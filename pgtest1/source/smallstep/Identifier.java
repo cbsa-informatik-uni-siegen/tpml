@@ -9,9 +9,16 @@ public class Identifier extends Expression {
     this.id = id;
   }
 
-  public Expression substitute(String id, Expression e) {
+  /**
+   * Performs the substitution for <b>(ID)</b> expressions.
+   * 
+   * @param id the identifier for the substitution.
+   * @param v the value to substitute.
+   * @return the new expression.
+   */
+  public Expression substitute(String id, Value v) {
     if (this.id.equals(id))
-      return e;
+      return v;
     else
       return this;
   }

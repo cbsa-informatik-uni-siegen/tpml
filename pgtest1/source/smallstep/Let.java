@@ -13,9 +13,16 @@ public class Let extends Expression {
     this.e2 = e2;
   }
 
-  public Expression substitute(String id, Expression e) {
-    Expression e1 = this.e1.substitute(id, e);
-    Expression e2 = this.id.equals(id) ? this.e2 : this.e2.substitute(id, e);
+  /**
+   * Performs the substitution for <b>(LET)</b> expressions.
+   * 
+   * @param id the identifier for the substitution.
+   * @param v the value to substitute.
+   * @return the new expression.
+   */
+  public Expression substitute(String id, Value v) {
+    Expression e1 = this.e1.substitute(id, v);
+    Expression e2 = this.id.equals(id) ? this.e2 : this.e2.substitute(id, v);
     return new Let(this.id, e1, e2);
   }
 

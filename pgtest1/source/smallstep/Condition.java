@@ -13,10 +13,17 @@ public class Condition extends Expression {
     this.e2 = e2;
   }
 
-  public Expression substitute(String id, Expression e) {
-    Expression e0 = this.e0.substitute(id, e);
-    Expression e1 = this.e1.substitute(id, e);
-    Expression e2 = this.e2.substitute(id, e);
+  /**
+   * Performs the substitution for <b>(COND)</b> expressions.
+   * 
+   * @param id the identifier for the substitution.
+   * @param v the value to substitute.
+   * @return the new expression.
+   */
+  public Expression substitute(String id, Value v) {
+    Expression e0 = this.e0.substitute(id, v);
+    Expression e1 = this.e1.substitute(id, v);
+    Expression e2 = this.e2.substitute(id, v);
     return new Condition(e0, e1, e2);
   }
 

@@ -11,8 +11,15 @@ public class Application extends Expression {
     this.e2 = e2;
   }
 
-  public Expression substitute(String id, Expression e) {
-    return new Application(this.e1.substitute(id, e), this.e2.substitute(id, e));
+  /**
+   * Performs the substitution on <b>(APP)</b> expressions.
+   * 
+   * @param id the identifier for the substitution.
+   * @param v the value to substitute.
+   * @return the new expression.
+   */
+  public Expression substitute(String id, Value v) {
+    return new Application(this.e1.substitute(id, v), this.e2.substitute(id, v));
   }
 
   public Expression evaluate(RuleChain ruleChain) {

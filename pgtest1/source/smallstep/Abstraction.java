@@ -11,11 +11,18 @@ public class Abstraction extends Expression {
     this.e = e;
   }
 
-  public Expression substitute(String id, Expression e) {
+  /**
+   * Performs the substitution for <b>(LAMBDA)</b> expressions.
+   * 
+   * @param id the identifier for the substitution.
+   * @param v the value to substitute.
+   * @return the new expression.
+   */
+  public Expression substitute(String id, Value v) {
     if (this.id.equals(id))
       return this;
     else
-      return new Abstraction(this.id, this.e.substitute(id, e));
+      return new Abstraction(this.id, this.e.substitute(id, v));
   }
 
   public Expression evaluate(RuleChain ruleChain) {
