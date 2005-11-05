@@ -3,10 +3,10 @@ package smallstep;
 public class Identifier extends Expression {
   /**
    * Generates a new Identifier.
-   * @param id the name of the identifier.
+   * @param name the name of the identifier.
    */
-  public Identifier(String id) {
-    this.id = id;
+  public Identifier(String name) {
+    this.name = name;
   }
 
   /**
@@ -17,25 +17,38 @@ public class Identifier extends Expression {
    * @return the new expression.
    */
   public Expression substitute(String id, Value v) {
-    if (this.id.equals(id))
+    if (this.name.equals(id))
       return v;
     else
       return this;
   }
 
+  /**
+   * Just returns the identifier expression.
+   *
+   * @param ruleChain the chain of rules.
+   * @return this identifier expression.
+   */
   public Expression evaluate(RuleChain ruleChain) {
-    // TODO Auto-generated method stub
-    return null;
+    return this;
   }
 
+  /**
+   * Returns the name of the identifier.
+   * @return the name of the identifier.
+   */
+  public final String getName() {
+    return this.name;
+  }
+  
   /**
    * Returns the string representation of the identifier.
    * @see java.lang.Object#toString()
    */
   @Override
   public String toString() {
-    return this.id;
+    return getName();
   }  
   
-  private String id;
+  private String name;
 }
