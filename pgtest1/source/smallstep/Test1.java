@@ -20,7 +20,7 @@ public class Test1 {
                     new IntegerConstant(1)),
                 new IntegerConstant(2)),
             UnitConstant.UNIT,
-            new BooleanConstant(true)),
+            BooleanConstant.TRUE),
         UnitConstant.UNIT);
   }
   
@@ -40,7 +40,7 @@ public class Test1 {
     return new Let(
         "f",
         new Condition(
-            new BooleanConstant(true),
+            BooleanConstant.TRUE,
             new Abstraction(
                 "x",
                 new Application(

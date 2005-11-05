@@ -17,17 +17,17 @@ public class RelationalOperator extends Operator {
     assert (c2 != null);
    
     if (this.op.equals("="))
-      return new BooleanConstant(c1.getNumber() == c2.getNumber());
+      return (c1.getNumber() == c2.getNumber()) ? BooleanConstant.TRUE : BooleanConstant.FALSE;
     else if (this.op.equals("<"))
-      return new BooleanConstant(c1.getNumber() < c2.getNumber());
+      return (c1.getNumber() < c2.getNumber()) ? BooleanConstant.TRUE : BooleanConstant.FALSE;
     else if (this.op.equals(">"))
-      return new BooleanConstant(c1.getNumber() > c2.getNumber());
+      return (c1.getNumber() > c2.getNumber()) ? BooleanConstant.TRUE : BooleanConstant.FALSE;
     else if (this.op.equals("<="))
-      return new BooleanConstant(c1.getNumber() <= c2.getNumber());
+      return (c1.getNumber() <= c2.getNumber()) ? BooleanConstant.TRUE : BooleanConstant.FALSE;
     else {
       assert (this.op.equals(">="));
       
-      return new BooleanConstant(c1.getNumber() >= c2.getNumber());
+      return (c1.getNumber() >= c2.getNumber()) ? BooleanConstant.TRUE : BooleanConstant.FALSE;
     }
   }
 

@@ -2,16 +2,6 @@ package smallstep;
 
 public class BooleanConstant extends Constant {
   /**
-   * Allocates a new boolean constant that corresponds
-   * to the given <code>primitiv</code> value.
-   * 
-   * @param primitive the primitive boolean value.
-   */
-  public BooleanConstant(boolean primitive) {
-    this.primitive = primitive;
-  }
-  
-  /**
    * Returns <code>true</code> if the primitive value of
    * this boolean constant is <code>true</code>.
    * 
@@ -29,6 +19,20 @@ public class BooleanConstant extends Constant {
   public String toString() {
     return isTrue() ? "true" : "false";
   }
+  
+  /**
+   * The <b>(TRUE)</b> expression.
+   */
+  public static final BooleanConstant TRUE = new BooleanConstant(true);
+  
+  /**
+   * The <b>(FALSE)</b> expression.
+   */
+  public static final BooleanConstant FALSE = new BooleanConstant(false);
 
+  private BooleanConstant(boolean primitive) {
+    this.primitive = primitive;
+  }
+  
   private boolean primitive;
 }
