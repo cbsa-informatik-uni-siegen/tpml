@@ -73,11 +73,17 @@ public class Condition extends Expression {
     // cast to boolean constant
     BooleanConstant v0 = (BooleanConstant)e0;
     
-    // we're about to (LET-EXEC) the expression
-    ruleChain.prepend(Rule.LET_EXEC);
-
-    // return the appropriate expression
-    return v0.isTrue() ? this.e1 : this.e2;
+    // check if the conditional value is true
+    if (v0.isTrue()) {
+      // prepend (COND-TRUE)
+      ruleChain.prepend(Rule.COND_TRUE);
+      return this.e1;
+    }
+    else {
+      // prepend (COND-FALSE)
+      ruleChain.prepend(Rule.COND_FALSE);
+      return this.e2;
+    }
   }
 
   /**
