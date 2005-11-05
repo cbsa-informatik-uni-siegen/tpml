@@ -1,0 +1,105 @@
+Package l1;
+
+
+Helpers
+ digit = ['0' .. '9'];
+ letter = [['a' .. 'z'] + ['A' .. 'Z']];
+
+
+Tokens
+ blank = (' ' | 13 | 10)+;
+
+ plus = '+';
+ minus = '-';
+ multiply = '*';
+ divide = '/';
+ modulo = 'mod';
+ lower_than = '<';
+ greater_than = '>';
+ lower_equal = '<=';
+ greater_equal = '>=';
+ equal = '=';
+ left_paren = '(';
+ right_paren = ')';
+ dot = '.';
+
+ if = 'if';
+ then = 'then';
+ else = 'else';
+ lambda = 'lambda';
+ let = 'let';
+ in = 'in';
+
+ unit = '()';
+ true = 'true';
+ false = 'false';
+ number = digit+;
+
+ identifier = letter (digit | letter)*;
+
+
+Ignored Tokens
+ blank;
+
+
+Productions
+ expression =
+  {application} application {-> application.expression} |
+  {condition} if [e0]:application then [e1]:expression else [e2]:expression {-> New expression.condition(e0.expression, e1, e2)} |
+  {let} let identifier equal [e1]:expression in [e2]:expression {-> New expression.let(identifier, e1, e2)} |
+  {abstraction} lambda identifier dot expression {-> New expression.abstraction(identifier, expression)};
+
+ application {-> expression} =
+  {term} term {-> term.expression} |
+  {application} application term {-> New expression.application(application.expression, term.expression)};
+
+ term {-> expression} =
+  {constant} constant {-> constant.expression} |
+  {identifier} identifier {-> New expression.identifier(identifier)} |
+  {expression} left_paren expression right_paren {-> expression};
+
+ constant {-> expression} =
+  {unit} unit {-> New expression.unit(unit)} |
+  {bool} bool {-> bool.expression} |
+  {number} number {-> New expression.number(number)} |
+  {operator} operator {-> operator.expression};
+
+ bool {-> expression} =
+  {true} true {-> New expression.true(true)} |
+  {false} false {-> New expression.false(false)};
+
+ operator {-> expression} =
+  {plus} plus {-> New expression.plus(plus)} |
+  {minus} minus {-> New expression.minus(minus)} |
+  {multiply} multiply {-> New expression.multiply(multiply)} |
+  {divide} divide {-> New expression.divide(divide)} |
+  {modulo} modulo {-> New expression.modulo(modulo)} |
+  {lower_than} lower_than {-> New expression.lower_than(lower_than)} |
+  {greater_than} greater_than {-> New expression.greater_than(greater_than)} |
+  {lower_equal} lower_equal {-> New expression.lower_equal(lower_equal)} |
+  {greater_equal} greater_equal {-> New expression.greater_equal(greater_equal)} |
+  {equal} equal {-> New expression.equal(equal)};
+
+
+Abstract Syntax Tree
+ expression =
+  {application} [e0]:expression [e1]:expression |
+  {condition} [e0]:expression [e1]:expression [e2]:expression |
+  {let} [id]:identifier [e1]:expression [e2]:expression |
+  {abstraction} [id]:identifier [e]:expression |
+  {identifier} identifier |
+  {unit} unit |
+  {true} true |
+  {false} false |
+  {number} number |
+  {plus} plus |
+  {minus} minus |
+  {multiply} multiply |
+  {divide} divide |
+  {modulo} modulo |
+  {lower_than} lower_than |
+  {greater_than} greater_than |
+  {lower_equal} lower_equal |
+  {greater_equal} greater_equal |
+  {equal} equal;
+
