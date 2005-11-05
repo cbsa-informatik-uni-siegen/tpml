@@ -23,6 +23,36 @@ public class Test1 {
             new BooleanConstant(true)),
         UnitConstant.UNIT);
   }
+  
+  private static Expression simpleAbstr() {
+    return new Application(
+        new Application(
+            new Abstraction(
+                "x",
+                new Application(
+                    ArithmeticOperator.DIV,
+                    new Identifier("x"))),
+            new IntegerConstant(4)),
+        new IntegerConstant(0));
+  }
+  
+  private static Expression simpleLet() {
+    return new Let(
+        "f",
+        new Condition(
+            new BooleanConstant(true),
+            new Abstraction(
+                "x",
+                new Application(
+                    new Application(
+                        ArithmeticOperator.PLUS,
+                        new IntegerConstant(1)),
+                    new Identifier("x"))),
+            UnitConstant.UNIT),
+        new Application(
+            new Identifier("f"),
+            new IntegerConstant(9)));
+  }
 
   private static void evaluate(Expression e) {
     System.out.println(e);
@@ -53,5 +83,9 @@ public class Test1 {
     evaluate(simplePlus());
     
     evaluate(simpleCond());
+    
+    evaluate(simpleAbstr());
+    
+    evaluate(simpleLet());
   }
 }
