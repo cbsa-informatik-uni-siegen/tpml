@@ -50,6 +50,14 @@ public class RuleChain {
   }
   
   /**
+   * Returns the rules contained within this chain.
+   * @return the rules contained within this chain.
+   */
+  public LinkedList<Rule> getRules() {
+    return this.rules;
+  }
+  
+  /**
    * Returns a list iterator on the rules, starting with
    * the first rule.
    * @return a list iterator on the rules.
