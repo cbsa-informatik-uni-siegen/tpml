@@ -105,6 +105,18 @@ public final class Rule {
     return this.name;
   }
   
+  /**
+   * Returns the string representation of the rule.
+   *
+   * @return the string representation of the rule.
+   * 
+   * @see java.lang.Object#toString()
+   */
+  @Override
+  public String toString() {
+    return getName();
+  }
+
   private Rule(boolean axiom, String name) {
     this.axiom = axiom;
     this.name = name;

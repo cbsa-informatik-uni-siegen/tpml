@@ -2,7 +2,7 @@ package smallstep;
 
 public abstract class Expression {
   /**
-   * Substitutes the expression <code>e</code> for the identifier <code>>id</code>
+   * Substitutes the value <code>v</code> for the identifier <code>>id</code>
    * and returns the resulting expression.
    * 
    * @param id the name of the identifier.
@@ -21,15 +21,4 @@ public abstract class Expression {
    * @return the resulting expression.        
    */
   public abstract Expression evaluate(RuleChain ruleChain);
-  
-  /**
-   * Checks whether the expression is already evaluated to a value.
-   * The default implementation just returns <code>false</code>
-   * and must be overridden by derived classes if appropriate.
-   * 
-   * @return <code>true</code> if the expression is already a value.
-   */
-  public boolean isValue() {
-    return false;
-  }
 }

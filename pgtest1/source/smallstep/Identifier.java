@@ -29,7 +29,13 @@ public class Identifier extends Expression {
   }
 
   /**
-   * @uml.property name="id"
+   * Returns the string representation of the identifier.
+   * @see java.lang.Object#toString()
    */
+  @Override
+  public String toString() {
+    return this.id;
+  }  
+  
   private String id;
 }

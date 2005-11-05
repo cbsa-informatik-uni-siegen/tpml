@@ -1,6 +1,7 @@
 package smallstep;
 
 import java.util.LinkedList;
+import java.util.ListIterator;
 
 /**
  * This class represents a chain of small step
@@ -24,31 +25,37 @@ public class RuleChain {
   }
   
   /**
-   * Appends <code>rule</code> to the chain.
-   * 
-   * This method first checks several contraints
-   * prior to appending the <code>rule</code>.
-   * 
-   * @param rule the rule to append.
+   * Checks whether the rule chain currently contains no rules.
+   * @return @c true if the rule chain is empty.
    */
-  public void append(Rule rule) {
-    // verify the rule list first if its not empty
-    if (!this.rules.isEmpty()) {
-      Rule last = this.rules.getLast();
-      if (last.isAxiom())
-        throw new IllegalStateException("Cannot append a rule to a chain that already contains an axiom");
-    }
-    
-    // append the rule to the chain of rules
-    this.rules.add(rule);
+  public final boolean isEmpty() {
+    return this.rules.isEmpty();
   }
   
   /**
-   * Returns the rules within this chain as a linked list.
-   * @return the rules within this chain as a linked list.
+   * Prepends <code>rule</code> to the chain.
+   * 
+   * This method first checks several constraints
+   * prior to prepending the <code>rule</code>.
+   * 
+   * @param rule the rule to append.
    */
-  public LinkedList<Rule> getRules() {
-    return this.rules;
+  public void prepend(Rule rule) {
+    // cannot prepend axiom to non-empty list and
+    // cannot prepend meta-rule to an empty list
+    assert (isEmpty() || !rule.isAxiom());
+    assert (!isEmpty () || rule.isAxiom());
+    
+    this.rules.addFirst(rule);
+  }
+  
+  /**
+   * Returns a list iterator on the rules, starting with
+   * the first rule.
+   * @return a list iterator on the rules.
+   */
+  public ListIterator<Rule> listIterator() {
+    return this.rules.listIterator();
   }
   
   private LinkedList<Rule> rules = new LinkedList<Rule>();
