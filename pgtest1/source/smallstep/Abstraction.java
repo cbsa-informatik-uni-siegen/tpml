@@ -56,7 +56,7 @@ public class Abstraction extends Value {
    */
   @Override
   public String toString() {
-    return "(lambda " + this.id + "." + this.e.toString() + ")";
+    return "\u03bb" + this.id + "." + this.e.toString();
   }
 
   private String id;

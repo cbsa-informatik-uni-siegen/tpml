@@ -93,7 +93,20 @@ public class Condition extends Expression {
    */
   @Override
   public String toString() {
-    return "(if " + this.e0 + " then " + this.e1 + " else " + this.e2 + ")";
+    String s0 = this.e0.toString();
+    String s1 = this.e1.toString();
+    String s2 = this.e2.toString();
+    
+    if (!(this.e0 instanceof Application) && !(this.e0 instanceof Value))
+      s0 = "(" + s0 + ")";
+    
+    if (!(this.e1 instanceof Application) && !(this.e1 instanceof Value))
+      s1 = "(" + s1 + ")";
+    
+    if (!(this.e2 instanceof Application) && !(this.e2 instanceof Value))
+      s2 = "(" + s2 + ")";
+    
+    return "if " + s0 + " then " + s1 + " else " + s2;
   }
 
   private Expression e0;

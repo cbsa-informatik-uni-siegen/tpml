@@ -103,7 +103,25 @@ public class Application extends Expression {
    */
   @Override
   public String toString() {
-    return "(" + this.e1 + " " + this.e2 + ")";
+    String s1 = this.e1.toString();
+    String s2 = this.e2.toString();
+
+    // check for cascaded applications
+    if (this.e1 instanceof Application) {
+      Application a1 = (Application)this.e1;
+      if (!(a1.e1 instanceof Operator) || !(a1.e2 instanceof Constant || a1.e2 instanceof Identifier))
+        s1 = "(" + s1 + ")";
+    }
+    else if (!(this.e1 instanceof Constant) && !(this.e1 instanceof Identifier)) {
+      // need to add parens to everything but constants and identifiers
+      s1 = "(" + s1 + ")";
+    }
+    
+    // same for the second expression
+    if (!(this.e2 instanceof Constant) && !(this.e2 instanceof Identifier))
+      s2 = "(" + s2 + ")";
+    
+    return s1 + " " + s2;
   }
   
   private Expression e1;

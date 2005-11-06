@@ -84,7 +84,13 @@ public class Let extends Expression {
    */
   @Override
   public String toString() {
-    return "let " + this.id + " = " + this.e1 + " in " + this.e2;
+    String s1 = this.e1.toString();
+    String s2 = this.e2.toString();
+    
+    if (!(this.e1 instanceof Application) && !(this.e1 instanceof Value))
+      s1 = "(" + s1 + ")";
+    
+    return "let " + this.id + " = " + s1 + " in " + s2; 
   }
 
   private String id;
