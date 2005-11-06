@@ -6,9 +6,10 @@ import java.awt.event.*;
 import java.util.LinkedList;
 import java.util.ListIterator;
 import javax.swing.*;
+import javax.swing.event.*;
 
 
-public class SSComponent extends JComponent {
+public class SSComponent extends JComponent implements Scrollable {
 
 	
 	private class SmallStep {
@@ -40,12 +41,6 @@ public class SSComponent extends JComponent {
 		}
 		
 		public void calculateSize() {
-			/*
-			 * the last combo will be the axiom rule combo box
-			 * and it will apear in the next line
-			int numCombos = ruleChain.getRules().size()-1;
-			width = numCombos * comboWidth;
-			 */
 						
 			/*
 			 * The height for the Expression text will take place later
@@ -72,7 +67,7 @@ public class SSComponent extends JComponent {
 				
 		public void checkComboSize() {
 			FontMetrics fm = getFontMetrics(comboFont);			
-			bw = 160;
+			bw = fm.stringWidth("COND-EVAL-EXN-EXN");
 			bh = fm.getHeight() + 2;
 			bt = bvi = fm.getHeight();
 			bvi *= 1.5f;
@@ -97,8 +92,10 @@ public class SSComponent extends JComponent {
 			c.setName("" + metaRules.size());
 			cx += bl + bhi + bw;
 			
-			c.addActionListener(new ActionListener () {
-				public void actionPerformed(ActionEvent e) {
+			c.addPopupMenuListener(new PopupMenuListener () {
+				public void popupMenuCanceled(PopupMenuEvent e) { }
+				public void popupMenuWillBecomeVisible(PopupMenuEvent e) { }
+				public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
 					JComboBox b = (JComboBox)e.getSource();
 					DefaultComboBoxModel m = (DefaultComboBoxModel)b.getModel();
 					int i = m.getIndexOf(m.getSelectedItem());
@@ -125,8 +122,10 @@ public class SSComponent extends JComponent {
 			parent.add(axiomRules);
 			axiomRules.setBounds(x + bl, y + bt + bh + bvi, bw, bh);
 			axiomRules.setVisible(false);
-			axiomRules.addActionListener(new ActionListener () {
-				public void actionPerformed(ActionEvent e) {
+			axiomRules.addPopupMenuListener(new PopupMenuListener () {
+				public void popupMenuCanceled(PopupMenuEvent e) { }
+				public void popupMenuWillBecomeVisible(PopupMenuEvent e) { }
+				public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
 					JComboBox b = (JComboBox)e.getSource();
 					DefaultComboBoxModel m = (DefaultComboBoxModel)b.getModel();
 					int i = m.getIndexOf(m.getSelectedItem());
@@ -136,69 +135,113 @@ public class SSComponent extends JComponent {
 			axiomRules.setVisible(false);
 		}
 		
-		public void handleMetaRuleChanged(int n, int index) {
-			for (int i=0; i<metaRules.size(); i++) {
-				JComboBox b = metaRules.get(i);
-				boolean v = i == 0 ||(i<=n+1 && index != 0) || (1<=n && index == 0);
-				b.setVisible(v);
+		public void handleMetaRuleChanged(int comboId, int index) {
+			if (comboId > metaRules.size())
+				return;
+
+			Rule r = ruleChain.getRules().get(comboId);
+			JComboBox b = metaRules.get(comboId);
+			DefaultComboBoxModel m = (DefaultComboBoxModel)b.getModel();
+			if (r.getName().equals (m.getSelectedItem())) {
+				b.setVisible(false);
+				if (comboId < (metaRules.size() - 1)) 
+					metaRules.get(comboId+1).setVisible(true);
+				else if (comboId == (metaRules.size() - 1))
+					axiomRules.setVisible(true);
 			}
-			boolean v = n == metaRules.size()-1 && index != 0;
-			axiomRules.setVisible(v);
 			repaint();
+			revalidate();
 		}
 		public void handleAxiomChanged(int index) {
-			if (index != 0)
-				checkCorrectness ();
-			repaint();
-		}
-		
-		public void checkCorrectness() {
-			LinkedList<Rule> rules = ruleChain.getRules();
-			for (int i=0; i<metaRules.size(); i++) {
-				JComboBox b = metaRules.get(i);
-				DefaultComboBoxModel m = (DefaultComboBoxModel)b.getModel();
-				Rule r = rules.get(i);
-				if (!r.getName().equals (m.getSelectedItem())) 
-					return;
-			}
-			Rule axiom = rules.getLast();
 			DefaultComboBoxModel m = (DefaultComboBoxModel)axiomRules.getModel();
-			if (!axiom.getName().equals(m.getSelectedItem()))
-				return;
-			unbuildSmallStep();
-			evaluateNextStep();
+			Rule r = ruleChain.getRules().getLast();
+			if (r.getName().equals(m.getSelectedItem())) {
+				axiomRules.setVisible(false);
+				correct = true;
+				evaluateNextStep();
+			}
+			repaint();
+			revalidate();
 		}
 		
 		public void checkMaxWidth() {
 			ListIterator<JComboBox> it = metaRules.listIterator();
+			FontMetrics fm = getFontMetrics(comboFont);
+			int px = x;
+			int relX = 0;
 			while (it.hasNext()) {
 				JComboBox b = it.next();
+				DefaultComboBoxModel m = (DefaultComboBoxModel)b.getModel();
+				if (!b.isVisible()) {
+					px += fm.stringWidth("(" + m.getSelectedItem() + ")") + bhi;
+					if (px > maxWidth)
+						maxWidth = px;
+				}
+				else if (b.isVisible()) {
+					relX = b.getX() - px;
+					b.setBounds(b.getX() - relX, b.getY(), b.getWidth(), b.getHeight());
+					if ((b.getX() + b.getWidth()) > maxWidth)
+						maxWidth = b.getX() + b.getWidth();
+					break;
+				}
+			}
+			while (it.hasNext()) {
+				JComboBox b = it.next();
+				b.setBounds(b.getX() - relX, b.getY(), b.getWidth(), b.getHeight());
 				if (b.isVisible()) {
 					if ((b.getX() + b.getWidth()) > maxWidth)
 						maxWidth = b.getX() + b.getWidth();
 				}
 			}
+			
 			if (axiomRules.isVisible()) {
 				if ((axiomRules.getX() + axiomRules.getWidth()) > maxWidth)
 					maxWidth = axiomRules.getX() + axiomRules.getWidth();
 			}
+			else if (correct) {
+				DefaultComboBoxModel m = (DefaultComboBoxModel)axiomRules.getModel();
+				if ((x + fm.stringWidth("(" + m.getSelectedItem() + ")") + bhi) > maxWidth)
+					maxWidth = x + fm.stringWidth("(" + m.getSelectedItem() + ")") + bhi;
+			}
+			
 		}
 		
 		public void render(Graphics2D g2d, int right) {
 			FontMetrics fm = getFontMetrics(textFont);
-			
+					
+			FontMetrics cfm = getFontMetrics(comboFont);
 			int ly = y + bt + bh + bvi / 2;
 
 			g2d.setColor(Color.black);
+			g2d.setFont(comboFont);
+			int px = x;
+			int py = ly - cfm.getAscent();
+			ListIterator<JComboBox> it = metaRules.listIterator();
+			while (it.hasNext()) {
+				JComboBox b = it.next();
+				if (b.isVisible())
+					break;
+				DefaultComboBoxModel m = (DefaultComboBoxModel)b.getModel();
+				g2d.drawString("(" + m.getSelectedItem() + ")", px, py);
+				px += cfm.stringWidth("(" + m.getSelectedItem() + ")") + bhi;
+			}
+			
 			g2d.drawLine(x + bl, ly, right, ly);
 			g2d.drawLine(right, ly, right - bvi / 4, ly - bhi / 4);
 			g2d.drawLine(right, ly, right - bvi / 4, ly + bhi / 4);
 			
+			width = right;
 			if (!correct)
 				return;
 			
+			py = ly + cfm.getHeight() + fm.getDescent();
+			DefaultComboBoxModel m = (DefaultComboBoxModel)axiomRules.getModel();
+			g2d.drawString("(" + m.getSelectedItem() + ")", x, py);
+			
 			g2d.setFont(textFont);
-			g2d.drawString(expression, right + bhi, y + bt + bh + bvi/2 + fm.getHeight () / 2);
+			g2d.drawString(expression, right + bhi, ly + (fm.getDescent() + fm.getAscent() / 2) / 2);
+			width += fm.stringWidth(expression);
+			
 		}
 		
 		public int getX() {
@@ -224,6 +267,7 @@ public class SSComponent extends JComponent {
 	private int						expressionPosY;
 	private int						currentPosY;
 	private int						maxWidth;
+	private int						maxSizeWidth, maxSizeHeight;
 	
 	public SSComponent(SmallStepModel model) {
 		super();
@@ -239,6 +283,8 @@ public class SSComponent extends JComponent {
 		currentPosY		= expressionPosY + fm.getHeight();
 		
 		maxWidth 		= 0;
+		maxSizeWidth	= fm.stringWidth(""+(model.getCurrentExpression())) + expressionPosX;
+		maxSizeHeight	= 2*currentPosY;
 		
 		evaluateNextStep();
 	}
@@ -265,18 +311,46 @@ public class SSComponent extends JComponent {
 		g2d.fillRect(0, 0, getWidth(), getHeight());
 		
 		Expression e = model.getOriginExpression();
+		FontMetrics fm = getFontMetrics(textFont);
 		g2d.setColor(Color.black);
 		g2d.setFont(textFont);
 		g2d.drawString(""+ e, expressionPosX, expressionPosY);
-		
+
+		maxWidth = 0;
+		maxSizeWidth = fm.stringWidth(""+e) + expressionPosX;
+		maxSizeHeight = 0;
 		ListIterator<SmallStep> it = steps.listIterator();
 		while (it.hasNext()) {
 			it.next().checkMaxWidth();
 		}
 		it = steps.listIterator();
 		while (it.hasNext()) {
-			it.next().render(g2d, maxWidth);
+			SmallStep step = it.next();
+			step.render(g2d, maxWidth);
+			if (maxSizeWidth < (step.getX() + step.getWidth()))
+				maxSizeWidth = step.getX() + step.getWidth();
+			if (maxSizeHeight < (step.getY() + step.getHeight()))
+				maxSizeHeight = step.getY() + step.getHeight();
+					
 		}
+
+		setPreferredSize (new Dimension (maxSizeWidth + 10, maxSizeHeight + fm.getHeight()));
+		revalidate();
 	}
 
+	public Dimension getPreferredScrollableViewportSize() {
+		return getPreferredSize();
+	}
+	public int getScrollableBlockIncrement(Rectangle visibleRect, int orientation, int direction) {
+		return direction;
+	}
+	public boolean getScrollableTracksViewportHeight() {
+		return false;
+	}
+	public boolean getScrollableTracksViewportWidth() {
+		return false;
+	}
+	public int getScrollableUnitIncrement(Rectangle visibleRect, int orientation, int direction) {
+		return direction * 25;
+	}
 }

@@ -188,7 +188,7 @@ public class Mainwindow extends JDialog {
       tree.apply(translator);
 
       // evaluate the resulting small step expression
-      SmallStepGUI gui = new SmallStepGUI(null, "narf", true,
+      SmallStepGUI gui = new SmallStepGUI(null, "SmallStep", true,
           new SmallStepModel(translator.getExpression()));
       gui.setVisible(true);
     } catch (Exception e) {
