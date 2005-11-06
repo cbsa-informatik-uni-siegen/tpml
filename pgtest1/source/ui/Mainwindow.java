@@ -8,7 +8,7 @@ import java.io.PushbackReader;
 import java.io.StringReader;
 
 import javax.swing.BoxLayout;
-import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -18,13 +18,14 @@ import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTree;
 import javax.swing.KeyStroke;
+import javax.swing.JOptionPane;
 
 import l1.Translator;
 import l1.lexer.Lexer;
 import l1.node.Start;
 import l1.parser.Parser;
 
-public class Mainwindow extends JDialog {
+public class Mainwindow extends JFrame {
   private JTabbedPane tabbedPane;
   private JTree treeView;
   private JMenuBar mainMenu;
@@ -188,14 +189,11 @@ public class Mainwindow extends JDialog {
       tree.apply(translator);
 
       // evaluate the resulting small step expression
-      SmallStepGUI gui = new SmallStepGUI(null, "SmallStep", true,
+      SmallStepGUI gui = new SmallStepGUI(this, "SmallStep", true,
           new SmallStepModel(translator.getExpression()));
       gui.setVisible(true);
     } catch (Exception e) {
-      e.printStackTrace();
+      JOptionPane.showMessageDialog(this, e.getLocalizedMessage(), "Error", JOptionPane.ERROR_MESSAGE);
     }
-
-    // SmallStepGUI gui = new SmallStepGUI (this, "SmallStep Interpreter");
-    // gui.setVisible (true);
   }
 }
