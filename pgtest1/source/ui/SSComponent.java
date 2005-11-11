@@ -2,7 +2,6 @@ package ui;
 
 import smallstep.*;
 import java.awt.*;
-import java.awt.event.*;
 import java.util.LinkedList;
 import java.util.ListIterator;
 import javax.swing.*;
@@ -21,8 +20,6 @@ public class SSComponent extends JComponent implements Scrollable {
 		private int 					bl, bt, bw, bh, bvi, bhi, cx;
 		private int						x, y;
 		private int						width, height;
-		private int 					comboWidth;
-		private int						comboHeight;
 		private boolean					correct;
 				
 		public SmallStep(RuleChain rules, String expression, JComponent parent, int x, int y) {
@@ -164,6 +161,20 @@ public class SSComponent extends JComponent implements Scrollable {
 			repaint();
 			revalidate();
 		}
+		public void completeStep() {
+			ListIterator<JComboBox> it = metaRules.listIterator();
+			ListIterator<Rule> rit = ruleChain.listIterator();
+			while (it.hasNext() && rit.hasNext()) {
+				JComboBox b = it.next();
+				Rule r = rit.next();
+				b.getModel().setSelectedItem(r.getName());
+				b.setVisible(false);
+			}
+			Rule axiom = ruleChain.getRules().getLast();
+			axiomRules.getModel().setSelectedItem(axiom.getName());
+			axiomRules.setVisible(false);
+			correct = true;
+		}
 		
 		public void checkMaxWidth() {
 			ListIterator<JComboBox> it = metaRules.listIterator();
@@ -290,10 +301,10 @@ public class SSComponent extends JComponent implements Scrollable {
 		evaluateNextStep();
 	}
 	
-	public void evaluateNextStep() {
+	public boolean evaluateNextStep() {
 		int result = model.evaluateNextStep();
 		if (result != 0)
-			return;
+			return false;
 		
 		Expression e = model.getCurrentExpression();
 		RuleChain rc = model.getCurrentRuleChain();
@@ -303,7 +314,26 @@ public class SSComponent extends JComponent implements Scrollable {
 		
 		steps.add(ss);
 		repaint();
-		
+		return (true);
+	}
+	
+	public void completeCurrentStep() {
+		SmallStep ss = steps.getLast();
+		ss.completeStep();
+		evaluateNextStep();
+		repaint();
+		revalidate();
+	}
+	
+	public void completeAllSteps() {
+		boolean comp = true;
+		while (comp) {
+			SmallStep ss = steps.getLast();
+			ss.completeStep();
+			repaint();
+			revalidate();
+			comp = evaluateNextStep();
+		}
 	}
 	
 	public void paintComponent(Graphics g) {
@@ -334,7 +364,6 @@ public class SSComponent extends JComponent implements Scrollable {
 				maxSizeHeight = step.getY() + step.getHeight();
 					
 		}
-
 		setPreferredSize (new Dimension (maxSizeWidth + 10, maxSizeHeight + fm.getHeight()));
 		revalidate();
 	}
@@ -343,7 +372,7 @@ public class SSComponent extends JComponent implements Scrollable {
 		return getPreferredSize();
 	}
 	public int getScrollableBlockIncrement(Rectangle visibleRect, int orientation, int direction) {
-		return direction;
+		return direction * 50;
 	}
 	public boolean getScrollableTracksViewportHeight() {
 		return false;
