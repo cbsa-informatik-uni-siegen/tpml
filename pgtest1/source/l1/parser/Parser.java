@@ -189,129 +189,135 @@ public class Parser
 			push(goTo(0), list);
 		    }
 		    break;
-                    case 4: /* reduce ATermApplication */
+                    case 4: /* reduce ARecursionExpression */
 		    {
 			ArrayList list = new4();
-			push(goTo(1), list);
+			push(goTo(0), list);
 		    }
 		    break;
-                    case 5: /* reduce AApplicationApplication */
+                    case 5: /* reduce ATermApplication */
 		    {
 			ArrayList list = new5();
 			push(goTo(1), list);
 		    }
 		    break;
-                    case 6: /* reduce AConstantTerm */
+                    case 6: /* reduce AApplicationApplication */
 		    {
 			ArrayList list = new6();
-			push(goTo(2), list);
+			push(goTo(1), list);
 		    }
 		    break;
-                    case 7: /* reduce AIdentifierTerm */
+                    case 7: /* reduce AConstantTerm */
 		    {
 			ArrayList list = new7();
 			push(goTo(2), list);
 		    }
 		    break;
-                    case 8: /* reduce AExpressionTerm */
+                    case 8: /* reduce AIdentifierTerm */
 		    {
 			ArrayList list = new8();
 			push(goTo(2), list);
 		    }
 		    break;
-                    case 9: /* reduce AUnitConstant */
+                    case 9: /* reduce AExpressionTerm */
 		    {
 			ArrayList list = new9();
-			push(goTo(3), list);
+			push(goTo(2), list);
 		    }
 		    break;
-                    case 10: /* reduce ABoolConstant */
+                    case 10: /* reduce AUnitConstant */
 		    {
 			ArrayList list = new10();
 			push(goTo(3), list);
 		    }
 		    break;
-                    case 11: /* reduce ANumberConstant */
+                    case 11: /* reduce ABoolConstant */
 		    {
 			ArrayList list = new11();
 			push(goTo(3), list);
 		    }
 		    break;
-                    case 12: /* reduce AOperatorConstant */
+                    case 12: /* reduce ANumberConstant */
 		    {
 			ArrayList list = new12();
 			push(goTo(3), list);
 		    }
 		    break;
-                    case 13: /* reduce ATrueBool */
+                    case 13: /* reduce AOperatorConstant */
 		    {
 			ArrayList list = new13();
-			push(goTo(4), list);
+			push(goTo(3), list);
 		    }
 		    break;
-                    case 14: /* reduce AFalseBool */
+                    case 14: /* reduce ATrueBool */
 		    {
 			ArrayList list = new14();
 			push(goTo(4), list);
 		    }
 		    break;
-                    case 15: /* reduce APlusOperator */
+                    case 15: /* reduce AFalseBool */
 		    {
 			ArrayList list = new15();
-			push(goTo(5), list);
+			push(goTo(4), list);
 		    }
 		    break;
-                    case 16: /* reduce AMinusOperator */
+                    case 16: /* reduce APlusOperator */
 		    {
 			ArrayList list = new16();
 			push(goTo(5), list);
 		    }
 		    break;
-                    case 17: /* reduce AMultiplyOperator */
+                    case 17: /* reduce AMinusOperator */
 		    {
 			ArrayList list = new17();
 			push(goTo(5), list);
 		    }
 		    break;
-                    case 18: /* reduce ADivideOperator */
+                    case 18: /* reduce AMultiplyOperator */
 		    {
 			ArrayList list = new18();
 			push(goTo(5), list);
 		    }
 		    break;
-                    case 19: /* reduce AModuloOperator */
+                    case 19: /* reduce ADivideOperator */
 		    {
 			ArrayList list = new19();
 			push(goTo(5), list);
 		    }
 		    break;
-                    case 20: /* reduce ALowerThanOperator */
+                    case 20: /* reduce AModuloOperator */
 		    {
 			ArrayList list = new20();
 			push(goTo(5), list);
 		    }
 		    break;
-                    case 21: /* reduce AGreaterThanOperator */
+                    case 21: /* reduce ALowerThanOperator */
 		    {
 			ArrayList list = new21();
 			push(goTo(5), list);
 		    }
 		    break;
-                    case 22: /* reduce ALowerEqualOperator */
+                    case 22: /* reduce AGreaterThanOperator */
 		    {
 			ArrayList list = new22();
 			push(goTo(5), list);
 		    }
 		    break;
-                    case 23: /* reduce AGreaterEqualOperator */
+                    case 23: /* reduce ALowerEqualOperator */
 		    {
 			ArrayList list = new23();
 			push(goTo(5), list);
 		    }
 		    break;
-                    case 24: /* reduce AEqualOperator */
+                    case 24: /* reduce AGreaterEqualOperator */
 		    {
 			ArrayList list = new24();
+			push(goTo(5), list);
+		    }
+		    break;
+                    case 25: /* reduce AEqualOperator */
+		    {
+			ArrayList list = new25();
 			push(goTo(5), list);
 		    }
 		    break;
@@ -424,7 +430,30 @@ public class Parser
 
 
 
-    ArrayList new4() /* reduce ATermApplication */
+    ArrayList new4() /* reduce ARecursionExpression */
+    {
+        ArrayList nodeList = new ArrayList();
+
+        ArrayList nodeArrayList4 = (ArrayList) pop();
+        ArrayList nodeArrayList3 = (ArrayList) pop();
+        ArrayList nodeArrayList2 = (ArrayList) pop();
+        ArrayList nodeArrayList1 = (ArrayList) pop();
+        PExpression pexpressionNode1;
+        {
+        TIdentifier tidentifierNode2;
+        PExpression pexpressionNode3;
+        tidentifierNode2 = (TIdentifier)nodeArrayList2.get(0);
+        pexpressionNode3 = (PExpression)nodeArrayList4.get(0);
+
+        pexpressionNode1 = new ARecursionExpression(tidentifierNode2, pexpressionNode3);
+        }
+	nodeList.add(pexpressionNode1);
+        return nodeList;
+    }
+
+
+
+    ArrayList new5() /* reduce ATermApplication */
     {
         ArrayList nodeList = new ArrayList();
 
@@ -437,7 +466,7 @@ public class Parser
 
 
 
-    ArrayList new5() /* reduce AApplicationApplication */
+    ArrayList new6() /* reduce AApplicationApplication */
     {
         ArrayList nodeList = new ArrayList();
 
@@ -458,7 +487,7 @@ public class Parser
 
 
 
-    ArrayList new6() /* reduce AConstantTerm */
+    ArrayList new7() /* reduce AConstantTerm */
     {
         ArrayList nodeList = new ArrayList();
 
@@ -471,7 +500,7 @@ public class Parser
 
 
 
-    ArrayList new7() /* reduce AIdentifierTerm */
+    ArrayList new8() /* reduce AIdentifierTerm */
     {
         ArrayList nodeList = new ArrayList();
 
@@ -489,7 +518,7 @@ public class Parser
 
 
 
-    ArrayList new8() /* reduce AExpressionTerm */
+    ArrayList new9() /* reduce AExpressionTerm */
     {
         ArrayList nodeList = new ArrayList();
 
@@ -504,7 +533,7 @@ public class Parser
 
 
 
-    ArrayList new9() /* reduce AUnitConstant */
+    ArrayList new10() /* reduce AUnitConstant */
     {
         ArrayList nodeList = new ArrayList();
 
@@ -522,7 +551,7 @@ public class Parser
 
 
 
-    ArrayList new10() /* reduce ABoolConstant */
+    ArrayList new11() /* reduce ABoolConstant */
     {
         ArrayList nodeList = new ArrayList();
 
@@ -535,7 +564,7 @@ public class Parser
 
 
 
-    ArrayList new11() /* reduce ANumberConstant */
+    ArrayList new12() /* reduce ANumberConstant */
     {
         ArrayList nodeList = new ArrayList();
 
@@ -553,7 +582,7 @@ public class Parser
 
 
 
-    ArrayList new12() /* reduce AOperatorConstant */
+    ArrayList new13() /* reduce AOperatorConstant */
     {
         ArrayList nodeList = new ArrayList();
 
@@ -566,7 +595,7 @@ public class Parser
 
 
 
-    ArrayList new13() /* reduce ATrueBool */
+    ArrayList new14() /* reduce ATrueBool */
     {
         ArrayList nodeList = new ArrayList();
 
@@ -584,7 +613,7 @@ public class Parser
 
 
 
-    ArrayList new14() /* reduce AFalseBool */
+    ArrayList new15() /* reduce AFalseBool */
     {
         ArrayList nodeList = new ArrayList();
 
@@ -602,7 +631,7 @@ public class Parser
 
 
 
-    ArrayList new15() /* reduce APlusOperator */
+    ArrayList new16() /* reduce APlusOperator */
     {
         ArrayList nodeList = new ArrayList();
 
@@ -620,7 +649,7 @@ public class Parser
 
 
 
-    ArrayList new16() /* reduce AMinusOperator */
+    ArrayList new17() /* reduce AMinusOperator */
     {
         ArrayList nodeList = new ArrayList();
 
@@ -638,7 +667,7 @@ public class Parser
 
 
 
-    ArrayList new17() /* reduce AMultiplyOperator */
+    ArrayList new18() /* reduce AMultiplyOperator */
     {
         ArrayList nodeList = new ArrayList();
 
@@ -656,7 +685,7 @@ public class Parser
 
 
 
-    ArrayList new18() /* reduce ADivideOperator */
+    ArrayList new19() /* reduce ADivideOperator */
     {
         ArrayList nodeList = new ArrayList();
 
@@ -674,7 +703,7 @@ public class Parser
 
 
 
-    ArrayList new19() /* reduce AModuloOperator */
+    ArrayList new20() /* reduce AModuloOperator */
     {
         ArrayList nodeList = new ArrayList();
 
@@ -692,7 +721,7 @@ public class Parser
 
 
 
-    ArrayList new20() /* reduce ALowerThanOperator */
+    ArrayList new21() /* reduce ALowerThanOperator */
     {
         ArrayList nodeList = new ArrayList();
 
@@ -710,7 +739,7 @@ public class Parser
 
 
 
-    ArrayList new21() /* reduce AGreaterThanOperator */
+    ArrayList new22() /* reduce AGreaterThanOperator */
     {
         ArrayList nodeList = new ArrayList();
 
@@ -728,7 +757,7 @@ public class Parser
 
 
 
-    ArrayList new22() /* reduce ALowerEqualOperator */
+    ArrayList new23() /* reduce ALowerEqualOperator */
     {
         ArrayList nodeList = new ArrayList();
 
@@ -746,7 +775,7 @@ public class Parser
 
 
 
-    ArrayList new23() /* reduce AGreaterEqualOperator */
+    ArrayList new24() /* reduce AGreaterEqualOperator */
     {
         ArrayList nodeList = new ArrayList();
 
@@ -764,7 +793,7 @@ public class Parser
 
 
 
-    ArrayList new24() /* reduce AEqualOperator */
+    ArrayList new25() /* reduce AEqualOperator */
     {
         ArrayList nodeList = new ArrayList();
 
@@ -784,8 +813,7 @@ public class Parser
 
     private static int[][][] actionTable;
 /*      {
-			{{-1, ERROR, 0}, {0, SHIFT, 1}, {1, SHIFT, 2}, {2, SHIFT, 3}, {3, SHIFT, 4}, {4, SHIFT, 5}, {5, SHIFT, 6}, {6, SHIFT, 7}, {7, SHIFT, 8}, {8, SHIFT, 9}, {9, SHIFT, 10}, {10, SHIFT, 11}, {13, SHIFT, 12}, {16, SHIFT, 13}, {17, SHIFT, 14}, {19, SHIFT, 15}, {20, SHIFT, 16}, {21, SHIFT, 17}, {22, SHIFT, 18}, {23, SHIFT, 19}, },
-			{{-1, REDUCE, 15}, },
+			{{-1, ERROR, 0}, {0, SHIFT, 1}, {1, SHIFT, 2}, {2, SHIFT, 3}, {3, SHIFT, 4}, {4, SHIFT, 5}, {5, SHIFT, 6}, {6, SHIFT, 7}, {7, SHIFT, 8}, {8, SHIFT, 9}, {9, SHIFT, 10}, {10, SHIFT, 11}, {13, SHIFT, 12}, {16, SHIFT, 13}, {17, SHIFT, 14}, {19, SHIFT, 15}, {20, SHIFT, 16}, {21, SHIFT, 17}, {22, SHIFT, 18}, {23, SHIFT, 19}, {24, SHIFT, 20}, },
 			{{-1, REDUCE, 16}, },
 			{{-1, REDUCE, 17}, },
 			{{-1, REDUCE, 18}, },
@@ -795,50 +823,55 @@ public class Parser
 			{{-1, REDUCE, 22}, },
 			{{-1, REDUCE, 23}, },
 			{{-1, REDUCE, 24}, },
-			{{-1, ERROR, 11}, {0, SHIFT, 1}, {1, SHIFT, 2}, {2, SHIFT, 3}, {3, SHIFT, 4}, {4, SHIFT, 5}, {5, SHIFT, 6}, {6, SHIFT, 7}, {7, SHIFT, 8}, {8, SHIFT, 9}, {9, SHIFT, 10}, {10, SHIFT, 11}, {13, SHIFT, 12}, {16, SHIFT, 13}, {17, SHIFT, 14}, {19, SHIFT, 15}, {20, SHIFT, 16}, {21, SHIFT, 17}, {22, SHIFT, 18}, {23, SHIFT, 19}, },
-			{{-1, ERROR, 12}, {0, SHIFT, 1}, {1, SHIFT, 2}, {2, SHIFT, 3}, {3, SHIFT, 4}, {4, SHIFT, 5}, {5, SHIFT, 6}, {6, SHIFT, 7}, {7, SHIFT, 8}, {8, SHIFT, 9}, {9, SHIFT, 10}, {10, SHIFT, 11}, {19, SHIFT, 15}, {20, SHIFT, 16}, {21, SHIFT, 17}, {22, SHIFT, 18}, {23, SHIFT, 19}, },
-			{{-1, ERROR, 13}, {23, SHIFT, 28}, },
-			{{-1, ERROR, 14}, {23, SHIFT, 29}, },
-			{{-1, REDUCE, 9}, },
-			{{-1, REDUCE, 13}, },
-			{{-1, REDUCE, 14}, },
-			{{-1, REDUCE, 11}, },
-			{{-1, REDUCE, 7}, },
-			{{-1, ERROR, 20}, {24, ACCEPT, -1}, },
-			{{-1, REDUCE, 0}, {0, SHIFT, 1}, {1, SHIFT, 2}, {2, SHIFT, 3}, {3, SHIFT, 4}, {4, SHIFT, 5}, {5, SHIFT, 6}, {6, SHIFT, 7}, {7, SHIFT, 8}, {8, SHIFT, 9}, {9, SHIFT, 10}, {10, SHIFT, 11}, {19, SHIFT, 15}, {20, SHIFT, 16}, {21, SHIFT, 17}, {22, SHIFT, 18}, {23, SHIFT, 19}, },
-			{{-1, REDUCE, 4}, },
-			{{-1, REDUCE, 6}, },
+			{{-1, REDUCE, 25}, },
+			{{-1, ERROR, 11}, {0, SHIFT, 1}, {1, SHIFT, 2}, {2, SHIFT, 3}, {3, SHIFT, 4}, {4, SHIFT, 5}, {5, SHIFT, 6}, {6, SHIFT, 7}, {7, SHIFT, 8}, {8, SHIFT, 9}, {9, SHIFT, 10}, {10, SHIFT, 11}, {13, SHIFT, 12}, {16, SHIFT, 13}, {17, SHIFT, 14}, {19, SHIFT, 15}, {20, SHIFT, 16}, {21, SHIFT, 17}, {22, SHIFT, 18}, {23, SHIFT, 19}, {24, SHIFT, 20}, },
+			{{-1, ERROR, 12}, {0, SHIFT, 1}, {1, SHIFT, 2}, {2, SHIFT, 3}, {3, SHIFT, 4}, {4, SHIFT, 5}, {5, SHIFT, 6}, {6, SHIFT, 7}, {7, SHIFT, 8}, {8, SHIFT, 9}, {9, SHIFT, 10}, {10, SHIFT, 11}, {20, SHIFT, 16}, {21, SHIFT, 17}, {22, SHIFT, 18}, {23, SHIFT, 19}, {24, SHIFT, 20}, },
+			{{-1, ERROR, 13}, {24, SHIFT, 29}, },
+			{{-1, ERROR, 14}, {24, SHIFT, 30}, },
+			{{-1, ERROR, 15}, {24, SHIFT, 31}, },
 			{{-1, REDUCE, 10}, },
+			{{-1, REDUCE, 14}, },
+			{{-1, REDUCE, 15}, },
 			{{-1, REDUCE, 12}, },
-			{{-1, ERROR, 26}, {11, SHIFT, 31}, },
-			{{-1, ERROR, 27}, {0, SHIFT, 1}, {1, SHIFT, 2}, {2, SHIFT, 3}, {3, SHIFT, 4}, {4, SHIFT, 5}, {5, SHIFT, 6}, {6, SHIFT, 7}, {7, SHIFT, 8}, {8, SHIFT, 9}, {9, SHIFT, 10}, {10, SHIFT, 11}, {14, SHIFT, 32}, {19, SHIFT, 15}, {20, SHIFT, 16}, {21, SHIFT, 17}, {22, SHIFT, 18}, {23, SHIFT, 19}, },
-			{{-1, ERROR, 28}, {12, SHIFT, 33}, },
-			{{-1, ERROR, 29}, {9, SHIFT, 34}, },
-			{{-1, REDUCE, 5}, },
 			{{-1, REDUCE, 8}, },
-			{{-1, ERROR, 32}, {0, SHIFT, 1}, {1, SHIFT, 2}, {2, SHIFT, 3}, {3, SHIFT, 4}, {4, SHIFT, 5}, {5, SHIFT, 6}, {6, SHIFT, 7}, {7, SHIFT, 8}, {8, SHIFT, 9}, {9, SHIFT, 10}, {10, SHIFT, 11}, {13, SHIFT, 12}, {16, SHIFT, 13}, {17, SHIFT, 14}, {19, SHIFT, 15}, {20, SHIFT, 16}, {21, SHIFT, 17}, {22, SHIFT, 18}, {23, SHIFT, 19}, },
-			{{-1, ERROR, 33}, {0, SHIFT, 1}, {1, SHIFT, 2}, {2, SHIFT, 3}, {3, SHIFT, 4}, {4, SHIFT, 5}, {5, SHIFT, 6}, {6, SHIFT, 7}, {7, SHIFT, 8}, {8, SHIFT, 9}, {9, SHIFT, 10}, {10, SHIFT, 11}, {13, SHIFT, 12}, {16, SHIFT, 13}, {17, SHIFT, 14}, {19, SHIFT, 15}, {20, SHIFT, 16}, {21, SHIFT, 17}, {22, SHIFT, 18}, {23, SHIFT, 19}, },
-			{{-1, ERROR, 34}, {0, SHIFT, 1}, {1, SHIFT, 2}, {2, SHIFT, 3}, {3, SHIFT, 4}, {4, SHIFT, 5}, {5, SHIFT, 6}, {6, SHIFT, 7}, {7, SHIFT, 8}, {8, SHIFT, 9}, {9, SHIFT, 10}, {10, SHIFT, 11}, {13, SHIFT, 12}, {16, SHIFT, 13}, {17, SHIFT, 14}, {19, SHIFT, 15}, {20, SHIFT, 16}, {21, SHIFT, 17}, {22, SHIFT, 18}, {23, SHIFT, 19}, },
-			{{-1, ERROR, 35}, {15, SHIFT, 38}, },
+			{{-1, ERROR, 21}, {25, ACCEPT, -1}, },
+			{{-1, REDUCE, 0}, {0, SHIFT, 1}, {1, SHIFT, 2}, {2, SHIFT, 3}, {3, SHIFT, 4}, {4, SHIFT, 5}, {5, SHIFT, 6}, {6, SHIFT, 7}, {7, SHIFT, 8}, {8, SHIFT, 9}, {9, SHIFT, 10}, {10, SHIFT, 11}, {20, SHIFT, 16}, {21, SHIFT, 17}, {22, SHIFT, 18}, {23, SHIFT, 19}, {24, SHIFT, 20}, },
+			{{-1, REDUCE, 5}, },
+			{{-1, REDUCE, 7}, },
+			{{-1, REDUCE, 11}, },
+			{{-1, REDUCE, 13}, },
+			{{-1, ERROR, 27}, {11, SHIFT, 33}, },
+			{{-1, ERROR, 28}, {0, SHIFT, 1}, {1, SHIFT, 2}, {2, SHIFT, 3}, {3, SHIFT, 4}, {4, SHIFT, 5}, {5, SHIFT, 6}, {6, SHIFT, 7}, {7, SHIFT, 8}, {8, SHIFT, 9}, {9, SHIFT, 10}, {10, SHIFT, 11}, {14, SHIFT, 34}, {20, SHIFT, 16}, {21, SHIFT, 17}, {22, SHIFT, 18}, {23, SHIFT, 19}, {24, SHIFT, 20}, },
+			{{-1, ERROR, 29}, {12, SHIFT, 35}, },
+			{{-1, ERROR, 30}, {9, SHIFT, 36}, },
+			{{-1, ERROR, 31}, {12, SHIFT, 37}, },
+			{{-1, REDUCE, 6}, },
+			{{-1, REDUCE, 9}, },
+			{{-1, ERROR, 34}, {0, SHIFT, 1}, {1, SHIFT, 2}, {2, SHIFT, 3}, {3, SHIFT, 4}, {4, SHIFT, 5}, {5, SHIFT, 6}, {6, SHIFT, 7}, {7, SHIFT, 8}, {8, SHIFT, 9}, {9, SHIFT, 10}, {10, SHIFT, 11}, {13, SHIFT, 12}, {16, SHIFT, 13}, {17, SHIFT, 14}, {19, SHIFT, 15}, {20, SHIFT, 16}, {21, SHIFT, 17}, {22, SHIFT, 18}, {23, SHIFT, 19}, {24, SHIFT, 20}, },
+			{{-1, ERROR, 35}, {0, SHIFT, 1}, {1, SHIFT, 2}, {2, SHIFT, 3}, {3, SHIFT, 4}, {4, SHIFT, 5}, {5, SHIFT, 6}, {6, SHIFT, 7}, {7, SHIFT, 8}, {8, SHIFT, 9}, {9, SHIFT, 10}, {10, SHIFT, 11}, {13, SHIFT, 12}, {16, SHIFT, 13}, {17, SHIFT, 14}, {19, SHIFT, 15}, {20, SHIFT, 16}, {21, SHIFT, 17}, {22, SHIFT, 18}, {23, SHIFT, 19}, {24, SHIFT, 20}, },
+			{{-1, ERROR, 36}, {0, SHIFT, 1}, {1, SHIFT, 2}, {2, SHIFT, 3}, {3, SHIFT, 4}, {4, SHIFT, 5}, {5, SHIFT, 6}, {6, SHIFT, 7}, {7, SHIFT, 8}, {8, SHIFT, 9}, {9, SHIFT, 10}, {10, SHIFT, 11}, {13, SHIFT, 12}, {16, SHIFT, 13}, {17, SHIFT, 14}, {19, SHIFT, 15}, {20, SHIFT, 16}, {21, SHIFT, 17}, {22, SHIFT, 18}, {23, SHIFT, 19}, {24, SHIFT, 20}, },
+			{{-1, ERROR, 37}, {0, SHIFT, 1}, {1, SHIFT, 2}, {2, SHIFT, 3}, {3, SHIFT, 4}, {4, SHIFT, 5}, {5, SHIFT, 6}, {6, SHIFT, 7}, {7, SHIFT, 8}, {8, SHIFT, 9}, {9, SHIFT, 10}, {10, SHIFT, 11}, {13, SHIFT, 12}, {16, SHIFT, 13}, {17, SHIFT, 14}, {19, SHIFT, 15}, {20, SHIFT, 16}, {21, SHIFT, 17}, {22, SHIFT, 18}, {23, SHIFT, 19}, {24, SHIFT, 20}, },
+			{{-1, ERROR, 38}, {15, SHIFT, 42}, },
 			{{-1, REDUCE, 3}, },
-			{{-1, ERROR, 37}, {18, SHIFT, 39}, },
-			{{-1, ERROR, 38}, {0, SHIFT, 1}, {1, SHIFT, 2}, {2, SHIFT, 3}, {3, SHIFT, 4}, {4, SHIFT, 5}, {5, SHIFT, 6}, {6, SHIFT, 7}, {7, SHIFT, 8}, {8, SHIFT, 9}, {9, SHIFT, 10}, {10, SHIFT, 11}, {13, SHIFT, 12}, {16, SHIFT, 13}, {17, SHIFT, 14}, {19, SHIFT, 15}, {20, SHIFT, 16}, {21, SHIFT, 17}, {22, SHIFT, 18}, {23, SHIFT, 19}, },
-			{{-1, ERROR, 39}, {0, SHIFT, 1}, {1, SHIFT, 2}, {2, SHIFT, 3}, {3, SHIFT, 4}, {4, SHIFT, 5}, {5, SHIFT, 6}, {6, SHIFT, 7}, {7, SHIFT, 8}, {8, SHIFT, 9}, {9, SHIFT, 10}, {10, SHIFT, 11}, {13, SHIFT, 12}, {16, SHIFT, 13}, {17, SHIFT, 14}, {19, SHIFT, 15}, {20, SHIFT, 16}, {21, SHIFT, 17}, {22, SHIFT, 18}, {23, SHIFT, 19}, },
+			{{-1, ERROR, 40}, {18, SHIFT, 43}, },
+			{{-1, REDUCE, 4}, },
+			{{-1, ERROR, 42}, {0, SHIFT, 1}, {1, SHIFT, 2}, {2, SHIFT, 3}, {3, SHIFT, 4}, {4, SHIFT, 5}, {5, SHIFT, 6}, {6, SHIFT, 7}, {7, SHIFT, 8}, {8, SHIFT, 9}, {9, SHIFT, 10}, {10, SHIFT, 11}, {13, SHIFT, 12}, {16, SHIFT, 13}, {17, SHIFT, 14}, {19, SHIFT, 15}, {20, SHIFT, 16}, {21, SHIFT, 17}, {22, SHIFT, 18}, {23, SHIFT, 19}, {24, SHIFT, 20}, },
+			{{-1, ERROR, 43}, {0, SHIFT, 1}, {1, SHIFT, 2}, {2, SHIFT, 3}, {3, SHIFT, 4}, {4, SHIFT, 5}, {5, SHIFT, 6}, {6, SHIFT, 7}, {7, SHIFT, 8}, {8, SHIFT, 9}, {9, SHIFT, 10}, {10, SHIFT, 11}, {13, SHIFT, 12}, {16, SHIFT, 13}, {17, SHIFT, 14}, {19, SHIFT, 15}, {20, SHIFT, 16}, {21, SHIFT, 17}, {22, SHIFT, 18}, {23, SHIFT, 19}, {24, SHIFT, 20}, },
 			{{-1, REDUCE, 1}, },
 			{{-1, REDUCE, 2}, },
         };*/
     private static int[][][] gotoTable;
 /*      {
-			{{-1, 20}, {11, 26}, {32, 35}, {33, 36}, {34, 37}, {38, 40}, {39, 41}, },
-			{{-1, 21}, {12, 27}, },
-			{{-1, 22}, {21, 30}, {27, 30}, },
-			{{-1, 23}, },
+			{{-1, 21}, {11, 27}, {34, 38}, {35, 39}, {36, 40}, {37, 41}, {42, 44}, {43, 45}, },
+			{{-1, 22}, {12, 28}, },
+			{{-1, 23}, {22, 32}, {28, 32}, },
 			{{-1, 24}, },
 			{{-1, 25}, },
+			{{-1, 26}, },
         };*/
     private static String[] errorMessages;
 /*      {
-			"expecting: '+', '-', '*', '/', 'mod', '<', '>', '<=', '>=', '=', '(', 'if', 'lambda', 'let', '()', 'true', 'false', number, identifier",
+			"expecting: '+', '-', '*', '/', 'mod', '<', '>', '<=', '>=', '=', '(', 'if', 'lambda', 'let', 'rec', '()', 'true', 'false', number, identifier",
 			"expecting: '+', '-', '*', '/', 'mod', '<', '>', '<=', '>=', '=', '(', ')', 'then', 'else', 'in', '()', 'true', 'false', number, identifier, EOF",
 			"expecting: '+', '-', '*', '/', 'mod', '<', '>', '<=', '>=', '=', '(', '()', 'true', 'false', number, identifier",
 			"expecting: identifier",
@@ -854,7 +887,7 @@ public class Parser
         };*/
     private static int[] errors;
 /*      {
-			0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 2, 3, 3, 1, 1, 1, 1, 1, 4, 5, 1, 1, 1, 1, 6, 7, 8, 9, 1, 1, 0, 0, 0, 10, 11, 12, 0, 0, 11, 11, 
+			0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 2, 3, 3, 3, 1, 1, 1, 1, 1, 4, 5, 1, 1, 1, 1, 6, 7, 8, 9, 8, 1, 1, 0, 0, 0, 0, 10, 11, 12, 11, 0, 0, 11, 11, 
         };*/
 
     static 

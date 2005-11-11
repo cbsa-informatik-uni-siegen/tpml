@@ -88,6 +88,11 @@ public class AnalysisAdapter implements Analysis
         defaultCase(node);
     }
 
+    public void caseARecursionExpression(ARecursionExpression node)
+    {
+        defaultCase(node);
+    }
+
     public void caseAIdentifierExpression(AIdentifierExpression node)
     {
         defaultCase(node);
@@ -259,6 +264,11 @@ public class AnalysisAdapter implements Analysis
     }
 
     public void caseTIn(TIn node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseTRec(TRec node)
     {
         defaultCase(node);
     }

@@ -137,6 +137,30 @@ public class DepthFirstAdapter extends AnalysisAdapter
         outAAbstractionExpression(node);
     }
 
+    public void inARecursionExpression(ARecursionExpression node)
+    {
+        defaultIn(node);
+    }
+
+    public void outARecursionExpression(ARecursionExpression node)
+    {
+        defaultOut(node);
+    }
+
+    public void caseARecursionExpression(ARecursionExpression node)
+    {
+        inARecursionExpression(node);
+        if(node.getId() != null)
+        {
+            node.getId().apply(this);
+        }
+        if(node.getE() != null)
+        {
+            node.getE().apply(this);
+        }
+        outARecursionExpression(node);
+    }
+
     public void inAIdentifierExpression(AIdentifierExpression node)
     {
         defaultIn(node);

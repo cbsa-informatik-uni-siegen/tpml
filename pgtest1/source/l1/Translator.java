@@ -129,6 +129,15 @@ public class Translator extends DepthFirstAdapter {
   }
 
   /**
+   * @see l1.analysis.DepthFirstAdapter#outARecursionExpression(l1.node.ARecursionExpression)
+   */
+  @Override
+  public void outARecursionExpression(ARecursionExpression node) {
+    Expression e = this.expressions.pop();
+    this.expressions.push(new Recursion(node.getId().getText(), e));
+  }
+  
+  /**
    * @see l1.analysis.DepthFirstAdapter#outALowerEqualExpression(l1.node.ALowerEqualExpression)
    */
   @Override

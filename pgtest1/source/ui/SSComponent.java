@@ -118,6 +118,7 @@ public class SSComponent extends JComponent implements Scrollable {
 			model.addElement("COND-TRUE");
 			model.addElement("COND-FALSE");
 			model.addElement("LET-EXEC");
+            model.addElement("UNFOLD");
 			axiomRules.setModel(model);
 			parent.add(axiomRules);
 			axiomRules.setBounds(x + bl, y + bt + bh + bvi, bw, bh);

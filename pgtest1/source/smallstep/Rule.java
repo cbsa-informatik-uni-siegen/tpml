@@ -90,6 +90,11 @@ public final class Rule {
   public static final Rule LET_EXEC = new Rule(true, "LET-EXEC");
   
   /**
+   * The <b>(UNFOLD)</b> axiom executes a <code>rec</code> expression.
+   */
+  public static final Rule UNFOLD = new Rule(true, "UNFOLD");
+  
+  /**
    * Checks whether this rule is an axiom.
    * @return <code>true</code> if this rule is an axiom.
    */

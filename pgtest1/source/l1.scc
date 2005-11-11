@@ -29,6 +29,7 @@ Tokens
  lambda = 'lambda';
  let = 'let';
  in = 'in';
+ rec = 'rec';
 
  unit = '()';
  true = 'true';
@@ -47,7 +48,8 @@ Productions
   {application} application {-> application.expression} |
   {condition} if [e0]:application then [e1]:expression else [e2]:expression {-> New expression.condition(e0.expression, e1, e2)} |
   {let} let identifier equal [e1]:expression in [e2]:expression {-> New expression.let(identifier, e1, e2)} |
-  {abstraction} lambda identifier dot expression {-> New expression.abstraction(identifier, expression)};
+  {abstraction} lambda identifier dot expression {-> New expression.abstraction(identifier, expression)} |
+  {recursion} rec identifier dot expression {-> New expression.recursion(identifier, expression)};
 
  application {-> expression} =
   {term} term {-> term.expression} |
@@ -87,6 +89,7 @@ Abstract Syntax Tree
   {condition} [e0]:expression [e1]:expression [e2]:expression |
   {let} [id]:identifier [e1]:expression [e2]:expression |
   {abstraction} [id]:identifier [e]:expression |
+  {recursion} [id]:identifier [e]:expression |
   {identifier} identifier |
   {unit} unit |
   {true} true |

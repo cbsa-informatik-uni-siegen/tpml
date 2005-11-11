@@ -35,6 +35,7 @@ public class MLStyledDocument extends DefaultStyledDocument {
     this.attributes.put("If", keywordSet);
     this.attributes.put("Then", keywordSet);
     this.attributes.put("Else", keywordSet);
+    this.attributes.put("Rec", keywordSet);
     
     // setup the value set
     SimpleAttributeSet valueSet = new SimpleAttributeSet();
