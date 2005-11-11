@@ -1,6 +1,6 @@
 package smallstep;
 
-public class Value extends Expression {
+public abstract class Value extends Expression {
   /**
    * Performs the substitution for values.
    * Since most values are atomic, the substitution
@@ -12,11 +12,11 @@ public class Value extends Expression {
    * default implementation.
    * 
    * @param id the identifier for the substitution.
-   * @param v the value to substitute.
+   * @param e the expression to substitute.
    * @return a reference to the value itself.
    */
   @Override
-  public Expression substitute(String id, Value v) {
+  public Expression substitute(String id, Expression e) {
     return this;
   }
 
@@ -34,7 +34,6 @@ public class Value extends Expression {
     return this;
   }
 
-  
   /**
    * Performs the application of <code>this</code> to <code>v</code>
    * and prepends the axiom that was used to <code>ruleChain</code>.

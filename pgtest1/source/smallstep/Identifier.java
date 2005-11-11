@@ -1,5 +1,8 @@
 package smallstep;
 
+import java.util.Set;
+import java.util.TreeSet;
+
 public class Identifier extends Expression {
   /**
    * Generates a new Identifier.
@@ -13,12 +16,12 @@ public class Identifier extends Expression {
    * Performs the substitution for <b>(ID)</b> expressions.
    * 
    * @param id the identifier for the substitution.
-   * @param v the value to substitute.
+   * @param e the expression to substitute.
    * @return the new expression.
    */
-  public Expression substitute(String id, Value v) {
+  public Expression substitute(String id, Expression e) {
     if (this.name.equals(id))
-      return v;
+      return e;
     else
       return this;
   }
@@ -31,6 +34,18 @@ public class Identifier extends Expression {
    */
   public Expression evaluate(RuleChain ruleChain) {
     return this;
+  }
+  
+  /**
+   * Returns the set that contains this identifier.
+   * @return the set that contains this identifier.
+   * @see smallstep.Expression#free()
+   */
+  @Override
+  public Set<String> free() {
+    Set<String> set = new TreeSet<String>();
+    set.add(this.name);
+    return set;
   }
 
   /**

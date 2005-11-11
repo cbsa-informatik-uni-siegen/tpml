@@ -1,15 +1,17 @@
 package smallstep;
 
+import java.util.Set;
+
 public abstract class Expression {
   /**
    * Substitutes the value <code>v</code> for the identifier <code>>id</code>
    * and returns the resulting expression.
    * 
    * @param id the name of the identifier.
-   * @param v the value to substitute.
+   * @param e the expression to substitute.
    * @return the resulting expression.
    */
-  public abstract Expression substitute(String id, Value v);
+  public abstract Expression substitute(String id, Expression e);
 
   /**
    * Evaluates the expression and returns the resulting expression.
@@ -21,4 +23,10 @@ public abstract class Expression {
    * @return the resulting expression.        
    */
   public abstract Expression evaluate(RuleChain ruleChain);
+  
+  /**
+   * Returns the free identifiers within this expression.
+   * @return the free identifiers within this expression.
+   */
+  public abstract Set<String> free();
 }

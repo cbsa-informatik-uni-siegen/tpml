@@ -1,5 +1,8 @@
 package smallstep;
 
+import java.util.Set;
+import java.util.TreeSet;
+
 public class Application extends Expression {
   /**
    * Generates a new application.
@@ -15,11 +18,11 @@ public class Application extends Expression {
    * Performs the substitution on <b>(APP)</b> expressions.
    * 
    * @param id the identifier for the substitution.
-   * @param v the value to substitute.
+   * @param e the expression to substitute.
    * @return the new expression.
    */
-  public Expression substitute(String id, Value v) {
-    return new Application(this.e1.substitute(id, v), this.e2.substitute(id, v));
+  public Expression substitute(String id, Expression e) {
+    return new Application(this.e1.substitute(id, e), this.e2.substitute(id, e));
   }
 
   public Expression evaluate(RuleChain ruleChain) {
@@ -94,6 +97,20 @@ public class Application extends Expression {
     
     // perform the application
     return v1.applyTo(v2, ruleChain);
+  }
+  
+  /**
+   * Returns the free identifiers of the two expressions
+   * of the application.
+   * @return the free identifiers.
+   * @see smallstep.Expression#free()
+   */
+  @Override
+  public Set<String> free() {
+    Set<String> set = new TreeSet<String>();
+    set.addAll(this.e1.free());
+    set.addAll(this.e2.free());
+    return set;
   }
 
   /**

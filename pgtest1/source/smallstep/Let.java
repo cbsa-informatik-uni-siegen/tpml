@@ -1,5 +1,8 @@
 package smallstep;
 
+import java.util.Set;
+import java.util.TreeSet;
+
 public class Let extends Expression {
   /**
    * Generates a new let expression.
@@ -17,12 +20,12 @@ public class Let extends Expression {
    * Performs the substitution for <b>(LET)</b> expressions.
    * 
    * @param id the identifier for the substitution.
-   * @param v the value to substitute.
+   * @param e the expression to substitute.
    * @return the new expression.
    */
-  public Expression substitute(String id, Value v) {
-    Expression e1 = this.e1.substitute(id, v);
-    Expression e2 = this.id.equals(id) ? this.e2 : this.e2.substitute(id, v);
+  public Expression substitute(String id, Expression e) {
+    Expression e1 = this.e1.substitute(id, e);
+    Expression e2 = this.id.equals(id) ? this.e2 : this.e2.substitute(id, e);
     return new Let(this.id, e1, e2);
   }
 
@@ -75,6 +78,21 @@ public class Let extends Expression {
     
     // ...and there we are
     return this.e2.substitute(this.id, v1);
+  }
+  
+  /**
+   * Returns the free identifiers of
+   * the subexpressions.
+   * @return the free identifiers.
+   * @see smallstep.Expression#free()
+   */
+  @Override
+  public Set<String> free() {
+    Set<String> set = new TreeSet<String>();
+    set.addAll(this.e2.free());
+    set.remove(this.id);
+    set.addAll(this.e1.free());
+    return set;
   }
 
   /**

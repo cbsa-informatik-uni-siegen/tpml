@@ -1,5 +1,8 @@
 package smallstep;
 
+import java.util.Set;
+import java.util.TreeSet;
+
 public class Abstraction extends Value {
   /**
    * Generates a new abstraction.
@@ -15,15 +18,29 @@ public class Abstraction extends Value {
    * Performs the substitution for <b>(LAMBDA)</b> expressions.
    * 
    * @param id the identifier for the substitution.
-   * @param v the value to substitute.
+   * @param e the expression to substitute.
    * @return the new expression.
    */
   @Override
-  public Expression substitute(String id, Value v) {
-    if (this.id.equals(id))
+  public Expression substitute(String id, Expression e) {
+    if (this.id.equals(id)) {
       return this;
-    else
-      return new Abstraction(this.id, this.e.substitute(id, v));
+    }
+    else {
+      // determine the free identifiers for e
+      Set<String> free = e.free();
+      
+      // generate a new unique identifier
+      String newId = this.id;
+      while (free.contains(newId))
+        newId = newId + "'";
+
+      // perform the bound renaming
+      Expression newE = this.e.substitute(this.id, new Identifier(newId));
+      
+      // perform the substitution
+      return new Abstraction(newId, newE.substitute(id, e));
+    }
   }
 
   /**
@@ -47,6 +64,19 @@ public class Abstraction extends Value {
     
     // perform the substitution
     return this.e.substitute(this.id, v);
+  }
+  
+  /**
+   * Returns the free identifiers minus the bound identifier.
+   * @return the free identifiers minus the bound identifier.
+   * @see smallstep.Expression#free()
+   */
+  @Override
+  public Set<String> free() {
+    Set<String> set = new TreeSet<String>();
+    set.addAll(this.e.free());
+    set.remove(this.id);
+    return set;
   }
 
   /**

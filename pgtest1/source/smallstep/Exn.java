@@ -1,5 +1,8 @@
 package smallstep;
 
+import java.util.Set;
+import java.util.TreeSet;
+
 /**
  * This class represents a runtime exception for the
  * small step interpreter.
@@ -13,11 +16,11 @@ public class Exn extends Expression {
    * substitution is possible on exceptions.
    * 
    * @param id the identifier.
-   * @param v the value.
+   * @param e the expression to substitute.
    * @return the exception itself.
    */
   @Override
-  public Expression substitute(String id, Value v) {
+  public Expression substitute(String id, Expression e) {
     // cannot substitute anything here
     return this;
   }
@@ -34,6 +37,17 @@ public class Exn extends Expression {
   public Expression evaluate(RuleChain ruleChain) {
     // cannot evaluate an exception
     return this;
+  }
+  
+  /**
+   * Returns the empty set, since exceptions
+   * cannot contain any free identifiers.
+   * @return the empty set.
+   * @see smallstep.Expression#free()
+   */
+  @Override
+  public Set<String> free() {
+    return new TreeSet<String>();
   }
 
   /**

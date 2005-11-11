@@ -1,5 +1,8 @@
 package smallstep;
 
+import java.util.Set;
+import java.util.TreeSet;
+
 /**
  * This class represents an applied operator, that is,
  * a binary operator which already knows its first
@@ -59,6 +62,16 @@ public class AppliedOperator extends Value {
     }
   }
 
+  /**
+   * Returns the empty set.
+   * @return the empty set.
+   * @see smallstep.Expression#free()
+   */
+  @Override
+  public Set<String> free() {
+    return new TreeSet<String>();
+  }
+  
   /**
    * Returns the string representation of the applied
    * operator.

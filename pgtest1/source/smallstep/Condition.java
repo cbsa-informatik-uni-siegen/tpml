@@ -1,5 +1,8 @@
 package smallstep;
 
+import java.util.Set;
+import java.util.TreeSet;
+
 /**
  * Representation of a <b>(COND)</b> expression for
  * the small step interpreter.
@@ -24,13 +27,13 @@ public class Condition extends Expression {
    * Performs the substitution for <b>(COND)</b> expressions.
    * 
    * @param id the identifier for the substitution.
-   * @param v the value to substitute.
+   * @param e the expression to substitute.
    * @return the new expression.
    */
-  public Expression substitute(String id, Value v) {
-    Expression e0 = this.e0.substitute(id, v);
-    Expression e1 = this.e1.substitute(id, v);
-    Expression e2 = this.e2.substitute(id, v);
+  public Expression substitute(String id, Expression e) {
+    Expression e0 = this.e0.substitute(id, e);
+    Expression e1 = this.e1.substitute(id, e);
+    Expression e2 = this.e2.substitute(id, e);
     return new Condition(e0, e1, e2);
   }
 
@@ -86,6 +89,21 @@ public class Condition extends Expression {
     }
   }
 
+  /**
+   * Returns the free identifiers of the
+   * subexpressions.
+   * @return the free identifiers.
+   * @see smallstep.Expression#free()
+   */
+  @Override
+  public Set<String> free() {
+    Set<String> set = new TreeSet<String>();
+    set.addAll(this.e0.free());
+    set.addAll(this.e1.free());
+    set.addAll(this.e2.free());
+    return set;
+  }
+  
   /**
    * Returns the string representation of the <b>(COND)</b>
    * expression.
