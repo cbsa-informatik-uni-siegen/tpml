@@ -114,28 +114,32 @@ public class Application extends Expression {
   }
 
   /**
-   * Returns the string representation of the <b>(APP)</b>
-   * expression.
-   * @see java.lang.Object#toString()
+   * Returns the pretty print priority of the <b>(APP)</b> expression.
+   * @return the pretty print priority of the <b>(APP)</b> expression.
+   * @see smallstep.Expression#getPrettyPrintPriority()
    */
   @Override
-  public String toString() {
-    String s1 = this.e1.toString();
-    String s2 = this.e2.toString();
-
-    // check for cascaded applications
-    if (this.e1 instanceof Application) {
-      Application a1 = (Application)this.e1;
-      if (!(a1.e1 instanceof Operator) || !(a1.e2 instanceof Constant || a1.e2 instanceof Identifier))
-        s1 = "(" + s1 + ")";
-    }
-    else if (!(this.e1 instanceof Constant) && !(this.e1 instanceof Identifier)) {
-      // need to add parens to everything but constants and identifiers
-      s1 = "(" + s1 + ")";
-    }
+  public int getPrettyPrintPriority() {
+    return 1;
+  }
+  
+  /**
+   * Returns the string representation of the <b>(APP)</b> expression.
+   * @return the string representation of the <b>(APP)</b> expression.
+   * @see smallstep.Expression#getPrettyPrintString()
+   */
+  @Override
+  public String getPrettyPrintString() {
+    // determine the string representations of e1 and e2
+    String s1 = this.e1.getPrettyPrintString();
+    String s2 = this.e2.getPrettyPrintString();
     
-    // same for the second expression
-    if (!(this.e2 instanceof Constant) && !(this.e2 instanceof Identifier))
+    // check if we need to add parenthesis to e1
+    if (this.e1.getPrettyPrintPriority() < 1)
+      s1 = "(" + s1 + ")";
+    
+    // check if we need to add parenthesis to e2
+    if (this.e2.getPrettyPrintPriority() < 2)
       s2 = "(" + s2 + ")";
     
     return s1 + " " + s2;

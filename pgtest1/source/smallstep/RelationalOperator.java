@@ -32,12 +32,12 @@ public class RelationalOperator extends Operator {
   }
 
   /**
-   * Returns the string representation of the relational
-   * operator.
-   * @see java.lang.Object#toString()
+   * Returns the string representation of the relational operator.
+   * @return the string representation of the relational operator.
+   * @see smallstep.Expression#getPrettyPrintString()
    */
   @Override
-  public String toString() {
+  public String getPrettyPrintString() {
     return this.op;
   }
 

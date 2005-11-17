@@ -12,11 +12,12 @@ public class BooleanConstant extends Constant {
   }
   
   /**
-   * Returns the string representation of the boolean constant. 
-   * @see java.lang.Object#toString()
+   * Returns the pretty printed string of the boolean constant.
+   * @return the pretty printed string of the boolean constant.
+   * @see smallstep.Expression#getPrettyPrintString()
    */
   @Override
-  public String toString() {
+  public String getPrettyPrintString() {
     return isTrue() ? "true" : "false";
   }
   

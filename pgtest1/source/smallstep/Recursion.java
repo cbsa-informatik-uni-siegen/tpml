@@ -92,13 +92,22 @@ public class Recursion extends Expression {
   }
   
   /**
-   * Returns the string representation for the
-   * recursive expression.
-   * @return the string expression.
-   * @see java.lang.Object#toString()
+   * Returns the pretty print priority for the <b>(REC)</b> expression.
+   * @return the pretty print priority for the <b>(REC)</b> expression.
+   * @see smallstep.Expression#getPrettyPrintPriority()
    */
   @Override
-  public String toString() {
+  public int getPrettyPrintPriority() {
+    return 0;
+  }
+  
+  /**
+   * Returns the string representation for the recursive expression.
+   * @return the string expression.
+   * @see smallstep.Expression#getPrettyPrintString()
+   */
+  @Override
+  public String getPrettyPrintString() {
     return "rec " + this.id + "." + this.e;
   }
 

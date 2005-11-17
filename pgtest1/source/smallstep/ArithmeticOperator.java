@@ -38,10 +38,11 @@ public class ArithmeticOperator extends Operator {
 
   /**
    * Returns the string representation of the operator.
-   * @see java.lang.Object#toString()
+   * @return the string representation of the operator.
+   * @see smallstep.Expression#getPrettyPrintString()
    */
   @Override
-  public String toString() {
+  public String getPrettyPrintString() {
     return this.op;
   }
 

@@ -13,18 +13,19 @@ public class IntegerConstant extends smallstep.Constant {
   
   /**
    * Returns the number represented by this integer constant.
-   * @return the number represented by this integer constant-
+   * @return the number represented by this integer constant.
    */
   public int getNumber() {
     return this.number;
   }
   
   /**
-   * Returns the string representation of the integer value.
-   * @see java.lang.Object#toString()
+   * Returns the pretty printed string of the integer constant.
+   * @return the pretty printed string of the integer constant.
+   * @see smallstep.Expression#getPrettyPrintString()
    */
   @Override
-  public String toString() {
+  public String getPrettyPrintString() {
     return Integer.toString(this.number);
   }
 

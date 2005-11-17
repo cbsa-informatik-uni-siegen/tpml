@@ -103,26 +103,27 @@ public class Condition extends Expression {
     set.addAll(this.e2.free());
     return set;
   }
-  
+
   /**
-   * Returns the string representation of the <b>(COND)</b>
-   * expression.
-   * @see java.lang.Object#toString()
+   * Returns the pretty print priority.
+   * @return the pretty print priority.
+   * @see smallstep.Expression#getPrettyPrintPriority()
    */
   @Override
-  public String toString() {
-    String s0 = this.e0.toString();
-    String s1 = this.e1.toString();
-    String s2 = this.e2.toString();
-    
-    if (!(this.e0 instanceof Application) && !(this.e0 instanceof Value))
-      s0 = "(" + s0 + ")";
-    
-    if (!(this.e1 instanceof Application) && !(this.e1 instanceof Value))
-      s1 = "(" + s1 + ")";
-    
-    if (!(this.e2 instanceof Application) && !(this.e2 instanceof Value))
-      s2 = "(" + s2 + ")";
+  public int getPrettyPrintPriority() {
+    return 0;
+  }
+  
+  /**
+   * Returns the string representation of the <b>(COND)</b> expression.
+   * @return the string representation of the <b>(COND)</b> expression.
+   * @see smallstep.Expression#getPrettyPrintString()
+   */
+  @Override
+  public String getPrettyPrintString() {
+    String s0 = this.e0.getPrettyPrintString();
+    String s1 = this.e1.getPrettyPrintString();
+    String s2 = this.e2.getPrettyPrintString();
     
     return "if " + s0 + " then " + s1 + " else " + s2;
   }

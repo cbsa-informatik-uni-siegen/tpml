@@ -21,4 +21,14 @@ public abstract class Constant extends Value {
   public Set<String> free() {
     return new TreeSet<String>();
   }
+  
+  /**
+   * Returns the pretty printer priority for the constant.
+   * @return the pretty printer priority for the constant.
+   * @see smallstep.Expression#getPrettyPrintPriority()
+   */
+  @Override
+  public int getPrettyPrintPriority() {
+    return 2;
+  }
 }

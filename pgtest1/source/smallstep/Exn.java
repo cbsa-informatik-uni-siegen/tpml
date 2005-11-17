@@ -51,11 +51,22 @@ public class Exn extends Expression {
   }
 
   /**
-   * Returns the string representation of the exception.
-   * @see java.lang.Object#toString()
+   * Returns the pretty print priority of the exception.
+   * @return the pretty print priority of the exception.
+   * @see smallstep.Expression#getPrettyPrintPriority()
    */
   @Override
-  public String toString() {
+  public int getPrettyPrintPriority() {
+    return 2;
+  }
+  
+  /**
+   * Returns the string representation of the exception.
+   * @return the string representation of the exception.
+   * @see smallstep.Expression#getPrettyPrintString()
+   */
+  @Override
+  public String getPrettyPrintString() {
     return this.name;
   }
 

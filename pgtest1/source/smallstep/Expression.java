@@ -29,4 +29,26 @@ public abstract class Expression {
    * @return the free identifiers within this expression.
    */
   public abstract Set<String> free();
+  
+  /**
+   * Returns the pretty printer priority of this expression.
+   * @return the pretty printer priority of this expression.
+   */
+  public abstract int getPrettyPrintPriority();
+  
+  /**
+   * Returns the pretty printed expression.
+   * @retrun the pretty printed expression.
+   */
+  public abstract String getPrettyPrintString();
+  
+  /**
+   * Returns the string representation of the expression
+   * as returned by getPrettyPrintString() method.
+   * @return the string representation of the expression.
+   */
+  @Override
+  public String toString() {
+    return getPrettyPrintString();
+  }
 }

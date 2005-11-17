@@ -57,11 +57,22 @@ public class Identifier extends Expression {
   }
   
   /**
-   * Returns the string representation of the identifier.
-   * @see java.lang.Object#toString()
+   * Returns the pretty print priority of the identifier.
+   * @return the pretty print priority of the identifier.
+   * @see smallstep.Expression#getPrettyPrintPriority()
    */
   @Override
-  public String toString() {
+  public int getPrettyPrintPriority() {
+    return 2;
+  }
+  
+  /**
+   * Returns the string representation of the identifier.
+   * @return the string representation of the identifier.
+   * @see smallstep.Expression#getPrettyPrintString()
+   */
+  @Override
+  public String getPrettyPrintString() {
     return getName();
   }  
   

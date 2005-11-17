@@ -80,13 +80,23 @@ public class Abstraction extends Value {
   }
 
   /**
-   * Returns the string representation of the <b>(LAMBDA)</b>
-   * expression.
-   * @see java.lang.Object#toString()
+   * Returns the pretty print priority for the abstraction.
+   * @return the pretty print priority for the abstraction.
+   * @see smallstep.Expression#getPrettyPrintPriority()
    */
   @Override
-  public String toString() {
-    return "\u03bb" + this.id + "." + this.e.toString();
+  public int getPrettyPrintPriority() {
+    return 0;
+  }
+  
+  /**
+   * Returns the string representation of the <b>(LAMBDA)</b> expression.
+   * @return the string representation of the <b>(LAMBDA)</b> expression.
+   * @see smallstep.Expression#getPrettyPrintString()
+   */
+  @Override
+  public String getPrettyPrintString() {
+    return "\u03bb" + this.id + "." + this.e.getPrettyPrintString();
   }
 
   private String id;

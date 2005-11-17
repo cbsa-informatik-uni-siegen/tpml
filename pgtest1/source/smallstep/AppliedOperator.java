@@ -73,15 +73,24 @@ public class AppliedOperator extends Value {
   }
   
   /**
-   * Returns the string representation of the applied
-   * operator.
-   * @see java.lang.Object#toString()
+   * Returns the pretty print priority of the applied operator.
+   * @return the pretty print priority of the applied operator.
+   * @see smallstep.Expression#getPrettyPrintPriority()
    */
   @Override
-  public String toString() {
-    // use the Application.toString() logic
+  public int getPrettyPrintPriority() {
+    return 1;
+  }
+  
+  /**
+   * Returns the string representation of the applied operator.
+   * @see smallstep.Expression#getPrettyPrintString()
+   */
+  @Override
+  public String getPrettyPrintString() {
+    // use the Application.getPrettyPrintString() logic
     Application application = new Application(this.operator, this.constant);
-    return application.toString();
+    return application.getPrettyPrintString();
   }
   
   private Operator operator;

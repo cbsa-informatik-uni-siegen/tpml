@@ -2,12 +2,12 @@ package smallstep;
 
 public class UnitConstant extends Constant {
   /**
-   * Returns the string representation of the
-   * <b>(UNIT)</b> constant.
-   * @see java.lang.Object#toString()
+   * Returns the pretty print string of the <b>(UNIT)</b> constant.
+   * @return the pretty print string of the <b>(UNIT)</b> constant.
+   * @see smallstep.Expression#getPrettyPrintString()
    */
   @Override
-  public String toString() {
+  public String getPrettyPrintString() {
     return "()";
   }
   
