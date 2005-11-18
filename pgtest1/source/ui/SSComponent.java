@@ -12,66 +12,76 @@ public class SSComponent extends JComponent implements Scrollable {
 
 	
 	private class SmallStep {
+		/**
+		 * List of all ComboBoxes for the MetaRules
+		 */
 		private LinkedList<JComboBox> 	metaRules;
+		/**
+		 * One ComboBox of the AxiomRule
+		 */
 		private JComboBox				axiomRules;
+		/**
+		 * The expression-string this SmallStep is representing
+		 */
 		private String					expression;
+		/**
+		 * The RuleChain of the	SmallStep
+		 */
 		private RuleChain				ruleChain;
-		private JComponent				parent;
-		private int 					bl, bt, bw, bh, bvi, bhi, cx;
-		private int						x, y;
-		private int						width, height;
+		/**
+		 * Real starting position of the ComboBoxes and the centering arrow
+		 */
+		private int						cx;
+		/**
+		 * X position of the SmallStep BoundingBox
+		 */
+		private int						x;
+		/**
+		 * Y position of the SmallStep BoundingBox
+		 */
+		private int						y;
+		/**
+		 * Width of the SmallStep BoundingBox
+		 */
+		private int						width;
+		/**
+		 * Height of the SmallStep BoundingBox
+		 */
+		private int						height;
+		/**
+		 * Whether this SmallStep is handled correctly
+		 */
 		private boolean					correct;
 				
-		public SmallStep(RuleChain rules, String expression, JComponent parent, int x, int y) {
+		public SmallStep(RuleChain rules, String expression, int x, int y) {
 			this.x 			= x;
 			this.y 			= y;
 			this.ruleChain	= rules;
-			this.parent		= parent;
 			this.expression	= expression;
 			metaRules 		= new LinkedList<JComboBox>();
 			correct 		= false;
-			cx				= x + bl; 
-
+			cx				= x + bl;
+			
+			// check the size of a single combo box
 			checkComboSize();
-			calculateSize();
+			
+			// check the height of the small step
+			height			= bt * 2 + bh * 2 + bvi;
+			
 			buildSmallStep();
 		}
-		
-		public void calculateSize() {
-						
-			/*
-			 * The height for the Expression text will take place later
-			 */
-			height = bt * 2 + bh * 2 + bvi;
-		}
-		
+				
 		public void buildSmallStep() {
 			for (int i = 0; i<ruleChain.getRules().size()-1; i++)
-				addMetaComboBox(parent);
-			addAxiomComboBox(parent);
+				addMetaComboBox();
+			addAxiomComboBox();
 			if (metaRules.size () == 0)
 				axiomRules.setVisible(true);
-			checkMaxWidth();
+			recalculateSizes();
 		}
 		
-		public void unbuildSmallStep() {
-			for (int i=0; i<metaRules.size(); i++) {
-				metaRules.get(i).setEnabled(false);
-			}
-			axiomRules.setEnabled(false);
-			correct = true;
-		}
-				
-		public void checkComboSize() {
-			FontMetrics fm = getFontMetrics(comboFont);			
-			bw = fm.stringWidth("COND-EVAL-EXN-EXN");
-			bh = fm.getHeight() + 2;
-			bt = bvi = fm.getHeight();
-			bvi *= 1.5f;
-			bhi = 10;
-		}
 		
-		public void addMetaComboBox(JComponent parent) {
+		private void addMetaComboBox() {
 			JComboBox c = new JComboBox();
 			DefaultComboBoxModel model = new DefaultComboBoxModel();
 			model.addElement("---");
@@ -84,7 +94,7 @@ public class SSComponent extends JComponent implements Scrollable {
 			model.addElement("COND-EVAL-EXN");
 			model.addElement("LET-EVAL-EXN");
 			c.setModel(model);
-			parent.add(c);
+			add(c);
 			c.setBounds(cx, y + bt, bw, bh);
 			c.setName("" + metaRules.size());
 			cx += bl + bhi + bw;
@@ -106,7 +116,7 @@ public class SSComponent extends JComponent implements Scrollable {
 			metaRules.add(c);
 		}
 		
-		public void addAxiomComboBox(JComponent parent) {
+		private void addAxiomComboBox() {
 			axiomRules = new JComboBox();
 			DefaultComboBoxModel model = new DefaultComboBoxModel();
 			model.addElement("---");
@@ -117,7 +127,7 @@ public class SSComponent extends JComponent implements Scrollable {
 			model.addElement("LET-EXEC");
             model.addElement("UNFOLD");
 			axiomRules.setModel(model);
-			parent.add(axiomRules);
+			add(axiomRules);
 			axiomRules.setBounds(x + bl, y + bt + bh + bvi, bw, bh);
 			axiomRules.setVisible(false);
 			axiomRules.addPopupMenuListener(new PopupMenuListener () {
@@ -133,7 +143,7 @@ public class SSComponent extends JComponent implements Scrollable {
 			axiomRules.setVisible(false);
 		}
 		
-		public void handleMetaRuleChanged(int comboId, int index) {
+		private void handleMetaRuleChanged(int comboId, int index) {
 			if (comboId > metaRules.size())
 				return;
 
@@ -150,7 +160,7 @@ public class SSComponent extends JComponent implements Scrollable {
 			repaint();
 			revalidate();
 		}
-		public void handleAxiomChanged(int index) {
+		private void handleAxiomChanged(int index) {
 			DefaultComboBoxModel m = (DefaultComboBoxModel)axiomRules.getModel();
 			Rule r = ruleChain.getRules().getLast();
 			if (r.getName().equals(m.getSelectedItem())) {
@@ -176,7 +186,15 @@ public class SSComponent extends JComponent implements Scrollable {
 			correct = true;
 		}
 		
-		public void checkMaxWidth() {
+		/**
+		 * Recalculates the sizes and the position of the comboboxes
+		 * 
+		 * All sizes of the comboBoxes/rule-strings are added together and compared
+		 * with a global maxWidth to find the most right position for drawing the 
+		 * centering arrow.  
+		 *
+		 */
+		private void recalculateSizes() {
 			ListIterator<JComboBox> it = metaRules.listIterator();
 			FontMetrics fm = getFontMetrics(comboFont);
 			int px = x;
@@ -281,6 +299,38 @@ public class SSComponent extends JComponent implements Scrollable {
 	private int						maxWidth;
 	private int						maxSizeWidth, maxSizeHeight;
 	
+	/**
+	 * The free space between the left position and the ComboBoxes or the centering arrow
+	 */
+	private int 					bl;
+	/**
+	 * The free space between the top position and the MetaRule ComboBoxes; between the
+	 * AxiomRuleComboBox and the bottom position 
+	 */
+	private int						bt;
+	/**
+	 * Width of the SmallStep ComboBox
+	 */
+	private int 					bw;
+	/**
+	 * Height of the SmallStep ComboBox
+	 */
+	private int 					bh;
+	/**
+	 * Vertical Intersection. The Space between the MetaRules and the AxiomRules ComboBox
+	 */
+	private int 					bvi;
+	/**
+	 * Horizontal Intersection. The Space between the Single MetaRule ComboBoxes
+	 */
+	private	int						bhi;
+	
+	/**
+	 * Constructor of the SmallStepComponent
+	 * 
+	 * @param model A model the SmallStepComponent uses to display and interact with the 
+	 * 				SmalStepInterpreter
+	 */
 	public SSComponent(SmallStepModel model) {
 		super();
 		this.model 		= model;
@@ -297,11 +347,30 @@ public class SSComponent extends JComponent implements Scrollable {
 		maxWidth 		= 0;
 		maxSizeWidth	= fm.stringWidth(""+(model.getCurrentExpression())) + expressionPosX;
 		maxSizeHeight	= 2*currentPosY;
-		
+	
+		checkComboSize ();
 		evaluateNextStep();
 	}
 	
-	public boolean evaluateNextStep() {
+	/**
+	 * Calculates the needed sizes to handle the correct display of the SmallSteps
+	 */
+	private void checkComboSize() {
+		FontMetrics fm = getFontMetrics(comboFont);			
+		bw = fm.stringWidth("COND-EVAL-EXN-EXN");
+		bh = fm.getHeight() + 2;
+		bt = bvi = fm.getHeight();
+		bvi *= 1.5f;
+		bhi = 10;
+	}
+	
+	/**
+	 * Requests the next SmallStep from the SmallStep interpreter.
+	 * 
+	 * @return True if the next Step could be requested, false if the expression if handled
+	 * 			completely or the expressen ended up in an exception.
+	 */
+	private boolean evaluateNextStep() {
 		int result = model.evaluateNextStep();
 		if (result != 0)
 			return false;
@@ -309,7 +378,7 @@ public class SSComponent extends JComponent implements Scrollable {
 		Expression e = model.getCurrentExpression();
 		RuleChain rc = model.getCurrentRuleChain();
 		
-		SmallStep ss = new SmallStep(rc, "" + e, this, expressionPosX, currentPosY);
+		SmallStep ss = new SmallStep(rc, "" + e, expressionPosX, currentPosY);
 		currentPosY += ss.getHeight() + 10;
 		
 		steps.add(ss);
@@ -317,6 +386,11 @@ public class SSComponent extends JComponent implements Scrollable {
 		return (true);
 	}
 	
+	/**
+	 * Complets the current step. 
+	 *
+	 * All combo boxes will be set to the correct state, then get hided and replaced by a string.
+	 */
 	public void completeCurrentStep() {
 		SmallStep ss = steps.getLast();
 		ss.completeStep();
@@ -325,17 +399,27 @@ public class SSComponent extends JComponent implements Scrollable {
 		revalidate();
 	}
 	
+	/**
+	 * Completes the current and the remaining steps 
+	 *
+	 */
 	public void completeAllSteps() {
 		boolean comp = true;
 		while (comp) {
 			SmallStep ss = steps.getLast();
 			ss.completeStep();
-			repaint();
-			revalidate();
 			comp = evaluateNextStep();
 		}
+		repaint();
+		revalidate();
 	}
 	
+	/**
+	 * Paints the SmallStepComponent.
+	 * 
+	 * The background will be filled white and then all the current steps will be rendered
+	 * on top of the plane.
+	 */
 	public void paintComponent(Graphics g) {
 		Graphics2D g2d = (Graphics2D)g.create();
 		g2d.setColor(Color.white);
@@ -352,7 +436,7 @@ public class SSComponent extends JComponent implements Scrollable {
 		maxSizeHeight = 0;
 		ListIterator<SmallStep> it = steps.listIterator();
 		while (it.hasNext()) {
-			it.next().checkMaxWidth();
+			it.next().recalculateSizes();
 		}
 		it = steps.listIterator();
 		while (it.hasNext()) {

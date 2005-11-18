@@ -76,7 +76,9 @@ public class Mainwindow extends JFrame {
     ActionListener mlMenuListener = new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand() == "SmallStep")
-          handleSmallStep();
+        	handleSmallStep();
+        if (e.getActionCommand() == "BigStep")
+        	handleBigStep();
       }
     };
 
@@ -127,6 +129,11 @@ public class Mainwindow extends JFrame {
     smallStepItem.setAccelerator(KeyStroke.getKeyStroke("F11"));
     smallStepItem.setMnemonic(KeyEvent.VK_S);
 
+    JMenuItem bigStepItem = actionsMenu.add("BigStep");
+    bigStepItem.addActionListener(mlMenuListener);
+    bigStepItem.setAccelerator(KeyStroke.getKeyStroke("F12"));
+    bigStepItem.setMnemonic(KeyEvent.VK_B);
+    
     setJMenuBar(this.mainMenu);
     
     // open first tab
@@ -195,5 +202,10 @@ public class Mainwindow extends JFrame {
     } catch (Exception e) {
       JOptionPane.showMessageDialog(this, e.getLocalizedMessage(), "Error", JOptionPane.ERROR_MESSAGE);
     }
+  }
+  
+  private void handleBigStep() {
+	  BigStepGUI gui = new BigStepGUI (this, "BiStep", true);
+	  gui.setVisible(true);
   }
 }
