@@ -1,14 +1,15 @@
 package smallstep;
 
+import smallstep.printer.AtomicItem;
+import smallstep.printer.Item;
+
 public class UnitConstant extends Constant {
   /**
-   * Returns the pretty print string of the <b>(UNIT)</b> constant.
-   * @return the pretty print string of the <b>(UNIT)</b> constant.
-   * @see smallstep.Expression#getPrettyPrintString()
+   * @see smallstep.Expression#getPrettyPrintItem()
    */
   @Override
-  public String getPrettyPrintString() {
-    return "()";
+  public Item getPrettyPrintItem() {
+    return new AtomicItem("()");
   }
   
   /**

@@ -3,6 +3,9 @@ package smallstep;
 import java.util.Set;
 import java.util.TreeSet;
 
+import smallstep.printer.ApplicationItem;
+import smallstep.printer.Item;
+
 public class Application extends Expression {
   /**
    * Generates a new application.
@@ -114,35 +117,11 @@ public class Application extends Expression {
   }
 
   /**
-   * Returns the pretty print priority of the <b>(APP)</b> expression.
-   * @return the pretty print priority of the <b>(APP)</b> expression.
-   * @see smallstep.Expression#getPrettyPrintPriority()
+   * @see smallstep.Expression#getPrettyPrintItem()
    */
   @Override
-  public int getPrettyPrintPriority() {
-    return 1;
-  }
-  
-  /**
-   * Returns the string representation of the <b>(APP)</b> expression.
-   * @return the string representation of the <b>(APP)</b> expression.
-   * @see smallstep.Expression#getPrettyPrintString()
-   */
-  @Override
-  public String getPrettyPrintString() {
-    // determine the string representations of e1 and e2
-    String s1 = this.e1.getPrettyPrintString();
-    String s2 = this.e2.getPrettyPrintString();
-    
-    // check if we need to add parenthesis to e1
-    if (this.e1.getPrettyPrintPriority() < 1)
-      s1 = "(" + s1 + ")";
-    
-    // check if we need to add parenthesis to e2
-    if (this.e2.getPrettyPrintPriority() < 2)
-      s2 = "(" + s2 + ")";
-    
-    return s1 + " " + s2;
+  public Item getPrettyPrintItem() {
+    return new ApplicationItem(this.e1.getPrettyPrintItem(), this.e2.getPrettyPrintItem());
   }
   
   private Expression e1;

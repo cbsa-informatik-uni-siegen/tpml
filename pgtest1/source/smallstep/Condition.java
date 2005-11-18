@@ -3,6 +3,9 @@ package smallstep;
 import java.util.Set;
 import java.util.TreeSet;
 
+import smallstep.printer.ConditionItem;
+import smallstep.printer.Item;
+
 /**
  * Representation of a <b>(COND)</b> expression for
  * the small step interpreter.
@@ -105,27 +108,11 @@ public class Condition extends Expression {
   }
 
   /**
-   * Returns the pretty print priority.
-   * @return the pretty print priority.
-   * @see smallstep.Expression#getPrettyPrintPriority()
+   * @see smallstep.Expression#getPrettyPrintItem()
    */
   @Override
-  public int getPrettyPrintPriority() {
-    return 0;
-  }
-  
-  /**
-   * Returns the string representation of the <b>(COND)</b> expression.
-   * @return the string representation of the <b>(COND)</b> expression.
-   * @see smallstep.Expression#getPrettyPrintString()
-   */
-  @Override
-  public String getPrettyPrintString() {
-    String s0 = this.e0.getPrettyPrintString();
-    String s1 = this.e1.getPrettyPrintString();
-    String s2 = this.e2.getPrettyPrintString();
-    
-    return "if " + s0 + " then " + s1 + " else " + s2;
+  public Item getPrettyPrintItem() {
+    return new ConditionItem(this.e0.getPrettyPrintItem(), this.e1.getPrettyPrintItem(), this.e2.getPrettyPrintItem());
   }
 
   private Expression e0;

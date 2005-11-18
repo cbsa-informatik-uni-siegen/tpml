@@ -1,5 +1,8 @@
 package smallstep;
 
+import smallstep.printer.AtomicItem;
+import smallstep.printer.Item;
+
 public class BooleanConstant extends Constant {
   /**
    * Returns <code>true</code> if the primitive value of
@@ -12,13 +15,11 @@ public class BooleanConstant extends Constant {
   }
   
   /**
-   * Returns the pretty printed string of the boolean constant.
-   * @return the pretty printed string of the boolean constant.
-   * @see smallstep.Expression#getPrettyPrintString()
+   * @see smallstep.Expression#getPrettyPrintItem()
    */
   @Override
-  public String getPrettyPrintString() {
-    return isTrue() ? "true" : "false";
+  public Item getPrettyPrintItem() {
+    return new AtomicItem(isTrue() ? "true" : "false");
   }
   
   /**

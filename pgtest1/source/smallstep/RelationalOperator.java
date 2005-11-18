@@ -1,5 +1,8 @@
 package smallstep;
 
+import smallstep.printer.AtomicItem;
+import smallstep.printer.Item;
+
 public class RelationalOperator extends Operator {
   /**
    * Performs the relational operation on <code>c1</code> and <code>c2</code>
@@ -32,13 +35,11 @@ public class RelationalOperator extends Operator {
   }
 
   /**
-   * Returns the string representation of the relational operator.
-   * @return the string representation of the relational operator.
-   * @see smallstep.Expression#getPrettyPrintString()
+   * @see smallstep.Expression#getPrettyPrintItem()
    */
   @Override
-  public String getPrettyPrintString() {
-    return this.op;
+  public Item getPrettyPrintItem() {
+    return new AtomicItem(this.op);
   }
 
   /**

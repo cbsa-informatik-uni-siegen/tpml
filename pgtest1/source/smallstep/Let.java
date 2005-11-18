@@ -3,6 +3,9 @@ package smallstep;
 import java.util.Set;
 import java.util.TreeSet;
 
+import smallstep.printer.Item;
+import smallstep.printer.LetItem;
+
 public class Let extends Expression {
   /**
    * Generates a new let expression.
@@ -96,26 +99,11 @@ public class Let extends Expression {
   }
 
   /**
-   * Returns the pretty print priority.
-   * @return the pretty print priority.
-   * @see smallstep.Expression#getPrettyPrintPriority()
+   * @see smallstep.Expression#getPrettyPrintItem()
    */
   @Override
-  public int getPrettyPrintPriority() {
-    return 0;
-  }
-  
-  /**
-   * Returns the string representation of the <b>(LET)</b> expression.
-   * @return the string representation of the <b>(LET)</b> expression.
-   * @see smallstep.Expression#getPrettyPrintString()
-   */
-  @Override
-  public String getPrettyPrintString() {
-    String s1 = this.e1.getPrettyPrintString();
-    String s2 = this.e2.getPrettyPrintString();
-    
-    return "let " + this.id + " = " + s1 + " in " + s2; 
+  public Item getPrettyPrintItem() {
+    return new LetItem(this.id, this.e1.getPrettyPrintItem(), this.e2.getPrettyPrintItem());
   }
 
   private String id;

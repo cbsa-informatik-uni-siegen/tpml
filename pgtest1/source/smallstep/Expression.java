@@ -1,6 +1,7 @@
 package smallstep;
 
 import java.util.Set;
+import smallstep.printer.Item;
 
 public abstract class Expression {
   /**
@@ -29,26 +30,20 @@ public abstract class Expression {
    * @return the free identifiers within this expression.
    */
   public abstract Set<String> free();
-  
+
   /**
-   * Returns the pretty printer priority of this expression.
-   * @return the pretty printer priority of this expression.
+   * Returns the pretty printer item for this expression.
+   * @return the pretty printer item for this expression.
    */
-  public abstract int getPrettyPrintPriority();
-  
-  /**
-   * Returns the pretty printed expression.
-   * @retrun the pretty printed expression.
-   */
-  public abstract String getPrettyPrintString();
+  public abstract Item getPrettyPrintItem();
   
   /**
    * Returns the string representation of the expression
-   * as returned by getPrettyPrintString() method.
+   * as returned by getPrettyPrintItem() method.
    * @return the string representation of the expression.
    */
   @Override
   public String toString() {
-    return getPrettyPrintString();
+    return getPrettyPrintItem().toString();
   }
 }

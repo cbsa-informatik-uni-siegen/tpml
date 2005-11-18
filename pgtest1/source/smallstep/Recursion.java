@@ -6,6 +6,9 @@ package smallstep;
 import java.util.Set;
 import java.util.TreeSet;
 
+import smallstep.printer.Item;
+import smallstep.printer.RecursionItem;
+
 /**
  * Implementation of the <b>(REC)</b> rule.
  *
@@ -90,25 +93,13 @@ public class Recursion extends Expression {
     set.remove(this.id);
     return set;
   }
-  
+
   /**
-   * Returns the pretty print priority for the <b>(REC)</b> expression.
-   * @return the pretty print priority for the <b>(REC)</b> expression.
-   * @see smallstep.Expression#getPrettyPrintPriority()
+   * @see smallstep.Expression#getPrettyPrintItem()
    */
   @Override
-  public int getPrettyPrintPriority() {
-    return 0;
-  }
-  
-  /**
-   * Returns the string representation for the recursive expression.
-   * @return the string expression.
-   * @see smallstep.Expression#getPrettyPrintString()
-   */
-  @Override
-  public String getPrettyPrintString() {
-    return "rec " + this.id + "." + this.e;
+  public Item getPrettyPrintItem() {
+    return new RecursionItem(this.id, this.e.getPrettyPrintItem());
   }
 
   private String id;

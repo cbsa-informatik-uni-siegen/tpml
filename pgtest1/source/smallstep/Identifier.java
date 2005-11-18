@@ -3,6 +3,9 @@ package smallstep;
 import java.util.Set;
 import java.util.TreeSet;
 
+import smallstep.printer.AtomicItem;
+import smallstep.printer.Item;
+
 public class Identifier extends Expression {
   /**
    * Generates a new Identifier.
@@ -55,26 +58,14 @@ public class Identifier extends Expression {
   public final String getName() {
     return this.name;
   }
-  
+
   /**
-   * Returns the pretty print priority of the identifier.
-   * @return the pretty print priority of the identifier.
-   * @see smallstep.Expression#getPrettyPrintPriority()
+   * @see smallstep.Expression#getPrettyPrintItem()
    */
   @Override
-  public int getPrettyPrintPriority() {
-    return 2;
+  public Item getPrettyPrintItem() {
+    return new AtomicItem(this.name);
   }
-  
-  /**
-   * Returns the string representation of the identifier.
-   * @return the string representation of the identifier.
-   * @see smallstep.Expression#getPrettyPrintString()
-   */
-  @Override
-  public String getPrettyPrintString() {
-    return getName();
-  }  
   
   private String name;
 }

@@ -35,8 +35,9 @@ public final class ApplicationItem extends Item {
    */
   @Override
   public List getStructureList() {
-    List<Item> items = new LinkedList<Item>();
+    List<Object> items = new LinkedList<Object>();
     items.add(this.e1);
+    items.add(" ");
     items.add(this.e2);
     return items;
   }
@@ -46,7 +47,7 @@ public final class ApplicationItem extends Item {
    */
   @Override
   public int[] getStructurePriorities() {
-    return new int[] { 1, 2 };
+    return new int[] { 1, 3, 2 };
   }
   
   private Item e1;

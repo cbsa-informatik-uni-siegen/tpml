@@ -3,6 +3,9 @@ package smallstep;
 import java.util.Set;
 import java.util.TreeSet;
 
+import smallstep.printer.ApplicationItem;
+import smallstep.printer.Item;
+
 /**
  * This class represents an applied operator, that is,
  * a binary operator which already knows its first
@@ -71,26 +74,13 @@ public class AppliedOperator extends Value {
   public Set<String> free() {
     return new TreeSet<String>();
   }
-  
+
   /**
-   * Returns the pretty print priority of the applied operator.
-   * @return the pretty print priority of the applied operator.
-   * @see smallstep.Expression#getPrettyPrintPriority()
+   * @see smallstep.Expression#getPrettyPrintItem()
    */
   @Override
-  public int getPrettyPrintPriority() {
-    return 1;
-  }
-  
-  /**
-   * Returns the string representation of the applied operator.
-   * @see smallstep.Expression#getPrettyPrintString()
-   */
-  @Override
-  public String getPrettyPrintString() {
-    // use the Application.getPrettyPrintString() logic
-    Application application = new Application(this.operator, this.constant);
-    return application.getPrettyPrintString();
+  public Item getPrettyPrintItem() {
+    return new ApplicationItem(this.operator.getPrettyPrintItem(), this.constant.getPrettyPrintItem());
   }
   
   private Operator operator;

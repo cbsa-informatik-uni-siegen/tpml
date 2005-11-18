@@ -3,6 +3,9 @@ package smallstep;
 import java.util.Set;
 import java.util.TreeSet;
 
+import smallstep.printer.AtomicItem;
+import smallstep.printer.Item;
+
 /**
  * This class represents a runtime exception for the
  * small step interpreter.
@@ -51,23 +54,11 @@ public class Exn extends Expression {
   }
 
   /**
-   * Returns the pretty print priority of the exception.
-   * @return the pretty print priority of the exception.
-   * @see smallstep.Expression#getPrettyPrintPriority()
+   * @see smallstep.Expression#getPrettyPrintItem()
    */
   @Override
-  public int getPrettyPrintPriority() {
-    return 2;
-  }
-  
-  /**
-   * Returns the string representation of the exception.
-   * @return the string representation of the exception.
-   * @see smallstep.Expression#getPrettyPrintString()
-   */
-  @Override
-  public String getPrettyPrintString() {
-    return this.name;
+  public Item getPrettyPrintItem() {
+    return new AtomicItem(this.name);
   }
 
   /**

@@ -36,9 +36,9 @@ public final class ConditionItem extends Item {
     LinkedList<Object> items = new LinkedList<Object>();
     items.add("if ");
     items.add(this.e0);
-    items.add("then ");
+    items.add(" then ");
     items.add(this.e1);
-    items.add("else ");
+    items.add(" else ");
     items.add(this.e2);
     return items;
   }

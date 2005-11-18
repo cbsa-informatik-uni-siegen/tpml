@@ -3,6 +3,9 @@ package smallstep;
 import java.util.Set;
 import java.util.TreeSet;
 
+import smallstep.printer.AbstractionItem;
+import smallstep.printer.Item;
+
 public class Abstraction extends Value {
   /**
    * Generates a new abstraction.
@@ -80,25 +83,15 @@ public class Abstraction extends Value {
   }
 
   /**
-   * Returns the pretty print priority for the abstraction.
-   * @return the pretty print priority for the abstraction.
-   * @see smallstep.Expression#getPrettyPrintPriority()
+   * Returns the AbstractionItem for this expression.
+   * @return the AbstractionItem for this expression.
+   * @see smallstep.Expression#getPrettyPrintItem()
    */
   @Override
-  public int getPrettyPrintPriority() {
-    return 0;
+  public Item getPrettyPrintItem() {
+    return new AbstractionItem(this.id, this.e.getPrettyPrintItem());
   }
   
-  /**
-   * Returns the string representation of the <b>(LAMBDA)</b> expression.
-   * @return the string representation of the <b>(LAMBDA)</b> expression.
-   * @see smallstep.Expression#getPrettyPrintString()
-   */
-  @Override
-  public String getPrettyPrintString() {
-    return "\u03bb" + this.id + "." + this.e.getPrettyPrintString();
-  }
-
   private String id;
   private Expression e;
 }
