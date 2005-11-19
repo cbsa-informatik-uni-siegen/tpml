@@ -40,12 +40,12 @@ public class Application extends Expression {
     if (!ruleChain.isEmpty()) {
       if (e1 instanceof Exn) {
         // prepend (APP-LEFT-EXN)
-        ruleChain.prepend(Rule.APP_LEFT_EXN);
+        ruleChain.prepend(new Rule(this, Rule.APP_LEFT_EXN));
         return e1;
       }
       else {
         // prepend (APP-LEFT)
-        ruleChain.prepend(Rule.APP_LEFT);
+        ruleChain.prepend(new Rule(this, Rule.APP_LEFT));
         return new Application(e1, this.e2);
       }
     }
@@ -70,12 +70,12 @@ public class Application extends Expression {
     if (!ruleChain.isEmpty()) {
       if (e2 instanceof Exn) {
         // prepend (APP-RIGHT-EXN)
-        ruleChain.prepend(Rule.APP_RIGHT_EXN);
+        ruleChain.prepend(new Rule(this, Rule.APP_RIGHT_EXN));
         return e2;
       }
       else {
         // prepend (APP-RIGHT)
-        ruleChain.prepend(Rule.APP_RIGHT);
+        ruleChain.prepend(new Rule(this, Rule.APP_RIGHT));
         return new Application(e1, e2);
       }
     }

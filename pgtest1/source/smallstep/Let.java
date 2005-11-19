@@ -50,12 +50,12 @@ public class Let extends Expression {
     if (!ruleChain.isEmpty()) {
       if (e1 instanceof Exn) {
         // prepend (LET-EVAL-EXN)
-        ruleChain.prepend(Rule.LET_EVAL_EXN);
+        ruleChain.prepend(new Rule(this, Rule.LET_EVAL_EXN));
         return e1;
       }
       else {
         // prepend (LET-EVAL)
-        ruleChain.prepend(Rule.LET_EVAL);
+        ruleChain.prepend(new Rule(this, Rule.LET_EVAL));
         return new Let(this.id, e1, this.e2);
       }
     }
@@ -75,7 +75,7 @@ public class Let extends Expression {
     Value v1 = (Value)e1;
     
     // we're going to perform (LET-EXEC)
-    ruleChain.prepend(Rule.LET_EXEC);
+    ruleChain.prepend(new Rule(this, Rule.LET_EXEC));
     
     // ...and there we are
     return this.e2.substitute(this.id, v1);

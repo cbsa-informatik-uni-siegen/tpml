@@ -10,123 +10,180 @@ package smallstep;
  */
 public final class Rule {
   /**
+   * Represents the various types of supported rules for
+   * the small step interpreter.
+   */
+  private static class Type {
+    /**
+     * Returns <code>true</code> if the type represents an axiom rule.
+     * @return <code>true</code> if the type represents an axiom rule.
+     */
+    public final boolean isAxiom() {
+      return this.axiom;
+    }
+    
+    /**
+     * Returns the name of the rule type.
+     * @return the name of the rule type.
+     */
+    public final String getName() {
+      return this.name;
+    }
+    
+    private Type(boolean axiom, String name) {
+      this.axiom = axiom;
+      this.name = name;
+    }
+    
+    private boolean axiom;
+    private String name;
+  }
+  
+  /**
    * The <b>(OP)</b> axiom to evaluate binary operations.
    */
-  public static final Rule OP = new Rule(true, "OP");
+  public static final Type OP = new Type(true, "OP");
   
   /**
    * The <b>(BETA-V)</b> axiom to perform beta-reduction.
    */
-  public static final Rule BETA_VALUE = new Rule(true, "BETA-V");
+  public static final Type BETA_VALUE = new Type(true, "BETA-V");
   
   /**
    * The <b>(APP-LEFT)</b> meta-rule to evaluate the left
    * part of an application.
    */
-  public static final Rule APP_LEFT = new Rule(false, "APP-LEFT");
+  public static final Type APP_LEFT = new Type(false, "APP-LEFT");
   
   /**
    * The <b>(APP-LEFT-EXN)</b> meta-rule which forwards an
    * exception that occurred while evaluating the left part
    * of an application.
    */
-  public static final Rule APP_LEFT_EXN = new Rule(false, "APP-LEFT-EXN");
+  public static final Type APP_LEFT_EXN = new Type(false, "APP-LEFT-EXN");
   
   /**
    * The <b>(APP-RIGHT)</b> meta-rule to evaluate the right
    * part of an application.
    */
-  public static final Rule APP_RIGHT = new Rule(false, "APP-RIGHT");
+  public static final Type APP_RIGHT = new Type(false, "APP-RIGHT");
   
   /**
    * The <b>(APP-RIGHT-EXN)</b> meta-rule which forwards an
    * exception that occurred while evaluating the left part
    * of an application.
    */
-  public static final Rule APP_RIGHT_EXN = new Rule(false, "APP-RIGHT-EXN");
+  public static final Type APP_RIGHT_EXN = new Type(false, "APP-RIGHT-EXN");
   
   /**
    * The <b>(COND-EVAL)</b> meta-rule to evaluate the conditional
    * expression of an <code>if then else</code> expression.
    */
-  public static final Rule COND_EVAL = new Rule(false, "COND-EVAL");
+  public static final Type COND_EVAL = new Type(false, "COND-EVAL");
   
   /**
    * The <b>(COND-EVAL-EXN)</b> meta-rule to forward exceptions
    * that occur while evaluating the conditional part of an
    * <code>if then else</code> expression.
    */
-  public static final Rule COND_EVAL_EXN = new Rule(false, "COND-EVAL-EXN");
+  public static final Type COND_EVAL_EXN = new Type(false, "COND-EVAL-EXN");
   
   /**
    * The <b>(COND-TRUE)</b> axiom to evaluate an <code>if then else</code>
    * expression whose conditional part was evaluated to <code>true</code>.
    */
-  public static final Rule COND_TRUE = new Rule(true, "COND-TRUE");
+  public static final Type COND_TRUE = new Type(true, "COND-TRUE");
   
   /**
    * The <b>(COND-FALSE)</b> axiom to evaluate an <code>if then else</code>
    * expression whose conditional part was evaluated to <code>false</code>.
    */
-  public static final Rule COND_FALSE = new Rule(true, "COND-FALSE");
+  public static final Type COND_FALSE = new Type(true, "COND-FALSE");
   
   /**
    * The <b>(LET-EVAL)</b> meta-rule evaluates the first expression
    * of a <code>let in</code> block.
    */
-  public static final Rule LET_EVAL = new Rule(false, "LET-EVAL");
+  public static final Type LET_EVAL = new Type(false, "LET-EVAL");
   
   /**
    * The <b>(LET-EVAL-EXN)</b> meta-rule forwards an exception that
    * occurred in the evaluation of the first expression of a <code>let
    * in</code> block.
    */
-  public static final Rule LET_EVAL_EXN = new Rule(false, "LET-EVAL-EXN");
+  public static final Type LET_EVAL_EXN = new Type(false, "LET-EVAL-EXN");
   
   /**
    * The <b>(LET-EXEC)</b> axiom executes a <code>let in</code> block
    * once the first expression is evaluated.
    */
-  public static final Rule LET_EXEC = new Rule(true, "LET-EXEC");
+  public static final Type LET_EXEC = new Type(true, "LET-EXEC");
   
   /**
    * The <b>(UNFOLD)</b> axiom executes a <code>rec</code> expression.
    */
-  public static final Rule UNFOLD = new Rule(true, "UNFOLD");
+  public static final Type UNFOLD = new Type(true, "UNFOLD");
+
+  /**
+   * Creates a new rule, which was applied to <code>expression</code>
+   * and is of the given <code>type</code>.
+   * @param expression the expression to which the rule was applied.
+   * @param type the type of the rule.
+   */
+  Rule(Expression expression, Type type) {
+    this.expression = expression;
+    this.type = type;
+  }
+  
+  /**
+   * Compares this rule to the given <code>obj</code> and returns
+   * <code>true</code> if they are equal.
+   * @return <code>true</code> if this is equal to <code>obj</code>
+   * @see java.lang.Object#equals(java.lang.Object)
+   */
+  @Override
+  public boolean equals(Object obj) {
+    if (obj != null && obj instanceof Rule) {
+      Rule rule = (Rule)obj;
+      return (rule.type == this.type && rule.expression.equals(this.expression));
+    }
+    return false;
+  }
   
   /**
    * Checks whether this rule is an axiom.
    * @return <code>true</code> if this rule is an axiom.
    */
-  public boolean isAxiom() {
-    return this.axiom;
+  public final boolean isAxiom() {
+    return this.type.isAxiom();
+  }
+  
+  /**
+   * Returns the expression to which this rule was applied.
+   * @return the expression to which this rule was applied.
+   */
+  public final Expression getExpression() {
+    return this.expression;
   }
   
   /**
    * Returns the name of this rule.
    * @return the name of this rule.
    */
-  public String getName() {
-    return this.name;
+  public final String getName() {
+    return this.type.getName();
   }
   
   /**
    * Returns the string representation of the rule.
-   *
    * @return the string representation of the rule.
-   * 
    * @see java.lang.Object#toString()
    */
   @Override
-  public String toString() {
+  public final String toString() {
     return getName();
   }
 
-  private Rule(boolean axiom, String name) {
-    this.axiom = axiom;
-    this.name = name;
-  }
-  
-  private boolean axiom;
-  private String name;
+  private Expression expression;
+  private Type type;
 }

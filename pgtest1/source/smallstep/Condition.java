@@ -53,12 +53,12 @@ public class Condition extends Expression {
     if (!ruleChain.isEmpty()) {
       if (e0 instanceof Exn) {
         // prepend (COND-EVAL-EXN)
-        ruleChain.prepend(Rule.COND_EVAL_EXN);
+        ruleChain.prepend(new Rule(this, Rule.COND_EVAL_EXN));
         return e0;
       }
       else {
         // prepend (COND-EVAL)
-        ruleChain.prepend(Rule.COND_EVAL);
+        ruleChain.prepend(new Rule(this, Rule.COND_EVAL));
         return new Condition(e0, this.e1, this.e2);
       }
     }
@@ -80,12 +80,12 @@ public class Condition extends Expression {
     // check if the conditional value is true
     if (v0.isTrue()) {
       // prepend (COND-TRUE)
-      ruleChain.prepend(Rule.COND_TRUE);
+      ruleChain.prepend(new Rule(this, Rule.COND_TRUE));
       return this.e1;
     }
     else {
       // prepend (COND-FALSE)
-      ruleChain.prepend(Rule.COND_FALSE);
+      ruleChain.prepend(new Rule(this, Rule.COND_FALSE));
       return this.e2;
     }
   }

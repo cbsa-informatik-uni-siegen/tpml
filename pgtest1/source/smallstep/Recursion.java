@@ -69,7 +69,7 @@ public class Recursion extends Expression {
     assert (ruleChain.isEmpty());
     
     // prepend the (UNFOLD) axiom
-    ruleChain.prepend(Rule.UNFOLD);
+    ruleChain.prepend(new Rule(this, Rule.UNFOLD));
     
     // perform the substitution
     return this.e.substitute(this.id, this);

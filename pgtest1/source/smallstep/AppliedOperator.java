@@ -52,7 +52,7 @@ public class AppliedOperator extends Value {
     
     if (v instanceof IntegerConstant) {
       // we effectly use (OP) now
-      ruleChain.prepend(Rule.OP);
+      ruleChain.prepend(new Rule(this, Rule.OP));
       
       // and perform the operation
       return this.operator.applyTo(this.constant, (IntegerConstant)v);

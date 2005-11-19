@@ -61,7 +61,7 @@ public class Abstraction extends Value {
     assert (ruleChain.isEmpty());
     
     // prepend the (BETA-VALUE) rule
-    ruleChain.prepend(Rule.BETA_VALUE);
+    ruleChain.prepend(new Rule(this, Rule.BETA_VALUE));
     
     // perform the substitution
     return this.e.substitute(this.id, v);
