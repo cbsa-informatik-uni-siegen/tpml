@@ -1,10 +1,8 @@
 package smallstep;
 
+import java.text.MessageFormat;
 import java.util.Set;
 import java.util.TreeSet;
-
-import smallstep.printer.ApplicationItem;
-import smallstep.printer.Item;
 
 /**
  * This class represents an applied operator, that is,
@@ -76,13 +74,52 @@ public class AppliedOperator extends Value {
   }
 
   /**
-   * @see smallstep.Expression#getPrettyPrintItem()
+   * Returns the pretty print format for an applied operator.
+   * @return the pretty print format for an applied operator.
+   * @see smallstep.Expression#getPrettyPrintFormat()
    */
   @Override
-  public Item getPrettyPrintItem() {
-    return new ApplicationItem(this.operator.getPrettyPrintItem(), this.constant.getPrettyPrintItem());
+  public MessageFormat getPrettyPrintFormat() {
+    return PRETTY_PRINT_FORMAT;
+  }
+
+  /**
+   * Returns the pretty print priority for this expression.
+   * @return the pretty print priority for this expression.
+   * @see smallstep.Expression#getPrettyPrintPriority()
+   */
+  @Override
+  public int getPrettyPrintPriority() {
+    return PRETTY_PRINT_PRIORITY;
+  }
+
+  /**
+   * Returns the subexpression priorities for an applied operator,
+   * which is the same as for applications, [1,2].
+   * @return the subexpression priorities for an applied operator.
+   * @see smallstep.Expression#getSubExpressionPriorities()
+   */
+  @Override
+  public int[] getSubExpressionPriorities() {
+    return PRETTY_PRINT_PRIORITIES;
+  }
+
+  /**
+   * Returns the subexpressions for an applied operator.
+   * @return the subexpressions for an applied operator.
+   * @see smallstep.Expression#getSubExpressions()
+   */
+  @Override
+  public Expression[] getSubExpressions() {
+    return new Expression[] { this.operator, this.constant };
   }
   
+  // the internal structure
   private Operator operator;
   private IntegerConstant constant;
+  
+  // pretty print support
+  private static final MessageFormat PRETTY_PRINT_FORMAT = new MessageFormat("{0} {1}");
+  private static final int PRETTY_PRINT_PRIORITIES[] = { 1, 2 };
+  private static final int PRETTY_PRINT_PRIORITY = 1;
 }

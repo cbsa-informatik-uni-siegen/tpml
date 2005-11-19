@@ -1,7 +1,5 @@
 package smallstep;
 
-import smallstep.printer.AtomicItem;
-import smallstep.printer.Item;
 
 public class RelationalOperator extends Operator {
   /**
@@ -35,11 +33,13 @@ public class RelationalOperator extends Operator {
   }
 
   /**
-   * @see smallstep.Expression#getPrettyPrintItem()
+   * Returns the string representation of the operator.
+   * @return the string representation of the operator.
+   * @see java.lang.Object#toString()
    */
   @Override
-  public Item getPrettyPrintItem() {
-    return new AtomicItem(this.op);
+  public String toString() {
+    return this.op;
   }
 
   /**

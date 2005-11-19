@@ -1,15 +1,15 @@
 package smallstep;
 
-import smallstep.printer.AtomicItem;
-import smallstep.printer.Item;
 
 public class UnitConstant extends Constant {
   /**
-   * @see smallstep.Expression#getPrettyPrintItem()
+   * Returns the string representation of the unit constant.
+   * @return the string representation of the unit constant.
+   * @see java.lang.Object#toString()
    */
   @Override
-  public Item getPrettyPrintItem() {
-    return new AtomicItem("()");
+  public String toString() {
+    return "()";
   }
   
   /**

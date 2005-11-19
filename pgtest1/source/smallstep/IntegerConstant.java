@@ -1,7 +1,5 @@
 package smallstep;
 
-import smallstep.printer.AtomicItem;
-import smallstep.printer.Item;
 
 public class IntegerConstant extends smallstep.Constant {
   /**
@@ -21,13 +19,15 @@ public class IntegerConstant extends smallstep.Constant {
   public int getNumber() {
     return this.number;
   }
-  
+
   /**
-   * @see smallstep.Expression#getPrettyPrintItem()
+   * Returns the string representation of the integer constant.
+   * @return the string representation of the integer constant.
+   * @see java.lang.Object#toString()
    */
   @Override
-  public Item getPrettyPrintItem() {
-    return new AtomicItem(Integer.toString(this.number));
+  public String toString() {
+    return Integer.toString(getNumber());
   }
 
   private int number;

@@ -1,10 +1,8 @@
 package smallstep;
 
+import java.text.MessageFormat;
 import java.util.Set;
 import java.util.TreeSet;
-
-import smallstep.printer.ApplicationItem;
-import smallstep.printer.Item;
 
 public class Application extends Expression {
   /**
@@ -117,13 +115,52 @@ public class Application extends Expression {
   }
 
   /**
-   * @see smallstep.Expression#getPrettyPrintItem()
+   * Returns a format for <code>"{0} {1}"</code> which can be used
+   * to pretty print an application.
+   * @return the pretty print message format for applications.
+   * @see smallstep.Expression#getPrettyPrintFormat()
    */
   @Override
-  public Item getPrettyPrintItem() {
-    return new ApplicationItem(this.e1.getPrettyPrintItem(), this.e2.getPrettyPrintItem());
+  public MessageFormat getPrettyPrintFormat() {
+    return PRETTY_PRINT_FORMAT;
+  }
+
+  /**
+   * Returns the return-pretty-print-priority for applications.
+   * @return the return-pretty-print-priority for applications.
+   * @see smallstep.Expression#getPrettyPrintPriority()
+   */
+  @Override
+  public int getPrettyPrintPriority() {
+    return PRETTY_PRINT_PRIORITY;
+  }
+
+  /**
+   * Returns the required subexpression pretty print priorities.
+   * @return the required subexpression pretty print priorities.
+   * @see smallstep.Expression#getSubExpressionPriorities()
+   */
+  @Override
+  public int[] getSubExpressionPriorities() {
+    return PRETTY_PRINT_PRIORITIES;
+  }
+
+  /**
+   * Returns the two subexpression for the application.
+   * @return the two subexpression for the application.
+   * @see smallstep.Expression#getSubExpressions()
+   */
+  @Override
+  public Expression[] getSubExpressions() {
+    return new Expression[] { this.e1, this.e2 };
   }
   
+  // sub expressions
   private Expression e1;
   private Expression e2;
+  
+  // pretty print support for applications
+  private static MessageFormat PRETTY_PRINT_FORMAT = new MessageFormat("{0} {1}");
+  private static int PRETTY_PRINT_PRIORITIES[] = { 1, 2 };
+  private static int PRETTY_PRINT_PRIORITY = 1;
 }

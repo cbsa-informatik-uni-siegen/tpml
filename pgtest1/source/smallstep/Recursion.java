@@ -3,11 +3,9 @@
  */
 package smallstep;
 
+import java.text.MessageFormat;
 import java.util.Set;
 import java.util.TreeSet;
-
-import smallstep.printer.Item;
-import smallstep.printer.RecursionItem;
 
 /**
  * Implementation of the <b>(REC)</b> rule.
@@ -95,13 +93,52 @@ public class Recursion extends Expression {
   }
 
   /**
-   * @see smallstep.Expression#getPrettyPrintItem()
+   * Returns the pretty print format for the <b>(REC)</b> expression,
+   * which is currently just <code>"rec id.{0}"</code>.
+   * @return the pretty print format for the <b>(REC)</b> expression.
+   * @see smallstep.Expression#getPrettyPrintFormat()
    */
   @Override
-  public Item getPrettyPrintItem() {
-    return new RecursionItem(this.id, this.e.getPrettyPrintItem());
+  public MessageFormat getPrettyPrintFormat() {
+    return new MessageFormat("rec " + this.id + ".{0}");
   }
 
+  /**
+   * Returns the pretty print priority for the <b>(REC)</b> expression.
+   * @return the pretty print priority for the <b>(REC)</b> expression.
+   * @see smallstep.Expression#getPrettyPrintPriority()
+   */
+  @Override
+  public int getPrettyPrintPriority() {
+    return PRETTY_PRINT_PRIORITY;
+  }
+
+  /**
+   * Returns the subexpression priorities for the pretty print support,
+   * which is right now just [0].
+   * @return the subexpression priorities for the <b>(REC)</b> expression.
+   * @see smallstep.Expression#getSubExpressionPriorities()
+   */
+  @Override
+  public int[] getSubExpressionPriorities() {
+    return PRETTY_PRINT_PRIORITIES;
+  }
+
+  /**
+   * Returns the list of subexpressions for this expression.
+   * @return the list of subexpressions for this expression.
+   * @see smallstep.Expression#getSubExpressions()
+   */
+  @Override
+  public Expression[] getSubExpressions() {
+    return new Expression[] { this.e };
+  }
+
+  // the internal structure
   private String id;
   private Expression e;
+  
+  // pretty print support
+  private static final int PRETTY_PRINT_PRIORITIES[] = { 0 };
+  private static final int PRETTY_PRINT_PRIORITY = 0;
 }

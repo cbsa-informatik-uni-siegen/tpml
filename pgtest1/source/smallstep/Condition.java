@@ -1,10 +1,8 @@
 package smallstep;
 
+import java.text.MessageFormat;
 import java.util.Set;
 import java.util.TreeSet;
-
-import smallstep.printer.ConditionItem;
-import smallstep.printer.Item;
 
 /**
  * Representation of a <b>(COND)</b> expression for
@@ -108,14 +106,55 @@ public class Condition extends Expression {
   }
 
   /**
-   * @see smallstep.Expression#getPrettyPrintItem()
+   * Returns the pretty print format for this expression, which
+   * is always <code>"if {0} then {1} else {2}"</code>.
+   * @return the pretty print format for conditions.
+   * @see smallstep.Expression#getPrettyPrintFormat()
    */
   @Override
-  public Item getPrettyPrintItem() {
-    return new ConditionItem(this.e0.getPrettyPrintItem(), this.e1.getPrettyPrintItem(), this.e2.getPrettyPrintItem());
+  public MessageFormat getPrettyPrintFormat() {
+    return PRETTY_PRINT_FORMAT;
   }
 
+  /**
+   * Returns the pretty print return priority for conditions.
+   * @return the pretty print return priority for conditions.
+   * @see smallstep.Expression#getPrettyPrintPriority()
+   */
+  @Override
+  public int getPrettyPrintPriority() {
+    return PRETTY_PRINT_PRIORITY;
+  }
+
+  /**
+   * Returns the required pretty print priorities for the sub
+   * expressions.
+   * @return the required pretty print priorities.
+   * @see smallstep.Expression#getSubExpressionPriorities()
+   */
+  @Override
+  public int[] getSubExpressionPriorities() {
+    return PRETTY_PRINT_PRIORITIES;
+  }
+
+  /**
+   * Returns an array with the three subexpressions of a
+   * condition.
+   * @return an array with the subexpressions.
+   * @see smallstep.Expression#getSubExpressions()
+   */
+  @Override
+  public Expression[] getSubExpressions() {
+    return new Expression[] { this.e0, this.e1, this.e2 }; 
+  }
+
+  // sub expressions
   private Expression e0;
   private Expression e1;
   private Expression e2;
+  
+  // pretty print support
+  private static MessageFormat PRETTY_PRINT_FORMAT = new MessageFormat("if {0} then {1} else {2}");
+  private static int PRETTY_PRINT_PRIORITIES[] = { 0, 0, 0 };
+  private static int PRETTY_PRINT_PRIORITY = 0;
 }

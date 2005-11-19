@@ -1,10 +1,8 @@
 package smallstep;
 
+import java.text.MessageFormat;
 import java.util.Set;
 import java.util.TreeSet;
-
-import smallstep.printer.AtomicItem;
-import smallstep.printer.Item;
 
 public class Identifier extends Expression {
   /**
@@ -60,12 +58,51 @@ public class Identifier extends Expression {
   }
 
   /**
-   * @see smallstep.Expression#getPrettyPrintItem()
+   * Returns the name of the identifier as MessageFormat,
+   * since an identifier has no subexpressions.
+   * @return the name of the identifier.
+   * @see smallstep.Expression#getPrettyPrintFormat()
    */
   @Override
-  public Item getPrettyPrintItem() {
-    return new AtomicItem(this.name);
+  public MessageFormat getPrettyPrintFormat() {
+    return new MessageFormat(this.name);
   }
-  
+
+  /**
+   * Returns the pretty print priority of this identifier.
+   * @return the pretty print priority of this identifier.
+   * @see smallstep.Expression#getPrettyPrintPriority()
+   */
+  @Override
+  public int getPrettyPrintPriority() {
+    return PRETTY_PRINT_PRIORITY;
+  }
+
+  /**
+   * Returns an empty array, since an identifier has no
+   * subexpressions.
+   * @return an empty array.
+   * @see smallstep.Expression#getSubExpressionPriorities()
+   */
+  @Override
+  public int[] getSubExpressionPriorities() {
+    return PRETTY_PRINT_PRIORITIES;
+  }
+
+  /**
+   * Returns an empty array, since an identifier has no subexpressions.
+   * @return an empty array.
+   * @see smallstep.Expression#getSubExpressions()
+   */
+  @Override
+  public Expression[] getSubExpressions() {
+    return Expression.EMPTY_ARRAY;
+  }
+
+  // the name of the identifier
   private String name;
+  
+  // pretty print support
+  private static final int PRETTY_PRINT_PRIORITIES[] = new int[0];
+  private static final int PRETTY_PRINT_PRIORITY = 2;
 }

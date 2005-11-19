@@ -1,7 +1,5 @@
 package smallstep;
 
-import smallstep.printer.AtomicItem;
-import smallstep.printer.Item;
 
 public class BooleanConstant extends Constant {
   /**
@@ -13,13 +11,15 @@ public class BooleanConstant extends Constant {
   public final boolean isTrue() {
     return this.primitive;
   }
-  
+
   /**
-   * @see smallstep.Expression#getPrettyPrintItem()
+   * Returns the string representation of the boolean constant.
+   * @return the string representation of the boolean constant.
+   * @see java.lang.Object#toString()
    */
   @Override
-  public Item getPrettyPrintItem() {
-    return new AtomicItem(isTrue() ? "true" : "false");
+  public String toString() {
+    return (isTrue() ? "true" : "false");
   }
   
   /**
