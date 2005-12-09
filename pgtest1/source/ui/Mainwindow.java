@@ -77,8 +77,6 @@ public class Mainwindow extends JFrame {
       public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand() == "SmallStep")
         	handleSmallStep();
-        if (e.getActionCommand() == "BigStep")
-        	handleBigStep();
       }
     };
 
@@ -202,10 +200,5 @@ public class Mainwindow extends JFrame {
     } catch (Exception e) {
       JOptionPane.showMessageDialog(this, e.getLocalizedMessage(), "Error", JOptionPane.ERROR_MESSAGE);
     }
-  }
-  
-  private void handleBigStep() {
-	  BigStepGUI gui = new BigStepGUI (this, "BiStep", true);
-	  gui.setVisible(true);
   }
 }
