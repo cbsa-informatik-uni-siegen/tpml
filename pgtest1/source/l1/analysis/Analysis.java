@@ -17,6 +17,11 @@ public interface Analysis extends Switch
     void caseALetExpression(ALetExpression node);
     void caseAAbstractionExpression(AAbstractionExpression node);
     void caseARecursionExpression(ARecursionExpression node);
+    void caseAAdditionExpression(AAdditionExpression node);
+    void caseASubstractionExpression(ASubstractionExpression node);
+    void caseAMultiplicationExpression(AMultiplicationExpression node);
+    void caseADivisionExpression(ADivisionExpression node);
+    void caseAModulationExpression(AModulationExpression node);
     void caseAIdentifierExpression(AIdentifierExpression node);
     void caseAUnitExpression(AUnitExpression node);
     void caseATrueExpression(ATrueExpression node);

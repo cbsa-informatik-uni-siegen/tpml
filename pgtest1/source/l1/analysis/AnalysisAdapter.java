@@ -93,6 +93,31 @@ public class AnalysisAdapter implements Analysis
         defaultCase(node);
     }
 
+    public void caseAAdditionExpression(AAdditionExpression node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseASubstractionExpression(ASubstractionExpression node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseAMultiplicationExpression(AMultiplicationExpression node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseADivisionExpression(ADivisionExpression node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseAModulationExpression(AModulationExpression node)
+    {
+        defaultCase(node);
+    }
+
     public void caseAIdentifierExpression(AIdentifierExpression node)
     {
         defaultCase(node);

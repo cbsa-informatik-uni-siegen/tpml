@@ -45,17 +45,28 @@ Ignored Tokens
 
 Productions
  expression =
-  {application} application {-> application.expression} |
-  {condition} if [e0]:application then [e1]:expression else [e2]:expression {-> New expression.condition(e0.expression, e1, e2)} |
+  {term} term {-> term.expression} |
+  {condition} if [e0]:term then [e1]:expression else [e2]:expression {-> New expression.condition(e0.expression, e1, e2)} |
   {let} let identifier equal [e1]:expression in [e2]:expression {-> New expression.let(identifier, e1, e2)} |
   {abstraction} lambda identifier dot expression {-> New expression.abstraction(identifier, expression)} |
   {recursion} rec identifier dot expression {-> New expression.recursion(identifier, expression)};
 
- application {-> expression} =
-  {term} term {-> term.expression} |
-  {application} application term {-> New expression.application(application.expression, term.expression)};
-
  term {-> expression} =
+  {factor} factor {-> factor.expression} |
+  {addition} term plus factor {-> New expression.addition(term.expression, factor.expression)} |
+  {substraction} term minus factor {-> New expression.substraction(term.expression, factor.expression)};
+
+ factor {-> expression} =
+  {application} application {-> application.expression} |
+  {multiplication} factor multiply application {-> New expression.multiplication(factor.expression, application.expression)} |
+  {division} factor divide application {-> New expression.division(factor.expression, application.expression)} |
+  {modulation} factor modulo application {-> New expression.modulation(factor.expression, application.expression)};
+
+ application {-> expression} =
+  {atom} atom {-> atom.expression} |
+  {application} application atom {-> New expression.application(application.expression, atom.expression)};
+
+ atom {-> expression} =
   {constant} constant {-> constant.expression} |
   {identifier} identifier {-> New expression.identifier(identifier)} |
   {expression} left_paren expression right_paren {-> expression};
@@ -64,7 +75,7 @@ Productions
   {unit} unit {-> New expression.unit(unit)} |
   {bool} bool {-> bool.expression} |
   {number} number {-> New expression.number(number)} |
-  {operator} operator {-> operator.expression};
+  {operator} left_paren operator right_paren {-> operator.expression};
 
  bool {-> expression} =
   {true} true {-> New expression.true(true)} |
@@ -90,6 +101,11 @@ Abstract Syntax Tree
   {let} [id]:identifier [e1]:expression [e2]:expression |
   {abstraction} [id]:identifier [e]:expression |
   {recursion} [id]:identifier [e]:expression |
+  {addition} [e0]:expression [e1]:expression |
+  {substraction} [e0]:expression [e1]:expression |
+  {multiplication} [e0]:expression [e1]:expression |
+  {division} [e0]:expression [e1]:expression |
+  {modulation} [e0]:expression [e1]:expression |
   {identifier} identifier |
   {unit} unit |
   {true} true |
