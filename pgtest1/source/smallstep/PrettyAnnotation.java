@@ -1,7 +1,5 @@
 package smallstep;
 
-import java.util.List;
-
 /**
  * An annotation for the pretty printer. Annotations are
  * used to mark regions within the text that are associated
@@ -22,7 +20,7 @@ public final class PrettyAnnotation {
    *                  the annotation).
    * @param breakOffsets the list of possible break offsets.
    */
-  PrettyAnnotation(int startOffset, int endOffset, List<Integer> breakOffsets) {
+  PrettyAnnotation(int startOffset, int endOffset, int[] breakOffsets) {
     this.breakOffsets = breakOffsets;
     this.startOffset = startOffset;
     this.endOffset = endOffset;
@@ -39,7 +37,7 @@ public final class PrettyAnnotation {
    * 
    * @return the break offsets for this annotation.
    */
-  public List<Integer> getBreakOffsets() {
+  public int[] getBreakOffsets() {
     return this.breakOffsets;
   }
   
@@ -65,7 +63,7 @@ public final class PrettyAnnotation {
     return this.endOffset;
   }
   
-  private List<Integer> breakOffsets;
+  private int[] breakOffsets;
   private int startOffset;
   private int endOffset;
 }
