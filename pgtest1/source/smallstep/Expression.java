@@ -61,12 +61,6 @@ public abstract class Expression {
   protected abstract PrettyStringBuilder toPrettyStringBuilder();  
   
   /**
-   * An empty array of expressions, used solely to save
-   * memory in derived classes.
-   */
-  //public static final Expression[] EMPTY_ARRAY = new Expression[0];
-  
-  /**
    * An empty string set, used solely to save memory in
    * derived classes, that don't provide any free
    * identifiers.
