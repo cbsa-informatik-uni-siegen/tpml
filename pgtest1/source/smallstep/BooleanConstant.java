@@ -1,6 +1,11 @@
 package smallstep;
 
-
+/**
+ * A boolean constant.
+ *
+ * @author Benedikt Meurer
+ * @version $Id$
+ */
 public class BooleanConstant extends Constant {
   /**
    * Returns <code>true</code> if the primitive value of

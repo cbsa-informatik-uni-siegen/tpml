@@ -39,7 +39,7 @@ public class RelationalOperator extends Operator {
    */
   @Override
   public String toString() {
-    return this.op;
+    return "(" + this.op + ")";
   }
 
   /**

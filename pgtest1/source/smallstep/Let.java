@@ -1,6 +1,5 @@
 package smallstep;
 
-import java.text.MessageFormat;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -97,52 +96,25 @@ public class Let extends Expression {
   }
 
   /**
-   * Returns <code>"let id={0} in {1}"</code>, which is used
-   * to pretty print the let expressions.
-   * @return the pretty print format for <b>(LET)</b>.
-   * @see smallstep.Expression#getPrettyPrintFormat()
+   * Returns the pretty string builder for let expressions.
+   * @return the pretty string builder for let expressions.
+   * @see smallstep.Expression#toPrettyStringBuilder()
    */
   @Override
-  public MessageFormat getPrettyPrintFormat() {
-    return new MessageFormat("let " + this.id + " = {0} in {1}");
+  protected PrettyStringBuilder toPrettyStringBuilder() {
+    PrettyStringBuilder builder = new PrettyStringBuilder(this, 0);
+    builder.appendKeyword("let");
+    builder.appendText(" " + this.id + " = ");
+    builder.appendBuilder(this.e1.toPrettyStringBuilder(), 0);
+    builder.appendBreak();
+    builder.appendText(" ");
+    builder.appendKeyword("in");
+    builder.appendText(" ");
+    builder.appendBuilder(this.e2.toPrettyStringBuilder(), 0);
+    return builder;
   }
-
-  /**
-   * Returns the pretty print priority of the <b>(LET)</b> expression.
-   * @return the pretty print priority of the <b>(LET)</b> expression.
-   * @see smallstep.Expression#getPrettyPrintPriority()
-   */
-  @Override
-  public int getPrettyPrintPriority() {
-    return PRETTY_PRINT_PRIORITY;
-  }
-
-  /**
-   * Returns the required subexpression pretty print priorities, which is [0,0]
-   * for the <b>(LET)</b> expression.
-   * @return the required subexpression pretty print priorities.
-   * @see smallstep.Expression#getSubExpressionPriorities()
-   */
-  @Override
-  public int[] getSubExpressionPriorities() {
-    return PRETTY_PRINT_PRIORITIES;
-  }
-
-  /**
-   * Returns the array of subexpressions for the <b>(LET)</b> expression.
-   * @return the array of subexpressions for the <b>(LET)</b> expression.
-   * @see smallstep.Expression#getSubExpressions()
-   */
-  @Override
-  public Expression[] getSubExpressions() {
-    return new Expression[] { this.e1, this.e2 };
-  }
-
+  
   private String id;
   private Expression e1;
   private Expression e2;
-  
-  // pretty print support
-  private static final int PRETTY_PRINT_PRIORITIES[] = { 0, 0 };
-  private static final int PRETTY_PRINT_PRIORITY = 0;
 }

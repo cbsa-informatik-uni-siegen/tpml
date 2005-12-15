@@ -1,6 +1,5 @@
 package smallstep;
 
-import java.text.MessageFormat;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -106,55 +105,31 @@ public class Condition extends Expression {
   }
 
   /**
-   * Returns the pretty print format for this expression, which
-   * is always <code>"if {0} then {1} else {2}"</code>.
-   * @return the pretty print format for conditions.
-   * @see smallstep.Expression#getPrettyPrintFormat()
+   * Returns the pretty string builder for conditions.
+   * @return the pretty string builder for conditions.
+   * @see smallstep.Expression#toPrettyStringBuilder()
    */
   @Override
-  public MessageFormat getPrettyPrintFormat() {
-    return PRETTY_PRINT_FORMAT;
+  protected PrettyStringBuilder toPrettyStringBuilder() {
+    PrettyStringBuilder builder = new PrettyStringBuilder(this, 0);
+    builder.appendKeyword("if");
+    builder.appendText(" ");
+    builder.appendBuilder(this.e0.toPrettyStringBuilder(), 0);
+    builder.appendBreak();
+    builder.appendText(" ");
+    builder.appendKeyword("then");
+    builder.appendText(" ");
+    builder.appendBuilder(this.e1.toPrettyStringBuilder(), 0);
+    builder.appendBreak();
+    builder.appendText(" ");
+    builder.appendKeyword("else");
+    builder.appendText(" ");
+    builder.appendBuilder(this.e2.toPrettyStringBuilder(), 0);
+    return builder;
   }
-
-  /**
-   * Returns the pretty print return priority for conditions.
-   * @return the pretty print return priority for conditions.
-   * @see smallstep.Expression#getPrettyPrintPriority()
-   */
-  @Override
-  public int getPrettyPrintPriority() {
-    return PRETTY_PRINT_PRIORITY;
-  }
-
-  /**
-   * Returns the required pretty print priorities for the sub
-   * expressions.
-   * @return the required pretty print priorities.
-   * @see smallstep.Expression#getSubExpressionPriorities()
-   */
-  @Override
-  public int[] getSubExpressionPriorities() {
-    return PRETTY_PRINT_PRIORITIES;
-  }
-
-  /**
-   * Returns an array with the three subexpressions of a
-   * condition.
-   * @return an array with the subexpressions.
-   * @see smallstep.Expression#getSubExpressions()
-   */
-  @Override
-  public Expression[] getSubExpressions() {
-    return new Expression[] { this.e0, this.e1, this.e2 }; 
-  }
-
+  
   // sub expressions
   private Expression e0;
   private Expression e1;
   private Expression e2;
-  
-  // pretty print support
-  private static MessageFormat PRETTY_PRINT_FORMAT = new MessageFormat("if {0} then {1} else {2}");
-  private static int PRETTY_PRINT_PRIORITIES[] = { 0, 0, 0 };
-  private static int PRETTY_PRINT_PRIORITY = 0;
 }

@@ -1,6 +1,5 @@
 package smallstep;
 
-import java.text.MessageFormat;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -74,52 +73,20 @@ public class AppliedOperator extends Value {
   }
 
   /**
-   * Returns the pretty print format for an applied operator.
-   * @return the pretty print format for an applied operator.
-   * @see smallstep.Expression#getPrettyPrintFormat()
+   * Returns the pretty string builder for applied operators.
+   * @return the pretty string builder for applied operators.
+   * @see smallstep.Expression#toPrettyStringBuilder()
    */
   @Override
-  public MessageFormat getPrettyPrintFormat() {
-    return PRETTY_PRINT_FORMAT;
-  }
-
-  /**
-   * Returns the pretty print priority for this expression.
-   * @return the pretty print priority for this expression.
-   * @see smallstep.Expression#getPrettyPrintPriority()
-   */
-  @Override
-  public int getPrettyPrintPriority() {
-    return PRETTY_PRINT_PRIORITY;
-  }
-
-  /**
-   * Returns the subexpression priorities for an applied operator,
-   * which is the same as for applications, [1,2].
-   * @return the subexpression priorities for an applied operator.
-   * @see smallstep.Expression#getSubExpressionPriorities()
-   */
-  @Override
-  public int[] getSubExpressionPriorities() {
-    return PRETTY_PRINT_PRIORITIES;
-  }
-
-  /**
-   * Returns the subexpressions for an applied operator.
-   * @return the subexpressions for an applied operator.
-   * @see smallstep.Expression#getSubExpressions()
-   */
-  @Override
-  public Expression[] getSubExpressions() {
-    return new Expression[] { this.operator, this.constant };
+  protected PrettyStringBuilder toPrettyStringBuilder() {
+    PrettyStringBuilder builder = new PrettyStringBuilder(this, 1);
+    builder.appendBuilder(this.operator.toPrettyStringBuilder(), 1);
+    builder.appendText(" ");
+    builder.appendBuilder(this.constant.toPrettyStringBuilder(), 2);
+    return builder;
   }
   
   // the internal structure
   private Operator operator;
   private IntegerConstant constant;
-  
-  // pretty print support
-  private static final MessageFormat PRETTY_PRINT_FORMAT = new MessageFormat("{0} {1}");
-  private static final int PRETTY_PRINT_PRIORITIES[] = { 1, 2 };
-  private static final int PRETTY_PRINT_PRIORITY = 1;
 }

@@ -1,8 +1,6 @@
 package smallstep;
 
-import java.text.MessageFormat;
 import java.util.Set;
-import java.util.TreeSet;
 
 /**
  * This class represents a runtime exception for the
@@ -48,49 +46,19 @@ public class Exn extends Expression {
    */
   @Override
   public Set<String> free() {
-    return new TreeSet<String>();
+    return Expression.EMPTY_SET;
   }
 
   /**
-   * Returns the pretty print format for this exception,
-   * which is simply a string that contains no format items,
-   * but just the name of the exception.
-   * @return the pretty print string for the exception.
-   * @see smallstep.Expression#getPrettyPrintFormat()
+   * Returns the pretty string builder for exceptions.
+   * @return the pretty string builder for exceptions.
+   * @see smallstep.Expression#toPrettyStringBuilder()
    */
   @Override
-  public MessageFormat getPrettyPrintFormat() {
-    return new MessageFormat(this.name);
-  }
-
-  /**
-   * Returns the pretty print priority for the exception.
-   * @return the pretty print priority for the exception.
-   * @see smallstep.Expression#getPrettyPrintPriority()
-   */
-  @Override
-  public int getPrettyPrintPriority() {
-    return PRETTY_PRINT_PRIORITY;
-  }
-
-  /**
-   * Returns an empty array, as an exception has no subexpressions.
-   * @return an empty array, as an exception has no subexpressions.
-   * @see smallstep.Expression#getSubExpressionPriorities()
-   */
-  @Override
-  public int[] getSubExpressionPriorities() {
-    return PRETTY_PRINT_PRIORITIES;
-  }
-
-  /**
-   * Returns an empty array, as an exception has no subexpressions.
-   * @return an empty array, as an exception has no subexpressions.
-   * @see smallstep.Expression#getSubExpressions()
-   */
-  @Override
-  public Expression[] getSubExpressions() {
-    return Expression.EMPTY_ARRAY;
+  protected PrettyStringBuilder toPrettyStringBuilder() {
+    PrettyStringBuilder builder = new PrettyStringBuilder(this, 2);
+    builder.appendText(this.name);
+    return builder;
   }
 
   /**
@@ -104,8 +72,4 @@ public class Exn extends Expression {
   
   // the name of the exception
   private String name;
-  
-  // pretty print support
-  private static final int PRETTY_PRINT_PRIORITIES[] = new int[0];
-  private static final int PRETTY_PRINT_PRIORITY = 2;
 }

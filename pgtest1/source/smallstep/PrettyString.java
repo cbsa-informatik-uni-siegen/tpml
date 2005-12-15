@@ -1,6 +1,6 @@
 package smallstep;
 
-import java.util.List;
+import java.util.Collection;
 
 /**
  * Provides the functionality to pretty-print an expression
@@ -18,12 +18,11 @@ public interface PrettyString {
    * Returns the list of annotations contained within the
    * pretty string.
    * 
-   * @return the annotations contained within the pretty
-   *         string.
+   * @return the annotations contained within the pretty string.
    *
    * @see smallstep.PrettyAnnotation         
    */
-  public List<PrettyAnnotation> getAnnotations();
+  public Collection<PrettyAnnotation> getAnnotations();
   
   /**
    * Looks up the <code>PrettyAnnotation</code> for the given

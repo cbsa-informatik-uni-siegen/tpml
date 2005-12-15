@@ -1,6 +1,11 @@
 package smallstep;
 
-
+/**
+ * Implementations of an arithmetic operator.
+ *
+ * @author Benedikt Meurer
+ * @version $Id$
+ */
 public class ArithmeticOperator extends Operator {
   /**
    * Performs the artihmetic operation on <code>c1</code> and <code>c2</code>.
@@ -38,13 +43,13 @@ public class ArithmeticOperator extends Operator {
   }
 
   /**
-   * Returns the string representation of the operator.
-   * @return the string representation of the operator.
+   * Returns the string representation for an arithmetic operator.
+   * @return the string representation for an arithmetic operator.
    * @see java.lang.Object#toString()
    */
   @Override
-  public String toString() {
-    return this.op;
+  public final String toString() {
+    return "(" + this.op + ")";
   }
   
   /**

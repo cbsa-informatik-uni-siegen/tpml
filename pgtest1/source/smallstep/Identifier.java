@@ -1,6 +1,5 @@
 package smallstep;
 
-import java.text.MessageFormat;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -58,51 +57,17 @@ public class Identifier extends Expression {
   }
 
   /**
-   * Returns the name of the identifier as MessageFormat,
-   * since an identifier has no subexpressions.
-   * @return the name of the identifier.
-   * @see smallstep.Expression#getPrettyPrintFormat()
+   * Returns the pretty string builder for identifiers.
+   * @return the pretty string builder for identifiers.
+   * @see smallstep.Expression#toPrettyStringBuilder()
    */
   @Override
-  public MessageFormat getPrettyPrintFormat() {
-    return new MessageFormat(this.name);
-  }
-
-  /**
-   * Returns the pretty print priority of this identifier.
-   * @return the pretty print priority of this identifier.
-   * @see smallstep.Expression#getPrettyPrintPriority()
-   */
-  @Override
-  public int getPrettyPrintPriority() {
-    return PRETTY_PRINT_PRIORITY;
-  }
-
-  /**
-   * Returns an empty array, since an identifier has no
-   * subexpressions.
-   * @return an empty array.
-   * @see smallstep.Expression#getSubExpressionPriorities()
-   */
-  @Override
-  public int[] getSubExpressionPriorities() {
-    return PRETTY_PRINT_PRIORITIES;
-  }
-
-  /**
-   * Returns an empty array, since an identifier has no subexpressions.
-   * @return an empty array.
-   * @see smallstep.Expression#getSubExpressions()
-   */
-  @Override
-  public Expression[] getSubExpressions() {
-    return Expression.EMPTY_ARRAY;
+  protected PrettyStringBuilder toPrettyStringBuilder() {
+    PrettyStringBuilder builder = new PrettyStringBuilder(this, 2);
+    builder.appendText(this.name);
+    return builder;
   }
 
   // the name of the identifier
   private String name;
-  
-  // pretty print support
-  private static final int PRETTY_PRINT_PRIORITIES[] = new int[0];
-  private static final int PRETTY_PRINT_PRIORITY = 2;
 }

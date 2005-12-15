@@ -1,8 +1,6 @@
 package smallstep;
 
-import java.text.MessageFormat;
 import java.util.Set;
-import java.util.TreeSet;
 
 /**
  * Abstract class to represent a constant expression
@@ -20,50 +18,18 @@ public abstract class Constant extends Value {
    */
   @Override
   public Set<String> free() {
-    return new TreeSet<String>();
-  }
-
-  /**
-   * Returns the pretty print format for constants.
-   * @return the pretty print format for constants.
-   * @see smallstep.Expression#getPrettyPrintFormat()
-   */
-  @Override
-  public MessageFormat getPrettyPrintFormat() {
-    return new MessageFormat(toString());
+    return Expression.EMPTY_SET;
   }
   
   /**
-   * Returns the pretty print priority for constants.
-   * @return the pretty print priority for constants.
-   * @see smallstep.Expression#getPrettyPrintPriority()
+   * Returns the pretty string builder for constants.
+   * @return the pretty string builder for constants.
+   * @see smallstep.Expression#toPrettyStringBuilder()
    */
   @Override
-  public int getPrettyPrintPriority() {
-    return PRETTY_PRINT_PRIORITY;
+  protected final PrettyStringBuilder toPrettyStringBuilder() {
+    PrettyStringBuilder builder = new PrettyStringBuilder(this, 2);
+    builder.appendText(toString());
+    return builder;
   }
-  
-  /**
-   * Returns an empty array, since constants have no subexpressions.
-   * @return an empty array, since constants have no subexpressions.
-   * @see smallstep.Expression#getSubExpressionPriorities()
-   */
-  @Override
-  public int[] getSubExpressionPriorities() {
-    return PRETTY_PRINT_PRIORITIES;
-  }
-  
-  /**
-   * Returns an empty array, since constants have no subexpressions.
-   * @return an empty array, since constants have no subexpressions.
-   * @see smallstep.Expression#getSubExpressions()
-   */
-  @Override
-  public Expression[] getSubExpressions() {
-    return Expression.EMPTY_ARRAY;
-  }
-  
-  // pretty printer support
-  private static final int PRETTY_PRINT_PRIORITIES[] = new int[0];
-  private static final int PRETTY_PRINT_PRIORITY = 2;
 }
