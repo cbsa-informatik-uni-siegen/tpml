@@ -6,7 +6,7 @@ import javax.swing.*;
 
 public class SmallStepGUI extends JDialog {
 	
-	private SSComponent ssComponent;
+	private SmallStepComponent ssComponent;
 	private JButton		buttonAutocomplete;
 	private JButton 	buttonNextStep;
 	private JButton		buttonClose;
@@ -18,7 +18,7 @@ public class SmallStepGUI extends JDialog {
 		JPanel mainPanel	= new JPanel();
 		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.PAGE_AXIS));
 
-		ssComponent 		= new SSComponent(model);
+		ssComponent 			= new SmallStepComponent(model);
 		buttonAutocomplete	= new JButton ("Autocomplete");
 		buttonNextStep 		= new JButton ("NextStep");
 		buttonClose    		= new JButton ("Close");

@@ -77,6 +77,8 @@ public class Mainwindow extends JFrame {
       public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand() == "SmallStep")
         	handleSmallStep();
+        // if (e.getActionCommand() == "TypeChecker")
+        // 	handleTypeChecker();
       }
     };
 
@@ -127,10 +129,12 @@ public class Mainwindow extends JFrame {
     smallStepItem.setAccelerator(KeyStroke.getKeyStroke("F11"));
     smallStepItem.setMnemonic(KeyEvent.VK_S);
 
-    JMenuItem bigStepItem = actionsMenu.add("BigStep");
-    bigStepItem.addActionListener(mlMenuListener);
-    bigStepItem.setAccelerator(KeyStroke.getKeyStroke("F12"));
-    bigStepItem.setMnemonic(KeyEvent.VK_B);
+    /*
+    JMenuItem typeCheckerItem = actionsMenu.add("TypeChecker");
+    typeCheckerItem.addActionListener(mlMenuListener);
+    typeCheckerItem.setAccelerator(KeyStroke.getKeyStroke("F12"));
+    typeCheckerItem.setMnemonic(KeyEvent.VK_T);
+    */
     
     setJMenuBar(this.mainMenu);
     
@@ -197,8 +201,16 @@ public class Mainwindow extends JFrame {
       SmallStepGUI gui = new SmallStepGUI(this, "SmallStep", true,
           new SmallStepModel(translator.getExpression()));
       gui.setVisible(true);
+      
     } catch (Exception e) {
       JOptionPane.showMessageDialog(this, e.getLocalizedMessage(), "Error", JOptionPane.ERROR_MESSAGE);
     }
   }
+  
+  /*
+  private void handleTypeChecker() {
+	  TypeCheckerGUI gui = new TypeCheckerGUI (this, "TypeChecker", true);
+	  gui.setVisible(true);
+  }
+  */
 }
