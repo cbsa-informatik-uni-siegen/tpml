@@ -87,7 +87,8 @@ public class Abstraction extends Value {
   @Override
   protected PrettyStringBuilder toPrettyStringBuilder() {
     PrettyStringBuilder builder = new PrettyStringBuilder(this, 0);
-    builder.appendText("\u03bb" + this.id + ".");
+    builder.appendKeyword("\u03bb");
+    builder.appendText(this.id + ".");
     builder.appendBuilder(this.e.toPrettyStringBuilder(), 0);
     return builder;
   }
