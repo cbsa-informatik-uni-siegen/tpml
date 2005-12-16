@@ -45,22 +45,30 @@ Ignored Tokens
 
 Productions
  expression =
-  {term} term {-> term.expression} |
-  {condition} if [e0]:term then [e1]:expression else [e2]:expression {-> New expression.condition(e0.expression, e1, e2)} |
+  {comparison} comparison {-> comparison.expression} |
+  {condition} if [e0]:comparison then [e1]:expression else [e2]:expression {-> New expression.condition(e0.expression, e1, e2)} |
   {let} let identifier equal [e1]:expression in [e2]:expression {-> New expression.let(identifier, e1, e2)} |
   {abstraction} lambda identifier dot expression {-> New expression.abstraction(identifier, expression)} |
   {recursion} rec identifier dot expression {-> New expression.recursion(identifier, expression)};
 
+ comparison {-> expression} =
+  {term} term {-> term.expression} |
+  {lower_than} comparison lower_than term {-> New expression.infix(comparison.expression, New expression.lower_than(lower_than), term.expression)} |
+  {greater_than} comparison greater_than term {-> New expression.infix(comparison.expression, New expression.greater_than(greater_than), term.expression)} |
+  {lower_equal} comparison lower_equal term {-> New expression.infix(comparison.expression, New expression.lower_equal(lower_equal), term.expression)} |
+  {greater_equal} comparison greater_equal term {-> New expression.infix(comparison.expression, New expression.greater_equal(greater_equal), term.expression)} |
+  {equal} comparison equal term {-> New expression.infix(comparison.expression, New expression.equal(equal), term.expression)};
+
  term {-> expression} =
   {factor} factor {-> factor.expression} |
-  {addition} term plus factor {-> New expression.addition(term.expression, factor.expression)} |
-  {substraction} term minus factor {-> New expression.substraction(term.expression, factor.expression)};
+  {addition} term plus factor {-> New expression.infix(term.expression, New expression.plus(plus), factor.expression)} |
+  {substraction} term minus factor {-> New expression.infix(term.expression, New expression.minus(minus), factor.expression)};
 
  factor {-> expression} =
   {application} application {-> application.expression} |
-  {multiplication} factor multiply application {-> New expression.multiplication(factor.expression, application.expression)} |
-  {division} factor divide application {-> New expression.division(factor.expression, application.expression)} |
-  {modulation} factor modulo application {-> New expression.modulation(factor.expression, application.expression)};
+  {multiplication} factor multiply application {-> New expression.infix(factor.expression, New expression.multiply(multiply), application.expression)} |
+  {division} factor divide application {-> New expression.infix(factor.expression, New expression.divide(divide), application.expression)} |
+  {modulation} factor modulo application {-> New expression.infix(factor.expression, New expression.modulo(modulo), application.expression)};
 
  application {-> expression} =
   {atom} atom {-> atom.expression} |
@@ -101,11 +109,7 @@ Abstract Syntax Tree
   {let} [id]:identifier [e1]:expression [e2]:expression |
   {abstraction} [id]:identifier [e]:expression |
   {recursion} [id]:identifier [e]:expression |
-  {addition} [e0]:expression [e1]:expression |
-  {substraction} [e0]:expression [e1]:expression |
-  {multiplication} [e0]:expression [e1]:expression |
-  {division} [e0]:expression [e1]:expression |
-  {modulation} [e0]:expression [e1]:expression |
+  {infix} [e1]:expression [op]:expression [e2]:expression |
   {identifier} identifier |
   {unit} unit |
   {true} true |

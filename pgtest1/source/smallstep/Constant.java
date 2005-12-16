@@ -27,8 +27,8 @@ public abstract class Constant extends Value {
    * @see smallstep.Expression#toPrettyStringBuilder()
    */
   @Override
-  protected final PrettyStringBuilder toPrettyStringBuilder() {
-    PrettyStringBuilder builder = new PrettyStringBuilder(this, 2);
+  protected PrettyStringBuilder toPrettyStringBuilder() {
+    PrettyStringBuilder builder = new PrettyStringBuilder(this, 6);
     builder.appendText(toString());
     return builder;
   }

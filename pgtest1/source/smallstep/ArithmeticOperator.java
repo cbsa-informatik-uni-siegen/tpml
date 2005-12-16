@@ -43,13 +43,28 @@ public class ArithmeticOperator extends Operator {
   }
 
   /**
+   * Returns the base pretty print priority for this operator.
+   * 
+   * @return the base pretty print priority for this operator.
+   * 
+   * @see smallstep.Operator#getPrettyPriority()
+   */
+  @Override
+  public int getPrettyPriority() {
+    if (this.op.equals("+") || this.op.equals("-"))
+      return 3;
+    else
+      return 4;
+  }
+  
+  /**
    * Returns the string representation for an arithmetic operator.
    * @return the string representation for an arithmetic operator.
    * @see java.lang.Object#toString()
    */
   @Override
   public final String toString() {
-    return "(" + this.op + ")";
+    return this.op;
   }
   
   /**

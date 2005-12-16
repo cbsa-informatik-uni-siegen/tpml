@@ -37,4 +37,23 @@ public abstract class Operator extends Constant {
    * @return the result or an expression.
    */
   public abstract Expression applyTo(IntegerConstant c1, IntegerConstant c2);
+  
+  /**
+   * Returns the base pretty print priority for this operator.
+   * 
+   * @return the base pretty print priority for this operator.
+   */
+  public abstract int getPrettyPriority();
+  
+  /**
+   * Returns the pretty string builder for operators.
+   * @return the pretty string builder for operators.
+   * @see smallstep.Expression#toPrettyStringBuilder()
+   */
+  @Override
+  protected PrettyStringBuilder toPrettyStringBuilder() {
+    PrettyStringBuilder builder = new PrettyStringBuilder(this, 6);
+    builder.appendText("(" + toString() + ")");
+    return builder;
+  }
 }

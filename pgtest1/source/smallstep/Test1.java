@@ -11,6 +11,16 @@ public class Test1 {
         new IntegerConstant(3));
   }
   
+  private static Expression simpleInfixPlus() {
+    return new InfixOperation(
+        ArithmeticOperator.MULT,
+        new InfixOperation(
+            ArithmeticOperator.PLUS,
+            new IntegerConstant(1),
+            new IntegerConstant(10)),
+        new IntegerConstant(8));
+  }
+  
   private static Expression simpleCond() {
     return new Application(
         new Condition(
@@ -87,5 +97,7 @@ public class Test1 {
     evaluate(simpleAbstr());
     
     evaluate(simpleLet());
+    
+    evaluate(simpleInfixPlus());
   }
 }

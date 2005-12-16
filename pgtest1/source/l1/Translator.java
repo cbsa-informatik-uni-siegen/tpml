@@ -201,5 +201,16 @@ public class Translator extends DepthFirstAdapter {
     this.expressions.push(UnitConstant.UNIT);
   }
   
+  /**
+   * @see l1.analysis.DepthFirstAdapter#outAInfixExpression(l1.node.AInfixExpression)
+   */
+  @Override
+  public void outAInfixExpression(AInfixExpression node) {
+    Expression e2 = this.expressions.pop();
+    Operator op = (Operator)this.expressions.pop();
+    Expression e1 = this.expressions.pop();
+    this.expressions.push(new InfixOperation(op, e1, e2));
+  }
+    
   private Stack<Expression> expressions = new Stack<Expression>();
 }

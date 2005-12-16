@@ -1,6 +1,11 @@
 package smallstep;
 
-
+/**
+ * Represents a relational operator.
+ *
+ * @author Benedikt Meurer
+ * @version $Id$
+ */
 public class RelationalOperator extends Operator {
   /**
    * Performs the relational operation on <code>c1</code> and <code>c2</code>
@@ -31,6 +36,18 @@ public class RelationalOperator extends Operator {
       return (c1.getNumber() >= c2.getNumber()) ? BooleanConstant.TRUE : BooleanConstant.FALSE;
     }
   }
+  
+  /**
+   * Returns the base pretty print priority for this operator.
+   * 
+   * @return the base pretty print priority for this operator.
+   * 
+   * @see smallstep.Operator#getPrettyPriority()
+   */
+  @Override
+  public int getPrettyPriority() {
+    return 2;
+  }
 
   /**
    * Returns the string representation of the operator.
@@ -39,7 +56,7 @@ public class RelationalOperator extends Operator {
    */
   @Override
   public String toString() {
-    return "(" + this.op + ")";
+    return this.op;
   }
 
   /**

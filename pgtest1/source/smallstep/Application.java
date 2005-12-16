@@ -120,10 +120,10 @@ public class Application extends Expression {
    */
   @Override
   protected PrettyStringBuilder toPrettyStringBuilder() {
-    PrettyStringBuilder builder = new PrettyStringBuilder(this, 1);
-    builder.appendBuilder(this.e1.toPrettyStringBuilder(), 1);
+    PrettyStringBuilder builder = new PrettyStringBuilder(this, 5);
+    builder.appendBuilder(this.e1.toPrettyStringBuilder(), 5);
     builder.appendText(" ");
-    builder.appendBuilder(this.e2.toPrettyStringBuilder(), 2);
+    builder.appendBuilder(this.e2.toPrettyStringBuilder(), 6);
     return builder;
   }
   

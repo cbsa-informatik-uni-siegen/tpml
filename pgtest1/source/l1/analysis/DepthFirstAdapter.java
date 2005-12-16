@@ -161,124 +161,32 @@ public class DepthFirstAdapter extends AnalysisAdapter
         outARecursionExpression(node);
     }
 
-    public void inAAdditionExpression(AAdditionExpression node)
+    public void inAInfixExpression(AInfixExpression node)
     {
         defaultIn(node);
     }
 
-    public void outAAdditionExpression(AAdditionExpression node)
+    public void outAInfixExpression(AInfixExpression node)
     {
         defaultOut(node);
     }
 
-    public void caseAAdditionExpression(AAdditionExpression node)
+    public void caseAInfixExpression(AInfixExpression node)
     {
-        inAAdditionExpression(node);
-        if(node.getE0() != null)
-        {
-            node.getE0().apply(this);
-        }
+        inAInfixExpression(node);
         if(node.getE1() != null)
         {
             node.getE1().apply(this);
         }
-        outAAdditionExpression(node);
-    }
-
-    public void inASubstractionExpression(ASubstractionExpression node)
-    {
-        defaultIn(node);
-    }
-
-    public void outASubstractionExpression(ASubstractionExpression node)
-    {
-        defaultOut(node);
-    }
-
-    public void caseASubstractionExpression(ASubstractionExpression node)
-    {
-        inASubstractionExpression(node);
-        if(node.getE0() != null)
+        if(node.getOp() != null)
         {
-            node.getE0().apply(this);
+            node.getOp().apply(this);
         }
-        if(node.getE1() != null)
+        if(node.getE2() != null)
         {
-            node.getE1().apply(this);
+            node.getE2().apply(this);
         }
-        outASubstractionExpression(node);
-    }
-
-    public void inAMultiplicationExpression(AMultiplicationExpression node)
-    {
-        defaultIn(node);
-    }
-
-    public void outAMultiplicationExpression(AMultiplicationExpression node)
-    {
-        defaultOut(node);
-    }
-
-    public void caseAMultiplicationExpression(AMultiplicationExpression node)
-    {
-        inAMultiplicationExpression(node);
-        if(node.getE0() != null)
-        {
-            node.getE0().apply(this);
-        }
-        if(node.getE1() != null)
-        {
-            node.getE1().apply(this);
-        }
-        outAMultiplicationExpression(node);
-    }
-
-    public void inADivisionExpression(ADivisionExpression node)
-    {
-        defaultIn(node);
-    }
-
-    public void outADivisionExpression(ADivisionExpression node)
-    {
-        defaultOut(node);
-    }
-
-    public void caseADivisionExpression(ADivisionExpression node)
-    {
-        inADivisionExpression(node);
-        if(node.getE0() != null)
-        {
-            node.getE0().apply(this);
-        }
-        if(node.getE1() != null)
-        {
-            node.getE1().apply(this);
-        }
-        outADivisionExpression(node);
-    }
-
-    public void inAModulationExpression(AModulationExpression node)
-    {
-        defaultIn(node);
-    }
-
-    public void outAModulationExpression(AModulationExpression node)
-    {
-        defaultOut(node);
-    }
-
-    public void caseAModulationExpression(AModulationExpression node)
-    {
-        inAModulationExpression(node);
-        if(node.getE0() != null)
-        {
-            node.getE0().apply(this);
-        }
-        if(node.getE1() != null)
-        {
-            node.getE1().apply(this);
-        }
-        outAModulationExpression(node);
+        outAInfixExpression(node);
     }
 
     public void inAIdentifierExpression(AIdentifierExpression node)

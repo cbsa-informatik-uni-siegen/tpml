@@ -63,7 +63,7 @@ public class Identifier extends Expression {
    */
   @Override
   protected PrettyStringBuilder toPrettyStringBuilder() {
-    PrettyStringBuilder builder = new PrettyStringBuilder(this, 2);
+    PrettyStringBuilder builder = new PrettyStringBuilder(this, 6);
     builder.appendText(this.name);
     return builder;
   }

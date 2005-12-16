@@ -79,10 +79,10 @@ public class AppliedOperator extends Value {
    */
   @Override
   protected PrettyStringBuilder toPrettyStringBuilder() {
-    PrettyStringBuilder builder = new PrettyStringBuilder(this, 1);
-    builder.appendBuilder(this.operator.toPrettyStringBuilder(), 1);
+    PrettyStringBuilder builder = new PrettyStringBuilder(this, 5);
+    builder.appendBuilder(this.operator.toPrettyStringBuilder(), 5);
     builder.appendText(" ");
-    builder.appendBuilder(this.constant.toPrettyStringBuilder(), 2);
+    builder.appendBuilder(this.constant.toPrettyStringBuilder(), 6);
     return builder;
   }
   

@@ -23,7 +23,7 @@ import l1.parser.*;
  * @version $Id$
  */
 public class Test1 {
-  private static final String SIMPLE = "let f = lambda x.(if = x 0 then + else -) x 1 in f (f 9)";
+  private static final String SIMPLE = "let f = lambda x.(if x = 0 then (+) else (-)) x 1 in f (f 9)";
   
   private static void evaluate(Expression e) {
     System.out.println(e);
