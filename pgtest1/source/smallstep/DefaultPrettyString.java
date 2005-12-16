@@ -1,12 +1,10 @@
 package smallstep;
 
-import java.text.CharacterIterator;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.Map;
 
 /**
- * Implementation of the <code>PrettyString</code> interface.
+ * Default implementation of the <code>PrettyString</code> interface.
  * 
  * @author Benedikt Meurer
  * @version $Id$
@@ -80,7 +78,7 @@ final class DefaultPrettyString implements PrettyString {
    * @see smallstep.PrettyCharIterator
    */
   public PrettyCharIterator toCharacterIterator() {
-    return new CharIterator();
+    return new DefaultPrettyCharIterator(this.content, this.annotations, this.keywordsMapping);
   }
   
   /**
@@ -101,79 +99,4 @@ final class DefaultPrettyString implements PrettyString {
   private String content;
   private Map<Expression, PrettyAnnotation> annotations;
   private boolean[] keywordsMapping;
-  
-  /**
-   * Implementation of the <code>PrettyCharIterator</code> interface
-   * for <code>DefaultPrettyString</code>s. We use an internal class here
-   * to gain direct access to the <code>DefaultPrettyString</code> member
-   * variables which are required to operate properly.
-   */
-  private final class CharIterator implements PrettyCharIterator {
-    public PrettyAnnotation getAnnotation() {
-      Collection<PrettyAnnotation> annotations = getAnnotations();
-      for (Iterator<PrettyAnnotation> iterator = annotations.iterator(); iterator.hasNext(); ) {
-        PrettyAnnotation annotation = iterator.next();
-        if (annotation.getStartOffset() <= this.index && this.index <= annotation.getEndOffset())
-          return annotation;
-      }
-      
-      // should never be reached
-      throw new IllegalStateException("Character iterator index out of bounds");
-    }
-
-    public boolean isKeyword() {
-      return keywordsMapping[getIndex()];
-    }
-
-    public char first() {
-      return setIndex(getBeginIndex());
-    }
-
-    public char last() {
-      return setIndex(getEndIndex());
-    }
-
-    public char current() {
-      return content.charAt(getIndex());
-    }
-
-    public char next() {
-      if (this.index == getEndIndex())
-        return CharacterIterator.DONE;
-      this.index += 1;
-      return current();
-    }
-
-    public char previous() {
-      if (this.index == 0)
-        return CharacterIterator.DONE;
-      this.index -= 1;
-      return current();
-    }
-
-    public char setIndex(int position) {
-      if (position < getBeginIndex() || position > getEndIndex())
-        throw new IllegalArgumentException("Invalid character iterator position " + position);
-      this.index = position;
-      return current();
-    }
-
-    public int getBeginIndex() {
-      return 0;
-    }
-
-    public int getEndIndex() {
-      return content.length();
-    }
-
-    public int getIndex() {
-      return this.index;
-    }
-
-    public Object clone() {
-      return new CharIterator();
-    }
-    
-    private int index = 0;
-  }
 }

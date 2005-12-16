@@ -17,6 +17,12 @@ public interface PrettyCharIterator extends CharacterIterator {
    * 
    * @return the most significant annotation for the current
    *         character.
+   *         
+   * @throws java.lang.IllegalStateException if the current index is outside the string
+   *                                         bounds. This holds if the character iterator
+   *                                         points to the end index.
+   *                                         
+   * @see java.text.CharacterIterator#getIndex()                                         
    */
   public PrettyAnnotation getAnnotation();
   
@@ -26,6 +32,8 @@ public interface PrettyCharIterator extends CharacterIterator {
    * presentation.
    * 
    * @return whether the current character belongs to a keyword.
+   * 
+   * @see java.text.CharacterIterator#getIndex()
    */
   public boolean isKeyword();
 }
