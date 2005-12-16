@@ -48,6 +48,7 @@ Productions
   {comparison} comparison {-> comparison.expression} |
   {condition} if [e0]:comparison then [e1]:expression else [e2]:expression {-> New expression.condition(e0.expression, e1, e2)} |
   {let} let identifier equal [e1]:expression in [e2]:expression {-> New expression.let(identifier, e1, e2)} |
+  {letrec} let rec identifier equal [e1]:expression in [e2]:expression {-> New expression.letrec(identifier, e1, e2)} |
   {abstraction} lambda identifier dot expression {-> New expression.abstraction(identifier, expression)} |
   {recursion} rec identifier dot expression {-> New expression.recursion(identifier, expression)};
 
@@ -107,6 +108,7 @@ Abstract Syntax Tree
   {application} [e0]:expression [e1]:expression |
   {condition} [e0]:expression [e1]:expression [e2]:expression |
   {let} [id]:identifier [e1]:expression [e2]:expression |
+  {letrec} [id]:identifier [e1]:expression [e2]:expression |
   {abstraction} [id]:identifier [e]:expression |
   {recursion} [id]:identifier [e]:expression |
   {infix} [e1]:expression [op]:expression [e2]:expression |

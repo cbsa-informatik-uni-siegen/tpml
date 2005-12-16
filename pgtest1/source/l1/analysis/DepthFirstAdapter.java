@@ -113,6 +113,34 @@ public class DepthFirstAdapter extends AnalysisAdapter
         outALetExpression(node);
     }
 
+    public void inALetrecExpression(ALetrecExpression node)
+    {
+        defaultIn(node);
+    }
+
+    public void outALetrecExpression(ALetrecExpression node)
+    {
+        defaultOut(node);
+    }
+
+    public void caseALetrecExpression(ALetrecExpression node)
+    {
+        inALetrecExpression(node);
+        if(node.getId() != null)
+        {
+            node.getId().apply(this);
+        }
+        if(node.getE1() != null)
+        {
+            node.getE1().apply(this);
+        }
+        if(node.getE2() != null)
+        {
+            node.getE2().apply(this);
+        }
+        outALetrecExpression(node);
+    }
+
     public void inAAbstractionExpression(AAbstractionExpression node)
     {
         defaultIn(node);

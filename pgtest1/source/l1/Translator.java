@@ -127,6 +127,16 @@ public class Translator extends DepthFirstAdapter {
     Expression e0 = this.expressions.pop();
     this.expressions.push(new Let(node.getId().getText(), e0, e1));
   }
+  
+  /**
+   * @see l1.analysis.DepthFirstAdapter#outALetrecExpression(l1.node.ALetrecExpression)
+   */
+  @Override
+  public void outALetrecExpression(ALetrecExpression node) {
+    Expression e1 = this.expressions.pop();
+    Expression e0 = this.expressions.pop();
+    this.expressions.push(new LetRec(node.getId().getText(), e0, e1));
+  }
 
   /**
    * @see l1.analysis.DepthFirstAdapter#outARecursionExpression(l1.node.ARecursionExpression)

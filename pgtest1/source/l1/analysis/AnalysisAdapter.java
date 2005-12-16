@@ -83,6 +83,11 @@ public class AnalysisAdapter implements Analysis
         defaultCase(node);
     }
 
+    public void caseALetrecExpression(ALetrecExpression node)
+    {
+        defaultCase(node);
+    }
+
     public void caseAAbstractionExpression(AAbstractionExpression node)
     {
         defaultCase(node);

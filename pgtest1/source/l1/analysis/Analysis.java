@@ -15,6 +15,7 @@ public interface Analysis extends Switch
     void caseAApplicationExpression(AApplicationExpression node);
     void caseAConditionExpression(AConditionExpression node);
     void caseALetExpression(ALetExpression node);
+    void caseALetrecExpression(ALetrecExpression node);
     void caseAAbstractionExpression(AAbstractionExpression node);
     void caseARecursionExpression(ARecursionExpression node);
     void caseAInfixExpression(AInfixExpression node);
