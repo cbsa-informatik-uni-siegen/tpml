@@ -45,6 +45,7 @@ public class SmallStepComponent extends JComponent {
 					underlineSequence((SmallStep)e.getSource(), e.getRule());
 				};
 			});
+			this.underlineSequence(null, null);
 		}
 		calculateCenter();
 		return res;
@@ -97,6 +98,7 @@ public class SmallStepComponent extends JComponent {
 		ListIterator<SmallStep> it = smallStepSteps.listIterator();
 		while (it.hasNext()) {
 			SmallStep s = it.next();
+			s.clearHighlighting();
 			if (s.clearUnderlining()) {
 				s.repaint();
 			}
@@ -110,6 +112,7 @@ public class SmallStepComponent extends JComponent {
 					parent.setUnderlining(rule);
 					parent.repaint();
 				}
+				s.setHightlighting(rule);
 			}
 		}
 	}

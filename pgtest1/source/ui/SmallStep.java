@@ -20,6 +20,7 @@ public class SmallStep extends JComponent {
 
 	private Font					textFont;
 	private Font					keywordFont;
+	private Font					constantFont;
 	
 	/**
 	 * The expression
@@ -88,10 +89,11 @@ public class SmallStep extends JComponent {
 		this.prettyString		= expression.toPrettyString();
 		
 		Font comboFont = new JComboBox().getFont();
-		textFont 	= comboFont.deriveFont(Font.PLAIN, comboFont.getSize2D() * 1.5f);
-		keywordFont = textFont.deriveFont(Font.BOLD);
+		textFont 		= comboFont.deriveFont(Font.PLAIN, comboFont.getSize2D() * 1.5f);
+		keywordFont 	= textFont.deriveFont(Font.BOLD);
+		constantFont	= textFont.deriveFont(Font.PLAIN);
 		
-		Renderer renderer = new Renderer(null, getFontMetrics(textFont), getFontMetrics(keywordFont));
+		Renderer renderer = new Renderer(null, getFontMetrics(textFont), getFontMetrics(keywordFont), getFontMetrics(constantFont));
 		
 		Dimension d = renderer.checkRenderSize(expression.toPrettyString(), 0, 0);
 		this.expressionWidth	= d.width;
@@ -165,7 +167,7 @@ public class SmallStep extends JComponent {
 		g2d.fillRect(0, 0, getWidth(), getHeight());
 		g2d.setColor(Color.BLACK);
 		if (this.smallStepResolved) {
-			Renderer renderer = new Renderer(g2d, getFontMetrics(textFont), getFontMetrics(keywordFont));
+			Renderer renderer = new Renderer(g2d, getFontMetrics(textFont), getFontMetrics(keywordFont), getFontMetrics(constantFont));
 			renderer.renderHighlightedExpression(center, 0, getWidth () - center, expressionHeight, this.prettyString, this.underlineExpression);
 		}
 	}
@@ -178,11 +180,26 @@ public class SmallStep extends JComponent {
 	}
 	
 	public boolean clearUnderlining() {
+		if (this.ruleCombos != null) {
+			this.ruleCombos.unsetHighlight();
+		}
 		if (this.underlineExpression != null) {
 			this.underlineExpression = null;
 			return true;
 		}
 		return false;
+	}
+	
+	public void setHightlighting(Rule r) {
+		if (this.ruleCombos != null) {
+			this.ruleCombos.setHighlight(r);
+		}
+	}
+	
+	public void clearHighlighting() {
+		if (this.ruleCombos != null) {
+			this.ruleCombos.unsetHighlight();
+		}
 	}
 	
 	public void addSmallStepEventListener(SmallStepEventListener e) {

@@ -296,6 +296,15 @@ public class SmallStepComboRules extends JComponent {
 		this.center = center;
 	}
 	
+	public void setHighlight(Rule r) {
+		this.ruleBelowMouse = r;
+		repaint();
+	}
+	public void unsetHighlight() {
+		this.ruleBelowMouse = null;
+		repaint();
+	}
+	
 	private void createMetaRule() {
 		DefaultComboBoxModel model = new DefaultComboBoxModel();
 		model.addElement("---");

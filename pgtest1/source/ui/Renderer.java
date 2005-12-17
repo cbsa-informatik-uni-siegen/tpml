@@ -15,17 +15,22 @@ public class Renderer {
 	private FontMetrics 	textFontMetrics;
 	private Font			keywordFont;
 	private FontMetrics		keywordFontMetrics;
+	private Font			constantFont;
+	private FontMetrics		constantFontMetrics;
 	
 	private	int 			fontAsc;
 	private int				fontDesc;
 	private int				fontHeight;
 	
-	public Renderer (Graphics2D g2d, FontMetrics tfm, FontMetrics kwfm) {
-		this.g2d 				= g2d;
-		this.textFont 			= tfm.getFont();
-		this.textFontMetrics	= tfm;
-		this.keywordFont		= kwfm.getFont();
-		this.keywordFontMetrics	= kwfm;
+	public Renderer (Graphics2D g2d, FontMetrics tfm, FontMetrics kfm, FontMetrics cfm) {
+		this.g2d 					= g2d;
+		this.textFont 				= tfm.getFont();
+		this.textFontMetrics		= tfm;
+		this.keywordFont			= kfm.getFont();
+		this.keywordFontMetrics		= kfm;
+		this.constantFont			= cfm.getFont();
+		this.constantFontMetrics	= cfm;
+		
 		
 		fontAsc = keywordFontMetrics.getAscent();
 		fontDesc = keywordFontMetrics.getDescent();
@@ -33,6 +38,10 @@ public class Renderer {
 		if (fontAsc < textFontMetrics.getAscent()) fontAsc = textFontMetrics.getAscent();
 		if (fontDesc< textFontMetrics.getDescent()) fontDesc = textFontMetrics.getDescent();
 		if (fontHeight < textFontMetrics.getHeight()) fontHeight = textFontMetrics.getHeight();
+		
+		if (fontAsc < constantFontMetrics.getAscent()) fontAsc = constantFontMetrics.getAscent();
+		if (fontDesc < constantFontMetrics.getDescent()) fontDesc = constantFontMetrics.getDescent();
+		if (fontHeight < constantFontMetrics.getHeight()) fontHeight = constantFontMetrics.getHeight();
 	}
 	
 	public void renderHighlightedExpression (int x, int y, int maxWidth, int maxHeight, PrettyString s, Expression expr) {
@@ -50,15 +59,24 @@ public class Renderer {
 		int i = 0;
 		for (char c = it.first(); c != CharacterIterator.DONE; c = it.next(), i++) {
 			int length = 0;
-			if (it.isKeyword()) {
-				g2d.setFont(this.keywordFont);
-				g2d.drawString("" + c, posX, posY);
-				length = this.keywordFontMetrics.stringWidth("" + c);
-			}
-			else {
+			switch (it.getStyle()) {
+			case NONE:
 				g2d.setFont(this.textFont);
 				g2d.drawString("" + c, posX, posY);
 				length = this.textFontMetrics.stringWidth("" + c);
+				break;
+			case KEYWORD:
+				g2d.setFont(this.keywordFont);
+				g2d.drawString("" + c, posX, posY);
+				length = this.keywordFontMetrics.stringWidth("" + c);
+				break;
+			case CONSTANT:
+				g2d.setColor(new Color(0, 127, 0));
+				g2d.setFont(this.constantFont);
+				g2d.drawString("" + c, posX, posY);
+				length = this.constantFontMetrics.stringWidth("" + c);
+				g2d.setColor(Color.BLACK);
+				break;
 			}
 			if (annotation != null) {
 				if (i >= annotation.getStartOffset() && i <= annotation.getEndOffset()) {
@@ -81,11 +99,16 @@ public class Renderer {
 		int posX = x;
 		int posY = y;
 		for (char c = it.first(); c != CharacterIterator.DONE; c = it.next()) {
-			if (it.isKeyword()) {
-				posX += this.keywordFontMetrics.stringWidth("" + c);
-			}
-			else {
+			switch(it.getStyle()) {
+			case NONE:
 				posX += this.textFontMetrics.stringWidth("" + c);
+				break;
+			case KEYWORD:
+				posX += this.keywordFontMetrics.stringWidth("" + c);
+				break;
+			case CONSTANT:
+				posX += this.constantFontMetrics.stringWidth("" + c);
+				break;
 			}
 		}
 		return new Dimension(posX, maxFontHeight);
