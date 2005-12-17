@@ -35,23 +35,40 @@ public class Renderer {
 		if (fontHeight < textFontMetrics.getHeight()) fontHeight = textFontMetrics.getHeight();
 	}
 	
-	public void renderHighlightedExpression (int x, int y, int maxWidth, int maxHeight, PrettyString s) {
-		int textY = y + maxHeight / 2 + (int)(fontAsc / 3.0f);
-		
-		PrettyCharIterator it = s.toCharacterIterator();
+	public void renderHighlightedExpression (int x, int y, int maxWidth, int maxHeight, PrettyString s, Expression expr) {
 		int posX = x;
-		int posY = y + maxHeight - fontDesc;
-		for (char c = it.first(); c != CharacterIterator.DONE; c = it.next()) {
+		int posY = y + maxHeight / 2 + (int)(fontAsc / 3.0f);
+		PrettyAnnotation annotation = null;
+		if (expr != null) {
+			try {
+				annotation = s.getAnnotationForExpression(expr);
+			} catch (Exception e) {
+				annotation = null;
+			}
+		}
+		PrettyCharIterator it = s.toCharacterIterator();
+		int i = 0;
+		for (char c = it.first(); c != CharacterIterator.DONE; c = it.next(), i++) {
+			int length = 0;
 			if (it.isKeyword()) {
 				g2d.setFont(this.keywordFont);
-				g2d.drawString("" + c, posX, textY);
-				posX += this.keywordFontMetrics.stringWidth("" + c);
+				g2d.drawString("" + c, posX, posY);
+				length = this.keywordFontMetrics.stringWidth("" + c);
 			}
 			else {
 				g2d.setFont(this.textFont);
-				g2d.drawString("" + c, posX, textY);
-				posX += this.textFontMetrics.stringWidth("" + c);
+				g2d.drawString("" + c, posX, posY);
+				length = this.textFontMetrics.stringWidth("" + c);
 			}
+			if (annotation != null) {
+				if (i >= annotation.getStartOffset() && i <= annotation.getEndOffset()) {
+					g2d.setColor(Color.RED);
+					g2d.drawLine(posX, posY + 3, posX + length, posY + 3);
+					g2d.drawLine(posX, posY + 4, posX + length, posY + 4);
+					g2d.setColor(Color.BLACK);
+				}
+			}
+			posX += length;
 		}
 	}
 	

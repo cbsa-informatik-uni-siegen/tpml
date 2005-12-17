@@ -9,5 +9,5 @@ public interface SmallStepEventListener extends EventListener {
 	
 	public void smallStepResolved(EventObject o);
 	
-	public void mouseFocusEvent(EventObject o);
+	public void mouseFocusEvent(SmallStepEvent e);
 }

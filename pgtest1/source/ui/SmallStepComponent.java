@@ -4,6 +4,7 @@ import java.util.*;
 import java.awt.Dimension;
 import javax.swing.JComponent;
 import java.awt.*;
+import smallstep.*;
 
 public class SmallStepComponent extends JComponent {
 
@@ -34,13 +35,15 @@ public class SmallStepComponent extends JComponent {
 			SmallStep parent = smallStepSteps.getLast();
 			SmallStep step = new SmallStep(parent, model.getCurrentExpression(), model.getCurrentRuleChain());
 			add(step);
-			step.setBounds(10, parent.getY() + parent.getHeight() + 10, step.getWidth(), step.getHeight());
+			step.setBounds(10, parent.getY() + parent.getHeight() + 20, step.getWidth(), step.getHeight());
 			smallStepSteps.add(step);
 			
 			step.addSmallStepEventListener(new SmallStepEventListener() {
 				public void smallStepResized(EventObject o) { calculateCenter(); }
 				public void smallStepResolved(EventObject o) { evaluateNextStep(); }
-				public void mouseFocusEvent(EventObject o) { };
+				public void mouseFocusEvent(SmallStepEvent e) {
+					underlineSequence((SmallStep)e.getSource(), e.getRule());
+				};
 			});
 		}
 		calculateCenter();
@@ -90,4 +93,24 @@ public class SmallStepComponent extends JComponent {
 		while (completeCurrentStep()); 
 	}
 	
+	public void underlineSequence(SmallStep smallStep, Rule rule) {
+		ListIterator<SmallStep> it = smallStepSteps.listIterator();
+		while (it.hasNext()) {
+			SmallStep s = it.next();
+			if (s.clearUnderlining()) {
+				s.repaint();
+			}
+		}
+		it = smallStepSteps.listIterator();
+		while (it.hasNext()) {
+			SmallStep s = it.next();
+			if (s == smallStep) {
+				SmallStep parent = s.getSmallStepParent();
+				if (parent != null) {
+					parent.setUnderlining(rule);
+					parent.repaint();
+				}
+			}
+		}
+	}
 }

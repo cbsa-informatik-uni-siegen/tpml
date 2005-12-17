@@ -1,9 +1,10 @@
 package ui;
 
 import smallstep.*;
+
 import java.awt.*;
 import java.util.*;
-
+import java.awt.event.*;
 import javax.swing.event.*;
 import javax.swing.JComponent;
 import javax.swing.JComboBox;
@@ -67,6 +68,10 @@ public class SmallStep extends JComponent {
 	
 	/**
 	 * 
+	 */
+	private Expression				underlineExpression = null;
+	/**
+	 * 
 	 * @param parent
 	 * @param expression
 	 * @param ruleChain
@@ -107,7 +112,7 @@ public class SmallStep extends JComponent {
 			ruleCombos.addSmallStepEventListener(new SmallStepEventListener() {
 				public void smallStepResized(EventObject o) { fireSmallStepResized (); }
 				public void smallStepResolved(EventObject o) { resolve(); }
-				public void mouseFocusEvent(EventObject o) { };
+				public void mouseFocusEvent(SmallStepEvent e) { fireSmallStepMouseFocusEvent (e.getRule()); };
 			});
 		}
 		else {
@@ -116,6 +121,11 @@ public class SmallStep extends JComponent {
 			// XXX FIXME
 		}
 		setCenter (0);
+		
+		this.addMouseMotionListener(new MouseMotionListener() {
+			public void mouseDragged(MouseEvent e) { }
+			public void mouseMoved(MouseEvent e) { if (e.getX() >= center) fireSmallStepMouseFocusEvent(null); };
+		});
 	}
 	
 	public void setCenter(int center) {
@@ -129,6 +139,10 @@ public class SmallStep extends JComponent {
 	
 	public int getCenter() {
 		return this.center;
+	}
+	
+	public SmallStep getSmallStepParent() {
+		return this.parent;
 	}
 	
 	public int getPreferredCenter() {
@@ -152,8 +166,23 @@ public class SmallStep extends JComponent {
 		g2d.setColor(Color.BLACK);
 		if (this.smallStepResolved) {
 			Renderer renderer = new Renderer(g2d, getFontMetrics(textFont), getFontMetrics(keywordFont));
-			renderer.renderHighlightedExpression(center, 0, getWidth () - center, expressionHeight, this.prettyString);
+			renderer.renderHighlightedExpression(center, 0, getWidth () - center, expressionHeight, this.prettyString, this.underlineExpression);
 		}
+	}
+	
+	public void setUnderlining(Rule r) {
+		if (r != null)
+			this.underlineExpression = r.getExpression();
+		else
+			this.underlineExpression = null;
+	}
+	
+	public boolean clearUnderlining() {
+		if (this.underlineExpression != null) {
+			this.underlineExpression = null;
+			return true;
+		}
+		return false;
 	}
 	
 	public void addSmallStepEventListener(SmallStepEventListener e) {
@@ -184,5 +213,14 @@ public class SmallStep extends JComponent {
 	             ((SmallStepEventListener)listeners[i+1]).smallStepResolved(new EventObject(this));
 	         }
 	     }
+	}
+	private void fireSmallStepMouseFocusEvent(Rule rule) {
+		Object[] listeners = listenerList.getListenerList();
+		
+		for (int i = listeners.length-2; i>=0; i-=2) {
+			if (listeners[i] == SmallStepEventListener.class) {
+				((SmallStepEventListener)listeners[i+1]).mouseFocusEvent(new SmallStepEvent (rule, this));
+			}
+		}
 	}
 }

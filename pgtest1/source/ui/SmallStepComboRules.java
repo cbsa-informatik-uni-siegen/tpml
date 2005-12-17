@@ -37,6 +37,19 @@ public class SmallStepComboRules extends JComponent {
 			this.w = w;
 			this.h = h;
 		}
+		public int getX() { 
+			return x;
+		}
+		public int getY() {
+			return y;
+		}
+		public int getWidth() {
+			return w;
+		}
+		public int getHeight() {
+			return h;
+		}
+		
 	}
 	/**
 	 * All rules needed for this ComboBox component 
@@ -90,6 +103,8 @@ public class SmallStepComboRules extends JComponent {
 	
 	private int			center;
 	
+	private Rule		ruleBelowMouse;
+	
 	private LinkedList<MouseBounding> 	mouseBoundings = new LinkedList<MouseBounding>();
 	
 
@@ -107,12 +122,20 @@ public class SmallStepComboRules extends JComponent {
 		this.comboSizeWidth		= 150;
 		this.comboSizeHeight	= this.fontMetrics.getHeight() + 2;
 		this.horizontalSpace	= this.comboSizeHeight / 2;
+		this.ruleBelowMouse		= null;
 		
 		this.ruleComboBox.addPopupMenuListener(new PopupMenuListener () {
 			public void popupMenuCanceled(PopupMenuEvent e) { }
 			public void popupMenuWillBecomeVisible(PopupMenuEvent e) { }
 			public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
 				comboSelectionChanged();
+			}
+		});
+		this.ruleComboBox.addMouseMotionListener(new MouseMotionListener() {
+			public void mouseDragged(MouseEvent e) { }
+			public void mouseMoved(MouseEvent e) {
+				JComboBox b = (JComboBox)e.getSource();
+				checkMouse (e.getX() + b.getX(), e.getY() + b.getY());
 			}
 		});
 		add(this.ruleComboBox);
@@ -123,6 +146,19 @@ public class SmallStepComboRules extends JComponent {
 			public void mouseMoved(MouseEvent e) {
 				checkMouse (e.getX(), e.getY());
 			}
+		});
+		this.addMouseListener(new MouseListener() {
+			public void mouseClicked(MouseEvent e) { }
+			public void mouseEntered(MouseEvent e) { }
+			public void mouseExited(MouseEvent e) {
+				if (ruleBelowMouse != null) {
+					fireSmallStepMouseFocusEvent(null);
+				}
+				ruleBelowMouse = null;
+				repaint();
+			}
+			public void mousePressed(MouseEvent e) { }
+			public void mouseReleased(MouseEvent e) { }
 		});
 		int numCombos = this.ruleChain.getRules().size();
 		if (numCombos > 1) {
@@ -147,22 +183,20 @@ public class SmallStepComboRules extends JComponent {
 		MouseBounding b = new MouseBounding(r, x, y, w, h);
 		mouseBoundings.add(b);
 	}
-	private String s = "Narf";
 	
 	private void checkMouse(int x, int y) {
 		ListIterator<MouseBounding> it = mouseBoundings.listIterator();
-		String t = "Narf";
+		Rule thisRule = null;
 		while (it.hasNext()) {
 			MouseBounding b = it.next();
-			Rule r = b.check(x, y);
-			if (r != null) {
-				t = r.getName ();
+			thisRule = b.check(x, y);
+			if (thisRule != null) {
 				break;
 			}
 		}
-		if (!t.equals(s) && !t.equals("Narf")) {
-			s = t;
-		}
+		this.ruleBelowMouse = thisRule;
+		this.fireSmallStepMouseFocusEvent(this.ruleBelowMouse);
+		repaint();
 	}
 
 	private void comboSelectionChanged () {
@@ -207,6 +241,7 @@ public class SmallStepComboRules extends JComponent {
 				else {
 					this.ruleComboBox.setVisible(true);
 					this.ruleComboBox.setBounds(posx, 0, comboSizeWidth, comboSizeHeight);
+					resizeMouseBounding(r, posx, 0, comboSizeWidth, comboSizeHeight);
 					posx += comboSizeWidth;
 					posx += this.horizontalSpace;
 					break;
@@ -219,6 +254,7 @@ public class SmallStepComboRules extends JComponent {
 					if (x > posx) {
 						posx = x;
 					}
+					resizeMouseBounding(r, 0, oldY, posx, comboSizeHeight);
 					break;
 				}
 				else {
@@ -227,6 +263,7 @@ public class SmallStepComboRules extends JComponent {
 					if (comboSizeWidth + this.horizontalSpace > posx) { 
 						posx = comboSizeWidth + this.horizontalSpace;
 					}
+					resizeMouseBounding(r, 0, oldY, posx, comboSizeHeight);
 					break;					
 				}
 			}
@@ -235,7 +272,7 @@ public class SmallStepComboRules extends JComponent {
 			resizeMouseBounding(r, oldX, oldY, w, comboSizeHeight);
 			posx += this.horizontalSpace;
 		}
-		posx += this.horizontalSpace;
+		posx += this.horizontalSpace * 2;
 		preferredSize = posx;
 		setPreferredSize (new Dimension (posx, comboSizeHeight * 3));
 		setSize (new Dimension (posx, comboSizeHeight * 3));
@@ -303,6 +340,12 @@ public class SmallStepComboRules extends JComponent {
 		ListIterator<Rule> it = this.ruleChain.listIterator();
 		while (it.hasNext()) {
 			Rule r = it.next();
+			if (r == this.ruleBelowMouse) {
+				g2d.setColor(Color.RED);
+			}
+			else {
+				g2d.setColor(Color.BLACK);
+			}
 			if (!r.isAxiom()) {
 				if (this.currentRule > id) {
 					g2d.drawString("(" + r.getName() + ")", posx, 0 + fontMetrics.getHeight());
@@ -321,12 +364,13 @@ public class SmallStepComboRules extends JComponent {
 			}
 			id++;
 		}
+		g2d.setColor(Color.BLACK);
 		int hor2 = this.horizontalSpace / 2;
-		
 		int h2 = getMaxHeight() / 2;
-		g2d.drawLine(0, h2, center, h2);
-		g2d.drawLine(center, h2, center - hor2, h2 - hor2);
-		g2d.drawLine(center, h2, center - hor2, h2 + hor2);
+		int right = center - this.horizontalSpace;
+		g2d.drawLine(0, h2, right, h2);
+		g2d.drawLine(right, h2, right - hor2, h2 - hor2);
+		g2d.drawLine(right, h2, right - hor2, h2 + hor2);
 		
 	}
 	
@@ -359,6 +403,15 @@ public class SmallStepComboRules extends JComponent {
 	         }
 	     }
 	}
+
+	private void fireSmallStepMouseFocusEvent(Rule rule) {
+		Object[] listeners = listenerList.getListenerList();
 		
+		for (int i = listeners.length-2; i>=0; i-=2) {
+			if (listeners[i] == SmallStepEventListener.class) {
+				((SmallStepEventListener)listeners[i+1]).mouseFocusEvent(new SmallStepEvent (rule, this));
+			}
+		}
+	}
 	
 }
