@@ -49,13 +49,14 @@ public abstract class Value extends Expression {
    * abstraction, operators, etc.).
    * 
    * @param v the value to which <code>this</code> should be applied.
+   * @param e the application expression to which this applicable value belongs to.
    * @param ruleChain the chain to prepend the rules to.
    * @return the resulting value.
    */
-  public Expression applyTo(Value v, RuleChain ruleChain) {
+  public Expression applyTo(Value v, Application e, RuleChain ruleChain) {
     assert (v instanceof Value);
     assert (ruleChain.isEmpty());
     
-    return new Application(this, v);
+    return e;
   }
 }

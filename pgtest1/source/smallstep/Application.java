@@ -96,7 +96,7 @@ public class Application extends Expression {
     Value v2 = (Value)e2;
     
     // perform the application
-    return v1.applyTo(v2, ruleChain);
+    return v1.applyTo(v2, this, ruleChain);
   }
   
   /**

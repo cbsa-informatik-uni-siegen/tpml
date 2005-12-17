@@ -49,18 +49,19 @@ public class Abstraction extends Value {
    * Applying a lambda abstraction to a value will always succeed.
    *  
    * @param v the value to which the lambda abstraction should be applied.
+   * @param e the application expression to which this abstraction belongs to.
    * @param ruleChain the chain of rules.
    * @return the applied abstraction.
    * 
    * @see smallstep.Value#applyTo(smallstep.Value, smallstep.RuleChain)
    */
   @Override
-  public Expression applyTo(Value v, RuleChain ruleChain) {
+  public Expression applyTo(Value v, Application e, RuleChain ruleChain) {
     assert (v instanceof Value);
     assert (ruleChain.isEmpty());
     
     // prepend the (BETA-VALUE) rule
-    ruleChain.prepend(new Rule(this, Rule.BETA_VALUE));
+    ruleChain.prepend(new Rule(e, Rule.BETA_VALUE));
     
     // perform the substitution
     return this.e.substitute(this.id, v);

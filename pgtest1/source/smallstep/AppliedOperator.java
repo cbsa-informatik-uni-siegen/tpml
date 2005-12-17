@@ -39,26 +39,27 @@ public class AppliedOperator extends Value {
    * only binary integer operators in our small language.
    * 
    * @param v the value to which this applied operator should be applied.
+   * @param e the application expression to which this applied operator belongs to.
    * @param ruleChain the chain of rules.
    * @return the result of the application.
    * 
    * @see smallstep.Value#applyTo(smallstep.Value, smallstep.RuleChain)
    */
   @Override
-  public Expression applyTo(Value v, RuleChain ruleChain) {
+  public Expression applyTo(Value v, Application e, RuleChain ruleChain) {
     assert (v != null);
     assert (ruleChain.isEmpty());
     
     if (this.operator.canApplyTo(this.constant.getClass(), v.getClass())) {
       // we effectly use (OP) now
-      ruleChain.prepend(new Rule(this, Rule.OP));
+      ruleChain.prepend(new Rule(e, Rule.OP));
       
       // and perform the operation
       return this.operator.applyTo(this.constant, (Constant)v);
     }
     else {
       // fallback to the default application and get stuck
-      return super.applyTo(v, ruleChain);
+      return super.applyTo(v, e, ruleChain);
     }
   }
 

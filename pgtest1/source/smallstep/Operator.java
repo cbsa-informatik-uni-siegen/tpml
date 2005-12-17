@@ -19,6 +19,7 @@ public abstract class Operator extends Constant {
    * <code>ruleChain</code> will be left untouched in either case.
    *  
    * @param v the value to which the operator should be applied.
+   * @param e the application expression to which this operator belongs to.
    * @param ruleChain the chain of rules.
    * @return either an applied operator or an application to indicate
    *         that the evaluation got stuck.
@@ -26,7 +27,7 @@ public abstract class Operator extends Constant {
    * @see smallstep.Value#applyTo(smallstep.Value, smallstep.RuleChain)
    */
   @Override
-  public final Expression applyTo(Value v, RuleChain ruleChain) {
+  public final Expression applyTo(Value v, Application e, RuleChain ruleChain) {
     assert (v != null);
     assert (ruleChain.isEmpty());
     
@@ -35,7 +36,7 @@ public abstract class Operator extends Constant {
     
     // fallback to default, which returns an application
     // to indicate that we got stuck.
-    return super.applyTo(v, ruleChain);
+    return super.applyTo(v, e, ruleChain);
   }
 
   /**
