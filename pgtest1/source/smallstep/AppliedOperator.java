@@ -23,7 +23,7 @@ public class AppliedOperator extends Value {
    *                 integer constant in our simple
    *                 language.
    */
-  public AppliedOperator(Operator operator, IntegerConstant constant) {
+  public AppliedOperator(Operator operator, Constant constant) {
     assert (operator != null);
     assert (constant != null);
     
@@ -49,12 +49,12 @@ public class AppliedOperator extends Value {
     assert (v != null);
     assert (ruleChain.isEmpty());
     
-    if (v instanceof IntegerConstant) {
+    if (this.operator.canApplyTo(this.constant.getClass(), v.getClass())) {
       // we effectly use (OP) now
       ruleChain.prepend(new Rule(this, Rule.OP));
       
       // and perform the operation
-      return this.operator.applyTo(this.constant, (IntegerConstant)v);
+      return this.operator.applyTo(this.constant, (Constant)v);
     }
     else {
       // fallback to the default application and get stuck
@@ -88,5 +88,5 @@ public class AppliedOperator extends Value {
   
   // the internal structure
   private Operator operator;
-  private IntegerConstant constant;
+  private Constant constant;
 }

@@ -178,6 +178,16 @@ public class AnalysisAdapter implements Analysis
         defaultCase(node);
     }
 
+    public void caseAAndExpression(AAndExpression node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseAOrExpression(AOrExpression node)
+    {
+        defaultCase(node);
+    }
+
     public void caseTBlank(TBlank node)
     {
         defaultCase(node);
@@ -244,6 +254,16 @@ public class AnalysisAdapter implements Analysis
     }
 
     public void caseTDot(TDot node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseTAnd(TAnd node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseTOr(TOr node)
     {
         defaultCase(node);
     }

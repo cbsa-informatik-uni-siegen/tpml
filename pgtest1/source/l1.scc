@@ -22,6 +22,8 @@ Tokens
  left_paren = '(';
  right_paren = ')';
  dot = '.';
+ and = '&&';
+ or = '||';
 
  if = 'if';
  then = 'then';
@@ -45,12 +47,17 @@ Ignored Tokens
 
 Productions
  expression =
-  {comparison} comparison {-> comparison.expression} |
-  {condition} if [e0]:comparison then [e1]:expression else [e2]:expression {-> New expression.condition(e0.expression, e1, e2)} |
+  {conjunction} conjunction {-> conjunction.expression} |
+  {condition} if [e0]:conjunction then [e1]:expression else [e2]:expression {-> New expression.condition(e0.expression, e1, e2)} |
   {let} let identifier equal [e1]:expression in [e2]:expression {-> New expression.let(identifier, e1, e2)} |
   {letrec} let rec identifier equal [e1]:expression in [e2]:expression {-> New expression.letrec(identifier, e1, e2)} |
   {abstraction} lambda identifier dot expression {-> New expression.abstraction(identifier, expression)} |
   {recursion} rec identifier dot expression {-> New expression.recursion(identifier, expression)};
+
+ conjunction {-> expression} =
+  {comparison} comparison {-> comparison.expression} |
+  {or} [e1]:conjunction or [e2]:comparison {-> New expression.infix(e1.expression, New expression.or(or), e2.expression)} |
+  {and} [e1]:conjunction and [e2]:comparison {-> New expression.infix(e1.expression, New expression.and(and), e2.expression)};
 
  comparison {-> expression} =
   {term} term {-> term.expression} |
@@ -100,7 +107,9 @@ Productions
   {greater_than} greater_than {-> New expression.greater_than(greater_than)} |
   {lower_equal} lower_equal {-> New expression.lower_equal(lower_equal)} |
   {greater_equal} greater_equal {-> New expression.greater_equal(greater_equal)} |
-  {equal} equal {-> New expression.equal(equal)};
+  {equal} equal {-> New expression.equal(equal)} |
+  {and} and {-> New expression.and(and)} |
+  {or} or {-> New expression.or(or)};
 
 
 Abstract Syntax Tree
@@ -126,5 +135,7 @@ Abstract Syntax Tree
   {greater_than} greater_than |
   {lower_equal} lower_equal |
   {greater_equal} greater_equal |
-  {equal} equal;
+  {equal} equal |
+  {and} and |
+  {or} or;
 

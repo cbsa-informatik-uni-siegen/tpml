@@ -74,68 +74,78 @@ class TokenIndex extends AnalysisAdapter
         index = 12;
     }
 
-    public void caseTIf(TIf node)
+    public void caseTAnd(TAnd node)
     {
         index = 13;
     }
 
-    public void caseTThen(TThen node)
+    public void caseTOr(TOr node)
     {
         index = 14;
     }
 
-    public void caseTElse(TElse node)
+    public void caseTIf(TIf node)
     {
         index = 15;
     }
 
-    public void caseTLambda(TLambda node)
+    public void caseTThen(TThen node)
     {
         index = 16;
     }
 
-    public void caseTLet(TLet node)
+    public void caseTElse(TElse node)
     {
         index = 17;
     }
 
-    public void caseTIn(TIn node)
+    public void caseTLambda(TLambda node)
     {
         index = 18;
     }
 
-    public void caseTRec(TRec node)
+    public void caseTLet(TLet node)
     {
         index = 19;
     }
 
-    public void caseTUnit(TUnit node)
+    public void caseTIn(TIn node)
     {
         index = 20;
     }
 
-    public void caseTTrue(TTrue node)
+    public void caseTRec(TRec node)
     {
         index = 21;
     }
 
-    public void caseTFalse(TFalse node)
+    public void caseTUnit(TUnit node)
     {
         index = 22;
     }
 
-    public void caseTNumber(TNumber node)
+    public void caseTTrue(TTrue node)
     {
         index = 23;
     }
 
-    public void caseTIdentifier(TIdentifier node)
+    public void caseTFalse(TFalse node)
     {
         index = 24;
     }
 
-    public void caseEOF(EOF node)
+    public void caseTNumber(TNumber node)
     {
         index = 25;
+    }
+
+    public void caseTIdentifier(TIdentifier node)
+    {
+        index = 26;
+    }
+
+    public void caseEOF(EOF node)
+    {
+        index = 27;
     }
 }

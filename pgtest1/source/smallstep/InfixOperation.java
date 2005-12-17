@@ -82,15 +82,15 @@ public final class InfixOperation extends Expression {
       }
     }
     
-    // if e1 is still not an integer constant, then 
-    // the evaluation got stuck and there are no
+    // if e1 is still not a constant, then the 
+    // evaluation got stuck and there are no
     // more small steps to perform
-    if (!(e1 instanceof IntegerConstant))
+    if (!(e1 instanceof Constant))
       return new InfixOperation(this.op, e1, this.e2);
     
     // if we get here, e1 must be a value
     // and the rule chain is empty
-    assert (e1 instanceof IntegerConstant);
+    assert (e1 instanceof Constant);
     assert (ruleChain.isEmpty());
     
     // evaluate e2 (may already be a value)
@@ -112,20 +112,25 @@ public final class InfixOperation extends Expression {
       }
     }
     
-    // if e2 is still not an integer constant, then the evaluation
+    // if e2 is still not a constant, then the evaluation
     // got stuck and there are no more small steps to perform
-    if (!(e2 instanceof IntegerConstant))
+    if (!(e2 instanceof Constant))
       return new InfixOperation(this.op, e1, e2);
     
-    // if we get here, e1 and e2 must be integer
+    // if we get here, e1 and e2 must be
     // constants and the rule chain is empty
-    assert (e1 instanceof IntegerConstant);
-    assert (e2 instanceof IntegerConstant);
+    assert (e1 instanceof Constant);
+    assert (e2 instanceof Constant);
     assert (ruleChain.isEmpty());
     
     // cast the expressions to integer constants
-    IntegerConstant c1 = (IntegerConstant)e1;
-    IntegerConstant c2 = (IntegerConstant)e2;
+    Constant c1 = (Constant)e1;
+    Constant c2 = (Constant)e2;
+    
+    // check if the operator can be applied to the operands,
+    // else the evaluation got stuck here
+    if (!this.op.canApplyTo(c1.getClass(), c2.getClass()))
+      return new InfixOperation(this.op, c1, c2);
     
     // perform the operation
     ruleChain.prepend(new Rule(this, Rule.OP));

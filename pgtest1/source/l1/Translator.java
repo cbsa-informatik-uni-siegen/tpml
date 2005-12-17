@@ -212,6 +212,22 @@ public class Translator extends DepthFirstAdapter {
   }
   
   /**
+   * @see l1.analysis.DepthFirstAdapter#outAAndExpression(l1.node.AAndExpression)
+   */
+  @Override
+  public void outAAndExpression(AAndExpression node) {
+    this.expressions.push(LogicOperator.AND);
+  }
+  
+  /**
+   * @see l1.analysis.DepthFirstAdapter#outAOrExpression(l1.node.AOrExpression)
+   */
+  @Override
+  public void outAOrExpression(AOrExpression node) {
+    this.expressions.push(LogicOperator.OR);
+  }
+  
+  /**
    * @see l1.analysis.DepthFirstAdapter#outAInfixExpression(l1.node.AInfixExpression)
    */
   @Override

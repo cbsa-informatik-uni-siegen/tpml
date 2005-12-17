@@ -2,6 +2,17 @@ package smallstep;
 
 public abstract class Operator extends Constant {
   /**
+   * Checks whether this operator can be applied to two
+   * constants of type <code>c1</code> and <code>c2</code>.
+   * 
+   * @param c1 class of the first constant.
+   * @param c2 class of the second constant.
+   * @return <code>true</code> if the operator can be applied
+   *         to <code>c1</code> and <code>c2</code>.
+   */
+  public abstract boolean canApplyTo(Class c1, Class c2);
+  
+  /**
    * If <code>v</code> is an integer constant, a new applied operator
    * will be allocated and returned. Else, an application object will
    * be returned to indicate that the evaluation got stuck.
@@ -36,7 +47,7 @@ public abstract class Operator extends Constant {
    * @param c2 the second operand.
    * @return the result or an expression.
    */
-  public abstract Expression applyTo(IntegerConstant c1, IntegerConstant c2);
+  public abstract Expression applyTo(Constant c1, Constant c2);
   
   /**
    * Returns the base pretty print priority for this operator.

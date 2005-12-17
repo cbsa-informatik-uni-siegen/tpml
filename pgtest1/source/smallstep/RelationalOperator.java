@@ -8,6 +8,23 @@ package smallstep;
  */
 public class RelationalOperator extends Operator {
   /**
+   * Checks if both <code>c1</code> and <code>c2</code> are
+   * <code>IntegerConstant</code>s.
+   * 
+   * @param c1 the class of the first operand.
+   * @param c2 the class of the second operand.
+   * 
+   * @return <code>true</code> if both <code>c1</code> and <code>c2</code>
+   *         are <code>IntegerConstant</code>s.
+   *         
+   * @see smallstep.Operator#canApplyTo(java.lang.Class, java.lang.Class)
+   */
+  @Override
+  public boolean canApplyTo(Class c1, Class c2) {
+    return (c1 == IntegerConstant.class && c2 == IntegerConstant.class);
+  }
+  
+  /**
    * Performs the relational operation on <code>c1</code> and <code>c2</code>
    * and returns a boolean constant.
    * 
@@ -15,25 +32,26 @@ public class RelationalOperator extends Operator {
    * @param c2 the second operand.
    * @return the result.
    * 
-   * @see smallstep.Operator#applyTo(smallstep.IntegerConstant, smallstep.IntegerConstant)
+   * @see smallstep.Operator#applyTo(smallstep.Constant, smallstep.Constant)
    */
   @Override
-  public final Expression applyTo(IntegerConstant c1, IntegerConstant c2) {
-    assert (c1 != null);
-    assert (c2 != null);
+  public final Expression applyTo(Constant c1, Constant c2) {
+    // cast the operands to integer constants
+    IntegerConstant ic1 = (IntegerConstant)c1;
+    IntegerConstant ic2 = (IntegerConstant)c2;
    
     if (this.op.equals("="))
-      return (c1.getNumber() == c2.getNumber()) ? BooleanConstant.TRUE : BooleanConstant.FALSE;
+      return (ic1.getNumber() == ic2.getNumber()) ? BooleanConstant.TRUE : BooleanConstant.FALSE;
     else if (this.op.equals("<"))
-      return (c1.getNumber() < c2.getNumber()) ? BooleanConstant.TRUE : BooleanConstant.FALSE;
+      return (ic1.getNumber() < ic2.getNumber()) ? BooleanConstant.TRUE : BooleanConstant.FALSE;
     else if (this.op.equals(">"))
-      return (c1.getNumber() > c2.getNumber()) ? BooleanConstant.TRUE : BooleanConstant.FALSE;
+      return (ic1.getNumber() > ic2.getNumber()) ? BooleanConstant.TRUE : BooleanConstant.FALSE;
     else if (this.op.equals("<="))
-      return (c1.getNumber() <= c2.getNumber()) ? BooleanConstant.TRUE : BooleanConstant.FALSE;
+      return (ic1.getNumber() <= ic2.getNumber()) ? BooleanConstant.TRUE : BooleanConstant.FALSE;
     else {
       assert (this.op.equals(">="));
       
-      return (c1.getNumber() >= c2.getNumber()) ? BooleanConstant.TRUE : BooleanConstant.FALSE;
+      return (ic1.getNumber() >= ic2.getNumber()) ? BooleanConstant.TRUE : BooleanConstant.FALSE;
     }
   }
   
