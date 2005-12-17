@@ -29,7 +29,7 @@ public abstract class Constant extends Value {
   @Override
   protected PrettyStringBuilder toPrettyStringBuilder() {
     PrettyStringBuilder builder = new PrettyStringBuilder(this, 6);
-    builder.appendText(toString());
+    builder.appendConstant(toString());
     return builder;
   }
 }

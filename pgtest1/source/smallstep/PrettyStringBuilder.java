@@ -57,12 +57,27 @@ final class PrettyStringBuilder {
   }
 
   /**
+   * Appends the given <code>constant</code> to the pretty string
+   * builder. Constants will be highlighted when displayed to the
+   * user.
+   * 
+   * @param constant the constant to append.
+   * 
+   * @see #appendKeyword(String)
+   * @see #appendText(String)
+   */
+  void appendConstant(String constant) {
+    this.items.add(new TextItem(constant, PrettyStyle.CONSTANT));
+  }
+  
+  /**
    * Appends the given <code>keyword</code> to the pretty string
    * builder. Keywords will be highlighted when displayed to the
    * user.
    * 
    * @param keyword the keyword to append.
-   * 
+   *
+   * @see #appendConstant(String)
    * @see #appendText(String)
    */
   void appendKeyword(String keyword) {
