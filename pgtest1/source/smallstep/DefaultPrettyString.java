@@ -21,13 +21,13 @@ final class DefaultPrettyString implements PrettyString {
    * 
    * @param content the string representation of an expression.
    * @param annotations the annotations within <code>content</code>.
-   * @param keywordsMapping a map, which tells for each character in <code>content</code>
-   *                        whether it belongs to a keyword or not.
+   * @param styles a map, which specifies for each character in <code>content</code>
+   *               the <code>PrettyStyle</code> to use.
    */
-  DefaultPrettyString(String content, Map<Expression, PrettyAnnotation> annotations, boolean[] keywordsMapping) {
+  DefaultPrettyString(String content, Map<Expression, PrettyAnnotation> annotations, PrettyStyle[] styles) {
     this.content = content;
     this.annotations = annotations;
-    this.keywordsMapping = keywordsMapping;
+    this.styles = styles;
   }
   
   /**
@@ -78,7 +78,7 @@ final class DefaultPrettyString implements PrettyString {
    * @see smallstep.PrettyCharIterator
    */
   public PrettyCharIterator toCharacterIterator() {
-    return new DefaultPrettyCharIterator(this.content, this.annotations, this.keywordsMapping);
+    return new DefaultPrettyCharIterator(this.content, this.annotations, this.styles);
   }
   
   /**
@@ -98,5 +98,5 @@ final class DefaultPrettyString implements PrettyString {
   // member variables
   private String content;
   private Map<Expression, PrettyAnnotation> annotations;
-  private boolean[] keywordsMapping;
+  private PrettyStyle[] styles;
 }

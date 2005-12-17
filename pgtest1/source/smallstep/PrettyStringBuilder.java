@@ -50,10 +50,10 @@ final class PrettyStringBuilder {
     
     // add the required items
     if (parenthesis)
-      this.items.add(new TextItem("("));
+      this.items.add(new TextItem("(", PrettyStyle.NONE));
     this.items.add(new BuilderItem(builder));
     if (parenthesis)
-      this.items.add(new TextItem(")"));
+      this.items.add(new TextItem(")", PrettyStyle.NONE));
   }
 
   /**
@@ -66,7 +66,7 @@ final class PrettyStringBuilder {
    * @see #appendText(String)
    */
   void appendKeyword(String keyword) {
-    this.items.add(new KeywordItem(keyword));
+    this.items.add(new TextItem(keyword, PrettyStyle.KEYWORD));
   }
   
   /**
@@ -79,7 +79,7 @@ final class PrettyStringBuilder {
    * @see #appendKeyword(String)
    */
   void appendText(String text) {
-    this.items.add(new TextItem(text));
+    this.items.add(new TextItem(text, PrettyStyle.NONE));
   }
 
   /**
@@ -104,8 +104,8 @@ final class PrettyStringBuilder {
     // determine the final string length for the builder contents
     int length = determineStringLength();
     
-    // allocate a keywords map (will be initialized to false)
-    boolean keywordsMapping[] = new boolean[length];
+    // allocate a styles map
+    PrettyStyle styles[] = new PrettyStyle[length];
     
     // allocate the string buffer
     StringBuilder buffer = new StringBuilder(length);
@@ -114,9 +114,9 @@ final class PrettyStringBuilder {
     Map<Expression, PrettyAnnotation> annotations = new HashMap<Expression, PrettyAnnotation>();
     
     // determine the string representation and place it into the string buffer
-    determineString(buffer, annotations, keywordsMapping);
+    determineString(buffer, annotations, styles);
     
-    return new DefaultPrettyString(buffer.toString(), annotations, keywordsMapping);
+    return new DefaultPrettyString(buffer.toString(), annotations, styles);
   }
 
   /**
@@ -152,16 +152,16 @@ final class PrettyStringBuilder {
    * Determines the string representation of the pretty string builder contents
    * and places the result into <code>buffer</code>.
    * 
-   * The <code>keywordMap</code> must be large enough to contain a boolean entry
-   * for each character in the target string,
+   * The <code>styles</code> map must be large enough to contain a <code>PrettyStyle</code>
+   * entry for each character in the target string,
    * 
    * @param buffer the target string buffer.
    * @param annotations the result annotations map.
-   * @param keywordMap the result keyword map.
+   * @param styles the result <code>PrettyStyle</code> map.
    * 
    * @see #determineStringLength()
    */
-  private void determineString(StringBuilder buffer, Map<Expression, PrettyAnnotation> annotations, boolean[] keywordMap) {
+  private void determineString(StringBuilder buffer, Map<Expression, PrettyAnnotation> annotations, PrettyStyle[] styles) {
     // remember the start offset for the annotation constructor
     int startOffset = buffer.length();
     
@@ -178,16 +178,13 @@ final class PrettyStringBuilder {
         breakOffsetList.add(buffer.length());
       }
       else if (item instanceof TextItem) {
-        buffer.append(((TextItem)item).content);
-      }
-      else if (item instanceof KeywordItem) {
-        String keyword = ((KeywordItem)item).keyword;
-        for (int i = 0; i < keyword.length(); ++i)
-          keywordMap[buffer.length() + i] = true;
-        buffer.append(keyword);
+        String text = ((TextItem)item).content;
+        for (int i = 0; i < text.length(); ++i)
+          styles[buffer.length() + i ] = ((TextItem)item).style;
+        buffer.append(text);
       }
       else if (item instanceof BuilderItem) {
-        ((BuilderItem)item).builder.determineString(buffer, annotations, keywordMap);
+        ((BuilderItem)item).builder.determineString(buffer, annotations, styles);
       }
     }
     
@@ -226,8 +223,9 @@ final class PrettyStringBuilder {
   }
   
   private static class TextItem extends Item {
-    TextItem(String content) {
+    TextItem(String content, PrettyStyle style) {
       this.content = content;
+      this.style = style;
     }
     
     int determineStringLength() {
@@ -235,18 +233,7 @@ final class PrettyStringBuilder {
     }
     
     String content;
-  }
-  
-  private static class KeywordItem extends Item {
-    KeywordItem(String keyword) {
-      this.keyword = keyword;
-    }
-    
-    int determineStringLength() {
-      return this.keyword.length();
-    }
-    
-    String keyword;
+    PrettyStyle style;
   }
   
   private static class BuilderItem extends Item {

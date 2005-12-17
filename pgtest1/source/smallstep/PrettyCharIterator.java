@@ -25,15 +25,16 @@ public interface PrettyCharIterator extends CharacterIterator {
    * @see java.text.CharacterIterator#getIndex()                                         
    */
   public PrettyAnnotation getAnnotation();
-  
+
   /**
-   * Returns <code>true</code> if the current character is
-   * part of an keyword and should be highlighted in the
-   * presentation.
+   * Returns the <code>PrettyStyle</code>, which should be used
+   * for the current character, or <code>PrettyStyle.NONE</code>
+   * if no special highlighting should be applied to the current
+   * character.
    * 
-   * @return whether the current character belongs to a keyword.
+   * @return the <code>PrettyStyle</code> for the current character.
    * 
    * @see java.text.CharacterIterator#getIndex()
    */
-  public boolean isKeyword();
+  public PrettyStyle getStyle();
 }

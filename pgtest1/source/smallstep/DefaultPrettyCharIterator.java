@@ -21,10 +21,10 @@ final class DefaultPrettyCharIterator implements PrettyCharIterator {
    * 
    * @param content the string content.
    * @param annotations the annotations for <code>content</code>.
-   * @param keywordsMapping the keywords mapping in <code>content</code>.
+   * @param styles the <code>PrettyStyle</code> mapping in <code>content</code>.
    */
-  DefaultPrettyCharIterator(String content, Map<Expression, PrettyAnnotation> annotations, boolean[] keywordsMapping) {
-    this(content, annotations, keywordsMapping, 0);
+  DefaultPrettyCharIterator(String content, Map<Expression, PrettyAnnotation> annotations, PrettyStyle[] styles) {
+    this(content, annotations, styles, 0);
   }
   
   /**
@@ -33,14 +33,14 @@ final class DefaultPrettyCharIterator implements PrettyCharIterator {
    * 
    * @param content the string content.
    * @param annotations the annotations for <code>content</code>.
-   * @param keywordsMapping the keywords mapping in <code>content</code>.
+   * @param styles the <code>PrettyStyle</code> mapping in <code>content</code>.
    * @param index the start index.
    */
-  DefaultPrettyCharIterator(String content, Map<Expression, PrettyAnnotation> annotations, boolean[] keywordsMapping, int index) {
+  DefaultPrettyCharIterator(String content, Map<Expression, PrettyAnnotation> annotations, PrettyStyle[] styles, int index) {
     this.index = index;
     this.content = content;
     this.annotations = annotations;
-    this.keywordsMapping = keywordsMapping;
+    this.styles = styles;
   }
   
   /**
@@ -69,20 +69,19 @@ final class DefaultPrettyCharIterator implements PrettyCharIterator {
   }
 
   /**
-   * Returns <code>true</code> if the character at the current
-   * character iterator position belongs to a keyword and should
-   * be highlighted appropriately, else <code>false</code>.
+   * Returns the <code>PrettyStyle</code> for the current
+   * character iterator position.
    * 
-   * @return whether the current character belongs to a keyword.
-   * 
-   * @see #getIndex()
-   * @see smallstep.PrettyCharIterator#isKeyword()
+   * @return the <code>PrettyStyle</code> for the current
+   *         character iterator position.
+   *         
+   * @see smallstep.PrettyCharIterator#getStyle()
    */
-  public boolean isKeyword() {
+  public PrettyStyle getStyle() {
     if (this.index < getEndIndex())
-      return this.keywordsMapping[this.index];
+      return this.styles[this.index];
     else
-      return false;
+      return PrettyStyle.NONE;
   }
 
   /**
@@ -166,12 +165,12 @@ final class DefaultPrettyCharIterator implements PrettyCharIterator {
    * @see java.lang.Object#clone()
    */
   public Object clone() {
-    return new DefaultPrettyCharIterator(this.content, this.annotations, this.keywordsMapping, this.index);
+    return new DefaultPrettyCharIterator(this.content, this.annotations, this.styles, this.index);
   }
   
   // member variables
   private int index;
   private String content;
   private Map<Expression, PrettyAnnotation> annotations;
-  private boolean[] keywordsMapping;
+  private PrettyStyle[] styles;
 }
