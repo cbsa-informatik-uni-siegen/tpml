@@ -62,7 +62,7 @@ public abstract class Operator extends Constant {
    * @see smallstep.Expression#toPrettyStringBuilder()
    */
   @Override
-  protected PrettyStringBuilder toPrettyStringBuilder() {
+  protected final PrettyStringBuilder toPrettyStringBuilder() {
     PrettyStringBuilder builder = new PrettyStringBuilder(this, 6);
     builder.appendText("(" + toString() + ")");
     return builder;

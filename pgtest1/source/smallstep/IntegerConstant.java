@@ -19,15 +19,17 @@ public class IntegerConstant extends smallstep.Constant {
   public int getNumber() {
     return this.number;
   }
-
+  
   /**
-   * Returns the string representation of the integer constant.
-   * @return the string representation of the integer constant.
-   * @see java.lang.Object#toString()
+   * Returns the pretty string builder for constants.
+   * @return the pretty string builder for constants.
+   * @see smallstep.Expression#toPrettyStringBuilder()
    */
   @Override
-  public String toString() {
-    return Integer.toString(getNumber());
+  protected final PrettyStringBuilder toPrettyStringBuilder() {
+    PrettyStringBuilder builder = new PrettyStringBuilder(this, 6);
+    builder.appendConstant(Integer.toString(this.number));
+    return builder;
   }
 
   private int number;

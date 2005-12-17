@@ -18,13 +18,15 @@ public class BooleanConstant extends Constant {
   }
 
   /**
-   * Returns the string representation of the boolean constant.
-   * @return the string representation of the boolean constant.
-   * @see java.lang.Object#toString()
+   * Returns the pretty string builder for constants.
+   * @return the pretty string builder for constants.
+   * @see smallstep.Expression#toPrettyStringBuilder()
    */
   @Override
-  public String toString() {
-    return (isTrue() ? "true" : "false");
+  protected final PrettyStringBuilder toPrettyStringBuilder() {
+    PrettyStringBuilder builder = new PrettyStringBuilder(this, 6);
+    builder.appendConstant(isTrue() ? "true" : "false");
+    return builder;
   }
   
   /**

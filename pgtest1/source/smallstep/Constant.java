@@ -20,16 +20,4 @@ public abstract class Constant extends Value {
   public Set<String> free() {
     return Expression.EMPTY_SET;
   }
-  
-  /**
-   * Returns the pretty string builder for constants.
-   * @return the pretty string builder for constants.
-   * @see smallstep.Expression#toPrettyStringBuilder()
-   */
-  @Override
-  protected PrettyStringBuilder toPrettyStringBuilder() {
-    PrettyStringBuilder builder = new PrettyStringBuilder(this, 6);
-    builder.appendConstant(toString());
-    return builder;
-  }
 }
