@@ -1,0 +1,11 @@
+TODO: 
+
+22.12.2005
+
+
+ - Modus hinzufügen, wo nur noch die Axiome angegeben werden für Smallstep
+   Interpreter
+
+ - Button für den Syntaktischen Zucker hinzufügen, der den SZ auflöst.
+
+ - && und || korrigieren.
