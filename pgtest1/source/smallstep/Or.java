@@ -111,6 +111,32 @@ public final class Or extends Expression {
     set.addAll(this.e1.free());
     return set;
   }
+  
+  /**
+   * Returns <code>true</code> since <b>(OR)</b> is
+   * syntactic sugar for <b>(COND)</b>.
+   * 
+   * @return <code>true</code>.
+   * 
+   * @see smallstep.Expression#containsSyntacticSugar()
+   */
+  @Override
+  public boolean containsSyntacticSugar() {
+    return true;
+  }
+  
+  /**
+   * Translates the <b>(OR)</b> and its subexpressions to
+   * a <b>(COND)</b> expression in the core syntax.
+   * 
+   * @return the new expression in the core syntax.
+   * 
+   * @see smallstep.Expression#translateSyntacticSugar()
+   */
+  @Override
+  public Expression translateSyntacticSugar() {
+    return new Condition(this.e0.translateSyntacticSugar(), BooleanConstant.TRUE, this.e1.translateSyntacticSugar());
+  }
 
   /**
    * Returns the pretty string builder for <b>(OR)</b> expressions.

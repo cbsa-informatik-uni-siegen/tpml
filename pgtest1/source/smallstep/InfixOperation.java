@@ -152,6 +152,32 @@ public final class InfixOperation extends Expression {
     set.addAll(this.e2.free());
     return set;
   }
+  
+  /**
+   * Returns <code>true</code> since an infix operation
+   * is syntactic sugar.
+   * 
+   * @return <code>true</code>.
+   * 
+   * @see smallstep.Expression#containsSyntacticSugar()
+   */
+  @Override
+  public boolean containsSyntacticSugar() {
+    return true;
+  }
+  
+  /**
+   * Translates the infix operation and the subexpressions
+   * to the core syntax.
+   * 
+   * @return the new expression in the core syntax.
+   * 
+   * @see smallstep.Expression#translateSyntacticSugar()
+   */
+  @Override
+  public Expression translateSyntacticSugar() {
+    return new Application(new Application(this.op, this.e1.translateSyntacticSugar()), this.e2.translateSyntacticSugar());
+  }
 
   /**
    * Returns the pretty string builder for infix operations.

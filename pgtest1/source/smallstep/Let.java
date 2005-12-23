@@ -94,6 +94,38 @@ public class Let extends Expression {
     set.addAll(this.e1.free());
     return set;
   }
+  
+  /**
+   * Returns <code>true</code> if any subexpression contains
+   * syntactic sugar.
+   * 
+   * @return whether any subexpression contains syntactic sugar.
+   * 
+   * @see smallstep.Expression#containsSyntacticSugar()
+   */
+  @Override
+  public boolean containsSyntacticSugar() {
+    return (this.e1.containsSyntacticSugar() || this.e2.containsSyntacticSugar());
+  }
+  
+  /**
+   * Translates any syntactic sugar in the subexpressions to the
+   * core syntax.
+   * 
+   * @return the new expression in the core syntax.
+   * 
+   * @see smallstep.Expression#translateSyntacticSugar()
+   */
+  @Override
+  public Expression translateSyntacticSugar() {
+    Expression e1 = this.e1.translateSyntacticSugar();
+    Expression e2 = this.e2.translateSyntacticSugar();
+    
+    if (e1 != this.e1 || e2 != this.e2)
+      return new Let(this.id, e1, e2);
+    else
+      return this;
+  }
 
   /**
    * Returns the pretty string builder for let expressions.

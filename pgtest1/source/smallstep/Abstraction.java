@@ -79,6 +79,37 @@ public class Abstraction extends Value {
     set.remove(this.id);
     return set;
   }
+  
+  /**
+   * Returns <code>true</code> if the subexpression
+   * contains syntactic sugar.
+   * 
+   * @return whether the subexpression contains
+   *         syntactic sugar.
+   *         
+   * @see smallstep.Expression#containsSyntacticSugar()
+   */
+  @Override
+  public boolean containsSyntacticSugar() {
+    return this.e.containsSyntacticSugar();
+  }
+  
+  /**
+   * Translates syntactic sugar in the subexpression to
+   * the core syntax.
+   * 
+   * @return the new expression without syntactic sugar.
+   * 
+   * @see smallstep.Expression#translateSyntacticSugar()
+   */
+  @Override
+  public Expression translateSyntacticSugar() {
+    Expression e = this.e.translateSyntacticSugar();
+    if (e != this.e)
+      return new Abstraction(this.id, e);
+    else
+      return this;
+  }
 
   /**
    * Returns the pretty string builder for abstractions.

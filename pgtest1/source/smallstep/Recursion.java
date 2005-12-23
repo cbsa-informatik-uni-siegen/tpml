@@ -90,6 +90,36 @@ public class Recursion extends Expression {
     set.remove(this.id);
     return set;
   }
+  
+  /**
+   * Returns <code>true</code> if the subexpression
+   * contains syntactic sugar.
+   * 
+   * @return whether the subexpression contains syntactic sugar.
+   * 
+   * @see smallstep.Expression#containsSyntacticSugar()
+   */
+  @Override
+  public boolean containsSyntacticSugar() {
+    return this.e.containsSyntacticSugar();
+  }
+  
+  /**
+   * Returns the new expression in the core syntax.
+   * 
+   * @return the new expression in the core syntax.
+   * 
+   * @see smallstep.Expression#translateSyntacticSugar()
+   */
+  @Override
+  public Expression translateSyntacticSugar() {
+    Expression e = this.e.translateSyntacticSugar();
+    
+    if (e != this.e)
+      return new Recursion(this.id, e);
+    else
+      return this;
+  }
 
   /**
    * Returns the pretty string builder for rec expressions.

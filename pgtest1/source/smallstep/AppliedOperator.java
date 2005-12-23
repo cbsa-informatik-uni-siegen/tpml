@@ -72,7 +72,33 @@ public class AppliedOperator extends Value {
   public Set<String> free() {
     return new TreeSet<String>();
   }
-
+  
+  /**
+   * Returns <code>false</code>, as applied operators cannot
+   * contain syntactic sugar.
+   * 
+   * @return <code>false</code>.
+   * 
+   * @see smallstep.Expression#containsSyntacticSugar()
+   */
+  @Override
+  public boolean containsSyntacticSugar() {
+    return false;
+  }
+  
+  /**
+   * Returns the expression itself, as applied operators
+   * cannot contain syntactic sugar.
+   * 
+   * @return the expression itself.
+   * 
+   * @see smallstep.Expression#translateSyntacticSugar()
+   */
+  @Override
+  public Expression translateSyntacticSugar() {
+    return this;
+  }
+  
   /**
    * Returns the pretty string builder for applied operators.
    * @return the pretty string builder for applied operators.

@@ -112,6 +112,32 @@ public final class And extends Expression {
     set.addAll(this.e1.free());
     return set;
   }
+  
+  /**
+   * Returns <code>true</code> since <b>(AND)</b> is
+   * syntactic sugar for <b>(COND)</b>.
+   * 
+   * @return <code>true</code>.
+   * 
+   * @see smallstep.Expression#containsSyntacticSugar()
+   */
+  @Override
+  public boolean containsSyntacticSugar() {
+    return true;
+  }
+  
+  /**
+   * Translates the <b>(AND)</b> expression to its matching
+   * <b>(COND)</b> expression.
+   * 
+   * @return the resulting <b>(COND)</b> expression.
+   * 
+   * @see smallstep.Expression#translateSyntacticSugar()
+   */
+  @Override
+  public Expression translateSyntacticSugar() {
+    return new Condition(this.e0.translateSyntacticSugar(), this.e1.translateSyntacticSugar(), BooleanConstant.FALSE);
+  }
 
   /**
    * Returns the pretty string builder for <b>(AND)</b>

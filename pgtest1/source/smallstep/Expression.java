@@ -30,6 +30,30 @@ public abstract class Expression {
    * @return the free identifiers within this expression.
    */
   public abstract Set<String> free();
+  
+  /**
+   * Returns <code>true</code> if the expression contains
+   * syntactic sugar, else <code>false</code>.
+   * 
+   * You can call translateSyntacticSugar() to translate
+   * all expressions to the core language.
+   * 
+   * @return <code>true</code> if the expression contains
+   *         syntactic sugar.
+   *         
+   * @see #translateSyntacticSugar()
+   */
+  public abstract boolean containsSyntacticSugar();
+  
+  /**
+   * Translates all syntactic sugar contained within the
+   * expression to the core syntax.
+   *
+   * @return the new expression without syntactic sugar.
+   * 
+   * @see #containsSyntacticSugar()
+   */
+  public abstract Expression translateSyntacticSugar();
 
   /**
    * Returns the <code>PrettyString</code> for this expression,

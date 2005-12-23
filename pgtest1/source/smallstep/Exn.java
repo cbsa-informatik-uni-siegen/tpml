@@ -48,6 +48,32 @@ public class Exn extends Expression {
   public Set<String> free() {
     return Expression.EMPTY_SET;
   }
+  
+  /**
+   * Returns <code>false</code> as exceptions cannot
+   * contain syntactic sugar.
+   * 
+   * @return <code>false</code>.
+   * 
+   * @see smallstep.Expression#containsSyntacticSugar()
+   */
+  @Override
+  public boolean containsSyntacticSugar() {
+    return false;
+  }
+  
+  /**
+   * Returns the expression itself as exceptions cannot
+   * contain syntactic sugar.
+   * 
+   * @return the expression itself.
+   * 
+   * @see smallstep.Expression#translateSyntacticSugar()
+   */
+  @Override
+  public Expression translateSyntacticSugar() {
+    return this;
+  }
 
   /**
    * Returns the pretty string builder for exceptions.

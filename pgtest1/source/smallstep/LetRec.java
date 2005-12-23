@@ -100,6 +100,32 @@ public final class LetRec extends Expression {
     set.addAll(this.e2.free());
     return set;
   }
+  
+  /**
+   * Returns <code>true</code> as <b>(LET-REC)</b> is
+   * syntactic sugar.
+   * 
+   * @return <code>true</code>.
+   * 
+   * @see smallstep.Expression#containsSyntacticSugar()
+   */
+  @Override
+  public boolean containsSyntacticSugar() {
+    return true;
+  }
+  
+  /**
+   * Translates the syntactic sugar for the <b>(LET-REC)</b>
+   * and its subexpressions to the core syntax.
+   * 
+   * @return the new expression in the core syntax.
+   * 
+   * @see smallstep.Expression#translateSyntacticSugar()
+   */
+  @Override
+  public Expression translateSyntacticSugar() {
+    return new Let(this.id, new Recursion(this.id, this.e1.translateSyntacticSugar()), this.e2.translateSyntacticSugar());
+  }
 
   /**
    * Returns the pretty string builder for let rec expressions.
