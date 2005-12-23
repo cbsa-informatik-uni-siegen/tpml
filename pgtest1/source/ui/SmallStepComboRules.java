@@ -310,10 +310,14 @@ public class SmallStepComboRules extends JComponent {
 		model.addElement("APP-LEFT");
 		model.addElement("APP-RIGHT");
 		model.addElement("COND-EVAL");
+		model.addElement("AND-EVAL");
+		model.addElement("OR-EVAL");
 		model.addElement("LET-EVAL");
 		model.addElement("APP-LEFT-EXN");
 		model.addElement("APP-RIGHT-EXN");
 		model.addElement("COND-EVAL-EXN");
+		model.addElement("AND-EVAL-EXN");
+		model.addElement("OR-EVAL-EXN");
 		model.addElement("LET-EVAL-EXN");
 		ruleComboBox.setModel(model);
 	}
@@ -325,6 +329,10 @@ public class SmallStepComboRules extends JComponent {
 		model.addElement("BETA-V");
 		model.addElement("COND-TRUE");
 		model.addElement("COND-FALSE");
+		model.addElement("AND-TRUE");
+		model.addElement("AND-FALSE");
+		model.addElement("OR-TRUE");
+		model.addElement("OR-FALSE");
 		model.addElement("LET-EXEC");
 		model.addElement("UNFOLD");
 		ruleComboBox.setModel(model);
