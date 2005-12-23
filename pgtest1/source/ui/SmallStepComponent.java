@@ -46,6 +46,10 @@ public class SmallStepComponent extends JComponent {
 		return this.justAxioms;
 	}
 	
+	public void setUnderlineExpressions(boolean underline) {
+		this.underlineExpressions = underline;
+	}
+	
 	public int evaluateNextStep() {
 		int res = model.evaluateNextStep();
 		if (res == 0) {
