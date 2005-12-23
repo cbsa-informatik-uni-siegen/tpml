@@ -130,6 +130,12 @@ public class SmallStep extends JComponent {
 		});
 	}
 	
+	public void resolveMetaRules() {
+		if (this.ruleCombos != null) {
+			this.ruleCombos.resolveMetaRules();
+		}
+	}
+	
 	public void setCenter(int center) {
 		this.center = center;
 		if (ruleCombos != null) {

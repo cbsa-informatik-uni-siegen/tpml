@@ -3,6 +3,8 @@ package ui;
 import java.util.*;
 import java.awt.Dimension;
 import javax.swing.JComponent;
+import javax.swing.event.EventListenerList;
+
 import java.awt.*;
 import smallstep.*;
 
@@ -12,11 +14,19 @@ public class SmallStepComponent extends JComponent {
 	
 	private LinkedList<SmallStep>	smallStepSteps = new LinkedList<SmallStep>();
 	
-	public SmallStepComponent(SmallStepModel model) {
+	private boolean					justAxioms;
+	
+	private boolean					underlineExpressions;
+	
+	private EventListenerList		listenerList = new EventListenerList();
+
+	public SmallStepComponent(SmallStepModel model, boolean justAxioms, boolean underlineExpressions) {
 		super();
 		setLayout(null);
 		
 		this.model = model;
+		this.justAxioms = justAxioms;
+		this.underlineExpressions = underlineExpressions;
 		
 		// create the first Step;
 		SmallStep step = new SmallStep(null, model.getOriginExpression(), null);
@@ -28,12 +38,24 @@ public class SmallStepComponent extends JComponent {
 		evaluateNextStep();
 	}
 	
+	public void setJustAxioms(boolean justAxioms) {
+		this.justAxioms = justAxioms;
+	}
+	
+	public boolean getJustAxioms() {
+		return this.justAxioms;
+	}
+	
 	public int evaluateNextStep() {
 		int res = model.evaluateNextStep();
 		if (res == 0) {
 			// this is a proper next step
 			SmallStep parent = smallStepSteps.getLast();
 			SmallStep step = new SmallStep(parent, model.getCurrentExpression(), model.getCurrentRuleChain());
+			if (this.justAxioms) {
+				step.resolveMetaRules();
+			}
+			
 			add(step);
 			step.setBounds(10, parent.getY() + parent.getHeight() + 20, step.getWidth(), step.getHeight());
 			smallStepSteps.add(step);
@@ -47,6 +69,7 @@ public class SmallStepComponent extends JComponent {
 			});
 			this.underlineSequence(null, null);
 		}
+		fireSmallStepResolved();
 		calculateCenter();
 		return res;
 	}
@@ -103,6 +126,9 @@ public class SmallStepComponent extends JComponent {
 				s.repaint();
 			}
 		}
+		if (!this.underlineExpressions) {
+			return;
+		}
 		it = smallStepSteps.listIterator();
 		while (it.hasNext()) {
 			SmallStep s = it.next();
@@ -115,5 +141,24 @@ public class SmallStepComponent extends JComponent {
 				s.setHightlighting(rule);
 			}
 		}
+	}
+	
+	public void addSmallStepEventListener(SmallStepEventListener e) {
+		listenerList.add(SmallStepEventListener.class, e);
+	}
+	
+	public void removeSmallStepEventListener(SmallStepEventListener e) {
+		listenerList.remove(SmallStepEventListener.class, e);
+	}
+	
+	private void fireSmallStepResolved() {
+		Object[] listeners = listenerList.getListenerList();
+		
+	    for (int i = listeners.length-2; i>=0; i-=2) {
+	         if (listeners[i]==SmallStepEventListener.class) {
+	             // Lazily create the event:
+	             ((SmallStepEventListener)listeners[i+1]).smallStepResolved(new EventObject(this));
+	         }
+	     }
 	}
 }

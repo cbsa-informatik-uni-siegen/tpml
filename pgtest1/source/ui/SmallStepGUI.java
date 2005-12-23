@@ -2,14 +2,17 @@ package ui;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.EventObject;
+
 import javax.swing.*;
 
 public class SmallStepGUI extends JDialog {
 	
-	private SmallStepComponent ssComponent;
-	private JButton		buttonAutocomplete;
-	private JButton 	buttonNextStep;
-	private JButton		buttonClose;
+	private SmallStepComponent 	ssComponent;
+	private JButton				buttonAutocomplete;
+	private JButton 			buttonNextStep;
+	private JButton				buttonClose;
+	private JScrollPane			scrollPane;
 	
 	public SmallStepGUI(Frame owner, String title, boolean modal, SmallStepModel model) {
 		super(owner, title, modal);
@@ -18,16 +21,18 @@ public class SmallStepGUI extends JDialog {
 		JPanel mainPanel	= new JPanel();
 		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.PAGE_AXIS));
 
-		ssComponent 			= new SmallStepComponent(model);
+		// setting the "justAxioms" true just for testing. This should be taken from 
+		// a settings dialog later
+		ssComponent 			= new SmallStepComponent(model, true, true);
 		buttonAutocomplete	= new JButton ("Autocomplete");
 		buttonNextStep 		= new JButton ("NextStep");
 		buttonClose    		= new JButton ("Close");
 
 		mainPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setViewportView(ssComponent);
-		scrollPane.getViewport().setBackground(Color.white);
+		this.scrollPane = new JScrollPane();
+		this.scrollPane.setViewportView(ssComponent);
+		this.scrollPane.getViewport().setBackground(Color.white);
 		mainPanel.add(scrollPane);
 		
 		mainPanel.add(Box.createRigidArea(new Dimension(0, 5)));
@@ -42,6 +47,11 @@ public class SmallStepGUI extends JDialog {
 		buttonPanel.add(buttonClose);
 		mainPanel.add(buttonPanel);
 		
+		this.ssComponent.addSmallStepEventListener(new SmallStepEventListener () {
+			public void smallStepResized(EventObject o) { jumpToTail(); }
+			public void smallStepResolved(EventObject o) { jumpToTail(); }
+			public void mouseFocusEvent(SmallStepEvent e) { }
+		});
 		buttonClose.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose ();
@@ -50,16 +60,22 @@ public class SmallStepGUI extends JDialog {
 		buttonNextStep.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ssComponent.completeCurrentStep();
+				jumpToTail();
 			}
 		});
 		buttonAutocomplete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ssComponent.completeAllSteps();
+				jumpToTail();
 			}
 		});
 		
 		getContentPane().add(mainPanel);
 		setSize(800, 600);
+		
 	}
 
+	public void jumpToTail() {
+		this.scrollPane.getViewport().setViewPosition(new Point(this.scrollPane.getViewport().getViewPosition().x, ssComponent.getHeight()));
+	}
 }

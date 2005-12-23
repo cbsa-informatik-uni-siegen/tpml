@@ -107,7 +107,6 @@ public class SmallStepComboRules extends JComponent {
 	
 	private LinkedList<MouseBounding> 	mouseBoundings = new LinkedList<MouseBounding>();
 	
-
 	private EventListenerList			listenerList = new EventListenerList();
 	
 	public SmallStepComboRules(RuleChain chain) {
@@ -331,6 +330,12 @@ public class SmallStepComboRules extends JComponent {
 		ruleComboBox.setModel(model);
 	}
 	
+	public void resolveMetaRules() {
+		while (this.currentRule < ruleChain.getRules().size () - 1) {
+			evaluateRule();
+		}
+		calculateSize();
+	}
 	public void resolve() {
 		this.currentRule = ruleChain.getRules().size();
 		ruleComboBox.setVisible(false);
