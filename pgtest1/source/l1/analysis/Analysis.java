@@ -19,6 +19,8 @@ public interface Analysis extends Switch
     void caseAAbstractionExpression(AAbstractionExpression node);
     void caseARecursionExpression(ARecursionExpression node);
     void caseAInfixExpression(AInfixExpression node);
+    void caseAAndExpression(AAndExpression node);
+    void caseAOrExpression(AOrExpression node);
     void caseAIdentifierExpression(AIdentifierExpression node);
     void caseAUnitExpression(AUnitExpression node);
     void caseATrueExpression(ATrueExpression node);
@@ -34,8 +36,6 @@ public interface Analysis extends Switch
     void caseALowerEqualExpression(ALowerEqualExpression node);
     void caseAGreaterEqualExpression(AGreaterEqualExpression node);
     void caseAEqualExpression(AEqualExpression node);
-    void caseAAndExpression(AAndExpression node);
-    void caseAOrExpression(AOrExpression node);
 
     void caseTBlank(TBlank node);
     void caseTPlus(TPlus node);

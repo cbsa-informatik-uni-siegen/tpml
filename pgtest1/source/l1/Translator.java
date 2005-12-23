@@ -216,7 +216,9 @@ public class Translator extends DepthFirstAdapter {
    */
   @Override
   public void outAAndExpression(AAndExpression node) {
-    this.expressions.push(LogicOperator.AND);
+    Expression e1 = this.expressions.pop();
+    Expression e0 = this.expressions.pop();
+    this.expressions.push(new And(e0, e1));
   }
   
   /**
@@ -224,7 +226,9 @@ public class Translator extends DepthFirstAdapter {
    */
   @Override
   public void outAOrExpression(AOrExpression node) {
-    this.expressions.push(LogicOperator.OR);
+    Expression e1 = this.expressions.pop();
+    Expression e0 = this.expressions.pop();
+    this.expressions.push(new Or(e0, e1));
   }
   
   /**

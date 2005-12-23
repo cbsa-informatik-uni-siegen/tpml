@@ -7,22 +7,27 @@ import l1.analysis.*;
 
 public final class AOrExpression extends PExpression
 {
-    private TOr _or_;
+    private PExpression _e0_;
+    private PExpression _e1_;
 
     public AOrExpression()
     {
     }
 
     public AOrExpression(
-        TOr _or_)
+        PExpression _e0_,
+        PExpression _e1_)
     {
-        setOr(_or_);
+        setE0(_e0_);
+
+        setE1(_e1_);
 
     }
     public Object clone()
     {
         return new AOrExpression(
-            (TOr) cloneNode(_or_));
+            (PExpression) cloneNode(_e0_),
+            (PExpression) cloneNode(_e1_));
     }
 
     public void apply(Switch sw)
@@ -30,16 +35,16 @@ public final class AOrExpression extends PExpression
         ((Analysis) sw).caseAOrExpression(this);
     }
 
-    public TOr getOr()
+    public PExpression getE0()
     {
-        return _or_;
+        return _e0_;
     }
 
-    public void setOr(TOr node)
+    public void setE0(PExpression node)
     {
-        if(_or_ != null)
+        if(_e0_ != null)
         {
-            _or_.parent(null);
+            _e0_.parent(null);
         }
 
         if(node != null)
@@ -52,20 +57,52 @@ public final class AOrExpression extends PExpression
             node.parent(this);
         }
 
-        _or_ = node;
+        _e0_ = node;
+    }
+
+    public PExpression getE1()
+    {
+        return _e1_;
+    }
+
+    public void setE1(PExpression node)
+    {
+        if(_e1_ != null)
+        {
+            _e1_.parent(null);
+        }
+
+        if(node != null)
+        {
+            if(node.parent() != null)
+            {
+                node.parent().removeChild(node);
+            }
+
+            node.parent(this);
+        }
+
+        _e1_ = node;
     }
 
     public String toString()
     {
         return ""
-            + toString(_or_);
+            + toString(_e0_)
+            + toString(_e1_);
     }
 
     void removeChild(Node child)
     {
-        if(_or_ == child)
+        if(_e0_ == child)
         {
-            _or_ = null;
+            _e0_ = null;
+            return;
+        }
+
+        if(_e1_ == child)
+        {
+            _e1_ = null;
             return;
         }
 
@@ -73,9 +110,15 @@ public final class AOrExpression extends PExpression
 
     void replaceChild(Node oldChild, Node newChild)
     {
-        if(_or_ == oldChild)
+        if(_e0_ == oldChild)
         {
-            setOr((TOr) newChild);
+            setE0((PExpression) newChild);
+            return;
+        }
+
+        if(_e1_ == oldChild)
+        {
+            setE1((PExpression) newChild);
             return;
         }
 

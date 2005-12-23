@@ -123,7 +123,57 @@ public final class Rule {
    * The <b>(UNFOLD)</b> axiom executes a <code>rec</code> expression.
    */
   public static final Type UNFOLD = new Type(true, "UNFOLD");
-
+  
+  /**
+   * The <b>(AND-EVAL)</b> meta-rule evaluates the first expression
+   * of a <code>&&</code> block.
+   */
+  public static final Type AND_EVAL = new Type(false, "AND-EVAL");
+  
+  /**
+   * The <b>(AND-EVAL-EXN)</b> meta-rule forwards an exception that
+   * occurred in the evaluation of the first operand of a
+   * <code>&&</code> expression.
+   */
+  public static final Type AND_EVAL_EXN = new Type(false, "AND-EVAL-EXN");
+  
+  /**
+   * The <b>(AND-TRUE)</b> axiom executes the <code>&&</code> for
+   * the case that the first operand evaluated to <code>true</code>.
+   */
+  public static final Type AND_TRUE = new Type(true, "AND-TRUE");
+  
+  /**
+   * The <b>(AND-FALSE)</b> axiom executes the <code>&&</code> for
+   * the case that the first operand evaluated to <code>false</code>.
+   */
+  public static final Type AND_FALSE = new Type(true, "AND-FALSE");
+  
+  /**
+   * The <b>(OR-EVAL)</b> meta-rule evaluates the first expression
+   * of a <code>||</code> block.
+   */
+  public static final Type OR_EVAL = new Type(false, "OR-EVAL");
+  
+  /**
+   * The <b>(OR-EVAL-EXN)</b> meta-rule forwards an exception
+   * that occurred in the evaluation of the first operand of
+   * a <code>||</code> expression.
+   */
+  public static final Type OR_EVAL_EXN = new Type(false, "OR-EVAL-EXN");
+  
+  /**
+   * The <b>(OR-TRUE)</b> axiom executes the <code>||</code> expression
+   * for the case that the first operand evaluated to <code>true</code>.
+   */
+  public static final Type OR_TRUE = new Type(true, "OR-TRUE");
+  
+  /**
+   * The <b>(OR-FALSE)</b> axiom executes the <code>||</code> expression
+   * for the case that the first operand evaluated to <code>false</code>.
+   */
+  public static final Type OR_FALSE = new Type(true, "OR-FALSE");
+  
   /**
    * Creates a new rule, which was applied to <code>expression</code>
    * and is of the given <code>type</code>.

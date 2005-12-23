@@ -7,22 +7,27 @@ import l1.analysis.*;
 
 public final class AAndExpression extends PExpression
 {
-    private TAnd _and_;
+    private PExpression _e0_;
+    private PExpression _e1_;
 
     public AAndExpression()
     {
     }
 
     public AAndExpression(
-        TAnd _and_)
+        PExpression _e0_,
+        PExpression _e1_)
     {
-        setAnd(_and_);
+        setE0(_e0_);
+
+        setE1(_e1_);
 
     }
     public Object clone()
     {
         return new AAndExpression(
-            (TAnd) cloneNode(_and_));
+            (PExpression) cloneNode(_e0_),
+            (PExpression) cloneNode(_e1_));
     }
 
     public void apply(Switch sw)
@@ -30,16 +35,16 @@ public final class AAndExpression extends PExpression
         ((Analysis) sw).caseAAndExpression(this);
     }
 
-    public TAnd getAnd()
+    public PExpression getE0()
     {
-        return _and_;
+        return _e0_;
     }
 
-    public void setAnd(TAnd node)
+    public void setE0(PExpression node)
     {
-        if(_and_ != null)
+        if(_e0_ != null)
         {
-            _and_.parent(null);
+            _e0_.parent(null);
         }
 
         if(node != null)
@@ -52,20 +57,52 @@ public final class AAndExpression extends PExpression
             node.parent(this);
         }
 
-        _and_ = node;
+        _e0_ = node;
+    }
+
+    public PExpression getE1()
+    {
+        return _e1_;
+    }
+
+    public void setE1(PExpression node)
+    {
+        if(_e1_ != null)
+        {
+            _e1_.parent(null);
+        }
+
+        if(node != null)
+        {
+            if(node.parent() != null)
+            {
+                node.parent().removeChild(node);
+            }
+
+            node.parent(this);
+        }
+
+        _e1_ = node;
     }
 
     public String toString()
     {
         return ""
-            + toString(_and_);
+            + toString(_e0_)
+            + toString(_e1_);
     }
 
     void removeChild(Node child)
     {
-        if(_and_ == child)
+        if(_e0_ == child)
         {
-            _and_ = null;
+            _e0_ = null;
+            return;
+        }
+
+        if(_e1_ == child)
+        {
+            _e1_ = null;
             return;
         }
 
@@ -73,9 +110,15 @@ public final class AAndExpression extends PExpression
 
     void replaceChild(Node oldChild, Node newChild)
     {
-        if(_and_ == oldChild)
+        if(_e0_ == oldChild)
         {
-            setAnd((TAnd) newChild);
+            setE0((PExpression) newChild);
+            return;
+        }
+
+        if(_e1_ == oldChild)
+        {
+            setE1((PExpression) newChild);
             return;
         }
 

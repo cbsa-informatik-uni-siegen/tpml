@@ -216,6 +216,54 @@ public class ReversedDepthFirstAdapter extends AnalysisAdapter
         outAInfixExpression(node);
     }
 
+    public void inAAndExpression(AAndExpression node)
+    {
+        defaultIn(node);
+    }
+
+    public void outAAndExpression(AAndExpression node)
+    {
+        defaultOut(node);
+    }
+
+    public void caseAAndExpression(AAndExpression node)
+    {
+        inAAndExpression(node);
+        if(node.getE1() != null)
+        {
+            node.getE1().apply(this);
+        }
+        if(node.getE0() != null)
+        {
+            node.getE0().apply(this);
+        }
+        outAAndExpression(node);
+    }
+
+    public void inAOrExpression(AOrExpression node)
+    {
+        defaultIn(node);
+    }
+
+    public void outAOrExpression(AOrExpression node)
+    {
+        defaultOut(node);
+    }
+
+    public void caseAOrExpression(AOrExpression node)
+    {
+        inAOrExpression(node);
+        if(node.getE1() != null)
+        {
+            node.getE1().apply(this);
+        }
+        if(node.getE0() != null)
+        {
+            node.getE0().apply(this);
+        }
+        outAOrExpression(node);
+    }
+
     public void inAIdentifierExpression(AIdentifierExpression node)
     {
         defaultIn(node);
@@ -514,45 +562,5 @@ public class ReversedDepthFirstAdapter extends AnalysisAdapter
             node.getEqual().apply(this);
         }
         outAEqualExpression(node);
-    }
-
-    public void inAAndExpression(AAndExpression node)
-    {
-        defaultIn(node);
-    }
-
-    public void outAAndExpression(AAndExpression node)
-    {
-        defaultOut(node);
-    }
-
-    public void caseAAndExpression(AAndExpression node)
-    {
-        inAAndExpression(node);
-        if(node.getAnd() != null)
-        {
-            node.getAnd().apply(this);
-        }
-        outAAndExpression(node);
-    }
-
-    public void inAOrExpression(AOrExpression node)
-    {
-        defaultIn(node);
-    }
-
-    public void outAOrExpression(AOrExpression node)
-    {
-        defaultOut(node);
-    }
-
-    public void caseAOrExpression(AOrExpression node)
-    {
-        inAOrExpression(node);
-        if(node.getOr() != null)
-        {
-            node.getOr().apply(this);
-        }
-        outAOrExpression(node);
     }
 }
