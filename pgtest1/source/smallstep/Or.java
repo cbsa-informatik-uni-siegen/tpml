@@ -88,7 +88,7 @@ public final class Or extends Expression {
     BooleanConstant c0 = (BooleanConstant)e0;
     if (c0.isTrue()) {
       ruleChain.prepend(new Rule(this, Rule.OR_TRUE));
-      return BooleanConstant.FALSE;
+      return BooleanConstant.TRUE;
     }
     else {
       ruleChain.prepend(new Rule(this, Rule.OR_FALSE));
