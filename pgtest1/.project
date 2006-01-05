@@ -11,8 +11,13 @@
 			</arguments>
 		</buildCommand>
 		<buildCommand>
-			<name>com.omondo.uml.std.Builder</name>
+			<name>org.eclipse.ui.externaltools.ExternalToolBuilder</name>
+			<triggers>auto,full,incremental,</triggers>
 			<arguments>
+				<dictionary>
+					<key>LaunchConfigHandle</key>
+					<value>&lt;project&gt;/.externalToolBuilders/SableCC.launch</value>
+				</dictionary>
 			</arguments>
 		</buildCommand>
 	</buildSpec>
