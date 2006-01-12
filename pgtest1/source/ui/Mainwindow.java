@@ -1,6 +1,7 @@
 package ui;
 
 import java.util.*;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -8,6 +9,7 @@ import java.io.PushbackReader;
 import java.io.StringReader;
 
 import javax.swing.BoxLayout;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JFileChooser;
 import javax.swing.JMenu;
@@ -148,6 +150,9 @@ public class Mainwindow extends JFrame {
 
   private void handleNew() {
     SourceFile newFile = new SourceFile();
+    try {
+    	newFile.getDocument().insertString(0, "let rec f = lambda x. if x = 0 then 1 else x * f (x-1) in f 5", null);
+    } catch (Exception e) { }
     tabbedPane.add(newFile.getComponent());
     fileList.add(newFile);
   }
@@ -197,9 +202,12 @@ public class Mainwindow extends JFrame {
       Translator translator = new Translator();
       tree.apply(translator);
 
+      Font f = new JComboBox().getFont();
+      SmallStepModel model = new SmallStepModel(translator.getExpression());
+      model.setFont(f);
+      
       // evaluate the resulting small step expression
-      SmallStepGUI gui = new SmallStepGUI(this, "SmallStep", true,
-          new SmallStepModel(translator.getExpression()));
+      SmallStepGUI gui = new SmallStepGUI(this, "SmallStep", true, model);
       gui.setVisible(true);
       
     } catch (Exception e) {

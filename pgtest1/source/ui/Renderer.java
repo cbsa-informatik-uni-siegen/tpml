@@ -2,14 +2,13 @@ package ui;
 
 import java.awt.*;
 import java.text.*;
+import java.util.Collection;
+import java.util.Iterator;
+
 import smallstep.*;
 
 public class Renderer {
 	
-	/**
-	 * The graphics context
-	 */
-	private Graphics2D 		g2d;
 	
 	private Font			textFont;
 	private FontMetrics 	textFontMetrics;
@@ -18,18 +17,27 @@ public class Renderer {
 	private Font			constantFont;
 	private FontMetrics		constantFontMetrics;
 	
+	private Color			textColor;
+	private Color			keywordColor;
+	private Color			constantColor;
+	
 	private	int 			fontAsc;
 	private int				fontDesc;
 	private int				fontHeight;
+	private int				neededRows;
+	private int				selectedAnnotation;
 	
-	public Renderer (Graphics2D g2d, FontMetrics tfm, FontMetrics kfm, FontMetrics cfm) {
-		this.g2d 					= g2d;
+	public Renderer (FontMetrics tfm, FontMetrics kfm, FontMetrics cfm, Color tc, Color kc, Color cc) {
 		this.textFont 				= tfm.getFont();
 		this.textFontMetrics		= tfm;
 		this.keywordFont			= kfm.getFont();
 		this.keywordFontMetrics		= kfm;
 		this.constantFont			= cfm.getFont();
 		this.constantFontMetrics	= cfm;
+		this.neededRows				= 1;
+		this.textColor				= tc;
+		this.keywordColor			= kc;
+		this.constantColor			= cc;
 		
 		
 		fontAsc = keywordFontMetrics.getAscent();
@@ -44,21 +52,194 @@ public class Renderer {
 		if (fontHeight < constantFontMetrics.getHeight()) fontHeight = constantFontMetrics.getHeight();
 	}
 	
-	public void renderHighlightedExpression (int x, int y, int maxWidth, int maxHeight, PrettyString s, Expression expr) {
-		int posX = x;
-		int posY = y + maxHeight / 2 + (int)(fontAsc / 3.0f);
-		PrettyAnnotation annotation = null;
-		if (expr != null) {
+	public int getSelectedAnnotation() {
+		return this.selectedAnnotation;
+	}
+	
+	private Dimension checkExpression (PrettyString prettyString, PrettyAnnotation annotation) {
+		Dimension d = new Dimension ();
+		int width = 0;
+		int height = 0;
+		PrettyCharIterator it = prettyString.toCharacterIterator();
+		int i = 0;
+		this.neededRows = 1;
+		for (char c = it.first(); c != CharacterIterator.DONE; c = it.next(), i++) {
+			if (annotation != null) {
+				for (int j=0; j<annotation.getBreakOffsets().length; j++) {
+					if (annotation.getBreakOffsets()[j] == i) {
+						height += this.fontHeight;
+						if (width > d.width) {
+							d.width = width;
+						}
+						width = 10;
+						this.neededRows++;
+						break;
+					}
+				}
+			}
+			switch (it.getStyle()) {
+			case NONE:
+				width += this.textFontMetrics.stringWidth("" + c);
+				break;
+			case KEYWORD:
+				width += this.keywordFontMetrics.stringWidth("" + c);
+				break;
+			case CONSTANT:
+				width += this.constantFontMetrics.stringWidth("" + c);
+				break;
+			}
+		}
+		if (width > d.width) {
+			d.width = width;
+		}
+		height += this.textFontMetrics.getHeight();
+		d.height = height;	
+		
+		return d;
+	}
+	
+	public Dimension getBestSize (PrettyString prettyString, int maxWidth) {
+		Dimension d = checkExpression (prettyString, null);
+		Dimension bestSize = d;
+		
+		this.selectedAnnotation = -1;
+		int bestDiff = d.width - maxWidth;
+		
+		if (d.width > maxWidth) {
+			Iterator<PrettyAnnotation> anit = prettyString.getAnnotations().iterator();
+			int annotationNr = 0;
+			while (anit.hasNext()) {
+				
+				PrettyAnnotation anno = anit.next();
+				if (anno.getBreakOffsets().length != 0) {
+					
+					boolean switchSize = false;
+					d = checkExpression (prettyString, anno);
+					int diff = d.width - maxWidth;
+					if (diff <= 0) {
+						if (bestDiff < 0 && diff > bestDiff || bestDiff > 0) {
+							switchSize = true;
+						}
+					}
+					else {
+						if (bestDiff < diff) {
+							switchSize = true;
+						}
+					}
+					
+					if (switchSize) {
+						bestDiff = diff;
+						bestSize = d;
+						this.selectedAnnotation = annotationNr;
+					}
+					
+				}
+				annotationNr++;
+			}
+		}
+		return bestSize;
+	}
+	
+	public void renderHighlightedExpression (Graphics2D g2d, int x, int y, int w, int h,
+			PrettyString expressionString, PrettyAnnotation annotation,
+			Expression underlineExpression) {
+
+		int posx = x;
+		int posy = y + h / 2;
+		posy += (this.fontAsc - this.fontDesc) / 2;
+		
+		if (annotation != null) {
+			posy -= annotation.getBreakOffsets().length * this.fontHeight / 2;
+		}
+		
+		PrettyAnnotation underlineAnnotation = null;
+		if (underlineExpression != null) {
 			try {
-				annotation = s.getAnnotationForExpression(expr);
+				underlineAnnotation = expressionString.getAnnotationForExpression(underlineExpression);
+			} catch (Exception e) {
+				underlineAnnotation = null;
+			}
+		}
+		
+		
+		PrettyCharIterator it = expressionString.toCharacterIterator();
+		int i = 0;
+		for (char c = it.first(); c != CharacterIterator.DONE; c = it.next(), i++) {
+			int length = 0;
+			if (annotation != null) {
+				for (int j=0; j<annotation.getBreakOffsets().length; j++) {
+					if (annotation.getBreakOffsets()[j] == i) {
+						posy += this.fontHeight;
+						posx = x + 10;
+					}
+				}
+			}
+			switch (it.getStyle()) {
+			case NONE:
+				g2d.setColor(this.textColor);
+				g2d.setFont(this.textFont);
+				g2d.drawString("" + c, posx, posy);
+				length = this.textFontMetrics.stringWidth("" + c);
+				break;
+			case KEYWORD:
+				g2d.setColor(this.keywordColor);
+				g2d.setFont(this.keywordFont);
+				g2d.drawString("" + c, posx, posy);
+				length = this.keywordFontMetrics.stringWidth("" + c);
+				break;
+			case CONSTANT:
+				g2d.setColor(this.constantColor);
+				g2d.setFont(this.constantFont);
+				g2d.drawString("" + c, posx, posy);
+				length = this.constantFontMetrics.stringWidth("" + c);
+				break;
+			}
+			if (underlineAnnotation != null) {
+				if (i >= underlineAnnotation.getStartOffset() && i <= underlineAnnotation.getEndOffset()) {
+					g2d.setColor(Color.RED);
+					g2d.drawLine(posx, posy + 3, posx + length, posy + 3);
+					g2d.drawLine(posx, posy + 4, posx + length, posy + 4);
+					g2d.setColor(Color.BLACK);
+				}
+			}
+			posx += length;
+		}
+		g2d.setColor(Color.BLACK);
+		
+	}
+	
+	public void renderHighlightedExpression (Graphics2D g2d, int x, int y, int maxWidth, int maxHeight, Expression expression, Expression underlineExpression) {
+		
+		/*
+		PrettyString s = expression.toPrettyString();
+		int posX = x;
+		int posY = y + (int)(fontAsc);
+		PrettyAnnotation annotation = null;
+		if (underlineExpression != null) {
+			try {
+				annotation = s.getAnnotationForExpression(underlineExpression);
 			} catch (Exception e) {
 				annotation = null;
 			}
 		}
+		
+		// PrettyAnnotation lineBreakAnnotation = getBestAnnotation(expression, maxWidth); 
+		
+		
+		
+		
 		PrettyCharIterator it = s.toCharacterIterator();
 		int i = 0;
 		for (char c = it.first(); c != CharacterIterator.DONE; c = it.next(), i++) {
 			int length = 0;
+			if (lineBreakAnnotation != null) {
+				for (int j=0; j<lineBreakAnnotation.getBreakOffsets().length; j++) {
+					if (lineBreakAnnotation.getBreakOffsets()[j] == i) {
+						posY += this.textFontMetrics.getHeight();
+						posX = x;
+					}
+				}
+			}
 			switch (it.getStyle()) {
 			case NONE:
 				g2d.setFont(this.textFont);
@@ -88,29 +269,18 @@ public class Renderer {
 			}
 			posX += length;
 		}
+		*/
 	}
 	
-	public Dimension checkRenderSize (PrettyString s, int x, int y) {
-		PrettyCharIterator it = s.toCharacterIterator();
-		int maxFontHeight = keywordFontMetrics.getHeight();
-		if (maxFontHeight < textFontMetrics.getHeight())
-			maxFontHeight = textFontMetrics.getHeight();
-		// XXX
-		int posX = x;
-		int posY = y;
-		for (char c = it.first(); c != CharacterIterator.DONE; c = it.next()) {
-			switch(it.getStyle()) {
-			case NONE:
-				posX += this.textFontMetrics.stringWidth("" + c);
-				break;
-			case KEYWORD:
-				posX += this.keywordFontMetrics.stringWidth("" + c);
-				break;
-			case CONSTANT:
-				posX += this.constantFontMetrics.stringWidth("" + c);
-				break;
-			}
-		}
-		return new Dimension(posX, maxFontHeight);
+	public Dimension checkRenderSize (Expression expression, int maxWidth) {
+		return new Dimension();
+		/*
+		PrettyAnnotation annotation = getBestAnnotation (expression, maxWidth);
+		Dimension d = checkExpression (expression, getBestAnnotation(expression, maxWidth));
+		
+		// one pixel more is needed to render the underlining correctly below the expression
+		d.height += 1;
+		return d;
+		*/
 	}
 }

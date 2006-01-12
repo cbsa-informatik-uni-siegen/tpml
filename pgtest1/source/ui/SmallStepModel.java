@@ -1,66 +1,531 @@
 package ui;
 
 
-import java.util.LinkedList;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Rectangle;
+import java.util.ListIterator;
+import java.util.Vector;
+import java.util.EventObject;
+
+import javax.swing.event.EventListenerList;
+
 import smallstep.*;
 
 
 public class SmallStepModel {
-		
-	private Expression 	originExpression;
-	private Expression 	currentExpression;
-	private RuleChain	currentRuleChain;
 	
+	public static final int EVAL_FINAL				= 1;
+	public static final int EVAL_EMPTY_CHAIN		= -1;
+	public static final int EVAL_OK					= 0;
+	
+	public static final int ROLE_RULE			= 0;
+	public static final int ROLE_EXPR			= 1;
+	public static final int ROLE_KEYWORD		= 2;
+	public static final int ROLE_CONSTANT		= 4;
+	public static final int ROLE_UNDERLINE		= 5;
+	
+	public class Step {
+		private Expression		expression;
+		
+		private Expression		underlineExpression;
+		
+		private RuleChain		ruleChain;
+		
+		private PrettyString	prettyString;
+		
+		private int				evaluatedMetaRules;
+		
+		private boolean			evaluatedAxiomRule;
+		
+		private Rectangle[]		rectangles;
+		
+		public Step (Expression expression, RuleChain ruleChain) {
+			this.expression = expression;
+			this.underlineExpression = null;
+			this.ruleChain 	= ruleChain;
+			this.prettyString = expression.toPrettyString();
+			this.evaluatedAxiomRule = false;
+			this.evaluatedMetaRules = 0;
+			this.rectangles = new Rectangle [this.ruleChain.getRules().size()];
+			for (int i=0; i<this.rectangles.length; i++) {
+				this.rectangles[i] = new Rectangle (0, 0, 0, 0);
+			}
+		}
+		
+		public void setUnderlineExpression(Expression expression) {
+			this.underlineExpression = expression;
+		}
+		
+		public Expression getUnderlineExpression() {
+			return this.underlineExpression;
+		}
+		
+		public Expression getExpression() {
+			return this.expression;
+		}
+		
+		public RuleChain getRuleChain() {
+			return this.ruleChain;
+		}
+		
+		public PrettyString getPrettyString() {
+			return this.prettyString;
+		}
+		
+		public void setEvaluatedMetaRules(int evaluatedMetaRules) {
+			this.evaluatedMetaRules = evaluatedMetaRules;
+		}
+		
+		public int getEvaluatedMetaRules() {
+			return this.evaluatedMetaRules;
+		}
+		
+		public void setEvaluatedAxiomRules(boolean evaluatedAxiomRules) {
+			this.evaluatedAxiomRule = evaluatedAxiomRules;
+		}
+		
+		public boolean getEvaluatedAxiomRules() {
+			return this.evaluatedAxiomRule;
+		}
+		
+		public int getNumberOfMetaRules () {
+			if (this.ruleChain.isEmpty() || this.ruleChain.getRules().size() == 1) {
+				return 0;
+			}
+			
+			return this.ruleChain.getRules().size() -1;
+		}
+		
+		public void setRectangle(int idx, Rectangle rect) {
+			System.out.println("setRectangle: " + this.rectangles.length);
+			if (idx >= 0 && idx < this.rectangles.length) {
+				this.rectangles[idx] = rect;
+			}
+		}
+		
+		public Rectangle getRectangle(int idx) {
+			if (idx >= 0 && idx < this.rectangles.length) {
+				return this.rectangles[idx];
+			}
+			return new Rectangle(0, 0, 0, 0);
+		}
+		
+		public int getNumberOfRectangles() {
+			return this.rectangles.length;
+		}
+	}
+	
+	private Vector<Step>	steps = new Vector<Step>();
+	/**
+	 * This is the absolut origin expression still containing the syntactical
+	 * sugar.
+	 */
+	private Expression 	originExpression;
+	
+	/**
+	 * True then  the user desided to release the syntactical sugar.
+	 */
+	private boolean		syntacticalSugarReleased;
+	
+	/**
+	 * 
+	 */
+	private boolean		justAxioms;
+	
+	/**
+	 * 
+	 */
+	private Font		expressionFont;
+	
+	/**
+	 */
+	private Font		keywordFont;
+	
+	/**
+	 */
+	private Font		constantFont;
+
+	/**
+	 * 
+	 */
+	private EventListenerList			listenerList = new EventListenerList();
 	
 	public SmallStepModel(Expression e) {
-		originExpression = currentExpression = e;
-		currentRuleChain = null;
+		this.originExpression 			= e;
+		this.syntacticalSugarReleased 	= false;
+		this.justAxioms					= true;
+		
+		// initiate the first step that just would be the origin expression
+		// with an empty rulechain
+		steps.add (new Step (this.originExpression, new RuleChain ()));
+		
+		// now the first step has be evaluated to produce some output
+		evaluateNextStep ();
+	}
+
+	public boolean releaseSyntacticalSugar () {
+		// when the first step is evaluated the used has desided not to
+		// release the syntactical sugar.
+		if (steps.size() != 2) {
+			return false;
+		}
+		
+		if (this.originExpression.containsSyntacticSugar() == false) {
+			return false;
+		}
+		
+		// now we can savely release the syntactical sugar. For that we 
+		// remove the last entry of the list, release the sugar put it
+		// in the list, and evaluate the last step again
+		steps.remove(1);
+		
+		Expression expr = this.originExpression.translateSyntacticSugar();
+		
+		steps.add(new Step(expr, new RuleChain ()));
+		
+		// now we can re-evaluate the next step
+		// XXX later we can save and reset all the already evaluated rules 
+		// in the step
+		evaluateNextStep();
+		
+		return true;
 	}
 	
-/*	
+	private int evaluateNextStep() {
+		Step step = steps.lastElement();
+		Expression expr = step.getExpression();
+		
+		if ((expr instanceof Value) || (expr instanceof Exn)) {
+			fireStepEvaluated();
+			return EVAL_FINAL;
+		}
+		
+		RuleChain chain = new RuleChain();
+		Expression expression = expr.evaluate(chain);
+		
+		if (chain.isEmpty()) 
+			return EVAL_EMPTY_CHAIN;
+		
+		steps.add(new Step(expression, chain));
+		if (this.justAxioms) {
+			completeMetaRules();
+		}
+		fireStepEvaluated();
+		return EVAL_OK;
+	}
+	
+	public void setFont(Font font) {
+		this.keywordFont = font.deriveFont(1.3f * font.getSize2D());
+		this.constantFont = font.deriveFont(1.2f * font.getSize2D());
+		this.expressionFont = font.deriveFont(1.2f * font.getSize2D());
+	}
+	
+	public void completeMetaRules() {
+		Step step = steps.lastElement();
+		if (!step.getRuleChain().isEmpty()) {
+			step.setEvaluatedMetaRules(step.getRuleChain().getRules().size()-1);
+		}
+		fireContentsChanged();
+	}
+	
+	public int completeLastStep() {
+		Step step = steps.lastElement();
+		step.setEvaluatedAxiomRules(true);
+		
+		if (!step.getRuleChain().isEmpty()) {
+			step.setEvaluatedMetaRules(step.getRuleChain().getRules().size()-1);
+		}
+	
+		fireContentsChanged();
+		return evaluateNextStep();
+	}
+	
+	public void completeAllSteps() {
+		while (completeLastStep() == SmallStepModel.EVAL_OK);
+	}
+	
 	public int getNumberOfSteps() {
-		return ruleChaines.size();
+		return this.steps.size();
 	}
 	
-	public int getNumberOfRules(int step) {
-		if (step >= ruleChaines.size())
-			return 0;
-		return ruleChaines.get(step).getRules().size();
+	public void setJustAxioms(boolean justAxioms) {
+		this.justAxioms = justAxioms;
 	}
 	
-	public Rule getRule(int step, int n) {
-		if (step >= ruleChaines.size())
-			throw new IllegalStateException("Step: " + step + " not in range of ruleChaines");
+	public boolean getJustAxioms() {
+		return this.justAxioms;
+	}
+	
+	public void ruleSelectionChanged(String string) {
+		if (steps.size () == 0) {
+			return;
+		}
 		
-		RuleChain rc = ruleChaines.get(step);
-		if (n >= rc.getRules().size())
-			throw new IllegalStateException("n: " + n + " not in range of RuleChaing");
-		
-		return rc.getRules().get(n); 
-	}
-*/
-	
-	public Expression getOriginExpression() {
-		return (originExpression);
-	}
-	
-	public Expression getCurrentExpression() {
-		return (currentExpression);
-	}
-	
-	public RuleChain getCurrentRuleChain() {
-		return (currentRuleChain);
-	}
-	
-	public int evaluateNextStep() {
-		if ((currentExpression instanceof Value) || (currentExpression instanceof Exn))
-			return 1;
-		currentRuleChain = new RuleChain();
-		currentExpression = currentExpression.evaluate(currentRuleChain);
-		
-		if (currentRuleChain.isEmpty())
-			return -1;
+		Step step = steps.lastElement();
+		if (step.getEvaluatedMetaRules() < step.getNumberOfMetaRules()) {
+			// not all meta rules are evaluated
 			
+			// even if you not belive, this line check if the last, not evaluated,
+			// rule of the meta rules matches the selected
+			if (step.getRuleChain().getRules().get(step.getEvaluatedMetaRules()).getName().equals(string)) {
+				step.setEvaluatedMetaRules(step.getEvaluatedMetaRules()+1);
+				fireContentsChanged();
+			}
+		}
+		else {
+			// all meta rules are evaluated so it has to be an axiom rule
+			if (step.getRuleChain().getRules().getLast().getName().equals(string)) {
+				step.setEvaluatedAxiomRules(true);
+				evaluateNextStep();
+				fireContentsChanged();
+			}
+		}
+	}
+	
+	public PrettyString getPrettyString(int idx) {
+		if (idx >= steps.size ()) {
+			return null;
+		}
+		
+		Step step = steps.elementAt(idx);
+		
+		return step.getPrettyString();
+	}
+	
+	public Expression getUnderlineExpression(int idx) {
+		if (idx >= steps.size()) {
+			return null;
+		}
+		
+		Step step = steps.elementAt(idx);
+		return step.getUnderlineExpression();
+	}
+	
+	public int getNumberOfMetaRules(int idx) {
+		if (idx >= steps.size ()) {
+			return 0;
+		}
+		
+		Step step = steps.elementAt(idx);
+		
+		int value = step.getRuleChain().getRules().size();
+		if (value > 0) {
+			value--;
+		}
+		
+		return value;
+	}
+	
+	public int getNumberOfEvaluatedMetaRules(int idx) {
+		if (idx >= steps.size ()) {
+			return 0;
+		}
+		
+		Step step = steps.elementAt(idx);
+		
+		return step.getEvaluatedMetaRules();
+	}
+	
+	
+	public Rule getMetaRule(int stepIdx, int idx) {
+		if (stepIdx >= steps.size ()) {
+			return null;
+		}
+		
+		Step step = steps.elementAt(stepIdx);
+		
+		int value = step.getRuleChain().getRules().size();
+		if (value > 0) {
+			value--;
+		}
+	
+		if (idx >= value) {
+			return null;
+		}
+		
+		return step.getRuleChain().getRules().get(idx);
+	}
+	
+	public Rule getAxiomRule(int stepIdx) {
+		if (stepIdx >= steps.size ()) {
+			return null;
+		}
+		
+		Step step = steps.elementAt(stepIdx);
+		
+		if (step.getRuleChain().isEmpty()) {
+			return null;
+		}
+		
+		return step.getRuleChain().getRules().getLast();
+	}
+	
+	public boolean getAximoRulesEvaluted(int stepIdx) {
+		if (stepIdx >= steps.size ()) {
+			return false;
+		}
+		
+		Step step = steps.elementAt(stepIdx);
+		
+		return step.getEvaluatedAxiomRules();
+	}
+	
+	public boolean getEmptyRules(int stepIdx) {
+		if (stepIdx >= steps.size ()) {
+			return false;
+		}
+		Step step = steps.elementAt(stepIdx);
+		return (step.getRuleChain().isEmpty());
+	}
+	
+	public String[] getMetaRules() {
+		String[] rules = new String [13];
+		
+		rules[0] = "---";
+		rules[1] = "APP-LEFT";
+		rules[2] = "APP-RIGHT";
+		rules[3] = "COND-EVAL";
+		rules[4] = "AND-EVAL";
+		rules[5] = "OR-EVAL";
+		rules[6] = "LET-EVAL";
+		rules[7] = "APP-LEFT-EXN";
+		rules[8] = "APP-RIGHT-EXN";
+		rules[9] = "COND-EVAL-EXN";
+		rules[10] = "AND-EVAL-EXN";
+		rules[11] = "OR-EVAL-EXN";
+		rules[12] = "LET-EVAL-EXN";
+		
+		return rules;
+	}
+	
+	public String[] getAxiomRules() {
+		String[] rules = new String[11];
+		
+		rules[0] = "---";
+		rules[1] = "OP";
+		rules[2] = "BETA-V";
+		rules[3] = "COND-TRUE";
+		rules[4] = "COND-FALSE";
+		rules[5] = "AND-TRUE";
+		rules[6] = "AND-FALSE";
+		rules[7] = "OR-TRUE";
+		rules[8] = "OR-FALSE";
+		rules[9] = "LET-EXEC";
+		rules[10] = "UNFOLD";
+		
+		return rules;
+	}
+	
+	public Font getFontRole(int role) {
+		Font font = this.expressionFont;
+		switch (role) {
+		case ROLE_RULE:
+		case ROLE_EXPR:
+			break;
+		case ROLE_KEYWORD:
+			font = this.keywordFont;
+			break;
+		case ROLE_CONSTANT:
+			font = this.constantFont;
+			break;
+		}
+		return font;
+	}
+	
+	public Color getColorRole(int role) {
+		Color color = null;
+		switch (role) {
+		case ROLE_RULE:
+			color = new Color(0.0f, 0.0f, 0.0f);
+			break;
+		case ROLE_EXPR:
+			color = new Color(0.0f, 0.0f, 0.0f);
+			break;
+		case ROLE_KEYWORD:
+			color = new Color(0.5f, 0.0f, 0.0f);
+			break;
+		case ROLE_CONSTANT:
+			color = new Color(0.0f, 0.0f, 0.5f);
+			break;
+		case ROLE_UNDERLINE:
+			color = new Color(1.0f, 0.0f, 0.0f);
+			break;
+		}
+		return color;
+	}
+	
+	public void setRectangle(int stepId, int ruleId, Rectangle rect) {
+		System.out.println("setRectangle(" + stepId + ", " + ruleId + "(" + rect.x + ", " + rect.y + " " + rect.width + ", " + rect.height + "))");
+		if (stepId >= 0 && stepId < steps.size()) {
+			steps.get(stepId).setRectangle(ruleId, rect);
+		}
+	}
+	
+	public Rectangle getRectangle(int stepId, int ruleId) {
+		if (stepId >= 0 && stepId < steps.size ()) {
+			return steps.get(stepId).getRectangle(ruleId);
+		}
+		return new Rectangle (0, 0, 0, 0);
+	}
+	
+	public int getNumberOfRectangles(int stepId) {
+		if (stepId >= 0 && stepId < steps.size ()) {
+			return steps.get(stepId).getNumberOfRectangles();
+		}
 		return 0;
+	}
+	
+	public Rule getRule(int stepId, int ruleId) {
+		if (stepId >= 0 && stepId < steps.size ()) {
+			RuleChain chain = steps.get(stepId).getRuleChain();
+			if (ruleId >= 0 && ruleId < chain.getRules().size()) {
+				return chain.getRules().get(ruleId);
+			}
+		}
+		return null;
+	}
+	
+	public void setUndelineExpression(int stepId, Expression expression) {
+		if (stepId >= 0 && stepId < steps.size ()) {
+			steps.get(stepId).setUnderlineExpression(expression);
+		}
+	}
+	public void clearUndelines() {
+		ListIterator<Step> it = steps.listIterator();
+		while (it.hasNext()) {
+			Step step = it.next();
+			step.setUnderlineExpression(null);
+		}
+	}
+	
+	public void addSmallStepEventListener(SmallStepEventListener e) {
+		listenerList.add(SmallStepEventListener.class, e);
+	}
+	
+	public void removeSmallStepEventListener(SmallStepEventListener e) {
+		listenerList.remove(SmallStepEventListener.class, e);
+	}
+
+	public void fireContentsChanged() {
+		Object[] listeners = listenerList.getListenerList();
+		
+	    for (int i = listeners.length-2; i>=0; i-=2) {
+	         if (listeners[i]==SmallStepEventListener.class) {
+	             // Lazily create the event:
+	             ((SmallStepEventListener)listeners[i+1]).contentsChanged(new EventObject(this));
+	         }
+	     }
+	}
+	
+	public void fireStepEvaluated() {
+		Object[] listeners = listenerList.getListenerList();
+		
+	    for (int i = listeners.length-2; i>=0; i-=2) {
+	         if (listeners[i]==SmallStepEventListener.class) {
+	             // Lazily create the event:
+	             ((SmallStepEventListener)listeners[i+1]).stepEvaluated(new EventObject(this));
+	         }
+	     }
 	}
 }
