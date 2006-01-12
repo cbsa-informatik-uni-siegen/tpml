@@ -76,8 +76,9 @@ public final class LetRec extends Expression {
     assert (this.e1 instanceof Expression);
     assert (this.e2 instanceof Expression);
     
-    // perform the (UNFOLD) operation on e1
+    // perform the (UNFOLD), which includes a (LET-EVAL) of course, operation on e1
     ruleChain.prepend(new Rule(this, Rule.UNFOLD));
+    ruleChain.prepend(new Rule(this, Rule.LET_EVAL));
     Expression e1 = this.e1.substitute(this.id, new Recursion(this.id, this.e1));
     
     // and generate a (LET) expression
