@@ -1,0 +1,40 @@
+Package de.unisiegen.tpml.grammars.l0;
+
+
+Helpers
+ digit = ['0' .. '9'];
+ letter = [['a' .. 'z'] + ['A' .. 'Z']];
+
+ 
+Tokens
+ blank = (' ' | 13 | 10)+;
+ dot = '.';
+ lbracket = '(';
+ rbracket = ')';
+ lambda = 'lambda';
+ identifier = letter (digit | letter)*;
+
+
+Ignored Tokens
+ blank;
+
+
+Productions
+ expression =
+  {application} [app]:application {-> app.expression } |
+  {abstraction} lambda [id]:identifier dot [e1]:expression {-> New expression.abstraction(id, e1)};
+  
+ application {-> expression} =
+  {atom} [a]:atom {-> a.expression } |
+  {application} [e1]:application [e2]:atom {-> New expression.application(e1.expression, e2.expression)};
+ 
+ atom {-> expression} =
+  {identifier} [id]:identifier {-> New expression.identifier(id) } |
+  {expression} lbracket [e]:expression rbracket {-> e.expression };
+
+
+Abstract Syntax Tree
+ expression =
+  {application} [e1]:expression [e2]:expression |
+  {abstraction} [id]:identifier [e1]:expression |
+  {identifier} [id]:identifier;

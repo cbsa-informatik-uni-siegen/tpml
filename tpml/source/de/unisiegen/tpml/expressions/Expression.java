@@ -1,7 +1,7 @@
-package tpml.expressions;
+package de.unisiegen.tpml.expressions;
 
+import java.util.Collections;
 import java.util.Set;
-import java.util.TreeSet;
 
 /**
  * Base class for all classes in the expression hierarchy.
@@ -19,8 +19,16 @@ public abstract class Expression {
    * All expression classes in the expression hierarchy must override
    * this method in one or the other way.
    * 
+   * The implementations of this method may either return the constant
+   * <code>EMPTY_SET</code> or a dynamically allocated <code>Set</code>.
+   * All implementors must ensure to not modify the <code>EMPTY_SET</code>
+   * in any case. So if unsure, check for equality to <code>EMPTY_SET</code>
+   * first before modifying the result of a <code>free()</code> invocation.  
+   * 
    * @return the set of free (unbound) identifiers within the
    *         expression.
+   *         
+   * @see #EMPTY_SET         
    */
   public abstract Set<String> free();
   
@@ -45,5 +53,5 @@ public abstract class Expression {
    * of newly allocated empty sets for the <code>free</code> method
    * implementations.
    */
-  protected static final Set<String> EMPTY_SET = new TreeSet<String>(); 
+  protected static final Set<String> EMPTY_SET = Collections.emptySet(); 
 }

@@ -1,4 +1,4 @@
-package tpml.expressions;
+package de.unisiegen.tpml.expressions;
 
 import java.util.Set;
 import java.util.TreeSet;
@@ -11,18 +11,27 @@ import java.util.TreeSet;
  */
 public final class Identifier extends Expression {
   /**
+   * Allocates a new identifier with the given <code>name</code>.
+   * 
+   * @param name the name of the identifier.
+   */
+  public Identifier(String name) {
+    this.name = name;
+  }
+  
+  /**
    * Returns a set that contains exacty one element, which is
    * the name of the identifier.
    * 
    * @return a set which contains the name of the identifier.
    * 
    * @see #getName()
-   * @see tpml.expressions.Expression#free()
+   * @see de.unisiegen.tpml.expressions.Expression#free()
    */
   @Override
   public Set<String> free() {
     Set<String> free = new TreeSet<String>();
-    free.add(getName());
+    free.add(this.name);
     return free;
   }
 
@@ -36,7 +45,7 @@ public final class Identifier extends Expression {
    *         itself.
    *
    * @see #getName()
-   * @see tpml.expressions.Expression#substitute(java.lang.String, tpml.expressions.Expression)
+   * @see de.unisiegen.tpml.expressions.Expression#substitute(java.lang.String, de.unisiegen.tpml.expressions.Expression)
    */
   @Override
   public Expression substitute(String id, Expression e) {

@@ -1,7 +1,6 @@
-package tpml.expressions;
+package de.unisiegen.tpml.expressions;
 
 import java.util.Set;
-import java.util.TreeSet;
 
 /**
  * Represents the <b>(APP)</b> expression in the expression
@@ -14,6 +13,12 @@ import java.util.TreeSet;
  * @version $Id$
  */
 public final class Application extends Expression {
+  /**
+   * Allocates a new application of <code>e1</code> to <code>e2</code>.
+   * 
+   * @param e1 the first expression (the operation).
+   * @param e2 the second expression (the operand).
+   */
   public Application(Expression e1, Expression e2) {
     this.e1 = e1;
     this.e2 = e2;
@@ -30,7 +35,7 @@ public final class Application extends Expression {
    * 
    * @see #getE1()
    * @see #getE2()
-   * @see tpml.expressions.Expression#free()
+   * @see de.unisiegen.tpml.expressions.Expression#free()
    */
   @Override
   public Set<String> free() {
@@ -38,16 +43,15 @@ public final class Application extends Expression {
     Set<String> freeE1 = this.e1.free();
     Set<String> freeE2 = this.e2.free();
     
-    // check if both sub expression contain no free identifiers
-    if (freeE1 == Expression.EMPTY_SET && freeE2 == Expression.EMPTY_SET)
-      return Expression.EMPTY_SET;
+    // check if any of the sub expressions contains no free identifiers
+    if (freeE1 == Expression.EMPTY_SET)
+      return freeE2;
+    else if (freeE2 == Expression.EMPTY_SET)
+      return freeE1;
     
-    // allocate a new set
-    Set<String> free = new TreeSet<String>();
-    free.addAll(this.e1.free());
-    free.addAll(this.e2.free());
-    
-    return free;
+    // add all free identifiers from e2 to the set returned for e1
+    freeE1.addAll(freeE2);
+    return freeE1;
   }
 
   /**
@@ -61,7 +65,7 @@ public final class Application extends Expression {
    * 
    * @see #getE1()
    * @see #getE2()
-   * @see tpml.expressions.Expression#substitute(java.lang.String, tpml.expressions.Expression)
+   * @see de.unisiegen.tpml.expressions.Expression#substitute(java.lang.String, de.unisiegen.tpml.expressions.Expression)
    */
   @Override
   public Expression substitute(String id, Expression e) {
