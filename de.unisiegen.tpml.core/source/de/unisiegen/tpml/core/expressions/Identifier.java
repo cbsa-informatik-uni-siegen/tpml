@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.expressions;
+package de.unisiegen.tpml.core.expressions;
 
 import java.util.Set;
 import java.util.TreeSet;
@@ -26,7 +26,7 @@ public final class Identifier extends Expression {
    * @return a set which contains the name of the identifier.
    * 
    * @see #getName()
-   * @see de.unisiegen.tpml.expressions.Expression#free()
+   * @see de.unisiegen.tpml.core.expressions.Expression#free()
    */
   @Override
   public Set<String> free() {
@@ -45,7 +45,7 @@ public final class Identifier extends Expression {
    *         itself.
    *
    * @see #getName()
-   * @see de.unisiegen.tpml.expressions.Expression#substitute(java.lang.String, de.unisiegen.tpml.expressions.Expression)
+   * @see de.unisiegen.tpml.core.expressions.Expression#substitute(java.lang.String, de.unisiegen.tpml.core.expressions.Expression)
    */
   @Override
   public Expression substitute(String id, Expression e) {

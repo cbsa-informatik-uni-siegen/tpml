@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.expressions;
+package de.unisiegen.tpml.core.expressions;
 
 import java.util.Collections;
 import java.util.Set;

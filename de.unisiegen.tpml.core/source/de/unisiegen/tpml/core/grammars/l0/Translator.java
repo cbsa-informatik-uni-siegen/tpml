@@ -1,15 +1,15 @@
-package de.unisiegen.tpml.grammars.l0;
+package de.unisiegen.tpml.core.grammars.l0;
 
 import java.util.Stack;
 
-import de.unisiegen.tpml.expressions.Abstraction;
-import de.unisiegen.tpml.expressions.Application;
-import de.unisiegen.tpml.expressions.Expression;
-import de.unisiegen.tpml.expressions.Identifier;
-import de.unisiegen.tpml.grammars.l0.analysis.DepthFirstAdapter;
-import de.unisiegen.tpml.grammars.l0.node.AAbstractionExpression;
-import de.unisiegen.tpml.grammars.l0.node.AApplicationExpression;
-import de.unisiegen.tpml.grammars.l0.node.AIdentifierExpression;
+import de.unisiegen.tpml.core.expressions.Abstraction;
+import de.unisiegen.tpml.core.expressions.Application;
+import de.unisiegen.tpml.core.expressions.Expression;
+import de.unisiegen.tpml.core.expressions.Identifier;
+import de.unisiegen.tpml.core.grammars.l0.analysis.DepthFirstAdapter;
+import de.unisiegen.tpml.core.grammars.l0.node.AAbstractionExpression;
+import de.unisiegen.tpml.core.grammars.l0.node.AApplicationExpression;
+import de.unisiegen.tpml.core.grammars.l0.node.AIdentifierExpression;
 
 /**
  * Translator class, which is used to transform the abstract
