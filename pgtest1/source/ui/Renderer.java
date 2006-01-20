@@ -56,6 +56,10 @@ public class Renderer {
 		return this.selectedAnnotation;
 	}
 	
+	public int getRenderHeight() {
+		return this.fontHeight;
+	}
+	
 	private Dimension checkExpression (PrettyString prettyString, PrettyAnnotation annotation) {
 		Dimension d = new Dimension ();
 		int width = 0;
@@ -122,7 +126,7 @@ public class Renderer {
 						}
 					}
 					else {
-						if (bestDiff < diff) {
+						if (bestDiff > diff) {
 							switchSize = true;
 						}
 					}

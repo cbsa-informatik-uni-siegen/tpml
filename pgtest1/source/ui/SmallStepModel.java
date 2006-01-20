@@ -7,6 +7,9 @@ import java.awt.Rectangle;
 import java.util.ListIterator;
 import java.util.Vector;
 import java.util.EventObject;
+import java.util.prefs.PreferenceChangeEvent;
+import java.util.prefs.PreferenceChangeListener;
+import java.util.prefs.Preferences;
 
 import javax.swing.event.EventListenerList;
 
@@ -24,6 +27,7 @@ public class SmallStepModel {
 	public static final int ROLE_KEYWORD		= 2;
 	public static final int ROLE_CONSTANT		= 4;
 	public static final int ROLE_UNDERLINE		= 5;
+	public static final int ROLE_RULE_EXP		= 6;
 	
 	public class Step {
 		private Expression		expression;
@@ -98,7 +102,6 @@ public class SmallStepModel {
 		}
 		
 		public void setRectangle(int idx, Rectangle rect) {
-			System.out.println("setRectangle: " + this.rectangles.length);
 			if (idx >= 0 && idx < this.rectangles.length) {
 				this.rectangles[idx] = rect;
 			}
@@ -145,6 +148,16 @@ public class SmallStepModel {
 	/**
 	 */
 	private Font		constantFont;
+	
+	/**
+	 * 
+	 */
+	private Font		ruleExpFont;
+	
+	/**
+	 * 
+	 */
+	private Font		origFont;
 
 	/**
 	 * 
@@ -155,11 +168,23 @@ public class SmallStepModel {
 		this.originExpression 			= e;
 		this.syntacticalSugarReleased 	= false;
 		this.justAxioms					= true;
+		this.origFont					= null;
 		
 		// initiate the first step that just would be the origin expression
 		// with an empty rulechain
 		steps.add (new Step (this.originExpression, new RuleChain ()));
 		
+		
+		Preferences prefs = Preferences.userNodeForPackage(SmallStepGUI.class);
+		this.justAxioms = prefs.getBoolean("ssJustAxioms", true);
+		prefs.addPreferenceChangeListener(new PreferenceChangeListener() {
+			public void preferenceChange(PreferenceChangeEvent event) {
+				if (event.getKey().equals("ssJustAxioms")) {
+					SmallStepModel.this.justAxioms = event.getNewValue().equals("true");
+				}
+			}
+		});
+
 		// now the first step has be evaluated to produce some output
 		evaluateNextStep ();
 	}
@@ -192,7 +217,7 @@ public class SmallStepModel {
 		return true;
 	}
 	
-	private int evaluateNextStep() {
+	public int evaluateNextStep() {
 		Step step = steps.lastElement();
 		Expression expr = step.getExpression();
 		
@@ -216,9 +241,11 @@ public class SmallStepModel {
 	}
 	
 	public void setFont(Font font) {
+		this.origFont = font;
 		this.keywordFont = font.deriveFont(1.3f * font.getSize2D());
 		this.constantFont = font.deriveFont(1.2f * font.getSize2D());
 		this.expressionFont = font.deriveFont(1.2f * font.getSize2D());
+		this.ruleExpFont = this.expressionFont.deriveFont(this.expressionFont.getSize2D() * 0.75f);
 	}
 	
 	public void completeMetaRules() {
@@ -228,6 +255,15 @@ public class SmallStepModel {
 		}
 		fireContentsChanged();
 	}
+	
+	public Font getOrigFont() {
+		return this.origFont;
+	}
+	
+	public Expression getOrigExpression() {
+		return this.originExpression;
+	}
+	
 	
 	public int completeLastStep() {
 		Step step = steps.lastElement();
@@ -239,6 +275,10 @@ public class SmallStepModel {
 	
 		fireContentsChanged();
 		return evaluateNextStep();
+	}
+	
+	public void completeSteps(int numSteps) {
+		while (numSteps > 0 && completeLastStep() == SmallStepModel.EVAL_OK) --numSteps;
 	}
 	
 	public void completeAllSteps() {
@@ -429,6 +469,8 @@ public class SmallStepModel {
 		case ROLE_CONSTANT:
 			font = this.constantFont;
 			break;
+		case ROLE_RULE_EXP:
+			font = this.ruleExpFont;
 		}
 		return font;
 	}
@@ -456,7 +498,6 @@ public class SmallStepModel {
 	}
 	
 	public void setRectangle(int stepId, int ruleId, Rectangle rect) {
-		System.out.println("setRectangle(" + stepId + ", " + ruleId + "(" + rect.x + ", " + rect.y + " " + rect.width + ", " + rect.height + "))");
 		if (stepId >= 0 && stepId < steps.size()) {
 			steps.get(stepId).setRectangle(ruleId, rect);
 		}

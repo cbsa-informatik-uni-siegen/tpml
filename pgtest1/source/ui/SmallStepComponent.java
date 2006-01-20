@@ -79,7 +79,23 @@ public class SmallStepComponent extends JComponent {
 	 * 
 	 */
 	private int 					maxWidth;
+	
+	/**
+	 * 
+	 */
+	private int 					lastSelectedStep = -1;
+	
+	/**
+	 * 
+	 */
+	private int 					lastSelectedRule = -1;
+	
 		
+	/**
+	 *
+	 */
+	private boolean 				groupRules = true;
+	
 	public SmallStepComponent() {
 		super();
 		setLayout(null);
@@ -125,7 +141,6 @@ public class SmallStepComponent extends JComponent {
 			public void stepEvaluated(EventObject o) { }
 			public void contentsChanged(EventObject o) {
 				upToDate = false;
-				System.out.println("contentsChanged");
 				repaint();
 //				invalidate();
 			}
@@ -180,6 +195,7 @@ public class SmallStepComponent extends JComponent {
 		
 		
 		FontMetrics fm = this.getFontMetrics(model.getFontRole(SmallStepModel.ROLE_EXPR));
+		FontMetrics expFm = this.getFontMetrics(model.getFontRole(SmallStepModel.ROLE_RULE_EXP));
 		
 		
 		this.verticalSizes = new int[model.getNumberOfSteps()+1];
@@ -196,9 +212,26 @@ public class SmallStepComponent extends JComponent {
 			}
 			int numRules = model.getNumberOfEvaluatedMetaRules(i);
 			for (int j=0; j<numRules; j++) {
-				String rule = model.getMetaRule(i, j).getName();
-				int width = fm.stringWidth(rule) + this.ruleIntersection.width;
-				currentCenter += width; 
+				Rule rule = model.getMetaRule(i, j);
+				String ruleText = rule.getName();
+				int multiplier = 1;
+				if (this.groupRules) {
+					int k = 1;
+					for (k = 1; (k+j)<numRules; k++) {
+						String rt = model.getMetaRule(i, j + k).getName();
+						// check if the next rule equals the current rule
+						if (ruleText.equals(rt)) {
+							continue;
+						}
+						// when this rule does not equal the current rule k will hold the multiplier for
+						// this rule
+						break;
+					}
+					multiplier = k;
+				}
+				int width = this.getRuleTextWidth(rule, fm, expFm, multiplier) + this.ruleIntersection.width;
+				currentCenter += width;
+				j += (multiplier - 1);
 			}
 			
 			if (numRules < model.getNumberOfMetaRules(i)) { 
@@ -235,6 +268,7 @@ public class SmallStepComponent extends JComponent {
 			Dimension d = renderer.getBestSize(model.getPrettyString(i), this.maxWidth - this.center);
 			int expression = 2 * this.border.height + d.height;
 			this.usedAnnotation[i] = renderer.getSelectedAnnotation();
+			
 			
 			if (d.width + this.center > this.rightOutline) {
 				this.rightOutline = d.width + this.center;
@@ -293,13 +327,35 @@ public class SmallStepComponent extends JComponent {
 	 * @param fm The fontmetrics that is used to calculate the position of the text
 	 * @return The position behind the drawn string
 	 */
-	public int drawRuleText (Graphics2D g2d, int x, int y, Rule rule, FontMetrics fm) {
+	public int drawRuleText (Graphics2D g2d, int x, int y, Rule rule, FontMetrics fm, FontMetrics expFm, int multiplier) {
 		int posy = y + this.comboSize.height - fm.getDescent();
+
+		String str = "(" + rule.getName() + ")";
+		g2d.setFont(fm.getFont());
+		g2d.drawString(str, x, posy);
+		x += fm.stringWidth(str);
 		
-		g2d.setFont(model.getFontRole(SmallStepModel.ROLE_RULE));
-		g2d.drawString(rule.getName(), x, posy);
+		if (multiplier > 1) {
+			posy -= fm.getAscent() / 2;
+			str = "" + multiplier;
+			g2d.setFont(expFm.getFont());
+			g2d.drawString(str, x, posy);
+			x += expFm.stringWidth(str);
+		}
 		
-		return (x + fm.stringWidth(rule.getName()));
+		return (x);
+	}
+	
+	public int getRuleTextWidth(Rule rule, FontMetrics fm, FontMetrics expFm, int multiplier) {
+		String str = "(" + rule.getName() + ")";
+		int width = fm.stringWidth(str);
+		
+		if (multiplier > 1) {
+			str = "" + multiplier;
+			width += expFm.stringWidth(str);
+		}
+		
+		return (width);
 	}
 	
 	public void drawExpressionString(Graphics2D g2d, int x, int y, int w, int h, PrettyString string) {
@@ -335,6 +391,8 @@ public class SmallStepComponent extends JComponent {
 		int y = this.verticalSizes[step];
 		int w = getWidth() - this.center;
 		int h = this.verticalSizes[step+1] - this.verticalSizes[step];
+		x += renderer.getRenderHeight() / 2;
+		w -= renderer.getRenderHeight() / 2;
 		
 		if (!this.underlineExpressions) {
 			underlineExpression = null;
@@ -353,30 +411,57 @@ public class SmallStepComponent extends JComponent {
 		g2d.setColor(Color.BLACK);
 		
 		FontMetrics fmRule = this.getFontMetrics(model.getFontRole(SmallStepModel.ROLE_RULE));
+		FontMetrics fmRuleExp = this.getFontMetrics(model.getFontRole(SmallStepModel.ROLE_RULE_EXP));
 		prepare ();
 		
-//		g2d.drawLine(this.center, 0, this.center, getHeight ());
-//		for (int i=0; i<verticalSizes.length; i++) {
-//			g2d.drawLine (0, this.verticalSizes[i], getWidth(), this.verticalSizes[i]);
-//		}
-//		g2d.drawLine(this.rightOutline, 0, this.rightOutline, getHeight());
+		boolean debugFrames = false;
+		if (debugFrames) {
+			g2d.drawLine(this.center, 0, this.center, getHeight ());
+			for (int i=0; i<verticalSizes.length; i++) {
+				g2d.drawLine (0, this.verticalSizes[i], getWidth(), this.verticalSizes[i]);
+			}
+			g2d.drawLine(this.rightOutline, 0, this.rightOutline, getHeight());
+		}
 		
 		for (int i=0; i<model.getNumberOfSteps(); i++) {
 			// draw the rules
 			if (!model.getEmptyRules(i)) {
 				int posx = this.border.width;
 				int posy = this.verticalSizes[i] + this.border.height;
-				
-				for (int j=0; j<model.getNumberOfEvaluatedMetaRules(i); j++) {
-					int newPosx = drawRuleText (g2d, posx, posy, model.getMetaRule(i, j), fmRule);
+				int numEvaluatedRules = model.getNumberOfEvaluatedMetaRules(i);
+				for (int j=0; j<numEvaluatedRules; j++) {
+					Rule rule = model.getMetaRule(i, j);
+					String ruleText = rule.getName();
+					int multiplier = 1;
+					if (this.groupRules) {
+						int k = 1;
+						for (k = 1; (k+j)<numEvaluatedRules; k++) {
+							String rt = model.getMetaRule(i, j + k).getName();
+							// check if the next rule equals the current rule
+							if (ruleText.equals(rt)) {
+								continue;
+							}
+							// when this rule does not equal the current rule k will hold the multiplier for
+							// this rule
+							break;
+						}
+						multiplier = k;
+					}
+					int newPosx = drawRuleText (g2d, posx, posy, model.getMetaRule(i, j), fmRule, fmRuleExp, multiplier);
 					int width = newPosx - posx;
 					model.setRectangle(i, j, new Rectangle (posx, posy, width, fmRule.getHeight()));
+					if (multiplier > 1) {
+						for (int k=0; k<multiplier; k++) {
+							model.setRectangle(i, j+k, new Rectangle(0, 0, 0, 0));
+						}
+					}
 					posx = newPosx + this.ruleIntersection.width;
+					j+= (multiplier-1);
 				}
 				if (model.getAximoRulesEvaluted(i)) {
 					posx = this.border.width;
 					posy = this.verticalSizes[i] + this.border.height + this.comboSize.height + this.ruleIntersection.height;
-					int newPosx = drawRuleText (g2d, posx, posy, model.getAxiomRule(i), fmRule);
+					int newPosx = drawRuleText (g2d, posx, posy, model.getAxiomRule(i), fmRule, fmRuleExp, 1);
 					int width = newPosx - posx;
 					model.setRectangle(i, model.getNumberOfEvaluatedMetaRules(i), new Rectangle (posx, posy, width, fmRule.getHeight()));
 				}
@@ -395,9 +480,6 @@ public class SmallStepComponent extends JComponent {
 		}	
 	}
 	
-	
-	private int lastSelectedStep = -1;
-	private int lastSelectedRule = -1;
 	
 	private void handleMouseMoved(MouseEvent e) {
 		int x = e.getX();
@@ -425,7 +507,6 @@ public class SmallStepComponent extends JComponent {
 		for (; i<model.getNumberOfRectangles(section); i++) {
 			Rectangle rect = model.getRectangle(section, i);
 			if (x >= rect.x && y >= rect.y && x < rect.x + rect.width && y < rect.y + rect.height) {
-				System.out.println("(" + x + ", " + y + ")");
 				if (lastSelectedStep != section || lastSelectedRule != i) {
 					lastSelectedStep = section;
 					lastSelectedRule = i;
@@ -447,216 +528,3 @@ public class SmallStepComponent extends JComponent {
 		repaint();
 	}
 }
-/*
-	private LinkedList<SmallStep>	smallStepSteps = new LinkedList<SmallStep>();
-	
-	private boolean					justAxioms;
-	
-	private boolean					underlineExpressions;
-	
-	private EventListenerList		listenerList = new EventListenerList();
-	
-	private int						maxWidth;
-
-	public SmallStepComponent(SmallStepModel model, boolean justAxioms, boolean underlineExpressions) {
-		super();
-		setLayout(null);
-		
-		this.model 					= model;
-		this.justAxioms 			= justAxioms;
-		this.underlineExpressions 	= underlineExpressions;
-		this.maxWidth				= 300;
-		
-		// create the first Step;
-		SmallStep step = new SmallStep(null, model.getOriginExpression(), null);
-		add(step);
-		step.setBounds(10, 10, step.getWidth(), step.getHeight());	
-		smallStepSteps.add(step);
-		
-		// and now evaluate the first "real" step
-		evaluateNextStep();
-	}
-	
-	public void setJustAxioms(boolean justAxioms) {
-		this.justAxioms = justAxioms;
-	}
-	
-	public boolean getJustAxioms() {
-		return this.justAxioms;
-	}
-	
-	public void setMaxWidth(int maxWidth) {
-		this.maxWidth = maxWidth;
-	}
-	
-	public int getMaxWidth() {
-		return this.maxWidth;
-	}
-	
-	public void setUnderlineExpressions(boolean underline) {
-		this.underlineExpressions = underline;
-	}
-	
-	public int evaluateNextStep() {
-		int res = model.evaluateNextStep();
-		if (res == 0) {
-			// this is a proper next step
-			SmallStep parent = smallStepSteps.getLast();
-			System.out.println("EvaluateNextStep: ");
-			System.out.println("  parent : " + parent.getExpression());
-			System.out.println("  current: " + model.getCurrentExpression());
-			SmallStep step = new SmallStep(parent, model.getCurrentExpression(), model.getCurrentRuleChain());
-			if (this.justAxioms) {
-				step.resolveMetaRules();
-			}
-			System.out.println("  pos:  " + parent.getX() + " " + parent.getY ());
-			System.out.println("  size: " + parent.getWidth() + " " + parent.getHeight());
-			System.out.println("  step: " + step.getWidth() + " " + step.getHeight());
-			add(step);
-			step.setBounds(10, parent.getY() + parent.getHeight() + 20, step.getWidth(), step.getHeight());
-			smallStepSteps.add(step);
-			
-			step.addSmallStepEventListener(new SmallStepEventListener() {
-				public void smallStepResized(EventObject o) { calculateCenter(); }
-				public void smallStepResolved(EventObject o) { evaluateNextStep(); }
-				public void mouseFocusEvent(SmallStepEvent e) {
-					underlineSequence((SmallStep)e.getSource(), e.getRule());
-				};
-				public void releaseSyntacticalSugar(EventObject o) {
-					resolveSyntacticalSugar();
-				}
-			});
-			this.underlineSequence(null, null);
-		}
-		calculateSizes ();
-		fireSmallStepResolved();
-		repaint();
-		return res;
-	}
-	
-	public void resolveSyntacticalSugar() {
-		SmallStep step = smallStepSteps.get(1);
-		remove(step);
-		smallStepSteps.remove(1);
-		
-		SmallStep parent = smallStepSteps.getFirst();
-		SmallStep resolvedStep = new SmallStep(parent, model.getOriginExpression().translateSyntacticSugar(), null);
-			
-		add(resolvedStep);
-		resolvedStep.setBounds(10, parent.getY() + parent.getHeight() + 20, resolvedStep.getWidth(), resolvedStep.getHeight());
-		smallStepSteps.add(resolvedStep);
-		
-		
-		model.resetModel(model.getOriginExpression().translateSyntacticSugar());
-		
-		calculateSizes();
-		repaint();
-		evaluateNextStep();
-	}
-	
-	public void calculateSizes() {
-		calculateCenter();
-		int x = 10;
-		int y = 10;
-		int maxWidth = 0;
-		int maxHeight = 0;
-		ListIterator<SmallStep> it = smallStepSteps.listIterator();
-		while (it.hasNext()) {
-			SmallStep step = it.next();
-			Dimension d = step.prepareSize(this.maxWidth);
-			step.setBounds(x, y, d.width, d.height);
-			step.setSize (d.width, d.height);
-			
-			if (x + d.width > maxWidth) {
-				maxWidth = x + d.width;
-			}
-			if (y + d.height > maxHeight) {
-				maxHeight = y + d.height;
-			}
-			
-			y += d.height + 20;
-		}
-		setPreferredSize (new Dimension (maxWidth + 20, maxHeight + 20));
-	}
-	
-	public void calculateCenter() {
-		int center = 0;
-		ListIterator<SmallStep> it = smallStepSteps.listIterator();
-		while (it.hasNext()) {
-			SmallStep s = it.next();
-			if (s.getPreferredCenter() > center) {
-				center = s.getPreferredCenter();
-			}
-		}
-		
-		it = smallStepSteps.listIterator();
-		while (it.hasNext()) {
-			SmallStep s = it.next();
-			s.setCenter(center);
-		}
-	}
-	
-	public void paintComponent(Graphics g) {
-//		System.out.println("SmallStepComponent.paintComponent");
-		Graphics2D g2d = (Graphics2D)g.create();
-		g2d.setColor(Color.WHITE);
-		g2d.fillRect(0, 0, getWidth(), getHeight());
-		g2d.setColor(Color.BLACK);
-	}
-	
-	public boolean completeCurrentStep() {
-		int was = smallStepSteps.size ();
-		smallStepSteps.getLast().resolve();
-		return was != smallStepSteps.size ();
-	}
-	
-	public void completeAllSteps() {
-		while (completeCurrentStep()); 
-	}
-	
-	public void underlineSequence(SmallStep smallStep, Rule rule) {
-		ListIterator<SmallStep> it = smallStepSteps.listIterator();
-		while (it.hasNext()) {
-			SmallStep s = it.next();
-			s.clearHighlighting();
-			if (s.clearUnderlining()) {
-				s.repaint();
-			}
-		}
-		if (!this.underlineExpressions) {
-			return;
-		}
-		it = smallStepSteps.listIterator();
-		while (it.hasNext()) {
-			SmallStep s = it.next();
-			if (s == smallStep) {
-				SmallStep parent = s.getSmallStepParent();
-				if (parent != null) {
-					parent.setUnderlining(rule);
-					parent.repaint();
-				}
-				s.setHightlighting(rule);
-			}
-		}
-	}
-	
-	public void addSmallStepEventListener(SmallStepEventListener e) {
-		listenerList.add(SmallStepEventListener.class, e);
-	}
-	
-	public void removeSmallStepEventListener(SmallStepEventListener e) {
-		listenerList.remove(SmallStepEventListener.class, e);
-	}
-	
-	private void fireSmallStepResolved() {
-		Object[] listeners = listenerList.getListenerList();
-		
-	    for (int i = listeners.length-2; i>=0; i-=2) {
-	         if (listeners[i]==SmallStepEventListener.class) {
-	             // Lazily create the event:
-	             ((SmallStepEventListener)listeners[i+1]).smallStepResolved(new EventObject(this));
-	         }
-	     }
-	}
-}
-*/

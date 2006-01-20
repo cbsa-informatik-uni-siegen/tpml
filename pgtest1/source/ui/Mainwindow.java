@@ -32,14 +32,12 @@ public class Mainwindow extends JFrame {
   private JTree treeView;
   private JMenuBar mainMenu;
 
-  // Just for this this application
-  //
 
   private LinkedList<SourceFile> fileList = new LinkedList<SourceFile>();
 
   public Mainwindow() {
     super();
-
+    
     setTitle("Projektgruppe v.01");
     initComponents();
     pack();
@@ -75,14 +73,6 @@ public class Mainwindow extends JFrame {
       }
     };
 
-    ActionListener mlMenuListener = new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        if (e.getActionCommand() == "SmallStep")
-        	handleSmallStep();
-        // if (e.getActionCommand() == "TypeChecker")
-        // 	handleTypeChecker();
-      }
-    };
 
     this.mainMenu = new JMenuBar();
 
@@ -121,15 +111,35 @@ public class Mainwindow extends JFrame {
     JMenuItem exitItem = fileMenu.add("Exit");
     exitItem.addActionListener(fileMenuListener);
     exitItem.setMnemonic(KeyEvent.VK_X);
+    
+    JMenu editMenu = new JMenu("Edit");
+    editMenu.setMnemonic(KeyEvent.VK_E);
+    this.mainMenu.add(editMenu);
+    
+    JMenuItem preferences = editMenu.add("Preferences");
+    preferences.setMnemonic(KeyEvent.VK_P);
+    preferences.addActionListener(new ActionListener() {
+    	public void actionPerformed(ActionEvent event) {
+    		SettingsGUI gui = new SettingsGUI(Mainwindow.this, false);
+    		gui.setVisible(true);
+    	}
+    });
+    
 
     JMenu actionsMenu = new JMenu("Actions");
     actionsMenu.setMnemonic(KeyEvent.VK_A);
     this.mainMenu.add(actionsMenu);
 
     JMenuItem smallStepItem = actionsMenu.add("SmallStep");
-    smallStepItem.addActionListener(mlMenuListener);
     smallStepItem.setAccelerator(KeyStroke.getKeyStroke("F11"));
     smallStepItem.setMnemonic(KeyEvent.VK_S);
+    smallStepItem.addActionListener(new ActionListener() {
+    	public void actionPerformed(ActionEvent event) {
+    		handleSmallStep();
+    	}
+    });
+    
+    
 
     /*
     JMenuItem typeCheckerItem = actionsMenu.add("TypeChecker");
@@ -158,7 +168,6 @@ public class Mainwindow extends JFrame {
   }
 
   private void handleSave() {
-    System.out.println("HandlerSave");
     // JFileChooser chooser = new JFileChooser();
   }
 
@@ -169,7 +178,6 @@ public class Mainwindow extends JFrame {
   }
 
   private void handleSaveAs() {
-    System.out.println("handleSaveAs");
     JFileChooser chooser = new JFileChooser();
     /*
      * // Note: source for ExampleFileFilter can be found in FileChooserDemo, //
@@ -180,8 +188,6 @@ public class Mainwindow extends JFrame {
      */
     int returnVal = chooser.showOpenDialog(this);
     if (returnVal == JFileChooser.APPROVE_OPTION) {
-      System.out.println("You chose to open this file: "
-          + chooser.getSelectedFile().getName());
     }
 
   }
@@ -207,7 +213,7 @@ public class Mainwindow extends JFrame {
       model.setFont(f);
       
       // evaluate the resulting small step expression
-      SmallStepGUI gui = new SmallStepGUI(this, "SmallStep", true, model);
+      SmallStepGUI gui = new SmallStepGUI(this, "SmallStep", false, model);
       gui.setVisible(true);
       
     } catch (Exception e) {
