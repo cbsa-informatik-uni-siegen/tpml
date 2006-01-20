@@ -1,0 +1,8 @@
+TODO für de.unisiegen.tpml.core
+===============================
+
+de.unisiegen.tpml.core.prettyprinter
+------------------------------------
+
+	* PrettyStringBuilder.java: Die derzeitige Konstruktion des PrettyStyle Arrays
+	  über die interne Marker-Liste ist unschön.

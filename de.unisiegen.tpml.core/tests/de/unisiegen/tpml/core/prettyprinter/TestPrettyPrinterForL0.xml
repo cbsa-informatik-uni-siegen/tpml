@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE ruleset [
+	<!ELEMENT ruleset (rule)+>
+	
+	<!ELEMENT rule (attribute|break|text)*>
+	<!ATTLIST rule class CDATA #REQUIRED>
+	<!ATTLIST rule priority CDATA #REQUIRED>
+	
+	<!ELEMENT attribute (#PCDATA)>
+	<!ATTLIST attribute priority CDATA "0">
+	
+	<!ELEMENT break EMPTY>
+	
+	<!ELEMENT text (#PCDATA)>
+	<!ATTLIST text style (default | constant | keyword) "default">
+]>
+
+<!--
+	$Id$
+	
+	Sample rule set for the L0 language used in the TextPrettyPrinterForL0
+	test case.
+-->
+
+<ruleset>
+	<rule class="de.unisiegen.tpml.core.expressions.Abstraction" priority="0">
+		<text style="keyword">λ</text>
+		<attribute>id</attribute>
+		<text>.</text>
+		<break />
+		<attribute priority="0">e1</attribute>
+	</rule>
+	
+	<rule class="de.unisiegen.tpml.core.expressions.Application" priority="1">
+		<attribute priority="1">e1</attribute>
+		<text> </text>
+		<break />
+		<attribute priority="2">e2</attribute>
+	</rule>
+	
+	<rule class="de.unisiegen.tpml.core.expressions.Identifier" priority="2">
+		<attribute>name</attribute>
+	</rule>
+</ruleset>
