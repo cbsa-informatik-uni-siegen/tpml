@@ -25,7 +25,7 @@ final class PrettyRule {
    * <tt>&lt;rule&gt;</tt> element identified by the <code>node</code>
    * argument.
    * 
-   * @param node the XML node for a <tt>&lt;rule&gt;</tt> element.
+   * @param node the XML node for a <tt>&lt;pretty-rule&gt;</tt> element.
    */
   PrettyRule(Node node) {
     // determine the value of the priority attribute 
