@@ -1,6 +1,7 @@
 package de.unisiegen.tpml.core.prettyprinter;
 
 import java.util.Collection;
+import java.util.Collections;
 
 /**
  * Default implementation of the <code>PrettyString</code> interface,
@@ -28,7 +29,7 @@ final class DefaultPrettyString implements PrettyString {
       throw new IllegalArgumentException("The number of styles doesn't match the number of characters");
 
     // initialize member attributes
-    this.annotations = annotations;
+    this.annotations = Collections.unmodifiableCollection(annotations);
     this.content = content;
     this.styles = styles;
   }
