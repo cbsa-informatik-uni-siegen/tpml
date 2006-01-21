@@ -39,10 +39,10 @@ final class PrettyElementAttribute extends PrettyElement {
   void appendObjectToBuilder(PrettyStringBuilder builder, Object object) {
     try {
       // determine the getter method for the attribute based on the name
-      Method method = object.getClass().getMethod(this.getterMethodName, EMPTY_CLASS_ARRAY);
+      Method method = object.getClass().getMethod(this.getterMethodName);
       
       // invoke the getter method to determine the attribute value
-      Object value = method.invoke(object, EMPTY_OBJECT_ARRAY);
+      Object value = method.invoke(object);
       
       // let the string builder process the attribute value
       builder.appendObject(value, this.priority);
@@ -60,8 +60,4 @@ final class PrettyElementAttribute extends PrettyElement {
   // member attributes
   private String getterMethodName;
   private int priority;
-  
-  // shared empty arrays used to speed up the method lookups and invocations 
-  private static final Class[] EMPTY_CLASS_ARRAY = new Class[0];
-  private static final Object[] EMPTY_OBJECT_ARRAY = new Object[0];
 }
