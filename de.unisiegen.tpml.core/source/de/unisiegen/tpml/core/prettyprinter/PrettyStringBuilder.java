@@ -159,6 +159,25 @@ final class PrettyStringBuilder {
     return new DefaultPrettyString(this.annotations, this.buffer, styles);
   }
   
+  /**
+   * Simply throws an exception as comparing string builders
+   * don't make sense and should never be performed.
+   * 
+   * @param obj another object.
+   * 
+   * @return never returns.
+   * 
+   * @throws UnsupportedOperationException always, since one should not
+   *                                       try to compare pretty string
+   *                                       builders.
+   *                                       
+   * @see java.lang.Object#equals(java.lang.Object)
+   */
+  @Override
+  public boolean equals(Object obj) {
+    throw new UnsupportedOperationException();
+  }
+  
   // memeber attributes
   private LinkedList<PrettyAnnotation> annotations = new LinkedList<PrettyAnnotation>(); 
   private Vector<Integer> breakOffsets;
