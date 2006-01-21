@@ -106,6 +106,51 @@ final class DefaultPrettyString implements PrettyString {
   }
   
   /**
+   * Compares this pretty string implementation to <code>obj</code>. If
+   * <code>obj</code> is a <code>DefaultPrettyString</code> instance, and
+   * it's field values are equal to the field values of this pretty string.
+   * 
+   * @param obj another object.
+   * 
+   * @return <code>true</code> if <code>obj</code> is equal to this
+   *         <code>DefaultPrettyString</code>.
+   *         
+   * @see java.lang.Object#equals(java.lang.Object)
+   */
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    else if (obj instanceof DefaultPrettyString) {
+      DefaultPrettyString string = (DefaultPrettyString)obj;
+      return (this.annotations.equals(string.annotations)
+           && this.content.equals(string.content)
+           && this.styles.equals(string.styles));
+    }
+    else {
+      return false;
+    }
+  }
+  
+  /**
+   * Returns a hash code value for this pretty string.
+   * 
+   * @return a hash code value for this pretty string.
+   * 
+   * @see java.lang.Object#hashCode()
+   */
+  @Override
+  public int hashCode() {
+    return this.annotations.hashCode() + this.content.hashCode() + this.styles.hashCode();
+  }
+  
+  /**
+   * Returns the raw string representation of this <code>PrettyString</code>
+   * without any style information or annotations.
+   * 
+   * @return the raw string representation.
+   * 
    * @see de.unisiegen.tpml.core.prettyprinter.PrettyString#toString()
    * @see java.lang.Object#toString()
    */

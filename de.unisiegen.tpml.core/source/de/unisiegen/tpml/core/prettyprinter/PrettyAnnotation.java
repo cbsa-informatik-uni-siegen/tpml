@@ -1,5 +1,7 @@
 package de.unisiegen.tpml.core.prettyprinter;
 
+import java.util.Arrays;
+
 /**
  * An annotation for the pretty printer. Annotations are
  * used to mark regions within the text that are associated
@@ -72,6 +74,46 @@ public final class PrettyAnnotation {
    */
   Object getObject() {
     return this.object;
+  }
+  
+  /**
+   * Tests whether the specified <code>obj</code> is an
+   * annotation, and is equal to this annotation.
+   * 
+   * @param obj another object.
+   * 
+   * @return <code>true</code> if <code>obj</code> is equal
+   *         to this <code>PrettyAnnotation</code>.
+   * 
+   * @see java.lang.Object#equals(java.lang.Object)
+   */
+  @Override
+  public boolean equals(Object obj) {
+    if (obj == this) {
+      return true;
+    }
+    else if (obj instanceof PrettyAnnotation) {
+      PrettyAnnotation annotation = (PrettyAnnotation)obj;
+      return (Arrays.equals(this.breakOffsets, annotation.breakOffsets)
+           && this.startOffset == annotation.startOffset
+           && this.endOffset == annotation.endOffset
+           && this.object.equals(annotation.object));
+    }
+    else {
+      return false;
+    }
+  }
+  
+  /**
+   * Returns a hash code value for this annotation.
+   * 
+   * @return a hash code value for this annotation.
+   * 
+   * @see java.lang.Object#hashCode()
+   */
+  @Override
+  public int hashCode() {
+    return this.breakOffsets.hashCode() + this.startOffset + this.endOffset + this.object.hashCode();
   }
   
   // member attributes

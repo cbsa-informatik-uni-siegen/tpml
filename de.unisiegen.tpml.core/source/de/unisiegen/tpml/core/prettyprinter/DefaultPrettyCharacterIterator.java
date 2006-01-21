@@ -181,6 +181,43 @@ final class DefaultPrettyCharacterIterator implements PrettyCharacterIterator {
     return new DefaultPrettyCharacterIterator(this.string, this.index);
   }
   
+  /**
+   * Returns <code>true</code> if <code>obj</code> is an instance of
+   * <code>DefaultPrettyCharacterIterator</code> whose index and string
+   * attributes are equal to this iterator.
+   * 
+   * @param obj another object.
+   * 
+   * @return <code>true</code> if <code>obj</code> equals this iterator.
+   * 
+   * @see java.lang.Object#equals(java.lang.Object)
+   */
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    else if (obj instanceof DefaultPrettyCharacterIterator) {
+      DefaultPrettyCharacterIterator iterator = (DefaultPrettyCharacterIterator)obj;
+      return (this.index == iterator.index && this.string.equals(iterator.string));
+    }
+    else {
+      return false;
+    }
+  }
+  
+  /**
+   * Returns a hash code value for this iterator.
+   * 
+   * @return a hash code value for this iterator.
+   * 
+   * @see java.lang.Object#hashCode()
+   */
+  @Override
+  public int hashCode() {
+    return (this.index + this.string.hashCode());
+  }
+  
   // member variables
   private int index;
   private DefaultPrettyString string;
