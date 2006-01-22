@@ -21,7 +21,7 @@ public final class PrettyAnnotation {
    * @param endOffset the end offset of the annotation in the text (the last character of
    *                  the annotation).
    * @param breakOffsets the list of possible break offsets.
-   * @param object the <code>Object</code> with which this annotation is associated.
+   * @param object the {@link Object} with which this annotation is associated.
    */
   PrettyAnnotation(int startOffset, int endOffset, int[] breakOffsets, Object object) {
     this.breakOffsets = breakOffsets;
@@ -83,7 +83,7 @@ public final class PrettyAnnotation {
    * @param obj another object.
    * 
    * @return <code>true</code> if <code>obj</code> is equal
-   *         to this <code>PrettyAnnotation</code>.
+   *         to this {@link PrettyAnnotation}.
    * 
    * @see java.lang.Object#equals(java.lang.Object)
    */

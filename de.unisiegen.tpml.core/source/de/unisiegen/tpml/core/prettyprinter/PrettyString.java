@@ -12,6 +12,7 @@ import java.util.Collection;
  * 
  * @see de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation
  * @see de.unisiegen.tpml.core.prettyprinter.PrettyCharacterIterator
+ * @see de.unisiegen.tpml.core.prettyprinter.PrettyStringFactory
  */
 public interface PrettyString extends CharSequence {
   /**

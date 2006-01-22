@@ -1,19 +1,7 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<!DOCTYPE pretty-rule-set [
-	<!ELEMENT pretty-rule-set (pretty-rule)+>
-	
-	<!ELEMENT pretty-rule (attribute|break|text)*>
-	<!ATTLIST pretty-rule class CDATA #REQUIRED>
-	<!ATTLIST pretty-rule priority CDATA #REQUIRED>
-	
-	<!ELEMENT attribute (#PCDATA)>
-	<!ATTLIST attribute priority CDATA "0">
-	
-	<!ELEMENT break EMPTY>
-	
-	<!ELEMENT text (#PCDATA)>
-	<!ATTLIST text style (default | constant | keyword) "default">
-]>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE pretty-rule-set PUBLIC
+	"-//University of Siegen//DTD Pretty Printer Rules 1.0//EN"
+	"http://echobase.homeunix.net/tpml/dtds/pretty-rule-set_1.0.dtd">
 
 <!--
 	$Id$

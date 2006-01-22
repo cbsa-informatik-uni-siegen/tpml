@@ -4,15 +4,15 @@ import java.util.Collection;
 import java.util.Collections;
 
 /**
- * Default implementation of the <code>PrettyString</code> interface,
- * created by the <code>PrettyStringBuilder</code> class.
+ * Default implementation of the {@link PrettyString} interface,
+ * created by the {@link PrettyStringBuilder} class.
  *
  * @author Benedikt Meurer
  * @version $Id$
  */
 final class DefaultPrettyString implements PrettyString {
   /**
-   * Allocates a new <code>DefaultPrettyString</code> with the specified
+   * Allocates a new {@link DefaultPrettyString} with the specified
    * parameters.
    * 
    * @param annotations the list of <code>PrettyAnnotation</code>s within the string.

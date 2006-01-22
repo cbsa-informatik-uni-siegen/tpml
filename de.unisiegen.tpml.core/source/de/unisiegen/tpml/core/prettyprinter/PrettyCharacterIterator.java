@@ -4,7 +4,7 @@ import java.text.CharacterIterator;
 
 /**
  * Provides functionality to iterate over the characters contained
- * within an <code>PrettyString</code> and extract certain information
+ * within an {@link PrettyString} and extract certain information
  * about the style and annotations for a given character.
  *
  * @author Benedikt Meurer
@@ -14,12 +14,12 @@ import java.text.CharacterIterator;
  */
 public interface PrettyCharacterIterator extends CharacterIterator {
   /**
-   * Returns the <code>PrettyStyle</code>, which should be used
-   * for the current character, or <code>PrettyStyle.DEFAULT</code>
+   * Returns the {@link PrettyStyle}, which should be used
+   * for the current character, or {@link PrettyStyle#DEFAULT}
    * if no special highlighting should be applied to the current
    * character.
    * 
-   * @return the <code>PrettyStyle</code> for the current character.
+   * @return the {@link PrettyStyle} for the current character.
    * 
    * @see java.text.CharacterIterator#getIndex()
    */

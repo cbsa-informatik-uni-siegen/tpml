@@ -4,8 +4,8 @@ import java.lang.reflect.Constructor;
 import java.util.LinkedList;
 
 import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
+import de.unisiegen.tpml.core.util.IterableNodeList;
 import de.unisiegen.tpml.core.util.StringUtilities;
 
 /**
@@ -32,14 +32,8 @@ final class PrettyRule {
     this.priority = Integer.valueOf(node.getAttributes().getNamedItem("priority").getTextContent());
 
     // add elements for all child nodes
-    NodeList childNodes = node.getChildNodes();
-    for (int i = 0; i < childNodes.getLength(); ++i) {
+    for (Node childNode : new IterableNodeList(node)) {
       try {
-        // determine the child node and verify that we have an element
-        Node childNode = childNodes.item(i);
-        if (childNode.getNodeType() != Node.ELEMENT_NODE)
-          continue;
-      
         // determine the element class name based on the node name
         String clazzName = PrettyElement.class.getCanonicalName() + StringUtilities.toCamelCase(childNode.getNodeName());
       

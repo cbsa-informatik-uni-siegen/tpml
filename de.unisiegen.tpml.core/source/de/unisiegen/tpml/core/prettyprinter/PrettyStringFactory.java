@@ -1,49 +1,60 @@
 package de.unisiegen.tpml.core.prettyprinter;
 
+import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
+
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
+
+import de.unisiegen.tpml.core.internal.DocumentParser;
+import de.unisiegen.tpml.core.internal.DocumentParserFactory;
 
 /**
- * Factory class used to generate <code>PrettyString</code>s for
- * objects based on a given pretty print descriptor. 
+ * Factory class used to generate {@link PrettyString}s for
+ * objects based on a given pretty print descriptor. The format
+ * for pretty print descriptors is determined by the file
+ * <tt>pretty-rule-set_1.0.dtd</tt>. A local copy of the DTD
+ * can be found in <tt>/de/unisiegen/tpml/core/internal/dtds</tt>.
  *
  * @author Benedikt Meurer
  * @version $Id$
+ * 
+ * @see de.unisiegen.tpml.core.PrettyString
  */
 public final class PrettyStringFactory {
   /**
-   * Returns the <code>PrettyStringFactory</code>, which pretty prints strings
-   * according to the pretty printer descriptor (the rule set) contained within
-   * the specified <code>resource</code>.
+   * Allocates a new {@link PrettyStringFactory} that can be used to generate
+   * {@link PrettyString}s based on the pretty print descriptor to which the
+   * <code>inputStream</code> is connected.
    * 
-   * @param resource the resource identifier, looked up using the class loader
-   *                 mechanism (<code>getResourceAsStream</code> in the
-   *                 <code>PrettyStringFactory</code> class).
+   * @param inputStream an {@link InputStream} connected with an XML input source,
+   *                    that contains a valid pretty print descriptor. 
    * 
-   * @return the <code>PrettyStringFactor</code> for the given <code>resource</code>.
+   * @return the {@link PrettyStringFactory} for <code>inputStream</code>.
    * 
-   * @throws Exception if an error occurred, e.g. the <code>resource</code> is
-   *                   not present or idenfies an invalid rule set.
+   * @throws ClassNotFoundException if a required pretty printer class is not found while parsing
+   *                                the XML document connected with the <code>inputStream</code>.
+   * @throws IOException if an error occurs while reading data from the <code>inputStream</code>.
+   * @throws NullPointerException if <code>inputStream</code> is <code>null</code>.
+   * @throws ParserConfigurationException if a required feature is not provided by the XML
+   *                                      parser available on the host.
+   * @throws SAXException if parsing of the XML document fails.
    */
-  public static synchronized PrettyStringFactory getFactoryForResource(String resource) throws Exception {
-    // check if we already have a factory for that resource
-    PrettyStringFactory factory = factories.get(resource);
-    if (factory == null) {
-      // open the specified resource as stream
-      InputStream inputStream = PrettyStringFactory.class.getResourceAsStream(resource);
-      
-      // parse the rule set from the input stream
-      PrettyRuleSet ruleSet = new PrettyRuleSet(inputStream);
-      
-      // allocate a factory for the rule set
-      factory = new PrettyStringFactory(ruleSet);
-      
-      // add the factory to our internal map
-      factories.put(resource, factory);
-    }
+  public static PrettyStringFactory newInstance(InputStream inputStream) throws ClassNotFoundException, IOException, ParserConfigurationException, SAXException {
+    // allocate a document parser for the given input stream
+    DocumentParserFactory factory = DocumentParserFactory.newInstance();
+    DocumentParser parser = factory.newValidatingParser();
     
-    // and return the factory
-    return factory;
+    // parse the XML input into a DOM document
+    Document document = parser.parse(inputStream);
+    
+    // generate a rule set from the DOM document
+    PrettyRuleSet ruleSet = new PrettyRuleSet(document.getDocumentElement());
+    
+    // generate a factory for that rule set
+    return new PrettyStringFactory(ruleSet);
   }
   
   /**
@@ -68,7 +79,4 @@ public final class PrettyStringFactory {
   
   // member attributes
   private PrettyRuleSet ruleSet;
-  
-  // the number of factories already loaded per resource
-  private static final HashMap<String, PrettyStringFactory> factories = new HashMap<String, PrettyStringFactory>();
 }
