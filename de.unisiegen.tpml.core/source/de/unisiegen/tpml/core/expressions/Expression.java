@@ -7,7 +7,7 @@ import java.util.Set;
  * Base class for all classes in the expression hierarchy.
  * 
  * @author Benedikt Meurer
- * @version $Id$
+ * @version $Id:Expression.java 66 2006-01-19 17:07:56Z benny $
  */
 public abstract class Expression {
   /**
@@ -53,5 +53,5 @@ public abstract class Expression {
    * of newly allocated empty sets for the <code>free</code> method
    * implementations.
    */
-  protected static final Set<String> EMPTY_SET = Collections.emptySet(); 
+  protected static final Set<String> EMPTY_SET = Collections.unmodifiableSet(Collections.<String>emptySet()); 
 }
