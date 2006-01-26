@@ -58,12 +58,14 @@ public final class PrettyStringFactory {
   }
   
   /**
-   * Returns the <code>PrettyString</code> for <code>object</code> using
-   * the rule set associated with this <code>PrettyStringFactor</code>.
+   * Returns the {@link PrettyString} for <code>object</code> using
+   * the rule set associated with this {@link PrettyStringFactor}.
    * 
-   * @param object the <code>Object</code> to pretty print.
+   * @param object the {@link Object} to pretty print.
    * 
-   * @return the <code>PrettyString</code> for <code>object</code>.
+   * @return the {@link PrettyString} for <code>object</code>.
+   * 
+   * @throws NullPointerException if <code>object</code> is <code>null</code>.
    */
   public PrettyString getPrettyStringForObject(Object object) {
     // generate a matching builder and process the object
