@@ -3,6 +3,8 @@ package de.unisiegen.tpml.core.prettyprinter;
 import java.util.Collection;
 import java.util.Collections;
 
+import de.unisiegen.tpml.core.HighlightStyle;
+
 /**
  * Default implementation of the {@link PrettyString} interface,
  * created by the {@link PrettyStringBuilder} class.
@@ -17,13 +19,13 @@ final class DefaultPrettyString implements PrettyString {
    * 
    * @param annotations the list of <code>PrettyAnnotation</code>s within the string.
    * @param content the actual string content.
-   * @param styles the <code>PrettyStyle</code> for every character in <code>content</code>.
+   * @param styles the <code>HighlightStyle</code> for every character in <code>content</code>.
    * 
-   * @throws IllegalArgumentException if the number of <code>PrettyStyle</code>s in
+   * @throws IllegalArgumentException if the number of <code>HighlightStyle</code>s in
    *                                  <code>styles</code> doesn't match the number of
    *                                  characters in <code>content</code>.
    */
-  DefaultPrettyString(Collection<PrettyAnnotation> annotations, CharSequence content, PrettyStyle[] styles) throws IllegalArgumentException {
+  DefaultPrettyString(Collection<PrettyAnnotation> annotations, CharSequence content, HighlightStyle[] styles) throws IllegalArgumentException {
     // verify that we have a style for every character
     if (content.length() != styles.length)
       throw new IllegalArgumentException("The number of styles doesn't match the number of characters");
@@ -90,7 +92,7 @@ final class DefaultPrettyString implements PrettyString {
   /**
    * @see de.unisiegen.tpml.core.prettyprinter.PrettyString#styleAt(int)
    */
-  public PrettyStyle styleAt(int index) {
+  public HighlightStyle styleAt(int index) {
     // verify that index is valid, and return the style
     if (index < 0 || index >= length())
       throw new StringIndexOutOfBoundsException(index);
@@ -162,5 +164,5 @@ final class DefaultPrettyString implements PrettyString {
   // member attributes
   private Collection<PrettyAnnotation> annotations;
   private CharSequence content;
-  private PrettyStyle[] styles;
+  private HighlightStyle[] styles;
 }

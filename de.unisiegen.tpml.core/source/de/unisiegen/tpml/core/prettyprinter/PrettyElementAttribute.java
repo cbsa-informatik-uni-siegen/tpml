@@ -33,6 +33,8 @@ final class PrettyElementAttribute extends PrettyElement {
   }
   
   /**
+   * {@inheritDoc}
+   * 
    * @see de.unisiegen.tpml.core.prettyprinter.PrettyElement#appendObjectToBuilder(de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder, java.lang.Object)
    */
   @Override

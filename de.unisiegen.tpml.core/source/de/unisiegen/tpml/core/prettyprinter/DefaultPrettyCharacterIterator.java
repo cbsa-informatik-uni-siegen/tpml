@@ -2,6 +2,8 @@ package de.unisiegen.tpml.core.prettyprinter;
 
 import java.text.CharacterIterator;
 
+import de.unisiegen.tpml.core.HighlightStyle;
+
 /**
  * Default implementation of the <code>PrettyCharIterator</code> interface,
  * which operates on data provided by the <code>PrettyString</code> class.
@@ -39,18 +41,18 @@ final class DefaultPrettyCharacterIterator implements PrettyCharacterIterator {
   }
   
   /**
-   * Returns the <code>PrettyStyle</code> for the current
+   * Returns the <code>HighlightStyle</code> for the current
    * character iterator position.
    * 
-   * @return the <code>PrettyStyle</code> for the current character iterator position.
+   * @return the <code>HighlightStyle</code> for the current character iterator position.
    *         
    * @see de.unisiegen.tpml.core.prettyprinter.PrettyCharacterIterator#getStyle()
    */
-  public PrettyStyle getStyle() {
+  public HighlightStyle getStyle() {
     if (this.index < getEndIndex())
       return this.string.styleAt(this.index);
     else
-      return PrettyStyle.DEFAULT;
+      return HighlightStyle.DEFAULT;
   }
 
   /**

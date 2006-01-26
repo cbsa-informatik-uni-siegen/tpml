@@ -2,6 +2,8 @@ package de.unisiegen.tpml.core.prettyprinter;
 
 import java.text.CharacterIterator;
 
+import de.unisiegen.tpml.core.HighlightStyle;
+
 /**
  * Provides functionality to iterate over the characters contained
  * within an {@link PrettyString} and extract certain information
@@ -14,14 +16,14 @@ import java.text.CharacterIterator;
  */
 public interface PrettyCharacterIterator extends CharacterIterator {
   /**
-   * Returns the {@link PrettyStyle}, which should be used
-   * for the current character, or {@link PrettyStyle#DEFAULT}
+   * Returns the {@link HighlightStyle}, which should be used
+   * for the current character, or {@link HighlightStyle#DEFAULT}
    * if no special highlighting should be applied to the current
    * character.
    * 
-   * @return the {@link PrettyStyle} for the current character.
+   * @return the {@link HighlightStyle} for the current character.
    * 
    * @see java.text.CharacterIterator#getIndex()
    */
-  public PrettyStyle getStyle();
+  public HighlightStyle getStyle();
 }

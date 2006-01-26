@@ -2,6 +2,8 @@ package de.unisiegen.tpml.core.prettyprinter;
 
 import java.util.Collection;
 
+import de.unisiegen.tpml.core.HighlightStyle;
+
 /**
  * Provides the functionality to pretty-print an expression
  * as string while extracting several informations about the
@@ -10,6 +12,7 @@ import java.util.Collection;
  * @author Benedikt Meurer
  * @version $Id$
  * 
+ * @see de.unisiegen.tpml.core.HighlightStyle
  * @see de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation
  * @see de.unisiegen.tpml.core.prettyprinter.PrettyCharacterIterator
  * @see de.unisiegen.tpml.core.prettyprinter.PrettyStringFactory
@@ -48,20 +51,20 @@ public interface PrettyString extends CharSequence {
   public PrettyAnnotation getAnnotationForObject(Object object) throws IllegalArgumentException;
 
   /**
-   * Returns the <code>PrettyStyle</code> that should be used for the
+   * Returns the <code>HighlightStyle</code> that should be used for the
    * character at the specified <code>index</code> within the pretty
    * string.
    * 
-   * @param index the index of the character whose <code>PrettyStyle</code> should
+   * @param index the index of the character whose <code>HighlightStyle</code> should
    *              be returned.
    * 
-   * @return the <code>PrettyStyle</code> that is associated with the character
+   * @return the <code>HighlightStyle</code> that is associated with the character
    *         at the position <code>index</code> within this pretty string.
    * 
    * @throws IndexOutOfBoundsException if the <code>index</code> argument is negative
    *                                   or not less than <code>length()</code>.
    */
-  public PrettyStyle styleAt(int index);
+  public HighlightStyle styleAt(int index);
   
   /**
    * Returns an <code>PrettyCharacterIterator</code> which can be used to

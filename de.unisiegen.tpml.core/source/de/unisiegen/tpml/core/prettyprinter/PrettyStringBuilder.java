@@ -3,6 +3,7 @@ package de.unisiegen.tpml.core.prettyprinter;
 import java.util.LinkedList;
 import java.util.Vector;
 
+import de.unisiegen.tpml.core.HighlightStyle;
 import de.unisiegen.tpml.core.util.IntegerUtilities;
 
 /**
@@ -34,7 +35,7 @@ final class PrettyStringBuilder {
    * 
    * @see de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation
    * @see #appendObject(Object)
-   * @see #appendText(String, PrettyStyle)
+   * @see #appendText(String, HighlightStyle)
    */
   void appendBreak() {
     // add the current buffer length as possible break offset
@@ -56,7 +57,7 @@ final class PrettyStringBuilder {
    * @param priority the priority at which <code>object</code> is to be inserted.
    *
    * @see #appendBreak()
-   * @see #appendText(String, PrettyStyle)
+   * @see #appendText(String, HighlightStyle)
    * @see de.unisiegen.tpml.core.prettyprinter.PrettyElement#appendObjectToBuilder(PrettyStringBuilder, Object)
    */
   void appendObject(Object object, int priority) {
@@ -103,7 +104,7 @@ final class PrettyStringBuilder {
     }
     else {
       // just append the string representation of the object
-      appendText(object.toString(), PrettyStyle.DEFAULT);
+      appendText(object.toString(), HighlightStyle.DEFAULT);
     }
   }
   
@@ -112,12 +113,12 @@ final class PrettyStringBuilder {
    * using the specified <code>style</code>. 
    * 
    * @param text the text to append.
-   * @param style the <code>PrettyStyle</code> to apply to <code>text</code>.
+   * @param style the <code>HighlightStyle</code> to apply to <code>text</code>.
    * 
    * @see #appendBreak()
    * @see #appendObject(Object)
    */
-  void appendText(String text, PrettyStyle style) {
+  void appendText(String text, HighlightStyle style) {
     // remember the current length as start offset
     int startOffset = this.buffer.length();
     
@@ -125,7 +126,7 @@ final class PrettyStringBuilder {
     this.buffer.append(text);
 
     // no need to set a marker for DEFAULT styles
-    if (style != PrettyStyle.DEFAULT) {
+    if (style != HighlightStyle.DEFAULT) {
       // determine the new length (as end offset)
       int endOffset = this.buffer.length();
     
@@ -148,9 +149,9 @@ final class PrettyStringBuilder {
    */
   PrettyString toPrettyString() {
     // determine the pretty string styles
-    PrettyStyle[] styles = new PrettyStyle[this.buffer.length()];
+    HighlightStyle[] styles = new HighlightStyle[this.buffer.length()];
     for (int i = 0; i < styles.length; ++i)
-      styles[i] = PrettyStyle.DEFAULT;
+      styles[i] = HighlightStyle.DEFAULT;
     for (Marker marker : this.markers)
       for (int i = 0; i < marker.getLength(); ++i)
         styles[marker.getOffset() + i] = marker.getStyle();
@@ -188,7 +189,7 @@ final class PrettyStringBuilder {
   // helper class to associate styles with text
   // chunks during pretty string construction
   private static class Marker {
-    Marker(int offset, int length, PrettyStyle style) {
+    Marker(int offset, int length, HighlightStyle style) {
       this.offset = offset;
       this.length = length;
       this.style = style;
@@ -202,12 +203,12 @@ final class PrettyStringBuilder {
       return this.length;
     }
     
-    PrettyStyle getStyle() {
+    HighlightStyle getStyle() {
       return this.style;
     }
     
     private int offset;
     private int length;
-    private PrettyStyle style;
+    private HighlightStyle style;
   }
 }
