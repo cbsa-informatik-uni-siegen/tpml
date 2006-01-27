@@ -21,9 +21,8 @@ public abstract class Expression {
    * 
    * The implementations of this method may either return the constant
    * <code>EMPTY_SET</code> or a dynamically allocated <code>Set</code>.
-   * All implementors must ensure to not modify the <code>EMPTY_SET</code>
-   * in any case. So if unsure, check for equality to <code>EMPTY_SET</code>
-   * first before modifying the result of a <code>free()</code> invocation.  
+   * All implementors must ensure to not modify the set returned from
+   * the {@link #free()} method.
    * 
    * @return the set of free (unbound) identifiers within the
    *         expression.

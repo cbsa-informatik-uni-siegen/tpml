@@ -1,6 +1,7 @@
 package de.unisiegen.tpml.core.expressions;
 
 import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * Represents the <b>(ABSTR)</b> expression in the expression
@@ -10,7 +11,7 @@ import java.util.Set;
  * <pre>lambda id.e1</pre>
  *
  * @author Benedikt Meurer
- * @version $Id$
+ * @version $Id:Abstraction.java 66 2006-01-19 17:07:56Z benny $
  */
 public final class Abstraction extends Expression {
   /**
@@ -45,8 +46,16 @@ public final class Abstraction extends Expression {
     // determine the free identifiers of e1, and
     // make sure it doesn't contain our id
     Set<String> freeE1 = this.e1.free();
-    freeE1.remove(this.id);
-    return freeE1;
+    if (freeE1.contains(this.id)) {
+      // allocate a new set without the identifier
+      TreeSet<String> free = new TreeSet<String>(freeE1);
+      free.remove(this.id);
+      return free;
+    }
+    else {
+      // we can just reuse the free set
+      return freeE1;
+    }
   }
 
   /**

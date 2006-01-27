@@ -1,6 +1,7 @@
 package de.unisiegen.tpml.core.expressions;
 
 import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * Represents the <b>(APP)</b> expression in the expression
@@ -10,7 +11,7 @@ import java.util.Set;
  * <pre>e1 e2</pre>
  *
  * @author Benedikt Meurer
- * @version $Id$
+ * @version $Id:Application.java 66 2006-01-19 17:07:56Z benny $
  */
 public final class Application extends Expression {
   /**
@@ -49,9 +50,11 @@ public final class Application extends Expression {
     else if (freeE2 == Expression.EMPTY_SET)
       return freeE1;
     
-    // add all free identifiers from e2 to the set returned for e1
-    freeE1.addAll(freeE2);
-    return freeE1;
+    // generate a new free set as union of the free sets
+    TreeSet<String> free = new TreeSet<String>();
+    free.addAll(freeE1);
+    free.addAll(freeE2);
+    return free;
   }
 
   /**

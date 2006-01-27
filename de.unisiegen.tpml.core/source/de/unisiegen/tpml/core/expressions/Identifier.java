@@ -1,13 +1,13 @@
 package de.unisiegen.tpml.core.expressions;
 
+import java.util.Collections;
 import java.util.Set;
-import java.util.TreeSet;
 
 /**
  * Represents an identifier in the expression hierarchy.
  *
  * @author Benedikt Meurer
- * @version $Id$
+ * @version $Id:Identifier.java 66 2006-01-19 17:07:56Z benny $
  */
 public final class Identifier extends Expression {
   /**
@@ -30,9 +30,7 @@ public final class Identifier extends Expression {
    */
   @Override
   public Set<String> free() {
-    Set<String> free = new TreeSet<String>();
-    free.add(this.name);
-    return free;
+    return Collections.singleton(this.name);
   }
 
   /**
