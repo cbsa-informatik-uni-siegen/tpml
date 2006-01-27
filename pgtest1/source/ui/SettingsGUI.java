@@ -189,7 +189,15 @@ public class SettingsGUI extends javax.swing.JDialog {
     private javax.swing.JButton buttonOk;
     private javax.swing.JCheckBox checkBoxSSJustAxioms;
     private javax.swing.JCheckBox checkBoxSSUnderline;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JComboBox jComboBox1;
+    private javax.swing.JFrame jFrame1;
+    private javax.swing.JList jList1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTabbedPane jTabbedPane1;
     // End of variables declaration//GEN-END:variables
     

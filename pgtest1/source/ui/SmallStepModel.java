@@ -29,19 +29,52 @@ public class SmallStepModel {
 	public static final int ROLE_UNDERLINE		= 5;
 	public static final int ROLE_RULE_EXP		= 6;
 	
+	/**
+	 * A single step represents the combination of the expression,
+	 * the expression that represetnts the part that should be underlined.
+	 * 
+	 * @author marcell
+	 *
+	 */
 	public class Step {
+		/**
+		 * The expression that should be drawn right of the arrow
+		 */
 		private Expression		expression;
 		
+		/**
+		 * The expression that should be underlined or it is null.
+		 */
 		private Expression		underlineExpression;
 		
+		/**
+		 * The rule that have to be selected correctly
+		 */
 		private RuleChain		ruleChain;
 		
+		/**
+		 * The string that should be drawn right the arrow.
+		 * This comes directly out of the expression.
+		 */
 		private PrettyString	prettyString;
 		
+		/**
+		 * The number of evaluated meta rules. These rules will be rendered
+		 * in text. The next meta rule, when one exists, will be shown as a
+		 * comboBox with which the user can evaluate the meta rule. 
+		 */
 		private int				evaluatedMetaRules;
 		
+		/**
+		 * Whether the axiom rule was correctly solved
+		 */
 		private boolean			evaluatedAxiomRule;
 		
+		/**
+		 * One rectangle for each rule (meta rules and axiom).
+		 * 
+		 * This value is set by the SmallStepComponent.
+		 */
 		private Rectangle[]		rectangles;
 		
 		public Step (Expression expression, RuleChain ruleChain) {
@@ -57,34 +90,68 @@ public class SmallStepModel {
 			}
 		}
 		
+		/**
+		 * Sets the expression that should be underlined.
+		 * 
+		 * @param expression The expression to be underlined or null if no
+		 * 					 expression should be underlined.
+		 */
 		public void setUnderlineExpression(Expression expression) {
 			this.underlineExpression = expression;
 		}
 		
+		/**
+		 * Returns the expression that should be underlined.
+		 * @return The expression that should be underlined. 
+		 */
 		public Expression getUnderlineExpression() {
 			return this.underlineExpression;
 		}
 		
+		/**
+		 * Returns the expression that is bound to this step
+		 * @return The expression that is bound to this step
+		 */
 		public Expression getExpression() {
 			return this.expression;
 		}
 		
+		/**
+		 * Returns the entire rule chain.
+		 * @return The entire rule chain
+		 */
 		public RuleChain getRuleChain() {
 			return this.ruleChain;
 		}
 		
+		/**
+		 * Returns the pretty formated string of this step
+		 * @return The pretty formated string of this step
+		 */
 		public PrettyString getPrettyString() {
 			return this.prettyString;
 		}
 		
+		/**
+		 * Sets the number of evaluated meta rules this valua
+		 * @param evaluatedMetaRules
+		 */
 		public void setEvaluatedMetaRules(int evaluatedMetaRules) {
 			this.evaluatedMetaRules = evaluatedMetaRules;
 		}
-		
+
+		/**
+		 * Returns the number of meta rules that have been evaluated already
+		 * @return The number of evaluated meta rules.
+		 */
 		public int getEvaluatedMetaRules() {
 			return this.evaluatedMetaRules;
 		}
 		
+		/**
+		 * Sets whether the axiom has been evaluated 
+		 * @param evaluatedAxiomRules Whether the axiom 
+		 */
 		public void setEvaluatedAxiomRules(boolean evaluatedAxiomRules) {
 			this.evaluatedAxiomRule = evaluatedAxiomRules;
 		}
@@ -127,43 +194,56 @@ public class SmallStepModel {
 	private Expression 	originExpression;
 	
 	/**
-	 * True then  the user desided to release the syntactical sugar.
+	 * True then the user has desided to release the syntactical sugar.
 	 */
 	private boolean		syntacticalSugarReleased;
 	
 	/**
+	 * When the user has set that only axiom rules should be selected by the user.
+	 * The this value has to be true else false.
 	 * 
+	 * When justAxioms is true then the evaluatedMetaRules of a Step is set to
+	 * the maximum of possible meta rules (that should be ruleChain.getRules().size()
 	 */
 	private boolean		justAxioms;
 	
 	/**
-	 * 
+	 * The font that should be used to render the expressions
 	 */
 	private Font		expressionFont;
 	
 	/**
+	 * The font that should be used to rencer the keywords like: let, in, if, then, else ...
 	 */
 	private Font		keywordFont;
 	
 	/**
+	 * The font that should be used to render constants
 	 */
 	private Font		constantFont;
 	
 	/**
-	 * 
+	 * The font that should be used to render the evaluated rules on the left side
 	 */
 	private Font		ruleExpFont;
 	
 	/**
-	 * 
+	 * The base font. All other fonts used in the SmallStep are derived from this font.
+	 * But this one is never actualy used directly. 
 	 */
 	private Font		origFont;
 
 	/**
-	 * 
+	 * The listener list. All listeners that needed to be informed when things change.
 	 */
 	private EventListenerList			listenerList = new EventListenerList();
 	
+	/**
+	 * Constructor. Adds the first step to the list of all steps, checks the
+	 * preferences for the "justAxioms" flag and evaluates the first step.
+	 * 
+	 * @param e The origin base expressions
+	 */
 	public SmallStepModel(Expression e) {
 		this.originExpression 			= e;
 		this.syntacticalSugarReleased 	= false;
@@ -189,6 +269,10 @@ public class SmallStepModel {
 		evaluateNextStep ();
 	}
 
+	/**
+	 * This function releases the last of the steps 
+	 * @return
+	 */
 	public boolean releaseSyntacticalSugar () {
 		// when the first step is evaluated the used has desided not to
 		// release the syntactical sugar.
