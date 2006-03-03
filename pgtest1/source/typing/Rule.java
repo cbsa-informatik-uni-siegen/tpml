@@ -1,5 +1,8 @@
 package typing;
 
+import java.util.Collection;
+import java.util.LinkedList;
+
 /**
  * Represents a type rule.
  *
@@ -71,6 +74,21 @@ public final class Rule {
    * The <b>(ABSTR)</b> type rule. 
    */
   public static final Rule ABSTR = new Rule("ABSTR");
+  
+  /**
+   * Returns the list of all available rules.
+   * 
+   * @return the list of all available rules.
+   */
+  public static Collection<Rule> getAllRules() {
+    LinkedList<Rule> rules = new LinkedList<Rule>();
+    rules.add(CONST);
+    rules.add(ID);
+    rules.add(APP);
+    rules.add(COND);
+    rules.add(ABSTR);
+    return rules;
+  }
   
   private Rule(String name) {
     this.name = name;
