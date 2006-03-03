@@ -42,7 +42,7 @@ public final class ProofNode implements TreeNode {
    * 
    * @see javax.swing.tree.TreeNode#getChildAt(int)
    */
-  public TreeNode getChildAt(int childIndex) {
+  public ProofNode getChildAt(int childIndex) {
     return this.children.elementAt(childIndex);
   }
 
@@ -60,7 +60,7 @@ public final class ProofNode implements TreeNode {
    * 
    * @see javax.swing.tree.TreeNode#getParent()
    */
-  public TreeNode getParent() {
+  public ProofNode getParent() {
     return this.parent;
   }
 
@@ -202,7 +202,7 @@ public final class ProofNode implements TreeNode {
   ProofNode cloneSubstituteAndReplace(Substitution substitution, ProofNode oldNode, ProofNode newNode) {
     // check if this one should be replaced
     if (oldNode == this)
-      return newNode;
+      return newNode.cloneSubstituteAndReplace(substitution, null, null);
     
     // allocate a new copy of the node
     ProofNode node = new ProofNode(this.judgement.substitute(substitution), this.rule);

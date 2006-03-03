@@ -60,7 +60,7 @@ public final class ProofTree implements TreeModel {
    * 
    * @see javax.swing.tree.TreeModel#getChild(java.lang.Object, int)
    */
-  public Object getChild(Object parent, int index) {
+  public ProofNode getChild(Object parent, int index) {
     return ((ProofNode)parent).getChildAt(index);
   }
 
@@ -87,7 +87,7 @@ public final class ProofTree implements TreeModel {
    * 
    * @see javax.swing.tree.TreeModel#getRoot()
    */
-  public Object getRoot() {
+  public ProofNode getRoot() {
     return this.root;
   }
 

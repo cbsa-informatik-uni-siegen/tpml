@@ -16,6 +16,7 @@ public final class InvalidRuleException extends Exception {
    *             for <code>node</code>.
    */
   InvalidRuleException(ProofNode node, Rule rule) {
+    super("Cannot apply " + rule + " to " + node.getJudgement());
     this.node = node;
     this.rule = rule;
   }

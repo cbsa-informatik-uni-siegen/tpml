@@ -4,7 +4,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 /**
- * TODO Add documentation here.
+ * Function types.
  *
  * @author Benedikt Meurer
  * @version $Id$
@@ -136,12 +136,12 @@ public final class ArrowType extends Type {
   /**
    * The arrow type for <code>int -&gt; int -&gt; int</code>.
    */
-  public static final ArrowType INT_INT_INT = new ArrowType(INT_INT, PrimitiveType.INT);
+  public static final ArrowType INT_INT_INT = new ArrowType(PrimitiveType.INT, INT_INT);
   
   /**
    * The arrow type for <code>int -&gt; int -&gt; bool</code>.
    */
-  public static final ArrowType INT_INT_BOOL = new ArrowType(INT_INT, PrimitiveType.BOOL);
+  public static final ArrowType INT_INT_BOOL = new ArrowType(PrimitiveType.BOOL, INT_INT);
 
   // member attributes
   private Type t1;

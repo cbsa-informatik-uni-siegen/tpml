@@ -82,7 +82,7 @@ public abstract class Type {
       return ArrowType.INT_INT_BOOL;
     
     // no primitive type
-    throw new IllegalArgumentException("Cannot simply determine type for " + expression);
+    throw new IllegalArgumentException("Cannot determine the type for " + expression);
   }
   
   /**
