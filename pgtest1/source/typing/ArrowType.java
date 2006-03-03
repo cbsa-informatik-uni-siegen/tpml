@@ -94,6 +94,21 @@ public final class ArrowType extends Type {
     return this.t2;
   }
 
+  /**
+   * The arrow type for <code>int -&gt; int</code>.
+   */
+  public static final ArrowType INT_INT = new ArrowType(PrimitiveType.INT, PrimitiveType.INT);
+  
+  /**
+   * The arrow type for <code>int -&gt; int -&gt; int</code>.
+   */
+  public static final ArrowType INT_INT_INT = new ArrowType(INT_INT, PrimitiveType.INT);
+  
+  /**
+   * The arrow type for <code>int -&gt; int -&gt; bool</code>.
+   */
+  public static final ArrowType INT_INT_BOOL = new ArrowType(INT_INT, PrimitiveType.BOOL);
+
   // member attributes
   private Type t1;
   private Type t2;

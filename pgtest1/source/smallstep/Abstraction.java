@@ -81,6 +81,20 @@ public class Abstraction extends Value {
   }
   
   /**
+   * @return Returns the id.
+   */
+  public String getId() {
+    return this.id;
+  }
+  
+  /**
+   * @return Returns the e.
+   */
+  public Expression getE() {
+    return this.e;
+  }
+  
+  /**
    * Returns <code>true</code> if the subexpression
    * contains syntactic sugar.
    * 

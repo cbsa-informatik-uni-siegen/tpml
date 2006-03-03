@@ -21,6 +21,21 @@ final class EquationList {
     this.first = first;
     this.remaining = remaining;
   }
+
+  /**
+   * Allocates a new {@link EquationList}, which extends this
+   * equation list with a new {@link Equation} for <code>left</code>
+   * and <code>right</code>.
+   * 
+   * @param left the left side of the new equation.
+   * @param right the right side of the new equation.
+   * 
+   * @return the extended {@link EquationList}.
+   */
+  EquationList extend(Type left, Type right) {
+    // allocate an extended equation list
+    return new EquationList(new Equation(left, right), this);
+  }
   
   /**
    * Applies the {@link Substitution} <code>s</code> to all

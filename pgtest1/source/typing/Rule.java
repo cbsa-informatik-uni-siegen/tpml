@@ -67,6 +67,11 @@ public final class Rule {
    */
   public static final Rule COND = new Rule("COND");
   
+  /**
+   * The <b>(ABSTR)</b> type rule. 
+   */
+  public static final Rule ABSTR = new Rule("ABSTR");
+  
   private Rule(String name) {
     this.name = name;
   }

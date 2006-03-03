@@ -42,6 +42,23 @@ public final class Environment {
   }
   
   /**
+   * Extends this type environment with an entry for the pair
+   * (<code>identifer</code>,<code>type</code>) and returns the
+   * new {@link Environment}.
+   *  
+   * @param identifier the identifier for <code>type</code>.
+   * @param type the {@link Type} that should be set for <code>identifier</code>.
+   * 
+   * @return the extended environment.
+   * 
+   * @throws IllegalArgumentException if an invalid value is specified for any
+   *                                  of the parameters.
+   */
+  public Environment extend(String identifier, Type type) {
+    return new Environment(this, identifier, type);
+  }
+  
+  /**
    * Looks up the type for the <code>identifier</code> in
    * this type environment.
    * 
@@ -87,6 +104,32 @@ public final class Environment {
     for (Environment env = this; env.parent != null; env = env.parent)
       identifiers.add(env.identifier);
     return identifiers;
+  }
+  
+  /**
+   * Applies the <code>substitution</code> to all types in
+   * the environment and returns the resulting environment.
+   * 
+   * @param substitution the {@link Substitution}.
+   * 
+   * @return the resulting {@link Environment}.
+   */
+  Environment substitute(Substitution substitution) {
+    // nothing to substitute in the empty environment
+    if (this == EMPTY_ENVIRONMENT)
+      return this;
+    
+    // apply the substitution to the parent
+    Environment parent = this.parent.substitute(substitution);
+
+    // apply the substitution to the type
+    Type type = this.type.substitute(substitution);
+    
+    // check anything changed
+    if (parent != this.parent || type != this.type)
+      return new Environment(parent, this.identifier, type);
+    else
+      return this;
   }
   
   /**

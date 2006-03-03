@@ -114,6 +114,24 @@ public class Application extends Expression {
   }
   
   /**
+   * Returns the first sub expression.
+   * 
+   * @return the e1.
+   */
+  public Expression getE1() {
+    return this.e1;
+  }
+  
+  /**
+   * Returns the second sub expression.
+   * 
+   * @return the e2.
+   */
+  public Expression getE2() {
+    return this.e2;
+  }
+  
+  /**
    * Returns <code>true</code> if a subexpression contains
    * syntactic sugar.
    * 

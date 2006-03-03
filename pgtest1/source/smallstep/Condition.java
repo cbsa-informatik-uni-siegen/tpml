@@ -105,6 +105,27 @@ public class Condition extends Expression {
   }
   
   /**
+   * @return Returns the e0.
+   */
+  public Expression getE0() {
+    return this.e0;
+  }
+  
+  /**
+   * @return Returns the e1.
+   */
+  public Expression getE1() {
+    return this.e1;
+  }
+  
+  /**
+   * @return Returns the e2.
+   */
+  public Expression getE2() {
+    return this.e2;
+  }
+  
+  /**
    * Returns <code>true</code> if any of the subexpressions
    * contains syntactic sugar, else <code>false</code>.
    * 

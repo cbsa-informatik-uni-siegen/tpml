@@ -15,6 +15,25 @@ import smallstep.Expression;
  */
 public final class Judgement {
   /**
+   * Allocates a new type {@link Judgement} with the given
+   * <code>environment</code>, <code>expression</code> and
+   * <code>type</code>.
+   * 
+   * @param environment the type {@link Environment} in which to
+   *                    determine the type of expression.
+   * @param expression the {@link Expression} for which a type
+   *                   should be determined.
+   * @param type the {@link Type} for this judgement, which may be
+   *             a {@link TypeVariable} if no concrete type is known
+   *             yet.
+   */
+  Judgement(Environment environment, Expression expression, Type type) {
+    this.environment = environment;
+    this.expression = expression;
+    this.type = type;
+  }
+  
+  /**
    * Returns the type environment for this type judgement,
    * that is, the environment in which the type of the
    * expression was determined.
@@ -42,6 +61,28 @@ public final class Judgement {
    */
   public Type getType() {
     return this.type;
+  }
+  
+  /**
+   * Applies the <code>substitution</code> to the environment
+   * and the type of this judgement.
+   * 
+   * @param substitution the {@link Substitution} to apply.
+   * 
+   * @return the new judgement.
+   */
+  Judgement substitute(Substitution substitution) {
+    // apply the substitution to the environment
+    Environment environment = this.environment.substitute(substitution);
+    
+    // apply the substitution to the type
+    Type type = this.type.substitute(substitution);
+    
+    // check if anything changed
+    if (environment != this.environment || type != this.type)
+      return new Judgement(environment, this.expression, type);
+    else
+      return this;
   }
   
   /**

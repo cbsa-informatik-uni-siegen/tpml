@@ -5,13 +5,38 @@ import javax.swing.event.TreeModelListener;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 
+import smallstep.Abstraction;
+import smallstep.Application;
+import smallstep.Condition;
+import smallstep.Constant;
+import smallstep.Expression;
+import smallstep.Identifier;
+
 /**
- * TODO Add documentation here.
+ * The tree of proof nodes required to prove a
+ * type judgement.
  *
  * @author Benedikt Meurer
  * @version $Id$
  */
 public final class ProofTree implements TreeModel {
+  /**
+   * Allocates a new proof tree with an inital type
+   * <code>environment</code> and the <code>expression</code>
+   * whose type should be determined.
+   * 
+   * @param environment the inital type {@link Environment}.
+   * @param expression the {@link smallstep.Expression} whose type
+   *                   should be determined.
+   */
+  ProofTree(Environment environment, Expression expression) {
+    // allocate the new judgement
+    Judgement judgement = new Judgement(environment, expression, newTypeVariable());
+    
+    // allocate the root node
+    this.root = new ProofNode(judgement);
+  }
+  
   /**
    * {@inheritDoc}
    * 
@@ -106,20 +131,90 @@ public final class ProofTree implements TreeModel {
    * @throws IllegalArgumentException if the <code>node</code> is not
    *                                  valid for the tree or the <code>node</code>
    *                                  is already proven.
+   * @throws InvalidRuleException if the <code>rule</code> cannot be applied to
+   *                              the <code>node</code>. 
+   * @throws UnificationException if the unification failed.
+   * @throws UnknownIdentifierException if an identifier could not be found in the
+   *                                    type environment of a judgement.  
    *                                  
    * @see ProofNode#getRule()                                  
    */
-  public ProofTree apply(Rule rule, ProofNode node) {
+  public ProofTree apply(Rule rule, ProofNode node) throws InvalidRuleException, UnificationException, UnknownIdentifierException {
     // verify that the node isn't already proven
     if (node.getRule() != null)
       throw new IllegalArgumentException("A type rule was already applied for the proof node");
     
     // verify that the node is valid for the tree
-    if (this.root != node && !this.root.hasChild(node))
+    if (this.root != node && !this.root.containsChild(node))
       throw new IllegalArgumentException("The proof node is not valid for the proof tree");
+
+    // determine the judgement
+    Judgement judgement = node.getJudgement();
     
-    // FIXME
-    return null;
+    // determine the judgement attributes
+    Type tau = judgement.getType();
+    Expression expression = judgement.getExpression();
+    Environment environment = judgement.getEnvironment();
+    
+    // allocate the new node as replacement for the node
+    ProofNode newNode = new ProofNode(judgement, rule);
+
+    // start with an empty equation list as base for the unification
+    EquationList equations = EquationList.EMPTY_LIST;
+    
+    // backward apply the rule
+    if (expression instanceof Constant && rule == Rule.CONST) {
+      // generate a new type equation for the judgement type and the constant type
+      Type constType = Type.getTypeForExpression(expression);
+      equations = equations.extend(tau, constType);
+    }
+    else if (expression instanceof Identifier && rule == Rule.ID) {
+      // generate a new type equation for the judgement type and the identifier type
+      Type idType = environment.get(((Identifier)expression).getName());
+      equations = equations.extend(tau, idType);
+    }
+    else if (expression instanceof Application && rule == Rule.APP) {
+      // split into tau1 and tau2 for the application
+      Type tau2 = newTypeVariable();
+      Type tau1 = new ArrowType(tau2, tau);
+      
+      // generate new sub nodes
+      Application application = (Application)expression;
+      newNode.addChild(new Judgement(environment, application.getE1(), tau1));
+      newNode.addChild(new Judgement(environment, application.getE2(), tau2));
+    }
+    else if (expression instanceof Condition && rule == Rule.COND) {
+      // generate new sub nodes
+      Condition condition = (Condition)expression;
+      newNode.addChild(new Judgement(environment, condition.getE0(), PrimitiveType.BOOL));
+      newNode.addChild(new Judgement(environment, condition.getE1(), tau));
+      newNode.addChild(new Judgement(environment, condition.getE2(), tau));
+    }
+    else if (expression instanceof Abstraction && rule == Rule.ABSTR) {
+      // generate new type variables
+      Type tau1 = newTypeVariable();
+      Type tau2 = newTypeVariable();
+      
+      // add type equations for tau and tau1->tau2
+      equations = equations.extend(tau, new ArrowType(tau1, tau2));
+      
+      // generate a new sub node
+      Abstraction abstraction = (Abstraction)expression;
+      newNode.addChild(new Judgement(environment.extend(abstraction.getId(), tau1), abstraction.getE(), tau2));
+    }
+    else {
+      // well, not possible then
+      throw new InvalidRuleException(node, rule);
+    }
+    
+    // determine the unificator
+    Substitution substitution = equations.unify();
+    
+    // allocate a root item for the new tree
+    ProofNode newRoot = this.root.cloneSubstituteAndReplace(substitution, node, newNode);
+    
+    // allocate the new tree
+    return new ProofTree(newRoot);
   }
   
   /**
@@ -144,6 +239,20 @@ public final class ProofTree implements TreeModel {
    */
   public Rule getRuleForNode(Object node) {
     return ((ProofNode)node).getRule();
+  }
+
+  // allocates a new tree with the given root 
+  private ProofTree(ProofNode root) {
+    this.root = root;
+  }
+  
+  // returns a new type variable that isn't currently used
+  private TypeVariable newTypeVariable() {
+    for (int i = 0;; ++i) {
+      String name = "\u03B1" + i;
+      if (this.root == null || !this.root.containsTypeVariable(name))
+        return new TypeVariable(name);
+    }
   }
   
   // member attributes

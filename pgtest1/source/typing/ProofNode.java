@@ -14,6 +14,16 @@ import javax.swing.tree.TreeNode;
  */
 public final class ProofNode implements TreeNode {
   /**
+   * Convenience wrapper for {@link #ProofNode(Judgement, Rule)},
+   * which passes <code>null</code> for <code>rule</code>.
+   * 
+   * @param judgement the type judgement for this proof node.
+   */
+  ProofNode(Judgement judgement) {
+    this(judgement, null);
+  }
+  
+  /**
    * Allocates a new <code>ProofNode</code> instance with the
    * given <code>judgement</code>.
    * 
@@ -128,6 +138,18 @@ public final class ProofNode implements TreeNode {
   }
   
   /**
+   * Convenience wrapper for the {@link #addChild(ProofNode)}
+   * method.
+   * 
+   * @param judgement a {@link Judgement} to add.
+   * 
+   * @see #addChild(ProofNode)
+   */
+  void addChild(Judgement judgement) {
+    addChild(new ProofNode(judgement));
+  }
+  
+  /**
    * Returns <code>true</code> if this proof node or any of
    * its sub nodes contains the given <code>node</code> in
    * the list of children.
@@ -137,13 +159,66 @@ public final class ProofNode implements TreeNode {
    * @return <code>true</code> if <code>node</code> is a
    *         child of this proof node.
    */
-  boolean hasChild(ProofNode node) {
+  boolean containsChild(ProofNode node) {
     for (ProofNode child : this.children)
-      if (child == node || child.hasChild(node))
+      if (child == node || child.containsChild(node))
         return true;
     return false;
   }
 
+  /**
+   * Returns <code>true</code> if this proof node or any of
+   * its sub nodes contains a type, which in turn contains
+   * a type variable of the given <code>name</code>.
+   * 
+   * @param name the name of the type variable to test.
+   * 
+   * @return <code>true</code> if a type variable of the
+   *         given <code>name</code> is present for this
+   *         node or any of its subnodes.
+   */
+  boolean containsTypeVariable(String name) {
+    if (this.judgement.getType().containsTypeVariable(name))
+      return true;
+    
+    for (ProofNode child : this.children)
+      if (child.containsTypeVariable(name))
+        return true;
+    
+    return false;
+  }
+  
+  /**
+   * Clones this node and all subnodes. Replaces all occurances of
+   * <code>oldNode</code> in the current tree below this node with
+   * <code>newNode</code> in the cloned tree.
+   * 
+   * @param oldNode the old node in the current tree.
+   * @param newNode the new node for <code>oldNode</code> in the
+   *                cloned tree.
+   *                
+   * @return the resulting tree starting at this node.
+   */
+  ProofNode cloneSubstituteAndReplace(Substitution substitution, ProofNode oldNode, ProofNode newNode) {
+    // check if this one should be replaced
+    if (oldNode == this)
+      return newNode;
+    
+    // allocate a new copy of the node
+    ProofNode node = new ProofNode(this.judgement.substitute(substitution), this.rule);
+    node.children = new Vector<ProofNode>();
+    
+    // clone/replace all children
+    for (ProofNode oldChild : this.children) {
+      ProofNode newChild = oldChild.cloneSubstituteAndReplace(substitution, oldNode, newNode);
+      node.children.add(newChild);
+      newChild.parent = node;
+    }
+    
+    // and return the cloned node
+    return node;
+  }
+  
   // member attributes
   private Judgement judgement;
   private Rule rule;
