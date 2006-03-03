@@ -62,5 +62,39 @@ public final class TypeVariable extends Type {
     return this.name;
   }
   
+  /**
+   * Returns <code>true</code> if <code>obj</code> is a
+   * <code>TypeVariable</code>, whose name is equal to
+   * this type variable.
+   * 
+   * @param obj another object.
+   * 
+   * @return <code>true</code> if same as <code>obj</code>.
+   * 
+   * @see java.lang.Object#equals(java.lang.Object)
+   */
+  @Override
+  public boolean equals(Object obj) {
+    if (obj instanceof TypeVariable) {
+      TypeVariable tvar = (TypeVariable)obj;
+      return this.name.equals(tvar.name);
+    }
+    else {
+      return false;
+    }
+  }
+  
+  /**
+   * Returns the string representation of the type variable.
+   * 
+   * @return the string representation of the type variable.
+   * 
+   * @see java.lang.Object#toString()
+   */
+  @Override
+  public String toString() {
+    return this.name;
+  }
+  
   private String name;
 }

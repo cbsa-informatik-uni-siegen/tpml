@@ -62,6 +62,20 @@ public final class ArrowType extends Type {
   }
   
   /**
+   * @return Returns the t1.
+   */
+  public Type getT1() {
+    return this.t1;
+  }
+  
+  /**
+   * @return Returns the t2.
+   */
+  public Type getT2() {
+    return this.t2;
+  }
+
+  /**
    * {@inheritDoc}
    * 
    * @see typing.Type#substitute(typing.Substitution)
@@ -79,21 +93,41 @@ public final class ArrowType extends Type {
     else
       return this;
   }
-  
-  /**
-   * @return Returns the t1.
-   */
-  public Type getT1() {
-    return this.t1;
-  }
-  
-  /**
-   * @return Returns the t2.
-   */
-  public Type getT2() {
-    return this.t2;
-  }
 
+  /**
+   * Returns <code>true</code> if <code>obj</code> is an
+   * <code>ArrowType</code>, which is equal to this
+   * arrow type.
+   * 
+   * @param obj another object.
+   * 
+   * @return <code>true</code> if equal.
+   * 
+   * @see java.lang.Object#equals(java.lang.Object)
+   */
+  @Override
+  public boolean equals(Object obj) {
+    if (obj instanceof ArrowType) {
+      ArrowType arrowType = (ArrowType)obj;
+      return (this.t1.equals(arrowType.t1) && this.t2.equals(arrowType.t2));
+    }
+    else {
+      return false;
+    }
+  }
+  
+  /**
+   * Returns the string representation of the arrow type.
+   * 
+   * @return the string representation of the arrow type.
+   * 
+   * @see java.lang.Object#toString()
+   */
+  @Override
+  public String toString() {
+    return "(" + this.t1 + " -> " + this.t2 + ")";
+  }
+  
   /**
    * The arrow type for <code>int -&gt; int</code>.
    */
