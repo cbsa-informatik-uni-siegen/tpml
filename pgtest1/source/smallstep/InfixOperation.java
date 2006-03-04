@@ -168,6 +168,13 @@ public final class InfixOperation extends Expression {
   }
   
   /**
+   * @return Returns the op.
+   */
+  public Operator getOp() {
+    return this.op;
+  }
+  
+  /**
    * Returns <code>true</code> since an infix operation
    * is syntactic sugar.
    * 
