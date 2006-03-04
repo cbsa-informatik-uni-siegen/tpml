@@ -6,6 +6,7 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Polygon;
 import java.util.EventObject;
 import java.util.Vector;
 import java.util.HashMap;
@@ -91,6 +92,13 @@ public class TypeCheckerComponent extends JComponent {
 	 * The font that is used to render the judgement
 	 */
 	private Font				expressionFont;
+	private FontMetrics			expressionFM;
+	
+	/**
+	 * 
+	 */
+	private Font				ruleFont;
+	private FontMetrics			ruleFM;
 
 	/**
 	 * The comboboxes that are used to let the user interact with.
@@ -100,14 +108,16 @@ public class TypeCheckerComponent extends JComponent {
 	/**
 	 * 
 	 */
-	public Vector<ProofNode>	selectionRelation;
+	private Vector<ProofNode>	selectionRelation;
 	
 	/**
 	 * 
 	 */
-	public HashMap<String, Rule>			rules;
+	private HashMap<String, Rule>			rules;
 	
 	private Dimension			selectionSize;
+	
+	private Dimension				maxSize;
 	
 	
 	public TypeCheckerComponent () {
@@ -115,18 +125,24 @@ public class TypeCheckerComponent extends JComponent {
 		this.setLayout(null);
 		this.indentionDepth = 25;
 	
-		this.expressionFont = new JComboBox().getFont();
+		Font font = new JComboBox ().getFont();
+		this.expressionFont = font.deriveFont(font.getSize2D() * 1.3f);
+		this.expressionFM = getFontMetrics (this.expressionFont);
+		
+		this.ruleFont = new JComboBox().getFont();
+		this.ruleFM = getFontMetrics (this.ruleFont);
 		
 		this.selections = new Vector<JComboBox>();
 		this.selectionRelation = new Vector<ProofNode> ();
 		this.rules = new HashMap<String, Rule>();
 		
-		FontMetrics fm = getFontMetrics(this.expressionFont);
+		this.maxSize = new Dimension ();
+		
+		FontMetrics fm = getFontMetrics (font);
 		this.selectionSize = new Dimension (fm.stringWidth("DAS IST NE RULE"), fm.getHeight());
 		
 		for (Rule r : Rule.getAllRules()) {
 			rules.put(r.getName(), r);
-			System.out.println ("rules [" + r.getName()  + "] = " + r);
 		}
 		
 	}
@@ -191,15 +207,12 @@ public class TypeCheckerComponent extends JComponent {
 	 */
 	private void checkNumberOfNeededSelections() {
 		
-		System.out.println("checkNumberOfSelections");
 		if (model == null)
 			return;
 		
 		int selectionCount = checkNextNode ((ProofNode)model.getRoot(), 0);
-		System.out.println("selectionCount: " + selectionCount);
 		
 		for (JComboBox c : selections) {
-			System.out.println(" remove (c)");
 			this.remove(c);
 		}
 		
@@ -240,30 +253,38 @@ public class TypeCheckerComponent extends JComponent {
 	 */
 	public int renderTreeNode (Graphics2D g2d, NodeItem node, String sindention) {
 		g2d.setFont(this.expressionFont);
-		FontMetrics fm = getFontMetrics(this.expressionFont);
 		
+		int rightBehind = 0;
+		
+		// build the judgement for this line in the way
+		// (<ID>) [<ENVIRONMENT>] |> <EXPRESSION> :: <TYPE>
+		
+		String judgement = "(" + this.ruleId + ") " + 
+			node.node.getJudgement().getEnvironment() + " \u22b3 " + 
+			node.node.getJudgement().getExpression().toString() +
+			" : : " +
+			node.node.getJudgement().getType() + 
+			"    ";
+		
+		int identifierSize = this.expressionFM.stringWidth ("(" + this.ruleId + ")");
 		
 		// Draw the two orthogonal lines from the front of this judgement
 		// line to the bottom of the leading parent judgement when a parent is
 		// is present.
 		if (node.hasParent) {
 			int nx = node.x - 2;
-			int ny = node.y - fm.getDescent();
+			int ny = node.y - this.expressionFM.getDescent();
 			g2d.drawLine(node.parentX, node.parentY, node.parentX, ny);
 			g2d.drawLine(node.parentX, ny, nx, ny);
+			
+			Polygon poly = new Polygon ();
+			poly.addPoint (node.parentX, node.parentY);
+			poly.addPoint (node.parentX + identifierSize/4, node.parentY + identifierSize/2);
+			poly.addPoint (node.parentX, node.parentY + identifierSize / 4);
+			poly.addPoint (node.parentX - identifierSize/4, node.parentY + identifierSize/2);
+
+			g2d.fill (poly);
 		}
-		
-		// build the judgement for this line in the way
-		// (<ID>) [<ENVIRONMENT>] |> <EXPRESSION> :: <TYPE>
-		
-		String judgement = "(" + this.ruleId + ") " + 
-			node.node.getJudgement().getEnvironment() + " |> " + 
-			node.node.getJudgement().getExpression().toString() +
-			"     : :     " +
-			node.node.getJudgement().getType() + 
-			"    ";
-		
-		int identifierSize = fm.stringWidth ("(" + this.ruleId + ")");
 		
 		
 		// find the position in the center of the (<ID>) below the judgement
@@ -272,6 +293,12 @@ public class TypeCheckerComponent extends JComponent {
 		
 		// render the judgement
 		g2d.drawString(judgement, node.x, node.y);
+		
+		// find the max size behind the judgement line
+		int size = node.x + this.expressionFM.stringWidth(judgement);
+		if (size > this.maxSize.width) {
+			this.maxSize.width = size;
+		}
 
 		// check wether we have to put a combobox 
 		Expression exp = node.node.getJudgement().getExpression();
@@ -290,32 +317,48 @@ public class TypeCheckerComponent extends JComponent {
 			// if so, the combobox will be placed behind the judgement line.
 			// if not, the combobox will be placed below.
 			if (idConst) {
-				int boxX = node.x + fm.stringWidth(judgement);
+				int boxX = node.x + this.expressionFM.stringWidth(judgement);
 				int boxY = node.y;
-				boxY -= selectionSize.height - fm.getDescent();
+				boxY -= selectionSize.height - this.expressionFM.getDescent();
 				box.setBounds(boxX, boxY, selectionSize.width, selectionSize.height);
 			}
 			else {
 				int boxX = node.x + identifierSize;
-				int boxY = node.y + fm.getDescent() + selectionSize.height / 2;
+				int boxY = node.y + this.expressionFM.getDescent() + selectionSize.height / 2;
 				box.setBounds(boxX, boxY, selectionSize.width, selectionSize.height);
-				node.y += selectionSize.height + selectionSize.height / 2 + fm.getDescent();
+				node.y += selectionSize.height + selectionSize.height / 2 + this.expressionFM.getDescent();
 				
+			}
+			
+			// find the max size behind the combo boxes
+			if (box.getX() + box.getWidth() > this.maxSize.width) {
+				this.maxSize.width = box.getX () + box.getWidth();
 			}
 		}
 		else {
-			
+			g2d.setFont(this.ruleFont);
+			g2d.setColor(new Color (255, 0, 0));
+			int ruleX = 0;
+			int ruleY = 0;
 			if (idConst) {
-				int ruleX = node.x + fm.stringWidth(judgement);
-				int ruleY = node.y;
-				g2d.drawString(node.node.getRule().toString(), ruleX, ruleY);
+				ruleX = node.x + this.ruleFM.stringWidth(judgement);
+				ruleY = node.y;
+				
 			}
 			else {
-				int ruleX = node.x + identifierSize;
-				int ruleY = node.y + fm.getHeight () + selectionSize.height / 2;
-				g2d.drawString(node.node.getRule().toString(), ruleX, ruleY);
+				ruleX = node.x + identifierSize;
+				ruleY = node.y + this.ruleFM.getHeight () + selectionSize.height / 2;
 				node.y = ruleY;
 			}
+			
+			// find the max size behind the evaluated rule
+			size = ruleX + this.ruleFM.stringWidth(node.node.getRule ().toString());
+			if (size > this.maxSize.width) {
+				this.maxSize.width = size;
+			}
+			
+			g2d.drawString(node.node.getRule().toString(), ruleX, ruleY);
+			g2d.setColor(new Color (0, 0, 0));
 		}
 		
 		
@@ -323,7 +366,7 @@ public class TypeCheckerComponent extends JComponent {
 		this.ruleId++;
 		
 		// continue with the child judgements.
-		node.y += fm.getHeight() + 15;
+		node.y += this.expressionFM.getHeight() + 15;
 		for (int i=0; i<node.node.getChildCount(); i++) {
 			
 			// create the NodeItem that is used to draw 
@@ -362,9 +405,11 @@ public class TypeCheckerComponent extends JComponent {
 			newNode.y = 25;
 			this.ruleId = 1;
 			this.whichComboBox = 0;
-			renderTreeNode (g2d, newNode, "");
+			this.maxSize.width = 0;
+			this.maxSize.height = renderTreeNode (g2d, newNode, "");
 			
 		}
+		setPreferredSize(this.maxSize);
 	}
 	
 	public void addTypeCheckerEventListener (TypeCheckerEventListener listener) {
