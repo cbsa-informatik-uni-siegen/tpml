@@ -11,6 +11,8 @@ import smallstep.Condition;
 import smallstep.Constant;
 import smallstep.Expression;
 import smallstep.Identifier;
+import smallstep.Let;
+import smallstep.Recursion;
 
 /**
  * The tree of proof nodes required to prove a
@@ -201,6 +203,26 @@ public final class ProofTree implements TreeModel {
       // generate a new sub node
       Abstraction abstraction = (Abstraction)expression;
       newNode.addChild(new Judgement(environment.extend(abstraction.getId(), tau1), abstraction.getE(), tau2));
+    }
+    else if (expression instanceof Let && rule == Rule.LET) {
+      // generate a new type variable
+      Type tau1 = newTypeVariable();
+      
+      // generate new sub nodes
+      Let let = (Let)expression;
+      newNode.addChild(new Judgement(environment, let.getE1(), tau1));
+      newNode.addChild(new Judgement(environment.extend(let.getId(), tau1), let.getE2(), tau));
+    }
+    else if (expression instanceof Recursion && rule == Rule.REC) {
+      // generate a new type variable
+      Type tau1 = newTypeVariable();
+      
+      // add equation tau = tau1
+      equations = equations.extend(tau, tau1);
+      
+      // generate new sub node
+      Recursion recursion = (Recursion)expression;
+      newNode.addChild(new Judgement(environment.extend(recursion.getId(), tau1), recursion.getE(), tau1));
     }
     else {
       // well, not possible then

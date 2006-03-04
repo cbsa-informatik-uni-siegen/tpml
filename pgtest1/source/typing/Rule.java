@@ -76,6 +76,16 @@ public final class Rule {
   public static final Rule ABSTR = new Rule("ABSTR");
   
   /**
+   * The <b>(LET)</b> type rule.
+   */
+  public static final Rule LET = new Rule("LET");
+  
+  /**
+   * The <b>(REC)</b> type rule.
+   */
+  public static final Rule REC = new Rule("REC");
+  
+  /**
    * Returns the list of all available rules.
    * 
    * @return the list of all available rules.

@@ -90,6 +90,20 @@ public class Recursion extends Expression {
     set.remove(this.id);
     return set;
   }
+
+  /**
+   * @return Returns the id.
+   */
+  public String getId() {
+    return this.id;
+  }
+  
+  /**
+   * @return Returns the e.
+   */
+  public Expression getE() {
+    return this.e;
+  }
   
   /**
    * Returns <code>true</code> if the subexpression
