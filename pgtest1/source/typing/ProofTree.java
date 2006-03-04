@@ -223,7 +223,7 @@ public final class ProofTree implements TreeModel {
       
       // generate new sub nodes
       LetRec letRec = (LetRec)expression;
-      newNode.addChild(new Judgement(environment, letRec.getE1(), tau1));
+      newNode.addChild(new Judgement(environment.extend(letRec.getId(), tau1), letRec.getE1(), tau1));
       newNode.addChild(new Judgement(environment.extend(letRec.getId(), tau1), letRec.getE2(), tau));
     }
     else if (expression instanceof Recursion && rule == Rule.REC) {
