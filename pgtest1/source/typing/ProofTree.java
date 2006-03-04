@@ -242,14 +242,9 @@ public final class ProofTree implements TreeModel {
       Type tau1 = newTypeVariable();
       Type tau2 = newTypeVariable();
       
-      // determine the type of the operator
-      InfixOperation operation = (InfixOperation)expression;
-      Type opType = Type.getTypeForExpression(operation.getOp());
-      
-      // add equation tau(op) = tau1 -> tau2 -> tau
-      equations = equations.extend(opType, new ArrowType(tau1, new ArrowType(tau2, tau)));
-      
       // generate new sub nodes
+      InfixOperation operation = (InfixOperation)expression;
+      newNode.addChild(new Judgement(environment, operation.getOp(), new ArrowType(tau1, new ArrowType(tau2, tau))));
       newNode.addChild(new Judgement(environment, operation.getE1(), tau1));
       newNode.addChild(new Judgement(environment, operation.getE2(), tau2));
     }
