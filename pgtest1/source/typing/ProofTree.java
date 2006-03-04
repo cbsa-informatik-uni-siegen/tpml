@@ -6,12 +6,16 @@ import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 
 import smallstep.Abstraction;
+import smallstep.And;
 import smallstep.Application;
 import smallstep.Condition;
 import smallstep.Constant;
 import smallstep.Expression;
 import smallstep.Identifier;
+import smallstep.InfixOperation;
 import smallstep.Let;
+import smallstep.LetRec;
+import smallstep.Or;
 import smallstep.Recursion;
 
 /**
@@ -213,6 +217,15 @@ public final class ProofTree implements TreeModel {
       newNode.addChild(new Judgement(environment, let.getE1(), tau1));
       newNode.addChild(new Judgement(environment.extend(let.getId(), tau1), let.getE2(), tau));
     }
+    else if (expression instanceof LetRec && rule == Rule.LET_REC) {
+      // generate a new type variable
+      Type tau1 = newTypeVariable();
+      
+      // generate new sub nodes
+      LetRec letRec = (LetRec)expression;
+      newNode.addChild(new Judgement(environment, letRec.getE1(), tau1));
+      newNode.addChild(new Judgement(environment.extend(letRec.getId(), tau1), letRec.getE2(), tau));
+    }
     else if (expression instanceof Recursion && rule == Rule.REC) {
       // generate a new type variable
       Type tau1 = newTypeVariable();
@@ -223,6 +236,33 @@ public final class ProofTree implements TreeModel {
       // generate new sub node
       Recursion recursion = (Recursion)expression;
       newNode.addChild(new Judgement(environment.extend(recursion.getId(), tau1), recursion.getE(), tau1));
+    }
+    else if (expression instanceof InfixOperation && rule == Rule.INFIX) {
+      // add equation tau = int
+      equations = equations.extend(tau, PrimitiveType.INT);
+      
+      // generate new sub nodes
+      InfixOperation operation = (InfixOperation)expression;
+      newNode.addChild(new Judgement(environment, operation.getE1(), PrimitiveType.INT));
+      newNode.addChild(new Judgement(environment, operation.getE2(), PrimitiveType.INT));
+    }
+    else if (expression instanceof And && rule == Rule.AND) {
+      // add equation tau = bool
+      equations = equations.extend(tau, PrimitiveType.BOOL);
+      
+      // generate new sub nodes
+      And and = (And)expression;
+      newNode.addChild(new Judgement(environment, and.getE0(), PrimitiveType.BOOL));
+      newNode.addChild(new Judgement(environment, and.getE1(), PrimitiveType.BOOL));
+    }
+    else if (expression instanceof Or && rule == Rule.OR) {
+      // add equation tau = bool
+      equations = equations.extend(tau, PrimitiveType.BOOL);
+      
+      // generate new sub nodes
+      Or or = (Or)expression;
+      newNode.addChild(new Judgement(environment, or.getE0(), PrimitiveType.BOOL));
+      newNode.addChild(new Judgement(environment, or.getE1(), PrimitiveType.BOOL));
     }
     else {
       // well, not possible then

@@ -113,6 +113,20 @@ public final class Or extends Expression {
   }
   
   /**
+   * @return Returns the e0.
+   */
+  public Expression getE0() {
+    return this.e0;
+  }
+  
+  /**
+   * @return Returns the e1.
+   */
+  public Expression getE1() {
+    return this.e1;
+  }
+  
+  /**
    * Returns <code>true</code> since <b>(OR)</b> is
    * syntactic sugar for <b>(COND)</b>.
    * 

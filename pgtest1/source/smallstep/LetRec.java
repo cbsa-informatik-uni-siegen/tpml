@@ -103,6 +103,27 @@ public final class LetRec extends Expression {
   }
   
   /**
+   * @return Returns the id.
+   */
+  public String getId() {
+    return this.id;
+  }
+  
+  /**
+   * @return Returns the e1.
+   */
+  public Expression getE1() {
+    return this.e1;
+  }
+  
+  /**
+   * @return Returns the e2.
+   */
+  public Expression getE2() {
+    return this.e2;
+  }
+  
+  /**
    * Returns <code>true</code> as <b>(LET-REC)</b> is
    * syntactic sugar.
    * 

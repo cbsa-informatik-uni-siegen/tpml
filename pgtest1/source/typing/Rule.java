@@ -81,9 +81,29 @@ public final class Rule {
   public static final Rule LET = new Rule("LET");
   
   /**
+   * The <b>(LET-REC)</b> type rule.
+   */
+  public static final Rule LET_REC = new Rule("LET-REC");
+  
+  /**
    * The <b>(REC)</b> type rule.
    */
   public static final Rule REC = new Rule("REC");
+  
+  /**
+   * The <b>(INFIX)</b> type rule.
+   */
+  public static final Rule INFIX = new Rule("INFIX");
+  
+  /**
+   * The <b>(AND)</b> type rule.
+   */
+  public static final Rule AND = new Rule("AND");
+  
+  /**
+   * The <b>(OR)</b> type rule.
+   */
+  public static final Rule OR = new Rule("OR");
   
   /**
    * Returns the list of all available rules.

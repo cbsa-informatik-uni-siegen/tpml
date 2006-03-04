@@ -112,6 +112,20 @@ public final class And extends Expression {
     set.addAll(this.e1.free());
     return set;
   }
+
+  /**
+   * @return Returns the e0.
+   */
+  public Expression getE0() {
+    return this.e0;
+  }
+  
+  /**
+   * @return Returns the e1.
+   */
+  public Expression getE1() {
+    return this.e1;
+  }
   
   /**
    * Returns <code>true</code> since <b>(AND)</b> is
