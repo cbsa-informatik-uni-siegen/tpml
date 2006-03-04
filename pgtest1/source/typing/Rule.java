@@ -117,6 +117,12 @@ public final class Rule {
     rules.add(APP);
     rules.add(COND);
     rules.add(ABSTR);
+    rules.add(LET);
+    rules.add(LET_REC);
+    rules.add(REC);
+    rules.add(INFIX);
+    rules.add(AND);
+    rules.add(OR);
     return rules;
   }
   
