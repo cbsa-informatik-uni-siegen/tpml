@@ -8,6 +8,7 @@ import javax.swing.tree.TreePath;
 import smallstep.Abstraction;
 import smallstep.And;
 import smallstep.Application;
+import smallstep.AppliedOperator;
 import smallstep.Condition;
 import smallstep.Constant;
 import smallstep.Expression;
@@ -266,6 +267,16 @@ public final class ProofTree implements TreeModel {
       newNode.addChild(new Judgement(environment, or.getE0(), PrimitiveType.BOOL));
       newNode.addChild(new Judgement(environment, or.getE1(), PrimitiveType.BOOL));
     }
+    else if (expression instanceof AppliedOperator && rule == Rule.APP) {
+      // split into tau1 and tau2 for the applied operator
+      Type tau2 = newTypeVariable();
+      Type tau1 = new ArrowType(tau2, tau);
+      
+      // generate new sub nodes
+      AppliedOperator aop = (AppliedOperator)expression;
+      newNode.addChild(new Judgement(environment, aop.getOperator(), tau1));
+      newNode.addChild(new Judgement(environment, aop.getConstant(), tau2));
+    }
     else {
       // well, not possible then
       throw new InvalidRuleException(node, rule);
@@ -278,7 +289,7 @@ public final class ProofTree implements TreeModel {
     ProofNode newRoot = this.root.cloneSubstituteAndReplace(substitution, node, newNode);
     
     // allocate the new tree
-    return new ProofTree(newRoot);
+    return new ProofTree(newRoot, nextTypeVariable);
   }
   
   /**
@@ -306,20 +317,18 @@ public final class ProofTree implements TreeModel {
   }
 
   // allocates a new tree with the given root 
-  private ProofTree(ProofNode root) {
+  private ProofTree(ProofNode root, int nextTypeVariable) {
+    this.nextTypeVariable = nextTypeVariable;
     this.root = root;
   }
   
   // returns a new type variable that isn't currently used
   private TypeVariable newTypeVariable() {
-    for (int i = 0;; ++i) {
-      String name = "\u03B1" + i;
-      if (this.root == null || !this.root.containsTypeVariable(name))
-        return new TypeVariable(name);
-    }
+    return new TypeVariable("\u03B1" + this.nextTypeVariable++);
   }
   
   // member attributes
   private EventListenerList listenerList = new EventListenerList();
+  private int nextTypeVariable;
   private ProofNode root;
 }

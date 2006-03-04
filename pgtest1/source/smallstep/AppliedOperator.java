@@ -74,6 +74,20 @@ public class AppliedOperator extends Value {
   }
   
   /**
+   * @return Returns the operator.
+   */
+  public Operator getOperator() {
+    return this.operator;
+  }
+  
+  /**
+   * @return Returns the constant.
+   */
+  public Constant getConstant() {
+    return this.constant;
+  }
+  
+  /**
    * Returns <code>false</code>, as applied operators cannot
    * contain syntactic sugar.
    * 
