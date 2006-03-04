@@ -25,6 +25,17 @@ public class SettingsGUI extends javax.swing.JDialog {
         buttonApply.setEnabled(false);
     }
     
+    public SettingsGUI(java.awt.Dialog parent, boolean modal) {
+        super(parent, modal);
+        initComponents();
+        
+        Preferences prefs = Preferences.userNodeForPackage(SettingsGUI.class);
+        checkBoxSSUnderline.setSelected(prefs.getBoolean("ssUnderlineExpressions", true));
+        checkBoxSSJustAxioms.setSelected(prefs.getBoolean("ssJustAxioms", true));
+        
+        buttonApply.setEnabled(false);
+    }
+    
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -38,6 +49,18 @@ public class SettingsGUI extends javax.swing.JDialog {
         jPanel1 = new javax.swing.JPanel();
         checkBoxSSUnderline = new javax.swing.JCheckBox();
         checkBoxSSJustAxioms = new javax.swing.JCheckBox();
+        jPanel2 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jList1 = new javax.swing.JList();
+        jPanel3 = new javax.swing.JPanel();
+        jPanel4 = new javax.swing.JPanel();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jComboBox1 = new javax.swing.JComboBox();
+        jButtonColor = new javax.swing.JButton();
+        jButtonFont = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        jPanelColor = new javax.swing.JPanel();
         buttonOk = new javax.swing.JButton();
         buttonCancel = new javax.swing.JButton();
         buttonApply = new javax.swing.JButton();
@@ -84,6 +107,106 @@ public class SettingsGUI extends javax.swing.JDialog {
         jPanel1.add(checkBoxSSJustAxioms, gridBagConstraints);
 
         jTabbedPane1.addTab("SmallStep", jPanel1);
+
+        jPanel2.setLayout(new java.awt.GridBagLayout());
+
+        jList1.setModel(new javax.swing.AbstractListModel() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public Object getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPane1.setViewportView(jList1);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridheight = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
+        gridBagConstraints.ipadx = 40;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 0);
+        jPanel2.add(jScrollPane1, gridBagConstraints);
+
+        jPanel3.setLayout(new java.awt.BorderLayout());
+
+        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Theme"));
+        jPanel4.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
+
+        jButton1.setText("New");
+        jPanel4.add(jButton1);
+
+        jButton2.setText("Delete");
+        jPanel4.add(jButton2);
+
+        jPanel3.add(jPanel4, java.awt.BorderLayout.SOUTH);
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jPanel3.add(jComboBox1, java.awt.BorderLayout.CENTER);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 5);
+        jPanel2.add(jPanel3, gridBagConstraints);
+
+        jButtonColor.setText("Color");
+        jButtonColor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonColorActionPerformed(evt);
+            }
+        });
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 0);
+        jPanel2.add(jButtonColor, gridBagConstraints);
+
+        jButtonFont.setText("Font");
+        jButtonFont.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonFontActionPerformed(evt);
+            }
+        });
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 0);
+        jPanel2.add(jButtonFont, gridBagConstraints);
+
+        jLabel2.setText("ABCD abcd");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        jPanel2.add(jLabel2, gridBagConstraints);
+
+        jPanelColor.setBackground(new java.awt.Color(0, 51, 255));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        jPanel2.add(jPanelColor, gridBagConstraints);
+
+        jTabbedPane1.addTab("Themes", jPanel2);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -143,6 +266,43 @@ public class SettingsGUI extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jButtonFontActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonFontActionPerformed
+        ChoseFontGUI gui = new ChoseFontGUI (this, true);
+        gui.addDialogListener(new DialogListener() {
+           public void dialogOk(java.util.EventObject o) {
+               handleFontChanged ((ChoseFontGUI)o.getSource());
+           } 
+           public void dialogCancel(java.util.EventObject o) {
+               
+           }
+        });
+        gui.setVisible (true);
+
+    }//GEN-LAST:event_jButtonFontActionPerformed
+
+    private void jButtonColorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonColorActionPerformed
+        ChoseColorGUI gui = new ChoseColorGUI (this, true);
+        gui.setColor(this.jPanelColor.getBackground());
+        gui.addDialogListener(new DialogListener() {
+            public void dialogOk(java.util.EventObject o) {
+                handleColorChanged ((ChoseColorGUI)o.getSource());
+            }
+            public void dialogCancel(java.util.EventObject o) { 
+                
+            }
+        });
+        gui.setVisible (true);
+
+    }//GEN-LAST:event_jButtonColorActionPerformed
+
+    private void handleFontChanged (ChoseFontGUI gui) {
+    }
+    
+    private void handleColorChanged (ChoseColorGUI gui) {
+        System.out.println("handleColorChanged");
+        this.jPanelColor.setBackground(gui.getColor ());
+    }
+    
     private void buttonApplyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonApplyActionPerformed
 // TODO add your handling code here:
         Preferences prefs = Preferences.userNodeForPackage(SettingsGUI.class);
@@ -191,12 +351,16 @@ public class SettingsGUI extends javax.swing.JDialog {
     private javax.swing.JCheckBox checkBoxSSUnderline;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButtonColor;
+    private javax.swing.JButton jButtonFont;
     private javax.swing.JComboBox jComboBox1;
-    private javax.swing.JFrame jFrame1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JList jList1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanelColor;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTabbedPane jTabbedPane1;
     // End of variables declaration//GEN-END:variables

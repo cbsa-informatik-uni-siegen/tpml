@@ -21,6 +21,10 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTree;
 import javax.swing.KeyStroke;
 import javax.swing.JOptionPane;
+import javax.swing.tree.TreeModel;
+import javax.swing.tree.TreeNode;
+
+import smallstep.Expression;
 
 import l1.Translator;
 import l1.lexer.Lexer;
@@ -43,14 +47,14 @@ public class Mainwindow extends JFrame {
     pack();
     setSize(640, 480);
   }
-
+  
   private void initComponents() {
     tabbedPane = new JTabbedPane();
 
     JScrollPane scrollPane = new JScrollPane();
     treeView = new JTree();
     scrollPane.setViewportView(treeView);
-
+  
     JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true,
         scrollPane, tabbedPane);
 
@@ -141,12 +145,15 @@ public class Mainwindow extends JFrame {
     
     
 
-    /*
+    
     JMenuItem typeCheckerItem = actionsMenu.add("TypeChecker");
-    typeCheckerItem.addActionListener(mlMenuListener);
     typeCheckerItem.setAccelerator(KeyStroke.getKeyStroke("F12"));
     typeCheckerItem.setMnemonic(KeyEvent.VK_T);
-    */
+    typeCheckerItem.addActionListener(new ActionListener() {
+    	public void actionPerformed(ActionEvent event) {
+    		handleTypeChecker();
+    	}
+    });
     
     setJMenuBar(this.mainMenu);
     
@@ -161,7 +168,8 @@ public class Mainwindow extends JFrame {
   private void handleNew() {
     SourceFile newFile = new SourceFile();
     try {
-    	newFile.getDocument().insertString(0, "let rec f = lambda x. if x = 0 then 1 else x * f (x-1) in f 5", null);
+//    	newFile.getDocument().insertString(0, "let rec f = lambda x. if x = 0 then 1 else x * f (x-1) in f 5", null);
+    	newFile.getDocument().insertString(0, "(+) 10 20", null);
     } catch (Exception e) { }
     tabbedPane.add(newFile.getComponent());
     fileList.add(newFile);
@@ -191,40 +199,49 @@ public class Mainwindow extends JFrame {
     }
 
   }
+  
+  private Expression getExpression() {
+	    int index = tabbedPane.getSelectedIndex();
+	    SourceFile sf = fileList.get(index);
+
+	    Expression result = null;
+	    try {
+	      // Allocate the parser
+	      Parser parser = new Parser(new Lexer(new PushbackReader(new StringReader(
+	          sf.getDocument().getText(0, sf.getDocument().getLength())), 1024)));
+
+	      // Parse the input
+	      Start tree = parser.parse();
+
+	      // translate the AST to a small step expression
+	      Translator translator = new Translator();
+	      tree.apply(translator);
+
+	      result = translator.getExpression();
+	      
+	    } catch (Exception e) {
+	      JOptionPane.showMessageDialog(this, e.getLocalizedMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+	    }
+	    return result;
+  }
 
   private void handleSmallStep() {
-    int index = tabbedPane.getSelectedIndex();
-    SourceFile sf = fileList.get(index);
-
-    try {
-      // Allocate the parser
-      Parser parser = new Parser(new Lexer(new PushbackReader(new StringReader(
-          sf.getDocument().getText(0, sf.getDocument().getLength())), 1024)));
-
-      // Parse the input
-      Start tree = parser.parse();
-
-      // translate the AST to a small step expression
-      Translator translator = new Translator();
-      tree.apply(translator);
 
       Font f = new JComboBox().getFont();
-      SmallStepModel model = new SmallStepModel(translator.getExpression());
+      SmallStepModel model = new SmallStepModel(getExpression());
       model.setFont(f);
       
       // evaluate the resulting small step expression
       SmallStepGUI gui = new SmallStepGUI(this, "SmallStep", false, model);
       gui.setVisible(true);
       
-    } catch (Exception e) {
-      JOptionPane.showMessageDialog(this, e.getLocalizedMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-    }
   }
   
-  /*
+  
   private void handleTypeChecker() {
 	  TypeCheckerGUI gui = new TypeCheckerGUI (this, "TypeChecker", true);
+	  gui.startTypeChecking (getExpression ());
 	  gui.setVisible(true);
   }
-  */
+  
 }
