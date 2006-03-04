@@ -101,6 +101,27 @@ public final class ProofNode implements TreeNode {
   }
 
   /**
+   * Returns <code>true</code> if this node and all
+   * sub nodes are finished. A node is finished if
+   * a {@link Rule} was applied and thereby a proper
+   * type is known.
+   * 
+   * @return <code>true</code> if finished.
+   */
+  public boolean isFinished() {
+    // check if this node has a rule
+    if (this.rule == null)
+      return false;
+    
+    // check all children
+    for (ProofNode node : this.children)
+      if (!node.isFinished())
+        return false;
+    
+    return true;
+  }
+  
+  /**
    * Returns the judgement associated with this
    * proof node in the proof tree.
    * 
