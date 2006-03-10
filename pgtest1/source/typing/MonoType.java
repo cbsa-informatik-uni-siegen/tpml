@@ -13,10 +13,7 @@ public abstract class MonoType extends Type {
    * @see typing.Type#containsFreeTypeVariable(java.lang.String)
    */
   @Override
-  public boolean containsFreeTypeVariable(String name) {
-    // TODO Auto-generated method stub
-    return false;
-  }
+  public abstract boolean containsFreeTypeVariable(String name);
 
   /**
    * {@inheritDoc}

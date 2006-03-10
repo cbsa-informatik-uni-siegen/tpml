@@ -129,7 +129,7 @@ public final class ArrowType extends MonoType {
    */
   @Override
   public String toString() {
-    return "(" + this.t1 + " -> " + this.t2 + ")";
+    return "(" + this.t1 + " \u2192 " + this.t2 + ")";
   }
   
   /**

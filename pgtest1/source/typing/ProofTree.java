@@ -248,12 +248,12 @@ public final class ProofTree implements TreeModel, TypeVariableAllocator {
     else if (expression instanceof Let && rule == Rule.P_LET) {
       // generate a new type variable
       TypeVariable tau1 = allocateTypeVariable();
-      
-      // generate new sub nodes (e2 is tested with substitution
-      // of the polymorphic closure of t1 for id)
+
+      // generate only the first sub node, the second one will
+      // be added once the first sub tree is finished, see
+      // ProofNode.cloneSubstituteAndReplace()
       Let let = (Let)expression;
       newNode.addChild(new Judgement(environment, let.getE1(), tau1));
-      newNode.addChild(new Judgement(environment.extend(let.getId(), environment.closure(tau1)), let.getE2(), tau));
     }
     else if (expression instanceof LetRec && rule == Rule.LET_REC) {
       // generate a new type variable

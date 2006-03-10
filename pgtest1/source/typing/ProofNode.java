@@ -5,6 +5,8 @@ import java.util.Vector;
 
 import javax.swing.tree.TreeNode;
 
+import smallstep.Let;
+
 /**
  * A node in the proof tree represented by {@link ProofTree}.
  * Each node has an associated {@link typing.Judgement}.
@@ -234,6 +236,16 @@ public final class ProofNode implements TreeNode {
       ProofNode newChild = oldChild.cloneSubstituteAndReplace(substitution, oldNode, newNode);
       node.children.add(newChild);
       newChild.parent = node;
+    }
+    
+    // special case (P-LET): We can only add the second child once the first
+    // subtree is finished.
+    if (node.rule == Rule.P_LET && node.children.size() == 1 && node.isFinished()) {
+      Environment environment = node.judgement.getEnvironment();
+      Let let = (Let)node.judgement.getExpression();
+      MonoType tau = node.judgement.getType();
+      MonoType tau1 = node.children.firstElement().judgement.getType();
+      node.addChild(new Judgement(environment.extend(let.getId(), environment.closure(tau1)), let.getE2(), tau));
     }
     
     // and return the cloned node
