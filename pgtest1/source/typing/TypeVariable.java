@@ -9,7 +9,7 @@ import java.util.Set;
  * @author Benedikt Meurer
  * @version $Id$
  */
-public final class TypeVariable extends Type {
+public final class TypeVariable extends MonoType {
   /**
    * Allocates a new type variable of the given <code>name</code>.
    * 
@@ -26,10 +26,10 @@ public final class TypeVariable extends Type {
    * returned if the name of the type variable is equal to
    * <code>name</code>.
    * 
-   * @see typing.Type#containsTypeVariable(java.lang.String)
+   * @see typing.Type#containsFreeTypeVariable(java.lang.String)
    */
   @Override
-  public final boolean containsTypeVariable(String name) {
+  public final boolean containsFreeTypeVariable(String name) {
     return this.name.equals(name);
   }
   
@@ -49,7 +49,7 @@ public final class TypeVariable extends Type {
    * @see typing.Type#substitute(typing.Substitution)
    */
   @Override
-  Type substitute(Substitution s) {
+  MonoType substitute(Substitution s) {
     return s.apply(this);
   }
   

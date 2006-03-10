@@ -13,10 +13,10 @@ final class Equation {
    * <code>left</code> and <code>right</code> side
    * types.
    * 
-   * @param left the type on the left side.
-   * @param right the type on the right side.
+   * @param left the monomorphic type on the left side.
+   * @param right the monomorphic type on the right side.
    */
-  Equation(Type left, Type right) {
+  Equation(MonoType left, MonoType right) {
     this.left = left;
     this.right = right;
   }
@@ -26,7 +26,7 @@ final class Equation {
    * 
    * @return the left side type.
    */
-  Type getLeft() {
+  MonoType getLeft() {
     return this.left;
   }
   
@@ -35,7 +35,7 @@ final class Equation {
    * 
    * @return the right side type.
    */
-  Type getRight() {
+  MonoType getRight() {
     return this.right;
   }
   
@@ -52,8 +52,8 @@ final class Equation {
    */
   Equation substitute(Substitution s) {
     // apply the substitution to both types
-    Type left = this.left.substitute(s);
-    Type right = this.right.substitute(s);
+    MonoType left = this.left.substitute(s);
+    MonoType right = this.right.substitute(s);
     
     // check if anything changed, otherwise we
     // can reuse the existing object
@@ -99,6 +99,6 @@ final class Equation {
   }
   
   // member attributes
-  private Type left;
-  private Type right;
+  private MonoType left;
+  private MonoType right;
 }

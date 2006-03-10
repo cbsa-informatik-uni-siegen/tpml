@@ -30,7 +30,7 @@ public abstract class Type {
    * @return <code>true</code> if this type contains a type
    *         variable named <code>name</code>, else <code>false</code>.
    */
-  public abstract boolean containsTypeVariable(String name);
+  public abstract boolean containsFreeTypeVariable(String name);
   
   /**
    * Returns the set of free type variables within this type.
@@ -41,9 +41,7 @@ public abstract class Type {
    * 
    * @return the set of free type variables within this type.
    */
-  public Set<String> free() {
-    return EMPTY_SET;
-  }
+  public abstract Set<String> free();
   
   /**
    * Applies the {@link Substitution} <code>s</code> to the

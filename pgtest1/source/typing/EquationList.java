@@ -32,7 +32,7 @@ final class EquationList {
    * 
    * @return the extended {@link EquationList}.
    */
-  EquationList extend(Type left, Type right) {
+  EquationList extend(MonoType left, MonoType right) {
     // allocate an extended equation list
     return new EquationList(new Equation(left, right), this);
   }
@@ -83,17 +83,17 @@ final class EquationList {
       return Substitution.EMPTY_SUBSTITUTION;
     
     // otherwise, we examine the first equation in the list
-    Type left = this.first.getLeft();
-    Type right = this.first.getRight();
+    MonoType left = this.first.getLeft();
+    MonoType right = this.first.getRight();
     
     // different actions, depending on the exact types
     if (left instanceof TypeVariable || right instanceof TypeVariable) {
       // the left or right side of the equation is a type variable
       TypeVariable tvar = (TypeVariable)(left instanceof TypeVariable ? left : right);
-      Type tau = (left instanceof TypeVariable ? right : left);
+      MonoType tau = (left instanceof TypeVariable ? right : left);
       
       // either tvar equals tau or tvar is not present in tau
-      if (tvar.equals(tau) || !tau.containsTypeVariable(tvar.getName())) {
+      if (tvar.equals(tau) || !tau.containsFreeTypeVariable(tvar.getName())) {
         Substitution s1 = new Substitution(tvar.getName(), tau);
         Substitution s2 = this.remaining.substitute(s1).unify();
         return s1.compose(s2);

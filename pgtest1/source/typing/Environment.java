@@ -42,6 +42,32 @@ public final class Environment {
   }
   
   /**
+   * Generates the polymorphic closure for the monomorphic
+   * type <code>tau</code> in the type environment.
+   * 
+   * @param tau a mono morphic type. 
+   * 
+   * @return the polymorphic closure for <code>tau</code>.
+   */
+  PolyType closure(MonoType tau) {
+    // determine the free type variables for tau
+    Set<String> freeTau = tau.free();
+    
+    // determine the free type variable for gamma
+    Set<String> freeGamma = free();
+    
+    // determine the set of free variables in
+    // tau without the ones in gamma
+    TreeSet<String> free = new TreeSet<String>();
+    for (String name : freeTau)
+      if (!freeGamma.contains(name))
+        free.add(name);
+    
+    // generate a new polymorphic type
+    return new PolyType(free, tau);
+  }
+  
+  /**
    * Extends this type environment with an entry for the pair
    * (<code>identifer</code>,<code>type</code>) and returns the
    * new {@link Environment}.
@@ -56,6 +82,34 @@ public final class Environment {
    */
   public Environment extend(String identifier, Type type) {
     return new Environment(this, identifier, type);
+  }
+  
+  /**
+   * Returns all free type variables in this type environment,
+   * that is the union of all free type variables for the types
+   * within this type environment.
+   * 
+   * @return the set of free type variables in this type
+   *         environment.
+   */
+  public Set<String> free() {
+    // check if this is the empty environment
+    if (this == EMPTY_ENVIRONMENT)
+      return Type.EMPTY_SET;
+    
+    // determine the free type variables for the parent
+    Set<String> freeParent = this.parent.free();
+    
+    // determine the free type variables for this type
+    Set<String> freeType = this.type.free();
+    if (freeType == Type.EMPTY_SET)
+      return freeParent;
+    
+    // merge the sets
+    TreeSet<String> free = new TreeSet<String>();
+    free.addAll(freeParent);
+    free.addAll(freeType);
+    return free;
   }
   
   /**

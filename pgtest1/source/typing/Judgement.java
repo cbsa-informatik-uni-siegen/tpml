@@ -23,11 +23,11 @@ public final class Judgement {
    *                    determine the type of expression.
    * @param expression the {@link Expression} for which a type
    *                   should be determined.
-   * @param type the {@link Type} for this judgement, which may be
+   * @param type the {@link MonoType} for this judgement, which may be
    *             a {@link TypeVariable} if no concrete type is known
    *             yet.
    */
-  Judgement(Environment environment, Expression expression, Type type) {
+  Judgement(Environment environment, Expression expression, MonoType type) {
     this.environment = environment;
     this.expression = expression;
     this.type = type;
@@ -57,9 +57,9 @@ public final class Judgement {
    * Return the type for this type judgement, which is
    * either a type variable or a concrete type.
    * 
-   * @return the type for this judgement.
+   * @return the monomorphic type for this judgement.
    */
-  public Type getType() {
+  public MonoType getType() {
     return this.type;
   }
   
@@ -76,7 +76,7 @@ public final class Judgement {
     Environment environment = this.environment.substitute(substitution);
     
     // apply the substitution to the type
-    Type type = this.type.substitute(substitution);
+    MonoType type = this.type.substitute(substitution);
     
     // check if anything changed
     if (environment != this.environment || type != this.type)
@@ -128,5 +128,5 @@ public final class Judgement {
   // member attributes
   private Environment environment;
   private Expression expression;
-  private Type type;
+  private MonoType type;
 }

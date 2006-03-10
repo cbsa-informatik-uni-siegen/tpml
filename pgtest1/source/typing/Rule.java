@@ -56,9 +56,19 @@ public final class Rule {
   public static final Rule CONST = new Rule("CONST");
   
   /**
+   * The polymorphic <b>(P-CONST)</b> type rule.
+   */
+  public static final Rule P_CONST = new Rule("P-CONST");
+  
+  /**
    * The <b>(ID)</b> type rule.
    */
   public static final Rule ID = new Rule("ID");
+  
+  /**
+   * The polymorphic <b>(P-ID)</b> type rule.
+   */
+  public static final Rule P_ID = new Rule("P-ID");
   
   /**
    * The <b>(APP)</b> type rule.
@@ -79,6 +89,11 @@ public final class Rule {
    * The <b>(LET)</b> type rule.
    */
   public static final Rule LET = new Rule("LET");
+  
+  /**
+   * The polymorphic <b>(P-LET)</b> type rule.
+   */
+  public static final Rule P_LET = new Rule("P-LET");
   
   /**
    * The <b>(LET-REC)</b> type rule.
@@ -113,11 +128,14 @@ public final class Rule {
   public static Collection<Rule> getAllRules() {
     LinkedList<Rule> rules = new LinkedList<Rule>();
     rules.add(CONST);
+    rules.add(P_CONST);
     rules.add(ID);
+    rules.add(P_ID);
     rules.add(APP);
     rules.add(COND);
     rules.add(ABSTR);
     rules.add(LET);
+    rules.add(P_LET);
     rules.add(LET_REC);
     rules.add(REC);
     rules.add(INFIX);

@@ -199,7 +199,7 @@ public final class ProofNode implements TreeNode {
    *         node or any of its subnodes.
    */
   boolean containsTypeVariable(String name) {
-    if (this.judgement.getType().containsTypeVariable(name))
+    if (this.judgement.getType().containsFreeTypeVariable(name))
       return true;
     
     for (ProofNode child : this.children)

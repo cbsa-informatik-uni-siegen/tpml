@@ -9,15 +9,15 @@ import java.util.TreeSet;
  * @author Benedikt Meurer
  * @version $Id$
  */
-public final class ArrowType extends Type {
+public final class ArrowType extends MonoType {
   /**
    * Allocates a new function type with <code>t1</code> as
    * argument type and <code>t2</code> as return type.
    * 
-   * @param t1 the argument type.
-   * @param t2 the return type.
+   * @param t1 the monomorphic argument type.
+   * @param t2 the monomorphic return type.
    */
-  public ArrowType(Type t1, Type t2) {
+  public ArrowType(MonoType t1, MonoType t2) {
     this.t1 = t1;
     this.t2 = t2;
   }
@@ -29,11 +29,11 @@ public final class ArrowType extends Type {
    * returned if either the operand or the return type contains
    * a type variable of the given <code>name</code>.
    * 
-   * @see typing.Type#containsTypeVariable(java.lang.String)
+   * @see typing.Type#containsFreeTypeVariable(java.lang.String)
    */
   @Override
-  public final boolean containsTypeVariable(String name) {
-    return (this.t1.containsTypeVariable(name) || this.t2.containsTypeVariable(name));
+  public final boolean containsFreeTypeVariable(String name) {
+    return (this.t1.containsFreeTypeVariable(name) || this.t2.containsFreeTypeVariable(name));
   }
   
   /**
@@ -62,16 +62,20 @@ public final class ArrowType extends Type {
   }
   
   /**
-   * @return Returns the t1.
+   * Returns the monomorphic argument type.
+   * 
+   * @return the monomorphic argument type.
    */
-  public Type getT1() {
+  public MonoType getT1() {
     return this.t1;
   }
   
   /**
-   * @return Returns the t2.
+   * Returns the monomorphic return type.
+   * 
+   * @return the monomorphic return type.
    */
-  public Type getT2() {
+  public MonoType getT2() {
     return this.t2;
   }
 
@@ -81,10 +85,10 @@ public final class ArrowType extends Type {
    * @see typing.Type#substitute(typing.Substitution)
    */
   @Override
-  Type substitute(Substitution s) {
+  MonoType substitute(Substitution s) {
     // apply the substitution to both types
-    Type t1 = this.t1.substitute(s);
-    Type t2 = this.t2.substitute(s);
+    MonoType t1 = this.t1.substitute(s);
+    MonoType t2 = this.t2.substitute(s);
     
     // check if anything changed, otherwise
     // we can reuse the existing object
@@ -139,6 +143,6 @@ public final class ArrowType extends Type {
   public static final ArrowType INT_INT_BOOL = new ArrowType(PrimitiveType.INT, new ArrowType(PrimitiveType.INT, PrimitiveType.BOOL));
 
   // member attributes
-  private Type t1;
-  private Type t2;
+  private MonoType t1;
+  private MonoType t2;
 }

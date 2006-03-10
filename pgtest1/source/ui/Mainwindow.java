@@ -168,7 +168,8 @@ public class Mainwindow extends JFrame {
   private void handleNew() {
     SourceFile newFile = new SourceFile();
     try {
-    	newFile.getDocument().insertString(0, "let rec f = lambda x. if x = 0 then 1 else x * f (x-1) in f 5", null);
+//    	newFile.getDocument().insertString(0, "let rec f = lambda x. if x = 0 then 1 else x * f (x-1) in f 5", null);
+    	newFile.getDocument().insertString(0, "let twice = lambda f.lambda x.f (f x) in twice", null);
     } catch (Exception e) { }
     tabbedPane.add(newFile.getComponent());
     fileList.add(newFile);

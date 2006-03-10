@@ -26,7 +26,7 @@ import smallstep.Recursion;
  * @author Benedikt Meurer
  * @version $Id$
  */
-public final class ProofTree implements TreeModel {
+public final class ProofTree implements TreeModel, TypeVariableAllocator {
   /**
    * Allocates a new proof tree with an inital type
    * <code>environment</code> and the <code>expression</code>
@@ -38,7 +38,7 @@ public final class ProofTree implements TreeModel {
    */
   ProofTree(Environment environment, Expression expression) {
     // allocate the new judgement
-    Judgement judgement = new Judgement(environment, expression, newTypeVariable());
+    Judgement judgement = new Judgement(environment, expression, allocateTypeVariable());
     
     // allocate the root node
     this.root = new ProofNode(judgement);
@@ -121,6 +121,15 @@ public final class ProofTree implements TreeModel {
   }
   
   /**
+   * {@inheritDoc}
+   * 
+   * @see typing.TypeVariableAllocator#allocateTypeVariable()
+   */
+  public TypeVariable allocateTypeVariable() {
+    return new TypeVariable("\u03B1" + this.nextTypeVariable++);
+  }
+  
+  /**
    * Applies <code>rule</code> for the <code>node</code> in
    * this proof tree and returns the new proof tree that is
    * the result of applying <code>rule</code> at <code>node</code>.
@@ -159,7 +168,7 @@ public final class ProofTree implements TreeModel {
     Judgement judgement = node.getJudgement();
     
     // determine the judgement attributes
-    Type tau = judgement.getType();
+    MonoType tau = judgement.getType();
     Expression expression = judgement.getExpression();
     Environment environment = judgement.getEnvironment();
     
@@ -173,17 +182,35 @@ public final class ProofTree implements TreeModel {
     if (expression instanceof Constant && rule == Rule.CONST) {
       // generate a new type equation for the judgement type and the constant type
       Type constType = Type.getTypeForExpression(expression);
+      if (constType instanceof MonoType)
+        equations = equations.extend(tau, (MonoType)constType);
+      else
+        throw new InvalidRuleException(node, rule);
+    }
+    else if (expression instanceof Constant && rule == Rule.P_CONST) {
+      // generate a new type equation for the judgement type and the
+      // instantiated (polymorphic) constant type
+      MonoType constType = instantiate(Type.getTypeForExpression(expression));
       equations = equations.extend(tau, constType);
     }
     else if (expression instanceof Identifier && rule == Rule.ID) {
       // generate a new type equation for the judgement type and the identifier type
       Type idType = environment.get(((Identifier)expression).getName());
+      if (idType instanceof MonoType)
+        equations = equations.extend(tau, (MonoType)idType);
+      else
+        throw new InvalidRuleException(node, rule);
+    }
+    else if (expression instanceof Identifier && rule == Rule.P_ID) {
+      // generate a new type equation for the judgement type and the 
+      // instantiated (polymorphic) identifier type
+      MonoType idType = instantiate(environment.get(((Identifier)expression).getName()));
       equations = equations.extend(tau, idType);
     }
     else if (expression instanceof Application && rule == Rule.APP) {
       // split into tau1 and tau2 for the application
-      Type tau2 = newTypeVariable();
-      Type tau1 = new ArrowType(tau2, tau);
+      TypeVariable tau2 = allocateTypeVariable();
+      ArrowType tau1 = new ArrowType(tau2, tau);
       
       // generate new sub nodes
       Application application = (Application)expression;
@@ -199,8 +226,8 @@ public final class ProofTree implements TreeModel {
     }
     else if (expression instanceof Abstraction && rule == Rule.ABSTR) {
       // generate new type variables
-      Type tau1 = newTypeVariable();
-      Type tau2 = newTypeVariable();
+      TypeVariable tau1 = allocateTypeVariable();
+      TypeVariable tau2 = allocateTypeVariable();
       
       // add type equations for tau and tau1->tau2
       equations = equations.extend(tau, new ArrowType(tau1, tau2));
@@ -211,16 +238,26 @@ public final class ProofTree implements TreeModel {
     }
     else if (expression instanceof Let && rule == Rule.LET) {
       // generate a new type variable
-      Type tau1 = newTypeVariable();
+      TypeVariable tau1 = allocateTypeVariable();
       
       // generate new sub nodes
       Let let = (Let)expression;
       newNode.addChild(new Judgement(environment, let.getE1(), tau1));
       newNode.addChild(new Judgement(environment.extend(let.getId(), tau1), let.getE2(), tau));
     }
+    else if (expression instanceof Let && rule == Rule.P_LET) {
+      // generate a new type variable
+      TypeVariable tau1 = allocateTypeVariable();
+      
+      // generate new sub nodes (e2 is tested with substitution
+      // of the polymorphic closure of t1 for id)
+      Let let = (Let)expression;
+      newNode.addChild(new Judgement(environment, let.getE1(), tau1));
+      newNode.addChild(new Judgement(environment.extend(let.getId(), environment.closure(tau1)), let.getE2(), tau));
+    }
     else if (expression instanceof LetRec && rule == Rule.LET_REC) {
       // generate a new type variable
-      Type tau1 = newTypeVariable();
+      TypeVariable tau1 = allocateTypeVariable();
       
       // generate new sub nodes
       LetRec letRec = (LetRec)expression;
@@ -229,7 +266,7 @@ public final class ProofTree implements TreeModel {
     }
     else if (expression instanceof Recursion && rule == Rule.REC) {
       // generate a new type variable
-      Type tau1 = newTypeVariable();
+      TypeVariable tau1 = allocateTypeVariable();
       
       // add equation tau = tau1
       equations = equations.extend(tau, tau1);
@@ -240,8 +277,8 @@ public final class ProofTree implements TreeModel {
     }
     else if (expression instanceof InfixOperation && rule == Rule.INFIX) {
       // generate two new type variables
-      Type tau1 = newTypeVariable();
-      Type tau2 = newTypeVariable();
+      TypeVariable tau1 = allocateTypeVariable();
+      TypeVariable tau2 = allocateTypeVariable();
       
       // generate new sub nodes
       InfixOperation operation = (InfixOperation)expression;
@@ -269,8 +306,8 @@ public final class ProofTree implements TreeModel {
     }
     else if (expression instanceof AppliedOperator && rule == Rule.APP) {
       // split into tau1 and tau2 for the applied operator
-      Type tau2 = newTypeVariable();
-      Type tau1 = new ArrowType(tau2, tau);
+      TypeVariable tau2 = allocateTypeVariable();
+      ArrowType tau1 = new ArrowType(tau2, tau);
       
       // generate new sub nodes
       AppliedOperator aop = (AppliedOperator)expression;
@@ -322,9 +359,14 @@ public final class ProofTree implements TreeModel {
     this.root = root;
   }
   
-  // returns a new type variable that isn't currently used
-  private TypeVariable newTypeVariable() {
-    return new TypeVariable("\u03B1" + this.nextTypeVariable++);
+  private MonoType instantiate(Type type) {
+    if (type instanceof PolyType) {
+      PolyType polyType = (PolyType)type;
+      return polyType.instantiate(this);
+    }
+    else {
+      return (MonoType)type;
+    }
   }
   
   // member attributes

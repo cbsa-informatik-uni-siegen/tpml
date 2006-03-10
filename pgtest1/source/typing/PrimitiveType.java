@@ -6,17 +6,17 @@ package typing;
  * @author Benedikt Meurer
  * @version $Id$
  */
-public final class PrimitiveType extends Type {
+public final class PrimitiveType extends MonoType {
   /**
    * {@inheritDoc}
    * 
    * Always returns <code>false</code> as primitive types
    * don't contain type variables.
    * 
-   * @see typing.Type#containsTypeVariable(java.lang.String)
+   * @see typing.Type#containsFreeTypeVariable(java.lang.String)
    */
   @Override
-  public boolean containsTypeVariable(String name) {
+  public boolean containsFreeTypeVariable(String name) {
     return false;
   }
   
@@ -26,7 +26,7 @@ public final class PrimitiveType extends Type {
    * @see typing.Type#substitute(typing.Substitution)
    */
   @Override
-  Type substitute(Substitution s) {
+  MonoType substitute(Substitution s) {
     return this;
   }
   
