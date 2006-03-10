@@ -7,6 +7,7 @@
 package ui;
 
 import java.util.prefs.*;
+import javax.swing.DefaultComboBoxModel;
 /**
  *
  * @author  marcell
@@ -23,6 +24,7 @@ public class SettingsGUI extends javax.swing.JDialog {
         checkBoxSSJustAxioms.setSelected(prefs.getBoolean("ssJustAxioms", true));
         
         buttonApply.setEnabled(false);
+        initializeThemes ();
     }
     
     public SettingsGUI(java.awt.Dialog parent, boolean modal) {
@@ -34,6 +36,31 @@ public class SettingsGUI extends javax.swing.JDialog {
         checkBoxSSJustAxioms.setSelected(prefs.getBoolean("ssJustAxioms", true));
         
         buttonApply.setEnabled(false);
+        
+        initializeThemes ();
+    }
+    
+    private void initializeThemes () {
+        ThemeManager manager = ThemeManager.get();
+        
+        DefaultComboBoxModel model = new DefaultComboBoxModel();
+        for (int i=0; i<manager.getNumberOfThemes(); i++) {
+            model.addElement(manager.getTheme(i).getName());
+        }
+        this.jThemesComboBox.setModel(model);
+        selectTheme (manager.getCurrentThemeIndex());
+    }
+    
+    private void selectTheme (int idx) {
+        ThemeManager manager = ThemeManager.get();
+        this.jThemesComboBox.setSelectedIndex(idx);
+        this.theme = manager.getTheme(idx);
+        int listIndex = this.itemList.getSelectedIndex();
+        this.itemList.setListData(this.theme.getItemNames());
+        if (listIndex == -1) {
+            listIndex = 0;
+        }
+        this.itemList.setSelectedIndex(listIndex);
     }
     
     /** This method is called from within the constructor to
@@ -51,15 +78,15 @@ public class SettingsGUI extends javax.swing.JDialog {
         checkBoxSSJustAxioms = new javax.swing.JCheckBox();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList();
+        itemList = new javax.swing.JList();
         jPanel3 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jComboBox1 = new javax.swing.JComboBox();
+        buttonNew = new javax.swing.JButton();
+        buttonDelete = new javax.swing.JButton();
+        jThemesComboBox = new javax.swing.JComboBox();
         jButtonColor = new javax.swing.JButton();
         jButtonFont = new javax.swing.JButton();
-        jLabel2 = new javax.swing.JLabel();
+        jFontLabel = new javax.swing.JLabel();
         jPanelColor = new javax.swing.JPanel();
         buttonOk = new javax.swing.JButton();
         buttonCancel = new javax.swing.JButton();
@@ -110,12 +137,18 @@ public class SettingsGUI extends javax.swing.JDialog {
 
         jPanel2.setLayout(new java.awt.GridBagLayout());
 
-        jList1.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+        itemList.setModel(new javax.swing.AbstractListModel() {
+            String[] strings = { "Item" };
             public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
         });
-        jScrollPane1.setViewportView(jList1);
+        itemList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                itemListValueChanged(evt);
+            }
+        });
+
+        jScrollPane1.setViewportView(itemList);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -133,16 +166,34 @@ public class SettingsGUI extends javax.swing.JDialog {
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Theme"));
         jPanel4.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
 
-        jButton1.setText("New");
-        jPanel4.add(jButton1);
+        buttonNew.setText("New");
+        buttonNew.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonNewActionPerformed(evt);
+            }
+        });
 
-        jButton2.setText("Delete");
-        jPanel4.add(jButton2);
+        jPanel4.add(buttonNew);
+
+        buttonDelete.setText("Delete");
+        buttonDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonDeleteActionPerformed(evt);
+            }
+        });
+
+        jPanel4.add(buttonDelete);
 
         jPanel3.add(jPanel4, java.awt.BorderLayout.SOUTH);
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jPanel3.add(jComboBox1, java.awt.BorderLayout.CENTER);
+        jThemesComboBox.setEditable(true);
+        jThemesComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jThemesComboBoxActionPerformed(evt);
+            }
+        });
+
+        jPanel3.add(jThemesComboBox, java.awt.BorderLayout.CENTER);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -185,7 +236,7 @@ public class SettingsGUI extends javax.swing.JDialog {
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 0);
         jPanel2.add(jButtonFont, gridBagConstraints);
 
-        jLabel2.setText("ABCD abcd");
+        jFontLabel.setText("abcdefghijk ABCDEFGHIJK");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 2;
@@ -194,7 +245,7 @@ public class SettingsGUI extends javax.swing.JDialog {
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-        jPanel2.add(jLabel2, gridBagConstraints);
+        jPanel2.add(jFontLabel, gridBagConstraints);
 
         jPanelColor.setBackground(new java.awt.Color(0, 51, 255));
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -266,8 +317,53 @@ public class SettingsGUI extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jThemesComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jThemesComboBoxActionPerformed
+// TODO add your handling code here:
+        int idx = this.jThemesComboBox.getSelectedIndex();
+        ThemeManager manager = ThemeManager.get();
+        if (idx == -1) {
+            String name = (String)this.jThemesComboBox.getSelectedItem();
+            if (manager.getCurrentThemeIndex() != 0) {
+                manager.getCurrentTheme().setName (name);
+                initializeThemes();
+            }
+        }
+        else {
+            selectTheme (idx);
+            manager.setCurrentThemeIndex(idx);
+        }
+    }//GEN-LAST:event_jThemesComboBoxActionPerformed
+
+    private void buttonDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonDeleteActionPerformed
+// TODO add your handling code here:
+        ThemeManager.get().removeCurrentTheme();
+        initializeThemes ();
+    }//GEN-LAST:event_buttonDeleteActionPerformed
+
+    private void buttonNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonNewActionPerformed
+// TODO add your handling code here:
+        ThemeManager.get().addNewTheme();
+        initializeThemes();
+    }//GEN-LAST:event_buttonNewActionPerformed
+
+    private void itemListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_itemListValueChanged
+// TODO add your handling code here:
+        int idx = this.itemList.getSelectedIndex();
+        if (idx == -1) {
+            return;
+        }
+        java.awt.Font font = theme.getItemFont(idx);
+        java.awt.Color color = theme.getItemColor(idx);
+        this.jPanelColor.setBackground(color);
+        this.jFontLabel.setFont(font);
+    }//GEN-LAST:event_itemListValueChanged
+
     private void jButtonFontActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonFontActionPerformed
+        int idx = this.itemList.getSelectedIndex();
+        java.awt.Font font = theme.getItemFont(idx);
+        
         ChoseFontGUI gui = new ChoseFontGUI (this, true);
+        gui.setGUIFont(font);
         gui.addDialogListener(new DialogListener() {
            public void dialogOk(java.util.EventObject o) {
                handleFontChanged ((ChoseFontGUI)o.getSource());
@@ -282,7 +378,9 @@ public class SettingsGUI extends javax.swing.JDialog {
 
     private void jButtonColorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonColorActionPerformed
         ChoseColorGUI gui = new ChoseColorGUI (this, true);
-        gui.setColor(this.jPanelColor.getBackground());
+        int idx = this.itemList.getSelectedIndex();
+        java.awt.Color color = theme.getItemColor(idx);
+        gui.setColor(color);
         gui.addDialogListener(new DialogListener() {
             public void dialogOk(java.util.EventObject o) {
                 handleColorChanged ((ChoseColorGUI)o.getSource());
@@ -296,18 +394,30 @@ public class SettingsGUI extends javax.swing.JDialog {
     }//GEN-LAST:event_jButtonColorActionPerformed
 
     private void handleFontChanged (ChoseFontGUI gui) {
+        this.jFontLabel.setFont(gui.getGUIFont());
+        int idx = this.itemList.getSelectedIndex();
+        theme.setItemFont(idx, gui.getGUIFont());
     }
     
     private void handleColorChanged (ChoseColorGUI gui) {
-        System.out.println("handleColorChanged");
         this.jPanelColor.setBackground(gui.getColor ());
+        int idx = this.itemList.getSelectedIndex();
+        theme.setItemColor(idx, gui.getColor());
     }
     
     private void buttonApplyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonApplyActionPerformed
 // TODO add your handling code here:
-        Preferences prefs = Preferences.userNodeForPackage(SettingsGUI.class);
-        prefs.putBoolean("ssUnderlineExpressions", checkBoxSSUnderline.isSelected());
-        prefs.putBoolean("ssJustAxioms", checkBoxSSJustAxioms.isSelected());
+        try {
+            Preferences prefs = Preferences.userNodeForPackage(SettingsGUI.class);
+            prefs.putBoolean("ssUnderlineExpressions", checkBoxSSUnderline.isSelected());
+            prefs.putBoolean("ssJustAxioms", checkBoxSSJustAxioms.isSelected());
+            ThemeManager manager = ThemeManager.get();
+            manager.storeThemes(prefs);
+            prefs.flush ();
+        }
+        catch (Exception e) {
+            System.out.println("error flushing preferences");
+        }
         buttonApply.setEnabled(false);
     }//GEN-LAST:event_buttonApplyActionPerformed
 
@@ -346,16 +456,15 @@ public class SettingsGUI extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonApply;
     private javax.swing.JButton buttonCancel;
+    private javax.swing.JButton buttonDelete;
+    private javax.swing.JButton buttonNew;
     private javax.swing.JButton buttonOk;
     private javax.swing.JCheckBox checkBoxSSJustAxioms;
     private javax.swing.JCheckBox checkBoxSSUnderline;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JList itemList;
     private javax.swing.JButton jButtonColor;
     private javax.swing.JButton jButtonFont;
-    private javax.swing.JComboBox jComboBox1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JList jList1;
+    private javax.swing.JLabel jFontLabel;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -363,6 +472,8 @@ public class SettingsGUI extends javax.swing.JDialog {
     private javax.swing.JPanel jPanelColor;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JComboBox jThemesComboBox;
     // End of variables declaration//GEN-END:variables
     
+    private Theme theme;
 }

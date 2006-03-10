@@ -103,7 +103,7 @@ public class FontChooser extends javax.swing.JPanel {
         add(jLabel2, gridBagConstraints);
 
         listStyle.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "Roman", "Oblique", "Bold", "Bold Oblique" };
+            String[] strings = { "Roman", "Bold", "Oblique", "Bold Oblique" };
             public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
         });
@@ -137,7 +137,7 @@ public class FontChooser extends javax.swing.JPanel {
         add(jLabel3, gridBagConstraints);
 
         listSize.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "8", "9", "10", "11", "12", "13", "14", "15", "16" };
+            String[] strings = { "8", "9", "10", "11", "12", "13", "14", "15", "16", "18", "20", "22", "24", "26", "28", "32", "36", "40" };
             public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
         });
@@ -186,17 +186,48 @@ public class FontChooser extends javax.swing.JPanel {
     private void listSizeValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_listSizeValueChanged
         // font size chooser changed
 // TODO add your handling code here:
+        applyFont();
     }//GEN-LAST:event_listSizeValueChanged
 
     private void listStyleValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_listStyleValueChanged
         // font style chooser changed
 // TODO add your handling code here:
+        applyFont();
     }//GEN-LAST:event_listStyleValueChanged
 
     private void listFamilyValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_listFamilyValueChanged
         // font family chooser changed
 // TODO add your handling code here:
+        applyFont();
     }//GEN-LAST:event_listFamilyValueChanged
+  
+    public void setGUIFont (java.awt.Font font) {
+        this.guiFont = font;
+        listFamily.setSelectedValue(font.getFamily(), true);
+        listStyle.setSelectedIndex(font.getStyle());
+        listSize.setSelectedValue (new Integer (font.getSize()).toString(), true);
+        applyFont ();
+    }
+    
+    public java.awt.Font getGUIFont () {
+        return this.guiFont;
+    }
+    
+    private void applyFont () {
+        String family = (String)listFamily.getSelectedValue();
+        int style = listStyle.getSelectedIndex();
+        String stringSize = (String)listSize.getSelectedValue();
+        int size = 8;
+        try {
+            size = Integer.parseInt(stringSize);
+        } catch (Exception e) {
+            
+        }
+        this.guiFont = new java.awt.Font (family, style, size);
+        this.jTextField1.setFont(this.guiFont);
+        this.jTextField1.setText("abcdefghijk ABCDEFGHIJK");
+    }
+    
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -212,5 +243,5 @@ public class FontChooser extends javax.swing.JPanel {
     private javax.swing.JList listSize;
     private javax.swing.JList listStyle;
     // End of variables declaration//GEN-END:variables
-    
+    private java.awt.Font guiFont;
 }

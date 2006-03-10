@@ -114,7 +114,7 @@ public class ChoseFontGUI extends javax.swing.JDialog {
         Object[] listeners = dialogListener.getListenerList();
 		
         for (int i = listeners.length-2; i>=0; i-=2) {
-            if (listeners[i]==SmallStepEventListener.class) {
+            if (listeners[i]==DialogListener.class) {
                 // Lazily create the event:
                 ((DialogListener)listeners[i+1]).dialogOk(new java.util.EventObject(this));
              }
@@ -126,11 +126,19 @@ public class ChoseFontGUI extends javax.swing.JDialog {
         Object[] listeners = dialogListener.getListenerList();
 		
         for (int i = listeners.length-2; i>=0; i-=2) {
-            if (listeners[i]==SmallStepEventListener.class) {
+            if (listeners[i]==DialogListener.class) {
                 // Lazily create the event:
                 ((DialogListener)listeners[i+1]).dialogCancel(new java.util.EventObject(this));
              }
         }
+    }
+    
+    public void setGUIFont (java.awt.Font font) {
+        fontChooser1.setGUIFont(font);
+    }
+    
+    public java.awt.Font getGUIFont () {
+        return fontChooser1.getGUIFont();
     }
 
     
