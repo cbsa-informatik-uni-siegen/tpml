@@ -279,9 +279,10 @@ public class TypeCheckerComponent extends JComponent {
 			
 			Polygon poly = new Polygon ();
 			poly.addPoint (node.parentX, node.parentY);
-			poly.addPoint (node.parentX + identifierSize/4, node.parentY + identifierSize/2);
-			poly.addPoint (node.parentX, node.parentY + identifierSize / 4);
-			poly.addPoint (node.parentX - identifierSize/4, node.parentY + identifierSize/2);
+			poly.addPoint (node.parentX + this.expressionFM.getAscent()/2, node.parentY + this.expressionFM.getAscent());
+			poly.addPoint (node.parentX, node.parentY + this.expressionFM.getAscent() / 2);
+			poly.addPoint (node.parentX - this.expressionFM.getAscent()/2, node.parentY + this.expressionFM.getAscent());
+//			poly.addPoint (node.parentX - identifierSize/4, node.parentY + identifierSize/2);
 
 			g2d.fill (poly);
 		}
