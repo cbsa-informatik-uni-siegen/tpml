@@ -3,13 +3,15 @@ package typing;
 import java.util.Set;
 
 /**
- * TODO Add documentation here.
+ * Abstract base class for monomorphic types.
  *
  * @author Benedikt Meurer
  * @version $Id$
  */
 public abstract class MonoType extends Type {
   /**
+   * {@inheritDoc}
+   * 
    * @see typing.Type#containsFreeTypeVariable(java.lang.String)
    */
   @Override

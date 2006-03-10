@@ -4,7 +4,9 @@ import java.util.Set;
 import java.util.TreeSet;
 
 /**
- * TODO Add documentation here.
+ * Represents a polymorphic type, which is basicly a
+ * monomorphic type with a set of type quantified type
+ * variables.
  *
  * @author Benedikt Meurer
  * @version $Id$

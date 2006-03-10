@@ -3,7 +3,8 @@ package typing;
 import java.util.Set;
 
 /**
- * TODO Add documentation here.
+ * This class represents a substitution, as returned by the unification
+ * algorithm.
  *
  * @author Benedikt Meurer
  * @version $Id$
