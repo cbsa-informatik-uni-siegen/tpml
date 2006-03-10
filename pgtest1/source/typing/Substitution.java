@@ -54,10 +54,10 @@ final class Substitution {
     
     // check if this substitution matches, otherwise
     // continue with the parent and so on...
-    if (this.name.equals(tvar.getName()))
-      return this.type;
-    else
-      return this.parent.apply(tvar);
+    MonoType tau = (this.name.equals(tvar.getName())) ? this.type : tvar;
+    
+    // continue with the parent substitution
+    return tau.substitute(this.parent);
   }
   
   /**
