@@ -341,9 +341,8 @@ public class TypeCheckerComponent extends JComponent {
 			int ruleX = 0;
 			int ruleY = 0;
 			if (idConst) {
-				ruleX = node.x + this.ruleFM.stringWidth(judgement);
+				ruleX = node.x + this.expressionFM.stringWidth(judgement);
 				ruleY = node.y;
-				
 			}
 			else {
 				ruleX = node.x + identifierSize;
