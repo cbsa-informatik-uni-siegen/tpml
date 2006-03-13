@@ -7,7 +7,7 @@ import java.util.prefs.*;
 
 import javax.swing.*;
 
-public class SmallStepGUI extends JDialog {
+public class SmallStepGUI extends JPanel {
 	
 	private SmallStepComponent 	ssComponent;
 	private JButton				buttonAutocomplete;
@@ -20,8 +20,8 @@ public class SmallStepGUI extends JDialog {
 	
 	
 	public SmallStepGUI(Frame owner, String title, boolean modal, SmallStepModel model) {
-		super(owner, title, modal);
-		getContentPane().setLayout (new BoxLayout (getContentPane(), BoxLayout.PAGE_AXIS));
+		//super(owner, title, modal);
+		this.setLayout (new BoxLayout (this, BoxLayout.PAGE_AXIS));
 		
 		JPanel mainPanel	= new JPanel();
 		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.PAGE_AXIS));
@@ -78,11 +78,12 @@ public class SmallStepGUI extends JDialog {
 		spinnerStep.setMaximumSize(new Dimension(fm.stringWidth("XXXX"), fm.getHeight()*2));
 		mainPanel.add(buttonPanel);
 		
-		buttonClose.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				dispose ();
-			}
-		});
+		//TODO this is done realy dirty by the smallsteplistener itself.
+//		buttonClose.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent e) {
+//				//dispose ();
+//			}
+//		});
 		buttonNextStep.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int num = (Integer)spinnerStep.getValue();
@@ -127,8 +128,8 @@ public class SmallStepGUI extends JDialog {
 				}
 			public void componentShown(ComponentEvent e) { }
 		});
-		getContentPane().add(mainPanel);
-		setSize(1024, 600);
+		this.add(mainPanel);
+		//setSize(1024, 600);
 		
 	}
 	
@@ -158,4 +159,9 @@ public class SmallStepGUI extends JDialog {
 		JScrollBar bar = this.scrollPane.getVerticalScrollBar();
 		bar.setValue(bar.getValue() + bar.getMaximum());
 	}
+
+	public JButton getButtonClose() {
+		return buttonClose;
+	}
+	
 }

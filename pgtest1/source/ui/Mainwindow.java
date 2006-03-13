@@ -38,6 +38,7 @@ public class Mainwindow extends JFrame {
 
 
   private LinkedList<SourceFile> fileList = new LinkedList<SourceFile>();
+  private LinkedList<EditorWindow> editorList = new LinkedList<EditorWindow>();
 
   public Mainwindow() {
     super();
@@ -171,8 +172,10 @@ public class Mainwindow extends JFrame {
 //    	newFile.getDocument().insertString(0, "let rec f = lambda x. if x = 0 then 1 else x * f (x-1) in f 5", null);
     	newFile.getDocument().insertString(0, "let twice = lambda f.lambda x.f (f x) in twice", null);
     } catch (Exception e) { }
-    tabbedPane.add(newFile.getComponent());
+    EditorWindow newEditor = new EditorWindow(newFile, this);
+    tabbedPane.add(newEditor);
     fileList.add(newFile);
+    editorList.add(newEditor);
   }
 
   private void handleSave() {
@@ -224,6 +227,11 @@ public class Mainwindow extends JFrame {
 	    }
 	    return result;
   }
+  
+  private EditorWindow getEditor() {
+	    int index = tabbedPane.getSelectedIndex();
+	    return (editorList.get(index));
+  }
 
   private void handleSmallStep() {
 
@@ -234,6 +242,7 @@ public class Mainwindow extends JFrame {
       // evaluate the resulting small step expression
       SmallStepGUI gui = new SmallStepGUI(this, "SmallStep", false, model);
       gui.setVisible(true);
+      ((EditorWindow)getEditor()).handleSmallStep(gui);
       
   }
   
