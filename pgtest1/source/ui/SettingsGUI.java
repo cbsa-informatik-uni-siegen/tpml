@@ -352,10 +352,18 @@ public class SettingsGUI extends javax.swing.JDialog {
         if (idx == -1) {
             return;
         }
-        java.awt.Font font = theme.getItemFont(idx);
+        if (theme.hasItemFont(idx)) {
+        	java.awt.Font font = theme.getItemFont(idx);
+        	this.jFontLabel.setEnabled(true);
+        	this.jButtonFont.setEnabled(true);
+            this.jFontLabel.setFont(font);
+        }
+        else {
+        	this.jFontLabel.setEnabled(false);
+        	this.jButtonFont.setEnabled(false);
+        }
         java.awt.Color color = theme.getItemColor(idx);
         this.jPanelColor.setBackground(color);
-        this.jFontLabel.setFont(font);
     }//GEN-LAST:event_itemListValueChanged
 
     private void jButtonFontActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonFontActionPerformed

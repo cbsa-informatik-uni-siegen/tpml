@@ -153,6 +153,7 @@ public class SmallStepComponent extends JComponent {
 			}
 		});
 
+		
 		this.renderer = new Renderer (getFontMetrics(model.getFontRole(SmallStepModel.ROLE_EXPR)),
 				getFontMetrics(model.getFontRole(SmallStepModel.ROLE_KEYWORD)),
 				getFontMetrics(model.getFontRole(SmallStepModel.ROLE_CONSTANT)),
@@ -195,6 +196,7 @@ public class SmallStepComponent extends JComponent {
 		
 		
 		FontMetrics fm = this.getFontMetrics(model.getFontRole(SmallStepModel.ROLE_EXPR));
+		FontMetrics ruleFm = this.getFontMetrics(model.getFontRole(SmallStepModel.ROLE_RULE));
 		FontMetrics expFm = this.getFontMetrics(model.getFontRole(SmallStepModel.ROLE_RULE_EXP));
 		
 		
@@ -229,7 +231,7 @@ public class SmallStepComponent extends JComponent {
 					}
 					multiplier = k;
 				}
-				int width = this.getRuleTextWidth(rule, fm, expFm, multiplier) + this.ruleIntersection.width;
+				int width = this.getRuleTextWidth(rule, ruleFm, expFm, multiplier) + this.ruleIntersection.width;
 				currentCenter += width;
 				j += (multiplier - 1);
 			}
@@ -242,7 +244,7 @@ public class SmallStepComponent extends JComponent {
 				int w = 0;
 				if (model.getAximoRulesEvaluted(i)) {
 					String rule = model.getAxiomRule(i).getName();
-					w = fm.stringWidth(rule) + this.ruleIntersection.width;
+					w = ruleFm.stringWidth(rule) + this.ruleIntersection.width;
 				}
 				else {
 					w = this.comboSize.width + this.ruleIntersection.width;
@@ -334,13 +336,16 @@ public class SmallStepComponent extends JComponent {
 		g2d.setFont(fm.getFont());
 		g2d.drawString(str, x, posy);
 		x += fm.stringWidth(str);
+		Font multiplierFont = fm.getFont().deriveFont(fm.getFont().getSize2D() * 0.75f);
+		FontMetrics multiplierFontMetrics = getFontMetrics (multiplierFont);
 		
 		if (multiplier > 1) {
 			posy -= fm.getAscent() / 2;
 			str = "" + multiplier;
 			g2d.setFont(expFm.getFont());
+			g2d.setFont(multiplierFont);
 			g2d.drawString(str, x, posy);
-			x += expFm.stringWidth(str);
+			x += multiplierFontMetrics.stringWidth(str);
 		}
 		
 		return (x);
@@ -350,9 +355,12 @@ public class SmallStepComponent extends JComponent {
 		String str = "(" + rule.getName() + ")";
 		int width = fm.stringWidth(str);
 		
+		Font multiplierFont = fm.getFont().deriveFont(fm.getFont().getSize2D() * 0.75f);
+		FontMetrics multiplierFontMetrics = getFontMetrics (multiplierFont);
+		
 		if (multiplier > 1) {
 			str = "" + multiplier;
-			width += expFm.stringWidth(str);
+			width += multiplierFontMetrics.stringWidth(str);
 		}
 		
 		return (width);
@@ -409,6 +417,8 @@ public class SmallStepComponent extends JComponent {
 		g2d.setColor(Color.WHITE);
 		g2d.fillRect(0, 0, getWidth(), getHeight());
 		g2d.setColor(Color.BLACK);
+		
+		renderer.checkThemeValues(this);
 		
 		FontMetrics fmRule = this.getFontMetrics(model.getFontRole(SmallStepModel.ROLE_RULE));
 		FontMetrics fmRuleExp = this.getFontMetrics(model.getFontRole(SmallStepModel.ROLE_RULE_EXP));

@@ -14,9 +14,14 @@ public class Theme {
 		private Font	font;
 		
 		private Color	color;
-		
+				
 		public ThemeItem () {
 			
+		}
+		public ThemeItem (String name, Color color) {
+			this.name = name;
+			this.color = color;
+			this.font = null;
 		}
 		public ThemeItem (String name, Font font, Color color) {
 			this.name = name;
@@ -39,7 +44,7 @@ public class Theme {
 		public void setColor (Color color) {
 			this.color = color;
 		}
-		
+				
 		public Font getFont () {
 			return this.font;
 		}
@@ -58,9 +63,12 @@ public class Theme {
 		this.items = new LinkedList<ThemeItem>();
 		Font f = new JComboBox().getFont();
 		
+		this.items.add(new ThemeItem("Rule", f, new Color(0, 0, 0)));
 		this.items.add(new ThemeItem("Expression", f, new Color (0, 0, 0)));
 		this.items.add(new ThemeItem("Keyword", f, new Color(0, 0, 0)));
 		this.items.add(new ThemeItem("Constant", f, new Color(0, 0, 0)));
+		this.items.add(new ThemeItem("Underline", new Color (255, 0, 0)));
+		this.items.add(new ThemeItem("RuleExpression", f, new Color (0, 0, 0)));
 	}
 	
 	public void setName (String name) {
@@ -77,6 +85,10 @@ public class Theme {
 	
 	public String getItemName (int idx) {
 		return this.items.get(idx).getName();
+	}
+	
+	public boolean hasItemFont (int idx) {
+		return this.items.get(idx).getFont () != null;
 	}
 	
 	public Font getItemFont (int idx) {

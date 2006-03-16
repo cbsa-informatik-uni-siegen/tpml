@@ -22,12 +22,31 @@ public class SmallStepModel {
 	public static final int EVAL_EMPTY_CHAIN		= -1;
 	public static final int EVAL_OK					= 0;
 	
+	/*
+	enum SmallStepRole {
+		ROLE_RULE,
+		ROLE_EXPR,
+		ROLE_KEYWORD,
+		ROLE_CONSTANT,
+		ROLE_UNDERLINE,
+		ROLE_RULE_EXPR,
+	}
+	*/
+	public static final int ROLE_RULE			= 0;
+	public static final int ROLE_EXPR			= 1;
+	public static final int ROLE_KEYWORD		= 2;
+	public static final int ROLE_CONSTANT		= 3;
+	public static final int ROLE_UNDERLINE		= 4;
+	public static final int ROLE_RULE_EXP		= 5;
+	
+	/*
 	public static final int ROLE_RULE			= 0;
 	public static final int ROLE_EXPR			= 1;
 	public static final int ROLE_KEYWORD		= 2;
 	public static final int ROLE_CONSTANT		= 4;
 	public static final int ROLE_UNDERLINE		= 5;
 	public static final int ROLE_RULE_EXP		= 6;
+	*/
 	
 	/**
 	 * A single step represents the combination of the expression,
@@ -542,13 +561,20 @@ public class SmallStepModel {
 	}
 	
 	public Font getFontRole(int role) {
-		Font font = this.expressionFont;
+		ThemeManager themeManager = ThemeManager.get();
+		Theme theme = themeManager.getCurrentTheme();
+		
+		Font font = theme.getItemFont(role);
+		/*
 		switch (role) {
 		case ROLE_RULE:
+			font = theme.getItemFont(ROLE_RULE);
+			break;
 		case ROLE_EXPR:
+			font = theme.getItemFont(RULE_EXPR);
 			break;
 		case ROLE_KEYWORD:
-			font = this.keywordFont;
+			font = theme.getItemFont(R)
 			break;
 		case ROLE_CONSTANT:
 			font = this.constantFont;
@@ -556,11 +582,17 @@ public class SmallStepModel {
 		case ROLE_RULE_EXP:
 			font = this.ruleExpFont;
 		}
+		*/
 		return font;
 	}
 	
 	public Color getColorRole(int role) {
-		Color color = null;
+		ThemeManager themeManager = ThemeManager.get();
+		Theme theme = themeManager.getCurrentTheme();
+		
+		Color color = theme.getItemColor(role);
+		/*
+		
 		switch (role) {
 		case ROLE_RULE:
 			color = new Color(0.0f, 0.0f, 0.0f);
@@ -578,6 +610,8 @@ public class SmallStepModel {
 			color = new Color(1.0f, 0.0f, 0.0f);
 			break;
 		}
+		
+		*/
 		return color;
 	}
 	

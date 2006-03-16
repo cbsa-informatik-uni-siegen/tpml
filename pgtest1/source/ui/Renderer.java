@@ -5,6 +5,8 @@ import java.text.*;
 import java.util.Collection;
 import java.util.Iterator;
 
+import javax.swing.JComponent;
+
 import smallstep.*;
 
 public class Renderer {
@@ -20,6 +22,7 @@ public class Renderer {
 	private Color			textColor;
 	private Color			keywordColor;
 	private Color			constantColor;
+	private Color			underlineColor;
 	
 	private	int 			fontAsc;
 	private int				fontDesc;
@@ -38,8 +41,28 @@ public class Renderer {
 		this.textColor				= tc;
 		this.keywordColor			= kc;
 		this.constantColor			= cc;
+		this.underlineColor			= new Color (0.5f, 0.0f, 0.0f);
 		
+		checkFontSizes ();
+	}
+	
+	public void checkThemeValues (JComponent component) {
+		Theme theme = ThemeManager.get().getCurrentTheme();
+		this.textFont = theme.getItemFont(SmallStepModel.ROLE_EXPR);
+		this.textFontMetrics = component.getFontMetrics(this.textFont);
+		this.keywordFont = theme.getItemFont(SmallStepModel.ROLE_KEYWORD);
+		this.keywordFontMetrics = component.getFontMetrics(this.keywordFont);
+		this.constantFont = theme.getItemFont(SmallStepModel.ROLE_CONSTANT);
+		this.constantFontMetrics = component.getFontMetrics(this.constantFont);
 		
+		this.textColor = theme.getItemColor(SmallStepModel.ROLE_EXPR);
+		this.keywordColor = theme.getItemColor(SmallStepModel.ROLE_KEYWORD);
+		this.constantColor = theme.getItemColor(SmallStepModel.ROLE_CONSTANT);
+		this.underlineColor = theme.getItemColor(SmallStepModel.ROLE_UNDERLINE);
+		
+		checkFontSizes ();
+	}
+	private void checkFontSizes () {
 		fontAsc = keywordFontMetrics.getAscent();
 		fontDesc = keywordFontMetrics.getDescent();
 		fontHeight = keywordFontMetrics.getHeight();
@@ -200,7 +223,8 @@ public class Renderer {
 			}
 			if (underlineAnnotation != null) {
 				if (i >= underlineAnnotation.getStartOffset() && i <= underlineAnnotation.getEndOffset()) {
-					g2d.setColor(Color.RED);
+					
+					g2d.setColor(this.underlineColor);
 					g2d.drawLine(posx, posy + 3, posx + length, posy + 3);
 					g2d.drawLine(posx, posy + 4, posx + length, posy + 4);
 					g2d.setColor(Color.BLACK);
