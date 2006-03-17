@@ -1,7 +1,5 @@
 package typing;
 
-import java.util.Set;
-
 /**
  * This class represents a substitution, as returned by the unification
  * algorithm.
@@ -82,36 +80,28 @@ final class Substitution {
     // and prepend (name,type) pair
     return new Substitution(this.name, this.type, parent);
   }
-  
+
   /**
-   * Removes the type variables with the given <code>names</code>
-   * and compresses the substitution. This is required to
-   * substitute type variables for polymorphic types.
+   * Returns <code>true</code> if the substitution contains
+   * a type, which in turn contains a free type variable of
+   * the given <code>name</code>.
    * 
-   * @param names a set of type variable names.
+   * @param name the name of the type variable to test.
    * 
-   * @return the resulting substitution.
+   * @return <code>true</code> if <code>name</code> is present
+   *         as free type variable in the substitution.
    */
-  Substitution compress(Set<String> names) {
-    // check if this is the empty substitution
+  boolean containsFreeTypeVariable(String name) {
+    // if this is the empty substitution, then name is not present
     if (this == EMPTY_SUBSTITUTION)
-      return this;
+      return false;
     
-    // check if this is one of the names that should be removed
-    if (names.contains(this.name)) {
-      // this is kinda tricky, we need to substitute all
-      // appearances of the name in the remaining
-      Substitution s = new Substitution(this.name, this.type);
-      return this.parent.substituteInTypes(s).compress(names);
-    }
+    // check if this type contains name
+    if (this.type.containsFreeTypeVariable(name))
+      return true;
     
-    // otherwise, just compress the parent
-    Substitution parent = this.parent.compress(names);
-    if (this.parent == parent)
-      return this;
-    
-    // generate a new substitution with the new parent
-    return new Substitution(this.name, this.type, parent);
+    // check the parent
+    return this.parent.containsFreeTypeVariable(name);
   }
   
   /**
@@ -141,24 +131,6 @@ final class Substitution {
   static final Substitution EMPTY_SUBSTITUTION = new Substitution();
   
   private Substitution() {
-  }
-  
-  private Substitution substituteInTypes(Substitution s) {
-    // check if this is the empty substitution
-    if (this == EMPTY_SUBSTITUTION)
-      return this;
-    
-    // substitute in the parent types
-    Substitution parent = this.parent.substituteInTypes(s);
-    
-    // substitute for this type
-    MonoType type = this.type.substitute(s);
-    
-    // check if we need to allocate a new substitution
-    if (this.parent != parent || this.type != type)
-      return new Substitution(this.name, type, parent);
-    else
-      return this;
   }
   
   // member attributes

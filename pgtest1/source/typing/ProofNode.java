@@ -222,18 +222,18 @@ public final class ProofNode implements TreeNode {
    *                
    * @return the resulting tree starting at this node.
    */
-  ProofNode cloneSubstituteAndReplace(Substitution substitution, ProofNode oldNode, ProofNode newNode) {
+  ProofNode cloneSubstituteAndReplace(Substitution substitution, ProofNode oldNode, ProofNode newNode, TypeVariableAllocator typeVariableAllocator) {
     // check if this one should be replaced
     if (oldNode == this)
-      return newNode.cloneSubstituteAndReplace(substitution, null, null);
+      return newNode.cloneSubstituteAndReplace(substitution, null, null, typeVariableAllocator);
     
     // allocate a new copy of the node
-    ProofNode node = new ProofNode(this.judgement.substitute(substitution), this.rule);
+    ProofNode node = new ProofNode(this.judgement.substitute(substitution, typeVariableAllocator), this.rule);
     node.children = new Vector<ProofNode>();
     
     // clone/replace all children
     for (ProofNode oldChild : this.children) {
-      ProofNode newChild = oldChild.cloneSubstituteAndReplace(substitution, oldNode, newNode);
+      ProofNode newChild = oldChild.cloneSubstituteAndReplace(substitution, oldNode, newNode, typeVariableAllocator);
       node.children.add(newChild);
       newChild.parent = node;
     }

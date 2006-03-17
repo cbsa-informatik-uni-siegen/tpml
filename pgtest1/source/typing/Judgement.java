@@ -67,13 +67,17 @@ public final class Judgement {
    * Applies the <code>substitution</code> to the environment
    * and the type of this judgement.
    * 
-   * @param substitution the {@link Substitution} to apply.
+   * @param substitution          the {@link Substitution} to apply.
+   * @param typeVariableAllocator the {@link TypeVariableAllocator} for the
+   *                              {@link Environment#substitute(Substitution, TypeVariableAllocator)}.
    * 
    * @return the new judgement.
+   * 
+   * @see Environment#substitute(Substitution, TypeVariableAllocator)
    */
-  Judgement substitute(Substitution substitution) {
+  Judgement substitute(Substitution substitution, TypeVariableAllocator typeVariableAllocator) {
     // apply the substitution to the environment
-    Environment environment = this.environment.substitute(substitution);
+    Environment environment = this.environment.substitute(substitution, typeVariableAllocator);
     
     // apply the substitution to the type
     MonoType type = this.type.substitute(substitution);

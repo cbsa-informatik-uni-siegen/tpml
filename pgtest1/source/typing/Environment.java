@@ -164,20 +164,44 @@ public final class Environment {
    * Applies the <code>substitution</code> to all types in
    * the environment and returns the resulting environment.
    * 
-   * @param substitution the {@link Substitution}.
+   * The <code>typeVariableAllocator</code> can be used to
+   * allocate new type variables required for renaming type
+   * variables when substituting below a polymorphic type.
+   * 
+   * @param substitution          the {@link Substitution}.
+   * @param typeVariableAllocator a {@link TypeVariableAllocator}, which can
+   *                              be used to allocate new type variables.
    * 
    * @return the resulting {@link Environment}.
    */
-  Environment substitute(Substitution substitution) {
+  Environment substitute(Substitution substitution, TypeVariableAllocator typeVariableAllocator) {
     // nothing to substitute in the empty environment
     if (this == EMPTY_ENVIRONMENT)
       return this;
     
     // apply the substitution to the parent
-    Environment parent = this.parent.substitute(substitution);
+    Environment parent = this.parent.substitute(substitution, typeVariableAllocator);
 
+    // check if we have a polymorphic type
+    Type type = this.type;
+    if (type instanceof PolyType) {
+      PolyType polyType = (PolyType)type;
+      
+      // determine a substitution for the bound rename
+      Substitution renamer = Substitution.EMPTY_SUBSTITUTION;
+      for (String name : polyType.getQuantifiedVariables()) {
+        // check if the substitution contains the name as free type variable
+        if (substitution.containsFreeTypeVariable(name)) {
+          renamer = new Substitution(name, typeVariableAllocator.allocateTypeVariable(), renamer);
+        }
+      }
+      
+      // apply the renamer to avoid collision
+      type = type.substitute(renamer);
+    }
+    
     // apply the substitution to the type
-    Type type = this.type.substitute(substitution);
+    type = type.substitute(substitution);
     
     // check anything changed
     if (parent != this.parent || type != this.type)

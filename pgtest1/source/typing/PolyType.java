@@ -79,6 +79,9 @@ public final class PolyType extends Type {
   /**
    * {@inheritDoc}
    * 
+   * Applies the substition <code>s</code> to both the
+   * monomorphic type and the type variables.
+   * 
    * @see typing.Type#substitute(typing.Substitution)
    */
   @Override
@@ -87,18 +90,21 @@ public final class PolyType extends Type {
     if (s == Substitution.EMPTY_SUBSTITUTION)
       return this;
     
-    // remove the quantified type variables
-    // and compress the substitution
-    s = s.compress(this.quantifiedVariables);
+    // determine the new set of quantified type variables
+    TreeSet<String> quantifiedVariables = new TreeSet<String>();
+    for (String name : this.quantifiedVariables) {
+      TypeVariable tvar = (TypeVariable)s.apply(new TypeVariable(name));
+      quantifiedVariables.add(tvar.getName());
+    }
     
-    // apply the substitution to the
-    // monomorphic type
+    // apply the substitution to the monomorphic type
     MonoType monoType = this.monoType.substitute(s);
-    if (this.monoType == monoType)
-      return this;
     
-    // allocate a new polymorphic type
-    return new PolyType(this.quantifiedVariables, monoType);
+    // check if anything changed
+    if (this.monoType != monoType || !this.quantifiedVariables.equals(quantifiedVariables))
+      return new PolyType(quantifiedVariables, monoType);
+    else
+      return this;
   }
   
   /**
@@ -120,6 +126,15 @@ public final class PolyType extends Type {
     
     // instantiate the monomorphic type by applying the substitution
     return this.monoType.substitute(s);
+  }
+  
+  /**
+   * Returns the set of quantified type variables.
+   * 
+   * @return the set of quantified variables.
+   */
+  public Set<String> getQuantifiedVariables() {
+    return this.quantifiedVariables;
   }
   
   /**

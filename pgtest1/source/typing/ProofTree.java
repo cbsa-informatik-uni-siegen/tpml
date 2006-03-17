@@ -323,7 +323,7 @@ public final class ProofTree implements TreeModel, TypeVariableAllocator {
     Substitution substitution = equations.unify();
     
     // allocate a root item for the new tree
-    ProofNode newRoot = this.root.cloneSubstituteAndReplace(substitution, node, newNode);
+    ProofNode newRoot = this.root.cloneSubstituteAndReplace(substitution, node, newNode, this);
     
     // allocate the new tree
     return new ProofTree(newRoot, nextTypeVariable);
