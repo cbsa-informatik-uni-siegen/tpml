@@ -96,8 +96,8 @@ final class Substitution {
     if (this == EMPTY_SUBSTITUTION)
       return false;
     
-    // check if this type contains name
-    if (this.type.containsFreeTypeVariable(name))
+    // check if name is equal or this type contains name
+    if (this.name.equals(name) || this.type.containsFreeTypeVariable(name))
       return true;
     
     // check the parent
