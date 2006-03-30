@@ -11,11 +11,10 @@ import java.util.EventObject;
 import java.util.Vector;
 import java.util.HashMap;
 
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
-import javax.swing.event.PopupMenuEvent;
-import javax.swing.event.PopupMenuListener;
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
 
 import smallstep.Constant;
 import smallstep.Expression;
@@ -23,6 +22,8 @@ import smallstep.Identifier;
 import typing.ProofNode;
 import typing.ProofTree;
 import typing.Rule;
+import ui.beans.MenuButton;
+import ui.beans.MenuButtonListener;
 
 /**
  * Implementation of the TypeCheckerComponent.  
@@ -99,11 +100,11 @@ public class TypeCheckerComponent extends JComponent {
 	 */
 	private Font				ruleFont;
 	private FontMetrics			ruleFM;
-
+	
 	/**
-	 * The comboboxes that are used to let the user interact with.
+	 * 
 	 */
-	private Vector<JComboBox>	selections;
+	private Vector<MenuButton>	menuButtons;
 	
 	/**
 	 * 
@@ -132,7 +133,7 @@ public class TypeCheckerComponent extends JComponent {
 		this.ruleFont = new JComboBox().getFont();
 		this.ruleFM = getFontMetrics (this.ruleFont);
 		
-		this.selections = new Vector<JComboBox>();
+		this.menuButtons = new Vector<MenuButton>();
 		this.selectionRelation = new Vector<ProofNode> ();
 		this.rules = new HashMap<String, Rule>();
 		
@@ -158,19 +159,18 @@ public class TypeCheckerComponent extends JComponent {
 	public void setIndentionDepth(int depth) {
 		this.indentionDepth = depth;
 	}
-	
-	public void handleRuleBoxChanged (JComboBox box) {
-		Rule rule = this.rules.get((String)box.getSelectedItem());
+		
+	public void handleRuleButtonChanged (MenuButton button, JMenuItem item) {
+		Rule rule = this.rules.get(item.getText());
 		if (rule == null)
 			return;
 		
-		int p = this.selections.indexOf(box);
+		int p = this.menuButtons.indexOf(button);
 		if (p == -1)
 			return;
+		
 		ProofNode proofNode = this.selectionRelation.elementAt(p);
-		
 		fireEvent (proofNode, rule);
-		
 	}
 	
 	/**
@@ -211,32 +211,43 @@ public class TypeCheckerComponent extends JComponent {
 			return;
 		
 		int selectionCount = checkNextNode ((ProofNode)model.getRoot(), 0);
-		
-		for (JComboBox c : selections) {
-			this.remove(c);
+
+		for (MenuButton b : menuButtons) {
+			this.remove(b);
 		}
 		
-		this.selections.clear();
+		this.menuButtons.clear ();
 		this.selectionRelation.clear ();
 		for (int i=0; i<selectionCount; i++) {
-			JComboBox selection = new JComboBox ();
-			this.selections.add(selection);
-			selection.setVisible(false);
 			
-			DefaultComboBoxModel model = new DefaultComboBoxModel();
-			model.addElement("---");
+			MenuButton menuButton = new MenuButton();
+			this.menuButtons.add(menuButton);
+			menuButton.setVisible(false);
+			
+			JPopupMenu menu = new JPopupMenu();
+			JMenuItem item;
+			
 			for (Rule r : Rule.getAllRules()) {
-				model.addElement(r.getName());
+				item = new JMenuItem (r.getName ());
+				item.setFont(item.getFont().deriveFont(Font.PLAIN));
+				menu.add(item);
 			}
-			selection.setModel(model);
-			selection.addPopupMenuListener(new PopupMenuListener () {
-				public void popupMenuCanceled(PopupMenuEvent e) { }
-				public void popupMenuWillBecomeVisible(PopupMenuEvent e) { }
-				public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
-					JComboBox comboBox = (JComboBox)e.getSource();
-					handleRuleBoxChanged (comboBox);
+			
+			menu.addSeparator();
+			item = new JMenuItem("Translate to coresyntax");
+//			Font fnt = item.getFont().deriveFont(Font.ITALIC);
+//			item.setFont(fnt);
+			
+			menu.add(item);
+			
+			menuButton.setMenu(menu);
+			
+			menuButton.addMenuButtonListener(new MenuButtonListener () {
+				public void menuItemActivated (MenuButton button, JMenuItem item) {
+					handleRuleButtonChanged (button, item);
 				}
 			});
+	
 		}
 		
 	}
@@ -306,13 +317,16 @@ public class TypeCheckerComponent extends JComponent {
 		boolean idConst = (exp instanceof Constant) || (exp instanceof Identifier);
 		if (node.node.getRule() == null) {
 			// find the correct combobox with the
-			JComboBox box = this.selections.elementAt(this.whichComboBox);
-			if (!box.isVisible()) {
-				this.add(box);
+			MenuButton button = this.menuButtons.elementAt(this.whichComboBox);
+			if (!button.isVisible()) {
+				this.add(button);
 				this.selectionRelation.add(node.node);
-				box.setVisible(true);
+				button.setVisible(true);
 			}
+			
 			this.whichComboBox++;
+			this.selectionSize.height = button.getHeight();
+			this.selectionSize.width = button.getWidth();
 			
 			// check whether this judgement is based on CONST or ID
 			// if so, the combobox will be placed behind the judgement line.
@@ -321,19 +335,18 @@ public class TypeCheckerComponent extends JComponent {
 				int boxX = node.x + this.expressionFM.stringWidth(judgement);
 				int boxY = node.y;
 				boxY -= selectionSize.height - this.expressionFM.getDescent();
-				box.setBounds(boxX, boxY, selectionSize.width, selectionSize.height);
+				button.setBounds(boxX, boxY, selectionSize.width, selectionSize.height);
 			}
 			else {
 				int boxX = node.x + identifierSize;
 				int boxY = node.y + this.expressionFM.getDescent() + selectionSize.height / 2;
-				box.setBounds(boxX, boxY, selectionSize.width, selectionSize.height);
+				button.setBounds(boxX, boxY, selectionSize.width, selectionSize.height);
 				node.y += selectionSize.height + selectionSize.height / 2 + this.expressionFM.getDescent();
 				
 			}
 			
-			// find the max size behind the combo boxes
-			if (box.getX() + box.getWidth() > this.maxSize.width) {
-				this.maxSize.width = box.getX () + box.getWidth();
+			if (button.getX() + button.getWidth() > this.maxSize.width) {
+				this.maxSize.width = button.getX() + button.getWidth();
 			}
 		}
 		else {
