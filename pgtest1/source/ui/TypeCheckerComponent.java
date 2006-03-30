@@ -14,6 +14,7 @@ import java.util.HashMap;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 
 import smallstep.Constant;

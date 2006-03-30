@@ -5,6 +5,7 @@ import java.util.Vector;
 import java.awt.*;
 
 import javax.swing.*;
+
 import java.awt.event.*;
 
 import smallstep.Expression;
@@ -118,6 +119,10 @@ public class TypeCheckerGUI extends JDialog {
 			++this.currentProofTreeIndex;
 			checkButtonStates ();
 		}
+		catch (Exception e) {
+			JOptionPane.showMessageDialog(this, e.getLocalizedMessage(), "Incorrect", JOptionPane.WARNING_MESSAGE);
+		}
+		/*
 		catch (InvalidRuleException ruleExc) {
 			ruleExc.printStackTrace();
 		}
@@ -127,6 +132,7 @@ public class TypeCheckerGUI extends JDialog {
 		catch (UnknownIdentifierException idExc) {
 			idExc.printStackTrace();
 		}
+		*/
 	}
 	
 	private void checkButtonStates() {
