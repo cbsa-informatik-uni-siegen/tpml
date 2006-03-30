@@ -114,6 +114,28 @@ final class EquationList {
       // try to unify the new list
       return eqns.unify();
     }
+    else if (left instanceof TupleType && right instanceof TupleType) {
+      // cast to TupleType instances (tau and tau')
+      TupleType taul = (TupleType)left;
+      TupleType taur = (TupleType)right;
+      
+      // check if the arities match
+      if (taul.arity() == taur.arity()) {
+        // determine the sub types
+        MonoType[] typesl = taul.getTypes();
+        MonoType[] typesr = taur.getTypes();
+        
+        // check all sub types
+        EquationList eqns = this.remaining;
+        for (int n = 0; n < typesl.length; ++n)
+          eqns = new EquationList(new Equation(typesl[n], typesr[n]), eqns);
+        
+        // try to unify the new list
+        return eqns.unify();
+      }
+      
+      // FALL-THROUGH: Otherwise it's a type error
+    }
     else if (left.equals(right)) {
       // the types equal, just unify the remaining equations then
       return this.remaining.unify();

@@ -121,6 +121,11 @@ public final class Rule {
   public static final Rule OR = new Rule("OR");
   
   /**
+   * The <b>(TUPLE)</b> type rule.
+   */
+  public static final Rule TUPLE = new Rule("TUPLE");
+  
+  /**
    * Returns the list of all available rules.
    * 
    * @return the list of all available rules.
@@ -141,6 +146,7 @@ public final class Rule {
     rules.add(INFIX);
     rules.add(AND);
     rules.add(OR);
+    rules.add(TUPLE);
     return rules;
   }
   

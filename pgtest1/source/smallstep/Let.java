@@ -62,12 +62,12 @@ public class Let extends Expression {
     // if e1 is still not a value, then the
     // evaluation got stuck and there are no
     // more small steps to perform
-    if (!(e1 instanceof Value))
+    if (!e1.isValue())
       return new Let(this.id, e1, this.e2);
     
     // if we get here, e1 must be a value
     // and the rule chain is empty
-    assert (e1 instanceof Value);
+    assert (e1.isValue());
     assert (ruleChain.isEmpty());
 
     // cast e1 to a value

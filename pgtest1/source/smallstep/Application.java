@@ -49,15 +49,19 @@ public class Application extends Expression {
       }
     }
     
+    // FIXME:
     // if e1 is still not a value, then the
     // evaluation got stuck and there are no
-    // more small steps to perform
+    // more small steps to perform, we need
+    // an instance of Value, as only Value
+    // has applyTo(), which should be changed
+    // to an interface or something like that
     if (!(e1 instanceof Value))
       return new Application(e1, this.e2);
 
     // if we get here, e1 must be a value
     // and the rule chain is empty
-    assert (e1 instanceof Value);
+    assert (e1.isValue());
     assert (ruleChain.isEmpty());
     
     // evalute e2 (may already be a value)
@@ -82,21 +86,20 @@ public class Application extends Expression {
     // if e2 is still not a value, then the
     // evaluation got stuck and there are no
     // more small steps to perform
-    if (!(e2 instanceof Value))
+    if (!e2.isValue())
       return new Application(e1, e2);
     
     // if we get here, e1 and e2 must be
     // values and the rule chain is empty
-    assert (e1 instanceof Value);
-    assert (e2 instanceof Value);
+    assert (e1.isValue());
+    assert (e2.isValue());
     assert (ruleChain.isEmpty());
     
-    // cast the expressions to values
+    // cast the first expression to a value
     Value v1 = (Value)e1;
-    Value v2 = (Value)e2;
     
     // perform the application
-    return v1.applyTo(v2, this, ruleChain);
+    return v1.applyTo(e2, this, ruleChain);
   }
   
   /**

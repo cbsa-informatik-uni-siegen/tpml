@@ -2,11 +2,13 @@ package typing;
 
 import java.util.Collections;
 import java.util.Set;
+import java.util.TreeSet;
 
 import smallstep.ArithmeticOperator;
 import smallstep.BooleanConstant;
 import smallstep.Expression;
 import smallstep.IntegerConstant;
+import smallstep.Projection;
 import smallstep.RelationalOperator;
 import smallstep.UnitConstant;
 
@@ -78,6 +80,18 @@ public abstract class Type {
       return ArrowType.INT_INT_INT;
     else if (expression instanceof RelationalOperator)
       return ArrowType.INT_INT_BOOL;
+    else if (expression instanceof Projection) {
+      Projection projection = (Projection)expression;
+      TreeSet<String> quantifiedVariables = new TreeSet<String>();
+      TypeVariable[] types = new TypeVariable[projection.getArity()];
+      for (int n = 0; n < types.length; ++n) {
+        types[n] = new TypeVariable("\u03B1" + n);
+        quantifiedVariables.add(types[n].getName());
+      }
+      TupleType tt = new TupleType(types);
+      ArrowType at = new ArrowType(tt, types[projection.getIndex() - 1]);
+      return new PolyType(quantifiedVariables, at);
+    }
     
     // no primitive type
     throw new IllegalArgumentException("Cannot determine the type for " + expression);

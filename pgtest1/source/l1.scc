@@ -21,6 +21,7 @@ Tokens
  equal = '=';
  left_paren = '(';
  right_paren = ')';
+ comma = ',';
  dot = '.';
  and = '&&';
  or = '||';
@@ -32,12 +33,15 @@ Tokens
  let = 'let';
  in = 'in';
  rec = 'rec';
+ fst = 'fst';
+ snd = 'snd';
+ projection = '#' digit+ '_' digit+;
 
  unit = '()';
  true = 'true';
  false = 'false';
  number = digit+;
-
+ 
  identifier = letter (digit | letter)*;
 
 
@@ -51,8 +55,8 @@ Productions
   {condition} if [e0]:conjunction then [e1]:expression else [e2]:expression {-> New expression.condition(e0.expression, e1, e2)} |
   {let} let identifier equal [e1]:expression in [e2]:expression {-> New expression.let(identifier, e1, e2)} |
   {letrec} let rec identifier equal [e1]:expression in [e2]:expression {-> New expression.letrec(identifier, e1, e2)} |
-  {abstraction} lambda identifier dot expression {-> New expression.abstraction(identifier, expression)} |
-  {recursion} rec identifier dot expression {-> New expression.recursion(identifier, expression)};
+  {abstraction} lambda identifier dot [e]:expression {-> New expression.abstraction(identifier, e)} |
+  {recursion} rec identifier dot [e]:expression {-> New expression.recursion(identifier, e)};
 
  conjunction {-> expression} =
   {comparison} comparison {-> comparison.expression} |
@@ -85,13 +89,21 @@ Productions
  atom {-> expression} =
   {constant} constant {-> constant.expression} |
   {identifier} identifier {-> New expression.identifier(identifier)} |
-  {expression} left_paren expression right_paren {-> expression};
+  {expression} left_paren [e]:expression right_paren {-> e} |
+  {tuple} left_paren [l]:tuple_list comma [e]:expression right_paren {-> New expression.tuple([l.expression, e])};
+
+ tuple_list {-> expression*} =
+  {list} [l]:tuple_list comma [e]:expression {-> [l.expression, e]} |
+  {single} [e]:expression {-> [e]};
 
  constant {-> expression} =
   {unit} unit {-> New expression.unit(unit)} |
   {bool} bool {-> bool.expression} |
   {number} number {-> New expression.number(number)} |
-  {operator} left_paren operator right_paren {-> operator.expression};
+  {operator} left_paren operator right_paren {-> operator.expression} |
+  {projection} projection {-> New expression.projection(projection)} |
+  {fst} fst {-> New expression.fst(fst)} |
+  {snd} snd {-> New expression.snd(snd)};
 
  bool {-> expression} =
   {true} true {-> New expression.true(true)} |
@@ -121,6 +133,7 @@ Abstract Syntax Tree
   {infix} [e1]:expression [op]:expression [e2]:expression |
   {and} [e0]:expression [e1]:expression |
   {or} [e0]:expression [e1]:expression |
+  {tuple} [expressions]:expression+ |
   {identifier} identifier |
   {unit} unit |
   {true} true |
@@ -135,5 +148,8 @@ Abstract Syntax Tree
   {greater_than} greater_than |
   {lower_equal} lower_equal |
   {greater_equal} greater_equal |
-  {equal} equal;
+  {equal} equal |
+  {projection} projection |
+  {fst} fst |
+  {snd} snd;
 

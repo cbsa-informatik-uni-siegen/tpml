@@ -324,7 +324,7 @@ public class SmallStepModel {
 		Step step = steps.lastElement();
 		Expression expr = step.getExpression();
 		
-		if ((expr instanceof Value) || (expr instanceof Exn)) {
+		if (expr.isValue() || (expr instanceof Exn)) {
 			fireStepEvaluated();
 			return EVAL_FINAL;
 		}
@@ -523,7 +523,7 @@ public class SmallStepModel {
 	}
 	
 	public String[] getMetaRules() {
-		String[] rules = new String [13];
+		String[] rules = new String [15];
 		
 		rules[0] = "---";
 		rules[1] = "APP-LEFT";
@@ -538,12 +538,14 @@ public class SmallStepModel {
 		rules[10] = "AND-EVAL-EXN";
 		rules[11] = "OR-EVAL-EXN";
 		rules[12] = "LET-EVAL-EXN";
+        rules[13] = "TUPLE";
+        rules[14] = "TUPLE-EXN";
 		
 		return rules;
 	}
 	
 	public String[] getAxiomRules() {
-		String[] rules = new String[11];
+		String[] rules = new String[14];
 		
 		rules[0] = "---";
 		rules[1] = "OP";
@@ -556,6 +558,9 @@ public class SmallStepModel {
 		rules[8] = "OR-FALSE";
 		rules[9] = "LET-EXEC";
 		rules[10] = "UNFOLD";
+        rules[11] = "PROJ";
+        rules[12] = "FST";
+        rules[13] = "SND";
 		
 		return rules;
 	}

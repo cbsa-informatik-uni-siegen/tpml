@@ -56,8 +56,8 @@ public class Abstraction extends Value {
    * @see smallstep.Value#applyTo(smallstep.Value, smallstep.RuleChain)
    */
   @Override
-  public Expression applyTo(Value v, Application e, RuleChain ruleChain) {
-    assert (v instanceof Value);
+  public Expression applyTo(Expression v, Application e, RuleChain ruleChain) {
+    assert (v.isValue());
     assert (ruleChain.isEmpty());
     
     // prepend the (BETA-VALUE) rule

@@ -46,8 +46,8 @@ public class AppliedOperator extends Value {
    * @see smallstep.Value#applyTo(smallstep.Value, smallstep.RuleChain)
    */
   @Override
-  public Expression applyTo(Value v, Application e, RuleChain ruleChain) {
-    assert (v != null);
+  public Expression applyTo(Expression v, Application e, RuleChain ruleChain) {
+    assert (v.isValue());
     assert (ruleChain.isEmpty());
     
     if (this.operator.canApplyTo(this.constant.getClass(), v.getClass())) {

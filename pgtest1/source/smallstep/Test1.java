@@ -66,7 +66,7 @@ public class Test1 {
 
   private static void evaluate(Expression e) {
     System.out.println(e);
-    while (!(e instanceof Value) && !(e instanceof Exn)) {
+    while (!e.isValue() && !(e instanceof Exn)) {
       RuleChain ruleChain = new RuleChain();
       e = e.evaluate(ruleChain);
       

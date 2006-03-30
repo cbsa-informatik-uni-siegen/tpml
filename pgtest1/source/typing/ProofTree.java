@@ -17,7 +17,9 @@ import smallstep.InfixOperation;
 import smallstep.Let;
 import smallstep.LetRec;
 import smallstep.Or;
+import smallstep.Projection;
 import smallstep.Recursion;
+import smallstep.Tuple;
 
 /**
  * The tree of proof nodes required to prove a
@@ -187,7 +189,9 @@ public final class ProofTree implements TreeModel, TypeVariableAllocator {
       else
         throw new InvalidRuleException(node, rule);
     }
-    else if (expression instanceof Constant && rule == Rule.P_CONST) {
+    else if ((expression instanceof Constant 
+           || expression instanceof Projection)
+          && rule == Rule.P_CONST) {
       // generate a new type equation for the judgement type and the
       // instantiated (polymorphic) constant type
       MonoType constType = instantiate(Type.getTypeForExpression(expression));
@@ -313,6 +317,24 @@ public final class ProofTree implements TreeModel, TypeVariableAllocator {
       AppliedOperator aop = (AppliedOperator)expression;
       newNode.addChild(new Judgement(environment, aop.getOperator(), tau1));
       newNode.addChild(new Judgement(environment, aop.getConstant(), tau2));
+    }
+    else if (expression instanceof Tuple && rule == Rule.TUPLE) {
+      // cast to tuple expression
+      Tuple tuple = (Tuple)expression;
+      
+      // allocate type variables for the tuple type
+      TypeVariable[] types = new TypeVariable[tuple.arity()];
+      Expression[] expressions = tuple.getExpressions();
+      for (int n = 0; n < types.length; ++n) {
+        // allocate a type variable for this subexpression
+        types[n] = allocateTypeVariable();
+        
+        // allocate a type node for the subexpression
+        newNode.addChild(new Judgement(environment, expressions[n], types[n]));
+      }
+      
+      // add equation tau = tau1 * ... * taun
+      equations = equations.extend(tau, new TupleType(types));
     }
     else {
       // well, not possible then

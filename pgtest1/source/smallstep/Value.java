@@ -2,6 +2,19 @@ package smallstep;
 
 public abstract class Value extends Expression {
   /**
+   * Returns <code>true</code> as all classes derived
+   * from {@link Value} are values.
+   * 
+   * @return always <code>true</code>.
+   * 
+   * @see smallstep.Expression#isValue()
+   */
+  @Override
+  public boolean isValue() {
+    return true;
+  }
+  
+  /**
    * Performs the substitution for values.
    * Since most values are atomic, the substitution
    * is a noop by default and will just return the
@@ -53,8 +66,8 @@ public abstract class Value extends Expression {
    * @param ruleChain the chain to prepend the rules to.
    * @return the resulting value.
    */
-  public Expression applyTo(Value v, Application e, RuleChain ruleChain) {
-    assert (v instanceof Value);
+  public Expression applyTo(Expression v, Application e, RuleChain ruleChain) {
+    assert (v.isValue());
     assert (ruleChain.isEmpty());
     
     return e;

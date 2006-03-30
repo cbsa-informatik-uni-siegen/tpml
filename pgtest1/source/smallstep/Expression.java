@@ -5,6 +5,17 @@ import java.util.TreeSet;
 
 public abstract class Expression {
   /**
+   * Returns <code>true</code> if the expression is a value
+   * that cannot be evaluated any further.
+   * 
+   * @return <code>true</code> if the expression is a value
+   *         and no further evaluation is possible.
+   */
+  public boolean isValue() {
+    return false;
+  }
+  
+  /**
    * Substitutes the value <code>v</code> for the identifier <code>>id</code>
    * and returns the resulting expression.
    * 

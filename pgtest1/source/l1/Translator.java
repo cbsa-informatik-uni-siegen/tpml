@@ -4,8 +4,12 @@
 package l1;
 
 import java.util.Stack;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import l1.analysis.*;
 import l1.node.*;
+import l1.parser.ParserException;
 import smallstep.*;
 
 /**
@@ -240,6 +244,52 @@ public class Translator extends DepthFirstAdapter {
     Operator op = (Operator)this.expressions.pop();
     Expression e1 = this.expressions.pop();
     this.expressions.push(new InfixOperation(op, e1, e2));
+  }
+  
+  /**
+   * @see l1.analysis.DepthFirstAdapter#outATupleExpression(l1.node.ATupleExpression)
+   */
+  @Override
+  public void outATupleExpression(ATupleExpression node) {
+    Expression[] expressions = new Expression[node.getExpressions().size()];
+    for (int n = expressions.length - 1; n >= 0; --n)
+      expressions[n] = this.expressions.pop();
+    this.expressions.push(new Tuple(expressions));
+  }
+  
+  /**
+   * @see l1.analysis.DepthFirstAdapter#outAProjectionExpression(l1.node.AProjectionExpression)
+   */
+  @Override
+  public void outAProjectionExpression(AProjectionExpression node) {
+    Pattern pattern = Pattern.compile("#(\\d+)_(\\d+)");
+    Matcher matcher = pattern.matcher(node.getProjection().getText());
+    if (!matcher.matches())
+      throw new IllegalArgumentException("Invalid projection, shouldn't happen");
+    
+    // determine arity and index for the projection
+    int arity = Integer.parseInt(matcher.group(1));
+    int index = Integer.parseInt(matcher.group(2));
+
+    // try to allocate a projection operator (throws an
+    // exception if either arity or index is invalid)
+    this.expressions.push(new Projection(arity, index));
+  }
+  
+  /**
+   * @see l1.analysis.DepthFirstAdapter#outAFstExpression(l1.node.AFstExpression)
+   */
+  @Override
+  public void outAFstExpression(AFstExpression node) {
+    this.expressions.push(new Fst());
+  }
+  
+  /**
+   * @see l1.analysis.DepthFirstAdapter#outASndExpression(l1.node.ASndExpression)
+   */
+  @Override
+  public void outASndExpression(ASndExpression node) {
+    this.expressions.push(new Snd());
   }
     
   private Stack<Expression> expressions = new Stack<Expression>();

@@ -27,8 +27,8 @@ public abstract class Operator extends Constant {
    * @see smallstep.Value#applyTo(smallstep.Value, smallstep.RuleChain)
    */
   @Override
-  public final Expression applyTo(Value v, Application e, RuleChain ruleChain) {
-    assert (v != null);
+  public final Expression applyTo(Expression v, Application e, RuleChain ruleChain) {
+    assert (v.isValue());
     assert (ruleChain.isEmpty());
     
     if (v instanceof IntegerConstant)

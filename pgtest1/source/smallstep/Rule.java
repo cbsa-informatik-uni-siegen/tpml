@@ -13,7 +13,7 @@ public final class Rule {
    * Represents the various types of supported rules for
    * the small step interpreter.
    */
-  private static class Type {
+  static class Type {
     /**
      * Returns <code>true</code> if the type represents an axiom rule.
      * @return <code>true</code> if the type represents an axiom rule.
@@ -173,6 +173,32 @@ public final class Rule {
    * for the case that the first operand evaluated to <code>false</code>.
    */
   public static final Type OR_FALSE = new Type(true, "OR-FALSE");
+  
+  /**
+   * The <b>(TUPLE)</b> meta-rule evaluates a tuples.
+   */
+  public static final Type TUPLE = new Type(false, "TUPLE");
+  
+  /**
+   * The <b>(TUPLE-EXN)</b> meta-rule forwards an exception
+   * that occurred in the evaluation of a pair.
+   */
+  public static final Type TUPLE_EXN = new Type(false, "TUPLE-EXN");
+  
+  /**
+   * The <b>(PROJ)</b> axiom returns an item from a tuple.
+   */
+  public static final Type PROJ = new Type(true, "PROJ");
+  
+  /**
+   * The <b>(FST)</b> axiom returns the first item of a pair.
+   */
+  public static final Type FST = new Type(true, "FST");
+  
+  /**
+   * The <b>(SND)</b> axiom returns the second item of a pair.
+   */
+  public static final Type SND = new Type(true, "SND");
   
   /**
    * Creates a new rule, which was applied to <code>expression</code>
