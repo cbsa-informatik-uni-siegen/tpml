@@ -9,3 +9,23 @@ TODO:
  - Button für den Syntaktischen Zucker hinzufügen, der den SZ auflöst.
 
  - && und || korrigieren.
+
+
+03.17.2006
+
+ GUI:
+ - Bei TypeChecker einklappen einbauen (anhand der Expression zuordnen)
+
+ GUI/Backend:
+ - GUESS Regel einbauen in TypeChecker
+ - ABSTR' Regel, wo Typ angegeben werden kann
+ - Bei P-ID den Benutzer Instanzen für die Typvariablen wählen lassen.
+ - Mehrstelliges let und lambda als synt. Zucker einbauen
+   und curryfiziertes let (let rec id = id1 id2 id3...idn.e1 in e2)
+ - Paare und Listen, dafür keine n-Tupel
+ - Auflösen von synt. Zucker jeweils pro Knoten (nie rekursiv, sondern
+   immer nur auf den äußersten Ausdruck), auch im Smallstep
+
+ Backend:
+ - Gebundene Umbenennung bei Substitution PIs
+

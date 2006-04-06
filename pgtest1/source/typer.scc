@@ -1,0 +1,57 @@
+
+Package typer ;
+    
+Helpers
+    /* Our helpers */
+    digit = ['0' .. '9'];
+    letter = [['a' .. 'z'] + ['A' .. 'Z']];
+    
+ 
+Tokens
+    blank = (' ' | 10 | 13)+;
+    int = 'int';
+    bool = 'bool';
+    unit = 'unit';
+    brleft = '(';
+    brright = ')';
+    cross = '*';
+    arrow = '->';
+    
+Ignored Tokens
+    blank;
+    
+Productions
+  term {-> type} = 
+    {arrow} [t0]:tuple arrow [t1]:term {-> New type.arrow(t0.type, t1.type)} |
+    {const} [t0]:tuple {-> t0.type };
+
+  const {-> type} =
+    {brace} brleft term brright {-> term.type } |
+    {int} int {-> New type.int (int)} |
+    {bool} bool {-> New type.bool (bool) } |
+    {unit} unit {-> New type.unit (unit) };
+
+  comptype {->type } = 
+    {const} const {-> const.type } |
+    {tuple} tuple {-> tuple.type };
+  
+
+  tuple {-> type} = 
+    {const} const {-> const.type } |
+    {tuple_list} tuple_list cross const {-> New type.tuple([tuple_list.type, const.type])};
+    
+  tuple_list {-> type*} =
+    {list} tuple_list cross const {-> [tuple_list.type, const.type]} |
+    {single} const {-> [const.type]};
+
+
+
+Abstract Syntax Tree
+  type = 
+    {int} int |
+    {bool} bool |
+    {unit} unit |
+    {tuple} [type]:type+ |
+    {arrow} [t0]:type [t1]:type;
+
+

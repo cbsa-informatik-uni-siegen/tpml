@@ -50,7 +50,7 @@ public class MenuButton extends JComponent {
 		this.inborder = 3;
 		calcPreferredSize();
 		addMouseListener(new MouseAdapter () {
-			public void mouseClicked(MouseEvent evt) {
+			public void mousePressed(MouseEvent evt) {
 				handleMouseClicked (evt);
 			}
 			

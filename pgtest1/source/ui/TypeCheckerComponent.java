@@ -16,10 +16,13 @@ import javax.swing.JComponent;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
+import javax.swing.JTextField;
 
 import smallstep.Constant;
 import smallstep.Expression;
 import smallstep.Identifier;
+import smallstep.Projection;
+import typing.MonoType;
 import typing.ProofNode;
 import typing.ProofTree;
 import typing.Rule;
@@ -117,9 +120,52 @@ public class TypeCheckerComponent extends JComponent {
 	 */
 	private HashMap<String, Rule>			rules;
 	
-	private Dimension			selectionSize;
+	private Dimension						selectionSize;
 	
-	private Dimension				maxSize;
+	private Dimension						maxSize;
+	
+	
+	
+	private enum ActionType {
+		ActionTypeTranslateToCoresyntax,
+		ActionTypeEnterType,
+	}
+	
+	private class RuleMenuItem extends JMenuItem {
+		private Rule	rule;
+		
+		public RuleMenuItem (Rule rule) {
+			super (rule.getName());
+			this.rule = rule;
+		}
+		
+		public Rule getRule () {
+			return rule;
+		}
+	};
+	
+	private static class ActionMenuItem extends JMenuItem {
+		private ActionType	type;
+		
+		public ActionMenuItem (ActionType type) {
+			super (ActionMenuItem.getString(type));
+			this.type = type;
+		}
+		
+		private static String getString(ActionType  type) {
+			switch (type) {
+			case ActionTypeTranslateToCoresyntax:
+				return "Translate to coresyntax";
+			case ActionTypeEnterType:
+				return "Enter type";
+			}
+			return "narf";
+		}
+		
+		public ActionType getActionType () {
+			return type;
+		}
+	}
 	
 	
 	public TypeCheckerComponent () {
@@ -160,19 +206,74 @@ public class TypeCheckerComponent extends JComponent {
 	public void setIndentionDepth(int depth) {
 		this.indentionDepth = depth;
 	}
+	
+	private boolean isLeaf (Expression exp) {
+		return (	(exp instanceof Constant) 
+				||	(exp instanceof Identifier)
+				||  (exp instanceof Projection));
+	}
 		
-	public void handleRuleButtonChanged (MenuButton button, JMenuItem item) {
-		Rule rule = this.rules.get(item.getText());
-		if (rule == null)
-			return;
+	public void handleButtonChanged (MenuButton button, JMenuItem item) {
+		if (item instanceof RuleMenuItem) {
+			RuleMenuItem ruleItem = (RuleMenuItem)item;
+			Rule rule = ruleItem.getRule();
+			if (rule == null)
+				return;
+			
+			
+			int p = this.menuButtons.indexOf(button);
+			if (p == -1)
+				return;
+			
+			ProofNode proofNode = this.selectionRelation.elementAt(p);
+			fireEvent (proofNode, rule);
+		}
+		else if (item instanceof ActionMenuItem) {
+			ActionMenuItem actionItem = (ActionMenuItem)item;
+			switch (actionItem.getActionType()) {
+			case ActionTypeEnterType:
+				handleEnterType (button);
+				break;
+			case ActionTypeTranslateToCoresyntax:
+				handleTranslteToCoreSyntax(button);
+				break;
+			}
+		}
+	}
+	
+	private void handleEnterType (MenuButton button) {
+		button.setVisible(false);
 		
 		int p = this.menuButtons.indexOf(button);
 		if (p == -1)
 			return;
 		
 		ProofNode proofNode = this.selectionRelation.elementAt(p);
-		fireEvent (proofNode, rule);
+		
+		FontMetrics fm = getFontMetrics (new JTextField().getFont());
+		TypeEnterGUI gui = new TypeEnterGUI (proofNode);
+		gui.addTypeEnterListener(new TypeEnterListener() {
+			public void typeAccepted (JComponent gui, String typeString, ProofNode node, MonoType type) {
+				fireGuess(node, type);
+				remove (gui);
+			}
+			
+			public void typeRejected (JComponent gui) {
+				remove (gui);
+			}
+
+		});
+		
+		add(gui);
+		gui.setBounds(button.getX(), button.getY(), 250, fm.getHeight() + 8);
+		gui.setVisible(true);
 	}
+	
+	private void handleTranslteToCoreSyntax(MenuButton button) {
+		
+	}
+	
+	private Vector<Expression>	tempExpressions;
 	
 	/**
 	 * Checks a ProofNode (with its childnodes) to decide how many 
@@ -191,6 +292,7 @@ public class TypeCheckerComponent extends JComponent {
 		// selection box here.
 		if (node.getRule() == null) {
 			currentlyNeeded++;
+			tempExpressions.add(node.getJudgement().getExpression());
 		}
 		else {
 			for (int i=0; i<node.getChildCount(); i++) {
@@ -210,7 +312,8 @@ public class TypeCheckerComponent extends JComponent {
 		
 		if (model == null)
 			return;
-		
+	
+		tempExpressions = new Vector<Expression>();
 		int selectionCount = checkNextNode ((ProofNode)model.getRoot(), 0);
 
 		for (MenuButton b : menuButtons) {
@@ -229,23 +332,27 @@ public class TypeCheckerComponent extends JComponent {
 			JMenuItem item;
 			
 			for (Rule r : Rule.getAllRules()) {
-				item = new JMenuItem (r.getName ());
+				item = new RuleMenuItem (r);
 				item.setFont(item.getFont().deriveFont(Font.PLAIN));
 				menu.add(item);
 			}
+			Expression exp = tempExpressions.elementAt(i);
 			
 			menu.addSeparator();
-			item = new JMenuItem("Translate to coresyntax");
-//			Font fnt = item.getFont().deriveFont(Font.ITALIC);
-//			item.setFont(fnt);
-			
+			item = new ActionMenuItem(ActionType.ActionTypeTranslateToCoresyntax);
+			item.setEnabled(exp.containsSyntacticSugar());
 			menu.add(item);
+			
+			item = new ActionMenuItem(ActionType.ActionTypeEnterType);
+			menu.add(item);
+						
+			
 			
 			menuButton.setMenu(menu);
 			
 			menuButton.addMenuButtonListener(new MenuButtonListener () {
 				public void menuItemActivated (MenuButton button, JMenuItem item) {
-					handleRuleButtonChanged (button, item);
+					handleButtonChanged (button, item);
 				}
 			});
 	
@@ -266,11 +373,9 @@ public class TypeCheckerComponent extends JComponent {
 	public int renderTreeNode (Graphics2D g2d, NodeItem node, String sindention) {
 		g2d.setFont(this.expressionFont);
 		
-		int rightBehind = 0;
 		
 		// build the judgement for this line in the way
 		// (<ID>) [<ENVIRONMENT>] |> <EXPRESSION> :: <TYPE>
-		
 		String judgement = "(" + this.ruleId + ") " + 
 			node.node.getJudgement().getEnvironment() + " \u22b3 " + 
 			node.node.getJudgement().getExpression().toString() +
@@ -294,7 +399,6 @@ public class TypeCheckerComponent extends JComponent {
 			poly.addPoint (node.parentX + this.expressionFM.getAscent()/2, node.parentY + this.expressionFM.getAscent());
 			poly.addPoint (node.parentX, node.parentY + this.expressionFM.getAscent() / 2);
 			poly.addPoint (node.parentX - this.expressionFM.getAscent()/2, node.parentY + this.expressionFM.getAscent());
-//			poly.addPoint (node.parentX - identifierSize/4, node.parentY + identifierSize/2);
 
 			g2d.fill (poly);
 		}
@@ -315,7 +419,8 @@ public class TypeCheckerComponent extends JComponent {
 
 		// check wether we have to put a combobox 
 		Expression exp = node.node.getJudgement().getExpression();
-		boolean idConst = (exp instanceof Constant) || (exp instanceof Identifier);
+		boolean idConst = isLeaf (exp); 
+//		(exp instanceof Constant) || (exp instanceof Identifier);
 		if (node.node.getRule() == null) {
 			// find the correct combobox with the
 			MenuButton button = this.menuButtons.elementAt(this.whichComboBox);
@@ -437,6 +542,17 @@ public class TypeCheckerComponent extends JComponent {
 	         if (listeners[i]==TypeCheckerEventListener.class) {
 	             // Lazily create the event:
 	             ((TypeCheckerEventListener)listeners[i+1]).applyRule(new EventObject(this), node, rule);
+	         }
+	     }
+	}
+	
+	public void fireGuess (ProofNode node, MonoType type) {
+		Object[] listeners = listenerList.getListenerList();
+		
+	    for (int i = listeners.length-2; i>=0; i-=2) {
+	         if (listeners[i]==TypeCheckerEventListener.class) {
+	             // Lazily create the event:
+	             ((TypeCheckerEventListener)listeners[i+1]).guessType(new EventObject(this), node, type);
 	         }
 	     }
 

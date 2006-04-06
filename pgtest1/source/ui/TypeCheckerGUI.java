@@ -9,6 +9,7 @@ import javax.swing.*;
 import java.awt.event.*;
 
 import smallstep.Expression;
+import typing.MonoType;
 import typing.ProofTree;
 import typing.ProofTreeFactory;
 import typing.ProofNode;
@@ -73,6 +74,10 @@ public class TypeCheckerGUI extends JDialog {
 			public void applyRule (EventObject o, ProofNode node, Rule rule) {
 				applyTypeCheckerRule (node, rule);
 			}
+			
+			public void guessType (EventObject o, ProofNode node, MonoType type) {
+				applyGuessType (node, type);
+			}
 		});
 		
 		
@@ -122,17 +127,24 @@ public class TypeCheckerGUI extends JDialog {
 		catch (Exception e) {
 			JOptionPane.showMessageDialog(this, e.getLocalizedMessage(), "Incorrect", JOptionPane.WARNING_MESSAGE);
 		}
-		/*
-		catch (InvalidRuleException ruleExc) {
-			ruleExc.printStackTrace();
+	}
+	
+	public void applyGuessType (ProofNode node, MonoType type) {
+		try {
+			// the user has clicked undo so we have to delete the tailing proofs
+			while (this.currentProofTreeIndex < this.proofTree.size()) {
+				this.proofTree.remove(this.currentProofTreeIndex);
+			}
+			ProofTree currentProof = proofTree.lastElement();	
+			ProofTree proof = currentProof.guess(node, type);
+			this.proofTree.add(proof);
+			this.typeCheckerComponent.setModel(proof);
+			++this.currentProofTreeIndex;
+			checkButtonStates ();
 		}
-		catch (UnificationException unifyExc) {
-			unifyExc.printStackTrace();
+		catch (Exception e) {
+			JOptionPane.showMessageDialog(this, e.getLocalizedMessage(), "Incorrect", JOptionPane.WARNING_MESSAGE);
 		}
-		catch (UnknownIdentifierException idExc) {
-			idExc.printStackTrace();
-		}
-		*/
 	}
 	
 	private void checkButtonStates() {
