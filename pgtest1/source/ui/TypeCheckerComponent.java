@@ -260,6 +260,7 @@ public class TypeCheckerComponent extends JComponent {
 			
 			public void typeRejected (JComponent gui) {
 				remove (gui);
+				repaint ();
 			}
 
 		});
@@ -267,6 +268,7 @@ public class TypeCheckerComponent extends JComponent {
 		add(gui);
 		gui.setBounds(button.getX(), button.getY(), 250, fm.getHeight() + 8);
 		gui.setVisible(true);
+		gui.setFocus();
 	}
 	
 	private void handleTranslteToCoreSyntax(MenuButton button) {

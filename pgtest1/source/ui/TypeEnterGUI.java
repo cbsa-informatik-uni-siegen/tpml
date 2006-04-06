@@ -12,6 +12,8 @@ import javax.swing.border.BevelBorder;
 import javax.swing.border.LineBorder;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.io.PushbackReader;
 import java.io.StringReader;
 
@@ -49,6 +51,18 @@ public class TypeEnterGUI extends JComponent {
 				handleTypeEntered ();
 			}
 		});
+		
+		textField.addKeyListener(new KeyAdapter() {
+			public void keyReleased (KeyEvent key) {
+				if (key.getKeyCode() == KeyEvent.VK_ESCAPE) {
+					fireRejected ();
+				}
+			}
+		});
+	}
+	
+	public void setFocus () {
+		this.textField.grabFocus();
 	}
 
 	public void addTypeEnterListener (TypeEnterListener listener) {
@@ -89,7 +103,7 @@ public class TypeEnterGUI extends JComponent {
 		}
 	}
 	
-	private void fireRejected (String typeString) {
+	private void fireRejected () {
 		Object objects[] = this.listenerList.getListenerList();
 		for (int i=objects.length-2; i>=0; i-=2) {
 			if (objects[i] == TypeEnterListener.class) {
