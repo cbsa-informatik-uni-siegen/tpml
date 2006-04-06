@@ -126,6 +126,11 @@ public final class Rule {
   public static final Rule TUPLE = new Rule("TUPLE");
   
   /**
+   * The <b>(GUESS)</b> type rule.
+   */
+  public static final Rule GUESS = new Rule("GUESS");
+  
+  /**
    * Returns the list of all available rules.
    * 
    * @return the list of all available rules.

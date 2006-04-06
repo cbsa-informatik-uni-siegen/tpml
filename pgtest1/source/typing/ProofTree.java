@@ -352,6 +352,50 @@ public final class ProofTree implements TreeModel, TypeVariableAllocator {
   }
   
   /**
+   * Guesses the given <code>type</code> for the <code>node</code> and
+   * returns the new proof tree that is the result of setting the type
+   * of <code>node</code> to <code>type</code>.
+   * 
+   * The <code>node</code> must be a valid node for the proof tree,
+   * and no type rule must have been applied to <code>node</code>
+   * already, that is {@link ProofNode#getRule()} must return
+   * <code>null</code> for <code>node</code>.
+   * 
+   * @param type the {@link MonoType} to set for <code>node</code>.
+   * @param node the {@link ProofNode} at which to apply <code>rule</code>.
+   * 
+   * @return the resulting {@link ProofTree}.
+   * 
+   * @throws IllegalArgumentException if the <code>node</code> is not
+   *                                  valid for the tree or the <code>node</code>
+   *                                  is already proven.
+   * @throws UnificationException if the unification failed.
+   */
+  public ProofTree guess(ProofNode node, MonoType type) throws UnificationException {
+    // verify that the node is valid for the tree
+    if (this.root != node && !this.root.containsChild(node))
+      throw new IllegalArgumentException("The proof node is not valid for the proof tree");
+
+    // determine the judgement
+    Judgement judgement = node.getJudgement();
+    
+    // allocate the new node as replacement for the node
+    ProofNode newNode = new ProofNode(judgement, Rule.GUESS);
+
+    // setup tau = type of the expression for the unification
+    EquationList equations = EquationList.EMPTY_LIST.extend(judgement.getType(), type);
+    
+    // determine the unificator
+    Substitution substitution = equations.unify();
+    
+    // allocate a root item for the new tree
+    ProofNode newRoot = this.root.cloneSubstituteAndReplace(substitution, node, newNode, this);
+    
+    // allocate the new tree
+    return new ProofTree(newRoot, nextTypeVariable);
+  }
+  
+  /**
    * Returns the {@link Judgement} for the <code>node</code> in this
    * proof tree.
    * 
