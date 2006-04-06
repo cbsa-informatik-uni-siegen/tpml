@@ -29,3 +29,11 @@ TODO:
  Backend:
  - Gebundene Umbenennung bei Substitution PIs
 
+
+06.04.06
+
+ typing.ProofTree:
+ - guess() unifiziert nicht korrekt, z.B. bei [f:'a1] > f :: ('a0 -> 'a2)
+   wenn (GUESS) angewendet wird, z.B. mit (int -> int), bleibt f:'a1 erhalten.
+   Hierfür müsste man schon teilweise die Logik von (ID) einbauen, um die
+   Verbindung zwischen 'a1 und ('a0 -> 'a2) herzustellen.
