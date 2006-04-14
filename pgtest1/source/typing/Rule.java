@@ -3,6 +3,21 @@ package typing;
 import java.util.Collection;
 import java.util.LinkedList;
 
+import smallstep.Abstraction;
+import smallstep.And;
+import smallstep.Application;
+import smallstep.AppliedOperator;
+import smallstep.Condition;
+import smallstep.Constant;
+import smallstep.Expression;
+import smallstep.Identifier;
+import smallstep.InfixOperation;
+import smallstep.Let;
+import smallstep.LetRec;
+import smallstep.Or;
+import smallstep.Recursion;
+import smallstep.Tuple;
+
 /**
  * Represents a type rule.
  *
@@ -126,11 +141,6 @@ public final class Rule {
   public static final Rule TUPLE = new Rule("TUPLE");
   
   /**
-   * The <b>(GUESS)</b> type rule.
-   */
-  public static final Rule GUESS = new Rule("GUESS");
-  
-  /**
    * Returns the list of all available rules.
    * 
    * @return the list of all available rules.
@@ -153,6 +163,66 @@ public final class Rule {
     rules.add(OR);
     rules.add(TUPLE);
     return rules;
+  }
+  
+  /**
+   * Returns the type rule that can be applied to
+   * the <code>expression</code> in the specified
+   * type <code>environment</code>.
+   * 
+   * @param expression the {@link smallstep.Expression} for which
+   *                   to determine the type {@link Rule}.
+   * @param environment the type {@link Environment}.                   
+   *
+   * @return the type rule for <code>expression</code> in the
+   *         <code>environment</code>.
+   *                           
+   * @throws UnknownIdentifierException if <code>expression</code> is
+   *                                    an unknown identifier. 
+   */
+  public static Rule getRuleForExpression(Expression expression, Environment environment) throws UnknownIdentifierException {
+    if (expression instanceof Constant) {
+      Type type = Type.getTypeForExpression(expression);
+      return (type instanceof PolyType) ? Rule.P_CONST : Rule.CONST;
+    }
+    else if (expression instanceof Identifier) {
+      Type type = environment.get(((Identifier)expression).getName());
+      return (type instanceof PolyType) ? Rule.P_ID : Rule.ID;
+    }
+    else if (expression instanceof Application || expression instanceof AppliedOperator) {
+      return Rule.APP;
+    }
+    else if (expression instanceof Condition) {
+      return Rule.COND;
+    }
+    else if (expression instanceof Abstraction) {
+      return Rule.ABSTR;
+    }
+    else if (expression instanceof Let) {
+      Expression e1 = ((Let)expression).getE1();
+      return e1.isValue() ? Rule.P_LET : Rule.LET;
+    }
+    else if (expression instanceof LetRec) {
+      return Rule.LET_REC;
+    }
+    else if (expression instanceof Recursion) {
+      return Rule.REC;
+    }
+    else if (expression instanceof InfixOperation) {
+      return Rule.INFIX;
+    }
+    else if (expression instanceof And) {
+      return Rule.AND;
+    }
+    else if (expression instanceof Or) {
+      return Rule.OR;
+    }
+    else if (expression instanceof Tuple) {
+      return Rule.TUPLE;
+    }
+    else {
+      throw new IllegalArgumentException("Invalid expression " + expression);
+    }
   }
   
   private Rule(String name) {

@@ -5,6 +5,7 @@ import java.util.Vector;
 
 import javax.swing.tree.TreeNode;
 
+import smallstep.Expression;
 import smallstep.Let;
 
 /**
@@ -250,6 +251,20 @@ public final class ProofNode implements TreeNode {
     
     // and return the cloned node
     return node;
+  }
+  
+  ProofNode findNodeByExpression(Expression expression) {
+    if (this.judgement.getExpression() == expression) {
+      return this;
+    }
+    else {
+      for (ProofNode child : this.children) {
+        ProofNode node = child.findNodeByExpression(expression);
+        if (node != null)
+          return node;
+      }
+    }
+    return null;
   }
   
   // member attributes
