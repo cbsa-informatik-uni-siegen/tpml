@@ -381,9 +381,11 @@ public class TypeCheckerComponent extends JComponent {
 		String judgement = "(" + this.ruleId + ") " + 
 			node.node.getJudgement().getEnvironment() + " \u22b3 " + 
 			node.node.getJudgement().getExpression().toString() +
-			" : : " +
-			node.node.getJudgement().getType() + 
-			"    ";
+			" : : ";
+		
+		if (node.node.isFinished()) {
+			judgement += node.node.getJudgement().getType() + "    ";
+		}
 		
 		int identifierSize = this.expressionFM.stringWidth ("(" + this.ruleId + ")");
 		
@@ -433,8 +435,9 @@ public class TypeCheckerComponent extends JComponent {
 			}
 			
 			this.whichComboBox++;
-			this.selectionSize.height = button.getHeight();
-			this.selectionSize.width = button.getWidth();
+			
+			this.selectionSize.width = button.getPreferredSize().width;
+			this.selectionSize.height = button.getPreferredSize().height;
 			
 			// check whether this judgement is based on CONST or ID
 			// if so, the combobox will be placed behind the judgement line.
