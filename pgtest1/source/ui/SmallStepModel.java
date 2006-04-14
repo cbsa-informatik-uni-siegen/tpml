@@ -22,31 +22,12 @@ public class SmallStepModel {
 	public static final int EVAL_EMPTY_CHAIN		= -1;
 	public static final int EVAL_OK					= 0;
 	
-	/*
-	enum SmallStepRole {
-		ROLE_RULE,
-		ROLE_EXPR,
-		ROLE_KEYWORD,
-		ROLE_CONSTANT,
-		ROLE_UNDERLINE,
-		ROLE_RULE_EXPR,
-	}
-	*/
 	public static final int ROLE_RULE			= 0;
 	public static final int ROLE_EXPR			= 1;
 	public static final int ROLE_KEYWORD		= 2;
 	public static final int ROLE_CONSTANT		= 3;
 	public static final int ROLE_UNDERLINE		= 4;
 	public static final int ROLE_RULE_EXP		= 5;
-	
-	/*
-	public static final int ROLE_RULE			= 0;
-	public static final int ROLE_EXPR			= 1;
-	public static final int ROLE_KEYWORD		= 2;
-	public static final int ROLE_CONSTANT		= 4;
-	public static final int ROLE_UNDERLINE		= 5;
-	public static final int ROLE_RULE_EXP		= 6;
-	*/
 	
 	/**
 	 * A single step represents the combination of the expression,
@@ -332,8 +313,9 @@ public class SmallStepModel {
 		RuleChain chain = new RuleChain();
 		Expression expression = expr.evaluate(chain);
 		
-		if (chain.isEmpty()) 
+		if (chain.isEmpty()) {
 			return EVAL_EMPTY_CHAIN;
+		}
 		
 		steps.add(new Step(expression, chain));
 		if (this.justAxioms) {
@@ -400,15 +382,21 @@ public class SmallStepModel {
 		return this.justAxioms;
 	}
 	
+	
 	public void ruleSelectionChanged(String string) {
 		if (steps.size () == 0) {
 			return;
 		}
-		
+				
 		Step step = steps.lastElement();
 		if (step.getEvaluatedMetaRules() < step.getNumberOfMetaRules()) {
 			// not all meta rules are evaluated
-			
+
+//			XXX: Resolve the type directly has to wait
+//			if (step.getRuleChain().getRules().get(step.getEvaluatedMetaRules()) == rule) {
+//				step.setEvaluatedMetaRules(step.getEvaluatedMetaRules()+1);
+//				fireContentsChanged();
+//			}
 			// even if you not belive, this line check if the last, not evaluated,
 			// rule of the meta rules matches the selected
 			if (step.getRuleChain().getRules().get(step.getEvaluatedMetaRules()).getName().equals(string)) {
@@ -417,6 +405,12 @@ public class SmallStepModel {
 			}
 		}
 		else {
+//			XXX: Resolve the type directly has to wait
+//			if (step.getRuleChain().getRules().getLast() == rule) {
+//				step.setEvaluatedAxiomRules(true);
+//				evaluateNextStep ();
+//				fireContentsChanged ();
+//			}
 			// all meta rules are evaluated so it has to be an axiom rule
 			if (step.getRuleChain().getRules().getLast().getName().equals(string)) {
 				step.setEvaluatedAxiomRules(true);

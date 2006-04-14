@@ -3,16 +3,15 @@ package ui;
 import java.util.*;
 import java.awt.Dimension;
 
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JComboBox;
 import javax.swing.JComponent;
-import javax.swing.event.EventListenerList;
-import javax.swing.event.PopupMenuEvent;
-import javax.swing.event.PopupMenuListener;
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
 
 import java.awt.*;
 import java.awt.event.*;
 import smallstep.*;
+import ui.beans.MenuButton;
+import ui.beans.MenuButtonListener;
 
 public class SmallStepComponent extends JComponent {
 
@@ -28,7 +27,6 @@ public class SmallStepComponent extends JComponent {
 	private int[]					verticalSizes;
 	
 	/**
-	 * 
 	 */
 	private int[]					usedAnnotation;
 	
@@ -39,7 +37,6 @@ public class SmallStepComponent extends JComponent {
 	private int						center;
 	
 	/**
-	 * 
 	 */
 	private int						rightOutline;
 	
@@ -47,54 +44,69 @@ public class SmallStepComponent extends JComponent {
 	 */
 	private Dimension 				ruleIntersection;
 	
-	
-	/**
-	 */
-	private Dimension				comboSize;
-	
-
 	/**
 	 */
 	private Dimension				border;
+		
+	/**
+	 */
+	private Dimension				buttonSize;
 	
 	/**
 	 */
-	private JComboBox				comboBox;
+	private MenuButton				menuButton;
 	
 	/**
 	 */
 	private boolean					upToDate;
 	
 	/**
-	 *
 	 */
 	private int						knownNumberOfSteps;
 	
 	/**
-	 * 
 	 */
 	private Renderer				renderer;
 	
 	/**
-	 * 
 	 */
 	private int 					maxWidth;
 	
 	/**
-	 * 
 	 */
 	private int 					lastSelectedStep = -1;
 	
 	/**
-	 * 
 	 */
 	private int 					lastSelectedRule = -1;
 	
-		
+
 	/**
-	 *
+	 */
+	private JPopupMenu				metaRulesMenu;
+	
+	/**
+	 */
+	private JPopupMenu				axiomRulesMenu;
+	
+	
+	/**
 	 */
 	private boolean 				groupRules = true;
+	
+	
+	private class RuleMenuItem extends JMenuItem {
+		private String rule;
+		
+		public RuleMenuItem (String rule) {
+			super (rule);
+			this.rule = rule;
+		}
+		
+		public String getRule () {
+			return rule;
+		}
+	};
 	
 	public SmallStepComponent() {
 		super();
@@ -106,14 +118,13 @@ public class SmallStepComponent extends JComponent {
 		this.center 				= 0;
 		this.rightOutline			= 0;
 		this.ruleIntersection		= new Dimension (10, 20);
-		this.comboSize				= new Dimension (100, 15);
 		this.border					= new Dimension (10, 20);
-		this.comboBox				= new JComboBox();
+		this.menuButton 			= new MenuButton();
 		this.upToDate				= false;
 		this.knownNumberOfSteps		= -1;
 		this.renderer				= null;
 			
-		add(this.comboBox);
+		add(this.menuButton);
 		
 		addMouseMotionListener(new MouseMotionListener() {
 			public void mouseDragged(MouseEvent e) { }
@@ -122,16 +133,31 @@ public class SmallStepComponent extends JComponent {
 			}
 		});
 		
-		this.comboBox.addMouseMotionListener(new MouseMotionListener() {
+		this.menuButton.addMouseMotionListener(new MouseMotionListener() {
 			public void mouseDragged(MouseEvent e) { }
 			public void mouseMoved(MouseEvent e) {
-				int x = comboBox.getX() + comboBox.getWidth() / 2;
-				int y = comboBox.getY() + comboBox.getHeight() / 2;
+				int x = menuButton.getX() + menuButton.getWidth() / 2;
+				int y = menuButton.getY() + menuButton.getHeight() / 2;
 				
 				handleMouseMoved(new MouseEvent((Component)e.getSource(), e.getID(), e.getWhen(), 
 						e.getModifiers(), x, y, e.getClickCount(), false));
 			}
 		});
+	
+		this.menuButton.addMenuButtonListener(new MenuButtonListener () {
+			public void menuItemActivated (MenuButton source, JMenuItem item) {
+				if (item instanceof RuleMenuItem) {
+					menuButton.setTextColor(Color.RED);
+					menuButton.setMarkerColor(Color.RED);
+					RuleMenuItem ruleItem = (RuleMenuItem)item;
+					model.ruleSelectionChanged(ruleItem.getRule());
+					upToDate = false;
+					repaint();
+				}
+			}
+		});
+		
+		
 	}
 	
 	public void setModel (SmallStepModel ssmodel) {
@@ -140,19 +166,29 @@ public class SmallStepComponent extends JComponent {
 		this.model.addSmallStepEventListener(new SmallStepEventListener() {
 			public void stepEvaluated(EventObject o) { }
 			public void contentsChanged(EventObject o) {
+				menuButton.setDefaultColors();
+				menuButton.setText("Choose");
+				menuButton.setTextColor(new Color(0.5f, 0.5f, 0.5f));
 				upToDate = false;
 				repaint();
 //				invalidate();
 			}
 		});
-		this.comboBox.addPopupMenuListener(new PopupMenuListener () {
-			public void popupMenuCanceled(PopupMenuEvent e) { }
-			public void popupMenuWillBecomeVisible(PopupMenuEvent e) { }
-			public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
-				model.ruleSelectionChanged((String)comboBox.getSelectedItem());
-			}
-		});
+		
+		menuButton.setDefaultColors();
+		menuButton.setText("Choose");
+		menuButton.setTextColor(new Color(0.5f, 0.5f, 0.5f));
 
+//		XXX: build the JPopupMenus here
+		this.axiomRulesMenu = new JPopupMenu();
+		for (String r : model.getAxiomRules()) {
+			this.axiomRulesMenu.add(new RuleMenuItem (r));
+		}
+		this.metaRulesMenu = new JPopupMenu();
+		for (String r : model.getMetaRules()) {
+			this.metaRulesMenu.add(new RuleMenuItem (r));
+		}
+		
 		
 		this.renderer = new Renderer (getFontMetrics(model.getFontRole(SmallStepModel.ROLE_EXPR)),
 				getFontMetrics(model.getFontRole(SmallStepModel.ROLE_KEYWORD)),
@@ -203,6 +239,7 @@ public class SmallStepComponent extends JComponent {
 		this.verticalSizes = new int[model.getNumberOfSteps()+1];
 		this.usedAnnotation = new int [model.getNumberOfSteps()];
 		
+		this.buttonSize = this.menuButton.getPreferredSize();
 		
 		// first we check the center of the all steps
 		this.center = 0;
@@ -238,7 +275,7 @@ public class SmallStepComponent extends JComponent {
 			
 			if (numRules < model.getNumberOfMetaRules(i)) { 
 				// add the space for the combobox
-				currentCenter += this.comboSize.width + this.ruleIntersection.width;
+				currentCenter += this.buttonSize.width + this.ruleIntersection.width;
 			}
 			else {
 				int w = 0;
@@ -247,7 +284,7 @@ public class SmallStepComponent extends JComponent {
 					w = ruleFm.stringWidth(rule) + this.ruleIntersection.width;
 				}
 				else {
-					w = this.comboSize.width + this.ruleIntersection.width;
+					w = this.buttonSize.width + this.ruleIntersection.width;
 				}
 				if (w > currentCenter) {
 					currentCenter = w;
@@ -265,7 +302,7 @@ public class SmallStepComponent extends JComponent {
 		// now based on the center we can check the vertical sizes
 		for (int i=0; i<model.getNumberOfSteps(); i++) {
 			// this will be changed later
-			int ruleBox = 2 * this.comboSize.height + this.ruleIntersection.height + 2 * this.border.height;
+			int ruleBox = 2 * this.buttonSize.height + this.ruleIntersection.height + 2 * this.border.height;
 			
 			Dimension d = renderer.getBestSize(model.getPrettyString(i), this.maxWidth - this.center);
 			int expression = 2 * this.border.height + d.height;
@@ -286,12 +323,14 @@ public class SmallStepComponent extends JComponent {
 		
 		// now we try to find out where we should put the combobox first we disable it
 		// to begin with a clear defined situation
-		this.comboBox.setVisible(false);
+//		this.comboBox.setVisible(false);
+		this.menuButton.setVisible(false);
 		
 		int rule = model.getNumberOfSteps () - 1;
 		int numEvaluatedRules = model.getNumberOfEvaluatedMetaRules(rule);
 		int numMetaRules = model.getNumberOfMetaRules(rule);
-		int posy = (this.verticalSizes[rule] + this.verticalSizes[rule+1]) / 2; 
+		int posy = (this.verticalSizes[rule] + this.verticalSizes[rule+1]) / 2;
+		
 		if (numEvaluatedRules < numMetaRules) {
 			int posx = 0;
 			for (int j=0; j<numEvaluatedRules; j++) {
@@ -299,19 +338,19 @@ public class SmallStepComponent extends JComponent {
 				posx += fm.stringWidth(strRule) + this.ruleIntersection.width;
 			}
 			posx += this.border.width;
-			this.comboBox.setBounds(posx, posy - this.ruleIntersection.height / 2  -  this.comboSize.height, this.comboSize.width, this.comboSize.height);
-			this.comboBox.setVisible(true);
-			this.comboBox.setModel(new DefaultComboBoxModel (model.getMetaRules()));
-			model.setRectangle(rule, numEvaluatedRules, this.comboBox.getBounds());
+			this.menuButton.setBounds(posx, posy - this.ruleIntersection.height / 2  - this.buttonSize.height, this.buttonSize.width, this.buttonSize.height);
+			this.menuButton.setVisible(true);
+			this.menuButton.setMenu(this.metaRulesMenu);
+			model.setRectangle(rule, numEvaluatedRules, this.menuButton.getBounds());
 		}
 		else {
 			// meta rule evaluated
 			if (!model.getAximoRulesEvaluted(rule)) {
-				this.comboBox.setBounds(this.border.width, posy + this.ruleIntersection.height / 2,
-						this.comboSize.width, this.comboSize.height);
-				this.comboBox.setVisible (true);
-				this.comboBox.setModel(new DefaultComboBoxModel (model.getAxiomRules()));
-				model.setRectangle(rule, numMetaRules, this.comboBox.getBounds());
+				this.menuButton.setBounds(this.border.width, posy + this.ruleIntersection.height / 2,
+						this.buttonSize.width, this.buttonSize.height);
+				this.menuButton.setVisible (true);
+				this.menuButton.setMenu(this.axiomRulesMenu);
+				model.setRectangle(rule, numMetaRules, this.menuButton.getBounds());
 			}
 		}
 		this.upToDate = true;
@@ -330,7 +369,7 @@ public class SmallStepComponent extends JComponent {
 	 * @return The position behind the drawn string
 	 */
 	public int drawRuleText (Graphics2D g2d, int x, int y, Rule rule, FontMetrics fm, FontMetrics expFm, int multiplier) {
-		int posy = y + this.comboSize.height - fm.getDescent();
+		int posy = y + this.buttonSize.height - fm.getDescent();
 
 		String str = "(" + rule.getName() + ")";
 		g2d.setFont(fm.getFont());
@@ -470,7 +509,7 @@ public class SmallStepComponent extends JComponent {
 				}
 				if (model.getAximoRulesEvaluted(i)) {
 					posx = this.border.width;
-					posy = this.verticalSizes[i] + this.border.height + this.comboSize.height + this.ruleIntersection.height;
+					posy = this.verticalSizes[i] + this.border.height + this.buttonSize.height + this.ruleIntersection.height;
 					int newPosx = drawRuleText (g2d, posx, posy, model.getAxiomRule(i), fmRule, fmRuleExp, 1);
 					int width = newPosx - posx;
 					model.setRectangle(i, model.getNumberOfEvaluatedMetaRules(i), new Rectangle (posx, posy, width, fmRule.getHeight()));

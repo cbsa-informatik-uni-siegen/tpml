@@ -36,7 +36,7 @@ public class Mainwindow extends JFrame {
   private JTree treeView;
   private JMenuBar mainMenu;
 
-  private static String defaultExpression = "let f = lambda x.x+1 in f 1";
+  private static String defaultExpression = "let rec f = lambda x. if x = 0 then 1 else x * f (x - 1) in f 3";
 
   private LinkedList<SourceFile> fileList = new LinkedList<SourceFile>();
   private LinkedList<EditorWindow> editorList = new LinkedList<EditorWindow>();

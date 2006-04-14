@@ -39,15 +39,22 @@ public class MenuButton extends JComponent {
 	
 	private int			margin;
 	
-	private int			inborder;
+	private float		inborder;
+	
+	private Color		textColor;
+	
+	private Color		markerColor;
+	
+	private ActionListener	listener;
 	
 	private JPopupMenu	menu				= null;
 	
 	public MenuButton () {
 		this.font = new JComboBox ().getFont();
 		this.text = new String("");
+		setDefaultColors ();
 		this.margin = 1;
-		this.inborder = 3;
+		this.inborder = 0.2f;
 		calcPreferredSize();
 		addMouseListener(new MouseAdapter () {
 			public void mousePressed(MouseEvent evt) {
@@ -55,6 +62,17 @@ public class MenuButton extends JComponent {
 			}
 			
 		});
+		
+		listener = new ActionListener () {
+			public void actionPerformed (ActionEvent event) {
+				handleMenuAction ((JMenuItem)event.getSource());
+			}
+		};
+	}
+	
+	public void setDefaultColors() {
+		this.textColor = new Color (0.0f, 0.0f, 0.0f);
+		this.markerColor = new Color (0.5f, 0.5f, 0.5f);
 	}
 	
 	public Font getFont() {
@@ -75,6 +93,22 @@ public class MenuButton extends JComponent {
 		calcPreferredSize();
 	}
 	
+	public Color getTextColor() {
+		return textColor;
+	}
+	
+	public void setTextColor(Color textColor) {
+		this.textColor = textColor;
+	}
+	
+	public Color getMarkerColor () {
+		return markerColor;
+	}
+	
+	public void setMarkerColor(Color markerColor) {
+		this.markerColor = markerColor;
+	}
+	
 	public int getMargin() {
 		return margin;
 	}
@@ -82,8 +116,12 @@ public class MenuButton extends JComponent {
 	public void setMargin(int margin) {
 		this.margin = margin;
 	}
+	
+	public void setInborder (float inborder) {
+		this.inborder = inborder;
+	}
 
-	public int getInborder() {
+	public float getInborder() {
 		return inborder;
 	}
 	
@@ -95,11 +133,7 @@ public class MenuButton extends JComponent {
 		if (element instanceof JMenuItem) {
 			JMenuItem item = (JMenuItem)element;
 
-			item.addActionListener(new ActionListener() {
-				public void  actionPerformed (ActionEvent event) {
-					handleMenuAction ((JMenuItem)event.getSource());
-				}
-			});
+			item.addActionListener(listener);
 		}
 		else {
 			MenuElement[] subElements = element.getSubElements();
@@ -109,7 +143,25 @@ public class MenuButton extends JComponent {
 		}
 	}
 	
+	private void uninstallElementListener (MenuElement element) {
+		if (element instanceof JMenuItem) {
+			JMenuItem item = (JMenuItem)element;
+			
+			item.removeActionListener(listener);
+			
+		}
+		else {
+			MenuElement[] subElements = element.getSubElements();
+			for (MenuElement e : subElements) {
+				uninstallElementListener (e);
+			}
+		}
+	}
+	
 	public void setMenu(JPopupMenu menu) {
+		if (this.menu != null) {
+			uninstallElementListener(menu);
+		}
 		this.menu = menu;
 	
 		installElementListener(menu);
@@ -122,7 +174,9 @@ public class MenuButton extends JComponent {
 	public void addMenuButtonListener(MenuButtonListener listener) {
 		listenerList.add(MenuButtonListener.class, listener);
 	}
+	
 	private void handleMenuAction (JMenuItem item) {
+		setText (item.getText());
 		Object[] listeners = listenerList.getListenerList();
 		
 	    for (int i = listeners.length-2; i>=0; i-=2) {
@@ -133,15 +187,6 @@ public class MenuButton extends JComponent {
 	     }
 
 	}
-
-
-	private void calcPreferredSize() {
-		FontMetrics fm = getFontMetrics (this.font);
-		int width = fm.stringWidth(text) +  fm.getHeight() + 2*this.margin;
-		int height = fm.getHeight();
-		this.setPreferredSize(new Dimension (width, height));
-		this.setSize(new Dimension (width, height));
-	}
 	
 	private void handleMouseClicked (MouseEvent evt) {
 		if (this.menu == null) {
@@ -149,6 +194,13 @@ public class MenuButton extends JComponent {
 		}
 				
 		this.menu.show(this, this.pos.x, this.pos.y);
+	}
+	
+	private void calcPreferredSize() {
+		FontMetrics fm = getFontMetrics (this.font);
+		int width = fm.stringWidth(text) +  fm.getHeight() + fm.getAscent();
+		int height = fm.getHeight();
+		this.setPreferredSize(new Dimension (width, height));
 	}
 	
 	public void paintComponent (Graphics g) {
@@ -160,14 +212,19 @@ public class MenuButton extends JComponent {
 		// draw the text
 		FontMetrics fm = getFontMetrics (font);
 		g2d.setColor(new Color(0.0f, 0.0f, 0.0f));
-		g2d.drawString(text, 0, fm.getAscent());
+		
+		int vcenter = getHeight () / 2 + fm.getAscent() / 3;
+		g2d.setColor(this.textColor);
+		g2d.drawString(text, 0, vcenter);
 		int width = fm.stringWidth(text);
 
-		this.pos = new Point(width + margin + 2*margin, margin);
-		size = new Dimension (fm.getHeight() - 1 - 2*margin, fm.getHeight() - 1 - 2*margin);
+		this.pos = new Point(width + fm.getAscent() + 2*margin, margin);
+		size = new Dimension (getHeight () - 1 - 2*margin, getHeight() - 1 - 2*margin);
+
+		int inborder = (int)((float)size.width * this.inborder); 
 		
 		// draw the marker
-		g2d.setColor(new Color(0.5f, 0.5f, 0.5f));
+		g2d.setColor(this.markerColor);
 		g2d.drawRect(pos.x, pos.y, size.width, size.height);
 		Polygon poly = new Polygon ();
 		poly.addPoint(pos.x + inborder, pos.y + inborder);

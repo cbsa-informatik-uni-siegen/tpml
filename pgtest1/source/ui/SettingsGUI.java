@@ -23,7 +23,6 @@ public class SettingsGUI extends javax.swing.JDialog {
         checkBoxSSUnderline.setSelected(prefs.getBoolean("ssUnderlineExpressions", true));
         checkBoxSSJustAxioms.setSelected(prefs.getBoolean("ssJustAxioms", true));
         
-        buttonApply.setEnabled(false);
         initializeThemes ();
     }
     
@@ -34,8 +33,6 @@ public class SettingsGUI extends javax.swing.JDialog {
         Preferences prefs = Preferences.userNodeForPackage(SettingsGUI.class);
         checkBoxSSUnderline.setSelected(prefs.getBoolean("ssUnderlineExpressions", true));
         checkBoxSSJustAxioms.setSelected(prefs.getBoolean("ssJustAxioms", true));
-        
-        buttonApply.setEnabled(false);
         
         initializeThemes ();
     }
@@ -88,9 +85,7 @@ public class SettingsGUI extends javax.swing.JDialog {
         jButtonFont = new javax.swing.JButton();
         jFontLabel = new javax.swing.JLabel();
         jPanelColor = new javax.swing.JPanel();
-        buttonOk = new javax.swing.JButton();
-        buttonCancel = new javax.swing.JButton();
-        buttonApply = new javax.swing.JButton();
+        buttonClose = new javax.swing.JButton();
 
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
@@ -262,19 +257,17 @@ public class SettingsGUI extends javax.swing.JDialog {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.ipadx = 205;
-        gridBagConstraints.ipady = 123;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         getContentPane().add(jTabbedPane1, gridBagConstraints);
 
-        buttonOk.setText("Ok");
-        buttonOk.addActionListener(new java.awt.event.ActionListener() {
+        buttonClose.setText("Close");
+        buttonClose.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buttonOkActionPerformed(evt);
+                buttonCloseActionPerformed(evt);
             }
         });
 
@@ -282,37 +275,8 @@ public class SettingsGUI extends javax.swing.JDialog {
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHEAST;
-        gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-        getContentPane().add(buttonOk, gridBagConstraints);
-
-        buttonCancel.setText("Cancel");
-        buttonCancel.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buttonCancelActionPerformed(evt);
-            }
-        });
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHEAST;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-        getContentPane().add(buttonCancel, gridBagConstraints);
-
-        buttonApply.setText("Apply");
-        buttonApply.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buttonApplyActionPerformed(evt);
-            }
-        });
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHEAST;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-        getContentPane().add(buttonApply, gridBagConstraints);
+        getContentPane().add(buttonClose, gridBagConstraints);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -326,11 +290,13 @@ public class SettingsGUI extends javax.swing.JDialog {
             if (manager.getCurrentThemeIndex() != 0) {
                 manager.getCurrentTheme().setName (name);
                 initializeThemes();
+                applySettings();
             }
         }
         else {
             selectTheme (idx);
             manager.setCurrentThemeIndex(idx);
+            applySettings();
         }
     }//GEN-LAST:event_jThemesComboBoxActionPerformed
 
@@ -405,16 +371,17 @@ public class SettingsGUI extends javax.swing.JDialog {
         this.jFontLabel.setFont(gui.getGUIFont());
         int idx = this.itemList.getSelectedIndex();
         theme.setItemFont(idx, gui.getGUIFont());
+        applySettings();
     }
     
     private void handleColorChanged (ChoseColorGUI gui) {
         this.jPanelColor.setBackground(gui.getColor ());
         int idx = this.itemList.getSelectedIndex();
         theme.setItemColor(idx, gui.getColor());
+        applySettings();
     }
     
-    private void buttonApplyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonApplyActionPerformed
-// TODO add your handling code here:
+    private void applySettings () {
         try {
             Preferences prefs = Preferences.userNodeForPackage(SettingsGUI.class);
             prefs.putBoolean("ssUnderlineExpressions", checkBoxSSUnderline.isSelected());
@@ -426,28 +393,22 @@ public class SettingsGUI extends javax.swing.JDialog {
         catch (Exception e) {
             System.out.println("error flushing preferences");
         }
-        buttonApply.setEnabled(false);
-    }//GEN-LAST:event_buttonApplyActionPerformed
-
+        
+    }
+    
     private void checkBoxSSJustAxiomsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkBoxSSJustAxiomsActionPerformed
 // TODO add your handling code here:
-        buttonApply.setEnabled(true);
+        applySettings();
     }//GEN-LAST:event_checkBoxSSJustAxiomsActionPerformed
 
-    private void buttonOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonOkActionPerformed
-// TODO add your handling code here:
-        buttonApplyActionPerformed(null);
-        dispose();
-    }//GEN-LAST:event_buttonOkActionPerformed
-
-    private void buttonCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCancelActionPerformed
+    private void buttonCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCloseActionPerformed
 // TODO add your handling code here:
         dispose();
-    }//GEN-LAST:event_buttonCancelActionPerformed
+    }//GEN-LAST:event_buttonCloseActionPerformed
 
     private void checkBoxSSUnderlineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkBoxSSUnderlineActionPerformed
 // TODO add your handling code here:
-        buttonApply.setEnabled(true);
+        applySettings();
     }//GEN-LAST:event_checkBoxSSUnderlineActionPerformed
     
     /**
@@ -462,11 +423,9 @@ public class SettingsGUI extends javax.swing.JDialog {
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton buttonApply;
-    private javax.swing.JButton buttonCancel;
+    private javax.swing.JButton buttonClose;
     private javax.swing.JButton buttonDelete;
     private javax.swing.JButton buttonNew;
-    private javax.swing.JButton buttonOk;
     private javax.swing.JCheckBox checkBoxSSJustAxioms;
     private javax.swing.JCheckBox checkBoxSSUnderline;
     private javax.swing.JList itemList;
