@@ -90,26 +90,6 @@ public class Projection extends Value {
   }
 
   /**
-   * {@inheritDoc}
-   * 
-   * @see smallstep.Expression#containsSyntacticSugar()
-   */
-  @Override
-  public boolean containsSyntacticSugar() {
-    return false;
-  }
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see smallstep.Expression#translateSyntacticSugar()
-   */
-  @Override
-  public Expression translateSyntacticSugar() {
-    return this;
-  }
-
-  /**
    * @see smallstep.Expression#toPrettyStringBuilder()
    */
   @Override

@@ -110,33 +110,6 @@ public final class Tuple extends Expression {
   /**
    * {@inheritDoc}
    * 
-   * @see smallstep.Expression#containsSyntacticSugar()
-   */
-  @Override
-  public boolean containsSyntacticSugar() {
-    for (Expression e : this.expressions)
-      if (e.containsSyntacticSugar())
-        return true;
-    return false;
-  }
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see smallstep.Expression#translateSyntacticSugar()
-   */
-  @Override
-  public Expression translateSyntacticSugar() {
-    // translate syntactic sugar for subexpressions
-    Expression[] expressions = new Expression[this.expressions.length];
-    for (int n = 0; n < expressions.length; ++n)
-      expressions[n] = this.expressions[n].translateSyntacticSugar();
-    return new Tuple(expressions);
-  }
-
-  /**
-   * {@inheritDoc}
-   * 
    * @see smallstep.Expression#toPrettyStringBuilder()
    */
   @Override

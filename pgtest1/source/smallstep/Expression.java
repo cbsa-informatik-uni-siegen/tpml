@@ -54,17 +54,21 @@ public abstract class Expression {
    *         
    * @see #translateSyntacticSugar()
    */
-  public abstract boolean containsSyntacticSugar();
+  public boolean containsSyntacticSugar() {
+    return false;
+  }
   
   /**
-   * Translates all syntactic sugar contained within the
-   * expression to the core syntax.
+   * If this {@link Expression} is syntactic, it is translated
+   * to core syntax.
    *
    * @return the new expression without syntactic sugar.
    * 
    * @see #containsSyntacticSugar()
    */
-  public abstract Expression translateSyntacticSugar();
+  public Expression translateSyntacticSugar() {
+    return this;
+  }
 
   /**
    * Returns the <code>PrettyString</code> for this expression,

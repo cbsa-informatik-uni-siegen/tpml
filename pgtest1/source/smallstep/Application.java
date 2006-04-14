@@ -135,38 +135,6 @@ public class Application extends Expression {
   }
   
   /**
-   * Returns <code>true</code> if a subexpression contains
-   * syntactic sugar.
-   * 
-   * @return whether a subexpression contains syntactic sugar.
-   * 
-   * @see smallstep.Expression#containsSyntacticSugar()
-   */
-  @Override
-  public boolean containsSyntacticSugar() {
-    return (this.e1.containsSyntacticSugar() || this.e2.containsSyntacticSugar());
-  }
-  
-  /**
-   * Translates the syntactic sugar contained within the
-   * subexpressions to the core syntax.
-   * 
-   * @return the new expression without syntactic sugar.
-   * 
-   * @see smallstep.Expression#translateSyntacticSugar()
-   */
-  @Override
-  public Expression translateSyntacticSugar() {
-    Expression e1 = this.e1.translateSyntacticSugar();
-    Expression e2 = this.e2.translateSyntacticSugar();
-    
-    if (e1 != this.e1 || e2 != this.e2)
-      return new Application(e1, e2);
-    else
-      return this;
-  }
-
-  /**
    * Returns the pretty string builder for applications.
    * @return the pretty string builder for applications.
    * @see smallstep.Expression#toPrettyStringBuilder()

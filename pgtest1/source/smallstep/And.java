@@ -150,7 +150,7 @@ public final class And extends Expression {
    */
   @Override
   public Expression translateSyntacticSugar() {
-    return new Condition(this.e0.translateSyntacticSugar(), this.e1.translateSyntacticSugar(), BooleanConstant.FALSE);
+    return new Condition(this.e0, this.e1, BooleanConstant.FALSE);
   }
 
   /**

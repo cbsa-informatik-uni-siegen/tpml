@@ -49,32 +49,6 @@ public class Identifier extends Expression {
   }
   
   /**
-   * Returns <code>false</code> as identifiers cannot
-   * contain syntactic sugar.
-   * 
-   * @return <code>false</code>.
-   * 
-   * @see smallstep.Expression#containsSyntacticSugar()
-   */
-  @Override
-  public boolean containsSyntacticSugar() {
-    return false;
-  }
-  
-  /**
-   * Returns the expression itself as identifiers cannot
-   * contain syntactic sugar.
-   * 
-   * @return the expression itself.
-   * 
-   * @see smallstep.Expression#translateSyntacticSugar()
-   */
-  @Override
-  public Expression translateSyntacticSugar() {
-    return this;
-  }
-
-  /**
    * Returns the name of the identifier.
    * @return the name of the identifier.
    */

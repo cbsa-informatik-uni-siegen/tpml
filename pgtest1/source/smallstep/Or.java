@@ -149,7 +149,7 @@ public final class Or extends Expression {
    */
   @Override
   public Expression translateSyntacticSugar() {
-    return new Condition(this.e0.translateSyntacticSugar(), BooleanConstant.TRUE, this.e1.translateSyntacticSugar());
+    return new Condition(this.e0, BooleanConstant.TRUE, this.e1);
   }
 
   /**

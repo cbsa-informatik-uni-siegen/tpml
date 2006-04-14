@@ -146,7 +146,7 @@ public final class LetRec extends Expression {
    */
   @Override
   public Expression translateSyntacticSugar() {
-    return new Let(this.id, new Recursion(this.id, this.e1.translateSyntacticSugar()), this.e2.translateSyntacticSugar());
+    return new Let(this.id, new Recursion(this.id, this.e1), this.e2);
   }
 
   /**

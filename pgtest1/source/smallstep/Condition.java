@@ -126,39 +126,6 @@ public class Condition extends Expression {
   }
   
   /**
-   * Returns <code>true</code> if any of the subexpressions
-   * contains syntactic sugar, else <code>false</code>.
-   * 
-   * @return whether any of the subexpressions contains
-   *         syntactic sugar.
-   *         
-   * @see smallstep.Expression#containsSyntacticSugar()
-   */
-  @Override
-  public boolean containsSyntacticSugar() {
-    return (this.e0.containsSyntacticSugar() || this.e1.containsSyntacticSugar() || this.e2.containsSyntacticSugar());
-  }
-  
-  /**
-   * Returns the expression without syntactic sugar.
-   * 
-   * @return the expression translated to the core syntax.
-   * 
-   * @see smallstep.Expression#translateSyntacticSugar()
-   */
-  @Override
-  public Expression translateSyntacticSugar() {
-    Expression e0 = this.e0.translateSyntacticSugar();
-    Expression e1 = this.e1.translateSyntacticSugar();
-    Expression e2 = this.e2.translateSyntacticSugar();
-    
-    if (e0 != this.e0 || e1 != this.e1 || e2 != this.e2)
-      return new Condition(e0, e1, e2);
-    else
-      return this;
-  }
-
-  /**
    * Returns the pretty string builder for conditions.
    * @return the pretty string builder for conditions.
    * @see smallstep.Expression#toPrettyStringBuilder()

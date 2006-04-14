@@ -197,7 +197,7 @@ public final class InfixOperation extends Expression {
    */
   @Override
   public Expression translateSyntacticSugar() {
-    return new Application(new Application(this.op, this.e1.translateSyntacticSugar()), this.e2.translateSyntacticSugar());
+    return new Application(new Application(this.op, this.e1), this.e2);
   }
 
   /**
