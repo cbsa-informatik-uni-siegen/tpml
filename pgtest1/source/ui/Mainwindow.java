@@ -24,7 +24,8 @@ import javax.swing.JOptionPane;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreeNode;
 
-import smallstep.Expression;
+import expressions.Expression;
+
 
 import l1.Translator;
 import l1.lexer.Lexer;

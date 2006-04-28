@@ -7,11 +7,12 @@ package l1;
 import java.io.*;
 import java.util.ListIterator;
 
-import smallstep.Exn;
-import smallstep.Expression;
-import smallstep.Rule;
-import smallstep.RuleChain;
-import smallstep.Value;
+import expressions.Exn;
+import expressions.Expression;
+import expressions.Rule;
+import expressions.RuleChain;
+import expressions.Value;
+
 import l1.lexer.*;
 import l1.node.*;
 import l1.parser.*;

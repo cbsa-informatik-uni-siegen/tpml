@@ -7,9 +7,10 @@ import javax.swing.JComponent;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
+import expressions.*;
+
 import java.awt.*;
 import java.awt.event.*;
-import smallstep.*;
 import ui.beans.MenuButton;
 import ui.beans.MenuButtonListener;
 

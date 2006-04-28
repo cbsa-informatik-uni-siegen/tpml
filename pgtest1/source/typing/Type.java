@@ -4,13 +4,14 @@ import java.util.Collections;
 import java.util.Set;
 import java.util.TreeSet;
 
-import smallstep.ArithmeticOperator;
-import smallstep.BooleanConstant;
-import smallstep.Expression;
-import smallstep.IntegerConstant;
-import smallstep.Projection;
-import smallstep.RelationalOperator;
-import smallstep.UnitConstant;
+import expressions.ArithmeticOperator;
+import expressions.BooleanConstant;
+import expressions.Expression;
+import expressions.IntegerConstant;
+import expressions.Projection;
+import expressions.RelationalOperator;
+import expressions.UnitConstant;
+
 
 /**
  * Basic class for all types in the type system.

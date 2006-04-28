@@ -18,10 +18,11 @@ import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.JTextField;
 
-import smallstep.Constant;
-import smallstep.Expression;
-import smallstep.Identifier;
-import smallstep.Projection;
+import expressions.Constant;
+import expressions.Expression;
+import expressions.Identifier;
+import expressions.Projection;
+
 import typing.MonoType;
 import typing.ProofNode;
 import typing.ProofTree;

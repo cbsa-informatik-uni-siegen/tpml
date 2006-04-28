@@ -7,7 +7,8 @@ import java.util.Iterator;
 
 import javax.swing.JComponent;
 
-import smallstep.*;
+import expressions.*;
+
 
 public class Renderer {
 	

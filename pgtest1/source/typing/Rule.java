@@ -3,20 +3,21 @@ package typing;
 import java.util.Collection;
 import java.util.LinkedList;
 
-import smallstep.Abstraction;
-import smallstep.And;
-import smallstep.Application;
-import smallstep.AppliedOperator;
-import smallstep.Condition;
-import smallstep.Constant;
-import smallstep.Expression;
-import smallstep.Identifier;
-import smallstep.InfixOperation;
-import smallstep.Let;
-import smallstep.LetRec;
-import smallstep.Or;
-import smallstep.Recursion;
-import smallstep.Tuple;
+import expressions.Abstraction;
+import expressions.And;
+import expressions.Application;
+import expressions.AppliedOperator;
+import expressions.Condition;
+import expressions.Constant;
+import expressions.Expression;
+import expressions.Identifier;
+import expressions.InfixOperation;
+import expressions.Let;
+import expressions.LetRec;
+import expressions.Or;
+import expressions.Recursion;
+import expressions.Tuple;
+
 
 /**
  * Represents a type rule.
@@ -170,7 +171,7 @@ public final class Rule {
    * the <code>expression</code> in the specified
    * type <code>environment</code>.
    * 
-   * @param expression the {@link smallstep.Expression} for which
+   * @param expression the {@link expressions.Expression} for which
    *                   to determine the type {@link Rule}.
    * @param environment the type {@link Environment}.                   
    *

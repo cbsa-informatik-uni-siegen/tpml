@@ -5,8 +5,9 @@ import java.util.Vector;
 
 import javax.swing.tree.TreeNode;
 
-import smallstep.Expression;
-import smallstep.Let;
+import expressions.Expression;
+import expressions.Let;
+
 
 /**
  * A node in the proof tree represented by {@link ProofTree}.

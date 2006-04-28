@@ -3,7 +3,8 @@ package typing;
 import java.io.PushbackReader;
 import java.io.StringReader;
 
-import smallstep.Expression;
+import expressions.Expression;
+
 
 import l1.Translator;
 import l1.lexer.Lexer;

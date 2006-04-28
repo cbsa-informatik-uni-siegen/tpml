@@ -6,9 +6,10 @@ import java.awt.*;
 
 import javax.swing.*;
 
+import expressions.Expression;
+
 import java.awt.event.*;
 
-import smallstep.Expression;
 import typing.MonoType;
 import typing.ProofTree;
 import typing.ProofTreeFactory;

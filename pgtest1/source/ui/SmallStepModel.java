@@ -13,7 +13,8 @@ import java.util.prefs.Preferences;
 
 import javax.swing.event.EventListenerList;
 
-import smallstep.*;
+import expressions.*;
+
 
 
 public class SmallStepModel {

@@ -7,21 +7,22 @@ import javax.swing.event.TreeModelListener;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 
-import smallstep.Abstraction;
-import smallstep.And;
-import smallstep.Application;
-import smallstep.AppliedOperator;
-import smallstep.Condition;
-import smallstep.Constant;
-import smallstep.Expression;
-import smallstep.Identifier;
-import smallstep.InfixOperation;
-import smallstep.Let;
-import smallstep.LetRec;
-import smallstep.Or;
-import smallstep.Projection;
-import smallstep.Recursion;
-import smallstep.Tuple;
+import expressions.Abstraction;
+import expressions.And;
+import expressions.Application;
+import expressions.AppliedOperator;
+import expressions.Condition;
+import expressions.Constant;
+import expressions.Expression;
+import expressions.Identifier;
+import expressions.InfixOperation;
+import expressions.Let;
+import expressions.LetRec;
+import expressions.Or;
+import expressions.Projection;
+import expressions.Recursion;
+import expressions.Tuple;
+
 
 /**
  * The tree of proof nodes required to prove a
@@ -37,7 +38,7 @@ public final class ProofTree implements TreeModel, TypeVariableAllocator {
    * whose type should be determined.
    * 
    * @param environment the inital type {@link Environment}.
-   * @param expression the {@link smallstep.Expression} whose type
+   * @param expression the {@link expressions.Expression} whose type
    *                   should be determined.
    */
   ProofTree(Environment environment, Expression expression) {

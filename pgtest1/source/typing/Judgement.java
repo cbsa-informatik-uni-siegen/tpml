@@ -1,6 +1,6 @@
 package typing;
 
-import smallstep.Expression;
+import expressions.Expression;
 
 /**
  * A type judgement is the atomic item of the typing proof, it

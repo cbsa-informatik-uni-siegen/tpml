@@ -7,10 +7,11 @@ import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import expressions.*;
+
 import l1.analysis.*;
 import l1.node.*;
 import l1.parser.ParserException;
-import smallstep.*;
 
 /**
  * Used to translate an abstract syntax tree as produced

@@ -1,6 +1,6 @@
 package typing;
 
-import smallstep.Expression;
+import expressions.Expression;
 
 /**
  * TODO Add documentation here.
