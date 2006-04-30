@@ -50,7 +50,30 @@ public abstract class ProofNode implements TreeNode {
    * @see #getParent()
    */
   protected ProofNode parent;
+  
+  /**
+   * The proof steps that were already performed on this {@link ProofNode},
+   * which consist of both the {@link ProofRule} and the {@link Expression}.
+   * 
+   * @see #getSteps()
+   */
+  protected ProofStep steps[];
 
+
+  
+  //
+  // Constructor
+  //
+  
+  /**
+   * Allocates a new {@link ProofNode} for the given <code>expression</code>.
+   * 
+   * @param expression the {@link Expression} for this proof node.
+   */
+  protected ProofNode(Expression expression) {
+    this.expression = expression;
+  }
+  
   
   
   //
@@ -68,6 +91,50 @@ public abstract class ProofNode implements TreeNode {
   }
 
   /**
+   * Returns the {@link ProofStep}s which were already performed
+   * on this proof node. The steps represent the {@link ProofRule}s
+   * that were applied to this node already and the associated
+   * expressions (which may be sub expressions of the expression
+   * associated with this proof node), to which the rules were
+   * applied.
+   * 
+   * @return the {@link ProofStep}s or an empty array if no rules
+   *         were applied to this node yet.
+   * 
+   * @see #getExpression()
+   */
+  public ProofStep[] getSteps() {
+    if (this.steps == null) {
+      return new ProofStep[0];
+    }
+    else {
+      return this.steps;
+    }
+  }
+  
+  /**
+   * Returns <code>true</code> if this node is already proven, that
+   * is, whether no more rules can be applied to this node. If
+   * <code>false</code> is returned the user must still apply
+   * additional rules to complete this node.
+   * 
+   * @return <code>true</code> if this node is already proven.
+   * 
+   * @see #getSteps()
+   */
+  public boolean isProven() {
+    // check if any steps were performed
+    if (this.steps != null) {
+      // check if any axiom was applied
+      for (ProofStep step : this.steps) {
+        if (step.getRule().isAxiom())
+          return true;
+      }
+    }
+    return false;
+  }
+  
+  /**
    * Returns <code>true</code> if the {@link Expression} associated with this
    * proof node contains syntactic code at the top most level. That is the
    * surrounding expression is syntactic sugar that can be translated into the
@@ -81,7 +148,7 @@ public abstract class ProofNode implements TreeNode {
   public boolean containsSyntacticSugar() {
     return getExpression().containsSyntacticSugar();
   }
-
+  
   /**
    * Creates and returns a forward-order enumeration of this node's children.
    * Modifying this node's child array invalidates any child enumerations

@@ -32,6 +32,28 @@ public abstract class ProofModel extends BeanSupport implements TreeModel {
   protected ProofNode root;
   
   
+
+  //
+  // Constructor
+  //
+  
+  /**
+   * Allocates a new {@link ProofModel} using the
+   * given <code>root</code> item.
+   * 
+   * @param root the new root item.
+   */
+  protected ProofModel(ProofNode root) {
+    // validate the root node
+    if (root == null) {
+      throw new IllegalArgumentException("No root node specified");
+    }
+    
+    // generate the new root
+    this.root = root;
+  }
+  
+  
   
   //
   // Bean properties
@@ -61,6 +83,34 @@ public abstract class ProofModel extends BeanSupport implements TreeModel {
     // FIXME
   }
   
+  /**
+   * Applies the given proof <code>rule</code> to the specified
+   * proof <code>node</code>.
+   * 
+   * The <code>node</code> must not be already proven (see the
+   * {@link ProofNode#isProven()} method for details), otherwise
+   * an {@link IllegalArgumentException} is thrown.
+   * 
+   * @param rule the {@link ProofRule} to apply.
+   * @param node the {@link ProofNode} to which the <code>rule</code>
+   *             should be applied.
+   *             
+   * @throw IllegalArgumentException if either the <code>rule</code> is
+   *                                 not valid for the model, or the
+   *                                 <code>node</code> is invalid for
+   *                                 the model.             
+   */
+  public abstract void prove(ProofRule rule, ProofNode node);
+  
+  /**
+   * 
+   * @param node
+   *
+   * @throws IllegalArgumentException if the <code>node</code> is
+   *                                  invalid for this proof model.
+   *                                  
+   * @see expressions.Expression#translateSyntacticSugar()
+   */
   public void translateToCoreSyntax(ProofNode node) {
     // FIXME
   }
@@ -183,7 +233,7 @@ public abstract class ProofModel extends BeanSupport implements TreeModel {
     }
     else {
       depth += 1;
-      if (aNode == root)
+      if (aNode == this.root)
         retNodes = new TreeNode[depth];
       else
         retNodes = getPathToRoot(aNode.getParent(), depth);
@@ -210,10 +260,19 @@ public abstract class ProofModel extends BeanSupport implements TreeModel {
   }
 
   /**
+   * This method is not implemented by the {@link ProofModel} class
+   * and will an {@link UnsupportedOperationException} on every
+   * invocation.
+   * 
+   * @param path path to the node that the user has altered.
+   * @param newValue the new value from the {@link javax.swing.tree.TreeCellEditor}.
+   * 
+   * @throws UnsupportedOperationException on every invocation.
+   * 
    * @see javax.swing.tree.TreeModel#valueForPathChanged(javax.swing.tree.TreePath, java.lang.Object)
    */
   public void valueForPathChanged(TreePath path, Object newValue) {
-    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Method not implemented");
   }
 
   

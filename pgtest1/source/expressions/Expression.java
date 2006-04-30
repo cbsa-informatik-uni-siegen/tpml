@@ -5,6 +5,17 @@ import java.util.TreeSet;
 
 public abstract class Expression {
   /**
+   * Returns <code>true</code> if the expression is an
+   * exception that cannot be evaluated any further.
+   * 
+   * @return <code>true</code> if the expression is an
+   *         exception.
+   */
+  public boolean isException() {
+    return (this instanceof Exn);
+  }
+  
+  /**
    * Returns <code>true</code> if the expression is a value
    * that cannot be evaluated any further.
    * 
