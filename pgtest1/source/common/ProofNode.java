@@ -10,14 +10,13 @@ import expressions.Expression;
 
 /**
  * TODO Add documentation here.
- * FIXME: Add bean property for "expression".
  * 
  * @see javax.swing.tree.TreeNode
  * 
  * @author Benedikt Meurer
  * @version $Id$
  */
-public abstract class ProofNode extends BeanSupport implements TreeNode {
+public abstract class ProofNode implements TreeNode {
   /**
    * An enumeration that is always empty. This is used when an enumeration of a
    * leaf node's children is requested.
@@ -31,10 +30,18 @@ public abstract class ProofNode extends BeanSupport implements TreeNode {
    * The child nodes of this node, or <code>null</code> if this node has no
    * children.
    * 
+   * @see #children()
    * @see #getChildAt(int)
    * @see #getChildCount()
    */
   protected Vector<ProofNode> children;
+  
+  /**
+   * The {@link Expression} associated with this proof node.
+   * 
+   * @see #getExpression()
+   */
+  protected Expression expression;
 
   /**
    * The parent node of this node, or <code>null</code> if this is the root
@@ -51,11 +58,13 @@ public abstract class ProofNode extends BeanSupport implements TreeNode {
   //
 
   /**
-   * @return
+   * Returns the {@link Expression} associated with this proof
+   * node. This is garantied to never return <code>null</code>.
+   * 
+   * @return the {@link Expression} for this proof node.
    */
   public Expression getExpression() {
-    // FIXME
-    return null;
+    return this.expression;
   }
 
   /**

@@ -409,4 +409,100 @@ public abstract class ProofModel extends BeanSupport implements TreeModel {
       }          
     }
   }
+  
+  
+  
+  //
+  // Convenience methods for event handling
+  //
+  
+  /**
+    * Invoke this method after you've changed how node is to be
+    * represented in the tree.
+    * 
+    * @param node the {@link TreeNode} that was altered.
+    */
+  protected void nodeChanged(TreeNode node) {
+    if (this.listenerList != null && node != null) {
+      // determine the parent node
+      TreeNode parent = node.getParent();
+      if (parent != null) {
+        // determine the index of the node
+        int anIndex = parent.getIndex(node);
+        if (anIndex != -1) {
+          int[] cIndexs = new int[1];
+          cIndexs[0] = anIndex;
+          nodesChanged(parent, cIndexs);
+        }
+      }
+      else if (node == getRoot()) {
+        nodesChanged(node, null);
+      }
+    }
+  }
+  
+  /**
+   * Invoke this method after you've changed how the children identified by
+   * <code>childIndicies</code> are to be represented in the tree.
+   * 
+   * @param node a {@link TreeNode} within this proof model.
+   * @param childIndices the indices of the children that changed.
+   */
+  protected void nodesChanged(TreeNode node, int[] childIndices) {
+    if (node != null) {
+      if (childIndices != null) {
+        // check if any child indices were supplied
+        int cCount = childIndices.length;
+        if (cCount > 0) {
+          // collect the child nodes
+          Object[] cChildren = new Object[cCount];
+          for (int counter = 0; counter < cCount; ++counter)
+            cChildren[counter] = node.getChildAt(childIndices[counter]);
+
+          // notify the view
+          fireTreeNodesChanged(this, getPathToRoot(node), childIndices,
+              cChildren);
+        }
+      }
+      else if (node == getRoot()) {
+        fireTreeNodesChanged(this, getPathToRoot(node), null, null);
+      }
+    }
+  }
+
+  /**
+   * Invoke this method after you've inserted some TreeNodes into
+   * node. <code>childIndices</code> should be the index of the new
+   * elements and must be sorted in ascending order.
+   * 
+   * @param node a node in the proof model.
+   * @param childIndices the indices of the children that were inserted.
+   */
+  protected void nodesWereInserted(TreeNode node, int[] childIndices) {
+    if (this.listenerList != null && node != null && childIndices != null && childIndices.length > 0) {
+      int cCount = childIndices.length;
+      Object[] newChildren = new Object[cCount];
+
+      for (int counter = 0; counter < cCount; ++counter)
+        newChildren[counter] = node.getChildAt(childIndices[counter]);
+      fireTreeNodesInserted(this, getPathToRoot(node), childIndices, newChildren);
+    }
+  }
+  
+  /**
+   * Invoke this method after you've removed some TreeNodes from
+   * node. <code>childIndices</code> should be the index of the
+   * removed elements and must be sorted in ascending order.
+   * And <code>removedChildren</code> should be the array of
+   * the children objects that were removed.
+   * 
+   * @param node a node in the proof model.
+   * @param childIndices the indices of the children that were removed.
+   * @param removedChildren the removed children.
+   */
+  protected void nodesWereRemoved(TreeNode node, int[] childIndices, Object[] removedChildren) {
+    if (node != null && childIndices != null) {
+      fireTreeNodesRemoved(this, getPathToRoot(node), childIndices, removedChildren);
+    }
+  }
 }
