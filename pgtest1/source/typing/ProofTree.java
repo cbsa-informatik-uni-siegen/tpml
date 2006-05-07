@@ -152,7 +152,7 @@ public final class ProofTree implements TreeModel, TypeVariableAllocator {
    * @throws IllegalArgumentException if the <code>node</code> is not
    *                                  valid for the tree or the <code>node</code>
    *                                  is already proven.
-   * @throws InvalidRuleException if the <code>rule</code> cannot be applied to
+   * @throws ProofRuleException if the <code>rule</code> cannot be applied to
    *                              the <code>node</code>. 
    * @throws UnificationException if the unification failed.
    * @throws UnknownIdentifierException if an identifier could not be found in the
@@ -182,7 +182,7 @@ public final class ProofTree implements TreeModel, TypeVariableAllocator {
    * @throws IllegalArgumentException if the <code>node</code> is not
    *                                  valid for the tree or the <code>node</code>
    *                                  is already proven.
-   * @throws InvalidRuleException shouldn't happen.
+   * @throws ProofRuleException shouldn't happen.
    * @throws UnificationException if the unification failed.
    * @throws UnknownIdentifierException if an identifier couldn't be found.
    */

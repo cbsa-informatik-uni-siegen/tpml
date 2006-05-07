@@ -9,7 +9,8 @@ import javax.swing.tree.TreeNode;
 import expressions.Expression;
 
 /**
- * TODO Add documentation here.
+ * Base class for proof nodes that present the fundamental
+ * parts of the {@link common.ProofModel}s.
  * 
  * @see javax.swing.tree.TreeNode
  * 
@@ -224,10 +225,24 @@ public abstract class ProofNode implements TreeNode {
    * @return this node's parent {@link ProofNode}, or <code>null</code> if
    *         this node has no parent.
    *         
+   * @see #setParent(ProofNode)         
    * @see javax.swing.tree.TreeNode#getParent()
    */
   public ProofNode getParent() {
     return this.parent;
+  }
+  
+  /**
+   * Sets this node's parent to <code>parent</code> but does not 
+   * change the <code>parent</code>'s child array.  This method
+   * is called from the {@link #insert(ProofNode, int)} and
+   * {@link #remove(ProofNode)} methods toreassign a child's
+   * parent, it should not be messaged from anywhere else.
+   *
+   * @param parent this node's new parent.
+   */
+  public void setParent(ProofNode parent) {
+    this.parent = parent;
   }
 
   /**
@@ -560,5 +575,129 @@ public abstract class ProofNode implements TreeNode {
     }
 
     return node;
+  }
+  
+  
+  
+  //
+  // Insertion / Removal 
+  //
+
+  /**
+   * Removes <code>newChild</code> from its parent and makes it a child of
+   * this node by adding it to the end of this node's child array.
+   *
+   * @param newChild node to add as a child of this node.
+   * 
+   * @throws IllegalArgumentException if <code>newChild</code> is <code>null</code>.
+   *
+   * @see #insert(ProofNode, int)
+   */
+  public void add(ProofNode newChild) {
+    if (newChild != null && newChild.getParent() == this) {
+      insert(newChild, getChildCount() - 1);
+    }
+    else {
+      insert(newChild, getChildCount());
+    }
+  }
+  
+  /**
+   * Removes <code>newChild</code> from its present parent (if it has a
+   * parent), sets the child's parent to this node, and then adds the child
+   * to this node's child array at index <code>childIndex</code>.
+   * <code>newChild</code> must not be <code>null</code> and must not be an
+   * ancestor of this node.
+   *
+   * @param newChild the {@link ProofNode} to insert under this node.
+   * @param childIndex the index in this node's child array
+   *                   where this node is to be inserted.
+   *                   
+   * @throw ArrayIndexOutOfBoundsException if <code>childIndex</code> is out of bounds.
+   * @throws IllegalArgumentException if <code>newChild</code> is null or is an ancestor of this node.
+   *
+   * @see #isNodeDescendant(ProofNode)
+   */
+  public void insert(ProofNode newChild, int childIndex) {
+    if (newChild == null) {
+      throw new IllegalArgumentException("new child is null");
+    }
+    else if (isNodeAncestor(newChild)) {
+      throw new IllegalArgumentException("new child is an ancestor");
+    }
+
+    // unlink from the old parent
+    ProofNode oldParent = newChild.getParent();
+    if (oldParent != null) {
+      oldParent.remove(newChild);
+    }
+ 
+    // link to the new parent
+    newChild.setParent(this);
+    
+    // allocate the list of children on demand 
+    if (this.children == null) {
+      this.children = new Vector<ProofNode>();
+    }
+    
+    // add to the list of children
+    this.children.insertElementAt(newChild, childIndex);
+  }
+  
+  /**
+   * Removes the child at the specified index from this node's children
+   * and sets that node's parent to <code>null</code>. The child node to
+   * remove must be a <code>ProofNode</code>.
+   *
+   * @param childIndex the index in this node's child array of the child to remove.
+   * 
+   * @throws ArrayIndexOutOfBoundsException if <code>childIndex</code> is out of bounds.
+   */
+  public void remove(int childIndex) {
+    ProofNode child = getChildAt(childIndex);
+    this.children.removeElementAt(childIndex);
+    child.setParent(null);
+  }
+  
+  /**
+   * Removes <code>aChild</code> from this node's child array, giving it a
+   * <code>null</code> parent.
+   *
+   * @param aChild a child of this node to remove.
+   * 
+   * @throws IllegalArgumentException if <code>aChild</code> is <code>null</code>
+   *                                  or is not a child of this node.
+   */
+  public void remove(ProofNode aChild) {
+    if (aChild == null) {
+      throw new IllegalArgumentException("argument is null");
+    }
+    if (!isNodeChild(aChild)) {
+      throw new IllegalArgumentException("argument is not a child");
+    }
+    remove(getIndex(aChild));
+  }
+  
+  /**
+   * Removes all of this node's children, setting their parents to
+   * <code>null</code>. If this node has no children, this method
+   * does nothing.
+   */
+  public void removeAllChildren() {
+    for (int i = getChildCount() - 1; i >= 0; --i) {
+      remove(i);
+    }
+  }  
+
+  /**
+   * Removes the subtree rooted at this node from the tree, giving this
+   * node a <code>null</code> parent. Does nothing if this node is the
+   * root of its tree.
+   */
+  public void removeFromParent() {
+    ProofNode parent = getParent();
+    if (parent != null) {
+      parent.remove(this);
+    }
   }
 }

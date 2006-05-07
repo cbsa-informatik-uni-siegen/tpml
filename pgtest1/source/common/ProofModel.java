@@ -127,12 +127,31 @@ public abstract class ProofModel extends BeanSupport implements TreeModel {
   }
   
   /**
+   * Guesses the next proof step for the specified <code>node</code>.
+   * 
+   * The <code>node</code> must not be already proven (see the
+   * {@link ProofNode#isProven()} method for details), otherwise
+   * an {@link IllegalStateException} is thrown.
+   * 
+   * @param node the {@link ProofNode} for which the next proof step should
+   *             be guessed.
+   *             
+   * @throws IllegalArgumentException if the <code>node</code> is invalid for
+   *                                  this model.             
+   * @throws IllegalStateException if for some reason <code>node</code> cannot
+   *                               be proven.
+   *
+   * @see #prove(ProofRule, ProofNode)
+   */
+  public abstract void guess(ProofNode node);
+  
+  /**
    * Applies the given proof <code>rule</code> to the specified
    * proof <code>node</code>.
    * 
    * The <code>node</code> must not be already proven (see the
    * {@link ProofNode#isProven()} method for details), otherwise
-   * an {@link IllegalArgumentException} is thrown.
+   * an {@link IllegalStateException} is thrown.
    * 
    * @param rule the {@link ProofRule} to apply.
    * @param node the {@link ProofNode} to which the <code>rule</code>
@@ -142,10 +161,14 @@ public abstract class ProofModel extends BeanSupport implements TreeModel {
    *                                 not valid for the model, or the
    *                                 <code>node</code> is invalid for
    *                                 the model.
-   * @throw ProofException if the <code>rule</code> cannot be applied
-   *                       to the <code>node</code>.                                 
+   * @throws IllegalStateException if for some reason <code>node</code> cannot
+   *                               be proven.
+   * @throw ProofRuleException if the <code>rule</code> cannot be applied
+   *                           to the <code>node</code>.
+   *
+   * @see #guess(ProofNode)
    */
-  public abstract void prove(ProofRule rule, ProofNode node) throws ProofException;
+  public abstract void prove(ProofRule rule, ProofNode node) throws ProofRuleException;
   
   /**
    * 

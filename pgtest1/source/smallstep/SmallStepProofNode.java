@@ -1,8 +1,9 @@
 package smallstep;
 
-import common.ProofException;
 import common.ProofNode;
+import common.ProofRuleException;
 import common.ProofStep;
+
 import expressions.Expression;
 
 /**
@@ -67,13 +68,21 @@ public class SmallStepProofNode extends ProofNode {
    *         <code>rule</code> and the evaluation is not
    *         stuck. 
    * 
-   * @throws ProofException if the <code>rule</code>
+   * @throws IllegalStateException if the node is already proven
+   *                               or cannot be proven.
+   * @throws ProofRuleException if the <code>rule</code>
+   *                            cannot be applied here.
    */
-  SmallStepProofNode apply(SmallStepProofRule rule) throws ProofException {
+  SmallStepProofNode apply(SmallStepProofRule rule) throws ProofRuleException {
     // evaluate the expression and determine the proof steps
     SmallStepEvaluator evaluator = new SmallStepEvaluator(getExpression());
     Expression expression = evaluator.getExpression();
     ProofStep[] steps = evaluator.getSteps();
+    
+    // check if the node is already completed
+    if (this.steps.length >= steps.length) {
+      throw new IllegalStateException("Cannot prove an already proven node (" + this.steps.length + " >= " + steps.length + ")");
+    }
     
     // verify the completed steps
     int n;
@@ -81,7 +90,7 @@ public class SmallStepProofNode extends ProofNode {
       if (this.steps[n].getRule() != steps[n].getRule())
         throw new IllegalStateException("Evaluated steps don't match completed steps");
     }
-    
+
     // check if the rule is valid
     int m;
     for (m = n; m < steps.length; ++m) {
@@ -91,7 +100,7 @@ public class SmallStepProofNode extends ProofNode {
     
     // check if rule is invalid
     if (m >= steps.length) {
-      throw new ProofException("Cannot apply " + rule.getName());
+      throw new ProofRuleException(this, rule);
     }
     
     // add the new step(s) to the node
@@ -101,11 +110,9 @@ public class SmallStepProofNode extends ProofNode {
     
     // check if we're done with this node
     if (isProven()) {
+      // return the node for the next expression
       // add the child node for the next expression
-      SmallStepProofNode node = new SmallStepProofNode(expression);
-      this.children.add(node);
-      node.parent = this;
-      return node;
+      return new SmallStepProofNode(expression);
     }
     
     // not yet done with this node 

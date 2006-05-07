@@ -101,7 +101,10 @@ final class SmallStepEvaluator {
   
   private Expression evaluate(Expression expression) {
     try {
-      Method method = getClass().getMethod("evaluate" + expression.getClass().getSimpleName(), expression.getClass());
+      // determine the specific evaluate method
+      Method method = lookupMethod("evaluate" + expression.getClass().getSimpleName());
+      
+      // try to invoke the method
       return (Expression)method.invoke(this, expression);
     }
     catch (NoSuchMethodException e) {
@@ -399,8 +402,10 @@ final class SmallStepEvaluator {
   
   private Expression apply(Application application, Expression e1, Expression e2) {
     try {
-      Method method = getClass().getMethod("apply" + e1.getClass().getSimpleName(),
-                                           application.getClass(), e1.getClass(), e2.getClass());
+      // determine the specific apply method
+      Method method = lookupMethod("apply" + e1.getClass().getSimpleName());
+      
+      // invoke the specific apply method
       return (Expression)method.invoke(this, application, e1, e2);
     }
     catch (NoSuchMethodException e) {
@@ -417,7 +422,7 @@ final class SmallStepEvaluator {
   @SuppressWarnings("unused")
   private Expression applyAbstraction(Application application, Abstraction abstr, Expression v) {
     addProofStep(SmallStepProofRule.BETA_V, application);
-    return abstr.substitute(abstr.getId(), v);
+    return abstr.getE().substitute(abstr.getId(), v);
   }
   
   @SuppressWarnings("unused")
@@ -434,5 +439,13 @@ final class SmallStepEvaluator {
   
   private void addProofStep(SmallStepProofRule rule, Expression expression) {
     this.steps.add(new ProofStep(expression, rule));
+  }
+  
+  private Method lookupMethod(String methodName) throws NoSuchMethodException {
+    Method[] methods = getClass().getDeclaredMethods();
+    for (int n = 0; n < methods.length; ++n)
+      if (methods[n].getName().equals(methodName))
+        return methods[n];
+    throw new NoSuchMethodException(methodName);
   }
 }
