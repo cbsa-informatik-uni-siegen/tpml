@@ -27,6 +27,17 @@ public abstract class Expression {
   }
   
   /**
+   * Normalizes the expression, i.e. replaces {@link Application}s
+   * of {@link Operator}s to {@link Constant}s with {@link
+   * AppliedOperator}s and such.  
+   * 
+   * @return the normalized expression.
+   */
+  public Expression normalize() {
+    return this;
+  }
+  
+  /**
    * Substitutes the value <code>v</code> for the identifier <code>>id</code>
    * and returns the resulting expression.
    * 

@@ -59,15 +59,58 @@ public abstract class ProofModel extends BeanSupport implements TreeModel {
   // Bean properties
   //
   
+  /**
+   * Returns <code>true</code> if the model has
+   * recorded undo steps that can be redone
+   * using the {@link #redo()} operation.
+   * 
+   * @return <code>true</code> if {@link #redo()}
+   *         is possible, <code>false</code> otherwise.
+   *
+   * @see #isUndoable()
+   * @see #redo()         
+   */
   public boolean isRedoable() {
     // FIXME
     return false;
   }
   
+  /**
+   * Returns <code>true</code> if the model has
+   * recoded proof steps that can be undone using
+   * the {@link #undo()} operation.
+   * 
+   * @return <code>true</code> if {@link #undo()}
+   *         is possible, <code>false</code> otherwise.
+   *
+   * @see #isRedoable()
+   * @see #undo()         
+   */
   public boolean isUndoable() {
     // FIXME
     return false;
   }
+
+  
+  
+  //
+  // Primitives
+  //
+  
+  /**
+   * Returns the list of {@link ProofRule}s that should
+   * be displayed as possible rules in the user interface.
+   * This is usually a subset of the list of all available
+   * rules for the given proof.
+   * 
+   * The user interface should query the rules everytime
+   * the user opens the menu/list to apply rules, as the
+   * list of rules may have changed after an operation.
+   * 
+   * @return the {@link ProofRule}s to be displayed in the
+   *         user interface.
+   */
+  public abstract ProofRule[] getRules();
 
   
   
@@ -98,9 +141,11 @@ public abstract class ProofModel extends BeanSupport implements TreeModel {
    * @throw IllegalArgumentException if either the <code>rule</code> is
    *                                 not valid for the model, or the
    *                                 <code>node</code> is invalid for
-   *                                 the model.             
+   *                                 the model.
+   * @throw ProofException if the <code>rule</code> cannot be applied
+   *                       to the <code>node</code>.                                 
    */
-  public abstract void prove(ProofRule rule, ProofNode node);
+  public abstract void prove(ProofRule rule, ProofNode node) throws ProofException;
   
   /**
    * 

@@ -24,6 +24,25 @@ public final class Or extends Expression {
   }
   
   /**
+   * {@inheritDoc}
+   * @see expressions.Expression#normalize()
+   */
+  @Override
+  public Expression normalize() {
+    // normalize the sub expression
+    Expression e0 = this.e0.normalize();
+    Expression e1 = this.e1.normalize();
+    
+    // check if we need to generate a new or
+    if (e0 != this.e0 || e1 != this.e1) {
+      return new Or(e0, e1);
+    }
+    else {
+      return this;
+    }
+  }
+  
+  /**
    * Performs the substitution for <b>(OR)</b> expressions.
    * 
    * @param id the identifier.

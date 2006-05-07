@@ -15,6 +15,31 @@ public class Application extends Expression {
   }
 
   /**
+   * {@inheritDoc}
+   * @see expressions.Expression#normalize()
+   */
+  @Override
+  public Expression normalize() {
+    // normalize the sub expression
+    Expression e1 = this.e1.normalize();
+    Expression e2 = this.e2.normalize();
+    
+    // check if e1 is an operator and e2 is a constant
+    if (e1 instanceof Operator && e2 instanceof Constant) {
+      // replace with applied operator
+      return new AppliedOperator((Operator)e1, (Constant)e2);
+    }
+    else if (this.e1 != e1 || this.e2 != e2) {
+      // generate new application
+      return new Application(e1, e2);
+    }
+    else {
+      // application is the same
+      return this;
+    }
+  }
+  
+  /**
    * Performs the substitution on <b>(APP)</b> expressions.
    * 
    * @param id the identifier for the substitution.

@@ -57,7 +57,7 @@ public abstract class ProofNode implements TreeNode {
    * 
    * @see #getSteps()
    */
-  protected ProofStep steps[];
+  protected ProofStep[] steps;
 
 
   
@@ -67,11 +67,25 @@ public abstract class ProofNode implements TreeNode {
   
   /**
    * Allocates a new {@link ProofNode} for the given <code>expression</code>.
+   * The list of of {@link ProofStep}s starts as an empty list.
    * 
    * @param expression the {@link Expression} for this proof node.
    */
   protected ProofNode(Expression expression) {
+    this(expression, new ProofStep[] {});
+  }
+  
+  /**
+   * Allocates a new {@link ProofNode} for the given <code>expression</code>
+   * and the specified <code>steps</code>.
+   * 
+   * @param expression the {@link Expression} for this proof node.
+   * @param steps the {@link ProofStep}s that were already applied for
+   *              the newly allocated node.
+   */
+  protected ProofNode(Expression expression, ProofStep[] steps) {
     this.expression = expression;
+    this.steps = steps;
   }
   
   

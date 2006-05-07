@@ -24,6 +24,26 @@ public class Condition extends Expression {
   }
 
   /**
+   * {@inheritDoc}
+   * @see expressions.Expression#normalize()
+   */
+  @Override
+  public Expression normalize() {
+    // normalize the sub expressions
+    Expression e0 = this.e0.normalize();
+    Expression e1 = this.e1.normalize();
+    Expression e2 = this.e2.normalize();
+    
+    // check if we need to generate a new condition
+    if (e0 != this.e0 || e1 != this.e1 || e2 != this.e2) {
+      return new Condition(e0, e1, e2);
+    }
+    else {
+      return this;
+    }
+  }
+  
+  /**
    * Performs the substitution for <b>(COND)</b> expressions.
    * 
    * @param id the identifier for the substitution.

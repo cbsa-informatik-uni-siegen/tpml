@@ -24,6 +24,25 @@ public final class InfixOperation extends Expression {
   }
   
   /**
+   * {@inheritDoc}
+   * @see expressions.Expression#normalize()
+   */
+  @Override
+  public Expression normalize() {
+    // normalize the sub expression
+    Expression e1 = this.e1.normalize();
+    Expression e2 = this.e2.normalize();
+    
+    // check if we need to generate new infix operation
+    if (e1 != this.e1 || e2 != this.e2) {
+      return new InfixOperation(this.op, e1, e2);
+    }
+    else {
+      return this;
+    }
+  }
+  
+  /**
    * Performs the substitution on infix operations, which is pretty similar to
    * the substitution on <b>(APP)</b> expressions.
    * 

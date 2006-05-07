@@ -24,6 +24,24 @@ public class Recursion extends Expression {
   }
   
   /**
+   * {@inheritDoc}
+   * @see expressions.Expression#normalize()
+   */
+  @Override
+  public Expression normalize() {
+    // normalize the sub expression
+    Expression e = this.e.normalize();
+    
+    // check if we need to generate new recursion
+    if (e != this.e) {
+      return new Recursion(this.id, e);
+    }
+    else {
+      return this;
+    }
+  }
+  
+  /**
    * Performs the substitution for recursive expressions.
    * 
    * @param id the identifier.

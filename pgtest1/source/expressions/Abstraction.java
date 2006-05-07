@@ -15,6 +15,25 @@ public class Abstraction extends Value {
   }
 
   /**
+   * {@inheritDoc}
+   * 
+   * @see expressions.Expression#normalize()
+   */
+  @Override
+  public Expression normalize() {
+    // normalize the sub expression
+    Expression e = this.e.normalize();
+    
+    // check if we need to generate new abstraction
+    if (e != this.e) {
+      return new Abstraction(this.id, e);
+    }
+    else {
+      return this;
+    }
+  }
+  
+  /**
    * Performs the substitution for <b>(LAMBDA)</b> expressions.
    * 
    * @param id the identifier for the substitution.

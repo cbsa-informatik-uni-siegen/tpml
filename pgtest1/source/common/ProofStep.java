@@ -29,6 +29,24 @@ public final class ProofStep {
 
   
   //
+  // Constructor
+  //
+  
+  /**
+   * Allocates a new proof step with the given <code>expression</code>
+   * and the specified <code>rule</code>.
+   * 
+   * @param expression the {@link Expression}.
+   * @param rule the {@link ProofRule} that was applied.
+   */
+  public ProofStep(Expression expression, ProofRule rule) {
+    this.expression = expression;
+    this.rule = rule;
+  }
+  
+  
+  
+  //
   // Primitives
   //
 
