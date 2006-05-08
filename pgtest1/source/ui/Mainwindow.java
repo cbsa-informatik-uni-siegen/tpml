@@ -24,6 +24,9 @@ import javax.swing.JOptionPane;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreeNode;
 
+import ui.smallstep.SmallStepGUI;
+import ui.smallstep.SmallStepView;
+
 import expressions.Expression;
 
 
@@ -238,7 +241,23 @@ public class Mainwindow extends JFrame {
   }
 
   private void handleSmallStep() {
+	  int index = tabbedPane.getSelectedIndex();
+	  SourceFile sf = fileList.get(index);
+	  try {
 
+		  SmallStepGUI gui = new SmallStepGUI (this, "SmallStep", true, sf.getDocument().getText(0, sf.getDocument().getLength()));
+		  gui.setVisible(true);
+	  } catch (Exception e) {
+	
+	  }
+	
+	  /*
+	  DebugView dbv = new DebugView (this, "narf", true, new SmallStepView ());
+	  dbv.setSize(600, 800);
+	  dbv.setVisible(true);
+	  */
+	  /*
+	   * XXX handleSmallStep is degraded to a debug view
       Font f = new JComboBox().getFont();
       SmallStepModel model = new SmallStepModel(getExpression());
       model.setFont(f);
@@ -248,6 +267,7 @@ public class Mainwindow extends JFrame {
       gui.setVisible(true);
       ((EditorWindow)getEditor()).handleSmallStep(gui);
       
+      */
   }
   
   

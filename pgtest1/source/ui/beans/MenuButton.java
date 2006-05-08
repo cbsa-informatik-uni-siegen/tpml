@@ -129,6 +129,29 @@ public class MenuButton extends JComponent {
 		return this.menu;
 	}
 	
+	public int getNeededWidth () {
+		FontMetrics fm = getFontMetrics (this.font);
+		int width = fm.stringWidth(this.text);
+		int addSize = fm.getHeight () - 2*margin;
+		if (this.text.length() != 0)
+			addSize += fm.getAscent () + 2*margin;
+
+		/*
+		this.text.length() == 0 ? 0 : (fm.getAscent() + fm.getHeight());
+		
+		this.pos = new Point(width + fm.getAscent() + 2*margin, margin);
+		size = new Dimension (getHeight () - 1 - 2*margin, getHeight() - 1 - 2*margin);
+
+		*/
+		
+		return (width + addSize);
+	}
+	
+	public int getNeededHeight () {
+		FontMetrics fm = getFontMetrics (this.font);
+		return fm.getHeight();
+	}
+	
 	private void installElementListener (MenuElement element) {
 		if (element instanceof JMenuItem) {
 			JMenuItem item = (JMenuItem)element;
@@ -217,8 +240,15 @@ public class MenuButton extends JComponent {
 		g2d.setColor(this.textColor);
 		g2d.drawString(text, 0, vcenter);
 		int width = fm.stringWidth(text);
-
-		this.pos = new Point(width + fm.getAscent() + 2*margin, margin);
+		
+		
+		if (this.text.length() != 0) {
+			this.pos = new Point(width + fm.getAscent() + 2*margin, margin);
+		}
+		else {
+			this.pos = new Point(width, margin);
+		}
+		
 		size = new Dimension (getHeight () - 1 - 2*margin, getHeight() - 1 - 2*margin);
 
 		int inborder = (int)((float)size.width * this.inborder); 
