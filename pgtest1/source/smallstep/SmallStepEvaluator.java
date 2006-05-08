@@ -106,7 +106,7 @@ final class SmallStepEvaluator {
   private Expression evaluate(Expression expression) {
     try {
       // determine the specific evaluate method
-      Method method = lookupMethod("evaluate" + expression.getClass().getSimpleName());
+      Method method = lookupMethod("evaluate", expression.getClass());
       
       // try to invoke the method
       return (Expression)method.invoke(this, expression);
@@ -439,7 +439,7 @@ final class SmallStepEvaluator {
   private Expression apply(Application application, Expression e1, Expression e2) {
     try {
       // determine the specific apply method
-      Method method = lookupMethod("apply" + e1.getClass().getSimpleName());
+      Method method = lookupMethod("apply", e1.getClass());
       
       // invoke the specific apply method
       return (Expression)method.invoke(this, application, e1, e2);
@@ -513,11 +513,16 @@ final class SmallStepEvaluator {
     this.steps.add(new ProofStep(expression, rule));
   }
   
-  private Method lookupMethod(String methodName) throws NoSuchMethodException {
-    Method[] methods = getClass().getDeclaredMethods();
-    for (int n = 0; n < methods.length; ++n)
-      if (methods[n].getName().equals(methodName))
-        return methods[n];
-    throw new NoSuchMethodException(methodName);
+  private Method lookupMethod(String baseName, Class klass) throws NoSuchMethodException {
+    // try for this class and all super classes up to Expression
+    for (; klass != Expression.class; klass = klass.getSuperclass()) {
+      // try to find a suitable method
+      Method[] methods = getClass().getDeclaredMethods();
+      for (Method method : methods) {
+        if (method.getName().equals(baseName + klass.getSimpleName()))
+          return method;
+      }
+    }
+    throw new NoSuchMethodException(baseName);
   }
 }
