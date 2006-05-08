@@ -39,6 +39,8 @@ final class SmallStepProofRule extends ProofRule {
   
   static final SmallStepProofRule COND_TRUE = new SmallStepProofRule("COND-TRUE", 0);
   
+  static final SmallStepProofRule FST = new SmallStepProofRule("FST", 0);
+  
   static final SmallStepProofRule LET_EVAL = new SmallStepProofRule("LET-EVAL", 1);
   
   static final SmallStepProofRule LET_EVAL_EXN = new SmallStepProofRule("LET-EVAL-EXN", 1);
@@ -54,6 +56,14 @@ final class SmallStepProofRule extends ProofRule {
   static final SmallStepProofRule OR_FALSE = new SmallStepProofRule("OR-FALSE", 0);
   
   static final SmallStepProofRule OR_TRUE = new SmallStepProofRule("OR-TRUE", 0);
+  
+  static final SmallStepProofRule SND = new SmallStepProofRule("SND", 0);
+  
+  static final SmallStepProofRule PROJ = new SmallStepProofRule("PROJ", 0);
+  
+  static final SmallStepProofRule TUPLE = new SmallStepProofRule("TUPLE", 1);
+  
+  static final SmallStepProofRule TUPLE_EXN = new SmallStepProofRule("TUPLE-EXN", 1);
   
   static final SmallStepProofRule UNFOLD = new SmallStepProofRule("UNFOLD", 0);
   

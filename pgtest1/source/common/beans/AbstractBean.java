@@ -1,19 +1,20 @@
-package common;
+package common.beans;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
 /**
- * Abstract base class for bean objects, which provide bean
- * properties.
+ * Abstract base class for bean objects, which provide simple
+ * bean properties with change listener support.
  *
  * @author Benedikt Meurer
  * @version $Id$
  * 
+ * @see common.beans.Bean
  * @see java.beans.PropertyChangeListener
  * @see java.beans.PropertyChangeSupport
  */
-public abstract class BeanSupport {
+public abstract class AbstractBean implements Bean {
   /**
    * If any <code>PropertyChangeListeners</code> have been registered,
    * the <code>changeSupport</code> field describes them.
@@ -28,6 +29,25 @@ public abstract class BeanSupport {
    * @see #firePropertyChange(String, Object, Object)
    */
   protected PropertyChangeSupport changeSupport;
+  
+  
+  
+  //
+  // Constructor
+  //
+  
+  /**
+   * Allocates a new abstract bean.
+   */
+  protected AbstractBean() {
+    // nothing to do here...
+  }
+  
+  
+  
+  //
+  // Listener registration
+  //
   
   /**
    * Adds a {@link PropertyChangeListener} to the listener list. The listener
@@ -150,6 +170,12 @@ public abstract class BeanSupport {
     }
     return this.changeSupport.getPropertyChangeListeners(propertyName);
   }
+  
+  
+  
+  //
+  // Listener invocation
+  //
   
   /**
    * Support for reporting bound property changes for Object properties. 

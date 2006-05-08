@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.Vector;
 
+import common.AbstractProofModel;
 import common.ProofModel;
 import common.ProofNode;
 import common.ProofRule;
@@ -17,7 +18,7 @@ import expressions.Expression;
  * @author Benedikt Meurer
  * @version $Id$
  */
-public class SmallStepProofModel extends ProofModel {
+public class SmallStepProofModel extends AbstractProofModel {
   //
   // Constructor
   //

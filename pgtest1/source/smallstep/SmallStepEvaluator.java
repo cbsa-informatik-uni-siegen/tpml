@@ -13,13 +13,17 @@ import expressions.BooleanConstant;
 import expressions.Condition;
 import expressions.Constant;
 import expressions.Expression;
+import expressions.Fst;
 import expressions.InfixOperation;
 import expressions.IntegerConstant;
 import expressions.Let;
 import expressions.LetRec;
 import expressions.Operator;
 import expressions.Or;
+import expressions.Projection;
 import expressions.Recursion;
+import expressions.Snd;
+import expressions.Tuple;
 
 /**
  * Evaluator for expression using the small step
@@ -393,6 +397,38 @@ final class SmallStepEvaluator {
     // generate the new (LET) expression
     return new Let(id, e1, e2);
   }
+ 
+  @SuppressWarnings("unused")
+  private Expression evaluateTuple(Tuple tuple) {
+    // determine the sub expressions
+    Expression[] expressions = tuple.getExpressions();
+    
+    // find the first sub expression that is not already a value
+    for (int n = 0; n < expressions.length; ++n) {
+      // check if the expression is not already a value
+      if (!expressions[n].isValue()) {
+        // try to evaluate the expression
+        Expression newExpression = evaluate(expressions[n]);
+        
+        // check if we need to forward an exception
+        if (newExpression.isException()) {
+          addProofStep(SmallStepProofRule.TUPLE_EXN, tuple);
+          return newExpression;
+        }
+        
+        // we performed (TUPLE) then
+        addProofStep(SmallStepProofRule.TUPLE, tuple);
+        
+        // otherwise generate a new tuple with the new expression
+        Expression[] newExpressions = tuple.getExpressions().clone();
+        newExpressions[n] = newExpression;
+        return new Tuple(newExpressions);
+      }
+    }
+    
+    // hm, can we get stuck here?
+    return tuple;
+  }
   
   
   
@@ -429,6 +465,42 @@ final class SmallStepEvaluator {
   private Expression applyAppliedOperator(Application application, AppliedOperator aop, IntegerConstant c) {
     addProofStep(SmallStepProofRule.OP, application);
     return aop.getOperator().applyTo(aop.getConstant(), c);
+  }
+  
+  @SuppressWarnings("unused")
+  private Expression applyFst(Application application, Fst fst, Tuple tuple) {
+    // check if the fst operator can be applied to the tuple
+    if (tuple.arity() == 2) {
+      addProofStep(SmallStepProofRule.FST, application);
+      return tuple.getExpressions()[0];
+    }
+    else {
+      return application;
+    }
+  }
+  
+  @SuppressWarnings("unused")
+  private Expression applyProjection(Application application, Projection projection, Tuple tuple) {
+    // check if the projection can be applied to the tuple
+    if (projection.getArity() == tuple.arity()) {
+      addProofStep(SmallStepProofRule.PROJ, application);
+      return tuple.getExpressions()[projection.getIndex()];
+    }
+    else {
+      return application;
+    }
+  }
+  
+  @SuppressWarnings("unused")
+  private Expression applySnd(Application application, Snd snd, Tuple tuple) {
+    // check if the snd operator can be applied to the tuple
+    if (tuple.arity() == 2) {
+      addProofStep(SmallStepProofRule.SND, application);
+      return tuple.getExpressions()[1];
+    }
+    else {
+      return application;
+    }
   }
 
   

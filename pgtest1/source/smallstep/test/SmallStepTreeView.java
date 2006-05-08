@@ -15,13 +15,12 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultTreeCellRenderer;
-import javax.swing.tree.TreePath;
-
-import common.ProofNode;
 
 import smallstep.SmallStepProofModel;
 import smallstep.SmallStepProofModelFactory;
 import smallstep.SmallStepProofNode;
+
+import common.ProofNode;
 
 /**
  * Test class for the small step interpreter.
@@ -34,7 +33,8 @@ public class SmallStepTreeView extends JFrame {
   /**
    * Simple test expression.
    */
-  private static final String SIMPLE = "let rec f = lambda x.if x = 0 then 1 else x * (f (x - 1)) in f 3";
+  //private static final String SIMPLE = "let rec f = lambda x.if x = 0 then 1 else x * (f (x - 1)) in f 3";
+  private static final String SIMPLE = "(1 + 2, 5 * 8, let x = 9 in (8,(+) 9 x), y)";
 
   
   

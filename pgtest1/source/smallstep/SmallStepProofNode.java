@@ -1,5 +1,6 @@
 package smallstep;
 
+import common.AbstractProofNode;
 import common.ProofNode;
 import common.ProofRuleException;
 import common.ProofStep;
@@ -12,7 +13,7 @@ import expressions.Expression;
  * @author Benedikt Meurer
  * @version $Id$
  */
-public class SmallStepProofNode extends ProofNode {
+public class SmallStepProofNode extends AbstractProofNode {
   //
   // Constructor
   //
@@ -77,36 +78,39 @@ public class SmallStepProofNode extends ProofNode {
     // evaluate the expression and determine the proof steps
     SmallStepEvaluator evaluator = new SmallStepEvaluator(getExpression());
     Expression expression = evaluator.getExpression();
-    ProofStep[] steps = evaluator.getSteps();
+    ProofStep[] evaluatedSteps = evaluator.getSteps();
+    
+    // determine the completed steps for the node
+    ProofStep[] completedSteps = getSteps();
     
     // check if the node is already completed
-    if (this.steps.length >= steps.length) {
-      throw new IllegalStateException("Cannot prove an already proven node (" + this.steps.length + " >= " + steps.length + ")");
+    if (completedSteps.length >= evaluatedSteps.length) {
+      throw new IllegalStateException("Cannot prove an already proven node");
     }
     
     // verify the completed steps
     int n;
-    for (n = 0; n < this.steps.length; ++n) {
-      if (this.steps[n].getRule() != steps[n].getRule())
-        throw new IllegalStateException("Evaluated steps don't match completed steps");
+    for (n = 0; n < completedSteps.length; ++n) {
+      if (completedSteps[n].getRule() != evaluatedSteps[n].getRule())
+        throw new IllegalStateException("Completed steps don't match evaluated steps");
     }
 
     // check if the rule is valid
     int m;
-    for (m = n; m < steps.length; ++m) {
-      if (steps[m].getRule() == rule)
+    for (m = n; m < evaluatedSteps.length; ++m) {
+      if (evaluatedSteps[m].getRule() == rule)
         break;
     }
     
     // check if rule is invalid
-    if (m >= steps.length) {
+    if (m >= evaluatedSteps.length) {
       throw new ProofRuleException(this, rule);
     }
     
     // add the new step(s) to the node
-    this.steps = new ProofStep[m + 1];
-    for (; m >= 0; --m)
-      this.steps[m] = steps[m];
+    ProofStep[] newSteps = new ProofStep[m + 1];
+    System.arraycopy(evaluatedSteps, 0, newSteps, 0, m + 1);
+    setSteps(newSteps);
     
     // check if we're done with this node
     if (isProven()) {
