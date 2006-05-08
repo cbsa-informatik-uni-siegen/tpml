@@ -126,6 +126,22 @@ public abstract class AbstractProofNode implements ProofNode {
   public Expression getExpression() {
     return this.expression;
   }
+  
+  /**
+   * Sets the {@link Expression} which is associated
+   * with this proof node. This method is used by proof
+   * model implementations, for example to implement the
+   * {@link ProofModel#translateToCoreSyntax(ProofNode)}
+   * method.
+   * 
+   * The <code>expression</code> is normalized prior to
+   * setting it for the node.
+   * 
+   * @param expression the new {@link Expression}.
+   */
+  public void setExpression(Expression expression) {
+    this.expression = expression.normalize();
+  }
 
   /**
    * {@inheritDoc}

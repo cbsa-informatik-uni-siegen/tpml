@@ -118,6 +118,23 @@ public class SmallStepTreeView extends JFrame {
     });
     buttons.add(guessButton);
     
+    // setup the translate button
+    JButton translateButton = new JButton("Translate");
+    translateButton.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent event) {
+        try {
+          // translate the last node
+          ProofNode node = model.getRoot().getLastLeaf();
+          model.translateToCoreSyntax(node);
+        }
+        catch (Exception e) {
+          e.printStackTrace();
+          JOptionPane.showMessageDialog(SmallStepTreeView.this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+      }
+    });
+    buttons.add(translateButton);
+    
     // setup the close button
     JButton closeButton = new JButton("Close");
     closeButton.addActionListener(new ActionListener() {

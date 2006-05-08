@@ -10,6 +10,8 @@ import javax.swing.tree.TreePath;
 
 import common.beans.AbstractBean;
 
+import expressions.Expression;
+
 /**
  * Abstract implementation of the {@link common.ProofModel} interface,
  * which is used by prover implementations. The user interface and
@@ -133,7 +135,28 @@ public abstract class AbstractProofModel extends AbstractBean implements ProofMo
    * @see ProofModel#translateToCoreSyntax(ProofNode)
    */
   public void translateToCoreSyntax(ProofNode node) {
-    // FIXME
+    // verify that the node is valid for the model
+    if (!getRoot().isNodeRelated(node)) {
+      throw new IllegalArgumentException("node is invalid");
+    }
+    
+    // verify that no actions were performed on the node
+    if (node.getSteps().length > 0) {
+      throw new IllegalStateException("steps have been performed on node");
+    }
+    
+    // verify that the expression actually contains syntactic sugar
+    Expression expression = node.getExpression();
+    if (!expression.containsSyntacticSugar()) {
+      throw new IllegalArgumentException("node does not contain syntactic sugar");
+    }
+    
+    // translate the expression of the node to core syntax
+    AbstractProofNode abstractNode = (AbstractProofNode)node;
+    abstractNode.setExpression(expression.translateSyntacticSugar());
+    
+    // tell the view to update the node's appearance
+    nodeChanged(abstractNode);
   }
   
   

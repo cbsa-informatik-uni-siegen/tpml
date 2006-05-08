@@ -130,12 +130,19 @@ public interface ProofModel extends Bean, TreeModel {
   public void prove(ProofRule rule, ProofNode node) throws ProofRuleException;
   
   /**
-   * FIXME
+   * Translates the outermost expression associated with the given
+   * <code>node</code> from syntactic sugar to core syntax.
    *  
-   * @param node
+   * @param node the proof node whose outermost expression should be
+   *             translated to core syntax.
    *
    * @throws IllegalArgumentException if the <code>node</code> is
-   *                                  invalid for this proof model.
+   *                                  invalid for this proof model,
+   *                                  or the <code>node</code>'s
+   *                                  expression does not contain
+   *                                  syntactic sugar.
+   * @throws IllegalStateException if any steps were performed on
+   *                               the <code>node</code> already,
    *                                  
    * @see expressions.Expression#translateSyntacticSugar()
    */
