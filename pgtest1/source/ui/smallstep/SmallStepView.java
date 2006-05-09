@@ -40,7 +40,11 @@ public class SmallStepView extends AbstractView {
 	}
 	
 	private void determineBounds (SmallStepNode node, int top) {
-		Dimension size = node.getRequiredSize(getWidth());
+		// the required size only has to checked for the size available
+		// from this View minus the size needed for the left part of the 
+		// rules minus the indentation of 25 pixels infront of all and minus
+		// 25 pixels on the right
+		Dimension size = node.getRequiredSize(getWidth() - SmallStepNode.getCenter() - 50);
 		int left = 25;
 		int right = left + size.width;
 		int bottom = top + size.height;

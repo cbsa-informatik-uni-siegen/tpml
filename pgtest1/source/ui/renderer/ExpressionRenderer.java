@@ -23,6 +23,17 @@ import expressions.PrettyString;
  */
 public class ExpressionRenderer {
 	
+	private class CheckerReturn {
+		public Dimension				size;
+		public int					rows;
+		public PrettyAnnotation		annotation;
+		public CheckerReturn(Dimension s, int r, PrettyAnnotation a) {
+			this.size 		= s; 
+			this.rows 		= r; 
+			this.annotation	= a;
+		}
+	}
+	
 	private 	Expression			expression;
 	
 	private 	Font				textFont;
@@ -41,15 +52,11 @@ public class ExpressionRenderer {
 	private		Color				underlineColor;	
 	
 	private 	int					fontHeight;
+	private		int					fontAscent;
+	private		int					fontDescent;
 	
-	private 	PrettyAnnotation	prettyAnnotation;
-	private		int					neededRows;
+	private 	CheckerReturn		bestCheckerReturn;
 	
-	private class CheckerReturn {
-		public Dimension		size;
-		public int			rows;
-		public CheckerReturn(Dimension s, int r) {this.size = s; this.rows = r; }
-	}
 	
 	private CheckerReturn checkExpression (PrettyString prettyString, PrettyAnnotation annotation) {
 		Dimension d = new Dimension ();
@@ -94,7 +101,7 @@ public class ExpressionRenderer {
 		d.height = height;
 		rows++;
 
-		return new CheckerReturn (d, rows);
+		return new CheckerReturn (d, rows, annotation);
 	}
 	
 	/**
@@ -130,11 +137,19 @@ public class ExpressionRenderer {
 	}
 	
 	public void checkFonts() {
-		this.fontHeight = this.textFontMetrics.getHeight();
-		if (this.fontHeight < this.keywordFontMetrics.getHeight()) 
-			this.fontHeight = this.keywordFontMetrics.getHeight();
-		if (this.fontHeight < this.constantFontMetrics.getHeight())
-			this.fontHeight = this.constantFontMetrics.getHeight();
+		this.fontHeight 	= this.textFontMetrics.getHeight();
+		this.fontAscent		= this.textFontMetrics.getAscent();
+		this.fontDescent	= this.textFontMetrics.getDescent();
+		if (this.fontHeight < this.keywordFontMetrics.getHeight()) { 
+			this.fontHeight 	= this.keywordFontMetrics.getHeight();
+			this.fontAscent		= this.keywordFontMetrics.getAscent();
+			this.fontDescent	= this.keywordFontMetrics.getDescent();
+		}
+		if (this.fontHeight < this.constantFontMetrics.getHeight()) {
+			this.fontHeight 	= this.constantFontMetrics.getHeight();
+			this.fontAscent		= this.constantFontMetrics.getAscent();
+			this.fontDescent	= this.constantFontMetrics.getDescent();
+		}
 	}
 	
 	/**
@@ -149,33 +164,34 @@ public class ExpressionRenderer {
 	public Dimension getNeededSize (int maxWidth) {
 		// first check the expression with no line breaks
 		PrettyString prettyString = this.expression.toPrettyString();
-		Dimension neededSize = null;
-		int neededRows = 0;
-		CheckerReturn orig;
-		CheckerReturn r = orig = checkExpression (prettyString, null);
-		if (r.size.width < maxWidth) {
-			this.prettyAnnotation = null;
-			this.neededRows = r.rows;
-			return r.size;
-		}
-		// now check all annotations which one fits best
-		for (PrettyAnnotation pa : prettyString.getAnnotations()) {
-			r = checkExpression (prettyString, pa);
-			if (r.size.width <= maxWidth) {
-				if (neededSize == null || r.size.width > neededSize.width) { 
-					this.prettyAnnotation = pa;
-					neededSize = r.size;
-					neededRows = r.rows;
-				}	
-			}	
-		}
-		this.neededRows = neededRows;
+		CheckerReturn smallest	= null;
+		CheckerReturn biggest 	= null;
 		
-		if (neededSize == null) {
-			this.prettyAnnotation = null;
-			neededSize = orig.size;
+		// put the first checkExpression in all the used CheckerReturn
+		CheckerReturn current = checkExpression (prettyString, null);
+		if (current.size.width <= maxWidth) {
+			this.bestCheckerReturn = current;
+			return bestCheckerReturn.size;
 		}
-		return neededSize;
+		
+		// now check for the biggest style to render the expression that
+		// is smaller than the maxWidth
+		// and check for the real smallest style
+		for (PrettyAnnotation pa : prettyString.getAnnotations()) {
+			current = checkExpression (prettyString, pa);
+			if (smallest == null || current.size.width < smallest.size.width) {
+				smallest = current;
+			}
+			if (current.size.width <= maxWidth && (biggest == null || current.size.width > biggest.size.width)) {
+				biggest = current;
+			}
+		}
+		
+		this.bestCheckerReturn = biggest;
+		if (this.bestCheckerReturn == null) {
+			this.bestCheckerReturn = smallest;
+		}
+		return this.bestCheckerReturn.size;
 	}
 	
 	/**
@@ -190,18 +206,19 @@ public class ExpressionRenderer {
 	 * @param	gc			The graphics context used to render the content.
 	 */
 	public void render(int x, int y, Graphics2D gc) {
+		
 		PrettyString prettyString = this.expression.toPrettyString();
 		PrettyCharIterator it = prettyString.toCharacterIterator();
 		int[] annoBreaks = null;
-		if (this.prettyAnnotation != null) {
-			annoBreaks = this.prettyAnnotation.getBreakOffsets();
+		if (this.bestCheckerReturn.annotation != null) {
+			annoBreaks = this.bestCheckerReturn.annotation.getBreakOffsets();
 		}
 		int i = 0;
 		int posX = x;
-		int posY = y + this.fontHeight;
+		int posY = y + this.fontHeight - this.fontDescent;
 		for (char c = it.first(); c != CharacterIterator.DONE; c = it.next(), i++) {
 			
-			if (this.prettyAnnotation != null) {
+			if (this.bestCheckerReturn.annotation != null) {
 				
 				for (int j=0; j<annoBreaks.length; j++) {
 					if (annoBreaks[j] == i) {
@@ -211,14 +228,28 @@ public class ExpressionRenderer {
 					}
 				}
 			}
+			Color		fontColor	= null;
 			FontMetrics fontMetrics = null;
 			Font		font 		= null;
 			
 			switch (it.getStyle()) {
-			case NONE:		fontMetrics = this.textFontMetrics; 	font = this.textFont;		break;
-			case KEYWORD: 	fontMetrics = this.keywordFontMetrics; 	font = this.keywordFont;	break;
-			case CONSTANT:	fontMetrics = this.constantFontMetrics;	font = this.constantFont;	break;
+			case NONE:
+				fontColor 	= this.textColor;
+				fontMetrics = this.textFontMetrics; 	
+				font 		= this.textFont;
+				break;
+			case KEYWORD:
+				fontColor	= this.keywordColor;
+				fontMetrics = this.keywordFontMetrics;
+				font 		= this.keywordFont;
+				break;
+			case CONSTANT:
+				fontColor	= this.constantColor;
+				fontMetrics = this.constantFontMetrics;
+				font 		= this.constantFont;
+				break;
 			}
+			gc.setColor(fontColor);
 			gc.setFont(font);
 			gc.drawString("" + c, posX, posY);
 			posX += fontMetrics.stringWidth("" + c);

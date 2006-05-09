@@ -176,7 +176,7 @@ class SmallStepNode extends AbstractNode {
 		expSize = getExpressionSize(maxWidth);
 		ruleSize = getRuleSize ();
 		
-		return new Dimension (expSize.width + SmallStepNode.center, 
+		return new Dimension (expSize.width + SmallStepNode.center + this.ruleFontMetrics.getDescent(), 
 				expSize.height > ruleSize.height ? expSize.height : ruleSize.height);
 		
 	}
@@ -207,22 +207,49 @@ class SmallStepNode extends AbstractNode {
 		int cX = 0;
 		SmallStepProofModel pModel = (SmallStepProofModel)model;
 		int w = 0;
-		for (ProofStep step : this.proofNode.getSteps()) {
-			ProofRule r = step.getRule();
-
-			if (r.isAxiom())
+		String 	lastName 	= null;
+		int		count		= 0;
+		boolean	addExp		= false;
+		
+		Font 		expF	= this.ruleFont.deriveFont(this.ruleFont.getSize2D() / 2.0f);
+		FontMetrics expFM	= getFontMetrics(expF);
+		
+		ProofStep steps [] = this.proofNode.getSteps();
+		for (int i=0; i<steps.length;) {
+			ProofRule r = steps [i].getRule();
+			if (r.isAxiom()) {
 				w = this.ruleFontMetrics.stringWidth("(" + r.getName() + ")");
-			else 
+				break;
+			}
+			else {
+				String name = r.getName();
+				i++;
+				int j=0;
+				for (; (j + i) <steps.length; j++) {
+					ProofRule tmpRule = steps [i+j].getRule();
+					if (!tmpRule.getName().equals(r.getName())) {
+						break;
+					}
+				}
+				if (j >= 1) {
+					addExp = true;
+					w += expFM.stringWidth("" + (j+1));
+				}
 				w += this.ruleFontMetrics.stringWidth("(" + r.getName() + ")");
-			
+				w += this.ruleFontMetrics.getDescent();
+				i += j;
+			}
 			if (w > maxX) maxX = w;
-			
 		}
 		
 		if (!this.proofNode.isProven()) {
 			maxX += this.ruleButton.getNeededWidth();
 		}
-		return new Dimension(maxX + 10, ruleFontMetrics.getHeight() * 2);
+		int height = ruleFontMetrics.getHeight() * 2 + 10;
+		if (addExp) {
+			height += expFM.getDescent() * 2;
+		}
+		return new Dimension(maxX + 10, height);
 	}
 
 	public Dimension getExpressionSize(int maxWidth) {
@@ -251,35 +278,65 @@ class SmallStepNode extends AbstractNode {
 		g2d.drawLine(center, heightDiv2, center - 5, heightDiv2 - 5);
 		g2d.drawLine(center, heightDiv2, center - 5, heightDiv2 + 5);
 		
-		// draw the expression
+		// now draw the expression
 		int posX = center;
 		int posY = heightDiv2 - expSize.height / 2;
-		expRenderer.render(posX, posY, g2d);
+		expRenderer.render(posX + this.ruleFontMetrics.getDescent(), posY, g2d);
 		
-		// now draw the expression
-		this.expRenderer.render(SmallStepNode.center, getY(), g2d);
+		posY = getHeight() / 2;
 		
 		// now draw the evaluated rules
 		g2d.setFont(this.ruleFont);
 		posX = 0;
-		for (ProofStep step : this.proofNode.getSteps()) {
-			ProofRule r = step.getRule();
-			posY = 0;
+		String 	lastName 	= null;
+		int		count		= 0;
+		
+		g2d.setColor(Color.BLACK);
+		Font		expF	= this.ruleFont.deriveFont(this.ruleFont.getSize2D());
+		FontMetrics	expFM	= getFontMetrics (expF);
+		ProofStep steps [] = this.proofNode.getSteps();
+		for (int i=0; i<steps.length;) {
+			ProofRule r = steps [i].getRule();
 			if (r.isAxiom()) {
 				posY = heightDiv2 + ruleFontMetrics.getAscent();
 				posX = 0;
+				g2d.drawString("(" + r.getName() + ")", posX, posY + 5);
+				break;
 			}
 			else {
-				posY = heightDiv2 - ruleFontMetrics.getDescent(); 
+				i++;
+				int j=0;
+				for (; (j+i)<steps.length; j++) {
+					ProofRule tmpRule = steps [i+j].getRule();
+					if (!tmpRule.getName().equals(r.getName())) {
+						break;
+					}
+				}
+				String ruleString = "(" + r.getName() + ")";
+				g2d.drawString(ruleString, posX, posY - 5);
+				posX += ruleFontMetrics.stringWidth(ruleString);
+				
+				if (j >= 1) {
+					ruleString = "" + (j + 1);
+					int tmpY = posY - this.ruleFontMetrics.getAscent() + expFM.getAscent() - expFM.getDescent() - 5;
+					g2d.setFont(expF);
+					g2d.drawString (ruleString, posX, tmpY);
+					posX += expFM.stringWidth(ruleString);
+					g2d.setFont(this.ruleFont);
+				}
+				posX += ruleFontMetrics.getDescent();
+				i += j;
 			}
-			g2d.drawString("(" + r.getName() + ")",  posX,  posY);
-			posX += ruleFontMetrics.stringWidth("(" + r.getName () + ")");
 		}
 		
 	}
 
 	public static void setCenter(int center) {
 		SmallStepNode.center = center;
+	}
+	
+	public static int getCenter() {
+		return SmallStepNode.center;
 	}
 	
 	private void evaluateRule (ProofRule rule) {
