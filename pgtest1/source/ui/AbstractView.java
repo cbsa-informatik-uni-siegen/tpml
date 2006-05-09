@@ -44,7 +44,9 @@ public abstract class AbstractView extends JComponent implements TreeModelListen
 				
 		if (children.length != indices.length) return;
 		for (int i=0; i<children.length; i++) {
-			node.addChildNode(createNode ((ProofNode)children[i]), indices [i]);
+			AbstractNode aNode = createNode ((ProofNode)children[i]);
+			aNode.setModel(this.model);
+			node.addChildNode(aNode, indices [i]);
 		}
 		
 		relayout();

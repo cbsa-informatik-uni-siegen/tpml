@@ -1,6 +1,7 @@
 package ui.smallstep;
 
 import common.ProofNode;
+import common.ProofRule;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -11,6 +12,7 @@ import smallstep.SmallStepProofNode;
 
 import ui.AbstractNode;
 import ui.AbstractView;
+
 
 public class SmallStepView extends AbstractView {
 	
@@ -71,9 +73,11 @@ public class SmallStepView extends AbstractView {
 	private void addNodes() {
 		removeAll();
 		SmallStepNode node = (SmallStepNode)rootNode;
+		node.reset();
 		add(node);
 		while (node.hasChildren()) {
 			node = (SmallStepNode)node.getFirstChild();
+			node.reset();
 			add(node);
 		}
 	}
@@ -94,9 +98,7 @@ public class SmallStepView extends AbstractView {
 	}
 	
 	protected AbstractNode createNode (ProofNode node) {
-		SmallStepProofNode pnode = (SmallStepProofNode)node;
-		
-		return new SmallStepNode (pnode);
+		return new SmallStepNode ((SmallStepProofNode)node);
 	}
 	
 	/**

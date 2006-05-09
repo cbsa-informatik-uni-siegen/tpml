@@ -67,4 +67,11 @@ public abstract class AbstractNode extends JComponent {
 	public void setModel (ProofModel model) {
 		this.model = model;
 	}
+	
+	public void debug (String indentation) {
+		System.out.println("" + indentation + ": " + this.proofNode.getExpression());
+		for (AbstractNode n : this.childNodes) {
+			n.debug(indentation + "  ");
+		}
+	}
 }

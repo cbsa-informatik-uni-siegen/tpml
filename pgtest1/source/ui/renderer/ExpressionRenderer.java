@@ -172,6 +172,7 @@ public class ExpressionRenderer {
 		this.neededRows = neededRows;
 		
 		if (neededSize == null) {
+			this.prettyAnnotation = null;
 			neededSize = orig.size;
 		}
 		return neededSize;

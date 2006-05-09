@@ -212,10 +212,13 @@ public class MenuButton extends JComponent {
 	}
 	
 	private void handleMouseClicked (MouseEvent evt) {
+		System.out.print("handleMouseClicked: ");
 		if (this.menu == null) {
+			System.out.println("null");
 			return;
 		}
-				
+		
+		System.out.println("show menu");
 		this.menu.show(this, this.pos.x, this.pos.y);
 	}
 	

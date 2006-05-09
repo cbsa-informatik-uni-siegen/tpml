@@ -6,17 +6,21 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.util.LinkedList;
 
 import javax.swing.JComboBox;
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
 
+import common.ProofModel;
 import common.ProofRule;
+import common.ProofRuleException;
 import common.ProofStep;
 
 import smallstep.SmallStepProofModel;
 import smallstep.SmallStepProofNode;
 import ui.AbstractNode;
 import ui.beans.MenuButton;
+import ui.beans.MenuButtonListener;
 import ui.renderer.EnvironmentRenderer;
 import ui.renderer.ExpressionRenderer;
 
@@ -24,6 +28,44 @@ import ui.renderer.ExpressionRenderer;
 
 class SmallStepNode extends AbstractNode {
 	
+	private enum ActionType {
+		TranslateToCoresyntax,
+	}
+
+	private class RuleMenuItem extends JMenuItem {
+		private ProofRule	rule;
+		
+		public RuleMenuItem (ProofRule rule) {
+			super (rule.getName());
+			this.rule = rule;
+		}
+		
+		public ProofRule getRule () {
+			return rule;
+		}
+	};
+	
+	private static class ActionMenuItem extends JMenuItem {
+		private ActionType	type;
+		
+		public ActionMenuItem (ActionType type) {
+			super (ActionMenuItem.getString(type));
+			this.type = type;
+		}
+		
+		private static String getString(ActionType  type) {
+			switch (type) {
+			case TranslateToCoresyntax:
+				return "Translate to coresyntax";
+			}
+			return "narf";
+		}
+		
+		public ActionType getActionType () {
+			return type;
+		}
+	}
+
 	private static int 				center;
 	
 	private EnvironmentRenderer		envRenderer;
@@ -41,6 +83,8 @@ class SmallStepNode extends AbstractNode {
 	private Font					ruleFont;
 	
 	private FontMetrics				ruleFontMetrics;
+	
+	private ActionMenuItem			translateToCoreSyntax = null;
 		
 	public SmallStepNode(SmallStepProofNode proofNode) {
 		super();
@@ -49,8 +93,42 @@ class SmallStepNode extends AbstractNode {
 		
 		this.proofNode		= proofNode;
 		
-		this.expRenderer	= new ExpressionRenderer (this.proofNode.getExpression());
+		Font fnt = new JComboBox().getFont();
+		FontMetrics fntMetrics = getFontMetrics(fnt);
 		
+		
+		this.ruleFont 			= fnt;
+		this.ruleFontMetrics	= fntMetrics;
+		
+		this.ruleButton = new MenuButton();
+		add (ruleButton);
+		this.ruleButton.addMenuButtonListener(new MenuButtonListener() {
+			public void menuItemActivated (MenuButton button, JMenuItem item) {
+				if (item instanceof RuleMenuItem) {
+					evaluateRule(((RuleMenuItem)item).getRule());
+				}
+				else if (item instanceof ActionMenuItem) {
+					ActionMenuItem ami = (ActionMenuItem)item;
+					switch (ami.getActionType()) {
+					case TranslateToCoresyntax:
+						translateToCoreSyntax();
+						break;
+					}
+				}
+			}
+		});
+	}
+	
+	public void reset () {
+		resetExpressionRenderer();
+		
+		if (this.translateToCoreSyntax != null) {
+			this.translateToCoreSyntax.setEnabled(this.proofNode.containsSyntacticSugar());
+		}
+	}
+	
+	private void resetExpressionRenderer() {
+		this.expRenderer	= new ExpressionRenderer (this.proofNode.getExpression());
 		
 		Font fnt = new JComboBox().getFont();
 		FontMetrics fntMetrics = getFontMetrics(fnt);
@@ -61,11 +139,32 @@ class SmallStepNode extends AbstractNode {
 		this.expRenderer.setUnderlineColor(Color.RED);
 		this.expRenderer.checkFonts();
 		
-		this.ruleFont 			= fnt;
-		this.ruleFontMetrics	= fntMetrics;
+	}
+	
+	
+	private void initiateButtonMenu() {
+		JPopupMenu menu = new JPopupMenu();
+		ProofRule rules[] = this.model.getRules();
+		for (ProofRule r : rules) {
+			RuleMenuItem item = new RuleMenuItem (r);
+			menu.add(item);
+		}
 		
-		this.ruleButton = new MenuButton();
-		add (ruleButton);
+		menu.addSeparator();
+		
+		this.translateToCoreSyntax = new ActionMenuItem (ActionType.TranslateToCoresyntax);
+		menu.add(this.translateToCoreSyntax);
+		if (!this.proofNode.containsSyntacticSugar()) {
+			this.translateToCoreSyntax.setEnabled(false);
+		}
+		
+		this.ruleButton.setMenu(menu);
+	}
+	
+	public void setModel (ProofModel model) {
+		super.setModel(model);
+		
+		initiateButtonMenu();
 	}
 	
 	/**
@@ -77,7 +176,7 @@ class SmallStepNode extends AbstractNode {
 		expSize = getExpressionSize(maxWidth);
 		ruleSize = getRuleSize ();
 		
-		return new Dimension (expSize.width + ruleSize.width, 
+		return new Dimension (expSize.width + SmallStepNode.center, 
 				expSize.height > ruleSize.height ? expSize.height : ruleSize.height);
 		
 	}
@@ -89,17 +188,11 @@ class SmallStepNode extends AbstractNode {
 			return;
 		}
 		int heightDiv2 = getHeight() / 2;
-		int posY = 0;
 		int posX = 0;
 	 	for (ProofStep step : this.proofNode.getSteps()) {
 			ProofRule r = step.getRule();
-			posY = 0;
 			if (r.isAxiom()) {
-				posY = heightDiv2 + ruleFontMetrics.getAscent();
 				posX = 0;
-			}
-			else {
-				posY = heightDiv2 - ruleFontMetrics.getDescent(); 
 			}
 			posX += ruleFontMetrics.stringWidth("(" + r.getName () + ")");
 		}
@@ -150,7 +243,7 @@ class SmallStepNode extends AbstractNode {
 		// fill the background white
 		g2d.setColor(Color.WHITE);
 		g2d.fillRect(0, 0, getWidth(), getHeight());
-		
+				
 		// draw a black arrow on the base
 		int heightDiv2 = getHeight() / 2;
 		g2d.setColor(Color.BLACK);
@@ -187,6 +280,26 @@ class SmallStepNode extends AbstractNode {
 
 	public static void setCenter(int center) {
 		SmallStepNode.center = center;
+	}
+	
+	private void evaluateRule (ProofRule rule) {
+		try {
+			this.model.prove(rule, this.proofNode);
+			this.ruleButton.setText("");
+			this.ruleButton.setTextColor(Color.BLACK);
+		} catch (ProofRuleException exc) {
+			this.ruleButton.setTextColor(Color.RED);
+		}
+	}
+	
+	private void translateToCoreSyntax () {
+		try {
+			this.model.translateToCoreSyntax(this.proofNode);
+		}
+		catch (IllegalArgumentException exc) {
+			System.out.println("already CoreSyntax");
+		}
+		this.ruleButton.setText("");
 	}
 }
 
