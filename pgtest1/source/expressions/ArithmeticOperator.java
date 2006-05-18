@@ -27,17 +27,17 @@ public class ArithmeticOperator extends Operator {
   /**
    * Performs the artihmetic operation on <code>c1</code> and <code>c2</code>.
    * 
-   * @param c1 the first operand.
-   * @param c2 the second operand.
+   * @param v1 the first operand.
+   * @param v2 the second operand.
    * @return the result.
    * 
-   * @see expressions.Operator#applyTo(expressions.Constant, expressions.Constant)
+   * @see expressions.Operator#applyTo(Value, Value)
    */
   @Override
-  public Expression applyTo(Constant c1, Constant c2) {
+  public Expression applyTo(Value v1, Value v2) {
     // cast operands to integer constants
-    IntegerConstant ic1 = (IntegerConstant)c1;
-    IntegerConstant ic2 = (IntegerConstant)c2;
+    IntegerConstant ic1 = (IntegerConstant)v1;
+    IntegerConstant ic2 = (IntegerConstant)v2;
 
     if (this.op.equals("+"))
       return new IntegerConstant(ic1.getNumber() + ic2.getNumber());

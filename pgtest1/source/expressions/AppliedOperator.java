@@ -19,16 +19,16 @@ public class AppliedOperator extends Value {
    * can then be applied to another value.
    * 
    * @param operator the binary operator.
-   * @param constant the first value, which must be an
-   *                 integer constant in our simple
-   *                 language.
+   * @param value the first value, which must be an
+   *              integer constant in our simple
+   *              language.
    */
-  public AppliedOperator(Operator operator, Constant constant) {
+  public AppliedOperator(Operator operator, Value value) {
     assert (operator != null);
-    assert (constant != null);
+    assert (value != null);
     
     this.operator = operator;
-    this.constant = constant;
+    this.value = value;
   }
 
   /**
@@ -50,12 +50,12 @@ public class AppliedOperator extends Value {
     assert (v.isValue());
     assert (ruleChain.isEmpty());
     
-    if (this.operator.canApplyTo(this.constant.getClass(), v.getClass())) {
+    if (this.operator.canApplyTo(this.value.getClass(), v.getClass())) {
       // we effectly use (OP) now
       ruleChain.prepend(new Rule(e, Rule.OP));
       
       // and perform the operation
-      return this.operator.applyTo(this.constant, (Constant)v);
+      return this.operator.applyTo(this.value, (Constant)v);
     }
     else {
       // fallback to the default application and get stuck
@@ -81,10 +81,10 @@ public class AppliedOperator extends Value {
   }
   
   /**
-   * @return Returns the constant.
+   * @return Returns the value.
    */
-  public Constant getConstant() {
-    return this.constant;
+  public Value getValue() {
+    return this.value;
   }
   
   /**
@@ -97,11 +97,11 @@ public class AppliedOperator extends Value {
     PrettyStringBuilder builder = new PrettyStringBuilder(this, 5);
     builder.appendBuilder(this.operator.toPrettyStringBuilder(), 5);
     builder.appendText(" ");
-    builder.appendBuilder(this.constant.toPrettyStringBuilder(), 6);
+    builder.appendBuilder(this.value.toPrettyStringBuilder(), 6);
     return builder;
   }
   
   // the internal structure
   private Operator operator;
-  private Constant constant;
+  private Value value;
 }

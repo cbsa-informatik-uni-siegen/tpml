@@ -397,7 +397,7 @@ public final class ProofTree implements TreeModel, TypeVariableAllocator {
       // generate new sub nodes
       AppliedOperator aop = (AppliedOperator)expression;
       newNode.addChild(new Judgement(environment, aop.getOperator(), tau1));
-      newNode.addChild(new Judgement(environment, aop.getConstant(), tau2));
+      newNode.addChild(new Judgement(environment, aop.getValue(), tau2));
     }
     else if (expression instanceof Tuple && rule == Rule.TUPLE) {
       // cast to tuple expression

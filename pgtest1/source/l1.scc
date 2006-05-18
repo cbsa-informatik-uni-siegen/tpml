@@ -38,6 +38,7 @@ Tokens
  projection = '#' digit+ '_' digit+;
  ref = 'ref';
  deref = '!';
+ assign = ':=';
 
  unit = '()';
  true = 'true';
@@ -71,7 +72,8 @@ Productions
   {greater_than} comparison greater_than term {-> New expression.infix(comparison.expression, New expression.greater_than(greater_than), term.expression)} |
   {lower_equal} comparison lower_equal term {-> New expression.infix(comparison.expression, New expression.lower_equal(lower_equal), term.expression)} |
   {greater_equal} comparison greater_equal term {-> New expression.infix(comparison.expression, New expression.greater_equal(greater_equal), term.expression)} |
-  {equal} comparison equal term {-> New expression.infix(comparison.expression, New expression.equal(equal), term.expression)};
+  {equal} comparison equal term {-> New expression.infix(comparison.expression, New expression.equal(equal), term.expression)} |
+  {assign} comparison assign term {-> New expression.infix(comparison.expression, New expression.assign(assign), term.expression)};
 
  term {-> expression} =
   {factor} factor {-> factor.expression} |
@@ -123,7 +125,8 @@ Productions
   {greater_than} greater_than {-> New expression.greater_than(greater_than)} |
   {lower_equal} lower_equal {-> New expression.lower_equal(lower_equal)} |
   {greater_equal} greater_equal {-> New expression.greater_equal(greater_equal)} |
-  {equal} equal {-> New expression.equal(equal)};
+  {equal} equal {-> New expression.equal(equal)} |
+  {assign} assign {-> New expression.assign(assign)};
 
 
 Abstract Syntax Tree
@@ -157,5 +160,6 @@ Abstract Syntax Tree
   {fst} fst |
   {snd} snd |
   {ref} ref |
-  {deref} deref;
+  {deref} deref |
+  {assign} assign;
 

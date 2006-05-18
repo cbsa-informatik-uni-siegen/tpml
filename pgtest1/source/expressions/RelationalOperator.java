@@ -4,7 +4,7 @@ package expressions;
  * Represents a relational operator.
  *
  * @author Benedikt Meurer
- * @version $Id$
+ * @version $Id:RelationalOperator.java 121 2006-04-28 16:45:27Z benny $
  */
 public class RelationalOperator extends Operator {
   /**
@@ -28,17 +28,17 @@ public class RelationalOperator extends Operator {
    * Performs the relational operation on <code>c1</code> and <code>c2</code>
    * and returns a boolean constant.
    * 
-   * @param c1 the first operand.
-   * @param c2 the second operand.
+   * @param v1 the first operand.
+   * @param v2 the second operand.
    * @return the result.
    * 
-   * @see expressions.Operator#applyTo(expressions.Constant, expressions.Constant)
+   * @see expressions.Operator#applyTo(Value, Value)
    */
   @Override
-  public final Expression applyTo(Constant c1, Constant c2) {
+  public final Expression applyTo(Value v1, Value v2) {
     // cast the operands to integer constants
-    IntegerConstant ic1 = (IntegerConstant)c1;
-    IntegerConstant ic2 = (IntegerConstant)c2;
+    IntegerConstant ic1 = (IntegerConstant)v1;
+    IntegerConstant ic2 = (IntegerConstant)v2;
    
     if (this.op.equals("="))
       return (ic1.getNumber() == ic2.getNumber()) ? BooleanConstant.TRUE : BooleanConstant.FALSE;

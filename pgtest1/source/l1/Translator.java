@@ -11,6 +11,7 @@ import l1.analysis.DepthFirstAdapter;
 import l1.node.AAbstractionExpression;
 import l1.node.AAndExpression;
 import l1.node.AApplicationExpression;
+import l1.node.AAssignExpression;
 import l1.node.AConditionExpression;
 import l1.node.ADerefExpression;
 import l1.node.ADivideExpression;
@@ -42,6 +43,7 @@ import expressions.Abstraction;
 import expressions.And;
 import expressions.Application;
 import expressions.ArithmeticOperator;
+import expressions.Assign;
 import expressions.BooleanConstant;
 import expressions.Condition;
 import expressions.Deref;
@@ -356,6 +358,14 @@ public class Translator extends DepthFirstAdapter {
   @Override
   public void outADerefExpression(ADerefExpression node) {
     this.expressions.push(new Deref());
+  }
+  
+  /**
+   * @see l1.analysis.DepthFirstAdapter#outAAssignExpression(l1.node.AAssignExpression)
+   */
+  @Override
+  public void outAAssignExpression(AAssignExpression node) {
+    this.expressions.push(new Assign());
   }
     
   private Stack<Expression> expressions = new Stack<Expression>();

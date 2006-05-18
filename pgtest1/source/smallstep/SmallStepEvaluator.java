@@ -11,9 +11,9 @@ import expressions.Abstraction;
 import expressions.And;
 import expressions.Application;
 import expressions.AppliedOperator;
+import expressions.Assign;
 import expressions.BooleanConstant;
 import expressions.Condition;
-import expressions.Constant;
 import expressions.Deref;
 import expressions.Expression;
 import expressions.Fst;
@@ -29,6 +29,8 @@ import expressions.Recursion;
 import expressions.Ref;
 import expressions.Snd;
 import expressions.Tuple;
+import expressions.UnitConstant;
+import expressions.Value;
 
 /**
  * Evaluator for expression using the small step
@@ -281,7 +283,8 @@ final class SmallStepEvaluator {
     Operator op = infixOperation.getOp();
     
     // check if e1 is not already an integer constant
-    if (!(e1 instanceof IntegerConstant)) {
+    if ((!(op instanceof Assign) && !(e1 instanceof IntegerConstant))
+        || (op instanceof Assign && !(e1 instanceof Location))) {
       // try to evaluate e1
       e1 = evaluate(e1);
       
@@ -301,7 +304,8 @@ final class SmallStepEvaluator {
     }
     
     // check if e2 is not already an integer constant
-    if (!(e2 instanceof IntegerConstant)) {
+    if ((!(op instanceof Assign) && !(e1 instanceof IntegerConstant))
+        || (op instanceof Assign && !e2.isValue())) {
       // try to evaluate e2
       e2 = evaluate(e2);
       
@@ -318,11 +322,24 @@ final class SmallStepEvaluator {
       return new InfixOperation(op, e1, e2);
     }
     
-    // we can perform (OP) now
-    addProofStep(SmallStepProofRule.OP, infixOperation);
+    // check if we have (ASSIGN) or (OP)
+    if (op instanceof Assign) {
+      // we can perform (ASSIGN) now
+      addProofStep(SmallStepProofRule.ASSIGN, infixOperation);
+      
+      // change the value at the memory location
+      this.store.put((Location)e1, e2);
+      
+      // return nothing
+      return UnitConstant.UNIT;
+    }
+    else {
+      // we can perform (OP) now
+      addProofStep(SmallStepProofRule.OP, infixOperation);
 
-    // apply the operator to the constant
-    return op.applyTo((Constant)e1, (Constant)e2);
+      // apply the operator to the constant
+      return op.applyTo((Value)e1, (Value)e2);
+    }
   }
   
   @SuppressWarnings("unused")
@@ -490,9 +507,17 @@ final class SmallStepEvaluator {
   }
   
   @SuppressWarnings("unused")
-  private Expression applyAppliedOperator(Application application, AppliedOperator aop, IntegerConstant c) {
-    addProofStep(SmallStepProofRule.OP, application);
-    return aop.getOperator().applyTo(aop.getConstant(), c);
+  private Expression applyAppliedOperator(Application application, AppliedOperator aop, Value v) {
+    // check if we have (ASSIGN) or (OP)
+    if (aop.getOperator() instanceof Assign) {
+      addProofStep(SmallStepProofRule.ASSIGN, application);
+      this.store.put((Location)aop.getValue(), v);
+      return UnitConstant.UNIT;
+    }
+    else {
+      addProofStep(SmallStepProofRule.OP, application);
+      return aop.getOperator().applyTo(aop.getValue(), v);
+    }
   }
   
   @SuppressWarnings("unused")

@@ -29,6 +29,8 @@ final class SmallStepProofRule extends ProofRule {
   
   static final SmallStepProofRule APP_RIGHT_EXN = new SmallStepProofRule("APP-RIGHT-EXN", 1);
   
+  static final SmallStepProofRule ASSIGN = new SmallStepProofRule("ASSIGN", 0);
+  
   static final SmallStepProofRule BETA_V = new SmallStepProofRule("BETA-V", 0);
   
   static final SmallStepProofRule COND_EVAL = new SmallStepProofRule("COND-EVAL", 1);

@@ -44,11 +44,11 @@ public abstract class Operator extends Constant {
    * and <code>c2</code> and returns the result, which
    * can be either a value or an exception.
    * 
-   * @param c1 the first operand.
-   * @param c2 the second operand.
+   * @param v1 the first operand.
+   * @param v2 the second operand.
    * @return the result or an expression.
    */
-  public abstract Expression applyTo(Constant c1, Constant c2);
+  public abstract Expression applyTo(Value v1, Value v2);
   
   /**
    * Returns the base pretty print priority for this operator.
