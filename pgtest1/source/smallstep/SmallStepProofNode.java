@@ -4,6 +4,7 @@ import common.AbstractProofNode;
 import common.ProofNode;
 import common.ProofRuleException;
 import common.ProofStep;
+import common.Store;
 
 import expressions.Expression;
 
@@ -27,6 +28,19 @@ public class SmallStepProofNode extends AbstractProofNode {
    */
   SmallStepProofNode(Expression expression) {
     super(expression.normalize());
+  }
+  
+  /**
+   * Allocates a new small step proof node for the given
+   * <code>expression</code> and <code>store</code>. The
+   * <code>expression</code> is normalized before creating
+   * the node.
+   * 
+   * @param expression the {@link Expression} for this node.
+   * @param store the {@link Store} for this node.
+   */
+  SmallStepProofNode(Expression expression, Store store) {
+    super(expression.normalize(), store);
   }
   
   
@@ -76,7 +90,7 @@ public class SmallStepProofNode extends AbstractProofNode {
    */
   SmallStepProofNode apply(SmallStepProofRule rule) throws ProofRuleException {
     // evaluate the expression and determine the proof steps
-    SmallStepEvaluator evaluator = new SmallStepEvaluator(getExpression());
+    SmallStepEvaluator evaluator = new SmallStepEvaluator(getExpression(), getStore());
     Expression expression = evaluator.getExpression();
     ProofStep[] evaluatedSteps = evaluator.getSteps();
     
@@ -116,7 +130,7 @@ public class SmallStepProofNode extends AbstractProofNode {
     if (isProven()) {
       // return the node for the next expression
       // add the child node for the next expression
-      return new SmallStepProofNode(expression);
+      return new SmallStepProofNode(expression, evaluator.getStore());
     }
     
     // not yet done with this node 

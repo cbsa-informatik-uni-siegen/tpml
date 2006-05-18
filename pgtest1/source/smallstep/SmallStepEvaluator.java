@@ -3,7 +3,9 @@ package smallstep;
 import java.lang.reflect.Method;
 import java.util.Vector;
 
+import common.MutableStore;
 import common.ProofStep;
+import common.Store;
 
 import expressions.Abstraction;
 import expressions.And;
@@ -12,16 +14,19 @@ import expressions.AppliedOperator;
 import expressions.BooleanConstant;
 import expressions.Condition;
 import expressions.Constant;
+import expressions.Deref;
 import expressions.Expression;
 import expressions.Fst;
 import expressions.InfixOperation;
 import expressions.IntegerConstant;
 import expressions.Let;
 import expressions.LetRec;
+import expressions.Location;
 import expressions.Operator;
 import expressions.Or;
 import expressions.Projection;
 import expressions.Recursion;
+import expressions.Ref;
 import expressions.Snd;
 import expressions.Tuple;
 
@@ -47,6 +52,13 @@ final class SmallStepEvaluator {
    */
   private Vector<ProofStep> steps = new Vector<ProofStep>();
   
+  /**
+   * The resulting {@link common.Store}.
+   * 
+   * @see #getStore()
+   */
+  private MutableStore store;
+  
 
   
   //
@@ -62,9 +74,15 @@ final class SmallStepEvaluator {
    * @param expression the {@link Expression} for which
    *                   to determine the next evaluation
    *                   step in the proof.
+   * @param store the {@link common.Store} to start with.                   
    */
-  SmallStepEvaluator(Expression expression) {
-    this.expression = evaluate(expression);
+  SmallStepEvaluator(Expression expression, Store store) {
+    // create store, remember expression
+    this.expression = expression;
+    this.store = new MutableStore(store);
+    
+    // evaluate expression
+    this.expression = evaluate(this.expression);
   }
   
   
@@ -95,6 +113,16 @@ final class SmallStepEvaluator {
     for (int n = 0; n < steps.length; ++n)
       steps[n] = this.steps.elementAt(steps.length - (n + 1));
     return steps;
+  }
+  
+  /**
+   * Returns the resulting {@link Store} for
+   * the evaluation.
+   * 
+   * @return the resulting store.
+   */
+  public Store getStore() {
+    return this.store;
   }
   
   
@@ -468,6 +496,24 @@ final class SmallStepEvaluator {
   }
   
   @SuppressWarnings("unused")
+  private Expression applyDeref(Application application, Deref deref, Location location) {
+    try {
+      // lookup the expression for the location
+      Expression e = this.store.get(location);
+      
+      // we performed (DEREF)
+      addProofStep(SmallStepProofRule.DEREF, application);
+      
+      // and return the expression
+      return e;
+    }
+    catch (IllegalArgumentException e) {
+      // the location is invalid
+      return application;
+    }
+  }
+  
+  @SuppressWarnings("unused")
   private Expression applyFst(Application application, Fst fst, Tuple tuple) {
     // check if the fst operator can be applied to the tuple
     if (tuple.arity() == 2) {
@@ -489,6 +535,19 @@ final class SmallStepEvaluator {
     else {
       return application;
     }
+  }
+  
+  @SuppressWarnings("unused")
+  private Expression applyRef(Application application, Ref ref, Expression e) {
+    // we're about to perform (REF)
+    addProofStep(SmallStepProofRule.REF, application);
+    
+    // allocate a new location and store the value
+    Location location = this.store.alloc();
+    this.store.put(location, e);
+    
+    // return the new location
+    return location;
   }
   
   @SuppressWarnings("unused")

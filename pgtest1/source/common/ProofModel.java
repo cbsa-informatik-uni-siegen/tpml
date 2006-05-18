@@ -38,6 +38,24 @@ public interface ProofModel extends Bean, TreeModel {
    *         user interface.
    */
   public ProofRule[] getRules();
+  
+  /**
+   * Returns <code>true</code> if memory operations, as
+   * part of the imperative concepts, are used while
+   * proving properties of a program.
+   * 
+   * If memory is enabled, the {@link ProofNode#getStore()}
+   * method returns the {@link Store} at the given node.
+   * Otherwise an invalid, usually empty store, will be
+   * returned.
+   * 
+   * @return <code>true</code> if memory operations are
+   *         used while proving properties of a program.
+   *         
+   * @see Store
+   * @see ProofNode#getStore()         
+   */
+  public boolean isMemoryEnabled();
 
   /**
    * Returns <code>true</code> if the model has

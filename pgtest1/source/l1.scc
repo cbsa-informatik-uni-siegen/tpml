@@ -36,6 +36,8 @@ Tokens
  fst = 'fst';
  snd = 'snd';
  projection = '#' digit+ '_' digit+;
+ ref = 'ref';
+ deref = '!';
 
  unit = '()';
  true = 'true';
@@ -103,7 +105,9 @@ Productions
   {operator} left_paren operator right_paren {-> operator.expression} |
   {projection} projection {-> New expression.projection(projection)} |
   {fst} fst {-> New expression.fst(fst)} |
-  {snd} snd {-> New expression.snd(snd)};
+  {snd} snd {-> New expression.snd(snd)} |
+  {ref} ref {-> New expression.ref(ref)} |
+  {deref} deref {-> New expression.deref(deref)};
 
  bool {-> expression} =
   {true} true {-> New expression.true(true)} |
@@ -151,5 +155,7 @@ Abstract Syntax Tree
   {equal} equal |
   {projection} projection |
   {fst} fst |
-  {snd} snd;
+  {snd} snd |
+  {ref} ref |
+  {deref} deref;
 

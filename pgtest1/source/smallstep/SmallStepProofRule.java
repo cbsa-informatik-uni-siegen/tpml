@@ -39,6 +39,8 @@ final class SmallStepProofRule extends ProofRule {
   
   static final SmallStepProofRule COND_TRUE = new SmallStepProofRule("COND-TRUE", 0);
   
+  static final SmallStepProofRule DEREF = new SmallStepProofRule("DEREF", 0);
+  
   static final SmallStepProofRule FST = new SmallStepProofRule("FST", 0);
   
   static final SmallStepProofRule LET_EVAL = new SmallStepProofRule("LET-EVAL", 1);
@@ -56,6 +58,8 @@ final class SmallStepProofRule extends ProofRule {
   static final SmallStepProofRule OR_FALSE = new SmallStepProofRule("OR-FALSE", 0);
   
   static final SmallStepProofRule OR_TRUE = new SmallStepProofRule("OR-TRUE", 0);
+  
+  static final SmallStepProofRule REF = new SmallStepProofRule("REF", 0);
   
   static final SmallStepProofRule SND = new SmallStepProofRule("SND", 0);
   

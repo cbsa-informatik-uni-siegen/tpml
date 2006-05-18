@@ -7,11 +7,60 @@ import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import expressions.*;
-
-import l1.analysis.*;
-import l1.node.*;
-import l1.parser.ParserException;
+import l1.analysis.DepthFirstAdapter;
+import l1.node.AAbstractionExpression;
+import l1.node.AAndExpression;
+import l1.node.AApplicationExpression;
+import l1.node.AConditionExpression;
+import l1.node.ADerefExpression;
+import l1.node.ADivideExpression;
+import l1.node.AEqualExpression;
+import l1.node.AFalseExpression;
+import l1.node.AFstExpression;
+import l1.node.AGreaterEqualExpression;
+import l1.node.AGreaterThanExpression;
+import l1.node.AIdentifierExpression;
+import l1.node.AInfixExpression;
+import l1.node.ALetExpression;
+import l1.node.ALetrecExpression;
+import l1.node.ALowerEqualExpression;
+import l1.node.ALowerThanExpression;
+import l1.node.AMinusExpression;
+import l1.node.AModuloExpression;
+import l1.node.AMultiplyExpression;
+import l1.node.ANumberExpression;
+import l1.node.AOrExpression;
+import l1.node.APlusExpression;
+import l1.node.AProjectionExpression;
+import l1.node.ARecursionExpression;
+import l1.node.ARefExpression;
+import l1.node.ASndExpression;
+import l1.node.ATrueExpression;
+import l1.node.ATupleExpression;
+import l1.node.AUnitExpression;
+import expressions.Abstraction;
+import expressions.And;
+import expressions.Application;
+import expressions.ArithmeticOperator;
+import expressions.BooleanConstant;
+import expressions.Condition;
+import expressions.Deref;
+import expressions.Expression;
+import expressions.Fst;
+import expressions.Identifier;
+import expressions.InfixOperation;
+import expressions.IntegerConstant;
+import expressions.Let;
+import expressions.LetRec;
+import expressions.Operator;
+import expressions.Or;
+import expressions.Projection;
+import expressions.Recursion;
+import expressions.Ref;
+import expressions.RelationalOperator;
+import expressions.Snd;
+import expressions.Tuple;
+import expressions.UnitConstant;
 
 /**
  * Used to translate an abstract syntax tree as produced
@@ -291,6 +340,22 @@ public class Translator extends DepthFirstAdapter {
   @Override
   public void outASndExpression(ASndExpression node) {
     this.expressions.push(new Snd());
+  }
+  
+  /**
+   * @see l1.analysis.DepthFirstAdapter#outARefExpression(l1.node.ARefExpression)
+   */
+  @Override
+  public void outARefExpression(ARefExpression node) {
+    this.expressions.push(new Ref());
+  }
+  
+  /**
+   * @see l1.analysis.DepthFirstAdapter#outADerefExpression(l1.node.ADerefExpression)
+   */
+  @Override
+  public void outADerefExpression(ADerefExpression node) {
+    this.expressions.push(new Deref());
   }
     
   private Stack<Expression> expressions = new Stack<Expression>();

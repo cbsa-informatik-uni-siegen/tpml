@@ -33,7 +33,8 @@ public class SmallStepTreeView extends JFrame {
   /**
    * Simple test expression.
    */
-  private static final String SIMPLE = "let rec f = lambda x.if x = 0 then 1 else x * (f (x - 1)) in f 3";
+  private static final String SIMPLE = "let x = ref 6 in !x";
+  //private static final String SIMPLE = "let rec f = lambda x.if x = 0 then 1 else x * (f (x - 1)) in f 3";
   //private static final String SIMPLE = "(1 + 2, 5 * 8, let x = 9 in (8,(+) 9 x), y)";
 
   
@@ -62,8 +63,11 @@ public class SmallStepTreeView extends JFrame {
           builder.append(", ");
         builder.append(node.getSteps()[n].getRule().getName());
       }
-      builder.append("] -> ");
+      builder.append("] -> (");
       builder.append(node.getExpression());
+      builder.append(", ");
+      builder.append(node.getStore());
+      builder.append(')');
       setText(builder.toString());
       return this;
     }
