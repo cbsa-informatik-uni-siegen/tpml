@@ -1,6 +1,5 @@
 package expressions;
 
-import java.util.Set;
 
 /**
  * Presents a projection, which can be used to select
@@ -79,16 +78,6 @@ public class Projection extends Value {
     }
   }
   
-  /**
-   * {@inheritDoc}
-   * 
-   * @see expressions.Expression#free()
-   */
-  @Override
-  public Set<String> free() {
-    return Expression.EMPTY_SET;
-  }
-
   /**
    * @see expressions.Expression#toPrettyStringBuilder()
    */

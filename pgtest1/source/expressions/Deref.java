@@ -1,6 +1,5 @@
 package expressions;
 
-import java.util.Set;
 
 /**
  * The deref operator, written as <code>!</code>.
@@ -26,19 +25,6 @@ public final class Deref extends Value {
   // Primitives
   //
   
-  /**
-   * Returns the set of free identifiers, which
-   * is empty for the deref operator.
-   * 
-   * @return the empty set.
-   * 
-   * @see expressions.Expression#free()
-   */
-  @Override
-  public Set<String> free() {
-    return EMPTY_SET;
-  }
-
   /**
    * {@inheritDoc}
    * 

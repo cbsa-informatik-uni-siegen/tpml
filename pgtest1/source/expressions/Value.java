@@ -15,25 +15,6 @@ public abstract class Value extends Expression {
   }
   
   /**
-   * Performs the substitution for values.
-   * Since most values are atomic, the substitution
-   * is a noop by default and will just return the
-   * value itself. There is one major exception to
-   * this rule, the lambda abstraction (ABSTR),
-   * which must perform the substitution on its
-   * subexpression and therefore overrides this
-   * default implementation.
-   * 
-   * @param id the identifier for the substitution.
-   * @param e the expression to substitute.
-   * @return a reference to the value itself.
-   */
-  @Override
-  public Expression substitute(String id, Expression e) {
-    return this;
-  }
-
-  /**
    * Performs the application of <code>this</code> to <code>v</code>
    * and prepends the axiom that was used to <code>ruleChain</code>.
    * If <code>this</code> cannot be applied to <code>v</code>, then

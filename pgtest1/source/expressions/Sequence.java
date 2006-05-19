@@ -135,17 +135,7 @@ public final class Sequence extends Expression {
    */
   @Override
   public Expression substitute(String id, Expression e) {
-    // perform the substitution on the sub expressions
-    Expression e1 = this.e1.substitute(id, e);
-    Expression e2 = this.e2.substitute(id, e);
-    
-    // check if we need a new sequence
-    if (this.e1 != e1 || this.e2 != e2) {
-      return new Sequence(e1, e2);
-    }
-    else {
-      return this;
-    }
+    return new Sequence(this.e1.substitute(id, e), this.e2.substitute(id, e));
   }
   
   /**

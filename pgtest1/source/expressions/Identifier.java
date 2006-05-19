@@ -20,10 +20,12 @@ public class Identifier extends Expression {
    * @return the new expression.
    */
   public Expression substitute(String id, Expression e) {
-    if (this.name.equals(id))
+    if (this.name.equals(id)) {
       return e;
-    else
+    }
+    else {
       return this;
+    }
   }
 
   /**

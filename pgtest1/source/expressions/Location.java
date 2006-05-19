@@ -1,6 +1,5 @@
 package expressions;
 
-import java.util.Set;
 
 /**
  * Represents a memory location.
@@ -61,19 +60,6 @@ public final class Location extends Value {
     return true;
   }
 
-  /**
-   * Returns the empty set as memory locations don't contain
-   * any free identifiers.
-   * 
-   * @return the empty set.
-   * 
-   * @see expressions.Expression#free()
-   */
-  @Override
-  public Set<String> free() {
-    return EMPTY_SET;
-  }
-  
   /**
    * Returns the pretty string builder for memory locations.
    * 

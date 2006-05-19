@@ -104,17 +104,7 @@ public final class Condition1 extends Expression {
    */
   @Override
   public Expression substitute(String id, Expression e) {
-    // perform the substitution on the sub expressions
-    Expression e0 = this.e0.substitute(id, e);
-    Expression e1 = this.e1.substitute(id, e);
-    
-    // check if we need a new condition1
-    if (this.e0 != e0 || this.e1 != e1) {
-      return new Condition1(e0, e1);
-    }
-    else {
-      return this;
-    }
+    return new Condition1(this.e0.substitute(id, e), this.e1.substitute(id, e));
   }
 
   /**

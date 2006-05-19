@@ -1,7 +1,5 @@
 package expressions;
 
-import java.util.Set;
-
 /**
  * This class represents a runtime exception for the
  * small step interpreter.
@@ -10,31 +8,6 @@ import java.util.Set;
  * @version $Id$
  */
 public class Exn extends Expression {
-  /**
-   * Just returns the expression itself, since no
-   * substitution is possible on exceptions.
-   * 
-   * @param id the identifier.
-   * @param e the expression to substitute.
-   * @return the exception itself.
-   */
-  @Override
-  public Expression substitute(String id, Expression e) {
-    // cannot substitute anything here
-    return this;
-  }
-
-  /**
-   * Returns the empty set, since exceptions
-   * cannot contain any free identifiers.
-   * @return the empty set.
-   * @see expressions.Expression#free()
-   */
-  @Override
-  public Set<String> free() {
-    return Expression.EMPTY_SET;
-  }
-  
   /**
    * Returns the pretty string builder for exceptions.
    * @return the pretty string builder for exceptions.

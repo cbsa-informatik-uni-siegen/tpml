@@ -41,11 +41,19 @@ public abstract class Expression {
    * Substitutes the value <code>v</code> for the identifier <code>>id</code>
    * and returns the resulting expression.
    * 
+   * The default implementation of this method provided by the abstract base
+   * class <code>Expression</code> simply returns a reference to the expression
+   * itself. Derived classes need to override this method if substitution is
+   * possible for those expressions.
+   * 
    * @param id the name of the identifier.
    * @param e the expression to substitute.
+   * 
    * @return the resulting expression.
    */
-  public abstract Expression substitute(String id, Expression e);
+  public Expression substitute(String id, Expression e) {
+    return this;
+  }
 
   /**
    * @throws UnsupportedOperationException on every invocation.
@@ -57,9 +65,18 @@ public abstract class Expression {
   
   /**
    * Returns the free identifiers within this expression.
+   * 
+   * The default implementation of this method provided by
+   * the abstract base class <code>Expression</code> simply
+   * returns the empty set. Derived classes should override
+   * this method if their respective expressions can contain
+   * free identifiers.
+   * 
    * @return the free identifiers within this expression.
    */
-  public abstract Set<String> free();
+  public Set<String> free() {
+    return EMPTY_SET;
+  }
   
   /**
    * Returns <code>true</code> if the expression contains
