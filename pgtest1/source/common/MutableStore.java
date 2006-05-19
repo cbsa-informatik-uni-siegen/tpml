@@ -172,7 +172,10 @@ public final class MutableStore implements Store {
   public Location alloc() {
     // try to find a new unique location
     for (String suffix = "";; suffix = suffix + "'") {
-      for (char c = 'A'; c <= 'Z'; ++c) {
+      for (int n = 0; n < 26; ++n) {
+        // generate the location base character
+        char c = (char)('A' + ((('X' - 'A') + n) % 26));
+        
         // try the location with this name
         Location location = new Location(c + suffix);
         for (Entry entry : this.entries) {
