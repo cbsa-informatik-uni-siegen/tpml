@@ -66,6 +66,17 @@ public abstract class Expression {
   
   /**
    * Returns <code>true</code> if the expression contains
+   * memory references or locations.
+   * 
+   * @return <code>true</code> if the expression contains
+   *                           memory references or locations.
+   */
+  public boolean containsReferences() {
+    return false;
+  }
+  
+  /**
+   * Returns <code>true</code> if the expression contains
    * syntactic sugar, else <code>false</code>.
    * 
    * You can call translateSyntacticSugar() to translate

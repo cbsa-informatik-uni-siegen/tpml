@@ -146,6 +146,16 @@ public final class Or extends Expression {
   }
   
   /**
+   * {@inheritDoc}
+   *
+   * @see expressions.Expression#containsReferences()
+   */
+  @Override
+  public boolean containsReferences() {
+    return (this.e0.containsReferences() || this.e1.containsReferences());
+  }
+  
+  /**
    * Returns <code>true</code> since <b>(OR)</b> is
    * syntactic sugar for <b>(COND)</b>.
    * 

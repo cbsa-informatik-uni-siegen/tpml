@@ -143,6 +143,16 @@ public final class LetRec extends Expression {
   }
   
   /**
+   * {@inheritDoc}
+   *
+   * @see expressions.Expression#containsReferences()
+   */
+  @Override
+  public boolean containsReferences() {
+    return (this.e1.containsReferences() || this.e2.containsReferences());
+  }
+  
+  /**
    * Returns <code>true</code> as <b>(LET-REC)</b> is
    * syntactic sugar.
    * 

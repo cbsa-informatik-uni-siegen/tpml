@@ -120,6 +120,21 @@ public final class Tuple extends Expression {
       free.addAll(e.free());
     return free;
   }
+  
+  /**
+   * {@inheritDoc}
+   *
+   * @see expressions.Expression#containsReferences()
+   */
+  @Override
+  public boolean containsReferences() {
+    for (int n = 0; n < this.expressions.length; ++n) {
+      if (this.expressions[n].containsReferences()) {
+        return true;
+      }
+    }
+    return false;
+  }
 
   /**
    * {@inheritDoc}

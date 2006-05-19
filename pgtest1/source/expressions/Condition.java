@@ -125,6 +125,16 @@ public class Condition extends Expression {
   }
   
   /**
+   * {@inheritDoc}
+   *
+   * @see expressions.Expression#containsReferences()
+   */
+  @Override
+  public boolean containsReferences() {
+    return (this.e0.containsReferences() || this.e1.containsReferences() || this.e2.containsReferences());
+  }
+  
+  /**
    * @return Returns the e0.
    */
   public Expression getE0() {

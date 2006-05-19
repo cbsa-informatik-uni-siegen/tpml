@@ -27,6 +27,16 @@ public final class Ref extends Value {
   //
   
   /**
+   * {@inheritDoc}
+   *
+   * @see expressions.Expression#containsReferences()
+   */
+  @Override
+  public boolean containsReferences() {
+    return true;
+  }
+
+  /**
    * Returns the set of free identifiers, which is
    * empty for the <code>ref</code> operator.
    * 
@@ -38,7 +48,7 @@ public final class Ref extends Value {
   public Set<String> free() {
     return EMPTY_SET;
   }
-
+  
   /**
    * Returns the pretty string builder for the
    * <code>ref</code> operator.

@@ -52,6 +52,16 @@ public final class Location extends Value {
   }
   
   /**
+   * {@inheritDoc}
+   *
+   * @see expressions.Expression#containsReferences()
+   */
+  @Override
+  public boolean containsReferences() {
+    return true;
+  }
+
+  /**
    * Returns the empty set as memory locations don't contain
    * any free identifiers.
    * 
@@ -63,7 +73,7 @@ public final class Location extends Value {
   public Set<String> free() {
     return EMPTY_SET;
   }
-
+  
   /**
    * Returns the pretty string builder for memory locations.
    * 

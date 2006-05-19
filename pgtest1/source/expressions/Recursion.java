@@ -108,6 +108,16 @@ public class Recursion extends Expression {
     set.remove(this.id);
     return set;
   }
+  
+  /**
+   * {@inheritDoc}
+   *
+   * @see expressions.Expression#containsReferences()
+   */
+  @Override
+  public boolean containsReferences() {
+    return this.e.containsReferences();
+  }
 
   /**
    * @return Returns the id.

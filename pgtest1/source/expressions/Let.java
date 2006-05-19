@@ -115,6 +115,16 @@ public class Let extends Expression {
   }
   
   /**
+   * {@inheritDoc}
+   *
+   * @see expressions.Expression#containsReferences()
+   */
+  @Override
+  public boolean containsReferences() {
+    return (this.e1.containsReferences() || this.e2.containsReferences());
+  }
+  
+  /**
    * @return Returns the id.
    */
   public String getId() {

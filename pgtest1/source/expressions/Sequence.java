@@ -71,6 +71,16 @@ public final class Sequence extends Expression {
   
   /**
    * {@inheritDoc}
+   *
+   * @see expressions.Expression#containsReferences()
+   */
+  @Override
+  public boolean containsReferences() {
+    return (this.e1.containsReferences() || this.e2.containsReferences());
+  }
+  
+  /**
+   * {@inheritDoc}
    * 
    * @see expressions.Expression#containsSyntacticSugar()
    */

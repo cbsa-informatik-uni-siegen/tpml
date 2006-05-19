@@ -142,6 +142,16 @@ public class Application extends Expression {
   }
   
   /**
+   * {@inheritDoc}
+   *
+   * @see expressions.Expression#containsReferences()
+   */
+  @Override
+  public boolean containsReferences() {
+    return (this.e1.containsReferences() || this.e2.containsReferences());
+  }
+  
+  /**
    * Returns the first sub expression.
    * 
    * @return the e1.

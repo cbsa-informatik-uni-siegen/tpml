@@ -33,6 +33,11 @@ public class SmallStepProofModel extends AbstractProofModel {
    */
   SmallStepProofModel(Expression expression) {
     super(new SmallStepProofNode(expression));
+    
+    // tell the view that stores should be displayed
+    // if the supplied expression contains any refe-
+    // rences or memory locations
+    setMemoryEnabled(expression.containsReferences());
   }
   
   
