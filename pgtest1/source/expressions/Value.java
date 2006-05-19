@@ -34,20 +34,6 @@ public abstract class Value extends Expression {
   }
 
   /**
-   * Performs the evaluation for values.
-   * Since values are atomic (there are already
-   * values), there's nothing to evaluate and the
-   * method will just return the value itself.
-   * 
-   * @param ruleChain the rule chain.
-   * @return a reference to the value itself.
-   */
-  @Override
-  public final Expression evaluate(RuleChain ruleChain) {
-    return this;
-  }
-
-  /**
    * Performs the application of <code>this</code> to <code>v</code>
    * and prepends the axiom that was used to <code>ruleChain</code>.
    * If <code>this</code> cannot be applied to <code>v</code>, then

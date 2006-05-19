@@ -81,30 +81,6 @@ public final class LetRec extends Expression {
   }
 
   /**
-   * Evaluates the let rec expression.
-   * 
-   * @param ruleChain the chain of rules.
-   * 
-   * @return the resulting expression.
-   * 
-   * @see expressions.Expression#evaluate(expressions.RuleChain)
-   */
-  @Override
-  public Expression evaluate(RuleChain ruleChain) {
-    assert (ruleChain.isEmpty());
-    assert (this.e1 instanceof Expression);
-    assert (this.e2 instanceof Expression);
-    
-    // perform the (UNFOLD), which includes a (LET-EVAL) of course, operation on e1
-    ruleChain.prepend(new Rule(this, Rule.UNFOLD));
-    ruleChain.prepend(new Rule(this, Rule.LET_EVAL));
-    Expression e1 = this.e1.substitute(this.id, new Recursion(this.id, this.e1));
-    
-    // and generate a (LET) expression
-    return new Let(this.id, e1, this.e2);
-  }
-
-  /**
    * Determines the set of free (unbound) identifiers for
    * the let rec expression.
    * 

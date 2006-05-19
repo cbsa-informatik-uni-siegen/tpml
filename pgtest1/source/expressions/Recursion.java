@@ -73,26 +73,6 @@ public class Recursion extends Expression {
   }
 
   /**
-   * Evaluates a <b>(REC)</b> expression using the <b>(UNFOLD)</b>
-   * rule.
-   * 
-   * @param ruleChain the rule chain.
-   * @return the resulting expression.
-   * 
-   * @see expressions.Expression#evaluate(expressions.RuleChain)
-   */
-  @Override
-  public Expression evaluate(RuleChain ruleChain) {
-    assert (ruleChain.isEmpty());
-    
-    // prepend the (UNFOLD) axiom
-    ruleChain.prepend(new Rule(this, Rule.UNFOLD));
-    
-    // perform the substitution
-    return this.e.substitute(this.id, this);
-  }
-
-  /**
    * Returns the free identifiers of the
    * subexpression minus the identifier of
    * the <b>(REC)</b> expression.

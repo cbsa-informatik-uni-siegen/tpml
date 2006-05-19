@@ -48,15 +48,12 @@ public abstract class Expression {
   public abstract Expression substitute(String id, Expression e);
 
   /**
-   * Evaluates the expression and returns the resulting expression.
-   * The rules that were taken into account will be appended to
-   * the given <code>ruleChain</code>.
-   * 
-   * @param ruleChain the <code>RuleChain</code> to which the
-   *        rules required for the evaluation are appended.
-   * @return the resulting expression.        
+   * @throws UnsupportedOperationException on every invocation.
    */
-  public abstract Expression evaluate(RuleChain ruleChain);
+  @Deprecated
+  public final Expression evaluate(RuleChain ruleChain) {
+    throw new UnsupportedOperationException("evaluate() is no longer used");
+  }
   
   /**
    * Returns the free identifiers within this expression.

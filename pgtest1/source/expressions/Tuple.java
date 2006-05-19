@@ -74,43 +74,6 @@ public final class Tuple extends Expression {
   /**
    * {@inheritDoc}
    * 
-   * @see expressions.Expression#evaluate(expressions.RuleChain)
-   */
-  @Override
-  public Expression evaluate(RuleChain ruleChain) {
-    assert (ruleChain.isEmpty());
-    assert (this.expressions.length > 0);
-    
-    // copy all subexpressions
-    Expression[] expressions = new Expression[this.expressions.length];
-    for (int n = 0; n < expressions.length; ++n)
-      expressions[n] = this.expressions[n];
-    
-    // evaluate the first non-value subexpression
-    for (int m = 0; m < expressions.length && ruleChain.isEmpty(); ++m) {
-      // evaluate the subexpression
-      expressions[m] = this.expressions[m].evaluate(ruleChain);
-      
-      // check if we have to forward an exception
-      if (expressions[m] instanceof Exn) {
-        ruleChain.prepend(new Rule(this, Rule.TUPLE_EXN));
-        return expressions[m];
-      }
-    }
-    
-    // check if any subexpression was evaluated
-    if (!ruleChain.isEmpty()) {
-      ruleChain.prepend(new Rule(this, Rule.TUPLE));
-      return new Tuple(expressions);
-    }
-
-    // nothing changed
-    return this;
-  }
-
-  /**
-   * {@inheritDoc}
-   * 
    * @see expressions.Expression#free()
    */
   @Override

@@ -25,20 +25,6 @@ public class Exn extends Expression {
   }
 
   /**
-   * Just returns the expression itself, since no
-   * evaluation is possible on exceptions. Nothing
-   * is added to the <code>ruleChain</code>.
-   * 
-   * @param ruleChain the chain of rules.
-   * @return the exception itself.
-   */
-  @Override
-  public Expression evaluate(RuleChain ruleChain) {
-    // cannot evaluate an exception
-    return this;
-  }
-  
-  /**
    * Returns the empty set, since exceptions
    * cannot contain any free identifiers.
    * @return the empty set.

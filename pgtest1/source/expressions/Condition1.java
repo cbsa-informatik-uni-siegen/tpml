@@ -120,16 +120,6 @@ public final class Condition1 extends Expression {
   /**
    * {@inheritDoc}
    * 
-   * @see expressions.Expression#evaluate(expressions.RuleChain)
-   */
-  @Override
-  public Expression evaluate(RuleChain ruleChain) {
-    return null;
-  }
-
-  /**
-   * {@inheritDoc}
-   * 
    * @see expressions.Expression#free()
    */
   @Override

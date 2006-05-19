@@ -57,58 +57,6 @@ public class Condition extends Expression {
     return new Condition(e0, e1, e2);
   }
 
-  public Expression evaluate(RuleChain ruleChain) {
-    assert (ruleChain.isEmpty());
-    assert (this.e0 instanceof Expression);
-    assert (this.e1 instanceof Expression);
-    assert (this.e2 instanceof Expression);
-    
-    // evalue e0 (may already be a value)
-    Expression e0 = this.e0.evaluate(ruleChain);
-    
-    // check if any rules were applied in the evaluation
-    // of e0 (if not, then e0 was already a value), e0
-    // may also be an exception to forward
-    if (!ruleChain.isEmpty()) {
-      if (e0 instanceof Exn) {
-        // prepend (COND-EVAL-EXN)
-        ruleChain.prepend(new Rule(this, Rule.COND_EVAL_EXN));
-        return e0;
-      }
-      else {
-        // prepend (COND-EVAL)
-        ruleChain.prepend(new Rule(this, Rule.COND_EVAL));
-        return new Condition(e0, this.e1, this.e2);
-      }
-    }
-    
-    // if e0 is not a boolean constant, then
-    // the evaluation got stuck and there are
-    // no more small steps to perform
-    if (!(e0 instanceof BooleanConstant))
-      return new Condition(e0, this.e1, this.e2);
-    
-    // if we get here, e0 must be a boolean
-    // constant and the rule chain is empty
-    assert (e0 instanceof BooleanConstant);
-    assert (ruleChain.isEmpty());
-    
-    // cast to boolean constant
-    BooleanConstant v0 = (BooleanConstant)e0;
-    
-    // check if the conditional value is true
-    if (v0.isTrue()) {
-      // prepend (COND-TRUE)
-      ruleChain.prepend(new Rule(this, Rule.COND_TRUE));
-      return this.e1;
-    }
-    else {
-      // prepend (COND-FALSE)
-      ruleChain.prepend(new Rule(this, Rule.COND_FALSE));
-      return this.e2;
-    }
-  }
-
   /**
    * Returns the free identifiers of the
    * subexpressions.

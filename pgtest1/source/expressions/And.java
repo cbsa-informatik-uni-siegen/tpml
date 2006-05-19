@@ -59,64 +59,6 @@ public final class And extends Expression {
   }
 
   /**
-   * Evaluates the expression and adds applied rules to the
-   * <code>ruleChain</code>.
-   * 
-   * @param ruleChain target chain of rules.
-   * 
-   * @return the resulting expression.
-   * 
-   * @see expressions.Expression#evaluate(expressions.RuleChain)
-   */
-  @Override
-  public Expression evaluate(RuleChain ruleChain) {
-    assert (ruleChain.isEmpty());
-    assert (this.e0 instanceof Expression);
-    assert (this.e1 instanceof Expression);
-    
-    // evaluate e0 (may already be a value)
-    Expression e0 = this.e0.evaluate(ruleChain);
-    
-    // check if any rules were applied in the evaluation
-    // of e0 (if not, then e0 was already a value), e0
-    // may also be an exception to forward
-    if (!ruleChain.isEmpty()) {
-      if (e0 instanceof Exn) {
-        // prepend (AND-EVAL-EXN)
-        ruleChain.prepend(new Rule(this, Rule.AND_EVAL_EXN));
-        return e0;
-      }
-      else {
-        // prepend (AND-EVAL)
-        ruleChain.prepend(new Rule(this, Rule.AND_EVAL));
-        return new And(e0, this.e1);
-      }
-    }
-    
-    // if e0 is still not a boolean constant, then
-    // the evaluation got stuck and there are no
-    // more small steps to perform
-    if (!(e0 instanceof BooleanConstant))
-      return new And(e0, this.e1);
-
-    // if we get here, e0 must be a boolean
-    // constant and the rule chain is empty
-    assert (e0 instanceof BooleanConstant);
-    assert (ruleChain.isEmpty());
-    
-    // now e0 is either true or false
-    BooleanConstant c0 = (BooleanConstant)e0;
-    if (c0.isTrue()) {
-      ruleChain.prepend(new Rule(this, Rule.AND_TRUE));
-      return this.e1;
-    }
-    else {
-      ruleChain.prepend(new Rule(this, Rule.AND_FALSE));
-      return BooleanConstant.FALSE;
-    }
-  }
-
-  /**
    * Returns the set of free identifiers for the
    * <code>&&</code> expression.
    * 

@@ -27,16 +27,6 @@ public class Identifier extends Expression {
   }
 
   /**
-   * Just returns the identifier expression.
-   *
-   * @param ruleChain the chain of rules.
-   * @return this identifier expression.
-   */
-  public Expression evaluate(RuleChain ruleChain) {
-    return this;
-  }
-  
-  /**
    * Returns the set that contains this identifier.
    * @return the set that contains this identifier.
    * @see expressions.Expression#free()
