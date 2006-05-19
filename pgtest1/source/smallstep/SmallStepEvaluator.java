@@ -304,7 +304,7 @@ final class SmallStepEvaluator {
     }
     
     // check if e2 is not already an integer constant
-    if ((!(op instanceof Assign) && !(e1 instanceof IntegerConstant))
+    if ((!(op instanceof Assign) && !(e2 instanceof IntegerConstant))
         || (op instanceof Assign && !e2.isValue())) {
       // try to evaluate e2
       e2 = evaluate(e2);

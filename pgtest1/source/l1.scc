@@ -62,9 +62,13 @@ Productions
   {recursion} rec identifier dot [e]:expression {-> New expression.recursion(identifier, e)};
 
  conjunction {-> expression} =
+  {assignment} assignment {-> assignment.expression} |
+  {or} [e1]:conjunction or [e2]:assignment {-> New expression.or(e1.expression, e2.expression)} |
+  {and} [e1]:conjunction and [e2]:assignment {-> New expression.and(e1.expression, e2.expression)};
+
+ assignment {-> expression} =
   {comparison} comparison {-> comparison.expression} |
-  {or} [e1]:conjunction or [e2]:comparison {-> New expression.or(e1.expression, e2.expression)} |
-  {and} [e1]:conjunction and [e2]:comparison {-> New expression.and(e1.expression, e2.expression)};
+  {assign} assignment assign comparison {-> New expression.infix(assignment.expression, New expression.assign(assign), comparison.expression)};
 
  comparison {-> expression} =
   {term} term {-> term.expression} |
@@ -72,8 +76,7 @@ Productions
   {greater_than} comparison greater_than term {-> New expression.infix(comparison.expression, New expression.greater_than(greater_than), term.expression)} |
   {lower_equal} comparison lower_equal term {-> New expression.infix(comparison.expression, New expression.lower_equal(lower_equal), term.expression)} |
   {greater_equal} comparison greater_equal term {-> New expression.infix(comparison.expression, New expression.greater_equal(greater_equal), term.expression)} |
-  {equal} comparison equal term {-> New expression.infix(comparison.expression, New expression.equal(equal), term.expression)} |
-  {assign} comparison assign term {-> New expression.infix(comparison.expression, New expression.assign(assign), term.expression)};
+  {equal} comparison equal term {-> New expression.infix(comparison.expression, New expression.equal(equal), term.expression)};
 
  term {-> expression} =
   {factor} factor {-> factor.expression} |

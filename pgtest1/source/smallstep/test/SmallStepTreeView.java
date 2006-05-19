@@ -33,7 +33,7 @@ public class SmallStepTreeView extends JFrame {
   /**
    * Simple test expression.
    */
-  private static final String SIMPLE = "let x = ref 6 in (x := true, !x)";
+  private static final String SIMPLE = "let f = ref (lambda x.x) in let fact = lambda x.if x = 0 then 1 else x * (!f (x - 1)) in (f := fact, !f 3)";
   //private static final String SIMPLE = "let rec f = lambda x.if x = 0 then 1 else x * (f (x - 1)) in f 3";
   //private static final String SIMPLE = "(1 + 2, 5 * 8, let x = 9 in (8,(+) 9 x), y)";
 
