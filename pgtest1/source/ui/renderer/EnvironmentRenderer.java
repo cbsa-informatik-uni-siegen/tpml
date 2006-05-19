@@ -56,7 +56,7 @@ public class EnvironmentRenderer {
 			Location l = locs.nextElement();
 			Expression exp = this.store.get(l);
 			width += this.fontMetrics.stringWidth(l + ": " + exp);
-			
+			numElements++;
 		}
 		if (numElements >= 2) {
 			width += (numElements-1) * this.fontMetrics.stringWidth(", ");

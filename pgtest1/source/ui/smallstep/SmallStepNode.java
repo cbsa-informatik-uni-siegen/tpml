@@ -379,7 +379,6 @@ class SmallStepNode extends AbstractNode {
 	 */
 	public void paintComponent(Graphics g) {
 		
-		
 		// now draw the expression
 		int heightDiv2 = this.expMaxSize.height / 2;
 		int posX = center;
