@@ -1,5 +1,7 @@
 package ui;
 
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.util.LinkedList;
 
 import javax.swing.JComponent;
@@ -25,6 +27,12 @@ public abstract class AbstractView extends JComponent implements TreeModelListen
 		reloadTree();
 		
 		relayout();
+		
+		this.addComponentListener(new ComponentAdapter() {
+			public void componentResized (ComponentEvent event) {
+				doLayouting();
+			}
+		});
 	}
 	
 	public void treeNodesChanged(TreeModelEvent e) {
@@ -143,5 +151,7 @@ public abstract class AbstractView extends JComponent implements TreeModelListen
 	protected abstract AbstractNode createNode(ProofNode node);
 	
 	protected abstract void relayout();
+	
+	protected abstract void doLayouting();
 	
 }

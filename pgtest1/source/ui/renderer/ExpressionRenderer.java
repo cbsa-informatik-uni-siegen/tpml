@@ -4,11 +4,9 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
-import java.awt.Graphics2D;
+import java.awt.Graphics;
 import java.text.CharacterIterator;
-
-import javax.swing.JComboBox;
-
+import java.util.LinkedList;
 
 import expressions.Expression;
 import expressions.PrettyAnnotation;
@@ -23,11 +21,11 @@ import expressions.PrettyString;
  */
 public class ExpressionRenderer {
 	
-	private class CheckerReturn {
-		public Dimension				size;
+	private class CheckerResult {
+		public Dimension			size;
 		public int					rows;
 		public PrettyAnnotation		annotation;
-		public CheckerReturn(Dimension s, int r, PrettyAnnotation a) {
+		public CheckerResult(Dimension s, int r, PrettyAnnotation a) {
 			this.size 		= s; 
 			this.rows 		= r; 
 			this.annotation	= a;
@@ -55,10 +53,12 @@ public class ExpressionRenderer {
 	private		int					fontAscent;
 	private		int					fontDescent;
 	
-	private 	CheckerReturn		bestCheckerReturn;
+	private 	CheckerResult		bestCheckerReturn;
+	
+	private 	LinkedList<CheckerResult>	checkerResults = new LinkedList<CheckerResult>();
 	
 	
-	private CheckerReturn checkExpression (PrettyString prettyString, PrettyAnnotation annotation) {
+	private CheckerResult checkExpression (PrettyString prettyString, PrettyAnnotation annotation) {
 		Dimension d = new Dimension ();
 		int width 	= 0;
 		int height	= 0;
@@ -101,7 +101,7 @@ public class ExpressionRenderer {
 		d.height = height;
 		rows++;
 
-		return new CheckerReturn (d, rows, annotation);
+		return new CheckerResult (d, rows, annotation);
 	}
 	
 	/**
@@ -162,28 +162,14 @@ public class ExpressionRenderer {
 	 * @return				The actual needed size for the environment
 	 */
 	public Dimension getNeededSize (int maxWidth) {
-		// first check the expression with no line breaks
-		PrettyString prettyString = this.expression.toPrettyString();
-		CheckerReturn smallest	= null;
-		CheckerReturn biggest 	= null;
-		
-		// put the first checkExpression in all the used CheckerReturn
-		CheckerReturn current = checkExpression (prettyString, null);
-		if (current.size.width <= maxWidth) {
-			this.bestCheckerReturn = current;
-			return bestCheckerReturn.size;
-		}
-		
-		// now check for the biggest style to render the expression that
-		// is smaller than the maxWidth
-		// and check for the real smallest style
-		for (PrettyAnnotation pa : prettyString.getAnnotations()) {
-			current = checkExpression (prettyString, pa);
-			if (smallest == null || current.size.width < smallest.size.width) {
-				smallest = current;
+		CheckerResult smallest 	= null;
+		CheckerResult biggest	= null;
+		for (CheckerResult cr : this.checkerResults) {
+			if (smallest == null || cr.size.width < smallest.size.width) {
+				smallest = cr;
 			}
-			if (current.size.width <= maxWidth && (biggest == null || current.size.width > biggest.size.width)) {
-				biggest = current;
+			if (cr.size.width <= maxWidth && (biggest == null || cr.size.width > biggest.size.width)) {
+				biggest = cr;
 			}
 		}
 		
@@ -191,8 +177,20 @@ public class ExpressionRenderer {
 		if (this.bestCheckerReturn == null) {
 			this.bestCheckerReturn = smallest;
 		}
-		return this.bestCheckerReturn.size;
+		return new Dimension (this.bestCheckerReturn.size);
 	}
+	
+	public void checkAnnotationSizes() {
+		this.checkerResults.clear();
+		PrettyString prettyString = this.expression.toPrettyString();
+		CheckerResult cr = checkExpression(prettyString, null);
+		this.checkerResults.add(cr);
+		for (PrettyAnnotation pa : prettyString.getAnnotations()) {
+			cr = checkExpression (prettyString, pa);
+			this.checkerResults.add(cr);
+		}
+	}
+	
 	
 	/**
 	 * Renders the Expression at the position given by (x, y).
@@ -205,13 +203,25 @@ public class ExpressionRenderer {
 	 * @param 	environment	The environment that should be rendered.
 	 * @param	gc			The graphics context used to render the content.
 	 */
-	public void render(int x, int y, Graphics2D gc) {
+	public void render(int x, int y, Expression underline, Graphics gc) {
+		
 		
 		PrettyString prettyString = this.expression.toPrettyString();
 		PrettyCharIterator it = prettyString.toCharacterIterator();
 		int[] annoBreaks = null;
 		if (this.bestCheckerReturn.annotation != null) {
 			annoBreaks = this.bestCheckerReturn.annotation.getBreakOffsets();
+		}
+		
+		// get the offsets of the underline expression
+		int uStart 	= -1;
+		int uEnd  	= -1;
+		if (underline != null) {
+			try {
+				PrettyAnnotation ua = prettyString.getAnnotationForExpression(underline);
+				uStart	= ua.getStartOffset();
+				uEnd	= ua.getEndOffset();
+			} catch (Exception e) { }
 		}
 		int i = 0;
 		int posX = x;
@@ -249,10 +259,15 @@ public class ExpressionRenderer {
 				font 		= this.constantFont;
 				break;
 			}
+			int sx = posX;
+			posX += fontMetrics.stringWidth("" + c);
+			if (i >= uStart && i <= uEnd) {
+				gc.setColor(Color.RED);
+				gc.drawLine(sx,posY + 1, posX, posY + 1);
+			}
 			gc.setColor(fontColor);
 			gc.setFont(font);
-			gc.drawString("" + c, posX, posY);
-			posX += fontMetrics.stringWidth("" + c);
+			gc.drawString("" + c, sx, posY);
 			
 		}
 	}

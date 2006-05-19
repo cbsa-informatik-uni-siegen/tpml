@@ -40,7 +40,8 @@ public class Mainwindow extends JFrame {
   private JTree treeView;
   private JMenuBar mainMenu;
 
-  private static String defaultExpression = "let rec f = lambda x. if x = 0 then 1 else x * f (x - 1) in f 3";
+  private static final String defaultExpression = "let rec f = lambda x. if x = 0 then 1 else x * f (x - 1) in f 3";
+  private static final String SIMPLE = "let f = ref (lambda x.x) in let fact = lambda x.if x = 0 then 1 else x * (!f (x - 1)) in (f := fact, !f 3)";
 
   private LinkedList<SourceFile> fileList = new LinkedList<SourceFile>();
   private LinkedList<EditorWindow> editorList = new LinkedList<EditorWindow>();
@@ -177,7 +178,7 @@ public class Mainwindow extends JFrame {
 //    	newFile.getDocument().insertString(0, "let rec f = lambda x. if x = 0 then 1 else x * f (x-1) in f 5", null);
 //    	newFile.getDocument().insertString(0, "let twice = lambda f.lambda x.f (f x) in twice", null);
 //      newFile.getDocument().insertString(0, "snd (fst, snd (true, fst)) (#8_1, #10_2)", null);
-        newFile.getDocument().insertString(0, defaultExpression, null);
+        newFile.getDocument().insertString(0, SIMPLE, null);
     } catch (Exception e) { }
     EditorWindow newEditor = new EditorWindow(newFile, this);
     tabbedPane.add(newEditor);

@@ -135,14 +135,6 @@ public class MenuButton extends JComponent {
 		int addSize = fm.getHeight () - 2*margin;
 		if (this.text.length() != 0)
 			addSize += fm.getAscent () + 2*margin;
-
-		/*
-		this.text.length() == 0 ? 0 : (fm.getAscent() + fm.getHeight());
-		
-		this.pos = new Point(width + fm.getAscent() + 2*margin, margin);
-		size = new Dimension (getHeight () - 1 - 2*margin, getHeight() - 1 - 2*margin);
-
-		*/
 		
 		return (width + addSize);
 	}
@@ -212,13 +204,10 @@ public class MenuButton extends JComponent {
 	}
 	
 	private void handleMouseClicked (MouseEvent evt) {
-		System.out.print("handleMouseClicked: ");
 		if (this.menu == null) {
-			System.out.println("null");
 			return;
 		}
 		
-		System.out.println("show menu");
 		this.menu.show(this, this.pos.x, this.pos.y);
 	}
 	
@@ -243,7 +232,6 @@ public class MenuButton extends JComponent {
 		g2d.setColor(this.textColor);
 		g2d.drawString(text, 0, vcenter);
 		int width = fm.stringWidth(text);
-		
 		
 		if (this.text.length() != 0) {
 			this.pos = new Point(width + fm.getAscent() + 2*margin, margin);
