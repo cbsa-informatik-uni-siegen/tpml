@@ -41,6 +41,14 @@ final class SmallStepProofRule extends ProofRule {
   
   static final SmallStepProofRule COND_TRUE = new SmallStepProofRule("COND-TRUE", 0);
   
+  static final SmallStepProofRule COND_1_EVAL = new SmallStepProofRule("COND-1-EVAL", 1);
+  
+  static final SmallStepProofRule COND_1_EVAL_EXN = new SmallStepProofRule("COND-1-EVAL-EXN", 1);
+  
+  static final SmallStepProofRule COND_1_FALSE = new SmallStepProofRule("COND-1-FALSE", 0);
+  
+  static final SmallStepProofRule COND_1_TRUE = new SmallStepProofRule("COND-1-TRUE", 0);
+  
   static final SmallStepProofRule DEREF = new SmallStepProofRule("DEREF", 0);
   
   static final SmallStepProofRule FST = new SmallStepProofRule("FST", 0);
@@ -63,6 +71,12 @@ final class SmallStepProofRule extends ProofRule {
   
   static final SmallStepProofRule REF = new SmallStepProofRule("REF", 0);
   
+  static final SmallStepProofRule SEQ_EVAL = new SmallStepProofRule("SEQ-EVAL", 1);
+
+  static final SmallStepProofRule SEQ_EVAL_EXN = new SmallStepProofRule("SEQ-EVAL-EXN", 1);
+  
+  static final SmallStepProofRule SEQ_EXEC = new SmallStepProofRule("SEQ-EXEC", 0);
+  
   static final SmallStepProofRule SND = new SmallStepProofRule("SND", 0);
   
   static final SmallStepProofRule PROJ = new SmallStepProofRule("PROJ", 0);
@@ -72,6 +86,8 @@ final class SmallStepProofRule extends ProofRule {
   static final SmallStepProofRule TUPLE_EXN = new SmallStepProofRule("TUPLE-EXN", 1);
   
   static final SmallStepProofRule UNFOLD = new SmallStepProofRule("UNFOLD", 0);
+  
+  static final SmallStepProofRule WHILE = new SmallStepProofRule("WHILE", 0);
   
   
   

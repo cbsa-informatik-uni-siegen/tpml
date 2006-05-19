@@ -12,6 +12,7 @@ import l1.node.AAbstractionExpression;
 import l1.node.AAndExpression;
 import l1.node.AApplicationExpression;
 import l1.node.AAssignExpression;
+import l1.node.ACondition1Expression;
 import l1.node.AConditionExpression;
 import l1.node.ADerefExpression;
 import l1.node.ADivideExpression;
@@ -35,10 +36,12 @@ import l1.node.APlusExpression;
 import l1.node.AProjectionExpression;
 import l1.node.ARecursionExpression;
 import l1.node.ARefExpression;
+import l1.node.ASequenceExpression;
 import l1.node.ASndExpression;
 import l1.node.ATrueExpression;
 import l1.node.ATupleExpression;
 import l1.node.AUnitExpression;
+import l1.node.AWhileExpression;
 import expressions.Abstraction;
 import expressions.And;
 import expressions.Application;
@@ -46,6 +49,7 @@ import expressions.ArithmeticOperator;
 import expressions.Assign;
 import expressions.BooleanConstant;
 import expressions.Condition;
+import expressions.Condition1;
 import expressions.Deref;
 import expressions.Expression;
 import expressions.Fst;
@@ -60,9 +64,11 @@ import expressions.Projection;
 import expressions.Recursion;
 import expressions.Ref;
 import expressions.RelationalOperator;
+import expressions.Sequence;
 import expressions.Snd;
 import expressions.Tuple;
 import expressions.UnitConstant;
+import expressions.While;
 
 /**
  * Used to translate an abstract syntax tree as produced
@@ -132,6 +138,28 @@ public class Translator extends DepthFirstAdapter {
     Expression e1 = this.expressions.pop();
     Expression e0 = this.expressions.pop();
     this.expressions.push(new Condition(e0, e1, e2));
+  }
+  
+  /**
+   * @see l1.analysis.DepthFirstAdapter#outACondition1Expression(l1.node.ACondition1Expression)
+   */
+  @Override
+  public void outACondition1Expression(ACondition1Expression node) {
+    Expression e1 = this.expressions.pop();
+    Expression e0 = this.expressions.pop();
+    this.expressions.push(new Condition1(e0, e1));
+  }
+  
+  /**
+   * {@inheritDoc}
+   *
+   * @see l1.analysis.DepthFirstAdapter#outAWhileExpression(l1.node.AWhileExpression)
+   */
+  @Override
+  public void outAWhileExpression(AWhileExpression node) {
+    Expression e1 = this.expressions.pop();
+    Expression e0 = this.expressions.pop();
+    this.expressions.push(new While(e0, e1));
   }
 
   /**
@@ -296,6 +324,16 @@ public class Translator extends DepthFirstAdapter {
     Operator op = (Operator)this.expressions.pop();
     Expression e1 = this.expressions.pop();
     this.expressions.push(new InfixOperation(op, e1, e2));
+  }
+  
+  /**
+   * @see l1.analysis.DepthFirstAdapter#outASequenceExpression(l1.node.ASequenceExpression)
+   */
+  @Override
+  public void outASequenceExpression(ASequenceExpression node) {
+    Expression e2 = this.expressions.pop();
+    Expression e1 = this.expressions.pop();
+    this.expressions.push(new Sequence(e1, e2));
   }
   
   /**

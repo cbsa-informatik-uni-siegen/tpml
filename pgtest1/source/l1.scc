@@ -21,6 +21,7 @@ Tokens
  equal = '=';
  left_paren = '(';
  right_paren = ')';
+ semicolon = ';';
  comma = ',';
  dot = '.';
  and = '&&';
@@ -33,6 +34,8 @@ Tokens
  let = 'let';
  in = 'in';
  rec = 'rec';
+ while = 'while';
+ do = 'do';
  fst = 'fst';
  snd = 'snd';
  projection = '#' digit+ '_' digit+;
@@ -52,17 +55,40 @@ Ignored Tokens
  blank;
 
 
+/*
+  Hinweise:
+  ---------
+  
+  1. open_expression, closed_expression wird benötigt um Dangling-Else-Problem zu lösen,
+     siehe: http://www.parsifalsoft.com/ifelse.html
+
+ */
+ 
 Productions
  expression =
+  {open_expression} [e]:open_expression {-> e.expression} |
+  {closed_expression} [e]:closed_expression {-> e.expression};
+ 
+ open_expression {-> expression} =
+  {condition1} if [e0]:expression then [e1]:expression {-> New expression.condition1(e0.expression, e1.expression)} |
+  {condition} if [e0]:expression then [e1]:closed_expression else [e2]:open_expression {-> New expression.condition(e0.expression, e1.expression, e2.expression)} |
+  {while} while [e1]:expression do [e2]:open_expression {-> New expression.while(e1.expression, e2.expression)};
+
+ closed_expression {-> expression} =
+  {simple} [e]:simple_expression {-> e.expression} |
+  {condition} if [e0]:expression then [e1]:closed_expression else [e2]:closed_expression {-> New expression.condition(e0.expression, e1.expression, e2.expression)} |
+  {while} while [e1]:expression do [e2]:closed_expression {-> New expression.while(e1.expression, e2.expression)};
+  
+ simple_expression {-> expression} = 
   {conjunction} conjunction {-> conjunction.expression} |
-  {condition} if [e0]:conjunction then [e1]:expression else [e2]:expression {-> New expression.condition(e0.expression, e1, e2)} |
-  {let} let identifier equal [e1]:expression in [e2]:expression {-> New expression.let(identifier, e1, e2)} |
-  {letrec} let rec identifier equal [e1]:expression in [e2]:expression {-> New expression.letrec(identifier, e1, e2)} |
-  {abstraction} lambda identifier dot [e]:expression {-> New expression.abstraction(identifier, e)} |
-  {recursion} rec identifier dot [e]:expression {-> New expression.recursion(identifier, e)};
+  {let} let identifier equal [e1]:expression in [e2]:closed_expression {-> New expression.let(identifier, e1, e2.expression)} |
+  {letrec} let rec identifier equal [e1]:expression in [e2]:closed_expression {-> New expression.letrec(identifier, e1, e2.expression)} |
+  {abstraction} lambda identifier dot [e]:closed_expression {-> New expression.abstraction(identifier, e.expression)} |
+  {recursion} rec identifier dot [e]:closed_expression {-> New expression.recursion(identifier, e.expression)};
 
  conjunction {-> expression} =
   {assignment} assignment {-> assignment.expression} |
+  {sequence} [e1]:conjunction semicolon [e2]:assignment {-> New expression.sequence(e1.expression, e2.expression)} |
   {or} [e1]:conjunction or [e2]:assignment {-> New expression.or(e1.expression, e2.expression)} |
   {and} [e1]:conjunction and [e2]:assignment {-> New expression.and(e1.expression, e2.expression)};
 
@@ -136,6 +162,7 @@ Abstract Syntax Tree
  expression =
   {application} [e0]:expression [e1]:expression |
   {condition} [e0]:expression [e1]:expression [e2]:expression |
+  {condition1} [e0]:expression [e1]:expression |
   {let} [id]:identifier [e1]:expression [e2]:expression |
   {letrec} [id]:identifier [e1]:expression [e2]:expression |
   {abstraction} [id]:identifier [e]:expression |
@@ -144,6 +171,8 @@ Abstract Syntax Tree
   {and} [e0]:expression [e1]:expression |
   {or} [e0]:expression [e1]:expression |
   {tuple} [expressions]:expression+ |
+  {sequence} [e1]:expression [e2]:expression |
+  {while} [e1]:expression [e2]:expression |
   {identifier} identifier |
   {unit} unit |
   {true} true |

@@ -14,6 +14,7 @@ import expressions.AppliedOperator;
 import expressions.Assign;
 import expressions.BooleanConstant;
 import expressions.Condition;
+import expressions.Condition1;
 import expressions.Deref;
 import expressions.Expression;
 import expressions.Fst;
@@ -27,10 +28,12 @@ import expressions.Or;
 import expressions.Projection;
 import expressions.Recursion;
 import expressions.Ref;
+import expressions.Sequence;
 import expressions.Snd;
 import expressions.Tuple;
 import expressions.UnitConstant;
 import expressions.Value;
+import expressions.While;
 
 /**
  * Evaluator for expression using the small step
@@ -276,6 +279,44 @@ final class SmallStepEvaluator {
   }
   
   @SuppressWarnings("unused")
+  private Expression evaluateCondition1(Condition1 condition1) {
+    // determine the sub expression
+    Expression e0 = condition1.getE0();
+    Expression e1 = condition1.getE1();
+    
+    // check if e0 is not already a boolean constant
+    if (!(e0 instanceof BooleanConstant)) {
+      // try to evaluate e0
+      e0 = evaluate(e0);
+      
+      // check if e0 is an exception, (COND-1-EVAL-EXN)
+      if (e0.isException()) {
+        addProofStep(SmallStepProofRule.COND_1_EVAL_EXN, condition1);
+        return e0;
+      }
+      
+      // otherwise we performed (COND-1-EVAL)
+      addProofStep(SmallStepProofRule.COND_1_EVAL, condition1);
+      
+      // return the new condition1
+      return new Condition1(e0, e1);
+    }
+    
+    // determine the boolean constant value
+    BooleanConstant booleanConstant = (BooleanConstant)e0;
+    if (booleanConstant.isTrue()) {
+      // jep, that's (COND-1-TRUE) then
+      addProofStep(SmallStepProofRule.COND_1_TRUE, condition1);
+      return e1;
+    }
+    else {
+      // jep, that's (COND-1-FALSE) then
+      addProofStep(SmallStepProofRule.COND_1_FALSE, condition1);
+      return UnitConstant.UNIT;
+    }
+  }
+  
+  @SuppressWarnings("unused")
   private Expression evaluateInfixOperation(InfixOperation infixOperation) {
     // determine the sub expressions and the operator
     Expression e1 = infixOperation.getE1();
@@ -444,6 +485,37 @@ final class SmallStepEvaluator {
   }
  
   @SuppressWarnings("unused")
+  private Expression evaluateSequence(Sequence sequence) {
+    // determine the sub expressions
+    Expression e1 = sequence.getE1();
+    Expression e2 = sequence.getE2();
+
+    // check if e1 is not already a value
+    if (!e1.isValue()) {
+      // try to evaluate e1
+      e1 = evaluate(e1);
+
+      // check if e1 is an exception, (SEQ-EVAL-EXN)
+      if (e1.isException()) {
+        addProofStep(SmallStepProofRule.SEQ_EVAL_EXN, sequence);
+        return e1;
+      }
+      
+      // otherwise we performed (SEQ-EVAL)
+      addProofStep(SmallStepProofRule.SEQ_EVAL, sequence);
+      
+      // return the new sequence
+      return new Sequence(e1, e2);
+    }
+
+    // we're about to perform (SEQ-EXEC)
+    addProofStep(SmallStepProofRule.SEQ_EXEC, sequence);
+    
+    // drop e1 from the sequence
+    return e2;
+  }
+  
+  @SuppressWarnings("unused")
   private Expression evaluateTuple(Tuple tuple) {
     // determine the sub expressions
     Expression[] expressions = tuple.getExpressions();
@@ -473,6 +545,19 @@ final class SmallStepEvaluator {
     
     // hm, can we get stuck here?
     return tuple;
+  }
+  
+  @SuppressWarnings("unused")
+  private Expression evaluateWhile(While loop) {
+    // determine the sub expressions
+    Expression e1 = loop.getE1();
+    Expression e2 = loop.getE2();
+    
+    // we're about to perform (WHILE)
+    addProofStep(SmallStepProofRule.WHILE, loop);
+    
+    // translate to: if e1 then (e2; while e1 do e2)
+    return new Condition1(e1, new Sequence(e2, loop));
   }
   
   
