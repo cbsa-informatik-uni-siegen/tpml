@@ -12,13 +12,6 @@ public abstract class BinaryOperator extends Constant {
   //
   
   /**
-   * The string representation for this binary operator.
-   * 
-   * @see #toString()
-   */
-  private String op;
-  
-  /**
    * The base pretty print priority for this binary operator.
    * 
    * @see #getPrettyPriority()
@@ -36,13 +29,13 @@ public abstract class BinaryOperator extends Constant {
    * specified <code>prettyPriority</code> used for pretty
    * printing of {@link InfixOperation}s.
    * 
-   * @param op the string representation for this binary
-   *           operator.
+   * @param text the string representation for this binary
+   *             operator.
    * @param prettyPriority the pretty print priority for
    *                       {@link InfixOperation}s.
    */
-  protected BinaryOperator(String op, int prettyPriority) {
-    this.op = op;
+  protected BinaryOperator(String text, int prettyPriority) {
+    super(text);
     this.prettyPriority = prettyPriority;
   }
   
@@ -89,26 +82,8 @@ public abstract class BinaryOperator extends Constant {
   protected final PrettyStringBuilder toPrettyStringBuilder() {
     PrettyStringBuilder builder = new PrettyStringBuilder(this, 6);
     builder.appendText("(");
-    builder.appendConstant(this.op);
+    builder.appendConstant(toString());
     builder.appendText(")");
     return builder;
-  }
-  
-  
-  
-  //
-  // Overwritten methods
-  //
-  
-  /**
-   * Returns the string representation for binary operators.
-   * 
-   * @return the string representation for binary operators.
-   * 
-   * @see java.lang.Object#toString()
-   */
-  @Override
-  public final String toString() {
-    return this.op;
   }
 }

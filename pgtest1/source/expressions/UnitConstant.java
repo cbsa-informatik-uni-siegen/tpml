@@ -1,29 +1,29 @@
 package expressions;
 
 /**
- * Represents unit constants.
+ * Represents the unit constant.
  *
  * @author Benedikt Meurer
  * @version $Id$
  */
 public final class UnitConstant extends Constant {
-  /**
-   * Returns the pretty string builder for constants.
-   * @return the pretty string builder for constants.
-   * @see expressions.Expression#toPrettyStringBuilder()
-   */
-  @Override
-  protected final PrettyStringBuilder toPrettyStringBuilder() {
-    PrettyStringBuilder builder = new PrettyStringBuilder(this, 6);
-    builder.appendConstant("()");
-    return builder;
-  }
+  //
+  // Constants
+  //
   
   /**
-   * The <b>(UNIT)</b> value.
+   * The single <code>UnitConstant</code> instance, which
+   * represents the unit value, written as <code>()</code>.
    */
   public static UnitConstant UNIT = new UnitConstant();
   
+  
+  
+  //
+  // Constructor (private)
+  //
+  
   private UnitConstant() {
+    super("()");
   }
 }

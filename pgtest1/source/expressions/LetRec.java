@@ -1,7 +1,6 @@
 package expressions;
 
 import java.util.Set;
-import java.util.TreeSet;
 
 /**
  * Represents the <code>let rec</code> expression, which is
@@ -15,7 +14,11 @@ import java.util.TreeSet;
  * @author Benedikt Meurer
  * @version $Id$
  */
-public final class LetRec extends Expression {
+public final class LetRec extends Let {
+  //
+  // Constructor
+  //
+  
   /**
    * Generates a new let rec expression.
    * 
@@ -24,10 +27,14 @@ public final class LetRec extends Expression {
    * @param e2 the second expression. 
    */
   public LetRec(String id, Expression e1, Expression e2) {
-    this.id = id;
-    this.e1 = e1;
-    this.e2 = e2;
+    super(id, e1, e2);
   }
+  
+  
+  
+  //
+  // Primitives
+  //
   
   /**
    * Performs the substitution on let rec expressions.
@@ -61,54 +68,6 @@ public final class LetRec extends Expression {
     }
   }
 
-  /**
-   * Determines the set of free (unbound) identifiers for
-   * the let rec expression.
-   * 
-   * @return the free identifiers.
-   * 
-   * @see expressions.Expression#free()
-   */
-  @Override
-  public Set<String> free() {
-    Set<String> set = new TreeSet<String>();
-    set.addAll(this.e1.free());
-    set.remove(this.id);
-    set.addAll(this.e2.free());
-    return set;
-  }
-  
-  /**
-   * @return Returns the id.
-   */
-  public String getId() {
-    return this.id;
-  }
-  
-  /**
-   * @return Returns the e1.
-   */
-  public Expression getE1() {
-    return this.e1;
-  }
-  
-  /**
-   * @return Returns the e2.
-   */
-  public Expression getE2() {
-    return this.e2;
-  }
-  
-  /**
-   * {@inheritDoc}
-   *
-   * @see expressions.Expression#containsReferences()
-   */
-  @Override
-  public boolean containsReferences() {
-    return (this.e1.containsReferences() || this.e2.containsReferences());
-  }
-  
   /**
    * Returns <code>true</code> as <b>(LET-REC)</b> is
    * syntactic sugar.
@@ -155,8 +114,4 @@ public final class LetRec extends Expression {
     builder.appendBuilder(this.e2.toPrettyStringBuilder(), 0);
     return builder;
   }
-
-  private String id;
-  private Expression e1;
-  private Expression e2;
 }

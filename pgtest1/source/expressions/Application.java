@@ -3,7 +3,7 @@ package expressions;
 import java.util.Set;
 import java.util.TreeSet;
 
-public class Application extends Expression {
+public final class Application extends Expression {
   //
   // Attributes
   //

@@ -3,7 +3,44 @@ package expressions;
 import java.util.Set;
 import java.util.TreeSet;
 
+/**
+ * Represents a <code>let</code> expression.
+ *
+ * @author Benedikt Meurer
+ * @version $Id$
+ */
 public class Let extends Expression {
+  //
+  // Attributes
+  //
+  
+  /**
+   * The identifier of the <code>Let</code> expression.
+   * 
+   * @see #getId()
+   */
+  protected String id;
+  
+  /**
+   * The first expression.
+   * 
+   * @see #getE1()
+   */
+  protected Expression e1;
+  
+  /**
+   * The second expression.
+   * 
+   * @see #getE2()
+   */
+  protected Expression e2;
+  
+  
+  
+  //
+  // Constructor
+  //
+  
   /**
    * Generates a new let expression.
    * @param id the name of the identifier.
@@ -15,14 +52,22 @@ public class Let extends Expression {
     this.e1 = e1;
     this.e2 = e2;
   }
+  
+  
+  
+  //
+  // Primitives
+  //
 
   /**
-   * Performs the substitution for <b>(LET)</b> expressions.
+   * Performs the substitution for <b>Let</b> expressions.
    * 
    * @param id the identifier for the substitution.
    * @param e the expression to substitute.
+   * 
    * @return the new expression.
    */
+  @Override
   public Expression substitute(String id, Expression e) {
     Expression e1 = this.e1.substitute(id, e);
     Expression e2 = this.id.equals(id) ? this.e2 : this.e2.substitute(id, e);
@@ -32,11 +77,13 @@ public class Let extends Expression {
   /**
    * Returns the free identifiers of
    * the subexpressions.
+   * 
    * @return the free identifiers.
+   * 
    * @see expressions.Expression#free()
    */
   @Override
-  public Set<String> free() {
+  public final Set<String> free() {
     Set<String> set = new TreeSet<String>();
     set.addAll(this.e2.free());
     set.remove(this.id);
@@ -50,29 +97,8 @@ public class Let extends Expression {
    * @see expressions.Expression#containsReferences()
    */
   @Override
-  public boolean containsReferences() {
+  public final boolean containsReferences() {
     return (this.e1.containsReferences() || this.e2.containsReferences());
-  }
-  
-  /**
-   * @return Returns the id.
-   */
-  public String getId() {
-    return this.id;
-  }
-  
-  /**
-   * @return Returns the e1.
-   */
-  public Expression getE1() {
-    return this.e1;
-  }
-  
-  /**
-   * @return Returns the e2.
-   */
-  public Expression getE2() {
-    return this.e2;
   }
   
   /**
@@ -93,8 +119,37 @@ public class Let extends Expression {
     builder.appendBuilder(this.e2.toPrettyStringBuilder(), 0);
     return builder;
   }
+
   
-  private String id;
-  private Expression e1;
-  private Expression e2;
+  
+  //
+  // Accessors
+  //
+  
+  /**
+   * Returns the identifier of the <code>Let</code> expression.
+   * 
+   * @return the identifier of the <code>Let</code> expression.
+   */
+  public String getId() {
+    return this.id;
+  }
+  
+  /**
+   * Returns the first expression.
+   * 
+   * @return the first expression.
+   */
+  public Expression getE1() {
+    return this.e1;
+  }
+  
+  /**
+   * Returns the second expression.
+   * 
+   * @return the second expression.
+   */
+  public Expression getE2() {
+    return this.e2;
+  }
 }
