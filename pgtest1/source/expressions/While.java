@@ -89,26 +89,6 @@ public final class While extends Expression {
   /**
    * {@inheritDoc}
    * 
-   * @see expressions.Expression#normalize()
-   */
-  @Override
-  public Expression normalize() {
-    // normalize the sub expressions
-    Expression e1 = this.e1.normalize();
-    Expression e2 = this.e2.normalize();
-    
-    // check if we need a new while
-    if (this.e1 != e1 || this.e2 != e2) {
-      return new While(e1, e2);
-    }
-    else {
-      return this;
-    }
-  }
-  
-  /**
-   * {@inheritDoc}
-   * 
    * @see expressions.Expression#substitute(java.lang.String, expressions.Expression)
    */
   @Override

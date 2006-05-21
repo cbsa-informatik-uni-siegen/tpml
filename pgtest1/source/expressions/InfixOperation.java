@@ -17,29 +17,10 @@ public final class InfixOperation extends Expression {
    * @param e1 the first operand.
    * @param e2 the second operand.
    */
-  public InfixOperation(Operator op, Expression e1, Expression e2) {
+  public InfixOperation(BinaryOperator op, Expression e1, Expression e2) {
     this.op = op;
     this.e1 = e1;
     this.e2 = e2;
-  }
-  
-  /**
-   * {@inheritDoc}
-   * @see expressions.Expression#normalize()
-   */
-  @Override
-  public Expression normalize() {
-    // normalize the sub expression
-    Expression e1 = this.e1.normalize();
-    Expression e2 = this.e2.normalize();
-    
-    // check if we need to generate new infix operation
-    if (e1 != this.e1 || e2 != this.e2) {
-      return new InfixOperation(this.op, e1, e2);
-    }
-    else {
-      return this;
-    }
   }
   
   /**
@@ -91,7 +72,7 @@ public final class InfixOperation extends Expression {
   /**
    * @return Returns the op.
    */
-  public Operator getOp() {
+  public BinaryOperator getOp() {
     return this.op;
   }
   
@@ -147,7 +128,7 @@ public final class InfixOperation extends Expression {
     return builder;
   }
 
-  private Operator op;
+  private BinaryOperator op;
   private Expression e1;
   private Expression e2;
 }

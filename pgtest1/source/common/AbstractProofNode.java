@@ -149,13 +149,10 @@ public abstract class AbstractProofNode implements ProofNode {
    * {@link ProofModel#translateToCoreSyntax(ProofNode)}
    * method.
    * 
-   * The <code>expression</code> is normalized prior to
-   * setting it for the node.
-   * 
    * @param expression the new {@link Expression}.
    */
   public void setExpression(Expression expression) {
-    this.expression = expression.normalize();
+    this.expression = expression;
   }
 
   /**

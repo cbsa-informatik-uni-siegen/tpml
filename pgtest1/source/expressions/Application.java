@@ -4,6 +4,30 @@ import java.util.Set;
 import java.util.TreeSet;
 
 public class Application extends Expression {
+  //
+  // Attributes
+  //
+  
+  /**
+   * The first expression.
+   * 
+   * @see #getE1()
+   */
+  private Expression e1;
+  
+  /**
+   * The second expression.
+   * 
+   * @see #getE2()
+   */
+  private Expression e2;
+  
+  
+  
+  //
+  // Constructor
+  //
+  
   /**
    * Generates a new application.
    * @param e1 the first expression.
@@ -14,29 +38,24 @@ public class Application extends Expression {
     this.e2 = e2;
   }
 
+  
+  
+  //
+  // Primitives
+  //
+  
   /**
-   * {@inheritDoc}
-   * @see expressions.Expression#normalize()
+   * An <code>Application</code> can be a value if it consists
+   * of a binary operator and a value.
+   * 
+   * @return <code>true</code> if the application consists of
+   *                           a binary operator and a value.
+   *
+   * @see expressions.Expression#isValue()
    */
   @Override
-  public Expression normalize() {
-    // normalize the sub expression
-    Expression e1 = this.e1.normalize();
-    Expression e2 = this.e2.normalize();
-    
-    // check if e1 is an operator and e2 is a constant
-    if (e1 instanceof Operator && e2 instanceof Constant) {
-      // replace with applied operator
-      return new AppliedOperator((Operator)e1, (Constant)e2);
-    }
-    else if (this.e1 != e1 || this.e2 != e2) {
-      // generate new application
-      return new Application(e1, e2);
-    }
-    else {
-      // application is the same
-      return this;
-    }
+  public boolean isValue() {
+    return (this.e1 instanceof BinaryOperator && this.e2.isValue());
   }
   
   /**
@@ -105,8 +124,4 @@ public class Application extends Expression {
     builder.appendBuilder(this.e2.toPrettyStringBuilder(), 6);
     return builder;
   }
-  
-  // sub expressions
-  private Expression e1;
-  private Expression e2;
 }

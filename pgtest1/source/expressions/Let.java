@@ -17,25 +17,6 @@ public class Let extends Expression {
   }
 
   /**
-   * {@inheritDoc}
-   * @see expressions.Expression#normalize()
-   */
-  @Override
-  public Expression normalize() {
-    // normalize the sub expression
-    Expression e1 = this.e1.normalize();
-    Expression e2 = this.e2.normalize();
-    
-    // check if we need to generate new let
-    if (e1 != this.e1 || e2 != this.e2) {
-      return new Let(this.id, e1, e2);
-    }
-    else {
-      return this;
-    }
-  }
-  
-  /**
    * Performs the substitution for <b>(LET)</b> expressions.
    * 
    * @param id the identifier for the substitution.

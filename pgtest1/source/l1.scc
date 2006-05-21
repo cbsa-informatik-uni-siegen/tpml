@@ -19,6 +19,8 @@ Tokens
  lower_equal = '<=';
  greater_equal = '>=';
  equal = '=';
+ uminus = '~-';
+ not = 'not';
  left_paren = '(';
  right_paren = ')';
  semicolon = ';';
@@ -135,6 +137,8 @@ Productions
   {number} number {-> New expression.number(number)} |
   {operator} left_paren operator right_paren {-> operator.expression} |
   {projection} projection {-> New expression.projection(projection)} |
+  {uminus} uminus {-> New expression.uminus(uminus)} |
+  {not} not {-> New expression.not(not)} |
   {fst} fst {-> New expression.fst(fst)} |
   {snd} snd {-> New expression.snd(snd)} |
   {ref} ref {-> New expression.ref(ref)} |
@@ -188,6 +192,8 @@ Abstract Syntax Tree
   {lower_equal} lower_equal |
   {greater_equal} greater_equal |
   {equal} equal |
+  {uminus} uminus |
+  {not} not |
   {projection} projection |
   {fst} fst |
   {snd} snd |

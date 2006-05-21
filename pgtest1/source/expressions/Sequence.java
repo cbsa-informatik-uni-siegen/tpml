@@ -107,26 +107,6 @@ public final class Sequence extends Expression {
     // translate to "let id = e1 in e2"
     return new Let(id, this.e1, this.e2);
   }
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see expressions.Expression#normalize()
-   */
-  @Override
-  public Expression normalize() {
-    // normalize the sub expression
-    Expression e1 = this.e1.normalize();
-    Expression e2 = this.e2.normalize();
-    
-    // check if we need a new sequence
-    if (this.e1 != e1 || this.e2 != e2) {
-      return new Sequence(e1, e2);
-    }
-    else {
-      return this;
-    }
-  }
   
   /**
    * {@inheritDoc}

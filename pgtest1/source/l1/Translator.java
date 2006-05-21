@@ -30,6 +30,7 @@ import l1.node.ALowerThanExpression;
 import l1.node.AMinusExpression;
 import l1.node.AModuloExpression;
 import l1.node.AMultiplyExpression;
+import l1.node.ANotExpression;
 import l1.node.ANumberExpression;
 import l1.node.AOrExpression;
 import l1.node.APlusExpression;
@@ -40,6 +41,7 @@ import l1.node.ASequenceExpression;
 import l1.node.ASndExpression;
 import l1.node.ATrueExpression;
 import l1.node.ATupleExpression;
+import l1.node.AUminusExpression;
 import l1.node.AUnitExpression;
 import l1.node.AWhileExpression;
 import expressions.Abstraction;
@@ -58,7 +60,8 @@ import expressions.InfixOperation;
 import expressions.IntegerConstant;
 import expressions.Let;
 import expressions.LetRec;
-import expressions.Operator;
+import expressions.BinaryOperator;
+import expressions.Not;
 import expressions.Or;
 import expressions.Projection;
 import expressions.Recursion;
@@ -67,6 +70,7 @@ import expressions.RelationalOperator;
 import expressions.Sequence;
 import expressions.Snd;
 import expressions.Tuple;
+import expressions.UnaryMinus;
 import expressions.UnitConstant;
 import expressions.While;
 
@@ -321,7 +325,7 @@ public class Translator extends DepthFirstAdapter {
   @Override
   public void outAInfixExpression(AInfixExpression node) {
     Expression e2 = this.expressions.pop();
-    Operator op = (Operator)this.expressions.pop();
+    BinaryOperator op = (BinaryOperator)this.expressions.pop();
     Expression e1 = this.expressions.pop();
     this.expressions.push(new InfixOperation(op, e1, e2));
   }
@@ -371,7 +375,7 @@ public class Translator extends DepthFirstAdapter {
    */
   @Override
   public void outAFstExpression(AFstExpression node) {
-    this.expressions.push(new Fst());
+    this.expressions.push(Fst.FST);
   }
   
   /**
@@ -379,7 +383,7 @@ public class Translator extends DepthFirstAdapter {
    */
   @Override
   public void outASndExpression(ASndExpression node) {
-    this.expressions.push(new Snd());
+    this.expressions.push(Snd.SND);
   }
   
   /**
@@ -387,7 +391,7 @@ public class Translator extends DepthFirstAdapter {
    */
   @Override
   public void outARefExpression(ARefExpression node) {
-    this.expressions.push(new Ref());
+    this.expressions.push(Ref.REF);
   }
   
   /**
@@ -395,7 +399,7 @@ public class Translator extends DepthFirstAdapter {
    */
   @Override
   public void outADerefExpression(ADerefExpression node) {
-    this.expressions.push(new Deref());
+    this.expressions.push(Deref.DEREF);
   }
   
   /**
@@ -403,7 +407,27 @@ public class Translator extends DepthFirstAdapter {
    */
   @Override
   public void outAAssignExpression(AAssignExpression node) {
-    this.expressions.push(new Assign());
+    this.expressions.push(Assign.ASSIGN);
+  }
+  
+  /**
+   * {@inheritDoc}
+   *
+   * @see l1.analysis.DepthFirstAdapter#outANotExpression(l1.node.ANotExpression)
+   */
+  @Override
+  public void outANotExpression(ANotExpression node) {
+    this.expressions.push(Not.NOT);
+  }
+  
+  /**
+   * {@inheritDoc}
+   *
+   * @see l1.analysis.DepthFirstAdapter#outAUminusExpression(l1.node.AUminusExpression)
+   */
+  @Override
+  public void outAUminusExpression(AUminusExpression node) {
+    this.expressions.push(UnaryMinus.UMINUS);
   }
     
   private Stack<Expression> expressions = new Stack<Expression>();

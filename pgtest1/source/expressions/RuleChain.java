@@ -14,8 +14,9 @@ import java.util.ListIterator;
  * chain.
  *
  * @author bmeurer
- * @version $Id$
+ * @version $Id:RuleChain.java 121 2006-04-28 16:45:27Z benny $
  */
+@Deprecated
 public class RuleChain {
   /**
    * Generates a new empty rule chain object.

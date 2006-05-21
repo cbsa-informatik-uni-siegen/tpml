@@ -46,20 +46,6 @@ public final class Tuple extends Expression {
   /**
    * {@inheritDoc}
    * 
-   * @see expressions.Expression#normalize()
-   */
-  @Override
-  public Expression normalize() {
-    // normalize all sub expressions
-    Expression[] expressions = new Expression[this.expressions.length];
-    for (int n = 0; n < expressions.length; ++n)
-      expressions[n] = this.expressions[n].normalize();
-    return new Tuple(expressions);
-  }
-  
-  /**
-   * {@inheritDoc}
-   * 
    * @see expressions.Expression#substitute(java.lang.String, expressions.Expression)
    */
   @Override
@@ -124,7 +110,7 @@ public final class Tuple extends Expression {
    * 
    * @return the arity of the tuple.
    */
-  public int arity() {
+  public int getArity() {
     return this.expressions.length;
   }
   

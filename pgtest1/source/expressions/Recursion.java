@@ -12,7 +12,7 @@ import java.util.TreeSet;
  * @author bmeurer
  * @version $Id$
  */
-public class Recursion extends Expression {
+public final class Recursion extends Expression {
   /**
    * Allocates a new <b>(REC)</b> expression.
    * @param id the identifier of the recursive expression.
@@ -21,24 +21,6 @@ public class Recursion extends Expression {
   public Recursion(String id, Expression e) {
     this.id = id;
     this.e = e;
-  }
-  
-  /**
-   * {@inheritDoc}
-   * @see expressions.Expression#normalize()
-   */
-  @Override
-  public Expression normalize() {
-    // normalize the sub expression
-    Expression e = this.e.normalize();
-    
-    // check if we need to generate new recursion
-    if (e != this.e) {
-      return new Recursion(this.id, e);
-    }
-    else {
-      return this;
-    }
   }
   
   /**

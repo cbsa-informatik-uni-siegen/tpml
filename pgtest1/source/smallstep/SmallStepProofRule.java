@@ -33,6 +33,8 @@ final class SmallStepProofRule extends ProofRule {
   
   static final SmallStepProofRule BETA_V = new SmallStepProofRule("BETA-V", 0);
   
+  static final SmallStepProofRule BOP = new SmallStepProofRule("BOP", 0);
+  
   static final SmallStepProofRule COND_EVAL = new SmallStepProofRule("COND-EVAL", 1);
   
   static final SmallStepProofRule COND_EVAL_EXN = new SmallStepProofRule("COND-EVAL-EXN", 1);
@@ -59,8 +61,6 @@ final class SmallStepProofRule extends ProofRule {
   
   static final SmallStepProofRule LET_EXEC = new SmallStepProofRule("LET-EXEC", 0);
   
-  static final SmallStepProofRule OP = new SmallStepProofRule("OP", 0);
-  
   static final SmallStepProofRule OR_EVAL = new SmallStepProofRule("OR-EVAL", 1);
   
   static final SmallStepProofRule OR_EVAL_EXN = new SmallStepProofRule("OR-EVAL-EXN", 1);
@@ -86,6 +86,8 @@ final class SmallStepProofRule extends ProofRule {
   static final SmallStepProofRule TUPLE_EXN = new SmallStepProofRule("TUPLE-EXN", 1);
   
   static final SmallStepProofRule UNFOLD = new SmallStepProofRule("UNFOLD", 0);
+  
+  static final SmallStepProofRule UOP = new SmallStepProofRule("UOP", 0);
   
   static final SmallStepProofRule WHILE = new SmallStepProofRule("WHILE", 0);
   

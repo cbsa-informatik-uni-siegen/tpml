@@ -1,22 +1,34 @@
 package expressions;
 
-
 /**
  * The deref operator, written as <code>!</code>.
  *
  * @author Benedikt Meurer
  * @version $Id$
  */
-public final class Deref extends Value {
+public final class Deref extends UnaryOperator {
   //
-  // Constructor
+  // Constants
+  //
+  
+  /**
+   * The single instance of the <code>Deref</code> class.
+   */
+  public static final Deref DEREF = new Deref();
+  
+  
+  
+  //
+  // Constructor (private)
   //
   
   /**
    * Allocates a new <code>Deref</code> instance.
+   * 
+   * @see #DEREF
    */
-  public Deref() {
-    // nothing to do
+  private Deref() {
+    super("!");
   }
   
   
@@ -26,14 +38,23 @@ public final class Deref extends Value {
   //
   
   /**
-   * {@inheritDoc}
+   * The <code>Deref</code> operator has no machine equivalent and
+   * must be handled by the interpreter, since it requires access
+   * to the memory store.
    * 
-   * @see expressions.Expression#toPrettyStringBuilder()
+   * This method always throws {@link UnsupportedOperationException}
+   * to indicate that it should not be called.
+   *
+   * @param e the operand.
+   * 
+   * @return does not return normally.
+   * 
+   * @throws UnsupportedOperationException on every invokation.
+   * 
+   * @see expressions.UnaryOperator#applyTo(expressions.Expression)
    */
   @Override
-  protected PrettyStringBuilder toPrettyStringBuilder() {
-    PrettyStringBuilder builder = new PrettyStringBuilder(this, 6);
-    builder.appendKeyword("!");
-    return builder;
+  public Expression applyTo(Expression e) throws UnaryOperatorException {
+    throw new UnsupportedOperationException("deref operator must be handled by the interpreter");
   }
 }

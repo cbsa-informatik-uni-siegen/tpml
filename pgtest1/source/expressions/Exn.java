@@ -7,7 +7,7 @@ package expressions;
  * @author bmeurer
  * @version $Id$
  */
-public class Exn extends Expression {
+public final class Exn extends Expression {
   /**
    * Returns the pretty string builder for exceptions.
    * @return the pretty string builder for exceptions.

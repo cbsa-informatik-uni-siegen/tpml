@@ -6,8 +6,9 @@ package expressions;
  * expression.
  *
  * @author bmeurer
- * @version $Id$
+ * @version $Id:Rule.java 121 2006-04-28 16:45:27Z benny $
  */
+@Deprecated
 public final class Rule {
   /**
    * Represents the various types of supported rules for

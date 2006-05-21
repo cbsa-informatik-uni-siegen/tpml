@@ -3,9 +3,16 @@ package expressions;
 import java.util.Set;
 import java.util.TreeSet;
 
-public class Abstraction extends Value {
+/**
+ * Represents a lambda abstraction.
+ *
+ * @author Benedikt Meurer
+ * @version $Id$
+ */
+public final class Abstraction extends Value {
   /**
    * Generates a new abstraction.
+   * 
    * @param id the name of the parameter.
    * @param e the expression.
    */
@@ -15,29 +22,11 @@ public class Abstraction extends Value {
   }
 
   /**
-   * {@inheritDoc}
-   * 
-   * @see expressions.Expression#normalize()
-   */
-  @Override
-  public Expression normalize() {
-    // normalize the sub expression
-    Expression e = this.e.normalize();
-    
-    // check if we need to generate new abstraction
-    if (e != this.e) {
-      return new Abstraction(this.id, e);
-    }
-    else {
-      return this;
-    }
-  }
-  
-  /**
    * Performs the substitution for <b>(LAMBDA)</b> expressions.
    * 
    * @param id the identifier for the substitution.
    * @param e the expression to substitute.
+   * 
    * @return the new expression.
    */
   @Override
@@ -62,30 +51,6 @@ public class Abstraction extends Value {
     }
   }
 
-  /**
-   * Applies the lambda abstraction to the value <code>v</code>
-   * and prepends the <b>(BETA-VALUE)</b> rule to the <code>ruleChain</code>.
-   * Applying a lambda abstraction to a value will always succeed.
-   *  
-   * @param v the value to which the lambda abstraction should be applied.
-   * @param e the application expression to which this abstraction belongs to.
-   * @param ruleChain the chain of rules.
-   * @return the applied abstraction.
-   * 
-   * @see expressions.Value#applyTo(expressions.Value, expressions.RuleChain)
-   */
-  @Override
-  public Expression applyTo(Expression v, Application e, RuleChain ruleChain) {
-    assert (v.isValue());
-    assert (ruleChain.isEmpty());
-    
-    // prepend the (BETA-VALUE) rule
-    ruleChain.prepend(new Rule(e, Rule.BETA_VALUE));
-    
-    // perform the substitution
-    return this.e.substitute(this.id, v);
-  }
-  
   /**
    * Returns the free identifiers minus the bound identifier.
    * @return the free identifiers minus the bound identifier.

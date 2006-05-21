@@ -10,8 +10,9 @@ import common.Store;
 import expressions.Abstraction;
 import expressions.And;
 import expressions.Application;
-import expressions.AppliedOperator;
 import expressions.Assign;
+import expressions.BinaryOperator;
+import expressions.BinaryOperatorException;
 import expressions.BooleanConstant;
 import expressions.Condition;
 import expressions.Condition1;
@@ -19,11 +20,9 @@ import expressions.Deref;
 import expressions.Expression;
 import expressions.Fst;
 import expressions.InfixOperation;
-import expressions.IntegerConstant;
 import expressions.Let;
 import expressions.LetRec;
 import expressions.Location;
-import expressions.Operator;
 import expressions.Or;
 import expressions.Projection;
 import expressions.Recursion;
@@ -31,8 +30,9 @@ import expressions.Ref;
 import expressions.Sequence;
 import expressions.Snd;
 import expressions.Tuple;
+import expressions.UnaryOperator;
+import expressions.UnaryOperatorException;
 import expressions.UnitConstant;
-import expressions.Value;
 import expressions.While;
 
 /**
@@ -321,11 +321,10 @@ final class SmallStepEvaluator {
     // determine the sub expressions and the operator
     Expression e1 = infixOperation.getE1();
     Expression e2 = infixOperation.getE2();
-    Operator op = infixOperation.getOp();
+    BinaryOperator op = infixOperation.getOp();
     
     // check if e1 is not already an integer constant
-    if ((!(op instanceof Assign) && !(e1 instanceof IntegerConstant))
-        || (op instanceof Assign && !(e1 instanceof Location))) {
+    if (!e1.isValue()) {
       // try to evaluate e1
       e1 = evaluate(e1);
       
@@ -344,9 +343,8 @@ final class SmallStepEvaluator {
       return new InfixOperation(op, e1, e2);
     }
     
-    // check if e2 is not already an integer constant
-    if ((!(op instanceof Assign) && !(e2 instanceof IntegerConstant))
-        || (op instanceof Assign && !e2.isValue())) {
+    // check if e2 is not already a value
+    if (!e2.isValue()) {
       // try to evaluate e2
       e2 = evaluate(e2);
       
@@ -363,24 +361,8 @@ final class SmallStepEvaluator {
       return new InfixOperation(op, e1, e2);
     }
     
-    // check if we have (ASSIGN) or (OP)
-    if (op instanceof Assign) {
-      // we can perform (ASSIGN) now
-      addProofStep(SmallStepProofRule.ASSIGN, infixOperation);
-      
-      // change the value at the memory location
-      this.store.put((Location)e1, e2);
-      
-      // return nothing
-      return UnitConstant.UNIT;
-    }
-    else {
-      // we can perform (OP) now
-      addProofStep(SmallStepProofRule.OP, infixOperation);
-
-      // apply the operator to the constant
-      return op.applyTo((Value)e1, (Value)e2);
-    }
+    // try to perform the application
+    return handleBinaryOperator(infixOperation, op, e1, e2);
   }
   
   @SuppressWarnings("unused")
@@ -592,16 +574,14 @@ final class SmallStepEvaluator {
   }
   
   @SuppressWarnings("unused")
-  private Expression applyAppliedOperator(Application application, AppliedOperator aop, Value v) {
-    // check if we have (ASSIGN) or (OP)
-    if (aop.getOperator() instanceof Assign) {
-      addProofStep(SmallStepProofRule.ASSIGN, application);
-      this.store.put((Location)aop.getValue(), v);
-      return UnitConstant.UNIT;
+  private Expression applyApplication(Application application, Application app1, Expression e2) {
+    try {
+      // try to perform the application
+      return handleBinaryOperator(application, (BinaryOperator)app1.getE1(), app1.getE2(), e2);
     }
-    else {
-      addProofStep(SmallStepProofRule.OP, application);
-      return aop.getOperator().applyTo(aop.getValue(), v);
+    catch (ClassCastException exception) {
+      // the first application is not what we need
+      return application;
     }
   }
   
@@ -624,30 +604,6 @@ final class SmallStepEvaluator {
   }
   
   @SuppressWarnings("unused")
-  private Expression applyFst(Application application, Fst fst, Tuple tuple) {
-    // check if the fst operator can be applied to the tuple
-    if (tuple.arity() == 2) {
-      addProofStep(SmallStepProofRule.FST, application);
-      return tuple.getExpressions()[0];
-    }
-    else {
-      return application;
-    }
-  }
-  
-  @SuppressWarnings("unused")
-  private Expression applyProjection(Application application, Projection projection, Tuple tuple) {
-    // check if the projection can be applied to the tuple
-    if (projection.getArity() == tuple.arity()) {
-      addProofStep(SmallStepProofRule.PROJ, application);
-      return tuple.getExpressions()[projection.getIndex()];
-    }
-    else {
-      return application;
-    }
-  }
-  
-  @SuppressWarnings("unused")
   private Expression applyRef(Application application, Ref ref, Expression e) {
     // we're about to perform (REF)
     addProofStep(SmallStepProofRule.REF, application);
@@ -661,13 +617,30 @@ final class SmallStepEvaluator {
   }
   
   @SuppressWarnings("unused")
-  private Expression applySnd(Application application, Snd snd, Tuple tuple) {
-    // check if the snd operator can be applied to the tuple
-    if (tuple.arity() == 2) {
-      addProofStep(SmallStepProofRule.SND, application);
-      return tuple.getExpressions()[1];
+  private Expression applyUnaryOperator(Application application, UnaryOperator operator, Expression e) {
+    try {
+      // try to perform the application
+      e = operator.applyTo(e);
+      
+      // determine the appropriate rule
+      if (operator instanceof Fst) {
+        addProofStep(SmallStepProofRule.FST, application);
+      }
+      else if (operator instanceof Snd) {
+        addProofStep(SmallStepProofRule.SND, application);
+      }
+      else if (operator instanceof Projection) {
+        addProofStep(SmallStepProofRule.PROJ, application);
+      }
+      else {
+        addProofStep(SmallStepProofRule.UOP, application);
+      }
+      
+      // and return the new expression
+      return e;
     }
-    else {
+    catch (UnaryOperatorException exception) {
+      // we're stuck
       return application;
     }
   }
@@ -680,6 +653,36 @@ final class SmallStepEvaluator {
   
   private void addProofStep(SmallStepProofRule rule, Expression expression) {
     this.steps.add(new ProofStep(expression, rule));
+  }
+  
+  private Expression handleBinaryOperator(Expression applicationOrInfix, BinaryOperator op, Expression e1, Expression e2) {
+    try {
+      // check if we have (ASSIGN) or (OP)
+      if (op instanceof Assign) {
+        // we can perform (ASSIGN) now
+        addProofStep(SmallStepProofRule.ASSIGN, applicationOrInfix);
+        
+        // change the value at the memory location
+        this.store.put((Location)e1, e2);
+        
+        // return nothing
+        return UnitConstant.UNIT;
+      }
+      else {
+        // try to perform the operation
+        Expression e = op.applyTo(e1, e2);
+        
+        // yep, that was (BOP) then
+        addProofStep(SmallStepProofRule.BOP, applicationOrInfix);
+        
+        // return the new expression
+        return e;
+      }
+    }
+    catch (BinaryOperatorException exception) {
+      // cannot apply binary operator, we're stuck
+      return applicationOrInfix;
+    }
   }
   
   private Method lookupMethod(String baseName, Class klass) throws NoSuchMethodException {

@@ -21,26 +21,23 @@ public class SmallStepProofNode extends AbstractProofNode {
   
   /**
    * Allocates a new small step proof node for the given
-   * <code>expression</code>. The <code>expression</code>
-   * is normalized before creating the node.
+   * <code>expression</code>.
    * 
    * @param expression the {@link Expression} for this node.
    */
   SmallStepProofNode(Expression expression) {
-    super(expression.normalize());
+    super(expression);
   }
   
   /**
    * Allocates a new small step proof node for the given
-   * <code>expression</code> and <code>store</code>. The
-   * <code>expression</code> is normalized before creating
-   * the node.
+   * <code>expression</code> and <code>store</code>.
    * 
    * @param expression the {@link Expression} for this node.
    * @param store the {@link Store} for this node.
    */
   SmallStepProofNode(Expression expression, Store store) {
-    super(expression.normalize(), store);
+    super(expression, store);
   }
   
   

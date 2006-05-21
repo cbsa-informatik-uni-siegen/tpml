@@ -6,105 +6,94 @@ package expressions;
  * @author Benedikt Meurer
  * @version $Id:RelationalOperator.java 121 2006-04-28 16:45:27Z benny $
  */
-public class RelationalOperator extends Operator {
-  /**
-   * Checks if both <code>c1</code> and <code>c2</code> are
-   * <code>IntegerConstant</code>s.
-   * 
-   * @param c1 the class of the first operand.
-   * @param c2 the class of the second operand.
-   * 
-   * @return <code>true</code> if both <code>c1</code> and <code>c2</code>
-   *         are <code>IntegerConstant</code>s.
-   *         
-   * @see expressions.Operator#canApplyTo(java.lang.Class, java.lang.Class)
-   */
-  @Override
-  public boolean canApplyTo(Class c1, Class c2) {
-    return (c1 == IntegerConstant.class && c2 == IntegerConstant.class);
-  }
+public class RelationalOperator extends BinaryOperator {
+  //
+  // Constants
+  //
   
   /**
-   * Performs the relational operation on <code>c1</code> and <code>c2</code>
-   * and returns a boolean constant.
-   * 
-   * @param v1 the first operand.
-   * @param v2 the second operand.
-   * @return the result.
-   * 
-   * @see expressions.Operator#applyTo(Value, Value)
-   */
-  @Override
-  public final Expression applyTo(Value v1, Value v2) {
-    // cast the operands to integer constants
-    IntegerConstant ic1 = (IntegerConstant)v1;
-    IntegerConstant ic2 = (IntegerConstant)v2;
-   
-    if (this.op.equals("="))
-      return (ic1.getNumber() == ic2.getNumber()) ? BooleanConstant.TRUE : BooleanConstant.FALSE;
-    else if (this.op.equals("<"))
-      return (ic1.getNumber() < ic2.getNumber()) ? BooleanConstant.TRUE : BooleanConstant.FALSE;
-    else if (this.op.equals(">"))
-      return (ic1.getNumber() > ic2.getNumber()) ? BooleanConstant.TRUE : BooleanConstant.FALSE;
-    else if (this.op.equals("<="))
-      return (ic1.getNumber() <= ic2.getNumber()) ? BooleanConstant.TRUE : BooleanConstant.FALSE;
-    else {
-      assert (this.op.equals(">="));
-      
-      return (ic1.getNumber() >= ic2.getNumber()) ? BooleanConstant.TRUE : BooleanConstant.FALSE;
-    }
-  }
-  
-  /**
-   * Returns the base pretty print priority for this operator.
-   * 
-   * @return the base pretty print priority for this operator.
-   * 
-   * @see expressions.Operator#getPrettyPriority()
-   */
-  @Override
-  public int getPrettyPriority() {
-    return 2;
-  }
-
-  /**
-   * Returns the string representation of the operator.
-   * @return the string representation of the operator.
-   * @see java.lang.Object#toString()
-   */
-  @Override
-  public String toString() {
-    return this.op;
-  }
-
-  /**
-   * The <b>(EQUALS)</b> operator.
+   * The equals operator.
    */
   public static final RelationalOperator EQUALS = new RelationalOperator("=");
   
   /**
-   * The <b>(LOWER-THAN)</b> operator.
+   * The lower-than operator.
    */
   public static final RelationalOperator LOWER_THAN = new RelationalOperator("<");
   
   /**
-   * The <b>(GREATER-THAN)</b> operator.
+   * The greater-than operator.
    */
   public static final RelationalOperator GREATER_THAN = new RelationalOperator(">");
   
   /**
-   * The <b>(LOWER-EQUAL)</b> operator.
+   * The lower-equal operator.
    */
   public static final RelationalOperator LOWER_EQUAL = new RelationalOperator("<=");
   
   /**
-   * The <b>(GREATER-EQUAL)</b> operator.
+   * The greater-equal operator.
    */
   public static final RelationalOperator GREATER_EQUAL = new RelationalOperator(">=");
+
   
-  private RelationalOperator(final String op) {
-    this.op = op;
+  
+  //
+  // Constructor (private)
+  //
+  
+  /**
+   * Allocates a new <code>RelationalOperator</code> with the
+   * specified string representation <code>op</code>.
+   * 
+   * @param op the string representation.
+   */
+  private RelationalOperator(String op) {
+    super(op, 2);
   }
   
-  private String op;
+  
+  
+  //
+  // Primitives
+  //
+  
+  /**
+   * {@inheritDoc}
+   *
+   * @see expressions.BinaryOperator#applyTo(expressions.Expression, expressions.Expression)
+   */
+  @Override
+  public Expression applyTo(Expression e1, Expression e2) throws BinaryOperatorException {
+    try {
+      // determine the numeric values of the operands
+      int n1 = ((IntegerConstant)e1).getNumber();
+      int n2 = ((IntegerConstant)e2).getNumber();
+      
+      // perform the requested comparison
+      if (this == EQUALS) {
+        return (n1 == n2) ? BooleanConstant.TRUE : BooleanConstant.FALSE;
+      }
+      else if (this == LOWER_THAN) {
+        return (n1 < n2) ? BooleanConstant.TRUE : BooleanConstant.FALSE;
+      }
+      else if (this == GREATER_THAN) {
+        return (n1 > n2) ? BooleanConstant.TRUE : BooleanConstant.FALSE;
+      }
+      else if (this == LOWER_EQUAL) {
+        return (n1 <= n2) ? BooleanConstant.TRUE : BooleanConstant.FALSE;
+      }
+      else if (this == GREATER_EQUAL) {
+        return (n1 >= n2) ? BooleanConstant.TRUE : BooleanConstant.FALSE;
+      }
+      else {
+        // programming error
+        throw new IllegalStateException("inconsistent arithmetic operator class");
+      }
+    }
+    catch (ClassCastException e) {
+      // one of the Expression to IntegerConstant casts failed
+      throw new BinaryOperatorException(this, e1, e2);
+    }
+  }
 }

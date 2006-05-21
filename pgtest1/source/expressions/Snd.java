@@ -8,14 +8,37 @@ package expressions;
  * @version $Id$
  */
 public final class Snd extends Projection {
+  //
+  // Constants
+  //
+  
+  /**
+   * The single instance of the <code>Snd</code> class.
+   */
+  public static final Snd SND = new Snd();
+  
+  
+  
+  //
+  // Constructor (private)
+  //
+  
   /**
    * Allocates a new instance of the <code>snd</code>
    * operator which is a special case of the projection
    * that returns the second item of a pair.
+   * 
+   * @see #SND
    */
-  public Snd() {
-    super(2, 2, Rule.SND);
+  private Snd() {
+    super(2, 2, "snd");
   }
+  
+  
+  
+  //
+  // Primitives
+  //
   
   /**
    * Returns <code>true</code> since the <code>snd</code>
@@ -41,17 +64,5 @@ public final class Snd extends Projection {
   @Override
   public Expression translateSyntacticSugar() {
     return new Projection(2, 2);
-  }
-  
-  /**
-   * {@inheritDoc}
-   * 
-   * @see expressions.Projection#toPrettyStringBuilder()
-   */
-  @Override
-  protected PrettyStringBuilder toPrettyStringBuilder() {
-    PrettyStringBuilder builder = new PrettyStringBuilder(this, 6);
-    builder.appendKeyword("snd");
-    return builder;
   }
 }

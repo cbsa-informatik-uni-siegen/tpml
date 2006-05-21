@@ -1,7 +1,12 @@
 package expressions;
 
-
-public class IntegerConstant extends expressions.Constant {
+/**
+ * Represents integer constants.
+ *
+ * @author Benedikt Meurer
+ * @version $Id$
+ */
+public final class IntegerConstant extends expressions.Constant {
   /**
    * Allocates a new integer constant with the given
    * <code>number</code>.

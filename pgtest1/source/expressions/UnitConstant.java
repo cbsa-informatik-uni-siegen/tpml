@@ -1,7 +1,12 @@
 package expressions;
 
-
-public class UnitConstant extends Constant {
+/**
+ * Represents unit constants.
+ *
+ * @author Benedikt Meurer
+ * @version $Id$
+ */
+public final class UnitConstant extends Constant {
   /**
    * Returns the pretty string builder for constants.
    * @return the pretty string builder for constants.

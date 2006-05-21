@@ -24,25 +24,6 @@ public final class And extends Expression {
   }
   
   /**
-   * {@inheritDoc}
-   * @see expressions.Expression#normalize()
-   */
-  @Override
-  public Expression normalize() {
-    // normalize the sub expression
-    Expression e0 = this.e0.normalize();
-    Expression e1 = this.e1.normalize();
-    
-    // check if we need to generate a new and
-    if (e0 != this.e0 || e1 != this.e1) {
-      return new And(e0, e1);
-    }
-    else {
-      return this;
-    }
-  }
-  
-  /**
    * Substitutes <code>e</code> for <code>id</code> within the subexpressions
    * of this <b>(AND)</b> expression.
    * 

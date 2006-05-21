@@ -3,7 +3,7 @@ package expressions;
 import java.util.Set;
 import java.util.TreeSet;
 
-public class Identifier extends Expression {
+public final class Identifier extends Expression {
   /**
    * Generates a new Identifier.
    * @param name the name of the identifier.

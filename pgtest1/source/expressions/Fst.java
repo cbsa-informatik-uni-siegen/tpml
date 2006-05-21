@@ -8,14 +8,37 @@ package expressions;
  * @version $Id$
  */
 public final class Fst extends Projection {
+  //
+  // Constants
+  //
+  
+  /**
+   * The single instance of the <code>Fst</code> class.
+   */
+  public static final Fst FST = new Fst();
+  
+  
+  
+  //
+  // Constructor (private)
+  //
+  
   /**
    * Allocates a new instance of the <code>fst</code>
    * operator which is a special case of the projection
    * that returns the first item of a pair.
+   * 
+   * @see #FST
    */
-  public Fst() {
-    super(2, 1, Rule.FST);
+  private Fst() {
+    super(2, 1, "fst");
   }
+  
+  
+  
+  //
+  // Primitives
+  //
   
   /**
    * Returns <code>true</code> since the <code>fst</code>
@@ -41,17 +64,5 @@ public final class Fst extends Projection {
   @Override
   public Expression translateSyntacticSugar() {
     return new Projection(2, 1);
-  }
-  
-  /**
-   * {@inheritDoc}
-   * 
-   * @see expressions.Projection#toPrettyStringBuilder()
-   */
-  @Override
-  protected PrettyStringBuilder toPrettyStringBuilder() {
-    PrettyStringBuilder builder = new PrettyStringBuilder(this, 6);
-    builder.appendKeyword("fst");
-    return builder;
   }
 }

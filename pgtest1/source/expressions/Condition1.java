@@ -80,26 +80,6 @@ public final class Condition1 extends Expression {
   /**
    * {@inheritDoc}
    * 
-   * @see expressions.Expression#normalize()
-   */
-  @Override
-  public Expression normalize() {
-    // normalize the sub expressions
-    Expression e0 = this.e0.normalize();
-    Expression e1 = this.e1.normalize();
-    
-    // check if we need a new condition1
-    if (this.e0 != e0 || this.e1 != e1) {
-      return new Condition1(e0, e1);
-    }
-    else {
-      return this;
-    }
-  }
-  
-  /**
-   * {@inheritDoc}
-   * 
    * @see expressions.Expression#substitute(java.lang.String, expressions.Expression)
    */
   @Override

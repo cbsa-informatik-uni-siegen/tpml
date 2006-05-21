@@ -7,16 +7,29 @@ package expressions;
  * @author Benedikt Meurer
  * @version $Id$
  */
-public final class Ref extends Value {
+public final class Ref extends UnaryOperator {
   //
-  // Constructor
+  // Constants
+  //
+  
+  /**
+   * The single instance of the <code>Ref</code> class.
+   */
+  public static final Ref REF = new Ref();
+  
+  
+  
+  //
+  // Constructor (private)
   //
   
   /**
    * Allocates a new <code>Ref</code> instance.
+   * 
+   * @see #REF
    */
-  public Ref() {
-    // nothing to do
+  private Ref() {
+    super("ref");
   }
   
   
@@ -34,19 +47,31 @@ public final class Ref extends Value {
   public boolean containsReferences() {
     return true;
   }
-
+  
+  
+  
+  //
+  // Primitives
+  //
+  
   /**
-   * Returns the pretty string builder for the
-   * <code>ref</code> operator.
+   * The <code>Ref</code> operator has no machine equivalent and
+   * must be handled by the interpreter, since it requires access
+   * to the memory store.
    * 
-   * @return the pretty string builder.
+   * This method always throws {@link UnsupportedOperationException}
+   * to indicate that it should not be called.
+   *
+   * @param e the operand.
    * 
-   * @see expressions.Expression#toPrettyStringBuilder()
+   * @return does not return normally.
+   * 
+   * @throws UnsupportedOperationException on every invokation.
+   * 
+   * @see expressions.UnaryOperator#applyTo(expressions.Expression)
    */
   @Override
-  protected PrettyStringBuilder toPrettyStringBuilder() {
-    PrettyStringBuilder builder = new PrettyStringBuilder(this, 6);
-    builder.appendKeyword("ref");
-    return builder;
+  public Expression applyTo(Expression e) throws UnaryOperatorException {
+    throw new UnsupportedOperationException("ref operator must be handled by the interpreter");
   }
 }

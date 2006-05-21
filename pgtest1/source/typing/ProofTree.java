@@ -10,7 +10,6 @@ import javax.swing.tree.TreePath;
 import expressions.Abstraction;
 import expressions.And;
 import expressions.Application;
-import expressions.AppliedOperator;
 import expressions.Condition;
 import expressions.Constant;
 import expressions.Expression;
@@ -389,22 +388,12 @@ public final class ProofTree implements TreeModel, TypeVariableAllocator {
       newNode.addChild(new Judgement(environment, or.getE0(), PrimitiveType.BOOL));
       newNode.addChild(new Judgement(environment, or.getE1(), PrimitiveType.BOOL));
     }
-    else if (expression instanceof AppliedOperator && rule == Rule.APP) {
-      // split into tau1 and tau2 for the applied operator
-      TypeVariable tau2 = allocateTypeVariable();
-      ArrowType tau1 = new ArrowType(tau2, tau);
-      
-      // generate new sub nodes
-      AppliedOperator aop = (AppliedOperator)expression;
-      newNode.addChild(new Judgement(environment, aop.getOperator(), tau1));
-      newNode.addChild(new Judgement(environment, aop.getValue(), tau2));
-    }
     else if (expression instanceof Tuple && rule == Rule.TUPLE) {
       // cast to tuple expression
       Tuple tuple = (Tuple)expression;
       
       // allocate type variables for the tuple type
-      TypeVariable[] types = new TypeVariable[tuple.arity()];
+      TypeVariable[] types = new TypeVariable[tuple.getArity()];
       Expression[] expressions = tuple.getExpressions();
       for (int n = 0; n < types.length; ++n) {
         // allocate a type variable for this subexpression

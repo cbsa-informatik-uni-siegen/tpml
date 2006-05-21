@@ -6,7 +6,6 @@ import java.util.LinkedList;
 import expressions.Abstraction;
 import expressions.And;
 import expressions.Application;
-import expressions.AppliedOperator;
 import expressions.Condition;
 import expressions.Constant;
 import expressions.Expression;
@@ -190,7 +189,7 @@ public final class Rule {
       Type type = environment.get(((Identifier)expression).getName());
       return (type instanceof PolyType) ? Rule.P_ID : Rule.ID;
     }
-    else if (expression instanceof Application || expression instanceof AppliedOperator) {
+    else if (expression instanceof Application) {
       return Rule.APP;
     }
     else if (expression instanceof Condition) {

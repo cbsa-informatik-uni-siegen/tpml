@@ -33,9 +33,9 @@ public class SmallStepTreeView extends JFrame {
   /**
    * Simple test expression.
    */
-  private static final String SIMPLE = "(ref 1, ref 2, ref 3, ref 4)";
+  //private static final String SIMPLE = "not ((+) 1 ( (/) 10 (9 + ~- (8 + 1))))";
   //private static final String SIMPLE = "let f = ref (lambda x.x) in let fact = lambda x.if x = 0 then 1 else x * (!f (x - 1)) in (f := fact, !f 3)";
-  //private static final String SIMPLE = "let rec f = lambda x.if x = 0 then 1 else x * (f (x - 1)) in f 3";
+  private static final String SIMPLE = "let rec f = lambda x.if x = 0 then 1 else x * (f (x - 1)) in f 3";
   //private static final String SIMPLE = "(1 + 2, 5 * 8, let x = 9 in (8,(+) 9 x), y)";
 
   

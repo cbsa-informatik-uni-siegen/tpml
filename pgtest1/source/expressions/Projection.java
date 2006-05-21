@@ -1,6 +1,5 @@
 package expressions;
 
-
 /**
  * Presents a projection, which can be used to select
  * an element from a {@link expressions.Tuple} expression.
@@ -10,7 +9,31 @@ package expressions;
  * @author Benedikt Meurer
  * @version $Id$
  */
-public class Projection extends Value {
+public class Projection extends UnaryOperator {
+  //
+  // Attributes
+  //
+
+  /**
+   * The arity of the projection.
+   * 
+   * @see #getArity()
+   */
+  private int arity;
+  
+  /**
+   * The index of the projection.
+   * 
+   * @see #getIndex()
+   */
+  private int index;
+  
+  
+  
+  //
+  // Constructors
+  //
+  
   /**
    * Allocates a new {@link Projection} with the given
    * <code>arity</code> and the <code>index</code> of 
@@ -26,66 +49,66 @@ public class Projection extends Value {
    *                                  <code>index</code> is invalid.
    */
   public Projection(int arity, int index) {
-    this(arity, index, Rule.PROJ);
+    this(arity, index, "#" + arity + "_" + index);
   }
   
   /**
-   * Constructor for derived classes ({@link Fst} and {@link Snd}),
-   * which allows to specify the <code>ruleType</code>.
+   * Allocates a new {@link Projection} with the given
+   * <code>arity</code> and the <code>index</code> of 
+   * the item that should be selected, and the string
+   * representation <code>op</code>.
    * 
-   * @param arity the arity.
-   * @param index the index.
-   * @param ruleType the {@link Rule.Type}.
+   * @param arity the arity of the tuple to which
+   *              this projection can be applied.
+   * @param index the index of the item to select
+   *              from the tuple, starting with
+   *              <code>1</code>.
+   * @param op the string representation of the projectin.              
+   *              
+   * @throws IllegalArgumentException if the <code>arity</code> or the
+   *                                  <code>index</code> is invalid.
    */
-  protected Projection(int arity, int index, Rule.Type ruleType) {
+  protected Projection(int arity, int index, String op) {
+    super(op);
+    
     // validate the settings
     if (arity <= 0)
       throw new IllegalArgumentException("The arity of a projection must be greater than 0");
     else if (index <= 0 || index > arity)
       throw new IllegalArgumentException("The index of a projection must be greater than 0 and less than the arity");
     
-    // apply the settings
-    this.ruleType = ruleType;
     this.arity = arity;
     this.index = index;
   }
   
-  /**
-   * {@inheritDoc}
-   * 
-   * @see expressions.Value#applyTo(expressions.Expression, expressions.Application, expressions.RuleChain)
-   */
-  @Override
-  public Expression applyTo(Expression v, Application e, RuleChain ruleChain) {
-    // v must be a tuple
-    if (v instanceof Tuple) {
-      // cast to tuple and check that we can apply
-      Tuple t = (Tuple)v;
-      if (t.arity() != this.arity) {
-        // cannot evaluate, invalid arity
-        return super.applyTo(v, e, ruleChain);
-      }
-      else {
-        // return the requested item from the tuple
-        // using the (PROJ) or whatever appropriate
-        // (i.e. (FST) or (SND)) expressions rule
-        ruleChain.prepend(new Rule(e, this.ruleType));
-        return t.getExpressions()[this.index - 1];
-      }
-    }
-    else {
-      return super.applyTo(v, e, ruleChain);
-    }
-  }
+  
+  
+  //
+  // Primitives
+  //
   
   /**
-   * @see expressions.Expression#toPrettyStringBuilder()
+   * {@inheritDoc}
+   *
+   * @see expressions.UnaryOperator#applyTo(expressions.Expression)
    */
   @Override
-  protected PrettyStringBuilder toPrettyStringBuilder() {
-    PrettyStringBuilder builder = new PrettyStringBuilder(this, 6);
-    builder.appendKeyword("#" + arity + "_" + index);
-    return builder;
+  public Expression applyTo(Expression e) throws UnaryOperatorException {
+    try {
+      // determine the sub expressions of the tuple
+      Expression[] expressions = ((Tuple)e).getExpressions();
+      
+      // verify that the arities match
+      if (this.arity != expressions.length)
+        throw new UnaryOperatorException(this, e);
+      
+      // return the sub expression at the index
+      return expressions[this.index - 1];
+    }
+    catch (ClassCastException exception) {
+      // cast of expression to tuple failed
+      throw new UnaryOperatorException(this, e);
+    }
   }
   
   /**
@@ -105,9 +128,4 @@ public class Projection extends Value {
   public int getIndex() {
     return this.index;
   }
-
-  // member attributes
-  private Rule.Type ruleType;
-  private int arity;
-  private int index;
 }
