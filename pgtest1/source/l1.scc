@@ -83,8 +83,8 @@ Productions
   
  simple_expression {-> expression} = 
   {conjunction} conjunction {-> conjunction.expression} |
-  {let} let identifier equal [e1]:expression in [e2]:closed_expression {-> New expression.let(identifier, e1, e2.expression)} |
-  {letrec} let rec identifier equal [e1]:expression in [e2]:closed_expression {-> New expression.letrec(identifier, e1, e2.expression)} |
+  {let} let [idlist]:identifier+ equal [e1]:expression in [e2]:closed_expression {-> New expression.let([idlist], e1, e2.expression)} |
+  {letrec} let rec [idlist]:identifier+ equal [e1]:expression in [e2]:closed_expression {-> New expression.letrec([idlist], e1, e2.expression)} |
   {abstraction} lambda identifier dot [e]:closed_expression {-> New expression.abstraction(identifier, e.expression)} |
   {recursion} rec identifier dot [e]:closed_expression {-> New expression.recursion(identifier, e.expression)};
 
@@ -167,8 +167,8 @@ Abstract Syntax Tree
   {application} [e0]:expression [e1]:expression |
   {condition} [e0]:expression [e1]:expression [e2]:expression |
   {condition1} [e0]:expression [e1]:expression |
-  {let} [id]:identifier [e1]:expression [e2]:expression |
-  {letrec} [id]:identifier [e1]:expression [e2]:expression |
+  {let} [idlist]:identifier+ [e1]:expression [e2]:expression |
+  {letrec} [idlist]:identifier+ [e1]:expression [e2]:expression |
   {abstraction} [id]:identifier [e]:expression |
   {recursion} [id]:identifier [e]:expression |
   {infix} [e1]:expression [op]:expression [e2]:expression |

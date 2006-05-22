@@ -16,6 +16,8 @@ import expressions.BinaryOperatorException;
 import expressions.BooleanConstant;
 import expressions.Condition;
 import expressions.Condition1;
+import expressions.CurriedLet;
+import expressions.CurriedLetRec;
 import expressions.Deref;
 import expressions.Expression;
 import expressions.Fst;
@@ -317,6 +319,46 @@ final class SmallStepEvaluator {
   }
   
   @SuppressWarnings("unused")
+  private Expression evaluateCurriedLet(CurriedLet curriedLet) {
+    // determine the sub expressions and the identifiers
+    String[] identifiers = curriedLet.getIdentifiers();
+    Expression e1 = curriedLet.getE1();
+    Expression e2 = curriedLet.getE2();
+    
+    // prepend the lambda abstractions to e1
+    for (int n = 1; n < identifiers.length; ++n)
+      e1 = new Abstraction(identifiers[n], e1);
+    
+    // we can simply perform (LET-EXEC)
+    addProofStep(SmallStepProofRule.LET_EXEC, curriedLet);
+    
+    // and perform the substitution
+    return e2.substitute(identifiers[0], e1);
+  }
+  
+  @SuppressWarnings("unused")
+  private Expression evaluateCurriedLetRec(CurriedLetRec curriedLetRec) {
+    // determine the sub expressions and the identifiers
+    String[] identifiers = curriedLetRec.getIdentifiers();
+    Expression e1 = curriedLetRec.getE1();
+    Expression e2 = curriedLetRec.getE2();
+    
+    // prepend the lambda abstractions to e1
+    for (int n = 1; n < identifiers.length; ++n)
+      e1 = new Abstraction(identifiers[n], e1);
+    
+    // we can perform (UNFOLD), which includes a (LET-EVAL)
+    addProofStep(SmallStepProofRule.UNFOLD, curriedLetRec);
+    addProofStep(SmallStepProofRule.LET_EVAL, curriedLetRec);
+
+    // perform the substitution on e1
+    e1 = e1.substitute(identifiers[0], new Recursion(identifiers[0], e1));
+    
+    // generate the new (LET) expression
+    return new Let(identifiers[0], e1, e2);
+  }
+  
+  @SuppressWarnings("unused")
   private Expression evaluateInfixOperation(InfixOperation infixOperation) {
     // determine the sub expressions and the operator
     Expression e1 = infixOperation.getE1();
@@ -398,6 +440,24 @@ final class SmallStepEvaluator {
   }
 
   @SuppressWarnings("unused")
+  private Expression evaluateLetRec(LetRec letRec) {
+    // determine the expressions and the identifier
+    Expression e1 = letRec.getE1();
+    Expression e2 = letRec.getE2();
+    String id = letRec.getId();
+    
+    // we perform (UNFOLD), which includes a (LET-EVAL)
+    addProofStep(SmallStepProofRule.UNFOLD, letRec);
+    addProofStep(SmallStepProofRule.LET_EVAL, letRec);
+    
+    // perform the substitution on e1
+    e1 = e1.substitute(id, new Recursion(id, e1));
+    
+    // generate the new (LET) expression
+    return new Let(id, e1, e2);
+  }
+ 
+  @SuppressWarnings("unused")
   private Expression evaluateOr(Or or) {
     // determine the sub expressions
     Expression e0 = or.getE0();
@@ -448,24 +508,6 @@ final class SmallStepEvaluator {
     return e.substitute(id, recursion);
   }
   
-  @SuppressWarnings("unused")
-  private Expression evaluateLetRec(LetRec letRec) {
-    // determine the expressions and the identifier
-    Expression e1 = letRec.getE1();
-    Expression e2 = letRec.getE2();
-    String id = letRec.getId();
-    
-    // we perform (UNFOLD), which includes a (LET-EVAL)
-    addProofStep(SmallStepProofRule.UNFOLD, letRec);
-    addProofStep(SmallStepProofRule.LET_EVAL, letRec);
-    
-    // perform the substitution on e1
-    e1 = e1.substitute(id, new Recursion(id, e1));
-    
-    // generate the new (LET) expression
-    return new Let(id, e1, e2);
-  }
- 
   @SuppressWarnings("unused")
   private Expression evaluateSequence(Sequence sequence) {
     // determine the sub expressions

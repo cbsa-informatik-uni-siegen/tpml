@@ -1,6 +1,7 @@
 package expressions;
 
 import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * Represents the <code>let rec</code> expression, which is
@@ -49,7 +50,7 @@ public final class LetRec extends Let {
   @Override
   public Expression substitute(String id, Expression e) {
     if (this.id.equals(id)) {
-      return new LetRec(this.id, this.e1.substitute(id, e), this.e2.substitute(id, e));
+      return this;
     }
     else {
       // determine the free identifiers for e
@@ -68,6 +69,23 @@ public final class LetRec extends Let {
     }
   }
 
+  /**
+   * Returns the free identifiers of
+   * the subexpressions.
+   * 
+   * @return the free identifiers.
+   * 
+   * @see expressions.Expression#free()
+   */
+  @Override
+  public Set<String> free() {
+    Set<String> set = new TreeSet<String>();
+    set.addAll(this.e2.free());
+    set.addAll(this.e1.free());
+    set.remove(this.id);
+    return set;
+  }
+  
   /**
    * Returns <code>true</code> as <b>(LET-REC)</b> is
    * syntactic sugar.

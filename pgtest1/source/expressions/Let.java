@@ -83,7 +83,7 @@ public class Let extends Expression {
    * @see expressions.Expression#free()
    */
   @Override
-  public final Set<String> free() {
+  public Set<String> free() {
     Set<String> set = new TreeSet<String>();
     set.addAll(this.e2.free());
     set.remove(this.id);

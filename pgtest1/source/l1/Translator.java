@@ -44,14 +44,18 @@ import l1.node.ATupleExpression;
 import l1.node.AUminusExpression;
 import l1.node.AUnitExpression;
 import l1.node.AWhileExpression;
+import l1.node.TIdentifier;
 import expressions.Abstraction;
 import expressions.And;
 import expressions.Application;
 import expressions.ArithmeticOperator;
 import expressions.Assign;
+import expressions.BinaryOperator;
 import expressions.BooleanConstant;
 import expressions.Condition;
 import expressions.Condition1;
+import expressions.CurriedLet;
+import expressions.CurriedLetRec;
 import expressions.Deref;
 import expressions.Expression;
 import expressions.Fst;
@@ -60,7 +64,6 @@ import expressions.InfixOperation;
 import expressions.IntegerConstant;
 import expressions.Let;
 import expressions.LetRec;
-import expressions.BinaryOperator;
 import expressions.Not;
 import expressions.Or;
 import expressions.Projection;
@@ -213,7 +216,19 @@ public class Translator extends DepthFirstAdapter {
   public void outALetExpression(ALetExpression node) {
     Expression e1 = this.expressions.pop();
     Expression e0 = this.expressions.pop();
-    this.expressions.push(new Let(node.getId().getText(), e0, e1));
+    
+    // determine the identifiers
+    String identifiers[] = new String[node.getIdlist().size()];
+    for (int n = 0; n < identifiers.length; ++n)
+      identifiers[n] = ((TIdentifier)node.getIdlist().get(n)).getText();
+    
+    // check if we should generate Let or CurriedLet
+    if (identifiers.length >= 2) {
+      this.expressions.push(new CurriedLet(identifiers, e0, e1));
+    }
+    else {
+      this.expressions.push(new Let(identifiers[0], e0, e1));
+    }
   }
   
   /**
@@ -223,7 +238,19 @@ public class Translator extends DepthFirstAdapter {
   public void outALetrecExpression(ALetrecExpression node) {
     Expression e1 = this.expressions.pop();
     Expression e0 = this.expressions.pop();
-    this.expressions.push(new LetRec(node.getId().getText(), e0, e1));
+    
+    // determine the identifiers
+    String identifiers[] = new String[node.getIdlist().size()];
+    for (int n = 0; n < identifiers.length; ++n)
+      identifiers[n] = ((TIdentifier)node.getIdlist().get(n)).getText();
+    
+    // check if we should generate LetRec or CurriedLetRec
+    if (identifiers.length >= 2) {
+      this.expressions.push(new CurriedLetRec(identifiers, e0, e1));
+    }
+    else {
+      this.expressions.push(new LetRec(identifiers[0], e0, e1));
+    }
   }
 
   /**
