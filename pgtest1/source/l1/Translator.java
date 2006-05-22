@@ -8,7 +8,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import l1.analysis.DepthFirstAdapter;
-import l1.node.AAbstractionExpression;
 import l1.node.AAndExpression;
 import l1.node.AApplicationExpression;
 import l1.node.AAssignExpression;
@@ -23,12 +22,14 @@ import l1.node.AGreaterEqualExpression;
 import l1.node.AGreaterThanExpression;
 import l1.node.AIdentifierExpression;
 import l1.node.AInfixExpression;
+import l1.node.ALambdaExpression;
 import l1.node.ALetExpression;
 import l1.node.ALetrecExpression;
 import l1.node.ALowerEqualExpression;
 import l1.node.ALowerThanExpression;
 import l1.node.AMinusExpression;
 import l1.node.AModuloExpression;
+import l1.node.AMultiLambdaExpression;
 import l1.node.AMultiplyExpression;
 import l1.node.ANotExpression;
 import l1.node.ANumberExpression;
@@ -45,7 +46,7 @@ import l1.node.AUminusExpression;
 import l1.node.AUnitExpression;
 import l1.node.AWhileExpression;
 import l1.node.TIdentifier;
-import expressions.Abstraction;
+import expressions.Lambda;
 import expressions.And;
 import expressions.Application;
 import expressions.ArithmeticOperator;
@@ -64,6 +65,7 @@ import expressions.InfixOperation;
 import expressions.IntegerConstant;
 import expressions.Let;
 import expressions.LetRec;
+import expressions.MultiLambda;
 import expressions.Not;
 import expressions.Or;
 import expressions.Projection;
@@ -118,12 +120,32 @@ public class Translator extends DepthFirstAdapter {
   }
   
   /**
-   * @see l1.analysis.DepthFirstAdapter#outAAbstractionExpression(l1.node.AAbstractionExpression)
+   * @see l1.analysis.DepthFirstAdapter#outALambdaExpression(l1.node.ALambdaExpression)
    */
   @Override
-  public void outAAbstractionExpression(AAbstractionExpression node) {
+  public void outALambdaExpression(ALambdaExpression node) {
     Expression e = this.expressions.pop();
-    this.expressions.push(new Abstraction(node.getId().getText(), e));
+    this.expressions.push(new Lambda(node.getId().getText(), e));
+  }
+  
+  /**
+   * {@inheritDoc}
+   *
+   * @see l1.analysis.DepthFirstAdapter#outAMultiLambdaExpression(l1.node.AMultiLambdaExpression)
+   */
+  @Override
+  public void outAMultiLambdaExpression(AMultiLambdaExpression node) {
+    // determine the function body
+    Expression e = this.expressions.pop();
+
+    // determine the identifiers
+    String identifiers[] = new String[node.getIdlist().size()];
+    for (int n = 0; n < identifiers.length; ++n) {
+      identifiers[n] = ((TIdentifier)node.getIdlist().get(n)).getText();
+    }
+    
+    // create the multi lambda expression
+    this.expressions.push(new MultiLambda(identifiers, e));
   }
 
   /**

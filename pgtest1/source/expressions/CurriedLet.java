@@ -1,5 +1,6 @@
 package expressions;
 
+import java.util.Arrays;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -83,20 +84,27 @@ public class CurriedLet extends Expression {
    */
   @Override
   public Expression substitute(String id, Expression e) {
-    // determine the expressions
+    // determine the expressions and the identifiers
+    String[] identifiers = this.identifiers;
     Expression e1 = this.e1;
     Expression e2 = this.e2;
     
-    // bound rename for substituting e in e1
-    Set<String> freeE = e.free();
-    for (int n = 1; n < this.identifiers.length; ++n) {
-      // generate a new unique identifier
-      String newId = this.identifiers[n];
-      while (freeE.contains(newId))
-        newId = newId + "'";
-
-      // perform the bound renaming
-      e1 = e1.substitute(this.identifiers[n], new Identifier(newId));
+    // check if we can substitute below e1
+    if (!Arrays.asList(identifiers).subList(1, identifiers.length).contains(id)) {
+      // bound rename for substituting e in e1
+      identifiers = identifiers.clone();
+      Set<String> freeE = e.free();
+      for (int n = 1; n < identifiers.length; ++n) {
+        // generate a new unique identifier
+        while (freeE.contains(identifiers[n]))
+          identifiers[n] = identifiers[n] + "'";
+        
+        // perform the bound renaming
+        e1 = e1.substitute(this.identifiers[n], new Identifier(identifiers[n]));
+      }
+      
+      // substitute in e1 if
+      e1 = e1.substitute(id, e);
     }
     
     // substitute e2 if id is not bound in e2
@@ -104,7 +112,7 @@ public class CurriedLet extends Expression {
       e2 = e2.substitute(id, e);
     
     // generate the new expression
-    return new CurriedLet(this.identifiers, e1, e2);
+    return new CurriedLet(identifiers, e1, e2);
   }
 
   /**
@@ -162,7 +170,7 @@ public class CurriedLet extends Expression {
     // translate to: let id1 = lambda id2...lambda idn.e1 in e2
     Expression e1 = this.e1;
     for (int n = this.identifiers.length - 1; n > 0; --n) {
-      e1 = new Abstraction(this.identifiers[n], e1);
+      e1 = new Lambda(this.identifiers[n], e1);
     }
     return new Let(this.identifiers[0], e1, this.e2);
   }

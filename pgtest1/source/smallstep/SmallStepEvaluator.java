@@ -7,7 +7,7 @@ import common.MutableStore;
 import common.ProofStep;
 import common.Store;
 
-import expressions.Abstraction;
+import expressions.Lambda;
 import expressions.And;
 import expressions.Application;
 import expressions.Assign;
@@ -25,6 +25,7 @@ import expressions.InfixOperation;
 import expressions.Let;
 import expressions.LetRec;
 import expressions.Location;
+import expressions.MultiLambda;
 import expressions.Or;
 import expressions.Projection;
 import expressions.Recursion;
@@ -327,7 +328,7 @@ final class SmallStepEvaluator {
     
     // prepend the lambda abstractions to e1
     for (int n = 1; n < identifiers.length; ++n)
-      e1 = new Abstraction(identifiers[n], e1);
+      e1 = new Lambda(identifiers[n], e1);
     
     // we can simply perform (LET-EXEC)
     addProofStep(SmallStepProofRule.LET_EXEC, curriedLet);
@@ -345,7 +346,7 @@ final class SmallStepEvaluator {
     
     // prepend the lambda abstractions to e1
     for (int n = 1; n < identifiers.length; ++n)
-      e1 = new Abstraction(identifiers[n], e1);
+      e1 = new Lambda(identifiers[n], e1);
     
     // we can perform (UNFOLD), which includes a (LET-EVAL)
     addProofStep(SmallStepProofRule.UNFOLD, curriedLetRec);
@@ -610,9 +611,38 @@ final class SmallStepEvaluator {
   }
 
   @SuppressWarnings("unused")
-  private Expression applyAbstraction(Application application, Abstraction abstr, Expression v) {
+  private Expression applyLambda(Application application, Lambda lambda, Expression v) {
     addProofStep(SmallStepProofRule.BETA_V, application);
-    return abstr.getE().substitute(abstr.getId(), v);
+    return lambda.getE().substitute(lambda.getId(), v);
+  }
+  
+  @SuppressWarnings("unused")
+  private Expression applyMultiLambda(Application application, MultiLambda multiLambda, Expression v) {
+    try {
+      // v must be a tuple with the appropriate arity
+      Tuple tuple = (Tuple)v;
+      if (tuple.getArity() != multiLambda.getArity()) {
+        return application;
+      }
+      
+      // perform the substitutions
+      String[] identifiers = multiLambda.getIdentifiers();
+      Expression[] expressions = tuple.getExpressions();
+      Expression e = multiLambda.getE();
+      for (int n = 0; n < identifiers.length; ++n) {
+        e = e.substitute(identifiers[n], expressions[n]);
+      }
+      
+      // yep, that was (BETA-V) then
+      addProofStep(SmallStepProofRule.BETA_V, application);
+      
+      // and return the new expression
+      return e;
+    }
+    catch (ClassCastException exception) {
+      // v is not a tuple
+      return application;
+    }
   }
   
   @SuppressWarnings("unused")

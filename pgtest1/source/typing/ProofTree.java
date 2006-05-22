@@ -7,7 +7,7 @@ import javax.swing.event.TreeModelListener;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 
-import expressions.Abstraction;
+import expressions.Lambda;
 import expressions.And;
 import expressions.Application;
 import expressions.Condition;
@@ -308,7 +308,7 @@ public final class ProofTree implements TreeModel, TypeVariableAllocator {
       newNode.addChild(new Judgement(environment, condition.getE1(), tau));
       newNode.addChild(new Judgement(environment, condition.getE2(), tau));
     }
-    else if (expression instanceof Abstraction && rule == Rule.ABSTR) {
+    else if (expression instanceof Lambda && rule == Rule.ABSTR) {
       // generate new type variables
       TypeVariable tau1 = allocateTypeVariable();
       TypeVariable tau2 = allocateTypeVariable();
@@ -317,7 +317,7 @@ public final class ProofTree implements TreeModel, TypeVariableAllocator {
       equations = equations.extend(tau, new ArrowType(tau1, tau2));
       
       // generate a new sub node
-      Abstraction abstraction = (Abstraction)expression;
+      Lambda abstraction = (Lambda)expression;
       newNode.addChild(new Judgement(environment.extend(abstraction.getId(), tau1), abstraction.getE(), tau2));
     }
     else if (expression instanceof Let && rule == Rule.LET) {

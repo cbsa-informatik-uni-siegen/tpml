@@ -9,14 +9,14 @@ import java.util.TreeSet;
  * @author Benedikt Meurer
  * @version $Id$
  */
-public final class Abstraction extends Value {
+public final class Lambda extends Value {
   /**
    * Generates a new abstraction.
    * 
    * @param id the name of the parameter.
    * @param e the expression.
    */
-  public Abstraction(String id, Expression e) {
+  public Lambda(String id, Expression e) {
     this.id = id;
     this.e = e;
   }
@@ -47,7 +47,7 @@ public final class Abstraction extends Value {
       Expression newE = this.e.substitute(this.id, new Identifier(newId));
       
       // perform the substitution
-      return new Abstraction(newId, newE.substitute(id, e));
+      return new Lambda(newId, newE.substitute(id, e));
     }
   }
 

@@ -8,9 +8,55 @@ package expressions;
  * @version $Id$
  */
 public final class Exn extends Expression {
+  //
+  // Constants
+  //
+  
+  /**
+   * The <b>(DIVIDE-BY-ZERO)</b> exception.
+   */
+  public static final Exn DIVIDE_BY_ZERO = new Exn("divide_by_zero");
+  
+  
+  
+  //
+  // Attributes
+  //
+
+  /**
+   * The name of the exception.
+   * 
+   * @see #toString()
+   */
+  private String name;
+  
+  
+  
+  //
+  // Constructor (private)
+  //
+  
+  /**
+   * Allocates a new <code>Exn</code> instance with
+   * the specified <code>name</code>.
+   * 
+   * @param name the name of the exception.
+   */
+  private Exn(String name) {
+    this.name = name;
+  }
+
+  
+  
+  //
+  // Primitives
+  //
+  
   /**
    * Returns the pretty string builder for exceptions.
+   * 
    * @return the pretty string builder for exceptions.
+   * 
    * @see expressions.Expression#toPrettyStringBuilder()
    */
   @Override
@@ -19,16 +65,25 @@ public final class Exn extends Expression {
     builder.appendText(this.name);
     return builder;
   }
+  
+  
+  
+  //
+  // Overwritten methods
+  //
 
   /**
-   * The <b>(DIVIDE-BY-ZERO)</b> exception.
+   * Returns the string representation of the
+   * exception, which is simply the name of
+   * the exception.
+   * 
+   * @return the string representation of the
+   *         exception.
+   *
+   * @see expressions.Expression#toString()
    */
-  public static final Exn DIVIDE_BY_ZERO = new Exn("divide_by_zero");
-  
-  private Exn(final String name) {
-    this.name = name;
+  @Override
+  public String toString() {
+    return this.name;
   }
-  
-  // the name of the exception
-  private String name;
 }

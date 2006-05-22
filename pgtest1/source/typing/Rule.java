@@ -3,7 +3,7 @@ package typing;
 import java.util.Collection;
 import java.util.LinkedList;
 
-import expressions.Abstraction;
+import expressions.Lambda;
 import expressions.And;
 import expressions.Application;
 import expressions.Condition;
@@ -195,7 +195,7 @@ public final class Rule {
     else if (expression instanceof Condition) {
       return Rule.COND;
     }
-    else if (expression instanceof Abstraction) {
+    else if (expression instanceof Lambda) {
       return Rule.ABSTR;
     }
     else if (expression instanceof Let) {

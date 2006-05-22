@@ -85,9 +85,14 @@ Productions
   {conjunction} conjunction {-> conjunction.expression} |
   {let} let [idlist]:identifier+ equal [e1]:expression in [e2]:closed_expression {-> New expression.let([idlist], e1, e2.expression)} |
   {letrec} let rec [idlist]:identifier+ equal [e1]:expression in [e2]:closed_expression {-> New expression.letrec([idlist], e1, e2.expression)} |
-  {abstraction} lambda identifier dot [e]:closed_expression {-> New expression.abstraction(identifier, e.expression)} |
+  {lambda} lambda identifier dot [e]:closed_expression {-> New expression.lambda(identifier, e.expression)} |
+  {multi_lambda} lambda left_paren [l]:id_list right_paren dot [e]:closed_expression {-> New expression.multi_lambda([l.identifier], e.expression)} |
   {recursion} rec identifier dot [e]:closed_expression {-> New expression.recursion(identifier, e.expression)};
-
+  
+ id_list {-> identifier*} =
+  {list} [l]:id_list comma [id]:identifier {-> [l.identifier, id]} |
+  {single} [id]:identifier {-> [id]};
+  
  conjunction {-> expression} =
   {assignment} assignment {-> assignment.expression} |
   {sequence} [e1]:conjunction semicolon [e2]:assignment {-> New expression.sequence(e1.expression, e2.expression)} |
@@ -169,7 +174,8 @@ Abstract Syntax Tree
   {condition1} [e0]:expression [e1]:expression |
   {let} [idlist]:identifier+ [e1]:expression [e2]:expression |
   {letrec} [idlist]:identifier+ [e1]:expression [e2]:expression |
-  {abstraction} [id]:identifier [e]:expression |
+  {lambda} [id]:identifier [e]:expression |
+  {multi_lambda} [idlist]:identifier+ [e]:expression |
   {recursion} [id]:identifier [e]:expression |
   {infix} [e1]:expression [op]:expression [e2]:expression |
   {and} [e0]:expression [e1]:expression |
