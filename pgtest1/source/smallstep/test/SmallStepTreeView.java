@@ -37,7 +37,7 @@ public class SmallStepTreeView extends JFrame {
   //private static final String SIMPLE = "let f = ref (lambda x.x) in let fact = lambda x.if x = 0 then 1 else x * (!f (x - 1)) in (f := fact, !f 3)";
   //private static final String SIMPLE = "let rec f = lambda x.if x = 0 then 1 else x * (f (x - 1)) in f 3";
   //private static final String SIMPLE = "(1 + 2, 5 * 8, let x = 9 in (8,(+) 9 x), y)";
-  private static final String SIMPLE = "let f = lambda (x1, x2). x1 + x2 in f (5, f (2, 3))";
+  private static final String SIMPLE = "let (x, y) = (1 + 2, fst (3,4)) in (y, x)";
 
   
   

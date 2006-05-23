@@ -26,6 +26,7 @@ import expressions.Let;
 import expressions.LetRec;
 import expressions.Location;
 import expressions.MultiLambda;
+import expressions.MultiLet;
 import expressions.Or;
 import expressions.Projection;
 import expressions.Recursion;
@@ -438,6 +439,55 @@ final class SmallStepEvaluator {
     
     // and perform the substitution
     return e2.substitute(id, e1);
+  }
+  
+  @SuppressWarnings("unused")
+  private Expression evaluateMultiLet(MultiLet multiLet) {
+    // determine the identifiers and the sub expressions
+    String[] identifiers = multiLet.getIdentifiers();
+    Expression e1 = multiLet.getE1();
+    Expression e2 = multiLet.getE2();
+    
+    // check if e1 is not already a value
+    if (!e1.isValue()) {
+      // try to evaluate e1
+      e1 = evaluate(e1);
+      
+      // check if e1 is an exception, (LET-EVAL-EXN)
+      if (e1.isException()) {
+        addProofStep(SmallStepProofRule.LET_EVAL_EXN, multiLet);
+        return e1;
+      }
+      
+      // otherwise we performed (LET-EVAL)
+      addProofStep(SmallStepProofRule.LET_EVAL, multiLet);
+      
+      // return the new multi let
+      return new MultiLet(identifiers, e1, e2);
+    }
+
+    // try to perform the (LET-EXEC)
+    try {
+      // arity of the tuple must match
+      Expression[] expressions = ((Tuple)e1).getExpressions();
+      if (expressions.length != identifiers.length)
+        return multiLet;
+      
+      // perform the substitutions
+      for (int n = 0; n < identifiers.length; ++n) {
+        e2 = e2.substitute(identifiers[n], expressions[n]);
+      }
+      
+      // jep, that was (LET-EXEC) then
+      addProofStep(SmallStepProofRule.LET_EXEC, multiLet);
+      
+      // return the new expression
+      return e2;
+    }
+    catch (ClassCastException exception) {
+      // e1 is not a tuple
+      return multiLet;
+    }
   }
 
   @SuppressWarnings("unused")

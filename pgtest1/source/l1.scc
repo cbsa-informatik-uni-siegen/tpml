@@ -84,6 +84,7 @@ Productions
  simple_expression {-> expression} = 
   {conjunction} conjunction {-> conjunction.expression} |
   {let} let [idlist]:identifier+ equal [e1]:expression in [e2]:closed_expression {-> New expression.let([idlist], e1, e2.expression)} |
+  {multi_let} let left_paren [l]:id_list right_paren equal [e1]:expression in [e2]:closed_expression {-> New expression.multi_let([l.identifier], e1, e2.expression)} |
   {letrec} let rec [idlist]:identifier+ equal [e1]:expression in [e2]:closed_expression {-> New expression.letrec([idlist], e1, e2.expression)} |
   {lambda} lambda identifier dot [e]:closed_expression {-> New expression.lambda(identifier, e.expression)} |
   {multi_lambda} lambda left_paren [l]:id_list right_paren dot [e]:closed_expression {-> New expression.multi_lambda([l.identifier], e.expression)} |
@@ -173,6 +174,7 @@ Abstract Syntax Tree
   {condition} [e0]:expression [e1]:expression [e2]:expression |
   {condition1} [e0]:expression [e1]:expression |
   {let} [idlist]:identifier+ [e1]:expression [e2]:expression |
+  {multi_let} [idlist]:identifier+ [e1]:expression [e2]:expression |
   {letrec} [idlist]:identifier+ [e1]:expression [e2]:expression |
   {lambda} [id]:identifier [e]:expression |
   {multi_lambda} [idlist]:identifier+ [e]:expression |

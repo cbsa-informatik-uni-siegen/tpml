@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.Set;
 import java.util.TreeSet;
 
+import util.StringUtilities;
+
 /**
  * Represents a curried <code>let rec</code> expression.
  *
@@ -131,9 +133,7 @@ public final class CurriedLetRec extends CurriedLet {
     builder.appendKeyword("let");
     builder.appendText(" ");
     builder.appendKeyword("rec");
-    for (String id : this.identifiers)
-      builder.appendText(" " + id);
-    builder.appendText(" = ");
+    builder.appendText(" " + StringUtilities.join(" ", this.identifiers) + " = ");
     builder.appendBuilder(this.e1.toPrettyStringBuilder(), 0);
     builder.appendBreak();
     builder.appendText(" ");

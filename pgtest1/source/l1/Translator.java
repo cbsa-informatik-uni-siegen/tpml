@@ -30,6 +30,7 @@ import l1.node.ALowerThanExpression;
 import l1.node.AMinusExpression;
 import l1.node.AModuloExpression;
 import l1.node.AMultiLambdaExpression;
+import l1.node.AMultiLetExpression;
 import l1.node.AMultiplyExpression;
 import l1.node.ANotExpression;
 import l1.node.ANumberExpression;
@@ -66,6 +67,7 @@ import expressions.IntegerConstant;
 import expressions.Let;
 import expressions.LetRec;
 import expressions.MultiLambda;
+import expressions.MultiLet;
 import expressions.Not;
 import expressions.Or;
 import expressions.Projection;
@@ -236,8 +238,8 @@ public class Translator extends DepthFirstAdapter {
    */
   @Override
   public void outALetExpression(ALetExpression node) {
+    Expression e2 = this.expressions.pop();
     Expression e1 = this.expressions.pop();
-    Expression e0 = this.expressions.pop();
     
     // determine the identifiers
     String identifiers[] = new String[node.getIdlist().size()];
@@ -246,11 +248,29 @@ public class Translator extends DepthFirstAdapter {
     
     // check if we should generate Let or CurriedLet
     if (identifiers.length >= 2) {
-      this.expressions.push(new CurriedLet(identifiers, e0, e1));
+      this.expressions.push(new CurriedLet(identifiers, e1, e2));
     }
     else {
-      this.expressions.push(new Let(identifiers[0], e0, e1));
+      this.expressions.push(new Let(identifiers[0], e1, e2));
     }
+  }
+  
+  /**
+   * {@inheritDoc}
+   *
+   * @see l1.analysis.DepthFirstAdapter#outAMultiLetExpression(l1.node.AMultiLetExpression)
+   */
+  @Override
+  public void outAMultiLetExpression(AMultiLetExpression node) {
+    Expression e2 = this.expressions.pop();
+    Expression e1 = this.expressions.pop();
+    
+    // determine the identifiers
+    String identifiers[] = new String[node.getIdlist().size()];
+    for (int n = 0; n < identifiers.length; ++n)
+      identifiers[n] = ((TIdentifier)node.getIdlist().get(n)).getText();
+
+    this.expressions.push(new MultiLet(identifiers, e1, e2));
   }
   
   /**
@@ -258,8 +278,8 @@ public class Translator extends DepthFirstAdapter {
    */
   @Override
   public void outALetrecExpression(ALetrecExpression node) {
+    Expression e2 = this.expressions.pop();
     Expression e1 = this.expressions.pop();
-    Expression e0 = this.expressions.pop();
     
     // determine the identifiers
     String identifiers[] = new String[node.getIdlist().size()];
@@ -268,10 +288,10 @@ public class Translator extends DepthFirstAdapter {
     
     // check if we should generate LetRec or CurriedLetRec
     if (identifiers.length >= 2) {
-      this.expressions.push(new CurriedLetRec(identifiers, e0, e1));
+      this.expressions.push(new CurriedLetRec(identifiers, e1, e2));
     }
     else {
-      this.expressions.push(new LetRec(identifiers[0], e0, e1));
+      this.expressions.push(new LetRec(identifiers[0], e1, e2));
     }
   }
 

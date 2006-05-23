@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.Set;
 import java.util.TreeSet;
 
+import util.StringUtilities;
+
 /**
  * Represents a curried <code>let</code> expression.
  *
@@ -184,9 +186,7 @@ public class CurriedLet extends Expression {
   protected PrettyStringBuilder toPrettyStringBuilder() {
     PrettyStringBuilder builder = new PrettyStringBuilder(this, 0);
     builder.appendKeyword("let");
-    for (String id : this.identifiers)
-      builder.appendText(" " + id);
-    builder.appendText(" = ");
+    builder.appendText(" " + StringUtilities.join(" ", this.identifiers) + " = ");
     builder.appendBuilder(this.e1.toPrettyStringBuilder(), 0);
     builder.appendBreak();
     builder.appendText(" ");

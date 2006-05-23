@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.Set;
 import java.util.TreeSet;
 
+import util.StringUtilities;
+
 /**
  * Represents a multi lambda abstraction, which takes
  * a single tuple argument as parameter.
@@ -49,7 +51,7 @@ public final class MultiLambda extends Value {
    */
   public MultiLambda(String[] identifiers, Expression e) {
     // validate the identifiers
-    if (identifiers == null || identifiers.length == 0) {
+    if (identifiers.length == 0) {
       throw new IllegalArgumentException("identifiers is empty");
     }
     
@@ -166,13 +168,7 @@ public final class MultiLambda extends Value {
   protected PrettyStringBuilder toPrettyStringBuilder() {
     PrettyStringBuilder builder = new PrettyStringBuilder(this, 0);
     builder.appendKeyword("\u03bb");
-    builder.appendText("(");
-    for (int n = 0; n < this.identifiers.length; ++n) {
-      if (n > 0)
-        builder.appendText(", ");
-      builder.appendText(this.identifiers[n]);
-    }
-    builder.appendText(").");
+    builder.appendText("(" + StringUtilities.join(", ", this.identifiers) + ").");
     builder.appendBuilder(this.e.toPrettyStringBuilder(), 0);
     return builder;
   }
