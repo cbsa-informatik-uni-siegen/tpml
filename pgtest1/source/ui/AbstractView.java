@@ -2,7 +2,6 @@ package ui;
 
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.util.LinkedList;
 
 import javax.swing.JComponent;
 import javax.swing.event.TreeModelEvent;
@@ -19,8 +18,14 @@ public abstract class AbstractView extends JComponent implements TreeModelListen
 
 	protected ProofModel		model = null;
 	
+	
+	public AbstractView() {
+		super ();
+		new SettingsGUI ();
+	}
 
 	public void setModel (ProofModel model) {
+		
 		this.model = model;
 		this.model.addTreeModelListener(this);
 		

@@ -7,6 +7,9 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
+
+import javax.swing.Scrollable;
 
 import smallstep.SmallStepProofNode;
 
@@ -14,15 +17,21 @@ import ui.AbstractNode;
 import ui.AbstractView;
 
 
-public class SmallStepView extends AbstractView {
+public class SmallStepView extends AbstractView implements Scrollable {
 	
-	private Dimension	requiredSize = new Dimension ();
+	private Dimension	requiredSize 	= new Dimension ();
 	
+	private Dimension	availableSize	= new Dimension();
 	
 	public SmallStepView () {
 		super();
 		this.setLayout(null);
 		
+	}
+	
+	public void setAvailableSize (Dimension size) {
+		this.availableSize = size;
+		relayout();
 	}
 		
 	private void determineCenter () {
@@ -43,10 +52,10 @@ public class SmallStepView extends AbstractView {
 	
 	private void determineNodeExpressionSize () {
 		SmallStepNode node = (SmallStepNode)rootNode;
-		node.prepareExpressionSize(getWidth() - SmallStepNode.getCenter() - 50);
+		node.prepareExpressionSize(this.availableSize.width - SmallStepNode.getCenter() - 50);
 		while (node.hasChildren()) {
 			node = (SmallStepNode)node.getFirstChild();
-			node.prepareExpressionSize(getWidth() - SmallStepNode.getCenter() - 50);
+			node.prepareExpressionSize(this.availableSize.width - SmallStepNode.getCenter() - 50);
 		}
 	}
 		
@@ -57,6 +66,23 @@ public class SmallStepView extends AbstractView {
 			node = (SmallStepNode)node.getFirstChild();
 			newY = node.setTop(newY);
 		}
+	}
+	
+	private void determinePreferredSize() {
+		int maxWidth = 0, currentWidth = 0;
+		SmallStepNode node = (SmallStepNode)rootNode;
+		maxWidth = currentWidth = node.getX() + node.getWidth();
+		while (node.hasChildren()) {
+			node = (SmallStepNode)node.getFirstChild();
+			currentWidth = node.getX() + node.getWidth();
+			if (currentWidth > maxWidth) {
+				maxWidth = currentWidth;
+			}
+		}
+		
+		setPreferredSize (new Dimension (maxWidth + 25, 
+				node.getY() + node.getHeight() + 25));
+		
 	}
 	
 	private void determineButtons() {
@@ -94,6 +120,7 @@ public class SmallStepView extends AbstractView {
 		determineNodeExpressionSize();
 		determineBounds();
 		determineButtons();
+		determinePreferredSize();
 	}
 	
 	protected AbstractNode createNode (ProofNode node) {
@@ -104,10 +131,29 @@ public class SmallStepView extends AbstractView {
 	 * Paints the content of the SmallStepView
 	 */
 	public void paintComponent (Graphics g) {
-		// clear the background 
 		g.setColor(Color.WHITE);
 		g.fillRect(0, 0, getWidth(), getHeight());
 		
+	}
+
+	public Dimension getPreferredScrollableViewportSize() {
+		return getPreferredSize();
+	}
+
+	public int getScrollableBlockIncrement(Rectangle visibleRect, int orientation, int direction) {
+		return 75;
+	}
+
+	public boolean getScrollableTracksViewportHeight() {
+		return false;
+	}
+
+	public boolean getScrollableTracksViewportWidth() {
+		return false;
+	}
+
+	public int getScrollableUnitIncrement(Rectangle visibleRect, int orientation, int direction) {
+		return 25;
 	}
 	
 }

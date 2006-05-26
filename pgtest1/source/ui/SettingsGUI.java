@@ -6,14 +6,24 @@
 
 package ui;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.util.prefs.*;
 import javax.swing.DefaultComboBoxModel;
+
+import ui.renderer.ExpressionRenderer;
 /**
  *
  * @author  marcell
  */
 public class SettingsGUI extends javax.swing.JDialog {
-    
+
+	public SettingsGUI() {
+		super();
+		ThemeManager manager = ThemeManager.get();
+		
+        applyToRenderers();
+	}
     /** Creates new form SettingsGUI */
     public SettingsGUI(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
@@ -389,13 +399,36 @@ public class SettingsGUI extends javax.swing.JDialog {
             ThemeManager manager = ThemeManager.get();
             manager.storeThemes(prefs);
             prefs.flush ();
+           
+            
+            applyToRenderers();
+            
         }
         catch (Exception e) {
             System.out.println("error flushing preferences");
         }
         
+        
+        
     }
-    
+
+    public void applyToRenderers() {
+        // apply the theme into the Expression Renderer
+    	ThemeManager manager = ThemeManager.get();
+        Theme theme = manager.getCurrentTheme();
+        Font fnt 	= theme.getItemFont(Theme.TYPE_CONSTANT);
+        Color col	= theme.getItemColor(Theme.TYPE_CONSTANT);
+        ExpressionRenderer.setConstantStyle(fnt, getFontMetrics (fnt), col);
+        fnt = theme.getItemFont(Theme.TYPE_EXPRESSION);
+        col	= theme.getItemColor(Theme.TYPE_EXPRESSION);
+        ExpressionRenderer.setTextStyle(fnt, getFontMetrics (fnt), col);
+        fnt = theme.getItemFont(Theme.TYPE_KEYWORD);
+        col	= theme.getItemColor(Theme.TYPE_KEYWORD);
+        ExpressionRenderer.setKeywordStyle(fnt, getFontMetrics (fnt), col);
+        col	= theme.getItemColor(Theme.TYPE_UNDERLINE);
+        ExpressionRenderer.setUnderlineColor(col);
+
+    }
     private void checkBoxSSJustAxiomsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkBoxSSJustAxiomsActionPerformed
 // TODO add your handling code here:
         applySettings();

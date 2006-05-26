@@ -53,6 +53,8 @@ public class Mainwindow extends JFrame {
     initComponents();
     pack();
     setSize(640, 480);
+    
+ 
   }
   
   private void initComponents() {
@@ -250,6 +252,7 @@ public class Mainwindow extends JFrame {
 		  gui.setVisible(true);
 	  } catch (Exception e) {
 	
+		  e.printStackTrace();
 	  }
 	
 	  /*

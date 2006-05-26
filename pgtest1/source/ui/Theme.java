@@ -7,26 +7,43 @@ import java.util.LinkedList;
 import javax.swing.JComboBox;
 
 public class Theme {
-
+	
+	public static final int	TYPE_RULE				= 0;
+	
+	public static final int TYPE_EXPRESSION			= 1;
+	
+	public static final int TYPE_KEYWORD			= 2;
+	
+	public static final int TYPE_CONSTANT			= 3;
+	
+	public static final	int TYPE_UNDERLINE			= 4;
+	
+	public static final int TYPE_RULEEXPRESSION		= 5;
+	
+	
 	private class ThemeItem {
-		private String	name;
+		private String			name;
 		
-		private Font	font;
+		private Font			font;
 		
-		private Color	color;
+		private Color			color;
+		
+		private int				type;
 				
 		public ThemeItem () {
 			
 		}
-		public ThemeItem (String name, Color color) {
-			this.name = name;
-			this.color = color;
-			this.font = null;
+		public ThemeItem (int type, String name, Color color) {
+			this.type	= type;
+			this.name 	= name;
+			this.color 	= color;
+			this.font 	= null;
 		}
-		public ThemeItem (String name, Font font, Color color) {
-			this.name = name;
-			this.font = font;
-			this.color = color;
+		public ThemeItem (int type, String name, Font font, Color color) {
+			this.type	= type;
+			this.name 	= name;
+			this.font 	= font;
+			this.color 	= color;
 		}
 		
 		public void setName (String name) {
@@ -63,14 +80,14 @@ public class Theme {
 		this.items = new LinkedList<ThemeItem>();
 		Font f = new JComboBox().getFont();
 		
-		this.items.add(new ThemeItem("Rule", f, new Color(0, 0, 0)));
-		this.items.add(new ThemeItem("Expression", f, new Color (0, 0, 0)));
-		this.items.add(new ThemeItem("Keyword", f, new Color(0, 0, 0)));
-		this.items.add(new ThemeItem("Constant", f, new Color(0, 0, 0)));
-		this.items.add(new ThemeItem("Underline", new Color (255, 0, 0)));
-		this.items.add(new ThemeItem("RuleExpression", f, new Color (0, 0, 0)));
+		this.items.add(new ThemeItem(Theme.TYPE_RULE, "Rule", f, new Color(0, 0, 0)));
+		this.items.add(new ThemeItem(Theme.TYPE_EXPRESSION, "Expression", f, new Color (0, 0, 0)));
+		this.items.add(new ThemeItem(Theme.TYPE_KEYWORD, "Keyword", f, new Color(0, 0, 0)));
+		this.items.add(new ThemeItem(Theme.TYPE_CONSTANT, "Constant", f, new Color(0, 0, 0)));
+		this.items.add(new ThemeItem(Theme.TYPE_UNDERLINE, "Underline", new Color (255, 0, 0)));
+		this.items.add(new ThemeItem(Theme.TYPE_RULEEXPRESSION, "RuleExpression", f, new Color (0, 0, 0)));
 	}
-	
+		
 	public void setName (String name) {
 		this.name = name;
 	}

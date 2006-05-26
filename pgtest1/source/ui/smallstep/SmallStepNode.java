@@ -204,10 +204,6 @@ class SmallStepNode extends AbstractNode {
 		Font fnt = new JComboBox().getFont();
 		FontMetrics fntMetrics = getFontMetrics(fnt);
 		
-		this.expRenderer.setTextStyle(fnt, fntMetrics, Color.BLACK);
-		this.expRenderer.setKeywordStyle(fnt, fntMetrics, Color.RED);
-		this.expRenderer.setConstantStyle(fnt, fntMetrics, Color.BLUE);
-		this.expRenderer.setUnderlineColor(Color.RED);
 		this.expRenderer.checkFonts();
 		this.expRenderer.checkAnnotationSizes();
 		
@@ -388,7 +384,12 @@ class SmallStepNode extends AbstractNode {
 			posY = heightDiv2 - envSize.height / 2;
 			envRenderer.render(posX + this.ruleFontMetrics.getHeight() + this.expSize.width, posY, g);
 		}
-					
+		
+		
+		ProofStep steps [] = this.proofNode.getSteps();
+		if (steps.length == 0 && this.proofNode.isProven()) {
+			return;
+		}
 		
 		// draw a black arrow on the base
 		heightDiv2 = this.expMaxSize.height + this.ruleMaxSize.height / 2;
@@ -402,14 +403,13 @@ class SmallStepNode extends AbstractNode {
 		// now draw the evaluated rules
 		g.setFont(this.ruleFont);
 		posX = 0;
-		
+
 		// clear the bounds
 		this.ruleBounds.clear();
 		
 		g.setColor(Color.BLACK);
 		Font		expF	= this.ruleFont.deriveFont(this.ruleFont.getSize2D());
 		FontMetrics	expFM	= getFontMetrics (expF);
-		ProofStep steps [] = this.proofNode.getSteps();
 		for (int i=0; i<steps.length;) {
 			ProofRule r = steps [i].getRule();
 			if (r.isAxiom()) {

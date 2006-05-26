@@ -34,24 +34,24 @@ public class ExpressionRenderer {
 	
 	private 	Expression			expression;
 	
-	private 	Font				textFont;
-	private		FontMetrics			textFontMetrics;
+	private 	static Font				textFont;
+	private		static FontMetrics		textFontMetrics;
 	
-	private		Font				keywordFont;
-	private		FontMetrics			keywordFontMetrics;
+	private		static Font				keywordFont;
+	private		static FontMetrics		keywordFontMetrics;
 	
-	private		Font				constantFont;
-	private		FontMetrics			constantFontMetrics;
+	private		static Font				constantFont;
+	private		static FontMetrics		constantFontMetrics;
 	
 	
-	private		Color				textColor;
-	private		Color				keywordColor;
-	private		Color				constantColor;
-	private		Color				underlineColor;	
+	private		static Color			textColor;
+	private		static Color			keywordColor;
+	private		static Color			constantColor;
+	private		static Color			underlineColor;	
 	
-	private 	int					fontHeight;
-	private		int					fontAscent;
-	private		int					fontDescent;
+	private 	static int				fontHeight;
+	private		static int				fontAscent;
+	private		static int				fontDescent;
 	
 	private 	CheckerResult		bestCheckerReturn;
 	
@@ -77,7 +77,7 @@ public class ExpressionRenderer {
 				// check if the one of the breakpoints is set at the current cursor pos 
 				for (int j=0; j<annoBreaks.length; j++) {
 					if (annoBreaks[j] == i) {
-						height += this.fontHeight;
+						height += fontHeight;
 						if (width > d.width) d.width = width;
 						// next line will be indentated by 10 pixels
 						width = 10;
@@ -89,15 +89,15 @@ public class ExpressionRenderer {
 			}
 			
 			switch (it.getStyle()) {
-			case NONE: 		width += this.textFontMetrics.stringWidth("" + c); 		break;
-			case KEYWORD: 	width += this.keywordFontMetrics.stringWidth("" + c); 	break;
-			case CONSTANT:	width += this.constantFontMetrics.stringWidth("" + c); 	break;
+			case NONE: 		width += textFontMetrics.stringWidth("" + c); 		break;
+			case KEYWORD: 	width += keywordFontMetrics.stringWidth("" + c); 	break;
+			case CONSTANT:	width += constantFontMetrics.stringWidth("" + c); 	break;
 			}
 			
 		}
 		// check the width and the height for the last line. there wouldn't be any breakpoint
 		if (width > d.width) d.width = width;
-		height += this.fontHeight;
+		height += fontHeight;
 		d.height = height;
 		rows++;
 
@@ -114,41 +114,41 @@ public class ExpressionRenderer {
 	}
 	
 
-	public void setTextStyle (Font font, FontMetrics fontMetrics, Color fontColor) {
-		this.textFont 			= font;
-		this.textFontMetrics	= fontMetrics;
-		this.textColor			= fontColor;
+	public static void setTextStyle (Font font, FontMetrics fontMetrics, Color fontColor) {
+		textFont 			= font;
+		textFontMetrics	= fontMetrics;
+		textColor			= fontColor;
 	}
 	
-	public void setKeywordStyle (Font font, FontMetrics fontMetrics, Color fontColor) {
-		this.keywordFont 			= font;
-		this.keywordFontMetrics		= fontMetrics;
-		this.keywordColor			= fontColor;
+	public static void setKeywordStyle (Font font, FontMetrics fontMetrics, Color fontColor) {
+		keywordFont 			= font;
+		keywordFontMetrics		= fontMetrics;
+		keywordColor			= fontColor;
 	}
 	
-	public void setConstantStyle (Font font, FontMetrics fontMetrics, Color fontColor) {
-		this.constantFont 			= font;
-		this.constantFontMetrics	= fontMetrics;
-		this.constantColor			= fontColor;
+	public static void setConstantStyle (Font font, FontMetrics fontMetrics, Color fontColor) {
+		constantFont 			= font;
+		constantFontMetrics		= fontMetrics;
+		constantColor			= fontColor;
 	}
 	
-	public void setUnderlineColor (Color color) {
-		this.underlineColor	= color;
+	public static void setUnderlineColor (Color color) {
+		underlineColor	= color;
 	}
 	
 	public void checkFonts() {
-		this.fontHeight 	= this.textFontMetrics.getHeight();
-		this.fontAscent		= this.textFontMetrics.getAscent();
-		this.fontDescent	= this.textFontMetrics.getDescent();
-		if (this.fontHeight < this.keywordFontMetrics.getHeight()) { 
-			this.fontHeight 	= this.keywordFontMetrics.getHeight();
-			this.fontAscent		= this.keywordFontMetrics.getAscent();
-			this.fontDescent	= this.keywordFontMetrics.getDescent();
+		fontHeight 	= textFontMetrics.getHeight();
+		fontAscent		= textFontMetrics.getAscent();
+		fontDescent	= textFontMetrics.getDescent();
+		if (fontHeight < keywordFontMetrics.getHeight()) { 
+			fontHeight 	= keywordFontMetrics.getHeight();
+			fontAscent		= keywordFontMetrics.getAscent();
+			fontDescent	= keywordFontMetrics.getDescent();
 		}
-		if (this.fontHeight < this.constantFontMetrics.getHeight()) {
-			this.fontHeight 	= this.constantFontMetrics.getHeight();
-			this.fontAscent		= this.constantFontMetrics.getAscent();
-			this.fontDescent	= this.constantFontMetrics.getDescent();
+		if (fontHeight < constantFontMetrics.getHeight()) {
+			fontHeight 	= constantFontMetrics.getHeight();
+			fontAscent		= constantFontMetrics.getAscent();
+			fontDescent	= constantFontMetrics.getDescent();
 		}
 	}
 	
@@ -225,14 +225,14 @@ public class ExpressionRenderer {
 		}
 		int i = 0;
 		int posX = x;
-		int posY = y + this.fontHeight - this.fontDescent;
+		int posY = y + fontHeight - fontDescent;
 		for (char c = it.first(); c != CharacterIterator.DONE; c = it.next(), i++) {
 			
 			if (this.bestCheckerReturn.annotation != null) {
 				
 				for (int j=0; j<annoBreaks.length; j++) {
 					if (annoBreaks[j] == i) {
-						posY += this.fontHeight;
+						posY += fontHeight;
 						posX = x + 10;
 						break;
 					}
@@ -244,25 +244,25 @@ public class ExpressionRenderer {
 			
 			switch (it.getStyle()) {
 			case NONE:
-				fontColor 	= this.textColor;
-				fontMetrics = this.textFontMetrics; 	
-				font 		= this.textFont;
+				fontColor 	= textColor;
+				fontMetrics = textFontMetrics; 	
+				font 		= textFont;
 				break;
 			case KEYWORD:
-				fontColor	= this.keywordColor;
-				fontMetrics = this.keywordFontMetrics;
-				font 		= this.keywordFont;
+				fontColor	= keywordColor;
+				fontMetrics = keywordFontMetrics;
+				font 		= keywordFont;
 				break;
 			case CONSTANT:
-				fontColor	= this.constantColor;
-				fontMetrics = this.constantFontMetrics;
-				font 		= this.constantFont;
+				fontColor	= constantColor;
+				fontMetrics = constantFontMetrics;
+				font 		= constantFont;
 				break;
 			}
 			int sx = posX;
 			posX += fontMetrics.stringWidth("" + c);
 			if (i >= uStart && i <= uEnd) {
-				gc.setColor(Color.RED);
+				gc.setColor(underlineColor);
 				gc.drawLine(sx,posY + 1, posX, posY + 1);
 			}
 			gc.setColor(fontColor);
