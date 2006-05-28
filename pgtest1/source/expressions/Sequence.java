@@ -1,7 +1,6 @@
 package expressions;
 
 import java.util.Set;
-import java.util.TreeSet;
 
 /**
  * Represents an expression for sequential execution
@@ -71,16 +70,6 @@ public final class Sequence extends Expression {
   
   /**
    * {@inheritDoc}
-   *
-   * @see expressions.Expression#containsReferences()
-   */
-  @Override
-  public boolean containsReferences() {
-    return (this.e1.containsReferences() || this.e2.containsReferences());
-  }
-  
-  /**
-   * {@inheritDoc}
    * 
    * @see expressions.Expression#containsSyntacticSugar()
    */
@@ -118,19 +107,6 @@ public final class Sequence extends Expression {
     return new Sequence(this.e1.substitute(id, e), this.e2.substitute(id, e));
   }
   
-  /**
-   * {@inheritDoc}
-   * 
-   * @see expressions.Expression#free()
-   */
-  @Override
-  public Set<String> free() {
-    Set<String> set = new TreeSet<String>();
-    set.addAll(this.e1.free());
-    set.addAll(this.e2.free());
-    return set;
-  }
-
   /**
    * {@inheritDoc}
    * 

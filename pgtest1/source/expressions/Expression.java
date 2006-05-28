@@ -1,8 +1,20 @@
 package expressions;
 
+import java.beans.Introspector;
+import java.beans.PropertyDescriptor;
+import java.util.Arrays;
+import java.util.Enumeration;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.Vector;
 
+/**
+ * Abstract base class for all kinds of expressions in the
+ * expression hierarchy.
+ *
+ * @author Benedikt Meurer
+ * @version $Id$
+ */
 public abstract class Expression {
   /**
    * Returns <code>true</code> if the expression is an
@@ -54,27 +66,45 @@ public abstract class Expression {
   
   /**
    * Returns the free identifiers within this expression.
-   * 
-   * The default implementation of this method provided by
-   * the abstract base class <code>Expression</code> simply
-   * returns the empty set. Derived classes should override
-   * this method if their respective expressions can contain
-   * free identifiers.
+   *
+   * The default implementation in the {@link Expression}
+   * class uses introspection to determine the sub expressions
+   * and calls <code>free()</code> recursively on all sub
+   * expressions. Some of the derived classes might need to
+   * override this method if they represents a binding mechanism,
+   * like {@link Let}, or if they don't have sub expressions,
+   * but provide free identifiers, like {@link Identifier}.
    * 
    * @return the free identifiers within this expression.
    */
   public Set<String> free() {
-    return EMPTY_SET;
+    TreeSet<String> free = new TreeSet<String>();
+    for (Enumeration<Expression> c = children(); c.hasMoreElements(); ) {
+      free.addAll(c.nextElement().free());
+    }
+    return free;
   }
   
   /**
    * Returns <code>true</code> if the expression contains
    * memory references or locations.
    * 
+   * The default implementation in the {@link Expression}
+   * class uses introspection to determine the sub expressions
+   * and calls <code>containsReferences()</code> recursively
+   * on all sub expressions. Some of the derived classes, like
+   * {@link Location} or {@link Ref}, will need to override
+   * this method appropriately.
+   * 
    * @return <code>true</code> if the expression contains
    *                           memory references or locations.
    */
   public boolean containsReferences() {
+    for (Enumeration<Expression> c = children(); c.hasMoreElements(); ) {
+      if (c.nextElement().containsReferences()) {
+        return true;
+      }
+    }
     return false;
   }
   
@@ -141,4 +171,45 @@ public abstract class Expression {
    * identifiers.
    */
   public static final TreeSet<String> EMPTY_SET = new TreeSet<String>();
+  
+  
+  
+  //
+  // Introspections
+  //
+  
+  /**
+   * Returns an enumeration for the direct ancestor expressions, the
+   * direct children, of this expression. The enumeration is generated
+   * using the bean properties for every {@link Expression} derived
+   * class. For example, {@link Application} provides <code>getE1</code>
+   * and <code>getE2</code>, and thereby the sub expressions <code>e1</code>
+   * and <code>e2</code>. It also supports arrays of expressions, as used
+   * in the {@link Tuple} expression class.
+   * 
+   * @return an {@link Enumeration} for the direct ancestor expressions
+   *         of this expression.
+   */
+  protected final Enumeration<Expression> children() {
+    try {
+      Vector<Expression> expressions = new Vector<Expression>();
+      PropertyDescriptor[] properties = Introspector.getBeanInfo(getClass(), Expression.class).getPropertyDescriptors();
+      for (PropertyDescriptor property : properties) {
+        Object value = property.getReadMethod().invoke(this);
+        if (value instanceof Expression[]) {
+          expressions.addAll(Arrays.asList((Expression[])value));
+        }
+        else if (value instanceof Expression) {
+          expressions.add((Expression)value);
+        }
+      }
+      return expressions.elements();
+    }
+    catch (RuntimeException exception) {
+      throw exception;
+    }
+    catch (Exception exception) {
+      throw new RuntimeException(exception);
+    }
+  }
 }

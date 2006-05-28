@@ -1,8 +1,5 @@
 package expressions;
 
-import java.util.Set;
-import java.util.TreeSet;
-
 /**
  * Represents a tuple expression.
  *
@@ -55,34 +52,6 @@ public final class Tuple extends Expression {
     for (int n = 0; n < expressions.length; ++n)
       expressions[n] = this.expressions[n].substitute(id, e);
     return new Tuple(expressions);
-  }
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see expressions.Expression#free()
-   */
-  @Override
-  public Set<String> free() {
-    TreeSet<String> free = new TreeSet<String>();
-    for (Expression e : this.expressions)
-      free.addAll(e.free());
-    return free;
-  }
-  
-  /**
-   * {@inheritDoc}
-   *
-   * @see expressions.Expression#containsReferences()
-   */
-  @Override
-  public boolean containsReferences() {
-    for (int n = 0; n < this.expressions.length; ++n) {
-      if (this.expressions[n].containsReferences()) {
-        return true;
-      }
-    }
-    return false;
   }
 
   /**

@@ -92,16 +92,6 @@ public class Let extends Expression {
   }
   
   /**
-   * {@inheritDoc}
-   *
-   * @see expressions.Expression#containsReferences()
-   */
-  @Override
-  public final boolean containsReferences() {
-    return (this.e1.containsReferences() || this.e2.containsReferences());
-  }
-  
-  /**
    * Returns the pretty string builder for let expressions.
    * @return the pretty string builder for let expressions.
    * @see expressions.Expression#toPrettyStringBuilder()

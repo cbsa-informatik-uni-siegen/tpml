@@ -1,8 +1,5 @@
 package expressions;
 
-import java.util.Set;
-import java.util.TreeSet;
-
 /**
  * A condition without an else block.
  *
@@ -49,16 +46,6 @@ public final class Condition1 extends Expression {
   
   /**
    * {@inheritDoc}
-   *
-   * @see expressions.Expression#containsReferences()
-   */
-  @Override
-  public boolean containsReferences() {
-    return (this.e0.containsReferences() || this.e1.containsReferences());
-  }
-  
-  /**
-   * {@inheritDoc}
    * 
    * @see expressions.Expression#containsSyntacticSugar()
    */
@@ -85,19 +72,6 @@ public final class Condition1 extends Expression {
   @Override
   public Expression substitute(String id, Expression e) {
     return new Condition1(this.e0.substitute(id, e), this.e1.substitute(id, e));
-  }
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see expressions.Expression#free()
-   */
-  @Override
-  public Set<String> free() {
-    Set<String> set = new TreeSet<String>();
-    set.addAll(this.e0.free());
-    set.addAll(this.e1.free());
-    return set;
   }
 
   /**

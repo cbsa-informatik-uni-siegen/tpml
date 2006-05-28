@@ -57,4 +57,14 @@ public final class Deref extends UnaryOperator {
   public Expression applyTo(Expression e) throws UnaryOperatorException {
     throw new UnsupportedOperationException("deref operator must be handled by the interpreter");
   }
+  
+  /**
+   * {@inheritDoc}
+   *
+   * @see expressions.Expression#containsReferences()
+   */
+  @Override
+  public boolean containsReferences() {
+    return true;
+  }
 }

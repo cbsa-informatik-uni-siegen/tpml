@@ -376,8 +376,8 @@ public final class ProofTree implements TreeModel, TypeVariableAllocator {
       
       // generate new sub nodes
       And and = (And)expression;
-      newNode.addChild(new Judgement(environment, and.getE0(), PrimitiveType.BOOL));
       newNode.addChild(new Judgement(environment, and.getE1(), PrimitiveType.BOOL));
+      newNode.addChild(new Judgement(environment, and.getE2(), PrimitiveType.BOOL));
     }
     else if (expression instanceof Or && rule == Rule.OR) {
       // add equation tau = bool
@@ -385,8 +385,8 @@ public final class ProofTree implements TreeModel, TypeVariableAllocator {
       
       // generate new sub nodes
       Or or = (Or)expression;
-      newNode.addChild(new Judgement(environment, or.getE0(), PrimitiveType.BOOL));
       newNode.addChild(new Judgement(environment, or.getE1(), PrimitiveType.BOOL));
+      newNode.addChild(new Judgement(environment, or.getE2(), PrimitiveType.BOOL));
     }
     else if (expression instanceof Tuple && rule == Rule.TUPLE) {
       // cast to tuple expression

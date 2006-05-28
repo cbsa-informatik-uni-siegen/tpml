@@ -162,33 +162,33 @@ final class SmallStepEvaluator {
   @SuppressWarnings("unused")
   private Expression evaluateAnd(And and) {
     // determine the sub expressions
-    Expression e0 = and.getE0();
     Expression e1 = and.getE1();
+    Expression e2 = and.getE2();
     
-    // check if e0 is not already a boolean constant
-    if (!(e0 instanceof BooleanConstant)) {
-      // try to evaluate e0
-      e0 = evaluate(e0);
+    // check if e1 is not already a boolean constant
+    if (!(e1 instanceof BooleanConstant)) {
+      // try to evaluate e1
+      e1 = evaluate(e1);
       
-      // check if e0 is an exception, (AND-EVAL-EXN)
-      if (e0.isException()) {
+      // check if e1 is an exception, (AND-EVAL-EXN)
+      if (e1.isException()) {
         addProofStep(SmallStepProofRule.AND_EVAL_EXN, and);
-        return e0;
+        return e1;
       }
       
       // otherwise we performed (AND-EVAL)
       addProofStep(SmallStepProofRule.AND_EVAL, and);
       
       // return the new and
-      return new And(e0, e1);
+      return new And(e1, e2);
     }
     
     // determine the boolean constant value
-    BooleanConstant booleanConstant = (BooleanConstant)e0;
+    BooleanConstant booleanConstant = (BooleanConstant)e1;
     if (booleanConstant.isTrue()) {
       // jep, that's (AND-TRUE) then
       addProofStep(SmallStepProofRule.AND_TRUE, and);
-      return e1;
+      return e2;
     }
     else {
       // jep, that's (AND-FALSE) then
@@ -511,29 +511,29 @@ final class SmallStepEvaluator {
   @SuppressWarnings("unused")
   private Expression evaluateOr(Or or) {
     // determine the sub expressions
-    Expression e0 = or.getE0();
     Expression e1 = or.getE1();
+    Expression e2 = or.getE2();
     
-    // check if e0 is not already a boolean constant
-    if (!(e0 instanceof BooleanConstant)) {
-      // try to evaluate e0
-      e0 = evaluate(e0);
+    // check if e1 is not already a boolean constant
+    if (!(e1 instanceof BooleanConstant)) {
+      // try to evaluate e1
+      e1 = evaluate(e1);
       
-      // check if e0 is an exception, (OR-EVAL-EXN)
-      if (e0.isException()) {
+      // check if e1 is an exception, (OR-EVAL-EXN)
+      if (e1.isException()) {
         addProofStep(SmallStepProofRule.OR_EVAL_EXN, or);
-        return e0;
+        return e1;
       }
       
       // otherwise we performed (OR-EVAL)
       addProofStep(SmallStepProofRule.OR_EVAL, or);
       
       // return the new or
-      return new Or(e0, e1);
+      return new Or(e1, e2);
     }
     
     // determine the boolean constant value
-    BooleanConstant booleanConstant = (BooleanConstant)e0;
+    BooleanConstant booleanConstant = (BooleanConstant)e1;
     if (booleanConstant.isTrue()) {
       // jep, that's (OR-TRUE) then
       addProofStep(SmallStepProofRule.OR_TRUE, or);
@@ -542,7 +542,7 @@ final class SmallStepEvaluator {
     else {
       // jep, that's (OR-FALSE) then
       addProofStep(SmallStepProofRule.OR_FALSE, or);
-      return e1;
+      return e2;
     }
   }
   

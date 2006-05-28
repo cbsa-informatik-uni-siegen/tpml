@@ -1,8 +1,5 @@
 package expressions;
 
-import java.util.Set;
-import java.util.TreeSet;
-
 /**
  * Representation of a <b>(COND)</b> expression for
  * the small step interpreter.
@@ -37,31 +34,6 @@ public final class Condition extends Expression {
     return new Condition(e0, e1, e2);
   }
 
-  /**
-   * Returns the free identifiers of the
-   * subexpressions.
-   * @return the free identifiers.
-   * @see expressions.Expression#free()
-   */
-  @Override
-  public Set<String> free() {
-    Set<String> set = new TreeSet<String>();
-    set.addAll(this.e0.free());
-    set.addAll(this.e1.free());
-    set.addAll(this.e2.free());
-    return set;
-  }
-  
-  /**
-   * {@inheritDoc}
-   *
-   * @see expressions.Expression#containsReferences()
-   */
-  @Override
-  public boolean containsReferences() {
-    return (this.e0.containsReferences() || this.e1.containsReferences() || this.e2.containsReferences());
-  }
-  
   /**
    * @return Returns the e0.
    */

@@ -1,8 +1,11 @@
 package expressions;
 
-import java.util.Set;
-import java.util.TreeSet;
-
+/**
+ * TODO Add documentation here.
+ *
+ * @author Benedikt Meurer
+ * @version $Id$
+ */
 public final class Application extends Expression {
   //
   // Attributes
@@ -69,30 +72,6 @@ public final class Application extends Expression {
     return new Application(this.e1.substitute(id, e), this.e2.substitute(id, e));
   }
 
-  /**
-   * Returns the free identifiers of the two expressions
-   * of the application.
-   * @return the free identifiers.
-   * @see expressions.Expression#free()
-   */
-  @Override
-  public Set<String> free() {
-    Set<String> set = new TreeSet<String>();
-    set.addAll(this.e1.free());
-    set.addAll(this.e2.free());
-    return set;
-  }
-  
-  /**
-   * {@inheritDoc}
-   *
-   * @see expressions.Expression#containsReferences()
-   */
-  @Override
-  public boolean containsReferences() {
-    return (this.e1.containsReferences() || this.e2.containsReferences());
-  }
-  
   /**
    * Returns the first sub expression.
    * 

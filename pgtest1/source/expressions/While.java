@@ -1,7 +1,6 @@
 package expressions;
 
 import java.util.Set;
-import java.util.TreeSet;
 
 /**
  * Represents a <code>while</code> loop.
@@ -49,16 +48,6 @@ public final class While extends Expression {
   
   /**
    * {@inheritDoc}
-   *
-   * @see expressions.Expression#containsReferences()
-   */
-  @Override
-  public boolean containsReferences() {
-    return (this.e1.containsReferences() || this.e2.containsReferences());
-  }
-  
-  /**
-   * {@inheritDoc}
    * 
    * @see expressions.Expression#containsSyntacticSugar()
    */
@@ -94,19 +83,6 @@ public final class While extends Expression {
   @Override
   public Expression substitute(String id, Expression e) {
     return new While(this.e1.substitute(id, e), this.e2.substitute(id, e));
-  }
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see expressions.Expression#free()
-   */
-  @Override
-  public Set<String> free() {
-    Set<String> set = new TreeSet<String>();
-    set.addAll(this.e1.free());
-    set.addAll(this.e2.free());
-    return set;
   }
 
   /**

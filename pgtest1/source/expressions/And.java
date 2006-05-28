@@ -1,11 +1,8 @@
 package expressions;
 
-import java.util.Set;
-import java.util.TreeSet;
-
 /**
  * Represents the <b>(AND)</b> expression, which is syntactic
- * sugar for <pre>if e0 then e1 else false</pre>.
+ * sugar for <pre>if e1 then e2 else false</pre>.
  *
  * @author Benedikt Meurer
  * @version $Id$
@@ -13,14 +10,14 @@ import java.util.TreeSet;
 public final class And extends Expression {
   /**
    * Allocates a new <b>(AND)</b> expression with the specified
-   * operands <code>e0</code> and <code>e1</code>.
+   * operands <code>e1</code> and <code>e2</code>.
    * 
-   * @param e0 the first operand.
-   * @param e1 the second operand.
+   * @param e1 the first expression.
+   * @param e2 the second expression.
    */
-  public And(Expression e0, Expression e1) {
-    this.e0 = e0;
+  public And(Expression e1, Expression e2) {
     this.e1 = e1;
+    this.e2 = e2;
   }
   
   /**
@@ -36,33 +33,12 @@ public final class And extends Expression {
    */
   @Override
   public Expression substitute(String id, Expression e) {
-    return new And(this.e0.substitute(id, e), this.e1.substitute(id, e));
+    return new And(this.e1.substitute(id, e), this.e2.substitute(id, e));
   }
 
   /**
-   * Returns the set of free identifiers for the
-   * <code>&&</code> expression.
+   * Returns the first expression.
    * 
-   * @return the set of free identifiers.
-   * 
-   * @see expressions.Expression#free()
-   */
-  @Override
-  public Set<String> free() {
-    TreeSet<String> set = new TreeSet<String>();
-    set.addAll(this.e0.free());
-    set.addAll(this.e1.free());
-    return set;
-  }
-
-  /**
-   * @return Returns the e0.
-   */
-  public Expression getE0() {
-    return this.e0;
-  }
-  
-  /**
    * @return Returns the e1.
    */
   public Expression getE1() {
@@ -70,15 +46,14 @@ public final class And extends Expression {
   }
   
   /**
-   * {@inheritDoc}
-   *
-   * @see expressions.Expression#containsReferences()
+   * Returns the second expression.
+   * 
+   * @return Returns the e2.
    */
-  @Override
-  public boolean containsReferences() {
-    return (this.e0.containsReferences() || this.e1.containsReferences());
+  public Expression getE2() {
+    return this.e2;
   }
- 
+  
   /**
    * Returns <code>true</code> since <b>(AND)</b> is
    * syntactic sugar for <b>(COND)</b>.
@@ -102,7 +77,7 @@ public final class And extends Expression {
    */
   @Override
   public Expression translateSyntacticSugar() {
-    return new Condition(this.e0, this.e1, BooleanConstant.FALSE);
+    return new Condition(this.e1, this.e2, BooleanConstant.FALSE);
   }
 
   /**
@@ -116,12 +91,12 @@ public final class And extends Expression {
   @Override
   protected PrettyStringBuilder toPrettyStringBuilder() {
     PrettyStringBuilder builder = new PrettyStringBuilder(this, 1);
-    builder.appendBuilder(this.e0.toPrettyStringBuilder(), 1);
+    builder.appendBuilder(this.e1.toPrettyStringBuilder(), 1);
     builder.appendText(" && ");
-    builder.appendBuilder(this.e1.toPrettyStringBuilder(), 2);
+    builder.appendBuilder(this.e2.toPrettyStringBuilder(), 2);
     return builder;
   }
 
-  private Expression e0;
   private Expression e1;
+  private Expression e2;
 }

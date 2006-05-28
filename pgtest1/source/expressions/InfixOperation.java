@@ -1,8 +1,5 @@
 package expressions;
 
-import java.util.Set;
-import java.util.TreeSet;
-
 /**
  * This class represents an infix expression.
  *
@@ -40,22 +37,6 @@ public final class InfixOperation extends Expression {
   }
 
   /**
-   * Returns the free identifiers of the two expressions
-   * of the infix operation.
-   * 
-   * @return the free identifiers.
-   * 
-   * @see expressions.Expression#free()
-   */
-  @Override
-  public Set<String> free() {
-    Set<String> set = new TreeSet<String>();
-    set.addAll(this.e1.free());
-    set.addAll(this.e2.free());
-    return set;
-  }
-  
-  /**
    * @return Returns the e1.
    */
   public Expression getE1() {
@@ -74,16 +55,6 @@ public final class InfixOperation extends Expression {
    */
   public BinaryOperator getOp() {
     return this.op;
-  }
-  
-  /**
-   * {@inheritDoc}
-   *
-   * @see expressions.Expression#containsReferences()
-   */
-  @Override
-  public boolean containsReferences() {
-    return (this.e1.containsReferences() || this.e2.containsReferences());
   }
   
   /**

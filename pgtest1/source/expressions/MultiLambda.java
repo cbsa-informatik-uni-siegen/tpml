@@ -115,16 +115,6 @@ public final class MultiLambda extends Value {
   /**
    * {@inheritDoc}
    *
-   * @see expressions.Expression#containsReferences()
-   */
-  @Override
-  public boolean containsReferences() {
-    return this.e.containsReferences();
-  }
-  
-  /**
-   * {@inheritDoc}
-   *
    * @see expressions.Expression#containsSyntacticSugar()
    */
   @Override

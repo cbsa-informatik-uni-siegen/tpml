@@ -65,16 +65,6 @@ public final class Lambda extends Value {
   }
   
   /**
-   * {@inheritDoc}
-   *
-   * @see expressions.Expression#containsReferences()
-   */
-  @Override
-  public boolean containsReferences() {
-    return this.e.containsReferences();
-  }
-  
-  /**
    * @return Returns the id.
    */
   public String getId() {
