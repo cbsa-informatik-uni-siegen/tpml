@@ -2,6 +2,8 @@ package expressions;
 
 import java.util.Set;
 
+import expressions.annotation.SyntacticSugar;
+
 /**
  * Represents an expression for sequential execution
  * of commands, <code>e1;e2</code>.
@@ -9,6 +11,7 @@ import java.util.Set;
  * @author Benedikt Meurer
  * @version $Id$
  */
+@SyntacticSugar
 public final class Sequence extends Expression {
   //
   // Attributes
@@ -67,16 +70,6 @@ public final class Sequence extends Expression {
   //
   // Primitives
   //
-  
-  /**
-   * {@inheritDoc}
-   * 
-   * @see expressions.Expression#containsSyntacticSugar()
-   */
-  @Override
-  public boolean containsSyntacticSugar() {
-    return true;
-  }
   
   /**
    * {@inheritDoc}

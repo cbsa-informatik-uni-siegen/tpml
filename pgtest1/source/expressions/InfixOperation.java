@@ -1,11 +1,14 @@
 package expressions;
 
+import expressions.annotation.SyntacticSugar;
+
 /**
  * This class represents an infix expression.
  *
  * @author bmeurer
  * @version $Id$
  */
+@SyntacticSugar
 public final class InfixOperation extends Expression {
   /**
    * Allocates a new infix operation with the specified parameters.
@@ -55,19 +58,6 @@ public final class InfixOperation extends Expression {
    */
   public BinaryOperator getOp() {
     return this.op;
-  }
-  
-  /**
-   * Returns <code>true</code> since an infix operation
-   * is syntactic sugar.
-   * 
-   * @return <code>true</code>.
-   * 
-   * @see expressions.Expression#containsSyntacticSugar()
-   */
-  @Override
-  public boolean containsSyntacticSugar() {
-    return true;
   }
   
   /**

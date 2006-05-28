@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.Set;
 import java.util.TreeSet;
 
+import expressions.annotation.SyntacticSugar;
+
 import util.StringUtilities;
 
 /**
@@ -13,6 +15,7 @@ import util.StringUtilities;
  * @author Benedikt Meurer
  * @version $Id$
  */
+@SyntacticSugar
 public final class MultiLambda extends Value {
   //
   // Attributes
@@ -110,16 +113,6 @@ public final class MultiLambda extends Value {
     free.addAll(this.e.free());
     free.removeAll(Arrays.asList(this.identifiers));
     return free;
-  }
-  
-  /**
-   * {@inheritDoc}
-   *
-   * @see expressions.Expression#containsSyntacticSugar()
-   */
-  @Override
-  public boolean containsSyntacticSugar() {
-    return true;
   }
   
   /**

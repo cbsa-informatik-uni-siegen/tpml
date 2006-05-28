@@ -53,6 +53,19 @@ public final class Exn extends Expression {
   //
   
   /**
+   * Returns <code>true</code>, since an <code>Exn</code>
+   * instance represents an exception in the program.
+   * 
+   * @return always <code>true</code>.
+   *
+   * @see expressions.Expression#isException()
+   */
+  @Override
+  public boolean isException() {
+    return true;
+  }
+  
+  /**
    * Returns the pretty string builder for exceptions.
    * 
    * @return the pretty string builder for exceptions.

@@ -37,3 +37,10 @@ TODO:
    wenn (GUESS) angewendet wird, z.B. mit (int -> int), bleibt f:'a1 erhalten.
    Hierfür müsste man schon teilweise die Logik von (ID) einbauen, um die
    Verbindung zwischen 'a1 und ('a0 -> 'a2) herzustellen.
+   
+   
+028.05.2006
+
+ - Hilfsklasse für "gebundene Umbennenung"
+ - SyntacticSugar als Annotation
+ - Listen: cons wie gehabt, :: + [x1,..,xn] als syntaktischer Zucker

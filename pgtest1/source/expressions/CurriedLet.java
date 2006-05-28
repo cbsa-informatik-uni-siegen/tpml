@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.Set;
 import java.util.TreeSet;
 
+import expressions.annotation.SyntacticSugar;
+
 import util.StringUtilities;
 
 /**
@@ -12,6 +14,7 @@ import util.StringUtilities;
  * @author Benedikt Meurer
  * @version $Id$
  */
+@SyntacticSugar
 public class CurriedLet extends Expression {
   //
   // Attributes
@@ -140,16 +143,6 @@ public class CurriedLet extends Expression {
     free.addAll(freeE1);
     free.addAll(freeE2);
     return free;
-  }
-  
-  /**
-   * {@inheritDoc}
-   *
-   * @see expressions.Expression#containsSyntacticSugar()
-   */
-  @Override
-  public boolean containsSyntacticSugar() {
-    return true;
   }
   
   /**

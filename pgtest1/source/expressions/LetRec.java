@@ -3,6 +3,8 @@ package expressions;
 import java.util.Set;
 import java.util.TreeSet;
 
+import expressions.annotation.SyntacticSugar;
+
 /**
  * Represents the <code>let rec</code> expression, which is
  * syntactic sugar for <b>(LET)</b> and <b>(REC)</b>.
@@ -15,6 +17,7 @@ import java.util.TreeSet;
  * @author Benedikt Meurer
  * @version $Id$
  */
+@SyntacticSugar
 public final class LetRec extends Let {
   //
   // Constructor
@@ -84,19 +87,6 @@ public final class LetRec extends Let {
     set.addAll(this.e1.free());
     set.remove(this.id);
     return set;
-  }
-  
-  /**
-   * Returns <code>true</code> as <b>(LET-REC)</b> is
-   * syntactic sugar.
-   * 
-   * @return <code>true</code>.
-   * 
-   * @see expressions.Expression#containsSyntacticSugar()
-   */
-  @Override
-  public boolean containsSyntacticSugar() {
-    return true;
   }
   
   /**

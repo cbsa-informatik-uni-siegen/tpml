@@ -1,5 +1,7 @@
 package expressions;
 
+import expressions.annotation.SyntacticSugar;
+
 /**
  * Represents the <b>(OR)</b> expression, which is syntactic sugar
  * for <pre>if e1 then true else e2</pre>.
@@ -7,6 +9,7 @@ package expressions;
  * @author Benedikt Meurer
  * @version $Id$
  */
+@SyntacticSugar
 public final class Or extends Expression {
   //
   // Attributes
@@ -77,19 +80,6 @@ public final class Or extends Expression {
    */
   public Expression getE2() {
     return this.e2;
-  }
-  
-  /**
-   * Returns <code>true</code> since <b>(OR)</b> is
-   * syntactic sugar for <b>(COND)</b>.
-   * 
-   * @return <code>true</code>.
-   * 
-   * @see expressions.Expression#containsSyntacticSugar()
-   */
-  @Override
-  public boolean containsSyntacticSugar() {
-    return true;
   }
   
   /**

@@ -1,5 +1,7 @@
 package expressions;
 
+import expressions.annotation.SyntacticSugar;
+
 /**
  * Represents the <b>(AND)</b> expression, which is syntactic
  * sugar for <pre>if e1 then e2 else false</pre>.
@@ -7,6 +9,7 @@ package expressions;
  * @author Benedikt Meurer
  * @version $Id$
  */
+@SyntacticSugar
 public final class And extends Expression {
   /**
    * Allocates a new <b>(AND)</b> expression with the specified
@@ -52,19 +55,6 @@ public final class And extends Expression {
    */
   public Expression getE2() {
     return this.e2;
-  }
-  
-  /**
-   * Returns <code>true</code> since <b>(AND)</b> is
-   * syntactic sugar for <b>(COND)</b>.
-   * 
-   * @return <code>true</code>.
-   * 
-   * @see expressions.Expression#containsSyntacticSugar()
-   */
-  @Override
-  public boolean containsSyntacticSugar() {
-    return true;
   }
   
   /**

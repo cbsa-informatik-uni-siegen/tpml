@@ -8,6 +8,8 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.Vector;
 
+import expressions.annotation.SyntacticSugar;
+
 /**
  * Abstract base class for all kinds of expressions in the
  * expression hierarchy.
@@ -20,11 +22,47 @@ public abstract class Expression {
    * Returns <code>true</code> if the expression is an
    * exception that cannot be evaluated any further.
    * 
+   * The default implementation simply returns <code>false</code>,
+   * so derived classes will need to override this method if the
+   * class represents an exception.
+   * 
    * @return <code>true</code> if the expression is an
    *         exception.
    */
   public boolean isException() {
-    return (this instanceof Exn);
+    return false;
+  }
+  
+  /**
+   * Returns <code>true</code> if the expression is
+   * syntactic sugar, that is not included in the
+   * core syntax.
+   * 
+   * Note that <code>false</code> is returned if this
+   * expression is part of the core syntax, but one of
+   * the sub expressions is syntactic sugar. If you
+   * want to know whether an expression contains
+   * syntactic sugar in some way, you should use the
+   * {@link #containsSyntacticSugar()} method instead.
+   * 
+   * The default implementation of this method returns
+   * <code>true</code> if the class on which this method
+   * is called is annotated with the {@link SyntacticSugar}
+   * annotation (or any of it's super classes is annotated
+   * with {@link SyntacticSugar}).
+   * 
+   * @return <code>true</code> if this - the outer most -
+   *         expression is not part of the core syntax.
+   *         
+   * @see #containsSyntacticSugar()         
+   */
+  public boolean isSyntacticSugar() {
+    for (Class<?> clazz = getClass(); clazz != Expression.class; clazz = clazz.getSuperclass()) {
+      if (clazz.isAnnotationPresent(SyntacticSugar.class)) {
+        return true;
+      }
+    }
+    return false;
   }
   
   /**
@@ -117,11 +155,24 @@ public abstract class Expression {
    * 
    * @return <code>true</code> if the expression contains
    *         syntactic sugar.
-   *         
+   *        
+   * @see #isSyntacticSugar()         
    * @see #translateSyntacticSugar()
    */
-  public boolean containsSyntacticSugar() {
-    return false;
+  public final boolean containsSyntacticSugar() {
+    // check if this expression is syntactic sugar
+    if (isSyntacticSugar()) {
+      return true;
+    }
+    else {
+      // test if any of the sub expressions is syntactic sugar
+      for (Enumeration<Expression> c = children(); c.hasMoreElements(); ) {
+        if (c.nextElement().containsSyntacticSugar()) {
+          return true;
+        }
+      }
+      return false;
+    }
   }
   
   /**

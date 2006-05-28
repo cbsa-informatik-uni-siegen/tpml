@@ -1,5 +1,7 @@
 package expressions;
 
+import expressions.annotation.SyntacticSugar;
+
 /**
  * The <code>fst</code> operator is syntactic
  * sugar for <code>#2_1</code>.
@@ -7,6 +9,7 @@ package expressions;
  * @author Benedikt Meurer
  * @version $Id$
  */
+@SyntacticSugar
 public final class Fst extends Projection {
   //
   // Constants
@@ -39,19 +42,6 @@ public final class Fst extends Projection {
   //
   // Primitives
   //
-  
-  /**
-   * Returns <code>true</code> since the <code>fst</code>
-   * operator is syntactic sugar for <code>#2_1</code>.
-   * 
-   * @return always <code>true</code>.
-   * 
-   * @see expressions.Projection#containsSyntacticSugar()
-   */
-  @Override
-  public boolean containsSyntacticSugar() {
-    return true;
-  }
   
   /**
    * Translates the <code>fst</code> operator to

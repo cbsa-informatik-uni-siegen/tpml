@@ -1,5 +1,7 @@
 package expressions;
 
+import expressions.annotation.SyntacticSugar;
+
 /**
  * The <code>snd</code> operator is syntactic
  * sugar for <code>#2_2</code>.
@@ -7,6 +9,7 @@ package expressions;
  * @author Benedikt Meurer
  * @version $Id$
  */
+@SyntacticSugar
 public final class Snd extends Projection {
   //
   // Constants
@@ -39,19 +42,6 @@ public final class Snd extends Projection {
   //
   // Primitives
   //
-  
-  /**
-   * Returns <code>true</code> since the <code>snd</code>
-   * operator is syntactic sugar for <code>#2_2</code>.
-   * 
-   * @return always <code>true</code>.
-   * 
-   * @see expressions.Projection#containsSyntacticSugar()
-   */
-  @Override
-  public boolean containsSyntacticSugar() {
-    return true;
-  }
   
   /**
    * Translates the <code>snd</code> operator to

@@ -2,12 +2,15 @@ package expressions;
 
 import java.util.Set;
 
+import expressions.annotation.SyntacticSugar;
+
 /**
  * Represents a <code>while</code> loop.
  *
  * @author Benedikt Meurer
  * @version $Id$
  */
+@SyntacticSugar
 public final class While extends Expression {
   //
   // Attributes
@@ -45,16 +48,6 @@ public final class While extends Expression {
   //
   // Primitives
   //
-  
-  /**
-   * {@inheritDoc}
-   * 
-   * @see expressions.Expression#containsSyntacticSugar()
-   */
-  @Override
-  public boolean containsSyntacticSugar() {
-    return true;
-  }
   
   /**
    * {@inheritDoc}

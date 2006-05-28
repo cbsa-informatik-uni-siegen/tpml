@@ -1,11 +1,14 @@
 package expressions;
 
+import expressions.annotation.SyntacticSugar;
+
 /**
  * A condition without an else block.
  *
  * @author Benedikt Meurer
  * @version $Id$
  */
+@SyntacticSugar
 public final class Condition1 extends Expression {
   //
   // Attributes
@@ -43,16 +46,6 @@ public final class Condition1 extends Expression {
   //
   // Primitives
   //
-  
-  /**
-   * {@inheritDoc}
-   * 
-   * @see expressions.Expression#containsSyntacticSugar()
-   */
-  @Override
-  public boolean containsSyntacticSugar() {
-    return true;
-  }
   
   /**
    * {@inheritDoc}
