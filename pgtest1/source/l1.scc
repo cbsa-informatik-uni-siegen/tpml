@@ -23,6 +23,8 @@ Tokens
  not = 'not';
  left_paren = '(';
  right_paren = ')';
+ left_bracket = '[';
+ right_bracket = ']';
  semicolon = ';';
  comma = ',';
  dot = '.';
@@ -38,19 +40,27 @@ Tokens
  rec = 'rec';
  while = 'while';
  do = 'do';
+ 
  fst = 'fst';
  snd = 'snd';
  projection = '#' digit+ '_' digit+;
+ 
  ref = 'ref';
  deref = '!';
  assign = ':=';
+ 
+ unarycons = 'cons';
+ binarycons = '::';
+ hd = 'hd';
+ tl = 'tl';
+ is_empty = 'is_empty';
 
  unit = '()';
  true = 'true';
  false = 'false';
  number = digit+;
  
- identifier = letter (digit | letter)*;
+ identifier = letter ('_' | digit | letter)*;
 
 
 Ignored Tokens
@@ -82,7 +92,7 @@ Productions
   {while} while [e1]:expression do [e2]:closed_expression {-> New expression.while(e1.expression, e2.expression)};
   
  simple_expression {-> expression} = 
-  {conjunction} conjunction {-> conjunction.expression} |
+  {sequence} sequence {-> sequence.expression} |
   {let} let [idlist]:identifier+ equal [e1]:expression in [e2]:closed_expression {-> New expression.let([idlist], e1, e2.expression)} |
   {multi_let} let left_paren [l]:id_list right_paren equal [e1]:expression in [e2]:closed_expression {-> New expression.multi_let([l.identifier], e1, e2.expression)} |
   {letrec} let rec [idlist]:identifier+ equal [e1]:expression in [e2]:closed_expression {-> New expression.letrec([idlist], e1, e2.expression)} |
@@ -94,15 +104,19 @@ Productions
   {list} [l]:id_list comma [id]:identifier {-> [l.identifier, id]} |
   {single} [id]:identifier {-> [id]};
   
- conjunction {-> expression} =
+ sequence {-> expression} =
   {assignment} assignment {-> assignment.expression} |
-  {sequence} [e1]:conjunction semicolon [e2]:assignment {-> New expression.sequence(e1.expression, e2.expression)} |
-  {or} [e1]:conjunction or [e2]:assignment {-> New expression.or(e1.expression, e2.expression)} |
-  {and} [e1]:conjunction and [e2]:assignment {-> New expression.and(e1.expression, e2.expression)};
-
+  {sequence} [e1]:sequence semicolon [e2]:assignment {-> New expression.sequence(e1.expression, e2.expression)};
+  
  assignment {-> expression} =
+  {conjunction} conjunction {-> conjunction.expression} |
+  {assign} [e1]:assignment assign [e2]:conjunction {-> New expression.infix(e1.expression, New expression.assign(assign), e2.expression)};
+
+ conjunction {-> expression} =
   {comparison} comparison {-> comparison.expression} |
-  {assign} assignment assign comparison {-> New expression.infix(assignment.expression, New expression.assign(assign), comparison.expression)};
+  {binarycons} [e1]:conjunction binarycons [e2]:comparison {-> New expression.infix(e1.expression, New expression.binarycons(binarycons), e2.expression)} |
+  {or} [e1]:conjunction or [e2]:comparison {-> New expression.or(e1.expression, e2.expression)} |
+  {and} [e1]:conjunction and [e2]:comparison {-> New expression.and(e1.expression, e2.expression)};
 
  comparison {-> expression} =
   {term} term {-> term.expression} |
@@ -131,12 +145,14 @@ Productions
   {constant} constant {-> constant.expression} |
   {identifier} identifier {-> New expression.identifier(identifier)} |
   {expression} left_paren [e]:expression right_paren {-> e} |
-  {tuple} left_paren [l]:tuple_list comma [e]:expression right_paren {-> New expression.tuple([l.expression, e])};
+  {tuple} left_paren [l]:expression_list comma [e]:expression right_paren {-> New expression.tuple([l.expression, e])} |
+  {list} left_bracket [l]:expression_list right_bracket {-> New expression.list([l.expression])} |
+  {empty_list} left_bracket right_bracket {-> New expression.list([])};
 
- tuple_list {-> expression*} =
-  {list} [l]:tuple_list comma [e]:expression {-> [l.expression, e]} |
+ expression_list {-> expression*} =
+  {list} [l]:expression_list comma [e]:expression {-> [l.expression, e]} |
   {single} [e]:expression {-> [e]};
-
+  
  constant {-> expression} =
   {unit} unit {-> New expression.unit(unit)} |
   {bool} bool {-> bool.expression} |
@@ -148,7 +164,11 @@ Productions
   {fst} fst {-> New expression.fst(fst)} |
   {snd} snd {-> New expression.snd(snd)} |
   {ref} ref {-> New expression.ref(ref)} |
-  {deref} deref {-> New expression.deref(deref)};
+  {deref} deref {-> New expression.deref(deref)} |
+  {unarycons} unarycons {-> New expression.unarycons(unarycons)} |
+  {hd} hd {-> New expression.hd(hd)} |
+  {tl} tl {-> New expression.tl(tl)} |
+  {is_empty} is_empty {-> New expression.is_empty(is_empty)};
 
  bool {-> expression} =
   {true} true {-> New expression.true(true)} |
@@ -165,7 +185,8 @@ Productions
   {lower_equal} lower_equal {-> New expression.lower_equal(lower_equal)} |
   {greater_equal} greater_equal {-> New expression.greater_equal(greater_equal)} |
   {equal} equal {-> New expression.equal(equal)} |
-  {assign} assign {-> New expression.assign(assign)};
+  {assign} assign {-> New expression.assign(assign)} |
+  {binarycons} binarycons {-> New expression.binarycons(binarycons)};
 
 
 Abstract Syntax Tree
@@ -182,7 +203,6 @@ Abstract Syntax Tree
   {infix} [e1]:expression [op]:expression [e2]:expression |
   {and} [e0]:expression [e1]:expression |
   {or} [e0]:expression [e1]:expression |
-  {tuple} [expressions]:expression+ |
   {sequence} [e1]:expression [e2]:expression |
   {while} [e1]:expression [e2]:expression |
   {identifier} identifier |
@@ -202,10 +222,19 @@ Abstract Syntax Tree
   {equal} equal |
   {uminus} uminus |
   {not} not |
+  
+  {tuple} [expressions]:expression+ |
   {projection} projection |
   {fst} fst |
   {snd} snd |
+  
   {ref} ref |
   {deref} deref |
-  {assign} assign;
+  {assign} assign |
 
+  {list} [expressions]:expression* |
+  {binarycons} binarycons |
+  {unarycons} unarycons |
+  {hd} hd |
+  {tl} tl |
+  {is_empty} is_empty;

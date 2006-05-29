@@ -7,23 +7,30 @@ import common.MutableStore;
 import common.ProofStep;
 import common.Store;
 
-import expressions.Lambda;
 import expressions.And;
 import expressions.Application;
 import expressions.Assign;
+import expressions.BinaryCons;
 import expressions.BinaryOperator;
 import expressions.BinaryOperatorException;
 import expressions.BooleanConstant;
 import expressions.Condition;
 import expressions.Condition1;
+import expressions.UnaryCons;
 import expressions.CurriedLet;
 import expressions.CurriedLetRec;
 import expressions.Deref;
+import expressions.EmptyList;
+import expressions.Exn;
 import expressions.Expression;
 import expressions.Fst;
+import expressions.Hd;
 import expressions.InfixOperation;
+import expressions.IsEmpty;
+import expressions.Lambda;
 import expressions.Let;
 import expressions.LetRec;
+import expressions.List;
 import expressions.Location;
 import expressions.MultiLambda;
 import expressions.MultiLet;
@@ -33,6 +40,7 @@ import expressions.Recursion;
 import expressions.Ref;
 import expressions.Sequence;
 import expressions.Snd;
+import expressions.Tl;
 import expressions.Tuple;
 import expressions.UnaryOperator;
 import expressions.UnaryOperatorException;
@@ -328,7 +336,7 @@ final class SmallStepEvaluator {
     Expression e2 = curriedLet.getE2();
     
     // prepend the lambda abstractions to e1
-    for (int n = 1; n < identifiers.length; ++n)
+    for (int n = identifiers.length - 1; n >= 1; --n)
       e1 = new Lambda(identifiers[n], e1);
     
     // we can simply perform (LET-EXEC)
@@ -346,7 +354,7 @@ final class SmallStepEvaluator {
     Expression e2 = curriedLetRec.getE2();
     
     // prepend the lambda abstractions to e1
-    for (int n = 1; n < identifiers.length; ++n)
+    for (int n = identifiers.length - 1; n >= 1; --n)
       e1 = new Lambda(identifiers[n], e1);
     
     // we can perform (UNFOLD), which includes a (LET-EVAL)
@@ -591,6 +599,38 @@ final class SmallStepEvaluator {
   }
   
   @SuppressWarnings("unused")
+  private Expression evaluateList(List list) {
+    // determine the sub expressions
+    Expression[] expressions = list.getExpressions();
+    
+    // find the first sub expression that is not already a value
+    for (int n = 0; n < expressions.length; ++n) {
+      // check if the expression is not already a value
+      if (!expressions[n].isValue()) {
+        // try to evaluate the expression
+        Expression newExpression = evaluate(expressions[n]);
+        
+        // check if we need to forward an exception
+        if (newExpression.isException()) {
+          addProofStep(SmallStepProofRule.LIST_EXN, list);
+          return newExpression;
+        }
+        
+        // we performed (LIST) then
+        addProofStep(SmallStepProofRule.LIST, list);
+        
+        // otherwise generate a new list with the new expression
+        Expression[] newExpressions = expressions.clone();
+        newExpressions[n] = newExpression;
+        return new List(newExpressions);
+      }
+    }
+    
+    // hm, can we get stuck here?
+    return list;
+  }
+  
+  @SuppressWarnings("unused")
   private Expression evaluateTuple(Tuple tuple) {
     // determine the sub expressions
     Expression[] expressions = tuple.getExpressions();
@@ -612,7 +652,7 @@ final class SmallStepEvaluator {
         addProofStep(SmallStepProofRule.TUPLE, tuple);
         
         // otherwise generate a new tuple with the new expression
-        Expression[] newExpressions = tuple.getExpressions().clone();
+        Expression[] newExpressions = expressions.clone();
         newExpressions[n] = newExpression;
         return new Tuple(newExpressions);
       }
@@ -766,6 +806,98 @@ final class SmallStepEvaluator {
       return application;
     }
   }
+  
+  @SuppressWarnings("unused")
+  private Expression applyHd(Application application, Hd hd, Expression e) {
+    // check if e is the empty list
+    if (e == EmptyList.EMPTY_LIST) {
+      addProofStep(SmallStepProofRule.HD_EMPTY, application);
+      return Exn.EMPTY_LIST;
+    }
+    
+    // check if e is a list
+    if (e instanceof List) {
+      addProofStep(SmallStepProofRule.HD, application);
+      return ((List)e).head();
+    }
+    
+    // otherwise try to return the first list item
+    try {
+      // e must be an application of cons to a pair
+      Application app1 = (Application)e;
+      Tuple tuple = (Tuple)app1.getE2();
+      if (!(app1.getE1() instanceof UnaryCons) || tuple.getArity() != 2) {
+        // we're stuck
+        return application;
+      }
+      
+      // jep, we can perform (HD) then
+      addProofStep(SmallStepProofRule.HD, application);
+      
+      // return the first item
+      return tuple.getExpressions(0);
+    }
+    catch(ClassCastException exception) {
+      // we're stuck
+      return application;
+    }
+  }
+
+  @SuppressWarnings("unused")
+  private Expression applyTl(Application application, Tl tl, Expression e) {
+    // check if e is the empty list
+    if (e == EmptyList.EMPTY_LIST) {
+      addProofStep(SmallStepProofRule.TL_EMPTY, application);
+      return Exn.EMPTY_LIST;
+    }
+    
+    // check if e is a list
+    if (e instanceof List) {
+      addProofStep(SmallStepProofRule.TL, application);
+      return ((List)e).tail();
+    }
+    
+    // otherwise try to return the remaining list
+    try {
+      // e must be an application of cons to a pair
+      Application app1 = (Application)e;
+      Tuple tuple = (Tuple)app1.getE2();
+      if (!(app1.getE1() instanceof UnaryCons) || tuple.getArity() != 2) {
+        // we're stuck
+        return application;
+      }
+      
+      // jep, we can perform (TL) then
+      addProofStep(SmallStepProofRule.TL, application);
+      
+      // return the remaining list
+      return tuple.getExpressions(1);
+    }
+    catch(ClassCastException exception) {
+      // we're stuck
+      return application;
+    }
+  }
+  
+  @SuppressWarnings("unused")
+  private Expression applyIsEmpty(Application application, IsEmpty isEmpty, Expression e) {
+    // check if e is the empty list, or an application of cons to a value, or a list
+    if (e == EmptyList.EMPTY_LIST) {
+      addProofStep(SmallStepProofRule.IS_EMPTY_TRUE, application);
+      return BooleanConstant.TRUE;
+    }
+    else if ((e instanceof List)
+        || (e instanceof Application
+         && ((Application)e).getE1() instanceof UnaryCons
+         && ((Application)e).getE2().isValue())) {
+      addProofStep(SmallStepProofRule.IS_EMPTY_FALSE, application);
+      return BooleanConstant.FALSE;
+    }
+    else {
+      // we're stuck
+      return application;
+    }
+  }
 
   
   
@@ -779,7 +911,7 @@ final class SmallStepEvaluator {
   
   private Expression handleBinaryOperator(Expression applicationOrInfix, BinaryOperator op, Expression e1, Expression e2) {
     try {
-      // check if we have (ASSIGN) or (OP)
+      // check if we have (ASSIGN), (BOP) or (CONS)
       if (op instanceof Assign) {
         // we can perform (ASSIGN) now
         addProofStep(SmallStepProofRule.ASSIGN, applicationOrInfix);
@@ -794,8 +926,8 @@ final class SmallStepEvaluator {
         // try to perform the operation
         Expression e = op.applyTo(e1, e2);
         
-        // yep, that was (BOP) then
-        addProofStep(SmallStepProofRule.BOP, applicationOrInfix);
+        // yep, that was (BOP) or (CONS) then
+        addProofStep((op instanceof BinaryCons) ? SmallStepProofRule.CONS : SmallStepProofRule.BOP, applicationOrInfix);
         
         // return the new expression
         return e;
@@ -807,13 +939,13 @@ final class SmallStepEvaluator {
     }
   }
   
-  private Method lookupMethod(String baseName, Class klass) throws NoSuchMethodException {
+  private Method lookupMethod(String baseName, Class clazz) throws NoSuchMethodException {
     // try for this class and all super classes up to Expression
-    for (; klass != Expression.class; klass = klass.getSuperclass()) {
+    for (; clazz != Expression.class; clazz = clazz.getSuperclass()) {
       // try to find a suitable method
       Method[] methods = getClass().getDeclaredMethods();
       for (Method method : methods) {
-        if (method.getName().equals(baseName + klass.getSimpleName()))
+        if (method.getName().equals(baseName + clazz.getSimpleName()))
           return method;
       }
     }

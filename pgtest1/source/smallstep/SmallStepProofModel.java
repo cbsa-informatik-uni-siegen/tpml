@@ -9,6 +9,7 @@ import common.ProofModel;
 import common.ProofNode;
 import common.ProofRule;
 import common.ProofRuleException;
+import common.ProofStep;
 
 import expressions.Expression;
 
@@ -89,37 +90,28 @@ public class SmallStepProofModel extends AbstractProofModel {
     if (!this.root.isNodeRelated(node)) {
       throw new IllegalArgumentException("The node is invalid for the model");
     }
-
-    // try all axiom rules
-    Field[] fields = SmallStepProofRule.class.getDeclaredFields();
-    for (int n = 0; n < fields.length; ++n) {
-      try {
-        // check if this is a static final field
-        if ((fields[n].getModifiers() & (Modifier.FINAL | Modifier.STATIC)) != 0) {
-          // determine the value of the field
-          Object value = fields[n].get(null);
-          if (value instanceof SmallStepProofRule) {
-            // check if we have an axiom rule
-            SmallStepProofRule rule = (SmallStepProofRule)value;
-            if (rule.isAxiom()) {
-              // try to prove using this rule
-              apply(rule, (SmallStepProofNode)node);
-              return;
-            }
-          }
-        }
-      }
-      catch (IllegalAccessException e) {
-        // shouldn't happen, but just in case...
-      }
-      catch (ProofRuleException e) {
-        // try with the next rule
-      }
+    
+    // evaluate the next step for the node
+    SmallStepEvaluator evaluator = new SmallStepEvaluator(node.getExpression(), node.getStore());
+    
+    // determine the steps
+    ProofStep[] evaluatedSteps = evaluator.getSteps();
+    ProofStep[] completedSteps = node.getSteps();
+    
+    // check if the node is already completed
+    if (completedSteps.length >= evaluatedSteps.length) {
+      throw new IllegalStateException("Cannot prove an already proven node");
     }
     
-    // if we get here, then the evaluation is stuck or
-    // the caller tried to guess() a rule for a value
-    throw new IllegalArgumentException("Cannot guess next proof step");
+    // try to prove using the guessed rule
+    try {
+      // all the last rule for the evaluated steps to the node
+      apply((SmallStepProofRule)evaluatedSteps[evaluatedSteps.length - 1].getRule(), (SmallStepProofNode)node);
+    }
+    catch (ProofRuleException exception) {
+      // hm, dunno... IllegalArgumentException for now
+      throw new IllegalArgumentException("Cannot guess next proof step", exception);
+    }
   }
   
   /**

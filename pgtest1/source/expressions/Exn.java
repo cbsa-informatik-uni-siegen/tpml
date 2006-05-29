@@ -17,6 +17,11 @@ public final class Exn extends Expression {
    */
   public static final Exn DIVIDE_BY_ZERO = new Exn("divide_by_zero");
   
+  /**
+   * The <b>(EMPTY-LIST)</b> exception.
+   */
+  public static final Exn EMPTY_LIST = new Exn("empty_list");
+  
   
   
   //

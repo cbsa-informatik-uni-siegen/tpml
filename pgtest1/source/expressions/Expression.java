@@ -230,11 +230,19 @@ public abstract class Expression {
   //
   
   /**
+   * Cached vector of sub expressions, so the children do not need
+   * to be determined on every invocation of {@link #children()}.
+   * 
+   * @see #children()
+   */
+  private transient Vector<Expression> children = null;
+  
+  /**
    * Returns an enumeration for the direct ancestor expressions, the
    * direct children, of this expression. The enumeration is generated
    * using the bean properties for every {@link Expression} derived
-   * class. For example, {@link Application} provides <code>getE1</code>
-   * and <code>getE2</code>, and thereby the sub expressions <code>e1</code>
+   * class. For example, {@link Application} provides <code>getE1()</code>
+   * and <code>getE2()</code>, and thereby the sub expressions <code>e1</code>
    * and <code>e2</code>. It also supports arrays of expressions, as used
    * in the {@link Tuple} expression class.
    * 
@@ -242,25 +250,30 @@ public abstract class Expression {
    *         of this expression.
    */
   protected final Enumeration<Expression> children() {
-    try {
-      Vector<Expression> expressions = new Vector<Expression>();
-      PropertyDescriptor[] properties = Introspector.getBeanInfo(getClass(), Expression.class).getPropertyDescriptors();
-      for (PropertyDescriptor property : properties) {
-        Object value = property.getReadMethod().invoke(this);
-        if (value instanceof Expression[]) {
-          expressions.addAll(Arrays.asList((Expression[])value));
-        }
-        else if (value instanceof Expression) {
-          expressions.add((Expression)value);
+    // check if we already determined the children
+    if (this.children == null) {
+      try {
+        this.children = new Vector<Expression>();
+        PropertyDescriptor[] properties = Introspector.getBeanInfo(getClass(), Expression.class).getPropertyDescriptors();
+        for (PropertyDescriptor property : properties) {
+          Object value = property.getReadMethod().invoke(this);
+          if (value instanceof Expression[]) {
+            this.children.addAll(Arrays.asList((Expression[])value));
+          }
+          else if (value instanceof Expression) {
+            this.children.add((Expression)value);
+          }
         }
       }
-      return expressions.elements();
+      catch (RuntimeException exception) {
+        throw exception;
+      }
+      catch (Exception exception) {
+        throw new RuntimeException(exception);
+      }
     }
-    catch (RuntimeException exception) {
-      throw exception;
-    }
-    catch (Exception exception) {
-      throw new RuntimeException(exception);
-    }
+    
+    // return an enumeration for the children
+    return this.children.elements();
   }
 }

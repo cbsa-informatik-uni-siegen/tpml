@@ -37,7 +37,9 @@ public class SmallStepTreeView extends JFrame {
   //private static final String SIMPLE = "let f = ref (lambda x.x) in let fact = lambda x.if x = 0 then 1 else x * (!f (x - 1)) in (f := fact, !f 3)";
   //private static final String SIMPLE = "let rec f = lambda x.if x = 0 then 1 else x * (f (x - 1)) in f 3";
   //private static final String SIMPLE = "(1 + 2, 5 * 8, let x = 9 in (8,(+) 9 x), y)";
-  private static final String SIMPLE = "let (x, y, z) = (~- 8, not true, 1) in x > z || y";
+  //private static final String SIMPLE = "let (x, y, z) = (~- 8, not true, 1) in x > z || y";
+  private static final String SIMPLE = "let rev l = let rec rev_helper s t = if is_empty s then t else rev_helper (tl s) ((hd s) :: t) in rev_helper l [] in rev [1+5,2+5,3+5]";
+  //private static final String SIMPLE = "let rec f s t = s + t in f [] [1,2,3]";
 
   
   
@@ -65,11 +67,16 @@ public class SmallStepTreeView extends JFrame {
           builder.append(", ");
         builder.append(node.getSteps()[n].getRule().getName());
       }
-      builder.append("] -> (");
+      builder.append("] -> ");
+      if (node.getExpression().containsReferences()) {
+        builder.append('(');
+      }
       builder.append(node.getExpression());
-      builder.append(", ");
-      builder.append(node.getStore());
-      builder.append(')');
+      if (node.getExpression().containsReferences()) {
+        builder.append(", ");
+        builder.append(node.getStore());
+        builder.append(')');
+      }
       setText(builder.toString());
       return this;
     }

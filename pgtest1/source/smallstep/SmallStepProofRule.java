@@ -91,6 +91,17 @@ final class SmallStepProofRule extends ProofRule {
   
   static final SmallStepProofRule WHILE = new SmallStepProofRule("WHILE", 0);
   
+
+  static final SmallStepProofRule CONS = new SmallStepProofRule("CONS", 0);
+  static final SmallStepProofRule LIST = new SmallStepProofRule("LIST", 1);
+  static final SmallStepProofRule LIST_EXN = new SmallStepProofRule("LIST-EXN", 1);
+  static final SmallStepProofRule HD = new SmallStepProofRule("HD", 0);
+  static final SmallStepProofRule TL = new SmallStepProofRule("TL", 0);
+  static final SmallStepProofRule HD_EMPTY = new SmallStepProofRule("HD-EMPTY", 0);
+  static final SmallStepProofRule TL_EMPTY = new SmallStepProofRule("TL-EMPTY", 0);
+  static final SmallStepProofRule IS_EMPTY_TRUE = new SmallStepProofRule("IS-EMPTY-TRUE", 0);
+  static final SmallStepProofRule IS_EMPTY_FALSE = new SmallStepProofRule("IS-EMPTY-FALSE", 0);
+  
   
   
   //

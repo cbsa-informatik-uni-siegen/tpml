@@ -73,6 +73,12 @@ public final class Tuple extends Expression {
     builder.appendText(")");
     return builder;
   }
+
+  
+  
+  //
+  // Accessors
+  //
   
   /**
    * Returns the arity of the tuple.
@@ -90,6 +96,22 @@ public final class Tuple extends Expression {
    */
   public Expression[] getExpressions() {
     return this.expressions;
+  }
+  
+  /**
+   * Returns the sub expression at the given <code>index</code>.
+   * 
+   * @param index the index of the sub expression to return.
+   *              
+   * @return the sub expression at the given <code>index</code>.
+   *         
+   * @throws ArrayIndexOutOfBoundsException if the <code>index</code>
+   *                                        is out of bounds.
+   *                                        
+   * @see #getExpressions()
+   */
+  public Expression getExpressions(int index) {
+    return this.expressions[index];
   }
   
   // member attributes

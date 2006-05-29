@@ -11,6 +11,7 @@ import l1.analysis.DepthFirstAdapter;
 import l1.node.AAndExpression;
 import l1.node.AApplicationExpression;
 import l1.node.AAssignExpression;
+import l1.node.ABinaryconsExpression;
 import l1.node.ACondition1Expression;
 import l1.node.AConditionExpression;
 import l1.node.ADerefExpression;
@@ -20,11 +21,14 @@ import l1.node.AFalseExpression;
 import l1.node.AFstExpression;
 import l1.node.AGreaterEqualExpression;
 import l1.node.AGreaterThanExpression;
+import l1.node.AHdExpression;
 import l1.node.AIdentifierExpression;
 import l1.node.AInfixExpression;
+import l1.node.AIsEmptyExpression;
 import l1.node.ALambdaExpression;
 import l1.node.ALetExpression;
 import l1.node.ALetrecExpression;
+import l1.node.AListExpression;
 import l1.node.ALowerEqualExpression;
 import l1.node.ALowerThanExpression;
 import l1.node.AMinusExpression;
@@ -41,12 +45,19 @@ import l1.node.ARecursionExpression;
 import l1.node.ARefExpression;
 import l1.node.ASequenceExpression;
 import l1.node.ASndExpression;
+import l1.node.ATlExpression;
 import l1.node.ATrueExpression;
 import l1.node.ATupleExpression;
 import l1.node.AUminusExpression;
+import l1.node.AUnaryconsExpression;
 import l1.node.AUnitExpression;
 import l1.node.AWhileExpression;
 import l1.node.TIdentifier;
+import expressions.BinaryCons;
+import expressions.UnaryCons;
+import expressions.EmptyList;
+import expressions.Hd;
+import expressions.IsEmpty;
 import expressions.Lambda;
 import expressions.And;
 import expressions.Application;
@@ -66,6 +77,7 @@ import expressions.InfixOperation;
 import expressions.IntegerConstant;
 import expressions.Let;
 import expressions.LetRec;
+import expressions.List;
 import expressions.MultiLambda;
 import expressions.MultiLet;
 import expressions.Not;
@@ -76,6 +88,7 @@ import expressions.Ref;
 import expressions.RelationalOperator;
 import expressions.Sequence;
 import expressions.Snd;
+import expressions.Tl;
 import expressions.Tuple;
 import expressions.UnaryMinus;
 import expressions.UnitConstant;
@@ -497,6 +510,78 @@ public class Translator extends DepthFirstAdapter {
   @Override
   public void outAUminusExpression(AUminusExpression node) {
     this.expressions.push(UnaryMinus.UMINUS);
+  }
+  
+  /**
+   * {@inheritDoc}
+   *
+   * @see l1.analysis.DepthFirstAdapter#outABinaryconsExpression(l1.node.ABinaryconsExpression)
+   */
+  @Override
+  public void outABinaryconsExpression(ABinaryconsExpression node) {
+    this.expressions.push(BinaryCons.CONS);
+  }
+  
+  /**
+   * {@inheritDoc}
+   *
+   * @see l1.analysis.DepthFirstAdapter#outAUnaryconsExpression(l1.node.AUnaryconsExpression)
+   */
+  @Override
+  public void outAUnaryconsExpression(AUnaryconsExpression node) {
+    this.expressions.push(UnaryCons.CONS);
+  }
+  
+  /**
+   * {@inheritDoc}
+   *
+   * @see l1.analysis.DepthFirstAdapter#outAHdExpression(l1.node.AHdExpression)
+   */
+  @Override
+  public void outAHdExpression(AHdExpression node) {
+    this.expressions.push(Hd.HD);
+  }
+  
+  /**
+   * {@inheritDoc}
+   *
+   * @see l1.analysis.DepthFirstAdapter#outAIsEmptyExpression(l1.node.AIsEmptyExpression)
+   */
+  @Override
+  public void outAIsEmptyExpression(AIsEmptyExpression node) {
+    this.expressions.push(IsEmpty.IS_EMPTY);
+  }
+  
+  /**
+   * {@inheritDoc}
+   *
+   * @see l1.analysis.DepthFirstAdapter#outAListExpression(l1.node.AListExpression)
+   */
+  @Override
+  public void outAListExpression(AListExpression node) {
+    // determine the list expressions
+    Expression[] expressions = new Expression[node.getExpressions().size()];
+    for (int n = expressions.length - 1; n >= 0; --n) {
+      expressions[n] = this.expressions.pop();
+    }
+    
+    // empty list needs special handling
+    if (expressions.length == 0) {
+      this.expressions.push(EmptyList.EMPTY_LIST);
+    }
+    else {
+      this.expressions.push(new List(expressions));
+    }
+  }
+  
+  /**
+   * {@inheritDoc}
+   *
+   * @see l1.analysis.DepthFirstAdapter#outATlExpression(l1.node.ATlExpression)
+   */
+  @Override
+  public void outATlExpression(ATlExpression node) {
+    this.expressions.push(Tl.TL);
   }
     
   private Stack<Expression> expressions = new Stack<Expression>();

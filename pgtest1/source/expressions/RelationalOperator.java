@@ -6,7 +6,7 @@ package expressions;
  * @author Benedikt Meurer
  * @version $Id:RelationalOperator.java 121 2006-04-28 16:45:27Z benny $
  */
-public class RelationalOperator extends BinaryOperator {
+public final class RelationalOperator extends BinaryOperator {
   //
   // Constants
   //

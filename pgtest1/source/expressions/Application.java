@@ -49,7 +49,8 @@ public final class Application extends Expression {
   
   /**
    * An <code>Application</code> can be a value if it consists
-   * of a binary operator and a value.
+   * of a binary operator and a value, or if it consists of a
+   * <code>UnaryCons</code> operator and a value.
    * 
    * @return <code>true</code> if the application consists of
    *                           a binary operator and a value.
@@ -58,7 +59,7 @@ public final class Application extends Expression {
    */
   @Override
   public boolean isValue() {
-    return (this.e1 instanceof BinaryOperator && this.e2.isValue());
+    return ((this.e1 instanceof BinaryOperator || this.e1 instanceof UnaryCons) && this.e2.isValue());
   }
   
   /**
