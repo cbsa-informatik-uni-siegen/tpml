@@ -9,18 +9,19 @@ package common;
  */
 public abstract class ProofRule {
   /**
+   * <code>true</code> if this rule is an axiom, which
+   * has no premises.
+   * 
+   * @see #isAxiom()
+   */
+  protected boolean axiom;
+  
+  /**
    * The user visible name of the proof rule.
    * 
    * @see #getName()
    */
   protected String name;
-  
-  /**
-   * The number of premises of this proof rule.
-   * 
-   * @see #getPremises()
-   */
-  protected int premises;
   
   
   
@@ -30,14 +31,15 @@ public abstract class ProofRule {
   
   /**
    * Allocates a new {@link ProofRule} with the given
-   * <code>name</code> and number of <code>premises</code>.
-   * 
+   * <code>name</code>. If <code>axiom</code> is <code>true</code>
+   * the rule has no premises.
+   *
+   * @param axiom if the rule is an axiom with no premises.
    * @param name the name of the proof rule.
-   * @param premises the number of premises.
    */
-  protected ProofRule(String name, int premises) {
+  protected ProofRule(boolean axiom, String name) {
+    this.axiom = axiom;
     this.name = name;
-    this.premises = premises;
   }
   
   
@@ -53,11 +55,9 @@ public abstract class ProofRule {
    * 
    * @return <code>true</code> if this rule is
    *         an axiom.
-   *         
-   * @see #getPremises()         
    */
   public boolean isAxiom() {
-    return (getPremises() == 0);
+    return this.axiom;
   }
   
   /**
@@ -68,18 +68,5 @@ public abstract class ProofRule {
    */
   public String getName() {
     return this.name;
-  }
-  
-  /**
-   * Returns the number of premises for this
-   * rule, which may be zero in case of axioms.
-   * 
-   * @return the number of premises for this
-   *         proof rule.
-   *         
-   * @see #isAxiom()         
-   */
-  public int getPremises() {
-    return this.premises;
   }
 }

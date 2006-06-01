@@ -13,94 +13,94 @@ final class SmallStepProofRule extends ProofRule {
   // Small step rules
   //
   
-  static final SmallStepProofRule AND_EVAL = new SmallStepProofRule("AND-EVAL", 1);
+  static final SmallStepProofRule AND_EVAL = new SmallStepProofRule(false, "AND-EVAL");
   
-  static final SmallStepProofRule AND_EVAL_EXN = new SmallStepProofRule("AND-EVAL-EXN", 1);
+  static final SmallStepProofRule AND_EVAL_EXN = new SmallStepProofRule(false, "AND-EVAL-EXN");
   
-  static final SmallStepProofRule AND_FALSE = new SmallStepProofRule("AND-FALSE", 0);
+  static final SmallStepProofRule AND_FALSE = new SmallStepProofRule(true, "AND-FALSE");
   
-  static final SmallStepProofRule AND_TRUE = new SmallStepProofRule("AND-TRUE", 0);
+  static final SmallStepProofRule AND_TRUE = new SmallStepProofRule(true, "AND-TRUE");
   
-  static final SmallStepProofRule APP_LEFT = new SmallStepProofRule("APP-LEFT", 1);
+  static final SmallStepProofRule APP_LEFT = new SmallStepProofRule(false, "APP-LEFT");
   
-  static final SmallStepProofRule APP_LEFT_EXN = new SmallStepProofRule("APP-LEFT-EXN", 1);
+  static final SmallStepProofRule APP_LEFT_EXN = new SmallStepProofRule(false, "APP-LEFT-EXN");
   
-  static final SmallStepProofRule APP_RIGHT = new SmallStepProofRule("APP-RIGHT", 1);
+  static final SmallStepProofRule APP_RIGHT = new SmallStepProofRule(false, "APP-RIGHT");
   
-  static final SmallStepProofRule APP_RIGHT_EXN = new SmallStepProofRule("APP-RIGHT-EXN", 1);
+  static final SmallStepProofRule APP_RIGHT_EXN = new SmallStepProofRule(false, "APP-RIGHT-EXN");
   
-  static final SmallStepProofRule ASSIGN = new SmallStepProofRule("ASSIGN", 0);
+  static final SmallStepProofRule ASSIGN = new SmallStepProofRule(true, "ASSIGN");
   
-  static final SmallStepProofRule BETA_V = new SmallStepProofRule("BETA-V", 0);
+  static final SmallStepProofRule BETA_V = new SmallStepProofRule(true, "BETA-V");
   
-  static final SmallStepProofRule BOP = new SmallStepProofRule("BOP", 0);
+  static final SmallStepProofRule BOP = new SmallStepProofRule(true, "BOP");
   
-  static final SmallStepProofRule COND_EVAL = new SmallStepProofRule("COND-EVAL", 1);
+  static final SmallStepProofRule COND_EVAL = new SmallStepProofRule(false, "COND-EVAL");
   
-  static final SmallStepProofRule COND_EVAL_EXN = new SmallStepProofRule("COND-EVAL-EXN", 1);
+  static final SmallStepProofRule COND_EVAL_EXN = new SmallStepProofRule(false, "COND-EVAL-EXN");
   
-  static final SmallStepProofRule COND_FALSE = new SmallStepProofRule("COND-FALSE", 0);
+  static final SmallStepProofRule COND_FALSE = new SmallStepProofRule(true, "COND-FALSE");
   
-  static final SmallStepProofRule COND_TRUE = new SmallStepProofRule("COND-TRUE", 0);
+  static final SmallStepProofRule COND_TRUE = new SmallStepProofRule(true, "COND-TRUE");
   
-  static final SmallStepProofRule COND_1_EVAL = new SmallStepProofRule("COND-1-EVAL", 1);
+  static final SmallStepProofRule COND_1_EVAL = new SmallStepProofRule(false, "COND-1-EVAL");
   
-  static final SmallStepProofRule COND_1_EVAL_EXN = new SmallStepProofRule("COND-1-EVAL-EXN", 1);
+  static final SmallStepProofRule COND_1_EVAL_EXN = new SmallStepProofRule(false, "COND-1-EVAL-EXN");
   
-  static final SmallStepProofRule COND_1_FALSE = new SmallStepProofRule("COND-1-FALSE", 0);
+  static final SmallStepProofRule COND_1_FALSE = new SmallStepProofRule(true, "COND-1-FALSE");
   
-  static final SmallStepProofRule COND_1_TRUE = new SmallStepProofRule("COND-1-TRUE", 0);
+  static final SmallStepProofRule COND_1_TRUE = new SmallStepProofRule(true, "COND-1-TRUE");
   
-  static final SmallStepProofRule DEREF = new SmallStepProofRule("DEREF", 0);
+  static final SmallStepProofRule DEREF = new SmallStepProofRule(true, "DEREF");
   
-  static final SmallStepProofRule FST = new SmallStepProofRule("FST", 0);
+  static final SmallStepProofRule FST = new SmallStepProofRule(true, "FST");
   
-  static final SmallStepProofRule LET_EVAL = new SmallStepProofRule("LET-EVAL", 1);
+  static final SmallStepProofRule LET_EVAL = new SmallStepProofRule(false, "LET-EVAL");
   
-  static final SmallStepProofRule LET_EVAL_EXN = new SmallStepProofRule("LET-EVAL-EXN", 1);
+  static final SmallStepProofRule LET_EVAL_EXN = new SmallStepProofRule(false, "LET-EVAL-EXN");
   
-  static final SmallStepProofRule LET_EXEC = new SmallStepProofRule("LET-EXEC", 0);
+  static final SmallStepProofRule LET_EXEC = new SmallStepProofRule(true, "LET-EXEC");
   
-  static final SmallStepProofRule OR_EVAL = new SmallStepProofRule("OR-EVAL", 1);
+  static final SmallStepProofRule OR_EVAL = new SmallStepProofRule(false, "OR-EVAL");
   
-  static final SmallStepProofRule OR_EVAL_EXN = new SmallStepProofRule("OR-EVAL-EXN", 1);
+  static final SmallStepProofRule OR_EVAL_EXN = new SmallStepProofRule(false, "OR-EVAL-EXN");
   
-  static final SmallStepProofRule OR_FALSE = new SmallStepProofRule("OR-FALSE", 0);
+  static final SmallStepProofRule OR_FALSE = new SmallStepProofRule(true, "OR-FALSE");
   
-  static final SmallStepProofRule OR_TRUE = new SmallStepProofRule("OR-TRUE", 0);
+  static final SmallStepProofRule OR_TRUE = new SmallStepProofRule(true, "OR-TRUE");
   
-  static final SmallStepProofRule REF = new SmallStepProofRule("REF", 0);
+  static final SmallStepProofRule REF = new SmallStepProofRule(true, "REF");
   
-  static final SmallStepProofRule SEQ_EVAL = new SmallStepProofRule("SEQ-EVAL", 1);
+  static final SmallStepProofRule SEQ_EVAL = new SmallStepProofRule(false, "SEQ-EVAL");
 
-  static final SmallStepProofRule SEQ_EVAL_EXN = new SmallStepProofRule("SEQ-EVAL-EXN", 1);
+  static final SmallStepProofRule SEQ_EVAL_EXN = new SmallStepProofRule(false, "SEQ-EVAL-EXN");
   
-  static final SmallStepProofRule SEQ_EXEC = new SmallStepProofRule("SEQ-EXEC", 0);
+  static final SmallStepProofRule SEQ_EXEC = new SmallStepProofRule(true, "SEQ-EXEC");
   
-  static final SmallStepProofRule SND = new SmallStepProofRule("SND", 0);
+  static final SmallStepProofRule SND = new SmallStepProofRule(true, "SND");
   
-  static final SmallStepProofRule PROJ = new SmallStepProofRule("PROJ", 0);
+  static final SmallStepProofRule PROJ = new SmallStepProofRule(true, "PROJ");
   
-  static final SmallStepProofRule TUPLE = new SmallStepProofRule("TUPLE", 1);
+  static final SmallStepProofRule TUPLE = new SmallStepProofRule(false, "TUPLE");
   
-  static final SmallStepProofRule TUPLE_EXN = new SmallStepProofRule("TUPLE-EXN", 1);
+  static final SmallStepProofRule TUPLE_EXN = new SmallStepProofRule(false, "TUPLE-EXN");
   
-  static final SmallStepProofRule UNFOLD = new SmallStepProofRule("UNFOLD", 0);
+  static final SmallStepProofRule UNFOLD = new SmallStepProofRule(true, "UNFOLD");
   
-  static final SmallStepProofRule UOP = new SmallStepProofRule("UOP", 0);
+  static final SmallStepProofRule UOP = new SmallStepProofRule(true, "UOP");
   
-  static final SmallStepProofRule WHILE = new SmallStepProofRule("WHILE", 0);
+  static final SmallStepProofRule WHILE = new SmallStepProofRule(true, "WHILE");
   
 
-  static final SmallStepProofRule CONS = new SmallStepProofRule("CONS", 0);
-  static final SmallStepProofRule LIST = new SmallStepProofRule("LIST", 1);
-  static final SmallStepProofRule LIST_EXN = new SmallStepProofRule("LIST-EXN", 1);
-  static final SmallStepProofRule HD = new SmallStepProofRule("HD", 0);
-  static final SmallStepProofRule TL = new SmallStepProofRule("TL", 0);
-  static final SmallStepProofRule HD_EMPTY = new SmallStepProofRule("HD-EMPTY", 0);
-  static final SmallStepProofRule TL_EMPTY = new SmallStepProofRule("TL-EMPTY", 0);
-  static final SmallStepProofRule IS_EMPTY_TRUE = new SmallStepProofRule("IS-EMPTY-TRUE", 0);
-  static final SmallStepProofRule IS_EMPTY_FALSE = new SmallStepProofRule("IS-EMPTY-FALSE", 0);
+  static final SmallStepProofRule CONS = new SmallStepProofRule(true, "CONS");
+  static final SmallStepProofRule LIST = new SmallStepProofRule(false, "LIST");
+  static final SmallStepProofRule LIST_EXN = new SmallStepProofRule(false, "LIST-EXN");
+  static final SmallStepProofRule HD = new SmallStepProofRule(true, "HD");
+  static final SmallStepProofRule TL = new SmallStepProofRule(true, "TL");
+  static final SmallStepProofRule HD_EMPTY = new SmallStepProofRule(true, "HD-EMPTY");
+  static final SmallStepProofRule TL_EMPTY = new SmallStepProofRule(true, "TL-EMPTY");
+  static final SmallStepProofRule IS_EMPTY_TRUE = new SmallStepProofRule(true, "IS-EMPTY-TRUE");
+  static final SmallStepProofRule IS_EMPTY_FALSE = new SmallStepProofRule(true, "IS-EMPTY-FALSE");
   
   
   
@@ -110,12 +110,13 @@ final class SmallStepProofRule extends ProofRule {
   
   /**
    * Allocates a new small step proof rule with the given
-   * <code>name</code> and number of <code>premises</code>.
-   * 
+   * <code>name</code>. If <code>axiom</code> is <code>true</code>
+   * the rule has no premises.
+   *
+   * @param axiom whether the rule has no premises.
    * @param name the name of the small step rule.
-   * @param premises the number of premises.
    */
-  private SmallStepProofRule(String name, int premises) {
-    super(name, premises);
+  private SmallStepProofRule(boolean axiom, String name) {
+    super(axiom, name);
   }
 }

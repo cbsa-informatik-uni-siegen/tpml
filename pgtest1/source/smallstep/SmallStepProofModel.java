@@ -86,27 +86,18 @@ public class SmallStepProofModel extends AbstractProofModel {
    */
   @Override
   public void guess(ProofNode node) {
-    // verify that the node is valid for the model
-    if (!this.root.isNodeRelated(node)) {
-      throw new IllegalArgumentException("The node is invalid for the model");
-    }
-    
-    // evaluate the next step for the node
-    SmallStepEvaluator evaluator = new SmallStepEvaluator(node.getExpression(), node.getStore());
-    
-    // determine the steps
-    ProofStep[] evaluatedSteps = evaluator.getSteps();
-    ProofStep[] completedSteps = node.getSteps();
+    // guess the remaining steps for the node
+    ProofStep[] remainingSteps = remaining(node);
     
     // check if the node is already completed
-    if (completedSteps.length >= evaluatedSteps.length) {
+    if (remainingSteps.length == 0) {
       throw new IllegalStateException("Cannot prove an already proven node");
     }
     
     // try to prove using the guessed rule
     try {
-      // all the last rule for the evaluated steps to the node
-      apply((SmallStepProofRule)evaluatedSteps[evaluatedSteps.length - 1].getRule(), (SmallStepProofNode)node);
+      // apply the last rule for the evaluated steps to the node
+      apply((SmallStepProofRule)remainingSteps[remainingSteps.length - 1].getRule(), (SmallStepProofNode)node);
     }
     catch (ProofRuleException exception) {
       // hm, dunno... IllegalArgumentException for now
@@ -135,6 +126,40 @@ public class SmallStepProofModel extends AbstractProofModel {
     apply((SmallStepProofRule)rule, (SmallStepProofNode)node);
   }
   
+  /**
+   * Returns the remaining {@link ProofStep}s required to prove the specified
+   * <code>node</code>. This method is used to guess the next step, see the
+   * {@link #guess(ProofNode)} method for further details, and in the user
+   * interface, to highlight the next expression. 
+   * 
+   * @param node the {@link ProofNode} for which to return the remaining
+   *             steps required to prove the <code>node</code>.
+   * 
+   * @return the remaining {@link ProofStep}s required to prove the
+   *         <code>node</code>, or an empty array if the <code>node</code>
+   *         is already proven or the evaluation is stuck.
+   * 
+   * @throws IllegalArgumentException if the <code>node</code> is invalid
+   *                                  for this model.
+   */
+  public ProofStep[] remaining(ProofNode node) {
+    // verify that the node is valid for the model
+    if (!this.root.isNodeRelated(node)) {
+      throw new IllegalArgumentException("The node is invalid for the model");
+    }
+    
+    // evaluate the next step for the node
+    SmallStepEvaluator evaluator = new SmallStepEvaluator(node.getExpression(), node.getStore());
+    
+    // determine the evaluated/completed steps
+    ProofStep[] evaluatedSteps = evaluator.getSteps();
+    ProofStep[] completedSteps = node.getSteps();
+    
+    // generate the remaining steps
+    ProofStep[] remainingSteps = new ProofStep[evaluatedSteps.length - completedSteps.length];
+    System.arraycopy(evaluatedSteps, completedSteps.length, remainingSteps, 0, remainingSteps.length);
+    return remainingSteps;
+  }
   
   
   //
