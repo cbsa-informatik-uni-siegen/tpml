@@ -106,10 +106,10 @@ public class SmallStepProofNode extends AbstractProofNode {
         throw new IllegalStateException("Completed steps don't match evaluated steps");
     }
 
-    // check if the rule is valid
+    // check if the rule is valid, accepting regular meta-rules for EXN rules
     int m;
     for (m = n; m < evaluatedSteps.length; ++m) {
-      if (evaluatedSteps[m].getRule() == rule)
+      if (evaluatedSteps[m].getRule() == rule || evaluatedSteps[m].getRule() == rule.getExnRule())
         break;
     }
     

@@ -1,5 +1,7 @@
 package smallstep;
 
+import java.util.HashMap;
+
 import common.ProofRule;
 
 /**
@@ -10,102 +12,177 @@ import common.ProofRule;
  */
 final class SmallStepProofRule extends ProofRule {
   //
-  // Small step rules
+  // Constants
   //
   
-  static final SmallStepProofRule AND_EVAL = new SmallStepProofRule(false, "AND-EVAL");
-  
-  static final SmallStepProofRule AND_EVAL_EXN = new SmallStepProofRule(false, "AND-EVAL-EXN");
-  
-  static final SmallStepProofRule AND_FALSE = new SmallStepProofRule(true, "AND-FALSE");
-  
-  static final SmallStepProofRule AND_TRUE = new SmallStepProofRule(true, "AND-TRUE");
-  
-  static final SmallStepProofRule APP_LEFT = new SmallStepProofRule(false, "APP-LEFT");
-  
-  static final SmallStepProofRule APP_LEFT_EXN = new SmallStepProofRule(false, "APP-LEFT-EXN");
-  
-  static final SmallStepProofRule APP_RIGHT = new SmallStepProofRule(false, "APP-RIGHT");
-  
-  static final SmallStepProofRule APP_RIGHT_EXN = new SmallStepProofRule(false, "APP-RIGHT-EXN");
-  
-  static final SmallStepProofRule ASSIGN = new SmallStepProofRule(true, "ASSIGN");
-  
-  static final SmallStepProofRule BETA_V = new SmallStepProofRule(true, "BETA-V");
-  
-  static final SmallStepProofRule BOP = new SmallStepProofRule(true, "BOP");
-  
-  static final SmallStepProofRule COND_EVAL = new SmallStepProofRule(false, "COND-EVAL");
-  
-  static final SmallStepProofRule COND_EVAL_EXN = new SmallStepProofRule(false, "COND-EVAL-EXN");
-  
-  static final SmallStepProofRule COND_FALSE = new SmallStepProofRule(true, "COND-FALSE");
-  
-  static final SmallStepProofRule COND_TRUE = new SmallStepProofRule(true, "COND-TRUE");
-  
-  static final SmallStepProofRule COND_1_EVAL = new SmallStepProofRule(false, "COND-1-EVAL");
-  
-  static final SmallStepProofRule COND_1_EVAL_EXN = new SmallStepProofRule(false, "COND-1-EVAL-EXN");
-  
-  static final SmallStepProofRule COND_1_FALSE = new SmallStepProofRule(true, "COND-1-FALSE");
-  
-  static final SmallStepProofRule COND_1_TRUE = new SmallStepProofRule(true, "COND-1-TRUE");
-  
-  static final SmallStepProofRule DEREF = new SmallStepProofRule(true, "DEREF");
-  
-  static final SmallStepProofRule FST = new SmallStepProofRule(true, "FST");
-  
-  static final SmallStepProofRule LET_EVAL = new SmallStepProofRule(false, "LET-EVAL");
-  
-  static final SmallStepProofRule LET_EVAL_EXN = new SmallStepProofRule(false, "LET-EVAL-EXN");
-  
-  static final SmallStepProofRule LET_EXEC = new SmallStepProofRule(true, "LET-EXEC");
-  
-  static final SmallStepProofRule OR_EVAL = new SmallStepProofRule(false, "OR-EVAL");
-  
-  static final SmallStepProofRule OR_EVAL_EXN = new SmallStepProofRule(false, "OR-EVAL-EXN");
-  
-  static final SmallStepProofRule OR_FALSE = new SmallStepProofRule(true, "OR-FALSE");
-  
-  static final SmallStepProofRule OR_TRUE = new SmallStepProofRule(true, "OR-TRUE");
-  
-  static final SmallStepProofRule REF = new SmallStepProofRule(true, "REF");
-  
-  static final SmallStepProofRule SEQ_EVAL = new SmallStepProofRule(false, "SEQ-EVAL");
-
-  static final SmallStepProofRule SEQ_EVAL_EXN = new SmallStepProofRule(false, "SEQ-EVAL-EXN");
-  
-  static final SmallStepProofRule SEQ_EXEC = new SmallStepProofRule(true, "SEQ-EXEC");
-  
-  static final SmallStepProofRule SND = new SmallStepProofRule(true, "SND");
-  
-  static final SmallStepProofRule PROJ = new SmallStepProofRule(true, "PROJ");
-  
-  static final SmallStepProofRule TUPLE = new SmallStepProofRule(false, "TUPLE");
-  
-  static final SmallStepProofRule TUPLE_EXN = new SmallStepProofRule(false, "TUPLE-EXN");
-  
-  static final SmallStepProofRule UNFOLD = new SmallStepProofRule(true, "UNFOLD");
-  
-  static final SmallStepProofRule UOP = new SmallStepProofRule(true, "UOP");
-  
-  static final SmallStepProofRule WHILE = new SmallStepProofRule(true, "WHILE");
-  
-
-  static final SmallStepProofRule CONS = new SmallStepProofRule(true, "CONS");
-  static final SmallStepProofRule LIST = new SmallStepProofRule(false, "LIST");
-  static final SmallStepProofRule LIST_EXN = new SmallStepProofRule(false, "LIST-EXN");
-  static final SmallStepProofRule HD = new SmallStepProofRule(true, "HD");
-  static final SmallStepProofRule TL = new SmallStepProofRule(true, "TL");
-  static final SmallStepProofRule HD_EMPTY = new SmallStepProofRule(true, "HD-EMPTY");
-  static final SmallStepProofRule TL_EMPTY = new SmallStepProofRule(true, "TL-EMPTY");
-  static final SmallStepProofRule IS_EMPTY_TRUE = new SmallStepProofRule(true, "IS-EMPTY-TRUE");
-  static final SmallStepProofRule IS_EMPTY_FALSE = new SmallStepProofRule(true, "IS-EMPTY-FALSE");
+  /**
+   * The definition of the small step rules as pairs of
+   * strings and booleans, where the string is the name
+   * of the rule and the boolean value indicates whether
+   * the rule is an axiom or a meta rule.
+   * 
+   * The EXN rules are generated automatically for each
+   * meta rule.
+   */
+  private static final Object[] RULES = {
+    // application rules
+    "APP-LEFT", false,
+    "APP-RIGHT", false,
+    "BETA-V", true,
+    
+    // condition rules
+    "COND-EVAL", false,
+    "COND-FALSE", true,
+    "COND-TRUE", true,
+    
+    // let rules
+    "LET-EVAL", false,
+    "LET-EXEC", true,
+    
+    // operator rules
+    "BOP", true,
+    "UOP", true,
+    
+    // recursion rules
+    "UNFOLD", true,
+    
+    // imperative rules
+    "ASSIGN", true,
+    "DEREF", true,
+    "REF", true,
+    "SEQ-EVAL", false,
+    "SEQ-EXEC", true,
+    "WHILE", true,
+    "COND-1-EVAL", false,
+    "COND-1-FALSE", true,
+    "COND-1-TRUE", true,
+    
+    // tuple rules
+    "FST", true,
+    "SND", true,
+    "PROJ", true,
+    "TUPLE", false,
+    
+    // list rules
+    "CONS", true,
+    "LIST", false,
+    "HD", true,
+    "TL", true,
+    "HD-EMPTY", true,
+    "TL-EMPTY", true,
+    "IS-EMPTY-TRUE", true,
+    "IS-EMPTY-FALSE", true,
+    
+    // && rules
+    "AND-EVAL", false,
+    "AND-FALSE", true,
+    "AND-TRUE", true,
+    
+    // || rules
+    "OR-EVAL", false,
+    "OR-FALSE", true,
+    "OR-TRUE", true,
+  };
   
   
   
   //
-  // Constructor
+  // Class attributes
+  //
+  
+  /**
+   * A mapping of rule names to rules, generated automatically
+   * from the {@link #RULES} when the class is loaded.
+   * 
+   * @see #RULES
+   */
+  private static HashMap<String, SmallStepProofRule> rules;
+  
+  
+  
+  //
+  // Class loading
+  //
+  
+  static {
+    // generate the rules mapping from the RULES array
+    rules = new HashMap<String, SmallStepProofRule>();
+    for (int n = 0; n < RULES.length; n += 2) {
+      // generate the rule
+      boolean axiom = ((Boolean)RULES[n + 1]).booleanValue();
+      String name = (String)RULES[n + 0];
+      
+      // determine the associated EXN rule
+      SmallStepProofRule exnRule = null;
+      if (!axiom) {
+        // generate the associated EXN rule
+        exnRule = new SmallStepProofRule(axiom, name + "-EXN", null);
+        rules.put(name + "-EXN", exnRule);
+      }
+      
+      // generate the proof rule
+      rules.put(name, new SmallStepProofRule(axiom, name, exnRule));
+    }
+  }
+  
+  
+  
+  //
+  // Class methods
+  //
+  
+  /**
+   * Returns the <code>SmallStepProofRule</code> with
+   * the specified <code>name</code>.
+   * 
+   * @return the <code>SmallStepProofRule</code> with
+   *         the specified <code>name</code>.
+   *         
+   * @throws IllegalArgumentException if the <code>name</code> does not
+   *                                  refer to a valid small step rule.
+   */
+  static SmallStepProofRule getRule(String name) {
+    SmallStepProofRule rule = rules.get(name);
+    if (rule == null) {
+      throw new IllegalArgumentException("name is invalid");
+    }
+    else {
+      return rule;
+    }
+  }
+  
+  /**
+   * Returns all available <code>SmallStepProofRule</code>s,
+   * except the <b>EXN</b> rules.
+   * 
+   * @return all available <code>SmallStepProofRule</code>s.
+   */
+  static SmallStepProofRule[] getRules() {
+    SmallStepProofRule[] rules = new SmallStepProofRule[RULES.length / 2];
+    for (int n = 0; n < rules.length; ++n) {
+      rules[n] = getRule((String)RULES[n * 2]);
+    }
+    return rules;
+  }
+  
+  
+  
+  //
+  // Attributes
+  //
+  
+  /**
+   * The <b>EXN</b> rule associated with this meta-rule. This
+   * is <code>null</code> for axioms and exception rules.
+   * 
+   * @see #getExnRule()
+   */
+  private SmallStepProofRule exnRule;
+  
+  
+  
+  //
+  // Constructor (private)
   //
   
   /**
@@ -115,8 +192,33 @@ final class SmallStepProofRule extends ProofRule {
    *
    * @param axiom whether the rule has no premises.
    * @param name the name of the small step rule.
+   * @param exnRule the <b>EXN</b> rule for this meta rule.
    */
-  private SmallStepProofRule(boolean axiom, String name) {
+  private SmallStepProofRule(boolean axiom, String name, SmallStepProofRule exnRule) {
     super(axiom, name);
+    this.exnRule = exnRule;
+  }
+  
+  
+  
+  //
+  // Primitives
+  //
+  
+  /**
+   * Returns the <b>EXN</b> rule for this meta rule. If this
+   * rule is an axiom or an <b>EXN</b> rule itself, this
+   * method will return a reference to this rule (this does
+   * not really make sense, but its convenient to use).
+   * 
+   * @return the <b>EXN</b> rule for this meta rule.
+   */
+  public SmallStepProofRule getExnRule() {
+    if (this.exnRule != null) {
+      return this.exnRule;
+    }
+    else {
+      return this;
+    }
   }
 }

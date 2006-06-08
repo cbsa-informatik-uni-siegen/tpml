@@ -1,9 +1,5 @@
 package smallstep;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
-import java.util.Vector;
-
 import common.AbstractProofModel;
 import common.ProofModel;
 import common.ProofNode;
@@ -54,23 +50,17 @@ public class SmallStepProofModel extends AbstractProofModel {
    */
   @Override
   public ProofRule[] getRules() {
-    // determine the available small step rules
-    Vector<ProofRule> rules = new Vector<ProofRule>();
-    Field[] fields = SmallStepProofRule.class.getDeclaredFields();
-    for (int n = 0; n < fields.length; ++n) {
-      try {
-        // check if this is a static final field
-        if ((fields[n].getModifiers() & (Modifier.FINAL | Modifier.STATIC)) != 0) {
-          Object value = fields[n].get(null);
-          if (value instanceof SmallStepProofRule)
-            rules.add((ProofRule)value);
-        }
-      }
-      catch (IllegalAccessException e) {
-        // nothing to do here
-      }
-    }
-    return rules.toArray(new ProofRule[] {});
+    return SmallStepProofRule.getRules();
+  }
+  
+  /**
+   * TODO
+   * 
+   * @return
+   */
+  public ProofRule[] getMatchingRules() {
+    // FIXME
+    return null;
   }
   
   

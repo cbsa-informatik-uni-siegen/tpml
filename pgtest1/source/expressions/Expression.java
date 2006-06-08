@@ -3,7 +3,9 @@ package expressions;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Enumeration;
+import java.util.LinkedList;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.Vector;
@@ -224,7 +226,6 @@ public abstract class Expression {
   public static final TreeSet<String> EMPTY_SET = new TreeSet<String>();
   
   
-  
   //
   // Introspections
   //
@@ -275,5 +276,43 @@ public abstract class Expression {
     
     // return an enumeration for the children
     return this.children.elements();
+  }
+
+  
+  
+  //
+  // Expression Tree Traversal
+  //
+  
+  /**
+   * Returns an {@link Enumeration} that enumerates the 
+   * expression within the expression hierarchy starting
+   * at this expression in level order (that is breadth
+   * first enumeration).
+   * 
+   * @return a breadth first enumeration of all expressions
+   *         within the expression hierarchy starting at
+   *         this item.
+   */
+  public Enumeration<Expression> levelOrderEnumeration() {
+    return new LevelOrderEnumeration(this);
+  }
+  
+  private class LevelOrderEnumeration implements Enumeration<Expression> {
+    private LinkedList<Expression> queue = new LinkedList<Expression>(); 
+    
+    LevelOrderEnumeration(Expression expression) {
+      this.queue.add(expression);
+    }
+    
+    public boolean hasMoreElements() {
+      return !this.queue.isEmpty();
+    }
+    
+    public Expression nextElement() {
+      Expression e = this.queue.poll();
+      this.queue.addAll(Collections.list(e.children()));
+      return e;
+    }
   }
 }

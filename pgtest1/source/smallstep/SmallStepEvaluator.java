@@ -127,8 +127,17 @@ final class SmallStepEvaluator {
   public ProofStep[] getSteps() {
     // return the steps in reversed order
     ProofStep[] steps = new ProofStep[this.steps.size()];
-    for (int n = 0; n < steps.length; ++n)
-      steps[n] = this.steps.elementAt(steps.length - (n + 1));
+    for (int n = 0; n < steps.length; ++n) {
+      if (this.expression.isException()) {
+        // translate meta rules to the associated EXN rules 
+        SmallStepProofRule rule = (SmallStepProofRule)this.steps.elementAt(n).getRule();
+        steps[n] = new ProofStep(this.steps.elementAt(n).getExpression(), rule.getExnRule());
+      }
+      else {
+        // just use the proof step
+        steps[n] = this.steps.elementAt(n);
+      }
+    }
     return steps;
   }
   
@@ -175,32 +184,26 @@ final class SmallStepEvaluator {
     
     // check if e1 is not already a boolean constant
     if (!(e1 instanceof BooleanConstant)) {
+      // we're about to perform (AND-EVAL)
+      addProofStep("AND-EVAL", and);
+      
       // try to evaluate e1
       e1 = evaluate(e1);
       
-      // check if e1 is an exception, (AND-EVAL-EXN)
-      if (e1.isException()) {
-        addProofStep(SmallStepProofRule.AND_EVAL_EXN, and);
-        return e1;
-      }
-      
-      // otherwise we performed (AND-EVAL)
-      addProofStep(SmallStepProofRule.AND_EVAL, and);
-      
-      // return the new and
-      return new And(e1, e2);
+      // exceptions need special handling
+      return e1.isException() ? e1 : new And(e1, e2);
     }
     
     // determine the boolean constant value
     BooleanConstant booleanConstant = (BooleanConstant)e1;
     if (booleanConstant.isTrue()) {
       // jep, that's (AND-TRUE) then
-      addProofStep(SmallStepProofRule.AND_TRUE, and);
+      addProofStep("AND-TRUE", and);
       return e2;
     }
     else {
       // jep, that's (AND-FALSE) then
-      addProofStep(SmallStepProofRule.AND_FALSE, and);
+      addProofStep("AND-FALSE", and);
       return BooleanConstant.FALSE;
     }
   }
@@ -213,38 +216,26 @@ final class SmallStepEvaluator {
 
     // check if e1 is not already a value
     if (!e1.isValue()) {
+      // we're about to perform (APP-LEFT)
+      addProofStep("APP-LEFT", application);
+      
       // try to evaluate e1
       e1 = evaluate(e1);
 
-      // check if e1 is an exception, (APP-LEFT-EXN)
-      if (e1.isException()) {
-        addProofStep(SmallStepProofRule.APP_LEFT_EXN, application);
-        return e1;
-      }
-      
-      // otherwise we performed (APP-LEFT)
-      addProofStep(SmallStepProofRule.APP_LEFT, application);
-      
-      // return the new application
-      return new Application(e1, e2);
+      // exceptions need special handling
+      return e1.isException() ? e1 : new Application(e1, e2);
     }
     
     // check if e2 is not already a value
     if (!e2.isValue()) {
+      // we're about to perform (APP-RIGHT)
+      addProofStep("APP-RIGHT", application);
+      
       // try to evaluate e2
       e2 = evaluate(e2);
       
-      // check if e2 is an exception, (APP-RIGHT-EXN)
-      if (e2.isException()) {
-        addProofStep(SmallStepProofRule.APP_RIGHT_EXN, application);
-        return e2;
-      }
-      
-      // otherwise we performed (APP-RIGHT)
-      addProofStep(SmallStepProofRule.APP_RIGHT, application);
-      
-      // return the new application
-      return new Application(e1, e2);
+      // exceptions need special handling
+      return e2.isException() ? e2 : new Application(e1, e2);
     }
 
     // perform the application
@@ -260,32 +251,26 @@ final class SmallStepEvaluator {
     
     // check if e0 is not already a boolean constant
     if (!(e0 instanceof BooleanConstant)) {
+      // we're about to perform (COND-EVAL)
+      addProofStep("COND-EVAL", condition);
+      
       // try to evaluate e0
       e0 = evaluate(e0);
       
-      // check if e0 is an exception, (COND-EVAL-EXN)
-      if (e0.isException()) {
-        addProofStep(SmallStepProofRule.COND_EVAL_EXN, condition);
-        return e0;
-      }
-      
-      // otherwise we performed (COND-EVAL)
-      addProofStep(SmallStepProofRule.COND_EVAL, condition);
-      
-      // return the new condition
-      return new Condition(e0, e1, e2);
+      // exceptions need special handling
+      return e0.isException() ? e0 : new Condition(e0, e1, e2);
     }
     
     // determine the boolean constant value
     BooleanConstant booleanConstant = (BooleanConstant)e0;
     if (booleanConstant.isTrue()) {
       // jep, that's (COND-TRUE) then
-      addProofStep(SmallStepProofRule.COND_TRUE, condition);
+      addProofStep("COND-TRUE", condition);
       return e1;
     }
     else {
       // jep, that's (COND-FALSE) then
-      addProofStep(SmallStepProofRule.COND_FALSE, condition);
+      addProofStep("COND-FALSE", condition);
       return e2;
     }
   }
@@ -298,32 +283,26 @@ final class SmallStepEvaluator {
     
     // check if e0 is not already a boolean constant
     if (!(e0 instanceof BooleanConstant)) {
+      // we're about to perform (COND-1-EVAL)
+      addProofStep("COND-1-EVAL", condition1);
+      
       // try to evaluate e0
       e0 = evaluate(e0);
       
-      // check if e0 is an exception, (COND-1-EVAL-EXN)
-      if (e0.isException()) {
-        addProofStep(SmallStepProofRule.COND_1_EVAL_EXN, condition1);
-        return e0;
-      }
-      
-      // otherwise we performed (COND-1-EVAL)
-      addProofStep(SmallStepProofRule.COND_1_EVAL, condition1);
-      
-      // return the new condition1
-      return new Condition1(e0, e1);
+      // exceptions need special handling
+      return e0.isException() ? e0 : new Condition1(e0, e1);
     }
     
     // determine the boolean constant value
     BooleanConstant booleanConstant = (BooleanConstant)e0;
     if (booleanConstant.isTrue()) {
       // jep, that's (COND-1-TRUE) then
-      addProofStep(SmallStepProofRule.COND_1_TRUE, condition1);
+      addProofStep("COND-1-TRUE", condition1);
       return e1;
     }
     else {
       // jep, that's (COND-1-FALSE) then
-      addProofStep(SmallStepProofRule.COND_1_FALSE, condition1);
+      addProofStep("COND-1-FALSE", condition1);
       return UnitConstant.UNIT;
     }
   }
@@ -340,7 +319,7 @@ final class SmallStepEvaluator {
       e1 = new Lambda(identifiers[n], e1);
     
     // we can simply perform (LET-EXEC)
-    addProofStep(SmallStepProofRule.LET_EXEC, curriedLet);
+    addProofStep("LET-EXEC", curriedLet);
     
     // and perform the substitution
     return e2.substitute(identifiers[0], e1);
@@ -358,8 +337,8 @@ final class SmallStepEvaluator {
       e1 = new Lambda(identifiers[n], e1);
     
     // we can perform (UNFOLD), which includes a (LET-EVAL)
-    addProofStep(SmallStepProofRule.UNFOLD, curriedLetRec);
-    addProofStep(SmallStepProofRule.LET_EVAL, curriedLetRec);
+    addProofStep("LET-EVAL", curriedLetRec);
+    addProofStep("UNFOLD", curriedLetRec);
 
     // perform the substitution on e1
     e1 = e1.substitute(identifiers[0], new Recursion(identifiers[0], e1));
@@ -377,40 +356,27 @@ final class SmallStepEvaluator {
     
     // check if e1 is not already an integer constant
     if (!e1.isValue()) {
+      // we're about to perform (APP-LEFT) and (APP-RIGHT)
+      addProofStep("APP-LEFT", infixOperation);
+      addProofStep("APP-RIGHT", infixOperation);
+      
       // try to evaluate e1
       e1 = evaluate(e1);
       
-      // check if e1 is an exception, (APP-RIGHT-EXN) and (APP-LEFT-EXN)
-      if (e1.isException()) {
-        addProofStep(SmallStepProofRule.APP_RIGHT_EXN, infixOperation);
-        addProofStep(SmallStepProofRule.APP_LEFT_EXN, infixOperation);
-        return e1;
-      }
-      
-      // otherwise we performed (APP-RIGHT) and (APP-LEFT)
-      addProofStep(SmallStepProofRule.APP_RIGHT, infixOperation);
-      addProofStep(SmallStepProofRule.APP_LEFT, infixOperation);
-      
-      // return the new infix operation
-      return new InfixOperation(op, e1, e2);
+      // exceptions need special handling
+      return e1.isException() ? e1 : new InfixOperation(op, e1, e2);
     }
     
     // check if e2 is not already a value
     if (!e2.isValue()) {
+      // we're about to perform (APP-RIGHT)
+      addProofStep("APP-RIGHT", infixOperation);
+      
       // try to evaluate e2
       e2 = evaluate(e2);
       
-      // check if e2 is an exception, (APP-RIGHT-EXN)
-      if (e2.isException()) {
-        addProofStep(SmallStepProofRule.APP_RIGHT, infixOperation);
-        return e2;
-      }
-      
-      // otherwise we performed (APP-RIGHT)
-      addProofStep(SmallStepProofRule.APP_RIGHT, infixOperation);
-      
-      // return the new infix operation
-      return new InfixOperation(op, e1, e2);
+      // exceptions need special handling
+      return e2.isException() ? e2 : new InfixOperation(op, e1, e2);
     }
     
     // try to perform the application
@@ -426,24 +392,18 @@ final class SmallStepEvaluator {
     
     // check if e1 is not already a value
     if (!e1.isValue()) {
+      // we're about to perform (LET-EVAL)
+      addProofStep("LET-EVAL", let);
+      
       // try to evaluate e1
       e1 = evaluate(e1);
       
-      // check if e1 is an exception, (LET-EVAL-EXN)
-      if (e1.isException()) {
-        addProofStep(SmallStepProofRule.LET_EVAL_EXN, let);
-        return e1;
-      }
-      
-      // otherwise we performed (LET-EVAL)
-      addProofStep(SmallStepProofRule.LET_EVAL, let);
-      
-      // return the new let
-      return new Let(id, e1, e2);
+      // exceptions need special treatment
+      return e1.isException() ? e1 : new Let(id, e1, e2);
     }
 
     // we can perform (LET-EXEC)
-    addProofStep(SmallStepProofRule.LET_EXEC, let);
+    addProofStep("LET-EXEC", let);
     
     // and perform the substitution
     return e2.substitute(id, e1);
@@ -458,20 +418,14 @@ final class SmallStepEvaluator {
     
     // check if e1 is not already a value
     if (!e1.isValue()) {
+      // we're about to perform (LET-EVAL)
+      addProofStep("LET-EVAL", multiLet);
+      
       // try to evaluate e1
       e1 = evaluate(e1);
       
-      // check if e1 is an exception, (LET-EVAL-EXN)
-      if (e1.isException()) {
-        addProofStep(SmallStepProofRule.LET_EVAL_EXN, multiLet);
-        return e1;
-      }
-      
-      // otherwise we performed (LET-EVAL)
-      addProofStep(SmallStepProofRule.LET_EVAL, multiLet);
-      
-      // return the new multi let
-      return new MultiLet(identifiers, e1, e2);
+      // exceptions need special treatment
+      return e1.isException() ? e1 : new MultiLet(identifiers, e1, e2);
     }
 
     // try to perform the (LET-EXEC)
@@ -487,7 +441,7 @@ final class SmallStepEvaluator {
       }
       
       // jep, that was (LET-EXEC) then
-      addProofStep(SmallStepProofRule.LET_EXEC, multiLet);
+      addProofStep("LET-EXEC", multiLet);
       
       // return the new expression
       return e2;
@@ -506,8 +460,8 @@ final class SmallStepEvaluator {
     String id = letRec.getId();
     
     // we perform (UNFOLD), which includes a (LET-EVAL)
-    addProofStep(SmallStepProofRule.UNFOLD, letRec);
-    addProofStep(SmallStepProofRule.LET_EVAL, letRec);
+    addProofStep("LET-EVAL", letRec);
+    addProofStep("UNFOLD", letRec);
     
     // perform the substitution on e1
     e1 = e1.substitute(id, new Recursion(id, e1));
@@ -524,32 +478,26 @@ final class SmallStepEvaluator {
     
     // check if e1 is not already a boolean constant
     if (!(e1 instanceof BooleanConstant)) {
+      // we're about to perform (OR-EVAL)
+      addProofStep("OR-EVAL", or);
+
       // try to evaluate e1
       e1 = evaluate(e1);
-      
-      // check if e1 is an exception, (OR-EVAL-EXN)
-      if (e1.isException()) {
-        addProofStep(SmallStepProofRule.OR_EVAL_EXN, or);
-        return e1;
-      }
-      
-      // otherwise we performed (OR-EVAL)
-      addProofStep(SmallStepProofRule.OR_EVAL, or);
-      
-      // return the new or
-      return new Or(e1, e2);
+
+      // exceptions need special treatment
+      return e1.isException() ? e1 : new Or(e1, e2);
     }
     
     // determine the boolean constant value
     BooleanConstant booleanConstant = (BooleanConstant)e1;
     if (booleanConstant.isTrue()) {
       // jep, that's (OR-TRUE) then
-      addProofStep(SmallStepProofRule.OR_TRUE, or);
+      addProofStep("OR-TRUE", or);
       return BooleanConstant.TRUE;
     }
     else {
       // jep, that's (OR-FALSE) then
-      addProofStep(SmallStepProofRule.OR_FALSE, or);
+      addProofStep("OR-FALSE", or);
       return e2;
     }
   }
@@ -561,7 +509,7 @@ final class SmallStepEvaluator {
     String id = recursion.getId();
     
     // we can perform (UNFOLD)
-    addProofStep(SmallStepProofRule.UNFOLD, recursion);
+    addProofStep("UNFOLD", recursion);
     
     // perform the substitution
     return e.substitute(id, recursion);
@@ -575,24 +523,18 @@ final class SmallStepEvaluator {
 
     // check if e1 is not already a value
     if (!e1.isValue()) {
+      // we're about to perform (SEQ-EVAL)
+      addProofStep("SEQ-EVAL", sequence);
+      
       // try to evaluate e1
       e1 = evaluate(e1);
 
-      // check if e1 is an exception, (SEQ-EVAL-EXN)
-      if (e1.isException()) {
-        addProofStep(SmallStepProofRule.SEQ_EVAL_EXN, sequence);
-        return e1;
-      }
-      
-      // otherwise we performed (SEQ-EVAL)
-      addProofStep(SmallStepProofRule.SEQ_EVAL, sequence);
-      
-      // return the new sequence
-      return new Sequence(e1, e2);
+      // exceptions need special treatment
+      return e1.isException() ? e1 : new Sequence(e1, e2);
     }
 
     // we're about to perform (SEQ-EXEC)
-    addProofStep(SmallStepProofRule.SEQ_EXEC, sequence);
+    addProofStep("SEQ-EXEC", sequence);
     
     // drop e1 from the sequence
     return e2;
@@ -607,17 +549,16 @@ final class SmallStepEvaluator {
     for (int n = 0; n < expressions.length; ++n) {
       // check if the expression is not already a value
       if (!expressions[n].isValue()) {
+        // we're about to perform (LIST)
+        addProofStep("LIST", list);
+        
         // try to evaluate the expression
         Expression newExpression = evaluate(expressions[n]);
         
         // check if we need to forward an exception
         if (newExpression.isException()) {
-          addProofStep(SmallStepProofRule.LIST_EXN, list);
           return newExpression;
         }
-        
-        // we performed (LIST) then
-        addProofStep(SmallStepProofRule.LIST, list);
         
         // otherwise generate a new list with the new expression
         Expression[] newExpressions = expressions.clone();
@@ -639,17 +580,16 @@ final class SmallStepEvaluator {
     for (int n = 0; n < expressions.length; ++n) {
       // check if the expression is not already a value
       if (!expressions[n].isValue()) {
+        // we're about to perform (TUPLE)
+        addProofStep("TUPLE", tuple);
+        
         // try to evaluate the expression
         Expression newExpression = evaluate(expressions[n]);
         
         // check if we need to forward an exception
         if (newExpression.isException()) {
-          addProofStep(SmallStepProofRule.TUPLE_EXN, tuple);
           return newExpression;
         }
-        
-        // we performed (TUPLE) then
-        addProofStep(SmallStepProofRule.TUPLE, tuple);
         
         // otherwise generate a new tuple with the new expression
         Expression[] newExpressions = expressions.clone();
@@ -669,7 +609,7 @@ final class SmallStepEvaluator {
     Expression e2 = loop.getE2();
     
     // we're about to perform (WHILE)
-    addProofStep(SmallStepProofRule.WHILE, loop);
+    addProofStep("WHILE", loop);
     
     // translate to: if e1 then (e2; while e1 do e2)
     return new Condition1(e1, new Sequence(e2, loop));
@@ -702,7 +642,7 @@ final class SmallStepEvaluator {
 
   @SuppressWarnings("unused")
   private Expression applyLambda(Application application, Lambda lambda, Expression v) {
-    addProofStep(SmallStepProofRule.BETA_V, application);
+    addProofStep("BETA-V", application);
     return lambda.getE().substitute(lambda.getId(), v);
   }
   
@@ -724,7 +664,7 @@ final class SmallStepEvaluator {
       }
       
       // yep, that was (BETA-V) then
-      addProofStep(SmallStepProofRule.BETA_V, application);
+      addProofStep("BETA-V", application);
       
       // and return the new expression
       return e;
@@ -754,7 +694,7 @@ final class SmallStepEvaluator {
       Expression e = this.store.get(location);
       
       // we performed (DEREF)
-      addProofStep(SmallStepProofRule.DEREF, application);
+      addProofStep("DEREF", application);
       
       // and return the expression
       return e;
@@ -768,7 +708,7 @@ final class SmallStepEvaluator {
   @SuppressWarnings("unused")
   private Expression applyRef(Application application, Ref ref, Expression e) {
     // we're about to perform (REF)
-    addProofStep(SmallStepProofRule.REF, application);
+    addProofStep("REF", application);
     
     // allocate a new location and store the value
     Location location = this.store.alloc();
@@ -786,16 +726,16 @@ final class SmallStepEvaluator {
       
       // determine the appropriate rule
       if (operator instanceof Fst) {
-        addProofStep(SmallStepProofRule.FST, application);
+        addProofStep("FST", application);
       }
       else if (operator instanceof Snd) {
-        addProofStep(SmallStepProofRule.SND, application);
+        addProofStep("SND", application);
       }
       else if (operator instanceof Projection) {
-        addProofStep(SmallStepProofRule.PROJ, application);
+        addProofStep("PROJ", application);
       }
       else {
-        addProofStep(SmallStepProofRule.UOP, application);
+        addProofStep("UOP", application);
       }
       
       // and return the new expression
@@ -811,13 +751,13 @@ final class SmallStepEvaluator {
   private Expression applyHd(Application application, Hd hd, Expression e) {
     // check if e is the empty list
     if (e == EmptyList.EMPTY_LIST) {
-      addProofStep(SmallStepProofRule.HD_EMPTY, application);
+      addProofStep("HD-EMPTY", application);
       return Exn.EMPTY_LIST;
     }
     
     // check if e is a list
     if (e instanceof List) {
-      addProofStep(SmallStepProofRule.HD, application);
+      addProofStep("HD", application);
       return ((List)e).head();
     }
     
@@ -832,7 +772,7 @@ final class SmallStepEvaluator {
       }
       
       // jep, we can perform (HD) then
-      addProofStep(SmallStepProofRule.HD, application);
+      addProofStep("HD", application);
       
       // return the first item
       return tuple.getExpressions(0);
@@ -847,13 +787,13 @@ final class SmallStepEvaluator {
   private Expression applyTl(Application application, Tl tl, Expression e) {
     // check if e is the empty list
     if (e == EmptyList.EMPTY_LIST) {
-      addProofStep(SmallStepProofRule.TL_EMPTY, application);
+      addProofStep("TL-EMPTY", application);
       return Exn.EMPTY_LIST;
     }
     
     // check if e is a list
     if (e instanceof List) {
-      addProofStep(SmallStepProofRule.TL, application);
+      addProofStep("TL", application);
       return ((List)e).tail();
     }
     
@@ -868,7 +808,7 @@ final class SmallStepEvaluator {
       }
       
       // jep, we can perform (TL) then
-      addProofStep(SmallStepProofRule.TL, application);
+      addProofStep("TL", application);
       
       // return the remaining list
       return tuple.getExpressions(1);
@@ -883,14 +823,14 @@ final class SmallStepEvaluator {
   private Expression applyIsEmpty(Application application, IsEmpty isEmpty, Expression e) {
     // check if e is the empty list, or an application of cons to a value, or a list
     if (e == EmptyList.EMPTY_LIST) {
-      addProofStep(SmallStepProofRule.IS_EMPTY_TRUE, application);
+      addProofStep("IS-EMPTY-TRUE", application);
       return BooleanConstant.TRUE;
     }
     else if ((e instanceof List)
         || (e instanceof Application
          && ((Application)e).getE1() instanceof UnaryCons
          && ((Application)e).getE2().isValue())) {
-      addProofStep(SmallStepProofRule.IS_EMPTY_FALSE, application);
+      addProofStep("IS-EMPTY-FALSE", application);
       return BooleanConstant.FALSE;
     }
     else {
@@ -905,8 +845,15 @@ final class SmallStepEvaluator {
   // Helper methods
   //
   
-  private void addProofStep(SmallStepProofRule rule, Expression expression) {
-    this.steps.add(new ProofStep(expression, rule));
+  /**
+   * Adds a new proof step with the specified <code>ruleName</code>
+   * for the given <code>expression</code>.
+   * 
+   * @param ruleName the name of the {@link SmallStepProofRule} to add as proof step.
+   * @param expression the {@link Expression} for the proof step.
+   */
+  private void addProofStep(String ruleName, Expression expression) {
+    this.steps.add(new ProofStep(expression, SmallStepProofRule.getRule(ruleName)));
   }
   
   private Expression handleBinaryOperator(Expression applicationOrInfix, BinaryOperator op, Expression e1, Expression e2) {
@@ -914,7 +861,7 @@ final class SmallStepEvaluator {
       // check if we have (ASSIGN), (BOP) or (CONS)
       if (op instanceof Assign) {
         // we can perform (ASSIGN) now
-        addProofStep(SmallStepProofRule.ASSIGN, applicationOrInfix);
+        addProofStep("ASSIGN", applicationOrInfix);
         
         // change the value at the memory location
         this.store.put((Location)e1, e2);
@@ -927,7 +874,7 @@ final class SmallStepEvaluator {
         Expression e = op.applyTo(e1, e2);
         
         // yep, that was (BOP) or (CONS) then
-        addProofStep((op instanceof BinaryCons) ? SmallStepProofRule.CONS : SmallStepProofRule.BOP, applicationOrInfix);
+        addProofStep((op instanceof BinaryCons) ? "CONS" : "BOP", applicationOrInfix);
         
         // return the new expression
         return e;
