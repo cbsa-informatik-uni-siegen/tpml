@@ -80,9 +80,9 @@ public class SmallStepView extends AbstractView implements Scrollable {
 			}
 		}
 		
-		setPreferredSize (new Dimension (maxWidth + 25, 
-				node.getY() + node.getHeight() + 25));
-		
+		Dimension size = new Dimension (maxWidth + 25, node.getY () + node.getHeight () + 25);
+		setPreferredSize (size);
+		setSize(size);
 	}
 	
 	private void determineButtons() {
@@ -92,6 +92,16 @@ public class SmallStepView extends AbstractView implements Scrollable {
 			node = (SmallStepNode)node.getFirstChild();
 			node.placeMenuButtons();
 		}
+	}
+	
+	private int countNodes() {
+		int numNodes = 1;
+		AbstractNode aNode = rootNode;
+		while (aNode.hasChildren()) {
+			aNode = aNode.getFirstChild();
+			numNodes++;
+		}
+		return numNodes;
 	}
 	
 	private void addNodes() {
@@ -104,6 +114,7 @@ public class SmallStepView extends AbstractView implements Scrollable {
 			node.reset();
 			add(node);
 		}
+		
 	}
 
 	

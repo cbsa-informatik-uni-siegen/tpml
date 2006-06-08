@@ -158,7 +158,7 @@ class SmallStepNode extends AbstractNode {
 			}
 		});
 	}
-	
+
 	private void setUnderlineExpression (Expression expression, boolean applyToChildren) {
 		if (this.underlineExpression != expression) {
 			this.underlineExpression = expression;
@@ -269,22 +269,38 @@ class SmallStepNode extends AbstractNode {
 		initiateButtonMenu();
 	}
 	
-	
 	public void placeMenuButtons() {
 		if (this.proofNode.isProven()) {
 			this.ruleButton.setVisible(false);
 			return;
 		}
+		Font 		expF 	= this.ruleFont.deriveFont(this.ruleFont.getSize2D());
+		FontMetrics expFM	= getFontMetrics(expF);
 		int heightDiv2 = this.expMaxSize.height + this.ruleMaxSize.height / 2;
 		int posX = 0;
-	 	for (ProofStep step : this.proofNode.getSteps()) {
-			ProofRule r = step.getRule();
+		ProofStep[] steps = this.proofNode.getSteps();
+		for (int i=0; i<steps.length;) {
+			ProofRule r = steps [i].getRule();
 			if (r.isAxiom()) {
-				posX = 0;
+				return;
 			}
-			posX += ruleFontMetrics.stringWidth("(" + r.getName () + ")");
+			else {
+				i++;
+				int j=0;
+				for (; (j+i)<steps.length; j++) {
+					ProofRule tmpRule = steps [i+j].getRule();
+					if (!tmpRule.getName ().equals (r.getName())) {
+						break;
+					}
+				}
+				posX += ruleFontMetrics.stringWidth ("(" + r.getName() + ")");
+				if (j >= 1) {
+					posX += expFM.stringWidth("" + (j+1));
+				}
+				posX += ruleFontMetrics.getDescent();
+				i += j;
+			}
 		}
-	 	
 		this.ruleButton.setBounds(posX, heightDiv2 - this.ruleButton.getNeededHeight(),
 				this.ruleButton.getNeededWidth(), this.ruleButton.getNeededHeight());
 		this.ruleButton.setVisible(true);
@@ -299,7 +315,7 @@ class SmallStepNode extends AbstractNode {
 		int w = 0;
 		boolean	addExp		= false;
 		
-		Font 		expF	= this.ruleFont.deriveFont(this.ruleFont.getSize2D() / 2.0f);
+		Font 		expF	= this.ruleFont.deriveFont(this.ruleFont.getSize2D());
 		FontMetrics expFM	= getFontMetrics(expF);
 		
 		ProofStep steps [] = this.proofNode.getSteps();
