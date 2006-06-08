@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
+import java.awt.Polygon;
 import java.util.Enumeration;
 
 import common.Store;
@@ -17,15 +18,8 @@ import expressions.Location;
  * @author marcell
  * @version $Id$
  */
-public class EnvironmentRenderer {
+public class EnvironmentRenderer extends AbstractRenderer {
 
-	
-	/**
-	 * Font that should be used to render the stuff
-	 */
-	private		Font			font			= null;
-	
-	private		FontMetrics		fontMetrics		= null;
 	
 	private		Store			store;
 	/**
@@ -37,32 +31,28 @@ public class EnvironmentRenderer {
 		this.store	= store;
 	}
 	
-	public void setFont (Font font, FontMetrics fontMetrics) {
-		this.font			= font;
-		this.fontMetrics	= fontMetrics;
-	}
-	
 	
 	/**
 	 * 
 	 * @return				The actual needed size for the environment
 	 */
 	public Dimension getNeededSize () {
-		int width = this.fontMetrics.stringWidth("[]");
+		int width = this.envFontMetrics.getHeight() * 2;
 		
+		width += this.envFontMetrics.getAscent();
 		int numElements = 0;
 		Enumeration<Location> locs = store.locations();
 		while (locs.hasMoreElements()) {
 			Location l = locs.nextElement();
 			Expression exp = this.store.get(l);
-			width += this.fontMetrics.stringWidth(l + ": " + exp);
+			width += this.envFontMetrics.stringWidth(l + ": " + exp);
 			numElements++;
 		}
 		if (numElements >= 2) {
-			width += (numElements-1) * this.fontMetrics.stringWidth(", ");
+			width += (numElements-1) * this.envFontMetrics.stringWidth(", ");
 		}
 		 		
-		return new Dimension (width, this.fontMetrics.getHeight());
+		return new Dimension (width, this.envFontMetrics.getHeight());
 	}
 	
 	/**
@@ -76,35 +66,59 @@ public class EnvironmentRenderer {
 	 * @param 	environment	The environment that should be rendered.
 	 * @param	gc			The graphics context needed to render the content
 	 */
-	public void render(int x, int y, Graphics gc) {
+	public void render(int x, int y, int height, Graphics gc) {
 		
 		
 		int posX = x;
-		int posY = y + this.fontMetrics.getHeight()- this.fontMetrics.getDescent();
+		int posY = y + height / 2 + this.envFontMetrics.getAscent() / 2;
 
-		gc.setFont(this.font);
+		gc.setFont(this.envFont);
 		gc.setColor(Color.BLACK);
-		// draw the leading 
-		gc.drawString("[", posX, posY);
-		posX += this.fontMetrics.stringWidth("[");
+		// draw the leading
+		// we will not render the '[' here it will be rendered
+		// by hand to get it in the right size
+
+		int bracketWidth = height / 10;
+		if (bracketWidth > this.envFontMetrics.getAscent ()) {
+			bracketWidth = this.envFontMetrics.getAscent ();
+		}
+		
+		gc.setColor(Color.BLACK);
+		gc.drawLine (posX + bracketWidth, y, posX, y);
+		gc.drawLine (posX, y, posX, y + height - 1);
+		gc.drawLine (posX, y + height - 1, posX + bracketWidth, y + height - 1);
+		
+		posX += bracketWidth + this.envFontMetrics.getAscent() / 2;
 		
 		Enumeration<Location> locs = this.store.locations();
+		
 		while (locs.hasMoreElements()) {
 			Location l = locs.nextElement();
 			
 			Expression exp = this.store.get(l);
 			// draw the name of the location plus the expression value
-			String locString = l + ": " + exp;
+			gc.setColor(this.envColor);
+			String locString = l.toString(); 
 			gc.drawString(locString, posX, posY);
-			posX += this.fontMetrics.stringWidth(locString);
+			posX += this.envFontMetrics.stringWidth(locString);
+
+			gc.setColor(new Color(128, 128, 128));
+			locString = ": " + exp;
+			gc.drawString(locString, posX, posY);
+			posX += this.envFontMetrics.stringWidth(locString);
 			
 			if (locs.hasMoreElements()) {
 				gc.drawString(", ", posX, posY);
-				posX += this.fontMetrics.stringWidth(", ");
+				posX += this.envFontMetrics.stringWidth(", ");
 			}
 		}
+		posX += bracketWidth + this.envFontMetrics.getAscent() / 2;
 		
-		gc.drawString ("]", posX, posY);
+		gc.setColor(Color.BLACK);
+		gc.drawLine (posX - bracketWidth, y, posX, y);
+		gc.drawLine (posX, y, posX, y + height - 1);
+		gc.drawLine (posX, y + height - 1, posX - bracketWidth, y + height - 1);
+		
 	}
 	
 }

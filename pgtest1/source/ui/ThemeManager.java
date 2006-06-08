@@ -130,7 +130,7 @@ public class ThemeManager {
 	private Theme loadTheme(Preferences themePref) {
 		Theme theme = new Theme();
 		try {
-			String[] itemNames = { "Rule", "Expression", "Keyword", "Constant", "Underline", "RuleExpression"  };
+			String[] itemNames = { "Rule", "Expression", "Keyword", "Constant", "Underline", "RuleExpression", "EnvironmentIdentifier" };
 			for (int i = 0; i < itemNames.length; i++) {
 				Preferences itemPref = themePref.node(itemNames[i]);
 				String fontName = itemPref.get("family", "UnknownFontFamily");

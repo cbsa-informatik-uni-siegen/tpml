@@ -7,11 +7,13 @@ import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.util.LinkedList;
 
 import javax.swing.JComboBox;
+import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
@@ -21,6 +23,7 @@ import common.ProofRuleException;
 import common.ProofStep;
 import expressions.Expression;
 
+import smallstep.SmallStepProofModel;
 import smallstep.SmallStepProofNode;
 import ui.AbstractNode;
 import ui.beans.MenuButton;
@@ -144,6 +147,12 @@ class SmallStepNode extends AbstractNode {
 				}
 			}
 		});
+		
+		this.ruleButton.addMouseMotionListener(new MouseMotionAdapter() {
+			public void mouseMoved (MouseEvent event) {
+				handleMouseMovedOnButton (event);
+			}
+		});
 
 		this.addMouseMotionListener(new MouseMotionAdapter() {
 			public void mouseMoved (MouseEvent event) {
@@ -190,6 +199,16 @@ class SmallStepNode extends AbstractNode {
 		setUnderlineExpression(null, false);
 	}
 	
+	private void handleMouseMovedOnButton (MouseEvent event) {
+		SmallStepProofModel mod = (SmallStepProofModel)model;
+		ProofStep[] steps = mod.remaining(this.proofNode);
+		if (steps.length >= 1) {
+			Expression exp = steps [0].getExpression();
+			setUnderlineExpression(exp, true);
+			setUnderlineExpression(exp, false);
+		}
+	}
+	
 	public void reset () {
 		resetRenderer();
 		
@@ -200,25 +219,31 @@ class SmallStepNode extends AbstractNode {
 	
 	private void resetRenderer() {
 		this.expRenderer	= new ExpressionRenderer (this.proofNode.getExpression());
-		
-		Font fnt = new JComboBox().getFont();
-		FontMetrics fntMetrics = getFontMetrics(fnt);
+		this.envRenderer	= new EnvironmentRenderer (this.proofNode.getStore());
 		
 		this.expRenderer.checkFonts();
 		this.expRenderer.checkAnnotationSizes();
-		
-		this.envRenderer	= new EnvironmentRenderer (this.proofNode.getStore());
-		this.envRenderer.setFont(fnt, fntMetrics);
 		
 	}
 	
 	
 	private void initiateButtonMenu() {
 		JPopupMenu menu = new JPopupMenu();
+		JMenu axiomRules = new JMenu ("Axioms");
+		JMenu metaRules = new JMenu ("Meta");
+		
+		menu.add(axiomRules);
+		menu.add(metaRules);
+		
 		ProofRule rules[] = this.model.getRules();
 		for (ProofRule r : rules) {
 			RuleMenuItem item = new RuleMenuItem (r);
-			menu.add(item);
+			if (r.isAxiom()) {
+				axiomRules.add(item);
+			}
+			else {
+				metaRules.add(item);
+			}
 		}
 		
 		menu.addSeparator();
@@ -320,7 +345,7 @@ class SmallStepNode extends AbstractNode {
 			this.envSize = new Dimension (0, 0);
 		}
 		
-		this.expSize = expRenderer.getNeededSize(maxWidth - this.envSize.width);
+		this.expSize = expRenderer.getNeededSize(maxWidth - this.envSize.width - 10);
 		
 		this.expEnvSize = new Dimension (this.expSize);
 		this.expEnvSize.width += this.envSize.width;
@@ -381,8 +406,8 @@ class SmallStepNode extends AbstractNode {
 		int posY = heightDiv2 - expSize.height / 2;
 		expRenderer.render(posX + this.ruleFontMetrics.getHeight(), posY, this.underlineExpression, g);
 		if (model.isMemoryEnabled()) {
-			posY = heightDiv2 - envSize.height / 2;
-			envRenderer.render(posX + this.ruleFontMetrics.getHeight() + this.expSize.width, posY, g);
+//			posY = heightDiv2 - envSize.height / 2;
+			envRenderer.render(posX + this.ruleFontMetrics.getHeight() + this.expSize.width + 10, posY, expSize.height, g);
 		}
 		
 		

@@ -21,9 +21,4 @@ public class Main {
 
 	}
 	
-	
-	public void narf()
-	{
-	}
-
 }

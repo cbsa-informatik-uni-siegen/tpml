@@ -11,7 +11,7 @@ import java.awt.Font;
 import java.util.prefs.*;
 import javax.swing.DefaultComboBoxModel;
 
-import ui.renderer.ExpressionRenderer;
+import ui.renderer.AbstractRenderer;
 /**
  *
  * @author  marcell
@@ -418,15 +418,19 @@ public class SettingsGUI extends javax.swing.JDialog {
         Theme theme = manager.getCurrentTheme();
         Font fnt 	= theme.getItemFont(Theme.TYPE_CONSTANT);
         Color col	= theme.getItemColor(Theme.TYPE_CONSTANT);
-        ExpressionRenderer.setConstantStyle(fnt, getFontMetrics (fnt), col);
+        AbstractRenderer.setConstantStyle(fnt, getFontMetrics (fnt), col);
         fnt = theme.getItemFont(Theme.TYPE_EXPRESSION);
         col	= theme.getItemColor(Theme.TYPE_EXPRESSION);
-        ExpressionRenderer.setTextStyle(fnt, getFontMetrics (fnt), col);
+        AbstractRenderer.setTextStyle(fnt, getFontMetrics (fnt), col);
         fnt = theme.getItemFont(Theme.TYPE_KEYWORD);
         col	= theme.getItemColor(Theme.TYPE_KEYWORD);
-        ExpressionRenderer.setKeywordStyle(fnt, getFontMetrics (fnt), col);
+        AbstractRenderer.setKeywordStyle(fnt, getFontMetrics (fnt), col);
         col	= theme.getItemColor(Theme.TYPE_UNDERLINE);
-        ExpressionRenderer.setUnderlineColor(col);
+        AbstractRenderer.setUnderlineColor(col);
+        
+        fnt = theme.getItemFont(Theme.ENV_IDENTIFIER);
+        col = theme.getItemColor(Theme.ENV_IDENTIFIER);
+        AbstractRenderer.setEnvironmentStyle(fnt, getFontMetrics (fnt), col);
 
     }
     private void checkBoxSSJustAxiomsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkBoxSSJustAxiomsActionPerformed

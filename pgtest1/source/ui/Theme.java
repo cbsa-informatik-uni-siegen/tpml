@@ -20,6 +20,8 @@ public class Theme {
 	
 	public static final int TYPE_RULEEXPRESSION		= 5;
 	
+	public static final int ENV_IDENTIFIER			= 6;
+	
 	
 	private class ThemeItem {
 		private String			name;
@@ -82,10 +84,11 @@ public class Theme {
 		
 		this.items.add(new ThemeItem(Theme.TYPE_RULE, "Rule", f, new Color(0, 0, 0)));
 		this.items.add(new ThemeItem(Theme.TYPE_EXPRESSION, "Expression", f, new Color (0, 0, 0)));
-		this.items.add(new ThemeItem(Theme.TYPE_KEYWORD, "Keyword", f, new Color(0, 0, 0)));
-		this.items.add(new ThemeItem(Theme.TYPE_CONSTANT, "Constant", f, new Color(0, 0, 0)));
+		this.items.add(new ThemeItem(Theme.TYPE_KEYWORD, "Keyword", f, new Color(128, 0, 0)));
+		this.items.add(new ThemeItem(Theme.TYPE_CONSTANT, "Constant", f, new Color(0, 0, 128)));
 		this.items.add(new ThemeItem(Theme.TYPE_UNDERLINE, "Underline", new Color (255, 0, 0)));
 		this.items.add(new ThemeItem(Theme.TYPE_RULEEXPRESSION, "RuleExpression", f, new Color (0, 0, 0)));
+		this.items.add(new ThemeItem(Theme.ENV_IDENTIFIER, "EnvironmentIdentifier", f, new Color (128, 0, 0)));
 	}
 		
 	public void setName (String name) {

@@ -19,7 +19,7 @@ import expressions.PrettyString;
  * @author marcell
  *
  */
-public class ExpressionRenderer {
+public class ExpressionRenderer extends AbstractRenderer {
 	
 	private class CheckerResult {
 		public Dimension			size;
@@ -34,24 +34,6 @@ public class ExpressionRenderer {
 	
 	private 	Expression			expression;
 	
-	private 	static Font				textFont;
-	private		static FontMetrics		textFontMetrics;
-	
-	private		static Font				keywordFont;
-	private		static FontMetrics		keywordFontMetrics;
-	
-	private		static Font				constantFont;
-	private		static FontMetrics		constantFontMetrics;
-	
-	
-	private		static Color			textColor;
-	private		static Color			keywordColor;
-	private		static Color			constantColor;
-	private		static Color			underlineColor;	
-	
-	private 	static int				fontHeight;
-	private		static int				fontAscent;
-	private		static int				fontDescent;
 	
 	private 	CheckerResult		bestCheckerReturn;
 	
@@ -114,43 +96,6 @@ public class ExpressionRenderer {
 	}
 	
 
-	public static void setTextStyle (Font font, FontMetrics fontMetrics, Color fontColor) {
-		textFont 			= font;
-		textFontMetrics	= fontMetrics;
-		textColor			= fontColor;
-	}
-	
-	public static void setKeywordStyle (Font font, FontMetrics fontMetrics, Color fontColor) {
-		keywordFont 			= font;
-		keywordFontMetrics		= fontMetrics;
-		keywordColor			= fontColor;
-	}
-	
-	public static void setConstantStyle (Font font, FontMetrics fontMetrics, Color fontColor) {
-		constantFont 			= font;
-		constantFontMetrics		= fontMetrics;
-		constantColor			= fontColor;
-	}
-	
-	public static void setUnderlineColor (Color color) {
-		underlineColor	= color;
-	}
-	
-	public void checkFonts() {
-		fontHeight 	= textFontMetrics.getHeight();
-		fontAscent		= textFontMetrics.getAscent();
-		fontDescent	= textFontMetrics.getDescent();
-		if (fontHeight < keywordFontMetrics.getHeight()) { 
-			fontHeight 	= keywordFontMetrics.getHeight();
-			fontAscent		= keywordFontMetrics.getAscent();
-			fontDescent	= keywordFontMetrics.getDescent();
-		}
-		if (fontHeight < constantFontMetrics.getHeight()) {
-			fontHeight 	= constantFontMetrics.getHeight();
-			fontAscent		= constantFontMetrics.getAscent();
-			fontDescent	= constantFontMetrics.getDescent();
-		}
-	}
 	
 	/**
 	 * Calculates the "best" size needed for the Expression.
