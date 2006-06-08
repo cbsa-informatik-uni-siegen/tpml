@@ -143,6 +143,8 @@ class SmallStepNode extends AbstractNode {
 						break;
 					}
 				}
+				setUnderlineExpression (null, true);
+				setUnderlineExpression (null, false);
 			}
 		});
 		
