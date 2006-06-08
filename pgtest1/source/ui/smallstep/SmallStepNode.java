@@ -5,15 +5,12 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
-import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.util.LinkedList;
 
 import javax.swing.JComboBox;
-import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
@@ -28,6 +25,7 @@ import smallstep.SmallStepProofNode;
 import ui.AbstractNode;
 import ui.beans.MenuButton;
 import ui.beans.MenuButtonListener;
+import ui.renderer.AbstractRenderer;
 import ui.renderer.EnvironmentRenderer;
 import ui.renderer.ExpressionRenderer;
 
@@ -229,21 +227,29 @@ class SmallStepNode extends AbstractNode {
 	
 	private void initiateButtonMenu() {
 		JPopupMenu menu = new JPopupMenu();
-		JMenu axiomRules = new JMenu ("Axioms");
-		JMenu metaRules = new JMenu ("Meta");
 		
-		menu.add(axiomRules);
-		menu.add(metaRules);
-		
+		/*
+		 * The axioms and meta rules are put in one list again
+		 * 
+		 * 
+		 * JMenu axiomRules = new JMenu ("Axioms");
+		 * JMenu metaRules = new JMenu ("Meta");
+		 * 
+		 * menu.add(axiomRules);
+		 * menu.add(metaRules);
+		 */
 		ProofRule rules[] = this.model.getRules();
 		for (ProofRule r : rules) {
-			RuleMenuItem item = new RuleMenuItem (r);
-			if (r.isAxiom()) {
-				axiomRules.add(item);
-			}
-			else {
-				metaRules.add(item);
-			}
+			menu.add(new RuleMenuItem (r));
+			/*
+			 * RuleMenuItem item = new RuleMenuItem (r);
+			 * if (r.isAxiom()) {
+			 *	 axiomRules.add(item);
+			 * }
+			 * else {
+			 * 	 metaRules.add(item);
+			 * }
+			 */
 		}
 		
 		menu.addSeparator();
@@ -345,7 +351,7 @@ class SmallStepNode extends AbstractNode {
 			this.envSize = new Dimension (0, 0);
 		}
 		
-		this.expSize = expRenderer.getNeededSize(maxWidth - this.envSize.width - 10);
+		this.expSize = expRenderer.getNeededSize(maxWidth - this.envSize.width - 10 - 10);
 		
 		this.expEnvSize = new Dimension (this.expSize);
 		this.expEnvSize.width += this.envSize.width;
@@ -399,15 +405,18 @@ class SmallStepNode extends AbstractNode {
 	 *  
 	 */
 	public void paintComponent(Graphics g) {
-		
+
 		// now draw the expression
 		int heightDiv2 = this.expMaxSize.height / 2;
 		int posX = center;
 		int posY = heightDiv2 - expSize.height / 2;
+		
+		
 		expRenderer.render(posX + this.ruleFontMetrics.getHeight(), posY, this.underlineExpression, g);
 		if (model.isMemoryEnabled()) {
-//			posY = heightDiv2 - envSize.height / 2;
-			envRenderer.render(posX + this.ruleFontMetrics.getHeight() + this.expSize.width + 10, posY, expSize.height, g);
+			envRenderer.render(posX+5, posY, 5, this.expEnvSize.height, AbstractRenderer.BRACE_LEFT, g);
+			int x = envRenderer.render(posX + this.ruleFontMetrics.getHeight() + this.expSize.width + 10, posY, expSize.height, g);
+			envRenderer.render(x, posY, 5, this.expEnvSize.height, AbstractRenderer.BRACE_RIGHT, g);
 		}
 		
 		

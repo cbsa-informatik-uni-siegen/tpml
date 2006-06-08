@@ -2,10 +2,7 @@ package ui.renderer;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.FontMetrics;
 import java.awt.Graphics;
-import java.awt.Polygon;
 import java.util.Enumeration;
 
 import common.Store;
@@ -65,8 +62,9 @@ public class EnvironmentRenderer extends AbstractRenderer {
 	 * @param	y			The vertical coordinate to render
 	 * @param 	environment	The environment that should be rendered.
 	 * @param	gc			The graphics context needed to render the content
+	 * @return	Returns the xpos behind the bracket
 	 */
-	public void render(int x, int y, int height, Graphics gc) {
+	public int render(int x, int y, int height, Graphics gc) {
 		
 		
 		int posX = x;
@@ -119,6 +117,7 @@ public class EnvironmentRenderer extends AbstractRenderer {
 		gc.drawLine (posX, y, posX, y + height - 1);
 		gc.drawLine (posX, y + height - 1, posX - bracketWidth, y + height - 1);
 		
+		return posX;
 	}
 	
 }
