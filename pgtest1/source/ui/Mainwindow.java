@@ -182,7 +182,8 @@ public class Mainwindow extends JFrame {
 //      newFile.getDocument().insertString(0, "snd (fst, snd (true, fst)) (#8_1, #10_2)", null);
         newFile.getDocument().insertString(0, SIMPLE, null);
     } catch (Exception e) { }
-    EditorWindow newEditor = new EditorWindow(newFile, this);
+    //EditorWindow newEditor = new EditorWindow(newFile, this);
+    EditorWindow newEditor = null;
     tabbedPane.add(newEditor);
     fileList.add(newFile);
     editorList.add(newEditor);
@@ -248,8 +249,8 @@ public class Mainwindow extends JFrame {
 	  SourceFile sf = fileList.get(index);
 	  try {
 
-		  SmallStepGUI gui = new SmallStepGUI (this, "SmallStep", true, sf.getDocument().getText(0, sf.getDocument().getLength()));
-		  gui.setVisible(true);
+		  //SmallStepGUI gui = new SmallStepGUI (this, "SmallStep", true, sf.getDocument().getText(0, sf.getDocument().getLength()));
+		  //gui.setVisible(true);
 	  } catch (Exception e) {
 	
 		  e.printStackTrace();

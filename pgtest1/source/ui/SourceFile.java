@@ -5,9 +5,16 @@ import java.awt.Component;
 import javax.swing.JEditorPane;
 import javax.swing.JScrollPane;
 import javax.swing.text.StyledEditorKit;
-import java.awt.event.*;
 
-public class SourceFile {
+import ui.newgui.EditorAction;
+import ui.newgui.EditorComponent;
+
+import java.awt.event.*;
+import java.beans.PropertyChangeSupport;
+import java.util.LinkedList;
+import java.util.List;
+
+public class SourceFile implements EditorComponent{
   static private int num = 0;
   private JScrollPane scrollPane;
   private JEditorPane editorPane;
@@ -42,4 +49,22 @@ public class SourceFile {
   public MLStyledDocument getDocument() {
     return (MLStyledDocument)editorPane.getDocument();
   }
+
+public List<EditorAction> getActions() {
+	return new LinkedList<EditorAction>();
+}
+
+public String getTitle() {
+
+	return filename;
+}
+
+public Component getDisplay() {
+	return getComponent();
+}
+
+public void setFilename(String filename) {
+	this.filename = filename;
+}
+
 }
