@@ -7,4 +7,6 @@ import javax.swing.JMenuItem;
 public interface MenuButtonListener extends EventListener {
 
 	public void menuItemActivated (MenuButton source, JMenuItem item); 
+	
+	public void menuClosed (MenuButton source);
 }

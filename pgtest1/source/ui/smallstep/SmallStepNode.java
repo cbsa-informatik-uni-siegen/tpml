@@ -147,6 +147,10 @@ class SmallStepNode extends AbstractNode {
 				setUnderlineExpression (null, true);
 				setUnderlineExpression (null, false);
 			}
+			public void menuClosed (MenuButton button) {
+				setUnderlineExpression (null, true);
+				setUnderlineExpression (null, false);
+			}
 		});
 		
 		this.ruleButton.addMouseMotionListener(new MouseMotionAdapter() {

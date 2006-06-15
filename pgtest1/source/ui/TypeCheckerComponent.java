@@ -357,6 +357,10 @@ public class TypeCheckerComponent extends JComponent {
 				public void menuItemActivated (MenuButton button, JMenuItem item) {
 					handleButtonChanged (button, item);
 				}
+				
+				public void menuClosed (MenuButton button) {
+					
+				}
 			});
 	
 		}

@@ -179,6 +179,13 @@ public class MenuButton extends JComponent {
 		}
 		this.menu = menu;
 	
+		this.menu.addPopupMenuListener(new PopupMenuListener () {
+			public void popupMenuCanceled (PopupMenuEvent e) { }
+			public void popupMenuWillBecomeInvisible (PopupMenuEvent e) {
+				fireMenuClosed ();
+			}
+			public void popupMenuWillBecomeVisible (PopupMenuEvent e) { }
+		});
 		installElementListener(menu);
 	}
 	
@@ -201,6 +208,15 @@ public class MenuButton extends JComponent {
 	         }
 	     }
 
+	}
+	
+	private void fireMenuClosed () {
+		Object[] listeners = listenerList.getListenerList();
+		for (int i = listeners.length-2; i>=0; i-=2) {
+			if (listeners[i]==MenuButtonListener.class) {
+				((MenuButtonListener)listeners[i+1]).menuClosed(this);
+			}
+		}
 	}
 	
 	private void handleMouseClicked (MouseEvent evt) {
