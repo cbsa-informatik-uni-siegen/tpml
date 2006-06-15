@@ -230,11 +230,17 @@ public class MainWindow extends JFrame{
       private void addActions(List<EditorAction> list, JComponent component){
     	  List<EditorAction> actionlist = list;
 		  for(int i = 0 ; i < actionlist.size() ; i++){
-			 EditorAction action = actionlist.get(i);
+			 final EditorAction action = actionlist.get(i);
 			 if (component instanceof JMenu){
-				 JMenuItem tmpmenu = new JMenuItem (action.getTitle());
+				 final JMenuItem tmpmenu = new JMenuItem (action.getTitle());
 				 tmpmenu.addActionListener(action.getActionListener());
+                 tmpmenu.setEnabled(action.isEnabled());
 				 component.add( tmpmenu);
+                 action.addPropertyChangeListener("enabled", new PropertyChangeListener() {
+                   public void propertyChange(PropertyChangeEvent evt) {
+                     tmpmenu.setEnabled(action.isEnabled());
+                   }
+                 });
 			 }
 			 else{
 				 //ImageIcon icon = new ImageIcon(action.getIcon());
