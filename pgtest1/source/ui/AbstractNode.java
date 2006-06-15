@@ -19,6 +19,8 @@ public abstract class AbstractNode extends JComponent {
 	
 	public AbstractNode () {
 		super();
+		setFocusable (true);
+		grabFocus ();
 	}
 	
 	public ProofNode getProofNode() {

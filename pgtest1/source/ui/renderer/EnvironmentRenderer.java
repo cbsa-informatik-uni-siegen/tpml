@@ -5,7 +5,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.util.Enumeration;
 
-import common.Store;
+import common.Environment;
 import expressions.Expression;
 import expressions.Location;
 
@@ -15,17 +15,17 @@ import expressions.Location;
  * @author marcell
  * @version $Id$
  */
-public class EnvironmentRenderer extends AbstractRenderer {
+public class EnvironmentRenderer<S, E> extends AbstractRenderer {
 
 	
-	private		Store			store;
+//	private		Store				store;
+	
+	private 	Environment<S, E>	environment;	
 	/**
 	 * 
-	 * @param gc
-	 * @param font
 	 */
-	public EnvironmentRenderer (Store store) {
-		this.store	= store;
+	public EnvironmentRenderer (Environment<S, E> environment) {
+		this.environment = environment;
 	}
 	
 	
@@ -34,22 +34,22 @@ public class EnvironmentRenderer extends AbstractRenderer {
 	 * @return				The actual needed size for the environment
 	 */
 	public Dimension getNeededSize () {
-		int width = this.envFontMetrics.getHeight() * 2;
+		int width = AbstractRenderer.envFontMetrics.getHeight() * 2;
 		
-		width += this.envFontMetrics.getAscent();
+		width += AbstractRenderer.envFontMetrics.getAscent();
 		int numElements = 0;
-		Enumeration<Location> locs = store.locations();
-		while (locs.hasMoreElements()) {
-			Location l = locs.nextElement();
-			Expression exp = this.store.get(l);
-			width += this.envFontMetrics.stringWidth(l + ": " + exp);
+		Enumeration<S> symbols = environment.symbols();
+		while (symbols.hasMoreElements()) {
+			S s = symbols.nextElement();
+			E e = this.environment.get(s);
+			width += AbstractRenderer.envFontMetrics.stringWidth(s + ": " + e);
 			numElements++;
 		}
 		if (numElements >= 2) {
-			width += (numElements-1) * this.envFontMetrics.stringWidth(", ");
+			width += (numElements-1) * AbstractRenderer.envFontMetrics.stringWidth(", ");
 		}
 		 		
-		return new Dimension (width, this.envFontMetrics.getHeight());
+		return new Dimension (width, AbstractRenderer.envFontMetrics.getHeight());
 	}
 	
 	/**
@@ -68,17 +68,17 @@ public class EnvironmentRenderer extends AbstractRenderer {
 		
 		
 		int posX = x;
-		int posY = y + height / 2 + this.envFontMetrics.getAscent() / 2;
+		int posY = y + height / 2 + AbstractRenderer.envFontMetrics.getAscent() / 2;
 
-		gc.setFont(this.envFont);
+		gc.setFont(AbstractRenderer.envFont);
 		gc.setColor(Color.BLACK);
 		// draw the leading
 		// we will not render the '[' here it will be rendered
 		// by hand to get it in the right size
 
 		int bracketWidth = height / 10;
-		if (bracketWidth > this.envFontMetrics.getAscent ()) {
-			bracketWidth = this.envFontMetrics.getAscent ();
+		if (bracketWidth > AbstractRenderer.envFontMetrics.getAscent ()) {
+			bracketWidth = AbstractRenderer.envFontMetrics.getAscent ();
 		}
 		
 		gc.setColor(Color.BLACK);
@@ -86,31 +86,30 @@ public class EnvironmentRenderer extends AbstractRenderer {
 		gc.drawLine (posX, y, posX, y + height - 1);
 		gc.drawLine (posX, y + height - 1, posX + bracketWidth, y + height - 1);
 		
-		posX += bracketWidth + this.envFontMetrics.getAscent() / 2;
+		posX += bracketWidth + AbstractRenderer.envFontMetrics.getAscent() / 2;
 		
-		Enumeration<Location> locs = this.store.locations();
+		Enumeration<S> symbols = this.environment.symbols();
 		
-		while (locs.hasMoreElements()) {
-			Location l = locs.nextElement();
-			
-			Expression exp = this.store.get(l);
+		while (symbols.hasMoreElements()) {
+			S s = symbols.nextElement();
+			E e = this.environment.get (s);
 			// draw the name of the location plus the expression value
-			gc.setColor(this.envColor);
-			String locString = l.toString(); 
+			gc.setColor(AbstractRenderer.envColor);
+			String locString = s.toString(); 
 			gc.drawString(locString, posX, posY);
-			posX += this.envFontMetrics.stringWidth(locString);
+			posX += AbstractRenderer.envFontMetrics.stringWidth(locString);
 
 			gc.setColor(new Color(128, 128, 128));
-			locString = ": " + exp;
+			locString = ": " + e;
 			gc.drawString(locString, posX, posY);
-			posX += this.envFontMetrics.stringWidth(locString);
+			posX += AbstractRenderer.envFontMetrics.stringWidth(locString);
 			
-			if (locs.hasMoreElements()) {
+			if (symbols.hasMoreElements()) {
 				gc.drawString(", ", posX, posY);
-				posX += this.envFontMetrics.stringWidth(", ");
+				posX += AbstractRenderer.envFontMetrics.stringWidth(", ");
 			}
 		}
-		posX += bracketWidth + this.envFontMetrics.getAscent() / 2;
+		posX += bracketWidth + AbstractRenderer.envFontMetrics.getAscent() / 2;
 		
 		gc.setColor(Color.BLACK);
 		gc.drawLine (posX - bracketWidth, y, posX, y);

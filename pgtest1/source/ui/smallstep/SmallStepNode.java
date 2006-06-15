@@ -19,6 +19,7 @@ import common.ProofRule;
 import common.ProofRuleException;
 import common.ProofStep;
 import expressions.Expression;
+import expressions.Location;
 
 import smallstep.SmallStepProofModel;
 import smallstep.SmallStepProofNode;
@@ -219,7 +220,8 @@ class SmallStepNode extends AbstractNode {
 	
 	private void resetRenderer() {
 		this.expRenderer	= new ExpressionRenderer (this.proofNode.getExpression());
-		this.envRenderer	= new EnvironmentRenderer (this.proofNode.getStore());
+		this.envRenderer	= new EnvironmentRenderer<Location, Expression> (
+				((SmallStepProofNode)this.proofNode).getStore());
 		
 		this.expRenderer.checkFonts();
 		this.expRenderer.checkAnnotationSizes();

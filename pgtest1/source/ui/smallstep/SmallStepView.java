@@ -9,6 +9,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
+import javax.swing.JViewport;
 import javax.swing.Scrollable;
 
 import smallstep.SmallStepProofNode;
@@ -145,6 +146,13 @@ public class SmallStepView extends AbstractView implements Scrollable {
 		g.setColor(Color.WHITE);
 		g.fillRect(0, 0, getWidth(), getHeight());
 		
+	}
+	
+	protected void nodeAdded (AbstractNode node) {
+		if (getParent () instanceof JViewport) {
+			JViewport vp = (JViewport)getParent();
+			vp.scrollRectToVisible(node.getBounds());
+		}
 	}
 
 	public Dimension getPreferredScrollableViewportSize() {

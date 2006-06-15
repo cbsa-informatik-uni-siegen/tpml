@@ -37,7 +37,8 @@ import ui.SourceFile;
 import ui.ThemeManager;
 
 public class MainWindow extends JFrame{
-	private static String defaultExpression = "let rec f = lambda x. if x = 0 then 1 else x * f (x - 1) in f 3";
+//	private static String defaultExpression = "let rec f = lambda x. if x = 0 then 1 else x * f (x - 1) in f 3";
+	private static String defaultExpression = "let f = ref (lambda x.x) in let fact = lambda x.if x = 0 then 1 else x * (!f (x - 1)) in (f := fact, !f 3)";
 	private JMenu fileMenu;
 	private JMenu editMenu;
 	private JMenu runMenu;

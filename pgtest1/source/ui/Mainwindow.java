@@ -182,7 +182,7 @@ public class Mainwindow extends JFrame {
 //      newFile.getDocument().insertString(0, "snd (fst, snd (true, fst)) (#8_1, #10_2)", null);
         newFile.getDocument().insertString(0, SIMPLE, null);
     } catch (Exception e) { }
-    //EditorWindow newEditor = new EditorWindow(newFile, this);
+//    EditorWindow newEditor = new EditorWindow(newFile, this);
     EditorWindow newEditor = null;
     tabbedPane.add(newEditor);
     fileList.add(newFile);

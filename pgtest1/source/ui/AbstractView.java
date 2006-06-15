@@ -21,6 +21,8 @@ public abstract class AbstractView extends JComponent implements TreeModelListen
 	
 	public AbstractView() {
 		super ();
+		setFocusable (true);
+		
 		new SettingsGUI ();
 	}
 
@@ -54,15 +56,19 @@ public abstract class AbstractView extends JComponent implements TreeModelListen
 				
 		Object[] children = e.getChildren();
 		int[] indices = e.getChildIndices();
-				
+
+		// save the last nod that should be inserted
+		// it will be used to determin 
+		AbstractNode lastNode = null;
 		if (children.length != indices.length) return;
 		for (int i=0; i<children.length; i++) {
 			AbstractNode aNode = createNode ((ProofNode)children[i]);
 			aNode.setModel(this.model);
 			node.addChildNode(aNode, indices [i]);
+			lastNode = aNode;
 		}
-		
 		relayout();
+		nodeAdded (lastNode);
 	}
 
 	public void treeNodesRemoved(TreeModelEvent e) {
@@ -159,4 +165,5 @@ public abstract class AbstractView extends JComponent implements TreeModelListen
 	
 	protected abstract void doLayouting();
 	
+	protected abstract void nodeAdded (AbstractNode node);
 }
