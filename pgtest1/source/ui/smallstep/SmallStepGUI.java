@@ -40,8 +40,6 @@ public class SmallStepGUI extends JPanel implements EditorComponent {
 	
 
 	public SmallStepGUI ( String title, boolean modal, String program) {
-		//super(owner, title, modal);
-		//this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		
 		//next 3 lines were added by christoph
 		actions = new LinkedList<DefaultEditorAction>();
@@ -49,11 +47,8 @@ public class SmallStepGUI extends JPanel implements EditorComponent {
 		this.title = title;
 		
 		this.setLayout(new BorderLayout ());
-//<<<<<<< .mine
 		view = new SmallStepView ();
 		this.add(view, BorderLayout.CENTER);
-//=======
-//>>>>>>> .r159
 		
 		this.scrollPane = new JScrollPane();
 		this.view = new SmallStepView ();
