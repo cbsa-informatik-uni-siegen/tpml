@@ -507,9 +507,9 @@ class SmallStepNode extends AbstractNode {
 					posX += expFM.stringWidth(ruleString);
 					g.setFont(this.ruleFont);
 				}
-				else {
-					this.ruleBounds.add(new RuleBound (r, new Rectangle (px, py, dx, dy)));
-				}
+				
+				this.ruleBounds.add(new RuleBound (r, new Rectangle (px, py, dx, dy)));
+				
 				posX += ruleFontMetrics.getDescent();
 				i += j;
 			}
