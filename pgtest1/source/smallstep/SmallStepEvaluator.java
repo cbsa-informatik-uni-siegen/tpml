@@ -3,9 +3,7 @@ package smallstep;
 import java.lang.reflect.Method;
 import java.util.Vector;
 
-import common.MutableStore;
 import common.ProofStep;
-import common.Store;
 
 import expressions.And;
 import expressions.Application;
@@ -70,11 +68,11 @@ final class SmallStepEvaluator {
   private Vector<ProofStep> steps = new Vector<ProofStep>();
   
   /**
-   * The resulting {@link common.Store}.
+   * The resulting {@link smallstep.Store}.
    * 
    * @see #getStore()
    */
-  private MutableStore store;
+  private DefaultStore store;
   
 
   
@@ -91,12 +89,12 @@ final class SmallStepEvaluator {
    * @param expression the {@link Expression} for which
    *                   to determine the next evaluation
    *                   step in the proof.
-   * @param store the {@link common.Store} to start with.                   
+   * @param store the {@link smallstep.Store} to start with.                   
    */
-  SmallStepEvaluator(Expression expression, Store store) {
+  SmallStepEvaluator(Expression expression, DefaultStore store) {
     // create store, remember expression
     this.expression = expression;
-    this.store = new MutableStore(store);
+    this.store = new DefaultStore(store);
     
     // evaluate expression
     this.expression = evaluate(this.expression);
@@ -142,12 +140,12 @@ final class SmallStepEvaluator {
   }
   
   /**
-   * Returns the resulting {@link Store} for
-   * the evaluation.
+   * Returns the resulting {@link DefaultStore}
+   * for the evaluation.
    * 
    * @return the resulting store.
    */
-  public Store getStore() {
+  public DefaultStore getStore() {
     return this.store;
   }
   

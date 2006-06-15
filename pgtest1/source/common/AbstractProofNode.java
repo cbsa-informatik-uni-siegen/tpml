@@ -82,16 +82,6 @@ public abstract class AbstractProofNode implements ProofNode {
    */
   protected ProofStep[] steps;
 
-  /**
-   * The {@link Store} for this node if memory operations are being used
-   * throughout the proof. Otherwise this is an invalid, immutable store
-   * which does not contain any memory locations.
-   * 
-   * @see #getStore()
-   * @see #setStore(Store)
-   */
-  protected Store store;
-
 
   
   //
@@ -101,30 +91,18 @@ public abstract class AbstractProofNode implements ProofNode {
   /**
    * Allocates a new {@link AbstractProofNode} for the given
    * <code>expression</code>. The list of {@link ProofStep}s
-   * starts as an empty list, and the {@link Store} starts
-   * out as an empty store.
+   * starts as an empty list.
    * 
    * @param expression the {@link Expression} for this proof node.
+   * 
+   * @throws NullPointerException if <code>expression</code>
+   *                              is <code>null</code>.
    */
   protected AbstractProofNode(Expression expression) {
-    this(expression, ImmutableStore.EMPTY_STORE);
-  }
-  
-  /**
-   * Allocates a new {@link ProofNode} for the given <code>expression</code>
-   * and the specified <code>store</code>.
-   * 
-   * @param expression the {@link Expression} for this proof node.
-   * @param store the {@link Store} for this proof node.
-   * 
-   * @throws NullPointerException if the <code>store</code> is <code>null</code>.
-   */
-  protected AbstractProofNode(Expression expression, Store store) {
-    if (store == null) {
-      throw new NullPointerException("store is null");
+    if (expression == null) {
+      throw new NullPointerException("expression is null");
     }
     this.expression = expression;
-    this.store = store;
   }
   
   
@@ -183,31 +161,6 @@ public abstract class AbstractProofNode implements ProofNode {
    */
   public void setSteps(ProofStep[] steps) {
     this.steps = steps;
-  }
-  
-  /**
-   * {@inheritDoc}
-   * 
-   * @see common.ProofNode#getStore()
-   */
-  public Store getStore() {
-    return this.store;
-  }
-  
-  /**
-   * Sets the new {@link Store} for this proof node.
-   * 
-   * @param store the new {@link Store} for this node.
-   * 
-   * @throws NullPointerException if <code>store</code> is <code>null</code>.
-   * 
-   * @see #getStore()
-   */
-  public void setStore(Store store) {
-    if (store == null) {
-      throw new NullPointerException("store is null");
-    }
-    this.store = store;
   }
   
   /**

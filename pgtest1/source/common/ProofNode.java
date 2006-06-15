@@ -46,19 +46,6 @@ public interface ProofNode extends TreeNode {
   public ProofStep[] getSteps();
   
   /**
-   * Returns the {@link Store} which specifies the memory allocation
-   * for this node. The returned store is only valid if the memory
-   * operations are enable for the proof, which can be checked
-   * using the {@link ProofModel#isMemoryEnabled()} method.
-   * 
-   * @return the {@link Store} with the memory allocation for this
-   *         proof node.
-   * 
-   * @see ProofModel#isMemoryEnabled()
-   */
-  public Store getStore();
-  
-  /**
    * Returns <code>true</code> if this node is already proven, that
    * is, whether no more rules can be applied to this node. If
    * <code>false</code> is returned the user must still apply

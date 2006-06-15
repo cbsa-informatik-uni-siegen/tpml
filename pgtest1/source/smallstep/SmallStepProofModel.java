@@ -139,7 +139,7 @@ public class SmallStepProofModel extends AbstractProofModel {
     }
     
     // evaluate the next step for the node
-    SmallStepEvaluator evaluator = new SmallStepEvaluator(node.getExpression(), node.getStore());
+    SmallStepEvaluator evaluator = new SmallStepEvaluator(node.getExpression(), ((SmallStepProofNode)node).getStore());
     
     // determine the evaluated/completed steps
     ProofStep[] evaluatedSteps = evaluator.getSteps();

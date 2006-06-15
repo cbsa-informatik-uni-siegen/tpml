@@ -6,6 +6,8 @@ import javax.swing.event.TreeModelListener;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreeNode;
 
+import smallstep.Store;
+
 import common.beans.Bean;
 
 /**

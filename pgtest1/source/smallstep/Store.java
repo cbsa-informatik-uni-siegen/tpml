@@ -1,6 +1,8 @@
-package common;
+package smallstep;
 
 import java.util.Enumeration;
+
+import common.Environment;
 
 import expressions.Expression;
 import expressions.Location;
@@ -11,7 +13,7 @@ import expressions.Location;
  * @author Benedikt Meurer
  * @version $Id$
  */
-public interface Store {
+public interface Store extends Environment<Location, Expression>{
   /**
    * Returns <code>true</code> if this store contains the
    * specified <code>location</code>.
@@ -27,22 +29,6 @@ public interface Store {
    * @see #get(Location)                                       
    */
   public boolean containsLocation(Location location);
-  
-  /**
-   * Returns the value stored at the specified <code>location</code>.
-   * 
-   * @param location a location in this store.
-   * 
-   * @return the expression stored at the specified <code>location</code>.
-   * 
-   * @throws IllegalArgumentException if the <code>location</code> is
-   *                                  not valid for the store.
-   * @throws NullPointerException if the given <code>location</code>
-   *                              is <code>null</code>.
-   *                              
-   * @see #containsLocation(Location)                              
-   */
-  public Expression get(Location location);
   
   /**
    * Returns an enumeration of the {@link Location}s within this

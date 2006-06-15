@@ -1,10 +1,10 @@
 package smallstep;
 
 import common.AbstractProofNode;
+import common.ProofModel;
 import common.ProofNode;
 import common.ProofRuleException;
 import common.ProofStep;
-import common.Store;
 
 import expressions.Expression;
 
@@ -16,6 +16,22 @@ import expressions.Expression;
  */
 public class SmallStepProofNode extends AbstractProofNode {
   //
+  // Attributes
+  //
+  
+  /**
+   * The {@link DefaultStore} for this node if memory operations are being
+   * used throughout the proof. Otherwise this is an invalid, immutable
+   * store which does not contain any memory locations.
+   * 
+   * @see #getStore()
+   * @see #setStore(DefaultStore)
+   */
+  private DefaultStore store;
+
+
+  
+  //
   // Constructor
   //
   
@@ -26,7 +42,7 @@ public class SmallStepProofNode extends AbstractProofNode {
    * @param expression the {@link Expression} for this node.
    */
   SmallStepProofNode(Expression expression) {
-    super(expression);
+    this(expression, DefaultStore.EMPTY_STORE);
   }
   
   /**
@@ -34,10 +50,17 @@ public class SmallStepProofNode extends AbstractProofNode {
    * <code>expression</code> and <code>store</code>.
    * 
    * @param expression the {@link Expression} for this node.
-   * @param store the {@link Store} for this node.
+   * @param store the {@link DefaultStore} for this node.
+   * 
+   * @throws NullPointerException if <code>expression</code> or
+   *                              <code>store</code> is <code>null</code>.
    */
-  SmallStepProofNode(Expression expression, Store store) {
-    super(expression, store);
+  SmallStepProofNode(Expression expression, DefaultStore store) {
+    super(expression);
+    if (store == null) {
+      throw new NullPointerException("store is null");
+    }
+    this.store = store;
   }
   
   
@@ -62,6 +85,37 @@ public class SmallStepProofNode extends AbstractProofNode {
     return (super.isProven()
          || getExpression().isValue()
          || getExpression().isException());
+  }
+  
+  /**
+   * Returns the {@link Store} which specifies the memory allocation
+   * for this node. The returned store is only valid if the memory
+   * operations are enable for the proof, which can be checked
+   * using the {@link ProofModel#isMemoryEnabled()} method.
+   * 
+   * @return the {@link Store} with the memory allocation for this
+   *         proof node.
+   * 
+   * @see ProofModel#isMemoryEnabled()
+   */
+  public DefaultStore getStore() {
+    return this.store;
+  }
+  
+  /**
+   * Sets the new {@link Store} for this proof node.
+   * 
+   * @param store the new {@link Store} for this node.
+   * 
+   * @throws NullPointerException if <code>store</code> is <code>null</code>.
+   * 
+   * @see #getStore()
+   */
+  public void setStore(DefaultStore store) {
+    if (store == null) {
+      throw new NullPointerException("store is null");
+    }
+    this.store = store;
   }
   
   
