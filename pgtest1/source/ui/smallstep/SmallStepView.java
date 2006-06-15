@@ -151,7 +151,18 @@ public class SmallStepView extends AbstractView implements Scrollable {
 	protected void nodeAdded (AbstractNode node) {
 		if (getParent () instanceof JViewport) {
 			JViewport vp = (JViewport)getParent();
-			vp.scrollRectToVisible(node.getBounds());
+			
+			// the viewport scroll to the rightmost position of
+			// the bounds rectangle. 
+			// Use a hardcoded width of 10 pixels to prevent the
+			// viewport from scrolling to the right.
+			// 
+			// look like the visible rect is relative to the
+			// current visible rect
+			Rectangle bounds = node.getBounds();
+			bounds.x = 0;
+			bounds.width = 10;
+			vp.scrollRectToVisible(bounds);
 		}
 	}
 
