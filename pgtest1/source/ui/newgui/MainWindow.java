@@ -39,6 +39,7 @@ import ui.ThemeManager;
 public class MainWindow extends JFrame{
 //	private static String defaultExpression = "let rec f = lambda x. if x = 0 then 1 else x * f (x - 1) in f 3";
 	private static String defaultExpression = "let f = ref (lambda x.x) in let fact = lambda x.if x = 0 then 1 else x * (!f (x - 1)) in (f := fact, !f 3)";
+//	private static String defaultExpression = "";
 	private JMenu fileMenu;
 	private JMenu editMenu;
 	private JMenu runMenu;
@@ -176,7 +177,7 @@ public class MainWindow extends JFrame{
 	  }
 	  private void handleOpen(){
 				    		JFileChooser chooser = new JFileChooser();
-				    		chooser.showOpenDialog(getMe());
+				    		chooser.showOpenDialog(this);
 				    		File infile = chooser.getSelectedFile();
 				    		StringBuffer buffer = new StringBuffer();
 				    		try{
@@ -189,7 +190,7 @@ public class MainWindow extends JFrame{
 				            SourceFile newFile = new SourceFile();
 				            newFile.setName(infile.getName());
 							newFile.getDocument().insertString(0, buffer.toString(), null);
-							EditorWindow newItem = new EditorWindow(newFile, getMe());
+							EditorWindow newItem = new EditorWindow(newFile, this);
 							newItem.addPropertyChangeListener(editorlistener);
 							tabbedPane.addTab(newItem.getTitle(), newItem);
 							tabbedPane.setSelectedComponent(newItem);
@@ -244,7 +245,7 @@ public class MainWindow extends JFrame{
 			 }
 			 else{
 				 //ImageIcon icon = new ImageIcon(action.getIcon());
-				 JButton tmptoolbar;
+				 final JButton tmptoolbar;
 				 if (action.getIcon() == null){
 					  tmptoolbar = new JButton (action.getTitle());
 				 }
@@ -253,6 +254,12 @@ public class MainWindow extends JFrame{
 				 }
 			 component.add( tmptoolbar);
 			 tmptoolbar.addActionListener(action.getActionListener());
+             tmptoolbar.setEnabled(action.isEnabled());
+             action.addPropertyChangeListener("enabled", new PropertyChangeListener() {
+               public void propertyChange(PropertyChangeEvent evt) {
+                 tmptoolbar.setEnabled(action.isEnabled());
+               }
+             });
 			 }
 			}
 		  if (component.equals(fileMenu)){
@@ -262,9 +269,6 @@ public class MainWindow extends JFrame{
 		   exitItem.setMnemonic(KeyEvent.VK_X);
 		   }
       }
-    private MainWindow getMe(){
-    	return this;
-    	};
 
 	/**
 	 * @param args
@@ -276,6 +280,7 @@ public class MainWindow extends JFrame{
 		mw.addWindowListener(new WindowAdapter () {
 			public void windowClosing(WindowEvent e) { System.exit(0); };
 		});
+		mw.paintAll(mw.getGraphics());
 		mw.setVisible(true);
 	}
 }
