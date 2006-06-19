@@ -31,7 +31,7 @@ public class EditorComponentListener implements ActionListener {
 		panel.setShownComponent(mycomponent.getDisplay());
 		panel.deselectButtons();
 		mybutton.setSelected(true);		
-		panel.repaint();
+		panel.paintAll(panel.getGraphics());
 		panel.updateActions(mycomponent);
 }
 
