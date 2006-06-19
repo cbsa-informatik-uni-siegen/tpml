@@ -108,7 +108,7 @@ public final class Sequence extends Expression {
   @Override
   protected PrettyStringBuilder toPrettyStringBuilder() {
     PrettyStringBuilder builder = new PrettyStringBuilder(this, 0);
-    builder.appendBuilder(this.e1.toPrettyStringBuilder(), 0);
+    builder.appendBuilder(this.e1.toPrettyStringBuilder(), 1);
     builder.appendText("; ");
     builder.appendBuilder(this.e2.toPrettyStringBuilder(), 0);
     return builder;
