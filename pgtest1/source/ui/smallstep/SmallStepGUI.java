@@ -106,7 +106,7 @@ public class SmallStepGUI extends JPanel implements EditorComponent {
 						new ActionListener() {
 					    	public void actionPerformed(ActionEvent event) {
 					    		try{
-					    		tmp.invoke(getMe());
+					    		tmp.invoke(SmallStepGUI.this);
 					    		} catch (Exception e){
 					    			e.printStackTrace();
 					    			//TODO Add Handling!!
@@ -127,10 +127,6 @@ public class SmallStepGUI extends JPanel implements EditorComponent {
 
 	public String getTitle() {
 		return title;
-	}
-	
-	private SmallStepGUI getMe(){
-		return this;
 	}
 
 	public Component getDisplay() {
