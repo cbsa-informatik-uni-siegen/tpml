@@ -1,15 +1,10 @@
 package smallstep;
 
-import java.io.IOException;
-import java.io.PushbackReader;
 import java.io.StringReader;
 
-import l1.Translator;
-import l1.lexer.Lexer;
-import l1.lexer.LexerException;
-import l1.node.Start;
-import l1.parser.Parser;
-import l1.parser.ParserException;
+import languages.Language;
+import languages.LanguageFactory;
+import languages.LanguageParser;
 import expressions.Expression;
 
 /**
@@ -67,23 +62,18 @@ public final class SmallStepProofModelFactory {
    *  
    * @return New instance of a <code>SmallStepProofModel</code>.
    * 
-   * @throws IOException if the <code>program</code> cannot be read. 
-   * @throws LexerException if the <code>program</code> cannot be tokenized.
-   * @throws ParserException if the <code>program</code> cannot be parsed.
+   * @throws Exception if an error occurred while parsing the <code>program</code>.
    * 
    */
-  public SmallStepProofModel newProofModel(String program) throws ParserException, LexerException, IOException {
-    // Allocate the parser
-    Parser parser = new Parser(new Lexer(new PushbackReader(new StringReader(program), 1024)));
-
-    // Parse the input
-    Start tree = parser.parse();
-
-    // translate the AST to a small step expression
-    Translator translator = new Translator();
-    tree.apply(translator);
-
-    // allocate new proof model for the parsed expression
-    return newProofModel(translator.getExpression());
+  public SmallStepProofModel newProofModel(String program) throws Exception {
+    // allocate the language for "l1"
+    LanguageFactory languageFactory = LanguageFactory.newInstance();
+    Language language = languageFactory.getLanguageById("l1");
+    
+    // allocate the parser for the language
+    LanguageParser parser = language.newParser(new StringReader(program));
+    
+    // parse the program and return a model for the expression
+    return newProofModel(parser.parse());
   }
 }

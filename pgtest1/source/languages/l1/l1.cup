@@ -1,0 +1,258 @@
+import expressions.*;
+
+
+/* Binary operators */
+terminal			PLUS, MINUS, STAR, SLASH, MOD;
+terminal			EQUAL, LESS, GREATER, LESSEQUAL, GREATEREQUAL;
+
+/* Logical operators */
+terminal			AMPERAMPER, BARBAR;
+
+/* Unary operators */
+terminal			TILDEMINUS, NOT;
+
+/* Tuple operators */
+terminal			FST, SND;
+
+/* List operators */
+terminal			CONS, IS_EMPTY, HD, TL;
+terminal			COLONCOLON;
+
+/* Reference operators */
+terminal			COLONEQUAL, DEREF, REF;
+
+/* Syntactic tokens */
+terminal			DOT;
+terminal			COMMA, BELOW_COMMA;
+terminal			SEMI, BELOW_SEMI;
+terminal			LPAREN, RPAREN;
+terminal			LBRACKET, RBRACKET;
+
+/* Keywords */
+terminal			LAMBDA, LET, IN, REC, IF, THEN, ELSE;
+terminal			WHILE, DO;
+terminal			TRUE, FALSE;
+
+/* Special tokens */
+terminal Integer	NUMBER;
+terminal String		IDENTIFIER;
+terminal			PARENPAREN;
+terminal			BRACKETBRACKET;
+
+/* Pseudo tokens (required for precedences) */
+terminal			APPL;
+
+
+/* Non-Terminals */
+non terminal Expression		seq_expr;
+non terminal Expression		expr;
+non terminal Expression		constant;
+non terminal Expression		operator;
+non terminal Expression[]	expr_semi_list;		/* list of expressions separated by semicolon */
+non terminal Expression[]	expr_comma_list;	/* list of expressions separated by comma */
+non terminal String[]		id_list;			/* list of identifiers without any separator */
+non terminal String[]		id_comma_list;		/* list of identifiers separated by comma */
+
+
+/* Precedences, based on http://caml.inria.fr/pub/docs/manual-ocaml/manual015.html */
+precedence nonassoc	IN;
+precedence nonassoc	BELOW_SEMI;
+precedence nonassoc	SEMI;					/* below EQUAL ({lbl = ...; lbl = ...}) */
+precedence nonassoc	LET, REC;				/* above SEMI (...; let ... in ...) */
+precedence nonassoc	DO;						/* below THEN (while ... do ...) */
+precedence nonassoc	THEN;					/* below ELSE (if ... then ...) */
+precedence nonassoc	ELSE;					/* (if ... then ... else ...) */
+precedence nonassoc	DOT;
+
+precedence right	COLONEQUAL;				/* expr (e := e := e) */
+
+precedence nonassoc	BELOW_COMMA;
+precedence left		COMMA;					/* expr/expr_comma_list (e,e,e) */
+
+precedence right	BARBAR;					/* expr (e || e || e) */
+precedence right	AMPERAMPER;				/* expr (e && e && e) */
+
+precedence left		EQUAL, LESS, GREATER, LESSEQUAL, GREATEREQUAL;
+precedence right	COLONCOLON;				/* expr (e :: e :: e) */
+precedence left		PLUS, MINUS;
+precedence left		STAR, SLASH, MOD;
+
+precedence nonassoc	NUMBER, IDENTIFIER;		/* necessary to get "f 8 + f 9" right */
+
+precedence nonassoc	LPAREN, RPAREN, LBRACKET, RBRACKET;
+precedence right	APPL;
+
+precedence nonassoc	BRACKETBRACKET, PARENPAREN, FALSE, TRUE, TILDEMINUS,
+					NOT, FST, SND, CONS, IS_EMPTY, HD, TL, DEREF, REF;
+
+
+seq_expr		::=	expr:e
+					{: RESULT = e; :}
+					%prec BELOW_SEMI
+				|	expr:e1 SEMI seq_expr:e2
+					{: RESULT = new Sequence(e1, e2); :}
+				;
+				
+				
+expr			::=	constant:c
+					{: RESULT = c; :}
+				|	IDENTIFIER:id
+					{: RESULT = new Identifier(id); :}
+
+				|	LPAREN operator:o RPAREN
+					{: RESULT = o; :}
+				|	LPAREN seq_expr:e RPAREN
+					{: RESULT = e; :}
+				
+				|	expr:e1 expr:e2
+					{: RESULT = new Application(e1, e2); :}
+					%prec APPL
+
+				|	expr:e1 COLONEQUAL expr:e2
+					{: RESULT = new InfixOperation(Assign.ASSIGN, e1, e2); :}
+
+				|	expr:e1 PLUS expr:e2
+					{: RESULT = new InfixOperation(ArithmeticOperator.PLUS, e1, e2); :}
+				|	expr:e1 MINUS expr:e2
+					{: RESULT = new InfixOperation(ArithmeticOperator.MINUS, e1, e2); :}
+				|	expr:e1 STAR expr:e2
+					{: RESULT = new InfixOperation(ArithmeticOperator.MULT, e1, e2); :}
+				|	expr:e1 SLASH expr:e2
+					{: RESULT = new InfixOperation(ArithmeticOperator.DIV, e1, e2); :}
+				|	expr:e1 MOD expr:e2
+					{: RESULT = new InfixOperation(ArithmeticOperator.MOD, e1, e2); :}
+
+				|	expr:e1 EQUAL expr:e2
+					{: RESULT = new InfixOperation(RelationalOperator.EQUALS, e1, e2); :}
+				|	expr:e1 LESS expr:e2
+					{: RESULT = new InfixOperation(RelationalOperator.LOWER_THAN, e1, e2); :}
+				|	expr:e1 GREATER expr:e2
+					{: RESULT = new InfixOperation(RelationalOperator.GREATER_THAN, e1, e2); :}
+				|	expr:e1 LESSEQUAL expr:e2
+					{: RESULT = new InfixOperation(RelationalOperator.LOWER_EQUAL, e1, e2); :}
+				|	expr:e1 GREATEREQUAL expr:e2
+					{: RESULT = new InfixOperation(RelationalOperator.GREATER_EQUAL, e1, e2); :}
+
+				/* Logical operators */
+				|	expr:e1 AMPERAMPER expr:e2
+					{: RESULT = new And(e1, e2); :}
+				|	expr:e1 BARBAR expr:e2
+					{: RESULT = new Or(e1, e2); :}
+
+				/* Tuples */
+				|	expr_comma_list:el
+					{: RESULT = new Tuple(el); :}
+					%prec BELOW_COMMA
+
+				/* Lists */
+				|	LBRACKET expr_semi_list:el RBRACKET
+					{: RESULT = new List(el); :}
+				|	expr:e1 COLONCOLON expr:e2
+					{: RESULT = new InfixOperation(BinaryCons.CONS, e1, e2); :}
+
+				/* Loops */
+				|	WHILE seq_expr:e1 DO seq_expr:e2
+					{: RESULT = new While(e1, e2); :}
+
+				/* Conditions */
+				|	IF seq_expr:e0 THEN seq_expr:e1 ELSE seq_expr:e2
+					{: RESULT = new Condition(e0, e1, e2); :}
+				|	IF seq_expr:e0 THEN seq_expr:e1
+					{: RESULT = new Condition1(e0, e1); :}
+
+				/* Lambda Abstraction */
+				|	LAMBDA IDENTIFIER:id DOT seq_expr:e
+					{: RESULT = new Lambda(id, e); :}
+				|	LAMBDA LPAREN id_comma_list:il RPAREN DOT seq_expr:e
+					{: RESULT = new MultiLambda(il, e); :}
+
+				/* Let */
+				|	LET id_list:il EQUAL seq_expr:e1 IN seq_expr:e2
+					{: RESULT = (il.length == 1) ? new Let(il[0], e1, e2) : new CurriedLet(il, e1, e2); :}
+				|	LET LPAREN id_comma_list:il RPAREN EQUAL seq_expr:e1 IN seq_expr:e2
+					{: RESULT = new MultiLet(il, e1, e2); :}
+
+				/* Recursion */				
+				|	REC IDENTIFIER:id DOT seq_expr:e
+					{: RESULT = new Recursion(id, e); :}
+				|	LET REC id_list:il EQUAL seq_expr:e1 IN seq_expr:e2
+					{: RESULT = (il.length == 1) ? new LetRec(il[0], e1, e2) : new CurriedLetRec(il, e1, e2); :}
+				;
+
+
+constant		::=	PARENPAREN					{: RESULT = UnitConstant.UNIT; :}
+				|	BRACKETBRACKET				{: RESULT = EmptyList.EMPTY_LIST; :}
+				|	TRUE						{: RESULT = BooleanConstant.TRUE; :}
+				|	FALSE						{: RESULT = BooleanConstant.FALSE; :}
+				|	NUMBER:n					{: RESULT = new IntegerConstant(n.intValue()); :}
+
+				/* Unary operators */
+				|	TILDEMINUS					{: RESULT = UnaryMinus.UMINUS; :}
+				|	NOT							{: RESULT = Not.NOT; :}
+
+				/* Tuple operators */
+				|	FST							{: RESULT = Fst.FST; :}
+				|	SND							{: RESULT = Snd.SND; :}
+
+				/* List operators */
+				|	CONS						{: RESULT = UnaryCons.CONS; :}
+				|	IS_EMPTY					{: RESULT = IsEmpty.IS_EMPTY; :}
+				|	HD							{: RESULT = Hd.HD; :}
+				|	TL							{: RESULT = Tl.TL; :}
+
+				/* Reference operators */
+				|	DEREF						{: RESULT = Deref.DEREF; :}
+				|	REF							{: RESULT = Ref.REF; :}
+				;
+
+
+operator		::=	PLUS						{: RESULT = ArithmeticOperator.PLUS; :}
+				|	MINUS						{: RESULT = ArithmeticOperator.MINUS; :}
+				|	STAR						{: RESULT = ArithmeticOperator.MULT; :}
+				|	SLASH						{: RESULT = ArithmeticOperator.DIV; :}
+				|	MOD							{: RESULT = ArithmeticOperator.MOD; :}
+				|	EQUAL						{: RESULT = RelationalOperator.EQUALS; :}
+				|	LESS						{: RESULT = RelationalOperator.LOWER_THAN; :}
+				|	GREATER						{: RESULT = RelationalOperator.GREATER_THAN; :}
+				|	LESSEQUAL					{: RESULT = RelationalOperator.LOWER_EQUAL; :}
+				|	GREATEREQUAL				{: RESULT = RelationalOperator.GREATER_EQUAL; :}
+
+				/* Reference operators */
+				|	COLONEQUAL					{: RESULT = Assign.ASSIGN; :}
+				;
+
+
+expr_semi_list	::=	expr:e
+					{: RESULT = new Expression[] { e }; :}
+				|	expr_semi_list:el SEMI expr:e
+					{: RESULT = new Expression[el.length + 1];
+					   System.arraycopy(el, 0, RESULT, 0, el.length);
+					   RESULT[el.length] = e; :}
+				;
+
+
+expr_comma_list	::=	expr_comma_list:el COMMA expr:e
+					{: RESULT = new Expression[el.length + 1];
+					   System.arraycopy(el, 0, RESULT, 0, el.length);
+					   RESULT[el.length] = e; :}
+				|	expr:e1 COMMA expr:e2
+					{: RESULT = new Expression[] { e1, e2 }; :}
+				;
+
+
+id_list			::=	id_list:l IDENTIFIER:id
+					{: RESULT = new String[l.length + 1];
+					   System.arraycopy(l, 0, RESULT, 0, l.length);
+					   RESULT[l.length] = id; :}
+				|	IDENTIFIER:id
+					{: RESULT = new String[] { id }; :}
+				;
+
+
+id_comma_list	::=	id_comma_list:l COMMA IDENTIFIER:id
+					{: RESULT = new String[l.length + 1];
+					   System.arraycopy(l, 0, RESULT, 0, l.length);
+					   RESULT[l.length] = id; :}
+				|	IDENTIFIER:id
+					{: RESULT = new String[] { id }; :}
+				;

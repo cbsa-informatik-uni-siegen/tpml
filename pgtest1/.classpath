@@ -2,5 +2,6 @@
 <classpath>
 	<classpathentry kind="src" path="source"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry sourcepath="lib/java-cup-11a-runtime-src.jar" kind="lib" path="lib/java-cup-11a-runtime.jar"/>
 	<classpathentry kind="output" path="build"/>
 </classpath>

@@ -10,4 +10,5 @@ public enum PrettyStyle {
   NONE,
   CONSTANT,
   KEYWORD,
+  COMMENT,
 }
