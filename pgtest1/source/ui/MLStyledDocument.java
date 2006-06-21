@@ -1,18 +1,26 @@
 package ui;
 
 import java.awt.Color;
-import java.io.*;
-import java.util.*;
-import java.util.regex.*;
-import javax.swing.text.*;
+import java.io.StringReader;
+import java.util.HashMap;
 
-import l1.lexer.*;
-import l1.node.*;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DefaultStyledDocument;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+
+import languages.Language;
+import languages.LanguageFactory;
+import languages.LanguageScanner;
+import languages.LanguageScannerException;
+import languages.LanguageSymbol;
+import expressions.PrettyStyle;
 
 public class MLStyledDocument extends DefaultStyledDocument {
-  private SimpleAttributeSet errorSet = new SimpleAttributeSet(); 
-  private SimpleAttributeSet normalSet = new SimpleAttributeSet(); 
-  private HashMap<String, SimpleAttributeSet> attributes = new HashMap<String, SimpleAttributeSet>();
+  private SimpleAttributeSet errorSet = new SimpleAttributeSet();
+  private SimpleAttributeSet normalSet = new SimpleAttributeSet();
+  private HashMap<PrettyStyle, SimpleAttributeSet> attributes = new HashMap<PrettyStyle, SimpleAttributeSet>();
   private static final long serialVersionUID = -1779640687489585648L;
   
   public MLStyledDocument() {
@@ -24,63 +32,92 @@ public class MLStyledDocument extends DefaultStyledDocument {
     StyleConstants.setForeground(this.normalSet, Color.BLACK);
     StyleConstants.setBold(this.normalSet, false);
 
+    // setup the comment set
+    SimpleAttributeSet commentSet = new SimpleAttributeSet();
+    StyleConstants.setForeground(commentSet, new Color(0.0f, 0.6f, 0.0f));
+    StyleConstants.setItalic(commentSet, true);
+    this.attributes.put(PrettyStyle.COMMENT, commentSet);
+
+    // setup the constant set
+    SimpleAttributeSet constantSet = new SimpleAttributeSet();
+    StyleConstants.setForeground(constantSet, new Color(0.0f, 0.0f, 0.6f));
+    StyleConstants.setBold(constantSet, true);
+    this.attributes.put(PrettyStyle.CONSTANT, constantSet);
+
     // setup the keyword set
     SimpleAttributeSet keywordSet = new SimpleAttributeSet();
     StyleConstants.setForeground(keywordSet, new Color(0.6f, 0.0f, 0.0f));
     StyleConstants.setBold(keywordSet, true);
-    
-    this.attributes.put("Lambda", keywordSet);
-    this.attributes.put("Let", keywordSet);
-    this.attributes.put("In", keywordSet);
-    this.attributes.put("If", keywordSet);
-    this.attributes.put("Then", keywordSet);
-    this.attributes.put("Else", keywordSet);
-    this.attributes.put("Rec", keywordSet);
-    this.attributes.put("Projection", keywordSet);
-    this.attributes.put("Fst", keywordSet);
-    this.attributes.put("Snd", keywordSet);
-    
-    // setup the value set
-    SimpleAttributeSet valueSet = new SimpleAttributeSet();
-    StyleConstants.setForeground(valueSet, new Color(0.0f, 0.0f, 0.6f));
-    StyleConstants.setBold(valueSet, true);
-    
-    this.attributes.put("False", valueSet);
-    this.attributes.put("Number", valueSet);
-    this.attributes.put("True", valueSet);
-    this.attributes.put("Unit", valueSet);
+    this.attributes.put(PrettyStyle.KEYWORD, keywordSet);
   }
   
-  public void insertString (int offset, String str, AttributeSet set)
-      throws BadLocationException {
-    super.insertString (offset, str, set);
-    processChanged (offset, str.length ());
+  public void insertString(int offset, String str, AttributeSet set) throws BadLocationException {
+    super.insertString(offset, str, set);
+    processChanged();
   }
   
-  public void remove (int offset, int length)
-      throws BadLocationException {
-    super.remove (offset, length);
-    processChanged (offset, length);
+  public void remove(int offset, int length) throws BadLocationException {
+    super.remove(offset, length);
+    processChanged();
   }
   
-  public void processChanged (int offset, int length)
-      throws BadLocationException {
-    String content = getText(0, getLength());
+  public void processChanged() throws BadLocationException {
+    // reset the character attributes
+    setCharacterAttributes(0, getLength(), this.normalSet, true);
     
-    Element root = getDefaultRootElement();
-    int startLine = root.getElementIndex( offset );
-    int endLine = root.getElementIndex( offset + length );
+    try {
+      // start with first character
+      int offset = 0;
+      
+      // determine the document content
+      String content = getText(offset, getLength());
+      
+      // determine the language 
+      LanguageFactory languageFactory = LanguageFactory.newInstance();
+      Language language = languageFactory.getLanguageById("l1");
     
-    for (int i = startLine; i <= endLine; i++)
-    {
-      int startOffset = root.getElement( i ).getStartOffset();
-      int endOffset = root.getElement( i ).getEndOffset();
-      applyHighlighting(content, startOffset, endOffset);
+      // allocate the scanner (initially)
+      LanguageScanner scanner = language.newScanner(new StringReader(content));
+      
+      // determine the tokens for the content
+      for (;;) {
+        try {
+          // read the next token from the scanner
+          LanguageSymbol symbol = scanner.nextSymbol();
+          if (symbol == null)
+            return;
+          
+          // check if we have an attribute set for the token
+          SimpleAttributeSet set = this.attributes.get(scanner.getStyleBySymbol(symbol));
+          if (set == null)
+            set = this.normalSet;
+          
+          // apply the character attribute set
+          setCharacterAttributes(offset + symbol.getLeft(), symbol.getRight() - symbol.getLeft(), set, true);
+        }
+        catch (LanguageScannerException e) {
+          // apply the error character attribute set to indicate the syntax error
+          setCharacterAttributes(offset + e.getLeft(), e.getRight() - e.getLeft(), this.errorSet, true);
+          
+          // adjust the offset to point after the error
+          offset += e.getRight();
+          
+          // skip the problematic characters
+          content = content.substring(e.getRight());
+          
+          // restart the scanner after the error
+          scanner.restart(new StringReader(content));
+        }
+      }
+    }
+    catch (Exception e) {
+      // FIXME
+      e.printStackTrace();
     }
   }
-  
-  private void applyHighlighting (String content, int offsetStart, int offsetEnd)
-      throws BadLocationException {
+
+  /*
+  private void applyHighlighting(String content, int offsetStart, int offsetEnd) throws BadLocationException {
     StringReader reader = new StringReader(content.substring(offsetStart, offsetEnd - 1));
     Lexer lexer = new Lexer(new PushbackReader(reader, 1024));
     
@@ -130,5 +167,5 @@ public class MLStyledDocument extends DefaultStyledDocument {
     catch (Exception e) {
       e.printStackTrace();
     }
-  }
+  }*/
 }

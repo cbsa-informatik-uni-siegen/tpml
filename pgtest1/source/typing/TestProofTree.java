@@ -3,13 +3,12 @@ package typing;
 import java.io.PushbackReader;
 import java.io.StringReader;
 
+import languages.Language;
+import languages.LanguageFactory;
+import languages.LanguageParser;
+
 import expressions.Expression;
 
-
-import l1.Translator;
-import l1.lexer.Lexer;
-import l1.node.Start;
-import l1.parser.Parser;
 
 /**
  * Simple test case for the {@link ProofTree} class.
@@ -64,18 +63,15 @@ final class TestProofTree {
    */
   public static void main(String[] args) {
     try {
-      // Allocate the parser
-      Parser parser = new Parser(new Lexer(new PushbackReader(new StringReader(SIMPLE), 1024)));
+      // allocate the language for L1
+      LanguageFactory languageFactory = LanguageFactory.newInstance();
+      Language language = languageFactory.getLanguageById("l1");
       
-      // Parse the input
-      Start tree = parser.parse();
-      
-      // translate the AST to a small step expression
-      Translator translator = new Translator();
-      tree.apply(translator);
+      // allocate the parser
+      LanguageParser parser = language.newParser(new StringReader(SIMPLE));
       
       // type checker test
-      typecheck(translator.getExpression());
+      typecheck(parser.parse());
     }
     catch (Exception e) {
       e.printStackTrace();

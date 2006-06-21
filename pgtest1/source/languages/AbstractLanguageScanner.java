@@ -102,8 +102,10 @@ public abstract class AbstractLanguageScanner implements LanguageScanner {
    * 
    * @throws IOException if an error occurs while reading characters
    *                     from the input source stream.
+   * @throws LanguageScannerException if a syntax error occurred while
+   *                                  trying to scan the input stream.
    */
-  public final LanguageSymbol next_token() throws IOException {
+  public final LanguageSymbol next_token() throws IOException, LanguageScannerException {
     for (;;) {
       // return the next symbol, skipping comments
       LanguageSymbol symbol = nextSymbol();

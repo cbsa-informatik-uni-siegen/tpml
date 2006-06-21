@@ -29,12 +29,6 @@ import ui.smallstep.SmallStepView;
 
 import expressions.Expression;
 
-
-import l1.Translator;
-import l1.lexer.Lexer;
-import l1.node.Start;
-import l1.parser.Parser;
-
 public class Mainwindow extends JFrame {
   private JTabbedPane tabbedPane;
   private JTree treeView;
@@ -220,6 +214,7 @@ public class Mainwindow extends JFrame {
 
 	    Expression result = null;
 	    try {
+          /*
 	      // Allocate the parser
 	      Parser parser = new Parser(new Lexer(new PushbackReader(new StringReader(
 	          sf.getDocument().getText(0, sf.getDocument().getLength())), 1024)));
@@ -232,7 +227,7 @@ public class Mainwindow extends JFrame {
 	      tree.apply(translator);
 
 	      result = translator.getExpression();
-	      
+	      */
 	    } catch (Exception e) {
 	      JOptionPane.showMessageDialog(this, e.getLocalizedMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 	    }

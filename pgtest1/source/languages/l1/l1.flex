@@ -1,7 +1,10 @@
 package languages.l1;
 
+import java.io.Reader;
+
 import expressions.PrettyStyle;
 import languages.AbstractLanguageScanner;
+import languages.LanguageScannerException;
 import languages.LanguageSymbol;
 
 /**
@@ -15,6 +18,7 @@ import languages.LanguageSymbol;
 
 %function nextSymbol
 %type LanguageSymbol
+%yylexthrow LanguageScannerException
 %eofclose
 %eofval{
 	return null;
@@ -36,12 +40,38 @@ import languages.LanguageSymbol;
 
 	protected PrettyStyle getStyleBySymbolId(int id) {
 		// TODO: Implement this.
-		return PrettyStyle.NONE;
+		switch (id) {
+		case COMMENT:
+			return PrettyStyle.COMMENT;
+
+		case TRUE: case FALSE: case NUMBER: case REF:
+		case CONS: case IS_EMPTY: case HD: case TL:
+		case BRACKETBRACKET: case PARENPAREN:
+		case FST: case SND: case MOD:
+			return PrettyStyle.CONSTANT;
+
+		case LAMBDA: case LET: case IN: case REC:
+		case IF: case THEN: case ELSE:
+		case WHILE: case DO:
+			return PrettyStyle.KEYWORD;
+			
+		default:
+			return PrettyStyle.NONE;
+		}
+	}
+	
+	public void restart(Reader reader) {
+		if (reader == null) {
+			throw new NullPointerException("reader is null");
+		}
+		yyreset(reader);
 	}
 %}
 
 LineTerminator	= \r|\n|\r\n
 WhiteSpace	= {LineTerminator} | [ \t\f]
+
+Comment		= "(*" ~"*)" | "(*" "*)"
 
 Number		= [:digit:]+
 Identifier	= [:jletter:] [:jletterdigit:]*
@@ -114,12 +144,19 @@ Identifier	= [:jletter:] [:jletterdigit:]*
 	"false"			{ return symbol("FALSE", FALSE); }
 	
 	// numbers and identifiers
-	{Number}		{ return symbol("NUMBER", NUMBER, Integer.valueOf(yytext())); }
+	{Number}		{
+						try {
+							return symbol("NUMBER", NUMBER, Integer.valueOf(yytext()));
+						}
+						catch (NumberFormatException e) {
+							throw new LanguageScannerException(yychar, yychar + yylength(), "Integer constant \"" + yytext() + "\" too large", e);
+						}
+					}
 	{Identifier}	{ return symbol("IDENTIFIER", IDENTIFIER, yytext()); }
 	
 	// whitespace and comments
+	{Comment}		{ return symbol("COMMENT", COMMENT); }
 	{WhiteSpace}	{ /* ignore */ }
 }
 
-.|\n				{ throw new Error("Illegal character <"
-									  + yytext() + ">"); }
+.|\n				{ throw new LanguageScannerException(yychar, yychar + yylength(), "Syntax error on token \"" + yytext() + "\""); }

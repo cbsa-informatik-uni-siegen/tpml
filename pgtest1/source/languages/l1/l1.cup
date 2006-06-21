@@ -27,6 +27,8 @@ terminal			COMMA, BELOW_COMMA;
 terminal			SEMI, BELOW_SEMI;
 terminal			LPAREN, RPAREN;
 terminal			LBRACKET, RBRACKET;
+terminal			PARENPAREN;
+terminal			BRACKETBRACKET;
 
 /* Keywords */
 terminal			LAMBDA, LET, IN, REC, IF, THEN, ELSE;
@@ -36,8 +38,7 @@ terminal			TRUE, FALSE;
 /* Special tokens */
 terminal Integer	NUMBER;
 terminal String		IDENTIFIER;
-terminal			PARENPAREN;
-terminal			BRACKETBRACKET;
+terminal			COMMENT;
 
 /* Pseudo tokens (required for precedences) */
 terminal			APPL;
