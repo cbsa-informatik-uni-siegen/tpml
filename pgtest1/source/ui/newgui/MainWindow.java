@@ -162,9 +162,6 @@ public class MainWindow extends JFrame{
 
 		fileMenu.addSeparator();
 
-		JMenuItem preferences = editMenu.add("Preferences");
-		preferences.addActionListener(menulistener);
-		preferences.setMnemonic(KeyEvent.VK_P);
 
 		JButton open = new JButton(new ImageIcon(EditorWindow.class
 				.getResource("icons/open.png")));
@@ -311,6 +308,12 @@ public class MainWindow extends JFrame{
 					KeyEvent.CTRL_MASK));
 			exitItem.addActionListener(menulistener);
 			exitItem.setMnemonic(KeyEvent.VK_Q);
+		}
+		if (component.equals(editMenu)){
+			JMenuItem preferences = editMenu.add("Preferences");
+			preferences.addActionListener(menulistener);
+			preferences.setMnemonic(KeyEvent.VK_P);
+
 		}
 	}
 
