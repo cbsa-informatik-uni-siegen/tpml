@@ -177,7 +177,7 @@ Identifier		= [:jletter:] [:jletterdigit:]*
 <YYCOMMENT> {
 	<<EOF>>						{ yybegin(YYCOMMENTEOF); return symbol("COMMENT", COMMENT, yycommentChar, yychar, null); }
 	"*)"						{ yybegin(YYINITIAL); return symbol("COMMENT", COMMENT, yycommentChar, yychar + yylength(), null); }
-	.							{ /* ignore */ }
+	.|\n						{ /* ignore */ }
 }
 
 <YYCOMMENTEOF> {
