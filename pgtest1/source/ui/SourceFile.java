@@ -1,6 +1,7 @@
 package ui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -34,7 +35,7 @@ public class SourceFile extends AbstractEditorComponent implements
 
 	private JScrollPane scrollPane;
 
-	private JEditorPane editorPane;
+	private CompoundEditorPane editorPane;
 
 	private String filename;
 
@@ -115,19 +116,16 @@ public class SourceFile extends AbstractEditorComponent implements
 		// this.title = "Source";
 		this.filename = "newfile" + num + ".ml";
 		num++;
-		this.scrollPane = new JScrollPane();
-		this.editorPane = new MLStyledEditor();
+//		this.scrollPane = new JScrollPane();
+		this.editorPane = new CompoundEditorPane();
 		this.editorPane.setName(filename);
-		this.editorPane.setAutoscrolls(false);
-		this.editorPane.setEditorKit(new StyledEditorKit());
-		this.editorPane.setDocument(new MLStyledDocument());
-		this.scrollPane.setViewportView(editorPane);
-		this.scrollPane.setName(filename);
-		((MLStyledDocument) editorPane.getDocument())
+//		this.scrollPane.setViewportView(editorPane);
+//		this.scrollPane.setName(filename);
+		((MLStyledDocument) editorPane.getEditorPane ().getDocument())
 				.addDocumentListener(doclistener);
-		this.add(scrollPane, BorderLayout.CENTER);
+		this.add(editorPane, BorderLayout.CENTER);
 
-		ToolTipManager.sharedInstance().registerComponent(this.editorPane);
+		ToolTipManager.sharedInstance().registerComponent(this.editorPane.getEditorPane());
 		// generateActions();
 
 		setActionStatus("Undo", false);
@@ -188,7 +186,7 @@ public class SourceFile extends AbstractEditorComponent implements
 
 	public void setName(String name) {
 		this.filename = name;
-		this.scrollPane.setName(this.filename);
+//		this.scrollPane.setName(this.filename);
 	}
 
 	public String getFilename() {
@@ -200,7 +198,7 @@ public class SourceFile extends AbstractEditorComponent implements
 	}
 
 	public MLStyledDocument getDocument() {
-		return (MLStyledDocument) editorPane.getDocument();
+		return (MLStyledDocument) editorPane.getEditorPane ().getDocument();
 	}
 
 	// public List<EditorAction> getActions() {

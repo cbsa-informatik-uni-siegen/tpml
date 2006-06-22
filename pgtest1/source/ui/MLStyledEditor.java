@@ -63,4 +63,8 @@ public class MLStyledEditor extends JEditorPane {
     // fallback to parent's implementation
     return super.getToolTipText(event);
   }
+  
+  public boolean getScrollableTracksViewportWidth() {
+	  return false;
+  }
 }
