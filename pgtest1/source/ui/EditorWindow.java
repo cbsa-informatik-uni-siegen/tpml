@@ -78,14 +78,9 @@ public class EditorWindow extends JPanel implements FileWindow {
 
 			public void propertyChange(PropertyChangeEvent evt) {
 				if (evt.getPropertyName().equals("modified")) {
-					if ((Boolean) evt.getNewValue()) {
-						EditorWindow.this.setModified(true);
-						((DefaultEditorAction) myactions.get("Save"))
-								.setEnabled(true);
-					} else {
-						((DefaultEditorAction) myactions.get("Save"))
-								.setEnabled(false);
-					}
+					EditorWindow.this.setModified((Boolean) evt.getNewValue());
+					((DefaultEditorAction) myactions.get("Save"))
+							.setEnabled((Boolean) evt.getNewValue());
 				} else if (evt.getPropertyName().equals("filename")) {
 					firePropertyChange("name", evt.getOldValue(), evt
 							.getNewValue());
@@ -103,7 +98,7 @@ public class EditorWindow extends JPanel implements FileWindow {
 		toolbaractions = new LinkedList<DefaultEditorAction>();
 		editactions = new LinkedList<DefaultEditorAction>();
 		myactions = new Hashtable();
-		modified = false;
+		// modified = false;
 
 		this.setLayout(new BorderLayout());
 		menu.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
@@ -117,11 +112,8 @@ public class EditorWindow extends JPanel implements FileWindow {
 	}
 
 	public String getTitle() {
-		if (modified) {
-			return "*" + file.getFilename();
-		} else {
-			return file.getFilename();
-		}
+		return file.getFilename();
+
 	}
 
 	private void generateActions() {
@@ -175,34 +167,36 @@ public class EditorWindow extends JPanel implements FileWindow {
 	}
 
 	@MainActionInfo(name = "Save", icon = "icons/save.png", visibleMenu = MainActionInfo.MENU_FILE, visibleToolbar = MainActionInfo.TOOLBAR_VISIBLE, accelModifiers = KeyEvent.CTRL_MASK, accelKey = KeyEvent.VK_S)
-	public void handleSave() {
+	public boolean handleSave() {
 		if (systemfile == null) {
-			handleSaveAs();
+			return handleSaveAs();
 		} else {
-			writeFile();
+			return writeFile();
 		}
 	}
 
 	@MainActionInfo(name = "SaveAs", icon = "icons/saveas.png", visibleMenu = MainActionInfo.MENU_FILE, visibleToolbar = MainActionInfo.TOOLBAR_VISIBLE, accelModifiers = KeyEvent.CTRL_MASK
 			| KeyEvent.SHIFT_MASK, accelKey = KeyEvent.VK_S)
-	public void handleSaveAs() {
+	public boolean handleSaveAs() {
 		JFileChooser chooser = new JFileChooser();
 		chooser.showSaveDialog(this);
 		File outfile = chooser.getSelectedFile();
 		if (outfile != null) {
 			try {
 				outfile.createNewFile();
+				systemfile = outfile;
+				String oldname = file.getFilename();
+				String newname = outfile.getName();
+				file.setFilename(newname);
+				firePropertyChange("name", oldname, newname);
+				writeFile();
+				return true;
 			} catch (Exception e) {
 				e.printStackTrace();
-				// TODO Add Handling!!
+				return false;
 			}
-
-			systemfile = outfile;
-			String oldname = file.getFilename();
-			String newname = outfile.getName();
-			file.setFilename(newname);
-			firePropertyChange("name", oldname, newname);
-			writeFile();
+		} else {
+			return false;
 		}
 	}
 
@@ -272,7 +266,7 @@ public class EditorWindow extends JPanel implements FileWindow {
 		}
 	}
 
-	private void writeFile() {
+	private boolean writeFile() {
 		try {
 			FileOutputStream out = new FileOutputStream(systemfile);
 			out.write(file.getDocument().getText(0,
@@ -280,11 +274,11 @@ public class EditorWindow extends JPanel implements FileWindow {
 			out.flush();
 			out.close();
 			file.setModified(false);
-			if (file.getFilename().startsWith("*"))
-				file.setFilename(file.getFilename().substring(1));
+			return true;
 		} catch (Exception e) {
 			// TODO Add Handling!!
 			System.out.println("Error while saving!");
+			return false;
 		}
 	}
 

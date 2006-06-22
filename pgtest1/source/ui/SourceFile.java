@@ -186,43 +186,6 @@ public class SourceFile extends AbstractEditorComponent implements
 		}
 	}
 
-	// private void generateActions() {
-	// Class me = this.getClass();
-	// Method[] methods = me.getDeclaredMethods();
-	// for (int i = 0; i < methods.length; i++) {
-	// final Method tmp = methods[i];
-	// EditorActionInfo actioninfo = tmp
-	// .getAnnotation(EditorActionInfo.class);
-	// if (actioninfo != null) {
-	// DefaultEditorAction newaction = new DefaultEditorAction();
-	// newaction.setTitle(actioninfo.name());
-	// newaction.setEnabled(true);
-	// if (!actioninfo.icon().equals("none")) {
-	// java.net.URL imgURL = EditorWindow.class
-	// .getResource(actioninfo.icon());
-	// if (imgURL != null) {
-	// newaction.setIcon(new ImageIcon(imgURL));
-	// } else {
-	// System.out.println("Imagefile not found!");
-	// }
-	// }
-	// newaction.setGroup(1);
-	// newaction.setActionlistener(new ActionListener() {
-	// public void actionPerformed(ActionEvent event) {
-	// try {
-	// tmp.invoke(SourceFile.this);
-	// } catch (Exception e) {
-	// e.printStackTrace();
-	// // TODO Add Handling!!
-	// }
-	// }
-	// });
-	// actions.add(newaction);
-	// myactions.put(tmp.getName().substring(6), newaction);
-	// }
-	// }
-	// }
-
 	public void setName(String name) {
 		this.filename = name;
 		this.scrollPane.setName(this.filename);
