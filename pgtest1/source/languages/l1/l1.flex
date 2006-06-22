@@ -30,6 +30,9 @@ import languages.LanguageSymbol;
 %char
 
 %{
+	/** The starting character position of the comment. */
+	private int yycommentChar = 0;
+
 	private LanguageSymbol symbol(String name, int id) {
 		return symbol(name, id, null);
 	}
@@ -69,94 +72,109 @@ import languages.LanguageSymbol;
 %}
 
 LineTerminator	= \r|\n|\r\n
-WhiteSpace	= {LineTerminator} | [ \t\f]
+WhiteSpace		= {LineTerminator} | [ \t\f]
 
-Comment		= "(*" ~"*)" | "(*" "*)"
+Comment			= "//" [^\r\n]* {LineTerminator}
 
-Number		= [:digit:]+
-Identifier	= [:jletter:] [:jletterdigit:]*
+Number			= [:digit:]+
+Identifier		= [:jletter:] [:jletterdigit:]*
+
+%state YYCOMMENT
+%state YYCOMMENTEOF
 
 %%
 
 <YYINITIAL> {
 	// arithmetic binary operators
-	"+"				{ return symbol("PLUS", PLUS); }
-	"-"				{ return symbol("MINUS", MINUS); }
-	"*"				{ return symbol("STAR", STAR); }
-	"/"				{ return symbol("SLASH", SLASH); }
-	"mod"			{ return symbol("MOD", MOD); }
+	"+"					{ return symbol("PLUS", PLUS); }
+	"-"					{ return symbol("MINUS", MINUS); }
+	"*"					{ return symbol("STAR", STAR); }
+	"/"					{ return symbol("SLASH", SLASH); }
+	"mod"				{ return symbol("MOD", MOD); }
 	
 	// relational binary operators
-	"="				{ return symbol("EQUAL", EQUAL); }
-	"<"				{ return symbol("LESS", LESS); }
-	">"				{ return symbol("GREATER", GREATER); }
-	"<="			{ return symbol("LESSEQUAL", LESSEQUAL); }
-	">="			{ return symbol("GREATEREQUAL", GREATEREQUAL); }
+	"="					{ return symbol("EQUAL", EQUAL); }
+	"<"					{ return symbol("LESS", LESS); }
+	">"					{ return symbol("GREATER", GREATER); }
+	"<="				{ return symbol("LESSEQUAL", LESSEQUAL); }
+	">="				{ return symbol("GREATEREQUAL", GREATEREQUAL); }
 	
 	// logical operators
-	"&&"			{ return symbol("AMPERAMPER", AMPERAMPER); }
-	"||"			{ return symbol("BARBAR", BARBAR); }
+	"&&"				{ return symbol("AMPERAMPER", AMPERAMPER); }
+	"||"				{ return symbol("BARBAR", BARBAR); }
 	
 	// unary operators
-	"~-"			{ return symbol("TILDEMINUS", TILDEMINUS); }
-	"not"			{ return symbol("NOT", NOT); }
+	"~-"				{ return symbol("TILDEMINUS", TILDEMINUS); }
+	"not"				{ return symbol("NOT", NOT); }
 	
 	// tuple operators
-	"fst"			{ return symbol("FST", FST); }
-	"snd"			{ return symbol("SND", SND); }
+	"fst"				{ return symbol("FST", FST); }
+	"snd"				{ return symbol("SND", SND); }
 
 	// list operators
-	"cons"			{ return symbol("CONS", CONS); }
-	"is_empty"		{ return symbol("IS_EMPTY", IS_EMPTY); }
-	"hd"			{ return symbol("HD", HD); }
-	"tl"			{ return symbol("TL", TL); }
-	"::"			{ return symbol("COLONCOLON", COLONCOLON); }
+	"cons"				{ return symbol("CONS", CONS); }
+	"is_empty"			{ return symbol("IS_EMPTY", IS_EMPTY); }
+	"hd"				{ return symbol("HD", HD); }
+	"tl"				{ return symbol("TL", TL); }
+	"::"				{ return symbol("COLONCOLON", COLONCOLON); }
 
 	// reference operators
-	":="			{ return symbol("COLONEQUAL", COLONEQUAL); }
-	"!"				{ return symbol("DEREF", DEREF); }
-	"ref"			{ return symbol("REF", REF); }
+	":="				{ return symbol("COLONEQUAL", COLONEQUAL); }
+	"!"					{ return symbol("DEREF", DEREF); }
+	"ref"				{ return symbol("REF", REF); }
 
 	// interpunctation
-	"."				{ return symbol("DOT", DOT); }
-	";"				{ return symbol("SEMI", SEMI); }
-	","				{ return symbol("COMMA", COMMA); }
-	"("				{ return symbol("LPAREN", LPAREN); }
-	")"				{ return symbol("RPAREN", RPAREN); }
-	"["				{ return symbol("LBRACKET", LBRACKET); }
-	"]"				{ return symbol("RBRACKET", RBRACKET); }
+	"."					{ return symbol("DOT", DOT); }
+	";"					{ return symbol("SEMI", SEMI); }
+	","					{ return symbol("COMMA", COMMA); }
+	"("					{ return symbol("LPAREN", LPAREN); }
+	")"					{ return symbol("RPAREN", RPAREN); }
+	"["					{ return symbol("LBRACKET", LBRACKET); }
+	"]"					{ return symbol("RBRACKET", RBRACKET); }
 	
 	// keywords
-	"lambda"		{ return symbol("LAMBDA", LAMBDA); }
-	"let"			{ return symbol("LET", LET); }
-	"in"			{ return symbol("IN", IN); }
-	"rec"			{ return symbol("REC", REC); }
-	"if"			{ return symbol("IF", IF); }
-	"then"			{ return symbol("THEN", THEN); }
-	"else"			{ return symbol("ELSE", ELSE); }
-	"while"			{ return symbol("WHILE", WHILE); }
-	"do"			{ return symbol("DO", DO); }
+	"lambda"			{ return symbol("LAMBDA", LAMBDA); }
+	"let"				{ return symbol("LET", LET); }
+	"in"				{ return symbol("IN", IN); }
+	"rec"				{ return symbol("REC", REC); }
+	"if"				{ return symbol("IF", IF); }
+	"then"				{ return symbol("THEN", THEN); }
+	"else"				{ return symbol("ELSE", ELSE); }
+	"while"				{ return symbol("WHILE", WHILE); }
+	"do"				{ return symbol("DO", DO); }
 
 	// constants
-	"()"			{ return symbol("BRACKETBRACKET", BRACKETBRACKET); }
-	"[]"			{ return symbol("PARENPAREN", PARENPAREN); }
-	"true"			{ return symbol("TRUE", TRUE); }
-	"false"			{ return symbol("FALSE", FALSE); }
+	"()"				{ return symbol("BRACKETBRACKET", BRACKETBRACKET); }
+	"[]"				{ return symbol("PARENPAREN", PARENPAREN); }
+	"true"				{ return symbol("TRUE", TRUE); }
+	"false"				{ return symbol("FALSE", FALSE); }
 	
 	// numbers and identifiers
-	{Number}		{
-						try {
-							return symbol("NUMBER", NUMBER, Integer.valueOf(yytext()));
+	{Number}			{
+							try {
+								return symbol("NUMBER", NUMBER, Integer.valueOf(yytext()));
+							}
+							catch (NumberFormatException e) {
+								throw new LanguageScannerException(yychar, yychar + yylength(), "Integer constant \"" + yytext() + "\" too large", e);
+							}
 						}
-						catch (NumberFormatException e) {
-							throw new LanguageScannerException(yychar, yychar + yylength(), "Integer constant \"" + yytext() + "\" too large", e);
-						}
-					}
-	{Identifier}	{ return symbol("IDENTIFIER", IDENTIFIER, yytext()); }
+	{Identifier}		{ return symbol("IDENTIFIER", IDENTIFIER, yytext()); }
+
+	// comments
+	"(*"				{ yycommentChar = yychar; yybegin(YYCOMMENT); }
 	
-	// whitespace and comments
-	{Comment}		{ return symbol("COMMENT", COMMENT); }
-	{WhiteSpace}	{ /* ignore */ }
+	// whitespace
+	{WhiteSpace}		{ /* ignore */ }
 }
 
-.|\n				{ throw new LanguageScannerException(yychar, yychar + yylength(), "Syntax error on token \"" + yytext() + "\""); }
+<YYCOMMENT> {
+	<<EOF>>				{ yybegin(YYCOMMENTEOF); return symbol("COMMENT", COMMENT, yycommentChar, yychar, null); }
+	"*)"				{ yybegin(YYINITIAL); return symbol("COMMENT", COMMENT, yycommentChar, yychar + yylength(), null); }
+	.					{ /* ignore */ }
+}
+
+<YYCOMMENTEOF> {
+	<<EOF>>				{ throw new LanguageScannerException(yycommentChar, yychar, "Unexpected end of comment"); }
+}
+
+.|\n					{ throw new LanguageScannerException(yychar, yychar + yylength(), "Syntax error on token \"" + yytext() + "\""); }

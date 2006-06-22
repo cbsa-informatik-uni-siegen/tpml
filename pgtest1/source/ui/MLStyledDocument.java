@@ -15,14 +15,35 @@ import languages.LanguageFactory;
 import languages.LanguageScanner;
 import languages.LanguageScannerException;
 import languages.LanguageSymbol;
+import expressions.Expression;
 import expressions.PrettyStyle;
 
+/**
+ * 
+ * TODO Add documentation here.
+ *
+ * @author Benedikt Meurer
+ * @version $Id$
+ */
 public class MLStyledDocument extends DefaultStyledDocument {
+  //
+  // Attributes
+  //
+  
   private SimpleAttributeSet errorSet = new SimpleAttributeSet();
   private SimpleAttributeSet normalSet = new SimpleAttributeSet();
   private HashMap<PrettyStyle, SimpleAttributeSet> attributes = new HashMap<PrettyStyle, SimpleAttributeSet>();
   private static final long serialVersionUID = -1779640687489585648L;
   
+  
+  
+  //
+  // Constructor
+  //
+  
+  /**
+   * 
+   */
   public MLStyledDocument() {
     // setup the error attribute set
     StyleConstants.setForeground(this.errorSet, Color.RED);
@@ -50,6 +71,32 @@ public class MLStyledDocument extends DefaultStyledDocument {
     StyleConstants.setBold(keywordSet, true);
     this.attributes.put(PrettyStyle.KEYWORD, keywordSet);
   }
+
+  
+  
+  //
+  // Primitives
+  //
+  
+  /**
+   * Returns the {@link Expression} for the program text within
+   * this document. Throws an exception if a parsing error occurred.
+   *  
+   * @return the {@link Expression} for the program text.
+   * 
+   * @throws Exception  
+   */
+  public Expression getExpression() throws Exception {
+    LanguageFactory languageFactory = LanguageFactory.newInstance();
+    Language language = languageFactory.getLanguageById("l1");
+    return language.newParser(new StringReader(getText(0, getLength()))).parse();
+  }
+  
+  
+  
+  //
+  // Change handling
+  //
   
   public void insertString(int offset, String str, AttributeSet set) throws BadLocationException {
     super.insertString(offset, str, set);
@@ -97,7 +144,7 @@ public class MLStyledDocument extends DefaultStyledDocument {
         }
         catch (LanguageScannerException e) {
           // apply the error character attribute set to indicate the syntax error
-          setCharacterAttributes(offset + e.getLeft(), e.getRight() - e.getLeft(), this.errorSet, true);
+          setCharacterAttributes(offset + e.getLeft(), e.getRight() - e.getLeft(), this.errorSet, false);
           
           // adjust the offset to point after the error
           offset += e.getRight();
@@ -115,57 +162,4 @@ public class MLStyledDocument extends DefaultStyledDocument {
       e.printStackTrace();
     }
   }
-
-  /*
-  private void applyHighlighting(String content, int offsetStart, int offsetEnd) throws BadLocationException {
-    StringReader reader = new StringReader(content.substring(offsetStart, offsetEnd - 1));
-    Lexer lexer = new Lexer(new PushbackReader(reader, 1024));
-    
-    try {
-      for (;;) {
-        try {
-          Token token = lexer.next();
-          if (token instanceof EOF)
-            break;
-          
-          // determine the token name from the token class
-          String tokenName = token.getClass().getSimpleName().substring(1);
-          
-          // check if we have an attribute set for the token
-          SimpleAttributeSet set = this.attributes.get(tokenName);
-          
-          // fallback to the normal attribute set
-          if (set == null)
-            set = this.normalSet;
-          
-          // apply the character attribute set
-          setCharacterAttributes(offsetStart + token.getPos() - 1, token.getText().length(), set, true);
-        }
-        catch (LexerException e) {
-          // Parse the lexer exception text: "[<line>,<col>] Unknown token: <token>"
-          Pattern pattern = Pattern.compile("^\\[(\\d)+,(\\d+)\\] Unknown token: (.+)$");
-          Matcher matcher = pattern.matcher(e.getMessage());
-          if (!matcher.find())
-            throw e;
-          
-          // extract position and token
-          int pos = Integer.valueOf(matcher.group(2));
-          String token = matcher.group(3);
-          
-          // apply the error character set
-          setCharacterAttributes(offsetStart + pos - 1, token.length(), this.errorSet, true);
-          
-          // setup the lexer to parse the remaining input
-          offsetStart += pos + token.length() - 1;
-          if (offsetStart >= offsetEnd)
-            break;
-          reader = new StringReader(content.substring(offsetStart, offsetEnd - 1));
-          lexer = new Lexer(new PushbackReader(reader, 1024));
-        }
-      }
-    }
-    catch (Exception e) {
-      e.printStackTrace();
-    }
-  }*/
 }
