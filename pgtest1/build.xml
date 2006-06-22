@@ -27,7 +27,7 @@
 			srcfile="${sourcedir}/languages/l1/l1.cup"
 			destdir="${sourcedir}/languages/l1"
 			package="languages.l1"
-			parser="L1Parser"
+			parser="L1AbstractParser"
 			symbols="L1Terminals"
 			interface="yes"
 			debug="no"
