@@ -26,6 +26,10 @@ public class DefaultEditorAction extends AbstractBean implements EditorAction {
 	private boolean enabled;
 
 	private ActionListener actionlistener;
+	
+	private int keyHeld;
+	
+	private int keyPressed;
 
 	//
 	// Primitives
@@ -74,6 +78,16 @@ public class DefaultEditorAction extends AbstractBean implements EditorAction {
 	public boolean isEnabled() {
 		return enabled;
 	};
+	
+
+	
+	public void setKeyHeld(int keyHeld) {
+		this.keyHeld = keyHeld;
+	}
+
+	public void setKeyPressed(int keyPressed) {
+		this.keyPressed = keyPressed;
+	}
 
 	/**
 	 * Returns the grouping id of this action. Actions with similar group ids
@@ -106,5 +120,13 @@ public class DefaultEditorAction extends AbstractBean implements EditorAction {
 
 	public ActionListener getActionListener() {
 		return actionlistener;
+	}
+
+	public int getKeyHeld() {
+		return keyHeld;
+	}
+
+	public int getKeyPressed() {
+		return keyPressed;
 	};
 }

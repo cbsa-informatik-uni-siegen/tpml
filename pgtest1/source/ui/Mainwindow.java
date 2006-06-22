@@ -272,9 +272,9 @@ public class Mainwindow extends JFrame {
   
   
   private void handleTypeChecker() {
-	  TypeCheckerGUI gui = new TypeCheckerGUI (this, "TypeChecker", true);
-	  gui.startTypeChecking (getExpression ());
-	  gui.setVisible(true);
+//	  TypeCheckerGUI gui = new TypeCheckerGUI (this, "TypeChecker", true);
+//	  gui.startTypeChecking (getExpression ());
+//	  gui.setVisible(true);
   }
   
 }

@@ -100,7 +100,7 @@ public class MainWindow extends JFrame{
 		    mainMenu.add(editMenu);
 		    
 		    runMenu = new JMenu("Run");
-		    runMenu.setMnemonic(KeyEvent.VK_A);
+		    runMenu.setMnemonic(KeyEvent.VK_R);
 		    mainMenu.add(runMenu);
 		    
 		    setJMenuBar(mainMenu);
@@ -140,12 +140,15 @@ public class MainWindow extends JFrame{
 		    newItem.setMnemonic(KeyEvent.VK_N);
 		    
 		    JMenuItem openItem = fileMenu.add("Open");
+		    openItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O,
+			        KeyEvent.CTRL_MASK));
+			    openItem.setMnemonic(KeyEvent.VK_O);
 		    openItem.addActionListener(menulistener);
-		    //newItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N,
-		    //   KeyEvent.CTRL_MASK));
-		    //newItem.setMnemonic(KeyEvent.VK_N);
 		    
 		    JMenuItem closeItem = fileMenu.add("Close");
+		    closeItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q,
+			        KeyEvent.CTRL_MASK));
+			    closeItem.setMnemonic(KeyEvent.VK_C);
 		    closeItem.addActionListener(menulistener);
 
 		    fileMenu.addSeparator();
@@ -236,7 +239,7 @@ public class MainWindow extends JFrame{
 				 final JMenuItem tmpmenu = new JMenuItem (action.getTitle());
 				 tmpmenu.addActionListener(action.getActionListener());
                  tmpmenu.setEnabled(action.isEnabled());
-				 component.add( tmpmenu);
+				 component.add(tmpmenu);
                  action.addPropertyChangeListener("enabled", new PropertyChangeListener() {
                    public void propertyChange(PropertyChangeEvent evt) {
                      tmpmenu.setEnabled(action.isEnabled());
@@ -244,13 +247,13 @@ public class MainWindow extends JFrame{
                  });
 			 }
 			 else{
-				 //ImageIcon icon = new ImageIcon(action.getIcon());
 				 final JButton tmptoolbar;
 				 if (action.getIcon() == null){
 					  tmptoolbar = new JButton (action.getTitle());
 				 }
 				 else{
 					  tmptoolbar = new JButton (action.getIcon());
+					  tmptoolbar.setToolTipText(action.getTitle());
 				 }
 			 component.add( tmptoolbar);
 			 tmptoolbar.addActionListener(action.getActionListener());

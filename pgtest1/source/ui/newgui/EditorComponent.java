@@ -25,6 +25,6 @@ public interface EditorComponent {
    * @return the title for this editor pane.
    */
   public String getTitle();
-  
-  public Component getDisplay();
+    
+//  public Component getDisplay();
 }

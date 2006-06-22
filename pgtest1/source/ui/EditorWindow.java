@@ -211,14 +211,24 @@ public class EditorWindow extends JPanel implements FileWindow {
 	@MainActionInfo(name = "SmallStep", icon = "none", visibleMenu = MainActionInfo.MENU_RUN, visibleToolbar = MainActionInfo.TOOLBAR_HIDDEN)
 	public void handleSmallStep() {
 		try {
-			SmallStepGUI gui = new SmallStepGUI("SmallStep", true, file
+			SmallStepGUI gui = new SmallStepGUI("SmallStep", file
 					.getDocument().getText(0, file.getDocument().getLength()));
 			addEditorComponent(gui);
 		} catch (Exception e) {
 			e.printStackTrace();
+			//TODO handle this!
 		}
 	}
-
+	@MainActionInfo(name = "TypeChecker", icon="none", visibleMenu = MainActionInfo.MENU_RUN, visibleToolbar = MainActionInfo.TOOLBAR_HIDDEN)
+	public void handleTypeChecker(){
+		try{
+		  TypeCheckerGUI gui = new TypeCheckerGUI ("TypeChecker");
+		  gui.startTypeChecking (file.getDocument().getExpression());
+		  addEditorComponent(gui);
+		} catch (Exception e){
+			e.printStackTrace();
+		}
+	}
 	private void addEditorComponent(EditorComponent comp) {
 		JToggleButton compbutton = new JToggleButton(comp.getTitle());
 		Component[] buttons = menu.getComponents();
@@ -273,7 +283,13 @@ public class EditorWindow extends JPanel implements FileWindow {
 		List<EditorAction> actionlist = list;
 		for (int i = 0; i < actionlist.size(); i++) {
 			final EditorAction action = actionlist.get(i);
-			final JButton tmp = new JButton(action.getTitle());
+			final JButton tmp;
+			 if (action.getIcon() == null){
+				 tmp = new JButton(action.getTitle());
+			 }
+			 else{
+				 tmp = new JButton(action.getIcon());
+			 }			
 			tmp.setEnabled(action.isEnabled());
 			action.addPropertyChangeListener("enabled", new PropertyChangeListener() {
                 public void propertyChange(PropertyChangeEvent evt) {

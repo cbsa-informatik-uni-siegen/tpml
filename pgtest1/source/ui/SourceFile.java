@@ -4,11 +4,13 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.lang.reflect.Method;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Stack;
 
+import javax.swing.ImageIcon;
 import javax.swing.JEditorPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -18,14 +20,15 @@ import javax.swing.event.DocumentListener;
 import javax.swing.text.StyledEditorKit;
 
 import ui.annotations.EditorActionInfo;
+import ui.newgui.AbstractEditorComponent;
 import ui.newgui.DefaultEditorAction;
 import ui.newgui.EditorAction;
 import ui.newgui.EditorComponent;
 
 import com.sun.org.apache.xalan.internal.xsltc.runtime.Hashtable;
 
-public class SourceFile extends JPanel implements EditorComponent {
-	private JPanel mypanel;
+public class SourceFile extends AbstractEditorComponent implements
+		EditorComponent {
 
 	static private int num = 0;
 
@@ -35,12 +38,11 @@ public class SourceFile extends JPanel implements EditorComponent {
 
 	private String filename;
 
-	private String title;
+	// private String title;
 
-	// TODO merge the two lists
-	private LinkedList<DefaultEditorAction> actions;
-
-	private Hashtable myactions;
+	// private LinkedList<DefaultEditorAction> actions;
+	//
+	// private Hashtable myactions;
 
 	private boolean modified;
 
@@ -51,21 +53,23 @@ public class SourceFile extends JPanel implements EditorComponent {
 	private DocumentListener doclistener;
 
 	public SourceFile() {
-		mypanel = new JPanel();
-		actions = new LinkedList<DefaultEditorAction>();
-		myactions = new Hashtable();
+		super("Source");
+		// mypanel = new JPanel();
+		// actions = new LinkedList<DefaultEditorAction>();
+		// myactions = new Hashtable();
 		undohistory = new Stack<String>();
 		redohistory = new Stack<String>();
 
 		undohistory.push("");
 
+		// TODO use an update manager
 		doclistener = new DocumentListener() {
 			public void insertUpdate(DocumentEvent arg0) {
 				if (!SourceFile.this.isModified()) {
 					SourceFile.this.setModified(true);
 					SourceFile.this.setFilename("*" + filename);
 				}
-				//System.out.println("Part of document added.");
+				// System.out.println("Part of document added.");
 				try {
 					String doctext = arg0.getDocument().getText(0,
 							arg0.getDocument().getLength());
@@ -87,7 +91,7 @@ public class SourceFile extends JPanel implements EditorComponent {
 					SourceFile.this.setModified(true);
 					SourceFile.this.setFilename("*" + filename);
 				}
-				//System.out.println("Part of document removed.");
+				// System.out.println("Part of document removed.");
 				try {
 					undohistory.push(arg0.getDocument().getText(0,
 							arg0.getDocument().getLength()));
@@ -108,7 +112,7 @@ public class SourceFile extends JPanel implements EditorComponent {
 		};
 
 		this.setLayout(new BorderLayout());
-		this.title = "Source";
+		// this.title = "Source";
 		this.filename = "newfile" + num + ".ml";
 		num++;
 		this.scrollPane = new JScrollPane();
@@ -122,13 +126,15 @@ public class SourceFile extends JPanel implements EditorComponent {
 		((MLStyledDocument) editorPane.getDocument())
 				.addDocumentListener(doclistener);
 		this.add(scrollPane, BorderLayout.CENTER);
-        ToolTipManager.sharedInstance().registerComponent(this.editorPane);
-		generateActions();
+
+		ToolTipManager.sharedInstance().registerComponent(this.editorPane);
+		// generateActions();
+
 		setActionStatus("Undo", false);
 		// setActionStatus("Redo", false);
 	}
 
-	@EditorActionInfo(name = "Undo", icon = "none")
+	@EditorActionInfo(name = "Undo", icon = "icons/undo.gif", keyHeld = KeyEvent.VK_UNDEFINED, keyPressed = KeyEvent.VK_UNDEFINED)
 	public void handleUndo() {
 		try {
 			getDocument().removeDocumentListener(doclistener);
@@ -159,7 +165,7 @@ public class SourceFile extends JPanel implements EditorComponent {
 		}
 	}
 
-	@EditorActionInfo(name = "Redo", icon = "none")
+	@EditorActionInfo(name = "Redo", icon = "icons/redo.gif", keyHeld = KeyEvent.VK_UNDEFINED, keyPressed = KeyEvent.VK_UNDEFINED)
 	public void handleRedo() {
 		try {
 			if (redohistory.size() > 0) {
@@ -167,7 +173,8 @@ public class SourceFile extends JPanel implements EditorComponent {
 				getDocument().remove(0, getDocument().getLength());
 				getDocument().insertString(0, redohistory.pop(), null);
 				getDocument().addDocumentListener(doclistener);
-				undohistory.push(getDocument().getText(0, getDocument().getLength()));
+				undohistory.push(getDocument().getText(0,
+						getDocument().getLength()));
 				setActionStatus("Undo", true);
 				if (redohistory.size() == 0)
 					setActionStatus("Redo", false);
@@ -179,36 +186,42 @@ public class SourceFile extends JPanel implements EditorComponent {
 		}
 	}
 
-	private void generateActions() {
-		Class me = this.getClass();
-		Method[] methods = me.getDeclaredMethods();
-		for (int i = 0; i < methods.length; i++) {
-			final Method tmp = methods[i];
-			EditorActionInfo actioninfo = tmp
-					.getAnnotation(EditorActionInfo.class);
-			if (actioninfo != null) {
-				DefaultEditorAction newaction = new DefaultEditorAction();
-				newaction.setTitle(actioninfo.name());
-				newaction.setEnabled(true);
-				if (!actioninfo.icon().equals("none")) {
-					// newaction.setIcon();
-				}
-				newaction.setGroup(1);
-				newaction.setActionlistener(new ActionListener() {
-					public void actionPerformed(ActionEvent event) {
-						try {
-							tmp.invoke(SourceFile.this);
-						} catch (Exception e) {
-							e.printStackTrace();
-							// TODO Add Handling!!
-						}
-					}
-				});
-				actions.add(newaction);
-				myactions.put(tmp.getName().substring(6), newaction);
-			}
-		}
-	}
+	// private void generateActions() {
+	// Class me = this.getClass();
+	// Method[] methods = me.getDeclaredMethods();
+	// for (int i = 0; i < methods.length; i++) {
+	// final Method tmp = methods[i];
+	// EditorActionInfo actioninfo = tmp
+	// .getAnnotation(EditorActionInfo.class);
+	// if (actioninfo != null) {
+	// DefaultEditorAction newaction = new DefaultEditorAction();
+	// newaction.setTitle(actioninfo.name());
+	// newaction.setEnabled(true);
+	// if (!actioninfo.icon().equals("none")) {
+	// java.net.URL imgURL = EditorWindow.class
+	// .getResource(actioninfo.icon());
+	// if (imgURL != null) {
+	// newaction.setIcon(new ImageIcon(imgURL));
+	// } else {
+	// System.out.println("Imagefile not found!");
+	// }
+	// }
+	// newaction.setGroup(1);
+	// newaction.setActionlistener(new ActionListener() {
+	// public void actionPerformed(ActionEvent event) {
+	// try {
+	// tmp.invoke(SourceFile.this);
+	// } catch (Exception e) {
+	// e.printStackTrace();
+	// // TODO Add Handling!!
+	// }
+	// }
+	// });
+	// actions.add(newaction);
+	// myactions.put(tmp.getName().substring(6), newaction);
+	// }
+	// }
+	// }
 
 	public void setName(String name) {
 		this.filename = name;
@@ -227,20 +240,20 @@ public class SourceFile extends JPanel implements EditorComponent {
 		return (MLStyledDocument) editorPane.getDocument();
 	}
 
-	public List<EditorAction> getActions() {
-		List<EditorAction> tmp = new LinkedList<EditorAction>();
-		tmp.addAll(actions);
-		return tmp;
-	}
+	// public List<EditorAction> getActions() {
+	// List<EditorAction> tmp = new LinkedList<EditorAction>();
+	// tmp.addAll(actions);
+	// return tmp;
+	// }
 
-	public String getTitle() {
+	// public String getTitle() {
+	//
+	// return title;
+	// }
 
-		return title;
-	}
-
-	public Component getDisplay() {
-		return getComponent();
-	}
+	// public Component getDisplay() {
+	// return getComponent();
+	// }
 
 	public void setFilename(String filename) {
 		String filenameold = this.filename;
@@ -258,12 +271,8 @@ public class SourceFile extends JPanel implements EditorComponent {
 		firePropertyChange("modified", modifiedold, modified);
 	}
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
-	public void setActionStatus(String name, boolean status) {
-		((DefaultEditorAction) myactions.get(name)).setEnabled(status);
-	}
+	// public void setTitle(String title) {
+	// this.title = title;
+	// }
 
 }

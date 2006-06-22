@@ -37,6 +37,20 @@ public interface EditorAction extends Bean {
    * @return the title (or tooltip) for this action.
    */
   public String getTitle();
+  /**
+   * Returns the key to hold for shortcuts. Example:
+   *  Ctrl + X, this functions would define Ctrl.
+   * @return the key to be held.
+   */
+  public int getKeyHeld();
+  /**
+   * Returns the key to be pressed for shortcuts. Example:
+   *  Ctrl + X, this would define the X. If no keyHeld is
+   *  defined only this key has to be pressed to trigger the
+   *  actio. Example: F12
+   * @return the key to be pressed.
+   */
+  public int getKeyPressed();
 
   /**
    * FIXME

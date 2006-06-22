@@ -17,4 +17,14 @@ public @interface EditorActionInfo {
 	 * @return The Path to the icon file relative to the classpath.
 	 */
 	public String icon();	
+	
+	/**
+	 * @return the keycode to be held for shortcuts.
+	 */
+	public int keyHeld();
+	
+	/**
+	 * @return the keycode to be pressed for shortcuts.
+	 */
+	public int keyPressed();
 }
