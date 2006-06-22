@@ -38,6 +38,7 @@ terminal			TRUE, FALSE;
 /* Special tokens */
 terminal Integer	NUMBER;
 terminal String		IDENTIFIER;
+terminal Integer[]	PROJECTION;
 terminal			COMMENT;
 
 /* Pseudo tokens (required for precedences) */
@@ -84,7 +85,8 @@ precedence nonassoc	LPAREN, RPAREN, LBRACKET, RBRACKET;
 precedence right	APPL;
 
 precedence nonassoc	BRACKETBRACKET, PARENPAREN, FALSE, TRUE, TILDEMINUS,
-					NOT, FST, SND, CONS, IS_EMPTY, HD, TL, DEREF, REF;
+					NOT, FST, SND, CONS, IS_EMPTY, HD, TL, DEREF, REF,
+					PROJECTION;
 
 
 seq_expr		::=	expr:e
@@ -186,6 +188,9 @@ constant		::=	PARENPAREN					{: RESULT = UnitConstant.UNIT; :}
 				|	TRUE						{: RESULT = BooleanConstant.TRUE; :}
 				|	FALSE						{: RESULT = BooleanConstant.FALSE; :}
 				|	NUMBER:n					{: RESULT = new IntegerConstant(n.intValue()); :}
+				
+				/* Projections */
+				|	PROJECTION:proj				{: RESULT = new Projection(proj[0], proj[1]); :}
 
 				/* Unary operators */
 				|	TILDEMINUS					{: RESULT = UnaryMinus.UMINUS; :}

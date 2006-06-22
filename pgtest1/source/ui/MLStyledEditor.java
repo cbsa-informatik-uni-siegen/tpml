@@ -4,8 +4,6 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.JEditorPane;
 import javax.swing.text.AttributeSet;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.Element;
 
 /**
  * TODO Add documentation here.
