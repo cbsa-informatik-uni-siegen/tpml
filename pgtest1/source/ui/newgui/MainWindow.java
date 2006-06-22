@@ -1,10 +1,8 @@
 package ui.newgui;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ComponentListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -17,7 +15,6 @@ import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
-import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -27,22 +24,19 @@ import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
-import javax.swing.LookAndFeel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import ui.EditorWindow;
-import ui.Mainwindow;
 import ui.SettingsGUI;
 import ui.SourceFile;
 import ui.ThemeManager;
 
-public class MainWindow extends JFrame {
-	// private static String defaultExpression = "let rec f = lambda x. if x = 0
-	// then 1 else x * f (x - 1) in f 3";
-	private static String defaultExpression = "let f = ref (lambda x.x) in let fact = lambda x.if x = 0 then 1 else x * (!f (x - 1)) in (f := fact, !f 3)";
-
-	// private static String defaultExpression = "";
+public class MainWindow extends JFrame{
+//	private static String defaultExpression = "let rec f = lambda x. if x = 0 then 1 else x * f (x - 1) in f 3";
+	private static String defaultExpression = "let f = ref (lambda x.x) in let fact = lambda x.if x = 0 then 1 else x * (!f (x - 1)) in f := fact; !f 3";
+//	private static String defaultExpression = "";
+    
 	private JMenu fileMenu;
 
 	private JMenu editMenu;
