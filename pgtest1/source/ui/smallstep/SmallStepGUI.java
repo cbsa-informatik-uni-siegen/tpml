@@ -2,40 +2,30 @@ package ui.smallstep;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
-import java.lang.reflect.Method;
-import java.util.LinkedList;
-import java.util.List;
 
-import javax.swing.JButton;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import smallstep.SmallStepProofModel;
 import smallstep.SmallStepProofModelFactory;
 import ui.annotations.EditorActionInfo;
 import ui.newgui.AbstractEditorComponent;
-import ui.newgui.DefaultEditorAction;
-import ui.newgui.EditorAction;
 import ui.newgui.EditorComponent;
 
-public class SmallStepGUI extends AbstractEditorComponent implements
-		EditorComponent {
+public class SmallStepGUI extends AbstractEditorComponent implements EditorComponent {
+    private static final long serialVersionUID = 9199836815081138367L;
 
-	private SmallStepView view;
+    private SmallStepView view;
 
 	private JScrollPane scrollPane;
 
 	private SmallStepProofModel model;
 
-	public SmallStepGUI(String title, String program) {
+	public SmallStepGUI(String title, String program) throws Exception {
 		super(title);
 
 		this.setLayout(new BorderLayout());
@@ -47,15 +37,9 @@ public class SmallStepGUI extends AbstractEditorComponent implements
 		this.scrollPane.getViewport().add(this.view);
 		this.add(this.scrollPane, BorderLayout.CENTER);
 
-		SmallStepProofModelFactory sspmf = SmallStepProofModelFactory
-				.newInstance();
-		try {
-			model = sspmf.newProofModel(program);
-			view.setModel(model);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return;
-		}
+		SmallStepProofModelFactory sspmf = SmallStepProofModelFactory.newInstance();
+		model = sspmf.newProofModel(program);
+		view.setModel(model);
 
 		this.scrollPane.addComponentListener(new ComponentAdapter() {
 			public void componentResized(ComponentEvent event) {

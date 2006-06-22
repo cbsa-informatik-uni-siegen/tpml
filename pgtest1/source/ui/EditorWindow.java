@@ -2,9 +2,7 @@ package ui;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -12,25 +10,20 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.lang.reflect.Method;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
-import javax.swing.KeyStroke;
-
-import com.sun.org.apache.xalan.internal.xsltc.runtime.Hashtable;
 
 import ui.annotations.MainActionInfo;
-import ui.newgui.AbstractEditorComponent;
 import ui.newgui.DefaultEditorAction;
 import ui.newgui.EditorAction;
 import ui.newgui.EditorComponent;
@@ -38,9 +31,9 @@ import ui.newgui.FileWindow;
 import ui.newgui.MainWindow;
 import ui.smallstep.SmallStepGUI;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.*;
-import java.net.URL;
+import com.sun.org.apache.xalan.internal.xsltc.runtime.Hashtable;
+
+import expressions.Expression;
 
 /**
  * An Editor in the UI. It contains the sourcefile and the excecutions.
@@ -49,8 +42,9 @@ import java.net.URL;
  * 
  */
 public class EditorWindow extends JPanel implements FileWindow {
+    private static final long serialVersionUID = -5830307198539052787L;
 
-	private SourceFile file;
+    private SourceFile file;
 
 	private File systemfile = null;
 
@@ -231,21 +225,21 @@ public class EditorWindow extends JPanel implements FileWindow {
 			setActionStatus("Undo", gui.getAction("Undo").isEnabled());
 			setActionStatus("Redo", gui.getAction("Redo").isEnabled());
 		} catch (Exception e) {
-			e.printStackTrace();
-			// TODO handle this!
+          JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
 	@MainActionInfo(name = "TypeChecker", icon = "none", visibleMenu = MainActionInfo.MENU_RUN, visibleToolbar = MainActionInfo.TOOLBAR_HIDDEN, accelModifiers = KeyEvent.VK_UNDEFINED, accelKey = KeyEvent.VK_F12)
 	public void handleTypeChecker() {
 		try {
+            Expression e = file.getDocument().getExpression();
 			TypeCheckerGUI gui = new TypeCheckerGUI("TypeChecker");
-			gui.startTypeChecking(file.getDocument().getExpression());
+			gui.startTypeChecking(e);
 			addEditorComponent(gui);
 			setActionStatus("Undo", gui.getAction("Undo").isEnabled());
 			setActionStatus("Redo", gui.getAction("Redo").isEnabled());
 		} catch (Exception e) {
-			e.printStackTrace();
+          JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
