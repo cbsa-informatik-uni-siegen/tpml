@@ -310,6 +310,7 @@ public class MainWindow extends JFrame{
 			exitItem.setMnemonic(KeyEvent.VK_Q);
 		}
 		if (component.equals(editMenu)){
+			editMenu.addSeparator();
 			JMenuItem preferences = editMenu.add("Preferences");
 			preferences.addActionListener(menulistener);
 			preferences.setMnemonic(KeyEvent.VK_P);
