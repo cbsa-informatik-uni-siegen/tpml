@@ -30,7 +30,6 @@ public class MLStyledDocument extends DefaultStyledDocument {
   // Attributes
   //
   
-  private SimpleAttributeSet errorSet = new SimpleAttributeSet();
   private SimpleAttributeSet normalSet = new SimpleAttributeSet();
   private HashMap<PrettyStyle, SimpleAttributeSet> attributes = new HashMap<PrettyStyle, SimpleAttributeSet>();
   private static final long serialVersionUID = -1779640687489585648L;
@@ -45,10 +44,6 @@ public class MLStyledDocument extends DefaultStyledDocument {
    * 
    */
   public MLStyledDocument() {
-    // setup the error attribute set
-    StyleConstants.setForeground(this.errorSet, Color.RED);
-    StyleConstants.setUnderline(this.errorSet, true);
-    
     // setup the normal attribute set
     StyleConstants.setForeground(this.normalSet, Color.BLACK);
     StyleConstants.setBold(this.normalSet, false);
@@ -143,8 +138,14 @@ public class MLStyledDocument extends DefaultStyledDocument {
           setCharacterAttributes(offset + symbol.getLeft(), symbol.getRight() - symbol.getLeft(), set, true);
         }
         catch (LanguageScannerException e) {
+          // setup the error attribute set
+          SimpleAttributeSet errorSet = new SimpleAttributeSet();
+          StyleConstants.setForeground(errorSet, Color.RED);
+          StyleConstants.setUnderline(errorSet, true);
+          errorSet.addAttribute("exception", e);
+          
           // apply the error character attribute set to indicate the syntax error
-          setCharacterAttributes(offset + e.getLeft(), e.getRight() - e.getLeft(), this.errorSet, false);
+          setCharacterAttributes(offset + e.getLeft(), e.getRight() - e.getLeft(), errorSet, false);
           
           // adjust the offset to point after the error
           offset += e.getRight();

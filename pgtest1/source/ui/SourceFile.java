@@ -1,32 +1,28 @@
 package ui;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.lang.reflect.Method;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Stack;
 
 import javax.swing.JEditorPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.ToolTipManager;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.StyledEditorKit;
-
-import com.sun.org.apache.xalan.internal.xsltc.runtime.Hashtable;
 
 import ui.annotations.EditorActionInfo;
 import ui.newgui.DefaultEditorAction;
 import ui.newgui.EditorAction;
 import ui.newgui.EditorComponent;
 
-import java.awt.event.*;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
-import java.lang.reflect.Method;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Stack;
+import com.sun.org.apache.xalan.internal.xsltc.runtime.Hashtable;
 
 public class SourceFile extends JPanel implements EditorComponent {
 	private JPanel mypanel;
@@ -116,7 +112,7 @@ public class SourceFile extends JPanel implements EditorComponent {
 		this.filename = "newfile" + num + ".ml";
 		num++;
 		this.scrollPane = new JScrollPane();
-		this.editorPane = new JEditorPane();
+		this.editorPane = new MLStyledEditor();
 		this.editorPane.setName(filename);
 		this.editorPane.setAutoscrolls(false);
 		this.editorPane.setEditorKit(new StyledEditorKit());
@@ -126,6 +122,7 @@ public class SourceFile extends JPanel implements EditorComponent {
 		((MLStyledDocument) editorPane.getDocument())
 				.addDocumentListener(doclistener);
 		this.add(scrollPane, BorderLayout.CENTER);
+        ToolTipManager.sharedInstance().registerComponent(this.editorPane);
 		generateActions();
 		setActionStatus("Undo", false);
 		// setActionStatus("Redo", false);
