@@ -26,9 +26,9 @@ public class EditorComponentListener implements ActionListener {
 	}
 	
 	public void actionPerformed(ActionEvent e) {
-		panel.remove(panel.getShownComponent());
+		panel.remove((JPanel)panel.getShownComponent());
 		panel.add((JPanel)mycomponent, BorderLayout.CENTER);
-		panel.setShownComponent((JPanel)mycomponent);
+		panel.setShownComponent(mycomponent);
 		panel.deselectButtons();
 		mybutton.setSelected(true);		
 		panel.paintAll(panel.getGraphics());

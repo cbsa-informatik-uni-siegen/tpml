@@ -25,10 +25,12 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
+import javax.swing.KeyStroke;
 
 import com.sun.org.apache.xalan.internal.xsltc.runtime.Hashtable;
 
 import ui.annotations.MainActionInfo;
+import ui.newgui.AbstractEditorComponent;
 import ui.newgui.DefaultEditorAction;
 import ui.newgui.EditorAction;
 import ui.newgui.EditorComponent;
@@ -56,7 +58,7 @@ public class EditorWindow extends JPanel implements FileWindow {
 
 	private JToolBar actions;
 
-	private Component shownComponent;
+	private EditorComponent shownComponent;
 
 	private List<DefaultEditorAction> fileactions;
 
@@ -101,8 +103,7 @@ public class EditorWindow extends JPanel implements FileWindow {
 		menupanel.setLayout(new BorderLayout());
 		menu = new JToolBar();
 		actions = new JToolBar();
-		// JToggleButton code = new JToggleButton("Source");
-		shownComponent = file.getComponent();
+		setShownComponent(file);
 		fileactions = new LinkedList<DefaultEditorAction>();
 		runactions = new LinkedList<DefaultEditorAction>();
 		toolbaractions = new LinkedList<DefaultEditorAction>();
@@ -117,8 +118,8 @@ public class EditorWindow extends JPanel implements FileWindow {
 		menupanel.add(menu, BorderLayout.WEST);
 		menupanel.add(actions, BorderLayout.CENTER);
 		generateActions();
-		//((DefaultEditorAction) myactions.get("Save")).setEnabled(false);
-		
+		setActionStatus("Undo", shownComponent.getAction("Undo").isEnabled());
+		setActionStatus("Redo", shownComponent.getAction("Redo").isEnabled());
 	}
 
 	public String getTitle() {
@@ -150,6 +151,8 @@ public class EditorWindow extends JPanel implements FileWindow {
 					}
 				}
 				newaction.setGroup(1);
+				newaction.setAccelModifiers(actioninfo.accelModifiers());
+				newaction.setAccelKey(actioninfo.accelKey());
 				newaction.setActionlistener(new ActionListener() {
 					public void actionPerformed(ActionEvent event) {
 						try {
@@ -172,12 +175,12 @@ public class EditorWindow extends JPanel implements FileWindow {
 				if (actioninfo.visibleMenu() == MainActionInfo.MENU_EDIT) {
 					editactions.add(newaction);
 				}
-				
+
 			}
 		}
 	}
 
-	@MainActionInfo(name = "Save", icon = "icons/save.png", visibleMenu = MainActionInfo.MENU_FILE, visibleToolbar = MainActionInfo.TOOLBAR_VISIBLE)
+	@MainActionInfo(name = "Save", icon = "icons/save.png", visibleMenu = MainActionInfo.MENU_FILE, visibleToolbar = MainActionInfo.TOOLBAR_VISIBLE, accelModifiers = KeyEvent.CTRL_MASK, accelKey = KeyEvent.VK_S)
 	public void handleSave() {
 		if (systemfile == null) {
 			handleSaveAs();
@@ -186,7 +189,8 @@ public class EditorWindow extends JPanel implements FileWindow {
 		}
 	}
 
-	@MainActionInfo(name = "SaveAs", icon = "icons/saveas.png", visibleMenu = MainActionInfo.MENU_FILE, visibleToolbar = MainActionInfo.TOOLBAR_VISIBLE)
+	@MainActionInfo(name = "SaveAs", icon = "icons/saveas.png", visibleMenu = MainActionInfo.MENU_FILE, visibleToolbar = MainActionInfo.TOOLBAR_VISIBLE, accelModifiers = KeyEvent.CTRL_MASK
+			| KeyEvent.SHIFT_MASK, accelKey = KeyEvent.VK_S)
 	public void handleSaveAs() {
 		JFileChooser chooser = new JFileChooser();
 		chooser.showSaveDialog(this);
@@ -208,27 +212,43 @@ public class EditorWindow extends JPanel implements FileWindow {
 		}
 	}
 
-	@MainActionInfo(name = "SmallStep", icon = "none", visibleMenu = MainActionInfo.MENU_RUN, visibleToolbar = MainActionInfo.TOOLBAR_HIDDEN)
+	@MainActionInfo(name = "Undo", icon = "icons/undo.gif", visibleMenu = MainActionInfo.MENU_EDIT, visibleToolbar = MainActionInfo.TOOLBAR_VISIBLE, accelModifiers = KeyEvent.CTRL_MASK, accelKey = KeyEvent.VK_Z)
+	public void handleUndo() {
+		shownComponent.handleUndo();
+	}
+
+	@MainActionInfo(name = "Redo", icon = "icons/redo.gif", visibleMenu = MainActionInfo.MENU_EDIT, visibleToolbar = MainActionInfo.TOOLBAR_VISIBLE, accelModifiers = KeyEvent.CTRL_MASK, accelKey = KeyEvent.VK_Y)
+	public void handleRedo() {
+		shownComponent.handleRedo();
+	}
+
+	@MainActionInfo(name = "SmallStep", icon = "none", visibleMenu = MainActionInfo.MENU_RUN, visibleToolbar = MainActionInfo.TOOLBAR_HIDDEN, accelModifiers = KeyEvent.VK_UNDEFINED, accelKey = KeyEvent.VK_F11)
 	public void handleSmallStep() {
 		try {
-			SmallStepGUI gui = new SmallStepGUI("SmallStep", file
-					.getDocument().getText(0, file.getDocument().getLength()));
+			SmallStepGUI gui = new SmallStepGUI("SmallStep", file.getDocument()
+					.getText(0, file.getDocument().getLength()));
 			addEditorComponent(gui);
+			setActionStatus("Undo", gui.getAction("Undo").isEnabled());
+			setActionStatus("Redo", gui.getAction("Redo").isEnabled());
 		} catch (Exception e) {
 			e.printStackTrace();
-			//TODO handle this!
+			// TODO handle this!
 		}
 	}
-	@MainActionInfo(name = "TypeChecker", icon="none", visibleMenu = MainActionInfo.MENU_RUN, visibleToolbar = MainActionInfo.TOOLBAR_HIDDEN)
-	public void handleTypeChecker(){
-		try{
-		  TypeCheckerGUI gui = new TypeCheckerGUI ("TypeChecker");
-		  gui.startTypeChecking (file.getDocument().getExpression());
-		  addEditorComponent(gui);
-		} catch (Exception e){
+
+	@MainActionInfo(name = "TypeChecker", icon = "none", visibleMenu = MainActionInfo.MENU_RUN, visibleToolbar = MainActionInfo.TOOLBAR_HIDDEN, accelModifiers = KeyEvent.VK_UNDEFINED, accelKey = KeyEvent.VK_F12)
+	public void handleTypeChecker() {
+		try {
+			TypeCheckerGUI gui = new TypeCheckerGUI("TypeChecker");
+			gui.startTypeChecking(file.getDocument().getExpression());
+			addEditorComponent(gui);
+			setActionStatus("Undo", gui.getAction("Undo").isEnabled());
+			setActionStatus("Redo", gui.getAction("Redo").isEnabled());
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
+
 	private void addEditorComponent(EditorComponent comp) {
 		JToggleButton compbutton = new JToggleButton(comp.getTitle());
 		Component[] buttons = menu.getComponents();
@@ -245,9 +265,9 @@ public class EditorWindow extends JPanel implements FileWindow {
 		deselectButtons();
 		compbutton.setSelected(true);
 		menu.add(compbutton);
-		remove(getShownComponent());
+		remove((Component) getShownComponent());
 		add((Component) comp, BorderLayout.CENTER);
-		setShownComponent((Component) comp);
+		setShownComponent(comp);
 		updateActions(comp);
 	}
 
@@ -283,30 +303,49 @@ public class EditorWindow extends JPanel implements FileWindow {
 		List<EditorAction> actionlist = list;
 		for (int i = 0; i < actionlist.size(); i++) {
 			final EditorAction action = actionlist.get(i);
-			final JButton tmp;
-			 if (action.getIcon() == null){
-				 tmp = new JButton(action.getTitle());
-			 }
-			 else{
-				 tmp = new JButton(action.getIcon());
-			 }			
-			tmp.setEnabled(action.isEnabled());
-			action.addPropertyChangeListener("enabled", new PropertyChangeListener() {
-                public void propertyChange(PropertyChangeEvent evt) {
-                  tmp.setEnabled(action.isEnabled());
-                }
-              });
-			component.add(tmp);
-			tmp.addActionListener(action.getActionListener());
+			if (action.isVisible()) {
+				final JButton tmp;
+				if (action.getIcon() == null) {
+					tmp = new JButton(action.getTitle());
+				} else {
+					tmp = new JButton(action.getIcon());
+				}
+				tmp.setEnabled(action.isEnabled());
+				// tmp.setAccelerator(KeyStroke.getKeyStroke(action.getAccelKey(),action.getAccelModifiers()));
+				action.addPropertyChangeListener("enabled",
+						new PropertyChangeListener() {
+							public void propertyChange(PropertyChangeEvent evt) {
+								tmp.setEnabled(action.isEnabled());
+							}
+						});
+				component.add(tmp);
+				tmp.addActionListener(action.getActionListener());
+			}
 		}
 	}
 
-	public Component getShownComponent() {
+	public EditorComponent getShownComponent() {
 		return shownComponent;
 	}
 
-	public void setShownComponent(Component shownComponent) {
-		this.shownComponent = shownComponent;
+	public void setShownComponent(EditorComponent ishownComponent) {
+		shownComponent = ishownComponent;
+		EditorAction undo = shownComponent.getAction("Undo");
+		EditorAction redo = shownComponent.getAction("Redo");
+		undo.addPropertyChangeListener("enabled", new PropertyChangeListener() {
+			public void propertyChange(PropertyChangeEvent evt) {
+				setActionStatus("Undo", (Boolean) evt.getNewValue());
+			}
+		});
+		redo.addPropertyChangeListener("enabled", new PropertyChangeListener() {
+			public void propertyChange(PropertyChangeEvent evt) {
+				setActionStatus("Redo", (Boolean) evt.getNewValue());
+			}
+		});
+	}
+
+	public void setActionStatus(String action, boolean enabled) {
+		((DefaultEditorAction) myactions.get(action)).setEnabled(enabled);
 	}
 
 	public List<EditorAction> getFileActions() {

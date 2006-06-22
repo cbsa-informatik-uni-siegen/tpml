@@ -239,6 +239,7 @@ public class MainWindow extends JFrame{
 				 final JMenuItem tmpmenu = new JMenuItem (action.getTitle());
 				 tmpmenu.addActionListener(action.getActionListener());
                  tmpmenu.setEnabled(action.isEnabled());
+                 tmpmenu.setAccelerator(KeyStroke.getKeyStroke(action.getAccelKey(),action.getAccelModifiers()));
 				 component.add(tmpmenu);
                  action.addPropertyChangeListener("enabled", new PropertyChangeListener() {
                    public void propertyChange(PropertyChangeEvent evt) {
@@ -267,9 +268,11 @@ public class MainWindow extends JFrame{
 			}
 		  if (component.equals(fileMenu)){
 		  fileMenu.addSeparator();
-		   JMenuItem exitItem = fileMenu.add("Exit");
+		   JMenuItem exitItem = fileMenu.add("Quit");
+		    exitItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q,
+			        KeyEvent.CTRL_MASK));
 		   exitItem.addActionListener(menulistener);
-		   exitItem.setMnemonic(KeyEvent.VK_X);
+		   exitItem.setMnemonic(KeyEvent.VK_Q);
 		   }
       }
 

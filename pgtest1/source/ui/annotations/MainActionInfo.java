@@ -23,6 +23,16 @@ public @interface MainActionInfo {
 	 */
 	public int visibleMenu();
 	
+	/**
+	 * @return the keycode to be held for shortcuts.
+	 */
+	public int accelModifiers();
+	
+	/**
+	 * @return the keycode to be pressed for shortcuts.
+	 */
+	public int accelKey();
+	
 	public static final int MENU_HIDDEN = 0;
 	public static final int MENU_FILE = 1;
 	public static final int MENU_EDIT = 2;

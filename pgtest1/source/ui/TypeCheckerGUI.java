@@ -163,7 +163,7 @@ public class TypeCheckerGUI extends AbstractEditorComponent {
 		}
 	}
 
-	@EditorActionInfo(name = "Undo", icon = "icons/undo.gif", keyHeld = KeyEvent.VK_UNDEFINED, keyPressed = KeyEvent.VK_UNDEFINED)
+	@EditorActionInfo(visible = false, name = "Undo", icon = "icons/undo.gif", accelModifiers = KeyEvent.VK_UNDEFINED, accelKey = KeyEvent.VK_UNDEFINED)
 	public void handleUndo() {
 		--this.currentProofTreeIndex;
 		ProofTree currentProof = proofTree
@@ -172,7 +172,7 @@ public class TypeCheckerGUI extends AbstractEditorComponent {
 		checkButtonStates();
 	}
 
-	@EditorActionInfo(name = "Redo", icon = "icons/redo.gif",  keyHeld = KeyEvent.VK_UNDEFINED, keyPressed = KeyEvent.VK_UNDEFINED)
+	@EditorActionInfo(visible = false, name = "Redo", icon = "icons/redo.gif",  accelModifiers = KeyEvent.VK_UNDEFINED, accelKey = KeyEvent.VK_UNDEFINED)
 	public void handleRedo() {
 		++this.currentProofTreeIndex;
 		ProofTree currentProof = proofTree

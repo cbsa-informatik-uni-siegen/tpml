@@ -7,6 +7,12 @@ import javax.swing.Icon;
 import common.beans.Bean;
 
 public interface EditorAction extends Bean {
+	/**
+	 * Returns <code>true</code> if the action is visible in the small
+	 * menu within the editorwindow
+	 * @return true if visible
+	 */
+	public boolean isVisible();
   /**
    * Returns <code>true</code> if the action can be performed, that is,
    * if the action widget should be sensitive.
@@ -42,7 +48,7 @@ public interface EditorAction extends Bean {
    *  Ctrl + X, this functions would define Ctrl.
    * @return the key to be held.
    */
-  public int getKeyHeld();
+  public int getAccelModifiers();
   /**
    * Returns the key to be pressed for shortcuts. Example:
    *  Ctrl + X, this would define the X. If no keyHeld is
@@ -50,7 +56,7 @@ public interface EditorAction extends Bean {
    *  actio. Example: F12
    * @return the key to be pressed.
    */
-  public int getKeyPressed();
+  public int getAccelKey();
 
   /**
    * FIXME

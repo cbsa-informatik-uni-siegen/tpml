@@ -17,6 +17,8 @@ public class DefaultEditorAction extends AbstractBean implements EditorAction {
 	// Attributes
 	//
 
+	private boolean visible;
+	
 	private String title;
 
 	private int group;
@@ -27,9 +29,9 @@ public class DefaultEditorAction extends AbstractBean implements EditorAction {
 
 	private ActionListener actionlistener;
 	
-	private int keyHeld;
+	private int accelModifiers;
 	
-	private int keyPressed;
+	private int accelKey;
 
 	//
 	// Primitives
@@ -49,6 +51,14 @@ public class DefaultEditorAction extends AbstractBean implements EditorAction {
 		boolean oldEnabled = this.enabled;
 		this.enabled = enabled;
 		firePropertyChange("enabled", oldEnabled, enabled);
+	}
+
+	public boolean isVisible() {
+		return visible;
+	}
+
+	public void setVisible(boolean visible) {
+		this.visible = visible;
 	}
 
 	public void setGroup(int group) {
@@ -81,12 +91,12 @@ public class DefaultEditorAction extends AbstractBean implements EditorAction {
 	
 
 	
-	public void setKeyHeld(int keyHeld) {
-		this.keyHeld = keyHeld;
+	public void setAccelModifiers(int keyHeld) {
+		this.accelModifiers = keyHeld;
 	}
 
-	public void setKeyPressed(int keyPressed) {
-		this.keyPressed = keyPressed;
+	public void setAccelKey(int keyPressed) {
+		this.accelKey = keyPressed;
 	}
 
 	/**
@@ -122,11 +132,11 @@ public class DefaultEditorAction extends AbstractBean implements EditorAction {
 		return actionlistener;
 	}
 
-	public int getKeyHeld() {
-		return keyHeld;
+	public int getAccelModifiers() {
+		return accelModifiers;
 	}
 
-	public int getKeyPressed() {
-		return keyPressed;
+	public int getAccelKey() {
+		return accelKey;
 	};
 }

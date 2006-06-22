@@ -134,7 +134,7 @@ public class SourceFile extends AbstractEditorComponent implements
 		// setActionStatus("Redo", false);
 	}
 
-	@EditorActionInfo(name = "Undo", icon = "icons/undo.gif", keyHeld = KeyEvent.VK_UNDEFINED, keyPressed = KeyEvent.VK_UNDEFINED)
+	@EditorActionInfo(visible = false, name = "Undo", icon = "icons/undo.gif", accelModifiers = KeyEvent.CTRL_MASK, accelKey = KeyEvent.VK_Z)
 	public void handleUndo() {
 		try {
 			getDocument().removeDocumentListener(doclistener);
@@ -165,7 +165,7 @@ public class SourceFile extends AbstractEditorComponent implements
 		}
 	}
 
-	@EditorActionInfo(name = "Redo", icon = "icons/redo.gif", keyHeld = KeyEvent.VK_UNDEFINED, keyPressed = KeyEvent.VK_UNDEFINED)
+	@EditorActionInfo(visible = false, name = "Redo", icon = "icons/redo.gif", accelModifiers = KeyEvent.VK_UNDEFINED, accelKey = KeyEvent.VK_UNDEFINED)
 	public void handleRedo() {
 		try {
 			if (redohistory.size() > 0) {

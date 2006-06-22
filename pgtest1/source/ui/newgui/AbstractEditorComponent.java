@@ -32,6 +32,7 @@ public abstract class AbstractEditorComponent extends JPanel implements EditorCo
 		tmp.addAll(actions);
 		return tmp;
 	}
+	
 
 	public String getTitle() {
 		return title;
@@ -58,8 +59,9 @@ public abstract class AbstractEditorComponent extends JPanel implements EditorCo
 						//TODO add handling!
 					}
 				}
-				newaction.setKeyHeld(actioninfo.keyHeld());
-				newaction.setKeyPressed(actioninfo.keyPressed());
+				newaction.setAccelModifiers(actioninfo.accelModifiers());
+				newaction.setAccelKey(actioninfo.accelKey());
+				newaction.setVisible(actioninfo.visible());
 				//TODO enable grouping
 				newaction.setGroup(1);
 				newaction.setActionlistener(new ActionListener() {
@@ -78,8 +80,12 @@ public abstract class AbstractEditorComponent extends JPanel implements EditorCo
 		}
 	}
 	
-	public void setActionStatus(String name, boolean status) {
-		((DefaultEditorAction) myactions.get(name)).setEnabled(status);
+	public void setActionStatus(String name, boolean enabled) {
+		((DefaultEditorAction) myactions.get(name)).setEnabled(enabled);
 	}
+	
+	  public EditorAction getAction (String action){
+		 return (EditorAction)myactions.get(action);
+	  };
 
 }

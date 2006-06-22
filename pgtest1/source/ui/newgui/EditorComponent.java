@@ -25,6 +25,18 @@ public interface EditorComponent {
    * @return the title for this editor pane.
    */
   public String getTitle();
+  /**
+   * Sets the enabled status of the specified action.
+   * @param action the name of the action
+   * @param enabled the enabled status to be set
+   */
+  public void setActionStatus (String action, boolean enabled);
+  
+  public EditorAction getAction (String action);
+  
+  public void handleUndo();
+  
+  public void handleRedo();
     
 //  public Component getDisplay();
 }

@@ -35,17 +35,8 @@ public class SmallStepGUI extends AbstractEditorComponent implements
 
 	private SmallStepProofModel model;
 
-	// next lines added by christoph
-	// private List<DefaultEditorAction> actions;
-
-	// private String title;
-
 	public SmallStepGUI(String title, String program) {
 		super(title);
-		// next 3 lines were added by christoph
-		// actions = new LinkedList<DefaultEditorAction>();
-		// generateActions();
-		// this.title = title;
 
 		this.setLayout(new BorderLayout());
 		view = new SmallStepView();
@@ -76,10 +67,11 @@ public class SmallStepGUI extends AbstractEditorComponent implements
 
 		this.scrollPane.setBackground(Color.WHITE);
 		this.scrollPane.getViewport().setBackground(Color.WHITE);
+		setActionStatus("Undo", false);
+		setActionStatus("Redo", false);
 	}
 
-	// all following methods added by christoph
-	@EditorActionInfo(name = "Guess", icon = "none", keyHeld = KeyEvent.VK_UNDEFINED, keyPressed = KeyEvent.VK_UNDEFINED)
+	@EditorActionInfo(visible = true, name = "Guess", icon = "none", accelModifiers = KeyEvent.VK_UNDEFINED, accelKey = KeyEvent.VK_UNDEFINED)
 	public void handleGuess() {
 		try {
 			model.guess(view.getRootNode().getFirstLeaf());
@@ -87,49 +79,14 @@ public class SmallStepGUI extends AbstractEditorComponent implements
 			JOptionPane.showMessageDialog(SmallStepGUI.this, exc.getMessage());
 		}
 	}
-
-	// private void generateActions(){
-	// Class me = this.getClass();
-	// Method[] methods = me.getDeclaredMethods();
-	// for (int i = 0; i < methods.length ; i++){
-	// final Method tmp = methods[i];
-	// EditorActionInfo actioninfo = tmp.getAnnotation(EditorActionInfo.class);
-	// if (actioninfo != null){
-	// DefaultEditorAction newaction = new DefaultEditorAction();
-	// newaction.setTitle(actioninfo.name());
-	// newaction.setEnabled(true);
-	// if ( ! actioninfo.icon().equals("none")) {
-	// //newaction.setIcon();
-	// }
-	// newaction.setGroup(1);
-	// newaction.setActionlistener(
-	// new ActionListener() {
-	// public void actionPerformed(ActionEvent event) {
-	// try{
-	// tmp.invoke(SmallStepGUI.this);
-	// } catch (Exception e){
-	// e.printStackTrace();
-	// //TODO Add Handling!!
-	// }
-	// }
-	// });
-	// actions.add(newaction);
-	// }
-	// }
-	// }
-
-	// public List<EditorAction> getActions() {
-	// List<EditorAction> tmp = new LinkedList<EditorAction>();
-	// tmp.addAll(actions);
-	// return tmp;
-	// }
-	//
-	//
-	// public String getTitle() {
-	// return title;
-	// }
-
-	// public Component getDisplay() {
-	// return this;
-	// }
+	@EditorActionInfo(visible = false, name = "Undo", icon = "icons/undo.gif", accelModifiers = KeyEvent.CTRL_MASK, accelKey = KeyEvent.VK_Z)
+	public void handleUndo() {
+		// TODO Auto-generated method stub
+		
+	}
+	@EditorActionInfo(visible = false, name = "Redo", icon = "icons/redo.gif", accelModifiers = KeyEvent.VK_UNDEFINED, accelKey = KeyEvent.VK_UNDEFINED)
+	public void handleRedo() {
+		// TODO Auto-generated method stub
+		
+	}
 }
