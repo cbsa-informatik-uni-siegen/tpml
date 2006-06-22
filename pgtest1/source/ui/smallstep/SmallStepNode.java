@@ -331,7 +331,7 @@ class SmallStepNode extends AbstractNode {
 			ProofRule r = steps [i].getRule();
 			if (r.isAxiom()) {
 				w = this.ruleFontMetrics.stringWidth("(" + r.getName() + ")");
-				break;
+				i++;
 			}
 			else {
 				i++;
