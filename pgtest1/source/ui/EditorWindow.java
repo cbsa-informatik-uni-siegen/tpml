@@ -42,9 +42,9 @@ import expressions.Expression;
  * 
  */
 public class EditorWindow extends JPanel implements FileWindow {
-    private static final long serialVersionUID = -5830307198539052787L;
+	private static final long serialVersionUID = -5830307198539052787L;
 
-    private SourceFile file;
+	private SourceFile file;
 
 	private File systemfile = null;
 
@@ -219,32 +219,36 @@ public class EditorWindow extends JPanel implements FileWindow {
 			setActionStatus("Undo", gui.getAction("Undo").isEnabled());
 			setActionStatus("Redo", gui.getAction("Redo").isEnabled());
 		} catch (Exception e) {
-          JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(this, e.getMessage(), "Error",
+					JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
 	@MainActionInfo(name = "TypeChecker", icon = "none", visibleMenu = MainActionInfo.MENU_RUN, visibleToolbar = MainActionInfo.TOOLBAR_HIDDEN, accelModifiers = KeyEvent.VK_UNDEFINED, accelKey = KeyEvent.VK_F12)
 	public void handleTypeChecker() {
 		try {
-            Expression e = file.getDocument().getExpression();
+			Expression e = file.getDocument().getExpression();
 			TypeCheckerGUI gui = new TypeCheckerGUI("TypeChecker");
 			gui.startTypeChecking(e);
 			addEditorComponent(gui);
 			setActionStatus("Undo", gui.getAction("Undo").isEnabled());
 			setActionStatus("Redo", gui.getAction("Redo").isEnabled());
 		} catch (Exception e) {
-          JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(this, e.getMessage(), "Error",
+					JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
 	private void addEditorComponent(EditorComponent comp) {
 		JToggleButton compbutton = new JToggleButton(comp.getTitle());
 		Component[] buttons = menu.getComponents();
+		boolean existed = false;
 		for (int i = 0; i < buttons.length; i++) {
 			if (((JToggleButton) buttons[i]).getLabel().equals(comp.getTitle())) {
 				compbutton = (JToggleButton) buttons[i];
 				compbutton
 						.removeActionListener(compbutton.getActionListeners()[0]);
+				existed = true;
 				break;
 			}
 		}
@@ -252,11 +256,13 @@ public class EditorWindow extends JPanel implements FileWindow {
 				compbutton));
 		deselectButtons();
 		compbutton.setSelected(true);
-		menu.add(compbutton);
+		if (!existed)
+			menu.add(compbutton);
 		remove((Component) getShownComponent());
 		add((Component) comp, BorderLayout.CENTER);
 		setShownComponent(comp);
 		updateActions(comp);
+		paintAll(getGraphics());
 	}
 
 	public void deselectButtons() {
