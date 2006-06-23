@@ -297,6 +297,7 @@ public class EditorWindow extends JPanel implements FileWindow {
 					tmp = new JButton(action.getTitle());
 				} else {
 					tmp = new JButton(action.getIcon());
+					tmp.setToolTipText(action.getTitle());
 				}
 				tmp.setEnabled(action.isEnabled());
 				// tmp.setAccelerator(KeyStroke.getKeyStroke(action.getAccelKey(),action.getAccelModifiers()));

@@ -32,11 +32,13 @@ import ui.SettingsGUI;
 import ui.SourceFile;
 import ui.ThemeManager;
 
-public class MainWindow extends JFrame{
-//	private static String defaultExpression = "let rec f = lambda x. if x = 0 then 1 else x * f (x - 1) in f 3";
+public class MainWindow extends JFrame {
+	// private static String defaultExpression = "let rec f = lambda x. if x = 0
+	// then 1 else x * f (x - 1) in f 3";
 	private static String defaultExpression = "let f = ref (lambda x.x) in let fact = lambda x.if x = 0 then 1 else x * (!f (x - 1)) in f := fact; !f 3";
-//	private static String defaultExpression = "";
-    
+
+	// private static String defaultExpression = "";
+
 	private JMenu fileMenu;
 
 	private JMenu editMenu;
@@ -55,6 +57,11 @@ public class MainWindow extends JFrame{
 
 	public MainWindow() {
 		super();
+		addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
+				MainWindow.this.handleExit();
+			};
+		});
 		setTitle("Projektgruppe v.01");
 		editorlistener = new PropertyChangeListener() {
 			public void propertyChange(PropertyChangeEvent evt) {
@@ -91,7 +98,7 @@ public class MainWindow extends JFrame{
 					handleClose();
 				else if (e.getActionCommand() == "Preferences")
 					handlePreferences();
-				else if (e.getActionCommand() == "Exit")
+				else if (e.getActionCommand() == "Quit")
 					handleExit();
 			}
 		};
@@ -154,14 +161,15 @@ public class MainWindow extends JFrame{
 		openItem.setMnemonic(KeyEvent.VK_O);
 		openItem.addActionListener(menulistener);
 
-		JMenuItem closeItem = fileMenu.add("Close");
-		closeItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q,
-				KeyEvent.CTRL_MASK));
-		closeItem.setMnemonic(KeyEvent.VK_C);
-		closeItem.addActionListener(menulistener);
+		if (selectedEditor != null) {
+			JMenuItem closeItem = fileMenu.add("Close");
+			closeItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W,
+					KeyEvent.CTRL_MASK));
+			closeItem.setMnemonic(KeyEvent.VK_C);
+			closeItem.addActionListener(menulistener);
+		}
 
 		fileMenu.addSeparator();
-
 
 		JButton open = new JButton(new ImageIcon(EditorWindow.class
 				.getResource("icons/open.png")));
@@ -217,27 +225,38 @@ public class MainWindow extends JFrame{
 	}
 
 	private void handleClose() {
-		if (selectedEditor.isModified()) {
-			// Custom button text
-			Object[] options = { "Yes", "No", "Cancel" };
-			int n = JOptionPane.showOptionDialog(this,
-					"File contains unsaved changes. Do you want to save?",
-					"Save File", JOptionPane.YES_NO_CANCEL_OPTION,
-					JOptionPane.QUESTION_MESSAGE, null, options, options[2]);
-			if (n == 0) {
-				if (selectedEditor.handleSave()) {
+		if (selectedEditor != null) {
+			if (selectedEditor.isModified()) {
+				// Custom button text
+				Object[] options = { "Yes", "No", "Cancel" };
+				int n = JOptionPane
+						.showOptionDialog(
+								this,
+								"File contains unsaved changes. Do you want to save?",
+								"Save File", JOptionPane.YES_NO_CANCEL_OPTION,
+								JOptionPane.QUESTION_MESSAGE, null, options,
+								options[2]);
+				if (n == 0) {
+					if (selectedEditor.handleSave()) {
+						tabbedPane.remove(tabbedPane.getSelectedIndex());
+						selectedEditor = (EditorWindow) tabbedPane
+								.getSelectedComponent();
+						this.repaint();
+					}
+				} else if (n == 1) {
 					tabbedPane.remove(tabbedPane.getSelectedIndex());
+					selectedEditor = (EditorWindow) tabbedPane
+							.getSelectedComponent();
 					this.repaint();
+				} else if (n == 2) {
+					return;
 				}
-			} else if (n == 1) {
+			} else {
 				tabbedPane.remove(tabbedPane.getSelectedIndex());
+				selectedEditor = (EditorWindow) tabbedPane
+						.getSelectedComponent();
 				this.repaint();
-			} else if (n == 2) {
-				return;
 			}
-		} else {
-			tabbedPane.remove(tabbedPane.getSelectedIndex());
-			this.repaint();
 		}
 
 	}
@@ -254,9 +273,14 @@ public class MainWindow extends JFrame{
 			addActions(selectedEditor.getRunActions(), runMenu);
 			addActions(selectedEditor.getEditActions(), editMenu);
 		}
+		closeFileMenu();
+		closeEditMenu();
 	}
 
 	private void handleExit() {
+		while (selectedEditor != null) {
+			handleClose();
+		}
 		System.exit(0);
 	}
 
@@ -301,21 +325,22 @@ public class MainWindow extends JFrame{
 						});
 			}
 		}
-		if (component.equals(fileMenu)) {
-			fileMenu.addSeparator();
-			JMenuItem exitItem = fileMenu.add("Quit");
-			exitItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q,
-					KeyEvent.CTRL_MASK));
-			exitItem.addActionListener(menulistener);
-			exitItem.setMnemonic(KeyEvent.VK_Q);
-		}
-		if (component.equals(editMenu)){
-			editMenu.addSeparator();
-			JMenuItem preferences = editMenu.add("Preferences");
-			preferences.addActionListener(menulistener);
-			preferences.setMnemonic(KeyEvent.VK_P);
+	}
 
-		}
+	private void closeEditMenu() {
+		editMenu.addSeparator();
+		JMenuItem preferences = editMenu.add("Preferences");
+		preferences.addActionListener(menulistener);
+		preferences.setMnemonic(KeyEvent.VK_P);
+	}
+
+	private void closeFileMenu() {
+		fileMenu.addSeparator();
+		JMenuItem exitItem = fileMenu.add("Quit");
+		exitItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q,
+				KeyEvent.CTRL_MASK));
+		exitItem.addActionListener(menulistener);
+		exitItem.setMnemonic(KeyEvent.VK_Q);
 	}
 
 	/**
@@ -325,11 +350,6 @@ public class MainWindow extends JFrame{
 
 		ThemeManager.get();
 		MainWindow mw = new MainWindow();
-		mw.addWindowListener(new WindowAdapter() {
-			public void windowClosing(WindowEvent e) {
-				System.exit(0);
-			};
-		});
 		mw.paintAll(mw.getGraphics());
 		mw.setVisible(true);
 	}
