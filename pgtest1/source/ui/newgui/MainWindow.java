@@ -232,10 +232,11 @@ public class MainWindow extends JFrame {
 				int n = JOptionPane
 						.showOptionDialog(
 								this,
-								"File contains unsaved changes. Do you want to save?",
+								selectedEditor.getFile().getFilename()+" contains unsaved changes. Do you want to save?",
 								"Save File", JOptionPane.YES_NO_CANCEL_OPTION,
 								JOptionPane.QUESTION_MESSAGE, null, options,
 								options[2]);
+				
 				if (n == 0) {
 					if (selectedEditor.handleSave()) {
 						tabbedPane.remove(tabbedPane.getSelectedIndex());
