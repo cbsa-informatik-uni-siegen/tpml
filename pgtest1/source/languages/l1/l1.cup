@@ -82,11 +82,11 @@ precedence left		STAR, SLASH, MOD;
 precedence nonassoc	NUMBER, IDENTIFIER;		/* necessary to get "f 8 + f 9" right */
 
 precedence nonassoc	LPAREN, RPAREN, LBRACKET, RBRACKET;
-precedence right	APPL;
+precedence left		APPL;
 
 precedence nonassoc	BRACKETBRACKET, PARENPAREN, FALSE, TRUE, TILDEMINUS,
 					NOT, FST, SND, CONS, IS_EMPTY, HD, TL, DEREF, REF,
-					PROJECTION;
+					PROJECTION, LAMBDA;
 
 
 seq_expr		::=	expr:e
@@ -158,9 +158,9 @@ expr			::=	constant:c
 					{: RESULT = new While(e1, e2); :}
 
 				/* Conditions */
-				|	IF seq_expr:e0 THEN seq_expr:e1 ELSE seq_expr:e2
+				|	IF seq_expr:e0 THEN expr:e1 ELSE expr:e2
 					{: RESULT = new Condition(e0, e1, e2); :}
-				|	IF seq_expr:e0 THEN seq_expr:e1
+				|	IF seq_expr:e0 THEN expr:e1
 					{: RESULT = new Condition1(e0, e1); :}
 
 				/* Lambda Abstraction */

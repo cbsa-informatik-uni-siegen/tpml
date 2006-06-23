@@ -148,8 +148,8 @@ Identifier		= [:jletter:] [:jletterdigit:]*
 	"do"						{ return symbol("DO", DO); }
 
 	// constants
-	"()"						{ return symbol("BRACKETBRACKET", BRACKETBRACKET); }
-	"[]"						{ return symbol("PARENPAREN", PARENPAREN); }
+	"()"						{ return symbol("PARENPAREN", PARENPAREN); }
+	"[]"						{ return symbol("BRACKETBRACKET", BRACKETBRACKET); }
 	"true"						{ return symbol("TRUE", TRUE); }
 	"false"						{ return symbol("FALSE", FALSE); }
 

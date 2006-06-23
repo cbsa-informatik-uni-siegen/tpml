@@ -154,7 +154,7 @@ public final class List extends Expression {
     builder.appendText("[");
     for (int n = 0; n < this.expressions.length; ++n) {
       if (n > 0) {
-        builder.appendText(", ");
+        builder.appendText("; ");
         builder.appendBreak();
       }
       builder.appendBuilder(this.expressions[n].toPrettyStringBuilder(), 0);
