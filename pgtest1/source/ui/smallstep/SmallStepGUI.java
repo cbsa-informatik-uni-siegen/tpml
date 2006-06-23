@@ -55,7 +55,7 @@ public class SmallStepGUI extends AbstractEditorComponent implements EditorCompo
 		setActionStatus("Redo", false);
 	}
 
-	@EditorActionInfo(visible = true, name = "Guess", icon = "none", accelModifiers = KeyEvent.VK_UNDEFINED, accelKey = KeyEvent.VK_UNDEFINED)
+	@EditorActionInfo(visible = true, name = "Guess", icon = "icons/next.png", accelModifiers = KeyEvent.VK_UNDEFINED, accelKey = KeyEvent.VK_UNDEFINED)
 	public void handleGuess() {
 		try {
 			model.guess(view.getRootNode().getFirstLeaf());
