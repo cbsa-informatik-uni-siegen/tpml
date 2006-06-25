@@ -3,14 +3,12 @@
 
 <product name="pgtest2" id="pgtest2.pgtest2" application="pgtest2.application" useFeatures="false">
 
-
    <configIni use="default"/>
 
    <launcherArgs>
    </launcherArgs>
 
    <windowImages/>
-
 
    <launcher name="pgtest2">
       <solaris/>
@@ -25,9 +23,11 @@
       <plugin id="org.eclipse.core.runtime"/>
       <plugin id="org.eclipse.help"/>
       <plugin id="org.eclipse.jface"/>
+      <plugin id="org.eclipse.jface.text"/>
       <plugin id="org.eclipse.osgi"/>
       <plugin id="org.eclipse.swt"/>
       <plugin id="org.eclipse.swt.gtk.linux.x86"/>
+      <plugin id="org.eclipse.text"/>
       <plugin id="org.eclipse.ui"/>
       <plugin id="org.eclipse.ui.workbench"/>
       <plugin id="pgtest2"/>

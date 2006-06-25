@@ -6,5 +6,6 @@ Bundle-Version: 0.0.1
 Bundle-Activator: pgtest2.Pgtest2Plugin
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.ui,
- org.eclipse.core.runtime
+ org.eclipse.core.runtime,
+ org.eclipse.jface.text
 Eclipse-AutoStart: true
