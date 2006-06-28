@@ -218,7 +218,6 @@ public interface ProofModel extends Bean, TreeModel {
    */
   public ProofNode getChild(Object parent, int index);
 
-
   /**
    * Builds the parents of node up to and including the root node,
    * where the original node is the last element in the returned
