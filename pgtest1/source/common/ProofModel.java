@@ -59,6 +59,12 @@ public interface ProofModel extends Bean, TreeModel {
    */
   public boolean isMemoryEnabled();
 
+  
+  
+  //
+  // Undo/Redo
+  //
+  
   /**
    * Returns <code>true</code> if the model has
    * recorded undo steps that can be redone
@@ -74,7 +80,7 @@ public interface ProofModel extends Bean, TreeModel {
   
   /**
    * Returns <code>true</code> if the model has
-   * recoded proof steps that can be undone using
+   * recorded proof steps that can be undone using
    * the {@link #undo()} operation.
    * 
    * @return <code>true</code> if {@link #undo()}
@@ -85,25 +91,37 @@ public interface ProofModel extends Bean, TreeModel {
    */
   public boolean isUndoable();
 
+  /**
+   * Redoes the previously undo change to the proof model. Use
+   * {@link #isRedoable()} to test whether there's a change to
+   * this model that can be redone.
+   * 
+   * @throws CannotRedoException if the redo history is empty
+   *                             or the change cannot be redone
+   *                             for some other reason.
+   * 
+   * @see #undo()
+   */
+  public void redo() throws CannotRedoException;
+  
+  /**
+   * Undoes the previous change to the proof model. Use
+   * {@link #isUndoable()} to test whether there's a change
+   * to this model that can be undone.
+   * 
+   * @throws CannotUndoException if the undo history is empty
+   *                             or the change cannot be undone
+   *                             for some other reason.
+   * 
+   * @see #redo()
+   */
+  public void undo() throws CannotUndoException;
+  
   
   
   //
   // Actions
   //
-  
-  /**
-   * FIXME
-   * 
-   * @see #undo()
-   */
-  public void redo();
-  
-  /**
-   * FIXME
-   * 
-   * @see #redo()
-   */
-  public void undo();
   
   /**
    * Guesses the next proof step for the specified <code>node</code>.

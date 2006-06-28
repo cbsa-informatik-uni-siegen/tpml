@@ -155,22 +155,95 @@ public class SmallStepProofModel extends AbstractProofModel {
   //
   // Internals
   //
-  
-  private void apply(SmallStepProofRule rule, SmallStepProofNode node) throws ProofRuleException {
-    // apply the rule to the specified node
-    SmallStepProofNode child = node.apply(rule);
-    
-    // check if we have a new tree node
-    if (child != null) {
-      // add the child node to the node
-      node.add(child);
 
-      // tell the view about the new tree node
-      int[] indices = { node.getIndex(child) };
-      nodesWereInserted(node, indices);
+  /**
+   * Applies the specified <code>rule</code> to the specified <code>node</code>.
+   * 
+   * @param rule the {@link SmallStepProofRule} to apply.
+   * @param node the {@link SmallStepProofNode} to which to apply the
+   *             <code>rule</code> (must be part of this model).
+   *             
+   * @throws ProofRuleException if the <code>rule</code> cannot be applied to the
+   *                            <code>node</code>.
+   */
+  private void apply(SmallStepProofRule rule, final SmallStepProofNode node) throws ProofRuleException {
+    // evaluate the expression and determine the proof steps
+    SmallStepEvaluator evaluator = new SmallStepEvaluator(node.getExpression(), node.getStore());
+    Expression expression = evaluator.getExpression();
+    ProofStep[] evaluatedSteps = evaluator.getSteps();
+    
+    // determine the completed steps for the node
+    final ProofStep[] completedSteps = node.getSteps();
+    
+    // check if the node is already completed
+    if (completedSteps.length >= evaluatedSteps.length) {
+      throw new IllegalStateException("Cannot prove an already proven node");
     }
     
-    // notify the view about the changes to this node
-    nodeChanged(node);
+    // verify the completed steps
+    int n;
+    for (n = 0; n < completedSteps.length; ++n) {
+      if (completedSteps[n].getRule() != evaluatedSteps[n].getRule())
+        throw new IllegalStateException("Completed steps don't match evaluated steps");
+    }
+
+    // check if the rule is valid, accepting regular meta-rules for EXN rules
+    int m;
+    for (m = n; m < evaluatedSteps.length; ++m) {
+      if (evaluatedSteps[m].getRule() == rule || evaluatedSteps[m].getRule() == rule.getExnRule())
+        break;
+    }
+    
+    // check if rule is invalid
+    if (m >= evaluatedSteps.length) {
+      throw new ProofRuleException(node, rule);
+    }
+    
+    // determine the new step(s) for the node
+    final ProofStep[] newSteps = new ProofStep[m + 1];
+    System.arraycopy(evaluatedSteps, 0, newSteps, 0, m + 1);
+
+    // check if the node is finished (the last
+    // step is an application of an axiom rule)
+    if (newSteps[m].getRule().isAxiom()) {
+      // create the child node for the node
+      final SmallStepProofNode child = new SmallStepProofNode(expression, evaluator.getStore());
+      
+      // add the undoable edit
+      addUndoableTreeEdit(new UndoableTreeEdit() {
+        public void redo() {
+          // apply the new steps and add the child
+          node.setSteps(newSteps);
+          node.add(child);
+          nodesWereInserted(node, new int[] { node.getIndex(child) });
+          nodeChanged(node);
+        }
+        
+        public void undo() {
+          // remove the child and revert the steps
+          int[] indices = { node.getIndex(child) };
+          node.remove(child);
+          nodesWereRemoved(node, indices, new Object[] { child });
+          node.setSteps(completedSteps);
+          nodeChanged(node);
+        }
+      });
+    }
+    else {
+      // add the undoable edit
+      addUndoableTreeEdit(new UndoableTreeEdit() {
+        public void redo() {
+          // apply the new steps
+          node.setSteps(newSteps);
+          nodeChanged(node);
+        }
+        
+        public void undo() {
+          // revert to the previous steps
+          node.setSteps(completedSteps);
+          nodeChanged(node);
+        }
+      });
+    }
   }
 }

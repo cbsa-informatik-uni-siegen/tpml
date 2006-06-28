@@ -1,6 +1,7 @@
 package common;
 
 import java.util.EventListener;
+import java.util.LinkedList;
 
 import javax.swing.event.EventListenerList;
 import javax.swing.event.TreeModelEvent;
@@ -118,39 +119,11 @@ public abstract class AbstractProofModel extends AbstractBean implements ProofMo
     }
   }
   
-  /**
-   * {@inheritDoc}
-   * 
-   * @see ProofModel#isRedoable()
-   */
-  public boolean isRedoable() {
-    // FIXME
-    return false;
-  }
-  
-  /**
-   * {@inheritDoc}
-   * 
-   * @see ProofModel#isUndoable()
-   */
-  public boolean isUndoable() {
-    // FIXME
-    return false;
-  }
-
   
   
   //
   // Actions
   //
-  
-  public void redo() {
-    // FIXME
-  }
-  
-  public void undo() {
-    // FIXME
-  }
   
   /**
    * {@inheritDoc}
@@ -183,17 +156,177 @@ public abstract class AbstractProofModel extends AbstractBean implements ProofMo
     }
     
     // verify that the expression actually contains syntactic sugar
-    Expression expression = node.getExpression();
+    final Expression expression = node.getExpression();
     if (!expression.containsSyntacticSugar()) {
       throw new IllegalArgumentException("node does not contain syntactic sugar");
     }
     
-    // translate the expression of the node to core syntax
-    AbstractProofNode abstractNode = (AbstractProofNode)node;
-    abstractNode.setExpression(expression.translateSyntacticSugar());
+    // cast the proof node to the appropriate type
+    final AbstractProofNode abstractNode = (AbstractProofNode)node;
     
-    // tell the view to update the node's appearance
-    nodeChanged(abstractNode);
+    // add the undoable edit
+    addUndoableTreeEdit(new UndoableTreeEdit() {
+      public void redo() {
+        // translate the expression of the node to core syntax
+        abstractNode.setExpression(expression.translateSyntacticSugar());
+        nodeChanged(abstractNode);
+      }
+      
+      public void undo() {
+        // restore the previous expression
+        abstractNode.setExpression(expression);
+        nodeChanged(abstractNode);
+      }
+    });
+  }
+  
+  
+  
+  //
+  // Undo/Redo
+  //
+  
+  /**
+   * The base interface for all undoable edit actions
+   * on the tree model. Derived classes will need to
+   * implement this interface whenever any action on
+   * the tree is to be performed.
+   */
+  protected static interface UndoableTreeEdit {
+    /**
+     * Performs the action of this tree edit. This method
+     * is invoked initially, when the edit is added via
+     * {@link AbstractProofModel#addUndoableTreeEdit(UndoableTreeEdit)},
+     * and when a previously undone change is redone.
+     */
+    public void redo();
+    
+    /**
+     * Undoes the effect of a previous call to {@link #redo()}.
+     */
+    public void undo();
+  }
+
+  /**
+   * The list of redoable edits.
+   * 
+   * @see #isRedoable()
+   * @see #redo()
+   */
+  private LinkedList<UndoableTreeEdit> redoEdits = new LinkedList<UndoableTreeEdit>();
+
+  /**
+   * The list of undoable edits.
+   * 
+   * @see #isUndoable()
+   * @see #undo()
+   */
+  private LinkedList<UndoableTreeEdit> undoEdits = new LinkedList<UndoableTreeEdit>();
+  
+  /**
+   * Adds the specified <code>edit</code> to the undo history
+   * and invokes the {@link UndoableTreeEdit#redo()} methods.
+   * The current redo history is cleared.
+   * 
+   * @param edit the {@link UndoableTreeEdit} to add.
+   * 
+   * @throws NullPointerException if <code>edit</code> is <code>null</code>.
+   */
+  protected void addUndoableTreeEdit(UndoableTreeEdit edit) {
+    // perform the edit action
+    edit.redo();
+    
+    // remember the previous redoable/undoable properties
+    boolean oldRedoable = isRedoable();
+    boolean oldUndoable = isUndoable();
+    
+    // clear the redo history
+    this.redoEdits.clear();
+    
+    // add to the undo history
+    this.undoEdits.add(0, edit);
+    
+    // notify the redoable/undoable properties
+    if (oldRedoable != isRedoable()) {
+      firePropertyChange("redoable", oldRedoable, isRedoable());
+    }
+    if (oldUndoable != isUndoable()) {
+      firePropertyChange("undoable", oldUndoable, isUndoable());
+    }
+  }
+  
+  /**
+   * {@inheritDoc}
+   * 
+   * @see ProofModel#isRedoable()
+   */
+  public boolean isRedoable() {
+    return (!this.redoEdits.isEmpty());
+  }
+  
+  /**
+   * {@inheritDoc}
+   * 
+   * @see ProofModel#isUndoable()
+   */
+  public boolean isUndoable() {
+    return (!this.undoEdits.isEmpty());
+  }
+
+  /**
+   * {@inheritDoc}
+   *
+   * @see common.ProofModel#redo()
+   */
+  public void redo() throws CannotRedoException {
+    if (this.redoEdits.isEmpty()) {
+      throw new CannotRedoException("nothing to redo");
+    }
+    
+    // remember the previous redoable/undoable properties
+    boolean oldRedoable = isRedoable();
+    boolean oldUndoable = isUndoable();
+    
+    // redo the most recent tree edit
+    UndoableTreeEdit edit = this.redoEdits.poll();
+    this.undoEdits.add(0, edit);
+    edit.redo();
+    
+    // notify the redoable/undoable properties
+    if (oldRedoable != isRedoable()) {
+      firePropertyChange("redoable", oldRedoable, isRedoable());
+    }
+    if (oldUndoable != isUndoable()) {
+      firePropertyChange("undoable", oldUndoable, isUndoable());
+    }
+  }
+
+  /**
+   * {@inheritDoc}
+   *
+   * @see common.ProofModel#undo()
+   */
+  public void undo() throws CannotUndoException {
+    if (this.undoEdits.isEmpty()) {
+      throw new CannotUndoException("nothing to undo");
+    }
+    
+    // remember the previous redoable/undoable properties
+    boolean oldRedoable = isRedoable();
+    boolean oldUndoable = isUndoable();
+    
+    // undo the most recent tree edit
+    UndoableTreeEdit edit = this.undoEdits.poll();
+    this.redoEdits.add(0, edit);
+    edit.undo();
+    
+    // notify the redoable/undoable properties
+    if (oldRedoable != isRedoable()) {
+      firePropertyChange("redoable", oldRedoable, isRedoable());
+    }
+    if (oldUndoable != isUndoable()) {
+      firePropertyChange("undoable", oldUndoable, isUndoable());
+    }
   }
   
   

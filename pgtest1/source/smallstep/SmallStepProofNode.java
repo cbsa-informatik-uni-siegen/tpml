@@ -2,9 +2,6 @@ package smallstep;
 
 import common.AbstractProofNode;
 import common.ProofModel;
-import common.ProofNode;
-import common.ProofRuleException;
-import common.ProofStep;
 
 import expressions.Expression;
 
@@ -116,75 +113,5 @@ public class SmallStepProofNode extends AbstractProofNode {
       throw new NullPointerException("store is null");
     }
     this.store = store;
-  }
-  
-  
-  
-  //
-  // Actions
-  //
-  
-  /**
-   * Applies the specified <code>rule</code> to this node.
-   * 
-   * @param rule the {@link SmallStepProofRule} to apply.
-   *
-   * @return the new {@link ProofNode} that was added as
-   *         child node when this node is completed with
-   *         <code>rule</code> and the evaluation is not
-   *         stuck. 
-   * 
-   * @throws IllegalStateException if the node is already proven
-   *                               or cannot be proven.
-   * @throws ProofRuleException if the <code>rule</code>
-   *                            cannot be applied here.
-   */
-  SmallStepProofNode apply(SmallStepProofRule rule) throws ProofRuleException {
-    // evaluate the expression and determine the proof steps
-    SmallStepEvaluator evaluator = new SmallStepEvaluator(getExpression(), getStore());
-    Expression expression = evaluator.getExpression();
-    ProofStep[] evaluatedSteps = evaluator.getSteps();
-    
-    // determine the completed steps for the node
-    ProofStep[] completedSteps = getSteps();
-    
-    // check if the node is already completed
-    if (completedSteps.length >= evaluatedSteps.length) {
-      throw new IllegalStateException("Cannot prove an already proven node");
-    }
-    
-    // verify the completed steps
-    int n;
-    for (n = 0; n < completedSteps.length; ++n) {
-      if (completedSteps[n].getRule() != evaluatedSteps[n].getRule())
-        throw new IllegalStateException("Completed steps don't match evaluated steps");
-    }
-
-    // check if the rule is valid, accepting regular meta-rules for EXN rules
-    int m;
-    for (m = n; m < evaluatedSteps.length; ++m) {
-      if (evaluatedSteps[m].getRule() == rule || evaluatedSteps[m].getRule() == rule.getExnRule())
-        break;
-    }
-    
-    // check if rule is invalid
-    if (m >= evaluatedSteps.length) {
-      throw new ProofRuleException(this, rule);
-    }
-    
-    // add the new step(s) to the node
-    ProofStep[] newSteps = new ProofStep[m + 1];
-    System.arraycopy(evaluatedSteps, 0, newSteps, 0, m + 1);
-    setSteps(newSteps);
-    
-    // check if we're done with this node
-    if (isProven()) {
-      // return the node for the next expression
-      // add the child node for the next expression
-      return new SmallStepProofNode(expression, evaluator.getStore());
-    }
-    
-    // not yet done with this node 
-    return null;
   }
 }

@@ -7,6 +7,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -35,11 +37,12 @@ public class SmallStepTreeView extends JFrame {
    */
   //private static final String SIMPLE = "not ((+) 1 ( (/) 10 (9 + ~- (8 + 1))))";
   //private static final String SIMPLE = "let f = ref (lambda x.x) in let fact = lambda x.if x = 0 then 1 else x * (!f (x - 1)) in (f := fact, !f 3)";
-  //private static final String SIMPLE = "let rec f = lambda x.if x = 0 then 1 else x * (f (x - 1)) in f 3";
+  private static final String SIMPLE = "let rec f = lambda x.if x = 0 then 1 else x * (f (x - 1)) in f 3";
   //private static final String SIMPLE = "(1 + 2, 5 * 8, let x = 9 in (8,(+) 9 x), y)";
   //private static final String SIMPLE = "let (x, y, z) = (~- 8, not true, 1) in x > z || y";
-  private static final String SIMPLE = "let rev l = let rec rev_helper s t = if is_empty s then t else rev_helper (tl s) ((hd s) :: t) in rev_helper l [] in rev [1+5,2+5,3+5]";
+  //private static final String SIMPLE = "let rev l = let rec rev_helper s t = if is_empty s then t else rev_helper (tl s) ((hd s) :: t) in rev_helper l [] in rev [1+5,2+5,3+5]";
   //private static final String SIMPLE = "let rec f s t = s + t in f [] [1,2,3]";
+  //private static final String SIMPLE = "let x = 1 in x";
 
   
   
@@ -130,6 +133,53 @@ public class SmallStepTreeView extends JFrame {
       }
     });
     buttons.add(guessButton);
+    
+    // setup the undo button
+    final JButton undoButton = new JButton("Undo");
+    undoButton.setEnabled(false);
+    undoButton.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent event) {
+        try {
+          // undo the last change
+          model.undo();
+        }
+        catch (Exception e) {
+          e.printStackTrace();
+          JOptionPane.showMessageDialog(SmallStepTreeView.this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+      }
+    });
+    model.addPropertyChangeListener("undoable", new PropertyChangeListener() {
+      public void propertyChange(PropertyChangeEvent event) {
+        undoButton.setEnabled(model.isUndoable());
+      }
+    });
+    buttons.add(undoButton);
+    
+    // setup the redo button
+    final JButton redoButton = new JButton("Redo");
+    redoButton.setEnabled(false);
+    redoButton.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent event) {
+        try {
+          // redo the last undone change
+          model.redo();
+          
+          // expand to the last node
+          tree.expandRow(tree.getRowCount() - 1);
+        }
+        catch (Exception e) {
+          e.printStackTrace();
+          JOptionPane.showMessageDialog(SmallStepTreeView.this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+      }
+    });
+    model.addPropertyChangeListener("redoable", new PropertyChangeListener() {
+      public void propertyChange(PropertyChangeEvent event) {
+        redoButton.setEnabled(model.isRedoable());
+      }
+    });
+    buttons.add(redoButton);
     
     // setup the translate button
     JButton translateButton = new JButton("Translate");
