@@ -1,4 +1,4 @@
-package smallstep.test;
+package bigstep.test;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -9,6 +9,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.LinkedList;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -18,31 +19,25 @@ import javax.swing.JPanel;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
-import smallstep.SmallStepProofModel;
-import smallstep.SmallStepProofModelFactory;
-import smallstep.SmallStepProofNode;
+import bigstep.BigStepProofModel;
+import bigstep.BigStepProofModelFactory;
+import bigstep.BigStepProofNode;
 
 import common.ProofNode;
 
 /**
- * Test class for the small step interpreter.
+ * Test class for the big step interpreter.
  *
  * @author Benedikt Meurer
  * @version $Id$
  */
 @SuppressWarnings("serial")
-public class SmallStepTreeView extends JFrame {
+public class BigStepTreeView extends JFrame {
   /**
    * Simple test expression.
    */
-  //private static final String SIMPLE = "not ((+) 1 ( (/) 10 (9 + ~- (8 + 1))))";
-  //private static final String SIMPLE = "let f = ref (lambda x.x) in let fact = lambda x.if x = 0 then 1 else x * (!f (x - 1)) in (f := fact, !f 3)";
-  private static final String SIMPLE = "let rec f = lambda x.if x = 0 then 1 else x * (f (x - 1)) in f 3";
-  //private static final String SIMPLE = "(1 + 2, 5 * 8, let x = 9 in (8,(+) 9 x), y)";
-  //private static final String SIMPLE = "let (x, y, z) = (~- 8, not true, 1) in x > z || y";
-  //private static final String SIMPLE = "let rev l = let rec rev_helper s t = if is_empty s then t else rev_helper (tl s) ((hd s) :: t) in rev_helper l [] in rev [1+5,2+5,3+5]";
-  //private static final String SIMPLE = "let rec f s t = s + t in f [] [1,2,3]";
-  //private static final String SIMPLE = "let x = 1 in x";
+  //private static final String SIMPLE = "(lambda id.id) 1";
+  private static final String SIMPLE = "1 + 2";
 
   
   
@@ -62,7 +57,7 @@ public class SmallStepTreeView extends JFrame {
     @Override
     public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus) {
       super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
-      SmallStepProofNode node = (SmallStepProofNode)value;
+      BigStepProofNode node = (BigStepProofNode)value;
       StringBuilder builder = new StringBuilder();
       builder.append('[');
       for (int n = 0; n < node.getSteps().length; ++n) {
@@ -71,14 +66,10 @@ public class SmallStepTreeView extends JFrame {
         builder.append(node.getSteps()[n].getRule().getName());
       }
       builder.append("] -> ");
-      if (node.getExpression().containsReferences()) {
-        builder.append('(');
-      }
       builder.append(node.getExpression());
-      if (node.getExpression().containsReferences()) {
-        builder.append(", ");
-        builder.append(node.getStore());
-        builder.append(')');
+      builder.append(" \u21d3 ");
+      if (node.getValue() != null) {
+        builder.append(node.getValue());
       }
       setText(builder.toString());
       return this;
@@ -94,7 +85,7 @@ public class SmallStepTreeView extends JFrame {
   /**
    * Default constructor.
    */
-  public SmallStepTreeView(final SmallStepProofModel model) {
+  public BigStepTreeView(final BigStepProofModel model) {
     // setup the frame
     setLayout(new BorderLayout());
     setSize(630, 580);
@@ -120,15 +111,16 @@ public class SmallStepTreeView extends JFrame {
       public void actionPerformed(ActionEvent event) {
         try {
           // guess the last node
-          ProofNode node = model.getRoot().getLastLeaf();
-          model.guess(node);
+          model.guess(nextNode(model));
           
-          // expand to the last node
-          tree.expandRow(tree.getRowCount() - 1);
+          // expand to the all nodes
+          for (int n = 0; n < tree.getRowCount(); ++n) {
+            tree.expandRow(n);
+          }
         }
         catch (Exception e) {
           e.printStackTrace();
-          JOptionPane.showMessageDialog(SmallStepTreeView.this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+          JOptionPane.showMessageDialog(BigStepTreeView.this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
       }
     });
@@ -145,7 +137,7 @@ public class SmallStepTreeView extends JFrame {
         }
         catch (Exception e) {
           e.printStackTrace();
-          JOptionPane.showMessageDialog(SmallStepTreeView.this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+          JOptionPane.showMessageDialog(BigStepTreeView.this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
       }
     });
@@ -166,11 +158,13 @@ public class SmallStepTreeView extends JFrame {
           model.redo();
           
           // expand to the last node
-          tree.expandRow(tree.getRowCount() - 1);
+          for (int n = 0; n < tree.getRowCount(); ++n) {
+            tree.expandRow(n);
+          }
         }
         catch (Exception e) {
           e.printStackTrace();
-          JOptionPane.showMessageDialog(SmallStepTreeView.this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+          JOptionPane.showMessageDialog(BigStepTreeView.this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
       }
     });
@@ -187,12 +181,11 @@ public class SmallStepTreeView extends JFrame {
       public void actionPerformed(ActionEvent event) {
         try {
           // translate the last node
-          ProofNode node = model.getRoot().getLastLeaf();
-          model.translateToCoreSyntax(node);
+          model.translateToCoreSyntax(nextNode(model));
         }
         catch (Exception e) {
           e.printStackTrace();
-          JOptionPane.showMessageDialog(SmallStepTreeView.this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+          JOptionPane.showMessageDialog(BigStepTreeView.this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
       }
     });
@@ -206,6 +199,21 @@ public class SmallStepTreeView extends JFrame {
       }
     });
     buttons.add(closeButton);
+  }
+  
+  private static ProofNode nextNode(BigStepProofModel model) {
+    LinkedList<ProofNode> nodes = new LinkedList<ProofNode>();
+    nodes.add(model.getRoot());
+    while (!nodes.isEmpty()) {
+      ProofNode node = nodes.poll();
+      if (node.getSteps().length == 0) {
+        return node;
+      }
+      for (int n = 0; n < node.getChildCount(); ++n) {
+        nodes.add(node.getChildAt(n));
+      }
+    }
+    throw new IllegalStateException("Unable to find next node");
   }
   
   
@@ -222,11 +230,11 @@ public class SmallStepTreeView extends JFrame {
   public static void main(String[] args) {
     try {
       // parse the program
-      SmallStepProofModelFactory factory = SmallStepProofModelFactory.newInstance();
-      SmallStepProofModel model = factory.newProofModel(SIMPLE);
+      BigStepProofModelFactory factory = BigStepProofModelFactory.newInstance();
+      BigStepProofModel model = factory.newProofModel(SIMPLE);
       
       // evaluate the resulting small step expression
-      SmallStepTreeView tv = new SmallStepTreeView(model);
+      BigStepTreeView tv = new BigStepTreeView(model);
       tv.addWindowListener(new WindowAdapter() {
         @Override
         public void windowClosing(WindowEvent e) {

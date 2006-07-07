@@ -137,10 +137,11 @@ public interface ProofModel extends Bean, TreeModel {
    *                                  this model.             
    * @throws IllegalStateException if for some reason <code>node</code> cannot
    *                               be proven.
+   * @throws ProofGuessException if the next proof step could not be guessed.
    *
    * @see #prove(ProofRule, ProofNode)
    */
-  public void guess(ProofNode node);
+  public void guess(ProofNode node) throws ProofGuessException;
   
   /**
    * Applies the given proof <code>rule</code> to the specified

@@ -3,7 +3,9 @@ package bigstep;
 import bigstep.rules.AppRule;
 import bigstep.rules.BetaValueRule;
 import bigstep.rules.ValRule;
+
 import common.AbstractProofModel;
+import common.ProofGuessException;
 import common.ProofNode;
 import common.ProofRule;
 import common.ProofRuleException;
@@ -51,8 +53,8 @@ public final class BigStepProofModel extends AbstractProofModel {
   @Override
   public ProofRule[] getRules() {
     return new BigStepProofRule[] {
-      new AppRule(),
       new BetaValueRule(),
+      new AppRule(),
       new ValRule()
     };
   }
@@ -63,8 +65,34 @@ public final class BigStepProofModel extends AbstractProofModel {
    * @see common.AbstractProofModel#guess(common.ProofNode)
    */
   @Override
-  public void guess(ProofNode node) {
-    // TODO Auto-generated method stub
+  public void guess(ProofNode node) throws ProofGuessException {
+    // verify that the node is valid for the model
+    if (!this.root.isNodeRelated(node)) {
+      throw new IllegalArgumentException("The node is invalid for the model");
+    }
+    
+    // verify that we did not already applied a rule to that node
+    if (node.getSteps().length > 0) {
+      throw new IllegalArgumentException("The node is already completed");
+    }
+    
+    // try to guess the next rule for the next
+    for (ProofRule rule : getRules()) {
+      try {
+        // try to apply the rule to the specified node
+        apply((BigStepProofRule)rule, (DefaultBigStepProofNode)node);
+        
+        // yep, we did it
+        return;
+      }
+      catch (ProofRuleException e) {
+        // next one, please
+        continue;
+      }
+    }
+    
+    // unable to guess next step
+    throw new ProofGuessException(node);
   }
 
   /**
@@ -82,6 +110,11 @@ public final class BigStepProofModel extends AbstractProofModel {
     // verify that the node is valid for the model
     if (!this.root.isNodeRelated(node)) {
       throw new IllegalArgumentException("The node is invalid for the model");
+    }
+    
+    // verify that we did not already applied a rule to that node
+    if (node.getSteps().length > 0) {
+      throw new IllegalArgumentException("The node is already completed");
     }
     
     // try to apply the rule to the specified node

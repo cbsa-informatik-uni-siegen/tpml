@@ -56,8 +56,18 @@ final class DefaultBigStepProofNode extends AbstractProofNode implements BigStep
   
   
   //
-  // Accessors
+  // Primitives
   //
+  
+  /**
+   * {@inheritDoc}
+   *
+   * @see common.AbstractProofNode#isProven()
+   */
+  @Override
+  public boolean isProven() {
+    return (this.value != null);
+  }
   
   /**
    * {@inheritDoc}
@@ -74,18 +84,16 @@ final class DefaultBigStepProofNode extends AbstractProofNode implements BigStep
    * or an exception (according to the semantics of
    * the big step interpreter), otherwise an
    * {@link IllegalArgumentException} will be thrown.
-   * If <code>value</code> is <code>null</code> a
-   * {@link NullPointerException} will be thrown.
    * 
-   * @param value
+   * @param value the new value for this node, or <code>null</code>
+   *              to reset the value.
    *
    * @throws IllegalArgumentException if <code>value</code> is invalid.
-   * @throws NullPointerException if <code>value</code> is <code>null</code>.
    * 
    * @see #getValue()
    */
   void setValue(Expression value) {
-    if (!value.isException() && !value.isValue()) {
+    if (value != null && !value.isException() && !value.isValue()) {
       throw new IllegalArgumentException("value is invalid");
     }
     this.value = value;

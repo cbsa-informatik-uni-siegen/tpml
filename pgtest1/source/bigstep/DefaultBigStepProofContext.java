@@ -71,9 +71,12 @@ final class DefaultBigStepProofContext implements BigStepProofContext {
     // try to apply the rule to the node
     rule.apply(this, node);
     
-    // update all super nodes
-    for (ProofNode parent = node.getParent(); parent != null; parent = parent.getParent()) {
-      rule.update(this, (BigStepProofNode)parent);
+    // update all (unproven) super nodes
+    for (ProofNode parentNode = node.getParent(); parentNode != null; parentNode = parentNode.getParent()) {
+      if (!parentNode.isProven()) {
+        BigStepProofRule parentRule = (BigStepProofRule)parentNode.getSteps()[0].getRule();
+        parentRule.update(this, (BigStepProofNode)parentNode);
+      }
     }
   }
   

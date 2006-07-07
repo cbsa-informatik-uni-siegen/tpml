@@ -1,6 +1,7 @@
 package smallstep;
 
 import common.AbstractProofModel;
+import common.ProofGuessException;
 import common.ProofModel;
 import common.ProofNode;
 import common.ProofRule;
@@ -75,7 +76,7 @@ public class SmallStepProofModel extends AbstractProofModel {
    * @see common.ProofModel#guess(common.ProofNode)
    */
   @Override
-  public void guess(ProofNode node) {
+  public void guess(ProofNode node) throws ProofGuessException {
     // guess the remaining steps for the node
     ProofStep[] remainingSteps = remaining(node);
     
@@ -90,8 +91,8 @@ public class SmallStepProofModel extends AbstractProofModel {
       apply((SmallStepProofRule)remainingSteps[remainingSteps.length - 1].getRule(), (SmallStepProofNode)node);
     }
     catch (ProofRuleException exception) {
-      // hm, dunno... IllegalArgumentException for now
-      throw new IllegalArgumentException("Cannot guess next proof step", exception);
+      // failed to guess
+      throw new ProofGuessException(node);
     }
   }
   

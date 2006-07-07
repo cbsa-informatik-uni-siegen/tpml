@@ -1,11 +1,13 @@
 package common;
 
 /**
- * This exception is thrown when an trying to apply a
+ * This exception is thrown when an attempt to apply a
  * rule that cannot be applied to a node.
  *
  * @author Benedikt Meurer
  * @version $Id$
+ * 
+ * @see common.ProofGuessException
  */
 public final class ProofRuleException extends Exception {
   /**

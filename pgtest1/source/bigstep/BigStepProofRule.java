@@ -4,7 +4,7 @@ import common.ProofRule;
 import common.ProofRuleException;
 
 /**
- * TODO Add documentation here.
+ * Abstract base class for big step proof rules.
  *
  * @author Benedikt Meurer
  * @version $Id$
@@ -33,9 +33,31 @@ public abstract class BigStepProofRule extends ProofRule {
   //
   
   /**
-   * TODO Add documentation here.
+   * Applies this big step proof rule to the specified <code>node</code>
+   * via the given <code>context</code>.
+   * 
+   * This default implementation simply throws <code>ProofRuleException</code>,
+   * so derived classes will need to override this method to provide the
+   * proper handling, but remember to verify the expression of the <code>node</code>
+   * first.
+   * 
+   * @param context the big step proof context via which the application
+   *                of this rule to the <code>node</code> should be
+   *                performed.
+   * @param node the big step proof node to which to apply this rule.
+   * 
+   * @throws NullPointerException if either <code>context</code> or
+   *                              <code>node</code> is <code>null</code>.                            
+   * @throws ProofRuleException if this rule cannot be applied to the
+   *                            <code>node</code>.
    */
   public void apply(BigStepProofContext context, BigStepProofNode node) throws ProofRuleException {
+    if (context == null) {
+      throw new NullPointerException("context is null");
+    }
+    if (node == null) {
+      throw new NullPointerException("node is null");
+    }
     throw new ProofRuleException(node, this);
   }
   

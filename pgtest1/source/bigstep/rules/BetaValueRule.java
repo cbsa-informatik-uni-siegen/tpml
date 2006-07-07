@@ -44,10 +44,19 @@ public final class BetaValueRule extends BigStepProofRule {
   @Override
   public void apply(BigStepProofContext context, BigStepProofNode node) throws ProofRuleException {
     try {
+      // the expression must an application of lambda...
       Application application = (Application)node.getExpression();
       Lambda e1 = (Lambda)application.getE1();
       Expression e2 = application.getE2();
-      context.addProofNode(node, e1.getE().substitute(e1.getId(), e2));
+      
+      // ...to a value
+      if (e2.isValue()) {
+        context.addProofNode(node, e1.getE().substitute(e1.getId(), e2));
+      }
+      else {
+        // cannot apply
+        super.apply(context, node);
+      }
     }
     catch (ClassCastException e) {
       super.apply(context, node);

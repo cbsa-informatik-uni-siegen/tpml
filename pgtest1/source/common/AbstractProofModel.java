@@ -130,7 +130,7 @@ public abstract class AbstractProofModel extends AbstractBean implements ProofMo
    * 
    * @see ProofModel#guess(ProofNode)
    */
-  public abstract void guess(ProofNode node);
+  public abstract void guess(ProofNode node) throws ProofGuessException;
   
   /**
    * {@inheritDoc}
