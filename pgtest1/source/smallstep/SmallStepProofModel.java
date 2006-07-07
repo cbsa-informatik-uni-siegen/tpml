@@ -155,6 +155,20 @@ public class SmallStepProofModel extends AbstractProofModel {
   //
   // Internals
   //
+  
+  /**
+   * {@inheritDoc}
+   *
+   * @see common.AbstractProofModel#addUndoableTreeEdit(common.AbstractProofModel.UndoableTreeEdit)
+   */
+  @Override
+  protected void addUndoableTreeEdit(UndoableTreeEdit edit) {
+    // perform the redo of the edit
+    edit.redo();
+    
+    // add to the undo history
+    super.addUndoableTreeEdit(edit);
+  }
 
   /**
    * Applies the specified <code>rule</code> to the specified <code>node</code>.

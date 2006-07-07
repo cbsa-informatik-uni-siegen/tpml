@@ -224,18 +224,14 @@ public abstract class AbstractProofModel extends AbstractBean implements ProofMo
   private LinkedList<UndoableTreeEdit> undoEdits = new LinkedList<UndoableTreeEdit>();
   
   /**
-   * Adds the specified <code>edit</code> to the undo history
-   * and invokes the {@link UndoableTreeEdit#redo()} methods.
-   * The current redo history is cleared.
+   * Adds the specified <code>edit</code> to the undo history. The
+   * current redo history is cleared.
    * 
    * @param edit the {@link UndoableTreeEdit} to add.
    * 
    * @throws NullPointerException if <code>edit</code> is <code>null</code>.
    */
   protected void addUndoableTreeEdit(UndoableTreeEdit edit) {
-    // perform the edit action
-    edit.redo();
-    
     // remember the previous redoable/undoable properties
     boolean oldRedoable = isRedoable();
     boolean oldUndoable = isUndoable();
