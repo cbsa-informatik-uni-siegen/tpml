@@ -36,7 +36,7 @@ public final class BigStepProofModelFactory {
    * 
    * @return a new instance of a <code>BigStepProofModelFactory</code>.
    */
-  public BigStepProofModelFactory newInstance() {
+  public static BigStepProofModelFactory newInstance() {
     return new BigStepProofModelFactory();
   }
   
