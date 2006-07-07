@@ -2,10 +2,12 @@ package bigstep.rules;
 
 import common.ProofRuleException;
 import expressions.Application;
+import expressions.ArithmeticOperator;
 import expressions.BinaryOperator;
 import expressions.BinaryOperatorException;
 import expressions.Expression;
 import expressions.InfixOperation;
+import expressions.RelationalOperator;
 
 import bigstep.BigStepProofContext;
 import bigstep.BigStepProofNode;
@@ -54,6 +56,11 @@ public final class BopRule extends BigStepProofRule {
         Expression e1 = a2.getE2();
         Expression e2 = a1.getE2();
         
+        // (BOP) can only handle arithmetic and relational operators
+        if (!(bop instanceof ArithmeticOperator || bop instanceof RelationalOperator)) {
+          throw new ProofRuleException(node, this);
+        }
+        
         // try to apply the operator
         context.setProofNodeValue(node, bop.applyTo(e1, e2));
       }
@@ -63,6 +70,11 @@ public final class BopRule extends BigStepProofRule {
         BinaryOperator bop = infixOperation.getOp();
         Expression e1 = infixOperation.getE1();
         Expression e2 = infixOperation.getE2();
+        
+        // (BOP) can only handle arithmetic and relational operators
+        if (!(bop instanceof ArithmeticOperator || bop instanceof RelationalOperator)) {
+          throw new ProofRuleException(node, this);
+        }
         
         // try to perform the infix operation
         context.setProofNodeValue(node, bop.applyTo(e1, e2));

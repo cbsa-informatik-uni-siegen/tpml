@@ -3,6 +3,8 @@ package bigstep.rules;
 import common.ProofRuleException;
 import expressions.Application;
 import expressions.Expression;
+import expressions.Not;
+import expressions.UnaryMinus;
 import expressions.UnaryOperator;
 import expressions.UnaryOperatorException;
 
@@ -46,6 +48,11 @@ public class UopRule extends BigStepProofRule {
       Application application = (Application)node.getExpression();
       UnaryOperator e1 = (UnaryOperator)application.getE1();
       Expression e2 = application.getE2();
+      
+      // (UOP) can only handle unary minus and not
+      if (!(e1 instanceof UnaryMinus || e1 instanceof Not)) {
+        throw new ProofRuleException(node, this);
+      }
 
       // try to apply the operator
       context.setProofNodeValue(node, e1.applyTo(e2));
