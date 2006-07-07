@@ -2,6 +2,8 @@ package bigstep;
 
 import bigstep.rules.AppRule;
 import bigstep.rules.BetaValueRule;
+import bigstep.rules.BopRule;
+import bigstep.rules.UopRule;
 import bigstep.rules.ValRule;
 
 import common.AbstractProofModel;
@@ -53,9 +55,11 @@ public final class BigStepProofModel extends AbstractProofModel {
   @Override
   public ProofRule[] getRules() {
     return new BigStepProofRule[] {
+      new ValRule(),
       new BetaValueRule(),
+      new BopRule(),
+      new UopRule(),
       new AppRule(),
-      new ValRule()
     };
   }
 

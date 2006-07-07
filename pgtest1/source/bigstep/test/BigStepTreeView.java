@@ -37,7 +37,7 @@ public class BigStepTreeView extends JFrame {
    * Simple test expression.
    */
   //private static final String SIMPLE = "(lambda id.id) 1";
-  private static final String SIMPLE = "1 + 2";
+  private static final String SIMPLE = "1 + 2 * (4 / 5)";
 
   
   
