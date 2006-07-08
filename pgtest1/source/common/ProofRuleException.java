@@ -45,7 +45,26 @@ public final class ProofRuleException extends Exception {
    *             applied to the <code>node</code>.
    */
   public ProofRuleException(ProofNode node, ProofRule rule) {
-    super("Cannot apply " + rule + " to " + node);
+    this(node, rule, null);
+  }
+  
+  /**
+   * Allocates a new {@link ProofRuleException} telling that
+   * the specified <code>rule</code> could not be applied to
+   * the given <code>node</code>.
+   * 
+   * @param node the {@link ProofNode}.
+   * @param rule the {@link ProofRule} that could not be
+   *             applied to the <code>node</code>.
+   * @param cause the cause, which is saved for later retrieval by the
+   *              {@link Throwable#getCause()} method. A <code>null</code>
+   *              value is permitted, and indicates that the cause is
+   *              nonexistent or unknown.
+   */
+  public ProofRuleException(ProofNode node, ProofRule rule, Throwable cause) {
+    super("Cannot apply " + rule + " to " + node, cause);
+    this.node = node;
+    this.rule = rule;
   }
   
   
