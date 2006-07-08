@@ -59,7 +59,7 @@ public final class BetaValueRule extends BigStepProofRule {
       }
     }
     catch (ClassCastException e) {
-      super.apply(context, node);
+      throw new ProofRuleException(node, this, e);
     }
   }
   

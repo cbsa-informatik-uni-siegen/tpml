@@ -81,10 +81,10 @@ public final class BopRule extends BigStepProofRule {
       }
     }
     catch (BinaryOperatorException e) {
-      super.apply(context, node);
+      throw new ProofRuleException(node, this, e);
     }
     catch (ClassCastException e) {
-      super.apply(context, node);
+      throw new ProofRuleException(node, this, e);
     }
   }
 }
