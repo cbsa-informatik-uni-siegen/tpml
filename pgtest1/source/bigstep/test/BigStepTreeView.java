@@ -38,7 +38,7 @@ public class BigStepTreeView extends JFrame {
    */
   //private static final String SIMPLE = "(lambda id.id) 1";
   //private static final String SIMPLE = "1 + 2 * (4 / 5)";
-  private static final String SIMPLE = "if 1 = 2 then 0";
+  private static final String SIMPLE = "if true then 1 + (0 / 0) else 1 / 0";
 
   
   

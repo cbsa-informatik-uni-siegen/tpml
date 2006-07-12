@@ -76,10 +76,39 @@ public abstract class BigStepProofRule extends ProofRule {
    *                as parameter to an {@link #apply(BigStepProofContext, BigStepProofNode)}
    *                invokation on another proof node, possibly with another
    *                proof rule.
-   * @param node the {@link BigStepProofNode} that may need to be updated.                
+   * @param node the {@link BigStepProofNode} that may need to be updated.
    */
   public void update(BigStepProofContext context, BigStepProofNode node) {
     // Nothing to do here, derived classes may implement this
     // method if required, for example the (LET) rule
+  }
+  
+  
+  
+  //
+  // Translations
+  //
+  
+  /**
+   * Translates this big step proof rule to an appropriate
+   * exception rule, with the given sub node index <code>n</code>.
+   * For example, for <b>(APP)</b>, this generates <b>(APP-EXN-n)</b>.
+   * 
+   * @param n the index of the sub node, starting at <code>0</code>.
+   * 
+   * @return the new {@link BigStepProofRule} for the exception.
+   * 
+   * @throws IllegalArgumentException if <code>n</code> is negative.
+   * @throws IllegalStateException if this rule is an axiom, for which
+   *                               no exception rule can be generated.
+   */
+  BigStepProofRule toExnRule(int n) {
+    if (n < 0) {
+      throw new IllegalArgumentException("n is negative");
+    }
+    if (isAxiom()) {
+      throw new IllegalStateException("rule is an axiom");
+    }
+    return new BigStepProofRule(false, getName() + "-EXN-" + (n + 1)) {};
   }
 }

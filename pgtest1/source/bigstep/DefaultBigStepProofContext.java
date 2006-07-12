@@ -2,7 +2,6 @@ package bigstep;
 
 import java.util.LinkedList;
 
-import common.ProofNode;
 import common.ProofRuleException;
 
 import expressions.Expression;
@@ -64,7 +63,7 @@ final class DefaultBigStepProofContext implements BigStepProofContext {
   /**
    * TODO Add documentation here.
    */
-  void apply(final BigStepProofRule rule, final DefaultBigStepProofNode node) throws ProofRuleException {
+  void apply(BigStepProofRule rule, BigStepProofNode node) throws ProofRuleException {
     // record the proof step
     setProofNodeRule(node, rule);
     
@@ -72,11 +71,18 @@ final class DefaultBigStepProofContext implements BigStepProofContext {
     rule.apply(this, node);
     
     // update all (unproven) super nodes
-    for (ProofNode parentNode = node.getParent(); parentNode != null; parentNode = parentNode.getParent()) {
-      if (!parentNode.isProven()) {
-        BigStepProofRule parentRule = (BigStepProofRule)parentNode.getSteps()[0].getRule();
-        parentRule.update(this, (BigStepProofNode)parentNode);
+    for (;;) {
+      // determine the parent node
+      BigStepProofNode parentNode = (BigStepProofNode)node.getParent();
+      if (parentNode == null) {
+        break;
       }
+      
+      // update the parent node
+      updateNode(parentNode, node);
+      
+      // continue with the next one
+      node = parentNode;
     }
   }
   
@@ -87,6 +93,46 @@ final class DefaultBigStepProofContext implements BigStepProofContext {
     // undo all already performed changes
     for (Runnable undoAction : this.undoActions) {
       undoAction.run();
+    }
+    this.undoActions.clear();
+  }
+  
+  /**
+   * Updates the <code>node</code> after a change to the <code>childNode</code>.
+   * This is needed for non-axiom rules, like <b>(APP)</b>, that need to react
+   * to proof steps on child nodes. If the <code>node</code> is already proven,
+   * no action will be performed.
+   * 
+   * If the <code>childNode</code>'s value is an exception, the exception will
+   * be forwarded to the <code>node</code>.
+   * 
+   * Otherwise the {@link BigStepProofRule#update(BigStepProofContext, BigStepProofNode)}
+   * method of the rule that was applied to <code>node</code> will be executed to
+   * update the state of the <code>node</code>.
+   * 
+   * @param node the node to update.
+   * @param childNode the child node that was changed.
+   */
+  void updateNode(BigStepProofNode node, BigStepProofNode childNode) {
+    // skip the node if its already proven
+    if (node.isProven()) {
+      return;
+    }
+    
+    // determine the rule that was applied to the node
+    BigStepProofRule rule = node.getRule();
+    
+    // check if child node resulted in an exception
+    if (childNode.isProven() && childNode.getValue().isException()) {
+      // generate an exception rule for the node
+      setProofNodeRule(node, rule.toExnRule(node.getIndex(childNode)));
+      
+      // forward the exception value
+      setProofNodeValue(node, childNode.getValue());
+    }
+    else {
+      // use the rule's update() mechanism
+      rule.update(this, node);
     }
   }
   

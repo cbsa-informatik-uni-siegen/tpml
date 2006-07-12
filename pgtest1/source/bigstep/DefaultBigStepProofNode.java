@@ -2,6 +2,7 @@ package bigstep;
 
 import smallstep.Store;
 import common.AbstractProofNode;
+import common.ProofStep;
 
 import expressions.Expression;
 
@@ -67,6 +68,21 @@ final class DefaultBigStepProofNode extends AbstractProofNode implements BigStep
   @Override
   public boolean isProven() {
     return (this.value != null);
+  }
+  
+  /**
+   * {@inheritDoc}
+   *
+   * @see bigstep.BigStepProofNode#getRule()
+   */
+  public BigStepProofRule getRule() {
+    ProofStep[] steps = getSteps();
+    if (steps.length > 0) {
+      return (BigStepProofRule)steps[0].getRule();
+    }
+    else {
+      return null;
+    }
   }
   
   /**

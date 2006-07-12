@@ -11,6 +11,21 @@ import expressions.Expression;
  */
 public interface BigStepProofNode extends ProofNode {
   /**
+   * Returns the {@link BigStepProofRule} that was applied to this proof
+   * node, or <code>null</code> if no rule was applied to this node so
+   * far.
+   * 
+   * This is a convenience method for the {@link ProofNode#getSteps()}
+   * method, which simply returns the first proof steps rule.
+   * 
+   * @return the rule that was applied to this proof node, or <code>null</code>.
+   * 
+   * @see BigStepProofRule
+   * @see ProofNode#getSteps()
+   */
+  public BigStepProofRule getRule();
+  
+  /**
    * Returns the resulting value of the expression at
    * this node, which is <code>null</code> until the
    * node is proven.
