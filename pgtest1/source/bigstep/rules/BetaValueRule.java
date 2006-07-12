@@ -9,6 +9,8 @@ import common.ProofRuleException;
 import expressions.Application;
 import expressions.Expression;
 import expressions.Lambda;
+import expressions.MultiLambda;
+import expressions.Projection;
 
 /**
  * TODO Add documentation here.
@@ -44,18 +46,34 @@ public final class BetaValueRule extends BigStepProofRule {
   @Override
   public void apply(BigStepProofContext context, BigStepProofNode node) throws ProofRuleException {
     try {
-      // the expression must an application of lambda...
+      // the expression must an application to a value...
       Application application = (Application)node.getExpression();
-      Lambda e1 = (Lambda)application.getE1();
       Expression e2 = application.getE2();
+      if (!e2.isValue()) {
+        throw new ProofRuleException(node, this);
+      }
       
-      // ...to a value
-      if (e2.isValue()) {
-        context.addProofNode(node, e1.getE().substitute(e1.getId(), e2));
+      // ...with a lambda or multi lambda expression
+      Expression e1 = application.getE1();
+      if (e1 instanceof MultiLambda) {
+        // multi lambda is special
+        MultiLambda multiLambda = (MultiLambda)e1;
+        Expression e = multiLambda.getE();
+        
+        // perform the required substitutions
+        String[] identifiers = multiLambda.getIdentifiers();
+        for (int n = 0; n < identifiers.length; ++n) {
+          // substitute: (#l_n e2) for id
+          e = e.substitute(identifiers[n], new Application(new Projection(identifiers.length, n + 1), e2));
+        }
+        
+        // add the proof node for e
+        context.addProofNode(node, e);
       }
       else {
-        // cannot apply
-        super.apply(context, node);
+        // must be lambda then
+        Lambda lambda = (Lambda)e1;
+        context.addProofNode(node, lambda.getE().substitute(lambda.getId(), e2));
       }
     }
     catch (ClassCastException e) {
@@ -70,10 +88,10 @@ public final class BetaValueRule extends BigStepProofRule {
    */
   @Override
   public void update(BigStepProofContext context, BigStepProofNode node) {
-    // check if the single child node is proven
-    if (node.getChildCount() == 1 && node.getChildAt(0).isProven()) {
-      // the value of the child is the value for this node
-      context.setProofNodeValue(node, ((BigStepProofNode)node.getChildAt(0)).getValue());
-    }
+    // determine the first child node
+    BigStepProofNode node0 = (BigStepProofNode)node.getChildAt(0);
+    
+    // forward the value to this node (may be null)
+    context.setProofNodeValue(node, node0.getValue());
   }
 }

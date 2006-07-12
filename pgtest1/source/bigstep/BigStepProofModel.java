@@ -5,6 +5,10 @@ import bigstep.rules.BetaValueRule;
 import bigstep.rules.BopRule;
 import bigstep.rules.CondFalseRule;
 import bigstep.rules.CondTrueRule;
+import bigstep.rules.LetRule;
+import bigstep.rules.ProjRule;
+import bigstep.rules.TupleRule;
+import bigstep.rules.UnfoldRule;
 import bigstep.rules.UopRule;
 import bigstep.rules.ValRule;
 
@@ -58,12 +62,16 @@ public final class BigStepProofModel extends AbstractProofModel {
   public ProofRule[] getRules() {
     return new BigStepProofRule[] {
       new ValRule(),
+      new ProjRule(),
       new BetaValueRule(),
       new BopRule(),
       new UopRule(),
       new AppRule(),
       new CondFalseRule(),
       new CondTrueRule(),
+      new LetRule(),
+      new UnfoldRule(),
+      new TupleRule(),
     };
   }
 
