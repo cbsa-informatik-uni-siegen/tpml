@@ -1,24 +1,20 @@
 package bigstep.rules;
 
-import common.ProofRuleException;
-import expressions.Application;
+import common.interpreters.MutableStore;
+
 import expressions.Expression;
 import expressions.Not;
 import expressions.UnaryMinus;
 import expressions.UnaryOperator;
 import expressions.UnaryOperatorException;
 
-import bigstep.BigStepProofContext;
-import bigstep.BigStepProofNode;
-import bigstep.BigStepProofRule;
-
 /**
- * TODO Add documentation here.
+ * This class represents the big step proof rule <b>(UOP)</b>.
  *
  * @author Benedikt Meurer
  * @version $Id$
  */
-public class UopRule extends BigStepProofRule {
+public class UopRule extends AbstractUnaryOperatorRule {
   //
   // Constructor
   //
@@ -27,7 +23,7 @@ public class UopRule extends BigStepProofRule {
    * Allocates a new <code>UopRule</code> instance.
    */
   public UopRule() {
-    super(true, "UOP");
+    super("UOP");
   }
   
   
@@ -35,33 +31,20 @@ public class UopRule extends BigStepProofRule {
   //
   // Primitives
   //
-  
+
   /**
    * {@inheritDoc}
    *
-   * @see bigstep.BigStepProofRule#apply(bigstep.BigStepProofContext, bigstep.BigStepProofNode)
+   * @see bigstep.rules.AbstractUnaryOperatorRule#applyTo(common.interpreters.MutableStore, expressions.UnaryOperator, expressions.Expression)
    */
   @Override
-  public void apply(BigStepProofContext context, BigStepProofNode node) throws ProofRuleException {
-    try {
-      // the node's expression must be an application of an unary operator to a value
-      Application application = (Application)node.getExpression();
-      UnaryOperator e1 = (UnaryOperator)application.getE1();
-      Expression e2 = application.getE2();
-      
-      // (UOP) can only handle unary minus and not
-      if (!(e1 instanceof UnaryMinus || e1 instanceof Not)) {
-        throw new ProofRuleException(node, this);
-      }
-
-      // try to apply the operator
-      context.setProofNodeResult(node, e1.applyTo(e2));
+  public Expression applyTo(MutableStore store, UnaryOperator e1, Expression e2) throws ClassCastException, UnaryOperatorException {
+    // (UOP) can only handle Not and UnaryMinus 
+    if (e1 instanceof Not || e1 instanceof UnaryMinus) {
+      return e1.applyTo(e2);
     }
-    catch (ClassCastException e) {
-      throw new ProofRuleException(node, this, e);
-    }
-    catch (UnaryOperatorException e) {
-      throw new ProofRuleException(node, this, e);
+    else {
+      throw new ClassCastException("Illegal operator " + e1.getClass());
     }
   }
 }

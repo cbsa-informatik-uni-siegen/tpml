@@ -2,28 +2,28 @@ package bigstep.rules;
 
 import common.interpreters.MutableStore;
 
+import expressions.Deref;
 import expressions.Expression;
-import expressions.Projection;
-import expressions.Tuple;
+import expressions.Location;
 import expressions.UnaryOperator;
 import expressions.UnaryOperatorException;
 
 /**
- * This class represents the big step rule <b>(PROJ)</b>.
+ * This class represents the big step rule <b>(DEREF)</b>.
  *
  * @author Benedikt Meurer
  * @version $Id$
  */
-public final class ProjRule extends AbstractUnaryOperatorRule {
+public final class DerefRule extends AbstractUnaryOperatorRule {
   //
   // Constructor
   //
   
   /**
-   * Allocates a new <code>ProjRule</code> instance.
+   * Allocates a new <code>DerefRule</code> instance.
    */
-  public ProjRule() {
-    super("PROJ");
+  public DerefRule() {
+    super("DEREF");
   }
   
   
@@ -39,11 +39,13 @@ public final class ProjRule extends AbstractUnaryOperatorRule {
    */
   @Override
   public Expression applyTo(MutableStore store, UnaryOperator e1, Expression e2) throws ClassCastException, UnaryOperatorException {
-    // cast to the appropriate types
-    Projection projection = (Projection)e1;
-    Tuple tuple = (Tuple)e2;
-    
-    // return the projected item
-    return projection.applyTo(tuple);
+    // e1 must be the deref operator
+    if (e1 instanceof Deref) {
+      // return the value at the given location
+      return store.get((Location)e2);
+    }
+    else {
+      throw new ClassCastException("Illegal operator " + e1.getClass());
+    }
   }
 }

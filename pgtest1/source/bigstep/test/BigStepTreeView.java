@@ -43,7 +43,8 @@ public class BigStepTreeView extends JFrame {
   //private static final String SIMPLE = "#2_2 (1 + 1, 2 + 2, 3 + 3, (4 + 4))";
   //private static final String SIMPLE = "let (x, y, z) = (1, 2, 3) in x + z + y";
   //private static final String SIMPLE = "let f = lambda (x, y, z).x + y + z in f (1, 2, 3)";
-  private static final String SIMPLE = "1 + 1;2 + 2; 3+3";
+  //private static final String SIMPLE = "1 + 1;2 + 2; 3+3";
+  private static final String SIMPLE = "let v = ref (1) in !v";
 
   
   
@@ -71,11 +72,17 @@ public class BigStepTreeView extends JFrame {
           builder.append(", ");
         builder.append(node.getSteps()[n].getRule().getName());
       }
-      builder.append("] -> ");
+      builder.append("] -> (");
       builder.append(node.getExpression());
-      builder.append(" \u21d3 ");
+      builder.append(", ");
+      builder.append(node.getStore());
+      builder.append(") \u21d3 ");
       if (node.getResult() != null) {
+        builder.append("(");
         builder.append(node.getResult().getValue());
+        builder.append(", ");
+        builder.append(node.getResult().getStore());
+        builder.append(")");
       }
       setText(builder.toString());
       return this;

@@ -5,8 +5,10 @@ import bigstep.rules.BetaValueRule;
 import bigstep.rules.BopRule;
 import bigstep.rules.CondFalseRule;
 import bigstep.rules.CondTrueRule;
+import bigstep.rules.DerefRule;
 import bigstep.rules.LetRule;
 import bigstep.rules.ProjRule;
+import bigstep.rules.RefRule;
 import bigstep.rules.SeqRule;
 import bigstep.rules.TupleRule;
 import bigstep.rules.UnfoldRule;
@@ -68,6 +70,8 @@ public final class BigStepProofModel extends AbstractInterpreterProofModel {
       new BetaValueRule(),
       new BopRule(),
       new UopRule(),
+      new RefRule(),
+      new DerefRule(),
       new AppRule(),
       new CondFalseRule(),
       new CondTrueRule(),

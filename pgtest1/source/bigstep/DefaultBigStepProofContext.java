@@ -215,9 +215,9 @@ final class DefaultBigStepProofContext implements BigStepProofContext {
     
     // use the store of the last child node (if proven)
     if (node.getChildCount() > 0) {
-      BigStepProofNode childNode = node.getLastChild();
-      if (childNode.isProven()) {
-        store = childNode.getStore();
+      BigStepProofResult result = node.getLastChild().getResult();
+      if (result != null) {
+        store = result.getStore();
       }
     }
     
