@@ -3,7 +3,7 @@ package bigstep;
 import javax.swing.tree.TreeNode;
 
 import common.ProofNode;
-import common.interpreters.Store;
+import common.interpreters.InterpreterProofNode;
 
 import expressions.Expression;
 
@@ -13,7 +13,7 @@ import expressions.Expression;
  * @author Benedikt Meurer
  * @version $Id$
  */
-public interface BigStepProofNode extends ProofNode {
+public interface BigStepProofNode extends InterpreterProofNode {
   //
   // Accessors
   //
@@ -47,17 +47,6 @@ public interface BigStepProofNode extends ProofNode {
    * @see ProofNode#getSteps()
    */
   public BigStepProofRule getRule();
-  
-  /**
-   * Returns the {@link Store}, which is used to evaluate the expression
-   * at this node (and possibly also used to evaluate sub expressions).
-   * 
-   * This is only meaningful if the expression to be proven contains
-   * memory operations, i.e. references.
-   * 
-   * @return the store, which is used to evaluate this expression.
-   */
-  public Store getStore();
   
   
   

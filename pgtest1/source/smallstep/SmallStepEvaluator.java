@@ -5,6 +5,7 @@ import java.util.Vector;
 
 import common.ProofStep;
 import common.interpreters.MutableStore;
+import common.interpreters.Store;
 
 import expressions.And;
 import expressions.Application;
@@ -69,11 +70,11 @@ final class SmallStepEvaluator {
   private Vector<ProofStep> steps = new Vector<ProofStep>();
   
   /**
-   * The resulting {@link common.interpreters.MutableStore}.
+   * The resulting {@link common.interpreters.Store}.
    * 
    * @see #getStore()
    */
-  private MutableStore store;
+  private Store store;
   
 
   
@@ -90,12 +91,12 @@ final class SmallStepEvaluator {
    * @param expression the {@link Expression} for which
    *                   to determine the next evaluation
    *                   step in the proof.
-   * @param store the {@link common.interpreters.MutableStore} to start with.                   
+   * @param store the {@link common.interpreters.Store} to start with.                   
    */
-  SmallStepEvaluator(Expression expression, MutableStore store) {
+  SmallStepEvaluator(Expression expression, Store store) {
     // create store, remember expression
     this.expression = expression;
-    this.store = new MutableStore(store);
+    this.store = store;
     
     // evaluate expression
     this.expression = evaluate(this.expression);
@@ -141,12 +142,11 @@ final class SmallStepEvaluator {
   }
   
   /**
-   * Returns the resulting {@link MutableStore}
-   * for the evaluation.
+   * Returns the resulting {@link Store} for the evaluation.
    * 
    * @return the resulting store.
    */
-  public MutableStore getStore() {
+  public Store getStore() {
     return this.store;
   }
   
@@ -710,8 +710,10 @@ final class SmallStepEvaluator {
     addProofStep("REF", application);
     
     // allocate a new location and store the value
-    Location location = this.store.alloc();
-    this.store.put(location, e);
+    MutableStore store = new MutableStore(this.store);
+    Location location = store.alloc();
+    store.put(location, e);
+    this.store = store;
     
     // return the new location
     return location;
@@ -863,7 +865,9 @@ final class SmallStepEvaluator {
         addProofStep("ASSIGN", applicationOrInfix);
         
         // change the value at the memory location
-        this.store.put((Location)e1, e2);
+        MutableStore store = new MutableStore(this.store);
+        store.put((Location)e1, e2);
+        this.store = store;
         
         // return nothing
         return UnitConstant.UNIT;

@@ -13,12 +13,12 @@ import bigstep.rules.UnfoldRule;
 import bigstep.rules.UopRule;
 import bigstep.rules.ValRule;
 
-import common.AbstractProofModel;
 import common.ProofGuessException;
 import common.ProofNode;
 import common.ProofRule;
 import common.ProofRuleException;
 import common.ProofStep;
+import common.interpreters.AbstractInterpreterProofModel;
 import common.interpreters.Store;
 
 import expressions.Expression;
@@ -29,7 +29,7 @@ import expressions.Expression;
  * @author Benedikt Meurer
  * @version $Id$
  */
-public final class BigStepProofModel extends AbstractProofModel {
+public final class BigStepProofModel extends AbstractInterpreterProofModel {
   //
   // Constructor (package)
   //
@@ -52,7 +52,7 @@ public final class BigStepProofModel extends AbstractProofModel {
   
   
   //
-  // Primitives
+  // Accessors
   //
   
   /**
@@ -77,6 +77,12 @@ public final class BigStepProofModel extends AbstractProofModel {
       new TupleRule(),
     };
   }
+  
+  
+  
+  //
+  // Actions
+  //
 
   /**
    * {@inheritDoc}

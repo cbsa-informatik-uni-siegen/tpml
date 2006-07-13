@@ -20,11 +20,23 @@ public final class MutableStore extends AbstractEnvironment<Location, Expression
   //
   
   /**
-   * Allocates a new store, based on the
-   * items from the specified <code>store</code>.
+   * Allocates a new store, based on the items from the specified <code>store</code>.
    * 
-   * @param store the {@link MutableStore}, whose
-   *              mappings should be copied.
+   * @param store the {@link Store}, whose items should be copied.
+   *
+   * @throws ClassCastException if <code>store</code> is not a {@link MutableStore}.
+   * @throws NullPointerException if <code>store</code> is <code>null</code>.
+   */
+  public MutableStore(Store store) {
+    this((MutableStore)store);
+  }
+  
+  /**
+   * Allocates a new store, based on the items from the specified <code>store</code>.
+   * 
+   * @param store the {@link MutableStore}, whose mappings should be copied.
+   * 
+   * @throws NullPointerException if <code>store</code> is <code>null</code>.
    */
   public MutableStore(MutableStore store) {
     super(store);

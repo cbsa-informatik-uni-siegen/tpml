@@ -2,8 +2,8 @@ package bigstep;
 
 import javax.swing.tree.TreeNode;
 
-import common.AbstractProofNode;
 import common.ProofStep;
+import common.interpreters.AbstractInterpreterProofNode;
 import common.interpreters.Store;
 
 import expressions.Expression;
@@ -17,7 +17,7 @@ import expressions.Expression;
  * 
  * @see bigstep.BigStepProofNode
  */
-final class DefaultBigStepProofNode extends AbstractProofNode implements BigStepProofNode {
+final class DefaultBigStepProofNode extends AbstractInterpreterProofNode implements BigStepProofNode {
   //
   // Attributes
   //
@@ -32,13 +32,6 @@ final class DefaultBigStepProofNode extends AbstractProofNode implements BigStep
    * @see #setResult(BigStepProofResult)
    */
   private BigStepProofResult result;
-  
-  /**
-   * The store to be used when evaluating this expression.
-   * 
-   * @see #getStore()
-   */
-  private Store store;
   
   
   
@@ -70,11 +63,7 @@ final class DefaultBigStepProofNode extends AbstractProofNode implements BigStep
    *                              <code>store</code> is <code>null</code>.
    */
   DefaultBigStepProofNode(Expression expression, Store store) {
-    super(expression);
-    if (store == null) {
-      throw new NullPointerException("store is null");
-    }
-    this.store = store;
+    super(expression, store);
   }
   
   
@@ -137,15 +126,6 @@ final class DefaultBigStepProofNode extends AbstractProofNode implements BigStep
     else {
       return null;
     }
-  }
-  
-  /**
-   * {@inheritDoc}
-   *
-   * @see bigstep.BigStepProofNode#getStore()
-   */
-  public Store getStore() {
-    return this.store;
   }
   
   

@@ -14,13 +14,6 @@ import javax.swing.JComboBox;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
-import common.ProofModel;
-import common.ProofRule;
-import common.ProofRuleException;
-import common.ProofStep;
-import expressions.Expression;
-import expressions.Location;
-
 import smallstep.SmallStepProofModel;
 import smallstep.SmallStepProofNode;
 import ui.AbstractNode;
@@ -29,6 +22,15 @@ import ui.beans.MenuButtonListener;
 import ui.renderer.AbstractRenderer;
 import ui.renderer.EnvironmentRenderer;
 import ui.renderer.ExpressionRenderer;
+
+import common.ProofModel;
+import common.ProofRule;
+import common.ProofRuleException;
+import common.ProofStep;
+import common.interpreters.InterpreterProofModel;
+
+import expressions.Expression;
+import expressions.Location;
 
 
 
@@ -368,7 +370,7 @@ class SmallStepNode extends AbstractNode {
 	}
 	
 	public void prepareExpressionSize (int maxWidth) {
-		if (model.isMemoryEnabled()) {
+		if (((InterpreterProofModel)model).isMemoryEnabled()) {
 			this.envSize = envRenderer.getNeededSize();	
 		}
 		else {
@@ -437,7 +439,7 @@ class SmallStepNode extends AbstractNode {
 		
 		
 		expRenderer.render(posX + this.ruleFontMetrics.getHeight(), posY, this.underlineExpression, g);
-		if (model.isMemoryEnabled()) {
+		if (((InterpreterProofModel)model).isMemoryEnabled()) {
 			envRenderer.render(posX+5, posY, 5, this.expEnvSize.height, AbstractRenderer.BRACE_LEFT, g);
 			int x = envRenderer.render(posX + this.ruleFontMetrics.getHeight() + this.expSize.width + 10, posY, expSize.height, g);
 			envRenderer.render(x, posY, 5, this.expEnvSize.height, AbstractRenderer.BRACE_RIGHT, g);

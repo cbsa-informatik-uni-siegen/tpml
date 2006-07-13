@@ -41,14 +41,6 @@ public abstract class AbstractProofModel extends AbstractBean implements ProofMo
   protected EventListenerList listenerList = new EventListenerList();
   
   /**
-   * Whether memory operations are enabled.
-   * 
-   * @see #isMemoryEnabled()
-   * @see #setMemoryEnabled(boolean)
-   */
-  protected boolean memoryEnabled;
-  
-  /**
    * The root node of the proof tree.
    * 
    * @see #getRoot()
@@ -92,35 +84,6 @@ public abstract class AbstractProofModel extends AbstractBean implements ProofMo
    */
   public abstract ProofRule[] getRules();
 
-  /**
-   * {@inheritDoc}
-   * 
-   * @see common.ProofModel#isMemoryEnabled()
-   */
-  public boolean isMemoryEnabled() {
-    return this.memoryEnabled;
-  }
-  
-  /**
-   * If <code>memoryEnabled</code> is <code>true</code> the proof
-   * model will indicate the upper layers that memory operations
-   * will be used, otherwise the simple configurations should be
-   * used and the {@link ProofNode#getStore()} return value will
-   * be ignored (and invalid).
-   *  
-   * @param memoryEnabled the new setting.
-   * 
-   * @see #isMemoryEnabled()
-   */
-  public void setMemoryEnabled(boolean memoryEnabled) {
-    // check if we have a new setting
-    if (this.memoryEnabled != memoryEnabled) {
-      boolean oldMemoryEnabled = this.memoryEnabled;
-      this.memoryEnabled = memoryEnabled;
-      firePropertyChange("memoryEnabled", oldMemoryEnabled, memoryEnabled);
-    }
-  }
-  
   
   
   //

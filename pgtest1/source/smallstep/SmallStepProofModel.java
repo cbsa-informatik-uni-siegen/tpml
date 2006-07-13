@@ -1,12 +1,12 @@
 package smallstep;
 
-import common.AbstractProofModel;
 import common.ProofGuessException;
 import common.ProofModel;
 import common.ProofNode;
 import common.ProofRule;
 import common.ProofRuleException;
 import common.ProofStep;
+import common.interpreters.AbstractInterpreterProofModel;
 
 import expressions.Expression;
 
@@ -16,7 +16,7 @@ import expressions.Expression;
  * @author Benedikt Meurer
  * @version $Id$
  */
-public class SmallStepProofModel extends AbstractProofModel {
+public class SmallStepProofModel extends AbstractInterpreterProofModel {
   //
   // Constructor
   //
@@ -41,7 +41,7 @@ public class SmallStepProofModel extends AbstractProofModel {
   
   
   //
-  // Primitives
+  // Accessors
   //
   
   /**
@@ -52,16 +52,6 @@ public class SmallStepProofModel extends AbstractProofModel {
   @Override
   public ProofRule[] getRules() {
     return SmallStepProofRule.getRules();
-  }
-  
-  /**
-   * TODO
-   * 
-   * @return
-   */
-  public ProofRule[] getMatchingRules() {
-    // FIXME
-    return null;
   }
   
   
