@@ -3,14 +3,17 @@ package bigstep;
 import java.util.LinkedList;
 
 import common.ProofRuleException;
+import common.interpreters.Store;
 
 import expressions.Expression;
 
 /**
- * TODO Add documentation here.
+ * Default implementation of the <code>BigStepProofContext</code> interface.
  *
  * @author Benedikt Meurer
  * @version $Id$
+ * 
+ * @see bigstep.BigStepProofContext
  */
 final class DefaultBigStepProofContext implements BigStepProofContext {
   //
@@ -123,12 +126,12 @@ final class DefaultBigStepProofContext implements BigStepProofContext {
     BigStepProofRule rule = node.getRule();
     
     // check if child node resulted in an exception
-    if (childNode.isProven() && childNode.getValue().isException()) {
+    if (childNode.isProven() && childNode.getResult().getValue().isException()) {
       // generate an exception rule for the node
       setProofNodeRule(node, rule.toExnRule(node.getIndex(childNode)));
       
       // forward the exception value
-      setProofNodeValue(node, childNode.getValue());
+      setProofNodeResult(node, childNode.getResult());
     }
     else {
       // use the rule's update() mechanism
@@ -207,7 +210,55 @@ final class DefaultBigStepProofContext implements BigStepProofContext {
    * @see BigStepProofContext#addProofNode(BigStepProofNode, Expression)
    */
   public void addProofNode(BigStepProofNode node, Expression expression) {
-    this.model.contextAddProofNode(this, (DefaultBigStepProofNode)node, expression);
+    // default to inherit the store of the parent node
+    Store store = node.getStore();
+    
+    // use the store of the last child node (if proven)
+    if (node.getChildCount() > 0) {
+      BigStepProofNode childNode = node.getLastChild();
+      if (childNode.isProven()) {
+        store = childNode.getStore();
+      }
+    }
+    
+    // and add the new node
+    addProofNode(node, expression, store);
+  }
+  
+  /**
+   * {@inheritDoc}
+   *
+   * @see bigstep.BigStepProofContext#addProofNode(bigstep.BigStepProofNode, expressions.Expression, common.interpreters.Store)
+   */
+  public void addProofNode(BigStepProofNode node, Expression expression, Store store) {
+    this.model.contextAddProofNode(this, (DefaultBigStepProofNode)node, expression, store);
+  }
+  
+  /**
+   * {@inheritDoc}
+   *
+   * @see bigstep.BigStepProofContext#setProofNodeResult(bigstep.BigStepProofNode, bigstep.BigStepProofResult)
+   */
+  public void setProofNodeResult(BigStepProofNode node, BigStepProofResult result) {
+    this.model.contextSetProofNodeResult(this, (DefaultBigStepProofNode)node, result);
+  }
+  
+  /**
+   * {@inheritDoc}
+   *
+   * @see bigstep.BigStepProofContext#setProofNodeResult(bigstep.BigStepProofNode, expressions.Expression)
+   */
+  public void setProofNodeResult(BigStepProofNode node, Expression value) {
+    setProofNodeResult(node, value, node.getStore());
+  }
+  
+  /**
+   * {@inheritDoc}
+   *
+   * @see bigstep.BigStepProofContext#setProofNodeResult(bigstep.BigStepProofNode, expressions.Expression, common.interpreters.Store)
+   */
+  public void setProofNodeResult(BigStepProofNode node, Expression value, Store store) {
+    setProofNodeResult(node, new DefaultBigStepProofResult(store, value));
   }
   
   /**
@@ -217,14 +268,5 @@ final class DefaultBigStepProofContext implements BigStepProofContext {
    */
   public void setProofNodeRule(BigStepProofNode node, BigStepProofRule rule) {
     this.model.contextSetProofNodeRule(this, (DefaultBigStepProofNode)node, rule);
-  }
-  
-  /**
-   * {@inheritDoc}
-   * 
-   * @see BigStepProofContext#setProofNodeValue(BigStepProofNode, Expression)
-   */
-  public void setProofNodeValue(BigStepProofNode node, Expression value) {
-    this.model.contextSetProofNodeValue(this, (DefaultBigStepProofNode)node, value);
   }
 }

@@ -52,7 +52,7 @@ public final class ProjRule extends BigStepProofRule {
       }
       
       // well, this is easy then
-      context.setProofNodeValue(node, tuple.getExpressions(projection.getIndex() - 1));
+      context.setProofNodeResult(node, tuple.getExpressions(projection.getIndex() - 1));
     }
     catch (ClassCastException e) {
       throw new ProofRuleException(node, this, e);

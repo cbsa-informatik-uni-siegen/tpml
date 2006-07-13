@@ -7,6 +7,7 @@ import bigstep.rules.CondFalseRule;
 import bigstep.rules.CondTrueRule;
 import bigstep.rules.LetRule;
 import bigstep.rules.ProjRule;
+import bigstep.rules.SeqRule;
 import bigstep.rules.TupleRule;
 import bigstep.rules.UnfoldRule;
 import bigstep.rules.UopRule;
@@ -18,6 +19,7 @@ import common.ProofNode;
 import common.ProofRule;
 import common.ProofRuleException;
 import common.ProofStep;
+import common.interpreters.Store;
 
 import expressions.Expression;
 
@@ -71,6 +73,7 @@ public final class BigStepProofModel extends AbstractProofModel {
       new CondTrueRule(),
       new LetRule(),
       new UnfoldRule(),
+      new SeqRule(),
       new TupleRule(),
     };
   }
@@ -181,8 +184,8 @@ public final class BigStepProofModel extends AbstractProofModel {
   /**
    * TODO Add documentation here.
    */
-  void contextAddProofNode(DefaultBigStepProofContext context, final DefaultBigStepProofNode node, final Expression expression) {
-    final DefaultBigStepProofNode child = new DefaultBigStepProofNode(expression);
+  void contextAddProofNode(DefaultBigStepProofContext context, final DefaultBigStepProofNode node, final Expression expression, Store store) {
+    final DefaultBigStepProofNode child = new DefaultBigStepProofNode(expression, store);
     
     context.addRedoAction(new Runnable() {
       public void run() {
@@ -196,6 +199,27 @@ public final class BigStepProofModel extends AbstractProofModel {
         int index = node.getIndex(child);
         node.remove(index);
         nodesWereRemoved(node, new int[] { index }, new Object[] { child });
+      }
+    });
+  }
+  
+  /**
+   * TODO Add documentation here.
+   */
+  void contextSetProofNodeResult(DefaultBigStepProofContext context, final DefaultBigStepProofNode node, final BigStepProofResult result) {
+    final BigStepProofResult oldResult = node.getResult();
+    
+    context.addRedoAction(new Runnable() {
+      public void run() {
+        node.setResult(result);
+        nodeChanged(node);
+      }
+    });
+    
+    context.addUndoAction(new Runnable() {
+      public void run() {
+        node.setResult(oldResult);
+        nodeChanged(node);
       }
     });
   }
@@ -216,27 +240,6 @@ public final class BigStepProofModel extends AbstractProofModel {
     context.addUndoAction(new Runnable() {
       public void run() {
         node.setSteps(oldSteps);
-        nodeChanged(node);
-      }
-    });
-  }
-  
-  /**
-   * TODO Add documentation here.
-   */
-  void contextSetProofNodeValue(DefaultBigStepProofContext context, final DefaultBigStepProofNode node, final Expression value) {
-    final Expression oldValue = node.getValue();
-    
-    context.addRedoAction(new Runnable() {
-      public void run() {
-        node.setValue(value);
-        nodeChanged(node);
-      }
-    });
-    
-    context.addUndoAction(new Runnable() {
-      public void run() {
-        node.setValue(oldValue);
         nodeChanged(node);
       }
     });

@@ -1,4 +1,4 @@
-package smallstep;
+package common.interpreters;
 
 import java.util.Enumeration;
 
@@ -8,12 +8,30 @@ import expressions.Expression;
 import expressions.Location;
 
 /**
- * TODO Add documentation here.
+ * Base interface for stores used in the big and small step
+ * interpreters to implement memory operations.
  *
  * @author Benedikt Meurer
  * @version $Id$
+ * 
+ * @see common.interpreters.MutableStore
  */
 public interface Store extends Environment<Location, Expression>{
+  //
+  // Constants
+  //
+  
+  /**
+   * Default empty store instance.
+   */
+  public static final MutableStore EMPTY_STORE = new MutableStore();
+  
+  
+
+  //
+  // Store queries
+  //
+  
   /**
    * Returns <code>true</code> if this store contains the
    * specified <code>location</code>.

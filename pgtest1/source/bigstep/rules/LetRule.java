@@ -102,8 +102,7 @@ public final class LetRule extends BigStepProofRule {
     // check if we have exactly one proven child node
     if (node.getChildCount() == 1 && node.getChildAt(0).isProven()) {
       // determine the value of the first child node
-      BigStepProofNode node0 = (BigStepProofNode)node.getChildAt(0);
-      Expression value0 = node0.getValue();
+      Expression value0 = node.getChildAt(0).getResult().getValue();
       
       // determine the expression for the node
       Expression e = (Expression)node.getExpression();
@@ -136,9 +135,8 @@ public final class LetRule extends BigStepProofRule {
       }
     }
     else if (node.getChildCount() == 2) {
-      // forward the value of the second child node
-      BigStepProofNode node1 = (BigStepProofNode)node.getChildAt(1);
-      context.setProofNodeValue(node, node1.getValue());
+      // forward the result of the second child node
+      context.setProofNodeResult(node, node.getChildAt(1).getResult());
     }
     else {
       super.update(context, node);

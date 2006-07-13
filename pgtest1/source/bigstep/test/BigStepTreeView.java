@@ -42,7 +42,8 @@ public class BigStepTreeView extends JFrame {
   //private static final String SIMPLE = "let rec f x = if x = 0 then 1 else x * f (x - 1) in f 3";
   //private static final String SIMPLE = "#2_2 (1 + 1, 2 + 2, 3 + 3, (4 + 4))";
   //private static final String SIMPLE = "let (x, y, z) = (1, 2, 3) in x + z + y";
-  private static final String SIMPLE = "let f = lambda (x, y, z).x + y + z in f (1, 2, 3)";
+  //private static final String SIMPLE = "let f = lambda (x, y, z).x + y + z in f (1, 2, 3)";
+  private static final String SIMPLE = "1 + 1;2 + 2; 3+3";
 
   
   
@@ -73,8 +74,8 @@ public class BigStepTreeView extends JFrame {
       builder.append("] -> ");
       builder.append(node.getExpression());
       builder.append(" \u21d3 ");
-      if (node.getValue() != null) {
-        builder.append(node.getValue());
+      if (node.getResult() != null) {
+        builder.append(node.getResult().getValue());
       }
       setText(builder.toString());
       return this;

@@ -1,5 +1,8 @@
 package bigstep;
 
+import common.interpreters.MutableStore;
+import common.interpreters.Store;
+
 import expressions.Expression;
 
 /**
@@ -21,14 +24,87 @@ public interface BigStepProofContext {
    * The method takes care of registering the required redo and undo actions for
    * the {@link BigStepProofModel} associated with this proof context.
    * 
+   * This method acts as a convenience wrapper for the extended
+   * {@link #addProofNode(BigStepProofNode, Expression, MutableStore)} method,
+   * and tries to automatically determine the appropriate store.
+   * 
    * @param node the parent node for the new child node.
    * @param expression the {@link Expression} for which to create a new big step
    *                   proof node below the <code>node</code>.
    *                   
    * @throws NullPointerException if either the <code>node</code> or the
-   *                              <code>expression</code> is <code>null</code>.                   
+   *                              <code>expression</code> is <code>null</code>.
+   *                              
+   * @see #addProofNode(BigStepProofNode, Expression, MutableStore)
    */
   public void addProofNode(BigStepProofNode node, Expression expression);
+  
+  /**
+   * Adds a new {@link BigStepProofNode} for the specified <code>expression</code>
+   * and <code>store</code> as child node for the given <code>node</code>.
+   * 
+   * The method takes care of registering the required redo and undo actions for
+   * the {@link BigStepProofModel} associated with this proof context.
+   * 
+   * @param node the parent node for the new child node.
+   * @param expression the {@link Expression} for which to create a new big step
+   *                   proof node below the <code>node</code>.
+   * @param store the {@link Store} for the new big step proof node.
+   * 
+   * @throws NullPointerException if either the <code>node</code>, the <code>store</code>
+   *                              or the <code>expression</code> is <code>null</code>.
+   *                              
+   * @see #addProofNode(BigStepProofNode, Expression)
+   * @see Store
+   */
+  public void addProofNode(BigStepProofNode node, Expression expression, Store store);
+  
+  /**
+   * Changes the result of the specified <code>node</code> to the given <code>result</code>.
+   * 
+   * The method takes care of registering the required redo and undo actions for
+   * the {@link BigStepProofModel} associated with this proof context.
+   * 
+   * @param node the node, whose result to change to the <code>result</code>.
+   * @param result the new result for the specified <code>node</code>.
+   * 
+   * @throws NullPointerException if either <code>node</code> is <code>null</code>.
+   */
+  public void setProofNodeResult(BigStepProofNode node, BigStepProofResult result);
+  
+  /**
+   * This method is a convenience wrapper for the
+   * {@link #setProofNodeResult(BigStepProofNode, Expression, MutableStore)} method,
+   * which simply passes the {@link Store} from the specified <code>node</code> (determined
+   * using the {@link BigStepProofNode#getStore()} method) as store for the
+   * {@link BigStepProofResult}, together with the <code>value</code>.
+   * 
+   * @param node the node, whose result to change to <code>value</code>.
+   * @param value the new value for the specified <code>node</code>.
+   * 
+   * @throws NullPointerException if <code>node</code> is <code>null</code>.
+   * 
+   * @see BigStepProofNode#getStore()
+   */
+  public void setProofNodeResult(BigStepProofNode node, Expression value);
+  
+  /**
+   * Changes the result of the specified <code>node</code> to a new big step result
+   * with the given <code>value</code> and <code>store</code>. This is a convenience
+   * wrapper for {@link #setProofNodeResult(BigStepProofNode, BigStepProofResult)}.
+   * 
+   * The method takes care of registering the required redo and undo actions for
+   * the {@link BigStepProofModel} associated with this proof context.
+   * 
+   * @param node the node, whose result to change to <code>value</code> and
+   *             <code>store</code>.
+   * @param value the new value for the specified <code>node</code>.
+   * @param store the resulting store.
+   * 
+   * @throws NullPointerException if the <code>node</code> or <code>store</code>
+   *                              is <code>null</code>
+   */
+  public void setProofNodeResult(BigStepProofNode node, Expression value, Store store);
   
   /**
    * Changes the big step proof rule of the specified <code>node</code> to the
@@ -43,17 +119,4 @@ public interface BigStepProofContext {
    * @param rule the new rule to use for the proof step for <code>node</code>.
    */
   public void setProofNodeRule(BigStepProofNode node, BigStepProofRule rule);
-  
-  /**
-   * Changes the value of the specified <code>node</code> to the given <code>value</code>.
-   * 
-   * The method takes care of registering the required redo and undo actions for
-   * the {@link BigStepProofModel} associated with this proof context.
-   * 
-   * @param node the node, whose value to change to <code>value</code>.
-   * @param value the new value for the specified <code>node</code>.
-   * 
-   * @throws NullPointerException if the <code>node</code> is <code>null</code>.
-   */
-  public void setProofNodeValue(BigStepProofNode node, Expression value);
 }

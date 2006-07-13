@@ -1,16 +1,21 @@
 package bigstep;
 
-import smallstep.Store;
+import javax.swing.tree.TreeNode;
+
 import common.AbstractProofNode;
 import common.ProofStep;
+import common.interpreters.Store;
 
 import expressions.Expression;
 
 /**
+ * Default implementation of the <code>BigStepProofNode</code> interface.
  * The class for nodes in a {@link bigstep.BigStepProofModel}.
  *
  * @author Benedikt Meurer
  * @version $Id$
+ * 
+ * @see bigstep.BigStepProofNode
  */
 final class DefaultBigStepProofNode extends AbstractProofNode implements BigStepProofNode {
   //
@@ -18,14 +23,22 @@ final class DefaultBigStepProofNode extends AbstractProofNode implements BigStep
   //
   
   /**
-   * The resulting value of the expression at this node.
-   * May be either a value (see {@link Expression#isValue()})
-   * or an exception (see {@link {@link Expression#isException()}),
-   * or <code>null</code> if the node is not yet proven.
+   * The result of the evaluation of the expression at this node.
+   * May be either <code>null</code> if the node is not yet proven,
+   * or a value (see {@link Expression#isValue()}) or an exception
+   * (see {@link Expression#isException()}) with a store.
    * 
-   * @see #getValue()
+   * @see #getResult()
+   * @see #setResult(BigStepProofResult)
    */
-  private Expression value;
+  private BigStepProofResult result;
+  
+  /**
+   * The store to be used when evaluating this expression.
+   * 
+   * @see #getStore()
+   */
+  private Store store;
   
   
   
@@ -38,9 +51,12 @@ final class DefaultBigStepProofNode extends AbstractProofNode implements BigStep
    * specified <code>expression</code>.
    * 
    * @param expression the {@link Expression} for this node.
+   * 
+   * @throws NullPointerException if either <code>expression</code>
+   *                              is <code>null</code>.
    */
   DefaultBigStepProofNode(Expression expression) {
-    super(expression);
+    this(expression, Store.EMPTY_STORE);
   }
   
   /**
@@ -49,15 +65,22 @@ final class DefaultBigStepProofNode extends AbstractProofNode implements BigStep
    * 
    * @param expression the {@link Expression} for this node.
    * @param store the {@link Store} for this node.
+   * 
+   * @throws NullPointerException if either <code>expression</code> or
+   *                              <code>store</code> is <code>null</code>.
    */
   DefaultBigStepProofNode(Expression expression, Store store) {
-    super(expression/*FIXME:, store*/);
+    super(expression);
+    if (store == null) {
+      throw new NullPointerException("store is null");
+    }
+    this.store = store;
   }
   
   
   
   //
-  // Primitives
+  // Accessors
   //
   
   /**
@@ -67,7 +90,38 @@ final class DefaultBigStepProofNode extends AbstractProofNode implements BigStep
    */
   @Override
   public boolean isProven() {
-    return (this.value != null);
+    return (this.result != null);
+  }
+
+  /**
+   * {@inheritDoc}
+   *
+   * @see bigstep.BigStepProofNode#getResult()
+   */
+  public BigStepProofResult getResult() {
+    return this.result;
+  }
+  
+  /**
+   * Sets the result for the expression at this node. The
+   * <code>result</code> must be either <code>null</code> or
+   * a {@link BigStepProofResult} with a valid store and a
+   * value or an exception (according to the semantics of the
+   * big step interpreter), otherwise an {@link IllegalArgumentException}
+   * will be thrown.
+   * 
+   * @param result the new result for this node, or <code>null</code> to
+   *               reset the result.
+   *               
+   * @throws IllegalArgumentException if <code>result</code> is invalid.
+   * 
+   * @see #getResult()
+   */
+  void setResult(BigStepProofResult result) {
+    if (result != null && !result.getValue().isException() && !result.getValue().isValue()) {
+      throw new IllegalArgumentException("result is invalid");
+    }
+    this.result = result;
   }
   
   /**
@@ -87,31 +141,124 @@ final class DefaultBigStepProofNode extends AbstractProofNode implements BigStep
   
   /**
    * {@inheritDoc}
-   * 
-   * @see BigStepProofNode#getValue()
+   *
+   * @see bigstep.BigStepProofNode#getStore()
    */
-  public Expression getValue() {
-    return this.value;
+  public Store getStore() {
+    return this.store;
+  }
+  
+  
+  
+  //
+  // Primitives
+  //
+  
+  /**
+   * {@inheritDoc}
+   *
+   * @see common.AbstractProofNode#getChildAt(int)
+   */
+  @Override
+  public DefaultBigStepProofNode getChildAt(int childIndex) {
+    return (DefaultBigStepProofNode)super.getChildAt(childIndex);
   }
   
   /**
-   * Sets the resulting value for this expression.
-   * The <code>value</code> must be either a value
-   * or an exception (according to the semantics of
-   * the big step interpreter), otherwise an
-   * {@link IllegalArgumentException} will be thrown.
-   * 
-   * @param value the new value for this node, or <code>null</code>
-   *              to reset the value.
+   * {@inheritDoc}
    *
-   * @throws IllegalArgumentException if <code>value</code> is invalid.
-   * 
-   * @see #getValue()
+   * @see common.AbstractProofNode#getParent()
    */
-  void setValue(Expression value) {
-    if (value != null && !value.isException() && !value.isValue()) {
-      throw new IllegalArgumentException("value is invalid");
-    }
-    this.value = value;
+  @Override
+  public DefaultBigStepProofNode getParent() {
+    return (DefaultBigStepProofNode)super.getParent();
+  }
+  
+  
+  
+  //
+  // Tree Queries
+  //
+  
+  /**
+   * {@inheritDoc}
+   *
+   * @see common.AbstractProofNode#getRoot()
+   */
+  @Override
+  public DefaultBigStepProofNode getRoot() {
+    return (DefaultBigStepProofNode)super.getRoot();
+  }
+  
+  
+  
+  //
+  // Child Queries
+  //
+  
+  /**
+   * {@inheritDoc}
+   *
+   * @see common.AbstractProofNode#getFirstChild()
+   */
+  @Override
+  public DefaultBigStepProofNode getFirstChild() {
+    return (DefaultBigStepProofNode)super.getFirstChild();
+  }
+  
+  /**
+   * {@inheritDoc}
+   *
+   * @see common.AbstractProofNode#getLastChild()
+   */
+  @Override
+  public DefaultBigStepProofNode getLastChild() {
+    return (DefaultBigStepProofNode)super.getLastChild();
+  }
+  
+  /**
+   * {@inheritDoc}
+   *
+   * @see common.AbstractProofNode#getChildAfter(javax.swing.tree.TreeNode)
+   */
+  @Override
+  public DefaultBigStepProofNode getChildAfter(TreeNode aChild) {
+    return (DefaultBigStepProofNode)super.getChildAfter(aChild);
+  }
+  
+  /**
+   * {@inheritDoc}
+   *
+   * @see common.AbstractProofNode#getChildBefore(javax.swing.tree.TreeNode)
+   */
+  @Override
+  public DefaultBigStepProofNode getChildBefore(TreeNode aChild) {
+    return (DefaultBigStepProofNode)super.getChildBefore(aChild);
+  }
+
+
+
+  //
+  // Leaf Queries
+  //
+
+  /**
+   * {@inheritDoc}
+   *
+   * @see common.AbstractProofNode#getFirstLeaf()
+   */
+  @Override
+  public DefaultBigStepProofNode getFirstLeaf() {
+    return (DefaultBigStepProofNode)super.getFirstLeaf();
+  }
+  
+  /**
+   * {@inheritDoc}
+   *
+   * @see common.AbstractProofNode#getLastLeaf()
+   */
+  @Override
+  public DefaultBigStepProofNode getLastLeaf() {
+    return (DefaultBigStepProofNode)super.getLastLeaf();
   }
 }

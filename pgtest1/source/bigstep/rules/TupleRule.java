@@ -43,10 +43,8 @@ public final class TupleRule extends BigStepProofRule {
       // can only be applied to Tuples
       Tuple tuple = (Tuple)node.getExpression();
       
-      // add nodes for all sub expressions
-      for (Expression e : tuple.getExpressions()) {
-        context.addProofNode(node, e);
-      }
+      // add a child node for the first sub expression
+      context.addProofNode(node, tuple.getExpressions(0));
     }
     catch (ClassCastException e) {
       throw new ProofRuleException(node, this, e);
@@ -60,17 +58,30 @@ public final class TupleRule extends BigStepProofRule {
    */
   @Override
   public void update(BigStepProofContext context, BigStepProofNode node) {
-    // check if all child nodes are proven
-    Expression[] values = new Expression[node.getChildCount()];
-    for (int n = 0; n < values.length; ++n) {
-      values[n] = ((BigStepProofNode)node.getChildAt(n)).getValue();
-      if (values[n] == null) {
-        // atleast one is not yet proven
-        return;
+    // determine the expression at this node
+    Tuple tuple = (Tuple)node.getExpression();
+    
+    // check if all child nodes were created
+    if (node.getChildCount() < tuple.getArity()) {
+      // verify that the last child node is proven
+      if (node.getLastChild().isProven()) {
+        // add the next child node
+        context.addProofNode(node, tuple.getExpressions(node.getChildCount()));
       }
     }
-    
-    // all child nodes are proven, we're done
-    context.setProofNodeValue(node, new Tuple(values));
+    else {
+      // check if all child nodes are proven
+      Expression[] values = new Expression[node.getChildCount()];
+      for (int n = 0; n < values.length; ++n) {
+        values[n] = node.getChildAt(n).getResult().getValue();
+        if (values[n] == null) {
+          // atleast one is not yet proven
+          return;
+        }
+      }
+      
+      // all child nodes are proven, we're done
+      context.setProofNodeResult(node, new Tuple(values));
+    }
   }
 }

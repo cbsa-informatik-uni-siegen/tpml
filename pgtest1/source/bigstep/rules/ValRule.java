@@ -7,7 +7,7 @@ import bigstep.BigStepProofRule;
 import common.ProofRuleException;
 
 /**
- * TODO Add documentation here.
+ * This class represents the big step rule <b>(VAL)</b>.
  *
  * @author Benedikt Meurer
  * @version $Id$
@@ -18,7 +18,7 @@ public final class ValRule extends BigStepProofRule {
   //
   
   /**
-   * TODO Add documentation here.
+   * Allocates a new <code>ValRule</code> instance.
    */
   public ValRule() {
     super(true, "VAL");
@@ -37,8 +37,9 @@ public final class ValRule extends BigStepProofRule {
    */
   @Override
   public void apply(BigStepProofContext context, BigStepProofNode node) throws ProofRuleException {
+    // (VAL) can only be applied to values
     if (node.getExpression().isValue()) {
-      context.setProofNodeValue(node, node.getExpression());
+      context.setProofNodeResult(node, node.getExpression());
     }
     else {
       super.apply(context, node);

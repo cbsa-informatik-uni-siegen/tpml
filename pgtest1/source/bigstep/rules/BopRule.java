@@ -14,7 +14,7 @@ import bigstep.BigStepProofNode;
 import bigstep.BigStepProofRule;
 
 /**
- * TODO Add documentation here.
+ * This class represents the big step rule <b>(BOP)</b>.
  *
  * @author Benedikt Meurer
  * @version $Id$
@@ -25,7 +25,7 @@ public final class BopRule extends BigStepProofRule {
   //
   
   /**
-   * TODO Add documentation here.
+   * Allocates a new <code>BopRule</code> instance.
    */
   public BopRule() {
     super(true, "BOP");
@@ -62,7 +62,7 @@ public final class BopRule extends BigStepProofRule {
         }
         
         // try to apply the operator
-        context.setProofNodeValue(node, bop.applyTo(e1, e2));
+        context.setProofNodeResult(node, bop.applyTo(e1, e2));
       }
       else {
         // infix operation is easy
@@ -77,7 +77,7 @@ public final class BopRule extends BigStepProofRule {
         }
         
         // try to perform the infix operation
-        context.setProofNodeValue(node, bop.applyTo(e1, e2));
+        context.setProofNodeResult(node, bop.applyTo(e1, e2));
       }
     }
     catch (BinaryOperatorException e) {

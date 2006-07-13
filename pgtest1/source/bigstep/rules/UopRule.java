@@ -55,7 +55,7 @@ public class UopRule extends BigStepProofRule {
       }
 
       // try to apply the operator
-      context.setProofNodeValue(node, e1.applyTo(e2));
+      context.setProofNodeResult(node, e1.applyTo(e2));
     }
     catch (ClassCastException e) {
       throw new ProofRuleException(node, this, e);

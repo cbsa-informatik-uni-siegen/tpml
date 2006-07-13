@@ -1,4 +1,4 @@
-package smallstep;
+package common.interpreters;
 
 import java.util.Enumeration;
 import java.util.LinkedList;
@@ -8,21 +8,27 @@ import expressions.Expression;
 import expressions.Location;
 
 /**
- * Default implementation of the <code>Store</code> interface, used
- * for the small step interpreter.
+ * Mutable implementation of the <code>Store</code> interface, used
+ * for the big and small step interpreters.
  *
  * @author Benedikt Meurer
- * @version $Id$
+ * @version $Id: MutableStore.java 168 2006-06-15 13:41:38Z benny $
  */
-final class DefaultStore extends AbstractEnvironment<Location, Expression> implements Store {
+public final class MutableStore extends AbstractEnvironment<Location, Expression> implements Store {
   //
-  // Constants
+  // Constructor 
   //
   
   /**
-   * Default empty store instance.
+   * Allocates a new store, based on the
+   * items from the specified <code>store</code>.
+   * 
+   * @param store the {@link MutableStore}, whose
+   *              mappings should be copied.
    */
-  public static final DefaultStore EMPTY_STORE = new DefaultStore();
+  public MutableStore(MutableStore store) {
+    super(store);
+  }
   
   
   
@@ -33,31 +39,20 @@ final class DefaultStore extends AbstractEnvironment<Location, Expression> imple
   /**
    * Allocates a new empty default store.
    */
-  DefaultStore() {
+  MutableStore() {
     super();
-  }
-  
-  /**
-   * Allocates a new store, based on the
-   * items from the specified <code>store</code>.
-   * 
-   * @param store the {@link DefaultStore}, whose
-   *              mappings should be copied.
-   */
-  DefaultStore(DefaultStore store) {
-    super(store);
   }
   
   
   
   //
-  // Primitives
+  // Store queries
   //
   
   /**
    * {@inheritDoc}
    *
-   * @see smallstep.Store#containsLocation(expressions.Location)
+   * @see common.interpreters.Store#containsLocation(expressions.Location)
    */
   public boolean containsLocation(Location location) {
     return containsSymbol(location);
@@ -66,7 +61,7 @@ final class DefaultStore extends AbstractEnvironment<Location, Expression> imple
   /**
    * {@inheritDoc}
    *
-   * @see smallstep.Store#locations()
+   * @see common.interpreters.Store#locations()
    */
   public Enumeration<Location> locations() {
     return symbols();
@@ -75,7 +70,7 @@ final class DefaultStore extends AbstractEnvironment<Location, Expression> imple
   
 
   //
-  // Allocation/Insertion
+  // Store modification
   //
   
   /**
@@ -87,7 +82,7 @@ final class DefaultStore extends AbstractEnvironment<Location, Expression> imple
    * 
    * @see #put(Location, Expression)
    */
-  Location alloc() {
+  public Location alloc() {
     // try to find a new unique location
     for (String suffix = "";; suffix = suffix + "'") {
       for (int n = 0; n < 26; ++n) {
@@ -117,7 +112,7 @@ final class DefaultStore extends AbstractEnvironment<Location, Expression> imple
    * @see #alloc()
    * @see #get(Location)
    */
-  void put(Location location, Expression expression) {
+  public void put(Location location, Expression expression) {
     // verify the location and expression
     if (location == null) {
       throw new IllegalArgumentException("location is null");

@@ -4,6 +4,7 @@ import java.lang.reflect.Method;
 import java.util.Vector;
 
 import common.ProofStep;
+import common.interpreters.MutableStore;
 
 import expressions.And;
 import expressions.Application;
@@ -14,7 +15,6 @@ import expressions.BinaryOperatorException;
 import expressions.BooleanConstant;
 import expressions.Condition;
 import expressions.Condition1;
-import expressions.UnaryCons;
 import expressions.CurriedLet;
 import expressions.CurriedLetRec;
 import expressions.Deref;
@@ -40,6 +40,7 @@ import expressions.Sequence;
 import expressions.Snd;
 import expressions.Tl;
 import expressions.Tuple;
+import expressions.UnaryCons;
 import expressions.UnaryOperator;
 import expressions.UnaryOperatorException;
 import expressions.UnitConstant;
@@ -68,11 +69,11 @@ final class SmallStepEvaluator {
   private Vector<ProofStep> steps = new Vector<ProofStep>();
   
   /**
-   * The resulting {@link smallstep.Store}.
+   * The resulting {@link common.interpreters.MutableStore}.
    * 
    * @see #getStore()
    */
-  private DefaultStore store;
+  private MutableStore store;
   
 
   
@@ -89,12 +90,12 @@ final class SmallStepEvaluator {
    * @param expression the {@link Expression} for which
    *                   to determine the next evaluation
    *                   step in the proof.
-   * @param store the {@link smallstep.Store} to start with.                   
+   * @param store the {@link common.interpreters.MutableStore} to start with.                   
    */
-  SmallStepEvaluator(Expression expression, DefaultStore store) {
+  SmallStepEvaluator(Expression expression, MutableStore store) {
     // create store, remember expression
     this.expression = expression;
-    this.store = new DefaultStore(store);
+    this.store = new MutableStore(store);
     
     // evaluate expression
     this.expression = evaluate(this.expression);
@@ -140,12 +141,12 @@ final class SmallStepEvaluator {
   }
   
   /**
-   * Returns the resulting {@link DefaultStore}
+   * Returns the resulting {@link MutableStore}
    * for the evaluation.
    * 
    * @return the resulting store.
    */
-  public DefaultStore getStore() {
+  public MutableStore getStore() {
     return this.store;
   }
   

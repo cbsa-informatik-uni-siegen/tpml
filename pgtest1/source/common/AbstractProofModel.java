@@ -66,11 +66,13 @@ public abstract class AbstractProofModel extends AbstractBean implements ProofMo
    * given <code>root</code> item.
    * 
    * @param root the new root item.
+   * 
+   * @?hrows NullPointerException if <code>root</code> is <code>null</code>.
    */
   protected AbstractProofModel(AbstractProofNode root) {
     // validate the root node
     if (root == null) {
-      throw new IllegalArgumentException("No root node specified");
+      throw new NullPointerException("root is null");
     }
     
     // use the root node

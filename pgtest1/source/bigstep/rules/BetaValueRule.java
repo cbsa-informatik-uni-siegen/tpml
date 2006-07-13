@@ -88,10 +88,7 @@ public final class BetaValueRule extends BigStepProofRule {
    */
   @Override
   public void update(BigStepProofContext context, BigStepProofNode node) {
-    // determine the first child node
-    BigStepProofNode node0 = (BigStepProofNode)node.getChildAt(0);
-    
-    // forward the value to this node (may be null)
-    context.setProofNodeValue(node, node0.getValue());
+    // forward the result of the first child node to this node (may be null)
+    context.setProofNodeResult(node, node.getChildAt(0).getResult());
   }
 }

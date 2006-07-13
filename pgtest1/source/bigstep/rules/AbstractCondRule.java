@@ -71,9 +71,8 @@ abstract class AbstractCondRule extends BigStepProofRule {
   public void update(BigStepProofContext context, BigStepProofNode node) {
     // check if we have exactly two proven child nodes
     if (node.getChildCount() == 2 && node.getChildAt(0).isProven() && node.getChildAt(1).isProven()) {
-      // use the value of the second child node for this node
-      BigStepProofNode node1 = (BigStepProofNode)node.getChildAt(1);
-      context.setProofNodeValue(node, node1.getValue());
+      // use the result of the second child node for this node
+      context.setProofNodeResult(node, node.getChildAt(1).getResult());
     }
   }
 }

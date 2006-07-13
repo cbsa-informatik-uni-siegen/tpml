@@ -2,6 +2,8 @@ package smallstep;
 
 import common.AbstractProofNode;
 import common.ProofModel;
+import common.interpreters.MutableStore;
+import common.interpreters.Store;
 
 import expressions.Expression;
 
@@ -17,14 +19,14 @@ public class SmallStepProofNode extends AbstractProofNode {
   //
   
   /**
-   * The {@link DefaultStore} for this node if memory operations are being
+   * The {@link MutableStore} for this node if memory operations are being
    * used throughout the proof. Otherwise this is an invalid, immutable
    * store which does not contain any memory locations.
    * 
    * @see #getStore()
-   * @see #setStore(DefaultStore)
+   * @see #setStore(MutableStore)
    */
-  private DefaultStore store;
+  private MutableStore store;
 
 
   
@@ -39,7 +41,7 @@ public class SmallStepProofNode extends AbstractProofNode {
    * @param expression the {@link Expression} for this node.
    */
   SmallStepProofNode(Expression expression) {
-    this(expression, DefaultStore.EMPTY_STORE);
+    this(expression, MutableStore.EMPTY_STORE);
   }
   
   /**
@@ -47,12 +49,12 @@ public class SmallStepProofNode extends AbstractProofNode {
    * <code>expression</code> and <code>store</code>.
    * 
    * @param expression the {@link Expression} for this node.
-   * @param store the {@link DefaultStore} for this node.
+   * @param store the {@link MutableStore} for this node.
    * 
    * @throws NullPointerException if <code>expression</code> or
    *                              <code>store</code> is <code>null</code>.
    */
-  SmallStepProofNode(Expression expression, DefaultStore store) {
+  SmallStepProofNode(Expression expression, MutableStore store) {
     super(expression);
     if (store == null) {
       throw new NullPointerException("store is null");
@@ -95,7 +97,7 @@ public class SmallStepProofNode extends AbstractProofNode {
    * 
    * @see ProofModel#isMemoryEnabled()
    */
-  public DefaultStore getStore() {
+  public MutableStore getStore() {
     return this.store;
   }
   
@@ -108,7 +110,7 @@ public class SmallStepProofNode extends AbstractProofNode {
    * 
    * @see #getStore()
    */
-  public void setStore(DefaultStore store) {
+  public void setStore(MutableStore store) {
     if (store == null) {
       throw new NullPointerException("store is null");
     }
