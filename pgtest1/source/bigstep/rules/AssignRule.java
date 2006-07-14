@@ -2,28 +2,31 @@ package bigstep.rules;
 
 import common.interpreters.MutableStore;
 
-import expressions.ArithmeticOperator;
+import expressions.Assign;
 import expressions.BinaryOperator;
 import expressions.BinaryOperatorException;
 import expressions.Expression;
-import expressions.RelationalOperator;
+import expressions.Location;
+import expressions.UnitConstant;
 
 /**
- * This class represents the big step rule <b>(BOP)</b>.
+ * This class represents the big step rule <b>(ASSIGN)</b>.
  *
  * @author Benedikt Meurer
  * @version $Id$
+ * 
+ * @see bigstep.rules.AbstractBinaryOperatorRule
  */
-public final class BopRule extends AbstractBinaryOperatorRule {
+public final class AssignRule extends AbstractBinaryOperatorRule {
   //
   // Constructor
   //
   
   /**
-   * Allocates a new <code>BopRule</code> instance.
+   * Allocates a new <code>AssignRule</code> instance.
    */
-  public BopRule() {
-    super("BOP");
+  public AssignRule() {
+    super("ASSIGN");
   }
   
   
@@ -39,9 +42,10 @@ public final class BopRule extends AbstractBinaryOperatorRule {
    */
   @Override
   public Expression applyTo(MutableStore store, BinaryOperator op, Expression e1, Expression e2) throws ClassCastException, BinaryOperatorException {
-    // (BOP) can only handle arithmetic and relational operators
-    if (op instanceof ArithmeticOperator || op instanceof RelationalOperator) {
-      return op.applyTo(e1, e2);
+    // (ASSIGN) can only be applied to Assign
+    if (op instanceof Assign) {
+      store.put((Location)e1, e2);
+      return UnitConstant.UNIT;
     }
     else {
       throw new ClassCastException("Illegal operator " + op.getClass());

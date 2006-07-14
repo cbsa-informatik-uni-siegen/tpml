@@ -18,6 +18,8 @@ import expressions.UnaryOperatorException;
  *
  * @author Benedikt Meurer
  * @version $Id$
+ * 
+ * @see bigstep.rules.AbstractBinaryOperatorRule
  */
 abstract class AbstractUnaryOperatorRule extends BigStepProofRule {
   //

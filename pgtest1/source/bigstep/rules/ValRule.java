@@ -42,7 +42,7 @@ public final class ValRule extends BigStepProofRule {
       context.setProofNodeResult(node, node.getExpression());
     }
     else {
-      super.apply(context, node);
+      throw new ProofRuleException(node, this);
     }
   }
 }

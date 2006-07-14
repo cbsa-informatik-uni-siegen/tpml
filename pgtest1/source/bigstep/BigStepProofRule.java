@@ -36,11 +36,6 @@ public abstract class BigStepProofRule extends ProofRule {
    * Applies this big step proof rule to the specified <code>node</code>
    * via the given <code>context</code>.
    * 
-   * This default implementation simply throws <code>ProofRuleException</code>,
-   * so derived classes will need to override this method to provide the
-   * proper handling, but remember to verify the expression of the <code>node</code>
-   * first.
-   * 
    * @param context the big step proof context via which the application
    *                of this rule to the <code>node</code> should be
    *                performed.
@@ -51,15 +46,7 @@ public abstract class BigStepProofRule extends ProofRule {
    * @throws ProofRuleException if this rule cannot be applied to the
    *                            <code>node</code>.
    */
-  public void apply(BigStepProofContext context, BigStepProofNode node) throws ProofRuleException {
-    if (context == null) {
-      throw new NullPointerException("context is null");
-    }
-    if (node == null) {
-      throw new NullPointerException("node is null");
-    }
-    throw new ProofRuleException(node, this);
-  }
+  public abstract void apply(BigStepProofContext context, BigStepProofNode node) throws ProofRuleException;
   
   /**
    * Updates the specified <code>node</code> as part of a previous rule
@@ -109,6 +96,10 @@ public abstract class BigStepProofRule extends ProofRule {
     if (isAxiom()) {
       throw new IllegalStateException("rule is an axiom");
     }
-    return new BigStepProofRule(false, getName() + "-EXN-" + (n + 1)) {};
+    return new BigStepProofRule(false, getName() + "-EXN-" + (n + 1)) {
+      public void apply(BigStepProofContext context, BigStepProofNode node) throws ProofRuleException {
+        throw new ProofRuleException(node, this);
+      }
+    };
   }
 }

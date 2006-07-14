@@ -18,6 +18,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultTreeCellRenderer;
+import javax.swing.tree.TreePath;
 
 import bigstep.BigStepProofModel;
 import bigstep.BigStepProofModelFactory;
@@ -44,7 +45,8 @@ public class BigStepTreeView extends JFrame {
   //private static final String SIMPLE = "let (x, y, z) = (1, 2, 3) in x + z + y";
   //private static final String SIMPLE = "let f = lambda (x, y, z).x + y + z in f (1, 2, 3)";
   //private static final String SIMPLE = "1 + 1;2 + 2; 3+3";
-  private static final String SIMPLE = "let v = ref (1) in !v";
+  //private static final String SIMPLE = "let v = ref (1) in !v";
+  private static final String SIMPLE = "let f = ref (lambda x.x) in f := (lambda x.if x = 0 then 1 else x * ! f (x - 1)); ! f 3";
 
   
   
@@ -194,7 +196,10 @@ public class BigStepTreeView extends JFrame {
       public void actionPerformed(ActionEvent event) {
         try {
           // translate the last node
-          model.translateToCoreSyntax(nextNode(model));
+          TreePath path = tree.getSelectionPath();
+          if (path != null) {
+            model.translateToCoreSyntax((ProofNode)path.getLastPathComponent());
+          }
         }
         catch (Exception e) {
           e.printStackTrace();

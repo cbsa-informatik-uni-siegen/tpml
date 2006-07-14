@@ -129,8 +129,8 @@ public abstract class AbstractProofModel extends AbstractBean implements ProofMo
     // cast the proof node to the appropriate type
     final AbstractProofNode abstractNode = (AbstractProofNode)node;
     
-    // add the undoable edit
-    addUndoableTreeEdit(new UndoableTreeEdit() {
+    // create the undoable edit
+    UndoableTreeEdit edit = new UndoableTreeEdit() {
       public void redo() {
         // translate the expression of the node to core syntax
         abstractNode.setExpression(expression.translateSyntacticSugar());
@@ -142,7 +142,13 @@ public abstract class AbstractProofModel extends AbstractBean implements ProofMo
         abstractNode.setExpression(expression);
         nodeChanged(abstractNode);
       }
-    });
+    };
+    
+    // perform the redo operation
+    edit.redo();
+    
+    // and record the edit
+    addUndoableTreeEdit(edit);
   }
   
   

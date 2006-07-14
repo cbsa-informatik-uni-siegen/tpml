@@ -1,6 +1,7 @@
 package bigstep;
 
 import bigstep.rules.AppRule;
+import bigstep.rules.AssignRule;
 import bigstep.rules.BetaValueRule;
 import bigstep.rules.BopRule;
 import bigstep.rules.CondFalseRule;
@@ -68,6 +69,7 @@ public final class BigStepProofModel extends AbstractInterpreterProofModel {
       new ValRule(),
       new ProjRule(),
       new BetaValueRule(),
+      new AssignRule(),
       new BopRule(),
       new UopRule(),
       new RefRule(),
