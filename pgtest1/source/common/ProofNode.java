@@ -99,6 +99,35 @@ public interface ProofNode extends TreeNode {
   
   
   //
+  // User Objects
+  //
+  
+  /**
+   * Returns the user object associated with this proof node,
+   * or <code>null</code> if no user object was previously set
+   * via {@link #setUserObject(Object)}.
+   * 
+   * @return the user object set for this proof node or <code>null</code>.
+   * 
+   * @see #setUserObject(Object)
+   */
+  public Object getUserObject();
+  
+  /**
+   * Associates the specified <code>userObject</code> with this
+   * proof node. The <code>userObject</code> may be null, in
+   * which case only the previously set user object will be reset.
+   * 
+   * @param userObject the new user object to associate with this
+   *                   proof node.
+   *                   
+   * @see #getUserObject()
+   */
+  public void setUserObject(Object userObject);
+  
+  
+  
+  //
   // Tree Queries
   //
 

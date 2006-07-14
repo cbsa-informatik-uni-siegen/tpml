@@ -81,6 +81,14 @@ public abstract class AbstractProofNode implements ProofNode {
    * @see #setSteps(ProofStep[])
    */
   protected ProofStep[] steps;
+  
+  /**
+   * The user object associated with this {@link ProofNode}.
+   * 
+   * @see #getUserObject()
+   * @see #setUserObject(Object)
+   */
+  private transient Object userObject;
 
 
   
@@ -293,6 +301,30 @@ public abstract class AbstractProofNode implements ProofNode {
     return true;
   }
 
+  
+  
+  //
+  // User Objects
+  //
+  
+  /**
+   * {@inheritDoc}
+   *
+   * @see common.ProofNode#getUserObject()
+   */
+  public Object getUserObject() {
+    return this.userObject;
+  }
+  
+  /**
+   * {@inheritDoc}
+   *
+   * @see common.ProofNode#setUserObject(java.lang.Object)
+   */
+  public void setUserObject(Object userObject) {
+    this.userObject = userObject;
+  }
+  
   
   
   //
