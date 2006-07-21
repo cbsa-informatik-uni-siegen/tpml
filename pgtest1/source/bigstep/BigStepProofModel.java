@@ -1,5 +1,7 @@
 package bigstep;
 
+import bigstep.rules.AndFalseRule;
+import bigstep.rules.AndTrueRule;
 import bigstep.rules.AppRule;
 import bigstep.rules.AssignRule;
 import bigstep.rules.BetaValueRule;
@@ -7,10 +9,17 @@ import bigstep.rules.BopRule;
 import bigstep.rules.CondFalseRule;
 import bigstep.rules.CondTrueRule;
 import bigstep.rules.DerefRule;
+import bigstep.rules.HdRule;
+import bigstep.rules.IsEmptyFalseRule;
+import bigstep.rules.IsEmptyTrueRule;
 import bigstep.rules.LetRule;
+import bigstep.rules.ListRule;
+import bigstep.rules.OrFalseRule;
+import bigstep.rules.OrTrueRule;
 import bigstep.rules.ProjRule;
 import bigstep.rules.RefRule;
 import bigstep.rules.SeqRule;
+import bigstep.rules.TlRule;
 import bigstep.rules.TupleRule;
 import bigstep.rules.UnfoldRule;
 import bigstep.rules.UopRule;
@@ -67,6 +76,10 @@ public final class BigStepProofModel extends AbstractInterpreterProofModel {
   public ProofRule[] getRules() {
     return new BigStepProofRule[] {
       new ValRule(),
+      new IsEmptyFalseRule(),
+      new IsEmptyTrueRule(),
+      new HdRule(),
+      new TlRule(),
       new ProjRule(),
       new BetaValueRule(),
       new AssignRule(),
@@ -80,7 +93,12 @@ public final class BigStepProofModel extends AbstractInterpreterProofModel {
       new LetRule(),
       new UnfoldRule(),
       new SeqRule(),
+      new ListRule(),
       new TupleRule(),
+      new AndFalseRule(),
+      new AndTrueRule(),
+      new OrFalseRule(),
+      new OrTrueRule(),
     };
   }
   

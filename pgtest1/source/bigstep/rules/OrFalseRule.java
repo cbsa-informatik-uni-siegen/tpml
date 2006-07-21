@@ -1,30 +1,28 @@
 package bigstep.rules;
 
-import expressions.BooleanConstant;
-import expressions.Condition;
-import expressions.Expression;
-import expressions.UnitConstant;
 import bigstep.BigStepProofContext;
 import bigstep.BigStepProofNode;
 import bigstep.BigStepProofResult;
 import bigstep.BigStepProofRule;
+import expressions.BooleanConstant;
+import expressions.Or;
 
 /**
- * This class represents the <b>(COND-FALSE)</b> big step rule.
+ * This class represents the big step rule <b>(OR-FALSE)</b>.
  *
  * @author Benedikt Meurer
  * @version $Id$
  */
-public final class CondFalseRule extends AbstractCondRule {
+public final class OrFalseRule extends AbstractOrRule {
   //
   // Constructor
   //
   
   /**
-   * Allocates a new <code>CondFalseRule</code>.
+   * Allocates a new <code>OrFalseRule</code> instance.
    */
-  public CondFalseRule() {
-    super("COND-FALSE");
+  public OrFalseRule() {
+    super("OR-FALSE");
   }
   
   
@@ -36,7 +34,7 @@ public final class CondFalseRule extends AbstractCondRule {
   /**
    * {@inheritDoc}
    *
-   * @see bigstep.rules.AbstractCondRule#update(bigstep.BigStepProofContext, bigstep.BigStepProofNode)
+   * @see bigstep.rules.AbstractOrRule#update(bigstep.BigStepProofContext, bigstep.BigStepProofNode)
    */
   @Override
   public void update(BigStepProofContext context, BigStepProofNode node) {
@@ -47,22 +45,15 @@ public final class CondFalseRule extends AbstractCondRule {
       
       // the value of the child node must be a boolean value
       if (result0.getValue() == BooleanConstant.TRUE) {
-        // let (COND-TRUE) handle the node
-        BigStepProofRule rule = new CondTrueRule();
+        // let (OR-TRUE) handle the node
+        BigStepProofRule rule = new OrTrueRule();
         context.setProofNodeRule(node, rule);
         rule.update(context, node);
       }
       else if (result0.getValue() == BooleanConstant.FALSE) {
-        Expression e = node.getExpression();
-        if (e instanceof Condition) {
-          // add next proof node for e2
-          Condition condition = (Condition)e;
-          context.addProofNode(node, condition.getE2());
-        }
-        else {
-          // result is the unit constant
-          context.setProofNodeResult(node, UnitConstant.UNIT);
-        }
+        // add a child node for the second expression
+        Or or = (Or)node.getExpression();
+        context.addProofNode(node, or.getE2());
       }
     }
     else {

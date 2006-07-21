@@ -51,7 +51,7 @@ abstract class AbstractBinaryOperatorRule extends BigStepProofRule {
    * @see bigstep.BigStepProofRule#apply(bigstep.BigStepProofContext, bigstep.BigStepProofNode)
    */
   @Override
-  public final void apply(BigStepProofContext context, BigStepProofNode node) throws ProofRuleException {
+  public final void apply(BigStepProofContext context, BigStepProofNode node) throws ProofRuleException, ClassCastException {
     try {
       // depends on whether we have an Application or InfixOperation
       BinaryOperator op;
@@ -85,9 +85,6 @@ abstract class AbstractBinaryOperatorRule extends BigStepProofRule {
       MutableStore store = new MutableStore(node.getStore());
       Expression value = applyTo(store, op, e1, e2);
       context.setProofNodeResult(node, value, store);
-    }
-    catch (ClassCastException e) {
-      throw new ProofRuleException(node, this, e);
     }
     catch (BinaryOperatorException e) {
       throw new ProofRuleException(node, this, e);

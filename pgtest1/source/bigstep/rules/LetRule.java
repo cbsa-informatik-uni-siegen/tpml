@@ -46,49 +46,44 @@ public final class LetRule extends BigStepProofRule {
    * @see bigstep.BigStepProofRule#apply(bigstep.BigStepProofContext, bigstep.BigStepProofNode)
    */
   @Override
-  public void apply(BigStepProofContext context, BigStepProofNode node) throws ProofRuleException {
-    try {
-      Expression e = node.getExpression();
-      if (e instanceof CurriedLet || e instanceof CurriedLetRec) {
-        // determine the first sub expression
-        CurriedLet curriedLet = (CurriedLet)e;
-        Expression e1 = curriedLet.getE1();
-        
-        // generate the appropriate lambda abstractions
-        String[] identifiers = curriedLet.getIdentifiers();
-        for (int n = identifiers.length - 1; n > 0; --n) {
-          e1 = new Lambda(identifiers[n], e1);
-        }
-        
-        // add the recursion for letrec
-        if (e instanceof CurriedLetRec) {
-          e1 = new Recursion(identifiers[0], e1);
-        }
-        
-        // add the proof node
-        context.addProofNode(node, e1);
+  public void apply(BigStepProofContext context, BigStepProofNode node) throws ProofRuleException, ClassCastException {
+    Expression e = node.getExpression();
+    if (e instanceof CurriedLet || e instanceof CurriedLetRec) {
+      // determine the first sub expression
+      CurriedLet curriedLet = (CurriedLet)e;
+      Expression e1 = curriedLet.getE1();
+      
+      // generate the appropriate lambda abstractions
+      String[] identifiers = curriedLet.getIdentifiers();
+      for (int n = identifiers.length - 1; n > 0; --n) {
+        e1 = new Lambda(identifiers[n], e1);
       }
-      else if (e instanceof MultiLet) {
-        // proof the first sub expression
-        MultiLet multiLet = (MultiLet)e;
-        context.addProofNode(node, multiLet.getE1());
+      
+      // add the recursion for letrec
+      if (e instanceof CurriedLetRec) {
+        e1 = new Recursion(identifiers[0], e1);
       }
-      else {
-        // determine the first sub expression
-        Let let = (Let)e;
-        Expression e1 = let.getE1();
-        
-        // add the recursion for letrec
-        if (e instanceof LetRec) {
-          e1 = new Recursion(let.getId(), e1);
-        }
-        
-        // add the proof node
-        context.addProofNode(node, e1);
-      }
+      
+      // add the proof node
+      context.addProofNode(node, e1);
     }
-    catch (ClassCastException e) {
-      throw new ProofRuleException(node, this, e);
+    else if (e instanceof MultiLet) {
+      // proof the first sub expression
+      MultiLet multiLet = (MultiLet)e;
+      context.addProofNode(node, multiLet.getE1());
+    }
+    else {
+      // determine the first sub expression
+      Let let = (Let)e;
+      Expression e1 = let.getE1();
+      
+      // add the recursion for letrec
+      if (e instanceof LetRec) {
+        e1 = new Recursion(let.getId(), e1);
+      }
+      
+      // add the proof node
+      context.addProofNode(node, e1);
     }
   }
   

@@ -1,29 +1,30 @@
 package bigstep.rules;
 
-import common.ProofRuleException;
-import expressions.Expression;
-import expressions.Tuple;
-
 import bigstep.BigStepProofContext;
 import bigstep.BigStepProofNode;
 import bigstep.BigStepProofRule;
 
+import common.ProofRuleException;
+
+import expressions.Expression;
+import expressions.List;
+
 /**
- * This class represents the big step rule <b>(TUPLE)</b>.
+ * This class represents the big step rule <b>(LIST)</b>.
  *
  * @author Benedikt Meurer
  * @version $Id$
  */
-public final class TupleRule extends BigStepProofRule {
+public final class ListRule extends BigStepProofRule {
   //
   // Constructor
   //
   
   /**
-   * Allocates a new <code>TupleRule</code> instance.
+   * Allocates a new <code>ListRule</code> instance.
    */
-  public TupleRule() {
-    super(false, "TUPLE");
+  public ListRule() {
+    super(false, "LIST");
   }
   
   
@@ -39,11 +40,11 @@ public final class TupleRule extends BigStepProofRule {
    */
   @Override
   public void apply(BigStepProofContext context, BigStepProofNode node) throws ProofRuleException, ClassCastException {
-    // can only be applied to Tuples
-    Tuple tuple = (Tuple)node.getExpression();
+    // can only be applied to lists
+    List list = (List)node.getExpression();
     
-    // add a child node for the first sub expression
-    context.addProofNode(node, tuple.getExpressions(0));
+    // add a child node for the first expression
+    context.addProofNode(node, list.getExpressions(0));
   }
   
   /**
@@ -54,14 +55,14 @@ public final class TupleRule extends BigStepProofRule {
   @Override
   public void update(BigStepProofContext context, BigStepProofNode node) {
     // determine the expression at this node
-    Tuple tuple = (Tuple)node.getExpression();
+    List list = (List)node.getExpression();
     
     // check if all child nodes were created
-    if (node.getChildCount() < tuple.getArity()) {
+    if (node.getChildCount() < list.getExpressions().length) {
       // verify that the last child node is proven
       if (node.getLastChild().isProven()) {
         // add the next child node
-        context.addProofNode(node, tuple.getExpressions(node.getChildCount()));
+        context.addProofNode(node, list.getExpressions(node.getChildCount()));
       }
     }
     else {
@@ -76,7 +77,7 @@ public final class TupleRule extends BigStepProofRule {
       }
       
       // all child nodes are proven, we're done
-      context.setProofNodeResult(node, new Tuple(values));
+      context.setProofNodeResult(node, new List(values));
     }
   }
 }

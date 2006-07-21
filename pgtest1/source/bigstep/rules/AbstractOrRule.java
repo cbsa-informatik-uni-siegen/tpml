@@ -1,34 +1,33 @@
 package bigstep.rules;
 
-import common.ProofRuleException;
-import expressions.Condition;
-import expressions.Condition1;
-import expressions.Expression;
-
 import bigstep.BigStepProofContext;
 import bigstep.BigStepProofNode;
 import bigstep.BigStepProofRule;
 
+import common.ProofRuleException;
+
+import expressions.Or;
+
 /**
- * Abstract base class for both the {@link bigstep.rules.CondFalseRule}
- * and the {@link bigstep.rules.CondTrueRule}.
+ * Abstract base class for the {@link bigstep.rules.OrFalseRule}
+ * and {@link bigstep.rules.OrTrueRule} classes.
  *
  * @author Benedikt Meurer
  * @version $Id$
  */
-abstract class AbstractCondRule extends BigStepProofRule {
+abstract class AbstractOrRule extends BigStepProofRule {
   //
   // Constructor (protected)
   //
   
   /**
-   * Allocates a new <code>AbstractCondRule</code> with
-   * the specified <code>name</code>.
+   * Allocates a new <code>AbstractOrRule</code> with the specified
+   * <code>name</code>.
    * 
-   * @param name the name of the cond rule, can be either
-   *             <tt>"COND-TRUE"</tt> or <tt>"COND-FALSE"</tt>.
+   * @param name the name of the rule (either <tt>"OR-FALSE"</tt> or
+   *             <tt>"OR-TRUE"</tt>).
    */
-  protected AbstractCondRule(String name) {
+  protected AbstractOrRule(String name) {
     super(false, name);
   }
   
@@ -45,16 +44,9 @@ abstract class AbstractCondRule extends BigStepProofRule {
    */
   @Override
   public void apply(BigStepProofContext context, BigStepProofNode node) throws ProofRuleException, ClassCastException {
-    // can be applied to Condition and Condition1
-    Expression e = node.getExpression();
-    if (e instanceof Condition) {
-      Condition condition = (Condition)e;
-      context.addProofNode(node, condition.getE0());
-    }
-    else {
-      Condition1 condition1 = (Condition1)e;
-      context.addProofNode(node, condition1.getE0());
-    }
+    // add the first proof node
+    Or or = (Or)node.getExpression();
+    context.addProofNode(node, or.getE1());
   }
   
   /**

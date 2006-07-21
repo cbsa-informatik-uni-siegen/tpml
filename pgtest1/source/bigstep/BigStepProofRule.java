@@ -40,13 +40,18 @@ public abstract class BigStepProofRule extends ProofRule {
    *                of this rule to the <code>node</code> should be
    *                performed.
    * @param node the big step proof node to which to apply this rule.
-   * 
-   * @throws NullPointerException if either <code>context</code> or
-   *                              <code>node</code> is <code>null</code>.                            
    * @throws ProofRuleException if this rule cannot be applied to the
    *                            <code>node</code>.
+   * @throws ClassCastException TODO
+   * @throws ClassCastException if the <code>node</code>s expression is
+   *                            an instance of an unsupported class or
+   *                            a similar error condition. Will be
+   *                            automatically converted into a
+   *                            {@link ProofRuleException}.
+   * @throws NullPointerException if either <code>context</code> or
+   *                              <code>node</code> is <code>null</code>.                            
    */
-  public abstract void apply(BigStepProofContext context, BigStepProofNode node) throws ProofRuleException;
+  public abstract void apply(BigStepProofContext context, BigStepProofNode node) throws ProofRuleException, ClassCastException;
   
   /**
    * Updates the specified <code>node</code> as part of a previous rule
@@ -73,8 +78,31 @@ public abstract class BigStepProofRule extends ProofRule {
   
   
   //
-  // Translations
+  // Rule Allocation
   //
+  
+  /**
+   * Allocates a new <code>BigStepProofRule</code> with the
+   * specified <code>name</code>, that does nothing, meaning
+   * that {@link #apply(BigStepProofContext, BigStepProofNode)}
+   * and {@link #update(BigStepProofContext, BigStepProofNode)}
+   * are noops.
+   * 
+   * @param name the name of the rule to allocate.
+   * 
+   * @return a newly allocated <code>BigStepProofRule</code>
+   *         with the specified <code>name</code>, that does
+   *         nothing.
+   *         
+   * @see #toExnRule(int)
+   */
+  protected BigStepProofRule newNoopRule(String name) {
+    return new BigStepProofRule(false, name) {
+      public void apply(BigStepProofContext context, BigStepProofNode node) throws ProofRuleException, ClassCastException {
+        throw new ProofRuleException(node, this);
+      }
+    };
+  }
   
   /**
    * Translates this big step proof rule to an appropriate
@@ -96,10 +124,6 @@ public abstract class BigStepProofRule extends ProofRule {
     if (isAxiom()) {
       throw new IllegalStateException("rule is an axiom");
     }
-    return new BigStepProofRule(false, getName() + "-EXN-" + (n + 1)) {
-      public void apply(BigStepProofContext context, BigStepProofNode node) throws ProofRuleException {
-        throw new ProofRuleException(node, this);
-      }
-    };
+    return newNoopRule(getName() + "-EXN-" + (n + 1));
   }
 }

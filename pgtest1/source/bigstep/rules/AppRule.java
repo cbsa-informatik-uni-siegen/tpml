@@ -12,7 +12,7 @@ import expressions.Expression;
 import expressions.InfixOperation;
 
 /**
- * TODO Add documentation here.
+ * This class represents the big step rule <b>(APP)</b>.
  *
  * @author Benedikt Meurer
  * @version $Id$
@@ -23,7 +23,7 @@ public final class AppRule extends BigStepProofRule {
   //
   
   /**
-   * TODO Add documentation here.
+   * Allocates a new <code>AppRule</code> instance.
    */
   public AppRule() {
     super(false, "APP");
@@ -41,22 +41,17 @@ public final class AppRule extends BigStepProofRule {
    * @see bigstep.BigStepProofRule#apply(bigstep.DefaultBigStepProofContext, bigstep.DefaultBigStepProofNode)
    */
   @Override
-  public void apply(BigStepProofContext context, BigStepProofNode node) throws ProofRuleException {
-    try {
-      Expression e = node.getExpression();
-      if (e instanceof Application) {
-        // well, applications are easy
-        Application application = (Application)e;
-        context.addProofNode(node, application.getE1());
-      }
-      else {
-        // otherwise must be an infix operation
-        InfixOperation infixOperation = (InfixOperation)e;
-        context.addProofNode(node, new Application(infixOperation.getOp(), infixOperation.getE1()));
-      }
+  public void apply(BigStepProofContext context, BigStepProofNode node) throws ProofRuleException, ClassCastException {
+    Expression e = node.getExpression();
+    if (e instanceof Application) {
+      // well, applications are easy
+      Application application = (Application)e;
+      context.addProofNode(node, application.getE1());
     }
-    catch (ClassCastException e) {
-      throw new ProofRuleException(node, this, e);
+    else {
+      // otherwise must be an infix operation
+      InfixOperation infixOperation = (InfixOperation)e;
+      context.addProofNode(node, new Application(infixOperation.getOp(), infixOperation.getE1()));
     }
   }
   

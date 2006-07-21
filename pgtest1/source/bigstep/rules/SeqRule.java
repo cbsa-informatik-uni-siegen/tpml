@@ -37,17 +37,12 @@ public final class SeqRule extends BigStepProofRule {
    * @see bigstep.BigStepProofRule#apply(bigstep.BigStepProofContext, bigstep.BigStepProofNode)
    */
   @Override
-  public void apply(BigStepProofContext context, BigStepProofNode node) throws ProofRuleException {
-    try {
-      // can only be applied to Sequences
-      Sequence sequence = (Sequence)node.getExpression();
-      
-      // add a proof node for e1
-      context.addProofNode(node, sequence.getE1());
-    }
-    catch (ClassCastException e) {
-      throw new ProofRuleException(node, this, e);
-    }
+  public void apply(BigStepProofContext context, BigStepProofNode node) throws ProofRuleException, ClassCastException {
+    // can only be applied to Sequences
+    Sequence sequence = (Sequence)node.getExpression();
+    
+    // add a proof node for e1
+    context.addProofNode(node, sequence.getE1());
   }
   
   /**

@@ -36,7 +36,7 @@ public final class ValRule extends BigStepProofRule {
    * @see bigstep.BigStepProofRule#apply(bigstep.BigStepProofContext, bigstep.BigStepProofNode)
    */
   @Override
-  public void apply(BigStepProofContext context, BigStepProofNode node) throws ProofRuleException {
+  public void apply(BigStepProofContext context, BigStepProofNode node) throws ProofRuleException, ClassCastException {
     // (VAL) can only be applied to values
     if (node.getExpression().isValue()) {
       context.setProofNodeResult(node, node.getExpression());

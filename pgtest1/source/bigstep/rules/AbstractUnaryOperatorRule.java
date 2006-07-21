@@ -48,7 +48,7 @@ abstract class AbstractUnaryOperatorRule extends BigStepProofRule {
    * @see bigstep.BigStepProofRule#apply(bigstep.BigStepProofContext, bigstep.BigStepProofNode)
    */
   @Override
-  public final void apply(BigStepProofContext context, BigStepProofNode node) throws ProofRuleException {
+  public final void apply(BigStepProofContext context, BigStepProofNode node) throws ProofRuleException, ClassCastException {
     try {
       // can only be applied to Applications
       Application application = (Application)node.getExpression();
@@ -64,9 +64,6 @@ abstract class AbstractUnaryOperatorRule extends BigStepProofRule {
       MutableStore store = new MutableStore(node.getStore());
       Expression value = applyTo(store, (UnaryOperator)e1, e2);
       context.setProofNodeResult(node, value, store);
-    }
-    catch (ClassCastException e) {
-      throw new ProofRuleException(node, this, e);
     }
     catch (UnaryOperatorException e) {
       throw new ProofRuleException(node, this, e);

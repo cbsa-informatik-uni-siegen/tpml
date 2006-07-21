@@ -44,40 +44,35 @@ public final class BetaValueRule extends BigStepProofRule {
    * @see bigstep.BigStepProofRule#apply(bigstep.BigStepProofContext, bigstep.BigStepProofNode)
    */
   @Override
-  public void apply(BigStepProofContext context, BigStepProofNode node) throws ProofRuleException {
-    try {
-      // the expression must an application to a value...
-      Application application = (Application)node.getExpression();
-      Expression e2 = application.getE2();
-      if (!e2.isValue()) {
-        throw new ProofRuleException(node, this);
+  public void apply(BigStepProofContext context, BigStepProofNode node) throws ProofRuleException, ClassCastException {
+    // the expression must an application to a value...
+    Application application = (Application)node.getExpression();
+    Expression e2 = application.getE2();
+    if (!e2.isValue()) {
+      throw new ProofRuleException(node, this);
+    }
+    
+    // ...with a lambda or multi lambda expression
+    Expression e1 = application.getE1();
+    if (e1 instanceof MultiLambda) {
+      // multi lambda is special
+      MultiLambda multiLambda = (MultiLambda)e1;
+      Expression e = multiLambda.getE();
+      
+      // perform the required substitutions
+      String[] identifiers = multiLambda.getIdentifiers();
+      for (int n = 0; n < identifiers.length; ++n) {
+        // substitute: (#l_n e2) for id
+        e = e.substitute(identifiers[n], new Application(new Projection(identifiers.length, n + 1), e2));
       }
       
-      // ...with a lambda or multi lambda expression
-      Expression e1 = application.getE1();
-      if (e1 instanceof MultiLambda) {
-        // multi lambda is special
-        MultiLambda multiLambda = (MultiLambda)e1;
-        Expression e = multiLambda.getE();
-        
-        // perform the required substitutions
-        String[] identifiers = multiLambda.getIdentifiers();
-        for (int n = 0; n < identifiers.length; ++n) {
-          // substitute: (#l_n e2) for id
-          e = e.substitute(identifiers[n], new Application(new Projection(identifiers.length, n + 1), e2));
-        }
-        
-        // add the proof node for e
-        context.addProofNode(node, e);
-      }
-      else {
-        // must be lambda then
-        Lambda lambda = (Lambda)e1;
-        context.addProofNode(node, lambda.getE().substitute(lambda.getId(), e2));
-      }
+      // add the proof node for e
+      context.addProofNode(node, e);
     }
-    catch (ClassCastException e) {
-      throw new ProofRuleException(node, this, e);
+    else {
+      // must be lambda then
+      Lambda lambda = (Lambda)e1;
+      context.addProofNode(node, lambda.getE().substitute(lambda.getId(), e2));
     }
   }
   

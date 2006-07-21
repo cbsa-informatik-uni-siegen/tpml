@@ -71,7 +71,12 @@ final class DefaultBigStepProofContext implements BigStepProofContext {
     setProofNodeRule(node, rule);
     
     // try to apply the rule to the node
-    rule.apply(this, node);
+    try {
+      rule.apply(this, node);
+    }
+    catch (ClassCastException e) {
+      throw new ProofRuleException(node, rule, e);
+    }
     
     // update all (unproven) super nodes
     for (;;) {

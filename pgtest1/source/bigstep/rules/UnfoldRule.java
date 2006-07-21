@@ -37,15 +37,10 @@ public final class UnfoldRule extends BigStepProofRule {
    * @see bigstep.BigStepProofRule#apply(bigstep.BigStepProofContext, bigstep.BigStepProofNode)
    */
   @Override
-  public void apply(BigStepProofContext context, BigStepProofNode node) throws ProofRuleException {
-    try {
-      // can only be applied to Recursions
-      Recursion recursion = (Recursion)node.getExpression();
-      context.addProofNode(node, recursion.getE().substitute(recursion.getId(), recursion));
-    }
-    catch (ClassCastException e) {
-      throw new ProofRuleException(node, this, e);
-    }
+  public void apply(BigStepProofContext context, BigStepProofNode node) throws ProofRuleException, ClassCastException {
+    // can only be applied to Recursions
+    Recursion recursion = (Recursion)node.getExpression();
+    context.addProofNode(node, recursion.getE().substitute(recursion.getId(), recursion));
   }
   
   /**
