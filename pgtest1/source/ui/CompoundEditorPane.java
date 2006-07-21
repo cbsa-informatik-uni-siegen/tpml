@@ -1,30 +1,19 @@
 package ui;
 
 import java.awt.Adjustable;
-import java.awt.Color;
-import java.awt.Component;
+import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.Event;
-import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
 import java.awt.Rectangle;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.FlowLayout;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.net.URL;
-import java.util.LinkedList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
@@ -160,11 +149,11 @@ public class CompoundEditorPane extends JPanel {
 	private MLStyledDocument	document;
 	
 	public static ImageIcon 	errorIcon= null;
-	
+		
 	public CompoundEditorPane() {
 		super ();
 			
-		setLayout (null);
+		setLayout (new BorderLayout());
 		
 		if (CompoundEditorPane.errorIcon == null) {
 			try {
@@ -189,24 +178,16 @@ public class CompoundEditorPane extends JPanel {
 
 		this.sideBar = new SideBar (this.scrollPane, this.editorPane.getFont(), inset);
 		this.sideBar.setTextComponent(editorPane);
+		this.sideBar.setPreferredSize(new Dimension(16, scrollPane.getHeight()));
 		ToolTipManager.sharedInstance().registerComponent(this.sideBar);
 		
-		add (sideBar);
-		add (scrollPane);
+
 		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS); 
-		this.scrollPane.setViewportView (this.editorPane);
-		this.scrollPane.setBackground(Color.WHITE);
-		this.scrollPane.getViewport().setBackground(Color.WHITE);
-		
-		addComponentListener (new ComponentAdapter () {
-			public void componentResized (ComponentEvent event) {
-				CompoundEditorPane.this.sideBar.setBounds(0, 
-						0, 16, CompoundEditorPane.this.getHeight ());
-				CompoundEditorPane.this.scrollPane.setBounds (17, 0, CompoundEditorPane.this.getWidth () - 16 , CompoundEditorPane.this.getHeight ());
-			}
-		});
-		
-		
+		scrollPane.setViewportView (editorPane);
+
+		add (sideBar, BorderLayout.WEST);
+		add (scrollPane, BorderLayout.CENTER);
+				
 		document.addPropertyChangeListener("exceptions", new PropertyChangeListener() {
 			public void propertyChange (PropertyChangeEvent event) {
 				buildMarks ();
