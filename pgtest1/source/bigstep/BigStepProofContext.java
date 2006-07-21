@@ -60,6 +60,17 @@ public interface BigStepProofContext {
   public void addProofNode(BigStepProofNode node, Expression expression, Store store);
   
   /**
+   * Returns <code>true</code> if the {@link BigStepProofModel} associated with
+   * this context has memory operations enabled, <code>false</code> otherwise.
+   * 
+   * Several rules - like <b>(APP)</b> - behave differently if memory operations
+   * are enabled, so you may need to test this condition.
+   * 
+   * @return <code>true</code> if memory operations are enabled.
+   */
+  public boolean isMemoryEnabled();
+  
+  /**
    * Changes the result of the specified <code>node</code> to the given <code>result</code>.
    * 
    * The method takes care of registering the required redo and undo actions for

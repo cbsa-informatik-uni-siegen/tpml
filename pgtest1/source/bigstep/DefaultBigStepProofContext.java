@@ -242,6 +242,15 @@ final class DefaultBigStepProofContext implements BigStepProofContext {
   /**
    * {@inheritDoc}
    *
+   * @see bigstep.BigStepProofContext#isMemoryEnabled()
+   */
+  public boolean isMemoryEnabled() {
+    return this.model.isMemoryEnabled();
+  }
+  
+  /**
+   * {@inheritDoc}
+   *
    * @see bigstep.BigStepProofContext#setProofNodeResult(bigstep.BigStepProofNode, bigstep.BigStepProofResult)
    */
   public void setProofNodeResult(BigStepProofNode node, BigStepProofResult result) {
@@ -254,7 +263,19 @@ final class DefaultBigStepProofContext implements BigStepProofContext {
    * @see bigstep.BigStepProofContext#setProofNodeResult(bigstep.BigStepProofNode, expressions.Expression)
    */
   public void setProofNodeResult(BigStepProofNode node, Expression value) {
-    setProofNodeResult(node, value, node.getStore());
+    // default to inherit the store of this node
+    Store store = node.getStore();
+    
+    // use the store of the last child node (if proven)
+    if (node.getChildCount() > 0) {
+      BigStepProofResult result = node.getLastChild().getResult();
+      if (result != null) {
+        store = result.getStore();
+      }
+    }
+    
+    // add the result
+    setProofNodeResult(node, value, store);
   }
   
   /**

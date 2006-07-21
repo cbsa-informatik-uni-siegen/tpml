@@ -43,6 +43,11 @@ public final class SeqRule extends BigStepProofRule {
     
     // add a proof node for e1
     context.addProofNode(node, sequence.getE1());
+    
+    // add a proof node for e2 is memory is disabled
+    if (!context.isMemoryEnabled()) {
+      context.addProofNode(node, sequence.getE2());
+    }
   }
   
   /**

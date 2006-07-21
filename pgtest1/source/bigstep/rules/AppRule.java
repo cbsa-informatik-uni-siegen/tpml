@@ -47,11 +47,21 @@ public final class AppRule extends BigStepProofRule {
       // well, applications are easy
       Application application = (Application)e;
       context.addProofNode(node, application.getE1());
+      
+      // we can add the second node as well if memory is disabled
+      if (!context.isMemoryEnabled()) {
+        context.addProofNode(node, application.getE2());
+      }
     }
     else {
       // otherwise must be an infix operation
       InfixOperation infixOperation = (InfixOperation)e;
       context.addProofNode(node, new Application(infixOperation.getOp(), infixOperation.getE1()));
+      
+      // we can add the second node as well if memory is disabled
+      if (!context.isMemoryEnabled()) {
+        context.addProofNode(node, infixOperation.getE2());
+      }
     }
   }
   

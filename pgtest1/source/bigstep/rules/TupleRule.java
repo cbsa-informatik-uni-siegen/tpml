@@ -6,6 +6,7 @@ import expressions.Tuple;
 
 import bigstep.BigStepProofContext;
 import bigstep.BigStepProofNode;
+import bigstep.BigStepProofResult;
 import bigstep.BigStepProofRule;
 
 /**
@@ -41,9 +42,18 @@ public final class TupleRule extends BigStepProofRule {
   public void apply(BigStepProofContext context, BigStepProofNode node) throws ProofRuleException, ClassCastException {
     // can only be applied to Tuples
     Tuple tuple = (Tuple)node.getExpression();
-    
-    // add a child node for the first sub expression
-    context.addProofNode(node, tuple.getExpressions(0));
+   
+    // check if memory is enabled
+    if (context.isMemoryEnabled()) {
+      // add a child node for the first sub expression
+      context.addProofNode(node, tuple.getExpressions(0));
+    }
+    else {
+      // add all child nodes at once
+      for (Expression e : tuple.getExpressions()) {
+        context.addProofNode(node, e);
+      }
+    }
   }
   
   /**
@@ -68,11 +78,12 @@ public final class TupleRule extends BigStepProofRule {
       // check if all child nodes are proven
       Expression[] values = new Expression[node.getChildCount()];
       for (int n = 0; n < values.length; ++n) {
-        values[n] = node.getChildAt(n).getResult().getValue();
-        if (values[n] == null) {
+        BigStepProofResult result = node.getChildAt(n).getResult();
+        if (result == null) {
           // atleast one is not yet proven
           return;
         }
+        values[n] = result.getValue();
       }
       
       // all child nodes are proven, we're done

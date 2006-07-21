@@ -47,7 +47,7 @@ public class BigStepTreeView extends JFrame {
   //private static final String SIMPLE = "1 + 1;2 + 2; 3+3";
   //private static final String SIMPLE = "let v = ref (1) in !v";
   //private static final String SIMPLE = "let f = ref (lambda x.x) in f := (lambda x.if x = 0 then 1 else x * ! f (x - 1)); ! f 3";
-  private static final String SIMPLE = "is_empty (cons (1, 2))";
+  private static final String SIMPLE = "1 + 1, 2 + (let x = ref 1 in !x)";
 
   
   
@@ -69,23 +69,34 @@ public class BigStepTreeView extends JFrame {
       super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
       BigStepProofNode node = (BigStepProofNode)value;
       StringBuilder builder = new StringBuilder();
+      boolean memoryEnabled = ((BigStepProofModel)tree.getModel()).isMemoryEnabled();
       builder.append('[');
       for (int n = 0; n < node.getSteps().length; ++n) {
         if (n > 0)
           builder.append(", ");
         builder.append(node.getSteps()[n].getRule().getName());
       }
-      builder.append("] -> (");
+      builder.append("] -> ");
+      if (memoryEnabled) {
+        builder.append('(');
+      }
       builder.append(node.getExpression());
-      builder.append(", ");
-      builder.append(node.getStore());
-      builder.append(") \u21d3 ");
-      if (node.getResult() != null) {
-        builder.append("(");
-        builder.append(node.getResult().getValue());
+      if (memoryEnabled) {
         builder.append(", ");
-        builder.append(node.getResult().getStore());
-        builder.append(")");
+        builder.append(node.getStore());
+        builder.append(')');
+      }
+      builder.append(" \u21d3 ");
+      if (node.getResult() != null) {
+        if (memoryEnabled) {
+          builder.append('(');
+        }
+        builder.append(node.getResult().getValue());
+        if (memoryEnabled) {
+          builder.append(", ");
+          builder.append(node.getResult().getStore());
+          builder.append(')');
+        }
       }
       setText(builder.toString());
       return this;
