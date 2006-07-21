@@ -62,6 +62,7 @@ public class MainWindow extends JFrame {
 				MainWindow.this.handleExit();
 			};
 		});
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setTitle("Projektgruppe v.01");
 		editorlistener = new PropertyChangeListener() {
 			public void propertyChange(PropertyChangeEvent evt) {
@@ -224,7 +225,11 @@ public class MainWindow extends JFrame {
 		}
 	}
 
-	private void handleClose() {
+	/**
+	 * 
+	 * @return true if Close was cancelled.
+	 */
+	private boolean handleClose() {
 		if (selectedEditor != null) {
 			if (selectedEditor.isModified()) {
 				// Custom button text
@@ -232,11 +237,12 @@ public class MainWindow extends JFrame {
 				int n = JOptionPane
 						.showOptionDialog(
 								this,
-								selectedEditor.getFile().getFilename()+" contains unsaved changes. Do you want to save?",
+								selectedEditor.getFile().getFilename()
+										+ " contains unsaved changes. Do you want to save?",
 								"Save File", JOptionPane.YES_NO_CANCEL_OPTION,
 								JOptionPane.QUESTION_MESSAGE, null, options,
 								options[2]);
-				
+
 				if (n == 0) {
 					if (selectedEditor.handleSave()) {
 						tabbedPane.remove(tabbedPane.getSelectedIndex());
@@ -249,8 +255,9 @@ public class MainWindow extends JFrame {
 					selectedEditor = (EditorWindow) tabbedPane
 							.getSelectedComponent();
 					this.repaint();
+					return false;
 				} else if (n == 2) {
-					return;
+					return true;
 				}
 			} else {
 				tabbedPane.remove(tabbedPane.getSelectedIndex());
@@ -259,6 +266,7 @@ public class MainWindow extends JFrame {
 				this.repaint();
 			}
 		}
+		return false;
 
 	}
 
@@ -280,7 +288,7 @@ public class MainWindow extends JFrame {
 
 	private void handleExit() {
 		while (selectedEditor != null) {
-			handleClose();
+			if (handleClose()) return;
 		}
 		System.exit(0);
 	}
