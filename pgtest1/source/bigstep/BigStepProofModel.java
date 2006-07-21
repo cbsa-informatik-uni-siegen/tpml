@@ -8,6 +8,7 @@ import bigstep.rules.BetaValueRule;
 import bigstep.rules.BopRule;
 import bigstep.rules.CondFalseRule;
 import bigstep.rules.CondTrueRule;
+import bigstep.rules.ConsRule;
 import bigstep.rules.DerefRule;
 import bigstep.rules.HdRule;
 import bigstep.rules.IsEmptyFalseRule;
@@ -24,6 +25,7 @@ import bigstep.rules.TupleRule;
 import bigstep.rules.UnfoldRule;
 import bigstep.rules.UopRule;
 import bigstep.rules.ValRule;
+import bigstep.rules.WhileRule;
 
 import common.ProofGuessException;
 import common.ProofNode;
@@ -76,6 +78,7 @@ public final class BigStepProofModel extends AbstractInterpreterProofModel {
   public ProofRule[] getRules() {
     return new BigStepProofRule[] {
       new ValRule(),
+      new ConsRule(),
       new IsEmptyFalseRule(),
       new IsEmptyTrueRule(),
       new HdRule(),
@@ -99,6 +102,7 @@ public final class BigStepProofModel extends AbstractInterpreterProofModel {
       new AndTrueRule(),
       new OrFalseRule(),
       new OrTrueRule(),
+      new WhileRule(),
     };
   }
   

@@ -47,7 +47,7 @@ public class BigStepTreeView extends JFrame {
   //private static final String SIMPLE = "1 + 1;2 + 2; 3+3";
   //private static final String SIMPLE = "let v = ref (1) in !v";
   //private static final String SIMPLE = "let f = ref (lambda x.x) in f := (lambda x.if x = 0 then 1 else x * ! f (x - 1)); ! f 3";
-  private static final String SIMPLE = "1 + 1, 2 + (let x = ref 1 in !x)";
+  private static final String SIMPLE = "let y = ref 1 in let x = ref 3 in (while (!x > 0) do (y := !y * !x; x := !x - 1)); !y";
 
   
   
