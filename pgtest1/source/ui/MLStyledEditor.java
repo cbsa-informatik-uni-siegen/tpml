@@ -65,6 +65,6 @@ public class MLStyledEditor extends JEditorPane {
   }
   
   public boolean getScrollableTracksViewportWidth() {
-	  return false;
+	  return true;
   }
 }
