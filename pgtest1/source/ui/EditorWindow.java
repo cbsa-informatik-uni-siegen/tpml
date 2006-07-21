@@ -332,11 +332,21 @@ public class EditorWindow extends JPanel implements FileWindow {
 				setActionStatus("Undo", (Boolean) evt.getNewValue());
 			}
 		});
+		// TODO this is dirty... nullpointer on initialisation
+		try {
+			setActionStatus("Undo", undo.isEnabled());
+		} catch (Exception e) {
+		}
 		redo.addPropertyChangeListener("enabled", new PropertyChangeListener() {
 			public void propertyChange(PropertyChangeEvent evt) {
 				setActionStatus("Redo", (Boolean) evt.getNewValue());
 			}
 		});
+		// TODO this is dirty... nullpointer on initialisation
+		try {
+			setActionStatus("Redo", redo.isEnabled());
+		} catch (Exception e) {
+		}
 	}
 
 	public void setActionStatus(String action, boolean enabled) {
