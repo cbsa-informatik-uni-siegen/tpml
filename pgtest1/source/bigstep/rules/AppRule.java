@@ -91,10 +91,10 @@ public final class AppRule extends BigStepProofRule {
       }
     }
     else if (node.getChildCount() == 2) {
-      // check if the second node is proven
+      // check if both child nodes are proven
       BigStepProofNode node0 = node.getChildAt(0);
       BigStepProofNode node1 = node.getChildAt(1);
-      if (node1.isProven()) {
+      if (node0.isProven() && node1.isProven()) {
         // add the third child node
         BigStepProofResult result0 = node0.getResult();
         BigStepProofResult result1 = node1.getResult();
