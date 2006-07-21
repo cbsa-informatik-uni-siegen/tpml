@@ -33,7 +33,7 @@ public class SourceFile extends AbstractEditorComponent implements
 
 	static private int num = 0;
 
-	private JScrollPane scrollPane;
+	//private JScrollPane scrollPane;
 
 	private CompoundEditorPane editorPane;
 
@@ -129,7 +129,7 @@ public class SourceFile extends AbstractEditorComponent implements
 		// generateActions();
 
 		setActionStatus("Undo", false);
-		// setActionStatus("Redo", false);
+		setActionStatus("Redo", false);
 	}
 
 	@EditorActionInfo(visible = false, name = "Undo", icon = "icons/undo.gif", accelModifiers = KeyEvent.CTRL_MASK, accelKey = KeyEvent.VK_Z)
@@ -193,9 +193,9 @@ public class SourceFile extends AbstractEditorComponent implements
 		return this.filename;
 	}
 
-	public Component getComponent() {
-		return this.scrollPane;
-	}
+//	public Component getComponent() {
+//		return this.scrollPane;
+//	}
 
 	public MLStyledDocument getDocument() {
 		return (MLStyledDocument) editorPane.getEditorPane ().getDocument();
