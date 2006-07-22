@@ -1,5 +1,7 @@
 package expressions;
 
+import common.prettyprinter.PrettyStringBuilder;
+
 /**
  * Representation of a <b>(COND)</b> expression for
  * the small step interpreter.

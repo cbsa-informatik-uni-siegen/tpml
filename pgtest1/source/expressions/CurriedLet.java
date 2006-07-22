@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.Set;
 import java.util.TreeSet;
 
+import common.prettyprinter.PrettyStringBuilder;
+
 import expressions.annotation.SyntacticSugar;
 
 import util.StringUtilities;

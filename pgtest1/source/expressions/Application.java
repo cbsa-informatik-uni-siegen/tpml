@@ -1,5 +1,7 @@
 package expressions;
 
+import common.prettyprinter.PrettyStringBuilder;
+
 /**
  * TODO Add documentation here.
  *

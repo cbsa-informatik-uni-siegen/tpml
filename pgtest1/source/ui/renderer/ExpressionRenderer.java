@@ -8,10 +8,11 @@ import java.awt.Graphics;
 import java.text.CharacterIterator;
 import java.util.LinkedList;
 
+import common.prettyprinter.PrettyAnnotation;
+import common.prettyprinter.PrettyCharIterator;
+import common.prettyprinter.PrettyString;
+
 import expressions.Expression;
-import expressions.PrettyAnnotation;
-import expressions.PrettyCharIterator;
-import expressions.PrettyString;
 
 /**
  * Class providing support to render an expression.
@@ -163,7 +164,7 @@ public class ExpressionRenderer extends AbstractRenderer {
 		int uEnd  	= -1;
 		if (underline != null) {
 			try {
-				PrettyAnnotation ua = prettyString.getAnnotationForExpression(underline);
+				PrettyAnnotation ua = prettyString.getAnnotationForPrintable(underline);
 				uStart	= ua.getStartOffset();
 				uEnd	= ua.getEndOffset();
 			} catch (Exception e) { }

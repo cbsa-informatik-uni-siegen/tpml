@@ -3,6 +3,8 @@ package expressions;
 import java.util.Arrays;
 import java.util.Vector;
 
+import common.prettyprinter.PrettyStringBuilder;
+
 import expressions.annotation.SyntacticSugar;
 
 /**

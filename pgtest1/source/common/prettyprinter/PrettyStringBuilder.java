@@ -1,39 +1,114 @@
-package expressions;
+package common.prettyprinter;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.ListIterator;
 import java.util.Map;
-import java.util.HashMap;
 
 /**
- * Provides functionality to generate a <code>PrettyString</code>
+ * Provides functionality to generate a {@link common.prettyprinter.PrettyString}
  * in an incremental fashion.
  *
  * @author Benedikt Meurer
  * @version $Id$
  * 
- * @see expressions.PrettyString
+ * @see common.prettyprinter.PrettyString
  */
-final class PrettyStringBuilder {
+public final class PrettyStringBuilder {
+  //
+  // Constants
+  //
+  
   /**
-   * Allocates a new <code>PrettyStringBuilder</code>. The returned
-   * builder will generate an annotation for <code>expression</code>
-   * for the whole string represented by this builder.
+   * An empty integer array, which is used for the break offsets while
+   * constructing {@link PrettyAnnotation}s if no breaks are specified
+   * for a given builder using the {@link #appendBreak()}.
    * 
-   * @param expression
-   * @param returnPriority
+   * @see PrettyAnnotation
    */
-  PrettyStringBuilder(Expression expression, int returnPriority) {
-    this.expression = expression;
+  private static int[] EMPTY_ARRAY = new int[0];
+  
+  
+  
+  //
+  // Attributes
+  //
+  
+  /**
+   * The {@link PrettyPrintable} for which this builder was allocated.
+   * 
+   * @see #PrettyStringBuilder(PrettyPrintable, int)
+   */
+  private PrettyPrintable printable;
+  
+  /**
+   * The return priority of the printable according to the priority grammar.
+   * 
+   * @see #PrettyStringBuilder(PrettyPrintable, int)
+   * @see #getReturnPriority()
+   */
+  private int returnPriority;
+  
+  /**
+   * FIXME
+   */
+  private LinkedList<Item> items = new LinkedList<Item>();
+  
+  
+  
+  //
+  // Constructor
+  //
+  
+  /**
+   * Allocates a new <code>PrettyStringBuilder</code>, which will generate
+   * an annotation for the <code>printable</code> for the whole string
+   * represented by the builder.
+   * 
+   * @param printable the printable object.
+   * @param returnPriority the return priority according to the priority
+   *                       grammar used for the printables in this
+   *                       builder.
+   *
+   * @throws NullPointerException if <code>printable</code> is <code>null</code>.
+   */
+  public PrettyStringBuilder(PrettyPrintable printable, int returnPriority) {
+    if (printable == null) {
+      throw new NullPointerException("printable is null");
+    }
+    this.printable = printable;
     this.returnPriority = returnPriority;
   }
+  
+  
+  
+  //
+  // Accessors
+  //
+  
+  /**
+   * Gives the <code>returnPriority</code> for the pretty printer
+   * of this builder. The <code>returnPriority</code> is specified
+   * when constructing the builder.
+   * 
+   * @return the <code>returnPriority</code>.
+   */
+  public int getReturnPriority() {
+    return this.returnPriority;
+  }
+
+  
+  
+  //
+  // Insertion
+  //
   
   /**
    * Appends a break location to the string builder.
    * A break marks the location as possible newline
    * insertion position for the presenter. 
    */
-  void appendBreak() {
+  public void appendBreak() {
     this.items.add(new BreakItem());
   }
   
@@ -43,8 +118,10 @@ final class PrettyStringBuilder {
    *   
    * @param builder the <code>PrettyStringBuilder</code> to insert.
    * @param argumentPriority the argument priority of the <code>builder</code>.
+   * 
+   * @throws NullPointerException if <code>builder</code> is <code>null</code>.
    */
-  void appendBuilder(PrettyStringBuilder builder, int argumentPriority) {
+  public void appendBuilder(PrettyStringBuilder builder, int argumentPriority) {
     // check if we need to add parenthesis
     boolean parenthesis = (builder.getReturnPriority() < argumentPriority);
     
@@ -66,7 +143,7 @@ final class PrettyStringBuilder {
    * @see #appendKeyword(String)
    * @see #appendText(String)
    */
-  void appendConstant(String constant) {
+  public void appendConstant(String constant) {
     this.items.add(new TextItem(constant, PrettyStyle.CONSTANT));
   }
   
@@ -80,7 +157,7 @@ final class PrettyStringBuilder {
    * @see #appendConstant(String)
    * @see #appendText(String)
    */
-  void appendKeyword(String keyword) {
+  public void appendKeyword(String keyword) {
     this.items.add(new TextItem(keyword, PrettyStyle.KEYWORD));
   }
   
@@ -93,29 +170,24 @@ final class PrettyStringBuilder {
    * 
    * @see #appendKeyword(String)
    */
-  void appendText(String text) {
+  public void appendText(String text) {
     this.items.add(new TextItem(text, PrettyStyle.NONE));
   }
-
-  /**
-   * Gives the <code>returnPriority</code> for the pretty printer
-   * of this builder. The <code>returnPriority</code> is specified
-   * when constructing the builder.
-   * 
-   * @return the returnPriority.
-   */
-  public int getReturnPriority() {
-    return this.returnPriority;
-  }
+  
+  
+  
+  //
+  // Conversion
+  //
   
   /**
-   * Converts the string builder content to a <code>PrettyString</code>.
-   * The returned <code>PrettyString</code> will be read-only and not
+   * Converts the string builder content to a {@link PrettyString}.
+   * The returned {@link PrettyString} will be read-only and not
    * updated when the state of the pretty string builder changes.
    * 
    * @return the pretty string for the current builder content.
    */
-  PrettyString toPrettyString() {
+  public PrettyString toPrettyString() {
     // determine the final string length for the builder contents
     int length = determineStringLength();
     
@@ -126,7 +198,7 @@ final class PrettyStringBuilder {
     StringBuilder buffer = new StringBuilder(length);
     
     // allocate an empty annotations map
-    Map<Expression, PrettyAnnotation> annotations = new HashMap<Expression, PrettyAnnotation>();
+    Map<PrettyPrintable, PrettyAnnotation> annotations = new HashMap<PrettyPrintable, PrettyAnnotation>();
     
     // determine the string representation and place it into the string buffer
     determineString(buffer, annotations, styles);
@@ -134,6 +206,12 @@ final class PrettyStringBuilder {
     return new DefaultPrettyString(buffer.toString(), annotations, styles);
   }
 
+  
+  
+  //
+  // Overridden methods
+  //
+  
   /**
    * Returns the string representation of the current string
    * builder content. This method is used for debugging
@@ -148,6 +226,12 @@ final class PrettyStringBuilder {
     return toPrettyString().toString();
   }
 
+  
+  
+  //
+  // Internals
+  //
+  
   /**
    * Determines the required string size for the string representation
    * of the pretty string builder contents.
@@ -176,7 +260,7 @@ final class PrettyStringBuilder {
    * 
    * @see #determineStringLength()
    */
-  private void determineString(StringBuilder buffer, Map<Expression, PrettyAnnotation> annotations, PrettyStyle[] styles) {
+  private void determineString(StringBuilder buffer, Map<PrettyPrintable, PrettyAnnotation> annotations, PrettyStyle[] styles) {
     // remember the start offset for the annotation constructor
     int startOffset = buffer.length();
     
@@ -209,21 +293,19 @@ final class PrettyStringBuilder {
       int[] breakOffsets = new int[breakOffsetList.size()];
       for (int i = 0; i < breakOffsets.length; ++i)
         breakOffsets[i] = breakOffsetList.get(i);
-      annotations.put(this.expression, new PrettyAnnotation(startOffset, buffer.length() - 1, breakOffsets));
+      annotations.put(this.printable, new PrettyAnnotation(startOffset, buffer.length() - 1, breakOffsets));
     }
     else {
       // just use the empty array for the break offsets to be more efficient
-      annotations.put(this.expression, new PrettyAnnotation(startOffset, buffer.length() - 1, EMPTY_ARRAY));
+      annotations.put(this.printable, new PrettyAnnotation(startOffset, buffer.length() - 1, EMPTY_ARRAY));
     }
   }
   
-  private Expression expression;
-  private int returnPriority;
-  private LinkedList<Item> items = new LinkedList<Item>();
-  private static int[] EMPTY_ARRAY = new int[0];
-  
 
-  // Pretty Printer Item classes
+  //
+  // Internal classes
+  //
+  
   private static abstract class Item {
     abstract int determineStringLength();
   }

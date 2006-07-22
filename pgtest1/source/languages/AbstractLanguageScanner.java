@@ -2,7 +2,8 @@ package languages;
 
 import java.io.IOException;
 
-import expressions.PrettyStyle;
+import common.prettyprinter.PrettyStyle;
+
 
 /**
  * TODO Add documentation here.

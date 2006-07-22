@@ -1,5 +1,7 @@
 package expressions;
 
+import common.prettyprinter.PrettyStringBuilder;
+
 /**
  * Abstract base class for binary operators.
  *

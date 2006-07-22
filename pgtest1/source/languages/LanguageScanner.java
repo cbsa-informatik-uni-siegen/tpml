@@ -3,7 +3,8 @@ package languages;
 import java.io.IOException;
 import java.io.Reader;
 
-import expressions.PrettyStyle;
+import common.prettyprinter.PrettyStyle;
+
 
 import java_cup.runtime.Scanner;
 

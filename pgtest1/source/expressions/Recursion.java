@@ -6,6 +6,8 @@ package expressions;
 import java.util.Set;
 import java.util.TreeSet;
 
+import common.prettyprinter.PrettyStringBuilder;
+
 /**
  * Implementation of the <b>(REC)</b> rule.
  *

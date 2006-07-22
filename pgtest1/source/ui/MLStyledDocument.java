@@ -12,6 +12,8 @@ import javax.swing.text.DefaultStyledDocument;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 
+import common.prettyprinter.PrettyStyle;
+
 import languages.Language;
 import languages.LanguageFactory;
 import languages.LanguageScanner;
@@ -19,7 +21,6 @@ import languages.LanguageScannerException;
 import languages.LanguageSymbol;
 import languages.NoSuchLanguageException;
 import expressions.Expression;
-import expressions.PrettyStyle;
 
 /**
  * 

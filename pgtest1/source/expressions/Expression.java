@@ -10,6 +10,10 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.Vector;
 
+import common.prettyprinter.PrettyPrintable;
+import common.prettyprinter.PrettyString;
+import common.prettyprinter.PrettyStringBuilder;
+
 import expressions.annotation.SyntacticSugar;
 
 /**
@@ -19,7 +23,7 @@ import expressions.annotation.SyntacticSugar;
  * @author Benedikt Meurer
  * @version $Id$
  */
-public abstract class Expression {
+public abstract class Expression implements PrettyPrintable {
   /**
    * Returns <code>true</code> if the expression is an
    * exception that cannot be evaluated any further.
@@ -192,7 +196,10 @@ public abstract class Expression {
   /**
    * Returns the <code>PrettyString</code> for this expression,
    * which can be used to present the expression to the user.
+   * 
    * @return the <code>PrettyString</code> for this expression.
+   * 
+   * @see PrettyPrintable#toPrettyString()
    */
   public final PrettyString toPrettyString() {
     return toPrettyStringBuilder().toPrettyString();
@@ -201,7 +208,9 @@ public abstract class Expression {
   /**
    * Default string converter for expressions, will be overridden
    * by special constructs like constants.
+   * 
    * @return the string representation for the whole expression.
+   * 
    * @see java.lang.Object#toString()
    */
   @Override

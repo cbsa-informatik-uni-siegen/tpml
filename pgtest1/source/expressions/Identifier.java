@@ -3,6 +3,8 @@ package expressions;
 import java.util.Set;
 import java.util.TreeSet;
 
+import common.prettyprinter.PrettyStringBuilder;
+
 public final class Identifier extends Expression {
   /**
    * Generates a new Identifier.

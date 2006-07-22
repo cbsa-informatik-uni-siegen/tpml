@@ -1,5 +1,7 @@
 package expressions;
 
+import common.prettyprinter.PrettyStringBuilder;
+
 /**
  * Abstract class to represent a constant expression
  * (only values can be constants).

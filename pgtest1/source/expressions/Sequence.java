@@ -2,6 +2,8 @@ package expressions;
 
 import java.util.Set;
 
+import common.prettyprinter.PrettyStringBuilder;
+
 import expressions.annotation.SyntacticSugar;
 
 /**
