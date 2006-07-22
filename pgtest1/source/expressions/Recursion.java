@@ -6,6 +6,8 @@ package expressions;
 import java.util.Set;
 import java.util.TreeSet;
 
+import types.MonoType;
+
 import common.prettyprinter.PrettyStringBuilder;
 
 /**
@@ -15,15 +17,104 @@ import common.prettyprinter.PrettyStringBuilder;
  * @version $Id$
  */
 public final class Recursion extends Expression {
+  //
+  // Attributes
+  //
+  
   /**
-   * Allocates a new <b>(REC)</b> expression.
+   * The identifier for the recursion.
+   * 
+   * @see #getId()
+   */
+  private String id;
+  
+  /**
+   * The type for the <code>id</code> or <code>null</code>.
+   * 
+   * @see #getTau()
+   */
+  private MonoType tau;
+  
+  /**
+   * The body of the recursion.
+   * 
+   * @see #getE()g
+   */
+  private Expression e;
+  
+  
+  
+  //
+  // Constructors
+  //
+  
+  /**
+   * Convenience wrapper for {@link #Recursion(String, MonoType, Expression)}
+   * passing <code>null</code> for <code>tau</code>.
+   * 
    * @param id the identifier of the recursive expression.
    * @param e the expression.
+   * 
+   * @throws NullPointerException if either <code>id</code> or
+   *                              <code>e</code> is <code>null</code>.
    */
   public Recursion(String id, Expression e) {
+    this(id, null, e);
+  }
+  
+  /**
+   * Allocates a new <b>(REC)</b> expression.
+   * 
+   * @param id the identifier of the recursive expression.
+   * @param e the expression.
+   * 
+   * @throws NullPointerException if either <code>id</code> or
+   *                              <code>e</code> is <code>null</code>.
+   */
+  public Recursion(String id, MonoType tau, Expression e) {
+    if (id == null) {
+      throw new NullPointerException("id is null");
+    }
+    if (e == null) {
+      throw new NullPointerException("e is null");
+    }
     this.id = id;
+    this.tau = tau;
     this.e = e;
   }
+  
+  
+  
+  //
+  // Accessors
+  //
+  
+  /**
+   * @return Returns the id.
+   */
+  public String getId() {
+    return this.id;
+  }
+  
+  /**
+   * @return Returns the tau.
+   */
+  public MonoType getTau() {
+    return this.tau;
+  }
+  
+  /**
+   * @return Returns the e.
+   */
+  public Expression getE() {
+    return this.e;
+  }
+
+  
+  
+  //
+  // Primitives
+  //
   
   /**
    * Performs the substitution for recursive expressions.
@@ -52,7 +143,7 @@ public final class Recursion extends Expression {
       Expression newE = this.e.substitute(this.id, new Identifier(newId));
       
       // perform the substitution
-      return new Recursion(newId, newE.substitute(id, e));
+      return new Recursion(newId, this.tau, newE.substitute(id, e));
     }
   }
 
@@ -72,20 +163,12 @@ public final class Recursion extends Expression {
     set.remove(this.id);
     return set;
   }
+
   
-  /**
-   * @return Returns the id.
-   */
-  public String getId() {
-    return this.id;
-  }
   
-  /**
-   * @return Returns the e.
-   */
-  public Expression getE() {
-    return this.e;
-  }
+  //
+  // Pretty printing
+  //
   
   /**
    * Returns the pretty string builder for rec expressions.
@@ -96,12 +179,13 @@ public final class Recursion extends Expression {
   protected PrettyStringBuilder toPrettyStringBuilder() {
     PrettyStringBuilder builder = new PrettyStringBuilder(this, 0);
     builder.appendKeyword("rec");
-    builder.appendText(" " + this.id + ".");
+    builder.appendText(" " + this.id);
+    if (this.tau != null) {
+      builder.appendText(":");
+      builder.appendText(this.tau.toString());
+    }
+    builder.appendText(".");
     builder.appendBuilder(this.e.toPrettyStringBuilder(), 0);
     return builder;
   }
-
-  // the internal structure
-  private String id;
-  private Expression e;
 }

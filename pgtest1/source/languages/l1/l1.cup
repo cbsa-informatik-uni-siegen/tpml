@@ -1,4 +1,5 @@
 import expressions.*;
+import types.*;
 
 
 /* Binary operators */
@@ -22,7 +23,8 @@ terminal			COLONCOLON;
 terminal			COLONEQUAL, DEREF, REF;
 
 /* Syntactic tokens */
-terminal			DOT;
+terminal			COLON, DOT;
+terminal			ARROW;
 terminal			COMMA, BELOW_COMMA;
 terminal			SEMI, BELOW_SEMI;
 terminal			LPAREN, RPAREN;
@@ -34,6 +36,9 @@ terminal			BRACKETBRACKET;
 terminal			LAMBDA, LET, IN, REC, IF, THEN, ELSE;
 terminal			WHILE, DO;
 terminal			TRUE, FALSE;
+
+/* Types */
+terminal			BOOL, INT, UNIT;
 
 /* Special tokens */
 terminal Integer	NUMBER;
@@ -53,6 +58,8 @@ non terminal Expression[]	expr_semi_list;		/* list of expressions separated by s
 non terminal Expression[]	expr_comma_list;	/* list of expressions separated by comma */
 non terminal String[]		id_list;			/* list of identifiers without any separator */
 non terminal String[]		id_comma_list;		/* list of identifiers separated by comma */
+non terminal MonoType		type;
+non terminal MonoType		simple_type;
 
 
 /* Precedences, based on http://caml.inria.fr/pub/docs/manual-ocaml/manual015.html */
@@ -77,6 +84,14 @@ precedence left		EQUAL, LESS, GREATER, LESSEQUAL, GREATEREQUAL;
 precedence right	COLONCOLON;				/* expr (e :: e :: e) */
 precedence left		PLUS, MINUS;
 precedence left		STAR, SLASH, MOD;
+
+precedence right	ARROW;
+
+
+
+/***************
+ * Expressions *
+ ***************/
 
 
 seq_expr			::=	expr:e
@@ -151,8 +166,12 @@ expr				::=	simple_expr:e
 					/* Lambda Abstraction */
 					|	LAMBDA IDENTIFIER:id DOT seq_expr:e
 						{: RESULT = new Lambda(id, e); :}
+					|	LAMBDA IDENTIFIER:id COLON type:tau DOT seq_expr:e
+						{: RESULT = new Lambda(id, tau, e); :}
 					|	LAMBDA LPAREN id_comma_list:il RPAREN DOT seq_expr:e
 						{: RESULT = new MultiLambda(il, e); :}
+					|	LAMBDA LPAREN id_comma_list:il RPAREN COLON type:tau DOT seq_expr:e
+						{: RESULT = new MultiLambda(il, tau, e); :}
 
 					/* Let */
 					|	LET id_list:il EQUAL seq_expr:e1 IN seq_expr:e2
@@ -163,6 +182,8 @@ expr				::=	simple_expr:e
 					/* Recursion */				
 					|	REC IDENTIFIER:id DOT seq_expr:e
 						{: RESULT = new Recursion(id, e); :}
+					|	REC IDENTIFIER:id COLON type:tau DOT seq_expr:e
+						{: RESULT = new Recursion(id, tau, e); :}
 					|	LET REC id_list:il EQUAL seq_expr:e1 IN seq_expr:e2
 						{: RESULT = (il.length == 1) ? new LetRec(il[0], e1, e2) : new CurriedLetRec(il, e1, e2); :}
 					;
@@ -274,3 +295,22 @@ id_comma_list		::=	id_comma_list:l COMMA IDENTIFIER:id
 					|	IDENTIFIER:id
 						{: RESULT = new String[] { id }; :}
 					;
+
+					
+					
+/*********
+ * Types *
+ *********/
+
+
+type				::=	simple_type:t			{: RESULT = t; :}
+					|	type:t1 ARROW type:t2	{: RESULT = new ArrowType(t1, t2); :}
+					;
+
+
+simple_type			::=	LPAREN type:t RPAREN	{: RESULT = t; :}
+					|	BOOL					{: RESULT = BooleanType.BOOL; :}
+					|	INT						{: RESULT = IntegerType.INT; :}
+					|	UNIT					{: RESULT = UnitType.UNIT; :}
+					;
+

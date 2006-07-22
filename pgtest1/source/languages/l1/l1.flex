@@ -2,7 +2,7 @@ package languages.l1;
 
 import java.io.Reader;
 
-import expressions.PrettyStyle;
+import common.prettyprinter.PrettyStyle;
 import languages.AbstractLanguageScanner;
 import languages.LanguageScannerException;
 import languages.LanguageSymbol;
@@ -129,12 +129,14 @@ Identifier		= [:jletter:] [:jletterdigit:]*
 
 	// interpunctation
 	"."							{ return symbol("DOT", DOT); }
+	":"							{ return symbol("COLON", COLON); }
 	";"							{ return symbol("SEMI", SEMI); }
 	","							{ return symbol("COMMA", COMMA); }
 	"("							{ return symbol("LPAREN", LPAREN); }
 	")"							{ return symbol("RPAREN", RPAREN); }
 	"["							{ return symbol("LBRACKET", LBRACKET); }
 	"]"							{ return symbol("RBRACKET", RBRACKET); }
+	"->"						{ return symbol("ARROW", ARROW); }
 
 	// keywords
 	"lambda"					{ return symbol("LAMBDA", LAMBDA); }
@@ -152,6 +154,11 @@ Identifier		= [:jletter:] [:jletterdigit:]*
 	"[]"						{ return symbol("BRACKETBRACKET", BRACKETBRACKET); }
 	"true"						{ return symbol("TRUE", TRUE); }
 	"false"						{ return symbol("FALSE", FALSE); }
+	
+	// types
+	"bool"						{ return symbol("BOOL", BOOL); }
+	"int"						{ return symbol("INT", INT); }
+	"unit"						{ return symbol("UNIT", UNIT); }
 
 	// numbers and identifiers
 	{Number}					{

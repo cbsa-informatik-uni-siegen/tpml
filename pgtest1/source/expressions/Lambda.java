@@ -3,6 +3,8 @@ package expressions;
 import java.util.Set;
 import java.util.TreeSet;
 
+import types.MonoType;
+
 import common.prettyprinter.PrettyStringBuilder;
 
 /**
@@ -12,17 +14,107 @@ import common.prettyprinter.PrettyStringBuilder;
  * @version $Id$
  */
 public final class Lambda extends Value {
+  //
+  // Attributes
+  //
+
+  /**
+   * The identifier for the parameter.
+   * 
+   * @see #getId()
+   */
+  private String id;
+  
+  /**
+   * The type of the parameter or <code>null</code>.
+   * 
+   * @see #getTau()
+   */
+  private MonoType tau;
+  
+  /**
+   * The expression in the body.
+   * 
+   * @see #getE()
+   */
+  private Expression e;
+  
+  
+  
+  //
+  // Constructors
+  //
+  
+  /**
+   * Convenience wrapper for {@link #Lambda(String, MonoType, Expression)}
+   * passing <code>null</code> for <code>tau</code>.
+   * 
+   * @param id the name of the parameter.
+   * @param e the expression.
+   * 
+   * @throws NullPointerException if <code>id</code> or <code>e</code>
+   *                              is <code>null</code>.
+   */
+  public Lambda(String id, Expression e) {
+    this(id, null, e);
+  }
+  
   /**
    * Generates a new abstraction.
    * 
    * @param id the name of the parameter.
+   * @param tau the {@link types.MonoType} for the <code>id</code>,
+   *            or <code>null</code> if no type is known.
    * @param e the expression.
+   * 
+   * @throws NullPointerException if <code>id</code> or <code>e</code>
+   *                              is <code>null</code>.
    */
-  public Lambda(String id, Expression e) {
+  public Lambda(String id, MonoType tau, Expression e) {
+    if (id == null) {
+      throw new NullPointerException("id is null");
+    }
+    if (e == null) {
+      throw new NullPointerException("e is null");
+    }
     this.id = id;
+    this.tau = tau;
     this.e = e;
   }
 
+  
+
+  //
+  // Accessors
+  //
+  
+  /**
+   * @return Returns the id.
+   */
+  public String getId() {
+    return this.id;
+  }
+  
+  /**
+   * @return Returns the tau.
+   */
+  public MonoType getTau() {
+    return this.tau;
+  }
+  
+  /**
+   * @return Returns the e.
+   */
+  public Expression getE() {
+    return this.e;
+  }
+
+  
+  
+  //
+  // Primitives
+  //
+  
   /**
    * Performs the substitution for <b>(LAMBDA)</b> expressions.
    * 
@@ -49,7 +141,7 @@ public final class Lambda extends Value {
       Expression newE = this.e.substitute(this.id, new Identifier(newId));
       
       // perform the substitution
-      return new Lambda(newId, newE.substitute(id, e));
+      return new Lambda(newId, this.tau, newE.substitute(id, e));
     }
   }
 
@@ -67,20 +159,6 @@ public final class Lambda extends Value {
   }
   
   /**
-   * @return Returns the id.
-   */
-  public String getId() {
-    return this.id;
-  }
-  
-  /**
-   * @return Returns the e.
-   */
-  public Expression getE() {
-    return this.e;
-  }
-  
-  /**
    * Returns the pretty string builder for abstractions.
    * @return the pretty string builder for abstractions.
    * @see expressions.Expression#toPrettyStringBuilder()
@@ -89,12 +167,13 @@ public final class Lambda extends Value {
   protected PrettyStringBuilder toPrettyStringBuilder() {
     PrettyStringBuilder builder = new PrettyStringBuilder(this, 0);
     builder.appendKeyword("\u03bb");
-    builder.appendText(this.id + ".");
+    builder.appendText(this.id);
+    if (this.tau != null) {
+      builder.appendText(":");
+      builder.appendText(this.tau.toString());
+    }
+    builder.appendText(".");
     builder.appendBuilder(this.e.toPrettyStringBuilder(), 0);
     return builder;
   }
-
-  // the internal structure
-  private String id;
-  private Expression e;
 }

@@ -8,6 +8,7 @@ import common.prettyprinter.PrettyStringBuilder;
 
 import expressions.annotation.SyntacticSugar;
 
+import types.MonoType;
 import util.StringUtilities;
 
 /**
@@ -31,6 +32,13 @@ public final class MultiLambda extends Value {
   private String[] identifiers;
   
   /**
+   * The type of the <code>identifiers</code> or <code>null</code>.
+   * 
+   * @see #getTau()
+   */
+  private MonoType tau;
+  
+  /**
    * The function body expression.
    * 
    * @see #getE()
@@ -40,8 +48,23 @@ public final class MultiLambda extends Value {
   
   
   //
-  // Constructor
+  // Constructors
   //
+  
+  /**
+   * Convenience wrapper for {@link #MultiLambda(String[], MonoType, Expression)}
+   * passing <code>null</code> for <code>tau</code>.
+   * 
+   * @param identifiers non-empty set of identifiers.
+   * @param e the function body.
+   * 
+   * @throws IllegalArgumentException if the <code>identifiers</code>
+   *                                  list is empty.
+   * @throws NullPointerException if <code>e</code> is <code>null</code>.
+   */
+  public MultiLambda(String[] identifiers, Expression e) {
+    this(identifiers, null, e);
+  }
   
   /**
    * Allocates a new <code>MultiLambda</code> expression with
@@ -49,19 +72,23 @@ public final class MultiLambda extends Value {
    * body <code>e</code>.
    * 
    * @param identifiers non-empty set of identifiers.
+   * @param tau the type of the identifiers or <code>null</code>.
    * @param e the function body.
    * 
    * @throws IllegalArgumentException if the <code>identifiers</code>
    *                                  list is empty.
+   * @throws NullPointerException if <code>e</code> is <code>null</code>.
    */
-  public MultiLambda(String[] identifiers, Expression e) {
-    // validate the identifiers
+  public MultiLambda(String[] identifiers, MonoType tau, Expression e) {
     if (identifiers.length == 0) {
       throw new IllegalArgumentException("identifiers is empty");
     }
+    if (e == null) {
+      throw new NullPointerException("e is null");
+    }
     
-    // initialize the attributes
     this.identifiers = identifiers;
+    this.tau = tau;
     this.e = e;
   }
   
@@ -100,7 +127,7 @@ public final class MultiLambda extends Value {
       newE = newE.substitute(id, e);
       
       // allocate the new multi lambda
-      return new MultiLambda(newIdentifiers, newE);
+      return new MultiLambda(newIdentifiers, this.tau, newE);
     }
   }
   
@@ -141,7 +168,7 @@ public final class MultiLambda extends Value {
     }
     
     // and return the new lambda expression
-    return new Lambda(id, e);
+    return new Lambda(id, this.tau, e);
   }
   
   /**
@@ -153,7 +180,12 @@ public final class MultiLambda extends Value {
   protected PrettyStringBuilder toPrettyStringBuilder() {
     PrettyStringBuilder builder = new PrettyStringBuilder(this, 0);
     builder.appendKeyword("\u03bb");
-    builder.appendText("(" + StringUtilities.join(", ", this.identifiers) + ").");
+    builder.appendText("(" + StringUtilities.join(", ", this.identifiers) + ")");
+    if (this.tau != null) {
+      builder.appendText(":");
+      builder.appendText(this.tau.toString());
+    }
+    builder.appendText(".");
     builder.appendBuilder(this.e.toPrettyStringBuilder(), 0);
     return builder;
   }
@@ -180,6 +212,16 @@ public final class MultiLambda extends Value {
    */
   public String[] getIdentifiers() {
     return this.identifiers;
+  }
+  
+  /**
+   * Returns the type of the <code>identifiers</code> or
+   * <code>null</code> if no type was specified.
+   * 
+   * @return the type of the identifiers;
+   */
+  public MonoType getTau() {
+    return this.tau;
   }
   
   /**
