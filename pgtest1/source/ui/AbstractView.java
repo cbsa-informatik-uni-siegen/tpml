@@ -139,14 +139,19 @@ public abstract class AbstractView extends JComponent implements TreeModelListen
 	protected void reloadNode (AbstractNode node) {
 		if (node == null) {
 			node = rootNode = createNode(model.getRoot());
-			node.setModel(model);
+			if (node != null) 
+				node.setModel(model);
 		}
-		
-		node.removeChildeNodes();
-		
-	
-		ProofNode pnode = node.getProofNode();
-		reloadNode (node, pnode);
+
+//		
+//		The nodes have been reloaded previously
+//		I realy don't know why that was needed
+//		
+//		node.removeChildeNodes();
+//		
+//	
+//		ProofNode pnode = node.getProofNode();
+//		reloadNode (node, pnode);
 		
 		relayout();
 	}

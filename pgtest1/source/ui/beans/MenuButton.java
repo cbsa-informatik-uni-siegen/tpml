@@ -232,13 +232,35 @@ public class MenuButton extends JComponent {
 		int width = fm.stringWidth(text) +  fm.getHeight() + fm.getAscent();
 		int height = fm.getHeight();
 		this.setPreferredSize(new Dimension (width, height));
+		this.setMinimumSize(new Dimension (width, height));
+	}
+	
+	@Override
+	public Dimension getPreferredSize () {
+		FontMetrics fm = getFontMetrics (this.font);
+		int width = fm.stringWidth(text) +  fm.getHeight() + fm.getAscent();
+		int height = fm.getHeight();
+		return new Dimension (width, height);
+	}
+	
+	@Override
+	public Dimension getMinimumSize() {
+		FontMetrics fm = getFontMetrics (this.font);
+		int width = fm.stringWidth(text) +  fm.getHeight() + fm.getAscent();
+		int height = fm.getHeight();
+		return new Dimension (width, height);
+	}
+	
+	@Override
+	public Dimension getMaximumSize() {
+		FontMetrics fm = getFontMetrics (this.font);
+		int width = fm.stringWidth(text) +  fm.getHeight() + fm.getAscent();
+		int height = fm.getHeight();
+		return new Dimension (width, height);
 	}
 	
 	public void paintComponent (Graphics g) {
 		Graphics2D g2d = (Graphics2D)g.create();
-		// clear the back
-		g2d.setColor(Color.WHITE);
-		g2d.fillRect(0, 0, getWidth(), getHeight ());
 		
 		// draw the text
 		FontMetrics fm = getFontMetrics (font);

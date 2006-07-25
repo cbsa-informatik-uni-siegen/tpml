@@ -33,13 +33,24 @@ public class ExpressionRenderer extends AbstractRenderer {
 		}
 	}
 	
-	private 	Expression			expression;
+	private 	Dimension				minSize;
 	
+	private 	Dimension				maxSize;
+	
+	private 	Expression			expression;
 	
 	private 	CheckerResult		bestCheckerReturn;
 	
 	private 	LinkedList<CheckerResult>	checkerResults = new LinkedList<CheckerResult>();
 	
+	
+	public Dimension getMinSize () {
+		return this.minSize;
+	}
+	
+	public Dimension getMaxSize() {
+		return this.maxSize;
+	}
 	
 	private CheckerResult checkExpression (PrettyString prettyString, PrettyAnnotation annotation) {
 		Dimension d = new Dimension ();
@@ -47,8 +58,9 @@ public class ExpressionRenderer extends AbstractRenderer {
 		int height	= 0;
 		PrettyCharIterator it = prettyString.toCharacterIterator();
 		int[] annoBreaks = null;
-		if (annotation != null)
+		if (annotation != null) {
 			annoBreaks = annotation.getBreakOffsets();
+		}
 		int i = 0;
 		int rows = 0;
 		for (char c = it.first(); c != CharacterIterator.DONE; c = it.next(), i++) {
@@ -83,6 +95,14 @@ public class ExpressionRenderer extends AbstractRenderer {
 		height += fontHeight;
 		d.height = height;
 		rows++;
+		
+		if (this.minSize == null || this.minSize.width > d.width) {
+			this.minSize = d;
+		}
+		
+		if (this.maxSize == null || this.maxSize.width < d.width) {
+			this.maxSize = d;
+		}
 
 		return new CheckerResult (d, rows, annotation);
 	}
@@ -126,6 +146,12 @@ public class ExpressionRenderer extends AbstractRenderer {
 		return new Dimension (this.bestCheckerReturn.size);
 	}
 	
+	public int getRowCount () {
+		if (this.bestCheckerReturn == null)
+			return 1;
+		return this.bestCheckerReturn.rows;
+	}
+	
 	public void checkAnnotationSizes() {
 		this.checkerResults.clear();
 		PrettyString prettyString = this.expression.toPrettyString();
@@ -138,6 +164,12 @@ public class ExpressionRenderer extends AbstractRenderer {
 	}
 	
 	
+	public void render(int x, int y, Expression underline, Graphics gc, int maxWidth) {
+		getNeededSize(maxWidth);
+		
+		render (x, y, underline, gc);
+	}
+	
 	/**
 	 * Renders the Expression at the position given by (x, y).
 	 * <br>
@@ -146,10 +178,11 @@ public class ExpressionRenderer extends AbstractRenderer {
 	 * 
 	 * @param	x			The horizontal coordinate to render
 	 * @param	y			The vertical coordinate to render
-	 * @param 	environment	The environment that should be rendered.
+	 * @param underline The Expression that should be underlined.
 	 * @param	gc			The graphics context used to render the content.
 	 */
 	public void render(int x, int y, Expression underline, Graphics gc) {
+		
 		
 		
 		PrettyString prettyString = this.expression.toPrettyString();
