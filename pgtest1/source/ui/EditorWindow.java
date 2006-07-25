@@ -24,6 +24,7 @@ import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 
 import ui.annotations.MainActionInfo;
+import ui.bigstep.BigStepGUI;
 import ui.newgui.DefaultEditorAction;
 import ui.newgui.EditorAction;
 import ui.newgui.EditorComponent;
@@ -219,6 +220,22 @@ public class EditorWindow extends JPanel implements FileWindow {
 			setActionStatus("Undo", gui.getAction("Undo").isEnabled());
 			setActionStatus("Redo", gui.getAction("Redo").isEnabled());
 		} catch (Exception e) {
+			JOptionPane.showMessageDialog(this, e.getMessage(), "Error",
+					JOptionPane.ERROR_MESSAGE);
+		}
+	}
+
+
+	@MainActionInfo(name = "BigStep", icon = "none", visibleMenu = MainActionInfo.MENU_RUN, visibleToolbar = MainActionInfo.TOOLBAR_HIDDEN, accelModifiers = KeyEvent.VK_UNDEFINED, accelKey = KeyEvent.VK_UNDEFINED)
+	public void handleBigStep() {
+		try {
+			BigStepGUI gui = new BigStepGUI("BigStep", file.getDocument()
+					.getText(0, file.getDocument().getLength()));
+			addEditorComponent(gui);
+			setActionStatus("Undo", gui.getAction("Undo").isEnabled());
+			setActionStatus("Redo", gui.getAction("Redo").isEnabled());
+		} catch (Exception e) {
+			e.printStackTrace();
 			JOptionPane.showMessageDialog(this, e.getMessage(), "Error",
 					JOptionPane.ERROR_MESSAGE);
 		}
