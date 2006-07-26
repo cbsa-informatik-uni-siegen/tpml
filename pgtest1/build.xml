@@ -16,7 +16,26 @@
 	<taskdef name="jflex" classname="JFlex.anttask.JFlexTask" classpath="${basedir}/lib/JFlex-1.4.1.jar" />
 	
 
-    <target name="all" depends="l1" description="Generate all" />
+    <target name="all" depends="l0,l1" description="Generate all" />
+	
+	<target name="l0" description="Generates lexer and parser for L0">
+		<jflex 
+    		file="${sourcedir}/languages/l0/l0.flex"
+    		destdir="${sourcedir}"
+			nobak="yes" />
+		<cup
+			srcfile="${sourcedir}/languages/l0/l0.cup"
+			destdir="${sourcedir}/languages/l0"
+			package="languages.l0"
+			parser="L0AbstractParser"
+			symbols="L0Terminals"
+			interface="yes"
+			debug="no"
+			expect="0"
+			nonterms="no"
+			nopositions="yes"
+			dump_grammar="no" />
+	</target>
 	
 	<target name="l1" description="Generates lexer and parser for L1">
 		<jflex 
