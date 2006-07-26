@@ -48,7 +48,6 @@ import languages.LanguageSymbol;
 	}
 
 	protected PrettyStyle getStyleBySymbolId(int id) {
-		// TODO: Implement this.
 		switch (id) {
 		case COMMENT:
 			return PrettyStyle.COMMENT;

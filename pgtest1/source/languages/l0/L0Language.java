@@ -1,28 +1,30 @@
-package languages.l1;
+package languages.l0;
 
 import java.io.Reader;
 
+import expressions.Expression;
+
 import java_cup.runtime.lr_parser;
+
 import languages.AbstractLanguage;
 import languages.LanguageParser;
 import languages.LanguageScanner;
-import expressions.Expression;
 
 /**
- * This class represents the language L1.
+ * This class represents the language L0.
  *
  * @author Benedikt Meurer
  * @version $Id$
  */
-public final class L1Language extends AbstractLanguage {
+public final class L0Language extends AbstractLanguage {
   //
   // Constructor
   //
   
   /**
-   * Allocates a new <code>L1Language</code> instance.
+   * Allocates a new <code>L0Language</code> instance.
    */
-  public L1Language() {
+  public L0Language() {
   }
   
   
@@ -36,18 +38,18 @@ public final class L1Language extends AbstractLanguage {
    *
    * @see languages.Language#newParser(languages.LanguageScanner)
    */
-  public final LanguageParser newParser(LanguageScanner scanner) {
-    if (scanner == null) {
-      throw new NullPointerException("scanner is null");
-    }
-    final lr_parser parser = new L1Parser(scanner);
-    return new LanguageParser() {
-      public Expression parse() throws Exception {
-        return (Expression)parser.parse().value;
-      }
-    };
-  }
-  
+ public LanguageParser newParser(LanguageScanner scanner) {
+   if (scanner == null) {
+     throw new NullPointerException("scanner is null");
+   }
+   final lr_parser parser = new L0Parser(scanner);
+   return new LanguageParser() {
+     public Expression parse() throws Exception {
+       return (Expression)parser.parse().value;
+     }
+   };
+ }
+
   /**
    * {@inheritDoc}
    *
@@ -57,6 +59,6 @@ public final class L1Language extends AbstractLanguage {
     if (reader == null) {
       throw new NullPointerException("reader is null");
     }
-    return new L1Scanner(reader);
+    return new L0Scanner(reader);
   }
 }

@@ -1,0 +1,47 @@
+import expressions.*;
+
+
+/* Syntactic tokens */
+terminal		DOT;
+terminal		LPAREN;
+terminal		RPAREN;
+terminal		LAMBDA;
+terminal String	IDENTIFIER;
+
+/* Special tokens */
+terminal		COMMENT;
+
+
+/* Non-Terminals */
+non terminal Expression		expr;
+non terminal Expression		simple_expr;
+non terminal Expression[]	simple_expr_list;
+
+
+expr				::=	simple_expr:e
+						{: RESULT = e; :}
+					|	simple_expr:e simple_expr_list:l
+						{: for (int n = 0; n < l.length; ++n) {
+						     e = new Application(e, l[n]);
+						   }
+						   RESULT = e; :}
+					|	LAMBDA IDENTIFIER:id DOT expr:e
+						{: RESULT = new Lambda(id, e); :}
+					;
+		
+		
+simple_expr			::=	IDENTIFIER:id
+						{: RESULT = new Identifier(id); :}
+					|	LPAREN expr:e RPAREN
+						{: RESULT = e; :}
+					;
+			
+			
+/* for applications */
+simple_expr_list	::=	simple_expr:e
+						{: RESULT = new Expression[] { e }; :}
+					|	simple_expr_list:l simple_expr:e
+						{: RESULT = new Expression[l.length + 1];
+						   System.arraycopy(l, 0, RESULT, 0, l.length);
+						   RESULT[l.length] = e; :}
+					;

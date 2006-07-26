@@ -3,7 +3,7 @@ package languages;
 import java.lang.reflect.InvocationTargetException;
 
 /**
- * TODO Add documentation here.
+ * Factory class for {@link languages.Language}s.
  *
  * @author Benedikt Meurer
  * @version $Id$
