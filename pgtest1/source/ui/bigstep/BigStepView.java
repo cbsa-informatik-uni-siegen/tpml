@@ -10,7 +10,9 @@ import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.Rectangle;
 
+import javax.swing.JScrollPane;
 import javax.swing.Scrollable;
+import javax.swing.SwingUtilities;
 import javax.swing.event.TreeModelEvent;
 
 import bigstep.BigStepProofNode;
@@ -39,8 +41,19 @@ public class BigStepView extends AbstractView implements Scrollable {
 	 */
 	private int		nodeId;
 	
+	/**
+	 * 
+	 */
+	private ProofNode 		jumpNode;
+	
+	/**
+	 */
+	private boolean				isLayouting;
+	
 	public BigStepView () {
 		super ();
+		
+		this.isLayouting = false;
 		
 		setLayout (null);
 	}
@@ -61,6 +74,13 @@ public class BigStepView extends AbstractView implements Scrollable {
 		BigStepNode bigStepNode = (BigStepNode)node.getUserObject();
 		if (bigStepNode == null) {
 			bigStepNode = new BigStepNode ((BigStepProofNode)node);
+			bigStepNode.addBigStepNodeListener(new BigStepNodeListener() {
+				
+				public void aboutToProve(ProofNode node) {
+					BigStepView.this.aboutToProve(node);
+				}
+				
+			});
 			bigStepNode.setModel(this.model);
 			bigStepNode.buildMenu();
 			node.setUserObject(bigStepNode);
@@ -102,6 +122,8 @@ public class BigStepView extends AbstractView implements Scrollable {
 		
 		setMinimumSize (size);
 		setMaximumSize (size);
+		
+		this.repaint();
 	}
 	
 	private void paintNodeArrow(ProofNode node, Graphics g) {
@@ -146,7 +168,6 @@ public class BigStepView extends AbstractView implements Scrollable {
 		}
 	}
 	
-	
 	@Override
 	protected AbstractNode createNode(ProofNode node) {
 		return null;
@@ -154,12 +175,23 @@ public class BigStepView extends AbstractView implements Scrollable {
 
 	@Override
 	protected void relayout() {
-		doLayouting();
+		// do nothing here its not needed within the big step view
 	}
 
 	@Override
 	protected void doLayouting() {
-		layout (this.availableWidth);
+		if (this.isLayouting) return;
+		
+		this.isLayouting = true;
+		
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				BigStepView.this.layout(BigStepView.this.availableWidth);
+				BigStepView.this.isLayouting = false;
+				BigStepView.this.scrollToVisible(BigStepView.this.jumpNode);
+				BigStepView.this.jumpNode = null;
+			}
+		});
 	}	
 
 	@Override
@@ -174,7 +206,6 @@ public class BigStepView extends AbstractView implements Scrollable {
 			BigStepNode node = (BigStepNode)this.model.getRoot().getUserObject();
 			if (node != null) {
 				node.updateNode();
-				System.out.println("nodeChanged: " + model.getRoot().getExpression ());
 			}
 		}
 		else {
@@ -184,10 +215,29 @@ public class BigStepView extends AbstractView implements Scrollable {
 				if (node != null) {
 					node.updateNode();
 				}
-				System.out.println("nodeChanged: " + pNode.getExpression ());
 			}
 		}
 		doLayouting();
+	}
+	
+	
+	
+	@Override
+	public void treeNodesInserted (TreeModelEvent e) {
+		// find the node that has been inserted.
+		// save this node to scroll to it later
+		
+		Object[] children = e.getChildren();
+		if (children.length != 0) {
+			this.jumpNode = (ProofNode)children[0];
+		}
+		
+		this.doLayouting();
+	}
+
+	@Override
+	public void treeNodesRemoved (TreeModelEvent e) {
+		
 	}
 
 	/**
@@ -203,7 +253,6 @@ public class BigStepView extends AbstractView implements Scrollable {
 		
 		paintNodeArrow (this.model.getRoot(), g);
 	}
-
 
 	public Dimension getPreferredScrollableViewportSize() {
 		return getPreferredSize();
@@ -225,5 +274,92 @@ public class BigStepView extends AbstractView implements Scrollable {
 		return 75;
 	}
 
+	private ProofNode getVisibleNode (ProofNode parentNode) {
+		
+		if (parentNode == null) {
+			return null;
+		}
+		
+		if (parentNode.getSteps().length == 0) {
+			BigStepNode bigStepNode = (BigStepNode)parentNode.getUserObject();
+			if (bigStepNode != null)
+			{
+				// check if node is currently visible
+				Rectangle visibleRect = getVisibleRect ();
+				int top = bigStepNode.getY();
+				int bottom = bigStepNode.getY () + bigStepNode.getHeight();
+				
+				if (   top >= visibleRect.y && top <= visibleRect.y + visibleRect.height
+						|| bottom >= visibleRect.y && bottom <= visibleRect.y + visibleRect.height) {
+					return parentNode;
+				}
+			}
+		}
+		
+		for (int i=0; i<parentNode.getChildCount(); i++) {
+			
+			ProofNode node = getVisibleNode (parentNode.getChildAt(i));
+			if (node != null) { 
+				return node; 
+			}
+			
+		}
+		
+		return null;
+	}
+	
+	private ProofNode getFirstUnproovenNode (ProofNode parentNode) {
+		if (parentNode == null) {
+			return null;
+		}
+		
+		if (parentNode.getSteps().length == 0) {
+			return parentNode;
+		}
+		
+		for (int i=0; i<parentNode.getChildCount(); i++) {
+			
+			ProofNode node = getFirstUnproovenNode (parentNode.getChildAt(i));
+			if (node != null) {
+				return node;
+			}
+		}
+		
+		return null;
+	}
+	
+	public void guessNode () throws Exception {
+		ProofNode node = getVisibleNode (this.model.getRoot());
+		if (node == null) {
+			node = getFirstUnproovenNode (this.model.getRoot());
+		}
+		
+		if (node == null) {
+			return;
+		}
+		
+		BigStepNode bigStepNode = (BigStepNode)node.getUserObject();
+		if (bigStepNode != null) {
+			bigStepNode.guessNode();
+		}
+		
+	}
 
+	public void aboutToProve (ProofNode node) {
+		this.jumpNode = node;
+	}
+	
+	
+	public void scrollToVisible (ProofNode node) {
+		
+		if (node == null) return;
+				
+		BigStepNode bigStepNode = (BigStepNode)node.getUserObject();
+		if (bigStepNode == null) return;
+		
+		this.scrollRectToVisible(bigStepNode.getBounds());
+		
+	}
+	
+	
 }

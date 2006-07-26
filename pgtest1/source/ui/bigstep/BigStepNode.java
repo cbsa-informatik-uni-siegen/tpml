@@ -231,6 +231,10 @@ public class BigStepNode extends AbstractNode {
 				rd.width,
 				maxHeight + 2*margin + spacing + ruleComp.getPreferredSize().height);
 		
+		if (ruleComp.getPreferredSize().width + margin + spacing + this.locationIdComponent.getPreferredSize().width > size.width) {
+			size.width = ruleComp.getPreferredSize().width + margin + spacing + this.locationIdComponent.getPreferredSize().width;
+		}
+		
 		setSize (size);
 		setPreferredSize (size);
 		setMinimumSize (size);
@@ -278,12 +282,16 @@ public class BigStepNode extends AbstractNode {
 	
 	public void evaluateRule (ProofRule rule) {
 		try {
+			// prepare the view that something is about to change next
+			this.fireBigStepNodeAboutToProve();
+
 			this.model.prove(rule, this.proofNode);
 			
 			ProofStep[] steps = this.proofNode.getSteps();
 			if (steps.length != 0) {
 				this.ruleString.setString("(" + steps [0].getRule().getName() + ")");
 			}
+			
 		} catch (Exception e) { 
 
 			this.menuButton.setTextColor(Color.RED);
@@ -291,11 +299,16 @@ public class BigStepNode extends AbstractNode {
 	}
 	
 	public void translateToCoreSyntax() {
+		// prepare the view that something is about to change next
+		this.fireBigStepNodeAboutToProve();
 		this.model.translateToCoreSyntax(this.proofNode);
 	}
 	
 	public void guessNode () {
 		try {
+			// prepare the view that something is about to change next
+			this.fireBigStepNodeAboutToProve();
+			
 			this.model.guess(this.proofNode);
 			
 			ProofStep[] steps = this.proofNode.getSteps();
@@ -316,5 +329,24 @@ public class BigStepNode extends AbstractNode {
 	public Point getJointPoint() {
 		Rectangle rect = this.locationIdComponent.getBounds();
 		return new Point (rect.x, rect.y + rect.height / 2);
+	}
+	
+	public void addBigStepNodeListener (BigStepNodeListener listener) {
+		this.listenerList.add(BigStepNodeListener.class, listener);
+	}
+	
+	public void fireBigStepNodeAboutToProve () {
+		Object[] listeners = this.listenerList.getListenerList();
+		
+		for (int i=0;i<listeners.length; i+=2) {
+			if (listeners[i+0] == BigStepNodeListener.class) {
+				
+				BigStepNodeListener listener = (BigStepNodeListener)listeners[i+1];
+				if (listener == null) continue;
+				
+				listener.aboutToProve(this.proofNode);
+			}
+		}
+		
 	}
 }

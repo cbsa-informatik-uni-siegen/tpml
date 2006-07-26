@@ -16,7 +16,7 @@ public abstract class AbstractView extends JComponent implements TreeModelListen
 	protected AbstractNode		rootNode;
 
 
-	protected ProofModel		model = null;
+	protected ProofModel			model = null;
 	
 	
 	public AbstractView() {

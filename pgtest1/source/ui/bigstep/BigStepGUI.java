@@ -70,17 +70,18 @@ public class BigStepGUI extends AbstractEditorComponent implements EditorCompone
   @EditorActionInfo(visible = true, name = "Guess", icon = "icons/next.png", accelModifiers = KeyEvent.VK_UNDEFINED, accelKey = KeyEvent.VK_UNDEFINED)
   public void handleGuess() {
     try {
-//      model.guess(view.getRootNode().getFirstLeaf());
+    	this.view.guessNode();
     }
     catch (Exception e) {
       JOptionPane.showMessageDialog(BigStepGUI.this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+      e.printStackTrace();
     }
   }
   
   @EditorActionInfo(visible = false, name = "Undo", icon = "icons/undo.gif", accelModifiers = KeyEvent.CTRL_MASK, accelKey = KeyEvent.VK_Z)
   public void handleUndo() {
     try {
-//      model.undo();
+    	this.model.undo();
     }
     catch (Exception e) {
       JOptionPane.showMessageDialog(BigStepGUI.this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -90,7 +91,7 @@ public class BigStepGUI extends AbstractEditorComponent implements EditorCompone
   @EditorActionInfo(visible = false, name = "Redo", icon = "icons/redo.gif", accelModifiers = KeyEvent.VK_UNDEFINED, accelKey = KeyEvent.VK_UNDEFINED)
   public void handleRedo() {
     try {
-//      model.redo();
+    	this.model.redo ();
     }
     catch (Exception e) {
       JOptionPane.showMessageDialog(BigStepGUI.this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
