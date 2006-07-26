@@ -357,7 +357,12 @@ public class BigStepView extends AbstractView implements Scrollable {
 		BigStepNode bigStepNode = (BigStepNode)node.getUserObject();
 		if (bigStepNode == null) return;
 		
-		this.scrollRectToVisible(bigStepNode.getBounds());
+		Rectangle rect = bigStepNode.getBounds ();
+		Rectangle visibleRect = this.getVisibleRect();
+		rect.x = visibleRect.x;
+		rect.width = 1;
+		
+		this.scrollRectToVisible(rect);
 		
 	}
 	
