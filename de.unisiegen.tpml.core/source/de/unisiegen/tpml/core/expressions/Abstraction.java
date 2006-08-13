@@ -14,6 +14,26 @@ import java.util.TreeSet;
  * @version $Id:Abstraction.java 66 2006-01-19 17:07:56Z benny $
  */
 public final class Abstraction extends Expression {
+  //
+  // Attributes
+  //
+  
+  /**
+   * The identifier of the abstraction parameter.
+   */
+  private String id;
+  
+  /**
+   * The expression of the abstraction body.
+   */
+  private Expression e1;
+  
+  
+  
+  //
+  // Constructor
+  //
+  
   /**
    * Allocates a new lambda abstraction with the specified
    * identifier <code>id</code> and the given sub expression
@@ -26,6 +46,34 @@ public final class Abstraction extends Expression {
     this.id = id;
     this.e1 = e1;
   }
+
+  
+  
+  //
+  // Accessors
+  //
+  
+  /**
+   * Returns the identifier of the parameter for the lambda expression.
+   * @return the identifier of the parameter for the lambda expression.
+   */
+  public String getId() {
+    return this.id;
+  }
+  
+  /**
+   * Returns the subexpression of the lambda expression.
+   * @return the subexpression of the lambda expression.
+   */
+  public Expression getE1() {
+    return this.e1;
+  }
+  
+  
+  
+  //
+  // Primitives
+  //
   
   /**
    * Returns the free (unbound) identifiers of the lambda abstraction.
@@ -100,23 +148,4 @@ public final class Abstraction extends Expression {
       return (this.e1 == newE1) ? this : new Abstraction(newId, newE1);
     }
   }
-
-  /**
-   * Returns the identifier of the parameter for the lambda expression.
-   * @return the identifier of the parameter for the lambda expression.
-   */
-  public String getId() {
-    return this.id;
-  }
-  
-  /**
-   * Returns the subexpression of the lambda expression.
-   * @return the subexpression of the lambda expression.
-   */
-  public Expression getE1() {
-    return this.e1;
-  }
-  
-  private String id;
-  private Expression e1;
 }

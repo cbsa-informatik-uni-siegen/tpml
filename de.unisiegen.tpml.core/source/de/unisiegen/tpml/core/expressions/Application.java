@@ -14,6 +14,30 @@ import java.util.TreeSet;
  * @version $Id:Application.java 66 2006-01-19 17:07:56Z benny $
  */
 public final class Application extends Expression {
+  //
+  // Attributes
+  //
+
+  /**
+   * The first, left-side expression.
+   * 
+   * @see #getE1()
+   */
+  private Expression e1;
+  
+  /**
+   * The second, right-side expression.
+   * 
+   * @see #getE2()
+   */
+  private Expression e2;
+  
+  
+  
+  //
+  // Constructor
+  //
+  
   /**
    * Allocates a new application of <code>e1</code> to <code>e2</code>.
    * 
@@ -24,6 +48,34 @@ public final class Application extends Expression {
     this.e1 = e1;
     this.e2 = e2;
   }
+  
+  
+  
+  //
+  // Accessors
+  //
+  
+  /**
+   * Returns the first expression of the application.
+   * @return the first expression of the application.
+   */
+  public Expression getE1() {
+    return this.e1;
+  }
+  
+  /**
+   * Returns the second expression of the application.
+   * @return the second expression of the application.
+   */
+  public Expression getE2() {
+    return this.e2;
+  }
+  
+  
+  
+  //
+  // Primitives
+  //
   
   /**
    * Returns the free (unbound) identifiers of the application.
@@ -83,23 +135,4 @@ public final class Application extends Expression {
     // generate a new application
     return new Application(e1, e2);
   }
-  
-  /**
-   * Returns the first expression of the application.
-   * @return the first expression of the application.
-   */
-  public Expression getE1() {
-    return this.e1;
-  }
-  
-  /**
-   * Returns the second expression of the application.
-   * @return the second expression of the application.
-   */
-  public Expression getE2() {
-    return this.e2;
-  }
-
-  private Expression e1;
-  private Expression e2;
 }

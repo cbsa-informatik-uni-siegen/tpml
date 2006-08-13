@@ -10,6 +10,23 @@ import java.util.Set;
  * @version $Id:Expression.java 66 2006-01-19 17:07:56Z benny $
  */
 public abstract class Expression {
+  //
+  // Constants
+  //
+  
+  /**
+   * Static empty set of strings, which is used to reduce the amount
+   * of newly allocated empty sets for the <code>free</code> method
+   * implementations.
+   */
+  protected static final Set<String> EMPTY_SET = Collections.unmodifiableSet(Collections.<String>emptySet());
+  
+  
+  
+  //
+  // Primitives
+  //
+  
   /**
    * Returns the free (unbound) identifiers within the expression,
    * e.g. the name of the identifier for an identifier expression
@@ -46,11 +63,4 @@ public abstract class Expression {
    * @return the resulting expression.
    */
   public abstract Expression substitute(String id, Expression e);
-  
-  /**
-   * Static empty set of strings, which is used to reduce the amount
-   * of newly allocated empty sets for the <code>free</code> method
-   * implementations.
-   */
-  protected static final Set<String> EMPTY_SET = Collections.unmodifiableSet(Collections.<String>emptySet()); 
 }

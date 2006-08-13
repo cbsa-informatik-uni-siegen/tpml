@@ -10,6 +10,23 @@ import java.util.Set;
  * @version $Id:Identifier.java 66 2006-01-19 17:07:56Z benny $
  */
 public final class Identifier extends Expression {
+  //
+  // Attributes
+  //
+
+  /**
+   * The name of the identifier.
+   * 
+   * @see #getName()
+   */
+  private String name;
+
+  
+  
+  //
+  // Constructor
+  //
+  
   /**
    * Allocates a new identifier with the given <code>name</code>.
    * 
@@ -18,6 +35,26 @@ public final class Identifier extends Expression {
   public Identifier(String name) {
     this.name = name;
   }
+
+  
+  
+  //
+  // Accessors
+  //
+  
+  /**
+   * Returns the name of the identifier.
+   * @return the name of the identifier.
+   */
+  public String getName() {
+    return this.name;
+  }
+  
+  
+  
+  //
+  // Primitives
+  //
   
   /**
    * Returns a set that contains exacty one element, which is
@@ -52,14 +89,4 @@ public final class Identifier extends Expression {
     else
       return this;
   }
-
-  /**
-   * Returns the name of the identifier.
-   * @return the name of the identifier.
-   */
-  public String getName() {
-    return this.name;
-  }
-  
-  private String name;
 }
