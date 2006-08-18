@@ -3,12 +3,13 @@ package de.unisiegen.tpml.core.expressions;
 import java.util.Set;
 import java.util.TreeSet;
 
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
+
 /**
- * Represents the <b>(APP)</b> expression in the expression
- * hierarchy.
+ * Represents the <b>(APP)</b> expression in the expression hierarchy.
  * 
- * The string representation for applications is:
- * <pre>e1 e2</pre>
+ * The string representation for applications is <pre>e1 e2</pre>.
  *
  * @author Benedikt Meurer
  * @version $Id:Application.java 66 2006-01-19 17:07:56Z benny $
@@ -134,5 +135,25 @@ public final class Application extends Expression {
     
     // generate a new application
     return new Application(e1, e2);
+  }
+  
+  
+  
+  //
+  // Pretty printing
+  //
+  
+  /**
+   * {@inheritDoc}
+   *
+   * @see de.unisiegen.tpml.core.expressions.Expression#toPrettyStringBuilder(de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory)
+   */
+  @Override
+  protected PrettyStringBuilder toPrettyStringBuilder(PrettyStringBuilderFactory factory) {
+    PrettyStringBuilder builder = factory.newBuilder(this, PRIO_APPLICATION);
+    builder.addBuilder(this.e1.toPrettyStringBuilder(factory), PRIO_APPLICATION_E1);
+    builder.addText(" ");
+    builder.addBuilder(this.e2.toPrettyStringBuilder(factory), PRIO_APPLICATION_E2);
+    return builder;
   }
 }

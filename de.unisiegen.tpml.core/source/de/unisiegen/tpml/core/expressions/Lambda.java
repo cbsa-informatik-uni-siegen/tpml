@@ -3,17 +3,18 @@ package de.unisiegen.tpml.core.expressions;
 import java.util.Set;
 import java.util.TreeSet;
 
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
+
 /**
- * Represents the <b>(ABSTR)</b> expression in the expression
- * hierarchy, which is used for lambda abstractions.
+ * Represents the <b>(ABSTR)</b> expression in the expression hierarchy, which is used for lambda abstractions.
  * 
- * The string representation for lambda abstraction is:
- * <pre>lambda id.e1</pre>
+ * The string representation for lambda abstraction is <pre>lambda id.e</pre>.
  *
  * @author Benedikt Meurer
- * @version $Id:Abstraction.java 66 2006-01-19 17:07:56Z benny $
+ * @version $Id:Lambda.java 66 2006-01-19 17:07:56Z benny $
  */
-public final class Abstraction extends Expression {
+public final class Lambda extends Expression {
   //
   // Attributes
   //
@@ -26,7 +27,7 @@ public final class Abstraction extends Expression {
   /**
    * The expression of the abstraction body.
    */
-  private Expression e1;
+  private Expression e;
   
   
   
@@ -36,15 +37,14 @@ public final class Abstraction extends Expression {
   
   /**
    * Allocates a new lambda abstraction with the specified
-   * identifier <code>id</code> and the given sub expression
-   * <code>e1</code>.
+   * identifier <code>id</code> and the given body <code>e</code>.
    * 
    * @param id the identifier of the lambda parameter.
-   * @param e1 the sub expression.
+   * @param e the body.
    */
-  public Abstraction(String id, Expression e1) {
+  public Lambda(String id, Expression e) {
     this.id = id;
-    this.e1 = e1;
+    this.e = e;
   }
 
   
@@ -55,6 +55,7 @@ public final class Abstraction extends Expression {
   
   /**
    * Returns the identifier of the parameter for the lambda expression.
+   * 
    * @return the identifier of the parameter for the lambda expression.
    */
   public String getId() {
@@ -62,11 +63,12 @@ public final class Abstraction extends Expression {
   }
   
   /**
-   * Returns the subexpression of the lambda expression.
-   * @return the subexpression of the lambda expression.
+   * Returns the body of the lambda expression.
+   * 
+   * @return the bodyof the lambda expression.
    */
-  public Expression getE1() {
-    return this.e1;
+  public Expression getE() {
+    return this.e;
   }
   
   
@@ -86,23 +88,23 @@ public final class Abstraction extends Expression {
    * @return the free identifiers for the lambda abstraction.
    * 
    * @see #getId()
-   * @see #getE1()
+   * @see #getE()
    * @see de.unisiegen.tpml.core.expressions.Expression#free()
    */
   @Override
   public Set<String> free() {
     // determine the free identifiers of e1, and
     // make sure it doesn't contain our id
-    Set<String> freeE1 = this.e1.free();
-    if (freeE1.contains(this.id)) {
+    Set<String> freeE = this.e.free();
+    if (freeE.contains(this.id)) {
       // allocate a new set without the identifier
-      TreeSet<String> free = new TreeSet<String>(freeE1);
+      TreeSet<String> free = new TreeSet<String>(freeE);
       free.remove(this.id);
       return free;
     }
     else {
       // we can just reuse the free set
-      return freeE1;
+      return freeE;
     }
   }
 
@@ -118,7 +120,7 @@ public final class Abstraction extends Expression {
    * @return the resulting expression.
    * 
    * @see #getId()
-   * @see #getE1()
+   * @see #getE()
    * @see de.unisiegen.tpml.core.expressions.Expression#substitute(java.lang.String, de.unisiegen.tpml.core.expressions.Expression)
    */
   @Override
@@ -139,13 +141,34 @@ public final class Abstraction extends Expression {
         newId = newId + "'";
 
       // perform the bound renaming (if required)
-      Expression newE1 = (this.id == newId) ? this.e1 : this.e1.substitute(this.id, new Identifier(newId));
+      Expression newE = (this.id == newId) ? this.e : this.e.substitute(this.id, new Identifier(newId));
       
       // perform the substitution for e1
-      newE1 = newE1.substitute(id, e);
+      newE = newE.substitute(id, e);
       
       // reuse this abstraction object if possible
-      return (this.e1 == newE1) ? this : new Abstraction(newId, newE1);
+      return (this.e == newE) ? this : new Lambda(newId, newE);
     }
+  }
+  
+  
+  
+  //
+  // Pretty printing
+  //
+  
+  /**
+   * {@inheritDoc}
+   *
+   * @see de.unisiegen.tpml.core.expressions.Expression#toPrettyStringBuilder(de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory)
+   */
+  @Override
+  protected PrettyStringBuilder toPrettyStringBuilder(PrettyStringBuilderFactory factory) {
+    PrettyStringBuilder builder = factory.newBuilder(this, PRIO_LAMBDA);
+    builder.addKeyword("\u03bb");
+    builder.addText(this.id);
+    builder.addText(".");
+    builder.addBuilder(this.e.toPrettyStringBuilder(factory), PRIO_LAMBDA_E);
+    return builder;
   }
 }

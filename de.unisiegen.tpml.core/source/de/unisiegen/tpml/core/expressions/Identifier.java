@@ -3,6 +3,9 @@ package de.unisiegen.tpml.core.expressions;
 import java.util.Collections;
 import java.util.Set;
 
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
+
 /**
  * Represents an identifier in the expression hierarchy.
  *
@@ -84,9 +87,29 @@ public final class Identifier extends Expression {
    */
   @Override
   public Expression substitute(String id, Expression e) {
-    if (id.equals(getName()))
+    if (id.equals(getName())) {
       return e;
-    else
+    }
+    else {
       return this;
+    }
+  }
+  
+  
+  
+  //
+  // Pretty printing
+  //
+  
+  /**
+   * {@inheritDoc}
+   *
+   * @see de.unisiegen.tpml.core.expressions.Expression#toPrettyStringBuilder(de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory)
+   */
+  @Override
+  protected PrettyStringBuilder toPrettyStringBuilder(PrettyStringBuilderFactory factory) {
+    PrettyStringBuilder builder = factory.newBuilder(this, PRIO_IDENTIFIER);
+    builder.addText(this.name);
+    return builder;
   }
 }

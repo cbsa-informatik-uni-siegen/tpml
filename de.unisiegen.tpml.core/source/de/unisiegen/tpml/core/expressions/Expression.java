@@ -3,13 +3,18 @@ package de.unisiegen.tpml.core.expressions;
 import java.util.Collections;
 import java.util.Set;
 
+import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable;
+import de.unisiegen.tpml.core.prettyprinter.PrettyString;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
+
 /**
  * Base class for all classes in the expression hierarchy.
  * 
  * @author Benedikt Meurer
  * @version $Id:Expression.java 66 2006-01-19 17:07:56Z benny $
  */
-public abstract class Expression {
+public abstract class Expression implements PrettyPrintable, PrettyPrintPriorities {
   //
   // Constants
   //
@@ -63,4 +68,35 @@ public abstract class Expression {
    * @return the resulting expression.
    */
   public abstract Expression substitute(String id, Expression e);
+  
+  
+  
+  //
+  // Pretty printing
+  //
+  
+  /**
+   * {@inheritDoc}
+   *
+   * @see de.unisiegen.tpml.core.prettyprinter.PrettyPrintable#toPrettyString()
+   */
+  public final PrettyString toPrettyString() {
+    return toPrettyStringBuilder(PrettyStringBuilderFactory.newInstance()).toPrettyString();
+  }
+  
+  /**
+   * Returns the pretty string builder used to pretty print this expression. The pretty
+   * string builder must be allocated from the specified <code>factory</code>, which is
+   * currently always the default factory, but may also be another factory in the future.
+   * 
+   * @param factory the {@link PrettyStringBuilderFactory} used to allocate the required
+   *                pretty string builders to pretty print this expression.
+   * 
+   * @return the pretty string builder used to pretty print this expression.
+   * 
+   * @see #toPrettyString()
+   * @see PrettyStringBuilder
+   * @see PrettyStringBuilderFactory
+   */
+  protected abstract PrettyStringBuilder toPrettyStringBuilder(PrettyStringBuilderFactory factory);
 }
