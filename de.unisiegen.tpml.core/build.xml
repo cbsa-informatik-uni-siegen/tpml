@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<!--
+	$Id$
+	
+	Copyright (c) 2006 Benedikt Meurer <benny@xfce.org>
+-->
+<project name="parsers" default="all" basedir=".">
+	<description>
+    	Generates the parsers and lexers for the TPML project.
+    </description>
+	
+	<property name="sourcedir" value="${basedir}/source-impl" />
+	<property name="destdir" value="${basedir}/source-generated" />
+	
+	
+	<taskdef name="cup" classname="java_cup.anttask.CUPTask" classpath="${basedir}/lib/java-cup-11a.jar" />
+	<taskdef name="jflex" classname="JFlex.anttask.JFlexTask" classpath="${basedir}/lib/JFlex-1.4.1.jar" />
+	
+
+    <target name="all" depends="l0" description="Generate all" />
+	
+	<target name="l0" description="Generates lexer and parser for L0">
+		<jflex 
+    		file="${sourcedir}/de/unisiegen/tpml/core/languages/l0/l0.flex"
+    		destdir="${destdir}"
+			nobak="yes" />
+		<cup
+			srcfile="${sourcedir}/de/unisiegen/tpml/core/languages/l0/l0.cup"
+			destdir="${destdir}/de/unisiegen/tpml/core/languages/l0"
+			package="de.unisiegen.tpml.core.languages.l0"
+			parser="L0AbstractParser"
+			symbols="L0Terminals"
+			interface="yes"
+			debug="no"
+			expect="0"
+			nonterms="no"
+			nopositions="yes"
+			dump_grammar="no" />
+	</target>
+</project>

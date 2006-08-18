@@ -2,6 +2,8 @@ package de.unisiegen.tpml.core.languages;
 
 import java.lang.reflect.InvocationTargetException;
 
+import de.unisiegen.tpml.core.languages.l0.L0Language;
+
 /**
  * Factory class for {@link de.unisiegen.tpml.core.languages.Language}s.
  *
@@ -49,7 +51,9 @@ public final class LanguageFactory {
    * @return an array with all available {@link Language}s.
    */
   public Language[] getAvailableLanguages() {
-    return new Language[0];
+    return new Language[] {
+        new L0Language(),
+    };
   }
   
   /**
