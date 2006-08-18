@@ -3,6 +3,8 @@
 	<name>de.unisiegen.tpml.ui</name>
 	<comment></comment>
 	<projects>
+		<project>de.unisiegen.tpml.core</project>
+		<project>de.unisiegen.tpml.graphics</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
