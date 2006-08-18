@@ -49,7 +49,7 @@ public abstract class Expression implements PrettyPrintable, PrettyPrintPrioriti
    * @return the set of free (unbound) identifiers within the
    *         expression.
    *         
-   * @see #EMPTY_SET         
+   * @see #EMPTY_SET
    */
   public abstract Set<String> free();
   
@@ -99,4 +99,23 @@ public abstract class Expression implements PrettyPrintable, PrettyPrintPrioriti
    * @see PrettyStringBuilderFactory
    */
   protected abstract PrettyStringBuilder toPrettyStringBuilder(PrettyStringBuilderFactory factory);
+  
+  
+  
+  //
+  // Base methods
+  //
+  
+  /**
+   * Returns the string representation for this expression. This method is mainly used for debugging.
+   *
+   * @return the pretty printed string representation for this expression.
+   * 
+   * @see #toPrettyString()
+   * @see java.lang.Object#toString()
+   */
+  @Override
+  public final String toString() {
+    return toPrettyString().toString();
+  }
 }
