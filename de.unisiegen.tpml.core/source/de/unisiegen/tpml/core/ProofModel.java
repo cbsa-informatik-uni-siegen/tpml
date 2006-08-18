@@ -6,7 +6,7 @@ import javax.swing.event.TreeModelListener;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreeNode;
 
-import de.unisiegen.tpml.core.beans.Bean;
+import de.unisiegen.tpml.core.util.beans.Bean;
 
 /**
  * The interface defines a suitable data model for proving various properties about an expression. It is based on

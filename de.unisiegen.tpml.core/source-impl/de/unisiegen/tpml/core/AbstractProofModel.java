@@ -9,10 +9,10 @@ import javax.swing.event.TreeModelListener;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
-import de.unisiegen.tpml.core.beans.AbstractBean;
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.languages.Language;
 import de.unisiegen.tpml.core.languages.LanguageTranslator;
+import de.unisiegen.tpml.core.util.beans.AbstractBean;
 
 /**
  * Abstract implementation of the {@link de.unisiegen.tpml.core.ProofModel} interface, which is used by prover

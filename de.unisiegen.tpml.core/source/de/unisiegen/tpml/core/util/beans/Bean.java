@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.core.beans;
+package de.unisiegen.tpml.core.util.beans;
 
 import java.beans.PropertyChangeListener;
 
