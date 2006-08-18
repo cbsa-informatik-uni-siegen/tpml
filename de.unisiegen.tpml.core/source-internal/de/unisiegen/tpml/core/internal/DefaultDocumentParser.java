@@ -16,7 +16,7 @@ import org.xml.sax.SAXException;
  * methods.
  *
  * @author Benedikt Meurer
- * @version $Id$
+ * @version $Id:DefaultDocumentParser.java 244 2006-08-18 14:31:01Z benny $
  * 
  * @see de.unisiegen.tpml.core.internal.DocumentParser
  * @see de.unisiegen.tpml.core.internal.DocumentParserFactory

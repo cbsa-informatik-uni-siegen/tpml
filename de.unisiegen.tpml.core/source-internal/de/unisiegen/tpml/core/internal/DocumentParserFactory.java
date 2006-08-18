@@ -15,7 +15,7 @@ import javax.xml.parsers.ParserConfigurationException;
  * based on the <code>de.unisiegen.tpml.core</code> package.
  * 
  * @author Benedikt Meurer
- * @version $Id$
+ * @version $Id:DocumentParserFactory.java 244 2006-08-18 14:31:01Z benny $
  * 
  * @see de.unisiegen.tpml.core.internal.DocumentParser
  */

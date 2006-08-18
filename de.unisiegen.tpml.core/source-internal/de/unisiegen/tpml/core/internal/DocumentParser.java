@@ -21,7 +21,7 @@ import org.xml.sax.SAXException;
  * public webserver).
  *
  * @author Benedikt Meurer
- * @version $Id$
+ * @version $Id:DocumentParser.java 244 2006-08-18 14:31:01Z benny $
  * 
  * @see de.unisiegen.tpml.core.internal.DocumentParserFactory
  */

@@ -17,7 +17,7 @@ import org.xml.sax.SAXException;
  * validate XML documents.
  *
  * @author Benedikt Meurer
- * @version $Id$
+ * @version $Id:DefaultEntityResolver.java 244 2006-08-18 14:31:01Z benny $
  * 
  * @see de.unisiegen.tpml.core.internal.DocumentParser
  * @see de.unisiegen.tpml.core.internal.DocumentParserFactory
