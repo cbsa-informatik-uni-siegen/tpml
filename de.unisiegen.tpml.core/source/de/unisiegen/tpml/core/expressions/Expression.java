@@ -13,6 +13,8 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
  * 
  * @author Benedikt Meurer
  * @version $Id:Expression.java 66 2006-01-19 17:07:56Z benny $
+ * 
+ * @see de.unisiegen.tpml.core.prettyprinter.PrettyPrintable
  */
 public abstract class Expression implements PrettyPrintable, PrettyPrintPriorities {
   //
@@ -20,9 +22,8 @@ public abstract class Expression implements PrettyPrintable, PrettyPrintPrioriti
   //
   
   /**
-   * Static empty set of strings, which is used to reduce the amount
-   * of newly allocated empty sets for the <code>free</code> method
-   * implementations.
+   * Static empty set of strings, which is used to reduce the amount of newly allocated empty sets for the
+   * <code>free</code> method implementations.
    */
   protected static final Set<String> EMPTY_SET = Collections.unmodifiableSet(Collections.<String>emptySet());
   
@@ -105,6 +106,22 @@ public abstract class Expression implements PrettyPrintable, PrettyPrintPrioriti
   //
   // Base methods
   //
+  
+  /**
+   * {@inheritDoc}
+   *
+   * @see java.lang.Object#equals(java.lang.Object)
+   */
+  @Override
+  public abstract boolean equals(Object obj);
+  
+  /**
+   * {@inheritDoc}
+   *
+   * @see java.lang.Object#hashCode()
+   */
+  @Override
+  public abstract int hashCode();
   
   /**
    * Returns the string representation for this expression. This method is mainly used for debugging.

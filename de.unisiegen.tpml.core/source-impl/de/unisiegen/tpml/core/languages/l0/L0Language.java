@@ -5,12 +5,13 @@ import java.io.Reader;
 import java_cup.runtime.lr_parser;
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.languages.AbstractLanguage;
+import de.unisiegen.tpml.core.languages.AbstractLanguageTranslator;
 import de.unisiegen.tpml.core.languages.LanguageParser;
 import de.unisiegen.tpml.core.languages.LanguageScanner;
 import de.unisiegen.tpml.core.languages.LanguageTranslator;
 
 /**
- * This class represents the language L0.
+ * This class represents the language L0, which serves as a factory class for L0 related functionality.
  *
  * @author Benedikt Meurer
  * @version $Id$
@@ -106,9 +107,6 @@ public final class L0Language extends AbstractLanguage {
    * @see de.unisiegen.tpml.core.languages.Language#newTranslator()
    */
   public LanguageTranslator newTranslator() {
-    return new LanguageTranslator() {
-      public Expression translateToCoreSyntax(Expression expression) { return expression; }
-      public Expression translateToCoreSyntax(Expression expression, boolean recursive) { return expression; }
-    };
+    return new AbstractLanguageTranslator() { };
   }
 }

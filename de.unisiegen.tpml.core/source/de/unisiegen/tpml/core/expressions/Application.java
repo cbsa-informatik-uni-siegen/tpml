@@ -13,6 +13,8 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
  *
  * @author Benedikt Meurer
  * @version $Id:Application.java 66 2006-01-19 17:07:56Z benny $
+ * 
+ * @see de.unisiegen.tpml.core.expressions.Expression
  */
 public final class Application extends Expression {
   //
@@ -155,5 +157,35 @@ public final class Application extends Expression {
     builder.addText(" ");
     builder.addBuilder(this.e2.toPrettyStringBuilder(factory), PRIO_APPLICATION_E2);
     return builder;
+  }
+  
+  
+  
+  //
+  // Base methods
+  //
+  
+  /**
+   * {@inheritDoc}
+   *
+   * @see de.unisiegen.tpml.core.expressions.Expression#equals(java.lang.Object)
+   */
+  @Override
+  public boolean equals(Object obj) {
+    if (obj instanceof Application) {
+      Application other = (Application)obj;
+      return (this.e1.equals(other.e1) && this.e2.equals(other.e2));
+    }
+    return false;
+  }
+  
+  /**
+   * {@inheritDoc}
+   *
+   * @see de.unisiegen.tpml.core.expressions.Expression#hashCode()
+   */
+  @Override
+  public int hashCode() {
+    return this.e1.hashCode() + this.e2.hashCode();
   }
 }

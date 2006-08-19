@@ -4,7 +4,8 @@ import de.unisiegen.tpml.core.expressions.Expression;
 
 /**
  * Base interface for translators that are used to translate expressions to core syntax for a
- * given language.
+ * given language. They are also used to test whether a specified expression is syntactic sugar
+ * for a given language.
  *
  * @author Benedikt Meurer
  * @version $Id$
@@ -16,19 +17,25 @@ public interface LanguageTranslator {
   //
   // Primitives
   //
-  
+
   /**
-   * This is a convenience wrapper for the {@link #translateToCoreSyntax(Expression, boolean)} method,
-   * where <code>false</code> is passed for the <code>recursive</code>.
+   * Tests whether the <code>expression</code> contains syntactic sugar according to the language for
+   * which this translator was created. If <code>recursive</code> is <code>true</code>, this method
+   * will return <code>true</code> if either <code>expression</code> itself is syntactic sugar or
+   * one of its sub expressions is syntactic sugar. Otherwise if <code>recursive</code> is <code>false</code>
+   * the test is only performed on the <code>expression</code> itself.
    * 
-   * @param expression the {@link Expression} to translate to core syntax.
+   * @param expression the {@link Expression} to test for syntactic sugar.
+   * @param recursive whether to recursively check sub expressions of the <code>expression</code> as well.
    * 
-   * @return <code>expression</code> translated to core syntax or the <code>expression</code> if it
-   *         is already in core syntax.
+   * @return <code>true</code> if the <code>expression</code> is syntactic sugar or, if <code>recursive</code>
+   *         is <code>true</code>, any of its sub expressions is syntactic sugar.
    * 
    * @throws NullPointerException if <code>expression</code> is <code>null</code>.
+   * 
+   * @see #translateToCoreSyntax(Expression, boolean)
    */
-  public Expression translateToCoreSyntax(Expression expression);
+  public boolean containsSyntacticSugar(Expression expression, boolean recursive);
   
   /**
    * Translates the <code>expression</code> to core syntax according to the language for which this
@@ -46,6 +53,8 @@ public interface LanguageTranslator {
    *         is already in core syntax or does not contain syntactic sugar.
    * 
    * @throws NullPointerException if <code>expression</code> is <code>null</code>.
+   * 
+   * @see #containsSyntacticSugar(Expression, boolean)
    */
   public Expression translateToCoreSyntax(Expression expression, boolean recursive);
 }

@@ -13,6 +13,9 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
  *
  * @author Benedikt Meurer
  * @version $Id:Lambda.java 66 2006-01-19 17:07:56Z benny $
+ * 
+ * @see de.unisiegen.tpml.core.expressions.Application
+ * @see de.unisiegen.tpml.core.expressions.Expression
  */
 public final class Lambda extends Expression {
   //
@@ -170,5 +173,35 @@ public final class Lambda extends Expression {
     builder.addText(".");
     builder.addBuilder(this.e.toPrettyStringBuilder(factory), PRIO_LAMBDA_E);
     return builder;
+  }
+  
+  
+  
+  //
+  // Base methods
+  //
+  
+  /**
+   * {@inheritDoc}
+   *
+   * @see de.unisiegen.tpml.core.expressions.Expression#equals(java.lang.Object)
+   */
+  @Override
+  public boolean equals(Object obj) {
+    if (obj instanceof Lambda) {
+      Lambda other = (Lambda)obj;
+      return (this.id.equals(other.id) && this.e.equals(other.e));
+    }
+    return false;
+  }
+  
+  /**
+   * {@inheritDoc}
+   *
+   * @see de.unisiegen.tpml.core.expressions.Expression#hashCode()
+   */
+  @Override
+  public int hashCode() {
+    return this.id.hashCode() + this.e.hashCode();
   }
 }

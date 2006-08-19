@@ -148,25 +148,9 @@ public interface ProofModel extends Bean, TreeModel {
   public void prove(ProofRule rule, ProofNode node) throws ProofRuleException;
   
   /**
-   * Returns <code>true</code> if the expression for the <code>node</code> is
-   * syntactic sugar, according to the language for which this model was
-   * created.
-   * 
-   * @param node the proof node whose outermost expression should be checked
-   *             for syntactic sugar.
-   *
-   * @return <code>true</code> if the outermost expression of the <code>node</code>
-   *         is syntactic sugar according to the language for this model.
-   *
-   * @throws IllegalArgumentException if the <code>node</code> is invalid for this proof model.
-   * 
-   * @see de.unisiegen.tpml.core.languages.LanguageTranslator
-   */
-  public boolean isSyntacticSugar(ProofNode node);
-  
-  /**
-   * Returns <code>true</code> if the expression for the <code>node</code> is syntactic
-   * sugar or contains a sub expression that is syntactic sugar.
+   * Returns <code>true</code> if the expression for the <code>node</code> contains syntactic sugar.
+   * If <code>recursive</code> is <code>true</code> and the expression for the <code>node</code> is
+   * not syntactic sugar, its sub expressions will also be checked.
    * 
    * @param node the proof node whose expression should be checked for syntactic sugar.
    * 
@@ -174,30 +158,12 @@ public interface ProofModel extends Bean, TreeModel {
    *         syntactic sugar according to the language for this model.
    *
    * @throws IllegalArgumentException if the <code>node</code> is invalid for this proof model.
-   * 
-   * @see de.unisiegen.tpml.core.languages.LanguageTranslator
-   */
-  public boolean containsSyntacticSugar(ProofNode node);
-  
-  /**
-   * Translates the outermost expression associated with the given
-   * <code>node</code> from syntactic sugar to core syntax.
-   *  
-   * @param node the proof node whose outermost expression should be
-   *             translated to core syntax.
-   *
-   * @throws IllegalArgumentException if the <code>node</code> is
-   *                                  invalid for this proof model,
-   *                                  or the <code>node</code>'s
-   *                                  expression is already in
-   *                                  core syntax.
-   * @throws IllegalStateException if any steps were performed on
-   *                               the <code>node</code> already,
+   * @throws NullPointerException if the <code>node</code> is <code>null</code>.
    * 
    * @see #translateToCoreSyntax(ProofNode, boolean)
-   * @see de.unisiegen.tpml.core.languages.LanguageTranslator
+   * @see de.unisiegen.tpml.core.languages.LanguageTranslator#containsSyntacticSugar(Expression, boolean)
    */
-  public void translateToCoreSyntax(ProofNode node);
+  public boolean containsSyntacticSugar(ProofNode node, boolean recursive);
   
   /**
    * Translates the expression for the <code>node</code> to core syntax according to
@@ -208,16 +174,14 @@ public interface ProofModel extends Bean, TreeModel {
    * @param node the proof node whose expression should be translated to core syntax.
    * @param recursive whether to translate the expression recursively.
    * 
-   * @throws IllegalArgumentException if the <code>node</code> is
-   *                                  invalid for this proof model,
-   *                                  or the <code>node</code>'s
-   *                                  expression does not contain
+   * @throws IllegalArgumentException if the <code>node</code> is invalid for this proof model,
+   *                                  or the <code>node</code>'s expression does not contain
    *                                  syntactic sugar.
-   * @throws IllegalStateException if any steps were performed on
-   *                               the <code>node</code> already,
+   * @throws IllegalStateException if any steps were performed on the <code>node</code> already.
+   * @throws NullPointerException if the <code>node</code> is <code>null</code>.                               
    * 
-   * @see #translateToCoreSyntax(ProofNode)
-   * @see de.unisiegen.tpml.core.languages.LanguageTranslator
+   * @see #containsSyntacticSugar(ProofNode, boolean)
+   * @see de.unisiegen.tpml.core.languages.LanguageTranslator#translateToCoreSyntax(Expression, boolean)
    */
   public void translateToCoreSyntax(ProofNode node, boolean recursive);
   

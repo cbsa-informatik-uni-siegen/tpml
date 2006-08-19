@@ -53,9 +53,15 @@ public abstract class AbstractProofModel extends AbstractBean implements ProofMo
   protected AbstractProofNode root;
   
   /**
-   * The language translator for this model.
+   * The language translator for this model, which is allocated on demand, and used
+   * to determine whether a given node contains syntactic sugar and probably translate
+   * the expression for the node to core syntax.
+   * 
+   * @see #language
+   * @see #containsSyntacticSugar(ProofNode, boolean)
+   * @see #translateToCoreSyntax(ProofNode, boolean)
    */
-  protected LanguageTranslator translator;
+  protected LanguageTranslator translator = null;
   
   
 
@@ -69,7 +75,7 @@ public abstract class AbstractProofModel extends AbstractBean implements ProofMo
    * @param language the {@link Language} for this model.
    * @param root the new root item.
    * 
-   * @?hrows NullPointerException if <code>language</code> or <code>root</code> is <code>null</code>.
+   * @throws NullPointerException if <code>language</code> or <code>root</code> is <code>null</code>.
    */
   protected AbstractProofModel(Language language, AbstractProofNode root) {
     if (language == null) {
@@ -78,10 +84,8 @@ public abstract class AbstractProofModel extends AbstractBean implements ProofMo
     if (root == null) {
       throw new NullPointerException("root is null");
     }
-
     this.language = language;
     this.root = root;
-    this.translator = language.newTranslator();
   }
   
   
@@ -120,42 +124,19 @@ public abstract class AbstractProofModel extends AbstractBean implements ProofMo
   /**
    * {@inheritDoc}
    *
-   * @see de.unisiegen.tpml.core.ProofModel#isSyntacticSugar(de.unisiegen.tpml.core.ProofNode)
+   * @see de.unisiegen.tpml.core.ProofModel#containsSyntacticSugar(de.unisiegen.tpml.core.ProofNode, boolean)
    */
-  public boolean isSyntacticSugar(ProofNode node) {
-    if (!getRoot().isNodeRelated(node)) {
+  public boolean containsSyntacticSugar(ProofNode node, boolean recursive) {
+    if (node == null) {
+      throw new NullPointerException("node is null");
+    }
+    if (!this.root.isNodeRelated(node)) {
       throw new IllegalArgumentException("node is invalid");
     }
-    
-    // check if the translated expression is the same
-    Expression expression = node.getExpression();
-    Expression translated = this.translator.translateToCoreSyntax(expression);
-    return (expression != translated);
-  }
-  
-  /**
-   * {@inheritDoc}
-   *
-   * @see de.unisiegen.tpml.core.ProofModel#containsSyntacticSugar(de.unisiegen.tpml.core.ProofNode)
-   */
-  public boolean containsSyntacticSugar(ProofNode node) {
-    if (!getRoot().isNodeRelated(node)) {
-      throw new IllegalArgumentException("node is invalid");
+    if (this.translator == null) {
+      this.translator = this.language.newTranslator();
     }
-    
-    // check if the translated expression is the same
-    Expression expression = node.getExpression();
-    Expression translated = this.translator.translateToCoreSyntax(expression, true);
-    return (expression != translated);
-  }
-  
-  /**
-   * {@inheritDoc}
-   * 
-   * @see ProofModel#translateToCoreSyntax(ProofNode)
-   */
-  public void translateToCoreSyntax(ProofNode node) {
-    translateToCoreSyntax(node, false);
+    return this.translator.containsSyntacticSugar(node.getExpression(), recursive);
   }
   
   /**
@@ -164,8 +145,8 @@ public abstract class AbstractProofModel extends AbstractBean implements ProofMo
    * @see de.unisiegen.tpml.core.ProofModel#translateToCoreSyntax(de.unisiegen.tpml.core.ProofNode, boolean)
    */
   public void translateToCoreSyntax(ProofNode node, boolean recursive) {
-    // verify that the expression for the node actually contains or is syntactic sugar
-    if ((recursive && !containsSyntacticSugar(node)) || (!recursive && !isSyntacticSugar(node))) {
+    // verify that the node actually contains syntactic sugar
+    if (!containsSyntacticSugar(node, recursive)) {
       throw new IllegalArgumentException("node does not contain syntactic sugar");
     }
     

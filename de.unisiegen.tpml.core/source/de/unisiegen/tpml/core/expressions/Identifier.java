@@ -11,6 +11,8 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
  *
  * @author Benedikt Meurer
  * @version $Id:Identifier.java 66 2006-01-19 17:07:56Z benny $
+ * 
+ * @see de.unisiegen.tpml.core.expressions.Expression
  */
 public final class Identifier extends Expression {
   //
@@ -111,5 +113,35 @@ public final class Identifier extends Expression {
     PrettyStringBuilder builder = factory.newBuilder(this, PRIO_IDENTIFIER);
     builder.addText(this.name);
     return builder;
+  }
+  
+  
+  
+  //
+  // Base methods
+  //
+  
+  /**
+   * {@inheritDoc}
+   *
+   * @see de.unisiegen.tpml.core.expressions.Expression#equals(java.lang.Object)
+   */
+  @Override
+  public boolean equals(Object obj) {
+    if (obj instanceof Identifier) {
+      Identifier other = (Identifier)obj;
+      return this.name.equals(other.name);
+    }
+    return false;
+  }
+  
+  /**
+   * {@inheritDoc}
+   *
+   * @see de.unisiegen.tpml.core.expressions.Expression#hashCode()
+   */
+  @Override
+  public int hashCode() {
+    return this.name.hashCode();
   }
 }
