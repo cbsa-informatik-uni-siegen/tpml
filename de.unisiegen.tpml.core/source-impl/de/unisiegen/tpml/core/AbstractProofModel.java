@@ -53,6 +53,13 @@ public abstract class AbstractProofModel extends AbstractBean implements ProofMo
   protected AbstractProofNode root;
   
   /**
+   * The set of proof rules that can be applied to the nodes within this proof model.
+   * 
+   * @see #getRules()
+   */
+  protected ProofRuleSet ruleSet;
+  
+  /**
    * The language translator for this model, which is allocated on demand, and used
    * to determine whether a given node contains syntactic sugar and probably translate
    * the expression for the node to core syntax.
@@ -74,17 +81,22 @@ public abstract class AbstractProofModel extends AbstractBean implements ProofMo
    * 
    * @param language the {@link Language} for this model.
    * @param root the new root item.
+   * @param ruleSet the set of proof rules.
    * 
    * @throws NullPointerException if <code>language</code> or <code>root</code> is <code>null</code>.
    */
-  protected AbstractProofModel(Language language, AbstractProofNode root) {
+  protected AbstractProofModel(Language language, AbstractProofNode root, AbstractProofRuleSet ruleSet) {
     if (language == null) {
       throw new NullPointerException("language is null");
+    }
+    if (ruleSet == null) {
+      throw new NullPointerException("ruleSet is null");
     }
     if (root == null) {
       throw new NullPointerException("root is null");
     }
     this.language = language;
+    this.ruleSet = ruleSet;
     this.root = root;
   }
   
@@ -99,7 +111,9 @@ public abstract class AbstractProofModel extends AbstractBean implements ProofMo
    * 
    * @see ProofModel#getRules()
    */
-  public abstract ProofRule[] getRules();
+  public ProofRule[] getRules() {
+    return this.ruleSet.getRules();
+  }
 
   
   

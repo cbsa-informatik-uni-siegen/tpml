@@ -172,20 +172,6 @@ public abstract class AbstractProofNode implements ProofNode {
   }
   
   /**
-   * {@inheritDoc}
-   * 
-   * @see ProofNode#isProven()
-   */
-  public boolean isProven() {
-    // check if any axiom was applied
-    for (ProofStep step : getSteps()) {
-      if (step.getRule().isAxiom())
-        return true;
-    }
-    return false;
-  }
-  
-  /**
    * Creates and returns a forward-order enumeration of this node's children.
    * Modifying this node's child array invalidates any child enumerations
    * created before the modification.
