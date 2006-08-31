@@ -16,19 +16,24 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
  * 
  * @see de.unisiegen.tpml.core.expressions.Application
  * @see de.unisiegen.tpml.core.expressions.Expression
+ * @see de.unisiegen.tpml.core.expressions.Value
  */
-public final class Lambda extends Expression {
+public final class Lambda extends Value {
   //
   // Attributes
   //
   
   /**
    * The identifier of the abstraction parameter.
+   * 
+   * @see #getId()
    */
   private String id;
   
   /**
    * The expression of the abstraction body.
+   * 
+   * @see #getE()
    */
   private Expression e;
   

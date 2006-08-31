@@ -55,6 +55,22 @@ public abstract class Expression implements PrettyPrintable, PrettyPrintPrioriti
   public abstract Set<String> free();
   
   /**
+   * Returns <code>true</code> if the expression should be considered a value
+   * in the big and small step interpreters and must thereby not be evaluated
+   * any further.
+   * 
+   * The default implementation in the <code>Expression</code> class simply
+   * returns <code>false</code>, so derived classes will need to override this
+   * method if their instances should be considered values under certain
+   * circumstances.
+   * 
+   * @return <code>true</code> if the expression is a value, <code>false</code> otherwise.
+   */
+  public boolean isValue() {
+    return false;
+  }
+  
+  /**
    * Substitutes the expression <code>e</code> for the identifier
    * <code>id</code> in this expression, and returns the resulting
    * expression.
