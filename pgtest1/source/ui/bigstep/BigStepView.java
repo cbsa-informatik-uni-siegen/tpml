@@ -82,6 +82,7 @@ public class BigStepView extends AbstractView implements Scrollable {
 				
 			});
 			bigStepNode.setModel(this.model);
+			bigStepNode.updateNode();
 			bigStepNode.buildMenu();
 			node.setUserObject(bigStepNode);
 			

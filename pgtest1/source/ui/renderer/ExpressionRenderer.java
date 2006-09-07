@@ -33,6 +33,8 @@ public class ExpressionRenderer extends AbstractRenderer {
 		}
 	}
 	
+	private 	Color						alternativeColor = null;
+	
 	private 	Dimension				minSize;
 	
 	private 	Dimension				maxSize;
@@ -43,6 +45,10 @@ public class ExpressionRenderer extends AbstractRenderer {
 	
 	private 	LinkedList<CheckerResult>	checkerResults = new LinkedList<CheckerResult>();
 	
+	
+	public void setAlternativeColor (Color alternativeColor) {
+		this.alternativeColor = alternativeColor;
+	}
 	
 	public Dimension getMinSize () {
 		return this.minSize;
@@ -146,6 +152,7 @@ public class ExpressionRenderer extends AbstractRenderer {
 		return new Dimension (this.bestCheckerReturn.size);
 	}
 	
+	
 	public int getRowCount () {
 		if (this.bestCheckerReturn == null)
 			return 1;
@@ -188,7 +195,8 @@ public class ExpressionRenderer extends AbstractRenderer {
 		PrettyString prettyString = this.expression.toPrettyString();
 		PrettyCharIterator it = prettyString.toCharacterIterator();
 		int[] annoBreaks = null;
-		if (this.bestCheckerReturn.annotation != null) {
+		
+		if (this.bestCheckerReturn != null && this.bestCheckerReturn.annotation != null) {
 			annoBreaks = this.bestCheckerReturn.annotation.getBreakOffsets();
 		}
 		
@@ -207,7 +215,7 @@ public class ExpressionRenderer extends AbstractRenderer {
 		int posY = y + fontHeight - fontDescent;
 		for (char c = it.first(); c != CharacterIterator.DONE; c = it.next(), i++) {
 			
-			if (this.bestCheckerReturn.annotation != null) {
+			if (this.bestCheckerReturn != null && this.bestCheckerReturn.annotation != null) {
 				
 				for (int j=0; j<annoBreaks.length; j++) {
 					if (annoBreaks[j] == i) {
@@ -238,6 +246,10 @@ public class ExpressionRenderer extends AbstractRenderer {
 				font 		= constantFont;
 				break;
 			}
+			if (alternativeColor != null) {
+				fontColor = alternativeColor;
+			}
+			
 			int sx = posX;
 			posX += fontMetrics.stringWidth("" + c);
 			if (i >= uStart && i <= uEnd) {

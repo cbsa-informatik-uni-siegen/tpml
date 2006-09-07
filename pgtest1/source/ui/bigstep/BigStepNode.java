@@ -2,7 +2,6 @@ package ui.bigstep;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.GridBagLayout;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -13,6 +12,9 @@ import javax.swing.JPopupMenu;
 
 import common.ProofRule;
 import common.ProofStep;
+import common.interpreters.InterpreterProofModel;
+import expressions.Expression;
+import expressions.Location;
 
 import bigstep.BigStepProofNode;
 
@@ -20,8 +22,8 @@ import bigstep.BigStepProofNode;
 import ui.AbstractNode;
 import ui.beans.MenuButton;
 import ui.beans.MenuButtonListener;
-import ui.renderer.ExpressionComponent;
-import ui.renderer.ExpressionRenderer;
+import ui.beans.StringComponent;
+import ui.renderer.CompoundExpression;
 
 public class BigStepNode extends AbstractNode {
 	private enum ActionType {
@@ -65,47 +67,50 @@ public class BigStepNode extends AbstractNode {
 		}
 	}
 	
-	private ActionMenuItem			translateToCoreSyntax = null;
+	private ActionMenuItem				translateToCoreSyntax 			= null;
 	
-	private ActionMenuItem			actionGuess						= null;
+	private ActionMenuItem				actionGuess									= null;
 
-	private StringComponent			locationIdComponent 	= null;
+	private StringComponent				locationIdComponent 				= null;
 	
-	private StringComponent			downArrowComponent		= null;
+	private StringComponent				downArrowComponent					= null;
+		
+	private CompoundExpression		expression									= null;
 	
-	private ExpressionComponent	expressionComponent		= null;
+	private CompoundExpression		resultExpression						= null;
 	
-	private ExpressionComponent	resultComponent				= null;
+	private MenuButton						menuButton									= null;
 	
-	private MenuButton					menuButton						= null;
+	private StringComponent				ruleString									= null;
 	
-	private StringComponent			ruleString						= null;
+	private GridBagLayout					layout											= null;
 	
-	private GridBagLayout				layout								= null;
+	private BigStepProofNode 			proofNode;
 	
-	private BigStepProofNode 		proofNode;
+	private int 									locationId;
 	
-	private int 								locationId;
-	
-	private ExpressionRenderer	expRenderer;	
 
 	public BigStepNode (BigStepProofNode proofNode) {
 		super ();
 		
 		this.proofNode = proofNode;
-		this.locationIdComponent 	= new StringComponent("(x)");
-		this.downArrowComponent		= new StringComponent("\u21d3");
-		this.expressionComponent	= new ExpressionComponent(proofNode.getExpression());
-		this.resultComponent			= new ExpressionComponent(null);
-		this.menuButton						= new MenuButton();
-		this.ruleString						= new StringComponent("Rule");
+		this.locationIdComponent 				= new StringComponent("(x)");
+		this.downArrowComponent					= new StringComponent("\u21d3");
+		this.expression									= new CompoundExpression<Location, Expression>(proofNode.getExpression());
+		this.resultExpression						= new CompoundExpression<Location, Expression>();
+		
+		this.menuButton									= new MenuButton();
+		this.ruleString									= new StringComponent("Rule");
 		
 		setLayout (null);
 		
+		this.expression.setUseColoring(true);
+		this.resultExpression.setUseColoring(false);
 		add (this.locationIdComponent);
 		add (this.downArrowComponent);
-		add (this.expressionComponent);
-		add (this.resultComponent);
+		add (this.expression);
+		add (this.resultExpression);
+		
 		add (this.menuButton);
 		add (this.ruleString);
 		
@@ -160,9 +165,18 @@ public class BigStepNode extends AbstractNode {
 	public void updateNode () {
 		if (this.proofNode != null) {
 			if (this.proofNode.getResult () != null) {
-				this.resultComponent.setExpression(this.proofNode.getResult().getValue());
+				this.resultExpression.setExpression(this.proofNode.getResult().getValue());
 			}
-			this.expressionComponent.setExpression(this.proofNode.getExpression());
+			this.expression.setExpression(this.proofNode.getExpression());
+		}
+		
+		if (((InterpreterProofModel)model).isMemoryEnabled()) {
+			if (this.proofNode.getResult() != null) {
+				this.resultExpression.setEnvironment(
+						((BigStepProofNode)this.proofNode).getResult().getStore());
+			}
+			this.expression.setEnvironment(
+					((BigStepProofNode)this.proofNode).getStore());
 		}
 	}
 	
@@ -170,106 +184,62 @@ public class BigStepNode extends AbstractNode {
 		int margin = 4;
 		int spacing = 4;
 		
+
+		int completeNeededWidth = this.expression.getMaxExpressionDimension().width + 
+															this.resultExpression.getMaxExpressionDimension().width;
+		
 		
 		// remainginWidth is the origin width minus the id 
 		// the down arrow and the margins and spacings 
 		int remainingWidth = width - this.locationIdComponent.getPreferredSize().width - this.downArrowComponent.getPreferredSize().width;
-		remainingWidth -= 2 * margin + 3 * spacing;
-		
-		Dimension rd = this.resultComponent.getPreferredSize();
-		Dimension ed = this.expressionComponent.getPreferredSize();
-		
-		if (rd.width + ed.width > width) {
-			// XXX: When need looking... see here
-			int mw = rd.width + ed.width;
-			float fr = (float)rd.width / (float)mw;
-			float fe = (float)ed.width / (float)mw;
-			
-			float factor = (float)remainingWidth / (fe * (float)ed.width + fr * (float)rd.width);
-			
-			float size = (float)rd.width * fr * factor;
-			rd = this.resultComponent.getSizeForWidth((int)size);
-			
-			size = (float)ed.width * fe * factor;
-			ed = this.expressionComponent.getSizeForWidth((int)size);
-			
-		}
-		
-		int maxHeight = rd.height > ed.height ? rd.height : ed.height;
-		
-		int rowCount = 1;
-		if (rd.height> ed.height) {
-			rowCount = this.resultComponent.getRowCount();
-		}
-		else {
-			rowCount = this.expressionComponent.getRowCount();
-		}
-		
-		rowCount = rowCount  / 2 + 1; 
-		
-		Font arrowFont = downArrowComponent.getFont();
-		arrowFont = getFont().deriveFont(Font.PLAIN, getFont().getSize2D() * (float)rowCount);
-		this.downArrowComponent.setFont(arrowFont);
 
+		float expFactor = (float)this.expression.getMaxExpressionDimension().width / (float)completeNeededWidth;
+		float resFactor = 1.0f - expFactor;
+
+		Dimension size = null;
+		
+		Dimension expDim = this.expression.getDimensions((int)(expFactor * (float)remainingWidth));
+		Dimension resDim = this.resultExpression.getDimensions((int)(resFactor * (float)remainingWidth));
+		
+		int maxHeight = expDim.height > resDim.height ? expDim.height : resDim.height;
 		
 		JComponent ruleComp;
-		if (this.proofNode.getSteps().length == 0) {
+		if (this.proofNode.getSteps ().length == 0) {
 			ruleComp = this.menuButton;
-			this.menuButton.setVisible (true);
-			this.ruleString.setVisible (false);
+			this.menuButton.setVisible(true);
+			this.ruleString.setVisible(false);
 		}
 		else {
 			ruleComp = this.ruleString;
-			this.menuButton.setVisible (false);
-			this.ruleString.setVisible (true);
+			this.menuButton.setVisible(false);
+			this.ruleString.setVisible(true);
 		}
-		Dimension size = new Dimension (
-				margin * 2 + 3 * spacing +
-				this.locationIdComponent.getPreferredSize().width +
-				ed.width + 
-				this.downArrowComponent.getPreferredSize().width + 
-				rd.width,
-				maxHeight + 2*margin + spacing + ruleComp.getPreferredSize().height);
 		
-		if (ruleComp.getPreferredSize().width + margin + spacing + this.locationIdComponent.getPreferredSize().width > size.width) {
-			size.width = ruleComp.getPreferredSize().width + margin + spacing + this.locationIdComponent.getPreferredSize().width;
-		}
+		size = new Dimension (
+				margin * 2 + this.locationIdComponent.getPreferredSize().width +
+				expDim.width +
+				this.downArrowComponent.getPreferredSize().width +
+				resDim.width,
+				maxHeight + 2*margin + spacing + ruleComp.getPreferredSize().height);
 		
 		setSize (size);
 		setPreferredSize (size);
 		setMinimumSize (size);
 		setMaximumSize (size);
 		
-		this.locationIdComponent.setBounds(
-				margin, 
-				margin, 
-				this.locationIdComponent.getPreferredSize().width,
-				maxHeight);
+		int posX = margin;
+		this.locationIdComponent.setBounds(posX, margin, this.locationIdComponent.getPreferredSize().width, maxHeight);
+		posX += this.locationIdComponent.getPreferredSize().width;
 		
-		this.expressionComponent.setBounds(
-				margin + spacing + this.locationIdComponent.getPreferredSize().width,
-				margin,
-				ed.width,
-				maxHeight);
+		this.expression.setBounds(posX, margin, expDim.width, maxHeight);
+		posX += expDim.width;
 		
-		this.downArrowComponent.setBounds(
-				margin + 2*spacing + this.locationIdComponent.getPreferredSize().width + ed.width,
-				margin,
-				this.downArrowComponent.getPreferredSize().width,
-				maxHeight);
+		this.downArrowComponent.setBounds(posX, margin, this.downArrowComponent.getPreferredSize().width, maxHeight);
+		posX += this.downArrowComponent.getPreferredSize().width;
 		
-		this.resultComponent.setBounds(
-				margin + 3*spacing + this.locationIdComponent.getPreferredSize().width + ed.width + this.downArrowComponent.getPreferredSize().width,
-				margin,
-				rd.width,
-				maxHeight);
-		
-		ruleComp.setBounds(
-				margin + spacing + this.locationIdComponent.getPreferredSize().width,
-				margin + maxHeight + spacing,
-				ruleComp.getPreferredSize().width,
-				ruleComp.getPreferredSize().height);
+		this.resultExpression.setBounds(posX, margin, resDim.width, maxHeight);
 
+		ruleComp.setBounds(this.locationIdComponent.getX() + this.locationIdComponent.getWidth(), margin + maxHeight + spacing, ruleComp.getPreferredSize().width, ruleComp.getPreferredSize().height);
 		
 		return size;
 		
@@ -347,6 +317,5 @@ public class BigStepNode extends AbstractNode {
 				listener.aboutToProve(this.proofNode);
 			}
 		}
-		
 	}
 }

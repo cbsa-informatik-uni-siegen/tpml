@@ -1,4 +1,4 @@
-package ui.bigstep;
+package ui.beans;
 
 import java.awt.Color;
 import java.awt.Dimension;
