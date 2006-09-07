@@ -23,6 +23,11 @@ interface PrettyPrintPriorities {
   public static final int PRIO_IDENTIFIER = 6;
   
   /**
+   * The pretty print priority for locations.
+   */
+  public static final int PRIO_LOCATION = 6;
+  
+  /**
    * The pretty print priority for applications.
    */
   public static final int PRIO_APPLICATION = 5;

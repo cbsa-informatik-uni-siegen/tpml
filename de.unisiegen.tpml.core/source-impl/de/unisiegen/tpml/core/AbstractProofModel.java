@@ -10,7 +10,6 @@ import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
 import de.unisiegen.tpml.core.expressions.Expression;
-import de.unisiegen.tpml.core.languages.Language;
 import de.unisiegen.tpml.core.languages.LanguageTranslator;
 import de.unisiegen.tpml.core.util.beans.AbstractBean;
 
@@ -31,11 +30,6 @@ public abstract class AbstractProofModel extends AbstractBean implements ProofMo
   //
   // Attributes
   //
-  
-  /**
-   * The language of the expression for this model.
-   */
-  protected Language language;
   
   /**
    * Event listeners.
@@ -79,23 +73,18 @@ public abstract class AbstractProofModel extends AbstractBean implements ProofMo
   /**
    * Allocates a new <code>AbstractProofModel</code> using the given <code>root</code> item.
    * 
-   * @param language the {@link Language} for this model.
    * @param root the new root item.
    * @param ruleSet the set of proof rules.
    * 
-   * @throws NullPointerException if <code>language</code> or <code>root</code> is <code>null</code>.
+   * @throws NullPointerException if <code>root</code> or <code>ruleSet</code> is <code>null</code>.
    */
-  protected AbstractProofModel(Language language, AbstractProofNode root, AbstractProofRuleSet ruleSet) {
-    if (language == null) {
-      throw new NullPointerException("language is null");
-    }
+  protected AbstractProofModel(AbstractProofNode root, AbstractProofRuleSet ruleSet) {
     if (ruleSet == null) {
       throw new NullPointerException("ruleSet is null");
     }
     if (root == null) {
       throw new NullPointerException("root is null");
     }
-    this.language = language;
     this.ruleSet = ruleSet;
     this.root = root;
   }
@@ -148,7 +137,7 @@ public abstract class AbstractProofModel extends AbstractBean implements ProofMo
       throw new IllegalArgumentException("node is invalid");
     }
     if (this.translator == null) {
-      this.translator = this.language.newTranslator();
+      this.translator = this.ruleSet.getLanguage().newTranslator();
     }
     return this.translator.containsSyntacticSugar(node.getExpression(), recursive);
   }

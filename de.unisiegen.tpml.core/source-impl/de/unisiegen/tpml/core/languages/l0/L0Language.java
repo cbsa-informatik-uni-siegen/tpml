@@ -3,6 +3,7 @@ package de.unisiegen.tpml.core.languages.l0;
 import java.io.Reader;
 
 import java_cup.runtime.lr_parser;
+import de.unisiegen.tpml.core.bigstep.BigStepProofModel;
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.languages.AbstractLanguage;
 import de.unisiegen.tpml.core.languages.AbstractLanguageTranslator;
@@ -69,8 +70,18 @@ public final class L0Language extends AbstractLanguage {
   
   
   //
-  // Parser/Scanner allocation
+  // Primitives
   //
+  
+  /**
+   * {@inheritDoc}
+   *
+   * @see de.unisiegen.tpml.core.bigstep.BigStepProofModel
+   * @see de.unisiegen.tpml.core.languages.Language#newBigStepProofModel(de.unisiegen.tpml.core.expressions.Expression)
+   */
+  public BigStepProofModel newBigStepProofModel(Expression expression) {
+    return new BigStepProofModel(expression, new L0BigStepProofRuleSet(this));
+  }
   
   /**
    * {@inheritDoc}

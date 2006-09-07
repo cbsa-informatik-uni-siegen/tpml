@@ -119,6 +119,34 @@ public abstract class AbstractEnvironment<S, E> implements Environment<S, E> {
   }
   
   /**
+   * Adds a new mapping from <code>symbol</code> to <code>entry</code>. Any
+   * previous mapping for <code>symbol</code> will be removed.
+   * 
+   * @param symbol the symbol for the new mapping.
+   * @param entry the entry for the new mapping.
+   * 
+   * @see #get(S)
+   */
+  protected void put(S symbol, E entry) {
+    if (symbol == null) {
+      throw new NullPointerException("symbol is null");
+    }
+    if (entry == null) {
+      throw new NullPointerException("entry is null");
+    }
+    
+    // copy-on-write semantics
+    LinkedList<Mapping<S, E>> mappings = new LinkedList<Mapping<S, E>>();
+    mappings.add(new Mapping<S, E>(symbol, entry));
+    for (Mapping<S, E> mapping : this.mappings) {
+      if (!mapping.getSymbol().equals(symbol)) {
+        mappings.add(mapping);
+      }
+    }
+    this.mappings = mappings;
+  }
+  
+  /**
    * {@inheritDoc}
    *
    * @see common.Environment#symbols()

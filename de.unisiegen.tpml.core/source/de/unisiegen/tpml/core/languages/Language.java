@@ -2,6 +2,9 @@ package de.unisiegen.tpml.core.languages;
 
 import java.io.Reader;
 
+import de.unisiegen.tpml.core.bigstep.BigStepProofModel;
+import de.unisiegen.tpml.core.expressions.Expression;
+
 /**
  * Base interface for all languages, which is used to create scanners and parsers for a specific language.
  *
@@ -40,6 +43,19 @@ public interface Language {
   //
   // Primitives
   //
+  
+  /**
+   * Allocates a new {@link BigStepProofModel} for the <code>expression</code> in this language, which
+   * is used to prove that <code>expression</code> using the big step semantic based on the rules from
+   * this language.
+   * 
+   * @param expression the {@link Expression} for the big step proof model.
+   * 
+   * @return the newly allocated big step proof model.
+   * 
+   * @throws NullPointerException if <code>expression</code> is <code>null</code>.
+   */
+  public BigStepProofModel newBigStepProofModel(Expression expression);
   
   /**
    * Allocates a new {@link LanguageParser} for this language, using the specified <code>scanner</code> as
