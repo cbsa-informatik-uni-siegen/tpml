@@ -10,6 +10,7 @@ import de.unisiegen.tpml.core.languages.AbstractLanguageTranslator;
 import de.unisiegen.tpml.core.languages.LanguageParser;
 import de.unisiegen.tpml.core.languages.LanguageScanner;
 import de.unisiegen.tpml.core.languages.LanguageTranslator;
+import de.unisiegen.tpml.core.smallstep.SmallStepProofModel;
 
 /**
  * This class represents the language L0, which serves as a factory class for L0 related functionality.
@@ -76,11 +77,19 @@ public final class L0Language extends AbstractLanguage {
   /**
    * {@inheritDoc}
    *
-   * @see de.unisiegen.tpml.core.bigstep.BigStepProofModel
    * @see de.unisiegen.tpml.core.languages.Language#newBigStepProofModel(de.unisiegen.tpml.core.expressions.Expression)
    */
   public BigStepProofModel newBigStepProofModel(Expression expression) {
     return new BigStepProofModel(expression, new L0BigStepProofRuleSet(this));
+  }
+  
+  /**
+   * {@inheritDoc}
+   *
+   * @see de.unisiegen.tpml.core.languages.Language#newSmallStepProofModel(de.unisiegen.tpml.core.expressions.Expression)
+   */
+  public SmallStepProofModel newSmallStepProofModel(Expression expression) {
+    return new SmallStepProofModel(expression, new L0SmallStepProofRuleSet(this));
   }
   
   /**

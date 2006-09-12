@@ -4,6 +4,7 @@ import java.io.Reader;
 
 import de.unisiegen.tpml.core.bigstep.BigStepProofModel;
 import de.unisiegen.tpml.core.expressions.Expression;
+import de.unisiegen.tpml.core.smallstep.SmallStepProofModel;
 
 /**
  * Base interface for all languages, which is used to create scanners and parsers for a specific language.
@@ -54,8 +55,25 @@ public interface Language {
    * @return the newly allocated big step proof model.
    * 
    * @throws NullPointerException if <code>expression</code> is <code>null</code>.
+   * 
+   * @see BigStepProofModel
    */
   public BigStepProofModel newBigStepProofModel(Expression expression);
+  
+  /**
+   * Allocates a new {@link SmallStepProofModel} for the <code>expression</code> in this language, which
+   * is used to prove that <code>expression</code> using the small step semantics based on the rules from
+   * this language.
+   * 
+   * @param expression the {@link Expression} for the small step proof model.
+   * 
+   * @return the newly allocated small step proof model.
+   * 
+   * @throws NullPointerException if <code>expression</code> is <code>null</code>.
+   * 
+   * @see SmallStepProofModel
+   */
+  public SmallStepProofModel newSmallStepProofModel(Expression expression);
   
   /**
    * Allocates a new {@link LanguageParser} for this language, using the specified <code>scanner</code> as

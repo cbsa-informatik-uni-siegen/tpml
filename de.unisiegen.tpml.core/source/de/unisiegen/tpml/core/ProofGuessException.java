@@ -46,7 +46,20 @@ public final class ProofGuessException extends Exception {
    * @see ProofModel#guess(ProofNode)
    */
   public ProofGuessException(ProofNode node) {
-    super("Cannot guess next proof step for " + node);
+    this(node, null);
+  }
+  
+  /**
+   * Same as {@link #ProofGuessException(ProofNode)}, but also accepts an additional {@link Throwable}
+   * which yields information about the cause of the exception.
+   * 
+   * @param node the node for which the guess failed.
+   * @param cause the cause, which is saved for later retrieval by the {@link Throwable#getCause()} method.
+   *              A <code>null</code> value is permitted, and indicates that the cause is nonexistent or
+   *              unknown.
+   */
+  public ProofGuessException(ProofNode node, Throwable cause) {
+    super("Cannot guess next proof step for " + node, cause);
     this.node = node;
   }
   

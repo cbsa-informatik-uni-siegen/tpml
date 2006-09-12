@@ -42,8 +42,16 @@ public final class ProofStep {
    * 
    * @param expression the {@link Expression}.
    * @param rule the {@link ProofRule} that was applied.
+   * 
+   * @throws NullPointerException if <code>expression</code> or <code>rule</code> is <code>null</code>.
    */
   public ProofStep(Expression expression, ProofRule rule) {
+    if (rule == null) {
+      throw new NullPointerException("rule is null");
+    }
+    if (expression == null) {
+      throw new NullPointerException("expression is null");
+    }
     this.expression = expression;
     this.rule = rule;
   }

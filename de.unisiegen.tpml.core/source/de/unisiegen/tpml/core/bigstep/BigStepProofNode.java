@@ -7,7 +7,7 @@ import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.interpreters.InterpreterProofNode;
 
 /**
- * Base interface to nodes in a {@link de.unisiegen.tpml.core.BigStepProofModel}.
+ * Base interface to nodes in a {@link de.unisiegen.tpml.core.bigstep.BigStepProofModel}.
  *
  * @author Benedikt Meurer
  * @version $Id$

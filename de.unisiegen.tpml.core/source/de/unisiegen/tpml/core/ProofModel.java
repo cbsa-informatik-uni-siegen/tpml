@@ -112,10 +112,9 @@ public interface ProofModel extends Bean, TreeModel {
    * @param node the {@link ProofNode} for which the next proof step should
    *             be guessed.
    *             
-   * @throws IllegalArgumentException if the <code>node</code> is invalid for
-   *                                  this model.             
-   * @throws IllegalStateException if for some reason <code>node</code> cannot
-   *                               be proven.
+   * @throws IllegalArgumentException if the <code>node</code> is invalid for this model.             
+   * @throws IllegalStateException if for some reason <code>node</code> cannot be proven.
+   * @throws NullPointerException if <code>node</code> is <code>null</code>.
    * @throws ProofGuessException if the next proof step could not be guessed.
    *
    * @see #prove(ProofRule, ProofNode)

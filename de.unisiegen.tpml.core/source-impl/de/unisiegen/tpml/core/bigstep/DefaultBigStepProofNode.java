@@ -135,7 +135,7 @@ final class DefaultBigStepProofNode extends AbstractInterpreterProofNode impleme
   /**
    * {@inheritDoc}
    *
-   * @see common.AbstractProofNode#getChildAt(int)
+   * @see de.unisiegen.tpml.core.AbstractProofNode#getChildAt(int)
    */
   @Override
   public DefaultBigStepProofNode getChildAt(int childIndex) {
@@ -145,7 +145,7 @@ final class DefaultBigStepProofNode extends AbstractInterpreterProofNode impleme
   /**
    * {@inheritDoc}
    *
-   * @see common.AbstractProofNode#getParent()
+   * @see de.unisiegen.tpml.core.AbstractProofNode#getParent()
    */
   @Override
   public DefaultBigStepProofNode getParent() {
@@ -161,7 +161,7 @@ final class DefaultBigStepProofNode extends AbstractInterpreterProofNode impleme
   /**
    * {@inheritDoc}
    *
-   * @see common.AbstractProofNode#getRoot()
+   * @see de.unisiegen.tpml.core.AbstractProofNode#getRoot()
    */
   @Override
   public DefaultBigStepProofNode getRoot() {
@@ -177,7 +177,7 @@ final class DefaultBigStepProofNode extends AbstractInterpreterProofNode impleme
   /**
    * {@inheritDoc}
    *
-   * @see common.AbstractProofNode#getFirstChild()
+   * @see de.unisiegen.tpml.core.AbstractProofNode#getFirstChild()
    */
   @Override
   public DefaultBigStepProofNode getFirstChild() {
@@ -187,7 +187,7 @@ final class DefaultBigStepProofNode extends AbstractInterpreterProofNode impleme
   /**
    * {@inheritDoc}
    *
-   * @see common.AbstractProofNode#getLastChild()
+   * @see de.unisiegen.tpml.core.AbstractProofNode#getLastChild()
    */
   @Override
   public DefaultBigStepProofNode getLastChild() {
@@ -197,7 +197,7 @@ final class DefaultBigStepProofNode extends AbstractInterpreterProofNode impleme
   /**
    * {@inheritDoc}
    *
-   * @see common.AbstractProofNode#getChildAfter(javax.swing.tree.TreeNode)
+   * @see de.unisiegen.tpml.core.AbstractProofNode#getChildAfter(javax.swing.tree.TreeNode)
    */
   @Override
   public DefaultBigStepProofNode getChildAfter(TreeNode aChild) {
@@ -207,7 +207,7 @@ final class DefaultBigStepProofNode extends AbstractInterpreterProofNode impleme
   /**
    * {@inheritDoc}
    *
-   * @see common.AbstractProofNode#getChildBefore(javax.swing.tree.TreeNode)
+   * @see de.unisiegen.tpml.core.AbstractProofNode#getChildBefore(javax.swing.tree.TreeNode)
    */
   @Override
   public DefaultBigStepProofNode getChildBefore(TreeNode aChild) {
@@ -223,7 +223,7 @@ final class DefaultBigStepProofNode extends AbstractInterpreterProofNode impleme
   /**
    * {@inheritDoc}
    *
-   * @see common.AbstractProofNode#getFirstLeaf()
+   * @see de.unisiegen.tpml.core.AbstractProofNode#getFirstLeaf()
    */
   @Override
   public DefaultBigStepProofNode getFirstLeaf() {
@@ -233,7 +233,7 @@ final class DefaultBigStepProofNode extends AbstractInterpreterProofNode impleme
   /**
    * {@inheritDoc}
    *
-   * @see common.AbstractProofNode#getLastLeaf()
+   * @see de.unisiegen.tpml.core.AbstractProofNode#getLastLeaf()
    */
   @Override
   public DefaultBigStepProofNode getLastLeaf() {

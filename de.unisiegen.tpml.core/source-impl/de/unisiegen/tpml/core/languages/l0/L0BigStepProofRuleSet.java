@@ -16,7 +16,7 @@ import de.unisiegen.tpml.core.expressions.Lambda;
  *
  * @see de.unisiegen.tpml.core.bigstep.AbstractBigStepProofRuleSet
  */
-public final class L0BigStepProofRuleSet extends AbstractBigStepProofRuleSet {
+public class L0BigStepProofRuleSet extends AbstractBigStepProofRuleSet {
   //
   // Constructor (package)
   //

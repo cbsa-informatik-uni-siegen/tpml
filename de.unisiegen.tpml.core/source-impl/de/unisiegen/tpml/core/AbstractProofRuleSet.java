@@ -3,6 +3,7 @@ package de.unisiegen.tpml.core;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import de.unisiegen.tpml.core.languages.Language;
 
@@ -89,6 +90,30 @@ public abstract class AbstractProofRuleSet implements ProofRuleSet {
    */
   public ProofRule[] getRules() {
     return this.rules.toArray(EMPTY_ARRAY);
+  }
+  
+  /**
+   * Looks up the previously registered {@link ProofRule} with the specified <code>name</code>.
+   * 
+   * @param name the name of the rule to look up.
+   * 
+   * @return the previously registered proof rule of the given <code>name</code>.
+   * 
+   * @throws NoSuchElementException if no rule of the given <code>name</code> is found.
+   * @throws NullPointerException if <code>name</code> is <code>null</code>.
+   * 
+   * @see ProofRule
+   */
+  protected ProofRule getRuleByName(String name) throws NoSuchElementException {
+    if (name == null) {
+      throw new NullPointerException("name is null");
+    }
+    for (ProofRule rule : this.rules) {
+      if (rule.getName().equals(name)) {
+        return rule;
+      }
+    }
+    throw new NoSuchElementException("No such rule of name " + name);
   }
   
   
