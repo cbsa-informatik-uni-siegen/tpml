@@ -43,6 +43,26 @@ interface PrettyPrintPriorities {
   public static final int PRIO_APPLICATION_E2 = PRIO_APPLICATION + 1;
   
   /**
+   * The pretty print priority for conditions.
+   */
+  public static final int PRIO_CONDITION = 0;
+  
+  /**
+   * The pretty print priority for the e0 of conditions.
+   */
+  public static final int PRIO_CONDITION_E0 = PRIO_CONDITION;
+  
+  /**
+   * The pretty print priority for the e1 of conditions.
+   */
+  public static final int PRIO_CONDITION_E1 = PRIO_CONDITION;
+  
+  /**
+   * The pretty print priority for the e2 of conditions.
+   */
+  public static final int PRIO_CONDITION_E2 = PRIO_CONDITION;
+  
+  /**
    * The pretty print priority for lambda expressions.
    */
   public static final int PRIO_LAMBDA = 0;
@@ -51,4 +71,19 @@ interface PrettyPrintPriorities {
    * The pretty print priority for the body of lambda expressions.
    */
   public static final int PRIO_LAMBDA_E = PRIO_LAMBDA;
+  
+  /**
+   * The pretty print priority for let expressions.
+   */
+  public static final int PRIO_LET = 0;
+  
+  /**
+   * The pretty print priority for the e1 of let expressions.
+   */
+  public static final int PRIO_LET_E1 = PRIO_LET;
+  
+  /**
+   * The pretty print priority for the e2 of let expressions.
+   */
+  public static final int PRIO_LET_E2 = PRIO_LET;
 }

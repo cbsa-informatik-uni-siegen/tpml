@@ -1,7 +1,14 @@
 package de.unisiegen.tpml.core.expressions;
 
+import java.beans.Introspector;
+import java.beans.PropertyDescriptor;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.Enumeration;
+import java.util.LinkedList;
 import java.util.Set;
+import java.util.TreeSet;
+import java.util.Vector;
 
 import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable;
 import de.unisiegen.tpml.core.prettyprinter.PrettyString;
@@ -18,41 +25,28 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
  */
 public abstract class Expression implements PrettyPrintable, PrettyPrintPriorities {
   //
-  // Constants
-  //
-  
-  /**
-   * Static empty set of strings, which is used to reduce the amount of newly allocated empty sets for the
-   * <code>free</code> method implementations.
-   */
-  protected static final Set<String> EMPTY_SET = Collections.unmodifiableSet(Collections.<String>emptySet());
-  
-  
-  
-  //
   // Primitives
   //
   
   /**
-   * Returns the free (unbound) identifiers within the expression,
-   * e.g. the name of the identifier for an identifier expression
-   * or the free identifiers for its sub expressions in applications,
-   * abstractions and recursions.
+   * Returns the free (unbound) identifiers within the expression, e.g. the name of the identifier for an
+   * identifier expression or the free identifiers for its sub expressions in applications, abstractions
+   * and recursions.
    * 
-   * All expression classes in the expression hierarchy must override
-   * this method in one or the other way.
+   * The default implementation in the {@link Expression} class uses introspection to determine the sub
+   * expressions and calls <code>free()</code> recursively on all sub expressions. Some of the derived
+   * classes might need to override this method if they represents a binding mechanism, like {@link Let},
+   * or if they don't have sub expressions, but provide free identifiers, like {@link Identifier}.
    * 
-   * The implementations of this method may either return the constant
-   * <code>EMPTY_SET</code> or a dynamically allocated <code>Set</code>.
-   * All implementors must ensure to not modify the set returned from
-   * the {@link #free()} method.
-   * 
-   * @return the set of free (unbound) identifiers within the
-   *         expression.
-   *         
-   * @see #EMPTY_SET
+   * @return the set of free (unbound) identifiers within the expression.
    */
-  public abstract Set<String> free();
+  public Set<String> free() {
+    TreeSet<String> free = new TreeSet<String>();
+    for (Enumeration<Expression> c = children(); c.hasMoreElements(); ) {
+      free.addAll(c.nextElement().free());
+    }
+    return free;
+  }
   
   /**
    * Returns <code>true</code> if the expression should be considered an exception
@@ -99,6 +93,8 @@ public abstract class Expression implements PrettyPrintable, PrettyPrintPrioriti
    * @param e the <code>Expression</code> to substitute.
    * 
    * @return the resulting expression.
+   * 
+   * @throws NullPointerException if <code>id</code> or </code>e</code> is <code>null</code>.
    */
   public abstract Expression substitute(String id, Expression e);
   
@@ -132,6 +128,101 @@ public abstract class Expression implements PrettyPrintable, PrettyPrintPrioriti
    * @see PrettyStringBuilderFactory
    */
   protected abstract PrettyStringBuilder toPrettyStringBuilder(PrettyStringBuilderFactory factory);
+  
+  
+  
+  //
+  // Introspections
+  //
+  
+  /**
+   * Cached vector of sub expressions, so the children do not need
+   * to be determined on every invocation of {@link #children()}.
+   * 
+   * @see #children()
+   */
+  private transient Vector<Expression> children = null;
+  
+  /**
+   * Returns an enumeration for the direct ancestor expressions, the
+   * direct children, of this expression. The enumeration is generated
+   * using the bean properties for every {@link Expression} derived
+   * class. For example, {@link Application} provides <code>getE1()</code>
+   * and <code>getE2()</code>, and thereby the sub expressions <code>e1</code>
+   * and <code>e2</code>. It also supports arrays of expressions, as used
+   * in the {@link Tuple} expression class.
+   * 
+   * @return an {@link Enumeration} for the direct ancestor expressions
+   *         of this expression.
+   */
+  protected final Enumeration<Expression> children() {
+    // check if we already determined the children
+    if (this.children == null) {
+      try {
+        this.children = new Vector<Expression>();
+        PropertyDescriptor[] properties = Introspector.getBeanInfo(getClass(), Expression.class).getPropertyDescriptors();
+        for (PropertyDescriptor property : properties) {
+          Object value = property.getReadMethod().invoke(this);
+          if (value instanceof Expression[]) {
+            this.children.addAll(Arrays.asList((Expression[])value));
+          }
+          else if (value instanceof Expression) {
+            this.children.add((Expression)value);
+          }
+        }
+      }
+      catch (RuntimeException exception) {
+        throw exception;
+      }
+      catch (Exception exception) {
+        throw new RuntimeException(exception);
+      }
+    }
+    
+    // return an enumeration for the children
+    return this.children.elements();
+  }
+
+  
+  
+  //
+  // Expression Tree Traversal
+  //
+  
+  /**
+   * Returns an {@link Enumeration} that enumerates the expression within the expression hierarchy starting
+   * at this expression in level order (that is breadth first enumeration).
+   * 
+   * @return a breadth first enumeration of all expressions within the expression hierarchy starting at
+   *         this item.
+   */
+  public Enumeration<Expression> levelOrderEnumeration() {
+    return new LevelOrderEnumeration(this);
+  }
+  
+  /**
+   * A level-order enumeration of the expressions within a given expression. Used to implement the
+   * {@link Expression#levelOrderEnumeration()} method.
+   *
+   * @see Expression#levelOrderEnumeration()
+   */
+  private class LevelOrderEnumeration implements Enumeration<Expression> {
+    private LinkedList<Expression> queue = new LinkedList<Expression>(); 
+    
+    LevelOrderEnumeration(Expression expression) {
+      this.queue.add(expression);
+    }
+    
+    public boolean hasMoreElements() {
+      return !this.queue.isEmpty();
+    }
+    
+    public Expression nextElement() {
+      Expression e = this.queue.poll();
+      this.queue.addAll(Collections.list(e.children()));
+      return e;
+    }
+  }
   
   
   

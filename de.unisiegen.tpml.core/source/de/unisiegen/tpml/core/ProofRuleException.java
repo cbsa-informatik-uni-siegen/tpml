@@ -7,7 +7,7 @@ package de.unisiegen.tpml.core;
  * @author Benedikt Meurer
  * @version $Id$
  * 
- * @see common.ProofGuessException
+ * @see de.unisiegen.tpml.core.ProofGuessException
  */
 public final class ProofRuleException extends Exception {
   /**
@@ -43,6 +43,8 @@ public final class ProofRuleException extends Exception {
    * @param node the {@link ProofNode}.
    * @param rule the {@link ProofRule} that could not be
    *             applied to the <code>node</code>.
+   *              
+   * @throws NullPointerException if <code>node</code> or <code>rule</code> is <code>null</code>.
    */
   public ProofRuleException(ProofNode node, ProofRule rule) {
     this(node, rule, null);
@@ -60,9 +62,17 @@ public final class ProofRuleException extends Exception {
    *              {@link Throwable#getCause()} method. A <code>null</code>
    *              value is permitted, and indicates that the cause is
    *              nonexistent or unknown.
+   *              
+   * @throws NullPointerException if <code>node</code> or <code>rule</code> is <code>null</code>.
    */
   public ProofRuleException(ProofNode node, ProofRule rule, Throwable cause) {
     super("Cannot apply " + rule + " to " + node, cause);
+    if (node == null) {
+      throw new NullPointerException("node is null");
+    }
+    if (rule == null) {
+      throw new NullPointerException("rule is null");
+    }
     this.node = node;
     this.rule = rule;
   }
@@ -70,7 +80,7 @@ public final class ProofRuleException extends Exception {
   
   
   //
-  // Primitives
+  // Accessors
   //
   
   /**

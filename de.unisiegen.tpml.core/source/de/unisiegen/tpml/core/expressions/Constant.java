@@ -4,54 +4,43 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
 
 /**
- * Instances of this class are used to represent memory locations as returned by the <code>ref</code>
- * operator and used by the <code>:=</code> (Assign) and <code>!</code> (Deref) operators.
+ * Abstract class to represent a constant expression (only values can be constants).
  *
  * @author Benedikt Meurer
  * @version $Id$
- * 
+ *
  * @see de.unisiegen.tpml.core.expressions.Value
  */
-public final class Location extends Value {
+public abstract class Constant extends Value {
   //
   // Attributes
   //
   
   /**
-   * The name of the location (uses uppercase letters).
+   * The text representation of the constant.
    * 
-   * @see #getName()
+   * @see #toPrettyStringBuilder(PrettyStringBuilderFactory)
    */
-  private String name;
+  private String text;
   
   
   
   //
-  // Constructor
+  // Constructor (protected)
   //
   
   /**
-   * Allocates a new <code>Location</code> instance with the specified <code>name</code>.
+   * Allocates a new <code>Constant</code> with the string representation given in <code>text</code>.
    * 
-   * @param the name of the memory location.
-   */
-  public Location(String name) {
-    this.name = name;
-  }
-  
-  
-
-  //
-  // Accessors
-  //
-  
-  /**
-   * Returns the name of the memory location.
+   * @param text the string representation of the constant.
    * 
-   * @return the name of the memory location.
+   * @throws NullPointerException if <code>text</code> is <code>null</code>.
    */
-  public String getName() {
-    return this.name;
+  protected Constant(String text) {
+    if (text == null) {
+      throw new NullPointerException("text is null");
+    }
+    this.text = text;
   }
   
   
@@ -63,16 +52,16 @@ public final class Location extends Value {
   /**
    * {@inheritDoc}
    *
-   * For <code>Location</code>s, this method always returns the location itself, because substituting
-   * below a location is not possible.
+   * Substitution below constants is not possible, so for <code>Constant</code>s this method
+   * will always return the constant itself.
    * 
    * @see de.unisiegen.tpml.core.expressions.Expression#substitute(java.lang.String, de.unisiegen.tpml.core.expressions.Expression)
    */
   @Override
-  public Expression substitute(String id, Expression e) {
+  public final Expression substitute(String id, Expression e) {
     return this;
   }
-  
+
   
   
   //
@@ -86,17 +75,17 @@ public final class Location extends Value {
    */
   @Override
   protected PrettyStringBuilder toPrettyStringBuilder(PrettyStringBuilderFactory factory) {
-    PrettyStringBuilder builder = factory.newBuilder(this, PRIO_LOCATION);
-    builder.addText(this.name);
+    PrettyStringBuilder builder = factory.newBuilder(this, PRIO_CONSTANT);
+    builder.addConstant(this.text);
     return builder;
   }
-  
-  
-  
-  //
-  // Overwritten methods
-  //
 
+  
+  
+  //
+  // Base methods
+  //
+  
   /**
    * {@inheritDoc}
    *
@@ -104,13 +93,13 @@ public final class Location extends Value {
    */
   @Override
   public boolean equals(Object obj) {
-    if (obj instanceof Location) {
-      Location other = (Location)obj;
-      return (this.name.equals(other.name));
+    if (obj instanceof Constant) {
+      Constant other = (Constant)obj;
+      return (this.text.equals(other.text) && getClass().equals(other.getClass()));
     }
     return false;
   }
-  
+
   /**
    * {@inheritDoc}
    *
@@ -118,6 +107,7 @@ public final class Location extends Value {
    */
   @Override
   public int hashCode() {
-    return this.name.hashCode();
+    return this.text.hashCode() + getClass().hashCode();
   }
+
 }

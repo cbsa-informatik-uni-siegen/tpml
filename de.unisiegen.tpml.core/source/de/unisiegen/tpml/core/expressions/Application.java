@@ -1,8 +1,5 @@
 package de.unisiegen.tpml.core.expressions;
 
-import java.util.Set;
-import java.util.TreeSet;
-
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
 
@@ -80,38 +77,6 @@ public final class Application extends Expression {
   // Primitives
   //
   
-  /**
-   * Returns the free (unbound) identifiers of the application.
-   * 
-   * The free (unbound) identifiers of the application are simply
-   * determined by querying the free identifiers of the two sub
-   * expressions.
-   * 
-   * @return the free identifiers for the application.
-   * 
-   * @see #getE1()
-   * @see #getE2()
-   * @see de.unisiegen.tpml.core.expressions.Expression#free()
-   */
-  @Override
-  public Set<String> free() {
-    // determine the free identifiers for the sub expressions
-    Set<String> freeE1 = this.e1.free();
-    Set<String> freeE2 = this.e2.free();
-    
-    // check if any of the sub expressions contains no free identifiers
-    if (freeE1 == Expression.EMPTY_SET)
-      return freeE2;
-    else if (freeE2 == Expression.EMPTY_SET)
-      return freeE1;
-    
-    // generate a new free set as union of the free sets
-    TreeSet<String> free = new TreeSet<String>();
-    free.addAll(freeE1);
-    free.addAll(freeE2);
-    return free;
-  }
-
   /**
    * Substitutes <code>e</code> for <code>id</code> in the two
    * sub expressions of the application.

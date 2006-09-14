@@ -43,6 +43,8 @@ public final class ProofGuessException extends Exception {
    * 
    * @param node the node for which the guess failed.
    * 
+   * @throws NullPointerException if <code>node</code> is <code>null</code>.
+   * 
    * @see ProofModel#guess(ProofNode)
    */
   public ProofGuessException(ProofNode node) {
@@ -57,9 +59,14 @@ public final class ProofGuessException extends Exception {
    * @param cause the cause, which is saved for later retrieval by the {@link Throwable#getCause()} method.
    *              A <code>null</code> value is permitted, and indicates that the cause is nonexistent or
    *              unknown.
+   * 
+   * @throws NullPointerException if <code>node</code> is <code>null</code>.
    */
   public ProofGuessException(ProofNode node, Throwable cause) {
     super("Cannot guess next proof step for " + node, cause);
+    if (node == null) {
+      throw new NullPointerException("node is null");
+    }
     this.node = node;
   }
   
