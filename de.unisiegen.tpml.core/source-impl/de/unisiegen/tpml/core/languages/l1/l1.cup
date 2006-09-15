@@ -1,16 +1,12 @@
-import expressions.*;
-import types.*;
+import de.unisiegen.tpml.core.expressions.*;
 
 
 /* Binary operators */
 terminal			PLUS, MINUS, STAR, SLASH, MOD;
 terminal			EQUAL, LESS, GREATER, LESSEQUAL, GREATEREQUAL;
 
-/* Tuple operators */
-terminal			FST, SND;
-
 /* Syntactic tokens */
-terminal			COLON, DOT;
+terminal			DOT;
 terminal			LPAREN, RPAREN;
 terminal			PARENPAREN;
 
@@ -78,7 +74,7 @@ expr				::=	simple_expr:e
 						{: RESULT = new InfixOperation(RelationalOperator.GREATER_EQUAL, e1, e2); :}
 
 					/* Conditions */
-					|	IF seq_expr:e0 THEN expr:e1 ELSE expr:e2
+					|	IF expr:e0 THEN expr:e1 ELSE expr:e2
 						{: RESULT = new Condition(e0, e1, e2); :}
 
 					/* Lambda Abstraction */

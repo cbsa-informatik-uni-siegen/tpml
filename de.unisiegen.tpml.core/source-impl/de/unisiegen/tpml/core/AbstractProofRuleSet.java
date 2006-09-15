@@ -155,6 +155,10 @@ public abstract class AbstractProofRuleSet implements ProofRuleSet {
    * Registers the <code>rule</code> in the proof rule set. If a rule with the same name
    * was already added to the proof rule set, the previous rule is unregistered first.
    * 
+   * The <code>rule</code> is prepended to the list, which is important for guessing, as
+   * the last registered proof rule will be used first when guessing. So, for example,
+   * for the big step interpreter, the <b>(APP)</b> must be registered first.
+   * 
    * @param rule the proof rule to register.
    * 
    * @throws NullPointerException if <code>rule</code> is <code>null</code>.
@@ -168,6 +172,6 @@ public abstract class AbstractProofRuleSet implements ProofRuleSet {
     this.rules.remove(rule);
     
     // register the new rule
-    this.rules.add(rule);
+    this.rules.add(0, rule);
   }
 }

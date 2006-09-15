@@ -6,6 +6,7 @@ import de.unisiegen.tpml.core.bigstep.BigStepProofNode;
 import de.unisiegen.tpml.core.bigstep.BigStepProofResult;
 import de.unisiegen.tpml.core.expressions.Application;
 import de.unisiegen.tpml.core.expressions.Expression;
+import de.unisiegen.tpml.core.expressions.InfixOperation;
 import de.unisiegen.tpml.core.expressions.Lambda;
 
 /**
@@ -26,14 +27,16 @@ public class L0BigStepProofRuleSet extends AbstractBigStepProofRuleSet {
    * <code>language</code>, which is the <b>L0</b> or a derived language.
    * 
    * @param language the language for the proof rule set.
+   * 
+   * @throws NullPointerException if <code>language</code> is <code>null</code>.
    */
   public L0BigStepProofRuleSet(L0Language language) {
     super(language);
     
     // register the big step rules (order is important for guessing!)
-    registerByMethodName("VAL", "applyValue");
-    registerByMethodName("BETA-V", "applyBetaValue", "updateBetaValue");
     registerByMethodName("APP", "applyApplication", "updateApplication");
+    registerByMethodName("BETA-V", "applyBetaValue", "updateBetaValue");
+    registerByMethodName("VAL", "applyValue");
   }
   
   
@@ -49,13 +52,27 @@ public class L0BigStepProofRuleSet extends AbstractBigStepProofRuleSet {
    * @param node the node to apply the <b>(APP)</b> rule to.
    */
   public void applyApplication(BigStepProofContext context, BigStepProofNode node) {
-    // add the first node for the application
-    Application application = (Application)node.getExpression();
-    context.addProofNode(node, application.getE1());
+    // check which type of "application" we have here
+    Expression e = node.getExpression();
+    if (e instanceof Application) {
+      // add the first node for the application
+      Application application = (Application)e;
+      context.addProofNode(node, application.getE1());
     
-    // we can add the second node as well if memory is disabled
-    if (!context.isMemoryEnabled()) {
-      context.addProofNode(node, application.getE2());
+      // we can add the second node as well if memory is disabled
+      if (!context.isMemoryEnabled()) {
+        context.addProofNode(node, application.getE2());
+      }
+    }
+    else {
+      // otherwise it must be an infix operation
+      InfixOperation infixOperation = (InfixOperation)e;
+      context.addProofNode(node, new Application(infixOperation.getOp(), infixOperation.getE1()));
+      
+      // we can add the second as well if memory is disabled
+      if (!context.isMemoryEnabled()) {
+        context.addProofNode(node, infixOperation.getE2());
+      }
     }
   }
   
@@ -66,11 +83,25 @@ public class L0BigStepProofRuleSet extends AbstractBigStepProofRuleSet {
    * @param node the node to update according to <b>(APP)</b>.
    */
   public void updateApplication(BigStepProofContext context, BigStepProofNode node) {
+    // determine the expression for the node
+    Expression e = node.getExpression();
+    
     // further operation depends on the number of child nodes
     if (node.getChildCount() == 1 && node.getChildAt(0).isProven()) {
-      // add the second child node for the application
-      Application application = (Application)node.getExpression();
-      context.addProofNode(node, application.getE2(), node.getChildAt(0).getResult().getStore());
+      // determine the first child node
+      BigStepProofNode node0 = node.getChildAt(0);
+      
+      // add the second child node for the application/infixOperation
+      if (e instanceof Application) {
+        // the Application case
+        Application application = (Application)e;
+        context.addProofNode(node, application.getE2(), node0.getResult().getStore());
+      }
+      else {
+        // the InfixOperation case
+        InfixOperation infixOperation = (InfixOperation)e;
+        context.addProofNode(node, infixOperation.getE2(), node0.getResult().getStore());
+      }
     }
     else if (node.getChildCount() == 2) {
       // check if both child nodes are proven

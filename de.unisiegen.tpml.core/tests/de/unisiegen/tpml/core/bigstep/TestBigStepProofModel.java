@@ -39,7 +39,8 @@ public final class TestBigStepProofModel extends JFrame {
   /**
    * Simple test expression.
    */
-  private static final String SIMPLE = "x (lambda x.x x) (lambda y.y (lambda x.x))";
+  //private static final String SIMPLE = "x (lambda x.x x) (lambda y.y (lambda x.x))";
+  private static final String SIMPLE = "let f = lambda x.x in f 8 + f 6";
 
   
   
@@ -251,9 +252,9 @@ public final class TestBigStepProofModel extends JFrame {
    */
   public static void main(String[] args) {
     try {
-      // parse the program (using L0)
+      // parse the program (using L1)
       LanguageFactory factory = LanguageFactory.newInstance();
-      Language language = factory.getLanguageById("l0");
+      Language language = factory.getLanguageById("l1");
       Expression expression = language.newParser(new StringReader(SIMPLE)).parse();
       BigStepProofModel model = language.newBigStepProofModel(expression);
       

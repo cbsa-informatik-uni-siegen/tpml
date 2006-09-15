@@ -33,6 +33,7 @@ public class L0SmallStepProofRuleSet extends AbstractSmallStepProofRuleSet {
   public L0SmallStepProofRuleSet(L0Language language) {
     super(language);
     
+    // register the small step rules
     register("APP-LEFT", false);
     register("APP-RIGHT", false);
     register("BETA-V", true);

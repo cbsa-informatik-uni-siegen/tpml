@@ -119,7 +119,7 @@ public abstract class AbstractSmallStepProofRuleSet extends AbstractProofRuleSet
     // try for this class and all super classes up to Expression
     for (; clazz != Expression.class; clazz = clazz.getSuperclass()) {
       // try to find a suitable method
-      for (Method method : getClass().getDeclaredMethods()) {
+      for (Method method : getClass().getMethods()) {
         if (method.getName().equals(baseName + clazz.getSimpleName())) {
           return method;
         }

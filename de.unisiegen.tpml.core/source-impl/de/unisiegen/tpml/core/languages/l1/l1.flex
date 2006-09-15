@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.core.languages.l0;
+package de.unisiegen.tpml.core.languages.l1;
 
 import java.io.Reader;
 
@@ -8,13 +8,13 @@ import de.unisiegen.tpml.core.languages.LanguageScannerException;
 import de.unisiegen.tpml.core.languages.LanguageSymbol;
 
 /**
- * This is the lexer class for L0.
+ * This is the lexer class for L1.
  */
 %%
 
-%class L0Scanner
+%class L1Scanner
 %extends AbstractLanguageScanner
-%implements L0Terminals
+%implements L1Terminals
 
 %function nextSymbol
 %type LanguageSymbol
@@ -33,12 +33,6 @@ import de.unisiegen.tpml.core.languages.LanguageSymbol;
 	/** The starting character position of the comment. */
 	private int yycommentChar = 0;
 	
-	/** The starting character position of the projection. */
-	private int yyprojChar = 0;
-	
-	/** The parsed arity of the projection. */
-	private Integer yyprojArity;
-
 	private LanguageSymbol symbol(String name, int id) {
 		return symbol(name, id, null);
 	}
@@ -53,7 +47,10 @@ import de.unisiegen.tpml.core.languages.LanguageSymbol;
 		case COMMENT:
 			return PrettyStyle.COMMENT;
 
-		case LAMBDA:
+		case TRUE: case FALSE: case NUMBER: case PARENPAREN: case MOD:
+			return PrettyStyle.CONSTANT;
+
+		case LAMBDA: case LET: case IN: case IF: case THEN: case ELSE:
 			return PrettyStyle.KEYWORD;
 			
 		default:
@@ -72,6 +69,7 @@ import de.unisiegen.tpml.core.languages.LanguageSymbol;
 LineTerminator	= \r|\n|\r\n
 WhiteSpace		= {LineTerminator} | [ \t\f]
 
+Number			= [:digit:]+
 Identifier		= [:jletter:] [:jletterdigit:]*
 
 %state YYCOMMENT, YYCOMMENTEOF
@@ -79,11 +77,47 @@ Identifier		= [:jletter:] [:jletterdigit:]*
 %%
 
 <YYINITIAL> {
-	// syntactic tokens
+	// arithmetic binary operators
+	"+"				{ return symbol("PLUS", PLUS); }
+	"-"				{ return symbol("MINUS", MINUS); }
+	"*"				{ return symbol("STAR", STAR); }
+	"/"				{ return symbol("SLASH", SLASH); }
+	"mod"			{ return symbol("MOD", MOD); }
+	
+	// relational binary operators
+	"="				{ return symbol("EQUAL", EQUAL); }
+	"<"				{ return symbol("LESS", LESS); }
+	">"				{ return symbol("GREATER", GREATER); }
+	"<="			{ return symbol("LESSEQUAL", LESSEQUAL); }
+	">="			{ return symbol("GREATEREQUAL", GREATEREQUAL); }
+	
+	// interpunctation
 	"."				{ return symbol("DOT", DOT); }
 	"("				{ return symbol("LPAREN", LPAREN); }
 	")"				{ return symbol("RPAREN", RPAREN); }
+	
+	// keywords
 	"lambda"		{ return symbol("LAMBDA", LAMBDA); }
+	"let"			{ return symbol("LET", LET); }
+	"in"			{ return symbol("IN", IN); }
+	"if"			{ return symbol("IF", IF); }
+	"then"			{ return symbol("THEN", THEN); }
+	"else"			{ return symbol("ELSE", ELSE); }
+	
+	// constants
+	"()"						{ return symbol("PARENPAREN", PARENPAREN); }
+	"true"						{ return symbol("TRUE", TRUE); }
+	"false"						{ return symbol("FALSE", FALSE); }
+	
+	// numbers and identifiers
+	{Number}		{
+						try {
+							return symbol("NUMBER", NUMBER, Integer.valueOf(yytext()));
+						}
+						catch (NumberFormatException e) {
+							throw new LanguageScannerException(yychar, yychar + yylength(), "Integer constant \"" + yytext() + "\" too large", e);
+						}
+					}
 	{Identifier}	{ return symbol("IDENTIFIER", IDENTIFIER, yytext()); }
 	
 	// comments

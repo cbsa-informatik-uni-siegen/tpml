@@ -1,19 +1,19 @@
-package de.unisiegen.tpml.core.languages.l0;
+package de.unisiegen.tpml.core.languages.l1;
 
 import java.io.Reader;
 
 import java_cup.runtime.lr_parser;
 import de.unisiegen.tpml.core.bigstep.BigStepProofModel;
 import de.unisiegen.tpml.core.expressions.Expression;
-import de.unisiegen.tpml.core.languages.AbstractLanguage;
-import de.unisiegen.tpml.core.languages.AbstractLanguageTranslator;
 import de.unisiegen.tpml.core.languages.LanguageParser;
 import de.unisiegen.tpml.core.languages.LanguageScanner;
 import de.unisiegen.tpml.core.languages.LanguageTranslator;
+import de.unisiegen.tpml.core.languages.l0.L0Language;
 import de.unisiegen.tpml.core.smallstep.SmallStepProofModel;
 
 /**
- * This class represents the language L0, which serves as a factory class for L0 related functionality.
+ * This class represents the language L1, which serves as a factory class for L1 related functionality,
+ * which extends the L0 language.
  *
  * @author Benedikt Meurer
  * @version $Id$
@@ -22,16 +22,17 @@ import de.unisiegen.tpml.core.smallstep.SmallStepProofModel;
  * @see de.unisiegen.tpml.core.languages.LanguageParser
  * @see de.unisiegen.tpml.core.languages.LanguageScanner
  * @see de.unisiegen.tpml.core.languages.LanguageTranslator
+ * @see de.unisiegen.tpml.core.languages.l0.L0Language
  */
-public class L0Language extends AbstractLanguage {
+public final class L1Language extends L0Language {
   //
   // Constructor
   //
   
   /**
-   * Allocates a new <code>L0Language</code> instance.
+   * Allocates a new <code>L1Language</code> instance.
    */
-  public L0Language() {
+  public L1Language() {
     // nothing to do here...
   }
   
@@ -46,6 +47,7 @@ public class L0Language extends AbstractLanguage {
    *
    * @see languages.Language#getDescription()
    */
+  @Override
   public String getDescription() {
     return "TODO";
   }
@@ -55,8 +57,9 @@ public class L0Language extends AbstractLanguage {
    *
    * @see languages.Language#getName()
    */
+  @Override
   public String getName() {
-    return "L0";
+    return "L1";
   }
   
   /**
@@ -64,8 +67,9 @@ public class L0Language extends AbstractLanguage {
    *
    * @see languages.Language#getTitle()
    */
+  @Override
   public String getTitle() {
-    return "Pure untyped λ calculus";
+    return "Applied untyped λ calculus";
   }
   
   
@@ -79,8 +83,9 @@ public class L0Language extends AbstractLanguage {
    *
    * @see de.unisiegen.tpml.core.languages.Language#newBigStepProofModel(de.unisiegen.tpml.core.expressions.Expression)
    */
+  @Override
   public BigStepProofModel newBigStepProofModel(Expression expression) {
-    return new BigStepProofModel(expression, new L0BigStepProofRuleSet(this));
+    return new BigStepProofModel(expression, new L1BigStepProofRuleSet(this));
   }
   
   /**
@@ -88,8 +93,9 @@ public class L0Language extends AbstractLanguage {
    *
    * @see de.unisiegen.tpml.core.languages.Language#newSmallStepProofModel(de.unisiegen.tpml.core.expressions.Expression)
    */
+  @Override
   public SmallStepProofModel newSmallStepProofModel(Expression expression) {
-    return new SmallStepProofModel(expression, new L0SmallStepProofRuleSet(this));
+    return new SmallStepProofModel(expression, new L1SmallStepProofRuleSet(this));
   }
   
   /**
@@ -97,11 +103,12 @@ public class L0Language extends AbstractLanguage {
    *
    * @see languages.Language#newParser(languages.LanguageScanner)
    */
+  @Override
  public LanguageParser newParser(LanguageScanner scanner) {
    if (scanner == null) {
      throw new NullPointerException("scanner is null");
    }
-   final lr_parser parser = new L0Parser(scanner);
+   final lr_parser parser = new L1Parser(scanner);
    return new LanguageParser() {
      public Expression parse() throws Exception {
        return (Expression)parser.parse().value;
@@ -114,11 +121,12 @@ public class L0Language extends AbstractLanguage {
    *
    * @see languages.Language#newScanner(java.io.Reader)
    */
+  @Override
   public LanguageScanner newScanner(Reader reader) {
     if (reader == null) {
       throw new NullPointerException("reader is null");
     }
-    return new L0Scanner(reader);
+    return new L1Scanner(reader);
   }
   
   /**
@@ -126,7 +134,8 @@ public class L0Language extends AbstractLanguage {
    *
    * @see de.unisiegen.tpml.core.languages.Language#newTranslator()
    */
+  @Override
   public LanguageTranslator newTranslator() {
-    return new AbstractLanguageTranslator() { };
+    return new L1LanguageTranslator();
   }
 }

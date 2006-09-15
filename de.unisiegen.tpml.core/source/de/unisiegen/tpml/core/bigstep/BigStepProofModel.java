@@ -147,8 +147,6 @@ public final class BigStepProofModel extends AbstractInterpreterProofModel {
       // revert the actions performed so far
       context.revert();
       
-      e.printStackTrace();
-      
       // re-throw the exception
       throw e;
     }

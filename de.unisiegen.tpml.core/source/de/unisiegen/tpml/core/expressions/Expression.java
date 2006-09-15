@@ -255,7 +255,7 @@ public abstract class Expression implements PrettyPrintable, PrettyPrintPrioriti
    * @see java.lang.Object#toString()
    */
   @Override
-  public final String toString() {
+  public String toString() {
     return toPrettyString().toString();
   }
 }

@@ -41,6 +41,10 @@ public abstract class AbstractBigStepProofRuleSet extends AbstractProofRuleSet {
    * Convenience wrapper for the {@link #register(String, Method, Method)} method, which simply passes
    * <code>null</code> for the <code>updateMethod</code> parameter.
    * 
+   * The rule is prepended to the list, which is important for guessing, as
+   * the last registered proof rule will be used first when guessing. So, for example,
+   * for the big step interpreter, the <b>(APP)</b> must be registered first.
+   * 
    * @param name the name of the big step proof rule to create.
    * @param applyMethod the implementation of the apply method for the
    * 
@@ -53,10 +57,16 @@ public abstract class AbstractBigStepProofRuleSet extends AbstractProofRuleSet {
   }
   
   /**
+   * Registers the rule with the given <code>name</code> and the <code>applyMethod</code> and
+   * <code>updateMethod</code>. The <code>updateMethod</code> may be <code>null</code>.
    * 
-   * @param name
-   * @param applyMethod
-   * @param updateMethod
+   * The rule is prepended to the list, which is important for guessing, as
+   * the last registered proof rule will be used first when guessing. So, for example,
+   * for the big step interpreter, the <b>(APP)</b> must be registered first.
+   * 
+   * @param name the name of the rule.
+   * @param applyMethod the <code>apply()</code> method.
+   * @param updateMethod the <code>update()</code> method or <code>null</code>.
    * 
    * @throws NullPointerException if <code>name</code> or <code>applyMethod</code> is <code>null</code>.
    * 
@@ -90,6 +100,10 @@ public abstract class AbstractBigStepProofRuleSet extends AbstractProofRuleSet {
    * Convenience wrapper for the {@link #register(String, Method)} method, which determines the
    * {@link Method} for the specified <code>applyMethodName</code> and uses it for the
    * <code>applyMethod</code>.
+   * 
+   * The rule is prepended to the list, which is important for guessing, as
+   * the last registered proof rule will be used first when guessing. So, for example,
+   * for the big step interpreter, the <b>(APP)</b> must be registered first.
    * 
    * @param name the name of the rule.
    * @param applyMethodName the name of the <code>apply</code> method.
@@ -140,7 +154,7 @@ public abstract class AbstractBigStepProofRuleSet extends AbstractProofRuleSet {
     }
     try {
       // lookup the method with the parameters BigStepProofContext and BigStepProofNode
-      return getClass().getDeclaredMethod(methodName, new Class[] { BigStepProofContext.class, BigStepProofNode.class });
+      return getClass().getMethod(methodName, new Class[] { BigStepProofContext.class, BigStepProofNode.class });
     }
     catch (RuntimeException e) {
       // just re-throw the exception

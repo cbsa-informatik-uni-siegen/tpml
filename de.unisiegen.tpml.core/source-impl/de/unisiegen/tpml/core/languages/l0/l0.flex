@@ -33,12 +33,6 @@ import de.unisiegen.tpml.core.languages.LanguageSymbol;
 	/** The starting character position of the comment. */
 	private int yycommentChar = 0;
 	
-	/** The starting character position of the projection. */
-	private int yyprojChar = 0;
-	
-	/** The parsed arity of the projection. */
-	private Integer yyprojArity;
-
 	private LanguageSymbol symbol(String name, int id) {
 		return symbol(name, id, null);
 	}

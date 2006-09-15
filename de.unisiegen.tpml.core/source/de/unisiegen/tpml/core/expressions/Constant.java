@@ -89,6 +89,22 @@ public abstract class Constant extends Value {
   /**
    * {@inheritDoc}
    *
+   * This method is overwritten in <code>Constant</code> for optimization reasons, because
+   * for example the <code>InfixOperation</code> needs only the string representation of
+   * the <code>BinaryOperator</code>, but no pretty print information and as such, it
+   * suffices to return the constant's string representation directly here, without
+   * going through the pretty printing.
+   * 
+   * @see de.unisiegen.tpml.core.expressions.Expression#toString()
+   */
+  @Override
+  public String toString() {
+    return this.text;
+  }
+  
+  /**
+   * {@inheritDoc}
+   *
    * @see de.unisiegen.tpml.core.expressions.Expression#equals(java.lang.Object)
    */
   @Override
@@ -109,5 +125,4 @@ public abstract class Constant extends Value {
   public int hashCode() {
     return this.text.hashCode() + getClass().hashCode();
   }
-
 }
