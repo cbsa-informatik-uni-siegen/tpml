@@ -63,6 +63,11 @@ interface PrettyPrintPriorities {
   public static final int PRIO_CONDITION_E2 = PRIO_CONDITION;
   
   /**
+   * The pretty print priority for exceptions.
+   */
+  public static final int PRIO_EXN = 2;
+  
+  /**
    * The pretty print priority for lambda expressions.
    */
   public static final int PRIO_LAMBDA = 0;
@@ -86,4 +91,34 @@ interface PrettyPrintPriorities {
    * The pretty print priority for the e2 of let expressions.
    */
   public static final int PRIO_LET_E2 = PRIO_LET;
+  
+  /**
+   * The pretty print priority for infix plus.
+   */
+  public static final int PRIO_PLUS = 3;
+  
+  /**
+   * The pretty print priority for infix minus.
+   */
+  public static final int PRIO_MINUS = PRIO_PLUS;
+  
+  /**
+   * The pretty print priority for infix multiplication.
+   */
+  public static final int PRIO_MULT = 4;
+  
+  /**
+   * The pretty print priority for infix division.
+   */
+  public static final int PRIO_DIV = PRIO_MULT;
+  
+  /**
+   * The pretty print priority for infix modulo.
+   */
+  public static final int PRIO_MOD = PRIO_DIV;
+  
+  /**
+   * The pretty print priority for relational operators (less, greater, equal, ...).
+   */
+  public static final int PRIO_RELATIONAL_OPERATOR = 2;
 }
