@@ -1,8 +1,11 @@
 package de.unisiegen.tpml.core.languages;
 
+import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 
 import de.unisiegen.tpml.core.languages.l0.L0Language;
+import de.unisiegen.tpml.core.languages.l1.L1Language;
+import de.unisiegen.tpml.core.languages.l2.L2Language;
 
 /**
  * Factory class for {@link de.unisiegen.tpml.core.languages.Language}s.
@@ -53,7 +56,25 @@ public final class LanguageFactory {
   public Language[] getAvailableLanguages() {
     return new Language[] {
         new L0Language(),
+        new L1Language(),
+        new L2Language(),
     };
+  }
+  
+  /**
+   * Returns the {@link Language} for the specified <code>file</code>. I.e. if the <code>file</code>
+   * is <tt>"sample.l0"</tt> the language <code>L0</code> will be returned.
+   * 
+   * @param file the file for which to return the {@link Language}.
+   * 
+   * @return the language for the given <code>fileName</code>.
+   * 
+   * @throws NoSuchLanguageException if the <code>file</code> is not recognized.
+   * @throws NullPointerException if <code>file</code> is <code>null</code>.
+   */
+  public Language getLanguageByFile(File file) throws NoSuchLanguageException {
+    String[] components = file.getName().split("\\.");
+    return getLanguageById(components[components.length - 1]);
   }
   
   /**
@@ -61,7 +82,10 @@ public final class LanguageFactory {
    * 
    * @param id the unique identifier of the {@link Language} to return, for example <code>"l1"</code>.
    * 
+   * @return the language with the specified <code>id</code>.
+   * 
    * @throws NoSuchLanguageException if the <code>id</code> does not refer to a valid language.
+   * @throws NullPointerException if <code>id</code> is <code>null</code>.
    */
   public Language getLanguageById(String id) throws NoSuchLanguageException {
     try {
