@@ -1,30 +1,30 @@
-package de.unisiegen.tpml.core.languages.l1;
+package de.unisiegen.tpml.core.languages.l2;
 
 import java_cup.runtime.Symbol;
 import de.unisiegen.tpml.core.languages.LanguageParserException;
 import de.unisiegen.tpml.core.languages.LanguageScanner;
 
 /**
- * The parser class for the <code>L1</code> language.
+ * The parser class for the <code>L2</code> language.
  *
  * @author Benedikt Meurer
  * @version $Id$
  * 
- * @see de.unisiegen.tpml.core.languages.l1.L1AbstractParser
+ * @see de.unisiegen.tpml.core.languages.l2.L2AbstractParser
  */
-final class L1Parser extends L1AbstractParser {
+final class L2Parser extends L2AbstractParser {
   //
   // Constructor (package)
   //
   
   /**
-   * Allocates a new <code>L1Parser</code> that operates on tokens from the specified <code>scanner</code>.
+   * Allocates a new <code>L2Parser</code> that operates on tokens from the specified <code>scanner</code>.
    * 
    * @param scanner the {@link LanguageScanner} to query the tokens from.
    *                
    * @throws NullPointerException if <code>scanner</code> is <code>null</code>.
    */
-  L1Parser(LanguageScanner scanner) {
+  L2Parser(LanguageScanner scanner) {
     super(scanner);
   }
   

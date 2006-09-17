@@ -23,7 +23,7 @@ public class L1LanguageTranslator extends AbstractLanguageTranslator {
    * Allocates a new <code>L1LanguageTranslator</code>.
    */
   public L1LanguageTranslator() {
-    // nothing to do here...
+    super();
   }
   
   
@@ -48,9 +48,9 @@ public class L1LanguageTranslator extends AbstractLanguageTranslator {
       
       // check if we should recurse
       if (recursive) {
-        op = translateToCoreSyntax(op, recursive);
-        e1 = translateToCoreSyntax(e1, recursive);
-        e2 = translateToCoreSyntax(e2, recursive);
+        op = translateToCoreSyntax(op, true);
+        e1 = translateToCoreSyntax(e1, true);
+        e2 = translateToCoreSyntax(e2, true);
       }
       
       // generate the applications

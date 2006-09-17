@@ -9,9 +9,14 @@ import de.unisiegen.tpml.core.expressions.BinaryOperator;
 import de.unisiegen.tpml.core.expressions.BinaryOperatorException;
 import de.unisiegen.tpml.core.expressions.BooleanConstant;
 import de.unisiegen.tpml.core.expressions.Condition;
+import de.unisiegen.tpml.core.expressions.CurriedLet;
+import de.unisiegen.tpml.core.expressions.CurriedLetRec;
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.expressions.InfixOperation;
+import de.unisiegen.tpml.core.expressions.Lambda;
 import de.unisiegen.tpml.core.expressions.Let;
+import de.unisiegen.tpml.core.expressions.LetRec;
+import de.unisiegen.tpml.core.expressions.Recursion;
 import de.unisiegen.tpml.core.languages.l0.L0BigStepProofRuleSet;
 import de.unisiegen.tpml.core.languages.l0.L0Language;
 
@@ -29,7 +34,7 @@ public class L1BigStepProofRuleSet extends L0BigStepProofRuleSet {
   //
   
   /**
-   * Allocates a new <code>L0BigStepProofRuleSet</code> with the specified
+   * Allocates a new <code>L1BigStepProofRuleSet</code> with the specified
    * <code>language</code>, which is the <b>L0</b> or a derived language.
    * 
    * @param language the language for the proof rule set.
@@ -139,9 +144,39 @@ public class L1BigStepProofRuleSet extends L0BigStepProofRuleSet {
    * @param node the node to apply the <b>(LET)</b> rule to.
    */
   public void applyLet(BigStepProofContext context, BigStepProofNode node) {
-    // add the proof node
-    Let let = (Let)node.getExpression();
-    context.addProofNode(node, let.getE1());
+    Expression e = node.getExpression();
+    if (e instanceof CurriedLet || e instanceof CurriedLetRec) {
+      // determine the first sub expression
+      CurriedLet curriedLet = (CurriedLet)e;
+      Expression e1 = curriedLet.getE1();
+      
+      // generate the appropriate lambda abstractions
+      String[] identifiers = curriedLet.getIdentifiers();
+      for (int n = identifiers.length - 1; n > 0; --n) {
+        e1 = new Lambda(identifiers[n], e1);
+      }
+      
+      // add the recursion for letrec
+      if (e instanceof CurriedLetRec) {
+        e1 = new Recursion(identifiers[0], e1);
+      }
+      
+      // add the proof node
+      context.addProofNode(node, e1);
+    }
+    else {
+      // determine the first sub expression
+      Let let = (Let)e;
+      Expression e1 = let.getE1();
+      
+      // add the recursion for letrec
+      if (e instanceof LetRec) {
+        e1 = new Recursion(let.getId(), e1);
+      }
+      
+      // add the proof node
+      context.addProofNode(node, e1);
+    }
   }
   
   /**
@@ -153,9 +188,23 @@ public class L1BigStepProofRuleSet extends L0BigStepProofRuleSet {
   public void updateLet(BigStepProofContext context, BigStepProofNode node) {
     // check if we have exactly one proven child node
     if (node.getChildCount() == 1 && node.getChildAt(0).isProven()) {
-      // add a proof node for e2
-      Let let = (Let)node.getExpression();
-      context.addProofNode(node, let.getE2().substitute(let.getId(), node.getChildAt(0).getResult().getValue()));
+      // determine the value of the first child node
+      Expression value0 = node.getChildAt(0).getResult().getValue();
+      
+      // determine the expression for the node
+      Expression e = node.getExpression();
+      
+      // check the expression type
+      if (e instanceof CurriedLet) {
+        // add a proof node for e2 (CurriedLet/CurriedLetRec)
+        CurriedLet curriedLet = (CurriedLet)e;
+        context.addProofNode(node, curriedLet.getE2().substitute(curriedLet.getIdentifiers()[0], value0));
+      }
+      else {
+        // add a proof node for e2 (Let/LetRec)
+        Let let = (Let)e;
+        context.addProofNode(node, let.getE2().substitute(let.getId(), value0));
+      }
     }
     else if (node.getChildCount() == 2) {
       // forward the result of the second child node

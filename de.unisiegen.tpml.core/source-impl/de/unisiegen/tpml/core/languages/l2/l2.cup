@@ -1,0 +1,147 @@
+import de.unisiegen.tpml.core.expressions.*;
+
+
+/* Binary operators */
+terminal			PLUS, MINUS, STAR, SLASH, MOD;
+terminal			EQUAL, LESS, GREATER, LESSEQUAL, GREATEREQUAL;
+
+/* Syntactic tokens */
+terminal			DOT;
+terminal			LPAREN, RPAREN;
+terminal			PARENPAREN;
+
+/* Keywords */
+terminal			LAMBDA, LET, REC, IN, IF, THEN, ELSE;
+terminal			TRUE, FALSE;
+
+/* Special tokens */
+terminal Integer	NUMBER;
+terminal String		IDENTIFIER;
+terminal			COMMENT;
+
+
+/* Non-Terminals */
+non terminal Expression		expr;
+non terminal Expression		simple_expr;
+non terminal Expression[]	simple_expr_list;
+non terminal Expression		constant;
+non terminal Expression		operator;
+non terminal String[]		id_list;			/* list of identifiers without any separator */
+
+
+/* Precedences, based on http://caml.inria.fr/pub/docs/manual-ocaml/manual015.html */
+precedence left		EQUAL, LESS, GREATER, LESSEQUAL, GREATEREQUAL;
+precedence left		PLUS, MINUS;
+precedence left		STAR, SLASH, MOD;
+
+
+
+/***************
+ * Expressions *
+ ***************/
+
+
+expr				::=	simple_expr:e
+						{: RESULT = e; :}
+				
+					/* Applications */
+					|	simple_expr:e simple_expr_list:l
+						{: for (int n = 0; n < l.length; ++n) {
+						     e = new Application(e, l[n]);
+						   }
+						   RESULT = e; :}
+
+					/* Infix Operations */
+					|	expr:e1 PLUS expr:e2
+						{: RESULT = new InfixOperation(ArithmeticOperator.PLUS, e1, e2); :}
+					|	expr:e1 MINUS expr:e2
+						{: RESULT = new InfixOperation(ArithmeticOperator.MINUS, e1, e2); :}
+					|	expr:e1 STAR expr:e2
+						{: RESULT = new InfixOperation(ArithmeticOperator.MULT, e1, e2); :}
+					|	expr:e1 SLASH expr:e2
+						{: RESULT = new InfixOperation(ArithmeticOperator.DIV, e1, e2); :}
+					|	expr:e1 MOD expr:e2
+						{: RESULT = new InfixOperation(ArithmeticOperator.MOD, e1, e2); :}
+
+					|	expr:e1 EQUAL expr:e2
+						{: RESULT = new InfixOperation(RelationalOperator.EQUALS, e1, e2); :}
+					|	expr:e1 LESS expr:e2
+						{: RESULT = new InfixOperation(RelationalOperator.LOWER_THAN, e1, e2); :}
+					|	expr:e1 GREATER expr:e2
+						{: RESULT = new InfixOperation(RelationalOperator.GREATER_THAN, e1, e2); :}
+					|	expr:e1 LESSEQUAL expr:e2
+						{: RESULT = new InfixOperation(RelationalOperator.LOWER_EQUAL, e1, e2); :}
+					|	expr:e1 GREATEREQUAL expr:e2
+						{: RESULT = new InfixOperation(RelationalOperator.GREATER_EQUAL, e1, e2); :}
+
+					/* Conditions */
+					|	IF expr:e0 THEN expr:e1 ELSE expr:e2
+						{: RESULT = new Condition(e0, e1, e2); :}
+
+					/* Lambda Abstraction */
+					|	LAMBDA IDENTIFIER:id DOT expr:e
+						{: RESULT = new Lambda(id, e); :}
+
+					/* Let */
+					|	LET IDENTIFIER:id EQUAL expr:e1 IN expr:e2
+						{: RESULT = new Let(id, e1, e2); :}
+
+					/* Recursion */				
+					|	REC IDENTIFIER:id DOT expr:e
+						{: RESULT = new Recursion(id, e); :}
+					|	LET REC id_list:il EQUAL expr:e1 IN expr:e2
+						{: RESULT = (il.length == 1) ? new LetRec(il[0], e1, e2) : new CurriedLetRec(il, e1, e2); :}
+					;
+
+
+simple_expr			::=	constant:c
+						{: RESULT = c; :}
+					|	IDENTIFIER:id
+						{: RESULT = new Identifier(id); :}
+
+					/* Parenthized operators/expressions */
+					|	LPAREN operator:o RPAREN
+						{: RESULT = o; :}
+					|	LPAREN expr:e RPAREN
+						{: RESULT = e; :}
+					;
+
+
+/* for applications */
+simple_expr_list	::=	simple_expr:e
+						{: RESULT = new Expression[] { e }; :}
+					|	simple_expr_list:l simple_expr:e
+						{: RESULT = new Expression[l.length + 1];
+						   System.arraycopy(l, 0, RESULT, 0, l.length);
+						   RESULT[l.length] = e; :}
+					;
+
+
+constant			::=	PARENPAREN		{: RESULT = UnitConstant.UNIT; :}
+					|	TRUE			{: RESULT = BooleanConstant.TRUE; :}
+					|	FALSE			{: RESULT = BooleanConstant.FALSE; :}
+					|	NUMBER:n		{: RESULT = new IntegerConstant(n.intValue()); :}
+					;
+
+
+operator			::=	PLUS			{: RESULT = ArithmeticOperator.PLUS; :}
+					|	MINUS			{: RESULT = ArithmeticOperator.MINUS; :}
+					|	STAR			{: RESULT = ArithmeticOperator.MULT; :}
+					|	SLASH			{: RESULT = ArithmeticOperator.DIV; :}
+					|	MOD				{: RESULT = ArithmeticOperator.MOD; :}
+					|	EQUAL			{: RESULT = RelationalOperator.EQUALS; :}
+					|	LESS			{: RESULT = RelationalOperator.LOWER_THAN; :}
+					|	GREATER			{: RESULT = RelationalOperator.GREATER_THAN; :}
+					|	LESSEQUAL		{: RESULT = RelationalOperator.LOWER_EQUAL; :}
+					|	GREATEREQUAL	{: RESULT = RelationalOperator.GREATER_EQUAL; :}
+					;
+
+
+id_list				::=	id_list:l IDENTIFIER:id
+						{: RESULT = new String[l.length + 1];
+						   System.arraycopy(l, 0, RESULT, 0, l.length);
+						   RESULT[l.length] = id; :}
+					|	IDENTIFIER:id
+						{: RESULT = new String[] { id }; :}
+					;
+

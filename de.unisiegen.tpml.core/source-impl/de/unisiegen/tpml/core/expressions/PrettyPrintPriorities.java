@@ -93,6 +93,16 @@ interface PrettyPrintPriorities {
   public static final int PRIO_LET_E2 = PRIO_LET;
   
   /**
+   * The pretty print priority for recursions.
+   */
+  public static final int PRIO_REC = 0;
+  
+  /**
+   * The pretty print priority for the e of recursions.
+   */
+  public static final int PRIO_REC_E = PRIO_REC;
+  
+  /**
    * The pretty print priority for infix plus.
    */
   public static final int PRIO_PLUS = 3;

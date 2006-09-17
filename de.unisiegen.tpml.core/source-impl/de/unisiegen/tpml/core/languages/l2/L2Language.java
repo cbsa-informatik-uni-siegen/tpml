@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.core.languages.l1;
+package de.unisiegen.tpml.core.languages.l2;
 
 import java.io.Reader;
 
@@ -8,12 +8,12 @@ import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.languages.LanguageParser;
 import de.unisiegen.tpml.core.languages.LanguageScanner;
 import de.unisiegen.tpml.core.languages.LanguageTranslator;
-import de.unisiegen.tpml.core.languages.l0.L0Language;
+import de.unisiegen.tpml.core.languages.l1.L1Language;
 import de.unisiegen.tpml.core.smallstep.SmallStepProofModel;
 
 /**
- * This class represents the language L1, which serves as a factory class for L1 related functionality,
- * which extends the L0 language.
+ * This class represents the language L2, which serves as a factory class for L2 related functionality,
+ * which extends the L1 language.
  *
  * @author Benedikt Meurer
  * @version $Id$
@@ -23,21 +23,22 @@ import de.unisiegen.tpml.core.smallstep.SmallStepProofModel;
  * @see de.unisiegen.tpml.core.languages.LanguageScanner
  * @see de.unisiegen.tpml.core.languages.LanguageTranslator
  * @see de.unisiegen.tpml.core.languages.l0.L0Language
+ * @see de.unisiegen.tpml.core.languages.l1.L1Language
  */
-public class L1Language extends L0Language {
+public class L2Language extends L1Language {
   //
   // Constructor
   //
   
   /**
-   * Allocates a new <code>L1Language</code> instance.
+   * Allocates a new <code>L2Language</code> instance.
    */
-  public L1Language() {
+  public L2Language() {
     super();
   }
   
   
-  
+
   //
   // Accessors
   //
@@ -59,7 +60,7 @@ public class L1Language extends L0Language {
    */
   @Override
   public String getName() {
-    return "L1";
+    return "L2";
   }
   
   /**
@@ -69,7 +70,7 @@ public class L1Language extends L0Language {
    */
   @Override
   public String getTitle() {
-    return "Applied untyped λ calculus";
+    return "Applied untyped λ calculus with recursion";
   }
   
   
@@ -85,7 +86,7 @@ public class L1Language extends L0Language {
    */
   @Override
   public BigStepProofModel newBigStepProofModel(Expression expression) {
-    return new BigStepProofModel(expression, new L1BigStepProofRuleSet(this));
+    return new BigStepProofModel(expression, new L2BigStepProofRuleSet(this));
   }
   
   /**
@@ -95,7 +96,7 @@ public class L1Language extends L0Language {
    */
   @Override
   public SmallStepProofModel newSmallStepProofModel(Expression expression) {
-    return new SmallStepProofModel(expression, new L1SmallStepProofRuleSet(this));
+    return new SmallStepProofModel(expression, new L2SmallStepProofRuleSet(this));
   }
   
   /**
@@ -108,7 +109,7 @@ public class L1Language extends L0Language {
    if (scanner == null) {
      throw new NullPointerException("scanner is null");
    }
-   final lr_parser parser = new L1Parser(scanner);
+   final lr_parser parser = new L2Parser(scanner);
    return new LanguageParser() {
      public Expression parse() throws Exception {
        return (Expression)parser.parse().value;
@@ -126,7 +127,7 @@ public class L1Language extends L0Language {
     if (reader == null) {
       throw new NullPointerException("reader is null");
     }
-    return new L1Scanner(reader);
+    return new L2Scanner(reader);
   }
   
   /**
@@ -136,6 +137,6 @@ public class L1Language extends L0Language {
    */
   @Override
   public LanguageTranslator newTranslator() {
-    return new L1LanguageTranslator();
+    return new L2LanguageTranslator();
   }
 }

@@ -55,7 +55,7 @@ public class L1SmallStepProofRuleSet extends L0SmallStepProofRuleSet {
   //
   
   /**
-   * TODO Add documentation here.
+   * The <code>apply()</code> method for applications, used to handle binary operators.
    * 
    * @param context the small step proof context.
    * @param application
