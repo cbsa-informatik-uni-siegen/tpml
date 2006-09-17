@@ -6,11 +6,13 @@ import de.unisiegen.tpml.core.types.Type;
 import de.unisiegen.tpml.core.util.AbstractEnvironment;
 
 /**
- * TODO Add documentation here.
+ * Default implementation of the <code>TypeEnvironment</code> interface.
  *
  * @author Benedikt Meurer
  * @version $Id$
  *
+ * @see de.unisiegen.tpml.core.typechecker.TypeEnvironment
+ * @see de.unisiegen.tpml.core.util.AbstractEnvironment
  */
 final class DefaultTypeEnvironment extends AbstractEnvironment<String, Type> implements TypeEnvironment {
   //

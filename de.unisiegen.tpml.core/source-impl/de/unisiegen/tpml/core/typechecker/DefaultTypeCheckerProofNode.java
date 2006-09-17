@@ -4,6 +4,7 @@ import javax.swing.tree.TreeNode;
 
 import de.unisiegen.tpml.core.AbstractProofNode;
 import de.unisiegen.tpml.core.expressions.Expression;
+import de.unisiegen.tpml.core.types.MonoType;
 
 /**
  * Default implementation of the <code>TypeCheckerProofNode</code> interface. The class for nodes
@@ -17,18 +18,74 @@ import de.unisiegen.tpml.core.expressions.Expression;
  */
 final class DefaultTypeCheckerProofNode extends AbstractProofNode implements TypeCheckerProofNode {
   //
+  // Attributes
+  //
+  
+  /**
+   * The type environment for this type checker proof node.
+   * 
+   * @see #getEnvironment()
+   */
+  private TypeEnvironment environment;
+  
+  /**
+   * The type for this type node, which is either a type variable or a monorphic type.
+   * 
+   * @see #getType()
+   */
+  private MonoType type;
+  
+  
+  
+  //
   // Constructor (package)
   //
   
   /**
-   * Allocates a new <code>DefaultTypeCheckerProofNode</code> with the specified <code>expression</code>.
+   * Allocates a new <code>DefaultTypeCheckerProofNode</code> with the specified <code>environment</code>,
+   * <code>expression</code> and <code>type</code>.
    * 
+   * @param environment the {@link TypeEnvironment} for this node.
    * @param expression the {@link Expression} for this node.
+   * @param type the {@link de.unisiegen.tpml.core.types.TypeVariable} or concrete type for this node.
    * 
-   * @throws NullPointerException if <code>expression</code> is <code>null</code>.
+   * @throws NullPointerException if <code>environment</code>, <code>expression</code> or <code>type</code>
+   *                              is <code>null</code>.
    */
-  DefaultTypeCheckerProofNode(Expression expression) {
+  DefaultTypeCheckerProofNode(TypeEnvironment environment, Expression expression, MonoType type) {
     super(expression);
+    if (environment == null) {
+      throw new NullPointerException("environment is null");
+    }
+    if (type == null) {
+      throw new NullPointerException("type is null");
+    }
+    this.environment = environment;
+    this.type = type;
+  }
+  
+  
+  
+  //
+  // Accessors
+  //
+  
+  /**
+   * {@inheritDoc}
+   *
+   * @see de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode#getEnvironment()
+   */
+  public TypeEnvironment getEnvironment() {
+    return this.environment;
+  }
+  
+  /**
+   * {@inheritDoc}
+   *
+   * @see de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode#getType()
+   */
+  public MonoType getType() {
+    return this.type;
   }
   
   

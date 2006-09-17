@@ -11,8 +11,8 @@ import de.unisiegen.tpml.core.expressions.Expression;
 
 /**
  * The heart of the type checker. Type checker proof rules are supplied via an
- * {@link de.unisiegen.tpml.core.typechecker.AbstractTypeCheckerProofRuleSet} that
- * is passed to the constructor.
+ * {@link de.unisiegen.tpml.core.typechecker.AbstractTypeCheckerProofRuleSet}
+ * that is passed to the constructor.
  *
  * @author Benedikt Meurer
  * @version $Id$
@@ -39,7 +39,7 @@ public final class TypeCheckerProofModel extends AbstractProofModel {
    * @see AbstractProofModel#AbstractProofModel(AbstractProofNode, AbstractProofRuleSet)
    */
   public TypeCheckerProofModel(Expression expression, AbstractTypeCheckerProofRuleSet ruleSet) {
-    super(new DefaultTypeCheckerProofNode(expression), ruleSet);
+    super(new DefaultTypeCheckerProofNode(new DefaultTypeEnvironment(), expression, /*FIXME*/null), ruleSet);
   }
   
   
