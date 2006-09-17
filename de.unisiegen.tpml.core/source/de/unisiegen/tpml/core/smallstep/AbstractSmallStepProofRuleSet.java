@@ -7,11 +7,12 @@ import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.languages.Language;
 
 /**
- * TODO Add documentation here.
+ * Abstract base class for small step proof rule sets.
  *
  * @author Benedikt Meurer
  * @version $Id$
  *
+ * @see de.unisiegen.tpml.core.AbstractProofRuleSet
  */
 public abstract class AbstractSmallStepProofRuleSet extends AbstractProofRuleSet {
   //
@@ -106,14 +107,17 @@ public abstract class AbstractSmallStepProofRuleSet extends AbstractProofRuleSet
   }
   
   /**
-   * TODO Add documentation here.
+   * Looks up the method with the given <code>baseName</code> and <code>clazz</code>. I.e.
+   * if <code>baseName</code> is <tt>"apply"</tt> and <code>clazz</code> is <tt>Application</tt>,
+   * the method <code>applyApplication()</code> will be looked up.
    * 
-   * @param baseName
-   * @param clazz
+   * @param baseName the basename of the method.
+   * @param clazz class whose name is used in the method name.
    * 
-   * @return
+   * @return the {@link Method} object.
    * 
-   * @throws NoSuchMethodException
+   * @throws NoSuchMethodException if the method cannot be found.
+   * @throws NullPointerException if <code>baseName</code> or <code>clazz</code> is <code>null</code>.
    */
   protected Method lookupMethod(String baseName, Class clazz) throws NoSuchMethodException {
     // try for this class and all super classes up to Expression
