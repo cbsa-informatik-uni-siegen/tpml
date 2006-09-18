@@ -30,8 +30,13 @@ public abstract class AbstractProofRule implements ProofRule {
    * Allocates a new <code>AbstractProofRule</code> with the specified <code>name</code>.
    * 
    * @param name the name of the proof rule.
+   * 
+   * @throws NullPointerException if <code>name</code> is <code>null</code>.
    */
   protected AbstractProofRule(String name) {
+    if (name == null) {
+      throw new NullPointerException("name is null");
+    }
     this.name = name;
   }
   

@@ -34,6 +34,19 @@ public interface TypeCheckerProofNode extends ProofNode {
    */
   public MonoType getType();
   
+  /**
+   * Convenience wrapper for the {@link ProofNode#getSteps()} method, which returns the
+   * <code>TypeCheckerProofRule</code> that was applied to this node or <code>null</code>
+   * if no rule was applied to this node so far.
+   * 
+   * @return the type proof rule that was applied to this node, or <code>null</code> if
+   *         no rule was applied to this node.
+   *
+   * @see TypeCheckerProofRule
+   * @see de.unisiegen.tpml.core.ProofStep
+   */
+  public TypeCheckerProofRule getRule();
+  
   
   
   //

@@ -18,13 +18,19 @@ public abstract class AbstractEnvironment<S, E> implements Environment<S, E> {
   //
   
   /**
-   * The store mappings, mapping locations to values.
+   * The store mappings, mapping symbols to entries.
    */
   protected static class Mapping<S, E> {
     private S symbol;
     private E entry;
     
     public Mapping(S symbol, E entry) {
+      if (symbol == null) {
+        throw new NullPointerException("symbol is null");
+      }
+      if (entry == null) {
+        throw new NullPointerException("entry is null");
+      }
       this.symbol = symbol;
       this.entry = entry;
     }

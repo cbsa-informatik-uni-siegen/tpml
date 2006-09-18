@@ -82,6 +82,27 @@ final class TypeEquation {
   
   
   //
+  // Primitives
+  //
+  
+  /**
+   * Applies the {@link TypeSubstitution} <code>s</code> to the types on both sides of the equation and
+   * returns the resulting equation.
+   * 
+   * @param s the {@link TypeSubstitution} to apply.
+   * 
+   * @return the resulting {@link TypeEquation}.
+   * 
+   * @see de.unisiegen.tpml.core.types.Type#substitute(TypeSubstitution)
+   */
+  TypeEquation substitute(TypeSubstitution s) {
+    // apply the substitution to the left and the right side
+    return new TypeEquation(this.left.substitute(s), this.right.substitute(s));
+  }
+  
+
+  
+  //
   // Base methods
   //
   

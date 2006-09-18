@@ -75,4 +75,24 @@ final class DefaultTypeEnvironment extends AbstractEnvironment<String, Type> imp
     environment.put(identifier, type);
     return environment;
   }
+  
+  /**
+   * {@inheritDoc}
+   *
+   * @see de.unisiegen.tpml.core.typechecker.TypeEnvironment#substitute(de.unisiegen.tpml.core.typechecker.TypeSubstitution)
+   */
+  public TypeEnvironment substitute(TypeSubstitution s) {
+    // create a new environment with the (possibly) new types
+    DefaultTypeEnvironment environment = new DefaultTypeEnvironment();
+    for (Mapping<String, Type> mapping : this.mappings) {
+      Type newType = mapping.getEntry().substitute(s);
+      if (!newType.equals(mapping.getEntry())) {
+        environment.mappings.add(new Mapping<String, Type>(mapping.getSymbol(), newType));
+      }
+      else {
+        environment.mappings.add(mapping);
+      }
+    }
+    return environment;
+  }
 }

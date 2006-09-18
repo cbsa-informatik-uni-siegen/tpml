@@ -376,6 +376,22 @@ public abstract class AbstractProofNode implements ProofNode {
     return (getParent() == null);
   }
 
+  /**
+   * Creates and returns an enumeration that traverses the subtree rooted at this node in postorder. The first
+   * node returned by the enumeration's <code>nextElement()</code> method is the leftmost leaf. This is the same
+   * as a depth-first traversal.
+   *
+   * Modifying the tree by inserting, removing, or moving a node invalidates any enumerations created before the
+   * modification.
+   *
+   * @return an enumeration for traversing the tree in post-order.
+   * 
+   * @see PostorderEnumeration
+   */
+  public Enumeration postorderEnumeration() {
+    return new PostorderEnumeration(this);
+  }
+
   
   
   //
@@ -647,6 +663,52 @@ public abstract class AbstractProofNode implements ProofNode {
     AbstractProofNode parent = getParent();
     if (parent != null) {
       parent.remove(this);
+    }
+  }
+  
+  
+  //
+  // Internal classes
+  //
+  
+  /**
+   * Implementation class for the {@link AbstractProofNode#postorderEnumeration()} method, which
+   * enumerates the nodes below a given abstract proof node in post-order.
+   * 
+   * @see AbstractProofNode#postorderEnumeration()
+   */
+  private static final class PostorderEnumeration implements Enumeration<AbstractProofNode> {
+    protected AbstractProofNode root;
+    protected Enumeration children;
+    protected Enumeration subtree;
+
+    PostorderEnumeration(AbstractProofNode root) {
+        super();
+        this.root = root;
+        this.children = root.children();
+        this.subtree = EMPTY_ENUMERATION;
+    }
+
+    public boolean hasMoreElements() {
+        return (this.root != null);
+    }
+
+    public AbstractProofNode nextElement() {
+        AbstractProofNode node;
+
+        if (this.subtree.hasMoreElements()) {
+          node = (AbstractProofNode)this.subtree.nextElement();
+        }
+        else if (this.children.hasMoreElements()) {
+          this.subtree = new PostorderEnumeration((AbstractProofNode)this.children.nextElement());
+          node = (AbstractProofNode)this.subtree.nextElement();
+        }
+        else {
+          node = this.root;
+          this.root = null;
+        }
+
+        return node;
     }
   }
 }

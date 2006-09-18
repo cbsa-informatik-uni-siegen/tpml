@@ -5,6 +5,7 @@ import java.util.TreeSet;
 
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
+import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
 
 /**
  * This class represents type variables in our type system.
@@ -157,7 +158,7 @@ public final class TypeVariable extends MonoType {
     }
     // perform the substitution on this type variable
     MonoType tau = substitution.get(this);
-    if (tau instanceof TypeVariable && !tau.equals(this)) {
+    if (!tau.equals(this)) {
       // another type variable, substitute again
       tau = tau.substitute(substitution);
     }

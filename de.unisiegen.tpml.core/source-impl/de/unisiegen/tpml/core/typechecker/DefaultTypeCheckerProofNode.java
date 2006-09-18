@@ -3,6 +3,7 @@ package de.unisiegen.tpml.core.typechecker;
 import javax.swing.tree.TreeNode;
 
 import de.unisiegen.tpml.core.AbstractProofNode;
+import de.unisiegen.tpml.core.ProofStep;
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.types.MonoType;
 
@@ -25,6 +26,7 @@ final class DefaultTypeCheckerProofNode extends AbstractProofNode implements Typ
    * The type environment for this type checker proof node.
    * 
    * @see #getEnvironment()
+   * @see #setEnvironment(TypeEnvironment)
    */
   private TypeEnvironment environment;
   
@@ -32,6 +34,7 @@ final class DefaultTypeCheckerProofNode extends AbstractProofNode implements Typ
    * The type for this type node, which is either a type variable or a monorphic type.
    * 
    * @see #getType()
+   * @see #setType(MonoType)
    */
   private MonoType type;
   
@@ -54,14 +57,8 @@ final class DefaultTypeCheckerProofNode extends AbstractProofNode implements Typ
    */
   DefaultTypeCheckerProofNode(TypeEnvironment environment, Expression expression, MonoType type) {
     super(expression);
-    if (environment == null) {
-      throw new NullPointerException("environment is null");
-    }
-    if (type == null) {
-      throw new NullPointerException("type is null");
-    }
-    this.environment = environment;
-    this.type = type;
+    setEnvironment(environment);
+    setType(type);
   }
   
   
@@ -80,12 +77,59 @@ final class DefaultTypeCheckerProofNode extends AbstractProofNode implements Typ
   }
   
   /**
+   * Sets the type environment for this proof node to <code>environment</code>.
+   * 
+   * @param environment the new type environment for this node.
+   * 
+   * @throws NullPointerException if <code>environment</code> is <code>null</code>.
+   * 
+   * @see #getEnvironment()
+   */
+  void setEnvironment(TypeEnvironment environment) {
+    if (environment == null) {
+      throw new NullPointerException("environment is null");
+    }
+    this.environment = environment;
+  }
+  
+  /**
    * {@inheritDoc}
    *
    * @see de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode#getType()
    */
   public MonoType getType() {
     return this.type;
+  }
+  
+  /**
+   * Sets the type of this proof node to <code>type</code>.
+   * 
+   * @param type the new type for this proof node.
+   * 
+   * @throws NullPointerException if <code>type</code> is <code>null</code>.
+   * 
+   * @see #getType()
+   */
+  void setType(MonoType type) {
+    if (type == null) {
+      throw new NullPointerException("type is null");
+    }
+    this.type = null;
+  }
+  
+  /**
+   * {@inheritDoc}
+   *
+   * @see de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode#getRule()
+   */
+  public TypeCheckerProofRule getRule() {
+    ProofStep[] steps = getSteps();
+    if (steps.length > 0) {
+      return (TypeCheckerProofRule)steps[0].getRule();
+    }
+    else {
+      return null;
+    }
   }
   
   

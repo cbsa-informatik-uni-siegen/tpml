@@ -12,7 +12,7 @@ import de.unisiegen.tpml.core.ProofRuleException;
  * @see de.unisiegen.tpml.core.bigstep.BigStepProofRule
  * @see de.unisiegen.tpml.core.AbstractProofRule
  */
-public abstract class AbstractBigStepProofRule extends AbstractProofRule implements BigStepProofRule {
+abstract class AbstractBigStepProofRule extends AbstractProofRule implements BigStepProofRule {
   //
   // Constructor (package)
   //
@@ -21,6 +21,8 @@ public abstract class AbstractBigStepProofRule extends AbstractProofRule impleme
    * Allocates a new <code>AbstractBigStepProofRule</code> of the specified <code>name</code>.
    * 
    * @param name the name of the big step proof rule to allocate.
+   * 
+   * @throws NullPointerException if <code>name</code> is <code>null</code>.
    * 
    * @see AbstractProofRule#AbstractProofRule(String)
    */

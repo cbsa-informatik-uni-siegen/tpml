@@ -46,7 +46,7 @@ public abstract class AbstractBigStepProofRuleSet extends AbstractProofRuleSet {
    * for the big step interpreter, the <b>(APP)</b> must be registered first.
    * 
    * @param name the name of the big step proof rule to create.
-   * @param applyMethod the implementation of the apply method for the
+   * @param applyMethod the implementation of the apply method for the big step interpreter.
    * 
    * @throws NullPointerException if <code>name</code> or <code>applyMethod</code> is <code>null</code>.
    * 

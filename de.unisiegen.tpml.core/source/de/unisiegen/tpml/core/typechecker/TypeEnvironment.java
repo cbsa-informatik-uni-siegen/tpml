@@ -52,4 +52,19 @@ public interface TypeEnvironment extends Environment<String, Type> {
    * @throws NullPointerException if <code>identifier</code> or <code>type</code> is <code>null</code>.
    */
   public TypeEnvironment extend(String identifier, Type type);
+  
+  /**
+   * Applies the substitution <code>s</code> to all types in this type environment and returns the
+   * new <code>TypeEnvironment</code>, which may be equal to this type environment if <code>s</code>
+   * did not change any of the types within.
+   * 
+   * @param s the {@link TypeSubstitution} to apply.
+   * 
+   * @return the resulting {@link TypeEnvironment}.
+   * 
+   * @throws NullPointerException if <code>s</code> is <code>null</code>.
+   * 
+   * @see Type#substitute(TypeSubstitution)
+   */
+  public TypeEnvironment substitute(TypeSubstitution s);
 }

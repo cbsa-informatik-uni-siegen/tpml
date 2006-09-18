@@ -1,5 +1,7 @@
 package de.unisiegen.tpml.core.types;
 
+import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
+
 /**
  * Abstract base class for monomorphic types.
  *
