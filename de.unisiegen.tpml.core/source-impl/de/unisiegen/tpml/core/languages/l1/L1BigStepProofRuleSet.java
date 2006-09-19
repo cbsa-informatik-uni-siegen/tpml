@@ -171,7 +171,8 @@ public class L1BigStepProofRuleSet extends L0BigStepProofRuleSet {
       
       // add the recursion for letrec
       if (e instanceof LetRec) {
-        e1 = new Recursion(let.getId(), null, e1);
+        LetRec letRec = (LetRec)e;
+        e1 = new Recursion(letRec.getId(), letRec.getTau(), e1);
       }
       
       // add the proof node

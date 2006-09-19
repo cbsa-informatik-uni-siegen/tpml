@@ -67,15 +67,21 @@ public class L1TypeCheckerProofRuleSet extends AbstractTypeCheckerProofRuleSet {
    * @param node the type checker proof node.
    */
   public void applyAbstr(TypeCheckerProofContext context, TypeCheckerProofNode node) {
-    // generate new type variables
-    TypeVariable tau1 = context.newTypeVariable();
+    // determine the type for the parameter 
+    Lambda lambda = (Lambda)node.getExpression();
+    MonoType tau1 = lambda.getTau();
+    if (tau1 == null) {
+      // need a new type variable
+      tau1 = context.newTypeVariable();
+    }
+    
+    // generate a new type variable for the result
     TypeVariable tau2 = context.newTypeVariable();
     
     // add type equations for tau and tau1->tau2
     context.addEquation(node.getType(), new ArrowType(tau1, tau2));
     
     // generate a new child node
-    Lambda lambda = (Lambda)node.getExpression();
     TypeEnvironment environment = node.getEnvironment();
     context.addProofNode(node, environment.extend(lambda.getId(), tau1), lambda.getE(), tau2);
   }
@@ -179,9 +185,6 @@ public class L1TypeCheckerProofRuleSet extends AbstractTypeCheckerProofRuleSet {
    * @param node the type checker proof node.
    */
   public void applyLet(TypeCheckerProofContext context, TypeCheckerProofNode node) {
-    // generate a new type variable
-    TypeVariable tau1 = context.newTypeVariable();
-    
     // determine the type environment
     TypeEnvironment environment = node.getEnvironment();
     
@@ -192,9 +195,25 @@ public class L1TypeCheckerProofRuleSet extends AbstractTypeCheckerProofRuleSet {
       Let let = (Let)expression;
       Expression e1 = let.getE1();
       
+      // the type for the id, either a type specified 
+      // in the let rec or a new type variable
+      MonoType tau1 = null;
+      
       // add the recursion for let rec
       if (expression instanceof LetRec) {
+        // check if a type was specified
+        LetRec letRec = (LetRec)expression;
+        tau1 = letRec.getTau();
+        if (tau1 == null) {
+          tau1 = context.newTypeVariable();
+        }
+        
+        // add the recursion for e1
         e1 = new Recursion(let.getId(), tau1, e1);
+      }
+      else {
+        // generate a new type variable
+        tau1 = context.newTypeVariable();
       }
       
       // add the child nodes
@@ -202,6 +221,9 @@ public class L1TypeCheckerProofRuleSet extends AbstractTypeCheckerProofRuleSet {
       context.addProofNode(node, environment.extend(let.getId(), tau1), let.getE2(), node.getType());
     }
     else {
+      // generate a new type variable
+      TypeVariable tau1 = context.newTypeVariable();
+      
       // determine the first sub expression
       CurriedLet curriedLet = (CurriedLet)expression;
       Expression e1 = curriedLet.getE1();

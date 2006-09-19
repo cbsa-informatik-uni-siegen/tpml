@@ -6,6 +6,7 @@ import java.util.TreeSet;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
+import de.unisiegen.tpml.core.types.MonoType;
 
 /**
  * Represents the <code>let rec</code> expression, which is syntactic sugar for <b>(LET)</b> and <b>(REC)</b>.
@@ -22,20 +23,51 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
  */
 public final class LetRec extends Let {
   //
+  // Attributes
+  //
+  
+  /**
+   * The type for the identifier or <code>null</code>.
+   * 
+   * @see #getTau()
+   */
+  private MonoType tau;
+  
+  
+  
+  //
   // Constructor
   //
   
   /**
-   * Allocates a new <code>LetRec</code> with the given <code>id</code>, <code>e1</code> and <code>e2</code>.
+   * Allocates a new <code>LetRec</code> with the given <code>id</code>, <code>tau</code>,
+   * <code>e1</code> and <code>e2</code>.
    * 
    * @param id the name of the identifier.
+   * @param tau the type for <code>id</code> or <code>null</code>.
    * @param e1 the first expression.
    * @param e2 the second expression.
    * 
    * @throws NullPointerException if <code>id</code>, <code>e1</code> or <code>e2</code> is <code>null</code>.
    */
-  public LetRec(String id, Expression e1, Expression e2) {
+  public LetRec(String id, MonoType tau, Expression e1, Expression e2) {
     super(id, e1, e2);
+    this.tau = tau;
+  }
+  
+  
+  
+  //
+  // Accessors
+  //
+  
+  /**
+   * Returns the type for the identifier or <code>null</code>.
+   * 
+   * @return the type for the identifier or <code>null</code>.
+   */
+  public MonoType getTau() {
+    return this.tau;
   }
   
   
@@ -65,7 +97,8 @@ public final class LetRec extends Let {
    */
   @Override
   public LetRec substitute(TypeSubstitution substitution) {
-    return new LetRec(this.id, this.e1.substitute(substitution), this.e2.substitute(substitution));
+    MonoType tau = (this.tau != null) ? this.tau.substitute(substitution) : null;
+    return new LetRec(this.id, tau, this.e1.substitute(substitution), this.e2.substitute(substitution));
   }
   
   /**
@@ -91,7 +124,7 @@ public final class LetRec extends Let {
       Expression newE1 = this.e1.substitute(this.id, new Identifier(newId));
       
       // perform the substitution
-      return new LetRec(newId, newE1.substitute(id, e), this.e2.substitute(id, e));
+      return new LetRec(newId, this.tau, newE1.substitute(id, e), this.e2.substitute(id, e));
     }
   }
   
@@ -111,7 +144,12 @@ public final class LetRec extends Let {
     builder.addKeyword("let");
     builder.addText(" ");
     builder.addKeyword("rec");
-    builder.addText(" " + this.id + " = ");
+    builder.addText(" " + this.id);
+    if (this.tau != null) {
+      builder.addText(":");
+      builder.addBuilder(this.tau.toPrettyStringBuilder(factory), PRIO_REC_TAU);
+    }
+    builder.addText(" = ");
     builder.addBuilder(this.e1.toPrettyStringBuilder(factory), PRIO_LET_E1);
     builder.addBreak();
     builder.addText(" ");

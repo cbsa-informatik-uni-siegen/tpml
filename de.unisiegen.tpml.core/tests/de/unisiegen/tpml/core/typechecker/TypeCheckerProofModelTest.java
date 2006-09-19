@@ -1,7 +1,6 @@
 package de.unisiegen.tpml.core.typechecker;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,7 +17,6 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTree;
-import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreePath;
 
 import de.unisiegen.tpml.core.ProofNode;
@@ -27,7 +25,7 @@ import de.unisiegen.tpml.core.languages.Language;
 import de.unisiegen.tpml.core.languages.LanguageFactory;
 
 /**
- * Test class for the {@link de.unisiegen.tpml.core.typechker.TypeCheckerProofModel} class.
+ * Test class for the {@link de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel} class.
  *
  * @author Benedikt Meurer
  * @version $Id: BigStepProofModelTest.java 268 2006-09-19 12:45:02Z benny $
@@ -39,7 +37,7 @@ public final class TypeCheckerProofModelTest extends JFrame {
   /**
    * Simple test expression.
    */
-  private static final String SIMPLE = "let rec fact = lambda x.if x = 0 then 1 else x * fact (x-1) in fact 3";
+  private static final String SIMPLE = "rec u:unit.u + 1";
 
   
   

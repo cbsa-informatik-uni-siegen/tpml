@@ -74,7 +74,7 @@ public class L2LanguageTranslator extends L1LanguageTranslator {
       }
       
       // generate the let expression
-      return new Let(letRec.getId(), new Recursion(letRec.getId(), null, e1), e2);
+      return new Let(letRec.getId(), new Recursion(letRec.getId(), letRec.getTau(), e1), e2);
     }
     else {
       return super.translateToCoreSyntax(expression, recursive);

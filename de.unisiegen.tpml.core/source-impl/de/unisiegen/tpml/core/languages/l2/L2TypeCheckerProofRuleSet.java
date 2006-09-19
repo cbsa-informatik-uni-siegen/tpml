@@ -5,7 +5,7 @@ import de.unisiegen.tpml.core.languages.l1.L1TypeCheckerProofRuleSet;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofContext;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode;
 import de.unisiegen.tpml.core.typechecker.TypeEnvironment;
-import de.unisiegen.tpml.core.types.TypeVariable;
+import de.unisiegen.tpml.core.types.MonoType;
 
 /**
  * The type proof rules for the <code>L2</code> language.
@@ -47,15 +47,19 @@ public class L2TypeCheckerProofRuleSet extends L1TypeCheckerProofRuleSet {
    * @param node the type checker proof node.
    */
   public void applyRec(TypeCheckerProofContext context, TypeCheckerProofNode node) {
-    // generate a new type variable
-    TypeVariable tau1 = context.newTypeVariable();
+    // determine the type for the identifier 
+    Recursion recursion = (Recursion)node.getExpression();
+    MonoType tau1 = recursion.getTau();
+    if (tau1 == null) {
+      // need to generate a type variable
+      tau1 = context.newTypeVariable();
+    }
     
     // add equation tau = tau1
     context.addEquation(node.getType(), tau1);
     
     // generate new child node
     TypeEnvironment environment = node.getEnvironment();
-    Recursion recursion = (Recursion)node.getExpression();
     context.addProofNode(node, environment.extend(recursion.getId(), tau1), recursion.getE(), tau1);
   }
 }
