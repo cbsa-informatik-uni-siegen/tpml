@@ -36,4 +36,9 @@ interface PrettyPrintPriorities {
    * The pretty print priority for the second type in an arrow type.
    */
   public static final int PRIO_ARROW_TAU2 = PRIO_ARROW;
+  
+  /**
+   * The pretty print priority for tuple types.
+   */
+  public static final int PRIO_TUPLE = 0;
 }

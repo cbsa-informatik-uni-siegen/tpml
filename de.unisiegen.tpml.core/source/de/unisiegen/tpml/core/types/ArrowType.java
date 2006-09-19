@@ -115,7 +115,7 @@ public final class ArrowType extends MonoType {
    * @see types.Type#substitute(types.TypeSubstitution)
    */
   @Override
-  public MonoType substitute(TypeSubstitution substitution) {
+  public ArrowType substitute(TypeSubstitution substitution) {
     if (substitution == null) {
       throw new NullPointerException("substitution is null");
     }
