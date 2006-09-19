@@ -15,12 +15,12 @@ interface PrettyPrintPriorities {
   /**
    * The pretty print priority for primitive types.
    */
-  public static final int PRIO_PRIMITIVE = 1;
+  public static final int PRIO_PRIMITIVE = 2;
   
   /**
    * The pretty print priority for type variables.
    */
-  public static final int PRIO_TYPE_VARIABLE = 1;
+  public static final int PRIO_TYPE_VARIABLE = 2;
   
   /**
    * The pretty print priority for arrow types.
@@ -40,5 +40,10 @@ interface PrettyPrintPriorities {
   /**
    * The pretty print priority for tuple types.
    */
-  public static final int PRIO_TUPLE = 0;
+  public static final int PRIO_TUPLE = 1;
+  
+  /**
+   * The pretty print priority for elements in tuple types.
+   */
+  public static final int PRIO_TUPLE_TAU = PRIO_TUPLE + 1;
 }

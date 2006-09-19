@@ -2,6 +2,7 @@ package de.unisiegen.tpml.core.typechecker;
 
 import de.unisiegen.tpml.core.types.ArrowType;
 import de.unisiegen.tpml.core.types.MonoType;
+import de.unisiegen.tpml.core.types.TupleType;
 import de.unisiegen.tpml.core.types.TypeVariable;
 
 /**
@@ -168,29 +169,29 @@ final class TypeEquationList {
       // try to unify the new list
       return eqns.unify();
     }
-    // TODO: Tuple Types
-    /*else if (left instanceof TupleType && right instanceof TupleType) {
+    else if (left instanceof TupleType && right instanceof TupleType) {
       // cast to TupleType instances (tau and tau')
       TupleType taul = (TupleType)left;
       TupleType taur = (TupleType)right;
       
+      // determine the sub types
+      MonoType[] typesl = taul.getTypes();
+      MonoType[] typesr = taur.getTypes();
+      
       // check if the arities match
-      if (taul.arity() == taur.arity()) {
-        // determine the sub types
-        MonoType[] typesl = taul.getTypes();
-        MonoType[] typesr = taur.getTypes();
-        
+      if (typesl.length == typesr.length) {
         // check all sub types
-        EquationList eqns = this.remaining;
-        for (int n = 0; n < typesl.length; ++n)
-          eqns = new EquationList(new Equation(typesl[n], typesr[n]), eqns);
+        TypeEquationList eqns = this.remaining;
+        for (int n = 0; n < typesl.length; ++n) {
+          eqns = eqns.extend(typesl[n], typesr[n]);
+        }
         
         // try to unify the new list
         return eqns.unify();
       }
       
       // FALL-THROUGH: Otherwise it's a type error
-    }*/
+    }
     else if (left.equals(right)) {
       // the types equal, just unify the remaining equations then
       return this.remaining.unify();

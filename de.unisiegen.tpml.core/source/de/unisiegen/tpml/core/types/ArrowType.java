@@ -167,9 +167,7 @@ public final class ArrowType extends MonoType {
       ArrowType type = (ArrowType)obj;
       return (this.tau1.equals(type.tau1) && this.tau2.equals(type.tau2));
     }
-    else {
-      return false;
-    }
+    return false;
   }
   
   /**

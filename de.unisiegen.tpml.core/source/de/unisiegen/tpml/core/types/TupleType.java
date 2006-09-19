@@ -1,5 +1,6 @@
 package de.unisiegen.tpml.core.types;
 
+import java.util.Arrays;
 import java.util.TreeSet;
 
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder;
@@ -131,8 +132,43 @@ public final class TupleType extends MonoType {
    */
   @Override
   protected PrettyStringBuilder toPrettyStringBuilder(PrettyStringBuilderFactory factory) {
-    // TODO Auto-generated method stub
-    return null;
+    PrettyStringBuilder builder = factory.newBuilder(this, PRIO_TUPLE);
+    for (int n = 0; n < this.types.length; ++n) {
+      if (n > 0) {
+        builder.addText(" * ");
+      }
+      builder.addBuilder(this.types[n].toPrettyStringBuilder(factory), PRIO_TUPLE_TAU);
+    }
+    return builder;
   }
-
+  
+  
+  
+  //
+  // Base methods
+  //
+  
+  /**
+   * {@inheritDoc}
+   *
+   * @see java.lang.Object#equals(java.lang.Object)
+   */
+  @Override
+  public boolean equals(Object obj) {
+    if (obj instanceof TupleType) {
+      TupleType other = (TupleType)obj;
+      return Arrays.equals(this.types, other.types);
+    }
+    return false;
+  }
+  
+  /**
+   * {@inheritDoc}
+   *
+   * @see java.lang.Object#hashCode()
+   */
+  @Override
+  public int hashCode() {
+    return Arrays.hashCode(this.types);
+  }
 }
