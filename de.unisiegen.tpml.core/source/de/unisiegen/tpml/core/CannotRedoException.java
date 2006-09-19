@@ -5,7 +5,7 @@ package de.unisiegen.tpml.core;
  * method, but the change cannot be redone or the redo history is empty.
  *
  * @author Benedikt Meurer
- * @version $Id$
+ * @version $Rev$
  * 
  * @see de.unisiegen.tpml.core.CannotUndoException
  */

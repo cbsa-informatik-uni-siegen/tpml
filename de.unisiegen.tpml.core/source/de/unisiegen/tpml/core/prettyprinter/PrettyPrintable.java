@@ -4,7 +4,7 @@ package de.unisiegen.tpml.core.prettyprinter;
  * Base interface for classes whose instances can be pretty printed.
  *
  * @author Benedikt Meurer
- * @version $Id$
+ * @version $Rev$
  * 
  * @see de.unisiegen.tpml.core.prettyprinter.PrettyString
  */

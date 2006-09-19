@@ -5,7 +5,7 @@ package de.unisiegen.tpml.core.expressions;
  * for example {@link de.unisiegen.tpml.core.expressions.Lambda} expressions.
  *
  * @author Benedikt Meurer
- * @version $Id$
+ * @version $Rev$
  * 
  * @see de.unisiegen.tpml.core.expressions.Expression
  */

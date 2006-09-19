@@ -10,7 +10,7 @@ import java.util.Map;
  * which operates on data provided by the <code>PrettyString</code> class.
  *
  * @author Benedikt Meurer
- * @version $Id$
+ * @version $Rev$
  * 
  * @see de.unisiegen.tpml.core.prettyprinter.DefaultPrettyString
  * @see de.unisiegen.tpml.core.prettyprinter.PrettyCharIterator

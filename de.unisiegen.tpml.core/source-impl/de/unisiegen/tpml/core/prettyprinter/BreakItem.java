@@ -9,7 +9,7 @@ import java.util.Map;
  * the presenter may start a new line at this offset.
  *
  * @author Benedikt Meurer
- * @version $Id$
+ * @version $Rev$
  * 
  * @see de.unisiegen.tpml.core.prettyprinter.AbstractItem
  * @see de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder#addBreak()

@@ -6,7 +6,7 @@ import de.unisiegen.tpml.core.types.MonoType;
  * Represents a type equation. Used primarily for the unification algorithm.
  *
  * @author Benedikt Meurer
- * @version $Id$
+ * @version $Rev$
  *
  * @see de.unisiegen.tpml.core.typechecker.TypeEquationList
  */

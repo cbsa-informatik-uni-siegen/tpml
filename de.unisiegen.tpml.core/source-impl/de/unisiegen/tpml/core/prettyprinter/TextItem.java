@@ -10,7 +10,7 @@ import java.util.Map;
  * <code>addKeyword()</code> and <code>addText()</code>.
  *
  * @author Benedikt Meurer
- * @version $Id$
+ * @version $Rev$
  * 
  * @see de.unisiegen.tpml.core.prettyprinter.AbstractItem
  * @see de.unisiegen.tpml.core.prettyprinter.DefaultPrettyStringBuilder

@@ -13,7 +13,7 @@ import de.unisiegen.tpml.core.util.beans.Bean;
  * the generic {@link javax.swing.tree.TreeModel}.
  *
  * @author Benedikt Meurer
- * @version $Id$
+ * @version $Rev$
  * 
  * @see de.unisiegen.tpml.core.AbstractProofModel
  * @see de.unisiegen.tpml.core.ProofNode

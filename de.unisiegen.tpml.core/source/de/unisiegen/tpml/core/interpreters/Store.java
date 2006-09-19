@@ -13,7 +13,7 @@ import de.unisiegen.tpml.core.util.Environment;
  * within a store, the expression at the specified location can be determined.
  * 
  * @author Benedikt Meurer
- * @version $Id$
+ * @version $Rev$
  * 
  * @see de.unisiegen.tpml.core.expressions.Location
  */

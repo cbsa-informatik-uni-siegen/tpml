@@ -11,7 +11,7 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
  * of two types, the parameter type <code>tau1</code> and the result type <code>tau2</code>, both monomorphic types.
  *
  * @author Benedikt Meurer
- * @version $Id$
+ * @version $Rev$
  *
  * @see de.unisiegen.tpml.core.types.BooleanType
  * @see de.unisiegen.tpml.core.types.IntegerType

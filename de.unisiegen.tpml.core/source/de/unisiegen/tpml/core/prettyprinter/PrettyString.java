@@ -7,7 +7,7 @@ import java.util.Collection;
  * as string while extracting several informations about the printables contained within the pretty string.
  *
  * @author Benedikt Meurer
- * @version $Id$
+ * @version $Rev$
  * 
  * @see de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation
  * @see de.unisiegen.tpml.core.prettyprinter.PrettyCharIterator

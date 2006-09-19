@@ -11,7 +11,7 @@ import de.unisiegen.tpml.core.util.IntegerUtilities;
  * heart of the pretty printer.
  *
  * @author Benedikt Meurer
- * @version $Id$
+ * @version $Rev$
  * 
  * @see de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder
  * @see de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory

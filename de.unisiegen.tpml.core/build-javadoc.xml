@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project default="javadoc">
+	<target name="javadoc">
+		<javadoc access="package" author="true"	version="true" classpath="lib/java-cup-11a-runtime.jar" destdir="doc/manual" source="1.5" windowtitle="TPML Core Reference Manual" encoding="UTF-8" overview="doc/overview.html">
+			
+			<doctitle><![CDATA[<h1>TPML Core Reference Manual</h1>]]></doctitle>
+			<bottom><![CDATA[Copyright (c) 2005-2006 University of Siegen]]></bottom>
+			
+			<fileset dir="source">
+				<include name="de/unisiegen/tpml/core/**/*.java" />
+			</fileset>
+			<fileset dir="source-impl">
+				<include name="de/unisiegen/tpml/core/**/*.java" />
+			</fileset>
+			<fileset dir="source-generated">
+				<include name="de/unisiegen/tpml/core/**/*.java" />
+			</fileset>
+			
+			<group title="Basics" packages="de.unisiegen.tpml.core:de.unisiegen.tpml.core.languages:de.unisiegen.tpml.core.prettyprinter" />
+			<group title="Utilities" packages="de.unisiegen.tpml.core.util*" />
+			<group title="Expression and Type Hierarchy" packages="de.unisiegen.tpml.core.expressions:de.unisiegen.tpml.core.types" />
+			<group title="Interpreters and Type Checker" packages="de.unisiegen.tpml.core.interpreters:de.unisiegen.tpml.core.bigstep:de.unisiegen.tpml.core.smallstep:de.unisiegen.tpml.core.typechecker" />
+			<group title="Language Implementations" packages="de.unisiegen.tpml.core.languages.l*" />
+			
+			<link href="http://java.sun.com/j2se/1.5.0/docs/api/" />
+			
+		</javadoc>
+	</target>
+</project>

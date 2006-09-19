@@ -9,7 +9,7 @@ import de.unisiegen.tpml.core.interpreters.Store;
  * and the resulting {@link de.unisiegen.tpml.core.interpreters.Store}.
  *
  * @author Benedikt Meurer
- * @version $Id$
+ * @version $Rev$
  */
 public final class BigStepProofResult {
   //

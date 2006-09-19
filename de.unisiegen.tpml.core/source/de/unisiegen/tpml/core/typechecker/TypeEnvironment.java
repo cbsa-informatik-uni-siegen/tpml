@@ -9,7 +9,7 @@ import de.unisiegen.tpml.core.util.Environment;
  * Base interface to the type environments used within the type checker.
  *
  * @author Benedikt Meurer
- * @version $Id$
+ * @version $Rev$
  *
  * @see de.unisiegen.tpml.core.util.Environment
  */

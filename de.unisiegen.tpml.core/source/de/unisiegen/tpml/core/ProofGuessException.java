@@ -4,7 +4,7 @@ package de.unisiegen.tpml.core;
  * This exception is thrown when an attempt to guess the next proof rule for a given proof node failed.
  *
  * @author Benedikt Meurer
- * @version $Id$
+ * @version $Rev$
  * 
  * @see de.unisiegen.tpml.core.ProofRuleException
  */

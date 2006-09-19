@@ -9,7 +9,7 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
  * <tt>bool</tt>, <tt>int</tt> and <tt>unit</tt>.
  *
  * @author Benedikt Meurer
- * @version $Id$
+ * @version $Rev$
  * 
  * @see de.unisiegen.tpml.core.types.MonoType
  * @see de.unisiegen.tpml.core.types.Type

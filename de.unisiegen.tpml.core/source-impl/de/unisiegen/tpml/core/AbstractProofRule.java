@@ -4,7 +4,7 @@ package de.unisiegen.tpml.core;
  * Abstract base class for classes implementing the <code>ProofRule</code> interface.
  *
  * @author Benedikt Meurer
- * @version $Id$
+ * @version $Rev$
  * 
  * @see de.unisiegen.tpml.core.ProofRule
  */

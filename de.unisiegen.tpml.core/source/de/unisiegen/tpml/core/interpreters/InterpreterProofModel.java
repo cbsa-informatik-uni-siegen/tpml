@@ -8,7 +8,7 @@ import de.unisiegen.tpml.core.ProofModel;
  * whether memory operations are enabled during the evaluation of the expression.
  *
  * @author Benedikt Meurer
- * @version $Id$
+ * @version $Rev$
  *
  * @see de.unisiegen.tpml.core.interpreters.InterpreterProofNode
  * @see de.unisiegen.tpml.core.ProofModel

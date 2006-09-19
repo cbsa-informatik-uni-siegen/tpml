@@ -8,7 +8,7 @@ import de.unisiegen.tpml.core.languages.LanguageScanner;
  * The parser class for the <code>L1</code> language.
  *
  * @author Benedikt Meurer
- * @version $Id$
+ * @version $Rev$
  * 
  * @see de.unisiegen.tpml.core.languages.l1.L1AbstractParser
  */

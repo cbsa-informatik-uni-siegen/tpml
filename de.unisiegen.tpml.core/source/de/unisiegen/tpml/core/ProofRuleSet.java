@@ -6,7 +6,7 @@ import de.unisiegen.tpml.core.languages.Language;
  * A set of <code>ProofRule</code>s.
  *
  * @author Benedikt Meurer
- * @version $Id$
+ * @version $Rev$
  * 
  * @see de.unisiegen.tpml.core.ProofRule
  */

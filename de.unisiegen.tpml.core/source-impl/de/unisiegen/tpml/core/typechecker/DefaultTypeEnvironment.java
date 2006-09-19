@@ -9,7 +9,7 @@ import de.unisiegen.tpml.core.util.AbstractEnvironment;
  * Default implementation of the <code>TypeEnvironment</code> interface.
  *
  * @author Benedikt Meurer
- * @version $Id$
+ * @version $Rev$
  *
  * @see de.unisiegen.tpml.core.typechecker.TypeEnvironment
  * @see de.unisiegen.tpml.core.util.AbstractEnvironment

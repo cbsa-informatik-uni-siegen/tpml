@@ -14,7 +14,7 @@ import de.unisiegen.tpml.core.types.MonoType;
  * The string representation for recursive expressions is <code>rec id.e</code>.
  *
  * @author Benedikt Meurer
- * @version $Id$
+ * @version $Rev$
  * 
  * @see de.unisiegen.tpml.core.expressions.Expression
  */

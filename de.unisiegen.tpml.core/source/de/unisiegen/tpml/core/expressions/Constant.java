@@ -7,7 +7,7 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
  * Abstract class to represent a constant expression (only values can be constants).
  *
  * @author Benedikt Meurer
- * @version $Id$
+ * @version $Rev$
  *
  * @see de.unisiegen.tpml.core.expressions.Value
  */

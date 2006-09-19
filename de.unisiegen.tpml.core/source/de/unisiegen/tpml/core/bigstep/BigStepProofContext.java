@@ -9,7 +9,7 @@ import de.unisiegen.tpml.core.interpreters.Store;
  * or updating a node after a rule application.
  *
  * @author Benedikt Meurer
- * @version $Id$
+ * @version $Rev$
  * 
  * @see de.unisiegen.tpml.core.bigstep.BigStepProofRule
  */

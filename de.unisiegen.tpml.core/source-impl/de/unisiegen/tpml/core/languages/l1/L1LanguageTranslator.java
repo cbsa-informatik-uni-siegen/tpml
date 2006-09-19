@@ -9,7 +9,7 @@ import de.unisiegen.tpml.core.languages.AbstractLanguageTranslator;
  * Language translator for the <code>L1</code> language.
  *
  * @author Benedikt Meurer
- * @version $Id$
+ * @version $Rev$
  *
  * @see de.unisiegen.tpml.core.languages.AbstractLanguageTranslator
  * @see de.unisiegen.tpml.core.languages.l1.L1Language

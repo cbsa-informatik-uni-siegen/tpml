@@ -17,7 +17,7 @@ import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel;
  * which extends the L1 language.
  *
  * @author Benedikt Meurer
- * @version $Id$
+ * @version $Rev$
  * 
  * @see de.unisiegen.tpml.core.languages.Language
  * @see de.unisiegen.tpml.core.languages.LanguageParser

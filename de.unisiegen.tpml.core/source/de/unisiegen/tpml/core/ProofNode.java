@@ -10,7 +10,7 @@ import de.unisiegen.tpml.core.expressions.Expression;
  * Base class for proof nodes that present the fundamental parts of the {@link de.unisiegen.tpml.core.ProofModel}s.
  * 
  * @author Benedikt Meurer
- * @version $Id$
+ * @version $Rev$
  * 
  * @see javax.swing.tree.TreeNode
  */
@@ -152,7 +152,7 @@ public interface ProofNode extends TreeNode {
    * 
    * @return the root of the tree that contains this node.
    * 
-   * @see #isNodeAncestor(ProofNode)
+   * @see #isNodeAncestor(TreeNode)
    * @see #isRoot()
    */
   public ProofNode getRoot();

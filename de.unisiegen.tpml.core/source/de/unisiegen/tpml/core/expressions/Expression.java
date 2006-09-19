@@ -20,7 +20,7 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
  * Base class for all classes in the expression hierarchy.
  * 
  * @author Benedikt Meurer
- * @version $Id:Expression.java 66 2006-01-19 17:07:56Z benny $
+ * @version $Rev$
  * 
  * @see de.unisiegen.tpml.core.prettyprinter.PrettyPrintable
  */

@@ -9,7 +9,7 @@ import de.unisiegen.tpml.core.types.MonoType;
  * Base interface to nodes in a {@link de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel}.
  *
  * @author Benedikt Meurer
- * @version $Id$
+ * @version $Rev$
  *
  * @see de.unisiegen.tpml.core.ProofNode
  * @see de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel

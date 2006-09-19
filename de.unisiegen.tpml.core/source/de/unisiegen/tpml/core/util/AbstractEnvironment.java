@@ -8,7 +8,7 @@ import java.util.LinkedList;
  * Abstract implementation of the generic <code>Environment</code> interface.
  *
  * @author Benedikt Meurer
- * @version $Id$
+ * @version $Rev$
  * 
  * @see de.unisiegen.tpml.core.util.Environment
  */

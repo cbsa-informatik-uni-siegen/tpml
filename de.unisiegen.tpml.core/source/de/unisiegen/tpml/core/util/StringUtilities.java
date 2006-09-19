@@ -7,7 +7,7 @@ import java.util.Collection;
  * Static class, which provides several static utility functions for handling strings.
  *
  * @author Benedikt Meurer
- * @version $Id$
+ * @version $Rev$
  * 
  * @see java.lang.String
  */

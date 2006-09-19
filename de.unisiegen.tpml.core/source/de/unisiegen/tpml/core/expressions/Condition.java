@@ -10,7 +10,7 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
  * The string representation for conditions is <code>if e0 then e1 else e2</code>.
  *
  * @author Benedikt Meurer
- * @version $Id$
+ * @version $Rev$
  *
  * @see de.unisiegen.tpml.core.expressions.Expression
  */

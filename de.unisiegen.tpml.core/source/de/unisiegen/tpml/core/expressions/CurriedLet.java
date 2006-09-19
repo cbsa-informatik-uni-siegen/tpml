@@ -15,7 +15,7 @@ import de.unisiegen.tpml.core.util.StringUtilities;
  * {@link de.unisiegen.tpml.core.expressions.Lambda}.
  *
  * @author Benedikt Meurer
- * @version $Id$
+ * @version $Rev$
  * 
  * @see de.unisiegen.tpml.core.expressions.Let
  * @see de.unisiegen.tpml.core.expressions.Lambda

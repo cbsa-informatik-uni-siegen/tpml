@@ -14,7 +14,7 @@ import de.unisiegen.tpml.core.types.MonoType;
  * The string representation for lambda abstraction is <pre>lambda id.e</pre>.
  *
  * @author Benedikt Meurer
- * @version $Id:Lambda.java 66 2006-01-19 17:07:56Z benny $
+ * @version $Rev$
  * 
  * @see de.unisiegen.tpml.core.expressions.Application
  * @see de.unisiegen.tpml.core.expressions.Expression

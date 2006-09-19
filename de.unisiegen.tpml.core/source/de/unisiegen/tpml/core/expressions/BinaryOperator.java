@@ -5,7 +5,7 @@ package de.unisiegen.tpml.core.expressions;
  * constants, and as such, are always values.
  *
  * @author Benedikt Meurer
- * @version $Id$
+ * @version $Rev$
  *
  * @see de.unisiegen.tpml.core.expressions.Constant
  */

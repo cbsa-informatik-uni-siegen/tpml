@@ -10,7 +10,7 @@ import de.unisiegen.tpml.core.interpreters.Store;
  * the implementation of the {@link de.unisiegen.tpml.core.smallstep.AbstractSmallStepProofRuleSet}.
  *
  * @author Benedikt Meurer
- * @version $Id$
+ * @version $Rev$
  *
  * @see de.unisiegen.tpml.core.smallstep.AbstractSmallStepProofRuleSet
  */

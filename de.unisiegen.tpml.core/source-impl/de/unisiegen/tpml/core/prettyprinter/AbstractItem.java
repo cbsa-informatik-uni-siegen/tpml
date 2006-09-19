@@ -8,7 +8,7 @@ import java.util.Map;
  * which are used to collect the information while generating the pretty string content.
  *
  * @author Benedikt Meurer
- * @version $Id$
+ * @version $Rev$
  * 
  * @see de.unisiegen.tpml.core.prettyprinter.DefaultPrettyStringBuilder
  */

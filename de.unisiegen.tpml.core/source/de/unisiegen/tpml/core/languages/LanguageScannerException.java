@@ -4,7 +4,7 @@ package de.unisiegen.tpml.core.languages;
  * Thrown if an error occurs while scanning the source code for a given language.
  *
  * @author Benedikt Meurer
- * @version $Id$
+ * @version $Rev$
  * 
  * @see de.unisiegen.tpml.core.languages.LanguageScanner
  */

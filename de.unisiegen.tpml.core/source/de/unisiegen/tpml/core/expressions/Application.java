@@ -10,7 +10,7 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
  * The string representation for applications is <pre>e1 e2</pre>.
  *
  * @author Benedikt Meurer
- * @version $Id:Application.java 66 2006-01-19 17:07:56Z benny $
+ * @version $Rev$
  * 
  * @see de.unisiegen.tpml.core.expressions.Expression
  */

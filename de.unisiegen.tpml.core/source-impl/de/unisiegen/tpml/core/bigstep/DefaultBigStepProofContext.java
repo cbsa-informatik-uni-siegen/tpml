@@ -13,7 +13,7 @@ import de.unisiegen.tpml.core.interpreters.Store;
  * during a single proof step and collect the actions later.
  *
  * @author Benedikt Meurer
- * @version $Id$
+ * @version $Rev$
  *
  * @see de.unisiegen.tpml.core.bigstep.AbstractBigStepProofRuleSet
  * @see de.unisiegen.tpml.core.bigstep.BigStepProofContext

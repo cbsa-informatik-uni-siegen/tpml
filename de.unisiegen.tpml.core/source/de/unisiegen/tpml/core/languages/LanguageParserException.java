@@ -5,7 +5,7 @@ package de.unisiegen.tpml.core.languages;
  * {@link languages.LanguageParser}.
  *
  * @author Benedikt Meurer
- * @version $Id$
+ * @version $Rev$
  */
 public final class LanguageParserException extends RuntimeException {
   //

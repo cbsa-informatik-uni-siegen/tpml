@@ -7,7 +7,7 @@ import java.beans.PropertyChangeSupport;
  * Abstract base class for bean objects, which provide simple bean properties with change listener support.
  *
  * @author Benedikt Meurer
- * @version $Id$
+ * @version $Rev$
  * 
  * @see de.unisiegen.tpml.core.beans.Bean
  * @see java.beans.PropertyChangeListener

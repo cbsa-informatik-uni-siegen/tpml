@@ -7,7 +7,7 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
  * Instances of this class represent exceptions in the expression hierarchy.
  *
  * @author Benedikt Meurer
- * @version $Id$
+ * @version $Rev$
  * 
  * @see de.unisiegen.tpml.core.expressions.Expression
  * @see de.unisiegen.tpml.core.expressions.Expression#isException()

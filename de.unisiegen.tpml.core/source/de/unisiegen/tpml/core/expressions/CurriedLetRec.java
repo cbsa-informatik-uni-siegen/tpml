@@ -14,7 +14,7 @@ import de.unisiegen.tpml.core.util.StringUtilities;
  * hierarchy.
  *
  * @author Benedikt Meurer
- * @version $Id$
+ * @version $Rev$
  * 
  * @see de.unisiegen.tpml.core.expressions.LetRec
  * @see de.unisiegen.tpml.core.expressions.CurriedLet

@@ -6,7 +6,7 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
  * Abstract base class for monomorphic types.
  *
  * @author Benedikt Meurer
- * @version $Id$
+ * @version $Rev$
  * 
  * @see de.unisiegen.tpml.core.types.Type
  */

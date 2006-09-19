@@ -8,7 +8,7 @@ import de.unisiegen.tpml.core.ProofRuleException;
  * to the {@link de.unisiegen.tpml.core.typechecker.TypeCheckerProofRule} used within the type checker.
  *
  * @author Benedikt Meurer
- * @version $Id$
+ * @version $Rev$
  * 
  * @see de.unisiegen.tpml.core.ProofRule
  */

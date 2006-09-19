@@ -5,7 +5,7 @@ package de.unisiegen.tpml.core.expressions;
  * value in the expression hierarchy. The string representation is <tt>()</tt>.
  *
  * @author Benedikt Meurer
- * @version $Id$
+ * @version $Rev$
  * 
  * @see de.unisiegen.tpml.core.expressions.Constant
  * @see de.unisiegen.tpml.core.expressions.Value

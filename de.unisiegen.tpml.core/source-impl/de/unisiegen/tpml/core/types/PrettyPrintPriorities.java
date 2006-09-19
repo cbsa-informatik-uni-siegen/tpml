@@ -6,7 +6,7 @@ package de.unisiegen.tpml.core.types;
  * the constants in this interface without having to explicitly use this interface each time.
  *
  * @author Benedikt Meurer
- * @version $Id$
+ * @version $Rev$
  * 
  * @see de.unisiegen.tpml.core.types.Type
  * @see de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder

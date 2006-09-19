@@ -5,7 +5,7 @@ package de.unisiegen.tpml.core.prettyprinter;
  * are associated with a specific {@link de.unisiegen.tpml.core.prettyprinter.PrettyPrintable}.
  *
  * @author Benedikt Meurer
- * @version $Id$
+ * @version $Rev$
  * 
  * @see de.unisiegen.tpml.core.prettyprinter.PrettyPrintable
  * @see de.unisiegen.tpml.core.prettyprinter.PrettyString

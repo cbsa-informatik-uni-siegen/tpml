@@ -6,7 +6,7 @@ import de.unisiegen.tpml.core.AbstractProofRule;
  * Default implementation of the <code>SmallStepProofRule</code> interface.
  *
  * @author Benedikt Meurer
- * @version $Id$
+ * @version $Rev$
  *
  * @see de.unisiegen.tpml.core.AbstractProofRule
  * @see de.unisiegen.tpml.core.smallstep.SmallStepProofRule

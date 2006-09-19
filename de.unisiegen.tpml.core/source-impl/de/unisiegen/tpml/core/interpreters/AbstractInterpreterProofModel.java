@@ -8,7 +8,7 @@ import de.unisiegen.tpml.core.AbstractProofRuleSet;
  * Abstract base class for all classes implementing the <code>InterpreterProofModel</code> interface.
  *
  * @author Benedikt Meurer
- * @version $Id$
+ * @version $Rev$
  *
  * @see de.unisiegen.tpml.core.interpreters.InterpreterProofModel
  * @see de.unisiegen.tpml.core.AbstractProofModel

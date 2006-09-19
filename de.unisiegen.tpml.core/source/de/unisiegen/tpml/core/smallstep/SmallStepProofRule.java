@@ -6,7 +6,7 @@ import de.unisiegen.tpml.core.ProofRule;
  * Base interface for small step proof rules.
  *
  * @author Benedikt Meurer
- * @version $Id$
+ * @version $Rev$
  *
  * @see de.unisiegen.tpml.core.ProofRule
  */

@@ -8,7 +8,7 @@ import java.util.Iterator;
  * handling integers and related constructs.
  *
  * @author Benedikt Meurer
- * @version $Id$
+ * @version $Rev$
  * 
  * @see java.lang.Integer
  */

@@ -12,7 +12,7 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
  * is a binary operator.
  *
  * @author Benedikt Meurer
- * @version $Id$
+ * @version $Rev$
  *
  * @see de.unisiegen.tpml.core.expressions.Application
  * @see de.unisiegen.tpml.core.expressions.BinaryOperator

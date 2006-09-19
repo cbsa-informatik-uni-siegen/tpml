@@ -6,7 +6,7 @@ package de.unisiegen.tpml.core.expressions;
  * can easily use the constants in this interface without having to explicitly use this interface each time.
  *
  * @author Benedikt Meurer
- * @version $Id$
+ * @version $Rev$
  * 
  * @see de.unisiegen.tpml.core.expressions.Expression
  * @see de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder

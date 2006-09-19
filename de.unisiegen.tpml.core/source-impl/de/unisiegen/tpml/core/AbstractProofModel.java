@@ -20,7 +20,7 @@ import de.unisiegen.tpml.core.util.beans.AbstractBean;
  * {@link de.unisiegen.tpml.core.ProofModel} interface.
  *
  * @author Benedikt Meurer
- * @version $Id$
+ * @version $Rev$
  * 
  * @see de.unisiegen.tpml.core.AbstractProofNode
  * @see de.unisiegen.tpml.core.ProofModel

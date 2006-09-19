@@ -8,7 +8,7 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
  * operator and used by the <code>:=</code> (Assign) and <code>!</code> (Deref) operators.
  *
  * @author Benedikt Meurer
- * @version $Id$
+ * @version $Rev$
  * 
  * @see de.unisiegen.tpml.core.expressions.Value
  */

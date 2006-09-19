@@ -4,7 +4,7 @@ package de.unisiegen.tpml.core.expressions;
  * Instances of this class represent arithmetic operators in the expression hierarchy.
  *
  * @author Benedikt Meurer
- * @version $Id$
+ * @version $Rev$
  * 
  * @see de.unisiegen.tpml.core.expressions.BinaryOperator
  * @see de.unisiegen.tpml.core.expressions.IntegerConstant

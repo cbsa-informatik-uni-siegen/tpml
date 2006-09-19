@@ -17,7 +17,7 @@ import de.unisiegen.tpml.core.types.MonoType;
  * <pre>let id = rec id.e1 in e2</pre>
  *
  * @author Benedikt Meurer
- * @version $Id$
+ * @version $Rev$
  * 
  * @see de.unisiegen.tpml.core.expressions.Let
  */

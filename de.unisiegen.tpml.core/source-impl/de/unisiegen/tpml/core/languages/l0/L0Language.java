@@ -16,7 +16,7 @@ import de.unisiegen.tpml.core.smallstep.SmallStepProofModel;
  * This class represents the language L0, which serves as a factory class for L0 related functionality.
  *
  * @author Benedikt Meurer
- * @version $Id$
+ * @version $Rev$
  * 
  * @see de.unisiegen.tpml.core.languages.Language
  * @see de.unisiegen.tpml.core.languages.LanguageParser

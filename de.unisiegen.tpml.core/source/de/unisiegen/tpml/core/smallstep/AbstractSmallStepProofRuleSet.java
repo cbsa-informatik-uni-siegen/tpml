@@ -10,7 +10,7 @@ import de.unisiegen.tpml.core.languages.Language;
  * Abstract base class for small step proof rule sets.
  *
  * @author Benedikt Meurer
- * @version $Id$
+ * @version $Rev$
  *
  * @see de.unisiegen.tpml.core.AbstractProofRuleSet
  */

@@ -7,7 +7,7 @@ import de.unisiegen.tpml.core.ProofRuleException;
  * Abstract base class for implementations of the <code>TypeCheckerProofRule</code> interface.
  *
  * @author Benedikt Meurer
- * @version $Id$
+ * @version $Rev$
  * 
  * @see de.unisiegen.tpml.core.typechecker.TypeCheckerProofRule
  * @see de.unisiegen.tpml.core.AbstractProofRule

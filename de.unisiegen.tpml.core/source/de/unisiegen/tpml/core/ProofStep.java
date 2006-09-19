@@ -7,7 +7,7 @@ import de.unisiegen.tpml.core.expressions.Expression;
  * {@link de.unisiegen.tpml.core.expressions.Expression}.
  *
  * @author Benedikt Meurer
- * @version $Id$
+ * @version $Rev$
  * 
  * @see de.unisiegen.tpml.core.expressions.Expression
  * @see de.unisiegen.tpml.core.ProofRule

@@ -24,7 +24,7 @@ import de.unisiegen.tpml.core.languages.l0.L0Language;
  * Big step proof rules for the <b>L1</b> and derived languages.
  *
  * @author Benedikt Meurer
- * @version $Id$
+ * @version $Rev$
  *
  * @see de.unisiegen.tpml.core.languages.l0.L0BigStepProofRuleSet
  */

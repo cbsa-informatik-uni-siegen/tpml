@@ -10,7 +10,7 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
  * Represents an identifier in the expression hierarchy.
  *
  * @author Benedikt Meurer
- * @version $Id:Identifier.java 66 2006-01-19 17:07:56Z benny $
+ * @version $Rev$
  * 
  * @see de.unisiegen.tpml.core.expressions.Expression
  */

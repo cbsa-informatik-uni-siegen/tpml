@@ -11,7 +11,7 @@ import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel;
  * Base interface for all languages, which is used to create scanners and parsers for a specific language.
  *
  * @author Benedikt Meurer
- * @version $Id$
+ * @version $Rev$
  */
 public interface Language {
   //

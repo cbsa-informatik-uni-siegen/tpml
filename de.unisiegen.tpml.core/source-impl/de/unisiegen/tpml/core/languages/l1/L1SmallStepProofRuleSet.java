@@ -16,7 +16,7 @@ import de.unisiegen.tpml.core.smallstep.SmallStepProofContext;
  * Small step proof rules for the <b>L1</b> and derived languages.
  *
  * @author Benedikt Meurer
- * @version $Id$
+ * @version $Rev$
  *
  * @see de.unisiegen.tpml.core.languages.l0.L0SmallStepProofRuleSet
  * @see de.unisiegen.tpml.core.languages.l1.L1Language

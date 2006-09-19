@@ -8,7 +8,7 @@ import de.unisiegen.tpml.core.ProofRuleException;
  * the {@link de.unisiegen.tpml.core.bigstep.BigStepProofRule} used within the big step interpreter.
  *
  * @author Benedikt Meurer
- * @version $Id$
+ * @version $Rev$
  *
  * @see de.unisiegen.tpml.core.ProofRule
  */

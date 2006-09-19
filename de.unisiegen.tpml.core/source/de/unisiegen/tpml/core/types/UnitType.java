@@ -5,7 +5,7 @@ package de.unisiegen.tpml.core.types;
  * exists at all times.
  *
  * @author Benedikt Meurer
- * @version $Id$
+ * @version $Rev$
  * 
  * @see #UNIT
  */

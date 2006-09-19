@@ -8,7 +8,7 @@ import de.unisiegen.tpml.core.languages.LanguageScanner;
  * The parser class for the L0 language.
  *
  * @author Benedikt Meurer
- * @version $Id$
+ * @version $Rev$
  */
 final class L0Parser extends L0AbstractParser {
   //

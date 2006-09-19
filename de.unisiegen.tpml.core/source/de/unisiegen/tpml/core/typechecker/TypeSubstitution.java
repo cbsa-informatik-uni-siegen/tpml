@@ -12,7 +12,7 @@ import de.unisiegen.tpml.core.types.TypeVariable;
  * used to substitute both on types and expressions.
  *
  * @author Benedikt Meurer
- * @version $Id$
+ * @version $Rev$
  * 
  * @see de.unisiegen.tpml.core.types.TypeVariable
  */

@@ -6,7 +6,7 @@ package de.unisiegen.tpml.core.expressions;
  * the arithmetic plus operator is applied to <code>true</code>.
  *
  * @author Benedikt Meurer
- * @version $Id$
+ * @version $Rev$
  *
  * @see de.unisiegen.tpml.core.expressions.BinaryOperator
  */

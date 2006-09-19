@@ -33,7 +33,7 @@ import org.w3c.dom.NodeList;
  * which is not only shorter, but also easier to understand.
  *
  * @author Benedikt Meurer
- * @version $Id$
+ * @version $Rev$
  * 
  * @see org.w3c.dom.Node
  * @see org.w3c.dom.NodeList

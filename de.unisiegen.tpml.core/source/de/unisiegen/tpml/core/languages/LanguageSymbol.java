@@ -6,7 +6,7 @@ import java_cup.runtime.Symbol;
  * TODO Add documentation here.
  *
  * @author Benedikt Meurer
- * @version $Id$
+ * @version $Rev$
  */
 public final class LanguageSymbol extends Symbol {
   //

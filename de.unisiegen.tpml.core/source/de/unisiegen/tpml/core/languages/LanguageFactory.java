@@ -11,7 +11,7 @@ import de.unisiegen.tpml.core.languages.l2.L2Language;
  * Factory class for {@link de.unisiegen.tpml.core.languages.Language}s.
  *
  * @author Benedikt Meurer
- * @version $Id$
+ * @version $Rev$
  * 
  * @see de.unisiegen.tpml.core.languages.Language
  */

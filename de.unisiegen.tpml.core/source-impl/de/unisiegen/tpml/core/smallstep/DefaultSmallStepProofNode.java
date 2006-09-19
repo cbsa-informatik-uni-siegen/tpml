@@ -16,7 +16,7 @@ import de.unisiegen.tpml.core.interpreters.Store;
  * in a {@link de.unisiegen.tpml.core.smallstep.SmallStepProofModel}.
  *
  * @author Benedikt Meurer
- * @version $Id$
+ * @version $Rev$
  * 
  * @see de.unisiegen.tpml.core.interpreters.AbstractInterpreterProofNode
  * @see de.unisiegen.tpml.core.smallstep.SmallStepProofNode

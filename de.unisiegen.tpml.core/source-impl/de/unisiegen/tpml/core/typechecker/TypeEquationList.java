@@ -9,7 +9,7 @@ import de.unisiegen.tpml.core.types.TypeVariable;
  * A list of <code>TypeEquation</code>s, in the same fashion as a list in OCaml.
  *
  * @author Benedikt Meurer
- * @version $Id$
+ * @version $Rev$
  *
  * @see de.unisiegen.tpml.core.typechecker.TypeEquation
  */

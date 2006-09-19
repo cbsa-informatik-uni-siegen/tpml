@@ -13,7 +13,7 @@ import de.unisiegen.tpml.core.expressions.Lambda;
  * Big step proof rules for the <b>L0</b> and derived languages.
  *
  * @author Benedikt Meurer
- * @version $Id$
+ * @version $Rev$
  *
  * @see de.unisiegen.tpml.core.bigstep.AbstractBigStepProofRuleSet
  */

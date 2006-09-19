@@ -5,7 +5,7 @@ package de.unisiegen.tpml.core;
  * rule that cannot be applied to a node.
  *
  * @author Benedikt Meurer
- * @version $Id$
+ * @version $Rev$
  * 
  * @see de.unisiegen.tpml.core.ProofGuessException
  */

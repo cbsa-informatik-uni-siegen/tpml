@@ -4,7 +4,7 @@ package de.unisiegen.tpml.core;
  * Base interface for proof rules in the small and big step interpreters and the type checker.
  *
  * @author Benedikt Meurer
- * @version $Id$
+ * @version $Rev$
  * 
  * @see de.unisiegen.tpml.core.ProofRuleSet
  */

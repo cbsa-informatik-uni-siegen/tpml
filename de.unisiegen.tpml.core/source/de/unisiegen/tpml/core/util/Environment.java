@@ -8,7 +8,7 @@ import java.util.Enumeration;
  * and small step interpreters also inherits this interface.
  *
  * @author Benedikt Meurer
- * @version $Id$
+ * @version $Rev$
  * 
  * @see de.unisiegen.tpml.core.util.AbstractEnvironment
  */

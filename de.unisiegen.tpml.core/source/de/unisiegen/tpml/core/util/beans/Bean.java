@@ -8,7 +8,7 @@ import java.beans.PropertyChangeListener;
  * this interface directly, or by deriving from the {@link de.unisiegen.tpml.core.beans.AbstractBean}.
  *
  * @author Benedikt Meurer
- * @version $Id$
+ * @version $Rev$
  * 
  * @see de.unisiegen.tpml.core.beans.AbstractBean
  * @see java.beans.PropertyChangeListener

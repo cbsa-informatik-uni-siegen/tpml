@@ -16,7 +16,7 @@ import de.unisiegen.tpml.core.expressions.Expression;
  * usage to the {@link common.ProofNode} interface.
  * 
  * @author Benedikt Meurer
- * @version $Id$
+ * @version $Rev$
  * 
  * @see common.ProofNode
  * @see javax.swing.tree.TreeNode

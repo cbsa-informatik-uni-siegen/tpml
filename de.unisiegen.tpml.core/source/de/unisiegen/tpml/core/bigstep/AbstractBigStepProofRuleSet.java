@@ -10,7 +10,7 @@ import de.unisiegen.tpml.core.languages.Language;
  * {@link de.unisiegen.tpml.core.bigstep.BigStepProofModel}s.
  *
  * @author Benedikt Meurer
- * @version $Id$
+ * @version $Rev$
  *
  * @see de.unisiegen.tpml.core.AbstractProofRuleSet
  * @see de.unisiegen.tpml.core.bigstep.BigStepProofModel

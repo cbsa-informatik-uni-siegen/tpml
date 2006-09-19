@@ -8,7 +8,7 @@ import java.util.Map;
  * builder.
  *
  * @author Benedikt Meurer
- * @version $Id$
+ * @version $Rev$
  * 
  * @see de.unisiegen.tpml.core.prettyprinter.AbstractItem
  * @see de.unisiegen.tpml.core.prettyprinter.DefaultPrettyStringBuilder

@@ -14,7 +14,7 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
  * type checker and the various parsers.
  *
  * @author Benedikt Meurer
- * @version $Id$
+ * @version $Rev$
  * 
  * @see de.unisiegen.tpml.core.prettyprinter.PrettyPrintable
  */

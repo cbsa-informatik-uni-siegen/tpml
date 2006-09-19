@@ -13,7 +13,7 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
  * The string representation is <code>let id = e1 in e2</code>.
  *
  * @author Benedikt Meurer
- * @version $Id$
+ * @version $Rev$
  *
  * @see de.unisiegen.tpml.core.expressions.Expression
  * @see de.unisiegen.tpml.core.expressions.Lambda

@@ -5,7 +5,7 @@ package de.unisiegen.tpml.core;
  * method on a proof model, but the change cannot be undo or the undo history is empty.
  *
  * @author Benedikt Meurer
- * @version $Id$
+ * @version $Rev$
  * 
  * @see de.unisiegen.tpml.core.CannotRedoException
  */

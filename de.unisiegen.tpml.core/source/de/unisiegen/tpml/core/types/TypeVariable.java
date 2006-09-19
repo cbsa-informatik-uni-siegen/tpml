@@ -33,7 +33,7 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
  * printed.
  *
  * @author Benedikt Meurer
- * @version $Id$
+ * @version $Rev$
  * 
  * @see de.unisiegen.tpml.core.types.Type
  */

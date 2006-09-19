@@ -13,7 +13,7 @@ import java_cup.runtime.Scanner;
  * to generate the expression tree.
  *
  * @author Benedikt Meurer
- * @version $Id$
+ * @version $Rev$
  * 
  * @see de.unisiegen.tpml.core.languages.Language
  * @see de.unisiegen.tpml.core.languages.LanguageParser
