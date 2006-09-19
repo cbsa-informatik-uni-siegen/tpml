@@ -81,7 +81,6 @@ public final class TypeCheckerProofModelTest extends JFrame {
           }
         }
         catch (Exception e) {
-          e.printStackTrace();
           JOptionPane.showMessageDialog(TypeCheckerProofModelTest.this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
       }
@@ -98,7 +97,6 @@ public final class TypeCheckerProofModelTest extends JFrame {
           model.undo();
         }
         catch (Exception e) {
-          e.printStackTrace();
           JOptionPane.showMessageDialog(TypeCheckerProofModelTest.this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
       }
@@ -125,7 +123,6 @@ public final class TypeCheckerProofModelTest extends JFrame {
           }
         }
         catch (Exception e) {
-          e.printStackTrace();
           JOptionPane.showMessageDialog(TypeCheckerProofModelTest.this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
       }
@@ -149,7 +146,6 @@ public final class TypeCheckerProofModelTest extends JFrame {
           }
         }
         catch (Exception e) {
-          e.printStackTrace();
           JOptionPane.showMessageDialog(TypeCheckerProofModelTest.this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
       }

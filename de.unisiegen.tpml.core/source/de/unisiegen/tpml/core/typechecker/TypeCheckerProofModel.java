@@ -2,6 +2,8 @@ package de.unisiegen.tpml.core.typechecker;
 
 import java.util.Enumeration;
 
+import org.apache.log4j.Logger;
+
 import de.unisiegen.tpml.core.AbstractProofModel;
 import de.unisiegen.tpml.core.AbstractProofNode;
 import de.unisiegen.tpml.core.AbstractProofRuleSet;
@@ -27,6 +29,19 @@ import de.unisiegen.tpml.core.types.TypeVariable;
  * @see de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode
  */
 public final class TypeCheckerProofModel extends AbstractProofModel {
+  //
+  // Constants
+  //
+  
+  /**
+   * The {@link Logger} for this class.
+   * 
+   * @see Logger
+   */
+  private static final Logger logger = Logger.getLogger(TypeCheckerProofModel.class);
+
+  
+  
   //
   // Attributes
   //
@@ -128,21 +143,25 @@ public final class TypeCheckerProofModel extends AbstractProofModel {
     }
     
     // try to guess the next rule
+    logger.debug("Trying to guess a rule for " + node);
     for (ProofRule rule : getRules()) {
       try {
         // try to apply the rule to the specified node
         apply((TypeCheckerProofRule)rule, (DefaultTypeCheckerProofNode)node);
+        logger.debug("Successfully applied (" + rule + ") to " + node);
         
         // yep, we did it
         return;
       }
       catch (ProofRuleException e) {
-        // next one, please
+        // rule failed to apply... so, next one, please
+        logger.debug("Failed to apply (" + rule + ") to " + node, e);
         continue;
       }
     }
     
     // unable to guess next step
+    logger.debug("Failed to find rule to apply to " + node);
     throw new ProofGuessException(node);
   }
 
