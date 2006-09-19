@@ -9,6 +9,7 @@ import de.unisiegen.tpml.core.ProofGuessException;
 import de.unisiegen.tpml.core.ProofNode;
 import de.unisiegen.tpml.core.ProofRule;
 import de.unisiegen.tpml.core.ProofRuleException;
+import de.unisiegen.tpml.core.ProofStep;
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.types.MonoType;
 import de.unisiegen.tpml.core.types.TypeVariable;
@@ -325,5 +326,33 @@ public final class TypeCheckerProofModel extends AbstractProofModel {
         });
       }
     }
+  }
+  
+  /**
+   * Used to implement the {@link DefaultTypeCheckerProofContext#apply(TypeCheckerProofRule, TypeCheckerProofNode)}
+   * method of the {@link DefaultTypeCheckerProofContext} class.
+   * 
+   * @param context the type checker proof context.
+   * @param node the type checker node.
+   * @param rule the type checker rule.
+   * 
+   * @see DefaultTypeCheckerProofContext#apply(TypeCheckerProofRule, TypeCheckerProofNode)
+   */
+  void contextSetProofNodeRule(DefaultTypeCheckerProofContext context, final DefaultTypeCheckerProofNode node, final TypeCheckerProofRule rule) {
+    final ProofStep[] oldSteps = node.getSteps();
+    
+    context.addRedoAction(new Runnable() {
+      public void run() {
+        node.setSteps(new ProofStep[] { new ProofStep(node.getExpression(), rule) });
+        nodeChanged(node);
+      }
+    });
+    
+    context.addUndoAction(new Runnable() {
+      public void run() {
+        node.setSteps(oldSteps);
+        nodeChanged(node);
+      }
+    });
   }
 }

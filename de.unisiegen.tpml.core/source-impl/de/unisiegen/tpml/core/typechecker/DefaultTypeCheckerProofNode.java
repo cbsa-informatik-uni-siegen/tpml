@@ -114,7 +114,7 @@ final class DefaultTypeCheckerProofNode extends AbstractProofNode implements Typ
     if (type == null) {
       throw new NullPointerException("type is null");
     }
-    this.type = null;
+    this.type = type;
   }
   
   /**

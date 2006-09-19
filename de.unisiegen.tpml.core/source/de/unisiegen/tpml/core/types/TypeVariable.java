@@ -1,7 +1,7 @@
 package de.unisiegen.tpml.core.types;
 
+import java.util.Collections;
 import java.util.Set;
-import java.util.TreeSet;
 
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
@@ -141,9 +141,7 @@ public final class TypeVariable extends MonoType {
    */
   @Override
   public Set<TypeVariable> free() {
-    TreeSet<TypeVariable> free = new TreeSet<TypeVariable>();
-    free.add(this);
-    return free;
+    return Collections.singleton(this);
   }
   
   /**

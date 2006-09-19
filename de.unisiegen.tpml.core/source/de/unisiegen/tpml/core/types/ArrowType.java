@@ -1,7 +1,6 @@
 package de.unisiegen.tpml.core.types;
 
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.HashSet;
 
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
@@ -13,10 +12,28 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
  *
  * @author Benedikt Meurer
  * @version $Id$
- * 
+ *
+ * @see de.unisiegen.tpml.core.types.BooleanType
+ * @see de.unisiegen.tpml.core.types.IntegerType
  * @see de.unisiegen.tpml.core.types.MonoType
  */
 public final class ArrowType extends MonoType {
+  //
+  // Constants
+  //
+  
+  /**
+   * The type for <code>int -&gt; int -&gt; bool</code>.
+   */
+  public static final ArrowType INT_INT_BOOL = new ArrowType(IntegerType.INT, new ArrowType(IntegerType.INT, BooleanType.BOOL));
+  
+  /**
+   * The type for <code>int -&gt; int -&gt; int</code>.
+   */
+  public static final ArrowType INT_INT_INT = new ArrowType(IntegerType.INT, new ArrowType(IntegerType.INT, IntegerType.INT));
+  
+  
+  
   //
   // Attributes
   //
@@ -102,8 +119,8 @@ public final class ArrowType extends MonoType {
    * @see types.Type#free()
    */
   @Override
-  public Set<TypeVariable> free() {
-    TreeSet<TypeVariable> free = new TreeSet<TypeVariable>();
+  public HashSet<TypeVariable> free() {
+    HashSet<TypeVariable> free = new HashSet<TypeVariable>();
     free.addAll(this.tau1.free());
     free.addAll(this.tau2.free());
     return free;

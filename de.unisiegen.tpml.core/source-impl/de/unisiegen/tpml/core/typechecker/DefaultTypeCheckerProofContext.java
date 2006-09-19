@@ -3,9 +3,19 @@ package de.unisiegen.tpml.core.typechecker;
 import java.util.LinkedList;
 
 import de.unisiegen.tpml.core.ProofRuleException;
+import de.unisiegen.tpml.core.expressions.ArithmeticOperator;
+import de.unisiegen.tpml.core.expressions.BooleanConstant;
 import de.unisiegen.tpml.core.expressions.Expression;
+import de.unisiegen.tpml.core.expressions.IntegerConstant;
+import de.unisiegen.tpml.core.expressions.RelationalOperator;
+import de.unisiegen.tpml.core.expressions.UnitConstant;
+import de.unisiegen.tpml.core.types.ArrowType;
+import de.unisiegen.tpml.core.types.BooleanType;
+import de.unisiegen.tpml.core.types.IntegerType;
 import de.unisiegen.tpml.core.types.MonoType;
+import de.unisiegen.tpml.core.types.Type;
 import de.unisiegen.tpml.core.types.TypeVariable;
+import de.unisiegen.tpml.core.types.UnitType;
 
 /**
  * Default implementation of the <code>TypeCheckerProofContext</code> interface.
@@ -120,6 +130,37 @@ final class DefaultTypeCheckerProofContext implements TypeCheckerProofContext {
   /**
    * {@inheritDoc}
    *
+   * @see de.unisiegen.tpml.core.typechecker.TypeCheckerProofContext#getTypeForExpression(de.unisiegen.tpml.core.expressions.Expression)
+   */
+  public Type getTypeForExpression(Expression expression) {
+    if (expression == null) {
+      throw new NullPointerException("expression is null");
+    }
+    
+    if (expression instanceof BooleanConstant) {
+      return BooleanType.BOOL;
+    }
+    else if (expression instanceof IntegerConstant) {
+      return IntegerType.INT;
+    }
+    else if (expression instanceof UnitConstant) {
+      return UnitType.UNIT;
+    }
+    else if (expression instanceof ArithmeticOperator) {
+      return ArrowType.INT_INT_INT;
+    }
+    else if (expression instanceof RelationalOperator) {
+      return ArrowType.INT_INT_BOOL;
+    }
+    else {
+      // not a simple expression
+      throw new IllegalArgumentException("Cannot determine the type for " + expression);
+    }
+  }
+  
+  /**
+   * {@inheritDoc}
+   *
    * @see de.unisiegen.tpml.core.typechecker.TypeCheckerProofContext#newTypeVariable()
    */
   public TypeVariable newTypeVariable() {
@@ -145,6 +186,9 @@ final class DefaultTypeCheckerProofContext implements TypeCheckerProofContext {
    *                              from the application of <code>rule</code> to <code>node</code>.
    */
   void apply(TypeCheckerProofRule rule, TypeCheckerProofNode node) throws ProofRuleException, UnificationException {
+    // record the proof step for the node
+    this.model.contextSetProofNodeRule(this, (DefaultTypeCheckerProofNode)node, rule);
+    
     // try to apply the rule to the node
     rule.apply(this, node);
     
@@ -180,7 +224,7 @@ final class DefaultTypeCheckerProofContext implements TypeCheckerProofContext {
     }
     this.undoActions.clear();
   }
-
+  
   
   
   //

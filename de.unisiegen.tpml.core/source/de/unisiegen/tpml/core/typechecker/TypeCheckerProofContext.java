@@ -2,6 +2,7 @@ package de.unisiegen.tpml.core.typechecker;
 
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.types.MonoType;
+import de.unisiegen.tpml.core.types.Type;
 import de.unisiegen.tpml.core.types.TypeVariable;
 
 /**
@@ -46,6 +47,20 @@ public interface TypeCheckerProofContext {
    * @throws NullPointerException if any of the parameters is <code>null</code>.
    */
   public void addProofNode(TypeCheckerProofNode node, TypeEnvironment environment, Expression expression, MonoType type);
+  
+  /**
+   * Returns the {@link Type} for the given <code>expression</code> if possible, i.e. <b>(BOOL)</b> if
+   * <code>expression</code> is an instance of {@link de.unisiegen.tpml.core.expressions.BooleanConstant}.
+   * 
+   * @param expression an {@link Expression}.
+   * 
+   * @return the {@link Type} for the <code>expression</code>.
+   * 
+   * @throws IllegalArgumentException if <code>expression</code> is not a simple expression, like a
+   *                                  constant for which it is possible to determine the type out of the box.
+   * @throws NullPointerException if <code>expression</code> is <code>null</code>.
+   */
+  public Type getTypeForExpression(Expression expression);
   
   /**
    * Allocates a new <code>TypeVariable</code> that is not already used in the type checker proof

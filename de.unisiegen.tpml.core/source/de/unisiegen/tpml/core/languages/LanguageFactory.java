@@ -6,6 +6,7 @@ import java.lang.reflect.InvocationTargetException;
 import de.unisiegen.tpml.core.languages.l0.L0Language;
 import de.unisiegen.tpml.core.languages.l1.L1Language;
 import de.unisiegen.tpml.core.languages.l2.L2Language;
+import de.unisiegen.tpml.core.languages.lt1.Lt1Language;
 
 /**
  * Factory class for {@link de.unisiegen.tpml.core.languages.Language}s.
@@ -58,6 +59,7 @@ public final class LanguageFactory {
         new L0Language(),
         new L1Language(),
         new L2Language(),
+        new Lt1Language(),
     };
   }
   
@@ -90,7 +92,7 @@ public final class LanguageFactory {
   public Language getLanguageById(String id) throws NoSuchLanguageException {
     try {
       // determine the class name for the language class
-      String clazzName = getClass().getPackage().getName() + "." + id.toLowerCase() + "." + id.toUpperCase() + "Language";
+      String clazzName = getClass().getPackage().getName() + "." + id.toLowerCase() + "." + id.substring(0, 1).toUpperCase() + id.substring(1) + "Language";
 
       // determine the language class
       Class clazz = Class.forName(clazzName);

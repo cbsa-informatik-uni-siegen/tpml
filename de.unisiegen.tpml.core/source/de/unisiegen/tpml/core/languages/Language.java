@@ -5,6 +5,7 @@ import java.io.Reader;
 import de.unisiegen.tpml.core.bigstep.BigStepProofModel;
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.smallstep.SmallStepProofModel;
+import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel;
 
 /**
  * Base interface for all languages, which is used to create scanners and parsers for a specific language.
@@ -74,6 +75,21 @@ public interface Language {
    * @see SmallStepProofModel
    */
   public SmallStepProofModel newSmallStepProofModel(Expression expression);
+  
+  /**
+   * Allocates a new {@link TypeCheckerProofModel} for the <code>expression</code> in this language, which
+   * is used to prove that <code>expression</code> is well-typed using the rules from this language.
+   * 
+   * @param expression the {@link Expression} for the type checker proof model.
+   * 
+   * @return the newly allocated type checker proof model.
+   * 
+   * @throws NullPointerException if <code>expression</code> is <code>null</code>.
+   * @throws UnsupportedOperationException if the language does not include a type system.
+   * 
+   * @see TypeCheckerProofModel
+   */
+  public TypeCheckerProofModel newTypeCheckerProofModel(Expression expression);
   
   /**
    * Allocates a new {@link LanguageParser} for this language, using the specified <code>scanner</code> as

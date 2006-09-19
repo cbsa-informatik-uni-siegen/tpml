@@ -2,6 +2,9 @@ package de.unisiegen.tpml.core.languages;
 
 import java.io.Reader;
 
+import de.unisiegen.tpml.core.expressions.Expression;
+import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel;
+
 /**
  * Abstract base class for classes that implement the {@link de.unisiegen.tpml.core.languages.Language}
  * interface.
@@ -28,6 +31,15 @@ public abstract class AbstractLanguage implements Language {
   //
   // Primitives
   //
+  
+  /**
+   * {@inheritDoc}
+   *
+   * @see de.unisiegen.tpml.core.languages.Language#newTypeCheckerProofModel(de.unisiegen.tpml.core.expressions.Expression)
+   */
+  public TypeCheckerProofModel newTypeCheckerProofModel(Expression expression) {
+    throw new UnsupportedOperationException("The language " + getName() + " does not include a type system");
+  }
   
   /**
    * {@inheritDoc}

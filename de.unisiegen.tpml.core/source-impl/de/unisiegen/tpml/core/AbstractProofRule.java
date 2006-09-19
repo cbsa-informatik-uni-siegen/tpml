@@ -64,6 +64,17 @@ public abstract class AbstractProofRule implements ProofRule {
   /**
    * {@inheritDoc}
    *
+   * @see #getName()
+   * @see java.lang.Object#toString()
+   */
+  @Override
+  public String toString() {
+    return this.name;
+  }
+  
+  /**
+   * {@inheritDoc}
+   *
    * Two proof rules are considered equal if both the name and the class of
    * the proof rule are equal.
    * 
