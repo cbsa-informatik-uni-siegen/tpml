@@ -299,18 +299,21 @@ public final class TypeCheckerProofModel extends AbstractProofModel {
       // determine the previous settings for the node
       final DefaultTypeCheckerProofNode node = (DefaultTypeCheckerProofNode)nodes.nextElement();
       final TypeEnvironment oldEnvironment = node.getEnvironment();
+      final Expression oldExpression = node.getExpression();
       final MonoType oldType = node.getType();
       
       // determine the new settings for the node
       final TypeEnvironment newEnvironment = oldEnvironment.substitute(s);
+      final Expression newExpression = oldExpression.substitute(s);
       final MonoType newType = oldType.substitute(s);
       
       // check if the old and new settings differ
-      if (!oldEnvironment.equals(newEnvironment) || !oldType.equals(newType)) {
+      if (!oldEnvironment.equals(newEnvironment) || !oldExpression.equals(newExpression) || !oldType.equals(newType)) {
         // add the redo action for the substitution
         context.addRedoAction(new Runnable() {
           public void run() {
             node.setEnvironment(newEnvironment);
+            node.setExpression(newExpression);
             node.setType(newType);
             nodeChanged(node);
           }
@@ -320,6 +323,7 @@ public final class TypeCheckerProofModel extends AbstractProofModel {
         context.addUndoAction(new Runnable() {
           public void run() {
             node.setEnvironment(oldEnvironment);
+            node.setExpression(oldExpression);
             node.setType(oldType);
             nodeChanged(node);
           }

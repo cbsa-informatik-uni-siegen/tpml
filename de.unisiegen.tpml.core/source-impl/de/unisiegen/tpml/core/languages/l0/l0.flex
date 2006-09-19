@@ -74,27 +74,27 @@ Identifier		= [:jletter:] [:jletterdigit:]*
 
 <YYINITIAL> {
 	// syntactic tokens
-	"."				{ return symbol("DOT", DOT); }
-	"("				{ return symbol("LPAREN", LPAREN); }
-	")"				{ return symbol("RPAREN", RPAREN); }
-	"lambda"		{ return symbol("LAMBDA", LAMBDA); }
-	{Identifier}	{ return symbol("IDENTIFIER", IDENTIFIER, yytext()); }
+	"."					{ return symbol("DOT", DOT); }
+	"("					{ return symbol("LPAREN", LPAREN); }
+	")"					{ return symbol("RPAREN", RPAREN); }
+	"lambda"|"\u03bb"	{ return symbol("LAMBDA", LAMBDA); }
+	{Identifier}		{ return symbol("IDENTIFIER", IDENTIFIER, yytext()); }
 	
 	// comments
-	"(*"			{ yycommentChar = yychar; yybegin(YYCOMMENT); }
+	"(*"				{ yycommentChar = yychar; yybegin(YYCOMMENT); }
 	
 	// whitespace
-	{WhiteSpace}	{ /* ignore */ }
+	{WhiteSpace}		{ /* ignore */ }
 }
 
 <YYCOMMENT> {
-	<<EOF>>			{ yybegin(YYCOMMENTEOF); return symbol("COMMENT", COMMENT, yycommentChar, yychar, null); }
-	"*)"			{ yybegin(YYINITIAL); return symbol("COMMENT", COMMENT, yycommentChar, yychar + yylength(), null); }
-	.|\n			{ /* ignore */ }
+	<<EOF>>				{ yybegin(YYCOMMENTEOF); return symbol("COMMENT", COMMENT, yycommentChar, yychar, null); }
+	"*)"				{ yybegin(YYINITIAL); return symbol("COMMENT", COMMENT, yycommentChar, yychar + yylength(), null); }
+	.|\n				{ /* ignore */ }
 }
 
 <YYCOMMENTEOF> {
-	<<EOF>>			{ throw new LanguageScannerException(yycommentChar, yychar, "Unexpected end of comment"); }
+	<<EOF>>				{ throw new LanguageScannerException(yycommentChar, yychar, "Unexpected end of comment"); }
 }
 
-.|\n				{ throw new LanguageScannerException(yychar, yychar + yylength(), "Syntax error on token \"" + yytext() + "\""); }
+.|\n					{ throw new LanguageScannerException(yychar, yychar + yylength(), "Syntax error on token \"" + yytext() + "\""); }

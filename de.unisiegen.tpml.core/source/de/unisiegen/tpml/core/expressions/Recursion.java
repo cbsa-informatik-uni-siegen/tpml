@@ -5,6 +5,8 @@ import java.util.TreeSet;
 
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
+import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
+import de.unisiegen.tpml.core.types.MonoType;
 
 /**
  * Instances of this class are used to represent recursive expressions in the expression hierarchy.
@@ -29,6 +31,13 @@ public final class Recursion extends Expression {
   private String id;
   
   /**
+   * The type for the <code>id</code> or <code>null</code>.
+   * 
+   * @see #getTau()
+   */
+  private MonoType tau;
+  
+  /**
    * The subexpression for the recursion.
    * 
    * @see #getE()
@@ -45,11 +54,12 @@ public final class Recursion extends Expression {
    * Allocates a new <code>Recursion</code> with the <code>id</code> and <code>e</code>.
    * 
    * @param id the identifier.
+   * @param tau the type for the <code>id</code> or <code>null</code>.
    * @param e the sub expression.
    * 
    * @throws NullPointerException if <code>id</code> or <code>e</code> is <code>null</code>.
    */
-  public Recursion(String id, Expression e) {
+  public Recursion(String id, MonoType tau, Expression e) {
     if (id == null) {
       throw new NullPointerException("id is null");
     }
@@ -57,6 +67,7 @@ public final class Recursion extends Expression {
       throw new NullPointerException("e is null");
     }
     this.id = id;
+    this.tau = tau;
     this.e = e;
   }
   
@@ -73,6 +84,15 @@ public final class Recursion extends Expression {
    */
   public String getId() {
     return this.id;
+  }
+  
+  /**
+   * Returns the type for the identifier or <code>null</code> if type inference should be used.
+   * 
+   * @return the type for the identifier or <code>null</code>.
+   */
+  public MonoType getTau() {
+    return this.tau;
   }
   
   /**
@@ -106,10 +126,21 @@ public final class Recursion extends Expression {
   /**
    * {@inheritDoc}
    *
+   * @see de.unisiegen.tpml.core.expressions.Expression#substitute(de.unisiegen.tpml.core.typechecker.TypeSubstitution)
+   */
+  @Override
+  public Recursion substitute(TypeSubstitution substitution) {
+    MonoType tau = (this.tau != null) ? this.tau.substitute(substitution) : null;
+    return new Recursion(this.id, tau, this.e.substitute(substitution));
+  }
+  
+  /**
+   * {@inheritDoc}
+   *
    * @see de.unisiegen.tpml.core.expressions.Expression#substitute(java.lang.String, de.unisiegen.tpml.core.expressions.Expression)
    */
   @Override
-  public Expression substitute(String id, Expression e) {
+  public Recursion substitute(String id, Expression e) {
     if (this.id.equals(id)) {
       return this;
     }
@@ -126,7 +157,7 @@ public final class Recursion extends Expression {
       Expression newE = this.e.substitute(this.id, new Identifier(newId));
       
       // perform the substitution
-      return new Recursion(newId, newE.substitute(id, e));
+      return new Recursion(newId, this.tau, newE.substitute(id, e));
     }
   }
 
@@ -141,10 +172,16 @@ public final class Recursion extends Expression {
    *
    * @see de.unisiegen.tpml.core.expressions.Expression#toPrettyStringBuilder(de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory)
    */
-  public @Override PrettyStringBuilder toPrettyStringBuilder(PrettyStringBuilderFactory factory) {
+  @Override
+  public PrettyStringBuilder toPrettyStringBuilder(PrettyStringBuilderFactory factory) {
     PrettyStringBuilder builder = factory.newBuilder(this, PRIO_REC);
     builder.addKeyword("rec");
-    builder.addText(" " + this.id + ".");
+    builder.addText(" " + this.id);
+    if (this.tau != null) {
+      builder.addText(":");
+      builder.addBuilder(this.tau.toPrettyStringBuilder(factory), PRIO_REC_TAU);
+    }
+    builder.addText(".");
     builder.addBuilder(this.e.toPrettyStringBuilder(factory), PRIO_REC_E);
     return builder;
   }

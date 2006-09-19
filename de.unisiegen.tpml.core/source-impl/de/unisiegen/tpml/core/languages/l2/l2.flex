@@ -78,64 +78,71 @@ Identifier		= [:jletter:] [:jletterdigit:]*
 
 <YYINITIAL> {
 	// arithmetic binary operators
-	"+"				{ return symbol("PLUS", PLUS); }
-	"-"				{ return symbol("MINUS", MINUS); }
-	"*"				{ return symbol("STAR", STAR); }
-	"/"				{ return symbol("SLASH", SLASH); }
-	"mod"			{ return symbol("MOD", MOD); }
+	"+"					{ return symbol("PLUS", PLUS); }
+	"-"					{ return symbol("MINUS", MINUS); }
+	"*"					{ return symbol("STAR", STAR); }
+	"/"					{ return symbol("SLASH", SLASH); }
+	"mod"				{ return symbol("MOD", MOD); }
 	
 	// relational binary operators
-	"="				{ return symbol("EQUAL", EQUAL); }
-	"<"				{ return symbol("LESS", LESS); }
-	">"				{ return symbol("GREATER", GREATER); }
-	"<="			{ return symbol("LESSEQUAL", LESSEQUAL); }
-	">="			{ return symbol("GREATEREQUAL", GREATEREQUAL); }
+	"="					{ return symbol("EQUAL", EQUAL); }
+	"<"					{ return symbol("LESS", LESS); }
+	">"					{ return symbol("GREATER", GREATER); }
+	"<="				{ return symbol("LESSEQUAL", LESSEQUAL); }
+	">="				{ return symbol("GREATEREQUAL", GREATEREQUAL); }
 	
 	// interpunctation
-	"."				{ return symbol("DOT", DOT); }
-	"("				{ return symbol("LPAREN", LPAREN); }
-	")"				{ return symbol("RPAREN", RPAREN); }
+	"."					{ return symbol("DOT", DOT); }
+	":"					{ return symbol("COLON", COLON); }
+	"("					{ return symbol("LPAREN", LPAREN); }
+	")"					{ return symbol("RPAREN", RPAREN); }
+	"->"|"\u2192"		{ return symbol("ARROW", ARROW); }
 	
 	// keywords
-	"lambda"		{ return symbol("LAMBDA", LAMBDA); }
-	"let"			{ return symbol("LET", LET); }
-	"rec"			{ return symbol("REC", REC); }
-	"in"			{ return symbol("IN", IN); }
-	"if"			{ return symbol("IF", IF); }
-	"then"			{ return symbol("THEN", THEN); }
-	"else"			{ return symbol("ELSE", ELSE); }
+	"lambda"|"\u03bb"	{ return symbol("LAMBDA", LAMBDA); }
+	"let"				{ return symbol("LET", LET); }
+	"rec"				{ return symbol("REC", REC); }
+	"in"				{ return symbol("IN", IN); }
+	"if"				{ return symbol("IF", IF); }
+	"then"				{ return symbol("THEN", THEN); }
+	"else"				{ return symbol("ELSE", ELSE); }
 	
 	// constants
-	"()"			{ return symbol("PARENPAREN", PARENPAREN); }
-	"true"			{ return symbol("TRUE", TRUE); }
-	"false"			{ return symbol("FALSE", FALSE); }
+	"()"				{ return symbol("PARENPAREN", PARENPAREN); }
+	"true"				{ return symbol("TRUE", TRUE); }
+	"false"				{ return symbol("FALSE", FALSE); }
+	
+	// types
+	"bool"				{ return symbol("BOOL", BOOL); }
+	"int"				{ return symbol("INT", INT); }
+	"unit"				{ return symbol("UNIT", UNIT); }
 	
 	// numbers and identifiers
-	{Number}		{
-						try {
-							return symbol("NUMBER", NUMBER, Integer.valueOf(yytext()));
+	{Number}			{
+							try {
+								return symbol("NUMBER", NUMBER, Integer.valueOf(yytext()));
+							}
+							catch (NumberFormatException e) {
+								throw new LanguageScannerException(yychar, yychar + yylength(), "Integer constant \"" + yytext() + "\" too large", e);
+							}
 						}
-						catch (NumberFormatException e) {
-							throw new LanguageScannerException(yychar, yychar + yylength(), "Integer constant \"" + yytext() + "\" too large", e);
-						}
-					}
-	{Identifier}	{ return symbol("IDENTIFIER", IDENTIFIER, yytext()); }
+	{Identifier}		{ return symbol("IDENTIFIER", IDENTIFIER, yytext()); }
 	
 	// comments
-	"(*"			{ yycommentChar = yychar; yybegin(YYCOMMENT); }
+	"(*"				{ yycommentChar = yychar; yybegin(YYCOMMENT); }
 	
 	// whitespace
-	{WhiteSpace}	{ /* ignore */ }
+	{WhiteSpace}		{ /* ignore */ }
 }
 
 <YYCOMMENT> {
-	<<EOF>>			{ yybegin(YYCOMMENTEOF); return symbol("COMMENT", COMMENT, yycommentChar, yychar, null); }
-	"*)"			{ yybegin(YYINITIAL); return symbol("COMMENT", COMMENT, yycommentChar, yychar + yylength(), null); }
-	.|\n			{ /* ignore */ }
+	<<EOF>>				{ yybegin(YYCOMMENTEOF); return symbol("COMMENT", COMMENT, yycommentChar, yychar, null); }
+	"*)"				{ yybegin(YYINITIAL); return symbol("COMMENT", COMMENT, yycommentChar, yychar + yylength(), null); }
+	.|\n				{ /* ignore */ }
 }
 
 <YYCOMMENTEOF> {
-	<<EOF>>			{ throw new LanguageScannerException(yycommentChar, yychar, "Unexpected end of comment"); }
+	<<EOF>>				{ throw new LanguageScannerException(yycommentChar, yychar, "Unexpected end of comment"); }
 }
 
-.|\n				{ throw new LanguageScannerException(yychar, yychar + yylength(), "Syntax error on token \"" + yytext() + "\""); }
+.|\n					{ throw new LanguageScannerException(yychar, yychar + yylength(), "Syntax error on token \"" + yytext() + "\""); }

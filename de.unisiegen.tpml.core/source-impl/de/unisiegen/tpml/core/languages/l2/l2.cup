@@ -1,4 +1,5 @@
 import de.unisiegen.tpml.core.expressions.*;
+import de.unisiegen.tpml.core.types.*;
 
 
 /* Binary operators */
@@ -6,13 +7,16 @@ terminal			PLUS, MINUS, STAR, SLASH, MOD;
 terminal			EQUAL, LESS, GREATER, LESSEQUAL, GREATEREQUAL;
 
 /* Syntactic tokens */
-terminal			DOT;
+terminal			ARROW, COLON, DOT;
 terminal			LPAREN, RPAREN;
 terminal			PARENPAREN;
 
 /* Keywords */
 terminal			LAMBDA, LET, REC, IN, IF, THEN, ELSE;
 terminal			TRUE, FALSE;
+
+/* Types */
+terminal			BOOL, INT, UNIT;
 
 /* Special tokens */
 terminal Integer	NUMBER;
@@ -27,12 +31,16 @@ non terminal Expression[]	simple_expr_list;
 non terminal Expression		constant;
 non terminal Expression		operator;
 non terminal String[]		id_list;			/* list of identifiers without any separator */
+non terminal MonoType		type;
+non terminal MonoType		simple_type;
 
 
 /* Precedences, based on http://caml.inria.fr/pub/docs/manual-ocaml/manual015.html */
 precedence left		EQUAL, LESS, GREATER, LESSEQUAL, GREATEREQUAL;
 precedence left		PLUS, MINUS;
 precedence left		STAR, SLASH, MOD;
+
+precedence right	ARROW;
 
 
 
@@ -81,6 +89,8 @@ expr				::=	simple_expr:e
 					/* Lambda Abstraction */
 					|	LAMBDA IDENTIFIER:id DOT expr:e
 						{: RESULT = new Lambda(id, null, e); :}
+					|	LAMBDA IDENTIFIER:id COLON type:tau DOT expr:e
+						{: RESULT = new Lambda(id, tau, e); :}
 
 					/* Let */
 					|	LET IDENTIFIER:id EQUAL expr:e1 IN expr:e2
@@ -88,7 +98,9 @@ expr				::=	simple_expr:e
 
 					/* Recursion */				
 					|	REC IDENTIFIER:id DOT expr:e
-						{: RESULT = new Recursion(id, e); :}
+						{: RESULT = new Recursion(id, null, e); :}
+					|	REC IDENTIFIER:id COLON type:tau DOT expr:e
+						{: RESULT = new Recursion(id, tau, e); :}
 					|	LET REC id_list:il EQUAL expr:e1 IN expr:e2
 						{: RESULT = (il.length == 1) ? new LetRec(il[0], e1, e2) : new CurriedLetRec(il, e1, e2); :}
 					;
@@ -145,3 +157,21 @@ id_list				::=	id_list:l IDENTIFIER:id
 						{: RESULT = new String[] { id }; :}
 					;
 
+					
+					
+/*********
+ * Types *
+ *********/
+
+
+type				::=	simple_type:t			{: RESULT = t; :}
+					|	type:t1 ARROW type:t2	{: RESULT = new ArrowType(t1, t2); :}
+					;
+
+
+simple_type			::=	LPAREN type:t RPAREN	{: RESULT = t; :}
+					|	BOOL					{: RESULT = BooleanType.BOOL; :}
+					|	INT						{: RESULT = IntegerType.INT; :}
+					|	UNIT					{: RESULT = UnitType.UNIT; :}
+					;
+					

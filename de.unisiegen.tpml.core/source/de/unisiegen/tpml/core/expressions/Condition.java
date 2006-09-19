@@ -2,6 +2,7 @@ package de.unisiegen.tpml.core.expressions;
 
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
+import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
 
 /**
  * Represents the conditional evaluation in the expression hierarchy.
@@ -112,10 +113,20 @@ public final class Condition extends Expression {
   /**
    * {@inheritDoc}
    *
+   * @see de.unisiegen.tpml.core.expressions.Expression#substitute(de.unisiegen.tpml.core.typechecker.TypeSubstitution)
+   */
+  @Override
+  public Condition substitute(TypeSubstitution substitution) {
+    return new Condition(this.e0.substitute(substitution), this.e1.substitute(substitution), this.e2.substitute(substitution));
+  }
+  
+  /**
+   * {@inheritDoc}
+   *
    * @see de.unisiegen.tpml.core.expressions.Expression#substitute(java.lang.String, de.unisiegen.tpml.core.expressions.Expression)
    */
   @Override
-  public Expression substitute(String id, Expression e) {
+  public Condition substitute(String id, Expression e) {
     Expression e0 = this.e0.substitute(id, e);
     Expression e1 = this.e1.substitute(id, e);
     Expression e2 = this.e2.substitute(id, e);
@@ -133,7 +144,8 @@ public final class Condition extends Expression {
    *
    * @see de.unisiegen.tpml.core.expressions.Expression#toPrettyStringBuilder(de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory)
    */
-  public @Override PrettyStringBuilder toPrettyStringBuilder(PrettyStringBuilderFactory factory) {
+  @Override
+  public PrettyStringBuilder toPrettyStringBuilder(PrettyStringBuilderFactory factory) {
     PrettyStringBuilder builder = factory.newBuilder(this, PRIO_CONDITION);
     builder.addKeyword("if");
     builder.addText(" ");

@@ -95,7 +95,7 @@ public class L2SmallStepProofRuleSet extends L1SmallStepProofRuleSet {
     context.addProofStep(getRuleByName("UNFOLD"), curriedLetRec);
 
     // perform the substitution on e1
-    e1 = e1.substitute(identifiers[0], new Recursion(identifiers[0], e1));
+    e1 = e1.substitute(identifiers[0], new Recursion(identifiers[0], null, e1));
     
     // generate the new (LET) expression
     return new Let(identifiers[0], e1, e2);
@@ -120,7 +120,7 @@ public class L2SmallStepProofRuleSet extends L1SmallStepProofRuleSet {
     context.addProofStep(getRuleByName("UNFOLD"), letRec);
     
     // perform the substitution on e1
-    e1 = e1.substitute(id, new Recursion(id, e1));
+    e1 = e1.substitute(id, new Recursion(id, null, e1));
     
     // generate the new (LET) expression
     return new Let(id, e1, e2);

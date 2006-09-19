@@ -2,6 +2,7 @@ package de.unisiegen.tpml.core.expressions;
 
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
+import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
 
 /**
  * Represents the <b>(APP)</b> expression in the expression hierarchy.
@@ -43,8 +44,16 @@ public final class Application extends Expression {
    * 
    * @param e1 the first expression (the operation).
    * @param e2 the second expression (the operand).
+   * 
+   * @throws NullPointerException if <code>e1</code> or <code>e2</code> is <code>null</code>.
    */
   public Application(Expression e1, Expression e2) {
+    if (e1 == null) {
+      throw new NullPointerException("e1 is null");
+    }
+    if (e2 == null) {
+      throw new NullPointerException("e2 is null");
+    }
     this.e1 = e1;
     this.e2 = e2;
   }
@@ -93,6 +102,16 @@ public final class Application extends Expression {
   }
   
   /**
+   * {@inheritDoc}
+   *
+   * @see de.unisiegen.tpml.core.expressions.Expression#substitute(de.unisiegen.tpml.core.typechecker.TypeSubstitution)
+   */
+  @Override
+  public Application substitute(TypeSubstitution substitution) {
+    return new Application(this.e1.substitute(substitution), this.e2.substitute(substitution));
+  }
+  
+  /**
    * Substitutes <code>e</code> for <code>id</code> in the two
    * sub expressions of the application.
    * 
@@ -106,7 +125,7 @@ public final class Application extends Expression {
    * @see de.unisiegen.tpml.core.expressions.Expression#substitute(java.lang.String, de.unisiegen.tpml.core.expressions.Expression)
    */
   @Override
-  public Expression substitute(String id, Expression e) {
+  public Application substitute(String id, Expression e) {
     // substitute for the two sub expression
     Expression e1 = this.e1.substitute(id, e);
     Expression e2 = this.e2.substitute(id, e);
@@ -130,7 +149,8 @@ public final class Application extends Expression {
    *
    * @see de.unisiegen.tpml.core.expressions.Expression#toPrettyStringBuilder(de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory)
    */
-  public @Override PrettyStringBuilder toPrettyStringBuilder(PrettyStringBuilderFactory factory) {
+  @Override
+  public PrettyStringBuilder toPrettyStringBuilder(PrettyStringBuilderFactory factory) {
     PrettyStringBuilder builder = factory.newBuilder(this, PRIO_APPLICATION);
     builder.addBuilder(this.e1.toPrettyStringBuilder(factory), PRIO_APPLICATION_E1);
     builder.addText(" ");

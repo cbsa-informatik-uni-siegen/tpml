@@ -10,6 +10,7 @@ import de.unisiegen.tpml.core.languages.LanguageScanner;
 import de.unisiegen.tpml.core.languages.LanguageTranslator;
 import de.unisiegen.tpml.core.languages.l1.L1Language;
 import de.unisiegen.tpml.core.smallstep.SmallStepProofModel;
+import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel;
 
 /**
  * This class represents the language L2, which serves as a factory class for L2 related functionality,
@@ -70,7 +71,7 @@ public class L2Language extends L1Language {
    */
   @Override
   public String getTitle() {
-    return "Applied untyped λ calculus with recursion";
+    return "Applied λ calculus with recursion";
   }
   
   
@@ -97,6 +98,16 @@ public class L2Language extends L1Language {
   @Override
   public SmallStepProofModel newSmallStepProofModel(Expression expression) {
     return new SmallStepProofModel(expression, new L2SmallStepProofRuleSet(this));
+  }
+  
+  /**
+   * {@inheritDoc}
+   *
+   * @see de.unisiegen.tpml.core.languages.l1.L1Language#newTypeCheckerProofModel(de.unisiegen.tpml.core.expressions.Expression)
+   */
+  @Override
+  public TypeCheckerProofModel newTypeCheckerProofModel(Expression expression) {
+    return new TypeCheckerProofModel(expression, new L2TypeCheckerProofRuleSet(this));
   }
   
   /**

@@ -1,12 +1,17 @@
-package de.unisiegen.tpml.core.languages.lt1;
+package de.unisiegen.tpml.core.languages.l1;
 
 import de.unisiegen.tpml.core.expressions.Application;
 import de.unisiegen.tpml.core.expressions.Condition;
 import de.unisiegen.tpml.core.expressions.Constant;
+import de.unisiegen.tpml.core.expressions.CurriedLet;
+import de.unisiegen.tpml.core.expressions.CurriedLetRec;
+import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.expressions.Identifier;
 import de.unisiegen.tpml.core.expressions.InfixOperation;
 import de.unisiegen.tpml.core.expressions.Lambda;
 import de.unisiegen.tpml.core.expressions.Let;
+import de.unisiegen.tpml.core.expressions.LetRec;
+import de.unisiegen.tpml.core.expressions.Recursion;
 import de.unisiegen.tpml.core.typechecker.AbstractTypeCheckerProofRuleSet;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofContext;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode;
@@ -18,26 +23,26 @@ import de.unisiegen.tpml.core.types.Type;
 import de.unisiegen.tpml.core.types.TypeVariable;
 
 /**
- * The type proof rules for the <code>Lt1</code> language.
+ * The type proof rules for the <code>L1</code> language.
  *
  * @author Benedikt Meurer
- * @version $Id$
+ * @version $Id: Lt1TypeCheckerProofRuleSet.java 272 2006-09-19 15:55:48Z benny $
  *
  * @see de.unisiegen.tpml.core.typechecker.AbstractTypeCheckerProofRuleSet
  */
-public class Lt1TypeCheckerProofRuleSet extends AbstractTypeCheckerProofRuleSet {
+public class L1TypeCheckerProofRuleSet extends AbstractTypeCheckerProofRuleSet {
   //
   // Constructor
   //
   
   /**
-   * Allocates a new <code>Lt1TypeCheckerProofRuleSet</code> for the specified <code>language</code>.
+   * Allocates a new <code>L1TypeCheckerProofRuleSet</code> for the specified <code>language</code>.
    * 
-   * @param language the <code>Lt1</code> or a derived language.
+   * @param language the <code>L1</code> or a derived language.
    * 
    * @throws NullPointerException if <code>language</code> is <code>null</code>.
    */
-  public Lt1TypeCheckerProofRuleSet(Lt1Language language) {
+  public L1TypeCheckerProofRuleSet(L1Language language) {
     super(language);
     
     // register the type rules
@@ -177,10 +182,44 @@ public class Lt1TypeCheckerProofRuleSet extends AbstractTypeCheckerProofRuleSet 
     // generate a new type variable
     TypeVariable tau1 = context.newTypeVariable();
     
-    // generate new child nodes
-    Let let = (Let)node.getExpression();
+    // determine the type environment
     TypeEnvironment environment = node.getEnvironment();
-    context.addProofNode(node, environment, let.getE1(), tau1);
-    context.addProofNode(node, environment.extend(let.getId(), tau1), let, node.getType());
+    
+    // can be applied to LetRec, Let, CurriedLetRec and CurriedLet
+    Expression expression = node.getExpression();
+    if (expression instanceof Let) {
+      // determine the first sub expression
+      Let let = (Let)expression;
+      Expression e1 = let.getE1();
+      
+      // add the recursion for let rec
+      if (expression instanceof LetRec) {
+        e1 = new Recursion(let.getId(), tau1, e1);
+      }
+      
+      // add the child nodes
+      context.addProofNode(node, environment, e1, tau1);
+      context.addProofNode(node, environment.extend(let.getId(), tau1), let.getE2(), node.getType());
+    }
+    else {
+      // determine the first sub expression
+      CurriedLet curriedLet = (CurriedLet)expression;
+      Expression e1 = curriedLet.getE1();
+      
+      // generate the appropriate lambda abstractions
+      String[] identifiers = curriedLet.getIdentifiers();
+      for (int n = identifiers.length - 1; n > 0; --n) {
+        e1 = new Lambda(identifiers[n], null, e1);
+      }
+      
+      // add the recursion for let rec
+      if (expression instanceof CurriedLetRec) {
+        e1 = new Recursion(identifiers[0], tau1, e1);
+      }
+      
+      // add the child nodes
+      context.addProofNode(node, environment, e1, tau1);
+      context.addProofNode(node, environment.extend(identifiers[0], tau1), curriedLet.getE2(), node.getType());
+    }
   }
 }

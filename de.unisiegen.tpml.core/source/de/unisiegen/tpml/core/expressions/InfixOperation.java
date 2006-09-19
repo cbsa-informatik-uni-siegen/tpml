@@ -2,6 +2,7 @@ package de.unisiegen.tpml.core.expressions;
 
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
+import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
 
 /**
  * Instances of this class are used to represent infix operations, which act as syntactic sugar
@@ -124,10 +125,20 @@ public final class InfixOperation extends Expression {
   /**
    * {@inheritDoc}
    *
+   * @see de.unisiegen.tpml.core.expressions.Expression#substitute(de.unisiegen.tpml.core.typechecker.TypeSubstitution)
+   */
+  @Override
+  public InfixOperation substitute(TypeSubstitution substitution) {
+    return new InfixOperation(this.op, this.e1.substitute(substitution), this.e2.substitute(substitution));
+  }
+  
+  /**
+   * {@inheritDoc}
+   *
    * @see de.unisiegen.tpml.core.expressions.Expression#substitute(java.lang.String, de.unisiegen.tpml.core.expressions.Expression)
    */
   @Override
-  public Expression substitute(String id, Expression e) {
+  public InfixOperation substitute(String id, Expression e) {
     return new InfixOperation(this.op, this.e1.substitute(id, e), this.e2.substitute(id, e));
   }
 

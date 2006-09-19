@@ -5,6 +5,7 @@ import java.util.TreeSet;
 
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
+import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
 
 /**
  * Represents the <code>let rec</code> expression, which is syntactic sugar for <b>(LET)</b> and <b>(REC)</b>.
@@ -55,6 +56,16 @@ public final class LetRec extends Let {
     set.addAll(this.e2.free());
     set.remove(this.id);
     return set;
+  }
+  
+  /**
+   * {@inheritDoc}
+   *
+   * @see de.unisiegen.tpml.core.expressions.Let#substitute(de.unisiegen.tpml.core.typechecker.TypeSubstitution)
+   */
+  @Override
+  public LetRec substitute(TypeSubstitution substitution) {
+    return new LetRec(this.id, this.e1.substitute(substitution), this.e2.substitute(substitution));
   }
   
   /**

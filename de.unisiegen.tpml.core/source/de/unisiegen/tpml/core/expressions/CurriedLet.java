@@ -6,6 +6,7 @@ import java.util.TreeSet;
 
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
+import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
 import de.unisiegen.tpml.core.util.StringUtilities;
 
 /**
@@ -160,10 +161,20 @@ public class CurriedLet extends Expression {
   /**
    * {@inheritDoc}
    *
+   * @see de.unisiegen.tpml.core.expressions.Expression#substitute(de.unisiegen.tpml.core.typechecker.TypeSubstitution)
+   */
+  @Override
+  public CurriedLet substitute(TypeSubstitution substitution) {
+    return new CurriedLet(this.identifiers, this.e1.substitute(substitution), this.e2.substitute(substitution));
+  }
+  
+  /**
+   * {@inheritDoc}
+   *
    * @see de.unisiegen.tpml.core.expressions.Expression#substitute(java.lang.String, de.unisiegen.tpml.core.expressions.Expression)
    */
   @Override
-  public Expression substitute(String id, Expression e) {
+  public CurriedLet substitute(String id, Expression e) {
     // determine the expressions and the identifiers
     String[] identifiers = this.identifiers;
     Expression e1 = this.e1;

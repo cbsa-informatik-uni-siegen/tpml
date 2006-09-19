@@ -39,41 +39,8 @@ public final class TypeCheckerProofModelTest extends JFrame {
   /**
    * Simple test expression.
    */
-  private static final String SIMPLE = "lambda x.if x = 1 then false else true";
+  private static final String SIMPLE = "let rec fact = lambda x.if x = 0 then 1 else x * fact (x-1) in fact 3";
 
-  
-  
-  //
-  // Renderer
-  //
-  
-  /**
-   * The tree renderer.
-   */
-  class Renderer extends DefaultTreeCellRenderer {
-    /**
-     * {@inheritDoc}
-     * 
-     * @see javax.swing.tree.DefaultTreeCellRenderer#getTreeCellRendererComponent(javax.swing.JTree, java.lang.Object, boolean, boolean, boolean, int, boolean)
-     */
-    @Override
-    public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus) {
-      super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
-      TypeCheckerProofNode node = (TypeCheckerProofNode)value;
-      StringBuilder builder = new StringBuilder();
-      builder.append(node.getEnvironment());
-      builder.append(" \u22b3 ");
-      builder.append(node.getExpression());
-      builder.append(" :: ");
-      builder.append(node.getType());
-      if (node.getRule() != null) {
-        builder.append(" (" + node.getRule() + ")");
-      }
-      setText(builder.toString());
-      return this;
-    }
-  }
-  
   
   
   //
@@ -96,7 +63,6 @@ public final class TypeCheckerProofModelTest extends JFrame {
     
     // setup the tree
     final JTree tree = new JTree(model);
-    tree.setCellRenderer(new Renderer());
     treePanel.add(tree, BorderLayout.CENTER);
     
     // setup the button panel
@@ -230,9 +196,9 @@ public final class TypeCheckerProofModelTest extends JFrame {
    */
   public static void main(String[] args) {
     try {
-      // parse the program (using Lt1)
+      // parse the program (using L2)
       LanguageFactory factory = LanguageFactory.newInstance();
-      Language language = factory.getLanguageById("lt1");
+      Language language = factory.getLanguageById("l2");
       Expression expression = language.newParser(new StringReader(SIMPLE)).parse();
       TypeCheckerProofModel model = language.newTypeCheckerProofModel(expression);
       

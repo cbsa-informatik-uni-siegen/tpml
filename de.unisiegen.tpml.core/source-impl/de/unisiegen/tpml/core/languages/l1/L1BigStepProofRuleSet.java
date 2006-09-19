@@ -158,7 +158,7 @@ public class L1BigStepProofRuleSet extends L0BigStepProofRuleSet {
       
       // add the recursion for letrec
       if (e instanceof CurriedLetRec) {
-        e1 = new Recursion(identifiers[0], e1);
+        e1 = new Recursion(identifiers[0], null, e1);
       }
       
       // add the proof node
@@ -171,7 +171,7 @@ public class L1BigStepProofRuleSet extends L0BigStepProofRuleSet {
       
       // add the recursion for letrec
       if (e instanceof LetRec) {
-        e1 = new Recursion(let.getId(), e1);
+        e1 = new Recursion(let.getId(), null, e1);
       }
       
       // add the proof node

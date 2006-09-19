@@ -5,6 +5,7 @@ import java.util.TreeSet;
 
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
+import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
 import de.unisiegen.tpml.core.types.MonoType;
 
 /**
@@ -144,6 +145,17 @@ public final class Lambda extends Value {
   }
 
   /**
+   * {@inheritDoc}
+   *
+   * @see de.unisiegen.tpml.core.expressions.Expression#substitute(de.unisiegen.tpml.core.typechecker.TypeSubstitution)
+   */
+  @Override
+  public Expression substitute(TypeSubstitution substitution) {
+    MonoType tau = (this.tau != null) ? this.tau.substitute(substitution) : null;
+    return new Lambda(this.id, tau, this.e.substitute(substitution));
+  }
+  
+  /**
    * Substitutes <code>e</code> for <code>id</code> within the
    * lambda expression, performing a bound rename if necessary
    * to avoid altering the binding of existing identifiers
@@ -159,7 +171,7 @@ public final class Lambda extends Value {
    * @see de.unisiegen.tpml.core.expressions.Expression#substitute(java.lang.String, de.unisiegen.tpml.core.expressions.Expression)
    */
   @Override
-  public Expression substitute(String id, Expression e) {
+  public Lambda substitute(String id, Expression e) {
     // check if the identifier is the same as our identifier,
     // in which case no substitution is performed below the
     // lambda expression

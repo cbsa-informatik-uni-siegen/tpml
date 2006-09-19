@@ -103,6 +103,11 @@ interface PrettyPrintPriorities {
   public static final int PRIO_REC = 0;
   
   /**
+   * The pretty print priority for the type of the recursion (a type!).
+   */
+  public static final int PRIO_REC_TAU = 0;
+  
+  /**
    * The pretty print priority for the e of recursions.
    */
   public static final int PRIO_REC_E = PRIO_REC;

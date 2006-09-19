@@ -5,6 +5,7 @@ import java.util.TreeSet;
 
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
+import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
 
 /**
  * Represents the simple binding mechanism <code>let</code>.
@@ -124,6 +125,16 @@ public class Let extends Expression {
     free.remove(this.id);
     free.addAll(this.e1.free());
     return free;
+  }
+  
+  /**
+   * {@inheritDoc}
+   *
+   * @see de.unisiegen.tpml.core.expressions.Expression#substitute(de.unisiegen.tpml.core.typechecker.TypeSubstitution)
+   */
+  @Override
+  public Let substitute(TypeSubstitution substitution) {
+    return new Let(this.id, this.e1.substitute(substitution), this.e2.substitute(substitution));
   }
   
   /**

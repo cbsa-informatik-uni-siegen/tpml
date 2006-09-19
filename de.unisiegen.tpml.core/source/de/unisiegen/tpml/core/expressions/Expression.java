@@ -14,6 +14,7 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable;
 import de.unisiegen.tpml.core.prettyprinter.PrettyString;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
+import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
 
 /**
  * Base class for all classes in the expression hierarchy.
@@ -78,6 +79,21 @@ public abstract class Expression implements PrettyPrintable, PrettyPrintPrioriti
    */
   public boolean isValue() {
     return false;
+  }
+  
+  /**
+   * Applies the type <code>substitution</code> to this expression, to be exact, to the types
+   * within this expression, and returns the new expression with the new types. If the expression
+   * does not contain any types, this method simply returns a reference to this expression.
+   * 
+   * @param substitution the type substitution to apply.
+   * 
+   * @return the resulting expression.
+   * 
+   * @throws NullPointerException if <code>substitution</code> is <code>null</code>.
+   */
+  public Expression substitute(TypeSubstitution substitution) {
+    return this;
   }
   
   /**

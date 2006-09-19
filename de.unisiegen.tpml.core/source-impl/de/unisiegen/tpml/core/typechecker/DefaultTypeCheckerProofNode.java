@@ -254,4 +254,31 @@ final class DefaultTypeCheckerProofNode extends AbstractProofNode implements Typ
   public DefaultTypeCheckerProofNode getLastLeaf() {
     return (DefaultTypeCheckerProofNode)super.getLastLeaf();
   }
+  
+  
+  
+  //
+  // Base methods
+  //
+  
+  /**
+   * {@inheritDoc}
+   * 
+   * Mainly useful for debugging purposes.
+   * 
+   * @see java.lang.Object#toString()
+   */
+  @Override
+  public String toString() {
+    StringBuilder builder = new StringBuilder();
+    builder.append(this.environment);
+    builder.append(" \u22b3 ");
+    builder.append(this.expression);
+    builder.append(" :: ");
+    builder.append(this.type);
+    if (getRule() != null) {
+      builder.append(" (" + getRule() + ")");
+    }
+    return builder.toString();
+  }
 }

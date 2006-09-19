@@ -10,6 +10,7 @@ import de.unisiegen.tpml.core.languages.LanguageScanner;
 import de.unisiegen.tpml.core.languages.LanguageTranslator;
 import de.unisiegen.tpml.core.languages.l0.L0Language;
 import de.unisiegen.tpml.core.smallstep.SmallStepProofModel;
+import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel;
 
 /**
  * This class represents the language L1, which serves as a factory class for L1 related functionality,
@@ -69,7 +70,7 @@ public class L1Language extends L0Language {
    */
   @Override
   public String getTitle() {
-    return "Applied untyped λ calculus";
+    return "Applied λ calculus";
   }
   
   
@@ -96,6 +97,16 @@ public class L1Language extends L0Language {
   @Override
   public SmallStepProofModel newSmallStepProofModel(Expression expression) {
     return new SmallStepProofModel(expression, new L1SmallStepProofRuleSet(this));
+  }
+  
+  /**
+   * {@inheritDoc}
+   *
+   * @see de.unisiegen.tpml.core.languages.AbstractLanguage#newTypeCheckerProofModel(de.unisiegen.tpml.core.expressions.Expression)
+   */
+  @Override
+  public TypeCheckerProofModel newTypeCheckerProofModel(Expression expression) {
+    return new TypeCheckerProofModel(expression, new L1TypeCheckerProofRuleSet(this));
   }
   
   /**
