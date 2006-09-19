@@ -35,7 +35,7 @@ public class L1BigStepProofRuleSet extends L0BigStepProofRuleSet {
   
   /**
    * Allocates a new <code>L1BigStepProofRuleSet</code> with the specified
-   * <code>language</code>, which is the <b>L0</b> or a derived language.
+   * <code>language</code>, which is the <b>L1</b> or a derived language.
    * 
    * @param language the language for the proof rule set.
    * 
@@ -153,7 +153,7 @@ public class L1BigStepProofRuleSet extends L0BigStepProofRuleSet {
       // generate the appropriate lambda abstractions
       String[] identifiers = curriedLet.getIdentifiers();
       for (int n = identifiers.length - 1; n > 0; --n) {
-        e1 = new Lambda(identifiers[n], e1);
+        e1 = new Lambda(identifiers[n], null, e1);
       }
       
       // add the recursion for letrec

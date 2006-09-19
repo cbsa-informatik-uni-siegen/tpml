@@ -26,7 +26,7 @@ expr				::=	simple_expr:e
 						   }
 						   RESULT = e; :}
 					|	LAMBDA IDENTIFIER:id DOT expr:e
-						{: RESULT = new Lambda(id, e); :}
+						{: RESULT = new Lambda(id, null, e); :}
 					;
 		
 		

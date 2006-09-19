@@ -73,8 +73,7 @@ public abstract class Constant extends Value {
    *
    * @see de.unisiegen.tpml.core.expressions.Expression#toPrettyStringBuilder(de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory)
    */
-  @Override
-  protected PrettyStringBuilder toPrettyStringBuilder(PrettyStringBuilderFactory factory) {
+  public @Override PrettyStringBuilder toPrettyStringBuilder(PrettyStringBuilderFactory factory) {
     PrettyStringBuilder builder = factory.newBuilder(this, PRIO_CONSTANT);
     builder.addConstant(this.text);
     return builder;

@@ -130,8 +130,7 @@ public final class TupleType extends MonoType {
    *
    * @see de.unisiegen.tpml.core.types.Type#toPrettyStringBuilder(de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory)
    */
-  @Override
-  protected PrettyStringBuilder toPrettyStringBuilder(PrettyStringBuilderFactory factory) {
+  public @Override PrettyStringBuilder toPrettyStringBuilder(PrettyStringBuilderFactory factory) {
     PrettyStringBuilder builder = factory.newBuilder(this, PRIO_TUPLE);
     for (int n = 0; n < this.types.length; ++n) {
       if (n > 0) {

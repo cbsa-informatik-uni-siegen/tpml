@@ -80,7 +80,7 @@ expr				::=	simple_expr:e
 
 					/* Lambda Abstraction */
 					|	LAMBDA IDENTIFIER:id DOT expr:e
-						{: RESULT = new Lambda(id, e); :}
+						{: RESULT = new Lambda(id, null, e); :}
 
 					/* Let */
 					|	LET IDENTIFIER:id EQUAL expr:e1 IN expr:e2

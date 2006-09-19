@@ -63,7 +63,7 @@ public class L2SmallStepProofRuleSet extends L1SmallStepProofRuleSet {
     
     // prepend the lambda abstractions to e1
     for (int n = identifiers.length - 1; n >= 1; --n)
-      e1 = new Lambda(identifiers[n], e1);
+      e1 = new Lambda(identifiers[n], null, e1);
     
     // we can simply perform (LET-EXEC)
     context.addProofStep(getRuleByName("LET-EXEC"), curriedLet);
@@ -88,7 +88,7 @@ public class L2SmallStepProofRuleSet extends L1SmallStepProofRuleSet {
     
     // prepend the lambda abstractions to e1
     for (int n = identifiers.length - 1; n >= 1; --n)
-      e1 = new Lambda(identifiers[n], e1);
+      e1 = new Lambda(identifiers[n], null, e1);
     
     // we can perform (UNFOLD), which includes a (LET-EVAL)
     context.addProofStep(getRuleByName("LET-EVAL"), curriedLetRec);

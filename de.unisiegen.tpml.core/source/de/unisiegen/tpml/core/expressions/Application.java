@@ -130,8 +130,7 @@ public final class Application extends Expression {
    *
    * @see de.unisiegen.tpml.core.expressions.Expression#toPrettyStringBuilder(de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory)
    */
-  @Override
-  protected PrettyStringBuilder toPrettyStringBuilder(PrettyStringBuilderFactory factory) {
+  public @Override PrettyStringBuilder toPrettyStringBuilder(PrettyStringBuilderFactory factory) {
     PrettyStringBuilder builder = factory.newBuilder(this, PRIO_APPLICATION);
     builder.addBuilder(this.e1.toPrettyStringBuilder(factory), PRIO_APPLICATION_E1);
     builder.addText(" ");

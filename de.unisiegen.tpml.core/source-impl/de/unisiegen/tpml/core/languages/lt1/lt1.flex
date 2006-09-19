@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.core.languages.l1;
+package de.unisiegen.tpml.core.languages.lt1;
 
 import java.io.Reader;
 
@@ -8,13 +8,13 @@ import de.unisiegen.tpml.core.languages.LanguageScannerException;
 import de.unisiegen.tpml.core.languages.LanguageSymbol;
 
 /**
- * This is the lexer class for L1.
+ * This is the lexer class for Lt1.
  */
 %%
 
-%class L1Scanner
+%class Lt1Scanner
 %extends AbstractLanguageScanner
-%implements L1Terminals
+%implements Lt1Terminals
 
 %function nextSymbol
 %type LanguageSymbol
@@ -93,8 +93,10 @@ Identifier		= [:jletter:] [:jletterdigit:]*
 	
 	// interpunctation
 	"."				{ return symbol("DOT", DOT); }
+	":"				{ return symbol("COLON", COLON); }
 	"("				{ return symbol("LPAREN", LPAREN); }
 	")"				{ return symbol("RPAREN", RPAREN); }
+	"->"|"\u2192"	{ return symbol("ARROW", ARROW); }
 	
 	// keywords
 	"lambda"		{ return symbol("LAMBDA", LAMBDA); }
@@ -108,6 +110,11 @@ Identifier		= [:jletter:] [:jletterdigit:]*
 	"()"			{ return symbol("PARENPAREN", PARENPAREN); }
 	"true"			{ return symbol("TRUE", TRUE); }
 	"false"			{ return symbol("FALSE", FALSE); }
+	
+	// types
+	"bool"			{ return symbol("BOOL", BOOL); }
+	"int"			{ return symbol("INT", INT); }
+	"unit"			{ return symbol("UNIT", UNIT); }
 	
 	// numbers and identifiers
 	{Number}		{

@@ -31,7 +31,7 @@ import de.unisiegen.tpml.core.languages.LanguageFactory;
  * @version $Id$
  */
 @SuppressWarnings("serial")
-public class TestSmallStepProofModel extends JFrame {
+public class SmallStepProofModelTest extends JFrame {
   /**
    * Simple test expression.
    */
@@ -89,7 +89,7 @@ public class TestSmallStepProofModel extends JFrame {
   /**
    * Default constructor.
    */
-  public TestSmallStepProofModel(final SmallStepProofModel model) {
+  public SmallStepProofModelTest(final SmallStepProofModel model) {
     // setup the frame
     setLayout(new BorderLayout());
     setSize(630, 580);
@@ -123,7 +123,7 @@ public class TestSmallStepProofModel extends JFrame {
         }
         catch (Exception e) {
           e.printStackTrace();
-          JOptionPane.showMessageDialog(TestSmallStepProofModel.this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+          JOptionPane.showMessageDialog(SmallStepProofModelTest.this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
       }
     });
@@ -140,7 +140,7 @@ public class TestSmallStepProofModel extends JFrame {
         }
         catch (Exception e) {
           e.printStackTrace();
-          JOptionPane.showMessageDialog(TestSmallStepProofModel.this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+          JOptionPane.showMessageDialog(SmallStepProofModelTest.this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
       }
     });
@@ -165,7 +165,7 @@ public class TestSmallStepProofModel extends JFrame {
         }
         catch (Exception e) {
           e.printStackTrace();
-          JOptionPane.showMessageDialog(TestSmallStepProofModel.this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+          JOptionPane.showMessageDialog(SmallStepProofModelTest.this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
       }
     });
@@ -187,7 +187,7 @@ public class TestSmallStepProofModel extends JFrame {
         }
         catch (Exception e) {
           e.printStackTrace();
-          JOptionPane.showMessageDialog(TestSmallStepProofModel.this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+          JOptionPane.showMessageDialog(SmallStepProofModelTest.this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
       }
     });
@@ -223,7 +223,7 @@ public class TestSmallStepProofModel extends JFrame {
       SmallStepProofModel model = language.newSmallStepProofModel(expression);
       
       // evaluate the resulting small step expression
-      TestSmallStepProofModel tv = new TestSmallStepProofModel(model);
+      SmallStepProofModelTest tv = new SmallStepProofModelTest(model);
       tv.addWindowListener(new WindowAdapter() {
         @Override
         public void windowClosing(WindowEvent e) {

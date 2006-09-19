@@ -108,8 +108,7 @@ public final class Identifier extends Expression {
    *
    * @see de.unisiegen.tpml.core.expressions.Expression#toPrettyStringBuilder(de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory)
    */
-  @Override
-  protected PrettyStringBuilder toPrettyStringBuilder(PrettyStringBuilderFactory factory) {
+  public @Override PrettyStringBuilder toPrettyStringBuilder(PrettyStringBuilderFactory factory) {
     PrettyStringBuilder builder = factory.newBuilder(this, PRIO_IDENTIFIER);
     builder.addText(this.name);
     return builder;

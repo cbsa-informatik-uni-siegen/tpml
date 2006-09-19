@@ -106,9 +106,9 @@ Identifier		= [:jletter:] [:jletterdigit:]*
 	"else"			{ return symbol("ELSE", ELSE); }
 	
 	// constants
-	"()"						{ return symbol("PARENPAREN", PARENPAREN); }
-	"true"						{ return symbol("TRUE", TRUE); }
-	"false"						{ return symbol("FALSE", FALSE); }
+	"()"			{ return symbol("PARENPAREN", PARENPAREN); }
+	"true"			{ return symbol("TRUE", TRUE); }
+	"false"			{ return symbol("FALSE", FALSE); }
 	
 	// numbers and identifiers
 	{Number}		{

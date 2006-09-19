@@ -48,7 +48,7 @@ public class L2LanguageTranslator extends L1LanguageTranslator {
       CurriedLet curriedLet = (CurriedLet)expression;
       Expression e1 = curriedLet.getE1();
       for (int n = curriedLet.getIdentifiers().length - 1; n > 0; --n) {
-        e1 = new Lambda(curriedLet.getIdentifiers(n), e1);
+        e1 = new Lambda(curriedLet.getIdentifiers(n), null, e1);
       }
       return new Let(curriedLet.getIdentifiers(0), e1, curriedLet.getE2());
     }
@@ -57,7 +57,7 @@ public class L2LanguageTranslator extends L1LanguageTranslator {
       CurriedLetRec curriedLetRec = (CurriedLetRec)expression;
       Expression e1 = curriedLetRec.getE1();
       for (int n = curriedLetRec.getIdentifiers().length - 1; n > 0; --n) {
-        e1 = new Lambda(curriedLetRec.getIdentifiers(n), e1);
+        e1 = new Lambda(curriedLetRec.getIdentifiers(n), null, e1);
       }
       return new Let(curriedLetRec.getIdentifiers(0), new Recursion(curriedLetRec.getIdentifiers(0), e1), curriedLetRec.getE2());
     }

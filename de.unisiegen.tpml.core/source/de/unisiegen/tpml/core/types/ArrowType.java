@@ -133,8 +133,7 @@ public final class ArrowType extends MonoType {
    *
    * @see de.unisiegen.tpml.core.types.Type#toPrettyStringBuilder(de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory)
    */
-  @Override
-  protected PrettyStringBuilder toPrettyStringBuilder(PrettyStringBuilderFactory factory) {
+  public @Override PrettyStringBuilder toPrettyStringBuilder(PrettyStringBuilderFactory factory) {
     PrettyStringBuilder builder = factory.newBuilder(this, PRIO_ARROW);
     builder.addBuilder(this.tau1.toPrettyStringBuilder(factory), PRIO_ARROW_TAU1);
     builder.addText(" \u2192 ");

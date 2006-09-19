@@ -5,6 +5,7 @@ import java.util.TreeSet;
 
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
+import de.unisiegen.tpml.core.types.MonoType;
 
 /**
  * Represents the <b>(ABSTR)</b> expression in the expression hierarchy, which is used for lambda abstractions.
@@ -31,6 +32,13 @@ public final class Lambda extends Value {
   private String id;
   
   /**
+   * The type of the parameter or <code>null</code>.
+   * 
+   * @see #getTau()
+   */
+  private MonoType tau;
+  
+  /**
    * The expression of the abstraction body.
    * 
    * @see #getE()
@@ -48,10 +56,20 @@ public final class Lambda extends Value {
    * identifier <code>id</code> and the given body <code>e</code>.
    * 
    * @param id the identifier of the lambda parameter.
+   * @param tau the type for the parameter or <code>null</code>.
    * @param e the body.
+   * 
+   * @throws NullPointerException if either <code>id</code> or <code>e</code> is <code>null</code>.
    */
-  public Lambda(String id, Expression e) {
+  public Lambda(String id, MonoType tau, Expression e) {
+    if (id == null) {
+      throw new NullPointerException("id is null");
+    }
+    if (e == null) {
+      throw new NullPointerException("e is null");
+    }
     this.id = id;
+    this.tau = tau;
     this.e = e;
   }
 
@@ -68,6 +86,15 @@ public final class Lambda extends Value {
    */
   public String getId() {
     return this.id;
+  }
+  
+  /**
+   * Returns the type for the parameter or <code>null</code>.
+   * 
+   * @return the type for the parameter or <code>null</code>.
+   */
+  public MonoType getTau() {
+    return this.tau;
   }
   
   /**
@@ -155,7 +182,7 @@ public final class Lambda extends Value {
       newE = newE.substitute(id, e);
       
       // reuse this abstraction object if possible
-      return (this.e == newE) ? this : new Lambda(newId, newE);
+      return (this.e == newE) ? this : new Lambda(newId, this.tau, newE);
     }
   }
   
@@ -170,11 +197,14 @@ public final class Lambda extends Value {
    *
    * @see de.unisiegen.tpml.core.expressions.Expression#toPrettyStringBuilder(de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory)
    */
-  @Override
-  protected PrettyStringBuilder toPrettyStringBuilder(PrettyStringBuilderFactory factory) {
+  public @Override PrettyStringBuilder toPrettyStringBuilder(PrettyStringBuilderFactory factory) {
     PrettyStringBuilder builder = factory.newBuilder(this, PRIO_LAMBDA);
     builder.addKeyword("\u03bb");
     builder.addText(this.id);
+    if (this.tau != null) {
+      builder.addText(":");
+      builder.addBuilder(this.tau.toPrettyStringBuilder(factory), PRIO_LAMBDA_TAU);
+    }
     builder.addText(".");
     builder.addBuilder(this.e.toPrettyStringBuilder(factory), PRIO_LAMBDA_E);
     return builder;

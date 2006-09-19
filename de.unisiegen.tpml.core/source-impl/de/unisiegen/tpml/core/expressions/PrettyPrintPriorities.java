@@ -73,6 +73,11 @@ interface PrettyPrintPriorities {
   public static final int PRIO_LAMBDA = 0;
   
   /**
+   * The pretty print priority for the type of the lambda expression (a type!).
+   */
+  public static final int PRIO_LAMBDA_TAU = 0;
+  
+  /**
    * The pretty print priority for the body of lambda expressions.
    */
   public static final int PRIO_LAMBDA_E = PRIO_LAMBDA;

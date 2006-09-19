@@ -35,7 +35,7 @@ import de.unisiegen.tpml.core.languages.LanguageFactory;
  * @see de.unisiegen.tpml.core.bigstep.BigStepProofModel
  */
 @SuppressWarnings("serial")
-public final class TestBigStepProofModel extends JFrame {
+public final class BigStepProofModelTest extends JFrame {
   /**
    * Simple test expression.
    */
@@ -105,7 +105,7 @@ public final class TestBigStepProofModel extends JFrame {
   /**
    * Default constructor.
    */
-  public TestBigStepProofModel(final BigStepProofModel model) {
+  public BigStepProofModelTest(final BigStepProofModel model) {
     // setup the frame
     setLayout(new BorderLayout());
     setSize(630, 580);
@@ -140,7 +140,7 @@ public final class TestBigStepProofModel extends JFrame {
         }
         catch (Exception e) {
           e.printStackTrace();
-          JOptionPane.showMessageDialog(TestBigStepProofModel.this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+          JOptionPane.showMessageDialog(BigStepProofModelTest.this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
       }
     });
@@ -157,7 +157,7 @@ public final class TestBigStepProofModel extends JFrame {
         }
         catch (Exception e) {
           e.printStackTrace();
-          JOptionPane.showMessageDialog(TestBigStepProofModel.this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+          JOptionPane.showMessageDialog(BigStepProofModelTest.this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
       }
     });
@@ -184,7 +184,7 @@ public final class TestBigStepProofModel extends JFrame {
         }
         catch (Exception e) {
           e.printStackTrace();
-          JOptionPane.showMessageDialog(TestBigStepProofModel.this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+          JOptionPane.showMessageDialog(BigStepProofModelTest.this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
       }
     });
@@ -208,7 +208,7 @@ public final class TestBigStepProofModel extends JFrame {
         }
         catch (Exception e) {
           e.printStackTrace();
-          JOptionPane.showMessageDialog(TestBigStepProofModel.this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+          JOptionPane.showMessageDialog(BigStepProofModelTest.this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
       }
     });
@@ -259,7 +259,7 @@ public final class TestBigStepProofModel extends JFrame {
       BigStepProofModel model = language.newBigStepProofModel(expression);
       
       // evaluate the resulting small step expression
-      TestBigStepProofModel window = new TestBigStepProofModel(model);
+      BigStepProofModelTest window = new BigStepProofModelTest(model);
       window.addWindowListener(new WindowAdapter() {
         @Override
         public void windowClosing(WindowEvent e) {

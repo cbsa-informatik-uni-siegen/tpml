@@ -110,7 +110,7 @@ public abstract class Type implements PrettyPrintable, PrettyPrintPriorities {
    * @see PrettyStringBuilder
    * @see PrettyStringBuilderFactory
    */
-  protected abstract PrettyStringBuilder toPrettyStringBuilder(PrettyStringBuilderFactory factory);
+  public abstract PrettyStringBuilder toPrettyStringBuilder(PrettyStringBuilderFactory factory);
   
   
   

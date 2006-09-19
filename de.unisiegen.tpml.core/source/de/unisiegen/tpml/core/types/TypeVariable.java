@@ -176,8 +176,7 @@ public final class TypeVariable extends MonoType {
    *
    * @see de.unisiegen.tpml.core.types.Type#toPrettyStringBuilder(de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory)
    */
-  @Override
-  protected PrettyStringBuilder toPrettyStringBuilder(PrettyStringBuilderFactory factory) {
+  public @Override PrettyStringBuilder toPrettyStringBuilder(PrettyStringBuilderFactory factory) {
     PrettyStringBuilder builder = factory.newBuilder(this, PRIO_TYPE_VARIABLE);
     builder.addText("" + offsetToGreekLetter(this.offset) + ((this.index > 0) ? this.index : ""));
     return builder;

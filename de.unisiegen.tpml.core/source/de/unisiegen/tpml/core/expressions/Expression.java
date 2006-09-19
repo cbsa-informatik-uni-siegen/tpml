@@ -127,7 +127,7 @@ public abstract class Expression implements PrettyPrintable, PrettyPrintPrioriti
    * @see PrettyStringBuilder
    * @see PrettyStringBuilderFactory
    */
-  protected abstract PrettyStringBuilder toPrettyStringBuilder(PrettyStringBuilderFactory factory);
+  public abstract PrettyStringBuilder toPrettyStringBuilder(PrettyStringBuilderFactory factory);
   
   
   
