@@ -17,7 +17,7 @@
 	<taskdef name="jflex" classname="JFlex.anttask.JFlexTask" classpath="${basedir}/lib/JFlex-1.4.1.jar" />
 	
 
-    <target name="all" depends="l0,l1,l2" description="Generate all" />
+    <target name="all" depends="l0,l1,l2,l3" description="Generate all" />
 	
 	<target name="l0" description="Generates lexer and parser for L0">
 		<jflex 
@@ -68,6 +68,25 @@
 			package="de.unisiegen.tpml.core.languages.l2"
 			parser="L2AbstractParser"
 			symbols="L2Terminals"
+			interface="yes"
+			debug="no"
+			expect="0"
+			nonterms="no"
+			nopositions="yes"
+			dump_grammar="no" />
+	</target>
+	
+	<target name="l3" description="Generates lexer and parser for L3">
+		<jflex 
+    		file="${sourcedir}/de/unisiegen/tpml/core/languages/l3/l3.flex"
+    		destdir="${destdir}"
+			nobak="yes" />
+		<cup
+			srcfile="${sourcedir}/de/unisiegen/tpml/core/languages/l3/l3.cup"
+			destdir="${destdir}/de/unisiegen/tpml/core/languages/l3"
+			package="de.unisiegen.tpml.core.languages.l3"
+			parser="L3AbstractParser"
+			symbols="L3Terminals"
 			interface="yes"
 			debug="no"
 			expect="0"

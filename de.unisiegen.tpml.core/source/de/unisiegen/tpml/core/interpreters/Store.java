@@ -72,12 +72,15 @@ public interface Store extends Environment<Location, Expression> {
    * @param location the {@link Location} for the <code>expression</code>
    * @param expression the {@link Expression}.
    * 
+   * @throws IllegalArgumentException if <code>expression</code> is not a value (see the description
+   *                                  for the {@link Expression#isValue()} method).
    * @throws NullPointerException if either <code>location</code> or <code>expression</code>
    *                              is <code>null</code>.
    *
    * @see #alloc()
    * @see #containsLocation(Location)
    * @see Environment#get(S)
+   * @see Expression#isValue()
    */
   public void put(Location location, Expression expression);
 }

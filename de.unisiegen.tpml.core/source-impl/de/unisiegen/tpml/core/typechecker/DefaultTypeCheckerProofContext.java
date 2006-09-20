@@ -4,15 +4,19 @@ import java.util.LinkedList;
 
 import de.unisiegen.tpml.core.ProofRuleException;
 import de.unisiegen.tpml.core.expressions.ArithmeticOperator;
+import de.unisiegen.tpml.core.expressions.Assign;
 import de.unisiegen.tpml.core.expressions.BooleanConstant;
+import de.unisiegen.tpml.core.expressions.Deref;
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.expressions.IntegerConstant;
+import de.unisiegen.tpml.core.expressions.Ref;
 import de.unisiegen.tpml.core.expressions.RelationalOperator;
 import de.unisiegen.tpml.core.expressions.UnitConstant;
 import de.unisiegen.tpml.core.types.ArrowType;
 import de.unisiegen.tpml.core.types.BooleanType;
 import de.unisiegen.tpml.core.types.IntegerType;
 import de.unisiegen.tpml.core.types.MonoType;
+import de.unisiegen.tpml.core.types.RefType;
 import de.unisiegen.tpml.core.types.Type;
 import de.unisiegen.tpml.core.types.TypeVariable;
 import de.unisiegen.tpml.core.types.UnitType;
@@ -151,6 +155,18 @@ final class DefaultTypeCheckerProofContext implements TypeCheckerProofContext {
     }
     else if (expression instanceof RelationalOperator) {
       return ArrowType.INT_INT_BOOL;
+    }
+    else if (expression instanceof Assign) {
+      TypeVariable tau = newTypeVariable();
+      return new ArrowType(new RefType(tau), new ArrowType(tau, UnitType.UNIT));
+    }
+    else if (expression instanceof Deref) {
+      TypeVariable tau = newTypeVariable();
+      return new ArrowType(new RefType(tau), tau);
+    }
+    else if (expression instanceof Ref) {
+      TypeVariable tau = newTypeVariable();
+      return new ArrowType(tau, new RefType(tau));
     }
     else {
       // not a simple expression

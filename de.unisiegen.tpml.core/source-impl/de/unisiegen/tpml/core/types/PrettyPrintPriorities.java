@@ -46,4 +46,14 @@ interface PrettyPrintPriorities {
    * The pretty print priority for elements in tuple types.
    */
   public static final int PRIO_TUPLE_TAU = PRIO_TUPLE + 1;
+  
+  /**
+   * The pretty print priority for reference types.
+   */
+  public static final int PRIO_REF = 2;
+  
+  /**
+   * The pretty print priority for the base type of reference types.
+   */
+  public static final int PRIO_REF_TAU = PRIO_REF;
 }

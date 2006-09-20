@@ -6,6 +6,7 @@ import java.lang.reflect.InvocationTargetException;
 import de.unisiegen.tpml.core.languages.l0.L0Language;
 import de.unisiegen.tpml.core.languages.l1.L1Language;
 import de.unisiegen.tpml.core.languages.l2.L2Language;
+import de.unisiegen.tpml.core.languages.l3.L3Language;
 
 /**
  * Factory class for {@link de.unisiegen.tpml.core.languages.Language}s.
@@ -24,7 +25,7 @@ public final class LanguageFactory {
    * Allocates a new <code>LanguageFactory</code>.
    */
   private LanguageFactory() {
-    // nothing to do here...
+    super();
   }
   
   
@@ -58,6 +59,7 @@ public final class LanguageFactory {
         new L0Language(),
         new L1Language(),
         new L2Language(),
+        new L3Language(),
     };
   }
   

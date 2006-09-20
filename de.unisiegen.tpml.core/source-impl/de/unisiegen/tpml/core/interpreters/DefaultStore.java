@@ -76,8 +76,11 @@ public final class DefaultStore extends AbstractEnvironment<Location, Expression
   public Location alloc() {
     // try to find a new unique location
     for (String suffix = "";; suffix += "'") {
-      for (char c = 'A'; c <= 'Z'; ++c) {
-        // try to location with this name
+      for (int n = 0; n < 26; ++n) {
+        // generate the location base character
+        char c = (char)('A' + ((('X' - 'A') + n) % 26));
+        
+        // try the location with this name
         Location location = new Location(c + suffix);
         if (!containsLocation(location)) {
           return location;
@@ -93,6 +96,9 @@ public final class DefaultStore extends AbstractEnvironment<Location, Expression
    */
   @Override
   public void put(Location location, Expression expression) {
-    put(location, expression);
+    if (!expression.isValue()) {
+      throw new IllegalArgumentException("expression must be a value");
+    }
+    super.put(location, expression);
   }
 }

@@ -58,19 +58,14 @@ public class L1SmallStepProofRuleSet extends L0SmallStepProofRuleSet {
    * The <code>apply()</code> method for applications, used to handle binary operators.
    * 
    * @param context the small step proof context.
-   * @param application
-   * @param e1
-   * @param e2
+   * @param application the application.
+   * @param e1 the first operand.
+   * @param e2 the second operand.
    * 
    * @return the resulting expression.
    */
   public Expression applyApplication(SmallStepProofContext context, Application application, Application e1, Expression e2) {
-    try {
-      return applyBinaryOperator(context, application, (BinaryOperator)e1.getE1(), e1.getE2(), e2);
-    }
-    catch (ClassCastException e) {
-      return application;
-    }
+    return applyBinaryOperator(context, application, (BinaryOperator)e1.getE1(), e1.getE2(), e2);
   }
   
   /**

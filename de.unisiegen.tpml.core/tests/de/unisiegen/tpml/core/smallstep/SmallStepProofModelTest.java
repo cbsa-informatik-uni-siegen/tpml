@@ -36,7 +36,8 @@ public class SmallStepProofModelTest extends JFrame {
    * Simple test expression.
    */
   //private static final String SIMPLE = "(lambda x.x x) (lambda y.y y) z";
-  private static final String SIMPLE = "let rec fact = lambda x.if x = 0 then 1 else x * fact (x - 1) in fact 3";
+  //private static final String SIMPLE = "let rec fact = lambda x.if x = 0 then 1 else x * fact (x - 1) in fact 3";
+  private static final String SIMPLE = "let x = ref 0 in let u = x := !x + 1 in !x";
 
   
   
@@ -216,9 +217,9 @@ public class SmallStepProofModelTest extends JFrame {
    */
   public static void main(String[] args) {
     try {
-      // parse the program (using L2)
+      // parse the program (using L3)
       LanguageFactory factory = LanguageFactory.newInstance();
-      Language language = factory.getLanguageById("l2");
+      Language language = factory.getLanguageById("l3");
       Expression expression = language.newParser(new StringReader(SIMPLE)).parse();
       SmallStepProofModel model = language.newSmallStepProofModel(expression);
       

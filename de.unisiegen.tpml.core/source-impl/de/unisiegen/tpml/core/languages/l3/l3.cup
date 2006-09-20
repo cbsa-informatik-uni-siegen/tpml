@@ -10,9 +10,10 @@ terminal			EQUAL, LESS, GREATER, LESSEQUAL, GREATEREQUAL;
 terminal			ARROW, COLON, DOT;
 terminal			LPAREN, RPAREN;
 terminal			PARENPAREN;
+terminal			COLONEQUAL, EXCLAMATION;
 
 /* Keywords */
-terminal			LAMBDA, LET, IN, IF, THEN, ELSE;
+terminal			LAMBDA, LET, REC, REF, IN, IF, THEN, ELSE;
 terminal			TRUE, FALSE;
 
 /* Types */
@@ -36,6 +37,8 @@ non terminal MonoType		simple_type;
 
 
 /* Precedences, based on http://caml.inria.fr/pub/docs/manual-ocaml/manual015.html */
+precedence right	COLONEQUAL;			/* expr (e := e := e) */
+
 precedence left		EQUAL, LESS, GREATER, LESSEQUAL, GREATEREQUAL;
 precedence left		PLUS, MINUS;
 precedence left		STAR, SLASH, MOD;
@@ -60,6 +63,9 @@ expr				::=	simple_expr:e
 						   RESULT = e; :}
 
 					/* Infix Operations */
+					|	expr:e1 COLONEQUAL expr:e2
+						{: RESULT = new InfixOperation(Assign.ASSIGN, e1, e2); :}
+
 					|	expr:e1 PLUS expr:e2
 						{: RESULT = new InfixOperation(ArithmeticOperator.PLUS, e1, e2); :}
 					|	expr:e1 MINUS expr:e2
@@ -100,6 +106,19 @@ expr				::=	simple_expr:e
 						   identifiers[0] = id;
 						   System.arraycopy(il, 0, identifiers, 1, il.length);
 						   RESULT = new CurriedLet(identifiers, e1, e2); :}
+
+					/* Recursion */				
+					|	REC IDENTIFIER:id DOT expr:e
+						{: RESULT = new Recursion(id, null, e); :}
+					|	REC IDENTIFIER:id COLON type:tau DOT expr:e
+						{: RESULT = new Recursion(id, tau, e); :}
+					|	LET REC IDENTIFIER:id COLON type:tau EQUAL expr:e1 IN expr:e2
+						{: RESULT = new LetRec(id, tau, e1, e2); :}
+					|	LET REC IDENTIFIER:id id_list:il EQUAL expr:e1 IN expr:e2
+						{: String[] identifiers = new String[il.length + 1];
+						   identifiers[0] = id;
+						   System.arraycopy(il, 0, identifiers, 1, il.length);
+						   RESULT = new CurriedLetRec(identifiers, e1, e2); :}
 					;
 
 
@@ -130,6 +149,10 @@ constant			::=	PARENPAREN		{: RESULT = UnitConstant.UNIT; :}
 					|	TRUE			{: RESULT = BooleanConstant.TRUE; :}
 					|	FALSE			{: RESULT = BooleanConstant.FALSE; :}
 					|	NUMBER:n		{: RESULT = new IntegerConstant(n.intValue()); :}
+					
+					/* Reference operators */
+					|	EXCLAMATION		{: RESULT = Deref.DEREF; :}
+					|	REF				{: RESULT = Ref.REF; :}
 					;
 
 
@@ -143,9 +166,12 @@ operator			::=	PLUS			{: RESULT = ArithmeticOperator.PLUS; :}
 					|	GREATER			{: RESULT = RelationalOperator.GREATER_THAN; :}
 					|	LESSEQUAL		{: RESULT = RelationalOperator.LOWER_EQUAL; :}
 					|	GREATEREQUAL	{: RESULT = RelationalOperator.GREATER_EQUAL; :}
+					
+					/* Reference operators */
+					|	COLONEQUAL		{: RESULT = Assign.ASSIGN; :}
 					;
 
-					
+
 id_list				::=	id_list:l IDENTIFIER:id
 						{: RESULT = new String[l.length + 1];
 						   System.arraycopy(l, 0, RESULT, 0, l.length);
@@ -154,14 +180,15 @@ id_list				::=	id_list:l IDENTIFIER:id
 						{: RESULT = new String[] { id }; :}
 					;
 
-
-
+					
+					
 /*********
  * Types *
  *********/
 
 
 type				::=	simple_type:t			{: RESULT = t; :}
+					|	type:tau REF			{: RESULT = new RefType(tau); :}
 					|	type:t1 ARROW type:t2	{: RESULT = new ArrowType(t1, t2); :}
 					;
 

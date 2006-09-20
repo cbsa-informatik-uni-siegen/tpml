@@ -21,7 +21,7 @@ public class L2TypeCheckerProofRuleSet extends L1TypeCheckerProofRuleSet {
   //
   
   /**
-   * Allocates an new <code>L2TypeCheckerProofRuleSet</code> for the specified <code>language</code>.
+   * Allocates a new <code>L2TypeCheckerProofRuleSet</code> for the specified <code>language</code>.
    * 
    * @param language the <code>L2</code> or a derived language.
    * 

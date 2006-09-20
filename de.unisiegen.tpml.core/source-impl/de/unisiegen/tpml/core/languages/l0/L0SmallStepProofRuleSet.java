@@ -75,6 +75,10 @@ public class L0SmallStepProofRuleSet extends AbstractSmallStepProofRuleSet {
       // invoke the specific apply method
       return (Expression)method.invoke(this, context, application, e1, e2);
     }
+    catch (ClassCastException e) {
+      // no way to further evaluate the application
+      return application;
+    }
     catch (NoSuchMethodException e) {
       // no way to further evaluate the application
       return application;

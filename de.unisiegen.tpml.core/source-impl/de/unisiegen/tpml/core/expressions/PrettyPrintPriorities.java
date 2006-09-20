@@ -141,4 +141,9 @@ interface PrettyPrintPriorities {
    * The pretty print priority for relational operators (less, greater, equal, ...).
    */
   public static final int PRIO_RELATIONAL_OPERATOR = 2;
+  
+  /** 
+   * The pretty print priority for the assign operator (<code>:=</code>).
+   */
+  public static final int PRIO_ASSIGN = 1;
 }
