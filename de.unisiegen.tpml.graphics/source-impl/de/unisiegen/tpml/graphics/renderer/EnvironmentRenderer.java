@@ -19,20 +19,7 @@ public class EnvironmentRenderer<S, E> extends AbstractRenderer {
 	}
 
 	public void setEnvironment (Environment<S, E> environment) {
-		this.environment = environment;
-		
-		do {
-			System.out.print("Environment ");
-			Enumeration<S> env = environment.symbols();
-			if (env.hasMoreElements()) {
-				S s = env.nextElement();
-				E e = environment.get(s);
-				System.out.print ("<" + s.getClass().getName() + ", " + e.getClass().getName() + ">" );
-			}
-			
-			System.out.println ();
-		} while (false);
-		
+		this.environment = environment;		
 	}
 	
 	

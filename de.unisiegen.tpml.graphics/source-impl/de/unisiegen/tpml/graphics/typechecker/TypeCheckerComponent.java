@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.graphics.typchecker;
+package de.unisiegen.tpml.graphics.typechecker;
 
 import java.awt.Color;
 import java.awt.Dimension;

@@ -10,12 +10,10 @@ import de.unisiegen.tpml.core.ProofNode;
 import de.unisiegen.tpml.core.languages.Language;
 import de.unisiegen.tpml.core.languages.LanguageFactory;
 import de.unisiegen.tpml.core.languages.LanguageParser;
-import de.unisiegen.tpml.core.smallstep.SmallStepProofModel;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel;
 import de.unisiegen.tpml.graphics.renderer.AbstractRenderer;
-import de.unisiegen.tpml.graphics.smallstep.SmallStepComponent;
 import de.unisiegen.tpml.graphics.theme.Theme;
-import de.unisiegen.tpml.graphics.typchecker.TypeCheckerComponent;
+import de.unisiegen.tpml.graphics.typechecker.TypeCheckerComponent;
 
 public class Main {
 	
