@@ -20,6 +20,19 @@ public class EnvironmentRenderer<S, E> extends AbstractRenderer {
 
 	public void setEnvironment (Environment<S, E> environment) {
 		this.environment = environment;
+		
+		do {
+			System.out.print("Environment ");
+			Enumeration<S> env = environment.symbols();
+			if (env.hasMoreElements()) {
+				S s = env.nextElement();
+				E e = environment.get(s);
+				System.out.print ("<" + s.getClass().getName() + ", " + e.getClass().getName() + ">" );
+			}
+			
+			System.out.println ();
+		} while (false);
+		
 	}
 	
 	
@@ -72,7 +85,7 @@ public class EnvironmentRenderer<S, E> extends AbstractRenderer {
 		// calculate the vertical center of the available space 
 		int posX = x + this.bracketSize;
 		int posY = y + height / 2;
-		posY -= AbstractRenderer.fontAscent / 2;
+		posY += AbstractRenderer.fontAscent  / 2;
 		
 		// find the first element in the enumeration if there is one
 		Enumeration<S> env = environment.symbols();

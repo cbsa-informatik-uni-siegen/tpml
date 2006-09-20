@@ -14,7 +14,7 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyString;
 
 
 
-public class ExpressionRenderer extends AbstractRenderer {
+public class PrettyStringRenderer extends AbstractRenderer {
 	
 	private class CheckerResult {
 		public PrettyAnnotation		annotation;
@@ -31,7 +31,7 @@ public class ExpressionRenderer extends AbstractRenderer {
 	
 	private CheckerResult								result;
 	
-	public ExpressionRenderer() {
+	public PrettyStringRenderer() {
 		this.results 		= new LinkedList<CheckerResult>();
 		this.result			= null;
 	}
@@ -152,6 +152,7 @@ public class ExpressionRenderer extends AbstractRenderer {
 			}
 
 		}
+		result.size.width = Math.max(w, result.size.width);
 		return result;
 	}
 

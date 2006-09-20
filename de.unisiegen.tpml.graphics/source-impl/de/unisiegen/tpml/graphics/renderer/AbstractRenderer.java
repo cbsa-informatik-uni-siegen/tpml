@@ -5,7 +5,7 @@ import java.awt.Component;
 import java.awt.Font;
 import java.awt.FontMetrics;
 
-import de.unisiegen.tpml.graphics.Theme;
+import de.unisiegen.tpml.graphics.theme.Theme;
 
 public abstract class AbstractRenderer {
 	

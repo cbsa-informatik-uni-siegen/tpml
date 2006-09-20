@@ -11,16 +11,15 @@ import de.unisiegen.tpml.core.typechecker.TypeEnvironment;
 import de.unisiegen.tpml.core.util.Environment;
 import de.unisiegen.tpml.graphics.renderer.AbstractRenderer;
 import de.unisiegen.tpml.graphics.renderer.EnvironmentRenderer;
-import de.unisiegen.tpml.graphics.renderer.ExpressionRenderer;
+import de.unisiegen.tpml.graphics.renderer.PrettyStringRenderer;
 
 public class CompoundExpression<S, E> extends JComponent {
 	
-	private ExpressionRenderer					expressionRenderer;
+	private PrettyStringRenderer				expressionRenderer;
 	
 	private Expression									expression;
 	
 	private Dimension										expressionSize;
-	
 	
 	private Environment<S, E> 					environment;
 	
@@ -41,14 +40,14 @@ public class CompoundExpression<S, E> extends JComponent {
 	}
 	
 	public void setNoLineWrapping (boolean noLineWrapping) {
-		this.noLineWrapping = true;
+		this.noLineWrapping = noLineWrapping;
 	}
 	
 	public void setExpression (Expression expression) {
 		this.expression = expression;
 		
 		if (this.expressionRenderer == null) {
-			this.expressionRenderer = new ExpressionRenderer ();
+			this.expressionRenderer = new PrettyStringRenderer ();
 		}
 		
 		this.expressionRenderer.setPrettyString(this.expression.toPrettyString());
@@ -136,8 +135,8 @@ public class CompoundExpression<S, E> extends JComponent {
 		this.expressionSize = this.expressionRenderer.getNeededSize(maxWidth);
 		result.width += expressionSize.width;
 		
-		if (expressionSize.width > result.width) {
-			result.width = expressionSize.width;
+		if (expressionSize.height > result.height) {
+			result.height = expressionSize.height;
 		}
 		
 		return result;
@@ -184,12 +183,13 @@ public class CompoundExpression<S, E> extends JComponent {
 			
 			// draw the environment first
 			this.environmentRenderer.renderer(posX, posY, this.environmentSize.width, getHeight (), gc);
-			
+			posX += this.environmentSize.width;
 			
 			// draw the arrow character in the vertical center
 			int centerV = getHeight () / 2;
 			centerV += AbstractRenderer.getTextFontMetrics().getAscent() / 2;
 			gc.setFont(AbstractRenderer.getTextFont());
+			gc.setColor(AbstractRenderer.getTextColor());
 			gc.drawString(CompoundExpression.arrowStr, posX, centerV);
 			posX += AbstractRenderer.getTextFontMetrics().stringWidth(CompoundExpression.arrowStr);
 			
