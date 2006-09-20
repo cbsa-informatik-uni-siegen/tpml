@@ -13,11 +13,15 @@ import de.unisiegen.tpml.core.ProofNode;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode;
 import de.unisiegen.tpml.graphics.renderer.TreeArrowRenderer;
-import de.unisiegen.tpml.graphics.tree.TreeNodeComponent;
 import de.unisiegen.tpml.graphics.tree.TreeNodeLayout;
 
 public class TypeCheckerComponent extends JComponent {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5184580585827680414L;
+
 	private TypeCheckerProofModel 			model;
 	
 	private int													availableWidth;
@@ -155,7 +159,7 @@ public class TypeCheckerComponent extends JComponent {
 
 		gc.setColor(Color.BLACK);
 		ProofNode rootNode = (ProofNode)this.model.getRoot();
-		TreeArrowRenderer.renderArrows (rootNode, gc);
+		TreeArrowRenderer.renderArrows (rootNode, treeNodeLayout.getSpacing (), gc);
 		
 		
 	}

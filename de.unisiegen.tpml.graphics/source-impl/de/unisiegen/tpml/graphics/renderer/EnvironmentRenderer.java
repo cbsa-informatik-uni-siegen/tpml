@@ -3,7 +3,6 @@ package de.unisiegen.tpml.graphics.renderer;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.util.Enumeration;
-import java.util.Iterator;
 
 import de.unisiegen.tpml.core.util.Environment;
 
@@ -26,8 +25,6 @@ public class EnvironmentRenderer<S, E> extends AbstractRenderer {
 	public Dimension getNeededSize () {
 		Dimension result = new Dimension (2 * this.bracketSize, AbstractRenderer.fontHeight);
 		
-		int numberOfSymbols = 0;
-
 		Enumeration<S> env = environment.symbols();
 		
 		if (!env.hasMoreElements()) {

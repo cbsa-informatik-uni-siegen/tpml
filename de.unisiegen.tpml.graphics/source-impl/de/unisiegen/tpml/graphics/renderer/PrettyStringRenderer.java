@@ -120,7 +120,7 @@ public class PrettyStringRenderer extends AbstractRenderer {
 			breakOffsets = new int[0];
 		}
 		
-		result.size.height = this.fontHeight;
+		result.size.height = AbstractRenderer.fontHeight;
 		
 		PrettyCharIterator it = this.prettyString.toCharacterIterator();
 		int i = 0;
@@ -129,7 +129,7 @@ public class PrettyStringRenderer extends AbstractRenderer {
 			
 			for (int j=0; j<breakOffsets.length; j++) {
 				if (breakOffsets [j] == i) {
-					result.size.height += this.fontHeight;
+					result.size.height += AbstractRenderer.fontHeight;
 					result.size.width = Math.max(w, result.size.width);
 					result.rows++;
 					

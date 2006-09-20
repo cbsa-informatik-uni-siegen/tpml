@@ -8,21 +8,25 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode;
+import de.unisiegen.tpml.core.types.Type;
 import de.unisiegen.tpml.graphics.components.CompoundExpression;
 import de.unisiegen.tpml.graphics.renderer.AbstractRenderer;
 import de.unisiegen.tpml.graphics.tree.TreeNodeComponent;
 
 public class TypeCheckerNodeComponent extends JComponent  implements TreeNodeComponent {
 
-	private TypeCheckerProofNode	node;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6671706090992083026L;
+
+	private Dimension														dimension;
 	
-	private Dimension							dimension;
+	private boolean															changed;
 	
-	private boolean								changed;
+	private CompoundExpression<String, Type>		expression;
 	
-	private CompoundExpression		expression;
-	
-	private JLabel								indexLabel;
+	private JLabel															indexLabel;
 	
 
 	// XXX: the result should be listed here aswell
@@ -32,13 +36,12 @@ public class TypeCheckerNodeComponent extends JComponent  implements TreeNodeCom
 	public TypeCheckerNodeComponent (TypeCheckerProofNode node) {
 		super ();
 		
-		this.node 			= node;
 		this.dimension	= new Dimension (0, 0);
 		
 		this.indexLabel	= new JLabel ();
 		add (this.indexLabel);
 		
-		this.expression = new CompoundExpression ();
+		this.expression = new CompoundExpression<String, Type> ();
 		this.expression.setExpression(node.getExpression());
 		this.expression.setEnvironment(node.getEnvironment());
 		add (this.expression);

@@ -8,6 +8,10 @@ import javax.swing.JPanel;
 
 public class TestDialog extends JDialog {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8927517104220650542L;
 	private JButton		undoButton;
 	private JButton		redoButton;
 	private JButton		guess;

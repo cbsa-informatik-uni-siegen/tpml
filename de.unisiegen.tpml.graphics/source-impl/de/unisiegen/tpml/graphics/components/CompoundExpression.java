@@ -15,6 +15,11 @@ import de.unisiegen.tpml.graphics.renderer.PrettyStringRenderer;
 
 public class CompoundExpression<S, E> extends JComponent {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7653329118052555176L;
+
 	private PrettyStringRenderer				expressionRenderer;
 	
 	private Expression									expression;
@@ -61,7 +66,7 @@ public class CompoundExpression<S, E> extends JComponent {
 		}
 		
 		if (this.environmentRenderer == null) {
-			this.environmentRenderer = new EnvironmentRenderer ();
+			this.environmentRenderer = new EnvironmentRenderer<S,E> ();
 		}
 		
 		this.environmentRenderer.setEnvironment(this.environment);

@@ -4,8 +4,6 @@ import java.awt.event.WindowEvent;
 import java.io.StringReader;
 import java.util.LinkedList;
 
-import javax.swing.JDialog;
-
 import de.unisiegen.tpml.core.ProofNode;
 import de.unisiegen.tpml.core.languages.Language;
 import de.unisiegen.tpml.core.languages.LanguageFactory;

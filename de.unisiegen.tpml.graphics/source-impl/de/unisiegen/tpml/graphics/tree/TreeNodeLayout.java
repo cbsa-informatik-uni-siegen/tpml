@@ -23,6 +23,10 @@ public class TreeNodeLayout {
 		this.spacing = spacing;
 	}
 	
+	public int getSpacing () {
+		return this.spacing;
+	}
+	
 	public Point placeNodes (ProofNode root, int posX, int posY, int availableWidth) {
 		this.availableWidth = availableWidth;
 		

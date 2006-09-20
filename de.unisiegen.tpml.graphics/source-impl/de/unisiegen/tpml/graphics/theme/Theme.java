@@ -28,11 +28,11 @@ public class Theme {
 	private class ThemeItem {
 		private String			name;
 		
-		private Font			font;
+		private Font				font;
 		
-		private Color			color;
+		private Color				color;
 		
-		private int				type;
+		private int					type;
 				
 		public ThemeItem () {
 			
@@ -74,6 +74,9 @@ public class Theme {
 			return this.color;
 		}
 		
+		public int getType () {
+			return this.type;
+		}
 	}
 	
 	private LinkedList<ThemeItem>		items;
