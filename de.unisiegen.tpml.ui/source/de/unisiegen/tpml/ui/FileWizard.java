@@ -233,6 +233,12 @@ public class FileWizard extends javax.swing.JDialog {
         okButton.setMnemonic('O');
         okButton.setText("Ok");
         okButton.setEnabled(false);
+        okButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                okButtonActionPerformed(evt);
+            }
+        });
+
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
@@ -245,8 +251,13 @@ public class FileWizard extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
+// TODO add your handling code here:
+        dispose();
+    }//GEN-LAST:event_okButtonActionPerformed
+
   private void languagesListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_languagesListValueChanged
-    Language language = (Language)this.languagesList.getSelectedValue();
+    language = (Language)this.languagesList.getSelectedValue();
     if (language != null) {
       this.descriptionTextArea.setText(language.getDescription());
       this.okButton.setEnabled(true);
@@ -266,5 +277,9 @@ public class FileWizard extends javax.swing.JDialog {
     private javax.swing.JList languagesList;
     private javax.swing.JButton okButton;
     // End of variables declaration//GEN-END:variables
-  
+    private Language language;
+    
+    public Language getLanguage(){
+        return language;
+    }
 }

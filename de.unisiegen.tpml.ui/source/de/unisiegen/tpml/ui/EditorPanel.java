@@ -6,9 +6,14 @@
 
 package de.unisiegen.tpml.ui;
 
+import de.unisiegen.tpml.core.languages.Language;
 import java.awt.BorderLayout;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.File;
+import java.io.FileOutputStream;
+import javax.swing.JFileChooser;
+
 
 /**
  *
@@ -17,13 +22,17 @@ import java.beans.PropertyChangeListener;
 public class EditorPanel extends javax.swing.JPanel {
     
     /** Creates new form EditorPanel */
-    public EditorPanel() {
+    public EditorPanel(Language language) {
         initComponents();
         // setting the default button states
         nextButton.setEnabled(false);
         smallstepButton.setEnabled(false);
         bigstepButton.setEnabled(false);
         typecheckerButton.setEnabled(false);
+        //
+        this.language = language;
+        setFileName("newfile"+num+"."+language.getName());
+        num++;
         editorComponentListener = new PropertyChangeListener (){
             public void propertyChange(PropertyChangeEvent evt) {
                 componentStatusChanged(evt.getPropertyName(), evt.getNewValue());
@@ -162,9 +171,23 @@ public class EditorPanel extends javax.swing.JPanel {
     private PropertyChangeListener editorComponentListener;
     
         /**
-	 * Title displayed in the tab.
+	 * Filename displayed in the tab.
 	 */
-	private String title;
+	private String filename;
+        
+        static private int num = 0;
+        /**
+         * The language used in this Editor
+         */	
+        private Language language;
+    /**
+     * The file to which this document is saved.
+     */
+        private File file;
+        /**
+         * Indicated if the file was changed.
+         */
+        private boolean changed;
 	/**
 	 * Indicates the status of the Undo function.
 	 */
@@ -194,7 +217,7 @@ public class EditorPanel extends javax.swing.JPanel {
                     }
                     else
                         if (ident.equals("title")){
-                        setTitle((String)newValue);
+                        setFileName((String)newValue);
                         }
                         else
                             if (ident.equals("undoStatus")){
@@ -285,13 +308,36 @@ public class EditorPanel extends javax.swing.JPanel {
 		firePropertyChange("saveStatus", this.saveStatus, saveStatus);
 		this.saveStatus = saveStatus;
 	}
-	public String getTitle() {
-		return title;
+	public String getFileName() {
+		return filename;
 	}
-	public void setTitle(String title) {
-		firePropertyChange("titel", this.title, title);
-		this.title = title;
+	public void setFileName(String title) {
+		firePropertyChange("filename", this.filename, title);
+		this.filename = title;
 	}
+		
+	public File getFile() {
+		return file;
+	}
+
+	public void setFile(File file) {
+		this.file = file;
+	}
+
+	public Language getLanguage() {
+		return language;
+	}
+
+
+	public boolean isChanged() {
+		return changed;
+	}
+
+	public void setChanged(boolean changed) {
+        firePropertyChange("changed", this.changed, changed);
+		this.changed = changed;
+	}
+
 	public boolean isUndoStatus() {
 		return undoStatus;
 	}
@@ -299,4 +345,46 @@ public class EditorPanel extends javax.swing.JPanel {
 		firePropertyChange("undoStatus", this.undoStatus, undoStatus);
 		this.undoStatus = undoStatus;
 	}
+        
+        public void handleUndo(){};
+        public void handleRedo(){};
+        public boolean handleSave(){
+            if (file == null)return handleSaveAs();
+            else return writeFile();            
+        };
+        public boolean handleSaveAs(){
+            	JFileChooser chooser = new JFileChooser();
+		chooser.showSaveDialog(getParent());
+		File outfile = chooser.getSelectedFile();
+		if (outfile != null) {
+			try {
+				outfile.createNewFile();
+                                setFile(outfile);
+                                setFileName(outfile.getName());
+				return writeFile();
+			} catch (Exception e) {
+				e.printStackTrace();
+				return false;
+			}
+		} else {
+			return false;
+		}
+        };
+        
+        	private boolean writeFile() {
+		try {
+			FileOutputStream out = new FileOutputStream(file);
+                        //TODO write actual content of the code window
+			out.write("Writing...".getBytes());
+			out.flush();
+			out.close();
+			setChanged(false);
+                        setSaveStatus(false);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
 }

@@ -30,12 +30,14 @@ public class TestEditorComponent extends javax.swing.JPanel implements AbstractE
         redotrue = new javax.swing.JButton();
         savetrue = new javax.swing.JButton();
         nexttrue = new javax.swing.JButton();
+        changed_true = new javax.swing.JButton();
         infoText = new javax.swing.JTextField();
         jPanel1 = new javax.swing.JPanel();
         undofalse = new javax.swing.JButton();
         redofalse = new javax.swing.JButton();
         savefalse = new javax.swing.JButton();
         nextfalse = new javax.swing.JButton();
+        changed_false = new javax.swing.JButton();
 
         setLayout(new java.awt.BorderLayout());
 
@@ -76,6 +78,15 @@ public class TestEditorComponent extends javax.swing.JPanel implements AbstractE
         });
 
         jPanel2.add(nexttrue);
+
+        changed_true.setText("changed_true");
+        changed_true.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                changed_trueActionPerformed(evt);
+            }
+        });
+
+        jPanel2.add(changed_true);
 
         infoText.setText("jTextField1");
         jPanel2.add(infoText);
@@ -120,9 +131,28 @@ public class TestEditorComponent extends javax.swing.JPanel implements AbstractE
 
         jPanel1.add(nextfalse);
 
+        changed_false.setText("changed_false");
+        changed_false.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                changed_falseActionPerformed(evt);
+            }
+        });
+
+        jPanel1.add(changed_false);
+
         add(jPanel1, java.awt.BorderLayout.CENTER);
 
     }// </editor-fold>//GEN-END:initComponents
+
+    private void changed_falseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changed_falseActionPerformed
+// TODO add your handling code here:
+        ((EditorPanel)(getParent()).getParent()).setChanged(false);
+    }//GEN-LAST:event_changed_falseActionPerformed
+
+    private void changed_trueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changed_trueActionPerformed
+// TODO add your handling code here:
+        ((EditorPanel)(getParent()).getParent()).setChanged(true);
+    }//GEN-LAST:event_changed_trueActionPerformed
 
     private void nextfalseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextfalseActionPerformed
 // TODO add your handling code here:
@@ -167,6 +197,8 @@ public class TestEditorComponent extends javax.swing.JPanel implements AbstractE
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton changed_false;
+    private javax.swing.JButton changed_true;
     private javax.swing.JTextField infoText;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
@@ -236,6 +268,25 @@ public class TestEditorComponent extends javax.swing.JPanel implements AbstractE
         setUndoStatus(false);
         setRedoStatus(false);
         setNextStatus(false);
+    }
+
+	public void setChangeStatus(boolean changeStatus) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void isChangeStatus() {
+		// TODO Auto-generated method stub
+		
+	}
+
+    public void handleNext() {
+    }
+
+    public void handleRedo() {
+    }
+
+    public void handleUndo() {
     }
     
 }

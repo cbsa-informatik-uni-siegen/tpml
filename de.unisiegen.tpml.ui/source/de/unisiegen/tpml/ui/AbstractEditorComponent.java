@@ -16,6 +16,11 @@ public interface AbstractEditorComponent {
 	public void setTitle(String title);
 	public boolean isUndoStatus();
 	public void setUndoStatus(boolean undoStatus);
+	public void setChangeStatus(boolean changeStatus);
+	public void isChangeStatus();
+        public void setDefaultStates();
         
-       public void setDefaultStates();
+        public void handleNext();
+        public void handleRedo();
+        public void handleUndo();
 }

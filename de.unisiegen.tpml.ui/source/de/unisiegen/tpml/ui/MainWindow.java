@@ -11,6 +11,10 @@ import java.awt.event.WindowEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import javax.swing.JOptionPane;
+
+import de.unisiegen.tpml.core.languages.Language;
+
 /**
  *
  * @author  TPPool15
@@ -45,7 +49,6 @@ public class MainWindow extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:initComponents
     private void initComponents() {
         javax.swing.JMenuBar MainMenuBar;
-        javax.swing.JMenuItem closeItem;
         javax.swing.JMenu editMenu;
         javax.swing.JSeparator editMenuSeperator;
         javax.swing.JMenu fileMenu;
@@ -246,6 +249,12 @@ public class MainWindow extends javax.swing.JFrame {
 
         preferencesItem.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("PreferencesMnemonic").charAt(0));
         preferencesItem.setText("Preferences");
+        preferencesItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                preferencesItemActionPerformed(evt);
+            }
+        });
+
         editMenu.add(preferencesItem);
 
         MainMenuBar.add(editMenu);
@@ -290,6 +299,12 @@ public class MainWindow extends javax.swing.JFrame {
         setBounds((screenSize.width-800)/2, (screenSize.height-600)/2, 800, 600);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void preferencesItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_preferencesItemActionPerformed
+// TODO add your handling code here:
+        SettingsGUI settings = new SettingsGUI(this, false);
+    	settings.setVisible(true);
+    }//GEN-LAST:event_preferencesItemActionPerformed
+
     private void newItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newItemActionPerformed
 // TODO add your handling code here:
         handleNew();
@@ -302,17 +317,17 @@ public class MainWindow extends javax.swing.JFrame {
 
     private void typecheckerItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_typecheckerItemActionPerformed
 // TODO add your handling code here:
-        ((EditorPanel)tabbedPane.getSelectedComponent()).handleTypeChecker();
+        (getActiveEditor()).handleTypeChecker();
     }//GEN-LAST:event_typecheckerItemActionPerformed
 
     private void bigstepItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bigstepItemActionPerformed
 // TODO add your handling code here:
-        ((EditorPanel)tabbedPane.getSelectedComponent()).handleBigStep();
+        (getActiveEditor()).handleBigStep();
     }//GEN-LAST:event_bigstepItemActionPerformed
 
     private void smallstepItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_smallstepItemActionPerformed
 // TODO add your handling code here:
-        ((EditorPanel)tabbedPane.getSelectedComponent()).handleSmallStep();
+        (getActiveEditor()).handleSmallStep();
     }//GEN-LAST:event_smallstepItemActionPerformed
 
     private void quitItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_quitItemActionPerformed
@@ -322,12 +337,12 @@ public class MainWindow extends javax.swing.JFrame {
 
     private void saveAsItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveAsItemActionPerformed
 // TODO add your handling code here:
-        handleSaveAs();
+        getActiveEditor().handleSaveAs();
     }//GEN-LAST:event_saveAsItemActionPerformed
 
     private void saveItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveItemActionPerformed
 // TODO add your handling code here:
-        handleSave();
+        getActiveEditor().handleSave();
     }//GEN-LAST:event_saveItemActionPerformed
 
     private void closeItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeItemActionPerformed
@@ -337,22 +352,22 @@ public class MainWindow extends javax.swing.JFrame {
 
     private void redoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_redoButtonActionPerformed
 // TODO add your handling code here:
-        handleRedo();
+        (getActiveEditor()).handleRedo();
     }//GEN-LAST:event_redoButtonActionPerformed
 
     private void undoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_undoButtonActionPerformed
 // TODO add your handling code here:
-        handleUndo();
+        (getActiveEditor()).handleUndo();
     }//GEN-LAST:event_undoButtonActionPerformed
 
     private void saveAsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveAsButtonActionPerformed
 // TODO add your handling code here:
-        handleSaveAs();
+        getActiveEditor().handleSaveAs();
     }//GEN-LAST:event_saveAsButtonActionPerformed
 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
 // TODO add your handling code here:
-        handleSave();
+        getActiveEditor().handleSave();
     }//GEN-LAST:event_saveButtonActionPerformed
 
     private void newButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
@@ -373,6 +388,7 @@ public class MainWindow extends javax.swing.JFrame {
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem bigstepItem;
+    private javax.swing.JMenuItem closeItem;
     private javax.swing.JMenuItem preferencesItem;
     private javax.swing.JButton redoButton;
     private javax.swing.JMenuItem redoItem;
@@ -396,26 +412,29 @@ public class MainWindow extends javax.swing.JFrame {
         typecheckerItem.setEnabled(state);
         saveAsItem.setEnabled(state);
         saveAsButton.setEnabled(state);
+        closeItem.setEnabled(state);
         
     }
     
-    private void editorStatusChange (String ident, Object onewValue){
+    private void editorStatusChange (String ident, Object newValue){
                 try{
-                Boolean newValue = (Boolean)onewValue;
                 if (ident.equals("redoStatus")){
-                setRedoState(newValue);
+                setRedoState((Boolean)newValue);
                 }
                 else
                     if (ident.equals("saveStatus")){
-                    setSaveState(newValue);
+                    setSaveState((Boolean)newValue);
                     }
                     else
-                        if (ident.equals("title")){
-                        //TODO set title of the tabbed pane!
+                        if (ident.equals("filename")){
+                        tabbedPane.setTitleAt(tabbedPane.getSelectedIndex(), (String)newValue);
                         }
                         else
                             if (ident.equals("undoStatus")){
-                                setUndoState(newValue);
+                                setUndoState((Boolean)newValue);
+                            }
+                            else if (ident.equals("changed")){
+                                setChangeState((Boolean)newValue);
                             }
                 }
                 catch (Exception e) {} //This was no Change we look for therefore we do nothing.
@@ -423,18 +442,13 @@ public class MainWindow extends javax.swing.JFrame {
     }
     
     private void updateEditorStates (EditorPanel editor) {
+        if (getActiveEditor() == null) setGeneralStates(false);
+        else{
         setRedoState(editor.isRedoStatus());
         setUndoState(editor.isUndoStatus());
         setSaveState(editor.isSaveStatus());
-    }
-    
-    private void handleNew(){
-        EditorPanel newEditorPanel = new EditorPanel(); 
-        tabbedPane.add(newEditorPanel);
-        tabbedPane.setSelectedComponent(newEditorPanel);
-        newEditorPanel.addPropertyChangeListener(editorPanelListener);
-        setGeneralStates(true);
-        updateEditorStates(newEditorPanel);
+        setChangeState(editor.isChanged());
+        }
     }
     
     private void setRedoState (Boolean state){
@@ -453,25 +467,103 @@ public class MainWindow extends javax.swing.JFrame {
             saveItem.setEnabled(state);
     }
     
-    private void handleSave(){}
+    private void setChangeState (Boolean state){
+        if (state){
+        tabbedPane.setTitleAt(tabbedPane.getSelectedIndex(), "*"+
+                ((EditorPanel)tabbedPane.getSelectedComponent()).getFileName());
+        }
+        else {
+        tabbedPane.setTitleAt(tabbedPane.getSelectedIndex(),
+                ((EditorPanel)tabbedPane.getSelectedComponent()).getFileName());
+        }
+    }
+    
+    private EditorPanel getActiveEditor(){
+    	return (EditorPanel)tabbedPane.getSelectedComponent();
+    }
+    
+    private void handleNew(){
+        FileWizard wizard = new FileWizard(this, true);
+        wizard.setLocationRelativeTo(this);
+        wizard.setVisible(true);
+        Language language = wizard.getLanguage();
         
-    private void handleSaveAs(){}
-    
-    private void handleUndo(){}
-    
-    private void handleRedo(){}
-    
-    private void handleClose(){}
-    
-    private void handleSmallStep(){
-    EditorPanel selected = (EditorPanel)tabbedPane.getSelectedComponent();
+        EditorPanel newEditorPanel = new EditorPanel(language); 
+        tabbedPane.add(newEditorPanel);
+        tabbedPane.setSelectedComponent(newEditorPanel);
+        newEditorPanel.addPropertyChangeListener(editorPanelListener);
+        setGeneralStates(true);
+        updateEditorStates(newEditorPanel);
     }
     
-    private void handleBigStep(){}
-    
-    private void handleTypeChecker(){}
-    
-    private void handleQuit(){
-    System.exit(0);
-    }
+//    private void handleOpen(){
+//        try {
+//		JFileChooser chooser = new JFileChooser();
+//		chooser.showOpenDialog(this);
+//		File infile = chooser.getSelectedFile();
+//                LanguageFactory langfactory = LanguageFactory.newInstance();
+//                Language language = langfactory.getLanguageByFile(infile);
+//                String filename = infile.getName();
+//		StringBuffer buffer = new StringBuffer();
+//
+//			FileInputStream in = new FileInputStream(infile);
+//			int onechar;
+//
+//			while ((onechar = in.read()) != -1)
+//				buffer.append((char) onechar);
+//
+//			//SourceFile newFile = new SourceFile();
+//			//newFile.setName(infile.getName());
+//			//newFile.getDocument().insertString(0, buffer.toString(), null);
+//                        
+//
+//		} catch (NoSuchLanguageException e) { 
+//                    
+//		}
+//	}
+            
+    	private void handleQuit() {
+		while (getActiveEditor() != null) {
+			if (handleClose())
+				return;
+		}
+		System.exit(0);
+	}
+        /**
+         * Returns true if the Close dialog was cancelled.
+         */
+        private boolean handleClose() {
+            EditorPanel selectedEditor = getActiveEditor();
+		if (selectedEditor != null) {
+			if (selectedEditor.isChanged()) {
+				// Custom button text
+				Object[] options = { "Yes", "No", "Cancel" };
+				int n = JOptionPane.showOptionDialog(
+								this,
+								selectedEditor.getFileName()
+                                                                + " contains unsaved changes. Do you want to save?",
+								"Save File", JOptionPane.YES_NO_CANCEL_OPTION,
+								JOptionPane.QUESTION_MESSAGE, null, options,
+								options[2]);
+
+				if (n == 0) {
+					if (selectedEditor.handleSave()) {
+						tabbedPane.remove(tabbedPane.getSelectedIndex());
+						this.repaint();
+					}
+				} else if (n == 1) {
+					tabbedPane.remove(tabbedPane.getSelectedIndex());
+					this.repaint();
+					return false;
+				} else if (n == 2) {
+					return true;
+				}
+			} else {
+				tabbedPane.remove(tabbedPane.getSelectedIndex());
+				this.repaint();
+			}
+		}
+		return false;
+
+	}
 }
