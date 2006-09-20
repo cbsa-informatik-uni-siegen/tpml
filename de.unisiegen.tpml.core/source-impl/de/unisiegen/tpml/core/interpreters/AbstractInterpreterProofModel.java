@@ -35,15 +35,23 @@ public abstract class AbstractInterpreterProofModel extends AbstractProofModel i
   /**
    * Allocates a new <code>AbstractInterpreterProofModel</code> with the specified <code>root</code> node.
    * 
+   * This method automatically calls {@link #setMemoryEnabled(boolean)} for the <code>root</code> node using
+   * its expression and the {@link de.unisiegen.tpml.core.expressions.Expression#containsMemoryOperations()}
+   * method. 
+   * 
    * @param root the new root item.
    * @param ruleSet the set of proof rules.
    * 
    * @throws NullPointerException if <code>language</code> or <code>root</code> is <code>null</code>.
    * 
    * @see AbstractProofModel#AbstractProofModel(AbstractProofNode, AbstractProofRuleSet)
+   * @see #setMemoryEnabled(boolean)
    */
   protected AbstractInterpreterProofModel(AbstractInterpreterProofNode root, AbstractProofRuleSet ruleSet) {
     super(root, ruleSet);
+    
+    // check if we have memory operations according to the expression
+    setMemoryEnabled(root.getExpression().containsMemoryOperations());
   }
   
   

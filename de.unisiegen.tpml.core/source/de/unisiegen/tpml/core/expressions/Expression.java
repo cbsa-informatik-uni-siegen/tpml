@@ -30,6 +30,35 @@ public abstract class Expression implements PrettyPrintable, PrettyPrintPrioriti
   //
   
   /**
+   * Returns <code>true</code> if the expression contains any of the memory operations, that is either
+   * {@link Assign#ASSIGN}, {@link Deref#DEREF} or {@link Ref#REF}. Otherwise <code>false</code> will
+   * be returned. 
+   *
+   * This method is used for the {@link de.unisiegen.tpml.core.interpreters.InterpreterProofModel}s to
+   * enable the {@link de.unisiegen.tpml.core.interpreters.InterpreterProofModel#isMemoryEnabled()}
+   * property depending on whether the expression at the root node contains memory operations or not.
+   * 
+   * This method uses the {@link #levelOrderEnumeration()} method to traverse all sub expressions,
+   * so this method does not need to be implemented by any derived class, but it'll work automagically.
+   * 
+   * @return <code>true</code> if the expression contains any of the memory operations, <code>false</code>
+   *         otherwise.
+   * 
+   * @see #children()
+   * @see #levelOrderEnumeration()
+   */
+  public final boolean containsMemoryOperations() {
+    Enumeration<Expression> enumeration = levelOrderEnumeration();
+    while (enumeration.hasMoreElements()) {
+      Expression e = enumeration.nextElement();
+      if (e == Assign.ASSIGN || e == Deref.DEREF || e == Ref.REF) {
+        return true;
+      }
+    }
+    return true;
+  }
+  
+  /**
    * Returns the free (unbound) identifiers within the expression, e.g. the name of the identifier for an
    * identifier expression or the free identifiers for its sub expressions in applications, abstractions
    * and recursions.
