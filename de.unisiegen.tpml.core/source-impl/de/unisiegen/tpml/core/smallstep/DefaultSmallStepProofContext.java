@@ -51,7 +51,8 @@ final class DefaultSmallStepProofContext implements SmallStepProofContext {
   //
   
   /**
-   * TODO Add documentation here.
+   * Allocates a new <code>DefaultSmallStepProofContext</code> instance using the specified <code>node</code>
+   * and the small step proof <code>ruleSet</code>.
    *
    * @param node the {@link ProofNode} for which to determine the next small steps. The expression
    *             and the store from the <code>node</code> are relevant here.

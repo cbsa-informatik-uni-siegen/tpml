@@ -3,10 +3,14 @@ package de.unisiegen.tpml.core.languages;
 import java_cup.runtime.Symbol;
 
 /**
- * TODO Add documentation here.
+ * Instances of this class represent symbols that will be returned from the
+ * {@link de.unisiegen.tpml.core.languages.LanguageScanner}s.
  *
  * @author Benedikt Meurer
  * @version $Rev$
+ * 
+ * @see java_cup.runtime.Symbol
+ * @see de.unisiegen.tpml.core.languages.LanguageScanner
  */
 public final class LanguageSymbol extends Symbol {
   //
