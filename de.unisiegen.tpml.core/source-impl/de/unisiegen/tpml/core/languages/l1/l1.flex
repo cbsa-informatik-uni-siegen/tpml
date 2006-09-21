@@ -34,7 +34,7 @@ import de.unisiegen.tpml.core.languages.LanguageSymbol;
 	private int yycommentChar = 0;
 	
 	private LanguageSymbol symbol(String name, int id) {
-		return symbol(name, id, null);
+		return symbol(name, id, yychar, yychar + yylength(), yytext());
 	}
 	
 	private LanguageSymbol symbol(String name, int id, Object value) {
