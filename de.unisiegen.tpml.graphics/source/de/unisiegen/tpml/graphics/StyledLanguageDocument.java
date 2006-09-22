@@ -4,8 +4,11 @@ import java.awt.Color;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.io.IOException;
+import java.io.Reader;
 import java.io.StringReader;
 import java.util.HashMap;
+import java.util.LinkedList;
 
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
@@ -14,7 +17,10 @@ import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 
 import de.unisiegen.tpml.core.expressions.Expression;
+import de.unisiegen.tpml.core.languages.AbstractLanguageScanner;
 import de.unisiegen.tpml.core.languages.Language;
+import de.unisiegen.tpml.core.languages.LanguageParser;
+import de.unisiegen.tpml.core.languages.LanguageParserException;
 import de.unisiegen.tpml.core.languages.LanguageScanner;
 import de.unisiegen.tpml.core.languages.LanguageScannerException;
 import de.unisiegen.tpml.core.languages.LanguageSymbol;
@@ -230,7 +236,10 @@ public class StyledLanguageDocument extends DefaultStyledDocument implements Bea
       String content = getText(offset, getLength());
       
       // allocate the scanner (initially)
-      LanguageScanner scanner = this.language.newScanner(new StringReader(content));
+      final LanguageScanner scanner = this.language.newScanner(new StringReader(content));
+      
+      // collect the tokens returned by the scanner
+      final LinkedList<LanguageSymbol> symbols = new LinkedList<LanguageSymbol>();
       
       // determine the tokens for the content
       for (;;) {
@@ -239,6 +248,9 @@ public class StyledLanguageDocument extends DefaultStyledDocument implements Bea
           LanguageSymbol symbol = scanner.nextSymbol();
           if (symbol == null)
             break;
+          
+          // add the token to our list
+          symbols.add(symbol);
           
           // check if we have an attribute set for the token
           SimpleAttributeSet set = this.attributes.get(scanner.getStyleBySymbol(symbol));
@@ -278,6 +290,38 @@ public class StyledLanguageDocument extends DefaultStyledDocument implements Bea
             exceptions = newExceptions;
           }
         }
+      }
+      
+      // check if the scanner is happy
+      if (exceptions == null) {
+				// allocate a parser based on a scanner that operates on the previously collected
+      	// tokens from the scanner step above...
+				LanguageParser parser = this.language.newParser(new AbstractLanguageScanner() {
+					public void restart(Reader reader) { throw new UnsupportedOperationException();	}
+					public LanguageSymbol nextSymbol() throws IOException, LanguageScannerException {	return (!symbols.isEmpty()) ? symbols.poll() : null; }
+					public PrettyStyle getStyleBySymbolId(int id) { return ((AbstractLanguageScanner)scanner).getStyleBySymbolId(id); }
+				});
+				
+				// ...and try to parse the token stream
+				try {
+					parser.parse();
+				}
+				catch (LanguageParserException e) {
+					// setup the error attribute set
+					SimpleAttributeSet errorSet = new SimpleAttributeSet();
+					StyleConstants.setForeground(errorSet, Color.RED);
+					StyleConstants.setUnderline(errorSet, true);
+					errorSet.addAttribute("exception", e);
+
+					// check if this is unexpected end of file
+					if (e.getLeft() < 0 && e.getRight() < 0) {
+						setCharacterAttributes(getLength(), getLength(), errorSet, false);
+					}
+					else {
+						// apply the error character attribute set to indicate the syntax error
+						setCharacterAttributes(e.getLeft(), e.getRight(), errorSet, false);
+					}
+				}
       }
     }
     catch (Exception e) {
