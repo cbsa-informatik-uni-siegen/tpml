@@ -10,6 +10,7 @@ import javax.swing.JLabel;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode;
 import de.unisiegen.tpml.core.types.Type;
 import de.unisiegen.tpml.graphics.components.CompoundExpression;
+import de.unisiegen.tpml.graphics.components.MenuButton;
 import de.unisiegen.tpml.graphics.renderer.AbstractRenderer;
 import de.unisiegen.tpml.graphics.tree.TreeNodeComponent;
 
@@ -24,9 +25,13 @@ public class TypeCheckerNodeComponent extends JComponent  implements TreeNodeCom
 	
 	private boolean															changed;
 	
+	private int																	spacing;
+	
 	private CompoundExpression<String, Type>		expression;
 	
 	private JLabel															indexLabel;
+	
+	private MenuButton													menuButton;
 	
 
 	// XXX: the result should be listed here aswell
@@ -37,7 +42,7 @@ public class TypeCheckerNodeComponent extends JComponent  implements TreeNodeCom
 		super ();
 		
 		this.dimension	= new Dimension (0, 0);
-		
+		this.spacing = 10;
 		this.indexLabel	= new JLabel ();
 		add (this.indexLabel);
 		
@@ -46,6 +51,10 @@ public class TypeCheckerNodeComponent extends JComponent  implements TreeNodeCom
 		this.expression.setEnvironment(node.getEnvironment());
 		add (this.expression);
 		
+		
+		this.menuButton = new MenuButton ();
+		this.menuButton.setText("Das ist ein Text");
+		add (this.menuButton);
 	}
 	
 	public void setIndex (int index) {
@@ -86,6 +95,14 @@ public class TypeCheckerNodeComponent extends JComponent  implements TreeNodeCom
 		this.expression.setBounds(posX, 0, expSize.width, this.dimension.height);
 		posX += expSize.width;
 		
+		// place the menu button
+		posX = 0;
+		Dimension buttonSize = this.menuButton.getNeededSize();
+		this.menuButton.setBounds(posX, this.dimension.height + spacing, buttonSize.width, buttonSize.height);
+		
+		
+		this.dimension.height += spacing + buttonSize.height;
+		this.dimension.width = Math.max(this.dimension.width, buttonSize.width);
 	}
 	
 	/*
