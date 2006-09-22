@@ -8,7 +8,7 @@ package de.unisiegen.tpml.core.languages;
  * 
  * @see de.unisiegen.tpml.core.languages.LanguageScanner
  */
-public final class LanguageScannerException extends Exception {
+public class LanguageScannerException extends RuntimeException {
   //
   // Constants
   //

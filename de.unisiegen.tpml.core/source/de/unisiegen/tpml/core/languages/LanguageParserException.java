@@ -6,8 +6,10 @@ package de.unisiegen.tpml.core.languages;
  *
  * @author Benedikt Meurer
  * @version $Rev$
+ * 
+ * @see de.unisiegen.tpml.core.languages.LanguageScannerException
  */
-public final class LanguageParserException extends RuntimeException {
+public final class LanguageParserException extends LanguageScannerException {
   //
   // Constants
   //
@@ -16,26 +18,6 @@ public final class LanguageParserException extends RuntimeException {
    * The unique serialization identifier of this class.
    */
   private static final long serialVersionUID = -5267613216858473920L;
-
-  
-  
-  //
-  // Attributes
-  //
-  
-  /**
-   * The left character offset of the parse error.
-   * 
-   * @see #getLeft()
-   */
-  private int left;
-  
-  /**
-   * The right character offset of the parse error.
-   * 
-   * @see #getRight()
-   */
-  private int right;
   
   
   
@@ -51,36 +33,10 @@ public final class LanguageParserException extends RuntimeException {
    * @param left the left character offset.
    * @param right the right character offset.
    * 
-   * @see #getLeft()
-   * @see #getRight()
+   * @see LanguageScannerException#getLeft()
+   * @see LanguageScannerException#getRight()
    */
   public LanguageParserException(String message, int left, int right) {
-    super(message);
-    this.left = left;
-    this.right = right;
-  }
-  
-  
-  
-  //
-  // Accessors
-  //
-  
-  /**
-   * Returns the left character offset of the error.
-   * 
-   * @return the left character offset of the error.
-   */
-  public int getLeft() {
-    return this.left;
-  }
-  
-  /**
-   * Returns the right character offset of the error.
-   * 
-   * @return the right character offset of the error.
-   */
-  public int getRight() {
-    return this.right;
+    super(left, right, message);
   }
 }
