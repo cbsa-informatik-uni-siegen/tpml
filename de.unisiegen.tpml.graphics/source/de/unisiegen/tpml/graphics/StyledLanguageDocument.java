@@ -16,6 +16,8 @@ import javax.swing.text.DefaultStyledDocument;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 
+import org.apache.log4j.Logger;
+
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.languages.AbstractLanguageScanner;
 import de.unisiegen.tpml.core.languages.Language;
@@ -45,6 +47,13 @@ public class StyledLanguageDocument extends DefaultStyledDocument implements Bea
    * Empty array of language exceptions.
    */
   private static final LanguageScannerException[] EMPTY_ARRAY = new LanguageScannerException[0];
+
+  /**
+   * The {@link Logger} for this class.
+   * 
+   * @see Logger
+   */
+  private static final Logger logger = Logger.getLogger(StyledLanguageDocument.class);
   
 	/**
 	 * The unique serialization identifier of this class. 
@@ -321,12 +330,14 @@ public class StyledLanguageDocument extends DefaultStyledDocument implements Bea
 						// apply the error character attribute set to indicate the syntax error
 						setCharacterAttributes(e.getLeft(), e.getRight(), errorSet, false);
 					}
+					
+					// add the exception to our list
+					exceptions = new LanguageScannerException[] { e };
 				}
       }
     }
     catch (Exception e) {
-      // FIXME: Proper logging
-      e.printStackTrace();
+    	logger.warn("Failed to process changes in the styled language document", e);
     }
     
     // update the exceptions property if necessary
