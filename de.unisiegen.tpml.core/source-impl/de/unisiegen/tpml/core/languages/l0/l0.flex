@@ -42,7 +42,7 @@ import de.unisiegen.tpml.core.languages.LanguageSymbol;
 	}
 
 	@Override
-	protected PrettyStyle getStyleBySymbolId(int id) {
+	public PrettyStyle getStyleBySymbolId(int id) {
 		switch (id) {
 		case COMMENT:
 			return PrettyStyle.COMMENT;

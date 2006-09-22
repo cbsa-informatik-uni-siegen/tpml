@@ -77,7 +77,7 @@ public abstract class AbstractLanguageScanner implements LanguageScanner {
    * 
    * @see #getStyleBySymbol(LanguageSymbol)
    */
-  protected abstract PrettyStyle getStyleBySymbolId(int id);
+  public abstract PrettyStyle getStyleBySymbolId(int id);
   
   
   
