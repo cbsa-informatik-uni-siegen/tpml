@@ -301,77 +301,76 @@ public class MainWindow extends javax.swing.JFrame {
 
     private void preferencesItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_preferencesItemActionPerformed
 // TODO add your handling code here:
-        SettingsGUI settings = new SettingsGUI(this, false);
-    	settings.setVisible(true);
+
     }//GEN-LAST:event_preferencesItemActionPerformed
 
     private void newItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newItemActionPerformed
-// TODO add your handling code here:
+// 
         handleNew();
     }//GEN-LAST:event_newItemActionPerformed
 
     private void tabbedPaneStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_tabbedPaneStateChanged
-// TODO add your handling code here:
+// 
         updateEditorStates((EditorPanel)tabbedPane.getSelectedComponent());
     }//GEN-LAST:event_tabbedPaneStateChanged
 
     private void typecheckerItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_typecheckerItemActionPerformed
-// TODO add your handling code here:
+// 
         (getActiveEditor()).handleTypeChecker();
     }//GEN-LAST:event_typecheckerItemActionPerformed
 
     private void bigstepItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bigstepItemActionPerformed
-// TODO add your handling code here:
+// 
         (getActiveEditor()).handleBigStep();
     }//GEN-LAST:event_bigstepItemActionPerformed
 
     private void smallstepItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_smallstepItemActionPerformed
-// TODO add your handling code here:
+// 
         (getActiveEditor()).handleSmallStep();
     }//GEN-LAST:event_smallstepItemActionPerformed
 
     private void quitItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_quitItemActionPerformed
-// TODO add your handling code here:
+// 
         handleQuit();
     }//GEN-LAST:event_quitItemActionPerformed
 
     private void saveAsItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveAsItemActionPerformed
-// TODO add your handling code here:
+// 
         getActiveEditor().handleSaveAs();
     }//GEN-LAST:event_saveAsItemActionPerformed
 
     private void saveItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveItemActionPerformed
-// TODO add your handling code here:
+// 
         getActiveEditor().handleSave();
     }//GEN-LAST:event_saveItemActionPerformed
 
     private void closeItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeItemActionPerformed
-// TODO add your handling code here:
+// 
         handleClose();
     }//GEN-LAST:event_closeItemActionPerformed
 
     private void redoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_redoButtonActionPerformed
-// TODO add your handling code here:
+// 
         (getActiveEditor()).handleRedo();
     }//GEN-LAST:event_redoButtonActionPerformed
 
     private void undoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_undoButtonActionPerformed
-// TODO add your handling code here:
+// 
         (getActiveEditor()).handleUndo();
     }//GEN-LAST:event_undoButtonActionPerformed
 
     private void saveAsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveAsButtonActionPerformed
-// TODO add your handling code here:
+// 
         getActiveEditor().handleSaveAs();
     }//GEN-LAST:event_saveAsButtonActionPerformed
 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
-// TODO add your handling code here:
+// 
         getActiveEditor().handleSave();
     }//GEN-LAST:event_saveButtonActionPerformed
 
     private void newButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
-// TODO add your handling code here:
+// 
         handleNew();
     }//GEN-LAST:event_newButtonActionPerformed
     
@@ -496,31 +495,9 @@ public class MainWindow extends javax.swing.JFrame {
         updateEditorStates(newEditorPanel);
     }
     
-//    private void handleOpen(){
-//        try {
-//		JFileChooser chooser = new JFileChooser();
-//		chooser.showOpenDialog(this);
-//		File infile = chooser.getSelectedFile();
-//                LanguageFactory langfactory = LanguageFactory.newInstance();
-//                Language language = langfactory.getLanguageByFile(infile);
-//                String filename = infile.getName();
-//		StringBuffer buffer = new StringBuffer();
-//
-//			FileInputStream in = new FileInputStream(infile);
-//			int onechar;
-//
-//			while ((onechar = in.read()) != -1)
-//				buffer.append((char) onechar);
-//
-//			//SourceFile newFile = new SourceFile();
-//			//newFile.setName(infile.getName());
-//			//newFile.getDocument().insertString(0, buffer.toString(), null);
-//                        
-//
-//		} catch (NoSuchLanguageException e) { 
-//                    
-//		}
-//	}
+    private void handleOpen(){
+
+    }
             
     	private void handleQuit() {
 		while (getActiveEditor() != null) {
@@ -529,9 +506,8 @@ public class MainWindow extends javax.swing.JFrame {
 		}
 		System.exit(0);
 	}
-        /**
-         * Returns true if the Close dialog was cancelled.
-         */
+
+        
         private boolean handleClose() {
             EditorPanel selectedEditor = getActiveEditor();
 		if (selectedEditor != null) {

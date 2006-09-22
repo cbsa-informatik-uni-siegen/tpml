@@ -10,7 +10,7 @@ package de.unisiegen.tpml.ui;
  *
  * @author  TPPool15
  */
-public class TestEditorComponent extends javax.swing.JPanel implements AbstractEditorComponent {
+public class TestEditorComponent extends javax.swing.JPanel implements EditorComponent {
     
     /** Creates new form TestEditorComponent */
     public TestEditorComponent(String name) {
@@ -145,53 +145,53 @@ public class TestEditorComponent extends javax.swing.JPanel implements AbstractE
     }// </editor-fold>//GEN-END:initComponents
 
     private void changed_falseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changed_falseActionPerformed
-// TODO add your handling code here:
+// 
         ((EditorPanel)(getParent()).getParent()).setChanged(false);
     }//GEN-LAST:event_changed_falseActionPerformed
 
     private void changed_trueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changed_trueActionPerformed
-// TODO add your handling code here:
+// 
         ((EditorPanel)(getParent()).getParent()).setChanged(true);
     }//GEN-LAST:event_changed_trueActionPerformed
 
     private void nextfalseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextfalseActionPerformed
-// TODO add your handling code here:
+// 
         setNextStatus(false);
     }//GEN-LAST:event_nextfalseActionPerformed
 
     private void savefalseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_savefalseActionPerformed
-// TODO add your handling code here:
+// 
         setSaveStatus(false);
     }//GEN-LAST:event_savefalseActionPerformed
 
     private void savetrueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_savetrueActionPerformed
-// TODO add your handling code here:
+// 
         setSaveStatus(true);
     }//GEN-LAST:event_savetrueActionPerformed
 
     private void redofalseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_redofalseActionPerformed
-// TODO add your handling code here:
+// 
         setRedoStatus(false);
     }//GEN-LAST:event_redofalseActionPerformed
 
     private void redotrueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_redotrueActionPerformed
-// TODO add your handling code here:
+// 
         setRedoStatus(true);
     }//GEN-LAST:event_redotrueActionPerformed
 
     private void undofalseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_undofalseActionPerformed
-// TODO add your handling code here:
+// 
         setUndoStatus(false);
     }//GEN-LAST:event_undofalseActionPerformed
 
     private void nexttrueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nexttrueActionPerformed
-// TODO add your handling code here:
+// 
         setNextStatus(true);
 
     }//GEN-LAST:event_nexttrueActionPerformed
 
     private void undotrueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_undotrueActionPerformed
-// TODO add your handling code here:
+// 
         setUndoStatus(true);
     }//GEN-LAST:event_undotrueActionPerformed
     
@@ -275,9 +275,9 @@ public class TestEditorComponent extends javax.swing.JPanel implements AbstractE
 		
 	}
 
-	public void isChangeStatus() {
+	public boolean isChangeStatus() {
 		// TODO Auto-generated method stub
-		
+		return false;
 	}
 
     public void handleNext() {
