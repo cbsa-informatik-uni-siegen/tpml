@@ -1,6 +1,7 @@
 package de.unisiegen.tpml.core.bigstep;
 
 import de.unisiegen.tpml.core.expressions.Expression;
+import de.unisiegen.tpml.core.interpreters.DefaultStore;
 import de.unisiegen.tpml.core.interpreters.Store;
 
 /**
@@ -63,14 +64,17 @@ public final class BigStepProofResult {
   //
   
   /**
-   * Returns the {@link Store} that is part of the result of a proven big step node.
+   * Returns the {@link Store} that is part of the result of a proven big step node. To be exact, a
+   * copy of the store is returned, that may then be modified by the caller (the {@link Store} has
+   * copy-on-write semantics). This is to ease the implementation of memory operations in the
+   * small and big step interpreters.
    * 
    * @return the resulting store for a big step proof node.
    * 
    * @see Store
    */
   public Store getStore() {
-    return this.store;
+    return new DefaultStore((DefaultStore)this.store);
   }
   
   /**

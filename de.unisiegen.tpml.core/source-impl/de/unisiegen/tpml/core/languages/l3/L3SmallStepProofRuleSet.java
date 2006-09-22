@@ -3,11 +3,16 @@ package de.unisiegen.tpml.core.languages.l3;
 import de.unisiegen.tpml.core.expressions.Application;
 import de.unisiegen.tpml.core.expressions.Assign;
 import de.unisiegen.tpml.core.expressions.BinaryOperator;
+import de.unisiegen.tpml.core.expressions.BooleanConstant;
+import de.unisiegen.tpml.core.expressions.Condition1;
 import de.unisiegen.tpml.core.expressions.Deref;
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.expressions.Location;
 import de.unisiegen.tpml.core.expressions.Ref;
+import de.unisiegen.tpml.core.expressions.Sequence;
 import de.unisiegen.tpml.core.expressions.UnitConstant;
+import de.unisiegen.tpml.core.expressions.While;
+import de.unisiegen.tpml.core.languages.l1.L1Language;
 import de.unisiegen.tpml.core.languages.l2.L2SmallStepProofRuleSet;
 import de.unisiegen.tpml.core.smallstep.SmallStepProofContext;
 
@@ -39,8 +44,14 @@ public class L3SmallStepProofRuleSet extends L2SmallStepProofRuleSet {
     
     // register small step rules
     register("ASSIGN", true);
+    register("COND-1-EVAL", false);
+    register("COND-1-FALSE", true);
+    register("COND-1-TRUE", true);
     register("DEREF", true);
     register("REF", true);
+    register("SEQ-EVAL", false);
+    register("SEQ-EXEC", true);
+    register("WHILE", true);
   }
   
   
@@ -66,6 +77,50 @@ public class L3SmallStepProofRuleSet extends L2SmallStepProofRuleSet {
     else {
       // let the parent class handle this operator application 
       return super.applyBinaryOperator(context, applicationOrInfix, op, e1, e2);
+    }
+  }
+  
+  
+  
+  //
+  // The (COND-1-EVAL), (COND-1-FALSE) and (COND-1-TRUE) rules
+  //
+  
+  /**
+   * The <code>evaluate()</code> method for <code>Condition1</code> expressions.
+   * 
+   * @param context the small step proof context.
+   * @param condition1 the {@link de.unisiegen.tpml.core.expressions.Condition1}.
+   * 
+   * @return the resulting expression.
+   */
+  public Expression evaluateCondition1(SmallStepProofContext context, Condition1 condition1) {
+    // determine the sub expression
+    Expression e0 = condition1.getE0();
+    Expression e1 = condition1.getE1();
+    
+    // check if e0 is not already a boolean constant
+    if (!(e0 instanceof BooleanConstant)) {
+      // we're about to perform (COND-1-EVAL)
+      context.addProofStep(getRuleByName("COND-1-EVAL"), condition1);
+      
+      // try to evaluate e0
+      e0 = evaluate(context, e0);
+      
+      // exceptions need special handling
+      return e0.isException() ? e0 : new Condition1(e0, e1);
+    }
+    
+    // determine the boolean constant value
+    if (e0 == BooleanConstant.TRUE) {
+      // jep, that's (COND-1-TRUE) then
+      context.addProofStep(getRuleByName("COND-1-TRUE"), condition1);
+      return e1;
+    }
+    else {
+      // jep, that's (COND-1-FALSE) then
+      context.addProofStep(getRuleByName("COND-1-FALSE"), condition1);
+      return UnitConstant.UNIT;
     }
   }
   
@@ -112,5 +167,69 @@ public class L3SmallStepProofRuleSet extends L2SmallStepProofRuleSet {
     context.getStore().put(location, e2);
     context.addProofStep(getRuleByName("REF"), application);
     return location;
+  }
+  
+  
+  
+  //
+  // The (SEQ-EVAL) and (SEQ-EXEC) rules
+  //
+  
+  /**
+   * The <code>evaluate()</code> method for <code>Sequence</code>s.
+   * 
+   * @param context the small step proof context.
+   * @param sequence the {@link de.unisiegen.tpml.core.expressions.Sequence}.
+   * 
+   * @return the resulting expression.
+   */
+  public Expression evaluateSequence(SmallStepProofContext context, Sequence sequence) {
+//  determine the sub expressions
+    Expression e1 = sequence.getE1();
+    Expression e2 = sequence.getE2();
+
+    // check if e1 is not already a value
+    if (!e1.isValue()) {
+      // we're about to perform (SEQ-EVAL)
+      context.addProofStep(getRuleByName("SEQ-EVAL"), sequence);
+      
+      // try to evaluate e1
+      e1 = evaluate(context, e1);
+
+      // exceptions need special treatment
+      return e1.isException() ? e1 : new Sequence(e1, e2);
+    }
+
+    // we're about to perform (SEQ-EXEC)
+    context.addProofStep(getRuleByName("SEQ-EXEC"), sequence);
+    
+    // drop e1 from the sequence
+    return e2;
+  }
+  
+  
+  
+  //
+  // The (WHILE) rule
+  //
+  
+  /**
+   * The <code>evaluate()</code> method for the <code>While</code> expression.
+   * 
+   * @param context the small step proof context.
+   * @param loop the {@link de.unisiegen.tpml.core.expressions.While} loop.
+   * 
+   * @return the resulting expression.
+   */
+  public Expression evaluateWhile(SmallStepProofContext context, While loop) {
+//  determine the sub expressions
+    Expression e1 = loop.getE1();
+    Expression e2 = loop.getE2();
+    
+    // we're about to perform (WHILE)
+    context.addProofStep(getRuleByName("WHILE"), loop);
+    
+    // translate to: if e1 then (e2; while e1 do e2)
+    return new Condition1(e1, new Sequence(e2, loop));
   }
 }

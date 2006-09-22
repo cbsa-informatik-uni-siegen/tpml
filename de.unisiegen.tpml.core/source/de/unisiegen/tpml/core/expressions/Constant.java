@@ -21,7 +21,7 @@ public abstract class Constant extends Value {
    * 
    * @see #toPrettyStringBuilder(PrettyStringBuilderFactory)
    */
-  private String text;
+  protected String text;
   
   
   

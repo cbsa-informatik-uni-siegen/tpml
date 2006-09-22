@@ -1,5 +1,8 @@
 package de.unisiegen.tpml.core.expressions;
 
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
+
 /**
  * Abstract base class for binary operators. Binary operators, like unary operators, are always
  * constants, and as such, are always values.
@@ -79,4 +82,24 @@ public abstract class BinaryOperator extends Constant {
    * @throws NullPointerException if <code>e1</code> or <code>e2</code> is <code>null</code>.
    */
   public abstract Expression applyTo(Expression e1, Expression e2) throws BinaryOperatorException;
+  
+  
+  
+  //
+  // Pretty printing
+  //
+  
+  /**
+   * {@inheritDoc}
+   *
+   * @see de.unisiegen.tpml.core.expressions.Constant#toPrettyStringBuilder(de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory)
+   */
+  @Override
+  public PrettyStringBuilder toPrettyStringBuilder(PrettyStringBuilderFactory factory) {
+    PrettyStringBuilder builder = factory.newBuilder(this, PRIO_CONSTANT);
+    builder.addText("(");
+    builder.addConstant(this.text);
+    builder.addText(")");
+    return builder;
+  }
 }

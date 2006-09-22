@@ -146,4 +146,34 @@ interface PrettyPrintPriorities {
    * The pretty print priority for the assign operator (<code>:=</code>).
    */
   public static final int PRIO_ASSIGN = 1;
+  
+  /**
+   * The pretty print priority for while expressions.
+   */
+  public static final int PRIO_WHILE = 0;
+  
+  /**
+   * The pretty print priority for the e1 of while expressions.
+   */
+  public static final int PRIO_WHILE_E1 = PRIO_WHILE;
+  
+  /**
+   * The pretty print priority for the e2 of while expressions.
+   */
+  public static final int PRIO_WHILE_E2 = PRIO_WHILE;
+  
+  /**
+   * The pretty print priority for sequences.
+   */
+  public static final int PRIO_SEQUENCE = 0;
+  
+  /**
+   * The pretty print priority for the e1 of sequences.
+   */
+  public static final int PRIO_SEQUENCE_E1 = PRIO_SEQUENCE + 1;
+  
+  /**
+   * The pretty print priority for the e2 of sequences.
+   */
+  public static final int PRIO_SEQUENCE_E2 = PRIO_SEQUENCE;
 }

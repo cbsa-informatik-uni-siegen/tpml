@@ -26,6 +26,10 @@ public interface InterpreterProofNode extends ProofNode {
    * 
    * This is only meaningful if the expression that is being proved contains memory operations.
    * 
+   * It is also important to note that a copy of the actual store associated with this node
+   * will be returned, so the caller can modify the store right away as needed in the big and
+   * small step interpreters (the {@link Store} class has copy-on-write semantics).
+   * 
    * @return the <code>Store</code> for this proof node.
    * 
    * @see Store

@@ -47,18 +47,36 @@ public class L2LanguageTranslator extends L1LanguageTranslator {
       // translate to: let id1 = lambda id2...lambda idn.e1 in e2
       CurriedLet curriedLet = (CurriedLet)expression;
       Expression e1 = curriedLet.getE1();
+      
+      // check if we should recurse
+      if (recursive) {
+        e1 = translateToCoreSyntax(e1, true);
+      }
+      
+      // add the lambdas
       for (int n = curriedLet.getIdentifiers().length - 1; n > 0; --n) {
         e1 = new Lambda(curriedLet.getIdentifiers(n), null, e1);
       }
+      
+      // generate the let expression
       return new Let(curriedLet.getIdentifiers(0), e1, curriedLet.getE2());
     }
     else if (expression instanceof CurriedLetRec) {
       // translate to: let id1 = rec id1.lambda id2...lambda idn.e1 in e2
       CurriedLetRec curriedLetRec = (CurriedLetRec)expression;
       Expression e1 = curriedLetRec.getE1();
+      
+      // check if we should recurse
+      if (recursive) {
+        e1 = translateToCoreSyntax(e1, true);
+      }
+      
+      // add the lambdas
       for (int n = curriedLetRec.getIdentifiers().length - 1; n > 0; --n) {
         e1 = new Lambda(curriedLetRec.getIdentifiers(n), null, e1);
       }
+      
+      // generate the let expression
       return new Let(curriedLetRec.getIdentifiers(0), new Recursion(curriedLetRec.getIdentifiers(0), null, e1), curriedLetRec.getE2());
     }
     else if (expression instanceof LetRec) {

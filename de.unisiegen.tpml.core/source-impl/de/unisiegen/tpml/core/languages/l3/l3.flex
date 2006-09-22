@@ -51,7 +51,8 @@ import de.unisiegen.tpml.core.languages.LanguageSymbol;
 		case COLONEQUAL:
 			return PrettyStyle.CONSTANT;
 
-		case LAMBDA: case LET: case REC: case IN: case IF: case THEN: case ELSE:
+		case LAMBDA: case LET: case REC: case IN: case IF: case THEN:
+		case ELSE: case WHILE: case DO:
 			return PrettyStyle.KEYWORD;
 			
 		default:
@@ -94,6 +95,7 @@ Identifier		= [:jletter:] [:jletterdigit:]*
 	
 	// interpunctation
 	"."					{ return symbol("DOT", DOT); }
+	";"					{ return symbol("SEMI", SEMI); }
 	":"					{ return symbol("COLON", COLON); }
 	":="				{ return symbol("COLONEQUAL", COLONEQUAL); }
 	"("					{ return symbol("LPAREN", LPAREN); }
@@ -110,6 +112,8 @@ Identifier		= [:jletter:] [:jletterdigit:]*
 	"if"				{ return symbol("IF", IF); }
 	"then"				{ return symbol("THEN", THEN); }
 	"else"				{ return symbol("ELSE", ELSE); }
+	"while"				{ return symbol("WHILE", WHILE); }
+	"do"				{ return symbol("DO", DO); }
 	
 	// constants
 	"()"				{ return symbol("PARENPAREN", PARENPAREN); }

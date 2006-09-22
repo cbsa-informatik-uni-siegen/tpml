@@ -9,6 +9,7 @@ import de.unisiegen.tpml.core.expressions.BinaryOperator;
 import de.unisiegen.tpml.core.expressions.BinaryOperatorException;
 import de.unisiegen.tpml.core.expressions.BooleanConstant;
 import de.unisiegen.tpml.core.expressions.Condition;
+import de.unisiegen.tpml.core.expressions.Condition1;
 import de.unisiegen.tpml.core.expressions.CurriedLet;
 import de.unisiegen.tpml.core.expressions.CurriedLetRec;
 import de.unisiegen.tpml.core.expressions.Expression;
@@ -17,6 +18,7 @@ import de.unisiegen.tpml.core.expressions.Lambda;
 import de.unisiegen.tpml.core.expressions.Let;
 import de.unisiegen.tpml.core.expressions.LetRec;
 import de.unisiegen.tpml.core.expressions.Recursion;
+import de.unisiegen.tpml.core.expressions.UnitConstant;
 import de.unisiegen.tpml.core.languages.l0.L0BigStepProofRuleSet;
 import de.unisiegen.tpml.core.languages.l0.L0Language;
 
@@ -67,8 +69,16 @@ public class L1BigStepProofRuleSet extends L0BigStepProofRuleSet {
    * @param node the node to apply the <b>(COND-FALSE)</b> or <b>(COND-TRUE)</b> rule to.
    */
   public void applyCond(BigStepProofContext context, BigStepProofNode node) {
-    // add the first child node
-    context.addProofNode(node, ((Condition)node.getExpression()).getE0());
+    // can be applied to Condition and Condition1
+    Expression e = node.getExpression();
+    if (e instanceof Condition) {
+      // add the first child node
+      context.addProofNode(node, ((Condition)e).getE0());
+    }
+    else {
+      // add the first child node
+      context.addProofNode(node, ((Condition1)e).getE0());
+    }
   }
   
   /**
@@ -90,9 +100,16 @@ public class L1BigStepProofRuleSet extends L0BigStepProofRuleSet {
         updateCondTrue(context, node);
       }
       else if (result0.getValue() == BooleanConstant.FALSE) {
-        // add next proof node for e2
-        Condition condition = (Condition)node.getExpression();
-        context.addProofNode(node, condition.getE2());
+        // can be applied to Condition and Condition1
+        Expression e = node.getExpression();
+        if (e instanceof Condition) {
+          // add next proof node for e2
+          context.addProofNode(node, ((Condition)e).getE2());
+        }
+        else {
+          // result is the unit constant
+          context.setProofNodeResult(node, UnitConstant.UNIT);
+        }
       }
     }
     else if (node.getChildCount() == 2 && node.getChildAt(0).isProven() && node.getChildAt(1).isProven()) {
@@ -120,9 +137,16 @@ public class L1BigStepProofRuleSet extends L0BigStepProofRuleSet {
         updateCondFalse(context, node);
       }
       else if (result0.getValue() == BooleanConstant.TRUE) {
-        // add next proof node for e1
-        Condition condition = (Condition)node.getExpression();
-        context.addProofNode(node, condition.getE1());
+        // can be applied to Condition and Condition1
+        Expression e = node.getExpression();
+        if (e instanceof Condition) {
+          // add next proof node for e1
+          context.addProofNode(node, ((Condition)e).getE1());
+        }
+        else {
+          // add next proof node for e1
+          context.addProofNode(node, ((Condition1)e).getE1());
+        }
       }
     }
     else if (node.getChildCount() == 2 && node.getChildAt(0).isProven() && node.getChildAt(1).isProven()) {

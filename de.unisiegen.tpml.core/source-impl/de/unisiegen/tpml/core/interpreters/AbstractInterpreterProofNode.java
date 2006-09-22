@@ -61,7 +61,7 @@ public abstract class AbstractInterpreterProofNode extends AbstractProofNode imp
    * @see de.unisiegen.tpml.core.interpreters.InterpreterProofNode#getStore()
    */
   public Store getStore() {
-    return this.store;
+    return new DefaultStore((DefaultStore)this.store);
   }
   
   /**

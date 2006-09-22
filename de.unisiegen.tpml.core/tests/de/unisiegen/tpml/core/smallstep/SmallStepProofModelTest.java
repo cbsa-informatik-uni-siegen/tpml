@@ -37,7 +37,8 @@ public class SmallStepProofModelTest extends JFrame {
    */
   //private static final String SIMPLE = "(lambda x.x x) (lambda y.y y) z";
   //private static final String SIMPLE = "let rec fact = lambda x.if x = 0 then 1 else x * fact (x - 1) in fact 3";
-  private static final String SIMPLE = "let x = ref 0 in let u = x := !x + 1 in !x";
+  //private static final String SIMPLE = "let x = ref 0 in let u = x := !x + 1 in !x";
+  private static final String SIMPLE = "let x = ref 9 in while !x > 0 do x := !x - 1";
 
   
   

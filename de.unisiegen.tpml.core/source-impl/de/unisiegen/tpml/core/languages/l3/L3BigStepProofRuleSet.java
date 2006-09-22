@@ -4,12 +4,15 @@ import de.unisiegen.tpml.core.bigstep.BigStepProofContext;
 import de.unisiegen.tpml.core.bigstep.BigStepProofNode;
 import de.unisiegen.tpml.core.expressions.Application;
 import de.unisiegen.tpml.core.expressions.Assign;
+import de.unisiegen.tpml.core.expressions.Condition1;
 import de.unisiegen.tpml.core.expressions.Deref;
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.expressions.InfixOperation;
 import de.unisiegen.tpml.core.expressions.Location;
 import de.unisiegen.tpml.core.expressions.Ref;
+import de.unisiegen.tpml.core.expressions.Sequence;
 import de.unisiegen.tpml.core.expressions.UnitConstant;
+import de.unisiegen.tpml.core.expressions.While;
 import de.unisiegen.tpml.core.interpreters.Store;
 import de.unisiegen.tpml.core.languages.l1.L1Language;
 import de.unisiegen.tpml.core.languages.l2.L2BigStepProofRuleSet;
@@ -44,6 +47,8 @@ public class L3BigStepProofRuleSet extends L2BigStepProofRuleSet {
     registerByMethodName("ASSIGN", "applyAssign");
     registerByMethodName("DEREF", "applyDeref");
     registerByMethodName("REF", "applyRef");
+    registerByMethodName("SEQ", "applySeq", "updateSeq");
+    registerByMethodName("WHILE", "applyWhile", "updateWhile");
   }
   
   
@@ -132,5 +137,76 @@ public class L3BigStepProofRuleSet extends L2BigStepProofRuleSet {
     Location location = store.alloc();
     store.put(location, application.getE2());
     context.setProofNodeResult(node, location, store);
+  }
+  
+  
+  
+  //
+  // The (SEQ) rule
+  //
+  
+  /**
+   * Applies the <b>(SEQ)</b> rule to the <code>node</code> using the <code>context</code>.
+   * 
+   * @param context the big step proof context.
+   * @param node the big step proof node.
+   */
+  public void applySeq(BigStepProofContext context, BigStepProofNode node) {
+    // add the proof node for e1
+    Sequence sequence = (Sequence)node.getExpression();
+    context.addProofNode(node, sequence.getE1());
+    
+    // add the proof node for e2 if memory is disabled
+    if (!context.isMemoryEnabled()) {
+      context.addProofNode(node, sequence.getE2());
+    }
+  }
+  
+  /**
+   * Updates the <code>node</code>, to which <b>(SEQ)</b> was applied previously, using the
+   * <code>context</code>.
+   * 
+   * @param context the big step proof context.
+   * @param node the big step proof node.
+   */
+  public void updateSeq(BigStepProofContext context, BigStepProofNode node) {
+    // check if the first (and only) node is proven
+    if (node.getChildCount() == 1 && node.getChildAt(0).isProven()) {
+      // add the proof node for e2
+      context.addProofNode(node, ((Sequence)node.getExpression()).getE2());
+    }
+    else if (node.getChildCount() == 2) {
+      // forward the result of e2 (may be null)
+      context.setProofNodeResult(node, node.getChildAt(1).getResult());
+    }
+  }
+  
+  
+  
+  //
+  // The (WHILE) rule
+  //
+  
+  /**
+   * Applies the <b>(WHILE)</b> rule to the <code>node</code> using the <code>context</code>.
+   * 
+   * @param context the big step proof context.
+   * @param node the big step proof node.
+   */
+  public void applyWhile(BigStepProofContext context, BigStepProofNode node) {
+    While loop = (While)node.getExpression();
+    context.addProofNode(node, new Condition1(loop.getE1(), new Sequence(loop.getE2(), loop)));
+  }
+  
+  /**
+   * Updates the <code>node</code>, to which <b>(WHILE)</b> was applied previously, using the
+   * <code>context</code>.
+   * 
+   * @param context the big step proof context.
+   * @param node the big step proof node.
+   */
+  public void updateWhile(BigStepProofContext context, BigStepProofNode node) {
+    // forward the proof result (may be null)
+    context.setProofNodeResult(node, node.getChildAt(0).getResult());
   }
 }

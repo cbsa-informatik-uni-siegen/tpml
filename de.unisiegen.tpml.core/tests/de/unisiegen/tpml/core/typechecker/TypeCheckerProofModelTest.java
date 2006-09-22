@@ -37,7 +37,7 @@ public final class TypeCheckerProofModelTest extends JFrame {
   /**
    * Simple test expression.
    */
-  private static final String SIMPLE = "let x = ref 0 in let u = x := !x + 1 in x";
+  private static final String SIMPLE = "let x = ref 9 in while !x > 0 do x := !x - 1";
 
   
   
