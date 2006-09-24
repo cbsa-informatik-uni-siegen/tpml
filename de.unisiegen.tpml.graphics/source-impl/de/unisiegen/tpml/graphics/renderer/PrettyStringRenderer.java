@@ -120,6 +120,7 @@ public class PrettyStringRenderer extends AbstractRenderer {
 			breakOffsets = new int[0];
 		}
 		
+		result.annotation = annotation;
 		result.size.height = AbstractRenderer.fontHeight;
 		
 		PrettyCharIterator it = this.prettyString.toCharacterIterator();
@@ -170,9 +171,6 @@ public class PrettyStringRenderer extends AbstractRenderer {
 	 * @return The width of the expression will get returned.
 	 */
 	public void render (int x, int y, int height,  Graphics gc) {
-		
-		CheckerResult result = new CheckerResult ();
-		result.rows = 1;
 		
 		int[] breakOffsets = null;
 		if (result.annotation != null) {

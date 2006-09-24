@@ -14,7 +14,7 @@ public class EnvironmentRenderer<S, E> extends AbstractRenderer {
 	private int									bracketSize;
 	
 	public EnvironmentRenderer() {
-		this.bracketSize = AbstractRenderer.fontHeight;
+		this.bracketSize = AbstractRenderer.fontDescent;
 	}
 
 	public void setEnvironment (Environment<S, E> environment) {

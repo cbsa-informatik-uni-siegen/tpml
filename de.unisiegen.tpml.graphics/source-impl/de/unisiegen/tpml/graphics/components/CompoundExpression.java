@@ -1,5 +1,6 @@
 package de.unisiegen.tpml.graphics.components;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 

@@ -53,18 +53,19 @@ public abstract class AbstractRenderer {
 		
 		AbstractRenderer.underlineColor				= theme.getItemColor(Theme.TYPE_UNDERLINE);
 		
+		
+		
 		AbstractRenderer.fontHeight = Math.max(AbstractRenderer.expFontMetrics.getHeight(),
 				Math.max(AbstractRenderer.keywordFontMetrics.getHeight(),
 				Math.max(AbstractRenderer.constantFontMetrics.getHeight(),
 						     AbstractRenderer.envFontMetrics.getHeight())));
-
 		
 		AbstractRenderer.fontAscent = Math.max(AbstractRenderer.expFontMetrics.getAscent(),
 				Math.max(AbstractRenderer.keywordFontMetrics.getAscent(),
 				Math.max(AbstractRenderer.constantFontMetrics.getAscent(),
 						     AbstractRenderer.envFontMetrics.getAscent())));
 
-		AbstractRenderer.fontHeight = Math.max(AbstractRenderer.expFontMetrics.getDescent(),
+		AbstractRenderer.fontDescent = Math.max(AbstractRenderer.expFontMetrics.getDescent(),
 				Math.max(AbstractRenderer.keywordFontMetrics.getDescent(),
 				Math.max(AbstractRenderer.constantFontMetrics.getDescent(),
 						     AbstractRenderer.envFontMetrics.getDescent())));

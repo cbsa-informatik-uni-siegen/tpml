@@ -165,6 +165,9 @@ public class TypeCheckerNodeComponent extends JComponent  implements TreeNodeCom
 		FontMetrics fm = AbstractRenderer.getTextFontMetrics();
 		Dimension labelSize = new Dimension (fm.stringWidth(this.indexLabel.getText()), fm.getHeight());
 		this.dimension.setSize(labelSize.width, labelSize.height);
+
+		// there will be a bit spacing between the index label and the expression
+		dimension.width += this.spacing;
 		
 		// the index shrinkens the max size for the expression
 		maxWidth -= labelSize.width;
@@ -190,7 +193,7 @@ public class TypeCheckerNodeComponent extends JComponent  implements TreeNodeCom
 		// now place the components
 		int posX = 0;
 		this.indexLabel.setBounds(posX, 0, labelSize.width, this.dimension.height);
-		posX += labelSize.width;
+		posX += labelSize.width + this.spacing;
 		
 		this.expression.setBounds(posX, 0, expSize.width, this.dimension.height);
 		posX += expSize.width;
@@ -208,7 +211,7 @@ public class TypeCheckerNodeComponent extends JComponent  implements TreeNodeCom
 		 */
 		if (this.proofNode.isProven()) {
 			// place the menu label
-			posX = 0;
+			posX = labelSize.width + this.spacing;
 			Dimension ruleLabelSize = this.ruleLabel.getPreferredSize();
 			
 			this.ruleLabel.setText ("(" + this.proofNode.getRule() + ")");
@@ -223,7 +226,7 @@ public class TypeCheckerNodeComponent extends JComponent  implements TreeNodeCom
 		}
 		else {
 			// place the menu button
-			posX = 0;
+			posX = labelSize.width + this.spacing;
 			Dimension buttonSize = this.ruleButton.getNeededSize();
 			this.ruleButton.setBounds(posX, this.dimension.height + spacing, buttonSize.width, buttonSize.height);
 			
@@ -330,7 +333,7 @@ public class TypeCheckerNodeComponent extends JComponent  implements TreeNodeCom
 	}
 
 	public Point getBottomArrowConnection () {
-		return new Point (this.getX() + this.indexLabel.getWidth() / 2, this.getY() + this.getHeight());
+		return new Point (this.getX() + this.indexLabel.getWidth() / 2, this.getY() + this.indexLabel.getHeight());
 	}
 	
 	public Point getLeftArrowConnection () {
