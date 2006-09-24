@@ -20,6 +20,11 @@ import javax.swing.event.PopupMenuListener;
 
 public class MenuButton extends JComponent {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3324315568161015639L;
+
 	private JPopupMenu			menu = null;
 	
 	private ActionListener	listener = null;
@@ -66,6 +71,14 @@ public class MenuButton extends JComponent {
 			}
 		});
 		
+	}
+	
+	public void addMenuButtonListener (MenuButtonListener listener) {
+		this.listenerList.add(MenuButtonListener.class, listener);
+	}
+	
+	public void removeMenuButtonListener (MenuButtonListener listener) {
+		this.listenerList.remove(MenuButtonListener.class, listener);
 	}
 	
 	public void setMenu (JPopupMenu menu) {
@@ -177,8 +190,7 @@ public class MenuButton extends JComponent {
 			return;
 		}
 		
-		this.menu.setLocation(event.getX() + 1, event.getY() + 1);
-		this.menu.setVisible (true);
+		this.menu.show (this, event.getX(), event.getY());
 	}
 	
 	

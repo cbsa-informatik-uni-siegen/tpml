@@ -4,18 +4,21 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Point;
+import java.awt.Rectangle;
 
 import javax.swing.JComponent;
+import javax.swing.Scrollable;
 import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
 
 import de.unisiegen.tpml.core.ProofNode;
+import de.unisiegen.tpml.core.languages.LanguageTranslator;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode;
 import de.unisiegen.tpml.graphics.renderer.TreeArrowRenderer;
 import de.unisiegen.tpml.graphics.tree.TreeNodeLayout;
 
-public class TypeCheckerComponent extends JComponent {
+public class TypeCheckerComponent extends JComponent implements Scrollable {
 	
 	/**
 	 * 
@@ -24,10 +27,11 @@ public class TypeCheckerComponent extends JComponent {
 
 	private TypeCheckerProofModel 			model;
 	
+	private LanguageTranslator					translator;
+	
 	private int													availableWidth;
 
 	private int													index;
-	
 
 	private TreeNodeLayout							treeNodeLayout;
 	
@@ -35,6 +39,7 @@ public class TypeCheckerComponent extends JComponent {
 		super ();
 		
 		this.model = model;
+		this.translator = this.model.getLanguage().newTranslator();
 		
 		this.treeNodeLayout = new TreeNodeLayout (10);
 		
@@ -42,12 +47,14 @@ public class TypeCheckerComponent extends JComponent {
 		
 		this.model.addTreeModelListener(new TreeModelListener() {
 			public void treeNodesChanged (TreeModelEvent e) {
+				TypeCheckerComponent.this.nodesChanged(e);
 				TypeCheckerComponent.this.relayout ();
 			}
 			public void treeNodesInserted (TreeModelEvent e) {
 				TypeCheckerComponent.this.treeContentChanged ();
 			}
 			public void treeNodesRemoved (TreeModelEvent e) {
+				TypeCheckerComponent.this.nodesRemoved (e);
 				TypeCheckerComponent.this.treeContentChanged ();
 			}
 			public void treeStructureChanged (TreeModelEvent e) {
@@ -103,7 +110,7 @@ public class TypeCheckerComponent extends JComponent {
 			// if the node has no userobject it may be new in the
 			// tree, so a new TypeCheckerNodeComponent will be created
 			// and added to the TypeCheckerProofNode  
-			nodeComponent = new TypeCheckerNodeComponent (node);
+			nodeComponent = new TypeCheckerNodeComponent (node, model, this.translator);
 			node.setUserObject(nodeComponent);
 			
 			// when this node gets asked for the size next time it will
@@ -113,6 +120,16 @@ public class TypeCheckerComponent extends JComponent {
 			// the newly created nodeComponent is a gui-element so
 			// it needs to get added to the gui
 			add (nodeComponent);
+			
+			// when the node changes the  gui needs to get updated
+			nodeComponent.addTypeCheckerNodeListener(new TypeCheckerNodeListener () {
+				public void nodeChanged (TypeCheckerNodeComponent node) {
+					TypeCheckerComponent.this.relayout();
+				}
+				public void requestTypeEnter (TypeCheckerNodeComponent node) {
+					
+				}
+			});
 		}
 		
 		// set the index value for the node
@@ -147,6 +164,39 @@ public class TypeCheckerComponent extends JComponent {
 	}
 	
 	
+	private void nodesChanged (TreeModelEvent event) {
+		Object[] children = event.getChildren();
+		if (children == null) {
+			return;
+		}
+		for (int i=0; i<children.length; i++) {
+			if (children[i] instanceof ProofNode) {
+				TypeCheckerProofNode proofNode = (TypeCheckerProofNode)children[i];
+				
+				TypeCheckerNodeComponent nodeComponent = (TypeCheckerNodeComponent)proofNode.getUserObject();
+				if (nodeComponent != null) {
+					nodeComponent.changeNode ();
+				}
+			}
+		}
+		
+	}
+
+	private void nodesRemoved (TreeModelEvent event) {
+		Object[] children = event.getChildren();
+		for (int i=0; i<children.length; i++) {
+			if (children[i] instanceof ProofNode) {
+				TypeCheckerProofNode proofNode = (TypeCheckerProofNode)children[i];
+				
+				TypeCheckerNodeComponent nodeComponent = (TypeCheckerNodeComponent)proofNode.getUserObject();
+				if (nodeComponent != null) {
+					remove (nodeComponent);
+					proofNode.setUserObject(null);
+				}
+			}
+		}
+	}
+	
 	/**
 	 * 
 	 * @param gc
@@ -165,4 +215,28 @@ public class TypeCheckerComponent extends JComponent {
 	}
 	
 
+	/*
+	 * Implementation of the Scrollable interface
+	 */
+	public Dimension getPreferredScrollableViewportSize () {
+		return getPreferredSize ();
+	}
+	
+	public int getScrollableBlockIncrement (Rectangle visibleRect, int orientation, int direction) {
+		// XXX: Dynamic block increment
+		return 25;
+	}
+	
+	public boolean getScrollableTracksViewportHeight () {
+		return false;
+	}
+	
+	public boolean getScrollableTracksViewportWidth () {
+		return false;
+	}
+	
+	public int getScrollableUnitIncrement (Rectangle visibleRect, int orientation, int direction) {
+		//  XXX: Dynamic unit increment
+		return 10;
+	}
 }

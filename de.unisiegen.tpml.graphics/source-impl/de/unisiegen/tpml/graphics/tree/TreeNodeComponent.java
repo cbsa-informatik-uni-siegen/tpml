@@ -9,7 +9,7 @@ public interface TreeNodeComponent {
 	
 	public Point getLeftArrowConnection ();
 	
-	public Dimension placeElementsForMaxWidth (int maxWidth);
+	public Dimension update (int maxWidth);
 	
 	public int getIndentationWidth ();
 	

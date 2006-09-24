@@ -55,7 +55,7 @@ public class TreeNodeLayout {
 		// the available width is shrinked by the already spended
 		// space by indentating the node
 		int availableWidth = this.availableWidth - posX;
-		Dimension size = nodeComponent.placeElementsForMaxWidth(availableWidth);
+		Dimension size = nodeComponent.update(availableWidth);
 		
 		
 		// do the real positioning of the node

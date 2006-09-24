@@ -12,9 +12,9 @@ public class TestDialog extends JDialog {
 	 * 
 	 */
 	private static final long serialVersionUID = 8927517104220650542L;
-	private JButton		undoButton;
-	private JButton		redoButton;
-	private JButton		guess;
+	public JButton		undoButton;
+	public JButton		redoButton;
+	public JButton		guess;
 	
 
 	public TestDialog () {
