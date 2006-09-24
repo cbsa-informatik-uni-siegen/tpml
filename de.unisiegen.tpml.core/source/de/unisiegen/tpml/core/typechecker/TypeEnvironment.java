@@ -1,8 +1,12 @@
 package de.unisiegen.tpml.core.typechecker;
 
 import java.util.Enumeration;
+import java.util.Set;
 
+import de.unisiegen.tpml.core.types.MonoType;
+import de.unisiegen.tpml.core.types.PolyType;
 import de.unisiegen.tpml.core.types.Type;
+import de.unisiegen.tpml.core.types.TypeVariable;
 import de.unisiegen.tpml.core.util.Environment;
 
 /**
@@ -19,6 +23,19 @@ public interface TypeEnvironment extends Environment<String, Type> {
   //
   
   /**
+   * Returns the polymorphic closure of <code>tau</code> in this type environment.
+   * 
+   * @param tau the monomorphic type.
+   * 
+   * @return the polymorphic closure of <code>tau</code>.
+   * 
+   * @throws NullPointerException if <code>tau</code> is <code>null</code>.
+   * 
+   * @see PolyType
+   */
+  public PolyType closure(MonoType tau);
+  
+  /**
    * Returns <code>true</code> if the type environment contains a mapping for the <code>identifier</code>.
    * 
    * @param identifier an identifier.
@@ -30,6 +47,15 @@ public interface TypeEnvironment extends Environment<String, Type> {
    * @see Environment#containsSymbol(S)
    */
   public boolean containsIdentifier(String identifier);
+  
+  /**
+   * Returns the free type variables of all types in this type environment.
+   * 
+   * @return the set of free type variables in this type environment.
+   * 
+   * @see Type#free()
+   */
+  public Set<TypeVariable> free();
   
   /**
    * Returns the identifiers for which mappings exist within this type environment.

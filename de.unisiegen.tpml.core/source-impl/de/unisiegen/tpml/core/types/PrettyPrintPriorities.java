@@ -56,4 +56,14 @@ interface PrettyPrintPriorities {
    * The pretty print priority for the base type of reference types.
    */
   public static final int PRIO_REF_TAU = PRIO_REF;
+  
+  /**
+   * The pretty print priority for polymorphic types.
+   */
+  public static final int PRIO_POLY = 0;
+  
+  /**
+   * The pretty print priority for the tau of polymorphic types.
+   */
+  public static final int PRIO_POLY_TAU = PRIO_POLY;
 }

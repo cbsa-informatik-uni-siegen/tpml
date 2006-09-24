@@ -8,6 +8,11 @@ import de.unisiegen.tpml.core.types.TypeVariable;
 
 /**
  * Default implementation of the <code>TypeSubstitution</code> interface.
+ * 
+ * This is an internal class of the type checker. If you need to generate new substitutions outside
+ * the generic type checker implementation, use the
+ * {@link de.unisiegen.tpml.core.typechecker.TypeUtilities#newSubstitution(TypeVariable, MonoType)}
+ * method instead.
  *
  * @author Benedikt Meurer
  * @version $Rev$

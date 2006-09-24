@@ -16,6 +16,7 @@ import de.unisiegen.tpml.core.types.ArrowType;
 import de.unisiegen.tpml.core.types.BooleanType;
 import de.unisiegen.tpml.core.types.IntegerType;
 import de.unisiegen.tpml.core.types.MonoType;
+import de.unisiegen.tpml.core.types.PolyType;
 import de.unisiegen.tpml.core.types.RefType;
 import de.unisiegen.tpml.core.types.Type;
 import de.unisiegen.tpml.core.types.TypeVariable;
@@ -171,6 +172,28 @@ final class DefaultTypeCheckerProofContext implements TypeCheckerProofContext {
     else {
       // not a simple expression
       throw new IllegalArgumentException("Cannot determine the type for " + expression);
+    }
+  }
+  
+  /**
+   * {@inheritDoc}
+   *
+   * @see de.unisiegen.tpml.core.typechecker.TypeCheckerProofContext#instantiate(de.unisiegen.tpml.core.types.Type)
+   */
+  public MonoType instantiate(Type type) {
+    if (type == null) {
+      throw new NullPointerException("type is null");
+    }
+    if (type instanceof PolyType) {
+      PolyType polyType = (PolyType)type;
+      MonoType tau = polyType.getTau();
+      for (TypeVariable tvar : polyType.getQuantifiedVariables()) {
+        tau = tau.substitute(TypeUtilities.newSubstitution(tvar, newTypeVariable()));
+      }
+      return tau;
+    }
+    else {
+      return (MonoType)type;
     }
   }
   

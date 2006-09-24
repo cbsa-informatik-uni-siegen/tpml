@@ -39,7 +39,7 @@ public abstract class Type implements PrettyPrintable, PrettyPrintPriorities {
    * Constructor for all types.
    */
   protected Type() {
-    // nothing to do here...
+    super();
   }
   
   

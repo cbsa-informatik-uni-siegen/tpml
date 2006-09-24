@@ -95,6 +95,23 @@ final class DefaultTypeCheckerProofNode extends AbstractProofNode implements Typ
   /**
    * {@inheritDoc}
    *
+   * @see de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode#isFinished()
+   */
+  public boolean isFinished() {
+    if (getRule() == null) {
+      return false;
+    }
+    for (int n = 0; n < getChildCount(); ++n) {
+      if (!getChildAt(n).isFinished()) {
+        return false;
+      }
+    }
+    return true;
+  }
+  
+  /**
+   * {@inheritDoc}
+   *
    * @see de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode#getType()
    */
   public MonoType getType() {

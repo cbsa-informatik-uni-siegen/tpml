@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.core.languages.l3;
+package de.unisiegen.tpml.core.languages.l4;
 
 import java.io.Reader;
 
@@ -8,16 +8,16 @@ import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.languages.LanguageParser;
 import de.unisiegen.tpml.core.languages.LanguageScanner;
 import de.unisiegen.tpml.core.languages.LanguageTranslator;
-import de.unisiegen.tpml.core.languages.l2.L2Language;
+import de.unisiegen.tpml.core.languages.l3.L3Language;
 import de.unisiegen.tpml.core.smallstep.SmallStepProofModel;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel;
 
 /**
- * This class represents the language L3, which serves as a factory class for L3 related functionality,
- * and extends the L2 language.
+ * This class represents the language L4, which serves as a factory class for L4 related functionality,
+ * and extends the L3 language.
  *
  * @author Benedikt Meurer
- * @version $Rev$
+ * @version $Rev: 279 $
  *
  * @see de.unisiegen.tpml.core.languages.Language
  * @see de.unisiegen.tpml.core.languages.LanguageParser
@@ -26,18 +26,19 @@ import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel;
  * @see de.unisiegen.tpml.core.languages.l0.L0Language
  * @see de.unisiegen.tpml.core.languages.l1.L1Language
  * @see de.unisiegen.tpml.core.languages.l2.L2Language
+ * @see de.unisiegen.tpml.core.languages.l3.L3Language
  */
-public class L3Language extends L2Language {
+public class L4Language extends L3Language {
   //
   // Constructor
   //
   
   /**
-   * Allocates a new <code>L3Language</code> instance.
+   * Allocates a new <code>L4Language</code> instance.
    * 
-   * @see de.unisiegen.tpml.core.languages.l2.L2Language#L2Language()
+   * @see de.unisiegen.tpml.core.languages.l3.L3Language#L3Language()
    */
-  public L3Language() {
+  public L4Language() {
     super();
   }
   
@@ -64,7 +65,7 @@ public class L3Language extends L2Language {
    */
   @Override
   public String getName() {
-    return "L3";
+    return "L4";
   }
   
   /**
@@ -74,7 +75,7 @@ public class L3Language extends L2Language {
    */
   @Override
   public String getTitle() {
-    return "Applied λ calculus with polymorphic type system";
+    return "Applied λ calculus with imperative concepts";
   }
   
   
@@ -90,7 +91,7 @@ public class L3Language extends L2Language {
    */
   @Override
   public BigStepProofModel newBigStepProofModel(Expression expression) {
-    return new BigStepProofModel(expression, new L3BigStepProofRuleSet(this));
+    return new BigStepProofModel(expression, new L4BigStepProofRuleSet(this));
   }
   
   /**
@@ -100,7 +101,7 @@ public class L3Language extends L2Language {
    */
   @Override
   public SmallStepProofModel newSmallStepProofModel(Expression expression) {
-    return new SmallStepProofModel(expression, new L3SmallStepProofRuleSet(this));
+    return new SmallStepProofModel(expression, new L4SmallStepProofRuleSet(this));
   }
   
   /**
@@ -110,7 +111,7 @@ public class L3Language extends L2Language {
    */
   @Override
   public TypeCheckerProofModel newTypeCheckerProofModel(Expression expression) {
-    return new TypeCheckerProofModel(expression, new L3TypeCheckerProofRuleSet(this));
+    return new TypeCheckerProofModel(expression, new L4TypeCheckerProofRuleSet(this));
   }
   
   /**
@@ -123,7 +124,7 @@ public class L3Language extends L2Language {
    if (scanner == null) {
      throw new NullPointerException("scanner is null");
    }
-   final lr_parser parser = new L3Parser(scanner);
+   final lr_parser parser = new L4Parser(scanner);
    return new LanguageParser() {
      public Expression parse() throws Exception {
        return (Expression)parser.parse().value;
@@ -141,7 +142,7 @@ public class L3Language extends L2Language {
     if (reader == null) {
       throw new NullPointerException("reader is null");
     }
-    return new L3Scanner(reader);
+    return new L4Scanner(reader);
   }
   
   /**
@@ -151,6 +152,6 @@ public class L3Language extends L2Language {
    */
   @Override
   public LanguageTranslator newTranslator() {
-    return new L3LanguageTranslator();
+    return new L4LanguageTranslator();
   }
 }

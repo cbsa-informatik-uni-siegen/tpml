@@ -28,6 +28,14 @@ public interface TypeCheckerProofNode extends ProofNode {
   public TypeEnvironment getEnvironment();
   
   /**
+   * Returns <code>true</code> if this node and all subnodes are finished. A node is finished if
+   * a {@link de.unisiegen.tpml.core.ProofRule} was applied and thereby a proper type is known.
+   * 
+   * @return <code>true</code> if finished.
+   */
+  public boolean isFinished();
+  
+  /**
    * Returns the type for this type node, which is either a type variable or a concrete type.
    * 
    * @return the monomorphic type for this type node.

@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.core.languages.l3;
+package de.unisiegen.tpml.core.languages.l4;
 
 import java.io.Reader;
 
@@ -8,13 +8,13 @@ import de.unisiegen.tpml.core.languages.LanguageScannerException;
 import de.unisiegen.tpml.core.languages.LanguageSymbol;
 
 /**
- * This is the lexer class for L3.
+ * This is the lexer class for L4.
  */
 %%
 
-%class L3Scanner
+%class L4Scanner
 %extends AbstractLanguageScanner
-%implements L3Terminals
+%implements L4Terminals
 
 %function nextSymbol
 %type LanguageSymbol
@@ -48,9 +48,11 @@ import de.unisiegen.tpml.core.languages.LanguageSymbol;
 			return PrettyStyle.COMMENT;
 
 		case TRUE: case FALSE: case NUMBER: case PARENPAREN: case MOD:
+		case COLONEQUAL: case REF:
 			return PrettyStyle.CONSTANT;
 
-		case LAMBDA: case LET: case REC: case IN: case IF: case THEN: case ELSE:
+		case LAMBDA: case LET: case REC: case IN: case IF: case THEN:
+		case ELSE: case WHILE: case DO:
 			return PrettyStyle.KEYWORD;
 			
 		default:
@@ -93,19 +95,25 @@ Identifier		= [:jletter:] [:jletterdigit:]*
 	
 	// interpunctation
 	"."					{ return symbol("DOT", DOT); }
+	";"					{ return symbol("SEMI", SEMI); }
 	":"					{ return symbol("COLON", COLON); }
+	":="				{ return symbol("COLONEQUAL", COLONEQUAL); }
 	"("					{ return symbol("LPAREN", LPAREN); }
 	")"					{ return symbol("RPAREN", RPAREN); }
+	"!"					{ return symbol("EXCLAMATION", EXCLAMATION); }
 	"->"|"\u2192"		{ return symbol("ARROW", ARROW); }
 	
 	// keywords
 	"lambda"|"\u03bb"	{ return symbol("LAMBDA", LAMBDA); }
 	"let"				{ return symbol("LET", LET); }
 	"rec"				{ return symbol("REC", REC); }
+	"ref"				{ return symbol("REF", REF); }
 	"in"				{ return symbol("IN", IN); }
 	"if"				{ return symbol("IF", IF); }
 	"then"				{ return symbol("THEN", THEN); }
 	"else"				{ return symbol("ELSE", ELSE); }
+	"while"				{ return symbol("WHILE", WHILE); }
+	"do"				{ return symbol("DO", DO); }
 	
 	// constants
 	"()"				{ return symbol("PARENPAREN", PARENPAREN); }

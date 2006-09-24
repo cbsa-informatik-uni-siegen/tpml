@@ -1,13 +1,22 @@
 package de.unisiegen.tpml.core.languages.l3;
 
-import de.unisiegen.tpml.core.expressions.Condition1;
-import de.unisiegen.tpml.core.expressions.Sequence;
-import de.unisiegen.tpml.core.expressions.While;
+import de.unisiegen.tpml.core.expressions.Constant;
+import de.unisiegen.tpml.core.expressions.CurriedLet;
+import de.unisiegen.tpml.core.expressions.CurriedLetRec;
+import de.unisiegen.tpml.core.expressions.Expression;
+import de.unisiegen.tpml.core.expressions.Identifier;
+import de.unisiegen.tpml.core.expressions.Lambda;
+import de.unisiegen.tpml.core.expressions.Let;
+import de.unisiegen.tpml.core.expressions.LetRec;
+import de.unisiegen.tpml.core.expressions.Recursion;
+import de.unisiegen.tpml.core.languages.l2.L2Language;
 import de.unisiegen.tpml.core.languages.l2.L2TypeCheckerProofRuleSet;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofContext;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode;
-import de.unisiegen.tpml.core.types.BooleanType;
-import de.unisiegen.tpml.core.types.UnitType;
+import de.unisiegen.tpml.core.typechecker.TypeEnvironment;
+import de.unisiegen.tpml.core.types.MonoType;
+import de.unisiegen.tpml.core.types.Type;
+import de.unisiegen.tpml.core.types.TypeVariable;
 
 /**
  * The type proof rules for the <code>L3</code> language.
@@ -28,69 +37,151 @@ public class L3TypeCheckerProofRuleSet extends L2TypeCheckerProofRuleSet {
    * @param language the <code>L3</code> or a derived language.
    * 
    * @throws NullPointerException if <code>language</code> is <code>null</code>.
+   * 
+   * @see L2TypeCheckerProofRuleSet#L2TypeCheckerProofRuleSet(L2Language)
    */
   public L3TypeCheckerProofRuleSet(L3Language language) {
     super(language);
     
     // register the additional type rules
-    registerByMethodName("COND-1", "applyCond1");
-    registerByMethodName("SEQ", "applySeq");
-    registerByMethodName("WHILE", "applyWhile");
+    registerByMethodName("P-CONST", "applyPConst");
+    registerByMethodName("P-ID", "applyPId");
+    registerByMethodName("P-LET", "applyPLet", "updatePLet");
   }
   
   
   
   //
-  // The (COND-1) rule
+  // The (P-CONST) rule
   //
   
   /**
-   * Applies the <b>(COND-1)</b> rule to the <code>node</code> using the <code>context</code>.
+   * Applies the <b>(P-CONST)</b> rule to the <code>node</code> using the <code>context</code>.
    * 
    * @param context the type checker proof context.
    * @param node the type checker proof node.
    */
-  public void applyCond1(TypeCheckerProofContext context, TypeCheckerProofNode node) {
-    Condition1 condition1 = (Condition1)node.getExpression();
-    context.addEquation(node.getType(), UnitType.UNIT);
-    context.addProofNode(node, node.getEnvironment(), condition1.getE0(), BooleanType.BOOL);
-    context.addProofNode(node, node.getEnvironment(), condition1.getE1(), node.getType());
+  public void applyPConst(TypeCheckerProofContext context, TypeCheckerProofNode node) {
+    Constant constant = (Constant)node.getExpression();
+    context.addEquation(node.getType(), context.instantiate(context.getTypeForExpression(constant)));
   }
   
   
   
   //
-  // The (SEQ) rule
+  // The (P-ID) rule
   //
   
   /**
-   * Applies the <b>(SEQ)</b> rule to the <code>node</code> using the <code>context</code>.
+   * Applies the <b>(P-ID)</b> rule to the <code>node</code> using the <code>context</code>.
    * 
    * @param context the type checker proof context.
    * @param node the type checker proof node.
    */
-  public void applySeq(TypeCheckerProofContext context, TypeCheckerProofNode node) {
-    Sequence sequence = (Sequence)node.getExpression();
-    context.addProofNode(node, node.getEnvironment(), sequence.getE1(), context.newTypeVariable());
-    context.addProofNode(node, node.getEnvironment(), sequence.getE2(), node.getType());
+  public void applyPId(TypeCheckerProofContext context, TypeCheckerProofNode node) {
+    Type type = node.getEnvironment().get(((Identifier)node.getExpression()).getName());
+    context.addEquation(node.getType(), context.instantiate(type));
   }
   
   
   
   //
-  // The (WHILE) rule
+  // The (P-LET) rule
   //
   
   /**
-   * Applies the <b>(WHILE)</b> rule to the <code>node</code> using the <code>context</code>.
+   * Applies the <b>(P-LET)</b> rule to the <code>node</code> using the <code>context</code>.
    * 
    * @param context the type checker proof context.
-   * @param node the type checker proof context.
+   * @param node the type checker proof node.
    */
-  public void applyWhile(TypeCheckerProofContext context, TypeCheckerProofNode node) {
-    While loop = (While)node.getExpression();
-    context.addEquation(node.getType(), UnitType.UNIT);
-    context.addProofNode(node, node.getEnvironment(), loop.getE1(), BooleanType.BOOL);
-    context.addProofNode(node, node.getEnvironment(), loop.getE2(), node.getType());
+  public void applyPLet(TypeCheckerProofContext context, TypeCheckerProofNode node) {
+    // determine the type environment
+    TypeEnvironment environment = node.getEnvironment();
+    
+    // can be applied to LetRec, Let, CurriedLetRec and CurriedLet
+    Expression expression = node.getExpression();
+    if (expression instanceof Let) {
+      // determine the first sub expression
+      Let let = (Let)expression;
+      Expression e1 = let.getE1();
+      
+      // the type for the id, either a type specified 
+      // in the let rec or a new type variable
+      MonoType tau1 = null;
+      
+      // add the recursion for let rec
+      if (expression instanceof LetRec) {
+        // check if a type was specified
+        LetRec letRec = (LetRec)expression;
+        tau1 = letRec.getTau();
+        if (tau1 == null) {
+          tau1 = context.newTypeVariable();
+        }
+        
+        // add the recursion for e1
+        e1 = new Recursion(let.getId(), tau1, e1);
+      }
+      else {
+        // generate a new type variable
+        tau1 = context.newTypeVariable();
+      }
+      
+      // add only the first child node, the second one will be added
+      // in updatePLet() once the first sub tree is finished.
+      context.addProofNode(node, environment, e1, tau1);
+    }
+    else {
+      // generate a new type variable
+      TypeVariable tau1 = context.newTypeVariable();
+      
+      // determine the first sub expression
+      CurriedLet curriedLet = (CurriedLet)expression;
+      Expression e1 = curriedLet.getE1();
+      
+      // generate the appropriate lambda abstractions
+      String[] identifiers = curriedLet.getIdentifiers();
+      for (int n = identifiers.length - 1; n > 0; --n) {
+        e1 = new Lambda(identifiers[n], null, e1);
+      }
+      
+      // add the recursion for let rec
+      if (expression instanceof CurriedLetRec) {
+        e1 = new Recursion(identifiers[0], tau1, e1);
+      }
+      
+      // add only the first child node, the second one will be added
+      // in updatePLet() once the first sub tree is finished.
+      context.addProofNode(node, environment, e1, tau1);
+    }
+  }
+  
+  /**
+   * Updates the <code>node</code>, to which <b>(P-LET)</b> was applied previously, using <code>context</code>.
+   * 
+   * @param context the type checker proof context.
+   * @param node the type checker proof node.
+   */
+  public void updatePLet(TypeCheckerProofContext context, TypeCheckerProofNode node) {
+    // check if the sub tree of the first child is finished now
+    if (node.getChildCount() == 1 && node.getChildAt(0).isFinished()) {
+      // determine the type environment
+      TypeEnvironment environment = node.getEnvironment();
+      
+      // can be applied to LetRec, Let, CurriedLetRec and CurriedLet
+      Expression expression = node.getExpression();
+      if (expression instanceof Let) {
+        Let let = (Let)expression;
+        MonoType tau = node.getType();
+        MonoType tau1 = node.getChildAt(0).getType();
+        context.addProofNode(node, environment.extend(let.getId(), environment.closure(tau1)), let.getE2(), tau);
+      }
+      else {
+        CurriedLet curriedLet = (CurriedLet)expression;
+        MonoType tau = node.getType();
+        MonoType tau1 = node.getChildAt(0).getType();
+        context.addProofNode(node, environment.extend(curriedLet.getIdentifiers(0), environment.closure(tau1)), curriedLet.getE2(), tau);
+      }
+    }
   }
 }

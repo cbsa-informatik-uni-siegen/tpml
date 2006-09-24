@@ -63,6 +63,23 @@ public interface TypeCheckerProofContext {
   public Type getTypeForExpression(Expression expression);
   
   /**
+   * Instantiates the <code>type</code> using the context information. That said, if <code>type</code>
+   * is a {@link de.unisiegen.tpml.core.types.PolyType} the {@link #newTypeVariable()} method is used
+   * to allocate new type variables for the quantified variables of the polymorphic type, while if
+   * <code>type</code> is a {@link MonoType} this method simply returns the <code>type</code>.
+   * 
+   * @param type the {@link Type} to instantiate.
+   * 
+   * @return the instantiated monomorphic type.
+   * 
+   * @throws NullPointerException if <code>type</code> is <code>null</code>.
+   * 
+   * @see MonoType
+   * @see de.unisiegen.tpml.core.types.PolyType
+   */
+  public MonoType instantiate(Type type);
+  
+  /**
    * Allocates a new <code>TypeVariable</code> that is not already used in the type checker proof
    * model associated with this type checker proof context.
    * 

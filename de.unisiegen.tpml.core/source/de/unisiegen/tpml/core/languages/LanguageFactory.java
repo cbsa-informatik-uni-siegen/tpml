@@ -7,6 +7,7 @@ import de.unisiegen.tpml.core.languages.l0.L0Language;
 import de.unisiegen.tpml.core.languages.l1.L1Language;
 import de.unisiegen.tpml.core.languages.l2.L2Language;
 import de.unisiegen.tpml.core.languages.l3.L3Language;
+import de.unisiegen.tpml.core.languages.l4.L4Language;
 
 /**
  * Factory class for {@link de.unisiegen.tpml.core.languages.Language}s.
@@ -60,6 +61,7 @@ public final class LanguageFactory {
         new L1Language(),
         new L2Language(),
         new L3Language(),
+        new L4Language(),
     };
   }
   
