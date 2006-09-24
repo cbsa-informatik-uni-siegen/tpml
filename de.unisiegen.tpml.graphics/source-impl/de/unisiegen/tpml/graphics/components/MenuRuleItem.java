@@ -6,6 +6,11 @@ import de.unisiegen.tpml.core.ProofRule;
 
 public class MenuRuleItem extends JMenuItem {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2904952709239466196L;
+	
 	private ProofRule		rule;
 	
 	public MenuRuleItem (ProofRule rule) {

@@ -13,7 +13,6 @@ import de.unisiegen.tpml.core.languages.LanguageParser;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel;
 import de.unisiegen.tpml.graphics.renderer.AbstractRenderer;
 import de.unisiegen.tpml.graphics.theme.Theme;
-import de.unisiegen.tpml.graphics.typechecker.TypeCheckerComponent;
 import de.unisiegen.tpml.graphics.typechecker.TypeCheckerGUI;
 
 public class Main {

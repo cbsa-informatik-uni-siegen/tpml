@@ -11,7 +11,6 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
 import de.unisiegen.tpml.core.ProofRule;
-import de.unisiegen.tpml.core.languages.Language;
 import de.unisiegen.tpml.core.languages.LanguageTranslator;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode;
@@ -52,10 +51,6 @@ public class TypeCheckerNodeComponent extends JComponent  implements TreeNodeCom
 	private JLabel															typeLabel;
 	
 	private JLabel															ruleLabel;
-	
-	private MenuGuessItem												menuGuessItem;
-	
-	private MenuEnterTypeItem										menuEnterTypeItem;
 	
 	private MenuTranslateItem										menuTranslateItem;
 	
@@ -116,8 +111,8 @@ public class TypeCheckerNodeComponent extends JComponent  implements TreeNodeCom
 			menu.add (new MenuRuleItem (rule[i]));
 		}
 		menu.addSeparator();
-		menu.add (this.menuEnterTypeItem = new MenuEnterTypeItem ());
-		menu.add (this.menuGuessItem = new MenuGuessItem ());
+		menu.add (new MenuEnterTypeItem ());
+		menu.add (new MenuGuessItem ());
 		menu.add (this.menuTranslateItem = new MenuTranslateItem ());
 		
 		this.ruleButton.setMenu(menu);
