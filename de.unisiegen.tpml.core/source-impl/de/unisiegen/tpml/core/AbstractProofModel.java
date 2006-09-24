@@ -10,6 +10,7 @@ import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
 import de.unisiegen.tpml.core.expressions.Expression;
+import de.unisiegen.tpml.core.languages.Language;
 import de.unisiegen.tpml.core.languages.LanguageTranslator;
 import de.unisiegen.tpml.core.util.beans.AbstractBean;
 
@@ -94,6 +95,15 @@ public abstract class AbstractProofModel extends AbstractBean implements ProofMo
   //
   // Primitives
   //
+  
+  /**
+   * {@inheritDoc}
+   *
+   * @see de.unisiegen.tpml.core.ProofModel#getLanguage()
+   */
+  public Language getLanguage() {
+    return this.ruleSet.getLanguage();
+  }
   
   /**
    * {@inheritDoc}

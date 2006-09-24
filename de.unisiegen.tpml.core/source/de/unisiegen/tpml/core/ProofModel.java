@@ -6,6 +6,7 @@ import javax.swing.event.TreeModelListener;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreeNode;
 
+import de.unisiegen.tpml.core.languages.Language;
 import de.unisiegen.tpml.core.util.beans.Bean;
 
 /**
@@ -22,6 +23,16 @@ public interface ProofModel extends Bean, TreeModel {
   //
   // Accessors
   //
+  
+  /**
+   * Returns the {@link Language} for which this proof model was constructed.
+   * 
+   * @return the {@link Language} for the proof model.
+   * 
+   * @see Language
+   * @see ProofRuleSet#getLanguage()
+   */
+  public Language getLanguage();
   
   /**
    * Returns the list of {@link ProofRule}s that should
