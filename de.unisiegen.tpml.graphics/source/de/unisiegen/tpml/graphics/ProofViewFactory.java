@@ -6,7 +6,7 @@ import de.unisiegen.tpml.graphics.typechecker.TypeCheckerView;
 public class ProofViewFactory {
 
 	
-	public ProofView newTypeCheckerView (TypeCheckerProofModel model) {
+	public static ProofView newTypeCheckerView (TypeCheckerProofModel model) {
 		return (ProofView) new TypeCheckerView (model);
 	}
 	
