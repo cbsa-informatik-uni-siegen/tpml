@@ -13,7 +13,7 @@ import de.unisiegen.tpml.core.languages.LanguageParser;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel;
 import de.unisiegen.tpml.graphics.renderer.AbstractRenderer;
 import de.unisiegen.tpml.graphics.theme.Theme;
-import de.unisiegen.tpml.graphics.typechecker.TypeCheckerGUI;
+import de.unisiegen.tpml.graphics.typechecker.TypeCheckerView;
 
 public class Main {
 	
@@ -51,7 +51,7 @@ public class Main {
 			AbstractRenderer.setTheme(theme, dialog);
 			
 //			TypeCheckerComponent component = new TypeCheckerComponent (model);
-			TypeCheckerGUI gui = new TypeCheckerGUI (model);
+			TypeCheckerView gui = new TypeCheckerView (model);
 			dialog.setContent(gui);
 			
 			

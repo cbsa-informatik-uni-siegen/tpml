@@ -5,12 +5,14 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.util.LinkedList;
 
 import javax.swing.JComponent;
 import javax.swing.Scrollable;
 import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
 
+import de.unisiegen.tpml.core.ProofGuessException;
 import de.unisiegen.tpml.core.ProofNode;
 import de.unisiegen.tpml.core.languages.LanguageTranslator;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel;
@@ -75,7 +77,30 @@ public class TypeCheckerComponent extends JComponent implements Scrollable {
 		this.availableWidth = availableWidth;
 		relayout();
 	}
+	
 
+	/**
+	 * Guesses the next unprooven node in the tree.
+	 * 
+	 * @throws IllegalStateException
+	 * @throws ProofGuessException
+	 */
+	public void guess () throws IllegalStateException, ProofGuessException {
+    LinkedList<ProofNode> nodes = new LinkedList<ProofNode>();
+    nodes.add(model.getRoot());
+    while (!nodes.isEmpty()) {
+      ProofNode node = nodes.poll();
+      if (node.getSteps().length == 0) {
+      	
+      	this.model.guess(node);
+      }
+      for (int n = 0; n < node.getChildCount(); ++n) {
+        nodes.add(node.getChildAt(n));
+      }
+    }
+    throw new IllegalStateException("Unable to find next node");
+		
+	}
 
 	/**
 	 * Recalculates the layout 

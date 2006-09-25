@@ -7,9 +7,11 @@ import java.awt.event.ComponentEvent;
 import javax.swing.JComponent;
 import javax.swing.JScrollPane;
 
+import de.unisiegen.tpml.core.ProofGuessException;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel;
+import de.unisiegen.tpml.graphics.ProofView;
 
-public class TypeCheckerGUI extends JComponent {
+public class TypeCheckerView extends JComponent implements ProofView {
 
 	/**
 	 * 
@@ -20,7 +22,7 @@ public class TypeCheckerGUI extends JComponent {
 	
 	private JScrollPane						scrollPane;
 	
-	public TypeCheckerGUI (TypeCheckerProofModel model) {
+	public TypeCheckerView (TypeCheckerProofModel model) {
 		super ();
 		
 		setLayout (new BorderLayout ());
@@ -34,8 +36,12 @@ public class TypeCheckerGUI extends JComponent {
 		
 		this.scrollPane.addComponentListener(new ComponentAdapter () {
 			public void componentResized (ComponentEvent event) {
-				TypeCheckerGUI.this.component.setAvailableWidth(TypeCheckerGUI.this.scrollPane.getViewport ().getWidth());
+				TypeCheckerView.this.component.setAvailableWidth(TypeCheckerView.this.scrollPane.getViewport ().getWidth());
 			}
 		});
+	}
+	
+	public void guess () throws IllegalStateException, ProofGuessException {
+		this.component.guess ();
 	}
 }
