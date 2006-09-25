@@ -176,4 +176,14 @@ interface PrettyPrintPriorities {
    * The pretty print priority for the e2 of sequences.
    */
   public static final int PRIO_SEQUENCE_E2 = PRIO_SEQUENCE;
+  
+  /**
+   * The pretty print priority for tuples.
+   */
+  public static final int PRIO_TUPLE = 6;
+  
+  /**
+   * The pretty print priority for sub expressions of tuples.
+   */
+  public static final int PRIO_TUPLE_E = 0;
 }

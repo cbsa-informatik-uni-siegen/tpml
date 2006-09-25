@@ -8,13 +8,16 @@ import de.unisiegen.tpml.core.expressions.Identifier;
 import de.unisiegen.tpml.core.expressions.Lambda;
 import de.unisiegen.tpml.core.expressions.Let;
 import de.unisiegen.tpml.core.expressions.LetRec;
+import de.unisiegen.tpml.core.expressions.MultiLet;
 import de.unisiegen.tpml.core.expressions.Recursion;
+import de.unisiegen.tpml.core.expressions.Tuple;
 import de.unisiegen.tpml.core.languages.l2.L2Language;
 import de.unisiegen.tpml.core.languages.l2.L2TypeCheckerProofRuleSet;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofContext;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode;
 import de.unisiegen.tpml.core.typechecker.TypeEnvironment;
 import de.unisiegen.tpml.core.types.MonoType;
+import de.unisiegen.tpml.core.types.TupleType;
 import de.unisiegen.tpml.core.types.Type;
 import de.unisiegen.tpml.core.types.TypeVariable;
 
@@ -47,6 +50,7 @@ public class L3TypeCheckerProofRuleSet extends L2TypeCheckerProofRuleSet {
     registerByMethodName("P-CONST", "applyPConst");
     registerByMethodName("P-ID", "applyPId");
     registerByMethodName("P-LET", "applyPLet", "updatePLet");
+    registerByMethodName("TUPLE", "applyTuple");
   }
   
   
@@ -99,7 +103,7 @@ public class L3TypeCheckerProofRuleSet extends L2TypeCheckerProofRuleSet {
     // determine the type environment
     TypeEnvironment environment = node.getEnvironment();
     
-    // can be applied to LetRec, Let, CurriedLetRec and CurriedLet
+    // can be applied to LetRec, Let, MultiLet, CurriedLetRec and CurriedLet
     Expression expression = node.getExpression();
     if (expression instanceof Let) {
       // determine the first sub expression
@@ -130,6 +134,22 @@ public class L3TypeCheckerProofRuleSet extends L2TypeCheckerProofRuleSet {
       // add only the first child node, the second one will be added
       // in updatePLet() once the first sub tree is finished.
       context.addProofNode(node, environment, e1, tau1);
+    }
+    else if (expression instanceof MultiLet) {
+      // determine the identifiers of the multi let
+      MultiLet multiLet = (MultiLet)expression;
+      String[] identifiers = multiLet.getIdentifiers();
+
+      // generate the type for e1
+      TypeVariable[] typeVariables = new TypeVariable[identifiers.length];
+      for (int n = 0; n < identifiers.length; ++n) {
+        typeVariables[n] = context.newTypeVariable();
+      }
+      TupleType tau = new TupleType(typeVariables);
+      
+      // add only the first child node, the second one will be added
+      // in updatePLet() once the first sub tree is finished.
+      context.addProofNode(node, environment, multiLet.getE1(), tau);
     }
     else {
       // generate a new type variable
@@ -176,6 +196,20 @@ public class L3TypeCheckerProofRuleSet extends L2TypeCheckerProofRuleSet {
         MonoType tau1 = node.getChildAt(0).getType();
         context.addProofNode(node, environment.extend(let.getId(), environment.closure(tau1)), let.getE2(), tau);
       }
+      else if (expression instanceof MultiLet) {
+        MultiLet multiLet = (MultiLet)expression;
+        String[] identifiers = multiLet.getIdentifiers();
+        TupleType tau = (TupleType)node.getChildAt(0).getType();
+        
+        // generate the environment for e2
+        TypeEnvironment environment2 = environment;
+        for (int n = 0; n < identifiers.length; ++n) {
+          environment2 = environment2.extend(identifiers[n], environment.closure(tau.getTypes(n)));
+        }
+        
+        // add the second proof node (for e2)
+        context.addProofNode(node, environment2, multiLet.getE2(), node.getType());
+      }
       else {
         CurriedLet curriedLet = (CurriedLet)expression;
         MonoType tau = node.getType();
@@ -183,5 +217,27 @@ public class L3TypeCheckerProofRuleSet extends L2TypeCheckerProofRuleSet {
         context.addProofNode(node, environment.extend(curriedLet.getIdentifiers(0), environment.closure(tau1)), curriedLet.getE2(), tau);
       }
     }
+  }
+  
+  
+  
+  //
+  // The (TUPLE) rule
+  //
+  
+  /**
+   * Applies the <b>(TUPLE)</b> rule to the <code>node</code> using the <code>context</code>.
+   * 
+   * @param context the type checker proof context.
+   * @param node the type checker proof node.
+   */
+  public void applyTuple(TypeCheckerProofContext context, TypeCheckerProofNode node) {
+    Expression[] expressions = ((Tuple)node.getExpression()).getExpressions();
+    TypeVariable[] typeVariables = new TypeVariable[expressions.length];
+    for (int n = 0; n < expressions.length; ++n) {
+      typeVariables[n] = context.newTypeVariable();
+      context.addProofNode(node, node.getEnvironment(), expressions[n], typeVariables[n]);
+    }
+    context.addEquation(node.getType(), new TupleType(typeVariables));
   }
 }

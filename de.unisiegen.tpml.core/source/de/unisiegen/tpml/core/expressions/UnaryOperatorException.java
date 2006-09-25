@@ -47,8 +47,8 @@ public final class UnaryOperatorException extends Exception {
   //
   
   /**
-   * Allocates a new <code>UnaryOperatorException</code>, which signals that the specified unary 
-   * <code>operator</code> could not be applied to the operand <code>e</code>.
+   * Convenience wrapper for {@link #UnaryOperatorException(UnaryOperator, Expression, Throwable)}, which
+   * simply passes <code>null</code> for the <code>cause</code>.
    * 
    * @param operator the {@link UnaryOperator} that failed to apply.
    * @param e the operand expression.
@@ -56,7 +56,21 @@ public final class UnaryOperatorException extends Exception {
    * @throws NullPointerException if <code>operator</code> or <code>e</code> is <code>null</code>.
    */
   public UnaryOperatorException(UnaryOperator operator, Expression e) {
-    super("Cannot apply " + operator + " to " + e);
+    this(operator, e, null);
+  }
+
+  /**
+   * Allocates a new <code>UnaryOperatorException</code>, which signals that the specified unary 
+   * <code>operator</code> could not be applied to the operand <code>e</code>.
+   * 
+   * @param operator the {@link UnaryOperator} that failed to apply.
+   * @param e the operand expression.
+   * @param cause the cause of the exception or <code>null</code>.
+   * 
+   * @throws NullPointerException if <code>operator</code> or <code>e</code> is <code>null</code>.
+   */
+  public UnaryOperatorException(UnaryOperator operator, Expression e, Throwable cause) {
+    super("Cannot apply " + operator + " to " + e, cause);
     if (operator == null) {
       throw new NullPointerException("operator is null");
     }

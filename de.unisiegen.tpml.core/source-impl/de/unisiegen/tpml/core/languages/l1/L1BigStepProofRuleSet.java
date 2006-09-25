@@ -17,6 +17,8 @@ import de.unisiegen.tpml.core.expressions.InfixOperation;
 import de.unisiegen.tpml.core.expressions.Lambda;
 import de.unisiegen.tpml.core.expressions.Let;
 import de.unisiegen.tpml.core.expressions.LetRec;
+import de.unisiegen.tpml.core.expressions.MultiLet;
+import de.unisiegen.tpml.core.expressions.Projection;
 import de.unisiegen.tpml.core.expressions.Recursion;
 import de.unisiegen.tpml.core.expressions.UnitConstant;
 import de.unisiegen.tpml.core.languages.l0.L0BigStepProofRuleSet;
@@ -188,6 +190,10 @@ public class L1BigStepProofRuleSet extends L0BigStepProofRuleSet {
       // add the proof node
       context.addProofNode(node, e1);
     }
+    else if (e instanceof MultiLet) {
+      // prove the first sub expression
+      context.addProofNode(node, ((MultiLet)e).getE1());
+    }
     else {
       // determine the first sub expression
       Let let = (Let)e;
@@ -224,6 +230,21 @@ public class L1BigStepProofRuleSet extends L0BigStepProofRuleSet {
         // add a proof node for e2 (CurriedLet/CurriedLetRec)
         CurriedLet curriedLet = (CurriedLet)e;
         context.addProofNode(node, curriedLet.getE2().substitute(curriedLet.getIdentifiers()[0], value0));
+      }
+      else if (e instanceof MultiLet) {
+        // determine the second sub expression e2 (MultiLet)
+        MultiLet multiLet = (MultiLet)e;
+        Expression e2 = multiLet.getE2();
+        
+        // perform the required substitutions
+        String[] identifiers = multiLet.getIdentifiers();
+        for (int n = 0; n < identifiers.length; ++n) {
+          // substitute: (#l_n value0) for id
+          e2 = e2.substitute(identifiers[n], new Application(new Projection(identifiers.length, n + 1), value0));
+        }
+        
+        // add a proof node for e2
+        context.addProofNode(node, e2);
       }
       else {
         // add a proof node for e2 (Let/LetRec)

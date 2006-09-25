@@ -8,6 +8,8 @@ import de.unisiegen.tpml.core.expressions.Application;
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.expressions.InfixOperation;
 import de.unisiegen.tpml.core.expressions.Lambda;
+import de.unisiegen.tpml.core.expressions.MultiLambda;
+import de.unisiegen.tpml.core.expressions.Projection;
 
 /**
  * Big step proof rules for the <b>L0</b> and derived languages.
@@ -141,9 +143,27 @@ public class L0BigStepProofRuleSet extends AbstractBigStepProofRuleSet {
       throw new IllegalArgumentException("e2 must be a value");
     }
     
-    // ...with a lambda expression
-    Lambda e1 = (Lambda)application.getE1();
-    context.addProofNode(node, e1.getE().substitute(e1.getId(), e2));
+    // ...with a lambda or multi lambda expression
+    Expression e1 = application.getE1();
+    if (e1 instanceof MultiLambda) {
+      // multi lambda is special
+      MultiLambda multiLambda = (MultiLambda)e1;
+      Expression e = multiLambda.getE();
+      
+      // perform the required substitutions
+      String[] identifiers = multiLambda.getIdentifiers();
+      for (int n = 0; n < identifiers.length; ++n) {
+        // substitute: (#l_n e2) for id
+        e = e.substitute(identifiers[n], new Application(new Projection(identifiers.length, n + 1), e2));
+      }
+      
+      // add the proof node for e
+      context.addProofNode(node, e);
+    }
+    else {
+      Lambda lambda = (Lambda)application.getE1();
+      context.addProofNode(node, lambda.getE().substitute(lambda.getId(), e2));
+    }
   }
   
   /**

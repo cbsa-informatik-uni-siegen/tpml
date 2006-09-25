@@ -158,4 +158,34 @@ public final class LetRec extends Let {
     builder.addBuilder(this.e2.toPrettyStringBuilder(factory), PRIO_LET_E2);
     return builder;
   }
+  
+  
+  
+  //
+  // Base methods
+  //
+  
+  /**
+   * {@inheritDoc}
+   *
+   * @see de.unisiegen.tpml.core.expressions.Let#equals(java.lang.Object)
+   */
+  @Override
+  public boolean equals(Object obj) {
+    if (obj instanceof LetRec) {
+      LetRec other = (LetRec)obj;
+      return (super.equals(obj) && ((this.tau == null) ? (other.tau == null) : this.tau.equals(other.tau)));
+    }
+    return false;
+  }
+  
+  /**
+   * {@inheritDoc}
+   *
+   * @see de.unisiegen.tpml.core.expressions.Let#hashCode()
+   */
+  @Override
+  public int hashCode() {
+    return super.hashCode() + ((this.tau != null) ? this.tau.hashCode() : 0);
+  }
 }

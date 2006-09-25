@@ -1,5 +1,7 @@
 package de.unisiegen.tpml.core.typechecker;
 
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.LinkedList;
 
 import de.unisiegen.tpml.core.ProofRuleException;
@@ -9,6 +11,7 @@ import de.unisiegen.tpml.core.expressions.BooleanConstant;
 import de.unisiegen.tpml.core.expressions.Deref;
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.expressions.IntegerConstant;
+import de.unisiegen.tpml.core.expressions.Projection;
 import de.unisiegen.tpml.core.expressions.Ref;
 import de.unisiegen.tpml.core.expressions.RelationalOperator;
 import de.unisiegen.tpml.core.expressions.UnitConstant;
@@ -18,6 +21,7 @@ import de.unisiegen.tpml.core.types.IntegerType;
 import de.unisiegen.tpml.core.types.MonoType;
 import de.unisiegen.tpml.core.types.PolyType;
 import de.unisiegen.tpml.core.types.RefType;
+import de.unisiegen.tpml.core.types.TupleType;
 import de.unisiegen.tpml.core.types.Type;
 import de.unisiegen.tpml.core.types.TypeVariable;
 import de.unisiegen.tpml.core.types.UnitType;
@@ -158,16 +162,26 @@ final class DefaultTypeCheckerProofContext implements TypeCheckerProofContext {
       return ArrowType.INT_INT_BOOL;
     }
     else if (expression instanceof Assign) {
-      TypeVariable tau = newTypeVariable();
-      return new ArrowType(new RefType(tau), new ArrowType(tau, UnitType.UNIT));
+      TypeVariable alpha = new TypeVariable(0, 0);
+      return new PolyType(Collections.singleton(alpha), new ArrowType(new RefType(alpha), new ArrowType(alpha, UnitType.UNIT)));
     }
     else if (expression instanceof Deref) {
-      TypeVariable tau = newTypeVariable();
-      return new ArrowType(new RefType(tau), tau);
+      TypeVariable alpha = new TypeVariable(0, 0);
+      return new PolyType(Collections.singleton(alpha), new ArrowType(new RefType(alpha), alpha));
     }
     else if (expression instanceof Ref) {
-      TypeVariable tau = newTypeVariable();
-      return new ArrowType(tau, new RefType(tau));
+      TypeVariable alpha = new TypeVariable(0, 0);
+      return new PolyType(Collections.singleton(alpha), new ArrowType(alpha, new RefType(alpha)));
+    }
+    else if (expression instanceof Projection) {
+      Projection projection = (Projection)expression;
+      TypeVariable[] typeVariables = new TypeVariable[projection.getArity()];
+      HashSet<TypeVariable> quantifiedVariables = new HashSet<TypeVariable>();
+      for (int n = 0; n < typeVariables.length; ++n) {
+        typeVariables[n] = new TypeVariable(n, 0);
+        quantifiedVariables.add(typeVariables[n]);
+      }
+      return new PolyType(quantifiedVariables, new ArrowType(new TupleType(typeVariables), typeVariables[projection.getIndex()]));
     }
     else {
       // not a simple expression

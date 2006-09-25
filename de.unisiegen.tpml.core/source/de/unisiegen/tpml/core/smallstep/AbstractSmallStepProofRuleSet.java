@@ -92,6 +92,10 @@ public abstract class AbstractSmallStepProofRuleSet extends AbstractProofRuleSet
       Method method = lookupMethod("evaluate", expression.getClass());
       return (Expression)method.invoke(this, context, expression);
     }
+    catch (ClassCastException e) {
+      // no way to further evaluate the expression
+      return expression;
+    }
     catch (NoSuchMethodException e) {
       // no way to further evaluate the expression
       return expression;

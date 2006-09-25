@@ -3,6 +3,7 @@ package de.unisiegen.tpml.core.languages.l4;
 import de.unisiegen.tpml.core.expressions.Condition1;
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.expressions.Let;
+import de.unisiegen.tpml.core.expressions.MultiLet;
 import de.unisiegen.tpml.core.expressions.Sequence;
 import de.unisiegen.tpml.core.expressions.While;
 import de.unisiegen.tpml.core.languages.l3.L3TypeCheckerProofRuleSet;
@@ -76,11 +77,17 @@ public class L4TypeCheckerProofRuleSet extends L3TypeCheckerProofRuleSet {
    */
   @Override
   public void applyPLet(TypeCheckerProofContext context, TypeCheckerProofNode node) {
-    // for Let and LetRec, e1 must be a value
+    // for Let, LetRec and MultiLet, e1 must be a value
     Expression expression = node.getExpression();
     if (expression instanceof Let) {
       Let let = (Let)expression;
       if (!let.getE1().isValue()) {
+        throw new IllegalArgumentException("(P-LET) can only be applied if e1 is a value");
+      }
+    }
+    else if (expression instanceof MultiLet) {
+      MultiLet multiLet = (MultiLet)expression;
+      if (!multiLet.getE1().isValue()) {
         throw new IllegalArgumentException("(P-LET) can only be applied if e1 is a value");
       }
     }

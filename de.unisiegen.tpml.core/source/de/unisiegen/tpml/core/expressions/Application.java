@@ -126,16 +126,7 @@ public final class Application extends Expression {
    */
   @Override
   public Application substitute(String id, Expression e) {
-    // substitute for the two sub expression
-    Expression e1 = this.e1.substitute(id, e);
-    Expression e2 = this.e2.substitute(id, e);
-    
-    // check if we can reuse this application object
-    if (e1 == this.e1 && e2 == this.e2)
-      return this;
-    
-    // generate a new application
-    return new Application(e1, e2);
+    return new Application(this.e1.substitute(id, e), this.e2.substitute(id, e));
   }
   
   

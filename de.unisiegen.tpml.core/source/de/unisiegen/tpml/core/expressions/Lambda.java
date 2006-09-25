@@ -237,7 +237,8 @@ public final class Lambda extends Value {
   public boolean equals(Object obj) {
     if (obj instanceof Lambda) {
       Lambda other = (Lambda)obj;
-      return (this.id.equals(other.id) && this.e.equals(other.e));
+      return (this.id.equals(other.id) && this.e.equals(other.e)
+          && (this.tau == null) ? (other.tau == null) : (this.tau.equals(other.tau)));
     }
     return false;
   }
@@ -249,6 +250,6 @@ public final class Lambda extends Value {
    */
   @Override
   public int hashCode() {
-    return this.id.hashCode() + this.e.hashCode();
+    return this.id.hashCode() + ((this.tau != null) ? this.tau.hashCode() : 0) + this.e.hashCode();
   }
 }

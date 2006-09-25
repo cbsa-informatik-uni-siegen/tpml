@@ -11,6 +11,7 @@ import de.unisiegen.tpml.core.expressions.InfixOperation;
 import de.unisiegen.tpml.core.expressions.Lambda;
 import de.unisiegen.tpml.core.expressions.Let;
 import de.unisiegen.tpml.core.expressions.LetRec;
+import de.unisiegen.tpml.core.expressions.MultiLet;
 import de.unisiegen.tpml.core.expressions.Recursion;
 import de.unisiegen.tpml.core.typechecker.AbstractTypeCheckerProofRuleSet;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofContext;
@@ -19,6 +20,7 @@ import de.unisiegen.tpml.core.typechecker.TypeEnvironment;
 import de.unisiegen.tpml.core.types.ArrowType;
 import de.unisiegen.tpml.core.types.BooleanType;
 import de.unisiegen.tpml.core.types.MonoType;
+import de.unisiegen.tpml.core.types.TupleType;
 import de.unisiegen.tpml.core.types.Type;
 import de.unisiegen.tpml.core.types.TypeVariable;
 
@@ -188,7 +190,7 @@ public class L1TypeCheckerProofRuleSet extends AbstractTypeCheckerProofRuleSet {
     // determine the type environment
     TypeEnvironment environment = node.getEnvironment();
     
-    // can be applied to LetRec, Let, CurriedLetRec and CurriedLet
+    // can be applied to LetRec, Let, MultiLet, CurriedLetRec and CurriedLet
     Expression expression = node.getExpression();
     if (expression instanceof Let) {
       // determine the first sub expression
@@ -219,6 +221,28 @@ public class L1TypeCheckerProofRuleSet extends AbstractTypeCheckerProofRuleSet {
       // add the child nodes
       context.addProofNode(node, environment, e1, tau1);
       context.addProofNode(node, environment.extend(let.getId(), tau1), let.getE2(), node.getType());
+    }
+    else if (expression instanceof MultiLet) {
+      // determine the identifiers of the multi let
+      MultiLet multiLet = (MultiLet)expression;
+      String[] identifiers = multiLet.getIdentifiers();
+
+      // generate the type for e1
+      TypeVariable[] typeVariables = new TypeVariable[identifiers.length];
+      for (int n = 0; n < identifiers.length; ++n) {
+        typeVariables[n] = context.newTypeVariable();
+      }
+      TupleType tau = new TupleType(typeVariables);
+      
+      // generate the environment for e2
+      TypeEnvironment environment2 = environment;
+      for (int n = 0; n < identifiers.length; ++n) {
+        environment2 = environment2.extend(identifiers[n], typeVariables[n]);
+      }
+      
+      // add the child nodes
+      context.addProofNode(node, environment, multiLet.getE1(), tau);
+      context.addProofNode(node, environment2, multiLet.getE2(), node.getType());
     }
     else {
       // generate a new type variable

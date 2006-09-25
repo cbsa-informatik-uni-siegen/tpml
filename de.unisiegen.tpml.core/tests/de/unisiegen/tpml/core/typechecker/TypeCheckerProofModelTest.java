@@ -37,7 +37,7 @@ public final class TypeCheckerProofModelTest extends JFrame {
   /**
    * Simple test expression.
    */
-  private static final String SIMPLE = "(lambda x:int.x) true";
+  private static final String SIMPLE = "(lambda x.x, lambda y.y := 1;x)";
 
   
   

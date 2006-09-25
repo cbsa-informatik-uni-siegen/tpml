@@ -55,7 +55,7 @@ public abstract class Expression implements PrettyPrintable, PrettyPrintPrioriti
         return true;
       }
     }
-    return true;
+    return false;
   }
   
   /**

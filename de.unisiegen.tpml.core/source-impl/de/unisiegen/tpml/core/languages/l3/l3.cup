@@ -6,8 +6,11 @@ import de.unisiegen.tpml.core.types.*;
 terminal			PLUS, MINUS, STAR, SLASH, MOD;
 terminal			EQUAL, LESS, GREATER, LESSEQUAL, GREATEREQUAL;
 
+/* Tuple operators */
+terminal			FST, SND;
+
 /* Syntactic tokens */
-terminal			ARROW, COLON, DOT;
+terminal			ARROW, COLON, COMMA, DOT;
 terminal			LPAREN, RPAREN;
 terminal			PARENPAREN;
 
@@ -21,6 +24,7 @@ terminal			BOOL, INT, UNIT;
 /* Special tokens */
 terminal Integer	NUMBER;
 terminal String		IDENTIFIER;
+terminal Integer[]	PROJECTION;
 terminal			COMMENT;
 
 
@@ -30,17 +34,25 @@ non terminal Expression		simple_expr;
 non terminal Expression[]	simple_expr_list;
 non terminal Expression		constant;
 non terminal Expression		operator;
+non terminal Expression[]	expr_comma_list;	/* list of expressions separated by comma */
 non terminal String[]		id_list;			/* list of identifiers without any separator */
+non terminal String[]		id_comma_list;		/* list of identifiers separated by comma */
 non terminal MonoType		type;
 non terminal MonoType		simple_type;
+non terminal MonoType[]		type_star_list;		/* list of types separated by star */
 
 
 /* Precedences, based on http://caml.inria.fr/pub/docs/manual-ocaml/manual015.html */
+precedence nonassoc	IN;
+precedence nonassoc	LET, REC;				/* above SEMI (...; let ... in ...) */
+precedence nonassoc	THEN;					/* below ELSE (if ... then ...) */
+precedence nonassoc	ELSE;					/* (if ... then ... else ...) */
+
+precedence right	ARROW;
+
 precedence left		EQUAL, LESS, GREATER, LESSEQUAL, GREATEREQUAL;
 precedence left		PLUS, MINUS;
 precedence left		STAR, SLASH, MOD;
-
-precedence right	ARROW;
 
 
 
@@ -91,6 +103,10 @@ expr				::=	simple_expr:e
 						{: RESULT = new Lambda(id, null, e); :}
 					|	LAMBDA IDENTIFIER:id COLON type:tau DOT expr:e
 						{: RESULT = new Lambda(id, tau, e); :}
+					|	LAMBDA LPAREN id_comma_list:il RPAREN DOT expr:e
+						{: RESULT = new MultiLambda(il, null, e); :}
+					|	LAMBDA LPAREN id_comma_list:il RPAREN COLON type:tau DOT expr:e
+						{: RESULT = new MultiLambda(il, tau, e); :}
 
 					/* Let */
 					|	LET IDENTIFIER:id EQUAL expr:e1 IN expr:e2
@@ -100,6 +116,8 @@ expr				::=	simple_expr:e
 						   identifiers[0] = id;
 						   System.arraycopy(il, 0, identifiers, 1, il.length);
 						   RESULT = new CurriedLet(identifiers, e1, e2); :}
+					|	LET LPAREN id_comma_list:il RPAREN EQUAL expr:e1 IN expr:e2
+						{: RESULT = new MultiLet(il, e1, e2); :}
 
 					/* Recursion */				
 					|	REC IDENTIFIER:id DOT expr:e
@@ -115,6 +133,10 @@ expr				::=	simple_expr:e
 						   identifiers[0] = id;
 						   System.arraycopy(il, 0, identifiers, 1, il.length);
 						   RESULT = new CurriedLetRec(identifiers, e1, e2); :}
+
+					/* Tuples */
+					|	LPAREN expr_comma_list:el RPAREN
+						{: RESULT = new Tuple(el); :}
 					;
 
 
@@ -145,6 +167,11 @@ constant			::=	PARENPAREN		{: RESULT = UnitConstant.UNIT; :}
 					|	TRUE			{: RESULT = BooleanConstant.TRUE; :}
 					|	FALSE			{: RESULT = BooleanConstant.FALSE; :}
 					|	NUMBER:n		{: RESULT = new IntegerConstant(n.intValue()); :}
+
+					/* Tuple operators */
+					|	PROJECTION:proj	{: RESULT = new Projection(proj[0], proj[1]); :}
+					|	FST				{: RESULT = Fst.FST; :}
+					|	SND				{: RESULT = Snd.SND; :}
 					;
 
 
@@ -161,7 +188,25 @@ operator			::=	PLUS			{: RESULT = ArithmeticOperator.PLUS; :}
 					;
 
 
+expr_comma_list		::=	expr_comma_list:el COMMA expr:e
+						{: RESULT = new Expression[el.length + 1];
+						   System.arraycopy(el, 0, RESULT, 0, el.length);
+						   RESULT[el.length] = e; :}
+					|	expr:e1 COMMA expr:e2
+						{: RESULT = new Expression[] { e1, e2 }; :}
+					;
+				
+				
 id_list				::=	id_list:l IDENTIFIER:id
+						{: RESULT = new String[l.length + 1];
+						   System.arraycopy(l, 0, RESULT, 0, l.length);
+						   RESULT[l.length] = id; :}
+					|	IDENTIFIER:id
+						{: RESULT = new String[] { id }; :}
+					;
+
+					
+id_comma_list		::=	id_comma_list:l COMMA IDENTIFIER:id
 						{: RESULT = new String[l.length + 1];
 						   System.arraycopy(l, 0, RESULT, 0, l.length);
 						   RESULT[l.length] = id; :}
@@ -178,6 +223,8 @@ id_list				::=	id_list:l IDENTIFIER:id
 
 type				::=	simple_type:t			{: RESULT = t; :}
 					|	type:t1 ARROW type:t2	{: RESULT = new ArrowType(t1, t2); :}
+					|	type_star_list:tl
+						{: RESULT = new TupleType(tl); :}
 					;
 
 
@@ -186,4 +233,12 @@ simple_type			::=	LPAREN type:t RPAREN	{: RESULT = t; :}
 					|	INT						{: RESULT = IntegerType.INT; :}
 					|	UNIT					{: RESULT = UnitType.UNIT; :}
 					;
-					
+
+
+type_star_list		::= type_star_list:tl STAR type:t
+						{: RESULT = new MonoType[tl.length + 1];
+						   System.arraycopy(tl, 0, RESULT, 0, tl.length);
+						   RESULT[tl.length] = t; :}
+					|	type:t1 STAR type:t2
+						{: RESULT = new MonoType[] { t1, t2 }; :}
+					;

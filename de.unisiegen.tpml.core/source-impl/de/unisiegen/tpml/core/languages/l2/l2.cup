@@ -36,11 +36,11 @@ non terminal MonoType		simple_type;
 
 
 /* Precedences, based on http://caml.inria.fr/pub/docs/manual-ocaml/manual015.html */
+precedence right	ARROW;
+
 precedence left		EQUAL, LESS, GREATER, LESSEQUAL, GREATEREQUAL;
 precedence left		PLUS, MINUS;
 precedence left		STAR, SLASH, MOD;
-
-precedence right	ARROW;
 
 
 

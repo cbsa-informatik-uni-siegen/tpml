@@ -33,6 +33,12 @@ import de.unisiegen.tpml.core.languages.LanguageSymbol;
 	/** The starting character position of the comment. */
 	private int yycommentChar = 0;
 	
+	/** The starting character position of the projection. */
+	private int yyprojChar = 0;
+	
+	/** The parsed arity of the projection. */
+	private Integer yyprojArity;
+
 	private LanguageSymbol symbol(String name, int id) {
 		return symbol(name, id, yychar, yychar + yylength(), yytext());
 	}
@@ -48,6 +54,7 @@ import de.unisiegen.tpml.core.languages.LanguageSymbol;
 			return PrettyStyle.COMMENT;
 
 		case TRUE: case FALSE: case NUMBER: case PARENPAREN: case MOD:
+		case FST: case SND: case PROJECTION:
 			return PrettyStyle.CONSTANT;
 
 		case LAMBDA: case LET: case REC: case IN: case IF: case THEN: case ELSE:
@@ -73,6 +80,7 @@ Number			= [:digit:]+
 Identifier		= [:jletter:] [:jletterdigit:]*
 
 %state YYCOMMENT, YYCOMMENTEOF
+%state YYPROJARITY, YYPROJUNDERLINE, YYPROJINDEX
 
 %%
 
@@ -91,8 +99,13 @@ Identifier		= [:jletter:] [:jletterdigit:]*
 	"<="				{ return symbol("LESSEQUAL", LESSEQUAL); }
 	">="				{ return symbol("GREATEREQUAL", GREATEREQUAL); }
 	
+	// tuple operators
+	"fst"				{ return symbol("FST", FST); }
+	"snd"				{ return symbol("SND", SND); }
+
 	// interpunctation
 	"."					{ return symbol("DOT", DOT); }
+	","					{ return symbol("COMMA", COMMA); }
 	":"					{ return symbol("COLON", COLON); }
 	"("					{ return symbol("LPAREN", LPAREN); }
 	")"					{ return symbol("RPAREN", RPAREN); }
@@ -128,6 +141,9 @@ Identifier		= [:jletter:] [:jletterdigit:]*
 						}
 	{Identifier}		{ return symbol("IDENTIFIER", IDENTIFIER, yytext()); }
 	
+	// projections
+	"#"					{ yyprojChar = yychar; yybegin(YYPROJARITY); }
+
 	// comments
 	"(*"				{ yycommentChar = yychar; yybegin(YYCOMMENT); }
 	
@@ -143,6 +159,27 @@ Identifier		= [:jletter:] [:jletterdigit:]*
 
 <YYCOMMENTEOF> {
 	<<EOF>>				{ throw new LanguageScannerException(yycommentChar, yychar, "Unexpected end of comment"); }
+}
+
+<YYPROJARITY> {
+	{Number}			{ yyprojArity = Integer.valueOf(yytext()); yybegin(YYPROJUNDERLINE); }
+	<<EOF>>				{ throw new LanguageScannerException(yyprojChar, yychar, "Unexpected end of projection"); }
+	\r|\n				{ throw new LanguageScannerException(yyprojChar, yychar, "Unexpected end of projection"); }
+	.					{ throw new LanguageScannerException(yyprojChar, yychar + yylength(), "Unexpected character \"" + yytext() + "\" in projection"); }
+}
+
+<YYPROJUNDERLINE> {
+	"_"					{ yybegin(YYPROJINDEX); }
+	<<EOF>>				{ throw new LanguageScannerException(yyprojChar, yychar, "Unexpected end of projection"); }
+	\r|\n				{ throw new LanguageScannerException(yyprojChar, yychar, "Unexpected end of projection"); }
+	.					{ throw new LanguageScannerException(yyprojChar, yychar + yylength(), "Unexpected character \"" + yytext() + "\" in projection"); }
+}
+
+<YYPROJINDEX> {
+	{Number}			{ yybegin(YYINITIAL); return symbol("PROJECTION", PROJECTION, yyprojChar, yychar + yylength(), new Integer[] { yyprojArity, Integer.valueOf(yytext()) }); }
+	<<EOF>>				{ throw new LanguageScannerException(yyprojChar, yychar, "Unexpected end of projection"); }
+	\r|\n				{ throw new LanguageScannerException(yyprojChar, yychar, "Unexpected end of projection"); }
+	.					{ throw new LanguageScannerException(yyprojChar, yychar + yylength(), "Unexpected character \"" + yytext() + "\" in projection"); }
 }
 
 .|\n					{ throw new LanguageScannerException(yychar, yychar + yylength(), "Syntax error on token \"" + yytext() + "\""); }

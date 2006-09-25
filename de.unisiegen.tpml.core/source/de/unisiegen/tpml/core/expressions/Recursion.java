@@ -201,7 +201,8 @@ public final class Recursion extends Expression {
   public boolean equals(Object obj) {
     if (obj instanceof Recursion) {
       Recursion other = (Recursion)obj;
-      return (this.id.equals(other.id) && this.e.equals(other.e));
+      return (this.id.equals(other.id) && this.e.equals(other.e)
+          && (this.tau == null) ? (other.tau == null) : (this.tau.equals(other.tau)));
     }
     return false;
   }
@@ -213,6 +214,6 @@ public final class Recursion extends Expression {
    */
   @Override
   public int hashCode() {
-    return this.id.hashCode() + this.e.hashCode();
+    return this.id.hashCode() + ((this.tau != null) ? this.tau.hashCode() : 0) + this.e.hashCode();
   }
 }
