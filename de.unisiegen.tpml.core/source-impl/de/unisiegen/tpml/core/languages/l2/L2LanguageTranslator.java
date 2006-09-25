@@ -1,6 +1,5 @@
 package de.unisiegen.tpml.core.languages.l2;
 
-import de.unisiegen.tpml.core.expressions.CurriedLet;
 import de.unisiegen.tpml.core.expressions.CurriedLetRec;
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.expressions.Lambda;
@@ -43,25 +42,7 @@ public class L2LanguageTranslator extends L1LanguageTranslator {
    */
   @Override
   public Expression translateToCoreSyntax(Expression expression, boolean recursive) {
-    if (expression instanceof CurriedLet) {
-      // translate to: let id1 = lambda id2...lambda idn.e1 in e2
-      CurriedLet curriedLet = (CurriedLet)expression;
-      Expression e1 = curriedLet.getE1();
-      
-      // check if we should recurse
-      if (recursive) {
-        e1 = translateToCoreSyntax(e1, true);
-      }
-      
-      // add the lambdas
-      for (int n = curriedLet.getIdentifiers().length - 1; n > 0; --n) {
-        e1 = new Lambda(curriedLet.getIdentifiers(n), null, e1);
-      }
-      
-      // generate the let expression
-      return new Let(curriedLet.getIdentifiers(0), e1, curriedLet.getE2());
-    }
-    else if (expression instanceof CurriedLetRec) {
+    if (expression instanceof CurriedLetRec) {
       // translate to: let id1 = rec id1.lambda id2...lambda idn.e1 in e2
       CurriedLetRec curriedLetRec = (CurriedLetRec)expression;
       Expression e1 = curriedLetRec.getE1();
