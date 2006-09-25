@@ -1,6 +1,7 @@
 package de.unisiegen.tpml.graphics.typechecker;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
@@ -33,6 +34,7 @@ public class TypeCheckerView extends JComponent implements ProofView {
 		add (scrollPane, BorderLayout.CENTER);
 		
 		this.scrollPane.setViewportView(component);
+		this.scrollPane.getViewport().setBackground(Color.WHITE);
 		
 		this.scrollPane.addComponentListener(new ComponentAdapter () {
 			public void componentResized (ComponentEvent event) {
