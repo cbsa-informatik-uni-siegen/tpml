@@ -152,14 +152,17 @@ public final class BigStepProofModel extends AbstractInterpreterProofModel {
       // try to apply the rule to the node
       context.apply(rule, node);
       
+      // determine the root node proof
+      final BigStepProofNode root = (BigStepProofNode)getRoot();
+      
       // determine the redo and undo actions from the context
       final Runnable redoActions = context.getRedoActions();
       final Runnable undoActions = context.getUndoActions();
       
       // record the undo edit action for this proof step
       addUndoableTreeEdit(new UndoableTreeEdit() {
-        public void redo() { redoActions.run(); }
-        public void undo() { undoActions.run(); }
+        public void redo() { redoActions.run(); setFinished(root.getResult() != null); }
+        public void undo() { undoActions.run(); setFinished(false); }
       });
     }
     catch (ProofRuleException e) {

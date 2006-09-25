@@ -25,6 +25,14 @@ public interface ProofModel extends Bean, TreeModel {
   //
   
   /**
+   * Returns <code>true</code> if the proof is finished successfully, otherwise if either the
+   * proof is not yet completed or the proof got stuck, <code>false</code> will be returned.
+   * 
+   * @return <code>true</code> if the proof is finished.
+   */
+  public boolean isFinished();
+  
+  /**
    * Returns the {@link Language} for which this proof model was constructed.
    * 
    * @return the {@link Language} for the proof model.

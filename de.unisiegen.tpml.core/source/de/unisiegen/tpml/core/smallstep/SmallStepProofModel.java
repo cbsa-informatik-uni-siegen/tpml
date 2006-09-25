@@ -188,7 +188,7 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel {
   private void apply(DefaultSmallStepProofRule rule, final DefaultSmallStepProofNode node) throws ProofRuleException {
     // evaluate the expression and determine the proof steps
     DefaultSmallStepProofContext context = new DefaultSmallStepProofContext(node, this.ruleSet);
-    Expression expression = context.getExpression();
+    final Expression expression = context.getExpression();
     ProofStep[] evaluatedSteps = context.getSteps();
     
     // determine the completed steps for the node
@@ -236,6 +236,9 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel {
           node.add(child);
           nodesWereInserted(node, new int[] { node.getIndex(child) });
           nodeChanged(node);
+          
+          // update the "finished" state
+          setFinished(expression.isException() || expression.isValue());
         }
         
         public void undo() {
@@ -245,6 +248,9 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel {
           nodesWereRemoved(node, indices, new Object[] { child });
           node.setSteps(completedSteps);
           nodeChanged(node);
+          
+          // update the "finished" state
+          setFinished(false);
         }
       });
     }

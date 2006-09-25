@@ -33,6 +33,14 @@ public abstract class AbstractProofModel extends AbstractBean implements ProofMo
   //
   
   /**
+   * Whether the proof is finished.
+   * 
+   * @see #isFinished()
+   * @see #setFinished(boolean)
+   */
+  private boolean finished;
+  
+  /**
    * Event listeners.
    * 
    * @see #addTreeModelListener(TreeModelListener)
@@ -93,8 +101,33 @@ public abstract class AbstractProofModel extends AbstractBean implements ProofMo
   
   
   //
-  // Primitives
+  // Accessors
   //
+  
+  /**
+   * {@inheritDoc}
+   *
+   * @see de.unisiegen.tpml.core.ProofModel#isFinished()
+   */
+  public boolean isFinished() {
+    return this.finished;
+  }
+  
+  /**
+   * Changes the value of the <code>finished</code> to the value of <code>finished</code>, and emits
+   * a {@link java.beans.PropertyChangeEvent} if the values differ.
+   * 
+   * @param finished the new value for the <code>finished</code> setting.
+   * 
+   * @see #isFinished()
+   */
+  protected void setFinished(boolean finished) {
+    if (this.finished != finished) {
+      boolean oldFinished = this.finished;
+      this.finished = finished;
+      firePropertyChange("finished", oldFinished, finished);
+    }
+  }
   
   /**
    * {@inheritDoc}

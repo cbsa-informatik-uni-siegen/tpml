@@ -35,7 +35,7 @@ public class SmallStepProofModelTest extends JFrame {
   /**
    * Simple test expression.
    */
-  private static final String SIMPLE = "let t = 1+1, (2 + 2, 8+8) in fst (snd t)";
+  private static final String SIMPLE = "let t = (1+1, (2 + 2, 8+8)) in fst (snd t)";
 
   
   
