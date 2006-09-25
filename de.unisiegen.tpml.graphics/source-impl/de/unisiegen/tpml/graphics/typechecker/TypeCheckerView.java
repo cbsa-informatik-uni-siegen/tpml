@@ -44,4 +44,5 @@ public class TypeCheckerView extends JComponent implements ProofView {
 	public void guess () throws IllegalStateException, ProofGuessException {
 		this.component.guess ();
 	}
+	
 }

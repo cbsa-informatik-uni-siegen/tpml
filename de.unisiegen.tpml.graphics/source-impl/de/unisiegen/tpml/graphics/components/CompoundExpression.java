@@ -2,6 +2,9 @@ package de.unisiegen.tpml.graphics.components;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Rectangle;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 
 import javax.swing.JComponent;
 
@@ -42,6 +45,27 @@ public class CompoundExpression<S, E> extends JComponent {
 		super ();
 		
 		this.braceSize = 10;
+		
+		this.addMouseMotionListener(new MouseMotionAdapter() {
+			public void mouseMoved (MouseEvent event) {
+				handleMouseMoved (event);
+			}
+		});
+	}
+	
+	private void handleMouseMoved (MouseEvent event) {
+		if (this.environmentRenderer != null && this.environmentRenderer.isCollapsed()) {
+			Rectangle r = this.environmentRenderer.getCollapsedArea();
+			if (event.getX () >= r.x && event.getX () <= r.x + r.width) {
+				setToolTipText(this.environmentRenderer.getCollapsedString());
+			}
+			else {
+				setToolTipText(null);
+			}
+		}
+		else {
+			setToolTipText(null);
+		}
 	}
 	
 	public void setNoLineWrapping (boolean noLineWrapping) {

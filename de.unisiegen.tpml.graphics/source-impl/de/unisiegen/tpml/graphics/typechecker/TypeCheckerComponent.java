@@ -9,6 +9,7 @@ import java.util.LinkedList;
 
 import javax.swing.JComponent;
 import javax.swing.Scrollable;
+import javax.swing.SwingUtilities;
 import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
 
@@ -37,13 +38,16 @@ public class TypeCheckerComponent extends JComponent implements Scrollable {
 
 	private TreeNodeLayout							treeNodeLayout;
 	
+	private boolean											currentlyLayouting;
+	
 	public TypeCheckerComponent (TypeCheckerProofModel model) {
 		super ();
 		
-		this.model = model;
-		this.translator = this.model.getLanguage().newTranslator();
+		this.currentlyLayouting = false;
+		this.model 							= model;
+		this.translator 				= this.model.getLanguage().newTranslator();
+		this.treeNodeLayout			= new TreeNodeLayout (10);
 		
-		this.treeNodeLayout = new TreeNodeLayout (10);
 		
 		setLayout (null);
 		
@@ -93,6 +97,7 @@ public class TypeCheckerComponent extends JComponent implements Scrollable {
       if (node.getSteps().length == 0) {
       	
       	this.model.guess(node);
+      	return;
       }
       for (int n = 0; n < node.getChildCount(); ++n) {
         nodes.add(node.getChildAt(n));
@@ -107,22 +112,34 @@ public class TypeCheckerComponent extends JComponent implements Scrollable {
 	 *
 	 */
 	private void relayout () {
-		TypeCheckerProofNode rootNode = (TypeCheckerProofNode)this.model.getRoot();
+		if (this.currentlyLayouting) {
+			return;
+		}
 		
-		Point rightBottomPos = treeNodeLayout.placeNodes (rootNode, 20, 20, this.availableWidth);
+		this.currentlyLayouting = true;
 		
-		// lets add some border to the space
-		
-		rightBottomPos.x += 20;
-		rightBottomPos.y += 20;
-		
-		Dimension size = new Dimension (rightBottomPos.x, rightBottomPos.y);
-		
-		// set all the sizes needed by the component
-		setMaximumSize (size);
-		setMinimumSize (size);
-		setPreferredSize (size);
-		setSize (size);
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run () {
+				TypeCheckerProofNode rootNode = (TypeCheckerProofNode)TypeCheckerComponent.this.model.getRoot();
+				
+				Point rightBottomPos = treeNodeLayout.placeNodes (rootNode, 20, 20, TypeCheckerComponent.this.availableWidth);
+				
+				// lets add some border to the space
+				
+				rightBottomPos.x += 20;
+				rightBottomPos.y += 20;
+				
+				Dimension size = new Dimension (rightBottomPos.x, rightBottomPos.y);
+				
+				// set all the sizes needed by the component
+				setMaximumSize (size);
+				setMinimumSize (size);
+				setPreferredSize (size);
+				setSize (size);
+				
+				TypeCheckerComponent.this.currentlyLayouting = false;
+			}
+		});
 	}
 	
 	private void checkForUserObject (TypeCheckerProofNode node) {
