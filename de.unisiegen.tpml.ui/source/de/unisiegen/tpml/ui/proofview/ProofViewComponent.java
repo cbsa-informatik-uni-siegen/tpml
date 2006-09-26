@@ -5,12 +5,20 @@
 package de.unisiegen.tpml.ui.proofview;
 
 import java.awt.BorderLayout;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 
+import org.apache.log4j.Logger;
+
+import de.unisiegen.tpml.core.CannotRedoException;
+import de.unisiegen.tpml.core.CannotUndoException;
+import de.unisiegen.tpml.core.ProofModel;
 import de.unisiegen.tpml.graphics.ProofView;
 import de.unisiegen.tpml.ui.EditorComponent;
+import de.unisiegen.tpml.ui.EditorPanel;
 
 /**
  * //TODO add documentation here.
@@ -21,15 +29,23 @@ import de.unisiegen.tpml.ui.EditorComponent;
  */
 public class ProofViewComponent extends JComponent implements EditorComponent {
 	
+	private static final Logger logger = Logger.getLogger(ProofViewComponent.class);
 	private ProofView view;
+	private ProofModel model;
 	private boolean nextStatus;
     private boolean redoStatus;
     private boolean undoStatus;
     private boolean saveStatus;
 	
-	public ProofViewComponent(ProofView view){
+	public ProofViewComponent(ProofView view, ProofModel model){
+		if (model == null || view == null){
+			throw new NullPointerException("model or view are null");
+		}
 		setLayout(new BorderLayout());
 		this.view = view;
+		this.model = model;
+		
+		this.model.addPropertyChangeListener(new ModelChangeListener());
 		add((JComponent)view, BorderLayout.CENTER);
 	}
 
@@ -40,7 +56,6 @@ public class ProofViewComponent extends JComponent implements EditorComponent {
 	 * @see de.unisiegen.tpml.ui.EditorComponent#isNextStatus()
 	 */
 	public boolean isNextStatus() {
-		// TODO Auto-generated method stub
 		return nextStatus;
 	}
 
@@ -62,8 +77,7 @@ public class ProofViewComponent extends JComponent implements EditorComponent {
 	 * @see de.unisiegen.tpml.ui.EditorComponent#isRedoStatus()
 	 */
 	public boolean isRedoStatus() {
-		// TODO Auto-generated method stub
-		return false;
+		return redoStatus;
 	}
 
 	/**
@@ -73,7 +87,8 @@ public class ProofViewComponent extends JComponent implements EditorComponent {
 	 * @see de.unisiegen.tpml.ui.EditorComponent#setRedoStatus(boolean)
 	 */
 	public void setRedoStatus(boolean redoStatus) {
-		// TODO Auto-generated method stub
+		firePropertyChange ("redoStatus", this.redoStatus, redoStatus);
+		this.redoStatus=redoStatus;
 
 	}
 
@@ -117,7 +132,8 @@ public class ProofViewComponent extends JComponent implements EditorComponent {
 	 * @see de.unisiegen.tpml.ui.EditorComponent#setUndoStatus(boolean)
 	 */
 	public void setUndoStatus(boolean undoStatus) {
-		// TODO Auto-generated method stub
+		firePropertyChange ("undoStatus", this.undoStatus, undoStatus);
+		this.undoStatus=undoStatus;
 
 	}
 
@@ -150,10 +166,9 @@ public class ProofViewComponent extends JComponent implements EditorComponent {
 	 * @see de.unisiegen.tpml.ui.EditorComponent#setDefaultStates()
 	 */
 	public void setDefaultStates() {
-		// TODO Auto-generated method stub
 		setNextStatus(true);
-		setRedoStatus(false);
-		setUndoStatus(false);
+		setRedoStatus(model.isRedoable());
+		setUndoStatus(model.isUndoable());
 		setChangeStatus(false);
 		setSaveStatus(false);
 
@@ -183,7 +198,11 @@ public class ProofViewComponent extends JComponent implements EditorComponent {
 	 * @see de.unisiegen.tpml.ui.EditorComponent#handleRedo()
 	 */
 	public void handleRedo() {
-		// TODO Auto-generated method stub
+		try{
+			model.redo();
+			} catch (CannotRedoException e) {
+				logger.error("Can not redo on this model", e);
+			}
 
 	}
 
@@ -194,8 +213,24 @@ public class ProofViewComponent extends JComponent implements EditorComponent {
 	 * @see de.unisiegen.tpml.ui.EditorComponent#handleUndo()
 	 */
 	public void handleUndo() {
-		// TODO Auto-generated method stub
+		try{
+		model.undo();
+		} catch (CannotUndoException e) {
+			logger.error("Can not undo on this model", e);
+		}
 
 	}
+	
+	private class ModelChangeListener implements PropertyChangeListener{
 
+		public void propertyChange(PropertyChangeEvent evt) {
+			if (evt.getPropertyName().equalsIgnoreCase("Undoable")){
+				setUndoStatus((Boolean)evt.getNewValue());
+			}
+			if (evt.getPropertyName().equalsIgnoreCase("Redoable")){
+				setRedoStatus((Boolean)evt.getNewValue());
+			}
+		}
+		
+	}
 }

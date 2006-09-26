@@ -6,7 +6,10 @@
 
 package de.unisiegen.tpml.ui;
 
+import de.unisiegen.tpml.core.ProofModel;
+import de.unisiegen.tpml.core.bigstep.BigStepProofModel;
 import de.unisiegen.tpml.core.languages.Language;
+import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel;
 import de.unisiegen.tpml.graphics.ProofView;
 import de.unisiegen.tpml.graphics.ProofViewFactory;
 import de.unisiegen.tpml.graphics.typechecker.TypeCheckerView;
@@ -69,76 +72,74 @@ public class EditorPanel extends javax.swing.JPanel {
 	// <editor-fold defaultstate="collapsed" desc=" Generated Code
 	// <editor-fold defaultstate="collapsed" desc=" Generated Code
 	// <editor-fold defaultstate="collapsed" desc=" Generated Code
-	// ">//GEN-BEGIN:initComponents
-	private void initComponents() {
-		jSeparator1 = new javax.swing.JSeparator();
-		editorToolBar = new javax.swing.JToolBar();
-		codeButton = new javax.swing.JToggleButton();
-		smallstepButton = new javax.swing.JToggleButton();
-		bigstepButton = new javax.swing.JToggleButton();
-		typecheckerButton = new javax.swing.JToggleButton();
-		actionToolBar = new javax.swing.JToolBar();
-		nextButton = new javax.swing.JButton();
-		editorPanel = new javax.swing.JPanel();
+    // <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:initComponents
+    private void initComponents() {
+        jSeparator1 = new javax.swing.JSeparator();
+        editorToolBar = new javax.swing.JToolBar();
+        codeButton = new javax.swing.JToggleButton();
+        smallstepButton = new javax.swing.JToggleButton();
+        bigstepButton = new javax.swing.JToggleButton();
+        typecheckerButton = new javax.swing.JToggleButton();
+        actionToolBar = new javax.swing.JToolBar();
+        nextButton = new javax.swing.JButton();
+        editorPanel = new javax.swing.JPanel();
 
-		setLayout(new java.awt.BorderLayout());
+        setLayout(new java.awt.BorderLayout());
 
-		codeButton.setText("Code");
-		codeButton.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				codeButtonActionPerformed(evt);
-			}
-		});
+        codeButton.setText("Source");
+        codeButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                codeButtonActionPerformed(evt);
+            }
+        });
 
-		editorToolBar.add(codeButton);
+        editorToolBar.add(codeButton);
 
-		smallstepButton.setText("SmallStep");
-		smallstepButton.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				smallstepButtonActionPerformed(evt);
-			}
-		});
+        smallstepButton.setText("SmallStep");
+        smallstepButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                smallstepButtonActionPerformed(evt);
+            }
+        });
 
-		editorToolBar.add(smallstepButton);
+        editorToolBar.add(smallstepButton);
 
-		bigstepButton.setText("BigStep");
-		bigstepButton.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				bigstepButtonActionPerformed(evt);
-			}
-		});
+        bigstepButton.setText("BigStep");
+        bigstepButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bigstepButtonActionPerformed(evt);
+            }
+        });
 
-		editorToolBar.add(bigstepButton);
+        editorToolBar.add(bigstepButton);
 
-		typecheckerButton.setText("TypeChecker");
-		typecheckerButton
-				.addActionListener(new java.awt.event.ActionListener() {
-					public void actionPerformed(java.awt.event.ActionEvent evt) {
-						typecheckerButtonActionPerformed(evt);
-					}
-				});
+        typecheckerButton.setText("TypeChecker");
+        typecheckerButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                typecheckerButtonActionPerformed(evt);
+            }
+        });
 
-		editorToolBar.add(typecheckerButton);
+        editorToolBar.add(typecheckerButton);
 
-		nextButton.setIcon(new javax.swing.ImageIcon(getClass().getResource(
-				"/de/unisiegen/tpml/ui/icons/next.png")));
-		nextButton.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				nextButtonActionPerformed(evt);
-			}
-		});
+        nextButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/next.png")));
+        nextButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                nextButtonActionPerformed(evt);
+            }
+        });
 
-		actionToolBar.add(nextButton);
+        actionToolBar.add(nextButton);
 
-		editorToolBar.add(actionToolBar);
+        editorToolBar.add(actionToolBar);
 
-		add(editorToolBar, java.awt.BorderLayout.NORTH);
+        add(editorToolBar, java.awt.BorderLayout.NORTH);
 
-		editorPanel.setLayout(new java.awt.BorderLayout());
+        editorPanel.setLayout(new java.awt.BorderLayout());
 
-		add(editorPanel, java.awt.BorderLayout.CENTER);
+        add(editorPanel, java.awt.BorderLayout.CENTER);
 
-	}// </editor-fold>//GEN-END:initComponents
+    }// </editor-fold>//GEN-END:initComponents
 
 	private void nextButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_nextButtonActionPerformed
 		// TODO add your handling code here:
@@ -171,26 +172,17 @@ public class EditorPanel extends javax.swing.JPanel {
 		codeButton.setSelected(true);
 	}// GEN-LAST:event_codeButtonActionPerformed
 
-	// Variables declaration - do not modify//GEN-BEGIN:variables
-	private javax.swing.JToolBar actionToolBar;
-
-	private javax.swing.JToggleButton bigstepButton;
-
-	private javax.swing.JToggleButton codeButton;
-
-	private javax.swing.JPanel editorPanel;
-
-	private javax.swing.JToolBar editorToolBar;
-
-	private javax.swing.JSeparator jSeparator1;
-
-	private javax.swing.JButton nextButton;
-
-	private javax.swing.JToggleButton smallstepButton;
-
-	private javax.swing.JToggleButton typecheckerButton;
-
-	// End of variables declaration//GEN-END:variables
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JToolBar actionToolBar;
+    private javax.swing.JToggleButton bigstepButton;
+    private javax.swing.JToggleButton codeButton;
+    private javax.swing.JPanel editorPanel;
+    private javax.swing.JToolBar editorToolBar;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JButton nextButton;
+    private javax.swing.JToggleButton smallstepButton;
+    private javax.swing.JToggleButton typecheckerButton;
+    // End of variables declaration//GEN-END:variables
 
 	private static final Logger logger = Logger.getLogger(EditorPanel.class);
 
@@ -332,8 +324,21 @@ public class EditorPanel extends javax.swing.JPanel {
 	 * Starts the Big Step Interpreter.
 	 */
 	public void handleBigStep() {
-		bigstep = new TestEditorComponent("BigStep");
-		activateFunction(bigstepButton, bigstep);
+		try {
+			BigStepProofModel model = language.newBigStepProofModel(code
+					.getDocument().getExpression());
+			bigstep = new ProofViewComponent(ProofViewFactory
+					.newBigStepView(model), model);
+			editorPanel.removeAll();
+			activateFunction(bigstepButton, bigstep);
+			paintAll(getGraphics());
+
+		} catch (Exception e) {
+			logger.error("Could not create new TypeCheckerView", e);
+			JOptionPane.showMessageDialog(this,
+					"Cannot run the typechecker for this expression.",
+					"TypeChecker", JOptionPane.ERROR_MESSAGE);
+		}
 	}
 
 	/**
@@ -341,9 +346,10 @@ public class EditorPanel extends javax.swing.JPanel {
 	 */
 	public void handleTypeChecker() {
 		try {
+			TypeCheckerProofModel model = language.newTypeCheckerProofModel(code
+					.getDocument().getExpression());
 			typechecker = new ProofViewComponent(ProofViewFactory
-					.newTypeCheckerView(language.newTypeCheckerProofModel(code
-							.getDocument().getExpression())));
+					.newTypeCheckerView(model), model);
 			editorPanel.removeAll();
 			activateFunction(typecheckerButton, typechecker);
 			paintAll(getGraphics());
