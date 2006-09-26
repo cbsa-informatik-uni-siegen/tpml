@@ -4,29 +4,95 @@
 	
 	Copyright (c) 2006 Benedikt Meurer <benny@xfce.org>
 -->
-<project name="parsers" default="all" basedir=".">
+<project name="de.unisiegen.tpml.core" default="dist" basedir=".">
 	<description>
-    	Generates the parsers and lexers for the TPML project.
+		Buildfile for the de.unisiegen.tpml.core subproject.
     </description>
 	
-	<property name="sourcedir" value="${basedir}/source-impl" />
-	<property name="destdir" value="${basedir}/source-generated" />
+	<property file="${basedir}/build.properties" />
+	<property name="libdir" value="${basedir}/lib" />
 	
 	
-	<taskdef name="cup" classname="java_cup.anttask.CUPTask" classpath="${basedir}/lib/java-cup-11a.jar" />
-	<taskdef name="jflex" classname="JFlex.anttask.JFlexTask" classpath="${basedir}/lib/JFlex-1.4.1.jar" />
 	
+	<!--
+		Building distributions
+	-->
+	
+	<property name="distdir" value="${basedir}/dist" />
+	<property name="classesdir" value="${distdir}/classes" />
+	
+	<target name="dist" depends="dist-preclean,dist-compile,dist-jar,dist-3rdparty,dist-clean" description="Build distribution">
+		<echo message="Distribution ready in ${distdir}/de.unisiegen.tpml.core-${de.unisiegen.tpml.core.version}.jar" />
+	</target>
+	
+	<target name="dist-preclean">
+		<delete dir="${distdir}" />
+		<mkdir dir="${distdir}" />
+	</target>
+		
+	<target name="dist-compile" depends="generate">
+		<delete dir="${classesdir}" />
+		<mkdir dir="${classesdir}" />
+		<javac debug="on" destdir="${classesdir}" encoding="UTF-8" optimize="on" source="1.5" target="1.5">
+			<src path="${basedir}/source" />
+			<src path="${basedir}/source-impl" />
+			<src path="${basedir}/source-generated" />
+			<classpath>
+				<pathelement location="${libdir}/java-cup-11a-runtime.jar" />
+				<pathelement location="${libdir}/log4j-1.2.14.jar" />
+			</classpath>
+		</javac>
+	</target>
+	
+	<target name="dist-jar" depends="dist-compile">
+		<manifest file="${distdir}/MANIFEST.MF">
+			<attribute name="Built-By" value="${user.name}" />
+			<section name="de.unisiegen.tpml.core">
+				<attribute name="Specification-Title" value="TPML Core" />
+				<attribute name="Specification-Version" value="${de.unisiegen.tpml.core.version}" />
+				<attribute name="Specification-Vendor" value="University of Siegen, Department of Theoretical Computer Science" />
+				<attribute name="Implementation-Title" value="de.unisiegen.tpml.core" />
+				<attribute name="Implementation-Version" value="${de.unisiegen.tpml.core.version} ${TODAY}" />
+				<attribute name="Implementation-Vendor" value="University of Siegen, Department of Theoretical Computer Science" />
+			</section>
+		</manifest>
+		<jar jarfile="${distdir}/de.unisiegen.tpml.core-${de.unisiegen.tpml.core.version}.jar" manifest="${distdir}/MANIFEST.MF">
+			<fileset dir="${classesdir}" />
+		</jar>
+		<delete file="${distdir}/MANIFEST.MF" />
+	</target>
+	
+	<target name="dist-3rdparty" description="Copy 3rd party jar files">
+		<copy file="${libdir}/java-cup-11a-runtime.jar" todir="${distdir}" />
+		<copy file="${libdir}/log4j-1.2.14.jar" todir="${distdir}" />
+	</target>
+	
+	<target name="dist-clean">
+		<delete dir="${classesdir}" />
+	</target>
+	
+	
+	
+	<!--
+		Autogenerating files (parsers, lexers)
+	-->
 
-    <target name="all" depends="l0,l1,l2,l3,l4" description="Generate all" />
+    <target name="generate" depends="l0,l1,l2,l3,l4" description="Generate parsers and lexers" />
 	
+	<property name="impldir" value="${basedir}/source-impl" />
+	<property name="generateddir" value="${basedir}/source-generated" />
+	
+	<taskdef name="cup" classname="java_cup.anttask.CUPTask" classpath="${libdir}/java-cup-11a.jar" />
+	<taskdef name="jflex" classname="JFlex.anttask.JFlexTask" classpath="${libdir}/JFlex-1.4.1.jar" />
+
 	<target name="l0" description="Generates lexer and parser for L0">
 		<jflex 
-    		file="${sourcedir}/de/unisiegen/tpml/core/languages/l0/l0.flex"
-    		destdir="${destdir}"
+    		file="${impldir}/de/unisiegen/tpml/core/languages/l0/l0.flex"
+    		destdir="${generateddir}"
 			nobak="yes" />
 		<cup
-			srcfile="${sourcedir}/de/unisiegen/tpml/core/languages/l0/l0.cup"
-			destdir="${destdir}/de/unisiegen/tpml/core/languages/l0"
+			srcfile="${impldir}/de/unisiegen/tpml/core/languages/l0/l0.cup"
+			destdir="${generateddir}/de/unisiegen/tpml/core/languages/l0"
 			package="de.unisiegen.tpml.core.languages.l0"
 			parser="L0AbstractParser"
 			symbols="L0Terminals"
@@ -40,12 +106,12 @@
 	
 	<target name="l1" description="Generates lexer and parser for L1">
 		<jflex 
-    		file="${sourcedir}/de/unisiegen/tpml/core/languages/l1/l1.flex"
-    		destdir="${destdir}"
+    		file="${impldir}/de/unisiegen/tpml/core/languages/l1/l1.flex"
+    		destdir="${generateddir}"
 			nobak="yes" />
 		<cup
-			srcfile="${sourcedir}/de/unisiegen/tpml/core/languages/l1/l1.cup"
-			destdir="${destdir}/de/unisiegen/tpml/core/languages/l1"
+			srcfile="${impldir}/de/unisiegen/tpml/core/languages/l1/l1.cup"
+			destdir="${generateddir}/de/unisiegen/tpml/core/languages/l1"
 			package="de.unisiegen.tpml.core.languages.l1"
 			parser="L1AbstractParser"
 			symbols="L1Terminals"
@@ -59,12 +125,12 @@
 	
 	<target name="l2" description="Generates lexer and parser for L2">
 		<jflex 
-    		file="${sourcedir}/de/unisiegen/tpml/core/languages/l2/l2.flex"
-    		destdir="${destdir}"
+    		file="${impldir}/de/unisiegen/tpml/core/languages/l2/l2.flex"
+    		destdir="${generateddir}"
 			nobak="yes" />
 		<cup
-			srcfile="${sourcedir}/de/unisiegen/tpml/core/languages/l2/l2.cup"
-			destdir="${destdir}/de/unisiegen/tpml/core/languages/l2"
+			srcfile="${impldir}/de/unisiegen/tpml/core/languages/l2/l2.cup"
+			destdir="${generateddir}/de/unisiegen/tpml/core/languages/l2"
 			package="de.unisiegen.tpml.core.languages.l2"
 			parser="L2AbstractParser"
 			symbols="L2Terminals"
@@ -78,12 +144,12 @@
 	
 	<target name="l3" description="Generates lexer and parser for L3">
 		<jflex 
-    		file="${sourcedir}/de/unisiegen/tpml/core/languages/l3/l3.flex"
-    		destdir="${destdir}"
+    		file="${impldir}/de/unisiegen/tpml/core/languages/l3/l3.flex"
+    		destdir="${generateddir}"
 			nobak="yes" />
 		<cup
-			srcfile="${sourcedir}/de/unisiegen/tpml/core/languages/l3/l3.cup"
-			destdir="${destdir}/de/unisiegen/tpml/core/languages/l3"
+			srcfile="${impldir}/de/unisiegen/tpml/core/languages/l3/l3.cup"
+			destdir="${generateddir}/de/unisiegen/tpml/core/languages/l3"
 			package="de.unisiegen.tpml.core.languages.l3"
 			parser="L3AbstractParser"
 			symbols="L3Terminals"
@@ -97,12 +163,12 @@
 	
 	<target name="l4" description="Generates lexer and parser for L4">
 		<jflex 
-    		file="${sourcedir}/de/unisiegen/tpml/core/languages/l4/l4.flex"
-    		destdir="${destdir}"
+    		file="${impldir}/de/unisiegen/tpml/core/languages/l4/l4.flex"
+    		destdir="${generateddir}"
 			nobak="yes" />
 		<cup
-			srcfile="${sourcedir}/de/unisiegen/tpml/core/languages/l4/l4.cup"
-			destdir="${destdir}/de/unisiegen/tpml/core/languages/l4"
+			srcfile="${impldir}/de/unisiegen/tpml/core/languages/l4/l4.cup"
+			destdir="${generateddir}/de/unisiegen/tpml/core/languages/l4"
 			package="de.unisiegen.tpml.core.languages.l4"
 			parser="L4AbstractParser"
 			symbols="L4Terminals"

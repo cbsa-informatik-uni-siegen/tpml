@@ -57,26 +57,6 @@ public final class LanguageSymbol extends Symbol {
     this.name = name;
   }
   
-  /**
-   * Special constructor that allocates a new <code>LanguageSymbol</code>
-   * with the given <code>name</code> and symbol <code>id</code>, and sets
-   * the parser private state variable to the specified <code>state</code>.
-   * 
-   * This method should only be used by the <code>startSymbol()</code>
-   * method of the {@link LanguageSymbolFactory} class.
-   * 
-   * @param name the name of the symbol.
-   * @param id the unique identifier of the symbol.
-   * @param state the initial parse state.
-   * 
-   * @see LanguageSymbolFactory#startSymbol(String, int, int)
-   * @see Symbol#parse_state
-   */
-  LanguageSymbol(String name, int id, int state) {
-    super(id, state);
-    this.name = name;
-  }
-  
 
   
   //
