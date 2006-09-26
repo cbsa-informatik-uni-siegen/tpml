@@ -66,6 +66,7 @@ public class ProofViewComponent extends JComponent implements EditorComponent {
 	 * @see de.unisiegen.tpml.ui.EditorComponent#setNextStatus(boolean)
 	 */
 	public void setNextStatus(boolean nextStatus) {
+
 		firePropertyChange ("nextStatus", this.nextStatus, nextStatus);
 		this.nextStatus=nextStatus;
 	}
@@ -224,11 +225,15 @@ public class ProofViewComponent extends JComponent implements EditorComponent {
 	private class ModelChangeListener implements PropertyChangeListener{
 
 		public void propertyChange(PropertyChangeEvent evt) {
-			if (evt.getPropertyName().equalsIgnoreCase("Undoable")){
+			if (evt.getPropertyName().equals("undoable")){
 				setUndoStatus((Boolean)evt.getNewValue());
 			}
-			if (evt.getPropertyName().equalsIgnoreCase("Redoable")){
+			if (evt.getPropertyName().equals("redoable")){
 				setRedoStatus((Boolean)evt.getNewValue());
+			}
+			if (evt.getPropertyName().equals("finished")){
+				if ((Boolean)evt.getNewValue())
+				setNextStatus(false);
 			}
 		}
 		
