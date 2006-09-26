@@ -1,5 +1,6 @@
 package de.unisiegen.tpml.graphics.components;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Rectangle;
@@ -39,18 +40,32 @@ public class CompoundExpression<S, E> extends JComponent {
 	
 	private boolean											noLineWrapping;
 	
+	private Color												alternativeColor;
+	
 	private static String								arrowStr = " \u22b3 ";
 	
 	public CompoundExpression () {
 		super ();
 		
-		this.braceSize = 10;
+		this.alternativeColor = null;
+		this.braceSize 				= 10;
 		
 		this.addMouseMotionListener(new MouseMotionAdapter() {
 			public void mouseMoved (MouseEvent event) {
 				handleMouseMoved (event);
 			}
 		});
+	}
+	
+	public void setAlternativeColor (Color color) {
+		this.alternativeColor = color;
+		
+		if (this.expressionRenderer != null) {
+			this.expressionRenderer.setAlternativeColor(color);
+		}
+		if (this.environmentRenderer != null) {
+			this.environmentRenderer.setAlternativeColor(color);
+		}
 	}
 	
 	private void handleMouseMoved (MouseEvent event) {
@@ -74,9 +89,14 @@ public class CompoundExpression<S, E> extends JComponent {
 	
 	public void setExpression (Expression expression) {
 		this.expression = expression;
+		if (this.expression == null) {
+			this.expressionRenderer = null;
+			return;
+		}
 		
 		if (this.expressionRenderer == null) {
 			this.expressionRenderer = new PrettyStringRenderer ();
+			this.expressionRenderer.setAlternativeColor(this.alternativeColor);
 		}
 		
 		this.expressionRenderer.setPrettyString(this.expression.toPrettyString());
@@ -91,6 +111,7 @@ public class CompoundExpression<S, E> extends JComponent {
 		
 		if (this.environmentRenderer == null) {
 			this.environmentRenderer = new EnvironmentRenderer<S,E> ();
+			this.environmentRenderer.setAlternativeColor(this.alternativeColor);
 		}
 		
 		this.environmentRenderer.setEnvironment(this.environment);
@@ -160,14 +181,15 @@ public class CompoundExpression<S, E> extends JComponent {
 
 		}
 		
-		// now check the size still available for the expression
-		this.expressionSize = this.expressionRenderer.getNeededSize(maxWidth);
-		result.width += expressionSize.width;
-		
-		if (expressionSize.height > result.height) {
-			result.height = expressionSize.height;
+		if (this.expression != null && this.expressionRenderer != null) {
+			// now check the size still available for the expression
+			this.expressionSize = this.expressionRenderer.getNeededSize(maxWidth);
+			result.width += expressionSize.width;
+			
+			if (expressionSize.height > result.height) {
+				result.height = expressionSize.height;
+			}
 		}
-		
 		return result;
 	}
 	

@@ -31,7 +31,8 @@ public abstract class AbstractRenderer {
 	protected		static int						fontAscent;
 	protected		static int						fontDescent;
 
-	
+
+	protected		Color									alternativeColor;
 
 	public static void setTheme (Theme theme, Component reference) { 
 		
@@ -84,4 +85,11 @@ public abstract class AbstractRenderer {
 		return AbstractRenderer.expColor;
 	}
 	
+	public AbstractRenderer() {
+		this.alternativeColor = null;
+	}
+	
+	public void setAlternativeColor (Color color) {
+		this.alternativeColor = color;
+	}
 }

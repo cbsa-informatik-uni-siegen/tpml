@@ -38,8 +38,6 @@ public class TypeCheckerNodeComponent extends JComponent  implements TreeNodeCom
 	
 	private Dimension														dimension;
 	
-	private boolean															changed;
-	
 	private int																	spacing;
 	
 	private JLabel															indexLabel;
@@ -80,10 +78,9 @@ public class TypeCheckerNodeComponent extends JComponent  implements TreeNodeCom
 		add (this.indexLabel);
 		
 		this.expression = new CompoundExpression<String, Type> ();
-		this.expression.setExpression(node.getExpression());
-		this.expression.setEnvironment(node.getEnvironment());
 		add (this.expression);
-		
+		changeNode ();
+
 		
 		/*
 		 * Create both, the ruleButton for selecting the rule
@@ -127,7 +124,6 @@ public class TypeCheckerNodeComponent extends JComponent  implements TreeNodeCom
 			}
 		});
 		
-		
 	}
 	
 	/**
@@ -139,24 +135,10 @@ public class TypeCheckerNodeComponent extends JComponent  implements TreeNodeCom
 		this.indexLabel.setText("(" + index  + ")");
 	}
 	
-	/**
-	 * Marks this noded as changed.<br>
-	 * <br>
-	 * When this nodes  
-	 * @param changed
-	 */
-	public void markChanged (boolean changed) {
-		this.changed = changed;
-	}
-	
-	public boolean isChanged () {
-		return this.changed;
-	}
 	
 	public void changeNode () {
 		this.expression.setExpression(this.proofNode.getExpression());
 		this.expression.setEnvironment(this.proofNode.getEnvironment());
-		this.changed = true;
 	}
 		
 	private void placeElements (int maxWidth) {
@@ -212,9 +194,9 @@ public class TypeCheckerNodeComponent extends JComponent  implements TreeNodeCom
 		if (this.proofNode.isProven()) {
 			// place the menu label
 			posX = labelSize.width + this.spacing;
-			Dimension ruleLabelSize = this.ruleLabel.getPreferredSize();
-			
 			this.ruleLabel.setText ("(" + this.proofNode.getRule() + ")");
+			
+			Dimension ruleLabelSize = this.ruleLabel.getPreferredSize();
 			this.ruleLabel.setBounds(posX, this.dimension.height + spacing, ruleLabelSize.width, ruleLabelSize.height);
 			
 			this.dimension.height += spacing + ruleLabelSize.height;
@@ -317,12 +299,10 @@ public class TypeCheckerNodeComponent extends JComponent  implements TreeNodeCom
 	 * the menu items will be checked if they are still available.
 	 */
 	public Dimension update (int maxWidth) {
-		if (this.changed) {
-			placeElements (maxWidth);
+		placeElements (maxWidth);
 			
-			this.menuTranslateItem.setEnabled(this.translator.containsSyntacticSugar(this.proofNode.getExpression(), false));
-
-		}
+		this.menuTranslateItem.setEnabled(this.translator.containsSyntacticSugar(this.proofNode.getExpression(), false));
+		
 		
 		return dimension;
 	}

@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.graphics.typechecker;
+package de.unisiegen.tpml.graphics.bigstep;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -13,29 +13,28 @@ import javax.swing.event.TreeModelEvent;
 
 import de.unisiegen.tpml.core.ProofGuessException;
 import de.unisiegen.tpml.core.ProofNode;
-import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel;
-import de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode;
+import de.unisiegen.tpml.core.bigstep.BigStepProofModel;
+import de.unisiegen.tpml.core.bigstep.BigStepProofNode;
 import de.unisiegen.tpml.graphics.AbstractProofComponent;
 import de.unisiegen.tpml.graphics.renderer.TreeArrowRenderer;
 import de.unisiegen.tpml.graphics.tree.TreeNodeLayout;
 
-public class TypeCheckerComponent extends AbstractProofComponent implements Scrollable {
-	
+public class BigStepComponent extends AbstractProofComponent implements Scrollable {
+
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 5184580585827680414L;
-
-	private int													index;
+	private static final long serialVersionUID = 3793854335585017325L;
 
 	private TreeNodeLayout							treeNodeLayout;
 	
-	public TypeCheckerComponent (TypeCheckerProofModel model) {
+	private int													index;
+	
+	public BigStepComponent (BigStepProofModel model) {
 		super (model);
+		this.treeNodeLayout 		= new TreeNodeLayout ();
 		
-		this.treeNodeLayout			= new TreeNodeLayout (10);
-		
-		setLayout (null);
+		setLayout(null);
 		
 		// initialy the tree content has changed
 		treeContentChanged();
@@ -45,13 +44,6 @@ public class TypeCheckerComponent extends AbstractProofComponent implements Scro
 		this.treeNodeLayout.setSpacing(spacing);
 	}
 	
-
-	/**
-	 * Guesses the next unprooven node in the tree.
-	 * 
-	 * @throws IllegalStateException
-	 * @throws ProofGuessException
-	 */
 	public void guess () throws IllegalStateException, ProofGuessException {
     LinkedList<ProofNode> nodes = new LinkedList<ProofNode>();
     nodes.add(this.proofModel.getRoot());
@@ -67,14 +59,106 @@ public class TypeCheckerComponent extends AbstractProofComponent implements Scro
       }
     }
     throw new IllegalStateException("Unable to find next node");
+
+	}
+	
+	private void checkForUserObject (BigStepProofNode node) {
+		if (node == null) {
+			return;
+		}
+		
+		BigStepNodeComponent nodeComponent = (BigStepNodeComponent)node.getUserObject();
+		if (nodeComponent == null) {
+			// if the node has no userobject it may be new in the
+			// tree, so a new TypeCheckerNodeComponent will be created
+			// and added to the TypeCheckerProofNode  
+			nodeComponent = new BigStepNodeComponent (node, (BigStepProofModel)this.proofModel, this.translator);
+			node.setUserObject(nodeComponent);
+			
+			// the newly created nodeComponent is a gui-element so
+			// it needs to get added to the gui
+			add (nodeComponent);
+			
+			// when the node changes the  gui needs to get updated
+			nodeComponent.addBigStepNodeListener(new BigStepNodeListener () {
+				public void nodeChanged (BigStepNodeComponent node) {
+					BigStepComponent.this.relayout();
+				}
+			});
+		}
+
+		// set the index value for the node
+		nodeComponent.setIndex(this.index);
+		++this.index;
+		
+		
+		// the typechecker is a real tree, so its needed to proceed with all
+		// children of the node
+		for (int i=0; i<node.getChildCount(); i++) {
+			BigStepProofNode pNode = node.getChildAt(i);
+			
+			checkForUserObject (pNode);
+		}
+	}
+	
+	/*
+	 * Implementation of the AbstractProofComponent interface 
+	 */
+	
+	@Override
+	protected void nodesChanged(TreeModelEvent event) {
+		Object[] children = event.getChildren();
+		if (children == null) {
+			return;
+		}
+		for (int i=0; i<children.length; i++) {
+			if (children[i] instanceof ProofNode) {
+				BigStepProofNode proofNode = (BigStepProofNode)children[i];
+				if (proofNode.getParent() == null) {
+					System.out.println("rootNode Changed");
+				}
+				
+				BigStepNodeComponent nodeComponent = (BigStepNodeComponent)proofNode.getUserObject();
+				if (nodeComponent != null) {
+					nodeComponent.changeNode ();
+				}
+			}
+		}
+	}
+
+	@Override
+	protected void nodesRemoved(TreeModelEvent event) {
+		Object[] children = event.getChildren();
+		if (children == null) {
+			return;
+		}
+		for (int i=0; i<children.length; i++) {
+			if (children[i] instanceof ProofNode) {
+				BigStepProofNode proofNode = (BigStepProofNode)children[i];
+				
+				BigStepNodeComponent nodeComponent = (BigStepNodeComponent)proofNode.getUserObject();
+				if (nodeComponent != null) {
+					remove (nodeComponent);
+					proofNode.setUserObject(null);
+				}
+			}
+		}
+	}
+
+	@Override
+	protected void treeContentChanged() {
+
+		BigStepProofNode rootNode = (BigStepProofNode)this.proofModel.getRoot();
+		
+		// initiate the index
+		this.index = 1;
+		checkForUserObject(rootNode);
+		relayout ();
 		
 	}
 
-	/**
-	 * Recalculates the layout 
-	 *
-	 */
-	protected void relayout () {
+	@Override
+	protected void relayout() {
 		if (this.currentlyLayouting) {
 			return;
 		}
@@ -83,9 +167,9 @@ public class TypeCheckerComponent extends AbstractProofComponent implements Scro
 		
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run () {
-				TypeCheckerProofNode rootNode = (TypeCheckerProofNode)TypeCheckerComponent.this.proofModel.getRoot();
+				BigStepProofNode rootNode = (BigStepProofNode)BigStepComponent.this.proofModel.getRoot();
 				
-				Point rightBottomPos = treeNodeLayout.placeNodes (rootNode, 20, 20, TypeCheckerComponent.this.availableWidth);
+				Point rightBottomPos = treeNodeLayout.placeNodes (rootNode, 20, 20, BigStepComponent.this.availableWidth);
 				
 				// lets add some border to the space
 				
@@ -100,102 +184,9 @@ public class TypeCheckerComponent extends AbstractProofComponent implements Scro
 				setPreferredSize (size);
 				setSize (size);
 				
-				TypeCheckerComponent.this.currentlyLayouting = false;
+				BigStepComponent.this.currentlyLayouting = false;
 			}
 		});
-	}
-	
-	private void checkForUserObject (TypeCheckerProofNode node) {
-		
-		if (node == null) {
-			return;
-		}
-		TypeCheckerNodeComponent nodeComponent = (TypeCheckerNodeComponent)node.getUserObject();
-		if (nodeComponent == null) {
-			// if the node has no userobject it may be new in the
-			// tree, so a new TypeCheckerNodeComponent will be created
-			// and added to the TypeCheckerProofNode  
-			nodeComponent = new TypeCheckerNodeComponent (node, (TypeCheckerProofModel)this.proofModel, this.translator);
-			node.setUserObject(nodeComponent);
-			
-			// the newly created nodeComponent is a gui-element so
-			// it needs to get added to the gui
-			add (nodeComponent);
-			
-			// when the node changes the  gui needs to get updated
-			nodeComponent.addTypeCheckerNodeListener(new TypeCheckerNodeListener () {
-				public void nodeChanged (TypeCheckerNodeComponent node) {
-					TypeCheckerComponent.this.relayout();
-				}
-				public void requestTypeEnter (TypeCheckerNodeComponent node) {
-					
-				}
-			});
-		}
-		
-		// set the index value for the node
-		nodeComponent.setIndex(this.index);
-		++this.index;
-		
-		
-		// the typechecker is a real tree, so its needed to proceed with all
-		// children of the node
-		for (int i=0; i<node.getChildCount(); i++) {
-			TypeCheckerProofNode pNode = node.getChildAt(i);
-			
-			checkForUserObject (pNode);
-		}
-		
-	}
-
-	/**
-	 * Gets called when the content of the tree has changed.
-	 * 
-	 * If nodes are newly inserted or nodes got removed.
-	 */
-	protected void treeContentChanged () {
-
-		TypeCheckerProofNode rootNode = (TypeCheckerProofNode)this.proofModel.getRoot();
-		
-		// initiate the index
-		this.index = 1;
-		checkForUserObject(rootNode);
-		relayout ();
-		
-	}
-	
-	
-	protected void nodesChanged (TreeModelEvent event) {
-		Object[] children = event.getChildren();
-		if (children == null) {
-			return;
-		}
-		for (int i=0; i<children.length; i++) {
-			if (children[i] instanceof ProofNode) {
-				TypeCheckerProofNode proofNode = (TypeCheckerProofNode)children[i];
-				
-				TypeCheckerNodeComponent nodeComponent = (TypeCheckerNodeComponent)proofNode.getUserObject();
-				if (nodeComponent != null) {
-					nodeComponent.changeNode ();
-				}
-			}
-		}
-		
-	}
-
-	protected void nodesRemoved (TreeModelEvent event) {
-		Object[] children = event.getChildren();
-		for (int i=0; i<children.length; i++) {
-			if (children[i] instanceof ProofNode) {
-				TypeCheckerProofNode proofNode = (TypeCheckerProofNode)children[i];
-				
-				TypeCheckerNodeComponent nodeComponent = (TypeCheckerNodeComponent)proofNode.getUserObject();
-				if (nodeComponent != null) {
-					remove (nodeComponent);
-					proofNode.setUserObject(null);
-				}
-			}
-		}
 	}
 	
 	/**
@@ -215,7 +206,6 @@ public class TypeCheckerComponent extends AbstractProofComponent implements Scro
 		
 	}
 	
-
 	/*
 	 * Implementation of the Scrollable interface
 	 */
@@ -239,5 +229,5 @@ public class TypeCheckerComponent extends AbstractProofComponent implements Scro
 	public int getScrollableUnitIncrement (Rectangle visibleRect, int orientation, int direction) {
 		//  XXX: Dynamic unit increment
 		return 10;
-	}
+	}	
 }

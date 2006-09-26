@@ -229,6 +229,9 @@ public class PrettyStringRenderer extends AbstractRenderer {
 				continue;
 			}
 			
+			if (this.alternativeColor != null) {
+				gc.setColor(this.alternativeColor);
+			}
 			
 			// draw the character and move the position
 			gc.drawString("" + c, posX, posY);

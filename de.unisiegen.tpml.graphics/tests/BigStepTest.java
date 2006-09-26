@@ -4,46 +4,31 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.StringReader;
-import java.util.LinkedList;
 
-import de.unisiegen.tpml.core.ProofNode;
+import de.unisiegen.tpml.core.bigstep.BigStepProofModel;
 import de.unisiegen.tpml.core.languages.Language;
 import de.unisiegen.tpml.core.languages.LanguageFactory;
 import de.unisiegen.tpml.core.languages.LanguageParser;
-import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel;
+import de.unisiegen.tpml.graphics.bigstep.BigStepView;
 import de.unisiegen.tpml.graphics.renderer.AbstractRenderer;
 import de.unisiegen.tpml.graphics.theme.Theme;
-import de.unisiegen.tpml.graphics.typechecker.TypeCheckerView;
 
-public class Main {
+public class BigStepTest {
 	
 	private static String expression = "let rec f = lambda x. if x = 0 then 1 else x * f (x - 1) in f 3";
 	
-	private static TypeCheckerProofModel model;
+	private static BigStepProofModel 	model;
 	
-	private static ProofNode nextNode(TypeCheckerProofModel model) {
-	    LinkedList<ProofNode> nodes = new LinkedList<ProofNode>();
-	    nodes.add(model.getRoot());
-	    while (!nodes.isEmpty()) {
-	      ProofNode node = nodes.poll();
-	      if (node.getSteps().length == 0) {
-	        return node;
-	      }
-	      for (int n = 0; n < node.getChildCount(); ++n) {
-	        nodes.add(node.getChildAt(n));
-	      }
-	    }
-	    throw new IllegalStateException("Unable to find next node");
-	}
+	private static BigStepView				gui;
 	
 	public static void main (String[] args) {
 		try {
 			LanguageFactory lf = LanguageFactory.newInstance();	
 			Language language = lf.getLanguageById("L2");
 			
-			LanguageParser parser = language.newParser(new StringReader(Main.expression));
+			LanguageParser parser = language.newParser(new StringReader(BigStepTest.expression));
 			
-			model = language.newTypeCheckerProofModel(parser.parse());
+			model = language.newBigStepProofModel(parser.parse());
 
 			TestDialog dialog = new TestDialog ();
 			// generate a default theme
@@ -51,7 +36,7 @@ public class Main {
 			AbstractRenderer.setTheme(theme, dialog);
 			
 //			TypeCheckerComponent component = new TypeCheckerComponent (model);
-			TypeCheckerView gui = new TypeCheckerView (model);
+			gui = new BigStepView (model);
 			dialog.setContent(gui);
 			
 			
@@ -67,8 +52,7 @@ public class Main {
 			dialog.guess.addActionListener(new ActionListener() {
 				public void actionPerformed (ActionEvent event) {
 					try {
-						ProofNode node = Main.nextNode(model);
-						model.guess(node);
+						gui.guess();
 					} catch (Exception e) { 
 						e.printStackTrace();
 					} 

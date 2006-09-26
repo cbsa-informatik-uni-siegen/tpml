@@ -1,5 +1,6 @@
 package de.unisiegen.tpml.graphics.renderer;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Rectangle;
@@ -97,6 +98,8 @@ public class EnvironmentRenderer<S, E> extends AbstractRenderer {
 		//
 		// just render the brackets around the environment
 		
+		gc.setColor(this.alternativeColor != null ? this.alternativeColor : Color.BLACK);
+		
 		// the left bracket
 		gc.drawLine (x, y, x + this.bracketSize, y);
 		gc.drawLine (x, y, x, y + height - 1);
@@ -122,13 +125,13 @@ public class EnvironmentRenderer<S, E> extends AbstractRenderer {
 			E e = environment.get(s);
 
 			// render the symbol
-			gc.setColor(AbstractRenderer.keywordColor);
+			gc.setColor(this.alternativeColor != null ? this.alternativeColor : AbstractRenderer.keywordColor);
 			gc.setFont(AbstractRenderer.keywordFont);
 			gc.drawString(s.toString() + ": ", posX, posY);
 			posX += AbstractRenderer.keywordFontMetrics.stringWidth(s.toString() + ": ");
 			
 			// render the entry
-			gc.setColor(AbstractRenderer.envColor);
+			gc.setColor(this.alternativeColor != null ? this.alternativeColor : AbstractRenderer.envColor);
 			gc.setFont(AbstractRenderer.envFont);
 			gc.drawString(e.toString(), posX, posY);
 			posX += AbstractRenderer.envFontMetrics.stringWidth(e.toString());
