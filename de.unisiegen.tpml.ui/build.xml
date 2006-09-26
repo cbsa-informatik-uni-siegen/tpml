@@ -28,7 +28,7 @@
 	<property name="distdir" value="${basedir}/dist" />
 	<property name="classesdir" value="${distdir}/classes" />
 	
-	<target name="dist" depends="dist-graphics,dist-preclean,dist-compile,dist-jar,dist-clean" description="Build distribution">
+	<target name="dist" depends="generate,dist-graphics,dist-preclean,dist-compile,dist-jar,dist-clean" description="Build distribution">
 		<zip destfile="${distdir}/tpml-${de.unisiegen.tpml.ui.version}.zip" update="yes">
 			<fileset dir="${core.distdir}" includes="*.jar" />
 			<fileset dir="${graphics.distdir}" includes="*.jar" />
@@ -88,5 +88,36 @@
 	
 	<target name="dist-clean">
 		<delete dir="${classesdir}" />
+	</target>
+	
+	
+	
+	<!--
+		Autogenerating files (Versions.java)
+	-->
+
+	<property name="generateddir" value="${basedir}/source-generated" />
+	
+	<target name="generate" description="Generate the Versions interface">
+		<mkdir dir="${generateddir}/de/unisiegen/tpml/ui" />
+		<echo file="${generateddir}/de/unisiegen/tpml/ui/Versions.java" append="false">package de.unisiegen.tpml.ui;
+
+/**
+ * Automatically generated interface for the project versions.
+ *
+ * @author Benedikt Meurer
+ * @version $$Ref$$
+ */
+public interface Versions {
+	/** The version of the de.unisiegen.tpml.core subproject. */
+	public static final String CORE = "${de.unisiegen.tpml.core.version}";
+
+	/** The version of the de.unisiegen.tpml.graphics subproject. */
+	public static final String GRAPHICS = "${de.unisiegen.tpml.graphics.version}";
+
+	/** The version of the de.unisiegen.tpml.ui subproject. */
+	public static final String UI = "${de.unisiegen.tpml.ui.version}";
+};
+		</echo>
 	</target>
 </project>
