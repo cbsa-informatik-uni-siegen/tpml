@@ -11,6 +11,7 @@ import de.unisiegen.tpml.graphics.ProofView;
 import de.unisiegen.tpml.graphics.ProofViewFactory;
 import de.unisiegen.tpml.graphics.typechecker.TypeCheckerView;
 import de.unisiegen.tpml.ui.editor.TextEditorPanel;
+import de.unisiegen.tpml.ui.proofview.ProofViewComponent;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -29,7 +30,6 @@ import javax.swing.JToggleButton;
 
 import org.apache.log4j.Logger;
 
-import proofview.ProofViewComponent;
 
 /**
  * Part of the UI displayed in the tabbed pane. It includes one open file and

@@ -598,7 +598,8 @@ public class MainWindow extends javax.swing.JFrame {
 			JFileChooser chooser = new JFileChooser();
 			chooser.showOpenDialog(this);
 			File infile = chooser.getSelectedFile();
-			
+			LanguageFactory langfactory = LanguageFactory.newInstance();
+			Language language = langfactory.getLanguageByFile(infile);
 			if (infile == null) return;
 			
 			StringBuffer buffer = new StringBuffer();
@@ -611,8 +612,8 @@ public class MainWindow extends javax.swing.JFrame {
 			if (infile == null)
 				return;
 
-			LanguageFactory langfactory = LanguageFactory.newInstance();
-			Language language = langfactory.getLanguageByFile(infile);
+			
+			
 			EditorPanel newEditorPanel = new EditorPanel(language);
 			tabbedPane.add(newEditorPanel);
 			tabbedPane.setSelectedComponent(newEditorPanel);
@@ -626,6 +627,9 @@ public class MainWindow extends javax.swing.JFrame {
 
 		} catch (NoSuchLanguageException e) {
 			logger.error("Language returned by the factory does not exist", e);
+			JOptionPane.showMessageDialog(this,
+					"File could not be found.", "Open File",
+					JOptionPane.ERROR_MESSAGE);
 		} catch (FileNotFoundException e) {
 			logger.error("File specified could not be found", e);
 			JOptionPane.showMessageDialog(this,

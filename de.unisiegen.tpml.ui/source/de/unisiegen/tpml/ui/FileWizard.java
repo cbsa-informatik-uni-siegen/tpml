@@ -156,9 +156,19 @@ public class FileWizard extends javax.swing.JDialog {
             public Object getElementAt(int i) { return strings[i]; }
         });
         languagesList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        languagesList.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                languagesListKeyPressed(evt);
+            }
+        });
         languagesList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
             public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
                 languagesListValueChanged(evt);
+            }
+        });
+        languagesList.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                languagesListMouseClicked(evt);
             }
         });
 
@@ -251,6 +261,22 @@ public class FileWizard extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void languagesListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_languagesListMouseClicked
+// TODO add your handling code here:
+        if (evt.getClickCount() == 2) {
+            dispose();
+        }
+    }//GEN-LAST:event_languagesListMouseClicked
+
+    private void languagesListKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_languagesListKeyPressed
+// TODO add your handling code here:
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            if (language != null){
+            dispose();
+            }
+        }
+    }//GEN-LAST:event_languagesListKeyPressed
+
     private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
 // 
         dispose();
@@ -269,7 +295,8 @@ public class FileWizard extends javax.swing.JDialog {
   }//GEN-LAST:event_languagesListValueChanged
 
   private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
-    dispose();
+      language = null;
+      dispose();
   }//GEN-LAST:event_cancelButtonActionPerformed
   
     // Variables declaration - do not modify//GEN-BEGIN:variables

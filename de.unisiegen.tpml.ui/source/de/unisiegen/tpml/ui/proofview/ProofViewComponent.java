@@ -2,7 +2,7 @@
  * TODO add documentation here
  * 
  */
-package proofview;
+package de.unisiegen.tpml.ui.proofview;
 
 import java.awt.BorderLayout;
 
