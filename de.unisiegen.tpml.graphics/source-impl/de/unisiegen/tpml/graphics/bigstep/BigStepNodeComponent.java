@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Point;
+import java.util.Arrays;
 
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -16,6 +17,7 @@ import de.unisiegen.tpml.core.bigstep.BigStepProofNode;
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.expressions.Location;
 import de.unisiegen.tpml.core.languages.LanguageTranslator;
+import de.unisiegen.tpml.graphics.RuleComparator;
 import de.unisiegen.tpml.graphics.components.CompoundExpression;
 import de.unisiegen.tpml.graphics.components.MenuButton;
 import de.unisiegen.tpml.graphics.components.MenuButtonListener;
@@ -98,7 +100,9 @@ public class BigStepNodeComponent extends JComponent implements TreeNodeComponen
 		/*
 		 * Create the PopupMenu for the menu button
 		 */
-		ProofRule[] rule = this.proofModel.getRules();
+		ProofRule[] rule = this.proofModel.getRules().clone();
+		Arrays.<ProofRule>sort(rule, new RuleComparator());
+		
 		JPopupMenu menu = new JPopupMenu ();
 		for (int i=0; i<rule.length; i++) {
 			menu.add (new MenuRuleItem (rule[i]));
