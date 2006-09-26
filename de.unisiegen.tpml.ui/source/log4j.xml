@@ -10,7 +10,7 @@
   </appender> 
 
   <logger name="de.unisiegen.tpml.ui.editor.TextEditorPanel">
-    <level value ="debug" />	
+    <level value ="error" />	
     <appender-ref ref="console" /> 
   </logger>
   

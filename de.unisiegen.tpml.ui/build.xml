@@ -1,0 +1,87 @@
+<?xml version="1.0"?>
+<!--
+	$Id$
+	
+	Copyright (c) 2006 Benedikt Meurer <benny@xfce.org>
+-->
+<project name="de.unisiegen.tpml.ui" default="dist" basedir=".">
+	<description>
+		Buildfile for the de.unisiegen.tpml.ui subproject.
+	</description>
+
+	<property file="${basedir}/build.properties" />
+	
+	<property name="core.basedir" value="${basedir}/../de.unisiegen.tpml.core" />
+	<property name="core.distdir" value="${core.basedir}/dist" />
+	<property file="${core.basedir}/build.properties" />
+	
+	<property name="graphics.basedir" value="${basedir}/../de.unisiegen.tpml.graphics" />
+	<property name="graphics.distdir" value="${graphics.basedir}/dist" />
+	<property file="${graphics.basedir}/build.properties" />
+	
+
+	
+	<!--
+		Build distributions
+	-->
+	
+	<property name="distdir" value="${basedir}/dist" />
+	<property name="classesdir" value="${distdir}/classes" />
+	
+	<target name="dist" depends="dist-graphics,dist-preclean,dist-compile,dist-jar,dist-clean" description="Build distribution">
+		<echo message="Distribution ready in ${distdir}/de.unisiegen.tpml.ui-${de.unisiegen.tpml.ui.version}.jar" />
+	</target>
+	
+	<target name="dist-graphics">
+		<ant dir="${graphics.basedir}" target="dist" inheritall="false" />
+	</target>
+
+	<target name="dist-preclean">
+		<delete dir="${distdir}" />
+		<mkdir dir="${distdir}" />
+	</target>
+		
+	<target name="dist-compile">
+		<delete dir="${classesdir}" />
+		<mkdir dir="${classesdir}" />
+		<javac debug="on" destdir="${classesdir}" encoding="UTF-8" optimize="on" source="1.5" target="1.5">
+			<src path="${basedir}/source" />
+			<classpath>
+				<pathelement location="${core.distdir}/de.unisiegen.tpml.core-${de.unisiegen.tpml.core.version}.jar" />
+				<pathelement location="${core.distdir}/java-cup-11a-runtime.jar" />
+				<pathelement location="${core.distdir}/log4j-1.2.14.jar" />
+				<pathelement location="${graphics.distdir}/de.unisiegen.tpml.graphics-${de.unisiegen.tpml.graphics.version}.jar" />
+			</classpath>
+		</javac>
+	</target>
+	
+	<target name="dist-jar" depends="dist-compile">
+		<manifest file="${distdir}/MANIFEST.MF">
+			<attribute name="Built-By" value="${user.name}" />
+			<attribute name="Main-Class" value="de.unisiegen.tpml.ui.MainWindow" />
+			<attribute name="Class-Path" value="de.unisiegen.tpml.core-${de.unisiegen.tpml.core.version}.jar de.unisiegen.tpml.graphics-${de.unisiegen.tpml.graphics.version}.jar java-cup-11a-runtime.jar log4j-1.2.14.jar" />
+			<section name="de.unisiegen.tpml.ui">
+				<attribute name="Specification-Title" value="TPML UI" />
+				<attribute name="Specification-Version" value="${de.unisiegen.tpml.ui.version}" />
+				<attribute name="Specification-Vendor" value="University of Siegen, Department of Theoretical Computer Science" />
+				<attribute name="Implementation-Title" value="de.unisiegen.tpml.ui" />
+				<attribute name="Implementation-Version" value="${de.unisiegen.tpml.ui.version} ${TODAY}" />
+				<attribute name="Implementation-Vendor" value="University of Siegen, Department of Theoretical Computer Science" />
+			</section>
+		</manifest>
+		<jar jarfile="${distdir}/de.unisiegen.tpml.ui-${de.unisiegen.tpml.ui.version}.jar" manifest="${distdir}/MANIFEST.MF">
+			<fileset dir="${classesdir}" />
+			<fileset dir="${basedir}/source">
+				<include name="**/*.gif"/>
+				<include name="**/*.png"/>
+				<include name="**/*.properties"/>
+				<include name="log4j.xml" />
+			</fileset>
+		</jar>
+		<delete file="${distdir}/MANIFEST.MF" />
+	</target>
+	
+	<target name="dist-clean">
+		<delete dir="${classesdir}" />
+	</target>
+</project>
