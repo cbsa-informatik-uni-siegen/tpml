@@ -17,7 +17,6 @@ import java.io.IOException;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import javax.swing.UIManager;
 
 import org.apache.log4j.Logger;
 
@@ -33,6 +32,10 @@ import de.unisiegen.tpml.core.languages.NoSuchLanguageException;
  * 
  */
 public class MainWindow extends javax.swing.JFrame {
+	/**
+	 * The unique serialization identifier for this class. 
+	 */
+	private static final long serialVersionUID = -3820623104618482450L;
 
 	/** Creates new form MainWindow */
 	public MainWindow() {
@@ -439,22 +442,6 @@ public class MainWindow extends javax.swing.JFrame {
 		handleNew();
 	}// GEN-LAST:event_newButtonActionPerformed
 
-	/**
-	 * @param args
-	 *            the command line arguments
-	 */
-	public static void main(String args[]) {
-	    try {
-	        UIManager.setLookAndFeel(
-	            UIManager.getSystemLookAndFeelClassName());
-	    } catch (Exception e) { }
-		java.awt.EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				new MainWindow().setVisible(true);
-			}
-		});
-	}
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem bigstepItem;
     private javax.swing.JMenuItem closeItem;
@@ -576,7 +563,7 @@ public class MainWindow extends javax.swing.JFrame {
 		try {
 			JFileChooser chooser = new JFileChooser();
 			int returnVal = chooser.showOpenDialog(this);
-			if (returnVal == chooser.APPROVE_OPTION) {
+			if (returnVal == JFileChooser.APPROVE_OPTION) {
 				File infile = chooser.getSelectedFile();
 				LanguageFactory langfactory = LanguageFactory.newInstance();
 				Language language = langfactory.getLanguageByFile(infile);
@@ -656,14 +643,14 @@ public class MainWindow extends javax.swing.JFrame {
 				logger.debug("Close dialog: YES");
 				boolean success = selectedEditor.handleSave();
 				if (success) {
-					tabbedPane.remove(tabbedPane.getSelectedIndex());
+					this.tabbedPane.remove(tabbedPane.getSelectedIndex());
 					this.repaint();
 				}
 				return success;
 
 			case 1: // Do not save changes
 				logger.debug("Close dialog: NO");
-				tabbedPane.remove(tabbedPane.getSelectedIndex());
+				this.tabbedPane.remove(tabbedPane.getSelectedIndex());
 				this.repaint();
 				return true;
 
@@ -675,7 +662,7 @@ public class MainWindow extends javax.swing.JFrame {
 				return false;
 			}
 		} else {
-			tabbedPane.remove(tabbedPane.getSelectedIndex());
+			this.tabbedPane.remove(tabbedPane.getSelectedIndex());
 			this.repaint();
 			return true;
 		}

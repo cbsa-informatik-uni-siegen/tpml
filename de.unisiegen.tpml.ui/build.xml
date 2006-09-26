@@ -51,6 +51,7 @@
 		<mkdir dir="${classesdir}" />
 		<javac debug="on" destdir="${classesdir}" encoding="UTF-8" optimize="on" source="1.5" target="1.5">
 			<src path="${basedir}/source" />
+			<src path="${basedir}/source-generated" />
 			<classpath>
 				<pathelement location="${core.distdir}/de.unisiegen.tpml.core-${de.unisiegen.tpml.core.version}.jar" />
 				<pathelement location="${core.distdir}/java-cup-11a-runtime.jar" />
@@ -63,7 +64,7 @@
 	<target name="dist-jar" depends="dist-compile">
 		<manifest file="${distdir}/MANIFEST.MF">
 			<attribute name="Built-By" value="${user.name}" />
-			<attribute name="Main-Class" value="de.unisiegen.tpml.ui.MainWindow" />
+			<attribute name="Main-Class" value="de.unisiegen.tpml.ui.Main" />
 			<attribute name="Class-Path" value="de.unisiegen.tpml.core-${de.unisiegen.tpml.core.version}.jar de.unisiegen.tpml.graphics-${de.unisiegen.tpml.graphics.version}.jar java-cup-11a-runtime.jar log4j-1.2.14.jar" />
 			<section name="de.unisiegen.tpml.ui">
 				<attribute name="Specification-Title" value="TPML UI" />
