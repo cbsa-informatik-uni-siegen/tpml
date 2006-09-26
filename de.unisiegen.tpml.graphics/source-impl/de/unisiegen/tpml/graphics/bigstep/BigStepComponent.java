@@ -109,6 +109,15 @@ public class BigStepComponent extends AbstractProofComponent implements Scrollab
 	protected void nodesChanged(TreeModelEvent event) {
 		Object[] children = event.getChildren();
 		if (children == null) {
+			// if the children are null and the path only contains one element
+			// this element is the root node.
+			if (event.getPath().length == 1) {
+				BigStepProofNode proofNode = (BigStepProofNode)event.getPath()[0];
+				BigStepNodeComponent nodeComponent = (BigStepNodeComponent)proofNode.getUserObject();
+				if (nodeComponent != null) {
+					nodeComponent.changeNode ();
+				}
+			}
 			return;
 		}
 		for (int i=0; i<children.length; i++) {

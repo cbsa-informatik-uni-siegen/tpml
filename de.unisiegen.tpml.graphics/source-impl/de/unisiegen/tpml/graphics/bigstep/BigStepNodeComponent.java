@@ -85,7 +85,7 @@ public class BigStepNodeComponent extends JComponent implements TreeNodeComponen
 		
 		this.resultExpression		= new CompoundExpression<Location, Expression>();
 		add (this.resultExpression);
-		this.resultExpression.setAlternativeColor(Color.DARK_GRAY);
+		this.resultExpression.setAlternativeColor(Color.LIGHT_GRAY);
 		
 		this.ruleButton 				= new MenuButton ();
 		add (this.ruleButton);
