@@ -267,6 +267,7 @@ public class MainWindow extends javax.swing.JFrame {
 
         editMenu.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("EditMnemonic").charAt(0));
         editMenu.setText("Edit");
+        undoItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Z, java.awt.event.InputEvent.CTRL_MASK));
         undoItem.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("UndoMnemonic").charAt(0));
         undoItem.setText("Undo");
         undoItem.addActionListener(new java.awt.event.ActionListener() {
@@ -277,6 +278,7 @@ public class MainWindow extends javax.swing.JFrame {
 
         editMenu.add(undoItem);
 
+        redoItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Y, java.awt.event.InputEvent.CTRL_MASK));
         redoItem.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("RedoMnemonic").charAt(0));
         redoItem.setText("Redo");
         redoItem.addActionListener(new java.awt.event.ActionListener() {
@@ -303,6 +305,7 @@ public class MainWindow extends javax.swing.JFrame {
 
         runMenu.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("RunMnemonic").charAt(0));
         runMenu.setText("Run");
+        smallstepItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F10, 0));
         smallstepItem.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("SmallStepMnemonic").charAt(0));
         smallstepItem.setText("SmallStep");
         smallstepItem.addActionListener(new java.awt.event.ActionListener() {
@@ -313,6 +316,7 @@ public class MainWindow extends javax.swing.JFrame {
 
         runMenu.add(smallstepItem);
 
+        bigstepItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F11, 0));
         bigstepItem.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("BigStepMnemonic").charAt(0));
         bigstepItem.setText("BigStep");
         bigstepItem.addActionListener(new java.awt.event.ActionListener() {
@@ -323,6 +327,7 @@ public class MainWindow extends javax.swing.JFrame {
 
         runMenu.add(bigstepItem);
 
+        typecheckerItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F12, 0));
         typecheckerItem.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("TypeCheckerMnemonic").charAt(0));
         typecheckerItem.setText("TypeChecker");
         typecheckerItem.addActionListener(new java.awt.event.ActionListener() {
