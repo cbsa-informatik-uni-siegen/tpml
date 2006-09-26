@@ -66,6 +66,9 @@
                   <Image iconType="3" name="/de/unisiegen/tpml/ui/icons/next.png"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="nextButtonActionPerformed"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>

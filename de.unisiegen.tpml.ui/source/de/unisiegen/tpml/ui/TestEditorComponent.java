@@ -6,9 +6,13 @@
 
 package de.unisiegen.tpml.ui;
 
+
 /**
+ * //TODO add documentation here.
  *
- * @author  TPPool15
+ * @author Christoph Fehling
+ * @version $Rev$ 
+ *
  */
 public class TestEditorComponent extends javax.swing.JPanel implements EditorComponent {
     
@@ -267,7 +271,7 @@ public class TestEditorComponent extends javax.swing.JPanel implements EditorCom
         setSaveStatus(false);
         setUndoStatus(false);
         setRedoStatus(false);
-        setNextStatus(false);
+        setNextStatus(true);
     }
 
 	public void setChangeStatus(boolean changeStatus) {

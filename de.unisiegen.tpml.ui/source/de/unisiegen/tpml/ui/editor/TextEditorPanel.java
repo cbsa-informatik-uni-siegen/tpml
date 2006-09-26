@@ -34,12 +34,13 @@ public class TextEditorPanel extends JPanel implements EditorComponent {
 	 * The serial version Identifier.
 	 */
 	private static final long serialVersionUID = -4886621661465144817L;
-	
-	private JEditorPane	editor;
-	
+
+	private JEditorPane editor;
+
 	private StyledLanguageDocument document;
-	
+
 	private JScrollPane scrollpane;
+
 	/**
 	 * TODO add documentation here
 	 * 
@@ -52,237 +53,165 @@ public class TextEditorPanel extends JPanel implements EditorComponent {
 
 	private DocumentListener doclistener;
 
+	private boolean nextStatus;
+
+	private boolean redoStatus;
+
+	private boolean undoStatus;
+
+	private boolean saveStatus;
+
+	private boolean changeStatus;
+
 	/**
 	 * TODO add documentation here
 	 */
 	public TextEditorPanel(Language language) {
-		if (language == null) throw new NullPointerException("language is null");
+		if (language == null)
+			throw new NullPointerException("language is null");
 		setLayout(new BorderLayout());
 		initComponents(language);
 	}
-	
-	private void initComponents (Language language){
+
+	private void initComponents(Language language) {
 		editor = new JEditorPane();
 		document = new StyledLanguageDocument(language);
 		scrollpane = new JScrollPane();
 		doclistener = new TextDocumentListener();
 		undohistory = new Stack<String>();
 		redohistory = new Stack<String>();
-		
-		
-		scrollpane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-		scrollpane.setViewportView (editor);	
-		
+
+		scrollpane
+				.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+		scrollpane.setViewportView(editor);
+
 		editor.setEditorKit(new StyledEditorKit());
 		editor.setDocument(document);
 		editor.setAutoscrolls(false);
-		
+
 		document.addDocumentListener(doclistener);
 
-		undohistory.push("");
+		// undohistory.push("");
 
 		add(scrollpane, BorderLayout.CENTER);
 	}
 
-	/**
-	 * TODO add documentation here
-	 * 
-	 * {@inheritDoc}
-	 * 
-	 * @see de.unisiegen.tpml.ui.EditorComponent#isNextStatus()
-	 */
 	public boolean isNextStatus() {
-		// TODO Auto-generated method stub
-		return false;
+		return nextStatus;
 	}
 
-	/**
-	 * TODO add documentation here
-	 * 
-	 * {@inheritDoc}
-	 * 
-	 * @see de.unisiegen.tpml.ui.EditorComponent#setNextStatus(boolean)
-	 */
 	public void setNextStatus(boolean nextStatus) {
-		// TODO Auto-generated method stub
-
+		firePropertyChange("nextStatus", this.nextStatus, nextStatus);
+		this.nextStatus = nextStatus;
 	}
 
-	/**
-	 * TODO add documentation here
-	 * 
-	 * {@inheritDoc}
-	 * 
-	 * @see de.unisiegen.tpml.ui.EditorComponent#isRedoStatus()
-	 */
 	public boolean isRedoStatus() {
-		// TODO Auto-generated method stub
-		return false;
+		return redoStatus;
 	}
 
-	/**
-	 * TODO add documentation here
-	 * 
-	 * {@inheritDoc}
-	 * 
-	 * @see de.unisiegen.tpml.ui.EditorComponent#setRedoStatus(boolean)
-	 */
 	public void setRedoStatus(boolean redoStatus) {
-		// TODO Auto-generated method stub
-
+		firePropertyChange("redoStatus", this.redoStatus, redoStatus);
+		this.redoStatus = redoStatus;
 	}
 
-	/**
-	 * TODO add documentation here
-	 * 
-	 * {@inheritDoc}
-	 * 
-	 * @see de.unisiegen.tpml.ui.EditorComponent#isSaveStatus()
-	 */
 	public boolean isSaveStatus() {
-		// TODO Auto-generated method stub
-		return false;
+		return saveStatus;
 	}
 
-	/**
-	 * TODO add documentation here
-	 * 
-	 * {@inheritDoc}
-	 * 
-	 * @see de.unisiegen.tpml.ui.EditorComponent#setSaveStatus(boolean)
-	 */
 	public void setSaveStatus(boolean saveStatus) {
-		// TODO Auto-generated method stub
-
+		firePropertyChange("saveStatus", this.saveStatus, saveStatus);
+		this.saveStatus = saveStatus;
 	}
 
-	/**
-	 * TODO add documentation here
-	 * 
-	 * {@inheritDoc}
-	 * 
-	 * @see de.unisiegen.tpml.ui.EditorComponent#isUndoStatus()
-	 */
 	public boolean isUndoStatus() {
+		return undoStatus;
+	}
+
+	public void setUndoStatus(boolean undoStatus) {
+		firePropertyChange("undoStatus", this.undoStatus, undoStatus);
+		this.undoStatus = undoStatus;
+	}
+
+	public void setDefaultStates() {
+		setSaveStatus(false);
+		setUndoStatus(false);
+		setRedoStatus(false);
+		setNextStatus(false);
+	}
+
+	public void setChangeStatus(boolean changeStatus) {
+		firePropertyChange("changeStatus", this.changeStatus, changeStatus);
+		this.changeStatus = changeStatus;
+	}
+
+	public boolean isChangeStatus() {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	/**
-	 * TODO add documentation here
-	 * 
-	 * {@inheritDoc}
-	 * 
-	 * @see de.unisiegen.tpml.ui.EditorComponent#setUndoStatus(boolean)
-	 */
-	public void setUndoStatus(boolean undoStatus) {
-		// TODO Auto-generated method stub
+	public String getText() {
+		try {
+			return document.getText(0, document.getLength());
+		} catch (BadLocationException e) {
+			logger.error("Cannot get Text from document", e);
+		}
+		return "";
+	}
+
+	public void setText(String text) {
+		try {
+			document.removeDocumentListener(doclistener);
+			document.remove(0, document.getLength());
+			document.insertString(0, text, null);
+			redohistory.clear();
+			undohistory.clear();
+			undohistory.push(text);
+			document.addDocumentListener(doclistener);
+		} catch (BadLocationException e) {
+			logger.error("Cannot set Text of the document", e);
+		}
 
 	}
 
 	/**
-	 * TODO add documentation here
+	 * //TODO add documentation here and clean everything up
 	 * 
-	 * {@inheritDoc}
+	 * @author Christoph Fehling
+	 * @version $Rev$
 	 * 
-	 * @see de.unisiegen.tpml.ui.EditorComponent#isChangeStatus()
 	 */
-	public boolean isChangeStatus() {
-		return changed;
-	}
-
-	/**
-	 * TODO add documentation here
-	 * 
-	 * {@inheritDoc}
-	 * 
-	 * @see de.unisiegen.tpml.ui.EditorComponent#setChangeStatus(boolean)
-	 */
-	public void setChangeStatus(boolean changeStatus) {
-		// TODO Auto-generated method stub
-
-	}
-
-	/**
-	 * TODO add documentation here
-	 * 
-	 * {@inheritDoc}
-	 * 
-	 * @see de.unisiegen.tpml.ui.EditorComponent#setDefaultStates()
-	 */
-	public void setDefaultStates() {
-		// TODO Auto-generated method stub
-
-	}
-
-	/**
-	 * TODO add documentation here
-	 * 
-	 * {@inheritDoc}
-	 * 
-	 * @see de.unisiegen.tpml.ui.EditorComponent#handleNext()
-	 */
-	public void handleNext() {
-		// TODO Auto-generated method stub
-
-	}
-
-	/**
-	 * TODO add documentation here
-	 * 
-	 * {@inheritDoc}
-	 * 
-	 * @see de.unisiegen.tpml.ui.EditorComponent#handleRedo()
-	 */
-	public void handleRedo() {
-		// TODO Auto-generated method stub
-
-	}
-
-	/**
-	 * TODO add documentation here
-	 * 
-	 * {@inheritDoc}
-	 * 
-	 * @see de.unisiegen.tpml.ui.EditorComponent#handleUndo()
-	 */
-	public void handleUndo() {
-		// TODO Auto-generated method stub
-
-	}
-
 	private class TextDocumentListener implements DocumentListener {
 		public void insertUpdate(DocumentEvent arg0) {
-			try{
-			if (!TextEditorPanel.this.isChangeStatus()) {
+			try {
 				TextEditorPanel.this.setChangeStatus(true);
-			}
-			String doctext = arg0.getDocument().getText(0,
-					arg0.getDocument().getLength());
-			undohistory.push(doctext);
-			setUndoStatus(true);
-			setRedoStatus(false);
-			redohistory.clear();
-			logger.debug("Text inserted into editor.");
-			}
-			catch (BadLocationException e){
+				String doctext = arg0.getDocument().getText(0,
+						arg0.getDocument().getLength());
+				if (doctext.endsWith(" ")) {
+					undohistory.push(doctext);
+					logger.debug("history added: " + doctext);
+				}
+				setUndoStatus(true);
+				setRedoStatus(false);
+				redohistory.clear();
+			} catch (BadLocationException e) {
 				logger.debug("Failed to add text to undo history", e);
 			}
 		}
 
 		public void removeUpdate(DocumentEvent arg0) {
-			try{
-			if (!TextEditorPanel.this.isChangeStatus()) {
+			try {
 				TextEditorPanel.this.setChangeStatus(true);
-			}
-			undohistory.push(arg0.getDocument().getText(0,
-					arg0.getDocument().getLength()));
-			setUndoStatus(true);
-			setRedoStatus(false);
-			redohistory.clear();
-			logger.debug("Text removed from editor.");
-			}
-			catch (BadLocationException e){
+
+				String doctext = arg0.getDocument().getText(0,
+						arg0.getDocument().getLength());
+				if (doctext.endsWith(" ")) {
+					undohistory.push(doctext);
+					logger.debug("history added: " + doctext);
+				}
+				setUndoStatus(true);
+				setRedoStatus(false);
+				redohistory.clear();
+			} catch (BadLocationException e) {
 				logger.debug("Failed to add text to undo history", e);
 			}
 		}
@@ -290,4 +219,54 @@ public class TextEditorPanel extends JPanel implements EditorComponent {
 		public void changedUpdate(DocumentEvent arg0) {
 		}
 	}
+
+	public void handleNext() {
+		// TODO Auto-generated method stub
+
+	}
+
+	public void handleRedo() {
+		try {
+			document.removeDocumentListener(doclistener);
+			document.remove(0, document.getLength());
+			document.insertString(0, redohistory.pop(), null);
+			document.addDocumentListener(doclistener);
+			undohistory.push(document.getText(0, document.getLength()));
+			setUndoStatus(true);
+			if (redohistory.size() == 0)
+				setRedoStatus(false);
+		} catch (BadLocationException e) {
+			logger.error("Cannot handle an undo", e);
+		}
+
+	}
+
+	public void handleUndo() {
+		try {
+			document.removeDocumentListener(doclistener);
+			String doctext = document.getText(0, document.getLength());
+			String historytext;
+			if (undohistory.isEmpty()) {
+				historytext = "";
+			} else {
+				historytext = undohistory.pop();
+			}		
+			
+			document.remove(0, document.getLength());
+			document.insertString(0, historytext, null);
+			document.addDocumentListener(doclistener);
+			redohistory.add(doctext);
+			if (historytext.equals(""))
+				setUndoStatus(false);
+			setRedoStatus(true);
+		} catch (BadLocationException e) {
+			logger.error("Cannot handle an undo", e);
+		}
+
+	}
+
+	public StyledLanguageDocument getDocument() {
+		return document;
+	}
+
 }
