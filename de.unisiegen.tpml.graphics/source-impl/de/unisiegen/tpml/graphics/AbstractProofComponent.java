@@ -38,6 +38,7 @@ public abstract class AbstractProofComponent extends JComponent {
 				AbstractProofComponent.this.relayout ();
 			}
 			public void treeNodesInserted (TreeModelEvent e) {
+				AbstractProofComponent.this.nodesInserted (e);
 				AbstractProofComponent.this.treeContentChanged ();
 			}
 			public void treeNodesRemoved (TreeModelEvent e) {
@@ -50,6 +51,8 @@ public abstract class AbstractProofComponent extends JComponent {
 		});
 		
 	}
+	
+	protected abstract void nodesInserted (TreeModelEvent event);
 	
 	protected abstract void nodesChanged (TreeModelEvent event);
 	

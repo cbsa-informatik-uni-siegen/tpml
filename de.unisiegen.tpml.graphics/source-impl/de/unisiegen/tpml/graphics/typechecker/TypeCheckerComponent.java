@@ -30,10 +30,16 @@ public class TypeCheckerComponent extends AbstractProofComponent implements Scro
 
 	private TreeNodeLayout							treeNodeLayout;
 	
+	private ProofNode										newNodeTop;
+	
+	private ProofNode										newNodeBottom;
+	
 	public TypeCheckerComponent (TypeCheckerProofModel model) {
 		super (model);
 		
 		this.treeNodeLayout			= new TreeNodeLayout (10);
+		this.newNodeTop					= null;
+		this.newNodeBottom			= null;
 		
 		setLayout (null);
 		
@@ -101,6 +107,7 @@ public class TypeCheckerComponent extends AbstractProofComponent implements Scro
 				setSize (size);
 				
 				TypeCheckerComponent.this.currentlyLayouting = false;
+				TypeCheckerComponent.this.jumpToNodeVisible ();
 			}
 		});
 	}
@@ -164,6 +171,27 @@ public class TypeCheckerComponent extends AbstractProofComponent implements Scro
 		
 	}
 	
+	protected void nodesInserted (TreeModelEvent event) {
+		Object [] children = event.getChildren();
+
+		// find the bottom and the top element that have been
+		// inserted. when getting next to the relayout function
+		// it gets tried to scroll this area visible
+		if (children != null) {
+			
+			// only problem with this could occure when
+			// then children[0] element isn't the topmost element
+			// in the tree that has been inserted and childre[x-1] isn't
+			// the last. at this condition that behaviour is undefined
+			this.newNodeTop = (ProofNode)children [0];
+			this.newNodeBottom = (ProofNode)children[children.length-1];
+		}
+		else {
+			this.newNodeTop = null;
+			this.newNodeBottom = null;
+		}
+	}
+	
 	
 	protected void nodesChanged (TreeModelEvent event) {
 		Object[] children = event.getChildren();
@@ -224,6 +252,39 @@ public class TypeCheckerComponent extends AbstractProofComponent implements Scro
 		TreeArrowRenderer.renderArrows (rootNode, treeNodeLayout.getSpacing (), gc);
 		
 		
+	}
+	
+	private void jumpToNodeVisible () {
+		if (this.newNodeTop == null || this.newNodeBottom == null) {
+			return;
+		}
+		
+		// get the Component nodes to evaluate the positions
+		// on the viewport
+		TypeCheckerNodeComponent topNode = (TypeCheckerNodeComponent)this.newNodeTop.getUserObject();
+		if (topNode == null) {
+			return;
+		}
+		TypeCheckerNodeComponent bottomNode = (TypeCheckerNodeComponent)this.newNodeBottom.getUserObject();
+		if (bottomNode == null) {
+			return;
+		}
+		
+		// get the visible rect to ensure the x coordinate is in the 
+		// visible area. only vertical scolling is requested
+		Rectangle visibleRect = this.getVisibleRect();
+		
+		Rectangle rect = new Rectangle ();
+		rect.x = visibleRect.x;
+		rect.width = 1;
+		
+		// the visible height is from the top of the topElement
+		// top element to the bottom of the bottomElement
+		rect.y = topNode.getBounds().y;
+		rect.height = (bottomNode.getBounds().y + bottomNode.getBounds().height) - rect.y;
+		
+		this.scrollRectToVisible(rect);
+
 	}
 	
 

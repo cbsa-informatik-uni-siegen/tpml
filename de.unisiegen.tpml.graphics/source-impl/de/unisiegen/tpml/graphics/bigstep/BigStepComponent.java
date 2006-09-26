@@ -30,9 +30,16 @@ public class BigStepComponent extends AbstractProofComponent implements Scrollab
 	
 	private int													index;
 	
+	private ProofNode										newNodeTop;
+	
+	private ProofNode										newNodeBottom;
+	
+	private int													border;
+	
 	public BigStepComponent (BigStepProofModel model) {
 		super (model);
 		this.treeNodeLayout 		= new TreeNodeLayout ();
+		this.border							= 20;
 		
 		setLayout(null);
 		
@@ -104,6 +111,27 @@ public class BigStepComponent extends AbstractProofComponent implements Scrollab
 	/*
 	 * Implementation of the AbstractProofComponent interface 
 	 */
+	@Override
+	protected void nodesInserted(TreeModelEvent event) {
+		Object [] children = event.getChildren();
+
+		// find the bottom and the top element that have been
+		// inserted. when getting next to the relayout function
+		// it gets tried to scroll this area visible
+		if (children != null) {
+			
+			// only problem with this could occure when
+			// then children[0] element isn't the topmost element
+			// in the tree that has been inserted and childre[x-1] isn't
+			// the last. at this condition that behaviour is undefined
+			this.newNodeTop = (ProofNode)children [0];
+			this.newNodeBottom = (ProofNode)children[children.length-1];
+		}
+		else {
+			this.newNodeTop = null;
+			this.newNodeBottom = null;
+		}
+	}
 	
 	@Override
 	protected void nodesChanged(TreeModelEvent event) {
@@ -178,12 +206,12 @@ public class BigStepComponent extends AbstractProofComponent implements Scrollab
 			public void run () {
 				BigStepProofNode rootNode = (BigStepProofNode)BigStepComponent.this.proofModel.getRoot();
 				
-				Point rightBottomPos = treeNodeLayout.placeNodes (rootNode, 20, 20, BigStepComponent.this.availableWidth);
+				Point rightBottomPos = treeNodeLayout.placeNodes (rootNode, BigStepComponent.this.border, BigStepComponent.this.border, BigStepComponent.this.availableWidth);
 				
 				// lets add some border to the space
 				
-				rightBottomPos.x += 20;
-				rightBottomPos.y += 20;
+				rightBottomPos.x += BigStepComponent.this.border;
+				rightBottomPos.y += BigStepComponent.this.border;
 				
 				Dimension size = new Dimension (rightBottomPos.x, rightBottomPos.y);
 				
@@ -194,6 +222,7 @@ public class BigStepComponent extends AbstractProofComponent implements Scrollab
 				setSize (size);
 				
 				BigStepComponent.this.currentlyLayouting = false;
+				BigStepComponent.this.jumpToNodeVisible();
 			}
 		});
 	}
@@ -212,7 +241,41 @@ public class BigStepComponent extends AbstractProofComponent implements Scrollab
 		ProofNode rootNode = (ProofNode)this.proofModel.getRoot();
 		TreeArrowRenderer.renderArrows (rootNode, treeNodeLayout.getSpacing (), gc);
 		
+	}
+	
+	private void jumpToNodeVisible () {
+		if (this.newNodeTop == null || this.newNodeBottom == null) {
+			return;
+		}
 		
+		// get the Component nodes to evaluate the positions
+		// on the viewport
+		BigStepNodeComponent topNode = (BigStepNodeComponent)this.newNodeTop.getUserObject();
+		if (topNode == null) {
+			return;
+		}
+		BigStepNodeComponent bottomNode = (BigStepNodeComponent)this.newNodeBottom.getUserObject();
+		if (bottomNode == null) {
+			return;
+		}
+		
+		// get the visible rect to ensure the x coordinate is in the 
+		// visible area. only vertical scolling is requested
+		Rectangle visibleRect = this.getVisibleRect();
+		
+		Rectangle rect = new Rectangle ();
+		rect.x = visibleRect.x;
+		rect.width = 1;
+		
+		// the visible height is from the top of the topElement
+		// top element to the bottom of the bottomElement
+		// the border is added on both sided to get a smoother scrolling
+		rect.y = topNode.getBounds().y - this.border;
+		rect.height = ((bottomNode.getBounds().y + bottomNode.getBounds().height) - rect.y) + this.border * 2;
+		
+		
+		this.scrollRectToVisible(rect);
+
 	}
 	
 	/*
