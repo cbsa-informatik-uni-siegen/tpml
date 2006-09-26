@@ -29,7 +29,12 @@
 	<property name="classesdir" value="${distdir}/classes" />
 	
 	<target name="dist" depends="dist-graphics,dist-preclean,dist-compile,dist-jar,dist-clean" description="Build distribution">
-		<echo message="Distribution ready in ${distdir}/de.unisiegen.tpml.ui-${de.unisiegen.tpml.ui.version}.jar" />
+		<zip destfile="${distdir}/tpml-${de.unisiegen.tpml.ui.version}.zip" update="yes">
+			<fileset dir="${core.distdir}" includes="*.jar" />
+			<fileset dir="${graphics.distdir}" includes="*.jar" />
+			<fileset dir="${distdir}" includes="*.jar" />
+		</zip>
+		<echo message="Distribution ready in ${distdir}/tpml-${de.unisiegen.tpml.ui.version}.zip" />
 	</target>
 	
 	<target name="dist-graphics">
