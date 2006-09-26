@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="source"/>
+	<classpathentry kind="src" path="source-generated"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/j2sdk1.5"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/de.unisiegen.tpml.core"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/de.unisiegen.tpml.graphics"/>
-	<classpathentry kind="src" path="source-generated"/>
 	<classpathentry kind="output" path="build"/>
 </classpath>
