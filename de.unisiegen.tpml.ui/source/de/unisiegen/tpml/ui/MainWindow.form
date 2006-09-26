@@ -236,7 +236,6 @@
   </NonVisualComponents>
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="0"/>
-    <Property name="title" type="java.lang.String" value="TPML v0.1"/>
     <Property name="name" type="java.lang.String" value="mainframe"/>
   </Properties>
   <SyntheticProperties>

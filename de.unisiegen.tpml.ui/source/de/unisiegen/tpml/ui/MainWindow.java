@@ -36,6 +36,8 @@ public class MainWindow extends javax.swing.JFrame {
 	/** Creates new form MainWindow */
 	public MainWindow() {
 		initComponents();
+		
+		setTitle("TPML " +Versions.UI);
 		// TODO clean up the setting of states
 		setGeneralStates(false);
 		saveItem.setEnabled(false);
@@ -106,7 +108,6 @@ public class MainWindow extends javax.swing.JFrame {
         typecheckerItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
-        setTitle("TPML v0.1");
         setName("mainframe");
         newButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/new.png")));
         newButton.setToolTipText("New File");
