@@ -47,6 +47,13 @@ public class TextEditorPanel extends JPanel implements EditorComponent {
 	 */
 	private boolean changed;
 
+	
+	/**
+	 * The initial content of this file
+	 * 
+	 */
+	private String initialContent;
+	
 	private Stack<String> undohistory;
 
 	private Stack<String> redohistory;
@@ -78,6 +85,7 @@ public class TextEditorPanel extends JPanel implements EditorComponent {
 		document = new StyledLanguageDocument(language);
 		scrollpane = new JScrollPane();
 		doclistener = new TextDocumentListener();
+		initialContent = "";
 		undohistory = new Stack<String>();
 		redohistory = new Stack<String>();
 
@@ -91,7 +99,7 @@ public class TextEditorPanel extends JPanel implements EditorComponent {
 
 		document.addDocumentListener(doclistener);
 
-		// undohistory.push("");
+		undohistory.push("");
 
 		add(scrollpane, BorderLayout.CENTER);
 	}
@@ -160,12 +168,19 @@ public class TextEditorPanel extends JPanel implements EditorComponent {
 
 	public void setText(String text) {
 		try {
+			initialContent = text;
+			
 			document.removeDocumentListener(doclistener);
+
 			document.remove(0, document.getLength());
 			document.insertString(0, text, null);
+			setRedoStatus(false);
 			redohistory.clear();
+			setUndoStatus(false);
 			undohistory.clear();
+			
 			undohistory.push(text);
+
 			document.addDocumentListener(doclistener);
 		} catch (BadLocationException e) {
 			logger.error("Cannot set Text of the document", e);
@@ -184,6 +199,7 @@ public class TextEditorPanel extends JPanel implements EditorComponent {
 		public void insertUpdate(DocumentEvent arg0) {
 			try {
 				TextEditorPanel.this.setChangeStatus(true);
+
 				String doctext = arg0.getDocument().getText(0,
 						arg0.getDocument().getLength());
 				if (doctext.endsWith(" ")) {
@@ -191,10 +207,11 @@ public class TextEditorPanel extends JPanel implements EditorComponent {
 					logger.debug("history added: " + doctext);
 				}
 				setUndoStatus(true);
+
 				setRedoStatus(false);
 				redohistory.clear();
 			} catch (BadLocationException e) {
-				logger.debug("Failed to add text to undo history", e);
+				logger.error("Failed to add text to undo history", e);
 			}
 		}
 
@@ -209,10 +226,11 @@ public class TextEditorPanel extends JPanel implements EditorComponent {
 					logger.debug("history added: " + doctext);
 				}
 				setUndoStatus(true);
+
 				setRedoStatus(false);
 				redohistory.clear();
 			} catch (BadLocationException e) {
-				logger.debug("Failed to add text to undo history", e);
+				logger.error("Failed to add text to undo history", e);
 			}
 		}
 
@@ -228,37 +246,42 @@ public class TextEditorPanel extends JPanel implements EditorComponent {
 	public void handleRedo() {
 		try {
 			document.removeDocumentListener(doclistener);
+			
+			undohistory.push(document.getText(0, document.getLength()));
 			document.remove(0, document.getLength());
 			document.insertString(0, redohistory.pop(), null);
-			document.addDocumentListener(doclistener);
-			undohistory.push(document.getText(0, document.getLength()));
+					
 			setUndoStatus(true);
+			document.addDocumentListener(doclistener);
 			if (redohistory.size() == 0)
 				setRedoStatus(false);
 		} catch (BadLocationException e) {
 			logger.error("Cannot handle an undo", e);
 		}
-
 	}
 
 	public void handleUndo() {
 		try {
 			document.removeDocumentListener(doclistener);
+
 			String doctext = document.getText(0, document.getLength());
 			String historytext;
-			if (undohistory.isEmpty()) {
-				historytext = "";
-			} else {
+
+			if (undohistory.peek().equals(initialContent)){
+				historytext = undohistory.peek();
+				setUndoStatus(false);
+			}
+			else{
 				historytext = undohistory.pop();
-			}		
-			
+			}
+
 			document.remove(0, document.getLength());
 			document.insertString(0, historytext, null);
-			document.addDocumentListener(doclistener);
+
 			redohistory.add(doctext);
-			if (historytext.equals(""))
-				setUndoStatus(false);
 			setRedoStatus(true);
+
+			document.addDocumentListener(doclistener);
 		} catch (BadLocationException e) {
 			logger.error("Cannot handle an undo", e);
 		}
