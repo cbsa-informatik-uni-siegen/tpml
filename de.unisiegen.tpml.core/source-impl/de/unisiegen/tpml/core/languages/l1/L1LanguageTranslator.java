@@ -88,7 +88,7 @@ public class L1LanguageTranslator extends L0LanguageTranslator {
       
       // add the lambdas
       for (int n = curriedLet.getIdentifiers().length - 1; n > 0; --n) {
-        e1 = new Lambda(curriedLet.getIdentifiers(n), null, e1);
+        e1 = new Lambda(curriedLet.getIdentifiers(n), curriedLet.getTypes(n), e1);
       }
       
       // generate the let expression

@@ -7,7 +7,7 @@ import java.util.TreeSet;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
-import de.unisiegen.tpml.core.util.StringUtilities;
+import de.unisiegen.tpml.core.types.MonoType;
 
 /**
  * Instances of this class represent curried let rec expressions in the expression
@@ -30,15 +30,21 @@ public final class CurriedLetRec extends CurriedLet {
    * @param identifiers an array with atleast two identifiers, where the first identifier is the name
    *                    to use for the function and the remaining identifiers specify the parameters for
    *                    the function.
+   * @param types the types for the <code>identifiers</code>, see {@link CurriedLet#getTypes()} for
+   *              an extensive description.
    * @param e1 the function body.
    * @param e2 the second expression.
    * 
-   * @throws IllegalArgumentException if the <code>identifiers</code> array contains less than two identifiers.
-   * @throws NullPointerException if <code>identifiers</code>, <code>e1</code> or <code>e2</code>
-   *                              is <code>null</code>.
+   * @throws IllegalArgumentException if the <code>identifiers</code> array contains less than two
+   *                                  identifiers, or the arity of <code>identifiers</code> and
+   *                                  <code>types</code> does not match.
+   * @throws NullPointerException if <code>identifiers</code>, <code>types</code>, <code>e1</code> or
+   *                              <code>e2</code> is <code>null</code>.
+   * 
+   * @see CurriedLet#CurriedLet(String[], MonoType[], Expression, Expression)
    */
-  public CurriedLetRec(String[] identifiers, Expression e1, Expression e2) {
-    super(identifiers, e1, e2);
+  public CurriedLetRec(String[] identifiers, MonoType[] types, Expression e1, Expression e2) {
+    super(identifiers, types, e1, e2);
   }
   
   
@@ -76,7 +82,11 @@ public final class CurriedLetRec extends CurriedLet {
    */
   @Override
   public CurriedLetRec substitute(TypeSubstitution substitution) {
-    return new CurriedLetRec(this.identifiers, this.e1.substitute(substitution), this.e2.substitute(substitution));
+    MonoType[] types = new MonoType[this.types.length];
+    for (int n = 0; n < types.length; ++n) {
+      types[n] = (this.types[n] != null) ? this.types[n].substitute(substitution) : null;
+    }
+    return new CurriedLetRec(this.identifiers, types, this.e1.substitute(substitution), this.e2.substitute(substitution));
   }
   
   /**
@@ -114,7 +124,7 @@ public final class CurriedLetRec extends CurriedLet {
       e2 = e2.substitute(id, e);
     
     // generate the new expression
-    return new CurriedLetRec(identifiers, e1, e2);
+    return new CurriedLetRec(identifiers, this.types, e1, e2);
   }
   
   
@@ -128,12 +138,30 @@ public final class CurriedLetRec extends CurriedLet {
    *
    * @see de.unisiegen.tpml.core.expressions.CurriedLet#toPrettyStringBuilder(de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory)
    */
-  public @Override PrettyStringBuilder toPrettyStringBuilder(PrettyStringBuilderFactory factory) {
+  @Override
+  public PrettyStringBuilder toPrettyStringBuilder(PrettyStringBuilderFactory factory) {
     PrettyStringBuilder builder = factory.newBuilder(this, PRIO_LET);
     builder.addKeyword("let");
     builder.addText(" ");
     builder.addKeyword("rec");
-    builder.addText(" " + StringUtilities.join(" ", this.identifiers) + " = ");
+    builder.addText(" " + this.identifiers[0]);
+    for (int n = 1; n < this.identifiers.length; ++n) {
+      builder.addText(" ");
+      if (this.types[n] != null) {
+        builder.addText("(");
+      }
+      builder.addText(this.identifiers[n]);
+      if (this.types[n] != null) {
+        builder.addText(": ");
+        builder.addBuilder(this.types[n].toPrettyStringBuilder(factory), PRIO_LET_TAU);
+        builder.addText(")");
+      }
+    }
+    if (this.types[0] != null) {
+      builder.addText(": ");
+      builder.addBuilder(this.types[0].toPrettyStringBuilder(factory), PRIO_LET_TAU);
+    }
+    builder.addText(" = ");
     builder.addBuilder(this.e1.toPrettyStringBuilder(factory), PRIO_LET_E1);
     builder.addBreak();
     builder.addText(" ");

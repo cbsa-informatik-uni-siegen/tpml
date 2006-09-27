@@ -35,7 +35,7 @@ public class SmallStepProofModelTest extends JFrame {
   /**
    * Simple test expression.
    */
-  private static final String SIMPLE = "(lambda (x,y):int*int.x+y) (1,9)";
+  private static final String SIMPLE = "let f (x:int) (y:int):int = x + y in f 1 2";
 
   
   

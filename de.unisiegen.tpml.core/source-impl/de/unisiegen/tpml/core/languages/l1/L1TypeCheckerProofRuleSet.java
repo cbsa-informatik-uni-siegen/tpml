@@ -290,21 +290,29 @@ public class L1TypeCheckerProofRuleSet extends AbstractTypeCheckerProofRuleSet {
       }
     }
     else {
-      // generate a new type variable
-      TypeVariable tau1 = context.newTypeVariable();
-      
       // determine the first sub expression
       CurriedLet curriedLet = (CurriedLet)expression;
       Expression e1 = curriedLet.getE1();
       
       // generate the appropriate lambda abstractions
+      MonoType[] types = curriedLet.getTypes();
       String[] identifiers = curriedLet.getIdentifiers();
       for (int n = identifiers.length - 1; n > 0; --n) {
-        e1 = new Lambda(identifiers[n], null, e1);
+        e1 = new Lambda(identifiers[n], types[n], e1);
+      }
+      
+      // generate the type of the function
+      MonoType tau1 = types[0];
+      if (tau1 == null) {
+        tau1 = context.newTypeVariable();
+      }
+      for (int n = 1; n < types.length; ++n) {
+        tau1 = new ArrowType((types[n] != null) ? types[n] : context.newTypeVariable(), tau1);
       }
       
       // add the recursion for let rec
       if (expression instanceof CurriedLetRec) {
+        // add the recursion
         e1 = new Recursion(identifiers[0], tau1, e1);
       }
       

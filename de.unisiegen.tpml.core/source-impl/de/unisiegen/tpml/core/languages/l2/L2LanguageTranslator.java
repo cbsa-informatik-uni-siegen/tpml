@@ -7,6 +7,8 @@ import de.unisiegen.tpml.core.expressions.Let;
 import de.unisiegen.tpml.core.expressions.LetRec;
 import de.unisiegen.tpml.core.expressions.Recursion;
 import de.unisiegen.tpml.core.languages.l1.L1LanguageTranslator;
+import de.unisiegen.tpml.core.types.ArrowType;
+import de.unisiegen.tpml.core.types.MonoType;
 
 /**
  * Language translator for the <code>L2</code> language.
@@ -45,6 +47,7 @@ public class L2LanguageTranslator extends L1LanguageTranslator {
     if (expression instanceof CurriedLetRec) {
       // translate to: let id1 = rec id1.lambda id2...lambda idn.e1 in e2
       CurriedLetRec curriedLetRec = (CurriedLetRec)expression;
+      MonoType[] types = curriedLetRec.getTypes();
       Expression e1 = curriedLetRec.getE1();
       
       // check if we should recurse
@@ -54,11 +57,23 @@ public class L2LanguageTranslator extends L1LanguageTranslator {
       
       // add the lambdas
       for (int n = curriedLetRec.getIdentifiers().length - 1; n > 0; --n) {
-        e1 = new Lambda(curriedLetRec.getIdentifiers(n), null, e1);
+        e1 = new Lambda(curriedLetRec.getIdentifiers(n), types[n], e1);
+      }
+      
+      // try to generate a recursive type
+      MonoType tau = types[0];
+      try {
+        for (int n = 1; n < types.length; ++n) {
+          tau = new ArrowType(types[n], tau);
+        }
+      }
+      catch (NullPointerException e) {
+        // no type for the recursion
+        tau = null;
       }
       
       // generate the let expression
-      return new Let(curriedLetRec.getIdentifiers(0), new Recursion(curriedLetRec.getIdentifiers(0), null, e1), curriedLetRec.getE2());
+      return new Let(curriedLetRec.getIdentifiers(0), new Recursion(curriedLetRec.getIdentifiers(0), tau, e1), curriedLetRec.getE2());
     }
     else if (expression instanceof LetRec) {
       // determine the sub expressions

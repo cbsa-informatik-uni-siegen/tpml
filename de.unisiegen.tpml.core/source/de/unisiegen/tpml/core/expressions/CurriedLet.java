@@ -7,7 +7,7 @@ import java.util.TreeSet;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
-import de.unisiegen.tpml.core.util.StringUtilities;
+import de.unisiegen.tpml.core.types.MonoType;
 
 /**
  * Instances of this class represents curried let expressions, which are
@@ -31,7 +31,15 @@ public class CurriedLet extends Expression {
    * @see #getIdentifiers()
    */
   protected String[] identifiers;
-
+  
+  /**
+   * The types for the identifiers, where the assignment is as follows:
+   * 
+   * @see #getTypes()
+   * @see #getTypes(int)
+   */
+  protected MonoType[] types;
+  
   /**
    * The first expression.
    * 
@@ -58,19 +66,26 @@ public class CurriedLet extends Expression {
    * @param identifiers an array with atleast two identifiers, where the first identifier is the name
    *                    to use for the function and the remaining identifiers specify the parameters for
    *                    the function.
+   * @param types the types for the <code>identifiers</code>, see {@link #getTypes()} for an extensive
+   *              description of the meaning of <code>types</code>.
    * @param e1 the function body.
    * @param e2 the second expression.
    * 
-   * @throws IllegalArgumentException if the <code>identifiers</code> array contains less than two identifiers.
-   * @throws NullPointerException if <code>identifiers</code>, <code>e1</code> or <code>e2</code>
-   *                              is <code>null</code>.
+   * @throws IllegalArgumentException if the <code>identifiers</code> array contains less than two
+   *                                  identifiers, or the arity of <code>identifiers</code> and
+   *                                  <code>types</code> doesn't match.
+   * @throws NullPointerException if <code>identifiers</code>, <code>types</code>, <code>e1</code> or
+   *                              <code>e2</code> is <code>null</code>.
    */
-  public CurriedLet(String[] identifiers, Expression e1, Expression e2) {
+  public CurriedLet(String[] identifiers, MonoType[] types, Expression e1, Expression e2) {
     if (e1 == null) {
       throw new NullPointerException("e1 is null");
     }
     if (e2 == null) {
       throw new NullPointerException("e2 is null");
+    }
+    if (types == null) {
+      throw new NullPointerException("types is null");
     }
     if (identifiers == null) {
       throw new NullPointerException("identifiers is null");
@@ -78,7 +93,11 @@ public class CurriedLet extends Expression {
     if (identifiers.length < 2) {
       throw new IllegalArgumentException("identifiers must contain atleast two items");
     }
+    if (identifiers.length != types.length) {
+      throw new IllegalArgumentException("the arity of identifiers and types must match");
+    }
     this.identifiers = identifiers;
+    this.types = types;
     this.e1 = e1;
     this.e2 = e2;
   }
@@ -112,6 +131,49 @@ public class CurriedLet extends Expression {
     return this.identifiers[n];
   }
   
+  /**
+   * Returns the types for the <code>identifiers</code>.
+   * 
+   * <code>let id (id1:tau1)...(idn:taun): tau = e1 in e2</code>
+   * 
+   * is translated to
+   * 
+   * <code>let id = lambda id1:tau1...lambda idn:taun.e1 in e2</code>
+   *
+   * which means <code>types[0]</code> is used for <code>identifiers[0]</code>
+   * and so on (where <code>types[0]</code> corresponds to <code>tau</code> in
+   * the example above, and <code>identifiers[0]</code> to <code>id</code>).
+   * 
+   * Any of the types may be null, in which case the type will be inferred
+   * in the type checker, while the <code>types</code> itself may not be
+   * <code>null</code>.
+   * 
+   * For recursion (see {@link CurriedLetRec}) the <code>tau</code> is used
+   * to build the type of the recursive identifier.
+   * 
+   * @return the types.
+   * 
+   * @see #getTypes(int)
+   */
+  public MonoType[] getTypes() {
+    return this.types;
+  }
+  
+  /**
+   * Returns the <code>n</code>th type.
+   * 
+   * @param n the index of the type.
+   * 
+   * @return the <code>n</code>th type.
+   * 
+   * @throws ArrayIndexOutOfBoundsException if <code>n</code> is out of bounds.
+   * 
+   * @see #getTypes()
+   */
+  public MonoType getTypes(int n) {
+    return this.types[n];
+  }
+
   /**
    * Returns the first expression.
    * 
@@ -165,7 +227,11 @@ public class CurriedLet extends Expression {
    */
   @Override
   public CurriedLet substitute(TypeSubstitution substitution) {
-    return new CurriedLet(this.identifiers, this.e1.substitute(substitution), this.e2.substitute(substitution));
+    MonoType[] types = new MonoType[this.types.length];
+    for (int n = 0; n < types.length; ++n) {
+      types[n] = (this.types[n] != null) ? this.types[n].substitute(substitution) : null;
+    }
+    return new CurriedLet(this.identifiers, types, this.e1.substitute(substitution), this.e2.substitute(substitution));
   }
   
   /**
@@ -187,8 +253,9 @@ public class CurriedLet extends Expression {
       Set<String> freeE = e.free();
       for (int n = 1; n < identifiers.length; ++n) {
         // generate a new unique identifier
-        while (freeE.contains(identifiers[n]))
+        while (freeE.contains(identifiers[n])) {
           identifiers[n] = identifiers[n] + "'";
+        }
         
         // perform the bound renaming
         e1 = e1.substitute(this.identifiers[n], new Identifier(identifiers[n]));
@@ -199,11 +266,12 @@ public class CurriedLet extends Expression {
     }
     
     // substitute e2 if id is not bound in e2
-    if (!this.identifiers[0].equals(id))
+    if (!this.identifiers[0].equals(id)) {
       e2 = e2.substitute(id, e);
+    }
     
     // generate the new expression
-    return new CurriedLet(identifiers, e1, e2);
+    return new CurriedLet(identifiers, this.types, e1, e2);
   }
   
   
@@ -217,10 +285,28 @@ public class CurriedLet extends Expression {
    *
    * @see de.unisiegen.tpml.core.expressions.Expression#toPrettyStringBuilder(de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory)
    */
-  public @Override PrettyStringBuilder toPrettyStringBuilder(PrettyStringBuilderFactory factory) {
+  @Override 
+  public PrettyStringBuilder toPrettyStringBuilder(PrettyStringBuilderFactory factory) {
     PrettyStringBuilder builder = factory.newBuilder(this, PRIO_LET);
     builder.addKeyword("let");
-    builder.addText(" " + StringUtilities.join(" ", this.identifiers) + " = ");
+    builder.addText(" " + this.identifiers[0]);
+    for (int n = 1; n < this.identifiers.length; ++n) {
+      builder.addText(" ");
+      if (this.types[n] != null) {
+        builder.addText("(");
+      }
+      builder.addText(this.identifiers[n]);
+      if (this.types[n] != null) {
+        builder.addText(": ");
+        builder.addBuilder(this.types[n].toPrettyStringBuilder(factory), PRIO_LET_TAU);
+        builder.addText(")");
+      }
+    }
+    if (this.types[0] != null) {
+      builder.addText(": ");
+      builder.addBuilder(this.types[0].toPrettyStringBuilder(factory), PRIO_LET_TAU);
+    }
+    builder.addText(" = ");
     builder.addBuilder(this.e1.toPrettyStringBuilder(factory), PRIO_LET_E1);
     builder.addBreak();
     builder.addText(" ");
@@ -245,7 +331,9 @@ public class CurriedLet extends Expression {
   public boolean equals(Object obj) {
     if (obj instanceof CurriedLet) {
       CurriedLet other = (CurriedLet)obj;
-      return (this.identifiers.equals(other.identifiers) && this.e1.equals(other.e1) && this.e2.equals(other.e2));
+      return (this.identifiers.equals(other.identifiers)
+           && ((this.types == null) ? (other.types == null) : Arrays.equals(this.types, other.types))
+           && this.e1.equals(other.e1) && this.e2.equals(other.e2));
     }
     return false;
   }
@@ -257,6 +345,7 @@ public class CurriedLet extends Expression {
    */
   @Override
   public int hashCode() {
-    return this.identifiers.hashCode() + this.e1.hashCode() + this.e2.hashCode();
+    return this.identifiers.hashCode() + this.e1.hashCode() + this.e2.hashCode()
+         + ((this.types != null) ? this.types.hashCode() : 0);
   }
 }
