@@ -9,7 +9,6 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import javax.swing.JComponent;
-import javax.swing.JPanel;
 
 import org.apache.log4j.Logger;
 
@@ -18,7 +17,6 @@ import de.unisiegen.tpml.core.CannotUndoException;
 import de.unisiegen.tpml.core.ProofModel;
 import de.unisiegen.tpml.graphics.ProofView;
 import de.unisiegen.tpml.ui.EditorComponent;
-import de.unisiegen.tpml.ui.EditorPanel;
 
 /**
  * //TODO add documentation here.
@@ -29,13 +27,17 @@ import de.unisiegen.tpml.ui.EditorPanel;
  */
 public class ProofViewComponent extends JComponent implements EditorComponent {
 	
+	/**
+	 * The unique serialization identifier.
+	 */
+	private static final long serialVersionUID = 8218146393722855647L;
+	
 	private static final Logger logger = Logger.getLogger(ProofViewComponent.class);
 	private ProofView view;
 	private ProofModel model;
 	private boolean nextStatus;
     private boolean redoStatus;
     private boolean undoStatus;
-    private boolean saveStatus;
 	
 	public ProofViewComponent(ProofView view, ProofModel model){
 		if (model == null || view == null){
@@ -228,12 +230,11 @@ public class ProofViewComponent extends JComponent implements EditorComponent {
 			if (evt.getPropertyName().equals("undoable")){
 				setUndoStatus((Boolean)evt.getNewValue());
 			}
-			if (evt.getPropertyName().equals("redoable")){
+			else if (evt.getPropertyName().equals("redoable")){
 				setRedoStatus((Boolean)evt.getNewValue());
 			}
-			if (evt.getPropertyName().equals("finished")){
-				if ((Boolean)evt.getNewValue())
-				setNextStatus(false);
+			else if (evt.getPropertyName().equals("finished")){
+				setNextStatus(!(Boolean)evt.getNewValue());
 			}
 		}
 		

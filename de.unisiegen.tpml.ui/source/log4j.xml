@@ -9,8 +9,18 @@
     </layout> 
   </appender> 
 
+  <logger name="de.unisiegen.tpml.core.bigstep.BigStepProofModel">
+    <level value="error" />
+    <appender-ref ref="console" />
+  </logger>
+  
+  <logger name="de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel">
+    <level value="error" />
+    <appender-ref ref="console" />
+  </logger>
+  
   <logger name="de.unisiegen.tpml.ui.editor.TextEditorPanel">
-    <level value ="error" />	
+    <level value="error" />	
     <appender-ref ref="console" /> 
   </logger>
   
