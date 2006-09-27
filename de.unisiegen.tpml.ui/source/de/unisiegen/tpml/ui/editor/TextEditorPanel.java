@@ -40,13 +40,6 @@ public class TextEditorPanel extends JPanel implements EditorComponent {
 	private StyledLanguageDocument document;
 
 	private JScrollPane scrollpane;
-
-	/**
-	 * TODO add documentation here
-	 * 
-	 */
-	private boolean changed;
-
 	
 	/**
 	 * The initial content of this file
@@ -66,9 +59,7 @@ public class TextEditorPanel extends JPanel implements EditorComponent {
 
 	private boolean undoStatus;
 
-	private boolean saveStatus;
-
-	private boolean changeStatus;
+	private boolean changed;
 
 	/**
 	 * TODO add documentation here
@@ -122,15 +113,6 @@ public class TextEditorPanel extends JPanel implements EditorComponent {
 		this.redoStatus = redoStatus;
 	}
 
-	public boolean isSaveStatus() {
-		return saveStatus;
-	}
-
-	public void setSaveStatus(boolean saveStatus) {
-		firePropertyChange("saveStatus", this.saveStatus, saveStatus);
-		this.saveStatus = saveStatus;
-	}
-
 	public boolean isUndoStatus() {
 		return undoStatus;
 	}
@@ -141,20 +123,19 @@ public class TextEditorPanel extends JPanel implements EditorComponent {
 	}
 
 	public void setDefaultStates() {
-		setSaveStatus(false);
+		setChanged(false);
 		setUndoStatus(false);
 		setRedoStatus(false);
 		setNextStatus(false);
 	}
 
-	public void setChangeStatus(boolean changeStatus) {
-		firePropertyChange("changeStatus", this.changeStatus, changeStatus);
-		this.changeStatus = changeStatus;
+	public void setChanged(boolean changeStatus) {
+		firePropertyChange("changed", this.changed, changeStatus);
+		this.changed = changeStatus;
 	}
 
-	public boolean isChangeStatus() {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean isChanged() {
+		return changed;
 	}
 
 	public String getText() {
@@ -198,7 +179,7 @@ public class TextEditorPanel extends JPanel implements EditorComponent {
 	private class TextDocumentListener implements DocumentListener {
 		public void insertUpdate(DocumentEvent arg0) {
 			try {
-				TextEditorPanel.this.setChangeStatus(true);
+				TextEditorPanel.this.setChanged(true);
 
 				String doctext = arg0.getDocument().getText(0,
 						arg0.getDocument().getLength());
@@ -217,7 +198,7 @@ public class TextEditorPanel extends JPanel implements EditorComponent {
 
 		public void removeUpdate(DocumentEvent arg0) {
 			try {
-				TextEditorPanel.this.setChangeStatus(true);
+				TextEditorPanel.this.setChanged(true);
 
 				String doctext = arg0.getDocument().getText(0,
 						arg0.getDocument().getLength());

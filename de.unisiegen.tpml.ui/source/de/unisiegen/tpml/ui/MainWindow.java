@@ -480,9 +480,7 @@ public class MainWindow extends javax.swing.JFrame {
 		try {
 			if (ident.equals("redoStatus")) {
 				setRedoState((Boolean) newValue);
-			} else if (ident.equals("saveStatus")) {
-				setSaveState((Boolean) newValue);
-			} else if (ident.equals("filename")) {
+			} else  if (ident.equals("filename")) {
 				tabbedPane.setTitleAt(tabbedPane.getSelectedIndex(),
 						(String) newValue);
 			} else if (ident.equals("undoStatus")) {
@@ -503,7 +501,7 @@ public class MainWindow extends javax.swing.JFrame {
 		else {
 			setRedoState(editor.isRedoStatus());
 			setUndoState(editor.isUndoStatus());
-			setSaveState(editor.isSaveStatus());
+			setSaveState(editor.isChanged());
 			setChangeState(editor.isChanged());
 		}
 	}

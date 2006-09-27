@@ -99,28 +99,6 @@ public class ProofViewComponent extends JComponent implements EditorComponent {
 	 * TODO add documentation here 
 	 *
 	 * {@inheritDoc}
-	 * @see de.unisiegen.tpml.ui.EditorComponent#isSaveStatus()
-	 */
-	public boolean isSaveStatus() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	/**
-	 * TODO add documentation here 
-	 *
-	 * {@inheritDoc}
-	 * @see de.unisiegen.tpml.ui.EditorComponent#setSaveStatus(boolean)
-	 */
-	public void setSaveStatus(boolean saveStatus) {
-		// TODO Auto-generated method stub
-
-	}
-
-	/**
-	 * TODO add documentation here 
-	 *
-	 * {@inheritDoc}
 	 * @see de.unisiegen.tpml.ui.EditorComponent#isUndoStatus()
 	 */
 	public boolean isUndoStatus() {
@@ -144,37 +122,12 @@ public class ProofViewComponent extends JComponent implements EditorComponent {
 	 * TODO add documentation here 
 	 *
 	 * {@inheritDoc}
-	 * @see de.unisiegen.tpml.ui.EditorComponent#isChangeStatus()
-	 */
-	public boolean isChangeStatus() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	/**
-	 * TODO add documentation here 
-	 *
-	 * {@inheritDoc}
-	 * @see de.unisiegen.tpml.ui.EditorComponent#setChangeStatus(boolean)
-	 */
-	public void setChangeStatus(boolean changeStatus) {
-		// TODO Auto-generated method stub
-
-	}
-
-	/**
-	 * TODO add documentation here 
-	 *
-	 * {@inheritDoc}
 	 * @see de.unisiegen.tpml.ui.EditorComponent#setDefaultStates()
 	 */
 	public void setDefaultStates() {
 		setNextStatus(true);
 		setRedoStatus(model.isRedoable());
 		setUndoStatus(model.isUndoable());
-		setChangeStatus(false);
-		setSaveStatus(false);
-
 	}
 
 	/**

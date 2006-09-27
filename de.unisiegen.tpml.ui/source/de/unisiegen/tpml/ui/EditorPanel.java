@@ -236,10 +236,6 @@ public class EditorPanel extends javax.swing.JPanel {
 	 */
 	private boolean redoStatus;
 
-	/**
-	 * Indicates the status of the Save function.
-	 */
-	private boolean saveStatus;
 
 	// self defined methods
 
@@ -256,13 +252,11 @@ public class EditorPanel extends javax.swing.JPanel {
 			nextButton.setEnabled((Boolean) newValue);
 		} else if (ident.equals("redoStatus")) {
 			setRedoStatus((Boolean) newValue);
-		} else if (ident.equals("saveStatus")) {
-			setSaveStatus((Boolean) newValue);
 		} else if (ident.equals("title")) {
 			setFileName((String) newValue);
 		} else if (ident.equals("undoStatus")) {
 			setUndoStatus((Boolean) newValue);
-		} else if (ident.equals("changeStatus")) {
+		} else if (ident.equals("changed")) {
 			setChanged((Boolean) newValue);
 		}
 
@@ -271,7 +265,6 @@ public class EditorPanel extends javax.swing.JPanel {
 	private void updateComponentStates(EditorComponent comp) {
 		setRedoStatus(comp.isRedoStatus());
 		setUndoStatus(comp.isUndoStatus());
-		setSaveStatus(comp.isSaveStatus());
 		nextButton.setEnabled(comp.isNextStatus());
 	}
 
@@ -416,26 +409,6 @@ public class EditorPanel extends javax.swing.JPanel {
 		this.redoStatus = redoStatus;
 	}
 
-	/**
-	 * Returns the save status. TODO merge this with the changestate to remove
-	 * redundancy
-	 * 
-	 * @return true if save is available.
-	 */
-	public boolean isSaveStatus() {
-		return saveStatus;
-	}
-
-	/**
-	 * Sets the save status.
-	 * 
-	 * @param saveStatus
-	 *            <code>true</code> if the file can / should be saved.
-	 */
-	public void setSaveStatus(boolean saveStatus) {
-		firePropertyChange("saveStatus", this.saveStatus, saveStatus);
-		this.saveStatus = saveStatus;
-	}
 
 	/**
 	 * Returns the file name.
@@ -502,7 +475,7 @@ public class EditorPanel extends javax.swing.JPanel {
 	 * @return <code>true</code> if the editor's document was changed.
 	 */
 	public boolean isChanged() {
-		return changed;
+		return this.changed;
 	}
 
 	/**
@@ -561,7 +534,7 @@ public class EditorPanel extends javax.swing.JPanel {
 	public boolean handleSaveAs() {
 		JFileChooser chooser = new JFileChooser();
 		int n = chooser.showSaveDialog(getParent());
-		if (n == chooser.APPROVE_OPTION) {
+		if (n == JFileChooser.APPROVE_OPTION) {
 			File outfile = chooser.getSelectedFile();
 			try {
 				outfile.createNewFile();
@@ -593,7 +566,7 @@ public class EditorPanel extends javax.swing.JPanel {
 			out.flush();
 			out.close();
 			setChanged(false);
-			setSaveStatus(false);
+			//setSaveStatus(false);
 			return true;
 		} catch (IOException e) {
 			logger.error("Could not write to file", e);
