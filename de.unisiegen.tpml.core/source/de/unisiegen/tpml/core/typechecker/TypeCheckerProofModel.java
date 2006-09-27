@@ -212,8 +212,10 @@ public final class TypeCheckerProofModel extends AbstractProofModel {
       // try to apply the rule to the node
       context.apply(rule, node);
       
-      // determine the root node
+      // check if we are finished
       final TypeCheckerProofNode root = (TypeCheckerProofNode)getRoot();
+      context.addRedoAction(new Runnable() { public void run() { setFinished(root.isFinished()); } });
+      context.addUndoAction(new Runnable() { public void run() { setFinished(false); } });
       
       // determine the redo and undo actions from the context
       final Runnable redoActions = context.getRedoActions();
@@ -221,8 +223,8 @@ public final class TypeCheckerProofModel extends AbstractProofModel {
       
       // record the undo edit action for this proof step
       addUndoableTreeEdit(new UndoableTreeEdit() {
-        public void redo() { redoActions.run(); setFinished(root.isFinished()); }
-        public void undo() { undoActions.run(); setFinished(false); }
+        public void redo() { redoActions.run(); }
+        public void undo() { undoActions.run(); }
       });
     }
     catch (ProofRuleException e) {

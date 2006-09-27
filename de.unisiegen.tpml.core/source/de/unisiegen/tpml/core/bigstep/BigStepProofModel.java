@@ -152,8 +152,10 @@ public final class BigStepProofModel extends AbstractInterpreterProofModel {
       // try to apply the rule to the node
       context.apply(rule, node);
       
-      // determine the root node proof
+      // check if we are finished
       final BigStepProofNode root = (BigStepProofNode)getRoot();
+      context.addRedoAction(new Runnable() { public void run() { setFinished(root.getResult() != null); } });
+      context.addUndoAction(new Runnable() { public void run() { setFinished(false); } });
       
       // determine the redo and undo actions from the context
       final Runnable redoActions = context.getRedoActions();
@@ -161,8 +163,8 @@ public final class BigStepProofModel extends AbstractInterpreterProofModel {
       
       // record the undo edit action for this proof step
       addUndoableTreeEdit(new UndoableTreeEdit() {
-        public void redo() { redoActions.run(); setFinished(root.getResult() != null); }
-        public void undo() { undoActions.run(); setFinished(false); }
+        public void redo() { redoActions.run(); }
+        public void undo() { undoActions.run(); }
       });
     }
     catch (ProofRuleException e) {
