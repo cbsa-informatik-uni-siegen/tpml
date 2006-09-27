@@ -169,12 +169,9 @@ public class BigStepNodeComponent extends JComponent implements TreeNodeComponen
 					this.ruleButton.setToolTipText(exc.getMessage());
 				}
 			}
-			
-			fireNodeChanged();
 		}
 		else if (item instanceof MenuTranslateItem) {
 			this.proofModel.translateToCoreSyntax(this.proofNode, false);
-			fireNodeChanged();
 		}
 		else if (item instanceof MenuGuessItem) {
 			try {
@@ -183,8 +180,9 @@ public class BigStepNodeComponent extends JComponent implements TreeNodeComponen
 			catch (Exception exc) {
 				exc.printStackTrace();
 			}
-			fireNodeChanged ();
 		}
+		
+		fireNodeChanged();
 		
 
 	}
@@ -280,7 +278,7 @@ public class BigStepNodeComponent extends JComponent implements TreeNodeComponen
 			this.ruleLabel.setBounds(posX, this.dimension.height + spacing, ruleLabelSize.width, ruleLabelSize.height);
 			
 			this.dimension.height += spacing + ruleLabelSize.height;
-			this.dimension.width = Math.max(this.dimension.width, ruleLabelSize.width);
+			this.dimension.width = Math.max(this.dimension.width, ruleLabelSize.width + posX);
 			
 			//  display only the label not the button
 			this.ruleLabel.setVisible (true);
@@ -292,7 +290,7 @@ public class BigStepNodeComponent extends JComponent implements TreeNodeComponen
 			this.ruleButton.setBounds(posX, this.dimension.height + spacing, buttonSize.width, buttonSize.height);
 			
 			this.dimension.height += spacing + buttonSize.height;
-			this.dimension.width = Math.max(this.dimension.width, buttonSize.width);
+			this.dimension.width = Math.max(this.dimension.width, buttonSize.width + posX);
 			
 			// display only the button not the label
 			this.ruleLabel.setVisible (false);
