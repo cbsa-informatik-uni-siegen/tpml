@@ -117,7 +117,9 @@ expr				::=	simple_expr:e
 						   System.arraycopy(il, 0, identifiers, 1, il.length);
 						   RESULT = new CurriedLet(identifiers, e1, e2); :}
 					|	LET LPAREN id_comma_list:il RPAREN EQUAL expr:e1 IN expr:e2
-						{: RESULT = new MultiLet(il, e1, e2); :}
+						{: RESULT = new MultiLet(il, null, e1, e2); :}
+					|	LET LPAREN id_comma_list:il RPAREN COLON type:tau EQUAL expr:e1 IN expr:e2
+						{: RESULT = new MultiLet(il, tau, e1, e2); :}
 
 					/* Recursion */				
 					|	REC IDENTIFIER:id DOT expr:e
@@ -133,10 +135,6 @@ expr				::=	simple_expr:e
 						   identifiers[0] = id;
 						   System.arraycopy(il, 0, identifiers, 1, il.length);
 						   RESULT = new CurriedLetRec(identifiers, e1, e2); :}
-
-					/* Tuples */
-					|	LPAREN expr_comma_list:el RPAREN
-						{: RESULT = new Tuple(el); :}
 					;
 
 
@@ -150,6 +148,10 @@ simple_expr			::=	constant:c
 						{: RESULT = o; :}
 					|	LPAREN expr:e RPAREN
 						{: RESULT = e; :}
+
+					/* Tuples */
+					|	LPAREN expr_comma_list:el RPAREN
+						{: RESULT = new Tuple(el); :}
 					;
 
 

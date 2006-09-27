@@ -143,7 +143,7 @@ public class L3SmallStepProofRuleSet extends L2SmallStepProofRuleSet {
       e1 = evaluate(context, e1);
       
       // exceptions need special treatment
-      return e1.isException() ? e1 : new MultiLet(identifiers, e1, e2);
+      return e1.isException() ? e1 : new MultiLet(identifiers, multiLet.getTau(), e1, e2);
     }
 
     // arity of the tuple must match

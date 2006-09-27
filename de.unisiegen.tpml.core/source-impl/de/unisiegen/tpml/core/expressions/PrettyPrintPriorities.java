@@ -88,6 +88,11 @@ interface PrettyPrintPriorities {
   public static final int PRIO_LET = 0;
   
   /**
+   * The pretty print priority for types in let expressions (types!).
+   */
+  public static final int PRIO_LET_TAU = 0;
+  
+  /**
    * The pretty print priority for the e1 of let expressions.
    */
   public static final int PRIO_LET_E1 = PRIO_LET;

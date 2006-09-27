@@ -150,6 +150,12 @@ public class L3TypeCheckerProofRuleSet extends L2TypeCheckerProofRuleSet {
       // add only the first child node, the second one will be added
       // in updatePLet() once the first sub tree is finished.
       context.addProofNode(node, environment, multiLet.getE1(), tau);
+      
+      // check if we have a type
+      if (multiLet.getTau() != null) {
+        // add an equation for tau = multiLet.getTau()
+        context.addEquation(tau, multiLet.getTau());
+      }
     }
     else {
       // generate a new type variable

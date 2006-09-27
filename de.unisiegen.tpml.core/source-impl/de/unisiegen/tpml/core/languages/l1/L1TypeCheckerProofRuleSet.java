@@ -11,6 +11,7 @@ import de.unisiegen.tpml.core.expressions.InfixOperation;
 import de.unisiegen.tpml.core.expressions.Lambda;
 import de.unisiegen.tpml.core.expressions.Let;
 import de.unisiegen.tpml.core.expressions.LetRec;
+import de.unisiegen.tpml.core.expressions.MultiLambda;
 import de.unisiegen.tpml.core.expressions.MultiLet;
 import de.unisiegen.tpml.core.expressions.Recursion;
 import de.unisiegen.tpml.core.typechecker.AbstractTypeCheckerProofRuleSet;
@@ -69,23 +70,61 @@ public class L1TypeCheckerProofRuleSet extends AbstractTypeCheckerProofRuleSet {
    * @param node the type checker proof node.
    */
   public void applyAbstr(TypeCheckerProofContext context, TypeCheckerProofNode node) {
-    // determine the type for the parameter 
-    Lambda lambda = (Lambda)node.getExpression();
-    MonoType tau1 = lambda.getTau();
-    if (tau1 == null) {
-      // need a new type variable
-      tau1 = context.newTypeVariable();
-    }
-    
-    // generate a new type variable for the result
-    TypeVariable tau2 = context.newTypeVariable();
-    
-    // add type equations for tau and tau1->tau2
-    context.addEquation(node.getType(), new ArrowType(tau1, tau2));
-    
-    // generate a new child node
+    // determine the type environment
     TypeEnvironment environment = node.getEnvironment();
-    context.addProofNode(node, environment.extend(lambda.getId(), tau1), lambda.getE(), tau2);
+    
+    // can be applied to both Lambda and MultiLambda
+    Expression expression = node.getExpression();
+    if (expression instanceof Lambda) {
+      // determine the type for the parameter 
+      Lambda lambda = (Lambda)expression;
+      MonoType tau1 = lambda.getTau();
+      if (tau1 == null) {
+        // need a new type variable
+        tau1 = context.newTypeVariable();
+      }
+      
+      // generate a new type variable for the result
+      TypeVariable tau2 = context.newTypeVariable();
+      
+      // add type equations for tau and tau1->tau2
+      context.addEquation(node.getType(), new ArrowType(tau1, tau2));
+      
+      // generate a new child node
+      context.addProofNode(node, environment.extend(lambda.getId(), tau1), lambda.getE(), tau2);
+    }
+    else {
+      // determine the type for the parameter
+      MultiLambda multiLambda = (MultiLambda)expression;
+      String[] identifiers = multiLambda.getIdentifiers();
+
+      // generate the type for identifiers (tau1)
+      TypeVariable[] typeVariables = new TypeVariable[identifiers.length];
+      for (int n = 0; n < identifiers.length; ++n) {
+        typeVariables[n] = context.newTypeVariable();
+      }
+      TupleType tau1 = new TupleType(typeVariables);
+
+      // generate the type variable for the result
+      TypeVariable tau2 = context.newTypeVariable();
+      
+      // add type equations for tau and tau1->tau2
+      context.addEquation(node.getType(), new ArrowType(tau1, tau2));
+      
+      // generate the environment for e
+      for (int n = 0; n < identifiers.length; ++n) {
+        environment = environment.extend(identifiers[n], typeVariables[n]);
+      }
+      
+      // add the child nodes
+      context.addProofNode(node, environment, multiLambda.getE(), tau2);
+      
+      // check if we have a type
+      if (multiLambda.getTau() != null) {
+        // add an equation for tau1 = multiLet.getTau()
+        context.addEquation(tau1, multiLambda.getTau());
+      }
+    }
   }
   
   
@@ -243,6 +282,12 @@ public class L1TypeCheckerProofRuleSet extends AbstractTypeCheckerProofRuleSet {
       // add the child nodes
       context.addProofNode(node, environment, multiLet.getE1(), tau);
       context.addProofNode(node, environment2, multiLet.getE2(), node.getType());
+      
+      // check if we have a type
+      if (multiLet.getTau() != null) {
+        // add an equation for tau = multiLet.getTau()
+        context.addEquation(tau, multiLet.getTau());
+      }
     }
     else {
       // generate a new type variable

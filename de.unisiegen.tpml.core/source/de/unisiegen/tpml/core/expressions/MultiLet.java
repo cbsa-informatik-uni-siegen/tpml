@@ -7,6 +7,7 @@ import java.util.TreeSet;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
+import de.unisiegen.tpml.core.types.MonoType;
 import de.unisiegen.tpml.core.util.StringUtilities;
 
 /**
@@ -34,6 +35,13 @@ public final class MultiLet extends Expression {
   private String[] identifiers;
   
   /**
+   * The type of the <code>identifiers</code> tuple.
+   * 
+   * @see #getTau()
+   */
+  private MonoType tau;
+  
+  /**
    * The first expression.
    * 
    * @see #getE1()
@@ -59,6 +67,8 @@ public final class MultiLet extends Expression {
    * expressions <code>e1</code> and <code>e2</code>.
    * 
    * @param identifiers non-empty set of identifiers.
+   * @param tau the type of the <code>identifiers</code> tuple (that is the type of <code>e1</code>)
+   *            or <code>null</code>.
    * @param e1 the first expression.
    * @param e2 the second expression.
    * 
@@ -66,7 +76,7 @@ public final class MultiLet extends Expression {
    * @throws NullPointerException if <code>identifiers</code>, <code>e1</code> or <code>e2</code>
    *                              is <code>null</code>.
    */
-  public MultiLet(String[] identifiers, Expression e1, Expression e2) {
+  public MultiLet(String[] identifiers, MonoType tau, Expression e1, Expression e2) {
     if (identifiers == null) {
       throw new NullPointerException("identifiers is null");
     }
@@ -80,6 +90,7 @@ public final class MultiLet extends Expression {
       throw new NullPointerException("e2 is null");
     }
     this.identifiers = identifiers;
+    this.tau = tau;
     this.e1 = e1;
     this.e2 = e2;
   }
@@ -114,6 +125,15 @@ public final class MultiLet extends Expression {
    */
   public String getIdentifiers(int n) {
     return this.identifiers[n];
+  }
+  
+  /**
+   * Returns the tuple type for <code>e1</code> or <code>null</code>.
+   * 
+   * @return the type for <code>e1</code> or <code>null</code>.
+   */
+  public MonoType getTau() {
+    return this.tau;
   }
   
   /**
@@ -161,7 +181,8 @@ public final class MultiLet extends Expression {
    */
   @Override
   public Expression substitute(TypeSubstitution substitution) {
-    return new MultiLet(this.identifiers, this.e1.substitute(substitution), this.e2.substitute(substitution));
+    MonoType tau = (this.tau != null) ? this.tau.substitute(substitution) : null;
+    return new MultiLet(this.identifiers, tau, this.e1.substitute(substitution), this.e2.substitute(substitution));
   }
   
   /**
@@ -198,7 +219,7 @@ public final class MultiLet extends Expression {
     }
     
     // generate the new expression
-    return new MultiLet(identifiers, e1, e2);
+    return new MultiLet(identifiers, this.tau, e1, e2);
   }
 
   
@@ -216,7 +237,12 @@ public final class MultiLet extends Expression {
   public PrettyStringBuilder toPrettyStringBuilder(PrettyStringBuilderFactory factory) {
     PrettyStringBuilder builder = factory.newBuilder(this, PRIO_LET);
     builder.addKeyword("let");
-    builder.addText(" (" + StringUtilities.join(", ", this.identifiers) + ") = ");
+    builder.addText(" (" + StringUtilities.join(", ", this.identifiers) + ")");
+    if (this.tau != null) {
+      builder.addText(":");
+      builder.addBuilder(this.tau.toPrettyStringBuilder(factory), PRIO_CONSTANT);
+    }
+    builder.addText(" = ");
     builder.addBuilder(this.e1.toPrettyStringBuilder(factory), PRIO_LET_E1);
     builder.addBreak();
     builder.addText(" ");
@@ -241,7 +267,9 @@ public final class MultiLet extends Expression {
   public boolean equals(Object obj) {
     if (obj instanceof MultiLet) {
       MultiLet other = (MultiLet)obj;
-      return (this.identifiers.equals(other.identifiers) && this.e1.equals(other.e1) && this.e2.equals(other.e2));
+      return (this.identifiers.equals(other.identifiers)
+           && this.e1.equals(other.e1) && this.e2.equals(other.e2)
+           && ((this.tau == null) ? (other.tau == null) : (this.tau.equals(other.tau))));
     }
     return false;
   }
@@ -253,6 +281,7 @@ public final class MultiLet extends Expression {
    */
   @Override
   public int hashCode() {
-    return this.identifiers.hashCode() + this.e1.hashCode() + this.e2.hashCode();
+    return this.identifiers.hashCode() + this.e1.hashCode() + this.e2.hashCode()
+         + ((this.tau != null) ? this.tau.hashCode() : 0);
   }
 }

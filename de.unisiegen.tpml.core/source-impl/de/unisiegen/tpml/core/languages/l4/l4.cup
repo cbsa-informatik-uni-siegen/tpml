@@ -113,10 +113,6 @@ expr				::=	simple_expr:e
 					|	expr:e1 GREATEREQUAL expr:e2
 						{: RESULT = new InfixOperation(RelationalOperator.GREATER_EQUAL, e1, e2); :}
 
-					/* Tuples */
-					|	LPAREN expr_comma_list:el RPAREN
-						{: RESULT = new Tuple(el); :}
-
 					/* Conditions */
 					|	IF seq_expr:e0 THEN seq_expr:e1 ELSE seq_expr:e2
 						{: RESULT = new Condition(e0, e1, e2); :}
@@ -142,7 +138,9 @@ expr				::=	simple_expr:e
 						   System.arraycopy(il, 0, identifiers, 1, il.length);
 						   RESULT = new CurriedLet(identifiers, e1, e2); :}
 					|	LET LPAREN id_comma_list:il RPAREN EQUAL seq_expr:e1 IN seq_expr:e2
-						{: RESULT = new MultiLet(il, e1, e2); :}
+						{: RESULT = new MultiLet(il, null, e1, e2); :}
+					|	LET LPAREN id_comma_list:il RPAREN COLON type:tau EQUAL seq_expr:e1 IN seq_expr:e2
+						{: RESULT = new MultiLet(il, tau, e1, e2); :}
 
 					/* Recursion */				
 					|	REC IDENTIFIER:id DOT seq_expr:e
@@ -175,6 +173,10 @@ simple_expr			::=	constant:c
 						{: RESULT = o; :}
 					|	LPAREN seq_expr:e RPAREN
 						{: RESULT = e; :}
+
+					/* Tuples */
+					|	LPAREN expr_comma_list:el RPAREN
+						{: RESULT = new Tuple(el); :}
 					;
 
 
