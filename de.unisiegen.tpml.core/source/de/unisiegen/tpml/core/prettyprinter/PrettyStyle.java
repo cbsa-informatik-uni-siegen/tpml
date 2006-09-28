@@ -28,4 +28,9 @@ public enum PrettyStyle {
    * Style for comments.
    */
   COMMENT,
+  
+  /**
+   * Style for data types.
+   */
+  TYPE,
 }

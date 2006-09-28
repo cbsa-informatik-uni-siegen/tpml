@@ -62,6 +62,9 @@ import de.unisiegen.tpml.core.languages.LanguageSymbol;
 		case ELSE: case WHILE: case DO:
 			return PrettyStyle.KEYWORD;
 			
+		case BOOL: case INT: case UNIT: case TYPEVARIABLE: case LIST:
+			return PrettyStyle.TYPE;
+			
 		default:
 			return PrettyStyle.NONE;
 		}
