@@ -95,7 +95,7 @@ public class EditorPanel extends javax.swing.JPanel {
 
         editorToolBar.add(codeButton);
 
-        smallstepButton.setText("SmallStep");
+        smallstepButton.setText("Small Step");
         smallstepButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 smallstepButtonActionPerformed(evt);
@@ -104,7 +104,7 @@ public class EditorPanel extends javax.swing.JPanel {
 
         editorToolBar.add(smallstepButton);
 
-        bigstepButton.setText("BigStep");
+        bigstepButton.setText("Big Step");
         bigstepButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 bigstepButtonActionPerformed(evt);
@@ -113,7 +113,7 @@ public class EditorPanel extends javax.swing.JPanel {
 
         editorToolBar.add(bigstepButton);
 
-        typecheckerButton.setText("TypeChecker");
+        typecheckerButton.setText("Type Checker");
         typecheckerButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 typecheckerButtonActionPerformed(evt);
@@ -123,6 +123,7 @@ public class EditorPanel extends javax.swing.JPanel {
         editorToolBar.add(typecheckerButton);
 
         nextButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/next.png")));
+        nextButton.setToolTipText("Guess");
         nextButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 nextButtonActionPerformed(evt);
@@ -291,10 +292,9 @@ public class EditorPanel extends javax.swing.JPanel {
 	 */
 	private void initEditor() {
 		code = new TextEditorPanel(language);
-		// code = new TestEditorComponent("Code");
+		
 		editorPanel.removeAll();
 		editorPanel.add((JPanel) code, BorderLayout.CENTER);
-		// ((JPanel) code).
 		((JPanel) code).addPropertyChangeListener(editorComponentListener);
 		code.setDefaultStates();
 		updateComponentStates(code);

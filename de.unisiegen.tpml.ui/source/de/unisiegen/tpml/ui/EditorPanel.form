@@ -34,7 +34,7 @@
         </Component>
         <Component class="javax.swing.JToggleButton" name="smallstepButton">
           <Properties>
-            <Property name="text" type="java.lang.String" value="SmallStep"/>
+            <Property name="text" type="java.lang.String" value="Small Step"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="smallstepButtonActionPerformed"/>
@@ -42,7 +42,7 @@
         </Component>
         <Component class="javax.swing.JToggleButton" name="bigstepButton">
           <Properties>
-            <Property name="text" type="java.lang.String" value="BigStep"/>
+            <Property name="text" type="java.lang.String" value="Big Step"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bigstepButtonActionPerformed"/>
@@ -50,7 +50,7 @@
         </Component>
         <Component class="javax.swing.JToggleButton" name="typecheckerButton">
           <Properties>
-            <Property name="text" type="java.lang.String" value="TypeChecker"/>
+            <Property name="text" type="java.lang.String" value="Type Checker"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="typecheckerButtonActionPerformed"/>
@@ -65,6 +65,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/de/unisiegen/tpml/ui/icons/next.png"/>
                 </Property>
+                <Property name="toolTipText" type="java.lang.String" value="Guess"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="nextButtonActionPerformed"/>

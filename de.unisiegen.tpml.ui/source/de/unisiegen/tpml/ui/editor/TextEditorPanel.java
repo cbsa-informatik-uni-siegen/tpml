@@ -6,7 +6,6 @@ import java.util.Stack;
 import javax.swing.JEditorPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextPane;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
@@ -83,15 +82,15 @@ public class TextEditorPanel extends JPanel implements EditorComponent {
 		scrollpane
 				.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 		scrollpane.setViewportView(editor);
-
+		
 		editor.setEditorKit(new StyledEditorKit());
 		editor.setDocument(document);
 		editor.setAutoscrolls(false);
+		
 
 		document.addDocumentListener(doclistener);
 
 		undohistory.push("");
-
 		add(scrollpane, BorderLayout.CENTER);
 	}
 

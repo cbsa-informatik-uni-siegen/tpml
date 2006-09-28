@@ -40,7 +40,7 @@ public class MainWindow extends javax.swing.JFrame {
 	/** Creates new form MainWindow */
 	public MainWindow() {
 		initComponents();
-		
+
 		setTitle("TPML " +Versions.UI);
 		// TODO clean up the setting of states
 		setGeneralStates(false);
@@ -99,6 +99,7 @@ public class MainWindow extends javax.swing.JFrame {
         fileMenuSeperator1 = new javax.swing.JSeparator();
         saveItem = new javax.swing.JMenuItem();
         saveAsItem = new javax.swing.JMenuItem();
+        saveAllItem = new javax.swing.JMenuItem();
         fileMenuSerpator2 = new javax.swing.JSeparator();
         quitItem = new javax.swing.JMenuItem();
         editMenu = new javax.swing.JMenu();
@@ -253,6 +254,16 @@ public class MainWindow extends javax.swing.JFrame {
 
         fileMenu.add(saveAsItem);
 
+        saveAllItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        saveAllItem.setText("Save All...");
+        saveAllItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveAllItemActionPerformed(evt);
+            }
+        });
+
+        fileMenu.add(saveAllItem);
+
         fileMenu.add(fileMenuSerpator2);
 
         quitItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, java.awt.event.InputEvent.CTRL_MASK));
@@ -310,7 +321,7 @@ public class MainWindow extends javax.swing.JFrame {
         runMenu.setText("Run");
         smallstepItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F10, 0));
         smallstepItem.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("SmallStepMnemonic").charAt(0));
-        smallstepItem.setText("SmallStep");
+        smallstepItem.setText("Small Step");
         smallstepItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 smallstepItemActionPerformed(evt);
@@ -321,7 +332,7 @@ public class MainWindow extends javax.swing.JFrame {
 
         bigstepItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F11, 0));
         bigstepItem.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("BigStepMnemonic").charAt(0));
-        bigstepItem.setText("BigStep");
+        bigstepItem.setText("Big Step");
         bigstepItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 bigstepItemActionPerformed(evt);
@@ -332,7 +343,7 @@ public class MainWindow extends javax.swing.JFrame {
 
         typecheckerItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F12, 0));
         typecheckerItem.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("TypeCheckerMnemonic").charAt(0));
-        typecheckerItem.setText("TypeChecker");
+        typecheckerItem.setText("Type Checker");
         typecheckerItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 typecheckerItemActionPerformed(evt);
@@ -347,6 +358,11 @@ public class MainWindow extends javax.swing.JFrame {
 
         setBounds(0, 0, 800, 600);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void saveAllItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveAllItemActionPerformed
+// TODO add your handling code here:
+        handleSaveAll();
+    }//GEN-LAST:event_saveAllItemActionPerformed
 
     private void redoItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_redoItemActionPerformed
 // TODO add your handling code here:
@@ -415,6 +431,9 @@ public class MainWindow extends javax.swing.JFrame {
 	private void closeItemActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_closeItemActionPerformed
 		// 
 		handleClose();
+		if (getActiveEditor() == null){
+			setGeneralStates(false);
+		}
 	}// GEN-LAST:event_closeItemActionPerformed
 
 	private void redoButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_redoButtonActionPerformed
@@ -448,6 +467,7 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JMenuItem preferencesItem;
     private javax.swing.JButton redoButton;
     private javax.swing.JMenuItem redoItem;
+    private javax.swing.JMenuItem saveAllItem;
     private javax.swing.JButton saveAsButton;
     private javax.swing.JMenuItem saveAsItem;
     private javax.swing.JButton saveButton;
@@ -470,6 +490,7 @@ public class MainWindow extends javax.swing.JFrame {
 		typecheckerItem.setEnabled(state);
 		saveAsItem.setEnabled(state);
 		saveAsButton.setEnabled(state);
+		saveAllItem.setEnabled(state);
 		closeItem.setEnabled(state);
 
 		setUndoState(state);
@@ -663,6 +684,15 @@ public class MainWindow extends javax.swing.JFrame {
 			this.tabbedPane.remove(tabbedPane.getSelectedIndex());
 			this.repaint();
 			return true;
+		}
+	}
+	
+	private void handleSaveAll(){
+		int tabcount = tabbedPane.getComponentCount();
+		for (int i = 0; i < tabcount; i++){
+			if ( !
+			((EditorPanel)tabbedPane.getComponentAt(i)).handleSave())
+				return;
 		}
 	}
 }
