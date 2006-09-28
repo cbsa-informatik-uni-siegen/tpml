@@ -72,8 +72,11 @@ public class TextEditorPanel extends JPanel implements EditorComponent {
 
 	private void initComponents(Language language) {
 		editor = new JEditorPane();
+
+		
 		document = new StyledLanguageDocument(language);
 		scrollpane = new JScrollPane();
+		
 		doclistener = new TextDocumentListener();
 		initialContent = "";
 		undohistory = new Stack<String>();
@@ -166,6 +169,10 @@ public class TextEditorPanel extends JPanel implements EditorComponent {
 			logger.error("Cannot set Text of the document", e);
 		}
 
+	}
+	
+	public JEditorPane getEditor(){
+		return editor;
 	}
 
 	/**

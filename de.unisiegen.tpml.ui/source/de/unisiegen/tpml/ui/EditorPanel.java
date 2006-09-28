@@ -61,6 +61,13 @@ public class EditorPanel extends javax.swing.JPanel {
 			}
 		};
 		initEditor();
+		
+		//TODO put this into a private class
+		this.addComponentListener(new java.awt.event.ComponentAdapter() {
+			public void componentShown(java.awt.event.ComponentEvent evt) {
+				code.getEditor().requestFocus();
+			}
+		});
 	}
 
 	/**
@@ -171,6 +178,7 @@ public class EditorPanel extends javax.swing.JPanel {
 		setComponent(code);
 		deselectButtons();
 		codeButton.setSelected(true);
+		code.getEditor().requestFocus();
 	}// GEN-LAST:event_codeButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
