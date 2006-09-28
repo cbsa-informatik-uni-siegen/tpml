@@ -33,6 +33,7 @@ terminal			BOOL, INT, UNIT;
 
 /* Special tokens */
 terminal Integer	NUMBER;
+terminal Integer	TYPEVARIABLE;
 terminal String		IDENTIFIER;
 terminal Integer[]	PROJECTION;
 terminal			COMMENT;
@@ -282,6 +283,7 @@ simple_type			::=	LPAREN type:t RPAREN	{: RESULT = t; :}
 					|	BOOL					{: RESULT = BooleanType.BOOL; :}
 					|	INT						{: RESULT = IntegerType.INT; :}
 					|	UNIT					{: RESULT = UnitType.UNIT; :}
+					|	TYPEVARIABLE:tvar		{: RESULT = new TypeVariable(0, tvar); :}
 					;
 
 

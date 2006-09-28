@@ -37,7 +37,7 @@ public final class TypeCheckerProofModelTest extends JFrame {
   /**
    * Simple test expression.
    */
-  private static final String SIMPLE = "let x:bool = true in x";
+  private static final String SIMPLE = "let rec x:α->β = x in x";
 
   
   
@@ -190,9 +190,9 @@ public final class TypeCheckerProofModelTest extends JFrame {
    */
   public static void main(String[] args) {
     try {
-      // parse the program (using L3)
+      // parse the program (using L4)
       LanguageFactory factory = LanguageFactory.newInstance();
-      Language language = factory.getLanguageById("l3");
+      Language language = factory.getLanguageById("l4");
       Expression expression = language.newParser(new StringReader(SIMPLE)).parse();
       TypeCheckerProofModel model = language.newTypeCheckerProofModel(expression);
       

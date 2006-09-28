@@ -71,6 +71,8 @@ WhiteSpace		= {LineTerminator} | [ \t\f]
 
 Number			= [:digit:]+
 Identifier		= [:jletter:] [:jletterdigit:]*
+LetterAX		= [a-x]
+LetterGreek		= [\u03b1-\u03c1\u03c3-\u03c9]
 
 %state YYCOMMENT, YYCOMMENTEOF
 
@@ -115,6 +117,15 @@ Identifier		= [:jletter:] [:jletterdigit:]*
 	"bool"				{ return symbol("BOOL", BOOL); }
 	"int"				{ return symbol("INT", INT); }
 	"unit"				{ return symbol("UNIT", UNIT); }
+	"'"{LetterAX}		{ return symbol("TYPEVARIABLE", TYPEVARIABLE, (int)(yycharat(1) - 'a')); }
+	{LetterGreek}		{
+							int c = yycharat(0);
+							if (c > '\u03c1') {
+								/* special case for letters after rho (see Unicode Table) */
+								c -= 1;
+							}
+							return symbol("TYPEVARIABLE", TYPEVARIABLE, (int)(c - '\u03b1'));
+						}
 	
 	// numbers and identifiers
 	{Number}			{
