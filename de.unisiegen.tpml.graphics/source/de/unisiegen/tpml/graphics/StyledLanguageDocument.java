@@ -146,6 +146,12 @@ public class StyledLanguageDocument extends DefaultStyledDocument implements Bea
     StyleConstants.setForeground(keywordSet, new Color(0.6f, 0.0f, 0.0f));
     StyleConstants.setBold(keywordSet, true);
     this.attributes.put(PrettyStyle.KEYWORD, keywordSet);
+    
+    // setup the type set
+    SimpleAttributeSet typeSet = new SimpleAttributeSet();
+    StyleConstants.setForeground(typeSet, new Color(0.0f, 0.6f, 0.0f));
+    StyleConstants.setBold(typeSet, true);
+    this.attributes.put(PrettyStyle.TYPE, typeSet);
   }
 
   
