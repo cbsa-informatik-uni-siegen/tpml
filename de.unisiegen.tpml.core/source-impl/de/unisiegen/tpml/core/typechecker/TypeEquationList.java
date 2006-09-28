@@ -1,6 +1,7 @@
 package de.unisiegen.tpml.core.typechecker;
 
 import de.unisiegen.tpml.core.types.ArrowType;
+import de.unisiegen.tpml.core.types.ListType;
 import de.unisiegen.tpml.core.types.MonoType;
 import de.unisiegen.tpml.core.types.RefType;
 import de.unisiegen.tpml.core.types.TupleType;
@@ -194,10 +195,22 @@ final class TypeEquationList {
       // FALL-THROUGH: Otherwise it's a type error
     }
     else if (left instanceof RefType && right instanceof RefType) {
-      // case to RefType instances (tau and tau')
+      // cast to RefType instances (tau and tau')
       RefType taul = (RefType)left;
       RefType taur = (RefType)right;
 
+      // we need to check {tau = tau'} as well
+      TypeEquationList eqns = this.remaining;
+      eqns = eqns.extend(taul.getTau(), taur.getTau());
+      
+      // try to unify the new list
+      return eqns.unify();
+    }
+    else if (left instanceof ListType && right instanceof ListType) {
+      // cast to ListType instances (tau and tau')
+      ListType taul = (ListType)left;
+      ListType taur = (ListType)right;
+      
       // we need to check {tau = tau'} as well
       TypeEquationList eqns = this.remaining;
       eqns = eqns.extend(taul.getTau(), taur.getTau());

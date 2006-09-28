@@ -7,17 +7,24 @@ import java.util.LinkedList;
 import de.unisiegen.tpml.core.ProofRuleException;
 import de.unisiegen.tpml.core.expressions.ArithmeticOperator;
 import de.unisiegen.tpml.core.expressions.Assign;
+import de.unisiegen.tpml.core.expressions.BinaryCons;
 import de.unisiegen.tpml.core.expressions.BooleanConstant;
 import de.unisiegen.tpml.core.expressions.Deref;
+import de.unisiegen.tpml.core.expressions.EmptyList;
 import de.unisiegen.tpml.core.expressions.Expression;
+import de.unisiegen.tpml.core.expressions.Hd;
 import de.unisiegen.tpml.core.expressions.IntegerConstant;
+import de.unisiegen.tpml.core.expressions.IsEmpty;
 import de.unisiegen.tpml.core.expressions.Projection;
 import de.unisiegen.tpml.core.expressions.Ref;
 import de.unisiegen.tpml.core.expressions.RelationalOperator;
+import de.unisiegen.tpml.core.expressions.Tl;
+import de.unisiegen.tpml.core.expressions.UnaryCons;
 import de.unisiegen.tpml.core.expressions.UnitConstant;
 import de.unisiegen.tpml.core.types.ArrowType;
 import de.unisiegen.tpml.core.types.BooleanType;
 import de.unisiegen.tpml.core.types.IntegerType;
+import de.unisiegen.tpml.core.types.ListType;
 import de.unisiegen.tpml.core.types.MonoType;
 import de.unisiegen.tpml.core.types.PolyType;
 import de.unisiegen.tpml.core.types.RefType;
@@ -162,16 +169,13 @@ final class DefaultTypeCheckerProofContext implements TypeCheckerProofContext {
       return ArrowType.INT_INT_BOOL;
     }
     else if (expression instanceof Assign) {
-      TypeVariable alpha = new TypeVariable(0, 0);
-      return new PolyType(Collections.singleton(alpha), new ArrowType(new RefType(alpha), new ArrowType(alpha, UnitType.UNIT)));
+      return new PolyType(Collections.singleton(TypeVariable.ALPHA), new ArrowType(new RefType(TypeVariable.ALPHA), new ArrowType(TypeVariable.ALPHA, UnitType.UNIT)));
     }
     else if (expression instanceof Deref) {
-      TypeVariable alpha = new TypeVariable(0, 0);
-      return new PolyType(Collections.singleton(alpha), new ArrowType(new RefType(alpha), alpha));
+      return new PolyType(Collections.singleton(TypeVariable.ALPHA), new ArrowType(new RefType(TypeVariable.ALPHA), TypeVariable.ALPHA));
     }
     else if (expression instanceof Ref) {
-      TypeVariable alpha = new TypeVariable(0, 0);
-      return new PolyType(Collections.singleton(alpha), new ArrowType(alpha, new RefType(alpha)));
+      return new PolyType(Collections.singleton(TypeVariable.ALPHA), new ArrowType(TypeVariable.ALPHA, new RefType(TypeVariable.ALPHA)));
     }
     else if (expression instanceof Projection) {
       Projection projection = (Projection)expression;
@@ -182,6 +186,24 @@ final class DefaultTypeCheckerProofContext implements TypeCheckerProofContext {
         quantifiedVariables.add(typeVariables[n]);
       }
       return new PolyType(quantifiedVariables, new ArrowType(new TupleType(typeVariables), typeVariables[projection.getIndex() - 1]));
+    }
+    else if (expression instanceof EmptyList) {
+      return new PolyType(Collections.singleton(TypeVariable.ALPHA), new ListType(TypeVariable.ALPHA));
+    }
+    else if (expression instanceof BinaryCons) {
+      return new PolyType(Collections.singleton(TypeVariable.ALPHA), new ArrowType(TypeVariable.ALPHA, new ArrowType(new ListType(TypeVariable.ALPHA), new ListType(TypeVariable.ALPHA))));
+    }
+    else if (expression instanceof UnaryCons) {
+      return new PolyType(Collections.singleton(TypeVariable.ALPHA), new ArrowType(new TupleType(new MonoType[] { TypeVariable.ALPHA, new ListType(TypeVariable.ALPHA) }), new ListType(TypeVariable.ALPHA)));
+    }
+    else if (expression instanceof Hd) {
+      return new PolyType(Collections.singleton(TypeVariable.ALPHA), new ArrowType(new ListType(TypeVariable.ALPHA), TypeVariable.ALPHA));
+    }
+    else if (expression instanceof Tl) {
+      return new PolyType(Collections.singleton(TypeVariable.ALPHA), new ArrowType(new ListType(TypeVariable.ALPHA), new ListType(TypeVariable.ALPHA)));
+    }
+    else if (expression instanceof IsEmpty) {
+      return new PolyType(Collections.singleton(TypeVariable.ALPHA), new ArrowType(new ListType(TypeVariable.ALPHA), BooleanType.BOOL));
     }
     else {
       // not a simple expression

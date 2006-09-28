@@ -39,6 +39,17 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
  */
 public final class TypeVariable extends MonoType {
   //
+  // Constants
+  //
+  
+  /**
+   * The type variable alpha.
+   */
+  public static final TypeVariable ALPHA = new TypeVariable(0, 0);
+  
+  
+  
+  //
   // Attributes
   //
   

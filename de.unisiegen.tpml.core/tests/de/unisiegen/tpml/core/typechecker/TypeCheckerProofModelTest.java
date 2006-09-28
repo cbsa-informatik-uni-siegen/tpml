@@ -37,7 +37,7 @@ public final class TypeCheckerProofModelTest extends JFrame {
   /**
    * Simple test expression.
    */
-  private static final String SIMPLE = "let rec x:α->β = x in x";
+  private static final String SIMPLE = "[fst (1,8);2;3;4;(5;8)]";
 
   
   

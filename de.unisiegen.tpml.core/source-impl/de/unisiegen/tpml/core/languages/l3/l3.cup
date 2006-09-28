@@ -19,17 +19,23 @@ terminal			EQUAL, LESS, GREATER, LESSEQUAL, GREATEREQUAL;
 /* Tuple operators */
 terminal			FST, SND;
 
+/* List operators */
+terminal			CONS, IS_EMPTY, HD, TL;
+terminal			COLONCOLON;
+
 /* Syntactic tokens */
-terminal			ARROW, COLON, COMMA, DOT;
+terminal			ARROW, COLON, COMMA, DOT, SEMI;
 terminal			LPAREN, RPAREN;
+terminal			LBRACKET, RBRACKET;
 terminal			PARENPAREN;
+terminal			BRACKETBRACKET;
 
 /* Keywords */
 terminal			LAMBDA, LET, REC, IN, IF, THEN, ELSE;
 terminal			TRUE, FALSE;
 
 /* Types */
-terminal			BOOL, INT, UNIT;
+terminal			BOOL, INT, UNIT, LIST;
 
 /* Special tokens */
 terminal Integer	NUMBER;
@@ -45,6 +51,7 @@ non terminal Expression		simple_expr;
 non terminal Expression[]	simple_expr_list;
 non terminal Expression		constant;
 non terminal Expression		operator;
+non terminal Expression[]	expr_semi_list;		/* list of expressions separated by semicolon */
 non terminal Expression[]	expr_comma_list;	/* list of expressions separated by comma */
 non terminal IdTypePair[]	id_type_list;		/* list of identifiers and optionally types */
 non terminal IdTypePair		id_type_pair;		/* (id:type) or id */
@@ -63,6 +70,7 @@ precedence nonassoc	ELSE;					/* (if ... then ... else ...) */
 precedence right	ARROW;
 
 precedence left		EQUAL, LESS, GREATER, LESSEQUAL, GREATEREQUAL;
+precedence right	COLONCOLON;				/* expr (e :: e :: e) */
 precedence left		PLUS, MINUS;
 precedence left		STAR, SLASH, MOD;
 
@@ -105,6 +113,9 @@ expr				::=	simple_expr:e
 						{: RESULT = new InfixOperation(RelationalOperator.LOWER_EQUAL, e1, e2); :}
 					|	expr:e1 GREATEREQUAL expr:e2
 						{: RESULT = new InfixOperation(RelationalOperator.GREATER_EQUAL, e1, e2); :}
+
+					|	expr:e1 COLONCOLON expr:e2
+						{: RESULT = new InfixOperation(BinaryCons.CONS, e1, e2); :}
 
 					/* Conditions */
 					|	IF expr:e0 THEN expr:e1 ELSE expr:e2
@@ -194,6 +205,10 @@ simple_expr			::=	constant:c
 					/* Tuples */
 					|	LPAREN expr_comma_list:el RPAREN
 						{: RESULT = new Tuple(el); :}
+						
+					/* Lists */
+					|	LBRACKET expr_semi_list:el RBRACKET
+						{: RESULT = new List(el); :}
 					;
 
 
@@ -208,6 +223,7 @@ simple_expr_list	::=	simple_expr:e
 
 
 constant			::=	PARENPAREN		{: RESULT = UnitConstant.UNIT; :}
+					|	BRACKETBRACKET	{: RESULT = EmptyList.EMPTY_LIST; :}
 					|	TRUE			{: RESULT = BooleanConstant.TRUE; :}
 					|	FALSE			{: RESULT = BooleanConstant.FALSE; :}
 					|	NUMBER:n		{: RESULT = new IntegerConstant(n.intValue()); :}
@@ -216,6 +232,12 @@ constant			::=	PARENPAREN		{: RESULT = UnitConstant.UNIT; :}
 					|	PROJECTION:proj	{: RESULT = new Projection(proj[0], proj[1]); :}
 					|	FST				{: RESULT = Fst.FST; :}
 					|	SND				{: RESULT = Snd.SND; :}
+					
+					/* List operators */
+					|	CONS			{: RESULT = UnaryCons.CONS; :}
+					|	IS_EMPTY		{: RESULT = IsEmpty.IS_EMPTY; :}
+					|	HD				{: RESULT = Hd.HD; :}
+					|	TL				{: RESULT = Tl.TL; :}
 					;
 
 
@@ -229,6 +251,18 @@ operator			::=	PLUS			{: RESULT = ArithmeticOperator.PLUS; :}
 					|	GREATER			{: RESULT = RelationalOperator.GREATER_THAN; :}
 					|	LESSEQUAL		{: RESULT = RelationalOperator.LOWER_EQUAL; :}
 					|	GREATEREQUAL	{: RESULT = RelationalOperator.GREATER_EQUAL; :}
+					
+					/* List operators */
+					|	COLONCOLON		{: RESULT = BinaryCons.CONS; :}
+					;
+
+
+expr_semi_list		::=	expr:e
+						{: RESULT = new Expression[] { e }; :}
+					|	expr_semi_list:el SEMI expr:e
+						{: RESULT = new Expression[el.length + 1];
+						   System.arraycopy(el, 0, RESULT, 0, el.length);
+						   RESULT[el.length] = e; :}
 					;
 
 
@@ -276,6 +310,7 @@ type				::=	simple_type:t			{: RESULT = t; :}
 					|	type:t1 ARROW type:t2	{: RESULT = new ArrowType(t1, t2); :}
 					|	type_star_list:tl
 						{: RESULT = new TupleType(tl); :}
+					|	type:t LIST				{: RESULT = new ListType(t); :}
 					;
 
 

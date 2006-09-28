@@ -72,6 +72,19 @@ public interface BigStepProofContext {
   public boolean isMemoryEnabled();
   
   /**
+   * Allocates a new big step proof rule of the given <code>name</code> that does nothing.
+   * This is used to implement various special cases like the <b>(HD-EMPTY)</b> and
+   * <b>(TL-EMPTY)</b> rules.
+   * 
+   * @param name the name of the new rule.
+   * 
+   * @return the newly allocated {@link BigStepProofRule}.
+   * 
+   * @throws NullPointerException if <code>name</code> is <code>null</code>.
+   */
+  public BigStepProofRule newNoopRule(String name);
+  
+  /**
    * Changes the result of the specified <code>node</code> to the given <code>result</code>.
    * 
    * The method takes care of registering the required redo and undo actions for

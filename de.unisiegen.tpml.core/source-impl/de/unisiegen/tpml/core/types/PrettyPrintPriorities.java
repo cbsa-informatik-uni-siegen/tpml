@@ -66,4 +66,14 @@ interface PrettyPrintPriorities {
    * The pretty print priority for the tau of polymorphic types.
    */
   public static final int PRIO_POLY_TAU = PRIO_POLY;
+  
+  /**
+   * The pretty print priority for list types.
+   */
+  public static final int PRIO_LIST = 2;
+  
+  /**
+   * The pretty print priority for the base type of list types.
+   */
+  public static final int PRIO_LIST_TAU = PRIO_LIST;
 }

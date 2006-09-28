@@ -7,24 +7,23 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
 
 /**
- * Instances of this class represent reference types in our type system. Reference types are types 
- * for expressions of type {@link de.unisiegen.tpml.core.expressions.Location} as returned by the
- * {@link de.unisiegen.tpml.core.expressions.Ref} operator.
+ * Instances of this class represent list types in our type system. List types are types for expressions of
+ * type {@link de.unisiegen.tpml.core.expressions.List} and {@link de.unisiegen.tpml.core.expressions.EmptyList}.
  *
  * @author Benedikt Meurer
  * @version $Rev$
  *
- * @see de.unisiegen.tpml.core.expressions.Location
- * @see de.unisiegen.tpml.core.expressions.Ref
+ * @see de.unisiegen.tpml.core.expressions.List
+ * @see de.unisiegen.tpml.core.expressions.EmptyList
  * @see de.unisiegen.tpml.core.types.MonoType
  */
-public final class RefType extends MonoType {
+public final class ListType extends MonoType {
   //
   // Attributes
   //
   
   /**
-   * The type of the reference, i.e. <code>int</code> in case of an <code>int ref</code>.
+   * The base type of the list elements.
    * 
    * @see #getTau()
    */
@@ -37,14 +36,15 @@ public final class RefType extends MonoType {
   //
   
   /**
-   * Allocates a new <code>RefType</code> for the monomorphic type <code>tau</code>. I.e. if
-   * <code>tau</code> is <code>bool</code>, the reference type will be <code>bool ref</code>.
+   * Allocates a new <code>ListType</code> for the monomorphic type <code>tau</code>, which represents
+   * the base type of the elements in the list. I.e. if <code>tau</code> is <code>int</code>, the list
+   * type is <code>int list</code>.
    * 
-   * @param tau the monomorphic base type.
+   * @param tau the type for the list elements.
    * 
    * @throws NullPointerException if <code>tau</code> is <code>null</code>.
    */
-  public RefType(MonoType tau) {
+  public ListType(MonoType tau) {
     if (tau == null) {
       throw new NullPointerException("tau is null");
     }
@@ -58,9 +58,9 @@ public final class RefType extends MonoType {
   //
   
   /**
-   * Returns the base type of the reference type.
+   * Returns the base element type.
    * 
-   * @return the base type.
+   * @return the base element type
    */
   public MonoType getTau() {
     return this.tau;
@@ -89,7 +89,7 @@ public final class RefType extends MonoType {
    */
   @Override
   public MonoType substitute(TypeSubstitution substitution) {
-    return new RefType(this.tau.substitute(substitution));
+    return new ListType(this.tau.substitute(substitution));
   }
 
   
@@ -105,9 +105,9 @@ public final class RefType extends MonoType {
    */
   @Override
   public PrettyStringBuilder toPrettyStringBuilder(PrettyStringBuilderFactory factory) {
-    PrettyStringBuilder builder = factory.newBuilder(this, PRIO_REF);
-    builder.addBuilder(this.tau.toPrettyStringBuilder(factory), PRIO_REF_TAU);
-    builder.addText(" ref");
+    PrettyStringBuilder builder = factory.newBuilder(this, PRIO_LIST);
+    builder.addBuilder(this.tau.toPrettyStringBuilder(factory), PRIO_LIST_TAU);
+    builder.addText(" list");
     return builder;
   }
 
@@ -124,12 +124,13 @@ public final class RefType extends MonoType {
    */
   @Override
   public boolean equals(Object obj) {
-    if (obj instanceof RefType) {
-      RefType other = (RefType)obj;
+    if (obj instanceof ListType) {
+      ListType other = (ListType)obj;
       return (this.tau.equals(other.tau));
     }
     return false;
   }
+  
   
   /**
    * {@inheritDoc}
@@ -138,6 +139,6 @@ public final class RefType extends MonoType {
    */
   @Override
   public int hashCode() {
-    return ((this.tau.hashCode() + 13) * 17) / 7;
+    return ((this.tau.hashCode() + 17) * 13) / 5;
   }
 }

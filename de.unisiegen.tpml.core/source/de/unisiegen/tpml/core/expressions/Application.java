@@ -98,7 +98,7 @@ public final class Application extends Expression {
    */
   @Override
   public boolean isValue() {
-    return ((this.e1 instanceof BinaryOperator) && this.e2.isValue());
+    return ((this.e1 instanceof BinaryOperator || this.e1 instanceof UnaryCons) && this.e2.isValue());
   }
   
   /**

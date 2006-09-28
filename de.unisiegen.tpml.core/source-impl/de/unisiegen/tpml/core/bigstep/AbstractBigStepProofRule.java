@@ -149,7 +149,7 @@ abstract class AbstractBigStepProofRule extends AbstractProofRule implements Big
    *         
    * @see #toExnRule(int)
    */
-  protected BigStepProofRule newNoopRule(String name) {
+  static BigStepProofRule newNoopRule(String name) {
     return new AbstractBigStepProofRule(name) {
       @Override
       protected void applyInternal(BigStepProofContext context, BigStepProofNode node) throws Exception {

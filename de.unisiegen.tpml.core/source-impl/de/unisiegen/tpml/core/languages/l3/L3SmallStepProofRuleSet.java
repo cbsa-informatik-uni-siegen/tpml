@@ -1,13 +1,24 @@
 package de.unisiegen.tpml.core.languages.l3;
 
 import de.unisiegen.tpml.core.expressions.Application;
+import de.unisiegen.tpml.core.expressions.BinaryCons;
+import de.unisiegen.tpml.core.expressions.BinaryOperator;
+import de.unisiegen.tpml.core.expressions.BinaryOperatorException;
+import de.unisiegen.tpml.core.expressions.BooleanConstant;
+import de.unisiegen.tpml.core.expressions.EmptyList;
+import de.unisiegen.tpml.core.expressions.Exn;
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.expressions.Fst;
+import de.unisiegen.tpml.core.expressions.Hd;
+import de.unisiegen.tpml.core.expressions.IsEmpty;
+import de.unisiegen.tpml.core.expressions.List;
 import de.unisiegen.tpml.core.expressions.MultiLambda;
 import de.unisiegen.tpml.core.expressions.MultiLet;
 import de.unisiegen.tpml.core.expressions.Projection;
 import de.unisiegen.tpml.core.expressions.Snd;
+import de.unisiegen.tpml.core.expressions.Tl;
 import de.unisiegen.tpml.core.expressions.Tuple;
+import de.unisiegen.tpml.core.expressions.UnaryCons;
 import de.unisiegen.tpml.core.expressions.UnaryOperatorException;
 import de.unisiegen.tpml.core.languages.l2.L2Language;
 import de.unisiegen.tpml.core.languages.l2.L2SmallStepProofRuleSet;
@@ -40,9 +51,17 @@ public class L3SmallStepProofRuleSet extends L2SmallStepProofRuleSet {
     super(language);
     
     // register the additional rules
+    register("CONS", true);
     register("FST", true);
+    register("HD", true);
+    register("HD-EMPTY", true);
+    register("IS-EMPTY-FALSE", true);
+    register("IS-EMPTY-TRUE", true);
+    register("LIST", false);
     register("PROJ", true);
     register("SND", true);
+    register("TL", true);
+    register("TL-EMPTY", true);
     register("TUPLE", false);
   }
   
@@ -88,6 +107,34 @@ public class L3SmallStepProofRuleSet extends L2SmallStepProofRuleSet {
   
   
   //
+  // The (CONS) rule
+  //
+  
+  /**
+   * {@inheritDoc}
+   *
+   * @see de.unisiegen.tpml.core.languages.l1.L1SmallStepProofRuleSet#applyBinaryOperator(de.unisiegen.tpml.core.smallstep.SmallStepProofContext, de.unisiegen.tpml.core.expressions.Expression, de.unisiegen.tpml.core.expressions.BinaryOperator, de.unisiegen.tpml.core.expressions.Expression, de.unisiegen.tpml.core.expressions.Expression)
+   */
+  @Override
+  protected Expression applyBinaryOperator(SmallStepProofContext context, Expression applicationOrInfix, BinaryOperator op, Expression e1, Expression e2) {
+    if (op instanceof BinaryCons) {
+      try {
+        Expression e = op.applyTo(e1, e2);
+        context.addProofStep(getRuleByName("CONS"), applicationOrInfix);
+        return e;
+      }
+      catch (BinaryOperatorException e) {
+        return applicationOrInfix;
+      }
+    }
+    else {
+      return super.applyBinaryOperator(context, applicationOrInfix, op, e1, e2);
+    }
+  }
+  
+  
+  
+  //
   // The (FST) rule
   //
   
@@ -109,6 +156,87 @@ public class L3SmallStepProofRuleSet extends L2SmallStepProofRuleSet {
       return e;
     }
     catch (UnaryOperatorException e) {
+      return application;
+    }
+  }
+  
+  
+  
+  //
+  // The (HD) and (HD-EMPTY) rules
+  //
+  
+  /**
+   * Applies the {@link Hd} operator <code>e1</code> to the {@link Expression} <code>e2</code> using the
+   * <code>context</code>.
+   * 
+   * @param context the msll step proof context.
+   * @param application the application.
+   * @param e1 the operator.
+   * @param e2 the operand.
+   * 
+   * @return the resulting expression.
+   */
+  public Expression applyHd(SmallStepProofContext context, Application application, Hd e1, Expression e2) {
+    // check if e2 is the empty list
+    if (e2 == EmptyList.EMPTY_LIST) {
+      context.addProofStep(getRuleByName("HD-EMPTY"), application);
+      return Exn.EMPTY_LIST;
+    }
+    
+    // check if e2 is a list
+    if (e2 instanceof List) {
+      context.addProofStep(getRuleByName("HD"), application);
+      return ((List)e2).head();
+    }
+    
+    // otherwise e2 must be an application of cons to a pair
+    Application app1 = (Application)e2;
+    Tuple tuple = (Tuple)app1.getE2();
+    if (!(app1.getE1() instanceof UnaryCons) || tuple.getExpressions().length != 2) {
+      // we're stuck
+      return application;
+    }
+    
+    // jep, we can perform (HD) then
+    context.addProofStep(getRuleByName("HD"), application);
+    
+    // return the first item
+    return tuple.getExpressions(0);
+  }
+  
+  
+  
+  //
+  // The (IS-EMPTY-FALSE) and (IS-EMPTY-TRUE) rules
+  //
+  
+  /**
+   * Applies the {@link IsEmpty} operator <code>e1</code> to the {@link Expression} <code>e2</code> using the
+   * <code>context</code>.
+   * 
+   * @param context the msll step proof context.
+   * @param application the application.
+   * @param e1 the operator.
+   * @param e2 the operand.
+   * 
+   * @return the resulting expression.
+   */
+  public Expression applyIsEmpty(SmallStepProofContext context, Application application, IsEmpty e1, Expression e2) {
+    // check if e2 is the empty list, or an application of cons to a value, or a list
+    if (e2 == EmptyList.EMPTY_LIST) {
+      context.addProofStep(getRuleByName("IS-EMPTY-TRUE"), application);
+      return BooleanConstant.TRUE;
+    }
+    else if ((e2 instanceof List)
+        || (e2 instanceof Application
+         && ((Application)e2).getE1() instanceof UnaryCons
+         && ((Application)e2).getE2().isValue())) {
+      context.addProofStep(getRuleByName("IS-EMPTY-FALSE"), application);
+      return BooleanConstant.FALSE;
+    }
+    else {
+      // we're stuck
       return application;
     }
   }
@@ -167,6 +295,50 @@ public class L3SmallStepProofRuleSet extends L2SmallStepProofRuleSet {
   
   
   //
+  // The (LIST) rule
+  //
+  
+  /**
+   * Evaluates the <code>list</code> using the <code>context</code>.
+   * 
+   * @param context the small step proof context.
+   * @param list the list to evaluate.
+   * 
+   * @return the resulting expression.
+   */
+  public Expression evaluateList(SmallStepProofContext context, List list) {
+    // determine the sub expressions
+    Expression[] expressions = list.getExpressions();
+    
+    // find the first sub expression that is not already a value
+    for (int n = 0; n < expressions.length; ++n) {
+      // check if the expression is not already a value
+      if (!expressions[n].isValue()) {
+        // we're about to perform (LIST)
+        context.addProofStep(getRuleByName("LIST"), list);
+        
+        // try to evaluate the expression
+        Expression newExpression = evaluate(context, expressions[n]);
+        
+        // check if we need to forward an exception
+        if (newExpression.isException()) {
+          return newExpression;
+        }
+        
+        // otherwise generate a new list with the new expression
+        Expression[] newExpressions = expressions.clone();
+        newExpressions[n] = newExpression;
+        return new List(newExpressions);
+      }
+    }
+    
+    // hm, can we get stuck here?
+    return list;
+  }
+  
+  
+  
+  //
   // The (PROJ) rule
   //
   
@@ -219,6 +391,51 @@ public class L3SmallStepProofRuleSet extends L2SmallStepProofRuleSet {
       return application;
     }
   }
+  
+  
+  
+  //
+  // The (TL) and (TL-EMPTY) rules
+  //
+  
+  /**
+   * Applies the {@link Tl} operator <code>e1</code> to the {@link Expression} <code>e2</code> using the
+   * <code>context</code>.
+   * 
+   * @param context the msll step proof context.
+   * @param application the application.
+   * @param e1 the operator.
+   * @param e2 the operand.
+   * 
+   * @return the resulting expression.
+   */
+  public Expression applyTl(SmallStepProofContext context, Application application, Tl e1, Expression e2) {
+    // check if e is the empty list
+    if (e2 == EmptyList.EMPTY_LIST) {
+      context.addProofStep(getRuleByName("TL-EMPTY"), application);
+      return Exn.EMPTY_LIST;
+    }
+    
+    // check if e is a list
+    if (e2 instanceof List) {
+      context.addProofStep(getRuleByName("TL"), application);
+      return ((List)e2).tail();
+    }
+    
+    // otherwise, e2 must be an application of cons to a pair
+    Application app1 = (Application)e2;
+    Tuple tuple = (Tuple)app1.getE2();
+    if (!(app1.getE1() instanceof UnaryCons) || tuple.getExpressions().length != 2) {
+      // we're stuck
+      return application;
+    }
+    
+    // jep, we can perform (TL) then
+    context.addProofStep(getRuleByName("TL"), application);
+    
+    // return the remaining list
+    return tuple.getExpressions(1);
+ }
   
   
   

@@ -8,6 +8,7 @@ import de.unisiegen.tpml.core.expressions.Identifier;
 import de.unisiegen.tpml.core.expressions.Lambda;
 import de.unisiegen.tpml.core.expressions.Let;
 import de.unisiegen.tpml.core.expressions.LetRec;
+import de.unisiegen.tpml.core.expressions.List;
 import de.unisiegen.tpml.core.expressions.MultiLet;
 import de.unisiegen.tpml.core.expressions.Recursion;
 import de.unisiegen.tpml.core.expressions.Tuple;
@@ -17,6 +18,7 @@ import de.unisiegen.tpml.core.typechecker.TypeCheckerProofContext;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode;
 import de.unisiegen.tpml.core.typechecker.TypeEnvironment;
 import de.unisiegen.tpml.core.types.ArrowType;
+import de.unisiegen.tpml.core.types.ListType;
 import de.unisiegen.tpml.core.types.MonoType;
 import de.unisiegen.tpml.core.types.TupleType;
 import de.unisiegen.tpml.core.types.Type;
@@ -48,10 +50,32 @@ public class L3TypeCheckerProofRuleSet extends L2TypeCheckerProofRuleSet {
     super(language);
     
     // register the additional type rules
+    registerByMethodName("LIST", "applyList");
     registerByMethodName("P-CONST", "applyPConst");
     registerByMethodName("P-ID", "applyPId");
     registerByMethodName("P-LET", "applyPLet", "updatePLet");
     registerByMethodName("TUPLE", "applyTuple");
+  }
+  
+  
+  
+  //
+  // The (LIST) rule
+  //
+  
+  /**
+   * Applies the <b>(LIST)</b> rule to the <code>node</code> using the <code>context</code>.
+   * 
+   * @param context the type checker proof context.
+   * @param node the type checker proof node.
+   */
+  public void applyList(TypeCheckerProofContext context, TypeCheckerProofNode node) {
+    Expression[] expressions = ((List)node.getExpression()).getExpressions();
+    TypeVariable tau = context.newTypeVariable();
+    for (int n = 0; n < expressions.length; ++n) {
+      context.addProofNode(node, node.getEnvironment(), expressions[n], tau);
+    }
+    context.addEquation(node.getType(), new ListType(tau));
   }
   
   

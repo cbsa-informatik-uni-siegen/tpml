@@ -3,16 +3,19 @@ package de.unisiegen.tpml.core.languages.l3;
 import java.util.Arrays;
 
 import de.unisiegen.tpml.core.expressions.Application;
+import de.unisiegen.tpml.core.expressions.EmptyList;
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.expressions.Fst;
 import de.unisiegen.tpml.core.expressions.Identifier;
 import de.unisiegen.tpml.core.expressions.Lambda;
 import de.unisiegen.tpml.core.expressions.Let;
+import de.unisiegen.tpml.core.expressions.List;
 import de.unisiegen.tpml.core.expressions.MultiLambda;
 import de.unisiegen.tpml.core.expressions.MultiLet;
 import de.unisiegen.tpml.core.expressions.Projection;
 import de.unisiegen.tpml.core.expressions.Snd;
 import de.unisiegen.tpml.core.expressions.Tuple;
+import de.unisiegen.tpml.core.expressions.UnaryCons;
 import de.unisiegen.tpml.core.languages.l2.L2LanguageTranslator;
 
 /**
@@ -53,6 +56,19 @@ public class L3LanguageTranslator extends L2LanguageTranslator {
     if (expression instanceof Fst) {
       Fst fst = (Fst)expression;
       return new Projection(fst.getArity(), fst.getIndex());
+    }
+    else if (expression instanceof List) {
+      List list = (List)expression;
+      Expression[] expressions = list.getExpressions();
+      expression = EmptyList.EMPTY_LIST;
+      for (int n = expressions.length - 1; n >= 0; --n) {
+        Expression e = expressions[n];
+        if (recursive) {
+          e = translateToCoreSyntax(e, true);
+        }
+        expression = new Application(UnaryCons.CONS, new Tuple(new Expression[] { e, expression }));
+      }
+      return expression;
     }
     else if (expression instanceof MultiLambda) {
       // determine the MultiLambda components

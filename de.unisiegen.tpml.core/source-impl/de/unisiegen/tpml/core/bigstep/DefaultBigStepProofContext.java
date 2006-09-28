@@ -113,6 +113,15 @@ final class DefaultBigStepProofContext implements BigStepProofContext {
   /**
    * {@inheritDoc}
    *
+   * @see de.unisiegen.tpml.core.bigstep.BigStepProofContext#newNoopRule(java.lang.String)
+   */
+  public BigStepProofRule newNoopRule(String name) {
+    return AbstractBigStepProofRule.newNoopRule(name);
+  }
+  
+  /**
+   * {@inheritDoc}
+   *
    * @see de.unisiegen.tpml.core.bigstep.BigStepProofContext#setProofNodeResult(de.unisiegen.tpml.core.bigstep.BigStepProofNode, de.unisiegen.tpml.core.bigstep.BigStepProofResult)
    */
   public void setProofNodeResult(BigStepProofNode node, BigStepProofResult result) {

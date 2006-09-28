@@ -153,6 +153,11 @@ interface PrettyPrintPriorities {
   public static final int PRIO_ASSIGN = 1;
   
   /**
+   * The pretty print priority for the binary cons operator (<code>::</code>).
+   */
+  public static final int PRIO_BINARY_CONS = 1;
+  
+  /**
    * The pretty print priority for while expressions.
    */
   public static final int PRIO_WHILE = 0;
@@ -191,4 +196,14 @@ interface PrettyPrintPriorities {
    * The pretty print priority for sub expressions of tuples.
    */
   public static final int PRIO_TUPLE_E = 0;
+  
+  /**
+   * The pretty print priority for lists.
+   */
+  public static final int PRIO_LIST = 6;
+  
+  /**
+   * The pretty print priority for sub expressions of lists.
+   */
+  public static final int PRIO_LIST_E = PRIO_SEQUENCE + 1;
 }

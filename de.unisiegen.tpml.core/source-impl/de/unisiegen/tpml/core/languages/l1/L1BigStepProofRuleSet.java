@@ -5,6 +5,7 @@ import de.unisiegen.tpml.core.bigstep.BigStepProofNode;
 import de.unisiegen.tpml.core.bigstep.BigStepProofResult;
 import de.unisiegen.tpml.core.bigstep.BigStepProofRule;
 import de.unisiegen.tpml.core.expressions.Application;
+import de.unisiegen.tpml.core.expressions.BinaryCons;
 import de.unisiegen.tpml.core.expressions.BinaryOperator;
 import de.unisiegen.tpml.core.expressions.BinaryOperatorException;
 import de.unisiegen.tpml.core.expressions.BooleanConstant;
@@ -294,6 +295,11 @@ public class L1BigStepProofRuleSet extends L0BigStepProofRuleSet {
       op = infixOperation.getOp();
       e1 = infixOperation.getE1();
       e2 = infixOperation.getE2();
+    }
+    
+    // we must not handle BinaryCons here
+    if (op instanceof BinaryCons) {
+      throw new IllegalArgumentException("(OP) cannot be used here, use (CONS) instead");
     }
     
     // perform the application

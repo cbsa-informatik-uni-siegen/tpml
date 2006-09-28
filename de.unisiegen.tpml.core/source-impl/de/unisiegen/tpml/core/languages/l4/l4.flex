@@ -55,6 +55,7 @@ import de.unisiegen.tpml.core.languages.LanguageSymbol;
 
 		case TRUE: case FALSE: case NUMBER: case PARENPAREN: case MOD:
 		case COLONEQUAL: case REF: case FST: case SND: case PROJECTION:
+		case CONS: case IS_EMPTY: case HD: case TL: case BRACKETBRACKET:
 			return PrettyStyle.CONSTANT;
 
 		case LAMBDA: case LET: case REC: case IN: case IF: case THEN:
@@ -106,6 +107,13 @@ LetterGreek		= [\u03b1-\u03c1\u03c3-\u03c9]
 	"fst"				{ return symbol("FST", FST); }
 	"snd"				{ return symbol("SND", SND); }
 
+	// list operators
+	"cons"				{ return symbol("CONS", CONS); }
+	"is_empty"			{ return symbol("IS_EMPTY", IS_EMPTY); }
+	"hd"				{ return symbol("HD", HD); }
+	"tl"				{ return symbol("TL", TL); }
+	"::"				{ return symbol("COLONCOLON", COLONCOLON); }
+
 	// interpunctation
 	"."					{ return symbol("DOT", DOT); }
 	","					{ return symbol("COMMA", COMMA); }
@@ -114,6 +122,8 @@ LetterGreek		= [\u03b1-\u03c1\u03c3-\u03c9]
 	":="				{ return symbol("COLONEQUAL", COLONEQUAL); }
 	"("					{ return symbol("LPAREN", LPAREN); }
 	")"					{ return symbol("RPAREN", RPAREN); }
+	"["					{ return symbol("LBRACKET", LBRACKET); }
+	"]"					{ return symbol("RBRACKET", RBRACKET); }
 	"!"					{ return symbol("EXCLAMATION", EXCLAMATION); }
 	"->"|"\u2192"		{ return symbol("ARROW", ARROW); }
 	
@@ -131,6 +141,7 @@ LetterGreek		= [\u03b1-\u03c1\u03c3-\u03c9]
 	
 	// constants
 	"()"				{ return symbol("PARENPAREN", PARENPAREN); }
+	"[]"				{ return symbol("BRACKETBRACKET", BRACKETBRACKET); }
 	"true"				{ return symbol("TRUE", TRUE); }
 	"false"				{ return symbol("FALSE", FALSE); }
 	
@@ -138,6 +149,7 @@ LetterGreek		= [\u03b1-\u03c1\u03c3-\u03c9]
 	"bool"				{ return symbol("BOOL", BOOL); }
 	"int"				{ return symbol("INT", INT); }
 	"unit"				{ return symbol("UNIT", UNIT); }
+	"list"				{ return symbol("LIST", LIST); }
 	"'"{LetterAX}		{ return symbol("TYPEVARIABLE", TYPEVARIABLE, (int)(yycharat(1) - 'a')); }
 	{LetterGreek}		{
 							int c = yycharat(0);
