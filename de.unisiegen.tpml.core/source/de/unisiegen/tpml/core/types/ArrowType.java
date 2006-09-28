@@ -1,6 +1,6 @@
 package de.unisiegen.tpml.core.types;
 
-import java.util.HashSet;
+import java.util.TreeSet;
 
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
@@ -119,8 +119,8 @@ public final class ArrowType extends MonoType {
    * @see types.Type#free()
    */
   @Override
-  public HashSet<TypeVariable> free() {
-    HashSet<TypeVariable> free = new HashSet<TypeVariable>();
+  public TreeSet<TypeVariable> free() {
+    TreeSet<TypeVariable> free = new TreeSet<TypeVariable>();
     free.addAll(this.tau1.free());
     free.addAll(this.tau2.free());
     return free;

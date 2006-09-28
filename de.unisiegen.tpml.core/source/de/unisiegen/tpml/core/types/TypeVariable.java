@@ -37,7 +37,7 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
  * 
  * @see de.unisiegen.tpml.core.types.Type
  */
-public final class TypeVariable extends MonoType {
+public final class TypeVariable extends MonoType implements Comparable<TypeVariable> {
   //
   // Constants
   //
@@ -185,10 +185,40 @@ public final class TypeVariable extends MonoType {
    *
    * @see de.unisiegen.tpml.core.types.Type#toPrettyStringBuilder(de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory)
    */
-  public @Override PrettyStringBuilder toPrettyStringBuilder(PrettyStringBuilderFactory factory) {
+  @Override
+  public PrettyStringBuilder toPrettyStringBuilder(PrettyStringBuilderFactory factory) {
     PrettyStringBuilder builder = factory.newBuilder(this, PRIO_TYPE_VARIABLE);
     builder.addText("" + offsetToGreekLetter(this.offset) + ((this.index > 0) ? this.index : ""));
     return builder;
+  }
+  
+  
+  
+  //
+  // Comparisons
+  //
+  
+  /**
+   * {@inheritDoc}
+   *
+   * @see java.lang.Comparable#compareTo(T)
+   */
+  public int compareTo(TypeVariable other) {
+    if (this.index < other.index) {
+      return -1;
+    }
+    else if (this.index > other.index) {
+      return 1;
+    }
+    else if (this.offset < other.offset) {
+      return -1;
+    }
+    else if (this.offset > other.offset) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
   }
   
   

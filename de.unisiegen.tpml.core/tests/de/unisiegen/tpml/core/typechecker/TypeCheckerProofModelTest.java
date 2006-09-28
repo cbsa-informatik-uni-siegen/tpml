@@ -37,7 +37,7 @@ public final class TypeCheckerProofModelTest extends JFrame {
   /**
    * Simple test expression.
    */
-  private static final String SIMPLE = "[fst (1,8);2;3;4;(5;8)]";
+  private static final String SIMPLE = "let id x y = x y in id id id";
 
   
   

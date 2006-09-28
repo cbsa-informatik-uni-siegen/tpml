@@ -1,8 +1,8 @@
 package de.unisiegen.tpml.core.types;
 
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.TreeSet;
 
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
@@ -100,8 +100,8 @@ public final class PolyType extends Type {
    * @see de.unisiegen.tpml.core.types.Type#free()
    */
   @Override
-  public Set<TypeVariable> free() {
-    HashSet<TypeVariable> free = new HashSet<TypeVariable>();
+  public TreeSet<TypeVariable> free() {
+    TreeSet<TypeVariable> free = new TreeSet<TypeVariable>();
     free.addAll(this.tau.free());
     free.remove(this.quantifiedVariables);
     return free;
@@ -118,7 +118,7 @@ public final class PolyType extends Type {
     MonoType tau = this.tau;
     
     // perform a bound rename on the type variables
-    HashSet<TypeVariable> quantifiedVariables = new HashSet<TypeVariable>();
+    TreeSet<TypeVariable> quantifiedVariables = new TreeSet<TypeVariable>();
     for (TypeVariable tvar : this.quantifiedVariables) {
       // generate a type variable that is not present in the substitution
       TypeVariable tvarn = tvar;

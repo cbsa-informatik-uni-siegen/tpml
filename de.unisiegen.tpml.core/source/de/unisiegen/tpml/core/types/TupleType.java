@@ -1,7 +1,7 @@
 package de.unisiegen.tpml.core.types;
 
 import java.util.Arrays;
-import java.util.HashSet;
+import java.util.TreeSet;
 
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
@@ -94,8 +94,8 @@ public final class TupleType extends MonoType {
    * @see de.unisiegen.tpml.core.types.Type#free()
    */
   @Override
-  public HashSet<TypeVariable> free() {
-    HashSet<TypeVariable> free = new HashSet<TypeVariable>();
+  public TreeSet<TypeVariable> free() {
+    TreeSet<TypeVariable> free = new TreeSet<TypeVariable>();
     for (MonoType type : this.types) {
       free.addAll(type.free());
     }
