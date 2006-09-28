@@ -6,6 +6,7 @@ import java.util.TreeSet;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
+import de.unisiegen.tpml.core.types.MonoType;
 
 /**
  * Represents the simple binding mechanism <code>let</code>.
@@ -31,6 +32,13 @@ public class Let extends Expression {
   protected String id;
   
   /**
+   * The type for the <code>id</code> (and thereby for <code>e1</code>) or <code>null</code>.
+   * 
+   * @see #getType()
+   */
+  protected MonoType tau;
+  
+  /**
    * The first expression.
    * 
    * @see #getE1()
@@ -54,12 +62,13 @@ public class Let extends Expression {
    * Allocates a new <code>Let</code> with the specified <code>id</code>, <code>e1</code> and <code>e2</code>.
    * 
    * @param id the name of the identifier.
+   * @param tau the type for the <code>id</code> (and thereby for <code>e1</code>) or <code>null</code>.
    * @param e1 the first expression.
    * @param e2 the second expression.
    * 
    * @throws NullPointerException if <code>id</code>, <code>e1</code> or <code>e2</code> is <code>null</code>.
    */
-  public Let(String id, Expression e1, Expression e2) {
+  public Let(String id, MonoType tau, Expression e1, Expression e2) {
     if (id == null) {
       throw new NullPointerException("id is null");
     }
@@ -70,6 +79,7 @@ public class Let extends Expression {
       throw new NullPointerException("e2 is null");
     }
     this.id = id;
+    this.tau = tau;
     this.e1 = e1;
     this.e2 = e2;
   }
@@ -87,6 +97,16 @@ public class Let extends Expression {
    */
   public String getId() {
     return this.id;
+  }
+  
+  /**
+   * Returns the type for the identifier (and thereby the type for <code>e1</code>) or <code>null</code>
+   * if no type was specified by the user or the translation to core syntax.
+   * 
+   * @return the type for <code>id</code> or <code>null</code>.
+   */
+  public MonoType getTau() {
+    return this.tau;
   }
   
   /**
@@ -134,7 +154,8 @@ public class Let extends Expression {
    */
   @Override
   public Let substitute(TypeSubstitution substitution) {
-    return new Let(this.id, this.e1.substitute(substitution), this.e2.substitute(substitution));
+    MonoType tau = (this.tau != null) ? this.tau.substitute(substitution) : null;
+    return new Let(this.id, tau, this.e1.substitute(substitution), this.e2.substitute(substitution));
   }
   
   /**
@@ -146,7 +167,7 @@ public class Let extends Expression {
   public Expression substitute(String id, Expression e) {
     Expression e1 = this.e1.substitute(id, e);
     Expression e2 = this.id.equals(id) ? this.e2 : this.e2.substitute(id, e);
-    return new Let(this.id, e1, e2);
+    return new Let(this.id, this.tau, e1, e2);
   }
 
   /**
@@ -157,7 +178,12 @@ public class Let extends Expression {
   public @Override PrettyStringBuilder toPrettyStringBuilder(PrettyStringBuilderFactory factory) {
     PrettyStringBuilder builder = factory.newBuilder(this, PRIO_LET);
     builder.addKeyword("let");
-    builder.addText(" " + this.id + " = ");
+    builder.addText(" " + this.id);
+    if (this.tau != null) {
+      builder.addText(":");
+      builder.addBuilder(this.tau.toPrettyStringBuilder(factory), PRIO_LET_TAU);
+    }
+    builder.addText(" = ");
     builder.addBuilder(this.e1.toPrettyStringBuilder(factory), PRIO_LET_E1);
     builder.addBreak();
     builder.addText(" ");
@@ -180,9 +206,10 @@ public class Let extends Expression {
    */
   @Override
   public boolean equals(Object obj) {
-    if (obj instanceof Let) {
+    if (obj instanceof Let && getClass().equals(obj.getClass())) {
       Let other = (Let)obj;
-      return (this.id.equals(other.id) && this.e1.equals(other.e1) && this.e2.equals(other.e2));
+      return (this.id.equals(other.id) && this.e1.equals(other.e1) && this.e2.equals(other.e2)
+           && ((this.tau == null) ? (other.tau == null) : this.tau.equals(other.tau)));
     }
     return false;
   }

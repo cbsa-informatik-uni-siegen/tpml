@@ -81,7 +81,7 @@ public class L4LanguageTranslator extends L3LanguageTranslator {
       }
       
       // generate the let expression
-      return new Let(id, e1, e2);
+      return new Let(id, null, e1, e2);
     }
     else if (expression instanceof While) {
       // translate to: rec w:unit.if e1 then e2;w

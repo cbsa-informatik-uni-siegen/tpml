@@ -73,7 +73,7 @@ public class L2LanguageTranslator extends L1LanguageTranslator {
       }
       
       // generate the let expression
-      return new Let(curriedLetRec.getIdentifiers(0), new Recursion(curriedLetRec.getIdentifiers(0), tau, e1), curriedLetRec.getE2());
+      return new Let(curriedLetRec.getIdentifiers(0), curriedLetRec.getTypes(0), new Recursion(curriedLetRec.getIdentifiers(0), tau, e1), curriedLetRec.getE2());
     }
     else if (expression instanceof LetRec) {
       // determine the sub expressions
@@ -88,7 +88,7 @@ public class L2LanguageTranslator extends L1LanguageTranslator {
       }
       
       // generate the let expression
-      return new Let(letRec.getId(), new Recursion(letRec.getId(), letRec.getTau(), e1), e2);
+      return new Let(letRec.getId(), letRec.getTau(), new Recursion(letRec.getId(), letRec.getTau(), e1), e2);
     }
     else {
       return super.translateToCoreSyntax(expression, recursive);

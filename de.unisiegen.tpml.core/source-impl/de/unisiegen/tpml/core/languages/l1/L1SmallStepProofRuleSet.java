@@ -215,7 +215,7 @@ public class L1SmallStepProofRuleSet extends L0SmallStepProofRuleSet {
       e1 = evaluate(context, e1);
       
       // exceptions need special treatment
-      return e1.isException() ? e1 : new Let(id, e1, e2);
+      return e1.isException() ? e1 : new Let(id, let.getTau(), e1, e2);
     }
 
     // we can perform (LET-EXEC)

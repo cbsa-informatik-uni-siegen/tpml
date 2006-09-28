@@ -111,25 +111,16 @@ public class L3TypeCheckerProofRuleSet extends L2TypeCheckerProofRuleSet {
       Let let = (Let)expression;
       Expression e1 = let.getE1();
       
-      // the type for the id, either a type specified 
-      // in the let rec or a new type variable
-      MonoType tau1 = null;
+      // check if a type was specified
+      MonoType tau1 = let.getTau();
+      if (tau1 == null) {
+        tau1 = context.newTypeVariable();
+      }
       
       // add the recursion for let rec
       if (expression instanceof LetRec) {
-        // check if a type was specified
-        LetRec letRec = (LetRec)expression;
-        tau1 = letRec.getTau();
-        if (tau1 == null) {
-          tau1 = context.newTypeVariable();
-        }
-        
         // add the recursion for e1
         e1 = new Recursion(let.getId(), tau1, e1);
-      }
-      else {
-        // generate a new type variable
-        tau1 = context.newTypeVariable();
       }
       
       // add only the first child node, the second one will be added

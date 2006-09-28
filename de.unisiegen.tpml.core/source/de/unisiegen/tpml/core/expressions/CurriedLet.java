@@ -329,7 +329,7 @@ public class CurriedLet extends Expression {
    */
   @Override
   public boolean equals(Object obj) {
-    if (obj instanceof CurriedLet) {
+    if (obj instanceof CurriedLet && getClass().equals(obj.getClass())) {
       CurriedLet other = (CurriedLet)obj;
       return (this.identifiers.equals(other.identifiers)
            && ((this.types == null) ? (other.types == null) : Arrays.equals(this.types, other.types))

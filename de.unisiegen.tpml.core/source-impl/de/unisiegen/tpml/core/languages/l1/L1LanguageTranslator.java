@@ -92,7 +92,7 @@ public class L1LanguageTranslator extends L0LanguageTranslator {
       }
       
       // generate the let expression
-      return new Let(curriedLet.getIdentifiers(0), e1, curriedLet.getE2());
+      return new Let(curriedLet.getIdentifiers(0), curriedLet.getTypes(0), e1, curriedLet.getE2());
     }
     else {
       // dunno, let the parent class handle it

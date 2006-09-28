@@ -23,19 +23,6 @@ import de.unisiegen.tpml.core.types.MonoType;
  */
 public final class LetRec extends Let {
   //
-  // Attributes
-  //
-  
-  /**
-   * The type for the identifier or <code>null</code>.
-   * 
-   * @see #getTau()
-   */
-  private MonoType tau;
-  
-  
-  
-  //
   // Constructor
   //
   
@@ -51,23 +38,7 @@ public final class LetRec extends Let {
    * @throws NullPointerException if <code>id</code>, <code>e1</code> or <code>e2</code> is <code>null</code>.
    */
   public LetRec(String id, MonoType tau, Expression e1, Expression e2) {
-    super(id, e1, e2);
-    this.tau = tau;
-  }
-  
-  
-  
-  //
-  // Accessors
-  //
-  
-  /**
-   * Returns the type for the identifier or <code>null</code>.
-   * 
-   * @return the type for the identifier or <code>null</code>.
-   */
-  public MonoType getTau() {
-    return this.tau;
+    super(id, tau, e1, e2);
   }
   
   
@@ -147,7 +118,7 @@ public final class LetRec extends Let {
     builder.addText(" " + this.id);
     if (this.tau != null) {
       builder.addText(":");
-      builder.addBuilder(this.tau.toPrettyStringBuilder(factory), PRIO_REC_TAU);
+      builder.addBuilder(this.tau.toPrettyStringBuilder(factory), PRIO_LET_TAU);
     }
     builder.addText(" = ");
     builder.addBuilder(this.e1.toPrettyStringBuilder(factory), PRIO_LET_E1);
@@ -157,35 +128,5 @@ public final class LetRec extends Let {
     builder.addText(" ");
     builder.addBuilder(this.e2.toPrettyStringBuilder(factory), PRIO_LET_E2);
     return builder;
-  }
-  
-  
-  
-  //
-  // Base methods
-  //
-  
-  /**
-   * {@inheritDoc}
-   *
-   * @see de.unisiegen.tpml.core.expressions.Let#equals(java.lang.Object)
-   */
-  @Override
-  public boolean equals(Object obj) {
-    if (obj instanceof LetRec) {
-      LetRec other = (LetRec)obj;
-      return (super.equals(obj) && ((this.tau == null) ? (other.tau == null) : this.tau.equals(other.tau)));
-    }
-    return false;
-  }
-  
-  /**
-   * {@inheritDoc}
-   *
-   * @see de.unisiegen.tpml.core.expressions.Let#hashCode()
-   */
-  @Override
-  public int hashCode() {
-    return super.hashCode() + ((this.tau != null) ? this.tau.hashCode() : 0);
   }
 }

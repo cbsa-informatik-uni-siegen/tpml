@@ -73,7 +73,7 @@ public class L3LanguageTranslator extends L2LanguageTranslator {
       
       // generate the required let's
       for (int n = identifiers.length - 1; n >= 0; --n) {
-        e = new Let(identifiers[n], new Application(new Projection(identifiers.length, n + 1), new Identifier(id)), e);
+        e = new Let(identifiers[n], null, new Application(new Projection(identifiers.length, n + 1), new Identifier(id)), e);
       }
       
       // and return the new lambda expression
@@ -100,11 +100,11 @@ public class L3LanguageTranslator extends L2LanguageTranslator {
       
       // generate the required let's
       for (int n = identifiers.length - 1; n >= 0; --n) {
-        e2 = new Let(identifiers[n], new Application(new Projection(identifiers.length, n + 1), new Identifier(id)), e2);
+        e2 = new Let(identifiers[n], null, new Application(new Projection(identifiers.length, n + 1), new Identifier(id)), e2);
       }
       
       // and return the new let expression
-      return new Let(id, e1, e2);
+      return new Let(id, multiLet.getTau(), e1, e2);
     }
     else if (expression instanceof Snd) {
       Snd snd = (Snd)expression;

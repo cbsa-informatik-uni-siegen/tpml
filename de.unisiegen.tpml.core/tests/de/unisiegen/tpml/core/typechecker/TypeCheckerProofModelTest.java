@@ -37,7 +37,7 @@ public final class TypeCheckerProofModelTest extends JFrame {
   /**
    * Simple test expression.
    */
-  private static final String SIMPLE = "let f (x:int) (y:int):int = x + y in f 1 2";
+  private static final String SIMPLE = "let x:bool = true in x";
 
   
   

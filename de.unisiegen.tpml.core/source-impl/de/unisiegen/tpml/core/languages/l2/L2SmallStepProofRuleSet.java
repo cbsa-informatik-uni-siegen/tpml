@@ -10,6 +10,7 @@ import de.unisiegen.tpml.core.expressions.Recursion;
 import de.unisiegen.tpml.core.languages.l1.L1Language;
 import de.unisiegen.tpml.core.languages.l1.L1SmallStepProofRuleSet;
 import de.unisiegen.tpml.core.smallstep.SmallStepProofContext;
+import de.unisiegen.tpml.core.types.MonoType;
 
 /**
  * Small step proof rules for the <code>L2</code> language.
@@ -83,22 +84,24 @@ public class L2SmallStepProofRuleSet extends L1SmallStepProofRuleSet {
   public Expression evaluateCurriedLetRec(SmallStepProofContext context, CurriedLetRec curriedLetRec) {
     // determine the sub expressions and the identifiers
     String[] identifiers = curriedLetRec.getIdentifiers();
+    MonoType[] types = curriedLetRec.getTypes();
     Expression e1 = curriedLetRec.getE1();
     Expression e2 = curriedLetRec.getE2();
     
     // prepend the lambda abstractions to e1
-    for (int n = identifiers.length - 1; n >= 1; --n)
-      e1 = new Lambda(identifiers[n], null, e1);
+    for (int n = identifiers.length - 1; n >= 1; --n) {
+      e1 = new Lambda(identifiers[n], types[n], e1);
+    }
     
     // we can perform (UNFOLD), which includes a (LET-EVAL)
     context.addProofStep(getRuleByName("LET-EVAL"), curriedLetRec);
     context.addProofStep(getRuleByName("UNFOLD"), curriedLetRec);
 
     // perform the substitution on e1
-    e1 = e1.substitute(identifiers[0], new Recursion(identifiers[0], null, e1));
+    e1 = e1.substitute(identifiers[0], new Recursion(identifiers[0], types[0], e1));
     
     // generate the new (LET) expression
-    return new Let(identifiers[0], e1, e2);
+    return new Let(identifiers[0], types[0], e1, e2);
   }
   
   /**
@@ -120,10 +123,10 @@ public class L2SmallStepProofRuleSet extends L1SmallStepProofRuleSet {
     context.addProofStep(getRuleByName("UNFOLD"), letRec);
     
     // perform the substitution on e1
-    e1 = e1.substitute(id, new Recursion(id, null, e1));
+    e1 = e1.substitute(id, new Recursion(id, letRec.getTau(), e1));
     
     // generate the new (LET) expression
-    return new Let(id, e1, e2);
+    return new Let(id, letRec.getTau(), e1, e2);
   }
   
   /**

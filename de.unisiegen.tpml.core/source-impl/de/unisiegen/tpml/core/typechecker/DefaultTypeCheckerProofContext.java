@@ -181,7 +181,7 @@ final class DefaultTypeCheckerProofContext implements TypeCheckerProofContext {
         typeVariables[n] = new TypeVariable(n, 0);
         quantifiedVariables.add(typeVariables[n]);
       }
-      return new PolyType(quantifiedVariables, new ArrowType(new TupleType(typeVariables), typeVariables[projection.getIndex()]));
+      return new PolyType(quantifiedVariables, new ArrowType(new TupleType(typeVariables), typeVariables[projection.getIndex() - 1]));
     }
     else {
       // not a simple expression
