@@ -14,7 +14,6 @@ import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.util.Stack;
 
-import javax.swing.JEditorPane;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
@@ -22,7 +21,6 @@ import javax.swing.JScrollPane;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
-import javax.swing.text.StyledEditorKit;
 
 import org.apache.log4j.Logger;
 
@@ -118,8 +116,11 @@ public class TextEditorPanel extends JPanel implements EditorComponent, Clipboar
 		JMenuItem cutItem = new JMenuItem("Cut");
 		JMenuItem pasteItem = new JMenuItem("Paste");
 		copyItem.addActionListener(menulistener);
+		copyItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/copy16.gif")));
 		cutItem.addActionListener(menulistener);
+		cutItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/cut16.gif")));
 		pasteItem.addActionListener(menulistener);
+		pasteItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/paste16.gif")));
 		popup.add(copyItem);
 		popup.add(cutItem);
 		popup.add(pasteItem);
@@ -350,6 +351,7 @@ public class TextEditorPanel extends JPanel implements EditorComponent, Clipboar
 			try {
 				undohistory.push(currentContent);
 				setRedoStatus(false);
+				setUndoStatus(true);
 				redohistory.clear();
 				currentContent = (String) arg0.getDocument().getText(0,
 						arg0.getDocument().getLength());
