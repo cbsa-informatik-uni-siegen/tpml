@@ -35,7 +35,7 @@ public class SmallStepProofModelTest extends JFrame {
   /**
    * Simple test expression.
    */
-  private static final String SIMPLE = "1 :: (cons (1, []))";
+  private static final String SIMPLE = "1 = 1 && 1 = 1";
 
   
   
@@ -215,9 +215,9 @@ public class SmallStepProofModelTest extends JFrame {
    */
   public static void main(String[] args) {
     try {
-      // parse the program (using L3)
+      // parse the program (using L1)
       LanguageFactory factory = LanguageFactory.newInstance();
-      Language language = factory.getLanguageById("l3");
+      Language language = factory.getLanguageById("l1");
       Expression expression = language.newParser(new StringReader(SIMPLE)).parse();
       SmallStepProofModel model = language.newSmallStepProofModel(expression);
       

@@ -39,7 +39,7 @@ public final class BigStepProofModelTest extends JFrame {
   /**
    * Simple test expression.
    */
-  private static final String SIMPLE = "[1 + 1;2 + 2;3 + 3;4;5]";
+  private static final String SIMPLE = "false || false && true || (1/0) < 0";
 
   
   
@@ -251,9 +251,9 @@ public final class BigStepProofModelTest extends JFrame {
    */
   public static void main(String[] args) {
     try {
-      // parse the program (using L3)
+      // parse the program (using L4)
       LanguageFactory factory = LanguageFactory.newInstance();
-      Language language = factory.getLanguageById("l3");
+      Language language = factory.getLanguageById("l4");
       Expression expression = language.newParser(new StringReader(SIMPLE)).parse();
       BigStepProofModel model = language.newBigStepProofModel(expression);
       

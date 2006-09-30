@@ -206,4 +206,34 @@ interface PrettyPrintPriorities {
    * The pretty print priority for sub expressions of lists.
    */
   public static final int PRIO_LIST_E = PRIO_SEQUENCE + 1;
+  
+  /**
+   * The pretty print priority for and expressions.
+   */
+  public static final int PRIO_AND = 1;
+  
+  /**
+   * The pretty print priority for the e1 of and expressions.
+   */
+  public static final int PRIO_AND_E1 = PRIO_AND;
+  
+  /**
+   * The pretty print priority for the e2 of and expressions.
+   */
+  public static final int PRIO_AND_E2 = PRIO_AND_E1 + 1;
+  
+  /**
+   * The pretty print priority for or expressions.
+   */
+  public static final int PRIO_OR = 1;
+  
+  /**
+   * The pretty print priority for the e1 of or expressions.
+   */
+  public static final int PRIO_OR_E1 = PRIO_OR;
+  
+  /**
+   * The pretty print priority for the e2 of or expressions.
+   */
+  public static final int PRIO_OR_E2 = PRIO_OR_E1 + 1;
 }

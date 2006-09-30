@@ -95,6 +95,16 @@ public final class Exn extends Expression {
   public Expression substitute(String id, Expression e) {
     return this;
   }
+  
+  /**
+   * {@inheritDoc}
+   *
+   * @see de.unisiegen.tpml.core.expressions.Expression#isException()
+   */
+  @Override
+  public boolean isException() {
+    return true;
+  }
 
   
   
@@ -107,7 +117,8 @@ public final class Exn extends Expression {
    *
    * @see de.unisiegen.tpml.core.expressions.Expression#toPrettyStringBuilder(de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory)
    */
-  public @Override PrettyStringBuilder toPrettyStringBuilder(PrettyStringBuilderFactory factory) {
+  @Override 
+  public PrettyStringBuilder toPrettyStringBuilder(PrettyStringBuilderFactory factory) {
     PrettyStringBuilder builder = factory.newBuilder(this, PRIO_EXN);
     builder.addText(this.name);
     return builder;

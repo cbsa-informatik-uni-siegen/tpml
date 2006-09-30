@@ -16,6 +16,9 @@ action code {:
 terminal			PLUS, MINUS, STAR, SLASH, MOD;
 terminal			EQUAL, LESS, GREATER, LESSEQUAL, GREATEREQUAL;
 
+/* Logical operators */
+terminal			AMPERAMPER, BARBAR;
+
 /* Syntactic tokens */
 terminal			ARROW, COLON, DOT;
 terminal			LPAREN, RPAREN;
@@ -49,6 +52,9 @@ non terminal MonoType		simple_type;
 
 /* Precedences, based on http://caml.inria.fr/pub/docs/manual-ocaml/manual015.html */
 precedence right	ARROW;
+
+precedence right	BARBAR;					/* expr (e || e || e) */
+precedence right	AMPERAMPER;				/* expr (e && e && e) */
 
 precedence left		EQUAL, LESS, GREATER, LESSEQUAL, GREATEREQUAL;
 precedence left		PLUS, MINUS;
@@ -93,6 +99,12 @@ expr				::=	simple_expr:e
 						{: RESULT = new InfixOperation(RelationalOperator.LOWER_EQUAL, e1, e2); :}
 					|	expr:e1 GREATEREQUAL expr:e2
 						{: RESULT = new InfixOperation(RelationalOperator.GREATER_EQUAL, e1, e2); :}
+
+					/* Logical operators */
+					|	expr:e1 AMPERAMPER expr:e2
+						{: RESULT = new And(e1, e2); :}
+					|	expr:e1 BARBAR expr:e2
+						{: RESULT = new Or(e1, e2); :}
 
 					/* Conditions */
 					|	IF expr:e0 THEN expr:e1 ELSE expr:e2

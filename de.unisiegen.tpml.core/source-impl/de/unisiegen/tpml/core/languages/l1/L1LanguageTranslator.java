@@ -1,12 +1,15 @@
 package de.unisiegen.tpml.core.languages.l1;
 
+import de.unisiegen.tpml.core.expressions.And;
 import de.unisiegen.tpml.core.expressions.Application;
+import de.unisiegen.tpml.core.expressions.BooleanConstant;
 import de.unisiegen.tpml.core.expressions.Condition;
 import de.unisiegen.tpml.core.expressions.CurriedLet;
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.expressions.InfixOperation;
 import de.unisiegen.tpml.core.expressions.Lambda;
 import de.unisiegen.tpml.core.expressions.Let;
+import de.unisiegen.tpml.core.expressions.Or;
 import de.unisiegen.tpml.core.languages.l0.L0LanguageTranslator;
 
 /**
@@ -44,22 +47,20 @@ public class L1LanguageTranslator extends L0LanguageTranslator {
    */
   @Override
   public Expression translateToCoreSyntax(Expression expression, boolean recursive) {
-    if (expression instanceof InfixOperation) {
+    if (expression instanceof And) {
       // determine the sub expressions
-      InfixOperation infixOperation = (InfixOperation)expression;
-      Expression op = infixOperation.getOp();
-      Expression e1 = infixOperation.getE1();
-      Expression e2 = infixOperation.getE2();
+      And and = (And)expression;
+      Expression e1 = and.getE1();
+      Expression e2 = and.getE2();
       
       // check if we should recurse
       if (recursive) {
-        op = translateToCoreSyntax(op, true);
         e1 = translateToCoreSyntax(e1, true);
         e2 = translateToCoreSyntax(e2, true);
       }
       
-      // generate the applications
-      return new Application(new Application(op, e1), e2);
+      // generate the condition
+      return new Condition(e1, e2, BooleanConstant.FALSE);
     }
     else if (expression instanceof Condition && recursive) {
       // determine the sub expressions
@@ -93,6 +94,38 @@ public class L1LanguageTranslator extends L0LanguageTranslator {
       
       // generate the let expression
       return new Let(curriedLet.getIdentifiers(0), curriedLet.getTypes(0), e1, curriedLet.getE2());
+    }
+    else if (expression instanceof InfixOperation) {
+      // determine the sub expressions
+      InfixOperation infixOperation = (InfixOperation)expression;
+      Expression op = infixOperation.getOp();
+      Expression e1 = infixOperation.getE1();
+      Expression e2 = infixOperation.getE2();
+      
+      // check if we should recurse
+      if (recursive) {
+        op = translateToCoreSyntax(op, true);
+        e1 = translateToCoreSyntax(e1, true);
+        e2 = translateToCoreSyntax(e2, true);
+      }
+      
+      // generate the applications
+      return new Application(new Application(op, e1), e2);
+    }
+    else if (expression instanceof Or) {
+      // determine the sub expressions
+      Or or = (Or)expression;
+      Expression e1 = or.getE1();
+      Expression e2 = or.getE2();
+      
+      // check if we should recurse
+      if (recursive) {
+        e1 = translateToCoreSyntax(e1, true);
+        e2 = translateToCoreSyntax(e2, true);
+      }
+      
+      // generate the condition
+      return new Condition(e1, BooleanConstant.TRUE, e2);
     }
     else {
       // dunno, let the parent class handle it

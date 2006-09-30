@@ -23,6 +23,9 @@ terminal			FST, SND;
 terminal			CONS, IS_EMPTY, HD, TL;
 terminal			COLONCOLON;
 
+/* Logical operators */
+terminal			AMPERAMPER, BARBAR;
+
 /* Syntactic tokens */
 terminal			ARROW, COLON, COMMA, DOT, SEMI;
 terminal			LPAREN, RPAREN;
@@ -68,6 +71,9 @@ precedence nonassoc	THEN;					/* below ELSE (if ... then ...) */
 precedence nonassoc	ELSE;					/* (if ... then ... else ...) */
 
 precedence right	ARROW;
+
+precedence right	BARBAR;					/* expr (e || e || e) */
+precedence right	AMPERAMPER;				/* expr (e && e && e) */
 
 precedence left		EQUAL, LESS, GREATER, LESSEQUAL, GREATEREQUAL;
 precedence right	COLONCOLON;				/* expr (e :: e :: e) */
@@ -116,6 +122,12 @@ expr				::=	simple_expr:e
 
 					|	expr:e1 COLONCOLON expr:e2
 						{: RESULT = new InfixOperation(BinaryCons.CONS, e1, e2); :}
+
+					/* Logical operators */
+					|	expr:e1 AMPERAMPER expr:e2
+						{: RESULT = new And(e1, e2); :}
+					|	expr:e1 BARBAR expr:e2
+						{: RESULT = new Or(e1, e2); :}
 
 					/* Conditions */
 					|	IF expr:e0 THEN expr:e1 ELSE expr:e2
