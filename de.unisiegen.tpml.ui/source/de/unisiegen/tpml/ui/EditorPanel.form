@@ -63,7 +63,7 @@
             <Component class="javax.swing.JButton" name="nextButton">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/de/unisiegen/tpml/ui/icons/next.png"/>
+                  <Image iconType="3" name="/de/unisiegen/tpml/ui/icons/next24.png"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" value="Guess"/>
               </Properties>

@@ -31,14 +31,15 @@ import de.unisiegen.tpml.graphics.StyledLanguageDocument;
 import de.unisiegen.tpml.ui.EditorComponent;
 
 /**
- * //TODO add documentation here.
- *	TODO this thing really needs cleaning up especially the cut copy paste functions...
+ * //TODO add documentation here. TODO this thing really needs cleaning up
+ * especially the cut copy paste functions...
  * 
  * @author Christoph Fehling
  * @version $Rev$
  * 
  */
-public class TextEditorPanel extends JPanel implements EditorComponent {
+public class TextEditorPanel extends JPanel implements EditorComponent,
+		ClipboardOwner {
 
 	private static final Logger logger = Logger
 			.getLogger(TextEditorPanel.class);
@@ -195,16 +196,16 @@ public class TextEditorPanel extends JPanel implements EditorComponent {
 	}
 
 	public void removeSelectedText() {
+		int start = editor.getSelectionStart();
+		int end = editor.getSelectionEnd();
 		try {
-			if (editor.getSelectionStart() < editor.getSelectionEnd()) {
-				document.remove(editor.getSelectionStart(), editor
-						.getSelectionEnd());
+			if (start < end) {
+				document.remove(start, (end-start));
 			} else {
-				document.remove(editor.getSelectionEnd(), editor
-						.getSelectionStart());
+				document.remove(end, (start-end));
 			}
 		} catch (BadLocationException e) {
-			e.printStackTrace();
+			logger.error("Cannot remove text from document", e);
 		}
 	}
 
@@ -244,7 +245,7 @@ public class TextEditorPanel extends JPanel implements EditorComponent {
 	 */
 
 	public void handleNext() {
-		// TODO Auto-generated method stub
+		// this function is not implemented here
 
 	}
 
@@ -290,6 +291,36 @@ public class TextEditorPanel extends JPanel implements EditorComponent {
 			logger.error("Cannot handle an undo", e);
 		}
 
+	}
+
+	public void handleCut() {
+		Clipboard clipboard = getToolkit().getSystemClipboard();
+		StringSelection stringSelection = new StringSelection(getSelectedText());
+		clipboard.setContents(stringSelection, this);
+		removeSelectedText();
+	}
+
+	public void handleCopy() {
+		Clipboard clipboard = getToolkit().getSystemClipboard();
+		StringSelection stringSelection = new StringSelection(getSelectedText());
+		clipboard.setContents(stringSelection, this);
+	}
+
+	public void handlePaste() {
+		Clipboard clipboard = getToolkit().getSystemClipboard();
+		Transferable contents = clipboard.getContents(null);
+		boolean hasTransferableText = (contents != null)
+				&& contents.isDataFlavorSupported(DataFlavor.stringFlavor);
+		if (hasTransferableText) {
+			try {
+				insertText((String) contents
+						.getTransferData(DataFlavor.stringFlavor));
+			} catch (UnsupportedFlavorException ex) {
+				logger.error("Can not paste from clipboard", ex);
+			} catch (IOException ex) {
+				logger.error("Can not paste from clipboard", ex);
+			}
+		}
 	}
 
 	public StyledLanguageDocument getDocument() {
@@ -362,47 +393,23 @@ public class TextEditorPanel extends JPanel implements EditorComponent {
 		}
 	}
 
-	private class MenuListener implements ActionListener, ClipboardOwner {
+	private class MenuListener implements ActionListener {
 
 		public void actionPerformed(ActionEvent evt) {
-			Clipboard clipboard = getToolkit().getSystemClipboard();
 			String command = evt.getActionCommand();
-			System.out.println(command);
 
 			if (command.equals("Copy")) {
-				StringSelection stringSelection = new StringSelection(
-						getSelectedText());
-				clipboard.setContents(stringSelection, this);
+				handleCopy();
 			} else if (command.equals("Cut")) {
-				StringSelection stringSelection = new StringSelection(getText());
-				clipboard.setContents(stringSelection, this);
-				removeSelectedText();
-
+				handleCut();
 			} else if (command.equals("Paste")) {
-				Transferable contents = clipboard.getContents(null);
-				boolean hasTransferableText = (contents != null)
-						&& contents
-								.isDataFlavorSupported(DataFlavor.stringFlavor);
-				if (hasTransferableText) {
-					try {
-						insertText((String) contents
-								.getTransferData(DataFlavor.stringFlavor));
-					} catch (UnsupportedFlavorException ex) {
-						// highly unlikely since we are using a standard
-						// DataFlavor
-						System.out.println(ex);
-						ex.printStackTrace();
-					} catch (IOException ex) {
-						System.out.println(ex);
-						ex.printStackTrace();
-					}
-				}
+				handlePaste();
 			}
 		}
+	}
 
-		public void lostOwnership(Clipboard arg0, Transferable arg1) {
-			// do nothing
-		}
+	public void lostOwnership(Clipboard arg0, Transferable arg1) {
+		// we do not care so we do nothing
 
 	}
 

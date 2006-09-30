@@ -140,7 +140,7 @@ public class FileWizard extends javax.swing.JDialog {
         gridBagConstraints.weightx = 1.0;
         headerPanel.add(headerSeparator, gridBagConstraints);
 
-        headerImageLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/new.png")));
+        headerImageLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/new24.png")));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridheight = 2;
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);

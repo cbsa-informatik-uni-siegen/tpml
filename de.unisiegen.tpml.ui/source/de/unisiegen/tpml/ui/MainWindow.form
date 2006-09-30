@@ -182,6 +182,36 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="redoItemActionPerformed"/>
               </Events>
             </MenuItem>
+            <MenuItem class="javax.swing.JSeparator" name="editMenuSeparator1">
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_VariableLocal" type="java.lang.Boolean" value="true"/>
+                <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="0"/>
+              </AuxValues>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="cutItem">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Cut"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cutItemActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="copyItem">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Copy"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="copyItemActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="pasteItem">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Paste"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="pasteItemActionPerformed"/>
+              </Events>
+            </MenuItem>
             <MenuItem class="javax.swing.JSeparator" name="editMenuSeperator">
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_VariableLocal" type="java.lang.Boolean" value="true"/>
@@ -298,7 +328,7 @@
         <Component class="javax.swing.JButton" name="newButton">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/de/unisiegen/tpml/ui/icons/new.png"/>
+              <Image iconType="3" name="/de/unisiegen/tpml/ui/icons/new24.png"/>
             </Property>
             <Property name="toolTipText" type="java.lang.String" value="New File"/>
             <Property name="borderPainted" type="boolean" value="false"/>
@@ -315,7 +345,7 @@
         <Component class="javax.swing.JButton" name="openButton">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/de/unisiegen/tpml/ui/icons/open.png"/>
+              <Image iconType="3" name="/de/unisiegen/tpml/ui/icons/open24.png"/>
             </Property>
             <Property name="toolTipText" type="java.lang.String" value="Open File"/>
             <Property name="borderPainted" type="boolean" value="false"/>
@@ -332,7 +362,7 @@
         <Component class="javax.swing.JButton" name="saveButton">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/de/unisiegen/tpml/ui/icons/save.png"/>
+              <Image iconType="3" name="/de/unisiegen/tpml/ui/icons/save24.png"/>
             </Property>
             <Property name="toolTipText" type="java.lang.String" value="Save File"/>
             <Property name="borderPainted" type="boolean" value="false"/>
@@ -345,7 +375,7 @@
         <Component class="javax.swing.JButton" name="saveAsButton">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/de/unisiegen/tpml/ui/icons/saveas.png"/>
+              <Image iconType="3" name="/de/unisiegen/tpml/ui/icons/saveas24.png"/>
             </Property>
             <Property name="toolTipText" type="java.lang.String" value="Save File As..."/>
             <Property name="borderPainted" type="boolean" value="false"/>
@@ -358,7 +388,7 @@
         <Component class="javax.swing.JButton" name="undoButton">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/de/unisiegen/tpml/ui/icons/undo.gif"/>
+              <Image iconType="3" name="/de/unisiegen/tpml/ui/icons/undo24.gif"/>
             </Property>
             <Property name="borderPainted" type="boolean" value="false"/>
             <Property name="opaque" type="boolean" value="false"/>
@@ -370,7 +400,7 @@
         <Component class="javax.swing.JButton" name="redoButton">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/de/unisiegen/tpml/ui/icons/redo.gif"/>
+              <Image iconType="3" name="/de/unisiegen/tpml/ui/icons/redo24.gif"/>
             </Property>
             <Property name="toolTipText" type="java.lang.String" value="Redo the last step."/>
             <Property name="borderPainted" type="boolean" value="false"/>

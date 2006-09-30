@@ -47,6 +47,8 @@ public class MainWindow extends javax.swing.JFrame {
 		saveItem.setEnabled(false);
 		saveButton.setEnabled(false);
 		preferencesItem.setEnabled(false);
+		copyItem.setEnabled(false);
+		pasteItem.setEnabled(false);
 
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
@@ -71,6 +73,7 @@ public class MainWindow extends javax.swing.JFrame {
     private void initComponents() {
         javax.swing.JMenuBar MainMenuBar;
         javax.swing.JMenu editMenu;
+        javax.swing.JSeparator editMenuSeparator1;
         javax.swing.JSeparator editMenuSeperator;
         javax.swing.JMenu fileMenu;
         javax.swing.JSeparator fileMenuSeperator1;
@@ -105,6 +108,10 @@ public class MainWindow extends javax.swing.JFrame {
         editMenu = new javax.swing.JMenu();
         undoItem = new javax.swing.JMenuItem();
         redoItem = new javax.swing.JMenuItem();
+        editMenuSeparator1 = new javax.swing.JSeparator();
+        cutItem = new javax.swing.JMenuItem();
+        copyItem = new javax.swing.JMenuItem();
+        pasteItem = new javax.swing.JMenuItem();
         editMenuSeperator = new javax.swing.JSeparator();
         preferencesItem = new javax.swing.JMenuItem();
         runMenu = new javax.swing.JMenu();
@@ -114,7 +121,7 @@ public class MainWindow extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setName("mainframe");
-        newButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/new.png")));
+        newButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/new24.png")));
         newButton.setToolTipText("New File");
         newButton.setBorderPainted(false);
         newButton.setOpaque(false);
@@ -126,7 +133,7 @@ public class MainWindow extends javax.swing.JFrame {
 
         mainToolbar.add(newButton);
 
-        openButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/open.png")));
+        openButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/open24.png")));
         openButton.setToolTipText("Open File");
         openButton.setBorderPainted(false);
         openButton.setOpaque(false);
@@ -138,7 +145,7 @@ public class MainWindow extends javax.swing.JFrame {
 
         mainToolbar.add(openButton);
 
-        saveButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/save.png")));
+        saveButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/save24.png")));
         saveButton.setToolTipText("Save File");
         saveButton.setBorderPainted(false);
         saveButton.setOpaque(false);
@@ -150,7 +157,7 @@ public class MainWindow extends javax.swing.JFrame {
 
         mainToolbar.add(saveButton);
 
-        saveAsButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/saveas.png")));
+        saveAsButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/saveas24.png")));
         saveAsButton.setToolTipText("Save File As...");
         saveAsButton.setBorderPainted(false);
         saveAsButton.setOpaque(false);
@@ -162,7 +169,7 @@ public class MainWindow extends javax.swing.JFrame {
 
         mainToolbar.add(saveAsButton);
 
-        undoButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/undo.gif")));
+        undoButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/undo24.gif")));
         undoButton.setBorderPainted(false);
         undoButton.setOpaque(false);
         undoButton.addActionListener(new java.awt.event.ActionListener() {
@@ -173,7 +180,7 @@ public class MainWindow extends javax.swing.JFrame {
 
         mainToolbar.add(undoButton);
 
-        redoButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/redo.gif")));
+        redoButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/redo24.gif")));
         redoButton.setToolTipText("Redo the last step.");
         redoButton.setBorderPainted(false);
         redoButton.setOpaque(false);
@@ -303,6 +310,35 @@ public class MainWindow extends javax.swing.JFrame {
 
         editMenu.add(redoItem);
 
+        editMenu.add(editMenuSeparator1);
+
+        cutItem.setText("Cut");
+        cutItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cutItemActionPerformed(evt);
+            }
+        });
+
+        editMenu.add(cutItem);
+
+        copyItem.setText("Copy");
+        copyItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                copyItemActionPerformed(evt);
+            }
+        });
+
+        editMenu.add(copyItem);
+
+        pasteItem.setText("Paste");
+        pasteItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pasteItemActionPerformed(evt);
+            }
+        });
+
+        editMenu.add(pasteItem);
+
         editMenu.add(editMenuSeperator);
 
         preferencesItem.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("PreferencesMnemonic").charAt(0));
@@ -358,6 +394,21 @@ public class MainWindow extends javax.swing.JFrame {
 
         setBounds(0, 0, 800, 600);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void pasteItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pasteItemActionPerformed
+// 
+        getActiveEditor().handlePaste();
+    }//GEN-LAST:event_pasteItemActionPerformed
+
+    private void copyItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copyItemActionPerformed
+// 
+        getActiveEditor().handleCopy();
+    }//GEN-LAST:event_copyItemActionPerformed
+
+    private void cutItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cutItemActionPerformed
+// 
+        getActiveEditor().handleCut();
+    }//GEN-LAST:event_cutItemActionPerformed
 
     private void saveAllItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveAllItemActionPerformed
 // TODO add your handling code here:
@@ -464,6 +515,9 @@ public class MainWindow extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem bigstepItem;
     private javax.swing.JMenuItem closeItem;
+    private javax.swing.JMenuItem copyItem;
+    private javax.swing.JMenuItem cutItem;
+    private javax.swing.JMenuItem pasteItem;
     private javax.swing.JMenuItem preferencesItem;
     private javax.swing.JButton redoButton;
     private javax.swing.JMenuItem redoItem;
@@ -492,6 +546,7 @@ public class MainWindow extends javax.swing.JFrame {
 		saveAsButton.setEnabled(state);
 		saveAllItem.setEnabled(state);
 		closeItem.setEnabled(state);
+		cutItem.setEnabled(state);
 
 		setUndoState(state);
 		setRedoState(state);
@@ -509,6 +564,10 @@ public class MainWindow extends javax.swing.JFrame {
 			} else if (ident.equals("changed")) {
 				setChangeState((Boolean) newValue);
 				setSaveState((Boolean) newValue);
+			} else if (ident.equals("texteditor")){
+				cutItem.setEnabled((Boolean) newValue);
+				copyItem.setEnabled((Boolean) newValue);
+				pasteItem.setEnabled((Boolean) newValue);
 			}
 		} catch (Exception e) {
 		} // This was no Change we look for therefore we do nothing.
@@ -573,6 +632,7 @@ public class MainWindow extends javax.swing.JFrame {
 		tabbedPane.add(newEditorPanel);
 		tabbedPane.setSelectedComponent(newEditorPanel);
 		newEditorPanel.addPropertyChangeListener(editorPanelListener);
+		newEditorPanel.setTexteditor(true);
 		setGeneralStates(true);
 		updateEditorStates(newEditorPanel);
 	}

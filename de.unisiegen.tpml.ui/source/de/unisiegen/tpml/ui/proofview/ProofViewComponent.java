@@ -102,8 +102,7 @@ public class ProofViewComponent extends JComponent implements EditorComponent {
 	 * @see de.unisiegen.tpml.ui.EditorComponent#isUndoStatus()
 	 */
 	public boolean isUndoStatus() {
-		// TODO Auto-generated method stub
-		return false;
+		return undoStatus;
 	}
 
 	/**
