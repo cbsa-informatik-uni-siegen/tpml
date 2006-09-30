@@ -25,12 +25,19 @@ public abstract class AbstractRenderer {
 	protected		static FontMetrics		envFontMetrics;
 	protected		static Color					envColor;
 	
+	protected 	static Font						typeFont;
+	protected		static FontMetrics		typeFontMetrics;
+	protected		static Color					typeColor;
+	
 	protected		static Color					underlineColor;	
 	
 	protected 	static int						fontHeight;
 	protected		static int						fontAscent;
 	protected		static int						fontDescent;
 
+	protected 	static Font						exponentFont;
+	protected		static FontMetrics		exponentFontMetrics;
+	protected		static Color					exponentColor;
 
 	protected		Color									alternativeColor;
 
@@ -52,6 +59,11 @@ public abstract class AbstractRenderer {
 		AbstractRenderer.envFont							= theme.getItemFont(Theme.TYPE_ENVIRONMENT);
 		AbstractRenderer.envFontMetrics				= reference.getFontMetrics(AbstractRenderer.envFont);
 		
+		AbstractRenderer.typeColor						= theme.getItemColor(Theme.TYPE_TYPE);
+		AbstractRenderer.typeFont							= theme.getItemFont(Theme.TYPE_TYPE);
+		AbstractRenderer.typeFontMetrics			= reference.getFontMetrics(AbstractRenderer.typeFont);
+		
+		
 		AbstractRenderer.underlineColor				= theme.getItemColor(Theme.TYPE_UNDERLINE);
 		
 		
@@ -59,17 +71,20 @@ public abstract class AbstractRenderer {
 		AbstractRenderer.fontHeight = Math.max(AbstractRenderer.expFontMetrics.getHeight(),
 				Math.max(AbstractRenderer.keywordFontMetrics.getHeight(),
 				Math.max(AbstractRenderer.constantFontMetrics.getHeight(),
-						     AbstractRenderer.envFontMetrics.getHeight())));
+				Math.max(AbstractRenderer.envFontMetrics.getHeight(),
+						     AbstractRenderer.typeFontMetrics.getHeight()))));
 		
 		AbstractRenderer.fontAscent = Math.max(AbstractRenderer.expFontMetrics.getAscent(),
 				Math.max(AbstractRenderer.keywordFontMetrics.getAscent(),
 				Math.max(AbstractRenderer.constantFontMetrics.getAscent(),
-						     AbstractRenderer.envFontMetrics.getAscent())));
+				Math.max(AbstractRenderer.envFontMetrics.getAscent(),
+								 AbstractRenderer.typeFontMetrics.getAscent()))));
 
 		AbstractRenderer.fontDescent = Math.max(AbstractRenderer.expFontMetrics.getDescent(),
 				Math.max(AbstractRenderer.keywordFontMetrics.getDescent(),
 				Math.max(AbstractRenderer.constantFontMetrics.getDescent(),
-						     AbstractRenderer.envFontMetrics.getDescent())));
+				Math.max(AbstractRenderer.envFontMetrics.getDescent(),
+								 AbstractRenderer.typeFontMetrics.getDescent()))));
 
 	}
 	
@@ -81,8 +96,21 @@ public abstract class AbstractRenderer {
 		return AbstractRenderer.expFont;
 	}
 	
+	
 	public static Color getTextColor () {
 		return AbstractRenderer.expColor;
+	}
+	
+	public static Font getExponentFont () {
+		return AbstractRenderer.exponentFont;
+	}
+	
+	public static Color getExponentColor () {
+		return AbstractRenderer.exponentColor;
+	}
+	
+	public static FontMetrics getExponentFontMetrics () {
+		return AbstractRenderer.exponentFontMetrics;
 	}
 	
 	public AbstractRenderer() {
@@ -92,4 +120,6 @@ public abstract class AbstractRenderer {
 	public void setAlternativeColor (Color color) {
 		this.alternativeColor = color;
 	}
+	
+	
 }

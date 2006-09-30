@@ -44,6 +44,7 @@ public class TypeCheckerTest {
 			dialog.setSize(new Dimension (640, 480));
 			dialog.setVisible(true);
 			dialog.addWindowListener(new WindowAdapter () {
+				@Override
 				public void windowClosing (WindowEvent e) {
 					System.exit (0);
 				}

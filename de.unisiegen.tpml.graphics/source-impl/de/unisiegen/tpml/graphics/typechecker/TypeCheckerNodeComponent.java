@@ -153,7 +153,7 @@ public class TypeCheckerNodeComponent extends JComponent  implements TreeNodeCom
 		this.dimension.setSize(labelSize.width, labelSize.height);
 
 		// there will be a bit spacing between the index label and the expression
-		dimension.width += this.spacing;
+		this.dimension.width += this.spacing;
 		
 		// the index shrinkens the max size for the expression
 		maxWidth -= labelSize.width;
@@ -201,9 +201,9 @@ public class TypeCheckerNodeComponent extends JComponent  implements TreeNodeCom
 			this.ruleLabel.setText ("(" + this.proofNode.getRule() + ")");
 			
 			Dimension ruleLabelSize = this.ruleLabel.getPreferredSize();
-			this.ruleLabel.setBounds(posX, this.dimension.height + spacing, ruleLabelSize.width, ruleLabelSize.height);
+			this.ruleLabel.setBounds(posX, this.dimension.height + this.spacing, ruleLabelSize.width, ruleLabelSize.height);
 			
-			this.dimension.height += spacing + ruleLabelSize.height;
+			this.dimension.height += this.spacing + ruleLabelSize.height;
 			this.dimension.width = Math.max(this.dimension.width, ruleLabelSize.width + posX);
 			
 			//  display only the label not the button
@@ -214,9 +214,9 @@ public class TypeCheckerNodeComponent extends JComponent  implements TreeNodeCom
 			// place the menu button
 			posX = labelSize.width + this.spacing;
 			Dimension buttonSize = this.ruleButton.getNeededSize();
-			this.ruleButton.setBounds(posX, this.dimension.height + spacing, buttonSize.width, buttonSize.height);
+			this.ruleButton.setBounds(posX, this.dimension.height + this.spacing, buttonSize.width, buttonSize.height);
 			
-			this.dimension.height += spacing + buttonSize.height;
+			this.dimension.height += this.spacing + buttonSize.height;
 			this.dimension.width = Math.max(this.dimension.width, buttonSize.width + posX);
 			
 			// display only the button not the label
@@ -231,15 +231,15 @@ public class TypeCheckerNodeComponent extends JComponent  implements TreeNodeCom
 	 */
 	
 	public void addTypeCheckerNodeListener (TypeCheckerNodeListener listener) {
-		listenerList.add (TypeCheckerNodeListener.class, listener);
+		this.listenerList.add (TypeCheckerNodeListener.class, listener);
 	}
 	
 	public void removeTypeCheckerNodeListener (TypeCheckerNodeListener listener) {
-		listenerList.remove(TypeCheckerNodeListener.class, listener);
+		this.listenerList.remove(TypeCheckerNodeListener.class, listener);
 	}
 	
 	private void fireNodeChanged () {
-		Object[] listeners = listenerList.getListenerList();
+		Object[] listeners = this.listenerList.getListenerList();
 		for (int i=0; i<listeners.length; i+=2) {
 			if (listeners [i] != TypeCheckerNodeListener.class) {
 				continue;
@@ -308,7 +308,7 @@ public class TypeCheckerNodeComponent extends JComponent  implements TreeNodeCom
 		this.menuTranslateItem.setEnabled(this.translator.containsSyntacticSugar(this.proofNode.getExpression(), false));
 		
 		
-		return dimension;
+		return this.dimension;
 	}
 	
 	public int getIndentationWidth () {
@@ -324,6 +324,7 @@ public class TypeCheckerNodeComponent extends JComponent  implements TreeNodeCom
 		return new Point (this.getX (), this.getY() + this.indexLabel.getY() + this.indexLabel.getHeight() / 2);
 	}
 	
+	@Override
 	public void setBounds (int x, int y, int width, int height) {
 		super.setBounds(x, y, width, height);
 	}

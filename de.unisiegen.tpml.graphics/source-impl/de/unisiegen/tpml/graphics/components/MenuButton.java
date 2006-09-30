@@ -66,6 +66,7 @@ public class MenuButton extends JComponent {
 		};
 		
 		this.addMouseListener(new MouseAdapter() {
+			@Override
 			public void mousePressed (MouseEvent event) {
 				MenuButton.this.handleMousePressed (event);
 			}
@@ -145,6 +146,7 @@ public class MenuButton extends JComponent {
 	 * 
 	 * @param gc The graphic context
 	 */
+	@Override
 	protected void paintComponent (Graphics gc) {
 		
 		// find the vertical centering position of menubutton
@@ -246,7 +248,7 @@ public class MenuButton extends JComponent {
 			// if this is just a leaf object remove the listener
 			JMenuItem item = (JMenuItem)element;
 			
-			item.removeActionListener(listener);
+			item.removeActionListener(this.listener);
 			
 		}
 		else {
@@ -270,7 +272,7 @@ public class MenuButton extends JComponent {
 			// if this is just a leaf object remove the listener
 			JMenuItem item = (JMenuItem)element;
 			
-			item.addActionListener(listener);
+			item.addActionListener(this.listener);
 			
 		}
 		else {

@@ -5,31 +5,32 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.StringReader;
 
-import de.unisiegen.tpml.core.bigstep.BigStepProofModel;
 import de.unisiegen.tpml.core.languages.Language;
 import de.unisiegen.tpml.core.languages.LanguageFactory;
 import de.unisiegen.tpml.core.languages.LanguageParser;
-import de.unisiegen.tpml.graphics.bigstep.BigStepView;
+import de.unisiegen.tpml.core.smallstep.SmallStepProofModel;
 import de.unisiegen.tpml.graphics.renderer.AbstractRenderer;
+import de.unisiegen.tpml.graphics.smallstep.SmallStepView;
 import de.unisiegen.tpml.graphics.theme.Theme;
 
-public class BigStepTest {
+public class SmallStepTest {
 	
-//	private static String expression = "let rec f = lambda x. if x = 0 then 1 else x * f (x - 1) in f 3";
-	private static String expression = "let x = 1 in x";
+	private static String expression = "let rec f = lambda x. if x = 0 then 1 else x * f (x - 1) in f 3";
+//	private static String expression = "let x = 1 in x";
 	
-	private static BigStepProofModel 	model;
+	private static SmallStepProofModel 	model;
 	
-	private static BigStepView				gui;
+	private static SmallStepView				gui;
 	
 	public static void main (String[] args) {
 		try {
 			LanguageFactory lf = LanguageFactory.newInstance();	
 			Language language = lf.getLanguageById("L2");
 			
-			LanguageParser parser = language.newParser(new StringReader(BigStepTest.expression));
+			LanguageParser parser = language.newParser(new StringReader(SmallStepTest.expression));
 			
-			model = language.newBigStepProofModel(parser.parse());
+			model = language.newSmallStepProofModel(parser.parse());
+//			SmallStepTest.evaluateModel(model);
 
 			TestDialog dialog = new TestDialog ();
 			// generate a default theme
@@ -37,7 +38,7 @@ public class BigStepTest {
 			AbstractRenderer.setTheme(theme, dialog);
 			
 //			TypeCheckerComponent component = new TypeCheckerComponent (model);
-			gui = new BigStepView (model);
+			gui = new SmallStepView (model);
 			dialog.setContent(gui);
 			
 			

@@ -51,6 +51,7 @@ public class CompoundExpression<S, E> extends JComponent {
 		this.braceSize 				= 10;
 		
 		this.addMouseMotionListener(new MouseMotionAdapter() {
+			@Override
 			public void mouseMoved (MouseEvent event) {
 				handleMouseMoved (event);
 			}
@@ -138,7 +139,7 @@ public class CompoundExpression<S, E> extends JComponent {
 		if (this.environment != null) {
 			this.environmentSize = this.environmentRenderer.getNeededSize();
 			
-			result.height = environmentSize.height;
+			result.height = this.environmentSize.height;
 			
 			if (this.environment instanceof Store) {
 				/*
@@ -155,7 +156,7 @@ public class CompoundExpression<S, E> extends JComponent {
 				result.width += this.braceSize;
 				
 				// and the environment size will be missing asswell
-				result.width += environmentSize.width;
+				result.width += this.environmentSize.width;
 				
 				
 				/*
@@ -171,7 +172,7 @@ public class CompoundExpression<S, E> extends JComponent {
 				 */
 
 				// the resulting size contains the environment 
-				result.width += environmentSize.width;
+				result.width += this.environmentSize.width;
 				
 				// and the |> character 
 				result.width += AbstractRenderer.getTextFontMetrics().stringWidth(CompoundExpression.arrowStr);
@@ -184,10 +185,10 @@ public class CompoundExpression<S, E> extends JComponent {
 		if (this.expression != null && this.expressionRenderer != null) {
 			// now check the size still available for the expression
 			this.expressionSize = this.expressionRenderer.getNeededSize(maxWidth);
-			result.width += expressionSize.width;
+			result.width += this.expressionSize.width;
 			
-			if (expressionSize.height > result.height) {
-				result.height = expressionSize.height;
+			if (this.expressionSize.height > result.height) {
+				result.height = this.expressionSize.height;
 			}
 		}
 		return result;

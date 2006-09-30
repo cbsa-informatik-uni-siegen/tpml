@@ -206,7 +206,7 @@ public class BigStepComponent extends AbstractProofComponent implements Scrollab
 			public void run () {
 				BigStepProofNode rootNode = (BigStepProofNode)BigStepComponent.this.proofModel.getRoot();
 				
-				Point rightBottomPos = treeNodeLayout.placeNodes (rootNode, BigStepComponent.this.border, BigStepComponent.this.border, BigStepComponent.this.availableWidth);
+				Point rightBottomPos = BigStepComponent.this.treeNodeLayout.placeNodes (rootNode, BigStepComponent.this.border, BigStepComponent.this.border, BigStepComponent.this.availableWidth);
 				
 				// lets add some border to the space
 				
@@ -238,8 +238,8 @@ public class BigStepComponent extends AbstractProofComponent implements Scrollab
 		
 
 		gc.setColor(Color.BLACK);
-		ProofNode rootNode = (ProofNode)this.proofModel.getRoot();
-		TreeArrowRenderer.renderArrows (rootNode, treeNodeLayout.getSpacing (), gc);
+		ProofNode rootNode = this.proofModel.getRoot();
+		TreeArrowRenderer.renderArrows (rootNode, this.treeNodeLayout.getSpacing (), gc);
 		
 	}
 	

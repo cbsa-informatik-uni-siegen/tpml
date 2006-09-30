@@ -55,7 +55,7 @@ public class EnvironmentRenderer<S, E> extends AbstractRenderer {
 	public Dimension getNeededSize () {
 		Dimension result = new Dimension (2 * this.bracketSize, AbstractRenderer.fontHeight);
 		
-		Enumeration<S> env = environment.symbols();
+		Enumeration<S> env = this.environment.symbols();
 		
 		if (!env.hasMoreElements()) {
 			// secure some space between the two brackets when
@@ -65,7 +65,7 @@ public class EnvironmentRenderer<S, E> extends AbstractRenderer {
 		else {
 			// get the first element
 			S s = env.nextElement();
-			E e = environment.get(s);
+			E e = this.environment.get(s);
 			
 			result.width += AbstractRenderer.keywordFontMetrics.stringWidth(s.toString() + ": ");
 			result.width += AbstractRenderer.envFontMetrics.stringWidth(e.toString());
@@ -118,11 +118,11 @@ public class EnvironmentRenderer<S, E> extends AbstractRenderer {
 		// find the first element in the enumeration if there is one
 		
 		this.collapsed = false;
-		Enumeration<S> env = environment.symbols();
+		Enumeration<S> env = this.environment.symbols();
 		if (env.hasMoreElements()) {
 			// get the first element
 			S s = env.nextElement();
-			E e = environment.get(s);
+			E e = this.environment.get(s);
 
 			// render the symbol
 			gc.setColor(this.alternativeColor != null ? this.alternativeColor : AbstractRenderer.keywordColor);

@@ -127,15 +127,15 @@ public class BigStepNodeComponent extends JComponent implements TreeNodeComponen
 	}
 	
 	public void addBigStepNodeListener (BigStepNodeListener listener) {
-		listenerList.add (BigStepNodeListener.class, listener);
+		this.listenerList.add (BigStepNodeListener.class, listener);
 	}
 	
 	public void removeBigStepNodeListener (BigStepNodeListener listener) {
-		listenerList.remove(BigStepNodeListener.class, listener);
+		this.listenerList.remove(BigStepNodeListener.class, listener);
 	}
 	
 	private void fireNodeChanged () {
-		Object[] listeners = listenerList.getListenerList();
+		Object[] listeners = this.listenerList.getListenerList();
 		for (int i=0; i<listeners.length; i+=2) {
 			if (listeners [i] != BigStepNodeListener.class) {
 				continue;
@@ -228,7 +228,7 @@ public class BigStepNodeComponent extends JComponent implements TreeNodeComponen
 		this.dimension.setSize(labelSize.width, labelSize.height);
 
 		// there will be a bit spacing between the index label and the expression
-		dimension.width += this.spacing;
+		this.dimension.width += this.spacing;
 		
 		// the index shrinkens the max size for the expression
 		maxWidth -= labelSize.width;
@@ -246,21 +246,21 @@ public class BigStepNodeComponent extends JComponent implements TreeNodeComponen
 		// the Integer.MAX_VALUE to prevent linewrapping
 		Dimension resultSize = this.resultExpression.getNeededSize(Integer.MAX_VALUE);
 		this.dimension.width += resultSize.width;
-		this.dimension.height = Math.max(resultSize.height, dimension.height);
+		this.dimension.height = Math.max(resultSize.height, this.dimension.height);
 				
 		// now place the elements
 		int posX = 0;
 		
-		this.indexLabel.setBounds(posX, 0, labelSize.width, dimension.height);
+		this.indexLabel.setBounds(posX, 0, labelSize.width, this.dimension.height);
 		posX += labelSize.width + this.spacing;
 		
-		this.expression.setBounds(posX, 0, expSize.width, dimension.height);
+		this.expression.setBounds(posX, 0, expSize.width, this.dimension.height);
 		posX += expSize.width;
 		
-		this.downArrowLabel.setBounds (posX, 0, arrowSize.width, dimension.height);
+		this.downArrowLabel.setBounds (posX, 0, arrowSize.width, this.dimension.height);
 		posX += arrowSize.width;
 		
-		this.resultExpression.setBounds(posX, 0, resultSize.width, dimension.height);
+		this.resultExpression.setBounds(posX, 0, resultSize.width, this.dimension.height);
 		
 		
 		/*
@@ -275,9 +275,9 @@ public class BigStepNodeComponent extends JComponent implements TreeNodeComponen
 			this.ruleLabel.setText ("(" + this.proofNode.getRule() + ")");
 			Dimension ruleLabelSize = this.ruleLabel.getPreferredSize();
 			
-			this.ruleLabel.setBounds(posX, this.dimension.height + spacing, ruleLabelSize.width, ruleLabelSize.height);
+			this.ruleLabel.setBounds(posX, this.dimension.height + this.spacing, ruleLabelSize.width, ruleLabelSize.height);
 			
-			this.dimension.height += spacing + ruleLabelSize.height;
+			this.dimension.height += this.spacing + ruleLabelSize.height;
 			this.dimension.width = Math.max(this.dimension.width, ruleLabelSize.width + posX);
 			
 			//  display only the label not the button
@@ -287,9 +287,9 @@ public class BigStepNodeComponent extends JComponent implements TreeNodeComponen
 		else {
 			// place the menu button
 			Dimension buttonSize = this.ruleButton.getNeededSize();
-			this.ruleButton.setBounds(posX, this.dimension.height + spacing, buttonSize.width, buttonSize.height);
+			this.ruleButton.setBounds(posX, this.dimension.height + this.spacing, buttonSize.width, buttonSize.height);
 			
-			this.dimension.height += spacing + buttonSize.height;
+			this.dimension.height += this.spacing + buttonSize.height;
 			this.dimension.width = Math.max(this.dimension.width, buttonSize.width + posX);
 			
 			// display only the button not the label
@@ -306,7 +306,7 @@ public class BigStepNodeComponent extends JComponent implements TreeNodeComponen
 		placeElements (maxWidth);
 		this.menuTranslateItem.setEnabled(this.translator.containsSyntacticSugar(this.proofNode.getExpression(), false));
 		
-		return dimension;
+		return this.dimension;
 
 	}
 	
@@ -326,6 +326,7 @@ public class BigStepNodeComponent extends JComponent implements TreeNodeComponen
 	}
 	
 
+	@Override
 	public void setBounds (int x, int y, int width, int height) {
 		super.setBounds (x, y, width, height);
 	}

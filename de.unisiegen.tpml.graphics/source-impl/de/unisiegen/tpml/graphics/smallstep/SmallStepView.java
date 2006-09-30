@@ -1,7 +1,6 @@
-package de.unisiegen.tpml.graphics.bigstep;
+package de.unisiegen.tpml.graphics.smallstep;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
@@ -9,38 +8,38 @@ import javax.swing.JComponent;
 import javax.swing.JScrollPane;
 
 import de.unisiegen.tpml.core.ProofGuessException;
-import de.unisiegen.tpml.core.bigstep.BigStepProofModel;
+import de.unisiegen.tpml.core.smallstep.SmallStepProofModel;
 import de.unisiegen.tpml.graphics.ProofView;
 
-public class BigStepView extends JComponent implements ProofView {
+public class SmallStepView extends JComponent implements ProofView {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -8529052541636149376L;
 	
-	private BigStepComponent			component;
+	private SmallStepComponent			component;
 	
-	private JScrollPane						scrollPane;
+	private JScrollPane							scrollPane;
 
 	
-	public BigStepView (BigStepProofModel model) {
+	public SmallStepView (SmallStepProofModel model) {
 		super ();
 		
 		setLayout (new BorderLayout ());
 		
 		this.scrollPane = new JScrollPane ();
-		this.component = new BigStepComponent (model);
+		this.component = new SmallStepComponent (model);
 		
 		add (this.scrollPane, BorderLayout.CENTER);
 		
 		this.scrollPane.setViewportView(this.component);
-		this.scrollPane.getViewport().setBackground(Color.WHITE);
+//		this.scrollPane.getViewport().setBackground(Color.WHITE);
 		
 		this.scrollPane.addComponentListener(new ComponentAdapter () {
 			@Override
 			public void componentResized (ComponentEvent event) {
-				BigStepView.this.component.setAvailableWidth(BigStepView.this.scrollPane.getViewport ().getWidth());
+				SmallStepView.this.component.setAvailableWidth(SmallStepView.this.scrollPane.getViewport ().getWidth());
 			}
 		});
 	}

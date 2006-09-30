@@ -80,6 +80,7 @@ public class TypeCheckerComponent extends AbstractProofComponent implements Scro
 	 * Recalculates the layout 
 	 *
 	 */
+	@Override
 	protected void relayout () {
 		if (this.currentlyLayouting) {
 			return;
@@ -91,7 +92,7 @@ public class TypeCheckerComponent extends AbstractProofComponent implements Scro
 			public void run () {
 				TypeCheckerProofNode rootNode = (TypeCheckerProofNode)TypeCheckerComponent.this.proofModel.getRoot();
 				
-				Point rightBottomPos = treeNodeLayout.placeNodes (rootNode, 20, 20, TypeCheckerComponent.this.availableWidth);
+				Point rightBottomPos = TypeCheckerComponent.this.treeNodeLayout.placeNodes (rootNode, 20, 20, TypeCheckerComponent.this.availableWidth);
 				
 				// lets add some border to the space
 				
@@ -160,6 +161,7 @@ public class TypeCheckerComponent extends AbstractProofComponent implements Scro
 	 * 
 	 * If nodes are newly inserted or nodes got removed.
 	 */
+	@Override
 	protected void treeContentChanged () {
 
 		TypeCheckerProofNode rootNode = (TypeCheckerProofNode)this.proofModel.getRoot();
@@ -171,6 +173,7 @@ public class TypeCheckerComponent extends AbstractProofComponent implements Scro
 		
 	}
 	
+	@Override
 	protected void nodesInserted (TreeModelEvent event) {
 		Object [] children = event.getChildren();
 
@@ -193,6 +196,7 @@ public class TypeCheckerComponent extends AbstractProofComponent implements Scro
 	}
 	
 	
+	@Override
 	protected void nodesChanged (TreeModelEvent event) {
 		Object[] children = event.getChildren();
 		if (children == null) {
@@ -222,6 +226,7 @@ public class TypeCheckerComponent extends AbstractProofComponent implements Scro
 		
 	}
 
+	@Override
 	protected void nodesRemoved (TreeModelEvent event) {
 		Object[] children = event.getChildren();
 		for (int i=0; i<children.length; i++) {
@@ -248,8 +253,8 @@ public class TypeCheckerComponent extends AbstractProofComponent implements Scro
 		
 
 		gc.setColor(Color.BLACK);
-		ProofNode rootNode = (ProofNode)this.proofModel.getRoot();
-		TreeArrowRenderer.renderArrows (rootNode, treeNodeLayout.getSpacing (), gc);
+		ProofNode rootNode = this.proofModel.getRoot();
+		TreeArrowRenderer.renderArrows (rootNode, this.treeNodeLayout.getSpacing (), gc);
 		
 		
 	}

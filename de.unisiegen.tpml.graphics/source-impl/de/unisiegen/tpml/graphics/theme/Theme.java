@@ -24,9 +24,11 @@ public class Theme {
 	
 	public static final int TYPE_ENVIRONMENT		= 6;
 	
+	public static final int TYPE_TYPE						= 7;
+	
 	
 	private class ThemeItem {
-		private String			name;
+		private String			itemName;
 		
 		private Font				font;
 		
@@ -38,24 +40,24 @@ public class Theme {
 			
 		}
 		public ThemeItem (int type, String name, Color color) {
-			this.type	= type;
-			this.name 	= name;
-			this.color 	= color;
-			this.font 	= null;
+			this.type			= type;
+			this.itemName	= name;
+			this.color 		= color;
+			this.font 		= null;
 		}
 		public ThemeItem (int type, String name, Font font, Color color) {
-			this.type	= type;
-			this.name 	= name;
-			this.font 	= font;
-			this.color 	= color;
+			this.type			= type;
+			this.itemName	= name;
+			this.font 		= font;
+			this.color 		= color;
 		}
 		
 		public void setName (String name) {
-			this.name = name;
+			this.itemName = name;
 		}
 		
 		public String getName () {
-			return this.name;
+			return this.itemName;
 		}
 		
 		public void setFont (Font font) {
@@ -94,6 +96,7 @@ public class Theme {
 		this.items.add(new ThemeItem(Theme.TYPE_UNDERLINE, "Underline", new Color (255, 0, 0)));
 		this.items.add(new ThemeItem(Theme.TYPE_RULEEXPRESSION, "RuleExpression", f, new Color (0, 0, 0)));
 		this.items.add(new ThemeItem(Theme.TYPE_ENVIRONMENT, "Environment", f, new Color (128, 128, 128)));
+		this.items.add(new ThemeItem(Theme.TYPE_TYPE, "Type", f, new Color (0.0f, 0.6f, 0.0f)));
 	}
 		
 	public void setName (String name) {

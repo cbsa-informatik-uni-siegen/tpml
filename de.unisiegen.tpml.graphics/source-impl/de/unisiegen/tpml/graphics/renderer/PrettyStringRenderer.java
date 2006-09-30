@@ -150,6 +150,11 @@ public class PrettyStringRenderer extends AbstractRenderer {
 			case CONSTANT:
 				w += AbstractRenderer.constantFontMetrics.charWidth(c);
 				break;
+			case COMMENT:
+				break;
+			case TYPE:
+				w += AbstractRenderer.typeFontMetrics.charWidth (c);
+				break;
 			}
 
 		}
@@ -173,8 +178,8 @@ public class PrettyStringRenderer extends AbstractRenderer {
 	public void render (int x, int y, int height,  Graphics gc) {
 		
 		int[] breakOffsets = null;
-		if (result.annotation != null) {
-			breakOffsets = result.annotation.getBreakOffsets();
+		if (this.result.annotation != null) {
+			breakOffsets = this.result.annotation.getBreakOffsets();
 		}
 		else {
 			breakOffsets = new int[0];
@@ -189,7 +194,7 @@ public class PrettyStringRenderer extends AbstractRenderer {
 		int posY = y + height / 2;
 		posY += AbstractRenderer.fontAscent / 2;
 		
-		float addY = (result.rows - 1) / 2.0f;
+		float addY = (this.result.rows - 1) / 2.0f;
 		addY *= AbstractRenderer.fontHeight;
 		posY -= addY;
 		

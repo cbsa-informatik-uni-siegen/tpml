@@ -31,12 +31,13 @@ public class TypeCheckerView extends JComponent implements ProofView {
 		this.scrollPane = new JScrollPane ();
 		this.component = new TypeCheckerComponent (model);
 		
-		add (scrollPane, BorderLayout.CENTER);
+		add (this.scrollPane, BorderLayout.CENTER);
 		
-		this.scrollPane.setViewportView(component);
+		this.scrollPane.setViewportView(this.component);
 		this.scrollPane.getViewport().setBackground(Color.WHITE);
 		
 		this.scrollPane.addComponentListener(new ComponentAdapter () {
+			@Override
 			public void componentResized (ComponentEvent event) {
 				TypeCheckerView.this.component.setAvailableWidth(TypeCheckerView.this.scrollPane.getViewport ().getWidth());
 			}
