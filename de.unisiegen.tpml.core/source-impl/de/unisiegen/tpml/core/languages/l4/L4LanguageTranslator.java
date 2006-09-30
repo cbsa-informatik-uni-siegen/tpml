@@ -1,5 +1,7 @@
 package de.unisiegen.tpml.core.languages.l4;
 
+import de.unisiegen.tpml.core.expressions.Application;
+import de.unisiegen.tpml.core.expressions.BinaryCons;
 import de.unisiegen.tpml.core.expressions.Condition;
 import de.unisiegen.tpml.core.expressions.Condition1;
 import de.unisiegen.tpml.core.expressions.Expression;
@@ -7,6 +9,8 @@ import de.unisiegen.tpml.core.expressions.Identifier;
 import de.unisiegen.tpml.core.expressions.Let;
 import de.unisiegen.tpml.core.expressions.Recursion;
 import de.unisiegen.tpml.core.expressions.Sequence;
+import de.unisiegen.tpml.core.expressions.Tuple;
+import de.unisiegen.tpml.core.expressions.UnaryCons;
 import de.unisiegen.tpml.core.expressions.UnitConstant;
 import de.unisiegen.tpml.core.expressions.While;
 import de.unisiegen.tpml.core.languages.l3.L3LanguageTranslator;
@@ -47,7 +51,23 @@ public class L4LanguageTranslator extends L3LanguageTranslator {
    */
   @Override
   public Expression translateToCoreSyntax(Expression expression, boolean recursive) {
-    if (expression instanceof Condition1) {
+    if (expression instanceof Application && ((Application)expression).getE1() instanceof Application
+        && ((Application)((Application)expression).getE1()).getE1() instanceof BinaryCons) {
+      // this is: ((::) e1) e2
+      Expression e1 = ((Application)((Application)expression).getE1()).getE2();
+      Expression e2 = ((Application)expression).getE2();
+      
+      // check if we should recurse
+      if (recursive) {
+        // translate e1 and e2
+        e1 = translateToCoreSyntax(e1, true);
+        e2 = translateToCoreSyntax(e2, true);
+      }
+      
+      // generate: cons (e1,2)
+      return new Application(UnaryCons.CONS, new Tuple(new Expression[] { e1, e2 }));
+    }
+    else if (expression instanceof Condition1) {
       // translate to: if e0 then e1 else ()
       Condition1 condition1 = (Condition1)expression;
       Expression e0 = condition1.getE0();

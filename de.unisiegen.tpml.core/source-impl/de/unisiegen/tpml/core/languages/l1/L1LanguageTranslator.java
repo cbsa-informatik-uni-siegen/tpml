@@ -110,7 +110,10 @@ public class L1LanguageTranslator extends L0LanguageTranslator {
       }
       
       // generate the applications
-      return new Application(new Application(op, e1), e2);
+      Application application = new Application(new Application(op, e1), e2);
+      
+      // special case: BinaryCons requires another run
+      return translateToCoreSyntax(application, recursive);
     }
     else if (expression instanceof Or) {
       // determine the sub expressions

@@ -39,7 +39,7 @@ public final class BigStepProofModelTest extends JFrame {
   /**
    * Simple test expression.
    */
-  private static final String SIMPLE = "false || false && true || (1/0) < 0";
+  private static final String SIMPLE = "1 :: 2 :: [3]";
 
   
   
