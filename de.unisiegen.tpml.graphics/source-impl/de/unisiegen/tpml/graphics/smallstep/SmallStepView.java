@@ -1,6 +1,7 @@
 package de.unisiegen.tpml.graphics.smallstep;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
@@ -34,7 +35,7 @@ public class SmallStepView extends JComponent implements ProofView {
 		add (this.scrollPane, BorderLayout.CENTER);
 		
 		this.scrollPane.setViewportView(this.component);
-//		this.scrollPane.getViewport().setBackground(Color.WHITE);
+		this.scrollPane.getViewport().setBackground(Color.WHITE);
 		
 		this.scrollPane.addComponentListener(new ComponentAdapter () {
 			@Override

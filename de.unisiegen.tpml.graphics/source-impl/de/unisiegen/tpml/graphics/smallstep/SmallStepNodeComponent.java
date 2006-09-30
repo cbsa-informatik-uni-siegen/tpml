@@ -2,6 +2,7 @@ package de.unisiegen.tpml.graphics.smallstep;
 
 import java.awt.Dimension;
 import java.awt.Point;
+import java.util.Arrays;
 
 import javax.swing.JComponent;
 import javax.swing.JMenuItem;
@@ -13,6 +14,7 @@ import de.unisiegen.tpml.core.expressions.Location;
 import de.unisiegen.tpml.core.languages.LanguageTranslator;
 import de.unisiegen.tpml.core.smallstep.SmallStepProofModel;
 import de.unisiegen.tpml.core.smallstep.SmallStepProofNode;
+import de.unisiegen.tpml.graphics.RuleComparator;
 import de.unisiegen.tpml.graphics.components.CompoundExpression;
 import de.unisiegen.tpml.graphics.components.MenuButton;
 import de.unisiegen.tpml.graphics.components.MenuButtonListener;
@@ -87,6 +89,7 @@ public class SmallStepNodeComponent extends JComponent {
 		
 		JPopupMenu menu = new JPopupMenu ();
 		ProofRule[] rules = this.proofModel.getRules();
+		Arrays.<ProofRule>sort(rules, new RuleComparator());
 		for (ProofRule r : rules) {
 			menu.add(new MenuRuleItem (r));
 		}
