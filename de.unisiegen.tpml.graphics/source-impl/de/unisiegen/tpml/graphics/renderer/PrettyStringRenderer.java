@@ -230,8 +230,13 @@ public class PrettyStringRenderer extends AbstractRenderer {
 				gc.setColor(AbstractRenderer.constantColor);
 				fm = AbstractRenderer.constantFontMetrics;
 				break;
-			default:
+			case COMMENT:
 				continue;
+			case TYPE:
+				gc.setFont(AbstractRenderer.typeFont);
+				gc.setColor(AbstractRenderer.typeColor);
+				fm = AbstractRenderer.typeFontMetrics;
+				break;
 			}
 			
 			if (this.alternativeColor != null) {
