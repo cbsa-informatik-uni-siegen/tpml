@@ -28,6 +28,7 @@ import org.apache.log4j.Logger;
 
 import de.unisiegen.tpml.core.languages.Language;
 import de.unisiegen.tpml.graphics.StyledLanguageDocument;
+import de.unisiegen.tpml.graphics.StyledLanguageEditor;
 import de.unisiegen.tpml.ui.EditorComponent;
 
 /**
@@ -38,18 +39,16 @@ import de.unisiegen.tpml.ui.EditorComponent;
  * @version $Rev$
  * 
  */
-public class TextEditorPanel extends JPanel implements EditorComponent,
-		ClipboardOwner {
+public class TextEditorPanel extends JPanel implements EditorComponent, ClipboardOwner {
 
-	private static final Logger logger = Logger
-			.getLogger(TextEditorPanel.class);
+	private static final Logger logger = Logger.getLogger(TextEditorPanel.class);
 
 	/**
 	 * The serial version Identifier.
 	 */
 	private static final long serialVersionUID = -4886621661465144817L;
 
-	private JEditorPane editor;
+	private StyledLanguageEditor editor;
 
 	private StyledLanguageDocument document;
 
@@ -90,7 +89,7 @@ public class TextEditorPanel extends JPanel implements EditorComponent,
 	}
 
 	private void initComponents(Language language) {
-		editor = new JEditorPane();
+		editor = new StyledLanguageEditor();
 
 		document = new StyledLanguageDocument(language);
 		scrollpane = new JScrollPane();
@@ -105,7 +104,6 @@ public class TextEditorPanel extends JPanel implements EditorComponent,
 				.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 		scrollpane.setViewportView(editor);
 
-		editor.setEditorKit(new StyledEditorKit());
 		editor.setDocument(document);
 		editor.setAutoscrolls(false);
 
@@ -232,7 +230,7 @@ public class TextEditorPanel extends JPanel implements EditorComponent,
 
 	}
 
-	public JEditorPane getEditor() {
+	public StyledLanguageEditor getEditor() {
 		return editor;
 	}
 
