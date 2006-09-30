@@ -70,7 +70,7 @@ public abstract class PrimitiveType extends MonoType {
    */
   public @Override PrettyStringBuilder toPrettyStringBuilder(PrettyStringBuilderFactory factory) {
     PrettyStringBuilder builder = factory.newBuilder(this, PRIO_PRIMITIVE);
-    builder.addText(this.name);
+    builder.addType(this.name);
     return builder;
   }
   

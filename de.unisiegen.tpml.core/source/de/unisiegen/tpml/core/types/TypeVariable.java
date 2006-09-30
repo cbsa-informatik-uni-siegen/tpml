@@ -188,7 +188,7 @@ public final class TypeVariable extends MonoType implements Comparable<TypeVaria
   @Override
   public PrettyStringBuilder toPrettyStringBuilder(PrettyStringBuilderFactory factory) {
     PrettyStringBuilder builder = factory.newBuilder(this, PRIO_TYPE_VARIABLE);
-    builder.addText("" + offsetToGreekLetter(this.offset) + ((this.index > 0) ? this.index : ""));
+    builder.addType("" + offsetToGreekLetter(this.offset) + ((this.index > 0) ? this.index : ""));
     return builder;
   }
   

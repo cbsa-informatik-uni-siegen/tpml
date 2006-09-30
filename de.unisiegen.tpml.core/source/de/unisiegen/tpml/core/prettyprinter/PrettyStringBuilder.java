@@ -82,6 +82,20 @@ public interface PrettyStringBuilder {
   public void addText(String text);
   
   /**
+   * Appends the given <code>type</code> to the pretty string builder. Types will be
+   * highlighted when displayed to the user.
+   * 
+   * @param type the type to append.
+   * 
+   * @throws NullPointerException if <code>type</code> is <code>null</code>.
+   * 
+   * @see #addConstant(String)
+   * @see #addKeyword(String)
+   * @see PrettyStyle#TYPE
+   */
+  public void addType(String type);
+  
+  /**
    * Generates a <code>PrettyString</code> from the current contents of the builder. Note that the
    * returned pretty string is not updated when the contents of the builder change at a later time,
    * but simply represents the current content at the time when this method is called.

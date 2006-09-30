@@ -135,6 +135,15 @@ final class DefaultPrettyStringBuilder implements PrettyStringBuilder {
   /**
    * {@inheritDoc}
    *
+   * @see de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder#addType(java.lang.String)
+   */
+  public void addType(String type) {
+    this.items.add(new TextItem(type, PrettyStyle.TYPE));
+  }
+  
+  /**
+   * {@inheritDoc}
+   *
    * @see de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder#toPrettyString()
    */
   public PrettyString toPrettyString() {

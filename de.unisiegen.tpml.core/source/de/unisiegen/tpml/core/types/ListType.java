@@ -107,7 +107,8 @@ public final class ListType extends MonoType {
   public PrettyStringBuilder toPrettyStringBuilder(PrettyStringBuilderFactory factory) {
     PrettyStringBuilder builder = factory.newBuilder(this, PRIO_LIST);
     builder.addBuilder(this.tau.toPrettyStringBuilder(factory), PRIO_LIST_TAU);
-    builder.addText(" list");
+    builder.addText(" ");
+    builder.addType("list");
     return builder;
   }
 

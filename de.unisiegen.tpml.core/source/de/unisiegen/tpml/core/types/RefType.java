@@ -107,7 +107,8 @@ public final class RefType extends MonoType {
   public PrettyStringBuilder toPrettyStringBuilder(PrettyStringBuilderFactory factory) {
     PrettyStringBuilder builder = factory.newBuilder(this, PRIO_REF);
     builder.addBuilder(this.tau.toPrettyStringBuilder(factory), PRIO_REF_TAU);
-    builder.addText(" ref");
+    builder.addText(" ");
+    builder.addType("ref");
     return builder;
   }
 
