@@ -9,6 +9,7 @@ package de.unisiegen.tpml.ui;
 import de.unisiegen.tpml.core.ProofModel;
 import de.unisiegen.tpml.core.bigstep.BigStepProofModel;
 import de.unisiegen.tpml.core.languages.Language;
+import de.unisiegen.tpml.core.smallstep.SmallStepProofModel;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel;
 import de.unisiegen.tpml.graphics.ProofView;
 import de.unisiegen.tpml.graphics.ProofViewFactory;
@@ -336,8 +337,21 @@ public class EditorPanel extends javax.swing.JPanel {
 	 */
 	public void handleSmallStep() {
 		setTexteditor(false);
-		smallstep = new TestEditorComponent("SmallStep");
-		activateFunction(smallstepButton, smallstep);
+		try {
+			SmallStepProofModel model = language.newSmallStepProofModel(code
+					.getDocument().getExpression());
+			smallstep = new ProofViewComponent(ProofViewFactory
+					.newSmallStepView(model), model);
+			editorPanel.removeAll();
+			activateFunction(smallstepButton, smallstep);
+			paintAll(getGraphics());
+
+		} catch (Exception e) {
+			logger.error("Could not create new SmallStepView", e);
+			JOptionPane.showMessageDialog(this,
+					"Cannot run the Small Step for this expression.",
+					"Small Step", JOptionPane.ERROR_MESSAGE);
+		}
 	}
 
 	/**
@@ -355,10 +369,10 @@ public class EditorPanel extends javax.swing.JPanel {
 			paintAll(getGraphics());
 
 		} catch (Exception e) {
-			logger.error("Could not create new TypeCheckerView", e);
+			logger.error("Could not create new BigStepView", e);
 			JOptionPane.showMessageDialog(this,
-					"Cannot run the typechecker for this expression.",
-					"TypeChecker", JOptionPane.ERROR_MESSAGE);
+					"Cannot run the bigstep for this expression.",
+					"Big Step", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 

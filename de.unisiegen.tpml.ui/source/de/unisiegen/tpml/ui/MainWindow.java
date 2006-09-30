@@ -75,6 +75,7 @@ public class MainWindow extends javax.swing.JFrame {
         javax.swing.JMenu editMenu;
         javax.swing.JSeparator editMenuSeparator1;
         javax.swing.JSeparator editMenuSeperator;
+        javax.swing.JToolBar editToolBar;
         javax.swing.JMenu fileMenu;
         javax.swing.JSeparator fileMenuSeperator1;
         javax.swing.JSeparator fileMenuSerpator2;
@@ -91,6 +92,10 @@ public class MainWindow extends javax.swing.JFrame {
         openButton = new javax.swing.JButton();
         saveButton = new javax.swing.JButton();
         saveAsButton = new javax.swing.JButton();
+        editToolBar = new javax.swing.JToolBar();
+        cutButton = new javax.swing.JButton();
+        copyButton = new javax.swing.JButton();
+        pasteButton = new javax.swing.JButton();
         undoButton = new javax.swing.JButton();
         redoButton = new javax.swing.JButton();
         tabbedPane = new javax.swing.JTabbedPane();
@@ -169,6 +174,21 @@ public class MainWindow extends javax.swing.JFrame {
 
         mainToolbar.add(saveAsButton);
 
+        cutButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/cut24.gif")));
+        cutButton.setBorderPainted(false);
+        cutButton.setOpaque(false);
+        editToolBar.add(cutButton);
+
+        copyButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/copy24.gif")));
+        copyButton.setBorderPainted(false);
+        copyButton.setOpaque(false);
+        editToolBar.add(copyButton);
+
+        pasteButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/paste24.gif")));
+        pasteButton.setBorderPainted(false);
+        pasteButton.setOpaque(false);
+        editToolBar.add(pasteButton);
+
         undoButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/undo24.gif")));
         undoButton.setBorderPainted(false);
         undoButton.setOpaque(false);
@@ -178,7 +198,7 @@ public class MainWindow extends javax.swing.JFrame {
             }
         });
 
-        mainToolbar.add(undoButton);
+        editToolBar.add(undoButton);
 
         redoButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/redo24.gif")));
         redoButton.setToolTipText("Redo the last step.");
@@ -190,7 +210,9 @@ public class MainWindow extends javax.swing.JFrame {
             }
         });
 
-        mainToolbar.add(redoButton);
+        editToolBar.add(redoButton);
+
+        mainToolbar.add(editToolBar);
 
         getContentPane().add(mainToolbar, java.awt.BorderLayout.NORTH);
 
@@ -229,7 +251,7 @@ public class MainWindow extends javax.swing.JFrame {
         fileMenu.add(openItem);
 
         closeItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_W, java.awt.event.InputEvent.CTRL_MASK));
-        closeItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/close16.gif")));
+        closeItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/empty16.gif")));
         closeItem.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("CloseMnemonic").charAt(0));
         closeItem.setText("Close");
         closeItem.addActionListener(new java.awt.event.ActionListener() {
@@ -254,7 +276,6 @@ public class MainWindow extends javax.swing.JFrame {
 
         fileMenu.add(saveItem);
 
-        saveAsItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         saveAsItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/saveas16.png")));
         saveAsItem.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("SaveAsMnemonic").charAt(0));
         saveAsItem.setText("Save As...");
@@ -280,7 +301,7 @@ public class MainWindow extends javax.swing.JFrame {
         fileMenu.add(fileMenuSerpator2);
 
         quitItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, java.awt.event.InputEvent.CTRL_MASK));
-        quitItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/quit16.png")));
+        quitItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/empty16.gif")));
         quitItem.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("QuitMnemonic").charAt(0));
         quitItem.setText("Quit");
         quitItem.addActionListener(new java.awt.event.ActionListener() {
@@ -353,7 +374,7 @@ public class MainWindow extends javax.swing.JFrame {
 
         editMenu.add(editMenuSeperator);
 
-        preferencesItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/preferences16.png")));
+        preferencesItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/empty16.gif")));
         preferencesItem.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("PreferencesMnemonic").charAt(0));
         preferencesItem.setText("Preferences");
         preferencesItem.addActionListener(new java.awt.event.ActionListener() {
@@ -528,8 +549,11 @@ public class MainWindow extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem bigstepItem;
     private javax.swing.JMenuItem closeItem;
+    private javax.swing.JButton copyButton;
     private javax.swing.JMenuItem copyItem;
+    private javax.swing.JButton cutButton;
     private javax.swing.JMenuItem cutItem;
+    private javax.swing.JButton pasteButton;
     private javax.swing.JMenuItem pasteItem;
     private javax.swing.JMenuItem preferencesItem;
     private javax.swing.JButton redoButton;
