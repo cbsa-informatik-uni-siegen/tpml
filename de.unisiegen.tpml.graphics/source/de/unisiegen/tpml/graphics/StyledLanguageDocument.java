@@ -216,6 +216,7 @@ public class StyledLanguageDocument extends DefaultStyledDocument implements Bea
    *
    * @see javax.swing.text.AbstractDocument#insertString(int, java.lang.String, javax.swing.text.AttributeSet)
    */
+  @Override
   public void insertString(int offset, String str, AttributeSet set) throws BadLocationException {
     super.insertString(offset, str, set);
     processChanged();
@@ -226,6 +227,7 @@ public class StyledLanguageDocument extends DefaultStyledDocument implements Bea
    *
    * @see javax.swing.text.Document#remove(int, int)
    */
+  @Override
   public void remove(int offset, int length) throws BadLocationException {
     super.remove(offset, length);
     processChanged();
@@ -314,7 +316,7 @@ public class StyledLanguageDocument extends DefaultStyledDocument implements Bea
 				LanguageParser parser = this.language.newParser(new AbstractLanguageScanner() {
 					public void restart(Reader reader) { throw new UnsupportedOperationException();	}
 					public LanguageSymbol nextSymbol() throws IOException, LanguageScannerException {	return (!symbols.isEmpty()) ? symbols.poll() : null; }
-					public PrettyStyle getStyleBySymbolId(int id) { return ((AbstractLanguageScanner)scanner).getStyleBySymbolId(id); }
+					@Override public PrettyStyle getStyleBySymbolId(int id) { return ((AbstractLanguageScanner)scanner).getStyleBySymbolId(id); }
 				});
 				
 				// ...and try to parse the token stream
