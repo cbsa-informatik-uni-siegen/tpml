@@ -203,7 +203,6 @@ public class SmallStepNodeComponent extends JComponent {
 	public void placeRules () {
 		
 		int top = getRuleTop() + (this.actualRuleHeight - this.ruleDimension.height) / 2;
-		System.out.println(getRuleTop () + " + (" + this.actualRuleHeight + " - " + this.ruleDimension.height + ") / 2 = " + top); 
 		this.rules.setBounds(0, top, this.ruleDimension.width, this.ruleDimension.height);
 	}
 	

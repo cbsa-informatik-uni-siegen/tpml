@@ -73,7 +73,6 @@ public class SmallStepRulesComponent extends JComponent {
 		int labelHeight		= Math.max (SmallStepRuleLabel.getLabelHeight(),
 																	this.menuButton.getHeight());
 		
-		System.out.println("labelHeiht: " + labelHeight);
 		int neededHeight 	= 2 * labelHeight + 2 * this.spacing + this.arrowSize;
 		int centerV 			= neededHeight / 2;
 		this.size 				= new Dimension (0, neededHeight);
@@ -168,7 +167,6 @@ public class SmallStepRulesComponent extends JComponent {
 		}
 		
 		this.size.width += this.arrowSize*2;
-		System.out.println("Size: " + this.size.width + ", " + this.size.height);
 		return this.size;
 	}
 	

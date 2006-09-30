@@ -326,8 +326,6 @@ public class SmallStepComponent extends AbstractProofComponent implements Scroll
 	
 	@Override
 	protected void nodesInserted (TreeModelEvent event) { 
-		System.out.println("nodesInserted");
-		
 	}
 	
 	@Override
