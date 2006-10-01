@@ -51,7 +51,6 @@ import de.unisiegen.tpml.core.languages.LanguageSymbol;
 			return PrettyStyle.CONSTANT;
 
 		case LAMBDA: case LET: case IN: case IF: case THEN: case ELSE:
-		case AMPERAMPER: case BARBAR:
 			return PrettyStyle.KEYWORD;
 			
 		case BOOL: case INT: case UNIT: case TYPEVARIABLE:
@@ -96,10 +95,6 @@ LetterGreek		= [\u03b1-\u03c1\u03c3-\u03c9]
 	">"					{ return symbol("GREATER", GREATER); }
 	"<="				{ return symbol("LESSEQUAL", LESSEQUAL); }
 	">="				{ return symbol("GREATEREQUAL", GREATEREQUAL); }
-	
-	// logical operators
-	"&&"				{ return symbol("AMPERAMPER", AMPERAMPER); }
-	"||"				{ return symbol("BARBAR", BARBAR); }
 	
 	// interpunctation
 	"."					{ return symbol("DOT", DOT); }

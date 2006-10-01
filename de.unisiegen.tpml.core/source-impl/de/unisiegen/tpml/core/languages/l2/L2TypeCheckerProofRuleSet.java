@@ -1,10 +1,13 @@
 package de.unisiegen.tpml.core.languages.l2;
 
+import de.unisiegen.tpml.core.expressions.And;
+import de.unisiegen.tpml.core.expressions.Or;
 import de.unisiegen.tpml.core.expressions.Recursion;
 import de.unisiegen.tpml.core.languages.l1.L1TypeCheckerProofRuleSet;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofContext;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode;
 import de.unisiegen.tpml.core.typechecker.TypeEnvironment;
+import de.unisiegen.tpml.core.types.BooleanType;
 import de.unisiegen.tpml.core.types.MonoType;
 
 /**
@@ -31,7 +34,55 @@ public class L2TypeCheckerProofRuleSet extends L1TypeCheckerProofRuleSet {
     super(language);
     
     // register the additional type rules
+    registerByMethodName("AND", "applyAnd");
     registerByMethodName("REC", "applyRec");
+    registerByMethodName("OR", "applyOr");
+  }
+  
+  
+  
+  //
+  // The (AND) rule
+  //
+  
+  /**
+   * Applies the <b>(AND)</b> rule to the <code>node</code> using the <code>context</code>.
+   * 
+   * @param context the type checker proof context.
+   * @param node the type checker proof node.
+   */
+  public void applyAnd(TypeCheckerProofContext context, TypeCheckerProofNode node) {
+    And and = (And)node.getExpression();
+    
+    // generate new child nodes
+    context.addProofNode(node, node.getEnvironment(), and.getE1(), BooleanType.BOOL);
+    context.addProofNode(node, node.getEnvironment(), and.getE2(), BooleanType.BOOL);
+    
+    // add the {tau = bool} equation
+    context.addEquation(node.getType(), BooleanType.BOOL);
+  }
+  
+  
+  
+  //
+  // The (OR) rule
+  //
+  
+  /**
+   * Applies the <b>(OR)</b> rule to the <code>node</code> using the <code>context</code>.
+   * 
+   * @param context the type checker proof context.
+   * @param node the type checker proof node.
+   */
+  public void applyOr(TypeCheckerProofContext context, TypeCheckerProofNode node) {
+    Or or = (Or)node.getExpression();
+    
+    // generate new child nodes
+    context.addProofNode(node, node.getEnvironment(), or.getE1(), BooleanType.BOOL);
+    context.addProofNode(node, node.getEnvironment(), or.getE2(), BooleanType.BOOL);
+    
+    // add the {tau = bool} equation
+    context.addEquation(node.getType(), BooleanType.BOOL);
   }
   
   

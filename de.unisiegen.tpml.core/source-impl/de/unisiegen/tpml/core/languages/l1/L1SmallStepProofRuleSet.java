@@ -1,6 +1,5 @@
 package de.unisiegen.tpml.core.languages.l1;
 
-import de.unisiegen.tpml.core.expressions.And;
 import de.unisiegen.tpml.core.expressions.Application;
 import de.unisiegen.tpml.core.expressions.BinaryOperator;
 import de.unisiegen.tpml.core.expressions.BinaryOperatorException;
@@ -9,7 +8,6 @@ import de.unisiegen.tpml.core.expressions.Condition;
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.expressions.InfixOperation;
 import de.unisiegen.tpml.core.expressions.Let;
-import de.unisiegen.tpml.core.expressions.Or;
 import de.unisiegen.tpml.core.languages.l0.L0Language;
 import de.unisiegen.tpml.core.languages.l0.L0SmallStepProofRuleSet;
 import de.unisiegen.tpml.core.smallstep.SmallStepProofContext;
@@ -42,18 +40,12 @@ public class L1SmallStepProofRuleSet extends L0SmallStepProofRuleSet {
     super(language);
     
     // register small step rules
-    register("AND-EVAL", false);
-    register("AND-FALSE", true);
-    register("AND-TRUE", true);
     register("COND-EVAL", false);
     register("COND-TRUE", true);
     register("COND-FALSE", true);
     register("LET-EVAL", false);
     register("LET-EXEC", true);
     register("OP", true);
-    register("OR-EVAL", false);
-    register("OR-FALSE", true);
-    register("OR-TRUE", true);
   }
   
   
@@ -97,50 +89,6 @@ public class L1SmallStepProofRuleSet extends L0SmallStepProofRuleSet {
     }
     catch (BinaryOperatorException e) {
       return applicationOrInfix;
-    }
-  }
-  
-  
-  
-  //
-  // The (AND-EVAL), (AND-FALSE) and (AND-TRUE) rules
-  //
-  
-  /**
-   * Evaluates the <code>and</code> expression using the <code>context</code>.
-   * 
-   * @param context the small step proof context.
-   * @param and the {@link And} expression to evaluate.
-   * 
-   * @return the resulting expression.
-   */
-  public Expression evaluateAnd(SmallStepProofContext context, And and) {
-    // determine the sub expressions
-    Expression e1 = and.getE1();
-    Expression e2 = and.getE2();
-    
-    // check if e1 is not already a boolean constant
-    if (!(e1 instanceof BooleanConstant)) {
-      // we're about to perform (AND-EVAL)
-      context.addProofStep(getRuleByName("AND-EVAL"), and);
-      
-      // try to evaluate e1
-      e1 = evaluate(context, e1);
-      
-      // exceptions need special handling
-      return e1.isException() ? e1 : new And(e1, e2);
-    }
-    
-    // determine the boolean constant value
-    if (e1 == BooleanConstant.TRUE) {
-      // jep, that's (AND-TRUE) then
-      context.addProofStep(getRuleByName("AND-TRUE"), and);
-      return e2;
-    }
-    else {
-      // jep, that's (AND-FALSE) then
-      context.addProofStep(getRuleByName("AND-FALSE"), and);
-      return BooleanConstant.FALSE;
     }
   }
   
@@ -275,49 +223,5 @@ public class L1SmallStepProofRuleSet extends L0SmallStepProofRuleSet {
     
     // and perform the substitution
     return e2.substitute(id, e1);
-  }
-  
-  
-  
-  //
-  // The (OR-EVAL), (OR-FALSE) and (OR-TRUE) rules
-  //
-  
-  /**
-   * Evaluates the <code>or</code> expression using the <code>context</code>.
-   * 
-   * @param context the small step proof context.
-   * @param and the {@link And} expression to evaluate.
-   * 
-   * @return the resulting expression.
-   */
-  public Expression evaluateOr(SmallStepProofContext context, Or or) {
-    // determine the sub expressions
-    Expression e1 = or.getE1();
-    Expression e2 = or.getE2();
-    
-    // check if e1 is not already a boolean constant
-    if (!(e1 instanceof BooleanConstant)) {
-      // we're about to perform (OR-EVAL)
-      context.addProofStep(getRuleByName("OR-EVAL"), or);
-
-      // try to evaluate e1
-      e1 = evaluate(context, e1);
-
-      // exceptions need special treatment
-      return e1.isException() ? e1 : new Or(e1, e2);
-    }
-    
-    // determine the boolean constant value
-    if (e1 == BooleanConstant.TRUE) {
-      // jep, that's (OR-TRUE) then
-      context.addProofStep(getRuleByName("OR-TRUE"), or);
-      return BooleanConstant.TRUE;
-    }
-    else {
-      // jep, that's (OR-FALSE) then
-      context.addProofStep(getRuleByName("OR-FALSE"), or);
-      return e2;
-    }
   }
 }

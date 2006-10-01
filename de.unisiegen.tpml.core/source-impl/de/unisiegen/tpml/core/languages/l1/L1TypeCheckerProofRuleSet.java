@@ -1,6 +1,5 @@
 package de.unisiegen.tpml.core.languages.l1;
 
-import de.unisiegen.tpml.core.expressions.And;
 import de.unisiegen.tpml.core.expressions.Application;
 import de.unisiegen.tpml.core.expressions.Condition;
 import de.unisiegen.tpml.core.expressions.Constant;
@@ -14,7 +13,6 @@ import de.unisiegen.tpml.core.expressions.Let;
 import de.unisiegen.tpml.core.expressions.LetRec;
 import de.unisiegen.tpml.core.expressions.MultiLambda;
 import de.unisiegen.tpml.core.expressions.MultiLet;
-import de.unisiegen.tpml.core.expressions.Or;
 import de.unisiegen.tpml.core.expressions.Recursion;
 import de.unisiegen.tpml.core.typechecker.AbstractTypeCheckerProofRuleSet;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofContext;
@@ -52,13 +50,11 @@ public class L1TypeCheckerProofRuleSet extends AbstractTypeCheckerProofRuleSet {
     
     // register the type rules
     registerByMethodName("ABSTR", "applyAbstr");
-    registerByMethodName("AND", "applyAnd");
     registerByMethodName("APP", "applyApp");
     registerByMethodName("COND", "applyCond");
     registerByMethodName("CONST", "applyConst");
     registerByMethodName("ID", "applyId");
     registerByMethodName("LET", "applyLet");
-    registerByMethodName("OR", "applyOr");
   }
   
   
@@ -129,29 +125,6 @@ public class L1TypeCheckerProofRuleSet extends AbstractTypeCheckerProofRuleSet {
         context.addEquation(tau1, multiLambda.getTau());
       }
     }
-  }
-  
-  
-  
-  //
-  // The (AND) rule
-  //
-  
-  /**
-   * Applies the <b>(AND)</b> rule to the <code>node</code> using the <code>context</code>.
-   * 
-   * @param context the type checker proof context.
-   * @param node the type checker proof node.
-   */
-  public void applyAnd(TypeCheckerProofContext context, TypeCheckerProofNode node) {
-    And and = (And)node.getExpression();
-    
-    // generate new child nodes
-    context.addProofNode(node, node.getEnvironment(), and.getE1(), BooleanType.BOOL);
-    context.addProofNode(node, node.getEnvironment(), and.getE2(), BooleanType.BOOL);
-    
-    // add the {tau = bool} equation
-    context.addEquation(node.getType(), BooleanType.BOOL);
   }
   
   
@@ -338,28 +311,5 @@ public class L1TypeCheckerProofRuleSet extends AbstractTypeCheckerProofRuleSet {
       context.addProofNode(node, environment, e1, tau1);
       context.addProofNode(node, environment.extend(identifiers[0], tau1), curriedLet.getE2(), node.getType());
     }
-  }
-  
-  
-  
-  //
-  // The (OR) rule
-  //
-  
-  /**
-   * Applies the <b>(OR)</b> rule to the <code>node</code> using the <code>context</code>.
-   * 
-   * @param context the type checker proof context.
-   * @param node the type checker proof node.
-   */
-  public void applyOr(TypeCheckerProofContext context, TypeCheckerProofNode node) {
-    Or or = (Or)node.getExpression();
-    
-    // generate new child nodes
-    context.addProofNode(node, node.getEnvironment(), or.getE1(), BooleanType.BOOL);
-    context.addProofNode(node, node.getEnvironment(), or.getE2(), BooleanType.BOOL);
-    
-    // add the {tau = bool} equation
-    context.addEquation(node.getType(), BooleanType.BOOL);
   }
 }
