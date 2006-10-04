@@ -231,26 +231,26 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel {
       // add the undoable edit
       addUndoableTreeEdit(new UndoableTreeEdit() {
         public void redo() {
+          // update the "finished" state
+          setFinished(expression.isException() || expression.isValue());
+
           // apply the new steps and add the child
           node.setSteps(newSteps);
           node.add(child);
           nodesWereInserted(node, new int[] { node.getIndex(child) });
           nodeChanged(node);
-          
-          // update the "finished" state
-          setFinished(expression.isException() || expression.isValue());
         }
         
         public void undo() {
+          // update the "finished" state
+          setFinished(false);
+
           // remove the child and revert the steps
           int[] indices = { node.getIndex(child) };
           node.remove(child);
           nodesWereRemoved(node, indices, new Object[] { child });
           node.setSteps(completedSteps);
           nodeChanged(node);
-          
-          // update the "finished" state
-          setFinished(false);
         }
       });
     }
