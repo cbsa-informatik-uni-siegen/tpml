@@ -17,6 +17,7 @@ import java.io.IOException;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileFilter;
 
 import org.apache.log4j.Logger;
 
@@ -88,6 +89,7 @@ public class MainWindow extends javax.swing.JFrame {
         javax.swing.JMenu runMenu;
 
         mainToolbar = new javax.swing.JToolBar();
+        jToolBar1 = new javax.swing.JToolBar();
         newButton = new javax.swing.JButton();
         openButton = new javax.swing.JButton();
         saveButton = new javax.swing.JButton();
@@ -126,6 +128,7 @@ public class MainWindow extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setName("mainframe");
+        mainToolbar.setFloatable(false);
         newButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/new24.png")));
         newButton.setToolTipText("New File");
         newButton.setBorderPainted(false);
@@ -136,7 +139,7 @@ public class MainWindow extends javax.swing.JFrame {
             }
         });
 
-        mainToolbar.add(newButton);
+        jToolBar1.add(newButton);
 
         openButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/open24.png")));
         openButton.setToolTipText("Open File");
@@ -148,7 +151,7 @@ public class MainWindow extends javax.swing.JFrame {
             }
         });
 
-        mainToolbar.add(openButton);
+        jToolBar1.add(openButton);
 
         saveButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/save24.png")));
         saveButton.setToolTipText("Save File");
@@ -160,7 +163,7 @@ public class MainWindow extends javax.swing.JFrame {
             }
         });
 
-        mainToolbar.add(saveButton);
+        jToolBar1.add(saveButton);
 
         saveAsButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/saveas24.png")));
         saveAsButton.setToolTipText("Save File As...");
@@ -172,8 +175,11 @@ public class MainWindow extends javax.swing.JFrame {
             }
         });
 
-        mainToolbar.add(saveAsButton);
+        jToolBar1.add(saveAsButton);
 
+        mainToolbar.add(jToolBar1);
+
+        editToolBar.setMaximumSize(new java.awt.Dimension(32767, 40));
         cutButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/cut24.gif")));
         cutButton.setBorderPainted(false);
         cutButton.setOpaque(false);
@@ -342,6 +348,7 @@ public class MainWindow extends javax.swing.JFrame {
 
         editMenu.add(editMenuSeparator1);
 
+        cutItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_X, java.awt.event.InputEvent.CTRL_MASK));
         cutItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/cut16.gif")));
         cutItem.setText("Cut");
         cutItem.addActionListener(new java.awt.event.ActionListener() {
@@ -352,6 +359,7 @@ public class MainWindow extends javax.swing.JFrame {
 
         editMenu.add(cutItem);
 
+        copyItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.CTRL_MASK));
         copyItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/copy16.gif")));
         copyItem.setText("Copy");
         copyItem.addActionListener(new java.awt.event.ActionListener() {
@@ -362,6 +370,7 @@ public class MainWindow extends javax.swing.JFrame {
 
         editMenu.add(copyItem);
 
+        pasteItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_V, java.awt.event.InputEvent.CTRL_MASK));
         pasteItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/paste16.gif")));
         pasteItem.setText("Paste");
         pasteItem.addActionListener(new java.awt.event.ActionListener() {
@@ -426,7 +435,7 @@ public class MainWindow extends javax.swing.JFrame {
 
         setJMenuBar(MainMenuBar);
 
-        setBounds(0, 0, 800, 600);
+        setBounds(0, 0, 706, 561);
     }// </editor-fold>//GEN-END:initComponents
 
     private void pasteItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pasteItemActionPerformed
@@ -553,6 +562,7 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JMenuItem copyItem;
     private javax.swing.JButton cutButton;
     private javax.swing.JMenuItem cutItem;
+    private javax.swing.JToolBar jToolBar1;
     private javax.swing.JButton pasteButton;
     private javax.swing.JMenuItem pasteItem;
     private javax.swing.JMenuItem preferencesItem;
@@ -678,6 +688,38 @@ public class MainWindow extends javax.swing.JFrame {
 		// TODO clean this up a little bit
 		try {
 			JFileChooser chooser = new JFileChooser();
+                        
+                        final LanguageFactory factory = LanguageFactory.newInstance();
+                        chooser.addChoosableFileFilter(new FileFilter() {
+                                @Override public boolean accept(File f) {
+                                        if (f.isDirectory()) {
+                                            return true;
+                                        }
+                                        try {
+                                                factory.getLanguageByFile(f);
+                                                return true;
+                                        }
+                                        catch (NoSuchLanguageException e) {
+                                                return false;
+                                        }
+                                }
+                                @Override public String getDescription() {
+                                        Language[] languages = factory.getAvailableLanguages();
+                                        StringBuilder builder = new StringBuilder(128);
+                                        builder.append("Source Files (");
+                                        for (int n = 0; n < languages.length; ++n) {
+                                                if (n > 0) {
+                                                        builder.append("; ");
+                                                }
+                                                builder.append("*.");
+                                                builder.append(languages[n].getName().toLowerCase());
+                                        }
+                                        builder.append(')');
+                                        return builder.toString();
+                                }
+                        });
+                        chooser.setAcceptAllFileFilterUsed(false);
+                        
 			int returnVal = chooser.showOpenDialog(this);
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
 				File infile = chooser.getSelectedFile();

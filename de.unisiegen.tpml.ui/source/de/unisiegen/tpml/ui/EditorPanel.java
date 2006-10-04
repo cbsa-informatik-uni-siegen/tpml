@@ -9,6 +9,8 @@ package de.unisiegen.tpml.ui;
 import de.unisiegen.tpml.core.ProofModel;
 import de.unisiegen.tpml.core.bigstep.BigStepProofModel;
 import de.unisiegen.tpml.core.languages.Language;
+import de.unisiegen.tpml.core.languages.LanguageFactory;
+import de.unisiegen.tpml.core.languages.NoSuchLanguageException;
 import de.unisiegen.tpml.core.smallstep.SmallStepProofModel;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel;
 import de.unisiegen.tpml.graphics.ProofView;
@@ -31,6 +33,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
+import javax.swing.filechooser.FileFilter;
 
 import org.apache.log4j.Logger;
 
@@ -461,8 +464,9 @@ public class EditorPanel extends javax.swing.JPanel {
 	 *            redo status to be set.
 	 */
 	public void setRedoStatus(boolean redoStatus) {
-		firePropertyChange("redoStatus", this.redoStatus, redoStatus);
+                boolean oldRedoStatus = this.redoStatus;
 		this.redoStatus = redoStatus;
+		firePropertyChange("redoStatus", oldRedoStatus, redoStatus);
 	}
 
 	/**
@@ -486,8 +490,9 @@ public class EditorPanel extends javax.swing.JPanel {
 	public void setFileName(String filename) {
 		if (filename == null)
 			throw new NullPointerException("filename is null");
-		firePropertyChange("filename", this.filename, filename);
+                String oldFilename = this.filename;
 		this.filename = filename;
+		firePropertyChange("filename", oldFilename, filename);
 	}
 
 	/**
@@ -512,7 +517,7 @@ public class EditorPanel extends javax.swing.JPanel {
 		if (file == null)
 			throw new NullPointerException("File is null");
 		this.file = file;
-		this.filename = file.getName();
+                setFileName(file.getName());
 	}
 
 	/**
@@ -596,26 +601,91 @@ public class EditorPanel extends javax.swing.JPanel {
 	 * @return true if the file could be changed.
 	 */
 	public boolean handleSaveAs() {
+                // setup the file chooser
+                final LanguageFactory factory = LanguageFactory.newInstance();
 		JFileChooser chooser = new JFileChooser();
-		int n = chooser.showSaveDialog(getParent());
-		if (n == JFileChooser.APPROVE_OPTION) {
-			File outfile = chooser.getSelectedFile();
-			try {
-				outfile.createNewFile();
-				setFile(outfile);
-				setFileName(outfile.getName());
-				return writeFile();
-			} catch (IOException e) {
-				logger.error("Selected file could not be created.", e);
-				JOptionPane.showMessageDialog(this,
-						"File could not be created.", "Save",
-						JOptionPane.ERROR_MESSAGE);
-				return false;
-			}
-		} else {
-			logger.debug("Save as dialog cancelled.");
-			return false;
-		}
+                chooser.addChoosableFileFilter(new FileFilter() {
+                        @Override public boolean accept(File f) {
+                                if (f.isDirectory()) {
+                                    return true;
+                                }
+                                try {
+                                        factory.getLanguageByFile(f);
+                                        return true;
+                                }
+                                catch (NoSuchLanguageException e) {
+                                        return false;
+                                }
+                        }
+                        @Override public String getDescription() {
+                                Language[] languages = factory.getAvailableLanguages();
+                                StringBuilder builder = new StringBuilder(128);
+                                builder.append("Source Files (");
+                                for (int n = 0; n < languages.length; ++n) {
+                                        if (n > 0) {
+                                                builder.append("; ");
+                                        }
+                                        builder.append("*.");
+                                        builder.append(languages[n].getName().toLowerCase());
+                                }
+                                builder.append(')');
+                                return builder.toString();
+                        }
+                });
+                chooser.setAcceptAllFileFilterUsed(false);
+
+                // determine the file name
+                File outfile;
+                for (;;) {
+                        // run the dialog
+                        int n = chooser.showSaveDialog(getParent());
+                        if (n != JFileChooser.APPROVE_OPTION) {
+                                logger.debug("Save as dialog cancelled");
+                                return false;
+                        }
+                        
+                        // check the extension
+                        File f = chooser.getSelectedFile();
+                        String name = f.getName();
+                        int i = name.lastIndexOf('.');
+                        if (i > 0 && i < name.length()) {
+                            if (!name.substring(i + 1).equalsIgnoreCase(this.language.getName())) {
+                                JOptionPane.showMessageDialog(this, "File name must end with \"." + this.language.getName().toLowerCase() + "\".", "Save", JOptionPane.ERROR_MESSAGE);
+                                continue;
+                            }
+                        }
+                        else {
+                            name = name + "." + this.language.getName().toLowerCase();
+                        }
+                        
+                        // try to create the new file
+                        try {
+                                outfile = new File(f.getParent(), name);
+                                if (!outfile.createNewFile()) {
+                                        // TODO: Christoph, this doesn't work propertly!
+                                        int j = JOptionPane.showConfirmDialog(this, "The file \"" + outfile.getName() + "\" already exists. Do you want to overwrite it?", "Overwrite", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+                                        if (j == JFileChooser.CANCEL_OPTION) {
+                                                logger.debug("Cancelled overwrite of \"" + outfile.getName() + "\"");
+                                                return false;
+                                        }
+                                        else if (j == JOptionPane.NO_OPTION) {
+                                                // next try
+                                               continue;
+                                        }
+                                }
+                
+                                // save to the new file
+                                setFile(outfile);
+                                setFileName(outfile.getName());
+                                return writeFile();
+                        } catch (IOException e) {
+                                logger.error("Selected file could not be created.", e);
+                                JOptionPane.showMessageDialog(this,
+                                                "File could not be created.", "Save",
+                                                JOptionPane.ERROR_MESSAGE);
+                                return false;
+                        }
+                }
 	}
 
 	/**
