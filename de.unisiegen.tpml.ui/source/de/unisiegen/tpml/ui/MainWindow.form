@@ -457,6 +457,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/de/unisiegen/tpml/ui/icons/cut24.gif"/>
                 </Property>
+                <Property name="toolTipText" type="java.lang.String" value="Cut"/>
                 <Property name="borderPainted" type="boolean" value="false"/>
                 <Property name="opaque" type="boolean" value="false"/>
               </Properties>
@@ -466,6 +467,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/de/unisiegen/tpml/ui/icons/copy24.gif"/>
                 </Property>
+                <Property name="toolTipText" type="java.lang.String" value="Copy"/>
                 <Property name="borderPainted" type="boolean" value="false"/>
                 <Property name="opaque" type="boolean" value="false"/>
               </Properties>
@@ -475,6 +477,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/de/unisiegen/tpml/ui/icons/paste24.gif"/>
                 </Property>
+                <Property name="toolTipText" type="java.lang.String" value="Paste"/>
                 <Property name="borderPainted" type="boolean" value="false"/>
                 <Property name="opaque" type="boolean" value="false"/>
               </Properties>

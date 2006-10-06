@@ -29,11 +29,19 @@
 	<property name="classesdir" value="${distdir}/classes" />
 	
 	<target name="dist" depends="generate,dist-graphics,dist-preclean,dist-compile,dist-jar,dist-clean" description="Build distribution">
-		<zip destfile="${distdir}/tpml-${de.unisiegen.tpml.ui.version}.zip" update="yes">
+		<mkdir dir="${distdir}/tpml-${de.unisiegen.tpml.ui.version}" />
+		<copy todir="${distdir}/tpml-${de.unisiegen.tpml.ui.version}">
 			<fileset dir="${core.distdir}" includes="*.jar" />
 			<fileset dir="${graphics.distdir}" includes="*.jar" />
 			<fileset dir="${distdir}" includes="*.jar" />
+			<fileset dir="${basedir}/doc" includes="LICENSE" />
+		</copy>
+		<zip destfile="${distdir}/tpml-${de.unisiegen.tpml.ui.version}.zip" update="yes">
+			<fileset dir="${distdir}">
+				<include name="tpml-${de.unisiegen.tpml.ui.version}**/*" />
+			</fileset>
 		</zip>
+		<delete dir="${distdir}/tpml-${de.unisiegen.tpml.ui.version}" includeemptydirs="true" />
 		<echo message="Distribution ready in ${distdir}/tpml-${de.unisiegen.tpml.ui.version}.zip" />
 	</target>
 	
@@ -42,12 +50,12 @@
 	</target>
 
 	<target name="dist-preclean">
-		<delete dir="${distdir}" />
+		<delete dir="${distdir}" includeemptydirs="true" />
 		<mkdir dir="${distdir}" />
 	</target>
 		
 	<target name="dist-compile">
-		<delete dir="${classesdir}" />
+		<delete dir="${classesdir}" includeemptydirs="true" />
 		<mkdir dir="${classesdir}" />
 		<javac debug="on" destdir="${classesdir}" encoding="UTF-8" optimize="on" source="1.5" target="1.5">
 			<src path="${basedir}/source" />
@@ -75,6 +83,8 @@
 				<attribute name="Implementation-Vendor" value="University of Siegen, Department of Theoretical Computer Science" />
 			</section>
 		</manifest>
+		<mkdir dir="${classesdir}/META-INF" />
+		<copy todir="${classesdir}/META-INF" file="${basedir}/doc/LICENSE" />
 		<jar jarfile="${distdir}/de.unisiegen.tpml.ui-${de.unisiegen.tpml.ui.version}.jar" manifest="${distdir}/MANIFEST.MF">
 			<fileset dir="${classesdir}" />
 			<fileset dir="${basedir}/source">

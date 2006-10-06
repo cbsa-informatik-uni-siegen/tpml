@@ -1,5 +1,7 @@
 package de.unisiegen.tpml.ui;
 
+import java.io.File;
+
 import javax.swing.UIManager;
 
 /**
@@ -20,7 +22,7 @@ public final class Main {
 	 * 
 	 * @see MainWindow
 	 */
-	public static void main(String args[]) {
+	public static void main(final String args[]) {
 		try {
 			// try to setup native look and feel for the platform
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -32,7 +34,17 @@ public final class Main {
 		// run a new MainWindow
 		java.awt.EventQueue.invokeLater(new Runnable() {
 			public void run() {
-				new MainWindow().setVisible(true);
+				// allocate the main window
+				MainWindow window = new MainWindow();
+				
+				// open any specified files
+				for (String fileName : args) {
+					File file = new File(fileName);
+					window.openFile(file);
+				}
+				
+				// display the main window
+				window.setVisible(true);
 			}
 		});
 	}

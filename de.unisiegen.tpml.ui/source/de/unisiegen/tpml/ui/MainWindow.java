@@ -6,6 +6,7 @@
 
 package de.unisiegen.tpml.ui;
 
+import java.awt.Component;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.beans.PropertyChangeEvent;
@@ -181,16 +182,19 @@ public class MainWindow extends javax.swing.JFrame {
 
         editToolBar.setMaximumSize(new java.awt.Dimension(32767, 40));
         cutButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/cut24.gif")));
+        cutButton.setToolTipText("Cut");
         cutButton.setBorderPainted(false);
         cutButton.setOpaque(false);
         editToolBar.add(cutButton);
 
         copyButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/copy24.gif")));
+        copyButton.setToolTipText("Copy");
         copyButton.setBorderPainted(false);
         copyButton.setOpaque(false);
         editToolBar.add(copyButton);
 
         pasteButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/paste24.gif")));
+        pasteButton.setToolTipText("Paste");
         pasteButton.setBorderPainted(false);
         pasteButton.setOpaque(false);
         editToolBar.add(pasteButton);
@@ -585,6 +589,66 @@ public class MainWindow extends javax.swing.JFrame {
 
 	// Self-defined methods:
 
+        void openFile(File file) {
+                if (file == null) {
+                        throw new NullPointerException("file is null");
+                }
+		// TODO clean this up a little bit
+		try {
+                        // check if we already have an editor panel for the file
+                        EditorPanel editorPanel = null;
+                        for (Component component : this.tabbedPane.getComponents()) {
+                                if (component instanceof EditorPanel && ((EditorPanel)component).getFile().equals(file)) {
+                                        editorPanel = (EditorPanel)component;
+                                        break;
+                                }
+                        }
+                        
+                        // if we don't already have the editor panel, create a new one
+                        if (editorPanel == null) {
+                                LanguageFactory langfactory = LanguageFactory.newInstance();
+                                Language language = langfactory.getLanguageByFile(file);
+
+                                StringBuffer buffer = new StringBuffer();
+                                FileInputStream in = new FileInputStream(file);
+                                int onechar;
+
+                                while ((onechar = in.read()) != -1) {
+                                        buffer.append((char) onechar);
+                                }
+
+                                editorPanel = new EditorPanel(language);
+                                tabbedPane.add(editorPanel);
+
+                                editorPanel.setFileName(file.getName());
+                                editorPanel.setEditorText(buffer.toString());
+                                editorPanel.setFile(file);
+                                editorPanel.addPropertyChangeListener(editorPanelListener);
+                        }
+                        
+                        this.tabbedPane.setSelectedComponent(editorPanel);
+                        setGeneralStates(true);
+                        updateEditorStates(editorPanel);
+		}
+                catch (NoSuchLanguageException e) {
+			logger.error("Language does not exist.", e);
+			JOptionPane.showMessageDialog(this, "File is not supported.",
+					"Open File", JOptionPane.ERROR_MESSAGE);
+		}
+                catch (FileNotFoundException e) {
+			logger.error("File specified could not be found", e);
+			JOptionPane.showMessageDialog(this, "File could not be found.",
+					"Open File", JOptionPane.ERROR_MESSAGE);
+		}
+                catch (IOException e) {
+			logger.error("Could not read from the file specified", e);
+			JOptionPane.showMessageDialog(this,
+					"Could not read from the file.", "Open File",
+					JOptionPane.ERROR_MESSAGE);
+		}
+
+        }
+        
 	private void setGeneralStates(boolean state) {
 		smallstepItem.setEnabled(state);
 		bigstepItem.setEnabled(state);
@@ -623,8 +687,12 @@ public class MainWindow extends javax.swing.JFrame {
 	}
 
 	private void updateEditorStates(EditorPanel editor) {
-		if (getActiveEditor() == null)
+                if (editor == null) {
+                        throw new NullPointerException("editor is null");
+                }
+		if (getActiveEditor() == null) {
 			setGeneralStates(false);
+                }
 		else {
 			setRedoState(editor.isRedoStatus());
 			setUndoState(editor.isUndoStatus());
@@ -685,101 +753,81 @@ public class MainWindow extends javax.swing.JFrame {
 	}
 
 	private void handleOpen() {
-		// TODO clean this up a little bit
-		try {
-			JFileChooser chooser = new JFileChooser();
-                        
-                        final LanguageFactory factory = LanguageFactory.newInstance();
-                        chooser.addChoosableFileFilter(new FileFilter() {
-                                @Override public boolean accept(File f) {
-                                        if (f.isDirectory()) {
-                                            return true;
-                                        }
-                                        try {
-                                                factory.getLanguageByFile(f);
-                                                return true;
-                                        }
-                                        catch (NoSuchLanguageException e) {
-                                                return false;
-                                        }
+                JFileChooser chooser = new JFileChooser();
+
+                final LanguageFactory factory = LanguageFactory.newInstance();
+                chooser.addChoosableFileFilter(new FileFilter() {
+                        @Override public boolean accept(File f) {
+                                if (f.isDirectory()) {
+                                    return true;
                                 }
-                                @Override public String getDescription() {
-                                        Language[] languages = factory.getAvailableLanguages();
-                                        StringBuilder builder = new StringBuilder(128);
-                                        builder.append("Source Files (");
-                                        for (int n = 0; n < languages.length; ++n) {
-                                                if (n > 0) {
-                                                        builder.append("; ");
-                                                }
-                                                builder.append("*.");
-                                                builder.append(languages[n].getName().toLowerCase());
-                                        }
-                                        builder.append(')');
-                                        return builder.toString();
+                                try {
+                                        factory.getLanguageByFile(f);
+                                        return true;
                                 }
-                        });
-                        chooser.setAcceptAllFileFilterUsed(false);
-                        
-			int returnVal = chooser.showOpenDialog(this);
-			if (returnVal == JFileChooser.APPROVE_OPTION) {
-				File infile = chooser.getSelectedFile();
-				LanguageFactory langfactory = LanguageFactory.newInstance();
-				Language language = langfactory.getLanguageByFile(infile);
-				if (infile == null)
-					return;
+                                catch (NoSuchLanguageException e) {
+                                        return false;
+                                }
+                        }
+                        @Override public String getDescription() {
+                                Language[] languages = factory.getAvailableLanguages();
+                                StringBuilder builder = new StringBuilder(128);
+                                builder.append("Source Files (");
+                                for (int n = 0; n < languages.length; ++n) {
+                                        if (n > 0) {
+                                                builder.append("; ");
+                                        }
+                                        builder.append("*.");
+                                        builder.append(languages[n].getName().toLowerCase());
+                                }
+                                builder.append(')');
+                                return builder.toString();
+                        }
+                });
+                chooser.setAcceptAllFileFilterUsed(false);
 
-				StringBuffer buffer = new StringBuffer();
-				FileInputStream in = new FileInputStream(infile);
-				int onechar;
-
-				while ((onechar = in.read()) != -1)
-					buffer.append((char) onechar);
-
-				if (infile == null)
-					return;
-
-				EditorPanel newEditorPanel = new EditorPanel(language);
-				tabbedPane.add(newEditorPanel);
-				tabbedPane.setSelectedComponent(newEditorPanel);
-
-				newEditorPanel.setFileName(infile.getName());
-				newEditorPanel.setEditorText(buffer.toString());
-				newEditorPanel.setFile(infile);
-				newEditorPanel.addPropertyChangeListener(editorPanelListener);
-				setGeneralStates(true);
-				updateEditorStates(newEditorPanel);
-			}
-
-		} catch (NoSuchLanguageException e) {
-			logger.error("Language does not exist.", e);
-			JOptionPane.showMessageDialog(this, "File is not supported.",
-					"Open File", JOptionPane.ERROR_MESSAGE);
-		} catch (FileNotFoundException e) {
-			logger.error("File specified could not be found", e);
-			JOptionPane.showMessageDialog(this, "File could not be found.",
-					"Open File", JOptionPane.ERROR_MESSAGE);
-		} catch (IOException e) {
-			logger.error("Could not read from the file specified", e);
-			JOptionPane.showMessageDialog(this,
-					"Could not read from the file.", "Open File",
-					JOptionPane.ERROR_MESSAGE);
-		}
-
+                int returnVal = chooser.showOpenDialog(this);
+                if (returnVal == JFileChooser.APPROVE_OPTION) {
+                        openFile(chooser.getSelectedFile());
+                }
 	}
 
 	private void handleQuit() {
-		while (getActiveEditor() != null) {
-			if (!handleClose())
-				return;
-		}
+                for (Component component : this.tabbedPane.getComponents()) {
+                        if (component instanceof EditorPanel) {
+                                EditorPanel editorPanel = (EditorPanel)component;
+                                if (!editorPanel.isChanged()) {
+                                        continue;
+                                }
+                                
+                                // Custom button text
+                                Object[] options = { "Yes", "No", "Cancel" };
+                                int n = JOptionPane.showOptionDialog(this, editorPanel.getFileName()
+                                                + " contains unsaved changes. Do you want to save?",
+                                                "Save File", JOptionPane.YES_NO_CANCEL_OPTION,
+                                                JOptionPane.QUESTION_MESSAGE, null, options, options[2]);
+                                switch (n) {
+                                case 0: // Save changes
+                                        logger.debug("Quit dialog: YES");
+                                        if (!editorPanel.handleSave()) {
+                                            // abort the quit
+                                            return;
+                                        }
+                                        break;
+                                        
+                                case 1: // Do not save changes
+                                        logger.debug("Quit dialog: NO");
+                                        break;
+                                        
+                                default: // Cancelled
+                                        logger.debug("Quit dialog: CANCEL");
+                                        return;
+                                }
+                        }
+                }
 		System.exit(0);
 	}
 
-	/**
-	 * TODO add documentation here
-	 * 
-	 * @return true if the active editor was closed
-	 */
 	/**
 	 * TODO add documentation here
 	 * 
