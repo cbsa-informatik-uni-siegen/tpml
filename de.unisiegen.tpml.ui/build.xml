@@ -36,13 +36,27 @@
 			<fileset dir="${distdir}" includes="*.jar" />
 			<fileset dir="${basedir}/doc" includes="LICENSE" />
 		</copy>
+		<copy todir="${distdir}/tpml-${de.unisiegen.tpml.ui.version}" file="${basedir}/tpml.sh">
+			<filterset>
+				<filter token="de.unisiegen.tpml.ui.version" value="${de.unisiegen.tpml.ui.version}" />
+			</filterset>
+		</copy>
+		<tar destfile="${distdir}/tpml-${de.unisiegen.tpml.ui.version}.tar.bz2" compression="bzip2" longfile="gnu">
+			<tarfileset dir="${distdir}">
+				<exclude name="tpml-${de.unisiegen.tpml.ui.version}**/tpml.sh" />
+				<include name="tpml-${de.unisiegen.tpml.ui.version}**/*" />
+			</tarfileset>
+			<tarfileset dir="${distdir}" mode="755">
+				<include name="tpml-${de.unisiegen.tpml.ui.version}**/tpml.sh" />
+			</tarfileset>
+		</tar>
 		<zip destfile="${distdir}/tpml-${de.unisiegen.tpml.ui.version}.zip" update="yes">
 			<fileset dir="${distdir}">
 				<include name="tpml-${de.unisiegen.tpml.ui.version}**/*" />
 			</fileset>
 		</zip>
 		<delete dir="${distdir}/tpml-${de.unisiegen.tpml.ui.version}" includeemptydirs="true" />
-		<echo message="Distribution ready in ${distdir}/tpml-${de.unisiegen.tpml.ui.version}.zip" />
+		<echo message="Distribution ready in ${distdir}/tpml-${de.unisiegen.tpml.ui.version}.tar.bz2 and ${distdir}/tpml-${de.unisiegen.tpml.ui.version}.zip" />
 	</target>
 	
 	<target name="dist-graphics">
