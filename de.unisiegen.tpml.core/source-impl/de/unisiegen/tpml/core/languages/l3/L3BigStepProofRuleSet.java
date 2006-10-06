@@ -62,6 +62,9 @@ public class L3BigStepProofRuleSet extends L2BigStepProofRuleSet {
     registerByMethodName("SND", "applySnd");
     registerByMethodName("TL", "applyTl");
     registerByMethodName("TUPLE", "applyTuple", "updateTuple");
+    
+    // register (VAL) once again to have higher priority than (TUPLE) for guessing
+    registerByMethodName("VAL", "applyValue");
   }
   
   
