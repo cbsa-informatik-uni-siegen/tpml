@@ -2,7 +2,7 @@
 #
 # $Id$
 #
-# Startscript for the TPML application.
+# Startscript for the TPML application on Linux/Unix.
 #
 
 # Check if a JRE is available
