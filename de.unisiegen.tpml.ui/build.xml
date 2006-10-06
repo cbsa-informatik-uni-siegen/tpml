@@ -41,6 +41,11 @@
 				<filter token="de.unisiegen.tpml.ui.version" value="${de.unisiegen.tpml.ui.version}" />
 			</filterset>
 		</copy>
+		<copy todir="${distdir}/tpml-${de.unisiegen.tpml.ui.version}" file="${basedir}/tpml.bat">
+			<filterset>
+				<filter token="de.unisiegen.tpml.ui.version" value="${de.unisiegen.tpml.ui.version}" />
+			</filterset>
+		</copy>
 		<tar destfile="${distdir}/tpml-${de.unisiegen.tpml.ui.version}.tar.bz2" compression="bzip2" longfile="gnu">
 			<tarfileset dir="${distdir}">
 				<exclude name="tpml-${de.unisiegen.tpml.ui.version}**/tpml.sh" />
