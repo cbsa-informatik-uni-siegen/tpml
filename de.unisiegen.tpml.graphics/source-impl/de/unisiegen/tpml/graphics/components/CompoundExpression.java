@@ -28,6 +28,8 @@ public class CompoundExpression<S, E> extends JComponent {
 	
 	private Expression									expression;
 	
+	private Expression									underlineExpression;
+	
 	private Dimension										expressionSize;
 	
 	private Environment<S, E> 					environment;
@@ -47,8 +49,9 @@ public class CompoundExpression<S, E> extends JComponent {
 	public CompoundExpression () {
 		super ();
 		
-		this.alternativeColor = null;
-		this.braceSize 				= 10;
+		this.alternativeColor 		= null;
+		this.braceSize 						= 10;
+		this.underlineExpression	= null;
 		
 		this.addMouseMotionListener(new MouseMotionAdapter() {
 			@Override
@@ -66,6 +69,14 @@ public class CompoundExpression<S, E> extends JComponent {
 		}
 		if (this.environmentRenderer != null) {
 			this.environmentRenderer.setAlternativeColor(color);
+		}
+	}
+	
+	public void setUnderlineExpression (Expression underlineExpression) {
+		this.underlineExpression = underlineExpression;
+		
+		if (this.expressionRenderer != null) {
+			this.expressionRenderer.setUndelinePrettyPrintable(this.underlineExpression);
 		}
 	}
 	
@@ -101,6 +112,10 @@ public class CompoundExpression<S, E> extends JComponent {
 		}
 		
 		this.expressionRenderer.setPrettyString(this.expression.toPrettyString());
+		
+		// reset the underlineExpression
+		setUnderlineExpression(this.underlineExpression);
+		
 	}
 	
 	public void setEnvironment (Environment<S, E> environment) {

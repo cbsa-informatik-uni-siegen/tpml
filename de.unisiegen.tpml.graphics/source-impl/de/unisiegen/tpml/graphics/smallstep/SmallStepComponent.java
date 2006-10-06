@@ -86,6 +86,9 @@ public class SmallStepComponent extends AbstractProofComponent implements Scroll
 				public void nodeChanged (SmallStepNodeComponent node) {
 					SmallStepComponent.this.relayout();
 				}
+				public void repaintAll () {
+					SmallStepComponent.this.repaint();
+				}
 			});
 			
 			nodeComponent.update();
@@ -203,7 +206,6 @@ public class SmallStepComponent extends AbstractProofComponent implements Scroll
 			// 
 			// the expression of the rootNode can be placed without checking anything
 			if (node.getParent() == null) {
-				
 				nodeComponent.placeExpression();
 				
 				
@@ -325,11 +327,12 @@ public class SmallStepComponent extends AbstractProofComponent implements Scroll
 	}
 	
 	@Override
-	protected void nodesInserted (TreeModelEvent event) { 
+	protected void nodesInserted (TreeModelEvent event) {
+		// no handling in the smallstep gui
 	}
 	
 	@Override
-	protected void nodesChanged (TreeModelEvent event) { 
+	protected void nodesChanged (TreeModelEvent event) {
 		Object[] children = event.getChildren();
 		if (children == null) {
 			

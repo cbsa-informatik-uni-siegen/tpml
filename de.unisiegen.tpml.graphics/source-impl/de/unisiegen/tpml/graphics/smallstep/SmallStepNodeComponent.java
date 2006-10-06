@@ -2,6 +2,8 @@ package de.unisiegen.tpml.graphics.smallstep;
 
 import java.awt.Dimension;
 import java.awt.Point;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 import java.util.Arrays;
 
 import javax.swing.JComponent;
@@ -54,23 +56,36 @@ public class SmallStepNodeComponent extends JComponent {
 	private MenuTranslateItem													translateItem;
 	
 	private LanguageTranslator												translator;
+	
+	private Expression																currentUnderlineExpression;
+	
+	private MouseMotionAdapter												underlineThisAdapter;
+	
+	private MouseMotionAdapter												underlineRuleAdapter;
+	
+	private enum Direction {
+		DIRECTION_PARENT,
+		DIRECTION_CHILD,
+	}
 
 	public SmallStepNodeComponent (SmallStepProofNode 	proofNode, 
 																 SmallStepProofModel 	proofModel,
 																 LanguageTranslator		translator,
 																 int spacing) {
 		
-		this.proofNode 						= proofNode;
+		this.proofNode 									= proofNode;
 		
-		this.proofModel						= proofModel;
+		this.proofModel									= proofModel;
 		
-		this.translator						= translator;
+		this.translator									= translator;
+		
+		this.currentUnderlineExpression	= null;
 		
 		// the dimension for the rules initialy (0, 0)
-		this.ruleDimension				= new Dimension (0, 0);
+		this.ruleDimension							= new Dimension (0, 0);
 		
 		// the dimension for the expression initialy (0, 0)
-		this.expressionDimension	= new Dimension (0, 0);
+		this.expressionDimension				= new Dimension (0, 0);
 		
 		
 		this.expression = new CompoundExpression<Location, Expression> ();
@@ -105,6 +120,49 @@ public class SmallStepNodeComponent extends JComponent {
 				SmallStepNodeComponent.this.menuItemActivated(item);
 			}
 		});
+
+		
+		
+		// create the adapters that will be used to determine 
+		// whether an expression needs to get underlined
+		this.underlineThisAdapter = new MouseMotionAdapter () {
+			@Override
+			public void mouseMoved (MouseEvent event) {
+				SmallStepNodeComponent.this.updateUnderlineExpression((Expression)null);
+				SmallStepNodeComponent.this.fireRepaintAll();
+			}
+		};
+		
+		this.underlineRuleAdapter = new MouseMotionAdapter () {
+			@Override
+			public void mouseMoved (MouseEvent event) {
+				SmallStepRuleLabel label = (SmallStepRuleLabel)event.getSource();
+				SmallStepNodeComponent.this.updateUnderlineExpression(label);
+				SmallStepNodeComponent.this.fireRepaintAll();
+			}
+		};
+		
+		this.addMouseMotionListener(this.underlineThisAdapter);
+		this.expression.addMouseMotionListener(this.underlineThisAdapter);
+	}
+	
+	private void updateUnderlineExpression (Expression expression) {
+		if (this.currentUnderlineExpression == expression) {
+			return;
+		}
+		
+		this.currentUnderlineExpression = expression;
+		
+		this.expression.setUnderlineExpression(this.currentUnderlineExpression);
+		
+		// free all the other nodes
+		freeUnderliningSibling(true, Direction.DIRECTION_CHILD);
+		freeUnderliningSibling(true, Direction.DIRECTION_PARENT);
+		
+	}
+	
+	private void updateUnderlineExpression (SmallStepRuleLabel label) {
+		updateUnderlineExpression (label.getStepExpression());
 	}
 	
 	private void menuItemActivated (JMenuItem item) {
@@ -166,7 +224,7 @@ public class SmallStepNodeComponent extends JComponent {
 	// Stuff for the rules
 	// 
 	public Dimension getMinRuleSize () {
-		this.ruleDimension = this.rules.getNeededSize();
+		this.ruleDimension = this.rules.getNeededSize(this.underlineRuleAdapter);
 		this.actualRuleHeight = this.ruleDimension.height;
 		return this.ruleDimension;
 	}
@@ -204,6 +262,33 @@ public class SmallStepNodeComponent extends JComponent {
 		
 		int top = getRuleTop() + (this.actualRuleHeight - this.ruleDimension.height) / 2;
 		this.rules.setBounds(0, top, this.ruleDimension.width, this.ruleDimension.height);
+	}
+	
+	private void freeUnderliningSibling (boolean ignoreThis, Direction direction) {
+		if (!ignoreThis) {
+			this.expression.setUnderlineExpression(null);
+		}
+
+		SmallStepProofNode nextNode = null;
+		switch (direction) {
+		case DIRECTION_CHILD:
+			try {
+				nextNode = this.proofNode.getFirstChild();
+			} catch (Exception e) {
+			}
+			break;
+		case DIRECTION_PARENT:
+			nextNode = this.proofNode.getParent();
+			break;
+		}
+		
+		if (nextNode == null) {
+			// no next node, so we're done here
+			return;
+		}
+		
+		SmallStepNodeComponent nextNodeComponent = (SmallStepNodeComponent)nextNode.getUserObject();
+		nextNodeComponent.freeUnderliningSibling(false, direction);
 	}
 	
 	
@@ -263,6 +348,17 @@ public class SmallStepNodeComponent extends JComponent {
 			}
 			
 			((SmallStepNodeListener)listeners [i+1]).nodeChanged(this);
+		}
+	}
+	
+	private void fireRepaintAll () {
+		Object[] listeners = this.listenerList.getListenerList();
+		for (int i=0; i<listeners.length; i+=2) {
+			if (listeners [i] != SmallStepNodeListener.class) {
+				continue;
+			}
+			
+			((SmallStepNodeListener)listeners [i+1]).repaintAll();
 		}
 	}
 	

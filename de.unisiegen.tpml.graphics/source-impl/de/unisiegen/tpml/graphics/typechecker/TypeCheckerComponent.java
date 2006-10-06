@@ -30,16 +30,14 @@ public class TypeCheckerComponent extends AbstractProofComponent implements Scro
 
 	private TreeNodeLayout							treeNodeLayout;
 	
-	private ProofNode										newNodeTop;
+	private ProofNode										jumpNode;
 	
-	private ProofNode										newNodeBottom;
 	
 	public TypeCheckerComponent (TypeCheckerProofModel model) {
 		super (model);
 		
 		this.treeNodeLayout			= new TreeNodeLayout (10);
-		this.newNodeTop					= null;
-		this.newNodeBottom			= null;
+		this.jumpNode						= null;
 		
 		setLayout (null);
 		
@@ -65,7 +63,11 @@ public class TypeCheckerComponent extends AbstractProofComponent implements Scro
       ProofNode node = nodes.poll();
       if (node.getSteps().length == 0) {
       	
-      	this.proofModel.guess(node);
+      	try {
+      		this.proofModel.guess(node);
+      	} catch (Exception e) {
+      		System.out.println ("GuessError: \"" + e.getMessage() + "\"");
+      	}
       	return;
       }
       for (int n = 0; n < node.getChildCount(); ++n) {
@@ -175,6 +177,10 @@ public class TypeCheckerComponent extends AbstractProofComponent implements Scro
 	
 	@Override
 	protected void nodesInserted (TreeModelEvent event) {
+		if (this.jumpNode != null) {
+			return;
+		}
+		
 		Object [] children = event.getChildren();
 
 		// find the bottom and the top element that have been
@@ -184,14 +190,12 @@ public class TypeCheckerComponent extends AbstractProofComponent implements Scro
 			
 			// only problem with this could occure when
 			// then children[0] element isn't the topmost element
-			// in the tree that has been inserted and childre[x-1] isn't
-			// the last. at this condition that behaviour is undefined
-			this.newNodeTop = (ProofNode)children [0];
-			this.newNodeBottom = (ProofNode)children[children.length-1];
+			// in the tree that has been inserted. at this condition 
+			// that behaviour is undefined
+			this.jumpNode = (ProofNode)children [0];
 		}
 		else {
-			this.newNodeTop = null;
-			this.newNodeBottom = null;
+			this.jumpNode = null;
 		}
 	}
 	
@@ -260,18 +264,14 @@ public class TypeCheckerComponent extends AbstractProofComponent implements Scro
 	}
 	
 	private void jumpToNodeVisible () {
-		if (this.newNodeTop == null || this.newNodeBottom == null) {
+		if (this.jumpNode == null) {
 			return;
 		}
 		
 		// get the Component nodes to evaluate the positions
 		// on the viewport
-		TypeCheckerNodeComponent topNode = (TypeCheckerNodeComponent)this.newNodeTop.getUserObject();
-		if (topNode == null) {
-			return;
-		}
-		TypeCheckerNodeComponent bottomNode = (TypeCheckerNodeComponent)this.newNodeBottom.getUserObject();
-		if (bottomNode == null) {
+		TypeCheckerNodeComponent node = (TypeCheckerNodeComponent)this.jumpNode.getUserObject();
+		if (node == null) {
 			return;
 		}
 		
@@ -280,16 +280,14 @@ public class TypeCheckerComponent extends AbstractProofComponent implements Scro
 		Rectangle visibleRect = this.getVisibleRect();
 		
 		Rectangle rect = new Rectangle ();
-		rect.x = visibleRect.x;
-		rect.width = 1;
-		
-		// the visible height is from the top of the topElement
-		// top element to the bottom of the bottomElement
-		rect.y = topNode.getBounds().y;
-		rect.height = (bottomNode.getBounds().y + bottomNode.getBounds().height) - rect.y;
+		rect.x 			= visibleRect.x;
+		rect.y 			= node.getY ();
+		rect.width 	= 1;
+		rect.height = node.getHeight ();
 		
 		this.scrollRectToVisible(rect);
 
+		this.jumpNode = null;
 	}
 	
 

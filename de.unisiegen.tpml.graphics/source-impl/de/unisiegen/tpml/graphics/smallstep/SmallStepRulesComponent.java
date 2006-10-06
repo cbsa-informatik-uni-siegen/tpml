@@ -3,12 +3,13 @@ package de.unisiegen.tpml.graphics.smallstep;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.event.MouseMotionAdapter;
 import java.util.LinkedList;
-import java.util.List;
 
 import javax.swing.JComponent;
 
 import de.unisiegen.tpml.core.ProofRule;
+import de.unisiegen.tpml.core.ProofStep;
 import de.unisiegen.tpml.core.smallstep.SmallStepProofNode;
 import de.unisiegen.tpml.core.smallstep.SmallStepProofRule;
 import de.unisiegen.tpml.graphics.components.MenuButton;
@@ -69,7 +70,7 @@ public class SmallStepRulesComponent extends JComponent {
 		setMaximumSize (size);
 	}
 	
-	public Dimension getNeededSize () {
+	public Dimension getNeededSize (MouseMotionAdapter adapter) {
 		int labelHeight		= Math.max (SmallStepRuleLabel.getLabelHeight(),
 																	this.menuButton.getHeight());
 		
@@ -79,29 +80,33 @@ public class SmallStepRulesComponent extends JComponent {
 		
 		// clear all the labels that are currently 
 		for (SmallStepRuleLabel l : this.ruleLabels) {
+			l.removeMouseMotionListener(adapter);
 			remove (l);
 		}
 		this.ruleLabels.clear();
 		
 		
-		List<SmallStepProofRule> rules = this.proofNode.getRules();
-		if (rules.size () > 0) {
+		ProofStep[] steps = this.proofNode.getSteps();
+		if (steps.length > 0) {
 			
 			// first reference rule will be the first node
-			SmallStepProofRule rule = rules.get(0);
-			int count								= 1;
+			ProofStep step	= steps [0];
+			int count				= 1;
 			
-			for (int i=1; i<rules.size(); i++) {
-				
-				SmallStepProofRule cRule = rules.get (i);
+			for (int i=1; i<steps.length; i++) {
+				ProofStep cStep = steps [i];
 				
 				// when the next rule is of the same type just increment the
 				// counter and wait until a different rule comes
-				if (cRule.equals (rule)) {
+				if (cStep.getRule().equals (step.getRule())) {
 					++count;
 				}
 				else {
-					SmallStepRuleLabel label 	= new SmallStepRuleLabel (rule.getName (), count);
+					SmallStepRuleLabel label 	= new SmallStepRuleLabel (step.getRule ().getName (), count);
+					label.addMouseMotionListener(adapter);
+					if (count == 1) {
+						label.setStepExpression(step.getExpression());
+					}
 					
 					// add the label to the gui and to the list of all labels
 					add (label);
@@ -115,13 +120,17 @@ public class SmallStepRulesComponent extends JComponent {
 					
 					
 					// the actual node this the new reference node
-					rule 	= cRule;
+					step	= cStep;
 					count	= 1;
 				}
 			}
 			
-			if (rule.isAxiom()) {
-				SmallStepRuleLabel label 	= new SmallStepRuleLabel (rule.getName (), count);
+			if (((SmallStepProofRule)step.getRule()).isAxiom()) {
+				SmallStepRuleLabel label 	= new SmallStepRuleLabel (step.getRule ().getName (), count);
+				label.addMouseMotionListener(adapter);
+				if (count == 1) {
+					label.setStepExpression(step.getExpression());
+				}
 				
 				// add the label to the gui and to the list of all labels
 				add (label);
@@ -139,7 +148,11 @@ public class SmallStepRulesComponent extends JComponent {
 				this.menuButton.setVisible(false);
 			}
 			else {
-				SmallStepRuleLabel label 	= new SmallStepRuleLabel (rule.getName (), count);
+				SmallStepRuleLabel label 	= new SmallStepRuleLabel (step.getRule ().getName (), count);
+				label.addMouseMotionListener(adapter);
+				if (count == 1) {
+					label.setStepExpression(step.getExpression());
+				}
 				
 				// add the label to the gui and to the list of all labels
 				add (label);

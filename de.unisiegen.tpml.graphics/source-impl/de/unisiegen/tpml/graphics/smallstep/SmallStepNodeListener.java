@@ -5,4 +5,6 @@ import java.util.EventListener;
 public interface SmallStepNodeListener extends EventListener {
 
 	public void nodeChanged (SmallStepNodeComponent node);
+	
+	public void repaintAll ();
 }

@@ -1,15 +1,16 @@
 package de.unisiegen.tpml.graphics.renderer;
 
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
-
 import java.text.CharacterIterator;
 import java.util.LinkedList;
 
 import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation;
 import de.unisiegen.tpml.core.prettyprinter.PrettyCharIterator;
+import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable;
 import de.unisiegen.tpml.core.prettyprinter.PrettyString;
 
 
@@ -31,15 +32,41 @@ public class PrettyStringRenderer extends AbstractRenderer {
 	
 	private CheckerResult								result;
 	
+	private PrettyPrintable							underlinePrettyPrintable;
+	
+	private PrettyAnnotation						underlineAnnotation;
+	
 	public PrettyStringRenderer() {
-		this.results 		= new LinkedList<CheckerResult>();
-		this.result			= null;
+		this.results 									= new LinkedList<CheckerResult>();
+		this.result										= null;
+		this.underlinePrettyPrintable	= null;
+		this.underlineAnnotation			= null;
 	}
 	
 	public void setPrettyString (PrettyString prettyString) {
 		this.prettyString = prettyString;
 		
+		if (this.prettyString != null && this.underlinePrettyPrintable != null) {
+			this.underlineAnnotation = this.prettyString.getAnnotationForPrintable(this.underlinePrettyPrintable);
+		}
+		else {
+			this.underlineAnnotation = null;
+		}
+		
 		checkLinewraps ();
+	}
+	
+	
+	
+	public void setUndelinePrettyPrintable (PrettyPrintable prettyPrintable) {
+		this.underlinePrettyPrintable = prettyPrintable;
+	
+		if (this.prettyString != null && this.underlinePrettyPrintable != null) {
+			this.underlineAnnotation = this.prettyString.getAnnotationForPrintable(this.underlinePrettyPrintable);
+		}
+		else {
+			this.underlineAnnotation = null;
+		}
 	}
 
 	
@@ -199,6 +226,13 @@ public class PrettyStringRenderer extends AbstractRenderer {
 		posY -= addY;
 		
 		
+		// start and end position for the underlining
+		int underlineStart 	= -1;
+		int underlineEnd 		= -1;
+		if (this.underlineAnnotation != null) {
+			underlineStart	= this.underlineAnnotation.getStartOffset();
+			underlineEnd		= this.underlineAnnotation.getEndOffset();
+		}
 		// now we can start to render the expression
 		PrettyCharIterator it = this.prettyString.toCharacterIterator();
 		for (char c = it.first(); c != CharacterIterator.DONE; c = it.next(), i++) {
@@ -211,7 +245,7 @@ public class PrettyStringRenderer extends AbstractRenderer {
 				}
 			}
 			
-
+			
 			// select the proppert font and color for the character
 			FontMetrics fm = null;
 			switch (it.getStyle()) {
@@ -237,6 +271,24 @@ public class PrettyStringRenderer extends AbstractRenderer {
 				gc.setColor(AbstractRenderer.typeColor);
 				fm = AbstractRenderer.typeFontMetrics;
 				break;
+			}
+			
+			if (i >= underlineStart && i <= underlineEnd) {
+				// the current character is in the range, where underlining
+				// should happen
+				
+				// save the current color, it will become resetted later
+				Color color = gc.getColor();
+				gc.setColor(AbstractRenderer.underlineColor);
+				
+				
+				// draw the line below the character 
+				int charWidth = fm.stringWidth("" + c);
+				gc.drawLine(posX, posY + 1, posX + charWidth, posY + 1);
+				
+				// reset the color for the characters
+				gc.setColor(color);
+				
 			}
 			
 			if (this.alternativeColor != null) {

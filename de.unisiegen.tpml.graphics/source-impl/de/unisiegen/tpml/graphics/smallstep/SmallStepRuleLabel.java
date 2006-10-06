@@ -6,6 +6,8 @@ import java.awt.Font;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 
+import de.unisiegen.tpml.core.expressions.Expression;
+
 public class SmallStepRuleLabel extends JComponent {
 	
 	/**
@@ -14,6 +16,8 @@ public class SmallStepRuleLabel extends JComponent {
 	private static final long serialVersionUID = 2850026835245921469L;
 
 	private int						ruleCount;
+	
+	private Expression		stepExpression;
 	
 	public SmallStepRuleLabel (String ruleName, int ruleCount) {
 		super ();
@@ -58,6 +62,8 @@ public class SmallStepRuleLabel extends JComponent {
 			exponentLabel.setVisible(false);
 		}
 		
+		this.stepExpression = null;
+		
 		// set the size for this component
 		setSize (size);
 		setMinimumSize (size);
@@ -67,6 +73,14 @@ public class SmallStepRuleLabel extends JComponent {
 	
 	public int getRuleCount () {
 		return this.ruleCount;
+	}
+	
+	public void setStepExpression (Expression stepExpression) {
+		this.stepExpression = stepExpression;
+	}
+	
+	public Expression getStepExpression () {
+		return this.stepExpression;
 	}
 	
 	public static int getLabelHeight () {

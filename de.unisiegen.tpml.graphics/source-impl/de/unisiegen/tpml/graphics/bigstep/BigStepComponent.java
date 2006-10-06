@@ -30,9 +30,7 @@ public class BigStepComponent extends AbstractProofComponent implements Scrollab
 	
 	private int													index;
 	
-	private ProofNode										newNodeTop;
-	
-	private ProofNode										newNodeBottom;
+	private ProofNode										jumpNode;
 	
 	private int													border;
 	
@@ -40,6 +38,7 @@ public class BigStepComponent extends AbstractProofComponent implements Scrollab
 		super (model);
 		this.treeNodeLayout 		= new TreeNodeLayout ();
 		this.border							= 20;
+		this.jumpNode						= null;
 		
 		setLayout(null);
 		
@@ -113,6 +112,10 @@ public class BigStepComponent extends AbstractProofComponent implements Scrollab
 	 */
 	@Override
 	protected void nodesInserted(TreeModelEvent event) {
+		if (this.jumpNode != null) {
+			return;
+		}
+			
 		Object [] children = event.getChildren();
 
 		// find the bottom and the top element that have been
@@ -122,14 +125,12 @@ public class BigStepComponent extends AbstractProofComponent implements Scrollab
 			
 			// only problem with this could occure when
 			// then children[0] element isn't the topmost element
-			// in the tree that has been inserted and childre[x-1] isn't
-			// the last. at this condition that behaviour is undefined
-			this.newNodeTop = (ProofNode)children [0];
-			this.newNodeBottom = (ProofNode)children[children.length-1];
+			// in the tree that has been inserted. at this condition 
+			// that behaviour is undefined
+			this.jumpNode = (ProofNode)children [0];
 		}
 		else {
-			this.newNodeTop = null;
-			this.newNodeBottom = null;
+			this.jumpNode = null;
 		}
 	}
 	
@@ -244,18 +245,14 @@ public class BigStepComponent extends AbstractProofComponent implements Scrollab
 	}
 	
 	private void jumpToNodeVisible () {
-		if (this.newNodeTop == null || this.newNodeBottom == null) {
+		if (this.jumpNode == null) {
 			return;
 		}
 		
 		// get the Component nodes to evaluate the positions
 		// on the viewport
-		BigStepNodeComponent topNode = (BigStepNodeComponent)this.newNodeTop.getUserObject();
-		if (topNode == null) {
-			return;
-		}
-		BigStepNodeComponent bottomNode = (BigStepNodeComponent)this.newNodeBottom.getUserObject();
-		if (bottomNode == null) {
+		BigStepNodeComponent node = (BigStepNodeComponent)this.jumpNode.getUserObject();
+		if (node == null) {
 			return;
 		}
 		
@@ -264,18 +261,14 @@ public class BigStepComponent extends AbstractProofComponent implements Scrollab
 		Rectangle visibleRect = this.getVisibleRect();
 		
 		Rectangle rect = new Rectangle ();
-		rect.x = visibleRect.x;
-		rect.width = 1;
-		
-		// the visible height is from the top of the topElement
-		// top element to the bottom of the bottomElement
-		// the border is added on both sided to get a smoother scrolling
-		rect.y = topNode.getBounds().y - this.border;
-		rect.height = ((bottomNode.getBounds().y + bottomNode.getBounds().height) - rect.y) + this.border * 2;
-		
+		rect.x 			= visibleRect.x;
+		rect.y 			= node.getY ();
+		rect.width 	= 1;
+		rect.height = node.getHeight ();		
 		
 		this.scrollRectToVisible(rect);
 
+		this.jumpNode = null;
 	}
 	
 	/*
