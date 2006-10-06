@@ -63,6 +63,8 @@
 				<attribute name="Implementation-Vendor" value="University of Siegen, Department of Theoretical Computer Science" />
 			</section>
 		</manifest>
+		<mkdir dir="${classesdir}/META-INF" />
+		<copy todir="${classesdir}/META-INF" file="${basedir}/doc/LICENSE" />
 		<jar jarfile="${distdir}/de.unisiegen.tpml.graphics-${de.unisiegen.tpml.graphics.version}.jar" manifest="${distdir}/MANIFEST.MF">
 			<fileset dir="${classesdir}" />
 		</jar>
