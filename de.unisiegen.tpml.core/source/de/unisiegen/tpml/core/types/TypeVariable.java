@@ -24,8 +24,11 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
  * 
  * The <code>offset</code> determines the greek letter assigned
  * to this variable, i.e. α for <code>0</code>, β for <code>1</code>
- * and so on. The <code>offset</code> is thereby limited to the
- * range <code>0..23</code> (the lower-case greek letters).
+ * and so on. Since the greek alphabet does only include 24 letters,
+ * an <code>offset</code> greater than 23 results in a greek letter
+ * with the <code>index</code> plus a number of ticks appended. I.e.
+ * α1' if <code>offset</code> is <code>24</code> and <code>index</code>
+ * is <code>1</code>.
  * 
  * If the <code>index</code> is <code>0</code> only the greek letter
  * determined from the <code>offset</code> will be printed. Otherwise,
@@ -81,12 +84,16 @@ public final class TypeVariable extends MonoType implements Comparable<TypeVaria
   //
   
   /**
-   * @param index
-   * @param offset
+   * Allocates a new <code>TypeVariable</code> with the given <code>index</code> and
+   * <code>offset</code>.
    * 
-   * @throws IllegalArgumentException if <code>index</code> or <code>offset</code>
-   *                                  is negative or <code>offset</code> is larger
-   *                                  than <code>23</code>.
+   * @param index the index of the type variable, that is the step of the proof, in
+   *              which it was created. A value of <code>0</code> means that the
+   *              type variable was specified in the source code.
+   * @param offset the offset, that is the number of type variables already allocated
+   *               in the proof step identified by <code>index</code>.
+   * 
+   * @throws IllegalArgumentException if <code>index</code> or <code>offset</code> is negative.
    *                                  
    * @see TypeVariable
    * @see #index
@@ -98,9 +105,6 @@ public final class TypeVariable extends MonoType implements Comparable<TypeVaria
     }
     if (offset < 0) {
       throw new IllegalArgumentException("offset is negative");
-    }
-    if (offset > 23) {
-      throw new IllegalArgumentException("offset too large");
     }
     this.index = index;
     this.offset = offset;
@@ -188,7 +192,11 @@ public final class TypeVariable extends MonoType implements Comparable<TypeVaria
   @Override
   public PrettyStringBuilder toPrettyStringBuilder(PrettyStringBuilderFactory factory) {
     PrettyStringBuilder builder = factory.newBuilder(this, PRIO_TYPE_VARIABLE);
-    builder.addType("" + offsetToGreekLetter(this.offset) + ((this.index > 0) ? this.index : ""));
+    String type = "" + offsetToGreekLetter(this.offset % 24) + ((this.index > 0) ? this.index : "");
+    for (int n = (this.offset / 24); n > 0; --n) {
+      type = type + "'";
+    }
+    builder.addType(type);
     return builder;
   }
   
