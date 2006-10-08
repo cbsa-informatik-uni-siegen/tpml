@@ -183,9 +183,6 @@ public class TypeCheckerComponent extends AbstractProofComponent implements Scro
 		
 		Object [] children = event.getChildren();
 
-		// find the bottom and the top element that have been
-		// inserted. when getting next to the relayout function
-		// it gets tried to scroll this area visible
 		if (children != null) {
 			
 			// only problem with this could occure when

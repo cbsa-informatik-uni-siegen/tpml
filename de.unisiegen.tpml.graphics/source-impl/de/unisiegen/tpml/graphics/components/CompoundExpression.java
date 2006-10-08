@@ -73,11 +73,20 @@ public class CompoundExpression<S, E> extends JComponent {
 	}
 	
 	public void setUnderlineExpression (Expression underlineExpression) {
+		boolean needsRepaint = this.underlineExpression != underlineExpression;
+		
+		
+		
 		this.underlineExpression = underlineExpression;
 		
 		if (this.expressionRenderer != null) {
 			this.expressionRenderer.setUndelinePrettyPrintable(this.underlineExpression);
 		}
+		
+		if (needsRepaint) {
+			repaint ();
+		}
+		
 	}
 	
 	private void handleMouseMoved (MouseEvent event) {

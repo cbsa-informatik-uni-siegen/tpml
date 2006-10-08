@@ -7,6 +7,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 
 import javax.swing.Scrollable;
+import javax.swing.SwingUtilities;
 import javax.swing.event.TreeModelEvent;
 
 import de.unisiegen.tpml.core.ProofNode;
@@ -30,10 +31,13 @@ public class SmallStepComponent extends AbstractProofComponent implements Scroll
 	
 	private int											availableWidth;
 	
+	private ProofNode								jumpNode;
+	
 	public SmallStepComponent (SmallStepProofModel proofModel) {
 		super (proofModel);
 		
 		
+		this.currentlyLayouting	= false;
 		
 		setLayout (null);
 		
@@ -295,40 +299,60 @@ public class SmallStepComponent extends AbstractProofComponent implements Scroll
 	 */
 	@Override
 	protected void relayout () {
+		if (this.currentlyLayouting) {
+			return;
+		}
 		
-		// get the rootNode it will be used many time
-		SmallStepProofNode rootNode = (SmallStepProofNode)this.proofModel.getRoot();
+		this.currentlyLayouting = true;
 		
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run () {
 		
-		// check if all nodes have a propper SmallStepNodeComponent
-		checkForUserObject (rootNode);
-		
-		// find the maximum width of the rules and inform the entire tree
-		int maxRuleWidth = checkMaxRuleWidth (rootNode, 0);
-		updateMaxRuleWidth (rootNode, maxRuleWidth);
-		
-		// evaluate the the sizes of the expression 
-		checkExpressionSize(rootNode);
-		
-		// now that the basics for the nodes are found, 
-		// they can be placed
-		Dimension size = placeNode (rootNode, this.border, this.border);
-		
-		// the needed size evaluaded by placing the nodes gets
-		// widened a bit to have a nice border around the component
-		size.width 	+= this.border;
-		size.height += this.border;
-		
-		// this size is used to determin all the sizes of the component
-		setPreferredSize (size);
-		setSize (size);
-		setMinimumSize (size);
-		setMaximumSize (size);
+				// get the rootNode it will be used many time
+				SmallStepProofNode rootNode = (SmallStepProofNode)SmallStepComponent.this.proofModel.getRoot();
+				
+				
+				// check if all nodes have a propper SmallStepNodeComponent
+				checkForUserObject (rootNode);
+				
+				// find the maximum width of the rules and inform the entire tree
+				int maxRuleWidth = checkMaxRuleWidth (rootNode, 0);
+				updateMaxRuleWidth (rootNode, maxRuleWidth);
+				
+				// evaluate the the sizes of the expression 
+				checkExpressionSize(rootNode);
+				
+				// now that the basics for the nodes are found, 
+				// they can be placed
+				Dimension size = placeNode (rootNode, SmallStepComponent.this.border, SmallStepComponent.this.border);
+				
+				// the needed size evaluaded by placing the nodes gets
+				// widened a bit to have a nice border around the component
+				size.width 	+= SmallStepComponent.this.border;
+				size.height += SmallStepComponent.this.border;
+				
+				// this size is used to determin all the sizes of the component
+				setPreferredSize (size);
+				setSize (size);
+				setMinimumSize (size);
+				setMaximumSize (size);
+				
+				SmallStepComponent.this.currentlyLayouting = false;
+				SmallStepComponent.this.jumpToNodeVisible();
+			}
+		});
 	}
 	
 	@Override
 	protected void nodesInserted (TreeModelEvent event) {
-		// no handling in the smallstep gui
+		Object [] children = event.getChildren();
+		
+		if (children != null) {
+			this.jumpNode = (ProofNode)children [0];
+		}
+		else {
+			this.jumpNode = null;
+		}
 	}
 	
 	@Override
@@ -401,11 +425,46 @@ public class SmallStepComponent extends AbstractProofComponent implements Scroll
 		} catch (Exception e) { }
 	}
 	
+	private void jumpToNodeVisible () {
+		if (this.jumpNode == null) {
+			return;
+		}
+		
+		// get the Component nodes to evaluate the positions
+		// on the viewport
+		SmallStepNodeComponent node = (SmallStepNodeComponent)this.jumpNode.getUserObject();
+		if (node == null) {
+			return;
+		}
+		
+		// get the visible rect to ensure the x coordinate is in the 
+		// visible area. only vertical scolling is requested
+		Rectangle visibleRect = this.getVisibleRect();
+		
+		Rectangle rect = new Rectangle ();
+		rect.x 			= visibleRect.x;
+		rect.y 			= node.getY ();
+		rect.width 	= 1;
+		rect.height = node.getHeight ();
+		
+		this.scrollRectToVisible(rect);
+
+		this.jumpNode = null;
+	}
+	//
+	// Methods for painting purposes
+	//
 	@Override
 	protected void paintComponent (Graphics gc) {
 		gc.setColor (Color.WHITE);
 		gc.fillRect(0, 0, getWidth () - 1, getHeight () - 1);
 	}
+	
+	
+	
+	// 
+	// Implementation of the Scrollable interface
+	//
 
 	public Dimension getPreferredScrollableViewportSize() {
 		return getPreferredSize ();

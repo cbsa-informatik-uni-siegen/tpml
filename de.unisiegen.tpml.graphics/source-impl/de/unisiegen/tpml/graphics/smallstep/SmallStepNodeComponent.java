@@ -11,6 +11,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
 import de.unisiegen.tpml.core.ProofRule;
+import de.unisiegen.tpml.core.ProofStep;
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.expressions.Location;
 import de.unisiegen.tpml.core.languages.LanguageTranslator;
@@ -129,21 +130,26 @@ public class SmallStepNodeComponent extends JComponent {
 			@Override
 			public void mouseMoved (MouseEvent event) {
 				SmallStepNodeComponent.this.updateUnderlineExpression((Expression)null);
-				SmallStepNodeComponent.this.fireRepaintAll();
 			}
 		};
 		
 		this.underlineRuleAdapter = new MouseMotionAdapter () {
 			@Override
 			public void mouseMoved (MouseEvent event) {
-				SmallStepRuleLabel label = (SmallStepRuleLabel)event.getSource();
-				SmallStepNodeComponent.this.updateUnderlineExpression(label);
-				SmallStepNodeComponent.this.fireRepaintAll();
+				if (event.getSource () instanceof SmallStepRuleLabel) {
+					SmallStepRuleLabel label = (SmallStepRuleLabel)event.getSource();
+					SmallStepNodeComponent.this.updateUnderlineExpression(label);
+				}
+				else if (event.getSource () instanceof MenuButton) {
+					MenuButton button = (MenuButton)event.getSource ();
+					SmallStepNodeComponent.this.updateUnderlineExpression(button);
+				}
 			}
 		};
 		
 		this.addMouseMotionListener(this.underlineThisAdapter);
 		this.expression.addMouseMotionListener(this.underlineThisAdapter);
+		this.rules.getMenuButton().addMouseMotionListener(this.underlineRuleAdapter);
 	}
 	
 	private void updateUnderlineExpression (Expression expression) {
@@ -163,6 +169,16 @@ public class SmallStepNodeComponent extends JComponent {
 	
 	private void updateUnderlineExpression (SmallStepRuleLabel label) {
 		updateUnderlineExpression (label.getStepExpression());
+	}
+	
+	private void updateUnderlineExpression (MenuButton button) {
+		ProofStep[] steps = this.proofModel.remaining(this.proofNode);
+		
+		if (steps.length == 0) {
+			return;
+		}
+		
+		updateUnderlineExpression (steps [0].getExpression());
 	}
 	
 	private void menuItemActivated (JMenuItem item) {
@@ -351,6 +367,7 @@ public class SmallStepNodeComponent extends JComponent {
 		}
 	}
 	
+	/*
 	private void fireRepaintAll () {
 		Object[] listeners = this.listenerList.getListenerList();
 		for (int i=0; i<listeners.length; i+=2) {
@@ -361,5 +378,7 @@ public class SmallStepNodeComponent extends JComponent {
 			((SmallStepNodeListener)listeners [i+1]).repaintAll();
 		}
 	}
+	*/
+	
 	
 }
