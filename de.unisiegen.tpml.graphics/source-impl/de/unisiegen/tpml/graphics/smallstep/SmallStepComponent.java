@@ -357,6 +357,7 @@ public class SmallStepComponent extends AbstractProofComponent implements Scroll
 	
 	@Override
 	protected void nodesChanged (TreeModelEvent event) {
+		boolean relayout = false;
 		Object[] children = event.getChildren();
 		if (children == null) {
 			
@@ -367,20 +368,26 @@ public class SmallStepComponent extends AbstractProofComponent implements Scroll
 				SmallStepNodeComponent nodeComponent = (SmallStepNodeComponent)proofNode.getUserObject();
 				if (nodeComponent != null) {
 					nodeComponent.update ();
+					relayout = true;
 				}
 				
 			}
-			return;
 		}
-		for (int i=0; i<children.length; i++) {
-			if (children[i] instanceof ProofNode) {
-				SmallStepProofNode proofNode = (SmallStepProofNode)children[i];
-				
-				SmallStepNodeComponent nodeComponent = (SmallStepNodeComponent)proofNode.getUserObject();
-				if (nodeComponent != null) {
-					nodeComponent.update ();
+		else {
+			for (int i=0; i<children.length; i++) {
+				if (children[i] instanceof ProofNode) {
+					SmallStepProofNode proofNode = (SmallStepProofNode)children[i];
+					
+					SmallStepNodeComponent nodeComponent = (SmallStepNodeComponent)proofNode.getUserObject();
+					if (nodeComponent != null) {
+						nodeComponent.update ();
+						relayout = true;
+					}
 				}
 			}
+		}
+		if (relayout) {
+			relayout ();
 		}
 	}
 	

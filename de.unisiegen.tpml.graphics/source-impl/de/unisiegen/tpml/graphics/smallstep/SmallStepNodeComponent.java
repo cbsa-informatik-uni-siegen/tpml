@@ -8,6 +8,7 @@ import java.util.Arrays;
 
 import javax.swing.JComponent;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 
 import de.unisiegen.tpml.core.ProofRule;
@@ -204,7 +205,32 @@ public class SmallStepNodeComponent extends JComponent {
 			}
 		}
 		else if (item instanceof MenuTranslateItem) {
-			this.proofModel.translateToCoreSyntax(this.proofNode, false);
+			
+			String[] answers = { "Just outer", "All", "Cancel" };
+			int n = JOptionPane.showOptionDialog(getParent(), "Translate to core syntax just " +
+					"on the outermost expression or on the entire Expression?",
+					"Translate to core syntax",
+					JOptionPane.YES_NO_CANCEL_OPTION,
+					JOptionPane.QUESTION_MESSAGE,
+					null,
+					answers,
+					answers[0]);
+			switch (n) {
+			case 0:
+				freeUnderliningSibling(false, Direction.DIRECTION_CHILD);
+				freeUnderliningSibling(false, Direction.DIRECTION_PARENT);
+				this.proofModel.translateToCoreSyntax(this.proofNode, false);
+				break;
+			case 1:
+				freeUnderliningSibling(false, Direction.DIRECTION_CHILD);
+				freeUnderliningSibling(false, Direction.DIRECTION_PARENT);
+				this.proofModel.translateToCoreSyntax(this.proofNode, true);
+				break;
+			case 2:
+				break;
+			}
+					
+					
 		}
 	}
 	
