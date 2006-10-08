@@ -54,7 +54,7 @@ public class L1LanguageTranslator extends L0LanguageTranslator {
       // translate the sub expressions
       e0 = translateToCoreSyntax(e0, true);
       e1 = translateToCoreSyntax(e1, true);
-      e1 = translateToCoreSyntax(e2, true);
+      e2 = translateToCoreSyntax(e2, true);
       
       // generate the condition
       return new Condition(e0, e1, e2);
