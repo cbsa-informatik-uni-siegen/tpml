@@ -1,0 +1,441 @@
+%% $Id$
+%%
+%% Kapitel 3 - Die Sprachen im Detail
+%%
+
+\chapter{Die Sprachen im Detail}
+
+Dieses Kapitel beschreibt die in \TPML\ verf"ugbaren Sprachen im Detail. Dies beinhaltet sowohl die abstrakte Syntax der Sprachen als auch die
+operationelle Semantik und das Typsystem, also die Regeln f"ur die big und small step Interpreter und den Type Checker. Dieses Kapitel ist
+jedoch nicht geeignet als Ersatz f"ur den Besuch der Vorlesung oder "Ubung, ebensowenig sollte dieses Handbuch als vollst"andiges Skript
+mi"sverstanden werden\footnote{Es mag wiederum allerdings n"utzlich als Grundlage f"ur die Pr"ufungsvorbereitung sein, da es eine vollst"andige
+Auflistung des Regelwerks darstellt, welches allerdings nicht hunderprozentig mit dem Vorlesungsinhalt "ubereinstimmt.}.
+
+Die Sprachen \LZERO\ bis \LFOUR\ sind strikt hierarchisch aufgebaut, das hei"st die Sprache $\mathcal{L}_{n+1}$ erweitert die Sprache
+$\mathcal{L}_n$ ($0 \le n < 4$), beinhaltet also alle Merkmale der Sprache $\mathcal{L}_n$. Die Sprachen entsprechen im wesentlichen
+den in der Vorlesung behandelten Sprachen. Kleinere Abweichungen sind jedoch m"oglich und stellenweise nicht vermeidbar. In der "Ubung
+werden, falls notwendig, diese Abweichungen herausgestellt und erl"autert.
+
+
+
+\section{Die Sprache \LZERO}
+
+Die Sprache \LZERO\ stellt die einfachste denkbare Programmiersprache dar und entspricht dem reinen ungetypten $\lambda$-Kalk"ul
+\engl{pure untyped $\lambda$-calculus}. Die abstrakte Syntax enth"alt lediglich drei Produktionen.
+\bgram
+e \is \id
+  \al \abstr{id}{e}
+  \al e_1 e_2
+\egram
+Ein g"ultiger Ausdruck ist also entweder ein Bezeichner, eine $\lambda$-Abstraktion oder eine Applikation. Die Menge \notation{$\Val$}\
+$\sleq \Exp$ der \Define{Werte}{Wert} \Engl{values}{value} \notation{$\name v$} wird durch
+\bgram
+v \is \id
+  \al \abstr{id}{e}
+\egram
+definiert.
+
+
+\subsection{Big step Semantik von \LZERO}
+
+Ein \define{big step} ist eine Formel der Gestalt $e \eval v$ mit $r \in Val$. Ein big step hei"st g"ultig f"ur \LZERO, wenn
+er sich mit den Regeln\\[5mm]
+  \begin{tabular}{ll}
+     \mbox{(VAL)}         & $v \eval v$ \\[3mm]
+     \mbox{(BETA-V)}      & $\regel{e[v/\id] \eval v'}
+                                   {(\abstr{id}{e})\,v \eval v'}$ \\[5mm]
+     \mbox{(APP)}         & $\regel{e_1 \eval v_1 \quad e_2 \eval v_2 \quad v_1\,v_2 \eval v}
+                                   {e_1\,e_2 \eval v}$
+  \end{tabular}\\[7mm]
+herleiten l"asst.
+
+
+\subsection{Small step Semantik von \LZERO}
+
+Ein \define{small step} ist eine Formel der Gestalt $e \to e'$. Ein small step hei"st g"ultig f"ur \LZERO, wenn er sich mit den
+Regeln\\[5mm]
+   \begin{tabular}{ll}
+     \mbox{(BETA-V)}      & $(\abstr{id}{e})\,v \to e[v/\id]$ \\[5mm]
+     \mbox{(APP-LEFT)}    & $\regel{e_1\to e'_1}
+                               {e_1\,e_2 \to e'_1\,e_2}$ \\[3mm]
+     \mbox{(APP-RIGHT)\ } & $\regel{e \to e'}
+                                  {v\,e \to v\,e'}$
+\end{tabular}\\[7mm]
+herleiten l"asst.
+
+
+
+\section{Die Sprache \LONE}
+
+Die Sprache \LONE\ erweitert \LZERO\ um Konstanten, bedingte Ausf"uhrung, den Bindungsmechanismus $\blet$, Ausnahmen
+\engl{exceptions} und ein einfaches Typsystem, entspricht damit also dem einfach getypten $\lambda$-Kalk"ul. Vorgegeben seien:
+\bitem
+  \item eine Menge $\Exn$ von \Define{Ausnahmen}{Ausnahme} $\exn$ \[\Exn = \{ divide\_by\_zero \}\]
+  \item f"ur jeden arithmetischen Operator $\op$ eine Funktion \[\op^\I: \Int \times \Int \to \Int \cup \Exn\]
+  \item f"ur jeden Vergleichsoperator $\op$ eine Funktion \[\op^\I: \Int \times \Int \to \Bool\]
+\eitem
+Die Menge \notation{$\Type$} der \Define{Typen}{Typ} \Engl{types}{type} $\tau$ ist definiert durch:
+\bgram
+  \tau \is \bool \mid \z \mid \unit
+       \al \tau_1 \to \tau_2
+\egram
+Die abstrakte Syntax, definiert durch die Menge $\Exp$ der g"ultigen Ausdr"ucke, wird erweitert durch neue Produktionen
+\bgram
+  e \is c
+    \al \abstr{\id: \tau}{e}
+    \al \bli{\id}{e_1}{e_2}
+    \al \bli{\id: \tau}{e_1}{e_2}
+    \al \bifte{e_0}{e_1}{e_2}
+    \al e_1\,\op\,e_2
+\egram
+wobei die Menge \notation{$\Const$} der \Define{Konstanten}{Konstante} \Engl{constants}{constant} $c$ durch
+\bgram
+c \is \nop                    & & \mbox{unit-Element}
+  \al b \in \{\true,\false\}  & & \mbox{boolescher Wert}
+  \al n \in \setZ             & & \mbox{ganze Zahl} 
+  \al \op                     & & \mbox{Operator} 
+\egram
+und die Menge \notation{$\Op$} der \Define{Operatoren}{Operator} \Engl{operators}{operator} $\op$ durch
+\bgram
+\op \is + \ \mid\  - \ \mid\  * \ \mid\ / \ \mid \ \mbox{mod}    & & \mbox{arithmetische Operatoren}
+    \al < \ \ \mid\ \ > \ \ \mid\ \ \leq \ \ \mid\ \  \geq \ |\ =  & & \mbox{Vergleichsoperatoren}
+\egram
+definiert ist. Die Menge \notation{$\Val$} der Werte $v$ wird um die Produktionen
+\bgram
+v \is c
+  \al \op\,e_1
+  \al \abstr{\id: \tau}{e}
+\egram
+erweitert. F"ur Zahlkonstanten existiert derzeit die Einschr"ankung, dass nur positive Ziffernfolgen vom Lexer
+akzeptiert werden. Negative Zahlen k"onnen aber bei Bedarf durch Subtraktion konstruiert werden ($0 - n$ f"ur
+$n \in \setN$).
+
+Die Angabe eines Typs bei $\lambda$-Abstraktion und $\blet$ ist also optional, und f"ur den big und small step
+Interpreter werden die Typangaben einfach ignoriert. Der Typechecker bestimmt bei $\abstr{\id}{e}$ den Typ f"ur
+$\id$ mittels Typinferenz, w"ahrend bei $\blet$ die Angabe des Typs lediglich als zus"atzliche Sicherheit f"ur
+den Programmierer dient.
+
+
+\subsection{Big step Semantik von \LONE}
+
+Ein big step hei"st g"ultig f"ur \LONE, wenn er sich mit den big step Regeln von \LZERO, den Regeln\\[5mm]
+  \begin{tabular}{ll}
+     \mbox{(OP)}          & $\op\,n_1\,n_2 \eval \op^{\I}(n_1,n_2)$ \\[3mm]
+     \mbox{(COND-TRUE)}   & $\regel{e_0 \eval \true \quad e_1 \eval v}
+                                   {\bifte{e_0}{e_1}{e_2} \eval v}$ \\[5mm]
+     \mbox{(COND-FALSE)}  & $\regel{e_0 \eval \false \quad e_2 \eval v}
+                                   {\bifte{e_0}{e_1}{e_2} \eval v}$ \\[5mm]
+     \mbox{(LET)}         & $\regel{e_1 \eval v_1 \quad e_2[v_1/\id] \eval v_2}
+                                   {\bli{\id}{e_1}{e_2} \eval v_2}$
+  \end{tabular}\\[7mm]
+und mit den zugeh"origen exception-Regeln herleiten l"asst. Diese exception-Regeln erh"alt man
+aus den obigen Regeln indem man zu jeder Regel der Form\\[2mm]
+   \begin{tabular}{ll}
+     \mbox{(R)} & $\regel{e_1 \eval v_1 \quad \ldots \quad  e_n \eval v_n}
+                         {e \eval v}$
+
+   \end{tabular}\\[3mm]
+(d.h.\ zu jeder Regel mit $n$ Pr\"amissen) f\"ur jedes $1 \le i \le n$ die Regel \\[3mm]
+   \begin{tabular}{ll}
+      \mbox{(R-EXN-$i$)} & $\regel{e_1 \eval v_1 \quad \ldots \quad e_{i-1} \eval v_{i-1} \quad e_i \eval \exn}
+                                {e \eval \exn}$ \\[5mm]
+   \end{tabular}\\[3mm]
+hinzuf"ugt. Exception-Regeln m"ussen beim big step Interpreter nicht explizit ausgew"ahlt werden, sondern werden
+automatisch eingesetzt, sobald eine Ausnahme weitergereicht werden mu"s.
+
+
+\subsection{Small step Semantik von \LONE}
+
+Ein small step hei"st g"ultig f"ur \LONE, wenn er sich mit den small step Regeln von \LZERO, den Regeln\\[5mm]
+  \begin{tabular}{ll}
+     \mbox{(OP)}          & $\op\,n_1\,n_2 \to \op^{\I}(n_1,n_2)$ \\[3mm]
+     \mbox{(COND-EVAL)\ } & $\regel{e_0 \to e'_0}
+                            {\bifte{e_0}{e_1}{e_2} \to \bifte{e'_0}{e_1}{e_2}}$ \\[5mm]
+     \mbox{(COND-TRUE)\ } & $\bifte{\true}{e_1}{e_2} \to e_1$ \\[3mm]
+     \mbox{(COND-FALSE) } & $\bifte{\false}{e_1}{e_2} \to e_2$ \\[3mm]
+     \mbox{(LET-EVAL)\  } & $\regel{e_1 \to e'_1}
+                            {\bli{\id}{e_1}{e_2} \to \bli{\id}{e'_1}{e_2}}$ \\[5mm]
+     \mbox{(LET-EXEC)}      & $\bli{\id}{v}{e} \to e[v/\id]$
+  \end{tabular}\\[7mm]
+und mit den zugeh"origen exception-Regeln herleiten l"asst. Diese exceptions-Regeln erh"alt man - "ahnlich wie
+bei der big step Seminatik - aus den obigen Regeln indem man f"ur jede Regel der Form\\[2mm]
+  \begin{tabular}{ll}
+    \mbox{(R)} & $\regel{e_1 \to e'_1}{e_2 \to e'_2}$
+  \end{tabular}\\[3mm]
+(d.h.\ zu jeder Regel mit Pr\"amisse) die Regel \\[3mm]
+  \begin{tabular}{ll}
+    \mbox{(R-EXN)} & $\regel{e_1 \to \exn}{e_2 \to \exn}$
+  \end{tabular}\\[3mm]
+hinzunimmt. Wie beim big step Interpreter gilt auch f"ur den small step Interpreter, dass exception-Regeln nicht
+explizit angegeben werden m"ussen.
+
+
+\subsection{Typsystem von \LONE}
+
+\LONE\ verf"ugt "uber ein einfaches Typsystem, benutzt aber wie alle folgenden Sprachen schon den Typinferenzalgorithmus,
+was anfangs vielleicht zu schwer verst"andlichen Fehlermeldungen f"uhren kann. In diesem Fall sollte es in der "Ubung
+angesprochen werden.
+
+Ein \define{Typurteil f"ur Ausdr"ucke} ist von der Form $\Tj{\Gamma}{e}{\tau}$, wobei $\Gamma: \Id \pto \Type$ eine
+partielle Funktion mit endlichem Definitionsbereich ist, die bestimmten Bezeichnern einen Typ zuordnet. $\Gamma$ wird
+als \define{Typumgebung} \engl{type environment} bezeichnet. Ein Typurteil hei"st g"ultig f"ur \LONE, wenn es sich mit
+den Regeln\\[3mm]
+\begin{tabular}{ll}
+  \mbox{(CONST)\  } & $\regel{\tj{c}{\tau}}
+                           {\Tj{\Gamma}{c}{\tau}}$\\[5mm]
+  \mbox{(ID)\     } & $\Tj{\Gamma}{\id}{\tau}$ \reason{falls $\id \in \dom \Gamma$ und $\Gamma(\id) = \tau$}\\[5mm]
+  \mbox{(APP)\    } & $\regel{\Tj{\Gamma}{e_1}{\tau\to\tau'} 
+                            \quad
+                            \Tj{\Gamma}{e_2}{\tau}}
+                           {\Tj{\Gamma}{e_1\,e_2}{\tau'}}$\\[5mm]
+  \mbox{(COND)\   } & $\regel{\Tj{\Gamma}{e_0}{\bool}
+                            \quad
+                            \Tj{\Gamma}{e_1}{\tau}
+                            \quad
+                            \Tj{\Gamma}{e_2}{\tau}}
+                          {\Tj{\Gamma}{\bifte{e_0}{e_1}{e_2}}{\tau}}$\\[5mm]
+  \mbox{(LET)\ } & $\regel{\Tj{\Gamma}{e_1}{\tau_1}
+                            \quad
+                            \Tj{\Gamma[\tau_1/\id]}{e_2}{\tau_2}}
+                           {\Tj{\Gamma}{\bli{\id}{e_1}{e_2}}{\tau_2}}$\\[5mm]
+  \mbox{(ABSTR)\  } & $\regel{\Tj{\Gamma[\tau/\id]}{e}{\tau'}} 
+                           {\Tj{\Gamma}{\abstr{\id:\tau}{e}}{\tau\to\tau'}}$
+\end{tabular}\\[7mm]
+herleiten l"asst. Die Regel (CONST) besagt hierbei, dass $c$ in der Typumgebung $\Gamma$ den Typ $\tau$ hat, wenn $c$
+den Typ $\tau$ hat. Dies wird durch die Regeln\\[3mm]
+\begin{tabular}{ll}
+\mbox{(UNIT)\  } & $\tj{()}{\unit}$\\[2mm]
+\mbox{(BOOL)\  } & $\tj{b}{\bool}$\\[2mm]
+\mbox{(INT)\   } & $\tj{n}{\z}$\\[2mm]
+\mbox{(AOP)\   } & $\tj{\op}{\z\to\z\to\z}$ \reason{ falls $\op$ arithmetischer Operator}\\[2mm]
+\mbox{(ROP)\   } & $\tj{\op}{\z\to\z\to\bool}$ \reason{ falls $\op$ Vergleichsoperator}
+\end{tabular}\\[7mm]
+definiert. Beim Typechecker werden diese Regeln f"ur Konstanten nicht angegeben, sondern lediglich die (CONST) Regel.
+
+
+\subsection{Syntaktischer Zucker}
+
+Die Sprache \LONE\ und alle folgenden Sprachen enthalten syntaktischen Zucker um das Schreiben von Programmen zu vereinfachen.
+Der syntaktische Zucker l"asst sich dann anschlie"send in Kernsyntax "ubersetzen oder direkt verarbeiten. Hierbei wurden aus
+Gr"unden der "Ubersichtlichkeit keine eigenen Regeln f"ur den syntaktischen Zucker eingef"uhrt, sondern es wird implizit eine
+Konvertierung des betreffenden Teilausdrucks in Kernsyntax vorgenommen. F"ur \LONE\ betrifft dies nur Ausdr"ucke, die
+Operatoren in Infixschreibweise enthalten. Es gilt:
+\beqns
+e_1\,\op\,e_2\quad \mbox{steht f"ur}\quad (\op\,e_1)\,e_2
+\eeqns
+Beim small step Interpreter w"urden also die Regeln (APP-LEFT) und (OP) angewendet. Beim Schreiben von Programmen ist dar"uber
+hinaus zu beachten, dass Operatoren, sofern sie nicht in Infixausdr"ucken auftauchen, immer geklammert werden m"ussen. Die
+Funktion, die $1$ zu ihrem Parameter addiert wird also als
+\[(+)\,1\]
+geschrieben. Dies entspricht der OCaml-Konvention und ist notwendig, da der Parser sonst bei bestimmten Ausdr"ucken nicht
+entscheiden kann, ob es ein Infixausdruck ist, oder der Operator als Parameter in eine Funktion eingesetzt werden soll. Zum
+Beispiel l"asst sich
+\[x + y\]
+interpretieren als Infixaddition von $x$ und $y$ oder als Anwendung der Funktion $x$ auf die Parameter $+$ und $y$. Intuitiv
+w"urde ein Mensch ersteres vermuten, der Parser f"ur die konkrete Syntax kann dies jedoch nicht entscheiden.
+
+
+
+\section{Die Sprache \LTWO}
+
+Die Sprache \LTWO\ erweitert \LONE\ um rekursive Ausdr"ucke\footnote{Wohlgemerkt aber nicht um rekursive Typen. Das
+Typsystem schr"ankt die Sprache also st"arker ein, als dies bei \LONE\ der Fall ist.} und syntaktischen Zucker, der
+es erlaubt Funktionen einfacher zu definieren, "ahnlich zu OCaml. Dar"uber hinaus bietet \LTWO\ logische Operatoren
+f"ur Konjunktion und Disjunktion.
+
+Die Menge \notation{$\Exp$} der g"ultigen Ausdr"ucke wird um die Produktionen
+\bgram
+e \is \rec{\id: \tau}{e}
+  \al \bli{\id (\id_1: \tau_1)\ldots(\id_n: \tau_n):\tau}{e_1}{e_2}
+  \al \bli{\brec\,\id (\id_1: \tau_1)\ldots(\id_n: \tau_n):\tau}{e_1}{e_2}
+  \al \andalso{e_1}{e_2}
+  \al \orelse{e_1}{e_2}
+\egram
+erweitert, wobei s"amtliche Typangaben optional sind. Bei $\blet$ und $\blet\,\brec$ m"ussen die Bezeichner f"ur die
+Parameter nur dann geklammert werden, wenn ein Typ f"ur diesen Parameter angegeben wird.
+
+
+\subsection{Big step Semantik von \LTWO}
+
+Ein big step hei"st g"ultig f"ur \LTWO, wenn er sich mit den big step Regeln von \LONE\ und den Regeln\\[3mm]
+  \begin{tabular}{ll}
+     \mbox{(AND-FALSE)}   & $\regel{e_1 \eval \false}
+                                   {\andalso{e_1}{e_2} \eval \false}$ \\[5mm]
+     \mbox{(AND-TRUE)}    & $\regel{e_1 \eval \true \quad e_2 \eval v}
+                                   {\andalso{e_1}{e_2} \eval v}$ \\[5mm]
+     \mbox{(OR-FALSE)}    & $\regel{e_1 \eval \false\quad e_2 \eval v}
+                                   {\orelse{e_1}{e_2} \eval v}$ \\[5mm]
+     \mbox{(OR-TRUE)}     & $\regel{e_1 \eval \true}
+                                   {\orelse{e_1}{e_2} \eval \true}$ \\[5mm]
+     \mbox{(UNFOLD)}      & $\regel{e[\rec{\id}{e}/\id] \eval v}
+                                   {\rec{\id}{e} \eval v}$
+   \end{tabular}\\[7mm]
+sowie den dazugeh"origen exception-Regeln herleiten l"asst.
+
+
+\subsection{Small step Semantik von \LTWO}
+
+Ein small step hei"st g"ultig f"ur \LTWO, wenn er sich mit den small step Regeln von \LONE\ und den Regeln\\[3mm]
+\begin{tabular}{ll}
+  \mbox{(AND-EVAL)}   & $\regel{e_1 \to e_1'}
+                             {\andalso{e_1}{e_2} \to \andalso{e_1'}{e_2}}$\\[5mm]
+  \mbox{(AND-FALSE)}  & $\andalso{\false}{e_2} \to \false$\\[3mm]
+  \mbox{(AND-TRUE)}   & $\andalso{\true}{e_2} \to e_2$\\[3mm]
+  \mbox{(OR-EVAL)}    & $\regel{e_1 \to e_1'}
+                             {\orelse{e_1}{e_2} \to \orelse{e_1'}{e_2}}$\\[5mm]
+  \mbox{(OR-FALSE)}  & $\orelse{\false}{e_2} \to e_2$\\[3mm]
+  \mbox{(OR-TRUE)}   & $\orelse{\true}{e_2} \to \true$\\[3mm]
+  \mbox{(UNFOLD)}     & $\rec{\id}{e} \to e[\rec{\id}{e}/\id]$
+\end{tabular}\\[7mm]
+sowie den dazugeh"origen exception-Regeln herleiten l"asst.
+
+
+\subsection{Typsystem von \LTWO}
+
+Ein Typurteil hei"st g"ultig f"ur \LTWO, wenn es sich mit den Typregeln von \LONE\ und den Regeln\\[3mm]
+\begin{tabular}{ll}
+\mbox{(AND)\ } & $\regel{\Tj{\Gamma}{e_1}{\bool} \quad \Tj{\Gamma}{e_2}{\bool}}
+                        {\Tj{\Gamma}{\andalso{e_1}{e_2}}{\bool}}$ \\[5mm]
+\mbox{(OR)\  } & $\regel{\Tj{\Gamma}{e_1}{\bool} \quad \Tj{\Gamma}{e_2}{\bool}}
+                        {\Tj{\Gamma}{\orelse{e_1}{e_2}}{\bool}}$ \\[5mm]
+\mbox{(REC)\ } & $\regel{\Tj{\Gamma[\tau/\id]}{e}{\tau}} 
+                         {\Tj{\Gamma}{\rec{\id:\tau}{e}}{\tau}}$
+\end{tabular}\\[7mm]
+herleiten l"asst. Fehlt die Angabe des Typs $\tau$ bei $\brec$ wird der Typ f"ur $e$ durch den Typinferenzalgorithmus
+bestimmt.
+
+
+\subsection{Syntaktischer Zucker}
+
+Die Sprache \LTWO\ enth"alt weitere Abk"urzungen zu den in \LONE\ definierten. Die logischen $\mathbin{\&\&}$- und 
+$\mathbin{||}$-Verkn"upfungen sind syntaktischer Zucker f"ur die bedingte Ausf"uhrung
+\beqns
+  \andalso{e_1}{e_2} & \mbox{ steht f"ur } & \bifte{e_1}{e_2}{\false} \\
+  \orelse{e_1}{e_2} & \mbox{ steht f"ur } & \bifte{e_1}{\true}{e_2}
+\eeqns
+und es existieren abgeleitete Interpreter und Typregeln, da sonst der Umgang mit diesen Konstrukten zu aufwendig
+w"are.
+
+Desweiteren stehen Abk"urzungen f"ur die einfache Definition von Funktionen zur Verf"ugung.
+\beqns
+  \bli{\id (\id_1: \tau_1)\ldots(\id_n: \tau_n):\tau}{e_1}{e_2}
+\eeqns
+steht f"ur
+\beqns
+  \bli{\id: \tau}{\abstr{\id_1: \tau_1}{\ldots\abstr{\id_n: \tau_n}{e_1}}}{e_2}
+\eeqns
+und
+\beqns
+  \bli{\brec\,\id (\id_1: \tau_1)\ldots(\id_n: \tau_n):\tau}{e_1}{e_2}
+\eeqns
+steht f"ur
+\beqns
+  \bli{\id: \tau}{\rec{\id: \tau}{\abstr{\id_1: \tau_1}{\ldots\abstr{\id_n: \tau_n}{e_1}}}}{e_2}\mbox{.}
+\eeqns
+F"ur diesen syntaktischen Zucker wurden keine abgeleiteten Regeln eingef"uhrt, stattdessen wird implizit
+eine "Ubersetzung in Kernsyntax vorgenommen.
+
+
+
+\section{Die Sprache \LTHREE}
+
+Die Sprache \LTHREE\ erweitert die Sprache \LTWO\ um ein polymorphes Typsystem, sowie Tupel und Listen, f"ur die
+zus"atzlich abk"urzende Schreibweisen eingef"uhrt wurden. Die Menge \notation{$\Exp$} der g"ultigen Ausdr"ucke
+wird hierf"ur um die Produktionen
+\bgram
+e \is (e_1,\ldots,e_n) \qquad (n \ge 2)                             & & \mbox{$n$-Tupel}
+  \al [e_1;\ldots;e_n]                                              & & \mbox{Liste}
+  \al e_1 \coloncolon e_2                                           & & \mbox{Konkatenation}
+  \al \abstr{(\id_1,\ldots,\id_n): \tau_1 * \ldots * \tau_n}{e}
+  \al \bli{(\id_1,\ldots,\id_n): \tau_1 * \ldots * \tau_n}{e1}{e2}
+\egram
+erweitert, wobei s"amtliche Typangaben wieder optional sind. Die Mengen \notation{$\Const$} und \notation{$\Val$}
+werden durch die Produktionen
+\bgram
+c \is \Fst \mid \Snd                & & \mbox{Paarprojektionen}
+  \al \#n\_i \qquad (1 \le i \le n) & & \mbox{Projektionen}
+  \al \Cons \mid []                 & & \mbox{Listenkonstruktion}
+  \al \Hd \mid \Tl \mid \Empty      & & \mbox{Listenoperatoren}
+\egram
+und
+\bgram
+v \is (v_1,\ldots,v_n)
+  \al [v_1,\ldots,v_n]
+  \al \Cons\,v_1
+\egram
+erweitert. F"ur Listenoperationen wird eine weitere Ausnahme
+\bgram
+\exn \is empty\_list
+\egram
+hinzugenommen.
+
+Die Menge der monomorphen Typen \notation{$\Type$} wird erweitert durch Produktionen f"ur Tupel- und Listentypen, sowie
+Typvariablen $\alpha\ldots\omega$.
+\bgram
+\tau \is \tau_1 * \ldots * \tau_n \qquad (n \ge 2)
+     \al \ltype{\tau'}
+     \al \alpha \mid \ldots \mid \omega
+\egram
+
+
+\subsection{Big step Semantik von \LTHREE}
+
+Ein big step hei"st g"ultig f"ur \LTHREE, wenn er sich mit den big step Regeln von \LTWO\ und den Regeln\\[5mm]
+  \begin{tabular}{ll}
+    \mbox{(TUPLE)}          & $\regel{e_1 \eval v_1 \quad \ldots \quad e_n \eval v_n}
+                                     {(e_1,\ldots,e_n) \eval (v_1,\ldots,v_n)}$ \\[5mm]
+    \mbox{(FST)}            & $\Fst\,(v_1,v_2) \eval v_1$ \\[3mm]
+    \mbox{(SND)}            & $\Snd\,(v_1,v_2) \eval v_2$ \\[3mm]
+    \mbox{(PROJ)}           & $\#n\_i\,(v_1,\ldots,v_n) \eval v_i \qquad (1 \le i \le n)$ \\[3mm]
+    \mbox{(LIST)}           & $\regel{e_1 \eval v_1 \quad \ldots \quad e_n \eval v_n}
+                                     {[e_1;\ldots;e_n] \eval [v_1;\ldots;v_n]}$ \\[5mm]
+    \mbox{(CONS)}           & $(\coloncolon)\,v'\,[v_1;\ldots;v_n] \eval [v';v_1;\ldots;v_n]$ \\[3mm]
+    \mbox{(HD)}             & $\Hd\,\left(\Cons\,\left(v_1,v_2\right)\right) \eval v_1$ \\[3mm]
+    \mbox{(HD-EMPTY)}       & $\Hd\,[] \eval empty\_list$ \\[3mm]
+    \mbox{(TL)}             & $\Tl\,\left(\Cons\,\left(v_1,v_2\right)\right) \eval v_2$ \\[3mm]
+    \mbox{(TL-EMPTY)}       & $\Tl\,[] \eval empty\_list$ \\[3mm]
+    \mbox{(IS-EMPTY-FALSE)} & $\Empty\,\left(\Cons\,v\right) \eval \false$ \\[3mm]
+    \mbox{(IS-EMPTY-TRUE)}  & $\Empty\,[] \eval \true$
+  \end{tabular}\\[7mm]
+sowie den entsprechenden exception-Regeln herleiten l"asst. Zu beachten ist, dass - vielleicht wider der Intuition - die
+(CONS) Regel\footnote{Der Leser wird sich hoffentlich erinnern, dass bin"are Operatoren, die au"serhalb eines Infixausdrucks
+verwendet werden, geklammert werden m"ussen. $v'\,\coloncolon\,[v_1,\ldots,v_n]$ ist also syntaktischer Zucker f"ur
+$(\coloncolon)\,v'\,[v_1;\ldots;v_n]$.} f"ur den bin"aren Konkatenationsoperator $\coloncolon$ definiert ist, und nicht f"ur den
+un"aren Listenkonstruktor $\Cons$. Dies wird jedoch leicht ersichtlich, wenn man sich vor Augen h"alt, dass $(\Cons\,v) \in \Val$.
+F"ur Details zum Thema Listen sei hier auf den Inhalt der Vorlesung verwiesen.
+
+
+\subsection{Small step Semantik von \LTHREE}
+
+Die small step Regeln f"ur \LTHREE\ entsprechen im wesentlichen den big step Regeln. Ein small step hei"st g"ultig f"ur
+\LTHREE, wenn er sich mit den small step Regeln von \LTWO\ und den Regeln\\[5mm]
+  \begin{tabular}{ll}
+    \mbox{(TUPLE)}          & $\regel{e_i \to e_i'}
+                                     {(e_1,\ldots,e_i,\ldots,e_n) \to (e_1,\ldots,e_i',\ldots,e_n)}$ \\[5mm]
+    \mbox{(FST)}            & $\Fst\,(v_1,v_2) \to v_1$ \\[3mm]
+    \mbox{(SND)}            & $\Snd\,(v_1,v_2) \to v_2$ \\[3mm]
+    \mbox{(PROJ)}           & $\#n\_i\,(v_1,\ldots,v_n) \to v_i \qquad (1 \le i \le n)$ \\[3mm]
+    \mbox{(LIST)}           & $\regel{e_i \to e_i'}
+                                     {[e_1;\ldots;e_i;\ldots,e_n] \to [e_1;\ldots;e_i';\ldots;e_n]}$ \\[5mm]
+    \mbox{(CONS)}           & $(\coloncolon)\,v'\,[v_1;\ldots;v_n] \to [v';v_1;\ldots;v_n]$ \\[3mm]
+    \mbox{(HD)}             & $\Hd\,\left(\Cons\,\left(v_1,v_2\right)\right) \to v_1$ \\[3mm]
+    \mbox{(HD-EMPTY)}       & $\Hd\,[] \to empty\_list$ \\[3mm]
+    \mbox{(TL)}             & $\Tl\,\left(\Cons\,\left(v_1,v_2\right)\right) \to v_2$ \\[3mm]
+    \mbox{(TL-EMPTY)}       & $\Tl\,[] \to empty\_list$ \\[3mm]
+    \mbox{(IS-EMPTY-FALSE)} & $\Empty\,\left(\Cons\,v\right) \to \false$ \\[3mm]
+    \mbox{(IS-EMPTY-TRUE)}  & $\Empty\,[] \to \true$
+  \end{tabular}\\[7mm]
+sowie den entsprechenden exception-Regeln herleiten l"asst.
+
+
+
+\section{Konkrete Syntax}
+
+Da es mitunter nicht mit jeder herk"ommlichen Tastatur m"oglich ist $\lambda$ zu tippen kann stattdessen das
+Schl"usselwort $\textbf{lambda}$ benutzt werden. Typvariablen $\alpha,\beta,\ldots$ werden in der "ublichen
+OCaml-Schreibweise $\texttt{'a}, \texttt{'b},\ldots$ geschrieben, und f"ur Funktionstypen wird der Pfeil
+$\to$ als $\texttt{->}$ notiert.
+
+
+
+% vi:set syntax=tex ts=2 sw=2 et encoding=UTF-8:
