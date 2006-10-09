@@ -199,4 +199,28 @@ final class DefaultSmallStepProofNode extends AbstractInterpreterProofNode imple
   public DefaultSmallStepProofNode getLastLeaf() {
     return (DefaultSmallStepProofNode)super.getLastLeaf();
   }
+  
+  
+  
+  //
+  // Base methods
+  //
+  
+  /**
+   * {@inheritDoc}
+   *
+   * This is mainly useful for debugging.
+   * 
+   * @see java.lang.Object#toString()
+   */
+  @Override
+  public String toString() {
+    StringBuilder builder = new StringBuilder();
+    builder.append('(');
+    builder.append(getStore());
+    builder.append(", ");
+    builder.append(getExpression());
+    builder.append(')');
+    return builder.toString();
+  }
 }

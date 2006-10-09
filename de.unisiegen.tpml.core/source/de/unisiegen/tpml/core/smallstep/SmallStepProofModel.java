@@ -1,5 +1,7 @@
 package de.unisiegen.tpml.core.smallstep;
 
+import org.apache.log4j.Logger;
+
 import de.unisiegen.tpml.core.AbstractProofRuleSet;
 import de.unisiegen.tpml.core.ProofGuessException;
 import de.unisiegen.tpml.core.ProofNode;
@@ -22,6 +24,19 @@ import de.unisiegen.tpml.core.interpreters.AbstractInterpreterProofNode;
  * @see de.unisiegen.tpml.core.smallstep.SmallStepProofNode
  */
 public final class SmallStepProofModel extends AbstractInterpreterProofModel {
+  //
+  // Constants
+  //
+  
+  /**
+   * The {@link Logger} for this class.
+   * 
+   * @see Logger
+   */
+  private static final Logger logger = Logger.getLogger(SmallStepProofModel.class);
+  
+  
+  
   //
   // Constructor
   //
@@ -95,7 +110,13 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel {
     }
     
     // apply the rule to the specified node
-    apply(rule, node);
+    try {
+      apply(rule, node);
+    }
+    catch (RuntimeException e) {
+      logger.error("An internal error occurred while proving " + node + " using (" + rule + ")", e);
+      throw e;
+    }
   }
   
   /**
@@ -202,7 +223,7 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel {
     // verify the completed steps
     int n;
     for (n = 0; n < completedSteps.length; ++n) {
-      if (completedSteps[n].getRule() != evaluatedSteps[n].getRule())
+      if (!completedSteps[n].getRule().equals(evaluatedSteps[n].getRule()))
         throw new IllegalStateException("Completed steps don't match evaluated steps");
     }
 

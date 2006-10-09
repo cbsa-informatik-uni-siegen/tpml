@@ -7,13 +7,24 @@ package de.unisiegen.tpml.core;
  * @author Benedikt Meurer
  * @version $Rev$
  * 
+ * @see de.unisiegen.tpml.core.ProofFinishedException
  * @see de.unisiegen.tpml.core.ProofGuessException
  */
 public final class ProofRuleException extends Exception {
+  //
+  // Constants
+  //
+  
   /**
    * The serial version id. 
    */
   private static final long serialVersionUID = -765882201403684253L;
+  
+  
+  
+  //
+  // Attributes
+  //
   
   /**
    * The node to which the rule was about to be applied.

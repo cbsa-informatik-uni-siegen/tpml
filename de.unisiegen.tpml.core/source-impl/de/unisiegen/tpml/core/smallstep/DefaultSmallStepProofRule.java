@@ -75,7 +75,7 @@ final class DefaultSmallStepProofRule extends AbstractProofRule implements Small
    */
   public SmallStepProofRule toExnRule() {
     if (!isAxiom()) {
-      return new DefaultSmallStepProofRule(getName() + "-EXN", true);
+      return new DefaultSmallStepProofRule(getName() + "-EXN", false);
     }
     else {
       return this;
