@@ -162,13 +162,8 @@ public class BigStepNodeComponent extends JComponent implements TreeNodeComponen
 				this.ruleButton.setText("(" + rule.getName() + ")");
 				this.ruleButton.setTextColor(Color.RED);
 				
-				Throwable cause = exc.getCause();
-				if (cause != null) {
-					this.ruleButton.setToolTipText(cause.getMessage());
-				}
-				else {
-					this.ruleButton.setToolTipText(exc.getMessage());
-				}
+				// TODO: Meaningful cause would be nice :-)
+				this.ruleButton.setToolTipText(exc.getMessage());
 			}
 		}
 		else if (item instanceof MenuTranslateItem) {
