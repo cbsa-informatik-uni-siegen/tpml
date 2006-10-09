@@ -2,6 +2,7 @@ package de.unisiegen.tpml.core.bigstep;
 
 import java.lang.reflect.Method;
 
+import de.unisiegen.tpml.core.AbstractProofRule;
 import de.unisiegen.tpml.core.AbstractProofRuleSet;
 import de.unisiegen.tpml.core.languages.Language;
 
@@ -133,6 +134,24 @@ public abstract class AbstractBigStepProofRuleSet extends AbstractProofRuleSet {
    */
   protected void registerByMethodName(String name, String applyMethodName, String updateMethodName) {
     register(name, getMethodByName(applyMethodName), getMethodByName(updateMethodName));
+  }
+  
+  /**
+   * Convenience wrapper for the {@link AbstractProofRuleSet#unregister(AbstractProofRule)} method,
+   * which takes a rule name rather than an {@link AbstractProofRule} object. The <code>rule</code>
+   * must have been previously registered.
+   * 
+   * @param name the name of the rule to unregister.
+   * 
+   * @throws java.util.NoSuchElementException if no rule of the given <code>name</code> was registered
+   *                                          previously. 
+   * @throws NullPointerException if <code>name</code> is <code>null</code>.
+   * 
+   * @see #register(String, Method, Method)
+   * @see AbstractProofRuleSet#unregister(AbstractProofRule)
+   */
+  protected void unregister(String name) {
+    unregister(getRuleByName(name));
   }
   
   /**

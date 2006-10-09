@@ -49,6 +49,10 @@ public class L3TypeCheckerProofRuleSet extends L2TypeCheckerProofRuleSet {
   public L3TypeCheckerProofRuleSet(L3Language language) {
     super(language);
     
+    // drop the (CONST) and (ID) type rules
+    unregister("CONST");
+    unregister("ID");
+    
     // register the additional type rules
     registerByMethodName("LIST", "applyList");
     registerByMethodName("P-CONST", "applyPConst");

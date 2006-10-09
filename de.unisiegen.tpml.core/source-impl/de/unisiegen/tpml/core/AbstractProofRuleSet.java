@@ -46,7 +46,7 @@ public abstract class AbstractProofRuleSet implements ProofRuleSet {
    * 
    * @see #getRules()
    */
-  protected List<ProofRule> rules = new LinkedList<ProofRule>();
+  protected List<AbstractProofRule> rules = new LinkedList<AbstractProofRule>();
   
   
 
@@ -104,11 +104,11 @@ public abstract class AbstractProofRuleSet implements ProofRuleSet {
    * 
    * @see ProofRule
    */
-  protected ProofRule getRuleByName(String name) throws NoSuchElementException {
+  protected AbstractProofRule getRuleByName(String name) throws NoSuchElementException {
     if (name == null) {
       throw new NullPointerException("name is null");
     }
-    for (ProofRule rule : this.rules) {
+    for (AbstractProofRule rule : this.rules) {
       if (rule.getName().equals(name)) {
         return rule;
       }
@@ -138,7 +138,7 @@ public abstract class AbstractProofRuleSet implements ProofRuleSet {
    */
   public final Iterator<ProofRule> iterator() {
     return new Iterator<ProofRule>() {
-      private Iterator<ProofRule> iterator = AbstractProofRuleSet.this.rules.iterator();
+      private Iterator<AbstractProofRule> iterator = AbstractProofRuleSet.this.rules.iterator();
       public boolean hasNext() { return this.iterator.hasNext(); }
       public ProofRule next() { return this.iterator.next(); }
       public void remove() { throw new UnsupportedOperationException(); }
@@ -162,6 +162,8 @@ public abstract class AbstractProofRuleSet implements ProofRuleSet {
    * @param rule the proof rule to register.
    * 
    * @throws NullPointerException if <code>rule</code> is <code>null</code>.
+   * 
+   * @see #unregister(AbstractProofRule)
    */
   protected void register(AbstractProofRule rule) {
     if (rule == null) {
@@ -173,5 +175,23 @@ public abstract class AbstractProofRuleSet implements ProofRuleSet {
     
     // register the new rule
     this.rules.add(0, rule);
+  }
+  
+  /**
+   * Unregisters the <code>rule</code> from the proof rule set.
+   * 
+   * @param rule the proof rule to unregister.
+   * 
+   * @throws NullPointerException if <code>rule</code> is <code>null</code>.
+   * 
+   * @see #register(AbstractProofRule)
+   */
+  protected void unregister(AbstractProofRule rule) {
+    if (rule == null) {
+      throw new NullPointerException("rule is null");
+    }
+    
+    // unregister the rule
+    this.rules.remove(rule);
   }
 }
