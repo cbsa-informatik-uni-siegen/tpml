@@ -209,17 +209,20 @@ public class SmallStepNodeComponent extends JComponent {
 			}
 		}
 		else if (item instanceof MenuTranslateItem) {
-			
-			String[] answers = { "Just outer", "All", "Cancel" };
-			int n = JOptionPane.showOptionDialog(getParent(), "Translate to core syntax just " +
-					"on the outermost expression or on the entire Expression?",
-					"Translate to core syntax",
-					JOptionPane.YES_NO_CANCEL_OPTION,
-					JOptionPane.QUESTION_MESSAGE,
-					null,
-					answers,
-					answers[0]);
-			switch (n) {
+			int answer = 1;
+			if (this.proofModel.containsSyntacticSugar(this.proofNode, false)) {
+				String[] answers = { "Outermost only", "Whole expression", "Cancel" };
+				answer = JOptionPane.showOptionDialog(getTopLevelAncestor(), "Do you want to translate all syntactic " +
+																						  "sugar contained within this expression,\nor only the " +
+																							"outermost expression?",
+																						  "Translate to core syntax",
+																						  JOptionPane.YES_NO_CANCEL_OPTION,
+																						  JOptionPane.QUESTION_MESSAGE,
+																						  null,
+																						  answers,
+																						  answers[0]);
+			}
+			switch (answer) {
 			case 0:
 				freeUnderliningSibling(false, Direction.DIRECTION_CHILD);
 				freeUnderliningSibling(false, Direction.DIRECTION_PARENT);
@@ -233,8 +236,7 @@ public class SmallStepNodeComponent extends JComponent {
 			case 2:
 				break;
 			}
-					
-					
+			fireNodeChanged();
 		}
 	}
 	
@@ -263,7 +265,7 @@ public class SmallStepNodeComponent extends JComponent {
 		}
 		
 		
-		this.translateItem.setEnabled(this.translator.containsSyntacticSugar(this.proofNode.getExpression(), false));
+		this.translateItem.setEnabled(this.translator.containsSyntacticSugar(this.proofNode.getExpression(), true));
 	}
 
 	//

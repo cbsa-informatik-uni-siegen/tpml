@@ -171,16 +171,20 @@ public class BigStepNodeComponent extends JComponent implements TreeNodeComponen
 			}
 		}
 		else if (item instanceof MenuTranslateItem) {
-			String[] answers = { "Just outer", "All", "Cancel" };
-			int n = JOptionPane.showOptionDialog(getParent(), "Translate to core syntax just " +
-					"on the outermost expression or on the entire Expression?",
-					"Translate to core syntax",
-					JOptionPane.YES_NO_CANCEL_OPTION,
-					JOptionPane.QUESTION_MESSAGE,
-					null,
-					answers,
-					answers[0]);
-			switch (n) {
+			int answer = 1;
+			if (this.proofModel.containsSyntacticSugar(this.proofNode, false)) {
+				String[] answers = { "Outermost only", "Whole expression", "Cancel" };
+				answer = JOptionPane.showOptionDialog(getTopLevelAncestor(), "Do you want to translate all syntactic " +
+																						  "sugar contained within this expression,\nor only the " +
+																							"outermost expression?",
+																						  "Translate to core syntax",
+																						  JOptionPane.YES_NO_CANCEL_OPTION,
+																						  JOptionPane.QUESTION_MESSAGE,
+																						  null,
+																						  answers,
+																						  answers[0]);
+			}
+			switch (answer) {
 			case 0:
 				this.proofModel.translateToCoreSyntax(this.proofNode, false);
 				break;
@@ -190,6 +194,7 @@ public class BigStepNodeComponent extends JComponent implements TreeNodeComponen
 			case 2:
 				break;
 			}
+			fireNodeChanged();
 		}
 		else if (item instanceof MenuGuessItem) {
 			try {
@@ -322,7 +327,7 @@ public class BigStepNodeComponent extends JComponent implements TreeNodeComponen
 	 */
 	public Dimension update(int maxWidth) {
 		placeElements (maxWidth);
-		this.menuTranslateItem.setEnabled(this.translator.containsSyntacticSugar(this.proofNode.getExpression(), false));
+		this.menuTranslateItem.setEnabled(this.translator.containsSyntacticSugar(this.proofNode.getExpression(), true));
 		
 		return this.dimension;
 
