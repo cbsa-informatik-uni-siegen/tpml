@@ -97,6 +97,19 @@ public class L1LanguageTranslator extends L0LanguageTranslator {
       // special case: BinaryCons requires another run
       return translateToCoreSyntax(application, recursive);
     }
+    else if (expression instanceof Let && recursive) {
+      // determine the sub expressions
+      Let let = (Let)expression;
+      Expression e1 = let.getE1();
+      Expression e2 = let.getE2();
+      
+      // translate the sub expressions
+      e1 = translateToCoreSyntax(e1, true);
+      e2 = translateToCoreSyntax(e2, true);
+      
+      // generate the let expression
+      return new Let(let.getId(), let.getTau(), e1, e2);
+    }
     else {
       // dunno, let the parent class handle it
       return super.translateToCoreSyntax(expression, recursive);

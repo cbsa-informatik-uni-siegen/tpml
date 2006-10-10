@@ -238,7 +238,7 @@ public final class Lambda extends Value {
     if (obj instanceof Lambda) {
       Lambda other = (Lambda)obj;
       return (this.id.equals(other.id) && this.e.equals(other.e)
-          && (this.tau == null) ? (other.tau == null) : (this.tau.equals(other.tau)));
+          && ((this.tau == null) ? (other.tau == null) : (this.tau.equals(other.tau))));
     }
     return false;
   }

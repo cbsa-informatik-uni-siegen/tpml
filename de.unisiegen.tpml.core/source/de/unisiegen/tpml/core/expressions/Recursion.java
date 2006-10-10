@@ -202,7 +202,7 @@ public final class Recursion extends Expression {
     if (obj instanceof Recursion) {
       Recursion other = (Recursion)obj;
       return (this.id.equals(other.id) && this.e.equals(other.e)
-          && (this.tau == null) ? (other.tau == null) : (this.tau.equals(other.tau)));
+          && ((this.tau == null) ? (other.tau == null) : (this.tau.equals(other.tau))));
     }
     return false;
   }

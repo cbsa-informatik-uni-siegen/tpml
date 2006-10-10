@@ -236,7 +236,7 @@ public final class MultiLambda extends Value {
     if (obj instanceof MultiLambda) {
       MultiLambda other = (MultiLambda)obj;
       return (Arrays.equals(this.identifiers, other.identifiers) && this.e.equals(other.e)
-          && (this.tau == null) ? (other.tau == null) : (this.tau.equals(other.tau)));
+          && ((this.tau == null) ? (other.tau == null) : (this.tau.equals(other.tau))));
     }
     return false;
   }

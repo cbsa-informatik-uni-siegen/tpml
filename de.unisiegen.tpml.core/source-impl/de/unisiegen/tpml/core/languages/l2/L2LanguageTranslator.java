@@ -124,6 +124,17 @@ public class L2LanguageTranslator extends L1LanguageTranslator {
       // generate the condition
       return new Condition(e1, BooleanConstant.TRUE, e2);
     }
+    else if (expression instanceof Recursion && recursive) {
+      // determine the sub expressions
+      Recursion recursion = (Recursion)expression;
+      Expression e = recursion.getE();
+      
+      // translate the sub expression
+      e = translateToCoreSyntax(e, true);
+      
+      // generate the recursion
+      return new Recursion(recursion.getId(), recursion.getTau(), e);
+    }
     else {
       return super.translateToCoreSyntax(expression, recursive);
     }
