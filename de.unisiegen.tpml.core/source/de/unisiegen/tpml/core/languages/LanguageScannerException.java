@@ -72,7 +72,7 @@ public class LanguageScannerException extends RuntimeException {
    * @param message the error message.
    * @param e the cause of the exception.
    */
-  public LanguageScannerException(int left, int right, String message, Exception e) {
+  public LanguageScannerException(int left, int right, String message, Throwable e) {
     super(message, e);
     this.left = left;
     this.right = right;
