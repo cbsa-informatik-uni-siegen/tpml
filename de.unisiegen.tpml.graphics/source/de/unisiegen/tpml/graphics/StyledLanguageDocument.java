@@ -278,6 +278,15 @@ public class StyledLanguageDocument extends DefaultStyledDocument implements Bea
           setCharacterAttributes(offset + symbol.getLeft(), symbol.getRight() - symbol.getLeft(), set, true);
         }
         catch (LanguageScannerException e) {
+        	// calculate the new offset
+        	int newOffset = offset + e.getRight();
+        	
+          // skip the problematic characters
+          content = content.substring(e.getRight());
+          
+        	// adjust the exception according to the offset
+        	e = new LanguageScannerException(offset + e.getLeft(), offset + e.getRight(), e.getMessage(), e.getCause());
+        	
           // setup the error attribute set
           SimpleAttributeSet errorSet = new SimpleAttributeSet();
           StyleConstants.setForeground(errorSet, Color.RED);
@@ -285,13 +294,10 @@ public class StyledLanguageDocument extends DefaultStyledDocument implements Bea
           errorSet.addAttribute("exception", e);
           
           // apply the error character attribute set to indicate the syntax error
-          setCharacterAttributes(offset + e.getLeft(), e.getRight() - e.getLeft(), errorSet, false);
+          setCharacterAttributes(e.getLeft(), e.getRight() - e.getLeft(), errorSet, false);
           
           // adjust the offset to point after the error
-          offset += e.getRight();
-          
-          // skip the problematic characters
-          content = content.substring(e.getRight());
+          offset = newOffset;
           
           // restart the scanner after the error
           scanner.restart(new StringReader(content));
@@ -336,7 +342,7 @@ public class StyledLanguageDocument extends DefaultStyledDocument implements Bea
 					}
 					else {
 						// apply the error character attribute set to indicate the syntax error
-						setCharacterAttributes(e.getLeft(), e.getRight(), errorSet, false);
+						setCharacterAttributes(e.getLeft(), e.getRight() - e.getLeft(), errorSet, false);
 					}
 					
 					// add the exception to our list
