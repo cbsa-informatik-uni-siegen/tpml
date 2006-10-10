@@ -1,5 +1,6 @@
 package de.unisiegen.tpml.core;
 
+import java.util.Enumeration;
 import java.util.NoSuchElementException;
 
 import javax.swing.tree.TreeNode;
@@ -166,6 +167,18 @@ public interface ProofNode extends TreeNode {
    * @see #getRoot()
    */
   public boolean isRoot();
+  
+  /**
+   * Creates and returns an enumeration that traverses the subtree rooted at this node in postorder. The first
+   * node returned by the enumeration's <code>nextElement()</code> method is the leftmost leaf. This is the same
+   * as a depth-first traversal.
+   *
+   * Modifying the tree by inserting, removing, or moving a node invalidates any enumerations created before the
+   * modification.
+   *
+   * @return an enumeration for traversing the tree in post-order.
+   */
+  public Enumeration<ProofNode> postorderEnumeration();
 
   
   
