@@ -1,6 +1,7 @@
 package de.unisiegen.tpml.core.typechecker;
 
 import java.util.Enumeration;
+import java.util.LinkedList;
 
 import org.apache.log4j.Logger;
 
@@ -160,7 +161,34 @@ public final class TypeCheckerProofModel extends AbstractProofModel {
     if (type == null) {
       throw new NullPointerException("type is null");
     }
+    
+    // guess the rule for the node utilizing the type
     guessInternal((DefaultTypeCheckerProofNode)node, type);
+    
+    // determine the direct children of the node
+    LinkedList<ProofNode> nodes = new LinkedList<ProofNode>();
+    for (int n = 0; n < node.getChildCount(); ++n) {
+      nodes.add(node.getChildAt(n));
+    }
+    
+    // guess all nodes below this node
+    while (!nodes.isEmpty()) {
+      try {
+        // process the first pending node
+        ProofNode child = nodes.poll();
+        
+        // guess this node
+        guess(child);
+        
+        // schedule the children for processing as well
+        for (int n = 0; n < child.getChildCount(); ++n) {
+          nodes.add(child.getChildAt(n));
+        }
+      }
+      catch (Exception e) {
+        // just ignore this exception...
+      }
+    }
   }
   
   /**
