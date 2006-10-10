@@ -833,7 +833,6 @@ public class MainWindow extends javax.swing.JFrame {
 	
 	private void updateRecentlyUsed(){
 		int length = this.recentlyUsed.size();
-		System.out.println(length);
 		if (length > 4) {
 			length = 4;
 			logger.error("Error: The list of recently used files is larger than four.");
