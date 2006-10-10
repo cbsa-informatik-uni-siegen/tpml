@@ -598,7 +598,7 @@ public class MainWindow extends javax.swing.JFrame {
                         // check if we already have an editor panel for the file
                         EditorPanel editorPanel = null;
                         for (Component component : this.tabbedPane.getComponents()) {
-                                if (component instanceof EditorPanel && ((EditorPanel)component).getFile().equals(file)) {
+                                if (component instanceof EditorPanel && file.equals(((EditorPanel)component).getFile())) {
                                         editorPanel = (EditorPanel)component;
                                         break;
                                 }
