@@ -263,6 +263,8 @@ public class SmallStepComponent extends AbstractProofComponent implements Scroll
 				if (this.model.isFinished()) {
 					nodeComponent.hideRules ();
 					nodeComponent.setBounds();
+					
+					size.width	= Math.max(size.width, x + nodeComponent.getSize().width);
 				}
 				else {
 					// the rules can savely be positioned
