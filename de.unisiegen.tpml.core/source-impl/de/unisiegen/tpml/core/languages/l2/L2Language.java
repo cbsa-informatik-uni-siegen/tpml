@@ -28,6 +28,19 @@ import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel;
  */
 public class L2Language extends L1Language {
   //
+  // Constants
+  //
+  
+  /**
+   * The group id for proof rules of this language.
+   * 
+   * @see de.unisiegen.tpml.core.AbstractProofRule#getGroup()
+   */
+  public static final int L2 = L1Language.L1 + 1;
+  
+  
+  
+  //
   // Constructor
   //
   

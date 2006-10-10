@@ -14,6 +14,14 @@ public abstract class AbstractProofRule implements ProofRule {
   //
   
   /**
+   * The group id of the proof rule, used to sort the proof rules by group when displaying
+   * them to the user.
+   * 
+   * @see #getGroup()
+   */
+  private int group;
+  
+  /**
    * The name of the proof rule.
    * 
    * @see #getName()
@@ -29,14 +37,16 @@ public abstract class AbstractProofRule implements ProofRule {
   /**
    * Allocates a new <code>AbstractProofRule</code> with the specified <code>name</code>.
    * 
+   * @param group the group id of the proof rule, see the description of the {@link #getGroup()} method.
    * @param name the name of the proof rule.
    * 
    * @throws NullPointerException if <code>name</code> is <code>null</code>.
    */
-  protected AbstractProofRule(String name) {
+  protected AbstractProofRule(int group, String name) {
     if (name == null) {
       throw new NullPointerException("name is null");
     }
+    this.group = group;
     this.name = name;
   }
   
@@ -49,10 +59,44 @@ public abstract class AbstractProofRule implements ProofRule {
   /**
    * {@inheritDoc}
    *
+   * @see de.unisiegen.tpml.core.ProofRule#getGroup()
+   */
+  public int getGroup() {
+    return this.group;
+  }
+  
+  /**
+   * {@inheritDoc}
+   *
    * @see de.unisiegen.tpml.core.ProofRule#getName()
    */
   public String getName() {
     return this.name;
+  }
+  
+  
+  
+  //
+  // Comparisons
+  //
+  
+  /**
+   * {@inheritDoc}
+   *
+   * @see java.lang.Comparable#compareTo(T)
+   */
+  public int compareTo(ProofRule other) {
+    // compare groups first
+    if (getGroup() < other.getGroup()) {
+      return -1;
+    }
+    else if (getGroup() > other.getGroup()) {
+      return 1;
+    }
+    else {
+      // compare by name
+      return getName().compareTo(other.getName());
+    }
   }
   
   

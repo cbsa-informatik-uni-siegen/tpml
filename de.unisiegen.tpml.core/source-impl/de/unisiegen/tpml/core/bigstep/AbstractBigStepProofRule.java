@@ -20,14 +20,16 @@ abstract class AbstractBigStepProofRule extends AbstractProofRule implements Big
   /**
    * Allocates a new <code>AbstractBigStepProofRule</code> of the specified <code>name</code>.
    * 
+   * @param group the group id of this big step rule, see the description of the
+   *              {@link AbstractProofRule#getGroup()} for details.
    * @param name the name of the big step proof rule to allocate.
    * 
    * @throws NullPointerException if <code>name</code> is <code>null</code>.
    * 
    * @see AbstractProofRule#AbstractProofRule(String)
    */
-  AbstractBigStepProofRule(String name) {
-    super(name);
+  AbstractBigStepProofRule(int group, String name) {
+    super(group, name);
   }
   
   
@@ -150,7 +152,7 @@ abstract class AbstractBigStepProofRule extends AbstractProofRule implements Big
    * @see #toExnRule(int)
    */
   static BigStepProofRule newNoopRule(String name) {
-    return new AbstractBigStepProofRule(name) {
+    return new AbstractBigStepProofRule(-1, name) {
       @Override
       protected void applyInternal(BigStepProofContext context, BigStepProofNode node) throws Exception {
         throw new IllegalArgumentException("Cannot apply noop rules");

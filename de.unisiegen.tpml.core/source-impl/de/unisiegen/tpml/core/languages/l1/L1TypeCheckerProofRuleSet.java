@@ -49,12 +49,12 @@ public class L1TypeCheckerProofRuleSet extends AbstractTypeCheckerProofRuleSet {
     super(language);
     
     // register the type rules
-    registerByMethodName("ABSTR", "applyAbstr");
-    registerByMethodName("APP", "applyApp");
-    registerByMethodName("COND", "applyCond");
-    registerByMethodName("CONST", "applyConst");
-    registerByMethodName("ID", "applyId");
-    registerByMethodName("LET", "applyLet");
+    registerByMethodName(L1Language.L1, "ABSTR", "applyAbstr");
+    registerByMethodName(L1Language.L1, "APP", "applyApp");
+    registerByMethodName(L1Language.L1, "COND", "applyCond");
+    registerByMethodName(L1Language.L1, "CONST", "applyConst");
+    registerByMethodName(L1Language.L1, "ID", "applyId");
+    registerByMethodName(L1Language.L1, "LET", "applyLet");
   }
   
   

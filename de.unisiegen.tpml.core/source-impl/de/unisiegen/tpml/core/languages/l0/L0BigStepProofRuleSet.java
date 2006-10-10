@@ -36,9 +36,9 @@ public class L0BigStepProofRuleSet extends AbstractBigStepProofRuleSet {
     super(language);
     
     // register the big step rules (order is important for guessing!)
-    registerByMethodName("APP", "applyApplication", "updateApplication");
-    registerByMethodName("BETA-V", "applyBetaValue", "updateBetaValue");
-    registerByMethodName("VAL", "applyValue");
+    registerByMethodName(L0Language.L0, "APP", "applyApplication", "updateApplication");
+    registerByMethodName(L0Language.L0, "BETA-V", "applyBetaValue", "updateBetaValue");
+    registerByMethodName(L0Language.L0, "VAL", "applyValue");
   }
   
   

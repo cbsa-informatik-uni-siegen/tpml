@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project default="javadoc">
 	<target name="javadoc">
-		<javadoc access="package" author="true"	version="true" classpath="lib/java-cup-11a-runtime.jar" destdir="doc/manual" source="1.5" windowtitle="TPML Core Reference Manual" encoding="UTF-8" overview="doc/overview.html">
+		<javadoc access="package" author="true"	version="true" classpath="lib/java-cup-11a-runtime.jar:lib/log4j-1.2.14.jar" destdir="doc/manual" source="1.5" windowtitle="TPML Core Reference Manual" encoding="UTF-8" overview="doc/overview.html">
 			
 			<doctitle><![CDATA[<h1>TPML Core Reference Manual</h1>]]></doctitle>
 			<bottom><![CDATA[Copyright (c) 2005-2006 University of Siegen]]></bottom>

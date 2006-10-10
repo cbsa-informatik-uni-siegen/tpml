@@ -1,5 +1,6 @@
 package de.unisiegen.tpml.core;
 
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -89,7 +90,9 @@ public abstract class AbstractProofRuleSet implements ProofRuleSet {
    * @see de.unisiegen.tpml.core.ProofRuleSet#getRules()
    */
   public ProofRule[] getRules() {
-    return this.rules.toArray(EMPTY_ARRAY);
+    ProofRule[] rules = this.rules.toArray(EMPTY_ARRAY);
+    Arrays.sort(rules);
+    return rules;
   }
   
   /**

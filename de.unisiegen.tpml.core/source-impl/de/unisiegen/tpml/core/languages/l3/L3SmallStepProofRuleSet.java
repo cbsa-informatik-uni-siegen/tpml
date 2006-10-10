@@ -51,18 +51,18 @@ public class L3SmallStepProofRuleSet extends L2SmallStepProofRuleSet {
     super(language);
     
     // register the additional rules
-    register("CONS", true);
-    register("FST", true);
-    register("HD", true);
-    register("HD-EMPTY", true);
-    register("IS-EMPTY-FALSE", true);
-    register("IS-EMPTY-TRUE", true);
-    register("LIST", false);
-    register("PROJ", true);
-    register("SND", true);
-    register("TL", true);
-    register("TL-EMPTY", true);
-    register("TUPLE", false);
+    register(L3Language.L3, "CONS", true);
+    register(L3Language.L3, "FST", true);
+    register(L3Language.L3, "HD", true);
+    register(L3Language.L3, "HD-EMPTY", true);
+    register(L3Language.L3, "IS-EMPTY-FALSE", true);
+    register(L3Language.L3, "IS-EMPTY-TRUE", true);
+    register(L3Language.L3, "LIST", false);
+    register(L3Language.L3, "PROJ", true);
+    register(L3Language.L3, "SND", true);
+    register(L3Language.L3, "TL", true);
+    register(L3Language.L3, "TL-EMPTY", true);
+    register(L3Language.L3, "TUPLE", false);
   }
   
   

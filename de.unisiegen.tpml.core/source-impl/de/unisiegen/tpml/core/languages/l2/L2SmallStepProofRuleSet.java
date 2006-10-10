@@ -42,13 +42,13 @@ public class L2SmallStepProofRuleSet extends L1SmallStepProofRuleSet {
     super(language);
     
     // register small step rules
-    register("AND-EVAL", false);
-    register("AND-FALSE", true);
-    register("AND-TRUE", true);
-    register("OR-EVAL", false);
-    register("OR-FALSE", true);
-    register("OR-TRUE", true);
-    register("UNFOLD", true);
+    register(L2Language.L2, "AND-EVAL", false);
+    register(L2Language.L2, "AND-FALSE", true);
+    register(L2Language.L2, "AND-TRUE", true);
+    register(L2Language.L2, "OR-EVAL", false);
+    register(L2Language.L2, "OR-FALSE", true);
+    register(L2Language.L2, "OR-TRUE", true);
+    register(L2Language.L2, "UNFOLD", true);
   }
   
   

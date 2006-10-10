@@ -43,17 +43,19 @@ public interface ProofModel extends Bean, TreeModel {
   public Language getLanguage();
   
   /**
-   * Returns the list of {@link ProofRule}s that should
-   * be displayed as possible rules in the user interface.
-   * This is usually a subset of the list of all available
-   * rules for the given proof.
+   * Returns the list of {@link ProofRule}s that should be displayed as possible rules
+   * in the user interface. This is usually a subset of the list of all available rules
+   * for the given proof.
    * 
-   * The user interface should query the rules everytime
-   * the user opens the menu/list to apply rules, as the
-   * list of rules may have changed after an operation.
+   * The user interface should query the rules everytime the user opens the menu/list to
+   * apply rules, as the list of rules may have changed after an operation.
    * 
-   * @return the {@link ProofRule}s to be displayed in the
-   *         user interface.
+   * The returned array is sorted using the sort order defined by the {@link ProofRule}s
+   * implementation of the {@link Comparable} interface.
+   * 
+   * @return the {@link ProofRule}s to be displayed in the user interface.
+   * 
+   * @see ProofRuleSet#getRules()
    */
   public ProofRule[] getRules();
   

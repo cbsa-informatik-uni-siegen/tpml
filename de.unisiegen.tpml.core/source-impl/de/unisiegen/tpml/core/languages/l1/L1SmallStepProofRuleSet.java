@@ -40,12 +40,12 @@ public class L1SmallStepProofRuleSet extends L0SmallStepProofRuleSet {
     super(language);
     
     // register small step rules
-    register("COND-EVAL", false);
-    register("COND-TRUE", true);
-    register("COND-FALSE", true);
-    register("LET-EVAL", false);
-    register("LET-EXEC", true);
-    register("OP", true);
+    register(L1Language.L1, "COND-EVAL", false);
+    register(L1Language.L1, "COND-TRUE", true);
+    register(L1Language.L1, "COND-FALSE", true);
+    register(L1Language.L1, "LET-EVAL", false);
+    register(L1Language.L1, "LET-EXEC", true);
+    register(L1Language.L1, "OP", true);
   }
   
   

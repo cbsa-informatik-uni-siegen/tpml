@@ -41,13 +41,15 @@ public abstract class AbstractSmallStepProofRuleSet extends AbstractProofRuleSet
    * Convenience wrapper for the {@link AbstractProofRuleSet#register(AbstractProofRule)} method,
    * which registers a new small step rule with the given <code>name</code>.
    * 
+   * @param group the group id of the small step rule, see the description of the
+   *              {@link AbstractProofRule#getGroup()} method for details.
    * @param name the name of the new small step rule.
    * @param axiom whether the new small step rule is an axiom.
    * 
    * @see SmallStepProofRule#isAxiom()
    */
-  protected void register(String name, boolean axiom) {
-    register(new DefaultSmallStepProofRule(name, axiom));
+  protected void register(int group, String name, boolean axiom) {
+    register(new DefaultSmallStepProofRule(group, name, axiom));
   }
   
   /**
@@ -61,7 +63,7 @@ public abstract class AbstractSmallStepProofRuleSet extends AbstractProofRuleSet
    *                                          previously. 
    * @throws NullPointerException if <code>name</code> is <code>null</code>.
    * 
-   * @see #register(String, Method, Method)
+   * @see #register(int, String, Method, Method)
    * @see AbstractProofRuleSet#unregister(AbstractProofRule)
    */
   protected void unregister(String name) {

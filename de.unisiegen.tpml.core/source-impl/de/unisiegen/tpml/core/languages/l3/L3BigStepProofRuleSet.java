@@ -52,19 +52,19 @@ public class L3BigStepProofRuleSet extends L2BigStepProofRuleSet {
     super(language);
     
     // register the rules (order is important for guessing!)
-    registerByMethodName("CONS", "applyCons");
-    registerByMethodName("HD", "applyHd");
-    registerByMethodName("IS-EMPTY-FALSE", "applyIsEmptyFalse");
-    registerByMethodName("IS-EMPTY-TRUE", "applyIsEmptyTrue");
-    registerByMethodName("LIST", "applyList", "updateList");
-    registerByMethodName("PROJ", "applyProj");
-    registerByMethodName("FST", "applyFst");
-    registerByMethodName("SND", "applySnd");
-    registerByMethodName("TL", "applyTl");
-    registerByMethodName("TUPLE", "applyTuple", "updateTuple");
+    registerByMethodName(L3Language.L3, "CONS", "applyCons");
+    registerByMethodName(L3Language.L3, "HD", "applyHd");
+    registerByMethodName(L3Language.L3, "IS-EMPTY-FALSE", "applyIsEmptyFalse");
+    registerByMethodName(L3Language.L3, "IS-EMPTY-TRUE", "applyIsEmptyTrue");
+    registerByMethodName(L3Language.L3, "LIST", "applyList", "updateList");
+    registerByMethodName(L3Language.L3, "PROJ", "applyProj");
+    registerByMethodName(L3Language.L3, "FST", "applyFst");
+    registerByMethodName(L3Language.L3, "SND", "applySnd");
+    registerByMethodName(L3Language.L3, "TL", "applyTl");
+    registerByMethodName(L3Language.L3, "TUPLE", "applyTuple", "updateTuple");
     
     // register (VAL) once again to have higher priority than (TUPLE) for guessing
-    registerByMethodName("VAL", "applyValue");
+    registerByMethodName(getRuleByName("VAL").getGroup(), "VAL", "applyValue");
   }
   
   

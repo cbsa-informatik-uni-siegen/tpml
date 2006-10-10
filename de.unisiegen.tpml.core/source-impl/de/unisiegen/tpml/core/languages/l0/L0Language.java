@@ -25,6 +25,19 @@ import de.unisiegen.tpml.core.smallstep.SmallStepProofModel;
  */
 public class L0Language extends AbstractLanguage {
   //
+  // Constants
+  //
+  
+  /**
+   * The group id for proof rules of this language.
+   * 
+   * @see de.unisiegen.tpml.core.AbstractProofRule#getGroup()
+   */
+  public static final int L0 = 0;
+  
+  
+  
+  //
   // Constructor
   //
   

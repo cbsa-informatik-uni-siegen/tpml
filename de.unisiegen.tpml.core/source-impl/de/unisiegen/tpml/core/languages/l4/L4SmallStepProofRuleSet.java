@@ -43,15 +43,15 @@ public class L4SmallStepProofRuleSet extends L3SmallStepProofRuleSet {
     super(language);
     
     // register small step rules
-    register("ASSIGN", true);
-    register("COND-1-EVAL", false);
-    register("COND-1-FALSE", true);
-    register("COND-1-TRUE", true);
-    register("DEREF", true);
-    register("REF", true);
-    register("SEQ-EVAL", false);
-    register("SEQ-EXEC", true);
-    register("WHILE", true);
+    register(L4Language.L4, "ASSIGN", true);
+    register(L4Language.L4, "COND-1-EVAL", false);
+    register(L4Language.L4, "COND-1-FALSE", true);
+    register(L4Language.L4, "COND-1-TRUE", true);
+    register(L4Language.L4, "DEREF", true);
+    register(L4Language.L4, "REF", true);
+    register(L4Language.L4, "SEQ-EVAL", false);
+    register(L4Language.L4, "SEQ-EXEC", true);
+    register(L4Language.L4, "WHILE", true);
   }
   
   

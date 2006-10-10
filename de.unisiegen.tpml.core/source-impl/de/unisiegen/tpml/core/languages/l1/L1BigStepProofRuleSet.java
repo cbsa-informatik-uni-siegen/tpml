@@ -52,10 +52,10 @@ public class L1BigStepProofRuleSet extends L0BigStepProofRuleSet {
     super(language);
 
     // register the big step rules (order is important for guessing!)
-    registerByMethodName("COND-FALSE", "applyCond", "updateCondFalse");
-    registerByMethodName("COND-TRUE", "applyCond", "updateCondTrue");
-    registerByMethodName("LET", "applyLet", "updateLet");
-    registerByMethodName("OP", "applyOp");
+    registerByMethodName(L1Language.L1, "COND-FALSE", "applyCond", "updateCondFalse");
+    registerByMethodName(L1Language.L1, "COND-TRUE", "applyCond", "updateCondTrue");
+    registerByMethodName(L1Language.L1, "LET", "applyLet", "updateLet");
+    registerByMethodName(L1Language.L1, "OP", "applyOp");
   }
   
   

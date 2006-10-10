@@ -36,9 +36,9 @@ public class L4TypeCheckerProofRuleSet extends L3TypeCheckerProofRuleSet {
     super(language);
     
     // register the additional type rules
-    registerByMethodName("COND-1", "applyCond1");
-    registerByMethodName("SEQ", "applySeq");
-    registerByMethodName("WHILE", "applyWhile");
+    registerByMethodName(L4Language.L4, "COND-1", "applyCond1");
+    registerByMethodName(L4Language.L4, "SEQ", "applySeq");
+    registerByMethodName(L4Language.L4, "WHILE", "applyWhile");
   }
   
   

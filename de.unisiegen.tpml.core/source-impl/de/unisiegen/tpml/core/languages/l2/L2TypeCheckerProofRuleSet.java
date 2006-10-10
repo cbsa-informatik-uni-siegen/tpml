@@ -34,9 +34,9 @@ public class L2TypeCheckerProofRuleSet extends L1TypeCheckerProofRuleSet {
     super(language);
     
     // register the additional type rules
-    registerByMethodName("AND", "applyAnd");
-    registerByMethodName("REC", "applyRec");
-    registerByMethodName("OR", "applyOr");
+    registerByMethodName(L2Language.L2, "AND", "applyAnd");
+    registerByMethodName(L2Language.L2, "REC", "applyRec");
+    registerByMethodName(L2Language.L2, "OR", "applyOr");
   }
   
   

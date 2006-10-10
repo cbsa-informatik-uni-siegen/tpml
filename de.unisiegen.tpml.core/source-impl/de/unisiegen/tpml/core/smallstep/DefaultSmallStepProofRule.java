@@ -35,6 +35,8 @@ final class DefaultSmallStepProofRule extends AbstractProofRule implements Small
    * If <code>axiom</code> is <code>true</code>, the new rule has no premises, otherwise it has
    * exactly one premise.
    * 
+   * @param group the group id of the small step rule, see the description of the
+   *              {@link AbstractProofRule#getGroup()} method for details.
    * @param name the name of the rule.
    * @param axiom <code>true</code> if the rule has no premises.
    * 
@@ -42,8 +44,8 @@ final class DefaultSmallStepProofRule extends AbstractProofRule implements Small
    * 
    * @see #isAxiom()
    */
-  DefaultSmallStepProofRule(String name, boolean axiom) {
-    super(name);
+  DefaultSmallStepProofRule(int group, String name, boolean axiom) {
+    super(group, name);
     this.axiom = axiom;
   }
   
@@ -75,7 +77,7 @@ final class DefaultSmallStepProofRule extends AbstractProofRule implements Small
    */
   public SmallStepProofRule toExnRule() {
     if (!isAxiom()) {
-      return new DefaultSmallStepProofRule(getName() + "-EXN", false);
+      return new DefaultSmallStepProofRule(getGroup(), getName() + "-EXN", false);
     }
     else {
       return this;

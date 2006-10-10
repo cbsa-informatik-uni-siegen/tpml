@@ -30,6 +30,19 @@ import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel;
  */
 public class L4Language extends L3Language {
   //
+  // Constants
+  //
+  
+  /**
+   * The group id for proof rules of this language.
+   * 
+   * @see de.unisiegen.tpml.core.AbstractProofRule#getGroup()
+   */
+  public static final int L4 = L3Language.L3 + 1;
+  
+  
+  
+  //
   // Constructor
   //
   

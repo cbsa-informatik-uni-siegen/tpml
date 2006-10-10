@@ -20,14 +20,16 @@ abstract class AbstractTypeCheckerProofRule extends AbstractProofRule implements
   /**
    * Allocates a new <code>AbstractTypeCheckerProofRule</code> of the specified <code>name</code>.
    * 
+   * @param group the group id of the type rule, see the description of the
+   *              {@link AbstractProofRule#getGroup()} method for details.
    * @param name the name of the type rule to allocate.
    *
    * @throws NullPointerException if <code>name</code> is <code>null</code>.
    * 
    * @see AbstractProofRule#AbstractProofRule(String)
    */
-  AbstractTypeCheckerProofRule(String name) {
-    super(name);
+  AbstractTypeCheckerProofRule(int group, String name) {
+    super(group, name);
   }
   
   

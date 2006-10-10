@@ -38,11 +38,11 @@ public class L2BigStepProofRuleSet extends L1BigStepProofRuleSet {
     super(language);
     
     // register the big step rules (order is important for guessing!)
-    registerByMethodName("AND-FALSE", "applyAnd", "updateAndFalse");
-    registerByMethodName("AND-TRUE", "applyAnd", "updateAndTrue");
-    registerByMethodName("UNFOLD", "applyUnfold", "updateUnfold");
-    registerByMethodName("OR-FALSE", "applyOr", "updateOrFalse");
-    registerByMethodName("OR-TRUE", "applyOr", "updateOrTrue");
+    registerByMethodName(L2Language.L2, "AND-FALSE", "applyAnd", "updateAndFalse");
+    registerByMethodName(L2Language.L2, "AND-TRUE", "applyAnd", "updateAndTrue");
+    registerByMethodName(L2Language.L2, "UNFOLD", "applyUnfold", "updateUnfold");
+    registerByMethodName(L2Language.L2, "OR-FALSE", "applyOr", "updateOrFalse");
+    registerByMethodName(L2Language.L2, "OR-TRUE", "applyOr", "updateOrTrue");
   }
   
   

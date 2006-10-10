@@ -44,11 +44,11 @@ public class L4BigStepProofRuleSet extends L3BigStepProofRuleSet {
     super(language);
     
     // register the big step rules (order is important for guessing!)
-    registerByMethodName("ASSIGN", "applyAssign");
-    registerByMethodName("DEREF", "applyDeref");
-    registerByMethodName("REF", "applyRef");
-    registerByMethodName("SEQ", "applySeq", "updateSeq");
-    registerByMethodName("WHILE", "applyWhile", "updateWhile");
+    registerByMethodName(L4Language.L4, "ASSIGN", "applyAssign");
+    registerByMethodName(L4Language.L4, "DEREF", "applyDeref");
+    registerByMethodName(L4Language.L4, "REF", "applyRef");
+    registerByMethodName(L4Language.L4, "SEQ", "applySeq", "updateSeq");
+    registerByMethodName(L4Language.L4, "WHILE", "applyWhile", "updateWhile");
   }
   
   

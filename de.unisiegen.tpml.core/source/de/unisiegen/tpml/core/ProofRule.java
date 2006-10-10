@@ -8,10 +8,19 @@ package de.unisiegen.tpml.core;
  * 
  * @see de.unisiegen.tpml.core.ProofRuleSet
  */
-public interface ProofRule {
+public interface ProofRule extends Comparable<ProofRule> {
   //
   // Accessors
   //
+  
+  /**
+   * Returns the group to which this proof rule belongs. The group is an identifier used to
+   * sort the rules when displaying them to the user. The user interface should simply sort
+   * the rules by group and name, adding a separator between the different groups.
+   * 
+   * @return the group id for this proof rule.
+   */
+  public int getGroup();
   
   /**
    * Returns the user visible name of the proof rule, without the parenthesis. For example for the

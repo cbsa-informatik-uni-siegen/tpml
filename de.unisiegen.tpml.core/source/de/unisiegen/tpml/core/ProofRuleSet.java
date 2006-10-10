@@ -28,6 +28,9 @@ public interface ProofRuleSet extends Iterable<ProofRule> {
   /**
    * Returns an array with all <code>ProofRule</code>s in this set of proof rules.
    * 
+   * The returned array is sorted using the sort order defined by the {@link ProofRule}s
+   * implementation of the {@link Comparable} interface.
+   * 
    * @return an array with all <code>ProofRule</code>s.
    * 
    * @see ProofRule

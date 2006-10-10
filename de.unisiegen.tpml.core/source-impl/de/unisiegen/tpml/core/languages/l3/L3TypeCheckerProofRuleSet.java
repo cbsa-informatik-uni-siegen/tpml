@@ -54,11 +54,11 @@ public class L3TypeCheckerProofRuleSet extends L2TypeCheckerProofRuleSet {
     unregister("ID");
     
     // register the additional type rules
-    registerByMethodName("LIST", "applyList");
-    registerByMethodName("P-CONST", "applyPConst");
-    registerByMethodName("P-ID", "applyPId");
-    registerByMethodName("P-LET", "applyPLet", "updatePLet");
-    registerByMethodName("TUPLE", "applyTuple");
+    registerByMethodName(L3Language.L3, "LIST", "applyList");
+    registerByMethodName(L3Language.L3, "P-CONST", "applyPConst");
+    registerByMethodName(L3Language.L3, "P-ID", "applyPId");
+    registerByMethodName(L3Language.L3, "P-LET", "applyPLet", "updatePLet");
+    registerByMethodName(L3Language.L3, "TUPLE", "applyTuple");
   }
   
   
