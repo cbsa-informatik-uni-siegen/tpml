@@ -274,6 +274,9 @@ public class FileWizard extends javax.swing.JDialog {
             if (language != null){
             dispose();
             }
+        } else if (evt.getKeyCode() == KeyEvent.VK_ESCAPE) {
+            language = null;
+            dispose();
         }
     }//GEN-LAST:event_languagesListKeyPressed
 

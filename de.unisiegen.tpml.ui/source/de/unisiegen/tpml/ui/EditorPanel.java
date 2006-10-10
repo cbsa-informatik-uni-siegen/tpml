@@ -52,8 +52,10 @@ public class EditorPanel extends javax.swing.JPanel {
 	private static final long serialVersionUID = -272175525193942130L;
 
 	/** Creates new form EditorPanel */
-	public EditorPanel(Language language) {
+	public EditorPanel(Language language, MainWindow window) {
 		initComponents();
+
+		this.window = window;
 		// setting the default button states
 		// TODO maybe write method for this
 		nextButton.setVisible(false);
@@ -92,75 +94,78 @@ public class EditorPanel extends javax.swing.JPanel {
 	// <editor-fold defaultstate="collapsed" desc=" Generated Code
 	// <editor-fold defaultstate="collapsed" desc=" Generated Code
 	// <editor-fold defaultstate="collapsed" desc=" Generated Code
-    // <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:initComponents
-    private void initComponents() {
-        jSeparator1 = new javax.swing.JSeparator();
-        editorToolBar = new javax.swing.JToolBar();
-        codeButton = new javax.swing.JToggleButton();
-        smallstepButton = new javax.swing.JToggleButton();
-        bigstepButton = new javax.swing.JToggleButton();
-        typecheckerButton = new javax.swing.JToggleButton();
-        actionToolBar = new javax.swing.JToolBar();
-        nextButton = new javax.swing.JButton();
-        editorPanel = new javax.swing.JPanel();
+	// <editor-fold defaultstate="collapsed" desc=" Generated Code
+	// ">//GEN-BEGIN:initComponents
+	private void initComponents() {
+		jSeparator1 = new javax.swing.JSeparator();
+		editorToolBar = new javax.swing.JToolBar();
+		codeButton = new javax.swing.JToggleButton();
+		smallstepButton = new javax.swing.JToggleButton();
+		bigstepButton = new javax.swing.JToggleButton();
+		typecheckerButton = new javax.swing.JToggleButton();
+		actionToolBar = new javax.swing.JToolBar();
+		nextButton = new javax.swing.JButton();
+		editorPanel = new javax.swing.JPanel();
 
-        setLayout(new java.awt.BorderLayout());
+		setLayout(new java.awt.BorderLayout());
 
-        codeButton.setText("Source");
-        codeButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                codeButtonActionPerformed(evt);
-            }
-        });
+		codeButton.setText("Source");
+		codeButton.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				codeButtonActionPerformed(evt);
+			}
+		});
 
-        editorToolBar.add(codeButton);
+		editorToolBar.add(codeButton);
 
-        smallstepButton.setText("Small Step");
-        smallstepButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                smallstepButtonActionPerformed(evt);
-            }
-        });
+		smallstepButton.setText("Small Step");
+		smallstepButton.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				smallstepButtonActionPerformed(evt);
+			}
+		});
 
-        editorToolBar.add(smallstepButton);
+		editorToolBar.add(smallstepButton);
 
-        bigstepButton.setText("Big Step");
-        bigstepButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bigstepButtonActionPerformed(evt);
-            }
-        });
+		bigstepButton.setText("Big Step");
+		bigstepButton.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				bigstepButtonActionPerformed(evt);
+			}
+		});
 
-        editorToolBar.add(bigstepButton);
+		editorToolBar.add(bigstepButton);
 
-        typecheckerButton.setText("Type Checker");
-        typecheckerButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                typecheckerButtonActionPerformed(evt);
-            }
-        });
+		typecheckerButton.setText("Type Checker");
+		typecheckerButton
+				.addActionListener(new java.awt.event.ActionListener() {
+					public void actionPerformed(java.awt.event.ActionEvent evt) {
+						typecheckerButtonActionPerformed(evt);
+					}
+				});
 
-        editorToolBar.add(typecheckerButton);
+		editorToolBar.add(typecheckerButton);
 
-        nextButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/next24.png")));
-        nextButton.setToolTipText("Guess");
-        nextButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                nextButtonActionPerformed(evt);
-            }
-        });
+		nextButton.setIcon(new javax.swing.ImageIcon(getClass().getResource(
+				"/de/unisiegen/tpml/ui/icons/next24.png")));
+		nextButton.setToolTipText("Guess");
+		nextButton.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				nextButtonActionPerformed(evt);
+			}
+		});
 
-        actionToolBar.add(nextButton);
+		actionToolBar.add(nextButton);
 
-        editorToolBar.add(actionToolBar);
+		editorToolBar.add(actionToolBar);
 
-        add(editorToolBar, java.awt.BorderLayout.NORTH);
+		add(editorToolBar, java.awt.BorderLayout.NORTH);
 
-        editorPanel.setLayout(new java.awt.BorderLayout());
+		editorPanel.setLayout(new java.awt.BorderLayout());
 
-        add(editorPanel, java.awt.BorderLayout.CENTER);
+		add(editorPanel, java.awt.BorderLayout.CENTER);
 
-    }// </editor-fold>//GEN-END:initComponents
+	}// </editor-fold>//GEN-END:initComponents
 
 	private void nextButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_nextButtonActionPerformed
 		// TODO add your handling code here:
@@ -198,19 +203,30 @@ public class EditorPanel extends javax.swing.JPanel {
 		code.getEditor().requestFocus();
 	}// GEN-LAST:event_codeButtonActionPerformed
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JToolBar actionToolBar;
-    private javax.swing.JToggleButton bigstepButton;
-    private javax.swing.JToggleButton codeButton;
-    private javax.swing.JPanel editorPanel;
-    private javax.swing.JToolBar editorToolBar;
-    private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JButton nextButton;
-    private javax.swing.JToggleButton smallstepButton;
-    private javax.swing.JToggleButton typecheckerButton;
-    // End of variables declaration//GEN-END:variables
+	// Variables declaration - do not modify//GEN-BEGIN:variables
+	private javax.swing.JToolBar actionToolBar;
+
+	private javax.swing.JToggleButton bigstepButton;
+
+	private javax.swing.JToggleButton codeButton;
+
+	private javax.swing.JPanel editorPanel;
+
+	private javax.swing.JToolBar editorToolBar;
+
+	private javax.swing.JSeparator jSeparator1;
+
+	private javax.swing.JButton nextButton;
+
+	private javax.swing.JToggleButton smallstepButton;
+
+	private javax.swing.JToggleButton typecheckerButton;
+
+	// End of variables declaration//GEN-END:variables
 
 	private static final Logger logger = Logger.getLogger(EditorPanel.class);
+
+	private MainWindow window;
 
 	/**
 	 * 
@@ -374,8 +390,8 @@ public class EditorPanel extends javax.swing.JPanel {
 		} catch (Exception e) {
 			logger.error("Could not create new BigStepView", e);
 			JOptionPane.showMessageDialog(this,
-					"Cannot run the bigstep for this expression.",
-					"Big Step", JOptionPane.ERROR_MESSAGE);
+					"Cannot run the bigstep for this expression.", "Big Step",
+					JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
@@ -464,7 +480,7 @@ public class EditorPanel extends javax.swing.JPanel {
 	 *            redo status to be set.
 	 */
 	public void setRedoStatus(boolean redoStatus) {
-                boolean oldRedoStatus = this.redoStatus;
+		boolean oldRedoStatus = this.redoStatus;
 		this.redoStatus = redoStatus;
 		firePropertyChange("redoStatus", oldRedoStatus, redoStatus);
 	}
@@ -490,7 +506,7 @@ public class EditorPanel extends javax.swing.JPanel {
 	public void setFileName(String filename) {
 		if (filename == null)
 			throw new NullPointerException("filename is null");
-                String oldFilename = this.filename;
+		String oldFilename = this.filename;
 		this.filename = filename;
 		firePropertyChange("filename", oldFilename, filename);
 	}
@@ -516,8 +532,11 @@ public class EditorPanel extends javax.swing.JPanel {
 	public void setFile(File file) {
 		if (file == null)
 			throw new NullPointerException("File is null");
+		//if (this.file != null) window.removeRecentlyUsed(this.file);
 		this.file = file;
-                setFileName(file.getName());
+		window.addRecentlyUsed(this.file);
+		setFileName(file.getName());
+		
 	}
 
 	/**
@@ -601,91 +620,104 @@ public class EditorPanel extends javax.swing.JPanel {
 	 * @return true if the file could be changed.
 	 */
 	public boolean handleSaveAs() {
-                // setup the file chooser
-                final LanguageFactory factory = LanguageFactory.newInstance();
+		// setup the file chooser
+		final LanguageFactory factory = LanguageFactory.newInstance();
 		JFileChooser chooser = new JFileChooser();
-                chooser.addChoosableFileFilter(new FileFilter() {
-                        @Override public boolean accept(File f) {
-                                if (f.isDirectory()) {
-                                    return true;
-                                }
-                                try {
-                                        factory.getLanguageByFile(f);
-                                        return true;
-                                }
-                                catch (NoSuchLanguageException e) {
-                                        return false;
-                                }
-                        }
-                        @Override public String getDescription() {
-                                Language[] languages = factory.getAvailableLanguages();
-                                StringBuilder builder = new StringBuilder(128);
-                                builder.append("Source Files (");
-                                for (int n = 0; n < languages.length; ++n) {
-                                        if (n > 0) {
-                                                builder.append("; ");
-                                        }
-                                        builder.append("*.");
-                                        builder.append(languages[n].getName().toLowerCase());
-                                }
-                                builder.append(')');
-                                return builder.toString();
-                        }
-                });
-                chooser.setAcceptAllFileFilterUsed(false);
+		chooser.addChoosableFileFilter(new FileFilter() {
+			@Override
+			public boolean accept(File f) {
+				if (f.isDirectory()) {
+					return true;
+				}
+				try {
+					factory.getLanguageByFile(f);
+					return true;
+				} catch (NoSuchLanguageException e) {
+					return false;
+				}
+			}
 
-                // determine the file name
-                File outfile;
-                for (;;) {
-                        // run the dialog
-                        int n = chooser.showSaveDialog(getParent());
-                        if (n != JFileChooser.APPROVE_OPTION) {
-                                logger.debug("Save as dialog cancelled");
-                                return false;
-                        }
-                        
-                        // check the extension
-                        File f = chooser.getSelectedFile();
-                        String name = f.getName();
-                        int i = name.lastIndexOf('.');
-                        if (i > 0 && i < name.length()) {
-                            if (!name.substring(i + 1).equalsIgnoreCase(this.language.getName())) {
-                                JOptionPane.showMessageDialog(this, "File name must end with \"." + this.language.getName().toLowerCase() + "\".", "Save", JOptionPane.ERROR_MESSAGE);
-                                continue;
-                            }
-                        }
-                        else {
-                            name = name + "." + this.language.getName().toLowerCase();
-                        }
-                        
-                        // try to create the new file
-                        try {
-                                outfile = new File(f.getParent(), name);
-                                if (!outfile.createNewFile()) {
-                                        // TODO: Christoph, this doesn't work propertly!
-                                        int j = JOptionPane.showConfirmDialog(this, "The file \"" + outfile.getName() + "\" already exists. Do you want to overwrite it?", "Overwrite", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
-                                        if (j == JFileChooser.CANCEL_OPTION) {
-                                                logger.debug("Cancelled overwrite of \"" + outfile.getName() + "\"");
-                                                return false;
-                                        }
-                                        else if (j == JOptionPane.NO_OPTION) {
-                                                // next try
-                                               continue;
-                                        }
-                                }
-                
-                                // save to the new file
-                                setFile(outfile);
-                                setFileName(outfile.getName());
-                                return writeFile();
-                        } catch (IOException e) {
-                                logger.error("Selected file could not be created.", e);
-                                JOptionPane.showMessageDialog(this,
-                                                "File could not be created.", "Save",
-                                                JOptionPane.ERROR_MESSAGE);
-                                return false;
-                        }
-                }
+			@Override
+			public String getDescription() {
+				Language[] languages = factory.getAvailableLanguages();
+				StringBuilder builder = new StringBuilder(128);
+				builder.append("Source Files (");
+				for (int n = 0; n < languages.length; ++n) {
+					if (n > 0) {
+						builder.append("; ");
+					}
+					builder.append("*.");
+					builder.append(languages[n].getName().toLowerCase());
+				}
+				builder.append(')');
+				return builder.toString();
+			}
+		});
+		chooser.setAcceptAllFileFilterUsed(false);
+
+		// determine the file name
+		File outfile;
+		for (;;) {
+			// run the dialog
+			int n = chooser.showSaveDialog(getParent());
+			if (n != JFileChooser.APPROVE_OPTION) {
+				logger.debug("Save as dialog cancelled");
+				return false;
+			}
+
+			// check the extension
+			File f = chooser.getSelectedFile();
+			String name = f.getName();
+			int i = name.lastIndexOf('.');
+			if (i > 0 && i < name.length()) {
+				if (!name.substring(i + 1).equalsIgnoreCase(
+						this.language.getName())) {
+					JOptionPane.showMessageDialog(this,
+							"File name must end with \"."
+									+ this.language.getName().toLowerCase()
+									+ "\".", "Save", JOptionPane.ERROR_MESSAGE);
+					continue;
+				}
+			} else {
+				name = name + "." + this.language.getName().toLowerCase();
+			}
+
+			// try to create the new file
+			try {
+				outfile = new File(f.getParent(), name);
+				if (!outfile.createNewFile()) {
+					// TODO: Christoph, this doesn't work propertly!
+					int j = JOptionPane
+							.showConfirmDialog(
+									this,
+									"The file \""
+											+ outfile.getName()
+											+ "\" already exists. Do you want to overwrite it?",
+									"Overwrite",
+									JOptionPane.YES_NO_CANCEL_OPTION,
+									JOptionPane.QUESTION_MESSAGE);
+					if (j == JFileChooser.CANCEL_OPTION) {
+						logger.debug("Cancelled overwrite of \""
+								+ outfile.getName() + "\"");
+						return false;
+					} else if (j == JOptionPane.NO_OPTION) {
+						// next try
+						continue;
+					}
+				}
+
+				// save to the new file
+				setFile(outfile);
+				setFileName(outfile.getName());
+				return writeFile();
+			} catch (IOException e) {
+				logger.error("Selected file could not be created.", e);
+				JOptionPane.showMessageDialog(this,
+						"File could not be created.", "Save",
+						JOptionPane.ERROR_MESSAGE);
+				return false;
+			}
+		}
 	}
 
 	/**
@@ -700,7 +732,7 @@ public class EditorPanel extends javax.swing.JPanel {
 			out.flush();
 			out.close();
 			setChanged(false);
-			// setSaveStatus(false);
+
 			return true;
 		} catch (IOException e) {
 			logger.error("Could not write to file", e);

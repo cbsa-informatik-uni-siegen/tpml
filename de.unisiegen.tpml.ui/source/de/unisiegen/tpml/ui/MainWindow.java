@@ -15,8 +15,11 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.lang.reflect.Array;
+import java.util.LinkedList;
 
 import javax.swing.JFileChooser;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 
@@ -51,6 +54,13 @@ public class MainWindow extends javax.swing.JFrame {
 		preferencesItem.setEnabled(false);
 		copyItem.setEnabled(false);
 		pasteItem.setEnabled(false);
+		recentlyUsed0.setVisible(false);
+		recentlyUsed1.setVisible(false);
+		recentlyUsed2.setVisible(false);
+		recentlyUsed3.setVisible(false);
+		
+		beginnerRadioButton.setEnabled(false);
+		advancedRadioButton.setEnabled(false);
 
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
@@ -62,6 +72,8 @@ public class MainWindow extends javax.swing.JFrame {
 				editorStatusChange(evt.getPropertyName(), evt.getNewValue());
 			}
 		};
+		
+		this.recentlyUsed = new LinkedList<File>();
 	}
 
 	/**
@@ -89,6 +101,7 @@ public class MainWindow extends javax.swing.JFrame {
         javax.swing.JMenuItem quitItem;
         javax.swing.JMenu runMenu;
 
+        modeSettingsGroup = new javax.swing.ButtonGroup();
         mainToolbar = new javax.swing.JToolBar();
         jToolBar1 = new javax.swing.JToolBar();
         newButton = new javax.swing.JButton();
@@ -112,6 +125,11 @@ public class MainWindow extends javax.swing.JFrame {
         saveAsItem = new javax.swing.JMenuItem();
         saveAllItem = new javax.swing.JMenuItem();
         fileMenuSerpator2 = new javax.swing.JSeparator();
+        recentlyUsed0 = new javax.swing.JMenuItem();
+        recentlyUsed1 = new javax.swing.JMenuItem();
+        recentlyUsed2 = new javax.swing.JMenuItem();
+        recentlyUsed3 = new javax.swing.JMenuItem();
+        fileMenuSeperator3 = new javax.swing.JSeparator();
         quitItem = new javax.swing.JMenuItem();
         editMenu = new javax.swing.JMenu();
         undoItem = new javax.swing.JMenuItem();
@@ -126,6 +144,9 @@ public class MainWindow extends javax.swing.JFrame {
         smallstepItem = new javax.swing.JMenuItem();
         bigstepItem = new javax.swing.JMenuItem();
         typecheckerItem = new javax.swing.JMenuItem();
+        runMenuSeparator1 = new javax.swing.JSeparator();
+        advancedRadioButton = new javax.swing.JRadioButtonMenuItem();
+        beginnerRadioButton = new javax.swing.JRadioButtonMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setName("mainframe");
@@ -310,6 +331,26 @@ public class MainWindow extends javax.swing.JFrame {
 
         fileMenu.add(fileMenuSerpator2);
 
+        recentlyUsed0.setText("Item");
+        recentlyUsed0.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                recentlyUsed0ActionPerformed(evt);
+            }
+        });
+
+        fileMenu.add(recentlyUsed0);
+
+        recentlyUsed1.setText("Item");
+        fileMenu.add(recentlyUsed1);
+
+        recentlyUsed2.setText("Item");
+        fileMenu.add(recentlyUsed2);
+
+        recentlyUsed3.setText("Item");
+        fileMenu.add(recentlyUsed3);
+
+        fileMenu.add(fileMenuSeperator3);
+
         quitItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, java.awt.event.InputEvent.CTRL_MASK));
         quitItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/empty16.gif")));
         quitItem.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("QuitMnemonic").charAt(0));
@@ -401,7 +442,7 @@ public class MainWindow extends javax.swing.JFrame {
         MainMenuBar.add(editMenu);
 
         runMenu.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("RunMnemonic").charAt(0));
-        runMenu.setText("Run");
+        runMenu.setText("Proof");
         smallstepItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F10, 0));
         smallstepItem.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("SmallStepMnemonic").charAt(0));
         smallstepItem.setText("Small Step");
@@ -435,12 +476,27 @@ public class MainWindow extends javax.swing.JFrame {
 
         runMenu.add(typecheckerItem);
 
+        runMenu.add(runMenuSeparator1);
+
+        modeSettingsGroup.add(advancedRadioButton);
+        advancedRadioButton.setText("Advanced");
+        runMenu.add(advancedRadioButton);
+
+        modeSettingsGroup.add(beginnerRadioButton);
+        beginnerRadioButton.setText("Beginner");
+        runMenu.add(beginnerRadioButton);
+
         MainMenuBar.add(runMenu);
 
         setJMenuBar(MainMenuBar);
 
         setBounds(0, 0, 706, 561);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void recentlyUsed0ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_recentlyUsed0ActionPerformed
+// TODO add your handling code here:
+        openFile(recentlyUsed.get(0));
+    }//GEN-LAST:event_recentlyUsed0ActionPerformed
 
     private void pasteItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pasteItemActionPerformed
 // 
@@ -560,18 +616,27 @@ public class MainWindow extends javax.swing.JFrame {
 	}// GEN-LAST:event_newButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JRadioButtonMenuItem advancedRadioButton;
+    private javax.swing.JRadioButtonMenuItem beginnerRadioButton;
     private javax.swing.JMenuItem bigstepItem;
     private javax.swing.JMenuItem closeItem;
     private javax.swing.JButton copyButton;
     private javax.swing.JMenuItem copyItem;
     private javax.swing.JButton cutButton;
     private javax.swing.JMenuItem cutItem;
+    private javax.swing.JSeparator fileMenuSeperator3;
     private javax.swing.JToolBar jToolBar1;
+    private javax.swing.ButtonGroup modeSettingsGroup;
     private javax.swing.JButton pasteButton;
     private javax.swing.JMenuItem pasteItem;
     private javax.swing.JMenuItem preferencesItem;
+    private javax.swing.JMenuItem recentlyUsed0;
+    private javax.swing.JMenuItem recentlyUsed1;
+    private javax.swing.JMenuItem recentlyUsed2;
+    private javax.swing.JMenuItem recentlyUsed3;
     private javax.swing.JButton redoButton;
     private javax.swing.JMenuItem redoItem;
+    private javax.swing.JSeparator runMenuSeparator1;
     private javax.swing.JMenuItem saveAllItem;
     private javax.swing.JButton saveAsButton;
     private javax.swing.JMenuItem saveAsItem;
@@ -586,10 +651,12 @@ public class MainWindow extends javax.swing.JFrame {
 	private PropertyChangeListener editorPanelListener;
 
 	private static final Logger logger = Logger.getLogger(MainWindow.class);
+	
+	private LinkedList<File> recentlyUsed;
 
 	// Self-defined methods:
 
-        void openFile(File file) {
+       void openFile(File file) {
                 if (file == null) {
                         throw new NullPointerException("file is null");
                 }
@@ -617,18 +684,22 @@ public class MainWindow extends javax.swing.JFrame {
                                         buffer.append((char) onechar);
                                 }
 
-                                editorPanel = new EditorPanel(language);
+                                editorPanel = new EditorPanel(language, this);
                                 tabbedPane.add(editorPanel);
 
                                 editorPanel.setFileName(file.getName());
                                 editorPanel.setEditorText(buffer.toString());
                                 editorPanel.setFile(file);
                                 editorPanel.addPropertyChangeListener(editorPanelListener);
+                                //addRecentlyUsed(file);
                         }
                         
                         this.tabbedPane.setSelectedComponent(editorPanel);
                         setGeneralStates(true);
                         updateEditorStates(editorPanel);
+                        
+
+                        
 		}
                 catch (NoSuchLanguageException e) {
 			logger.error("Language does not exist.", e);
@@ -658,6 +729,9 @@ public class MainWindow extends javax.swing.JFrame {
 		saveAllItem.setEnabled(state);
 		closeItem.setEnabled(state);
 		cutItem.setEnabled(state);
+		advancedRadioButton.setEnabled(state);
+		beginnerRadioButton.setEnabled(state);
+		beginnerRadioButton.setSelected(state);
 
 		setUndoState(state);
 		setRedoState(state);
@@ -688,7 +762,7 @@ public class MainWindow extends javax.swing.JFrame {
 
 	private void updateEditorStates(EditorPanel editor) {
                 if (editor == null) {
-                        throw new NullPointerException("editor is null");
+                        setGeneralStates(false);
                 }
 		if (getActiveEditor() == null) {
 			setGeneralStates(false);
@@ -700,6 +774,44 @@ public class MainWindow extends javax.swing.JFrame {
 			setChangeState(editor.isChanged());
 		}
 	}
+	
+	private void updateRecentlyUsed(){
+		int length = recentlyUsed.size();
+		System.out.println(length);
+		if (length > 4) {
+			length = 4;
+			logger.error("Error: The list of recently used files is larger than four.");
+		} 
+		for (int i = 0 ; i < length ; i++){
+			JMenuItem item = getRecentItem(i);
+
+			item.setEnabled(true);
+			item.setVisible(true);
+			item.setText(recentlyUsed.get(i).getPath());
+			
+		}
+		
+	}
+	
+	private JMenuItem getRecentItem (int number){
+		switch (number){
+		case 0: return recentlyUsed0;
+		case 1: return recentlyUsed1;
+		case 2: return recentlyUsed2;
+		case 3: return recentlyUsed3;
+		default: return null;
+		}
+	}
+	
+	public void addRecentlyUsed (File file){
+		recentlyUsed.addFirst(file);
+        if (recentlyUsed.size() > 4) recentlyUsed.removeLast();
+        updateRecentlyUsed();
+	}
+	
+//	public void removeRecentlyUsed (File file){
+//		recentlyUsed.remove(file);
+//	}
 
 	private void setRedoState(Boolean state) {
 		redoButton.setEnabled(state);
@@ -743,7 +855,7 @@ public class MainWindow extends javax.swing.JFrame {
 		if (language == null)
 			return;
 
-		EditorPanel newEditorPanel = new EditorPanel(language);
+		EditorPanel newEditorPanel = new EditorPanel(language, this);
 		tabbedPane.add(newEditorPanel);
 		tabbedPane.setSelectedComponent(newEditorPanel);
 		newEditorPanel.addPropertyChangeListener(editorPanelListener);
@@ -791,7 +903,7 @@ public class MainWindow extends javax.swing.JFrame {
                         openFile(chooser.getSelectedFile());
                 }
 	}
-
+	
 	private void handleQuit() {
                 for (Component component : this.tabbedPane.getComponents()) {
                         if (component instanceof EditorPanel) {
