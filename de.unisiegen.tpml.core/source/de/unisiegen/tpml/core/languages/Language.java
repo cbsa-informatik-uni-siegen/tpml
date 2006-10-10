@@ -136,4 +136,43 @@ public interface Language {
    * @see LanguageTranslator
    */
   public LanguageTranslator newTranslator();
+  
+  /**
+   * Allocates a new {@link LanguageTypeParser} for this language, using the specified
+   * <code>scanner</code> as token source for the newly allocated parser. The parser can
+   * then be used to parse the tokens returned from the <code>scanner</code> into a valid
+   * {@link de.unisiegen.tpml.core.types.MonoType}.
+   * 
+   * @param scanner the scanner from which to read the tokens.
+   * 
+   * @return a newly allocated type parser for this language.
+   * 
+   * @throws NullPointerException if <code>scanner</code> is <code>null</code>.
+   */
+  public LanguageTypeParser newTypeParser(LanguageTypeScanner scanner);
+  
+  /**
+   * Convenience wrapper for the {@link #newTypeParser(LanguageTypeScanner)} method, which automatically
+   * creates a new {@link LanguageTypeScanner} for the specified <code>reader</code>.
+   * 
+   * @param reader the reader from which to read the source code.
+   * 
+   * @return the newly allocated type parser for this language.
+   * 
+   * @throws NullPointerException if <code>reader</code> is <code>null</code>.
+   */
+  public LanguageTypeParser newTypeParser(Reader reader);
+  
+  /**
+   * Allocates a new {@link LanguageTypeScanner}, a lexer, for this language, which parses tokens that
+   * may appear in a {@link de.unisiegen.tpml.core.types.MonoType}s string representation from the
+   * specified <code>reader</code>.
+   * 
+   * @param reader the {@link Reader} for the source input stream.
+   * 
+   * @return a newly allocated scanner for this language.
+   * 
+   * @throws NullPointerException if <code>reader</code> is <code>null</code>.
+   */
+  public LanguageTypeScanner newTypeScanner(Reader reader);
 }

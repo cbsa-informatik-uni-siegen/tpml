@@ -107,6 +107,7 @@
 	</target>
 	
 	<target name="l1" description="Generates lexer and parser for L1">
+		<!-- Expressions -->
 		<jflex 
     		file="${impldir}/de/unisiegen/tpml/core/languages/l1/l1.flex"
     		destdir="${generateddir}"
@@ -117,6 +118,24 @@
 			package="de.unisiegen.tpml.core.languages.l1"
 			parser="L1AbstractParser"
 			symbols="L1Terminals"
+			interface="yes"
+			debug="no"
+			expect="0"
+			nonterms="no"
+			nopositions="yes"
+			dump_grammar="no" />
+		
+		<!-- Types -->
+		<jflex 
+    		file="${impldir}/de/unisiegen/tpml/core/languages/l1/l1type.flex"
+    		destdir="${generateddir}"
+			nobak="yes" />
+		<cup
+			srcfile="${impldir}/de/unisiegen/tpml/core/languages/l1/l1type.cup"
+			destdir="${generateddir}/de/unisiegen/tpml/core/languages/l1"
+			package="de.unisiegen.tpml.core.languages.l1"
+			parser="L1AbstractTypeParser"
+			symbols="L1TypeTerminals"
 			interface="yes"
 			debug="no"
 			expect="0"
@@ -145,6 +164,7 @@
 	</target>
 	
 	<target name="l3" description="Generates lexer and parser for L3">
+		<!-- Expressions -->
 		<jflex 
     		file="${impldir}/de/unisiegen/tpml/core/languages/l3/l3.flex"
     		destdir="${generateddir}"
@@ -161,9 +181,28 @@
 			nonterms="no"
 			nopositions="yes"
 			dump_grammar="no" />
+
+		<!-- Types -->
+		<jflex 
+    		file="${impldir}/de/unisiegen/tpml/core/languages/l3/l3type.flex"
+    		destdir="${generateddir}"
+			nobak="yes" />
+		<cup
+			srcfile="${impldir}/de/unisiegen/tpml/core/languages/l3/l3type.cup"
+			destdir="${generateddir}/de/unisiegen/tpml/core/languages/l3"
+			package="de.unisiegen.tpml.core.languages.l3"
+			parser="L3AbstractTypeParser"
+			symbols="L3TypeTerminals"
+			interface="yes"
+			debug="no"
+			expect="0"
+			nonterms="no"
+			nopositions="yes"
+			dump_grammar="no" />
 	</target>
 	
 	<target name="l4" description="Generates lexer and parser for L4">
+		<!-- Expressions -->
 		<jflex 
     		file="${impldir}/de/unisiegen/tpml/core/languages/l4/l4.flex"
     		destdir="${generateddir}"
@@ -174,6 +213,24 @@
 			package="de.unisiegen.tpml.core.languages.l4"
 			parser="L4AbstractParser"
 			symbols="L4Terminals"
+			interface="yes"
+			debug="no"
+			expect="0"
+			nonterms="no"
+			nopositions="yes"
+			dump_grammar="no" />
+
+		<!-- Types -->
+		<jflex 
+    		file="${impldir}/de/unisiegen/tpml/core/languages/l4/l4type.flex"
+    		destdir="${generateddir}"
+			nobak="yes" />
+		<cup
+			srcfile="${impldir}/de/unisiegen/tpml/core/languages/l4/l4type.cup"
+			destdir="${generateddir}/de/unisiegen/tpml/core/languages/l4"
+			package="de.unisiegen.tpml.core.languages.l4"
+			parser="L4AbstractTypeParser"
+			symbols="L4TypeTerminals"
 			interface="yes"
 			debug="no"
 			expect="0"

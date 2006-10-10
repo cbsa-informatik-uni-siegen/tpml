@@ -8,9 +8,12 @@ import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.languages.LanguageParser;
 import de.unisiegen.tpml.core.languages.LanguageScanner;
 import de.unisiegen.tpml.core.languages.LanguageTranslator;
+import de.unisiegen.tpml.core.languages.LanguageTypeParser;
+import de.unisiegen.tpml.core.languages.LanguageTypeScanner;
 import de.unisiegen.tpml.core.languages.l0.L0Language;
 import de.unisiegen.tpml.core.smallstep.SmallStepProofModel;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel;
+import de.unisiegen.tpml.core.types.MonoType;
 
 /**
  * This class represents the language L1, which serves as a factory class for L1 related functionality,
@@ -143,7 +146,7 @@ public class L1Language extends L0Language {
   /**
    * {@inheritDoc}
    *
-   * @see languages.Language#newScanner(java.io.Reader)
+   * @see de.unisiegen.tpml.core.languages.Language#newScanner(java.io.Reader)
    */
   @Override
   public LanguageScanner newScanner(Reader reader) {
@@ -161,5 +164,36 @@ public class L1Language extends L0Language {
   @Override
   public LanguageTranslator newTranslator() {
     return new L1LanguageTranslator();
+  }
+  
+  /**
+   * {@inheritDoc}
+   *
+   * @see de.unisiegen.tpml.core.languages.AbstractLanguage#newTypeParser(de.unisiegen.tpml.core.languages.LanguageTypeScanner)
+   */
+  @Override
+  public LanguageTypeParser newTypeParser(LanguageTypeScanner scanner) {
+    if (scanner == null) {
+      throw new NullPointerException("scanner is null");
+    }
+    final lr_parser parser = new L1TypeParser(scanner);
+    return new LanguageTypeParser() {
+      public MonoType parse() throws Exception {
+        return (MonoType)parser.parse().value;
+      }
+    };
+  }
+  
+  /**
+   * {@inheritDoc}
+   *
+   * @see de.unisiegen.tpml.core.languages.AbstractLanguage#newTypeScanner(java.io.Reader)
+   */
+  @Override
+  public LanguageTypeScanner newTypeScanner(Reader reader) {
+    if (reader == null) {
+      throw new NullPointerException("reader is null");
+    }
+    return new L1TypeScanner(reader);
   }
 }

@@ -13,11 +13,15 @@ import de.unisiegen.tpml.core.expressions.Expression;
  * @see de.unisiegen.tpml.core.languages.Language
  */
 public interface LanguageParser {
+  //
+  // Primitives
+  //
+  
   /**
-   * Tries to parse the token stream of the associated scanner and returns the parse {@link Expression}
+   * Tries to parse the token stream of the associated scanner and returns the parsed {@link Expression}
    * if successfull. Otherwise an exception is thrown indicating the parsing error.
    * 
-   * @return the parse {@link Expression}.
+   * @return the parsed {@link Expression}.
    * 
    * @throws Exception if an error occurs while parsing the token stream of the associated scanner.
    */

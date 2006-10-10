@@ -8,9 +8,12 @@ import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.languages.LanguageParser;
 import de.unisiegen.tpml.core.languages.LanguageScanner;
 import de.unisiegen.tpml.core.languages.LanguageTranslator;
+import de.unisiegen.tpml.core.languages.LanguageTypeParser;
+import de.unisiegen.tpml.core.languages.LanguageTypeScanner;
 import de.unisiegen.tpml.core.languages.l2.L2Language;
 import de.unisiegen.tpml.core.smallstep.SmallStepProofModel;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel;
+import de.unisiegen.tpml.core.types.MonoType;
 
 /**
  * This class represents the language L3, which serves as a factory class for L3 related functionality,
@@ -165,5 +168,36 @@ public class L3Language extends L2Language {
   @Override
   public LanguageTranslator newTranslator() {
     return new L3LanguageTranslator();
+  }
+  
+  /**
+   * {@inheritDoc}
+   *
+   * @see de.unisiegen.tpml.core.languages.l1.L1Language#newTypeParser(de.unisiegen.tpml.core.languages.LanguageTypeScanner)
+   */
+  @Override
+  public LanguageTypeParser newTypeParser(LanguageTypeScanner scanner) {
+    if (scanner == null) {
+      throw new NullPointerException("scanner is null");
+    }
+    final lr_parser parser = new L3TypeParser(scanner);
+    return new LanguageTypeParser() {
+      public MonoType parse() throws Exception {
+        return (MonoType)parser.parse().value;
+      }
+    };
+  }
+  
+  /**
+   * {@inheritDoc}
+   *
+   * @see de.unisiegen.tpml.core.languages.l1.L1Language#newTypeScanner(java.io.Reader)
+   */
+  @Override
+  public LanguageTypeScanner newTypeScanner(Reader reader) {
+    if (reader == null) {
+      throw new NullPointerException("reader is null");
+    }
+    return new L3TypeScanner(reader);
   }
 }

@@ -49,4 +49,31 @@ public abstract class AbstractLanguage implements Language {
   public final LanguageParser newParser(Reader reader) {
     return newParser(newScanner(reader));
   }
+  
+  /**
+   * {@inheritDoc}
+   *
+   * @see de.unisiegen.tpml.core.languages.Language#newTypeParser(de.unisiegen.tpml.core.languages.LanguageTypeScanner)
+   */
+  public LanguageTypeParser newTypeParser(LanguageTypeScanner scanner) {
+    throw new UnsupportedOperationException("The language " + getName() + " does not include a type system");
+  }
+  
+  /**
+   * {@inheritDoc}
+   *
+   * @see de.unisiegen.tpml.core.languages.Language#newTypeParser(java.io.Reader)
+   */
+  public final LanguageTypeParser newTypeParser(Reader reader) {
+    return newTypeParser(newTypeScanner(reader));
+  }
+  
+  /**
+   * {@inheritDoc}
+   *
+   * @see de.unisiegen.tpml.core.languages.Language#newTypeScanner(java.io.Reader)
+   */
+  public LanguageTypeScanner newTypeScanner(Reader reader) {
+    throw new UnsupportedOperationException("The language " + getName() + " does not include a type system");
+  }
 }
