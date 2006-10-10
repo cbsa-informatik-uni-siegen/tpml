@@ -50,9 +50,6 @@ public interface ProofModel extends Bean, TreeModel {
    * The user interface should query the rules everytime the user opens the menu/list to
    * apply rules, as the list of rules may have changed after an operation.
    * 
-   * The returned array is sorted using the sort order defined by the {@link ProofRule}s
-   * implementation of the {@link Comparable} interface.
-   * 
    * @return the {@link ProofRule}s to be displayed in the user interface.
    * 
    * @see ProofRuleSet#getRules()

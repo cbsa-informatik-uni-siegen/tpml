@@ -1,5 +1,6 @@
 package de.unisiegen.tpml.core;
 
+import java.util.Arrays;
 import java.util.EventListener;
 import java.util.LinkedList;
 
@@ -144,7 +145,9 @@ public abstract class AbstractProofModel extends AbstractBean implements ProofMo
    * @see ProofModel#getRules()
    */
   public ProofRule[] getRules() {
-    return this.ruleSet.getRules();
+    ProofRule[] rules = this.ruleSet.getRules();
+    Arrays.sort(rules);
+    return rules;
   }
 
   

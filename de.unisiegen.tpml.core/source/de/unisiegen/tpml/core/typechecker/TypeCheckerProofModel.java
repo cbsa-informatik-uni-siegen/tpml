@@ -307,7 +307,7 @@ public final class TypeCheckerProofModel extends AbstractProofModel {
     
     // try to guess the next rule
     logger.debug("Trying to guess a rule for " + node);
-    for (ProofRule rule : getRules()) {
+    for (ProofRule rule : this.ruleSet.getRules()) { // MUST be the getRules() from the ProofRuleSet
       try {
         // try to apply the rule to the specified node
         applyInternal((TypeCheckerProofRule)rule, node, type);
