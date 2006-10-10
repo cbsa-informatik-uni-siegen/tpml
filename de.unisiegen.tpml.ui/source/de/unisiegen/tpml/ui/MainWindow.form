@@ -318,7 +318,7 @@
             <MenuItem class="javax.swing.JMenuItem" name="smallstepItem">
               <Properties>
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
-                  <KeyStroke key="F10"/>
+                  <KeyStroke key="F9"/>
                 </Property>
                 <Property name="mnemonic" type="int" editor="org.netbeans.modules.i18n.form.FormI18nMnemonicEditor">
                   <ResourceString bundle="de/unisiegen/tpml/ui/ui.properties" key="SmallStepMnemonic" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
@@ -359,6 +359,18 @@
             </MenuItem>
             <MenuItem class="javax.swing.JSeparator" name="runMenuSeparator1">
             </MenuItem>
+            <MenuItem class="javax.swing.JRadioButtonMenuItem" name="beginnerRadioButton">
+              <Properties>
+                <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+                  <ComponentRef name="modeSettingsGroup"/>
+                </Property>
+                <Property name="selected" type="boolean" value="true"/>
+                <Property name="text" type="java.lang.String" value="Beginner"/>
+              </Properties>
+              <Events>
+                <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="beginnerRadioButtonItemStateChanged"/>
+              </Events>
+            </MenuItem>
             <MenuItem class="javax.swing.JRadioButtonMenuItem" name="advancedRadioButton">
               <Properties>
                 <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
@@ -366,14 +378,9 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="Advanced"/>
               </Properties>
-            </MenuItem>
-            <MenuItem class="javax.swing.JRadioButtonMenuItem" name="beginnerRadioButton">
-              <Properties>
-                <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
-                  <ComponentRef name="modeSettingsGroup"/>
-                </Property>
-                <Property name="text" type="java.lang.String" value="Beginner"/>
-              </Properties>
+              <Events>
+                <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="advancedRadioButtonItemStateChanged"/>
+              </Events>
             </MenuItem>
           </SubComponents>
         </Menu>

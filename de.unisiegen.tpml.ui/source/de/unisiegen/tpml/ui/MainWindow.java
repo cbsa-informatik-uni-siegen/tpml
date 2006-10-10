@@ -17,6 +17,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.LinkedList;
+import java.util.prefs.Preferences;
 
 import javax.swing.JFileChooser;
 import javax.swing.JMenuItem;
@@ -30,42 +31,62 @@ import de.unisiegen.tpml.core.languages.LanguageFactory;
 import de.unisiegen.tpml.core.languages.NoSuchLanguageException;
 
 /**
- * //TODO add documentation here.
+ * TODO add documentation here.
  * 
  * @author Christoph Fehling
  * @version $Rev$
  * 
+ * @see de.unisiegen.tpml.ui.Main
  */
 public class MainWindow extends javax.swing.JFrame {
+	//
+	// Constants
+	//
+	
 	/**
 	 * The unique serialization identifier for this class. 
 	 */
 	private static final long serialVersionUID = -3820623104618482450L;
+	
+	/**
+	 * The preferences for the <code>de.unisiegen.tpml.ui</code> package.
+	 */
+	private static final Preferences preferences = Preferences.userNodeForPackage(MainWindow.class);
+	
+	
+	
+	//
+	// Constructor
+	//
 
-	/** Creates new form MainWindow */
+	/**
+	 *  Creates new form <code>MainWindow</code>.
+	 */
 	public MainWindow() {
 		initComponents();
 
-		setTitle("TPML " +Versions.UI);
+		setTitle("TPML " + Versions.UI);
 		// TODO clean up the setting of states
 		setGeneralStates(false);
-		saveItem.setEnabled(false);
-		saveButton.setEnabled(false);
-		preferencesItem.setEnabled(false);
-		copyItem.setEnabled(false);
-		pasteItem.setEnabled(false);
-		recentlyUsed0.setVisible(false);
-		recentlyUsed1.setVisible(false);
-		recentlyUsed2.setVisible(false);
-		recentlyUsed3.setVisible(false);
+		this.saveItem.setEnabled(false);
+		this.saveButton.setEnabled(false);
+		this.preferencesItem.setEnabled(false);
+		this.copyItem.setEnabled(false);
+		this.pasteItem.setEnabled(false);
+		this.recentlyUsed0.setVisible(false);
+		this.recentlyUsed1.setVisible(false);
+		this.recentlyUsed2.setVisible(false);
+		this.recentlyUsed3.setVisible(false);
 		
-		beginnerRadioButton.setEnabled(false);
-		advancedRadioButton.setEnabled(false);
-
+		// apply the last "advanced mode" setting
+		boolean advanced = preferences.getBoolean("advanced", false);
+		this.advancedRadioButton.setSelected(advanced);
+		this.beginnerRadioButton.setSelected(!advanced);
+		
 		addWindowListener(new WindowAdapter() {
-			public void windowClosing(WindowEvent e) {
+			@Override	public void windowClosing(WindowEvent e) {
 				MainWindow.this.handleQuit();
-			};
+			}
 		});
 		this.editorPanelListener = new PropertyChangeListener() {
 			public void propertyChange(PropertyChangeEvent evt) {
@@ -146,8 +167,8 @@ public class MainWindow extends javax.swing.JFrame {
         bigstepItem = new javax.swing.JMenuItem();
         typecheckerItem = new javax.swing.JMenuItem();
         runMenuSeparator1 = new javax.swing.JSeparator();
-        advancedRadioButton = new javax.swing.JRadioButtonMenuItem();
         beginnerRadioButton = new javax.swing.JRadioButtonMenuItem();
+        advancedRadioButton = new javax.swing.JRadioButtonMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setName("mainframe");
@@ -444,7 +465,7 @@ public class MainWindow extends javax.swing.JFrame {
 
         runMenu.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("RunMnemonic").charAt(0));
         runMenu.setText("Proof");
-        smallstepItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F10, 0));
+        smallstepItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F9, 0));
         smallstepItem.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("SmallStepMnemonic").charAt(0));
         smallstepItem.setText("Small Step");
         smallstepItem.addActionListener(new java.awt.event.ActionListener() {
@@ -479,13 +500,26 @@ public class MainWindow extends javax.swing.JFrame {
 
         runMenu.add(runMenuSeparator1);
 
+        modeSettingsGroup.add(beginnerRadioButton);
+        beginnerRadioButton.setSelected(true);
+        beginnerRadioButton.setText("Beginner");
+        beginnerRadioButton.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                beginnerRadioButtonItemStateChanged(evt);
+            }
+        });
+
+        runMenu.add(beginnerRadioButton);
+
         modeSettingsGroup.add(advancedRadioButton);
         advancedRadioButton.setText("Advanced");
-        runMenu.add(advancedRadioButton);
+        advancedRadioButton.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                advancedRadioButtonItemStateChanged(evt);
+            }
+        });
 
-        modeSettingsGroup.add(beginnerRadioButton);
-        beginnerRadioButton.setText("Beginner");
-        runMenu.add(beginnerRadioButton);
+        runMenu.add(advancedRadioButton);
 
         MainMenuBar.add(runMenu);
 
@@ -493,6 +527,30 @@ public class MainWindow extends javax.swing.JFrame {
 
         setBounds(0, 0, 706, 561);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void advancedRadioButtonItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_advancedRadioButtonItemStateChanged
+        if (this.advancedRadioButton.isSelected()) {
+            for (Component component : this.tabbedPane.getComponents()) {
+            	if (component instanceof EditorPanel) {
+            		EditorPanel editorPanel = (EditorPanel)component;
+            		// TODO: Set the advanced state of type checker, 
+            		// small step and big step interpreter to true
+            	}
+            }
+        }
+    }//GEN-LAST:event_advancedRadioButtonItemStateChanged
+
+    private void beginnerRadioButtonItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_beginnerRadioButtonItemStateChanged
+        if (this.beginnerRadioButton.isSelected()) {
+          for (Component component : this.tabbedPane.getComponents()) {
+          	if (component instanceof EditorPanel) {
+          		EditorPanel editorPanel = (EditorPanel)component;
+          		// TODO: Set the advanced state of type checker, 
+          		// small step and big step interpreter to false
+          	}
+          }
+        }
+    }//GEN-LAST:event_beginnerRadioButtonItemStateChanged
 
     private void recentlyUsed0ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_recentlyUsed0ActionPerformed
 // TODO add your handling code here:
@@ -730,9 +788,6 @@ public class MainWindow extends javax.swing.JFrame {
 		saveAllItem.setEnabled(state);
 		closeItem.setEnabled(state);
 		cutItem.setEnabled(state);
-		advancedRadioButton.setEnabled(state);
-		beginnerRadioButton.setEnabled(state);
-		beginnerRadioButton.setSelected(state);
 
 		setUndoState(state);
 		setRedoState(state);
@@ -906,38 +961,44 @@ public class MainWindow extends javax.swing.JFrame {
 	}
 	
 	private void handleQuit() {
-                for (Component component : this.tabbedPane.getComponents()) {
-                        if (component instanceof EditorPanel) {
-                                EditorPanel editorPanel = (EditorPanel)component;
-                                if (!editorPanel.isChanged()) {
-                                        continue;
-                                }
-                                
-                                // Custom button text
-                                Object[] options = { "Yes", "No", "Cancel" };
-                                int n = JOptionPane.showOptionDialog(this, editorPanel.getFileName()
-                                                + " contains unsaved changes. Do you want to save?",
-                                                "Save File", JOptionPane.YES_NO_CANCEL_OPTION,
-                                                JOptionPane.QUESTION_MESSAGE, null, options, options[2]);
-                                switch (n) {
-                                case 0: // Save changes
-                                        logger.debug("Quit dialog: YES");
-                                        if (!editorPanel.handleSave()) {
-                                            // abort the quit
-                                            return;
-                                        }
-                                        break;
-                                        
-                                case 1: // Do not save changes
-                                        logger.debug("Quit dialog: NO");
-                                        break;
-                                        
-                                default: // Cancelled
-                                        logger.debug("Quit dialog: CANCEL");
-                                        return;
-                                }
-                        }
-                }
+		// be sure to save all files first
+		for (Component component : this.tabbedPane.getComponents()) {
+			if (component instanceof EditorPanel) {
+				EditorPanel editorPanel = (EditorPanel)component;
+				if (!editorPanel.isChanged()) {
+					continue;
+				}
+				
+				// Custom button text
+				Object[] options = { "Yes", "No", "Cancel" };
+				int n = JOptionPane.showOptionDialog(this, editorPanel.getFileName()
+						+ " contains unsaved changes. Do you want to save?",
+						"Save File", JOptionPane.YES_NO_CANCEL_OPTION,
+						JOptionPane.QUESTION_MESSAGE, null, options, options[2]);
+				switch (n) {
+				case 0: // Save changes
+					logger.debug("Quit dialog: YES");
+					if (!editorPanel.handleSave()) {
+						// abort the quit
+						return;
+					}
+					break;
+					
+				case 1: // Do not save changes
+					logger.debug("Quit dialog: NO");
+					break;
+					
+				default: // Cancelled
+					logger.debug("Quit dialog: CANCEL");
+					return;
+				}
+			}
+		}
+		
+		// remember the settings
+		preferences.putBoolean("advanced", this.advancedRadioButton.isSelected());
+		
+		// terminate the application
 		System.exit(0);
 	}
 
