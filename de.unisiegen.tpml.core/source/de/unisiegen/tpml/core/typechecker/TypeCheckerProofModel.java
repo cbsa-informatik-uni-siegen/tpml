@@ -128,43 +128,41 @@ public final class TypeCheckerProofModel extends AbstractProofModel {
   /**
    * {@inheritDoc}
    *
+   * @see #guessWithType(ProofNode, MonoType)
    * @see de.unisiegen.tpml.core.AbstractProofModel#guess(de.unisiegen.tpml.core.ProofNode)
    */
   @Override
   public void guess(ProofNode node) throws ProofGuessException {
-    if (node == null) {
-      throw new NullPointerException("node is null");
-    }
-    if (node.getSteps().length > 0) {
-      throw new IllegalArgumentException("The node is already completed");
-    }
-    if (!this.root.isNodeRelated(node)) {
-      throw new IllegalArgumentException("The node is invalid for the model");
-    }
-    
-    // try to guess the next rule
-    logger.debug("Trying to guess a rule for " + node);
-    for (ProofRule rule : getRules()) {
-      try {
-        // try to apply the rule to the specified node
-        apply((TypeCheckerProofRule)rule, (DefaultTypeCheckerProofNode)node);
-        logger.debug("Successfully applied (" + rule + ") to " + node);
-        
-        // yep, we did it
-        return;
-      }
-      catch (ProofRuleException e) {
-        // rule failed to apply... so, next one, please
-        logger.debug("Failed to apply (" + rule + ") to " + node, e);
-        continue;
-      }
-    }
-    
-    // unable to guess next step
-    logger.debug("Failed to find rule to apply to " + node);
-    throw new ProofGuessException(node);
+    guessInternal((DefaultTypeCheckerProofNode)node, null);
   }
-
+  
+  /**
+   * Guesses the next proof step for the specified <code>node</code> using the <code>type</code>
+   * for the <code>node</code>. This method is used for the <tt>"Enter type"</tt> action in the
+   * type checker user interface.
+   * 
+   * The <code>node</code> must not be already proven (see the
+   * {@link ProofNode#isProven()} method for details), otherwise
+   * an {@link IllegalStateException} is thrown.
+   * 
+   * @param node the {@link ProofNode} for which the next proof step should
+   *             be guessed.
+   *             
+   * @throws IllegalArgumentException if the <code>node</code> is invalid for this model.             
+   * @throws IllegalStateException if for some reason <code>node</code> cannot be proven.
+   * @throws NullPointerException if <code>node</code> or <code>type</code> is <code>null</code>.
+   * @throws ProofGuessException if the next proof step could not be guessed.
+   *
+   * @see #guess(ProofNode)
+   * @see #prove(ProofRule, ProofNode)
+   */
+  public void guessWithType(ProofNode node, MonoType type) throws ProofGuessException {
+    if (type == null) {
+      throw new NullPointerException("type is null");
+    }
+    guessInternal((DefaultTypeCheckerProofNode)node, type);
+  }
+  
   /**
    * {@inheritDoc}
    *
@@ -183,7 +181,7 @@ public final class TypeCheckerProofModel extends AbstractProofModel {
     }
     
     // try to apply the rule to the specified node
-    apply((TypeCheckerProofRule)rule, (DefaultTypeCheckerProofNode)node);
+    applyInternal((TypeCheckerProofRule)rule, (DefaultTypeCheckerProofNode)node, null);
   }
   
   
@@ -198,6 +196,8 @@ public final class TypeCheckerProofModel extends AbstractProofModel {
    * 
    * @param rule the type proof rule to apply.
    * @param node the type proof node to which to apply the <code>rule</code>.
+   * @param type the type the user guessed for the <code>node</code> or <code>null</code>
+   *             if the user didn't enter a type.
    * 
    * @throws ProofRuleException if the application of the <code>rule</code> to
    *                            the <code>node</code> failed.
@@ -205,12 +205,12 @@ public final class TypeCheckerProofModel extends AbstractProofModel {
    * @see #guess(ProofNode)
    * @see #prove(ProofRule, ProofNode)
    */
-  private void apply(TypeCheckerProofRule rule, DefaultTypeCheckerProofNode node) throws ProofRuleException {
+  private void applyInternal(TypeCheckerProofRule rule, DefaultTypeCheckerProofNode node, MonoType type) throws ProofRuleException {
     // allocate a new type proof context
     DefaultTypeCheckerProofContext context = new DefaultTypeCheckerProofContext(this);
     try {
       // try to apply the rule to the node
-      context.apply(rule, node);
+      context.apply(rule, node, type);
       
       // check if we are finished
       final TypeCheckerProofNode root = (TypeCheckerProofNode)getRoot();
@@ -248,6 +248,56 @@ public final class TypeCheckerProofModel extends AbstractProofModel {
       // re-throw the exception
       throw e;
     }
+  }
+  
+  /**
+   * Implementation of the {@link #guess(ProofNode)} and {@link #guessWithType(ProofNode, MonoType)}
+   * methods.
+   * 
+   * @param node the proof node for which to guess the next step.
+   * @param type the type that the user entered for this <code>node</code> or <code>null</code> to
+   *             let the type inference algorithm guess the type.
+   * 
+   * @throws IllegalArgumentException if the <code>node</code> is invalid for this model.             
+   * @throws IllegalStateException if for some reason <code>node</code> cannot be proven.
+   * @throws NullPointerException if <code>node</code> is <code>null</code>.
+   * @throws ProofGuessException if the next proof step could not be guessed.
+   *
+   * @see #guess(ProofNode)
+   * @see #guessWithType(ProofNode, MonoType)
+   */
+  private void guessInternal(DefaultTypeCheckerProofNode node, MonoType type) throws ProofGuessException {
+    if (node == null) {
+      throw new NullPointerException("node is null");
+    }
+    if (node.getSteps().length > 0) {
+      throw new IllegalArgumentException("The node is already completed");
+    }
+    if (!this.root.isNodeRelated(node)) {
+      throw new IllegalArgumentException("The node is invalid for the model");
+    }
+    
+    // try to guess the next rule
+    logger.debug("Trying to guess a rule for " + node);
+    for (ProofRule rule : getRules()) {
+      try {
+        // try to apply the rule to the specified node
+        applyInternal((TypeCheckerProofRule)rule, node, type);
+        logger.debug("Successfully applied (" + rule + ") to " + node);
+        
+        // yep, we did it
+        return;
+      }
+      catch (ProofRuleException e) {
+        // rule failed to apply... so, next one, please
+        logger.debug("Failed to apply (" + rule + ") to " + node, e);
+        continue;
+      }
+    }
+    
+    // unable to guess next step
+    logger.debug("Failed to find rule to apply to " + node);
+    throw new ProofGuessException(node);
   }
   
   

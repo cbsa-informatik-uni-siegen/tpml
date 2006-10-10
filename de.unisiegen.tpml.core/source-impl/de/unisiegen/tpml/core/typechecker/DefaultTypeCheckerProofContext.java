@@ -253,6 +253,8 @@ final class DefaultTypeCheckerProofContext implements TypeCheckerProofContext {
    * 
    * @param rule the proof rule to apply to the <code>node</code>.
    * @param node the proof node to which to apply the <code>rule</code>.
+   * @param type the type the user guessed for the <code>node</code> or <code>null</code>
+   *             if the user didn't enter a type.
    * 
    * @throws NullPointerException if <code>rule</code> or <code>node</code> is <code>null</code>.
    * @throws ProofRuleException if the application of the <code>rule</code> to the
@@ -260,12 +262,18 @@ final class DefaultTypeCheckerProofContext implements TypeCheckerProofContext {
    * @throws UnificationException if an error occurs while unifying the type equations that resulted
    *                              from the application of <code>rule</code> to <code>node</code>.
    */
-  void apply(TypeCheckerProofRule rule, TypeCheckerProofNode node) throws ProofRuleException, UnificationException {
+  void apply(TypeCheckerProofRule rule, TypeCheckerProofNode node, MonoType type) throws ProofRuleException, UnificationException {
     // record the proof step for the node
     this.model.contextSetProofNodeRule(this, (DefaultTypeCheckerProofNode)node, rule);
     
     // try to apply the rule to the node
     rule.apply(this, node);
+    
+    // check if the user specified a type
+    if (type != null) {
+      // add an equation for { node.getType() = type }
+      addEquation(node.getType(), type);
+    }
     
     // unify the type equations and apply the substitution to the model
     this.model.contextApplySubstitution(this, this.equations.unify());
