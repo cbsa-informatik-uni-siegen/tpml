@@ -5,7 +5,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.util.LinkedList;
+import java.util.Enumeration;
 
 import javax.swing.Scrollable;
 import javax.swing.SwingUtilities;
@@ -98,19 +98,14 @@ public class BigStepComponent extends AbstractProofComponent implements Scrollab
 	 * @throws ProofGuessException
 	 */
 	public void guess () throws IllegalStateException, ProofGuessException {
-    LinkedList<ProofNode> nodes = new LinkedList<ProofNode>();
-    nodes.add(this.proofModel.getRoot());
-    while (!nodes.isEmpty()) {
-      ProofNode node = nodes.poll();
-      if (node.getSteps().length == 0) {
-      	
-      	this.proofModel.guess(node);
-      	return;
-      }
-      for (int n = 0; n < node.getChildCount(); ++n) {
-        nodes.add(node.getChildAt(n));
-      }
-    }
+		Enumeration<ProofNode> enumeration = this.proofModel.getRoot().postorderEnumeration();
+		while (enumeration.hasMoreElements()) {
+			ProofNode node = enumeration.nextElement();
+			if (!node.isProven()) {
+				this.proofModel.guess(node);
+				return;
+			}
+		}
     throw new IllegalStateException("Unable to find next node");
 
 	}

@@ -11,6 +11,7 @@ import javax.swing.Scrollable;
 import javax.swing.SwingUtilities;
 import javax.swing.event.TreeModelEvent;
 
+import de.unisiegen.tpml.core.ProofGuessException;
 import de.unisiegen.tpml.core.ProofNode;
 import de.unisiegen.tpml.core.smallstep.SmallStepProofModel;
 import de.unisiegen.tpml.core.smallstep.SmallStepProofNode;
@@ -474,20 +475,16 @@ public class SmallStepComponent extends AbstractProofComponent implements Scroll
 		relayout ();
 	}
 	
-	public void guess () {
-		SmallStepProofNode node = (SmallStepProofNode)this.model.getRoot();
-		while (node != null) {
-			try {
-				SmallStepProofNode cNode = node.getFirstChild();
-				node = cNode;
-			} catch (Exception e) { break;}
+	public void guess () throws IllegalStateException, ProofGuessException {
+		Enumeration<ProofNode> enumeration = this.proofModel.getRoot().postorderEnumeration();
+		while (enumeration.hasMoreElements()) {
+			ProofNode node = enumeration.nextElement();
+			if (!node.isProven()) {
+				this.proofModel.guess(node);
+				return;
+			}
 		}
-		if (node == null) {
-			return;
-		}
-		try {
-			this.model.guess(node);
-		} catch (Exception e) { }
+    throw new IllegalStateException("Unable to find next node");
 	}
 	
 	private void jumpToNodeVisible () {
