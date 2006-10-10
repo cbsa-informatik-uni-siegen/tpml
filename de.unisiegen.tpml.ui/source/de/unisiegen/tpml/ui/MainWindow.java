@@ -74,6 +74,7 @@ public class MainWindow extends javax.swing.JFrame {
 		};
 		
 		this.recentlyUsed = new LinkedList<File>();
+		updateRecentlyUsed();
 	}
 
 	/**
@@ -776,7 +777,7 @@ public class MainWindow extends javax.swing.JFrame {
 	}
 	
 	private void updateRecentlyUsed(){
-		int length = recentlyUsed.size();
+		int length = this.recentlyUsed.size();
 		System.out.println(length);
 		if (length > 4) {
 			length = 4;
@@ -787,10 +788,10 @@ public class MainWindow extends javax.swing.JFrame {
 
 			item.setEnabled(true);
 			item.setVisible(true);
-			item.setText(recentlyUsed.get(i).getPath());
+			item.setText("" + (i + 1) + ". " + recentlyUsed.get(i).getName());
 			
 		}
-		
+		this.fileMenuSeperator3.setVisible(length > 0);
 	}
 	
 	private JMenuItem getRecentItem (int number){
