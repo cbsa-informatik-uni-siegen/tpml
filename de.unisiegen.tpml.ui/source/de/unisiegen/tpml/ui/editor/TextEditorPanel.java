@@ -28,6 +28,8 @@ import de.unisiegen.tpml.core.languages.Language;
 import de.unisiegen.tpml.graphics.StyledLanguageDocument;
 import de.unisiegen.tpml.graphics.StyledLanguageEditor;
 import de.unisiegen.tpml.ui.EditorComponent;
+import de.unisiegen.tpml.ui.SideBar;
+import de.unisiegen.tpml.ui.SideBarListener;
 
 /**
  * //TODO add documentation here. TODO this thing really needs cleaning up
@@ -51,6 +53,8 @@ public class TextEditorPanel extends JPanel implements EditorComponent, Clipboar
 	private StyledLanguageDocument document;
 
 	private JScrollPane scrollpane;
+	
+	private SideBar			sideBar;
 
 	/**
 	 * The initial content of this file
@@ -90,7 +94,23 @@ public class TextEditorPanel extends JPanel implements EditorComponent, Clipboar
 		editor = new StyledLanguageEditor();
 
 		document = new StyledLanguageDocument(language);
-		scrollpane = new JScrollPane();
+		
+		JPanel compoundPanel = new JPanel ();
+		compoundPanel.setLayout(new BorderLayout ());
+		
+		this.scrollpane = new JScrollPane();
+		compoundPanel.add(this.scrollpane, BorderLayout.CENTER);
+		
+		this.sideBar = new SideBar (this.scrollpane,
+																this.document,
+																this.editor);
+		this.sideBar.addSibeBarListener(new SideBarListener() {
+			public void markText (int left, int right) {
+				TextEditorPanel.this.selectErrorText(left, right);
+			}
+		});
+		compoundPanel.add(this.sideBar, BorderLayout.WEST);
+		
 
 		doclistener = new TextDocumentListener();
 		initialContent = "";
@@ -126,7 +146,11 @@ public class TextEditorPanel extends JPanel implements EditorComponent, Clipboar
 		popup.add(pasteItem);
 		editor.addMouseListener(new PopupListener());
 
-		add(scrollpane, BorderLayout.CENTER);
+		add(compoundPanel, BorderLayout.CENTER);
+	}
+	
+	private void selectErrorText (int left, int right) {
+		this.editor.select(left, right);
 	}
 
 	public boolean isNextStatus() {
