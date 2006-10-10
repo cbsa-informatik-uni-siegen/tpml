@@ -34,30 +34,79 @@ public class BigStepNodeComponent extends JComponent implements TreeNodeComponen
 	 */
 	private static final long serialVersionUID = -2050381804392542081L;
 
+	/**
+	 * The {@link BigStepProofModel} that will get used to apply the 
+	 * actions on.
+	 */
 	private BigStepProofModel														proofModel;
 	
+	/**
+	 * The origin {@link BigStepProofNode}. Contains the information this
+	 * node gives a graphics representation.
+	 */
 	private BigStepProofNode														proofNode;
 	
+	/**
+	 * Contains the information of the size of the Component.
+	 * When {@link #placeElements(int)} is called <i>dimension</i> is
+	 * filled with proppert values.
+	 */
 	private Dimension																		dimension;
 	
+	/**
+	 * Amount of pixels that will be left free between the elements of the
+	 * node.
+	 */
 	private int 																				spacing;
 	
+	/**
+	 * Label that will contain the index at the front.
+	 */
 	private JLabel																			indexLabel;
 	
+	/**
+	 * Component containing the expression and the store.
+	 */
 	private CompoundExpression<Location, Expression>		expression;
 	
+	/**
+	 * Label containing the down-directed double-arrow separating the 
+	 * Expression and the Resul-Expression.
+	 */
 	private JLabel																			downArrowLabel;
 	
+	/**
+	 * Component containing the result-expression and the result-store.
+	 */
 	private CompoundExpression<Location, Expression>		resultExpression;
 	
+	/**
+	 * The Button with its DropDownMenu used to perform the userinteraction.
+	 */
 	private MenuButton																	ruleButton;
-	
+
+	/**
+	 * Label that will be used to show the evaluated rule.
+	 */
 	private JLabel																			ruleLabel;
 	
+	/**
+	 * The "Translate to core syntax" item in the context menu.
+	 */
 	private MenuTranslateItem														menuTranslateItem;
 	
+	/**
+	 * The translator will be used to determine whether the expression 
+	 * contains syntactical sugar.
+	 */
 	private LanguageTranslator													translator;
 
+	/**
+	 * 
+	 * @param node				The node that should be represented
+	 * @param model				The model 
+	 * @param translator  The translator from the model
+	 */
 	public BigStepNodeComponent (BigStepProofNode		node,
 															 BigStepProofModel	model,
 															 LanguageTranslator	translator) {
@@ -131,14 +180,29 @@ public class BigStepNodeComponent extends JComponent implements TreeNodeComponen
 		changeNode ();
 	}
 	
+	/**
+	 * Adds a new {@link BigStepNodeListener} to the <i>SmallStepNodeComponent</i>
+	 * 
+	 * @param listener The listener to be added
+	 */
 	public void addBigStepNodeListener (BigStepNodeListener listener) {
 		this.listenerList.add (BigStepNodeListener.class, listener);
 	}
+	
+	/**
+	 * Removes a {@link BigStepNodeListener} from the <i>SmallStepNodeComponent</i>
+	 * 
+	 * @param listener The listener to be removed.
+	 */
 	
 	public void removeBigStepNodeListener (BigStepNodeListener listener) {
 		this.listenerList.remove(BigStepNodeListener.class, listener);
 	}
 	
+	/**
+	 * Calls the {@link BigStepNodeListener#nodeChanged(BigStepNodeComponent)} of
+	 * all listeners.
+	 */
 	private void fireNodeChanged () {
 		Object[] listeners = this.listenerList.getListenerList();
 		for (int i=0; i<listeners.length; i+=2) {
@@ -150,6 +214,10 @@ public class BigStepNodeComponent extends JComponent implements TreeNodeComponen
 		}
 	}
 
+	/**
+	 * Hndles 
+	 * @param item
+	 */
 	private void handleMenuActivated (JMenuItem item) {
 		if (item instanceof MenuRuleItem) {
 			MenuRuleItem ruleItem = (MenuRuleItem)item;

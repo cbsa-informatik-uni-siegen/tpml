@@ -19,6 +19,12 @@ import de.unisiegen.tpml.graphics.AbstractProofComponent;
 import de.unisiegen.tpml.graphics.renderer.TreeArrowRenderer;
 import de.unisiegen.tpml.graphics.tree.TreeNodeLayout;
 
+/**
+ * Implementation of the graphical representation of the BigStep-Interpreter.
+ * 
+ * @author marcell
+ *
+ */
 public class BigStepComponent extends AbstractProofComponent implements Scrollable {
 
 	/**
@@ -26,14 +32,42 @@ public class BigStepComponent extends AbstractProofComponent implements Scrollab
 	 */
 	private static final long serialVersionUID = 3793854335585017325L;
 
+	/**
+	 * Handles the layouting of the BigStepNodeComponents to a tree. 
+	 */
 	private TreeNodeLayout							treeNodeLayout;
 	
+	/**
+	 * When checking all nodes within the tree, this <i>index</i> is used to
+	 * count them top to bottom.
+	 */
 	private int													index;
 	
+	/**
+	 * Contains the <i>ProofNode</i> where to scroll. <br>
+	 * When new nodes get inserted, the first of those nodes is
+	 * assigned to the jumpNode. When the layout is changing (that
+	 * is always happening when nodes get inserted) the <i>BigStepComponent</i>
+	 * scrolls itself, so that the <i>jumpNode</i> is visible. 
+	 */
 	private ProofNode										jumpNode;
 	
+	
+	/**
+	 * The border around the <i>BigStepComponent</i> in pixels.<br>
+	 * This are 20 pixels per default.
+	 */
 	private int													border;
 	
+	
+	/**
+	 * Constructor.<br>
+	 * <br>
+	 * The first <i>treeContentChanged</i> is called manualy at the end of
+	 * the constructor to get started. 
+	 * 
+	 * @param model The model the <i>BigStepComponent</i> should visualise.
+	 */
 	public BigStepComponent (BigStepProofModel model) {
 		super (model);
 		this.treeNodeLayout 		= new TreeNodeLayout ();
@@ -46,10 +80,23 @@ public class BigStepComponent extends AbstractProofComponent implements Scrollab
 		treeContentChanged();
 	}
 	
+
+	/**
+	 * Sets the spacing of the layout.
+	 * 
+	 * @param spacing The spacing.
+	 */
 	public void setSpacing (int spacing) {
 		this.treeNodeLayout.setSpacing(spacing);
 	}
 	
+	
+	/**
+	 * Guesses the first unprooven node within the tree. 
+	 *
+	 * @throws IllegalStateException
+	 * @throws ProofGuessException
+	 */
 	public void guess () throws IllegalStateException, ProofGuessException {
     LinkedList<ProofNode> nodes = new LinkedList<ProofNode>();
     nodes.add(this.proofModel.getRoot());
@@ -68,6 +115,19 @@ public class BigStepComponent extends AbstractProofComponent implements Scrollab
 
 	}
 	
+	/**
+	 * Checks all nodes below the given node for an UserObject.<br>
+	 * All <i>BigStepProofNode</i>s are provided with an UserObject.
+	 * The UserObject is the <i>BigStepNodeComponent</i>, that is the actual
+	 * node the BigStepGUI works with.<br>
+	 * <br>
+	 * This function goes recursive over the tree and checks every <i>BigStepProofNode</i>
+	 * whether an userObject is already present. If none is there, a new one created.<br>
+	 * <br>
+	 * Here the nodes get there index value.
+	 * 
+	 * @param node The node which tree should be checked. One should only give the rootNode here.
+	 */
 	private void checkForUserObject (BigStepProofNode node) {
 		if (node == null) {
 			return;
@@ -110,6 +170,16 @@ public class BigStepComponent extends AbstractProofComponent implements Scrollab
 	/*
 	 * Implementation of the AbstractProofComponent interface 
 	 */
+	/**
+	 * Assigns the first, newly inserted node to the jumpNode. When
+	 * the next relayout is called, the <i>BigStepComponent</i> is able to
+	 * scroll to a propper position.<br>
+	 * <br>
+	 * Reimplementation of the {@link AbstractProofComponent#nodesInserted(TreeModelEvent)}
+	 * Method.<br>
+	 *  
+	 * @param event 
+	 */
 	@Override
 	protected void nodesInserted(TreeModelEvent event) {
 		if (this.jumpNode != null) {
@@ -133,7 +203,18 @@ public class BigStepComponent extends AbstractProofComponent implements Scrollab
 			this.jumpNode = null;
 		}
 	}
-	
+
+	/**
+	 * Delegates the nodesChanged Events.<br>
+	 * <br>
+	 * Reimplementation of the {@link AbstractProofComponent#nodesChanged(TreeModelEvent)}
+	 * Method.<br> 
+	 * <br>
+	 * The userobject of all <i>ProofNodes</i> that have changed
+	 * is informed about the change.
+	 * 
+	 * @param event The TreeModelEvent
+	 */
 	@Override
 	protected void nodesChanged(TreeModelEvent event) {
 		Object[] children = event.getChildren();
@@ -152,9 +233,6 @@ public class BigStepComponent extends AbstractProofComponent implements Scrollab
 		for (int i=0; i<children.length; i++) {
 			if (children[i] instanceof ProofNode) {
 				BigStepProofNode proofNode = (BigStepProofNode)children[i];
-				if (proofNode.getParent() == null) {
-					System.out.println("rootNode Changed");
-				}
 				
 				BigStepNodeComponent nodeComponent = (BigStepNodeComponent)proofNode.getUserObject();
 				if (nodeComponent != null) {
@@ -164,6 +242,22 @@ public class BigStepComponent extends AbstractProofComponent implements Scrollab
 		}
 	}
 
+	/**
+	 * Remove the userobjects from the nodes that have been removed.<br>
+	 * <br>
+	 * Reimplementation of the {@link AbstractProofComponent#nodesRemoved(TreeModelEvent)}.
+	 * Method.<br>
+	 * <br>
+	 * All nodes that have been removed within the origin <i>ProofTree</i>
+	 * from the <i>ProoModel</i> still need to get rid of thire useObject
+	 * that represents the graphical part of the node.<br>
+	 * <br>
+	 * All those <i>SmallStepNodeComponent</i> objects, that are 
+	 * userobjects from each node, will be removed from this JComponent and
+	 * will be detached from the <i>ProofNode</i>.
+	 * 
+	 * @param event The TreeModelEvent
+	 */
 	@Override
 	protected void nodesRemoved(TreeModelEvent event) {
 		Object[] children = event.getChildren();
@@ -183,6 +277,12 @@ public class BigStepComponent extends AbstractProofComponent implements Scrollab
 		}
 	}
 
+	/**
+	 * Checks if all nodes in the tree have an useobject and riggers a relayout.<br>
+	 * <br>
+	 * Reimplementation of the {@link AbstractProofComponent#treeContentChanged()}
+	 * Method.<br> 
+	 */
 	@Override
 	protected void treeContentChanged() {
 
@@ -195,6 +295,19 @@ public class BigStepComponent extends AbstractProofComponent implements Scrollab
 		
 	}
 
+	/**
+	 * Does the layouting of the tree.<br>
+	 * <br>
+	 * Reimplementation of the {@link AbstractProofComponent#relayout()} Method.<br>
+	 * <br>
+	 * The actual placement of the nodes is done by the {@link TreeNodeLayout.
+	 * The <i>TreeNodeLayout</i> returns the bottom-right-point of the entire
+	 * layout. Size position widened by the border used to determine the size 
+	 * of the component.<br>
+	 * Right after setting the size of the component the jump to a possible new
+	 * node takes place. (See {@link #jumpToNodeVisible()})<br>
+	 * 
+	 */
 	@Override
 	protected void relayout() {
 		if (this.currentlyLayouting) {
@@ -229,7 +342,14 @@ public class BigStepComponent extends AbstractProofComponent implements Scrollab
 	}
 	
 	/**
-	 * 
+	 * Renders the decoration of the BigStepComponent.<br>
+	 * <br>
+	 * Reimplementation of {@link javax.swing.JComponent#paint(java.awt.Graphics)}
+	 * Method.<br>
+	 * <br>
+	 * Simple fills the entire background with white color and
+	 * lets the {@link TreeArrowRenderer#renderArrows(ProofNode, int, Graphics)} 
+	 * render the lines and the arrows of the tree structur.
 	 * @param gc
 	 */
 	@Override
@@ -244,6 +364,9 @@ public class BigStepComponent extends AbstractProofComponent implements Scrollab
 		
 	}
 	
+	/**
+	 * Scroll the vieport so that the first of least added nodes becomes visible.<br>
+	 */
 	private void jumpToNodeVisible () {
 		if (this.jumpNode == null) {
 			return;
