@@ -5,15 +5,21 @@ import java.awt.Color;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
-import javax.swing.JComponent;
 import javax.swing.JScrollPane;
 
 import de.unisiegen.tpml.core.ProofGuessException;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel;
-import de.unisiegen.tpml.graphics.ProofView;
+import de.unisiegen.tpml.graphics.AbstractProofView;
 
-public class TypeCheckerView extends JComponent implements ProofView {
-
+/**
+ * TODO Add documentation here.
+ *
+ * @author Marcell Fischbach
+ * @version $Rev$
+ * 
+ * @see de.unisiegen.tpml.graphics.AbstractProofView
+ */
+public class TypeCheckerView extends AbstractProofView {
 	/**
 	 * 
 	 */
@@ -47,5 +53,4 @@ public class TypeCheckerView extends JComponent implements ProofView {
 	public void guess () throws IllegalStateException, ProofGuessException {
 		this.component.guess ();
 	}
-	
 }

@@ -5,32 +5,71 @@ import java.awt.Color;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
-import javax.swing.JComponent;
 import javax.swing.JScrollPane;
 
 import de.unisiegen.tpml.core.ProofGuessException;
 import de.unisiegen.tpml.core.smallstep.SmallStepProofModel;
-import de.unisiegen.tpml.graphics.ProofView;
+import de.unisiegen.tpml.graphics.AbstractProofView;
 
-public class SmallStepView extends JComponent implements ProofView {
-
+/**
+ * The implementation of the {@link de.unisiegen.tpml.graphics.ProofView} interface for the small
+ * step interpreter user interface.
+ *
+ * @author Marcell Fischbach
+ * @author Benedikt Meurer
+ * @version $Rev$
+ *
+ * @see de.unisiegen.tpml.graphics.AbstractProofView
+ * @see de.unisiegen.tpml.graphics.smallstep.SmallStepComponent
+ */
+public class SmallStepView extends AbstractProofView {
+	//
+	// Constants
+	//
+	
 	/**
-	 * 
+	 * The unique serialization identifier for this class.
 	 */
 	private static final long serialVersionUID = -8529052541636149376L;
 	
+	
+	
+	//
+	// Attributes
+	//
+	
+	/**
+	 * The small step component.
+	 */
 	private SmallStepComponent			component;
 	
+	/**
+	 * The scroll pane for the <code>component</code>.
+	 */
 	private JScrollPane							scrollPane;
 
 	
+	
+	//
+	// Constructor
+	//
+	
+	/**
+	 * Allocates a new <code>SmallStepView</code> for the specified <code>model</code>.
+	 * 
+	 * @param model the proof model for the small step view.
+	 * 
+	 * @throws NullPointerException if <code>model</code> is <code>null</code>.
+	 */
 	public SmallStepView (SmallStepProofModel model) {
-		super ();
+		if (model == null) {
+			throw new NullPointerException("model is null");
+		}
 		
 		setLayout (new BorderLayout ());
 		
 		this.scrollPane = new JScrollPane ();
-		this.component = new SmallStepComponent (model);
+		this.component = new SmallStepComponent (model, isAdvanced());
 		
 		add (this.scrollPane, BorderLayout.CENTER);
 		
@@ -45,9 +84,35 @@ public class SmallStepView extends JComponent implements ProofView {
 		});
 	}
 
-	public void guess() throws IllegalStateException, ProofGuessException {
-		this.component.guess ();
+	
+	
+	//
+	// Accessors
+	//
+	
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see de.unisiegen.tpml.graphics.AbstractProofView#setAdvanced(boolean)
+	 */
+	@Override
+	public void setAdvanced(boolean advanced) {
+		super.setAdvanced(advanced);
+		this.component.setAdvanced(isAdvanced());
 	}
 	
 	
+	
+	//
+	// Primitives
+	//
+	
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see de.unisiegen.tpml.graphics.ProofView#guess()
+	 */
+	public void guess() throws IllegalStateException, ProofGuessException {
+		this.component.guess ();
+	}
 }

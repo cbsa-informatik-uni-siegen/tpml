@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.util.Enumeration;
 
 import javax.swing.Scrollable;
 import javax.swing.SwingUtilities;
@@ -15,6 +16,17 @@ import de.unisiegen.tpml.core.smallstep.SmallStepProofModel;
 import de.unisiegen.tpml.core.smallstep.SmallStepProofNode;
 import de.unisiegen.tpml.graphics.AbstractProofComponent;
 
+/**
+ * TODO Add documentation here.
+ *
+ * @author Marcell Fischbach
+ * @author Benedikt Meurer
+ * @version $Rev$
+ *
+ * @see de.unisiegen.tpml.graphics.AbstractProofComponent
+ * @see de.unisiegen.tpml.graphics.smallstep.SmallStepNodeComponent
+ * @see de.unisiegen.tpml.graphics.smallstep.SmallStepView
+ */
 public class SmallStepComponent extends AbstractProofComponent implements Scrollable {
 
 	/**
@@ -33,7 +45,9 @@ public class SmallStepComponent extends AbstractProofComponent implements Scroll
 	
 	private ProofNode								jumpNode;
 	
-	public SmallStepComponent (SmallStepProofModel proofModel) {
+	private boolean									advanced;
+	
+	public SmallStepComponent (SmallStepProofModel proofModel, boolean advanced) {
 		super (proofModel);
 		
 		
@@ -44,10 +58,52 @@ public class SmallStepComponent extends AbstractProofComponent implements Scroll
 		this.model 		= proofModel;
 		this.border		= 20;
 		this.spacing	= 10;
+		this.advanced = advanced;
 		
 		
 		// trigger the first layouting
 		relayout ();
+	}
+	
+	/**
+	 * Returns <code>true</code> if the small step component is in advanced mode, <code>false</code>
+	 * if its in beginner mode.
+	 * 
+	 * @return <code>true</code> if advanced mode is active.
+	 * 
+	 * @see #setAdvanced(boolean)
+	 */
+	boolean isAdvanced() {
+		return this.advanced;
+	}
+	
+	/**
+	 * If <code>advanced</code> is <code>true</code>, the small step component will display
+	 * only axiom rules in the rule menu, otherwise, in beginner mode, meta rules will also
+	 * be displayed.
+	 * 
+	 * @param advanced <code>true</code> to display only axiom rules.
+	 * 
+	 * @see #isAdvanced()
+	 */
+	void setAdvanced(boolean advanced) {
+		// check if we have a new setting
+		if (this.advanced != advanced) {
+			// remember the new setting
+			this.advanced = advanced;
+		
+			// make sure all nodes have valid user objects
+			checkForUserObject((SmallStepProofNode)this.proofModel.getRoot());
+			
+			// update all active nodes
+			Enumeration<ProofNode> enumeration = this.proofModel.getRoot().postorderEnumeration();
+			while (enumeration.hasMoreElements()) {
+				// tell the component belonging to this node, that we have a new advanced state
+				SmallStepProofNode node = (SmallStepProofNode)enumeration.nextElement();
+				SmallStepNodeComponent component = (SmallStepNodeComponent)node.getUserObject();
+				component.setAdvanced(advanced);
+			}
+		}
 	}
 	
 	@Override
@@ -83,7 +139,7 @@ public class SmallStepComponent extends AbstractProofComponent implements Scroll
 		if (nodeComponent == null) {
 			
 			// create the noded that has not been there yet
-			nodeComponent = new SmallStepNodeComponent (node, this.model, this.translator, this.spacing);
+			nodeComponent = new SmallStepNodeComponent (node, this.model, this.translator, this.spacing, this.advanced);
 			
 			// add the needed listener
 			nodeComponent.addSmallStepNodeListener(new SmallStepNodeListener() {

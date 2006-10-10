@@ -17,6 +17,7 @@ import de.unisiegen.tpml.core.expressions.Location;
 import de.unisiegen.tpml.core.languages.LanguageTranslator;
 import de.unisiegen.tpml.core.smallstep.SmallStepProofModel;
 import de.unisiegen.tpml.core.smallstep.SmallStepProofNode;
+import de.unisiegen.tpml.core.smallstep.SmallStepProofRule;
 import de.unisiegen.tpml.graphics.components.CompoundExpression;
 import de.unisiegen.tpml.graphics.components.MenuButton;
 import de.unisiegen.tpml.graphics.components.MenuButtonListener;
@@ -24,6 +25,15 @@ import de.unisiegen.tpml.graphics.components.MenuGuessItem;
 import de.unisiegen.tpml.graphics.components.MenuRuleItem;
 import de.unisiegen.tpml.graphics.components.MenuTranslateItem;
 
+/**
+ * TODO Add documentation here.
+ *
+ * @author Marcell Fischbach
+ * @author Benedikt Meurer
+ * @version $Rev$
+ *
+ * @see de.unisiegen.tpml.graphics.smallstep.SmallStepComponent
+ */
 public class SmallStepNodeComponent extends JComponent {
 
 	/**
@@ -71,7 +81,8 @@ public class SmallStepNodeComponent extends JComponent {
 	public SmallStepNodeComponent (SmallStepProofNode 	proofNode, 
 																 SmallStepProofModel 	proofModel,
 																 LanguageTranslator		translator,
-																 int spacing) {
+																 int 									spacing,
+																 boolean 							advanced) {
 		
 		this.proofNode 									= proofNode;
 		
@@ -97,28 +108,8 @@ public class SmallStepNodeComponent extends JComponent {
 		this.memoryEnabled 	= this.proofModel.isMemoryEnabled();
 		this.spacing				= 10;
 		
+		this.translateItem = new MenuTranslateItem();
 		
-		/*
-		 * Fill the menu with menuitems
-		 */
-		
-		JPopupMenu menu = new JPopupMenu ();
-		ProofRule[] rules = this.proofModel.getRules();
-		if (rules.length > 0) {
-			int group = rules[0].getGroup();
-			for (ProofRule r : rules) {
-				if (r.getGroup() != group) {
-					menu.addSeparator();
-				}
-				menu.add(new MenuRuleItem (r));
-				group = r.getGroup();
-			}
-		}
-		menu.addSeparator();
-		menu.add(new MenuGuessItem());
-		menu.add(this.translateItem = new MenuTranslateItem());
-		
-		this.rules.getMenuButton().setMenu(menu);
 		
 		this.rules.getMenuButton().addMenuButtonListener(new MenuButtonListener () {
 			public void menuClosed (MenuButton source) { }
@@ -127,7 +118,6 @@ public class SmallStepNodeComponent extends JComponent {
 			}
 		});
 
-		
 		
 		// create the adapters that will be used to determine 
 		// whether an expression needs to get underlined
@@ -155,6 +145,39 @@ public class SmallStepNodeComponent extends JComponent {
 		this.addMouseMotionListener(this.underlineThisAdapter);
 		this.expression.addMouseMotionListener(this.underlineThisAdapter);
 		this.rules.getMenuButton().addMouseMotionListener(this.underlineRuleAdapter);
+		
+		// apply the advanced setting
+		setAdvanced(advanced);
+	}
+	
+	/**
+	 * Sets whether the small step view operates in advanced or beginner mode.
+	 * 
+	 * @param advanced <code>true</code> to display only axiom rules in the menu.
+	 * 
+	 * @see SmallStepComponent#setAdvanced(boolean)
+	 */
+	void setAdvanced(boolean advanced) {
+		// Fill the menu with menuitems
+		JPopupMenu menu = new JPopupMenu ();
+		ProofRule[] rules = this.proofModel.getRules();
+		if (rules.length > 0) {
+			int group = rules[0].getGroup();
+			for (ProofRule r : rules) {
+				if (((SmallStepProofRule)r).isAxiom() || !advanced) {
+					if (r.getGroup() != group) {
+						menu.addSeparator();
+					}
+					menu.add(new MenuRuleItem (r));
+					group = r.getGroup();
+				}
+			}
+		}
+		menu.addSeparator();
+		menu.add(new MenuGuessItem());
+		menu.add(this.translateItem);
+		
+		this.rules.getMenuButton().setMenu(menu);
 	}
 	
 	private void updateUnderlineExpression (Expression expression) {
