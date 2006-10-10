@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Point;
-import java.util.Arrays;
 
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -17,7 +16,6 @@ import de.unisiegen.tpml.core.languages.LanguageTranslator;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode;
 import de.unisiegen.tpml.core.types.Type;
-import de.unisiegen.tpml.graphics.RuleComparator;
 import de.unisiegen.tpml.graphics.components.CompoundExpression;
 import de.unisiegen.tpml.graphics.components.MenuButton;
 import de.unisiegen.tpml.graphics.components.MenuButtonListener;
@@ -105,13 +103,20 @@ public class TypeCheckerNodeComponent extends JComponent  implements TreeNodeCom
 		/*
 		 * Create the PopupMenu for the menu button
 		 */
-		ProofRule[] rule = this.proofModel.getRules().clone ();
-		Arrays.<ProofRule>sort (rule, new RuleComparator ());
-		
 		JPopupMenu menu = new JPopupMenu ();
-		for (int i=0; i<rule.length; i++) {
-			menu.add (new MenuRuleItem (rule[i]));
+
+		ProofRule[] rules = this.proofModel.getRules();
+		if (rules.length > 0) {
+			int group = rules[0].getGroup();
+			for (ProofRule r : rules) {
+				if (r.getGroup() != group) {
+					menu.addSeparator();
+				}
+				menu.add (new MenuRuleItem (r));
+				group = r.getGroup();
+			}
 		}
+		
 		menu.addSeparator();
 		menu.add (new MenuEnterTypeItem ());
 		menu.add (new MenuGuessItem ());
