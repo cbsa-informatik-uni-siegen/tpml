@@ -216,8 +216,21 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel {
     final ProofStep[] completedSteps = node.getSteps();
     
     // check if the node is already completed
-    if (completedSteps.length >= evaluatedSteps.length) {
-      throw new IllegalStateException("Cannot prove an already proven node");
+    if (completedSteps.length == evaluatedSteps.length) {
+      // check if the interpreter is stuck
+      SmallStepProofRule lastRule = (SmallStepProofRule)evaluatedSteps[evaluatedSteps.length - 1].getRule();
+      if (!lastRule.isAxiom()) {
+        // the proof is stuck
+        throw new ProofRuleException(node, rule);
+      }
+      else {
+        // an internal error in the upper layers
+        throw new IllegalStateException("Cannot prove an already proven node");
+      }
+    }
+    else if (completedSteps.length > evaluatedSteps.length) {
+      // this is a bug then
+      throw new IllegalStateException("completedSteps > evaluatedSteps");
     }
     
     // verify the completed steps
