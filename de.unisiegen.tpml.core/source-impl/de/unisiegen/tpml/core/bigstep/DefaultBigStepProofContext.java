@@ -196,16 +196,13 @@ final class DefaultBigStepProofContext implements BigStepProofContext {
     // update all (unproven) super nodes
     for (;;) {
       // determine the parent node
-      BigStepProofNode parentNode = node.getParent();
-      if (parentNode == null) {
+      node = node.getParent();
+      if (node == null) {
         break;
       }
       
       // update the parent node
-      updateNode(parentNode, node);
-      
-      // continue with the next one
-      node = parentNode;
+      updateNode(node);
     }
   }
   
@@ -225,37 +222,56 @@ final class DefaultBigStepProofContext implements BigStepProofContext {
   }
   
   /**
-   * Updates the <code>node</code> after a change to the <code>childNode</code>.
+   * Updates the <code>node</code> after a change to one of its child nodes.
    * This is needed for non-axiom rules, like <b>(APP)</b>, that need to react
    * to proof steps on child nodes. If the <code>node</code> is already proven,
    * no action will be performed.
    * 
-   * If the <code>childNode</code>'s value is an exception, the exception will
-   * be forwarded to the <code>node</code>.
+   * If all child nodes are finished and one of the child nodes resulted in
+   * an exception, the first such exception will be forwarded to the <code>node</code>.
    * 
    * Otherwise the {@link BigStepProofRule#update(BigStepProofContext, BigStepProofNode)}
    * method of the rule that was applied to <code>node</code> will be executed to
    * update the state of the <code>node</code>.
    * 
    * @param node the node to update.
-   * @param childNode the child node that was changed.
+   * 
+   * @see #apply(BigStepProofRule, BigStepProofNode)
    */
-  void updateNode(BigStepProofNode node, BigStepProofNode childNode) {
+  void updateNode(BigStepProofNode node) {
     // skip the node if its already proven
     if (node.isProven()) {
       return;
+    }
+    
+    // check if all child nodes are finished...
+    boolean childrenFinished = true;
+    for (int n = 0; childrenFinished && n < node.getChildCount(); ++n) {
+      childrenFinished = (childrenFinished && node.getChildAt(n).isFinished());
+    }
+
+    // ...and if so, check if any resulted in an exception
+    BigStepProofNode nodeWithExn = null;
+    if (childrenFinished) {
+      for (int n = 0; n < node.getChildCount(); ++n) {
+        nodeWithExn = node.getChildAt(n);
+        if (nodeWithExn.getResult().getValue().isException()) {
+          break;
+        }
+        nodeWithExn = null;
+      }
     }
     
     // determine the rule that was applied to the node
     AbstractBigStepProofRule rule = (AbstractBigStepProofRule)node.getRule();
     
     // check if child node resulted in an exception
-    if (childNode.isProven() && childNode.getResult().getValue().isException()) {
+    if (nodeWithExn != null) {
       // generate an exception rule for the node
-      setProofNodeRule(node, rule.toExnRule(node.getIndex(childNode)));
+      setProofNodeRule(node, rule.toExnRule(node.getIndex(nodeWithExn)));
       
       // forward the exception value
-      setProofNodeResult(node, childNode.getResult());
+      setProofNodeResult(node, nodeWithExn.getResult());
     }
     else {
       // use the rule's update() mechanism

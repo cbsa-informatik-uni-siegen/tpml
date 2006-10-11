@@ -154,7 +154,7 @@ public final class BigStepProofModel extends AbstractInterpreterProofModel {
       
       // check if we are finished
       final BigStepProofNode root = (BigStepProofNode)getRoot();
-      context.addRedoAction(new Runnable() { public void run() { setFinished(root.getResult() != null); } });
+      context.addRedoAction(new Runnable() { public void run() { setFinished(root.isFinished()); } });
       context.addUndoAction(new Runnable() { public void run() { setFinished(false); } });
       
       // determine the redo and undo actions from the context

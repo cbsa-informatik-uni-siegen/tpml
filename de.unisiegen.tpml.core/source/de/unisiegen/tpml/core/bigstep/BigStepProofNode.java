@@ -20,6 +20,16 @@ public interface BigStepProofNode extends InterpreterProofNode {
   //
   
   /**
+   * Returns <code>true</code> if the proof for the sub tree started by this node is finished, otherwise
+   * <code>false</code> is returned to indicate that one or more child nodes are still not proven.
+   * 
+   * @return <code>true</code> if the proof for the sub tree, whose root is this node, is finished.
+   * 
+   * @see ProofNode#isProven()
+   */
+  public boolean isFinished();
+  
+  /**
    * Returns the result of the evaluation of the expression
    * at this node, which is <code>null</code> until the
    * node is proven.

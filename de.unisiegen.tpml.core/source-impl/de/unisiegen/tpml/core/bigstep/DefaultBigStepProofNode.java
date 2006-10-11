@@ -74,6 +74,23 @@ final class DefaultBigStepProofNode extends AbstractInterpreterProofNode impleme
 
   /**
    * {@inheritDoc}
+   *
+   * @see de.unisiegen.tpml.core.bigstep.BigStepProofNode#isFinished()
+   */
+  public boolean isFinished() {
+    if (!isProven()) {
+      return false;
+    }
+    for (int n = 0; n < getChildCount(); ++n) {
+      if (!getChildAt(n).isFinished()) {
+        return false;
+      }
+    }
+    return true;
+  }
+  
+  /**
+   * {@inheritDoc}
    * 
    * A big step proof node is proven if the {@link #result} is non-<code>null</code>.
    * 
