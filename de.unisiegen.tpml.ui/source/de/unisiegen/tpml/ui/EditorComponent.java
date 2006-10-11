@@ -76,4 +76,6 @@ public interface EditorComponent {
 	 * 
 	 */
 	public void handleUndo();
+	
+	public void setAdvanced(boolean status);
 }

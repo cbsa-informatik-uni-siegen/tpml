@@ -437,4 +437,9 @@ public class TextEditorPanel extends JPanel implements EditorComponent, Clipboar
 
 	}
 
+	public void setAdvanced(boolean status) {
+		// the editor does not have an advanced mode so this is ignored.
+		
+	}
+
 }

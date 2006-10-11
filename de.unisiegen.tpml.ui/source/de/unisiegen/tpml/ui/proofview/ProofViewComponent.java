@@ -191,4 +191,8 @@ public class ProofViewComponent extends JComponent implements EditorComponent {
 		}
 		
 	}
+
+	public void setAdvanced(boolean status) {
+		view.setAdvanced(status);
+	}
 }

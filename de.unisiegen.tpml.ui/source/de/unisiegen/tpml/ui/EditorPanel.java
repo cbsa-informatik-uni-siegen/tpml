@@ -65,6 +65,10 @@ public class EditorPanel extends javax.swing.JPanel {
 		typecheckerButton.setVisible(false);
 		//
 		this.language = language;
+		
+		//TODO PREFERENCES get this from the preferences
+		setAdvanced(false);
+		
 		setFileName("newfile" + num + "." + language.getName());
 		num++;
 		editorComponentListener = new PropertyChangeListener() {
@@ -252,6 +256,8 @@ public class EditorPanel extends javax.swing.JPanel {
 	 * static number counting the new files with default name.
 	 */
 	static private int num = 0;
+	
+	private boolean advanced;
 
 	/**
 	 * The language used in this Editor.
@@ -363,7 +369,9 @@ public class EditorPanel extends javax.swing.JPanel {
 					.newSmallStepView(model), model);
 			editorPanel.removeAll();
 			activateFunction(smallstepButton, smallstep);
+			smallstep.setAdvanced(this.advanced);
 			paintAll(getGraphics());
+			
 
 		} catch (Exception e) {
 			logger.error("Could not create new SmallStepView", e);
@@ -385,7 +393,9 @@ public class EditorPanel extends javax.swing.JPanel {
 					.newBigStepView(model), model);
 			editorPanel.removeAll();
 			activateFunction(bigstepButton, bigstep);
+			bigstep.setAdvanced(this.advanced);
 			paintAll(getGraphics());
+			
 
 		} catch (Exception e) {
 			logger.error("Could not create new BigStepView", e);
@@ -408,7 +418,9 @@ public class EditorPanel extends javax.swing.JPanel {
 					.newTypeCheckerView(model), model);
 			editorPanel.removeAll();
 			activateFunction(typecheckerButton, typechecker);
+			typechecker.setAdvanced(this.advanced);
 			paintAll(getGraphics());
+			
 
 		} catch (Exception e) {
 			logger.error("Could not create new TypeCheckerView", e);
@@ -534,7 +546,7 @@ public class EditorPanel extends javax.swing.JPanel {
 			throw new NullPointerException("File is null");
 		//if (this.file != null) window.removeRecentlyUsed(this.file);
 		this.file = file;
-		window.addRecentlyUsed(this.file);
+		window.addRecentlyUsed(new HistoryItem (this.file));
 		setFileName(file.getName());
 		
 	}
@@ -597,6 +609,17 @@ public class EditorPanel extends javax.swing.JPanel {
 	public void setUndoStatus(boolean undoStatus) {
 		firePropertyChange("undoStatus", this.undoStatus, undoStatus);
 		this.undoStatus = undoStatus;
+	}
+	
+	public void setAdvanced(boolean state){
+		if (bigstep != null) bigstep.setAdvanced(state);
+		if (smallstep != null) smallstep.setAdvanced(state);
+		if (typechecker != null) typechecker.setAdvanced(state);
+		this.advanced = state;
+	}
+	
+	public boolean isAdvaced (){
+		return this.advanced;
 	}
 
 	public void handleUndo() {

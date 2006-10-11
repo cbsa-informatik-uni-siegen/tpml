@@ -292,5 +292,10 @@ public class TestEditorComponent extends javax.swing.JPanel implements EditorCom
 
     public void handleUndo() {
     }
+
+	public void setAdvanced(boolean status) {
+		// TODO Auto-generated method stub
+		
+	}
     
 }
