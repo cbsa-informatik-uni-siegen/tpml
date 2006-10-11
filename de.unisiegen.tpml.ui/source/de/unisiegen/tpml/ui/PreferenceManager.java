@@ -10,28 +10,59 @@ import java.util.prefs.Preferences;
  * @author Christoph Fehling
  * @version $Rev$
  * 
+ * @see java.util.prefs.Preferences
  */
 public class PreferenceManager {
+	//
+	// Attributes
+	//
+	
+	/**
+	 * The {@link Preferences} object for the node where the settings are stored and loaded.
+	 * 
+	 * @see Preferences
+	 */
 	private Preferences prefs;
 
+	
+	
+	//
+	// Constructor
+	//
+	
+	/**
+	 * Allocates a new <code>PreferencesManager</code>.
+	 */
 	public PreferenceManager() {
-		prefs = Preferences.userNodeForPackage(this.getClass());
+		this.prefs = Preferences.userNodeForPackage(this.getClass());
 	}
 
+	
+	
+	//
+	// Primitives
+	//
+	
+	/**
+	 * TODO Add documentation here.
+	 */
 	public void setRecentlyUsed(LinkedList<HistoryItem> list) {
 		int length = list.size();
 		for (int i = 0; i < length; i++) {
-			prefs.put("item" + i, list.get(i).getFile().toURI().toASCIIString());
+			this.prefs.put("item" + i, list.get(i).getFile().toURI().normalize().toASCIIString());
 		}
 
 	}
 
+	/**
+	 * TODO Add documentation here.
+	 */
 	public LinkedList<HistoryItem> getRecentlyUsed() {
 		int count = 0;
 		String result = "";
 		LinkedList<HistoryItem> list = new LinkedList<HistoryItem>();
 		while (true) {
-			result = prefs.get("item"+count, "end");
+			result = this.prefs.get("item" + count, "end");
 			if (result.equals("end")) break;
 			
 			list.add(new HistoryItem(new File(result)));
@@ -40,11 +71,17 @@ public class PreferenceManager {
 		return list;
 	}
 	
+	/**
+	 * TODO Add documentation here.
+	 */
 	public void setAdvanced (boolean status){
-		prefs.putBoolean("advanced", status);
+		this.prefs.putBoolean("advanced", status);
 	}
 	
+	/**
+	 * TODO Add documentation here.
+	 */
 	public boolean getAdvanced (){
-		return prefs.getBoolean("advanced", false);
+		return this.prefs.getBoolean("advanced", false);
 	}
 }
