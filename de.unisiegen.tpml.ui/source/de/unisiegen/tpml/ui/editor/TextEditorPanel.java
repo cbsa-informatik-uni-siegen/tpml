@@ -373,6 +373,7 @@ public class TextEditorPanel extends JPanel implements EditorComponent, Clipboar
 
 		public void removeUpdate(DocumentEvent arg0) {
 			try {
+				TextEditorPanel.this.setChanged(true);
 				undohistory.push(currentContent);
 				setRedoStatus(false);
 				setUndoStatus(true);
