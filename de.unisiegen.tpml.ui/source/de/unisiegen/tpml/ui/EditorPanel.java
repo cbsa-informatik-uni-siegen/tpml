@@ -46,7 +46,7 @@ import org.apache.log4j.Logger;
 public class EditorPanel extends javax.swing.JPanel {
 
 	/**
-	 * TODO add documentation here
+	 * The serial version UID
 	 * 
 	 */
 	private static final long serialVersionUID = -272175525193942130L;
@@ -57,13 +57,13 @@ public class EditorPanel extends javax.swing.JPanel {
 
 		this.window = window;
 		// setting the default button states
-		// TODO maybe write method for this
 		nextButton.setVisible(false);
 		actionToolBar.setVisible(false);
 		smallstepButton.setVisible(false);
 		bigstepButton.setVisible(false);
 		typecheckerButton.setVisible(false);
-		//
+		//finished setting the default states
+		
 		this.language = language;
 		
 		//TODO PREFERENCES get this from the preferences
@@ -78,9 +78,7 @@ public class EditorPanel extends javax.swing.JPanel {
 		};
 		initEditor();
 
-		// code.
 
-		// TODO put this into a private class
 		this.addComponentListener(new java.awt.event.ComponentAdapter() {
 			public void componentShown(java.awt.event.ComponentEvent evt) {
 				code.getEditor().requestFocus();
@@ -172,7 +170,7 @@ public class EditorPanel extends javax.swing.JPanel {
 	}// </editor-fold>//GEN-END:initComponents
 
 	private void nextButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_nextButtonActionPerformed
-		// TODO add your handling code here:
+		// 
 		activeEditorComponent.handleNext();
 	}// GEN-LAST:event_nextButtonActionPerformed
 
@@ -323,7 +321,7 @@ public class EditorPanel extends javax.swing.JPanel {
 	}
 
 	/**
-	 * TODO merge these two
+	 * Sets the Component shown in the Editor Panel.
 	 * 
 	 * @param comp
 	 */
@@ -561,14 +559,14 @@ public class EditorPanel extends javax.swing.JPanel {
 		return language;
 	}
 
-	/**
-	 * TODO add documentation here
-	 * 
-	 * @return <code>true</code> if the editor's document was changed.
-	 */
-//	public boolean isChanged() {
-//		return this.changed;
-//	}
+//	/**
+//	 *  add documentation here
+//	 * 
+//	 * @return <code>true</code> if the editor's document was changed.
+//	 */
+////	public boolean isChanged() {
+////		return this.changed;
+////	}
 
 	/**
 	 * Sets the change status of the editor
@@ -640,9 +638,9 @@ public class EditorPanel extends javax.swing.JPanel {
 	};
 
 	/**
-	 * TODO add documentation here
+	 * Saves the active editor component.
 	 * 
-	 * @return true if the file could be changed.
+	 * @return true if the file could be saved.
 	 */
 	public boolean handleSaveAs() {
 		// setup the file chooser
@@ -746,7 +744,7 @@ public class EditorPanel extends javax.swing.JPanel {
 	}
 
 	/**
-	 * TODO add documentation here
+	 * Writes content of the source panel to a specified file.
 	 * 
 	 * @return true if the file could be written
 	 */

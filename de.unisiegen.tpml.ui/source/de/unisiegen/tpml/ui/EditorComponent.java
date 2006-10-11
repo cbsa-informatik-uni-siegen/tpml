@@ -77,5 +77,10 @@ public interface EditorComponent {
 	 */
 	public void handleUndo();
 	
+	/**
+	 * Sets the Mode (Advanced / Beginner for the Component.
+	 * 
+	 * @param status true if mode shall be advanced.
+	 */
 	public void setAdvanced(boolean status);
 }

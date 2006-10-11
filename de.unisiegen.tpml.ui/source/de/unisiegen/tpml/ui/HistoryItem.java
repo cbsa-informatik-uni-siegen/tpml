@@ -12,7 +12,7 @@ import org.apache.log4j.Logger;
 public class HistoryItem extends JMenuItem {
 	
 	/**
-	 * TODO add documentation here
+	 * The serial version UID
 	 * 
 	 */
 	private static final long serialVersionUID = -2506446517048657839L;

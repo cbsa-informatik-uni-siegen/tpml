@@ -33,7 +33,7 @@ import de.unisiegen.tpml.core.languages.LanguageFactory;
 import de.unisiegen.tpml.core.languages.NoSuchLanguageException;
 
 /**
- * TODO add documentation here.
+ * The main programm window.
  * 
  * @author Christoph Fehling
  * @version $Rev$
@@ -67,7 +67,7 @@ public class MainWindow extends javax.swing.JFrame {
 		initComponents();
 
 		setTitle("TPML " + Versions.UI);
-		// TODO clean up the setting of states
+		// Setting the default states
 		setGeneralStates(false);
 		this.saveItem.setEnabled(false);
 		this.saveButton.setEnabled(false);
@@ -75,6 +75,7 @@ public class MainWindow extends javax.swing.JFrame {
 		this.copyItem.setEnabled(false);
 		this.pasteItem.setEnabled(false);
 		this.recentFilesMenu.setVisible(false);
+		// Finished setting the states.
 
 		addWindowListener(new WindowAdapter() {
 			@Override
@@ -95,6 +96,7 @@ public class MainWindow extends javax.swing.JFrame {
 			recentlyUsed.get(i).setWindow(this);
 		}
 		updateRecentlyUsed();
+		
 		// apply the last "advanced mode" setting
 		boolean advanced = prefmanager.getAdvanced();
 		this.advancedRadioButton.setSelected(advanced);
@@ -555,17 +557,17 @@ public class MainWindow extends javax.swing.JFrame {
 	}// GEN-LAST:event_cutItemActionPerformed
 
 	private void saveAllItemActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_saveAllItemActionPerformed
-	// TODO add your handling code here:
+	// 
 		handleSaveAll();
 	}// GEN-LAST:event_saveAllItemActionPerformed
 
 	private void redoItemActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_redoItemActionPerformed
-	// TODO add your handling code here:
+	// 
 		(getActiveEditor()).handleRedo();
 	}// GEN-LAST:event_redoItemActionPerformed
 
 	private void undoItemActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_undoItemActionPerformed
-	// TODO add your handling code here:
+	// 
 		(getActiveEditor()).handleUndo();
 	}// GEN-LAST:event_undoItemActionPerformed
 
@@ -579,7 +581,7 @@ public class MainWindow extends javax.swing.JFrame {
 	}// GEN-LAST:event_openButtonActionPerformed
 
 	private void preferencesItemActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_preferencesItemActionPerformed
-		// TODO add your handling code here:
+		// TODO when the preferences button is enabled handle the click here
 
 	}// GEN-LAST:event_preferencesItemActionPerformed
 
@@ -702,7 +704,7 @@ public class MainWindow extends javax.swing.JFrame {
 		if (file == null) {
 			throw new NullPointerException("file is null");
 		}
-		// TODO clean this up a little bit
+
 		try {
 			// check if we already have an editor panel for the file
 			EditorPanel editorPanel = null;
@@ -736,7 +738,6 @@ public class MainWindow extends javax.swing.JFrame {
 				editorPanel.setEditorText(buffer.toString());
 				editorPanel.setFile(file);
 				editorPanel.addPropertyChangeListener(editorPanelListener);
-				// addRecentlyUsed(file);
 			}
 
 			this.tabbedPane.setSelectedComponent(editorPanel);
@@ -775,7 +776,6 @@ public class MainWindow extends javax.swing.JFrame {
 	}
 
 	private void editorStatusChange(String ident, Object newValue) {
-		try {
 			if (ident.equals("redoStatus")) {
 				setRedoState((Boolean) newValue);
 			} else if (ident.equals("filename")) {
@@ -793,9 +793,6 @@ public class MainWindow extends javax.swing.JFrame {
 				copyItem.setEnabled((Boolean) newValue);
 				pasteItem.setEnabled((Boolean) newValue);
 			}
-		} catch (Exception e) {
-		} // This was no Change we look for therefore we do nothing.
-		// TODO add correct handling
 
 	}
 
@@ -996,16 +993,15 @@ public class MainWindow extends javax.swing.JFrame {
 	}
 
 	/**
-	 * TODO add documentation here
+	 * Closes the active editor window. 
 	 * 
 	 * @return true if the active editor could be closed.
 	 */
 	private boolean handleClose() {
-		// TODO clean this up a little bit
 		EditorPanel selectedEditor = getActiveEditor();
-		//if (selectedEditor.isChanged()) {
+
 		if (selectedEditor.isUndoStatus()) {
-			// Custom button text
+
 			Object[] options = { "Yes", "No", "Cancel" };
 			int n = JOptionPane.showOptionDialog(this, selectedEditor
 					.getFileName()

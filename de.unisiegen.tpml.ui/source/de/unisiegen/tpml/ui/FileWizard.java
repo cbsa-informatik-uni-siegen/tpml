@@ -262,14 +262,14 @@ public class FileWizard extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void languagesListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_languagesListMouseClicked
-// TODO add your handling code here:
+// 
         if (evt.getClickCount() == 2) {
             dispose();
         }
     }//GEN-LAST:event_languagesListMouseClicked
 
     private void languagesListKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_languagesListKeyPressed
-// TODO add your handling code here:
+// 
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             if (language != null){
             dispose();

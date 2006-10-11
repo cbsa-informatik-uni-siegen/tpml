@@ -8,7 +8,7 @@ package de.unisiegen.tpml.ui;
 
 
 /**
- * //TODO add documentation here.
+ * For TESTING only remove this from final version
  *
  * @author Christoph Fehling
  * @version $Rev$ 
@@ -275,12 +275,12 @@ public class TestEditorComponent extends javax.swing.JPanel implements EditorCom
     }
 
 	public void setChangeStatus(boolean changeStatus) {
-		// TODO Auto-generated method stub
+		// 
 		
 	}
 
 	public boolean isChangeStatus() {
-		// TODO Auto-generated method stub
+		// 
 		return false;
 	}
 
@@ -294,7 +294,7 @@ public class TestEditorComponent extends javax.swing.JPanel implements EditorCom
     }
 
 	public void setAdvanced(boolean status) {
-		// TODO Auto-generated method stub
+		// 
 		
 	}
     

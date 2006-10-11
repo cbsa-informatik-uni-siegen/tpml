@@ -32,8 +32,7 @@ import de.unisiegen.tpml.ui.SideBar;
 import de.unisiegen.tpml.ui.SideBarListener;
 
 /**
- * //TODO add documentation here. TODO this thing really needs cleaning up
- * especially the cut copy paste functions...
+ * The Editor displayed in the Source Tab.
  * 
  * @author Christoph Fehling
  * @version $Rev$
@@ -81,7 +80,7 @@ public class TextEditorPanel extends JPanel implements EditorComponent, Clipboar
 	private JPopupMenu popup;
 
 	/**
-	 * TODO add documentation here
+	 * Editor with syntax highlighting and undo/redo history.
 	 */
 	public TextEditorPanel(Language language) {
 		if (language == null)
@@ -213,8 +212,7 @@ public class TextEditorPanel extends JPanel implements EditorComponent, Clipboar
 		try {
 			document.insertString(editor.getCaretPosition(), text, null);
 		} catch (BadLocationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error("Text could not be inserted into document", e);
 		}
 	}
 
@@ -260,7 +258,7 @@ public class TextEditorPanel extends JPanel implements EditorComponent, Clipboar
 	}
 
 	/**
-	 * //TODO add documentation here and clean everything up
+	 * The Next Function is not implemented!
 	 * 
 	 * @author Christoph Fehling
 	 * @version $Rev$
@@ -269,7 +267,6 @@ public class TextEditorPanel extends JPanel implements EditorComponent, Clipboar
 
 	public void handleNext() {
 		// this function is not implemented here
-
 	}
 
 	public void handleRedo() {
