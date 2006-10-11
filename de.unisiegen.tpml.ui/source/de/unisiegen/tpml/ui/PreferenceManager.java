@@ -49,7 +49,7 @@ public class PreferenceManager {
 	public void setRecentlyUsed(LinkedList<HistoryItem> list) {
 		int length = list.size();
 		for (int i = 0; i < length; i++) {
-			this.prefs.put("item" + i, list.get(i).getFile().toURI().normalize().toASCIIString());
+			this.prefs.put("item" + i, list.get(i).getFile().getAbsolutePath());
 		}
 
 	}
