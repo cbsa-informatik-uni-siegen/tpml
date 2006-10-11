@@ -498,6 +498,9 @@
                 <Property name="borderPainted" type="boolean" value="false"/>
                 <Property name="opaque" type="boolean" value="false"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cutButtonActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="copyButton">
               <Properties>
@@ -508,6 +511,9 @@
                 <Property name="borderPainted" type="boolean" value="false"/>
                 <Property name="opaque" type="boolean" value="false"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="copyButtonActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="pasteButton">
               <Properties>
@@ -518,6 +524,9 @@
                 <Property name="borderPainted" type="boolean" value="false"/>
                 <Property name="opaque" type="boolean" value="false"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="pasteButtonActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="undoButton">
               <Properties>

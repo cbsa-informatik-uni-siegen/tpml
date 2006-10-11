@@ -18,6 +18,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
@@ -78,6 +79,10 @@ public class TextEditorPanel extends JPanel implements EditorComponent, Clipboar
 	private boolean changed;
 
 	private JPopupMenu popup;
+	
+	private JMenuItem undoItem;
+	
+	private JMenuItem redoItem;
 
 	/**
 	 * Editor with syntax highlighting and undo/redo history.
@@ -131,15 +136,27 @@ public class TextEditorPanel extends JPanel implements EditorComponent, Clipboar
 		// the popup menu and listeners
 		popup = new JPopupMenu();
 		MenuListener menulistener = new MenuListener();
+		undoItem = new JMenuItem("Undo");
+		redoItem = new JMenuItem("Redo");
+		JSeparator separator = new JSeparator();
 		JMenuItem copyItem = new JMenuItem("Copy");
 		JMenuItem cutItem = new JMenuItem("Cut");
 		JMenuItem pasteItem = new JMenuItem("Paste");
+		undoItem.addActionListener(menulistener);
+		undoItem.setEnabled(false);
+		undoItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/undo16.gif")));
+		redoItem.addActionListener(menulistener);
+		redoItem.setEnabled(false);
+		redoItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/redo16.gif")));
 		copyItem.addActionListener(menulistener);
 		copyItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/copy16.gif")));
 		cutItem.addActionListener(menulistener);
 		cutItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/cut16.gif")));
 		pasteItem.addActionListener(menulistener);
 		pasteItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/paste16.gif")));
+		popup.add(undoItem);
+		popup.add(redoItem);
+		popup.add(separator);
 		popup.add(copyItem);
 		popup.add(cutItem);
 		popup.add(pasteItem);
@@ -168,6 +185,7 @@ public class TextEditorPanel extends JPanel implements EditorComponent, Clipboar
 	public void setRedoStatus(boolean redoStatus) {
 		firePropertyChange("redoStatus", this.redoStatus, redoStatus);
 		this.redoStatus = redoStatus;
+		redoItem.setEnabled(this.redoStatus);
 	}
 
 	public boolean isUndoStatus() {
@@ -177,6 +195,7 @@ public class TextEditorPanel extends JPanel implements EditorComponent, Clipboar
 	public void setUndoStatus(boolean undoStatus) {
 		firePropertyChange("undoStatus", this.undoStatus, undoStatus);
 		this.undoStatus = undoStatus;
+		undoItem.setEnabled(this.undoStatus);
 	}
 
 	public void setDefaultStates() {
@@ -412,6 +431,10 @@ public class TextEditorPanel extends JPanel implements EditorComponent, Clipboar
 				handleCut();
 			} else if (command.equals("Paste")) {
 				handlePaste();
+			}  else if (command.equals("Undo")) {
+				handleUndo();
+			} else if (command.equals("Redo")) {
+				handleRedo();
 			}
 		}
 	}

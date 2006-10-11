@@ -7,8 +7,6 @@
 package de.unisiegen.tpml.ui;
 
 import java.awt.Component;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.beans.PropertyChangeEvent;
@@ -17,12 +15,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.LinkedList;
-import java.util.prefs.Preferences;
 
 import javax.swing.JFileChooser;
-import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 
@@ -75,6 +70,9 @@ public class MainWindow extends javax.swing.JFrame {
 		this.copyItem.setEnabled(false);
 		this.pasteItem.setEnabled(false);
 		this.recentFilesMenu.setVisible(false);
+		this.cutButton.setEnabled(false);
+		this.copyButton.setEnabled(false);
+		this.pasteButton.setEnabled(false);
 		// Finished setting the states.
 
 		addWindowListener(new WindowAdapter() {
@@ -231,18 +229,36 @@ public class MainWindow extends javax.swing.JFrame {
         cutButton.setToolTipText("Cut");
         cutButton.setBorderPainted(false);
         cutButton.setOpaque(false);
+        cutButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cutButtonActionPerformed(evt);
+            }
+        });
+
         editToolBar.add(cutButton);
 
         copyButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/copy24.gif")));
         copyButton.setToolTipText("Copy");
         copyButton.setBorderPainted(false);
         copyButton.setOpaque(false);
+        copyButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                copyButtonActionPerformed(evt);
+            }
+        });
+
         editToolBar.add(copyButton);
 
         pasteButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/paste24.gif")));
         pasteButton.setToolTipText("Paste");
         pasteButton.setBorderPainted(false);
         pasteButton.setOpaque(false);
+        pasteButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pasteButtonActionPerformed(evt);
+            }
+        });
+
         editToolBar.add(pasteButton);
 
         undoButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/undo24.gif")));
@@ -517,6 +533,21 @@ public class MainWindow extends javax.swing.JFrame {
         setBounds(0, 0, 706, 561);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void pasteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pasteButtonActionPerformed
+// TODO add your handling code here:
+        getActiveEditor().handlePaste();
+    }//GEN-LAST:event_pasteButtonActionPerformed
+
+    private void copyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copyButtonActionPerformed
+// TODO add your handling code here:
+        getActiveEditor().handleCopy();
+    }//GEN-LAST:event_copyButtonActionPerformed
+
+    private void cutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cutButtonActionPerformed
+// TODO add your handling code here:
+        getActiveEditor().handleCut();
+    }//GEN-LAST:event_cutButtonActionPerformed
+
 	private void advancedRadioButtonItemStateChanged(
 			java.awt.event.ItemEvent evt) {// GEN-FIRST:event_advancedRadioButtonItemStateChanged
 		if (this.advancedRadioButton.isSelected()) {
@@ -738,6 +769,7 @@ public class MainWindow extends javax.swing.JFrame {
 				editorPanel.setEditorText(buffer.toString());
 				editorPanel.setFile(file);
 				editorPanel.addPropertyChangeListener(editorPanelListener);
+				editorPanel.setTexteditor(true);
 			}
 
 			this.tabbedPane.setSelectedComponent(editorPanel);
@@ -776,6 +808,7 @@ public class MainWindow extends javax.swing.JFrame {
 	}
 
 	private void editorStatusChange(String ident, Object newValue) {
+		logger.debug("Editor status changed: "+ident);
 			if (ident.equals("redoStatus")) {
 				setRedoState((Boolean) newValue);
 			} else if (ident.equals("filename")) {
@@ -790,10 +823,12 @@ public class MainWindow extends javax.swing.JFrame {
 				//setSaveState((Boolean) newValue);
 			} else if (ident.equals("texteditor")) {
 				cutItem.setEnabled((Boolean) newValue);
+				cutButton.setEnabled((Boolean) newValue);
 				copyItem.setEnabled((Boolean) newValue);
+				copyButton.setEnabled((Boolean) newValue);
 				pasteItem.setEnabled((Boolean) newValue);
-			}
-
+				pasteButton.setEnabled((Boolean) newValue);
+			} 
 	}
 
 	private void updateEditorStates(EditorPanel editor) {

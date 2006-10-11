@@ -332,7 +332,7 @@ public class EditorPanel extends javax.swing.JPanel {
 		activeEditorComponent = comp;
 		paintAll(getGraphics());
 	}
-
+	
 	private EditorComponent getComponent() {
 		return (EditorComponent) editorPanel.getComponent(0);
 	}
@@ -352,6 +352,7 @@ public class EditorPanel extends javax.swing.JPanel {
 		deselectButtons();
 		codeButton.setSelected(true);
 		codeButton.setEnabled(true);
+
 		paintAll(this.getGraphics());
 	}
 
@@ -585,6 +586,7 @@ public class EditorPanel extends javax.swing.JPanel {
 
 	public void setTexteditor(boolean texteditor) {
 		firePropertyChange("texteditor", this.texteditor, texteditor);
+		logger.debug("Texteditor is active");
 		this.texteditor = texteditor;
 	}
 
