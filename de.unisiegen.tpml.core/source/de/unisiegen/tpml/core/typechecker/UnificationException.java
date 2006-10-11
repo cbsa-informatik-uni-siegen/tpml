@@ -1,5 +1,8 @@
 package de.unisiegen.tpml.core.typechecker;
 
+import java.text.MessageFormat;
+
+import de.unisiegen.tpml.core.Messages;
 import de.unisiegen.tpml.core.types.Type;
 
 /**
@@ -48,7 +51,7 @@ public final class UnificationException extends Exception {
    * @param equation the {@link TypeEquation} that could not be unified.
    */
   UnificationException(TypeEquation equation) {
-    super("Cannot unify " + equation);
+    super(MessageFormat.format(Messages.getString("UnificationException.0"), equation)); //$NON-NLS-1$
     this.equation = equation;
   }
   

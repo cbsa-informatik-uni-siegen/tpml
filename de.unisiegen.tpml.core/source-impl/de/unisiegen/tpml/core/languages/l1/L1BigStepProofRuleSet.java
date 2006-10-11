@@ -1,5 +1,6 @@
 package de.unisiegen.tpml.core.languages.l1;
 
+import de.unisiegen.tpml.core.Messages;
 import de.unisiegen.tpml.core.bigstep.BigStepProofContext;
 import de.unisiegen.tpml.core.bigstep.BigStepProofNode;
 import de.unisiegen.tpml.core.bigstep.BigStepProofResult;
@@ -52,10 +53,10 @@ public class L1BigStepProofRuleSet extends L0BigStepProofRuleSet {
     super(language);
 
     // register the big step rules (order is important for guessing!)
-    registerByMethodName(L1Language.L1, "COND-FALSE", "applyCond", "updateCondFalse");
-    registerByMethodName(L1Language.L1, "COND-TRUE", "applyCond", "updateCondTrue");
-    registerByMethodName(L1Language.L1, "LET", "applyLet", "updateLet");
-    registerByMethodName(L1Language.L1, "OP", "applyOp");
+    registerByMethodName(L1Language.L1, "COND-FALSE", "applyCond", "updateCondFalse"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    registerByMethodName(L1Language.L1, "COND-TRUE", "applyCond", "updateCondTrue"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    registerByMethodName(L1Language.L1, "LET", "applyLet", "updateLet"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    registerByMethodName(L1Language.L1, "OP", "applyOp"); //$NON-NLS-1$ //$NON-NLS-2$
   }
   
   
@@ -99,7 +100,7 @@ public class L1BigStepProofRuleSet extends L0BigStepProofRuleSet {
       // the value of the child node must be a boolean value
       if (result0.getValue() == BooleanConstant.TRUE) {
         // let (COND-TRUE) handle the node
-        context.setProofNodeRule(node, (BigStepProofRule)getRuleByName("COND-TRUE"));
+        context.setProofNodeRule(node, (BigStepProofRule)getRuleByName("COND-TRUE")); //$NON-NLS-1$
         updateCondTrue(context, node);
       }
       else if (result0.getValue() == BooleanConstant.FALSE) {
@@ -136,7 +137,7 @@ public class L1BigStepProofRuleSet extends L0BigStepProofRuleSet {
       // the result of the child node must be a boolean value
       if (result0.getValue() == BooleanConstant.FALSE) {
         // let (COND-FALSE) handle the node
-        context.setProofNodeRule(node, (BigStepProofRule)getRuleByName("COND-FALSE"));
+        context.setProofNodeRule(node, (BigStepProofRule)getRuleByName("COND-FALSE")); //$NON-NLS-1$
         updateCondFalse(context, node);
       }
       else if (result0.getValue() == BooleanConstant.TRUE) {
@@ -299,7 +300,7 @@ public class L1BigStepProofRuleSet extends L0BigStepProofRuleSet {
     
     // we must not handle BinaryCons here
     if (op instanceof BinaryCons) {
-      throw new IllegalArgumentException("(OP) cannot be used here, use (CONS) instead");
+      throw new IllegalArgumentException(Messages.getString("L1BigStepProofRuleSet.0")); //$NON-NLS-1$
     }
     
     // perform the application

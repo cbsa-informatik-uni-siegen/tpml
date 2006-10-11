@@ -256,4 +256,43 @@ final class DefaultBigStepProofNode extends AbstractInterpreterProofNode impleme
   public DefaultBigStepProofNode getLastLeaf() {
     return (DefaultBigStepProofNode)super.getLastLeaf();
   }
+  
+  
+  
+  //
+  // Base methods
+  //
+  
+  /**
+   * {@inheritDoc}
+   *
+   * @see java.lang.Object#toString()
+   */
+  @Override
+  public String toString() {
+    StringBuilder builder = new StringBuilder();
+    boolean memoryEnabled = getExpression().containsMemoryOperations();
+    if (memoryEnabled) {
+      builder.append('(');
+    }
+    builder.append(getExpression());
+    if (memoryEnabled) {
+      builder.append(", ");
+      builder.append(getStore());
+      builder.append(')');
+    }
+    builder.append(" \u21d3 ");
+    if (this.result != null) {
+      if (memoryEnabled) {
+        builder.append('(');
+      }
+      builder.append(this.result.getValue());
+      if (memoryEnabled) {
+        builder.append(", ");
+        builder.append(this.result.getStore());
+        builder.append(')');
+      }
+    }
+    return builder.toString();
+  }
 }

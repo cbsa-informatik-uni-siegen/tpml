@@ -1,7 +1,9 @@
 package de.unisiegen.tpml.core.languages;
 
 import java.io.Reader;
+import java.text.MessageFormat;
 
+import de.unisiegen.tpml.core.Messages;
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel;
 
@@ -38,7 +40,7 @@ public abstract class AbstractLanguage implements Language {
    * @see de.unisiegen.tpml.core.languages.Language#newTypeCheckerProofModel(de.unisiegen.tpml.core.expressions.Expression)
    */
   public TypeCheckerProofModel newTypeCheckerProofModel(Expression expression) {
-    throw new UnsupportedOperationException("The language " + getName() + " does not include a type system");
+    throw new UnsupportedOperationException(MessageFormat.format(Messages.getString("AbstractLanguage.0"), getName())); //$NON-NLS-1$
   }
   
   /**
@@ -56,7 +58,7 @@ public abstract class AbstractLanguage implements Language {
    * @see de.unisiegen.tpml.core.languages.Language#newTypeParser(de.unisiegen.tpml.core.languages.LanguageTypeScanner)
    */
   public LanguageTypeParser newTypeParser(LanguageTypeScanner scanner) {
-    throw new UnsupportedOperationException("The language " + getName() + " does not include a type system");
+    throw new UnsupportedOperationException(MessageFormat.format(Messages.getString("AbstractLanguage.0"), getName())); //$NON-NLS-1$
   }
   
   /**
@@ -74,6 +76,6 @@ public abstract class AbstractLanguage implements Language {
    * @see de.unisiegen.tpml.core.languages.Language#newTypeScanner(java.io.Reader)
    */
   public LanguageTypeScanner newTypeScanner(Reader reader) {
-    throw new UnsupportedOperationException("The language " + getName() + " does not include a type system");
+    throw new UnsupportedOperationException(MessageFormat.format(Messages.getString("AbstractLanguage.0"), getName())); //$NON-NLS-1$
   }
 }

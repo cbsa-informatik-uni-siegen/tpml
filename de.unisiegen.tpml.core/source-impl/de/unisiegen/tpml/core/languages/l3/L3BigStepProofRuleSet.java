@@ -1,5 +1,6 @@
 package de.unisiegen.tpml.core.languages.l3;
 
+import de.unisiegen.tpml.core.Messages;
 import de.unisiegen.tpml.core.bigstep.BigStepProofContext;
 import de.unisiegen.tpml.core.bigstep.BigStepProofNode;
 import de.unisiegen.tpml.core.bigstep.BigStepProofResult;
@@ -52,19 +53,19 @@ public class L3BigStepProofRuleSet extends L2BigStepProofRuleSet {
     super(language);
     
     // register the rules (order is important for guessing!)
-    registerByMethodName(L3Language.L3, "CONS", "applyCons");
-    registerByMethodName(L3Language.L3, "HD", "applyHd");
-    registerByMethodName(L3Language.L3, "IS-EMPTY-FALSE", "applyIsEmptyFalse");
-    registerByMethodName(L3Language.L3, "IS-EMPTY-TRUE", "applyIsEmptyTrue");
-    registerByMethodName(L3Language.L3, "LIST", "applyList", "updateList");
-    registerByMethodName(L3Language.L3, "PROJ", "applyProj");
-    registerByMethodName(L3Language.L3, "FST", "applyFst");
-    registerByMethodName(L3Language.L3, "SND", "applySnd");
-    registerByMethodName(L3Language.L3, "TL", "applyTl");
-    registerByMethodName(L3Language.L3, "TUPLE", "applyTuple", "updateTuple");
+    registerByMethodName(L3Language.L3, "CONS", "applyCons"); //$NON-NLS-1$ //$NON-NLS-2$
+    registerByMethodName(L3Language.L3, "HD", "applyHd"); //$NON-NLS-1$ //$NON-NLS-2$
+    registerByMethodName(L3Language.L3, "IS-EMPTY-FALSE", "applyIsEmptyFalse"); //$NON-NLS-1$ //$NON-NLS-2$
+    registerByMethodName(L3Language.L3, "IS-EMPTY-TRUE", "applyIsEmptyTrue"); //$NON-NLS-1$ //$NON-NLS-2$
+    registerByMethodName(L3Language.L3, "LIST", "applyList", "updateList"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    registerByMethodName(L3Language.L3, "PROJ", "applyProj"); //$NON-NLS-1$ //$NON-NLS-2$
+    registerByMethodName(L3Language.L3, "FST", "applyFst"); //$NON-NLS-1$ //$NON-NLS-2$
+    registerByMethodName(L3Language.L3, "SND", "applySnd"); //$NON-NLS-1$ //$NON-NLS-2$
+    registerByMethodName(L3Language.L3, "TL", "applyTl"); //$NON-NLS-1$ //$NON-NLS-2$
+    registerByMethodName(L3Language.L3, "TUPLE", "applyTuple", "updateTuple"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     
     // register (VAL) once again to have higher priority than (TUPLE) for guessing
-    registerByMethodName(getRuleByName("VAL").getGroup(), "VAL", "applyValue");
+    registerByMethodName(getRuleByName("VAL").getGroup(), "VAL", "applyValue"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
   }
   
   
@@ -142,16 +143,16 @@ public class L3BigStepProofRuleSet extends L2BigStepProofRuleSet {
   public void applyHd(BigStepProofContext context, BigStepProofNode node) {
     // can only be applied to Applications of Hd to a list value
     Application application = (Application)node.getExpression();
-    @SuppressWarnings("unused") Hd hd = (Hd)application.getE1();
+    @SuppressWarnings("unused") Hd hd = (Hd)application.getE1(); //$NON-NLS-1$
     Expression e2 = application.getE2();
     if (!e2.isValue()) {
-      throw new IllegalArgumentException("e2 must be a value");
+      throw new IllegalArgumentException(Messages.getString("L3BigStepProofRuleSet.0")); //$NON-NLS-1$
     }
     
     // check if e2 is the empty list
     if (e2 == EmptyList.EMPTY_LIST) {
       context.setProofNodeResult(node, Exn.EMPTY_LIST);
-      context.setProofNodeRule(node, context.newNoopRule("HD-EMPTY"));
+      context.setProofNodeRule(node, context.newNoopRule("HD-EMPTY")); //$NON-NLS-1$
       return;
     }
     
@@ -161,15 +162,20 @@ public class L3BigStepProofRuleSet extends L2BigStepProofRuleSet {
       return;
     }
     
-    // otherwise e2 must be an application of cons to a pair
-    Application a1 = (Application)e2;
-    Tuple tuple = (Tuple)a1.getE2();
-    if (!(a1.getE1() instanceof UnaryCons) || tuple.getExpressions().length != 2) {
-      throw new IllegalArgumentException("e2 must be an application of cons to a pair");
-    }
+    try {
+      // otherwise e2 must be an application of cons to a pair
+      Application a1 = (Application)e2;
+      Tuple tuple = (Tuple)a1.getE2();
+      if (!(a1.getE1() instanceof UnaryCons) || tuple.getExpressions().length != 2) {
+        throw new ClassCastException();
+      }
     
-    // jep, we can perform (HD) then
-    context.setProofNodeResult(node, tuple.getExpressions(0));
+      // jep, we can perform (HD) then
+      context.setProofNodeResult(node, tuple.getExpressions(0));
+    }
+    catch (ClassCastException e) {
+      throw new IllegalArgumentException(Messages.getString("L3BigStepProofRuleSet.1"), e); //$NON-NLS-1$
+    }
   }
   
   
@@ -187,16 +193,16 @@ public class L3BigStepProofRuleSet extends L2BigStepProofRuleSet {
   public void applyIsEmptyFalse(BigStepProofContext context, BigStepProofNode node) {
     // node's expression must be an Application of IsEmpty to a value
     Application application = (Application)node.getExpression();
-    @SuppressWarnings("unused") IsEmpty isEmpty = (IsEmpty)application.getE1();
+    @SuppressWarnings("unused") IsEmpty isEmpty = (IsEmpty)application.getE1(); //$NON-NLS-1$
     Expression e2 = application.getE2();
     if (!e2.isValue()) {
-      throw new IllegalArgumentException("e2 must be a value");
+      throw new IllegalArgumentException(Messages.getString("L3BigStepProofRuleSet.2")); //$NON-NLS-1$
     }
     
     // check if e2 is the empty list
     if (e2 == EmptyList.EMPTY_LIST) {
       // let (IS-EMPTY-TRUE) handle the node
-      context.setProofNodeRule(node, (BigStepProofRule)getRuleByName("IS-EMPTY-TRUE"));
+      context.setProofNodeRule(node, (BigStepProofRule)getRuleByName("IS-EMPTY-TRUE")); //$NON-NLS-1$
       applyIsEmptyTrue(context, node);
     }
     else if (e2 instanceof List) {
@@ -204,14 +210,19 @@ public class L3BigStepProofRuleSet extends L2BigStepProofRuleSet {
       context.setProofNodeResult(node, BooleanConstant.TRUE);
     }
     else {
-      // otherwise e2 must be an application of cons to a pair
-      Application a1 = (Application)e2;
-      Tuple tuple = (Tuple)a1.getE2();
-      if (a1.getE1() instanceof UnaryCons && tuple.getExpressions().length == 2) {
-        context.setProofNodeResult(node, BooleanConstant.TRUE);
+      try {
+        // otherwise e2 must be an application of cons to a pair
+        Application a1 = (Application)e2;
+        Tuple tuple = (Tuple)a1.getE2();
+        if (a1.getE1() instanceof UnaryCons && tuple.getExpressions().length == 2) {
+          context.setProofNodeResult(node, BooleanConstant.TRUE);
+        }
+        else {
+          throw new ClassCastException();
+        }
       }
-      else {
-        throw new IllegalArgumentException("e2 must be an application of cons to a pair");
+      catch (ClassCastException e) {
+        throw new IllegalArgumentException(Messages.getString("L3BigStepProofRuleSet.3"), e); //$NON-NLS-1$
       }
     }
   }
@@ -231,10 +242,10 @@ public class L3BigStepProofRuleSet extends L2BigStepProofRuleSet {
   public void applyIsEmptyTrue(BigStepProofContext context, BigStepProofNode node) {
     // node's expression must be an Application of IsEmpty to a value
     Application application = (Application)node.getExpression();
-    @SuppressWarnings("unused") IsEmpty isEmpty = (IsEmpty)application.getE1();
+    @SuppressWarnings("unused") IsEmpty isEmpty = (IsEmpty)application.getE1(); //$NON-NLS-1$
     Expression e2 = application.getE2();
     if (!e2.isValue()) {
-      throw new IllegalArgumentException("e2 must be a value");
+      throw new IllegalArgumentException(Messages.getString("L3BigStepProofRuleSet.4")); //$NON-NLS-1$
     }
     
     // check if e2 is the empty list
@@ -244,7 +255,7 @@ public class L3BigStepProofRuleSet extends L2BigStepProofRuleSet {
     }
     else {
       // let (IS-EMPTY-FALSE) handle the node
-      context.setProofNodeRule(node, (BigStepProofRule)getRuleByName("IS-EMPTY-FALSE"));
+      context.setProofNodeRule(node, (BigStepProofRule)getRuleByName("IS-EMPTY-FALSE")); //$NON-NLS-1$
       applyIsEmptyFalse(context, node);
     }
   }
@@ -369,16 +380,16 @@ public class L3BigStepProofRuleSet extends L2BigStepProofRuleSet {
   public void applyTl(BigStepProofContext context, BigStepProofNode node) {
     // can only be applied to Applications of Tl to a list value
     Application application = (Application)node.getExpression();
-    @SuppressWarnings("unused") Tl tl = (Tl)application.getE1();
+    @SuppressWarnings("unused") Tl tl = (Tl)application.getE1(); //$NON-NLS-1$
     Expression e2 = application.getE2();
     if (!e2.isValue()) {
-      throw new IllegalArgumentException("e2 must be a value");
+      throw new IllegalArgumentException(Messages.getString("L3BigStepProofRuleSet.5")); //$NON-NLS-1$
     }
     
     // check if e2 is the empty list
     if (e2 == EmptyList.EMPTY_LIST) {
       context.setProofNodeResult(node, Exn.EMPTY_LIST);
-      context.setProofNodeRule(node, context.newNoopRule("TL-EMPTY"));
+      context.setProofNodeRule(node, context.newNoopRule("TL-EMPTY")); //$NON-NLS-1$
       return;
     }
     
@@ -388,15 +399,20 @@ public class L3BigStepProofRuleSet extends L2BigStepProofRuleSet {
       return;
     }
     
-    // otherwise e2 must be an application of cons to a pair
-    Application a1 = (Application)e2;
-    Tuple tuple = (Tuple)a1.getE2();
-    if (!(a1.getE1() instanceof UnaryCons) || tuple.getExpressions().length != 2) {
-      throw new IllegalArgumentException("e2 must be an application of cons to a pair");
+    try {
+      // otherwise e2 must be an application of cons to a pair
+      Application a1 = (Application)e2;
+      Tuple tuple = (Tuple)a1.getE2();
+      if (!(a1.getE1() instanceof UnaryCons) || tuple.getExpressions().length != 2) {
+        throw new ClassCastException();
+      }
+      
+      // jep, we can perform (TL) then
+      context.setProofNodeResult(node, tuple.getExpressions(1));
     }
-    
-    // jep, we can perform (TL) then
-    context.setProofNodeResult(node, tuple.getExpressions(1));
+    catch (ClassCastException e) {
+      throw new IllegalArgumentException(Messages.getString("L3BigStepProofRuleSet.6"), e); //$NON-NLS-1$
+    }
   }
   
   

@@ -3,6 +3,7 @@ package de.unisiegen.tpml.core.languages.l0;
 import java.io.Reader;
 
 import java_cup.runtime.lr_parser;
+import de.unisiegen.tpml.core.Messages;
 import de.unisiegen.tpml.core.bigstep.BigStepProofModel;
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.languages.AbstractLanguage;
@@ -60,7 +61,7 @@ public class L0Language extends AbstractLanguage {
    * @see languages.Language#getDescription()
    */
   public String getDescription() {
-    return "TODO";
+    return Messages.getString("L0Language.0"); //$NON-NLS-1$
   }
   
   /**
@@ -69,7 +70,7 @@ public class L0Language extends AbstractLanguage {
    * @see languages.Language#getName()
    */
   public String getName() {
-    return "L0";
+    return "L0"; //$NON-NLS-1$
   }
   
   /**
@@ -78,7 +79,7 @@ public class L0Language extends AbstractLanguage {
    * @see languages.Language#getTitle()
    */
   public String getTitle() {
-    return "Pure untyped λ calculus";
+    return Messages.getString("L0Language.1"); //$NON-NLS-1$
   }
   
   
@@ -112,7 +113,7 @@ public class L0Language extends AbstractLanguage {
    */
  public LanguageParser newParser(LanguageScanner scanner) {
    if (scanner == null) {
-     throw new NullPointerException("scanner is null");
+     throw new NullPointerException("scanner is null"); //$NON-NLS-1$
    }
    final lr_parser parser = new L0Parser(scanner);
    return new LanguageParser() {
@@ -129,7 +130,7 @@ public class L0Language extends AbstractLanguage {
    */
   public LanguageScanner newScanner(Reader reader) {
     if (reader == null) {
-      throw new NullPointerException("reader is null");
+      throw new NullPointerException("reader is null"); //$NON-NLS-1$
     }
     return new L0Scanner(reader);
   }

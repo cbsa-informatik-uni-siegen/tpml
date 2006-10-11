@@ -56,6 +56,8 @@ public final class ProofRuleException extends Exception {
    *             applied to the <code>node</code>.
    *              
    * @throws NullPointerException if <code>node</code> or <code>rule</code> is <code>null</code>.
+   * 
+   * @see #ProofRuleException(ProofNode, ProofRule, Throwable)
    */
   public ProofRuleException(ProofNode node, ProofRule rule) {
     this(node, rule, null);
@@ -75,9 +77,35 @@ public final class ProofRuleException extends Exception {
    *              nonexistent or unknown.
    *              
    * @throws NullPointerException if <code>node</code> or <code>rule</code> is <code>null</code>.
+   * 
+   * @see #ProofRuleException(String, ProofNode, ProofRule, Throwable)
    */
   public ProofRuleException(ProofNode node, ProofRule rule, Throwable cause) {
-    super("Cannot apply " + rule + " to " + node, cause);
+    this("Cannot apply " + rule + " to " + node, node, rule, cause);
+  }
+  
+  /**
+   * Allocates a new {@link ProofRuleException} telling that the specified <code>rule</code>
+   * could not be applied to the given <code>node</code>. The <code>message</code> gives detailed
+   * information about the cause of the problem.
+   * 
+   * @param message detailed information about the cause.
+   * @param node the {@link ProofNode}.
+   * @param rule the {@link ProofRule} that could not be
+   *             applied to the <code>node</code>.
+   * @param cause the cause, which is saved for later retrieval by the
+   *              {@link Throwable#getCause()} method. A <code>null</code>
+   *              value is permitted, and indicates that the cause is
+   *              nonexistent or unknown.
+   *              
+   * @throws NullPointerException if <code>message</code>, <code>node</code> or <code>rule</code>
+   *                              is <code>null</code>.
+   */
+  public ProofRuleException(String message, ProofNode node, ProofRule rule, Throwable cause) {
+    super(message, cause);
+    if (message == null) {
+      throw new NullPointerException("message is null");
+    }
     if (node == null) {
       throw new NullPointerException("node is null");
     }

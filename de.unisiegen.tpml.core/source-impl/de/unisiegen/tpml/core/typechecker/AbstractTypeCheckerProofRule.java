@@ -57,6 +57,12 @@ abstract class AbstractTypeCheckerProofRule extends AbstractProofRule implements
       throw e;
     }
     catch (Exception e) {
+      // check if e contains a usable error message
+      for (Throwable t = e; t != null; t = t.getCause()) {
+        if (t instanceof IllegalArgumentException) {
+          throw new ProofRuleException(t.getMessage(), node, this, e);
+        }
+      }
       throw new ProofRuleException(node, this, e);
     }
   }

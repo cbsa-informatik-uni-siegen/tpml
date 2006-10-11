@@ -1,5 +1,7 @@
-#Sat Sep 16 15:07:33 CEST 2006
+#Wed Oct 11 17:39:03 CEST 2006
 eclipse.preferences.version=1
 encoding//source-impl/de/unisiegen/tpml/core/languages/l0/L0Language.java=UTF-8
 encoding//source-impl/de/unisiegen/tpml/core/languages/l1/L1Language.java=UTF-8
+encoding//source-impl/de/unisiegen/tpml/core/messages.properties=UTF-8
+encoding//source-impl/de/unisiegen/tpml/core/messages_de.properties=UTF-8
 encoding/<project>=UTF-8

@@ -1,6 +1,9 @@
 package de.unisiegen.tpml.core.languages.l2;
 
+import java.text.MessageFormat;
+
 import java_cup.runtime.Symbol;
+import de.unisiegen.tpml.core.Messages;
 import de.unisiegen.tpml.core.languages.LanguageParserException;
 import de.unisiegen.tpml.core.languages.LanguageScanner;
 
@@ -43,7 +46,7 @@ final class L2Parser extends L2AbstractParser {
   public void report_error(String message, Object info) {
     Symbol symbol = (Symbol)info;
     if (symbol.sym == EOF_sym()) {
-      message = "Unexpected end of file";
+      message = Messages.getString("Parser.0"); //$NON-NLS-1$
     }
     throw new LanguageParserException(message, symbol.left, symbol.right);
   }
@@ -65,6 +68,6 @@ final class L2Parser extends L2AbstractParser {
    */
   @Override
   public void syntax_error(Symbol symbol) {
-    report_error("Syntax error on token \"" + symbol.value + "\"", symbol);
+    report_error(MessageFormat.format(Messages.getString("Parser.1"), symbol.value), symbol); //$NON-NLS-1$
   }
 }

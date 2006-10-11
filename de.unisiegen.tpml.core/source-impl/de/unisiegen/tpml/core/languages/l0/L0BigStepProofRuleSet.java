@@ -1,5 +1,6 @@
 package de.unisiegen.tpml.core.languages.l0;
 
+import de.unisiegen.tpml.core.Messages;
 import de.unisiegen.tpml.core.bigstep.AbstractBigStepProofRuleSet;
 import de.unisiegen.tpml.core.bigstep.BigStepProofContext;
 import de.unisiegen.tpml.core.bigstep.BigStepProofNode;
@@ -36,9 +37,9 @@ public class L0BigStepProofRuleSet extends AbstractBigStepProofRuleSet {
     super(language);
     
     // register the big step rules (order is important for guessing!)
-    registerByMethodName(L0Language.L0, "APP", "applyApplication", "updateApplication");
-    registerByMethodName(L0Language.L0, "BETA-V", "applyBetaValue", "updateBetaValue");
-    registerByMethodName(L0Language.L0, "VAL", "applyValue");
+    registerByMethodName(L0Language.L0, "APP", "applyApplication", "updateApplication"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    registerByMethodName(L0Language.L0, "BETA-V", "applyBetaValue", "updateBetaValue"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    registerByMethodName(L0Language.L0, "VAL", "applyValue"); //$NON-NLS-1$ //$NON-NLS-2$
   }
   
   
@@ -140,7 +141,7 @@ public class L0BigStepProofRuleSet extends AbstractBigStepProofRuleSet {
     Application application = (Application)node.getExpression();
     Expression e2 = application.getE2();
     if (!e2.isValue()) {
-      throw new IllegalArgumentException("e2 must be a value");
+      throw new IllegalArgumentException(Messages.getString("L0BigStepProofRuleSet.0")); //$NON-NLS-1$
     }
     
     // ...with a lambda or multi lambda expression
@@ -191,7 +192,7 @@ public class L0BigStepProofRuleSet extends AbstractBigStepProofRuleSet {
    */
   public void applyValue(BigStepProofContext context, BigStepProofNode node) {
     if (!node.getExpression().isValue()) {
-      throw new IllegalArgumentException("(VAL) can only be applied to values");
+      throw new IllegalArgumentException(Messages.getString("L0BigStepProofRuleSet.1")); //$NON-NLS-1$
     }
     context.setProofNodeResult(node, node.getExpression());
   }

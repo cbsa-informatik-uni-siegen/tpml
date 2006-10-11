@@ -3,6 +3,7 @@ package de.unisiegen.tpml.core.languages.l1;
 import java.io.Reader;
 
 import java_cup.runtime.lr_parser;
+import de.unisiegen.tpml.core.Messages;
 import de.unisiegen.tpml.core.bigstep.BigStepProofModel;
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.languages.LanguageParser;
@@ -66,7 +67,7 @@ public class L1Language extends L0Language {
    */
   @Override
   public String getDescription() {
-    return "TODO";
+    return Messages.getString("L1Language.0"); //$NON-NLS-1$
   }
   
   /**
@@ -76,7 +77,7 @@ public class L1Language extends L0Language {
    */
   @Override
   public String getName() {
-    return "L1";
+    return "L1"; //$NON-NLS-1$
   }
   
   /**
@@ -86,7 +87,7 @@ public class L1Language extends L0Language {
    */
   @Override
   public String getTitle() {
-    return "Applied λ calculus";
+    return Messages.getString("L1Language.1"); //$NON-NLS-1$
   }
   
   
@@ -133,7 +134,7 @@ public class L1Language extends L0Language {
   @Override
  public LanguageParser newParser(LanguageScanner scanner) {
    if (scanner == null) {
-     throw new NullPointerException("scanner is null");
+     throw new NullPointerException("scanner is null"); //$NON-NLS-1$
    }
    final lr_parser parser = new L1Parser(scanner);
    return new LanguageParser() {
@@ -151,7 +152,7 @@ public class L1Language extends L0Language {
   @Override
   public LanguageScanner newScanner(Reader reader) {
     if (reader == null) {
-      throw new NullPointerException("reader is null");
+      throw new NullPointerException("reader is null"); //$NON-NLS-1$
     }
     return new L1Scanner(reader);
   }
@@ -174,7 +175,7 @@ public class L1Language extends L0Language {
   @Override
   public LanguageTypeParser newTypeParser(LanguageTypeScanner scanner) {
     if (scanner == null) {
-      throw new NullPointerException("scanner is null");
+      throw new NullPointerException("scanner is null"); //$NON-NLS-1$
     }
     final lr_parser parser = new L1TypeParser(scanner);
     return new LanguageTypeParser() {
@@ -192,7 +193,7 @@ public class L1Language extends L0Language {
   @Override
   public LanguageTypeScanner newTypeScanner(Reader reader) {
     if (reader == null) {
-      throw new NullPointerException("reader is null");
+      throw new NullPointerException("reader is null"); //$NON-NLS-1$
     }
     return new L1TypeScanner(reader);
   }

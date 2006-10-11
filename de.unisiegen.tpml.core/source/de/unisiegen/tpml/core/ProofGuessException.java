@@ -1,5 +1,7 @@
 package de.unisiegen.tpml.core;
 
+import java.text.MessageFormat;
+
 /**
  * This exception is thrown when an attempt to guess the next proof rule for a given proof node failed.
  *
@@ -63,9 +65,9 @@ public final class ProofGuessException extends Exception {
    * @throws NullPointerException if <code>node</code> is <code>null</code>.
    */
   public ProofGuessException(ProofNode node, Throwable cause) {
-    super("Cannot guess next proof step for " + node, cause);
+    super(MessageFormat.format(Messages.getString("ProofGuessException.0"), node), cause); //$NON-NLS-1$
     if (node == null) {
-      throw new NullPointerException("node is null");
+      throw new NullPointerException("node is null"); //$NON-NLS-1$
     }
     this.node = node;
   }

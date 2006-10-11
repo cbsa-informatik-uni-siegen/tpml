@@ -2,6 +2,7 @@ package de.unisiegen.tpml.core.bigstep;
 
 import de.unisiegen.tpml.core.AbstractProofRule;
 import de.unisiegen.tpml.core.ProofRuleException;
+import de.unisiegen.tpml.core.typechecker.UnificationException;
 
 /**
  * Abstract base class for implementations of the <code>BigStepProofRule</code> interface.
@@ -62,6 +63,12 @@ abstract class AbstractBigStepProofRule extends AbstractProofRule implements Big
       throw e;
     }
     catch (Exception e) {
+      // check if e contains a usable error message
+      for (Throwable t = e; t != null; t = t.getCause()) {
+        if (t instanceof IllegalArgumentException && t instanceof UnificationException) {
+          throw new ProofRuleException(t.getMessage(), node, this, e);
+        }
+      }
       throw new ProofRuleException(node, this, e);
     }
   }
