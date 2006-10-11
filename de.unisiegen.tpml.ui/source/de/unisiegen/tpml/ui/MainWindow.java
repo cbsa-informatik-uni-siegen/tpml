@@ -781,11 +781,13 @@ public class MainWindow extends javax.swing.JFrame {
 			} else if (ident.equals("filename")) {
 				tabbedPane.setTitleAt(tabbedPane.getSelectedIndex(),
 						(String) newValue);
+				//TODO merge undostatus and changestatus
 			} else if (ident.equals("undoStatus")) {
 				setUndoState((Boolean) newValue);
+				setChangeState((Boolean) newValue);
 			} else if (ident.equals("changed")) {
 				setChangeState((Boolean) newValue);
-				setSaveState((Boolean) newValue);
+				//setSaveState((Boolean) newValue);
 			} else if (ident.equals("texteditor")) {
 				cutItem.setEnabled((Boolean) newValue);
 				copyItem.setEnabled((Boolean) newValue);
@@ -806,8 +808,8 @@ public class MainWindow extends javax.swing.JFrame {
 		} else {
 			setRedoState(editor.isRedoStatus());
 			setUndoState(editor.isUndoStatus());
-			setSaveState(editor.isChanged());
-			setChangeState(editor.isChanged());
+			//setSaveState(editor.isUndoStatus());
+			setChangeState(editor.isUndoStatus());
 		}
 	}
 
@@ -853,6 +855,7 @@ public class MainWindow extends javax.swing.JFrame {
 	}
 
 	private void setUndoState(Boolean state) {
+		logger.debug("UndoStatus of MainWindow set to "+state);
 		undoButton.setEnabled(state);
 		undoItem.setEnabled(state);
 
@@ -868,11 +871,13 @@ public class MainWindow extends javax.swing.JFrame {
 			tabbedPane.setTitleAt(tabbedPane.getSelectedIndex(), "*"
 					+ ((EditorPanel) tabbedPane.getSelectedComponent())
 							.getFileName());
+			setSaveState(true);
 
 		} else {
 			tabbedPane.setTitleAt(tabbedPane.getSelectedIndex(),
 					((EditorPanel) tabbedPane.getSelectedComponent())
 							.getFileName());
+			setSaveState(false);
 		}
 	}
 
@@ -946,7 +951,8 @@ public class MainWindow extends javax.swing.JFrame {
 		for (Component component : this.tabbedPane.getComponents()) {
 			if (component instanceof EditorPanel) {
 				EditorPanel editorPanel = (EditorPanel) component;
-				if (!editorPanel.isChanged()) {
+				//	if (!editorPanel.isChanged()) {
+				if (!editorPanel.isUndoStatus()) {
 					continue;
 				}
 
@@ -997,7 +1003,8 @@ public class MainWindow extends javax.swing.JFrame {
 	private boolean handleClose() {
 		// TODO clean this up a little bit
 		EditorPanel selectedEditor = getActiveEditor();
-		if (selectedEditor.isChanged()) {
+		//if (selectedEditor.isChanged()) {
+		if (selectedEditor.isUndoStatus()) {
 			// Custom button text
 			Object[] options = { "Yes", "No", "Cancel" };
 			int n = JOptionPane.showOptionDialog(this, selectedEditor

@@ -272,7 +272,7 @@ public class EditorPanel extends javax.swing.JPanel {
 	/**
 	 * Indicated if the file was changed.
 	 */
-	private boolean changed;
+	//private boolean changed;
 
 	/**
 	 * Indicates the status of the Undo function.
@@ -310,7 +310,8 @@ public class EditorPanel extends javax.swing.JPanel {
 		} else if (ident.equals("undoStatus")) {
 			setUndoStatus((Boolean) newValue);
 		} else if (ident.equals("changed")) {
-			setChanged((Boolean) newValue);
+			//setChanged((Boolean) newValue);
+			setUndoStatus((Boolean) newValue);
 		}
 
 	}
@@ -565,9 +566,9 @@ public class EditorPanel extends javax.swing.JPanel {
 	 * 
 	 * @return <code>true</code> if the editor's document was changed.
 	 */
-	public boolean isChanged() {
-		return this.changed;
-	}
+//	public boolean isChanged() {
+//		return this.changed;
+//	}
 
 	/**
 	 * Sets the change status of the editor
@@ -575,10 +576,10 @@ public class EditorPanel extends javax.swing.JPanel {
 	 * @param changed
 	 *            true if the editor's document was changed.
 	 */
-	public void setChanged(boolean changed) {
-		firePropertyChange("changed", this.changed, changed);
-		this.changed = changed;
-	}
+//	public void setChanged(boolean changed) {
+//		firePropertyChange("changed", this.changed, changed);
+//		this.changed = changed;
+//	}
 
 	public boolean isTexteditor() {
 		return this.texteditor;
@@ -607,6 +608,7 @@ public class EditorPanel extends javax.swing.JPanel {
 	}
 
 	public void setUndoStatus(boolean undoStatus) {
+		logger.debug("UndoStatus of EditorPanel set to "+undoStatus);
 		firePropertyChange("undoStatus", this.undoStatus, undoStatus);
 		this.undoStatus = undoStatus;
 	}
@@ -754,8 +756,8 @@ public class EditorPanel extends javax.swing.JPanel {
 			out.write(code.getText().getBytes());
 			out.flush();
 			out.close();
-			setChanged(false);
 
+			code.setUndoStatus(false);	
 			return true;
 		} catch (IOException e) {
 			logger.error("Could not write to file", e);

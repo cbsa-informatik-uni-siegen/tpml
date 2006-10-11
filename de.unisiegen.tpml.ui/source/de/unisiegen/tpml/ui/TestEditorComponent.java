@@ -150,12 +150,12 @@ public class TestEditorComponent extends javax.swing.JPanel implements EditorCom
 
     private void changed_falseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changed_falseActionPerformed
 // 
-        ((EditorPanel)(getParent()).getParent()).setChanged(false);
+    //    ((EditorPanel)(getParent()).getParent()).setChanged(false);
     }//GEN-LAST:event_changed_falseActionPerformed
 
     private void changed_trueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changed_trueActionPerformed
 // 
-        ((EditorPanel)(getParent()).getParent()).setChanged(true);
+    //    ((EditorPanel)(getParent()).getParent()).setChanged(true);
     }//GEN-LAST:event_changed_trueActionPerformed
 
     private void nextfalseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextfalseActionPerformed

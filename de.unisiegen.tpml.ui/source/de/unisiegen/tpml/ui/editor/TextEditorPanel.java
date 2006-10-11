@@ -181,16 +181,16 @@ public class TextEditorPanel extends JPanel implements EditorComponent, Clipboar
 	}
 
 	public void setDefaultStates() {
-		setChanged(false);
+		//setChanged(false);
 		setUndoStatus(false);
 		setRedoStatus(false);
 		setNextStatus(false);
 	}
 
-	public void setChanged(boolean changeStatus) {
-		firePropertyChange("changed", this.changed, changeStatus);
-		this.changed = changeStatus;
-	}
+//	public void setChanged(boolean changeStatus) {
+//		firePropertyChange("changed", this.changed, changeStatus);
+//		this.changed = changeStatus;
+//	}
 
 	public boolean isChanged() {
 		return changed;
@@ -352,17 +352,15 @@ public class TextEditorPanel extends JPanel implements EditorComponent, Clipboar
 
 	private class TextDocumentListener implements DocumentListener {
 		public void insertUpdate(DocumentEvent arg0) {
+			logger.debug("Text inserted into document");
 			try {
-				TextEditorPanel.this.setChanged(true);
-
+				TextEditorPanel.this.setUndoStatus(true);
 				String doctext = arg0.getDocument().getText(0,
 						arg0.getDocument().getLength());
 				if (doctext.endsWith(" ")) {
 					undohistory.push(doctext);
 					logger.debug("history added: " + doctext);
 				}
-				setUndoStatus(true);
-
 				setRedoStatus(false);
 				redohistory.clear();
 				currentContent = doctext;
@@ -372,33 +370,21 @@ public class TextEditorPanel extends JPanel implements EditorComponent, Clipboar
 		}
 
 		public void removeUpdate(DocumentEvent arg0) {
+			logger.debug("Text removed from document");
 			try {
-				TextEditorPanel.this.setChanged(true);
+				TextEditorPanel.this.setUndoStatus(true);
 				undohistory.push(currentContent);
 				setRedoStatus(false);
-				setUndoStatus(true);
 				redohistory.clear();
 				currentContent = (String) arg0.getDocument().getText(0,
 						arg0.getDocument().getLength());
-
-				// TextEditorPanel.this.setChanged(true);
-				//
-				// String doctext = arg0.getDocument().getText(0,
-				// arg0.getDocument().getLength());
-				// //if (doctext.endsWith(" ")) {
-				// undohistory.push(doctext);
-				// logger.debug("history added: " + doctext);
-				// //}
-				// setUndoStatus(true);
-				//
-				// setRedoStatus(false);
-				// redohistory.clear();
 			} catch (BadLocationException e) {
 				logger.error("Failed to add text to undo history", e);
 			}
 		}
 
 		public void changedUpdate(DocumentEvent arg0) {
+			logger.debug("Document was changed");
 		}
 	}
 
