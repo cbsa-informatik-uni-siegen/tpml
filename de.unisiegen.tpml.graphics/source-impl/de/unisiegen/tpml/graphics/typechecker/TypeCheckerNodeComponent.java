@@ -332,7 +332,7 @@ public class TypeCheckerNodeComponent extends JComponent  implements TreeNodeCom
 				this.ruleButton.setText("(" + rule.getName() + ")");
 				this.ruleButton.setTextColor(Color.RED);
 
-				// TODO: Meaningful cause would be nice :-)
+				// determine the error text for the tooltip
 				this.ruleButton.setToolTipText(exc.getMessage());
 			}
 			

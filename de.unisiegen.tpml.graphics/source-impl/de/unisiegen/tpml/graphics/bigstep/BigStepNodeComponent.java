@@ -226,7 +226,7 @@ public class BigStepNodeComponent extends JComponent implements TreeNodeComponen
 			try {
 				this.proofModel.prove(rule, this.proofNode);
 				this.ruleButton.setToolTipText(null);
-			} catch (Exception exc) {
+			} catch (Throwable e) {
 				
 				// when the node could not be prooven with the selected
 				// rule the menu button gets labeled with the given rule 
@@ -234,8 +234,9 @@ public class BigStepNodeComponent extends JComponent implements TreeNodeComponen
 				this.ruleButton.setText("(" + rule.getName() + ")");
 				this.ruleButton.setTextColor(Color.RED);
 				
-				// TODO: Meaningful cause would be nice :-)
-				this.ruleButton.setToolTipText(exc.getMessage());
+				// determine the error message for the tooltip
+				e.printStackTrace();
+				this.ruleButton.setToolTipText(e.getMessage());
 			}
 		}
 		else if (item instanceof MenuTranslateItem) {
