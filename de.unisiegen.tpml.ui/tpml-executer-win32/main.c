@@ -11,7 +11,7 @@ int WINAPI WinMain (HINSTANCE hThisInstance,
 {
   char* args [4];
   int i=0;
-  args [i++] = "java.exe";
+  args [i++] = "javaw.exe";
   args [i++] = "-jar";
   args [i++] = "de.unisiegen.tpml.ui*.jar";
   args [i++] = NULL;
