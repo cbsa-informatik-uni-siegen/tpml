@@ -141,6 +141,9 @@
             </MenuItem>
             <Menu class="javax.swing.JMenu" name="recentFilesMenu">
               <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/de/unisiegen/tpml/ui/icons/empty16.gif"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Recently Used"/>
               </Properties>
             </Menu>

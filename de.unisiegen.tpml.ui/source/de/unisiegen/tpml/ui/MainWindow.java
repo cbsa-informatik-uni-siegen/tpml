@@ -354,6 +354,7 @@ public class MainWindow extends javax.swing.JFrame {
 
         fileMenu.add(fileMenuSerpator2);
 
+        recentFilesMenu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/empty16.gif")));
         recentFilesMenu.setText("Recently Used");
         fileMenu.add(recentFilesMenu);
 
