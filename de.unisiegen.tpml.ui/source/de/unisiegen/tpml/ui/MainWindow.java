@@ -982,7 +982,8 @@ public class MainWindow extends javax.swing.JFrame {
 		// remember the settings
 		prefmanager.setAdvanced(this.advancedRadioButton
 				.isSelected());
-
+		// remember the history
+		prefmanager.setRecentlyUsed(recentlyUsed);
 		// terminate the application
 		System.exit(0);
 	}
