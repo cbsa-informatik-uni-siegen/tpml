@@ -83,7 +83,7 @@ public class SmallStepNodeComponent extends JComponent {
 																 LanguageTranslator		translator,
 																 int 									spacing,
 																 boolean 							advanced) {
-		
+		super ();
 		this.proofNode 									= proofNode;
 		
 		this.proofModel									= proofModel;
@@ -273,7 +273,7 @@ public class SmallStepNodeComponent extends JComponent {
 	
 	public void setBounds () {
 		setBounds (this.origin.x, this.origin.y, 
-				this.ruleDimension.width + this.expressionDimension.width, 
+				this.ruleDimension.width + this.expressionDimension.width + this.spacing, 
 				this.actualRuleHeight + this.actualExpressionHeight + this.spacing);
 	}
 	
@@ -376,7 +376,6 @@ public class SmallStepNodeComponent extends JComponent {
 		maxWidth -= this.ruleDimension.width + this.spacing;
 		
 		this.expressionDimension = this.expression.getNeededSize(maxWidth);
-		this.expressionDimension.width += this.spacing;
 		
 		// use the calculated expression height for the actual height
 		// until it will be changed by the SmallStepComponent

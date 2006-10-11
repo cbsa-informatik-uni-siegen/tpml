@@ -211,9 +211,7 @@ public class CompoundExpression<S, E> extends JComponent {
 			this.expressionSize = this.expressionRenderer.getNeededSize(maxWidth);
 			result.width += this.expressionSize.width;
 			
-			if (this.expressionSize.height > result.height) {
-				result.height = this.expressionSize.height;
-			}
+			result.height = Math.max(result.height, this.expressionSize.height);
 		}
 		return result;
 	}
@@ -251,6 +249,7 @@ public class CompoundExpression<S, E> extends JComponent {
 			
 			// if there is an environment render it now
 			if (this.environment != null) {
+				posX += this.braceSize;
 				
 				this.environmentRenderer.renderer(posX, posY, this.environmentSize.width, getHeight (), gc);
 			}
