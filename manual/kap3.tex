@@ -354,7 +354,7 @@ werden durch die Produktionen
 \bgram
 c \is \Fst \mid \Snd                & & \mbox{Paarprojektionen}
   \al \#n\_i \qquad (1 \le i \le n) & & \mbox{Projektionen}
-  \al \Cons \mid []                 & & \mbox{Listenkonstruktion}
+  \al \Cons \mid [\,]               & & \mbox{Listenkonstruktion}
   \al \Hd \mid \Tl \mid \Empty      & & \mbox{Listenoperatoren}
 \egram
 und
@@ -391,11 +391,11 @@ Ein big step hei"st g"ultig f"ur \LTHREE, wenn er sich mit den big step Regeln v
                                      {[e_1;\ldots;e_n] \eval [v_1;\ldots;v_n]}$ \\[5mm]
     \mbox{(CONS)}           & $(\coloncolon)\,v'\,[v_1;\ldots;v_n] \eval [v';v_1;\ldots;v_n]$ \\[3mm]
     \mbox{(HD)}             & $\Hd\,\left(\Cons\,\left(v_1,v_2\right)\right) \eval v_1$ \\[3mm]
-    \mbox{(HD-EMPTY)}       & $\Hd\,[] \eval empty\_list$ \\[3mm]
+    \mbox{(HD-EMPTY)}       & $\Hd\,[\,] \eval empty\_list$ \\[3mm]
     \mbox{(TL)}             & $\Tl\,\left(\Cons\,\left(v_1,v_2\right)\right) \eval v_2$ \\[3mm]
-    \mbox{(TL-EMPTY)}       & $\Tl\,[] \eval empty\_list$ \\[3mm]
+    \mbox{(TL-EMPTY)}       & $\Tl\,[\,] \eval empty\_list$ \\[3mm]
     \mbox{(IS-EMPTY-FALSE)} & $\Empty\,\left(\Cons\,v\right) \eval \false$ \\[3mm]
-    \mbox{(IS-EMPTY-TRUE)}  & $\Empty\,[] \eval \true$
+    \mbox{(IS-EMPTY-TRUE)}  & $\Empty\,[\,] \eval \true$
   \end{tabular}\\[7mm]
 sowie den entsprechenden exception-Regeln herleiten l"asst. Zu beachten ist, dass - vielleicht wider der Intuition - die
 (CONS) Regel\footnote{Der Leser wird sich hoffentlich erinnern, dass bin"are Operatoren, die au"serhalb eines Infixausdrucks
@@ -419,13 +419,111 @@ Die small step Regeln f"ur \LTHREE\ entsprechen im wesentlichen den big step Reg
                                      {[e_1;\ldots;e_i;\ldots,e_n] \to [e_1;\ldots;e_i';\ldots;e_n]}$ \\[5mm]
     \mbox{(CONS)}           & $(\coloncolon)\,v'\,[v_1;\ldots;v_n] \to [v';v_1;\ldots;v_n]$ \\[3mm]
     \mbox{(HD)}             & $\Hd\,\left(\Cons\,\left(v_1,v_2\right)\right) \to v_1$ \\[3mm]
-    \mbox{(HD-EMPTY)}       & $\Hd\,[] \to empty\_list$ \\[3mm]
+    \mbox{(HD-EMPTY)}       & $\Hd\,[\,] \to empty\_list$ \\[3mm]
     \mbox{(TL)}             & $\Tl\,\left(\Cons\,\left(v_1,v_2\right)\right) \to v_2$ \\[3mm]
-    \mbox{(TL-EMPTY)}       & $\Tl\,[] \to empty\_list$ \\[3mm]
+    \mbox{(TL-EMPTY)}       & $\Tl\,[\,] \to empty\_list$ \\[3mm]
     \mbox{(IS-EMPTY-FALSE)} & $\Empty\,\left(\Cons\,v\right) \to \false$ \\[3mm]
-    \mbox{(IS-EMPTY-TRUE)}  & $\Empty\,[] \to \true$
+    \mbox{(IS-EMPTY-TRUE)}  & $\Empty\,[\,] \to \true$
   \end{tabular}\\[7mm]
 sowie den entsprechenden exception-Regeln herleiten l"asst.
+
+
+\subsection{Typsystem von \LTHREE}
+
+Wie bereits erw"ahnt verf"ugt die Sprache \LTHREE\ "uber ein polymorphes Typsystem, das hei"st dass die Axiome f"ur
+Konstanten jetzt von der Form $\tj{c}{\pi}$ sind. F"ur die Konstanten der Sprachen \LONE\ bis \LTWO\ sei $\pi$
+einfach der bisherige monomorphe Typ $\tau$, f"ur die mit \LTHREE\ neu hinzukommenden Konstanten sei es der
+polymorphe Typ, wie im Folgenden dargestellt.
+\begin{eqnarray*}
+ [\,]         & :: & \forall\alpha.\,\ltype{\alpha} \\
+\Cons         & :: & \forall\alpha.\,\alpha * \ltype{\alpha}\to \ltype{\alpha}\\
+  \Hd         & :: & \forall\alpha.\,\ltype{\alpha} \to \alpha \\
+  \Tl         & :: & \forall\alpha.\,\ltype{\alpha} \to \ltype{\alpha}\\
+\Empty        & :: & \forall\alpha.\,\ltype{\alpha} \to \bool\\
+ \coloncolon  & :: & \forall\alpha.\,\alpha \to \ltype{\alpha} \to \ltype{\alpha}\\
+ \Fst         & :: & \forall\alpha_1,\alpha_2.\,\alpha_1 * \alpha_2 \to \alpha_1\\
+ \Snd         & :: & \forall\alpha_1,\alpha_2.\,\alpha_1 * \alpha_2 \to \alpha_2\\
+ \#n\_i       & :: & \forall\alpha_1,\ldots,\alpha_n.\,\alpha_1 * \ldots * \alpha_n \to \alpha_i \quad (1 \le i \le n)
+\end{eqnarray*}
+Die Regel
+\[ \mbox{(P-CONST) }\ \regel{\tj{c}{\pi}}
+                            {\Tj{\Gamma}{c}{\tau}}
+   \ \mbox{ falls $\tau$ Instanz von $\pi$}\]
+ersetzt die bisherige Regel (CONST), wobei $\tau'$ eine \emph{neue Instanz} des polymorphen Typs
+$\pi = \forall\alpha_1,\ldots,\alpha_n.\,\tau$ ist, wenn $\tau'$ von der Form $\tau[\alpha_1'/\alpha_1,\ldots,\alpha_n'/\alpha_n]$
+ist, wobei $\alpha_1',\ldots,\alpha_n'$ neue Typvariablen sind.
+
+In die Typumgebung $\Gamma: \Id \pto \Ptype$ werden nun polymorphe Typen eingetragen. Entsprechend ersetzt die Regel
+\[ \mbox{(P-ID) }\ \Tj{\Gamma}{\id}{\tau} \reason{falls $\id \in \dom \Gamma$, $\Gamma(\id) = \pi$ und $\tau$ Instanz von $\pi$} \]
+die bisherige Regel (ID). Die neue Regel
+\[ \mbox{(P-LET) }\ \regel{\Tj{\Gamma}{e_1}{\tau}
+                          \quad
+                          \Tj{\Gamma[Closure_\Gamma(\tau)/\id]}{e_2}{\tau'}}
+                          {\Tj{\Gamma}{\bli{\id}{e_1}{e_2}}{\tau'}}\]
+sorgt f"ur das ,,polymorph machen'' des Typs beim Eintragen in die Typumgebung, wobei der polymorphe Abschlu"s eines Typs $\tau$
+in der Typumgebung $\Gamma$ durch
+\[
+  Closure_\Gamma(\tau) = \forall\alpha_1,\ldots,\alpha_n.\,\tau \reason{mit $\{\alpha_1,\ldots,\alpha_n\} = free(\tau) \backslash free(\Gamma)$}
+\]
+definiert ist. Die Regel (LET) wird beibehalten, da sie f"ur \LFOUR, wo (P-LET) eingeschr"ankt wird, noch ben"otigt wird. F"ur \LTHREE\ ist
+es also zul"assig, im Falle von $Closure_\Gamma(\tau) = \tau$ sowohl (LET) als auch (P-LET) anzuwenden\footnote{Na"urlich auch dann, wenn
+es f"ur die Wohlgetyptheit nicht erforderlich ist, dass f"ur $\id$ ein polymorpher Typ eingetragen wird.}.
+
+F"ur Listen und Tupel werden die Regeln\\[3mm]
+\begin{tabular}{ll}
+  \mbox{(LIST)\ } & $\regel{\Tj{\Gamma}{e_1}{\tau} \quad \ldots \quad \Tj{\Gamma}{e_n}{\tau}}
+                           {\Tj{\Gamma}{[e_1;\ldots;e_n]}{\ltype{\tau}}}$ \\[5mm]
+  \mbox{(TUPLE)\ }& $\regel{\Tj{\Gamma}{e_1}{\tau_1} \quad \ldots \quad \Tj{\Gamma}{e_n}{\tau_n}}
+                           {\Tj{\Gamma}{(e_1,\ldots,e_n)}{\tau_1 * \ldots * \tau_n}}$
+\end{tabular}\\[7mm]
+hinzugenommen.
+
+
+\subsection{Syntaktischer Zucker}
+
+\LTHREE\ enth"alt wie gesehen syntaktischen Zucker f"ur den leichteren Umgang mit Listen und Tupeln. Die Ak"urzungen werden
+wie im Folgenden dargestellt in die Kernsyntax "ubersetzt.
+\begin{eqnarray*}
+  [e_1;\ldots;e_n]    & \mbox{ steht f"ur } & \Cons\,(e_1,\ldots \Cons\,(e_n, [\,])) \quad (n \le 1) \\
+  e_1 \coloncolon e_2 & \mbox{ steht f"ur } & \Cons\,(e_1, e_2) \\
+  \Fst                & \mbox{ steht f"ur } & \#2\_1 \\
+  \Snd                & \mbox{ steht f"ur } & \#2\_2
+\end{eqnarray*}
+Mehrfaches $\lambda$
+\[
+  \lambda(\id_1,\ldots,\id_n):\,\tau_1 * \ldots * \tau_n.\,e
+\]
+steht f"ur
+\[
+  \lambda \id:\,\tau_1 * \ldots * \tau_n.\,\blet\,\id_1 = (\#n\_1\,id)\,\bin \ldots \blet\,\id_n = (\#n\_n\,id)\,\bin\,e
+\]
+und mehrfaches $\blet$
+\[
+  \bli{(\id_1,\ldots,\id_n):\,\tau_1 * \ldots * \tau_n}{e_1}{e_2}
+\]
+steht f"ur
+\[
+  \bli{\id:\,\tau_1 * \ldots * \tau_n}{e_1}{\blet\,\id_1 = (\#n\_1\,id)\,\bin \ldots \blet\,\id_n = (\#n\_n\,id)\,\bin\,e_2}
+\]
+wobei $\id_1,\ldots,\id_n$ verschieden sind und $\id$ ein neuer Name, der nicht in $e$ bzw. $e_2$ und unter $\id_1,\ldots,\id_n$
+vorkommt.
+
+
+
+\section{Die Sprache \LFOUR}
+
+Die Sprache \LFOUR\ erweitert schlie"slich \LTHREE\ um imperative Konzepte, also Speicher, sequentielle Ausf"uhrung und
+Schleifen. Die Menge $\Exp$ der g"ultigen Ausdr"ucke wird hierzu um die Produktionen
+\bgram
+e \is \bift{e_1}{e_2}
+  \al \bwd{e_1}{e_2}
+  \al e_1 \Assign e_2
+\egram
+und die Menge $\Const$ um die Produktionen 
+\bgram
+c \is \Ref \mid \Deref
+\egram
+erweitert.
 
 
 
