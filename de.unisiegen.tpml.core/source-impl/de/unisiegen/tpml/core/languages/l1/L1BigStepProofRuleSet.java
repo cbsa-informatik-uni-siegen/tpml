@@ -21,9 +21,11 @@ import de.unisiegen.tpml.core.expressions.Lambda;
 import de.unisiegen.tpml.core.expressions.Let;
 import de.unisiegen.tpml.core.expressions.LetRec;
 import de.unisiegen.tpml.core.expressions.MultiLet;
+import de.unisiegen.tpml.core.expressions.Not;
 import de.unisiegen.tpml.core.expressions.Or;
 import de.unisiegen.tpml.core.expressions.Projection;
 import de.unisiegen.tpml.core.expressions.Recursion;
+import de.unisiegen.tpml.core.expressions.UnaryOperatorException;
 import de.unisiegen.tpml.core.expressions.UnitConstant;
 import de.unisiegen.tpml.core.languages.l0.L0BigStepProofRuleSet;
 import de.unisiegen.tpml.core.languages.l0.L0Language;
@@ -61,6 +63,7 @@ public class L1BigStepProofRuleSet extends L0BigStepProofRuleSet {
     registerByMethodName(L1Language.L1, "COND-FALSE", "applyCond", "updateCondFalse"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     registerByMethodName(L1Language.L1, "COND-TRUE", "applyCond", "updateCondTrue"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     registerByMethodName(L1Language.L1, "LET", "applyLet", "updateLet"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    registerByMethodName(L1Language.L1, "NOT", "applyNot"); //$NON-NLS-1$ //$NON-NLS-2$
     registerByMethodName(L1Language.L1, "OP", "applyOp"); //$NON-NLS-1$ //$NON-NLS-2$
     registerByMethodName(L2Language.L2, "OR-FALSE", "applyOr", "updateOrFalse"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     registerByMethodName(L2Language.L2, "OR-TRUE", "applyOr", "updateOrTrue"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
@@ -346,6 +349,26 @@ public class L1BigStepProofRuleSet extends L0BigStepProofRuleSet {
   
   
   //
+  // The (NOT) rule
+  //
+  
+  /**
+   * Applies the <b>(NOT)</b> rule to the <code>node</code> using the <code>context</code>.
+   * 
+   * @param context the big step proof context.
+   * @param node the node to apply the <b>(NOT)</b> rule to.
+   * 
+   * @throws UnaryOperatorException if the <b>(NOT)</b> rule cannot be applied here. 
+   */
+  public void applyNot(BigStepProofContext context, BigStepProofNode node) throws UnaryOperatorException {
+    Application application = (Application)node.getExpression();
+    Not e1 = (Not)application.getE1();
+    context.setProofNodeResult(node, e1.applyTo(application.getE2()));
+  }
+
+
+
+  //
   // The (OP) rule
   //
   
@@ -355,7 +378,7 @@ public class L1BigStepProofRuleSet extends L0BigStepProofRuleSet {
    * @param context the big step proof context.
    * @param node the node to apply the <b>(OP)</b> rule to.
    * 
-   * @throws BinaryOperatorException if the <b>(OP)</b> 
+   * @throws BinaryOperatorException if the <b>(OP)</b> rule cannot be applied here.
    */
   public void applyOp(BigStepProofContext context, BigStepProofNode node) throws BinaryOperatorException {
     // depends on whether we have an Application or InfixOperation

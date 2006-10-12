@@ -25,6 +25,7 @@ terminal			COLONCOLON;
 
 /* Logical operators */
 terminal			AMPERAMPER, BARBAR;
+terminal			NOT;
 
 /* Syntactic tokens */
 terminal			ARROW, COLON, COMMA, DOT, SEMI;
@@ -239,6 +240,9 @@ constant			::=	PARENPAREN		{: RESULT = UnitConstant.UNIT; :}
 					|	TRUE			{: RESULT = BooleanConstant.TRUE; :}
 					|	FALSE			{: RESULT = BooleanConstant.FALSE; :}
 					|	NUMBER:n		{: RESULT = new IntegerConstant(n.intValue()); :}
+					
+					/* Logical operators */
+					|	NOT				{: RESULT = Not.NOT; :}
 
 					/* Tuple operators */
 					|	PROJECTION:proj	{: RESULT = new Projection(proj[0], proj[1]); :}

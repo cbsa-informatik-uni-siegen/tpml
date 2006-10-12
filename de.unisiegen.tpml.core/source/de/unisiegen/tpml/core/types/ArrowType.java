@@ -23,6 +23,11 @@ public final class ArrowType extends MonoType {
   //
   
   /**
+   * The type for <code>bool -&gt; bool</code>.
+   */
+  public static final ArrowType BOOL_BOOL = new ArrowType(BooleanType.BOOL, BooleanType.BOOL);
+  
+  /**
    * The type for <code>int -&gt; int -&gt; bool</code>.
    */
   public static final ArrowType INT_INT_BOOL = new ArrowType(IntegerType.INT, new ArrowType(IntegerType.INT, BooleanType.BOOL));

@@ -56,6 +56,7 @@ import de.unisiegen.tpml.core.languages.LanguageSymbol;
 		case TRUE: case FALSE: case NUMBER: case PARENPAREN: case MOD:
 		case COLONEQUAL: case REF: case FST: case SND: case PROJECTION:
 		case CONS: case IS_EMPTY: case HD: case TL: case BRACKETBRACKET:
+		case NOT:
 			return PrettyStyle.CONSTANT;
 
 		case LAMBDA: case LET: case REC: case IN: case IF: case THEN:
@@ -120,6 +121,7 @@ LetterGreek		= [\u03b1-\u03c1\u03c3-\u03c9]
 	// logical operators
 	"&&"				{ return symbol("AMPERAMPER", AMPERAMPER); }
 	"||"				{ return symbol("BARBAR", BARBAR); }
+	"not"				{ return symbol("NOT", NOT); }
 	
 	// interpunctation
 	"."					{ return symbol("DOT", DOT); }

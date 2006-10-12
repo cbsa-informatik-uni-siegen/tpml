@@ -15,6 +15,7 @@ import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.expressions.Hd;
 import de.unisiegen.tpml.core.expressions.IntegerConstant;
 import de.unisiegen.tpml.core.expressions.IsEmpty;
+import de.unisiegen.tpml.core.expressions.Not;
 import de.unisiegen.tpml.core.expressions.Projection;
 import de.unisiegen.tpml.core.expressions.Ref;
 import de.unisiegen.tpml.core.expressions.RelationalOperator;
@@ -167,6 +168,9 @@ final class DefaultTypeCheckerProofContext implements TypeCheckerProofContext {
     }
     else if (expression instanceof RelationalOperator) {
       return ArrowType.INT_INT_BOOL;
+    }
+    else if (expression instanceof Not) {
+      return ArrowType.BOOL_BOOL;
     }
     else if (expression instanceof Assign) {
       return new PolyType(Collections.singleton(TypeVariable.ALPHA), new ArrowType(new RefType(TypeVariable.ALPHA), new ArrowType(TypeVariable.ALPHA, UnitType.UNIT)));

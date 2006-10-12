@@ -25,6 +25,7 @@ terminal			COLONCOLON;
 
 /* Logical operators */
 terminal			AMPERAMPER, BARBAR;
+terminal			NOT;
 
 /* Syntactic tokens */
 terminal			ARROW, COLON, COMMA, DOT;
@@ -265,6 +266,9 @@ constant			::=	PARENPAREN		{: RESULT = UnitConstant.UNIT; :}
 					|	FALSE			{: RESULT = BooleanConstant.FALSE; :}
 					|	NUMBER:n		{: RESULT = new IntegerConstant(n.intValue()); :}
 					
+					/* Logical operators */
+					|	NOT				{: RESULT = Not.NOT; :}
+
 					/* Reference operators */
 					|	EXCLAMATION		{: RESULT = Deref.DEREF; :}
 					|	REF				{: RESULT = Ref.REF; :}

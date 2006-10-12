@@ -9,7 +9,9 @@ import de.unisiegen.tpml.core.expressions.Condition;
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.expressions.InfixOperation;
 import de.unisiegen.tpml.core.expressions.Let;
+import de.unisiegen.tpml.core.expressions.Not;
 import de.unisiegen.tpml.core.expressions.Or;
+import de.unisiegen.tpml.core.expressions.UnaryOperatorException;
 import de.unisiegen.tpml.core.languages.l0.L0Language;
 import de.unisiegen.tpml.core.languages.l0.L0SmallStepProofRuleSet;
 import de.unisiegen.tpml.core.languages.l2.L2Language;
@@ -51,6 +53,7 @@ public class L1SmallStepProofRuleSet extends L0SmallStepProofRuleSet {
     register(L1Language.L1, "COND-FALSE", true);
     register(L1Language.L1, "LET-EVAL", false);
     register(L1Language.L1, "LET-EXEC", true);
+    register(L1Language.L1, "NOT", true);
     register(L1Language.L1, "OP", true);
     register(L2Language.L2, "OR-EVAL", false);
     register(L2Language.L2, "OR-FALSE", true);
@@ -98,6 +101,34 @@ public class L1SmallStepProofRuleSet extends L0SmallStepProofRuleSet {
     }
     catch (BinaryOperatorException e) {
       return applicationOrInfix;
+    }
+  }
+  
+  
+  
+  //
+  // The (NOT) rule
+  //
+  
+  /**
+   * Applies the {@link de.unisiegen.tpml.core.expressions.Not} operator <code>e1</code> to the
+   * {@link BooleanConstant} <code>e2</code> using the <code>context</code>.
+   * 
+   * @param context the small step proof context.
+   * @param application the application.
+   * @param e1 the not operator.
+   * @param e2 the operand.
+   * 
+   * @return the resulting expression.
+   */
+  public Expression applyNot(SmallStepProofContext context, Application application, Not e1, BooleanConstant e2) {
+    try {
+      Expression e = e1.applyTo(e2);
+      context.addProofStep(getRuleByName("NOT"), application);
+      return e;
+    }
+    catch (UnaryOperatorException e) {
+      return application;
     }
   }
   
