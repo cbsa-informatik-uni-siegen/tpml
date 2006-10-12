@@ -34,14 +34,10 @@
 			<fileset dir="${core.distdir}" includes="*.jar" />
 			<fileset dir="${graphics.distdir}" includes="*.jar" />
 			<fileset dir="${distdir}" includes="*.jar" />
+			<fileset dir="${basedir}" includes="tpml.exe" />
 			<fileset dir="${basedir}/doc" includes="LICENSE" />
 		</copy>
 		<copy todir="${distdir}/tpml-${de.unisiegen.tpml.ui.version}" file="${basedir}/tpml.sh">
-			<filterset>
-				<filter token="de.unisiegen.tpml.ui.version" value="${de.unisiegen.tpml.ui.version}" />
-			</filterset>
-		</copy>
-		<copy todir="${distdir}/tpml-${de.unisiegen.tpml.ui.version}" file="${basedir}/tpml.exe">
 			<filterset>
 				<filter token="de.unisiegen.tpml.ui.version" value="${de.unisiegen.tpml.ui.version}" />
 			</filterset>
