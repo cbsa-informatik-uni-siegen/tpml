@@ -108,13 +108,13 @@ public class FileWizard extends javax.swing.JDialog {
         okButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("New File...");
+        setTitle(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("New_File..."));
         setName("fileWizard");
         headerPanel.setLayout(new java.awt.GridBagLayout());
 
         headerPanel.setBackground(javax.swing.UIManager.getDefaults().getColor("window"));
         headerTitleLabel.setFont(new java.awt.Font("Dialog", 1, 24));
-        headerTitleLabel.setText("New File...");
+        headerTitleLabel.setText(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("New_File..."));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
@@ -122,7 +122,7 @@ public class FileWizard extends javax.swing.JDialog {
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 5, 10);
         headerPanel.add(headerTitleLabel, gridBagConstraints);
 
-        headerSubTitleLabel.setText("Create an empty source file for a language");
+        headerSubTitleLabel.setText(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("Create_an_empty_source_file_for_a_language"));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
@@ -200,7 +200,7 @@ public class FileWizard extends javax.swing.JDialog {
         gridBagConstraints.insets = new java.awt.Insets(5, 10, 10, 10);
         bodyPanel.add(descriptionScrollPane, gridBagConstraints);
 
-        descriptionLabel.setText("Description:");
+        descriptionLabel.setText(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("Description:"));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
@@ -210,7 +210,7 @@ public class FileWizard extends javax.swing.JDialog {
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 0, 10);
         bodyPanel.add(descriptionLabel, gridBagConstraints);
 
-        languagesLabel.setText("Available languages:");
+        languagesLabel.setText(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("Available_languages:"));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
@@ -225,7 +225,7 @@ public class FileWizard extends javax.swing.JDialog {
         buttonsPanel.setLayout(new java.awt.GridBagLayout());
 
         cancelButton.setMnemonic('C');
-        cancelButton.setText("Cancel");
+        cancelButton.setText(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("Cancel"));
         cancelButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cancelButtonActionPerformed(evt);
@@ -241,7 +241,7 @@ public class FileWizard extends javax.swing.JDialog {
         buttonsPanel.add(cancelButton, gridBagConstraints);
 
         okButton.setMnemonic('O');
-        okButton.setText("Ok");
+        okButton.setText(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("Ok"));
         okButton.setEnabled(false);
         okButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

@@ -6,25 +6,10 @@
 
 package de.unisiegen.tpml.ui;
 
-import de.unisiegen.tpml.core.ProofModel;
-import de.unisiegen.tpml.core.bigstep.BigStepProofModel;
-import de.unisiegen.tpml.core.languages.Language;
-import de.unisiegen.tpml.core.languages.LanguageFactory;
-import de.unisiegen.tpml.core.languages.NoSuchLanguageException;
-import de.unisiegen.tpml.core.smallstep.SmallStepProofModel;
-import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel;
-import de.unisiegen.tpml.graphics.ProofView;
-import de.unisiegen.tpml.graphics.ProofViewFactory;
-import de.unisiegen.tpml.graphics.typechecker.TypeCheckerView;
-import de.unisiegen.tpml.ui.editor.TextEditorPanel;
-import de.unisiegen.tpml.ui.proofview.ProofViewComponent;
-
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
@@ -36,6 +21,16 @@ import javax.swing.JToggleButton;
 import javax.swing.filechooser.FileFilter;
 
 import org.apache.log4j.Logger;
+
+import de.unisiegen.tpml.core.bigstep.BigStepProofModel;
+import de.unisiegen.tpml.core.languages.Language;
+import de.unisiegen.tpml.core.languages.LanguageFactory;
+import de.unisiegen.tpml.core.languages.NoSuchLanguageException;
+import de.unisiegen.tpml.core.smallstep.SmallStepProofModel;
+import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel;
+import de.unisiegen.tpml.graphics.ProofViewFactory;
+import de.unisiegen.tpml.ui.editor.TextEditorPanel;
+import de.unisiegen.tpml.ui.proofview.ProofViewComponent;
 
 /**
  * Part of the UI displayed in the tabbed pane. It includes one open file and
@@ -111,7 +106,7 @@ public class EditorPanel extends javax.swing.JPanel {
 
 		setLayout(new java.awt.BorderLayout());
 
-		codeButton.setText("Source");
+		codeButton.setText(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("Source"));
 		codeButton.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				codeButtonActionPerformed(evt);
@@ -150,7 +145,7 @@ public class EditorPanel extends javax.swing.JPanel {
 
 		nextButton.setIcon(new javax.swing.ImageIcon(getClass().getResource(
 				"/de/unisiegen/tpml/ui/icons/next24.png")));
-		nextButton.setToolTipText("Guess");
+		nextButton.setToolTipText(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("Guess"));
 		nextButton.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				nextButtonActionPerformed(evt);
@@ -376,7 +371,7 @@ public class EditorPanel extends javax.swing.JPanel {
 		} catch (Exception e) {
 			logger.error("Could not create new SmallStepView", e);
 			JOptionPane.showMessageDialog(this,
-					"Cannot run the Small Step for this expression.",
+					java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("CouldNotSmallStep"),
 					"Small Step", JOptionPane.ERROR_MESSAGE);
 		}
 	}
@@ -400,7 +395,7 @@ public class EditorPanel extends javax.swing.JPanel {
 		} catch (Exception e) {
 			logger.error("Could not create new BigStepView", e);
 			JOptionPane.showMessageDialog(this,
-					"Cannot run the bigstep for this expression.", "Big Step",
+					java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("CouldNotBigStep"), "Big Step",
 					JOptionPane.ERROR_MESSAGE);
 		}
 	}
@@ -425,7 +420,7 @@ public class EditorPanel extends javax.swing.JPanel {
 		} catch (Exception e) {
 			logger.error("Could not create new TypeCheckerView", e);
 			JOptionPane.showMessageDialog(this,
-					"Cannot run the typechecker for this expression.",
+					java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("CouldNotTypeChecker"),
 					"TypeChecker", JOptionPane.ERROR_MESSAGE);
 		}
 	}
@@ -698,9 +693,9 @@ public class EditorPanel extends javax.swing.JPanel {
 				if (!name.substring(i + 1).equalsIgnoreCase(
 						this.language.getName())) {
 					JOptionPane.showMessageDialog(this,
-							"File name must end with \"."
+							java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("FileMustEndWith")+" \"."
 									+ this.language.getName().toLowerCase()
-									+ "\".", "Save", JOptionPane.ERROR_MESSAGE);
+									+ "\".", java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("Save"), JOptionPane.ERROR_MESSAGE);
 					continue;
 				}
 			} else {
@@ -715,10 +710,10 @@ public class EditorPanel extends javax.swing.JPanel {
 					int j = JOptionPane
 							.showConfirmDialog(
 									this,
-									"The file \""
+									java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("The_File")+" \""
 											+ outfile.getName()
-											+ "\" already exists. Do you want to overwrite it?",
-									"Overwrite",
+											+ "\" " +java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("alreadyExists"),
+									java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("Overwrite"),
 									JOptionPane.YES_NO_CANCEL_OPTION,
 									JOptionPane.QUESTION_MESSAGE);
 					if (j == JFileChooser.CANCEL_OPTION) {
@@ -738,7 +733,7 @@ public class EditorPanel extends javax.swing.JPanel {
 			} catch (IOException e) {
 				logger.error("Selected file could not be created.", e);
 				JOptionPane.showMessageDialog(this,
-						"File could not be created.", "Save",
+						java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("FileCantBeCreated"), java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("Save"),
 						JOptionPane.ERROR_MESSAGE);
 				return false;
 			}
@@ -761,8 +756,8 @@ public class EditorPanel extends javax.swing.JPanel {
 			return true;
 		} catch (IOException e) {
 			logger.error("Could not write to file", e);
-			JOptionPane.showMessageDialog(this, "Could not write to file.",
-					"Write File", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(this, java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("CouldNotWriteToFile"),
+					java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("WriteFile"), JOptionPane.ERROR_MESSAGE);
 			return false;
 		}
 	}

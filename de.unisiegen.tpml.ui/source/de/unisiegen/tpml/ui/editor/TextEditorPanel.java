@@ -136,12 +136,12 @@ public class TextEditorPanel extends JPanel implements EditorComponent, Clipboar
 		// the popup menu and listeners
 		popup = new JPopupMenu();
 		MenuListener menulistener = new MenuListener();
-		undoItem = new JMenuItem("Undo");
-		redoItem = new JMenuItem("Redo");
+		undoItem = new JMenuItem(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("Undo"));
+		redoItem = new JMenuItem(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("Redo"));
 		JSeparator separator = new JSeparator();
-		JMenuItem copyItem = new JMenuItem("Copy");
-		JMenuItem cutItem = new JMenuItem("Cut");
-		JMenuItem pasteItem = new JMenuItem("Paste");
+		JMenuItem copyItem = new JMenuItem(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("Copy"));
+		JMenuItem cutItem = new JMenuItem(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("Cut"));
+		JMenuItem pasteItem = new JMenuItem(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("Paste"));
 		undoItem.addActionListener(menulistener);
 		undoItem.setEnabled(false);
 		undoItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/undo16.gif")));
@@ -425,15 +425,15 @@ public class TextEditorPanel extends JPanel implements EditorComponent, Clipboar
 		public void actionPerformed(ActionEvent evt) {
 			String command = evt.getActionCommand();
 
-			if (command.equals("Copy")) {
+			if (command.equals(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("Copy"))) {
 				handleCopy();
-			} else if (command.equals("Cut")) {
+			} else if (command.equals(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("Cut"))) {
 				handleCut();
-			} else if (command.equals("Paste")) {
+			} else if (command.equals(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("Paste"))) {
 				handlePaste();
-			}  else if (command.equals("Undo")) {
+			}  else if (command.equals(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("Undo"))) {
 				handleUndo();
-			} else if (command.equals("Redo")) {
+			} else if (command.equals(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("Redo"))) {
 				handleRedo();
 			}
 		}
