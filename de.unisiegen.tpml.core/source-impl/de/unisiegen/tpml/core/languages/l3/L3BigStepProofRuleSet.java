@@ -207,7 +207,7 @@ public class L3BigStepProofRuleSet extends L2BigStepProofRuleSet {
     }
     else if (e2 instanceof List) {
       // Lists aren't empty
-      context.setProofNodeResult(node, BooleanConstant.TRUE);
+      context.setProofNodeResult(node, BooleanConstant.FALSE);
     }
     else {
       try {
@@ -215,7 +215,7 @@ public class L3BigStepProofRuleSet extends L2BigStepProofRuleSet {
         Application a1 = (Application)e2;
         Tuple tuple = (Tuple)a1.getE2();
         if (a1.getE1() instanceof UnaryCons && tuple.getExpressions().length == 2) {
-          context.setProofNodeResult(node, BooleanConstant.TRUE);
+          context.setProofNodeResult(node, BooleanConstant.FALSE);
         }
         else {
           throw new ClassCastException();

@@ -1,5 +1,6 @@
 package de.unisiegen.tpml.core.languages.l1;
 
+import de.unisiegen.tpml.core.expressions.And;
 import de.unisiegen.tpml.core.expressions.Application;
 import de.unisiegen.tpml.core.expressions.BinaryOperator;
 import de.unisiegen.tpml.core.expressions.BinaryOperatorException;
@@ -8,8 +9,10 @@ import de.unisiegen.tpml.core.expressions.Condition;
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.expressions.InfixOperation;
 import de.unisiegen.tpml.core.expressions.Let;
+import de.unisiegen.tpml.core.expressions.Or;
 import de.unisiegen.tpml.core.languages.l0.L0Language;
 import de.unisiegen.tpml.core.languages.l0.L0SmallStepProofRuleSet;
+import de.unisiegen.tpml.core.languages.l2.L2Language;
 import de.unisiegen.tpml.core.smallstep.SmallStepProofContext;
 
 /**
@@ -40,12 +43,18 @@ public class L1SmallStepProofRuleSet extends L0SmallStepProofRuleSet {
     super(language);
     
     // register small step rules
+    register(L2Language.L2, "AND-EVAL", false);
+    register(L2Language.L2, "AND-FALSE", true);
+    register(L2Language.L2, "AND-TRUE", true);
     register(L1Language.L1, "COND-EVAL", false);
     register(L1Language.L1, "COND-TRUE", true);
     register(L1Language.L1, "COND-FALSE", true);
     register(L1Language.L1, "LET-EVAL", false);
     register(L1Language.L1, "LET-EXEC", true);
     register(L1Language.L1, "OP", true);
+    register(L2Language.L2, "OR-EVAL", false);
+    register(L2Language.L2, "OR-FALSE", true);
+    register(L2Language.L2, "OR-TRUE", true);
   }
   
   
@@ -95,6 +104,50 @@ public class L1SmallStepProofRuleSet extends L0SmallStepProofRuleSet {
   
   
   //
+  // The (AND-EVAL), (AND-FALSE) and (AND-TRUE) rules
+  //
+  
+  /**
+   * Evaluates the <code>and</code> expression using the <code>context</code>.
+   * 
+   * @param context the small step proof context.
+   * @param and the {@link And} expression to evaluate.
+   * 
+   * @return the resulting expression.
+   */
+  public Expression evaluateAnd(SmallStepProofContext context, And and) {
+    // determine the sub expressions
+    Expression e1 = and.getE1();
+    Expression e2 = and.getE2();
+    
+    // check if e1 is not already a boolean constant
+    if (!(e1 instanceof BooleanConstant)) {
+      // we're about to perform (AND-EVAL)
+      context.addProofStep(getRuleByName("AND-EVAL"), and);
+      
+      // try to evaluate e1
+      e1 = evaluate(context, e1);
+      
+      // exceptions need special handling
+      return e1.isException() ? e1 : new And(e1, e2);
+    }
+    
+    // determine the boolean constant value
+    if (e1 == BooleanConstant.TRUE) {
+      // jep, that's (AND-TRUE) then
+      context.addProofStep(getRuleByName("AND-TRUE"), and);
+      return e2;
+    }
+    else {
+      // jep, that's (AND-FALSE) then
+      context.addProofStep(getRuleByName("AND-FALSE"), and);
+      return BooleanConstant.FALSE;
+    }
+  }
+  
+  
+  
+  //
   // The (APP-LEFT) and (APP-RIGHT) rules for infix operations
   //
   
@@ -107,7 +160,7 @@ public class L1SmallStepProofRuleSet extends L0SmallStepProofRuleSet {
    * @return the resulting expression.
    */
   public Expression evaluateInfixOperation(SmallStepProofContext context, InfixOperation infixOperation) {
-    //  determine the sub expressions and the operator
+    // determine the sub expressions and the operator
     Expression e1 = infixOperation.getE1();
     Expression e2 = infixOperation.getE2();
     BinaryOperator op = infixOperation.getOp();
@@ -201,7 +254,7 @@ public class L1SmallStepProofRuleSet extends L0SmallStepProofRuleSet {
    * @return the resulting expression.
    */
   public Expression evaluateLet(SmallStepProofContext context, Let let) {
-//  determine the sub expressions and the identifier
+    // determine the sub expressions and the identifier
     Expression e1 = let.getE1();
     Expression e2 = let.getE2();
     String id = let.getId();
@@ -223,5 +276,49 @@ public class L1SmallStepProofRuleSet extends L0SmallStepProofRuleSet {
     
     // and perform the substitution
     return e2.substitute(id, e1);
+  }
+  
+  
+  
+  //
+  // The (OR-EVAL), (OR-FALSE) and (OR-TRUE) rules
+  //
+  
+  /**
+   * Evaluates the <code>or</code> expression using the <code>context</code>.
+   * 
+   * @param context the small step proof context.
+   * @param and the {@link And} expression to evaluate.
+   * 
+   * @return the resulting expression.
+   */
+  public Expression evaluateOr(SmallStepProofContext context, Or or) {
+    // determine the sub expressions
+    Expression e1 = or.getE1();
+    Expression e2 = or.getE2();
+    
+    // check if e1 is not already a boolean constant
+    if (!(e1 instanceof BooleanConstant)) {
+      // we're about to perform (OR-EVAL)
+      context.addProofStep(getRuleByName("OR-EVAL"), or);
+
+      // try to evaluate e1
+      e1 = evaluate(context, e1);
+
+      // exceptions need special treatment
+      return e1.isException() ? e1 : new Or(e1, e2);
+    }
+    
+    // determine the boolean constant value
+    if (e1 == BooleanConstant.TRUE) {
+      // jep, that's (OR-TRUE) then
+      context.addProofStep(getRuleByName("OR-TRUE"), or);
+      return BooleanConstant.TRUE;
+    }
+    else {
+      // jep, that's (OR-FALSE) then
+      context.addProofStep(getRuleByName("OR-FALSE"), or);
+      return e2;
+    }
   }
 }

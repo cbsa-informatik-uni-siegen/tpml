@@ -1,14 +1,10 @@
 package de.unisiegen.tpml.core.languages.l2;
 
-import de.unisiegen.tpml.core.expressions.And;
-import de.unisiegen.tpml.core.expressions.BooleanConstant;
-import de.unisiegen.tpml.core.expressions.Condition;
 import de.unisiegen.tpml.core.expressions.CurriedLetRec;
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.expressions.Lambda;
 import de.unisiegen.tpml.core.expressions.Let;
 import de.unisiegen.tpml.core.expressions.LetRec;
-import de.unisiegen.tpml.core.expressions.Or;
 import de.unisiegen.tpml.core.expressions.Recursion;
 import de.unisiegen.tpml.core.languages.l1.L1LanguageTranslator;
 import de.unisiegen.tpml.core.types.ArrowType;
@@ -48,22 +44,7 @@ public class L2LanguageTranslator extends L1LanguageTranslator {
    */
   @Override
   public Expression translateToCoreSyntax(Expression expression, boolean recursive) {
-    if (expression instanceof And) {
-      // determine the sub expressions
-      And and = (And)expression;
-      Expression e1 = and.getE1();
-      Expression e2 = and.getE2();
-      
-      // check if we should recurse
-      if (recursive) {
-        e1 = translateToCoreSyntax(e1, true);
-        e2 = translateToCoreSyntax(e2, true);
-      }
-      
-      // generate the condition
-      return new Condition(e1, e2, BooleanConstant.FALSE);
-    }
-    else if (expression instanceof CurriedLetRec) {
+    if (expression instanceof CurriedLetRec) {
       // translate to: let id1 = rec id1.lambda id2...lambda idn.e1 in e2
       CurriedLetRec curriedLetRec = (CurriedLetRec)expression;
       MonoType[] types = curriedLetRec.getTypes();
@@ -108,21 +89,6 @@ public class L2LanguageTranslator extends L1LanguageTranslator {
       
       // generate the let expression
       return new Let(letRec.getId(), letRec.getTau(), new Recursion(letRec.getId(), letRec.getTau(), e1), e2);
-    }
-    else if (expression instanceof Or) {
-      // determine the sub expressions
-      Or or = (Or)expression;
-      Expression e1 = or.getE1();
-      Expression e2 = or.getE2();
-      
-      // check if we should recurse
-      if (recursive) {
-        e1 = translateToCoreSyntax(e1, true);
-        e2 = translateToCoreSyntax(e2, true);
-      }
-      
-      // generate the condition
-      return new Condition(e1, BooleanConstant.TRUE, e2);
     }
     else if (expression instanceof Recursion && recursive) {
       // determine the sub expressions
