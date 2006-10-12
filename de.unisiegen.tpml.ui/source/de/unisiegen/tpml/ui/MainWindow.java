@@ -477,7 +477,7 @@ public class MainWindow extends javax.swing.JFrame {
 
         MainMenuBar.add(editMenu);
 
-        runMenu.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("RunMnemonic").charAt(0));
+        runMenu.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("ProofMnemonic").charAt(0));
         runMenu.setText(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("Proof"));
         smallstepItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F9, 0));
         smallstepItem.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("SmallStepMnemonic").charAt(0));
@@ -541,6 +541,7 @@ public class MainWindow extends javax.swing.JFrame {
 
         helpMenu.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("HelpMnemonic").charAt(0));
         helpMenu.setText(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("Help"));
+        aboutItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F1, 0));
         aboutItem.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("AboutMnemonic").charAt(0));
         aboutItem.setText(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("About..."));
         aboutItem.addActionListener(new java.awt.event.ActionListener() {

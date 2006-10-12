@@ -108,13 +108,19 @@ public class FileWizard extends javax.swing.JDialog {
         okButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("New_File..."));
+        setTitle("New File...");
         setName("fileWizard");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
+
         headerPanel.setLayout(new java.awt.GridBagLayout());
 
         headerPanel.setBackground(javax.swing.UIManager.getDefaults().getColor("window"));
         headerTitleLabel.setFont(new java.awt.Font("Dialog", 1, 24));
-        headerTitleLabel.setText(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("New_File..."));
+        headerTitleLabel.setText("New File...");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
@@ -122,7 +128,7 @@ public class FileWizard extends javax.swing.JDialog {
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 5, 10);
         headerPanel.add(headerTitleLabel, gridBagConstraints);
 
-        headerSubTitleLabel.setText(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("Create_an_empty_source_file_for_a_language"));
+        headerSubTitleLabel.setText("Create an empty source file for a language");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
@@ -200,7 +206,7 @@ public class FileWizard extends javax.swing.JDialog {
         gridBagConstraints.insets = new java.awt.Insets(5, 10, 10, 10);
         bodyPanel.add(descriptionScrollPane, gridBagConstraints);
 
-        descriptionLabel.setText(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("Description:"));
+        descriptionLabel.setText("Description:");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
@@ -210,7 +216,7 @@ public class FileWizard extends javax.swing.JDialog {
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 0, 10);
         bodyPanel.add(descriptionLabel, gridBagConstraints);
 
-        languagesLabel.setText(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("Available_languages:"));
+        languagesLabel.setText("Available languages:");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
@@ -225,7 +231,7 @@ public class FileWizard extends javax.swing.JDialog {
         buttonsPanel.setLayout(new java.awt.GridBagLayout());
 
         cancelButton.setMnemonic('C');
-        cancelButton.setText(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("Cancel"));
+        cancelButton.setText("Cancel");
         cancelButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cancelButtonActionPerformed(evt);
@@ -241,7 +247,7 @@ public class FileWizard extends javax.swing.JDialog {
         buttonsPanel.add(cancelButton, gridBagConstraints);
 
         okButton.setMnemonic('O');
-        okButton.setText(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("Ok"));
+        okButton.setText("Ok");
         okButton.setEnabled(false);
         okButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -260,6 +266,10 @@ public class FileWizard extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        this.language = null;
+    }//GEN-LAST:event_formWindowClosing
 
     private void languagesListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_languagesListMouseClicked
 // 
