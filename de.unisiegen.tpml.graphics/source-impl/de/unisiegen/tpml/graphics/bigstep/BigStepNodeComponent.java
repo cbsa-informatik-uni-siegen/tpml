@@ -26,6 +26,13 @@ import de.unisiegen.tpml.graphics.components.MenuTranslateItem;
 import de.unisiegen.tpml.graphics.renderer.AbstractRenderer;
 import de.unisiegen.tpml.graphics.tree.TreeNodeComponent;
 
+
+/**
+ * Graphics representation of a BigStepProofNode
+ * 
+ * @author marcell
+ *
+ */
 public class BigStepNodeComponent extends JComponent implements TreeNodeComponent {
 
 	

@@ -85,6 +85,8 @@ public class Theme {
 	
 	private String									name;
 	
+	private int											id;
+	
 	public Theme () {
 		this.items = new LinkedList<ThemeItem>();
 		Font f = new JComboBox().getFont();
@@ -105,6 +107,14 @@ public class Theme {
 	
 	public String getName () {
 		return this.name;
+	}
+	
+	public void setId (int id) {
+		this.id = id;
+	}
+	
+	public int getId () {
+		return this.id;
 	}
 	
 	public int getNumberOfItems () {
