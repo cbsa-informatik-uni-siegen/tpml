@@ -3,7 +3,7 @@
 %% Kapitel 3 - Die Sprachen im Detail
 %%
 
-\chapter{Die Sprachen im Detail}
+\chapter{Die Sprachen im Detail\label{DieSprachenImDetail}}
 
 Dieses Kapitel beschreibt die in \TPML\ verf"ugbaren Sprachen im Detail. Dies beinhaltet sowohl die abstrakte Syntax der Sprachen als auch die
 operationelle Semantik und das Typsystem, also die Regeln f"ur die big und small step Interpreter und den Type Checker. Dieses Kapitel ist
@@ -81,12 +81,14 @@ Die Menge \notation{$\Type$} der \Define{Typen}{Typ} \Engl{types}{type} $\tau$ i
 \egram
 Die abstrakte Syntax, definiert durch die Menge $\Exp$ der g"ultigen Ausdr"ucke, wird erweitert durch neue Produktionen
 \bgram
-  e \is c
-    \al \abstr{\id: \tau}{e}
-    \al \bli{\id}{e_1}{e_2}
-    \al \bli{\id: \tau}{e_1}{e_2}
-    \al \bifte{e_0}{e_1}{e_2}
-    \al e_1\,\op\,e_2
+e \is c
+  \al \abstr{\id: \tau}{e}
+  \al \bli{\id}{e_1}{e_2}
+  \al \bli{\id: \tau}{e_1}{e_2}
+  \al \bifte{e_0}{e_1}{e_2}
+  \al e_1\,\op\,e_2
+  \al \andalso{e_1}{e_2}
+  \al \orelse{e_1}{e_2}
 \egram
 wobei die Menge \notation{$\Const$} der \Define{Konstanten}{Konstante} \Engl{constants}{constant} $c$ durch
 \bgram
@@ -97,8 +99,9 @@ c \is \nop                    & & \mbox{unit-Element}
 \egram
 und die Menge \notation{$\Op$} der \Define{Operatoren}{Operator} \Engl{operators}{operator} $\op$ durch
 \bgram
-\op \is + \ \mid\  - \ \mid\  * \ \mid\ / \ \mid \ \mbox{mod}    & & \mbox{arithmetische Operatoren}
-    \al < \ \ \mid\ \ > \ \ \mid\ \ \leq \ \ \mid\ \  \geq \ |\ =  & & \mbox{Vergleichsoperatoren}
+\op \is + \ \mid\  - \ \mid\  * \ \mid\ / \ \mid \ \mbox{mod}     & & \mbox{arithmetische Operatoren}
+    \al < \ \ \mid\ \ > \ \ \mid\ \ \leq \ \ \mid\ \  \geq \ |\ = & & \mbox{Vergleichsoperatoren}
+    \al \Not                                                & & \mbox{Negation}
 \egram
 definiert ist. Die Menge \notation{$\Val$} der Werte $v$ wird um die Produktionen
 \bgram
@@ -120,13 +123,22 @@ den Programmierer dient.
 
 Ein big step hei"st g"ultig f"ur \LONE, wenn er sich mit den big step Regeln von \LZERO, den Regeln\\[5mm]
   \begin{tabular}{ll}
-     \mbox{(OP)}          & $\op\,n_1\,n_2 \eval \op^{\I}(n_1,n_2)$ \\[3mm]
+     \mbox{(AND-FALSE)}   & $\regel{e_1 \eval \false}
+                                   {\andalso{e_1}{e_2} \eval \false}$ \\[5mm]
+     \mbox{(AND-TRUE)}    & $\regel{e_1 \eval \true \quad e_2 \eval v}
+                                   {\andalso{e_1}{e_2} \eval v}$ \\[5mm]
      \mbox{(COND-TRUE)}   & $\regel{e_0 \eval \true \quad e_1 \eval v}
                                    {\bifte{e_0}{e_1}{e_2} \eval v}$ \\[5mm]
      \mbox{(COND-FALSE)}  & $\regel{e_0 \eval \false \quad e_2 \eval v}
                                    {\bifte{e_0}{e_1}{e_2} \eval v}$ \\[5mm]
      \mbox{(LET)}         & $\regel{e_1 \eval v_1 \quad e_2[v_1/\id] \eval v_2}
-                                   {\bli{\id}{e_1}{e_2} \eval v_2}$
+                                   {\bli{\id}{e_1}{e_2} \eval v_2}$ \\[5mm]
+     \mbox{(NOT)}         & $\Not\,b \eval \neg b$ \\[3mm]
+     \mbox{(OP)}          & $\op\,n_1\,n_2 \eval \op^{\I}(n_1,n_2)$ \\[3mm]
+     \mbox{(OR-FALSE)}    & $\regel{e_1 \eval \false\quad e_2 \eval v}
+                                   {\orelse{e_1}{e_2} \eval v}$ \\[5mm]
+     \mbox{(OR-TRUE)}     & $\regel{e_1 \eval \true}
+                                   {\orelse{e_1}{e_2} \eval \true}$
   \end{tabular}\\[7mm]
 und mit den zugeh"origen exception-Regeln herleiten l"asst. Diese exception-Regeln erh"alt man
 aus den obigen Regeln indem man zu jeder Regel der Form\\[2mm]
@@ -148,14 +160,23 @@ automatisch eingesetzt, sobald eine Ausnahme weitergereicht werden mu"s.
 
 Ein small step hei"st g"ultig f"ur \LONE, wenn er sich mit den small step Regeln von \LZERO, den Regeln\\[5mm]
   \begin{tabular}{ll}
-     \mbox{(OP)}          & $\op\,n_1\,n_2 \to \op^{\I}(n_1,n_2)$ \\[3mm]
-     \mbox{(COND-EVAL)\ } & $\regel{e_0 \to e'_0}
+    \mbox{(AND-EVAL)}     & $\regel{e_1 \to e_1'}
+                                 {\andalso{e_1}{e_2} \to \andalso{e_1'}{e_2}}$\\[5mm]
+    \mbox{(AND-FALSE)}    & $\andalso{\false}{e_2} \to \false$\\[3mm]
+    \mbox{(AND-TRUE)}     & $\andalso{\true}{e_2} \to e_2$\\[3mm]
+    \mbox{(NOT)}          & $\Not\,b \to \neg b$\\[3mm]
+    \mbox{(OP)}           & $\op\,n_1\,n_2 \to \op^{\I}(n_1,n_2)$ \\[3mm]
+    \mbox{(COND-EVAL)\ }  & $\regel{e_0 \to e'_0}
                             {\bifte{e_0}{e_1}{e_2} \to \bifte{e'_0}{e_1}{e_2}}$ \\[5mm]
-     \mbox{(COND-TRUE)\ } & $\bifte{\true}{e_1}{e_2} \to e_1$ \\[3mm]
-     \mbox{(COND-FALSE) } & $\bifte{\false}{e_1}{e_2} \to e_2$ \\[3mm]
-     \mbox{(LET-EVAL)\  } & $\regel{e_1 \to e'_1}
+    \mbox{(COND-TRUE)\ }  & $\bifte{\true}{e_1}{e_2} \to e_1$ \\[3mm]
+    \mbox{(COND-FALSE) }  & $\bifte{\false}{e_1}{e_2} \to e_2$ \\[3mm]
+    \mbox{(LET-EVAL)\  }  & $\regel{e_1 \to e'_1}
                             {\bli{\id}{e_1}{e_2} \to \bli{\id}{e'_1}{e_2}}$ \\[5mm]
-     \mbox{(LET-EXEC)}      & $\bli{\id}{v}{e} \to e[v/\id]$
+    \mbox{(LET-EXEC)}       & $\bli{\id}{v}{e} \to e[v/\id]$ \\[5mm]
+    \mbox{(OR-EVAL)}      & $\regel{e_1 \to e_1'}
+                                   {\orelse{e_1}{e_2} \to \orelse{e_1'}{e_2}}$\\[5mm]
+    \mbox{(OR-FALSE)}     & $\orelse{\false}{e_2} \to e_2$\\[3mm]
+    \mbox{(OR-TRUE)}      & $\orelse{\true}{e_2} \to \true$
   \end{tabular}\\[7mm]
 und mit den zugeh"origen exception-Regeln herleiten l"asst. Diese exceptions-Regeln erh"alt man - "ahnlich wie
 bei der big step Seminatik - aus den obigen Regeln indem man f"ur jede Regel der Form\\[2mm]
@@ -199,7 +220,11 @@ den Regeln\\[3mm]
                             \Tj{\Gamma[\tau_1/\id]}{e_2}{\tau_2}}
                            {\Tj{\Gamma}{\bli{\id}{e_1}{e_2}}{\tau_2}}$\\[5mm]
   \mbox{(ABSTR)\  } & $\regel{\Tj{\Gamma[\tau/\id]}{e}{\tau'}} 
-                           {\Tj{\Gamma}{\abstr{\id:\tau}{e}}{\tau\to\tau'}}$
+                           {\Tj{\Gamma}{\abstr{\id:\tau}{e}}{\tau\to\tau'}}$ \\[5mm]
+  \mbox{(AND)\ } & $\regel{\Tj{\Gamma}{e_1}{\bool} \quad \Tj{\Gamma}{e_2}{\bool}}
+                          {\Tj{\Gamma}{\andalso{e_1}{e_2}}{\bool}}$ \\[5mm]
+  \mbox{(OR)\  } & $\regel{\Tj{\Gamma}{e_1}{\bool} \quad \Tj{\Gamma}{e_2}{\bool}}
+                          {\Tj{\Gamma}{\orelse{e_1}{e_2}}{\bool}}$
 \end{tabular}\\[7mm]
 herleiten l"asst. Die Regel (CONST) besagt hierbei, dass $c$ in der Typumgebung $\Gamma$ den Typ $\tau$ hat, wenn $c$
 den Typ $\tau$ hat. Dies wird durch die Regeln\\[3mm]
@@ -207,6 +232,7 @@ den Typ $\tau$ hat. Dies wird durch die Regeln\\[3mm]
 \mbox{(UNIT)\  } & $\tj{()}{\unit}$\\[2mm]
 \mbox{(BOOL)\  } & $\tj{b}{\bool}$\\[2mm]
 \mbox{(INT)\   } & $\tj{n}{\z}$\\[2mm]
+\mbox{(NOT)\   } & $\tj{\Not}{\bool\to\bool}$\\[2mm]
 \mbox{(AOP)\   } & $\tj{\op}{\z\to\z\to\z}$ \reason{ falls $\op$ arithmetischer Operator}\\[2mm]
 \mbox{(ROP)\   } & $\tj{\op}{\z\to\z\to\bool}$ \reason{ falls $\op$ Vergleichsoperator}
 \end{tabular}\\[7mm]
@@ -217,9 +243,9 @@ definiert. Beim Typechecker werden diese Regeln f"ur Konstanten nicht angegeben,
 
 Die Sprache \LONE\ und alle folgenden Sprachen enthalten syntaktischen Zucker um das Schreiben von Programmen zu vereinfachen.
 Der syntaktische Zucker l"asst sich dann anschlie"send in Kernsyntax "ubersetzen oder direkt verarbeiten. Hierbei wurden aus
-Gr"unden der "Ubersichtlichkeit keine eigenen Regeln f"ur den syntaktischen Zucker eingef"uhrt, sondern es wird implizit eine
-Konvertierung des betreffenden Teilausdrucks in Kernsyntax vorgenommen. F"ur \LONE\ betrifft dies nur Ausdr"ucke, die
-Operatoren in Infixschreibweise enthalten. Es gilt:
+Gr"unden der "Ubersichtlichkeit nicht immer abgeleitete Regeln f"ur den syntaktischen Zucker eingef"uhrt, sondern es wird implizit
+eine Konvertierung des betreffenden Teilausdrucks in Kernsyntax vorgenommen. F"ur \LONE\ betrifft dies Ausdr"ucke, die
+Operatoren in Infixschreibweise enthalten, und die logischen Operatoren $\mathbin{\&\&}$ und $\mathbin{||}$. Es gilt:
 \beqns
 e_1\,\op\,e_2\quad \mbox{steht f"ur}\quad (\op\,e_1)\,e_2
 \eeqns
@@ -234,22 +260,34 @@ Beispiel l"asst sich
 interpretieren als Infixaddition von $x$ und $y$ oder als Anwendung der Funktion $x$ auf die Parameter $+$ und $y$. Intuitiv
 w"urde ein Mensch ersteres vermuten, der Parser f"ur die konkrete Syntax kann dies jedoch nicht entscheiden.
 
+Die logischen $\mathbin{\&\&}$- und 
+$\mathbin{||}$-Verkn"upfungen sind syntaktischer Zucker f"ur die bedingte Ausf"uhrung
+\beqns
+  \andalso{e_1}{e_2} & \mbox{ steht f"ur } & \bifte{e_1}{e_2}{\false} \\
+  \orelse{e_1}{e_2} & \mbox{ steht f"ur } & \bifte{e_1}{\true}{e_2}
+\eeqns
+und es existieren abgeleitete Interpreter- und Typregeln, da sonst der Umgang mit diesen Konstrukten zu aufwendig
+w"are.
+
+Interessant zu beobachten ist, dass auch der $\Not$-Operator als syntaktischer Zucker aufgefasst werden k"onnte.
+\beqns
+  \Not & \mbox{ steht f"ur } & \abstr{\id: \bool}{\bifte{\id}{\false}{\true}}
+\eeqns
+Dies sei aber nur am Rande erw"ahnt.
+
 
 
 \section{Die Sprache \LTWO}
 
 Die Sprache \LTWO\ erweitert \LONE\ um rekursive Ausdr"ucke\footnote{Wohlgemerkt aber nicht um rekursive Typen. Das
 Typsystem schr"ankt die Sprache also st"arker ein, als dies bei \LONE\ der Fall ist.} und syntaktischen Zucker, der
-es erlaubt Funktionen einfacher zu definieren, "ahnlich zu OCaml. Dar"uber hinaus bietet \LTWO\ logische Operatoren
-f"ur Konjunktion und Disjunktion.
+es erlaubt Funktionen einfacher zu definieren, "ahnlich zu OCaml.
 
 Die Menge \notation{$\Exp$} der g"ultigen Ausdr"ucke wird um die Produktionen
 \bgram
 e \is \rec{\id: \tau}{e}
   \al \bli{\id (\id_1: \tau_1)\ldots(\id_n: \tau_n):\tau}{e_1}{e_2}
   \al \bli{\brec\,\id (\id_1: \tau_1)\ldots(\id_n: \tau_n):\tau}{e_1}{e_2}
-  \al \andalso{e_1}{e_2}
-  \al \orelse{e_1}{e_2}
 \egram
 erweitert, wobei s"amtliche Typangaben optional sind. Bei $\blet$ und $\blet\,\brec$ m"ussen die Bezeichner f"ur die
 Parameter nur dann geklammert werden, wenn ein Typ f"ur diesen Parameter angegeben wird.
@@ -257,47 +295,27 @@ Parameter nur dann geklammert werden, wenn ein Typ f"ur diesen Parameter angegeb
 
 \subsection{Big step Semantik von \LTWO}
 
-Ein big step hei"st g"ultig f"ur \LTWO, wenn er sich mit den big step Regeln von \LONE\ und den Regeln\\[3mm]
+Ein big step hei"st g"ultig f"ur \LTWO, wenn er sich mit den big step Regeln von \LONE\ und der Regel\\[3mm]
   \begin{tabular}{ll}
-     \mbox{(AND-FALSE)}   & $\regel{e_1 \eval \false}
-                                   {\andalso{e_1}{e_2} \eval \false}$ \\[5mm]
-     \mbox{(AND-TRUE)}    & $\regel{e_1 \eval \true \quad e_2 \eval v}
-                                   {\andalso{e_1}{e_2} \eval v}$ \\[5mm]
-     \mbox{(OR-FALSE)}    & $\regel{e_1 \eval \false\quad e_2 \eval v}
-                                   {\orelse{e_1}{e_2} \eval v}$ \\[5mm]
-     \mbox{(OR-TRUE)}     & $\regel{e_1 \eval \true}
-                                   {\orelse{e_1}{e_2} \eval \true}$ \\[5mm]
-     \mbox{(UNFOLD)}      & $\regel{e[\rec{\id}{e}/\id] \eval v}
-                                   {\rec{\id}{e} \eval v}$
-   \end{tabular}\\[7mm]
-sowie den dazugeh"origen exception-Regeln herleiten l"asst.
+    \mbox{(UNFOLD)}      & $\regel{e[\rec{\id}{e}/\id] \eval v}
+                                  {\rec{\id}{e} \eval v}$
+  \end{tabular}\\[7mm]
+sowie der dazugeh"origen exception-Regel herleiten l"asst.
 
 
 \subsection{Small step Semantik von \LTWO}
 
-Ein small step hei"st g"ultig f"ur \LTWO, wenn er sich mit den small step Regeln von \LONE\ und den Regeln\\[3mm]
-\begin{tabular}{ll}
-  \mbox{(AND-EVAL)}   & $\regel{e_1 \to e_1'}
-                             {\andalso{e_1}{e_2} \to \andalso{e_1'}{e_2}}$\\[5mm]
-  \mbox{(AND-FALSE)}  & $\andalso{\false}{e_2} \to \false$\\[3mm]
-  \mbox{(AND-TRUE)}   & $\andalso{\true}{e_2} \to e_2$\\[3mm]
-  \mbox{(OR-EVAL)}    & $\regel{e_1 \to e_1'}
-                             {\orelse{e_1}{e_2} \to \orelse{e_1'}{e_2}}$\\[5mm]
-  \mbox{(OR-FALSE)}  & $\orelse{\false}{e_2} \to e_2$\\[3mm]
-  \mbox{(OR-TRUE)}   & $\orelse{\true}{e_2} \to \true$\\[3mm]
-  \mbox{(UNFOLD)}     & $\rec{\id}{e} \to e[\rec{\id}{e}/\id]$
-\end{tabular}\\[7mm]
-sowie den dazugeh"origen exception-Regeln herleiten l"asst.
+Ein small step hei"st g"ultig f"ur \LTWO, wenn er sich mit den small step Regeln von \LONE\ und der Regel\\[3mm]
+  \begin{tabular}{ll}
+    \mbox{(UNFOLD)}     & $\rec{\id}{e} \to e[\rec{\id}{e}/\id]$
+  \end{tabular}\\[7mm]
+herleiten l"asst.
 
 
 \subsection{Typsystem von \LTWO}
 
-Ein Typurteil hei"st g"ultig f"ur \LTWO, wenn es sich mit den Typregeln von \LONE\ und den Regeln\\[3mm]
+Ein Typurteil hei"st g"ultig f"ur \LTWO, wenn es sich mit den Typregeln von \LONE\ und der Regel\\[3mm]
 \begin{tabular}{ll}
-\mbox{(AND)\ } & $\regel{\Tj{\Gamma}{e_1}{\bool} \quad \Tj{\Gamma}{e_2}{\bool}}
-                        {\Tj{\Gamma}{\andalso{e_1}{e_2}}{\bool}}$ \\[5mm]
-\mbox{(OR)\  } & $\regel{\Tj{\Gamma}{e_1}{\bool} \quad \Tj{\Gamma}{e_2}{\bool}}
-                        {\Tj{\Gamma}{\orelse{e_1}{e_2}}{\bool}}$ \\[5mm]
 \mbox{(REC)\ } & $\regel{\Tj{\Gamma[\tau/\id]}{e}{\tau}} 
                          {\Tj{\Gamma}{\rec{\id:\tau}{e}}{\tau}}$
 \end{tabular}\\[7mm]
@@ -307,16 +325,8 @@ bestimmt.
 
 \subsection{Syntaktischer Zucker}
 
-Die Sprache \LTWO\ enth"alt weitere Abk"urzungen zu den in \LONE\ definierten. Die logischen $\mathbin{\&\&}$- und 
-$\mathbin{||}$-Verkn"upfungen sind syntaktischer Zucker f"ur die bedingte Ausf"uhrung
-\beqns
-  \andalso{e_1}{e_2} & \mbox{ steht f"ur } & \bifte{e_1}{e_2}{\false} \\
-  \orelse{e_1}{e_2} & \mbox{ steht f"ur } & \bifte{e_1}{\true}{e_2}
-\eeqns
-und es existieren abgeleitete Interpreter und Typregeln, da sonst der Umgang mit diesen Konstrukten zu aufwendig
-w"are.
-
-Desweiteren stehen Abk"urzungen f"ur die einfache Definition von Funktionen zur Verf"ugung.
+Die Sprache \LTWO\ enth"alt weitere Abk"urzungen zu den in \LONE\ definierten. Die folgenden Abk"urzungen stehen f"ur
+die leichtere Definition von Funktionen zur Verf"ugung.
 \beqns
   \bli{\id (\id_1: \tau_1)\ldots(\id_n: \tau_n):\tau}{e_1}{e_2}
 \eeqns
@@ -517,13 +527,53 @@ Schleifen. Die Menge $\Exp$ der g"ultigen Ausdr"ucke wird hierzu um die Produkti
 \bgram
 e \is \bift{e_1}{e_2}
   \al \bwd{e_1}{e_2}
-  \al e_1 \Assign e_2
+  \al e_1\,;\,e_2
 \egram
 und die Menge $\Const$ um die Produktionen 
 \bgram
-c \is \Ref \mid \Deref
+c \is \Ref \mid \Deref \mid \Assign
 \egram
 erweitert.
+
+
+\subsection{Typsystem von \LFOUR}
+
+Ein Typurteil hei"st g"ultig f"ur \LTWO, wenn es sich mit den Typregeln von \LONE\ und den Regeln\\[3mm]
+\begin{tabular}{ll}
+\mbox{(SEQ)\ }    & $\regel{\Tj{\Gamma}{e_1}{\tau_1} \quad \Tj{\Gamma}{e_2}{\tau_2}}
+                           {\Tj{\Gamma}{e_1\,;\,e_2}{\tau_2}}$ \\[5mm]
+\mbox{(WHILE)\ }  & $\regel{\Tj{\Gamma}{e_1}{\bool} \quad \Tj{\Gamma}{e_2}{\tau}}
+                           {\Tj{\Gamma}{\bwd{e_1}{e_2}}{\unit}}$ \\[5mm]
+\mbox{(COND-1)\ } & $\regel{\Tj{\Gamma}{e_0}{\bool} \quad \Tj{\Gamma}{e_1}{\unit}}
+                           {\Tj{\Gamma}{\bift{e_0}{e_1}}{\unit}}$
+\end{tabular}\\[7mm]
+herleiten l"asst.
+Die neuen Konstanten werden "uber die Regel (P-CONST) behandelt und haben die folgenden polymorphen Typen.
+\begin{eqnarray*}
+\Deref  & :: & \forall\alpha.\,\reftype{\alpha} \to \alpha \\
+\Ref    & :: & \forall\alpha.\,\alpha \to \reftype{\alpha} \\
+\Assign & :: & \forall\alpha.\,\reftype{\alpha} \to \alpha \to \unit
+\end{eqnarray*}
+Um die Typsicherheit zu gew"ahrleisten, muss die Regel (P-LET) eingeschr"ankt werden, und zwar wird nun
+nur noch "uber Werte quantifiziert
+\[ \mbox{(P-LET) }\ \regel{\Tj{\Gamma}{v_1}{\tau}
+                          \quad
+                          \Tj{\Gamma[Closure_\Gamma(\tau)/\id]}{e_2}{\tau'}}
+                          {\Tj{\Gamma}{\bli{\id}{v_1}{e_2}}{\tau'}}\]
+wobei $v_1 \in \Val$. Das bedeutet also in der Folge, dass (P-LET) nur noch angewendet werden darf, wenn
+hinter dem Gleichheitszeichen ein Wert steht. Sonst muss (LET) angewendet werden. Dies entspricht dem
+OCaml Typsystem.
+
+
+\subsection{Syntaktischer Zucker}
+
+Die Sprache \LFOUR\ beinhaltet drei Abk"urzungen, die wie folgt in Kernsyntax "ubersetzt werden
+\begin{eqnarray*}
+  e_1\,;\,e_2     & \mbox{ steht f"ur } & \bli{\id}{e_1}{e_2} \\
+  \bift{e_1}{e_2} & \mbox{ steht f"ur } & \bifte{e_1}{e_2}{()} \\
+  \bwd{e_1}{e_2}  & \mbox{ steht f"ur } & \rec{\id: unit}{\bift{e_1}{(e_2\,;\,\id)}}
+\end{eqnarray*}
+wobei $\id \not\in free(e_1) \cup free(e_2)$.
 
 
 

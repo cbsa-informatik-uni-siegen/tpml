@@ -2,9 +2,11 @@
 
 TEXFILES =								\
 	TP.tex								\
+	anhanga.tex							\
 	kap1.tex							\
 	kap2.tex							\
 	kap3.tex							\
+	kap4.tex							\
 	manual.tex
 
 all: pdf

@@ -5,12 +5,101 @@
 
 \chapter{Einleitung}
 
+
+
 \section{Systemvoraussetzungen}
+
+\TPML\ wurde vollst"andig in Java entwickelt, und ben"otigt zur Ausf"uhrung lediglich ein JRE oder
+JDK in der Version 5.0 oder neuer.
+Einige System, wie zum Beispiel Mac OS X Tiger, diverse Linux Distributionen und angepasste Windows
+OEM Installation, enthalten bereits Java 5.0. Ansonsten kann die neueste Version der Java Runtime
+Environment (optional kombiniert mit dem Java Development Kit) von der Sun Microsystems Webseite
+heruntergeladen werden.
+
+\url{http://java.sun.com/}
+
+Bei manueller Installation des JRE oder JDK unter Unix/Linux-Systemen muss darauf geachtet werden, dass
+das {\tt java}-Binary anschlie"send im {\tt \$PATH} verf"ugbar ist. Wird das JDK zum Beispiel unter
+{\tt /usr/local/jdk1.5.0} installiert, muss anschlie"send im Profil der Shell {\tt /usr/local/jdk1.5.0/bin}
+zum {\tt \$PATH} hinzugef"ugt werden. Im Falle der {\tt bash} w"are dies in der Datei {\tt .bashrc}
+im Homeverzeichnis ein Eintrag
+\begin{verbatim}
+  export PATH="/usr/local/jdk1.5.0/bin:$PATH"
+\end{verbatim}
+und anschlie"send muss entweder die Datei mittels {\tt source .bashrc} neugeladen oder die
+Shell neu gestartet werden.
+
+Unter Windows "ubernimmt das Java Installationsprogramm die Aufgabe die entsprechenden Systemeinstellungen
+anzupassen. Es sind in der Regel nach der Installation keine weitere Anpassungen mehr notwendig.
+
+
 
 \section{Installation}
 
+Die Installation ist so einfach wie m"oglich gehalten. Nach dem Download des ZIP- oder TAR-Archivs muss dieses
+lediglich entpackt werden. Unter Mac OS X erledigt dies der StuffIt Expander, unter Windows kann in
+neueren Versionen entweder die in den Windows Explorer integrierte Unterst"utzung f"ur komprimierte
+Ordner oder ein externes Programm wie zum Beispiel WinZIP verwendet werden. Unter Unix/Linux kann
+das TAR-Archiv mittels dem {\tt tar}-Kommando entpackt werden\footnote{Oder alternativ nat"urlich
+auch "uber grafische Tools wie Xarchiver, File Roller oder Ark.}.
+\begin{verbatim}
+  bzcat tpml-X.Y.Z.tar.bz2 | tar xf -
+\end{verbatim}
+Anschlie"send wechselt man in das erzeugte Verzeichnis {\tt tpml-X.Y.Z} und f"uhrt dort das Shellskript
+{\tt tpml.sh} aus. Sofern eine geeignete JavaSE 5.0 Installation gefunden wurde, startet nun \TPML,
+ansonsten gibt es eine Fehlermeldung, und es sollte "uberpr"uft werden, ob wirklich ein JRE oder JDK
+5.0 installiert ist, und sichergestellt werden, dass das {\tt java}-Binary im {\tt \$PATH} liegt.
+
+Unter Windows gen"ugt ein Doppelklick auf die Datei {\tt tpml.exe}. Sollte keine JavaSE 5.0
+Installation gefunden werden, oder ist Java nicht korrekt im System eingerichtet erscheint
+ein Fehlerdialog.
+
+
+
 \section{Erste Schritte}
 
+Nach dem Start des Programms k"onnen neue Dateien erstellt werden. Dateien sind immer mit einer
+Programmiersprache verkn"upft, die durch die Dateiendung identifiziert wird\footnote{In gleicher
+Weise wie {\tt .java} eine Java-Datei bezeichnet und {\tt .c} eine C-Datei.}. In \TPML\ wurden
+die Sprachen \LZERO\ bis \LFOUR\ realisiert, die den wesentlichen in der Vorlesung behandelten
+Sprachen entsprechen\footnote{Derzeit existiert noch keine Sprache, die objekt-orientierte
+Konzepte unterst"utzt, wie sie in diesem Semester im zweiten Teil der Vorlesung eingef"uhrt
+werden. Dies ist Aufgabe der folgenden Projektgruppe.}, wobei die Namen und der Umfang
+einzelner Sprachen von denen in der Vorlesung abweichen kann. Die Sprachen werden in
+Kapitel~\ref{DieSprachenImDetail} im Detail behandelt, welches auch als Nachschlagewerk
+dienen soll.
+
+Um eine neue Datei zu erstellen w"ahlt man aus dem Menu {\bf Datei} den Eintrag {\bf Neu...}
+worauf sich ein Dialog "offnet, in dem die f"ur die Datei zu benutzende Programmiersprache
+ausgew"ahlt werden muss. Da die Vorlesung mit dem ungetypten $\lambda$-Kalk"ul beginnt,
+w"ahlen wir also auch hier ein einfaches Programmbeispiel in der Programmiersprache \LZERO.
+Nach der Auswahl der Programmiersprache "offnet sich ein Texteditor, in den der Programmtext
+eingegeben werden kann. Hierzu w"ahlen wir das Beispiel der Identit"atsfunktion, angewandt
+auf sich selbst.
+\begin{verbatim}
+  (lambda x.x) (lambda x.x)
+\end{verbatim}
+Zugegebenerma"sen nicht das beindruckendste Programm, aber f"ur ein erstes Beispiel doch
+sehr gut geeignet. Wie man bei der Eingabe des obigen Programms merken wird, unterst"utzt
+der Editor Syntaxhighlighting und markiert automatische Fehler im Programmtext, wie man
+es in der Regel von integrierten Entwicklungsumgebungen gewohnt ist\footnote{Nichtsdestotrotz
+sollte \TPML\ nicht mit einer IDE verwechselt, da es strikt als Lernwerkzeug ausgelegt ist.}.
+
+Anschlie"send kann man nun den big oder small step Interpreter starten und einen Programmablauf
+durchspielen, der bei dem obigen Programm verst"andlicherweise nicht sonderlich spektakul"ar
+ist. F"ur das Beispiel benutzen wir den small step Interpreter. Dazu w"ahlt man aus dem
+Men"u {\bf Beweis} den Eintrag {\bf Small Step}. Es "offnet sich nun ein weiterer mit dieser
+Datei verbundener Reiter {\bf Small Step} mit dem aus der Vorlesung bekannten Aussehen einer
+small step Herleitung. Der Interpreter erwartet nun die Auswahl einer small step Regel um den
+Beweis zu vervollst"andigen. Hierzu klickt man den grauen Button, und w"ahlt dann aus
+dem Men"u die n"achste anzuwendende Regel, in unserem Fall die (BETA-V) Regel.
+
+Nach Anwendung der Regel zeigt der Interpreter den n"achsten Beweisschritt, der in diesem
+Fall auch schon der letzte ist, da $\lambda x.x$ bereits ein Wert ist, der naturgem"a"s
+nicht weiter ausgewertet werden kann.
+
+Dies soll dem Zweck der \emph{ersten Schritte} gen"ugen. Das n"achste Kapitel beschreibt
+die Benutzeroberfl"ache und die Beweiswerkzeuge im Detail.
 
 
 
