@@ -678,11 +678,7 @@ public class MainWindow extends javax.swing.JFrame {
 	private void closeItemActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_closeItemActionPerformed
 		// 
 		handleClose();
-		if (getActiveEditor() == null) {
-			setGeneralStates(false);
-			saveItem.setEnabled(false);
-			saveButton.setEnabled(false);
-		}
+
 	}// GEN-LAST:event_closeItemActionPerformed
 
 	private void redoButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_redoButtonActionPerformed
@@ -824,7 +820,12 @@ public class MainWindow extends javax.swing.JFrame {
 		saveAllItem.setEnabled(state);
 		closeItem.setEnabled(state);
 		cutItem.setEnabled(state);
-
+		cutButton.setEnabled(state);
+		copyItem.setEnabled(state);
+		copyButton.setEnabled(state);
+		pasteItem.setEnabled(state);
+		pasteButton.setEnabled(state);
+		
 		setUndoState(state);
 		setRedoState(state);
 	}
@@ -1056,7 +1057,7 @@ public class MainWindow extends javax.swing.JFrame {
 	 */
 	private boolean handleClose() {
 		EditorPanel selectedEditor = getActiveEditor();
-
+		boolean success;
 		if (selectedEditor.isUndoStatus()) {
 
 			Object[] options = { java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("Yes"), java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("No"), java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("Cancel") };
@@ -1068,7 +1069,7 @@ public class MainWindow extends javax.swing.JFrame {
 			switch (n) {
 			case 0: // Save Changes
 				logger.debug("Close dialog: YES");
-				boolean success = selectedEditor.handleSave();
+				success = selectedEditor.handleSave();
 				if (success) {
 					this.tabbedPane.remove(tabbedPane.getSelectedIndex());
 					this.repaint();
@@ -1079,20 +1080,26 @@ public class MainWindow extends javax.swing.JFrame {
 				logger.debug("Close dialog: NO");
 				this.tabbedPane.remove(tabbedPane.getSelectedIndex());
 				this.repaint();
-				return true;
+				success = true;
 
 			case 2: // Cancelled.
 				logger.debug("Close dialog: CANCEL");
-				return false;
+				success = false;
 
 			default:
-				return false;
+				success = false;
 			}
 		} else {
 			this.tabbedPane.remove(tabbedPane.getSelectedIndex());
 			this.repaint();
-			return true;
+			success = true;
 		}
+		if (getActiveEditor() == null) {
+			setGeneralStates(false);
+			saveItem.setEnabled(false);
+			saveButton.setEnabled(false);
+		}
+		return success;
 	}
 
 	private void handleSaveAll() {
