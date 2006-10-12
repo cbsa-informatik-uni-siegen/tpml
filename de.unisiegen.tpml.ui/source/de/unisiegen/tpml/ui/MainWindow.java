@@ -543,6 +543,12 @@ public class MainWindow extends javax.swing.JFrame {
         helpMenu.setText(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("Help"));
         aboutItem.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("AboutMnemonic").charAt(0));
         aboutItem.setText(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("About..."));
+        aboutItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                aboutItemActionPerformed(evt);
+            }
+        });
+
         helpMenu.add(aboutItem);
 
         MainMenuBar.add(helpMenu);
@@ -551,6 +557,13 @@ public class MainWindow extends javax.swing.JFrame {
 
         setBounds(0, 0, 706, 561);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void aboutItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutItemActionPerformed
+// TODO add your handling code here:
+        AboutDialog about = new AboutDialog(this, true);
+        about.setLocationRelativeTo(this);
+        about.setVisible(true);
+    }//GEN-LAST:event_aboutItemActionPerformed
 
     private void pasteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pasteButtonActionPerformed
 // TODO add your handling code here:
