@@ -185,6 +185,10 @@ public class SideBar extends JComponent {
 	}
 	
 	private void mouseMoved (MouseEvent event) {
+		if (this.verticalPositions == null) {
+			return;
+		}
+		
 		int y = event.getY() + this.vScrollBar.getValue ();
 		int hh = this.errorIcon.getIconHeight() / 2;
 		for (int i=0; i<this.verticalPositions.length; i++) {
