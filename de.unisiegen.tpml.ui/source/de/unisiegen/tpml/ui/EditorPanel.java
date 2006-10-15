@@ -321,10 +321,11 @@ public class EditorPanel extends javax.swing.JPanel {
 	 * @param comp
 	 */
 	private void setComponent(EditorComponent comp) {
-		updateComponentStates(comp);
+		
 		editorPanel.removeAll();
 		editorPanel.add((JComponent) comp, BorderLayout.CENTER);
 		activeEditorComponent = comp;
+		updateComponentStates(comp);
 		paintAll(getGraphics());
 	}
 	
@@ -605,6 +606,7 @@ public class EditorPanel extends javax.swing.JPanel {
 	public void setUndoStatus(boolean undoStatus) {
 		logger.debug("UndoStatus of EditorPanel set to "+undoStatus);
 		firePropertyChange("undoStatus", this.undoStatus, undoStatus);
+		if (this.isTexteditor()) firePropertyChange("changed", this.undoStatus, undoStatus);
 		this.undoStatus = undoStatus;
 	}
 	
