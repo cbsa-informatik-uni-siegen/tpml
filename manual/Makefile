@@ -15,6 +15,7 @@ pdf: manual.pdf
 
 manual.pdf: $(TEXFILES)
 	pdflatex manual.tex
+	makeindex manual.idx -o manual.ind
 	pdflatex manual.tex
 
 clean:
@@ -24,5 +25,8 @@ clean:
 	rm -f *.pdf
 	rm -f *.ps
 	rm -f *.toc
+	rm -f *.idx
+	rm -f *.ilg
+	rm -f *.ind
 
 # vi:set ts=8 sw=8 noet syntax=make:

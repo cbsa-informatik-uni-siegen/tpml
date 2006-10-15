@@ -9,7 +9,7 @@ Dieses Kapitel beschreibt die in \TPML\ verf"ugbaren Sprachen im Detail. Dies be
 operationelle Semantik und das Typsystem, also die Regeln f"ur die big und small step Interpreter und den Type Checker. Dieses Kapitel ist
 jedoch nicht geeignet als Ersatz f"ur den Besuch der Vorlesung oder "Ubung, ebensowenig sollte dieses Handbuch als vollst"andiges Skript
 mi"sverstanden werden\footnote{Es mag wiederum allerdings n"utzlich als Grundlage f"ur die Pr"ufungsvorbereitung sein, da es eine vollst"andige
-Auflistung des Regelwerks darstellt, welches allerdings nicht hunderprozentig mit dem Vorlesungsinhalt "ubereinstimmt.}.
+Auflistung des Regelwerks darstellt, welches jedoch nicht hunderprozentig mit dem Vorlesungsinhalt "ubereinstimmt.}.
 
 Die Sprachen \LZERO\ bis \LFOUR\ sind strikt hierarchisch aufgebaut, das hei"st die Sprache $\mathcal{L}_{n+1}$ erweitert die Sprache
 $\mathcal{L}_n$ ($0 \le n < 4$), beinhaltet also alle Merkmale der Sprache $\mathcal{L}_n$. Die Sprachen entsprechen im wesentlichen
@@ -20,15 +20,15 @@ werden, falls notwendig, diese Abweichungen herausgestellt und erl"autert.
 
 \section{Die Sprache \LZERO}
 
-Die Sprache \LZERO\ stellt die einfachste denkbare Programmiersprache dar und entspricht dem reinen ungetypten $\lambda$-Kalk"ul
-\engl{pure untyped $\lambda$-calculus}. Die abstrakte Syntax enth"alt lediglich drei Produktionen.
+Die Sprache \LZERO\ stellt die einfachste denkbare Programmiersprache dar und entspricht dem \Define{reinen ungetypten $\lambda$-Kalk"ul}{reiner
+ungetypter $\lambda$-Kalk"ul} \engl{pure untyped $\lambda$-calculus}. Die abstrakte Syntax enth"alt lediglich drei Produktionen.
 \bgram
 e \is \id
   \al \abstr{id}{e}
-  \al e_1 e_2
+  \al e_1\,e_2
 \egram
-Ein g"ultiger Ausdruck ist also entweder ein Bezeichner, eine $\lambda$-Abstraktion oder eine Applikation. Die Menge \notation{$\Val$}\
-$\sleq \Exp$ der \Define{Werte}{Wert} \Engl{values}{value} \notation{$\name v$} wird durch
+Ein g"ultiger Ausdruck ist also entweder ein Bezeichner, eine \notation{$\lambda$-Abstraktion} oder eine \notation{Applikation}.
+Die Menge \notation{$\Val$}\ $\sleq \Exp$ der \Define{Werte}{Wert} \Engl{values}{value} \notation{$\name v$} wird durch
 \bgram
 v \is \id
   \al \abstr{id}{e}
@@ -121,7 +121,7 @@ den Programmierer dient.
 
 \subsection{Big step Semantik von \LONE}
 
-Ein big step hei"st g"ultig f"ur \LONE, wenn er sich mit den big step Regeln von \LZERO, den Regeln\\[5mm]
+Ein \notation{big step} hei"st g"ultig f"ur \LONE, wenn er sich mit den big step Regeln von \LZERO, den Regeln\\[5mm]
   \begin{tabular}{ll}
      \mbox{(AND-FALSE)}   & $\regel{e_1 \eval \false}
                                    {\andalso{e_1}{e_2} \eval \false}$ \\[5mm]
@@ -158,7 +158,7 @@ automatisch eingesetzt, sobald eine Ausnahme weitergereicht werden mu"s.
 
 \subsection{Small step Semantik von \LONE}
 
-Ein small step hei"st g"ultig f"ur \LONE, wenn er sich mit den small step Regeln von \LZERO, den Regeln\\[5mm]
+Ein \notation{small step} hei"st g"ultig f"ur \LONE, wenn er sich mit den small step Regeln von \LZERO, den Regeln\\[5mm]
   \begin{tabular}{ll}
     \mbox{(AND-EVAL)}     & $\regel{e_1 \to e_1'}
                                  {\andalso{e_1}{e_2} \to \andalso{e_1'}{e_2}}$\\[5mm]
@@ -193,13 +193,13 @@ explizit angegeben werden m"ussen.
 
 \subsection{Typsystem von \LONE}
 
-\LONE\ verf"ugt "uber ein einfaches Typsystem, benutzt aber wie alle folgenden Sprachen schon den Typinferenzalgorithmus,
-was anfangs vielleicht zu schwer verst"andlichen Fehlermeldungen f"uhren kann. In diesem Fall sollte es in der "Ubung
-angesprochen werden.
+\LONE\ verf"ugt "uber ein einfaches \notation{Typsystem}, benutzt aber wie alle folgenden Sprachen schon den
+\notation{Typinferenzalgorithmus}, was anfangs vielleicht zu schwer verst"andlichen Fehlermeldungen f"uhren kann.
+In diesem Fall sollte es in der "Ubung angesprochen werden.
 
-Ein \define{Typurteil f"ur Ausdr"ucke} ist von der Form $\Tj{\Gamma}{e}{\tau}$, wobei $\Gamma: \Id \pto \Type$ eine
+Ein \define{Typurteil} f"ur Ausdr"ucke ist von der Form $\Tj{\Gamma}{e}{\tau}$, wobei $\Gamma: \Id \pto \Type$ eine
 partielle Funktion mit endlichem Definitionsbereich ist, die bestimmten Bezeichnern einen Typ zuordnet. $\Gamma$ wird
-als \define{Typumgebung} \engl{type environment} bezeichnet. Ein Typurteil hei"st g"ultig f"ur \LONE, wenn es sich mit
+als \define{Typumgebung} \engl{type environment} bezeichnet. Ein Typurteil heisst g"ultig f"ur \LONE, wenn es sich mit
 den Regeln\\[3mm]
 \begin{tabular}{ll}
   \mbox{(CONST)\  } & $\regel{\tj{c}{\tau}}
@@ -236,16 +236,16 @@ den Typ $\tau$ hat. Dies wird durch die Regeln\\[3mm]
 \mbox{(AOP)\   } & $\tj{\op}{\z\to\z\to\z}$ \reason{ falls $\op$ arithmetischer Operator}\\[2mm]
 \mbox{(ROP)\   } & $\tj{\op}{\z\to\z\to\bool}$ \reason{ falls $\op$ Vergleichsoperator}
 \end{tabular}\\[7mm]
-definiert. Beim Typechecker werden diese Regeln f"ur Konstanten nicht angegeben, sondern lediglich die (CONST) Regel.
+definiert. Beim Type Checker werden diese Regeln f"ur Konstanten nicht angegeben, sondern lediglich die (CONST) Regel.
 
 
 \subsection{Syntaktischer Zucker}
 
-Die Sprache \LONE\ und alle folgenden Sprachen enthalten syntaktischen Zucker um das Schreiben von Programmen zu vereinfachen.
-Der syntaktische Zucker l"asst sich dann anschlie"send in Kernsyntax "ubersetzen oder direkt verarbeiten. Hierbei wurden aus
-Gr"unden der "Ubersichtlichkeit nicht immer abgeleitete Regeln f"ur den syntaktischen Zucker eingef"uhrt, sondern es wird implizit
-eine Konvertierung des betreffenden Teilausdrucks in Kernsyntax vorgenommen. F"ur \LONE\ betrifft dies Ausdr"ucke, die
-Operatoren in Infixschreibweise enthalten, und die logischen Operatoren $\mathbin{\&\&}$ und $\mathbin{||}$. Es gilt:
+Die Sprache \LONE\ und alle folgenden Sprachen enthalten \Define{syntaktischen Zucker}{syntaktischer Zucker} um das Schreiben
+von Programmen zu vereinfachen. Der syntaktische Zucker l"asst sich dann anschlie"send in Kernsyntax "ubersetzen oder direkt
+verarbeiten. Hierbei wurden aus Gr"unden der "Ubersichtlichkeit nicht immer abgeleitete Regeln f"ur den syntaktischen Zucker eingef"uhrt,
+sondern es wird implizit eine Konvertierung des betreffenden Teilausdrucks in \notation{Kernsyntax} vorgenommen. F"ur \LONE\ betrifft dies
+Ausdr"ucke, die Operatoren in \notation{Infixschreibweise} enthalten, und die logischen Operatoren $\mathbin{\&\&}$ und $\mathbin{||}$. Es gilt:
 \beqns
 e_1\,\op\,e_2\quad \mbox{steht f"ur}\quad (\op\,e_1)\,e_2
 \eeqns
@@ -279,6 +279,8 @@ Dies sei aber nur am Rande erw"ahnt.
 
 \section{Die Sprache \LTWO}
 
+\index{Rekursion}
+\index{recursion}
 Die Sprache \LTWO\ erweitert \LONE\ um rekursive Ausdr"ucke\footnote{Wohlgemerkt aber nicht um rekursive Typen. Das
 Typsystem schr"ankt die Sprache also st"arker ein, als dies bei \LONE\ der Fall ist.} und syntaktischen Zucker, der
 es erlaubt Funktionen einfacher zu definieren, "ahnlich zu OCaml.
@@ -295,7 +297,7 @@ Parameter nur dann geklammert werden, wenn ein Typ f"ur diesen Parameter angegeb
 
 \subsection{Big step Semantik von \LTWO}
 
-Ein big step hei"st g"ultig f"ur \LTWO, wenn er sich mit den big step Regeln von \LONE\ und der Regel\\[3mm]
+Ein \notation{big step} hei"st g"ultig f"ur \LTWO, wenn er sich mit den big step Regeln von \LONE\ und der Regel\\[3mm]
   \begin{tabular}{ll}
     \mbox{(UNFOLD)}      & $\regel{e[\rec{\id}{e}/\id] \eval v}
                                   {\rec{\id}{e} \eval v}$
@@ -305,7 +307,7 @@ sowie der dazugeh"origen exception-Regel herleiten l"asst.
 
 \subsection{Small step Semantik von \LTWO}
 
-Ein small step hei"st g"ultig f"ur \LTWO, wenn er sich mit den small step Regeln von \LONE\ und der Regel\\[3mm]
+Ein \notation{small step} hei"st g"ultig f"ur \LTWO, wenn er sich mit den small step Regeln von \LONE\ und der Regel\\[3mm]
   \begin{tabular}{ll}
     \mbox{(UNFOLD)}     & $\rec{\id}{e} \to e[\rec{\id}{e}/\id]$
   \end{tabular}\\[7mm]
@@ -314,7 +316,7 @@ herleiten l"asst.
 
 \subsection{Typsystem von \LTWO}
 
-Ein Typurteil hei"st g"ultig f"ur \LTWO, wenn es sich mit den Typregeln von \LONE\ und der Regel\\[3mm]
+Ein \notation{Typurteil} hei"st g"ultig f"ur \LTWO, wenn es sich mit den Typregeln von \LONE\ und der Regel\\[3mm]
 \begin{tabular}{ll}
 \mbox{(REC)\ } & $\regel{\Tj{\Gamma[\tau/\id]}{e}{\tau}} 
                          {\Tj{\Gamma}{\rec{\id:\tau}{e}}{\tau}}$
@@ -343,15 +345,16 @@ steht f"ur
   \bli{\id: \tau}{\rec{\id: \tau}{\abstr{\id_1: \tau_1}{\ldots\abstr{\id_n: \tau_n}{e_1}}}}{e_2}\mbox{.}
 \eeqns
 F"ur diesen syntaktischen Zucker wurden keine abgeleiteten Regeln eingef"uhrt, stattdessen wird implizit
-eine "Ubersetzung in Kernsyntax vorgenommen.
+eine "Ubersetzung in \notation{Kernsyntax} vorgenommen.
 
 
 
 \section{Die Sprache \LTHREE}
 
-Die Sprache \LTHREE\ erweitert die Sprache \LTWO\ um ein polymorphes Typsystem, sowie Tupel und Listen, f"ur die
-zus"atzlich abk"urzende Schreibweisen eingef"uhrt wurden. Die Menge \notation{$\Exp$} der g"ultigen Ausdr"ucke
-wird hierf"ur um die Produktionen
+\index{Polymorphie}
+Die Sprache \LTHREE\ erweitert die Sprache \LTWO\ um ein polymorphes \notation{Typsystem}, sowie \notation{Tupel} und 
+\notation{Listen}, f"ur die zus"atzlich abk"urzende Schreibweisen eingef"uhrt wurden. Die Menge \notation{$\Exp$} der
+g"ultigen Ausdr"ucke wird hierf"ur um die Produktionen
 \bgram
 e \is (e_1,\ldots,e_n) \qquad (n \ge 2)                             & & \mbox{$n$-Tupel}
   \al [e_1;\ldots;e_n]                                              & & \mbox{Liste}
@@ -390,7 +393,7 @@ Typvariablen $\alpha\ldots\omega$.
 
 \subsection{Big step Semantik von \LTHREE}
 
-Ein big step hei"st g"ultig f"ur \LTHREE, wenn er sich mit den big step Regeln von \LTWO\ und den Regeln\\[5mm]
+Ein \notation{big step} hei"st g"ultig f"ur \LTHREE, wenn er sich mit den big step Regeln von \LTWO\ und den Regeln\\[5mm]
   \begin{tabular}{ll}
     \mbox{(TUPLE)}          & $\regel{e_1 \eval v_1 \quad \ldots \quad e_n \eval v_n}
                                      {(e_1,\ldots,e_n) \eval (v_1,\ldots,v_n)}$ \\[5mm]
@@ -417,7 +420,7 @@ F"ur Details zum Thema Listen sei hier auf den Inhalt der Vorlesung verwiesen.
 
 \subsection{Small step Semantik von \LTHREE}
 
-Die small step Regeln f"ur \LTHREE\ entsprechen im wesentlichen den big step Regeln. Ein small step hei"st g"ultig f"ur
+Die \notation{small step} Regeln f"ur \LTHREE\ entsprechen im wesentlichen den big step Regeln. Ein small step hei"st g"ultig f"ur
 \LTHREE, wenn er sich mit den small step Regeln von \LTWO\ und den Regeln\\[5mm]
   \begin{tabular}{ll}
     \mbox{(TUPLE)}          & $\regel{e_i \to e_i'}
@@ -440,7 +443,7 @@ sowie den entsprechenden exception-Regeln herleiten l"asst.
 
 \subsection{Typsystem von \LTHREE}
 
-Wie bereits erw"ahnt verf"ugt die Sprache \LTHREE\ "uber ein polymorphes Typsystem, das hei"st dass die Axiome f"ur
+Wie bereits erw"ahnt verf"ugt die Sprache \LTHREE\ "uber ein \notation{polymorphes Typsystem}, das hei"st dass die Axiome f"ur
 Konstanten jetzt von der Form $\tj{c}{\pi}$ sind. F"ur die Konstanten der Sprachen \LONE\ bis \LTWO\ sei $\pi$
 einfach der bisherige monomorphe Typ $\tau$, f"ur die mit \LTHREE\ neu hinzukommenden Konstanten sei es der
 polymorphe Typ, wie im Folgenden dargestellt.
@@ -522,8 +525,8 @@ vorkommt.
 
 \section{Die Sprache \LFOUR}
 
-Die Sprache \LFOUR\ erweitert schlie"slich \LTHREE\ um imperative Konzepte, also Speicher, sequentielle Ausf"uhrung und
-Schleifen. Die Menge $\Exp$ der g"ultigen Ausdr"ucke wird hierzu um die Produktionen
+Die Sprache \LFOUR\ erweitert schlie"slich \LTHREE\ um \notation{imperative Konzepte}, also \notation{Speicher}, \notation{sequentielle Ausf"uhrung} und
+\notation{Schleifen}. Die Menge $\Exp$ der g"ultigen Ausdr"ucke wird hierzu um die Produktionen
 \bgram
 e \is \bift{e_1}{e_2}
   \al \bwd{e_1}{e_2}
@@ -535,10 +538,68 @@ c \is \Ref \mid \Deref \mid \Assign
 \egram
 erweitert.
 
+Die operationelle Semantik muss f"ur die Sprache \LFOUR\ angepasst werden. Dazu sei eine unendliche Menge \notation{$\Loc$} vorgegen,
+deren Element ($X, Y, \ldots$) \Define{Speicherpl"atze}{Speicherplatz} \engl{locations}{location} genannt werden. Ein \define{Speicherzustand}
+\engl{store} ist eine partielle Funktion
+\[
+  \sigma: \Loc \pto \Val
+\]
+mit endlichem Definitionsbereich $dom(\sigma)$.
+\name{Store} sei die Menge aller Speicherzust"ande. Eine \define{Konfiguration} ist entweder ein Paar
+$(e,\sigma) \in \Exp \times \name{Store}$ oder $(exn, \sigma) \in \Exn \times \name{Store}$. F"ur die Semantik des
+$\Ref$-Operators sei eine totale Funktion
+\[
+  alloc: \name{Store} \to \Loc
+\]
+mit $alloc(\sigma) \not\in dom(\sigma)$ gegeben ($alloc(\sigma)$ ist also ein Speicherplatz in $\sigma$,
+der bisher noch nicht alloziert wurde).
+
+
+\subsection{Big step Semantik von \LFOUR}
+
+Ein \notation{big step} ist von der Form $(e,\sigma) \eval (v,\sigma')$ oder $(e,\sigma) \eval (exn,\sigma')$. Ein big step
+heisst g"ultig f"ur \LFOUR, wenn er sich mit den Regeln\\[5mm]
+  \begin{tabular}{ll}
+    \mbox{(DEREF)}        & $(\Deref\,X, \sigma) \eval (\sigma(X), \sigma)$   \ falls $X \in dom(\sigma)$ \\[3mm]
+    \mbox{(ASSIGN)}       & $(X\,\Assign\,v, \sigma) \eval ((), \sigma[v/X])$ \ falls $X \in dom(\sigma)$ \\[3mm]
+    \mbox{(REF)}          & $(\Ref\,v, \sigma) \eval (X, \sigma[v/X])$        \ mit $X = alloc(\sigma)$ \\[3mm]
+    \mbox{(SEQ)}          & $\regel{(e_1,\sigma) \eval (v_1,\sigma') \quad (e_2,\sigma') \eval (v_2,\sigma'')}
+                                   {(e_1\,;\,e_2,\sigma) \eval (v_2,\sigma'')}$ \\[5mm]
+    \mbox{(COND-1-FALSE)} & $\regel{(e_0,\sigma) \eval (\false,\sigma')}
+                                   {(\bift{e_0}{e_1},\sigma) \eval ((), \sigma')}$ \\[5mm]
+    \mbox{(COND-1-TRUE)}  & $\regel{(e_0,\sigma) \eval (\true,\sigma') \quad (e_1,\sigma') \eval (v_1,\sigma'')}
+                                   {(\bift{e_0}{e_1},\sigma) \eval (v_1,\sigma'')}$ \\[5mm]
+    \mbox{(WHILE)}        & $\regel{(\bift{e_1}{e_2\,;\,\bwd{e_1}{e_2}}, \sigma) \eval (v,\sigma')}
+                                   {(\bwd{e_1}{e_2}, \sigma) \eval (v,\sigma')}$
+  \end{tabular}\\[7mm]
+sowie den entsprechenden exception-Regeln und den durch Speicherzust"ande erweiterten big step Regeln von \LTHREE\ 
+herleiten l"asst.
+
+
+\subsection{Small step Semantik von \LFOUR}
+
+Ein \notation{small step} ist nun von der Form $(e,\sigma) \to (e',\sigma')$ oder $(e,\sigma) \to (exn,\sigma)$. Ein small
+step heisst g"ultig f"ur \LFOUR, wenn er sich mit den Regeln\\[5mm]
+  \begin{tabular}{ll}
+    \mbox{(DEREF)}        & $(\Deref\,X, \sigma) \to (\sigma(X), \sigma)$   \ falls $X \in dom(\sigma)$ \\[3mm]
+    \mbox{(ASSIGN)}       & $(X\,\Assign\,v, \sigma) \to ((), \sigma[v/X])$ \ falls $X \in dom(\sigma)$ \\[3mm]
+    \mbox{(REF)}          & $(\Ref\,v, \sigma) \to (X, \sigma[v/X])$        \ mit $X = alloc(\sigma)$ \\[3mm]
+    \mbox{(SEQ-EVAL)}     & $\regel{(e_1,\sigma) \to (e_1',\sigma')}
+                                   {(e_1\,;\,e_2,\sigma) \to (e_1'\,;\,e_2,\sigma)}$ \\[5mm]
+    \mbox{(SEQ-EXEC)}     & $(v\,;\,e,\sigma) \to (e,\sigma)$ \\[3mm]
+    \mbox{(COND-1-EVAL)}  & $\regel{(e_0,\sigma) \to (e_0',\sigma')}
+                                   {(\bift{e_0}{e_1},\sigma) \to (\bift{e_0'}{e_1},\sigma)}$ \\[5mm]
+    \mbox{(COND-1-FALSE)} & $(\bift{\false}{e},\sigma) \to ((),\sigma)$ \\[3mm]
+    \mbox{(COND-1-TRUE)}  & $(\bift{\true}{e},\sigma) \to (e,\sigma)$ \\[3mm]
+    \mbox{(WHILE)}        & $(\bwd{e_0}{e_1},\sigma) \to (\bift{e_0}{e_1\,;\,\bwd{e_0}{e_1}}, \sigma)$
+  \end{tabular}\\[7mm]
+sowie den entsprechenden exception-Regeln und den durch Speicherzust"ande erweiterten small step Regeln von \LTHREE\ 
+herleiten l"asst.
+
 
 \subsection{Typsystem von \LFOUR}
 
-Ein Typurteil hei"st g"ultig f"ur \LTWO, wenn es sich mit den Typregeln von \LONE\ und den Regeln\\[3mm]
+Ein \notation{Typurteil} hei"st g"ultig f"ur \LTWO, wenn es sich mit den Typregeln von \LONE\ und den Regeln\\[3mm]
 \begin{tabular}{ll}
 \mbox{(SEQ)\ }    & $\regel{\Tj{\Gamma}{e_1}{\tau_1} \quad \Tj{\Gamma}{e_2}{\tau_2}}
                            {\Tj{\Gamma}{e_1\,;\,e_2}{\tau_2}}$ \\[5mm]
@@ -554,7 +615,7 @@ Die neuen Konstanten werden "uber die Regel (P-CONST) behandelt und haben die fo
 \Ref    & :: & \forall\alpha.\,\alpha \to \reftype{\alpha} \\
 \Assign & :: & \forall\alpha.\,\reftype{\alpha} \to \alpha \to \unit
 \end{eqnarray*}
-Um die Typsicherheit zu gew"ahrleisten, muss die Regel (P-LET) eingeschr"ankt werden, und zwar wird nun
+Um die \notation{Typsicherheit} zu gew"ahrleisten, muss die Regel (P-LET) eingeschr"ankt werden, und zwar wird nun
 nur noch "uber Werte quantifiziert
 \[ \mbox{(P-LET) }\ \regel{\Tj{\Gamma}{v_1}{\tau}
                           \quad
@@ -567,7 +628,7 @@ OCaml Typsystem.
 
 \subsection{Syntaktischer Zucker}
 
-Die Sprache \LFOUR\ beinhaltet drei Abk"urzungen, die wie folgt in Kernsyntax "ubersetzt werden
+Die Sprache \LFOUR\ beinhaltet drei Abk"urzungen, die wie folgt in \notation{Kernsyntax} "ubersetzt werden
 \begin{eqnarray*}
   e_1\,;\,e_2     & \mbox{ steht f"ur } & \bli{\id}{e_1}{e_2} \\
   \bift{e_1}{e_2} & \mbox{ steht f"ur } & \bifte{e_1}{e_2}{()} \\

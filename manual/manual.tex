@@ -21,6 +21,7 @@
 \usepackage{array}
 \usepackage{stmaryrd}
 \usepackage{hyperref}
+\usepackage{index}
 
 % TP Latex Macros
 \input{TP}
@@ -43,6 +44,9 @@
 \title{{\Huge \TPML\ 1.0}\\Benutzerhandbuch}
 \author{{\Large Christoph Fehling, Marcell Fischbach, Benedikt Meurer}\\Fachbereich 12 - Informatik und Elektrotechnik\\Universit"at Siegen}
 \date{\small\today}
+
+% Index
+\newindex{default}{idx}{ind}{Stichwortverzeichnis}
 
 \begin{document}
 
@@ -77,6 +81,9 @@ Studierenden das in der Vorlesung Gelernte direkt anzuwenden und dabei die einze
 \begin{appendix}
 \include{anhanga}
 \end{appendix}
+
+%% Stichwortverzeichnis
+\printindex
 
 \end{document}
 
