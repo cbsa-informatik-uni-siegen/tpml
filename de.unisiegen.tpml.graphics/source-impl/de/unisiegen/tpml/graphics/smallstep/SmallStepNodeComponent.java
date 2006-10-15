@@ -210,6 +210,7 @@ public class SmallStepNodeComponent extends JComponent {
 	}
 	
 	private void menuItemActivated (JMenuItem item) {
+		freeUnderlining ();
 		if (item instanceof MenuRuleItem) {
 			MenuRuleItem ruleItem = (MenuRuleItem) item;
 			ProofRule rule = ruleItem.getRule();
@@ -247,13 +248,9 @@ public class SmallStepNodeComponent extends JComponent {
 			}
 			switch (answer) {
 			case 0:
-				freeUnderliningSibling(false, Direction.DIRECTION_CHILD);
-				freeUnderliningSibling(false, Direction.DIRECTION_PARENT);
 				this.proofModel.translateToCoreSyntax(this.proofNode, false);
 				break;
 			case 1:
-				freeUnderliningSibling(false, Direction.DIRECTION_CHILD);
-				freeUnderliningSibling(false, Direction.DIRECTION_PARENT);
 				this.proofModel.translateToCoreSyntax(this.proofNode, true);
 				break;
 			case 2:
@@ -333,6 +330,11 @@ public class SmallStepNodeComponent extends JComponent {
 		
 		int top = getRuleTop() + (this.actualRuleHeight - this.ruleDimension.height) / 2;
 		this.rules.setBounds(0, top, this.ruleDimension.width, this.ruleDimension.height);
+	}
+	
+	private void freeUnderlining () {
+		freeUnderliningSibling (false, Direction.DIRECTION_CHILD);
+		freeUnderliningSibling (false, Direction.DIRECTION_PARENT);
 	}
 	
 	private void freeUnderliningSibling (boolean ignoreThis, Direction direction) {
