@@ -25,12 +25,24 @@ public class MenuButton extends JComponent {
 	 */
 	private static final long serialVersionUID = 3324315568161015639L;
 
+	/**
+	 * A popup menu that will be displayed when the MenuButton is opend.
+	 */
 	private JPopupMenu			menu = null;
 	
+	/**
+	 * The action listener.
+	 */
 	private ActionListener	listener = null;
 	
+	/**
+	 * The text that will be displayed.
+	 */
 	private String					text;
 	
+	/**
+	 * The color that will be used to render the text.
+	 */
 	private Color						textColor;
 	
 	/**
@@ -82,6 +94,11 @@ public class MenuButton extends JComponent {
 		this.listenerList.remove(MenuButtonListener.class, listener);
 	}
 	
+	/**
+	 * Sets the Popupmenu for the MenuButton.
+	 * 
+	 * @param menu
+	 */
 	public void setMenu (JPopupMenu menu) {
 		if (this.menu != null) {
 			uninstallMenuEventListener (this.menu);
@@ -100,10 +117,18 @@ public class MenuButton extends JComponent {
 		installMenuEventListener (this.menu);
 	}
 	
+	/**
+	 * Sets the text that should be shown.
+	 * @param text
+	 */
 	public void setText (String text) {
 		this.text = text;
 	}
 	
+	/**
+	 * Sets the color 
+	 * @param color
+	 */
 	public void setTextColor (Color color) {
 		this.textColor = color;
 	}

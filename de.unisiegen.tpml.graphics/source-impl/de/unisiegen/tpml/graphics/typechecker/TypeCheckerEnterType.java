@@ -22,6 +22,9 @@ import javax.swing.border.BevelBorder;
 import de.unisiegen.tpml.graphics.Messages;
 
 /**
+ * The Component that will be displayed when the user selectes
+ * Enter Type.
+ * 
  * @author marcell
  *
  */
@@ -90,10 +93,18 @@ public class TypeCheckerEnterType extends JComponent {
 		};
 	}
 	
+	/**
+	 * Clears the text of the textField
+	 *
+	 */
 	public void clear () {
 		this.textField.setText(""); //$NON-NLS-1$
 	}
 	
+	/**
+	 * Selects all text in the textField.
+	 *
+	 */
 	public void selectAll() {
 		this.textField.selectAll();
 	}

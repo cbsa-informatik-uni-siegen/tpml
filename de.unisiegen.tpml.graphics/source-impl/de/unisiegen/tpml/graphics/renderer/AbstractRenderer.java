@@ -7,11 +7,24 @@ import java.awt.FontMetrics;
 
 import de.unisiegen.tpml.graphics.theme.Theme;
 
+
+/**
+ * Abstract base class for the {@link PrettyStringRenderer} providing 
+ * fonts, colors and fontmetrices to perform the rendering.<br>
+ * <br>
+ * All the Colors and Fonts coms from the current {@link Theme}.
+ * 
+ * 
+ * @author marcell
+ *
+ */
 public abstract class AbstractRenderer {
 	
+
 	protected 	static Font						expFont;
 	protected		static FontMetrics		expFontMetrics;
 	protected		static Color					expColor;
+	
 	
 	protected		static Font						keywordFont;
 	protected		static FontMetrics		keywordFontMetrics;
@@ -41,6 +54,14 @@ public abstract class AbstractRenderer {
 
 	protected		Color									alternativeColor;
 
+	/**
+	 * Initializes the colors, fonts and fontmetrics.
+	 * 
+	 * @param theme			The that that should be used to retrieve the
+	 * 									information for the stuff. 
+	 * @param reference Any object subclassing {@link Component} used
+	 * 									to call the {@link Component#getFontMetrics(java.awt.Font)}-Method.
+	 */
 	public static void setTheme (Theme theme, Component reference) { 
 		
 		AbstractRenderer.expColor							= theme.getItemColor(Theme.TYPE_EXPRESSION);

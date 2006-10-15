@@ -52,6 +52,9 @@ public class BigStepView extends AbstractProofView {
 		});
 	}
 
+	/**
+	 * Guesses the first node with the tree that is not already prooven.
+	 */
 	public void guess() throws IllegalStateException, ProofGuessException {
 		this.component.guess ();
 	}

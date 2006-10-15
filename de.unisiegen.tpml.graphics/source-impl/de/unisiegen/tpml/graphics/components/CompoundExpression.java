@@ -24,28 +24,77 @@ public class CompoundExpression<S, E> extends JComponent {
 	 */
 	private static final long serialVersionUID = -7653329118052555176L;
 
+	/**
+	 * Renderer that is used to render the expression
+	 */
 	private PrettyStringRenderer				expressionRenderer;
 	
+	/**
+	 * The current expression.
+	 */
 	private Expression									expression;
 	
+	/**
+	 * The expression that will be underlined during the rendering.
+	 */
 	private Expression									underlineExpression;
 	
+	/**
+	 * The size of the expression.
+	 */
 	private Dimension										expressionSize;
 	
+	
+	/**
+	 * The current environment. If the environment is <i>null</i>
+	 * no environment is rendered.
+	 */
 	private Environment<S, E> 					environment;
 	
+	/**
+	 * Renderer that is used to render the environment.
+	 */
 	private EnvironmentRenderer<S, E>		environmentRenderer;
 	
+	/**
+	 * The size of the environment.
+	 */
 	private Dimension										environmentSize;
 	
+	/**
+	 * The width of the braces around the expression and the 
+	 * environment.
+	 */
 	private	int													braceSize;
 	
+	/**
+	 * Whether the expression should be wrapped if there is
+	 * not enough space to render it in on line.<br>
+	 * Actualy this is only used with the result of the
+	 * BigStepGUI.
+	 */
 	private boolean											noLineWrapping;
 	
+	/**
+	 * If this color is given all colors of the {@link AbstractRenderer}
+	 * are ignored and only this color is used.
+	 */
 	private Color												alternativeColor;
-	
+
+	/**
+	 * The arrow symbol that is used between the environment
+	 * and the expression when used within the {@link de.unisiegen.tpml.graphics.typechecker.TypeCheckerNodeComponent}
+	 */
 	private static String								arrowStr = " \u22b3 ";
 	
+	/**
+	 * Initialises the CompoundExpression with the
+	 * default values.<br>
+	 * <br>
+	 * The braces have a size of 10 pixes, no underlining
+	 * and the color of the {@link AbstractRenderer} are ignored.
+	 *
+	 */
 	public CompoundExpression () {
 		super ();
 		
@@ -61,6 +110,15 @@ public class CompoundExpression<S, E> extends JComponent {
 		});
 	}
 	
+	/**
+	 * Sets an alternative color.<br>
+	 * <br>
+	 * Both renderers, the {@link PrettyStringRenderer} and
+	 * the {@link EnvironmentRenderer}, are updated with this
+	 * color.
+	 * 
+	 * @param color The alternative color.
+	 */
 	public void setAlternativeColor (Color color) {
 		this.alternativeColor = color;
 		
@@ -72,6 +130,12 @@ public class CompoundExpression<S, E> extends JComponent {
 		}
 	}
 	
+	
+	/**
+	 * Sets the expression, that should be underlined.
+	 * 
+	 * @param underlineExpression
+	 */
 	public void setUnderlineExpression (Expression underlineExpression) {
 		boolean needsRepaint = this.underlineExpression != underlineExpression;
 		
@@ -89,6 +153,11 @@ public class CompoundExpression<S, E> extends JComponent {
 		
 	}
 	
+	/**
+	 * Handles whether a ToolTip should be displayed for the environment, if some
+	 * parts of it are collapsed. 
+	 * @param event
+	 */
 	private void handleMouseMoved (MouseEvent event) {
 		if (this.environmentRenderer != null && this.environmentRenderer.isCollapsed()) {
 			Rectangle r = this.environmentRenderer.getCollapsedArea();
@@ -104,10 +173,20 @@ public class CompoundExpression<S, E> extends JComponent {
 		}
 	}
 	
+	/**
+	 * Sets whether the expression should be wrapped or not.
+	 * 
+	 * @param noLineWrapping
+	 */
 	public void setNoLineWrapping (boolean noLineWrapping) {
 		this.noLineWrapping = noLineWrapping;
 	}
 	
+	/**
+	 * Sets the expression that should rendered.
+	 * 
+	 * @param expression
+	 */
 	public void setExpression (Expression expression) {
 		this.expression = expression;
 		if (this.expression == null) {
@@ -127,6 +206,11 @@ public class CompoundExpression<S, E> extends JComponent {
 		
 	}
 	
+	/**
+	 * Sets the environment taht should be rendered.
+	 * 
+	 * @param environment
+	 */
 	public void setEnvironment (Environment<S, E> environment) {
 		this.environment = environment;
 		if (this.environment == null) {
@@ -144,8 +228,7 @@ public class CompoundExpression<S, E> extends JComponent {
 	
 	
 	/**
-	 * Calculates the size needed to propperly render the compoundExpression<br>
-	 * <br>
+	 * Calculates the size needed to propperly render the compoundExpression
 	 *   
 	 * @param maxWidth
 	 * @return
@@ -216,6 +299,11 @@ public class CompoundExpression<S, E> extends JComponent {
 		return result;
 	}
 	
+	/**
+	 * The actualy rendering method.
+	 * 
+	 * @param gc The Graphics object that will be used to render the stuff.
+	 */
 	@Override
 	protected void paintComponent (Graphics gc) {
 		// assuming the size of the component will suffice, no testing

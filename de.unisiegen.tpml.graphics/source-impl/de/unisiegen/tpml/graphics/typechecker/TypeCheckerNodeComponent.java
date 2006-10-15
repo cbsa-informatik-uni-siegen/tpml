@@ -39,6 +39,9 @@ public class TypeCheckerNodeComponent extends JComponent  implements TreeNodeCom
 	 */
 	private static final long serialVersionUID = -6671706090992083026L;
 	
+	/**
+	 * 
+	 */
 	private TypeCheckerProofModel								proofModel;
 	
 	private TypeCheckerProofNode								proofNode;

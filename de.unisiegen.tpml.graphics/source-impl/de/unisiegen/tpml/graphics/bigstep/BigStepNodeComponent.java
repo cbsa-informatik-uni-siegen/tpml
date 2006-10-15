@@ -224,7 +224,19 @@ public class BigStepNodeComponent extends JComponent implements TreeNodeComponen
 	}
 
 	/**
-	 * Hndles 
+	 * Handles the actions that should be done when an item from the MenuButton
+	 * was selected.<br>
+	 * <br>
+	 * Tree possible actions can be done here: 1st Selection of a rule to apply to
+	 * the node. 2nd Translation of the expression into core syntax. And 3rd Guess
+	 * of the rules for the current node.<br>
+	 * <br>
+	 * If the current outermost expression does not contain any syntactical sugar,
+	 * the translation will be done directly recersivly on the entire expresion.<br>
+	 * If the current outermost expression does contain syntactical sugar, a
+	 * messagebox will be shown whether the translation should be done only on the 
+	 * outermost expression or if it should be done on the entire expression.
+	 * 
 	 * @param item
 	 */
 	private void handleMenuActivated (JMenuItem item) {
@@ -286,12 +298,21 @@ public class BigStepNodeComponent extends JComponent implements TreeNodeComponen
 
 	}
 	
-	
+	/**
+	 * Sets the index of the current node.
+	 * 
+	 * @param index 
+	 */
 	public void setIndex (int index) {
 		this.indexLabel.setText("(" + index + ")"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 	
 	
+	/**
+	 * Does an update on the compound expression.<br>
+	 * Resets the expression and the environment (if there is one).
+	 * That causes the PrettyStringRenderer to recheck the breakoints. 
+	 */
 	public void changeNode () {
 		
 		this.expression.setExpression (this.proofNode.getExpression());
@@ -320,6 +341,19 @@ public class BigStepNodeComponent extends JComponent implements TreeNodeComponen
 		}
 	}
 	
+	/**
+	 * Places all elements of the current node.<br>
+	 * Just places one element after the other. 1st the index, 2nd the compoundExpression
+	 * 3rd the double-sidded-down-directed arrow. When the node is proven (that is if there
+	 * is already an evaluated result, it will be placed behind the arrow.<br>
+	 * <br>
+	 * If the the nodes is evaluated the ruleLabel is placed with a bit spacing below the
+	 * expression. If the node is not evaluated the menuButton is placed at the same size.<br>
+	 * <br>
+	 * After the placing is done the {@link #dimension} contains the needed size of this node.
+	 * 
+	 * @param maxWidth The maximum width that is available for the current node.
+	 */
 	private void placeElements (int maxWidth) {
 		// get the size for the index at the beginning: (x)
 		FontMetrics fm = AbstractRenderer.getTextFontMetrics();

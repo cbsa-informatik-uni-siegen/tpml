@@ -5,10 +5,22 @@ import java.awt.Point;
 
 import de.unisiegen.tpml.core.ProofNode;
 
+/**
+ * Handles the layouting of a treebased  GUI. The 
+ * TypeChecker- and the BigStep-GUI are handled with this. 
+ * @author marcell
+ *
+ */
 public class TreeNodeLayout {
 	
+	/**
+	 * Contains available width of the layout.  
+	 */
 	private int availableWidth;
 	
+	/**
+	 * The spacing between the nodes.
+	 */
 	private int spacing;
 
 	public TreeNodeLayout () {
@@ -19,14 +31,31 @@ public class TreeNodeLayout {
 		this.spacing = spacing;
 	}
 	
+	/**
+	 * Sets the spacing
+	 * @param spacing
+	 */
 	public void setSpacing (int spacing) {
 		this.spacing = spacing;
 	}
-	
+
+	/**
+	 * Returns the spacing
+	 * @return
+	 */
 	public int getSpacing () {
 		return this.spacing;
 	}
 	
+	/**
+	 * Places the nodes.
+	 * 
+	 * @param root The rootNode of the tree
+	 * @param posX Left position where the root node should be placed
+	 * @param posY Top position where the root node should be placed
+	 * @param availableWidth The maximum width available for the layout.
+	 * @return
+	 */
 	public Point placeNodes (ProofNode root, int posX, int posY, int availableWidth) {
 		this.availableWidth = availableWidth;
 		

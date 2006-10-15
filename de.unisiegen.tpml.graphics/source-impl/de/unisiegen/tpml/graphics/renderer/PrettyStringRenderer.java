@@ -14,11 +14,24 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable;
 import de.unisiegen.tpml.core.prettyprinter.PrettyString;
 
 
-
+/**
+ * Subclass of the {@link AbstractRenderer} providing the rendering of 
+ * a {@link de.unisiegen.tpml.core.prettyprinter.PrettyString}
+ * @author marcell
+ *
+ */
 public class PrettyStringRenderer extends AbstractRenderer {
 	
+	/**
+	 * Inner private class the store information for the line wrapping
+	 * 
+	 * @author marcell
+	 *
+	 */
 	private class CheckerResult {
+		/// The annotation used for the linewrapping
 		public PrettyAnnotation		annotation;
+		/// The rows used to 
 		public int								rows;
 		public Dimension					size;
 		public CheckerResult() {
@@ -26,14 +39,33 @@ public class PrettyStringRenderer extends AbstractRenderer {
 		}
 	}
 	
+	/**
+	 * Results containg the information of all possible 
+	 * linewrappings.
+	 */
 	private LinkedList<CheckerResult>		results;
 
+	/**
+	 * The pretty string that should be rendered.
+	 */
 	private PrettyString								prettyString;
 	
+	/**
+	 * The result of all results that actually will be used
+	 * during the rendering. If <i>result</i> is <i>null</i> 
+	 * no line wrapping is done.
+	 */
 	private CheckerResult								result;
 	
+	/**
+	 * The pretty printable that will be underline during the rendering.
+	 */
 	private PrettyPrintable							underlinePrettyPrintable;
 	
+	/**
+	 * The annotation containing the information where the underline 
+	 * appears within the string.
+	 */
 	private PrettyAnnotation						underlineAnnotation;
 	
 	public PrettyStringRenderer() {
@@ -43,6 +75,11 @@ public class PrettyStringRenderer extends AbstractRenderer {
 		this.underlineAnnotation			= null;
 	}
 	
+	/**
+	 * Sets the PrettyString 
+	 * 
+	 * @param prettyString
+	 */
 	public void setPrettyString (PrettyString prettyString) {
 		this.prettyString = prettyString;
 		
@@ -57,7 +94,10 @@ public class PrettyStringRenderer extends AbstractRenderer {
 	}
 	
 	
-	
+	/**
+	 * Sets the prettyPrintable that should be underlined.
+	 * @param prettyPrintable
+	 */
 	public void setUndelinePrettyPrintable (PrettyPrintable prettyPrintable) {
 		this.underlinePrettyPrintable = prettyPrintable;
 	
@@ -114,6 +154,7 @@ public class PrettyStringRenderer extends AbstractRenderer {
 	}
 
 	/**
+	 * Checks the results for all possible annotations.
 	 */
 	private void checkLinewraps () {
 		this.results.clear();

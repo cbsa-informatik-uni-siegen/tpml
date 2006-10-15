@@ -9,6 +9,13 @@ import de.unisiegen.tpml.graphics.tree.TreeNodeComponent;
 
 public class TreeArrowRenderer {
 	
+	/**
+	 * Renders the tree, that connects all nodes.
+	 *  
+	 * @param node
+	 * @param spacing
+	 * @param gc
+	 */
 	public static void renderArrows (ProofNode node, int spacing, Graphics gc) {
 		
 		if (node.getChildCount() == 0) {

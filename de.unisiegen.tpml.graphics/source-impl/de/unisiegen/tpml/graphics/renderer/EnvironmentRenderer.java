@@ -9,26 +9,69 @@ import java.util.Enumeration;
 import de.unisiegen.tpml.core.util.Environment;
 
 
+/**
+ * Subclass of the {@link AbstractRenderer} providing the rendering
+ * of an environment.
+ * 
+ * @author marcell
+ *
+ * @param <S>
+ * @param <E>
+ */
 public class EnvironmentRenderer<S, E> extends AbstractRenderer {
 
+	/**
+	 * The environment that should be rendered.
+	 */
 	private Environment<S, E>		environment;
 	
+	/**
+	 * The width of the brackets around the environment in pixels.
+	 */
 	private int									bracketSize;
 	
+	/**
+	 * Holds informatioin whether the environment is collapsed.<br>
+	 * <br>
+	 * Only the first element of the environment is show. If there
+	 * are more than one element, they will only be shown as ", ...".
+	 * Than the collapsed flag is <i>true</i> else it is <i>false</i>.
+	 */
 	private boolean							collapsed;
 	
+	/**
+	 * The rectangle describing the area of the ", ...".<br>
+	 * <br>
+	 * Can be used to determin where a ToolTip should be displayed.
+	 */
 	private Rectangle						collapsedArea;
 	
+	/**
+	 * Containing all the informations that are not shown. When
+	 * the environment is collpased.
+	 */
 	private String							collapsedString;
 	
+	/**
+	 * 
+	 */
 	private static final String	collapsString = ", ...";
 	
+	/**
+	 * 
+	 *
+	 */
 	public EnvironmentRenderer() {
 		this.bracketSize 		= AbstractRenderer.fontDescent;
 		this.collapsed 			= false;
 		this.collapsedArea	= new Rectangle ();
 	}
 
+	/**
+	 * Sets the environment.
+	 * 
+	 * @param environment
+	 */
 	public void setEnvironment (Environment<S, E> environment) {
 		this.environment = environment;
 		
@@ -52,6 +95,12 @@ public class EnvironmentRenderer<S, E> extends AbstractRenderer {
 	}
 	
 	
+	/**
+	 * Calculates the size, that is needed to propperly render
+	 * the environment.
+	 * 
+	 * @return The size needed to render the environment.
+	 */
 	public Dimension getNeededSize () {
 		Dimension result = new Dimension (2 * this.bracketSize, AbstractRenderer.fontHeight);
 		
@@ -81,18 +130,45 @@ public class EnvironmentRenderer<S, E> extends AbstractRenderer {
 		return result;
 	}
 	
+	/**
+	 * Returns whether the environment was collapsed.
+	 * @return
+	 */
 	public boolean isCollapsed () {
 		return this.collapsed;
 	}
 	
+	/**
+	 * Returns the area whre the ", ..." is diplayed.
+	 * @return
+	 */
 	public Rectangle getCollapsedArea () {
 		return this.collapsedArea;
 	}
 	
+	/**
+	 * Returns the information of the environment that 
+	 * are not displayed.
+	 * 
+	 * @return
+	 */
 	public String getCollapsedString () {
 		return this.collapsedString;
 	}
 	
+	
+	/**
+	 * Renders the environment.<br>
+	 * <br>
+	 * The environment is always rendered as a single line. It will appear
+	 * verticaly centered betwean <i>y</i> and <i>(y + height></i>.
+	 * 
+	 * @param x The left position where the environment should be displayed
+	 * @param y The top position where the environment should be displayed.
+	 * @param width The width the renderer is given to render the environment.
+	 * @param height The Height the renderer is given to render the envionment.
+	 * @param gc
+	 */
 	public void renderer (int x, int y, int width, int height, Graphics gc) {
 		
 		//

@@ -19,6 +19,13 @@ import de.unisiegen.tpml.graphics.AbstractProofComponent;
 import de.unisiegen.tpml.graphics.renderer.TreeArrowRenderer;
 import de.unisiegen.tpml.graphics.tree.TreeNodeLayout;
 
+/**
+ * Implementation of the graphics repsentation of the 
+ * TypeChecker 
+ * 
+ * @author marcell
+ *
+ */
 public class TypeCheckerComponent extends AbstractProofComponent implements Scrollable {
 	
 	/**
@@ -26,10 +33,20 @@ public class TypeCheckerComponent extends AbstractProofComponent implements Scro
 	 */
 	private static final long serialVersionUID = 5184580585827680414L;
 
+	/**
+	 * Index that will be incremented during the layouting. 
+	 */
 	private int													index;
 
+	/**
+	 * TreeNodeLayout will be used to do the layouting of the tree.
+	 */
 	private TreeNodeLayout							treeNodeLayout;
 	
+	/**
+	 * The ProofNode where the scrollView will scroll to when
+	 * an new node will be inserted.
+	 */
 	private ProofNode										jumpNode;
 	
 	
@@ -105,6 +122,11 @@ public class TypeCheckerComponent extends AbstractProofComponent implements Scro
 		});
 	}
 	
+	/**
+	 * Checks the entire tree if every {@link TypeCheckerProofNode} contains an Userobject.
+	 * 
+	 * @param node
+	 */
 	private void checkForUserObject (TypeCheckerProofNode node) {
 		
 		if (node == null) {
@@ -150,8 +172,11 @@ public class TypeCheckerComponent extends AbstractProofComponent implements Scro
 
 	/**
 	 * Gets called when the content of the tree has changed.
+	 * If nodes are newly inserted or nodes got removed.<br>
+	 * <br>
+	 * The tree will be checked for userobject and than get
+	 * relayouted.
 	 * 
-	 * If nodes are newly inserted or nodes got removed.
 	 */
 	@Override
 	protected void treeContentChanged () {
@@ -165,6 +190,10 @@ public class TypeCheckerComponent extends AbstractProofComponent implements Scro
 		
 	}
 	
+	/**
+	 * Saves the first of the newly inserted nodes for the node
+	 * to jump to later.
+	 */
 	@Override
 	protected void nodesInserted (TreeModelEvent event) {
 		if (this.jumpNode != null) {
@@ -187,6 +216,10 @@ public class TypeCheckerComponent extends AbstractProofComponent implements Scro
 	}
 	
 	
+	/**
+	 * Delegates a {@link TypeCheckerNodeComponent#changeNode()} to every nodes
+	 * that have changed.
+	 */
 	@Override
 	protected void nodesChanged (TreeModelEvent event) {
 		Object[] children = event.getChildren();
@@ -217,6 +250,9 @@ public class TypeCheckerComponent extends AbstractProofComponent implements Scro
 		
 	}
 
+	/**
+	 * Removes the userobject from the {@link TypeCheckerProofNode}.
+	 */
 	@Override
 	protected void nodesRemoved (TreeModelEvent event) {
 		Object[] children = event.getChildren();
@@ -234,7 +270,7 @@ public class TypeCheckerComponent extends AbstractProofComponent implements Scro
 	}
 	
 	/**
-	 * 
+	 * Just renders the tree using the {@link TreeArrowRenderer#renderArrows(ProofNode, int, Graphics)}-Method
 	 * @param gc
 	 */
 	@Override
@@ -250,6 +286,10 @@ public class TypeCheckerComponent extends AbstractProofComponent implements Scro
 		
 	}
 	
+	/**
+	 * Scroll the Viewport to the rect of the previously saved node. 
+	 *
+	 */
 	private void jumpToNodeVisible () {
 		if (this.jumpNode == null) {
 			return;
