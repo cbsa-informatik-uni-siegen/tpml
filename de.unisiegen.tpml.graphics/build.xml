@@ -67,6 +67,9 @@
 		<copy todir="${classesdir}/META-INF" file="${basedir}/doc/LICENSE" />
 		<jar jarfile="${distdir}/de.unisiegen.tpml.graphics-${de.unisiegen.tpml.graphics.version}.jar" manifest="${distdir}/MANIFEST.MF">
 			<fileset dir="${classesdir}" />
+			<fileset dir="${basedir}/source-impl">
+				<include name="**/*.properties"/>
+			</fileset>
 		</jar>
 		<delete file="${distdir}/MANIFEST.MF" />
 	</target>
