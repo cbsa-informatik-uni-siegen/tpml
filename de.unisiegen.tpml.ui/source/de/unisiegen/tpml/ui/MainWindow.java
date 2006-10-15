@@ -64,7 +64,7 @@ public class MainWindow extends javax.swing.JFrame {
 		setGeneralStates(false);
 		this.saveItem.setEnabled(false);
 		this.saveButton.setEnabled(false);
-		this.preferencesItem.setEnabled(false);
+		this.preferencesItem.setEnabled(true);
 		this.copyItem.setEnabled(false);
 		this.pasteItem.setEnabled(false);
 		this.recentFilesMenu.setVisible(false);
@@ -768,7 +768,10 @@ public class MainWindow extends javax.swing.JFrame {
 	}// GEN-LAST:event_openButtonActionPerformed
 
 	private void preferencesItemActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_preferencesItemActionPerformed
-		// TODO when the preferences button is enabled handle the click here
+		// 
+            PreferenceDialog prefdialog = new PreferenceDialog(this, true);
+    		prefdialog.setLocationRelativeTo(this);
+    		prefdialog.setVisible(true);
 
 	}// GEN-LAST:event_preferencesItemActionPerformed
 
