@@ -2,6 +2,8 @@ package de.unisiegen.tpml.graphics.components;
 
 import javax.swing.JMenuItem;
 
+import de.unisiegen.tpml.graphics.Messages;
+
 public class MenuTranslateItem extends JMenuItem {
 
 	/**
@@ -11,6 +13,6 @@ public class MenuTranslateItem extends JMenuItem {
 
 	public MenuTranslateItem () {
 		super ();
-		init ("Translate to coresyntax", null);
+		init (Messages.getString("MenuTranslateItem.0"), null); //$NON-NLS-1$
 	}
 }

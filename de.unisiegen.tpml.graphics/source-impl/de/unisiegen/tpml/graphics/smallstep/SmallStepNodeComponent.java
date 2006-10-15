@@ -18,6 +18,7 @@ import de.unisiegen.tpml.core.languages.LanguageTranslator;
 import de.unisiegen.tpml.core.smallstep.SmallStepProofModel;
 import de.unisiegen.tpml.core.smallstep.SmallStepProofNode;
 import de.unisiegen.tpml.core.smallstep.SmallStepProofRule;
+import de.unisiegen.tpml.graphics.Messages;
 import de.unisiegen.tpml.graphics.components.CompoundExpression;
 import de.unisiegen.tpml.graphics.components.MenuButton;
 import de.unisiegen.tpml.graphics.components.MenuButtonListener;
@@ -235,16 +236,14 @@ public class SmallStepNodeComponent extends JComponent {
 		else if (item instanceof MenuTranslateItem) {
 			int answer = 1;
 			if (this.proofModel.containsSyntacticSugar(this.proofNode, false)) {
-				String[] answers = { "Outermost only", "Whole expression", "Cancel" };
-				answer = JOptionPane.showOptionDialog(getTopLevelAncestor(), "Do you want to translate all syntactic " +
-																						  "sugar contained within this expression,\nor only the " +
-																							"outermost expression?",
-																						  "Translate to core syntax",
-																						  JOptionPane.YES_NO_CANCEL_OPTION,
-																						  JOptionPane.QUESTION_MESSAGE,
-																						  null,
-																						  answers,
-																						  answers[0]);
+				String[] answers = { Messages.getString("NodeComponent.0"), Messages.getString("NodeComponent.1"), Messages.getString("NodeComponent.2") }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				answer = JOptionPane.showOptionDialog(getTopLevelAncestor(), Messages.getString("NodeComponent.3"), //$NON-NLS-1$
+				    Messages.getString("NodeComponent.4"), //$NON-NLS-1$
+				    JOptionPane.YES_NO_CANCEL_OPTION,
+				    JOptionPane.QUESTION_MESSAGE,
+				    null,
+				    answers,
+				    answers[0]);
 			}
 			switch (answer) {
 			case 0:

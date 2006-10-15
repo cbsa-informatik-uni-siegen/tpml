@@ -19,6 +19,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.BevelBorder;
 
+import de.unisiegen.tpml.graphics.Messages;
+
 /**
  * @author marcell
  *
@@ -53,14 +55,14 @@ public class TypeCheckerEnterType extends JComponent {
 		this.textField = new JTextField ();
 		this.panel.add (this.textField, BorderLayout.CENTER);
 		
-		this.label = new JLabel ("Type: ");
+		this.label = new JLabel (Messages.getString("TypeCheckerEnterType.0")); //$NON-NLS-1$
 		this.panel.add(this.label, BorderLayout.WEST);
 		this.panel.setBorder(new BevelBorder (BevelBorder.RAISED));
 
 		
 		// calc some space for the textField
 		FontMetrics fm = getFontMetrics(this.textField.getFont());
-		int width = fm.stringWidth("int -> int -> int -> int -> int");
+		int width = fm.stringWidth("int -> int -> int -> int -> int"); //$NON-NLS-1$
 		
 		Dimension size = getPreferredSize ();
 		setPreferredSize (new Dimension (size.width + width, size.height));
@@ -89,7 +91,7 @@ public class TypeCheckerEnterType extends JComponent {
 	}
 	
 	public void clear () {
-		this.textField.setText("");
+		this.textField.setText(""); //$NON-NLS-1$
 	}
 	
 	public void selectAll() {

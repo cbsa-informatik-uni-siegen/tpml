@@ -2,6 +2,8 @@ package de.unisiegen.tpml.graphics.components;
 
 import javax.swing.JMenuItem;
 
+import de.unisiegen.tpml.graphics.Messages;
+
 public class MenuGuessItem extends JMenuItem {
 
 	/**
@@ -12,6 +14,6 @@ public class MenuGuessItem extends JMenuItem {
 	public MenuGuessItem () {
 		super ();
 		
-		init ("Guess", null);
+		init (Messages.getString("MenuGuessItem.0"), null); //$NON-NLS-1$
 	}
 }

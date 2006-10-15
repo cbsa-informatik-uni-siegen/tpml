@@ -2,6 +2,8 @@ package de.unisiegen.tpml.graphics.components;
 
 import javax.swing.JMenuItem;
 
+import de.unisiegen.tpml.graphics.Messages;
+
 public class MenuEnterTypeItem extends JMenuItem {
 	
 	/**
@@ -12,7 +14,7 @@ public class MenuEnterTypeItem extends JMenuItem {
 	public MenuEnterTypeItem () {
 		super ();
 		
-		init ("Enter type", null);
+		init (Messages.getString("MenuEnterTypeItem.0"), null); //$NON-NLS-1$
 	}
 
 }

@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Point;
 import java.io.StringReader;
+import java.text.MessageFormat;
 
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -20,6 +21,7 @@ import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode;
 import de.unisiegen.tpml.core.types.MonoType;
 import de.unisiegen.tpml.core.types.Type;
+import de.unisiegen.tpml.graphics.Messages;
 import de.unisiegen.tpml.graphics.components.CompoundExpression;
 import de.unisiegen.tpml.graphics.components.MenuButton;
 import de.unisiegen.tpml.graphics.components.MenuButtonListener;
@@ -103,7 +105,7 @@ public class TypeCheckerNodeComponent extends JComponent  implements TreeNodeCom
 		
 		this.typeLabel = new JLabel ();
 		add (this.typeLabel);
-		this.typeLabel.setText (" :: ");
+		this.typeLabel.setText (" :: "); //$NON-NLS-1$
 		
 		this.typeEnter = new TypeCheckerEnterType ();
 		add (this.typeEnter);
@@ -160,7 +162,7 @@ public class TypeCheckerNodeComponent extends JComponent  implements TreeNodeCom
 	 * @param index The index
 	 */
 	public void setIndex (int index) {
-		this.indexLabel.setText("(" + index  + ")");
+		this.indexLabel.setText("(" + index  + ")"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 	
 	
@@ -191,10 +193,10 @@ public class TypeCheckerNodeComponent extends JComponent  implements TreeNodeCom
 		
 		// get the neede size for the type
 		if (this.proofNode.getType () != null && this.proofNode.isFinished()) {
-			this.typeLabel.setText(" :: " + this.proofNode.getType());
+			this.typeLabel.setText(" :: " + this.proofNode.getType()); //$NON-NLS-1$
 		}
 		else {
-			this.typeLabel.setText(" :: ");
+			this.typeLabel.setText(" :: "); //$NON-NLS-1$
 		}
 		Dimension typeSize = this.typeLabel.getPreferredSize();
 		this.dimension.width += typeSize.width;
@@ -222,7 +224,7 @@ public class TypeCheckerNodeComponent extends JComponent  implements TreeNodeCom
 		posX = labelSize.width + this.spacing;
 		if (this.proofNode.isProven()) {
 			// place the menu label
-			this.ruleLabel.setText ("(" + this.proofNode.getRule() + ")");
+			this.ruleLabel.setText ("(" + this.proofNode.getRule() + ")"); //$NON-NLS-1$ //$NON-NLS-2$
 			
 			Dimension ruleLabelSize = this.ruleLabel.getPreferredSize();
 			this.ruleLabel.setBounds(posX, this.dimension.height + this.spacing, ruleLabelSize.width, ruleLabelSize.height);
@@ -275,7 +277,7 @@ public class TypeCheckerNodeComponent extends JComponent  implements TreeNodeCom
 			monoType = parser.parse();
 		} catch (Exception e) {
 			this.typeEnter.selectAll ();
-			JOptionPane.showMessageDialog(getTopLevelAncestor(), "Failed to parse \"" + type + "\".");
+			JOptionPane.showMessageDialog(getTopLevelAncestor(), MessageFormat.format(Messages.getString("TypeCheckerNodeComponent.0"), type)); //$NON-NLS-1$
 			return;
 		}
 		try {
@@ -329,7 +331,7 @@ public class TypeCheckerNodeComponent extends JComponent  implements TreeNodeCom
 				// when the node could not be prooven with the selected
 				// rule the menu button gets labeled with the given rule 
 				// and will be displayed in red
-				this.ruleButton.setText("(" + rule.getName() + ")");
+				this.ruleButton.setText("(" + rule.getName() + ")"); //$NON-NLS-1$ //$NON-NLS-2$
 				this.ruleButton.setTextColor(Color.RED);
 
 				// determine the error text for the tooltip
@@ -341,16 +343,14 @@ public class TypeCheckerNodeComponent extends JComponent  implements TreeNodeCom
 		else if (item instanceof MenuTranslateItem) {
 			int answer = 1;
 			if (this.proofModel.containsSyntacticSugar(this.proofNode, false)) {
-				String[] answers = { "Outermost only", "Whole expression", "Cancel" };
-				answer = JOptionPane.showOptionDialog(getTopLevelAncestor(), "Do you want to translate all syntactic " +
-																						  "sugar contained within this expression,\nor only the " +
-																							"outermost expression?",
-																						  "Translate to core syntax",
-																						  JOptionPane.YES_NO_CANCEL_OPTION,
-																						  JOptionPane.QUESTION_MESSAGE,
-																						  null,
-																						  answers,
-																						  answers[0]);
+				String[] answers = { Messages.getString("NodeComponent.0"), Messages.getString("NodeComponent.1"), Messages.getString("NodeComponent.2") }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				answer = JOptionPane.showOptionDialog(getTopLevelAncestor(), Messages.getString("NodeComponent.3"), //$NON-NLS-1$
+				    Messages.getString("NodeComponent.4"), //$NON-NLS-1$
+				    JOptionPane.YES_NO_CANCEL_OPTION,
+				    JOptionPane.QUESTION_MESSAGE,
+				    null,
+				    answers,
+				    answers[0]);
 			}
 			switch (answer) {
 			case 0:
