@@ -80,6 +80,21 @@ public class ThemeManager {
 		return this.currentTheme;
 	}
 	
+	public void setCurrentThem (Theme theme) {
+		this.currentTheme = theme;
+	}
+	
+	public int getNumberOfThemes () {
+		return this.themes.size();
+	}
+	
+	public Theme getTheme (int idx) {
+		if (idx < 0 || idx >= this.themes.size()) {
+			return null;
+		}
+		return this.themes.get(idx);
+	}
+	
 	public void saveThemes () {
 		
 		// first remove all the current stored themes
