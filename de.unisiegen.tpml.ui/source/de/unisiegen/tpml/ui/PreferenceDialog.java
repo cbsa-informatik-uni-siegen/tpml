@@ -123,7 +123,7 @@ public class PreferenceDialog extends javax.swing.JDialog {
         fontButton.setText("Font");
         westPanel.add(fontButton);
 
-        getContentPane().add(westPanel, java.awt.BorderLayout.WEST);
+        getContentPane().add(westPanel, java.awt.BorderLayout.EAST);
 
         centerPanel.setLayout(new javax.swing.BoxLayout(centerPanel, javax.swing.BoxLayout.Y_AXIS));
 
@@ -170,7 +170,7 @@ public class PreferenceDialog extends javax.swing.JDialog {
 
         eastPanel.add(itemScrollPane);
 
-        getContentPane().add(eastPanel, java.awt.BorderLayout.EAST);
+        getContentPane().add(eastPanel, java.awt.BorderLayout.WEST);
 
         southPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT, 0, 5));
 

@@ -1252,7 +1252,7 @@ public class MainWindow extends javax.swing.JFrame {
 	private boolean handleClose() {
 		EditorPanel selectedEditor = getActiveEditor();
 		boolean success;
-		if (selectedEditor.isUndoStatus()) {
+		if (selectedEditor.shouldBeSaved()) {
 
 			Object[] options = {
 					java.util.ResourceBundle.getBundle(

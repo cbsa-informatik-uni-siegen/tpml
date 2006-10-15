@@ -620,6 +620,10 @@ public class EditorPanel extends javax.swing.JPanel {
 	public boolean isAdvaced (){
 		return this.advanced;
 	}
+	
+	public boolean shouldBeSaved(){
+		return code.isUndoStatus();
+	}
 
 	public void handleUndo() {
 		getComponent().handleUndo();
