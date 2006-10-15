@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.text.MessageFormat;
 
 import javax.swing.JComponent;
 import javax.swing.JMenuItem;
@@ -230,7 +231,7 @@ public class SmallStepNodeComponent extends JComponent {
 			try {
 				this.proofModel.guess(this.proofNode);
 			} catch (Exception e) {
-				
+				JOptionPane.showMessageDialog(getTopLevelAncestor(), MessageFormat.format(Messages.getString("NodeComponent.5"), e.getMessage()), Messages.getString("NodeComponent.6"), JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 		}
 		else if (item instanceof MenuTranslateItem) {

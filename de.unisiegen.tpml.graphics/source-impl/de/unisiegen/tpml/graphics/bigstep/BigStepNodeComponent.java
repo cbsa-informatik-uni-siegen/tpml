@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Point;
+import java.text.MessageFormat;
 
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -139,7 +140,7 @@ public class BigStepNodeComponent extends JComponent implements TreeNodeComponen
 		
 		this.downArrowLabel			= new JLabel ();
 		add (this.downArrowLabel);
-		this.downArrowLabel.setText(" \u21d3 "); // \u21d3 is the double arrow down //$NON-NLS-1$ //$NON-NLS-1$
+		this.downArrowLabel.setText(" \u21d3 "); // \u21d3 is the double arrow down //$NON-NLS-1$ //$NON-NLS-1$ //$NON-NLS-1$
 		
 		this.resultExpression		= new CompoundExpression<Location, Expression>();
 		add (this.resultExpression);
@@ -275,8 +276,8 @@ public class BigStepNodeComponent extends JComponent implements TreeNodeComponen
 			try {
 				this.proofModel.guess(this.proofNode);
 			}
-			catch (Exception exc) {
-				exc.printStackTrace();
+			catch (Exception e) {
+				JOptionPane.showMessageDialog(getTopLevelAncestor(), MessageFormat.format(Messages.getString("NodeComponent.5"), e.getMessage()), Messages.getString("NodeComponent.6"), JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 		}
 		

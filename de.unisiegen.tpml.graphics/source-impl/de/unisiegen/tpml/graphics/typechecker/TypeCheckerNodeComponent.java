@@ -283,9 +283,8 @@ public class TypeCheckerNodeComponent extends JComponent  implements TreeNodeCom
 		try {
 			this.proofModel.guessWithType(this.proofNode, monoType);
 		} catch (Exception e) {
-			// TODO: add sensible error message
 			this.typeEnter.selectAll ();
-			JOptionPane.showMessageDialog(getTopLevelAncestor(), e.getMessage());
+			JOptionPane.showMessageDialog(getTopLevelAncestor(), MessageFormat.format(Messages.getString("NodeComponent.5"), e.getMessage()), Messages.getString("NodeComponent.6"), JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
 			return;
 		}
 		
@@ -368,9 +367,8 @@ public class TypeCheckerNodeComponent extends JComponent  implements TreeNodeCom
 			try {
 				this.proofModel.guess(this.proofNode);
 			}
-			catch (Exception exc) {
-				// TODO: add sensible error message here
-				exc.printStackTrace();
+			catch (Exception e) {
+				JOptionPane.showMessageDialog(getTopLevelAncestor(), MessageFormat.format(Messages.getString("NodeComponent.5"), e.getMessage()), Messages.getString("NodeComponent.6"), JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 			fireNodeChanged ();
 		}
