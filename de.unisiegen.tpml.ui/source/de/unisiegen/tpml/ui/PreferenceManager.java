@@ -110,7 +110,7 @@ public class PreferenceManager {
 	
 	public void setWindowPreferences(JFrame frame){
 
-		if ((frame.getExtendedState() & JFrame.MAXIMIZED_BOTH) == JFrame.MAXIMIZED_BOTH){
+		if ((frame.getExtendedState() & JFrame.MAXIMIZED_BOTH) != 0){
 			prefs.putBoolean("maximized", true);
 		}
 		else {

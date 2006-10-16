@@ -65,9 +65,6 @@ public class MainWindow extends javax.swing.JFrame {
 		//position the window
 		PreferenceManager prefmanager = PreferenceManager.get();
 		this.setBounds(prefmanager.getWindowBounds());
-		if (prefmanager.getWindowMaximized()){
-			this.setExtendedState(JFrame.MAXIMIZED_BOTH);
-		}
 		// Setting the default states
 		setGeneralStates(false);
 		this.saveItem.setEnabled(false);
@@ -104,6 +101,15 @@ public class MainWindow extends javax.swing.JFrame {
 		boolean advanced = prefmanager.getAdvanced();
 		this.advancedRadioButton.setSelected(advanced);
 		this.beginnerRadioButton.setSelected(!advanced);
+
+		// apply the last maximization state
+		if (prefmanager.getWindowMaximized()){
+			// needs to be visible first
+			this.setVisible(true);
+			
+			// set to maximized
+			this.setExtendedState(this.getExtendedState() | JFrame.MAXIMIZED_BOTH);
+		}
 	}
 
 	/**
