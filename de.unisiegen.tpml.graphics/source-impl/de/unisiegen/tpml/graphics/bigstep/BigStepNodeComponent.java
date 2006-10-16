@@ -190,6 +190,16 @@ public class BigStepNodeComponent extends JComponent implements TreeNodeComponen
 	}
 	
 	/**
+	 * Causes the expression and the resultexpression
+	 * to recalculate their layout.
+	 *
+	 */
+	public void reset () {
+		this.expression.reset();
+		this.resultExpression.reset();
+	}
+	
+	/**
 	 * Adds a new {@link BigStepNodeListener} to the <i>SmallStepNodeComponent</i>
 	 * 
 	 * @param listener The listener to be added

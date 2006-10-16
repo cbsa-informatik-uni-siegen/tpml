@@ -16,6 +16,8 @@ import de.unisiegen.tpml.core.ProofNode;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode;
 import de.unisiegen.tpml.graphics.AbstractProofComponent;
+import de.unisiegen.tpml.graphics.renderer.EnvironmentRenderer;
+import de.unisiegen.tpml.graphics.renderer.PrettyStringRenderer;
 import de.unisiegen.tpml.graphics.renderer.TreeArrowRenderer;
 import de.unisiegen.tpml.graphics.tree.TreeNodeLayout;
 
@@ -123,6 +125,18 @@ public class TypeCheckerComponent extends AbstractProofComponent implements Scro
 	}
 	
 	/**
+	 * Causes every {@link PrettyStringRenderer} and 
+	 * {@link EnvironmentRenderer} to recalculate thier
+	 * layout.
+	 */
+	@Override
+	protected void resetLayout () {
+		// apply the reset on the root node
+		resetUserObject((TypeCheckerProofNode)this.proofModel.getRoot());
+	}
+	
+	
+	/**
 	 * Checks the entire tree if every {@link TypeCheckerProofNode} contains an Userobject.
 	 * 
 	 * @param node
@@ -168,6 +182,31 @@ public class TypeCheckerComponent extends AbstractProofComponent implements Scro
 			checkForUserObject (pNode);
 		}
 		
+	}
+
+	/**
+	 * Causes all userobject from all nodes to reset the layout.<br>
+	 * <br>
+	 * Resetting means that every {@link PrettyStringRenderer} and 
+	 * {@link EnvironmentRenderer} recalculates their needed font sizes.
+	 */
+	private void resetUserObject (TypeCheckerProofNode node) {
+		if (node == null) {
+			return;
+		}
+		
+		TypeCheckerNodeComponent nodeComponent = (TypeCheckerNodeComponent)node.getUserObject();
+		if (nodeComponent == null) {
+			return;
+		}
+		
+		nodeComponent.reset ();
+		
+		for (int i=0; i<node.getChildCount (); i++) {
+			TypeCheckerProofNode pNode = node.getChildAt(i);
+			
+			resetUserObject (pNode);
+		}
 	}
 
 	/**

@@ -13,9 +13,11 @@ import javax.swing.event.TreeModelEvent;
 
 import de.unisiegen.tpml.core.ProofGuessException;
 import de.unisiegen.tpml.core.ProofNode;
+import de.unisiegen.tpml.core.bigstep.BigStepProofNode;
 import de.unisiegen.tpml.core.smallstep.SmallStepProofModel;
 import de.unisiegen.tpml.core.smallstep.SmallStepProofNode;
 import de.unisiegen.tpml.graphics.AbstractProofComponent;
+import de.unisiegen.tpml.graphics.bigstep.BigStepNodeComponent;
 
 /**
  * TODO Add documentation here.
@@ -163,6 +165,28 @@ public class SmallStepComponent extends AbstractProofComponent implements Scroll
 		
 		checkForUserObject (getFirstChild (node));
 	}
+	
+	/**
+	 * Causes all userobject from all nodes to reset the layout.<br>
+	 * <br>
+	 * Resetting means that every {@link PrettyStringRenderer} and 
+	 * {@link EnvironmentRenderer} recalculates their needed font sizes.
+	 */
+	private void resetUserObject (SmallStepProofNode node) {
+		if (node == null) {
+			return;
+		}
+		
+		SmallStepNodeComponent nodeComponent = (SmallStepNodeComponent)node.getUserObject();
+		if (nodeComponent == null) {
+			return;
+		}
+		
+		nodeComponent.reset ();
+		
+		resetUserObject (getFirstChild (node));
+	}
+	
 	
 	/**
 	 * Traverses the ProofTree recursivly and checks the needed size for
@@ -403,6 +427,11 @@ public class SmallStepComponent extends AbstractProofComponent implements Scroll
 	}
 	
 	@Override
+	protected void resetLayout () {
+		
+	}
+	
+	@Override
 	protected void nodesInserted (TreeModelEvent event) {
 		Object [] children = event.getChildren();
 		
@@ -467,7 +496,7 @@ public class SmallStepComponent extends AbstractProofComponent implements Scroll
 				}
 			}
 		}
-
+		
 	}
 	
 	@Override

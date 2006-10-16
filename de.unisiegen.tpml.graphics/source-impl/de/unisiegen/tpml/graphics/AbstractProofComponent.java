@@ -6,6 +6,9 @@ import javax.swing.event.TreeModelListener;
 
 import de.unisiegen.tpml.core.AbstractProofModel;
 import de.unisiegen.tpml.core.languages.LanguageTranslator;
+import de.unisiegen.tpml.graphics.theme.Theme;
+import de.unisiegen.tpml.graphics.theme.ThemeManager;
+import de.unisiegen.tpml.graphics.theme.ThemeManagerListener;
 
 public abstract class AbstractProofComponent extends JComponent {
 	
@@ -50,6 +53,12 @@ public abstract class AbstractProofComponent extends JComponent {
 			}
 		});
 		
+		
+		ThemeManager.get().addThemeManagerListener(new ThemeManagerListener() {
+			public void currentThemeChanged (Theme theme) {
+				AbstractProofComponent.this.resetLayout ();
+			}
+		});
 	}
 	
 	protected abstract void nodesInserted (TreeModelEvent event);
@@ -61,6 +70,8 @@ public abstract class AbstractProofComponent extends JComponent {
 	protected abstract void treeContentChanged ();
 	
 	protected abstract void relayout ();
+	
+	protected abstract void resetLayout ();
 	
 	public void setAvailableWidth (int availableWidth) {
 		this.availableWidth = availableWidth;

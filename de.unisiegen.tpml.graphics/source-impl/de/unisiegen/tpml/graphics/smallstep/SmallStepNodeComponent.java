@@ -153,6 +153,15 @@ public class SmallStepNodeComponent extends JComponent {
 	}
 	
 	/**
+	 * Causes the expression and the resultexpression
+	 * to recalculate their layout.
+	 *
+	 */
+	public void reset () {
+		this.expression.reset();
+	}
+
+	/**
 	 * Sets whether the small step view operates in advanced or beginner mode.
 	 * 
 	 * @param advanced <code>true</code> to display only axiom rules in the menu.

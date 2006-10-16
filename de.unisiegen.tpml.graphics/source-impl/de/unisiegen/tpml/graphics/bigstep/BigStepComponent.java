@@ -162,6 +162,31 @@ public class BigStepComponent extends AbstractProofComponent implements Scrollab
 		}
 	}
 	
+	/**
+	 * Causes all userobject from all nodes to reset the layout.<br>
+	 * <br>
+	 * Resetting means that every {@link PrettyStringRenderer} and 
+	 * {@link EnvironmentRenderer} recalculates their needed font sizes.
+	 */
+	private void resetUserObject (BigStepProofNode node) {
+		if (node == null) {
+			return;
+		}
+		
+		BigStepNodeComponent nodeComponent = (BigStepNodeComponent)node.getUserObject();
+		if (nodeComponent == null) {
+			return;
+		}
+		
+		nodeComponent.reset ();
+		
+		for (int i=0; i<node.getChildCount (); i++) {
+			BigStepProofNode pNode = node.getChildAt(i);
+			
+			resetUserObject (pNode);
+		}
+	}
+	
 	/*
 	 * Implementation of the AbstractProofComponent interface 
 	 */
@@ -335,6 +360,18 @@ public class BigStepComponent extends AbstractProofComponent implements Scrollab
 			}
 		});
 	}
+	
+	/**
+	 * Causes every {@link PrettyStringRenderer} and 
+	 * {@link EnvironmentRenderer} to recalculate thier
+	 * layout.
+	 */
+	@Override
+	protected void resetLayout () {
+		// apply the reset on the root node
+		resetUserObject((BigStepProofNode)this.proofModel.getRoot());
+	}
+	
 	
 	/**
 	 * Renders the decoration of the BigStepComponent.<br>

@@ -154,6 +154,16 @@ public class CompoundExpression<S, E> extends JComponent {
 	}
 	
 	/**
+	 * Causes the PrettyStringRenderer to recheck the linewraps
+	 *
+	 */
+	public void reset () {
+		if (this.expressionRenderer != null) {
+			this.expressionRenderer.checkLinewraps();
+		}
+	}
+	
+	/**
 	 * Handles whether a ToolTip should be displayed for the environment, if some
 	 * parts of it are collapsed. 
 	 * @param event

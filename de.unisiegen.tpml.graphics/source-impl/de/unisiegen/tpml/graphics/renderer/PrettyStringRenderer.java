@@ -156,7 +156,7 @@ public class PrettyStringRenderer extends AbstractRenderer {
 	/**
 	 * Checks the results for all possible annotations.
 	 */
-	private void checkLinewraps () {
+	public void checkLinewraps () {
 		this.results.clear();
 		
 		this.results.add(checkLinewrap (null));

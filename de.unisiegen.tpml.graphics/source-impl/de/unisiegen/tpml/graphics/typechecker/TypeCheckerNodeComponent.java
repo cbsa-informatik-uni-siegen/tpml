@@ -160,6 +160,15 @@ public class TypeCheckerNodeComponent extends JComponent  implements TreeNodeCom
 	}
 	
 	/**
+	 * Causes the expression and the resultexpression
+	 * to recalculate their layout.
+	 *
+	 */
+	public void reset () {
+		this.expression.reset();
+	}
+
+	/**
 	 * Sets the index that will be displayed in front of the node
 	 * 
 	 * @param index The index

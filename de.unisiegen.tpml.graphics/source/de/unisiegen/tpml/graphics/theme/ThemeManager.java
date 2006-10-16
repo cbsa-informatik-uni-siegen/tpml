@@ -8,7 +8,10 @@ import java.awt.Font;
 import java.util.LinkedList;
 import java.util.prefs.Preferences;
 
+import javax.swing.JLabel;
 import javax.swing.event.EventListenerList;
+
+import de.unisiegen.tpml.graphics.renderer.AbstractRenderer;
 
 /**
  * @author marcell
@@ -106,6 +109,9 @@ public class ThemeManager {
 	
 	public void setCurrentThem (Theme theme) {
 		this.currentTheme = theme;
+		if (theme != null) {
+			AbstractRenderer.setTheme(theme, new JLabel ());
+		}
 		fireThemeChanged();
 	}
 	
