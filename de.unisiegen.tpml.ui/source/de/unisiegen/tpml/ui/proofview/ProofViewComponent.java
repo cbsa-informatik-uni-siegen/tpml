@@ -3,14 +3,17 @@ package de.unisiegen.tpml.ui.proofview;
 import java.awt.BorderLayout;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.text.MessageFormat;
 
 import javax.swing.JComponent;
+import javax.swing.JOptionPane;
 
 import org.apache.log4j.Logger;
 
 import de.unisiegen.tpml.core.CannotRedoException;
 import de.unisiegen.tpml.core.CannotUndoException;
 import de.unisiegen.tpml.core.ProofModel;
+import de.unisiegen.tpml.graphics.Messages;
 import de.unisiegen.tpml.graphics.ProofView;
 import de.unisiegen.tpml.ui.EditorComponent;
 
@@ -151,7 +154,10 @@ public class ProofViewComponent extends JComponent implements EditorComponent {
 		try {
 			view.guess();
 		} catch (Exception e) {
-			logger.error("Guess could not be executed", e);
+			//logger.error("Guess could not be executed", e);
+			JOptionPane.showMessageDialog(getTopLevelAncestor(), MessageFormat.format(java.util.ResourceBundle.getBundle(
+			"de/unisiegen/tpml/ui/ui").getString("NodeComponent.5"), e.getMessage()), java.util.ResourceBundle.getBundle(
+			"de/unisiegen/tpml/ui/ui").getString("NodeComponent.6"), JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 
 	}
