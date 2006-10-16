@@ -62,12 +62,13 @@ public class PreferenceDialog extends javax.swing.JDialog {
         javax.swing.JButton closeButton;
         javax.swing.JButton deleteButton;
         javax.swing.JPanel eastPanel;
-        javax.swing.JPanel fontPanel;
+        java.awt.GridBagConstraints gridBagConstraints;
         javax.swing.JScrollPane itemScrollPane;
+        javax.swing.JPanel jPanel1;
+        javax.swing.JPanel jPanel2;
         javax.swing.JButton newButton;
         javax.swing.JPanel northPanel;
         javax.swing.JPanel southPanel;
-        javax.swing.JPanel westPanel;
 
         northPanel = new javax.swing.JPanel();
         chooseLabel = new javax.swing.JLabel();
@@ -75,12 +76,12 @@ public class PreferenceDialog extends javax.swing.JDialog {
         buttonPanel = new javax.swing.JPanel();
         newButton = new javax.swing.JButton();
         deleteButton = new javax.swing.JButton();
-        westPanel = new javax.swing.JPanel();
+        centerPanel = new javax.swing.JPanel();
         colorBotton = new javax.swing.JButton();
         fontButton = new javax.swing.JButton();
-        centerPanel = new javax.swing.JPanel();
+        jPanel1 = new javax.swing.JPanel();
         colorPanel = new javax.swing.JPanel();
-        fontPanel = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel();
         fontLabel = new javax.swing.JLabel();
         eastPanel = new javax.swing.JPanel();
         itemScrollPane = new javax.swing.JScrollPane();
@@ -92,6 +93,7 @@ public class PreferenceDialog extends javax.swing.JDialog {
         setTitle("Preferences");
         northPanel.setLayout(new java.awt.BorderLayout());
 
+        northPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
         chooseLabel.setText("Choose Theme:");
         chooseLabel.setVerticalAlignment(javax.swing.SwingConstants.TOP);
         northPanel.add(chooseLabel, java.awt.BorderLayout.NORTH);
@@ -122,7 +124,7 @@ public class PreferenceDialog extends javax.swing.JDialog {
 
         getContentPane().add(northPanel, java.awt.BorderLayout.NORTH);
 
-        westPanel.setLayout(new javax.swing.BoxLayout(westPanel, javax.swing.BoxLayout.Y_AXIS));
+        centerPanel.setLayout(new java.awt.GridBagLayout());
 
         colorBotton.setText("Color");
         colorBotton.addActionListener(new java.awt.event.ActionListener() {
@@ -131,38 +133,64 @@ public class PreferenceDialog extends javax.swing.JDialog {
             }
         });
 
-        westPanel.add(colorBotton);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(10, 5, 10, 10);
+        centerPanel.add(colorBotton, gridBagConstraints);
 
         fontButton.setText("Font");
-        westPanel.add(fontButton);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(10, 5, 10, 10);
+        centerPanel.add(fontButton, gridBagConstraints);
 
-        getContentPane().add(westPanel, java.awt.BorderLayout.EAST);
+        jPanel1.setLayout(new java.awt.BorderLayout());
 
-        centerPanel.setLayout(new javax.swing.BoxLayout(centerPanel, javax.swing.BoxLayout.Y_AXIS));
-
+        jPanel1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         colorPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
         colorPanel.setBackground(new java.awt.Color(0, 0, 204));
         colorPanel.setMaximumSize(new java.awt.Dimension(32767, 23));
         colorPanel.setMinimumSize(new java.awt.Dimension(10, 23));
         colorPanel.setPreferredSize(new java.awt.Dimension(100, 23));
-        centerPanel.add(colorPanel);
+        jPanel1.add(colorPanel, java.awt.BorderLayout.CENTER);
 
-        fontPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 0);
+        centerPanel.add(jPanel1, gridBagConstraints);
 
-        fontPanel.setMaximumSize(new java.awt.Dimension(32767, 23));
-        fontPanel.setMinimumSize(new java.awt.Dimension(10, 23));
-        fontPanel.setPreferredSize(new java.awt.Dimension(100, 23));
+        jPanel2.setLayout(new java.awt.BorderLayout());
+
+        jPanel2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         fontLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         fontLabel.setText("This is Thahoma");
-        fontPanel.add(fontLabel);
+        jPanel2.add(fontLabel, java.awt.BorderLayout.CENTER);
 
-        centerPanel.add(fontPanel);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 0);
+        centerPanel.add(jPanel2, gridBagConstraints);
 
         getContentPane().add(centerPanel, java.awt.BorderLayout.CENTER);
 
         eastPanel.setLayout(new javax.swing.BoxLayout(eastPanel, javax.swing.BoxLayout.X_AXIS));
 
+        eastPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 10, 10, 10));
         itemList.setModel(new javax.swing.AbstractListModel() {
             String[] strings = { "A really looong name" };
             public int getSize() { return strings.length; }
@@ -185,20 +213,23 @@ public class PreferenceDialog extends javax.swing.JDialog {
 
         getContentPane().add(eastPanel, java.awt.BorderLayout.WEST);
 
-        southPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT, 0, 5));
+        southPanel.setLayout(new java.awt.GridBagLayout());
 
+        southPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
         closeButton.setText("Close");
-        southPanel.add(closeButton);
+        southPanel.add(closeButton, new java.awt.GridBagConstraints());
 
         getContentPane().add(southPanel, java.awt.BorderLayout.SOUTH);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void closeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeButtonActionPerformed
+        dispose();
+    }//GEN-LAST:event_closeButtonActionPerformed
+
     private void colorBottonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_colorBottonActionPerformed
-// TODO add your handling code here:
         JColorChooser chooser = new JColorChooser();
-        
     }//GEN-LAST:event_colorBottonActionPerformed
 
     private void newButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
