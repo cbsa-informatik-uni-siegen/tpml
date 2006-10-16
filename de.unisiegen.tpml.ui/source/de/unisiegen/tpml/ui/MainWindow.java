@@ -1346,7 +1346,16 @@ public class MainWindow extends javax.swing.JFrame {
 	 * @see #restoreOpenFiles()
 	 */
 	public void saveOpenFiles() {
-		// TODO
+		int tabcount = tabbedPane.getComponentCount();
+		LinkedList<File> filelist = new LinkedList<File>();
+		File file;
+		for (int i = 0; i < tabcount; i++) {
+			file = ((EditorPanel) tabbedPane.getComponentAt(i)).getFile();
+			if (file != null){
+				filelist.add(file);
+			}
+		}
+		PreferenceManager.get().setOpenFiles(filelist);
 	}
 	
 	/**
@@ -1358,6 +1367,13 @@ public class MainWindow extends javax.swing.JFrame {
 	 * @see #saveOpenFiles()
 	 */
 	public void restoreOpenFiles() {
-		// TODO
+		LinkedList<File> filelist = PreferenceManager.get().getOpenFiles();
+		File currentfile;
+		for (int i = 0 ; i < filelist.size(); i++){
+			currentfile = filelist.get(i);
+			if (currentfile.exists() && currentfile.canRead()){
+				openFile(currentfile);
+			}
+		}
 	}
 }

@@ -64,7 +64,7 @@ public class PreferenceManager {
 	public void setRecentlyUsed(LinkedList<HistoryItem> list) {
 		int length = list.size();
 		for (int i = 0; i < length; i++) {
-			this.prefs.put("item" + i, list.get(i).getFile().getAbsolutePath());
+			this.prefs.put("historyitem" + i, list.get(i).getFile().getAbsolutePath());
 		}
 
 	}
@@ -77,10 +77,38 @@ public class PreferenceManager {
 		String result = "";
 		LinkedList<HistoryItem> list = new LinkedList<HistoryItem>();
 		while (true) {
-			result = this.prefs.get("item" + count, "end");
+			result = this.prefs.get("historyitem" + count, "end");
 			if (result.equals("end")) break;
 			
 			list.add(new HistoryItem(new File(result)));
+			count++;
+		}
+		return list;
+	}
+	
+	public void setOpenFiles(LinkedList<File> list){
+		//delete all openitems
+		int delete = 0;
+		while (! prefs.get("openitem"+delete, "end").equals("end")){
+			prefs.remove("openitem"+delete);
+			delete++;
+		}
+		//insert new items
+		int length = list.size();
+		for (int i = 0; i < length; i++) {
+			this.prefs.put("openitem" + i, list.get(i).getAbsolutePath());
+		}
+	}
+	
+	public LinkedList<File> getOpenFiles() {
+		int count = 0;
+		String result = "";
+		LinkedList<File> list = new LinkedList<File>();
+		while (true) {
+			result = this.prefs.get("openitem" + count, "end");
+			if (result.equals("end")) break;
+			
+			list.add(new File(result));
 			count++;
 		}
 		return list;
