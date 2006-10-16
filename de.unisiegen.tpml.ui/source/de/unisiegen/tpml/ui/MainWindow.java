@@ -8,6 +8,8 @@ package de.unisiegen.tpml.ui;
 
 import java.awt.Component;
 import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.beans.PropertyChangeEvent;
@@ -17,9 +19,11 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.LinkedList;
+import java.util.ResourceBundle;
 
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 
@@ -925,7 +929,7 @@ public class MainWindow extends javax.swing.JFrame {
 
 	// private PreferenceManager prefmanager;
 
-	private static int historyLength = 10;
+	private static int historyLength = 9;
 
 	private LinkedList<HistoryItem> recentlyUsed;
 
@@ -1079,9 +1083,8 @@ public class MainWindow extends javax.swing.JFrame {
 	}
 
 	private void updateRecentlyUsed() {
-		int length = this.recentlyUsed.size();
+		final int length = (this.recentlyUsed.size() > historyLength) ? historyLength : this.recentlyUsed.size(); 
 		if (length > historyLength) {
-			length = historyLength;
 			logger
 					.error("Error: The list of recently used files is larger than "
 							+ historyLength);
@@ -1089,12 +1092,24 @@ public class MainWindow extends javax.swing.JFrame {
 		HistoryItem item;
 		this.recentFilesMenu.setVisible(length > 0);
 		this.fileMenuSeperator3.setVisible(length > 0);
-		recentFilesMenu.removeAll();
+		this.recentFilesMenu.removeAll();
 		for (int i = 0; i < length; i++) {
-			item = recentlyUsed.get(i);
+			item = this.recentlyUsed.get(i);
 			item.setText("" + (i + 1) + ". " + item.getFile().getName());
-			recentFilesMenu.add(item);
+			this.recentFilesMenu.add(item);
 		}
+		this.recentFilesMenu.addSeparator();
+		JMenuItem openAllItem = new JMenuItem(ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("OpenAll"));
+		openAllItem.setMnemonic(ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("OpenAllMnemonic").charAt(0));
+		openAllItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				for (int i = 0; i < length; ++i) {
+					File file = MainWindow.this.recentlyUsed.get(i).getFile();
+					openFile(file);
+				}
+			}
+		});
+		this.recentFilesMenu.add(openAllItem);
 	}
 
 	public void addRecentlyUsed(HistoryItem historyItem) {
