@@ -1050,19 +1050,32 @@ public class MainWindow extends javax.swing.JFrame {
 	}
 
 	private void updateEditorStates(EditorPanel editor) {
-		if (editor == null) {
+		if (editor == null) {//last tab was closed
 			setGeneralStates(false);
-		}
-		if (getActiveEditor() == null) {
-			setGeneralStates(false);
+//		}
+//		if (getActiveEditor() == null) { // the same as above?
+//			setGeneralStates(false);
 		} else {
 			setRedoState(editor.isRedoStatus());
 			setUndoState(editor.isUndoStatus());
 			// setSaveState(editor.isUndoStatus());
+			setChangeState(editor.isUndoStatus());
 			if (editor.isTexteditor()) {
-				setChangeState(editor.isUndoStatus());
+				setEditorFunctions(true);
+			}
+			else {
+				setEditorFunctions(true);
 			}
 		}
+	}
+	
+	private void setEditorFunctions(boolean state){
+		cutButton.setEnabled(state);
+		cutItem.setEnabled(state);
+		copyButton.setEnabled(state);
+		copyItem.setEnabled(state);
+		pasteButton.setEnabled(state);
+		pasteItem.setEnabled(state);
 	}
 
 	private void updateRecentlyUsed() {
@@ -1210,7 +1223,7 @@ public class MainWindow extends javax.swing.JFrame {
 		for (Component component : this.tabbedPane.getComponents()) {
 			if (component instanceof EditorPanel) {
 				EditorPanel editorPanel = (EditorPanel) component;
-				if (!editorPanel.isUndoStatus()) {
+				if (!editorPanel.shouldBeSaved()) {
 					continue;
 				}
 

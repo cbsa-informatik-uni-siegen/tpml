@@ -7,6 +7,7 @@
 package de.unisiegen.tpml.ui;
 
 import java.awt.Font;
+import javax.swing.JColorChooser;
 
 import org.apache.log4j.Logger;
 
@@ -106,6 +107,12 @@ public class PreferenceDialog extends javax.swing.JDialog {
         buttonPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT, 0, 5));
 
         newButton.setText("New");
+        newButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                newButtonActionPerformed(evt);
+            }
+        });
+
         buttonPanel.add(newButton);
 
         deleteButton.setText("Delete");
@@ -118,6 +125,12 @@ public class PreferenceDialog extends javax.swing.JDialog {
         westPanel.setLayout(new javax.swing.BoxLayout(westPanel, javax.swing.BoxLayout.Y_AXIS));
 
         colorBotton.setText("Color");
+        colorBotton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                colorBottonActionPerformed(evt);
+            }
+        });
+
         westPanel.add(colorBotton);
 
         fontButton.setText("Font");
@@ -181,6 +194,16 @@ public class PreferenceDialog extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void colorBottonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_colorBottonActionPerformed
+// TODO add your handling code here:
+        JColorChooser chooser = new JColorChooser();
+        
+    }//GEN-LAST:event_colorBottonActionPerformed
+
+    private void newButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
+// TODO add your handling code here:
+    }//GEN-LAST:event_newButtonActionPerformed
 
     private void itemListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_itemListValueChanged
 // TODO add your handling code here:
