@@ -1247,6 +1247,9 @@ public class MainWindow extends javax.swing.JFrame {
 			}
 		}
 
+		// save the session
+		saveOpenFiles();
+		
 		// remember the settings
 		PreferenceManager prefmanager = PreferenceManager.get();
 		prefmanager.setAdvanced(this.advancedRadioButton.isSelected());
@@ -1325,5 +1328,30 @@ public class MainWindow extends javax.swing.JFrame {
 			if (!((EditorPanel) tabbedPane.getComponentAt(i)).handleSave())
 				return;
 		}
+	}
+	
+	
+	/**
+	 * Stores the list of open files for the next start (see {@link #restoreOpenFiles()}), that is
+	 * the list of files from the {@link EditorPanel}s that have valid <code>File</code> objects.
+	 * 
+	 * This is called exactly once on quit.
+	 * 
+	 * @see #restoreOpenFiles()
+	 */
+	public void saveOpenFiles() {
+		// TODO
+	}
+	
+	/**
+	 * Restores the list of open files from a previous session, previously saved by the
+	 * {@link #saveOpenFiles()} method.
+	 * 
+	 * This is called on startup if no files where provided.
+	 * 
+	 * @see #saveOpenFiles()
+	 */
+	public void restoreOpenFiles() {
+		// TODO
 	}
 }

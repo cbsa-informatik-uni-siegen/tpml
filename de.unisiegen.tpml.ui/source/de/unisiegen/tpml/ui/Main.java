@@ -37,10 +37,17 @@ public final class Main {
 				// allocate the main window
 				MainWindow window = new MainWindow();
 				
-				// open any specified files
-				for (String fileName : args) {
-					File file = new File(fileName);
-					window.openFile(file);
+				// check if any files are specified
+				if (args.length > 0) {
+					// open any specified files
+					for (String fileName : args) {
+						File file = new File(fileName);
+						window.openFile(file);
+					}
+				}
+				else {
+					// restore the files from the previous session
+					window.restoreOpenFiles();
 				}
 				
 				// display the main window
