@@ -372,7 +372,8 @@ public class EditorPanel extends javax.swing.JPanel {
 		} catch (Exception e) {
 			logger.error("Could not create new SmallStepView", e);
 			JOptionPane.showMessageDialog(this,
-					java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("CouldNotSmallStep"),
+					java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("CouldNotSmallStep")+
+					"\n"+e.getMessage()+".",
 					"Small Step", JOptionPane.ERROR_MESSAGE);
 		}
 	}
@@ -396,7 +397,8 @@ public class EditorPanel extends javax.swing.JPanel {
 		} catch (Exception e) {
 			logger.error("Could not create new BigStepView", e);
 			JOptionPane.showMessageDialog(this,
-					java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("CouldNotBigStep"), "Big Step",
+					java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("CouldNotBigStep")+
+					"\n"+e.getMessage()+".", "Big Step",
 					JOptionPane.ERROR_MESSAGE);
 		}
 	}
@@ -421,7 +423,8 @@ public class EditorPanel extends javax.swing.JPanel {
 		} catch (Exception e) {
 			logger.error("Could not create new TypeCheckerView", e);
 			JOptionPane.showMessageDialog(this,
-					java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("CouldNotTypeChecker"),
+					java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("CouldNotTypeChecker")+
+					"\n"+e.getMessage()+".",
 					"TypeChecker", JOptionPane.ERROR_MESSAGE);
 		}
 	}
