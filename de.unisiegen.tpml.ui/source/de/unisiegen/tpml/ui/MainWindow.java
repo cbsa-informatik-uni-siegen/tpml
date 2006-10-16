@@ -7,6 +7,7 @@
 package de.unisiegen.tpml.ui;
 
 import java.awt.Component;
+import java.awt.Rectangle;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.beans.PropertyChangeEvent;
@@ -18,6 +19,7 @@ import java.io.IOException;
 import java.util.LinkedList;
 
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 
@@ -60,6 +62,12 @@ public class MainWindow extends javax.swing.JFrame {
 		initComponents();
 
 		setTitle("TPML " + Versions.UI);
+		//position the window
+		PreferenceManager prefmanager = PreferenceManager.get();
+		this.setBounds(prefmanager.getWindowBounds());
+		if (prefmanager.getWindowMaximized()){
+			this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+		}
 		// Setting the default states
 		setGeneralStates(false);
 		this.saveItem.setEnabled(false);
@@ -85,7 +93,6 @@ public class MainWindow extends javax.swing.JFrame {
 			}
 		};
 
-		this.prefmanager = new PreferenceManager();
 		this.recentlyUsed = prefmanager.getRecentlyUsed();
 		// TODO this is ugly :(
 		for (int i = 0; i < recentlyUsed.size(); i++) {
@@ -683,24 +690,24 @@ public class MainWindow extends javax.swing.JFrame {
 	}// </editor-fold>//GEN-END:initComponents
 
 	private void aboutItemActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_aboutItemActionPerformed
-	// TODO add your handling code here:
+		// TODO add your handling code here:
 		AboutDialog about = new AboutDialog(this, true);
 		about.setLocationRelativeTo(this);
 		about.setVisible(true);
 	}// GEN-LAST:event_aboutItemActionPerformed
 
 	private void pasteButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_pasteButtonActionPerformed
-	// TODO add your handling code here:
+		// TODO add your handling code here:
 		getActiveEditor().handlePaste();
 	}// GEN-LAST:event_pasteButtonActionPerformed
 
 	private void copyButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_copyButtonActionPerformed
-	// TODO add your handling code here:
+		// TODO add your handling code here:
 		getActiveEditor().handleCopy();
 	}// GEN-LAST:event_copyButtonActionPerformed
 
 	private void cutButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_cutButtonActionPerformed
-	// TODO add your handling code here:
+		// TODO add your handling code here:
 		getActiveEditor().handleCut();
 	}// GEN-LAST:event_cutButtonActionPerformed
 
@@ -769,9 +776,9 @@ public class MainWindow extends javax.swing.JFrame {
 
 	private void preferencesItemActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_preferencesItemActionPerformed
 		// 
-            PreferenceDialog prefdialog = new PreferenceDialog(this, true);
-    		prefdialog.setLocationRelativeTo(this);
-    		prefdialog.setVisible(true);
+		PreferenceDialog prefdialog = new PreferenceDialog(this, true);
+		prefdialog.setLocationRelativeTo(this);
+		prefdialog.setVisible(true);
 
 	}// GEN-LAST:event_preferencesItemActionPerformed
 
@@ -910,7 +917,7 @@ public class MainWindow extends javax.swing.JFrame {
 
 	private static final Logger logger = Logger.getLogger(MainWindow.class);
 
-	private PreferenceManager prefmanager;
+	// private PreferenceManager prefmanager;
 
 	private static int historyLength = 10;
 
@@ -1046,7 +1053,7 @@ public class MainWindow extends javax.swing.JFrame {
 			setRedoState(editor.isRedoStatus());
 			setUndoState(editor.isUndoStatus());
 			// setSaveState(editor.isUndoStatus());
-			if (editor.isTexteditor()){
+			if (editor.isTexteditor()) {
 				setChangeState(editor.isUndoStatus());
 			}
 		}
@@ -1146,8 +1153,9 @@ public class MainWindow extends javax.swing.JFrame {
 	}
 
 	private void handleOpen() {
-		JFileChooser chooser = new JFileChooser();
-
+		PreferenceManager prefmanager = PreferenceManager.get();
+		JFileChooser chooser = new JFileChooser(prefmanager.getWorkingPath());
+		chooser.setMultiSelectionEnabled(true);
 		final LanguageFactory factory = LanguageFactory.newInstance();
 		chooser.addChoosableFileFilter(new FileFilter() {
 			@Override
@@ -1183,8 +1191,12 @@ public class MainWindow extends javax.swing.JFrame {
 
 		int returnVal = chooser.showOpenDialog(this);
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
-			openFile(chooser.getSelectedFile());
+			File[] files = chooser.getSelectedFiles();
+			for (int i = 0 ; i < files.length ; i++){
+				openFile(files[i]);
+			}
 		}
+		prefmanager.setWorkingPath(chooser.getCurrentDirectory().getAbsolutePath());
 	}
 
 	private void handleQuit() {
@@ -1192,7 +1204,6 @@ public class MainWindow extends javax.swing.JFrame {
 		for (Component component : this.tabbedPane.getComponents()) {
 			if (component instanceof EditorPanel) {
 				EditorPanel editorPanel = (EditorPanel) component;
-				// if (!editorPanel.isChanged()) {
 				if (!editorPanel.isUndoStatus()) {
 					continue;
 				}
@@ -1237,9 +1248,12 @@ public class MainWindow extends javax.swing.JFrame {
 		}
 
 		// remember the settings
+		PreferenceManager prefmanager = PreferenceManager.get();
 		prefmanager.setAdvanced(this.advancedRadioButton.isSelected());
 		// remember the history
 		prefmanager.setRecentlyUsed(recentlyUsed);
+		//remember window state
+		prefmanager.setWindowPreferences(this);
 		// terminate the application
 		System.exit(0);
 	}

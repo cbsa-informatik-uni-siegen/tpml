@@ -648,7 +648,8 @@ public class EditorPanel extends javax.swing.JPanel {
 	public boolean handleSaveAs() {
 		// setup the file chooser
 		final LanguageFactory factory = LanguageFactory.newInstance();
-		JFileChooser chooser = new JFileChooser();
+		PreferenceManager prefmanager = PreferenceManager.get();
+		JFileChooser chooser = new JFileChooser(prefmanager.getWorkingPath());
 		chooser.addChoosableFileFilter(new FileFilter() {
 			@Override
 			public boolean accept(File f) {
@@ -680,12 +681,14 @@ public class EditorPanel extends javax.swing.JPanel {
 			}
 		});
 		chooser.setAcceptAllFileFilterUsed(false);
-
+		prefmanager.setWorkingPath(chooser.getCurrentDirectory().getAbsolutePath());
+		
 		// determine the file name
 		File outfile;
 		for (;;) {
 			// run the dialog
 			int n = chooser.showSaveDialog(getParent());
+			
 			if (n != JFileChooser.APPROVE_OPTION) {
 				logger.debug("Save as dialog cancelled");
 				return false;
