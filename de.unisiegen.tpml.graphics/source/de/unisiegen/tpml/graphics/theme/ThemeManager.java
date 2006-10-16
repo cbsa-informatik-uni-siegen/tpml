@@ -8,6 +8,8 @@ import java.awt.Font;
 import java.util.LinkedList;
 import java.util.prefs.Preferences;
 
+import javax.swing.event.EventListenerList;
+
 /**
  * @author marcell
  *
@@ -22,9 +24,13 @@ public class ThemeManager {
 
 	private String								currentThemeName;
 	
+	private EventListenerList			listenerList;
+	
 	private ThemeManager () {
 		
 		this.themes = new LinkedList<Theme> ();
+		
+		this.listenerList = new EventListenerList ();
 		
 		// load the current themes
 		loadThemes ();
@@ -57,6 +63,24 @@ public class ThemeManager {
 		
 	}
 	
+	public void addThemeManagerListener (ThemeManagerListener listener) {
+		this.listenerList.add (ThemeManagerListener.class, listener);
+	}
+	
+	public void removeThemeManagerListener (ThemeManagerListener listener) {
+		this.listenerList.remove(ThemeManagerListener.class, listener);
+	}
+	
+	private void fireThemeChanged () {
+		Object[] listeners = this.listenerList.getListenerList();
+		for (int i=0; i<listeners.length; i++) {
+			if (listeners [i] == ThemeManagerListener.class) {
+				
+				((ThemeManagerListener)listeners [i+1]).currentThemeChanged(this.currentTheme);
+			}
+		}
+	}
+	
 	public static ThemeManager get () {
 		if (ThemeManager.themeManager == null) {
 			ThemeManager.themeManager = new ThemeManager ();
@@ -82,6 +106,7 @@ public class ThemeManager {
 	
 	public void setCurrentThem (Theme theme) {
 		this.currentTheme = theme;
+		fireThemeChanged();
 	}
 	
 	public int getNumberOfThemes () {
