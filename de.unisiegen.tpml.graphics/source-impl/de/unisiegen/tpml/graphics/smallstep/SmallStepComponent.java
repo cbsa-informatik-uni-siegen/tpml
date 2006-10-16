@@ -13,11 +13,11 @@ import javax.swing.event.TreeModelEvent;
 
 import de.unisiegen.tpml.core.ProofGuessException;
 import de.unisiegen.tpml.core.ProofNode;
-import de.unisiegen.tpml.core.bigstep.BigStepProofNode;
 import de.unisiegen.tpml.core.smallstep.SmallStepProofModel;
 import de.unisiegen.tpml.core.smallstep.SmallStepProofNode;
 import de.unisiegen.tpml.graphics.AbstractProofComponent;
-import de.unisiegen.tpml.graphics.bigstep.BigStepNodeComponent;
+import de.unisiegen.tpml.graphics.renderer.EnvironmentRenderer;
+import de.unisiegen.tpml.graphics.renderer.PrettyStringRenderer;
 
 /**
  * TODO Add documentation here.
@@ -428,7 +428,7 @@ public class SmallStepComponent extends AbstractProofComponent implements Scroll
 	
 	@Override
 	protected void resetLayout () {
-		
+		resetUserObject((SmallStepProofNode)this.proofModel.getRoot());
 	}
 	
 	@Override
