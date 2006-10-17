@@ -194,7 +194,7 @@ public class L3TypeCheckerProofRuleSet extends L2TypeCheckerProofRuleSet {
       if (tau1 == null) {
         tau1 = context.newTypeVariable();
       }
-      for (int n = 1; n < types.length; ++n) {
+      for (int n = types.length - 1; n > 0; --n) {
         tau1 = new ArrowType((types[n] != null) ? types[n] : context.newTypeVariable(), tau1);
       }
 
