@@ -55,6 +55,9 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel {
    */
   public SmallStepProofModel(Expression expression, AbstractSmallStepProofRuleSet ruleSet) {
     super(new DefaultSmallStepProofNode(expression), ruleSet);
+    
+    // set the "finished" state initially
+    setFinished(expression.isException() || expression.isValue());
   }
   
   

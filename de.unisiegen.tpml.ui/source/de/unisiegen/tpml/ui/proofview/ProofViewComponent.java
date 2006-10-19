@@ -138,7 +138,7 @@ public class ProofViewComponent extends JComponent implements EditorComponent {
 	 * @see de.unisiegen.tpml.ui.EditorComponent#setDefaultStates()
 	 */
 	public void setDefaultStates() {
-		setNextStatus(true);
+		setNextStatus(!model.isFinished());
 		setRedoStatus(model.isRedoable());
 		setUndoStatus(model.isUndoable());
 	}
