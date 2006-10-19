@@ -404,9 +404,9 @@ Ein \notation{big step} hei"st g"ultig f"ur \LTHREE, wenn er sich mit den big st
                                      {[e_1;\ldots;e_n] \eval [v_1;\ldots;v_n]}$ \\[5mm]
     \mbox{(CONS)}           & $(\coloncolon)\,v'\,[v_1;\ldots;v_n] \eval [v';v_1;\ldots;v_n]$ \\[3mm]
     \mbox{(HD)}             & $\Hd\,\left(\Cons\,\left(v_1,v_2\right)\right) \eval v_1$ \\[3mm]
-    \mbox{(HD-EMPTY)}       & $\Hd\,[\,] \eval empty\_list$ \\[3mm]
+    \mbox{(HD-EMPTY)}       & $\Hd\,[\,] \eval\,\uparrow empty\_list$ \\[3mm]
     \mbox{(TL)}             & $\Tl\,\left(\Cons\,\left(v_1,v_2\right)\right) \eval v_2$ \\[3mm]
-    \mbox{(TL-EMPTY)}       & $\Tl\,[\,] \eval empty\_list$ \\[3mm]
+    \mbox{(TL-EMPTY)}       & $\Tl\,[\,] \eval\,\uparrow empty\_list$ \\[3mm]
     \mbox{(IS-EMPTY-FALSE)} & $\Empty\,\left(\Cons\,v\right) \eval \false$ \\[3mm]
     \mbox{(IS-EMPTY-TRUE)}  & $\Empty\,[\,] \eval \true$
   \end{tabular}\\[7mm]
@@ -432,9 +432,9 @@ Die \notation{small step} Regeln f"ur \LTHREE\ entsprechen im wesentlichen den b
                                      {[e_1;\ldots;e_i;\ldots,e_n] \to [e_1;\ldots;e_i';\ldots;e_n]}$ \\[5mm]
     \mbox{(CONS)}           & $(\coloncolon)\,v'\,[v_1;\ldots;v_n] \to [v';v_1;\ldots;v_n]$ \\[3mm]
     \mbox{(HD)}             & $\Hd\,\left(\Cons\,\left(v_1,v_2\right)\right) \to v_1$ \\[3mm]
-    \mbox{(HD-EMPTY)}       & $\Hd\,[\,] \to empty\_list$ \\[3mm]
+    \mbox{(HD-EMPTY)}       & $\Hd\,[\,] \to \, \uparrow empty\_list$ \\[3mm]
     \mbox{(TL)}             & $\Tl\,\left(\Cons\,\left(v_1,v_2\right)\right) \to v_2$ \\[3mm]
-    \mbox{(TL-EMPTY)}       & $\Tl\,[\,] \to empty\_list$ \\[3mm]
+    \mbox{(TL-EMPTY)}       & $\Tl\,[\,] \to \, \uparrow empty\_list$ \\[3mm]
     \mbox{(IS-EMPTY-FALSE)} & $\Empty\,\left(\Cons\,v\right) \to \false$ \\[3mm]
     \mbox{(IS-EMPTY-TRUE)}  & $\Empty\,[\,] \to \true$
   \end{tabular}\\[7mm]
