@@ -120,7 +120,7 @@ public final class Exn extends Expression {
   @Override 
   public PrettyStringBuilder toPrettyStringBuilder(PrettyStringBuilderFactory factory) {
     PrettyStringBuilder builder = factory.newBuilder(this, PRIO_EXN);
-    builder.addText(this.name);
+    builder.addText("\u2191 " + this.name);
     return builder;
   }
 
