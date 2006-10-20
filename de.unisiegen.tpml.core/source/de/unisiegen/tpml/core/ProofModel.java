@@ -121,6 +121,20 @@ public interface ProofModel extends Bean, TreeModel {
   //
   
   /**
+   * Completes the sub tree starting at the given <code>node</code> using incremental guessing.
+   * The method is somewhat smart in detecting diversion in the big step interpreter. 
+   * 
+   * @param node the {@link ProofNode} which to complete.
+   * 
+   * @throws IllegalArgumentException if the <code>node</code> is invalid for this model.
+   * @throws IllegalStateException if for some reason <code>node</code> cannot be proven.
+   * @throws NullPointerException if <code>node</code> is <code>null</code>.
+   * 
+   * @see #guess(ProofNode)
+   */
+  public void complete(ProofNode node) throws ProofGuessException;
+  
+  /**
    * Guesses the next proof step for the specified <code>node</code>.
    * 
    * The <code>node</code> must not be already proven (see the
@@ -135,6 +149,7 @@ public interface ProofModel extends Bean, TreeModel {
    * @throws NullPointerException if <code>node</code> is <code>null</code>.
    * @throws ProofGuessException if the next proof step could not be guessed.
    *
+   * @see #complete(ProofNode)
    * @see #prove(ProofRule, ProofNode)
    */
   public void guess(ProofNode node) throws ProofGuessException;

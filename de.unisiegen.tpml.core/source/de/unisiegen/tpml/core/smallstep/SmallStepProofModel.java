@@ -82,11 +82,11 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel {
       // check if we are already completed
       if (node.isProven()) {
         // the node is already proven, programming error
-        throw new IllegalStateException(Messages.getString("SmallStepProofModel.0")); //$NON-NLS-1$
+        throw new IllegalStateException("Cannot prove an already proven node"); //$NON-NLS-1$
       }
       else {
         // the evaluation got stuck
-        throw new ProofGuessException(Messages.getString("SmallStepProofModel.1"), node); //$NON-NLS-1$
+        throw new ProofGuessException(Messages.getString("InterpreterModel.0"), node); //$NON-NLS-1$
       }
     }
     

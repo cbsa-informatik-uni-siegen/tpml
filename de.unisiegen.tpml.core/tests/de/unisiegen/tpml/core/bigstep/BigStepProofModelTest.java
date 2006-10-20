@@ -39,7 +39,7 @@ public final class BigStepProofModelTest extends JFrame {
   /**
    * Simple test expression.
    */
-  private static final String SIMPLE = "1 :: 2 :: [3]";
+  private static final String SIMPLE = "let rec fact x = if x = 0 then 1 else x * fact x in fact 10";
 
   
   
@@ -144,6 +144,27 @@ public final class BigStepProofModelTest extends JFrame {
       }
     });
     buttons.add(guessButton);
+    
+    // setup the complete button
+    JButton completeButton = new JButton("Complete");
+    completeButton.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent event) {
+        try {
+          // guess the last node
+          model.complete((ProofNode)tree.getSelectionPath().getLastPathComponent());
+          
+          // expand to the all nodes
+          for (int n = 0; n < tree.getRowCount(); ++n) {
+            tree.expandRow(n);
+          }
+        }
+        catch (Exception e) {
+          e.printStackTrace();
+          JOptionPane.showMessageDialog(BigStepProofModelTest.this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+      }
+    });
+    buttons.add(completeButton);
     
     // setup the undo button
     final JButton undoButton = new JButton("Undo");

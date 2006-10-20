@@ -22,14 +22,14 @@ public final class ProofStep {
    * 
    * @see #getExpression()
    */
-  protected Expression expression;
+  private Expression expression;
   
   /**
    * The {@link ProofRule} that was applied to an {@link Expression} to advance in the proof.
    * 
    * @see #getRule()
    */
-  protected ProofRule rule;
+  private ProofRule rule;
   
 
   
@@ -82,5 +82,35 @@ public final class ProofStep {
    */
   public ProofRule getRule() {
     return this.rule;
+  }
+  
+  
+  
+  //
+  // Base methods
+  //
+  
+  /**
+   * {@inheritDoc}
+   *
+   * @see java.lang.Object#equals(java.lang.Object)
+   */
+  @Override
+  public boolean equals(Object obj) {
+    if (obj instanceof ProofStep) {
+      ProofStep other = (ProofStep)obj;
+      return (this.expression.equals(other.expression) || this.rule.equals(other.rule));
+    }
+    return false;
+  }
+  
+  /**
+   * {@inheritDoc}
+   *
+   * @see java.lang.Object#hashCode()
+   */
+  @Override
+  public int hashCode() {
+    return this.expression.hashCode() + this.rule.hashCode();
   }
 }

@@ -102,7 +102,7 @@ public final class BigStepProofModel extends AbstractInterpreterProofModel {
     
     // unable to guess next step
     logger.debug("Failed to find rule to apply to " + node); //$NON-NLS-1$
-    throw new ProofGuessException(Messages.getString("BigStepProofModel.0"), node); //$NON-NLS-1$
+    throw new ProofGuessException(Messages.getString("InterpreterModel.0"), node); //$NON-NLS-1$
   }
 
   /**

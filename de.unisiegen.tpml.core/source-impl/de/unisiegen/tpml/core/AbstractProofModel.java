@@ -158,6 +158,34 @@ public abstract class AbstractProofModel extends AbstractBean implements ProofMo
   
   /**
    * {@inheritDoc}
+   *
+   * @see de.unisiegen.tpml.core.ProofModel#complete(de.unisiegen.tpml.core.ProofNode)
+   */
+  public void complete(ProofNode node) throws ProofGuessException {
+    if (node == null) {
+      throw new NullPointerException("node is null");
+    }
+    
+    // check if we need to guess here
+    if (!node.isProven()) {
+      guess(node);
+    }
+    
+    // check if we got stuck (only relevant for the big step interpreter)
+    for (ProofNode parent = node.getParent(); parent != null; parent = parent.getParent()) {
+      if (node.getExpression().equals(parent.getExpression()) && Arrays.equals(node.getSteps(), parent.getSteps())) {
+        throw new ProofGuessException(Messages.getString("AbstractProofModel.0"), node); //$NON-NLS-1$
+      }
+    }
+    
+    // complete the child nodes
+    for (int n = 0; n < node.getChildCount(); ++n) {
+      complete(node.getChildAt(n));
+    }
+  }
+  
+  /**
+   * {@inheritDoc}
    * 
    * @see ProofModel#guess(ProofNode)
    */
