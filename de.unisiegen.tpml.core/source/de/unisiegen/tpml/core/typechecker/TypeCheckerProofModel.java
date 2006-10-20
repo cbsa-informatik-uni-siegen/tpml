@@ -165,12 +165,7 @@ public final class TypeCheckerProofModel extends AbstractProofModel {
     guessInternal((DefaultTypeCheckerProofNode)node, type);
     
     // try to complete the node
-    try {
-      complete(node);
-    }
-    catch (ProofGuessException e) {
-      // just ignore this exception...
-    }
+    complete(node);
   }
   
   /**
