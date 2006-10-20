@@ -54,6 +54,19 @@ public final class ProofGuessException extends Exception {
   }
   
   /**
+   * Shortcut for {@link #ProofGuessException(String, ProofNode, Throwable)} passing <code>null</code>
+   * for the <code>cause</code> parameter.
+   * 
+   * @param message the descriptive text.
+   * @param node the node for which the guess failed.
+   * 
+   * @throws NullPointerException if <code>message</code> or <code>node</code> is <code>null</code>.
+   */
+  public ProofGuessException(String message, ProofNode node) {
+    this(message, node, null);
+  }
+  
+  /**
    * Same as {@link #ProofGuessException(ProofNode)}, but also accepts an additional {@link Throwable}
    * which yields information about the cause of the exception.
    * 
@@ -65,7 +78,26 @@ public final class ProofGuessException extends Exception {
    * @throws NullPointerException if <code>node</code> is <code>null</code>.
    */
   public ProofGuessException(ProofNode node, Throwable cause) {
-    super(MessageFormat.format(Messages.getString("ProofGuessException.0"), node), cause); //$NON-NLS-1$
+    this(MessageFormat.format(Messages.getString("ProofGuessException.0"), node), node, cause); //$NON-NLS-1$
+  }
+  
+  /**
+   * Same as {@link #ProofGuessException(ProofNode, Throwable)}, but also accepts an additional
+   * <code>message</code> describing the cause of the exception.
+   * 
+   * @param message the descriptive text.
+   * @param node the node for which the guess failed.
+   * @param cause the cause, which is saved for later retrieval by the {@link Throwable#getCause()} method.
+   *              A <code>null</code> value is permitted, and indicates that the cause is nonexistent or
+   *              unknown.
+   * 
+   * @throws NullPointerException if <code>message</code> or <code>node</code> is <code>null</code>.
+   */
+  public ProofGuessException(String message, ProofNode node, Throwable cause) {
+    super(message, cause);
+    if (message == null) {
+      throw new NullPointerException("message is null"); //$NON-NLS-1$
+    }
     if (node == null) {
       throw new NullPointerException("node is null"); //$NON-NLS-1$
     }

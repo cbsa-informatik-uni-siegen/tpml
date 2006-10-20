@@ -3,6 +3,7 @@ package de.unisiegen.tpml.core.smallstep;
 import org.apache.log4j.Logger;
 
 import de.unisiegen.tpml.core.AbstractProofRuleSet;
+import de.unisiegen.tpml.core.Messages;
 import de.unisiegen.tpml.core.ProofGuessException;
 import de.unisiegen.tpml.core.ProofNode;
 import de.unisiegen.tpml.core.ProofRule;
@@ -78,7 +79,15 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel {
     
     // check if the node is already completed
     if (remainingSteps.length == 0) {
-      throw new IllegalStateException("Cannot prove an already proven node");
+      // check if we are already completed
+      if (node.isProven()) {
+        // the node is already proven, programming error
+        throw new IllegalStateException(Messages.getString("SmallStepProofModel.0")); //$NON-NLS-1$
+      }
+      else {
+        // the evaluation got stuck
+        throw new ProofGuessException(Messages.getString("SmallStepProofModel.1"), node); //$NON-NLS-1$
+      }
     }
     
     // try to prove using the guessed rule
@@ -100,16 +109,16 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel {
   @Override
   public void prove(ProofRule rule, ProofNode node) throws ProofRuleException {
     if (node == null) {
-      throw new NullPointerException("node is null");
+      throw new NullPointerException("node is null"); //$NON-NLS-1$
     }
     if (rule == null) {
-      throw new NullPointerException("rule is null");
+      throw new NullPointerException("rule is null"); //$NON-NLS-1$
     }
     if (!this.root.isNodeRelated(node)) {
-      throw new IllegalArgumentException("The node is invalid for the model");
+      throw new IllegalArgumentException("The node is invalid for the model"); //$NON-NLS-1$
     }
     if (!this.ruleSet.contains(rule)) {
-      throw new IllegalArgumentException("The rule is invalid for the model");
+      throw new IllegalArgumentException("The rule is invalid for the model"); //$NON-NLS-1$
     }
     
     // apply the rule to the specified node
@@ -117,7 +126,7 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel {
       apply(rule, node);
     }
     catch (RuntimeException e) {
-      logger.error("An internal error occurred while proving " + node + " using (" + rule + ")", e);
+      logger.error("An internal error occurred while proving " + node + " using (" + rule + ")", e); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
       throw e;
     }
   }
@@ -138,10 +147,10 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel {
    */
   public ProofStep[] remaining(ProofNode node) {
     if (node == null) {
-      throw new NullPointerException("node is null");
+      throw new NullPointerException("node is null"); //$NON-NLS-1$
     }
     if (!this.root.isNodeRelated(node)) {
-      throw new IllegalArgumentException("The node is invalid for the model");
+      throw new IllegalArgumentException("The node is invalid for the model"); //$NON-NLS-1$
     }
     
     // evaluate the next step for the node
@@ -228,19 +237,19 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel {
       }
       else {
         // an internal error in the upper layers
-        throw new IllegalStateException("Cannot prove an already proven node");
+        throw new IllegalStateException("Cannot prove an already proven node"); //$NON-NLS-1$
       }
     }
     else if (completedSteps.length > evaluatedSteps.length) {
       // this is a bug then
-      throw new IllegalStateException("completedSteps > evaluatedSteps");
+      throw new IllegalStateException("completedSteps > evaluatedSteps"); //$NON-NLS-1$
     }
     
     // verify the completed steps
     int n;
     for (n = 0; n < completedSteps.length; ++n) {
       if (!completedSteps[n].getRule().equals(evaluatedSteps[n].getRule()))
-        throw new IllegalStateException("Completed steps don't match evaluated steps");
+        throw new IllegalStateException("Completed steps don't match evaluated steps"); //$NON-NLS-1$
     }
 
     // check if the rule is valid, accepting regular meta-rules for EXN rules

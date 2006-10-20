@@ -3,6 +3,7 @@ package de.unisiegen.tpml.core.bigstep;
 import org.apache.log4j.Logger;
 
 import de.unisiegen.tpml.core.AbstractProofRuleSet;
+import de.unisiegen.tpml.core.Messages;
 import de.unisiegen.tpml.core.ProofGuessException;
 import de.unisiegen.tpml.core.ProofNode;
 import de.unisiegen.tpml.core.ProofRule;
@@ -72,36 +73,36 @@ public final class BigStepProofModel extends AbstractInterpreterProofModel {
   @Override
   public void guess(ProofNode node) throws ProofGuessException {
     if (node == null) {
-      throw new NullPointerException("node is null");
+      throw new NullPointerException("node is null"); //$NON-NLS-1$
     }
     if (node.getSteps().length > 0) {
-      throw new IllegalArgumentException("The node is already completed");
+      throw new IllegalArgumentException("The node is already completed"); //$NON-NLS-1$
     }
     if (!this.root.isNodeRelated(node)) {
-      throw new IllegalArgumentException("The node is invalid for the model");
+      throw new IllegalArgumentException("The node is invalid for the model"); //$NON-NLS-1$
     }
     
     // try to guess the next rule
-    logger.debug("Trying to guess a rule for " + node);
+    logger.debug("Trying to guess a rule for " + node); //$NON-NLS-1$
     for (ProofRule rule : this.ruleSet.getRules()) { // MUST be the getRules() from the ProofRuleSet
       try {
         // try to apply the rule to the specified node
         apply((BigStepProofRule)rule, (DefaultBigStepProofNode)node);
-        logger.debug("Successfully applied (" + rule + ") to " + node);
+        logger.debug("Successfully applied (" + rule + ") to " + node); //$NON-NLS-1$ //$NON-NLS-2$
         
         // yep, we did it
         return;
       }
       catch (ProofRuleException e) {
         // rule failed to apply... so, next one, please
-        logger.debug("Failed to apply (" + rule + ") to " + node, e);
+        logger.debug("Failed to apply (" + rule + ") to " + node, e); //$NON-NLS-1$ //$NON-NLS-2$
         continue;
       }
     }
     
     // unable to guess next step
-    logger.debug("Failed to find rule to apply to " + node);
-    throw new ProofGuessException(node);
+    logger.debug("Failed to find rule to apply to " + node); //$NON-NLS-1$
+    throw new ProofGuessException(Messages.getString("BigStepProofModel.0"), node); //$NON-NLS-1$
   }
 
   /**
@@ -112,19 +113,19 @@ public final class BigStepProofModel extends AbstractInterpreterProofModel {
   @Override
   public void prove(ProofRule rule, ProofNode node) throws ProofRuleException {
     if (rule == null) {
-      throw new NullPointerException("rule is null");
+      throw new NullPointerException("rule is null"); //$NON-NLS-1$
     }
     if (node == null) {
-      throw new NullPointerException("node is null");
+      throw new NullPointerException("node is null"); //$NON-NLS-1$
     }
     if (!this.ruleSet.contains(rule)) {
-      throw new IllegalArgumentException("The rule is invalid for the model");
+      throw new IllegalArgumentException("The rule is invalid for the model"); //$NON-NLS-1$
     }
     if (!this.root.isNodeRelated(node)) {
-      throw new IllegalArgumentException("The node is invalid for the model");
+      throw new IllegalArgumentException("The node is invalid for the model"); //$NON-NLS-1$
     }
     if (node.getSteps().length > 0) {
-      throw new IllegalArgumentException("The node is already completed");
+      throw new IllegalArgumentException("The node is already completed"); //$NON-NLS-1$
     }
    
     // try to apply the rule to the specified node
