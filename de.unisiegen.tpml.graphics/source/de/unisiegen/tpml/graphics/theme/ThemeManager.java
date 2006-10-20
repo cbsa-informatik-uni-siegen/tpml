@@ -42,7 +42,7 @@ public class ThemeManager {
 		// check if there is a theme stored with the name default
 		boolean containsDefault = false;
 		for (Theme theme : this.themes) {
-			if (theme.getName() == "Default") {
+			if (theme.getName().equals ("Default")) {
 				containsDefault = true;
 				break;
 			}
