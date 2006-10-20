@@ -91,8 +91,10 @@ public class ThemeManager {
 		return ThemeManager.themeManager;
 	}
 	
-	public Theme createNewTheme () {
+	public Theme createNewTheme (String name) {
 		Theme theme = new Theme ();
+		
+		theme.setName(name);
 		
 		this.themes.add(theme);
 		
@@ -124,6 +126,23 @@ public class ThemeManager {
 			return null;
 		}
 		return this.themes.get(idx);
+	}
+	
+	public Theme getTheme (String name) {
+		for (Theme theme : this.themes) {
+			if (theme.getName().equals(name)) {
+				return theme;
+			}
+		}
+		return null;
+	}
+	
+	public String[] getThemeNames() {
+		String[] res = new String [this.themes.size()];
+		for (int i=0; i<this.themes.size(); i++) {
+			res [i] = this.themes.get(i).getName();
+		}
+		return res;
 	}
 	
 	public void saveThemes () {
