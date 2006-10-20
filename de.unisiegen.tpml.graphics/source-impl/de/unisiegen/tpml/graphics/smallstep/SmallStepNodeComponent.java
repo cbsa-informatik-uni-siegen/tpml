@@ -1,5 +1,7 @@
 package de.unisiegen.tpml.graphics.smallstep;
 
+import java.awt.Container;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
@@ -10,6 +12,7 @@ import javax.swing.JComponent;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
+import javax.swing.SwingUtilities;
 
 import de.unisiegen.tpml.core.ProofRule;
 import de.unisiegen.tpml.core.ProofStep;
@@ -119,8 +122,27 @@ public class SmallStepNodeComponent extends JComponent {
 		
 		this.rules.getMenuButton().addMenuButtonListener(new MenuButtonListener () {
 			public void menuClosed (MenuButton source) { }
-			public void menuItemActivated (MenuButton source, JMenuItem item) {
-				SmallStepNodeComponent.this.menuItemActivated(item);
+			public void menuItemActivated (MenuButton source, final JMenuItem item) {
+				// setup a wait cursor for the toplevel ancestor
+				final Container toplevel = getTopLevelAncestor();
+				final Cursor cursor = toplevel.getCursor();
+				toplevel.setCursor(new Cursor(Cursor.WAIT_CURSOR));
+
+				// avoid blocking the popup menu
+				SwingUtilities.invokeLater(new Runnable() {
+					public void run() {
+						// handle the menu action
+						SmallStepNodeComponent.this.menuItemActivated (item);
+						
+						// wait for the repaint before resetting the cursor
+						SwingUtilities.invokeLater(new Runnable() {
+							public void run() {
+								// reset the cursor
+								toplevel.setCursor(cursor);
+							}
+						});
+					}
+				});
 			}
 		});
 
@@ -245,8 +267,12 @@ public class SmallStepNodeComponent extends JComponent {
 			try {
 				fireNodeGuessed();
 				this.proofModel.guess(this.proofNode);
-			} catch (Exception e) {
-				JOptionPane.showMessageDialog(getTopLevelAncestor(), MessageFormat.format(Messages.getString("NodeComponent.5"), e.getMessage()), Messages.getString("NodeComponent.6"), JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
+			} catch (final Exception e) {
+				SwingUtilities.invokeLater(new Runnable() {
+					public void run() {
+						JOptionPane.showMessageDialog(getTopLevelAncestor(), MessageFormat.format(Messages.getString("NodeComponent.5"), e.getMessage()), Messages.getString("NodeComponent.6"), JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
+					}
+				});
 			}
 		}
 		else if (item instanceof MenuGuessTreeItem) {
@@ -254,8 +280,12 @@ public class SmallStepNodeComponent extends JComponent {
 				fireNodeGuessed();
 				this.proofModel.complete(this.proofNode);
 			}
-			catch (Exception e) {
-				JOptionPane.showMessageDialog(getTopLevelAncestor(), MessageFormat.format(Messages.getString("NodeComponent.7"), e.getMessage()), Messages.getString("NodeComponent.8"), JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
+			catch (final Exception e) {
+				SwingUtilities.invokeLater(new Runnable() {
+					public void run() {
+						JOptionPane.showMessageDialog(getTopLevelAncestor(), MessageFormat.format(Messages.getString("NodeComponent.7"), e.getMessage()), Messages.getString("NodeComponent.8"), JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
+					}
+				});
 			}
 		}
 		else if (item instanceof MenuTranslateItem) {

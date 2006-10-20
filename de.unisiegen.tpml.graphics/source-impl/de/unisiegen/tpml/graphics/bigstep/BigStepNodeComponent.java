@@ -1,6 +1,8 @@
 package de.unisiegen.tpml.graphics.bigstep;
 
 import java.awt.Color;
+import java.awt.Container;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Point;
@@ -11,6 +13,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
+import javax.swing.SwingUtilities;
 
 import de.unisiegen.tpml.core.ProofRule;
 import de.unisiegen.tpml.core.bigstep.BigStepProofModel;
@@ -183,8 +186,27 @@ public class BigStepNodeComponent extends JComponent implements TreeNodeComponen
 		 */
 		this.ruleButton.addMenuButtonListener(new MenuButtonListener() {
 			public void menuClosed (MenuButton button) { } 
-			public void menuItemActivated (MenuButton button, JMenuItem source) {
-				BigStepNodeComponent.this.handleMenuActivated (source);
+			public void menuItemActivated (MenuButton button, final JMenuItem source) {
+				// setup a wait cursor for the toplevel ancestor
+				final Container toplevel = getTopLevelAncestor();
+				final Cursor cursor = toplevel.getCursor();
+				toplevel.setCursor(new Cursor(Cursor.WAIT_CURSOR));
+
+				// avoid blocking the popup menu
+				SwingUtilities.invokeLater(new Runnable() {
+					public void run() {
+						// handle the menu action
+						BigStepNodeComponent.this.handleMenuActivated (source);
+						
+						// wait for the repaint before resetting the cursor
+						SwingUtilities.invokeLater(new Runnable() {
+							public void run() {
+								// reset the cursor
+								toplevel.setCursor(cursor);
+							}
+						});
+					}
+				});
 			}
 		});
 		
@@ -283,7 +305,6 @@ public class BigStepNodeComponent extends JComponent implements TreeNodeComponen
 				this.ruleButton.setTextColor(Color.RED);
 				
 				// determine the error message for the tooltip
-				e.printStackTrace();
 				this.ruleButton.setToolTipText(e.getMessage());
 			}
 		}
@@ -316,8 +337,12 @@ public class BigStepNodeComponent extends JComponent implements TreeNodeComponen
 				fireNodeGuessed();
 				this.proofModel.guess(this.proofNode);
 			}
-			catch (Exception e) {
-				JOptionPane.showMessageDialog(getTopLevelAncestor(), MessageFormat.format(Messages.getString("NodeComponent.5"), e.getMessage()), Messages.getString("NodeComponent.6"), JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
+			catch (final Exception e) {
+				SwingUtilities.invokeLater(new Runnable() {
+					public void run() {
+						JOptionPane.showMessageDialog(getTopLevelAncestor(), MessageFormat.format(Messages.getString("NodeComponent.5"), e.getMessage()), Messages.getString("NodeComponent.6"), JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
+					}
+				});
 			}
 		}
 		else if (item instanceof MenuGuessTreeItem) {
@@ -325,8 +350,12 @@ public class BigStepNodeComponent extends JComponent implements TreeNodeComponen
 				fireNodeGuessed();
 				this.proofModel.complete(this.proofNode);
 			}
-			catch (Exception e) {
-				JOptionPane.showMessageDialog(getTopLevelAncestor(), MessageFormat.format(Messages.getString("NodeComponent.7"), e.getMessage()), Messages.getString("NodeComponent.8"), JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
+			catch (final Exception e) {
+				SwingUtilities.invokeLater(new Runnable() {
+					public void run() {
+						JOptionPane.showMessageDialog(getTopLevelAncestor(), MessageFormat.format(Messages.getString("NodeComponent.7"), e.getMessage()), Messages.getString("NodeComponent.8"), JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
+					}
+				});
 			}
 		}
 		
