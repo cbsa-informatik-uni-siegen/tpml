@@ -142,7 +142,7 @@
         </Component>
         <Component class="javax.swing.JLabel" name="websiteLabelTarget">
           <Properties>
-            <Property name="text" type="java.lang.String" value="http://www.informatik.uni-siegen.de/theo.html"/>
+            <Property name="text" type="java.lang.String" value="http://www.informatik.uni-siegen.de/theo/tpml/"/>
           </Properties>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_VariableLocal" type="java.lang.Boolean" value="true"/>

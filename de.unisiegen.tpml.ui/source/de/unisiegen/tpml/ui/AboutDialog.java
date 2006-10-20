@@ -118,7 +118,7 @@ public class AboutDialog extends javax.swing.JDialog {
         gridBagConstraints.insets = new java.awt.Insets(12, 12, 6, 6);
         bodyPanel.add(websiteLabel, gridBagConstraints);
 
-        websiteLabelTarget.setText("http://www.informatik.uni-siegen.de/theo.html");
+        websiteLabelTarget.setText("http://www.informatik.uni-siegen.de/theo/tpml/");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
