@@ -1,5 +1,7 @@
 package de.unisiegen.tpml.core.bigstep;
 
+import java.text.MessageFormat;
+
 import org.apache.log4j.Logger;
 
 import de.unisiegen.tpml.core.AbstractProofRuleSet;
@@ -68,6 +70,44 @@ public final class BigStepProofModel extends AbstractInterpreterProofModel {
   /**
    * {@inheritDoc}
    *
+   * @see de.unisiegen.tpml.core.AbstractProofModel#complete(de.unisiegen.tpml.core.ProofNode)
+   */
+  @Override
+  public void complete(ProofNode node) throws ProofGuessException {
+    if (node == null) {
+      throw new NullPointerException("node is null");
+    }
+    
+    // check if we got stuck
+    if (!node.isRoot()) {
+      // cast to BigStepProofNode's
+      BigStepProofNode current = (BigStepProofNode)node.getParent();
+      BigStepProofNode parent = current.getParent();
+
+      // check if the same rule was applied more than 20 times in a row, and if so warn the
+      // user that the evaluation may diverge and suggest manual checking
+      for (int n = 0; parent != null; parent = parent.getParent()) {
+        // check if this is the same rule
+        if (parent.getRule().equals(current.getRule())) {
+          // another time...
+          n += 1;
+          
+          // ...maybe already too often
+          if (n >= 20) {
+            // stop the completion, warn the user and suggest manual checking
+            throw new ProofGuessException(Messages.getString("BigStepProofModel.0"), node); //$NON-NLS-1$
+          }
+        }
+      }
+    }
+    
+    // otherwise, try to complete the proof
+    super.complete(node);
+  }
+  
+  /**
+   * {@inheritDoc}
+   *
    * @see de.unisiegen.tpml.core.AbstractProofModel#guess(de.unisiegen.tpml.core.ProofNode)
    */
   @Override
@@ -86,16 +126,38 @@ public final class BigStepProofModel extends AbstractInterpreterProofModel {
     logger.debug("Trying to guess a rule for " + node); //$NON-NLS-1$
     for (ProofRule rule : this.ruleSet.getRules()) { // MUST be the getRules() from the ProofRuleSet
       try {
+        // cast node to a DefaultBigStepProofNode
+        DefaultBigStepProofNode current = (DefaultBigStepProofNode)node;
+        
+        // (APP) is a special case, because (APP) can always be applied to applications,
+        // which can turn into trouble for expressions such as "1 + true"
+        if (rule.getName().equals("APP")) {
+          // determine the parent node
+          BigStepProofNode parent = current.getParent();
+          
+          // in order to avoid endless guessing of (APP) for said expressions, we check if the
+          // parent node has exactly the same expression and (APP) was applied to it, and if
+          // so, skip the (APP) rule here
+          if (parent != null && parent.getRule().equals(rule)
+              && parent.getExpression().equals(current.getExpression())) {
+            // log the details of the problem...
+            logger.debug(MessageFormat.format("Detected endless guessing of ({0}) for {1}", rule, current)); //$NON-NLS-1$
+            
+            // ...and skip the (APP) rule for the guess operation
+            continue;
+          }
+        }
+        
         // try to apply the rule to the specified node
-        apply((BigStepProofRule)rule, (DefaultBigStepProofNode)node);
-        logger.debug("Successfully applied (" + rule + ") to " + node); //$NON-NLS-1$ //$NON-NLS-2$
+        apply((BigStepProofRule)rule, current);
         
         // yep, we did it
+        logger.debug(MessageFormat.format("Successfully applied ({0}) to {1}", rule, node)); //$NON-NLS-1$
         return;
       }
       catch (ProofRuleException e) {
         // rule failed to apply... so, next one, please
-        logger.debug("Failed to apply (" + rule + ") to " + node, e); //$NON-NLS-1$ //$NON-NLS-2$
+        logger.debug(MessageFormat.format("Failed to apply ({0}) to {1}", rule, node), e); //$NON-NLS-1$
         continue;
       }
     }

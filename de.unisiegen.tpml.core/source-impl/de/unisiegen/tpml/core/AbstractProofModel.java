@@ -10,8 +10,6 @@ import javax.swing.event.TreeModelListener;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
-import de.unisiegen.tpml.core.bigstep.BigStepProofModel;
-import de.unisiegen.tpml.core.bigstep.BigStepProofNode;
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.languages.Language;
 import de.unisiegen.tpml.core.languages.LanguageTranslator;
@@ -173,25 +171,12 @@ public abstract class AbstractProofModel extends AbstractBean implements ProofMo
       guess(node);
     }
     
-    // check if we got stuck (only relevant for the big step interpreter)
-    if (this instanceof BigStepProofModel) {
-      for (ProofNode parent = node.getParent(); parent != null; parent = parent.getParent()) {
-        // cast to BigStepProofNode
-        BigStepProofNode bNode = (BigStepProofNode)node;
-        BigStepProofNode bParent = (BigStepProofNode)parent;
-        
-        // check if we got stuck
-        if (bNode.getExpression().equals(bParent.getExpression())
-            && Arrays.equals(bNode.getSteps(), bParent.getSteps())
-            && bNode.getStore().equals(bParent.getStore())) {
-          throw new ProofGuessException(Messages.getString("AbstractProofModel.0"), bNode); //$NON-NLS-1$
-        }
+    // check if we're done with the proof
+    if (!isFinished()) {
+      // complete the child nodes
+      for (int n = 0; n < node.getChildCount(); ++n) {
+        complete(node.getChildAt(n));
       }
-    }
-    
-    // complete the child nodes
-    for (int n = 0; n < node.getChildCount(); ++n) {
-      complete(node.getChildAt(n));
     }
   }
   
