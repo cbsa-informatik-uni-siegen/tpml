@@ -1,8 +1,14 @@
 package de.unisiegen.tpml.core.interpreters;
 
+import java.util.Arrays;
+
 import de.unisiegen.tpml.core.AbstractProofModel;
 import de.unisiegen.tpml.core.AbstractProofNode;
 import de.unisiegen.tpml.core.AbstractProofRuleSet;
+import de.unisiegen.tpml.core.Messages;
+import de.unisiegen.tpml.core.ProofGuessException;
+import de.unisiegen.tpml.core.ProofNode;
+import de.unisiegen.tpml.core.ProofRule;
 
 /**
  * Abstract base class for all classes implementing the <code>InterpreterProofModel</code> interface.
@@ -52,6 +58,47 @@ public abstract class AbstractInterpreterProofModel extends AbstractProofModel i
     
     // check if we have memory operations according to the expression
     setMemoryEnabled(root.getExpression().containsMemoryOperations());
+  }
+  
+  
+  
+  //
+  // Actions
+  //
+  
+  /**
+   * {@inheritDoc}
+   *
+   * @see de.unisiegen.tpml.core.AbstractProofModel#complete(de.unisiegen.tpml.core.ProofNode)
+   */
+  @Override
+  public void complete(ProofNode node) throws ProofGuessException {
+    // check if we're not at the root, as we want to avoid endless diversion
+    if (node != null && !node.isRoot()) {
+      // start at the parent node and look for a pattern
+      ProofNode current = node.getParent();
+      ProofNode parent = current.getParent();
+      
+      // determine the current sequence of rules
+      ProofRule[] rules = current.getRules();
+      
+      for (int count = 0; parent != null; parent = parent.getParent()) {
+        // check if the same sequence of rules was applied to this node
+        if (Arrays.equals(rules, parent.getRules())) {
+          // yet another time...
+          count += 1;
+          
+          // ...maybe already too often
+          if (count >= 20) {
+            // stop the automatic completion, warn the user and suggest manual checkin
+            throw new ProofGuessException(Messages.getString("AbstractInterpreterProofModel.0"), node); //$NON-NLS-1$
+          }
+        }
+      }
+    }
+    
+    // otherwise, try to complete the proof
+    super.complete(node);
   }
   
   

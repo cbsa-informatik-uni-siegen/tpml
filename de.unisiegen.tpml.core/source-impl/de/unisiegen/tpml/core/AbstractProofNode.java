@@ -27,10 +27,16 @@ public abstract class AbstractProofNode implements ProofNode {
   //
   
   /**
+   * Empty {@link ProofRule} array which is returned from {@link #getRules()}
+   * when no steps have been added to a proof node. 
+   */
+  private static final ProofRule[] EMPTY_RULES_ARRAY = new ProofRule[0];
+  
+  /**
    * Empty {@link ProofStep} array which is returned from {@link #getSteps()}
    * when no steps have been added to a proof node. 
    */
-  protected static final ProofStep[] EMPTY_ARRAY = new ProofStep[0];
+  private static final ProofStep[] EMPTY_STEPS_ARRAY = new ProofStep[0];
   
   /**
    * An enumeration that is always empty. This is used when an enumeration of a
@@ -74,13 +80,21 @@ public abstract class AbstractProofNode implements ProofNode {
   protected AbstractProofNode parent;
   
   /**
+   * Cached array for the {@link #getRules()} method, so the rules do not
+   * need to be determined each time.
+   * 
+   * @see #getRules()
+   */
+  private ProofRule[] rules;
+  
+  /**
    * The proof steps that were already performed on this {@link ProofNode},
    * which consist of both the {@link ProofRule} and the {@link Expression}.
    * 
    * @see #getSteps()
    * @see #setSteps(ProofStep[])
    */
-  protected ProofStep[] steps;
+  private ProofStep[] steps;
   
   /**
    * The user object associated with this {@link ProofNode}.
@@ -143,12 +157,35 @@ public abstract class AbstractProofNode implements ProofNode {
 
   /**
    * {@inheritDoc}
+   *
+   * @see de.unisiegen.tpml.core.ProofNode#getRules()
+   */
+  public ProofRule[] getRules() {
+    // determine the rules on-demand
+    if (this.rules == null) {
+      // check if we have any steps
+      if (this.steps == null) {
+        return EMPTY_RULES_ARRAY;
+      }
+      else {
+        // determine the rules from the steps
+        this.rules = new ProofRule[this.steps.length];
+        for (int n = 0; n < this.steps.length; ++n) {
+          this.rules[n] = this.steps[n].getRule();
+        }
+      }
+    }
+    return this.rules;
+  }
+  
+  /**
+   * {@inheritDoc}
    * 
    * @see ProofNode#getSteps()
    */
   public ProofStep[] getSteps() {
     if (this.steps == null) {
-      return EMPTY_ARRAY;
+      return EMPTY_STEPS_ARRAY;
     }
     else {
       return this.steps;
@@ -168,6 +205,7 @@ public abstract class AbstractProofNode implements ProofNode {
    * @see #getSteps()              
    */
   public void setSteps(ProofStep[] steps) {
+    this.rules = null;
     this.steps = steps;
   }
   

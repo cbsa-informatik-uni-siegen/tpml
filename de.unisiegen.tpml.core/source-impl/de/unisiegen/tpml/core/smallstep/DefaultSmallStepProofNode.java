@@ -1,11 +1,8 @@
 package de.unisiegen.tpml.core.smallstep;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import javax.swing.tree.TreeNode;
 
-import de.unisiegen.tpml.core.ProofStep;
+import de.unisiegen.tpml.core.ProofRule;
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.interpreters.AbstractInterpreterProofNode;
 import de.unisiegen.tpml.core.interpreters.DefaultStore;
@@ -55,25 +52,6 @@ final class DefaultSmallStepProofNode extends AbstractInterpreterProofNode imple
   
   
   //
-  // Accessors
-  //
-  
-  /**
-   * {@inheritDoc}
-   *
-   * @see de.unisiegen.tpml.core.smallstep.SmallStepProofNode#getRules()
-   */
-  public List<SmallStepProofRule> getRules() {
-    List<SmallStepProofRule> rules = new LinkedList<SmallStepProofRule>();
-    for (ProofStep step : getSteps()) {
-      rules.add((SmallStepProofRule)step.getRule());
-    }
-    return rules;
-  }
-
-  
-
-  //
   // Primitives
   //
   
@@ -84,8 +62,8 @@ final class DefaultSmallStepProofNode extends AbstractInterpreterProofNode imple
    */
   public boolean isProven() {
     // check if any axiom was applied
-    for (SmallStepProofRule rule : getRules()) {
-      if (rule.isAxiom()) {
+    for (ProofRule rule : getRules()) {
+      if (((SmallStepProofRule)rule).isAxiom()) {
         return true;
       }
     }

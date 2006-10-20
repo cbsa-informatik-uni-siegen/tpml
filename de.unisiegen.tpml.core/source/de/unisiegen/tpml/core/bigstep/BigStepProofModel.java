@@ -70,44 +70,6 @@ public final class BigStepProofModel extends AbstractInterpreterProofModel {
   /**
    * {@inheritDoc}
    *
-   * @see de.unisiegen.tpml.core.AbstractProofModel#complete(de.unisiegen.tpml.core.ProofNode)
-   */
-  @Override
-  public void complete(ProofNode node) throws ProofGuessException {
-    if (node == null) {
-      throw new NullPointerException("node is null");
-    }
-    
-    // check if we got stuck
-    if (!node.isRoot()) {
-      // cast to BigStepProofNode's
-      BigStepProofNode current = (BigStepProofNode)node.getParent();
-      BigStepProofNode parent = current.getParent();
-
-      // check if the same rule was applied more than 20 times in a row, and if so warn the
-      // user that the evaluation may diverge and suggest manual checking
-      for (int n = 0; parent != null; parent = parent.getParent()) {
-        // check if this is the same rule
-        if (parent.getRule().equals(current.getRule())) {
-          // another time...
-          n += 1;
-          
-          // ...maybe already too often
-          if (n >= 20) {
-            // stop the completion, warn the user and suggest manual checking
-            throw new ProofGuessException(Messages.getString("BigStepProofModel.0"), node); //$NON-NLS-1$
-          }
-        }
-      }
-    }
-    
-    // otherwise, try to complete the proof
-    super.complete(node);
-  }
-  
-  /**
-   * {@inheritDoc}
-   *
    * @see de.unisiegen.tpml.core.AbstractProofModel#guess(de.unisiegen.tpml.core.ProofNode)
    */
   @Override

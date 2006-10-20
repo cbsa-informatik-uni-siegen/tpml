@@ -31,6 +31,16 @@ public interface ProofNode extends TreeNode {
   public Expression getExpression();
 
   /**
+   * Convenience wrapper for the {@link #getSteps()} method, which returns only the {@link ProofRule}s
+   * from the {@link ProofStep}s.
+   * 
+   * @return the already applied {@link ProofRule}s.
+   * 
+   * @see #getSteps()
+   */
+  public ProofRule[] getRules();
+  
+  /**
    * Returns the {@link ProofStep}s which were already performed on this proof node. The steps represent
    * the {@link ProofRule}s that were applied to this node already and the associated expressions (which
    * may be sub expressions of the expression associated with this proof node), to which the rules were
@@ -39,6 +49,7 @@ public interface ProofNode extends TreeNode {
    * @return the {@link ProofStep}s or an empty array if no rules were applied to this node yet.
    * 
    * @see #getExpression()
+   * @see #getRules()
    */
   public ProofStep[] getSteps();
   
