@@ -85,6 +85,7 @@ public class TypeCheckerComponent extends AbstractProofComponent implements Scro
 		while (enumeration.hasMoreElements()) {
 			ProofNode node = enumeration.nextElement();
 			if (!node.isProven()) {
+				this.wasGuessed = true;
 				this.proofModel.guess(node);
 				return;
 			}

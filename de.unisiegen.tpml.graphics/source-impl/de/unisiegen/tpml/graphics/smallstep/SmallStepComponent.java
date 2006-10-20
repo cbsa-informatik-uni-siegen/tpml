@@ -591,8 +591,8 @@ public class SmallStepComponent extends AbstractProofComponent implements Scroll
 		while (enumeration.hasMoreElements()) {
 			ProofNode node = enumeration.nextElement();
 			if (!node.isProven()) {
-				this.proofModel.guess(node);
 				this.wasGuessed = false;
+				this.proofModel.guess(node);
 				return;
 			}
 		}
