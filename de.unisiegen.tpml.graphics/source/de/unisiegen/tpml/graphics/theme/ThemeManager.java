@@ -58,7 +58,7 @@ public class ThemeManager {
 		}
 		
 		for (Theme theme : this.themes) {
-			if (theme.getName () == this.currentThemeName) {
+			if (theme.getName ().equals(this.currentThemeName)) {
 				this.currentTheme = theme;
 				break;
 			}
