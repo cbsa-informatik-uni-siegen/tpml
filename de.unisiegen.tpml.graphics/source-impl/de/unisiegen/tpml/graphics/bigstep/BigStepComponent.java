@@ -61,6 +61,12 @@ public class BigStepComponent extends AbstractProofComponent implements Scrollab
 	
 	
 	/**
+	 * Whether the used had pressed one of the guess buttons. 
+	 */
+	private boolean											wasGuessed;
+	
+	
+	/**
 	 * Constructor.<br>
 	 * <br>
 	 * The first <i>treeContentChanged</i> is called manualy at the end of
@@ -102,6 +108,7 @@ public class BigStepComponent extends AbstractProofComponent implements Scrollab
 		while (enumeration.hasMoreElements()) {
 			ProofNode node = enumeration.nextElement();
 			if (!node.isProven()) {
+				this.wasGuessed = true;
 				this.proofModel.guess(node);
 				return;
 			}
@@ -144,6 +151,9 @@ public class BigStepComponent extends AbstractProofComponent implements Scrollab
 			nodeComponent.addBigStepNodeListener(new BigStepNodeListener () {
 				public void nodeChanged (BigStepNodeComponent node) {
 					BigStepComponent.this.relayout();
+				}
+				public void nodeGuessed () {
+					BigStepComponent.this.wasGuessed = true;
 				}
 			});
 		}
@@ -425,6 +435,11 @@ public class BigStepComponent extends AbstractProofComponent implements Scrollab
 
 		this.jumpNode = null;
 	}
+	
+	public boolean wasGuessed () {
+		return this.wasGuessed;
+	}
+
 	
 	/*
 	 * Implementation of the Scrollable interface

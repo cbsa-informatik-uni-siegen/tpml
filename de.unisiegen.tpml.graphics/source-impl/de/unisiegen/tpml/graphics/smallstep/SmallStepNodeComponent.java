@@ -243,6 +243,7 @@ public class SmallStepNodeComponent extends JComponent {
 		}
 		else if (item instanceof MenuGuessItem) {
 			try {
+				fireNodeGuessed();
 				this.proofModel.guess(this.proofNode);
 			} catch (Exception e) {
 				JOptionPane.showMessageDialog(getTopLevelAncestor(), MessageFormat.format(Messages.getString("NodeComponent.5"), e.getMessage()), Messages.getString("NodeComponent.6"), JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
@@ -250,6 +251,7 @@ public class SmallStepNodeComponent extends JComponent {
 		}
 		else if (item instanceof MenuGuessTreeItem) {
 			try {
+				fireNodeGuessed();
 				this.proofModel.complete(this.proofNode);
 			}
 			catch (Exception e) {
@@ -442,6 +444,17 @@ public class SmallStepNodeComponent extends JComponent {
 			}
 			
 			((SmallStepNodeListener)listeners [i+1]).nodeChanged(this);
+		}
+	}
+	
+	private void fireNodeGuessed () {
+		Object[] listeners = this.listenerList.getListenerList();
+		for (int i=0; i<listeners.length; i+=2) {
+			if (listeners [i] != SmallStepNodeListener.class) {
+				continue;
+			}
+			
+			((SmallStepNodeListener)listeners [i+1]).nodeGuessed();
 		}
 	}
 	

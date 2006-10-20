@@ -50,7 +50,12 @@ public class TypeCheckerComponent extends AbstractProofComponent implements Scro
 	 * an new node will be inserted.
 	 */
 	private ProofNode										jumpNode;
-	
+
+	/**
+	 * Whether the used had pressed one of the guess buttons. 
+	 */
+	private boolean											wasGuessed;
+
 	
 	public TypeCheckerComponent (TypeCheckerProofModel model) {
 		super (model);
@@ -165,6 +170,9 @@ public class TypeCheckerComponent extends AbstractProofComponent implements Scro
 				}
 				public void requestTypeEnter (TypeCheckerNodeComponent node) {
 					
+				}
+				public void nodeGuessed () {
+					TypeCheckerComponent.this.wasGuessed = true;
 				}
 			});
 		}
@@ -356,6 +364,9 @@ public class TypeCheckerComponent extends AbstractProofComponent implements Scro
 		this.jumpNode = null;
 	}
 	
+	public boolean wasGuessed () {
+		return this.wasGuessed;
+	}
 
 	/*
 	 * Implementation of the Scrollable interface

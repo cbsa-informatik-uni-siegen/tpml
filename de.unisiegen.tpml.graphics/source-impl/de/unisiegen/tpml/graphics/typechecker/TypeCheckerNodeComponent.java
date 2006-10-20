@@ -415,6 +415,17 @@ public class TypeCheckerNodeComponent extends JComponent  implements TreeNodeCom
 			((TypeCheckerNodeListener)listeners [i+1]).nodeChanged(this);
 		}
 	}
+	
+	private void fireNodeGuessed () {
+		Object[] listeners = this.listenerList.getListenerList();
+		for (int i=0; i<listeners.length; i+=2) {
+			if (listeners [i] != TypeCheckerNodeListener.class) {
+				continue;
+			}
+			
+			((TypeCheckerNodeListener)listeners [i+1]).nodeGuessed();
+		}
+	}
 
 	/**
 	 * Handles every action, that is done via the menu of
@@ -475,6 +486,7 @@ public class TypeCheckerNodeComponent extends JComponent  implements TreeNodeCom
 		}
 		else if (item instanceof MenuGuessItem) {
 			try {
+				fireNodeGuessed();
 				this.proofModel.guess(this.proofNode);
 			}
 			catch (Exception e) {
@@ -484,6 +496,7 @@ public class TypeCheckerNodeComponent extends JComponent  implements TreeNodeCom
 		}
 		else if (item instanceof MenuGuessTreeItem) {
 			try {
+				fireNodeGuessed();
 				this.proofModel.complete(this.proofNode);
 			}
 			catch (Exception e) {

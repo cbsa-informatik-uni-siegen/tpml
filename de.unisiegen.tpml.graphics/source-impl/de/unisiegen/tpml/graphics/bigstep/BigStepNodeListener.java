@@ -17,4 +17,9 @@ public interface BigStepNodeListener extends EventListener {
 	 */
 	public void nodeChanged (BigStepNodeComponent node);
 	
+	/**
+	 * 
+	 */
+	public void nodeGuessed ();
+	
 }

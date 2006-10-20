@@ -55,4 +55,9 @@ public interface ProofView {
 	 * @throws ProofGuessException if the proof model failes to guess the next rule.
 	 */
 	public void guess() throws IllegalStateException, ProofGuessException;
+	
+	/**
+	 *	Returns <i>True</i> if some kind of guess was pressed pevor 
+	 */
+	public boolean wasGuessed ();
 }
