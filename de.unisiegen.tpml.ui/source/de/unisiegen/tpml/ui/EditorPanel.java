@@ -92,77 +92,85 @@ public class EditorPanel extends javax.swing.JPanel {
 	// <editor-fold defaultstate="collapsed" desc=" Generated Code
 	// <editor-fold defaultstate="collapsed" desc=" Generated Code
 	// <editor-fold defaultstate="collapsed" desc=" Generated Code
-	// ">//GEN-BEGIN:initComponents
-	private void initComponents() {
-		jSeparator1 = new javax.swing.JSeparator();
-		editorToolBar = new javax.swing.JToolBar();
-		codeButton = new javax.swing.JToggleButton();
-		smallstepButton = new javax.swing.JToggleButton();
-		bigstepButton = new javax.swing.JToggleButton();
-		typecheckerButton = new javax.swing.JToggleButton();
-		actionToolBar = new javax.swing.JToolBar();
-		nextButton = new javax.swing.JButton();
-		editorPanel = new javax.swing.JPanel();
+    // <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:initComponents
+    private void initComponents() {
+        jSeparator1 = new javax.swing.JSeparator();
+        editorToolBar = new javax.swing.JToolBar();
+        codeButton = new javax.swing.JToggleButton();
+        smallstepButton = new javax.swing.JToggleButton();
+        bigstepButton = new javax.swing.JToggleButton();
+        typecheckerButton = new javax.swing.JToggleButton();
+        actionToolBar = new javax.swing.JToolBar();
+        nextButton = new javax.swing.JButton();
+        editorPanel = new javax.swing.JPanel();
 
-		setLayout(new java.awt.BorderLayout());
+        setLayout(new java.awt.BorderLayout());
 
-		codeButton.setText(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("Source"));
-		codeButton.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				codeButtonActionPerformed(evt);
-			}
-		});
+        addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                tabChange(evt);
+            }
+        });
 
-		editorToolBar.add(codeButton);
+        codeButton.setText("Source");
+        codeButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                codeButtonActionPerformed(evt);
+            }
+        });
 
-		smallstepButton.setText("Small Step");
-		smallstepButton.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				smallstepButtonActionPerformed(evt);
-			}
-		});
+        editorToolBar.add(codeButton);
 
-		editorToolBar.add(smallstepButton);
+        smallstepButton.setText("Small Step");
+        smallstepButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                smallstepButtonActionPerformed(evt);
+            }
+        });
 
-		bigstepButton.setText("Big Step");
-		bigstepButton.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				bigstepButtonActionPerformed(evt);
-			}
-		});
+        editorToolBar.add(smallstepButton);
 
-		editorToolBar.add(bigstepButton);
+        bigstepButton.setText("Big Step");
+        bigstepButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bigstepButtonActionPerformed(evt);
+            }
+        });
 
-		typecheckerButton.setText("Type Checker");
-		typecheckerButton
-				.addActionListener(new java.awt.event.ActionListener() {
-					public void actionPerformed(java.awt.event.ActionEvent evt) {
-						typecheckerButtonActionPerformed(evt);
-					}
-				});
+        editorToolBar.add(bigstepButton);
 
-		editorToolBar.add(typecheckerButton);
+        typecheckerButton.setText("Type Checker");
+        typecheckerButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                typecheckerButtonActionPerformed(evt);
+            }
+        });
 
-		nextButton.setIcon(new javax.swing.ImageIcon(getClass().getResource(
-				"/de/unisiegen/tpml/ui/icons/next24.png")));
-		nextButton.setToolTipText(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("Guess"));
-		nextButton.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				nextButtonActionPerformed(evt);
-			}
-		});
+        editorToolBar.add(typecheckerButton);
 
-		actionToolBar.add(nextButton);
+        nextButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/next24.png")));
+        nextButton.setToolTipText("Guess");
+        nextButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                nextButtonActionPerformed(evt);
+            }
+        });
 
-		editorToolBar.add(actionToolBar);
+        actionToolBar.add(nextButton);
 
-		add(editorToolBar, java.awt.BorderLayout.NORTH);
+        editorToolBar.add(actionToolBar);
 
-		editorPanel.setLayout(new java.awt.BorderLayout());
+        add(editorToolBar, java.awt.BorderLayout.NORTH);
 
-		add(editorPanel, java.awt.BorderLayout.CENTER);
+        editorPanel.setLayout(new java.awt.BorderLayout());
 
-	}// </editor-fold>//GEN-END:initComponents
+        add(editorPanel, java.awt.BorderLayout.CENTER);
+
+    }// </editor-fold>//GEN-END:initComponents
+
+        private void tabChange(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tabChange
+// TODO add your handling code here:
+        }//GEN-LAST:event_tabChange
 
 	private void nextButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_nextButtonActionPerformed
 		// 
@@ -200,26 +208,17 @@ public class EditorPanel extends javax.swing.JPanel {
 		code.getEditor().requestFocus();
 	}// GEN-LAST:event_codeButtonActionPerformed
 
-	// Variables declaration - do not modify//GEN-BEGIN:variables
-	private javax.swing.JToolBar actionToolBar;
-
-	private javax.swing.JToggleButton bigstepButton;
-
-	private javax.swing.JToggleButton codeButton;
-
-	private javax.swing.JPanel editorPanel;
-
-	private javax.swing.JToolBar editorToolBar;
-
-	private javax.swing.JSeparator jSeparator1;
-
-	private javax.swing.JButton nextButton;
-
-	private javax.swing.JToggleButton smallstepButton;
-
-	private javax.swing.JToggleButton typecheckerButton;
-
-	// End of variables declaration//GEN-END:variables
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JToolBar actionToolBar;
+    private javax.swing.JToggleButton bigstepButton;
+    private javax.swing.JToggleButton codeButton;
+    private javax.swing.JPanel editorPanel;
+    private javax.swing.JToolBar editorToolBar;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JButton nextButton;
+    private javax.swing.JToggleButton smallstepButton;
+    private javax.swing.JToggleButton typecheckerButton;
+    // End of variables declaration//GEN-END:variables
 
 	private static final Logger logger = Logger.getLogger(EditorPanel.class);
 
@@ -457,10 +456,10 @@ public class EditorPanel extends javax.swing.JPanel {
 		deselectButtons();
 		button.setSelected(true);
 		button.setVisible(true);
-		if (comp.isNextStatus()) {
+		//if (comp.isNextStatus()) {
 			nextButton.setVisible(true);
 			actionToolBar.setVisible(true);
-		}
+		//}
 	}
 
 	/**

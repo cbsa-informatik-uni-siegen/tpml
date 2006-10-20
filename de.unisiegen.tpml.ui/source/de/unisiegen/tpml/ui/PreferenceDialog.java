@@ -6,8 +6,12 @@
 
 package de.unisiegen.tpml.ui;
 
+import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.ActionListener;
+
 import javax.swing.JColorChooser;
+import javax.swing.JOptionPane;
 
 import org.apache.log4j.Logger;
 
@@ -24,27 +28,12 @@ public class PreferenceDialog extends javax.swing.JDialog {
 		super(parent, modal);
 		initComponents();
 		thememanager = ThemeManager.get();
-		int length = thememanager.getNumberOfThemes();
-		for (int i = 0; i < length; i++) {
-			themeBox.addItem(thememanager.getTheme(i).getName());
-		}
-		String[] itemnames = thememanager.getTheme(themeBox.getSelectedIndex())
-				.getItemNames();
+		String lastTheme = thememanager.getCurrentTheme().getName();
 
-		itemList.setListData(itemnames);
-		
-		itemList.setSelectedIndex(0);
-		colorPanel.setBackground(thememanager.getCurrentTheme().getItemColor(0));
-		Font itemfont = thememanager.getCurrentTheme().getItemFont(0);
-		if (itemfont != null){
-			fontButton.setEnabled(true);
-			fontLabel.setText("Font is: "+ itemfont.getFontName());
-		}
-		else {
-			fontButton.setEnabled(false);
-			fontLabel.setText("");
-		}
-
+		updateThemeManager();
+		themeBox.setSelectedItem(lastTheme);
+		// thememanager.removeTheme(thememanager.getTheme(0));
+		// thememanager.removeTheme(thememanager.getTheme(0));
 	}
 
 	/**
@@ -54,13 +43,13 @@ public class PreferenceDialog extends javax.swing.JDialog {
 	 */
 	// <editor-fold defaultstate="collapsed" desc=" Generated Code
 	// <editor-fold defaultstate="collapsed" desc=" Generated Code
+	// <editor-fold defaultstate="collapsed" desc=" Generated Code
     // <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:initComponents
     private void initComponents() {
         javax.swing.JPanel buttonPanel;
         javax.swing.JPanel centerPanel;
         javax.swing.JLabel chooseLabel;
         javax.swing.JButton closeButton;
-        javax.swing.JButton deleteButton;
         javax.swing.JPanel eastPanel;
         java.awt.GridBagConstraints gridBagConstraints;
         javax.swing.JScrollPane itemScrollPane;
@@ -76,6 +65,7 @@ public class PreferenceDialog extends javax.swing.JDialog {
         buttonPanel = new javax.swing.JPanel();
         newButton = new javax.swing.JButton();
         deleteButton = new javax.swing.JButton();
+        nameButton = new javax.swing.JButton();
         centerPanel = new javax.swing.JPanel();
         colorBotton = new javax.swing.JButton();
         fontButton = new javax.swing.JButton();
@@ -118,14 +108,30 @@ public class PreferenceDialog extends javax.swing.JDialog {
         buttonPanel.add(newButton);
 
         deleteButton.setText("Delete");
+        deleteButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteButtonActionPerformed(evt);
+            }
+        });
+
         buttonPanel.add(deleteButton);
 
         northPanel.add(buttonPanel, java.awt.BorderLayout.SOUTH);
+
+        nameButton.setText("Change Name");
+        nameButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                nameButtonActionPerformed(evt);
+            }
+        });
+
+        northPanel.add(nameButton, java.awt.BorderLayout.EAST);
 
         getContentPane().add(northPanel, java.awt.BorderLayout.NORTH);
 
         centerPanel.setLayout(new java.awt.GridBagLayout());
 
+        centerPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 10, 0));
         colorBotton.setText("Color");
         colorBotton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -217,6 +223,12 @@ public class PreferenceDialog extends javax.swing.JDialog {
 
         southPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
         closeButton.setText("Close");
+        closeButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                closeButtonActionPerformed(evt);
+            }
+        });
+
         southPanel.add(closeButton, new java.awt.GridBagConstraints());
 
         getContentPane().add(southPanel, java.awt.BorderLayout.SOUTH);
@@ -224,55 +236,154 @@ public class PreferenceDialog extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void closeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeButtonActionPerformed
-        dispose();
-    }//GEN-LAST:event_closeButtonActionPerformed
-
-    private void colorBottonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_colorBottonActionPerformed
-        JColorChooser chooser = new JColorChooser();
-    }//GEN-LAST:event_colorBottonActionPerformed
-
-    private void newButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
+        private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
 // TODO add your handling code here:
-    }//GEN-LAST:event_newButtonActionPerformed
+            thememanager.removeTheme(thememanager.getCurrentTheme());            
+            updateThemeManager();                
+                    
+                    
+                    
+        }//GEN-LAST:event_deleteButtonActionPerformed
 
-    private void itemListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_itemListValueChanged
-// TODO add your handling code here:
-        logger.debug("Selected Item is: "+itemList.getSelectedValue());
-        colorPanel.setBackground(thememanager.getCurrentTheme().getItemColor(itemList.getSelectedIndex()));
-		Font itemfont = thememanager.getCurrentTheme().getItemFont(itemList.getSelectedIndex());
-		if (itemfont != null){
-			fontButton.setEnabled(true);
-			fontLabel.setText(""+ itemfont.getFontName());
+	private void nameButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_nameButtonActionPerformed
+	// TODO add your handling code here:
+		String name = askForName();
+		if (name != null) {
+			thememanager.getCurrentTheme().setName(name);
+			updateThemeManager();
 		}
-		else {
-			fontButton.setEnabled(false);
-			fontLabel.setText("");
-		}
-    }//GEN-LAST:event_itemListValueChanged
+	}// GEN-LAST:event_nameButtonActionPerformed
 
-        private void itemListPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_itemListPropertyChange
-// TODO add your handling code here:
-        }//GEN-LAST:event_itemListPropertyChange
+	private void closeButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_closeButtonActionPerformed
+		dispose();
+	}// GEN-LAST:event_closeButtonActionPerformed
+
+	private void colorBottonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_colorBottonActionPerformed
+		//JColorChooser chooser = new JColorChooser();
+		Color color = JColorChooser.showDialog(this, "Choose Color", colorPanel.getBackground());
+		if (color != null){
+		System.out.println(color);
+		colorPanel.setBackground(color);
+		thememanager.getCurrentTheme().setItemColor(itemList.getSelectedIndex(), color);
+		thememanager.setCurrentThem(thememanager.getCurrentTheme());
+		}
+	}// GEN-LAST:event_colorBottonActionPerformed
+
+	private void newButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_newButtonActionPerformed
+	// TODO add your handling code here:
+		String name = askForName();
+		if (name != null) {
+			thememanager.createNewTheme(name);
+			updateThemeManager();
+		}
+	}// GEN-LAST:event_newButtonActionPerformed
+
+	private void itemListValueChanged(javax.swing.event.ListSelectionEvent evt) {// GEN-FIRST:event_itemListValueChanged
+	// TODO add your handling code here:
+		if (itemList.getSelectedIndex() != -1) {
+			logger.debug("Selected Item is: " + itemList.getSelectedValue());
+			colorPanel.setBackground(thememanager.getCurrentTheme()
+					.getItemColor(itemList.getSelectedIndex()));
+			Font itemfont = thememanager.getCurrentTheme().getItemFont(
+					itemList.getSelectedIndex());
+			if (itemfont != null) {
+				fontButton.setEnabled(true);
+				fontLabel.setText("" + itemfont.getFontName());
+			} else {
+				fontButton.setEnabled(false);
+				fontLabel.setText("");
+			}
+		}
+	}// GEN-LAST:event_itemListValueChanged
+
+	private void itemListPropertyChange(java.beans.PropertyChangeEvent evt) {// GEN-FIRST:event_itemListPropertyChange
+	// TODO add your handling code here:
+	}// GEN-LAST:event_itemListPropertyChange
 
 	private void themeBoxActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_themeBoxActionPerformed
-	// TODO add your handling code here:
-		thememanager.setCurrentThem(thememanager.getTheme(themeBox
-				.getSelectedIndex()));
-		logger.debug("Set the current theme to: "
-				+ thememanager.getCurrentTheme().getName());
+		// TODO add your handling code here:
+		if (themeBox.getSelectedIndex() != -1) {
+			thememanager.setCurrentThem(thememanager.getTheme(themeBox
+					.getSelectedIndex()));
+			itemList.setSelectedIndex(0);
+			updateColorFont();
+			if (thememanager.getCurrentTheme().getName().equals("Default")) {
+				deleteButton.setEnabled(false);
+                                nameButton.setEnabled(false);
+			} else {
+				deleteButton.setEnabled(true);
+                                nameButton.setEnabled(true);
+			}
+			logger.debug("Set the current theme to: "
+					+ thememanager.getCurrentTheme().getName());
+			//updateThemeManager();
+		}
 	}// GEN-LAST:event_themeBoxActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton colorBotton;
     private javax.swing.JPanel colorPanel;
+    private javax.swing.JButton deleteButton;
     private javax.swing.JButton fontButton;
     private javax.swing.JLabel fontLabel;
     private javax.swing.JList itemList;
+    private javax.swing.JButton nameButton;
     private javax.swing.JComboBox themeBox;
     // End of variables declaration//GEN-END:variables
 
 	private ThemeManager thememanager;
 
 	private static Logger logger = Logger.getLogger(PreferenceDialog.class);
+
+	public void updateThemeManager() {
+		ActionListener[] listeners = themeBox.getActionListeners();
+		themeBox.removeAllItems();
+		String[] names = thememanager.getThemeNames();
+		for (int i = 0; i < names.length; i++) {
+			logger.debug("Adding theme " + names[i]);
+			themeBox.addItem(names[i]);
+		}
+		themeBox.setSelectedIndex(themeBox.getItemCount()-1);
+		thememanager.setCurrentThem(thememanager.getTheme(themeBox.getSelectedIndex()));
+		String[] itemnames = thememanager.getCurrentTheme()
+				.getItemNames();
+
+		itemList.setListData(itemnames);
+
+		itemList.setSelectedIndex(0);
+		updateColorFont();
+		
+		for (int i = 0; i < listeners.length; i++){
+			themeBox.addActionListener(listeners[i]);
+		}
+
+	}
+
+	private String askForName() {
+		String name = (String) JOptionPane.showInputDialog(this, "", "Name:",
+				JOptionPane.PLAIN_MESSAGE, null, null, "");
+		while (thememanager.getTheme(name) != null) // this must be null
+													// otherwise the theme name
+													// is already present
+		{
+			name = (String) JOptionPane.showInputDialog(this, "Name already exists, please select another one:", "Name:",
+					JOptionPane.PLAIN_MESSAGE, null, null, "");
+			if (name == null) break;
+		}
+		return name;
+	}
+	
+	private void updateColorFont(){
+		colorPanel
+		.setBackground(thememanager.getCurrentTheme().getItemColor(itemList.getSelectedIndex()));
+Font itemfont = thememanager.getCurrentTheme().getItemFont(itemList.getSelectedIndex());
+if (itemfont != null) {
+	fontButton.setEnabled(true);
+	fontLabel.setText(itemfont.getFontName());
+	fontLabel.setFont(itemfont);
+} else {
+	fontButton.setEnabled(false);
+	fontLabel.setText("");
+}
+	}
 }
