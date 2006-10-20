@@ -8,6 +8,19 @@ import javax.swing.JLabel;
 
 import de.unisiegen.tpml.core.expressions.Expression;
 
+/**
+ * Just a simple Component combining two {@link JLabel}s together. One
+ * for the name of the rules with a leading <i>(</i> and and a tailing
+ * <i>)</i>. And one for a possible exponent, when the rules have been
+ * grouped together. When the exponent is <i>1</i> it will not be shown.<br>
+ * <br>
+ * The height, this components need, is always containing the exponent
+ * even if it isn't shown at all. It is easier to place them if they 
+ * have a homogenouse height.
+ * 
+ * @author marcell
+ *
+ */
 public class SmallStepRuleLabel extends JComponent {
 	
 	/**
@@ -15,10 +28,27 @@ public class SmallStepRuleLabel extends JComponent {
 	 */
 	private static final long serialVersionUID = 2850026835245921469L;
 
+	/**
+	 * The exponent number
+	 */
 	private int						ruleCount;
 	
+	/**
+	 * The expression that may be associated with this rule.<br>
+	 * <br>
+	 * This expression is used to determin the part of the 
+	 * current expression of the {@link SmallStepNodeComponent} 
+	 * that needs to get underlines.
+	 */
 	private Expression		stepExpression;
 	
+	/**
+	 * Creates a new SmallStepRuleLabel with a name and a value
+	 * for the exponent (the ruleCount).
+	 * 
+	 * @param ruleName The name of the rule
+	 * @param ruleCount The number that should be shown in the exponent.
+	 */
 	public SmallStepRuleLabel (String ruleName, int ruleCount) {
 		super ();
 		
@@ -71,18 +101,37 @@ public class SmallStepRuleLabel extends JComponent {
 		setPreferredSize (size);
 	}
 	
+	/**
+	 * Returns the number of the exponent
+	 * @return
+	 */
 	public int getRuleCount () {
 		return this.ruleCount;
 	}
 	
+	/**
+	 * Sets a new expression this rule should be associated to.
+	 * @param stepExpression
+	 * @see #stepExpression
+	 */
 	public void setStepExpression (Expression stepExpression) {
 		this.stepExpression = stepExpression;
 	}
 	
+	/**
+	 * Returns the current {@link #stepExpression}
+	 * @return
+	 */
 	public Expression getStepExpression () {
 		return this.stepExpression;
 	}
 	
+	/**
+	 * Creates a dummy Expression with a placeholder rule name <i>RULE</i>
+	 * to determine the height.
+	 * 
+	 * @return
+	 */
 	public static int getLabelHeight () {
 		
 		// just create a label that can calculate the height

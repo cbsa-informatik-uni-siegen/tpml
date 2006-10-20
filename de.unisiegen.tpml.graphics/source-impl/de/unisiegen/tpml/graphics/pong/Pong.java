@@ -323,7 +323,7 @@ public class Pong extends JComponent {
 				this.onTheRun = true;
 				
 				this.npc.dest = Py + ((0.1f - Px) / Qx) * Qy;
-				float add = (this.random.nextFloat() - 0.5f) * this.npcBat.height * this.ball.speed / 0.03f;
+				float add = (this.random.nextFloat() - 0.5f) * this.npcBat.height * this.ball.speed / 0.017f;
 				this.npc.dest += add;
 				
 				float dist = this.npc.dest - this.npc.bat.position;

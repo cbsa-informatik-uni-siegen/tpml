@@ -24,6 +24,7 @@ import de.unisiegen.tpml.graphics.components.CompoundExpression;
 import de.unisiegen.tpml.graphics.components.MenuButton;
 import de.unisiegen.tpml.graphics.components.MenuButtonListener;
 import de.unisiegen.tpml.graphics.components.MenuGuessItem;
+import de.unisiegen.tpml.graphics.components.MenuGuessTreeItem;
 import de.unisiegen.tpml.graphics.components.MenuRuleItem;
 import de.unisiegen.tpml.graphics.components.MenuTranslateItem;
 
@@ -43,6 +44,9 @@ public class SmallStepNodeComponent extends JComponent {
 	 */
 	private static final long serialVersionUID = 5536947349690384851L;
 	
+	/**
+	 * The {@link SmallStepProofNode} 
+	 */
 	private SmallStepProofNode												proofNode;
 	
 	private SmallStepProofModel												proofModel;
@@ -186,6 +190,7 @@ public class SmallStepNodeComponent extends JComponent {
 		}
 		menu.addSeparator();
 		menu.add(new MenuGuessItem());
+		menu.add(new MenuGuessTreeItem());
 		menu.add(this.translateItem);
 		
 		this.rules.getMenuButton().setMenu(menu);
@@ -241,6 +246,14 @@ public class SmallStepNodeComponent extends JComponent {
 				this.proofModel.guess(this.proofNode);
 			} catch (Exception e) {
 				JOptionPane.showMessageDialog(getTopLevelAncestor(), MessageFormat.format(Messages.getString("NodeComponent.5"), e.getMessage()), Messages.getString("NodeComponent.6"), JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
+			}
+		}
+		else if (item instanceof MenuGuessTreeItem) {
+			try {
+				this.proofModel.complete(this.proofNode);
+			}
+			catch (Exception e) {
+				JOptionPane.showMessageDialog(getTopLevelAncestor(), MessageFormat.format(Messages.getString("NodeComponent.7"), e.getMessage()), Messages.getString("NodeComponent.8"), JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 		}
 		else if (item instanceof MenuTranslateItem) {
@@ -431,19 +444,5 @@ public class SmallStepNodeComponent extends JComponent {
 			((SmallStepNodeListener)listeners [i+1]).nodeChanged(this);
 		}
 	}
-	
-	/*
-	private void fireRepaintAll () {
-		Object[] listeners = this.listenerList.getListenerList();
-		for (int i=0; i<listeners.length; i+=2) {
-			if (listeners [i] != SmallStepNodeListener.class) {
-				continue;
-			}
-			
-			((SmallStepNodeListener)listeners [i+1]).repaintAll();
-		}
-	}
-	*/
-	
 	
 }

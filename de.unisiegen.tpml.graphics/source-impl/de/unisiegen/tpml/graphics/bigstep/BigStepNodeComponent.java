@@ -23,6 +23,7 @@ import de.unisiegen.tpml.graphics.components.CompoundExpression;
 import de.unisiegen.tpml.graphics.components.MenuButton;
 import de.unisiegen.tpml.graphics.components.MenuButtonListener;
 import de.unisiegen.tpml.graphics.components.MenuGuessItem;
+import de.unisiegen.tpml.graphics.components.MenuGuessTreeItem;
 import de.unisiegen.tpml.graphics.components.MenuRuleItem;
 import de.unisiegen.tpml.graphics.components.MenuTranslateItem;
 import de.unisiegen.tpml.graphics.renderer.AbstractRenderer;
@@ -30,7 +31,7 @@ import de.unisiegen.tpml.graphics.tree.TreeNodeComponent;
 
 
 /**
- * Graphics representation of a BigStepProofNode
+ * Graphics representation of a {@link BigStepProofNode}
  * 
  * @author marcell
  *
@@ -172,6 +173,7 @@ public class BigStepNodeComponent extends JComponent implements TreeNodeComponen
 		}
 		menu.addSeparator();
 		menu.add (new MenuGuessItem ());
+		menu.add (new MenuGuessTreeItem ());
 		menu.add (this.menuTranslateItem = new MenuTranslateItem ());
 		
 		this.ruleButton.setMenu(menu);
@@ -300,6 +302,14 @@ public class BigStepNodeComponent extends JComponent implements TreeNodeComponen
 			}
 			catch (Exception e) {
 				JOptionPane.showMessageDialog(getTopLevelAncestor(), MessageFormat.format(Messages.getString("NodeComponent.5"), e.getMessage()), Messages.getString("NodeComponent.6"), JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
+			}
+		}
+		else if (item instanceof MenuGuessTreeItem) {
+			try {
+				this.proofModel.complete(this.proofNode);
+			}
+			catch (Exception e) {
+				JOptionPane.showMessageDialog(getTopLevelAncestor(), MessageFormat.format(Messages.getString("NodeComponent.7"), e.getMessage()), Messages.getString("NodeComponent.8"), JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 		}
 		

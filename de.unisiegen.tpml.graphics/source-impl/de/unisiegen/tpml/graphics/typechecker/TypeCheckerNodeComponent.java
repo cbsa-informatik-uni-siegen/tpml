@@ -27,11 +27,18 @@ import de.unisiegen.tpml.graphics.components.MenuButton;
 import de.unisiegen.tpml.graphics.components.MenuButtonListener;
 import de.unisiegen.tpml.graphics.components.MenuEnterTypeItem;
 import de.unisiegen.tpml.graphics.components.MenuGuessItem;
+import de.unisiegen.tpml.graphics.components.MenuGuessTreeItem;
 import de.unisiegen.tpml.graphics.components.MenuRuleItem;
 import de.unisiegen.tpml.graphics.components.MenuTranslateItem;
 import de.unisiegen.tpml.graphics.renderer.AbstractRenderer;
 import de.unisiegen.tpml.graphics.tree.TreeNodeComponent;
 
+
+/**
+ * Graphical representation of a {@link TypeCheckerProofNode }.
+ * @author marcell
+ *
+ */
 public class TypeCheckerNodeComponent extends JComponent  implements TreeNodeComponent {
 
 	/**
@@ -40,36 +47,83 @@ public class TypeCheckerNodeComponent extends JComponent  implements TreeNodeCom
 	private static final long serialVersionUID = -6671706090992083026L;
 	
 	/**
-	 * 
+	 * The Model this node can work with to guess, enter type or
+	 * do Coresyntax transaltion
 	 */
 	private TypeCheckerProofModel								proofModel;
 	
+	/**
+	 * The Origin {@link TypeCheckerProofNode} this node represents.
+	 */
 	private TypeCheckerProofNode								proofNode;
 	
+	/**
+	 * The calculated dimension for this node in pixels.
+	 */
 	private Dimension														dimension;
 	
+	/**
+	 * The spacing that should be set free between to components
+	 * within the node.
+	 */
 	private int																	spacing;
 	
+	/**
+	 * The label containing the <i>(x)</i> text at the beginning.
+	 */
 	private JLabel															indexLabel;
 	
+	/**
+	 * The {@link CompoundExpression} containing the expression of
+	 * this node.
+	 */
 	private CompoundExpression<String, Type>		expression;
 	
+	/**
+	 * The {@link MenuButton} the user can use to do the actions.
+	 */
 	private MenuButton													ruleButton;
 	
+	/**
+	 * The {@link JLabel} showing the resulting type of this node, once
+	 * the node has been evaluated.
+	 */
 	private JLabel															typeLabel;
 	
+	/**
+	 * The {@link JLabel} showing the information about the rule, once
+	 * the rule has been evaluated.
+	 */
 	private JLabel															ruleLabel;
 	
+	/**
+	 * The {@link TypeCheckerEnterType} element that will be shown
+	 * once the user select <i>"Enter type"</i> from the menu.
+	 */
 	private TypeCheckerEnterType								typeEnter;
 	
+	/**
+	 * The menuTranslate is one element within the menu. <br>
+	 * Needs to get handled separatly because it can be enabled and
+	 * disabled whether the expression is containing Syntactical Sugar.
+	 */
 	private MenuTranslateItem										menuTranslateItem;
 	
+	/**
+	 * The translator will be used to determin whether the expression
+	 * contains syntactical sugor.
+	 */
 	private LanguageTranslator									translator;
 	
 
 
 	/**
-	 * Constructor for a TypeCheckerNode 
+	 * Constructor for a TypeCheckerNode<br>
+	 * <br>
+	 * All elements needed within the node will be created and 
+	 * added to the component. Some of them will be hidden at
+	 * first (the {@link #typeEnter}, or the {@link #ruleLabel}) because
+	 * they are not needed but they are always there.<br>
 	 * 
 	 * @param node The origin ProofNode
 	 * @param model The model
@@ -134,6 +188,7 @@ public class TypeCheckerNodeComponent extends JComponent  implements TreeNodeCom
 		menu.addSeparator();
 		menu.add (new MenuEnterTypeItem ());
 		menu.add (new MenuGuessItem ());
+		menu.add (new MenuGuessTreeItem ());
 		menu.add (this.menuTranslateItem = new MenuTranslateItem ());
 		
 		this.ruleButton.setMenu(menu);
@@ -177,12 +232,30 @@ public class TypeCheckerNodeComponent extends JComponent  implements TreeNodeCom
 		this.indexLabel.setText("(" + index  + ")"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 	
-	
+	/**
+	 * Causes the {@link #expression} to updated theire
+	 * expression and environment.
+	 *
+	 */
 	public void changeNode () {
 		this.expression.setExpression(this.proofNode.getExpression());
 		this.expression.setEnvironment(this.proofNode.getEnvironment());
 	}
 		
+	/**
+	 * Places all elements one after another.<br>
+	 * <br>
+	 * First the label, the expression and the "::" will be placed, if the
+	 * node is already prooven the {@link #typeLabel} will be placed aswell.
+	 * The {@link #dimension} will be rescaled with every item that is placed and
+	 * with all items, the height of the dimension will set to the current maximum.<br>
+	 * <br>
+	 * When all item of the top row are placed the {@link #ruleButton}, {@link #ruleLabel} or
+	 * {@link #typeEnter} will be placed depending whether the node is evaluated, it is not 
+	 * evaluated or the user previously selected <i>Enter type</i>.
+	 * 
+	 * @param maxWidth The maximum amount of pixels available to place the elements.
+	 */
 	private void placeElements (int maxWidth) {
 		
 		// get the size for the index at the beginning: (x)
@@ -281,6 +354,13 @@ public class TypeCheckerNodeComponent extends JComponent  implements TreeNodeCom
 	 * Implementation of the eventhandling
 	 */
 	
+	/**
+	 * Will be called when the user has accepted the {@link TypeCheckerEnterType} 
+	 * component with a type.<br>
+	 * The type string will be tried to get applied on the {@link #proofNode} using
+	 * a {@link Language} and a {@link LanguageParser} to get a {@link MonoType} 
+	 * that will be applied to the node using {@link TypeCheckerProofModel#guessWithType(ProofNode, MonoType).
+	 */
 	private void handleTypeEntered (String type) {
 		Language language = this.proofModel.getLanguage();
 		LanguageTypeParser parser = language.newTypeParser(new StringReader (type));
@@ -304,6 +384,13 @@ public class TypeCheckerNodeComponent extends JComponent  implements TreeNodeCom
 		fireNodeChanged ();
 	}
 	
+	/**
+	 * Just set the type enter to <i>No active</i> and 
+	 * causes a node changed.<br>
+	 * That will lead to a propper layouting where the 
+	 * {@link #ruleButton} will be displayed again.
+	 *
+	 */
 	private void handleTypeEnterCanceled () {
 		this.typeEnter.setActive(false);
 		fireNodeChanged();
@@ -329,6 +416,17 @@ public class TypeCheckerNodeComponent extends JComponent  implements TreeNodeCom
 		}
 	}
 
+	/**
+	 * Handles every action, that is done via the menu of
+	 * the {@link #ruleButton}.<br>
+	 * <br>
+	 * Because every item in the menu (except the Separatero :-) ) is
+	 * one of our own, the activated type of item can simply be identified
+	 * by its class.<br>
+	 * 
+	 * 
+	 * @param item
+	 */
 	private void handleMenuActivated (JMenuItem item) {
 		if (item instanceof MenuRuleItem) {
 			MenuRuleItem ruleItem = (MenuRuleItem)item;
@@ -384,6 +482,14 @@ public class TypeCheckerNodeComponent extends JComponent  implements TreeNodeCom
 			}
 			fireNodeChanged ();
 		}
+		else if (item instanceof MenuGuessTreeItem) {
+			try {
+				this.proofModel.complete(this.proofNode);
+			}
+			catch (Exception e) {
+				JOptionPane.showMessageDialog(getTopLevelAncestor(), MessageFormat.format(Messages.getString("NodeComponent.7"), e.getMessage()), Messages.getString("NodeComponent.8"), JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
+			}
+		}
 		else if (item instanceof MenuEnterTypeItem) {
 			this.typeEnter.setActive(true);
 			this.typeEnter.clear();
@@ -411,19 +517,34 @@ public class TypeCheckerNodeComponent extends JComponent  implements TreeNodeCom
 		return this.dimension;
 	}
 	
+	/**
+	 * Returns the number of pixels the children should be displayed 
+	 * indentated.
+	 */
 	public int getIndentationWidth () {
 		// XXX: calculate the indentation
 		return this.indexLabel.getWidth();
 	}
 
+	/**
+	 * Returns the point at the bottom of the node where
+	 * the layout should attach the arrow.
+	 */
 	public Point getBottomArrowConnection () {
 		return new Point (this.getX() + this.indexLabel.getWidth() / 2, this.getY() + this.indexLabel.getHeight());
 	}
 	
+	/**
+	 * Returns the point at the left of the node where
+	 * the layout should attach the line to its parent.
+	 */
 	public Point getLeftArrowConnection () {
 		return new Point (this.getX (), this.getY() + this.indexLabel.getY() + this.indexLabel.getHeight() / 2);
 	}
 	
+	/**
+	 * Just calls setBounds of the super class.
+	 */
 	@Override
 	public void setBounds (int x, int y, int width, int height) {
 		super.setBounds(x, y, width, height);

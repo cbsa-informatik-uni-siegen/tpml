@@ -22,6 +22,9 @@ import javax.swing.border.BevelBorder;
 import de.unisiegen.tpml.graphics.Messages;
 
 /**
+ * Component providing a label with a text enter field, where the
+ * User is able to enter a Type, that will be used to proof a node
+ * using the {@link TypeCheckerProofModel}
  * The Component that will be displayed when the user selectes
  * Enter Type.
  * 
@@ -35,14 +38,34 @@ public class TypeCheckerEnterType extends JComponent {
 	 */
 	private static final long serialVersionUID = 63257034534910804L;
 
+	/**
+	 * The Panel where everything is layed out
+	 */
 	private JPanel						panel;
 	
+	/**
+	 * The Textfield where the user is able to enter the type
+	 */
 	private JTextField				textField;
 	
+	/**
+	 * Label that informs the user what to do: "Enter type: "
+	 */
 	private JLabel						label;
 	
+	/**
+	 * The {@link TypeCheckerNodeComponent} can determine whether
+	 * the TypeCheckerEnterType-GUI is active. It will need the
+	 * information to do a propper layouting.
+	 * 
+	 */
 	private boolean						active;
 	
+	/**
+	 * The {@link ComponentAdapter} that will be used to determine
+	 * when the component gets shown. When the component gets shown
+	 * a {@link #requestTextFocus()} will be called.
+	 */
 	private ComponentAdapter	componentAdapter;
 	
 	public TypeCheckerEnterType () {
@@ -135,6 +158,10 @@ public class TypeCheckerEnterType extends JComponent {
 		}
 	}
 		
+	/**
+	 * Sets this component active and adds the componentAdapter.
+	 * @param active
+	 */
 	public void setActive (boolean active) {
 		this.active = active;
 		
@@ -143,21 +170,42 @@ public class TypeCheckerEnterType extends JComponent {
 		}
 	}
 	
+	/**
+	 * Requests the keyboard focus for the TextField and
+	 * removes the componentAdapter from the Component.
+	 *
+	 */
 	public void requestTextFocus () {
 		this.textField.requestFocus();
 		removeComponentListener(this.componentAdapter);
 	}
 	
+	/**
+	 * Returns the {@link #active}-Flag
+	 * @return Returns the {@link #active}-Flag
+	 */
 	public boolean isActive () {
 		return this.active;
 	}
 	
+	/**
+	 * Checks whether the uses has released the "Escape" key.<br>
+	 * <br>
+	 * If so, the cancel event will be fired using the {@link TypeCheckerTypeEnterListener#canceled()}
+	 *  
+	 * @param event The keyboard event from Java
+	 */
 	private void keyReleased (KeyEvent event) {
 		if (event.getKeyCode() == KeyEvent.VK_ESCAPE) {
 			fireCanceled ();
 		}
 	}
 	
+	/**
+	 * Causes the {@link TypeCheckerTypeEnterListener#typeEntered(String)}
+	 * to be called with the type string entered.
+	 * @param event
+	 */
 	private void actionPerformed (ActionEvent event) {
 		fireTypeEntered (this.textField.getText());
 	}

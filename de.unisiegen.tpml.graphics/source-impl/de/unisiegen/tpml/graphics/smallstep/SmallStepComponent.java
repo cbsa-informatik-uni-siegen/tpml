@@ -38,18 +38,47 @@ public class SmallStepComponent extends AbstractProofComponent implements Scroll
 	private static final long serialVersionUID = 1022005553523956037L;
 
 
+	/**
+	 * The origin {@link SmallStepProofModel}
+	 */
 	private SmallStepProofModel			model;
 	
+	/**
+	 * The border in pixels around the nodes 
+	 */
 	private int											border;
 	
+	/**
+	 * The spacing between the nodes
+	 */
 	private int											spacing;
 	
+	/**
+	 * The visible width is set via {@link #setAvailableWidth(int)}
+	 * by the ScrollPane of {@link SmallStepView}.
+	 */
 	private int											availableWidth;
 	
+	/**
+	 * Contains the <i>ProofNode</i> that has been inserted
+	 * last. 
+	 */
 	private ProofNode								jumpNode;
+	
 	
 	private boolean									advanced;
 	
+	/**
+	 * Sets the default values.<br>
+	 * <br>
+	 * A border of 20 pixels and spacing of 10 pixels.<br>
+	 * <br>
+	 * To get a propper start a {@link #relayout()} is called 
+	 * manually.
+	 * 
+	 * @param proofModel
+	 * @param advanced
+	 */
 	public SmallStepComponent (SmallStepProofModel proofModel, boolean advanced) {
 		super (proofModel);
 		
@@ -109,6 +138,9 @@ public class SmallStepComponent extends AbstractProofComponent implements Scroll
 		}
 	}
 	
+	/**
+	 * Sets the width that is available by the {@link SmallStepView}.
+	 */
 	@Override
 	public void setAvailableWidth (int availableWidth) {
 		this.availableWidth = availableWidth;
@@ -117,6 +149,14 @@ public class SmallStepComponent extends AbstractProofComponent implements Scroll
 	
 	
 	
+	/**
+	 * Returns the first child of the given node.<br>
+	 * <br>
+	 * If the node has no children, <i>null</i> is returned.
+	 * 
+	 * @param node
+	 * @return
+	 */
 	private SmallStepProofNode getFirstChild (SmallStepProofNode node) {
 		try {
 			return node.getFirstChild();
@@ -260,7 +300,7 @@ public class SmallStepComponent extends AbstractProofComponent implements Scroll
 	/**
 	 * Iterates through the entire tree an places every node.<br>
 	 * <br>
-	 * There are some things to take care of when the nodes get placed:<br>
+	 * There are some things to take care of, when the nodes get placed:<br>
 	 * <br>
 	 * The expression and the rules of the parent node are in one row so
 	 * when the nodes get placed the actualHeight of each node must be the 
@@ -426,11 +466,20 @@ public class SmallStepComponent extends AbstractProofComponent implements Scroll
 		});
 	}
 	
+	/**
+	 * Resets all user objects by calling {@link #resetUserObject(SmallStepProofNode)}
+	 * on the rootNode of the model. <br>
+	 * This will cause the {@link PrettyStringRenderer} to update all fonts an to 
+	 * recalculate the line wrappings etc...
+	 */
 	@Override
 	protected void resetLayout () {
 		resetUserObject((SmallStepProofNode)this.proofModel.getRoot());
 	}
 	
+	/**
+	 * Just saves the node that has been inserted.
+	 */
 	@Override
 	protected void nodesInserted (TreeModelEvent event) {
 		Object [] children = event.getChildren();
@@ -443,6 +492,15 @@ public class SmallStepComponent extends AbstractProofComponent implements Scroll
 		}
 	}
 	
+	
+	/**
+	 * Causes an {@link SmallStepNodeComponent#update() on all
+	 * nodes that have changed.<br>
+	 * <br>
+	 * When all updates are done relayouts the View.
+	 * 
+	 * @see #relayout()
+	 */
 	@Override
 	protected void nodesChanged (TreeModelEvent event) {
 		boolean relayout = false;
@@ -479,6 +537,10 @@ public class SmallStepComponent extends AbstractProofComponent implements Scroll
 		}
 	}
 	
+	/**
+	 * Removes all userobjects from the nodes that will be removed
+	 * by the {@link SmallStepProofModel} later. 
+	 */
 	@Override
 	protected void nodesRemoved (TreeModelEvent event) { 
 		Object[] children = event.getChildren();
@@ -499,11 +561,23 @@ public class SmallStepComponent extends AbstractProofComponent implements Scroll
 		
 	}
 	
+	/**
+	 * Just causes a relayout.
+	 * 
+	 * @see #relayout()
+	 */
 	@Override
 	protected void treeContentChanged () {
 		relayout ();
 	}
 	
+	/**
+	 * Finds the last unprooven node within the ProofTree und calls a guess on
+	 * the proofModel with the node.
+	 * 
+	 * @throws IllegalStateException
+	 * @throws ProofGuessException
+	 */
 	public void guess () throws IllegalStateException, ProofGuessException {
 		Enumeration<ProofNode> enumeration = this.proofModel.getRoot().postorderEnumeration();
 		while (enumeration.hasMoreElements()) {
@@ -516,6 +590,11 @@ public class SmallStepComponent extends AbstractProofComponent implements Scroll
     throw new IllegalStateException("Unable to find next node");
 	}
 	
+	/**
+	 * Scroll the current visible area to the rectangle where
+	 * the saved {@link #jumpNode} lays.
+	 *
+	 */
 	private void jumpToNodeVisible () {
 		if (this.jumpNode == null) {
 			return;
