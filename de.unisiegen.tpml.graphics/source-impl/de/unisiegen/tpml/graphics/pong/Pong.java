@@ -7,8 +7,12 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.Point;
+import java.awt.Toolkit;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.util.Random;
@@ -58,6 +62,16 @@ public class Pong extends JComponent {
 		public void saveMovement() {
 			this.movementOldPos = this.position;
 		}
+		
+		public void setPosition(float position) {
+			if (position < (this.height / 2f)) {
+				position = this.height / 2f;
+			}
+			else if (position > (1f - this.height / 2f)) {
+				position = (1f - this.height / 2f);
+			}
+			this.position = position;
+		}
 	}
 	
 	private class Ball {
@@ -78,18 +92,11 @@ public class Pong extends JComponent {
 		public float radius;
 		
 		public Ball () {
-			this.posX 			= 0.5f;
-			this.posY 			= 0.5f;
-			this.oldPosX		= this.posX;
-			this.oldPosY		= this.posY;
-			
-			this.directionX = 1.0f / (float)Math.sqrt (2);
-			this.directionY = 1.0f / (float)Math.sqrt (2);
-			
-			
-			this.speed 			= 0.015f; 
-			
+			this.directionX = -1.0f / (float)Math.sqrt (2);
+
 			this.radius			= 0.02f;
+			
+			restart();
 		}
 		
 		public void move () {
@@ -102,6 +109,17 @@ public class Pong extends JComponent {
 			this.oldPosY = this.posY;
 		}
 		
+		public void restart() {
+			this.posX 			= 0.5f;
+			this.posY 			= 0.5f;
+			this.oldPosX		= this.posX;
+			this.oldPosY		= this.posY;
+			
+			this.speed 			= 0.015f; 
+			
+			this.directionX = -this.directionX;
+			this.directionY = 1.0f / (float)Math.sqrt (2);
+		}
 	}
 	
 	private class NPC {
@@ -117,18 +135,18 @@ public class Pong extends JComponent {
 		
 		public void act () {
 			if (this.bat.position > this.dest) {
-				this.bat.position -= this.speed;
+				this.bat.setPosition(this.bat.position - this.speed);
 				
 				if (this.bat.position < this.dest) {
-					this.bat.position = this.dest;
+					this.bat.setPosition(this.dest);
 				}
 			}
 			
 			if (this.bat.position < this.dest) {
-				this.bat.position += this.speed;
+				this.bat.setPosition(this.bat.position + this.speed);
 				
 				if (this.bat.position > this.dest) {
-					this.bat.position = this.dest;
+					this.bat.setPosition(this.dest);
 				}
 			}
 		}
@@ -152,6 +170,9 @@ public class Pong extends JComponent {
 	private Font		font;
 	
 	private boolean	onTheRun;
+	
+	private boolean paused;
+	
 	public Pong () {
 		this.pcBat 				= new Bat (0.1f, 0.01f, 0.5f);
 		this.npcBat 			= new Bat (0.1f, 0.01f, 0.5f);
@@ -182,18 +203,35 @@ public class Pong extends JComponent {
 			public void componentResized (ComponentEvent event) {
 				Pong.this.handleResize ();
 			}
-			
 		});
 		
 		this.timer = new Timer ();
 		this.timer.schedule(new TimerTask() {
 			@Override
 			public void run () {
-				Pong.this.handleTimerEvent ();
+				if (!Pong.this.paused) {
+					Pong.this.handleTimerEvent ();
+				}
 			}
 		}, 0, 20);
 
+		// setup an invisible cursor
+		Image cursorImage = Toolkit.getDefaultToolkit().createImage(getClass().getResource("/de/unisiegen/tpml/graphics/pong/empty.gif"));
+		setCursor(Toolkit.getDefaultToolkit().createCustomCursor(cursorImage, new Point(0,0), "empty"));
 
+		// pause the game if the mouse is outside the component
+		this.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				Pong.this.paused = false;
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {
+				Pong.this.paused = true;
+			}
+		});
+		
 		setDoubleBuffered(false);
 		setOpaque(true);
 		this.renderAll = true;
@@ -210,7 +248,7 @@ public class Pong extends JComponent {
 		this.pcBat.save();
 		
 		// and set the new one
-		this.pcBat.position = height;
+		this.pcBat.setPosition(height);
 		
 		repaint ();
 	}
@@ -242,12 +280,12 @@ public class Pong extends JComponent {
 		
 		if (this.ball.posX >= 1.0f) {
 			this.npcBat.points ++;
-			this.ball = new Ball ();
+			this.ball.restart();
 		}
 		
 		if (this.ball.posX <= 0.0f) {
 			this.pcBat.points++;
-			this.ball = new Ball ();
+			this.ball.restart();
 		}
 
 		recalcNPCDest();

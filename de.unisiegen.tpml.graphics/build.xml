@@ -68,6 +68,7 @@
 		<jar jarfile="${distdir}/de.unisiegen.tpml.graphics-${de.unisiegen.tpml.graphics.version}.jar" manifest="${distdir}/MANIFEST.MF">
 			<fileset dir="${classesdir}" />
 			<fileset dir="${basedir}/source-impl">
+				<include name="**/*.gif"/>
 				<include name="**/*.properties"/>
 			</fileset>
 		</jar>
