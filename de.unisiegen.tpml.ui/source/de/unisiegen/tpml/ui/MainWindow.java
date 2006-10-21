@@ -100,7 +100,7 @@ public class MainWindow extends javax.swing.JFrame {
 						if ((evt.getID() == KeyEvent.KEY_PRESSED)) {
 							if (((evt.getKeyCode() == KeyEvent.VK_RIGHT) && evt
 									.isAltDown())
-									|| ((evt.getKeyCode() == KeyEvent.VK_PAGE_UP) && evt
+									|| ((evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) && evt
 											.isControlDown())) {
 								if (tabbedPane.getSelectedIndex() + 1 == tabbedPane
 										.getTabCount()) {
@@ -114,7 +114,7 @@ public class MainWindow extends javax.swing.JFrame {
 							} else {
 								if (((evt.getKeyCode() == KeyEvent.VK_LEFT) && evt
 										.isAltDown())
-										|| ((evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN) && evt
+										|| ((evt.getKeyCode() == KeyEvent.VK_PAGE_UP) && evt
 												.isControlDown())) {
 									if (tabbedPane.getSelectedIndex() == 0) {
 										tabbedPane.setSelectedIndex(tabbedPane
