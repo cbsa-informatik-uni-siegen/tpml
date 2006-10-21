@@ -135,7 +135,6 @@ public class EditorPanel extends javax.swing.JPanel {
         toolBarPanel.setLayout(new java.awt.GridBagLayout());
 
         editorToolBar.setFloatable(false);
-        codeButton.setFont(new java.awt.Font("Dialog", 0, 12));
         codeButton.setText("Source");
         codeButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -145,7 +144,6 @@ public class EditorPanel extends javax.swing.JPanel {
 
         editorToolBar.add(codeButton);
 
-        smallstepButton.setFont(new java.awt.Font("Dialog", 0, 12));
         smallstepButton.setText("Small Step");
         smallstepButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -155,7 +153,6 @@ public class EditorPanel extends javax.swing.JPanel {
 
         editorToolBar.add(smallstepButton);
 
-        bigstepButton.setFont(new java.awt.Font("Dialog", 0, 12));
         bigstepButton.setText("Big Step");
         bigstepButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -165,7 +162,6 @@ public class EditorPanel extends javax.swing.JPanel {
 
         editorToolBar.add(bigstepButton);
 
-        typecheckerButton.setFont(new java.awt.Font("Dialog", 0, 12));
         typecheckerButton.setText("Type Checker");
         typecheckerButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
