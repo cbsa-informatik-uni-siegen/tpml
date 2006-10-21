@@ -1120,8 +1120,8 @@ public class MainWindow extends javax.swing.JFrame {
 			setRedoState(editor.isRedoStatus());
 			setUndoState(editor.isUndoStatus());
 			// setSaveState(editor.isUndoStatus());
-			setChangeState(editor.isUndoStatus());
 			if (editor.isTexteditor()) {
+				setChangeState(editor.isUndoStatus());
 				setEditorFunctions(true);
 			} else {
 				setEditorFunctions(true);
