@@ -94,6 +94,9 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel {
     try {
       // apply the last rule of the remaining steps to the node
       apply(remainingSteps[remainingSteps.length - 1].getRule(), node);
+      
+      // remember that the user cheated
+      setCheating(true);
     }
     catch (ProofRuleException e) {
       // failed to guess

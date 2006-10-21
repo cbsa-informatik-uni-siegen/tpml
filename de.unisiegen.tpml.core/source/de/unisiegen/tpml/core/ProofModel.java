@@ -25,6 +25,15 @@ public interface ProofModel extends Bean, TreeModel {
   //
   
   /**
+   * Returns <code>true</code> if the user <i>cheated</i> during the prove using the
+   * {@link #guess(ProofNode)} or {@link #complete(ProofNode)} methods. Otherwise, if
+   * the user did the whole proof by hand, <code>false</code> will be returned.
+   * 
+   * @return <code>true</code> if the user cheated, <code>false</code> otherwise.
+   */
+  public boolean isCheating();
+  
+  /**
    * Returns <code>true</code> if the proof is finished successfully, otherwise if either the
    * proof is not yet completed or the proof got stuck, <code>false</code> will be returned.
    * 

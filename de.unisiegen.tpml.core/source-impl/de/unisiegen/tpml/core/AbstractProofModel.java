@@ -34,6 +34,14 @@ public abstract class AbstractProofModel extends AbstractBean implements ProofMo
   //
   
   /**
+   * Whether the user cheated during the proof.
+   * 
+   * @see #isCheating()
+   * @see #setCheating(boolean)
+   */
+  private boolean cheating;
+  
+  /**
    * Whether the proof is finished.
    * 
    * @see #isFinished()
@@ -108,6 +116,31 @@ public abstract class AbstractProofModel extends AbstractBean implements ProofMo
   /**
    * {@inheritDoc}
    *
+   * @see de.unisiegen.tpml.core.ProofModel#isCheating()
+   */
+  public boolean isCheating() {
+    return this.cheating;
+  }
+  
+  /**
+   * Changes the value of the <code>cheating</code> property to the value of <code>cheating</code>, and
+   * emits a {@link java.beans.PropertyChangeEvent} if the values differ.
+   * 
+   * @param cheating the new value for the <code>cheating</code> setting.
+   * 
+   * @see #isCheating()
+   */
+  protected void setCheating(boolean cheating) {
+    if (this.cheating != cheating) {
+      boolean oldCheating = this.cheating;
+      this.cheating = cheating;
+      firePropertyChange("cheating", oldCheating, cheating);
+    }
+  }
+  
+  /**
+   * {@inheritDoc}
+   *
    * @see de.unisiegen.tpml.core.ProofModel#isFinished()
    */
   public boolean isFinished() {
@@ -115,8 +148,8 @@ public abstract class AbstractProofModel extends AbstractBean implements ProofMo
   }
   
   /**
-   * Changes the value of the <code>finished</code> to the value of <code>finished</code>, and emits
-   * a {@link java.beans.PropertyChangeEvent} if the values differ.
+   * Changes the value of the <code>finished</code> property to the value of <code>finished</code>, and
+   * emits a {@link java.beans.PropertyChangeEvent} if the values differ.
    * 
    * @param finished the new value for the <code>finished</code> setting.
    * 

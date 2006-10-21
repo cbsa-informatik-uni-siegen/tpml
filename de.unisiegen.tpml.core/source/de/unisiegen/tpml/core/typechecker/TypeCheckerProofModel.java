@@ -288,9 +288,12 @@ public final class TypeCheckerProofModel extends AbstractProofModel {
       try {
         // try to apply the rule to the specified node
         applyInternal((TypeCheckerProofRule)rule, node, type);
-        logger.debug("Successfully applied (" + rule + ") to " + node);
+        
+        // remember that the user cheated
+        setCheating(true);
         
         // yep, we did it
+        logger.debug("Successfully applied (" + rule + ") to " + node);
         return;
       }
       catch (ProofRuleException e) {

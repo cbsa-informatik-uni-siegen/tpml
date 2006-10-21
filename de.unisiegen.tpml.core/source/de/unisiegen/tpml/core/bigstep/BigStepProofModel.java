@@ -113,6 +113,9 @@ public final class BigStepProofModel extends AbstractInterpreterProofModel {
         // try to apply the rule to the specified node
         apply((BigStepProofRule)rule, current);
         
+        // remember that the user cheated
+        setCheating(true);
+        
         // yep, we did it
         logger.debug(MessageFormat.format("Successfully applied ({0}) to {1}", rule, node)); //$NON-NLS-1$
         return;
