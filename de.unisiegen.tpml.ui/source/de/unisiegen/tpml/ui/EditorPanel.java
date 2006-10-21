@@ -663,10 +663,13 @@ public class EditorPanel extends javax.swing.JPanel {
 	}
 
 	public void setUndoStatus(boolean undoStatus) {
-		logger.debug("UndoStatus of EditorPanel set to "+undoStatus);
-		firePropertyChange("undoStatus", this.undoStatus, undoStatus);
-		if (this.isTexteditor()) firePropertyChange("changed", this.undoStatus, undoStatus);
-		this.undoStatus = undoStatus;
+		if (this.undoStatus != undoStatus) {
+			logger.debug("UndoStatus of EditorPanel set to "+undoStatus);
+			boolean oldUndoStatus = this.undoStatus;
+			this.undoStatus = undoStatus;
+			firePropertyChange("undoStatus", oldUndoStatus, undoStatus);
+			if (this.isTexteditor()) firePropertyChange("changed", oldUndoStatus, undoStatus);
+		}
 	}
 	
 	public void setAdvanced(boolean state){
