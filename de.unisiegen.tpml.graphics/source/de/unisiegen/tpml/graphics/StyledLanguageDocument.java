@@ -138,6 +138,26 @@ public class StyledLanguageDocument extends DefaultStyledDocument implements Bea
     // setup the normal attribute set
     StyleConstants.setForeground(this.normalSet, Color.BLACK);
     StyleConstants.setBold(this.normalSet, false);
+		
+    // setup the comment set
+    SimpleAttributeSet commentSet = new SimpleAttributeSet();
+    StyleConstants.setItalic(commentSet, true);
+    this.attributes.put(PrettyStyle.COMMENT, commentSet);
+
+    // setup the constant set
+    SimpleAttributeSet constantSet = new SimpleAttributeSet();
+    StyleConstants.setBold(constantSet, true);
+    this.attributes.put(PrettyStyle.CONSTANT, constantSet);
+
+    // setup the keyword set
+    SimpleAttributeSet keywordSet = new SimpleAttributeSet();
+    StyleConstants.setBold(keywordSet, true);
+    this.attributes.put(PrettyStyle.KEYWORD, keywordSet);
+    
+    // setup the type set
+    SimpleAttributeSet typeSet = new SimpleAttributeSet();
+    StyleConstants.setBold(typeSet, true);
+    this.attributes.put(PrettyStyle.TYPE, typeSet);
 
     // initially setup the attributes
     initAttributes();
@@ -145,7 +165,16 @@ public class StyledLanguageDocument extends DefaultStyledDocument implements Bea
     // update the attributes whenever the current theme changes
     this.themeManager.addThemeManagerListener(new ThemeManagerListener() {
     	public void currentThemeChanged(Theme theme) {
-    		initAttributes();
+    		try {
+    			// initialize the attributes
+    			initAttributes();
+    			
+    			// reprocess the document
+    			processChanged();
+    		}
+    		catch (BadLocationException e) {
+    			// ignore the exception...
+    		}
     	}
     });
   }
@@ -157,35 +186,15 @@ public class StyledLanguageDocument extends DefaultStyledDocument implements Bea
 	//
 	
 	/**
-	 * TODO Add documentation here
+	 * Initializes the attributes to use the fonts from the current theme. 
 	 */
 	private void initAttributes() {
-		// determine the current theme
+		// use the colors from the current theme
 		Theme currentTheme = this.themeManager.getCurrentTheme();
-		
-    // setup the comment set
-    SimpleAttributeSet commentSet = new SimpleAttributeSet();
-    StyleConstants.setForeground(commentSet, currentTheme.getItemColor(Theme.TYPE_COMMENT));
-    StyleConstants.setItalic(commentSet, true);
-    this.attributes.put(PrettyStyle.COMMENT, commentSet);
-
-    // setup the constant set
-    SimpleAttributeSet constantSet = new SimpleAttributeSet();
-    StyleConstants.setForeground(constantSet, currentTheme.getItemColor(Theme.TYPE_CONSTANT));
-    StyleConstants.setBold(constantSet, true);
-    this.attributes.put(PrettyStyle.CONSTANT, constantSet);
-
-    // setup the keyword set
-    SimpleAttributeSet keywordSet = new SimpleAttributeSet();
-    StyleConstants.setForeground(keywordSet, currentTheme.getItemColor(Theme.TYPE_KEYWORD));
-    StyleConstants.setBold(keywordSet, true);
-    this.attributes.put(PrettyStyle.KEYWORD, keywordSet);
-    
-    // setup the type set
-    SimpleAttributeSet typeSet = new SimpleAttributeSet();
-    StyleConstants.setForeground(typeSet, currentTheme.getItemColor(Theme.TYPE_TYPE));
-    StyleConstants.setBold(typeSet, true);
-    this.attributes.put(PrettyStyle.TYPE, typeSet);
+    StyleConstants.setForeground(this.attributes.get(PrettyStyle.COMMENT), currentTheme.getItemColor(Theme.TYPE_COMMENT));
+    StyleConstants.setForeground(this.attributes.get(PrettyStyle.CONSTANT), currentTheme.getItemColor(Theme.TYPE_CONSTANT));
+    StyleConstants.setForeground(this.attributes.get(PrettyStyle.KEYWORD), currentTheme.getItemColor(Theme.TYPE_KEYWORD));
+    StyleConstants.setForeground(this.attributes.get(PrettyStyle.TYPE), currentTheme.getItemColor(Theme.TYPE_TYPE));
 	}
 	
 	
