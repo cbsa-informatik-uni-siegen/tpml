@@ -26,6 +26,8 @@ public class Theme {
 	
 	public static final int TYPE_TYPE						= 7;
 	
+	public static final int TYPE_COMMENT 				= 8;
+	
 	
 	private class ThemeItem {
 		private String			itemName;
@@ -99,6 +101,7 @@ public class Theme {
 		this.items.add(new ThemeItem(Theme.TYPE_RULEEXPRESSION, "RuleExpression", f, new Color (0, 0, 0)));
 		this.items.add(new ThemeItem(Theme.TYPE_ENVIRONMENT, "Environment", f, new Color (128, 128, 128)));
 		this.items.add(new ThemeItem(Theme.TYPE_TYPE, "Type", f, new Color (0.0f, 0.6f, 0.0f)));
+		this.items.add(new ThemeItem(Theme.TYPE_COMMENT, "Comment", f, new Color (0.1f, 0.1f, 0.8f)));
 	}
 		
 	public void setName (String name) {
