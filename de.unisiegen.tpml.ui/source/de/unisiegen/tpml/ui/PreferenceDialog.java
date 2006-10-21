@@ -6,19 +6,27 @@
 
 package de.unisiegen.tpml.ui;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
+import javax.swing.JButton;
 import javax.swing.JColorChooser;
+import javax.swing.JDialog;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
 import org.apache.log4j.Logger;
 
 import de.unisiegen.tpml.graphics.theme.ThemeManager;
+import de.unisiegen.tpml.ui.beans.FontChooser;
 
 /**
- * 
  * @author TPPool15
  */
 public class PreferenceDialog extends javax.swing.JDialog {
@@ -44,209 +52,275 @@ public class PreferenceDialog extends javax.swing.JDialog {
 	// <editor-fold defaultstate="collapsed" desc=" Generated Code
 	// <editor-fold defaultstate="collapsed" desc=" Generated Code
 	// <editor-fold defaultstate="collapsed" desc=" Generated Code
-    // <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:initComponents
-    private void initComponents() {
-        javax.swing.JPanel buttonPanel;
-        javax.swing.JPanel centerPanel;
-        javax.swing.JLabel chooseLabel;
-        javax.swing.JButton closeButton;
-        javax.swing.JPanel eastPanel;
-        java.awt.GridBagConstraints gridBagConstraints;
-        javax.swing.JScrollPane itemScrollPane;
-        javax.swing.JPanel jPanel1;
-        javax.swing.JPanel jPanel2;
-        javax.swing.JButton newButton;
-        javax.swing.JPanel northPanel;
-        javax.swing.JPanel southPanel;
+	// <editor-fold defaultstate="collapsed" desc=" Generated Code
+	// ">//GEN-BEGIN:initComponents
+	private void initComponents() {
+		javax.swing.JPanel buttonPanel;
+		javax.swing.JPanel centerPanel;
+		javax.swing.JLabel chooseLabel;
+		javax.swing.JButton closeButton;
+		javax.swing.JPanel eastPanel;
+		java.awt.GridBagConstraints gridBagConstraints;
+		javax.swing.JScrollPane itemScrollPane;
+		javax.swing.JPanel jPanel1;
+		javax.swing.JPanel jPanel2;
+		javax.swing.JButton newButton;
+		javax.swing.JPanel northPanel;
+		javax.swing.JPanel southPanel;
 
-        northPanel = new javax.swing.JPanel();
-        chooseLabel = new javax.swing.JLabel();
-        themeBox = new javax.swing.JComboBox();
-        buttonPanel = new javax.swing.JPanel();
-        newButton = new javax.swing.JButton();
-        deleteButton = new javax.swing.JButton();
-        nameButton = new javax.swing.JButton();
-        centerPanel = new javax.swing.JPanel();
-        colorBotton = new javax.swing.JButton();
-        fontButton = new javax.swing.JButton();
-        jPanel1 = new javax.swing.JPanel();
-        colorPanel = new javax.swing.JPanel();
-        jPanel2 = new javax.swing.JPanel();
-        fontLabel = new javax.swing.JLabel();
-        eastPanel = new javax.swing.JPanel();
-        itemScrollPane = new javax.swing.JScrollPane();
-        itemList = new javax.swing.JList();
-        southPanel = new javax.swing.JPanel();
-        closeButton = new javax.swing.JButton();
+		northPanel = new javax.swing.JPanel();
+		chooseLabel = new javax.swing.JLabel();
+		themeBox = new javax.swing.JComboBox();
+		buttonPanel = new javax.swing.JPanel();
+		newButton = new javax.swing.JButton();
+		deleteButton = new javax.swing.JButton();
+		nameButton = new javax.swing.JButton();
+		centerPanel = new javax.swing.JPanel();
+		colorBotton = new javax.swing.JButton();
+		fontButton = new javax.swing.JButton();
+		jPanel1 = new javax.swing.JPanel();
+		colorPanel = new javax.swing.JPanel();
+		jPanel2 = new javax.swing.JPanel();
+		fontLabel = new javax.swing.JLabel();
+		eastPanel = new javax.swing.JPanel();
+		itemScrollPane = new javax.swing.JScrollPane();
+		itemList = new javax.swing.JList();
+		southPanel = new javax.swing.JPanel();
+		closeButton = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Preferences");
-        northPanel.setLayout(new java.awt.BorderLayout());
+		setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+		setTitle("Preferences");
+		northPanel.setLayout(new java.awt.BorderLayout());
 
-        northPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        chooseLabel.setText("Choose Theme:");
-        chooseLabel.setVerticalAlignment(javax.swing.SwingConstants.TOP);
-        northPanel.add(chooseLabel, java.awt.BorderLayout.NORTH);
+		northPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10,
+				10, 10));
+		chooseLabel.setText("Choose Theme:");
+		chooseLabel.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+		northPanel.add(chooseLabel, java.awt.BorderLayout.NORTH);
 
-        themeBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                themeBoxActionPerformed(evt);
-            }
-        });
+		themeBox.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				themeBoxActionPerformed(evt);
+			}
+		});
 
-        northPanel.add(themeBox, java.awt.BorderLayout.CENTER);
+		northPanel.add(themeBox, java.awt.BorderLayout.CENTER);
 
-        buttonPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT, 0, 5));
+		buttonPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT, 0,
+				5));
 
-        newButton.setText("New");
-        newButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                newButtonActionPerformed(evt);
-            }
-        });
+		newButton.setText("New");
+		newButton.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				newButtonActionPerformed(evt);
+			}
+		});
 
-        buttonPanel.add(newButton);
+		buttonPanel.add(newButton);
 
-        deleteButton.setText("Delete");
-        deleteButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                deleteButtonActionPerformed(evt);
-            }
-        });
+		deleteButton.setText("Delete");
+		deleteButton.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				deleteButtonActionPerformed(evt);
+			}
+		});
 
-        buttonPanel.add(deleteButton);
+		buttonPanel.add(deleteButton);
 
-        northPanel.add(buttonPanel, java.awt.BorderLayout.SOUTH);
+		northPanel.add(buttonPanel, java.awt.BorderLayout.SOUTH);
 
-        nameButton.setText("Change Name");
-        nameButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                nameButtonActionPerformed(evt);
-            }
-        });
+		nameButton.setText("Change Name");
+		nameButton.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				nameButtonActionPerformed(evt);
+			}
+		});
 
-        northPanel.add(nameButton, java.awt.BorderLayout.EAST);
+		northPanel.add(nameButton, java.awt.BorderLayout.EAST);
 
-        getContentPane().add(northPanel, java.awt.BorderLayout.NORTH);
+		getContentPane().add(northPanel, java.awt.BorderLayout.NORTH);
 
-        centerPanel.setLayout(new java.awt.GridBagLayout());
+		centerPanel.setLayout(new java.awt.GridBagLayout());
 
-        centerPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 10, 0));
-        colorBotton.setText("Color");
-        colorBotton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                colorBottonActionPerformed(evt);
-            }
-        });
+		centerPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 10,
+				0));
+		colorBotton.setText("Color");
+		colorBotton.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				colorBottonActionPerformed(evt);
+			}
+		});
 
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(10, 5, 10, 10);
-        centerPanel.add(colorBotton, gridBagConstraints);
+		gridBagConstraints = new java.awt.GridBagConstraints();
+		gridBagConstraints.gridx = 1;
+		gridBagConstraints.gridy = 0;
+		gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+		gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+		gridBagConstraints.insets = new java.awt.Insets(10, 5, 10, 10);
+		centerPanel.add(colorBotton, gridBagConstraints);
 
-        fontButton.setText("Font");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(10, 5, 10, 10);
-        centerPanel.add(fontButton, gridBagConstraints);
+		fontButton.setText("Font");
+		fontButton.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				fontButtonActionPerformed(evt);
+			}
+		});
 
-        jPanel1.setLayout(new java.awt.BorderLayout());
+		gridBagConstraints = new java.awt.GridBagConstraints();
+		gridBagConstraints.gridx = 1;
+		gridBagConstraints.gridy = 1;
+		gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+		gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+		gridBagConstraints.insets = new java.awt.Insets(10, 5, 10, 10);
+		centerPanel.add(fontButton, gridBagConstraints);
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        colorPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+		jPanel1.setLayout(new java.awt.BorderLayout());
 
-        colorPanel.setBackground(new java.awt.Color(0, 0, 204));
-        colorPanel.setMaximumSize(new java.awt.Dimension(32767, 23));
-        colorPanel.setMinimumSize(new java.awt.Dimension(10, 23));
-        colorPanel.setPreferredSize(new java.awt.Dimension(100, 23));
-        jPanel1.add(colorPanel, java.awt.BorderLayout.CENTER);
+		jPanel1.setBorder(javax.swing.BorderFactory
+				.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+		colorPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 0);
-        centerPanel.add(jPanel1, gridBagConstraints);
+		colorPanel.setBackground(new java.awt.Color(0, 0, 204));
+		colorPanel.setMaximumSize(new java.awt.Dimension(32767, 23));
+		colorPanel.setMinimumSize(new java.awt.Dimension(10, 23));
+		colorPanel.setPreferredSize(new java.awt.Dimension(100, 23));
+		jPanel1.add(colorPanel, java.awt.BorderLayout.CENTER);
 
-        jPanel2.setLayout(new java.awt.BorderLayout());
+		gridBagConstraints = new java.awt.GridBagConstraints();
+		gridBagConstraints.gridx = 0;
+		gridBagConstraints.gridy = 0;
+		gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+		gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+		gridBagConstraints.weightx = 1.0;
+		gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 0);
+		centerPanel.add(jPanel1, gridBagConstraints);
 
-        jPanel2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        fontLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        fontLabel.setText("This is Thahoma");
-        jPanel2.add(fontLabel, java.awt.BorderLayout.CENTER);
+		jPanel2.setLayout(new java.awt.BorderLayout());
 
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 0);
-        centerPanel.add(jPanel2, gridBagConstraints);
+		jPanel2.setBorder(javax.swing.BorderFactory
+				.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+		fontLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+		fontLabel.setText("This is Thahoma");
+		jPanel2.add(fontLabel, java.awt.BorderLayout.CENTER);
 
-        getContentPane().add(centerPanel, java.awt.BorderLayout.CENTER);
+		gridBagConstraints = new java.awt.GridBagConstraints();
+		gridBagConstraints.gridx = 0;
+		gridBagConstraints.gridy = 1;
+		gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+		gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+		gridBagConstraints.weightx = 1.0;
+		gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 0);
+		centerPanel.add(jPanel2, gridBagConstraints);
 
-        eastPanel.setLayout(new javax.swing.BoxLayout(eastPanel, javax.swing.BoxLayout.X_AXIS));
+		getContentPane().add(centerPanel, java.awt.BorderLayout.CENTER);
 
-        eastPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 10, 10, 10));
-        itemList.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "A really looong name" };
-            public int getSize() { return strings.length; }
-            public Object getElementAt(int i) { return strings[i]; }
-        });
-        itemList.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
-            public void propertyChange(java.beans.PropertyChangeEvent evt) {
-                itemListPropertyChange(evt);
-            }
-        });
-        itemList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
-            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
-                itemListValueChanged(evt);
-            }
-        });
+		eastPanel.setLayout(new javax.swing.BoxLayout(eastPanel,
+				javax.swing.BoxLayout.X_AXIS));
 
-        itemScrollPane.setViewportView(itemList);
+		eastPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 10, 10,
+				10));
+		itemList.setModel(new javax.swing.AbstractListModel() {
+			String[] strings = { "A really looong name" };
 
-        eastPanel.add(itemScrollPane);
+			public int getSize() {
+				return strings.length;
+			}
 
-        getContentPane().add(eastPanel, java.awt.BorderLayout.WEST);
+			public Object getElementAt(int i) {
+				return strings[i];
+			}
+		});
+		itemList.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+			public void propertyChange(java.beans.PropertyChangeEvent evt) {
+				itemListPropertyChange(evt);
+			}
+		});
+		itemList
+				.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+					public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+						itemListValueChanged(evt);
+					}
+				});
 
-        southPanel.setLayout(new java.awt.GridBagLayout());
+		itemScrollPane.setViewportView(itemList);
 
-        southPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        closeButton.setText("Close");
-        closeButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                closeButtonActionPerformed(evt);
-            }
-        });
+		eastPanel.add(itemScrollPane);
 
-        southPanel.add(closeButton, new java.awt.GridBagConstraints());
+		getContentPane().add(eastPanel, java.awt.BorderLayout.WEST);
 
-        getContentPane().add(southPanel, java.awt.BorderLayout.SOUTH);
+		southPanel.setLayout(new java.awt.GridBagLayout());
 
-        pack();
-    }// </editor-fold>//GEN-END:initComponents
+		southPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10,
+				10, 10));
+		closeButton.setText("Close");
+		closeButton.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				closeButtonActionPerformed(evt);
+			}
+		});
 
-        private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
-// TODO add your handling code here:
-            thememanager.removeTheme(thememanager.getCurrentTheme());            
-            updateThemeManager();                
-                    
-                    
-                    
-        }//GEN-LAST:event_deleteButtonActionPerformed
+		southPanel.add(closeButton, new java.awt.GridBagConstraints());
+
+		getContentPane().add(southPanel, java.awt.BorderLayout.SOUTH);
+
+		pack();
+	}// </editor-fold>//GEN-END:initComponents
+
+	private void fontButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_fontButtonActionPerformed
+		// TODO add your handling code here:
+		final FontChooser chooser = new FontChooser();
+		chooser.setGUIFont(thememanager.getCurrentTheme().getItemFont(
+				itemList.getSelectedIndex()));
+		final JDialog dialog = new JDialog(this, "Choose Font");
+		dialog.setLayout(new BorderLayout());
+		dialog.add(chooser, BorderLayout.CENTER);
+
+		JPanel buttonpanel = new JPanel();
+		buttonpanel.setLayout(new GridBagLayout());
+		final JButton cancelButton = new JButton("Cancel");
+		final JButton okButton = new JButton("OK");
+		buttonpanel.add(cancelButton);
+		buttonpanel.add(okButton);
+		ActionListener buttonlistener = new ActionListener() {
+
+			public void actionPerformed(ActionEvent evt) {
+				if (evt.getActionCommand().equals("OK")) {
+					setItemFont(chooser.getGUIFont());
+					dialog.dispose();
+				} else {
+					if (evt.getActionCommand().equals("Cancel")) {
+						dialog.dispose();
+					}
+				}
+
+			}
+
+		};
+		okButton.addActionListener(buttonlistener);
+		cancelButton.addActionListener(buttonlistener);
+		dialog.add(buttonpanel, BorderLayout.SOUTH);
+
+		dialog.pack();
+		dialog.setLocationRelativeTo(this);
+		dialog.setVisible(true);
+		// if (color != null){
+		// colorPanel.setBackground(color);
+		// thememanager.getCurrentTheme().setItemColor(itemList.getSelectedIndex(),
+		// color);
+		// thememanager.setCurrentThem(thememanager.getCurrentTheme());
+		// }
+
+	}// GEN-LAST:event_fontButtonActionPerformed
+
+	private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_deleteButtonActionPerformed
+		// TODO add your handling code here:
+		thememanager.removeTheme(thememanager.getCurrentTheme());
+		updateThemeManager();
+
+	}// GEN-LAST:event_deleteButtonActionPerformed
 
 	private void nameButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_nameButtonActionPerformed
-	// TODO add your handling code here:
+		// TODO add your handling code here:
 		String name = askForName();
 		if (name != null) {
 			thememanager.getCurrentTheme().setName(name);
@@ -259,18 +333,19 @@ public class PreferenceDialog extends javax.swing.JDialog {
 	}// GEN-LAST:event_closeButtonActionPerformed
 
 	private void colorBottonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_colorBottonActionPerformed
-		//JColorChooser chooser = new JColorChooser();
-		Color color = JColorChooser.showDialog(this, "Choose Color", colorPanel.getBackground());
-		if (color != null){
-		System.out.println(color);
-		colorPanel.setBackground(color);
-		thememanager.getCurrentTheme().setItemColor(itemList.getSelectedIndex(), color);
-		thememanager.setCurrentThem(thememanager.getCurrentTheme());
+		// JColorChooser chooser = new JColorChooser();
+		Color color = JColorChooser.showDialog(this, "Choose Color", colorPanel
+				.getBackground());
+		if (color != null) {
+			colorPanel.setBackground(color);
+			thememanager.getCurrentTheme().setItemColor(itemList.getSelectedIndex(),
+					color);
+			thememanager.setCurrentThem(thememanager.getCurrentTheme());
 		}
 	}// GEN-LAST:event_colorBottonActionPerformed
 
 	private void newButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_newButtonActionPerformed
-	// TODO add your handling code here:
+		// TODO add your handling code here:
 		String name = askForName();
 		if (name != null) {
 			thememanager.createNewTheme(name);
@@ -279,16 +354,16 @@ public class PreferenceDialog extends javax.swing.JDialog {
 	}// GEN-LAST:event_newButtonActionPerformed
 
 	private void itemListValueChanged(javax.swing.event.ListSelectionEvent evt) {// GEN-FIRST:event_itemListValueChanged
-	// TODO add your handling code here:
+		// TODO add your handling code here:
 		if (itemList.getSelectedIndex() != -1) {
 			logger.debug("Selected Item is: " + itemList.getSelectedValue());
-			colorPanel.setBackground(thememanager.getCurrentTheme()
-					.getItemColor(itemList.getSelectedIndex()));
+			// colorPanel.setBackground(thememanager.getCurrentTheme().getItemColor(
+			// itemList.getSelectedIndex()));
 			Font itemfont = thememanager.getCurrentTheme().getItemFont(
 					itemList.getSelectedIndex());
 			if (itemfont != null) {
 				fontButton.setEnabled(true);
-				fontLabel.setText("" + itemfont.getFontName());
+				updateColorFont();
 			} else {
 				fontButton.setEnabled(false);
 				fontLabel.setText("");
@@ -297,7 +372,7 @@ public class PreferenceDialog extends javax.swing.JDialog {
 	}// GEN-LAST:event_itemListValueChanged
 
 	private void itemListPropertyChange(java.beans.PropertyChangeEvent evt) {// GEN-FIRST:event_itemListPropertyChange
-	// TODO add your handling code here:
+		// TODO add your handling code here:
 	}// GEN-LAST:event_itemListPropertyChange
 
 	private void themeBoxActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_themeBoxActionPerformed
@@ -309,27 +384,35 @@ public class PreferenceDialog extends javax.swing.JDialog {
 			updateColorFont();
 			if (thememanager.getCurrentTheme().getName().equals("Default")) {
 				deleteButton.setEnabled(false);
-                                nameButton.setEnabled(false);
+				nameButton.setEnabled(false);
 			} else {
 				deleteButton.setEnabled(true);
-                                nameButton.setEnabled(true);
+				nameButton.setEnabled(true);
 			}
 			logger.debug("Set the current theme to: "
 					+ thememanager.getCurrentTheme().getName());
-			//updateThemeManager();
+			// updateThemeManager();
 		}
 	}// GEN-LAST:event_themeBoxActionPerformed
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton colorBotton;
-    private javax.swing.JPanel colorPanel;
-    private javax.swing.JButton deleteButton;
-    private javax.swing.JButton fontButton;
-    private javax.swing.JLabel fontLabel;
-    private javax.swing.JList itemList;
-    private javax.swing.JButton nameButton;
-    private javax.swing.JComboBox themeBox;
-    // End of variables declaration//GEN-END:variables
+	// Variables declaration - do not modify//GEN-BEGIN:variables
+	private javax.swing.JButton colorBotton;
+
+	private javax.swing.JPanel colorPanel;
+
+	private javax.swing.JButton deleteButton;
+
+	private javax.swing.JButton fontButton;
+
+	private javax.swing.JLabel fontLabel;
+
+	private javax.swing.JList itemList;
+
+	private javax.swing.JButton nameButton;
+
+	private javax.swing.JComboBox themeBox;
+
+	// End of variables declaration//GEN-END:variables
 
 	private ThemeManager thememanager;
 
@@ -343,17 +426,17 @@ public class PreferenceDialog extends javax.swing.JDialog {
 			logger.debug("Adding theme " + names[i]);
 			themeBox.addItem(names[i]);
 		}
-		themeBox.setSelectedIndex(themeBox.getItemCount()-1);
-		thememanager.setCurrentThem(thememanager.getTheme(themeBox.getSelectedIndex()));
-		String[] itemnames = thememanager.getCurrentTheme()
-				.getItemNames();
+		themeBox.setSelectedIndex(themeBox.getItemCount() - 1);
+		thememanager.setCurrentThem(thememanager.getTheme(themeBox
+				.getSelectedIndex()));
+		String[] itemnames = thememanager.getCurrentTheme().getItemNames();
 
 		itemList.setListData(itemnames);
 
 		itemList.setSelectedIndex(0);
 		updateColorFont();
-		
-		for (int i = 0; i < listeners.length; i++){
+
+		for (int i = 0; i < listeners.length; i++) {
 			themeBox.addActionListener(listeners[i]);
 		}
 
@@ -363,27 +446,44 @@ public class PreferenceDialog extends javax.swing.JDialog {
 		String name = (String) JOptionPane.showInputDialog(this, "", "Name:",
 				JOptionPane.PLAIN_MESSAGE, null, null, "");
 		while (thememanager.getTheme(name) != null) // this must be null
-													// otherwise the theme name
-													// is already present
+		// otherwise the theme name
+		// is already present
 		{
-			name = (String) JOptionPane.showInputDialog(this, "Name already exists, please select another one:", "Name:",
+			name = (String) JOptionPane.showInputDialog(this,
+					"Name already exists, please select another one:", "Name:",
 					JOptionPane.PLAIN_MESSAGE, null, null, "");
-			if (name == null) break;
+			if (name == null)
+				break;
 		}
 		return name;
 	}
-	
-	private void updateColorFont(){
-		colorPanel
-		.setBackground(thememanager.getCurrentTheme().getItemColor(itemList.getSelectedIndex()));
-Font itemfont = thememanager.getCurrentTheme().getItemFont(itemList.getSelectedIndex());
-if (itemfont != null) {
-	fontButton.setEnabled(true);
-	fontLabel.setText(itemfont.getFontName());
-	fontLabel.setFont(itemfont);
-} else {
-	fontButton.setEnabled(false);
-	fontLabel.setText("");
-}
+
+	private void updateColorFont() {
+		colorPanel.setBackground(thememanager.getCurrentTheme().getItemColor(
+				itemList.getSelectedIndex()));
+		Font itemfont = thememanager.getCurrentTheme().getItemFont(
+				itemList.getSelectedIndex());
+		if (itemfont != null) {
+			fontButton.setEnabled(true);
+			fontLabel.setText(itemfont.getFontName());
+			fontLabel.setFont(itemfont);
+			// fontLabel.set
+		} else {
+			fontButton.setEnabled(false);
+			fontLabel.setText("");
+		}
 	}
+
+	/**
+	 * Sets the font for the currently selected Item
+	 * 
+	 * @param font
+	 *          the font to be set
+	 */
+	private void setItemFont(Font font) {
+		thememanager.getCurrentTheme().setItemFont(itemList.getSelectedIndex(),
+				font);
+		updateColorFont();
+	}
+
 }

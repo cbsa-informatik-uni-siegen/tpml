@@ -820,7 +820,7 @@ public class EditorPanel extends javax.swing.JPanel {
 			out.close();
 
 			// TODO: Christoph, what about this one?
-                        //code.setUndoStatus(false);	
+      code.clearHistory();
                         
 			return true;
 		} catch (IOException e) {

@@ -223,6 +223,12 @@ public class TextEditorPanel extends JPanel implements EditorComponent, Clipboar
 		}
 		this.undoItem.setEnabled(this.undoStatus);
 	}
+	
+	public void clearHistory (){
+		undohistory.clear();
+		redohistory.clear();
+		setUndoStatus(false);
+	}
 
 	public void setDefaultStates() {
 		//setChanged(false);
