@@ -333,6 +333,11 @@ public class CompoundExpression<S, E> extends JComponent {
 	 */
 	@Override
 	protected void paintComponent (Graphics gc) {
+		// make sure that we have an expression renderer
+		if (this.expressionRenderer == null) {
+			return;
+		}
+		
 		// assuming the size of the component will suffice, no testing
 		// of any sizes will happen.
 		
