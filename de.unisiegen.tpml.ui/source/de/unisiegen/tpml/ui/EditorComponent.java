@@ -5,9 +5,13 @@ package de.unisiegen.tpml.ui;
  * window.
  * 
  * @author Christoph Fehling
- * 
+ * @version $Rev$
  */
 public interface EditorComponent {
+	//
+	// Accessors
+	//
+	
 	/**
 	 * Status of the next function.
 	 * 
@@ -16,12 +20,11 @@ public interface EditorComponent {
 	public boolean isNextStatus();
 
 	/**
-	 * Sets the status of the next function
+	 * Returns <code>true</code> if <i>Pong</i> can be played.
 	 * 
-	 * @param nextStatus
-	 *            true if the next function should be enabled
+	 * @return <code>true</code> if <i>Pong</i> can be played.
 	 */
-	public void setNextStatus(boolean nextStatus);
+	public boolean isPongStatus();
 
 	/**
 	 * Status of the redo function.
@@ -31,28 +34,18 @@ public interface EditorComponent {
 	public boolean isRedoStatus();
 
 	/**
-	 * Sets the status of the redo function
-	 * 
-	 * @param redoStatus
-	 *            true if the redo function should be enabled
-	 */
-	public void setRedoStatus(boolean redoStatus);
-
-	/**
 	 * Status of the undo function.
 	 * 
 	 * @return true if undo is enabled.
 	 */
 	public boolean isUndoStatus();
 
-	/**
-	 * Sets the status of the undo function
-	 * 
-	 * @param redoStatus
-	 *            true if the undo function should be enabled
-	 */
-	public void setUndoStatus(boolean undoStatus);
-
+	
+	
+	//
+	// Primitives
+	//
+	
 	/**
 	 * Sets the default states for the editor functions
 	 * 

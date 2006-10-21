@@ -230,6 +230,15 @@ public class TestEditorComponent extends javax.swing.JPanel implements EditorCom
         firePropertyChange ("nextStatus", this.nextStatus, nextStatus);
         this.nextStatus = nextStatus;
     }
+    
+    /**
+     * {@inheritDoc}
+     *
+     * @see de.unisiegen.tpml.ui.EditorComponent#isPongStatus()
+     */
+    public boolean isPongStatus() {
+    	return false;
+    }
 
     public boolean isRedoStatus() {
         return redoStatus;        

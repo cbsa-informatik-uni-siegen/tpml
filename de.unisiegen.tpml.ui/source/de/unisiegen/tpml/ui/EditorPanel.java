@@ -6,7 +6,10 @@
 
 package de.unisiegen.tpml.ui;
 
+import de.unisiegen.tpml.graphics.pong.PongView;
 import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Frame;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
@@ -53,11 +56,17 @@ public class EditorPanel extends javax.swing.JPanel {
 		this.window = window;
 		// setting the default button states
 		nextButton.setVisible(false);
-		actionToolBar.setVisible(false);
+                pongButton.setVisible(false);
 		smallstepButton.setVisible(false);
 		bigstepButton.setVisible(false);
 		typecheckerButton.setVisible(false);
 		//finished setting the default states
+
+                // hack to get consistent heights
+                codeButton.setPreferredSize(new Dimension(codeButton.getPreferredSize().width, pongButton.getPreferredSize().height));
+                smallstepButton.setPreferredSize(new Dimension(smallstepButton.getPreferredSize().width, pongButton.getPreferredSize().height));
+                bigstepButton.setPreferredSize(new Dimension(bigstepButton.getPreferredSize().width, pongButton.getPreferredSize().height));
+                typecheckerButton.setPreferredSize(new Dimension(typecheckerButton.getPreferredSize().width, pongButton.getPreferredSize().height));
 		
 		this.language = language;
 		
@@ -94,7 +103,14 @@ public class EditorPanel extends javax.swing.JPanel {
 	// <editor-fold defaultstate="collapsed" desc=" Generated Code
     // <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:initComponents
     private void initComponents() {
+        javax.swing.JToolBar actionToolBar;
+        javax.swing.JToolBar editorToolBar;
+        java.awt.GridBagConstraints gridBagConstraints;
+        javax.swing.JPanel toolBarPanel;
+
         jSeparator1 = new javax.swing.JSeparator();
+        editorPanel = new javax.swing.JPanel();
+        toolBarPanel = new javax.swing.JPanel();
         editorToolBar = new javax.swing.JToolBar();
         codeButton = new javax.swing.JToggleButton();
         smallstepButton = new javax.swing.JToggleButton();
@@ -102,7 +118,7 @@ public class EditorPanel extends javax.swing.JPanel {
         typecheckerButton = new javax.swing.JToggleButton();
         actionToolBar = new javax.swing.JToolBar();
         nextButton = new javax.swing.JButton();
-        editorPanel = new javax.swing.JPanel();
+        pongButton = new javax.swing.JButton();
 
         setLayout(new java.awt.BorderLayout());
 
@@ -112,6 +128,14 @@ public class EditorPanel extends javax.swing.JPanel {
             }
         });
 
+        editorPanel.setLayout(new java.awt.BorderLayout());
+
+        add(editorPanel, java.awt.BorderLayout.CENTER);
+
+        toolBarPanel.setLayout(new java.awt.GridBagLayout());
+
+        editorToolBar.setFloatable(false);
+        codeButton.setFont(new java.awt.Font("Dialog", 0, 12));
         codeButton.setText("Source");
         codeButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -121,6 +145,7 @@ public class EditorPanel extends javax.swing.JPanel {
 
         editorToolBar.add(codeButton);
 
+        smallstepButton.setFont(new java.awt.Font("Dialog", 0, 12));
         smallstepButton.setText("Small Step");
         smallstepButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -130,6 +155,7 @@ public class EditorPanel extends javax.swing.JPanel {
 
         editorToolBar.add(smallstepButton);
 
+        bigstepButton.setFont(new java.awt.Font("Dialog", 0, 12));
         bigstepButton.setText("Big Step");
         bigstepButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -139,6 +165,7 @@ public class EditorPanel extends javax.swing.JPanel {
 
         editorToolBar.add(bigstepButton);
 
+        typecheckerButton.setFont(new java.awt.Font("Dialog", 0, 12));
         typecheckerButton.setText("Type Checker");
         typecheckerButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -148,8 +175,19 @@ public class EditorPanel extends javax.swing.JPanel {
 
         editorToolBar.add(typecheckerButton);
 
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.ipadx = 32;
+        gridBagConstraints.weighty = 1.0;
+        toolBarPanel.add(editorToolBar, gridBagConstraints);
+
+        actionToolBar.setFloatable(false);
         nextButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/next24.png")));
         nextButton.setToolTipText("Guess");
+        nextButton.setBorderPainted(false);
+        nextButton.setOpaque(false);
         nextButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 nextButtonActionPerformed(evt);
@@ -158,15 +196,34 @@ public class EditorPanel extends javax.swing.JPanel {
 
         actionToolBar.add(nextButton);
 
-        editorToolBar.add(actionToolBar);
+        pongButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/pong16.gif")));
+        pongButton.setToolTipText(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("PongTooltip"));
+        pongButton.setBorderPainted(false);
+        pongButton.setOpaque(false);
+        pongButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pongButtonActionPerformed(evt);
+            }
+        });
 
-        add(editorToolBar, java.awt.BorderLayout.NORTH);
+        actionToolBar.add(pongButton);
 
-        editorPanel.setLayout(new java.awt.BorderLayout());
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        toolBarPanel.add(actionToolBar, gridBagConstraints);
 
-        add(editorPanel, java.awt.BorderLayout.CENTER);
+        add(toolBarPanel, java.awt.BorderLayout.NORTH);
 
     }// </editor-fold>//GEN-END:initComponents
+
+    private void pongButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pongButtonActionPerformed
+        PongView pongView = new PongView((Frame)getTopLevelAncestor());
+        pongView.setVisible(true);
+    }//GEN-LAST:event_pongButtonActionPerformed
 
         private void tabChange(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tabChange
 // TODO add your handling code here:
@@ -209,13 +266,12 @@ public class EditorPanel extends javax.swing.JPanel {
 	}// GEN-LAST:event_codeButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JToolBar actionToolBar;
     private javax.swing.JToggleButton bigstepButton;
     private javax.swing.JToggleButton codeButton;
     private javax.swing.JPanel editorPanel;
-    private javax.swing.JToolBar editorToolBar;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JButton nextButton;
+    private javax.swing.JButton pongButton;
     private javax.swing.JToggleButton smallstepButton;
     private javax.swing.JToggleButton typecheckerButton;
     // End of variables declaration//GEN-END:variables
@@ -294,7 +350,9 @@ public class EditorPanel extends javax.swing.JPanel {
 	 */
 	private void componentStatusChanged(String ident, Object newValue) {
 		if (ident.equals("nextStatus")) {
-			nextButton.setEnabled((Boolean) newValue);
+			this.nextButton.setEnabled((Boolean) newValue);
+		} else if (ident.equals("pongStatus")) {
+                        this.pongButton.setVisible((Boolean) newValue);
 		} else if (ident.equals("redoStatus")) {
 			setRedoStatus((Boolean) newValue);
 		} else if (ident.equals("title")) {
@@ -311,7 +369,9 @@ public class EditorPanel extends javax.swing.JPanel {
 	private void updateComponentStates(EditorComponent comp) {
 		setRedoStatus(comp.isRedoStatus());
 		setUndoStatus(comp.isUndoStatus());
-		nextButton.setEnabled(comp.isNextStatus());
+		this.nextButton.setEnabled(comp.isNextStatus());
+                this.nextButton.setVisible(comp != this.code);
+                this.pongButton.setVisible(comp.isPongStatus());
 	}
 
 	/**
@@ -456,10 +516,7 @@ public class EditorPanel extends javax.swing.JPanel {
 		deselectButtons();
 		button.setSelected(true);
 		button.setVisible(true);
-		//if (comp.isNextStatus()) {
-			nextButton.setVisible(true);
-			actionToolBar.setVisible(true);
-		//}
+    		nextButton.setVisible(true);
 	}
 
 	/**
@@ -763,7 +820,9 @@ public class EditorPanel extends javax.swing.JPanel {
 			out.flush();
 			out.close();
 
-			code.setUndoStatus(false);	
+			// TODO: Christoph, what about this one?
+                        //code.setUndoStatus(false);	
+                        
 			return true;
 		} catch (IOException e) {
 			logger.error("Could not write to file", e);

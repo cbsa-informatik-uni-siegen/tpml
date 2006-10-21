@@ -13,7 +13,6 @@ import org.apache.log4j.Logger;
 import de.unisiegen.tpml.core.CannotRedoException;
 import de.unisiegen.tpml.core.CannotUndoException;
 import de.unisiegen.tpml.core.ProofModel;
-import de.unisiegen.tpml.graphics.Messages;
 import de.unisiegen.tpml.graphics.ProofView;
 import de.unisiegen.tpml.ui.EditorComponent;
 
@@ -26,25 +25,65 @@ import de.unisiegen.tpml.ui.EditorComponent;
  * 
  */
 public class ProofViewComponent extends JComponent implements EditorComponent {
-
+	//
+	// Constants
+	//
+	
+	/**
+	 * The {@link Logger} for this class.
+	 */
+	private static final Logger logger = Logger.getLogger(ProofViewComponent.class);
+	
 	/**
 	 * The unique serialization identifier.
 	 */
 	private static final long serialVersionUID = 8218146393722855647L;
 
-	private static final Logger logger = Logger
-			.getLogger(ProofViewComponent.class);
+	
+	
+	//
+	// Attributes
+	//
 
+	/**
+	 * TODO Add documentation here.
+	 */
 	private ProofView view;
 
+	/**
+	 * TODO Add documentation here.
+	 */
 	private ProofModel model;
 
+	/**
+	 * TODO Add documentation here.
+	 */
 	private boolean nextStatus;
 
+	/**
+	 * TODO Add documentation here.
+	 */
+	private boolean pongStatus;
+
+	/**
+	 * TODO Add documentation here.
+	 */
 	private boolean redoStatus;
 
+	/**
+	 * TODO Add documentation here.
+	 */
 	private boolean undoStatus;
-
+	
+	
+	
+	//
+	// Constructor
+	//
+	
+	/**
+	 * TODO Add documentation here.
+	 */
 	public ProofViewComponent(ProofView view, ProofModel model) {
 		if (model == null || view == null) {
 			throw new NullPointerException("model or view are null");
@@ -57,6 +96,12 @@ public class ProofViewComponent extends JComponent implements EditorComponent {
 		add((JComponent) view, BorderLayout.CENTER);
 	}
 
+	
+	
+	//
+	// Accessors
+	//
+	
 	/**
 	 * Returns the Next Status of the Component.
 	 * 
@@ -65,20 +110,46 @@ public class ProofViewComponent extends JComponent implements EditorComponent {
 	 * @see de.unisiegen.tpml.ui.EditorComponent#isNextStatus()
 	 */
 	public boolean isNextStatus() {
-		return nextStatus;
+		return this.nextStatus;
 	}
 
 	/**
 	 * Sets the Next Status of the Component.
+	 *
+	 * @param nextStatus the new setting for the <code>nextStatus</code> property.
 	 * 
-	 * {@inheritDoc}
-	 * 
-	 * @see de.unisiegen.tpml.ui.EditorComponent#setNextStatus(boolean)
+	 * @see #isNextStatus()
 	 */
-	public void setNextStatus(boolean nextStatus) {
-
-		firePropertyChange("nextStatus", this.nextStatus, nextStatus);
-		this.nextStatus = nextStatus;
+	private void setNextStatus(boolean nextStatus) {
+		if (this.nextStatus != nextStatus) {
+			boolean oldNextStatus = this.nextStatus;
+			this.nextStatus = nextStatus;
+			firePropertyChange("nextStatus", oldNextStatus, nextStatus);
+		}
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see de.unisiegen.tpml.ui.EditorComponent#isPongStatus()
+	 */
+	public boolean isPongStatus() {
+		return this.pongStatus;
+	}
+	
+	/**
+	 * Sets the Pong Status of the Component.
+	 * 
+	 * @param pongStatus the new setting for the <code>pongStatus</code> property.
+	 * 
+	 * @see #isPongStatus()
+	 */
+	private void setPongStatus(boolean pongStatus) {
+		if (this.pongStatus != pongStatus) {
+			boolean oldPongStatus = this.pongStatus;
+			this.pongStatus = pongStatus;
+			firePropertyChange("pongStatus", oldPongStatus, pongStatus);
+		}
 	}
 
 	/**
@@ -89,20 +160,22 @@ public class ProofViewComponent extends JComponent implements EditorComponent {
 	 * @see de.unisiegen.tpml.ui.EditorComponent#isRedoStatus()
 	 */
 	public boolean isRedoStatus() {
-		return redoStatus;
+		return this.redoStatus;
 	}
 
 	/**
 	 * Sets the Redo Status of the Component.
 	 * 
-	 * {@inheritDoc}
-	 * 
-	 * @see de.unisiegen.tpml.ui.EditorComponent#setRedoStatus(boolean)
+	 * @param redoStatus the new setting for the <code>redoStatus</code> property.
+	 *
+	 * @see #isRedoStatus()
 	 */
-	public void setRedoStatus(boolean redoStatus) {
-		firePropertyChange("redoStatus", this.redoStatus, redoStatus);
-		this.redoStatus = redoStatus;
-
+	private void setRedoStatus(boolean redoStatus) {
+		if (this.redoStatus != redoStatus) {
+			boolean oldRedoStatus = this.redoStatus;
+			this.redoStatus = redoStatus;
+			firePropertyChange("redoStatus", oldRedoStatus, redoStatus);
+		}
 	}
 
 	/**
@@ -113,22 +186,30 @@ public class ProofViewComponent extends JComponent implements EditorComponent {
 	 * @see de.unisiegen.tpml.ui.EditorComponent#isUndoStatus()
 	 */
 	public boolean isUndoStatus() {
-		return undoStatus;
+		return this.undoStatus;
 	}
 
 	/**
 	 * Sets the Undo Status of the Component.
+	 *
+	 * @param undoStatus the new setting for the <code>undoStatus</code> property.
 	 * 
-	 * {@inheritDoc}
-	 * 
-	 * @see de.unisiegen.tpml.ui.EditorComponent#setUndoStatus(boolean)
+	 * @see #isUndoStatus()
 	 */
-	public void setUndoStatus(boolean undoStatus) {
-		firePropertyChange("undoStatus", this.undoStatus, undoStatus);
-		this.undoStatus = undoStatus;
-
+	private void setUndoStatus(boolean undoStatus) {
+		if (this.undoStatus != undoStatus) {
+			boolean oldUndoStatus = this.undoStatus;
+			this.undoStatus = undoStatus;
+			firePropertyChange("undoStatus", oldUndoStatus, undoStatus);
+		}
 	}
 
+	
+	
+	//
+	// Primitives
+	//
+	
 	/**
 	 * Sets the Default States of the Component's functions.
 	 * Attention: For now the NextStatus is alsways enabled.
@@ -138,9 +219,9 @@ public class ProofViewComponent extends JComponent implements EditorComponent {
 	 * @see de.unisiegen.tpml.ui.EditorComponent#setDefaultStates()
 	 */
 	public void setDefaultStates() {
-		setNextStatus(!model.isFinished());
-		setRedoStatus(model.isRedoable());
-		setUndoStatus(model.isUndoable());
+		setNextStatus(!this.model.isFinished());
+		setRedoStatus(this.model.isRedoable());
+		setUndoStatus(this.model.isUndoable());
 	}
 
 	/**
@@ -152,9 +233,8 @@ public class ProofViewComponent extends JComponent implements EditorComponent {
 	 */
 	public void handleNext() {
 		try {
-			view.guess();
+			this.view.guess();
 		} catch (Exception e) {
-			//logger.error("Guess could not be executed", e);
 			JOptionPane.showMessageDialog(getTopLevelAncestor(), MessageFormat.format(java.util.ResourceBundle.getBundle(
 			"de/unisiegen/tpml/ui/ui").getString("NodeComponent.5"), e.getMessage()), java.util.ResourceBundle.getBundle(
 			"de/unisiegen/tpml/ui/ui").getString("NodeComponent.6"), JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
@@ -171,11 +251,10 @@ public class ProofViewComponent extends JComponent implements EditorComponent {
 	 */
 	public void handleRedo() {
 		try {
-			model.redo();
+			this.model.redo();
 		} catch (CannotRedoException e) {
 			logger.error("Can not redo on this model", e);
 		}
-
 	}
 
 	/**
@@ -187,7 +266,7 @@ public class ProofViewComponent extends JComponent implements EditorComponent {
 	 */
 	public void handleUndo() {
 		try {
-			model.undo();
+			this.model.undo();
 		} catch (CannotUndoException e) {
 			logger.error("Can not undo on this model", e);
 		}
@@ -196,28 +275,35 @@ public class ProofViewComponent extends JComponent implements EditorComponent {
 
 	/**
 	 * Handles Property Changes fired by the model.
-	 * it supports:
-	 * 	undoable, redoable, and finished.
-	 *
-	 * @author Christoph Fehling
-	 * @version $Rev$ 
-	 *
+	 * it supports:	cheating, undoable, redoable, and finished.
 	 */
 	private class ModelChangeListener implements PropertyChangeListener {
-
 		public void propertyChange(PropertyChangeEvent evt) {
-			if (evt.getPropertyName().equals("undoable")) {
+			// determine the name of the changed property
+			String propertyName = evt.getPropertyName().intern();
+			
+			// the undo/redo/next stati
+			if (propertyName == "undoable") {
 				setUndoStatus((Boolean) evt.getNewValue());
-			} else if (evt.getPropertyName().equals("redoable")) {
+			} else if (propertyName == "redoable") {
 				setRedoStatus((Boolean) evt.getNewValue());
-			} else if (evt.getPropertyName().equals("finished")) {
+			} else if (propertyName == "finished") {
 				setNextStatus(!(Boolean) evt.getNewValue());
 			}
+			
+			// the pong status
+			if (propertyName == "cheating" || propertyName == "finished") {
+				setPongStatus(!ProofViewComponent.this.model.isCheating() && ProofViewComponent.this.model.isFinished());
+			}
 		}
-
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see de.unisiegen.tpml.ui.EditorComponent#setAdvanced(boolean)
+	 */
 	public void setAdvanced(boolean status) {
-		view.setAdvanced(status);
+		this.view.setAdvanced(status);
 	}
 }

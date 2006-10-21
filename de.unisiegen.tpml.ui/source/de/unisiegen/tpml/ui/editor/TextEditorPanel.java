@@ -38,9 +38,16 @@ import de.unisiegen.tpml.ui.SideBarListener;
  * @author Christoph Fehling
  * @version $Rev$
  * 
+ * @see de.unisiegen.tpml.ui.EditorComponent
  */
 public class TextEditorPanel extends JPanel implements EditorComponent, ClipboardOwner {
-
+	//
+	// Constants
+	//
+	
+	/**
+	 * The {@link Logger} for this class.
+	 */
 	private static final Logger logger = Logger.getLogger(TextEditorPanel.class);
 
 	/**
@@ -48,6 +55,12 @@ public class TextEditorPanel extends JPanel implements EditorComponent, Clipboar
 	 */
 	private static final long serialVersionUID = -4886621661465144817L;
 
+	
+	
+	//
+	// Attributes
+	//
+	
 	private StyledLanguageEditor editor;
 
 	private StyledLanguageDocument document;
@@ -60,15 +73,15 @@ public class TextEditorPanel extends JPanel implements EditorComponent, Clipboar
 	 * The initial content of this file
 	 * 
 	 */
-	private String initialContent;
+	private String initialContent = "";
 
-	private String currentContent;
+	private String currentContent = "";
 
-	private Stack<String> undohistory;
+	private Stack<String> undohistory = new Stack<String>();
 
-	private Stack<String> redohistory;
+	private Stack<String> redohistory = new Stack<String>();
 
-	private DocumentListener doclistener;
+	private TextDocumentListener doclistener = new TextDocumentListener();
 
 	private boolean nextStatus;
 
@@ -95,9 +108,9 @@ public class TextEditorPanel extends JPanel implements EditorComponent, Clipboar
 	}
 
 	private void initComponents(Language language) {
-		editor = new StyledLanguageEditor();
+		this.editor = new StyledLanguageEditor();
 
-		document = new StyledLanguageDocument(language);
+		this.document = new StyledLanguageDocument(language);
 		
 		JPanel compoundPanel = new JPanel ();
 		compoundPanel.setLayout(new BorderLayout ());
@@ -116,51 +129,44 @@ public class TextEditorPanel extends JPanel implements EditorComponent, Clipboar
 		compoundPanel.add(this.sideBar, BorderLayout.WEST);
 		
 
-		doclistener = new TextDocumentListener();
-		initialContent = "";
-		currentContent = "";
-		undohistory = new Stack<String>();
-		redohistory = new Stack<String>();
+		this.scrollpane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+		this.scrollpane.setViewportView(this.editor);
 
-		scrollpane
-				.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-		scrollpane.setViewportView(editor);
+		this.editor.setDocument(this.document);
+		this.editor.setAutoscrolls(false);
 
-		editor.setDocument(document);
-		editor.setAutoscrolls(false);
+		this.document.addDocumentListener(this.doclistener);
 
-		document.addDocumentListener(doclistener);
-
-		undohistory.push("");
+		this.undohistory.push("");
 
 		// the popup menu and listeners
-		popup = new JPopupMenu();
+		this.popup = new JPopupMenu();
 		MenuListener menulistener = new MenuListener();
-		undoItem = new JMenuItem(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("Undo"));
-		redoItem = new JMenuItem(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("Redo"));
+		this.undoItem = new JMenuItem(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("Undo"));
+		this.redoItem = new JMenuItem(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("Redo"));
 		JSeparator separator = new JSeparator();
 		JMenuItem copyItem = new JMenuItem(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("Copy"));
 		JMenuItem cutItem = new JMenuItem(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("Cut"));
 		JMenuItem pasteItem = new JMenuItem(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("Paste"));
-		undoItem.addActionListener(menulistener);
-		undoItem.setEnabled(false);
-		undoItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/undo16.gif")));
-		redoItem.addActionListener(menulistener);
-		redoItem.setEnabled(false);
-		redoItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/redo16.gif")));
+		this.undoItem.addActionListener(menulistener);
+		this.undoItem.setEnabled(false);
+		this.undoItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/undo16.gif")));
+		this.redoItem.addActionListener(menulistener);
+		this.redoItem.setEnabled(false);
+		this.redoItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/redo16.gif")));
 		copyItem.addActionListener(menulistener);
 		copyItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/copy16.gif")));
 		cutItem.addActionListener(menulistener);
 		cutItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/cut16.gif")));
 		pasteItem.addActionListener(menulistener);
 		pasteItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/paste16.gif")));
-		popup.add(undoItem);
-		popup.add(redoItem);
-		popup.add(separator);
-		popup.add(copyItem);
-		popup.add(cutItem);
-		popup.add(pasteItem);
-		editor.addMouseListener(new PopupListener());
+		this.popup.add(this.undoItem);
+		this.popup.add(this.redoItem);
+		this.popup.add(separator);
+		this.popup.add(copyItem);
+		this.popup.add(cutItem);
+		this.popup.add(pasteItem);
+		this.editor.addMouseListener(new PopupListener());
 
 		add(compoundPanel, BorderLayout.CENTER);
 	}
@@ -170,32 +176,52 @@ public class TextEditorPanel extends JPanel implements EditorComponent, Clipboar
 	}
 
 	public boolean isNextStatus() {
-		return nextStatus;
+		return this.nextStatus;
 	}
 
-	public void setNextStatus(boolean nextStatus) {
-		firePropertyChange("nextStatus", this.nextStatus, nextStatus);
-		this.nextStatus = nextStatus;
+	private void setNextStatus(boolean nextStatus) {
+		if (this.nextStatus != nextStatus) {
+			boolean oldNextStatus = this.nextStatus;
+			this.nextStatus = nextStatus;
+			firePropertyChange("nextStatus", oldNextStatus, nextStatus);
+		}
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * This method always returns false, because <i>Pong</i> cannot be played from the editor.
+	 *
+	 * @see de.unisiegen.tpml.ui.EditorComponent#isPongStatus()
+	 */
+	public boolean isPongStatus() {
+		return false;
 	}
 
 	public boolean isRedoStatus() {
-		return redoStatus;
+		return this.redoStatus;
 	}
 
-	public void setRedoStatus(boolean redoStatus) {
-		firePropertyChange("redoStatus", this.redoStatus, redoStatus);
-		this.redoStatus = redoStatus;
-		redoItem.setEnabled(this.redoStatus);
+	private void setRedoStatus(boolean redoStatus) {
+		if (this.redoStatus != redoStatus) {
+			boolean oldRedoStatus = this.redoStatus;
+			this.redoStatus = redoStatus;
+			firePropertyChange("redoStatus", oldRedoStatus, redoStatus);
+		}
+		this.redoItem.setEnabled(this.redoStatus);
 	}
 
 	public boolean isUndoStatus() {
-		return undoStatus;
+		return this.undoStatus;
 	}
 
-	public void setUndoStatus(boolean undoStatus) {
-		firePropertyChange("undoStatus", this.undoStatus, undoStatus);
-		this.undoStatus = undoStatus;
-		undoItem.setEnabled(this.undoStatus);
+	private void setUndoStatus(boolean undoStatus) {
+		if (this.undoStatus != undoStatus) {
+			boolean oldUndoStatus = this.undoStatus;
+			this.undoStatus = undoStatus;
+			firePropertyChange("undoStatus", oldUndoStatus, undoStatus);
+		}
+		this.undoItem.setEnabled(this.undoStatus);
 	}
 
 	public void setDefaultStates() {
@@ -211,12 +237,12 @@ public class TextEditorPanel extends JPanel implements EditorComponent, Clipboar
 //	}
 
 	public boolean isChanged() {
-		return changed;
+		return this.changed;
 	}
 
 	public String getText() {
 		try {
-			return document.getText(0, document.getLength());
+			return this.document.getText(0, this.document.getLength());
 		} catch (BadLocationException e) {
 			logger.error("Cannot get Text from document", e);
 		}
@@ -224,25 +250,25 @@ public class TextEditorPanel extends JPanel implements EditorComponent, Clipboar
 	}
 
 	public String getSelectedText() {
-		return editor.getSelectedText();
+		return this.editor.getSelectedText();
 	}
 
 	public void insertText(String text) {
 		try {
-			document.insertString(editor.getCaretPosition(), text, null);
+			this.document.insertString(this.editor.getCaretPosition(), text, null);
 		} catch (BadLocationException e) {
 			logger.error("Text could not be inserted into document", e);
 		}
 	}
 
 	public void removeSelectedText() {
-		int start = editor.getSelectionStart();
-		int end = editor.getSelectionEnd();
+		int start = this.editor.getSelectionStart();
+		int end = this.editor.getSelectionEnd();
 		try {
 			if (start < end) {
-				document.remove(start, (end-start));
+				this.document.remove(start, (end-start));
 			} else {
-				document.remove(end, (start-end));
+				this.document.remove(end, (start-end));
 			}
 		} catch (BadLocationException e) {
 			logger.error("Cannot remove text from document", e);
@@ -251,21 +277,21 @@ public class TextEditorPanel extends JPanel implements EditorComponent, Clipboar
 
 	public void setText(String text) {
 		try {
-			initialContent = text;
-			currentContent = text;
+			this.initialContent = text;
+			this.currentContent = text;
 
-			document.removeDocumentListener(doclistener);
+			this.document.removeDocumentListener(this.doclistener);
 
-			document.remove(0, document.getLength());
-			document.insertString(0, text, null);
+			this.document.remove(0, this.document.getLength());
+			this.document.insertString(0, text, null);
 			setRedoStatus(false);
-			redohistory.clear();
+			this.redohistory.clear();
 			setUndoStatus(false);
-			undohistory.clear();
+			this.undohistory.clear();
 
-			undohistory.push(text);
+			this.undohistory.push(text);
 
-			document.addDocumentListener(doclistener);
+			this.document.addDocumentListener(this.doclistener);
 		} catch (BadLocationException e) {
 			logger.error("Cannot set Text of the document", e);
 		}
@@ -273,7 +299,7 @@ public class TextEditorPanel extends JPanel implements EditorComponent, Clipboar
 	}
 
 	public StyledLanguageEditor getEditor() {
-		return editor;
+		return this.editor;
 	}
 
 	/**
@@ -290,16 +316,17 @@ public class TextEditorPanel extends JPanel implements EditorComponent, Clipboar
 
 	public void handleRedo() {
 		try {
-			document.removeDocumentListener(doclistener);
+			this.document.removeDocumentListener(this.doclistener);
 
-			undohistory.push(document.getText(0, document.getLength()));
-			document.remove(0, document.getLength());
-			document.insertString(0, redohistory.pop(), null);
+			this.undohistory.push(this.document.getText(0, this.document.getLength()));
+			this.document.remove(0, this.document.getLength());
+			this.document.insertString(0, this.redohistory.pop(), null);
 
 			setUndoStatus(true);
-			document.addDocumentListener(doclistener);
-			if (redohistory.size() == 0)
+			this.document.addDocumentListener(this.doclistener);
+			if (this.redohistory.size() == 0) {
 				setRedoStatus(false);
+			}
 		} catch (BadLocationException e) {
 			logger.error("Cannot handle an undo", e);
 		}
@@ -307,25 +334,25 @@ public class TextEditorPanel extends JPanel implements EditorComponent, Clipboar
 
 	public void handleUndo() {
 		try {
-			document.removeDocumentListener(doclistener);
+			this.document.removeDocumentListener(this.doclistener);
 
-			String doctext = document.getText(0, document.getLength());
+			String doctext = this.document.getText(0, this.document.getLength());
 			String historytext;
 
-			if (undohistory.peek().equals(initialContent)) {
-				historytext = undohistory.peek();
+			if (this.undohistory.peek().equals(this.initialContent)) {
+				historytext = this.undohistory.peek();
 				setUndoStatus(false);
 			} else {
-				historytext = undohistory.pop();
+				historytext = this.undohistory.pop();
 			}
 
-			document.remove(0, document.getLength());
-			document.insertString(0, historytext, null);
+			this.document.remove(0, this.document.getLength());
+			this.document.insertString(0, historytext, null);
 
-			redohistory.add(doctext);
+			this.redohistory.add(doctext);
 			setRedoStatus(true);
 
-			document.addDocumentListener(doclistener);
+			this.document.addDocumentListener(this.doclistener);
 		} catch (BadLocationException e) {
 			logger.error("Cannot handle an undo", e);
 		}
@@ -363,7 +390,7 @@ public class TextEditorPanel extends JPanel implements EditorComponent, Clipboar
 	}
 
 	public StyledLanguageDocument getDocument() {
-		return document;
+		return this.document;
 	}
 
 	private class TextDocumentListener implements DocumentListener {
@@ -374,12 +401,12 @@ public class TextEditorPanel extends JPanel implements EditorComponent, Clipboar
 				String doctext = arg0.getDocument().getText(0,
 						arg0.getDocument().getLength());
 				if (doctext.endsWith(" ")) {
-					undohistory.push(doctext);
+					TextEditorPanel.this.undohistory.push(doctext);
 					logger.debug("history added: " + doctext);
 				}
 				setRedoStatus(false);
-				redohistory.clear();
-				currentContent = doctext;
+				TextEditorPanel.this.redohistory.clear();
+				TextEditorPanel.this.currentContent = doctext;
 			} catch (BadLocationException e) {
 				logger.error("Failed to add text to undo history", e);
 			}
@@ -389,11 +416,10 @@ public class TextEditorPanel extends JPanel implements EditorComponent, Clipboar
 			logger.debug("Text removed from document");
 			try {
 				TextEditorPanel.this.setUndoStatus(true);
-				undohistory.push(currentContent);
+				TextEditorPanel.this.undohistory.push(TextEditorPanel.this.currentContent);
 				setRedoStatus(false);
-				redohistory.clear();
-				currentContent = (String) arg0.getDocument().getText(0,
-						arg0.getDocument().getLength());
+				TextEditorPanel.this.redohistory.clear();
+				TextEditorPanel.this.currentContent = arg0.getDocument().getText(0, arg0.getDocument().getLength());
 			} catch (BadLocationException e) {
 				logger.error("Failed to add text to undo history", e);
 			}
@@ -405,17 +431,19 @@ public class TextEditorPanel extends JPanel implements EditorComponent, Clipboar
 	}
 
 	private class PopupListener extends MouseAdapter {
+		@Override
 		public void mousePressed(MouseEvent e) {
 			maybeShowPopup(e);
 		}
 
+		@Override
 		public void mouseReleased(MouseEvent e) {
 			maybeShowPopup(e);
 		}
 
 		private void maybeShowPopup(MouseEvent e) {
 			if (e.isPopupTrigger()) {
-				popup.show(e.getComponent(), e.getX(), e.getY());
+				TextEditorPanel.this.popup.show(e.getComponent(), e.getX(), e.getY());
 			}
 		}
 	}
