@@ -16,6 +16,8 @@ import de.unisiegen.tpml.core.ProofNode;
 import de.unisiegen.tpml.core.bigstep.BigStepProofModel;
 import de.unisiegen.tpml.core.bigstep.BigStepProofNode;
 import de.unisiegen.tpml.graphics.AbstractProofComponent;
+import de.unisiegen.tpml.graphics.renderer.EnvironmentRenderer;
+import de.unisiegen.tpml.graphics.renderer.PrettyStringRenderer;
 import de.unisiegen.tpml.graphics.renderer.TreeArrowRenderer;
 import de.unisiegen.tpml.graphics.tree.TreeNodeLayout;
 
@@ -61,12 +63,6 @@ public class BigStepComponent extends AbstractProofComponent implements Scrollab
 	
 	
 	/**
-	 * Whether the used had pressed one of the guess buttons. 
-	 */
-	private boolean											wasGuessed;
-	
-	
-	/**
 	 * Constructor.<br>
 	 * <br>
 	 * The first <i>treeContentChanged</i> is called manualy at the end of
@@ -108,7 +104,6 @@ public class BigStepComponent extends AbstractProofComponent implements Scrollab
 		while (enumeration.hasMoreElements()) {
 			ProofNode node = enumeration.nextElement();
 			if (!node.isProven()) {
-				this.wasGuessed = true;
 				this.proofModel.guess(node);
 				return;
 			}
@@ -151,9 +146,6 @@ public class BigStepComponent extends AbstractProofComponent implements Scrollab
 			nodeComponent.addBigStepNodeListener(new BigStepNodeListener () {
 				public void nodeChanged (BigStepNodeComponent node) {
 					BigStepComponent.this.relayout();
-				}
-				public void nodeGuessed () {
-					BigStepComponent.this.wasGuessed = true;
 				}
 			});
 		}
@@ -436,10 +428,6 @@ public class BigStepComponent extends AbstractProofComponent implements Scrollab
 		this.jumpNode = null;
 	}
 	
-	public boolean wasGuessed () {
-		return this.wasGuessed;
-	}
-
 	
 	/*
 	 * Implementation of the Scrollable interface

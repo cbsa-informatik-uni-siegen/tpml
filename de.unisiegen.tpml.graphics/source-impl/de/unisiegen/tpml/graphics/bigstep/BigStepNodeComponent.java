@@ -258,21 +258,6 @@ public class BigStepNodeComponent extends JComponent implements TreeNodeComponen
 	}
 	
 	/**
-	 * 
-	 */
-	private void fireNodeGuessed () {
-		Object[] listeners = this.listenerList.getListenerList();
-		for (int i=0; i<listeners.length; i+=2) {
-			if (listeners [i] != BigStepNodeListener.class) {
-				continue;
-			}
-			
-			((BigStepNodeListener)listeners [i+1]).nodeGuessed();
-		}
-		
-	}
-
-	/**
 	 * Handles the actions that should be done when an item from the MenuButton
 	 * was selected.<br>
 	 * <br>
@@ -334,7 +319,6 @@ public class BigStepNodeComponent extends JComponent implements TreeNodeComponen
 		}
 		else if (item instanceof MenuGuessItem) {
 			try {
-				fireNodeGuessed();
 				this.proofModel.guess(this.proofNode);
 			}
 			catch (final Exception e) {
@@ -347,7 +331,6 @@ public class BigStepNodeComponent extends JComponent implements TreeNodeComponen
 		}
 		else if (item instanceof MenuGuessTreeItem) {
 			try {
-				fireNodeGuessed();
 				this.proofModel.complete(this.proofNode);
 			}
 			catch (final Exception e) {

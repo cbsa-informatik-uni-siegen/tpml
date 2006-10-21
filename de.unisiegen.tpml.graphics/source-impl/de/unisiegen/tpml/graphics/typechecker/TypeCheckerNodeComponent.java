@@ -453,17 +453,6 @@ public class TypeCheckerNodeComponent extends JComponent  implements TreeNodeCom
 		}
 	}
 	
-	private void fireNodeGuessed () {
-		Object[] listeners = this.listenerList.getListenerList();
-		for (int i=0; i<listeners.length; i+=2) {
-			if (listeners [i] != TypeCheckerNodeListener.class) {
-				continue;
-			}
-			
-			((TypeCheckerNodeListener)listeners [i+1]).nodeGuessed();
-		}
-	}
-
 	/**
 	 * Handles every action, that is done via the menu of
 	 * the {@link #ruleButton}.<br>
@@ -523,7 +512,6 @@ public class TypeCheckerNodeComponent extends JComponent  implements TreeNodeCom
 		}
 		else if (item instanceof MenuGuessItem) {
 			try {
-				fireNodeGuessed();
 				this.proofModel.guess(this.proofNode);
 			}
 			catch (final Exception e) {
@@ -537,7 +525,6 @@ public class TypeCheckerNodeComponent extends JComponent  implements TreeNodeCom
 		}
 		else if (item instanceof MenuGuessTreeItem) {
 			try {
-				fireNodeGuessed();
 				this.proofModel.complete(this.proofNode);
 			}
 			catch (final Exception e) {

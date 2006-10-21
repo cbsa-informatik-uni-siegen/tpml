@@ -69,11 +69,6 @@ public class SmallStepComponent extends AbstractProofComponent implements Scroll
 	private boolean									advanced;
 	
 	/**
-	 * Whether the used had pressed one of the guess buttons. 
-	 */
-	private boolean											wasGuessed;
-
-	/**
 	 * Sets the default values.<br>
 	 * <br>
 	 * A border of 20 pixels and spacing of 10 pixels.<br>
@@ -196,9 +191,6 @@ public class SmallStepComponent extends AbstractProofComponent implements Scroll
 				}
 				public void repaintAll () {
 					SmallStepComponent.this.repaint();
-				}
-				public void nodeGuessed () {
-					SmallStepComponent.this.wasGuessed = true;
 				}
 			});
 			
@@ -591,7 +583,6 @@ public class SmallStepComponent extends AbstractProofComponent implements Scroll
 		while (enumeration.hasMoreElements()) {
 			ProofNode node = enumeration.nextElement();
 			if (!node.isProven()) {
-				this.wasGuessed = false;
 				this.proofModel.guess(node);
 				return;
 			}
@@ -639,10 +630,6 @@ public class SmallStepComponent extends AbstractProofComponent implements Scroll
 		gc.fillRect(0, 0, getWidth () - 1, getHeight () - 1);
 	}
 	
-	public boolean wasGuessed () {
-		return this.wasGuessed;
-	}
-
 	
 	// 
 	// Implementation of the Scrollable interface

@@ -58,8 +58,4 @@ public class BigStepView extends AbstractProofView {
 	public void guess() throws IllegalStateException, ProofGuessException {
 		this.component.guess ();
 	}
-	
-	public boolean wasGuessed () {
-		return this.component.wasGuessed();
-	}
 }
