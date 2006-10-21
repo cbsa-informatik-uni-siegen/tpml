@@ -198,22 +198,30 @@ public class CompoundExpression<S, E> extends JComponent {
 	 * @param expression
 	 */
 	public void setExpression (Expression expression) {
-		this.expression = expression;
-		if (this.expression == null) {
-			this.expressionRenderer = null;
-			return;
+		// check if we have a new expression
+		if (this.expression != expression) {
+			// update to the new expression
+			this.expression = expression;
+			
+			// check what to do with the renderer
+			if (this.expression == null) {
+				this.expressionRenderer = null;
+			}
+			else {
+				if (this.expressionRenderer == null) {
+					this.expressionRenderer = new PrettyStringRenderer ();
+					this.expressionRenderer.setAlternativeColor(this.alternativeColor);
+				}
+				
+				this.expressionRenderer.setPrettyString(this.expression.toPrettyString());
+				
+				// reset the underlineExpression
+				setUnderlineExpression(this.underlineExpression);
+			}
+			
+			// be sure to schedule a repaint
+			repaint();
 		}
-		
-		if (this.expressionRenderer == null) {
-			this.expressionRenderer = new PrettyStringRenderer ();
-			this.expressionRenderer.setAlternativeColor(this.alternativeColor);
-		}
-		
-		this.expressionRenderer.setPrettyString(this.expression.toPrettyString());
-		
-		// reset the underlineExpression
-		setUnderlineExpression(this.underlineExpression);
-		
 	}
 	
 	/**
@@ -222,18 +230,27 @@ public class CompoundExpression<S, E> extends JComponent {
 	 * @param environment
 	 */
 	public void setEnvironment (Environment<S, E> environment) {
-		this.environment = environment;
-		if (this.environment == null) {
-			this.environmentRenderer = null;
-			return;
+		// check if we have a new environment
+		if (this.environment != environment) {
+			// update to the new environment
+			this.environment = environment;
+			
+			// check what to do with the renderer
+			if (this.environment == null) {
+				this.environmentRenderer = null;
+			}
+			else {
+				if (this.environmentRenderer == null) {
+					this.environmentRenderer = new EnvironmentRenderer<S,E> ();
+					this.environmentRenderer.setAlternativeColor(this.alternativeColor);
+				}
+				
+				this.environmentRenderer.setEnvironment(this.environment);
+			}
+			
+			// be sure to schedule a repaint
+			repaint();
 		}
-		
-		if (this.environmentRenderer == null) {
-			this.environmentRenderer = new EnvironmentRenderer<S,E> ();
-			this.environmentRenderer.setAlternativeColor(this.alternativeColor);
-		}
-		
-		this.environmentRenderer.setEnvironment(this.environment);
 	}
 	
 	
