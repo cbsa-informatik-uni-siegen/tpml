@@ -6,8 +6,11 @@ import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.KeyEventDispatcher;
+import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -152,6 +155,21 @@ public class PreferenceDialog extends javax.swing.JDialog {
         
         // initialize the components
         initComponents();
+        
+        // listen to key events
+        KeyboardFocusManager.getCurrentKeyboardFocusManager()
+				.addKeyEventDispatcher(new KeyEventDispatcher() {
+					public boolean dispatchKeyEvent(KeyEvent evt) {
+                                            if (evt.getKeyCode() == KeyEvent.VK_ESCAPE){
+                                                dispose();
+                                                return true;
+                                            }
+                                            else{
+                                                return false;
+                                            }
+                                        }
+						
+				});
         
         // connect the font button to the theme
         this.fontButton.setFont(this.theme.getFont());
