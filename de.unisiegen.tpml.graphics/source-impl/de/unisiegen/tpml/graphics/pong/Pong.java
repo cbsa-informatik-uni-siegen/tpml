@@ -96,7 +96,6 @@ public class Pong extends JComponent {
 
 			this.radius			= 0.02f;
 			
-			restart();
 		}
 		
 		public void move () {
@@ -109,9 +108,9 @@ public class Pong extends JComponent {
 			this.oldPosY = this.posY;
 		}
 		
-		public void restart() {
-			this.posX 			= 0.5f;
-			this.posY 			= 0.5f;
+		public void restart(Bat pcBat) {
+			this.posX 			= 0.9f - this.radius;
+			this.posY 			= pcBat.position;
 			this.oldPosX		= this.posX;
 			this.oldPosY		= this.posY;
 			
@@ -173,11 +172,19 @@ public class Pong extends JComponent {
 	
 	private boolean paused;
 	
+	private enum GameState {
+		GameStateHold,
+		GameStateFlow,
+	}
+	
+	private GameState gameState;
+	
 	public Pong () {
 		this.pcBat 				= new Bat (0.1f, 0.01f, 0.5f);
 		this.npcBat 			= new Bat (0.1f, 0.01f, 0.5f);
 		
 		this.ball					= new Ball ();
+		this.ball.restart(this.pcBat);
 		
 		this.npc 					= new NPC ();
 		this.npc.maxSpeed	= this.ball.speed;
@@ -187,6 +194,8 @@ public class Pong extends JComponent {
 		this.random				= new Random ();
 		
 		this.onTheRun			= false;
+		
+		this.gameState		= GameState.GameStateHold;
 		
 		this.font					= new JLabel().getFont();
 		
@@ -230,6 +239,11 @@ public class Pong extends JComponent {
 			public void mouseExited(MouseEvent e) {
 				Pong.this.paused = true;
 			}
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				Pong.this.handleMouseClicked ();
+			}
 		});
 		
 		setDoubleBuffered(false);
@@ -250,10 +264,40 @@ public class Pong extends JComponent {
 		// and set the new one
 		this.pcBat.setPosition(height);
 		
+		
+		if (this.gameState == GameState.GameStateHold) {
+			this.ball.posX = 0.9f - this.ball.radius;
+			this.ball.posY = this.pcBat.position;
+		}
+		
 		repaint ();
 	}
 	
+	private void handleMouseClicked () {
+		if (this.gameState == GameState.GameStateFlow) {
+			return;
+		}
+		
+		this.ball.restart(this.pcBat);
+		
+		this.ball.directionX = -0.4f;
+		this.ball.directionY = 0.5f - this.pcBat.position;
+		
+		float length = (float)Math.sqrt (this.ball.directionX*this.ball.directionX + this.ball.directionY*this.ball.directionY);
+		this.ball.directionX /= length;
+		this.ball.directionY /= length;
+		
+		this.gameState = GameState.GameStateFlow;
+		this.onTheRun = false;
+		recalcNPCDest();
+	}
+	
 	private void handleTimerEvent () {
+		
+		if (this.gameState == GameState.GameStateHold) {
+			return;
+		}
+		
 		
 		// do the npc movement
 		this.npc.act();
@@ -279,13 +323,17 @@ public class Pong extends JComponent {
 		}
 		
 		if (this.ball.posX >= 1.0f) {
-			this.npcBat.points ++;
-			this.ball.restart();
+			this.gameState = GameState.GameStateHold;
+			this.npcBat.points++;
+			this.onTheRun = false;
+			this.ball.restart(this.pcBat);
 		}
 		
 		if (this.ball.posX <= 0.0f) {
+			this.gameState = GameState.GameStateHold; 
 			this.pcBat.points++;
-			this.ball.restart();
+			this.onTheRun = false;
+			this.ball.restart(this.pcBat);
 		}
 
 		recalcNPCDest();
@@ -361,7 +409,7 @@ public class Pong extends JComponent {
 				this.onTheRun = true;
 				
 				this.npc.dest = Py + ((0.1f - Px) / Qx) * Qy;
-				float add = (this.random.nextFloat() - 0.5f) * this.npcBat.height * this.ball.speed / 0.015f;
+				float add = (this.random.nextFloat() - 0.5f) * this.npcBat.height * this.ball.speed * 70;
 				this.npc.dest += add;
 				
 				float dist = this.npc.dest - this.npc.bat.position;
