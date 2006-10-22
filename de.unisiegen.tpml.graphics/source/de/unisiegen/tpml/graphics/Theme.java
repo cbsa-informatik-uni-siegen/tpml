@@ -141,7 +141,7 @@ public final class Theme extends AbstractBean {
 		this.preferences = Preferences.userNodeForPackage(Theme.class);
 
 		// load the commentColor setting
-		this.commentColor = Color.decode(this.preferences.get("commentColor", "#1acc1a"));
+		this.commentColor = Color.decode(this.preferences.get("commentColor", "#1a991a"));
 		
 		// load the constantColor setting
 		this.constantColor = Color.decode(this.preferences.get("constantColor", "#00007f"));
