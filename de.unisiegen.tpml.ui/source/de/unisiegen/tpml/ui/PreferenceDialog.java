@@ -35,7 +35,18 @@ import de.unisiegen.tpml.ui.beans.FontChooser;
  * @author Christoph Fehling
  */
 public class PreferenceDialog extends javax.swing.JDialog {
-    //
+		//
+	  // Constants
+	  //
+	
+    /**
+  	 * The unique serialization identifier of this class. 
+	   */
+	  private static final long serialVersionUID = 6823003123624975539L;
+
+	
+	
+	  //
     // Inner classes
     //
     
