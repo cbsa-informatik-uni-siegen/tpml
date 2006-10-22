@@ -1,10 +1,8 @@
 package de.unisiegen.tpml.graphics;
 
-import javax.swing.JComponent;
+import java.beans.PropertyChangeListener;
 
-import de.unisiegen.tpml.graphics.theme.Theme;
-import de.unisiegen.tpml.graphics.theme.ThemeManager;
-import de.unisiegen.tpml.graphics.theme.ThemeManagerListener;
+import javax.swing.JComponent;
 
 /**
  * Abstract base class for all {@link de.unisiegen.tpml.graphics.ProofView}s.
@@ -28,11 +26,11 @@ public abstract class AbstractProofView extends JComponent implements ProofView 
 	private boolean advanced;
 	
 	/**
-	 * The global {@link ThemeManager} instance.
+	 * The currently active {@link Theme}.
 	 * 
 	 * Used to repaint the proof view whenever the current theme changes.
 	 */
-	private ThemeManager themeManager = ThemeManager.get();
+	private Theme theme = Theme.currentTheme();
 	
 	
 	
@@ -47,9 +45,11 @@ public abstract class AbstractProofView extends JComponent implements ProofView 
 		super();
 		
 		// repaint the proof view whenever the current theme changes
-		this.themeManager.addThemeManagerListener(new ThemeManagerListener() {
-			public void currentThemeChanged(Theme theme) {
-				repaint();
+		this.theme.addPropertyChangeListener(new PropertyChangeListener() {
+			public void propertyChange(java.beans.PropertyChangeEvent evt) {
+				if (evt.getPropertyName().endsWith("Color")) {
+					repaint();
+				}
 			}
 		});
 	}

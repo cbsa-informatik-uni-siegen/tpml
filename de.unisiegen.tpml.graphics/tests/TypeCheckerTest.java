@@ -9,8 +9,6 @@ import de.unisiegen.tpml.core.languages.Language;
 import de.unisiegen.tpml.core.languages.LanguageFactory;
 import de.unisiegen.tpml.core.languages.LanguageParser;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel;
-import de.unisiegen.tpml.graphics.renderer.AbstractRenderer;
-import de.unisiegen.tpml.graphics.theme.Theme;
 import de.unisiegen.tpml.graphics.typechecker.TypeCheckerView;
 
 public class TypeCheckerTest {
@@ -32,9 +30,6 @@ public class TypeCheckerTest {
 			model = language.newTypeCheckerProofModel(parser.parse());
 
 			TestDialog dialog = new TestDialog ();
-			// generate a default theme
-			Theme theme = new Theme ();
-			AbstractRenderer.setTheme(theme, dialog);
 			
 //			TypeCheckerComponent component = new TypeCheckerComponent (model);
 			gui = new TypeCheckerView (model);

@@ -9,8 +9,6 @@ package de.unisiegen.tpml.ui;
 import java.awt.Component;
 import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
-import java.awt.Rectangle;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -36,7 +34,6 @@ import org.apache.log4j.Logger;
 import de.unisiegen.tpml.core.languages.Language;
 import de.unisiegen.tpml.core.languages.LanguageFactory;
 import de.unisiegen.tpml.core.languages.NoSuchLanguageException;
-import de.unisiegen.tpml.graphics.theme.ThemeManager;
 
 /**
  * The main programm window.
@@ -1352,8 +1349,6 @@ public class MainWindow extends javax.swing.JFrame {
 		prefmanager.setRecentlyUsed(recentlyUsed);
 		// remember window state
 		prefmanager.setWindowPreferences(this);
-		// save the themes
-		ThemeManager.get().saveThemes();
 		// terminate the application
 		System.exit(0);
 	}

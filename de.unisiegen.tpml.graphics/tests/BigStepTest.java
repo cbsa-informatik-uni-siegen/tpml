@@ -10,8 +10,6 @@ import de.unisiegen.tpml.core.languages.Language;
 import de.unisiegen.tpml.core.languages.LanguageFactory;
 import de.unisiegen.tpml.core.languages.LanguageParser;
 import de.unisiegen.tpml.graphics.bigstep.BigStepView;
-import de.unisiegen.tpml.graphics.renderer.AbstractRenderer;
-import de.unisiegen.tpml.graphics.theme.Theme;
 
 public class BigStepTest {
 	
@@ -32,9 +30,6 @@ public class BigStepTest {
 			model = language.newBigStepProofModel(parser.parse());
 
 			TestDialog dialog = new TestDialog ();
-			// generate a default theme
-			Theme theme = new Theme ();
-			AbstractRenderer.setTheme(theme, dialog);
 			
 //			TypeCheckerComponent component = new TypeCheckerComponent (model);
 			gui = new BigStepView (model);

@@ -6,7 +6,6 @@
 
 package de.unisiegen.tpml.ui;
 
-import de.unisiegen.tpml.graphics.pong.PongView;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Frame;
@@ -32,6 +31,7 @@ import de.unisiegen.tpml.core.languages.NoSuchLanguageException;
 import de.unisiegen.tpml.core.smallstep.SmallStepProofModel;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel;
 import de.unisiegen.tpml.graphics.ProofViewFactory;
+import de.unisiegen.tpml.graphics.pong.PongView;
 import de.unisiegen.tpml.ui.editor.TextEditorPanel;
 import de.unisiegen.tpml.ui.proofview.ProofViewComponent;
 

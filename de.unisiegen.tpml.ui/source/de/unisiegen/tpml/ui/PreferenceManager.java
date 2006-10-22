@@ -1,16 +1,11 @@
 package de.unisiegen.tpml.ui;
 
-import java.awt.Dimension;
-import java.awt.Point;
 import java.awt.Rectangle;
 import java.io.File;
 import java.util.LinkedList;
 import java.util.prefs.Preferences;
 
 import javax.swing.JFrame;
-import javax.swing.text.Position;
-
-import de.unisiegen.tpml.graphics.theme.ThemeManager;
 
 /**
  * Manages the preferences for the user interface.

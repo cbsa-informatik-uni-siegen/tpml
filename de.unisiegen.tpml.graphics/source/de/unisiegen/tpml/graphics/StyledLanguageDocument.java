@@ -28,9 +28,6 @@ import de.unisiegen.tpml.core.languages.LanguageScannerException;
 import de.unisiegen.tpml.core.languages.LanguageSymbol;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStyle;
 import de.unisiegen.tpml.core.util.beans.Bean;
-import de.unisiegen.tpml.graphics.theme.Theme;
-import de.unisiegen.tpml.graphics.theme.ThemeManager;
-import de.unisiegen.tpml.graphics.theme.ThemeManagerListener;
 
 /**
  * An implementation of the {@link javax.swing.text.StyledDocument} interface to enable syntax
@@ -108,11 +105,11 @@ public class StyledLanguageDocument extends DefaultStyledDocument implements Bea
   private HashMap<PrettyStyle, SimpleAttributeSet> attributes = new HashMap<PrettyStyle, SimpleAttributeSet>();
   
   /**
-   * The global {@link ThemeManager} instance.
+   * The currently active {@link Theme}.
    * 
-   * @see ThemeManager
+   * @see Theme
    */
-  private ThemeManager themeManager = ThemeManager.get();
+  private Theme theme = Theme.currentTheme();
 	
 	
 	
@@ -163,17 +160,17 @@ public class StyledLanguageDocument extends DefaultStyledDocument implements Bea
     initAttributes();
     
     // update the attributes whenever the current theme changes
-    this.themeManager.addThemeManagerListener(new ThemeManagerListener() {
-    	public void currentThemeChanged(Theme theme) {
+    this.theme.addPropertyChangeListener(new PropertyChangeListener() {
+    	public void propertyChange(PropertyChangeEvent evt) {
     		try {
-    			// initialize the attributes
+    			// reload the attributes
     			initAttributes();
     			
     			// reprocess the document
     			processChanged();
     		}
     		catch (BadLocationException e) {
-    			// ignore the exception...
+    			// just ignore...
     		}
     	}
     });
@@ -189,12 +186,25 @@ public class StyledLanguageDocument extends DefaultStyledDocument implements Bea
 	 * Initializes the attributes to use the fonts from the current theme. 
 	 */
 	private void initAttributes() {
-		// use the colors from the current theme
-		Theme currentTheme = this.themeManager.getCurrentTheme();
-    StyleConstants.setForeground(this.attributes.get(PrettyStyle.COMMENT), currentTheme.getItemColor(Theme.TYPE_COMMENT));
-    StyleConstants.setForeground(this.attributes.get(PrettyStyle.CONSTANT), currentTheme.getItemColor(Theme.TYPE_CONSTANT));
-    StyleConstants.setForeground(this.attributes.get(PrettyStyle.KEYWORD), currentTheme.getItemColor(Theme.TYPE_KEYWORD));
-    StyleConstants.setForeground(this.attributes.get(PrettyStyle.TYPE), currentTheme.getItemColor(Theme.TYPE_TYPE));
+		// determine the current font family and size
+		String fontFamily = this.theme.getFont().getFamily();
+		int fontSize = this.theme.getFont().getSize();
+		
+		// use the colors and font from the current theme
+		StyleConstants.setFontFamily(this.normalSet, fontFamily);
+		StyleConstants.setFontSize(this.normalSet, fontSize);
+		StyleConstants.setForeground(this.attributes.get(PrettyStyle.COMMENT), this.theme.getCommentColor());
+		StyleConstants.setFontFamily(this.attributes.get(PrettyStyle.COMMENT), fontFamily);
+		StyleConstants.setFontSize(this.attributes.get(PrettyStyle.COMMENT), fontSize);
+    StyleConstants.setForeground(this.attributes.get(PrettyStyle.CONSTANT), this.theme.getConstantColor());
+		StyleConstants.setFontFamily(this.attributes.get(PrettyStyle.CONSTANT), fontFamily);
+		StyleConstants.setFontSize(this.attributes.get(PrettyStyle.CONSTANT), fontSize);
+    StyleConstants.setForeground(this.attributes.get(PrettyStyle.KEYWORD), this.theme.getKeywordColor());
+		StyleConstants.setFontFamily(this.attributes.get(PrettyStyle.KEYWORD), fontFamily);
+		StyleConstants.setFontSize(this.attributes.get(PrettyStyle.KEYWORD), fontSize);
+    StyleConstants.setForeground(this.attributes.get(PrettyStyle.TYPE), this.theme.getTypeColor());
+		StyleConstants.setFontFamily(this.attributes.get(PrettyStyle.TYPE), fontFamily);
+		StyleConstants.setFontSize(this.attributes.get(PrettyStyle.TYPE), fontSize);
 	}
 	
 	
@@ -332,6 +342,8 @@ public class StyledLanguageDocument extends DefaultStyledDocument implements Bea
         	
           // setup the error attribute set
           SimpleAttributeSet errorSet = new SimpleAttributeSet();
+          StyleConstants.setFontFamily(errorSet, this.theme.getFont().getFamily());
+          StyleConstants.setFontSize(errorSet, this.theme.getFont().getSize());
           StyleConstants.setForeground(errorSet, Color.RED);
           StyleConstants.setUnderline(errorSet, true);
           errorSet.addAttribute("exception", e);

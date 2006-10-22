@@ -6,9 +6,9 @@
 
 package de.unisiegen.tpml.ui;
 
-import java.awt.AWTEvent;
 import java.awt.Component;
 import java.awt.event.KeyEvent;
+
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.JLabel;

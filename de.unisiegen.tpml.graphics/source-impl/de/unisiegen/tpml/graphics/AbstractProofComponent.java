@@ -1,14 +1,15 @@
 package de.unisiegen.tpml.graphics;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
 import javax.swing.JComponent;
+import javax.swing.SwingUtilities;
 import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
 
 import de.unisiegen.tpml.core.AbstractProofModel;
 import de.unisiegen.tpml.core.languages.LanguageTranslator;
-import de.unisiegen.tpml.graphics.theme.Theme;
-import de.unisiegen.tpml.graphics.theme.ThemeManager;
-import de.unisiegen.tpml.graphics.theme.ThemeManagerListener;
 
 public abstract class AbstractProofComponent extends JComponent {
 	
@@ -25,6 +26,8 @@ public abstract class AbstractProofComponent extends JComponent {
 	protected boolean									currentlyLayouting;
 	
 	protected	int											availableWidth;
+	
+	private Theme											theme;
 
 	
 	
@@ -53,10 +56,16 @@ public abstract class AbstractProofComponent extends JComponent {
 			}
 		});
 		
-		
-		ThemeManager.get().addThemeManagerListener(new ThemeManagerListener() {
-			public void currentThemeChanged (Theme theme) {
-				AbstractProofComponent.this.resetLayout ();
+		// reset the layout whenever the font changes
+		this.theme = Theme.currentTheme();
+		this.theme.addPropertyChangeListener("font", new PropertyChangeListener() {
+			public void propertyChange(PropertyChangeEvent evt) {
+				SwingUtilities.invokeLater(new Runnable() {
+					public void run() {
+						resetLayout();
+						relayout();
+					}
+				});
 			}
 		});
 	}

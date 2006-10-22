@@ -6,7 +6,6 @@
 
 package de.unisiegen.tpml.ui;
 
-import java.awt.event.KeyEvent;
 
 /**
  *

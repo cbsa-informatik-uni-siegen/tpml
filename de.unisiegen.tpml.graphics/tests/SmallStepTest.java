@@ -9,9 +9,7 @@ import de.unisiegen.tpml.core.languages.Language;
 import de.unisiegen.tpml.core.languages.LanguageFactory;
 import de.unisiegen.tpml.core.languages.LanguageParser;
 import de.unisiegen.tpml.core.smallstep.SmallStepProofModel;
-import de.unisiegen.tpml.graphics.renderer.AbstractRenderer;
 import de.unisiegen.tpml.graphics.smallstep.SmallStepView;
-import de.unisiegen.tpml.graphics.theme.Theme;
 
 public class SmallStepTest {
 	
@@ -33,9 +31,6 @@ public class SmallStepTest {
 //			SmallStepTest.evaluateModel(model);
 
 			TestDialog dialog = new TestDialog ();
-			// generate a default theme
-			Theme theme = new Theme ();
-			AbstractRenderer.setTheme(theme, dialog);
 			
 //			TypeCheckerComponent component = new TypeCheckerComponent (model);
 			gui = new SmallStepView (model);

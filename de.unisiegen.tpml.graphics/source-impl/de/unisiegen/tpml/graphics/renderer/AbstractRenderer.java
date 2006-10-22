@@ -4,8 +4,12 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.FontMetrics;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
-import de.unisiegen.tpml.graphics.theme.Theme;
+import javax.swing.JLabel;
+
+import de.unisiegen.tpml.graphics.Theme;
 
 
 /**
@@ -54,6 +58,19 @@ public abstract class AbstractRenderer {
 
 	protected		Color									alternativeColor;
 
+	private     static Theme				  theme;
+	
+	static {
+		// connect to the theme
+		theme = Theme.currentTheme();
+		setTheme(theme, new JLabel());
+		theme.addPropertyChangeListener(new PropertyChangeListener() {
+			public void propertyChange(PropertyChangeEvent evt) {
+				setTheme(theme, new JLabel());
+			}
+		});
+	}
+	
 	/**
 	 * Initializes the colors, fonts and fontmetrics.
 	 * 
@@ -62,30 +79,30 @@ public abstract class AbstractRenderer {
 	 * @param reference Any object subclassing {@link Component} used
 	 * 									to call the {@link Component#getFontMetrics(java.awt.Font)}-Method.
 	 */
-	public static void setTheme (Theme theme, Component reference) { 
+	private static void setTheme (Theme theme, Component reference) { 
 		
-		AbstractRenderer.expColor							= theme.getItemColor(Theme.TYPE_EXPRESSION);
-		AbstractRenderer.expFont							= theme.getItemFont(Theme.TYPE_EXPRESSION);
+		AbstractRenderer.expColor							= theme.getExpressionColor();
+		AbstractRenderer.expFont							= theme.getFont();
 		AbstractRenderer.expFontMetrics				= reference.getFontMetrics(AbstractRenderer.expFont);
 		
-		AbstractRenderer.keywordColor					= theme.getItemColor(Theme.TYPE_KEYWORD);
-		AbstractRenderer.keywordFont					= theme.getItemFont(Theme.TYPE_KEYWORD);
+		AbstractRenderer.keywordColor					= theme.getKeywordColor();
+		AbstractRenderer.keywordFont					= theme.getFont();
 		AbstractRenderer.keywordFontMetrics		= reference.getFontMetrics(AbstractRenderer.keywordFont);
 		
-		AbstractRenderer.constantColor				= theme.getItemColor(Theme.TYPE_CONSTANT);
-		AbstractRenderer.constantFont					= theme.getItemFont(Theme.TYPE_CONSTANT);
+		AbstractRenderer.constantColor				= theme.getConstantColor();
+		AbstractRenderer.constantFont					= theme.getFont();
 		AbstractRenderer.constantFontMetrics	= reference.getFontMetrics(AbstractRenderer.constantFont);
 		
-		AbstractRenderer.envColor							= theme.getItemColor(Theme.TYPE_ENVIRONMENT);
-		AbstractRenderer.envFont							= theme.getItemFont(Theme.TYPE_ENVIRONMENT);
+		AbstractRenderer.envColor							= theme.getEnvironmentColor();
+		AbstractRenderer.envFont							= theme.getFont();
 		AbstractRenderer.envFontMetrics				= reference.getFontMetrics(AbstractRenderer.envFont);
 		
-		AbstractRenderer.typeColor						= theme.getItemColor(Theme.TYPE_TYPE);
-		AbstractRenderer.typeFont							= theme.getItemFont(Theme.TYPE_TYPE);
+		AbstractRenderer.typeColor						= theme.getTypeColor();
+		AbstractRenderer.typeFont							= theme.getFont();
 		AbstractRenderer.typeFontMetrics			= reference.getFontMetrics(AbstractRenderer.typeFont);
 		
 		
-		AbstractRenderer.underlineColor				= theme.getItemColor(Theme.TYPE_UNDERLINE);
+		AbstractRenderer.underlineColor				= theme.getUnderlineColor();
 		
 		
 		
