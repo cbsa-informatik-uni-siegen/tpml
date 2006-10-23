@@ -4,6 +4,15 @@ import javax.swing.JMenuItem;
 
 import de.unisiegen.tpml.graphics.Messages;
 
+/**
+ * An item that can be added to the menu of the MenuButton.<br>
+ * This item provides the entry text to translate the expression
+ * into core syntax.<br>
+ * 
+ * @author marcell
+ *
+ */
+
 public class MenuTranslateItem extends JMenuItem {
 
 	/**

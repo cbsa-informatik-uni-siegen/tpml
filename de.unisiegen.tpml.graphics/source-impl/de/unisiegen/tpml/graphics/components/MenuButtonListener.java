@@ -14,17 +14,17 @@ import javax.swing.JMenuItem;
  */
 public interface MenuButtonListener extends EventListener {
 	/**
-	 * TODO Add documentation here.
+	 * Called when an item from the menu was selected.
 	 * 
-	 * @param source
-	 * @param item
+	 * @param source The menu button who caused the event
+	 * @param item   The item that was selected
 	 */
 	public void menuItemActivated (MenuButton source, JMenuItem item);
 	
 	/**
-	 * TODO Add documentation here.
+	 * Called when the menu was closed.
 	 * 
-	 * @param source
+	 * @param source The menu button who caused the event.
 	 */
 	public void menuClosed (MenuButton source);
 }

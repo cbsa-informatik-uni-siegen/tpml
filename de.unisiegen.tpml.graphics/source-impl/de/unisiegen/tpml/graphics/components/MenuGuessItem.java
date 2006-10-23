@@ -3,7 +3,13 @@ package de.unisiegen.tpml.graphics.components;
 import javax.swing.JMenuItem;
 
 import de.unisiegen.tpml.graphics.Messages;
-
+/**
+ * An item that can be added to the menu of the MenuButton.<br>
+ * This item provides the entry text to guess the node.<br>
+ * 
+ * @author marcell
+ *
+ */
 public class MenuGuessItem extends JMenuItem {
 
 	/**

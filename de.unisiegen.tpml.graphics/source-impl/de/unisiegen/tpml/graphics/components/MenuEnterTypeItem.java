@@ -4,6 +4,14 @@ import javax.swing.JMenuItem;
 
 import de.unisiegen.tpml.graphics.Messages;
 
+/**
+ * An item that can be added to the menu of the MenuButton.<br>
+ * This item provides the entry text to enter a type.<br>
+ * This one is only used within the type checker.
+ * 
+ * @author marcell
+ *
+ */
 public class MenuEnterTypeItem extends JMenuItem {
 	
 	/**

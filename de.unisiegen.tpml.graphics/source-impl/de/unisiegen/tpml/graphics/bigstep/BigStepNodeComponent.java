@@ -492,22 +492,36 @@ public class BigStepNodeComponent extends JComponent implements TreeNodeComponen
 
 	}
 	
-	
+	/**
+	 * Returns the point at the bottom of the node where
+	 * the layout should attach the arrow.
+	 */
 	public Point getBottomArrowConnection() {
 		return new Point (this.getX() + this.indexLabel.getWidth() / 2, this.getY() + this.indexLabel.getHeight());
 	}
 
+	/**
+	 * Returns the point at the left of the node where
+	 * the layout should attach the line to its parent.
+	 */
 	public Point getLeftArrowConnection() {
 		return new Point (this.getX (), this.getY() + this.indexLabel.getY() + this.indexLabel.getHeight() / 2);
 	}
 
 
+	/**
+	 * Returns the number of pixels the children should be displayed 
+	 * indentated.
+	 */
 	public int getIndentationWidth() {
 		// XXX: calculate the indentation
 		return this.indexLabel.getWidth();
 	}
 	
 
+	/**
+	 * Just calls setBounds of the super class.
+	 */
 	@Override
 	public void setBounds (int x, int y, int width, int height) {
 		super.setBounds (x, y, width, height);
