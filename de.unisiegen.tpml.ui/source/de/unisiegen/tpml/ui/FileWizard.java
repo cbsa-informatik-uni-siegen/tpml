@@ -120,7 +120,7 @@ public class FileWizard extends javax.swing.JDialog {
 
         headerPanel.setBackground(javax.swing.UIManager.getDefaults().getColor("window"));
         headerTitleLabel.setFont(new java.awt.Font("Dialog", 1, 24));
-        headerTitleLabel.setText("New File...");
+        headerTitleLabel.setText(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("FileWizardTitle"));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
@@ -128,7 +128,7 @@ public class FileWizard extends javax.swing.JDialog {
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 5, 10);
         headerPanel.add(headerTitleLabel, gridBagConstraints);
 
-        headerSubTitleLabel.setText("Create an empty source file for a language");
+        headerSubTitleLabel.setText(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("FileWizardSubtitle"));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
@@ -206,7 +206,7 @@ public class FileWizard extends javax.swing.JDialog {
         gridBagConstraints.insets = new java.awt.Insets(5, 10, 10, 10);
         bodyPanel.add(descriptionScrollPane, gridBagConstraints);
 
-        descriptionLabel.setText("Description:");
+        descriptionLabel.setText(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("Description"));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
@@ -216,7 +216,7 @@ public class FileWizard extends javax.swing.JDialog {
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 0, 10);
         bodyPanel.add(descriptionLabel, gridBagConstraints);
 
-        languagesLabel.setText("Available languages:");
+        languagesLabel.setText(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("Available_Languages"));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
@@ -230,8 +230,8 @@ public class FileWizard extends javax.swing.JDialog {
 
         buttonsPanel.setLayout(new java.awt.GridBagLayout());
 
-        cancelButton.setMnemonic('C');
-        cancelButton.setText("Cancel");
+        cancelButton.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("CancelMnemonic").charAt(0));
+        cancelButton.setText(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("Cancel"));
         cancelButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cancelButtonActionPerformed(evt);
@@ -239,11 +239,9 @@ public class FileWizard extends javax.swing.JDialog {
         });
 
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 10);
         buttonsPanel.add(cancelButton, gridBagConstraints);
 
         okButton.setMnemonic('O');
@@ -256,10 +254,11 @@ public class FileWizard extends javax.swing.JDialog {
         });
 
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        gridBagConstraints.insets = new java.awt.Insets(10, 0, 10, 10);
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
         buttonsPanel.add(okButton, gridBagConstraints);
 
         getContentPane().add(buttonsPanel, java.awt.BorderLayout.SOUTH);
