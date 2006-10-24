@@ -3,17 +3,141 @@
 %% Kapitel 2 - Die Oberflaeche
 %%
 
-\chapter{Die Oberfl"ache}
+\chapter{Benutzerinterface}
 
-\section{"Uberblick "uber die Oberfl"ache}
+\section{"Uberblick}
 
-\section{Der Editor}
+Das Menu {\bf Datei} enthält Funktionen zur Dateiverwaltung, wie
+beispielsweise Öffnen und Schließen. Weiterhin kann unter {\bf
+Zuletzt benutzt} schnell auf die aktuellsten Dateien zugegriffen
+werden. Unter {\bf Bearbeiten} sind Editorfunktionen enthalten. Die
+einzelnen Komponenten werden in Kapitel~\ref{Qelltexteditor}
+und~\ref{Beweiswerkzeuge} genauer betrachtet. Mit {\bf
+Einstellungen...} kann die Schriftart und Gr"o"se global f"ur alle
+Editorkomponenten gesetzt werden. Weiterhin stellt man hier die
+Einf"arbung von Schl"usselworten im
+Quelltexteditor~\ref{Qelltexteditor} ein. Das Menu {\bf Beweis}
+enthält die einzelnen Beweiswerkzeuge und dient dazu zwischen dem
+{\bf Beginner} und {\bf Fortgeschrittener} Modus zu wechseln. Diese
+Modi beeintr"achtigen die bei den Beweisschritten zur Verf"ugung
+stehenden Regeln.
 
-\section{Der Small Step Interpreter}
+\section {Quelltexteditor}
+\label{Qelltexteditor} Jede ge"offnete Datei wird in einem Tab
+angezeigt, der den Dateinamen angibt. Zwischen den Tabs kann mit
+{\bf Strg + Bildhoch/Bildrunter} und {\bf Alt + Rechts/Links}
+gewechselt werden.
 
-\section{Der Big Step Interpreter}
 
-\section{Der Type Checker}
+Jeder Datei ist eine Sprache fest zugeordnet. M"ochte man einen
+Ausdruck in einer anderen Sprache beweisen, so kann man hierf"ur
+einen neuen Editor "offnen und der Ausdruck kopieren. Alternativ
+kann auch die Dateiendung einer gespeicherten Datei ge"andert
+werden. Ist ein eigegebener Ausdruck, so wird dies links von der
+betroffenen Zeile durch ein Error-Icon markiert. Zus"atzlich wird
+der fehlerhafte Teil rot unterstrichen. Bewegt man den Mauszeiger
+"uber den markierten Text oder das Error-Icon, so erscheint ein
+Popup, das den Fehler genauer beschreibt. Ein Klick auf das
+Error-Icon bewirkt, dass der Textcursor an den fehlerhalfen Text
+springt.
+
+\section {Beweiswerkzeuge}
+\label{Beweiswerkzeuge} Wird ein Beweiswerkzeug gestartet, so wird
+es zus"atzlich zum Quelltexteditor im Tab der Datei angezeigt. F"ur
+jede Datei kann jeweils nur ein Small Step Interpreter, ein Big Step
+Interpreter und ein Type Checker aktiv sein. Diese können über die
+entsprechende Schaltfl"achen angewählt werden. Wird ein
+Beweiswerkzeug erneut gestartet, so ersetzt der neue Beweis ein ggf.
+schon aktives Beweiswerkzeug des selben Typs. M"ochte man also zum
+Beispiel einen Small Step Beweis neu starten oder f"ur einen leicht
+ge"anderten Ausdruck erneut ausführen, so kann dies "uber eine
+erneute Anwahl der Small Step Funktion im Menu {\bf Beweis}
+geschehen. Dabei wird jedoch der aktive Small Step Interpreter durch
+den neuen ersetzt.
+
+Jedes Beweiswerkzeug verf"ugt "uber einen {\bf Beginner} und einen
+{\bf Fortgeschrittener} Modus. Diese Modi unterscheiden sich in den
+Regeln, zum Beweis des Ausdrucks zur Verfügung stehen. Zur Zeit
+betrifft diese Einstellung jedoch nur den Small Step Interpreter
+
+\section {Tutorials}
+Im folgenden wird anhand von einigen Beispielen in die
+Funktionsweise der einzelnen Beweiswerkzeuge eingef"uhrt. Zun"achst
+"offnen wir "uber {\bf Datei} $\rightarrow$ {\bf Neu...} einen
+Editor. Wie gesagt ist jeder Editor fest mit einer Sprache
+verknüpft.
+
+TODO: Screenshot Neu Dialog.
+
+Wir w"ahlen für unser Beispiel die Sprache L1 aus und best"atigen
+mit {\bf OK}. Es ist nun standartm"a"sig der Quelltexteditor aktiv.
+Wir geben einen Ausdruck ein, mit dem wir nun arbeiten wollen:
+
+{\bf (lambda x.x * 3) 4}
+
+Mit ein wenig Vorstellungskraft erkennt man, dass dieser Ausdruck
+vorraussichtlich das Produkt aus 3 und 4 berechnet.
+
+
+\subsection{Small Step Interpreter}
+Unsere mutige Behauptung wollen wir nun natürlich durch einen
+stichhaltigen Beweis untermauern. Wir starten also mittels {\bf
+Beweis} $\rightarrow$ {\bf Small Step} oder mit der Taste F9 einen
+Small Step Interpreter.
+
+TODO: Screenshot Small Step Interpreter
+
+Bewegt man nun den Mauscursor "uber den Buttons des Regelmenus
+oberhalb des Pfeils f"ur den ersten Ableitungsschritt wird der Teil
+des Ausdrucks rot unterstrichen, der als n"achstes Abgeleitet werden
+soll. In unserem Falle ist dies der gesamte Ausdruck. Der nächste
+Ableitungsschritt muss {\bf Beta-Value} sein, um die 4 f"ur das x zu
+substituieren. Wir klicken also auf den Button und w"ahlen in dem
+erscheinenden Regelmenu den entsprechenden Eintrag aus. Alternativ
+kann man auch einzelne Schritte oder den kompletten Beweis
+automatisch ausf"uhren lassen. F"ur einzelne Schritte klickt man
+entweder auf den gr"unen Pfeil oberhalb des Small Step Interpreters
+oder w"ahlt {\bf Raten} im Regelmenu. Eine komplette Beweisführung
+wird mittels {\bf Vervollst"andigen} im selben Menu vorgenommen.
+
+Ist man mit den Regeln vertraut, so kann man "uber {\bf Beweis}
+$\rightarrow$ {\bf Fortgeschrittener} einige Regeln ausblenden. Das
+Regelmenu enth"alt nun nur noch Regeln die spezifizieren was getan
+werden soll und nicht mehr genau wo. So muss zum Beispiel eine
+Bedingung nicht mehr mit {\bf COND-EVAL} ausgewertet werden. Man
+gibt w"ahlt lediglich {\bf COND-TRUE} bzw. {\bf COND-FALSE} aus.
+
+\subsection{Big Step Interpreter}
+Der Big Step Interpreter kann auch "uber das {\bf Beweis} Menu oder
+mit der Taste F11 gestartet werden. Zu beachten ist, dass man sich
+hierf"ur nicht zwingend im Quelltexteditor befinden muss. Auch beim
+Big Step Interpreter k"onnen Regeln "uber das Regelmenu ausgew"ahlt
+werden. Ist ein Unterbaum vollst"andig ausgewertet, so wird das
+ermittelte Ergebnis f"ur h"ohere Knoten "ubernommen. Da unser
+Beispiel lediglich einen Unterbaum f"ur die Regel {\bf BETA-VALUE}
+enth"alt, ist dies auch gleichzeitig unser Ergebnis. Im Gegensatz
+zum Small Step Interpreter gibt es aufgrund der Baumstruktur des
+Beweises mehrere Stellen an denen Regeln angewandt werden k"onnen.
+Die Raten-Funktion bezieht sich dabei immer auf den obersten, noch
+nicht komplett ausgewerteten Teilbaum. Mit {\bf Vervollst"andigen}
+wird stets nur der jeweilige Unterbaum komplett ausgewertet und
+nicht wie beim Small Step Interpreter der komplette Beweis zu ende
+geführt.
+
+\subsection{Type Checker}
+Diese Beweisart ist genau wie der Big Step Interpreter in einer
+Baumstruktur aufgebaut. Der Type Checker verh"alt sich daher
+bez"uglich des Anwenden von Regeln, den Raten und der
+Vervollst"andigen Funktion genau wie der Big Step Interpreter. Das
+Anf"ugen von Typvariablen geschieht bei Regelanwendung automatisch.
+Alternativ kann man mit der Funktion {\bf Typ eingeben} in dem
+Regelmenu selbst einen Typ f"ur den entsprechenden Teilbaum
+eingeben.
+
+TODO: Screenshot Type Checker mit Typ Eingabefeld.
+
+Der Typinferenzalgorithmus versucht dann den Unterbaum zu diesem Typ
+auszuwerten.
 
 
 
