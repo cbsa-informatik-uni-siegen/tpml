@@ -7,8 +7,8 @@
 
 \section{"Uberblick}
 
-Das Menu {\bf Datei} enthält Funktionen zur Dateiverwaltung, wie
-beispielsweise Öffnen und Schließen. Weiterhin kann unter {\bf
+Das Menu {\bf Datei} enth"alt Funktionen zur Dateiverwaltung, wie
+beispielsweise "offnen und Schliessen. Weiterhin kann unter {\bf
 Zuletzt benutzt} schnell auf die aktuellsten Dateien zugegriffen
 werden. Unter {\bf Bearbeiten} sind Editorfunktionen enthalten. Die
 einzelnen Komponenten werden in Kapitel~\ref{Qelltexteditor}
@@ -17,7 +17,7 @@ Einstellungen...} kann die Schriftart und Gr"o"se global f"ur alle
 Editorkomponenten gesetzt werden. Weiterhin stellt man hier die
 Einf"arbung von Schl"usselworten im
 Quelltexteditor~\ref{Qelltexteditor} ein. Das Menu {\bf Beweis}
-enthält die einzelnen Beweiswerkzeuge und dient dazu zwischen dem
+enth"alt die einzelnen Beweiswerkzeuge und dient dazu zwischen dem
 {\bf Beginner} und {\bf Fortgeschrittener} Modus zu wechseln. Diese
 Modi beeintr"achtigen die bei den Beweisschritten zur Verf"ugung
 stehenden Regeln.
@@ -45,19 +45,19 @@ springt.
 \label{Beweiswerkzeuge} Wird ein Beweiswerkzeug gestartet, so wird
 es zus"atzlich zum Quelltexteditor im Tab der Datei angezeigt. F"ur
 jede Datei kann jeweils nur ein Small Step Interpreter, ein Big Step
-Interpreter und ein Type Checker aktiv sein. Diese können über die
-entsprechende Schaltfl"achen angewählt werden. Wird ein
+Interpreter und ein Type Checker aktiv sein. Diese k"onnen "uber die
+entsprechende Schaltfl"achen angew"ahlt werden. Wird ein
 Beweiswerkzeug erneut gestartet, so ersetzt der neue Beweis ein ggf.
 schon aktives Beweiswerkzeug des selben Typs. M"ochte man also zum
 Beispiel einen Small Step Beweis neu starten oder f"ur einen leicht
-ge"anderten Ausdruck erneut ausführen, so kann dies "uber eine
+ge"anderten Ausdruck erneut ausf"uhren, so kann dies "uber eine
 erneute Anwahl der Small Step Funktion im Menu {\bf Beweis}
 geschehen. Dabei wird jedoch der aktive Small Step Interpreter durch
 den neuen ersetzt.
 
 Jedes Beweiswerkzeug verf"ugt "uber einen {\bf Beginner} und einen
 {\bf Fortgeschrittener} Modus. Diese Modi unterscheiden sich in den
-Regeln, zum Beweis des Ausdrucks zur Verfügung stehen. Zur Zeit
+Regeln, zum Beweis des Ausdrucks zur Verf"ugung stehen. Zur Zeit
 betrifft diese Einstellung jedoch nur den Small Step Interpreter
 
 \section {Tutorials}
@@ -65,12 +65,17 @@ Im folgenden wird anhand von einigen Beispielen in die
 Funktionsweise der einzelnen Beweiswerkzeuge eingef"uhrt. Zun"achst
 "offnen wir "uber {\bf Datei} $\rightarrow$ {\bf Neu...} einen
 Editor. Wie gesagt ist jeder Editor fest mit einer Sprache
-verknüpft.
+verkn"upft.
 
-TODO: Screenshot Neu Dialog.
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width=7cm]{images/new-dialog.png}
+\caption{Eine neue Datei erstellen}
+\end{center}
+\end{figure}
 
-Wir w"ahlen für unser Beispiel die Sprache L1 aus und best"atigen
-mit {\bf OK}. Es ist nun standartm"a"sig der Quelltexteditor aktiv.
+Wir w"ahlen f"ur unser Beispiel die Sprache \LONE\ aus und best"atigen
+mit {\bf Ok}. Es ist nun standardm"a"sig der Quelltexteditor aktiv.
 Wir geben einen Ausdruck ein, mit dem wir nun arbeiten wollen:
 
 {\bf (lambda x.x * 3) 4}
@@ -80,24 +85,31 @@ vorraussichtlich das Produkt aus 3 und 4 berechnet.
 
 
 \subsection{Small Step Interpreter}
-Unsere mutige Behauptung wollen wir nun natürlich durch einen
+Unsere mutige Behauptung wollen wir nun nat"urlich durch einen
 stichhaltigen Beweis untermauern. Wir starten also mittels {\bf
 Beweis} $\rightarrow$ {\bf Small Step} oder mit der Taste F9 einen
 Small Step Interpreter.
 
-TODO: Screenshot Small Step Interpreter
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width=7cm]{images/small-step.png}
+\caption{Der Small Step Interpreter}
+\label{FigureSmallStep}
+\end{center}
+\end{figure}
 
 Bewegt man nun den Mauscursor "uber den Buttons des Regelmenus
 oberhalb des Pfeils f"ur den ersten Ableitungsschritt wird der Teil
 des Ausdrucks rot unterstrichen, der als n"achstes Abgeleitet werden
-soll. In unserem Falle ist dies der gesamte Ausdruck. Der nächste
-Ableitungsschritt muss {\bf Beta-Value} sein, um die 4 f"ur das x zu
+soll, wie in Abbildung~\ref{FigureSmallStep} gezeigt.
+In unserem Falle ist dies der gesamte Ausdruck. Der n"achste
+Ableitungsschritt muss {\bf BETA-V} sein, um die 4 f"ur das x zu
 substituieren. Wir klicken also auf den Button und w"ahlen in dem
 erscheinenden Regelmenu den entsprechenden Eintrag aus. Alternativ
 kann man auch einzelne Schritte oder den kompletten Beweis
 automatisch ausf"uhren lassen. F"ur einzelne Schritte klickt man
 entweder auf den gr"unen Pfeil oberhalb des Small Step Interpreters
-oder w"ahlt {\bf Raten} im Regelmenu. Eine komplette Beweisführung
+oder w"ahlt {\bf Raten} im Regelmenu. Eine komplette Beweisf"uhrung
 wird mittels {\bf Vervollst"andigen} im selben Menu vorgenommen.
 
 Ist man mit den Regeln vertraut, so kann man "uber {\bf Beweis}
@@ -122,22 +134,29 @@ Die Raten-Funktion bezieht sich dabei immer auf den obersten, noch
 nicht komplett ausgewerteten Teilbaum. Mit {\bf Vervollst"andigen}
 wird stets nur der jeweilige Unterbaum komplett ausgewertet und
 nicht wie beim Small Step Interpreter der komplette Beweis zu ende
-geführt.
+gef"uhrt.
 
 \subsection{Type Checker}
+
 Diese Beweisart ist genau wie der Big Step Interpreter in einer
 Baumstruktur aufgebaut. Der Type Checker verh"alt sich daher
 bez"uglich des Anwenden von Regeln, den Raten und der
 Vervollst"andigen Funktion genau wie der Big Step Interpreter. Das
 Anf"ugen von Typvariablen geschieht bei Regelanwendung automatisch.
+
 Alternativ kann man mit der Funktion {\bf Typ eingeben} in dem
 Regelmenu selbst einen Typ f"ur den entsprechenden Teilbaum
-eingeben.
+eingeben, wie in Abbildung~\ref{FigureTypeChecker} gezeigt.
+Der Typinferenzalgorithmus versucht dann den Unterbaum zu
+diesem Typ auszuwerten.
 
-TODO: Screenshot Type Checker mit Typ Eingabefeld.
-
-Der Typinferenzalgorithmus versucht dann den Unterbaum zu diesem Typ
-auszuwerten.
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width=7cm]{images/type-checker.png}
+\caption{Der Type Checker}
+\label{FigureTypeChecker}
+\end{center}
+\end{figure}
 
 
 
