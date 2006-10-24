@@ -172,6 +172,7 @@ public class PreferenceDialog extends javax.swing.JDialog {
 				});
         
         // connect the font button to the theme
+        /* FIXME: Windows and custom fonts
         this.fontButton.setFont(this.theme.getFont());
         this.fontButton.setText(this.theme.getFont().getName() + " " + this.theme.getFont().getSize());
         this.theme.addPropertyChangeListener("font", new PropertyChangeListener() {
@@ -181,6 +182,7 @@ public class PreferenceDialog extends javax.swing.JDialog {
                 PreferenceDialog.this.fontButton.setText(font.getName() + " " + font.getSize());
             }
         });
+        */
         
         // setup the colors list
         DefaultListModel colorsModel = new DefaultListModel();
@@ -204,9 +206,8 @@ public class PreferenceDialog extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:initComponents
     private void initComponents() {
         javax.swing.JButton closeButton;
-        javax.swing.JLabel colorsLabel;
+        javax.swing.JLabel colorLabel;
         javax.swing.JScrollPane colorsScrollPane;
-        javax.swing.JLabel fontLabel;
         java.awt.GridBagConstraints gridBagConstraints;
         javax.swing.JPanel mainPanel;
         javax.swing.JPanel southPanel;
@@ -214,9 +215,7 @@ public class PreferenceDialog extends javax.swing.JDialog {
         southPanel = new javax.swing.JPanel();
         closeButton = new javax.swing.JButton();
         mainPanel = new javax.swing.JPanel();
-        fontLabel = new javax.swing.JLabel();
-        colorsLabel = new javax.swing.JLabel();
-        fontButton = new javax.swing.JButton();
+        colorLabel = new javax.swing.JLabel();
         colorsScrollPane = new javax.swing.JScrollPane();
         colorsList = new javax.swing.JList();
 
@@ -239,38 +238,13 @@ public class PreferenceDialog extends javax.swing.JDialog {
 
         mainPanel.setLayout(new java.awt.GridBagLayout());
 
-        fontLabel.setText("Font");
+        colorLabel.setText(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("Colors"));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.insets = new java.awt.Insets(18, 18, 12, 0);
-        mainPanel.add(fontLabel, gridBagConstraints);
-
-        colorsLabel.setText(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("Colors"));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(0, 18, 12, 18);
-        mainPanel.add(colorsLabel, gridBagConstraints);
-
-        fontButton.setText("Dialog 16 Bold");
-        fontButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fontButtonActionPerformed(evt);
-            }
-        });
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(0, 30, 24, 18);
-        mainPanel.add(fontButton, gridBagConstraints);
+        mainPanel.add(colorLabel, gridBagConstraints);
 
         colorsList.setModel(new javax.swing.AbstractListModel() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
@@ -293,7 +267,7 @@ public class PreferenceDialog extends javax.swing.JDialog {
         gridBagConstraints.ipadx = 300;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(0, 30, 18, 18);
+        gridBagConstraints.insets = new java.awt.Insets(0, 30, 6, 18);
         mainPanel.add(colorsScrollPane, gridBagConstraints);
 
         getContentPane().add(mainPanel, java.awt.BorderLayout.CENTER);
@@ -319,46 +293,11 @@ public class PreferenceDialog extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_colorsListMouseClicked
 
-    private void fontButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fontButtonActionPerformed
-        final JDialog dialog = new JDialog(this, java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("Select_a_font"));
-        dialog.setLayout(new BorderLayout());
-        
-        final FontChooser fontChooser = new FontChooser();
-        fontChooser.setGUIFont(this.theme.getFont());
-        dialog.add(fontChooser, BorderLayout.CENTER);
-        
-        JPanel buttonPanel = new JPanel();
-        buttonPanel.setLayout(new FlowLayout());
-        dialog.add(buttonPanel, BorderLayout.SOUTH);
-        
-        final JButton okButton = new JButton(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("Ok"));
-        buttonPanel.add(okButton);
-        okButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                PreferenceDialog.this.theme.setFont(fontChooser.getGUIFont());
-                dialog.dispose();
-            }
-        });
-
-        final JButton cancelButton = new JButton(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("Cancel"));
-        buttonPanel.add(cancelButton);
-        cancelButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                dialog.dispose();
-            }
-        });
-        
-        dialog.pack();
-        dialog.setLocationRelativeTo(this);
-        dialog.setVisible(true);
-    }//GEN-LAST:event_fontButtonActionPerformed
-
     private void closeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeButtonActionPerformed
         dispose();
     }//GEN-LAST:event_closeButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JList colorsList;
-    private javax.swing.JButton fontButton;
     // End of variables declaration//GEN-END:variables
 }

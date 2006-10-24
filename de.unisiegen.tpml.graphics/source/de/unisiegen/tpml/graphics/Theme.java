@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.util.prefs.Preferences;
 
-import javax.swing.JLabel;
+import javax.swing.JComboBox;
 
 import de.unisiegen.tpml.core.util.beans.AbstractBean;
 
@@ -153,10 +153,13 @@ public final class Theme extends AbstractBean {
 		this.expressionColor = Color.decode(this.preferences.get("expressionColor", "#000000"));
 		
 		// load the font setting
+		/* FIXME: This doesn't work on Windows! (*surprise*)
 		Font defaultFont = new JLabel().getFont();
 		this.font = new Font(this.preferences.get("fontName", defaultFont.getName()),
 				this.preferences.getInt("fontStyle", defaultFont.getStyle()),
 				this.preferences.getInt("fontSize", defaultFont.getSize()));
+	  */
+		this.font = new JComboBox().getFont();
 		
 		// load the keywordColor setting
 		this.keywordColor = Color.decode(this.preferences.get("keywordColor", "#7f0000"));
@@ -370,6 +373,7 @@ public final class Theme extends AbstractBean {
 	 * @see Font
 	 */
 	public void setFont(Font font) {
+		/* FIXME: Windows, meh...
 		if (font == null) {
 			throw new NullPointerException("font is null");
 		}
@@ -384,6 +388,8 @@ public final class Theme extends AbstractBean {
 			this.preferences.putInt("fontSize", font.getSize());
 			this.preferences.putInt("fontStyle", font.getStyle());
 		}
+		*/
+		throw new UnsupportedOperationException("Setting custom fonts mess up TPML on Windows!");
 	}
 	
 	/**
