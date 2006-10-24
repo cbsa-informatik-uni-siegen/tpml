@@ -1,8 +1,8 @@
 package de.unisiegen.tpml.core.typechecker;
 
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.TreeSet;
 
 import de.unisiegen.tpml.core.ProofRuleException;
 import de.unisiegen.tpml.core.expressions.ArithmeticOperator;
@@ -184,7 +184,7 @@ final class DefaultTypeCheckerProofContext implements TypeCheckerProofContext {
     else if (expression instanceof Projection) {
       Projection projection = (Projection)expression;
       TypeVariable[] typeVariables = new TypeVariable[projection.getArity()];
-      HashSet<TypeVariable> quantifiedVariables = new HashSet<TypeVariable>();
+      TreeSet<TypeVariable> quantifiedVariables = new TreeSet<TypeVariable>();
       for (int n = 0; n < typeVariables.length; ++n) {
         typeVariables[n] = new TypeVariable(n, 0);
         quantifiedVariables.add(typeVariables[n]);

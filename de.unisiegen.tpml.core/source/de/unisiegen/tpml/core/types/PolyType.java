@@ -103,7 +103,7 @@ public final class PolyType extends Type {
   public TreeSet<TypeVariable> free() {
     TreeSet<TypeVariable> free = new TreeSet<TypeVariable>();
     free.addAll(this.tau.free());
-    free.remove(this.quantifiedVariables);
+    free.removeAll(this.quantifiedVariables);
     return free;
   }
   

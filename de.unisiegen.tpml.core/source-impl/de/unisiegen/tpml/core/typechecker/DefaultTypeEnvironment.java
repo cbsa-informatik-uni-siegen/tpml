@@ -1,8 +1,8 @@
 package de.unisiegen.tpml.core.typechecker;
 
 import java.util.Enumeration;
-import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 import de.unisiegen.tpml.core.types.MonoType;
 import de.unisiegen.tpml.core.types.PolyType;
@@ -59,7 +59,7 @@ final class DefaultTypeEnvironment extends AbstractEnvironment<String, Type> imp
    */
   public PolyType closure(MonoType tau) {
     // determine the quantified type variables
-    HashSet<TypeVariable> quantifiedVariables = new HashSet<TypeVariable>();
+    TreeSet<TypeVariable> quantifiedVariables = new TreeSet<TypeVariable>();
     quantifiedVariables.addAll(tau.free());
     quantifiedVariables.removeAll(free());
     
@@ -82,7 +82,7 @@ final class DefaultTypeEnvironment extends AbstractEnvironment<String, Type> imp
    * @see de.unisiegen.tpml.core.typechecker.TypeEnvironment#free()
    */
   public Set<TypeVariable> free() {
-    HashSet<TypeVariable> free = new HashSet<TypeVariable>();
+    TreeSet<TypeVariable> free = new TreeSet<TypeVariable>();
     for (Mapping<String, Type> mapping : this.mappings) {
       free.addAll(mapping.getEntry().free());
     }
