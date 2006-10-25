@@ -1,0 +1,490 @@
+\documentclass[fleqn,landscape,titlepage,german]{myslides}
+%
+% Praesentation der Projektgruppe TPML, 2006
+%
+% 2006 Benedikt Meurer <benny@xfce.org>
+%
+ 
+\usepackage{amssymb}
+\usepackage[latin1]{inputenc}
+\usepackage{german}
+\usepackage{ngerman}
+
+% Einkommentieren, um Handouts zu generieren
+%\createhandoutstrue
+
+\begin{document}
+  
+\presentation[TPML 1.0]{Benedikt Meurer}{TPML 1.0 - Ein "Uberblick}
+\maketitle
+
+\addoverviewitem{Einleitung}
+\addoverviewitem{Die Kernkomponenten}
+\addoverviewitem{Die Sprachen}
+\addoverviewitem{Die Renderer}
+\addoverviewitem{Die Benutzerschnittstelle}
+\addoverviewitem{TPML 2.0}
+\addoverviewitem{Fazit}
+
+\CenteredGraphics
+
+
+
+%%
+%% Einleitung
+%%
+
+\makeoverviewslide
+
+\myslide{Ziele}{
+  \begin{itemgroup}{Ziele der Entwicklung}
+    \item Unterst"utzung der autodidaktischen Erarbeitung von Inhalten der ,,Theorie der Programmierung I''
+    \item Studierenden ein Gef"uhl f"ur Interpreter und Typsystem vermitteln
+    \item Praktisches Arbeiten mit dem Regelwerk hilft beim Verst"andnis
+    \item Besseres Verst"andnis der Zusammenh"ange von Programmtext und Ausf"uhrung auf einer Maschine
+    \item Vorbereitung und Motivation f"ur weitergehende Veranstaltungen\\(,,Theorie der Programmierung II'' und ,,Konzepte h"oherer Programmiersprachen'')
+  \end{itemgroup}
+}
+
+\myslide{Realisierung - ,,Divide and Conquer''}{
+  {\bf Leitsatz f"ur Ingenieure:} Hast du ein Problem, mach viele draus!
+
+  \animate{1}{
+    \begin{itemgroup}{Zerlegung in drei Teilprojekte}
+      \item {\tt de.unisiegen.tpml.core}      - Die Kernkomponenten Typechecker, Interpretern, Parsern, Lexern, Pretty Printern, \ldots
+      \item {\tt de.unisiegen.tpml.graphics}  - Untere Ebene der Benutzeroberfl"ache mit Texteditor, big und small step und Typechecker Oberfl"ache
+      \item {\tt de.unisiegen.tpml.ui}        - Obere Ebene der Benutzeroberfl"ache die alles zusammenf"ugt
+    \end{itemgroup}
+    \graphicybox{5cm}{images/realisierung.pdf}
+  }
+}
+
+\myslide{Realisierung - Arbeitsaufteilung}{
+  \begin{itemgroup}{Vorgehen}
+    \item Teilprojekte \cemph{unabh"angig} voneinander entwickelt
+    \item Kommunikation "uber \cemph{wohldefinierte} Schnittstellen
+  \end{itemgroup}
+
+  \begin{itemgroup}{Entwickler (Ansprechpartner f"ur nachfolgende Gruppen)}
+    \item {\tt de.unisiegen.tpml.core}      - Benedikt Meurer
+    \item {\tt de.unisiegen.tpml.graphics}  - Marcell Fischbach
+    \item {\tt de.unisiegen.tpml.ui}        - Christoph Fehling
+  \end{itemgroup}
+}
+
+\myslide{Realisierung - Entwicklung}{
+  \begin{itemgroup}{Werkzeuge}
+    \item Plattform: JavaSE 5.0
+    \item Entwicklungsumgebung: Eclipse 3.1.2
+    \item GUI Builder: NetBeans 5.0
+    \item Lexer Generator: JFlex 1.4.1
+    \item Parser Generator: JavaCUP 11a
+    \item Protokollierung: log4j 1.2.14
+  \end{itemgroup}
+
+  \begin{itemgroup}{Grundlage}
+    \item Vorlesungsinhalt ,,Theorie der Programmierung I'' (2005/2006)
+    \item OCaml 3.09.3
+  \end{itemgroup}
+}
+
+
+
+%%
+%% Die Kernkomponenten
+%%
+
+\makeoverviewslide
+
+\myslide{"Uberblick I}{
+  \begin{itemgroup}{Komponenten}
+    \item Abstract Syntax Tree
+    \item Small step Interpreter
+    \item Big step Interpreter
+    \item Type Checker
+    \item Parser/Lexer
+    \item Pretty Printer
+  \end{itemgroup}
+
+  \animate{1}{
+    \begin{itemgroup}{Ziele}
+      \item \cemph{Generische} Komponenten (Big/Small Stepper, Type Checker)
+      \item Sprachabh"angige Teile \cemph{isolieren}
+      \item Einziger Abstract Syntax Tree
+    \end{itemgroup}
+  }
+}
+
+\myslide{"Uberblick II}{
+  {\bf "Uberblick:} Datenflu"s zwischen den Kernkomponenten
+
+  \graphicxbox{24cm}{images/overview.pdf}
+
+  \begin{itemize}
+    \item grobe Strukturierung
+    \item einige Komponenten mehrfach vorhanden (z.B. Parser/Lexer)
+  \end{itemize}
+}
+
+\myslide{"Uberblick III}{
+  \begin{itemgroup}{Voraussetzung:}
+    \item Unterschiedliche Sprachen (nur teilweise aufeinander aufbauend)
+    \item Parser, Lexer, abstrakte Syntax (und damit Pretty Printer), Big/Small Stepper, Type Checker augenscheinlich sprachabh"angig
+  \end{itemgroup}
+
+  {\bf Problem:} Jede Komponente pro Sprache realisieren w"are zu aufwendig/nicht wartbar
+
+  {\bf L"osung:} Aufteilung in sprachabh"angige/-unabh"angige Teile
+}
+
+\myslide{"Uberblick IV}{
+  {\bf Aufteilung:} Sprachabh"angige/-unabh"angige Teile
+
+  \graphicxbox{18cm}{images/separierung.pdf}
+
+  \begin{itemize}
+    \item AST, PrettyPrinter, Parser/Lexer klar
+    \item Interpreter, Type Checker aufspalten
+  \end{itemize}
+}
+
+\myslide{Die abstrakte Syntax I}{
+  \begin{itemgroup}{Abstrakte Syntax}
+    \item Darstellung m"oglichst nahe an der Vorlesung
+    \item Realisierung durch \cemph{Vererbung} in Java (einfache Hierarchie)
+  \end{itemgroup}
+
+  \graphicybox{10cm}{images/ast.pdf}
+}
+
+\myslide{Die abstrakte Syntax II}{
+  {\bf Problem I:} Zugeh"origkeit zur Menge $Val$ (operationelle Semantik)?
+
+  \begin{itemize}
+    \item Klar bei {\tt Value} und abgeleiteten Klassen
+    \item Aber {\tt Tuple} {\tt extends} {\tt Value} oder {\tt List} {\tt extends} {\tt Value}?
+  \end{itemize}
+
+  \animate{1}{
+    {\bf L"osung:} Werte nicht ,,durch Vererbung auszumachen''
+
+    Statt
+    \[
+      e \in Val \Leftrightarrow e \texttt{ instanceof } \texttt{Value}
+    \]
+    eine Methode {\tt isValue()} in {\tt Expression}, statisch f"ur {\tt Value}, dynamisch f"ur {\tt List}/{\tt Tuple}
+  }
+}
+
+\myslide{Die abstrakte Syntax III}{
+  {\bf Problem II:} Unterschiedliche Substitution f"ur {\tt Let} und {\tt LetRec}
+
+  Substitution und Prettyprinting unterschiedlich f"ur
+  \[
+    \textbf{let}\,id=e_1\,\textbf{in}\,e_2
+  \]
+  und
+  \[
+    \textbf{let rec}\,id=e_1\,\textbf{in}\,e_2
+  \]
+  aber {\tt LetRec} {\tt extends} {\tt Let}.
+
+  \animate{1}{
+    {\bf L"osung:} Bisher keine, {\tt substitute()} und "ahnliche Methoden m"ussen neuimplementiert werden in diesen
+    F"allen ($\to$ schlechtes Codereuse, doppelte Fehler)
+  }
+}
+
+\myslide{Die abstrakte Syntax IV}{
+  \begin{itemgroup}{Syntaktischer Zucker}
+    \item eigene Klassen f"ur syntaktischen Zucker
+    \item z.B. {\tt LetRec} f"ur $\textbf{let rec}\,id=e_1\,\textbf{in}\,e_2$
+    \item oder {\tt CurriedLet} f"ur $\textbf{let}\,id\ id_1\,\ldots\,id_n = e_1\,\textbf{in}\,e_2$
+  \end{itemgroup}
+
+  \animate{1}{
+    "Ubersetzung in Kernsyntax durch sprachabh"angigen {\tt LanguageTranslator}
+    \begin{itemize}
+      \item erm"oglicht Konstrukte sp"ater in Kernsyntax zu "ubernehmen
+      \item z.B. {\bf let} syntaktischer Zucker f"ur $\mathcal{L}_1$ aber Kernsyntax f"ur $\mathcal{L}_1^{typed}$
+    \end{itemize}
+
+    Zwei Modi f"ur {\tt LanguageTranslator}: {\em outermost only} und {\em recursive}
+  }
+}
+
+\myslide{Die konkrete Syntax}{
+  \begin{itemgroup}{Konkrete Syntax:}
+    \item Definitiv \cemph{sprachabh"angig}
+    \item Eigene Lexer/Parser pro Sprache
+    \item Lexer f"ur \cemph{Syntaxhighlighting} im Editor benutzen
+  \end{itemgroup}
+
+  \animate{1}{
+    \begin{itemgroup}{Dazu:}
+      \item Gemeinsame Schnittstellen {\tt LanguageScanner} und {\tt LanguageParser} f"ur alle Lexer/Parser.
+      \item Parser durch {\tt Java CUP}, Lexer durch {\tt JFlex} generieren.
+    \end{itemgroup}
+
+    {\bf Beachte:} Konkrete Syntax nicht 100\%ig gleich abstrakter Syntax, z.B. {\tt lambda id:'a\,->\,'b.e} statt $\lambda id:\alpha\to\beta.e$, etc.
+  }
+}
+
+\myslide{Der Pretty Printer}{
+  \begin{itemgroup}{Pretty Printing}
+    \item \cemph{Sprachunabh"angig}, basierend auf abstrakter Syntax
+    \item ,,Umkehrung'' des Parsings, Prinzip der \cemph{,,Priority Grammars''} zur Klammerung
+    \item {\tt PrettyString} als Repr"asentation mit zus"atzlichen Informationen
+    \item {\tt PrettyPrintable} implementiert in {\tt Expression} und {\tt Type}
+    \item {\tt PrettyStringBuilder} zum Konstruieren von {\tt PrettyString}s
+  \end{itemgroup}
+}
+
+\myslide{ProofModels}{
+  {\bf Idee:} Big/Small Stepper und Type Checker aufteilen in sprachabh"angige/unabh"angige Teile
+
+  \animate{1}{
+    \begin{itemgroup}{Sprachunabh"angiger Teil}
+      \item Bietet zwei Schnittstellen:
+      \item zum sprachabh"angigen Teil
+      \item zum User Interface
+    \end{itemgroup}
+
+    {\bf Schnittstelle zur Sprache:} Regeln ({\tt ProofRuleSet}s) in das {\tt ProofModel} laden
+
+    {\bf Schnittstelle zum UI:} Baumdarstellung basierend auf {\tt TreeModel} (Swing)
+  }
+}
+
+\myslide{ProofRuleSets}{
+  \begin{itemgroup}{Schnittstelle zur Sprache}
+    \item Sprachen bieten Regeln, z.B. {\tt BigStepProofRule}s
+    \item Regeln angeordnet in {\tt ProofRuleSet}s
+    \item Regeln interagieren mit spezifischem {\tt ProofModel} "uber {\tt ProofContext}s
+  \end{itemgroup}
+
+  \animate{1}{
+    \begin{itemgroup}{Big step und Type Checker Regeln:}
+      \item {\tt apply()} zum Anwenden auf Knoten
+      \item {\tt update()} f"ur z.B. {\bf (LET)}
+    \end{itemgroup}
+
+    Small stepper hingegen ,,wei"s'' Regeln exakt und vergleicht lediglich Benutzerauswahl ($\to$ Eindeutigkeit des small steps)
+  }
+}
+
+\myslide{ProofContexts}{
+  {\bf Frage:} Regeln interagieren "uber {\tt ProofContext}s statt direkt mit {\tt ProofModel}?
+
+  \animate{1}{
+    \begin{itemize}
+      \item {\tt ProofContext} als \cemph{Protokollierungsschicht} zwischen Regeln und Model
+      \item kann Schritte f"ur \cemph{Undo}/\cemph{Redo} bestimmen
+      \item Undo/Redo damit transparent f"ur Model und Regeln, keine explizite Programmierung erforderlich
+    \end{itemize}
+  }
+}
+
+\myslide{TreeModel}{
+  \begin{itemgroup}{Schnittstelle zum UI}
+    \item grunds"atzlich alle drei \cemph{baumartige} Strukturen
+    \item basierend auf {\tt javax.swing.tree.TreeModel}
+    \item da existierendes Framework ($\to$ well-tested code)
+    \item leichter zu debuggen, z.B. mittels {\tt JTree}
+  \end{itemgroup}
+
+  {\bf Small stepper:} Darstellung als degenerierter Baum
+}
+
+\myslide{ProofModels revisited}{
+  {\bf Zusammenfassung:} Big/Small step und Type Checker {\tt ProofModel}s
+
+  \begin{itemize}
+    \item Sprachunabh"angiger, generischer Kern
+    \item Schnittstelle zum Regelwerk (sprachabh"angig)
+    \item Schnittstelle zum UI (sprachneutral)
+    \item Beispielhaft: das {\tt BigStepProofModel}
+  \end{itemize}
+
+  \graphicybox{4cm}{images/proofmodels.pdf}
+}
+
+
+
+%%
+%% Die Sprachen
+%%
+
+\makeoverviewslide
+
+\myslide{Die Sprachen I}{
+  \begin{itemgroup}{Zielsetzung:}
+    \item Unterst"utzung f"ur unterschiedliche Sprachen
+    \item dynamisch erweiterbar
+  \end{itemgroup}
+
+  {\bf Grundlage:} zuvor geschilderte Aufteilung der Kernkomponenten
+
+  {\bf dynamisch erweiterbar:} ja, aber bisher nicht von ,,extern'' (z.B. JAR-File/Plugin Mechanismus)
+}
+
+\myslide{Die Sprachen II}{
+  \begin{itemgroup}{Realisierte Sprachen (TPML 1.0)}
+    \item $\mathcal{L}_0$ - reiner ungetypter $\lambda$-Kalk"ul
+    \item $\mathcal{L}_1$ - angewandter $\lambda$-Kalk"ul mit einfachem Typsystem
+    \item $\mathcal{L}_2$ - rekursive Ausdr"ucke
+    \item $\mathcal{L}_3$ - polymorphes Typsystem, Listen, Tupel
+    \item $\mathcal{L}_4$ - imperative Konzepte
+  \end{itemgroup}
+
+  \begin{itemgroup}{Nicht realisiert}
+    \item Records mit Subtyping (wird in TP II ersetzt durch Objekte)
+  \end{itemgroup}
+}
+
+\myslide{Die Sprachen III}{
+  \begin{itemgroup}{Ein Blick in die Zukunft}
+    \item Objekte (Reihen und Reihentypen)
+    \item Klassen
+    \item Subtyping
+    \item rekursive Typen
+    \item Pattern Matching 
+    \item Aufz"ahlungstypen
+  \end{itemgroup}
+
+  Teilweise "Anderungen an sprachunabh"angigem Teil (z.B. \cemph{Sorted Unification})
+}
+
+
+
+%%
+%% Die Renderer
+%%
+
+\makeoverviewslide
+
+\myslide{Die Renderer I}{
+  \begin{itemgroup}{Das {\tt de.unisiegen.tpml.graphics} Projekt}
+    \item oberhalb der Kernkomponenten
+    \item realisiert den \cemph{Editor} (mit Syntaxhighlighting) und die \cemph{Renderer}
+    \item ein Renderer pro Beweiswerkzeug (Small/Big step Interpreter, Type Checker)
+    \item Renderer sind Schnittstelle zwischen Benutzer und den Kernkomponenten
+    \item Renderer absolut generisch
+  \end{itemgroup}
+}
+
+\myslide{Die Renderer II}{
+  \begin{itemgroup}{Funktionsweise}
+    \item Renderer arbeiten grunds"atzlich auf {\tt ProofModel}s, mit jeweiligen Eigenheiten
+    \item grob aufgeteilt in drei Klassen {\tt NodeComponent}, {\tt Component} und {\tt View}
+    \item {\tt NodeComponent} als Widget per Knoten im Beweisbaum
+    \item {\tt Component} sorgt f"ur Layouting der {\tt NodeComponent}s
+    \item {\tt View} enth"alt ein {\tt Component}, dient als Schnittstelle zum dar"uberliegenden UI
+  \end{itemgroup}
+}
+
+\myslide{Die Renderer III}{
+  \begin{itemgroup}{Zuk"unftige Entwicklungen}
+    \item Visualisierung von Bindungen (z.B. bei $\textbf{let}$, $\lambda$, etc)
+    \item Darstellung des abstrakten Syntaxbaums eines Ausdrucks
+    \item Schrittweise Durchf"uhrung einer Substitution
+    \item Schrittweise Durchf"uhrung des Unifikationsalgorithmus
+    \item Schrittweise Durchf"uhrung des Subtypingalgorithmus\\($\to$ Objekte)
+    \item Druckfunktion in Kombination mit dem UI
+  \end{itemgroup}
+}
+
+
+
+%%
+%% Die Benutzerschnittstelle
+%%
+
+\makeoverviewslide
+
+\myslide{Die Benutzerschnittstelle I}{
+  \begin{itemgroup}{Die Benutzerschnittstelle}
+    \item Bindeglied zwischen den Teilprojekten
+    \item Basierend auf AWT/Swing f"ur m"oglichst einfache Installation
+    \item Orientiert an bekannten IDEs (Eclipse, NetBeans)
+    \item Ein-Fenster-Anwendung mit einem Tab pro Datei
+    \item Pro Tab {\tt Source}, {\tt Big Step}, {\tt Small Step} und {\tt Type Checker}
+    \item Verbindung Datei $\leftrightarrow$ Sprache
+  \end{itemgroup}
+}
+
+\myslide{Die Benutzerschnittstelle II}{
+  \begin{itemgroup}{Details}
+    \item GUI Entwurf mit NetBeans
+    \item Verschiedene \cemph{Schichten}: {\tt MainWindow} $\to$ {\tt EditorPanel} $\to$ {\tt EditorComponent}
+    \item Kommunikation zu h"oheren Schichten "uber \cemph{Bean Properties} (z.B. Zustand der Undo/Redo Button)
+    \item Session Management (Fensterposition/gr"o"se und Dateien merken)
+  \end{itemgroup}
+
+  \begin{itemgroup}{Zusatzfeatures}
+    \item Starter f"ur Unix/Linux und Windows, mit Pr"ufung auf JavaSE 5.0
+    \item Integration in das Betriebssystem "uber MIME und Application Database (bisher nur unter Unix/Linux)
+  \end{itemgroup}
+}
+
+\myslide{Die Benutzerschnittstelle III}{
+  \begin{itemgroup}{Neulich in der Glaskugel$\ldots$}
+    \item Druckfunktion und/oder PDF/PS Export
+    \item Weitere Strukturierung, Trennung von NetBeans GUI und Funktionalit"at
+    \item OS-Integration f"ur Windows/OSX
+    \item Installer, optional als Bundle mit JRE 5.0 (Fehlerursache \#1)
+    \item {\tt log4j}-Integration f"ur Fehlerberichte
+    \item \emph{Outline} (abstrakte Syntax) f"ur Editor, ala Eclipse
+  \end{itemgroup}
+}
+
+
+
+%%
+%% TPML 2.0
+%%
+
+\makeoverviewslide
+
+\myslide{TPML 2.0}{
+  {\bf Die Zukunft:} TPML 2.0/3.0
+
+  \begin{itemize}
+    \item einige Ziele f"ur Teilprojekte schon abgesteckt
+    \item bereits Stoff f"ur (fast) zwei weitere PGs
+    \item Vorlesung ,,Theorie der Programmierung'' sehr variabel
+    \item Userfeedback wird weitere Baustellen aufzeigen
+  \end{itemize}
+
+  \animate{1}{
+    {\bf Ansprechpartner:} Christoph Fehling und Benedikt Meurer
+
+    {\bf Erfahrungsgem"a"s:} Ziele/Anspr"uche nicht zu hoch stecken
+  }
+}
+
+
+
+%%
+%% Fazit
+%%
+
+\makeoverviewslide
+
+\myslide{Fazit}{
+  {\bf Fazit:} Stichpunkte im R"uckblick auf ein Jahr TPML 1.0
+
+  \begin{itemize}
+    \item Kleine Projektgruppe (2-3 Teilnehmer) \quad\quad \includegraphics[width=1cm]{images/wmdz.png}
+    \item Gute Arbeitsatmosph"are
+    \item Flexible Einteilung, (fast) keine fixen Termine
+    \item ,,Extreme Prototyping''
+    \item Flexible Zielsetzung
+    \item Formale Grundlage (in der Vorlesung fehlende Regeln vorher festklopfen)
+  \end{itemize}
+}
+
+
+
+\end{document}
+
