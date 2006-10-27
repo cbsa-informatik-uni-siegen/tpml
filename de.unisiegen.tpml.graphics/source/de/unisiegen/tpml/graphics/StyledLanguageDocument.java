@@ -187,17 +187,23 @@ public class StyledLanguageDocument extends DefaultStyledDocument implements Bea
 	 */
 	private void initAttributes() {
 		// determine the current font family and size
-		int fontSize = this.theme.getFontSize();
+		String fontFamily = this.theme.getFont().getFamily();
+		int fontSize = this.theme.getFont().getSize();
 		
 		// use the colors and font from the current theme
+		StyleConstants.setFontFamily(this.normalSet, fontFamily);
 		StyleConstants.setFontSize(this.normalSet, fontSize);
 		StyleConstants.setForeground(this.attributes.get(PrettyStyle.COMMENT), this.theme.getCommentColor());
+		StyleConstants.setFontFamily(this.attributes.get(PrettyStyle.COMMENT), fontFamily);
 		StyleConstants.setFontSize(this.attributes.get(PrettyStyle.COMMENT), fontSize);
     StyleConstants.setForeground(this.attributes.get(PrettyStyle.CONSTANT), this.theme.getConstantColor());
+		StyleConstants.setFontFamily(this.attributes.get(PrettyStyle.CONSTANT), fontFamily);
 		StyleConstants.setFontSize(this.attributes.get(PrettyStyle.CONSTANT), fontSize);
     StyleConstants.setForeground(this.attributes.get(PrettyStyle.KEYWORD), this.theme.getKeywordColor());
+		StyleConstants.setFontFamily(this.attributes.get(PrettyStyle.KEYWORD), fontFamily);
 		StyleConstants.setFontSize(this.attributes.get(PrettyStyle.KEYWORD), fontSize);
     StyleConstants.setForeground(this.attributes.get(PrettyStyle.TYPE), this.theme.getTypeColor());
+		StyleConstants.setFontFamily(this.attributes.get(PrettyStyle.TYPE), fontFamily);
 		StyleConstants.setFontSize(this.attributes.get(PrettyStyle.TYPE), fontSize);
 	}
 	
@@ -336,7 +342,8 @@ public class StyledLanguageDocument extends DefaultStyledDocument implements Bea
         	
           // setup the error attribute set
           SimpleAttributeSet errorSet = new SimpleAttributeSet();
-          StyleConstants.setFontSize(errorSet, this.theme.getFontSize());
+          StyleConstants.setFontFamily(errorSet, this.theme.getFont().getFamily());
+          StyleConstants.setFontSize(errorSet, this.theme.getFont().getSize());
           StyleConstants.setForeground(errorSet, Color.RED);
           StyleConstants.setUnderline(errorSet, true);
           errorSet.addAttribute("exception", e);

@@ -82,23 +82,23 @@ public abstract class AbstractRenderer {
 	private static void setTheme (Theme theme, Component reference) { 
 		
 		AbstractRenderer.expColor							= theme.getExpressionColor();
-		AbstractRenderer.expFont							= reference.getFont().deriveFont((float)theme.getFontSize());
+		AbstractRenderer.expFont							= theme.getFont();
 		AbstractRenderer.expFontMetrics				= reference.getFontMetrics(AbstractRenderer.expFont);
 		
 		AbstractRenderer.keywordColor					= theme.getKeywordColor();
-		AbstractRenderer.keywordFont					= reference.getFont().deriveFont((float)theme.getFontSize());
+		AbstractRenderer.keywordFont					= theme.getFont();
 		AbstractRenderer.keywordFontMetrics		= reference.getFontMetrics(AbstractRenderer.keywordFont);
 		
 		AbstractRenderer.constantColor				= theme.getConstantColor();
-		AbstractRenderer.constantFont					= reference.getFont().deriveFont((float)theme.getFontSize());
+		AbstractRenderer.constantFont					= theme.getFont();
 		AbstractRenderer.constantFontMetrics	= reference.getFontMetrics(AbstractRenderer.constantFont);
 		
 		AbstractRenderer.envColor							= theme.getEnvironmentColor();
-		AbstractRenderer.envFont							= reference.getFont().deriveFont((float)theme.getFontSize());
+		AbstractRenderer.envFont							= theme.getFont();
 		AbstractRenderer.envFontMetrics				= reference.getFontMetrics(AbstractRenderer.envFont);
 		
 		AbstractRenderer.typeColor						= theme.getTypeColor();
-		AbstractRenderer.typeFont							= reference.getFont().deriveFont((float)theme.getFontSize());
+		AbstractRenderer.typeFont							= theme.getFont();
 		AbstractRenderer.typeFontMetrics			= reference.getFontMetrics(AbstractRenderer.typeFont);
 		
 		
