@@ -1,7 +1,6 @@
 package de.unisiegen.tpml.graphics;
 
 import java.awt.Color;
-import java.awt.Font;
 import java.util.prefs.Preferences;
 
 import javax.swing.JComboBox;
@@ -63,12 +62,12 @@ public final class Theme extends AbstractBean {
 	private Color expressionColor;
 	
 	/**
-	 * The global font setting, which is used for the renderers and the editors.
+	 * The global font size setting, which is used for the renderers and the editors.
 	 * 
-	 * @see #getFont()
-	 * @see #setFont(Font)
+	 * @see #getFontSize()
+	 * @see #setFontSize(int)
 	 */
-	private Font font;
+	private int fontSize;
 	
 	/**
 	 * The {@link Color} used to render keywords.
@@ -152,14 +151,8 @@ public final class Theme extends AbstractBean {
 		// load the expressionColor setting
 		this.expressionColor = Color.decode(this.preferences.get("expressionColor", "#000000"));
 		
-		// load the font setting
-		/* FIXME: This doesn't work on Windows! (*surprise*)
-		Font defaultFont = new JLabel().getFont();
-		this.font = new Font(this.preferences.get("fontName", defaultFont.getName()),
-				this.preferences.getInt("fontStyle", defaultFont.getStyle()),
-				this.preferences.getInt("fontSize", defaultFont.getSize()));
-	  */
-		this.font = new JComboBox().getFont();
+		// load the font size setting
+		this.fontSize = this.preferences.getInt("fontSize", new JComboBox().getFont().getSize());
 		
 		// load the keywordColor setting
 		this.keywordColor = Color.decode(this.preferences.get("keywordColor", "#7f0000"));
@@ -350,46 +343,39 @@ public final class Theme extends AbstractBean {
 	}
 	
 	/**
-	 * Returns the global font that should be used for the renderers and editors.
+	 * Returns the global font size that should be used for the renderers and editors.
 	 * 
-	 * @return the font for the renderers and editors.
+	 * @return the font size for the renderers and editors.
 	 * 
-	 * @see #setFont(Font)
-	 * @see Font
+	 * @see #setFontSize(int)
 	 */
-	public Font getFont() {
-		return this.font;
+	public int getFontSize() {
+		return this.fontSize;
 	}
 	
 	/**
-	 * Changes the global font that is used for the renderers and editors to the specified
-	 * <code>font</code>.
+	 * Changes the global font size that is used for the renderers and editors to the specified
+	 * <code>fontSize</code>.
 	 * 
-	 * @param font the new global font setting.
+	 * @param fontSize the new global font size setting.
 	 * 
-	 * @throws NullPointerException if <code>font</code> is <code>null</code>.
+	 * @throws IllegalArgumentException if <code>fontSize</code> is invalid.
 	 * 
-	 * @see #getFont()
-	 * @see Font
+	 * @see #getFontSize()
 	 */
-	public void setFont(Font font) {
-		/* FIXME: Windows, meh...
-		if (font == null) {
-			throw new NullPointerException("font is null");
+	public void setFont(int fontSize) {
+		if (fontSize < 1) {
+			throw new IllegalArgumentException("fontSize is invalid");
 		}
-		if (!this.font.equals(font)) {
-			// update the font
-			Font oldFont = this.font;
-			this.font = font;
-			firePropertyChange("font", oldFont, font);
+		if (this.fontSize != fontSize) {
+			// update the font size
+			int oldFontSize = this.fontSize;
+			this.fontSize = fontSize;
+			firePropertyChange("fontSize", oldFontSize, fontSize);
 			
 			// save the new setting
-			this.preferences.put("fontName", font.getName());
-			this.preferences.putInt("fontSize", font.getSize());
-			this.preferences.putInt("fontStyle", font.getStyle());
+			this.preferences.putInt("fontSize", fontSize);
 		}
-		*/
-		throw new UnsupportedOperationException("Setting custom fonts mess up TPML on Windows!");
 	}
 	
 	/**
