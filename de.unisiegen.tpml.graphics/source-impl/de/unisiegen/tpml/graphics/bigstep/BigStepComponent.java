@@ -147,6 +147,9 @@ public class BigStepComponent extends AbstractProofComponent implements Scrollab
 				public void nodeChanged (BigStepNodeComponent node) {
 					BigStepComponent.this.relayout();
 				}
+				public void requestJumpToNode (ProofNode node) {
+					BigStepComponent.this.jumpNode = node;
+				}
 			});
 		}
 

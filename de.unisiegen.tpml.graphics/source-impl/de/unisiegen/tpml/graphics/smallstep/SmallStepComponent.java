@@ -192,6 +192,9 @@ public class SmallStepComponent extends AbstractProofComponent implements Scroll
 				public void repaintAll () {
 					SmallStepComponent.this.repaint();
 				}
+				public void requestJumpToNode (ProofNode node) {
+					SmallStepComponent.this.jumpNode = node;
+				}
 			});
 			
 			nodeComponent.update();

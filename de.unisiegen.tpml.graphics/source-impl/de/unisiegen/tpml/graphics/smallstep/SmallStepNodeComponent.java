@@ -14,6 +14,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
 
+import de.unisiegen.tpml.core.ProofGuessException;
+import de.unisiegen.tpml.core.ProofNode;
 import de.unisiegen.tpml.core.ProofRule;
 import de.unisiegen.tpml.core.ProofStep;
 import de.unisiegen.tpml.core.expressions.Expression;
@@ -372,7 +374,8 @@ public class SmallStepNodeComponent extends JComponent {
 		else if (item instanceof MenuGuessItem) {
 			try {
 				this.proofModel.guess(this.proofNode);
-			} catch (final Exception e) {
+			} catch (final ProofGuessException e) {
+				fireRequstJumpToNode(e.getNode());
 				SwingUtilities.invokeLater(new Runnable() {
 					public void run() {
 						JOptionPane.showMessageDialog(getTopLevelAncestor(), MessageFormat.format(Messages.getString("NodeComponent.5"), e.getMessage()), Messages.getString("NodeComponent.6"), JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
@@ -384,7 +387,8 @@ public class SmallStepNodeComponent extends JComponent {
 			try {
 				this.proofModel.complete(this.proofNode);
 			}
-			catch (final Exception e) {
+			catch (final ProofGuessException e) {
+				fireRequstJumpToNode(e.getNode());
 				SwingUtilities.invokeLater(new Runnable() {
 					public void run() {
 						JOptionPane.showMessageDialog(getTopLevelAncestor(), MessageFormat.format(Messages.getString("NodeComponent.7"), e.getMessage()), Messages.getString("NodeComponent.8"), JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
@@ -679,6 +683,17 @@ public class SmallStepNodeComponent extends JComponent {
 			}
 			
 			((SmallStepNodeListener)listeners [i+1]).nodeChanged(this);
+		}
+	}
+	
+	private void fireRequstJumpToNode (ProofNode node) {
+		Object[] listeners = this.listenerList.getListenerList();
+		for (int i=0; i<listeners.length; i+=2) {
+			if (listeners [i] != SmallStepNodeListener.class) {
+				continue;
+			}
+			
+			((SmallStepNodeListener)listeners [i+1]).requestJumpToNode(node);
 		}
 	}
 	

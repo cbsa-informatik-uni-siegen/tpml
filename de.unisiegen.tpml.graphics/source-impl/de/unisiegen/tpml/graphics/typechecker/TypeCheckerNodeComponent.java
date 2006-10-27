@@ -16,6 +16,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
 
+import de.unisiegen.tpml.core.ProofGuessException;
+import de.unisiegen.tpml.core.ProofNode;
 import de.unisiegen.tpml.core.ProofRule;
 import de.unisiegen.tpml.core.languages.Language;
 import de.unisiegen.tpml.core.languages.LanguageParser;
@@ -64,7 +66,7 @@ public class TypeCheckerNodeComponent extends JComponent  implements TreeNodeCom
 	/**
 	 * The calculated dimension for this node in pixels.
 	 */
-	private Dimension														dimension;
+	private Dimension															dimension;
 	
 	/**
 	 * The spacing that should be set free between to components
@@ -453,6 +455,17 @@ public class TypeCheckerNodeComponent extends JComponent  implements TreeNodeCom
 		}
 	}
 	
+	private void fireRequestJumpToNode (ProofNode node) {
+		Object[] listeners = this.listenerList.getListenerList();
+		for (int i=0; i<listeners.length; i+=2) {
+			if (listeners [i] != TypeCheckerNodeListener.class) {
+				continue;
+			}
+			
+			((TypeCheckerNodeListener)listeners [i+1]).requestJumpToNode(node);
+		}
+	}
+	
 	/**
 	 * Handles every action, that is done via the menu of
 	 * the {@link #ruleButton}.<br>
@@ -514,7 +527,8 @@ public class TypeCheckerNodeComponent extends JComponent  implements TreeNodeCom
 			try {
 				this.proofModel.guess(this.proofNode);
 			}
-			catch (final Exception e) {
+			catch (final ProofGuessException e) {
+				fireRequestJumpToNode(e.getNode());
 				SwingUtilities.invokeLater(new Runnable() {
 					public void run() {
 						JOptionPane.showMessageDialog(getTopLevelAncestor(), MessageFormat.format(Messages.getString("NodeComponent.5"), e.getMessage()), Messages.getString("NodeComponent.6"), JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
@@ -527,13 +541,15 @@ public class TypeCheckerNodeComponent extends JComponent  implements TreeNodeCom
 			try {
 				this.proofModel.complete(this.proofNode);
 			}
-			catch (final Exception e) {
+			catch (final ProofGuessException e) {
+				fireRequestJumpToNode(e.getNode());
 				SwingUtilities.invokeLater(new Runnable() {
 					public void run() {
 						JOptionPane.showMessageDialog(getTopLevelAncestor(), MessageFormat.format(Messages.getString("NodeComponent.7"), e.getMessage()), Messages.getString("NodeComponent.8"), JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
 					}
 				});
 			}
+			fireNodeChanged ();
 		}
 		else if (item instanceof MenuEnterTypeItem) {
 			this.typeEnter.setActive(true);

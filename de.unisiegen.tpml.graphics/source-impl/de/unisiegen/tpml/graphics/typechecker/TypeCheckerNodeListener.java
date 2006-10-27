@@ -2,6 +2,8 @@ package de.unisiegen.tpml.graphics.typechecker;
 
 import java.util.EventListener;
 
+import de.unisiegen.tpml.core.ProofNode;
+
 public interface TypeCheckerNodeListener extends EventListener {
 
 	/**
@@ -17,4 +19,11 @@ public interface TypeCheckerNodeListener extends EventListener {
 	 * @param node
 	 */
 	public void requestTypeEnter (TypeCheckerNodeComponent node);
+	
+	/**
+	 * Callend when an error occured during guess or an guess tree.
+	 * 
+	 * @param node The node where the component should jumpt to
+	 */
+	public void requestJumpToNode (ProofNode node);
 }

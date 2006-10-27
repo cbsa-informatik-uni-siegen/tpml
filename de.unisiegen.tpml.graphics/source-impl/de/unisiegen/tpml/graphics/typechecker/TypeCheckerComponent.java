@@ -166,6 +166,9 @@ public class TypeCheckerComponent extends AbstractProofComponent implements Scro
 				public void requestTypeEnter (TypeCheckerNodeComponent node) {
 					
 				}
+				public void requestJumpToNode (ProofNode node) {
+					TypeCheckerComponent.this.jumpNode = node;
+				}
 			});
 		}
 		

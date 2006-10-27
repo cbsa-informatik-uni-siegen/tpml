@@ -15,6 +15,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
 
+import de.unisiegen.tpml.core.ProofGuessException;
+import de.unisiegen.tpml.core.ProofNode;
 import de.unisiegen.tpml.core.ProofRule;
 import de.unisiegen.tpml.core.bigstep.BigStepProofModel;
 import de.unisiegen.tpml.core.bigstep.BigStepProofNode;
@@ -257,6 +259,17 @@ public class BigStepNodeComponent extends JComponent implements TreeNodeComponen
 		}
 	}
 	
+	private void fireRequestJumpToNode (ProofNode node) {
+		Object[] listeners = this.listenerList.getListenerList();
+		for (int i=0; i<listeners.length; i+=2) {
+			if (listeners [i] != BigStepNodeListener.class) {
+				continue;
+			}
+			
+			((BigStepNodeListener)listeners [i+1]).requestJumpToNode(node);
+		}
+	}
+	
 	/**
 	 * Handles the actions that should be done when an item from the MenuButton
 	 * was selected.<br>
@@ -321,7 +334,8 @@ public class BigStepNodeComponent extends JComponent implements TreeNodeComponen
 			try {
 				this.proofModel.guess(this.proofNode);
 			}
-			catch (final Exception e) {
+			catch (final ProofGuessException e) {
+				fireRequestJumpToNode(e.getNode());
 				SwingUtilities.invokeLater(new Runnable() {
 					public void run() {
 						JOptionPane.showMessageDialog(getTopLevelAncestor(), MessageFormat.format(Messages.getString("NodeComponent.5"), e.getMessage()), Messages.getString("NodeComponent.6"), JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
@@ -333,7 +347,8 @@ public class BigStepNodeComponent extends JComponent implements TreeNodeComponen
 			try {
 				this.proofModel.complete(this.proofNode);
 			}
-			catch (final Exception e) {
+			catch (final ProofGuessException e) {
+				fireRequestJumpToNode(e.getNode());
 				SwingUtilities.invokeLater(new Runnable() {
 					public void run() {
 						JOptionPane.showMessageDialog(getTopLevelAncestor(), MessageFormat.format(Messages.getString("NodeComponent.7"), e.getMessage()), Messages.getString("NodeComponent.8"), JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$

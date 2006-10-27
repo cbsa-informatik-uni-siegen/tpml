@@ -2,6 +2,8 @@ package de.unisiegen.tpml.graphics.smallstep;
 
 import java.util.EventListener;
 
+import de.unisiegen.tpml.core.ProofNode;
+
 public interface SmallStepNodeListener extends EventListener {
 
 	/**
@@ -16,4 +18,10 @@ public interface SmallStepNodeListener extends EventListener {
 	 *
 	 */
 	public void repaintAll ();
+	
+	/**
+	 * Requests the SmallStepComponent to scroll to given node
+	 * 
+	 */
+	public void requestJumpToNode (ProofNode node);
 }
