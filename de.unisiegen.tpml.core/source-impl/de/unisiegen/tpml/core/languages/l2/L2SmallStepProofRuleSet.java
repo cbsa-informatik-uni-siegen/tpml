@@ -1,6 +1,5 @@
 package de.unisiegen.tpml.core.languages.l2;
 
-import de.unisiegen.tpml.core.expressions.CurriedLet;
 import de.unisiegen.tpml.core.expressions.CurriedLetRec;
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.expressions.Lambda;
@@ -47,31 +46,6 @@ public class L2SmallStepProofRuleSet extends L1SmallStepProofRuleSet {
   //
   // The (UNFOLD) rule
   //
-
-  /**
-   * Evaluates the curried let expression <code>curriedLet</code> using <code>context</code>.
-   * 
-   * @param context the small step proof context.
-   * @param curriedLet the curried let expression.
-   * 
-   * @return the resulting expression.
-   */
-  public Expression evaluateCurriedLet(SmallStepProofContext context, CurriedLet curriedLet) {
-    // determine the sub expressions and the identifiers
-    String[] identifiers = curriedLet.getIdentifiers();
-    Expression e1 = curriedLet.getE1();
-    Expression e2 = curriedLet.getE2();
-    
-    // prepend the lambda abstractions to e1
-    for (int n = identifiers.length - 1; n >= 1; --n)
-      e1 = new Lambda(identifiers[n], null, e1);
-    
-    // we can simply perform (LET-EXEC)
-    context.addProofStep(getRuleByName("LET-EXEC"), curriedLet);
-    
-    // and perform the substitution
-    return e2.substitute(identifiers[0], e1);
-  }
 
   /**
    * Evaluates the recursive curried let expression <code>curriedLetRec</code> using <code>context</code>.

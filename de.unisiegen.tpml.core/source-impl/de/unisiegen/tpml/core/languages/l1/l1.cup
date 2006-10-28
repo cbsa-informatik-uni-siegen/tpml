@@ -2,6 +2,16 @@ import de.unisiegen.tpml.core.expressions.*;
 import de.unisiegen.tpml.core.types.*;
 
 
+/* Helper class */
+action code {:
+  private static class IdTypePair {
+    public IdTypePair(String id, MonoType tau) { this.id = id; this.tau = tau; }
+    String id;
+    MonoType tau;
+  }
+:}
+
+
 /* Binary operators */
 terminal			PLUS, MINUS, STAR, SLASH, MOD;
 terminal			EQUAL, LESS, GREATER, LESSEQUAL, GREATEREQUAL;
@@ -35,6 +45,8 @@ non terminal Expression		simple_expr;
 non terminal Expression[]	simple_expr_list;
 non terminal Expression		constant;
 non terminal Expression		operator;
+non terminal IdTypePair[]	id_type_list;		/* list of identifiers and optionally types */
+non terminal IdTypePair		id_type_pair;		/* (id:type) or id */
 non terminal MonoType		type;
 non terminal MonoType		simple_type;
 
@@ -110,6 +122,25 @@ expr				::=	simple_expr:e
 						{: RESULT = new Let(id, null, e1, e2); :}
 					|	LET IDENTIFIER:id COLON type:tau EQUAL expr:e1 IN expr:e2
 						{: RESULT = new Let(id, tau, e1, e2); :}
+					|	LET IDENTIFIER:id id_type_list:itl EQUAL expr:e1 IN expr:e2
+						{: String[] identifiers = new String[itl.length + 1];
+						   MonoType[] types = new MonoType[itl.length + 1];
+						   for (int n = 0; n < itl.length; ++n) {
+						     identifiers[n + 1] = itl[n].id;
+						     types[n + 1] = itl[n].tau;
+						   }
+						   identifiers[0] = id;
+						   RESULT = new CurriedLet(identifiers, types, e1, e2); :}
+					|	LET IDENTIFIER:id id_type_list:itl COLON type:tau EQUAL expr:e1 IN expr:e2
+						{: String[] identifiers = new String[itl.length + 1];
+						   MonoType[] types = new MonoType[itl.length + 1];
+						   for (int n = 0; n < itl.length; ++n) {
+						     identifiers[n + 1] = itl[n].id;
+						     types[n + 1] = itl[n].tau;
+						   }
+						   identifiers[0] = id;
+						   types[0] = tau;
+						   RESULT = new CurriedLet(identifiers, types, e1, e2); :}
 					;
 
 
@@ -158,6 +189,21 @@ operator			::=	PLUS			{: RESULT = ArithmeticOperator.PLUS; :}
 					|	GREATEREQUAL	{: RESULT = RelationalOperator.GREATER_EQUAL; :}
 					;
 
+id_type_list		::= id_type_list:l id_type_pair:itp
+						{: RESULT = new IdTypePair[l.length + 1];
+						   System.arraycopy(l, 0, RESULT, 0, l.length);
+						   RESULT[l.length] = itp; :}
+					|	id_type_pair:itp
+						{: RESULT = new IdTypePair[] { itp }; :}
+					;
+					
+
+id_type_pair		::= LPAREN IDENTIFIER:id COLON type:tau RPAREN
+						{: RESULT = new IdTypePair(id, tau); :}
+					|	IDENTIFIER:id
+						{: RESULT = new IdTypePair(id, null); :}
+					;
+					
 					
 
 /*********

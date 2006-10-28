@@ -6,8 +6,10 @@ import de.unisiegen.tpml.core.expressions.BinaryOperator;
 import de.unisiegen.tpml.core.expressions.BinaryOperatorException;
 import de.unisiegen.tpml.core.expressions.BooleanConstant;
 import de.unisiegen.tpml.core.expressions.Condition;
+import de.unisiegen.tpml.core.expressions.CurriedLet;
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.expressions.InfixOperation;
+import de.unisiegen.tpml.core.expressions.Lambda;
 import de.unisiegen.tpml.core.expressions.Let;
 import de.unisiegen.tpml.core.expressions.Not;
 import de.unisiegen.tpml.core.expressions.Or;
@@ -276,6 +278,31 @@ public class L1SmallStepProofRuleSet extends L0SmallStepProofRuleSet {
   // The (LET-EXEC) and (LET-EXEC) rules
   //
   
+  /**
+   * Evaluates the curried let expression <code>curriedLet</code> using <code>context</code>.
+   * 
+   * @param context the small step proof context.
+   * @param curriedLet the curried let expression.
+   * 
+   * @return the resulting expression.
+   */
+  public Expression evaluateCurriedLet(SmallStepProofContext context, CurriedLet curriedLet) {
+    // determine the sub expressions and the identifiers
+    String[] identifiers = curriedLet.getIdentifiers();
+    Expression e1 = curriedLet.getE1();
+    Expression e2 = curriedLet.getE2();
+    
+    // prepend the lambda abstractions to e1
+    for (int n = identifiers.length - 1; n >= 1; --n)
+      e1 = new Lambda(identifiers[n], null, e1);
+    
+    // we can simply perform (LET-EXEC)
+    context.addProofStep(getRuleByName("LET-EXEC"), curriedLet);
+    
+    // and perform the substitution
+    return e2.substitute(identifiers[0], e1);
+  }
+
   /**
    * Evaluates the <code>let</code> using the <code>context</code>.
    * 
