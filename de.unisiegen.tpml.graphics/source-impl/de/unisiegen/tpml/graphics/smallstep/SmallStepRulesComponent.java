@@ -17,18 +17,45 @@ import de.unisiegen.tpml.graphics.components.MenuButton;
 /**
  * Component containing the RuleItems.<br>
  * <br>
- * The Rule items of a SmallStepRulesComponnent are 
+ * The Rule items of a <i>SmallStepRulesComponnent</i> are 
  * {@link SmallStepRuleLabel}s showing the rules
  * already applied to the node, a {@link MenuButton} 
  * showing a rule that has not yet been evaluated and
  * the arrow separating the <i>MetaRules</i> from the 
  * <i>AxiomRule</i>.<br>
  * <br>
+ * The following image demonstrates a usual appearance of
+ * a <code>SmallStepRulesComponent</code> with a few <i>MetaRules</i>
+ * (two of the them are grouped together)
+ * and the applied <i>AxiomRule</i>:<br>
+ * <br>
+ * <img src="../../../../../../images/rulescomponent.png" /><br>
+ * <br>
+ * In the following image you just can see the boundings of all
+ * rule labels.<br>
+ * <img src="../../../../../../images/rulescomponent_scheme.png" /><br>
+ * <br>
+ * There is no <code>spacing/code> between the labels. But there is the 
+ * an amount of {@link #spacing} between the centering line
+ * (the one of the arrow) and the bottom of the <i>MetaRules</i>
+ * and the top of the <i>AxiomRule</i>.<br>
+ * <br> 
  * The imported information about the layout on this 
- * is shown in {@link #getNeededSize(MouseMotionAdapter)}
+ * is shown in {@link #getNeededSize(MouseMotionAdapter)}. The calling
+ * of this method not only returns the needed space for this component
+ * it also arranges the placing of all labels within it.<br>
+ * <br>
+ * <b><code>IMPORTANT:</code></b> When assigned space for this component by calling
+ * {@link java.awt.Component#setBounds(int, int, int, int)} the vertical alignment
+ * must be done manualy. <b>This component is always top-aligned</br>.
+ * <br>
  * 
  *  
  * @author marcell
+ * @see de.unisiegen.tpml.graphics.smallstep.SmallStepView
+ * @see de.unisiegen.tpml.graphics.smallstep.SmallStepComponent
+ * @see de.unisiegen.tpml.graphics.smallstep.SmallStepNodeComponent
+ * @see de.unisiegen.tpml.graphics.smallstep.SmallStepRuleLabel
  *
  */
 public class SmallStepRulesComponent extends JComponent {

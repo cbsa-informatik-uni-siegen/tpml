@@ -34,13 +34,52 @@ import de.unisiegen.tpml.graphics.components.MenuRuleItem;
 import de.unisiegen.tpml.graphics.components.MenuTranslateItem;
 
 /**
- * TODO Add documentation here.
+ * The graphical representation of a 
+ * {@link de.unisiegen.tpml.core.smallstep.SmallStepProofNode}.<br>
+ * <br>
+ * The <code>SmallStepNodeComponent</code> is a bit more complicated than
+ * the node from the other two GUIs because the rules applied to this node
+ * are pointing on the expression of the next node.<br>
+ * To handle this right, <b>one</b> <code>SmallStepNodeComponent</code> is 
+ * build like the following image shows:<br>
+ * <img src="../../../../../../images/smallstepnode.png" /><br>
+ * <br>
+ * Actualy there are only two elements to handle here (that is they are handled
+ * in the {@link de.unisiegen.tpml.graphics.smallstep.SmallStepComponent#placeNode(SmallStepProofNode, int, int)}-method).
+ * Those two elements are the {@link #expression} at the top right and 
+ * the {@link #rules} at the bottom left.
+ * <img src="../../../../../../images/smallstepnode_scheme.png" /><br>
+ * <br>
+ * Because the elements of this node need to get layed out in an arrangement 
+ * with the  elements of the parent-node and the child-node, both components 
+ * have a dimension containing the size they need for themeself and an additional 
+ * information on the actual size they need to fill(this is alway more or equal as
+ * the size of itself). The <code>rules</code> of the parent node needs to get
+ * verticaly centered and aligned with the <code>expression</code> of this node.
+ * Usualy the <code>rules</code> are higher than the <code>expression</code>s. So the
+ * height of the {@link #expressionDimension} is less than the {@link #actualExpressionHeight}.
+ * When the <code>expression</code> gets placed the <code>actualExpressionHeight</code> is used
+ * for the height. The {@link #actualRuleHeight} of the parent node than is the same
+ * as this <code>actualExpressionHeight</code>.
+ * <br>
+ * Analog the same is done for the <code>rules</code> of this node and the 
+ * <code>expression</code> of the child-node. The only difference is:
+ * when the <code>rules</code> are placed theire vertical-center-alignment
+ * needs to get calculated menualy, because the 
+ * {@link de.unisiegen.tpml.graphics.smallstep.SmallStepRulesComponent}
+ * is always top-aligned.<br> 
+ *  
+ *  
  *
  * @author Marcell Fischbach
  * @author Benedikt Meurer
  * @version $Rev$
  *
+ * @see de.unisiegen.tpml.graphics.smallstep.SmallStepView
  * @see de.unisiegen.tpml.graphics.smallstep.SmallStepComponent
+ * @see de.unisiegen.tpml.graphics.smallstep.SmallStepRulesComponent
+ * @see de.unisiegen.tpml.graphics.smallstep.SmallStepRuleLabel
+ * @see de.unisiegen.tpml.graphics.components.CompoundExpression 
  */
 public class SmallStepNodeComponent extends JComponent {
 

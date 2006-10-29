@@ -41,8 +41,52 @@ import de.unisiegen.tpml.graphics.tree.TreeNodeComponent;
 
 
 /**
- * Graphical representation of a {@link TypeCheckerProofNode }.
+ * Graphical representation of a {@link TypeCheckerProofNode }.<br>
+ * <br>
+ * A usual look of a node may be given in the following pictur.
+ * It shows the second node within the tree of the TypeChecker of
+ * the Expression:
+ * <code>let rec f = lambda x. if x = 0 then 1 else x * f (x-1) in f 3</code><br>
+ * <img src="../../../../../../images/typecheckernode.png" /><br>
+ * <br>
+ * This node is actualy build using 4 components. The following
+ * scheme illustrates the layouting of the single components.<br>
+ * <img src="../../../../../../images/typecheckernode_scheme.png" /><br>
+ * <br>
+ * The first rectangle represents the {@link #indexLabel} The second
+ * rectanle represents the entire {@link #expression} including the
+ * typeenvironment. The last element in the first row is 
+ * the {@link #typeLabel} containing the resulting type, it also is containing
+ * the <code>" :: "</code>. If the node is not completly evaluated only the 
+ * four dots are drawn.<br>  
+ * In the next row there is only one rectangle containing the 
+ * rule. In the case of the previous image the {@link #ruleLabel} is shown,
+ * but as long as the node has not been evaluated with a rule there would
+ * be located the {@link #ruleButton}. Another possible component that could
+ * be located at this position is the {@link #typeEnter}. That could be used
+ * to give the user the possibilty to enter a type by himself.<br>
+ * The bit of free space between the top and the bottom row aswell as between
+ * the indexLabel and the expression is given in pixels in the {@link #spacing}.
+ * <br>
+ * Within the {@link TypeCheckerComponent} the {@link de.unisiegen.tpml.graphics.renderer.TreeArrowRenderer} will
+ * be used to draw the lines and the arrow of the tree. The TreeArrowRenderer
+ * uses {@link TreeNodeComponent}s to located the points where the lines and
+ * the arrow will be located. Therefore this component implements this 
+ * interface. So the method {@link #getLeftArrowConnection()} returns the
+ * point marked in red in the scheme and the method {@link #getBottomArrowConnection()}
+ * return the point marked in blue. Those points are absolut positions, not relative to
+ * this component.<br>
+ * <br>
+ * The entire layouting or placing of the nodes of this component is
+ * done in the method {@link #placeElements(int)}.<br>
+ * 
+
  * @author marcell
+ * 
+ * @see de.unisiegen.tpml.graphics.typechecker.TypeCheckerView
+ * @see de.unisiegen.tpml.graphics.typechecker.TypeCheckerComponent
+ * @see de.unisiegen.tpml.graphics.tree.TreeNodeComponent
+ * @see de.unisiegen.tpml.graphics.typechecker.TypeCheckerEnterType
  *
  */
 public class TypeCheckerNodeComponent extends JComponent  implements TreeNodeComponent {
@@ -398,7 +442,7 @@ public class TypeCheckerNodeComponent extends JComponent  implements TreeNodeCom
 	 * component with a type.<br>
 	 * The type string will be tried to get applied on the {@link #proofNode} using
 	 * a {@link Language} and a {@link LanguageParser} to get a {@link MonoType} 
-	 * that will be applied to the node using {@link TypeCheckerProofModel#guessWithType(ProofNode, MonoType).
+	 * that will be applied to the node using {@link TypeCheckerProofModel#guessWithType(ProofNode, MonoType)}.
 	 */
 	private void handleTypeEntered (String type) {
 		Language language = this.proofModel.getLanguage();
@@ -610,4 +654,5 @@ public class TypeCheckerNodeComponent extends JComponent  implements TreeNodeCom
 	public void setBounds (int x, int y, int width, int height) {
 		super.setBounds(x, y, width, height);
 	}
+	
 }

@@ -13,13 +13,25 @@ import de.unisiegen.tpml.core.expressions.Expression;
  * for the name of the rules with a leading <i>(</i> and and a tailing
  * <i>)</i>. And one for a possible exponent, when the rules have been
  * grouped together. When the exponent is <i>1</i> it will not be shown.<br>
+ * <br>The following example will display those two possible renderings.<br>
+ * <br>
+ * <img src="../../../../../../images/rulelabel1.png" /><br>
+ * <img src="../../../../../../images/rulelabel2.png" /><br>
+ * <br>
+ * But no matter if there is an exponent, that should be displayed,
+ * the label for the exponent is always there. This way all rule labels
+ * have an equal height. Showing here:<br>
+ * <img src="../../../../../../images/rulelabel_scheme.png" /><br>
  * <br>
  * The height, this components need, is always containing the exponent
  * even if it isn't shown at all. It is easier to place them if they 
  * have a homogenouse height.
  * 
  * @author marcell
- *
+ * @see de.unisiegen.tpml.graphics.smallstep.SmallStepView
+ * @see de.unisiegen.tpml.graphics.smallstep.SmallStepComponent
+ * @see de.unisiegen.tpml.graphics.smallstep.SmallStepNodeComponent
+ * @see de.unisiegen.tpml.graphics.smallstep.SmallStepRulesComponent
  */
 public class SmallStepRuleLabel extends JComponent {
 	
@@ -139,4 +151,5 @@ public class SmallStepRuleLabel extends JComponent {
 		return l.getHeight();
 	}
 	
+
 }

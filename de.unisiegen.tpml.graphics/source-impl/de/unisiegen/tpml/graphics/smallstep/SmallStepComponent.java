@@ -20,15 +20,34 @@ import de.unisiegen.tpml.graphics.renderer.EnvironmentRenderer;
 import de.unisiegen.tpml.graphics.renderer.PrettyStringRenderer;
 
 /**
- * TODO Add documentation here.
- *
+ * The layouting of the SmallStep-GUI is a bit more complicated as the 
+ * layouting of the other two GUIs because of two reasons.<br>
+ * <code>First</code>: One node within the <i>SmallStep-Tree</i> actualy needs
+ * to rows to get placed and<br>
+ * <code>Second</code>: Rules of each node have different widths but the need
+ * to get placed all aligned.<br>
+ * <br>
+ * When layouting this component (that is done in the {@link #relayout()}-method)
+ * first all nodes within the tree are check if they have an 
+ * {@link de.unisiegen.tpml.graphics.smallstep.SmallStepNodeComponent} assigned
+ * to them. Then the tree is scanned for the node with the widest 
+ * {@link de.unisiegen.tpml.graphics.smallstep.SmallStepNodeComponent#rules}.
+ * This value is assigned to each node, this way all nodes know the maximum width
+ * of all rules and they can use this for their own width. By doing so, all nodes
+ * will be horizontaly aligned.<br>
+ * <br>
+ * When this all is done the actual placing of the nodes is done. 
+ * {@see #placeNode(SmallStepProofNode, int, int)} for this.
+ *   
  * @author Marcell Fischbach
  * @author Benedikt Meurer
  * @version $Rev$
  *
  * @see de.unisiegen.tpml.graphics.AbstractProofComponent
- * @see de.unisiegen.tpml.graphics.smallstep.SmallStepNodeComponent
  * @see de.unisiegen.tpml.graphics.smallstep.SmallStepView
+ * @see de.unisiegen.tpml.graphics.smallstep.SmallStepNodeComponent
+ * @see de.unisiegen.tpml.graphics.smallstep.SmallStepRulesComponent
+ * @see de.unisiegen.tpml.graphics.smallstep.SmallStepRuleLabel
  */
 public class SmallStepComponent extends AbstractProofComponent implements Scrollable {
 

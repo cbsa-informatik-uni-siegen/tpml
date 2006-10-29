@@ -23,9 +23,44 @@ import de.unisiegen.tpml.graphics.tree.TreeNodeLayout;
 
 /**
  * Implementation of the graphics repsentation of the 
- * TypeChecker 
+ * TypeChecker<br>
+ * <br>
+ *  
+ * The following image shows a usual look of a part of an TypeChckerComponent.
+ * It contains a few nodes of the origin expression:
+ * <code>let rec f = lambda x. if x = 0 then 1 else x * f (x-1) in f 3</code><br>
+ * <img src="../../../../../../images/typechecker.png" /><br>
+ * <br>
+ * The entire placing of the nodes is done within the method 
+ * {@link #relayout()} but actualy the layouting is passed over
+ * to the {@link de.unisiegen.tpml.graphics.tree.TreeNodeLayout} 
+ * to place the nodes. <br>
+ * <br>
+ * The lines and arrows of the tree are rendered using the 
+ * {@link de.unisiegen.tpml.graphics.renderer.TreeArrowRenderer},
+ * so all nodes within the tree implement the 
+ * {@link de.unisiegen.tpml.graphics.tree.TreeNodeComponent} interface.<br>
+ * <br>
+ * The nodes are not stored directly in the <i>TypeCheckerComponent</i>, they are
+ * stored using the <i>Userobject</i> provided by the {@link de.unisiegen.tpml.core.ProofNode}.<br>
+ * Everytime the content of the tree changes ({@link #treeContentChanged()} is called) the 
+ * {@link #checkForUserObject(TypeCheckerProofNode)}-method is called. This causes a recursive traversing
+ * of the entire tree to check if every node has its corresponding 
+ * {@link de.unisiegen.tpml.graphics.typechecker.TypeCheckerNodeComponent}.<br>
+ * <br>
+ * When nodes get removed only the userobject of that nodes needs to get release.<br>
+ * When nodes get inserted, the first of them is stored in the {@link #jumpNode} so the
+ * next time the component gets layouted the {@link #jumpToNodeVisible()}-method is called
+ * and the scrollview of the {@link de.unisiegen.tpml.graphics.bigstep.BigStepView} 
+ * scrolls to a place the stored node gets visible.
+ * 
+ * 
  * 
  * @author marcell
+ * 
+ * @see de.unisiegen.tpml.graphics.typechecker.TypeCheckerView
+ * @see de.unisiegen.tpml.graphics.typechecker.TypeCheckerNodeComponent
+ * @see de.unisiegen.tpml.graphics.typechecker.TypeCheckerEnterType
  *
  */
 public class TypeCheckerComponent extends AbstractProofComponent implements Scrollable {

@@ -36,10 +36,50 @@ import de.unisiegen.tpml.graphics.tree.TreeNodeComponent;
 
 
 /**
- * Graphics representation of a {@link BigStepProofNode}
+ * Graphics representation of a {@link BigStepProofNode} <br>
+ * <br>
+ * A usual look of a node may be given in the following pictur.
+ * It shows the second node within the tree of the BigStepper of
+ * the Expression:
+ * <code>let rec f = lambda x. if x = 0 then 1 else x * f (x-1) in f 3</code><br>
+ * <img src="../../../../../../images/bigstepnode.png" /><br>
+ * <br>
+ * This node is actualy build using 5 components. The following
+ * scheme illustrates the layouting of the single components.<br>
+ * <img src="../../../../../../images/bigstepnode_scheme.png" /><br>
+ * <br>
+ * The first rectangle represents the {@link #indexLabel}. The second
+ * rectanle represents the {@link #expression}. The third is the 
+ * down-directed arrow this is the {@link #downArrowLabel}. The last
+ * element in the first row is the {@link #resultExpression} containing
+ * the resulting expression, this is not visible until the node is
+ * complete evaluated.<br>
+ * In the next row there is only one rectangle containing the 
+ * rule. In the case of the previous image the {@link #ruleLabel} is shown,
+ * but as long as the node has not been evaluated with a rule there would
+ * be located the {@link #ruleButton}.<br>
+ * The bit of free space between the top and the bottom row aswell as between
+ * the indexLabel and the expression is given in pixels in the {@link #spacing}.
+ * <br>
+ * Within the {@link BigStepComponent} the {@link de.unisiegen.tpml.graphics.renderer.TreeArrowRenderer} will
+ * be used to draw the lines and the arrow of the tree. The TreeArrowRenderer
+ * uses {@link TreeNodeComponent}s to located the points where the lines and
+ * the arrow will be located. Therefore this component implements this 
+ * interface. So the method {@link #getLeftArrowConnection()} returns the
+ * point marked in red in the scheme and the method {@link #getBottomArrowConnection()}
+ * return the point marked in blue. Those points are absolut positions, not relative to
+ * this component.<br>
+ * <br>
+ * The entire layouting or placing of the nodes of this component is
+ * done in the method {@link #placeElements(int)}.<br>
+ * 
  * 
  * @author marcell
- *
+ * 
+ * @see de.unisiegen.tpml.graphics.bigstep.BigStepView
+ * @see de.unisiegen.tpml.graphics.bigstep.BigStepComponent
+ * @see de.unisiegen.tpml.graphics.tree.TreeNodeComponent
+ * @see de.unisiegen.tpml.graphics.renderer.TreeArrowRenderer 
  */
 public class BigStepNodeComponent extends JComponent implements TreeNodeComponent {
 
