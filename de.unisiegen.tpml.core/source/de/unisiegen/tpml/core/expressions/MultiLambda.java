@@ -180,8 +180,9 @@ public final class MultiLambda extends Value {
       String[] newIdentifiers = this.identifiers.clone();
       for (int n = 0; n < newIdentifiers.length; ++n) {
         // generate a new unique identifier
-        while (freeE.contains(newIdentifiers[n]))
+        while (newE.free().contains(newIdentifiers[n]) || freeE.contains(newIdentifiers[n]) || newIdentifiers[n].equals(id)) {
           newIdentifiers[n] = newIdentifiers[n] + "'";
+        }
         
         // perform the bound renaming
         newE = newE.substitute(this.identifiers[n], new Identifier(newIdentifiers[n]));

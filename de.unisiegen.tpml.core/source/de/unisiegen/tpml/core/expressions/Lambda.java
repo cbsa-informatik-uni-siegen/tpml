@@ -179,13 +179,17 @@ public final class Lambda extends Value {
       return this;
     }
     else {
+      // determine the free identifiers of this lambda
+      Set<String> free = free();
+      
       // determine the free identifiers for e
       Set<String> freeE = e.free();
       
       // generate a new unique identifier
       String newId = this.id;
-      while (freeE.contains(newId))
+      while (free.contains(newId) || freeE.contains(newId) || newId.equals(id)) {
         newId = newId + "'";
+      }
 
       // perform the bound renaming (if required)
       Expression newE = (this.id == newId) ? this.e : this.e.substitute(this.id, new Identifier(newId));

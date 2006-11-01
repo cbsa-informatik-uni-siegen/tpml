@@ -79,6 +79,10 @@ public class L0SmallStepProofRuleSet extends AbstractSmallStepProofRuleSet {
       // no way to further evaluate the application
       return application;
     }
+    catch (IllegalArgumentException e) {
+      // no way to further evaluate the application
+      return application;
+    }
     catch (NoSuchMethodException e) {
       // no way to further evaluate the application
       return application;
