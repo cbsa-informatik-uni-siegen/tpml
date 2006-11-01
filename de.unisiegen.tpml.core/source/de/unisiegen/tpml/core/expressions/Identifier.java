@@ -7,14 +7,15 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
 
 /**
- * Represents an identifier in the expression hierarchy.
+ * Represents an identifier in the expression hierarchy. Identifiers are values wrt the semantics
+ * of the various languages.
  *
  * @author Benedikt Meurer
  * @version $Rev$
  * 
- * @see de.unisiegen.tpml.core.expressions.Expression
+ * @see de.unisiegen.tpml.core.expressions.Value
  */
-public final class Identifier extends Expression {
+public final class Identifier extends Value {
   //
   // Attributes
   //
@@ -108,7 +109,8 @@ public final class Identifier extends Expression {
    *
    * @see de.unisiegen.tpml.core.expressions.Expression#toPrettyStringBuilder(de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory)
    */
-  public @Override PrettyStringBuilder toPrettyStringBuilder(PrettyStringBuilderFactory factory) {
+  @Override
+  public PrettyStringBuilder toPrettyStringBuilder(PrettyStringBuilderFactory factory) {
     PrettyStringBuilder builder = factory.newBuilder(this, PRIO_IDENTIFIER);
     builder.addText(this.name);
     return builder;
