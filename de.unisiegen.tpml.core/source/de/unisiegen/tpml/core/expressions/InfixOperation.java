@@ -157,7 +157,7 @@ public final class InfixOperation extends Expression {
     PrettyStringBuilder builder = factory.newBuilder(this, this.op.getPrettyPriority());
     builder.addBuilder(this.e1.toPrettyStringBuilder(factory), this.op.getPrettyPriority());
     builder.addText(" " + this.op.toString() + " ");
-    builder.addBuilder(this.e2.toPrettyStringBuilder(factory), this.op.getPrettyPriority());
+    builder.addBuilder(this.e2.toPrettyStringBuilder(factory), this.op.getPrettyPriority() + 1);
     return builder;
   }
 
