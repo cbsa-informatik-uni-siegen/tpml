@@ -9,17 +9,34 @@ import javax.swing.JTree ;
 import javax.swing.tree.DefaultMutableTreeNode ;
 import javax.swing.tree.DefaultTreeModel ;
 import javax.swing.tree.MutableTreeNode ;
+import de.unisiegen.tpml.core.expressions.And ;
 import de.unisiegen.tpml.core.expressions.Application ;
 import de.unisiegen.tpml.core.expressions.ArithmeticOperator ;
+import de.unisiegen.tpml.core.expressions.BinaryCons ;
 import de.unisiegen.tpml.core.expressions.BinaryOperator ;
+import de.unisiegen.tpml.core.expressions.BooleanConstant ;
 import de.unisiegen.tpml.core.expressions.Condition ;
+import de.unisiegen.tpml.core.expressions.Condition1 ;
+import de.unisiegen.tpml.core.expressions.EmptyList ;
 import de.unisiegen.tpml.core.expressions.Expression ;
+import de.unisiegen.tpml.core.expressions.Fst ;
+import de.unisiegen.tpml.core.expressions.Hd ;
 import de.unisiegen.tpml.core.expressions.Identifier ;
 import de.unisiegen.tpml.core.expressions.InfixOperation ;
 import de.unisiegen.tpml.core.expressions.IntegerConstant ;
+import de.unisiegen.tpml.core.expressions.IsEmpty ;
 import de.unisiegen.tpml.core.expressions.Lambda ;
 import de.unisiegen.tpml.core.expressions.Let ;
+import de.unisiegen.tpml.core.expressions.List ;
+import de.unisiegen.tpml.core.expressions.Not ;
+import de.unisiegen.tpml.core.expressions.Or ;
+import de.unisiegen.tpml.core.expressions.Projection ;
 import de.unisiegen.tpml.core.expressions.RelationalOperator ;
+import de.unisiegen.tpml.core.expressions.Snd ;
+import de.unisiegen.tpml.core.expressions.Tl ;
+import de.unisiegen.tpml.core.expressions.Tuple ;
+import de.unisiegen.tpml.core.expressions.UnaryCons ;
+import de.unisiegen.tpml.core.expressions.UnitConstant ;
 
 
 public class AbstractSyntaxTree
@@ -60,7 +77,7 @@ public class AbstractSyntaxTree
   {
     treeModel.setRoot ( new DefaultMutableTreeNode ( pExpression
         .toPrettyString ( ) ) ) ;
-    treeModel.insertNodeInto ( syntaxTree ( pExpression ) ,
+    treeModel.insertNodeInto ( expression ( pExpression ) ,
         ( MutableTreeNode ) treeModel.getRoot ( ) , 0 ) ;
     this.jTreeSyntax.expandRow ( 0 ) ;
   }
@@ -95,7 +112,7 @@ public class AbstractSyntaxTree
   }
 
 
-  private DefaultMutableTreeNode syntaxTree ( Expression pExpression )
+  private DefaultMutableTreeNode expression ( Expression pExpression )
   {
     if ( pExpression instanceof Application )
     {
@@ -109,6 +126,10 @@ public class AbstractSyntaxTree
     {
       return lambda ( ( Lambda ) pExpression ) ;
     }
+    else if ( pExpression instanceof ArithmeticOperator )
+    {
+      return arithmeticOperator ( ( ArithmeticOperator ) pExpression ) ;
+    }
     else if ( pExpression instanceof InfixOperation )
     {
       return infixOperation ( ( InfixOperation ) pExpression ) ;
@@ -117,15 +138,86 @@ public class AbstractSyntaxTree
     {
       return condition ( ( Condition ) pExpression ) ;
     }
+    else if ( pExpression instanceof Condition1 )
+    {
+      return condition1 ( ( Condition1 ) pExpression ) ;
+    }
     else if ( pExpression instanceof Identifier )
     {
       return identifier ( ( Identifier ) pExpression ) ;
+    }
+    else if ( pExpression instanceof And )
+    {
+      return and ( ( And ) pExpression ) ;
+    }
+    else if ( pExpression instanceof Or )
+    {
+      return or ( ( Or ) pExpression ) ;
+    }
+    else if ( pExpression instanceof Not )
+    {
+      return not ( ( Not ) pExpression ) ;
+    }
+    else if ( pExpression instanceof Tuple )
+    {
+      return tuple ( ( Tuple ) pExpression ) ;
+    }
+    else if ( pExpression instanceof Fst )
+    {
+      return fst ( ( Fst ) pExpression ) ;
+    }
+    else if ( pExpression instanceof Snd )
+    {
+      return snd ( ( Snd ) pExpression ) ;
+    }
+    else if ( pExpression instanceof Projection )
+    {
+      return projection ( ( Projection ) pExpression ) ;
+    }
+    else if ( pExpression instanceof List )
+    {
+      return list ( ( List ) pExpression ) ;
+    }
+    else if ( pExpression instanceof IsEmpty )
+    {
+      return isEmpty ( ( IsEmpty ) pExpression ) ;
+    }
+    else if ( pExpression instanceof UnaryCons )
+    {
+      return unaryCons ( ( UnaryCons ) pExpression ) ;
+    }
+    else if ( pExpression instanceof EmptyList )
+    {
+      return emptyList ( ( EmptyList ) pExpression ) ;
+    }
+    else if ( pExpression instanceof BinaryCons )
+    {
+      return binaryCons ( ( BinaryCons ) pExpression ) ;
+    }
+    else if ( pExpression instanceof Hd )
+    {
+      return hd ( ( Hd ) pExpression ) ;
+    }
+    else if ( pExpression instanceof Tl )
+    {
+      return tl ( ( Tl ) pExpression ) ;
     }
     else if ( pExpression instanceof IntegerConstant )
     {
       return integerConstant ( ( IntegerConstant ) pExpression ) ;
     }
-    return new DefaultMutableTreeNode ( "UNKNOWN" ) ;
+    else if ( pExpression instanceof BooleanConstant )
+    {
+      return booleanConstant ( ( BooleanConstant ) pExpression ) ;
+    }
+    else if ( pExpression instanceof UnitConstant )
+    {
+      return unitConstant ( ( UnitConstant ) pExpression ) ;
+    }
+    else
+    {
+      return new DefaultMutableTreeNode ( "UNKNOWN" ) ;
+    }
   }
 
 
@@ -140,12 +232,12 @@ public class AbstractSyntaxTree
     DefaultMutableTreeNode subchild1 = new DefaultMutableTreeNode ( "e1 { "
         + e1.toPrettyString ( ) + " }" ) ;
     treeModel.insertNodeInto ( subchild1 , child , 0 ) ;
-    treeModel.insertNodeInto ( syntaxTree ( e1 ) , subchild1 , 0 ) ;
+    treeModel.insertNodeInto ( expression ( e1 ) , subchild1 , 0 ) ;
     // Subchild 2
     DefaultMutableTreeNode subchild2 = new DefaultMutableTreeNode ( "e2 { "
         + e2.toPrettyString ( ) + " }" ) ;
     treeModel.insertNodeInto ( subchild2 , child , 1 ) ;
-    treeModel.insertNodeInto ( syntaxTree ( e2 ) , subchild2 , 0 ) ;
+    treeModel.insertNodeInto ( expression ( e2 ) , subchild2 , 0 ) ;
     return child ;
   }
 
@@ -166,25 +258,18 @@ public class AbstractSyntaxTree
     DefaultMutableTreeNode subchild2 = new DefaultMutableTreeNode ( "e1 { "
         + e1.toPrettyString ( ) + " }" ) ;
     treeModel.insertNodeInto ( subchild2 , child , 1 ) ;
-    treeModel.insertNodeInto ( syntaxTree ( e1 ) , subchild2 , 0 ) ;
+    treeModel.insertNodeInto ( expression ( e1 ) , subchild2 , 0 ) ;
     // Subchild 3
     DefaultMutableTreeNode subchild3 = new DefaultMutableTreeNode ( "e2 { "
         + e2.toPrettyString ( ) + " }" ) ;
     treeModel.insertNodeInto ( subchild3 , child , 2 ) ;
-    treeModel.insertNodeInto ( syntaxTree ( e2 ) , subchild3 , 0 ) ;
+    treeModel.insertNodeInto ( expression ( e2 ) , subchild3 , 0 ) ;
     return child ;
   }
 
 
   private DefaultMutableTreeNode lambda ( Lambda pLambda )
   {
-    /*
-     * String id = pLambda.getId ( ) ; Expression e = pLambda.getE ( ) ; Object []
-     * a = pLambda.free ( ).toArray ( ) ; Object [] b = e.free ( ).toArray ( ) ;
-     * for ( int i = 0 ; i< a.length ; i++) { System.err.println ( "Free
-     * Lambda:" + a[i] ) ; } for ( int i = 0 ; i< b.length ; i++) {
-     * System.err.println ( "Free e:" + b[i] ) ; }
-     */
     String id = pLambda.getId ( ) ;
     Expression e = pLambda.getE ( ) ;
     // Child
@@ -198,7 +283,16 @@ public class AbstractSyntaxTree
     DefaultMutableTreeNode subchild2 = new DefaultMutableTreeNode ( "e { "
         + e.toPrettyString ( ) + " }" ) ;
     treeModel.insertNodeInto ( subchild2 , child , 1 ) ;
-    treeModel.insertNodeInto ( syntaxTree ( e ) , subchild2 , 0 ) ;
+    treeModel.insertNodeInto ( expression ( e ) , subchild2 , 0 ) ;
+    return child ;
+  }
+
+
+  private DefaultMutableTreeNode arithmeticOperator ( ArithmeticOperator expr )
+  {
+    // Child
+    DefaultMutableTreeNode child = new DefaultMutableTreeNode (
+        "ArithmeticOperator { " + expr.toPrettyString ( ) + " }" ) ;
     return child ;
   }
 
@@ -215,7 +309,7 @@ public class AbstractSyntaxTree
     DefaultMutableTreeNode subchild1 = new DefaultMutableTreeNode ( "e1 { "
         + e1.toPrettyString ( ) + " }" ) ;
     treeModel.insertNodeInto ( subchild1 , child , 0 ) ;
-    treeModel.insertNodeInto ( syntaxTree ( e1 ) , subchild1 , 0 ) ;
+    treeModel.insertNodeInto ( expression ( e1 ) , subchild1 , 0 ) ;
     // Subchild 2
     String text ;
     text = "BinaryOperator { " + b.toPrettyString ( ) + " }" ;
@@ -233,7 +327,7 @@ public class AbstractSyntaxTree
     DefaultMutableTreeNode subchild3 = new DefaultMutableTreeNode ( "e2 { "
         + e2.toPrettyString ( ) + " }" ) ;
     treeModel.insertNodeInto ( subchild3 , child , 2 ) ;
-    treeModel.insertNodeInto ( syntaxTree ( e2 ) , subchild3 , 0 ) ;
+    treeModel.insertNodeInto ( expression ( e2 ) , subchild3 , 0 ) ;
     return child ;
   }
 
@@ -250,17 +344,38 @@ public class AbstractSyntaxTree
     DefaultMutableTreeNode subchild1 = new DefaultMutableTreeNode ( "e0 { "
         + e0.toPrettyString ( ) + " }" ) ;
     treeModel.insertNodeInto ( subchild1 , child , 0 ) ;
-    treeModel.insertNodeInto ( syntaxTree ( e0 ) , subchild1 , 0 ) ;
+    treeModel.insertNodeInto ( expression ( e0 ) , subchild1 , 0 ) ;
     // Subchild 2
     DefaultMutableTreeNode subchild2 = new DefaultMutableTreeNode ( "e1 { "
         + e1.toPrettyString ( ) + " }" ) ;
     treeModel.insertNodeInto ( subchild2 , child , 1 ) ;
-    treeModel.insertNodeInto ( syntaxTree ( e1 ) , subchild2 , 0 ) ;
+    treeModel.insertNodeInto ( expression ( e1 ) , subchild2 , 0 ) ;
     // Subchild 3
     DefaultMutableTreeNode subchild3 = new DefaultMutableTreeNode ( "e2 { "
         + e2.toPrettyString ( ) + " }" ) ;
     treeModel.insertNodeInto ( subchild3 , child , 2 ) ;
-    treeModel.insertNodeInto ( syntaxTree ( e2 ) , subchild3 , 0 ) ;
+    treeModel.insertNodeInto ( expression ( e2 ) , subchild3 , 0 ) ;
+    return child ;
+  }
+
+
+  private DefaultMutableTreeNode condition1 ( Condition1 pCondition1 )
+  {
+    Expression e0 = pCondition1.getE0 ( ) ;
+    Expression e1 = pCondition1.getE1 ( ) ;
+    // Child
+    DefaultMutableTreeNode child = new DefaultMutableTreeNode ( "Condition1 { "
+        + pCondition1.toPrettyString ( ) + " }" ) ;
+    // Subchild 1
+    DefaultMutableTreeNode subchild1 = new DefaultMutableTreeNode ( "e0 { "
+        + e0.toPrettyString ( ) + " }" ) ;
+    treeModel.insertNodeInto ( subchild1 , child , 0 ) ;
+    treeModel.insertNodeInto ( expression ( e0 ) , subchild1 , 0 ) ;
+    // Subchild 2
+    DefaultMutableTreeNode subchild2 = new DefaultMutableTreeNode ( "e1 { "
+        + e1.toPrettyString ( ) + " }" ) ;
+    treeModel.insertNodeInto ( subchild2 , child , 1 ) ;
+    treeModel.insertNodeInto ( expression ( e1 ) , subchild2 , 0 ) ;
     return child ;
   }
 
@@ -281,5 +396,176 @@ public class AbstractSyntaxTree
     DefaultMutableTreeNode child = new DefaultMutableTreeNode (
         "IntegerConstant { " + pIntegerConstant.toPrettyString ( ) + " }" ) ;
     return child ;
+  }
+
+
+  private DefaultMutableTreeNode booleanConstant (
+      BooleanConstant pBooleanConstant )
+  {
+    // Child
+    DefaultMutableTreeNode child = new DefaultMutableTreeNode (
+        "BooleanConstant { " + pBooleanConstant.toPrettyString ( ) + " }" ) ;
+    return child ;
+  }
+
+
+  private DefaultMutableTreeNode unitConstant ( UnitConstant pBooleanConstant )
+  {
+    // Child
+    DefaultMutableTreeNode child = new DefaultMutableTreeNode (
+        "UnitConstant { " + pBooleanConstant.toPrettyString ( ) + " }" ) ;
+    return child ;
+  }
+
+
+  private DefaultMutableTreeNode tuple ( Tuple pTuple )
+  {
+    Expression [ ] e = pTuple.getExpressions ( ) ;
+    // Child
+    DefaultMutableTreeNode child = new DefaultMutableTreeNode ( "Tuple { "
+        + pTuple.toPrettyString ( ) + " }" ) ;
+    // Subchilds
+    for ( int i = 0 ; i < e.length ; i ++ )
+    {
+      DefaultMutableTreeNode subchild = new DefaultMutableTreeNode ( "e" + i
+          + " { " + e [ i ].toPrettyString ( ) + " }" ) ;
+      treeModel.insertNodeInto ( subchild , child , i ) ;
+      treeModel.insertNodeInto ( expression ( e [ i ] ) , subchild , 0 ) ;
+    }
+    return child ;
+  }
+
+
+  private DefaultMutableTreeNode fst ( Fst pFst )
+  {
+    return new DefaultMutableTreeNode ( "Fst { " + pFst.toPrettyString ( )
+        + " }" ) ;
+  }
+
+
+  private DefaultMutableTreeNode snd ( Snd pSnd )
+  {
+    return new DefaultMutableTreeNode ( "Snd { " + pSnd.toPrettyString ( )
+        + " }" ) ;
+  }
+
+
+  private DefaultMutableTreeNode projection ( Projection pProjection )
+  {
+    return new DefaultMutableTreeNode ( "Projection { "
+        + pProjection.toPrettyString ( ) + " }" ) ;
+  }
+
+
+  private DefaultMutableTreeNode list ( List pList )
+  {
+    Expression [ ] e = pList.getExpressions ( ) ;
+    // Child
+    DefaultMutableTreeNode child = new DefaultMutableTreeNode ( "List { "
+        + pList.toPrettyString ( ) + " }" ) ;
+    // Subchilds
+    for ( int i = 0 ; i < e.length ; i ++ )
+    {
+      DefaultMutableTreeNode subchild = new DefaultMutableTreeNode ( "e" + i
+          + " { " + e [ i ].toPrettyString ( ) + " }" ) ;
+      treeModel.insertNodeInto ( subchild , child , i ) ;
+      treeModel.insertNodeInto ( expression ( e [ i ] ) , subchild , 0 ) ;
+    }
+    return child ;
+  }
+
+
+  private DefaultMutableTreeNode emptyList ( EmptyList pEmptyList )
+  {
+    return new DefaultMutableTreeNode ( "EmptyList { "
+        + pEmptyList.toPrettyString ( ) + " }" ) ;
+  }
+
+
+  private DefaultMutableTreeNode isEmpty ( IsEmpty expr )
+  {
+    return new DefaultMutableTreeNode ( "IsEmpty { " + expr.toPrettyString ( )
+        + " }" ) ;
+  }
+
+
+  private DefaultMutableTreeNode unaryCons ( UnaryCons pUnaryCons )
+  {
+    return new DefaultMutableTreeNode ( "UnaryCons { "
+        + pUnaryCons.toPrettyString ( ) + " }" ) ;
+  }
+
+
+  private DefaultMutableTreeNode binaryCons ( BinaryCons pBinaryCons )
+  {
+    return new DefaultMutableTreeNode ( "BinaryCons { "
+        + pBinaryCons.toPrettyString ( ) + " }" ) ;
+  }
+
+
+  private DefaultMutableTreeNode hd ( Hd pHd )
+  {
+    return new DefaultMutableTreeNode ( "Hd { " + pHd.toPrettyString ( ) + " }" ) ;
+  }
+
+
+  private DefaultMutableTreeNode tl ( Tl pTl )
+  {
+    return new DefaultMutableTreeNode ( "Tl { " + pTl.toPrettyString ( ) + " }" ) ;
+  }
+
+
+  private DefaultMutableTreeNode and ( And pAnd )
+  {
+    Expression e1 = pAnd.getE1 ( ) ;
+    Expression e2 = pAnd.getE2 ( ) ;
+    // Child
+    DefaultMutableTreeNode child = new DefaultMutableTreeNode ( "And { "
+        + pAnd.toPrettyString ( ) + " }" ) ;
+    // Subchild 1
+    DefaultMutableTreeNode subchild1 = new DefaultMutableTreeNode ( "e1 { "
+        + e1.toPrettyString ( ) + " }" ) ;
+    treeModel.insertNodeInto ( subchild1 , child , 0 ) ;
+    treeModel.insertNodeInto ( expression ( e1 ) , subchild1 , 0 ) ;
+    // Subchild 2
+    DefaultMutableTreeNode subchild2 = new DefaultMutableTreeNode ( "e2 { "
+        + e2.toPrettyString ( ) + " }" ) ;
+    treeModel.insertNodeInto ( subchild2 , child , 1 ) ;
+    treeModel.insertNodeInto ( expression ( e2 ) , subchild2 , 0 ) ;
+    return child ;
+  }
+
+
+  private DefaultMutableTreeNode or ( Or pOr )
+  {
+    Expression e1 = pOr.getE1 ( ) ;
+    Expression e2 = pOr.getE2 ( ) ;
+    // Child
+    DefaultMutableTreeNode child = new DefaultMutableTreeNode ( "Or { "
+        + pOr.toPrettyString ( ) + " }" ) ;
+    // Subchild 1
+    DefaultMutableTreeNode subchild1 = new DefaultMutableTreeNode ( "e1 { "
+        + e1.toPrettyString ( ) + " }" ) ;
+    treeModel.insertNodeInto ( subchild1 , child , 0 ) ;
+    treeModel.insertNodeInto ( expression ( e1 ) , subchild1 , 0 ) ;
+    // Subchild 2
+    DefaultMutableTreeNode subchild2 = new DefaultMutableTreeNode ( "e2 { "
+        + e2.toPrettyString ( ) + " }" ) ;
+    treeModel.insertNodeInto ( subchild2 , child , 1 ) ;
+    treeModel.insertNodeInto ( expression ( e2 ) , subchild2 , 0 ) ;
+    return child ;
+  }
+
+
+  private DefaultMutableTreeNode not ( Not pNot )
+  {
+    return new DefaultMutableTreeNode ( "Not { " + pNot.toPrettyString ( )
+        + " }" ) ;
+  }
+
+
+  public JTree getJTreeSyntax ( )
+  {
+    return jTreeSyntax ;
   }
 }
