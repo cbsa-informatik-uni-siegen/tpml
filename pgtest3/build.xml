@@ -57,7 +57,7 @@
 						<include name="tpml-${de.unisiegen.tpml.ui.version}**/*" />
 					</fileset>
 				</zip>
-		<!--			 <delete dir="${distdir}/tpml-${de.unisiegen.tpml.ui.version}" includeemptydirs="true" />  -->
+			 <delete dir="${distdir}/tpml-${de.unisiegen.tpml.ui.version}" includeemptydirs="true" />
 				<echo message="Distribution ready in ${distdir}/tpml-${de.unisiegen.tpml.ui.version}.tar.bz2 and ${distdir}/tpml-${de.unisiegen.tpml.ui.version}.zip" />
 	</target>
 	
@@ -145,6 +145,10 @@
 		
 		<copy todir="${distdir}/tpml-${de.unisiegen.tpml.ui.version}" file="${distdir}/start.exe">
 		</copy>
+	</target>
+	
+	<target name="dist-clean">
+		<delete dir="${classesdir}" />
 	</target>
 	
 	
