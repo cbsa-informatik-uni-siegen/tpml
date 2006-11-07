@@ -1,0 +1,183 @@
+<?xml version="1.0"?>
+<!--
+	$Id: build.xml 421 2006-10-12 09:54:10Z benny $
+	
+	Copyright (c) 2006 Benedikt Meurer <benny@xfce.org>
+-->
+<project name="de.unisiegen.tpml.ui" default="dist" basedir="../de.unisiegen.tpml.ui">
+<!--<project name="de.unisiegen.tpml.ui" default="version-check" basedir="../de.unisiegen.tpml.ui">-->
+	<description>
+		Buildfile for the de.unisiegen.tpml.ui subproject.
+	</description>
+
+	<property file="${basedir}/build.properties" />
+	
+	<property name="core.basedir" value="${basedir}/../de.unisiegen.tpml.core" />
+	<property name="core.distdir" value="${core.basedir}/dist" />
+	<property file="${core.basedir}/build.properties" />
+	
+	<property name="graphics.basedir" value="${basedir}/../de.unisiegen.tpml.graphics" />
+	<property name="graphics.distdir" value="${graphics.basedir}/dist" />
+	<property file="${graphics.basedir}/build.properties" />
+	
+
+	
+	<!--
+		Build distributions
+	-->
+	
+	<property name="distdir" value="${basedir}/dist" />
+	<property name="classesdir" value="${distdir}/classes" />
+	
+	<target name="dist" depends="generate,dist-graphics,dist-preclean,dist-compile,version-check,dist-jar,exe" description="Build distribution">
+		<mkdir dir="${distdir}/tpml-${de.unisiegen.tpml.ui.version}" />
+		<copy todir="${distdir}/tpml-${de.unisiegen.tpml.ui.version}">
+			<fileset dir="${core.distdir}" includes="*.jar" />
+			<fileset dir="${graphics.distdir}" includes="*.jar" />
+			<fileset dir="${distdir}" includes="*.jar" />
+			<fileset dir="${basedir}" includes="tpml.exe" />
+			<fileset dir="${basedir}/doc" includes="LICENSE" />
+		</copy>
+		<copy todir="${distdir}/tpml-${de.unisiegen.tpml.ui.version}" file="${basedir}/tpml.sh">
+			<filterset>
+				<filter token="de.unisiegen.tpml.ui.version" value="${de.unisiegen.tpml.ui.version}" />
+			</filterset>
+		</copy>
+		<tar destfile="${distdir}/tpml-${de.unisiegen.tpml.ui.version}.tar.bz2" compression="bzip2" longfile="gnu">
+					<tarfileset dir="${distdir}">
+						<exclude name="tpml-${de.unisiegen.tpml.ui.version}**/tpml.sh" />
+						<include name="tpml-${de.unisiegen.tpml.ui.version}**/*" />
+					</tarfileset>
+					<tarfileset dir="${distdir}" mode="755">
+						<include name="tpml-${de.unisiegen.tpml.ui.version}**/tpml.sh" />
+					</tarfileset>
+				</tar>
+				<zip destfile="${distdir}/tpml-${de.unisiegen.tpml.ui.version}.zip" update="yes">
+					<fileset dir="${distdir}">
+						<include name="tpml-${de.unisiegen.tpml.ui.version}**/*" />
+					</fileset>
+				</zip>
+		<!--			 <delete dir="${distdir}/tpml-${de.unisiegen.tpml.ui.version}" includeemptydirs="true" />  -->
+				<echo message="Distribution ready in ${distdir}/tpml-${de.unisiegen.tpml.ui.version}.tar.bz2 and ${distdir}/tpml-${de.unisiegen.tpml.ui.version}.zip" />
+	</target>
+	
+	<target name="dist-graphics">
+		<ant dir="${graphics.basedir}" target="dist" inheritall="false" />
+	</target>
+
+	<target name="dist-preclean">
+		<delete dir="${distdir}" includeemptydirs="true" />
+		<mkdir dir="${distdir}" />
+	</target>
+		
+	<target name="dist-compile">
+		<delete dir="${classesdir}" includeemptydirs="true" />
+		<mkdir dir="${classesdir}" />
+		<javac debug="on" destdir="${classesdir}" encoding="UTF-8" optimize="on" source="1.5" target="1.5">
+			<src path="${basedir}/source" />
+			<src path="${basedir}/source-generated" />
+			<classpath>
+				<pathelement location="${core.distdir}/de.unisiegen.tpml.core-${de.unisiegen.tpml.core.version}.jar" />
+				<pathelement location="${core.distdir}/java-cup-11a-runtime.jar" />
+				<pathelement location="${core.distdir}/log4j-1.2.14.jar" />
+				<pathelement location="${graphics.distdir}/de.unisiegen.tpml.graphics-${de.unisiegen.tpml.graphics.version}.jar" />
+			</classpath>
+		</javac>
+	</target>
+	
+	<property name="pgtest3dir" value="${basedir}/../pgtest3/source/de/unisiegen/tpml/ui/" />
+	<target name="version-check" depends="dist-compile">
+
+				<javac 
+									 srcdir="${pgtest3dir}" 
+									 includes="JOpFrame.java,MsgFrame.java,Start.java"
+									 debug="on" 
+									 destdir="${classesdir}" 
+									 optimize="on" 
+									 source="1.2" 
+									 target="1.1"
+									 failonerror="false">
+							<src path="${pgtest3dir}"/>
+							<src path="${basedir}/source" />
+					</javac>
+	</target>
+	
+	<target name="dist-jar" depends="dist-compile,version-check">
+		<manifest file="${distdir}/MANIFEST.MF">
+			<attribute name="Built-By" value="${user.name}" />
+			<attribute name="Main-Class" value="de.unisiegen.tpml.ui.Start" />
+			<attribute name="Class-Path" value="de.unisiegen.tpml.core-${de.unisiegen.tpml.core.version}.jar de.unisiegen.tpml.graphics-${de.unisiegen.tpml.graphics.version}.jar java-cup-11a-runtime.jar log4j-1.2.14.jar" />
+			<section name="de.unisiegen.tpml.ui">
+				<attribute name="Specification-Title" value="TPML UI" />
+				<attribute name="Specification-Version" value="${de.unisiegen.tpml.ui.version}" />
+				<attribute name="Specification-Vendor" value="University of Siegen, Department of Theoretical Computer Science" />
+				<attribute name="Implementation-Title" value="de.unisiegen.tpml.ui" />
+				<attribute name="Implementation-Version" value="${de.unisiegen.tpml.ui.version} ${TODAY}" />
+				<attribute name="Implementation-Vendor" value="University of Siegen, Department of Theoretical Computer Science" />
+			</section>
+		</manifest>
+		<mkdir dir="${classesdir}/META-INF" />
+		<copy todir="${classesdir}/META-INF" file="${basedir}/doc/LICENSE" />
+		<jar jarfile="${distdir}/de.unisiegen.tpml.ui-${de.unisiegen.tpml.ui.version}.jar" manifest="${distdir}/MANIFEST.MF">
+			<fileset dir="${classesdir}" />
+			<fileset dir="${basedir}/source">
+				<include name="**/*.gif"/>
+				<include name="**/*.png"/>
+				<include name="**/*.properties"/>
+				<include name="log4j.xml" />
+			</fileset>
+		</jar>
+		<delete file="${distdir}/MANIFEST.MF" />
+	</target>
+	
+	<target name="exe" depends="dist-jar">
+		<copy todir="${distdir}" file="${basedir}/../pgtest3/tpml.xml">
+			<filterset>
+							<filter token="de.unisiegen.tpml.ui.version" value="${de.unisiegen.tpml.ui.version}" />
+				      <filter token="path" value="${distdir}/tpml-${de.unisiegen.tpml.ui.version}" />
+			</filterset>
+		</copy>
+		<taskdef name="launch4j"
+		    	classname="net.sf.launch4j.ant.Launch4jTask"
+		    	classpath="c:/launch4j/launch4j.jar:c:/launch4j/lib/xstream.jar" 
+		/>
+		<launch4j configFile="${distdir}/tpml.xml" />
+		
+		<copy todir="${distdir}/tpml-${de.unisiegen.tpml.ui.version}" file="${distdir}/start.exe">
+		</copy>
+	</target>
+	
+	
+
+	
+	
+	
+	<!--
+		Autogenerating files (Versions.java)
+	-->
+
+	<property name="generateddir" value="${basedir}/source-generated" />
+	
+	<target name="generate" description="Generate the Versions interface">
+		<mkdir dir="${generateddir}/de/unisiegen/tpml/ui" />
+		<echo file="${generateddir}/de/unisiegen/tpml/ui/Versions.java" append="false">package de.unisiegen.tpml.ui;
+
+/**
+ * Automatically generated interface for the project versions.
+ *
+ * @author Benedikt Meurer
+ * @version $$Ref$$
+ */
+public interface Versions {
+	/** The version of the de.unisiegen.tpml.core subproject. */
+	public static final String CORE = "${de.unisiegen.tpml.core.version}";
+
+	/** The version of the de.unisiegen.tpml.graphics subproject. */
+	public static final String GRAPHICS = "${de.unisiegen.tpml.graphics.version}";
+
+	/** The version of the de.unisiegen.tpml.ui subproject. */
+	public static final String UI = "${de.unisiegen.tpml.ui.version}";
+};
+		</echo>
+	</target>
+</project>
