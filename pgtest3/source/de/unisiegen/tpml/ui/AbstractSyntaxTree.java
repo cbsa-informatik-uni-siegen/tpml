@@ -18,8 +18,10 @@ import de.unisiegen.tpml.core.expressions.BinaryOperator ;
 import de.unisiegen.tpml.core.expressions.BooleanConstant ;
 import de.unisiegen.tpml.core.expressions.Condition ;
 import de.unisiegen.tpml.core.expressions.Condition1 ;
+import de.unisiegen.tpml.core.expressions.Constant ;
 import de.unisiegen.tpml.core.expressions.Deref ;
 import de.unisiegen.tpml.core.expressions.EmptyList ;
+import de.unisiegen.tpml.core.expressions.Exn ;
 import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.expressions.Fst ;
 import de.unisiegen.tpml.core.expressions.Hd ;
@@ -46,6 +48,7 @@ import de.unisiegen.tpml.core.expressions.Tl ;
 import de.unisiegen.tpml.core.expressions.Tuple ;
 import de.unisiegen.tpml.core.expressions.UnaryCons ;
 import de.unisiegen.tpml.core.expressions.UnitConstant ;
+import de.unisiegen.tpml.core.expressions.Value ;
 import de.unisiegen.tpml.core.expressions.While ;
 
 
@@ -240,6 +243,15 @@ public class AbstractSyntaxTree
   }
 
 
+  private DefaultMutableTreeNode constant ( Constant pConstant )
+  {
+    // Child
+    DefaultMutableTreeNode child = new DefaultMutableTreeNode ( "Constant { "
+        + pConstant.toPrettyString ( ) + " }" ) ;
+    return child ;
+  }
+
+
   private DefaultMutableTreeNode deref ( Deref expr )
   {
     // Child
@@ -253,6 +265,15 @@ public class AbstractSyntaxTree
   {
     return new DefaultMutableTreeNode ( "EmptyList { "
         + pEmptyList.toPrettyString ( ) + " }" ) ;
+  }
+
+
+  private DefaultMutableTreeNode exn ( Exn pExpr )
+  {
+    // Child
+    DefaultMutableTreeNode child = new DefaultMutableTreeNode ( "Exn { "
+        + pExpr.toPrettyString ( ) + " }" ) ;
+    return child ;
   }
 
 
@@ -408,9 +429,21 @@ public class AbstractSyntaxTree
     {
       return binaryOperator ( ( BinaryOperator ) pExpression ) ;
     }
+    else if ( pExpression instanceof Constant )
+    {
+      return constant ( ( Constant ) pExpression ) ;
+    }
+    else if ( pExpression instanceof Value )
+    {
+      return value ( ( Value ) pExpression ) ;
+    }
+    else if ( pExpression instanceof Exn )
+    {
+      return exn ( ( Exn ) pExpression ) ;
+    }
     else
     {
-      return new DefaultMutableTreeNode ( "UNKNOWN" ) ;
+      return new DefaultMutableTreeNode ( "UNKNOWN EXPRESSION" ) ;
     }
   }
 
@@ -808,6 +841,15 @@ public class AbstractSyntaxTree
     // Child
     DefaultMutableTreeNode child = new DefaultMutableTreeNode (
         "UnitConstant { " + pBooleanConstant.toPrettyString ( ) + " }" ) ;
+    return child ;
+  }
+
+
+  private DefaultMutableTreeNode value ( Value pExpr )
+  {
+    // Child
+    DefaultMutableTreeNode child = new DefaultMutableTreeNode ( "Value { "
+        + pExpr.toPrettyString ( ) + " }" ) ;
     return child ;
   }
 
