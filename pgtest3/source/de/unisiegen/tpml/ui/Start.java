@@ -96,7 +96,7 @@ public class Start
 		}
 		catch (NumberFormatException e)
 		{
-			new MsgFrame( "Unknown version", "Das Ergebnis der Java-versionsprüfung ist ungültig!");
+			new MsgFrame( "Unbekannte Version", "Das Ergebnis der Java-versionsprüfung ist ungültig! Es wurde "+ versionA[0] +"." + versionA[1] + "als Version zurückgegeben.");
 		}
 		
 		// lexografik order: in 2.5, the 5 isn't important
@@ -136,6 +136,7 @@ public class Start
 				}
 			}
 		}
+		//if -f is set- programm starts wihtout any test
 		if (force)
 		{
 			//alle Argumente werden gebaut, damit Dateien gestartet geöffnet werden können
@@ -167,11 +168,15 @@ public class Start
 				// Testausgabe für die Java-Version
 				// System.out.println(System.getProperty("java.version"));
 				//JavaTest javaTest = new JavaTest();
+				
+				//For errormessages bevor 1.2
 				//For nicer errormessages
 				boolean is12 = isJavaRightVersion(1, 2);
 				//boolean is12 = false;
-				//For errormessages bevor 1.2
+				
+				//checks fersion
 				boolean isRight = isJavaRightVersion(neededMaster, neededSlave);
+				
 				if (isRight)
 				{
 					try
