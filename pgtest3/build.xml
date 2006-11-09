@@ -35,7 +35,7 @@
 			<fileset dir="${core.distdir}" includes="*.jar" />
 			<fileset dir="${graphics.distdir}" includes="*.jar" />
 			<fileset dir="${distdir}" includes="*.jar" />
-			<fileset dir="${basedir}" includes="tpml.exe" />
+	<!--		<fileset dir="${basedir}" includes="tpml.exe" /> -->
 			<fileset dir="${basedir}/doc" includes="LICENSE" />
 		</copy>
 		<copy todir="${distdir}/tpml-${de.unisiegen.tpml.ui.version}" file="${basedir}/tpml.sh">
@@ -143,17 +143,13 @@
 		/>
 		<launch4j configFile="${distdir}/tpml.xml" />
 		
-		<copy todir="${distdir}/tpml-${de.unisiegen.tpml.ui.version}" file="${distdir}/start.exe">
+		<copy todir="${distdir}/tpml-${de.unisiegen.tpml.ui.version}" file="${distdir}/tpml.exe">
 		</copy>
 	</target>
 	
 	<target name="dist-clean">
 		<delete dir="${classesdir}" />
 	</target>
-	
-	
-
-	
 	
 	
 	<!--
