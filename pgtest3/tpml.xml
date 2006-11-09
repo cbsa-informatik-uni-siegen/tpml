@@ -1,8 +1,8 @@
 <launch4jConfig>
-  <dontWrapJar>false</dontWrapJar>
+  <dontWrapJar>true</dontWrapJar>
   <headerType>gui</headerType>
   <jar>de.unisiegen.tpml.ui-@de.unisiegen.tpml.ui.version@.jar</jar>
-  <outfile>start.exe</outfile>
+  <outfile>tpml.exe</outfile>
   <errTitle>Wrong JAVA found</errTitle>
   <cmdLine></cmdLine>
   <chdir></chdir>
