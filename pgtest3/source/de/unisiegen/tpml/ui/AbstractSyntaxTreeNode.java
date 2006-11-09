@@ -6,6 +6,27 @@ import de.unisiegen.tpml.core.expressions.Expression ;
 
 public class AbstractSyntaxTreeNode
 {
+  private static final String BEFOR_DESCRIPTION = "" ;
+
+
+  private static final String AFTER_DESCRIPTION = "" ;
+
+
+  private static final String BETWEEN = "&nbsp;&nbsp;&nbsp;&nbsp;" ;
+
+
+  private static final String BEFOR_NAME = "[&nbsp;" ;
+
+
+  private static final String AFTER_NAME = "&nbsp;]" ;
+
+
+  private static final String COLOR = "0000FF" ;
+
+
+  private String description ;
+
+
   private String name ;
 
 
@@ -15,26 +36,27 @@ public class AbstractSyntaxTreeNode
   private Expression expression ;
 
 
-  public AbstractSyntaxTreeNode ( String pName , Expression pExpression )
+  public AbstractSyntaxTreeNode ( String pDescription , String pName ,
+      Expression pExpression )
   {
+    this.description = pDescription ;
+    if ( this.description == null )
+    {
+      this.description = "" ;
+    }
     this.name = pName ;
-    this.html = "<html>" + this.name + "</html>" ;
+    if ( this.name == null )
+    {
+      this.name = "" ;
+    }
+    resetHtml ( ) ;
     this.expression = pExpression ;
   }
 
 
-  private String bold ( String pText , int pStart , int pEnd )
+  public String getDescription ( )
   {
-    String s = "<html>" ;
-    s += pText.substring ( 0 , pStart ) ;
-    s += "<b>" ;
-    s += "<font color=\"#FF0000\">" ;
-    s += pText.substring ( pStart , pEnd + 1 ) ;
-    s += "</b>" ;
-    s += "</font>" ;
-    s += pText.substring ( pEnd + 1 , pText.length ( ) ) ;
-    s += "</html>" ;
-    return s ;
+    return description ;
   }
 
 
@@ -53,6 +75,27 @@ public class AbstractSyntaxTreeNode
   public String getName ( )
   {
     return name ;
+  }
+
+
+  public void resetHtml ( )
+  {
+    StringBuffer s = new StringBuffer ( "<html>" ) ;
+    s.append ( BEFOR_DESCRIPTION ) ;
+    s.append ( this.description ) ;
+    s.append ( AFTER_DESCRIPTION ) ;
+    s.append ( BETWEEN ) ;
+    s.append ( BEFOR_NAME ) ;
+    s.append ( this.name ) ;
+    s.append ( AFTER_NAME ) ;
+    s.append ( "</html>" ) ;
+    this.html = s.toString ( ) ;
+  }
+
+
+  public void setDescription ( String description )
+  {
+    this.description = description ;
   }
 
 
@@ -82,12 +125,21 @@ public class AbstractSyntaxTreeNode
 
   public void updateHtml ( int pStart , int pEnd )
   {
-    this.html = bold ( name , pStart , pEnd ) ;
-  }
-
-
-  public void resetHtml ( )
-  {
-    this.html = "<html>" + name + "</html>" ;
+    StringBuffer s = new StringBuffer ( "<html>" ) ;
+    s.append ( BEFOR_DESCRIPTION ) ;
+    s.append ( this.description ) ;
+    s.append ( AFTER_DESCRIPTION ) ;
+    s.append ( BETWEEN ) ;
+    s.append ( BEFOR_NAME ) ;
+    s.append ( this.name.substring ( 0 , pStart ) ) ;
+    s.append ( "<b>" ) ;
+    s.append ( "<font color=\"#" + COLOR + "\">" ) ;
+    s.append ( this.name.substring ( pStart , pEnd + 1 ) ) ;
+    s.append ( "</b>" ) ;
+    s.append ( "</font>" ) ;
+    s.append ( this.name.substring ( pEnd + 1 , this.name.length ( ) ) ) ;
+    s.append ( AFTER_NAME ) ;
+    s.append ( "</html>" ) ;
+    this.html = s.toString ( ) ;
   }
 }
