@@ -6,8 +6,12 @@ package de.unisiegen.tpml.ui ;
  */
 public class Start
 {
-	final static int masterN = 1;
-	final static int slaveN = 5;
+	//Here you can definde the needed JAVA-Version MASTERN.SLAVAN
+	//It is MASTERN = 1;
+	//			SLAVEN = 5;
+	//for JAVA 1.5 needed. The Programm will start with all JAVA 1.5 and above versions 
+	final static int MASTERN = 1;
+	final static int SLAVEN = 5;
 
 	/**
 	 * implementation of split function because String.split dose not exist bevore Java 1.4 implementation ist
@@ -21,23 +25,32 @@ public class Start
 	 */
 	public static String[] split(String toDiv, char div)
 	{
+		//TO work with String put it into an array
 		char[] toDivC = toDiv.toCharArray();
+		//length of array that will be returned
 		int lengthWihtoutDiv = toDivC.length;
+		//lets count the split-char
 		int countdiv=0;
+		//walk through the array
 		for (int i = 0; i < toDivC.length; i++)
 		{
+			//div-char is found
 			if (toDivC[i] == div)
 			{
+				//because the div-chars will not be returned
 				lengthWihtoutDiv--;
 				countdiv++;
 			}
 		}
-		
+		//build result
 		String result[] = new String [countdiv+1];
+		//these strings will be added to the result[]
 		String tmp1 = "";
+		//second count, at j the tmp will be added
 		int j = 0;
 		for (int i = 0; i < toDivC.length; i++)
 		{
+			//only chars != to div will be added 
 			if (toDivC[i] != div)
 			{
 				tmp1 = tmp1+toDivC[i];
@@ -55,8 +68,6 @@ public class Start
 		}
 		return result;
 	}
-
-
 
 	/**
 	 * checks, if javaversion is equal or higher than given version
@@ -108,11 +119,9 @@ public class Start
 	 */
 	public static void main(String args[])
 	{
-	
 		int countArgs = args.length;
-		int neededMaster = masterN;
-		int neededSlave = slaveN;
-		//String programmToStart = "";
+		int neededMaster = MASTERN;
+		int neededSlave = SLAVEN;
 		boolean force = false;
 		int forceInt = -1;
 
@@ -167,8 +176,6 @@ public class Start
 				{
 					try
 					{
-						//System.out.println(programmToStart);
-						// TODO Programm soll später in der gleichen Klasse stehen und dort einfach die Mainmethode starten
 						Main.main(args);
 					}
 					catch (Exception e)
@@ -182,22 +189,23 @@ public class Start
 						}
 						else
 						{
-							new MsgFrame(title, message);	
+							new MsgFrame(title, message);
+							System.exit(1);
 						}
 					}
 				}
 				else
 				{
+					String message = "Java "+neededMaster+"."+neededSlave+ " NICHT erkannt! Installieren Sie bitte die benötigte Verion.";
+					String title = "Falsche Java-Version";
 					if (is12)
 					{
-						String title = "Java "+neededMaster+"."+neededSlave+ " NICHT erkannt! Installieren Sie die	benötigte Verion";
-						String message = "Falsche Java-Version";
 						new JOpFrame(title, message);
 						System.exit(1);
 					}
 					else
 					{
-						new MsgFrame("Falsche Java-Version", "Java " + neededMaster + "." + neededSlave	+ " NICHT erkannt! Installieren Sie die benötigte Verion");
+						new MsgFrame(title, message);
 					}
 				}
 			}
