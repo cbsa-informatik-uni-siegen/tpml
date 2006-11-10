@@ -123,8 +123,8 @@ public class AbstractSyntaxTreeUi
     this.treeModel = new DefaultTreeModel ( this.rootExpression ) ;
     this.jTreeAbstractSyntaxTree = new JTree ( this.treeModel ) ;
     this.jTreeAbstractSyntaxTree.setCellRenderer ( this.cellRenderer ) ;
-    this.jTreeAbstractSyntaxTree.getSelectionModel ( )
-        .addTreeSelectionListener ( new AbstractSyntaxTreeListener ( this ) ) ;
+    //this.jTreeAbstractSyntaxTree.getSelectionModel ( )
+      //  .addTreeSelectionListener ( new AbstractSyntaxTreeListener ( this ) ) ;
     this.gridBagConstraints = new GridBagConstraints ( ) ;
     this.gridBagConstraints.insets = new Insets ( 2 , 2 , 2 , 2 ) ;
     this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
