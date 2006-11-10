@@ -135,15 +135,6 @@ public class AbstractSyntaxTree
   }
 
 
-  @ SuppressWarnings ( "unused" )
-  private DefaultMutableTreeNode createNode ( String pDescription ,
-      String pName , Expression pExpression , int pStart , int pEnd )
-  {
-    return new DefaultMutableTreeNode ( new AbstractSyntaxTreeNode (
-        pDescription , pName , pExpression , pStart , pEnd ) ) ;
-  }
-
-
   private DefaultMutableTreeNode createNode ( String pDescription ,
       String pName , int pStart , int pEnd )
   {

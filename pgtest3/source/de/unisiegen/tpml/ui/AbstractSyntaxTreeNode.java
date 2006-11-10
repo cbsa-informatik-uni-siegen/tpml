@@ -120,7 +120,56 @@ public class AbstractSyntaxTreeNode
   }
 
 
+  private String keyword ;
+
+
+  public void setKeyword ( String pKeyword )
+  {
+    this.keyword = pKeyword ;
+  }
+
+
   public void updateHtml ( int pStart , int pEnd )
+  {
+    StringBuffer s = new StringBuffer ( "<html>" ) ;
+    s.append ( BEFOR_DESCRIPTION ) ;
+    s.append ( this.description ) ;
+    s.append ( AFTER_DESCRIPTION ) ;
+    s.append ( BETWEEN ) ;
+    s.append ( BEFOR_NAME ) ;
+    for ( int i = 0 ; i < this.name.length ( ) ; i ++ )
+    {
+      if ( this.keyword.charAt ( i ) == 'X' )
+      {
+        s.append ( "<font color=\"#" + COLOR + "\">" ) ;
+      }
+      if ( i < pStart )
+      {
+        s.append ( this.name.charAt ( i ) ) ;
+      }
+      else if ( ( i >= pStart ) && ( i <= pEnd ) )
+      {
+        s.append ( "<b>" ) ;
+        s.append ( this.name.charAt ( i ) ) ;
+        s.append ( "</b>" ) ;
+      }
+      else if ( i > pEnd )
+      {
+        s.append ( this.name.charAt ( i ) ) ;
+      }
+      if ( this.keyword.charAt ( i ) == 'X' )
+      {
+        s.append ( "</font>" ) ;
+      }
+    }
+    s.append ( AFTER_NAME ) ;
+    s.append ( "</html>" ) ;
+    this.html = s.toString ( ) ;
+  }
+
+
+  @ SuppressWarnings ( "unused" )
+  private void oldupdateHtml ( int pStart , int pEnd )
   {
     StringBuffer s = new StringBuffer ( "<html>" ) ;
     s.append ( BEFOR_DESCRIPTION ) ;

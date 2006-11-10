@@ -7,7 +7,9 @@ import javax.swing.event.TreeSelectionListener ;
 import javax.swing.tree.DefaultMutableTreeNode ;
 import javax.swing.tree.TreePath ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation ;
+import de.unisiegen.tpml.core.prettyprinter.PrettyCharIterator ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyString ;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStyle ;
 
 
 public class AbstractSyntaxTreeListener implements TreeSelectionListener
@@ -33,9 +35,9 @@ public class AbstractSyntaxTreeListener implements TreeSelectionListener
 
   private void resetHighlighting ( DefaultMutableTreeNode pNode )
   {
-    AbstractSyntaxTreeNode a = ( AbstractSyntaxTreeNode ) pNode
+    AbstractSyntaxTreeNode abstractSyntaxTreeNode = ( AbstractSyntaxTreeNode ) pNode
         .getUserObject ( ) ;
-    a.resetHtml ( ) ;
+    abstractSyntaxTreeNode.resetHtml ( ) ;
     abstractSyntaxTree.getTreeModel ( ).nodeChanged ( pNode ) ;
     for ( int i = 0 ; i < pNode.getChildCount ( ) ; i ++ )
     {
@@ -92,10 +94,24 @@ public class AbstractSyntaxTreeListener implements TreeSelectionListener
             .toPrettyString ( ) ;
         PrettyAnnotation prettyAnnotation = prettyString
             .getAnnotationForPrintable ( last.getExpression ( ) ) ;
+        PrettyCharIterator p = prettyString.toCharacterIterator ( ) ;
+        char c = p.first ( ) ;
+        String s = "" ;
+        while ( c != PrettyCharIterator.DONE )
+        {
+          if ( p.getStyle ( ) == PrettyStyle.KEYWORD )
+          {
+            s += "X" ;
+          }
+          else
+          {
+            s += " " ;
+          }
+          c = p.next ( ) ;
+        }
+        list.get ( i ).setKeyword ( s ) ;
         list.get ( i ).updateHtml ( prettyAnnotation.getStartOffset ( ) ,
             prettyAnnotation.getEndOffset ( ) ) ;
-        
-        
       }
     }
     repaint ( ( DefaultMutableTreeNode ) treePath.getPath ( ) [ 0 ] ) ;
