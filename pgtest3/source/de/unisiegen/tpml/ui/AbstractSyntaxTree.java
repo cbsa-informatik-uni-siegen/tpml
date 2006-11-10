@@ -128,10 +128,27 @@ public class AbstractSyntaxTree
 
 
   private DefaultMutableTreeNode createNode ( String pDescription ,
-      String pName , Object pObject )
+      String pName , Expression pExpression )
   {
     return new DefaultMutableTreeNode ( new AbstractSyntaxTreeNode (
-        pDescription , pName , pObject ) ) ;
+        pDescription , pName , pExpression ) ) ;
+  }
+
+
+  @ SuppressWarnings ( "unused" )
+  private DefaultMutableTreeNode createNode ( String pDescription ,
+      String pName , Expression pExpression , int pStart , int pEnd )
+  {
+    return new DefaultMutableTreeNode ( new AbstractSyntaxTreeNode (
+        pDescription , pName , pExpression , pStart , pEnd ) ) ;
+  }
+
+
+  private DefaultMutableTreeNode createNode ( String pDescription ,
+      String pName , int pStart , int pEnd )
+  {
+    return new DefaultMutableTreeNode ( new AbstractSyntaxTreeNode (
+        pDescription , pName , pStart , pEnd ) ) ;
   }
 
 
@@ -266,7 +283,6 @@ public class AbstractSyntaxTree
   }
 
 
-  // TODO
   private DefaultMutableTreeNode exprCurriedLet ( CurriedLet pExpr )
   {
     String [ ] id = pExpr.getIdentifiers ( ) ;
@@ -276,10 +292,12 @@ public class AbstractSyntaxTree
     DefaultMutableTreeNode child = createNode ( "CurriedLet" , pExpr
         .toPrettyString ( ).toString ( ) , pExpr ) ;
     // Subchilds
+    int lenght = 0 ;
     for ( int i = 0 ; i < id.length ; i ++ )
     {
       DefaultMutableTreeNode subchild = createNode ( "Identifier" , id [ i ] ,
-          null ) ;
+          lenght + 4 + i , lenght + 3 + id [ i ].length ( ) + i ) ;
+      lenght += id [ i ].length ( ) ;
       treeModel.insertNodeInto ( subchild , child , i ) ;
     }
     // Subchild
@@ -296,7 +314,6 @@ public class AbstractSyntaxTree
   }
 
 
-  // TODO
   private DefaultMutableTreeNode exprCurriedLetRec ( CurriedLetRec pExpr )
   {
     String [ ] id = pExpr.getIdentifiers ( ) ;
@@ -306,10 +323,12 @@ public class AbstractSyntaxTree
     DefaultMutableTreeNode child = createNode ( "CurriedLetRec" , pExpr
         .toPrettyString ( ).toString ( ) , pExpr ) ;
     // Subchilds
+    int lenght = 0 ;
     for ( int i = 0 ; i < id.length ; i ++ )
     {
       DefaultMutableTreeNode subchild = createNode ( "Identifier" , id [ i ] ,
-          null ) ;
+          lenght + 8 + i , lenght + 7 + id [ i ].length ( ) + i ) ;
+      lenght += id [ i ].length ( ) ;
       treeModel.insertNodeInto ( subchild , child , i ) ;
     }
     // Subchild
@@ -626,10 +645,9 @@ public class AbstractSyntaxTree
     {
       name = "BinaryOperator" ;
     }
-    subchild2 = createNode ( name , b.toString ( ) ,
-        new AbstractSyntaxTreeIndices ( e1.toPrettyString ( ).toString ( )
-            .length ( ) , e1.toPrettyString ( ).toString ( ).length ( )
-            + b.toString ( ).length ( ) ) ) ;
+    subchild2 = createNode ( name , b.toString ( ) , e1.toPrettyString ( )
+        .toString ( ).length ( ) , e1.toPrettyString ( ).toString ( ).length ( )
+        + b.toString ( ).length ( ) ) ;
     treeModel.insertNodeInto ( subchild2 , child , 1 ) ;
     // Subchild 3
     DefaultMutableTreeNode subchild3 = createNode ( "e2" , e2.toPrettyString ( )
@@ -662,8 +680,8 @@ public class AbstractSyntaxTree
     DefaultMutableTreeNode child = createNode ( "Lamdba" , pExpr
         .toPrettyString ( ).toString ( ) , pExpr ) ;
     // Subchild 1
-    DefaultMutableTreeNode subchild1 = createNode ( "Identifier" , id ,
-        new AbstractSyntaxTreeIndices ( 1 , id.length ( ) ) ) ;
+    DefaultMutableTreeNode subchild1 = createNode ( "Identifier" , id , 1 , id
+        .length ( ) ) ;
     treeModel.insertNodeInto ( subchild1 , child , 0 ) ;
     // Subchild 2
     DefaultMutableTreeNode subchild2 = createNode ( "e" , e.toPrettyString ( )
@@ -683,8 +701,8 @@ public class AbstractSyntaxTree
     DefaultMutableTreeNode child = createNode ( "Let" , pExpr.toPrettyString ( )
         .toString ( ) , pExpr ) ;
     // Subchild 1
-    DefaultMutableTreeNode subchild1 = createNode ( "Identifier" , id ,
-        new AbstractSyntaxTreeIndices ( 4 , 3 + id.length ( ) ) ) ;
+    DefaultMutableTreeNode subchild1 = createNode ( "Identifier" , id , 4 ,
+        3 + id.length ( ) ) ;
     treeModel.insertNodeInto ( subchild1 , child , 0 ) ;
     // Subchild 2
     DefaultMutableTreeNode subchild2 = createNode ( "e1" , e1.toPrettyString ( )
@@ -709,8 +727,8 @@ public class AbstractSyntaxTree
     DefaultMutableTreeNode child = createNode ( "LetRec" , pExpr
         .toPrettyString ( ).toString ( ) , pExpr ) ;
     // Subchild 1
-    DefaultMutableTreeNode subchild1 = createNode ( "Identifier" , id ,
-        new AbstractSyntaxTreeIndices ( 8 , 7 + id.length ( ) ) ) ;
+    DefaultMutableTreeNode subchild1 = createNode ( "Identifier" , id , 8 ,
+        7 + id.length ( ) ) ;
     treeModel.insertNodeInto ( subchild1 , child , 0 ) ;
     // Subchild 2
     DefaultMutableTreeNode subchild2 = createNode ( "e1" , e1.toPrettyString ( )
@@ -751,14 +769,13 @@ public class AbstractSyntaxTree
     DefaultMutableTreeNode child = createNode ( "Location" , pExpr
         .toPrettyString ( ).toString ( ) , pExpr ) ;
     // Subchild 1
-    DefaultMutableTreeNode subchild1 = createNode ( "Name" , name ,
-        new AbstractSyntaxTreeIndices ( 0 , name.length ( ) - 1 ) ) ;
+    DefaultMutableTreeNode subchild1 = createNode ( "Name" , name , 0 , name
+        .length ( ) - 1 ) ;
     treeModel.insertNodeInto ( subchild1 , child , 0 ) ;
     return child ;
   }
 
 
-  // TODO
   private DefaultMutableTreeNode exprLultiLambda ( MultiLambda pExpr )
   {
     String id[] = pExpr.getIdentifiers ( ) ;
@@ -767,10 +784,12 @@ public class AbstractSyntaxTree
     DefaultMutableTreeNode child = createNode ( "MultiLamdba" , pExpr
         .toPrettyString ( ).toString ( ) , pExpr ) ;
     // Subchild 1
+    int lenght = 0 ;
     for ( int i = 0 ; i < id.length ; i ++ )
     {
       DefaultMutableTreeNode subchild1 = createNode ( "Identifier" , id [ i ] ,
-          null ) ;
+          lenght + 2 + ( i * 2 ) , lenght + 1 + id [ i ].length ( ) + ( i * 2 ) ) ;
+      lenght += id [ i ].length ( ) ;
       treeModel.insertNodeInto ( subchild1 , child , i ) ;
     }
     // Subchild 2
@@ -782,7 +801,6 @@ public class AbstractSyntaxTree
   }
 
 
-  // TODO
   private DefaultMutableTreeNode exprMultiLet ( MultiLet pExpr )
   {
     String [ ] id = pExpr.getIdentifiers ( ) ;
@@ -792,10 +810,12 @@ public class AbstractSyntaxTree
     DefaultMutableTreeNode child = createNode ( "MultiLet" , pExpr
         .toPrettyString ( ).toString ( ) , pExpr ) ;
     // Subchilds
+    int lenght = 0 ;
     for ( int i = 0 ; i < id.length ; i ++ )
     {
       DefaultMutableTreeNode subchild = createNode ( "Identifier" , id [ i ] ,
-          null ) ;
+          lenght + 5 + ( i * 2 ) , lenght + 4 + id [ i ].length ( ) + ( i * 2 ) ) ;
+      lenght += id [ i ].length ( ) ;
       treeModel.insertNodeInto ( subchild , child , i ) ;
     }
     // Subchild
@@ -854,8 +874,8 @@ public class AbstractSyntaxTree
     DefaultMutableTreeNode child = createNode ( "Recursion" , pExpr
         .toPrettyString ( ).toString ( ) , pExpr ) ;
     // Subchild 1
-    DefaultMutableTreeNode subchild1 = createNode ( "Identifier" , id ,
-        new AbstractSyntaxTreeIndices ( 4 , 3 + id.length ( ) ) ) ;
+    DefaultMutableTreeNode subchild1 = createNode ( "Identifier" , id , 4 ,
+        3 + id.length ( ) ) ;
     treeModel.insertNodeInto ( subchild1 , child , 0 ) ;
     // Subchild 2
     DefaultMutableTreeNode subchild2 = createNode ( "e" , e.toPrettyString ( )
@@ -962,8 +982,8 @@ public class AbstractSyntaxTree
   {
     return createNode (
         "<b><font color=\"#FF0000\">UNKNOWN EXPRESSION</font></b>" , pExpr
-            .toPrettyString ( ).toString ( ) , new AbstractSyntaxTreeIndices (
-            0 , pExpr.toPrettyString ( ).toString ( ).length ( ) - 1 ) ) ;
+            .toPrettyString ( ).toString ( ) , 0 , pExpr.toPrettyString ( )
+            .toString ( ).length ( ) - 1 ) ;
   }
 
 

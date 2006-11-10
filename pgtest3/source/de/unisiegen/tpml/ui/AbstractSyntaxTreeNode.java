@@ -24,6 +24,9 @@ public class AbstractSyntaxTreeNode
   private static final String COLOR = "0000FF" ;
 
 
+  private static final boolean BOLD = true ;
+
+
   private String description ;
 
 
@@ -36,45 +39,63 @@ public class AbstractSyntaxTreeNode
   private Expression expression ;
 
 
-  private AbstractSyntaxTreeIndices abstractSyntaxTreeIndices ;
+  private int startIndex ;
+
+
+  private int endIndex ;
 
 
   public AbstractSyntaxTreeNode ( String pDescription , String pName ,
-      Object pObject )
+      Expression pExpression )
   {
     this.description = pDescription ;
-    if ( this.description == null )
-    {
-      this.description = "" ;
-    }
     this.name = pName ;
-    if ( this.name == null )
-    {
-      this.name = "" ;
-    }
+    this.expression = pExpression ;
+    this.startIndex = - 1 ;
+    this.endIndex = - 1 ;
     resetHtml ( ) ;
-    if ( pObject instanceof Expression )
-    {
-      this.expression = ( Expression ) pObject ;
-      this.abstractSyntaxTreeIndices = null ;
-    }
-    else if ( pObject instanceof AbstractSyntaxTreeIndices )
-    {
-      this.expression = null ;
-      this.abstractSyntaxTreeIndices = ( AbstractSyntaxTreeIndices ) pObject ;
-    }
   }
 
 
-  public AbstractSyntaxTreeIndices getAbstractSyntaxTreeIndices ( )
+  public AbstractSyntaxTreeNode ( String pDescription , String pName ,
+      Expression pExpression , int pStart , int pEnd )
   {
-    return this.abstractSyntaxTreeIndices ;
+    this.description = pDescription ;
+    this.name = pName ;
+    this.expression = pExpression ;
+    this.startIndex = pStart ;
+    this.endIndex = pEnd ;
+    resetHtml ( ) ;
+  }
+
+
+  public AbstractSyntaxTreeNode ( String pDescription , String pName ,
+      int pStart , int pEnd )
+  {
+    this.description = pDescription ;
+    this.name = pName ;
+    this.expression = null ;
+    this.startIndex = pStart ;
+    this.endIndex = pEnd ;
+    resetHtml ( ) ;
+  }
+
+
+  public int getEndIndex ( )
+  {
+    return endIndex ;
   }
 
 
   public Expression getExpression ( )
   {
     return expression ;
+  }
+
+
+  public int getStartIndex ( )
+  {
+    return startIndex ;
   }
 
 
@@ -108,11 +129,11 @@ public class AbstractSyntaxTreeNode
     s.append ( BETWEEN ) ;
     s.append ( BEFOR_NAME ) ;
     s.append ( this.name.substring ( 0 , pStart ) ) ;
-    s.append ( "<b>" ) ;
+    if ( BOLD ) s.append ( "<b>" ) ;
     s.append ( "<font color=\"#" + COLOR + "\">" ) ;
     s.append ( this.name.substring ( pStart , pEnd + 1 ) ) ;
     s.append ( "</font>" ) ;
-    s.append ( "</b>" ) ;
+    if ( BOLD ) s.append ( "</b>" ) ;
     s.append ( this.name.substring ( pEnd + 1 , this.name.length ( ) ) ) ;
     s.append ( AFTER_NAME ) ;
     s.append ( "</html>" ) ;

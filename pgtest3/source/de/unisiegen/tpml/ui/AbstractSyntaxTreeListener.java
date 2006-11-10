@@ -68,7 +68,7 @@ public class AbstractSyntaxTreeListener implements TreeSelectionListener
     {
       secondlast = list.get ( list.size ( ) - 2 ) ;
     }
-    if ( last.getAbstractSyntaxTreeIndices ( ) != null )
+    if ( ( last.getStartIndex ( ) != - 1 ) && ( last.getEndIndex ( ) != - 1 ) )
     {
       for ( int i = 0 ; i < list.size ( ) - 1 ; i ++ )
       {
@@ -77,10 +77,8 @@ public class AbstractSyntaxTreeListener implements TreeSelectionListener
         PrettyAnnotation prettyAnnotation = prettyString
             .getAnnotationForPrintable ( secondlast.getExpression ( ) ) ;
         list.get ( i ).updateHtml (
-            prettyAnnotation.getStartOffset ( )
-                + last.getAbstractSyntaxTreeIndices ( ).getStart ( ) ,
-            prettyAnnotation.getStartOffset ( )
-                + last.getAbstractSyntaxTreeIndices ( ).getEnd ( ) ) ;
+            prettyAnnotation.getStartOffset ( ) + last.getStartIndex ( ) ,
+            prettyAnnotation.getStartOffset ( ) + last.getEndIndex ( ) ) ;
       }
     }
     else
