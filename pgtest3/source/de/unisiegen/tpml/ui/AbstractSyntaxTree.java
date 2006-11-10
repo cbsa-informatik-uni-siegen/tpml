@@ -292,12 +292,12 @@ public class AbstractSyntaxTree
     DefaultMutableTreeNode child = createNode ( "CurriedLet" , pExpr
         .toPrettyString ( ).toString ( ) , pExpr ) ;
     // Subchilds
-    int lenght = 0 ;
+    int length = 0 ;
     for ( int i = 0 ; i < id.length ; i ++ )
     {
       DefaultMutableTreeNode subchild = createNode ( "Identifier" , id [ i ] ,
-          lenght + 4 + i , lenght + 3 + id [ i ].length ( ) + i ) ;
-      lenght += id [ i ].length ( ) ;
+          length + 4 + i , length + 3 + id [ i ].length ( ) + i ) ;
+      length += id [ i ].length ( ) ;
       treeModel.insertNodeInto ( subchild , child , i ) ;
     }
     // Subchild
@@ -323,12 +323,12 @@ public class AbstractSyntaxTree
     DefaultMutableTreeNode child = createNode ( "CurriedLetRec" , pExpr
         .toPrettyString ( ).toString ( ) , pExpr ) ;
     // Subchilds
-    int lenght = 0 ;
+    int length = 0 ;
     for ( int i = 0 ; i < id.length ; i ++ )
     {
       DefaultMutableTreeNode subchild = createNode ( "Identifier" , id [ i ] ,
-          lenght + 8 + i , lenght + 7 + id [ i ].length ( ) + i ) ;
-      lenght += id [ i ].length ( ) ;
+          length + 8 + i , length + 7 + id [ i ].length ( ) + i ) ;
+      length += id [ i ].length ( ) ;
       treeModel.insertNodeInto ( subchild , child , i ) ;
     }
     // Subchild
@@ -784,12 +784,12 @@ public class AbstractSyntaxTree
     DefaultMutableTreeNode child = createNode ( "MultiLamdba" , pExpr
         .toPrettyString ( ).toString ( ) , pExpr ) ;
     // Subchild 1
-    int lenght = 0 ;
+    int length = 0 ;
     for ( int i = 0 ; i < id.length ; i ++ )
     {
       DefaultMutableTreeNode subchild1 = createNode ( "Identifier" , id [ i ] ,
-          lenght + 2 + ( i * 2 ) , lenght + 1 + id [ i ].length ( ) + ( i * 2 ) ) ;
-      lenght += id [ i ].length ( ) ;
+          length + 2 + ( i * 2 ) , length + 1 + id [ i ].length ( ) + ( i * 2 ) ) ;
+      length += id [ i ].length ( ) ;
       treeModel.insertNodeInto ( subchild1 , child , i ) ;
     }
     // Subchild 2
@@ -810,12 +810,12 @@ public class AbstractSyntaxTree
     DefaultMutableTreeNode child = createNode ( "MultiLet" , pExpr
         .toPrettyString ( ).toString ( ) , pExpr ) ;
     // Subchilds
-    int lenght = 0 ;
+    int length = 0 ;
     for ( int i = 0 ; i < id.length ; i ++ )
     {
       DefaultMutableTreeNode subchild = createNode ( "Identifier" , id [ i ] ,
-          lenght + 5 + ( i * 2 ) , lenght + 4 + id [ i ].length ( ) + ( i * 2 ) ) ;
-      lenght += id [ i ].length ( ) ;
+          length + 5 + ( i * 2 ) , length + 4 + id [ i ].length ( ) + ( i * 2 ) ) ;
+      length += id [ i ].length ( ) ;
       treeModel.insertNodeInto ( subchild , child , i ) ;
     }
     // Subchild

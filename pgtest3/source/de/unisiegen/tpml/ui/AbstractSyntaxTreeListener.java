@@ -49,6 +49,7 @@ public class AbstractSyntaxTreeListener implements TreeSelectionListener
     TreePath treePath = pEvent.getNewLeadSelectionPath ( ) ;
     if ( treePath == null )
     {
+      System.err.println ( "TreePath == null" ) ;
       return ;
     }
     LinkedList < AbstractSyntaxTreeNode > list = new LinkedList < AbstractSyntaxTreeNode > ( ) ;
@@ -68,6 +69,7 @@ public class AbstractSyntaxTreeListener implements TreeSelectionListener
     {
       secondlast = list.get ( list.size ( ) - 2 ) ;
     }
+    // No Expression
     if ( ( last.getStartIndex ( ) != - 1 ) && ( last.getEndIndex ( ) != - 1 ) )
     {
       for ( int i = 0 ; i < list.size ( ) - 1 ; i ++ )
@@ -81,6 +83,7 @@ public class AbstractSyntaxTreeListener implements TreeSelectionListener
             prettyAnnotation.getStartOffset ( ) + last.getEndIndex ( ) ) ;
       }
     }
+    // Expression
     else
     {
       for ( int i = 0 ; i < list.size ( ) ; i ++ )
@@ -91,6 +94,8 @@ public class AbstractSyntaxTreeListener implements TreeSelectionListener
             .getAnnotationForPrintable ( last.getExpression ( ) ) ;
         list.get ( i ).updateHtml ( prettyAnnotation.getStartOffset ( ) ,
             prettyAnnotation.getEndOffset ( ) ) ;
+        
+        
       }
     }
     repaint ( ( DefaultMutableTreeNode ) treePath.getPath ( ) [ 0 ] ) ;
