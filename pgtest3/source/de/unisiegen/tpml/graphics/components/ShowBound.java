@@ -2,6 +2,7 @@ package de.unisiegen.tpml.graphics.components;
 
 import java.util.Enumeration;
 import java.util.LinkedList;
+import java.util.Vector;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
@@ -20,18 +21,23 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyString;
 
 public class ShowBound 
 {
+	//TODO
+	int count=0;
+	static Expression holeExpression;
 	
 	private static ShowBound bound = null ;
 	
-	public static ShowBound getInstance ( )
+	public static ShowBound getInstance (Expression e )
 	  {
 	    if ( bound == null )
 	    {
 	      bound = new ShowBound ( ) ;
+	      holeExpression=e;
 	      return bound ;
 	    }
 	    else
 	    {
+	      holeExpression=e;
 	      return bound ;
 	    }
 	  }
@@ -62,6 +68,9 @@ public class ShowBound
 			     LinkedList<String> e2 = new LinkedList();
 			      Expression e = pLambda.getE ( ) ;
 			      
+			      //CHANGE BENJAMIN TEST
+			      check(e);
+			      
 			      Object [] a = pLambda.free ( ).toArray ( ) ;
 			      Object [] b = e.free ( ).toArray ( ) ;
 			      
@@ -91,46 +100,19 @@ public class ShowBound
 			    	  }
 			      }
 			      
-			      Enumeration child =pLambda.children();
-			      
-			      while (child.hasMoreElements())
-			      {
-			    	  Expression actualExpression = (Expression) child.nextElement();
-			    	  
-			    	  if( actualExpression.free ( ).toArray ( ).length >0)
-			    	  {
-			    		  if (actualExpression instanceof Identifier)
-			    		  {
-			    			  Identifier id = (Identifier) actualExpression;
-			    			  
-			    			  for (int i=0; i<e2.size(); i++)
-			    			  {
-			    				  System.err.println("Identifier: "+id.getName()+", aus Liste: " + e2.get(i));
-			    				  if (id.getName().equals(e2.get(i)))
-			    				 {
-			    					  	PrettyString ps =pLambda.toPrettyString();
-			    					  	PrettyAnnotation mark = ps.getAnnotationForPrintable(e);
-			    					  	System.err.println("Startoffset: "+ mark.getStartOffset() +" Endoffset: "+ mark.getEndOffset());  
-			    				 }
-			    			  }
-			    			  
-			    		  }
-			    	  }
-			    	  
-			    	 
-			    	 
-			      }
+			      childCheck(pLambda.children(), e2, pLambda);
+			     
 			      
 			  	//PrettyString ps =pLambda.toPrettyString();
 			  	//PrettyAnnotation mark = ps.getAnnotationForPrintable(e);
 			  	//System.err.println("Startoffset: "+ mark.getStartOffset() +" Endoffset: "+ mark.getEndOffset());
 			    
-			      System.err.println("Länge e1: "+e1.size()+"Länge e2: " +e2.size());
-			      for (String s : e2)
+			      //System.err.println("Länge e1: "+e1.size()+"Länge e2: " +e2.size());
+			      /**for (String s : e2)
 			      {
-			    	  System.err.println("Test3 "+e1.size());
+			    	  
 			    	  System.err.println(s);
-			      }
+			      }*/
 			}
 
 			
@@ -142,5 +124,45 @@ public class ShowBound
 				
 				check(e1);
 				check(e2);
+			}
+			
+			
+			public void childCheck (Enumeration child, LinkedList e2, Lambda pLambda)
+			{
+				count++;
+				System.err.println(count+". Aufruf");
+				
+				while (child.hasMoreElements())
+				{
+					
+					Expression actualExpression = (Expression) child.nextElement();
+					
+					 if( actualExpression.free ( ).toArray ( ).length >0)
+					 {
+						//System.err.println("Länge Array von Free: "+actualExpression.free ( ).toArray ( ).length );
+						 
+						 if (actualExpression instanceof Identifier)
+			    		  {
+			    			   
+			    			  Identifier id = (Identifier) actualExpression;
+			    			  
+			    			  for (int i=0; i<e2.size(); i++)
+			    			  {
+			    				   
+			    				 
+			    				  if (id.getName().equals(e2.get(i)))
+			    				 {
+			    					  	PrettyString ps =holeExpression.toPrettyString();
+			    					  	PrettyAnnotation mark = ps.getAnnotationForPrintable(id);
+			    					  	System.err.println("Für den Identifier "+ id.getName()+" Startoffset: "+ mark.getStartOffset() +" Endoffset: "+ mark.getEndOffset());  
+			    				 }
+			    			  }
+			    			  
+			    		  }
+						 else childCheck(actualExpression.children(),e2,pLambda);
+					 }
+					 
+					 
+				}
 			}
 }
