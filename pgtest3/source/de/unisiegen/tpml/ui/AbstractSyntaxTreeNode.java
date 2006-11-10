@@ -36,8 +36,11 @@ public class AbstractSyntaxTreeNode
   private Expression expression ;
 
 
+  private AbstractSyntaxTreeIndices abstractSyntaxTreeIndices ;
+
+
   public AbstractSyntaxTreeNode ( String pDescription , String pName ,
-      Expression pExpression )
+      Object pObject )
   {
     this.description = pDescription ;
     if ( this.description == null )
@@ -50,31 +53,28 @@ public class AbstractSyntaxTreeNode
       this.name = "" ;
     }
     resetHtml ( ) ;
-    this.expression = pExpression ;
+    if ( pObject instanceof Expression )
+    {
+      this.expression = ( Expression ) pObject ;
+      this.abstractSyntaxTreeIndices = null ;
+    }
+    else if ( pObject instanceof AbstractSyntaxTreeIndices )
+    {
+      this.expression = null ;
+      this.abstractSyntaxTreeIndices = ( AbstractSyntaxTreeIndices ) pObject ;
+    }
   }
 
 
-  public String getDescription ( )
+  public AbstractSyntaxTreeIndices getAbstractSyntaxTreeIndices ( )
   {
-    return description ;
+    return this.abstractSyntaxTreeIndices ;
   }
 
 
   public Expression getExpression ( )
   {
     return expression ;
-  }
-
-
-  public String getHtml ( )
-  {
-    return html ;
-  }
-
-
-  public String getName ( )
-  {
-    return name ;
   }
 
 
@@ -90,30 +90,6 @@ public class AbstractSyntaxTreeNode
     s.append ( AFTER_NAME ) ;
     s.append ( "</html>" ) ;
     this.html = s.toString ( ) ;
-  }
-
-
-  public void setDescription ( String description )
-  {
-    this.description = description ;
-  }
-
-
-  public void setExpression ( Expression expression )
-  {
-    this.expression = expression ;
-  }
-
-
-  public void setHtml ( String html )
-  {
-    this.html = html ;
-  }
-
-
-  public void setName ( String name )
-  {
-    this.name = name ;
   }
 
 
@@ -135,8 +111,8 @@ public class AbstractSyntaxTreeNode
     s.append ( "<b>" ) ;
     s.append ( "<font color=\"#" + COLOR + "\">" ) ;
     s.append ( this.name.substring ( pStart , pEnd + 1 ) ) ;
-    s.append ( "</b>" ) ;
     s.append ( "</font>" ) ;
+    s.append ( "</b>" ) ;
     s.append ( this.name.substring ( pEnd + 1 , this.name.length ( ) ) ) ;
     s.append ( AFTER_NAME ) ;
     s.append ( "</html>" ) ;

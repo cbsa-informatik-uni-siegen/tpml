@@ -59,76 +59,79 @@ import de.unisiegen.tpml.core.expressions.While ;
 
 public class AbstractSyntaxTree
 {
-  private static AbstractSyntaxTree abstractSyntax = null ;
+  private static AbstractSyntaxTree abstractSyntaxTree = null ;
 
 
   public static AbstractSyntaxTree getInstance ( )
   {
-    if ( abstractSyntax == null )
+    if ( abstractSyntaxTree == null )
     {
-      abstractSyntax = new AbstractSyntaxTree ( ) ;
-      return abstractSyntax ;
+      abstractSyntaxTree = new AbstractSyntaxTree ( ) ;
+      return abstractSyntaxTree ;
     }
     else
     {
-      return abstractSyntax ;
+      return abstractSyntaxTree ;
     }
   }
 
 
-  private JFrame jFrameTest ;
+  private JFrame jFrameAbstractSyntaxTree ;
 
 
   private GridBagConstraints gridBagConstraints ;
 
 
-  private JTree jTreeSyntax ;
+  private JTree jTreeAbstractSyntaxTree ;
 
 
-  private DefaultMutableTreeNode root ;
+  private DefaultMutableTreeNode rootExpression ;
 
 
   private DefaultTreeModel treeModel ;
 
 
+  private DefaultTreeCellRenderer cellRenderer ;
+
+
   private AbstractSyntaxTree ( )
   {
-    this.root = createNode ( "ROOT" , "ROOT" , null ) ;
-    DefaultTreeCellRenderer renderer = new DefaultTreeCellRenderer ( ) ;
-    renderer.setIcon ( null ) ;
-    renderer.setLeafIcon ( null ) ;
-    renderer.setOpenIcon ( null ) ;
-    renderer.setClosedIcon ( null ) ;
-    renderer.setDisabledIcon ( null ) ;
-    renderer.setFont ( new Font ( "SansSerif" , Font.PLAIN , 14 ) ) ;
-    this.treeModel = new DefaultTreeModel ( this.root ) ;
-    this.jTreeSyntax = new JTree ( this.treeModel ) ;
-    this.jTreeSyntax.setCellRenderer ( renderer ) ;
-    this.jTreeSyntax.getSelectionModel ( ).addTreeSelectionListener (
-        new AbstractSyntaxTreeListener ( this ) ) ;
+    this.cellRenderer = new DefaultTreeCellRenderer ( ) ;
+    this.cellRenderer.setIcon ( null ) ;
+    this.cellRenderer.setLeafIcon ( null ) ;
+    this.cellRenderer.setOpenIcon ( null ) ;
+    this.cellRenderer.setClosedIcon ( null ) ;
+    this.cellRenderer.setDisabledIcon ( null ) ;
+    this.cellRenderer.setFont ( new Font ( "SansSerif" , Font.PLAIN , 16 ) ) ;
+    this.treeModel = new DefaultTreeModel ( this.rootExpression ) ;
+    this.jTreeAbstractSyntaxTree = new JTree ( this.treeModel ) ;
+    this.jTreeAbstractSyntaxTree.setCellRenderer ( this.cellRenderer ) ;
+    this.jTreeAbstractSyntaxTree.getSelectionModel ( )
+        .addTreeSelectionListener ( new AbstractSyntaxTreeListener ( this ) ) ;
     this.gridBagConstraints = new GridBagConstraints ( ) ;
     this.gridBagConstraints.insets = new Insets ( 2 , 2 , 2 , 2 ) ;
     this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
-    this.jFrameTest = new JFrame ( ) ;
-    this.jFrameTest.setLayout ( new GridBagLayout ( ) ) ;
-    this.jFrameTest.setTitle ( "AbstractSyntaxTree" ) ;
-    this.jFrameTest.setSize ( 600 , 450 ) ;
-    this.jFrameTest.setLocation ( 50 , 50 ) ;
-    this.jFrameTest.setDefaultCloseOperation ( JFrame.HIDE_ON_CLOSE ) ;
+    this.jFrameAbstractSyntaxTree = new JFrame ( ) ;
+    this.jFrameAbstractSyntaxTree.setLayout ( new GridBagLayout ( ) ) ;
+    this.jFrameAbstractSyntaxTree.setTitle ( "AbstractSyntaxTree" ) ;
+    this.jFrameAbstractSyntaxTree.setSize ( 600 , 450 ) ;
+    this.jFrameAbstractSyntaxTree.setLocation ( 50 , 50 ) ;
+    this.jFrameAbstractSyntaxTree
+        .setDefaultCloseOperation ( JFrame.HIDE_ON_CLOSE ) ;
     this.gridBagConstraints.gridx = 0 ;
     this.gridBagConstraints.gridy = 0 ;
     this.gridBagConstraints.weightx = 10 ;
     this.gridBagConstraints.weighty = 10 ;
-    this.jFrameTest.getContentPane ( ).add ( this.jTreeSyntax ,
-        this.gridBagConstraints ) ;
+    this.jFrameAbstractSyntaxTree.getContentPane ( ).add (
+        this.jTreeAbstractSyntaxTree , this.gridBagConstraints ) ;
   }
 
 
   private DefaultMutableTreeNode createNode ( String pDescription ,
-      String pName , Expression pExpr )
+      String pName , Object pObject )
   {
     return new DefaultMutableTreeNode ( new AbstractSyntaxTreeNode (
-        pDescription , pName , pExpr ) ) ;
+        pDescription , pName , pObject ) ) ;
   }
 
 
@@ -263,6 +266,7 @@ public class AbstractSyntaxTree
   }
 
 
+  // TODO
   private DefaultMutableTreeNode exprCurriedLet ( CurriedLet pExpr )
   {
     String [ ] id = pExpr.getIdentifiers ( ) ;
@@ -292,6 +296,7 @@ public class AbstractSyntaxTree
   }
 
 
+  // TODO
   private DefaultMutableTreeNode exprCurriedLetRec ( CurriedLetRec pExpr )
   {
     String [ ] id = pExpr.getIdentifiers ( ) ;
@@ -562,7 +567,7 @@ public class AbstractSyntaxTree
     {
       return exprExn ( ( Exn ) pExpr ) ;
     }
-    return createNode ( "" , "UNKNOWN EXPRESSION" , null ) ;
+    return exprUnknown ( pExpr ) ;
   }
 
 
@@ -600,27 +605,31 @@ public class AbstractSyntaxTree
     treeModel.insertNodeInto ( exprExpression ( e1 ) , subchild1 , 0 ) ;
     // Subchild 2
     DefaultMutableTreeNode subchild2 ;
-    // TODO
+    String name ;
     if ( b instanceof ArithmeticOperator )
     {
-      subchild2 = createNode ( "ArithmeticOperator" , b.toString ( ) , null ) ;
+      name = "ArithmeticOperator" ;
     }
     else if ( b instanceof RelationalOperator )
     {
-      subchild2 = createNode ( "RelationalOperator" , b.toString ( ) , null ) ;
+      name = "RelationalOperator" ;
     }
     else if ( b instanceof BinaryCons )
     {
-      subchild2 = createNode ( "BinaryCons" , b.toString ( ) , null ) ;
+      name = "BinaryCons" ;
     }
     else if ( b instanceof Assign )
     {
-      subchild2 = createNode ( "Assign" , b.toString ( ) , null ) ;
+      name = "Assign" ;
     }
     else
     {
-      subchild2 = createNode ( "BinaryOperator" , b.toString ( ) , null ) ;
+      name = "BinaryOperator" ;
     }
+    subchild2 = createNode ( name , b.toString ( ) ,
+        new AbstractSyntaxTreeIndices ( e1.toPrettyString ( ).toString ( )
+            .length ( ) , e1.toPrettyString ( ).toString ( ).length ( )
+            + b.toString ( ).length ( ) ) ) ;
     treeModel.insertNodeInto ( subchild2 , child , 1 ) ;
     // Subchild 3
     DefaultMutableTreeNode subchild3 = createNode ( "e2" , e2.toPrettyString ( )
@@ -653,8 +662,8 @@ public class AbstractSyntaxTree
     DefaultMutableTreeNode child = createNode ( "Lamdba" , pExpr
         .toPrettyString ( ).toString ( ) , pExpr ) ;
     // Subchild 1
-    DefaultMutableTreeNode subchild1 = createNode ( "Identifier" , id , 
-        new Identifier (id)) ;
+    DefaultMutableTreeNode subchild1 = createNode ( "Identifier" , id ,
+        new AbstractSyntaxTreeIndices ( 1 , id.length ( ) ) ) ;
     treeModel.insertNodeInto ( subchild1 , child , 0 ) ;
     // Subchild 2
     DefaultMutableTreeNode subchild2 = createNode ( "e" , e.toPrettyString ( )
@@ -674,7 +683,8 @@ public class AbstractSyntaxTree
     DefaultMutableTreeNode child = createNode ( "Let" , pExpr.toPrettyString ( )
         .toString ( ) , pExpr ) ;
     // Subchild 1
-    DefaultMutableTreeNode subchild1 = createNode ( "Identifier" , id , null ) ;
+    DefaultMutableTreeNode subchild1 = createNode ( "Identifier" , id ,
+        new AbstractSyntaxTreeIndices ( 4 , 3 + id.length ( ) ) ) ;
     treeModel.insertNodeInto ( subchild1 , child , 0 ) ;
     // Subchild 2
     DefaultMutableTreeNode subchild2 = createNode ( "e1" , e1.toPrettyString ( )
@@ -699,7 +709,8 @@ public class AbstractSyntaxTree
     DefaultMutableTreeNode child = createNode ( "LetRec" , pExpr
         .toPrettyString ( ).toString ( ) , pExpr ) ;
     // Subchild 1
-    DefaultMutableTreeNode subchild1 = createNode ( "Identifier" , id , null ) ;
+    DefaultMutableTreeNode subchild1 = createNode ( "Identifier" , id ,
+        new AbstractSyntaxTreeIndices ( 8 , 7 + id.length ( ) ) ) ;
     treeModel.insertNodeInto ( subchild1 , child , 0 ) ;
     // Subchild 2
     DefaultMutableTreeNode subchild2 = createNode ( "e1" , e1.toPrettyString ( )
@@ -740,12 +751,14 @@ public class AbstractSyntaxTree
     DefaultMutableTreeNode child = createNode ( "Location" , pExpr
         .toPrettyString ( ).toString ( ) , pExpr ) ;
     // Subchild 1
-    DefaultMutableTreeNode subchild1 = createNode ( "Name" , name , null ) ;
+    DefaultMutableTreeNode subchild1 = createNode ( "Name" , name ,
+        new AbstractSyntaxTreeIndices ( 0 , name.length ( ) - 1 ) ) ;
     treeModel.insertNodeInto ( subchild1 , child , 0 ) ;
     return child ;
   }
 
 
+  // TODO
   private DefaultMutableTreeNode exprLultiLambda ( MultiLambda pExpr )
   {
     String id[] = pExpr.getIdentifiers ( ) ;
@@ -769,6 +782,7 @@ public class AbstractSyntaxTree
   }
 
 
+  // TODO
   private DefaultMutableTreeNode exprMultiLet ( MultiLet pExpr )
   {
     String [ ] id = pExpr.getIdentifiers ( ) ;
@@ -840,7 +854,8 @@ public class AbstractSyntaxTree
     DefaultMutableTreeNode child = createNode ( "Recursion" , pExpr
         .toPrettyString ( ).toString ( ) , pExpr ) ;
     // Subchild 1
-    DefaultMutableTreeNode subchild1 = createNode ( "Identifier" , id , null ) ;
+    DefaultMutableTreeNode subchild1 = createNode ( "Identifier" , id ,
+        new AbstractSyntaxTreeIndices ( 4 , 3 + id.length ( ) ) ) ;
     treeModel.insertNodeInto ( subchild1 , child , 0 ) ;
     // Subchild 2
     DefaultMutableTreeNode subchild2 = createNode ( "e" , e.toPrettyString ( )
@@ -943,6 +958,15 @@ public class AbstractSyntaxTree
   }
 
 
+  private DefaultMutableTreeNode exprUnknown ( Expression pExpr )
+  {
+    return createNode (
+        "<b><font color=\"#FF0000\">UNKNOWN EXPRESSION</font></b>" , pExpr
+            .toPrettyString ( ).toString ( ) , new AbstractSyntaxTreeIndices (
+            0 , pExpr.toPrettyString ( ).toString ( ).length ( ) - 1 ) ) ;
+  }
+
+
   private DefaultMutableTreeNode exprValue ( Value pExpr )
   {
     return createNode ( "Value" , pExpr.toPrettyString ( ).toString ( ) , pExpr ) ;
@@ -970,15 +994,9 @@ public class AbstractSyntaxTree
   }
 
 
-  public JTree getJTreeSyntax ( )
+  public JTree getJAbstractSyntaxTree ( )
   {
-    return jTreeSyntax ;
-  }
-
-
-  public DefaultMutableTreeNode getRoot ( )
-  {
-    return root ;
+    return jTreeAbstractSyntaxTree ;
   }
 
 
@@ -990,16 +1008,17 @@ public class AbstractSyntaxTree
 
   public void setExpression ( Expression pExpr )
   {
-    this.root = createNode ( "Expression" , pExpr.toPrettyString ( )
+    this.rootExpression = createNode ( "Expression" , pExpr.toPrettyString ( )
         .toString ( ) , pExpr ) ;
-    treeModel.setRoot ( this.root ) ;
-    treeModel.insertNodeInto ( exprExpression ( pExpr ) , this.root , 0 ) ;
-    this.jTreeSyntax.expandRow ( 0 ) ;
+    treeModel.setRoot ( this.rootExpression ) ;
+    treeModel.insertNodeInto ( exprExpression ( pExpr ) , this.rootExpression ,
+        0 ) ;
+    this.jTreeAbstractSyntaxTree.expandRow ( 0 ) ;
   }
 
 
   public void setVisible ( boolean pVisible )
   {
-    this.jFrameTest.setVisible ( pVisible ) ;
+    this.jFrameAbstractSyntaxTree.setVisible ( pVisible ) ;
   }
 }
