@@ -1,15 +1,7 @@
 package de.unisiegen.tpml.ui ;
 
 
-import java.awt.Font ;
-import java.awt.GridBagConstraints ;
-import java.awt.GridBagLayout ;
-import java.awt.Insets ;
-import javax.swing.JFrame ;
-import javax.swing.JTree ;
 import javax.swing.tree.DefaultMutableTreeNode ;
-import javax.swing.tree.DefaultTreeCellRenderer ;
-import javax.swing.tree.DefaultTreeModel ;
 import de.unisiegen.tpml.core.expressions.And ;
 import de.unisiegen.tpml.core.expressions.Application ;
 import de.unisiegen.tpml.core.expressions.ArithmeticOperator ;
@@ -62,6 +54,9 @@ public class AbstractSyntaxTree
   private static AbstractSyntaxTree abstractSyntaxTree = null ;
 
 
+  private AbstractSyntaxTreeUI abstractSyntaxTreeUI ;
+
+
   public static AbstractSyntaxTree getInstance ( )
   {
     if ( abstractSyntaxTree == null )
@@ -76,62 +71,17 @@ public class AbstractSyntaxTree
   }
 
 
-  private JFrame jFrameAbstractSyntaxTree ;
-
-
-  private GridBagConstraints gridBagConstraints ;
-
-
-  private JTree jTreeAbstractSyntaxTree ;
-
-
-  private DefaultMutableTreeNode rootExpression ;
-
-
-  private DefaultTreeModel treeModel ;
-
-
-  private DefaultTreeCellRenderer cellRenderer ;
-
-
   private AbstractSyntaxTree ( )
   {
-    this.cellRenderer = new DefaultTreeCellRenderer ( ) ;
-    this.cellRenderer.setIcon ( null ) ;
-    this.cellRenderer.setLeafIcon ( null ) ;
-    this.cellRenderer.setOpenIcon ( null ) ;
-    this.cellRenderer.setClosedIcon ( null ) ;
-    this.cellRenderer.setDisabledIcon ( null ) ;
-    this.cellRenderer.setFont ( new Font ( "SansSerif" , Font.PLAIN , 16 ) ) ;
-    this.treeModel = new DefaultTreeModel ( this.rootExpression ) ;
-    this.jTreeAbstractSyntaxTree = new JTree ( this.treeModel ) ;
-    this.jTreeAbstractSyntaxTree.setCellRenderer ( this.cellRenderer ) ;
-    this.jTreeAbstractSyntaxTree.getSelectionModel ( )
-        .addTreeSelectionListener ( new AbstractSyntaxTreeListener ( this ) ) ;
-    this.gridBagConstraints = new GridBagConstraints ( ) ;
-    this.gridBagConstraints.insets = new Insets ( 2 , 2 , 2 , 2 ) ;
-    this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
-    this.jFrameAbstractSyntaxTree = new JFrame ( ) ;
-    this.jFrameAbstractSyntaxTree.setLayout ( new GridBagLayout ( ) ) ;
-    this.jFrameAbstractSyntaxTree.setTitle ( "AbstractSyntaxTree" ) ;
-    this.jFrameAbstractSyntaxTree.setSize ( 600 , 450 ) ;
-    this.jFrameAbstractSyntaxTree.setLocation ( 50 , 50 ) ;
-    this.jFrameAbstractSyntaxTree
-        .setDefaultCloseOperation ( JFrame.HIDE_ON_CLOSE ) ;
-    this.gridBagConstraints.gridx = 0 ;
-    this.gridBagConstraints.gridy = 0 ;
-    this.gridBagConstraints.weightx = 10 ;
-    this.gridBagConstraints.weighty = 10 ;
-    this.jFrameAbstractSyntaxTree.getContentPane ( ).add (
-        this.jTreeAbstractSyntaxTree , this.gridBagConstraints ) ;
+    this.abstractSyntaxTreeUI = new AbstractSyntaxTreeUI ( ) ;
   }
 
 
   private DefaultMutableTreeNode createNode ( String pDescription ,
-      String pName , Expression pExpression )
+      Expression pExpr )
   {
     return new DefaultMutableTreeNode ( new AbstractSyntaxTreeNode (
-        pDescription , pName , pExpression ) ) ;
+        pDescription , pExpr ) ) ;
   }
 
 
@@ -147,19 +97,13 @@ public class AbstractSyntaxTree
   {
     Expression e1 = pExpr.getE1 ( ) ;
     Expression e2 = pExpr.getE2 ( ) ;
-    // Child
-    DefaultMutableTreeNode child = createNode ( "And" , pExpr.toPrettyString ( )
-        .toString ( ) , pExpr ) ;
-    // Subchild 1
-    DefaultMutableTreeNode subchild1 = createNode ( "e1" , e1.toPrettyString ( )
-        .toString ( ) , e1 ) ;
-    treeModel.insertNodeInto ( subchild1 , child , 0 ) ;
-    treeModel.insertNodeInto ( exprExpression ( e1 ) , subchild1 , 0 ) ;
-    // Subchild 2
-    DefaultMutableTreeNode subchild2 = createNode ( "e2" , e2.toPrettyString ( )
-        .toString ( ) , e2 ) ;
-    treeModel.insertNodeInto ( subchild2 , child , 1 ) ;
-    treeModel.insertNodeInto ( exprExpression ( e2 ) , subchild2 , 0 ) ;
+    DefaultMutableTreeNode child = createNode ( "And" , pExpr ) ;
+    DefaultMutableTreeNode subchild1 = createNode ( "e1" , e1 ) ;
+    DefaultMutableTreeNode subchild2 = createNode ( "e2" , e2 ) ;
+    subchild1.add ( exprExpression ( e1 ) ) ;
+    subchild2.add ( exprExpression ( e2 ) ) ;
+    child.add ( subchild1 ) ;
+    child.add ( subchild2 ) ;
     return child ;
   }
 
@@ -168,19 +112,13 @@ public class AbstractSyntaxTree
   {
     Expression e1 = pExpr.getE1 ( ) ;
     Expression e2 = pExpr.getE2 ( ) ;
-    // Child
-    DefaultMutableTreeNode child = createNode ( "Application" , pExpr
-        .toPrettyString ( ).toString ( ) , pExpr ) ;
-    // Subchild 1
-    DefaultMutableTreeNode subchild1 = createNode ( "e1" , e1.toPrettyString ( )
-        .toString ( ) , e1 ) ;
-    treeModel.insertNodeInto ( subchild1 , child , 0 ) ;
-    treeModel.insertNodeInto ( exprExpression ( e1 ) , subchild1 , 0 ) ;
-    // Subchild 2
-    DefaultMutableTreeNode subchild2 = createNode ( "e2" , e2.toPrettyString ( )
-        .toString ( ) , e2 ) ;
-    treeModel.insertNodeInto ( subchild2 , child , 1 ) ;
-    treeModel.insertNodeInto ( exprExpression ( e2 ) , subchild2 , 0 ) ;
+    DefaultMutableTreeNode child = createNode ( "Application" , pExpr ) ;
+    DefaultMutableTreeNode subchild1 = createNode ( "e1" , e1 ) ;
+    DefaultMutableTreeNode subchild2 = createNode ( "e2" , e2 ) ;
+    subchild1.add ( exprExpression ( e1 ) ) ;
+    subchild2.add ( exprExpression ( e2 ) ) ;
+    child.add ( subchild1 ) ;
+    child.add ( subchild2 ) ;
     return child ;
   }
 
@@ -188,34 +126,31 @@ public class AbstractSyntaxTree
   private DefaultMutableTreeNode exprArithmeticOperator (
       ArithmeticOperator pExpr )
   {
-    return createNode ( "ArithmeticOperator" , pExpr.toString ( ) , pExpr ) ;
+    return createNode ( "ArithmeticOperator" , pExpr ) ;
   }
 
 
   private DefaultMutableTreeNode exprAssign ( Assign pExpr )
   {
-    return createNode ( "Assign" , pExpr.toPrettyString ( ).toString ( ) ,
-        pExpr ) ;
+    return createNode ( "Assign" , pExpr ) ;
   }
 
 
   private DefaultMutableTreeNode exprBinaryCons ( BinaryCons pExpr )
   {
-    return createNode ( "BinaryCons" , pExpr.toPrettyString ( ).toString ( ) ,
-        pExpr ) ;
+    return createNode ( "BinaryCons" , pExpr ) ;
   }
 
 
   private DefaultMutableTreeNode exprBinaryOperator ( BinaryOperator pExpr )
   {
-    return createNode ( "BinaryOperator" , pExpr.toString ( ) , pExpr ) ;
+    return createNode ( "BinaryOperator" , pExpr ) ;
   }
 
 
   private DefaultMutableTreeNode exprBooleanConstant ( BooleanConstant pExpr )
   {
-    return createNode ( "BooleanConstant" , pExpr.toPrettyString ( )
-        .toString ( ) , pExpr ) ;
+    return createNode ( "BooleanConstant" , pExpr ) ;
   }
 
 
@@ -225,23 +160,17 @@ public class AbstractSyntaxTree
     Expression e1 = pExpr.getE1 ( ) ;
     Expression e2 = pExpr.getE2 ( ) ;
     // Child
-    DefaultMutableTreeNode child = createNode ( "Condition" , pExpr
-        .toPrettyString ( ).toString ( ) , pExpr ) ;
+    DefaultMutableTreeNode child = createNode ( "Condition" , pExpr ) ;
     // Subchild 1
-    DefaultMutableTreeNode subchild1 = createNode ( "e0" , e0.toPrettyString ( )
-        .toString ( ) , e0 ) ;
-    treeModel.insertNodeInto ( subchild1 , child , 0 ) ;
-    treeModel.insertNodeInto ( exprExpression ( e0 ) , subchild1 , 0 ) ;
-    // Subchild 2
-    DefaultMutableTreeNode subchild2 = createNode ( "e1" , e1.toPrettyString ( )
-        .toString ( ) , e1 ) ;
-    treeModel.insertNodeInto ( subchild2 , child , 1 ) ;
-    treeModel.insertNodeInto ( exprExpression ( e1 ) , subchild2 , 0 ) ;
-    // Subchild 3
-    DefaultMutableTreeNode subchild3 = createNode ( "e2" , e2.toPrettyString ( )
-        .toString ( ) , e2 ) ;
-    treeModel.insertNodeInto ( subchild3 , child , 2 ) ;
-    treeModel.insertNodeInto ( exprExpression ( e2 ) , subchild3 , 0 ) ;
+    DefaultMutableTreeNode subchild0 = createNode ( "e0" , e0 ) ;
+    DefaultMutableTreeNode subchild1 = createNode ( "e1" , e1 ) ;
+    DefaultMutableTreeNode subchild2 = createNode ( "e2" , e2 ) ;
+    subchild0.add ( exprExpression ( e0 ) ) ;
+    subchild1.add ( exprExpression ( e1 ) ) ;
+    subchild2.add ( exprExpression ( e2 ) ) ;
+    child.add ( subchild0 ) ;
+    child.add ( subchild1 ) ;
+    child.add ( subchild2 ) ;
     return child ;
   }
 
@@ -250,27 +179,20 @@ public class AbstractSyntaxTree
   {
     Expression e0 = pExpr.getE0 ( ) ;
     Expression e1 = pExpr.getE1 ( ) ;
-    // Child
-    DefaultMutableTreeNode child = createNode ( "Condition1" , pExpr
-        .toPrettyString ( ).toString ( ) , pExpr ) ;
-    // Subchild 1
-    DefaultMutableTreeNode subchild1 = createNode ( "e0" , e0.toPrettyString ( )
-        .toString ( ) , e0 ) ;
-    treeModel.insertNodeInto ( subchild1 , child , 0 ) ;
-    treeModel.insertNodeInto ( exprExpression ( e0 ) , subchild1 , 0 ) ;
-    // Subchild 2
-    DefaultMutableTreeNode subchild2 = createNode ( "e1" , e1.toPrettyString ( )
-        .toString ( ) , e1 ) ;
-    treeModel.insertNodeInto ( subchild2 , child , 1 ) ;
-    treeModel.insertNodeInto ( exprExpression ( e1 ) , subchild2 , 0 ) ;
+    DefaultMutableTreeNode child = createNode ( "Condition1" , pExpr ) ;
+    DefaultMutableTreeNode subchild1 = createNode ( "e0" , e0 ) ;
+    DefaultMutableTreeNode subchild2 = createNode ( "e1" , e1 ) ;
+    subchild1.add ( exprExpression ( e0 ) ) ;
+    subchild2.add ( exprExpression ( e1 ) ) ;
+    child.add ( subchild1 ) ;
+    child.add ( subchild2 ) ;
     return child ;
   }
 
 
   private DefaultMutableTreeNode exprConstant ( Constant pExpr )
   {
-    return createNode ( "Constant" , pExpr.toPrettyString ( ).toString ( ) ,
-        pExpr ) ;
+    return createNode ( "Constant" , pExpr ) ;
   }
 
 
@@ -279,28 +201,21 @@ public class AbstractSyntaxTree
     String [ ] id = pExpr.getIdentifiers ( ) ;
     Expression e1 = pExpr.getE1 ( ) ;
     Expression e2 = pExpr.getE2 ( ) ;
-    // Child
-    DefaultMutableTreeNode child = createNode ( "CurriedLet" , pExpr
-        .toPrettyString ( ).toString ( ) , pExpr ) ;
-    // Subchilds
+    DefaultMutableTreeNode child = createNode ( "CurriedLet" , pExpr ) ;
     int length = 0 ;
     for ( int i = 0 ; i < id.length ; i ++ )
     {
-      DefaultMutableTreeNode subchild = createNode ( "Identifier" , id [ i ] ,
+      DefaultMutableTreeNode subchilds = createNode ( "Identifier" , id [ i ] ,
           length + 4 + i , length + 3 + id [ i ].length ( ) + i ) ;
       length += id [ i ].length ( ) ;
-      treeModel.insertNodeInto ( subchild , child , i ) ;
+      child.add ( subchilds ) ;
     }
-    // Subchild
-    DefaultMutableTreeNode subchild2 = createNode ( "e1" , e1.toPrettyString ( )
-        .toString ( ) , e1 ) ;
-    treeModel.insertNodeInto ( subchild2 , child , id.length ) ;
-    treeModel.insertNodeInto ( exprExpression ( e1 ) , subchild2 , 0 ) ;
-    // Subchild
-    DefaultMutableTreeNode subchild3 = createNode ( "e2" , e2.toPrettyString ( )
-        .toString ( ) , e2 ) ;
-    treeModel.insertNodeInto ( subchild3 , child , id.length + 1 ) ;
-    treeModel.insertNodeInto ( exprExpression ( e2 ) , subchild3 , 0 ) ;
+    DefaultMutableTreeNode subchild1 = createNode ( "e1" , e1 ) ;
+    DefaultMutableTreeNode subchild2 = createNode ( "e2" , e2 ) ;
+    subchild1.add ( exprExpression ( e1 ) ) ;
+    subchild2.add ( exprExpression ( e2 ) ) ;
+    child.add ( subchild1 ) ;
+    child.add ( subchild2 ) ;
     return child ;
   }
 
@@ -311,47 +226,40 @@ public class AbstractSyntaxTree
     Expression e1 = pExpr.getE1 ( ) ;
     Expression e2 = pExpr.getE2 ( ) ;
     // Child
-    DefaultMutableTreeNode child = createNode ( "CurriedLetRec" , pExpr
-        .toPrettyString ( ).toString ( ) , pExpr ) ;
-    // Subchilds
+    DefaultMutableTreeNode child = createNode ( "CurriedLetRec" , pExpr ) ;
     int length = 0 ;
     for ( int i = 0 ; i < id.length ; i ++ )
     {
-      DefaultMutableTreeNode subchild = createNode ( "Identifier" , id [ i ] ,
+      DefaultMutableTreeNode subchilds = createNode ( "Identifier" , id [ i ] ,
           length + 8 + i , length + 7 + id [ i ].length ( ) + i ) ;
       length += id [ i ].length ( ) ;
-      treeModel.insertNodeInto ( subchild , child , i ) ;
+      child.add ( subchilds ) ;
     }
-    // Subchild
-    DefaultMutableTreeNode subchild2 = createNode ( "e1" , e1.toPrettyString ( )
-        .toString ( ) , e1 ) ;
-    treeModel.insertNodeInto ( subchild2 , child , id.length ) ;
-    treeModel.insertNodeInto ( exprExpression ( e1 ) , subchild2 , 0 ) ;
-    // Subchild
-    DefaultMutableTreeNode subchild3 = createNode ( "e2" , e2.toPrettyString ( )
-        .toString ( ) , e2 ) ;
-    treeModel.insertNodeInto ( subchild3 , child , id.length + 1 ) ;
-    treeModel.insertNodeInto ( exprExpression ( e2 ) , subchild3 , 0 ) ;
+    DefaultMutableTreeNode subchild1 = createNode ( "e1" , e1 ) ;
+    DefaultMutableTreeNode subchild2 = createNode ( "e2" , e2 ) ;
+    subchild1.add ( exprExpression ( e1 ) ) ;
+    subchild2.add ( exprExpression ( e2 ) ) ;
+    child.add ( subchild1 ) ;
+    child.add ( subchild2 ) ;
     return child ;
   }
 
 
   private DefaultMutableTreeNode exprDeref ( Deref pExpr )
   {
-    return createNode ( "Deref" , pExpr.toPrettyString ( ).toString ( ) , pExpr ) ;
+    return createNode ( "Deref" , pExpr ) ;
   }
 
 
   private DefaultMutableTreeNode exprEmptyList ( EmptyList pExpr )
   {
-    return createNode ( "EmptyList" , pExpr.toPrettyString ( ).toString ( ) ,
-        pExpr ) ;
+    return createNode ( "EmptyList" , pExpr ) ;
   }
 
 
   private DefaultMutableTreeNode exprExn ( Exn pExpr )
   {
-    return createNode ( "Exn" , pExpr.toPrettyString ( ).toString ( ) , pExpr ) ;
+    return createNode ( "Exn" , pExpr ) ;
   }
 
 
@@ -583,20 +491,19 @@ public class AbstractSyntaxTree
 
   private DefaultMutableTreeNode exprFst ( Fst pExpr )
   {
-    return createNode ( "Fst" , pExpr.toPrettyString ( ).toString ( ) , pExpr ) ;
+    return createNode ( "Fst" , pExpr ) ;
   }
 
 
   private DefaultMutableTreeNode exprHd ( Hd pExpr )
   {
-    return createNode ( "Hd" , pExpr.toPrettyString ( ).toString ( ) , pExpr ) ;
+    return createNode ( "Hd" , pExpr ) ;
   }
 
 
   private DefaultMutableTreeNode exprIdentifier ( Identifier pExpr )
   {
-    return createNode ( "Identifier" , pExpr.toPrettyString ( ).toString ( ) ,
-        pExpr ) ;
+    return createNode ( "Identifier" , pExpr ) ;
   }
 
 
@@ -606,14 +513,11 @@ public class AbstractSyntaxTree
     Expression e2 = pExpr.getE2 ( ) ;
     BinaryOperator b = pExpr.getOp ( ) ;
     // Child
-    DefaultMutableTreeNode child = createNode ( "InfixOperation" , pExpr
-        .toPrettyString ( ).toString ( ) , pExpr ) ;
+    DefaultMutableTreeNode child = createNode ( "InfixOperation" , pExpr ) ;
     // Subchild 1
-    DefaultMutableTreeNode subchild1 = createNode ( "e1" , e1.toPrettyString ( )
-        .toString ( ) , e1 ) ;
-    treeModel.insertNodeInto ( subchild1 , child , 0 ) ;
-    treeModel.insertNodeInto ( exprExpression ( e1 ) , subchild1 , 0 ) ;
-    // Subchild 2
+    DefaultMutableTreeNode subchild1 = createNode ( "e1" , e1 ) ;
+    subchild1.add ( exprExpression ( e1 ) ) ;
+    child.add ( subchild1 ) ;
     DefaultMutableTreeNode subchild2 ;
     String name ;
     if ( b instanceof ArithmeticOperator )
@@ -639,27 +543,23 @@ public class AbstractSyntaxTree
     subchild2 = createNode ( name , b.toString ( ) , e1.toPrettyString ( )
         .toString ( ).length ( ) , e1.toPrettyString ( ).toString ( ).length ( )
         + b.toString ( ).length ( ) ) ;
-    treeModel.insertNodeInto ( subchild2 , child , 1 ) ;
-    // Subchild 3
-    DefaultMutableTreeNode subchild3 = createNode ( "e2" , e2.toPrettyString ( )
-        .toString ( ) , e2 ) ;
-    treeModel.insertNodeInto ( subchild3 , child , 2 ) ;
-    treeModel.insertNodeInto ( exprExpression ( e2 ) , subchild3 , 0 ) ;
+    child.add ( subchild2 ) ;
+    DefaultMutableTreeNode subchild3 = createNode ( "e2" , e2 ) ;
+    subchild3.add ( exprExpression ( e2 ) ) ;
+    child.add ( subchild3 ) ;
     return child ;
   }
 
 
   private DefaultMutableTreeNode exprIntegerConstant ( IntegerConstant pExpr )
   {
-    return createNode ( "IntegerConstant" , pExpr.toPrettyString ( )
-        .toString ( ) , pExpr ) ;
+    return createNode ( "IntegerConstant" , pExpr ) ;
   }
 
 
   private DefaultMutableTreeNode exprIsEmpty ( IsEmpty pExpr )
   {
-    return createNode ( "IsEmpty" , pExpr.toPrettyString ( ).toString ( ) ,
-        pExpr ) ;
+    return createNode ( "IsEmpty" , pExpr ) ;
   }
 
 
@@ -667,18 +567,13 @@ public class AbstractSyntaxTree
   {
     String id = pExpr.getId ( ) ;
     Expression e = pExpr.getE ( ) ;
-    // Child
-    DefaultMutableTreeNode child = createNode ( "Lamdba" , pExpr
-        .toPrettyString ( ).toString ( ) , pExpr ) ;
-    // Subchild 1
+    DefaultMutableTreeNode child = createNode ( "Lamdba" , pExpr ) ;
     DefaultMutableTreeNode subchild1 = createNode ( "Identifier" , id , 1 , id
         .length ( ) ) ;
-    treeModel.insertNodeInto ( subchild1 , child , 0 ) ;
-    // Subchild 2
-    DefaultMutableTreeNode subchild2 = createNode ( "e" , e.toPrettyString ( )
-        .toString ( ) , e ) ;
-    treeModel.insertNodeInto ( subchild2 , child , 1 ) ;
-    treeModel.insertNodeInto ( exprExpression ( e ) , subchild2 , 0 ) ;
+    DefaultMutableTreeNode subchild2 = createNode ( "e" , e ) ;
+    subchild2.add ( exprExpression ( e ) ) ;
+    child.add ( subchild1 ) ;
+    child.add ( subchild2 ) ;
     return child ;
   }
 
@@ -688,23 +583,16 @@ public class AbstractSyntaxTree
     String id = pExpr.getId ( ) ;
     Expression e1 = pExpr.getE1 ( ) ;
     Expression e2 = pExpr.getE2 ( ) ;
-    // Child
-    DefaultMutableTreeNode child = createNode ( "Let" , pExpr.toPrettyString ( )
-        .toString ( ) , pExpr ) ;
-    // Subchild 1
+    DefaultMutableTreeNode child = createNode ( "Let" , pExpr ) ;
     DefaultMutableTreeNode subchild1 = createNode ( "Identifier" , id , 4 ,
         3 + id.length ( ) ) ;
-    treeModel.insertNodeInto ( subchild1 , child , 0 ) ;
-    // Subchild 2
-    DefaultMutableTreeNode subchild2 = createNode ( "e1" , e1.toPrettyString ( )
-        .toString ( ) , e1 ) ;
-    treeModel.insertNodeInto ( subchild2 , child , 1 ) ;
-    treeModel.insertNodeInto ( exprExpression ( e1 ) , subchild2 , 0 ) ;
-    // Subchild 3
-    DefaultMutableTreeNode subchild3 = createNode ( "e2" , e2.toPrettyString ( )
-        .toString ( ) , e2 ) ;
-    treeModel.insertNodeInto ( subchild3 , child , 2 ) ;
-    treeModel.insertNodeInto ( exprExpression ( e2 ) , subchild3 , 0 ) ;
+    DefaultMutableTreeNode subchild2 = createNode ( "e1" , e1 ) ;
+    DefaultMutableTreeNode subchild3 = createNode ( "e2" , e2 ) ;
+    subchild2.add ( exprExpression ( e1 ) ) ;
+    subchild3.add ( exprExpression ( e2 ) ) ;
+    child.add ( subchild1 ) ;
+    child.add ( subchild2 ) ;
+    child.add ( subchild3 ) ;
     return child ;
   }
 
@@ -714,23 +602,16 @@ public class AbstractSyntaxTree
     String id = pExpr.getId ( ) ;
     Expression e1 = pExpr.getE1 ( ) ;
     Expression e2 = pExpr.getE2 ( ) ;
-    // Child
-    DefaultMutableTreeNode child = createNode ( "LetRec" , pExpr
-        .toPrettyString ( ).toString ( ) , pExpr ) ;
-    // Subchild 1
+    DefaultMutableTreeNode child = createNode ( "LetRec" , pExpr ) ;
     DefaultMutableTreeNode subchild1 = createNode ( "Identifier" , id , 8 ,
         7 + id.length ( ) ) ;
-    treeModel.insertNodeInto ( subchild1 , child , 0 ) ;
-    // Subchild 2
-    DefaultMutableTreeNode subchild2 = createNode ( "e1" , e1.toPrettyString ( )
-        .toString ( ) , e1 ) ;
-    treeModel.insertNodeInto ( subchild2 , child , 1 ) ;
-    treeModel.insertNodeInto ( exprExpression ( e1 ) , subchild2 , 0 ) ;
-    // Subchild 3
-    DefaultMutableTreeNode subchild3 = createNode ( "e2" , e2.toPrettyString ( )
-        .toString ( ) , e2 ) ;
-    treeModel.insertNodeInto ( subchild3 , child , 2 ) ;
-    treeModel.insertNodeInto ( exprExpression ( e2 ) , subchild3 , 0 ) ;
+    DefaultMutableTreeNode subchild2 = createNode ( "e1" , e1 ) ;
+    DefaultMutableTreeNode subchild3 = createNode ( "e2" , e2 ) ;
+    subchild2.add ( exprExpression ( e1 ) ) ;
+    subchild3.add ( exprExpression ( e2 ) ) ;
+    child.add ( subchild1 ) ;
+    child.add ( subchild2 ) ;
+    child.add ( subchild3 ) ;
     return child ;
   }
 
@@ -738,16 +619,12 @@ public class AbstractSyntaxTree
   private DefaultMutableTreeNode exprList ( List pExpr )
   {
     Expression [ ] e = pExpr.getExpressions ( ) ;
-    // Child
-    DefaultMutableTreeNode child = createNode ( "List" , pExpr
-        .toPrettyString ( ).toString ( ) , pExpr ) ;
-    // Subchilds
+    DefaultMutableTreeNode child = createNode ( "List" , pExpr ) ;
     for ( int i = 0 ; i < e.length ; i ++ )
     {
-      DefaultMutableTreeNode subchild = createNode ( "e" + i , e [ i ]
-          .toPrettyString ( ).toString ( ) , e [ i ] ) ;
-      treeModel.insertNodeInto ( subchild , child , i ) ;
-      treeModel.insertNodeInto ( exprExpression ( e [ i ] ) , subchild , 0 ) ;
+      DefaultMutableTreeNode subchild = createNode ( "e" + i , e [ i ] ) ;
+      subchild.add ( exprExpression ( e [ i ] ) ) ;
+      child.add ( subchild ) ;
     }
     return child ;
   }
@@ -756,13 +633,10 @@ public class AbstractSyntaxTree
   private DefaultMutableTreeNode exprLocation ( Location pExpr )
   {
     String name = pExpr.getName ( ) ;
-    // Child
-    DefaultMutableTreeNode child = createNode ( "Location" , pExpr
-        .toPrettyString ( ).toString ( ) , pExpr ) ;
-    // Subchild 1
+    DefaultMutableTreeNode child = createNode ( "Location" , pExpr ) ;
     DefaultMutableTreeNode subchild1 = createNode ( "Name" , name , 0 , name
         .length ( ) - 1 ) ;
-    treeModel.insertNodeInto ( subchild1 , child , 0 ) ;
+    child.add ( subchild1 ) ;
     return child ;
   }
 
@@ -771,23 +645,18 @@ public class AbstractSyntaxTree
   {
     String id[] = pExpr.getIdentifiers ( ) ;
     Expression e = pExpr.getE ( ) ;
-    // Child
-    DefaultMutableTreeNode child = createNode ( "MultiLamdba" , pExpr
-        .toPrettyString ( ).toString ( ) , pExpr ) ;
-    // Subchild 1
+    DefaultMutableTreeNode child = createNode ( "MultiLamdba" , pExpr ) ;
     int length = 0 ;
     for ( int i = 0 ; i < id.length ; i ++ )
     {
-      DefaultMutableTreeNode subchild1 = createNode ( "Identifier" , id [ i ] ,
+      DefaultMutableTreeNode subchild = createNode ( "Identifier" , id [ i ] ,
           length + 2 + ( i * 2 ) , length + 1 + id [ i ].length ( ) + ( i * 2 ) ) ;
       length += id [ i ].length ( ) ;
-      treeModel.insertNodeInto ( subchild1 , child , i ) ;
+      child.add ( subchild ) ;
     }
-    // Subchild 2
-    DefaultMutableTreeNode subchild2 = createNode ( "e" , e.toPrettyString ( )
-        .toString ( ) , e ) ;
-    treeModel.insertNodeInto ( subchild2 , child , id.length ) ;
-    treeModel.insertNodeInto ( exprExpression ( e ) , subchild2 , 0 ) ;
+    DefaultMutableTreeNode subchild2 = createNode ( "e" , e ) ;
+    subchild2.add ( exprExpression ( e ) ) ;
+    child.add ( subchild2 ) ;
     return child ;
   }
 
@@ -797,35 +666,28 @@ public class AbstractSyntaxTree
     String [ ] id = pExpr.getIdentifiers ( ) ;
     Expression e1 = pExpr.getE1 ( ) ;
     Expression e2 = pExpr.getE2 ( ) ;
-    // Child
-    DefaultMutableTreeNode child = createNode ( "MultiLet" , pExpr
-        .toPrettyString ( ).toString ( ) , pExpr ) ;
-    // Subchilds
+    DefaultMutableTreeNode child = createNode ( "MultiLet" , pExpr ) ;
     int length = 0 ;
     for ( int i = 0 ; i < id.length ; i ++ )
     {
       DefaultMutableTreeNode subchild = createNode ( "Identifier" , id [ i ] ,
           length + 5 + ( i * 2 ) , length + 4 + id [ i ].length ( ) + ( i * 2 ) ) ;
       length += id [ i ].length ( ) ;
-      treeModel.insertNodeInto ( subchild , child , i ) ;
+      this.abstractSyntaxTreeUI.appendNode ( subchild , child ) ;
     }
-    // Subchild
-    DefaultMutableTreeNode subchild2 = createNode ( "e1" , e1.toPrettyString ( )
-        .toString ( ) , e1 ) ;
-    treeModel.insertNodeInto ( subchild2 , child , id.length ) ;
-    treeModel.insertNodeInto ( exprExpression ( e1 ) , subchild2 , 0 ) ;
-    // Subchild
-    DefaultMutableTreeNode subchild3 = createNode ( "e2" , e2.toPrettyString ( )
-        .toString ( ) , e2 ) ;
-    treeModel.insertNodeInto ( subchild3 , child , id.length + 1 ) ;
-    treeModel.insertNodeInto ( exprExpression ( e2 ) , subchild3 , 0 ) ;
+    DefaultMutableTreeNode subchild2 = createNode ( "e1" , e1 ) ;
+    DefaultMutableTreeNode subchild3 = createNode ( "e2" , e2 ) ;
+    subchild2.add ( exprExpression ( e1 ) ) ;
+    subchild3.add ( exprExpression ( e2 ) ) ;
+    child.add ( subchild2 ) ;
+    child.add ( subchild3 ) ;
     return child ;
   }
 
 
   private DefaultMutableTreeNode exprNot ( Not pExpr )
   {
-    return createNode ( "Not" , pExpr.toPrettyString ( ).toString ( ) , pExpr ) ;
+    return createNode ( "Not" , pExpr ) ;
   }
 
 
@@ -833,27 +695,20 @@ public class AbstractSyntaxTree
   {
     Expression e1 = pExpr.getE1 ( ) ;
     Expression e2 = pExpr.getE2 ( ) ;
-    // Child
-    DefaultMutableTreeNode child = createNode ( "Or" , pExpr.toPrettyString ( )
-        .toString ( ) , pExpr ) ;
-    // Subchild 1
-    DefaultMutableTreeNode subchild1 = createNode ( "e1" , e1.toPrettyString ( )
-        .toString ( ) , e1 ) ;
-    treeModel.insertNodeInto ( subchild1 , child , 0 ) ;
-    treeModel.insertNodeInto ( exprExpression ( e1 ) , subchild1 , 0 ) ;
-    // Subchild 2
-    DefaultMutableTreeNode subchild2 = createNode ( "e2" , e2.toPrettyString ( )
-        .toString ( ) , e2 ) ;
-    treeModel.insertNodeInto ( subchild2 , child , 1 ) ;
-    treeModel.insertNodeInto ( exprExpression ( e2 ) , subchild2 , 0 ) ;
+    DefaultMutableTreeNode child = createNode ( "Or" , pExpr ) ;
+    DefaultMutableTreeNode subchild1 = createNode ( "e1" , e1 ) ;
+    DefaultMutableTreeNode subchild2 = createNode ( "e2" , e2 ) ;
+    subchild1.add ( exprExpression ( e1 ) ) ;
+    subchild2.add ( exprExpression ( e2 ) ) ;
+    child.add ( subchild1 ) ;
+    child.add ( subchild2 ) ;
     return child ;
   }
 
 
   private DefaultMutableTreeNode exprProjection ( Projection pExpr )
   {
-    return createNode ( "Projection" , pExpr.toPrettyString ( ).toString ( ) ,
-        pExpr ) ;
+    return createNode ( "Projection" , pExpr ) ;
   }
 
 
@@ -861,32 +716,27 @@ public class AbstractSyntaxTree
   {
     String id = pExpr.getId ( ) ;
     Expression e = pExpr.getE ( ) ;
-    // Child
-    DefaultMutableTreeNode child = createNode ( "Recursion" , pExpr
-        .toPrettyString ( ).toString ( ) , pExpr ) ;
-    // Subchild 1
+    DefaultMutableTreeNode child = createNode ( "Recursion" , pExpr ) ;
     DefaultMutableTreeNode subchild1 = createNode ( "Identifier" , id , 4 ,
         3 + id.length ( ) ) ;
-    treeModel.insertNodeInto ( subchild1 , child , 0 ) ;
-    // Subchild 2
-    DefaultMutableTreeNode subchild2 = createNode ( "e" , e.toPrettyString ( )
-        .toString ( ) , e ) ;
-    treeModel.insertNodeInto ( subchild2 , child , 1 ) ;
-    treeModel.insertNodeInto ( exprExpression ( e ) , subchild2 , 0 ) ;
+    DefaultMutableTreeNode subchild2 = createNode ( "e" , e ) ;
+    subchild2.add ( exprExpression ( e ) ) ;
+    child.add ( subchild1 ) ;
+    child.add ( subchild2 ) ;
     return child ;
   }
 
 
   private DefaultMutableTreeNode exprRef ( Ref pExpr )
   {
-    return createNode ( "Ref" , pExpr.toPrettyString ( ).toString ( ) , pExpr ) ;
+    return createNode ( "Ref" , pExpr ) ;
   }
 
 
   private DefaultMutableTreeNode exprRelationalOperator (
       RelationalOperator pExpr )
   {
-    return createNode ( "RelationalOperator" , pExpr.toString ( ) , pExpr ) ;
+    return createNode ( "RelationalOperator" , pExpr ) ;
   }
 
 
@@ -894,48 +744,38 @@ public class AbstractSyntaxTree
   {
     Expression e1 = pExpr.getE1 ( ) ;
     Expression e2 = pExpr.getE2 ( ) ;
-    // Child
-    DefaultMutableTreeNode child = createNode ( "Sequence" , pExpr
-        .toPrettyString ( ).toString ( ) , pExpr ) ;
-    // Subchild 1
-    DefaultMutableTreeNode subchild1 = createNode ( "e1" , e1.toPrettyString ( )
-        .toString ( ) , e1 ) ;
-    treeModel.insertNodeInto ( subchild1 , child , 0 ) ;
-    treeModel.insertNodeInto ( exprExpression ( e1 ) , subchild1 , 0 ) ;
-    // Subchild 2
-    DefaultMutableTreeNode subchild2 = createNode ( "e2" , e2.toPrettyString ( )
-        .toString ( ) , e2 ) ;
-    treeModel.insertNodeInto ( subchild2 , child , 1 ) ;
-    treeModel.insertNodeInto ( exprExpression ( e2 ) , subchild2 , 0 ) ;
+    DefaultMutableTreeNode child = createNode ( "Sequence" , pExpr ) ;
+    DefaultMutableTreeNode subchild1 = createNode ( "e1" , e1 ) ;
+    DefaultMutableTreeNode subchild2 = createNode ( "e2" , e2 ) ;
+    subchild1.add ( exprExpression ( e1 ) ) ;
+    subchild2.add ( exprExpression ( e2 ) ) ;
+    child.add ( subchild1 ) ;
+    child.add ( subchild2 ) ;
     return child ;
   }
 
 
   private DefaultMutableTreeNode exprSnd ( Snd pExpr )
   {
-    return createNode ( "Snd" , pExpr.toPrettyString ( ).toString ( ) , pExpr ) ;
+    return createNode ( "Snd" , pExpr ) ;
   }
 
 
   private DefaultMutableTreeNode exprTl ( Tl pExpr )
   {
-    return createNode ( "Tl" , pExpr.toPrettyString ( ).toString ( ) , pExpr ) ;
+    return createNode ( "Tl" , pExpr ) ;
   }
 
 
   private DefaultMutableTreeNode exprTuple ( Tuple pExpr )
   {
     Expression [ ] e = pExpr.getExpressions ( ) ;
-    // Child
-    DefaultMutableTreeNode child = createNode ( "Tuple" , pExpr
-        .toPrettyString ( ).toString ( ) , pExpr ) ;
-    // Subchilds
+    DefaultMutableTreeNode child = createNode ( "Tuple" , pExpr ) ;
     for ( int i = 0 ; i < e.length ; i ++ )
     {
-      DefaultMutableTreeNode subchild = createNode ( "e" + i , e [ i ]
-          .toPrettyString ( ).toString ( ) , e [ i ] ) ;
-      treeModel.insertNodeInto ( subchild , child , i ) ;
-      treeModel.insertNodeInto ( exprExpression ( e [ i ] ) , subchild , 0 ) ;
+      DefaultMutableTreeNode subchild = createNode ( "e" + i , e [ i ] ) ;
+      subchild.add ( exprExpression ( e [ i ] ) ) ;
+      child.add ( subchild ) ;
     }
     return child ;
   }
@@ -943,29 +783,25 @@ public class AbstractSyntaxTree
 
   private DefaultMutableTreeNode exprUnaryCons ( UnaryCons pExpr )
   {
-    return createNode ( "UnaryCons" , pExpr.toPrettyString ( ).toString ( ) ,
-        pExpr ) ;
+    return createNode ( "UnaryCons" , pExpr ) ;
   }
 
 
   private DefaultMutableTreeNode exprUnaryListOperator ( UnaryListOperator pExpr )
   {
-    return createNode ( "UnaryListOperator" , pExpr.toPrettyString ( )
-        .toString ( ) , pExpr ) ;
+    return createNode ( "UnaryListOperator" , pExpr ) ;
   }
 
 
   private DefaultMutableTreeNode exprUnaryOperator ( UnaryOperator pExpr )
   {
-    return createNode ( "UnaryOperator" ,
-        pExpr.toPrettyString ( ).toString ( ) , pExpr ) ;
+    return createNode ( "UnaryOperator" , pExpr ) ;
   }
 
 
   private DefaultMutableTreeNode exprUnitConstant ( UnitConstant pExpr )
   {
-    return createNode ( "UnitConstant" , pExpr.toPrettyString ( ).toString ( ) ,
-        pExpr ) ;
+    return createNode ( "UnitConstant" , pExpr ) ;
   }
 
 
@@ -980,7 +816,7 @@ public class AbstractSyntaxTree
 
   private DefaultMutableTreeNode exprValue ( Value pExpr )
   {
-    return createNode ( "Value" , pExpr.toPrettyString ( ).toString ( ) , pExpr ) ;
+    return createNode ( "Value" , pExpr ) ;
   }
 
 
@@ -988,48 +824,28 @@ public class AbstractSyntaxTree
   {
     Expression e1 = pExpr.getE1 ( ) ;
     Expression e2 = pExpr.getE2 ( ) ;
-    // Child
-    DefaultMutableTreeNode child = createNode ( "While" , pExpr
-        .toPrettyString ( ).toString ( ) , pExpr ) ;
-    // Subchild 1
-    DefaultMutableTreeNode subchild1 = createNode ( "e1" , e1.toPrettyString ( )
-        .toString ( ) , e1 ) ;
-    treeModel.insertNodeInto ( subchild1 , child , 0 ) ;
-    treeModel.insertNodeInto ( exprExpression ( e1 ) , subchild1 , 0 ) ;
-    // Subchild 2
-    DefaultMutableTreeNode subchild2 = createNode ( "e2" , e2.toPrettyString ( )
-        .toString ( ) , e2 ) ;
-    treeModel.insertNodeInto ( subchild2 , child , 1 ) ;
-    treeModel.insertNodeInto ( exprExpression ( e2 ) , subchild2 , 0 ) ;
+    DefaultMutableTreeNode child = createNode ( "While" , pExpr ) ;
+    DefaultMutableTreeNode subchild1 = createNode ( "e1" , e1 ) ;
+    DefaultMutableTreeNode subchild2 = createNode ( "e2" , e2 ) ;
+    subchild1.add ( exprExpression ( e1 ) ) ;
+    subchild2.add ( exprExpression ( e2 ) ) ;
+    child.add ( subchild1 ) ;
+    child.add ( subchild2 ) ;
     return child ;
-  }
-
-
-  public JTree getJAbstractSyntaxTree ( )
-  {
-    return jTreeAbstractSyntaxTree ;
-  }
-
-
-  public DefaultTreeModel getTreeModel ( )
-  {
-    return treeModel ;
   }
 
 
   public void setExpression ( Expression pExpr )
   {
-    this.rootExpression = createNode ( "Expression" , pExpr.toPrettyString ( )
-        .toString ( ) , pExpr ) ;
-    treeModel.setRoot ( this.rootExpression ) ;
-    treeModel.insertNodeInto ( exprExpression ( pExpr ) , this.rootExpression ,
-        0 ) ;
-    this.jTreeAbstractSyntaxTree.expandRow ( 0 ) ;
+    DefaultMutableTreeNode rootNode = createNode ( "Expression" , pExpr ) ;
+    rootNode.add ( exprExpression ( pExpr ) ) ;
+    this.abstractSyntaxTreeUI.setRootNode ( rootNode ) ;
+    this.abstractSyntaxTreeUI.expandRow ( 0 ) ;
   }
 
 
   public void setVisible ( boolean pVisible )
   {
-    this.jFrameAbstractSyntaxTree.setVisible ( pVisible ) ;
+    this.abstractSyntaxTreeUI.setVisible ( pVisible ) ;
   }
 }

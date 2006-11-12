@@ -1,7 +1,11 @@
 package de.unisiegen.tpml.ui ;
 
 
+import java.awt.Color ;
 import de.unisiegen.tpml.core.expressions.Expression ;
+import de.unisiegen.tpml.core.prettyprinter.PrettyCharIterator ;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStyle ;
+import de.unisiegen.tpml.graphics.Theme ;
 
 
 public class AbstractSyntaxTreeNode
@@ -19,12 +23,6 @@ public class AbstractSyntaxTreeNode
 
 
   private static final String AFTER_NAME = "&nbsp;]" ;
-
-
-  private static final String COLOR = "0000FF" ;
-
-
-  private static final boolean BOLD = true ;
 
 
   private String description ;
@@ -45,26 +43,16 @@ public class AbstractSyntaxTreeNode
   private int endIndex ;
 
 
-  public AbstractSyntaxTreeNode ( String pDescription , String pName ,
-      Expression pExpression )
+  private Color CURRENT = new Color ( 225 , 0 , 0 ) ;
+
+
+  public AbstractSyntaxTreeNode ( String pDescription , Expression pExpression )
   {
     this.description = pDescription ;
-    this.name = pName ;
+    this.name = pExpression.toPrettyString ( ).toString ( ) ;
     this.expression = pExpression ;
     this.startIndex = - 1 ;
     this.endIndex = - 1 ;
-    resetHtml ( ) ;
-  }
-
-
-  public AbstractSyntaxTreeNode ( String pDescription , String pName ,
-      Expression pExpression , int pStart , int pEnd )
-  {
-    this.description = pDescription ;
-    this.name = pName ;
-    this.expression = pExpression ;
-    this.startIndex = pStart ;
-    this.endIndex = pEnd ;
     resetHtml ( ) ;
   }
 
@@ -93,6 +81,38 @@ public class AbstractSyntaxTreeNode
   }
 
 
+  private String getHex ( Color pColor )
+  {
+    return ( getHex ( pColor.getRed ( ) ) + getHex ( pColor.getGreen ( ) ) + getHex ( pColor
+        .getBlue ( ) ) ) ;
+  }
+
+
+  private String getHex ( int pNumber )
+  {
+    String result = "" ;
+    String hex[] =
+    { "0" , "1" , "2" , "3" , "4" , "5" , "6" , "7" , "8" , "9" , "A" , "B" ,
+        "C" , "D" , "E" , "F" } ;
+    int remainder = Math.abs ( pNumber ) ;
+    int base = 0 ;
+    if ( remainder > 0 )
+    {
+      while ( remainder > 0 )
+      {
+        base = remainder % 16 ;
+        remainder = ( remainder / 16 ) ;
+        result = hex [ base ] + result ;
+      }
+    }
+    else
+    {
+      result = "00" ;
+    }
+    return result ;
+  }
+
+
   public int getStartIndex ( )
   {
     return startIndex ;
@@ -101,16 +121,23 @@ public class AbstractSyntaxTreeNode
 
   public void resetHtml ( )
   {
-    StringBuffer s = new StringBuffer ( "<html>" ) ;
-    s.append ( BEFOR_DESCRIPTION ) ;
-    s.append ( this.description ) ;
-    s.append ( AFTER_DESCRIPTION ) ;
-    s.append ( BETWEEN ) ;
-    s.append ( BEFOR_NAME ) ;
-    s.append ( this.name ) ;
-    s.append ( AFTER_NAME ) ;
-    s.append ( "</html>" ) ;
-    this.html = s.toString ( ) ;
+    if ( this.expression == null )
+    {
+      StringBuffer result = new StringBuffer ( "<html>" ) ;
+      result.append ( BEFOR_DESCRIPTION ) ;
+      result.append ( this.description ) ;
+      result.append ( AFTER_DESCRIPTION ) ;
+      result.append ( BETWEEN ) ;
+      result.append ( BEFOR_NAME ) ;
+      result.append ( this.name ) ;
+      result.append ( AFTER_NAME ) ;
+      result.append ( "</html>" ) ;
+      this.html = result.toString ( ) ;
+    }
+    else
+    {
+      updateHtml ( - 1 , - 1 ) ;
+    }
   }
 
 
@@ -120,72 +147,89 @@ public class AbstractSyntaxTreeNode
   }
 
 
-  private String keyword ;
-
-
-  public void setKeyword ( String pKeyword )
-  {
-    this.keyword = pKeyword ;
-  }
-
-
   public void updateHtml ( int pStart , int pEnd )
   {
-    StringBuffer s = new StringBuffer ( "<html>" ) ;
-    s.append ( BEFOR_DESCRIPTION ) ;
-    s.append ( this.description ) ;
-    s.append ( AFTER_DESCRIPTION ) ;
-    s.append ( BETWEEN ) ;
-    s.append ( BEFOR_NAME ) ;
+    PrettyCharIterator p = this.expression.toPrettyString ( )
+        .toCharacterIterator ( ) ;
+    Color keyword = Theme.currentTheme ( ).getKeywordColor ( ) ;
+    Color constant = Theme.currentTheme ( ).getConstantColor ( ) ;
+    Color comment = Theme.currentTheme ( ).getCommentColor ( ) ;
+    Color type = Theme.currentTheme ( ).getTypeColor ( ) ;
+    Color none = Theme.currentTheme ( ).getExpressionColor ( ) ;
+    StringBuffer result = new StringBuffer ( "<html>" ) ;
+    result.append ( BEFOR_DESCRIPTION ) ;
+    result.append ( this.description ) ;
+    result.append ( AFTER_DESCRIPTION ) ;
+    result.append ( BETWEEN ) ;
+    result.append ( BEFOR_NAME ) ;
     for ( int i = 0 ; i < this.name.length ( ) ; i ++ )
     {
-      if ( this.keyword.charAt ( i ) == 'X' )
+      // None
+      if ( p.getStyle ( ) == PrettyStyle.NONE )
       {
-        s.append ( "<font color=\"#" + COLOR + "\">" ) ;
+        result.append ( "<font color=\"#" + getHex ( none ) + "\">" ) ;
       }
-      if ( i < pStart )
+      // Type
+      if ( p.getStyle ( ) == PrettyStyle.TYPE )
       {
-        s.append ( this.name.charAt ( i ) ) ;
+        result.append ( "<font color=\"#" + getHex ( type ) + "\">" ) ;
+      }
+      // Comment
+      if ( p.getStyle ( ) == PrettyStyle.COMMENT )
+      {
+        result.append ( "<font color=\"#" + getHex ( comment ) + "\">" ) ;
+      }
+      // Constant
+      if ( p.getStyle ( ) == PrettyStyle.CONSTANT )
+      {
+        result.append ( "<font color=\"#" + getHex ( constant ) + "\">" ) ;
+      }
+      // Keyword
+      if ( p.getStyle ( ) == PrettyStyle.KEYWORD )
+      {
+        result.append ( "<b><font color=\"#" + getHex ( keyword ) + "\">" ) ;
+      }
+      // Current Expression
+      if ( ( pStart == - 1 ) || ( pEnd == - 1 ) || ( i < pStart )
+          || ( i > pEnd ) )
+      {
+        result.append ( this.name.charAt ( i ) ) ;
       }
       else if ( ( i >= pStart ) && ( i <= pEnd ) )
       {
-        s.append ( "<b>" ) ;
-        s.append ( this.name.charAt ( i ) ) ;
-        s.append ( "</b>" ) ;
+        result.append ( "<b><font color=\"#" + getHex ( CURRENT ) + "\">" ) ;
+        result.append ( this.name.charAt ( i ) ) ;
+        result.append ( "</font></b>" ) ;
       }
-      else if ( i > pEnd )
+      // Keyword
+      if ( p.getStyle ( ) == PrettyStyle.KEYWORD )
       {
-        s.append ( this.name.charAt ( i ) ) ;
+        result.append ( "</font></b>" ) ;
       }
-      if ( this.keyword.charAt ( i ) == 'X' )
+      // Constant
+      if ( p.getStyle ( ) == PrettyStyle.CONSTANT )
       {
-        s.append ( "</font>" ) ;
+        result.append ( "</font>" ) ;
       }
+      // Comment
+      if ( p.getStyle ( ) == PrettyStyle.COMMENT )
+      {
+        result.append ( "</font>" ) ;
+      }
+      // Type
+      if ( p.getStyle ( ) == PrettyStyle.TYPE )
+      {
+        result.append ( "</font>" ) ;
+      }
+      // None
+      if ( p.getStyle ( ) == PrettyStyle.NONE )
+      {
+        result.append ( "</font>" ) ;
+      }
+      p.next ( ) ;
     }
-    s.append ( AFTER_NAME ) ;
-    s.append ( "</html>" ) ;
-    this.html = s.toString ( ) ;
-  }
-
-
-  @ SuppressWarnings ( "unused" )
-  private void oldupdateHtml ( int pStart , int pEnd )
-  {
-    StringBuffer s = new StringBuffer ( "<html>" ) ;
-    s.append ( BEFOR_DESCRIPTION ) ;
-    s.append ( this.description ) ;
-    s.append ( AFTER_DESCRIPTION ) ;
-    s.append ( BETWEEN ) ;
-    s.append ( BEFOR_NAME ) ;
-    s.append ( this.name.substring ( 0 , pStart ) ) ;
-    if ( BOLD ) s.append ( "<b>" ) ;
-    s.append ( "<font color=\"#" + COLOR + "\">" ) ;
-    s.append ( this.name.substring ( pStart , pEnd + 1 ) ) ;
-    s.append ( "</font>" ) ;
-    if ( BOLD ) s.append ( "</b>" ) ;
-    s.append ( this.name.substring ( pEnd + 1 , this.name.length ( ) ) ) ;
-    s.append ( AFTER_NAME ) ;
-    s.append ( "</html>" ) ;
-    this.html = s.toString ( ) ;
+    result.append ( AFTER_NAME ) ;
+    result.append ( "</html>" ) ;
+    this.html = result.toString ( ) ;
   }
 }

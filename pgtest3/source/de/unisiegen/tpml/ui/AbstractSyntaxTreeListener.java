@@ -7,25 +7,23 @@ import javax.swing.event.TreeSelectionListener ;
 import javax.swing.tree.DefaultMutableTreeNode ;
 import javax.swing.tree.TreePath ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyCharIterator ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyString ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyStyle ;
 
 
 public class AbstractSyntaxTreeListener implements TreeSelectionListener
 {
-  private AbstractSyntaxTree abstractSyntaxTree ;
+  private AbstractSyntaxTreeUI abstractSyntaxTreeUI ;
 
 
-  public AbstractSyntaxTreeListener ( AbstractSyntaxTree pAbstractSyntaxTree )
+  public AbstractSyntaxTreeListener ( AbstractSyntaxTreeUI pAbstractSyntaxTreeUI )
   {
-    this.abstractSyntaxTree = pAbstractSyntaxTree ;
+    this.abstractSyntaxTreeUI = pAbstractSyntaxTreeUI ;
   }
 
 
   private void repaint ( DefaultMutableTreeNode pNode )
   {
-    abstractSyntaxTree.getTreeModel ( ).nodeChanged ( pNode ) ;
+    this.abstractSyntaxTreeUI.nodeChanged ( pNode ) ;
     for ( int i = 0 ; i < pNode.getChildCount ( ) ; i ++ )
     {
       repaint ( ( DefaultMutableTreeNode ) pNode.getChildAt ( i ) ) ;
@@ -38,7 +36,7 @@ public class AbstractSyntaxTreeListener implements TreeSelectionListener
     AbstractSyntaxTreeNode abstractSyntaxTreeNode = ( AbstractSyntaxTreeNode ) pNode
         .getUserObject ( ) ;
     abstractSyntaxTreeNode.resetHtml ( ) ;
-    abstractSyntaxTree.getTreeModel ( ).nodeChanged ( pNode ) ;
+    this.abstractSyntaxTreeUI.nodeChanged ( pNode ) ;
     for ( int i = 0 ; i < pNode.getChildCount ( ) ; i ++ )
     {
       resetHighlighting ( ( DefaultMutableTreeNode ) pNode.getChildAt ( i ) ) ;
@@ -94,22 +92,6 @@ public class AbstractSyntaxTreeListener implements TreeSelectionListener
             .toPrettyString ( ) ;
         PrettyAnnotation prettyAnnotation = prettyString
             .getAnnotationForPrintable ( last.getExpression ( ) ) ;
-        PrettyCharIterator p = prettyString.toCharacterIterator ( ) ;
-        char c = p.first ( ) ;
-        String s = "" ;
-        while ( c != PrettyCharIterator.DONE )
-        {
-          if ( p.getStyle ( ) == PrettyStyle.KEYWORD )
-          {
-            s += "X" ;
-          }
-          else
-          {
-            s += " " ;
-          }
-          c = p.next ( ) ;
-        }
-        list.get ( i ).setKeyword ( s ) ;
         list.get ( i ).updateHtml ( prettyAnnotation.getStartOffset ( ) ,
             prettyAnnotation.getEndOffset ( ) ) ;
       }
