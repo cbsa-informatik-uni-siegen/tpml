@@ -5,6 +5,8 @@ import java.awt.Color ;
 import java.util.LinkedList ;
 import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.expressions.Lambda ;
+import de.unisiegen.tpml.core.expressions.Let ;
+import de.unisiegen.tpml.core.expressions.LetRec ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyCharIterator ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyString ;
@@ -50,7 +52,10 @@ public class AbstractSyntaxTreeNode
   private LinkedList < Expression > relations ;
 
 
-  private Color CURRENT = new Color ( 0 , 0 , 255 ) ;
+  private Color SELECTED = new Color ( 255 , 0 , 0 ) ;
+
+
+  private Color BINDING = new Color ( 255 , 127 , 127 ) ;
 
 
   public AbstractSyntaxTreeNode ( String pDescription , Expression pExpression )
@@ -85,19 +90,6 @@ public class AbstractSyntaxTreeNode
     this.expression = null ;
     this.startIndex = pStart ;
     this.endIndex = pEnd ;
-    resetHtml ( ) ;
-  }
-
-
-  public AbstractSyntaxTreeNode ( String pDescription , String pName ,
-      int pStart , int pEnd , LinkedList < Expression > pRelations )
-  {
-    this.description = pDescription ;
-    this.name = pName ;
-    this.expression = null ;
-    this.startIndex = pStart ;
-    this.endIndex = pEnd ;
-    this.relations = pRelations ;
     resetHtml ( ) ;
   }
 
@@ -169,7 +161,7 @@ public class AbstractSyntaxTreeNode
     }
     else
     {
-      updateHtml ( - 1 , - 1 ) ;
+      updateHtml ( - 1 , - 1 , false ) ;
     }
   }
 
@@ -198,286 +190,131 @@ public class AbstractSyntaxTreeNode
   }
 
 
-  public void updateHtml ( int pStart , int pEnd )
+  public void updateHtml ( int pSelectionStart , int pSelectionEnd ,
+      boolean pPrintBindings )
   {
     PrettyCharIterator p = this.expression.toPrettyString ( )
         .toCharacterIterator ( ) ;
     Color keywordColor = Theme.currentTheme ( ).getKeywordColor ( ) ;
     Color constantColor = Theme.currentTheme ( ).getConstantColor ( ) ;
-    StringBuffer result = new StringBuffer ( "<html>" ) ;
+    StringBuffer result = new StringBuffer ( ) ;
+    result.append ( "<html>" ) ;
     result.append ( BEFOR_DESCRIPTION ) ;
     result.append ( this.description ) ;
     result.append ( AFTER_DESCRIPTION ) ;
     result.append ( BETWEEN ) ;
     result.append ( BEFOR_NAME ) ;
-    boolean constant = false ;
-    boolean keyword = false ;
-    boolean current = false ;
     p.first ( ) ;
-    for ( int i = 0 ; i < this.name.length ( ) ; i ++ )
+    int index = 0 ;
+    while ( index < this.name.length ( ) )
     {
-      if ( ( this.expression instanceof Lambda )
-          &&( ( i == 1 ) || ( isInList ( i ) ) ) )
+      // Selected
+      if ( index == pSelectionStart )
       {
-        Color c = new Color ( 175 , 175 , 255 ) ;
-        
-        if ((i>=pStart)&&(i<=pEnd))
-          
+        result.append ( "<b><font color=\"#" + getHex ( SELECTED ) + "\">" ) ;
+        while ( index <= pSelectionEnd )
         {
-          c= CURRENT ;
+          result.append ( this.name.charAt ( index ) ) ;
+          index ++ ;
+          p.next ( ) ;
         }
-          
-        
-        result.append ( "<b><font color=\"#"
-            + getHex ( c ) + "\">" ) ;
-        
-        result.append ( this.name.charAt ( i ) ) ;
         result.append ( "</font></b>" ) ;
       }
+      // Binding
+      else if ( ( this.relations != null ) && ( isInList ( index ) )
+          && ( pPrintBindings ) )
+      {
+        result.append ( "<b><font color=\"#" + getHex ( BINDING ) + "\">" ) ;
+        while ( isInList ( index ) )
+        {
+          result.append ( this.name.charAt ( index ) ) ;
+          index ++ ;
+          p.next ( ) ;
+        }
+        result.append ( "</font></b>" ) ;
+      }
+      // Binding - Lambda
+      else if ( ( this.expression != null )
+          && ( this.expression instanceof Lambda ) && ( index == 1 )
+          && ( pPrintBindings ) )
+      {
+        Lambda l = ( Lambda ) this.expression ;
+        result.append ( "<b><font color=\"#" + getHex ( BINDING ) + "\">" ) ;
+        int j = 0 ;
+        while ( j < l.getId ( ).length ( ) )
+        {
+          result.append ( this.name.charAt ( index ) ) ;
+          index ++ ;
+          j ++ ;
+          p.next ( ) ;
+        }
+        result.append ( "</font></b>" ) ;
+      }
+      // Binding - LetRec
+      else if ( ( this.expression != null )
+          && ( this.expression instanceof LetRec ) && ( index == 8 ) )
+      {
+        LetRec l = ( LetRec ) this.expression ;
+        result.append ( "<b><font color=\"#" + getHex ( BINDING ) + "\">" ) ;
+        int j = 0 ;
+        while ( j < l.getId ( ).length ( ) )
+        {
+          result.append ( this.name.charAt ( index ) ) ;
+          index ++ ;
+          j ++ ;
+          p.next ( ) ;
+        }
+        result.append ( "</font></b>" ) ;
+      }
+      // Binding - Let
+      else if ( ( this.expression != null )
+          && ( this.expression instanceof Let )
+          && ( ! ( this.expression instanceof LetRec ) ) && ( index == 4 ) )
+      {
+        Let l = ( Let ) this.expression ;
+        result.append ( "<b><font color=\"#" + getHex ( BINDING ) + "\">" ) ;
+        int j = 0 ;
+        while ( j < l.getId ( ).length ( ) )
+        {
+          result.append ( this.name.charAt ( index ) ) ;
+          index ++ ;
+          j ++ ;
+          p.next ( ) ;
+        }
+        result.append ( "</font></b>" ) ;
+      }
+      // Keyword
+      else if ( p.getStyle ( ) == PrettyStyle.KEYWORD )
+      {
+        result.append ( "<b><font color=\"#" + getHex ( keywordColor ) + "\">" ) ;
+        while ( p.getStyle ( ) == PrettyStyle.KEYWORD )
+        {
+          result.append ( this.name.charAt ( index ) ) ;
+          index ++ ;
+          p.next ( ) ;
+        }
+        result.append ( "</font></b>" ) ;
+      }
+      // Constant
+      else if ( p.getStyle ( ) == PrettyStyle.CONSTANT )
+      {
+        result
+            .append ( "<b><font color=\"#" + getHex ( constantColor ) + "\">" ) ;
+        while ( p.getStyle ( ) == PrettyStyle.CONSTANT )
+        {
+          result.append ( this.name.charAt ( index ) ) ;
+          index ++ ;
+          p.next ( ) ;
+        }
+        result.append ( "</font></b>" ) ;
+      }
+      // Else
       else
       {
-        if ( p.getStyle ( ) == PrettyStyle.KEYWORD )
-        {
-          if ( keyword == false && ! current )
-          {
-            result.append ( "<b><font color=\"#" + getHex ( keywordColor )
-                + "\">" ) ;
-            keyword = true ;
-          }
-        }
-        else if ( keyword == true )
-        {
-          result.append ( "</font></b>" ) ;
-          keyword = false ;
-        }
-        if ( p.getStyle ( ) == PrettyStyle.CONSTANT )
-        {
-          if ( constant == false && ! current )
-          {
-            result.append ( "<b><font color=\"#" + getHex ( constantColor )
-                + "\">" ) ;
-            constant = true ;
-          }
-        }
-        else if ( constant == true )
-        {
-          result.append ( "</font></b>" ) ;
-          constant = false ;
-        }
-        if ( ( ( pStart == - 1 ) && ( pEnd == - 1 ) ) || ( i > pEnd )
-            || ( i < pStart ) || ( ( i > pStart ) && ( i < pEnd ) ) )
-        {
-          result.append ( this.name.charAt ( i ) ) ;
-        }
-        else if ( i == pStart )
-        {
-          if ( keyword == true )
-          {
-            result.append ( "</font></b>" ) ;
-            keyword = false ;
-          }
-          if ( constant == true )
-          {
-            result.append ( "</font></b>" ) ;
-            constant = false ;
-          }
-          current = true ;
-          result.append ( "<b><font color=\"#" + getHex ( CURRENT ) + "\">" ) ;
-          result.append ( this.name.charAt ( i ) ) ;
-          if ( i == pEnd )
-          {
-            result.append ( "</font></b>" ) ;
-            current = false ;
-          }
-        }
-        else if ( i == pEnd )
-        {
-          result.append ( this.name.charAt ( i ) ) ;
-          result.append ( "</font></b>" ) ;
-          current = false ;
-        }
-        if ( i == this.name.length ( ) - 1 )
-        {
-          if ( keyword == true )
-          {
-            result.append ( "</font></b>" ) ;
-          }
-          if ( constant == true )
-          {
-            result.append ( "</font></b>" ) ;
-          }
-        }
+        result.append ( this.name.charAt ( index ) ) ;
+        index ++ ;
+        p.next ( ) ;
       }
-      p.next ( ) ;
-    }
-    result.append ( AFTER_NAME ) ;
-    result.append ( "</html>" ) ;
-    this.html = result.toString ( ) ;
-  }
-
-
-  public void updateHtmlOld2 ( int pStart , int pEnd )
-  {
-    PrettyCharIterator p = this.expression.toPrettyString ( )
-        .toCharacterIterator ( ) ;
-    Color keywordColor = Theme.currentTheme ( ).getKeywordColor ( ) ;
-    Color constantColor = Theme.currentTheme ( ).getConstantColor ( ) ;
-    StringBuffer result = new StringBuffer ( "<html>" ) ;
-    result.append ( BEFOR_DESCRIPTION ) ;
-    result.append ( this.description ) ;
-    result.append ( AFTER_DESCRIPTION ) ;
-    result.append ( BETWEEN ) ;
-    result.append ( BEFOR_NAME ) ;
-    boolean constant = false ;
-    boolean keyword = false ;
-    boolean current = false ;
-    p.first ( ) ;
-    for ( int i = 0 ; i < this.name.length ( ) ; i ++ )
-    {
-      if ( p.getStyle ( ) == PrettyStyle.KEYWORD )
-      {
-        if ( keyword == false && ! current )
-        {
-          result.append ( "<b><font color=\"#" + getHex ( keywordColor )
-              + "\">" ) ;
-          keyword = true ;
-        }
-      }
-      else if ( keyword == true )
-      {
-        result.append ( "</font></b>" ) ;
-        keyword = false ;
-      }
-      if ( p.getStyle ( ) == PrettyStyle.CONSTANT )
-      {
-        if ( constant == false && ! current )
-        {
-          result.append ( "<b><font color=\"#" + getHex ( constantColor )
-              + "\">" ) ;
-          constant = true ;
-        }
-      }
-      else if ( constant == true )
-      {
-        result.append ( "</font></b>" ) ;
-        constant = false ;
-      }
-      if ( ( ( pStart == - 1 ) && ( pEnd == - 1 ) ) || ( i > pEnd )
-          || ( i < pStart ) || ( ( i > pStart ) && ( i < pEnd ) ) )
-      {
-        result.append ( this.name.charAt ( i ) ) ;
-      }
-      else if ( i == pStart )
-      {
-        if ( keyword == true )
-        {
-          result.append ( "</font></b>" ) ;
-          keyword = false ;
-        }
-        if ( constant == true )
-        {
-          result.append ( "</font></b>" ) ;
-          constant = false ;
-        }
-        current = true ;
-        result.append ( "<b><font color=\"#" + getHex ( CURRENT ) + "\">" ) ;
-        result.append ( this.name.charAt ( i ) ) ;
-        if ( i == pEnd )
-        {
-          result.append ( "</font></b>" ) ;
-          current = false ;
-        }
-      }
-      else if ( i == pEnd )
-      {
-        result.append ( this.name.charAt ( i ) ) ;
-        result.append ( "</font></b>" ) ;
-        current = false ;
-      }
-      if ( i == this.name.length ( ) - 1 )
-      {
-        if ( keyword == true )
-        {
-          result.append ( "</font></b>" ) ;
-        }
-        if ( constant == true )
-        {
-          result.append ( "</font></b>" ) ;
-        }
-      }
-      p.next ( ) ;
-    }
-    result.append ( AFTER_NAME ) ;
-    result.append ( "</html>" ) ;
-    this.html = result.toString ( ) ;
-  }
-
-
-  public void updateHtmlOld ( int pStart , int pEnd )
-  {
-    PrettyCharIterator p = this.expression.toPrettyString ( )
-        .toCharacterIterator ( ) ;
-    Color keywordColor = Theme.currentTheme ( ).getKeywordColor ( ) ;
-    Color constantColor = Theme.currentTheme ( ).getConstantColor ( ) ;
-    StringBuffer result = new StringBuffer ( "<html>" ) ;
-    result.append ( BEFOR_DESCRIPTION ) ;
-    result.append ( this.description ) ;
-    result.append ( AFTER_DESCRIPTION ) ;
-    result.append ( BETWEEN ) ;
-    result.append ( BEFOR_NAME ) ;
-    boolean constant = false ;
-    boolean keyword = false ;
-    p.first ( ) ;
-    for ( int i = 0 ; i < this.name.length ( ) ; i ++ )
-    {
-      if ( p.getStyle ( ) == PrettyStyle.CONSTANT )
-      {
-        if ( constant == false )
-        {
-          result.append ( "<b><font color=\"#" + getHex ( constantColor )
-              + "\">" ) ;
-          constant = true ;
-        }
-      }
-      else if ( constant == true )
-      {
-        result.append ( "</font></b>" ) ;
-        constant = false ;
-      }
-      if ( p.getStyle ( ) == PrettyStyle.KEYWORD )
-      {
-        if ( keyword == false )
-        {
-          result.append ( "<b><font color=\"#" + getHex ( keywordColor )
-              + "\">" ) ;
-          keyword = true ;
-        }
-      }
-      else if ( keyword == true )
-      {
-        result.append ( "</font></b>" ) ;
-        keyword = false ;
-      }
-      if ( ( pStart == - 1 ) || ( pEnd == - 1 ) || ( i < pStart )
-          || ( i > pEnd ) )
-      {
-        result.append ( this.name.charAt ( i ) ) ;
-      }
-      else if ( ( i >= pStart ) && ( i <= pEnd ) )
-      {
-        result.append ( "<b><font color=\"#" + getHex ( CURRENT ) + "\">" ) ;
-        result.append ( this.name.charAt ( i ) ) ;
-        result.append ( "</font></b>" ) ;
-      }
-      p.next ( ) ;
-    }
-    if ( keyword == true )
-    {
-      result.append ( "</font></b>" ) ;
-    }
-    if ( constant == true )
-    {
-      result.append ( "</font></b>" ) ;
     }
     result.append ( AFTER_NAME ) ;
     result.append ( "</html>" ) ;

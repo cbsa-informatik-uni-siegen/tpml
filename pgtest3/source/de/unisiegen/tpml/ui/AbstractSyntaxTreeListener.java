@@ -81,7 +81,7 @@ public class AbstractSyntaxTreeListener implements TreeSelectionListener
             .getAnnotationForPrintable ( secondlast.getExpression ( ) ) ;
         list.get ( i ).updateHtml (
             prettyAnnotation.getStartOffset ( ) + last.getStartIndex ( ) ,
-            prettyAnnotation.getStartOffset ( ) + last.getEndIndex ( ) ) ;
+            prettyAnnotation.getStartOffset ( ) + last.getEndIndex ( ) , true ) ;
       }
     }
     // Expression
@@ -94,7 +94,7 @@ public class AbstractSyntaxTreeListener implements TreeSelectionListener
         PrettyAnnotation prettyAnnotation = prettyString
             .getAnnotationForPrintable ( last.getExpression ( ) ) ;
         list.get ( i ).updateHtml ( prettyAnnotation.getStartOffset ( ) ,
-            prettyAnnotation.getEndOffset ( ) ) ;
+            prettyAnnotation.getEndOffset ( ) , false ) ;
       }
     }
     repaint ( ( DefaultMutableTreeNode ) treePath.getPath ( ) [ 0 ] ) ;

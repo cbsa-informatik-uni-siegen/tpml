@@ -24,9 +24,6 @@ public class AbstractSyntaxTree
   private static AbstractSyntaxTree abstractSyntaxTree = null ;
 
 
-  private AbstractSyntaxTreeUI abstractSyntaxTreeUI ;
-
-
   public static AbstractSyntaxTree getInstance ( )
   {
     if ( abstractSyntaxTree == null )
@@ -39,6 +36,9 @@ public class AbstractSyntaxTree
       return abstractSyntaxTree ;
     }
   }
+
+
+  private AbstractSyntaxTreeUI abstractSyntaxTreeUI ;
 
 
   private AbstractSyntaxTree ( )
@@ -71,21 +71,20 @@ public class AbstractSyntaxTree
   }
 
 
-  private DefaultMutableTreeNode createNode ( String pDescription ,
-      String pName , int pStart , int pEnd ,
-      LinkedList < Expression > pRelations )
-  {
-    return new DefaultMutableTreeNode ( new AbstractSyntaxTreeNode (
-        pDescription , pName , pStart , pEnd , pRelations ) ) ;
-  }
-
-
   private DefaultMutableTreeNode exprChilds ( Expression pExpr )
   {
     LinkedList < Expression > listFree = null ;
     if ( pExpr instanceof Lambda )
     {
       listFree = free ( pExpr , ( ( Lambda ) pExpr ).getId ( ) ) ;
+    }
+    else if ( pExpr instanceof LetRec )
+    {
+      listFree = free ( pExpr , ( ( LetRec ) pExpr ).getId ( ) ) ;
+    }
+    else if ( pExpr instanceof Let )
+    {
+      listFree = free ( pExpr , ( ( Let ) pExpr ).getId ( ) ) ;
     }
     DefaultMutableTreeNode node = createNode ( pExpr.getClass ( )
         .getSimpleName ( ) , pExpr , listFree ) ;
@@ -98,6 +97,14 @@ public class AbstractSyntaxTree
       if ( e instanceof Lambda )
       {
         listFree = free ( e , ( ( Lambda ) e ).getId ( ) ) ;
+      }
+      else if ( e instanceof LetRec )
+      {
+        listFree = free ( e , ( ( LetRec ) e ).getId ( ) ) ;
+      }
+      else if ( e instanceof Let )
+      {
+        listFree = free ( e , ( ( Let ) e ).getId ( ) ) ;
       }
       DefaultMutableTreeNode child = createNode ( "e" + i ++ , e , listFree ) ;
       child.add ( exprExpression ( e ) ) ;
@@ -153,34 +160,6 @@ public class AbstractSyntaxTree
     child.add ( subchild1 ) ;
     child.add ( subchild2 ) ;
     return child ;
-  }
-
-
-  public LinkedList < Expression > free ( Expression pExpr , String id )
-  {
-    LinkedList < Expression > list = new LinkedList < Expression > ( ) ;
-    if ( pExpr instanceof Identifier )
-    {
-      if ( ( ( Identifier ) pExpr ).getName ( ).equals ( id ) )
-      {
-        list.add ( pExpr ) ;
-        return list ;
-      }
-    }
-    Enumeration < Expression > children = pExpr.children ( ) ;
-    while ( children.hasMoreElements ( ) )
-    {
-      Expression current = children.nextElement ( ) ;
-      if ( ! current.free ( ).isEmpty ( ) )
-      {
-        LinkedList < Expression > tmpList = free ( current , id ) ;
-        for ( Expression tmpExpr : tmpList )
-        {
-          list.add ( tmpExpr ) ;
-        }
-      }
-    }
-    return list ;
   }
 
 
@@ -263,65 +242,17 @@ public class AbstractSyntaxTree
 
   private DefaultMutableTreeNode exprLambda ( Lambda pExpr )
   {
-    LinkedList < Expression > list = free ( pExpr , pExpr.getId ( ) ) ;
+    LinkedList < Expression > listFree = free ( pExpr , pExpr.getId ( ) ) ;
     String id = pExpr.getId ( ) ;
     Expression e = pExpr.getE ( ) ;
-    DefaultMutableTreeNode child = createNode ( "Lamdba" , pExpr , list ) ;
+    DefaultMutableTreeNode child = createNode ( pExpr.getClass ( )
+        .getSimpleName ( ) , pExpr , listFree ) ;
     DefaultMutableTreeNode subchild1 = createNode ( "Identifier" , id , 1 , id
         .length ( ) ) ;
-    DefaultMutableTreeNode subchild2 = createNode ( "e" , e  ) ;
+    DefaultMutableTreeNode subchild2 = createNode ( "e" , e ) ;
     subchild2.add ( exprExpression ( e ) ) ;
     child.add ( subchild1 ) ;
     child.add ( subchild2 ) ;
-    return child ;
-  }
-
-
-  private DefaultMutableTreeNode exprLet ( Let pExpr )
-  {
-    String id = pExpr.getId ( ) ;
-    Expression e1 = pExpr.getE1 ( ) ;
-    Expression e2 = pExpr.getE2 ( ) ;
-    DefaultMutableTreeNode child = createNode ( "Let" , pExpr ) ;
-    DefaultMutableTreeNode subchild1 = createNode ( "Identifier" , id , 4 ,
-        3 + id.length ( ) ) ;
-    DefaultMutableTreeNode subchild2 = createNode ( "e1" , e1 ) ;
-    DefaultMutableTreeNode subchild3 = createNode ( "e2" , e2 ) ;
-    subchild2.add ( exprExpression ( e1 ) ) ;
-    subchild3.add ( exprExpression ( e2 ) ) ;
-    child.add ( subchild1 ) ;
-    child.add ( subchild2 ) ;
-    child.add ( subchild3 ) ;
-    return child ;
-  }
-
-
-  private DefaultMutableTreeNode exprLetRec ( LetRec pExpr )
-  {
-    String id = pExpr.getId ( ) ;
-    Expression e1 = pExpr.getE1 ( ) ;
-    Expression e2 = pExpr.getE2 ( ) ;
-    DefaultMutableTreeNode child = createNode ( "LetRec" , pExpr ) ;
-    DefaultMutableTreeNode subchild1 = createNode ( "Identifier" , id , 8 ,
-        7 + id.length ( ) ) ;
-    DefaultMutableTreeNode subchild2 = createNode ( "e1" , e1 ) ;
-    DefaultMutableTreeNode subchild3 = createNode ( "e2" , e2 ) ;
-    subchild2.add ( exprExpression ( e1 ) ) ;
-    subchild3.add ( exprExpression ( e2 ) ) ;
-    child.add ( subchild1 ) ;
-    child.add ( subchild2 ) ;
-    child.add ( subchild3 ) ;
-    return child ;
-  }
-
-
-  private DefaultMutableTreeNode exprLocation ( Location pExpr )
-  {
-    String name = pExpr.getName ( ) ;
-    DefaultMutableTreeNode child = createNode ( "Location" , pExpr ) ;
-    DefaultMutableTreeNode subchild1 = createNode ( "Name" , name , 0 , name
-        .length ( ) - 1 ) ;
-    child.add ( subchild1 ) ;
     return child ;
   }
 
@@ -342,6 +273,59 @@ public class AbstractSyntaxTree
     DefaultMutableTreeNode subchild2 = createNode ( "e" , e ) ;
     subchild2.add ( exprExpression ( e ) ) ;
     child.add ( subchild2 ) ;
+    return child ;
+  }
+
+
+  private DefaultMutableTreeNode exprLet ( Let pExpr )
+  {
+    LinkedList < Expression > listFree = free ( pExpr , pExpr.getId ( ) ) ;
+    String id = pExpr.getId ( ) ;
+    Expression e1 = pExpr.getE1 ( ) ;
+    Expression e2 = pExpr.getE2 ( ) ;
+    DefaultMutableTreeNode child = createNode ( pExpr.getClass ( )
+        .getSimpleName ( ) , pExpr , listFree ) ;
+    DefaultMutableTreeNode subchild1 = createNode ( "Identifier" , id , 4 ,
+        3 + id.length ( ) ) ;
+    DefaultMutableTreeNode subchild2 = createNode ( "e1" , e1 ) ;
+    DefaultMutableTreeNode subchild3 = createNode ( "e2" , e2 ) ;
+    subchild2.add ( exprExpression ( e1 ) ) ;
+    subchild3.add ( exprExpression ( e2 ) ) ;
+    child.add ( subchild1 ) ;
+    child.add ( subchild2 ) ;
+    child.add ( subchild3 ) ;
+    return child ;
+  }
+
+
+  private DefaultMutableTreeNode exprLetRec ( LetRec pExpr )
+  {
+    LinkedList < Expression > listFree = free ( pExpr , pExpr.getId ( ) ) ;
+    String id = pExpr.getId ( ) ;
+    Expression e1 = pExpr.getE1 ( ) ;
+    Expression e2 = pExpr.getE2 ( ) ;
+    DefaultMutableTreeNode child = createNode ( pExpr.getClass ( )
+        .getSimpleName ( ) , pExpr , listFree ) ;
+    DefaultMutableTreeNode subchild1 = createNode ( "Identifier" , id , 8 ,
+        7 + id.length ( ) ) ;
+    DefaultMutableTreeNode subchild2 = createNode ( "e1" , e1 ) ;
+    DefaultMutableTreeNode subchild3 = createNode ( "e2" , e2 ) ;
+    subchild2.add ( exprExpression ( e1 ) ) ;
+    subchild3.add ( exprExpression ( e2 ) ) ;
+    child.add ( subchild1 ) ;
+    child.add ( subchild2 ) ;
+    child.add ( subchild3 ) ;
+    return child ;
+  }
+
+
+  private DefaultMutableTreeNode exprLocation ( Location pExpr )
+  {
+    String name = pExpr.getName ( ) ;
+    DefaultMutableTreeNode child = createNode ( "Location" , pExpr ) ;
+    DefaultMutableTreeNode subchild1 = createNode ( "Name" , name , 0 , name
+        .length ( ) - 1 ) ;
+    child.add ( subchild1 ) ;
     return child ;
   }
 
@@ -385,10 +369,39 @@ public class AbstractSyntaxTree
   }
 
 
-  public void setExpression ( Expression pExpression )
+  public LinkedList < Expression > free ( Expression pExpr , String id )
   {
-    DefaultMutableTreeNode rootNode = createNode ( "Expression" , pExpression ) ;
-    rootNode.add ( exprExpression ( pExpression ) ) ;
+    LinkedList < Expression > list = new LinkedList < Expression > ( ) ;
+    if ( pExpr instanceof Identifier )
+    {
+      if ( ( ( Identifier ) pExpr ).getName ( ).equals ( id ) )
+      {
+        list.add ( pExpr ) ;
+        return list ;
+      }
+    }
+    Enumeration < Expression > children = pExpr.children ( ) ;
+    while ( children.hasMoreElements ( ) )
+    {
+      Expression current = children.nextElement ( ) ;
+      if ( ! current.free ( ).isEmpty ( ) )
+      {
+        LinkedList < Expression > tmpList = free ( current , id ) ;
+        for ( Expression tmpExpr : tmpList )
+        {
+          list.add ( tmpExpr ) ;
+        }
+      }
+    }
+    return list ;
+  }
+
+
+  public void setExpression ( Expression pExpr )
+  {
+    // LinkedList < Expression > listFree = free ( pExpr , pExpr.getId ( ) ) ;
+    DefaultMutableTreeNode rootNode = createNode ( "Expression" , pExpr ) ;
+    rootNode.add ( exprExpression ( pExpr ) ) ;
     this.abstractSyntaxTreeUI.setRootNode ( rootNode ) ;
     this.abstractSyntaxTreeUI.expandRow ( 0 ) ;
   }
