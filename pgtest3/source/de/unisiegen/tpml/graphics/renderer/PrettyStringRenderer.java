@@ -12,6 +12,7 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation;
 import de.unisiegen.tpml.core.prettyprinter.PrettyCharIterator;
 import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable;
 import de.unisiegen.tpml.core.prettyprinter.PrettyString;
+import de.unisiegen.tpml.graphics.components.ShowBound;
 
 
 /**
@@ -276,8 +277,9 @@ public class PrettyStringRenderer extends AbstractRenderer {
 		}
 		// now we can start to render the expression
 		PrettyCharIterator it = this.prettyString.toCharacterIterator();
+		int number=-1;
 		for (char c = it.first(); c != CharacterIterator.DONE; c = it.next(), i++) {
-		
+			number++;
 			for (int j=0; j<breakOffsets.length; j++) {
 				if (breakOffsets [j] == i) {
 					posY += AbstractRenderer.fontHeight;
@@ -286,42 +288,53 @@ public class PrettyStringRenderer extends AbstractRenderer {
 				}
 			}
 			
+			FontMetrics fm = null;
+			
 			//TODO: mach mal so, dass wenn benny was makiert, dann soll das anders werden.
-			//ShowBound sb = ShowBound.getInstance();
+			//Wenn das markiert ist, muss sich sonst niemand mehr um die Farbe kümmenr
+			
+			ShowBound sb = ShowBound.getInstance(); //gets singelton instance of showbound to show bindings
 			//Indexes indexes = sb.getIndexes();
 			//if i == get
 			
 			
-			
-			
-			
-			// select the proppert font and color for the character
-			FontMetrics fm = null;
-			switch (it.getStyle()) {
-			case NONE:
-				gc.setFont(AbstractRenderer.expFont);
-				gc.setColor(AbstractRenderer.expColor);
+			if (i == 0 || i == 3)
+			{
+				gc.setColor(Color.red);
 				fm = AbstractRenderer.expFontMetrics;
-				break;
-			case KEYWORD:
-				gc.setFont(AbstractRenderer.keywordFont);
-				gc.setColor(AbstractRenderer.keywordColor);
-				fm = AbstractRenderer.keywordFontMetrics;
-				break;
-			case CONSTANT:
-				gc.setFont(AbstractRenderer.constantFont);
-				gc.setColor(AbstractRenderer.constantColor);
-				fm = AbstractRenderer.constantFontMetrics;
-				break;
-			case COMMENT:
-				continue;
-			case TYPE:
-				gc.setFont(AbstractRenderer.typeFont);
-				gc.setColor(AbstractRenderer.typeColor);
-				fm = AbstractRenderer.typeFontMetrics;
-				break;
+				
 			}
 			
+			else
+			{
+//			 select the proppert font and color for the character
+				
+				switch (it.getStyle()) {
+				case NONE:
+					gc.setFont(AbstractRenderer.expFont);
+					gc.setColor(AbstractRenderer.expColor);
+					fm = AbstractRenderer.expFontMetrics;
+					break;
+				case KEYWORD:
+					gc.setFont(AbstractRenderer.keywordFont);
+					gc.setColor(AbstractRenderer.keywordColor);
+					fm = AbstractRenderer.keywordFontMetrics;
+					break;
+				case CONSTANT:
+					gc.setFont(AbstractRenderer.constantFont);
+					gc.setColor(AbstractRenderer.constantColor);
+					fm = AbstractRenderer.constantFontMetrics;
+					break;
+				case COMMENT:
+					continue;
+				case TYPE:
+					gc.setFont(AbstractRenderer.typeFont);
+					gc.setColor(AbstractRenderer.typeColor);
+					fm = AbstractRenderer.typeFontMetrics;
+					break;
+				}
+				
+			}
 			if (i >= underlineStart && i <= underlineEnd) {
 				// the current character is in the range, where underlining
 				// should happen
@@ -339,7 +352,6 @@ public class PrettyStringRenderer extends AbstractRenderer {
 				gc.setColor(color);
 				
 			}
-			
 			if (this.alternativeColor != null) {
 				gc.setColor(this.alternativeColor);
 			}
@@ -350,6 +362,12 @@ public class PrettyStringRenderer extends AbstractRenderer {
 			posX += fm.stringWidth("" + c);
 			
 			// go on to the next character
+
+			
+			
+			
+			
+			
 		}
 		
 		
