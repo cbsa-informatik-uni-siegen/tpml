@@ -16,7 +16,7 @@ import de.unisiegen.tpml.core.util.Environment;
 import de.unisiegen.tpml.graphics.renderer.AbstractRenderer;
 import de.unisiegen.tpml.graphics.renderer.EnvironmentRenderer;
 import de.unisiegen.tpml.graphics.renderer.PrettyStringRenderer;
-import de.unisiegen.tpml.ui.AbstractSyntaxTree;
+import de.unisiegen.tpml.ui.abstractsyntaxtree.AbstractSyntaxTree;
 
 public class CompoundExpression<S, E> extends JComponent {
 	

@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.ui ;
+package de.unisiegen.tpml.ui.abstractsyntaxtree ;
 
 
 import java.util.LinkedList ;
@@ -6,6 +6,13 @@ import javax.swing.event.TreeSelectionEvent ;
 import javax.swing.event.TreeSelectionListener ;
 import javax.swing.tree.DefaultMutableTreeNode ;
 import javax.swing.tree.TreePath ;
+import de.unisiegen.tpml.core.expressions.CurriedLet ;
+import de.unisiegen.tpml.core.expressions.CurriedLetRec ;
+import de.unisiegen.tpml.core.expressions.Lambda ;
+import de.unisiegen.tpml.core.expressions.Let ;
+import de.unisiegen.tpml.core.expressions.LetRec ;
+import de.unisiegen.tpml.core.expressions.MultiLambda ;
+import de.unisiegen.tpml.core.expressions.MultiLet ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyString ;
 
@@ -18,6 +25,20 @@ public class AbstractSyntaxTreeListener implements TreeSelectionListener
   public AbstractSyntaxTreeListener ( AbstractSyntaxTreeUI pAbstractSyntaxTreeUI )
   {
     this.abstractSyntaxTreeUI = pAbstractSyntaxTreeUI ;
+  }
+
+
+  private int childIndex ( DefaultMutableTreeNode pParent ,
+      DefaultMutableTreeNode pChild )
+  {
+    for ( int i = 0 ; i < pParent.getChildCount ( ) ; i ++ )
+    {
+      if ( pParent.getChildAt ( i ).equals ( pChild ) )
+      {
+        return i ;
+      }
+    }
+    return - 1 ;
   }
 
 
@@ -35,7 +56,7 @@ public class AbstractSyntaxTreeListener implements TreeSelectionListener
   {
     AbstractSyntaxTreeNode abstractSyntaxTreeNode = ( AbstractSyntaxTreeNode ) pNode
         .getUserObject ( ) ;
-    abstractSyntaxTreeNode.resetHtml ( ) ;
+    abstractSyntaxTreeNode.resetCaption ( ) ;
     this.abstractSyntaxTreeUI.nodeChanged ( pNode ) ;
     for ( int i = 0 ; i < pNode.getChildCount ( ) ; i ++ )
     {
@@ -46,7 +67,6 @@ public class AbstractSyntaxTreeListener implements TreeSelectionListener
 
   public void valueChanged ( TreeSelectionEvent pEvent )
   {
-    // TreePath treePath = pEvent.getNewLeadSelectionPath ( ) ;
     TreePath treePath = pEvent.getPath ( ) ;
     if ( treePath == null )
     {
@@ -79,9 +99,24 @@ public class AbstractSyntaxTreeListener implements TreeSelectionListener
             .toPrettyString ( ) ;
         PrettyAnnotation prettyAnnotation = prettyString
             .getAnnotationForPrintable ( secondlast.getExpression ( ) ) ;
-        list.get ( i ).updateHtml (
+        int childIndex = childIndex ( ( DefaultMutableTreeNode ) treePath
+            .getPath ( ) [ treePath.getPathCount ( ) - 2 ] ,
+            ( DefaultMutableTreeNode ) treePath.getPath ( ) [ treePath
+                .getPathCount ( ) - 1 ] ) ;
+        if ( ! ( secondlast.getExpression ( ) instanceof Lambda )
+            && ! ( secondlast.getExpression ( ) instanceof MultiLambda )
+            && ! ( secondlast.getExpression ( ) instanceof MultiLet )
+            && ! ( secondlast.getExpression ( ) instanceof LetRec )
+            && ! ( secondlast.getExpression ( ) instanceof Let )
+            && ! ( secondlast.getExpression ( ) instanceof CurriedLetRec )
+            && ! ( secondlast.getExpression ( ) instanceof CurriedLet ) )
+        {
+          childIndex = - 1 ;
+        }
+        list.get ( i ).updateCaption (
             prettyAnnotation.getStartOffset ( ) + last.getStartIndex ( ) ,
-            prettyAnnotation.getStartOffset ( ) + last.getEndIndex ( ) , true ) ;
+            prettyAnnotation.getStartOffset ( ) + last.getEndIndex ( ) ,
+            childIndex ) ;
       }
     }
     // Expression
@@ -93,8 +128,8 @@ public class AbstractSyntaxTreeListener implements TreeSelectionListener
             .toPrettyString ( ) ;
         PrettyAnnotation prettyAnnotation = prettyString
             .getAnnotationForPrintable ( last.getExpression ( ) ) ;
-        list.get ( i ).updateHtml ( prettyAnnotation.getStartOffset ( ) ,
-            prettyAnnotation.getEndOffset ( ) , false ) ;
+        list.get ( i ).updateCaption ( prettyAnnotation.getStartOffset ( ) ,
+            prettyAnnotation.getEndOffset ( ) , - 1 ) ;
       }
     }
     repaint ( ( DefaultMutableTreeNode ) treePath.getPath ( ) [ 0 ] ) ;

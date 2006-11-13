@@ -1,12 +1,12 @@
-package de.unisiegen.tpml.ui ;
+package de.unisiegen.tpml.ui.abstractsyntaxtree ;
 
 
 import java.awt.Color ;
-import java.util.LinkedList ;
 import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.expressions.Lambda ;
 import de.unisiegen.tpml.core.expressions.Let ;
 import de.unisiegen.tpml.core.expressions.LetRec ;
+import de.unisiegen.tpml.core.expressions.MultiLet ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyCharIterator ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyString ;
@@ -49,13 +49,13 @@ public class AbstractSyntaxTreeNode
   private int endIndex ;
 
 
-  private LinkedList < Expression > relations ;
+  private AbstractSyntaxTreeFree relations = null ;
 
 
   private Color SELECTED = new Color ( 255 , 0 , 0 ) ;
 
 
-  private Color BINDING = new Color ( 255 , 127 , 127 ) ;
+  private Color BINDING = new Color ( 255 , 150 , 150 ) ;
 
 
   public AbstractSyntaxTreeNode ( String pDescription , Expression pExpression )
@@ -65,12 +65,12 @@ public class AbstractSyntaxTreeNode
     this.expression = pExpression ;
     this.startIndex = - 1 ;
     this.endIndex = - 1 ;
-    resetHtml ( ) ;
+    resetCaption ( ) ;
   }
 
 
   public AbstractSyntaxTreeNode ( String pDescription , Expression pExpression ,
-      LinkedList < Expression > pRelations )
+      AbstractSyntaxTreeFree pRelations )
   {
     this.description = pDescription ;
     this.name = pExpression.toPrettyString ( ).toString ( ) ;
@@ -78,7 +78,7 @@ public class AbstractSyntaxTreeNode
     this.startIndex = - 1 ;
     this.endIndex = - 1 ;
     this.relations = pRelations ;
-    resetHtml ( ) ;
+    resetCaption ( ) ;
   }
 
 
@@ -90,7 +90,7 @@ public class AbstractSyntaxTreeNode
     this.expression = null ;
     this.startIndex = pStart ;
     this.endIndex = pEnd ;
-    resetHtml ( ) ;
+    resetCaption ( ) ;
   }
 
 
@@ -144,7 +144,26 @@ public class AbstractSyntaxTreeNode
   }
 
 
-  public void resetHtml ( )
+  private boolean isInList ( int pList , int pIndex )
+  {
+    if ( this.relations == null ) return false ;
+    for ( int i = 0 ; i < this.relations.get ( pList ).size ( ) ; i ++ )
+    {
+      Expression e = ( Expression ) this.relations.get ( pList ).get ( i ) ;
+      PrettyString prettyString = this.expression.toPrettyString ( ) ;
+      PrettyAnnotation prettyAnnotation = prettyString
+          .getAnnotationForPrintable ( e ) ;
+      if ( ( pIndex >= prettyAnnotation.getStartOffset ( ) )
+          && ( pIndex <= prettyAnnotation.getEndOffset ( ) ) )
+      {
+        return true ;
+      }
+    }
+    return false ;
+  }
+
+
+  public void resetCaption ( )
   {
     if ( this.expression == null )
     {
@@ -161,7 +180,7 @@ public class AbstractSyntaxTreeNode
     }
     else
     {
-      updateHtml ( - 1 , - 1 , false ) ;
+      updateCaption ( - 1 , - 1 , - 1 ) ;
     }
   }
 
@@ -172,26 +191,8 @@ public class AbstractSyntaxTreeNode
   }
 
 
-  private boolean isInList ( int pIndex )
-  {
-    if ( this.relations == null ) return false ;
-    for ( Expression e : this.relations )
-    {
-      PrettyString prettyString = this.expression.toPrettyString ( ) ;
-      PrettyAnnotation prettyAnnotation = prettyString
-          .getAnnotationForPrintable ( e ) ;
-      if ( ( pIndex >= prettyAnnotation.getStartOffset ( ) )
-          && ( pIndex <= prettyAnnotation.getEndOffset ( ) ) )
-      {
-        return true ;
-      }
-    }
-    return false ;
-  }
-
-
-  public void updateHtml ( int pSelectionStart , int pSelectionEnd ,
-      boolean pPrintBindings )
+  public void updateCaption ( int pSelectionStart , int pSelectionEnd ,
+      int pPrintBindings )
   {
     PrettyCharIterator p = this.expression.toPrettyString ( )
         .toCharacterIterator ( ) ;
@@ -221,11 +222,13 @@ public class AbstractSyntaxTreeNode
         result.append ( "</font></b>" ) ;
       }
       // Binding
-      else if ( ( this.relations != null ) && ( isInList ( index ) )
-          && ( pPrintBindings ) )
+      else if ( ( this.relations != null ) && ( pPrintBindings >= 0 )
+          && ( this.relations.size ( ) > pPrintBindings )
+          && ( this.relations.get ( pPrintBindings ) != null )
+          && ( isInList ( pPrintBindings , index ) ) )
       {
         result.append ( "<b><font color=\"#" + getHex ( BINDING ) + "\">" ) ;
-        while ( isInList ( index ) )
+        while ( isInList ( pPrintBindings , index ) )
         {
           result.append ( this.name.charAt ( index ) ) ;
           index ++ ;
@@ -236,7 +239,7 @@ public class AbstractSyntaxTreeNode
       // Binding - Lambda
       else if ( ( this.expression != null )
           && ( this.expression instanceof Lambda ) && ( index == 1 )
-          && ( pPrintBindings ) )
+          && ( pPrintBindings >= 0 ) )
       {
         Lambda l = ( Lambda ) this.expression ;
         result.append ( "<b><font color=\"#" + getHex ( BINDING ) + "\">" ) ;
@@ -252,7 +255,8 @@ public class AbstractSyntaxTreeNode
       }
       // Binding - LetRec
       else if ( ( this.expression != null )
-          && ( this.expression instanceof LetRec ) && ( index == 8 ) )
+          && ( this.expression instanceof LetRec ) && ( index == 8 )
+          && ( pPrintBindings >= 0 ) )
       {
         LetRec l = ( LetRec ) this.expression ;
         result.append ( "<b><font color=\"#" + getHex ( BINDING ) + "\">" ) ;
@@ -269,12 +273,30 @@ public class AbstractSyntaxTreeNode
       // Binding - Let
       else if ( ( this.expression != null )
           && ( this.expression instanceof Let )
-          && ( ! ( this.expression instanceof LetRec ) ) && ( index == 4 ) )
+          && ( ! ( this.expression instanceof LetRec ) ) && ( index == 4 )
+          && ( pPrintBindings >= 0 ) )
       {
         Let l = ( Let ) this.expression ;
         result.append ( "<b><font color=\"#" + getHex ( BINDING ) + "\">" ) ;
         int j = 0 ;
         while ( j < l.getId ( ).length ( ) )
+        {
+          result.append ( this.name.charAt ( index ) ) ;
+          index ++ ;
+          j ++ ;
+          p.next ( ) ;
+        }
+        result.append ( "</font></b>" ) ;
+      }
+      // Binding - MultiLet
+      else if ( ( this.expression != null )
+          && ( this.expression instanceof MultiLet ) && ( index == 4 )
+          && ( pPrintBindings >= 0 ) )
+      {
+        MultiLet l = ( MultiLet ) this.expression ;
+        result.append ( "<b><font color=\"#" + getHex ( BINDING ) + "\">" ) ;
+        int j = 0 ;
+        while ( j < l.getIdentifiers ( pPrintBindings ).length ( ) )
         {
           result.append ( this.name.charAt ( index ) ) ;
           index ++ ;

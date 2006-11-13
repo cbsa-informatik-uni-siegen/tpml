@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.ui ;
+package de.unisiegen.tpml.ui.abstractsyntaxtree ;
 
 
 import java.awt.Color ;
@@ -87,18 +87,6 @@ public class AbstractSyntaxTreeUI
   }
 
 
-  public JTree getJAbstractSyntaxTree ( )
-  {
-    return jTreeAbstractSyntax ;
-  }
-
-
-  public void nodeChanged ( DefaultMutableTreeNode pNode )
-  {
-    this.treeModel.nodeChanged ( pNode ) ;
-  }
-
-
   public void appendNode ( DefaultMutableTreeNode pChild ,
       DefaultMutableTreeNode pParent )
   {
@@ -110,6 +98,18 @@ public class AbstractSyntaxTreeUI
   public void expandRow ( int pIndex )
   {
     this.jTreeAbstractSyntax.expandRow ( pIndex ) ;
+  }
+
+
+  public JTree getJAbstractSyntaxTree ( )
+  {
+    return jTreeAbstractSyntax ;
+  }
+
+
+  public void nodeChanged ( DefaultMutableTreeNode pNode )
+  {
+    this.treeModel.nodeChanged ( pNode ) ;
   }
 
 
