@@ -2,6 +2,7 @@ package de.unisiegen.tpml.graphics.components;
 
 import java.util.Enumeration;
 import java.util.LinkedList;
+import java.util.Vector;
 
 import de.unisiegen.tpml.core.expressions.Application;
 import de.unisiegen.tpml.core.expressions.Expression;
@@ -13,11 +14,12 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyString;
 
 public class ShowBound
 {
-	// TODO
-	int count = 0;
-	static Expression holeExpression;
 
+	
+	static Expression holeExpression;
+	
 	private static ShowBound bound = null;
+	private static LinkedList<PrettyAnnotation> tmp = new LinkedList();
 
 	public static ShowBound getInstance()
 	{
@@ -119,9 +121,7 @@ public class ShowBound
 	
 	public void childCheck(Enumeration child, LinkedList e2, Expression pE)
 	{
-		count++;
-		// Prints number off call
-		// System.err.println(count + ". Aufruf");
+			
 
 		while (child.hasMoreElements())
 		{
@@ -135,18 +135,23 @@ public class ShowBound
 				{
 
 					Identifier id = (Identifier) actualExpression;
-
+				
 					for (int i = 0; i < e2.size(); i++)
 					{
-
+						
 						if (id.getName().equals(e2.get(i)))
 						{
+							
 							PrettyString ps1 = holeExpression.toPrettyString();
 							PrettyAnnotation mark1 = ps1.getAnnotationForPrintable(pE);
 							PrettyAnnotation mark2 = ps1.getAnnotationForPrintable(id);
 
+							tmp.add(mark1);
+							tmp.add(mark2);
+							
 							int start = mark1.getStartOffset() + 1;
 							int length = mark1.getStartOffset() + id.toString().length();
+							
 
 							System.err.println("Für den Identifier: Startoffset: " + start
 									+ "Endoffset" + length);
@@ -163,9 +168,41 @@ public class ShowBound
 
 		}
 	}
+	
+
+	public LinkedList getAnnotations()
+	{
+		boolean found=false;
+		
+		LinkedList<Bound> result = new LinkedList();
+		for (int i=0; i<tmp.size();i=i+2)
+		{
+			found=false;
+			for (int j=0; j<result.size();j++ )
+			{
+				if (tmp.get(i).getStartOffset()== result.get(j).startOffset)
+				{
+					result.get(j).marks.add(tmp.get(i+1));
+					found=true;
+				}
+			}
+			if (!found)
+			{
+				Bound listIt = new Bound(tmp.get(i).getStartOffset(),tmp.get(i).getEndOffset());
+				listIt.marks.add(tmp.get(i+1));
+				result.add(listIt);
+				
+			}
+		}
+		
+		return result;
+	}
 
 	public static void setHoleExpression(Expression holeExpression)
 	{
 		ShowBound.holeExpression = holeExpression;
+		tmp=new LinkedList();
 	}
 }
+
+
