@@ -1,52 +1,22 @@
 package de.unisiegen.tpml.ui ;
 
 
+import java.util.Enumeration ;
+import java.util.LinkedList ;
 import javax.swing.tree.DefaultMutableTreeNode ;
-import de.unisiegen.tpml.core.expressions.And ;
-import de.unisiegen.tpml.core.expressions.Application ;
-import de.unisiegen.tpml.core.expressions.ArithmeticOperator ;
-import de.unisiegen.tpml.core.expressions.Assign ;
-import de.unisiegen.tpml.core.expressions.BinaryCons ;
 import de.unisiegen.tpml.core.expressions.BinaryOperator ;
-import de.unisiegen.tpml.core.expressions.BooleanConstant ;
-import de.unisiegen.tpml.core.expressions.Condition ;
-import de.unisiegen.tpml.core.expressions.Condition1 ;
-import de.unisiegen.tpml.core.expressions.Constant ;
 import de.unisiegen.tpml.core.expressions.CurriedLet ;
 import de.unisiegen.tpml.core.expressions.CurriedLetRec ;
-import de.unisiegen.tpml.core.expressions.Deref ;
-import de.unisiegen.tpml.core.expressions.EmptyList ;
-import de.unisiegen.tpml.core.expressions.Exn ;
 import de.unisiegen.tpml.core.expressions.Expression ;
-import de.unisiegen.tpml.core.expressions.Fst ;
-import de.unisiegen.tpml.core.expressions.Hd ;
 import de.unisiegen.tpml.core.expressions.Identifier ;
 import de.unisiegen.tpml.core.expressions.InfixOperation ;
-import de.unisiegen.tpml.core.expressions.IntegerConstant ;
-import de.unisiegen.tpml.core.expressions.IsEmpty ;
 import de.unisiegen.tpml.core.expressions.Lambda ;
 import de.unisiegen.tpml.core.expressions.Let ;
 import de.unisiegen.tpml.core.expressions.LetRec ;
-import de.unisiegen.tpml.core.expressions.List ;
 import de.unisiegen.tpml.core.expressions.Location ;
 import de.unisiegen.tpml.core.expressions.MultiLambda ;
 import de.unisiegen.tpml.core.expressions.MultiLet ;
-import de.unisiegen.tpml.core.expressions.Not ;
-import de.unisiegen.tpml.core.expressions.Or ;
-import de.unisiegen.tpml.core.expressions.Projection ;
 import de.unisiegen.tpml.core.expressions.Recursion ;
-import de.unisiegen.tpml.core.expressions.Ref ;
-import de.unisiegen.tpml.core.expressions.RelationalOperator ;
-import de.unisiegen.tpml.core.expressions.Sequence ;
-import de.unisiegen.tpml.core.expressions.Snd ;
-import de.unisiegen.tpml.core.expressions.Tl ;
-import de.unisiegen.tpml.core.expressions.Tuple ;
-import de.unisiegen.tpml.core.expressions.UnaryCons ;
-import de.unisiegen.tpml.core.expressions.UnaryListOperator ;
-import de.unisiegen.tpml.core.expressions.UnaryOperator ;
-import de.unisiegen.tpml.core.expressions.UnitConstant ;
-import de.unisiegen.tpml.core.expressions.Value ;
-import de.unisiegen.tpml.core.expressions.While ;
 
 
 public class AbstractSyntaxTree
@@ -86,6 +56,14 @@ public class AbstractSyntaxTree
 
 
   private DefaultMutableTreeNode createNode ( String pDescription ,
+      Expression pExpr , LinkedList < Expression > pRelations )
+  {
+    return new DefaultMutableTreeNode ( new AbstractSyntaxTreeNode (
+        pDescription , pExpr , pRelations ) ) ;
+  }
+
+
+  private DefaultMutableTreeNode createNode ( String pDescription ,
       String pName , int pStart , int pEnd )
   {
     return new DefaultMutableTreeNode ( new AbstractSyntaxTreeNode (
@@ -93,106 +71,39 @@ public class AbstractSyntaxTree
   }
 
 
-  private DefaultMutableTreeNode exprAnd ( And pExpr )
+  private DefaultMutableTreeNode createNode ( String pDescription ,
+      String pName , int pStart , int pEnd ,
+      LinkedList < Expression > pRelations )
   {
-    Expression e1 = pExpr.getE1 ( ) ;
-    Expression e2 = pExpr.getE2 ( ) ;
-    DefaultMutableTreeNode child = createNode ( "And" , pExpr ) ;
-    DefaultMutableTreeNode subchild1 = createNode ( "e1" , e1 ) ;
-    DefaultMutableTreeNode subchild2 = createNode ( "e2" , e2 ) ;
-    subchild1.add ( exprExpression ( e1 ) ) ;
-    subchild2.add ( exprExpression ( e2 ) ) ;
-    child.add ( subchild1 ) ;
-    child.add ( subchild2 ) ;
-    return child ;
+    return new DefaultMutableTreeNode ( new AbstractSyntaxTreeNode (
+        pDescription , pName , pStart , pEnd , pRelations ) ) ;
   }
 
 
-  private DefaultMutableTreeNode exprApplication ( Application pExpr )
+  private DefaultMutableTreeNode exprChilds ( Expression pExpr )
   {
-    Expression e1 = pExpr.getE1 ( ) ;
-    Expression e2 = pExpr.getE2 ( ) ;
-    DefaultMutableTreeNode child = createNode ( "Application" , pExpr ) ;
-    DefaultMutableTreeNode subchild1 = createNode ( "e1" , e1 ) ;
-    DefaultMutableTreeNode subchild2 = createNode ( "e2" , e2 ) ;
-    subchild1.add ( exprExpression ( e1 ) ) ;
-    subchild2.add ( exprExpression ( e2 ) ) ;
-    child.add ( subchild1 ) ;
-    child.add ( subchild2 ) ;
-    return child ;
-  }
-
-
-  private DefaultMutableTreeNode exprArithmeticOperator (
-      ArithmeticOperator pExpr )
-  {
-    return createNode ( "ArithmeticOperator" , pExpr ) ;
-  }
-
-
-  private DefaultMutableTreeNode exprAssign ( Assign pExpr )
-  {
-    return createNode ( "Assign" , pExpr ) ;
-  }
-
-
-  private DefaultMutableTreeNode exprBinaryCons ( BinaryCons pExpr )
-  {
-    return createNode ( "BinaryCons" , pExpr ) ;
-  }
-
-
-  private DefaultMutableTreeNode exprBinaryOperator ( BinaryOperator pExpr )
-  {
-    return createNode ( "BinaryOperator" , pExpr ) ;
-  }
-
-
-  private DefaultMutableTreeNode exprBooleanConstant ( BooleanConstant pExpr )
-  {
-    return createNode ( "BooleanConstant" , pExpr ) ;
-  }
-
-
-  private DefaultMutableTreeNode exprCondition ( Condition pExpr )
-  {
-    Expression e0 = pExpr.getE0 ( ) ;
-    Expression e1 = pExpr.getE1 ( ) ;
-    Expression e2 = pExpr.getE2 ( ) ;
-    // Child
-    DefaultMutableTreeNode child = createNode ( "Condition" , pExpr ) ;
-    // Subchild 1
-    DefaultMutableTreeNode subchild0 = createNode ( "e0" , e0 ) ;
-    DefaultMutableTreeNode subchild1 = createNode ( "e1" , e1 ) ;
-    DefaultMutableTreeNode subchild2 = createNode ( "e2" , e2 ) ;
-    subchild0.add ( exprExpression ( e0 ) ) ;
-    subchild1.add ( exprExpression ( e1 ) ) ;
-    subchild2.add ( exprExpression ( e2 ) ) ;
-    child.add ( subchild0 ) ;
-    child.add ( subchild1 ) ;
-    child.add ( subchild2 ) ;
-    return child ;
-  }
-
-
-  private DefaultMutableTreeNode exprCondition1 ( Condition1 pExpr )
-  {
-    Expression e0 = pExpr.getE0 ( ) ;
-    Expression e1 = pExpr.getE1 ( ) ;
-    DefaultMutableTreeNode child = createNode ( "Condition1" , pExpr ) ;
-    DefaultMutableTreeNode subchild1 = createNode ( "e0" , e0 ) ;
-    DefaultMutableTreeNode subchild2 = createNode ( "e1" , e1 ) ;
-    subchild1.add ( exprExpression ( e0 ) ) ;
-    subchild2.add ( exprExpression ( e1 ) ) ;
-    child.add ( subchild1 ) ;
-    child.add ( subchild2 ) ;
-    return child ;
-  }
-
-
-  private DefaultMutableTreeNode exprConstant ( Constant pExpr )
-  {
-    return createNode ( "Constant" , pExpr ) ;
+    LinkedList < Expression > listFree = null ;
+    if ( pExpr instanceof Lambda )
+    {
+      listFree = free ( pExpr , ( ( Lambda ) pExpr ).getId ( ) ) ;
+    }
+    DefaultMutableTreeNode node = createNode ( pExpr.getClass ( )
+        .getSimpleName ( ) , pExpr , listFree ) ;
+    Enumeration < Expression > list = pExpr.children ( ) ;
+    int i = 0 ;
+    while ( list.hasMoreElements ( ) )
+    {
+      Expression e = list.nextElement ( ) ;
+      listFree = null ;
+      if ( e instanceof Lambda )
+      {
+        listFree = free ( e , ( ( Lambda ) e ).getId ( ) ) ;
+      }
+      DefaultMutableTreeNode child = createNode ( "e" + i ++ , e , listFree ) ;
+      child.add ( exprExpression ( e ) ) ;
+      node.add ( child ) ;
+    }
+    return node ;
   }
 
 
@@ -245,143 +156,38 @@ public class AbstractSyntaxTree
   }
 
 
-  private DefaultMutableTreeNode exprDeref ( Deref pExpr )
+  public LinkedList < Expression > free ( Expression pExpr , String id )
   {
-    return createNode ( "Deref" , pExpr ) ;
-  }
-
-
-  private DefaultMutableTreeNode exprEmptyList ( EmptyList pExpr )
-  {
-    return createNode ( "EmptyList" , pExpr ) ;
-  }
-
-
-  private DefaultMutableTreeNode exprExn ( Exn pExpr )
-  {
-    return createNode ( "Exn" , pExpr ) ;
+    LinkedList < Expression > list = new LinkedList < Expression > ( ) ;
+    if ( pExpr instanceof Identifier )
+    {
+      if ( ( ( Identifier ) pExpr ).getName ( ).equals ( id ) )
+      {
+        list.add ( pExpr ) ;
+        return list ;
+      }
+    }
+    Enumeration < Expression > children = pExpr.children ( ) ;
+    while ( children.hasMoreElements ( ) )
+    {
+      Expression current = children.nextElement ( ) ;
+      if ( ! current.free ( ).isEmpty ( ) )
+      {
+        LinkedList < Expression > tmpList = free ( current , id ) ;
+        for ( Expression tmpExpr : tmpList )
+        {
+          list.add ( tmpExpr ) ;
+        }
+      }
+    }
+    return list ;
   }
 
 
   private DefaultMutableTreeNode exprExpression ( Expression pExpr )
   {
-    // Value - Constant - BinaryOperator - ArithmeticOperator
-    if ( pExpr instanceof ArithmeticOperator )
-    {
-      return exprArithmeticOperator ( ( ArithmeticOperator ) pExpr ) ;
-    }
-    // Value - Constant - BinaryOperator - Assign
-    else if ( pExpr instanceof Assign )
-    {
-      return exprAssign ( ( Assign ) pExpr ) ;
-    }
-    // Value - Constant - BinaryOperator - BinaryCons
-    else if ( pExpr instanceof BinaryCons )
-    {
-      return exprBinaryCons ( ( BinaryCons ) pExpr ) ;
-    }
-    // Value - Constant - BinaryOperator - RelationalOperator
-    else if ( pExpr instanceof RelationalOperator )
-    {
-      return exprRelationalOperator ( ( RelationalOperator ) pExpr ) ;
-    }
-    // Value - Constant - BinaryOperator
-    else if ( pExpr instanceof BinaryOperator )
-    {
-      return exprBinaryOperator ( ( BinaryOperator ) pExpr ) ;
-    }
-    // Value - Constant - UnaryOperator - UnaryListOperator - Hd
-    else if ( pExpr instanceof Hd )
-    {
-      return exprHd ( ( Hd ) pExpr ) ;
-    }
-    // Value - Constant - UnaryOperator - UnaryListOperator - Tl
-    else if ( pExpr instanceof Tl )
-    {
-      return exprTl ( ( Tl ) pExpr ) ;
-    }
-    // Value - Constant - UnaryOperator - UnaryListOperator - IsEmpty
-    else if ( pExpr instanceof IsEmpty )
-    {
-      return exprIsEmpty ( ( IsEmpty ) pExpr ) ;
-    }
-    // Value - Constant - UnaryOperator - UnaryListOperator
-    else if ( pExpr instanceof UnaryListOperator )
-    {
-      return exprUnaryListOperator ( ( UnaryListOperator ) pExpr ) ;
-    }
-    // Value - Constant - UnaryOperator - Projection - Fst
-    else if ( pExpr instanceof Fst )
-    {
-      return exprFst ( ( Fst ) pExpr ) ;
-    }
-    // Value - Constant - UnaryOperator - Projection - Snd
-    else if ( pExpr instanceof Snd )
-    {
-      return exprSnd ( ( Snd ) pExpr ) ;
-    }
-    // Value - Constant - UnaryOperator - Projection
-    else if ( pExpr instanceof Projection )
-    {
-      return exprProjection ( ( Projection ) pExpr ) ;
-    }
-    // Value - Constant - UnaryOperator - Ref
-    else if ( pExpr instanceof Ref )
-    {
-      return exprRef ( ( Ref ) pExpr ) ;
-    }
-    // Value - Constant - UnaryOperator - Deref
-    else if ( pExpr instanceof Deref )
-    {
-      return exprDeref ( ( Deref ) pExpr ) ;
-    }
-    // Value - Constant - UnaryOperator - Not
-    else if ( pExpr instanceof Not )
-    {
-      return exprNot ( ( Not ) pExpr ) ;
-    }
-    // Value - Constant - UnaryOperator
-    else if ( pExpr instanceof UnaryOperator )
-    {
-      return exprUnaryOperator ( ( UnaryOperator ) pExpr ) ;
-    }
-    // Value - Constant - UnaryCons
-    else if ( pExpr instanceof UnaryCons )
-    {
-      return exprUnaryCons ( ( UnaryCons ) pExpr ) ;
-    }
-    // Value - Constant - IntegerConstant
-    else if ( pExpr instanceof IntegerConstant )
-    {
-      return exprIntegerConstant ( ( IntegerConstant ) pExpr ) ;
-    }
-    // Value - Constant - BooleanConstant
-    else if ( pExpr instanceof BooleanConstant )
-    {
-      return exprBooleanConstant ( ( BooleanConstant ) pExpr ) ;
-    }
-    // Value - Constant - UnitConstant
-    else if ( pExpr instanceof UnitConstant )
-    {
-      return exprUnitConstant ( ( UnitConstant ) pExpr ) ;
-    }
-    // Value - Constant - EmptyList
-    else if ( pExpr instanceof EmptyList )
-    {
-      return exprEmptyList ( ( EmptyList ) pExpr ) ;
-    }
-    // Value - Constant
-    else if ( pExpr instanceof Constant )
-    {
-      return exprConstant ( ( Constant ) pExpr ) ;
-    }
-    // Value - Identifier
-    else if ( pExpr instanceof Identifier )
-    {
-      return exprIdentifier ( ( Identifier ) pExpr ) ;
-    }
     // Value - MultiLambda
-    else if ( pExpr instanceof MultiLambda )
+    if ( pExpr instanceof MultiLambda )
     {
       return exprLultiLambda ( ( MultiLambda ) pExpr ) ;
     }
@@ -390,20 +196,10 @@ public class AbstractSyntaxTree
     {
       return exprLambda ( ( Lambda ) pExpr ) ;
     }
-    // Value - Sequence
-    else if ( pExpr instanceof Sequence )
-    {
-      return exprSequence ( ( Sequence ) pExpr ) ;
-    }
     // Value - Location
     else if ( pExpr instanceof Location )
     {
       return exprLocation ( ( Location ) pExpr ) ;
-    }
-    // Value
-    else if ( pExpr instanceof Value )
-    {
-      return exprValue ( ( Value ) pExpr ) ;
     }
     // Let - LetRec
     else if ( pExpr instanceof LetRec )
@@ -425,11 +221,6 @@ public class AbstractSyntaxTree
     {
       return exprCurriedLet ( ( CurriedLet ) pExpr ) ;
     }
-    // Application
-    else if ( pExpr instanceof Application )
-    {
-      return exprApplication ( ( Application ) pExpr ) ;
-    }
     // MultiLet
     else if ( pExpr instanceof MultiLet )
     {
@@ -445,65 +236,7 @@ public class AbstractSyntaxTree
     {
       return exprInfixOperation ( ( InfixOperation ) pExpr ) ;
     }
-    // Condition
-    else if ( pExpr instanceof Condition )
-    {
-      return exprCondition ( ( Condition ) pExpr ) ;
-    }
-    // Condition1
-    else if ( pExpr instanceof Condition1 )
-    {
-      return exprCondition1 ( ( Condition1 ) pExpr ) ;
-    }
-    // And
-    else if ( pExpr instanceof And )
-    {
-      return exprAnd ( ( And ) pExpr ) ;
-    }
-    // Or
-    else if ( pExpr instanceof Or )
-    {
-      return exprOr ( ( Or ) pExpr ) ;
-    }
-    // Tuple
-    else if ( pExpr instanceof Tuple )
-    {
-      return exprTuple ( ( Tuple ) pExpr ) ;
-    }
-    // List
-    else if ( pExpr instanceof List )
-    {
-      return exprList ( ( List ) pExpr ) ;
-    }
-    // While
-    else if ( pExpr instanceof While )
-    {
-      return exprWhile ( ( While ) pExpr ) ;
-    }
-    // Exn
-    else if ( pExpr instanceof Exn )
-    {
-      return exprExn ( ( Exn ) pExpr ) ;
-    }
-    return exprUnknown ( pExpr ) ;
-  }
-
-
-  private DefaultMutableTreeNode exprFst ( Fst pExpr )
-  {
-    return createNode ( "Fst" , pExpr ) ;
-  }
-
-
-  private DefaultMutableTreeNode exprHd ( Hd pExpr )
-  {
-    return createNode ( "Hd" , pExpr ) ;
-  }
-
-
-  private DefaultMutableTreeNode exprIdentifier ( Identifier pExpr )
-  {
-    return createNode ( "Identifier" , pExpr ) ;
+    return exprChilds ( pExpr ) ;
   }
 
 
@@ -512,65 +245,31 @@ public class AbstractSyntaxTree
     Expression e1 = pExpr.getE1 ( ) ;
     Expression e2 = pExpr.getE2 ( ) ;
     BinaryOperator b = pExpr.getOp ( ) ;
-    // Child
-    DefaultMutableTreeNode child = createNode ( "InfixOperation" , pExpr ) ;
-    // Subchild 1
+    DefaultMutableTreeNode node = createNode ( "InfixOperation" , pExpr ) ;
     DefaultMutableTreeNode subchild1 = createNode ( "e1" , e1 ) ;
-    subchild1.add ( exprExpression ( e1 ) ) ;
-    child.add ( subchild1 ) ;
-    DefaultMutableTreeNode subchild2 ;
-    String name ;
-    if ( b instanceof ArithmeticOperator )
-    {
-      name = "ArithmeticOperator" ;
-    }
-    else if ( b instanceof RelationalOperator )
-    {
-      name = "RelationalOperator" ;
-    }
-    else if ( b instanceof BinaryCons )
-    {
-      name = "BinaryCons" ;
-    }
-    else if ( b instanceof Assign )
-    {
-      name = "Assign" ;
-    }
-    else
-    {
-      name = "BinaryOperator" ;
-    }
-    subchild2 = createNode ( name , b.toString ( ) , e1.toPrettyString ( )
-        .toString ( ).length ( ) , e1.toPrettyString ( ).toString ( ).length ( )
+    DefaultMutableTreeNode subchild2 = createNode ( b.getClass ( )
+        .getSimpleName ( ) , b.toString ( ) , e1.toPrettyString ( ).toString ( )
+        .length ( ) , e1.toPrettyString ( ).toString ( ).length ( )
         + b.toString ( ).length ( ) ) ;
-    child.add ( subchild2 ) ;
     DefaultMutableTreeNode subchild3 = createNode ( "e2" , e2 ) ;
+    subchild1.add ( exprExpression ( e1 ) ) ;
     subchild3.add ( exprExpression ( e2 ) ) ;
-    child.add ( subchild3 ) ;
-    return child ;
-  }
-
-
-  private DefaultMutableTreeNode exprIntegerConstant ( IntegerConstant pExpr )
-  {
-    return createNode ( "IntegerConstant" , pExpr ) ;
-  }
-
-
-  private DefaultMutableTreeNode exprIsEmpty ( IsEmpty pExpr )
-  {
-    return createNode ( "IsEmpty" , pExpr ) ;
+    node.add ( subchild1 ) ;
+    node.add ( subchild2 ) ;
+    node.add ( subchild3 ) ;
+    return node ;
   }
 
 
   private DefaultMutableTreeNode exprLambda ( Lambda pExpr )
   {
+    LinkedList < Expression > list = free ( pExpr , pExpr.getId ( ) ) ;
     String id = pExpr.getId ( ) ;
     Expression e = pExpr.getE ( ) ;
-    DefaultMutableTreeNode child = createNode ( "Lamdba" , pExpr ) ;
+    DefaultMutableTreeNode child = createNode ( "Lamdba" , pExpr , list ) ;
     DefaultMutableTreeNode subchild1 = createNode ( "Identifier" , id , 1 , id
         .length ( ) ) ;
-    DefaultMutableTreeNode subchild2 = createNode ( "e" , e ) ;
+    DefaultMutableTreeNode subchild2 = createNode ( "e" , e  ) ;
     subchild2.add ( exprExpression ( e ) ) ;
     child.add ( subchild1 ) ;
     child.add ( subchild2 ) ;
@@ -612,20 +311,6 @@ public class AbstractSyntaxTree
     child.add ( subchild1 ) ;
     child.add ( subchild2 ) ;
     child.add ( subchild3 ) ;
-    return child ;
-  }
-
-
-  private DefaultMutableTreeNode exprList ( List pExpr )
-  {
-    Expression [ ] e = pExpr.getExpressions ( ) ;
-    DefaultMutableTreeNode child = createNode ( "List" , pExpr ) ;
-    for ( int i = 0 ; i < e.length ; i ++ )
-    {
-      DefaultMutableTreeNode subchild = createNode ( "e" + i , e [ i ] ) ;
-      subchild.add ( exprExpression ( e [ i ] ) ) ;
-      child.add ( subchild ) ;
-    }
     return child ;
   }
 
@@ -685,33 +370,6 @@ public class AbstractSyntaxTree
   }
 
 
-  private DefaultMutableTreeNode exprNot ( Not pExpr )
-  {
-    return createNode ( "Not" , pExpr ) ;
-  }
-
-
-  private DefaultMutableTreeNode exprOr ( Or pExpr )
-  {
-    Expression e1 = pExpr.getE1 ( ) ;
-    Expression e2 = pExpr.getE2 ( ) ;
-    DefaultMutableTreeNode child = createNode ( "Or" , pExpr ) ;
-    DefaultMutableTreeNode subchild1 = createNode ( "e1" , e1 ) ;
-    DefaultMutableTreeNode subchild2 = createNode ( "e2" , e2 ) ;
-    subchild1.add ( exprExpression ( e1 ) ) ;
-    subchild2.add ( exprExpression ( e2 ) ) ;
-    child.add ( subchild1 ) ;
-    child.add ( subchild2 ) ;
-    return child ;
-  }
-
-
-  private DefaultMutableTreeNode exprProjection ( Projection pExpr )
-  {
-    return createNode ( "Projection" , pExpr ) ;
-  }
-
-
   private DefaultMutableTreeNode exprRecursion ( Recursion pExpr )
   {
     String id = pExpr.getId ( ) ;
@@ -727,118 +385,10 @@ public class AbstractSyntaxTree
   }
 
 
-  private DefaultMutableTreeNode exprRef ( Ref pExpr )
+  public void setExpression ( Expression pExpression )
   {
-    return createNode ( "Ref" , pExpr ) ;
-  }
-
-
-  private DefaultMutableTreeNode exprRelationalOperator (
-      RelationalOperator pExpr )
-  {
-    return createNode ( "RelationalOperator" , pExpr ) ;
-  }
-
-
-  private DefaultMutableTreeNode exprSequence ( Sequence pExpr )
-  {
-    Expression e1 = pExpr.getE1 ( ) ;
-    Expression e2 = pExpr.getE2 ( ) ;
-    DefaultMutableTreeNode child = createNode ( "Sequence" , pExpr ) ;
-    DefaultMutableTreeNode subchild1 = createNode ( "e1" , e1 ) ;
-    DefaultMutableTreeNode subchild2 = createNode ( "e2" , e2 ) ;
-    subchild1.add ( exprExpression ( e1 ) ) ;
-    subchild2.add ( exprExpression ( e2 ) ) ;
-    child.add ( subchild1 ) ;
-    child.add ( subchild2 ) ;
-    return child ;
-  }
-
-
-  private DefaultMutableTreeNode exprSnd ( Snd pExpr )
-  {
-    return createNode ( "Snd" , pExpr ) ;
-  }
-
-
-  private DefaultMutableTreeNode exprTl ( Tl pExpr )
-  {
-    return createNode ( "Tl" , pExpr ) ;
-  }
-
-
-  private DefaultMutableTreeNode exprTuple ( Tuple pExpr )
-  {
-    Expression [ ] e = pExpr.getExpressions ( ) ;
-    DefaultMutableTreeNode child = createNode ( "Tuple" , pExpr ) ;
-    for ( int i = 0 ; i < e.length ; i ++ )
-    {
-      DefaultMutableTreeNode subchild = createNode ( "e" + i , e [ i ] ) ;
-      subchild.add ( exprExpression ( e [ i ] ) ) ;
-      child.add ( subchild ) ;
-    }
-    return child ;
-  }
-
-
-  private DefaultMutableTreeNode exprUnaryCons ( UnaryCons pExpr )
-  {
-    return createNode ( "UnaryCons" , pExpr ) ;
-  }
-
-
-  private DefaultMutableTreeNode exprUnaryListOperator ( UnaryListOperator pExpr )
-  {
-    return createNode ( "UnaryListOperator" , pExpr ) ;
-  }
-
-
-  private DefaultMutableTreeNode exprUnaryOperator ( UnaryOperator pExpr )
-  {
-    return createNode ( "UnaryOperator" , pExpr ) ;
-  }
-
-
-  private DefaultMutableTreeNode exprUnitConstant ( UnitConstant pExpr )
-  {
-    return createNode ( "UnitConstant" , pExpr ) ;
-  }
-
-
-  private DefaultMutableTreeNode exprUnknown ( Expression pExpr )
-  {
-    return createNode (
-        "<b><font color=\"#FF0000\">UNKNOWN EXPRESSION</font></b>" , pExpr
-            .toPrettyString ( ).toString ( ) , 0 , pExpr.toPrettyString ( )
-            .toString ( ).length ( ) - 1 ) ;
-  }
-
-
-  private DefaultMutableTreeNode exprValue ( Value pExpr )
-  {
-    return createNode ( "Value" , pExpr ) ;
-  }
-
-
-  private DefaultMutableTreeNode exprWhile ( While pExpr )
-  {
-    Expression e1 = pExpr.getE1 ( ) ;
-    Expression e2 = pExpr.getE2 ( ) ;
-    DefaultMutableTreeNode child = createNode ( "While" , pExpr ) ;
-    DefaultMutableTreeNode subchild1 = createNode ( "e1" , e1 ) ;
-    DefaultMutableTreeNode subchild2 = createNode ( "e2" , e2 ) ;
-    subchild1.add ( exprExpression ( e1 ) ) ;
-    subchild2.add ( exprExpression ( e2 ) ) ;
-    child.add ( subchild1 ) ;
-    child.add ( subchild2 ) ;
-    return child ;
-  }
-
-
-  public void setExpression ( Expression pExpr )
-  {
-    DefaultMutableTreeNode rootNode = createNode ( "Expression" , pExpr ) ;
-    rootNode.add ( exprExpression ( pExpr ) ) ;
+    DefaultMutableTreeNode rootNode = createNode ( "Expression" , pExpression ) ;
+    rootNode.add ( exprExpression ( pExpression ) ) ;
     this.abstractSyntaxTreeUI.setRootNode ( rootNode ) ;
     this.abstractSyntaxTreeUI.expandRow ( 0 ) ;
   }

@@ -46,10 +46,11 @@ public class AbstractSyntaxTreeListener implements TreeSelectionListener
 
   public void valueChanged ( TreeSelectionEvent pEvent )
   {
-    TreePath treePath = pEvent.getNewLeadSelectionPath ( ) ;
+    // TreePath treePath = pEvent.getNewLeadSelectionPath ( ) ;
+    TreePath treePath = pEvent.getPath ( ) ;
     if ( treePath == null )
     {
-      System.err.println ( "TreePath == null" ) ;
+      System.err.println ( "treePath == null" ) ;
       return ;
     }
     LinkedList < AbstractSyntaxTreeNode > list = new LinkedList < AbstractSyntaxTreeNode > ( ) ;
