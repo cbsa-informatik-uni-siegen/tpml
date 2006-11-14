@@ -21,7 +21,7 @@ public class ShowBound
 	
 	private static ShowBound bound = null;
 	private static LinkedList<PrettyAnnotation> tmp = new LinkedList();
-	LinkedList<Bound> result = new LinkedList();
+	public LinkedList<Bound> result = new LinkedList();
 
 	public static ShowBound getInstance()
 	{
