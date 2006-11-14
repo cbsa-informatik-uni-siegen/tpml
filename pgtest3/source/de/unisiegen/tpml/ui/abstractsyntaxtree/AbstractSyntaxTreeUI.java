@@ -144,7 +144,6 @@ public class AbstractSyntaxTreeUI
 
 
   protected void hide() {
-	// TODO Auto-generated method stub
 	  this.jTreeAbstractSyntax.collapseRow(0);
 	
 }
@@ -184,7 +183,6 @@ protected void expand() {
 
 
 protected void close() {
-	// TODO Auto-generated method stub
 	  
 	for (int i = jTreeAbstractSyntax.getRowCount() - 1; i >= 0; i--) {
 		jTreeAbstractSyntax.collapseRow(i);
