@@ -11,6 +11,7 @@ import de.unisiegen.tpml.core.expressions.Lambda;
 import de.unisiegen.tpml.core.expressions.Let;
 import de.unisiegen.tpml.core.expressions.MultiLambda;
 import de.unisiegen.tpml.core.expressions.MultiLet;
+import de.unisiegen.tpml.core.expressions.Recursion;
 import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation;
 import de.unisiegen.tpml.core.prettyprinter.PrettyString;
 import de.unisiegen.tpml.graphics.components.Bound;
@@ -69,6 +70,11 @@ static Expression holeExpression;
 
 				checkCurriedLet((CurriedLet) pExpression);
 			}
+			else if (pExpression instanceof Recursion)
+			{
+
+				checkRecursion((Recursion) pExpression);
+			}
 			else
 			{
 				Enumeration<Expression> child = pExpression.children();
@@ -86,6 +92,7 @@ static Expression holeExpression;
 
 	}
 	
+	//TODO working end
 	private void checkLambda(Lambda lambda)
 	{
 		// rekursiver Aufruf für Ausdruck e von lambda
@@ -151,6 +158,8 @@ checkRec(lambda.children(),lambda,list);
 				
 	}
 	
+
+	
 	
 	private void checkCurriedLet(CurriedLet let)
 	{
@@ -158,26 +167,25 @@ checkRec(lambda.children(),lambda,list);
 		Object[] b = let.getE1().free().toArray();
 		Object[] a = let.getE2().free().toArray();
 		
-		System.err.println("a");
-		for (int i=0; i<a.length;i++)
-		{
-			System.err.println(a[i].toString());
-		}
-		
-		System.err.println("b");
-		
-		for (int i=0; i<b.length;i++)
-		{
-			System.err.println(b[i].toString());
-		}
-		
+			
 		LinkedList list = listWithBounds(a, b);
 		
 		
 		checkRec(let.children(),let,list);
 	}
 	
-	
+
+	private void checkRecursion(Recursion rec)
+	{
+//	 anlegen von Arrays mit den frei vorkommenden Namen der beiden expressions von lambda
+		Object[] a = rec.free().toArray();
+		Object[] b = rec.getE().free().toArray();
+		
+		LinkedList list = listWithBounds(a, b);
+		
+		
+		checkRec(rec.children(),rec,list);
+	}
 
 	//TODO just working begin
 	private Bound checkRec (Enumeration child,Expression e, LinkedList <String> list)
@@ -266,6 +274,10 @@ checkRec(lambda.children(),lambda,list);
 									}
 								}
 								
+							}
+							else if (e instanceof Recursion)
+							{
+								start=4;
 							}
 							
 							int length = start + id.toString().length()-1;
