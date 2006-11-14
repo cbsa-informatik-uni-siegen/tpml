@@ -7,6 +7,8 @@ import java.awt.Font ;
 import java.awt.GridBagConstraints ;
 import java.awt.GridBagLayout ;
 import java.awt.LayoutManager;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame ;
@@ -89,6 +91,11 @@ public class AbstractSyntaxTreeUI
     
     //Buttons
     this.jBclose = new JButton("close all");
+    this.jBclose.addActionListener( new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+            close();  // code to execute when button is pressed
+        }
+    });
     
     this.jBexpand = new JButton("expand");
     
@@ -122,7 +129,14 @@ public class AbstractSyntaxTreeUI
   }
 
 
-  public void appendNode ( DefaultMutableTreeNode pChild ,
+  protected void close() {
+	// TODO Auto-generated method stub
+	  this.jTreeAbstractSyntax.collapseRow(0);
+	
+}
+
+
+public void appendNode ( DefaultMutableTreeNode pChild ,
       DefaultMutableTreeNode pParent )
   {
     this.treeModel
