@@ -9,6 +9,7 @@ import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.expressions.Identifier;
 import de.unisiegen.tpml.core.expressions.Lambda;
 import de.unisiegen.tpml.core.expressions.Let;
+import de.unisiegen.tpml.core.expressions.MultiLambda;
 import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation;
 import de.unisiegen.tpml.core.prettyprinter.PrettyString;
 
@@ -20,6 +21,7 @@ public class ShowBound
 	
 	private static ShowBound bound = null;
 	private static LinkedList<PrettyAnnotation> tmp = new LinkedList();
+	LinkedList<Bound> result = new LinkedList();
 
 	public static ShowBound getInstance()
 	{
@@ -50,6 +52,11 @@ public class ShowBound
 
 				checkBoundLet((Let) pExpression);
 			}
+			else if (pExpression instanceof MultiLambda)
+			{
+
+				checkBoundMultiLambda((MultiLambda) pExpression);
+			}
 			else
 			{
 				Enumeration<Expression> child = pExpression.children();
@@ -77,17 +84,32 @@ public class ShowBound
 		Object[] a = pLambda.free().toArray();
 		Object[] b = e.free().toArray();
 
+		System.out.println(pLambda.toString());
 		checkBound(pLambda, a, b);
 		
 	}
 
 	public void checkBoundLet(Let pLet)
 	{
-		//Expression e1=pLet.getId();
-		Expression e2=pLet.getE2();
+		Object[] a = pLet.getE1().free().toArray();
+		Object[] b = pLet.getE2().free().toArray();
 		
-		System.out.println(pLet.getId());
-		System.out.println(e2.toString());
+		//System.out.println(pLet.toString());
+		//System.out.println(pLet.getE1().toString());
+		//System.out.println(pLet.getE2().toString());
+		checkBound(pLet,a,b);
+	}
+	
+	public void checkBoundMultiLambda(MultiLambda pMultiLambda)
+	{
+		Expression e = pMultiLambda.getE();
+
+		check(e);
+
+		Object[] a = pMultiLambda.free().toArray();
+		Object[] b = e.free().toArray();
+		
+		checkBound(pMultiLambda,a,b);
 	}
 
 	public void checkBound (Expression pE, Object[] a, Object[] b)
@@ -148,16 +170,26 @@ public class ShowBound
 
 							tmp.add(mark1);
 							tmp.add(mark2);
+							int start =0;
+							if (holeExpression instanceof Lambda)
+							{
+								start = mark1.getStartOffset() + 1;
+								
+							}
+							else 
+								//if (holeExpression instanceof Let)
+							{
+								start = mark1.getStartOffset() + 4;
+							}
 							
-							int start = mark1.getStartOffset() + 1;
 							int length = mark1.getStartOffset() + id.toString().length();
-							
 
 							System.err.println("Für den Identifier: Startoffset: " + start
 									+ "Endoffset" + length);
 							System.err.println("Für die Variable " + id.getName()
 									+ " Startoffset: " + mark2.getStartOffset() + " Endoffset: "
 									+ mark2.getEndOffset());
+							getAnnotations();
 						}
 					}
 
@@ -174,7 +206,7 @@ public class ShowBound
 	{
 		boolean found=false;
 		
-		LinkedList<Bound> result = new LinkedList();
+		
 		for (int i=0; i<tmp.size();i=i+2)
 		{
 			found=false;
@@ -194,7 +226,7 @@ public class ShowBound
 				
 			}
 		}
-		
+		System.out.println("Array: "+result.size());
 		return result;
 	}
 
