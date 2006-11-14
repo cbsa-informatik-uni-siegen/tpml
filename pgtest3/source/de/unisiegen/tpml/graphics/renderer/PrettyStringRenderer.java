@@ -230,6 +230,28 @@ public class PrettyStringRenderer extends AbstractRenderer {
 		result.size.width = Math.max(w, result.size.width);
 		return result;
 	}
+	
+	/**
+	 * Hilfmethode, umd zu überprüfen, ob ein int in der Liste liegt
+	 * 
+	 */
+	public static boolean isIn (int test, LinkedList list)
+	{
+		System.out.println("Nun wird überprüft, ob die Zahl in der Liste steht...");
+		System.out.println("Länge der komischen Liste: "+list.size());
+		boolean result = false;
+		
+		for (int i=0; i<list.size(); i++)
+		{
+			int tmp = Integer.parseInt((String)list.getFirst());
+			System.out.println(""+tmp);
+			if (test == tmp) return true;
+		}
+		
+		//nur nachsehen, ob diese Methode geht, damit tatsächlich was gemalt wird
+		//return result;
+		return true;
+	}
 
 	
 	/**
@@ -294,13 +316,16 @@ public class PrettyStringRenderer extends AbstractRenderer {
 			//Wenn das markiert ist, muss sich sonst niemand mehr um die Farbe kümmenr
 			
 			ShowBound sb = ShowBound.getInstance(); //gets singelton instance of showbound to show bindings
+			LinkedList sbl = sb.getAnnotations();
+			
+			
 			//Indexes indexes = sb.getIndexes();
 			//if i == get
 			
 			
-			if (i == 0 || i == 3)
+			if (isIn(i, sbl))
 			{
-				gc.setColor(Color.red);
+				gc.setColor(Color.orange);
 				fm = AbstractRenderer.expFontMetrics;
 				
 			}
