@@ -137,11 +137,14 @@ public class AbstractSyntaxTreeUI
 
   protected void expand() {
 	// TODO Auto-generated method stub
+	  
 	  int start = this.jTreeAbstractSyntax.getSelectionRows()[0];
+	  //this.jTreeAbstractSyntax.expa
 	  while( start < this.jTreeAbstractSyntax.getRowCount() ) {
 		  this.jTreeAbstractSyntax.expandRow( start );
 	      start++;
 	 }
+
 
 	 //TreePath path = this.jTreeAbstractSyntax.getSelectionPath();
 	 //int pathCount = path.get();
