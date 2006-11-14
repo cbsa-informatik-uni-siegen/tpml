@@ -19,6 +19,7 @@ import javax.swing.WindowConstants ;
 import javax.swing.tree.DefaultMutableTreeNode ;
 import javax.swing.tree.DefaultTreeCellRenderer ;
 import javax.swing.tree.DefaultTreeModel ;
+import javax.swing.tree.TreePath;
 
 
 public class AbstractSyntaxTreeUI
@@ -98,6 +99,11 @@ public class AbstractSyntaxTreeUI
     });
     
     this.jBexpand = new JButton("expand");
+    this.jBexpand.addActionListener( new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+            expand();  // code to execute when button is pressed
+        }
+    });
     
     
     // Panel
@@ -129,7 +135,31 @@ public class AbstractSyntaxTreeUI
   }
 
 
-  protected void close() {
+  protected void expand() {
+	// TODO Auto-generated method stub
+	  int start = this.jTreeAbstractSyntax.getSelectionRows()[0];
+	  while( start < this.jTreeAbstractSyntax.getRowCount() ) {
+		  this.jTreeAbstractSyntax.expandRow( start );
+	      start++;
+	 }
+
+	 //TreePath path = this.jTreeAbstractSyntax.getSelectionPath();
+	 //int pathCount = path.get();
+	 //for (int i = 0 ; i < path.getPathCount(); i++) 
+	 //{
+     //    path.(i);
+     //}
+	  //this.jTreeAbstractSyntax.expandPath(path);
+	  //int [] selection = this.jTreeAbstractSyntax.getSelectionRows();
+	  //for (int i = 0 ; i < selection.length ; i++)
+	  //{
+		//   System.out.println("Row: "+i);
+	  //this.jTreeAbstractSyntax.expandRow(i);
+	  //}
+}
+
+
+protected void close() {
 	// TODO Auto-generated method stub
 	  this.jTreeAbstractSyntax.collapseRow(0);
 	
