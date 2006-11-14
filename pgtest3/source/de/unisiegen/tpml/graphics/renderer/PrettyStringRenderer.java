@@ -12,6 +12,7 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation;
 import de.unisiegen.tpml.core.prettyprinter.PrettyCharIterator;
 import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable;
 import de.unisiegen.tpml.core.prettyprinter.PrettyString;
+import de.unisiegen.tpml.graphics.components.Bound;
 import de.unisiegen.tpml.graphics.components.ShowBound;
 
 
@@ -235,7 +236,7 @@ public class PrettyStringRenderer extends AbstractRenderer {
 	 * Hilfmethode, umd zu überprüfen, ob ein int in der Liste liegt
 	 * 
 	 */
-	public static boolean isIn (int test, LinkedList list)
+	public static boolean isIn (int test, LinkedList <Bound> list)
 	{
 		System.out.println("Nun wird überprüft, ob die Zahl in der Liste steht...");
 		System.out.println("Länge der komischen Liste: "+list.size());
@@ -243,14 +244,21 @@ public class PrettyStringRenderer extends AbstractRenderer {
 		
 		for (int i=0; i<list.size(); i++)
 		{
-			int tmp = Integer.parseInt((String)list.getFirst());
-			System.out.println(""+tmp);
-			if (test == tmp) return true;
+			int min = list.get(i).getStartOffset();
+			int max = list.get(i).getEndOffset();
+			//LinkedList<PrettyAnnotation> other = list.get(i).marks;
+			System.out.println("alles zwischen "+min+" und "+max+ " wird makiert.");
+			//list.get(i).
+			//int tmp = 1;
+			//System.out.println(""+tmp);
+			if (test <= max && test >= min) 
+				{
+					return true;
+				}
 		}
-		
 		//nur nachsehen, ob diese Methode geht, damit tatsächlich was gemalt wird
-		//return result;
-		return true;
+		return result;
+		
 	}
 
 	
@@ -317,6 +325,7 @@ public class PrettyStringRenderer extends AbstractRenderer {
 			
 			ShowBound sb = ShowBound.getInstance(); //gets singelton instance of showbound to show bindings
 			LinkedList sbl = sb.getAnnotations();
+			//LinkedList <Bound> sbl = sb.result;
 			
 			
 			//Indexes indexes = sb.getIndexes();
