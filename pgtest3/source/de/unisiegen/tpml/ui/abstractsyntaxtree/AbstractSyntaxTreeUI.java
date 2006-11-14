@@ -136,9 +136,15 @@ public class AbstractSyntaxTreeUI
 
 
   protected void expand() {
-	// TODO Auto-generated method stub
+	// TODO dummerweise klappt er alles auf, was unter der Selection ist, nicht nur den Unterbaum :(
+	  int start=0;
 	  
-	  int start = this.jTreeAbstractSyntax.getSelectionRows()[0];
+	  try {
+		  start = this.jTreeAbstractSyntax.getSelectionRows()[0];
+	  }
+	  catch (Exception e){
+		  start = 0;
+	  }
 	  //this.jTreeAbstractSyntax.expa
 	  while( start < this.jTreeAbstractSyntax.getRowCount() ) {
 		  this.jTreeAbstractSyntax.expandRow( start );
@@ -165,6 +171,7 @@ public class AbstractSyntaxTreeUI
 protected void close() {
 	// TODO Auto-generated method stub
 	  this.jTreeAbstractSyntax.collapseRow(0);
+	  this.jTreeAbstractSyntax.expandRow(0);
 	
 }
 
