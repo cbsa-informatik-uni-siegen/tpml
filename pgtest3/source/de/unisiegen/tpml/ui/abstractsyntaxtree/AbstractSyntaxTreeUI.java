@@ -1,11 +1,16 @@
 package de.unisiegen.tpml.ui.abstractsyntaxtree ;
 
 
+import java.awt.BorderLayout;
 import java.awt.Color ;
 import java.awt.Font ;
 import java.awt.GridBagConstraints ;
 import java.awt.GridBagLayout ;
+import java.awt.LayoutManager;
+
+import javax.swing.JButton;
 import javax.swing.JFrame ;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane ;
 import javax.swing.JTree ;
 import javax.swing.WindowConstants ;
@@ -38,6 +43,15 @@ public class AbstractSyntaxTreeUI
 
 
   private JScrollPane jScrollPaneAbstractSyntax ;
+  
+  private JPanel jPanel;
+  
+  private JButton jBexpand;
+  private JButton jBclose;
+
+
+  private BorderLayout borderLayout;
+  
 
 
   public AbstractSyntaxTreeUI ( )
@@ -69,9 +83,25 @@ public class AbstractSyntaxTreeUI
     // GridBagLayout
     this.gridBagLayout = new GridBagLayout ( ) ;
     this.gridBagConstraints = new GridBagConstraints ( ) ;
+    //BorderLayout
+    this.borderLayout = new BorderLayout();
+    
+    
+    //Buttons
+    this.jBclose = new JButton("close all");
+    
+    this.jBexpand = new JButton("expand");
+    
+    
+    // Panel
+    this.jPanel = new JPanel();
+    this.jPanel.add(jBclose);
+    this.jPanel.add(jBexpand);
+        
     // Frame
     this.jFrameAbstractSyntaxTree = new JFrame ( ) ;
-    this.jFrameAbstractSyntaxTree.setLayout ( this.gridBagLayout ) ;
+    //this.jFrameAbstractSyntaxTree.setLayout ( this.gridBagLayout ) ;
+    this.jFrameAbstractSyntaxTree.setLayout ( this.borderLayout ) ;
     this.jFrameAbstractSyntaxTree.setTitle ( "AbstractSyntaxTree" ) ;
     this.jFrameAbstractSyntaxTree.setSize ( 600 , 450 ) ;
     this.jFrameAbstractSyntaxTree.setLocation ( 100 , 0 ) ;
@@ -83,8 +113,12 @@ public class AbstractSyntaxTreeUI
     this.gridBagConstraints.gridy = 0 ;
     this.gridBagConstraints.weightx = 10 ;
     this.gridBagConstraints.weighty = 10 ;
-    this.jFrameAbstractSyntaxTree.getContentPane ( ).add (
-        this.jScrollPaneAbstractSyntax , this.gridBagConstraints ) ;
+    this.jPanel.add(jScrollPaneAbstractSyntax);
+    //this.jFrameAbstractSyntaxTree.getContentPane ( ).add (this.jScrollPaneAbstractSyntax , this.gridBagConstraints ) ;
+    this.jFrameAbstractSyntaxTree.getContentPane ( ).add (this.jScrollPaneAbstractSyntax , BorderLayout.CENTER ) ;
+
+    
+    this.jFrameAbstractSyntaxTree.getContentPane ( ).add (this.jPanel , BorderLayout.SOUTH ) ;
   }
 
 
