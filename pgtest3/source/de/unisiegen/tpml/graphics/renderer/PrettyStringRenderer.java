@@ -255,6 +255,20 @@ public class PrettyStringRenderer extends AbstractRenderer {
 				{
 					return true;
 				}
+			else
+			{
+				LinkedList <PrettyAnnotation> rest = list.get(i).getMarks();
+				for (int j = 0 ; j<rest.size(); j++)
+				{
+					PrettyAnnotation tmp = rest.get(j);
+					int min1 = tmp.getStartOffset();
+					int max1 = tmp.getEndOffset();
+					if (test <= max1 && test >= min1) 
+					{
+						return true;
+					}
+				}
+			}
 		}
 		//nur nachsehen, ob diese Methode geht, damit tatsächlich was gemalt wird
 		return result;
