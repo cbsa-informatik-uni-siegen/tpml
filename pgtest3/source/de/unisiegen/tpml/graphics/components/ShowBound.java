@@ -9,6 +9,7 @@ import de.unisiegen.tpml.core.expressions.Identifier;
 import de.unisiegen.tpml.core.expressions.Lambda;
 import de.unisiegen.tpml.core.expressions.Let;
 import de.unisiegen.tpml.core.expressions.MultiLambda;
+import de.unisiegen.tpml.core.expressions.MultiLet;
 import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation;
 import de.unisiegen.tpml.core.prettyprinter.PrettyString;
 import de.unisiegen.tpml.graphics.components.Bound;
@@ -56,6 +57,11 @@ static Expression holeExpression;
 			{
 
 				checkMultiLambda((MultiLambda) pExpression);
+			}
+			else if (pExpression instanceof MultiLet)
+			{
+
+				checkMultiLet((MultiLet) pExpression);
 			}
 			else
 			{
@@ -124,6 +130,20 @@ checkRec(lambda.children(),lambda,list);
 
 		
 	}
+	
+	private void checkMultiLet(MultiLet let)
+	{
+		// anlegen von Arrays mit den frei vorkommenden Namen der beiden expressions von lambda
+		Object[] a = let.getE1().free().toArray();
+		Object[] b = let.getE2().free().toArray();
+		
+		LinkedList list = listWithBounds(a, b);
+		
+		
+		checkRec(let.children(),let,list);
+
+		
+	}
 
 	//TODO just working begin
 	private Bound checkRec (Enumeration child,Expression e, LinkedList <String> list)
@@ -178,6 +198,22 @@ checkRec(lambda.children(),lambda,list);
 									for (int y=0; y<z;y++)
 									{
 										start+=2+lambda.getIdentifiers(y).toString().length();
+									}
+								}
+								
+							}
+							
+							else if (e instanceof MultiLet)
+							{
+								MultiLet let= (MultiLet)e;
+								start=5;
+								for (int z=0; z<let.getIdentifiers().length;z++)
+									
+								if (let.getIdentifiers(z).equals(id.toString()))
+								{
+									for (int y=0; y<z;y++)
+									{
+										start+=2+let.getIdentifiers(y).toString().length();
 									}
 								}
 								
