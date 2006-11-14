@@ -51,6 +51,7 @@ public class AbstractSyntaxTreeUI
   
   private JButton jBexpand;
   private JButton jBclose;
+  private JButton jBhide;
 
 
   private BorderLayout borderLayout;
@@ -97,6 +98,12 @@ public class AbstractSyntaxTreeUI
             close();  // code to execute when button is pressed
         }
     });
+    this.jBhide = new JButton("hide all");
+    this.jBhide.addActionListener( new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+            hide();  // code to execute when button is pressed
+        }
+    });
     
     this.jBexpand = new JButton("expand");
     this.jBexpand.addActionListener( new ActionListener() {
@@ -109,6 +116,7 @@ public class AbstractSyntaxTreeUI
     // Panel
     this.jPanel = new JPanel();
     this.jPanel.add(jBclose);
+    this.jPanel.add(jBhide);
     this.jPanel.add(jBexpand);
         
     // Frame
@@ -135,7 +143,14 @@ public class AbstractSyntaxTreeUI
   }
 
 
-  protected void expand() {
+  protected void hide() {
+	// TODO Auto-generated method stub
+	  this.jTreeAbstractSyntax.collapseRow(0);
+	
+}
+
+
+protected void expand() {
 	// TODO dummerweise klappt er alles auf, was unter der Selection ist, nicht nur den Unterbaum :(
 	  int start=0;
 	  
@@ -170,8 +185,10 @@ public class AbstractSyntaxTreeUI
 
 protected void close() {
 	// TODO Auto-generated method stub
-	  this.jTreeAbstractSyntax.collapseRow(0);
-	  this.jTreeAbstractSyntax.expandRow(0);
+	  
+	for (int i = jTreeAbstractSyntax.getRowCount() - 1; i >= 0; i--) {
+		jTreeAbstractSyntax.collapseRow(i);
+}
 	
 }
 
