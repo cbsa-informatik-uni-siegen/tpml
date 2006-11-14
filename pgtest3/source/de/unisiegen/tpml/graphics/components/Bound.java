@@ -7,14 +7,29 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation;
 public class Bound
 {
 	
-	public int startOffset;
-	public int endOffset;
-	public LinkedList<PrettyAnnotation> marks = new LinkedList();
+	private int startOffset;
+	private int endOffset;
+	private LinkedList<PrettyAnnotation> marks = new LinkedList();
 	
 	public Bound( int start, int end)
 	{
 		
 		startOffset =start;
 		endOffset=end;
+	}
+
+	public int getEndOffset()
+	{
+		return endOffset;
+	}
+
+	public LinkedList<PrettyAnnotation> getMarks()
+	{
+		return marks;
+	}
+
+	public int getStartOffset()
+	{
+		return startOffset;
 	}
 }
