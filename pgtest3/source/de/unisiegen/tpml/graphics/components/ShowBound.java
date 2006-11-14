@@ -4,6 +4,7 @@ import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.LinkedList;
 
+import de.unisiegen.tpml.core.expressions.CurriedLet;
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.expressions.Identifier;
 import de.unisiegen.tpml.core.expressions.Lambda;
@@ -62,6 +63,11 @@ static Expression holeExpression;
 			{
 
 				checkMultiLet((MultiLet) pExpression);
+			}
+			else if (pExpression instanceof CurriedLet)
+			{
+
+				checkCurriedLet((CurriedLet) pExpression);
 			}
 			else
 			{
@@ -141,9 +147,37 @@ checkRec(lambda.children(),lambda,list);
 		
 		
 		checkRec(let.children(),let,list);
-
 		
+				
 	}
+	
+	
+	private void checkCurriedLet(CurriedLet let)
+	{
+//	 anlegen von Arrays mit den frei vorkommenden Namen der beiden expressions von lambda
+		Object[] b = let.getE1().free().toArray();
+		Object[] a = let.getE2().free().toArray();
+		
+		System.err.println("a");
+		for (int i=0; i<a.length;i++)
+		{
+			System.err.println(a[i].toString());
+		}
+		
+		System.err.println("b");
+		
+		for (int i=0; i<b.length;i++)
+		{
+			System.err.println(b[i].toString());
+		}
+		
+		LinkedList list = listWithBounds(a, b);
+		
+		
+		checkRec(let.children(),let,list);
+	}
+	
+	
 
 	//TODO just working begin
 	private Bound checkRec (Enumeration child,Expression e, LinkedList <String> list)
@@ -214,6 +248,21 @@ checkRec(lambda.children(),lambda,list);
 									for (int y=0; y<z;y++)
 									{
 										start+=2+let.getIdentifiers(y).toString().length();
+									}
+								}
+								
+							}
+							else if (e instanceof CurriedLet)
+							{
+								CurriedLet let= (CurriedLet)e;
+								start=4;
+								for (int z=0; z<let.getIdentifiers().length;z++)
+									
+								if (let.getIdentifiers(z).equals(id.toString()))
+								{
+									for (int y=0; y<z;y++)
+									{
+										start+=1+let.getIdentifiers(y).toString().length();
 									}
 								}
 								
