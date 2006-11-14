@@ -167,6 +167,8 @@ public class ShowBound
 							PrettyString ps1 = holeExpression.toPrettyString();
 							PrettyAnnotation mark1 = ps1.getAnnotationForPrintable(pE);
 							PrettyAnnotation mark2 = ps1.getAnnotationForPrintable(id);
+							
+							//TODO Just Testing
 							System.out.println("Identifier:"+pE.toString());
 							System.out.println("Var:"+id.toString());
 							
@@ -193,6 +195,10 @@ public class ShowBound
 									+ mark2.getEndOffset());
 							Bound addToList = new Bound(start,length);
 							addToList.getMarks().add(mark2);
+							tmp.add(addToList);
+							
+							//TODO just Testing
+							getAnnotations();
 							
 						}
 					}
@@ -209,7 +215,7 @@ public class ShowBound
 	public LinkedList getAnnotations()
 	{
 		boolean found=false;
-		
+		System.out.println("Tmpsize"+tmp.size());
 		
 		for (int i=0; i<tmp.size();i=i+2)
 		{
