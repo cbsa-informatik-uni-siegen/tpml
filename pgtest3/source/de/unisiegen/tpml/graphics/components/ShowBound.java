@@ -20,7 +20,7 @@ public class ShowBound
 	static Expression holeExpression;
 	
 	private static ShowBound bound = null;
-	private static LinkedList<PrettyAnnotation> tmp = new LinkedList();
+	private static LinkedList<Bound> tmp = new LinkedList();
 	public LinkedList<Bound> result = new LinkedList();
 
 	public static ShowBound getInstance()
@@ -167,9 +167,11 @@ public class ShowBound
 							PrettyString ps1 = holeExpression.toPrettyString();
 							PrettyAnnotation mark1 = ps1.getAnnotationForPrintable(pE);
 							PrettyAnnotation mark2 = ps1.getAnnotationForPrintable(id);
-
-							tmp.add(mark1);
-							tmp.add(mark2);
+							System.out.println("Identifier:"+pE.toString());
+							System.out.println("Var:"+id.toString());
+							
+							
+							
 							int start =0;
 							if (holeExpression instanceof Lambda)
 							{
@@ -177,19 +179,21 @@ public class ShowBound
 								
 							}
 							else 
-								//if (holeExpression instanceof Let)
+								if (holeExpression instanceof Let)
 							{
 								start = mark1.getStartOffset() + 4;
 							}
 							
-							int length = mark1.getStartOffset() + id.toString().length();
+							int length = start + id.toString().length()-1;
 
 							System.err.println("Für den Identifier: Startoffset: " + start
 									+ "Endoffset" + length);
 							System.err.println("Für die Variable " + id.getName()
 									+ " Startoffset: " + mark2.getStartOffset() + " Endoffset: "
 									+ mark2.getEndOffset());
-							getAnnotations();
+							Bound addToList = new Bound(start,length);
+							addToList.getMarks().add(mark2);
+							
 						}
 					}
 
@@ -212,16 +216,16 @@ public class ShowBound
 			found=false;
 			for (int j=0; j<result.size();j++ )
 			{
-				if (tmp.get(i).getStartOffset()== result.get(j).startOffset)
+				if (tmp.get(i).getStartOffset()== result.get(j).getStartOffset())
 				{
-					result.get(j).marks.add(tmp.get(i+1));
+					result.get(j).getMarks().addAll(tmp.get(i).getMarks());
 					found=true;
 				}
 			}
 			if (!found)
 			{
 				Bound listIt = new Bound(tmp.get(i).getStartOffset(),tmp.get(i).getEndOffset());
-				listIt.marks.add(tmp.get(i+1));
+				listIt.getMarks().addAll(tmp.get(i).getMarks());
 				result.add(listIt);
 				
 			}
