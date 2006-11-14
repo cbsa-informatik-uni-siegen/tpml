@@ -216,6 +216,13 @@ public class CompoundExpression<S, E> extends JComponent {
           ast.setExpression ( this.expression ) ;
           ast.setVisible ( true ) ;
           // CHANGE CHRISTIAN END
+					
+		  // CHANGE BENJAMIN
+			ShowBound bound = ShowBound.getInstance();
+			bound.setHoleExpression(this.expression);
+			
+			bound.check(this.expression);
+		  // CHANGE BENJAMIN END
           
 					this.expressionRenderer = new PrettyStringRenderer ();
 					this.expressionRenderer.setAlternativeColor(this.alternativeColor);
