@@ -169,8 +169,8 @@ public class ShowBound
 							PrettyAnnotation mark2 = ps1.getAnnotationForPrintable(id);
 							
 							//TODO Just Testing
-							System.out.println("Identifier:"+pE.toString());
-							System.out.println("Var:"+id.toString());
+							//System.out.println("Identifier:"+pE.toString());
+							//System.out.println("Var:"+id.toString());
 							
 							
 							
