@@ -13,6 +13,7 @@ import de.unisiegen.tpml.core.expressions.Let ;
 import de.unisiegen.tpml.core.expressions.LetRec ;
 import de.unisiegen.tpml.core.expressions.MultiLambda ;
 import de.unisiegen.tpml.core.expressions.MultiLet ;
+import de.unisiegen.tpml.core.expressions.Recursion ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyString ;
 
@@ -93,6 +94,10 @@ public class AbstractSyntaxTreeListener implements TreeSelectionListener
     // No Expression
     if ( ( last.getStartIndex ( ) != - 1 ) && ( last.getEndIndex ( ) != - 1 ) )
     {
+      if ( secondlast == null )
+      {
+        return ;
+      }
       for ( int i = 0 ; i < list.size ( ) - 1 ; i ++ )
       {
         PrettyString prettyString = list.get ( i ).getExpression ( )
@@ -109,7 +114,8 @@ public class AbstractSyntaxTreeListener implements TreeSelectionListener
             && ! ( secondlast.getExpression ( ) instanceof LetRec )
             && ! ( secondlast.getExpression ( ) instanceof Let )
             && ! ( secondlast.getExpression ( ) instanceof CurriedLetRec )
-            && ! ( secondlast.getExpression ( ) instanceof CurriedLet ) )
+            && ! ( secondlast.getExpression ( ) instanceof CurriedLet )
+            && ! ( secondlast.getExpression ( ) instanceof Recursion ) )
         {
           childIndex = - 1 ;
         }

@@ -8,6 +8,7 @@ import java.awt.GridBagLayout ;
 import javax.swing.JFrame ;
 import javax.swing.JScrollPane ;
 import javax.swing.JTree ;
+import javax.swing.WindowConstants ;
 import javax.swing.tree.DefaultMutableTreeNode ;
 import javax.swing.tree.DefaultTreeCellRenderer ;
 import javax.swing.tree.DefaultTreeModel ;
@@ -75,7 +76,7 @@ public class AbstractSyntaxTreeUI
     this.jFrameAbstractSyntaxTree.setSize ( 600 , 450 ) ;
     this.jFrameAbstractSyntaxTree.setLocation ( 100 , 0 ) ;
     this.jFrameAbstractSyntaxTree
-        .setDefaultCloseOperation ( JFrame.HIDE_ON_CLOSE ) ;
+        .setDefaultCloseOperation ( WindowConstants.HIDE_ON_CLOSE ) ;
     // Build
     this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
     this.gridBagConstraints.gridx = 0 ;
@@ -103,7 +104,7 @@ public class AbstractSyntaxTreeUI
 
   public JTree getJAbstractSyntaxTree ( )
   {
-    return jTreeAbstractSyntax ;
+    return this.jTreeAbstractSyntax ;
   }
 
 

@@ -52,7 +52,7 @@ public class AbstractSyntaxTreeFree
   }
 
 
-  public LinkedList get ( int pIndex )
+  public LinkedList < Expression > get ( int pIndex )
   {
     return this.list.get ( pIndex ) ;
   }
