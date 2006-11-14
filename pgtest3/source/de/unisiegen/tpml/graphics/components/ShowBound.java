@@ -1,6 +1,7 @@
 package de.unisiegen.tpml.graphics.components;
 
 import java.util.Enumeration;
+import java.util.Iterator;
 import java.util.LinkedList;
 
 import de.unisiegen.tpml.core.expressions.Expression;
@@ -93,6 +94,7 @@ static Expression holeExpression;
 	
 	private void checkMultiLambda(MultiLambda lambda)
 	{
+		
 		// rekursiver Aufruf für Ausdruck e von lambda
 		Expression e = lambda.getE();
 		check(e);
@@ -161,10 +163,24 @@ checkRec(lambda.children(),lambda,list);
 								start = mark1.getStartOffset() + 1;
 								
 							}
-							else 
-								if (e instanceof Let)
+							else if (e instanceof Let)
 							{
 								start = mark1.getStartOffset() + 4;
+							}
+							else if (e instanceof MultiLambda)
+							{
+								MultiLambda lambda= (MultiLambda)e;
+								start=2;
+								for (int z=0; z<lambda.getIdentifiers().length;z++)
+									
+								if (lambda.getIdentifiers(z).equals(id.toString()))
+								{
+									for (int y=0; y<z;y++)
+									{
+										start+=2+lambda.getIdentifiers(y).toString().length();
+									}
+								}
+								
 							}
 							
 							int length = start + id.toString().length()-1;
