@@ -211,16 +211,25 @@ checkRec(child,lambda,list);
 	private void checkCurriedLet(CurriedLet let)
 	{
 //	 anlegen von Arrays mit den frei vorkommenden Namen der beiden expressions von lambda
-		Object[] b = let.getE1().free().toArray();
-		Object[] a = let.getE2().free().toArray();
 		
-
+		Object[] a = let.getE2().free().toArray();
+		Object[] b = let.getE1().free().toArray();
+		Object[] tmp = new Object[b.length];
+		
+		for (int i=0; i<b.length;i++)
+		{
+			if (!b[i].equals(let.getIdentifiers(0)))
+			{
+				tmp[i]=b[i];
+			}
+		}
+		
 
 		check(let.getE1());
 		check(let.getE2());
 			
-		LinkedList list = listWithBounds(new Object[0], b);
-		LinkedList list2 = listWithBounds(b, a);
+		LinkedList list = listWithBounds(new Object[0], tmp);
+		LinkedList list2 = listWithBounds(tmp, a);
 		
 	
 		
@@ -397,7 +406,7 @@ checkRec(child,lambda,list);
 		
 		for (int i = 0; i < a.length; i++)
 		{
-
+			if (a[i]!=null)
 			tmp.add((String) a[i]);
 		}
 		
