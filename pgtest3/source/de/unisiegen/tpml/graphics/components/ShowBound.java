@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 
 import de.unisiegen.tpml.core.expressions.CurriedLet;
+import de.unisiegen.tpml.core.expressions.CurriedLetRec;
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.expressions.Identifier;
 import de.unisiegen.tpml.core.expressions.Lambda;
@@ -23,7 +24,8 @@ static Expression holeExpression;
 
 	private static ShowBound bound = null;
 	private static LinkedList<Bound> tmp = new LinkedList();
-	public LinkedList<Bound> result = new LinkedList();
+	private boolean debugOutput=false;
+	//public LinkedList<Bound> result = new LinkedList();
 
 	public static ShowBound getInstance()
 	{
@@ -50,11 +52,6 @@ static Expression holeExpression;
 
 				checkLambda((Lambda) pExpression);
 			}
-			else if (pExpression instanceof Let)
-			{
-
-				checkLet((Let) pExpression);
-			}
 			else if (pExpression instanceof MultiLambda)
 			{
 
@@ -65,15 +62,25 @@ static Expression holeExpression;
 
 				checkMultiLet((MultiLet) pExpression);
 			}
+			else if (pExpression instanceof CurriedLetRec)
+			{
+			
+				checkCurriedLetRec((CurriedLetRec) pExpression);
+			}
 			else if (pExpression instanceof CurriedLet)
 			{
-
+				
 				checkCurriedLet((CurriedLet) pExpression);
 			}
 			else if (pExpression instanceof Recursion)
 			{
 
 				checkRecursion((Recursion) pExpression);
+			}
+			else if (pExpression instanceof Let)
+			{
+
+				checkLet((Let) pExpression);
 			}
 			else
 			{
@@ -92,6 +99,9 @@ static Expression holeExpression;
 
 	}
 	
+
+
+
 	//TODO working end
 	private void checkLambda(Lambda lambda)
 	{
@@ -186,8 +196,24 @@ checkRec(lambda.children(),lambda,list);
 		
 		checkRec(rec.children(),rec,list);
 	}
+	
+	
+	private void checkCurriedLetRec(CurriedLetRec rec)
+	{
+//	 anlegen von Arrays mit den frei vorkommenden Namen der beiden expressions von lambda
+		Object[] b = rec.getE1().free().toArray();
+		Object[] a = rec.getE2().free().toArray();
 
-	//TODO just working begin
+		
+			
+		LinkedList list = listWithBounds(a, b);
+		
+		
+		checkRec(rec.children(),rec,list);
+		
+	}
+
+	
 	private Bound checkRec (Enumeration child,Expression e, LinkedList <String> list)
 	{
 		Bound result=null;
@@ -220,7 +246,22 @@ checkRec(lambda.children(),lambda,list);
 							
 							
 							int start =0;
-							if (e instanceof Lambda)
+							if (e instanceof CurriedLetRec)
+							{
+								CurriedLetRec let= (CurriedLetRec)e;
+								start=8;
+								for (int z=0; z<let.getIdentifiers().length;z++)
+									
+								if (let.getIdentifiers(z).equals(id.toString()))
+								{
+									for (int y=0; y<z;y++)
+									{
+										start+=1+let.getIdentifiers(y).toString().length();
+									}
+								}
+								
+							}
+							else if (e instanceof Lambda)
 							{
 								start = mark1.getStartOffset() + 1;
 								
@@ -279,14 +320,18 @@ checkRec(lambda.children(),lambda,list);
 							{
 								start=4;
 							}
+						
+							
 							
 							int length = start + id.toString().length()-1;
-						
+							if (debugOutput)
+							{
 							System.err.println("Für den Identifier: Startoffset: " + start
 									+ "Endoffset" + length);
 							System.err.println("Für die Variable " + id.getName()
 									+ " Startoffset: " + mark2.getStartOffset() + " Endoffset: "
 									+ mark2.getEndOffset());
+							}
 							Bound addToList = new Bound(start,length);
 							addToList.getMarks().add(mark2);
 							tmp.add(addToList);
@@ -309,7 +354,7 @@ checkRec(lambda.children(),lambda,list);
 		
 		return result;
 	}
-	//TODO just working end
+
 	
 	
 	public LinkedList<String> listWithBounds ( Object[] a, Object[] b)
