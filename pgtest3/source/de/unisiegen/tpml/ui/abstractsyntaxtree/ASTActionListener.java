@@ -9,12 +9,12 @@ import javax.swing.tree.TreePath ;
 
 public class ASTActionListener implements ActionListener
 {
-  private AbstractSyntaxTreeUI abstractSyntaxTreeUI ;
+  private ASTUI aSTUI ;
 
 
-  public ASTActionListener ( AbstractSyntaxTreeUI pAbstractSyntaxTreeUI )
+  public ASTActionListener ( ASTUI pASTUI )
   {
-    this.abstractSyntaxTreeUI = pAbstractSyntaxTreeUI ;
+    this.aSTUI = pASTUI ;
   }
 
 
@@ -46,17 +46,17 @@ public class ASTActionListener implements ActionListener
 
   public void closeAll ( )
   {
-    for ( int i = this.abstractSyntaxTreeUI.getJAbstractSyntaxTree ( )
+    for ( int i = this.aSTUI.getJAbstractSyntaxTree ( )
         .getRowCount ( ) - 1 ; i >= 0 ; i -- )
     {
-      this.abstractSyntaxTreeUI.getJAbstractSyntaxTree ( ).collapseRow ( i ) ;
+      this.aSTUI.getJAbstractSyntaxTree ( ).collapseRow ( i ) ;
     }
   }
 
 
   public void expand ( )
   {
-    expandTreePath ( this.abstractSyntaxTreeUI.getJAbstractSyntaxTree ( )
+    expandTreePath ( this.aSTUI.getJAbstractSyntaxTree ( )
         .getSelectionPath ( ) ) ;
   }
 
@@ -64,10 +64,10 @@ public class ASTActionListener implements ActionListener
   public void expandAll ( )
   {
     int i = 0 ;
-    while ( i < this.abstractSyntaxTreeUI.getJAbstractSyntaxTree ( )
+    while ( i < this.aSTUI.getJAbstractSyntaxTree ( )
         .getRowCount ( ) )
     {
-      this.abstractSyntaxTreeUI.getJAbstractSyntaxTree ( ).expandRow ( i ) ;
+      this.aSTUI.getJAbstractSyntaxTree ( ).expandRow ( i ) ;
       i ++ ;
     }
   }
@@ -85,26 +85,26 @@ public class ASTActionListener implements ActionListener
     {
       expandTreePath ( pTreePath.pathByAddingChild ( b.getChildAt ( i ) ) ) ;
     }
-    this.abstractSyntaxTreeUI.getJAbstractSyntaxTree ( )
+    this.aSTUI.getJAbstractSyntaxTree ( )
         .expandPath ( pTreePath ) ;
   }
 
 
   public void collapse ( )
   {
-    int row[] = this.abstractSyntaxTreeUI.getJAbstractSyntaxTree ( )
+    int row[] = this.aSTUI.getJAbstractSyntaxTree ( )
         .getSelectionRows ( ) ;
     if ( row == null )
     {
       return ;
     }
-    this.abstractSyntaxTreeUI.getJAbstractSyntaxTree ( )
+    this.aSTUI.getJAbstractSyntaxTree ( )
         .collapseRow ( row [ 0 ] ) ;
   }
 
 
   public void collapseAll ( )
   {
-    this.abstractSyntaxTreeUI.getJAbstractSyntaxTree ( ).collapseRow ( 0 ) ;
+    this.aSTUI.getJAbstractSyntaxTree ( ).collapseRow ( 0 ) ;
   }
 }

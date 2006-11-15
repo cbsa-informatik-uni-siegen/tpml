@@ -20,7 +20,7 @@ import javax.swing.tree.DefaultTreeCellRenderer ;
 import javax.swing.tree.DefaultTreeModel ;
 
 
-public class AbstractSyntaxTreeUI
+public class ASTUI
 {
   private JFrame jFrameAbstractSyntaxTree ;
 
@@ -82,7 +82,7 @@ public class AbstractSyntaxTreeUI
   private ASTItemListener aSTItemListener ;
 
 
-  public AbstractSyntaxTreeUI ( )
+  public ASTUI ( )
   {
     // Listener
     this.aSTItemListener = new ASTItemListener ( this ) ;
@@ -271,6 +271,12 @@ public class AbstractSyntaxTreeUI
   }
 
 
+  public JCheckBox getJCheckBoxBindings ( )
+  {
+    return this.jCheckBoxBindings ;
+  }
+
+
   public JCheckBox getJCheckBoxReplace ( )
   {
     return this.jCheckBoxReplace ;
@@ -293,11 +299,5 @@ public class AbstractSyntaxTreeUI
   public void setVisible ( boolean pVisible )
   {
     this.jFrameAbstractSyntaxTree.setVisible ( pVisible ) ;
-  }
-
-
-  public JCheckBox getJCheckBoxBindings ( )
-  {
-    return this.jCheckBoxBindings ;
   }
 }

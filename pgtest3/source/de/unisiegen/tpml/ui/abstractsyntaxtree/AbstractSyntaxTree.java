@@ -35,27 +35,27 @@ public class AbstractSyntaxTree
   }
 
 
-  private AbstractSyntaxTreeUI abstractSyntaxTreeUI ;
+  private ASTUI aSTUI ;
 
 
   private AbstractSyntaxTree ( )
   {
-    this.abstractSyntaxTreeUI = new AbstractSyntaxTreeUI ( ) ;
+    this.aSTUI = new ASTUI ( ) ;
   }
 
 
   private DefaultMutableTreeNode createNode ( String pDescription ,
       Expression pExpr )
   {
-    return new DefaultMutableTreeNode ( new AbstractSyntaxTreeNode (
+    return new DefaultMutableTreeNode ( new ASTNode (
         pDescription , pExpr ) ) ;
   }
 
 
   private DefaultMutableTreeNode createNode ( String pDescription ,
-      Expression pExpr , AbstractSyntaxTreeFree pRelations )
+      Expression pExpr , ASTBindings pRelations )
   {
-    return new DefaultMutableTreeNode ( new AbstractSyntaxTreeNode (
+    return new DefaultMutableTreeNode ( new ASTNode (
         pDescription , pExpr , pRelations ) ) ;
   }
 
@@ -63,7 +63,7 @@ public class AbstractSyntaxTree
   private DefaultMutableTreeNode createNode ( String pDescription ,
       String pName , int pStart , int pEnd )
   {
-    return new DefaultMutableTreeNode ( new AbstractSyntaxTreeNode (
+    return new DefaultMutableTreeNode ( new ASTNode (
         pDescription , pName , pStart , pEnd ) ) ;
   }
 
@@ -73,7 +73,7 @@ public class AbstractSyntaxTree
     String [ ] idList = pExpression.getIdentifiers ( ) ;
     Expression e1 = pExpression.getE1 ( ) ;
     Expression e2 = pExpression.getE2 ( ) ;
-    AbstractSyntaxTreeFree free = new AbstractSyntaxTreeFree ( ) ;
+    ASTBindings free = new ASTBindings ( ) ;
     free.add ( pExpression.getE2 ( ) , pExpression.getIdentifiers ( 0 ) ) ;
     for ( int i = 1 ; i < pExpression.getIdentifiers ( ).length ; i ++ )
     {
@@ -105,7 +105,7 @@ public class AbstractSyntaxTree
     String [ ] idList = pExpression.getIdentifiers ( ) ;
     Expression e1 = pExpression.getE1 ( ) ;
     Expression e2 = pExpression.getE2 ( ) ;
-    AbstractSyntaxTreeFree free = new AbstractSyntaxTreeFree ( ) ;
+    ASTBindings free = new ASTBindings ( ) ;
     free.add ( pExpression , pExpression.getIdentifiers ( 0 ) ) ;
     for ( int i = 1 ; i < pExpression.getIdentifiers ( ).length ; i ++ )
     {
@@ -205,7 +205,7 @@ public class AbstractSyntaxTree
     String id = pExpression.getId ( ) ;
     Expression e = pExpression.getE ( ) ;
     DefaultMutableTreeNode child = createNode ( pExpression.getClass ( )
-        .getSimpleName ( ) , pExpression , new AbstractSyntaxTreeFree (
+        .getSimpleName ( ) , pExpression , new ASTBindings (
         pExpression.getE ( ) , pExpression.getId ( ) ) ) ;
     DefaultMutableTreeNode subchild1 = createNode ( "Identifier" , id , 1 , id
         .length ( ) ) ;
@@ -245,7 +245,7 @@ public class AbstractSyntaxTree
     Expression e1 = pExpression.getE1 ( ) ;
     Expression e2 = pExpression.getE2 ( ) ;
     DefaultMutableTreeNode child = createNode ( pExpression.getClass ( )
-        .getSimpleName ( ) , pExpression , new AbstractSyntaxTreeFree (
+        .getSimpleName ( ) , pExpression , new ASTBindings (
         pExpression.getE2 ( ) , pExpression.getId ( ) ) ) ;
     DefaultMutableTreeNode subchild1 = createNode ( "Identifier" , id , 4 ,
         3 + id.length ( ) ) ;
@@ -266,7 +266,7 @@ public class AbstractSyntaxTree
     Expression e1 = pExpression.getE1 ( ) ;
     Expression e2 = pExpression.getE2 ( ) ;
     DefaultMutableTreeNode child = createNode ( pExpression.getClass ( )
-        .getSimpleName ( ) , pExpression , new AbstractSyntaxTreeFree (
+        .getSimpleName ( ) , pExpression , new ASTBindings (
         pExpression , pExpression.getId ( ) ) ) ;
     DefaultMutableTreeNode subchild1 = createNode ( "Identifier" , id , 8 ,
         7 + id.length ( ) ) ;
@@ -297,7 +297,7 @@ public class AbstractSyntaxTree
   {
     String idList[] = pExpression.getIdentifiers ( ) ;
     DefaultMutableTreeNode child = createNode ( pExpression.getClass ( )
-        .getSimpleName ( ) , pExpression , new AbstractSyntaxTreeFree (
+        .getSimpleName ( ) , pExpression , new ASTBindings (
         pExpression , pExpression.getIdentifiers ( ) ) ) ;
     int length = 0 ;
     for ( int i = 0 ; i < idList.length ; i ++ )
@@ -322,7 +322,7 @@ public class AbstractSyntaxTree
     Expression e1 = pExpression.getE1 ( ) ;
     Expression e2 = pExpression.getE2 ( ) ;
     DefaultMutableTreeNode child = createNode ( pExpression.getClass ( )
-        .getSimpleName ( ) , pExpression , new AbstractSyntaxTreeFree (
+        .getSimpleName ( ) , pExpression , new ASTBindings (
         pExpression.getE2 ( ) , pExpression.getIdentifiers ( ) ) ) ;
     int length = 0 ;
     for ( int i = 0 ; i < idList.length ; i ++ )
@@ -365,7 +365,7 @@ public class AbstractSyntaxTree
     String id = pExpression.getId ( ) ;
     Expression e = pExpression.getE ( ) ;
     DefaultMutableTreeNode child = createNode ( pExpression.getClass ( )
-        .getSimpleName ( ) , pExpression , new AbstractSyntaxTreeFree (
+        .getSimpleName ( ) , pExpression , new ASTBindings (
         pExpression , pExpression.getId ( ) ) ) ;
     DefaultMutableTreeNode subchild1 = createNode ( "Identifier" , id , 4 ,
         3 + id.length ( ) ) ;
@@ -381,13 +381,13 @@ public class AbstractSyntaxTree
   {
     DefaultMutableTreeNode rootNode = createNode ( "Expression" , pExpression ) ;
     rootNode.add ( exprExpression ( pExpression ) ) ;
-    this.abstractSyntaxTreeUI.setRootNode ( rootNode ) ;
-    this.abstractSyntaxTreeUI.expandRow ( 0 ) ;
+    this.aSTUI.setRootNode ( rootNode ) ;
+    this.aSTUI.expandRow ( 0 ) ;
   }
 
 
   public void setVisible ( boolean pVisible )
   {
-    this.abstractSyntaxTreeUI.setVisible ( pVisible ) ;
+    this.aSTUI.setVisible ( pVisible ) ;
   }
 }

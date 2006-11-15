@@ -10,7 +10,7 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStyle ;
 import de.unisiegen.tpml.graphics.Theme ;
 
 
-public class AbstractSyntaxTreeNode
+public class ASTNode
 {
   private static final String BEFOR_DESCRIPTION = "" ;
 
@@ -69,43 +69,45 @@ public class AbstractSyntaxTreeNode
   private int endIndex ;
 
 
-  private AbstractSyntaxTreeFree relations = null ;
+  private ASTBindings aSTBindings ;
 
 
-  public AbstractSyntaxTreeNode ( String pDescription , Expression pExpression )
+  public ASTNode ( String pDescription , Expression pExpression )
   {
     this.description = pDescription ;
     this.expressionString = pExpression.toPrettyString ( ).toString ( ) ;
     this.expression = pExpression ;
     this.startIndex = - 1 ;
     this.endIndex = - 1 ;
+    this.aSTBindings = null ;
     resetCaption ( ) ;
     this.replace = false ;
   }
 
 
-  public AbstractSyntaxTreeNode ( String pDescription , Expression pExpression ,
-      AbstractSyntaxTreeFree pRelations )
+  public ASTNode ( String pDescription , Expression pExpression ,
+      ASTBindings pRelations )
   {
     this.description = pDescription ;
     this.expressionString = pExpression.toPrettyString ( ).toString ( ) ;
     this.expression = pExpression ;
     this.startIndex = - 1 ;
     this.endIndex = - 1 ;
-    this.relations = pRelations ;
+    this.aSTBindings = pRelations ;
     resetCaption ( ) ;
     this.replace = false ;
   }
 
 
-  public AbstractSyntaxTreeNode ( String pDescription ,
-      String pExpressionString , int pStart , int pEnd )
+  public ASTNode ( String pDescription , String pExpressionString , int pStart ,
+      int pEnd )
   {
     this.description = pDescription ;
     this.expressionString = pExpressionString ;
     this.expression = null ;
     this.startIndex = pStart ;
     this.endIndex = pEnd ;
+    this.aSTBindings = null ;
     resetCaption ( ) ;
     this.replace = false ;
   }
@@ -163,17 +165,17 @@ public class AbstractSyntaxTreeNode
 
   private boolean isInList ( int pList , int pIndex )
   {
-    if ( this.relations == null )
+    if ( this.aSTBindings == null )
     {
       return false ;
     }
-    if ( ( pList < 0 ) || ( pList >= this.relations.size ( ) ) )
+    if ( ( pList < 0 ) || ( pList >= this.aSTBindings.size ( ) ) )
     {
       return false ;
     }
-    for ( int i = 0 ; i < this.relations.size ( pList ) ; i ++ )
+    for ( int i = 0 ; i < this.aSTBindings.size ( pList ) ; i ++ )
     {
-      Expression e = this.relations.get ( pList , i ) ;
+      Expression e = this.aSTBindings.get ( pList , i ) ;
       PrettyString prettyString = this.expression.toPrettyString ( ) ;
       PrettyAnnotation prettyAnnotation = prettyString
           .getAnnotationForPrintable ( e ) ;
@@ -219,8 +221,8 @@ public class AbstractSyntaxTreeNode
       result.append ( AFTER_DESCRIPTION ) ;
       result.append ( BETWEEN ) ;
       result.append ( BEFOR_NAME ) ;
-      result.append ( "<b><font color=\"#"
-          + getHex ( AbstractSyntaxTreeNode.SELECTED ) + "\">" ) ;
+      result.append ( "<b><font color=\"#" + getHex ( ASTNode.SELECTED )
+          + "\">" ) ;
       result.append ( this.expressionString ) ;
       result.append ( "</font></b>" ) ;
       result.append ( AFTER_NAME ) ;
@@ -285,7 +287,7 @@ public class AbstractSyntaxTreeNode
         result.append ( "</font></b>" ) ;
       }
       // Binding
-      else if ( ( showBindings ) && ( this.relations != null )
+      else if ( ( showBindings ) && ( this.aSTBindings != null )
           && ( pPrintBindings >= 0 ) && ( isInList ( pPrintBindings , index ) ) )
       {
         result.append ( "<b><font color=\"#" + getHex ( BINDING ) + "\">" ) ;
@@ -338,6 +340,6 @@ public class AbstractSyntaxTreeNode
 
   public static void setShowBindings ( boolean pShowBindings )
   {
-    AbstractSyntaxTreeNode.showBindings = pShowBindings ;
+    ASTNode.showBindings = pShowBindings ;
   }
 }

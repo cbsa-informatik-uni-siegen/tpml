@@ -20,12 +20,12 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyString ;
 
 public class ASTTreeSelectionListener implements TreeSelectionListener
 {
-  private AbstractSyntaxTreeUI abstractSyntaxTreeUI ;
+  private ASTUI aSTUI ;
 
 
-  public ASTTreeSelectionListener ( AbstractSyntaxTreeUI pAbstractSyntaxTreeUI )
+  public ASTTreeSelectionListener ( ASTUI pASTUI )
   {
-    this.abstractSyntaxTreeUI = pAbstractSyntaxTreeUI ;
+    this.aSTUI = pASTUI ;
   }
 
 
@@ -45,7 +45,7 @@ public class ASTTreeSelectionListener implements TreeSelectionListener
 
   private void repaint ( DefaultMutableTreeNode pNode )
   {
-    this.abstractSyntaxTreeUI.nodeChanged ( pNode ) ;
+    this.aSTUI.nodeChanged ( pNode ) ;
     for ( int i = 0 ; i < pNode.getChildCount ( ) ; i ++ )
     {
       repaint ( ( DefaultMutableTreeNode ) pNode.getChildAt ( i ) ) ;
@@ -55,10 +55,10 @@ public class ASTTreeSelectionListener implements TreeSelectionListener
 
   private void reset ( DefaultMutableTreeNode pNode )
   {
-    AbstractSyntaxTreeNode abstractSyntaxTreeNode = ( AbstractSyntaxTreeNode ) pNode
+    ASTNode aSTNode = ( ASTNode ) pNode
         .getUserObject ( ) ;
-    abstractSyntaxTreeNode.resetCaption ( ) ;
-    abstractSyntaxTreeNode.setReplace ( false ) ;
+    aSTNode.resetCaption ( ) ;
+    aSTNode.setReplace ( false ) ;
     // this.abstractSyntaxTreeUI.nodeChanged ( pNode ) ;
     for ( int i = 0 ; i < pNode.getChildCount ( ) ; i ++ )
     {
@@ -73,21 +73,21 @@ public class ASTTreeSelectionListener implements TreeSelectionListener
     {
       return ;
     }
-    LinkedList < AbstractSyntaxTreeNode > list = new LinkedList < AbstractSyntaxTreeNode > ( ) ;
+    LinkedList < ASTNode > list = new LinkedList < ASTNode > ( ) ;
     for ( int i = 0 ; i < pTreePath.getPathCount ( ) ; i ++ )
     {
       Object tmp = ( ( DefaultMutableTreeNode ) pTreePath.getPath ( ) [ i ] )
           .getUserObject ( ) ;
-      if ( ( tmp instanceof AbstractSyntaxTreeNode ) )
+      if ( ( tmp instanceof ASTNode ) )
       {
-        list.add ( ( AbstractSyntaxTreeNode ) tmp ) ;
+        list.add ( ( ASTNode ) tmp ) ;
       }
     }
     DefaultMutableTreeNode rootNode = ( DefaultMutableTreeNode ) pTreePath
         .getPath ( ) [ 0 ] ;
     reset ( rootNode ) ;
-    AbstractSyntaxTreeNode last = list.getLast ( ) ;
-    AbstractSyntaxTreeNode secondlast = null ;
+    ASTNode last = list.getLast ( ) ;
+    ASTNode secondlast = null ;
     if ( list.size ( ) >= 2 )
     {
       secondlast = list.get ( list.size ( ) - 2 ) ;

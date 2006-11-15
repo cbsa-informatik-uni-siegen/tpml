@@ -7,33 +7,33 @@ import java.awt.event.ItemListener ;
 
 public class ASTItemListener implements ItemListener
 {
-  private AbstractSyntaxTreeUI abstractSyntaxTreeUI ;
+  private ASTUI aSTUI ;
 
 
-  public ASTItemListener ( AbstractSyntaxTreeUI pAbstractSyntaxTreeUI )
+  public ASTItemListener ( ASTUI pASTUI )
   {
-    this.abstractSyntaxTreeUI = pAbstractSyntaxTreeUI ;
+    this.aSTUI = pASTUI ;
   }
 
 
   public void itemStateChanged ( ItemEvent pItemEvent )
   {
     if ( pItemEvent.getSource ( ).equals (
-        this.abstractSyntaxTreeUI.getJCheckBoxReplace ( ) ) )
+        this.aSTUI.getJCheckBoxReplace ( ) ) )
     {
-      AbstractSyntaxTreeNode
+      ASTNode
           .setReplaceGeneral ( pItemEvent.getStateChange ( ) == ItemEvent.SELECTED ) ;
-      this.abstractSyntaxTreeUI.getASTTreeSelectionListener ( ).update (
-          this.abstractSyntaxTreeUI.getJAbstractSyntaxTree ( )
+      this.aSTUI.getASTTreeSelectionListener ( ).update (
+          this.aSTUI.getJAbstractSyntaxTree ( )
               .getSelectionPath ( ) ) ;
     }
     else if ( pItemEvent.getSource ( ).equals (
-        this.abstractSyntaxTreeUI.getJCheckBoxBindings ( ) ) )
+        this.aSTUI.getJCheckBoxBindings ( ) ) )
     {
-      AbstractSyntaxTreeNode
+      ASTNode
           .setShowBindings ( pItemEvent.getStateChange ( ) == ItemEvent.SELECTED ) ;
-      this.abstractSyntaxTreeUI.getASTTreeSelectionListener ( ).update (
-          this.abstractSyntaxTreeUI.getJAbstractSyntaxTree ( )
+      this.aSTUI.getASTTreeSelectionListener ( ).update (
+          this.aSTUI.getJAbstractSyntaxTree ( )
               .getSelectionPath ( ) ) ;
     }
   }

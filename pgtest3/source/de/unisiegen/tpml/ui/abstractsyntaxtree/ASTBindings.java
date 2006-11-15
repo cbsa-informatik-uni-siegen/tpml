@@ -7,58 +7,58 @@ import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.expressions.Identifier ;
 
 
-public class AbstractSyntaxTreeFree
+public class ASTBindings
 {
   private LinkedList < LinkedList < Expression >> list ;
 
 
-  public AbstractSyntaxTreeFree ( )
+  public ASTBindings ( )
   {
     this.list = new LinkedList < LinkedList < Expression >> ( ) ;
   }
 
 
-  public AbstractSyntaxTreeFree ( Expression pExpr , String pId )
+  public ASTBindings ( Expression pExpr , String pId )
   {
     this.list = new LinkedList < LinkedList < Expression >> ( ) ;
     add ( pExpr , pId ) ;
   }
 
 
-  public AbstractSyntaxTreeFree ( Expression pExpr , String pIdentifiers[] )
+  public ASTBindings ( Expression pExpr , String pIdentifiers[] )
   {
     this.list = new LinkedList < LinkedList < Expression >> ( ) ;
     add ( pExpr , pIdentifiers ) ;
   }
 
 
-  public void add ( Expression pExpr , String pId )
+  public void add ( Expression pExpression , String pId )
   {
-    this.list.add ( free ( pExpr , pId ) ) ;
+    this.list.add ( free ( pExpression , pId ) ) ;
   }
 
 
-  public void add ( Expression pExpr , String pIdentifiers[] )
+  public void add ( Expression pExpression , String pIdentifiers[] )
   {
     for ( int i = 0 ; i < pIdentifiers.length ; i ++ )
     {
-      this.list.add ( free ( pExpr , pIdentifiers [ i ] ) ) ;
+      this.list.add ( free ( pExpression , pIdentifiers [ i ] ) ) ;
     }
   }
 
 
-  private LinkedList < Expression > free ( Expression pExpr , String pId )
+  private LinkedList < Expression > free ( Expression pExpression , String pId )
   {
     LinkedList < Expression > tmp = new LinkedList < Expression > ( ) ;
-    if ( pExpr instanceof Identifier )
+    if ( pExpression instanceof Identifier )
     {
-      if ( ( ( Identifier ) pExpr ).getName ( ).equals ( pId ) )
+      if ( ( ( Identifier ) pExpression ).getName ( ).equals ( pId ) )
       {
-        tmp.add ( pExpr ) ;
+        tmp.add ( pExpression ) ;
         return tmp ;
       }
     }
-    Enumeration < Expression > children = pExpr.children ( ) ;
+    Enumeration < Expression > children = pExpression.children ( ) ;
     while ( children.hasMoreElements ( ) )
     {
       Expression current = children.nextElement ( ) ;
@@ -75,9 +75,9 @@ public class AbstractSyntaxTreeFree
   }
 
 
-  public Expression get ( int pList , int pIndex )
+  public Expression get ( int pListIndex , int pIndex )
   {
-    return this.list.get ( pList ).get ( pIndex ) ;
+    return this.list.get ( pListIndex ).get ( pIndex ) ;
   }
 
 
@@ -87,8 +87,8 @@ public class AbstractSyntaxTreeFree
   }
 
 
-  public int size ( int pList )
+  public int size ( int pListIndex )
   {
-    return this.list.get ( pList ).size ( ) ;
+    return this.list.get ( pListIndex ).size ( ) ;
   }
 }
