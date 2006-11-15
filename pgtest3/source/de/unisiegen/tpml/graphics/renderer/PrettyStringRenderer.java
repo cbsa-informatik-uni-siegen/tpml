@@ -247,7 +247,7 @@ public class PrettyStringRenderer extends AbstractRenderer {
 			int min = list.get(i).getStartOffset();
 			int max = list.get(i).getEndOffset();
 			//LinkedList<PrettyAnnotation> other = list.get(i).marks;
-			System.out.println("alles zwischen "+min+" und "+max+ " wird makiert.");
+			//System.out.println("alles zwischen "+min+" und "+max+ " wird makiert.");
 			//list.get(i).
 			//int tmp = 1;
 			//System.out.println(""+tmp);
