@@ -10,6 +10,7 @@ import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.expressions.Identifier;
 import de.unisiegen.tpml.core.expressions.Lambda;
 import de.unisiegen.tpml.core.expressions.Let;
+import de.unisiegen.tpml.core.expressions.LetRec;
 import de.unisiegen.tpml.core.expressions.MultiLambda;
 import de.unisiegen.tpml.core.expressions.MultiLet;
 import de.unisiegen.tpml.core.expressions.Recursion;
@@ -24,7 +25,7 @@ static Expression holeExpression;
 
 	private static ShowBound bound = null;
 	private static LinkedList<Bound> tmp = new LinkedList();
-	private boolean debugOutput=true;
+	private boolean debugOutput=false;
 	//public LinkedList<Bound> result = new LinkedList();
 
 	public static ShowBound getInstance()
@@ -212,12 +213,16 @@ checkRec(child,lambda,list);
 //	 anlegen von Arrays mit den frei vorkommenden Namen der beiden expressions von lambda
 		Object[] b = let.getE1().free().toArray();
 		Object[] a = let.getE2().free().toArray();
+		
+
 
 		check(let.getE1());
 		check(let.getE2());
 			
 		LinkedList list = listWithBounds(new Object[0], b);
-		LinkedList list2 = listWithBounds(new Object[0], a);
+		LinkedList list2 = listWithBounds(b, a);
+		
+	
 		
 		LinkedList <Expression> child = new LinkedList();
 		Enumeration tmpChild =let.children();
@@ -225,13 +230,17 @@ checkRec(child,lambda,list);
 		{
 			child.add((Expression)tmpChild.nextElement());
 		}
-		
+		LinkedList<Expression> child2 =new LinkedList();
+		child2.add((child.getLast()));
+		checkRec(child2,let,list2);
 		child.remove(child.size()-1);
 		checkRec(child,let,list);
-		checkRec(child,let,list2);
+		
 		
 
 	}
+	
+	
 	
 
 	private void checkRecursion(Recursion rec)
@@ -414,6 +423,11 @@ checkRec(child,lambda,list);
 			}
 			return start;
 		}
+		else if (e instanceof LetRec)
+		{
+			start = 8;
+			return start;
+		}
 		else if (e instanceof Lambda)
 		{
 			start = mark1.getStartOffset() + 1;
@@ -493,5 +507,17 @@ checkRec(child,lambda,list);
 		return tmp;
 	}
 	
-
+/** often needed to Debug
+ 		System.out.println("a");
+		for (int i=0;i<a.length;i++)
+		{
+			System.out.println(a[i]);
+		}
+		
+		System.out.println("b");
+		for (int i=0;i<b.length;i++)
+		{
+			System.out.println(b[i]);
+		}
+ */
 }
