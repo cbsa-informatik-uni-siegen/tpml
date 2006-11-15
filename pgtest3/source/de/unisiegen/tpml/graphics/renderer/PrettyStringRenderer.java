@@ -352,6 +352,11 @@ public class PrettyStringRenderer extends AbstractRenderer {
 			
 			if (isIn(i, annotationsList))
 			{
+				//using thes variables will underline with the existing underlinealgo using their color
+				//underlineStart = i;
+				//underlineEnd = i;
+				
+				//manipulating font
 				Font orginalFont = gc.getFont();
 				String fontName = orginalFont.getName();
 				int fontSize = orginalFont.getSize();
@@ -359,6 +364,8 @@ public class PrettyStringRenderer extends AbstractRenderer {
 				gc.setColor(Color.orange);
 				gc.setFont(newFont);
 				fm = AbstractRenderer.expFontMetrics;
+				int charWidth = fm.stringWidth("" + c);
+				gc.drawLine(posX, posY + 1, posX + charWidth, posY + 1);
 				
 			}
 			
