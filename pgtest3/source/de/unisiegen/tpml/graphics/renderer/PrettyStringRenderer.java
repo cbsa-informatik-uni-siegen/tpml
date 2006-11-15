@@ -3,10 +3,15 @@ package de.unisiegen.tpml.graphics.renderer;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
+import java.awt.font.TextAttribute;
 import java.text.CharacterIterator;
 import java.util.LinkedList;
+import java.util.Map;
+
+import javax.swing.text.StyledEditorKit.ItalicAction;
 
 import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation;
 import de.unisiegen.tpml.core.prettyprinter.PrettyCharIterator;
@@ -274,7 +279,7 @@ public class PrettyStringRenderer extends AbstractRenderer {
 		return result;
 		
 	}
-
+	
 	
 	/**
 	 * Renders the Prettystring.
@@ -334,11 +339,10 @@ public class PrettyStringRenderer extends AbstractRenderer {
 			
 			FontMetrics fm = null;
 			
-			//TODO: mach mal so, dass wenn benny was makiert, dann soll das anders werden.
-			//Wenn das markiert ist, muss sich sonst niemand mehr um die Farbe kümmenr
+			//TODO: Vielleicht unterstreichen
 			
-			ShowBound sb = ShowBound.getInstance(); //gets singelton instance of showbound to show bindings
-			LinkedList sbl = sb.getAnnotations();
+			ShowBound instanceOfShowBound = ShowBound.getInstance(); //gets singelton instance of showbound to show bindings
+			LinkedList annotationsList = instanceOfShowBound.getAnnotations();
 			//LinkedList <Bound> sbl = sb.result;
 			
 			
@@ -346,9 +350,14 @@ public class PrettyStringRenderer extends AbstractRenderer {
 			//if i == get
 			
 			
-			if (isIn(i, sbl))
+			if (isIn(i, annotationsList))
 			{
+				Font orginalFont = gc.getFont();
+				String fontName = orginalFont.getName();
+				int fontSize = orginalFont.getSize();
+				Font newFont = new Font(fontName, Font.BOLD|Font.ITALIC, fontSize);
 				gc.setColor(Color.orange);
+				gc.setFont(newFont);
 				fm = AbstractRenderer.expFontMetrics;
 				
 			}
