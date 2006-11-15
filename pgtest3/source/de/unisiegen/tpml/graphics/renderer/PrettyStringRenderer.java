@@ -238,8 +238,8 @@ public class PrettyStringRenderer extends AbstractRenderer {
 	 */
 	public static boolean isIn (int test, LinkedList <Bound> list)
 	{
-		System.out.println("Nun wird überprüft, ob die Zahl in der Liste steht...");
-		System.out.println("Länge der komischen Liste: "+list.size());
+		//System.out.println("Nun wird überprüft, ob die Zahl in der Liste steht...");
+		//System.out.println("Länge der komischen Liste: "+list.size());
 		boolean result = false;
 		
 		for (int i=0; i<list.size(); i++)
