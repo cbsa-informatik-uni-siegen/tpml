@@ -245,81 +245,8 @@ checkRec(lambda.children(),lambda,list);
 							
 							
 							
-							int start =0;
-							if (e instanceof CurriedLetRec)
-							{
-								CurriedLetRec let= (CurriedLetRec)e;
-								start=8;
-								for (int z=0; z<let.getIdentifiers().length;z++)
-									
-								if (let.getIdentifiers(z).equals(id.toString()))
-								{
-									for (int y=0; y<z;y++)
-									{
-										start+=1+let.getIdentifiers(y).toString().length();
-									}
-								}
-								
-							}
-							else if (e instanceof Lambda)
-							{
-								start = mark1.getStartOffset() + 1;
-								
-							}
-							else if (e instanceof Let)
-							{
-								start = mark1.getStartOffset() + 4;
-							}
-							else if (e instanceof MultiLambda)
-							{
-								MultiLambda lambda= (MultiLambda)e;
-								start=2;
-								for (int z=0; z<lambda.getIdentifiers().length;z++)
-									
-								if (lambda.getIdentifiers(z).equals(id.toString()))
-								{
-									for (int y=0; y<z;y++)
-									{
-										start+=2+lambda.getIdentifiers(y).toString().length();
-									}
-								}
-								
-							}
+							int start =getStartOffset(e, id, mark1);
 							
-							else if (e instanceof MultiLet)
-							{
-								MultiLet let= (MultiLet)e;
-								start=5;
-								for (int z=0; z<let.getIdentifiers().length;z++)
-									
-								if (let.getIdentifiers(z).equals(id.toString()))
-								{
-									for (int y=0; y<z;y++)
-									{
-										start+=2+let.getIdentifiers(y).toString().length();
-									}
-								}
-								
-							}
-							else if (e instanceof CurriedLet)
-							{
-								CurriedLet let= (CurriedLet)e;
-								start=4;
-								for (int z=0; z<let.getIdentifiers().length;z++)
-									
-								if (let.getIdentifiers(z).equals(id.toString()))
-								{
-									for (int y=0; y<z;y++)
-									{
-										start+=1+let.getIdentifiers(y).toString().length();
-									}
-								}
-								
-							}
-							else if (e instanceof Recursion)
-							{
-								start=4;
-							}
 						
 							
 							
@@ -388,12 +315,97 @@ checkRec(lambda.children(),lambda,list);
 		
 		return tmp;
 	}
+	
+	private int getStartOffset(Expression e, Identifier id, PrettyAnnotation mark1)
+	{
+		int start=0;
+		
+		if (e instanceof CurriedLetRec)
+		{
+			CurriedLetRec let= (CurriedLetRec)e;
+			start=8;
+			for (int z=0; z<let.getIdentifiers().length;z++)
+				
+			if (let.getIdentifiers(z).equals(id.toString()))
+			{
+				for (int y=0; y<z;y++)
+				{
+					start+=1+let.getIdentifiers(y).toString().length();
+				}
+			}
+			return start;
+		}
+		else if (e instanceof Lambda)
+		{
+			start = mark1.getStartOffset() + 1;
+			return start;
+		}
+		else if (e instanceof Let)
+		{
+			start = mark1.getStartOffset() + 4;
+			return start;
+			
+		}
+		else if (e instanceof MultiLambda)
+		{
+			MultiLambda lambda= (MultiLambda)e;
+			start=2;
+			for (int z=0; z<lambda.getIdentifiers().length;z++)
+				
+			if (lambda.getIdentifiers(z).equals(id.toString()))
+			{
+				for (int y=0; y<z;y++)
+				{
+					start+=2+lambda.getIdentifiers(y).toString().length();
+				}
+			}
+			return start;
+		}
+		
+		else if (e instanceof MultiLet)
+		{
+			MultiLet let= (MultiLet)e;
+			start=5;
+			for (int z=0; z<let.getIdentifiers().length;z++)
+				
+			if (let.getIdentifiers(z).equals(id.toString()))
+			{
+				for (int y=0; y<z;y++)
+				{
+					start+=2+let.getIdentifiers(y).toString().length();
+				}
+			}
+			return start;
+		}
+		else if (e instanceof CurriedLet)
+		{
+			CurriedLet let= (CurriedLet)e;
+			start=4;
+			for (int z=0; z<let.getIdentifiers().length;z++)
+				
+			if (let.getIdentifiers(z).equals(id.toString()))
+			{
+				for (int y=0; y<z;y++)
+				{
+					start+=1+let.getIdentifiers(y).toString().length();
+				}
+			}
+			return start;
+		}
+		else if (e instanceof Recursion)
+		{
+			start=4;
+			return start;
+		}
+		return start;
+	}
 
 	public static void setHoleExpression(Expression holeExpression)
 	{
 		bound.holeExpression = holeExpression;
 		tmp=new LinkedList();
 	}
+	
 	public LinkedList getAnnotations()
 	{
 		return tmp;
