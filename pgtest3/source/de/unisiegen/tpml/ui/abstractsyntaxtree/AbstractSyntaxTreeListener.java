@@ -53,38 +53,40 @@ public class AbstractSyntaxTreeListener implements TreeSelectionListener
   }
 
 
-  private void resetHighlighting ( DefaultMutableTreeNode pNode )
+  private void reset ( DefaultMutableTreeNode pNode )
   {
     AbstractSyntaxTreeNode abstractSyntaxTreeNode = ( AbstractSyntaxTreeNode ) pNode
         .getUserObject ( ) ;
     abstractSyntaxTreeNode.resetCaption ( ) ;
-    this.abstractSyntaxTreeUI.nodeChanged ( pNode ) ;
+    abstractSyntaxTreeNode.setReplace ( false ) ;
+    // this.abstractSyntaxTreeUI.nodeChanged ( pNode ) ;
     for ( int i = 0 ; i < pNode.getChildCount ( ) ; i ++ )
     {
-      resetHighlighting ( ( DefaultMutableTreeNode ) pNode.getChildAt ( i ) ) ;
+      reset ( ( DefaultMutableTreeNode ) pNode.getChildAt ( i ) ) ;
     }
   }
 
 
-  public void valueChanged ( TreeSelectionEvent pEvent )
+  public void update ( TreePath pTreePath )
   {
-    TreePath treePath = pEvent.getPath ( ) ;
-    if ( treePath == null )
+    if ( pTreePath == null )
     {
       System.err.println ( "treePath == null" ) ;
       return ;
     }
     LinkedList < AbstractSyntaxTreeNode > list = new LinkedList < AbstractSyntaxTreeNode > ( ) ;
-    for ( int i = 0 ; i < treePath.getPathCount ( ) ; i ++ )
+    for ( int i = 0 ; i < pTreePath.getPathCount ( ) ; i ++ )
     {
-      Object tmp = ( ( DefaultMutableTreeNode ) treePath.getPath ( ) [ i ] )
+      Object tmp = ( ( DefaultMutableTreeNode ) pTreePath.getPath ( ) [ i ] )
           .getUserObject ( ) ;
       if ( ( tmp instanceof AbstractSyntaxTreeNode ) )
       {
         list.add ( ( AbstractSyntaxTreeNode ) tmp ) ;
       }
     }
-    resetHighlighting ( ( DefaultMutableTreeNode ) treePath.getPath ( ) [ 0 ] ) ;
+    DefaultMutableTreeNode rootNode = ( DefaultMutableTreeNode ) pTreePath
+        .getPath ( ) [ 0 ] ;
+    reset ( rootNode ) ;
     AbstractSyntaxTreeNode last = list.getLast ( ) ;
     AbstractSyntaxTreeNode secondlast = null ;
     if ( list.size ( ) >= 2 )
@@ -98,15 +100,16 @@ public class AbstractSyntaxTreeListener implements TreeSelectionListener
       {
         return ;
       }
+      list.get ( list.size ( ) - 1 ).setSelectedCaption ( ) ;
       for ( int i = 0 ; i < list.size ( ) - 1 ; i ++ )
       {
         PrettyString prettyString = list.get ( i ).getExpression ( )
             .toPrettyString ( ) ;
         PrettyAnnotation prettyAnnotation = prettyString
             .getAnnotationForPrintable ( secondlast.getExpression ( ) ) ;
-        int childIndex = childIndex ( ( DefaultMutableTreeNode ) treePath
-            .getPath ( ) [ treePath.getPathCount ( ) - 2 ] ,
-            ( DefaultMutableTreeNode ) treePath.getPath ( ) [ treePath
+        int childIndex = childIndex ( ( DefaultMutableTreeNode ) pTreePath
+            .getPath ( ) [ pTreePath.getPathCount ( ) - 2 ] ,
+            ( DefaultMutableTreeNode ) pTreePath.getPath ( ) [ pTreePath
                 .getPathCount ( ) - 1 ] ) ;
         if ( ! ( secondlast.getExpression ( ) instanceof Lambda )
             && ! ( secondlast.getExpression ( ) instanceof MultiLambda )
@@ -119,6 +122,7 @@ public class AbstractSyntaxTreeListener implements TreeSelectionListener
         {
           childIndex = - 1 ;
         }
+        list.get ( i ).setReplace ( true ) ;
         list.get ( i ).updateCaption (
             prettyAnnotation.getStartOffset ( ) + last.getStartIndex ( ) ,
             prettyAnnotation.getStartOffset ( ) + last.getEndIndex ( ) ,
@@ -134,10 +138,20 @@ public class AbstractSyntaxTreeListener implements TreeSelectionListener
             .toPrettyString ( ) ;
         PrettyAnnotation prettyAnnotation = prettyString
             .getAnnotationForPrintable ( last.getExpression ( ) ) ;
+        if ( i < list.size ( ) - 1 )
+        {
+          list.get ( i ).setReplace ( true ) ;
+        }
         list.get ( i ).updateCaption ( prettyAnnotation.getStartOffset ( ) ,
             prettyAnnotation.getEndOffset ( ) , - 1 ) ;
       }
     }
-    repaint ( ( DefaultMutableTreeNode ) treePath.getPath ( ) [ 0 ] ) ;
+    repaint ( rootNode ) ;
+  }
+
+
+  public void valueChanged ( TreeSelectionEvent pEvent )
+  {
+    update ( pEvent.getPath ( ) ) ;
   }
 }

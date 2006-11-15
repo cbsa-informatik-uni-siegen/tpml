@@ -27,10 +27,37 @@ public class AbstractSyntaxTreeNode
   private static final String AFTER_NAME = "&nbsp;]" ;
 
 
+  private static final Color SELECTED = new Color ( 255 , 0 , 0 ) ;
+
+
+  private static final Color BINDING = new Color ( 255 , 155 , 155 ) ;
+
+
+  private static final String REPLACE_STRING = "..." ;
+
+
+  private static boolean replaceGeneral = false ;
+
+
+  public static boolean isReplaceGeneral ( )
+  {
+    return replaceGeneral ;
+  }
+
+
+  public static void setReplaceGeneral ( boolean pReplaceGeneral )
+  {
+    replaceGeneral = pReplaceGeneral ;
+  }
+
+
+  private boolean replace ;
+
+
   private String description ;
 
 
-  private String name ;
+  private String expressionString ;
 
 
   private String caption ;
@@ -48,20 +75,15 @@ public class AbstractSyntaxTreeNode
   private AbstractSyntaxTreeFree relations = null ;
 
 
-  private Color SELECTED = new Color ( 255 , 0 , 0 ) ;
-
-
-  private Color BINDING = new Color ( 255 , 150 , 150 ) ;
-
-
   public AbstractSyntaxTreeNode ( String pDescription , Expression pExpression )
   {
     this.description = pDescription ;
-    this.name = pExpression.toPrettyString ( ).toString ( ) ;
+    this.expressionString = pExpression.toPrettyString ( ).toString ( ) ;
     this.expression = pExpression ;
     this.startIndex = - 1 ;
     this.endIndex = - 1 ;
     resetCaption ( ) ;
+    this.replace = false ;
   }
 
 
@@ -69,24 +91,26 @@ public class AbstractSyntaxTreeNode
       AbstractSyntaxTreeFree pRelations )
   {
     this.description = pDescription ;
-    this.name = pExpression.toPrettyString ( ).toString ( ) ;
+    this.expressionString = pExpression.toPrettyString ( ).toString ( ) ;
     this.expression = pExpression ;
     this.startIndex = - 1 ;
     this.endIndex = - 1 ;
     this.relations = pRelations ;
     resetCaption ( ) ;
+    this.replace = false ;
   }
 
 
-  public AbstractSyntaxTreeNode ( String pDescription , String pName ,
-      int pStart , int pEnd )
+  public AbstractSyntaxTreeNode ( String pDescription ,
+      String pExpressionString , int pStart , int pEnd )
   {
     this.description = pDescription ;
-    this.name = pName ;
+    this.expressionString = pExpressionString ;
     this.expression = null ;
     this.startIndex = pStart ;
     this.endIndex = pEnd ;
     resetCaption ( ) ;
+    this.replace = false ;
   }
 
 
@@ -142,10 +166,17 @@ public class AbstractSyntaxTreeNode
 
   private boolean isInList ( int pList , int pIndex )
   {
-    if ( this.relations == null ) return false ;
-    for ( int i = 0 ; i < this.relations.get ( pList ).size ( ) ; i ++ )
+    if ( this.relations == null )
     {
-      Expression e = this.relations.get ( pList ).get ( i ) ;
+      return false ;
+    }
+    if ( ( pList < 0 ) || ( pList >= this.relations.size ( ) ) )
+    {
+      return false ;
+    }
+    for ( int i = 0 ; i < this.relations.size ( pList ) ; i ++ )
+    {
+      Expression e = this.relations.get ( pList , i ) ;
       PrettyString prettyString = this.expression.toPrettyString ( ) ;
       PrettyAnnotation prettyAnnotation = prettyString
           .getAnnotationForPrintable ( e ) ;
@@ -169,7 +200,7 @@ public class AbstractSyntaxTreeNode
       result.append ( AFTER_DESCRIPTION ) ;
       result.append ( BETWEEN ) ;
       result.append ( BEFOR_NAME ) ;
-      result.append ( this.name ) ;
+      result.append ( this.expressionString ) ;
       result.append ( AFTER_NAME ) ;
       result.append ( "</html>" ) ;
       this.caption = result.toString ( ) ;
@@ -178,6 +209,37 @@ public class AbstractSyntaxTreeNode
     {
       updateCaption ( - 1 , - 1 , - 1 ) ;
     }
+  }
+
+
+  public void setSelectedCaption ( )
+  {
+    if ( this.expression == null )
+    {
+      StringBuffer result = new StringBuffer ( "<html>" ) ;
+      result.append ( BEFOR_DESCRIPTION ) ;
+      result.append ( this.description ) ;
+      result.append ( AFTER_DESCRIPTION ) ;
+      result.append ( BETWEEN ) ;
+      result.append ( BEFOR_NAME ) ;
+      result.append ( "<b><font color=\"#"
+          + getHex ( AbstractSyntaxTreeNode.SELECTED ) + "\">" ) ;
+      result.append ( this.expressionString ) ;
+      result.append ( "</font></b>" ) ;
+      result.append ( AFTER_NAME ) ;
+      result.append ( "</html>" ) ;
+      this.caption = result.toString ( ) ;
+    }
+    else
+    {
+      updateCaption ( - 1 , - 1 , - 1 ) ;
+    }
+  }
+
+
+  public void setReplace ( boolean pReplace )
+  {
+    this.replace = pReplace ;
   }
 
 
@@ -204,16 +266,22 @@ public class AbstractSyntaxTreeNode
     result.append ( BEFOR_NAME ) ;
     p.first ( ) ;
     int index = 0 ;
-    while ( index < this.name.length ( ) )
+    while ( index < this.expressionString.length ( ) )
     {
       // Selected
       if ( index == pSelectionStart )
       {
-        result
-            .append ( "<b><font color=\"#" + getHex ( this.SELECTED ) + "\">" ) ;
+        result.append ( "<b><font color=\"#" + getHex ( SELECTED ) + "\">" ) ;
+        if ( replaceGeneral && this.replace )
+        {
+          result.append ( "&nbsp;" + REPLACE_STRING + "&nbsp;" ) ;
+        }
         while ( index <= pSelectionEnd )
         {
-          result.append ( this.name.charAt ( index ) ) ;
+          if ( ! ( replaceGeneral && this.replace ) )
+          {
+            result.append ( this.expressionString.charAt ( index ) ) ;
+          }
           index ++ ;
           p.next ( ) ;
         }
@@ -221,14 +289,14 @@ public class AbstractSyntaxTreeNode
       }
       // Binding
       else if ( ( this.relations != null ) && ( pPrintBindings >= 0 )
-          && ( this.relations.size ( ) > pPrintBindings )
-          && ( this.relations.get ( pPrintBindings ) != null )
+      // && ( this.relations.size ( ) > pPrintBindings )
+          // && ( this.relations.get ( pPrintBindings ) != null )
           && ( isInList ( pPrintBindings , index ) ) )
       {
-        result.append ( "<b><font color=\"#" + getHex ( this.BINDING ) + "\">" ) ;
+        result.append ( "<b><font color=\"#" + getHex ( BINDING ) + "\">" ) ;
         while ( isInList ( pPrintBindings , index ) )
         {
-          result.append ( this.name.charAt ( index ) ) ;
+          result.append ( this.expressionString.charAt ( index ) ) ;
           index ++ ;
           p.next ( ) ;
         }
@@ -240,7 +308,7 @@ public class AbstractSyntaxTreeNode
         result.append ( "<b><font color=\"#" + getHex ( keywordColor ) + "\">" ) ;
         while ( p.getStyle ( ) == PrettyStyle.KEYWORD )
         {
-          result.append ( this.name.charAt ( index ) ) ;
+          result.append ( this.expressionString.charAt ( index ) ) ;
           index ++ ;
           p.next ( ) ;
         }
@@ -253,7 +321,7 @@ public class AbstractSyntaxTreeNode
             .append ( "<b><font color=\"#" + getHex ( constantColor ) + "\">" ) ;
         while ( p.getStyle ( ) == PrettyStyle.CONSTANT )
         {
-          result.append ( this.name.charAt ( index ) ) ;
+          result.append ( this.expressionString.charAt ( index ) ) ;
           index ++ ;
           p.next ( ) ;
         }
@@ -262,7 +330,7 @@ public class AbstractSyntaxTreeNode
       // Else
       else
       {
-        result.append ( this.name.charAt ( index ) ) ;
+        result.append ( this.expressionString.charAt ( index ) ) ;
         index ++ ;
         p.next ( ) ;
       }
