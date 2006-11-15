@@ -36,13 +36,10 @@ public class AbstractSyntaxTreeNode
   private static final String REPLACE_STRING = "..." ;
 
 
-  private static boolean replaceGeneral = false ;
+  private static boolean replaceGeneral = true ;
 
 
-  public static boolean isReplaceGeneral ( )
-  {
-    return replaceGeneral ;
-  }
+  private static boolean showBindings = true ;
 
 
   public static void setReplaceGeneral ( boolean pReplaceGeneral )
@@ -288,10 +285,8 @@ public class AbstractSyntaxTreeNode
         result.append ( "</font></b>" ) ;
       }
       // Binding
-      else if ( ( this.relations != null ) && ( pPrintBindings >= 0 )
-      // && ( this.relations.size ( ) > pPrintBindings )
-          // && ( this.relations.get ( pPrintBindings ) != null )
-          && ( isInList ( pPrintBindings , index ) ) )
+      else if ( ( showBindings ) && ( this.relations != null )
+          && ( pPrintBindings >= 0 ) && ( isInList ( pPrintBindings , index ) ) )
       {
         result.append ( "<b><font color=\"#" + getHex ( BINDING ) + "\">" ) ;
         while ( isInList ( pPrintBindings , index ) )
@@ -338,5 +333,11 @@ public class AbstractSyntaxTreeNode
     result.append ( AFTER_NAME ) ;
     result.append ( "</html>" ) ;
     this.caption = result.toString ( ) ;
+  }
+
+
+  public static void setShowBindings ( boolean pShowBindings )
+  {
+    AbstractSyntaxTreeNode.showBindings = pShowBindings ;
   }
 }

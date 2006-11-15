@@ -73,9 +73,14 @@ public class AbstractSyntaxTree
     String [ ] idList = pExpression.getIdentifiers ( ) ;
     Expression e1 = pExpression.getE1 ( ) ;
     Expression e2 = pExpression.getE2 ( ) ;
+    AbstractSyntaxTreeFree free = new AbstractSyntaxTreeFree ( ) ;
+    free.add ( pExpression.getE2 ( ) , pExpression.getIdentifiers ( 0 ) ) ;
+    for ( int i = 1 ; i < pExpression.getIdentifiers ( ).length ; i ++ )
+    {
+      free.add ( pExpression.getE1 ( ) , pExpression.getIdentifiers ( i ) ) ;
+    }
     DefaultMutableTreeNode child = createNode ( pExpression.getClass ( )
-        .getSimpleName ( ) , pExpression , new AbstractSyntaxTreeFree (
-        pExpression.getE2 ( ) , pExpression.getIdentifiers ( ) ) ) ;
+        .getSimpleName ( ) , pExpression , free ) ;
     int length = 0 ;
     for ( int i = 0 ; i < idList.length ; i ++ )
     {
@@ -100,9 +105,14 @@ public class AbstractSyntaxTree
     String [ ] idList = pExpression.getIdentifiers ( ) ;
     Expression e1 = pExpression.getE1 ( ) ;
     Expression e2 = pExpression.getE2 ( ) ;
+    AbstractSyntaxTreeFree free = new AbstractSyntaxTreeFree ( ) ;
+    free.add ( pExpression , pExpression.getIdentifiers ( 0 ) ) ;
+    for ( int i = 1 ; i < pExpression.getIdentifiers ( ).length ; i ++ )
+    {
+      free.add ( pExpression.getE1 ( ) , pExpression.getIdentifiers ( i ) ) ;
+    }
     DefaultMutableTreeNode child = createNode ( pExpression.getClass ( )
-        .getSimpleName ( ) , pExpression , new AbstractSyntaxTreeFree (
-        pExpression , pExpression.getIdentifiers ( ) ) ) ;
+        .getSimpleName ( ) , pExpression , free ) ;
     int length = 0 ;
     for ( int i = 0 ; i < idList.length ; i ++ )
     {

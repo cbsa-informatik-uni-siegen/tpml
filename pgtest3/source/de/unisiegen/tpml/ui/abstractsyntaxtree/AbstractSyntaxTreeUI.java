@@ -1,15 +1,12 @@
 package de.unisiegen.tpml.ui.abstractsyntaxtree ;
 
 
-import java.awt.BorderLayout ;
 import java.awt.Color ;
 import java.awt.Font ;
 import java.awt.GridBagConstraints ;
 import java.awt.GridBagLayout ;
-import java.awt.event.ActionEvent ;
-import java.awt.event.ActionListener ;
-import java.awt.event.ItemEvent ;
-import java.awt.event.ItemListener ;
+import java.awt.Insets ;
+import javax.swing.BorderFactory ;
 import javax.swing.JButton ;
 import javax.swing.JCheckBox ;
 import javax.swing.JFrame ;
@@ -17,6 +14,7 @@ import javax.swing.JPanel ;
 import javax.swing.JScrollPane ;
 import javax.swing.JTree ;
 import javax.swing.WindowConstants ;
+import javax.swing.border.TitledBorder ;
 import javax.swing.tree.DefaultMutableTreeNode ;
 import javax.swing.tree.DefaultTreeCellRenderer ;
 import javax.swing.tree.DefaultTreeModel ;
@@ -48,30 +46,52 @@ public class AbstractSyntaxTreeUI
   private JScrollPane jScrollPaneAbstractSyntax ;
 
 
+  private JPanel jPanelCenter ;
+
+
   private JPanel jPanelSouth ;
 
 
   private JButton jButtonExpand ;
 
 
-  private JButton jButtonClose ;
+  private JButton jButtonCollapse ;
 
 
-  private JButton jButtonHide ;
+  private JButton jButtonExpandAll ;
+
+
+  private JButton jButtonCloseAll ;
+
+
+  private JButton jButtonCollapseAll ;
 
 
   private JCheckBox jCheckBoxReplace ;
 
 
-  private AbstractSyntaxTreeListener abstractSyntaxTreeListener ;
+  private JCheckBox jCheckBoxBindings ;
 
 
-  private BorderLayout borderLayout ;
+  private ASTTreeSelectionListener aSTTreeSelectionListener ;
+
+
+  private ASTActionListener aSTActionListener ;
+
+
+  private ASTItemListener aSTItemListener ;
 
 
   public AbstractSyntaxTreeUI ( )
   {
-    // Tree - Renderer
+    // Listener
+    this.aSTItemListener = new ASTItemListener ( this ) ;
+    this.aSTActionListener = new ASTActionListener ( this ) ;
+    this.aSTTreeSelectionListener = new ASTTreeSelectionListener ( this ) ;
+    // Layout
+    this.gridBagLayout = new GridBagLayout ( ) ;
+    this.gridBagConstraints = new GridBagConstraints ( ) ;
+    // Tree
     this.cellRenderer = new DefaultTreeCellRenderer ( ) ;
     this.cellRenderer.setIcon ( null ) ;
     this.cellRenderer.setLeafIcon ( null ) ;
@@ -86,87 +106,136 @@ public class AbstractSyntaxTreeUI
     this.cellRenderer.setBorderSelectionColor ( Color.BLUE ) ;
     this.cellRenderer.setTextSelectionColor ( Color.BLACK ) ;
     this.cellRenderer.setTextNonSelectionColor ( Color.BLACK ) ;
-    // Tree - TreeModel
     this.treeModel = new DefaultTreeModel ( this.rootNode ) ;
-    // Tree
     this.jTreeAbstractSyntax = new JTree ( this.treeModel ) ;
     this.jTreeAbstractSyntax.setCellRenderer ( this.cellRenderer ) ;
-    this.abstractSyntaxTreeListener = new AbstractSyntaxTreeListener ( this ) ;
     this.jTreeAbstractSyntax.getSelectionModel ( ).addTreeSelectionListener (
-        this.abstractSyntaxTreeListener ) ;
-    // Tree - ScrollPane
+        this.aSTTreeSelectionListener ) ;
     this.jScrollPaneAbstractSyntax = new JScrollPane ( this.jTreeAbstractSyntax ) ;
-    // GridBagLayout
-    this.gridBagLayout = new GridBagLayout ( ) ;
-    this.gridBagConstraints = new GridBagConstraints ( ) ;
-    // BorderLayout
-    this.borderLayout = new BorderLayout ( ) ;
-    // Buttons
-    this.jButtonClose = new JButton ( "close all" ) ;
-    this.jButtonClose.addActionListener ( new ActionListener ( )
-    {
-      public void actionPerformed ( ActionEvent e )
-      {
-        close ( ) ;
-      }
-    } ) ;
-    this.jButtonHide = new JButton ( "hide all" ) ;
-    this.jButtonHide.addActionListener ( new ActionListener ( )
-    {
-      public void actionPerformed ( ActionEvent e )
-      {
-        hide ( ) ;
-      }
-    } ) ;
+    // Button
+    this.jButtonCloseAll = new JButton ( "close all" ) ;
+    this.jButtonCloseAll.setActionCommand ( "close_all" ) ;
+    this.jButtonCloseAll.setFocusable ( false ) ;
+    this.jButtonCloseAll.addActionListener ( this.aSTActionListener ) ;
+    this.jButtonCollapseAll = new JButton ( "collapse all" ) ;
+    this.jButtonCollapseAll.setActionCommand ( "collapse_all" ) ;
+    this.jButtonCollapseAll.setFocusable ( false ) ;
+    this.jButtonCollapseAll.addActionListener ( this.aSTActionListener ) ;
+    this.jButtonCollapse = new JButton ( "collapse" ) ;
+    this.jButtonCollapse.setActionCommand ( "collapse" ) ;
+    this.jButtonCollapse.setFocusable ( false ) ;
+    this.jButtonCollapse.addActionListener ( this.aSTActionListener ) ;
     this.jButtonExpand = new JButton ( "expand" ) ;
-    this.jButtonExpand.addActionListener ( new ActionListener ( )
-    {
-      public void actionPerformed ( ActionEvent e )
-      {
-        expand ( ) ;
-      }
-    } ) ;
+    this.jButtonExpand.setActionCommand ( "expand" ) ;
+    this.jButtonExpand.setFocusable ( false ) ;
+    this.jButtonExpand.addActionListener ( this.aSTActionListener ) ;
+    this.jButtonExpandAll = new JButton ( "expand all" ) ;
+    this.jButtonExpandAll.setActionCommand ( "expand_all" ) ;
+    this.jButtonExpandAll.setFocusable ( false ) ;
+    this.jButtonExpandAll.addActionListener ( this.aSTActionListener ) ;
     // CheckBox
-    this.jCheckBoxReplace = new JCheckBox ( "Replace Expression" , false ) ;
-    this.jCheckBoxReplace.addItemListener ( new ItemListener ( )
-    {
-      public void itemStateChanged ( ItemEvent e )
-      {
-        AbstractSyntaxTreeNode
-            .setReplaceGeneral ( e.getStateChange ( ) == ItemEvent.SELECTED ) ;
-        abstractSyntaxTreeListener
-            .update ( AbstractSyntaxTreeUI.this.jTreeAbstractSyntax
-                .getSelectionPath ( ) ) ;
-      }
-    } ) ;
+    this.jCheckBoxReplace = new JCheckBox ( "replace expressions" ) ;
+    this.jCheckBoxReplace.setSelected ( true ) ;
+    this.jCheckBoxReplace.setFocusable ( false ) ;
+    this.jCheckBoxReplace.addItemListener ( this.aSTItemListener ) ;
+    this.jCheckBoxBindings = new JCheckBox ( "show bindings" ) ;
+    this.jCheckBoxBindings.setSelected ( true ) ;
+    this.jCheckBoxBindings.setFocusable ( false ) ;
+    this.jCheckBoxBindings.addItemListener ( this.aSTItemListener ) ;
     // Panel
+    this.jPanelCenter = new JPanel ( ) ;
+    this.jPanelCenter.setLayout ( this.gridBagLayout ) ;
+    this.jPanelCenter.setBorder ( new TitledBorder ( BorderFactory
+        .createLineBorder ( Color.black , 1 ) , "" ,
+        TitledBorder.DEFAULT_JUSTIFICATION , TitledBorder.TOP , new Font (
+            "SansSerif" , Font.PLAIN , 12 ) ) ) ;
+    this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
+    this.gridBagConstraints.insets = new Insets ( 0 , 0 , 0 , 0 ) ;
+    this.gridBagConstraints.gridx = 0 ;
+    this.gridBagConstraints.gridy = 0 ;
+    this.gridBagConstraints.weightx = 10 ;
+    this.gridBagConstraints.weighty = 10 ;
+    this.jPanelCenter.add ( this.jScrollPaneAbstractSyntax ,
+        this.gridBagConstraints ) ;
     this.jPanelSouth = new JPanel ( ) ;
-    this.jPanelSouth.add ( this.jCheckBoxReplace ) ;
-    this.jPanelSouth.add ( this.jButtonClose ) ;
-    this.jPanelSouth.add ( this.jButtonHide ) ;
-    this.jPanelSouth.add ( this.jButtonExpand ) ;
+    this.jPanelSouth.setLayout ( this.gridBagLayout ) ;
+    this.jPanelSouth.setBorder ( new TitledBorder ( BorderFactory
+        .createLineBorder ( Color.black , 1 ) , "" ,
+        TitledBorder.DEFAULT_JUSTIFICATION , TitledBorder.TOP , new Font (
+            "SansSerif" , Font.PLAIN , 12 ) ) ) ;
+    this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
+    this.gridBagConstraints.insets = new Insets ( 4 , 4 , 4 , 4 ) ;
+    this.gridBagConstraints.gridx = 0 ;
+    this.gridBagConstraints.gridy = 0 ;
+    this.gridBagConstraints.weightx = 10 ;
+    this.gridBagConstraints.weighty = 10 ;
+    this.jPanelSouth.add ( this.jCheckBoxBindings , this.gridBagConstraints ) ;
+    this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
+    this.gridBagConstraints.insets = new Insets ( 4 , 4 , 4 , 4 ) ;
+    this.gridBagConstraints.gridx = 0 ;
+    this.gridBagConstraints.gridy = 1 ;
+    this.gridBagConstraints.weightx = 10 ;
+    this.gridBagConstraints.weighty = 10 ;
+    this.jPanelSouth.add ( this.jCheckBoxReplace , this.gridBagConstraints ) ;
+    this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
+    this.gridBagConstraints.insets = new Insets ( 4 , 4 , 4 , 4 ) ;
+    this.gridBagConstraints.gridx = 1 ;
+    this.gridBagConstraints.gridy = 0 ;
+    this.gridBagConstraints.weightx = 0 ;
+    this.gridBagConstraints.weighty = 10 ;
+    this.jPanelSouth.add ( this.jButtonCloseAll , this.gridBagConstraints ) ;
+    this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
+    this.gridBagConstraints.insets = new Insets ( 4 , 4 , 4 , 4 ) ;
+    this.gridBagConstraints.gridx = 2 ;
+    this.gridBagConstraints.gridy = 0 ;
+    this.gridBagConstraints.weightx = 0 ;
+    this.gridBagConstraints.weighty = 10 ;
+    this.jPanelSouth.add ( this.jButtonCollapse , this.gridBagConstraints ) ;
+    this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
+    this.gridBagConstraints.insets = new Insets ( 4 , 4 , 4 , 4 ) ;
+    this.gridBagConstraints.gridx = 2 ;
+    this.gridBagConstraints.gridy = 1 ;
+    this.gridBagConstraints.weightx = 0 ;
+    this.gridBagConstraints.weighty = 10 ;
+    this.jPanelSouth.add ( this.jButtonCollapseAll , this.gridBagConstraints ) ;
+    this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
+    this.gridBagConstraints.insets = new Insets ( 4 , 4 , 4 , 4 ) ;
+    this.gridBagConstraints.gridx = 3 ;
+    this.gridBagConstraints.gridy = 0 ;
+    this.gridBagConstraints.weightx = 0 ;
+    this.gridBagConstraints.weighty = 10 ;
+    this.jPanelSouth.add ( this.jButtonExpand , this.gridBagConstraints ) ;
+    this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
+    this.gridBagConstraints.insets = new Insets ( 4 , 4 , 4 , 4 ) ;
+    this.gridBagConstraints.gridx = 3 ;
+    this.gridBagConstraints.gridy = 1 ;
+    this.gridBagConstraints.weightx = 0 ;
+    this.gridBagConstraints.weighty = 10 ;
+    this.jPanelSouth.add ( this.jButtonExpandAll , this.gridBagConstraints ) ;
     // Frame
     this.jFrameAbstractSyntaxTree = new JFrame ( ) ;
-    // this.jFrameAbstractSyntaxTree.setLayout ( this.gridBagLayout ) ;
-    this.jFrameAbstractSyntaxTree.setLayout ( this.borderLayout ) ;
+    this.jFrameAbstractSyntaxTree.setLayout ( this.gridBagLayout ) ;
     this.jFrameAbstractSyntaxTree.setTitle ( "AbstractSyntaxTree" ) ;
     this.jFrameAbstractSyntaxTree.setSize ( 600 , 450 ) ;
     this.jFrameAbstractSyntaxTree.setLocation ( 100 , 0 ) ;
     this.jFrameAbstractSyntaxTree
         .setDefaultCloseOperation ( WindowConstants.HIDE_ON_CLOSE ) ;
-    // Build
     this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
+    this.gridBagConstraints.insets = new Insets ( 4 , 4 , 4 , 4 ) ;
     this.gridBagConstraints.gridx = 0 ;
     this.gridBagConstraints.gridy = 0 ;
     this.gridBagConstraints.weightx = 10 ;
     this.gridBagConstraints.weighty = 10 ;
-    this.jPanelSouth.add ( this.jScrollPaneAbstractSyntax ) ;
-    // this.jFrameAbstractSyntaxTree.getContentPane ( ).add
-    // (this.jScrollPaneAbstractSyntax , this.gridBagConstraints ) ;
-    this.jFrameAbstractSyntaxTree.getContentPane ( ).add (
-        this.jScrollPaneAbstractSyntax , BorderLayout.CENTER ) ;
+    this.jFrameAbstractSyntaxTree.getContentPane ( ).add ( this.jPanelCenter ,
+        this.gridBagConstraints ) ;
+    this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
+    this.gridBagConstraints.insets = new Insets ( 4 , 4 , 4 , 4 ) ;
+    this.gridBagConstraints.gridx = 0 ;
+    this.gridBagConstraints.gridy = 1 ;
+    this.gridBagConstraints.weightx = 0 ;
+    this.gridBagConstraints.weighty = 0 ;
     this.jFrameAbstractSyntaxTree.getContentPane ( ).add ( this.jPanelSouth ,
-        BorderLayout.SOUTH ) ;
+        this.gridBagConstraints ) ;
   }
 
 
@@ -178,53 +247,21 @@ public class AbstractSyntaxTreeUI
   }
 
 
-  public void close ( )
-  {
-    for ( int i = this.jTreeAbstractSyntax.getRowCount ( ) - 1 ; i >= 0 ; i -- )
-    {
-      this.jTreeAbstractSyntax.collapseRow ( i ) ;
-    }
-  }
-
-
-  public void expand ( )
-  {
-    // TODO dummerweise klappt er alles auf, was unter der Selection ist, nicht
-    // nur den Unterbaum :(
-    int start = 0 ;
-    try
-    {
-      start = this.jTreeAbstractSyntax.getSelectionRows ( ) [ 0 ] ;
-    }
-    catch ( Exception e )
-    {
-      start = 0 ;
-    }
-    // this.jTreeAbstractSyntax.expa
-    while ( start < this.jTreeAbstractSyntax.getRowCount ( ) )
-    {
-      this.jTreeAbstractSyntax.expandRow ( start ) ;
-      start ++ ;
-    }
-    // TreePath path = this.jTreeAbstractSyntax.getSelectionPath();
-    // int pathCount = path.get();
-    // for (int i = 0 ; i < path.getPathCount(); i++)
-    // {
-    // path.(i);
-    // }
-    // this.jTreeAbstractSyntax.expandPath(path);
-    // int [] selection = this.jTreeAbstractSyntax.getSelectionRows();
-    // for (int i = 0 ; i < selection.length ; i++)
-    // {
-    // System.out.println("Row: "+i);
-    // this.jTreeAbstractSyntax.expandRow(i);
-    // }
-  }
-
-
   public void expandRow ( int pIndex )
   {
     this.jTreeAbstractSyntax.expandRow ( pIndex ) ;
+  }
+
+
+  public ASTActionListener getASTActionListener ( )
+  {
+    return this.aSTActionListener ;
+  }
+
+
+  public ASTTreeSelectionListener getASTTreeSelectionListener ( )
+  {
+    return this.aSTTreeSelectionListener ;
   }
 
 
@@ -234,9 +271,9 @@ public class AbstractSyntaxTreeUI
   }
 
 
-  public void hide ( )
+  public JCheckBox getJCheckBoxReplace ( )
   {
-    this.jTreeAbstractSyntax.collapseRow ( 0 ) ;
+    return this.jCheckBoxReplace ;
   }
 
 
@@ -256,5 +293,11 @@ public class AbstractSyntaxTreeUI
   public void setVisible ( boolean pVisible )
   {
     this.jFrameAbstractSyntaxTree.setVisible ( pVisible ) ;
+  }
+
+
+  public JCheckBox getJCheckBoxBindings ( )
+  {
+    return this.jCheckBoxBindings ;
   }
 }

@@ -18,12 +18,12 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyString ;
 
 
-public class AbstractSyntaxTreeListener implements TreeSelectionListener
+public class ASTTreeSelectionListener implements TreeSelectionListener
 {
   private AbstractSyntaxTreeUI abstractSyntaxTreeUI ;
 
 
-  public AbstractSyntaxTreeListener ( AbstractSyntaxTreeUI pAbstractSyntaxTreeUI )
+  public ASTTreeSelectionListener ( AbstractSyntaxTreeUI pAbstractSyntaxTreeUI )
   {
     this.abstractSyntaxTreeUI = pAbstractSyntaxTreeUI ;
   }
@@ -71,7 +71,6 @@ public class AbstractSyntaxTreeListener implements TreeSelectionListener
   {
     if ( pTreePath == null )
     {
-      System.err.println ( "treePath == null" ) ;
       return ;
     }
     LinkedList < AbstractSyntaxTreeNode > list = new LinkedList < AbstractSyntaxTreeNode > ( ) ;
@@ -150,8 +149,8 @@ public class AbstractSyntaxTreeListener implements TreeSelectionListener
   }
 
 
-  public void valueChanged ( TreeSelectionEvent pEvent )
+  public void valueChanged ( TreeSelectionEvent pTreeSelectionEvent )
   {
-    update ( pEvent.getPath ( ) ) ;
+    update ( pTreeSelectionEvent.getPath ( ) ) ;
   }
 }
