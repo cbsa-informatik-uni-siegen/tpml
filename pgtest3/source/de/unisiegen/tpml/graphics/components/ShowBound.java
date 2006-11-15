@@ -24,7 +24,7 @@ static Expression holeExpression;
 
 	private static ShowBound bound = null;
 	private static LinkedList<Bound> tmp = new LinkedList();
-	private boolean debugOutput=false;
+	private boolean debugOutput=true;
 	//public LinkedList<Bound> result = new LinkedList();
 
 	public static ShowBound getInstance()
@@ -115,7 +115,14 @@ static Expression holeExpression;
 		
 		LinkedList list = listWithBounds(a, b);
 		
-	checkRec(lambda.children(),lambda,list);
+		LinkedList <Expression> child = new LinkedList();
+		Enumeration tmpChild =lambda.children();
+		while (tmpChild.hasMoreElements())
+		{
+			child.add((Expression)tmpChild.nextElement());
+		}
+		
+	checkRec(child,lambda,list);
 	
 
 	}
@@ -134,7 +141,14 @@ static Expression holeExpression;
 		
 		LinkedList list = listWithBounds(a, b);
 		
-checkRec(lambda.children(),lambda,list);
+		LinkedList <Expression> child = new LinkedList();
+		Enumeration tmpChild =lambda.children();
+		while (tmpChild.hasMoreElements())
+		{
+			child.add((Expression)tmpChild.nextElement());
+		}
+		
+checkRec(child,lambda,list);
 	
 		
 	}
@@ -143,27 +157,49 @@ checkRec(lambda.children(),lambda,list);
 	private void checkLet(Let let)
 	{
 		// anlegen von Arrays mit den frei vorkommenden Namen der beiden expressions von lambda
-		Object[] a = let.getE1().free().toArray();
+		Object[] a = new Object[0];
 		Object[] b = let.getE2().free().toArray();
+	
+		check(let.getE1());
 		
 		LinkedList list = listWithBounds(a, b);
 		
+		LinkedList <Expression> child = new LinkedList();
+		Enumeration tmpChild =let.children();
+		tmpChild.nextElement();
+		while (tmpChild.hasMoreElements())
+		{
+			child.add((Expression)tmpChild.nextElement());
+		}
 		
-		checkRec(let.children(),let,list);
+		
+		checkRec(child,let,list);
 
 		
 	}
 	
 	private void checkMultiLet(MultiLet let)
 	{
-		// anlegen von Arrays mit den frei vorkommenden Namen der beiden expressions von lambda
-		Object[] a = let.getE1().free().toArray();
+//	 anlegen von Arrays mit den frei vorkommenden Namen der beiden expressions von lambda
+		Object[] a = new Object[0];
 		Object[] b = let.getE2().free().toArray();
+	
+		check(let.getE1());
 		
 		LinkedList list = listWithBounds(a, b);
 		
+		LinkedList <Expression> child = new LinkedList();
+		Enumeration tmpChild =let.children();
+		tmpChild.nextElement();
+		while (tmpChild.hasMoreElements())
+		{
+			child.add((Expression)tmpChild.nextElement());
+		}
 		
-		checkRec(let.children(),let,list);
+		
+		checkRec(child,let,list);
+
+		
 		
 				
 	}
@@ -176,12 +212,25 @@ checkRec(lambda.children(),lambda,list);
 //	 anlegen von Arrays mit den frei vorkommenden Namen der beiden expressions von lambda
 		Object[] b = let.getE1().free().toArray();
 		Object[] a = let.getE2().free().toArray();
-		
+
+		check(let.getE1());
+		check(let.getE2());
 			
-		LinkedList list = listWithBounds(a, b);
+		LinkedList list = listWithBounds(new Object[0], b);
+		LinkedList list2 = listWithBounds(new Object[0], a);
 		
+		LinkedList <Expression> child = new LinkedList();
+		Enumeration tmpChild =let.children();
+		while (tmpChild.hasMoreElements())
+		{
+			child.add((Expression)tmpChild.nextElement());
+		}
 		
-		checkRec(let.children(),let,list);
+		child.remove(child.size()-1);
+		checkRec(child,let,list);
+		checkRec(child,let,list2);
+		
+
 	}
 	
 
@@ -193,8 +242,15 @@ checkRec(lambda.children(),lambda,list);
 		
 		LinkedList list = listWithBounds(a, b);
 		
+		LinkedList <Expression> child = new LinkedList();
+		Enumeration tmpChild =rec.children();
+		while (tmpChild.hasMoreElements())
+		{
+			child.add((Expression)tmpChild.nextElement());
+		}
 		
-		checkRec(rec.children(),rec,list);
+		
+		checkRec(child,rec,list);
 	}
 	
 	
@@ -208,21 +264,29 @@ checkRec(lambda.children(),lambda,list);
 			
 		LinkedList list = listWithBounds(a, b);
 		
+		LinkedList <Expression> child = new LinkedList();
+		Enumeration tmpChild =rec.children();
+		while (tmpChild.hasMoreElements())
+		{
+			child.add((Expression)tmpChild.nextElement());
+		}
 		
-		checkRec(rec.children(),rec,list);
+		
+		checkRec(child,rec,list);
 		
 	}
 
 	
-	private Bound checkRec (Enumeration child,Expression e, LinkedList <String> list)
+	private Bound checkRec (LinkedList<Expression> child,Expression e, LinkedList <String> list)
 	{
 		Bound result=null;
 		
 		
-		while (child.hasMoreElements())
+		for (int j=0; j<child.size();j++)
 		{
 
-			Expression actualExpression = (Expression) child.nextElement();
+			Expression actualExpression = (Expression) child.get(j);
+			
 
 			if (actualExpression.free().toArray().length > 0)
 			{
@@ -274,7 +338,15 @@ checkRec(lambda.children(),lambda,list);
 
 				}
 				else
-					checkRec(actualExpression.children(),e, list);
+				{
+						LinkedList <Expression> childtmp = new LinkedList();
+						Enumeration tmpChild =actualExpression.children();
+						while (tmpChild.hasMoreElements())
+						{
+							child.add((Expression)tmpChild.nextElement());
+						}
+						checkRec(childtmp,e, list);
+				}
 			}
 
 		}
@@ -291,18 +363,25 @@ checkRec(lambda.children(),lambda,list);
 		
 		e1=castArray(a);
 		e2=castArray(b);
-
+		
 		for (int i = 0; i < e1.size(); i++)
 		{
-			if (e2.contains(e1.get(i)))
+			for (int j=0; j<e2.size();j++)
 			{
-				e2.remove(i);
-				i--;
+				if (e1.get(i).equals(e2.get(j)))
+				{
+					e2.remove(j);
+					j--;
+				}
 			}
+			
 		}
+
 		return e2;
 	}
 	
+
+
 	private LinkedList<String> castArray(Object[] a)
 	{
 		LinkedList<String> tmp = new LinkedList();
@@ -399,6 +478,9 @@ checkRec(lambda.children(),lambda,list);
 		}
 		return start;
 	}
+	
+		
+	
 
 	public static void setHoleExpression(Expression holeExpression)
 	{
