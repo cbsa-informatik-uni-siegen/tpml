@@ -6,6 +6,7 @@ import java.awt.Font ;
 import java.awt.GridBagConstraints ;
 import java.awt.GridBagLayout ;
 import java.awt.Insets ;
+import java.util.ResourceBundle ;
 import javax.swing.BorderFactory ;
 import javax.swing.JButton ;
 import javax.swing.JCheckBox ;
@@ -46,9 +47,6 @@ public class ASTUI
   private JScrollPane jScrollPaneAbstractSyntax ;
 
 
-  private JPanel jPanelCenter ;
-
-
   private JPanel jPanelSouth ;
 
 
@@ -76,6 +74,9 @@ public class ASTUI
   private JCheckBox jCheckBoxBindings ;
 
 
+  private JCheckBox jCheckBoxSelected ;
+
+
   private ASTTreeSelectionListener aSTTreeSelectionListener ;
 
 
@@ -88,8 +89,13 @@ public class ASTUI
   private AbstractSyntaxTree abstractSyntaxTree ;
 
 
+  private ResourceBundle resourceBundle ;
+
+
   public ASTUI ( AbstractSyntaxTree pAbstractSyntaxTree )
   {
+    this.resourceBundle = ResourceBundle
+        .getBundle ( "de/unisiegen/tpml/ui/abstractsyntaxtree/ast" ) ;
     this.abstractSyntaxTree = pAbstractSyntaxTree ;
     // Listener
     this.aSTItemListener = new ASTItemListener ( this ) ;
@@ -119,98 +125,147 @@ public class ASTUI
     this.jTreeAbstractSyntax.getSelectionModel ( ).addTreeSelectionListener (
         this.aSTTreeSelectionListener ) ;
     this.jScrollPaneAbstractSyntax = new JScrollPane ( this.jTreeAbstractSyntax ) ;
-    // Button
-    this.jButtonClose = new JButton ( "close" ) ;
-    this.jButtonClose.setActionCommand ( "close" ) ;
-    this.jButtonClose.setFocusable ( false ) ;
-    this.jButtonClose.addActionListener ( this.aSTActionListener ) ;
-    this.jButtonCloseAll = new JButton ( "close all" ) ;
-    this.jButtonCloseAll.setActionCommand ( "close_all" ) ;
-    this.jButtonCloseAll.setFocusable ( false ) ;
-    this.jButtonCloseAll.addActionListener ( this.aSTActionListener ) ;
-    this.jButtonCollapseAll = new JButton ( "collapse all" ) ;
-    this.jButtonCollapseAll.setActionCommand ( "collapse_all" ) ;
-    this.jButtonCollapseAll.setFocusable ( false ) ;
-    this.jButtonCollapseAll.addActionListener ( this.aSTActionListener ) ;
-    this.jButtonCollapse = new JButton ( "collapse" ) ;
-    this.jButtonCollapse.setActionCommand ( "collapse" ) ;
-    this.jButtonCollapse.setFocusable ( false ) ;
-    this.jButtonCollapse.addActionListener ( this.aSTActionListener ) ;
-    this.jButtonExpand = new JButton ( "expand" ) ;
+    this.jScrollPaneAbstractSyntax.setBorder ( new TitledBorder ( BorderFactory
+        .createLineBorder ( Color.black , 1 ) , "" ,
+        TitledBorder.DEFAULT_JUSTIFICATION , TitledBorder.TOP , new Font (
+            "SansSerif" , Font.PLAIN , 12 ) ) ) ;
+    // Button Expand
+    this.jButtonExpand = new JButton ( this.resourceBundle
+        .getString ( "expand" ) ) ;
+    this.jButtonExpand.setMnemonic ( this.resourceBundle.getString (
+        "expandMnemonic" ).charAt ( 0 ) ) ;
     this.jButtonExpand.setActionCommand ( "expand" ) ;
     this.jButtonExpand.setFocusable ( false ) ;
     this.jButtonExpand.addActionListener ( this.aSTActionListener ) ;
-    this.jButtonExpandAll = new JButton ( "expand all" ) ;
+    // Button ExpandAll
+    this.jButtonExpandAll = new JButton ( this.resourceBundle
+        .getString ( "expand_all" ) ) ;
+    this.jButtonExpandAll.setMnemonic ( this.resourceBundle.getString (
+        "expand_allMnemonic" ).charAt ( 0 ) ) ;
     this.jButtonExpandAll.setActionCommand ( "expand_all" ) ;
     this.jButtonExpandAll.setFocusable ( false ) ;
     this.jButtonExpandAll.addActionListener ( this.aSTActionListener ) ;
-    // CheckBox
-    this.jCheckBoxReplace = new JCheckBox ( "replace expressions" ) ;
-    this.jCheckBoxReplace.setSelected ( this.abstractSyntaxTree
-        .getASTPreferences ( ).isCheckedReplace ( ) ) ;
-    this.jCheckBoxReplace.setFocusable ( false ) ;
-    this.jCheckBoxReplace.addItemListener ( this.aSTItemListener ) ;
-    this.jCheckBoxBindings = new JCheckBox ( "show bindings" ) ;
+    // Button CollapseAll
+    this.jButtonCollapseAll = new JButton ( this.resourceBundle
+        .getString ( "collapse_all" ) ) ;
+    this.jButtonCollapseAll.setMnemonic ( this.resourceBundle.getString (
+        "collapse_allMnemonic" ).charAt ( 0 ) ) ;
+    this.jButtonCollapseAll.setActionCommand ( "collapse_all" ) ;
+    this.jButtonCollapseAll.setFocusable ( false ) ;
+    this.jButtonCollapseAll.addActionListener ( this.aSTActionListener ) ;
+    // Button Collapse
+    this.jButtonCollapse = new JButton ( this.resourceBundle
+        .getString ( "collapse" ) ) ;
+    this.jButtonCollapse.setMnemonic ( this.resourceBundle.getString (
+        "collapseMnemonic" ).charAt ( 0 ) ) ;
+    this.jButtonCollapse.setActionCommand ( "collapse" ) ;
+    this.jButtonCollapse.setFocusable ( false ) ;
+    this.jButtonCollapse.addActionListener ( this.aSTActionListener ) ;
+    // Button Close
+    this.jButtonClose = new JButton ( this.resourceBundle.getString ( "close" ) ) ;
+    this.jButtonClose.setMnemonic ( this.resourceBundle.getString (
+        "closeMnemonic" ).charAt ( 0 ) ) ;
+    this.jButtonClose.setActionCommand ( "close" ) ;
+    this.jButtonClose.setFocusable ( false ) ;
+    this.jButtonClose.addActionListener ( this.aSTActionListener ) ;
+    // Button Close All
+    this.jButtonCloseAll = new JButton ( this.resourceBundle
+        .getString ( "close_all" ) ) ;
+    this.jButtonCloseAll.setMnemonic ( this.resourceBundle.getString (
+        "close_allMnemonic" ).charAt ( 0 ) ) ;
+    this.jButtonCloseAll.setActionCommand ( "close_all" ) ;
+    this.jButtonCloseAll.setFocusable ( false ) ;
+    this.jButtonCloseAll.addActionListener ( this.aSTActionListener ) ;
+    // CheckBox Selected
+    this.jCheckBoxSelected = new JCheckBox ( this.resourceBundle
+        .getString ( "selected" ) ) ;
+    this.jCheckBoxSelected.setMnemonic ( this.resourceBundle.getString (
+        "selectedMnemonic" ).charAt ( 0 ) ) ;
+    this.jCheckBoxSelected.setSelected ( this.abstractSyntaxTree
+        .getASTPreferences ( ).isCheckedSelected ( ) ) ;
+    this.jCheckBoxSelected.setFocusable ( false ) ;
+    this.jCheckBoxSelected.addItemListener ( this.aSTItemListener ) ;
+    // CheckBox Bindings
+    this.jCheckBoxBindings = new JCheckBox ( this.resourceBundle
+        .getString ( "bindings" ) ) ;
+    this.jCheckBoxBindings.setMnemonic ( this.resourceBundle.getString (
+        "bindingsMnemonic" ).charAt ( 0 ) ) ;
     this.jCheckBoxBindings.setSelected ( this.abstractSyntaxTree
         .getASTPreferences ( ).isCheckedBindings ( ) ) ;
     this.jCheckBoxBindings.setFocusable ( false ) ;
     this.jCheckBoxBindings.addItemListener ( this.aSTItemListener ) ;
-    // Panel
-    this.jPanelCenter = new JPanel ( ) ;
-    this.jPanelCenter.setLayout ( this.gridBagLayout ) ;
-    this.jPanelCenter.setBorder ( new TitledBorder ( BorderFactory
-        .createLineBorder ( Color.black , 1 ) , "" ,
-        TitledBorder.DEFAULT_JUSTIFICATION , TitledBorder.TOP , new Font (
-            "SansSerif" , Font.PLAIN , 12 ) ) ) ;
+    // CheckBox Replace
+    this.jCheckBoxReplace = new JCheckBox ( this.resourceBundle
+        .getString ( "replace" ) ) ;
+    this.jCheckBoxReplace.setMnemonic ( this.resourceBundle.getString (
+        "replaceMnemonic" ).charAt ( 0 ) ) ;
+    this.jCheckBoxReplace.setSelected ( this.abstractSyntaxTree
+        .getASTPreferences ( ).isCheckedReplace ( ) ) ;
+    this.jCheckBoxReplace.setFocusable ( false ) ;
+    this.jCheckBoxReplace.addItemListener ( this.aSTItemListener ) ;
+    // ScrollPane AbstractSyntax
     this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
     this.gridBagConstraints.insets = new Insets ( 0 , 0 , 0 , 0 ) ;
     this.gridBagConstraints.gridx = 0 ;
     this.gridBagConstraints.gridy = 0 ;
     this.gridBagConstraints.weightx = 10 ;
     this.gridBagConstraints.weighty = 10 ;
-    this.jPanelCenter.add ( this.jScrollPaneAbstractSyntax ,
-        this.gridBagConstraints ) ;
+    // Panel South
     this.jPanelSouth = new JPanel ( ) ;
     this.jPanelSouth.setLayout ( this.gridBagLayout ) ;
     this.jPanelSouth.setBorder ( new TitledBorder ( BorderFactory
         .createLineBorder ( Color.black , 1 ) , "" ,
         TitledBorder.DEFAULT_JUSTIFICATION , TitledBorder.TOP , new Font (
             "SansSerif" , Font.PLAIN , 12 ) ) ) ;
+    // CheckBox Selected
     this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
     this.gridBagConstraints.insets = new Insets ( 4 , 4 , 4 , 4 ) ;
     this.gridBagConstraints.gridx = 0 ;
     this.gridBagConstraints.gridy = 0 ;
+    this.gridBagConstraints.weightx = 10 ;
+    this.gridBagConstraints.weighty = 10 ;
+    this.jPanelSouth.add ( this.jCheckBoxSelected , this.gridBagConstraints ) ;
+    // CheckBox Bindings
+    this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
+    this.gridBagConstraints.insets = new Insets ( 4 , 4 , 4 , 4 ) ;
+    this.gridBagConstraints.gridx = 0 ;
+    this.gridBagConstraints.gridy = 1 ;
     this.gridBagConstraints.weightx = 10 ;
     this.gridBagConstraints.weighty = 10 ;
     this.jPanelSouth.add ( this.jCheckBoxBindings , this.gridBagConstraints ) ;
+    // CheckBox Replace
     this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
     this.gridBagConstraints.insets = new Insets ( 4 , 4 , 4 , 4 ) ;
     this.gridBagConstraints.gridx = 0 ;
-    this.gridBagConstraints.gridy = 1 ;
+    this.gridBagConstraints.gridy = 2 ;
     this.gridBagConstraints.weightx = 10 ;
     this.gridBagConstraints.weighty = 10 ;
     this.jPanelSouth.add ( this.jCheckBoxReplace , this.gridBagConstraints ) ;
+    // Button Expand
     this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
     this.gridBagConstraints.insets = new Insets ( 4 , 4 , 4 , 4 ) ;
     this.gridBagConstraints.gridx = 1 ;
     this.gridBagConstraints.gridy = 0 ;
     this.gridBagConstraints.weightx = 0 ;
     this.gridBagConstraints.weighty = 10 ;
-    this.jPanelSouth.add ( this.jButtonClose , this.gridBagConstraints ) ;
-    this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
-    this.gridBagConstraints.insets = new Insets ( 4 , 4 , 4 , 4 ) ;
-    this.gridBagConstraints.gridx = 1 ;
-    this.gridBagConstraints.gridy = 1 ;
-    this.gridBagConstraints.weightx = 0 ;
-    this.gridBagConstraints.weighty = 10 ;
-    this.jPanelSouth.add ( this.jButtonCloseAll , this.gridBagConstraints ) ;
+    this.jPanelSouth.add ( this.jButtonExpand , this.gridBagConstraints ) ;
+    // Button ExpandAll
     this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
     this.gridBagConstraints.insets = new Insets ( 4 , 4 , 4 , 4 ) ;
     this.gridBagConstraints.gridx = 2 ;
     this.gridBagConstraints.gridy = 0 ;
     this.gridBagConstraints.weightx = 0 ;
     this.gridBagConstraints.weighty = 10 ;
+    this.jPanelSouth.add ( this.jButtonExpandAll , this.gridBagConstraints ) ;
+    // Button Collapse
+    this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
+    this.gridBagConstraints.insets = new Insets ( 4 , 4 , 4 , 4 ) ;
+    this.gridBagConstraints.gridx = 1 ;
+    this.gridBagConstraints.gridy = 1 ;
+    this.gridBagConstraints.weightx = 0 ;
+    this.gridBagConstraints.weighty = 10 ;
     this.jPanelSouth.add ( this.jButtonCollapse , this.gridBagConstraints ) ;
+    // Button CollapseAll
     this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
     this.gridBagConstraints.insets = new Insets ( 4 , 4 , 4 , 4 ) ;
     this.gridBagConstraints.gridx = 2 ;
@@ -218,36 +273,41 @@ public class ASTUI
     this.gridBagConstraints.weightx = 0 ;
     this.gridBagConstraints.weighty = 10 ;
     this.jPanelSouth.add ( this.jButtonCollapseAll , this.gridBagConstraints ) ;
+    // Button Close
     this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
     this.gridBagConstraints.insets = new Insets ( 4 , 4 , 4 , 4 ) ;
-    this.gridBagConstraints.gridx = 3 ;
-    this.gridBagConstraints.gridy = 0 ;
+    this.gridBagConstraints.gridx = 1 ;
+    this.gridBagConstraints.gridy = 2 ;
     this.gridBagConstraints.weightx = 0 ;
     this.gridBagConstraints.weighty = 10 ;
-    this.jPanelSouth.add ( this.jButtonExpand , this.gridBagConstraints ) ;
+    this.jPanelSouth.add ( this.jButtonClose , this.gridBagConstraints ) ;
+    // Button CloseAll
     this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
     this.gridBagConstraints.insets = new Insets ( 4 , 4 , 4 , 4 ) ;
-    this.gridBagConstraints.gridx = 3 ;
-    this.gridBagConstraints.gridy = 1 ;
+    this.gridBagConstraints.gridx = 2 ;
+    this.gridBagConstraints.gridy = 2 ;
     this.gridBagConstraints.weightx = 0 ;
     this.gridBagConstraints.weighty = 10 ;
-    this.jPanelSouth.add ( this.jButtonExpandAll , this.gridBagConstraints ) ;
+    this.jPanelSouth.add ( this.jButtonCloseAll , this.gridBagConstraints ) ;
     // Frame
     this.jFrameAbstractSyntaxTree = new JFrame ( ) ;
     this.jFrameAbstractSyntaxTree.setLayout ( this.gridBagLayout ) ;
     this.jFrameAbstractSyntaxTree.setTitle ( "AbstractSyntaxTree" ) ;
     this.jFrameAbstractSyntaxTree.setSize ( 600 , 450 ) ;
     this.jFrameAbstractSyntaxTree.setLocation ( 100 , 0 ) ;
+    this.jFrameAbstractSyntaxTree.setIconImage ( null ) ;
     this.jFrameAbstractSyntaxTree
         .setDefaultCloseOperation ( WindowConstants.HIDE_ON_CLOSE ) ;
+    // ScrollPane AbstractSyntax
     this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
     this.gridBagConstraints.insets = new Insets ( 4 , 4 , 4 , 4 ) ;
     this.gridBagConstraints.gridx = 0 ;
     this.gridBagConstraints.gridy = 0 ;
     this.gridBagConstraints.weightx = 10 ;
     this.gridBagConstraints.weighty = 10 ;
-    this.jFrameAbstractSyntaxTree.getContentPane ( ).add ( this.jPanelCenter ,
-        this.gridBagConstraints ) ;
+    this.jFrameAbstractSyntaxTree.getContentPane ( ).add (
+        this.jScrollPaneAbstractSyntax , this.gridBagConstraints ) ;
+    // Panel South
     this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
     this.gridBagConstraints.insets = new Insets ( 4 , 4 , 4 , 4 ) ;
     this.gridBagConstraints.gridx = 0 ;
@@ -306,6 +366,12 @@ public class ASTUI
   public JCheckBox getJCheckBoxReplace ( )
   {
     return this.jCheckBoxReplace ;
+  }
+
+
+  public JCheckBox getJCheckBoxSelected ( )
+  {
+    return this.jCheckBoxSelected ;
   }
 
 
