@@ -61,6 +61,9 @@ public class ASTUI
   private JButton jButtonExpandAll ;
 
 
+  private JButton jButtonClose ;
+
+
   private JButton jButtonCloseAll ;
 
 
@@ -113,6 +116,10 @@ public class ASTUI
         this.aSTTreeSelectionListener ) ;
     this.jScrollPaneAbstractSyntax = new JScrollPane ( this.jTreeAbstractSyntax ) ;
     // Button
+    this.jButtonClose = new JButton ( "close" ) ;
+    this.jButtonClose.setActionCommand ( "close" ) ;
+    this.jButtonClose.setFocusable ( false ) ;
+    this.jButtonClose.addActionListener ( this.aSTActionListener ) ;
     this.jButtonCloseAll = new JButton ( "close all" ) ;
     this.jButtonCloseAll.setActionCommand ( "close_all" ) ;
     this.jButtonCloseAll.setFocusable ( false ) ;
@@ -181,6 +188,13 @@ public class ASTUI
     this.gridBagConstraints.insets = new Insets ( 4 , 4 , 4 , 4 ) ;
     this.gridBagConstraints.gridx = 1 ;
     this.gridBagConstraints.gridy = 0 ;
+    this.gridBagConstraints.weightx = 0 ;
+    this.gridBagConstraints.weighty = 10 ;
+    this.jPanelSouth.add ( this.jButtonClose , this.gridBagConstraints ) ;
+    this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
+    this.gridBagConstraints.insets = new Insets ( 4 , 4 , 4 , 4 ) ;
+    this.gridBagConstraints.gridx = 1 ;
+    this.gridBagConstraints.gridy = 1 ;
     this.gridBagConstraints.weightx = 0 ;
     this.gridBagConstraints.weighty = 10 ;
     this.jPanelSouth.add ( this.jButtonCloseAll , this.gridBagConstraints ) ;

@@ -21,7 +21,15 @@ public class ASTActionListener implements ActionListener
   public void actionPerformed ( ActionEvent pActionEvent )
   {
     String actionCommand = pActionEvent.getActionCommand ( ) ;
-    if ( actionCommand.equals ( "expand" ) )
+    if ( actionCommand.equals ( "close" ) )
+    {
+      close ( ) ;
+    }
+    else if ( actionCommand.equals ( "close_all" ) )
+    {
+      closeAll ( ) ;
+    }
+    else if ( actionCommand.equals ( "expand" ) )
     {
       expand ( ) ;
     }
@@ -29,25 +37,34 @@ public class ASTActionListener implements ActionListener
     {
       expandAll ( ) ;
     }
-    else if ( actionCommand.equals ( "collapse_all" ) )
-    {
-      collapseAll ( ) ;
-    }
     else if ( actionCommand.equals ( "collapse" ) )
     {
       collapse ( ) ;
     }
-    else if ( actionCommand.equals ( "close_all" ) )
+    else if ( actionCommand.equals ( "collapse_all" ) )
     {
-      closeAll ( ) ;
+      collapseAll ( ) ;
+    }
+  }
+
+
+  public void close ( )
+  {
+    int row[] = this.aSTUI.getJAbstractSyntaxTree ( ).getSelectionRows ( ) ;
+    if ( row == null )
+    {
+      return ;
+    }
+    for ( int i = this.aSTUI.getJAbstractSyntaxTree ( ).getRowCount ( ) - 1 ; i >= row [ 0 ] ; i -- )
+    {
+      this.aSTUI.getJAbstractSyntaxTree ( ).collapseRow ( i ) ;
     }
   }
 
 
   public void closeAll ( )
   {
-    for ( int i = this.aSTUI.getJAbstractSyntaxTree ( )
-        .getRowCount ( ) - 1 ; i >= 0 ; i -- )
+    for ( int i = this.aSTUI.getJAbstractSyntaxTree ( ).getRowCount ( ) - 1 ; i >= 0 ; i -- )
     {
       this.aSTUI.getJAbstractSyntaxTree ( ).collapseRow ( i ) ;
     }
@@ -56,16 +73,14 @@ public class ASTActionListener implements ActionListener
 
   public void expand ( )
   {
-    expandTreePath ( this.aSTUI.getJAbstractSyntaxTree ( )
-        .getSelectionPath ( ) ) ;
+    expandTreePath ( this.aSTUI.getJAbstractSyntaxTree ( ).getSelectionPath ( ) ) ;
   }
 
 
   public void expandAll ( )
   {
     int i = 0 ;
-    while ( i < this.aSTUI.getJAbstractSyntaxTree ( )
-        .getRowCount ( ) )
+    while ( i < this.aSTUI.getJAbstractSyntaxTree ( ).getRowCount ( ) )
     {
       this.aSTUI.getJAbstractSyntaxTree ( ).expandRow ( i ) ;
       i ++ ;
@@ -85,21 +100,18 @@ public class ASTActionListener implements ActionListener
     {
       expandTreePath ( pTreePath.pathByAddingChild ( b.getChildAt ( i ) ) ) ;
     }
-    this.aSTUI.getJAbstractSyntaxTree ( )
-        .expandPath ( pTreePath ) ;
+    this.aSTUI.getJAbstractSyntaxTree ( ).expandPath ( pTreePath ) ;
   }
 
 
   public void collapse ( )
   {
-    int row[] = this.aSTUI.getJAbstractSyntaxTree ( )
-        .getSelectionRows ( ) ;
+    int row[] = this.aSTUI.getJAbstractSyntaxTree ( ).getSelectionRows ( ) ;
     if ( row == null )
     {
       return ;
     }
-    this.aSTUI.getJAbstractSyntaxTree ( )
-        .collapseRow ( row [ 0 ] ) ;
+    this.aSTUI.getJAbstractSyntaxTree ( ).collapseRow ( row [ 0 ] ) ;
   }
 
 

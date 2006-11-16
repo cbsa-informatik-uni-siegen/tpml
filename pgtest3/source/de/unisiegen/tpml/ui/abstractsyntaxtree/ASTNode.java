@@ -27,12 +27,6 @@ public class ASTNode
   private static final String AFTER_NAME = "&nbsp;]" ;
 
 
-  private static final Color SELECTED = new Color ( 255 , 0 , 0 ) ;
-
-
-  private static final Color BINDING = new Color ( 255 , 155 , 155 ) ;
-
-
   private static final String REPLACE_STRING = "..." ;
 
 
@@ -221,8 +215,8 @@ public class ASTNode
       result.append ( AFTER_DESCRIPTION ) ;
       result.append ( BETWEEN ) ;
       result.append ( BEFOR_NAME ) ;
-      result.append ( "<b><font color=\"#" + getHex ( ASTNode.SELECTED )
-          + "\">" ) ;
+      result.append ( "<b><font color=\"#"
+          + getHex ( Theme.currentTheme ( ).getSelectedColor ( ) ) + "\">" ) ;
       result.append ( this.expressionString ) ;
       result.append ( "</font></b>" ) ;
       result.append ( AFTER_NAME ) ;
@@ -270,7 +264,8 @@ public class ASTNode
       // Selected
       if ( index == pSelectionStart )
       {
-        result.append ( "<b><font color=\"#" + getHex ( SELECTED ) + "\">" ) ;
+        result.append ( "<b><font color=\"#"
+            + getHex ( Theme.currentTheme ( ).getSelectedColor ( ) ) + "\">" ) ;
         if ( replaceGeneral && this.replace )
         {
           result.append ( "&nbsp;" + REPLACE_STRING + "&nbsp;" ) ;
@@ -290,7 +285,8 @@ public class ASTNode
       else if ( ( showBindings ) && ( this.aSTBindings != null )
           && ( pPrintBindings >= 0 ) && ( isInList ( pPrintBindings , index ) ) )
       {
-        result.append ( "<b><font color=\"#" + getHex ( BINDING ) + "\">" ) ;
+        result.append ( "<b><font color=\"#"
+            + getHex ( Theme.currentTheme ( ).getBindingColor ( ) ) + "\">" ) ;
         while ( isInList ( pPrintBindings , index ) )
         {
           result.append ( this.expressionString.charAt ( index ) ) ;
