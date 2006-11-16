@@ -12,6 +12,9 @@ public class ASTPreferences
   private boolean checkedBindings ;
 
 
+  private boolean checkedSelected ;
+
+
   private Preferences preferences ;
 
 
@@ -21,25 +24,36 @@ public class ASTPreferences
         .userNodeForPackage ( AbstractSyntaxTree.class ) ;
     String replace = this.preferences.get ( "checkedReplace" , "true" ) ;
     String bindings = this.preferences.get ( "checkedBindings" , "true" ) ;
+    String selected = this.preferences.get ( "checkedSelected" , "true" ) ;
+    if ( selected.equals ( "true" ) )
+    {
+      this.checkedSelected = true ;
+      ASTNode.setCheckedSelected ( true ) ;
+    }
+    else
+    {
+      this.checkedSelected = false ;
+      ASTNode.setCheckedSelected ( false ) ;
+    }
     if ( replace.equals ( "true" ) )
     {
       this.checkedReplace = true ;
-      ASTNode.setReplaceGeneral ( true ) ;
+      ASTNode.setCheckedReplace ( true ) ;
     }
     else
     {
       this.checkedReplace = false ;
-      ASTNode.setReplaceGeneral ( false ) ;
+      ASTNode.setCheckedReplace ( false ) ;
     }
     if ( bindings.equals ( "true" ) )
     {
       this.checkedBindings = true ;
-      ASTNode.setShowBindings ( true ) ;
+      ASTNode.setCheckedBindings ( true ) ;
     }
     else
     {
       this.checkedBindings = false ;
-      ASTNode.setShowBindings ( false ) ;
+      ASTNode.setCheckedBindings ( false ) ;
     }
   }
 
@@ -53,6 +67,12 @@ public class ASTPreferences
   public boolean isCheckedReplace ( )
   {
     return this.checkedReplace ;
+  }
+
+
+  public boolean isCheckedSelected ( )
+  {
+    return this.checkedSelected ;
   }
 
 
@@ -77,5 +97,17 @@ public class ASTPreferences
       replace = "true" ;
     }
     this.preferences.put ( "checkedReplace" , replace ) ;
+  }
+
+
+  public void setCheckedSelected ( boolean pCheckedSelected )
+  {
+    this.checkedSelected = pCheckedSelected ;
+    String selected = "false" ;
+    if ( pCheckedSelected )
+    {
+      selected = "true" ;
+    }
+    this.preferences.put ( "checkedSelected" , selected ) ;
   }
 }

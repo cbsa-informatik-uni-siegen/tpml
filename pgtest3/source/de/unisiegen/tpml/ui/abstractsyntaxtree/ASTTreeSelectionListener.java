@@ -57,8 +57,7 @@ public class ASTTreeSelectionListener implements TreeSelectionListener
   {
     ASTNode aSTNode = ( ASTNode ) pNode.getUserObject ( ) ;
     aSTNode.resetCaption ( ) ;
-    aSTNode.setReplace ( false ) ;
-    // this.abstractSyntaxTreeUI.nodeChanged ( pNode ) ;
+    aSTNode.setReplaceNode ( false ) ;
     for ( int i = 0 ; i < pNode.getChildCount ( ) ; i ++ )
     {
       reset ( ( DefaultMutableTreeNode ) pNode.getChildAt ( i ) ) ;
@@ -98,7 +97,7 @@ public class ASTTreeSelectionListener implements TreeSelectionListener
       {
         return ;
       }
-      list.get ( list.size ( ) - 1 ).setSelectedCaption ( ) ;
+      list.get ( list.size ( ) - 1 ).enableSelectedColor ( ) ;
       for ( int i = 0 ; i < list.size ( ) - 1 ; i ++ )
       {
         PrettyString prettyString = list.get ( i ).getExpression ( )
@@ -120,7 +119,7 @@ public class ASTTreeSelectionListener implements TreeSelectionListener
         {
           childIndex = - 1 ;
         }
-        list.get ( i ).setReplace ( true ) ;
+        list.get ( i ).setReplaceNode ( true ) ;
         list.get ( i ).updateCaption (
             prettyAnnotation.getStartOffset ( ) + last.getStartIndex ( ) ,
             prettyAnnotation.getStartOffset ( ) + last.getEndIndex ( ) ,
@@ -138,7 +137,7 @@ public class ASTTreeSelectionListener implements TreeSelectionListener
             .getAnnotationForPrintable ( last.getExpression ( ) ) ;
         if ( i < list.size ( ) - 1 )
         {
-          list.get ( i ).setReplace ( true ) ;
+          list.get ( i ).setReplaceNode ( true ) ;
         }
         list.get ( i ).updateCaption ( prettyAnnotation.getStartOffset ( ) ,
             prettyAnnotation.getEndOffset ( ) , - 1 ) ;

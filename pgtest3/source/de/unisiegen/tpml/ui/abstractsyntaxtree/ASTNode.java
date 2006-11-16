@@ -30,25 +30,34 @@ public class ASTNode
   private static final String REPLACE_STRING = "..." ;
 
 
-  private static boolean replaceGeneral = true ;
+  private static boolean checkedSelected = true ;
 
 
-  private static boolean showBindings = true ;
+  private static boolean checkedReplace = true ;
 
 
-  public static void setReplaceGeneral ( boolean pReplaceGeneral )
+  private static boolean checkedBindings = true ;
+
+
+  public static void setCheckedBindings ( boolean pCheckedBindings )
   {
-    replaceGeneral = pReplaceGeneral ;
+    checkedBindings = pCheckedBindings ;
   }
 
 
-  public static void setShowBindings ( boolean pShowBindings )
+  public static void setCheckedReplace ( boolean pCheckedReplace )
   {
-    ASTNode.showBindings = pShowBindings ;
+    checkedReplace = pCheckedReplace ;
   }
 
 
-  private boolean replace ;
+  public static void setCheckedSelected ( boolean pCheckedSelected )
+  {
+    checkedSelected = pCheckedSelected ;
+  }
+
+
+  private boolean replaceNode ;
 
 
   private String description ;
@@ -81,7 +90,7 @@ public class ASTNode
     this.endIndex = - 1 ;
     this.aSTBindings = null ;
     resetCaption ( ) ;
-    this.replace = false ;
+    this.replaceNode = false ;
   }
 
 
@@ -95,7 +104,7 @@ public class ASTNode
     this.endIndex = - 1 ;
     this.aSTBindings = pRelations ;
     resetCaption ( ) ;
-    this.replace = false ;
+    this.replaceNode = false ;
   }
 
 
@@ -109,7 +118,38 @@ public class ASTNode
     this.endIndex = pEnd ;
     this.aSTBindings = null ;
     resetCaption ( ) ;
-    this.replace = false ;
+    this.replaceNode = false ;
+  }
+
+
+  public void enableSelectedColor ( )
+  {
+    if ( this.expression == null )
+    {
+      StringBuffer result = new StringBuffer ( "<html>" ) ;
+      result.append ( BEFOR_DESCRIPTION ) ;
+      result.append ( this.description ) ;
+      result.append ( AFTER_DESCRIPTION ) ;
+      result.append ( BETWEEN ) ;
+      result.append ( BEFOR_NAME ) ;
+      if ( checkedSelected )
+      {
+        result.append ( "<b><font color=\"#"
+            + getHex ( Theme.currentTheme ( ).getSelectedColor ( ) ) + "\">" ) ;
+      }
+      result.append ( this.expressionString ) ;
+      if ( checkedSelected )
+      {
+        result.append ( "</font></b>" ) ;
+      }
+      result.append ( AFTER_NAME ) ;
+      result.append ( "</html>" ) ;
+      this.caption = result.toString ( ) ;
+    }
+    else
+    {
+      updateCaption ( - 1 , - 1 , - 1 ) ;
+    }
   }
 
 
@@ -211,34 +251,9 @@ public class ASTNode
   }
 
 
-  public void setReplace ( boolean pReplace )
+  public void setReplaceNode ( boolean pReplaceNode )
   {
-    this.replace = pReplace ;
-  }
-
-
-  public void setSelectedCaption ( )
-  {
-    if ( this.expression == null )
-    {
-      StringBuffer result = new StringBuffer ( "<html>" ) ;
-      result.append ( BEFOR_DESCRIPTION ) ;
-      result.append ( this.description ) ;
-      result.append ( AFTER_DESCRIPTION ) ;
-      result.append ( BETWEEN ) ;
-      result.append ( BEFOR_NAME ) ;
-      result.append ( "<b><font color=\"#"
-          + getHex ( Theme.currentTheme ( ).getSelectedColor ( ) ) + "\">" ) ;
-      result.append ( this.expressionString ) ;
-      result.append ( "</font></b>" ) ;
-      result.append ( AFTER_NAME ) ;
-      result.append ( "</html>" ) ;
-      this.caption = result.toString ( ) ;
-    }
-    else
-    {
-      updateCaption ( - 1 , - 1 , - 1 ) ;
-    }
+    this.replaceNode = pReplaceNode ;
   }
 
 
@@ -268,17 +283,17 @@ public class ASTNode
     while ( index < this.expressionString.length ( ) )
     {
       // Selected
-      if ( index == pSelectionStart )
+      if ( ( checkedSelected ) && ( index == pSelectionStart ) )
       {
         result.append ( "<b><font color=\"#"
             + getHex ( Theme.currentTheme ( ).getSelectedColor ( ) ) + "\">" ) ;
-        if ( replaceGeneral && this.replace )
+        if ( checkedReplace && this.replaceNode )
         {
           result.append ( "&nbsp;" + REPLACE_STRING + "&nbsp;" ) ;
         }
         while ( index <= pSelectionEnd )
         {
-          if ( ! ( replaceGeneral && this.replace ) )
+          if ( ! ( checkedReplace && this.replaceNode ) )
           {
             result.append ( this.expressionString.charAt ( index ) ) ;
           }
@@ -287,8 +302,20 @@ public class ASTNode
         }
         result.append ( "</font></b>" ) ;
       }
+      // Not Selected and should be replaced
+      else if ( ! ( checkedSelected ) && ( checkedReplace )
+          && ( this.replaceNode ) && ( index == pSelectionStart ) )
+      {
+        result.append ( "<b>&nbsp;" + REPLACE_STRING + "&nbsp;" ) ;
+        while ( index <= pSelectionEnd )
+        {
+          index ++ ;
+          p.next ( ) ;
+        }
+        result.append ( "</b>" ) ;
+      }
       // Binding
-      else if ( ( showBindings ) && ( this.aSTBindings != null )
+      else if ( ( checkedBindings ) && ( this.aSTBindings != null )
           && ( pPrintBindings >= 0 ) && ( isInList ( pPrintBindings , index ) ) )
       {
         result.append ( "<b><font color=\"#"
