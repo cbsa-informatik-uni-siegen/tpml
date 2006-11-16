@@ -88,8 +88,13 @@ static Expression holeExpression;
 				Enumeration<Expression> child = pExpression.children();
 				while (child.hasMoreElements())
 				{
-					System.err.println("War da");
+					
 					Expression actualExpression = (Expression) child.nextElement();
+					if (debugOutput)
+					{
+						System.err.println(actualExpression.toString());
+						
+					}
 
 					check(actualExpression);
 
@@ -262,6 +267,7 @@ checkRec(child,lambda,list);
 		
 		
 		check(rec.getE());
+		
 		
 		LinkedList list = listWithBounds(a, b);
 		
