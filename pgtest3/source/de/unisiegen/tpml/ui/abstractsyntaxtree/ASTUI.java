@@ -85,8 +85,12 @@ public class ASTUI
   private ASTItemListener aSTItemListener ;
 
 
-  public ASTUI ( )
+  private AbstractSyntaxTree abstractSyntaxTree ;
+
+
+  public ASTUI ( AbstractSyntaxTree pAbstractSyntaxTree )
   {
+    this.abstractSyntaxTree = pAbstractSyntaxTree ;
     // Listener
     this.aSTItemListener = new ASTItemListener ( this ) ;
     this.aSTActionListener = new ASTActionListener ( this ) ;
@@ -142,11 +146,13 @@ public class ASTUI
     this.jButtonExpandAll.addActionListener ( this.aSTActionListener ) ;
     // CheckBox
     this.jCheckBoxReplace = new JCheckBox ( "replace expressions" ) ;
-    this.jCheckBoxReplace.setSelected ( true ) ;
+    this.jCheckBoxReplace.setSelected ( this.abstractSyntaxTree
+        .isCheckedReplace ( ) ) ;
     this.jCheckBoxReplace.setFocusable ( false ) ;
     this.jCheckBoxReplace.addItemListener ( this.aSTItemListener ) ;
     this.jCheckBoxBindings = new JCheckBox ( "show bindings" ) ;
-    this.jCheckBoxBindings.setSelected ( true ) ;
+    this.jCheckBoxBindings.setSelected ( this.abstractSyntaxTree
+        .isCheckedBindings ( ) ) ;
     this.jCheckBoxBindings.setFocusable ( false ) ;
     this.jCheckBoxBindings.addItemListener ( this.aSTItemListener ) ;
     // Panel
@@ -313,5 +319,11 @@ public class ASTUI
   public void setVisible ( boolean pVisible )
   {
     this.jFrameAbstractSyntaxTree.setVisible ( pVisible ) ;
+  }
+
+
+  public AbstractSyntaxTree getAbstractSyntaxTree ( )
+  {
+    return this.abstractSyntaxTree ;
   }
 }

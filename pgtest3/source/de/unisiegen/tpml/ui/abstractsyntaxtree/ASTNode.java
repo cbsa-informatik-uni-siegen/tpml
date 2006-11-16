@@ -42,6 +42,12 @@ public class ASTNode
   }
 
 
+  public static void setShowBindings ( boolean pShowBindings )
+  {
+    ASTNode.showBindings = pShowBindings ;
+  }
+
+
   private boolean replace ;
 
 
@@ -205,6 +211,12 @@ public class ASTNode
   }
 
 
+  public void setReplace ( boolean pReplace )
+  {
+    this.replace = pReplace ;
+  }
+
+
   public void setSelectedCaption ( )
   {
     if ( this.expression == null )
@@ -227,12 +239,6 @@ public class ASTNode
     {
       updateCaption ( - 1 , - 1 , - 1 ) ;
     }
-  }
-
-
-  public void setReplace ( boolean pReplace )
-  {
-    this.replace = pReplace ;
   }
 
 
@@ -331,11 +337,5 @@ public class ASTNode
     result.append ( AFTER_NAME ) ;
     result.append ( "</html>" ) ;
     this.caption = result.toString ( ) ;
-  }
-
-
-  public static void setShowBindings ( boolean pShowBindings )
-  {
-    ASTNode.showBindings = pShowBindings ;
   }
 }

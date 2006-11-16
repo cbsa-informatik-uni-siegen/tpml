@@ -4,6 +4,7 @@ package de.unisiegen.tpml.ui.abstractsyntaxtree ;
 import java.lang.reflect.InvocationTargetException ;
 import java.lang.reflect.Method ;
 import java.util.Enumeration ;
+import java.util.prefs.Preferences ;
 import javax.swing.tree.DefaultMutableTreeNode ;
 import de.unisiegen.tpml.core.expressions.BinaryOperator ;
 import de.unisiegen.tpml.core.expressions.CurriedLet ;
@@ -35,36 +36,68 @@ public class AbstractSyntaxTree
   }
 
 
+  private Preferences preferences ;
+
+
   private ASTUI aSTUI ;
+
+
+  private boolean checkedReplace ;
+
+
+  private boolean checkedBindings ;
 
 
   private AbstractSyntaxTree ( )
   {
-    this.aSTUI = new ASTUI ( ) ;
+    this.preferences = Preferences
+        .userNodeForPackage ( AbstractSyntaxTree.class ) ;
+    String replace = this.preferences.get ( "checkedReplace" , "true" ) ;
+    String bindings = this.preferences.get ( "checkedBindings" , "true" ) ;
+    if ( replace.equals ( "true" ) )
+    {
+      this.checkedReplace = true ;
+      ASTNode.setReplaceGeneral ( true ) ;
+    }
+    else
+    {
+      this.checkedReplace = false ;
+      ASTNode.setReplaceGeneral ( false ) ;
+    }
+    if ( bindings.equals ( "true" ) )
+    {
+      this.checkedBindings = true ;
+      ASTNode.setShowBindings ( true ) ;
+    }
+    else
+    {
+      this.checkedBindings = false ;
+      ASTNode.setShowBindings ( false ) ;
+    }
+    this.aSTUI = new ASTUI ( this ) ;
   }
 
 
   private DefaultMutableTreeNode createNode ( String pDescription ,
       Expression pExpr )
   {
-    return new DefaultMutableTreeNode ( new ASTNode (
-        pDescription , pExpr ) ) ;
+    return new DefaultMutableTreeNode ( new ASTNode ( pDescription , pExpr ) ) ;
   }
 
 
   private DefaultMutableTreeNode createNode ( String pDescription ,
       Expression pExpr , ASTBindings pRelations )
   {
-    return new DefaultMutableTreeNode ( new ASTNode (
-        pDescription , pExpr , pRelations ) ) ;
+    return new DefaultMutableTreeNode ( new ASTNode ( pDescription , pExpr ,
+        pRelations ) ) ;
   }
 
 
   private DefaultMutableTreeNode createNode ( String pDescription ,
       String pName , int pStart , int pEnd )
   {
-    return new DefaultMutableTreeNode ( new ASTNode (
-        pDescription , pName , pStart , pEnd ) ) ;
+    return new DefaultMutableTreeNode ( new ASTNode ( pDescription , pName ,
+        pStart , pEnd ) ) ;
   }
 
 
@@ -205,8 +238,8 @@ public class AbstractSyntaxTree
     String id = pExpression.getId ( ) ;
     Expression e = pExpression.getE ( ) ;
     DefaultMutableTreeNode child = createNode ( pExpression.getClass ( )
-        .getSimpleName ( ) , pExpression , new ASTBindings (
-        pExpression.getE ( ) , pExpression.getId ( ) ) ) ;
+        .getSimpleName ( ) , pExpression , new ASTBindings ( pExpression
+        .getE ( ) , pExpression.getId ( ) ) ) ;
     DefaultMutableTreeNode subchild1 = createNode ( "Identifier" , id , 1 , id
         .length ( ) ) ;
     DefaultMutableTreeNode subchild2 = createNode ( "e" , e ) ;
@@ -245,8 +278,8 @@ public class AbstractSyntaxTree
     Expression e1 = pExpression.getE1 ( ) ;
     Expression e2 = pExpression.getE2 ( ) ;
     DefaultMutableTreeNode child = createNode ( pExpression.getClass ( )
-        .getSimpleName ( ) , pExpression , new ASTBindings (
-        pExpression.getE2 ( ) , pExpression.getId ( ) ) ) ;
+        .getSimpleName ( ) , pExpression , new ASTBindings ( pExpression
+        .getE2 ( ) , pExpression.getId ( ) ) ) ;
     DefaultMutableTreeNode subchild1 = createNode ( "Identifier" , id , 4 ,
         3 + id.length ( ) ) ;
     DefaultMutableTreeNode subchild2 = createNode ( "e1" , e1 ) ;
@@ -266,8 +299,8 @@ public class AbstractSyntaxTree
     Expression e1 = pExpression.getE1 ( ) ;
     Expression e2 = pExpression.getE2 ( ) ;
     DefaultMutableTreeNode child = createNode ( pExpression.getClass ( )
-        .getSimpleName ( ) , pExpression , new ASTBindings (
-        pExpression , pExpression.getId ( ) ) ) ;
+        .getSimpleName ( ) , pExpression , new ASTBindings ( pExpression ,
+        pExpression.getId ( ) ) ) ;
     DefaultMutableTreeNode subchild1 = createNode ( "Identifier" , id , 8 ,
         7 + id.length ( ) ) ;
     DefaultMutableTreeNode subchild2 = createNode ( "e1" , e1 ) ;
@@ -297,8 +330,8 @@ public class AbstractSyntaxTree
   {
     String idList[] = pExpression.getIdentifiers ( ) ;
     DefaultMutableTreeNode child = createNode ( pExpression.getClass ( )
-        .getSimpleName ( ) , pExpression , new ASTBindings (
-        pExpression , pExpression.getIdentifiers ( ) ) ) ;
+        .getSimpleName ( ) , pExpression , new ASTBindings ( pExpression ,
+        pExpression.getIdentifiers ( ) ) ) ;
     int length = 0 ;
     for ( int i = 0 ; i < idList.length ; i ++ )
     {
@@ -322,8 +355,8 @@ public class AbstractSyntaxTree
     Expression e1 = pExpression.getE1 ( ) ;
     Expression e2 = pExpression.getE2 ( ) ;
     DefaultMutableTreeNode child = createNode ( pExpression.getClass ( )
-        .getSimpleName ( ) , pExpression , new ASTBindings (
-        pExpression.getE2 ( ) , pExpression.getIdentifiers ( ) ) ) ;
+        .getSimpleName ( ) , pExpression , new ASTBindings ( pExpression
+        .getE2 ( ) , pExpression.getIdentifiers ( ) ) ) ;
     int length = 0 ;
     for ( int i = 0 ; i < idList.length ; i ++ )
     {
@@ -365,8 +398,8 @@ public class AbstractSyntaxTree
     String id = pExpression.getId ( ) ;
     Expression e = pExpression.getE ( ) ;
     DefaultMutableTreeNode child = createNode ( pExpression.getClass ( )
-        .getSimpleName ( ) , pExpression , new ASTBindings (
-        pExpression , pExpression.getId ( ) ) ) ;
+        .getSimpleName ( ) , pExpression , new ASTBindings ( pExpression ,
+        pExpression.getId ( ) ) ) ;
     DefaultMutableTreeNode subchild1 = createNode ( "Identifier" , id , 4 ,
         3 + id.length ( ) ) ;
     DefaultMutableTreeNode subchild2 = createNode ( "e" , e ) ;
@@ -389,5 +422,23 @@ public class AbstractSyntaxTree
   public void setVisible ( boolean pVisible )
   {
     this.aSTUI.setVisible ( pVisible ) ;
+  }
+
+
+  public boolean isCheckedBindings ( )
+  {
+    return this.checkedBindings ;
+  }
+
+
+  public boolean isCheckedReplace ( )
+  {
+    return this.checkedReplace ;
+  }
+
+
+  public Preferences getPreferences ( )
+  {
+    return this.preferences ;
   }
 }
