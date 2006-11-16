@@ -55,8 +55,7 @@ public class ASTTreeSelectionListener implements TreeSelectionListener
 
   private void reset ( DefaultMutableTreeNode pNode )
   {
-    ASTNode aSTNode = ( ASTNode ) pNode
-        .getUserObject ( ) ;
+    ASTNode aSTNode = ( ASTNode ) pNode.getUserObject ( ) ;
     aSTNode.resetCaption ( ) ;
     aSTNode.setReplace ( false ) ;
     // this.abstractSyntaxTreeUI.nodeChanged ( pNode ) ;

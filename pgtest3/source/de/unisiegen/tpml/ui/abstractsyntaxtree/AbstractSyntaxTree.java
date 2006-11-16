@@ -4,7 +4,6 @@ package de.unisiegen.tpml.ui.abstractsyntaxtree ;
 import java.lang.reflect.InvocationTargetException ;
 import java.lang.reflect.Method ;
 import java.util.Enumeration ;
-import java.util.prefs.Preferences ;
 import javax.swing.tree.DefaultMutableTreeNode ;
 import de.unisiegen.tpml.core.expressions.BinaryOperator ;
 import de.unisiegen.tpml.core.expressions.CurriedLet ;
@@ -36,44 +35,15 @@ public class AbstractSyntaxTree
   }
 
 
-  private Preferences preferences ;
-
-
   private ASTUI aSTUI ;
 
 
-  private boolean checkedReplace ;
-
-
-  private boolean checkedBindings ;
+  private ASTPreferences aSTPreferences ;
 
 
   private AbstractSyntaxTree ( )
   {
-    this.preferences = Preferences
-        .userNodeForPackage ( AbstractSyntaxTree.class ) ;
-    String replace = this.preferences.get ( "checkedReplace" , "true" ) ;
-    String bindings = this.preferences.get ( "checkedBindings" , "true" ) ;
-    if ( replace.equals ( "true" ) )
-    {
-      this.checkedReplace = true ;
-      ASTNode.setReplaceGeneral ( true ) ;
-    }
-    else
-    {
-      this.checkedReplace = false ;
-      ASTNode.setReplaceGeneral ( false ) ;
-    }
-    if ( bindings.equals ( "true" ) )
-    {
-      this.checkedBindings = true ;
-      ASTNode.setShowBindings ( true ) ;
-    }
-    else
-    {
-      this.checkedBindings = false ;
-      ASTNode.setShowBindings ( false ) ;
-    }
+    this.aSTPreferences = new ASTPreferences ( ) ;
     this.aSTUI = new ASTUI ( this ) ;
   }
 
@@ -410,6 +380,12 @@ public class AbstractSyntaxTree
   }
 
 
+  public ASTPreferences getASTPreferences ( )
+  {
+    return this.aSTPreferences ;
+  }
+
+
   public void setExpression ( Expression pExpression )
   {
     DefaultMutableTreeNode rootNode = createNode ( "Expression" , pExpression ) ;
@@ -422,23 +398,5 @@ public class AbstractSyntaxTree
   public void setVisible ( boolean pVisible )
   {
     this.aSTUI.setVisible ( pVisible ) ;
-  }
-
-
-  public boolean isCheckedBindings ( )
-  {
-    return this.checkedBindings ;
-  }
-
-
-  public boolean isCheckedReplace ( )
-  {
-    return this.checkedReplace ;
-  }
-
-
-  public Preferences getPreferences ( )
-  {
-    return this.preferences ;
   }
 }

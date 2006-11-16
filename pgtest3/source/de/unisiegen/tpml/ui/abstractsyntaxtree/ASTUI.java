@@ -147,12 +147,12 @@ public class ASTUI
     // CheckBox
     this.jCheckBoxReplace = new JCheckBox ( "replace expressions" ) ;
     this.jCheckBoxReplace.setSelected ( this.abstractSyntaxTree
-        .isCheckedReplace ( ) ) ;
+        .getASTPreferences ( ).isCheckedReplace ( ) ) ;
     this.jCheckBoxReplace.setFocusable ( false ) ;
     this.jCheckBoxReplace.addItemListener ( this.aSTItemListener ) ;
     this.jCheckBoxBindings = new JCheckBox ( "show bindings" ) ;
     this.jCheckBoxBindings.setSelected ( this.abstractSyntaxTree
-        .isCheckedBindings ( ) ) ;
+        .getASTPreferences ( ).isCheckedBindings ( ) ) ;
     this.jCheckBoxBindings.setFocusable ( false ) ;
     this.jCheckBoxBindings.addItemListener ( this.aSTItemListener ) ;
     // Panel
@@ -273,6 +273,12 @@ public class ASTUI
   }
 
 
+  public AbstractSyntaxTree getAbstractSyntaxTree ( )
+  {
+    return this.abstractSyntaxTree ;
+  }
+
+
   public ASTActionListener getASTActionListener ( )
   {
     return this.aSTActionListener ;
@@ -319,11 +325,5 @@ public class ASTUI
   public void setVisible ( boolean pVisible )
   {
     this.jFrameAbstractSyntaxTree.setVisible ( pVisible ) ;
-  }
-
-
-  public AbstractSyntaxTree getAbstractSyntaxTree ( )
-  {
-    return this.abstractSyntaxTree ;
   }
 }
