@@ -19,6 +19,7 @@ import de.unisiegen.tpml.core.util.beans.AbstractBean;
  *
  * @author Marcell Fischbach
  * @author Benedikt Meurer
+ * @author Christian Fehler
  * @version $Rev: 526 $
  *
  * @see de.unisiegen.tpml.core.util.beans.Bean
@@ -78,10 +79,20 @@ public final class Theme extends AbstractBean {
 	 */
 	private Color keywordColor;
   
-  
+  /**
+   * The {@link Color} used to render selected expressions.
+   * 
+   * @see #getSelectedColor()
+   * @see #setSelectedColor(Color)
+   */ 
   private Color selectedColor;
   
-  
+  /**
+   * The {@link Color} used to render bindings.
+   * 
+   * @see #getBindingColor()
+   * @see #setBindingColor(Color)
+   */  
   private Color bindingColor;
 	
 	/**
@@ -158,8 +169,10 @@ public final class Theme extends AbstractBean {
 		// load the expressionColor setting
 		this.expressionColor = Color.decode(this.preferences.get("expressionColor", "#000000"));
 		
+    // load the selectedColor setting
     this.selectedColor = Color.decode(this.preferences.get("selectedColor", "#FF0000"));
     
+    // load the bindingColor setting
     this.bindingColor = Color.decode(this.preferences.get("bindingColor", "#FFAA33"));
     
 		// load the font setting
@@ -414,12 +427,26 @@ public final class Theme extends AbstractBean {
 		return this.keywordColor;
 	}
 	
-  
+  /**
+   * Returns the {@link Color} used to render selected expressions.
+   * 
+   * @return the color for selected expressions.
+   * 
+   * @see #setSelectedColor(Color)
+   * @see Color
+   */
   public Color getSelectedColor() {
     return this.selectedColor;
   }
   
-  
+  /**
+   * Returns the {@link Color} used to render bindings.
+   * 
+   * @return the color for binding.
+   * 
+   * @see #setBindingColor(Color)
+   * @see Color
+   */
   public Color getBindingColor() {
     return this.bindingColor;
   }
@@ -450,7 +477,16 @@ public final class Theme extends AbstractBean {
 		}
 	}
 	
-  
+  /**
+   * Sets the color that should be used to render selected expressions to the specified <code>selectedColor</code>.
+   * 
+   * @param selectedColor the color for selected expressions.
+   * 
+   * @see #getSelectedColor()
+   * @see Color
+   * 
+   * @throws NullPointerException if <code>selectedColor</code> is <code>null</code>.
+   */
   public void setSelectedColor(Color selectedColor) {
     if (selectedColor == null) {
       throw new NullPointerException("selectedColor is null");
@@ -466,7 +502,16 @@ public final class Theme extends AbstractBean {
     }
   }
   
-  
+  /**
+   * Sets the color that should be used to render bindings to the specified <code>bindingsColor</code>.
+   * 
+   * @param bindingColor the color for bindings.
+   * 
+   * @see #getBindingColor()
+   * @see Color
+   * 
+   * @throws NullPointerException if <code>selectedColor</code> is <code>null</code>.
+   */
   public void setBindingColor(Color bindingColor) {
     if (bindingColor == null) {
       throw new NullPointerException("selectedColor is null");
@@ -481,7 +526,6 @@ public final class Theme extends AbstractBean {
       this.preferences.put("bindingColor", encodeColor(bindingColor));
     }
   }
-  
   
 	/**
 	 * Returns the {@link Color} that should be used to render rules in the small and big step interpreters
