@@ -88,7 +88,7 @@ static Expression holeExpression;
 				Enumeration<Expression> child = pExpression.children();
 				while (child.hasMoreElements())
 				{
-
+					System.err.println("War da");
 					Expression actualExpression = (Expression) child.nextElement();
 
 					check(actualExpression);
@@ -136,6 +136,7 @@ static Expression holeExpression;
 		Expression e = lambda.getE();
 		check(e);
 		
+		
 		// anlegen von Arrays mit den frei vorkommenden Namen der beiden expressions von lambda
 		Object[] a = lambda.free().toArray();
 		Object[] b = e.free().toArray();
@@ -162,6 +163,7 @@ checkRec(child,lambda,list);
 		Object[] b = let.getE2().free().toArray();
 	
 		check(let.getE1());
+		check(let.getE2());
 		
 		LinkedList list = listWithBounds(a, b);
 		
@@ -186,7 +188,7 @@ checkRec(child,lambda,list);
 		Object[] b = let.getE2().free().toArray();
 	
 		check(let.getE1());
-		
+		check(let.getE2());
 		LinkedList list = listWithBounds(a, b);
 		
 		LinkedList <Expression> child = new LinkedList();
@@ -258,6 +260,9 @@ checkRec(child,lambda,list);
 		Object[] a = rec.free().toArray();
 		Object[] b = rec.getE().free().toArray();
 		
+		
+		check(rec.getE());
+		
 		LinkedList list = listWithBounds(a, b);
 		
 		LinkedList <Expression> child = new LinkedList();
@@ -274,22 +279,35 @@ checkRec(child,lambda,list);
 	
 	private void checkCurriedLetRec(CurriedLetRec rec)
 	{
-//	 anlegen von Arrays mit den frei vorkommenden Namen der beiden expressions von lambda
-		Object[] b = rec.getE1().free().toArray();
+//	 anlegen von Arrays mit den frei vorkommenden Namen der beiden expressions 
 		Object[] a = rec.getE2().free().toArray();
-
+		Object[] b = rec.getE1().free().toArray();
+		Object[] tmp = new Object[b.length];
 		
+		check(rec.getE1());
+		check(rec.getE2());
+		
+		for (int i=0; i<b.length;i++)
+		{
+			if (!b[i].equals(rec.getIdentifiers(0)))
+			{
+				tmp[i]=b[i];
+			}
+		}
+		
+		LinkedList list = listWithBounds(new Object[0], tmp);
+		LinkedList list2 = listWithBounds(tmp, a);
 			
-		LinkedList list = listWithBounds(a, b);
-		
 		LinkedList <Expression> child = new LinkedList();
 		Enumeration tmpChild =rec.children();
 		while (tmpChild.hasMoreElements())
 		{
 			child.add((Expression)tmpChild.nextElement());
 		}
-		
-		
+		LinkedList<Expression> child2 =new LinkedList();
+		child2.add((child.getLast()));
+		checkRec(child2,rec,list2);
+		child.remove(child.size()-1);
 		checkRec(child,rec,list);
 		
 	}
