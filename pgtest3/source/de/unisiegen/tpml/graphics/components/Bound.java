@@ -17,6 +17,13 @@ public class Bound
 		startOffset =start;
 		endOffset=end;
 	}
+	public Bound( int start, int end,LinkedList<PrettyAnnotation> list)
+	{
+		
+		startOffset =start;
+		endOffset=end;
+		marks=list;
+	}
 
 	public int getEndOffset()
 	{
