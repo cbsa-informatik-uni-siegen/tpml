@@ -207,9 +207,24 @@ public class AbstractSyntaxTree
   {
     String id = pExpression.getId ( ) ;
     Expression e = pExpression.getE ( ) ;
+    ASTBindings a = new ASTBindings ( pExpression , pExpression.getId ( ) ) ;
+    // Check child
+    /*
+     * for ( int i = 0 ; i < a.getNothingFree ( ).size ( ) ; i ++ ) { Expression
+     * ex = a.getNothingFree ( ).get ( i ) ; if ( ex instanceof Lambda ) {
+     * ASTBindings b = new ASTBindings ( ex , ( ( Lambda ) ex ).getId ( ) ) ;
+     * for ( int j = 0 ; j < b.size ( 0 ) ; j ++ ) { PrettyString prettyString =
+     * pExpression.toPrettyString ( ) ; PrettyAnnotation prettyAnnotation =
+     * prettyString .getAnnotationForPrintable ( b.get ( 0 , j ) ) ;
+     * System.out.println ( prettyAnnotation.getStartOffset ( ) + " -> " +
+     * prettyAnnotation.getEndOffset ( ) ) ; } } }
+     */
+    for ( int i = 0 ; i < a.getNotBounded ( ).size ( ) ; i ++ )
+    {
+      System.out.println ( a.getNotBounded ( ).get ( i ) ) ;
+    }
     DefaultMutableTreeNode child = createNode ( pExpression.getClass ( )
-        .getSimpleName ( ) , pExpression , new ASTBindings ( pExpression
-        .getE ( ) , pExpression.getId ( ) ) ) ;
+        .getSimpleName ( ) , pExpression , a ) ;
     DefaultMutableTreeNode subchild1 = createNode ( "Identifier" , id , 1 , id
         .length ( ) ) ;
     DefaultMutableTreeNode subchild2 = createNode ( "e" , e ) ;

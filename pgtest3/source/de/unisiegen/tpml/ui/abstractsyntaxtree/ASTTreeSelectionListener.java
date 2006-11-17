@@ -120,10 +120,20 @@ public class ASTTreeSelectionListener implements TreeSelectionListener
           childIndex = - 1 ;
         }
         list.get ( i ).setReplaceNode ( true ) ;
-        list.get ( i ).updateCaption (
-            prettyAnnotation.getStartOffset ( ) + last.getStartIndex ( ) ,
-            prettyAnnotation.getStartOffset ( ) + last.getEndIndex ( ) ,
-            childIndex ) ;
+        // CHANGE CHRISTIAN
+        if ( i == list.size ( ) - 2 )
+        {
+          list.get ( i ).updateCaption (
+              prettyAnnotation.getStartOffset ( ) + last.getStartIndex ( ) ,
+              prettyAnnotation.getStartOffset ( ) + last.getEndIndex ( ) ,
+              childIndex ) ;
+        }
+        else
+        {
+          list.get ( i ).updateCaption (
+              prettyAnnotation.getStartOffset ( ) + last.getStartIndex ( ) ,
+              prettyAnnotation.getStartOffset ( ) + last.getEndIndex ( ) , - 1 ) ;
+        }
       }
     }
     // Expression

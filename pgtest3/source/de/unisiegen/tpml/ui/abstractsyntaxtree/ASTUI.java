@@ -11,7 +11,9 @@ import javax.swing.BorderFactory ;
 import javax.swing.JButton ;
 import javax.swing.JCheckBox ;
 import javax.swing.JFrame ;
+import javax.swing.JMenuItem ;
 import javax.swing.JPanel ;
+import javax.swing.JPopupMenu ;
 import javax.swing.JScrollPane ;
 import javax.swing.JTree ;
 import javax.swing.WindowConstants ;
@@ -89,11 +91,36 @@ public class ASTUI
   private AbstractSyntaxTree abstractSyntaxTree ;
 
 
+  private ASTMouseListener aSTMouseListener ;
+
+
   private ResourceBundle resourceBundle ;
+
+
+  private JPopupMenu jPopupMenu ;
+
+
+  private JMenuItem jMenuItemExpand ;
+
+
+  private JMenuItem jMenuItemExpandAll ;
+
+
+  private JMenuItem jMenuItemCollapse ;
+
+
+  private JMenuItem jMenuItemCollapseAll ;
+
+
+  private JMenuItem jMenuItemClose ;
+
+
+  private JMenuItem jMenuItemCloseAll ;
 
 
   public ASTUI ( AbstractSyntaxTree pAbstractSyntaxTree )
   {
+    // Preferences
     this.resourceBundle = ResourceBundle
         .getBundle ( "de/unisiegen/tpml/ui/abstractsyntaxtree/ast" ) ;
     this.abstractSyntaxTree = pAbstractSyntaxTree ;
@@ -101,6 +128,41 @@ public class ASTUI
     this.aSTItemListener = new ASTItemListener ( this ) ;
     this.aSTActionListener = new ASTActionListener ( this ) ;
     this.aSTTreeSelectionListener = new ASTTreeSelectionListener ( this ) ;
+    this.aSTMouseListener = new ASTMouseListener ( this ) ;
+    // PopupMenu
+    this.jPopupMenu = new JPopupMenu ( ) ;
+    this.jMenuItemExpand = new JMenuItem ( this.resourceBundle
+        .getString ( "expand" ) ) ;
+    this.jMenuItemExpand.setActionCommand ( "expand" ) ;
+    this.jMenuItemExpand.addActionListener ( this.aSTActionListener ) ;
+    this.jPopupMenu.add ( this.jMenuItemExpand ) ;
+    this.jMenuItemExpandAll = new JMenuItem ( this.resourceBundle
+        .getString ( "expand_all" ) ) ;
+    this.jMenuItemExpandAll.setActionCommand ( "expand_all" ) ;
+    this.jMenuItemExpandAll.addActionListener ( this.aSTActionListener ) ;
+    this.jPopupMenu.add ( this.jMenuItemExpandAll ) ;
+    this.jPopupMenu.addSeparator ( ) ;
+    this.jMenuItemCollapse = new JMenuItem ( this.resourceBundle
+        .getString ( "collapse" ) ) ;
+    this.jMenuItemCollapse.setActionCommand ( "collapse" ) ;
+    this.jMenuItemCollapse.addActionListener ( this.aSTActionListener ) ;
+    this.jPopupMenu.add ( this.jMenuItemCollapse ) ;
+    this.jMenuItemCollapseAll = new JMenuItem ( this.resourceBundle
+        .getString ( "collapse_all" ) ) ;
+    this.jMenuItemCollapseAll.setActionCommand ( "collapse_all" ) ;
+    this.jMenuItemCollapseAll.addActionListener ( this.aSTActionListener ) ;
+    this.jPopupMenu.add ( this.jMenuItemCollapseAll ) ;
+    this.jPopupMenu.addSeparator ( ) ;
+    this.jMenuItemClose = new JMenuItem ( this.resourceBundle
+        .getString ( "close" ) ) ;
+    this.jMenuItemClose.setActionCommand ( "close" ) ;
+    this.jMenuItemClose.addActionListener ( this.aSTActionListener ) ;
+    this.jPopupMenu.add ( this.jMenuItemClose ) ;
+    this.jMenuItemCloseAll = new JMenuItem ( this.resourceBundle
+        .getString ( "close_all" ) ) ;
+    this.jMenuItemCloseAll.setActionCommand ( "close_all" ) ;
+    this.jMenuItemCloseAll.addActionListener ( this.aSTActionListener ) ;
+    this.jPopupMenu.add ( this.jMenuItemCloseAll ) ;
     // Layout
     this.gridBagLayout = new GridBagLayout ( ) ;
     this.gridBagConstraints = new GridBagConstraints ( ) ;
@@ -124,6 +186,7 @@ public class ASTUI
     this.jTreeAbstractSyntax.setCellRenderer ( this.cellRenderer ) ;
     this.jTreeAbstractSyntax.getSelectionModel ( ).addTreeSelectionListener (
         this.aSTTreeSelectionListener ) ;
+    this.jTreeAbstractSyntax.addMouseListener ( this.aSTMouseListener ) ;
     this.jScrollPaneAbstractSyntax = new JScrollPane ( this.jTreeAbstractSyntax ) ;
     this.jScrollPaneAbstractSyntax.setBorder ( new TitledBorder ( BorderFactory
         .createLineBorder ( Color.black , 1 ) , "" ,
@@ -375,6 +438,48 @@ public class ASTUI
   }
 
 
+  public JMenuItem getJMenuItemClose ( )
+  {
+    return this.jMenuItemClose ;
+  }
+
+
+  public JMenuItem getJMenuItemCloseAll ( )
+  {
+    return this.jMenuItemCloseAll ;
+  }
+
+
+  public JMenuItem getJMenuItemCollapse ( )
+  {
+    return this.jMenuItemCollapse ;
+  }
+
+
+  public JMenuItem getJMenuItemCollapseAll ( )
+  {
+    return this.jMenuItemCollapseAll ;
+  }
+
+
+  public JMenuItem getJMenuItemExpand ( )
+  {
+    return this.jMenuItemExpand ;
+  }
+
+
+  public JMenuItem getJMenuItemExpandAll ( )
+  {
+    return this.jMenuItemExpandAll ;
+  }
+
+
+  public JPopupMenu getJPopupMenu ( )
+  {
+    return this.jPopupMenu ;
+  }
+
+
   public void nodeChanged ( DefaultMutableTreeNode pNode )
   {
     this.treeModel.nodeChanged ( pNode ) ;
@@ -391,5 +496,53 @@ public class ASTUI
   public void setVisible ( boolean pVisible )
   {
     this.jFrameAbstractSyntaxTree.setVisible ( pVisible ) ;
+  }
+
+
+  public JButton getJButtonClose ( )
+  {
+    return this.jButtonClose ;
+  }
+
+
+  public JButton getJButtonCloseAll ( )
+  {
+    return this.jButtonCloseAll ;
+  }
+
+
+  public JButton getJButtonCollapse ( )
+  {
+    return this.jButtonCollapse ;
+  }
+
+
+  public JButton getJButtonCollapseAll ( )
+  {
+    return this.jButtonCollapseAll ;
+  }
+
+
+  public JButton getJButtonExpand ( )
+  {
+    return this.jButtonExpand ;
+  }
+
+
+  public JButton getJButtonExpandAll ( )
+  {
+    return this.jButtonExpandAll ;
+  }
+
+
+  public ASTItemListener getASTItemListener ( )
+  {
+    return this.aSTItemListener ;
+  }
+
+
+  public ASTMouseListener getASTMouseListener ( )
+  {
+    return this.aSTMouseListener ;
   }
 }
