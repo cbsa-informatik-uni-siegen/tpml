@@ -57,7 +57,7 @@ public class ASTTreeSelectionListener implements TreeSelectionListener
   {
     ASTNode aSTNode = ( ASTNode ) pNode.getUserObject ( ) ;
     aSTNode.resetCaption ( ) ;
-    aSTNode.setReplaceNode ( false ) ;
+    aSTNode.setReplaceExpression ( false ) ;
     for ( int i = 0 ; i < pNode.getChildCount ( ) ; i ++ )
     {
       reset ( ( DefaultMutableTreeNode ) pNode.getChildAt ( i ) ) ;
@@ -119,7 +119,7 @@ public class ASTTreeSelectionListener implements TreeSelectionListener
         {
           childIndex = - 1 ;
         }
-        list.get ( i ).setReplaceNode ( true ) ;
+        list.get ( i ).setReplaceExpression ( true ) ;
         // CHANGE CHRISTIAN
         if ( i == list.size ( ) - 2 )
         {
@@ -147,7 +147,7 @@ public class ASTTreeSelectionListener implements TreeSelectionListener
             .getAnnotationForPrintable ( last.getExpression ( ) ) ;
         if ( i < list.size ( ) - 1 )
         {
-          list.get ( i ).setReplaceNode ( true ) ;
+          list.get ( i ).setReplaceExpression ( true ) ;
         }
         list.get ( i ).updateCaption ( prettyAnnotation.getStartOffset ( ) ,
             prettyAnnotation.getEndOffset ( ) , - 1 ) ;

@@ -57,7 +57,7 @@ public class ASTNode
   }
 
 
-  private boolean replaceNode ;
+  private boolean replaceExpression ;
 
 
   private String description ;
@@ -90,7 +90,7 @@ public class ASTNode
     this.endIndex = - 1 ;
     this.aSTBindings = null ;
     resetCaption ( ) ;
-    this.replaceNode = false ;
+    this.replaceExpression = false ;
   }
 
 
@@ -104,7 +104,7 @@ public class ASTNode
     this.endIndex = - 1 ;
     this.aSTBindings = pRelations ;
     resetCaption ( ) ;
-    this.replaceNode = false ;
+    this.replaceExpression = false ;
   }
 
 
@@ -118,7 +118,7 @@ public class ASTNode
     this.endIndex = pEnd ;
     this.aSTBindings = null ;
     resetCaption ( ) ;
-    this.replaceNode = false ;
+    this.replaceExpression = false ;
   }
 
 
@@ -251,9 +251,9 @@ public class ASTNode
   }
 
 
-  public void setReplaceNode ( boolean pReplaceNode )
+  public void setReplaceExpression ( boolean pReplaceExpression )
   {
-    this.replaceNode = pReplaceNode ;
+    this.replaceExpression = pReplaceExpression ;
   }
 
 
@@ -287,13 +287,13 @@ public class ASTNode
       {
         result.append ( "<b><font color=\"#"
             + getHex ( Theme.currentTheme ( ).getSelectedColor ( ) ) + "\">" ) ;
-        if ( checkedReplace && this.replaceNode )
+        if ( checkedReplace && this.replaceExpression )
         {
           result.append ( "&nbsp;" + REPLACE_STRING + "&nbsp;" ) ;
         }
         while ( index <= pSelectionEnd )
         {
-          if ( ! ( checkedReplace && this.replaceNode ) )
+          if ( ! ( checkedReplace && this.replaceExpression ) )
           {
             result.append ( this.expressionString.charAt ( index ) ) ;
           }
@@ -304,7 +304,7 @@ public class ASTNode
       }
       // Not Selected and should be replaced
       else if ( ! ( checkedSelected ) && ( checkedReplace )
-          && ( this.replaceNode ) && ( index == pSelectionStart ) )
+          && ( this.replaceExpression ) && ( index == pSelectionStart ) )
       {
         result.append ( "<b>&nbsp;" + REPLACE_STRING + "&nbsp;" ) ;
         while ( index <= pSelectionEnd )
@@ -364,5 +364,17 @@ public class ASTNode
     result.append ( AFTER_NAME ) ;
     result.append ( "</html>" ) ;
     this.caption = result.toString ( ) ;
+  }
+
+
+  public String getDescription ( )
+  {
+    return this.description ;
+  }
+
+
+  public void setDescription ( String pDescription )
+  {
+    this.description = pDescription ;
   }
 }

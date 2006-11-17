@@ -18,11 +18,15 @@ public class ASTBindings
   private LinkedList < Expression > notBounded ;
 
 
+  private Expression expression ;
+
+
   public ASTBindings ( )
   {
     this.list = new LinkedList < LinkedList < Expression >> ( ) ;
     this.nothingFree = new LinkedList < Expression > ( ) ;
     this.notBounded = new LinkedList < Expression > ( ) ;
+    this.expression = null ;
   }
 
 
@@ -32,6 +36,7 @@ public class ASTBindings
     this.nothingFree = new LinkedList < Expression > ( ) ;
     this.notBounded = new LinkedList < Expression > ( ) ;
     add ( pExpr , pId ) ;
+    this.expression = pExpr ;
   }
 
 
@@ -41,6 +46,7 @@ public class ASTBindings
     this.nothingFree = new LinkedList < Expression > ( ) ;
     this.notBounded = new LinkedList < Expression > ( ) ;
     add ( pExpr , pIdentifiers ) ;
+    this.expression = pExpr ;
   }
 
 
@@ -75,6 +81,7 @@ public class ASTBindings
     while ( children.hasMoreElements ( ) )
     {
       Expression current = children.nextElement ( ) ;
+      Enumeration < Expression > currentChildren = current.children ( ) ;
       if ( ! current.free ( ).isEmpty ( ) )
       {
         LinkedList < Expression > tmpList = free ( current , pId ) ;
@@ -83,7 +90,7 @@ public class ASTBindings
           tmp.add ( tmpExpr ) ;
         }
       }
-      else
+      else if ( currentChildren.hasMoreElements ( ) )
       {
         this.nothingFree.add ( current ) ;
       }
@@ -119,5 +126,11 @@ public class ASTBindings
   public LinkedList < Expression > getNotBounded ( )
   {
     return this.notBounded ;
+  }
+
+
+  public Expression getExpression ( )
+  {
+    return this.expression ;
   }
 }

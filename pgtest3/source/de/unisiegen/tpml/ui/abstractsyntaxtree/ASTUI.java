@@ -545,4 +545,10 @@ public class ASTUI
   {
     return this.aSTMouseListener ;
   }
+
+
+  public DefaultTreeModel getTreeModel ( )
+  {
+    return this.treeModel ;
+  }
 }
