@@ -1,6 +1,5 @@
 package de.unisiegen.tpml.graphics.renderer;
 
-
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -10,6 +9,7 @@ import java.awt.font.TextAttribute;
 import java.text.CharacterIterator;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.Vector;
 
 import javax.swing.text.StyledEditorKit.ItalicAction;
 
@@ -68,6 +68,18 @@ public class PrettyStringRenderer extends AbstractRenderer {
 	 * The pretty printable that will be underline during the rendering.
 	 */
 	private PrettyPrintable							underlinePrettyPrintable;
+	
+	
+	/**
+	 * TODO
+	 * Hier werden die Positionen gespeichert, auf denen die Maus reagieren muss...
+	 */
+	//private Vector<Integer> 											toListenForMouse;
+	//public Vector getToListenForMouse()
+	//{
+	//	return toListenForMouse;
+	//}
+	private ToListenForMouseContainer					toListenForMouse;
 	
 	/**
 	 * The annotation containing the information where the underline 
@@ -251,6 +263,7 @@ public class PrettyStringRenderer extends AbstractRenderer {
 		{
 			int min = list.get(i).getStartOffset();
 			int max = list.get(i).getEndOffset();
+			
 			//LinkedList<PrettyAnnotation> other = list.get(i).marks;
 			//System.out.println("alles zwischen "+min+" und "+max+ " wird makiert.");
 			//list.get(i).
@@ -295,6 +308,10 @@ public class PrettyStringRenderer extends AbstractRenderer {
 	 */
 	public void render (int x, int y, int height,  Graphics gc) {
 		
+		toListenForMouse = ToListenForMouseContainer.getInstanceOf();
+		//nicht malen
+		//toListenForMouse.add(-1);
+		
 		int[] breakOffsets = null;
 		if (this.result.annotation != null) {
 			breakOffsets = this.result.annotation.getBreakOffsets();
@@ -309,6 +326,9 @@ public class PrettyStringRenderer extends AbstractRenderer {
 		// propper amount of rows 
 		int i = 0;
 		int posX = x;
+		
+		
+		
 		int posY = y + height / 2;
 		posY += AbstractRenderer.fontAscent / 2;
 		
@@ -334,6 +354,8 @@ public class PrettyStringRenderer extends AbstractRenderer {
 					posY += AbstractRenderer.fontHeight;
 					
 					posX = x;
+					//				Komische TEstausgabe TODO komische Testausgabe
+					//System.out.println("Position in X-Richtung ist: "+x);
 				}
 			}
 			
@@ -356,20 +378,51 @@ public class PrettyStringRenderer extends AbstractRenderer {
 				//underlineStart = i;
 				//underlineEnd = i;
 				
-				//manipulating font
-				Font orginalFont = gc.getFont();
-				String fontName = orginalFont.getName();
-				int fontSize = orginalFont.getSize();
-				Font newFont = new Font(fontName, Font.BOLD|Font.ITALIC, fontSize);
-				gc.setColor(Color.orange);
-				gc.setFont(newFont);
 				fm = AbstractRenderer.expFontMetrics;
 				int charWidth = fm.stringWidth("" + c);
-				gc.drawLine(posX, posY + 1, posX + charWidth, posY + 1);
+				int charHighth = fm.getHeight();
+				
+				
+				
+				//Die eventuell zu markierenden werden in eine Liste gespeichert!
+				toListenForMouse.add(posX);
+				toListenForMouse.add(posX+charWidth);
+				toListenForMouse.add(posY);
+				toListenForMouse.add(posY+charHighth);
+			
+				
+				if (toListenForMouse.getMark())
+				{
+					
+					Font orginalFont = gc.getFont();
+					String fontName = orginalFont.getName();
+					int fontSize = orginalFont.getSize();
+					Font newFont = new Font(fontName, Font.BOLD|Font.ITALIC, fontSize);
+					gc.setColor(Color.orange);
+					gc.setFont(newFont);
+					//int charWidth = fm.stringWidth("" + c);
+					gc.drawLine(posX, posY + 1, posX + charWidth, posY + 1);
+				}
+				
+				//beginne bei 1, weil das 0 steht für malen oder nicht
+				//for (int t = 1; t<toListenForMouse.size(); t=t+4)
+				//{
+				//	int pX = toListenForMouse.get(t);
+				//	System.out.println("Liste Größe: "+toListenForMouse.size()+" und t ist: "+t);
+				//	int pX1 = toListenForMouse.get(t+1);
+				//	int pY = toListenForMouse.get(t+2);
+				//	int pY1 = toListenForMouse.get(t+3);
+//				Komische TEstausgabe TODO komische Testausgabe
+			//		System.out.println("Markiert wird laut Liste: "+pX +"-" +(pX1) +" " +pY + "-" + (pY1));
+				//}
+//			
+				
 				
 			}
+			//manipulating font
 			
-			else
+			
+			//else
 			{
 //			 select the proppert font and color for the character
 				
@@ -422,6 +475,8 @@ public class PrettyStringRenderer extends AbstractRenderer {
 			
 			// draw the character and move the position
 			gc.drawString("" + c, posX, posY);
+			//			Komische TEstausgabe TODO komische Testausgabe
+			//System.out.println("Position in X-Richtung, in Y-Richtung ist: "+posX + " " + posY );
 			
 			posX += fm.stringWidth("" + c);
 			

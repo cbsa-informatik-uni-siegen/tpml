@@ -33,6 +33,7 @@ import de.unisiegen.tpml.graphics.components.MenuGuessItem;
 import de.unisiegen.tpml.graphics.components.MenuGuessTreeItem;
 import de.unisiegen.tpml.graphics.components.MenuRuleItem;
 import de.unisiegen.tpml.graphics.components.MenuTranslateItem;
+import de.unisiegen.tpml.graphics.renderer.ToListenForMouseContainer;
 
 /**
  * The graphical representation of a 
@@ -286,10 +287,43 @@ public class SmallStepNodeComponent extends JComponent {
 				}
 				else if (event.getSource () instanceof CompoundExpression )
 				{
+					//TODO jetzt wollen wir doch mal gucken, wo wir eigentlich sind!
 					
-					System.out.println(" Event: "+event);
-					System.out.println("Typ: "+event.getSource());
-					System.out.println("Position "+event.getX() +", "+ event.getY());
+					ToListenForMouseContainer toListenForMouse = ToListenForMouseContainer.getInstanceOf();
+					
+					//TODO Testausgabe
+					//System.out.println("ncihts malen");
+					toListenForMouse.setMark(false);
+					for (int t = 0; t<toListenForMouse.size(); t=t+4)
+					{
+						int pX = toListenForMouse.get(t);
+						int pX1 = toListenForMouse.get(t+1);
+						//brauche uch zur Zeit nicht
+						//int pY = toListenForMouse.get(t+2);
+					  //int pY1 = toListenForMouse.get(t+3);
+						//TODO TEstausgabe
+						//System.out.println(pX+" " +pX1 + " " + pY + " " + pY1);
+						//System.out.println(event.getX()+"    " +event.getY());
+						
+						
+						//Herausfinden, ob ich auf einem erwarteten Zeichen bin!
+						if (event.getX() >= pX && event.getX() <= pX1  )
+						{
+							//TODO TestausgbaetoListenForMouse.setElementAt(0, 1);
+							//System.out.println("JA, JETZT MUSS DER MOUSEFFEKT ANGEHEN");
+							toListenForMouse.setMark(true);
+							
+						}
+						SmallStepNodeComponent.this.expression.repaint();
+						
+					}
+					
+					
+					
+					
+					//System.out.println(" Event: "+event);
+					//System.out.println("Typ: "+event.getSource());
+					//System.out.println("Position "+event.getX() +", "+ event.getY());
 				}
 			}
 		};
