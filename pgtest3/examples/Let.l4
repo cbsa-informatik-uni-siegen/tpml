@@ -1,1 +1,1 @@
-let x = 1 in x + 2
+let x = x in x + 2
