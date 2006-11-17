@@ -5,7 +5,6 @@ import java.awt.Color ;
 import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyCharIterator ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyString ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStyle ;
 import de.unisiegen.tpml.graphics.Theme ;
 
@@ -72,10 +71,10 @@ public class ASTNode
   private Expression expression ;
 
 
-  private int startIndex ;
+  private int selectedStartIndex ;
 
 
-  private int endIndex ;
+  private int selectedEndIndex ;
 
 
   private ASTBindings aSTBindings ;
@@ -86,8 +85,8 @@ public class ASTNode
     this.description = pDescription ;
     this.expressionString = pExpression.toPrettyString ( ).toString ( ) ;
     this.expression = pExpression ;
-    this.startIndex = - 1 ;
-    this.endIndex = - 1 ;
+    this.selectedStartIndex = - 1 ;
+    this.selectedEndIndex = - 1 ;
     this.aSTBindings = null ;
     resetCaption ( ) ;
     this.replaceExpression = false ;
@@ -100,22 +99,22 @@ public class ASTNode
     this.description = pDescription ;
     this.expressionString = pExpression.toPrettyString ( ).toString ( ) ;
     this.expression = pExpression ;
-    this.startIndex = - 1 ;
-    this.endIndex = - 1 ;
+    this.selectedStartIndex = - 1 ;
+    this.selectedEndIndex = - 1 ;
     this.aSTBindings = pRelations ;
     resetCaption ( ) ;
     this.replaceExpression = false ;
   }
 
 
-  public ASTNode ( String pDescription , String pExpressionString , int pStart ,
-      int pEnd )
+  public ASTNode ( String pDescription , String pExpressionString ,
+      int pSelectedStartIndex , int pSelectedEndIndex )
   {
     this.description = pDescription ;
     this.expressionString = pExpressionString ;
     this.expression = null ;
-    this.startIndex = pStart ;
-    this.endIndex = pEnd ;
+    this.selectedStartIndex = pSelectedStartIndex ;
+    this.selectedEndIndex = pSelectedEndIndex ;
     this.aSTBindings = null ;
     resetCaption ( ) ;
     this.replaceExpression = false ;
@@ -153,9 +152,9 @@ public class ASTNode
   }
 
 
-  public int getEndIndex ( )
+  public String getDescription ( )
   {
-    return this.endIndex ;
+    return this.description ;
   }
 
 
@@ -197,27 +196,29 @@ public class ASTNode
   }
 
 
-  public int getStartIndex ( )
+  public int getSelectedEndIndex ( )
   {
-    return this.startIndex ;
+    return this.selectedEndIndex ;
   }
 
 
-  private boolean isInList ( int pList , int pIndex )
+  public int getSelectedStartIndex ( )
   {
-    if ( this.aSTBindings == null )
+    return this.selectedStartIndex ;
+  }
+
+
+  private boolean isInList ( int pListIndex , int pIndex )
+  {
+    if ( ( this.aSTBindings == null ) || ( pListIndex < 0 )
+        || ( pListIndex >= this.aSTBindings.size ( ) ) )
     {
       return false ;
     }
-    if ( ( pList < 0 ) || ( pList >= this.aSTBindings.size ( ) ) )
+    for ( int i = 0 ; i < this.aSTBindings.size ( pListIndex ) ; i ++ )
     {
-      return false ;
-    }
-    for ( int i = 0 ; i < this.aSTBindings.size ( pList ) ; i ++ )
-    {
-      Expression e = this.aSTBindings.get ( pList , i ) ;
-      PrettyString prettyString = this.expression.toPrettyString ( ) ;
-      PrettyAnnotation prettyAnnotation = prettyString
+      Expression e = this.aSTBindings.get ( pListIndex , i ) ;
+      PrettyAnnotation prettyAnnotation = this.expression.toPrettyString ( )
           .getAnnotationForPrintable ( e ) ;
       if ( ( pIndex >= prettyAnnotation.getStartOffset ( ) )
           && ( pIndex <= prettyAnnotation.getEndOffset ( ) ) )
@@ -248,6 +249,12 @@ public class ASTNode
     {
       updateCaption ( - 1 , - 1 , - 1 ) ;
     }
+  }
+
+
+  public void setDescription ( String pDescription )
+  {
+    this.description = pDescription ;
   }
 
 
@@ -364,17 +371,5 @@ public class ASTNode
     result.append ( AFTER_NAME ) ;
     result.append ( "</html>" ) ;
     this.caption = result.toString ( ) ;
-  }
-
-
-  public String getDescription ( )
-  {
-    return this.description ;
-  }
-
-
-  public void setDescription ( String pDescription )
-  {
-    this.description = pDescription ;
   }
 }

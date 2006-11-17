@@ -45,13 +45,13 @@ public class ASTMouseListener implements MouseListener
     {
       int x = pMouseEvent.getX ( ) ;
       int y = pMouseEvent.getY ( ) ;
-      TreePath t = this.aSTUI.getJAbstractSyntaxTree ( ).getPathForLocation (
-          x , y ) ;
-      if ( t == null )
+      TreePath treePath = this.aSTUI.getJAbstractSyntaxTree ( )
+          .getPathForLocation ( x , y ) ;
+      if ( treePath == null )
       {
         return ;
       }
-      this.aSTUI.getJAbstractSyntaxTree ( ).setSelectionPath ( t ) ;
+      this.aSTUI.getJAbstractSyntaxTree ( ).setSelectionPath ( treePath ) ;
       this.aSTUI.getJPopupMenu ( ).show ( pMouseEvent.getComponent ( ) , x , y ) ;
     }
     setStatus ( ) ;
@@ -60,12 +60,13 @@ public class ASTMouseListener implements MouseListener
 
   public void setStatus ( )
   {
-    TreePath p = this.aSTUI.getJAbstractSyntaxTree ( ).getSelectionPath ( ) ;
-    if ( p == null )
+    TreePath treePath = this.aSTUI.getJAbstractSyntaxTree ( )
+        .getSelectionPath ( ) ;
+    if ( treePath == null )
     {
       return ;
     }
-    DefaultMutableTreeNode d = ( DefaultMutableTreeNode ) p
+    DefaultMutableTreeNode d = ( DefaultMutableTreeNode ) treePath
         .getLastPathComponent ( ) ;
     this.aSTUI.getJMenuItemExpand ( ).setEnabled ( true ) ;
     this.aSTUI.getJButtonExpand ( ).setEnabled ( true ) ;

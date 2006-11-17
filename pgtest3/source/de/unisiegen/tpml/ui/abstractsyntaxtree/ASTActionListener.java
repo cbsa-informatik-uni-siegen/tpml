@@ -111,11 +111,11 @@ public class ASTActionListener implements ActionListener
     {
       return ;
     }
-    DefaultMutableTreeNode b = ( DefaultMutableTreeNode ) pTreePath
+    DefaultMutableTreeNode lastNode = ( DefaultMutableTreeNode ) pTreePath
         .getLastPathComponent ( ) ;
-    for ( int i = 0 ; i < b.getChildCount ( ) ; i ++ )
+    for ( int i = 0 ; i < lastNode.getChildCount ( ) ; i ++ )
     {
-      expandTreePath ( pTreePath.pathByAddingChild ( b.getChildAt ( i ) ) ) ;
+      expandTreePath ( pTreePath.pathByAddingChild ( lastNode.getChildAt ( i ) ) ) ;
     }
     this.aSTUI.getJAbstractSyntaxTree ( ).expandPath ( pTreePath ) ;
   }

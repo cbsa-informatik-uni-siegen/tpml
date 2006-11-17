@@ -18,37 +18,32 @@ public class ASTItemListener implements ItemListener
 
   public void itemStateChanged ( ItemEvent pItemEvent )
   {
+    boolean selected = pItemEvent.getStateChange ( ) == ItemEvent.SELECTED ;
     if ( pItemEvent.getSource ( ).equals ( this.aSTUI.getJCheckBoxReplace ( ) ) )
     {
-      ASTNode
-          .setCheckedReplace ( pItemEvent.getStateChange ( ) == ItemEvent.SELECTED ) ;
+      ASTNode.setCheckedReplace ( selected ) ;
       this.aSTUI.getASTTreeSelectionListener ( ).update (
           this.aSTUI.getJAbstractSyntaxTree ( ).getSelectionPath ( ) ) ;
       this.aSTUI.getAbstractSyntaxTree ( ).getASTPreferences ( )
-          .setCheckedReplace (
-              pItemEvent.getStateChange ( ) == ItemEvent.SELECTED ) ;
+          .setCheckedReplace ( selected ) ;
     }
     else if ( pItemEvent.getSource ( ).equals (
         this.aSTUI.getJCheckBoxBindings ( ) ) )
     {
-      ASTNode
-          .setCheckedBindings ( pItemEvent.getStateChange ( ) == ItemEvent.SELECTED ) ;
+      ASTNode.setCheckedBindings ( selected ) ;
       this.aSTUI.getASTTreeSelectionListener ( ).update (
           this.aSTUI.getJAbstractSyntaxTree ( ).getSelectionPath ( ) ) ;
       this.aSTUI.getAbstractSyntaxTree ( ).getASTPreferences ( )
-          .setCheckedBindings (
-              pItemEvent.getStateChange ( ) == ItemEvent.SELECTED ) ;
+          .setCheckedBindings ( selected ) ;
     }
     else if ( pItemEvent.getSource ( ).equals (
         this.aSTUI.getJCheckBoxSelected ( ) ) )
     {
-      ASTNode
-          .setCheckedSelected ( pItemEvent.getStateChange ( ) == ItemEvent.SELECTED ) ;
+      ASTNode.setCheckedSelected ( selected ) ;
       this.aSTUI.getASTTreeSelectionListener ( ).update (
           this.aSTUI.getJAbstractSyntaxTree ( ).getSelectionPath ( ) ) ;
       this.aSTUI.getAbstractSyntaxTree ( ).getASTPreferences ( )
-          .setCheckedSelected (
-              pItemEvent.getStateChange ( ) == ItemEvent.SELECTED ) ;
+          .setCheckedSelected ( selected ) ;
     }
   }
 }

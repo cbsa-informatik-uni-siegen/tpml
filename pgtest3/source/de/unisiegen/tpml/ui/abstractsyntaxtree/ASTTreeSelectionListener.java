@@ -15,7 +15,6 @@ import de.unisiegen.tpml.core.expressions.MultiLambda ;
 import de.unisiegen.tpml.core.expressions.MultiLet ;
 import de.unisiegen.tpml.core.expressions.Recursion ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyString ;
 
 
 public class ASTTreeSelectionListener implements TreeSelectionListener
@@ -91,7 +90,8 @@ public class ASTTreeSelectionListener implements TreeSelectionListener
       secondlast = list.get ( list.size ( ) - 2 ) ;
     }
     // No Expression
-    if ( ( last.getStartIndex ( ) != - 1 ) && ( last.getEndIndex ( ) != - 1 ) )
+    if ( ( last.getSelectedStartIndex ( ) != - 1 )
+        && ( last.getSelectedEndIndex ( ) != - 1 ) )
     {
       if ( secondlast == null )
       {
@@ -100,10 +100,9 @@ public class ASTTreeSelectionListener implements TreeSelectionListener
       list.get ( list.size ( ) - 1 ).enableSelectedColor ( ) ;
       for ( int i = 0 ; i < list.size ( ) - 1 ; i ++ )
       {
-        PrettyString prettyString = list.get ( i ).getExpression ( )
-            .toPrettyString ( ) ;
-        PrettyAnnotation prettyAnnotation = prettyString
-            .getAnnotationForPrintable ( secondlast.getExpression ( ) ) ;
+        PrettyAnnotation prettyAnnotation = list.get ( i ).getExpression ( )
+            .toPrettyString ( ).getAnnotationForPrintable (
+                secondlast.getExpression ( ) ) ;
         int childIndex = childIndex ( ( DefaultMutableTreeNode ) pTreePath
             .getPath ( ) [ pTreePath.getPathCount ( ) - 2 ] ,
             ( DefaultMutableTreeNode ) pTreePath.getPath ( ) [ pTreePath
@@ -120,19 +119,23 @@ public class ASTTreeSelectionListener implements TreeSelectionListener
           childIndex = - 1 ;
         }
         list.get ( i ).setReplaceExpression ( true ) ;
-        // CHANGE CHRISTIAN
         if ( i == list.size ( ) - 2 )
         {
-          list.get ( i ).updateCaption (
-              prettyAnnotation.getStartOffset ( ) + last.getStartIndex ( ) ,
-              prettyAnnotation.getStartOffset ( ) + last.getEndIndex ( ) ,
-              childIndex ) ;
+          list.get ( i )
+              .updateCaption (
+                  prettyAnnotation.getStartOffset ( )
+                      + last.getSelectedStartIndex ( ) ,
+                  prettyAnnotation.getStartOffset ( )
+                      + last.getSelectedEndIndex ( ) , childIndex ) ;
         }
         else
         {
-          list.get ( i ).updateCaption (
-              prettyAnnotation.getStartOffset ( ) + last.getStartIndex ( ) ,
-              prettyAnnotation.getStartOffset ( ) + last.getEndIndex ( ) , - 1 ) ;
+          list.get ( i )
+              .updateCaption (
+                  prettyAnnotation.getStartOffset ( )
+                      + last.getSelectedStartIndex ( ) ,
+                  prettyAnnotation.getStartOffset ( )
+                      + last.getSelectedEndIndex ( ) , - 1 ) ;
         }
       }
     }
@@ -141,10 +144,9 @@ public class ASTTreeSelectionListener implements TreeSelectionListener
     {
       for ( int i = 0 ; i < list.size ( ) ; i ++ )
       {
-        PrettyString prettyString = list.get ( i ).getExpression ( )
-            .toPrettyString ( ) ;
-        PrettyAnnotation prettyAnnotation = prettyString
-            .getAnnotationForPrintable ( last.getExpression ( ) ) ;
+        PrettyAnnotation prettyAnnotation = list.get ( i ).getExpression ( )
+            .toPrettyString ( ).getAnnotationForPrintable (
+                last.getExpression ( ) ) ;
         if ( i < list.size ( ) - 1 )
         {
           list.get ( i ).setReplaceExpression ( true ) ;

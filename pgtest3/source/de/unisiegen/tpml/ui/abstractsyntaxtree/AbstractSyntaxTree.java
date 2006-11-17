@@ -17,7 +17,6 @@ import de.unisiegen.tpml.core.expressions.MultiLambda ;
 import de.unisiegen.tpml.core.expressions.MultiLet ;
 import de.unisiegen.tpml.core.expressions.Recursion ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation ;
-import de.unisiegen.tpml.core.prettyprinter.PrettyString ;
 
 
 public class AbstractSyntaxTree
@@ -52,6 +51,29 @@ public class AbstractSyntaxTree
   {
     this.aSTPreferences = new ASTPreferences ( ) ;
     this.aSTUI = new ASTUI ( this ) ;
+  }
+
+
+  private void createChildren ( Expression pExpression ,
+      DefaultMutableTreeNode pNode )
+  {
+    Enumeration < Expression > children = pExpression.children ( ) ;
+    int startIndex = minimumChildExpression ( pExpression ) ;
+    while ( children.hasMoreElements ( ) )
+    {
+      Expression child = children.nextElement ( ) ;
+      DefaultMutableTreeNode e = expression ( child ) ;
+      ASTNode node1 = ( ASTNode ) e.getUserObject ( ) ;
+      String text = BEFORE + "e" + startIndex + AFTER + node1.getDescription ( ) ;
+      if ( startIndex == - 1 )
+      {
+        text = BEFORE + "e" + AFTER + node1.getDescription ( ) ;
+      }
+      node1.setDescription ( text ) ;
+      node1.resetCaption ( ) ;
+      pNode.add ( e ) ;
+      startIndex ++ ;
+    }
   }
 
 
@@ -92,22 +114,12 @@ public class AbstractSyntaxTree
     int length = 0 ;
     for ( int i = 0 ; i < idList.length ; i ++ )
     {
-      DefaultMutableTreeNode subchilds = createNode ( "Identifier" ,
-          idList [ i ] , length + 4 + i , length + 3 + idList [ i ].length ( )
-              + i ) ;
+      DefaultMutableTreeNode node0 = createNode ( "Identifier" , idList [ i ] ,
+          length + 4 + i , length + 3 + idList [ i ].length ( ) + i ) ;
       length += idList [ i ].length ( ) ;
-      node.add ( subchilds ) ;
+      node.add ( node0 ) ;
     }
-    DefaultMutableTreeNode e1 = expression ( pExpression.getE1 ( ) ) ;
-    ASTNode node1 = ( ASTNode ) e1.getUserObject ( ) ;
-    node1.setDescription ( BEFORE + "e1" + AFTER + node1.getDescription ( ) ) ;
-    node1.resetCaption ( ) ;
-    node.add ( e1 ) ;
-    DefaultMutableTreeNode e2 = expression ( pExpression.getE2 ( ) ) ;
-    ASTNode node2 = ( ASTNode ) e2.getUserObject ( ) ;
-    node2.setDescription ( BEFORE + "e2" + AFTER + node2.getDescription ( ) ) ;
-    node2.resetCaption ( ) ;
-    node.add ( e2 ) ;
+    createChildren ( pExpression , node ) ;
     return node ;
   }
 
@@ -126,22 +138,12 @@ public class AbstractSyntaxTree
     int length = 0 ;
     for ( int i = 0 ; i < idList.length ; i ++ )
     {
-      DefaultMutableTreeNode subchilds = createNode ( "Identifier" ,
-          idList [ i ] , length + 8 + i , length + 7 + idList [ i ].length ( )
-              + i ) ;
+      DefaultMutableTreeNode node0 = createNode ( "Identifier" , idList [ i ] ,
+          length + 8 + i , length + 7 + idList [ i ].length ( ) + i ) ;
       length += idList [ i ].length ( ) ;
-      node.add ( subchilds ) ;
+      node.add ( node0 ) ;
     }
-    DefaultMutableTreeNode e1 = expression ( pExpression.getE1 ( ) ) ;
-    ASTNode node1 = ( ASTNode ) e1.getUserObject ( ) ;
-    node1.setDescription ( BEFORE + "e1" + AFTER + node1.getDescription ( ) ) ;
-    node1.resetCaption ( ) ;
-    node.add ( e1 ) ;
-    DefaultMutableTreeNode e2 = expression ( pExpression.getE2 ( ) ) ;
-    ASTNode node2 = ( ASTNode ) e2.getUserObject ( ) ;
-    node2.setDescription ( BEFORE + "e2" + AFTER + node2.getDescription ( ) ) ;
-    node2.resetCaption ( ) ;
-    node.add ( e2 ) ;
+    createChildren ( pExpression , node ) ;
     return node ;
   }
 
@@ -188,7 +190,7 @@ public class AbstractSyntaxTree
     {
       return infixOperation ( ( InfixOperation ) pExpression ) ;
     }
-    return normal ( pExpression ) ;
+    return other ( pExpression ) ;
   }
 
 
@@ -205,22 +207,21 @@ public class AbstractSyntaxTree
     BinaryOperator b = pExpression.getOp ( ) ;
     DefaultMutableTreeNode node = createNode ( pExpression.getClass ( )
         .getSimpleName ( ) , pExpression ) ;
-    PrettyString prettyString = pExpression.toPrettyString ( ) ;
-    PrettyAnnotation prettyAnnotation = prettyString
+    DefaultMutableTreeNode ex1 = expression ( e1 ) ;
+    ASTNode node0 = ( ASTNode ) ex1.getUserObject ( ) ;
+    node0.setDescription ( BEFORE + "e1" + AFTER + node0.getDescription ( ) ) ;
+    node0.resetCaption ( ) ;
+    node.add ( ex1 ) ;
+    PrettyAnnotation prettyAnnotation = pExpression.toPrettyString ( )
         .getAnnotationForPrintable ( e1 ) ;
-    DefaultMutableTreeNode subchild2 = createNode ( b.getClass ( )
-        .getSimpleName ( ) , b.toString ( ) , ( 2 * prettyAnnotation
-        .getStartOffset ( ) )
-        + e1.toPrettyString ( ).toString ( ).length ( ) ,
+    DefaultMutableTreeNode node1 = createNode (
+        b.getClass ( ).getSimpleName ( ) , b.toString ( ) ,
+        ( 2 * prettyAnnotation.getStartOffset ( ) )
+            + e1.toPrettyString ( ).toString ( ).length ( ) ,
         ( 2 * prettyAnnotation.getStartOffset ( ) )
             + e1.toPrettyString ( ).toString ( ).length ( )
             + b.toString ( ).length ( ) ) ;
-    DefaultMutableTreeNode ex1 = expression ( e1 ) ;
-    ASTNode node1 = ( ASTNode ) ex1.getUserObject ( ) ;
-    node1.setDescription ( BEFORE + "e1" + AFTER + node1.getDescription ( ) ) ;
-    node1.resetCaption ( ) ;
-    node.add ( ex1 ) ;
-    node.add ( subchild2 ) ;
+    node.add ( node1 ) ;
     DefaultMutableTreeNode ex2 = expression ( e2 ) ;
     ASTNode node2 = ( ASTNode ) ex2.getUserObject ( ) ;
     node2.setDescription ( BEFORE + "e2" + AFTER + node2.getDescription ( ) ) ;
@@ -232,79 +233,70 @@ public class AbstractSyntaxTree
 
   private DefaultMutableTreeNode lambda ( Lambda pExpression )
   {
-    String id = pExpression.getId ( ) ;
     DefaultMutableTreeNode node = createNode ( pExpression.getClass ( )
         .getSimpleName ( ) , pExpression , new ASTBindings ( pExpression ,
         pExpression.getId ( ) ) ) ;
-    DefaultMutableTreeNode subchild1 = createNode ( "Identifier" , id , 1 , id
-        .length ( ) ) ;
-    node.add ( subchild1 ) ;
-    DefaultMutableTreeNode e = expression ( pExpression.getE ( ) ) ;
-    ASTNode node1 = ( ASTNode ) e.getUserObject ( ) ;
-    node1.setDescription ( BEFORE + "e" + AFTER + node1.getDescription ( ) ) ;
-    node1.resetCaption ( ) ;
-    node.add ( e ) ;
+    node.add ( createNode ( "Identifier" , pExpression.getId ( ) , 1 ,
+        pExpression.getId ( ).length ( ) ) ) ;
+    createChildren ( pExpression , node ) ;
     return node ;
   }
 
 
   private DefaultMutableTreeNode let ( Let pExpression )
   {
-    String id = pExpression.getId ( ) ;
     DefaultMutableTreeNode node = createNode ( pExpression.getClass ( )
         .getSimpleName ( ) , pExpression , new ASTBindings ( pExpression
         .getE2 ( ) , pExpression.getId ( ) ) ) ;
-    DefaultMutableTreeNode subchild1 = createNode ( "Identifier" , id , 4 ,
-        3 + id.length ( ) ) ;
-    node.add ( subchild1 ) ;
-    DefaultMutableTreeNode e1 = expression ( pExpression.getE1 ( ) ) ;
-    ASTNode node1 = ( ASTNode ) e1.getUserObject ( ) ;
-    node1.setDescription ( BEFORE + "e1" + AFTER + node1.getDescription ( ) ) ;
-    node1.resetCaption ( ) ;
-    node.add ( e1 ) ;
-    DefaultMutableTreeNode e2 = expression ( pExpression.getE2 ( ) ) ;
-    ASTNode node2 = ( ASTNode ) e2.getUserObject ( ) ;
-    node2.setDescription ( BEFORE + "e2" + AFTER + node2.getDescription ( ) ) ;
-    node2.resetCaption ( ) ;
-    node.add ( e2 ) ;
+    node.add ( createNode ( "Identifier" , pExpression.getId ( ) , 4 ,
+        3 + pExpression.getId ( ).length ( ) ) ) ;
+    createChildren ( pExpression , node ) ;
     return node ;
   }
 
 
   private DefaultMutableTreeNode letRec ( LetRec pExpression )
   {
-    String id = pExpression.getId ( ) ;
-    Expression e1 = pExpression.getE1 ( ) ;
-    Expression e2 = pExpression.getE2 ( ) ;
     DefaultMutableTreeNode node = createNode ( pExpression.getClass ( )
         .getSimpleName ( ) , pExpression , new ASTBindings ( pExpression ,
         pExpression.getId ( ) ) ) ;
-    DefaultMutableTreeNode subchild1 = createNode ( "Identifier" , id , 8 ,
-        7 + id.length ( ) ) ;
-    node.add ( subchild1 ) ;
-    DefaultMutableTreeNode ex1 = expression ( e1 ) ;
-    ASTNode node1 = ( ASTNode ) ex1.getUserObject ( ) ;
-    node1.setDescription ( BEFORE + "e1" + AFTER + node1.getDescription ( ) ) ;
-    node1.resetCaption ( ) ;
-    node.add ( ex1 ) ;
-    DefaultMutableTreeNode ex2 = expression ( e2 ) ;
-    ASTNode node2 = ( ASTNode ) ex2.getUserObject ( ) ;
-    node2.setDescription ( BEFORE + "e2" + AFTER + node2.getDescription ( ) ) ;
-    node2.resetCaption ( ) ;
-    node.add ( ex2 ) ;
+    node.add ( createNode ( "Identifier" , pExpression.getId ( ) , 8 ,
+        7 + pExpression.getId ( ).length ( ) ) ) ;
+    createChildren ( pExpression , node ) ;
     return node ;
   }
 
 
   private DefaultMutableTreeNode location ( Location pExpression )
   {
-    String name = pExpression.getName ( ) ;
     DefaultMutableTreeNode node = createNode ( pExpression.getClass ( )
         .getSimpleName ( ) , pExpression ) ;
-    DefaultMutableTreeNode subchild1 = createNode ( "Name" , name , 0 , name
-        .length ( ) - 1 ) ;
-    node.add ( subchild1 ) ;
+    node.add ( createNode ( "Name" , pExpression.getName ( ) , 0 , pExpression
+        .getName ( ).length ( ) - 1 ) ) ;
     return node ;
+  }
+
+
+  private int minimumChildExpression ( Expression pExpression )
+  {
+    int result = Integer.MAX_VALUE ;
+    for ( Method method : pExpression.getClass ( ).getMethods ( ) )
+    {
+      if ( method.getName ( ).matches ( "getE[0-9]{1}" ) )
+      {
+        result = Math.min ( result , Integer.parseInt ( String.valueOf ( method
+            .getName ( ).charAt ( 4 ) ) ) ) ;
+      }
+      if ( method.getName ( ).matches ( "getE" ) )
+      {
+        return - 1 ;
+      }
+    }
+    if ( result == Integer.MAX_VALUE )
+    {
+      return 1 ;
+    }
+    return result ;
   }
 
 
@@ -323,11 +315,7 @@ public class AbstractSyntaxTree
       length += idList [ i ].length ( ) ;
       node.add ( subchild ) ;
     }
-    DefaultMutableTreeNode e = expression ( pExpression.getE ( ) ) ;
-    ASTNode node1 = ( ASTNode ) e.getUserObject ( ) ;
-    node1.setDescription ( BEFORE + "e" + AFTER + node1.getDescription ( ) ) ;
-    node1.resetCaption ( ) ;
-    node.add ( e ) ;
+    createChildren ( pExpression , node ) ;
     return node ;
   }
 
@@ -347,37 +335,16 @@ public class AbstractSyntaxTree
       length += idList [ i ].length ( ) ;
       node.add ( subchild ) ;
     }
-    DefaultMutableTreeNode e1 = expression ( pExpression.getE1 ( ) ) ;
-    ASTNode node1 = ( ASTNode ) e1.getUserObject ( ) ;
-    node1.setDescription ( BEFORE + "e1" + AFTER + node1.getDescription ( ) ) ;
-    node1.resetCaption ( ) ;
-    node.add ( e1 ) ;
-    DefaultMutableTreeNode e2 = expression ( pExpression.getE2 ( ) ) ;
-    ASTNode node2 = ( ASTNode ) e2.getUserObject ( ) ;
-    node2.setDescription ( BEFORE + "e2" + AFTER + node2.getDescription ( ) ) ;
-    node2.resetCaption ( ) ;
-    node.add ( e2 ) ;
+    createChildren ( pExpression , node ) ;
     return node ;
   }
 
 
-  private DefaultMutableTreeNode normal ( Expression pExpression )
+  private DefaultMutableTreeNode other ( Expression pExpression )
   {
     DefaultMutableTreeNode node = createNode ( pExpression.getClass ( )
         .getSimpleName ( ) , pExpression ) ;
-    Enumeration < Expression > children = pExpression.children ( ) ;
-    int startIndex = startIndex ( pExpression ) ;
-    while ( children.hasMoreElements ( ) )
-    {
-      Expression child = children.nextElement ( ) ;
-      DefaultMutableTreeNode e = expression ( child ) ;
-      ASTNode node1 = ( ASTNode ) e.getUserObject ( ) ;
-      node1.setDescription ( BEFORE + "e" + startIndex + AFTER
-          + node1.getDescription ( ) ) ;
-      node1.resetCaption ( ) ;
-      node.add ( e ) ;
-      startIndex ++ ;
-    }
+    createChildren ( pExpression , node ) ;
     return node ;
   }
 
@@ -388,14 +355,8 @@ public class AbstractSyntaxTree
     DefaultMutableTreeNode node = createNode ( pExpression.getClass ( )
         .getSimpleName ( ) , pExpression , new ASTBindings ( pExpression ,
         pExpression.getId ( ) ) ) ;
-    DefaultMutableTreeNode subchild1 = createNode ( "Identifier" , id , 4 ,
-        3 + id.length ( ) ) ;
-    node.add ( subchild1 ) ;
-    DefaultMutableTreeNode e = expression ( pExpression.getE ( ) ) ;
-    ASTNode node1 = ( ASTNode ) e.getUserObject ( ) ;
-    node1.setDescription ( BEFORE + "e" + AFTER + node1.getDescription ( ) ) ;
-    node1.resetCaption ( ) ;
-    node.add ( e ) ;
+    node.add ( createNode ( "Identifier" , id , 4 , 3 + id.length ( ) ) ) ;
+    createChildren ( pExpression , node ) ;
     return node ;
   }
 
@@ -409,20 +370,5 @@ public class AbstractSyntaxTree
   public void setVisible ( boolean pVisible )
   {
     this.aSTUI.setVisible ( pVisible ) ;
-  }
-
-
-  private int startIndex ( Expression pExpression )
-  {
-    int result = Integer.MAX_VALUE ;
-    for ( Method method : pExpression.getClass ( ).getDeclaredMethods ( ) )
-    {
-      if ( method.getName ( ).matches ( "getE[0-9]{1}" ) )
-      {
-        result = Math.min ( result , Integer.parseInt ( String.valueOf ( method
-            .getName ( ).charAt ( 4 ) ) ) ) ;
-      }
-    }
-    return result ;
   }
 }
