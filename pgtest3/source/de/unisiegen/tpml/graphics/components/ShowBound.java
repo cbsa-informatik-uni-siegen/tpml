@@ -1,7 +1,6 @@
 package de.unisiegen.tpml.graphics.components;
 
 import java.util.Enumeration;
-import java.util.Iterator;
 import java.util.LinkedList;
 
 import de.unisiegen.tpml.core.expressions.CurriedLet;
@@ -20,13 +19,12 @@ import de.unisiegen.tpml.graphics.components.Bound;
 
 public class ShowBound
 {
-static Expression holeExpression;
-	
+	static Expression holeExpression;
 
 	private static ShowBound bound = null;
-	private static LinkedList<Bound> tmp = new LinkedList();
-	private boolean debugOutput=false;
-	//public LinkedList<Bound> result = new LinkedList();
+	private static LinkedList<Bound> tmp = new LinkedList<Bound>();
+	private boolean debugOutput = true;
+	// public LinkedList<Bound> result = new LinkedList();
 
 	public static ShowBound getInstance()
 	{
@@ -37,15 +35,14 @@ static Expression holeExpression;
 		}
 		else
 		{
-			
+
 			return bound;
 		}
 	}
-	
-	
+
 	public void check(Expression pExpression)
 	{
-	
+
 		{
 
 			if (pExpression instanceof Lambda)
@@ -65,12 +62,12 @@ static Expression holeExpression;
 			}
 			else if (pExpression instanceof CurriedLetRec)
 			{
-			
+
 				checkCurriedLetRec((CurriedLetRec) pExpression);
 			}
 			else if (pExpression instanceof CurriedLet)
 			{
-				
+
 				checkCurriedLet((CurriedLet) pExpression);
 			}
 			else if (pExpression instanceof Recursion)
@@ -85,250 +82,253 @@ static Expression holeExpression;
 			}
 			else
 			{
-				Enumeration<Expression> child = pExpression.children();
-				while (child.hasMoreElements())
+				/**
+				  Enumeration<Expression> child = pExpression.children(); while
+				  (child.hasMoreElements()) {
+				  
+				  Expression actualExpression = (Expression) child.nextElement(); if
+				  (debugOutput) { System.err.println(actualExpression.toString());
+				   }
+				  
+				  check(actualExpression);
+				   }
+				 */
+				
+				
+				LinkedList<Expression> child = new LinkedList<Expression>();
+				Enumeration tmpChild = pExpression.children();
+				while (tmpChild.hasMoreElements())
 				{
-					
-					Expression actualExpression = (Expression) child.nextElement();
-					if (debugOutput)
-					{
-						System.err.println(actualExpression.toString());
-						
-					}
 
-					check(actualExpression);
+					child.add((Expression) tmpChild.nextElement());
 
 				}
+				for (int j=1; j<child.size();j++)
+				{
+					if (child.get(j).hashCode()==child.get(j-1).hashCode())
+					{
+						System.out.println("2 gleiche Objekte");
+						System.out.println(child.get(j)+"Hash:"+child.get(j).hashCode()+" und "+child.get(j-1)+" Hashcode:"+child.get(j-1).hashCode());
+						
+					}
+				}
+				
+				for (int i = 0; i < child.size(); i++)
+			
+				{
+						
+						
+					
+					
+					check(child.get(i));
+				}
+				
 			}
 
 		}
 
 	}
-	
 
 
-
-	//TODO working end
 	private void checkLambda(Lambda lambda)
 	{
 		// rekursiver Aufruf für Ausdruck e von lambda
 		Expression e = lambda.getE();
 		check(e);
-		
-		// anlegen von Arrays mit den frei vorkommenden Namen der beiden expressions von lambda
+
+		// anlegen von Arrays mit den frei vorkommenden Namen der beiden expressions
+		// von lambda
 		Object[] a = lambda.free().toArray();
 		Object[] b = e.free().toArray();
-		
-		LinkedList list = listWithBounds(a, b);
-		
-		LinkedList <Expression> child = new LinkedList();
-		Enumeration tmpChild =lambda.children();
+
+		LinkedList <String> list = listWithBounds(a, b);
+
+		LinkedList<Expression> child = new LinkedList<Expression>();
+		Enumeration tmpChild = lambda.children();
 		while (tmpChild.hasMoreElements())
 		{
-			child.add((Expression)tmpChild.nextElement());
+			child.add((Expression) tmpChild.nextElement());
 		}
-		
-	checkRec(child,lambda,list);
-	
+
+		checkRec(child, lambda, list);
 
 	}
-	
-	
+
 	private void checkMultiLambda(MultiLambda lambda)
 	{
-		
+
 		// rekursiver Aufruf für Ausdruck e von lambda
 		Expression e = lambda.getE();
 		check(e);
-		
-		
-		// anlegen von Arrays mit den frei vorkommenden Namen der beiden expressions von lambda
+
+		// anlegen von Arrays mit den frei vorkommenden Namen der beiden expressions
+		// von lambda
 		Object[] a = lambda.free().toArray();
 		Object[] b = e.free().toArray();
-		
-		LinkedList list = listWithBounds(a, b);
-		
-		LinkedList <Expression> child = new LinkedList();
-		Enumeration tmpChild =lambda.children();
+
+		LinkedList <String> list = listWithBounds(a, b);
+
+		LinkedList<Expression> child = new LinkedList<Expression>();
+		Enumeration tmpChild = lambda.children();
 		while (tmpChild.hasMoreElements())
 		{
-			child.add((Expression)tmpChild.nextElement());
+			child.add((Expression) tmpChild.nextElement());
 		}
-		
-checkRec(child,lambda,list);
-	
-		
-	}
 
+		checkRec(child, lambda, list);
+
+	}
 
 	private void checkLet(Let let)
 	{
-		// anlegen von Arrays mit den frei vorkommenden Namen der beiden expressions von lambda
+		// anlegen von Arrays mit den frei vorkommenden Namen der beiden expressions
+		// von lambda
 		Object[] a = new Object[0];
 		Object[] b = let.getE2().free().toArray();
-	
+
 		check(let.getE1());
 		check(let.getE2());
-		
-		LinkedList list = listWithBounds(a, b);
-		
-		LinkedList <Expression> child = new LinkedList();
-		Enumeration tmpChild =let.children();
+
+		LinkedList <String> list = listWithBounds(a, b);
+
+		LinkedList<Expression> child = new LinkedList<Expression>();
+		Enumeration tmpChild = let.children();
 		tmpChild.nextElement();
 		while (tmpChild.hasMoreElements())
 		{
-			child.add((Expression)tmpChild.nextElement());
+			child.add((Expression) tmpChild.nextElement());
 		}
-		
-		
-		checkRec(child,let,list);
 
-		
+		checkRec(child, let, list);
+
 	}
-	
+
 	private void checkMultiLet(MultiLet let)
 	{
-//	 anlegen von Arrays mit den frei vorkommenden Namen der beiden expressions von lambda
+		// anlegen von Arrays mit den frei vorkommenden Namen der beiden expressions
+		// von lambda
 		Object[] a = new Object[0];
 		Object[] b = let.getE2().free().toArray();
-	
+
 		check(let.getE1());
 		check(let.getE2());
-		LinkedList list = listWithBounds(a, b);
-		
-		LinkedList <Expression> child = new LinkedList();
-		Enumeration tmpChild =let.children();
+		LinkedList <String> list = listWithBounds(a, b);
+
+		LinkedList<Expression> child = new LinkedList<Expression>();
+		Enumeration tmpChild = let.children();
 		tmpChild.nextElement();
 		while (tmpChild.hasMoreElements())
 		{
-			child.add((Expression)tmpChild.nextElement());
+			child.add((Expression) tmpChild.nextElement());
 		}
-		
-		
-		checkRec(child,let,list);
 
-		
-		
-				
+		checkRec(child, let, list);
+
 	}
-	
 
-	
-	
 	private void checkCurriedLet(CurriedLet let)
 	{
-//	 anlegen von Arrays mit den frei vorkommenden Namen der beiden expressions von lambda
-		
+		// anlegen von Arrays mit den frei vorkommenden Namen der beiden expressions
+		// von lambda
+
 		Object[] a = let.getE2().free().toArray();
 		Object[] b = let.getE1().free().toArray();
 		Object[] tmp = new Object[b.length];
-		
-		for (int i=0; i<b.length;i++)
+
+		for (int i = 0; i < b.length; i++)
 		{
 			if (!b[i].equals(let.getIdentifiers(0)))
 			{
-				tmp[i]=b[i];
+				tmp[i] = b[i];
 			}
 		}
-		
 
 		check(let.getE1());
 		check(let.getE2());
-			
-		LinkedList list = listWithBounds(new Object[0], tmp);
-		LinkedList list2 = listWithBounds(tmp, a);
-		
-	
-		
-		LinkedList <Expression> child = new LinkedList();
-		Enumeration tmpChild =let.children();
+
+		LinkedList <String> list = listWithBounds(new Object[0], tmp);
+		LinkedList <String> list2 = listWithBounds(tmp, a);
+
+		LinkedList<Expression> child = new LinkedList<Expression>();
+		Enumeration tmpChild = let.children();
 		while (tmpChild.hasMoreElements())
 		{
-			child.add((Expression)tmpChild.nextElement());
+			child.add((Expression) tmpChild.nextElement());
 		}
-		LinkedList<Expression> child2 =new LinkedList();
+		LinkedList<Expression> child2 = new LinkedList<Expression>();
 		child2.add((child.getLast()));
-		checkRec(child2,let,list2);
-		child.remove(child.size()-1);
-		checkRec(child,let,list);
-		
-		
+		checkRec(child2, let, list2);
+		child.remove(child.size() - 1);
+		checkRec(child, let, list);
 
 	}
-	
-	
-	
 
 	private void checkRecursion(Recursion rec)
 	{
-//	 anlegen von Arrays mit den frei vorkommenden Namen der beiden expressions von lambda
+		// anlegen von Arrays mit den frei vorkommenden Namen der beiden expressions
+		// von lambda
 		Object[] a = rec.free().toArray();
 		Object[] b = rec.getE().free().toArray();
 		
-		
+
 		check(rec.getE());
-		
-		
-		LinkedList list = listWithBounds(a, b);
-		
-		LinkedList <Expression> child = new LinkedList();
-		Enumeration tmpChild =rec.children();
+
+		LinkedList <String> list = listWithBounds(a, b);
+
+		LinkedList<Expression> child = new LinkedList<Expression>();
+		Enumeration tmpChild = rec.children();
 		while (tmpChild.hasMoreElements())
 		{
-			child.add((Expression)tmpChild.nextElement());
+			child.add((Expression) tmpChild.nextElement());
 		}
 		
-		
-		checkRec(child,rec,list);
+		checkRec(child, rec, list);
 	}
-	
-	
+
 	private void checkCurriedLetRec(CurriedLetRec rec)
 	{
-//	 anlegen von Arrays mit den frei vorkommenden Namen der beiden expressions 
+		// anlegen von Arrays mit den frei vorkommenden Namen der beiden expressions
 		Object[] a = rec.getE2().free().toArray();
 		Object[] b = rec.getE1().free().toArray();
 		Object[] tmp = new Object[b.length];
-		
+
 		check(rec.getE1());
 		check(rec.getE2());
-		
-		for (int i=0; i<b.length;i++)
+
+		for (int i = 0; i < b.length; i++)
 		{
 			if (!b[i].equals(rec.getIdentifiers(0)))
 			{
-				tmp[i]=b[i];
+				tmp[i] = b[i];
 			}
 		}
-		
-		LinkedList list = listWithBounds(new Object[0], tmp);
-		LinkedList list2 = listWithBounds(tmp, a);
-			
-		LinkedList <Expression> child = new LinkedList();
-		Enumeration tmpChild =rec.children();
+
+		LinkedList <String>list = listWithBounds(new Object[0], tmp);
+		LinkedList<String> list2 = listWithBounds(tmp, a);
+
+		LinkedList<Expression> child = new LinkedList<Expression>();
+		Enumeration tmpChild = rec.children();
 		while (tmpChild.hasMoreElements())
 		{
-			child.add((Expression)tmpChild.nextElement());
+			child.add((Expression) tmpChild.nextElement());
 		}
-		LinkedList<Expression> child2 =new LinkedList();
+		LinkedList<Expression> child2 = new LinkedList<Expression>();
 		child2.add((child.getLast()));
-		checkRec(child2,rec,list2);
-		child.remove(child.size()-1);
-		checkRec(child,rec,list);
-		
+		checkRec(child2, rec, list2);
+		child.remove(child.size() - 1);
+		checkRec(child, rec, list);
+
 	}
 
-	
-	private Bound checkRec (LinkedList<Expression> child,Expression e, LinkedList <String> list)
+	private Bound checkRec(LinkedList<Expression> child, Expression e,
+			LinkedList<String> list)
 	{
-		Bound result=null;
-		
-		
-		for (int j=0; j<child.size();j++)
+		Bound result = null;
+
+		for (int j = 0; j < child.size(); j++)
 		{
 
-			Expression actualExpression = (Expression) child.get(j);
-			
+			Expression actualExpression = child.get(j);
 
 			if (actualExpression.free().toArray().length > 0)
 			{
@@ -337,78 +337,67 @@ checkRec(child,lambda,list);
 				{
 
 					Identifier id = (Identifier) actualExpression;
-				
+
 					for (int i = 0; i < list.size(); i++)
 					{
-						
+
 						if (id.getName().equals(list.get(i)))
 						{
+							if (debugOutput)
+								System.out.println("checkRec:" + e.toString());
 							
 							PrettyString ps1 = holeExpression.toPrettyString();
 							PrettyAnnotation mark1 = ps1.getAnnotationForPrintable(e);
 							PrettyAnnotation mark2 = ps1.getAnnotationForPrintable(id);
-							
-							
-							
-							
-							int start =getStartOffset(e, id, mark1);
-							
-						
-							
-							
-							int length = start + id.toString().length()-1;
+
+							int start = getStartOffset(e, id, mark1); 
+
+							int length = start + id.toString().length() - 1;
+
 							if (debugOutput)
 							{
-							System.err.println("Für den Identifier: Startoffset: " + start
-									+ "Endoffset" + length);
-							System.err.println("Für die Variable " + id.getName()
-									+ " Startoffset: " + mark2.getStartOffset() + " Endoffset: "
-									+ mark2.getEndOffset());
+								System.err.println("Für den Identifier: Startoffset: " + start
+										+ "Endoffset" + length);
+								System.err.println("Für die Variable " + id.getName()
+										+ " Startoffset: " + mark2.getStartOffset()
+										+ " Endoffset: " + mark2.getEndOffset());
 							}
-							Bound addToList = new Bound(start,length);
+							Bound addToList = new Bound(start, length);
 							addToList.getMarks().add(mark2);
 							tmp.add(addToList);
-					
-							
-							
-					
-							
-							
-							
+
 						}
 					}
 
 				}
 				else
 				{
-						LinkedList <Expression> childtmp = new LinkedList();
-						Enumeration tmpChild =actualExpression.children();
-						while (tmpChild.hasMoreElements())
-						{
-							child.add((Expression)tmpChild.nextElement());
-						}
-						checkRec(childtmp,e, list);
+					LinkedList<Expression> childtmp = new LinkedList<Expression>();
+					Enumeration tmpChild = actualExpression.children();
+					while (tmpChild.hasMoreElements())
+					{
+						child.add((Expression) tmpChild.nextElement());
+					}
+					checkRec(childtmp, e, list);
 				}
 			}
 
 		}
-		
+
 		return result;
 	}
 
-	
-	
-	public LinkedList<String> listWithBounds ( Object[] a, Object[] b)
+	public LinkedList<String> listWithBounds(Object[] a, Object[] b)
 	{
-		LinkedList<String> e1 = new LinkedList();
-		LinkedList<String> e2 = new LinkedList();
-		
-		e1=castArray(a);
-		e2=castArray(b);
-		
+		LinkedList<String> e1 = new LinkedList<String>();
+		LinkedList<String> e2 = new LinkedList<String>();
+
+		e1 = castArray(a);
+		e2 = castArray(b);
+
 		for (int i = 0; i < e1.size(); i++)
 		{
-			for (int j=0; j<e2.size();j++)
+			for (int j = 0; j < e2.size(); j++)
 			{
 				if (e1.get(i).equals(e2.get(j)))
 				{
@@ -416,49 +405,47 @@ checkRec(child,lambda,list);
 					j--;
 				}
 			}
-			
+
 		}
 
 		return e2;
 	}
-	
-
 
 	private LinkedList<String> castArray(Object[] a)
 	{
-		LinkedList<String> tmp = new LinkedList();
-		
+		LinkedList<String> tmp = new LinkedList<String>();
+
 		for (int i = 0; i < a.length; i++)
 		{
-			if (a[i]!=null)
-			tmp.add((String) a[i]);
+			if (a[i] != null)
+				tmp.add((String) a[i]);
 		}
-		
+
 		return tmp;
 	}
-	
+
 	private int getStartOffset(Expression e, Identifier id, PrettyAnnotation mark1)
 	{
-		int start=0;
-		
+		int start = 0;
+
 		if (e instanceof CurriedLetRec)
 		{
-			CurriedLetRec let= (CurriedLetRec)e;
-			start=8;
-			for (int z=0; z<let.getIdentifiers().length;z++)
-				
-			if (let.getIdentifiers(z).equals(id.toString()))
-			{
-				for (int y=0; y<z;y++)
+			CurriedLetRec let = (CurriedLetRec) e;
+			start = mark1.getStartOffset()+8;
+			for (int z = 0; z < let.getIdentifiers().length; z++)
+
+				if (let.getIdentifiers(z).equals(id.toString()))
 				{
-					start+=1+let.getIdentifiers(y).toString().length();
+					for (int y = 0; y < z; y++)
+					{
+						start += 1 + let.getIdentifiers(y).toString().length();
+					}
 				}
-			}
 			return start;
 		}
 		else if (e instanceof LetRec)
 		{
-			start = 8;
+			start = mark1.getStartOffset()+8;
 			return start;
 		}
 		else if (e instanceof Lambda)
@@ -470,87 +457,78 @@ checkRec(child,lambda,list);
 		{
 			start = mark1.getStartOffset() + 4;
 			return start;
-			
+
 		}
 		else if (e instanceof MultiLambda)
 		{
-			MultiLambda lambda= (MultiLambda)e;
-			start=2;
-			for (int z=0; z<lambda.getIdentifiers().length;z++)
-				
-			if (lambda.getIdentifiers(z).equals(id.toString()))
-			{
-				for (int y=0; y<z;y++)
+			MultiLambda lambda = (MultiLambda) e;
+			start = 2+ mark1.getStartOffset();
+			for (int z = 0; z < lambda.getIdentifiers().length; z++)
+
+				if (lambda.getIdentifiers(z).equals(id.toString()))
 				{
-					start+=2+lambda.getIdentifiers(y).toString().length();
+					for (int y = 0; y < z; y++)
+					{
+						start += 2 + lambda.getIdentifiers(y).toString().length();
+					}
 				}
-			}
 			return start;
 		}
-		
+
 		else if (e instanceof MultiLet)
 		{
-			MultiLet let= (MultiLet)e;
-			start=5;
-			for (int z=0; z<let.getIdentifiers().length;z++)
-				
-			if (let.getIdentifiers(z).equals(id.toString()))
-			{
-				for (int y=0; y<z;y++)
+			MultiLet let = (MultiLet) e;
+			start =mark1.getStartOffset()+ 5;
+			for (int z = 0; z < let.getIdentifiers().length; z++)
+
+				if (let.getIdentifiers(z).equals(id.toString()))
 				{
-					start+=2+let.getIdentifiers(y).toString().length();
+					for (int y = 0; y < z; y++)
+					{
+						start += 2 + let.getIdentifiers(y).toString().length();
+					}
 				}
-			}
 			return start;
 		}
 		else if (e instanceof CurriedLet)
 		{
-			CurriedLet let= (CurriedLet)e;
-			start=4;
-			for (int z=0; z<let.getIdentifiers().length;z++)
-				
-			if (let.getIdentifiers(z).equals(id.toString()))
-			{
-				for (int y=0; y<z;y++)
+			CurriedLet let = (CurriedLet) e;
+			start =mark1.getStartOffset()+ 4;
+			for (int z = 0; z < let.getIdentifiers().length; z++)
+
+				if (let.getIdentifiers(z).equals(id.toString()))
 				{
-					start+=1+let.getIdentifiers(y).toString().length();
+					for (int y = 0; y < z; y++)
+					{
+						start += 1 + let.getIdentifiers(y).toString().length();
+					}
 				}
-			}
 			return start;
 		}
 		else if (e instanceof Recursion)
 		{
-			start=4;
+			start = mark1.getStartOffset()+4;
 			return start;
 		}
 		return start;
 	}
-	
-		
-	
 
 	public static void setHoleExpression(Expression holeExpression)
 	{
-		bound.holeExpression = holeExpression;
-		tmp=new LinkedList();
+		ShowBound.holeExpression = holeExpression;
+		tmp = new LinkedList<Bound>();
 	}
-	
+
 	public LinkedList getAnnotations()
 	{
 		return tmp;
 	}
-	
-/** often needed to Debug
- 		System.out.println("a");
-		for (int i=0;i<a.length;i++)
-		{
-			System.out.println(a[i]);
-		}
-		
-		System.out.println("b");
-		for (int i=0;i<b.length;i++)
-		{
-			System.out.println(b[i]);
-		}
- */
+
+	/**
+	 * often needed to Debug System.out.println("a"); for (int i=0;i<a.length;i++) {
+	 * System.out.println(a[i]); }
+	 * 
+	 * System.out.println("b"); for (int i=0;i<b.length;i++) {
+	 * System.out.println(b[i]); }
+	 */
 }
