@@ -18,7 +18,7 @@ public class ASTBindings
   private LinkedList < Expression > notBounded ;
 
 
-  private Expression expression ;
+  private Expression holeExpression ;
 
 
   public ASTBindings ( )
@@ -26,7 +26,7 @@ public class ASTBindings
     this.list = new LinkedList < LinkedList < Expression >> ( ) ;
     this.nothingFree = new LinkedList < Expression > ( ) ;
     this.notBounded = new LinkedList < Expression > ( ) ;
-    this.expression = null ;
+    this.holeExpression = null ;
   }
 
 
@@ -35,7 +35,7 @@ public class ASTBindings
     this.list = new LinkedList < LinkedList < Expression >> ( ) ;
     this.nothingFree = new LinkedList < Expression > ( ) ;
     this.notBounded = new LinkedList < Expression > ( ) ;
-    this.expression = pExpression ;
+    this.holeExpression = null ;
     add ( pExpression , pId ) ;
   }
 
@@ -45,7 +45,7 @@ public class ASTBindings
     this.list = new LinkedList < LinkedList < Expression >> ( ) ;
     this.nothingFree = new LinkedList < Expression > ( ) ;
     this.notBounded = new LinkedList < Expression > ( ) ;
-    this.expression = pExpression ;
+    this.holeExpression = null ;
     add ( pExpression , pIdentifiers ) ;
   }
 
@@ -81,7 +81,6 @@ public class ASTBindings
     while ( children.hasMoreElements ( ) )
     {
       Expression current = children.nextElement ( ) ;
-      Enumeration < Expression > currentChildren = current.children ( ) ;
       if ( ! current.free ( ).isEmpty ( ) )
       {
         LinkedList < Expression > tmpList = free ( current , pId ) ;
@@ -90,7 +89,7 @@ public class ASTBindings
           result.add ( tmpExpr ) ;
         }
       }
-      else if ( currentChildren.hasMoreElements ( ) )
+      else
       {
         this.nothingFree.add ( current ) ;
       }
@@ -105,9 +104,9 @@ public class ASTBindings
   }
 
 
-  public Expression getExpression ( )
+  public Expression getHoleExpression ( )
   {
-    return this.expression ;
+    return this.holeExpression ;
   }
 
 
@@ -132,5 +131,11 @@ public class ASTBindings
   public int size ( int pListIndex )
   {
     return this.list.get ( pListIndex ).size ( ) ;
+  }
+
+
+  public void setHoleExpression ( Expression pExpression )
+  {
+    this.holeExpression = pExpression ;
   }
 }

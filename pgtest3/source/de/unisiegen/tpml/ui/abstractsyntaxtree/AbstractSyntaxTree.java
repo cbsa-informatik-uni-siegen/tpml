@@ -3,6 +3,7 @@ package de.unisiegen.tpml.ui.abstractsyntaxtree ;
 
 import java.lang.reflect.Method ;
 import java.util.Enumeration ;
+import java.util.LinkedList ;
 import javax.swing.tree.DefaultMutableTreeNode ;
 import de.unisiegen.tpml.core.expressions.BinaryOperator ;
 import de.unisiegen.tpml.core.expressions.CurriedLet ;
@@ -361,8 +362,119 @@ public class AbstractSyntaxTree
   }
 
 
+  public void getAll ( LinkedList < ASTBindings > pList , Expression pExpression )
+  {
+    if ( pExpression instanceof LetRec )
+    {
+      LetRec tmp = ( LetRec ) pExpression ;
+      ASTBindings ast = new ASTBindings ( tmp , tmp.getId ( ) ) ;
+      ast.setHoleExpression ( pExpression ) ;
+      pList.add ( ast ) ;
+      LinkedList < Expression > nothingFree = ast.getNothingFree ( ) ;
+      for ( int i = 0 ; i < nothingFree.size ( ) ; i ++ )
+      {
+        getAll ( pList , nothingFree.get ( i ) ) ;
+      }
+    }
+    else if ( pExpression instanceof Let )
+    {
+      Let tmp = ( Let ) pExpression ;
+      ASTBindings ast = new ASTBindings ( tmp.getE2 ( ) , tmp.getId ( ) ) ;
+      ast.setHoleExpression ( pExpression ) ;
+      pList.add ( ast ) ;
+      LinkedList < Expression > nothingFree = ast.getNothingFree ( ) ;
+      nothingFree.add ( tmp.getE1 ( ) ) ;
+      for ( int i = 0 ; i < nothingFree.size ( ) ; i ++ )
+      {
+        getAll ( pList , nothingFree.get ( i ) ) ;
+      }
+    }
+    else if ( pExpression instanceof Lambda )
+    {
+      Lambda tmp = ( Lambda ) pExpression ;
+      ASTBindings ast = new ASTBindings ( tmp , tmp.getId ( ) ) ;
+      ast.setHoleExpression ( pExpression ) ;
+      pList.add ( ast ) ;
+      LinkedList < Expression > nothingFree = ast.getNothingFree ( ) ;
+      for ( int i = 0 ; i < nothingFree.size ( ) ; i ++ )
+      {
+        getAll ( pList , nothingFree.get ( i ) ) ;
+      }
+    }
+    else if ( pExpression instanceof Recursion )
+    {
+      Recursion tmp = ( Recursion ) pExpression ;
+      ASTBindings ast = new ASTBindings ( tmp , tmp.getId ( ) ) ;
+      ast.setHoleExpression ( pExpression ) ;
+      pList.add ( ast ) ;
+      LinkedList < Expression > nothingFree = ast.getNothingFree ( ) ;
+      for ( int i = 0 ; i < nothingFree.size ( ) ; i ++ )
+      {
+        getAll ( pList , nothingFree.get ( i ) ) ;
+      }
+    }
+    else
+    {
+      Enumeration < Expression > children = pExpression.children ( ) ;
+      while ( children.hasMoreElements ( ) )
+      {
+        Expression child = children.nextElement ( ) ;
+        getAll ( pList , child ) ;
+      }
+    }
+  }
+
+
+  public void testBindings ( Expression pExpression )
+  {
+    LinkedList < ASTBindings > list = new LinkedList < ASTBindings > ( ) ;
+    getAll ( list , pExpression ) ;
+    for ( int i = 0 ; i < list.size ( ) ; i ++ )
+    {
+      for ( int j = 0 ; j < list.get ( i ).size ( ) ; j ++ )
+      {
+        for ( int k = 0 ; k < list.get ( i ).size ( j ) ; k ++ )
+        {
+          Expression e1 = list.get ( i ).getHoleExpression ( ) ;
+          PrettyAnnotation pa1 = pExpression.toPrettyString ( )
+              .getAnnotationForPrintable ( e1 ) ;
+          int startIndex = pa1.getStartOffset ( ) ;
+          int endIndex = startIndex ;
+          if ( e1 instanceof LetRec )
+          {
+            startIndex += 8 ;
+            endIndex += 7 + ( ( LetRec ) e1 ).getId ( ).length ( ) ;
+          }
+          else if ( e1 instanceof Let )
+          {
+            startIndex += 4 ;
+            endIndex += 3 + ( ( Let ) e1 ).getId ( ).length ( ) ;
+          }
+          else if ( e1 instanceof Lambda )
+          {
+            startIndex += 1 ;
+            endIndex += ( ( Lambda ) e1 ).getId ( ).length ( ) ;
+          }
+          else if ( e1 instanceof Recursion )
+          {
+            startIndex += 4 ;
+            endIndex += 3 + ( ( Recursion ) e1 ).getId ( ).length ( ) ;
+          }
+          Expression e2 = list.get ( i ).get ( j , k ) ;
+          PrettyAnnotation pa2 = pExpression.toPrettyString ( )
+              .getAnnotationForPrintable ( e2 ) ;
+          System.out.println ( "Cf - ID " + startIndex + " -> " + endIndex
+              + " Binding " + pa2.getStartOffset ( ) + " -> "
+              + pa2.getEndOffset ( ) ) ;
+        }
+      }
+    }
+  }
+
+
   public void setExpression ( Expression pExpression )
   {
+    testBindings ( pExpression ) ;
     this.aSTUI.setRootNode ( expression ( pExpression ) ) ;
   }
 
