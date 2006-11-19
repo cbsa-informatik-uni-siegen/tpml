@@ -6,108 +6,131 @@ import java.util.prefs.Preferences ;
 
 public class ASTPreferences
 {
-  private boolean checkedReplace ;
+  private boolean replace ;
 
 
-  private boolean checkedBindings ;
+  private boolean bindings ;
 
 
-  private boolean checkedSelected ;
+  private boolean selected ;
 
 
   private Preferences preferences ;
+
+
+  private int width ;
+
+
+  private int height ;
+
+
+  private int positionX ;
+
+
+  private int positionY ;
 
 
   public ASTPreferences ( )
   {
     this.preferences = Preferences
         .userNodeForPackage ( AbstractSyntaxTree.class ) ;
-    String replace = this.preferences.get ( "checkedReplace" , "true" ) ;
-    String bindings = this.preferences.get ( "checkedBindings" , "true" ) ;
-    String selected = this.preferences.get ( "checkedSelected" , "true" ) ;
-    if ( selected.equals ( "true" ) )
-    {
-      this.checkedSelected = true ;
-      ASTNode.setCheckedSelected ( true ) ;
-    }
-    else
-    {
-      this.checkedSelected = false ;
-      ASTNode.setCheckedSelected ( false ) ;
-    }
-    if ( replace.equals ( "true" ) )
-    {
-      this.checkedReplace = true ;
-      ASTNode.setCheckedReplace ( true ) ;
-    }
-    else
-    {
-      this.checkedReplace = false ;
-      ASTNode.setCheckedReplace ( false ) ;
-    }
-    if ( bindings.equals ( "true" ) )
-    {
-      this.checkedBindings = true ;
-      ASTNode.setCheckedBindings ( true ) ;
-    }
-    else
-    {
-      this.checkedBindings = false ;
-      ASTNode.setCheckedBindings ( false ) ;
-    }
+    this.replace = this.preferences.getBoolean ( "replace" , true ) ;
+    this.bindings = this.preferences.getBoolean ( "bindings" , true ) ;
+    this.selected = this.preferences.getBoolean ( "selected" , true ) ;
+    this.width = this.preferences.getInt ( "jFrameWidth" , 600 ) ;
+    this.height = this.preferences.getInt ( "jFrameHeight" , 450 ) ;
+    this.positionX = this.preferences.getInt ( "jFramePositionX" , 100 ) ;
+    this.positionY = this.preferences.getInt ( "jFramePositionY" , 100 ) ;
   }
 
 
-  public boolean isCheckedBindings ( )
+  public int getHeight ( )
   {
-    return this.checkedBindings ;
+    return this.height ;
   }
 
 
-  public boolean isCheckedReplace ( )
+  public int getPositionX ( )
   {
-    return this.checkedReplace ;
+    return this.positionX ;
   }
 
 
-  public boolean isCheckedSelected ( )
+  public int getPositionY ( )
   {
-    return this.checkedSelected ;
+    return this.positionY ;
   }
 
 
-  public void setCheckedBindings ( boolean pCheckedBindings )
+  public int getWidth ( )
   {
-    this.checkedBindings = pCheckedBindings ;
-    String bindings = "false" ;
-    if ( pCheckedBindings )
-    {
-      bindings = "true" ;
-    }
-    this.preferences.put ( "checkedBindings" , bindings ) ;
+    return this.width ;
   }
 
 
-  public void setCheckedReplace ( boolean pCheckedReplace )
+  public boolean isBindings ( )
   {
-    this.checkedReplace = pCheckedReplace ;
-    String replace = "false" ;
-    if ( pCheckedReplace )
-    {
-      replace = "true" ;
-    }
-    this.preferences.put ( "checkedReplace" , replace ) ;
+    return this.bindings ;
   }
 
 
-  public void setCheckedSelected ( boolean pCheckedSelected )
+  public boolean isReplace ( )
   {
-    this.checkedSelected = pCheckedSelected ;
-    String selected = "false" ;
-    if ( pCheckedSelected )
-    {
-      selected = "true" ;
-    }
-    this.preferences.put ( "checkedSelected" , selected ) ;
+    return this.replace ;
+  }
+
+
+  public boolean isSelected ( )
+  {
+    return this.selected ;
+  }
+
+
+  public void setBindings ( boolean pBindings )
+  {
+    this.bindings = pBindings ;
+    this.preferences.putBoolean ( "bindings" , pBindings ) ;
+  }
+
+
+  public void setHeight ( int pHeight )
+  {
+    this.height = pHeight ;
+    this.preferences.putInt ( "jFrameHeight" , pHeight ) ;
+  }
+
+
+  public void setPositionX ( int pPositionX )
+  {
+    this.positionX = pPositionX ;
+    this.preferences.putInt ( "jFramePositionX" , pPositionX ) ;
+  }
+
+
+  public void setPositionY ( int pPositionY )
+  {
+    this.positionY = pPositionY ;
+    this.preferences.putInt ( "jFramePositionY" , pPositionY ) ;
+  }
+
+
+  public void setReplace ( boolean pReplace )
+  {
+    this.replace = pReplace ;
+    this.preferences.putBoolean ( "replace" , pReplace ) ;
+  }
+
+
+  public void setSelected ( boolean pSelected )
+  {
+    this.selected = pSelected ;
+    this.preferences.putBoolean ( "selected" , pSelected ) ;
+  }
+
+
+  public void setWidth ( int pWidth )
+  {
+    this.width = pWidth ;
+    this.preferences.putInt ( "jFrameWidth" , pWidth ) ;
   }
 }

@@ -7,6 +7,7 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyCharIterator ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStyle ;
 import de.unisiegen.tpml.graphics.Theme ;
+import de.unisiegen.tpml.ui.abstractsyntaxtree.bindings.ASTBindings ;
 
 
 public class ASTNode

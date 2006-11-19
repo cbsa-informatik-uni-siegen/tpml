@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.ui.abstractsyntaxtree ;
+package de.unisiegen.tpml.ui.abstractsyntaxtree.listener ;
 
 
 import java.util.LinkedList ;
@@ -15,6 +15,8 @@ import de.unisiegen.tpml.core.expressions.MultiLambda ;
 import de.unisiegen.tpml.core.expressions.MultiLet ;
 import de.unisiegen.tpml.core.expressions.Recursion ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation ;
+import de.unisiegen.tpml.ui.abstractsyntaxtree.ASTNode;
+import de.unisiegen.tpml.ui.abstractsyntaxtree.ASTUI;
 
 
 public class ASTTreeSelectionListener implements TreeSelectionListener

@@ -21,6 +21,11 @@ import javax.swing.border.TitledBorder ;
 import javax.swing.tree.DefaultMutableTreeNode ;
 import javax.swing.tree.DefaultTreeCellRenderer ;
 import javax.swing.tree.DefaultTreeModel ;
+import de.unisiegen.tpml.ui.abstractsyntaxtree.listener.ASTActionListener ;
+import de.unisiegen.tpml.ui.abstractsyntaxtree.listener.ASTItemListener ;
+import de.unisiegen.tpml.ui.abstractsyntaxtree.listener.ASTMouseListener ;
+import de.unisiegen.tpml.ui.abstractsyntaxtree.listener.ASTTreeSelectionListener ;
+import de.unisiegen.tpml.ui.abstractsyntaxtree.listener.ASTWindowListener ;
 
 
 public class ASTUI
@@ -245,7 +250,7 @@ public class ASTUI
     this.jCheckBoxSelected.setMnemonic ( this.resourceBundle.getString (
         "selectedMnemonic" ).charAt ( 0 ) ) ;
     this.jCheckBoxSelected.setSelected ( this.abstractSyntaxTree
-        .getASTPreferences ( ).isCheckedSelected ( ) ) ;
+        .getASTPreferences ( ).isSelected ( ) ) ;
     this.jCheckBoxSelected.setFocusable ( false ) ;
     this.jCheckBoxSelected.addItemListener ( this.aSTItemListener ) ;
     // CheckBox Bindings
@@ -254,7 +259,7 @@ public class ASTUI
     this.jCheckBoxBindings.setMnemonic ( this.resourceBundle.getString (
         "bindingsMnemonic" ).charAt ( 0 ) ) ;
     this.jCheckBoxBindings.setSelected ( this.abstractSyntaxTree
-        .getASTPreferences ( ).isCheckedBindings ( ) ) ;
+        .getASTPreferences ( ).isBindings ( ) ) ;
     this.jCheckBoxBindings.setFocusable ( false ) ;
     this.jCheckBoxBindings.addItemListener ( this.aSTItemListener ) ;
     // CheckBox Replace
@@ -263,7 +268,7 @@ public class ASTUI
     this.jCheckBoxReplace.setMnemonic ( this.resourceBundle.getString (
         "replaceMnemonic" ).charAt ( 0 ) ) ;
     this.jCheckBoxReplace.setSelected ( this.abstractSyntaxTree
-        .getASTPreferences ( ).isCheckedReplace ( ) ) ;
+        .getASTPreferences ( ).isReplace ( ) ) ;
     this.jCheckBoxReplace.setFocusable ( false ) ;
     this.jCheckBoxReplace.addItemListener ( this.aSTItemListener ) ;
     // ScrollPane AbstractSyntax
@@ -356,11 +361,17 @@ public class ASTUI
     this.jFrameAbstractSyntaxTree = new JFrame ( ) ;
     this.jFrameAbstractSyntaxTree.setLayout ( this.gridBagLayout ) ;
     this.jFrameAbstractSyntaxTree.setTitle ( "AbstractSyntaxTree" ) ;
-    this.jFrameAbstractSyntaxTree.setSize ( 600 , 450 ) ;
-    this.jFrameAbstractSyntaxTree.setLocation ( 100 , 0 ) ;
+    this.jFrameAbstractSyntaxTree.setSize ( this.abstractSyntaxTree
+        .getASTPreferences ( ).getWidth ( ) , this.abstractSyntaxTree
+        .getASTPreferences ( ).getHeight ( ) ) ;
+    this.jFrameAbstractSyntaxTree.setLocation ( this.abstractSyntaxTree
+        .getASTPreferences ( ).getPositionX ( ) , this.abstractSyntaxTree
+        .getASTPreferences ( ).getPositionY ( ) ) ;
     this.jFrameAbstractSyntaxTree.setIconImage ( null ) ;
     this.jFrameAbstractSyntaxTree
         .setDefaultCloseOperation ( WindowConstants.HIDE_ON_CLOSE ) ;
+    this.jFrameAbstractSyntaxTree.addWindowListener ( new ASTWindowListener (
+        this ) ) ;
     // ScrollPane AbstractSyntax
     this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
     this.gridBagConstraints.insets = new Insets ( 4 , 4 , 4 , 4 ) ;
@@ -550,5 +561,11 @@ public class ASTUI
   public DefaultTreeModel getTreeModel ( )
   {
     return this.treeModel ;
+  }
+
+
+  public JFrame getJFrameAbstractSyntaxTree ( )
+  {
+    return this.jFrameAbstractSyntaxTree ;
   }
 }

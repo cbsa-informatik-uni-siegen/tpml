@@ -1,10 +1,11 @@
-package de.unisiegen.tpml.ui.abstractsyntaxtree ;
+package de.unisiegen.tpml.ui.abstractsyntaxtree.listener ;
 
 
 import java.awt.event.MouseEvent ;
 import java.awt.event.MouseListener ;
 import javax.swing.tree.DefaultMutableTreeNode ;
 import javax.swing.tree.TreePath ;
+import de.unisiegen.tpml.ui.abstractsyntaxtree.ASTUI;
 
 
 public class ASTMouseListener implements MouseListener

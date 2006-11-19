@@ -1,10 +1,11 @@
-package de.unisiegen.tpml.ui.abstractsyntaxtree ;
+package de.unisiegen.tpml.ui.abstractsyntaxtree.listener ;
 
 
 import java.awt.event.ActionEvent ;
 import java.awt.event.ActionListener ;
 import javax.swing.tree.DefaultMutableTreeNode ;
 import javax.swing.tree.TreePath ;
+import de.unisiegen.tpml.ui.abstractsyntaxtree.ASTUI;
 
 
 public class ASTActionListener implements ActionListener

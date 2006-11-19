@@ -18,6 +18,9 @@ import de.unisiegen.tpml.core.expressions.MultiLambda ;
 import de.unisiegen.tpml.core.expressions.MultiLet ;
 import de.unisiegen.tpml.core.expressions.Recursion ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation ;
+import de.unisiegen.tpml.ui.abstractsyntaxtree.bindings.ASTBindings ;
+import de.unisiegen.tpml.ui.abstractsyntaxtree.bindings.ASTBindingsList ;
+import de.unisiegen.tpml.ui.abstractsyntaxtree.bindings.ASTPair ;
 
 
 public class AbstractSyntaxTree
@@ -141,15 +144,8 @@ public class AbstractSyntaxTree
     for ( int i = 0 ; i < idList.length ; i ++ )
     {
       DefaultMutableTreeNode node0 = createNode ( "Identifier" , idList [ i ] ,
-          
-          
-          lengthIdentifier + 8 + i , 
-          
-          lengthIdentifier + 7
-              + idList [ i ].length ( ) + i 
-              
-      
-      ) ;
+          lengthIdentifier + 8 + i , lengthIdentifier + 7
+              + idList [ i ].length ( ) + i ) ;
       lengthIdentifier += idList [ i ].length ( ) ;
       node.add ( node0 ) ;
     }
@@ -375,14 +371,13 @@ public class AbstractSyntaxTree
   {
     ASTBindingsList bindings = new ASTBindingsList ( pExpression ) ;
     LinkedList < ASTPair > list = bindings.getASTPairs ( ) ;
-    for ( int i = 0 ; i < list.size ( ) ; i ++ )
+    for ( ASTPair identifier : list )
     {
-      ASTPair identifier = list.get ( i ) ;
       System.out.println ( "Cf - Identifier " + identifier.getStart ( )
           + " -> " + identifier.getEnd ( ) ) ;
-      for ( int j = 0 ; j < identifier.size ( ) ; j ++ )
+      for ( int i = 0 ; i < identifier.size ( ) ; i ++ )
       {
-        ASTPair binding = identifier.get ( j ) ;
+        ASTPair binding = identifier.get ( i ) ;
         System.out.println ( "Cf - Binding    " + binding.getStart ( ) + " -> "
             + binding.getEnd ( ) ) ;
       }
