@@ -112,12 +112,13 @@ public class AbstractSyntaxTree
     }
     DefaultMutableTreeNode node = createNode ( pExpression.getClass ( )
         .getSimpleName ( ) , pExpression , free ) ;
-    int length = 0 ;
+    int lengthIdentifier = 0 ;
     for ( int i = 0 ; i < idList.length ; i ++ )
     {
       DefaultMutableTreeNode node0 = createNode ( "Identifier" , idList [ i ] ,
-          length + 4 + i , length + 3 + idList [ i ].length ( ) + i ) ;
-      length += idList [ i ].length ( ) ;
+          lengthIdentifier + 4 + i , lengthIdentifier + 3
+              + idList [ i ].length ( ) + i ) ;
+      lengthIdentifier += idList [ i ].length ( ) ;
       node.add ( node0 ) ;
     }
     createChildren ( pExpression , node ) ;
@@ -136,12 +137,20 @@ public class AbstractSyntaxTree
     }
     DefaultMutableTreeNode node = createNode ( pExpression.getClass ( )
         .getSimpleName ( ) , pExpression , free ) ;
-    int length = 0 ;
+    int lengthIdentifier = 0 ;
     for ( int i = 0 ; i < idList.length ; i ++ )
     {
       DefaultMutableTreeNode node0 = createNode ( "Identifier" , idList [ i ] ,
-          length + 8 + i , length + 7 + idList [ i ].length ( ) + i ) ;
-      length += idList [ i ].length ( ) ;
+          
+          
+          lengthIdentifier + 8 + i , 
+          
+          lengthIdentifier + 7
+              + idList [ i ].length ( ) + i 
+              
+      
+      ) ;
+      lengthIdentifier += idList [ i ].length ( ) ;
       node.add ( node0 ) ;
     }
     createChildren ( pExpression , node ) ;
@@ -307,13 +316,13 @@ public class AbstractSyntaxTree
     DefaultMutableTreeNode node = createNode ( pExpression.getClass ( )
         .getSimpleName ( ) , pExpression , new ASTBindings ( pExpression ,
         pExpression.getIdentifiers ( ) ) ) ;
-    int length = 0 ;
+    int lengthIdentifier = 0 ;
     for ( int i = 0 ; i < idList.length ; i ++ )
     {
       DefaultMutableTreeNode subchild = createNode ( "Identifier" ,
-          idList [ i ] , length + 2 + ( i * 2 ) , length + 1
-              + idList [ i ].length ( ) + ( i * 2 ) ) ;
-      length += idList [ i ].length ( ) ;
+          idList [ i ] , lengthIdentifier + 2 + ( i * 2 ) , lengthIdentifier
+              + 1 + idList [ i ].length ( ) + ( i * 2 ) ) ;
+      lengthIdentifier += idList [ i ].length ( ) ;
       node.add ( subchild ) ;
     }
     createChildren ( pExpression , node ) ;
@@ -327,13 +336,13 @@ public class AbstractSyntaxTree
     DefaultMutableTreeNode node = createNode ( pExpression.getClass ( )
         .getSimpleName ( ) , pExpression , new ASTBindings ( pExpression
         .getE2 ( ) , pExpression.getIdentifiers ( ) ) ) ;
-    int length = 0 ;
+    int lengthIdentifier = 0 ;
     for ( int i = 0 ; i < idList.length ; i ++ )
     {
       DefaultMutableTreeNode subchild = createNode ( "Identifier" ,
-          idList [ i ] , length + 5 + ( i * 2 ) , length + 4
-              + idList [ i ].length ( ) + ( i * 2 ) ) ;
-      length += idList [ i ].length ( ) ;
+          idList [ i ] , lengthIdentifier + 5 + ( i * 2 ) , lengthIdentifier
+              + 4 + idList [ i ].length ( ) + ( i * 2 ) ) ;
+      lengthIdentifier += idList [ i ].length ( ) ;
       node.add ( subchild ) ;
     }
     createChildren ( pExpression , node ) ;
@@ -362,119 +371,29 @@ public class AbstractSyntaxTree
   }
 
 
-  public void getAll ( LinkedList < ASTBindings > pList , Expression pExpression )
+  public void calculateBindings ( Expression pExpression )
   {
-    if ( pExpression instanceof LetRec )
-    {
-      LetRec tmp = ( LetRec ) pExpression ;
-      ASTBindings ast = new ASTBindings ( tmp , tmp.getId ( ) ) ;
-      ast.setHoleExpression ( pExpression ) ;
-      pList.add ( ast ) ;
-      LinkedList < Expression > nothingFree = ast.getNothingFree ( ) ;
-      for ( int i = 0 ; i < nothingFree.size ( ) ; i ++ )
-      {
-        getAll ( pList , nothingFree.get ( i ) ) ;
-      }
-    }
-    else if ( pExpression instanceof Let )
-    {
-      Let tmp = ( Let ) pExpression ;
-      ASTBindings ast = new ASTBindings ( tmp.getE2 ( ) , tmp.getId ( ) ) ;
-      ast.setHoleExpression ( pExpression ) ;
-      pList.add ( ast ) ;
-      LinkedList < Expression > nothingFree = ast.getNothingFree ( ) ;
-      nothingFree.add ( tmp.getE1 ( ) ) ;
-      for ( int i = 0 ; i < nothingFree.size ( ) ; i ++ )
-      {
-        getAll ( pList , nothingFree.get ( i ) ) ;
-      }
-    }
-    else if ( pExpression instanceof Lambda )
-    {
-      Lambda tmp = ( Lambda ) pExpression ;
-      ASTBindings ast = new ASTBindings ( tmp , tmp.getId ( ) ) ;
-      ast.setHoleExpression ( pExpression ) ;
-      pList.add ( ast ) ;
-      LinkedList < Expression > nothingFree = ast.getNothingFree ( ) ;
-      for ( int i = 0 ; i < nothingFree.size ( ) ; i ++ )
-      {
-        getAll ( pList , nothingFree.get ( i ) ) ;
-      }
-    }
-    else if ( pExpression instanceof Recursion )
-    {
-      Recursion tmp = ( Recursion ) pExpression ;
-      ASTBindings ast = new ASTBindings ( tmp , tmp.getId ( ) ) ;
-      ast.setHoleExpression ( pExpression ) ;
-      pList.add ( ast ) ;
-      LinkedList < Expression > nothingFree = ast.getNothingFree ( ) ;
-      for ( int i = 0 ; i < nothingFree.size ( ) ; i ++ )
-      {
-        getAll ( pList , nothingFree.get ( i ) ) ;
-      }
-    }
-    else
-    {
-      Enumeration < Expression > children = pExpression.children ( ) ;
-      while ( children.hasMoreElements ( ) )
-      {
-        Expression child = children.nextElement ( ) ;
-        getAll ( pList , child ) ;
-      }
-    }
-  }
-
-
-  public void testBindings ( Expression pExpression )
-  {
-    LinkedList < ASTBindings > list = new LinkedList < ASTBindings > ( ) ;
-    getAll ( list , pExpression ) ;
+    ASTBindingsList bindings = new ASTBindingsList ( pExpression ) ;
+    LinkedList < ASTPair > list = bindings.getASTPairs ( ) ;
     for ( int i = 0 ; i < list.size ( ) ; i ++ )
     {
-      for ( int j = 0 ; j < list.get ( i ).size ( ) ; j ++ )
+      ASTPair identifier = list.get ( i ) ;
+      System.out.println ( "Cf - Identifier " + identifier.getStart ( )
+          + " -> " + identifier.getEnd ( ) ) ;
+      for ( int j = 0 ; j < identifier.size ( ) ; j ++ )
       {
-        for ( int k = 0 ; k < list.get ( i ).size ( j ) ; k ++ )
-        {
-          Expression e1 = list.get ( i ).getHoleExpression ( ) ;
-          PrettyAnnotation pa1 = pExpression.toPrettyString ( )
-              .getAnnotationForPrintable ( e1 ) ;
-          int startIndex = pa1.getStartOffset ( ) ;
-          int endIndex = startIndex ;
-          if ( e1 instanceof LetRec )
-          {
-            startIndex += 8 ;
-            endIndex += 7 + ( ( LetRec ) e1 ).getId ( ).length ( ) ;
-          }
-          else if ( e1 instanceof Let )
-          {
-            startIndex += 4 ;
-            endIndex += 3 + ( ( Let ) e1 ).getId ( ).length ( ) ;
-          }
-          else if ( e1 instanceof Lambda )
-          {
-            startIndex += 1 ;
-            endIndex += ( ( Lambda ) e1 ).getId ( ).length ( ) ;
-          }
-          else if ( e1 instanceof Recursion )
-          {
-            startIndex += 4 ;
-            endIndex += 3 + ( ( Recursion ) e1 ).getId ( ).length ( ) ;
-          }
-          Expression e2 = list.get ( i ).get ( j , k ) ;
-          PrettyAnnotation pa2 = pExpression.toPrettyString ( )
-              .getAnnotationForPrintable ( e2 ) ;
-          System.out.println ( "Cf - ID " + startIndex + " -> " + endIndex
-              + " Binding " + pa2.getStartOffset ( ) + " -> "
-              + pa2.getEndOffset ( ) ) ;
-        }
+        ASTPair binding = identifier.get ( j ) ;
+        System.out.println ( "Cf - Binding    " + binding.getStart ( ) + " -> "
+            + binding.getEnd ( ) ) ;
       }
+      System.out.println ( ) ;
     }
   }
 
 
   public void setExpression ( Expression pExpression )
   {
-    testBindings ( pExpression ) ;
+    calculateBindings ( pExpression ) ;
     this.aSTUI.setRootNode ( expression ( pExpression ) ) ;
   }
 
