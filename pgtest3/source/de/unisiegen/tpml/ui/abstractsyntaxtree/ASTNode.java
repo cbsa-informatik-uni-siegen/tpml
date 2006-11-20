@@ -138,6 +138,8 @@ public class ASTNode
       result.append ( AFTER_DESCRIPTION ) ;
       result.append ( BETWEEN ) ;
       result.append ( BEFOR_NAME ) ;
+      result.append ( "<font color=\"#"
+          + getHex ( Theme.currentTheme ( ).getExpressionColor ( ) ) + "\">" ) ;
       if ( selection )
       {
         result.append ( "<b><font color=\"#"
@@ -148,6 +150,7 @@ public class ASTNode
       {
         result.append ( "</font></b>" ) ;
       }
+      result.append ( "</font>" ) ;
       result.append ( AFTER_NAME ) ;
       result.append ( "</html>" ) ;
       this.caption = result.toString ( ) ;
@@ -230,7 +233,10 @@ public class ASTNode
       result.append ( AFTER_DESCRIPTION ) ;
       result.append ( BETWEEN ) ;
       result.append ( BEFOR_NAME ) ;
+      result.append ( "<font color=\"#"
+          + getHex ( Theme.currentTheme ( ).getExpressionColor ( ) ) + "\">" ) ;
       result.append ( this.expressionString ) ;
+      result.append ( "</font>" ) ;
       result.append ( AFTER_NAME ) ;
       result.append ( "</html>" ) ;
       this.caption = result.toString ( ) ;
