@@ -92,14 +92,14 @@ public class ASTTreeSelectionListener implements TreeSelectionListener
       secondlast = list.get ( list.size ( ) - 2 ) ;
     }
     // No Expression
-    if ( ( last.getSelectionStartIndex ( ) != - 1 )
-        && ( last.getSelectionEndIndex ( ) != - 1 ) )
+    if ( last.getASTPair ( ) != null )
     {
       if ( secondlast == null )
       {
         return ;
       }
-      list.get ( list.size ( ) - 1 ).enableSelectedColor ( ) ;
+      // Highlight the selected Identifier
+      last.enableSelectedColor ( ) ;
       for ( int i = 0 ; i < list.size ( ) - 1 ; i ++ )
       {
         PrettyAnnotation prettyAnnotation = list.get ( i ).getExpression ( )
@@ -120,13 +120,17 @@ public class ASTTreeSelectionListener implements TreeSelectionListener
         {
           childIndex = ASTNode.NO_BINDING ;
         }
+        if ( i < list.size ( ) - 2 )
+        {
+          list.get ( i ).setASTBinding ( secondlast.getASTBinding ( ) ) ;
+        }
         list.get ( i ).setReplaceInThisNode ( true ) ;
         list.get ( i )
             .updateCaption (
                 prettyAnnotation.getStartOffset ( )
-                    + last.getSelectionStartIndex ( ) ,
+                    + last.getASTPair ( ).getStart ( ) ,
                 prettyAnnotation.getStartOffset ( )
-                    + last.getSelectionEndIndex ( ) , childIndex ) ;
+                    + last.getASTPair ( ).getEnd ( ) , childIndex ) ;
       }
     }
     // Expression

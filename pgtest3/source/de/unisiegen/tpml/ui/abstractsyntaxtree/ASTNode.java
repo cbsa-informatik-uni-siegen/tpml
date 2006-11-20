@@ -7,7 +7,8 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyCharIterator ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStyle ;
 import de.unisiegen.tpml.graphics.Theme ;
-import de.unisiegen.tpml.ui.abstractsyntaxtree.binding.ASTBinding;
+import de.unisiegen.tpml.ui.abstractsyntaxtree.binding.ASTBinding ;
+import de.unisiegen.tpml.ui.abstractsyntaxtree.binding.ASTPair ;
 
 
 public class ASTNode
@@ -78,13 +79,10 @@ public class ASTNode
   private Expression expression ;
 
 
-  private int selectionStartIndex ;
-
-
-  private int selectionEndIndex ;
-
-
   private ASTBinding aSTBinding ;
+
+
+  private ASTPair aSTPair ;
 
 
   public ASTNode ( Expression pExpression )
@@ -92,8 +90,7 @@ public class ASTNode
     this.description = pExpression.getClass ( ).getSimpleName ( ) ;
     this.expressionString = pExpression.toPrettyString ( ).toString ( ) ;
     this.expression = pExpression ;
-    this.selectionStartIndex = ASTNode.NO_SELECTION ;
-    this.selectionEndIndex = ASTNode.NO_SELECTION ;
+    this.aSTPair = null ;
     this.aSTBinding = null ;
     this.replaceInThisNode = false ;
     resetCaption ( ) ;
@@ -105,8 +102,7 @@ public class ASTNode
     this.description = pExpression.getClass ( ).getSimpleName ( ) ;
     this.expressionString = pExpression.toPrettyString ( ).toString ( ) ;
     this.expression = pExpression ;
-    this.selectionStartIndex = ASTNode.NO_SELECTION ;
-    this.selectionEndIndex = ASTNode.NO_SELECTION ;
+    this.aSTPair = null ;
     this.aSTBinding = pASTBindings ;
     this.replaceInThisNode = false ;
     resetCaption ( ) ;
@@ -114,13 +110,12 @@ public class ASTNode
 
 
   public ASTNode ( String pDescription , String pExpressionString ,
-      int pSelectedStartIndex , int pSelectedEndIndex )
+      ASTPair pASTPair )
   {
     this.description = pDescription ;
     this.expressionString = pExpressionString ;
     this.expression = null ;
-    this.selectionStartIndex = pSelectedStartIndex ;
-    this.selectionEndIndex = pSelectedEndIndex ;
+    this.aSTPair = pASTPair ;
     this.aSTBinding = null ;
     this.replaceInThisNode = false ;
     resetCaption ( ) ;
@@ -203,18 +198,6 @@ public class ASTNode
   }
 
 
-  public int getSelectionEndIndex ( )
-  {
-    return this.selectionEndIndex ;
-  }
-
-
-  public int getSelectionStartIndex ( )
-  {
-    return this.selectionStartIndex ;
-  }
-
-
   private boolean isBinding ( int pBindingIndex , int pCharIndex )
   {
     if ( ( this.aSTBinding == null ) || ( pBindingIndex < 0 )
@@ -224,9 +207,9 @@ public class ASTNode
     }
     for ( int i = 0 ; i < this.aSTBinding.size ( pBindingIndex ) ; i ++ )
     {
-      PrettyAnnotation prettyAnnotation = this.expression.toPrettyString ( )
-          .getAnnotationForPrintable (
-              this.aSTBinding.get ( pBindingIndex , i ) ) ;
+      PrettyAnnotation prettyAnnotation = this.expression
+          .toPrettyString ( )
+          .getAnnotationForPrintable ( this.aSTBinding.get ( pBindingIndex , i ) ) ;
       if ( ( pCharIndex >= prettyAnnotation.getStartOffset ( ) )
           && ( pCharIndex <= prettyAnnotation.getEndOffset ( ) ) )
       {
@@ -278,6 +261,8 @@ public class ASTNode
   {
     PrettyCharIterator prettyCharIterator = this.expression.toPrettyString ( )
         .toCharacterIterator ( ) ;
+    String expressionColor = getHex ( Theme.currentTheme ( )
+        .getExpressionColor ( ) ) ;
     String keywordColor = getHex ( Theme.currentTheme ( ).getKeywordColor ( ) ) ;
     String constantColor = getHex ( Theme.currentTheme ( ).getConstantColor ( ) ) ;
     String selectionColor = getHex ( Theme.currentTheme ( )
@@ -290,6 +275,7 @@ public class ASTNode
     result.append ( AFTER_DESCRIPTION ) ;
     result.append ( BETWEEN ) ;
     result.append ( BEFOR_NAME ) ;
+    result.append ( "<font color=\"#" + expressionColor + "\">" ) ;
     prettyCharIterator.first ( ) ;
     int charIndex = 0 ;
     while ( charIndex < this.expressionString.length ( ) )
@@ -378,8 +364,27 @@ public class ASTNode
         prettyCharIterator.next ( ) ;
       }
     }
+    result.append ( "</font>" ) ;
     result.append ( AFTER_NAME ) ;
     result.append ( "</html>" ) ;
     this.caption = result.toString ( ) ;
+  }
+
+
+  public ASTPair getASTPair ( )
+  {
+    return this.aSTPair ;
+  }
+
+
+  public ASTBinding getASTBinding ( )
+  {
+    return this.aSTBinding ;
+  }
+
+
+  public void setASTBinding ( ASTBinding pASTBinding )
+  {
+    this.aSTBinding = pASTBinding ;
   }
 }
