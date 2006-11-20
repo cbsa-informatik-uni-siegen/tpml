@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.ui.abstractsyntaxtree.bindings ;
+package de.unisiegen.tpml.ui.abstractsyntaxtree.binding ;
 
 
 import java.util.LinkedList ;

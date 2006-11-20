@@ -34,16 +34,7 @@ public class ASTPreferences
   {
     this.preferences = Preferences
         .userNodeForPackage ( AbstractSyntaxTree.class ) ;
-    this.replace = this.preferences.getBoolean ( "replace" , true ) ;
-    this.bindings = this.preferences.getBoolean ( "bindings" , true ) ;
-    this.selected = this.preferences.getBoolean ( "selected" , true ) ;
-    ASTNode.setReplace ( this.replace ) ;
-    ASTNode.setBindings ( this.bindings ) ;
-    ASTNode.setSelected ( this.selected ) ;
-    this.width = this.preferences.getInt ( "jFrameWidth" , 600 ) ;
-    this.height = this.preferences.getInt ( "jFrameHeight" , 450 ) ;
-    this.positionX = this.preferences.getInt ( "jFramePositionX" , 100 ) ;
-    this.positionY = this.preferences.getInt ( "jFramePositionY" , 100 ) ;
+    updatePreferences ( ) ;
   }
 
 
@@ -135,5 +126,20 @@ public class ASTPreferences
   {
     this.width = pWidth ;
     this.preferences.putInt ( "jFrameWidth" , pWidth ) ;
+  }
+
+
+  public void updatePreferences ( )
+  {
+    this.replace = this.preferences.getBoolean ( "replace" , true ) ;
+    this.bindings = this.preferences.getBoolean ( "bindings" , true ) ;
+    this.selected = this.preferences.getBoolean ( "selected" , true ) ;
+    ASTNode.setReplace ( this.replace ) ;
+    ASTNode.setBinding ( this.bindings ) ;
+    ASTNode.setSelection ( this.selected ) ;
+    this.width = this.preferences.getInt ( "jFrameWidth" , 600 ) ;
+    this.height = this.preferences.getInt ( "jFrameHeight" , 450 ) ;
+    this.positionX = this.preferences.getInt ( "jFramePositionX" , 100 ) ;
+    this.positionY = this.preferences.getInt ( "jFramePositionY" , 100 ) ;
   }
 }

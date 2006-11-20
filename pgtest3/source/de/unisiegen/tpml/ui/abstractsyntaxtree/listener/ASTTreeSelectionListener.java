@@ -15,8 +15,8 @@ import de.unisiegen.tpml.core.expressions.MultiLambda ;
 import de.unisiegen.tpml.core.expressions.MultiLet ;
 import de.unisiegen.tpml.core.expressions.Recursion ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation ;
-import de.unisiegen.tpml.ui.abstractsyntaxtree.ASTNode;
-import de.unisiegen.tpml.ui.abstractsyntaxtree.ASTUI;
+import de.unisiegen.tpml.ui.abstractsyntaxtree.ASTNode ;
+import de.unisiegen.tpml.ui.abstractsyntaxtree.ASTUI ;
 
 
 public class ASTTreeSelectionListener implements TreeSelectionListener
@@ -40,7 +40,7 @@ public class ASTTreeSelectionListener implements TreeSelectionListener
         return i ;
       }
     }
-    return - 1 ;
+    return ASTNode.NO_BINDING ;
   }
 
 
@@ -58,7 +58,7 @@ public class ASTTreeSelectionListener implements TreeSelectionListener
   {
     ASTNode aSTNode = ( ASTNode ) pNode.getUserObject ( ) ;
     aSTNode.resetCaption ( ) ;
-    aSTNode.setReplaceExpression ( false ) ;
+    aSTNode.setReplaceInThisNode ( false ) ;
     for ( int i = 0 ; i < pNode.getChildCount ( ) ; i ++ )
     {
       reset ( ( DefaultMutableTreeNode ) pNode.getChildAt ( i ) ) ;
@@ -92,8 +92,8 @@ public class ASTTreeSelectionListener implements TreeSelectionListener
       secondlast = list.get ( list.size ( ) - 2 ) ;
     }
     // No Expression
-    if ( ( last.getSelectedStartIndex ( ) != - 1 )
-        && ( last.getSelectedEndIndex ( ) != - 1 ) )
+    if ( ( last.getSelectionStartIndex ( ) != - 1 )
+        && ( last.getSelectionEndIndex ( ) != - 1 ) )
     {
       if ( secondlast == null )
       {
@@ -118,27 +118,15 @@ public class ASTTreeSelectionListener implements TreeSelectionListener
             && ! ( secondlast.getExpression ( ) instanceof CurriedLet )
             && ! ( secondlast.getExpression ( ) instanceof Recursion ) )
         {
-          childIndex = - 1 ;
+          childIndex = ASTNode.NO_BINDING ;
         }
-        list.get ( i ).setReplaceExpression ( true ) ;
-        if ( i == list.size ( ) - 2 )
-        {
-          list.get ( i )
-              .updateCaption (
-                  prettyAnnotation.getStartOffset ( )
-                      + last.getSelectedStartIndex ( ) ,
-                  prettyAnnotation.getStartOffset ( )
-                      + last.getSelectedEndIndex ( ) , childIndex ) ;
-        }
-        else
-        {
-          list.get ( i )
-              .updateCaption (
-                  prettyAnnotation.getStartOffset ( )
-                      + last.getSelectedStartIndex ( ) ,
-                  prettyAnnotation.getStartOffset ( )
-                      + last.getSelectedEndIndex ( ) , - 1 ) ;
-        }
+        list.get ( i ).setReplaceInThisNode ( true ) ;
+        list.get ( i )
+            .updateCaption (
+                prettyAnnotation.getStartOffset ( )
+                    + last.getSelectionStartIndex ( ) ,
+                prettyAnnotation.getStartOffset ( )
+                    + last.getSelectionEndIndex ( ) , childIndex ) ;
       }
     }
     // Expression
@@ -151,10 +139,10 @@ public class ASTTreeSelectionListener implements TreeSelectionListener
                 last.getExpression ( ) ) ;
         if ( i < list.size ( ) - 1 )
         {
-          list.get ( i ).setReplaceExpression ( true ) ;
+          list.get ( i ).setReplaceInThisNode ( true ) ;
         }
         list.get ( i ).updateCaption ( prettyAnnotation.getStartOffset ( ) ,
-            prettyAnnotation.getEndOffset ( ) , - 1 ) ;
+            prettyAnnotation.getEndOffset ( ) , ASTNode.NO_BINDING ) ;
       }
     }
     repaint ( rootNode ) ;

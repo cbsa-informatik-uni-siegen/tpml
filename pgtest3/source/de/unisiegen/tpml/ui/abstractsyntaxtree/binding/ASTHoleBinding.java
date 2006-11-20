@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.ui.abstractsyntaxtree.bindings ;
+package de.unisiegen.tpml.ui.abstractsyntaxtree.binding ;
 
 
 import java.util.Enumeration ;
@@ -15,18 +15,18 @@ import de.unisiegen.tpml.core.expressions.Recursion ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation ;
 
 
-public class ASTBindingsList
+public class ASTHoleBinding
 {
   private Expression expression ;
 
 
-  private LinkedList < ASTBindings > list ;
+  private LinkedList < ASTBinding > list ;
 
 
   private LinkedList < ASTPair > listASTPair ;
 
 
-  public ASTBindingsList ( Expression pExpression )
+  public ASTHoleBinding ( Expression pExpression )
   {
     this.expression = pExpression ;
     this.listASTPair = new LinkedList < ASTPair > ( ) ;
@@ -34,115 +34,110 @@ public class ASTBindingsList
   }
 
 
-  private void calculateList ( LinkedList < ASTBindings > pList ,
+  private void calculateList ( LinkedList < ASTBinding > pList ,
       Expression pExpression )
   {
     if ( pExpression instanceof CurriedLetRec )
     {
       CurriedLetRec tmp = ( CurriedLetRec ) pExpression ;
-      ASTBindings ast = new ASTBindings ( ) ;
+      ASTBinding ast = new ASTBinding ( pExpression ) ;
       ast.add ( tmp , tmp.getIdentifiers ( 0 ) ) ;
       for ( int i = 1 ; i < tmp.getIdentifiers ( ).length ; i ++ )
       {
         ast.add ( tmp.getE1 ( ) , tmp.getIdentifiers ( i ) ) ;
       }
-      ast.setHoleExpression ( pExpression ) ;
       pList.add ( ast ) ;
-      LinkedList < Expression > nothingFree = ast.getNothingFree ( ) ;
-      for ( int i = 0 ; i < nothingFree.size ( ) ; i ++ )
+      LinkedList < Expression > notFree = ast.getNotFree ( ) ;
+      for ( Expression e : notFree )
       {
-        calculateList ( pList , nothingFree.get ( i ) ) ;
+        calculateList ( pList , e ) ;
       }
     }
     else if ( pExpression instanceof CurriedLet )
     {
       CurriedLet tmp = ( CurriedLet ) pExpression ;
-      ASTBindings ast = new ASTBindings ( ) ;
+      ASTBinding ast = new ASTBinding ( pExpression ) ;
       ast.add ( tmp.getE2 ( ) , tmp.getIdentifiers ( 0 ) ) ;
       for ( int i = 1 ; i < tmp.getIdentifiers ( ).length ; i ++ )
       {
         ast.add ( tmp.getE1 ( ) , tmp.getIdentifiers ( i ) ) ;
       }
-      ast.setHoleExpression ( pExpression ) ;
       pList.add ( ast ) ;
-      LinkedList < Expression > nothingFree = ast.getNothingFree ( ) ;
-      for ( int i = 0 ; i < nothingFree.size ( ) ; i ++ )
+      LinkedList < Expression > notFree = ast.getNotFree ( ) ;
+      for ( Expression e : notFree )
       {
-        calculateList ( pList , nothingFree.get ( i ) ) ;
+        calculateList ( pList , e ) ;
       }
     }
     else if ( pExpression instanceof MultiLambda )
     {
       MultiLambda tmp = ( MultiLambda ) pExpression ;
-      ASTBindings ast = new ASTBindings ( tmp , tmp.getIdentifiers ( ) ) ;
-      ast.setHoleExpression ( pExpression ) ;
+      ASTBinding ast = new ASTBinding ( pExpression , tmp , tmp
+          .getIdentifiers ( ) ) ;
       pList.add ( ast ) ;
-      LinkedList < Expression > nothingFree = ast.getNothingFree ( ) ;
-      for ( int i = 0 ; i < nothingFree.size ( ) ; i ++ )
+      LinkedList < Expression > notFree = ast.getNotFree ( ) ;
+      for ( Expression e : notFree )
       {
-        calculateList ( pList , nothingFree.get ( i ) ) ;
+        calculateList ( pList , e ) ;
       }
     }
     else if ( pExpression instanceof MultiLet )
     {
       MultiLet tmp = ( MultiLet ) pExpression ;
-      ASTBindings ast = new ASTBindings ( tmp.getE2 ( ) , tmp.getIdentifiers ( ) ) ;
-      ast.setHoleExpression ( pExpression ) ;
+      ASTBinding ast = new ASTBinding ( pExpression , tmp.getE2 ( ) , tmp
+          .getIdentifiers ( ) ) ;
       pList.add ( ast ) ;
-      LinkedList < Expression > nothingFree = ast.getNothingFree ( ) ;
-      nothingFree.add ( tmp.getE1 ( ) ) ;
-      for ( int i = 0 ; i < nothingFree.size ( ) ; i ++ )
+      LinkedList < Expression > notFree = ast.getNotFree ( ) ;
+      notFree.add ( tmp.getE1 ( ) ) ;
+      for ( Expression e : notFree )
       {
-        calculateList ( pList , nothingFree.get ( i ) ) ;
+        calculateList ( pList , e ) ;
       }
     }
     else if ( pExpression instanceof LetRec )
     {
       LetRec tmp = ( LetRec ) pExpression ;
-      ASTBindings ast = new ASTBindings ( tmp , tmp.getId ( ) ) ;
-      ast.setHoleExpression ( pExpression ) ;
+      ASTBinding ast = new ASTBinding ( pExpression , tmp , tmp.getId ( ) ) ;
       pList.add ( ast ) ;
-      LinkedList < Expression > nothingFree = ast.getNothingFree ( ) ;
-      for ( int i = 0 ; i < nothingFree.size ( ) ; i ++ )
+      LinkedList < Expression > notFree = ast.getNotFree ( ) ;
+      for ( Expression e : notFree )
       {
-        calculateList ( pList , nothingFree.get ( i ) ) ;
+        calculateList ( pList , e ) ;
       }
     }
     else if ( pExpression instanceof Let )
     {
       Let tmp = ( Let ) pExpression ;
-      ASTBindings ast = new ASTBindings ( tmp.getE2 ( ) , tmp.getId ( ) ) ;
-      ast.setHoleExpression ( pExpression ) ;
+      ASTBinding ast = new ASTBinding ( pExpression , tmp.getE2 ( ) , tmp
+          .getId ( ) ) ;
       pList.add ( ast ) ;
-      LinkedList < Expression > nothingFree = ast.getNothingFree ( ) ;
-      nothingFree.add ( tmp.getE1 ( ) ) ;
-      for ( int i = 0 ; i < nothingFree.size ( ) ; i ++ )
+      LinkedList < Expression > notFree = ast.getNotFree ( ) ;
+      notFree.add ( tmp.getE1 ( ) ) ;
+      for ( Expression e : notFree )
       {
-        calculateList ( pList , nothingFree.get ( i ) ) ;
+        calculateList ( pList , e ) ;
       }
     }
     else if ( pExpression instanceof Lambda )
     {
       Lambda tmp = ( Lambda ) pExpression ;
-      ASTBindings ast = new ASTBindings ( tmp , tmp.getId ( ) ) ;
-      ast.setHoleExpression ( pExpression ) ;
+      ASTBinding ast = new ASTBinding ( pExpression , tmp , tmp.getId ( ) ) ;
       pList.add ( ast ) ;
-      LinkedList < Expression > nothingFree = ast.getNothingFree ( ) ;
-      for ( int i = 0 ; i < nothingFree.size ( ) ; i ++ )
+      LinkedList < Expression > notFree = ast.getNotFree ( ) ;
+      for ( Expression e : notFree )
       {
-        calculateList ( pList , nothingFree.get ( i ) ) ;
+        calculateList ( pList , e ) ;
       }
     }
     else if ( pExpression instanceof Recursion )
     {
       Recursion tmp = ( Recursion ) pExpression ;
-      ASTBindings ast = new ASTBindings ( tmp , tmp.getId ( ) ) ;
-      ast.setHoleExpression ( pExpression ) ;
+      ASTBinding ast = new ASTBinding ( pExpression , tmp , tmp.getId ( ) ) ;
       pList.add ( ast ) ;
-      LinkedList < Expression > nothingFree = ast.getNothingFree ( ) ;
-      for ( int i = 0 ; i < nothingFree.size ( ) ; i ++ )
+      LinkedList < Expression > notFree = ast.getNotFree ( ) ;
+      for ( Expression e : notFree )
       {
-        calculateList ( pList , nothingFree.get ( i ) ) ;
+        calculateList ( pList , e ) ;
       }
     }
     else
@@ -159,7 +154,7 @@ public class ASTBindingsList
 
   private void calculate ( )
   {
-    this.list = new LinkedList < ASTBindings > ( ) ;
+    this.list = new LinkedList < ASTBinding > ( ) ;
     calculateList ( this.list , this.expression ) ;
     for ( int i = 0 ; i < this.list.size ( ) ; i ++ )
     {

@@ -3,8 +3,8 @@ package de.unisiegen.tpml.ui.abstractsyntaxtree.listener ;
 
 import java.awt.event.ItemEvent ;
 import java.awt.event.ItemListener ;
-import de.unisiegen.tpml.ui.abstractsyntaxtree.ASTNode;
-import de.unisiegen.tpml.ui.abstractsyntaxtree.ASTUI;
+import de.unisiegen.tpml.ui.abstractsyntaxtree.ASTNode ;
+import de.unisiegen.tpml.ui.abstractsyntaxtree.ASTUI ;
 
 
 public class ASTItemListener implements ItemListener
@@ -26,26 +26,26 @@ public class ASTItemListener implements ItemListener
       ASTNode.setReplace ( selected ) ;
       this.aSTUI.getASTTreeSelectionListener ( ).update (
           this.aSTUI.getJAbstractSyntaxTree ( ).getSelectionPath ( ) ) ;
-      this.aSTUI.getAbstractSyntaxTree ( ).getASTPreferences ( )
-          .setReplace ( selected ) ;
+      this.aSTUI.getAbstractSyntaxTree ( ).getASTPreferences ( ).setReplace (
+          selected ) ;
     }
     else if ( pItemEvent.getSource ( ).equals (
         this.aSTUI.getJCheckBoxBindings ( ) ) )
     {
-      ASTNode.setBindings ( selected ) ;
+      ASTNode.setBinding ( selected ) ;
       this.aSTUI.getASTTreeSelectionListener ( ).update (
           this.aSTUI.getJAbstractSyntaxTree ( ).getSelectionPath ( ) ) ;
-      this.aSTUI.getAbstractSyntaxTree ( ).getASTPreferences ( )
-          .setBindings ( selected ) ;
+      this.aSTUI.getAbstractSyntaxTree ( ).getASTPreferences ( ).setBindings (
+          selected ) ;
     }
     else if ( pItemEvent.getSource ( ).equals (
         this.aSTUI.getJCheckBoxSelected ( ) ) )
     {
-      ASTNode.setSelected ( selected ) ;
+      ASTNode.setSelection ( selected ) ;
       this.aSTUI.getASTTreeSelectionListener ( ).update (
           this.aSTUI.getJAbstractSyntaxTree ( ).getSelectionPath ( ) ) ;
-      this.aSTUI.getAbstractSyntaxTree ( ).getASTPreferences ( )
-          .setSelected ( selected ) ;
+      this.aSTUI.getAbstractSyntaxTree ( ).getASTPreferences ( ).setSelected (
+          selected ) ;
     }
   }
 }

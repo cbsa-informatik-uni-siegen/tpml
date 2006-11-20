@@ -57,12 +57,13 @@ public class ASTActionListener implements ActionListener
 
   public void close ( )
   {
-    int row[] = this.aSTUI.getJAbstractSyntaxTree ( ).getSelectionRows ( ) ;
-    if ( row == null )
+    int selectionRows[] = this.aSTUI.getJAbstractSyntaxTree ( )
+        .getSelectionRows ( ) ;
+    if ( selectionRows == null )
     {
       return ;
     }
-    for ( int i = this.aSTUI.getJAbstractSyntaxTree ( ).getRowCount ( ) - 1 ; i >= row [ 0 ] ; i -- )
+    for ( int i = this.aSTUI.getJAbstractSyntaxTree ( ).getRowCount ( ) - 1 ; i >= selectionRows [ 0 ] ; i -- )
     {
       this.aSTUI.getJAbstractSyntaxTree ( ).collapseRow ( i ) ;
     }
@@ -80,12 +81,13 @@ public class ASTActionListener implements ActionListener
 
   public void collapse ( )
   {
-    int row[] = this.aSTUI.getJAbstractSyntaxTree ( ).getSelectionRows ( ) ;
-    if ( row == null )
+    int selectionRows[] = this.aSTUI.getJAbstractSyntaxTree ( )
+        .getSelectionRows ( ) ;
+    if ( selectionRows == null )
     {
       return ;
     }
-    this.aSTUI.getJAbstractSyntaxTree ( ).collapseRow ( row [ 0 ] ) ;
+    this.aSTUI.getJAbstractSyntaxTree ( ).collapseRow ( selectionRows [ 0 ] ) ;
   }
 
 

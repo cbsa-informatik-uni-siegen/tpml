@@ -7,12 +7,18 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyCharIterator ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStyle ;
 import de.unisiegen.tpml.graphics.Theme ;
-import de.unisiegen.tpml.ui.abstractsyntaxtree.bindings.ASTBindings ;
+import de.unisiegen.tpml.ui.abstractsyntaxtree.binding.ASTBinding;
 
 
 public class ASTNode
 {
-  private static final String BEFOR_DESCRIPTION = "" ;
+  public static final int NO_BINDING = - 1 ;
+
+
+  public static final int NO_SELECTION = - 1 ;
+
+
+  private static final String BEFORE_DESCRIPTION = "" ;
 
 
   private static final String AFTER_DESCRIPTION = "" ;
@@ -30,34 +36,34 @@ public class ASTNode
   private static final String REPLACE_STRING = "..." ;
 
 
-  private static boolean selected = true ;
+  private static boolean selection = true ;
 
 
   private static boolean replace = true ;
 
 
-  private static boolean bindings = true ;
+  private static boolean binding = true ;
 
 
-  public static void setBindings ( boolean pCheckedBindings )
+  public static void setBinding ( boolean pBinding )
   {
-    bindings = pCheckedBindings ;
+    binding = pBinding ;
   }
 
 
-  public static void setReplace ( boolean pCheckedReplace )
+  public static void setReplace ( boolean pReplace )
   {
-    replace = pCheckedReplace ;
+    replace = pReplace ;
   }
 
 
-  public static void setSelected ( boolean pCheckedSelected )
+  public static void setSelection ( boolean pSelection )
   {
-    selected = pCheckedSelected ;
+    selection = pSelection ;
   }
 
 
-  private boolean replaceExpression ;
+  private boolean replaceInThisNode ;
 
 
   private String description ;
@@ -72,39 +78,38 @@ public class ASTNode
   private Expression expression ;
 
 
-  private int selectedStartIndex ;
+  private int selectionStartIndex ;
 
 
-  private int selectedEndIndex ;
+  private int selectionEndIndex ;
 
 
-  private ASTBindings aSTBindings ;
+  private ASTBinding aSTBinding ;
 
 
-  public ASTNode ( String pDescription , Expression pExpression )
+  public ASTNode ( Expression pExpression )
   {
-    this.description = pDescription ;
+    this.description = pExpression.getClass ( ).getSimpleName ( ) ;
     this.expressionString = pExpression.toPrettyString ( ).toString ( ) ;
     this.expression = pExpression ;
-    this.selectedStartIndex = - 1 ;
-    this.selectedEndIndex = - 1 ;
-    this.aSTBindings = null ;
+    this.selectionStartIndex = ASTNode.NO_SELECTION ;
+    this.selectionEndIndex = ASTNode.NO_SELECTION ;
+    this.aSTBinding = null ;
+    this.replaceInThisNode = false ;
     resetCaption ( ) ;
-    this.replaceExpression = false ;
   }
 
 
-  public ASTNode ( String pDescription , Expression pExpression ,
-      ASTBindings pRelations )
+  public ASTNode ( Expression pExpression , ASTBinding pASTBindings )
   {
-    this.description = pDescription ;
+    this.description = pExpression.getClass ( ).getSimpleName ( ) ;
     this.expressionString = pExpression.toPrettyString ( ).toString ( ) ;
     this.expression = pExpression ;
-    this.selectedStartIndex = - 1 ;
-    this.selectedEndIndex = - 1 ;
-    this.aSTBindings = pRelations ;
+    this.selectionStartIndex = ASTNode.NO_SELECTION ;
+    this.selectionEndIndex = ASTNode.NO_SELECTION ;
+    this.aSTBinding = pASTBindings ;
+    this.replaceInThisNode = false ;
     resetCaption ( ) ;
-    this.replaceExpression = false ;
   }
 
 
@@ -114,11 +119,17 @@ public class ASTNode
     this.description = pDescription ;
     this.expressionString = pExpressionString ;
     this.expression = null ;
-    this.selectedStartIndex = pSelectedStartIndex ;
-    this.selectedEndIndex = pSelectedEndIndex ;
-    this.aSTBindings = null ;
+    this.selectionStartIndex = pSelectedStartIndex ;
+    this.selectionEndIndex = pSelectedEndIndex ;
+    this.aSTBinding = null ;
+    this.replaceInThisNode = false ;
     resetCaption ( ) ;
-    this.replaceExpression = false ;
+  }
+
+
+  public void appendDescription ( String pDescription )
+  {
+    this.description = pDescription + this.description ;
   }
 
 
@@ -127,18 +138,18 @@ public class ASTNode
     if ( this.expression == null )
     {
       StringBuffer result = new StringBuffer ( "<html>" ) ;
-      result.append ( BEFOR_DESCRIPTION ) ;
+      result.append ( BEFORE_DESCRIPTION ) ;
       result.append ( this.description ) ;
       result.append ( AFTER_DESCRIPTION ) ;
       result.append ( BETWEEN ) ;
       result.append ( BEFOR_NAME ) ;
-      if ( selected )
+      if ( selection )
       {
         result.append ( "<b><font color=\"#"
-            + getHex ( Theme.currentTheme ( ).getSelectedColor ( ) ) + "\">" ) ;
+            + getHex ( Theme.currentTheme ( ).getSelectionColor ( ) ) + "\">" ) ;
       }
       result.append ( this.expressionString ) ;
-      if ( selected )
+      if ( selection )
       {
         result.append ( "</font></b>" ) ;
       }
@@ -148,14 +159,9 @@ public class ASTNode
     }
     else
     {
-      updateCaption ( - 1 , - 1 , - 1 ) ;
+      updateCaption ( ASTNode.NO_SELECTION , ASTNode.NO_SELECTION ,
+          ASTNode.NO_BINDING ) ;
     }
-  }
-
-
-  public String getDescription ( )
-  {
-    return this.description ;
   }
 
 
@@ -197,32 +203,32 @@ public class ASTNode
   }
 
 
-  public int getSelectedEndIndex ( )
+  public int getSelectionEndIndex ( )
   {
-    return this.selectedEndIndex ;
+    return this.selectionEndIndex ;
   }
 
 
-  public int getSelectedStartIndex ( )
+  public int getSelectionStartIndex ( )
   {
-    return this.selectedStartIndex ;
+    return this.selectionStartIndex ;
   }
 
 
-  private boolean isInList ( int pListIndex , int pIndex )
+  private boolean isBinding ( int pBindingIndex , int pCharIndex )
   {
-    if ( ( this.aSTBindings == null ) || ( pListIndex < 0 )
-        || ( pListIndex >= this.aSTBindings.size ( ) ) )
+    if ( ( this.aSTBinding == null ) || ( pBindingIndex < 0 )
+        || ( pBindingIndex >= this.aSTBinding.size ( ) ) )
     {
       return false ;
     }
-    for ( int i = 0 ; i < this.aSTBindings.size ( pListIndex ) ; i ++ )
+    for ( int i = 0 ; i < this.aSTBinding.size ( pBindingIndex ) ; i ++ )
     {
-      Expression e = this.aSTBindings.get ( pListIndex , i ) ;
       PrettyAnnotation prettyAnnotation = this.expression.toPrettyString ( )
-          .getAnnotationForPrintable ( e ) ;
-      if ( ( pIndex >= prettyAnnotation.getStartOffset ( ) )
-          && ( pIndex <= prettyAnnotation.getEndOffset ( ) ) )
+          .getAnnotationForPrintable (
+              this.aSTBinding.get ( pBindingIndex , i ) ) ;
+      if ( ( pCharIndex >= prettyAnnotation.getStartOffset ( ) )
+          && ( pCharIndex <= prettyAnnotation.getEndOffset ( ) ) )
       {
         return true ;
       }
@@ -236,7 +242,7 @@ public class ASTNode
     if ( this.expression == null )
     {
       StringBuffer result = new StringBuffer ( "<html>" ) ;
-      result.append ( BEFOR_DESCRIPTION ) ;
+      result.append ( BEFORE_DESCRIPTION ) ;
       result.append ( this.description ) ;
       result.append ( AFTER_DESCRIPTION ) ;
       result.append ( BETWEEN ) ;
@@ -248,20 +254,15 @@ public class ASTNode
     }
     else
     {
-      updateCaption ( - 1 , - 1 , - 1 ) ;
+      updateCaption ( ASTNode.NO_SELECTION , ASTNode.NO_SELECTION ,
+          ASTNode.NO_BINDING ) ;
     }
   }
 
 
-  public void setDescription ( String pDescription )
+  public void setReplaceInThisNode ( boolean pReplaceExpression )
   {
-    this.description = pDescription ;
-  }
-
-
-  public void setReplaceExpression ( boolean pReplaceExpression )
-  {
-    this.replaceExpression = pReplaceExpression ;
+    this.replaceInThisNode = pReplaceExpression ;
   }
 
 
@@ -273,100 +274,108 @@ public class ASTNode
 
 
   public void updateCaption ( int pSelectionStart , int pSelectionEnd ,
-      int pPrintBindings )
+      int pBindingIndex )
   {
-    PrettyCharIterator p = this.expression.toPrettyString ( )
+    PrettyCharIterator prettyCharIterator = this.expression.toPrettyString ( )
         .toCharacterIterator ( ) ;
-    Color keywordColor = Theme.currentTheme ( ).getKeywordColor ( ) ;
-    Color constantColor = Theme.currentTheme ( ).getConstantColor ( ) ;
+    String keywordColor = getHex ( Theme.currentTheme ( ).getKeywordColor ( ) ) ;
+    String constantColor = getHex ( Theme.currentTheme ( ).getConstantColor ( ) ) ;
+    String selectionColor = getHex ( Theme.currentTheme ( )
+        .getSelectionColor ( ) ) ;
+    String bindingColor = getHex ( Theme.currentTheme ( ).getBindingColor ( ) ) ;
     StringBuffer result = new StringBuffer ( ) ;
     result.append ( "<html>" ) ;
-    result.append ( BEFOR_DESCRIPTION ) ;
+    result.append ( BEFORE_DESCRIPTION ) ;
     result.append ( this.description ) ;
     result.append ( AFTER_DESCRIPTION ) ;
     result.append ( BETWEEN ) ;
     result.append ( BEFOR_NAME ) ;
-    p.first ( ) ;
-    int index = 0 ;
-    while ( index < this.expressionString.length ( ) )
+    prettyCharIterator.first ( ) ;
+    int charIndex = 0 ;
+    while ( charIndex < this.expressionString.length ( ) )
     {
-      // Selected
-      if ( ( selected ) && ( index == pSelectionStart ) )
+      // Selection
+      if ( ( selection ) && ( charIndex == pSelectionStart ) )
       {
-        result.append ( "<b><font color=\"#"
-            + getHex ( Theme.currentTheme ( ).getSelectedColor ( ) ) + "\">" ) ;
-        if ( replace && this.replaceExpression )
+        result.append ( "<b><font color=\"#" + selectionColor + "\">" ) ;
+        // Replace selected Expression
+        if ( replace && this.replaceInThisNode )
         {
           result.append ( "&nbsp;" + REPLACE_STRING + "&nbsp;" ) ;
         }
-        while ( index <= pSelectionEnd )
+        while ( charIndex <= pSelectionEnd )
         {
-          if ( ! ( replace && this.replaceExpression ) )
+          // Do not replace selected Expression
+          if ( ! ( replace && this.replaceInThisNode ) )
           {
-            result.append ( this.expressionString.charAt ( index ) ) ;
+            result.append ( this.expressionString.charAt ( charIndex ) ) ;
           }
-          index ++ ;
-          p.next ( ) ;
+          // Next character
+          charIndex ++ ;
+          prettyCharIterator.next ( ) ;
         }
         result.append ( "</font></b>" ) ;
       }
-      // Not Selected and should be replaced
-      else if ( ! ( selected ) && ( replace )
-          && ( this.replaceExpression ) && ( index == pSelectionStart ) )
+      // No selection highlighting and replace the selection
+      else if ( ! ( selection ) && ( replace ) && ( this.replaceInThisNode )
+          && ( charIndex == pSelectionStart ) )
       {
-        result.append ( "<b>&nbsp;" + REPLACE_STRING + "&nbsp;" ) ;
-        while ( index <= pSelectionEnd )
+        result.append ( "<b>&nbsp;" + REPLACE_STRING + "&nbsp;</b>" ) ;
+        while ( charIndex <= pSelectionEnd )
         {
-          index ++ ;
-          p.next ( ) ;
+          // Next character
+          charIndex ++ ;
+          prettyCharIterator.next ( ) ;
         }
-        result.append ( "</b>" ) ;
       }
       // Binding
-      else if ( ( bindings ) && ( this.aSTBindings != null )
-          && ( pPrintBindings >= 0 ) && ( isInList ( pPrintBindings , index ) ) )
+      else if ( ( binding ) && ( this.aSTBinding != null )
+          && ( pBindingIndex >= 0 )
+          && ( isBinding ( pBindingIndex , charIndex ) ) )
       {
-        result.append ( "<b><font color=\"#"
-            + getHex ( Theme.currentTheme ( ).getBindingColor ( ) ) + "\">" ) ;
-        while ( isInList ( pPrintBindings , index ) )
+        result.append ( "<b><font color=\"#" + bindingColor + "\">" ) ;
+        while ( isBinding ( pBindingIndex , charIndex ) )
         {
-          result.append ( this.expressionString.charAt ( index ) ) ;
-          index ++ ;
-          p.next ( ) ;
+          result.append ( this.expressionString.charAt ( charIndex ) ) ;
+          // Next character
+          charIndex ++ ;
+          prettyCharIterator.next ( ) ;
         }
         result.append ( "</font></b>" ) ;
       }
       // Keyword
-      else if ( p.getStyle ( ) == PrettyStyle.KEYWORD )
+      else if ( prettyCharIterator.getStyle ( ) == PrettyStyle.KEYWORD )
       {
-        result.append ( "<b><font color=\"#" + getHex ( keywordColor ) + "\">" ) ;
-        while ( p.getStyle ( ) == PrettyStyle.KEYWORD )
+        result.append ( "<b><font color=\"#" + keywordColor + "\">" ) ;
+        while ( prettyCharIterator.getStyle ( ) == PrettyStyle.KEYWORD )
         {
-          result.append ( this.expressionString.charAt ( index ) ) ;
-          index ++ ;
-          p.next ( ) ;
+          result.append ( this.expressionString.charAt ( charIndex ) ) ;
+          // Next character
+          charIndex ++ ;
+          prettyCharIterator.next ( ) ;
         }
         result.append ( "</font></b>" ) ;
       }
       // Constant
-      else if ( p.getStyle ( ) == PrettyStyle.CONSTANT )
+      else if ( prettyCharIterator.getStyle ( ) == PrettyStyle.CONSTANT )
       {
-        result
-            .append ( "<b><font color=\"#" + getHex ( constantColor ) + "\">" ) ;
-        while ( p.getStyle ( ) == PrettyStyle.CONSTANT )
+        result.append ( "<b><font color=\"#" + constantColor + "\">" ) ;
+        while ( prettyCharIterator.getStyle ( ) == PrettyStyle.CONSTANT )
         {
-          result.append ( this.expressionString.charAt ( index ) ) ;
-          index ++ ;
-          p.next ( ) ;
+          result.append ( this.expressionString.charAt ( charIndex ) ) ;
+          // Next character
+          charIndex ++ ;
+          prettyCharIterator.next ( ) ;
         }
         result.append ( "</font></b>" ) ;
       }
       // Else
       else
       {
-        result.append ( this.expressionString.charAt ( index ) ) ;
-        index ++ ;
-        p.next ( ) ;
+        result.append ( this.expressionString.charAt ( charIndex ) ) ;
+        // Next character
+        charIndex ++ ;
+        prettyCharIterator.next ( ) ;
       }
     }
     result.append ( AFTER_NAME ) ;

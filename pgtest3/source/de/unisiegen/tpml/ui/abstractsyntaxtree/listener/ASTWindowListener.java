@@ -3,7 +3,9 @@ package de.unisiegen.tpml.ui.abstractsyntaxtree.listener ;
 
 import java.awt.event.WindowEvent ;
 import java.awt.event.WindowListener ;
-import de.unisiegen.tpml.ui.abstractsyntaxtree.ASTUI;
+import javax.swing.JFrame ;
+import de.unisiegen.tpml.ui.abstractsyntaxtree.ASTPreferences ;
+import de.unisiegen.tpml.ui.abstractsyntaxtree.ASTUI ;
 
 
 public class ASTWindowListener implements WindowListener
@@ -34,14 +36,13 @@ public class ASTWindowListener implements WindowListener
   public void windowClosing ( @ SuppressWarnings ( "unused" )
   WindowEvent pWindowEvent )
   {
-    this.aSTUI.getAbstractSyntaxTree ( ).getASTPreferences ( ).setWidth (
-        this.aSTUI.getJFrameAbstractSyntaxTree ( ).getWidth ( ) ) ;
-    this.aSTUI.getAbstractSyntaxTree ( ).getASTPreferences ( ).setHeight (
-        this.aSTUI.getJFrameAbstractSyntaxTree ( ).getHeight ( ) ) ;
-    this.aSTUI.getAbstractSyntaxTree ( ).getASTPreferences ( ).setPositionX (
-        this.aSTUI.getJFrameAbstractSyntaxTree ( ).getX ( ) ) ;
-    this.aSTUI.getAbstractSyntaxTree ( ).getASTPreferences ( ).setPositionY (
-        this.aSTUI.getJFrameAbstractSyntaxTree ( ).getY ( ) ) ;
+    ASTPreferences aSTPreferences = this.aSTUI.getAbstractSyntaxTree ( )
+        .getASTPreferences ( ) ;
+    JFrame jFrame = this.aSTUI.getJFrameAbstractSyntaxTree ( ) ;
+    aSTPreferences.setWidth ( jFrame.getWidth ( ) ) ;
+    aSTPreferences.setHeight ( jFrame.getHeight ( ) ) ;
+    aSTPreferences.setPositionX ( jFrame.getX ( ) ) ;
+    aSTPreferences.setPositionY ( jFrame.getY ( ) ) ;
   }
 
 

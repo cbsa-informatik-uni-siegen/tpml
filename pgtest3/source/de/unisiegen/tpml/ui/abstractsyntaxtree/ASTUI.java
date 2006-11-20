@@ -419,6 +419,18 @@ public class ASTUI
   }
 
 
+  public ASTItemListener getASTItemListener ( )
+  {
+    return this.aSTItemListener ;
+  }
+
+
+  public ASTMouseListener getASTMouseListener ( )
+  {
+    return this.aSTMouseListener ;
+  }
+
+
   public ASTTreeSelectionListener getASTTreeSelectionListener ( )
   {
     return this.aSTTreeSelectionListener ;
@@ -428,6 +440,42 @@ public class ASTUI
   public JTree getJAbstractSyntaxTree ( )
   {
     return this.jTreeAbstractSyntax ;
+  }
+
+
+  public JButton getJButtonClose ( )
+  {
+    return this.jButtonClose ;
+  }
+
+
+  public JButton getJButtonCloseAll ( )
+  {
+    return this.jButtonCloseAll ;
+  }
+
+
+  public JButton getJButtonCollapse ( )
+  {
+    return this.jButtonCollapse ;
+  }
+
+
+  public JButton getJButtonCollapseAll ( )
+  {
+    return this.jButtonCollapseAll ;
+  }
+
+
+  public JButton getJButtonExpand ( )
+  {
+    return this.jButtonExpand ;
+  }
+
+
+  public JButton getJButtonExpandAll ( )
+  {
+    return this.jButtonExpandAll ;
   }
 
 
@@ -446,6 +494,12 @@ public class ASTUI
   public JCheckBox getJCheckBoxSelected ( )
   {
     return this.jCheckBoxSelected ;
+  }
+
+
+  public JFrame getJFrameAbstractSyntaxTree ( )
+  {
+    return this.jFrameAbstractSyntaxTree ;
   }
 
 
@@ -491,6 +545,12 @@ public class ASTUI
   }
 
 
+  public DefaultTreeModel getTreeModel ( )
+  {
+    return this.treeModel ;
+  }
+
+
   public void nodeChanged ( DefaultMutableTreeNode pNode )
   {
     this.treeModel.nodeChanged ( pNode ) ;
@@ -507,65 +567,5 @@ public class ASTUI
   public void setVisible ( boolean pVisible )
   {
     this.jFrameAbstractSyntaxTree.setVisible ( pVisible ) ;
-  }
-
-
-  public JButton getJButtonClose ( )
-  {
-    return this.jButtonClose ;
-  }
-
-
-  public JButton getJButtonCloseAll ( )
-  {
-    return this.jButtonCloseAll ;
-  }
-
-
-  public JButton getJButtonCollapse ( )
-  {
-    return this.jButtonCollapse ;
-  }
-
-
-  public JButton getJButtonCollapseAll ( )
-  {
-    return this.jButtonCollapseAll ;
-  }
-
-
-  public JButton getJButtonExpand ( )
-  {
-    return this.jButtonExpand ;
-  }
-
-
-  public JButton getJButtonExpandAll ( )
-  {
-    return this.jButtonExpandAll ;
-  }
-
-
-  public ASTItemListener getASTItemListener ( )
-  {
-    return this.aSTItemListener ;
-  }
-
-
-  public ASTMouseListener getASTMouseListener ( )
-  {
-    return this.aSTMouseListener ;
-  }
-
-
-  public DefaultTreeModel getTreeModel ( )
-  {
-    return this.treeModel ;
-  }
-
-
-  public JFrame getJFrameAbstractSyntaxTree ( )
-  {
-    return this.jFrameAbstractSyntaxTree ;
   }
 }

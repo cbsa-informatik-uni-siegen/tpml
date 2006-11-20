@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.ui.abstractsyntaxtree.bindings ;
+package de.unisiegen.tpml.ui.abstractsyntaxtree.binding ;
 
 
 import java.util.Enumeration ;
@@ -7,45 +7,47 @@ import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.expressions.Identifier ;
 
 
-public class ASTBindings
+public class ASTBinding
 {
   private LinkedList < LinkedList < Expression >> list ;
 
 
-  private LinkedList < Expression > nothingFree ;
+  private LinkedList < Expression > notFree ;
 
 
-  private LinkedList < Expression > notBounded ;
+  private LinkedList < Expression > noBinding ;
 
 
   private Expression holeExpression ;
 
 
-  public ASTBindings ( )
+  public ASTBinding ( Expression pHoleExpression )
   {
     this.list = new LinkedList < LinkedList < Expression >> ( ) ;
-    this.nothingFree = new LinkedList < Expression > ( ) ;
-    this.notBounded = new LinkedList < Expression > ( ) ;
-    this.holeExpression = null ;
+    this.notFree = new LinkedList < Expression > ( ) ;
+    this.noBinding = new LinkedList < Expression > ( ) ;
+    this.holeExpression = pHoleExpression ;
   }
 
 
-  public ASTBindings ( Expression pExpression , String pId )
+  public ASTBinding ( Expression pHoleExpression , Expression pExpression ,
+      String pId )
   {
     this.list = new LinkedList < LinkedList < Expression >> ( ) ;
-    this.nothingFree = new LinkedList < Expression > ( ) ;
-    this.notBounded = new LinkedList < Expression > ( ) ;
-    this.holeExpression = null ;
+    this.notFree = new LinkedList < Expression > ( ) ;
+    this.noBinding = new LinkedList < Expression > ( ) ;
+    this.holeExpression = pHoleExpression ;
     add ( pExpression , pId ) ;
   }
 
 
-  public ASTBindings ( Expression pExpression , String pIdentifiers[] )
+  public ASTBinding ( Expression pHoleExpression , Expression pExpression ,
+      String pIdentifiers[] )
   {
     this.list = new LinkedList < LinkedList < Expression >> ( ) ;
-    this.nothingFree = new LinkedList < Expression > ( ) ;
-    this.notBounded = new LinkedList < Expression > ( ) ;
-    this.holeExpression = null ;
+    this.notFree = new LinkedList < Expression > ( ) ;
+    this.noBinding = new LinkedList < Expression > ( ) ;
+    this.holeExpression = pHoleExpression ;
     add ( pExpression , pIdentifiers ) ;
   }
 
@@ -58,9 +60,9 @@ public class ASTBindings
 
   public void add ( Expression pExpression , String pIdentifiers[] )
   {
-    for ( int i = 0 ; i < pIdentifiers.length ; i ++ )
+    for ( String id : pIdentifiers )
     {
-      this.list.add ( free ( pExpression , pIdentifiers [ i ] ) ) ;
+      this.list.add ( free ( pExpression , id ) ) ;
     }
   }
 
@@ -75,7 +77,7 @@ public class ASTBindings
         result.add ( pExpression ) ;
         return result ;
       }
-      this.notBounded.add ( pExpression ) ;
+      this.noBinding.add ( pExpression ) ;
     }
     Enumeration < Expression > children = pExpression.children ( ) ;
     while ( children.hasMoreElements ( ) )
@@ -91,7 +93,7 @@ public class ASTBindings
       }
       else
       {
-        this.nothingFree.add ( current ) ;
+        this.notFree.add ( current ) ;
       }
     }
     return result ;
@@ -110,15 +112,15 @@ public class ASTBindings
   }
 
 
-  public LinkedList < Expression > getNotBounded ( )
+  public Expression getNoBinding ( int pIndex )
   {
-    return this.notBounded ;
+    return this.noBinding.get ( pIndex ) ;
   }
 
 
-  public LinkedList < Expression > getNothingFree ( )
+  public LinkedList < Expression > getNotFree ( )
   {
-    return this.nothingFree ;
+    return this.notFree ;
   }
 
 
@@ -131,11 +133,5 @@ public class ASTBindings
   public int size ( int pListIndex )
   {
     return this.list.get ( pListIndex ).size ( ) ;
-  }
-
-
-  public void setHoleExpression ( Expression pExpression )
-  {
-    this.holeExpression = pExpression ;
   }
 }

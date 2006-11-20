@@ -82,10 +82,10 @@ public final class Theme extends AbstractBean {
   /**
    * The {@link Color} used to render selected expressions.
    * 
-   * @see #getSelectedColor()
-   * @see #setSelectedColor(Color)
+   * @see #getSelectionColor()
+   * @see #setSelectionColor(Color)
    */ 
-  private Color selectedColor;
+  private Color selectionColor;
   
   /**
    * The {@link Color} used to render bindings.
@@ -169,8 +169,8 @@ public final class Theme extends AbstractBean {
 		// load the expressionColor setting
 		this.expressionColor = Color.decode(this.preferences.get("expressionColor", "#000000"));
 		
-    // load the selectedColor setting
-    this.selectedColor = Color.decode(this.preferences.get("selectedColor", "#FF0000"));
+    // load the selectionColor setting
+    this.selectionColor = Color.decode(this.preferences.get("selectionColor", "#FF0000"));
     
     // load the bindingColor setting
     this.bindingColor = Color.decode(this.preferences.get("bindingColor", "#FFAA33"));
@@ -432,11 +432,11 @@ public final class Theme extends AbstractBean {
    * 
    * @return the color for selected expressions.
    * 
-   * @see #setSelectedColor(Color)
+   * @see #setSelectionColor(Color)
    * @see Color
    */
-  public Color getSelectedColor() {
-    return this.selectedColor;
+  public Color getSelectionColor() {
+    return this.selectionColor;
   }
   
   /**
@@ -478,27 +478,27 @@ public final class Theme extends AbstractBean {
 	}
 	
   /**
-   * Sets the color that should be used to render selected expressions to the specified <code>selectedColor</code>.
+   * Sets the color that should be used to render selected expressions to the specified <code>selectionColor</code>.
    * 
-   * @param selectedColor the color for selected expressions.
+   * @param selectionColor the color for selected expressions.
    * 
-   * @see #getSelectedColor()
+   * @see #getSelectionColor()
    * @see Color
    * 
-   * @throws NullPointerException if <code>selectedColor</code> is <code>null</code>.
+   * @throws NullPointerException if <code>selectionColor</code> is <code>null</code>.
    */
-  public void setSelectedColor(Color selectedColor) {
+  public void setSelectionColor(Color selectedColor) {
     if (selectedColor == null) {
-      throw new NullPointerException("selectedColor is null");
+      throw new NullPointerException("selectionColor is null");
     }
-    if (!this.selectedColor.equals(selectedColor)) {
+    if (!this.selectionColor.equals(selectedColor)) {
       // update the keywordColor
-      Color oldKeywordColor = this.selectedColor;
-      this.selectedColor = selectedColor;
-      firePropertyChange("selectedColor", oldKeywordColor, selectedColor);
+      Color oldKeywordColor = this.selectionColor;
+      this.selectionColor = selectedColor;
+      firePropertyChange("selectionColor", oldKeywordColor, selectedColor);
       
       // save the new setting
-      this.preferences.put("selectedColor", encodeColor(selectedColor));
+      this.preferences.put("selectionColor", encodeColor(selectedColor));
     }
   }
   
@@ -510,11 +510,11 @@ public final class Theme extends AbstractBean {
    * @see #getBindingColor()
    * @see Color
    * 
-   * @throws NullPointerException if <code>selectedColor</code> is <code>null</code>.
+   * @throws NullPointerException if <code>selectionColor</code> is <code>null</code>.
    */
   public void setBindingColor(Color bindingColor) {
     if (bindingColor == null) {
-      throw new NullPointerException("selectedColor is null");
+      throw new NullPointerException("selectionColor is null");
     }
     if (!this.bindingColor.equals(bindingColor)) {
       // update the keywordColor
