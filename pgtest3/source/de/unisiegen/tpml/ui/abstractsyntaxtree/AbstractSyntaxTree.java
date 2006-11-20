@@ -388,6 +388,14 @@ public class AbstractSyntaxTree
 
   public void setExpression ( Expression pExpression )
   {
+    // TODO Test
+    LinkedList < String > list = new LinkedList < String > ( pExpression
+        .free ( ) ) ;
+    System.out.println ( "Cf - Size: " + list.size ( ) ) ;
+    for ( String s : list )
+    {
+      System.out.println ( "Cf - Free: " + s ) ;
+    }// Test
     calculateBindings ( pExpression ) ;
     this.aSTUI.setRootNode ( expression ( pExpression ) ) ;
   }

@@ -5,7 +5,7 @@ import java.awt.event.MouseEvent ;
 import java.awt.event.MouseListener ;
 import javax.swing.tree.DefaultMutableTreeNode ;
 import javax.swing.tree.TreePath ;
-import de.unisiegen.tpml.ui.abstractsyntaxtree.ASTUI;
+import de.unisiegen.tpml.ui.abstractsyntaxtree.ASTUI ;
 
 
 public class ASTMouseListener implements MouseListener
@@ -81,16 +81,21 @@ public class ASTMouseListener implements MouseListener
     this.aSTUI.getJButtonClose ( ).setEnabled ( true ) ;
     this.aSTUI.getJMenuItemCloseAll ( ).setEnabled ( true ) ;
     this.aSTUI.getJButtonCloseAll ( ).setEnabled ( true ) ;
+    boolean allVisible = allChildrenVisible ( this.aSTUI
+        .getJAbstractSyntaxTree ( ).getPathForRow ( 0 ) ) ;
+    this.aSTUI.getJMenuItemExpandAll ( ).setEnabled ( ! allVisible ) ;
+    this.aSTUI.getJButtonExpandAll ( ).setEnabled ( ! allVisible ) ;
     if ( d.getChildCount ( ) > 0 )
     {
+      boolean allChildrenVisible = allChildrenVisible ( treePath ) ;
       boolean selectedChildVisible = this.aSTUI.getJAbstractSyntaxTree ( )
-          .isVisible (
-              this.aSTUI.getJAbstractSyntaxTree ( ).getSelectionPath ( )
-                  .pathByAddingChild ( d.getChildAt ( 0 ) ) ) ;
+          .isVisible ( treePath.pathByAddingChild ( d.getChildAt ( 0 ) ) ) ;
       boolean rootChildVisible = this.aSTUI.getJAbstractSyntaxTree ( )
           .isVisible (
               this.aSTUI.getJAbstractSyntaxTree ( ).getPathForRow ( 0 )
                   .pathByAddingChild ( d.getChildAt ( 0 ) ) ) ;
+      this.aSTUI.getJMenuItemExpand ( ).setEnabled ( ! allChildrenVisible ) ;
+      this.aSTUI.getJButtonExpand ( ).setEnabled ( ! allChildrenVisible ) ;
       this.aSTUI.getJMenuItemCollapse ( ).setEnabled ( selectedChildVisible ) ;
       this.aSTUI.getJButtonCollapse ( ).setEnabled ( selectedChildVisible ) ;
       this.aSTUI.getJMenuItemCollapseAll ( ).setEnabled ( rootChildVisible ) ;
@@ -104,13 +109,37 @@ public class ASTMouseListener implements MouseListener
     {
       this.aSTUI.getJMenuItemExpand ( ).setEnabled ( false ) ;
       this.aSTUI.getJButtonExpand ( ).setEnabled ( false ) ;
-      this.aSTUI.getJMenuItemExpandAll ( ).setEnabled ( false ) ;
-      this.aSTUI.getJButtonExpandAll ( ).setEnabled ( false ) ;
+      // this.aSTUI.getJMenuItemExpandAll ( ).setEnabled ( false ) ;
+      // this.aSTUI.getJButtonExpandAll ( ).setEnabled ( false ) ;
       this.aSTUI.getJMenuItemCollapse ( ).setEnabled ( false ) ;
       this.aSTUI.getJButtonCollapse ( ).setEnabled ( false ) ;
       this.aSTUI.getJMenuItemClose ( ).setEnabled ( false ) ;
       this.aSTUI.getJButtonClose ( ).setEnabled ( false ) ;
     }
+  }
+
+
+  private boolean allChildrenVisible ( TreePath pTreePath )
+  {
+    DefaultMutableTreeNode d = ( DefaultMutableTreeNode ) pTreePath
+        .getLastPathComponent ( ) ;
+    if ( d.getChildCount ( ) == 0 )
+    {
+      return true ;
+    }
+    boolean childVisible = true ;
+    for ( int i = 0 ; i < d.getChildCount ( ) ; i ++ )
+    {
+      if ( ! this.aSTUI.getJAbstractSyntaxTree ( ).isVisible (
+          pTreePath.pathByAddingChild ( d.getChildAt ( i ) ) ) )
+      {
+        return false ;
+      }
+      childVisible = childVisible
+          && allChildrenVisible ( pTreePath.pathByAddingChild ( d
+              .getChildAt ( i ) ) ) ;
+    }
+    return childVisible ;
   }
 
 

@@ -5,7 +5,7 @@ import java.awt.event.ActionEvent ;
 import java.awt.event.ActionListener ;
 import javax.swing.tree.DefaultMutableTreeNode ;
 import javax.swing.tree.TreePath ;
-import de.unisiegen.tpml.ui.abstractsyntaxtree.ASTUI;
+import de.unisiegen.tpml.ui.abstractsyntaxtree.ASTUI ;
 
 
 public class ASTActionListener implements ActionListener
@@ -25,26 +25,32 @@ public class ASTActionListener implements ActionListener
     if ( actionCommand.equals ( "close" ) )
     {
       close ( ) ;
+      this.aSTUI.getASTMouseListener ( ).setStatus ( ) ;
     }
     else if ( actionCommand.equals ( "close_all" ) )
     {
       closeAll ( ) ;
+      this.aSTUI.getASTMouseListener ( ).setStatus ( ) ;
     }
     else if ( actionCommand.equals ( "expand" ) )
     {
       expand ( ) ;
+      this.aSTUI.getASTMouseListener ( ).setStatus ( ) ;
     }
     else if ( actionCommand.equals ( "expand_all" ) )
     {
       expandAll ( ) ;
+      this.aSTUI.getASTMouseListener ( ).setStatus ( ) ;
     }
     else if ( actionCommand.equals ( "collapse" ) )
     {
       collapse ( ) ;
+      this.aSTUI.getASTMouseListener ( ).setStatus ( ) ;
     }
     else if ( actionCommand.equals ( "collapse_all" ) )
     {
       collapseAll ( ) ;
+      this.aSTUI.getASTMouseListener ( ).setStatus ( ) ;
     }
   }
 
