@@ -37,6 +37,9 @@ public class ASTPreferences
     this.replace = this.preferences.getBoolean ( "replace" , true ) ;
     this.bindings = this.preferences.getBoolean ( "bindings" , true ) ;
     this.selected = this.preferences.getBoolean ( "selected" , true ) ;
+    ASTNode.setReplace ( this.replace ) ;
+    ASTNode.setBindings ( this.bindings ) ;
+    ASTNode.setSelected ( this.selected ) ;
     this.width = this.preferences.getInt ( "jFrameWidth" , 600 ) ;
     this.height = this.preferences.getInt ( "jFrameHeight" , 450 ) ;
     this.positionX = this.preferences.getInt ( "jFramePositionX" , 100 ) ;

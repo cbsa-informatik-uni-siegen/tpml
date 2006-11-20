@@ -30,30 +30,30 @@ public class ASTNode
   private static final String REPLACE_STRING = "..." ;
 
 
-  private static boolean checkedSelected = true ;
+  private static boolean selected = true ;
 
 
-  private static boolean checkedReplace = true ;
+  private static boolean replace = true ;
 
 
-  private static boolean checkedBindings = true ;
+  private static boolean bindings = true ;
 
 
-  public static void setCheckedBindings ( boolean pCheckedBindings )
+  public static void setBindings ( boolean pCheckedBindings )
   {
-    checkedBindings = pCheckedBindings ;
+    bindings = pCheckedBindings ;
   }
 
 
-  public static void setCheckedReplace ( boolean pCheckedReplace )
+  public static void setReplace ( boolean pCheckedReplace )
   {
-    checkedReplace = pCheckedReplace ;
+    replace = pCheckedReplace ;
   }
 
 
-  public static void setCheckedSelected ( boolean pCheckedSelected )
+  public static void setSelected ( boolean pCheckedSelected )
   {
-    checkedSelected = pCheckedSelected ;
+    selected = pCheckedSelected ;
   }
 
 
@@ -132,13 +132,13 @@ public class ASTNode
       result.append ( AFTER_DESCRIPTION ) ;
       result.append ( BETWEEN ) ;
       result.append ( BEFOR_NAME ) ;
-      if ( checkedSelected )
+      if ( selected )
       {
         result.append ( "<b><font color=\"#"
             + getHex ( Theme.currentTheme ( ).getSelectedColor ( ) ) + "\">" ) ;
       }
       result.append ( this.expressionString ) ;
-      if ( checkedSelected )
+      if ( selected )
       {
         result.append ( "</font></b>" ) ;
       }
@@ -291,17 +291,17 @@ public class ASTNode
     while ( index < this.expressionString.length ( ) )
     {
       // Selected
-      if ( ( checkedSelected ) && ( index == pSelectionStart ) )
+      if ( ( selected ) && ( index == pSelectionStart ) )
       {
         result.append ( "<b><font color=\"#"
             + getHex ( Theme.currentTheme ( ).getSelectedColor ( ) ) + "\">" ) ;
-        if ( checkedReplace && this.replaceExpression )
+        if ( replace && this.replaceExpression )
         {
           result.append ( "&nbsp;" + REPLACE_STRING + "&nbsp;" ) ;
         }
         while ( index <= pSelectionEnd )
         {
-          if ( ! ( checkedReplace && this.replaceExpression ) )
+          if ( ! ( replace && this.replaceExpression ) )
           {
             result.append ( this.expressionString.charAt ( index ) ) ;
           }
@@ -311,7 +311,7 @@ public class ASTNode
         result.append ( "</font></b>" ) ;
       }
       // Not Selected and should be replaced
-      else if ( ! ( checkedSelected ) && ( checkedReplace )
+      else if ( ! ( selected ) && ( replace )
           && ( this.replaceExpression ) && ( index == pSelectionStart ) )
       {
         result.append ( "<b>&nbsp;" + REPLACE_STRING + "&nbsp;" ) ;
@@ -323,7 +323,7 @@ public class ASTNode
         result.append ( "</b>" ) ;
       }
       // Binding
-      else if ( ( checkedBindings ) && ( this.aSTBindings != null )
+      else if ( ( bindings ) && ( this.aSTBindings != null )
           && ( pPrintBindings >= 0 ) && ( isInList ( pPrintBindings , index ) ) )
       {
         result.append ( "<b><font color=\"#"

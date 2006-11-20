@@ -23,7 +23,7 @@ public class ASTItemListener implements ItemListener
     boolean selected = pItemEvent.getStateChange ( ) == ItemEvent.SELECTED ;
     if ( pItemEvent.getSource ( ).equals ( this.aSTUI.getJCheckBoxReplace ( ) ) )
     {
-      ASTNode.setCheckedReplace ( selected ) ;
+      ASTNode.setReplace ( selected ) ;
       this.aSTUI.getASTTreeSelectionListener ( ).update (
           this.aSTUI.getJAbstractSyntaxTree ( ).getSelectionPath ( ) ) ;
       this.aSTUI.getAbstractSyntaxTree ( ).getASTPreferences ( )
@@ -32,7 +32,7 @@ public class ASTItemListener implements ItemListener
     else if ( pItemEvent.getSource ( ).equals (
         this.aSTUI.getJCheckBoxBindings ( ) ) )
     {
-      ASTNode.setCheckedBindings ( selected ) ;
+      ASTNode.setBindings ( selected ) ;
       this.aSTUI.getASTTreeSelectionListener ( ).update (
           this.aSTUI.getJAbstractSyntaxTree ( ).getSelectionPath ( ) ) ;
       this.aSTUI.getAbstractSyntaxTree ( ).getASTPreferences ( )
@@ -41,7 +41,7 @@ public class ASTItemListener implements ItemListener
     else if ( pItemEvent.getSource ( ).equals (
         this.aSTUI.getJCheckBoxSelected ( ) ) )
     {
-      ASTNode.setCheckedSelected ( selected ) ;
+      ASTNode.setSelected ( selected ) ;
       this.aSTUI.getASTTreeSelectionListener ( ).update (
           this.aSTUI.getJAbstractSyntaxTree ( ).getSelectionPath ( ) ) ;
       this.aSTUI.getAbstractSyntaxTree ( ).getASTPreferences ( )
