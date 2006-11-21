@@ -298,6 +298,8 @@ public class SmallStepNodeComponent extends JComponent {
 					{
 						int pX = toListenForMouse.get(t);
 						int pX1 = toListenForMouse.get(t+1);
+						int pY = toListenForMouse.get(t+2);
+						int pY1 = toListenForMouse.get(t+3);
 						//brauche uch zur Zeit nicht
 						//int pY = toListenForMouse.get(t+2);
 					  //int pY1 = toListenForMouse.get(t+3);
@@ -307,25 +309,24 @@ public class SmallStepNodeComponent extends JComponent {
 						
 						
 						//Herausfinden, ob ich auf einem erwarteten Zeichen bin!
-						if (event.getX() >= pX && event.getX() <= pX1  )
+						if ((event.getX() >= pX) && (event.getX() <= pX1) && (event.getY() >= pY-4) && (event.getY() <= pY1-14))
 						{
 							//TODO TestausgbaetoListenForMouse.setElementAt(0, 1);
 							//System.out.println("JA, JETZT MUSS DER MOUSEFFEKT ANGEHEN");
 							toListenForMouse.setMark(true);
-							
 						}
 						toListenForMouse.setHereIam(event.getX(), event.getY());
 						SmallStepNodeComponent.this.expression.repaint();
-						
 					}
-					
-					
-					
-					
 					//System.out.println(" Event: "+event);
 					//System.out.println("Typ: "+event.getSource());
 					//System.out.println("Position "+event.getX() +", "+ event.getY());
 				}
+				else
+				{
+					SmallStepNodeComponent.this.expression.repaint();
+				}
+				
 			}
 		};
 		
