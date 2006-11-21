@@ -314,6 +314,7 @@ public class SmallStepNodeComponent extends JComponent {
 							toListenForMouse.setMark(true);
 							
 						}
+						toListenForMouse.setHereIam(event.getX(), event.getY());
 						SmallStepNodeComponent.this.expression.repaint();
 						
 					}

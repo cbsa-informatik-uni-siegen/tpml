@@ -10,7 +10,11 @@ public class ToListenForMouseContainer
 {
 	private Vector toListenForMouse;
 	
+	private int [] hereIam;
+	
 	private boolean mark;
+	
+	private int rightList;
 	
 	private static ToListenForMouseContainer myToListenForMouseContainer = null;
 	
@@ -18,6 +22,11 @@ public class ToListenForMouseContainer
 	{
 		toListenForMouse = new Vector();
 		mark = false;
+		hereIam = new int [2];
+		hereIam[0] = 0;
+		hereIam[1] = 0;
+		rightList = -2;
+		
 	}
 	
 	public static ToListenForMouseContainer getInstanceOf()
@@ -75,6 +84,33 @@ public class ToListenForMouseContainer
 	public void setMark(boolean b)
 	{
 		mark = b;
+	}
+	
+	public void setHereIam(int x, int y)
+	{
+		hereIam[0] = x;
+		hereIam[1] = y;
+	}
+	
+	public int [] getHereIam ()
+	{
+		return hereIam;
+	}
+	
+	public void setRightList (int x)
+	{
+		if (x == -1)
+		{
+			System.out.println("Der will verbotener weise .1 setzen, scheiﬂe!");
+			System.exit(125);
+		}
+			
+		rightList = x;
+  }
+	
+	public int getRightList ()
+	{
+		return rightList;
 	}
 	
 }

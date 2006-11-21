@@ -17,6 +17,7 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation;
 import de.unisiegen.tpml.core.prettyprinter.PrettyCharIterator;
 import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable;
 import de.unisiegen.tpml.core.prettyprinter.PrettyString;
+import de.unisiegen.tpml.graphics.Theme;
 import de.unisiegen.tpml.graphics.components.Bound;
 import de.unisiegen.tpml.graphics.components.ShowBound;
 
@@ -257,7 +258,7 @@ public class PrettyStringRenderer extends AbstractRenderer {
 	{
 		//System.out.println("Nun wird überprüft, ob die Zahl in der Liste steht...");
 		//System.out.println("Länge der komischen Liste: "+list.size());
-		boolean result = false;
+		boolean result = false;	//steht für false, positive Werte werden als Position und true missbraucht
 		
 		for (int i=0; i<list.size(); i++)
 		{
@@ -269,9 +270,51 @@ public class PrettyStringRenderer extends AbstractRenderer {
 			//list.get(i).
 			//int tmp = 1;
 			//System.out.println(""+tmp);
-			if (test <= max && test >= min) 
+			if ((test <= max) && (test >= min)) 
 				{
 					return true;
+				}
+			else
+			{
+				int count=0;
+				LinkedList <PrettyAnnotation> rest = list.get(i).getMarks();
+				for (int j = 0 ; j<rest.size(); j++)
+				{
+					count++;
+					PrettyAnnotation tmp = rest.get(j);
+					int min1 = tmp.getStartOffset();
+					int max1 = tmp.getEndOffset();
+					if ((test <= max1) && (test >= min1)) 
+					{
+						return true;
+					}
+				}
+			}
+		}
+		//nur nachsehen, ob diese Methode geht, damit tatsächlich was gemalt wird
+		return result;
+	}
+	
+	
+	public static int isInListe (int test, LinkedList <Bound> list)
+	{
+		//System.out.println("Nun wird überprüft, ob die Zahl in der Liste steht...");
+		//System.out.println("Länge der komischen Liste: "+list.size());
+		int result = -1;
+		
+		for (int i=0; i<list.size(); i++)
+		{
+			int min = list.get(i).getStartOffset();
+			int max = list.get(i).getEndOffset();
+			
+			//LinkedList<PrettyAnnotation> other = list.get(i).marks;
+			//System.out.println("alles zwischen "+min+" und "+max+ " wird makiert.");
+			//list.get(i).
+			//int tmp = 1;
+			//System.out.println(""+tmp);
+			if ((test <= max) && (test >= min)) 
+				{
+					return i;
 				}
 			else
 			{
@@ -281,17 +324,18 @@ public class PrettyStringRenderer extends AbstractRenderer {
 					PrettyAnnotation tmp = rest.get(j);
 					int min1 = tmp.getStartOffset();
 					int max1 = tmp.getEndOffset();
-					if (test <= max1 && test >= min1) 
+					if ((test <= max1) && (test >= min1)) 
 					{
-						return true;
+						return i;
 					}
 				}
 			}
 		}
-		//nur nachsehen, ob diese Methode geht, damit tatsächlich was gemalt wird
 		return result;
-		
 	}
+
+	
+	
 	
 	
 	/**
@@ -308,9 +352,8 @@ public class PrettyStringRenderer extends AbstractRenderer {
 	 */
 	public void render (int x, int y, int height,  Graphics gc) {
 		
+		//Eine Instanz, die Instanz von toLitenForMouse
 		toListenForMouse = ToListenForMouseContainer.getInstanceOf();
-		//nicht malen
-		//toListenForMouse.add(-1);
 		
 		int[] breakOffsets = null;
 		if (this.result.annotation != null) {
@@ -320,14 +363,11 @@ public class PrettyStringRenderer extends AbstractRenderer {
 			breakOffsets = new int[0];
 		}
 		
-		
 		// get the starting offsets x is just the left border
 		// y will be the center of the space available minus the
 		// propper amount of rows 
 		int i = 0;
 		int posX = x;
-		
-		
 		
 		int posY = y + height / 2;
 		posY += AbstractRenderer.fontAscent / 2;
@@ -347,9 +387,11 @@ public class PrettyStringRenderer extends AbstractRenderer {
 		// now we can start to render the expression
 		PrettyCharIterator it = this.prettyString.toCharacterIterator();
 		int number=-1;
-		for (char c = it.first(); c != CharacterIterator.DONE; c = it.next(), i++) {
+		for (char c = it.first(); c != CharacterIterator.DONE; c = it.next(), i++) 
+		{
 			number++;
-			for (int j=0; j<breakOffsets.length; j++) {
+			for (int j=0; j<breakOffsets.length; j++) 
+			{
 				if (breakOffsets [j] == i) {
 					posY += AbstractRenderer.fontHeight;
 					
@@ -361,6 +403,10 @@ public class PrettyStringRenderer extends AbstractRenderer {
 			
 			FontMetrics fm = null;
 			
+			fm = AbstractRenderer.expFontMetrics;
+			int charWidth = fm.stringWidth("" + c);
+			int charHighth = fm.getHeight();
+			
 			//TODO: Vielleicht unterstreichen
 			
 			ShowBound instanceOfShowBound = ShowBound.getInstance(); //gets singelton instance of showbound to show bindings
@@ -370,59 +416,70 @@ public class PrettyStringRenderer extends AbstractRenderer {
 			
 			//Indexes indexes = sb.getIndexes();
 			//if i == get
-			
-			
 			if (isIn(i, annotationsList))
 			{
-				//using thes variables will underline with the existing underlinealgo using their color
-				//underlineStart = i;
-				//underlineEnd = i;
+				//ALTusing thes variables will underline with the existing underlinealgo using their color
+				//ALTunderlineStart = i;
+				//ALTunderlineEnd = i;
 				
-				fm = AbstractRenderer.expFontMetrics;
-				int charWidth = fm.stringWidth("" + c);
-				int charHighth = fm.getHeight();
-				
-				
-				
+				//fm = AbstractRenderer.expFontMetrics;
+				//int charWidth = fm.stringWidth("" + c);
+				//int charHighth = fm.getHeight();
+	
 				//Die eventuell zu markierenden werden in eine Liste gespeichert!
+				//Alle, die eine Bindung laut Liste haben...
 				toListenForMouse.add(posX);
 				toListenForMouse.add(posX+charWidth);
 				toListenForMouse.add(posY);
 				toListenForMouse.add(posY+charHighth);
-			
-				
-				if (toListenForMouse.getMark())
-				{
-					
-					Font orginalFont = gc.getFont();
-					String fontName = orginalFont.getName();
-					int fontSize = orginalFont.getSize();
-					Font newFont = new Font(fontName, Font.BOLD|Font.ITALIC, fontSize);
-					gc.setColor(Color.orange);
-					gc.setFont(newFont);
-					//int charWidth = fm.stringWidth("" + c);
-					gc.drawLine(posX, posY + 1, posX + charWidth, posY + 1);
-				}
-				
-				//beginne bei 1, weil das 0 steht für malen oder nicht
-				//for (int t = 1; t<toListenForMouse.size(); t=t+4)
-				//{
-				//	int pX = toListenForMouse.get(t);
-				//	System.out.println("Liste Größe: "+toListenForMouse.size()+" und t ist: "+t);
-				//	int pX1 = toListenForMouse.get(t+1);
-				//	int pY = toListenForMouse.get(t+2);
-				//	int pY1 = toListenForMouse.get(t+3);
-//				Komische TEstausgabe TODO komische Testausgabe
-			//		System.out.println("Markiert wird laut Liste: "+pX +"-" +(pX1) +" " +pY + "-" + (pY1));
-				//}
-//			
-				
+				System.out.println("Der Buchstabe wird der Liste hinzugefügt: "+c);
+				System.out.println("Der Buchstabe steht an Position : "+i);
 				
 			}
+							
+			//Wenn gemalt werden soll, also die Maus über einem Buchstaben steht	
+			if (toListenForMouse.getMark() && isInListe(i, annotationsList) != -1)
+				{
+					System.out.println("Der Mauszeiger ist über einem Buchstaben, der gemalt werden soll");
+				  //TODO hier muss überprüft werden, ob die Position des Mauszeigers auf der annotationList liegt
+					//Das ist die Xposition des Mauszeigers
+				  int xPos = toListenForMouse.getHereIam()[0];
+					//System.out.println("Hier ist die Maus "+xPos);
+					
+					//fm = AbstractRenderer.expFontMetrics;
+					//int charWidth = fm.stringWidth("" + c);
+					//int charHighth = fm.getHeight();
+					
+					//Pürfen, auf welchem Zeichen die Maus ist...
+					if ((xPos >= posX) && (xPos <= posX+charWidth))
+					{
+						System.out.println("Er ist über einem anzunakdenden Zeichen: "+c);
+						System.out.println("Es steht in der Liste : "+isInListe(i, annotationsList));
+						if (isInListe(i, annotationsList) != -1) 
+							{
+								toListenForMouse.setRightList(isInListe(i, annotationsList));		
+							}
+					 }
+					if (isInListe(i, annotationsList) != -1)
+					{
+						if (isInListe(i, annotationsList) == toListenForMouse.getRightList())
+						{
+							Font orginalFont = gc.getFont();
+							String fontName = orginalFont.getName();
+							int fontSize = orginalFont.getSize();
+							Font newFont = new Font(fontName, Font.BOLD|Font.ITALIC, fontSize);
+							gc.setColor(Theme.currentTheme().getBindingColor());
+							//gc.setColor(Color.orange);
+							gc.setFont(newFont);
+							//int charWidth = fm.stringWidth("" + c);
+							gc.drawLine(posX, posY + 1, posX + charWidth, posY + 1);
+						}
+					}
+				}
 			//manipulating font
 			
 			
-			//else
+			else
 			{
 //			 select the proppert font and color for the character
 				
@@ -430,24 +487,24 @@ public class PrettyStringRenderer extends AbstractRenderer {
 				case NONE:
 					gc.setFont(AbstractRenderer.expFont);
 					gc.setColor(AbstractRenderer.expColor);
-					fm = AbstractRenderer.expFontMetrics;
+					//fm = AbstractRenderer.expFontMetrics;
 					break;
 				case KEYWORD:
 					gc.setFont(AbstractRenderer.keywordFont);
 					gc.setColor(AbstractRenderer.keywordColor);
-					fm = AbstractRenderer.keywordFontMetrics;
+					//fm = AbstractRenderer.keywordFontMetrics;
 					break;
 				case CONSTANT:
 					gc.setFont(AbstractRenderer.constantFont);
 					gc.setColor(AbstractRenderer.constantColor);
-					fm = AbstractRenderer.constantFontMetrics;
+					//fm = AbstractRenderer.constantFontMetrics;
 					break;
 				case COMMENT:
 					continue;
 				case TYPE:
 					gc.setFont(AbstractRenderer.typeFont);
 					gc.setColor(AbstractRenderer.typeColor);
-					fm = AbstractRenderer.typeFontMetrics;
+					//fm = AbstractRenderer.typeFontMetrics;
 					break;
 				}
 				
@@ -462,7 +519,7 @@ public class PrettyStringRenderer extends AbstractRenderer {
 				
 				
 				// draw the line below the character 
-				int charWidth = fm.stringWidth("" + c);
+				//int charWidth = fm.stringWidth("" + c);
 				gc.drawLine(posX, posY + 1, posX + charWidth, posY + 1);
 				
 				// reset the color for the characters
@@ -481,18 +538,8 @@ public class PrettyStringRenderer extends AbstractRenderer {
 			posX += fm.stringWidth("" + c);
 			
 			// go on to the next character
-
-			
-			
-			
-			
-			
-		}
-		
-		
+		}		
 	}
-	
-	
 }
 
 
