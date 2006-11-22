@@ -8,6 +8,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionAdapter;
+import java.util.LinkedList;
 
 import javax.swing.JComponent;
 
@@ -285,6 +286,27 @@ public class CompoundExpression<S, E> extends JComponent {
 			bound.setHoleExpression(this.expression);
 			
 			bound.check(this.expression);
+			
+//		Debug
+			if (false)
+			{
+				
+				LinkedList<Bound> bounds = bound.getAnnotations();
+				
+				for (int i=0; i< bounds.size(); i++)
+				{
+					Bound tmp = bounds.get(i);
+					System.err.print("BM- Id: " +tmp.getStartOffset()+"->"+tmp.getEndOffset()+" Bindung: ");
+					for (int j=0; j<tmp.getMarks().size();j++)
+					{
+						System.err.print(tmp.getMarks().get(j).getStartOffset()+"->"+tmp.getMarks().get(j).getEndOffset()+"  ");
+					}
+					System.err.println();
+					System.err.println("BM- "+tmp.getExpressions().size());
+				}
+				
+				
+			}
 		  // CHANGE BENJAMIN END
           
 					this.expressionRenderer = new PrettyStringRenderer ();
