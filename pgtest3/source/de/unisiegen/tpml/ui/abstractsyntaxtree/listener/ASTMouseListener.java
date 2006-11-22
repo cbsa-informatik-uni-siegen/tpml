@@ -148,6 +148,13 @@ public class ASTMouseListener implements MouseListener
       this.aSTUI.getJButtonCollapse ( ).setEnabled ( false ) ;
       this.aSTUI.getJMenuItemClose ( ).setEnabled ( false ) ;
       this.aSTUI.getJButtonClose ( ).setEnabled ( false ) ;
+      // If the root is the only node, disable buttons
+      DefaultMutableTreeNode root = ( DefaultMutableTreeNode ) this.aSTUI
+          .getTreeModel ( ).getRoot ( ) ;
+      this.aSTUI.getJMenuItemCloseAll ( ).setEnabled ( ! root.isLeaf ( ) ) ;
+      this.aSTUI.getJButtonCloseAll ( ).setEnabled ( ! root.isLeaf ( ) ) ;
+      this.aSTUI.getJMenuItemCollapseAll ( ).setEnabled ( ! root.isLeaf ( ) ) ;
+      this.aSTUI.getJButtonCollapseAll ( ).setEnabled ( ! root.isLeaf ( ) ) ;
     }
   }
 }
