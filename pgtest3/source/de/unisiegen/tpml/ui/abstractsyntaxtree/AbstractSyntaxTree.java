@@ -5,6 +5,7 @@ import java.lang.reflect.Method ;
 import java.util.Enumeration ;
 import java.util.LinkedList ;
 import javax.swing.tree.DefaultMutableTreeNode ;
+import de.unisiegen.tpml.Debug ;
 import de.unisiegen.tpml.core.expressions.BinaryOperator ;
 import de.unisiegen.tpml.core.expressions.CurriedLet ;
 import de.unisiegen.tpml.core.expressions.CurriedLetRec ;
@@ -60,8 +61,12 @@ public class AbstractSyntaxTree
   private ASTPreferences aSTPreferences ;
 
 
+  private Expression oldExpression ;
+
+
   private AbstractSyntaxTree ( )
   {
+    this.oldExpression = null ;
     this.aSTPreferences = new ASTPreferences ( ) ;
     this.aSTUI = new ASTUI ( this ) ;
   }
@@ -214,6 +219,12 @@ public class AbstractSyntaxTree
   public ASTPreferences getASTPreferences ( )
   {
     return this.aSTPreferences ;
+  }
+
+
+  public ASTUI getASTUI ( )
+  {
+    return this.aSTUI ;
   }
 
 
@@ -394,18 +405,21 @@ public class AbstractSyntaxTree
 
   public void setExpression ( Expression pExpression )
   {
-    // TODO überprüfen ob neue Expression
+    // Debug.addUser ( "benjamin" ) ;
+    // Debug.addUser ( "michael" ) ;
+    Debug.out.println ( "AbstractSyntaxTree.setExpression" , "christian" ) ;
     if ( pExpression == null )
     {
+      Debug.err.println ( "Expression is null" , "christian" ) ;
       return ;
     }
-    // calculateBindings ( pExpression ) ;
+    if ( ( this.oldExpression != null )
+        && ( pExpression.equals ( this.oldExpression ) ) )
+    {
+      Debug.err.println ( "Expression has not changed" , "christian " ) ;
+      return ;
+    }
+    this.oldExpression = pExpression ;
     this.aSTUI.setRootNode ( expression ( pExpression ) ) ;
-  }
-
-
-  public ASTUI getASTUI ( )
-  {
-    return this.aSTUI ;
   }
 }

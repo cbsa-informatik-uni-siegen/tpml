@@ -2,12 +2,15 @@ package de.unisiegen.tpml.graphics.smallstep ;
 
 
 import java.awt.Color ;
+import java.awt.Dimension ;
 import java.awt.GridBagConstraints ;
 import java.awt.GridBagLayout ;
 import java.awt.Insets ;
 import java.awt.event.ComponentAdapter ;
 import java.awt.event.ComponentEvent ;
+import javax.swing.JPanel ;
 import javax.swing.JScrollPane ;
+import javax.swing.JSplitPane ;
 import de.unisiegen.tpml.core.ProofGuessException ;
 import de.unisiegen.tpml.core.smallstep.SmallStepProofModel ;
 import de.unisiegen.tpml.graphics.AbstractProofView ;
@@ -43,13 +46,16 @@ public class SmallStepView extends AbstractProofView
   /**
    * The small step component.
    */
-  private SmallStepComponent component ;
+  protected SmallStepComponent component ;
 
 
   /**
    * The scroll pane for the <code>component</code>.
    */
-  private JScrollPane scrollPane ;
+  protected JScrollPane scrollPane ;
+
+
+  private JSplitPane jSplitPane ;
 
 
   //
@@ -74,38 +80,51 @@ public class SmallStepView extends AbstractProofView
         .getExpression ( ) ) ;
     model.addTreeModelListener ( new ASTTreeModelListener ( abstractSyntaxTree ,
         model ) ) ;
-    GridBagLayout gridBagLayout = new GridBagLayout ( ) ;
     GridBagConstraints gridBagConstraints = new GridBagConstraints ( ) ;
-    setLayout ( gridBagLayout ) ;
+    setLayout ( new GridBagLayout ( ) ) ;
     this.scrollPane = new JScrollPane ( ) ;
     this.component = new SmallStepComponent ( model , isAdvanced ( ) ) ;
-    gridBagConstraints.fill = GridBagConstraints.BOTH ;
-    gridBagConstraints.insets = new Insets ( 0 , 0 , 0 , 0 ) ;
-    gridBagConstraints.gridx = 0 ;
-    gridBagConstraints.gridy = 0 ;
-    gridBagConstraints.weightx = 10 ;
-    gridBagConstraints.weighty = 10 ;
-    add ( this.scrollPane , gridBagConstraints ) ;
-    gridBagConstraints.fill = GridBagConstraints.BOTH ;
-    gridBagConstraints.insets = new Insets ( 1 , 1 , 1 , 1 ) ;
-    gridBagConstraints.gridx = 0 ;
-    gridBagConstraints.gridy = 7 ;
-    gridBagConstraints.weightx = 0 ;
-    gridBagConstraints.weighty = 0 ;
-    add ( abstractSyntaxTree.getASTUI ( ).getJPanelMain ( ) ,
-        gridBagConstraints ) ;
     this.scrollPane.setViewportView ( this.component ) ;
     this.scrollPane.getViewport ( ).setBackground ( Color.WHITE ) ;
+    this.scrollPane.setPreferredSize ( new Dimension ( 10000 , 10000 ) ) ;
     this.scrollPane.addComponentListener ( new ComponentAdapter ( )
     {
       @ Override
-      public void componentResized ( ComponentEvent event )
+      public void componentResized ( @ SuppressWarnings ( "unused" )
+      ComponentEvent event )
       {
         SmallStepView.this.component
             .setAvailableWidth ( SmallStepView.this.scrollPane.getViewport ( )
                 .getWidth ( ) ) ;
       }
     } ) ;
+    JPanel ast = abstractSyntaxTree.getASTUI ( ).getJPanelMain ( ) ;
+    ast.getPreferredSize ( ).getHeight ( ) ;
+    this.jSplitPane = new JSplitPane ( JSplitPane.VERTICAL_SPLIT ,
+        this.scrollPane , ast ) ;
+    this.jSplitPane.setOneTouchExpandable ( true ) ;
+    this.jSplitPane.setResizeWeight ( 0.75 ) ;
+    gridBagConstraints.fill = GridBagConstraints.BOTH ;
+    gridBagConstraints.insets = new Insets ( 0 , 0 , 0 , 0 ) ;
+    gridBagConstraints.gridx = 0 ;
+    gridBagConstraints.gridy = 0 ;
+    gridBagConstraints.weightx = 10 ;
+    gridBagConstraints.weighty = 10 ;
+    add ( this.jSplitPane , gridBagConstraints ) ;
+  }
+
+
+  //
+  // Primitives
+  //
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.tpml.graphics.ProofView#guess()
+   */
+  public void guess ( ) throws IllegalStateException , ProofGuessException
+  {
+    this.component.guess ( ) ;
   }
 
 
@@ -122,19 +141,5 @@ public class SmallStepView extends AbstractProofView
   {
     super.setAdvanced ( advanced ) ;
     this.component.setAdvanced ( isAdvanced ( ) ) ;
-  }
-
-
-  //
-  // Primitives
-  //
-  /**
-   * {@inheritDoc}
-   * 
-   * @see de.unisiegen.tpml.graphics.ProofView#guess()
-   */
-  public void guess ( ) throws IllegalStateException , ProofGuessException
-  {
-    this.component.guess ( ) ;
   }
 }

@@ -2,7 +2,6 @@ package de.unisiegen.tpml.ui.abstractsyntaxtree ;
 
 
 import java.awt.Color ;
-import java.awt.Dimension ;
 import java.awt.Font ;
 import java.awt.GridBagConstraints ;
 import java.awt.GridBagLayout ;
@@ -459,7 +458,6 @@ public class ASTUI
     this.gridBagConstraints.gridy = 1 ;
     this.gridBagConstraints.weightx = 0 ;
     this.gridBagConstraints.weighty = 0 ;
-    this.jPanelMain.setPreferredSize ( new Dimension ( 100 , 300 ) ) ;
     this.jPanelMain.add ( this.jPanelPreferences , this.gridBagConstraints ) ;
   }
 
