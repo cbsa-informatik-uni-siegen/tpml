@@ -163,6 +163,16 @@ public final class MultiLet extends Expression {
   /**
    * {@inheritDoc}
    *
+   * @see de.unisiegen.tpml.core.expressions.Expression#clone()
+   */
+  @Override
+  public MultiLet clone() {
+    return new MultiLet(this.identifiers, this.tau, this.e1.clone(), this.e2.clone());
+  }
+  
+  /**
+   * {@inheritDoc}
+   *
    * @see de.unisiegen.tpml.core.expressions.Expression#free()
    */
   @Override

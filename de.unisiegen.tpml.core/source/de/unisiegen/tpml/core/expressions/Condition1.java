@@ -90,11 +90,23 @@ public final class Condition1 extends Expression {
   /**
    * {@inheritDoc}
    *
+   * @see de.unisiegen.tpml.core.expressions.Expression#clone()
+   */
+  @Override
+  public Condition1 clone() {
+    return new Condition1(this.e0.clone(), this.e1.clone());
+  }
+  
+  /**
+   * {@inheritDoc}
+   *
    * @see de.unisiegen.tpml.core.expressions.Expression#substitute(de.unisiegen.tpml.core.typechecker.TypeSubstitution)
    */
   @Override
   public Expression substitute(TypeSubstitution substitution) {
-    return new Condition1(this.e0.substitute(substitution), this.e1.substitute(substitution));
+    Expression e0 = this.e0.substitute(substitution);
+    Expression e1 = this.e1.substitute(substitution);
+    return (this.e0 == e0 && this.e1 == e1) ? this : new Condition1(e0, e1);
   }
   
   /**
@@ -104,7 +116,9 @@ public final class Condition1 extends Expression {
    */
   @Override
   public Expression substitute(String id, Expression e) {
-    return new Condition1(this.e0.substitute(id, e), this.e1.substitute(id, e));
+    Expression e0 = this.e0.substitute(id, e);
+    Expression e1 = this.e1.substitute(id, e);
+    return (this.e0 == e0 && this.e1 == e1) ? this : new Condition1(e0, e1);
   }
 
   

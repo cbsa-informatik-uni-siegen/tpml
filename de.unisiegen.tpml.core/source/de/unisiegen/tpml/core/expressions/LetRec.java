@@ -50,6 +50,16 @@ public final class LetRec extends Let {
   /**
    * {@inheritDoc}
    *
+   * @see de.unisiegen.tpml.core.expressions.Let#clone()
+   */
+  @Override
+  public LetRec clone() {
+    return new LetRec(this.id, this.tau, this.e1.clone(), this.e2.clone());
+  }
+  
+  /**
+   * {@inheritDoc}
+   *
    * @see de.unisiegen.tpml.core.expressions.Let#free()
    */
   @Override

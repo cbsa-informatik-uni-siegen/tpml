@@ -87,6 +87,16 @@ public final class Application extends Expression {
   //
   
   /**
+   * {@inheritDoc}
+   *
+   * @see de.unisiegen.tpml.core.expressions.Expression#clone()
+   */
+  @Override
+  public Application clone() {
+    return new Application(this.e1.clone(), this.e2.clone());
+  }
+  
+  /**
    * An <code>Application</code> can be a value if it consists
    * of a binary operator and a value, or if it consists of a
    * <code>UnaryCons</code> operator and a value.
@@ -108,7 +118,9 @@ public final class Application extends Expression {
    */
   @Override
   public Application substitute(TypeSubstitution substitution) {
-    return new Application(this.e1.substitute(substitution), this.e2.substitute(substitution));
+    Expression e1 = this.e1.substitute(substitution);
+    Expression e2 = this.e2.substitute(substitution);
+    return (this.e1 == e1 && this.e2 == e2) ? this : new Application(e1, e2);
   }
   
   /**
@@ -126,7 +138,9 @@ public final class Application extends Expression {
    */
   @Override
   public Application substitute(String id, Expression e) {
-    return new Application(this.e1.substitute(id, e), this.e2.substitute(id, e));
+    Expression e1 = this.e1.substitute(id, e);
+    Expression e2 = this.e2.substitute(id, e);
+    return (this.e1 == e1 && this.e2 == e2) ? this : new Application(e1, e2);
   }
   
   

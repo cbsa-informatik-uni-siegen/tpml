@@ -86,6 +86,19 @@ public final class Exn extends Expression {
   /**
    * {@inheritDoc}
    *
+   * Cloning is not necessary for exceptions and as such, we just a return a reference to
+   * <code>this</code> here.
+   * 
+   * @see de.unisiegen.tpml.core.expressions.Expression#clone()
+   */
+  @Override
+  public Exn clone() {
+    return this;
+  }
+  
+  /**
+   * {@inheritDoc}
+   *
    * Substitution below exceptions is not possible, so for the <code>Exn</code> class, this method
    * always returns a reference to the exception itself.
    * 

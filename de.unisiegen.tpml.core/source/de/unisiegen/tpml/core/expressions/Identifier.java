@@ -63,6 +63,16 @@ public final class Identifier extends Value {
   //
   
   /**
+   * {@inheritDoc}
+   *
+   * @see de.unisiegen.tpml.core.expressions.Expression#clone()
+   */
+  @Override
+  public Identifier clone() {
+    return new Identifier(this.name);
+  }
+  
+  /**
    * Returns a set that contains exacty one element, which is
    * the name of the identifier.
    * 
@@ -91,7 +101,9 @@ public final class Identifier extends Value {
   @Override
   public Expression substitute(String id, Expression e) {
     if (id.equals(getName())) {
-      return e;
+      // we need to clone the expression here to make sure we can distinguish an expression
+      // in the pretty printer that is substituted multiple times
+      return e.clone();
     }
     else {
       return this;

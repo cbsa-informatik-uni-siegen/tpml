@@ -56,6 +56,16 @@ public final class CurriedLetRec extends CurriedLet {
   /**
    * {@inheritDoc}
    *
+   * @see de.unisiegen.tpml.core.expressions.CurriedLet#clone()
+   */
+  @Override
+  public CurriedLetRec clone() {
+    return new CurriedLetRec(this.identifiers, this.types, this.e1.clone(), this.e2.clone());
+  }
+  
+  /**
+   * {@inheritDoc}
+   *
    * @see de.unisiegen.tpml.core.expressions.CurriedLet#free()
    */
   @Override

@@ -141,6 +141,16 @@ public final class MultiLambda extends Value {
   /**
    * {@inheritDoc}
    *
+   * @see de.unisiegen.tpml.core.expressions.Expression#clone()
+   */
+  @Override
+  public MultiLambda clone() {
+    return new MultiLambda(this.identifiers, this.tau, this.e.clone());
+  }
+  
+  /**
+   * {@inheritDoc}
+   *
    * @see de.unisiegen.tpml.core.expressions.Expression#free()
    */
   @Override

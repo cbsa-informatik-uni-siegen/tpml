@@ -89,6 +89,15 @@ public final class And extends Expression {
   // Primitives
   //
   
+  /**
+   * {@inheritDoc}
+   *
+   * @see de.unisiegen.tpml.core.expressions.Expression#clone()
+   */
+  @Override
+  public And clone() {
+    return new And(this.e1.clone(), this.e2.clone());
+  }
   
   /**
    * {@inheritDoc}
@@ -97,7 +106,9 @@ public final class And extends Expression {
    */
   @Override
   public Expression substitute(TypeSubstitution substitution) {
-    return new And(this.e1.substitute(substitution), this.e2.substitute(substitution));
+    Expression e1 = this.e1.substitute(substitution);
+    Expression e2 = this.e2.substitute(substitution);
+    return (this.e1 == e1 && this.e2 == e2) ? this : new And(e1, e2);
   }
   
   /**
@@ -107,7 +118,9 @@ public final class And extends Expression {
    */
   @Override
   public Expression substitute(String id, Expression e) {
-    return new And(this.e1.substitute(id, e), this.e2.substitute(id, e));
+    Expression e1 = this.e1.substitute(id, e);
+    Expression e2 = this.e2.substitute(id, e);
+    return (this.e1 == e1 && this.e2 == e2) ? this : new And(e1, e2);
   }
 
   

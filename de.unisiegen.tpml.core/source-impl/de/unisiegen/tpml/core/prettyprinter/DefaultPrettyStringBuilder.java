@@ -1,6 +1,7 @@
 package de.unisiegen.tpml.core.prettyprinter;
 
 import java.util.HashMap;
+import java.util.IdentityHashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
@@ -157,7 +158,7 @@ final class DefaultPrettyStringBuilder implements PrettyStringBuilder {
     StringBuilder buffer = new StringBuilder(length);
     
     // allocate an empty annotations map
-    Map<PrettyPrintable, PrettyAnnotation> annotations = new HashMap<PrettyPrintable, PrettyAnnotation>();
+    Map<PrettyPrintable, PrettyAnnotation> annotations = new IdentityHashMap<PrettyPrintable, PrettyAnnotation>();
     
     // determine the string representation and place it into the string buffer
     determineString(buffer, annotations, styles);
