@@ -300,12 +300,14 @@ public class CompoundExpression<S, E> extends JComponent {
 				for (int i=0; i< bounds.size(); i++)
 				{
 					Bound tmp = bounds.get(i);
-					Debug.printerr("BM- Id: " +tmp.getStartOffset()+"->"+tmp.getEndOffset()+" Bindung: ","Benjamin");
+					Debug.err.print("BM- Id: " +tmp.getStartOffset()+"->"+tmp.getEndOffset()+" Bindung: ","Benjamin");
 					for (int j=0; j<tmp.getMarks().size();j++)
 					{
-						Debug.printerr(tmp.getMarks().get(j).getStartOffset()+"->"+tmp.getMarks().get(j).getEndOffset()+"  ","Benjamin");
+						Debug.err.print(tmp.getMarks().get(j).getStartOffset()+"->"+tmp.getMarks().get(j).getEndOffset()+"  ","Benjamin");
 					}
-					Debug.printerrln("","Benjamin");
+					Debug.err.println(" ","Benjamin");
+					Debug.out.println("Test","Benjamin");
+					Debug.out.println("Test2","Christian");
 					
 				}
 				
