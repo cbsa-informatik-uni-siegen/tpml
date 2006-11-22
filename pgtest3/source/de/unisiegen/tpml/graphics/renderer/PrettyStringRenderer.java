@@ -431,8 +431,9 @@ public class PrettyStringRenderer extends AbstractRenderer {
 				toListenForMouse.add(posX+charWidth);
 				toListenForMouse.add(posY);
 				toListenForMouse.add(posY+charHighth);
-				System.out.println("Der Buchstabe wird der Liste hinzugefügt: "+c);
-				System.out.println("Der Buchstabe steht an Position : "+i);
+				//TODO Testausgaben
+				//System.out.println("Der Buchstabe wird der Liste hinzugefügt: "+c);
+				//System.out.println("Der Buchstabe steht an Position : "+i);
 				
 			}
 							
@@ -445,7 +446,7 @@ public class PrettyStringRenderer extends AbstractRenderer {
 				
 				
 				
-				System.out.println("Der Mauszeiger ist über einem Buchstaben, der gemalt werden soll");
+				//System.out.println("Der Mauszeiger ist über einem Buchstaben, der gemalt werden soll");
 				  //TODO hier muss überprüft werden, ob die Position des Mauszeigers auf der annotationList liegt
 					//Das ist die Xposition des Mauszeigers
 				  int xPos = toListenForMouse.getHereIam()[0];
@@ -458,8 +459,9 @@ public class PrettyStringRenderer extends AbstractRenderer {
 					//Pürfen, auf welchem Zeichen die Maus ist...
 					if ((xPos >= posX) && (xPos <= posX+charWidth))
 					{
-						System.out.println("Er ist über einem anzunakdenden Zeichen: "+c);
-						System.out.println("Es steht in der Liste : "+isInListe(i, annotationsList));
+						//TODO TEstausgaben
+						//System.out.println("Er ist über einem anzunakdenden Zeichen: "+c);
+						//System.out.println("Es steht in der Liste : "+isInListe(i, annotationsList));
 						if (isInListe(i, annotationsList) != -1) 
 							{
 								toListenForMouse.setRightList(isInListe(i, annotationsList));		
