@@ -382,17 +382,7 @@ public class AbstractSyntaxTree
     {
       return ;
     }
-    // TODO Test
-    LinkedList < String > list = new LinkedList < String > ( pExpression
-        .free ( ) ) ;
-    System.out.println ( "Cf - Expression: "
-        + pExpression.toPrettyString ( ).toString ( ) ) ;
-    System.out.println ( "Cf - Free Size: " + list.size ( ) ) ;
-    for ( String s : list )
-    {
-      System.out.println ( "Cf - Free: " + s ) ;
-    }// Test
-    calculateBindings ( pExpression ) ;
+    //calculateBindings ( pExpression ) ;
     this.aSTUI.setRootNode ( expression ( pExpression ) ) ;
   }
 

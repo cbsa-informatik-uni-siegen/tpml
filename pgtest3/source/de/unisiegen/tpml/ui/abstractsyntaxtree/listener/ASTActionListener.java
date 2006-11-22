@@ -52,6 +52,22 @@ public class ASTActionListener implements ActionListener
       collapseAll ( ) ;
       this.aSTUI.getASTMouseListener ( ).setStatus ( ) ;
     }
+    else if ( actionCommand.equals ( "selection" ) )
+    {
+      this.aSTUI.getASTItemListener ( ).update (
+          this.aSTUI.getJMenuItemSelection ( ).isSelected ( ) , null ,
+          "selection" ) ;
+    }
+    else if ( actionCommand.equals ( "binding" ) )
+    {
+      this.aSTUI.getASTItemListener ( ).update (
+          this.aSTUI.getJMenuItemBinding ( ).isSelected ( ) , null , "binding" ) ;
+    }
+    else if ( actionCommand.equals ( "replace" ) )
+    {
+      this.aSTUI.getASTItemListener ( ).update (
+          this.aSTUI.getJMenuItemReplace ( ).isSelected ( ) , null , "replace" ) ;
+    }
   }
 
 

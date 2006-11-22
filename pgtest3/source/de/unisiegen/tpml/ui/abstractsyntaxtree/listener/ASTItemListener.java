@@ -20,32 +20,49 @@ public class ASTItemListener implements ItemListener
 
   public void itemStateChanged ( ItemEvent pItemEvent )
   {
-    boolean selected = pItemEvent.getStateChange ( ) == ItemEvent.SELECTED ;
-    if ( pItemEvent.getSource ( ).equals ( this.aSTUI.getJCheckBoxReplace ( ) ) )
+    update ( pItemEvent.getStateChange ( ) == ItemEvent.SELECTED , pItemEvent
+        .getSource ( ) , "" ) ;
+  }
+
+
+  public void update ( boolean pSelected , Object pSource ,
+      String pActionCommand )
+  {
+    if ( ( pActionCommand.equals ( "replace" ) )
+        || ( ( pSource != null ) && ( pSource.equals ( this.aSTUI
+            .getJCheckBoxReplace ( ) ) ) ) )
     {
-      ASTNode.setReplace ( selected ) ;
+      ASTNode.setReplace ( pSelected ) ;
       this.aSTUI.getASTTreeSelectionListener ( ).update (
           this.aSTUI.getJAbstractSyntaxTree ( ).getSelectionPath ( ) ) ;
       this.aSTUI.getAbstractSyntaxTree ( ).getASTPreferences ( ).setReplace (
-          selected ) ;
+          pSelected ) ;
+      this.aSTUI.getJCheckBoxReplace ( ).setSelected ( pSelected ) ;
+      this.aSTUI.getJMenuItemReplace ( ).setSelected ( pSelected ) ;
     }
-    else if ( pItemEvent.getSource ( ).equals (
-        this.aSTUI.getJCheckBoxBindings ( ) ) )
+    else if ( ( pActionCommand.equals ( "binding" ) )
+        || ( ( pSource != null ) && ( pSource.equals ( this.aSTUI
+            .getJCheckBoxBinding ( ) ) ) ) )
     {
-      ASTNode.setBinding ( selected ) ;
+      ASTNode.setBinding ( pSelected ) ;
       this.aSTUI.getASTTreeSelectionListener ( ).update (
           this.aSTUI.getJAbstractSyntaxTree ( ).getSelectionPath ( ) ) ;
       this.aSTUI.getAbstractSyntaxTree ( ).getASTPreferences ( ).setBindings (
-          selected ) ;
+          pSelected ) ;
+      this.aSTUI.getJCheckBoxBinding ( ).setSelected ( pSelected ) ;
+      this.aSTUI.getJMenuItemBinding ( ).setSelected ( pSelected ) ;
     }
-    else if ( pItemEvent.getSource ( ).equals (
-        this.aSTUI.getJCheckBoxSelected ( ) ) )
+    else if ( ( pActionCommand.equals ( "selection" ) )
+        || ( ( pSource != null ) && ( pSource.equals ( this.aSTUI
+            .getJCheckBoxSelection ( ) ) ) ) )
     {
-      ASTNode.setSelection ( selected ) ;
+      ASTNode.setSelection ( pSelected ) ;
       this.aSTUI.getASTTreeSelectionListener ( ).update (
           this.aSTUI.getJAbstractSyntaxTree ( ).getSelectionPath ( ) ) ;
       this.aSTUI.getAbstractSyntaxTree ( ).getASTPreferences ( ).setSelected (
-          selected ) ;
+          pSelected ) ;
+      this.aSTUI.getJCheckBoxSelection ( ).setSelected ( pSelected ) ;
+      this.aSTUI.getJMenuItemSelection ( ).setSelected ( pSelected ) ;
     }
   }
 }

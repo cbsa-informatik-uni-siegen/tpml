@@ -10,7 +10,9 @@ import java.util.ResourceBundle ;
 import javax.swing.BorderFactory ;
 import javax.swing.JButton ;
 import javax.swing.JCheckBox ;
+import javax.swing.JCheckBoxMenuItem ;
 import javax.swing.JFrame ;
+import javax.swing.JMenu ;
 import javax.swing.JMenuItem ;
 import javax.swing.JPanel ;
 import javax.swing.JPopupMenu ;
@@ -78,10 +80,10 @@ public class ASTUI
   private JCheckBox jCheckBoxReplace ;
 
 
-  private JCheckBox jCheckBoxBindings ;
+  private JCheckBox jCheckBoxBinding ;
 
 
-  private JCheckBox jCheckBoxSelected ;
+  private JCheckBox jCheckBoxSelection ;
 
 
   private ASTTreeSelectionListener aSTTreeSelectionListener ;
@@ -120,7 +122,19 @@ public class ASTUI
   private JMenuItem jMenuItemClose ;
 
 
+  private JCheckBoxMenuItem jMenuItemBinding ;
+
+
   private JMenuItem jMenuItemCloseAll ;
+
+
+  private JMenu jMenuItemPreferences ;
+
+
+  private JCheckBoxMenuItem jMenuItemReplace ;
+
+
+  private JCheckBoxMenuItem jMenuItemSelection ;
 
 
   public ASTUI ( AbstractSyntaxTree pAbstractSyntaxTree )
@@ -138,36 +152,83 @@ public class ASTUI
     this.jPopupMenu = new JPopupMenu ( ) ;
     this.jMenuItemExpand = new JMenuItem ( this.resourceBundle
         .getString ( "expand" ) ) ;
+    this.jMenuItemExpand.setMnemonic ( this.resourceBundle.getString (
+        "expandMnemonic" ).charAt ( 0 ) ) ;
     this.jMenuItemExpand.setActionCommand ( "expand" ) ;
     this.jMenuItemExpand.addActionListener ( this.aSTActionListener ) ;
     this.jPopupMenu.add ( this.jMenuItemExpand ) ;
     this.jMenuItemExpandAll = new JMenuItem ( this.resourceBundle
         .getString ( "expand_all" ) ) ;
+    this.jMenuItemExpandAll.setMnemonic ( this.resourceBundle.getString (
+        "expand_allMnemonic" ).charAt ( 0 ) ) ;
     this.jMenuItemExpandAll.setActionCommand ( "expand_all" ) ;
     this.jMenuItemExpandAll.addActionListener ( this.aSTActionListener ) ;
     this.jPopupMenu.add ( this.jMenuItemExpandAll ) ;
     this.jPopupMenu.addSeparator ( ) ;
     this.jMenuItemCollapse = new JMenuItem ( this.resourceBundle
         .getString ( "collapse" ) ) ;
+    this.jMenuItemCollapse.setMnemonic ( this.resourceBundle.getString (
+        "collapseMnemonic" ).charAt ( 0 ) ) ;
     this.jMenuItemCollapse.setActionCommand ( "collapse" ) ;
     this.jMenuItemCollapse.addActionListener ( this.aSTActionListener ) ;
     this.jPopupMenu.add ( this.jMenuItemCollapse ) ;
     this.jMenuItemCollapseAll = new JMenuItem ( this.resourceBundle
         .getString ( "collapse_all" ) ) ;
+    this.jMenuItemCollapseAll.setMnemonic ( this.resourceBundle.getString (
+        "collapse_allMnemonic" ).charAt ( 0 ) ) ;
     this.jMenuItemCollapseAll.setActionCommand ( "collapse_all" ) ;
     this.jMenuItemCollapseAll.addActionListener ( this.aSTActionListener ) ;
     this.jPopupMenu.add ( this.jMenuItemCollapseAll ) ;
     this.jPopupMenu.addSeparator ( ) ;
     this.jMenuItemClose = new JMenuItem ( this.resourceBundle
         .getString ( "close" ) ) ;
+    this.jMenuItemClose.setMnemonic ( this.resourceBundle.getString (
+        "closeMnemonic" ).charAt ( 0 ) ) ;
     this.jMenuItemClose.setActionCommand ( "close" ) ;
     this.jMenuItemClose.addActionListener ( this.aSTActionListener ) ;
     this.jPopupMenu.add ( this.jMenuItemClose ) ;
     this.jMenuItemCloseAll = new JMenuItem ( this.resourceBundle
         .getString ( "close_all" ) ) ;
+    this.jMenuItemCloseAll.setMnemonic ( this.resourceBundle.getString (
+        "close_allMnemonic" ).charAt ( 0 ) ) ;
     this.jMenuItemCloseAll.setActionCommand ( "close_all" ) ;
     this.jMenuItemCloseAll.addActionListener ( this.aSTActionListener ) ;
     this.jPopupMenu.add ( this.jMenuItemCloseAll ) ;
+    this.jPopupMenu.addSeparator ( ) ;
+    this.jMenuItemPreferences = new JMenu ( this.resourceBundle
+        .getString ( "preferences" ) ) ;
+    this.jMenuItemPreferences.setMnemonic ( this.resourceBundle.getString (
+        "preferencesMnemonic" ).charAt ( 0 ) ) ;
+    this.jMenuItemPreferences.setActionCommand ( "preferences" ) ;
+    this.jMenuItemPreferences.addActionListener ( this.aSTActionListener ) ;
+    this.jPopupMenu.add ( this.jMenuItemPreferences ) ;
+    this.jMenuItemSelection = new JCheckBoxMenuItem ( this.resourceBundle
+        .getString ( "selection" ) ) ;
+    this.jMenuItemSelection.setMnemonic ( this.resourceBundle.getString (
+        "selectionMnemonic" ).charAt ( 0 ) ) ;
+    this.jMenuItemSelection.setActionCommand ( "selection" ) ;
+    this.jMenuItemSelection.addActionListener ( this.aSTActionListener ) ;
+    this.jMenuItemSelection.setSelected ( this.abstractSyntaxTree
+        .getASTPreferences ( ).isSelected ( ) ) ;
+    this.jMenuItemPreferences.add ( this.jMenuItemSelection ) ;
+    this.jMenuItemBinding = new JCheckBoxMenuItem ( this.resourceBundle
+        .getString ( "binding" ) ) ;
+    this.jMenuItemBinding.setMnemonic ( this.resourceBundle.getString (
+        "bindingMnemonic" ).charAt ( 0 ) ) ;
+    this.jMenuItemBinding.setActionCommand ( "binding" ) ;
+    this.jMenuItemBinding.addActionListener ( this.aSTActionListener ) ;
+    this.jMenuItemBinding.setSelected ( this.abstractSyntaxTree
+        .getASTPreferences ( ).isBindings ( ) ) ;
+    this.jMenuItemPreferences.add ( this.jMenuItemBinding ) ;
+    this.jMenuItemReplace = new JCheckBoxMenuItem ( this.resourceBundle
+        .getString ( "replace" ) ) ;
+    this.jMenuItemReplace.setMnemonic ( this.resourceBundle.getString (
+        "replaceMnemonic" ).charAt ( 0 ) ) ;
+    this.jMenuItemReplace.setActionCommand ( "replace" ) ;
+    this.jMenuItemReplace.addActionListener ( this.aSTActionListener ) ;
+    this.jMenuItemReplace.setSelected ( this.abstractSyntaxTree
+        .getASTPreferences ( ).isReplace ( ) ) ;
+    this.jMenuItemPreferences.add ( this.jMenuItemReplace ) ;
     // Layout
     this.gridBagLayout = new GridBagLayout ( ) ;
     this.gridBagConstraints = new GridBagConstraints ( ) ;
@@ -245,23 +306,23 @@ public class ASTUI
     this.jButtonCloseAll.setFocusable ( false ) ;
     this.jButtonCloseAll.addActionListener ( this.aSTActionListener ) ;
     // CheckBox Selected
-    this.jCheckBoxSelected = new JCheckBox ( this.resourceBundle
-        .getString ( "selected" ) ) ;
-    this.jCheckBoxSelected.setMnemonic ( this.resourceBundle.getString (
-        "selectedMnemonic" ).charAt ( 0 ) ) ;
-    this.jCheckBoxSelected.setSelected ( this.abstractSyntaxTree
+    this.jCheckBoxSelection = new JCheckBox ( this.resourceBundle
+        .getString ( "selection" ) ) ;
+    this.jCheckBoxSelection.setMnemonic ( this.resourceBundle.getString (
+        "selectionMnemonic" ).charAt ( 0 ) ) ;
+    this.jCheckBoxSelection.setSelected ( this.abstractSyntaxTree
         .getASTPreferences ( ).isSelected ( ) ) ;
-    this.jCheckBoxSelected.setFocusable ( false ) ;
-    this.jCheckBoxSelected.addItemListener ( this.aSTItemListener ) ;
+    this.jCheckBoxSelection.setFocusable ( false ) ;
+    this.jCheckBoxSelection.addItemListener ( this.aSTItemListener ) ;
     // CheckBox Bindings
-    this.jCheckBoxBindings = new JCheckBox ( this.resourceBundle
-        .getString ( "bindings" ) ) ;
-    this.jCheckBoxBindings.setMnemonic ( this.resourceBundle.getString (
-        "bindingsMnemonic" ).charAt ( 0 ) ) ;
-    this.jCheckBoxBindings.setSelected ( this.abstractSyntaxTree
+    this.jCheckBoxBinding = new JCheckBox ( this.resourceBundle
+        .getString ( "binding" ) ) ;
+    this.jCheckBoxBinding.setMnemonic ( this.resourceBundle.getString (
+        "bindingMnemonic" ).charAt ( 0 ) ) ;
+    this.jCheckBoxBinding.setSelected ( this.abstractSyntaxTree
         .getASTPreferences ( ).isBindings ( ) ) ;
-    this.jCheckBoxBindings.setFocusable ( false ) ;
-    this.jCheckBoxBindings.addItemListener ( this.aSTItemListener ) ;
+    this.jCheckBoxBinding.setFocusable ( false ) ;
+    this.jCheckBoxBinding.addItemListener ( this.aSTItemListener ) ;
     // CheckBox Replace
     this.jCheckBoxReplace = new JCheckBox ( this.resourceBundle
         .getString ( "replace" ) ) ;
@@ -292,7 +353,7 @@ public class ASTUI
     this.gridBagConstraints.gridy = 0 ;
     this.gridBagConstraints.weightx = 10 ;
     this.gridBagConstraints.weighty = 10 ;
-    this.jPanelSouth.add ( this.jCheckBoxSelected , this.gridBagConstraints ) ;
+    this.jPanelSouth.add ( this.jCheckBoxSelection , this.gridBagConstraints ) ;
     // CheckBox Bindings
     this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
     this.gridBagConstraints.insets = new Insets ( 4 , 4 , 4 , 4 ) ;
@@ -300,7 +361,7 @@ public class ASTUI
     this.gridBagConstraints.gridy = 1 ;
     this.gridBagConstraints.weightx = 10 ;
     this.gridBagConstraints.weighty = 10 ;
-    this.jPanelSouth.add ( this.jCheckBoxBindings , this.gridBagConstraints ) ;
+    this.jPanelSouth.add ( this.jCheckBoxBinding , this.gridBagConstraints ) ;
     // CheckBox Replace
     this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
     this.gridBagConstraints.insets = new Insets ( 4 , 4 , 4 , 4 ) ;
@@ -479,9 +540,9 @@ public class ASTUI
   }
 
 
-  public JCheckBox getJCheckBoxBindings ( )
+  public JCheckBox getJCheckBoxBinding ( )
   {
-    return this.jCheckBoxBindings ;
+    return this.jCheckBoxBinding ;
   }
 
 
@@ -491,15 +552,21 @@ public class ASTUI
   }
 
 
-  public JCheckBox getJCheckBoxSelected ( )
+  public JCheckBox getJCheckBoxSelection ( )
   {
-    return this.jCheckBoxSelected ;
+    return this.jCheckBoxSelection ;
   }
 
 
   public JFrame getJFrameAbstractSyntaxTree ( )
   {
     return this.jFrameAbstractSyntaxTree ;
+  }
+
+
+  public JCheckBoxMenuItem getJMenuItemBinding ( )
+  {
+    return this.jMenuItemBinding ;
   }
 
 
@@ -536,6 +603,18 @@ public class ASTUI
   public JMenuItem getJMenuItemExpandAll ( )
   {
     return this.jMenuItemExpandAll ;
+  }
+
+
+  public JCheckBoxMenuItem getJMenuItemReplace ( )
+  {
+    return this.jMenuItemReplace ;
+  }
+
+
+  public JCheckBoxMenuItem getJMenuItemSelection ( )
+  {
+    return this.jMenuItemSelection ;
   }
 
 
