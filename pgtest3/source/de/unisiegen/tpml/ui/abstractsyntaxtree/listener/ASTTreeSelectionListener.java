@@ -120,10 +120,7 @@ public class ASTTreeSelectionListener implements TreeSelectionListener
         {
           childIndex = ASTNode.NO_BINDING ;
         }
-        if ( i < list.size ( ) - 2 )
-        {
-          list.get ( i ).setASTBinding ( secondlast.getASTBinding ( ) ) ;
-        }
+        list.get ( i ).setASTBinding ( last.getASTBinding ( ) ) ;
         list.get ( i ).setReplaceInThisNode ( true ) ;
         list.get ( i )
             .updateCaption (

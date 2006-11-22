@@ -110,13 +110,13 @@ public class ASTNode
 
 
   public ASTNode ( String pDescription , String pExpressionString ,
-      ASTPair pASTPair )
+      ASTPair pASTPair , ASTBinding pASTBindings )
   {
     this.description = pDescription ;
     this.expressionString = pExpressionString ;
     this.expression = null ;
     this.aSTPair = pASTPair ;
-    this.aSTBinding = null ;
+    this.aSTBinding = pASTBindings ;
     this.replaceInThisNode = false ;
     resetCaption ( ) ;
   }

@@ -108,20 +108,22 @@ public class AbstractSyntaxTree
   private DefaultMutableTreeNode curriedLet ( CurriedLet pExpression )
   {
     String [ ] idList = pExpression.getIdentifiers ( ) ;
-    ASTBinding free = new ASTBinding ( pExpression ) ;
-    free.add ( pExpression.getE2 ( ) , pExpression.getIdentifiers ( 0 ) ) ;
+    ASTBinding aSTBinding = new ASTBinding ( pExpression ) ;
+    aSTBinding.add ( pExpression.getE2 ( ) , pExpression.getIdentifiers ( 0 ) ) ;
     for ( int i = 1 ; i < pExpression.getIdentifiers ( ).length ; i ++ )
     {
-      free.add ( pExpression.getE1 ( ) , pExpression.getIdentifiers ( i ) ) ;
+      aSTBinding
+          .add ( pExpression.getE1 ( ) , pExpression.getIdentifiers ( i ) ) ;
     }
     DefaultMutableTreeNode node = new DefaultMutableTreeNode ( new ASTNode (
-        pExpression , free ) ) ;
+        pExpression , aSTBinding ) ) ;
     int lengthIdentifier = 0 ;
     for ( int i = 0 ; i < idList.length ; i ++ )
     {
-      DefaultMutableTreeNode node0 = new DefaultMutableTreeNode ( new ASTNode (
-          "Identifier" , idList [ i ] , new ASTPair ( lengthIdentifier + 4 + i ,
-              lengthIdentifier + 3 + idList [ i ].length ( ) + i ) ) ) ;
+      DefaultMutableTreeNode node0 = new DefaultMutableTreeNode (
+          new ASTNode ( "Identifier" , idList [ i ] , new ASTPair (
+              lengthIdentifier + 4 + i , lengthIdentifier + 3
+                  + idList [ i ].length ( ) + i ) , aSTBinding ) ) ;
       lengthIdentifier += idList [ i ].length ( ) ;
       node.add ( node0 ) ;
     }
@@ -133,20 +135,22 @@ public class AbstractSyntaxTree
   private DefaultMutableTreeNode curriedLetRec ( CurriedLetRec pExpression )
   {
     String [ ] idList = pExpression.getIdentifiers ( ) ;
-    ASTBinding free = new ASTBinding ( pExpression ) ;
-    free.add ( pExpression , pExpression.getIdentifiers ( 0 ) ) ;
+    ASTBinding aSTBinding = new ASTBinding ( pExpression ) ;
+    aSTBinding.add ( pExpression , pExpression.getIdentifiers ( 0 ) ) ;
     for ( int i = 1 ; i < pExpression.getIdentifiers ( ).length ; i ++ )
     {
-      free.add ( pExpression.getE1 ( ) , pExpression.getIdentifiers ( i ) ) ;
+      aSTBinding
+          .add ( pExpression.getE1 ( ) , pExpression.getIdentifiers ( i ) ) ;
     }
     DefaultMutableTreeNode node = new DefaultMutableTreeNode ( new ASTNode (
-        pExpression , free ) ) ;
+        pExpression , aSTBinding ) ) ;
     int lengthIdentifier = 0 ;
     for ( int i = 0 ; i < idList.length ; i ++ )
     {
-      DefaultMutableTreeNode node0 = new DefaultMutableTreeNode ( new ASTNode (
-          "Identifier" , idList [ i ] , new ASTPair ( lengthIdentifier + 8 + i ,
-              lengthIdentifier + 7 + idList [ i ].length ( ) + i ) ) ) ;
+      DefaultMutableTreeNode node0 = new DefaultMutableTreeNode (
+          new ASTNode ( "Identifier" , idList [ i ] , new ASTPair (
+              lengthIdentifier + 8 + i , lengthIdentifier + 7
+                  + idList [ i ].length ( ) + i ) , aSTBinding ) ) ;
       lengthIdentifier += idList [ i ].length ( ) ;
       node.add ( node0 ) ;
     }
@@ -227,7 +231,7 @@ public class AbstractSyntaxTree
             + e1.toPrettyString ( ).toString ( ).length ( ) ,
         ( 2 * prettyAnnotation.getStartOffset ( ) )
             + e1.toPrettyString ( ).toString ( ).length ( )
-            + b.toString ( ).length ( ) ) ) ) ;
+            + b.toString ( ).length ( ) ) , null ) ) ;
     node.add ( node1 ) ;
     DefaultMutableTreeNode ex2 = expression ( e2 ) ;
     ASTNode node2 = ( ASTNode ) ex2.getUserObject ( ) ;
@@ -240,12 +244,13 @@ public class AbstractSyntaxTree
 
   private DefaultMutableTreeNode lambda ( Lambda pExpression )
   {
+    ASTBinding aSTBinding = new ASTBinding ( pExpression , pExpression ,
+        pExpression.getId ( ) ) ;
     DefaultMutableTreeNode node = new DefaultMutableTreeNode ( new ASTNode (
-        pExpression , new ASTBinding ( pExpression , pExpression , pExpression
-            .getId ( ) ) ) ) ;
+        pExpression , aSTBinding ) ) ;
     node.add ( new DefaultMutableTreeNode ( new ASTNode ( "Identifier" ,
         pExpression.getId ( ) , new ASTPair ( 1 , pExpression.getId ( )
-            .length ( ) ) ) ) ) ;
+            .length ( ) ) , aSTBinding ) ) ) ;
     createChildren ( pExpression , node ) ;
     return node ;
   }
@@ -253,12 +258,13 @@ public class AbstractSyntaxTree
 
   private DefaultMutableTreeNode let ( Let pExpression )
   {
+    ASTBinding aSTBinding = new ASTBinding ( pExpression ,
+        pExpression.getE2 ( ) , pExpression.getId ( ) ) ;
     DefaultMutableTreeNode node = new DefaultMutableTreeNode ( new ASTNode (
-        pExpression , new ASTBinding ( pExpression , pExpression.getE2 ( ) ,
-            pExpression.getId ( ) ) ) ) ;
+        pExpression , aSTBinding ) ) ;
     node.add ( new DefaultMutableTreeNode ( new ASTNode ( "Identifier" ,
         pExpression.getId ( ) , new ASTPair ( 4 , 3 + pExpression.getId ( )
-            .length ( ) ) ) ) ) ;
+            .length ( ) ) , aSTBinding ) ) ) ;
     createChildren ( pExpression , node ) ;
     return node ;
   }
@@ -266,12 +272,13 @@ public class AbstractSyntaxTree
 
   private DefaultMutableTreeNode letRec ( LetRec pExpression )
   {
+    ASTBinding aSTBinding = new ASTBinding ( pExpression , pExpression ,
+        pExpression.getId ( ) ) ;
     DefaultMutableTreeNode node = new DefaultMutableTreeNode ( new ASTNode (
-        pExpression , new ASTBinding ( pExpression , pExpression , pExpression
-            .getId ( ) ) ) ) ;
+        pExpression , aSTBinding ) ) ;
     node.add ( new DefaultMutableTreeNode ( new ASTNode ( "Identifier" ,
         pExpression.getId ( ) , new ASTPair ( 8 , 7 + pExpression.getId ( )
-            .length ( ) ) ) ) ) ;
+            .length ( ) ) , aSTBinding ) ) ) ;
     createChildren ( pExpression , node ) ;
     return node ;
   }
@@ -283,7 +290,7 @@ public class AbstractSyntaxTree
         pExpression ) ) ;
     node.add ( new DefaultMutableTreeNode ( new ASTNode ( "Name" , pExpression
         .getName ( ) ,
-        new ASTPair ( 0 , pExpression.getName ( ).length ( ) - 1 ) ) ) ) ;
+        new ASTPair ( 0 , pExpression.getName ( ).length ( ) - 1 ) , null ) ) ) ;
     return node ;
   }
 
@@ -313,17 +320,18 @@ public class AbstractSyntaxTree
 
   private DefaultMutableTreeNode multiLambda ( MultiLambda pExpression )
   {
+    ASTBinding aSTBinding = new ASTBinding ( pExpression , pExpression ,
+        pExpression.getIdentifiers ( ) ) ;
     String idList[] = pExpression.getIdentifiers ( ) ;
     DefaultMutableTreeNode node = new DefaultMutableTreeNode ( new ASTNode (
-        pExpression , new ASTBinding ( pExpression , pExpression , pExpression
-            .getIdentifiers ( ) ) ) ) ;
+        pExpression , aSTBinding ) ) ;
     int lengthIdentifier = 0 ;
     for ( int i = 0 ; i < idList.length ; i ++ )
     {
       DefaultMutableTreeNode subchild = new DefaultMutableTreeNode (
           new ASTNode ( "Identifier" , idList [ i ] , new ASTPair (
               lengthIdentifier + 2 + ( i * 2 ) , lengthIdentifier + 1
-                  + idList [ i ].length ( ) + ( i * 2 ) ) ) ) ;
+                  + idList [ i ].length ( ) + ( i * 2 ) ) , aSTBinding ) ) ;
       lengthIdentifier += idList [ i ].length ( ) ;
       node.add ( subchild ) ;
     }
@@ -334,10 +342,11 @@ public class AbstractSyntaxTree
 
   private DefaultMutableTreeNode multiLet ( MultiLet pExpression )
   {
+    ASTBinding aSTBinding = new ASTBinding ( pExpression ,
+        pExpression.getE2 ( ) , pExpression.getIdentifiers ( ) ) ;
     String [ ] idList = pExpression.getIdentifiers ( ) ;
     DefaultMutableTreeNode node = new DefaultMutableTreeNode ( new ASTNode (
-        pExpression , new ASTBinding ( pExpression , pExpression.getE2 ( ) ,
-            pExpression.getIdentifiers ( ) ) ) ) ;
+        pExpression , aSTBinding ) ) ;
     int lengthIdentifier = 0 ;
     final int length = idList.length ;
     for ( int index = 0 ; index < length ; index ++ )
@@ -345,7 +354,7 @@ public class AbstractSyntaxTree
       DefaultMutableTreeNode subchild = new DefaultMutableTreeNode (
           new ASTNode ( "Identifier" , idList [ index ] , new ASTPair (
               lengthIdentifier + 5 + ( index * 2 ) , lengthIdentifier + 4
-                  + idList [ index ].length ( ) + ( index * 2 ) ) ) ) ;
+                  + idList [ index ].length ( ) + ( index * 2 ) ) , aSTBinding ) ) ;
       lengthIdentifier += idList [ index ].length ( ) ;
       node.add ( subchild ) ;
     }
@@ -365,12 +374,13 @@ public class AbstractSyntaxTree
 
   private DefaultMutableTreeNode recursion ( Recursion pExpression )
   {
+    ASTBinding aSTBinding = new ASTBinding ( pExpression , pExpression ,
+        pExpression.getId ( ) ) ;
     String id = pExpression.getId ( ) ;
     DefaultMutableTreeNode node = new DefaultMutableTreeNode ( new ASTNode (
-        pExpression , new ASTBinding ( pExpression , pExpression , pExpression
-            .getId ( ) ) ) ) ;
+        pExpression , aSTBinding ) ) ;
     node.add ( new DefaultMutableTreeNode ( new ASTNode ( "Identifier" , id ,
-        new ASTPair ( 4 , 3 + id.length ( ) ) ) ) ) ;
+        new ASTPair ( 4 , 3 + id.length ( ) ) , aSTBinding ) ) ) ;
     createChildren ( pExpression , node ) ;
     return node ;
   }
@@ -382,7 +392,7 @@ public class AbstractSyntaxTree
     {
       return ;
     }
-    //calculateBindings ( pExpression ) ;
+    // calculateBindings ( pExpression ) ;
     this.aSTUI.setRootNode ( expression ( pExpression ) ) ;
   }
 
