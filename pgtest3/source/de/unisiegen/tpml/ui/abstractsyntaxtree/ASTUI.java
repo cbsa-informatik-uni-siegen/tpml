@@ -250,6 +250,7 @@ public class ASTUI
     this.jTreeAbstractSyntax.setCellRenderer ( this.cellRenderer ) ;
     this.jTreeAbstractSyntax.getSelectionModel ( ).addTreeSelectionListener (
         this.aSTTreeSelectionListener ) ;
+    this.jTreeAbstractSyntax.setRowHeight ( 22 ) ;
     this.jTreeAbstractSyntax.addMouseListener ( this.aSTMouseListener ) ;
     this.jScrollPaneAbstractSyntax = new JScrollPane ( this.jTreeAbstractSyntax ) ;
     this.jScrollPaneAbstractSyntax.setBorder ( new TitledBorder ( BorderFactory
