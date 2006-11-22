@@ -125,11 +125,23 @@ public final class InfixOperation extends Expression {
   /**
    * {@inheritDoc}
    *
+   * @see de.unisiegen.tpml.core.expressions.Expression#clone()
+   */
+  @Override
+  public InfixOperation clone() {
+    return new InfixOperation(this.op, this.e1.clone(), this.e2.clone());
+  }
+  
+  /**
+   * {@inheritDoc}
+   *
    * @see de.unisiegen.tpml.core.expressions.Expression#substitute(de.unisiegen.tpml.core.typechecker.TypeSubstitution)
    */
   @Override
   public InfixOperation substitute(TypeSubstitution substitution) {
-    return new InfixOperation(this.op, this.e1.substitute(substitution), this.e2.substitute(substitution));
+    Expression e1 = this.e1.substitute(substitution);
+    Expression e2 = this.e2.substitute(substitution);
+    return (this.e1 == e1 && this.e2 == e2) ? this : new InfixOperation(this.op, e1, e2);
   }
   
   /**
@@ -139,7 +151,9 @@ public final class InfixOperation extends Expression {
    */
   @Override
   public InfixOperation substitute(String id, Expression e) {
-    return new InfixOperation(this.op, this.e1.substitute(id, e), this.e2.substitute(id, e));
+    Expression e1 = this.e1.substitute(id, e);
+    Expression e2 = this.e2.substitute(id, e);
+    return (this.e1 == e1 && this.e2 == e2) ? this : new InfixOperation(this.op, e1, e2);
   }
 
   

@@ -136,6 +136,16 @@ public class Let extends Expression {
   /**
    * {@inheritDoc}
    *
+   * @see de.unisiegen.tpml.core.expressions.Expression#clone()
+   */
+  @Override
+  public Let clone() {
+    return new Let(this.id, this.tau, this.e1.clone(), this.e2.clone());
+  }
+  
+  /**
+   * {@inheritDoc}
+   *
    * @see expressions.Expression#free()
    */
   @Override
@@ -167,7 +177,7 @@ public class Let extends Expression {
   public Expression substitute(String id, Expression e) {
     Expression e1 = this.e1.substitute(id, e);
     Expression e2 = this.id.equals(id) ? this.e2 : this.e2.substitute(id, e);
-    return new Let(this.id, this.tau, e1, e2);
+    return (this.e1 == e1 && this.e2 == e2) ? this : new Let(this.id, this.tau, e1, e2);
   }
 
   /**

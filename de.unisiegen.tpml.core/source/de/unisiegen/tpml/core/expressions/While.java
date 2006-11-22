@@ -90,11 +90,23 @@ public final class While extends Expression {
   /**
    * {@inheritDoc}
    *
+   * @see de.unisiegen.tpml.core.expressions.Expression#clone()
+   */
+  @Override
+  public While clone() {
+    return new While(this.e1.clone(), this.e2.clone());
+  }
+  
+  /**
+   * {@inheritDoc}
+   *
    * @see de.unisiegen.tpml.core.expressions.Expression#substitute(de.unisiegen.tpml.core.typechecker.TypeSubstitution)
    */
   @Override
   public Expression substitute(TypeSubstitution substitution) {
-    return new While(this.e1.substitute(substitution), this.e2.substitute(substitution));
+    Expression e1 = this.e1.substitute(substitution);
+    Expression e2 = this.e2.substitute(substitution);
+    return (this.e1 == e1 && this.e2 == e2) ? this : new While(e1, e2);
   }
   
   /**
@@ -104,7 +116,9 @@ public final class While extends Expression {
    */
   @Override
   public Expression substitute(String id, Expression e) {
-    return new While(this.e1.substitute(id, e), this.e2.substitute(id, e));
+    Expression e1 = this.e1.substitute(id, e);
+    Expression e2 = this.e2.substitute(id, e);
+    return (this.e1 == e1 && this.e2 == e2) ? this : new While(e1, e2);
   }
 
   

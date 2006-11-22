@@ -63,6 +63,16 @@ public final class Location extends Value {
   /**
    * {@inheritDoc}
    *
+   * @see de.unisiegen.tpml.core.expressions.Expression#clone()
+   */
+  @Override
+  public Location clone() {
+    return new Location(this.name);
+  }
+  
+  /**
+   * {@inheritDoc}
+   *
    * For <code>Location</code>s, this method always returns the location itself, because substituting
    * below a location is not possible.
    * 

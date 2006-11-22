@@ -52,6 +52,20 @@ public abstract class Constant extends Value {
   /**
    * {@inheritDoc}
    *
+   * Cloning constants doesn't make sense usually since they're mostly singletons, and
+   * is also not required for the highlighting of bound variables, so this method always
+   * returns <code>this</code> for all kinds of {@link Constant}s.
+   * 
+   * @see de.unisiegen.tpml.core.expressions.Expression#clone()
+   */
+  @Override
+  public Constant clone() {
+    return this;
+  }
+  
+  /**
+   * {@inheritDoc}
+   *
    * Substitution below constants is not possible, so for <code>Constant</code>s this method
    * will always return the constant itself.
    * 

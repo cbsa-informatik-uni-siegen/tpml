@@ -113,6 +113,16 @@ public final class Recursion extends Expression {
   /**
    * {@inheritDoc}
    *
+   * @see de.unisiegen.tpml.core.expressions.Expression#clone()
+   */
+  @Override
+  public Recursion clone() {
+    return new Recursion(this.id, this.tau, this.e.clone());
+  }
+  
+  /**
+   * {@inheritDoc}
+   *
    * @see de.unisiegen.tpml.core.expressions.Expression#free()
    */
   @Override

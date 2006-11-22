@@ -201,6 +201,16 @@ public class CurriedLet extends Expression {
   /**
    * {@inheritDoc}
    *
+   * @see de.unisiegen.tpml.core.expressions.Expression#clone()
+   */
+  @Override
+  public CurriedLet clone() {
+    return new CurriedLet(this.identifiers, this.types, this.e1.clone(), this.e2.clone());
+  }
+  
+  /**
+   * {@inheritDoc}
+   *
    * @see de.unisiegen.tpml.core.expressions.Expression#free()
    */
   @Override

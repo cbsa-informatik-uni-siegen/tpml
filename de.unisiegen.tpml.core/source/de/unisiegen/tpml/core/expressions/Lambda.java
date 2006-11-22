@@ -114,6 +114,16 @@ public final class Lambda extends Value {
   //
   
   /**
+   * {@inheritDoc}
+   *
+   * @see de.unisiegen.tpml.core.expressions.Expression#clone()
+   */
+  @Override
+  public Expression clone() {
+    return new Lambda(this.id, this.tau, this.e.clone());
+  }
+  
+  /**
    * Returns the free (unbound) identifiers of the lambda abstraction.
    * 
    * The free (unbound) identifiers of the lambda abstraction are

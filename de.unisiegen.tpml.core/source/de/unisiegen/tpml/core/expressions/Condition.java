@@ -113,11 +113,24 @@ public final class Condition extends Expression {
   /**
    * {@inheritDoc}
    *
+   * @see de.unisiegen.tpml.core.expressions.Expression#clone()
+   */
+  @Override
+  public Condition clone() {
+    return new Condition(this.e0.clone(), this.e1.clone(), this.e2.clone());
+  }
+  
+  /**
+   * {@inheritDoc}
+   *
    * @see de.unisiegen.tpml.core.expressions.Expression#substitute(de.unisiegen.tpml.core.typechecker.TypeSubstitution)
    */
   @Override
   public Condition substitute(TypeSubstitution substitution) {
-    return new Condition(this.e0.substitute(substitution), this.e1.substitute(substitution), this.e2.substitute(substitution));
+    Expression e0 = this.e0.substitute(substitution);
+    Expression e1 = this.e1.substitute(substitution);
+    Expression e2 = this.e2.substitute(substitution);
+    return (this.e0 == e0 && this.e1 == e1 && this.e2 == e2) ? this : new Condition(e0, e1, e2);
   }
   
   /**
@@ -130,7 +143,7 @@ public final class Condition extends Expression {
     Expression e0 = this.e0.substitute(id, e);
     Expression e1 = this.e1.substitute(id, e);
     Expression e2 = this.e2.substitute(id, e);
-    return new Condition(e0, e1, e2);
+    return (this.e0 == e0 && this.e1 == e1 && this.e2 == e2) ? this : new Condition(e0, e1, e2);
   }
 
   

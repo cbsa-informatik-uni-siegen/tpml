@@ -141,6 +141,20 @@ public final class List extends Expression {
   //
   
   /**
+   * {@inheritDoc}
+   *
+   * @see de.unisiegen.tpml.core.expressions.Expression#clone()
+   */
+  @Override
+  public List clone() {
+    Expression[] expressions = new Expression[this.expressions.length];
+    for (int n = 0; n < expressions.length; ++n) {
+      expressions[n] = this.expressions[n].clone();
+    }
+    return new List(expressions);
+  }
+  
+  /**
    * Returns the first in the list.
    * 
    * @return the first expression in the list.

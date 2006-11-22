@@ -89,6 +89,20 @@ public final class Tuple extends Expression {
   /**
    * {@inheritDoc}
    *
+   * @see de.unisiegen.tpml.core.expressions.Expression#clone()
+   */
+  @Override
+  public Tuple clone() {
+    Expression[] expressions = new Expression[this.expressions.length];
+    for (int n = 0; n < expressions.length; ++n) {
+      expressions[n] = this.expressions[n].clone();
+    }
+    return new Tuple(expressions);
+  }
+  
+  /**
+   * {@inheritDoc}
+   *
    * @see de.unisiegen.tpml.core.expressions.Expression#substitute(java.lang.String, de.unisiegen.tpml.core.expressions.Expression)
    */
   @Override
