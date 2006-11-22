@@ -200,7 +200,7 @@ public abstract class Expression implements PrettyPrintable, PrettyPrintPrioriti
    * @return an {@link Enumeration} for the direct ancestor expressions
    *         of this expression.
    */
-  protected final Enumeration<Expression> children() {
+  public final Enumeration<Expression> children() {
     // check if we already determined the children
     if (this.children == null) {
       try {
