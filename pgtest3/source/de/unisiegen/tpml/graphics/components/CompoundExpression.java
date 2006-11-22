@@ -12,6 +12,7 @@ import java.util.LinkedList;
 
 import javax.swing.JComponent;
 
+import de.unisiegen.tpml.Debug;
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.interpreters.Store;
 import de.unisiegen.tpml.core.typechecker.TypeEnvironment;
@@ -300,13 +301,13 @@ public class CompoundExpression<S, E> extends JComponent {
 				for (int i=0; i< bounds.size(); i++)
 				{
 					Bound tmp = bounds.get(i);
-					System.err.print("BM- Id: " +tmp.getStartOffset()+"->"+tmp.getEndOffset()+" Bindung: ");
+					Debug.printerr("BM- Id: " +tmp.getStartOffset()+"->"+tmp.getEndOffset()+" Bindung: ","Benjamin");
 					for (int j=0; j<tmp.getMarks().size();j++)
 					{
-						System.err.print(tmp.getMarks().get(j).getStartOffset()+"->"+tmp.getMarks().get(j).getEndOffset()+"  ");
+						Debug.printerr(tmp.getMarks().get(j).getStartOffset()+"->"+tmp.getMarks().get(j).getEndOffset()+"  ","Benjamin");
 					}
-					System.err.println();
-					System.err.println("BM- "+tmp.getExpressions().size());
+					Debug.printerrln("","Benjamin");
+					Debug.printerrln("BM- "+tmp.getExpressions().size(),"Benjamin");
 				}
 				
 				
