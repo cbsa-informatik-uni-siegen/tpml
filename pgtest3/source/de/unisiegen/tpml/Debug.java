@@ -5,7 +5,7 @@ import java.util.Properties;
 
 public class Debug
 {
-	static LinkedList<String> userDebug=new LinkedList<String>();
+	private static LinkedList<String> userDebug=new LinkedList<String>();
 	
 	public static void print(String out,String name)
 	{
@@ -65,5 +65,10 @@ public class Debug
 				System.err.println(out);
 			}
 		}
+	}
+
+	public static void addUser(String name)
+	{
+		userDebug.add(name);
 	}
 }
