@@ -2,6 +2,7 @@ package de.unisiegen.tpml.ui.abstractsyntaxtree ;
 
 
 import java.awt.Color ;
+import java.awt.Dimension ;
 import java.awt.Font ;
 import java.awt.GridBagConstraints ;
 import java.awt.GridBagLayout ;
@@ -11,14 +12,12 @@ import javax.swing.BorderFactory ;
 import javax.swing.JButton ;
 import javax.swing.JCheckBox ;
 import javax.swing.JCheckBoxMenuItem ;
-import javax.swing.JFrame ;
 import javax.swing.JMenu ;
 import javax.swing.JMenuItem ;
 import javax.swing.JPanel ;
 import javax.swing.JPopupMenu ;
 import javax.swing.JScrollPane ;
 import javax.swing.JTree ;
-import javax.swing.WindowConstants ;
 import javax.swing.border.TitledBorder ;
 import javax.swing.tree.DefaultMutableTreeNode ;
 import javax.swing.tree.DefaultTreeCellRenderer ;
@@ -27,14 +26,11 @@ import de.unisiegen.tpml.ui.abstractsyntaxtree.listener.ASTActionListener ;
 import de.unisiegen.tpml.ui.abstractsyntaxtree.listener.ASTItemListener ;
 import de.unisiegen.tpml.ui.abstractsyntaxtree.listener.ASTMouseListener ;
 import de.unisiegen.tpml.ui.abstractsyntaxtree.listener.ASTTreeSelectionListener ;
-import de.unisiegen.tpml.ui.abstractsyntaxtree.listener.ASTWindowListener ;
 
 
 public class ASTUI
 {
-  private JFrame jFrameAbstractSyntaxTree ;
-
-
+  // private JFrame jFrameAbstractSyntaxTree ;
   private GridBagConstraints gridBagConstraints ;
 
 
@@ -56,7 +52,10 @@ public class ASTUI
   private JScrollPane jScrollPaneAbstractSyntax ;
 
 
-  private JPanel jPanelSouth ;
+  private JPanel jPanelPreferences ;
+
+
+  private JPanel jPanelMain ;
 
 
   private JButton jButtonExpand ;
@@ -340,9 +339,9 @@ public class ASTUI
     this.gridBagConstraints.weightx = 10 ;
     this.gridBagConstraints.weighty = 10 ;
     // Panel South
-    this.jPanelSouth = new JPanel ( ) ;
-    this.jPanelSouth.setLayout ( this.gridBagLayout ) ;
-    this.jPanelSouth.setBorder ( new TitledBorder ( BorderFactory
+    this.jPanelPreferences = new JPanel ( ) ;
+    this.jPanelPreferences.setLayout ( this.gridBagLayout ) ;
+    this.jPanelPreferences.setBorder ( new TitledBorder ( BorderFactory
         .createLineBorder ( Color.black , 1 ) , "" ,
         TitledBorder.DEFAULT_JUSTIFICATION , TitledBorder.TOP , new Font (
             "SansSerif" , Font.PLAIN , 12 ) ) ) ;
@@ -351,106 +350,117 @@ public class ASTUI
     this.gridBagConstraints.insets = new Insets ( 4 , 4 , 4 , 4 ) ;
     this.gridBagConstraints.gridx = 0 ;
     this.gridBagConstraints.gridy = 0 ;
-    this.gridBagConstraints.weightx = 10 ;
+    this.gridBagConstraints.weightx = 0 ;
     this.gridBagConstraints.weighty = 10 ;
-    this.jPanelSouth.add ( this.jCheckBoxSelection , this.gridBagConstraints ) ;
+    this.jPanelPreferences.add ( this.jCheckBoxSelection ,
+        this.gridBagConstraints ) ;
     // CheckBox Bindings
     this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
     this.gridBagConstraints.insets = new Insets ( 4 , 4 , 4 , 4 ) ;
     this.gridBagConstraints.gridx = 0 ;
     this.gridBagConstraints.gridy = 1 ;
-    this.gridBagConstraints.weightx = 10 ;
+    this.gridBagConstraints.weightx = 0 ;
     this.gridBagConstraints.weighty = 10 ;
-    this.jPanelSouth.add ( this.jCheckBoxBinding , this.gridBagConstraints ) ;
+    this.jPanelPreferences.add ( this.jCheckBoxBinding ,
+        this.gridBagConstraints ) ;
     // CheckBox Replace
-    this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
-    this.gridBagConstraints.insets = new Insets ( 4 , 4 , 4 , 4 ) ;
-    this.gridBagConstraints.gridx = 0 ;
-    this.gridBagConstraints.gridy = 2 ;
-    this.gridBagConstraints.weightx = 10 ;
-    this.gridBagConstraints.weighty = 10 ;
-    this.jPanelSouth.add ( this.jCheckBoxReplace , this.gridBagConstraints ) ;
-    // Button Expand
     this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
     this.gridBagConstraints.insets = new Insets ( 4 , 4 , 4 , 4 ) ;
     this.gridBagConstraints.gridx = 1 ;
     this.gridBagConstraints.gridy = 0 ;
+    this.gridBagConstraints.weightx = 10 ;
+    this.gridBagConstraints.weighty = 10 ;
+    this.jPanelPreferences.add ( this.jCheckBoxReplace ,
+        this.gridBagConstraints ) ;
+    // Button Expand
+    this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
+    this.gridBagConstraints.insets = new Insets ( 4 , 4 , 4 , 4 ) ;
+    this.gridBagConstraints.gridx = 2 ;
+    this.gridBagConstraints.gridy = 0 ;
     this.gridBagConstraints.weightx = 0 ;
     this.gridBagConstraints.weighty = 10 ;
-    this.jPanelSouth.add ( this.jButtonExpand , this.gridBagConstraints ) ;
+    this.jPanelPreferences.add ( this.jButtonExpand , this.gridBagConstraints ) ;
     // Button ExpandAll
     this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
     this.gridBagConstraints.insets = new Insets ( 4 , 4 , 4 , 4 ) ;
     this.gridBagConstraints.gridx = 2 ;
-    this.gridBagConstraints.gridy = 0 ;
+    this.gridBagConstraints.gridy = 1 ;
     this.gridBagConstraints.weightx = 0 ;
     this.gridBagConstraints.weighty = 10 ;
-    this.jPanelSouth.add ( this.jButtonExpandAll , this.gridBagConstraints ) ;
+    this.jPanelPreferences.add ( this.jButtonExpandAll ,
+        this.gridBagConstraints ) ;
     // Button Collapse
     this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
     this.gridBagConstraints.insets = new Insets ( 4 , 4 , 4 , 4 ) ;
-    this.gridBagConstraints.gridx = 1 ;
-    this.gridBagConstraints.gridy = 1 ;
+    this.gridBagConstraints.gridx = 3 ;
+    this.gridBagConstraints.gridy = 0 ;
     this.gridBagConstraints.weightx = 0 ;
     this.gridBagConstraints.weighty = 10 ;
-    this.jPanelSouth.add ( this.jButtonCollapse , this.gridBagConstraints ) ;
+    this.jPanelPreferences
+        .add ( this.jButtonCollapse , this.gridBagConstraints ) ;
     // Button CollapseAll
     this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
     this.gridBagConstraints.insets = new Insets ( 4 , 4 , 4 , 4 ) ;
-    this.gridBagConstraints.gridx = 2 ;
+    this.gridBagConstraints.gridx = 3 ;
     this.gridBagConstraints.gridy = 1 ;
     this.gridBagConstraints.weightx = 0 ;
     this.gridBagConstraints.weighty = 10 ;
-    this.jPanelSouth.add ( this.jButtonCollapseAll , this.gridBagConstraints ) ;
+    this.jPanelPreferences.add ( this.jButtonCollapseAll ,
+        this.gridBagConstraints ) ;
     // Button Close
     this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
     this.gridBagConstraints.insets = new Insets ( 4 , 4 , 4 , 4 ) ;
-    this.gridBagConstraints.gridx = 1 ;
-    this.gridBagConstraints.gridy = 2 ;
+    this.gridBagConstraints.gridx = 4 ;
+    this.gridBagConstraints.gridy = 0 ;
     this.gridBagConstraints.weightx = 0 ;
     this.gridBagConstraints.weighty = 10 ;
-    this.jPanelSouth.add ( this.jButtonClose , this.gridBagConstraints ) ;
+    this.jPanelPreferences.add ( this.jButtonClose , this.gridBagConstraints ) ;
     // Button CloseAll
     this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
     this.gridBagConstraints.insets = new Insets ( 4 , 4 , 4 , 4 ) ;
-    this.gridBagConstraints.gridx = 2 ;
-    this.gridBagConstraints.gridy = 2 ;
+    this.gridBagConstraints.gridx = 4 ;
+    this.gridBagConstraints.gridy = 1 ;
     this.gridBagConstraints.weightx = 0 ;
     this.gridBagConstraints.weighty = 10 ;
-    this.jPanelSouth.add ( this.jButtonCloseAll , this.gridBagConstraints ) ;
+    this.jPanelPreferences
+        .add ( this.jButtonCloseAll , this.gridBagConstraints ) ;
     // Frame
-    this.jFrameAbstractSyntaxTree = new JFrame ( ) ;
-    this.jFrameAbstractSyntaxTree.setLayout ( this.gridBagLayout ) ;
-    this.jFrameAbstractSyntaxTree.setTitle ( "AbstractSyntaxTree" ) ;
-    this.jFrameAbstractSyntaxTree.setSize ( this.abstractSyntaxTree
-        .getASTPreferences ( ).getWidth ( ) , this.abstractSyntaxTree
-        .getASTPreferences ( ).getHeight ( ) ) ;
-    this.jFrameAbstractSyntaxTree.setLocation ( this.abstractSyntaxTree
-        .getASTPreferences ( ).getPositionX ( ) , this.abstractSyntaxTree
-        .getASTPreferences ( ).getPositionY ( ) ) ;
-    this.jFrameAbstractSyntaxTree.setIconImage ( null ) ;
-    this.jFrameAbstractSyntaxTree
-        .setDefaultCloseOperation ( WindowConstants.HIDE_ON_CLOSE ) ;
-    this.jFrameAbstractSyntaxTree.addWindowListener ( new ASTWindowListener (
-        this ) ) ;
+    /*
+     * this.jFrameAbstractSyntaxTree = new JFrame ( ) ;
+     * this.jFrameAbstractSyntaxTree.setLayout ( this.gridBagLayout ) ;
+     * this.jFrameAbstractSyntaxTree.setTitle ( "AbstractSyntaxTree" ) ;
+     * this.jFrameAbstractSyntaxTree.setSize ( this.abstractSyntaxTree
+     * .getASTPreferences ( ).getWidth ( ) , this.abstractSyntaxTree
+     * .getASTPreferences ( ).getHeight ( ) ) ;
+     * this.jFrameAbstractSyntaxTree.setLocation ( this.abstractSyntaxTree
+     * .getASTPreferences ( ).getPositionX ( ) , this.abstractSyntaxTree
+     * .getASTPreferences ( ).getPositionY ( ) ) ;
+     * this.jFrameAbstractSyntaxTree.setIconImage ( null ) ;
+     * this.jFrameAbstractSyntaxTree .setDefaultCloseOperation (
+     * WindowConstants.HIDE_ON_CLOSE ) ;
+     * this.jFrameAbstractSyntaxTree.addWindowListener ( new ASTWindowListener (
+     * this ) ) ;
+     */
+    this.jPanelMain = new JPanel ( ) ;
+    this.jPanelMain.setLayout ( this.gridBagLayout ) ;
     // ScrollPane AbstractSyntax
     this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
-    this.gridBagConstraints.insets = new Insets ( 4 , 4 , 4 , 4 ) ;
+    this.gridBagConstraints.insets = new Insets ( 0 , 0 , 0 , 0 ) ;
     this.gridBagConstraints.gridx = 0 ;
     this.gridBagConstraints.gridy = 0 ;
     this.gridBagConstraints.weightx = 10 ;
     this.gridBagConstraints.weighty = 10 ;
-    this.jFrameAbstractSyntaxTree.getContentPane ( ).add (
-        this.jScrollPaneAbstractSyntax , this.gridBagConstraints ) ;
+    this.jPanelMain.add ( this.jScrollPaneAbstractSyntax ,
+        this.gridBagConstraints ) ;
     // Panel South
     this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
-    this.gridBagConstraints.insets = new Insets ( 4 , 4 , 4 , 4 ) ;
+    this.gridBagConstraints.insets = new Insets ( 2 , 0 , 0 , 0 ) ;
     this.gridBagConstraints.gridx = 0 ;
     this.gridBagConstraints.gridy = 1 ;
     this.gridBagConstraints.weightx = 0 ;
     this.gridBagConstraints.weighty = 0 ;
-    this.jFrameAbstractSyntaxTree.getContentPane ( ).add ( this.jPanelSouth ,
-        this.gridBagConstraints ) ;
+    this.jPanelMain.setPreferredSize ( new Dimension ( 100 , 300 ) ) ;
+    this.jPanelMain.add ( this.jPanelPreferences , this.gridBagConstraints ) ;
   }
 
 
@@ -558,12 +568,10 @@ public class ASTUI
   }
 
 
-  public JFrame getJFrameAbstractSyntaxTree ( )
-  {
-    return this.jFrameAbstractSyntaxTree ;
-  }
-
-
+  /*
+   * public JFrame getJFrameAbstractSyntaxTree ( ) { return
+   * this.jFrameAbstractSyntaxTree ; }
+   */
   public JCheckBoxMenuItem getJMenuItemBinding ( )
   {
     return this.jMenuItemBinding ;
@@ -643,8 +651,12 @@ public class ASTUI
   }
 
 
-  public void setVisible ( boolean pVisible )
+  /*
+   * public void setVisible ( boolean pVisible ) {
+   * this.jFrameAbstractSyntaxTree.setVisible ( pVisible ) ; }
+   */
+  public JPanel getJPanelMain ( )
   {
-    this.jFrameAbstractSyntaxTree.setVisible ( pVisible ) ;
+    return this.jPanelMain ;
   }
 }

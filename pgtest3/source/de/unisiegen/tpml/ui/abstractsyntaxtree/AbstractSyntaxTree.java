@@ -48,6 +48,12 @@ public class AbstractSyntaxTree
   }
 
 
+  public static AbstractSyntaxTree getNewInstance ( )
+  {
+    return new AbstractSyntaxTree ( ) ;
+  }
+
+
   private ASTUI aSTUI ;
 
 
@@ -116,7 +122,7 @@ public class AbstractSyntaxTree
           .add ( pExpression.getE1 ( ) , pExpression.getIdentifiers ( i ) ) ;
     }
     DefaultMutableTreeNode node = new DefaultMutableTreeNode ( new ASTNode (
-        pExpression , aSTBinding ) ) ;
+        pExpression ) ) ;
     int lengthIdentifier = 0 ;
     for ( int i = 0 ; i < idList.length ; i ++ )
     {
@@ -143,7 +149,7 @@ public class AbstractSyntaxTree
           .add ( pExpression.getE1 ( ) , pExpression.getIdentifiers ( i ) ) ;
     }
     DefaultMutableTreeNode node = new DefaultMutableTreeNode ( new ASTNode (
-        pExpression , aSTBinding ) ) ;
+        pExpression ) ) ;
     int lengthIdentifier = 0 ;
     for ( int i = 0 ; i < idList.length ; i ++ )
     {
@@ -247,7 +253,7 @@ public class AbstractSyntaxTree
     ASTBinding aSTBinding = new ASTBinding ( pExpression , pExpression ,
         pExpression.getId ( ) ) ;
     DefaultMutableTreeNode node = new DefaultMutableTreeNode ( new ASTNode (
-        pExpression , aSTBinding ) ) ;
+        pExpression ) ) ;
     node.add ( new DefaultMutableTreeNode ( new ASTNode ( "Identifier" ,
         pExpression.getId ( ) , new ASTPair ( 1 , pExpression.getId ( )
             .length ( ) ) , aSTBinding ) ) ) ;
@@ -261,7 +267,7 @@ public class AbstractSyntaxTree
     ASTBinding aSTBinding = new ASTBinding ( pExpression ,
         pExpression.getE2 ( ) , pExpression.getId ( ) ) ;
     DefaultMutableTreeNode node = new DefaultMutableTreeNode ( new ASTNode (
-        pExpression , aSTBinding ) ) ;
+        pExpression ) ) ;
     node.add ( new DefaultMutableTreeNode ( new ASTNode ( "Identifier" ,
         pExpression.getId ( ) , new ASTPair ( 4 , 3 + pExpression.getId ( )
             .length ( ) ) , aSTBinding ) ) ) ;
@@ -275,7 +281,7 @@ public class AbstractSyntaxTree
     ASTBinding aSTBinding = new ASTBinding ( pExpression , pExpression ,
         pExpression.getId ( ) ) ;
     DefaultMutableTreeNode node = new DefaultMutableTreeNode ( new ASTNode (
-        pExpression , aSTBinding ) ) ;
+        pExpression ) ) ;
     node.add ( new DefaultMutableTreeNode ( new ASTNode ( "Identifier" ,
         pExpression.getId ( ) , new ASTPair ( 8 , 7 + pExpression.getId ( )
             .length ( ) ) , aSTBinding ) ) ) ;
@@ -324,7 +330,7 @@ public class AbstractSyntaxTree
         pExpression.getIdentifiers ( ) ) ;
     String idList[] = pExpression.getIdentifiers ( ) ;
     DefaultMutableTreeNode node = new DefaultMutableTreeNode ( new ASTNode (
-        pExpression , aSTBinding ) ) ;
+        pExpression ) ) ;
     int lengthIdentifier = 0 ;
     for ( int i = 0 ; i < idList.length ; i ++ )
     {
@@ -346,7 +352,7 @@ public class AbstractSyntaxTree
         pExpression.getE2 ( ) , pExpression.getIdentifiers ( ) ) ;
     String [ ] idList = pExpression.getIdentifiers ( ) ;
     DefaultMutableTreeNode node = new DefaultMutableTreeNode ( new ASTNode (
-        pExpression , aSTBinding ) ) ;
+        pExpression ) ) ;
     int lengthIdentifier = 0 ;
     final int length = idList.length ;
     for ( int index = 0 ; index < length ; index ++ )
@@ -378,7 +384,7 @@ public class AbstractSyntaxTree
         pExpression.getId ( ) ) ;
     String id = pExpression.getId ( ) ;
     DefaultMutableTreeNode node = new DefaultMutableTreeNode ( new ASTNode (
-        pExpression , aSTBinding ) ) ;
+        pExpression ) ) ;
     node.add ( new DefaultMutableTreeNode ( new ASTNode ( "Identifier" , id ,
         new ASTPair ( 4 , 3 + id.length ( ) ) , aSTBinding ) ) ) ;
     createChildren ( pExpression , node ) ;
@@ -388,6 +394,7 @@ public class AbstractSyntaxTree
 
   public void setExpression ( Expression pExpression )
   {
+    // TODO überprüfen ob neue Expression
     if ( pExpression == null )
     {
       return ;
@@ -397,8 +404,8 @@ public class AbstractSyntaxTree
   }
 
 
-  public void setVisible ( boolean pVisible )
+  public ASTUI getASTUI ( )
   {
-    this.aSTUI.setVisible ( pVisible ) ;
+    return this.aSTUI ;
   }
 }

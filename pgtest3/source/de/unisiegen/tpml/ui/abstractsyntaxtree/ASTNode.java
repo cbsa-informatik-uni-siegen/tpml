@@ -97,7 +97,7 @@ public class ASTNode
   }
 
 
-  public ASTNode ( Expression pExpression , ASTBinding pASTBindings )
+  /*public ASTNode ( Expression pExpression , ASTBinding pASTBindings )
   {
     this.description = pExpression.getClass ( ).getSimpleName ( ) ;
     this.expressionString = pExpression.toPrettyString ( ).toString ( ) ;
@@ -106,7 +106,7 @@ public class ASTNode
     this.aSTBinding = pASTBindings ;
     this.replaceInThisNode = false ;
     resetCaption ( ) ;
-  }
+  }*/
 
 
   public ASTNode ( String pDescription , String pExpressionString ,
