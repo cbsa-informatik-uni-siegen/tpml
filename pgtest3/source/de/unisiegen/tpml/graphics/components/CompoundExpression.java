@@ -101,6 +101,9 @@ public class CompoundExpression<S, E> extends JComponent {
 	 * and the color of the {@link AbstractRenderer} are ignored.
 	 *
 	 */
+	
+	//TODO Kommentar erstellen
+	private ShowBound bound;
 	public CompoundExpression () {
 		super ();
 		
@@ -282,7 +285,7 @@ public class CompoundExpression<S, E> extends JComponent {
           // CHANGE CHRISTIAN END
 					
 		  // CHANGE BENJAMIN
-			ShowBound bound = ShowBound.getInstance();
+			bound = new ShowBound();
 			// CHANGE MICHAEL
 			// with ervery new expression renderd by the PrettyStringRenderer the elements listen by mouse will be resetet
 			ToListenForMouseContainer.getInstanceOf().reset();
@@ -468,7 +471,7 @@ public class CompoundExpression<S, E> extends JComponent {
 		// Store, the entire expression (with environment) will begin
 		// with the expression
 		if (this.environment == null || this.environment instanceof Store) {
-			this.expressionRenderer.render(posX, posY, getHeight(), gc);
+			this.expressionRenderer.render(posX, posY, getHeight(), gc, bound);
 			posX += this.expressionSize.width;
 			
 			// if there is an environment render it now
@@ -493,7 +496,7 @@ public class CompoundExpression<S, E> extends JComponent {
 			posX += AbstractRenderer.getTextFontMetrics().stringWidth(CompoundExpression.arrowStr);
 			
 			// draw the expression at the last position.
-			this.expressionRenderer.render(posX, posY, getHeight (), gc);
+			this.expressionRenderer.render(posX, posY, getHeight (), gc, bound);
 		}
 		
 		
