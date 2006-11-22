@@ -2,6 +2,9 @@ package de.unisiegen.tpml.ui.abstractsyntaxtree ;
 
 
 import java.awt.Color ;
+import java.util.MissingResourceException ;
+import java.util.ResourceBundle ;
+import de.unisiegen.tpml.Debug ;
 import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyCharIterator ;
@@ -85,9 +88,25 @@ public class ASTNode
   private ASTPair aSTPair ;
 
 
+  private ResourceBundle resourceBundle ;
+
+
   public ASTNode ( Expression pExpression )
   {
-    this.description = pExpression.getClass ( ).getSimpleName ( ) ;
+    // Preferences
+    this.resourceBundle = ResourceBundle
+        .getBundle ( "de/unisiegen/tpml/ui/abstractsyntaxtree/ast" ) ;
+    try
+    {
+      this.description = this.resourceBundle.getString ( pExpression
+          .getClass ( ).getSimpleName ( ) ) ;
+    }
+    catch ( MissingResourceException e )
+    {
+      Debug.err.println ( "MissingResourceException: "
+          + pExpression.getClass ( ).getSimpleName ( ) , "christian" ) ;
+      this.description = pExpression.getClass ( ).getSimpleName ( ) ;
+    }
     this.expressionString = pExpression.toPrettyString ( ).toString ( ) ;
     this.expression = pExpression ;
     this.aSTPair = null ;
@@ -97,22 +116,22 @@ public class ASTNode
   }
 
 
-  /*public ASTNode ( Expression pExpression , ASTBinding pASTBindings )
-  {
-    this.description = pExpression.getClass ( ).getSimpleName ( ) ;
-    this.expressionString = pExpression.toPrettyString ( ).toString ( ) ;
-    this.expression = pExpression ;
-    this.aSTPair = null ;
-    this.aSTBinding = pASTBindings ;
-    this.replaceInThisNode = false ;
-    resetCaption ( ) ;
-  }*/
-
-
   public ASTNode ( String pDescription , String pExpressionString ,
       ASTPair pASTPair , ASTBinding pASTBindings )
   {
-    this.description = pDescription ;
+    // Preferences
+    this.resourceBundle = ResourceBundle
+        .getBundle ( "de/unisiegen/tpml/ui/abstractsyntaxtree/ast" ) ;
+    try
+    {
+      this.description = this.resourceBundle.getString ( pDescription ) ;
+    }
+    catch ( MissingResourceException e )
+    {
+      Debug.err.println ( "MissingResourceException: " + pDescription ,
+          "christian" ) ;
+      this.description = pDescription ;
+    }
     this.expressionString = pExpressionString ;
     this.expression = null ;
     this.aSTPair = pASTPair ;
@@ -160,6 +179,18 @@ public class ASTNode
       updateCaption ( ASTNode.NO_SELECTION , ASTNode.NO_SELECTION ,
           ASTNode.NO_BINDING ) ;
     }
+  }
+
+
+  public ASTBinding getASTBinding ( )
+  {
+    return this.aSTBinding ;
+  }
+
+
+  public ASTPair getASTPair ( )
+  {
+    return this.aSTPair ;
   }
 
 
@@ -246,6 +277,12 @@ public class ASTNode
       updateCaption ( ASTNode.NO_SELECTION , ASTNode.NO_SELECTION ,
           ASTNode.NO_BINDING ) ;
     }
+  }
+
+
+  public void setASTBinding ( ASTBinding pASTBinding )
+  {
+    this.aSTBinding = pASTBinding ;
   }
 
 
@@ -374,23 +411,5 @@ public class ASTNode
     result.append ( AFTER_NAME ) ;
     result.append ( "</html>" ) ;
     this.caption = result.toString ( ) ;
-  }
-
-
-  public ASTPair getASTPair ( )
-  {
-    return this.aSTPair ;
-  }
-
-
-  public ASTBinding getASTBinding ( )
-  {
-    return this.aSTBinding ;
-  }
-
-
-  public void setASTBinding ( ASTBinding pASTBinding )
-  {
-    this.aSTBinding = pASTBinding ;
   }
 }
