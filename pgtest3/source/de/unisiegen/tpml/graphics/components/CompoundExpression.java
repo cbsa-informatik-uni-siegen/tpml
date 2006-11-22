@@ -193,8 +193,8 @@ public class CompoundExpression<S, E> extends JComponent {
 	 */
 	private void handleMouseMoved (MouseEvent event) {
 		//TODO Testausgaben
-		//System.out.println("Event geworfen: "+event);
-		//System.out.println("Incence: "+event.getSource());
+		System.out.println("Event geworfen: "+event);
+		System.out.println("Incence: "+event.getSource());
 		if (event.getSource () instanceof CompoundExpression )
 		{
 			//TODO jetzt wollen wir doch mal gucken, wo wir eigentlich sind!
