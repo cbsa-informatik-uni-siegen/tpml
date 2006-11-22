@@ -123,7 +123,7 @@ public class CompoundExpression<S, E> extends JComponent {
 		this.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseExited(MouseEvent e) {
-				//TODO hier sollte eigentlich das Ereignis sein, dass die Maus den Ausdruck verlässt, und der dann neu gemalt wird, funktioniert aber nicht
+				//TODO hier sollte eigentlich das Ereignis sein, dass die Maus den Ausdruck verlï¿½sst, und der dann neu gemalt wird, funktioniert aber nicht
 				//System.err.println("Ladidal");
 				//ToListenForMouseContainer.getInstanceOf().reset();
 				toListenForMouse.setMark(false);
@@ -280,12 +280,6 @@ public class CompoundExpression<S, E> extends JComponent {
 			}
 			else {
 				if (this.expressionRenderer == null) {
-          
-          // CHANGE CHRISTIAN
-          AbstractSyntaxTree ast= AbstractSyntaxTree.getInstance ( ) ;
-          ast.setExpression ( this.expression ) ;
-          ast.setVisible ( true ) ;
-          // CHANGE CHRISTIAN END
 					
 		  // CHANGE BENJAMIN
 			//bound = new ShowBound();
