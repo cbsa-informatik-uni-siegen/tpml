@@ -199,7 +199,6 @@ public class PrettyStringRenderer extends AbstractRenderer {
 		CheckerResult result = new CheckerResult ();
 		result.rows = 1;
 		
-		
 		int[] breakOffsets = null;
 		if (annotation != null) {
 			breakOffsets = annotation.getBreakOffsets();
@@ -440,7 +439,13 @@ public class PrettyStringRenderer extends AbstractRenderer {
 			//Wenn gemalt werden soll, also die Maus über einem Buchstaben steht	
 			if (toListenForMouse.getMark() && isInListe(i, annotationsList) != -1)
 				{
-					System.out.println("Der Mauszeiger ist über einem Buchstaben, der gemalt werden soll");
+				
+				//TODO Hier lasse ich mir mal alle Positionen angeben, die in der Liste stehen!
+				//mach mal
+				
+				
+				
+				System.out.println("Der Mauszeiger ist über einem Buchstaben, der gemalt werden soll");
 				  //TODO hier muss überprüft werden, ob die Position des Mauszeigers auf der annotationList liegt
 					//Das ist die Xposition des Mauszeigers
 				  int xPos = toListenForMouse.getHereIam()[0];
