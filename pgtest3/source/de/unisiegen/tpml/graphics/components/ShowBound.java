@@ -179,12 +179,31 @@ public class ShowBound
 	{
 		// anlegen von Arrays mit den frei vorkommenden Namen der beiden expressions
 		// von lambda
-		Object[] a = new Object[0];
+		
 		Object[] b = let.getE2().free().toArray();
+		Object[] c = let.free().toArray();
+		
+		if (debug)
+
+		{
+			System.out.println(let.toString());
+		
+			System.out.println("b");
+			for (int i = 0; i < b.length; i++)
+			{
+				System.out.println(b[i]);
+			}
+			System.out.println("c");
+			for (int i = 0; i < c.length; i++)
+			{
+				System.out.println(c[i]);
+			}
+
+		}
 
 		checkChild(let);
 
-		LinkedList<String> list = listWithBounds(a, b);
+		LinkedList<String> list = listWithBounds(c, b);
 
 		LinkedList<Expression> child = new LinkedList<Expression>();
 		Enumeration tmpChild = let.children();
@@ -350,8 +369,7 @@ public class ShowBound
 
 						if (id.getName().equals(list.get(i)))
 						{
-
-							PrettyString ps1 = holeExpression.toPrettyString();
+														PrettyString ps1 = holeExpression.toPrettyString();
 							PrettyAnnotation mark1 = ps1.getAnnotationForPrintable(e);
 							PrettyAnnotation mark2 = ps1.getAnnotationForPrintable(id);
 
