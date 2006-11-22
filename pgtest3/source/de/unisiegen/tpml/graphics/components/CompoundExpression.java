@@ -103,7 +103,7 @@ public class CompoundExpression<S, E> extends JComponent {
 	 */
 	
 	//TODO Kommentar erstellen
-	private ShowBound bound;
+	private ShowBound bound = new ShowBound();
 	
 	private ToListenForMouseContainer toListenForMouse = new ToListenForMouseContainer();
 	
@@ -288,7 +288,7 @@ public class CompoundExpression<S, E> extends JComponent {
           // CHANGE CHRISTIAN END
 					
 		  // CHANGE BENJAMIN
-			bound = new ShowBound();
+			//bound = new ShowBound();
 			// CHANGE MICHAEL
 			// with ervery new expression renderd by the PrettyStringRenderer the elements listen by mouse will be resetet
 			//toListenForMouse.reset();
