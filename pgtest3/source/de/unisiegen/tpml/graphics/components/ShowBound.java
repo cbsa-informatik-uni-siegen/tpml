@@ -22,9 +22,8 @@ public class ShowBound
 
 	private static ShowBound bound = null;
 	private static LinkedList<Bound> tmp = new LinkedList<Bound>();
-	private boolean debugOutput = true;
-	// public LinkedList<Bound> result = new LinkedList();
-
+	private boolean debug = false;
+	
 	public static ShowBound getInstance()
 	{
 		if (bound == null)
@@ -81,51 +80,57 @@ public class ShowBound
 			}
 			else
 			{
-
-				LinkedList<Expression> child = new LinkedList<Expression>();
-				Enumeration tmpChild = pExpression.children();
-				while (tmpChild.hasMoreElements())
-				{
-
-					child.add((Expression) tmpChild.nextElement());
-
-				}
-
-				{
-					for (int i = 0; i < child.size(); i++)
-
-					{
-						check(child.get(i));
-
-						if (debugOutput)
-						{
-							System.out.print(child.get(i).toPrettyString());
-
-							try
-							{
-								PrettyString ps = holeExpression.toPrettyString();
-								PrettyAnnotation mark = ps.getAnnotationForPrintable(child
-										.get(i));
-								System.out.println("start:" + mark.getStartOffset());
-							}
-							catch (Exception e)
-							{
-								System.out.println("Mist da!");
-							}
-						}
-					}
-				}
+				checkChild(pExpression);
+				
 			}
 
 		}
 
 	}
 
+	private void checkChild(Expression pExpression)
+	{
+		LinkedList<Expression> child = new LinkedList<Expression>();
+		Enumeration tmpChild = pExpression.children();
+		while (tmpChild.hasMoreElements())
+		{
+
+			child.add((Expression) tmpChild.nextElement());
+
+		}
+
+		{
+			for (int i = 0; i < child.size(); i++)
+
+			{
+				check(child.get(i));
+
+				if (debug)
+				{
+					System.out.print(child.get(i).toPrettyString());
+
+					try
+					{
+						PrettyString ps = holeExpression.toPrettyString();
+						PrettyAnnotation mark = ps.getAnnotationForPrintable(child
+								.get(i));
+						System.out.println("start:" + mark.getStartOffset());
+					}
+					catch (Exception e)
+					{
+						System.out.println("Kein Startoffset für diesen Ausdruck verfügbar!");
+					}
+				}
+			}
+		}
+		
+	}
+
 	private void checkLambda(Lambda lambda)
 	{
 		// rekursiver Aufruf für Ausdruck e von lambda
 		Expression e = lambda.getE();
-		check(e);
+		checkChild(lambda);
 
 		// anlegen von Arrays mit den frei vorkommenden Namen der beiden expressions
 		// von lambda
@@ -150,7 +155,7 @@ public class ShowBound
 
 		// rekursiver Aufruf für Ausdruck e von lambda
 		Expression e = lambda.getE();
-		check(e);
+		checkChild(lambda);
 
 		// anlegen von Arrays mit den frei vorkommenden Namen der beiden expressions
 		// von lambda
@@ -177,8 +182,7 @@ public class ShowBound
 		Object[] a = new Object[0];
 		Object[] b = let.getE2().free().toArray();
 
-		check(let.getE1());
-		check(let.getE2());
+		checkChild(let);
 
 		LinkedList<String> list = listWithBounds(a, b);
 
@@ -201,8 +205,7 @@ public class ShowBound
 		Object[] a = let.free().toArray();
 		Object[] b = let.getE2().free().toArray();
 
-		check(let.getE1());
-		check(let.getE2());
+		checkChild(let);
 		LinkedList<String> list = listWithBounds(new Object[b.length], b);
 
 		LinkedList<Expression> child = new LinkedList<Expression>();
@@ -224,25 +227,28 @@ public class ShowBound
 		Object[] b = let.getE1().free().toArray();
 		Object[] a = let.free().toArray();
 
-		check(let.getE1());
-		check(let.getE2());
+		checkChild(let);
+		
+		if (debug)
 
-		System.out.println("a");
-		for (int i = 0; i < a.length; i++)
 		{
-			System.out.println(a[i]);
-		}
-		System.out.println("b");
-		for (int i = 0; i < b.length; i++)
-		{
-			System.out.println(b[i]);
-		}
-		System.out.println("c");
-		for (int i = 0; i < c.length; i++)
-		{
-			System.out.println(c[i]);
-		}
+			System.out.println("a");
+			for (int i = 0; i < a.length; i++)
+			{
+				System.out.println(a[i]);
+			}
+			System.out.println("b");
+			for (int i = 0; i < b.length; i++)
+			{
+				System.out.println(b[i]);
+			}
+			System.out.println("c");
+			for (int i = 0; i < c.length; i++)
+			{
+				System.out.println(c[i]);
+			}
 
+		}
 		LinkedList<String> list = listWithBounds(new Object[a.length], a);
 		LinkedList<String> list2 = listWithBounds(c, b);
 		list2.add(let.getIdentifiers(0));
@@ -281,7 +287,7 @@ public class ShowBound
 		Object[] a = rec.free().toArray();
 		Object[] b = rec.getE().free().toArray();
 
-		check(rec.getE());
+		checkChild(rec);
 
 		LinkedList<String> list = listWithBounds(a, b);
 
@@ -302,8 +308,7 @@ public class ShowBound
 		Object[] b = rec.getE1().free().toArray();
 		Object[] c = rec.free().toArray();
 
-		check(rec.getE1());
-		check(rec.getE2());
+		checkChild(rec);
 
 		LinkedList<String> list = listWithBounds(c, a);
 		LinkedList<String> list2 = listWithBounds(c, b);
@@ -354,6 +359,7 @@ public class ShowBound
 
 							int length = start + id.toString().length() - 1;
 
+							//TODO old debug output
 							if (false)
 							{
 								System.err.println("Für den Identifier: Startoffset: " + start
