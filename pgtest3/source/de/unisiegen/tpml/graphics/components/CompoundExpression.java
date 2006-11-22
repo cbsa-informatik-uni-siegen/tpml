@@ -293,8 +293,7 @@ public class CompoundExpression<S, E> extends JComponent {
 			bound.check(this.expression);
 			
 //		Debug
-			if (false)
-			{
+			
 				
 				LinkedList<Bound> bounds = bound.getAnnotations();
 				
@@ -311,7 +310,7 @@ public class CompoundExpression<S, E> extends JComponent {
 				}
 				
 				
-			}
+		
 		  // CHANGE BENJAMIN END
           
 					this.expressionRenderer = new PrettyStringRenderer ();
