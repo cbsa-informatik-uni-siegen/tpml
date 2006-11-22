@@ -549,7 +549,7 @@ public class ShowBound
 		holeExpression = pExpression;
 
 		tmp = new LinkedList<Bound>();
-		Debug.print("Hallo","Benjamin");
+	
 	}
 
 	public LinkedList<Bound> getAnnotations()
