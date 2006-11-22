@@ -104,6 +104,9 @@ public class CompoundExpression<S, E> extends JComponent {
 	
 	//TODO Kommentar erstellen
 	private ShowBound bound;
+	
+	private ToListenForMouseContainer toListenForMouse = new ToListenForMouseContainer();
+	
 	public CompoundExpression () {
 		super ();
 		
@@ -123,7 +126,7 @@ public class CompoundExpression<S, E> extends JComponent {
 				//TODO hier sollte eigentlich das Ereignis sein, dass die Maus den Ausdruck verlässt, und der dann neu gemalt wird, funktioniert aber nicht
 				//System.err.println("Ladidal");
 				//ToListenForMouseContainer.getInstanceOf().reset();
-				ToListenForMouseContainer.getInstanceOf().setMark(false);
+				toListenForMouse.setMark(false);
 				CompoundExpression.this.repaint();
 			}
 			
@@ -196,7 +199,7 @@ public class CompoundExpression<S, E> extends JComponent {
 		{
 			//TODO jetzt wollen wir doch mal gucken, wo wir eigentlich sind!
 			
-			ToListenForMouseContainer toListenForMouse = ToListenForMouseContainer.getInstanceOf();
+			//toListenForMouse = new ToListenForMouseContainer();
 			toListenForMouse.setHereIam(event.getX(), event.getY());
 			
 			//TODO Testausgabe
@@ -288,7 +291,7 @@ public class CompoundExpression<S, E> extends JComponent {
 			bound = new ShowBound();
 			// CHANGE MICHAEL
 			// with ervery new expression renderd by the PrettyStringRenderer the elements listen by mouse will be resetet
-			ToListenForMouseContainer.getInstanceOf().reset();
+			//toListenForMouse.reset();
 			// CHANGE MICHAEL
 			bound.setHoleExpression(this.expression);
 			
@@ -471,7 +474,7 @@ public class CompoundExpression<S, E> extends JComponent {
 		// Store, the entire expression (with environment) will begin
 		// with the expression
 		if (this.environment == null || this.environment instanceof Store) {
-			this.expressionRenderer.render(posX, posY, getHeight(), gc, bound);
+			this.expressionRenderer.render(posX, posY, getHeight(), gc, bound, toListenForMouse);
 			posX += this.expressionSize.width;
 			
 			// if there is an environment render it now
@@ -496,7 +499,7 @@ public class CompoundExpression<S, E> extends JComponent {
 			posX += AbstractRenderer.getTextFontMetrics().stringWidth(CompoundExpression.arrowStr);
 			
 			// draw the expression at the last position.
-			this.expressionRenderer.render(posX, posY, getHeight (), gc, bound);
+			this.expressionRenderer.render(posX, posY, getHeight (), gc, bound, toListenForMouse);
 		}
 		
 		
