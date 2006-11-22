@@ -291,9 +291,12 @@ public class SmallStepNodeComponent extends JComponent {
 					
 					ToListenForMouseContainer toListenForMouse = ToListenForMouseContainer.getInstanceOf();
 					
+					toListenForMouse.setHereIam(event.getX(), event.getY());
+					
 					//TODO Testausgabe
 					//System.out.println("ncihts malen");
 					toListenForMouse.setMark(false);
+					SmallStepNodeComponent.this.expression.repaint();
 					for (int t = 0; t<toListenForMouse.size(); t=t+4)
 					{
 						int pX = toListenForMouse.get(t);

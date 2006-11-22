@@ -437,7 +437,8 @@ public class PrettyStringRenderer extends AbstractRenderer {
 				
 			}
 							
-			//Wenn gemalt werden soll, also die Maus über einem Buchstaben steht	
+			//Wenn gemalt werden soll, also die Maus über einem Buchstaben steht
+			//TODO Aufpassen, dass die Liste ab und zu neu gesetzt wird!
 			if (toListenForMouse.getMark() && isInListe(i, annotationsList) != -1)
 				{
 				
