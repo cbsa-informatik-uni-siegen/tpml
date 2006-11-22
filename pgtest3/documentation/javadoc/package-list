@@ -1,0 +1,16 @@
+de.unisiegen.tpml.core
+de.unisiegen.tpml.core.bigstep
+de.unisiegen.tpml.core.expressions
+de.unisiegen.tpml.core.interpreters
+de.unisiegen.tpml.core.languages
+de.unisiegen.tpml.core.languages.l0
+de.unisiegen.tpml.core.languages.l1
+de.unisiegen.tpml.core.languages.l2
+de.unisiegen.tpml.core.languages.l3
+de.unisiegen.tpml.core.languages.l4
+de.unisiegen.tpml.core.prettyprinter
+de.unisiegen.tpml.core.smallstep
+de.unisiegen.tpml.core.typechecker
+de.unisiegen.tpml.core.types
+de.unisiegen.tpml.core.util
+de.unisiegen.tpml.core.util.beans
