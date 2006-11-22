@@ -215,8 +215,8 @@ public class CompoundExpression<S, E> extends JComponent {
 				
 				
 				//Herausfinden, ob ich auf einem erwarteten Zeichen bin!
-				if ((event.getX() >= pX) && (event.getX() <= pX1) && (event.getY() >= pY-4) && (event.getY() <= pY1-14))
-				//if ((event.getX() >= pX) && (event.getX() <= pX1))
+				//if ((event.getX() >= pX) && (event.getX() <= pX1) && (event.getY() >= pY-4) && (event.getY() <= pY1-14))
+				if ((event.getX() >= pX) && (event.getX() <= pX1))
 				{
 					//TODO TestausgbaetoListenForMouse.setElementAt(0, 1);
 					//System.out.println("JA, JETZT MUSS DER MOUSEFFEKT ANGEHEN");
@@ -230,16 +230,20 @@ public class CompoundExpression<S, E> extends JComponent {
 			//System.out.println("Position "+event.getX() +", "+ event.getY());
 		}
 		
-		else if (this.environmentRenderer != null && this.environmentRenderer.isCollapsed()) {
+		else if (this.environmentRenderer != null && this.environmentRenderer.isCollapsed()) 
+		{
 			Rectangle r = this.environmentRenderer.getCollapsedArea();
-			if (event.getX () >= r.x && event.getX () <= r.x + r.width) {
+			if (event.getX () >= r.x && event.getX () <= r.x + r.width) 
+			{
 				setToolTipText(this.environmentRenderer.getCollapsedString());
 			}
-			else {
+			else 
+			{
 				setToolTipText(null);
 			}
 		}
-		else {
+		else 
+		{
 			setToolTipText(null);
 		}
 	}

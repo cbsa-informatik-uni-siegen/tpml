@@ -407,8 +407,8 @@ public class PrettyStringRenderer extends AbstractRenderer {
 			int charHighth = fm.getHeight();
 			
 			//TODO: Vielleicht unterstreichen
-			
-			ShowBound instanceOfShowBound = ShowBound.getInstance(); //gets singelton instance of showbound to show bindings
+			//gets singelton instance of showbound to show bindings
+			ShowBound instanceOfShowBound = ShowBound.getInstance(); 
 			LinkedList annotationsList = instanceOfShowBound.getAnnotations();
 			//LinkedList <Bound> sbl = sb.result;
 			
