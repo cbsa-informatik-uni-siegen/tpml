@@ -349,10 +349,10 @@ public class PrettyStringRenderer extends AbstractRenderer {
 	 * @param gc The Graphics context that will be used to render
 	 * @return The width of the expression will get returned.
 	 */
-	public void render (int x, int y, int height,  Graphics gc, ShowBound bound) {
+	public void render (int x, int y, int height,  Graphics gc, ShowBound bound, ToListenForMouseContainer toListenForMouse) {
 		
 		//Eine Instanz, die Instanz von toLitenForMouse
-		toListenForMouse = ToListenForMouseContainer.getInstanceOf();
+		//toListenForMouse = ToListenForMouseContainer.getInstanceOf();
 		
 		int[] breakOffsets = null;
 		if (this.result.annotation != null) {

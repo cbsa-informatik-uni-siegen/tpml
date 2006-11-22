@@ -16,9 +16,9 @@ public class ToListenForMouseContainer
 	
 	private int rightList;
 	
-	private static ToListenForMouseContainer myToListenForMouseContainer = null;
+	//private static ToListenForMouseContainer myToListenForMouseContainer = null;
 	
-	private ToListenForMouseContainer()
+	public ToListenForMouseContainer()
 	{
 		toListenForMouse = new Vector();
 		mark = false;
@@ -29,7 +29,7 @@ public class ToListenForMouseContainer
 		
 	}
 	
-	public static ToListenForMouseContainer getInstanceOf()
+	/*public static ToListenForMouseContainer getInstanceOf()
 	{
 		if (myToListenForMouseContainer == null)
 		{
@@ -40,8 +40,9 @@ public class ToListenForMouseContainer
 		{
 			return myToListenForMouseContainer;	
 		}
-		
-	}
+		}
+	*/	
+	
 	
 	public void add (int toadd)
 	{
@@ -63,8 +64,7 @@ public class ToListenForMouseContainer
 	
 	public void reset ()
 	{
-		toListenForMouse.removeAllElements();
-	
+		toListenForMouse.removeAllElements();	
 	}
 	
 	public int size()
