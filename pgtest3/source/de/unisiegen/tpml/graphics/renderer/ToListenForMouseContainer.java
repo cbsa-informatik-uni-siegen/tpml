@@ -64,6 +64,7 @@ public class ToListenForMouseContainer
 	public void reset ()
 	{
 		toListenForMouse.removeAllElements();
+	
 	}
 	
 	public int size()

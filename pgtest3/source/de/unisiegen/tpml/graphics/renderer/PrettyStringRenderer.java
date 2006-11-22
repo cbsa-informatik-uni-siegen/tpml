@@ -349,7 +349,7 @@ public class PrettyStringRenderer extends AbstractRenderer {
 	 * @param gc The Graphics context that will be used to render
 	 * @return The width of the expression will get returned.
 	 */
-	public void render (int x, int y, int height,  Graphics gc) {
+	public void render (int x, int y, int height,  Graphics gc, ShowBound bound) {
 		
 		//Eine Instanz, die Instanz von toLitenForMouse
 		toListenForMouse = ToListenForMouseContainer.getInstanceOf();
@@ -406,9 +406,10 @@ public class PrettyStringRenderer extends AbstractRenderer {
 			int charWidth = fm.stringWidth("" + c);
 			int charHighth = fm.getHeight();
 			
+			
 			//TODO: Vielleicht unterstreichen
 			//gets singelton instance of showbound to show bindings
-			ShowBound instanceOfShowBound = ShowBound.getInstance(); 
+			ShowBound instanceOfShowBound = bound; 
 			LinkedList annotationsList = instanceOfShowBound.getAnnotations();
 			//LinkedList <Bound> sbl = sb.result;
 			
