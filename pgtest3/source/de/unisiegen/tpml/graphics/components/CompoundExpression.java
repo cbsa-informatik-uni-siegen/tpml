@@ -4,7 +4,9 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionAdapter;
 
 import javax.swing.JComponent;
@@ -16,6 +18,8 @@ import de.unisiegen.tpml.core.util.Environment;
 import de.unisiegen.tpml.graphics.renderer.AbstractRenderer;
 import de.unisiegen.tpml.graphics.renderer.EnvironmentRenderer;
 import de.unisiegen.tpml.graphics.renderer.PrettyStringRenderer;
+import de.unisiegen.tpml.graphics.renderer.ToListenForMouseContainer;
+import de.unisiegen.tpml.graphics.smallstep.SmallStepNodeComponent;
 import de.unisiegen.tpml.ui.abstractsyntaxtree.AbstractSyntaxTree;
 
 public class CompoundExpression<S, E> extends JComponent {
@@ -109,6 +113,16 @@ public class CompoundExpression<S, E> extends JComponent {
 				handleMouseMoved (event);
 			}
 		});
+		this.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseExited(MouseEvent e) {
+				//TODO hier sollte eigentlich das Ereignis sein, dass die Maus den Ausdruck verlässt, und der dann neu gemalt wird, funktioniert aber nicht
+				//System.err.println("Ladidal");
+				ToListenForMouseContainer.getInstanceOf().reset();
+				CompoundExpression.this.repaint();
+			}
+			
+		});
 	}
 	
 	/**
@@ -170,7 +184,51 @@ public class CompoundExpression<S, E> extends JComponent {
 	 * @param event
 	 */
 	private void handleMouseMoved (MouseEvent event) {
-		if (this.environmentRenderer != null && this.environmentRenderer.isCollapsed()) {
+		System.out.println("Event geworfen: "+event);
+		System.out.println("Incence: "+event.getSource());
+		if (event.getSource () instanceof CompoundExpression )
+		{
+			//TODO jetzt wollen wir doch mal gucken, wo wir eigentlich sind!
+			
+			ToListenForMouseContainer toListenForMouse = ToListenForMouseContainer.getInstanceOf();
+			
+			toListenForMouse.setHereIam(event.getX(), event.getY());
+			
+			//TODO Testausgabe
+			//System.out.println("ncihts malen");
+			toListenForMouse.setMark(false);
+			CompoundExpression.this.repaint();
+			for (int t = 0; t<toListenForMouse.size(); t=t+4)
+			{
+				int pX = toListenForMouse.get(t);
+				int pX1 = toListenForMouse.get(t+1);
+				int pY = toListenForMouse.get(t+2);
+				int pY1 = toListenForMouse.get(t+3);
+				//brauche uch zur Zeit nicht
+				//int pY = toListenForMouse.get(t+2);
+			  //int pY1 = toListenForMouse.get(t+3);
+				//TODO TEstausgabe
+				//System.out.println(pX+" " +pX1 + " " + pY + " " + pY1);
+				//System.out.println(event.getX()+"    " +event.getY());
+				
+				
+				//Herausfinden, ob ich auf einem erwarteten Zeichen bin!
+				if ((event.getX() >= pX) && (event.getX() <= pX1) && (event.getY() >= pY-4) && (event.getY() <= pY1-14))
+				//if ((event.getX() >= pX) && (event.getX() <= pX1))
+				{
+					//TODO TestausgbaetoListenForMouse.setElementAt(0, 1);
+					//System.out.println("JA, JETZT MUSS DER MOUSEFFEKT ANGEHEN");
+					toListenForMouse.setMark(true);
+				}
+				toListenForMouse.setHereIam(event.getX(), event.getY());
+				CompoundExpression.this.repaint();
+			}
+			//System.out.println(" Event: "+event);
+			//System.out.println("Typ: "+event.getSource());
+			//System.out.println("Position "+event.getX() +", "+ event.getY());
+		}
+		
+		else if (this.environmentRenderer != null && this.environmentRenderer.isCollapsed()) {
 			Rectangle r = this.environmentRenderer.getCollapsedArea();
 			if (event.getX () >= r.x && event.getX () <= r.x + r.width) {
 				setToolTipText(this.environmentRenderer.getCollapsedString());
@@ -219,6 +277,10 @@ public class CompoundExpression<S, E> extends JComponent {
 					
 		  // CHANGE BENJAMIN
 			ShowBound bound = ShowBound.getInstance();
+			// CHANGE MICHAEL
+			// with ervery new expression renderd by the PrettyStringRenderer the elements listen by mouse will be resetet
+			ToListenForMouseContainer.getInstanceOf().reset();
+			// CHANGE MICHAEL
 			bound.setHoleExpression(this.expression);
 			
 			bound.check(this.expression);

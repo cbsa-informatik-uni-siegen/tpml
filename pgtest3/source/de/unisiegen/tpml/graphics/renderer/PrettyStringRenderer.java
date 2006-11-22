@@ -415,18 +415,10 @@ public class PrettyStringRenderer extends AbstractRenderer {
 			
 			//Indexes indexes = sb.getIndexes();
 			//if i == get
+			//Wenn Elemnt in der Liste der zu makierend sind, in iregend einer
 			if (isIn(i, annotationsList))
 			{
-				//ALTusing thes variables will underline with the existing underlinealgo using their color
-				//ALTunderlineStart = i;
-				//ALTunderlineEnd = i;
-				
-				//fm = AbstractRenderer.expFontMetrics;
-				//int charWidth = fm.stringWidth("" + c);
-				//int charHighth = fm.getHeight();
-	
-				//Die eventuell zu markierenden werden in eine Liste gespeichert!
-				//Alle, die eine Bindung laut Liste haben...
+				//Dann werden sie in die Liste gepackt, wo später Mauslistener reagieren
 				toListenForMouse.add(posX);
 				toListenForMouse.add(posX+charWidth);
 				toListenForMouse.add(posY);
@@ -435,22 +427,24 @@ public class PrettyStringRenderer extends AbstractRenderer {
 				//System.out.println("Der Buchstabe wird der Liste hinzugefügt: "+c);
 				//System.out.println("Der Buchstabe steht an Position : "+i);
 				
+				//ALTusing thes variables will underline with the existing underlinealgo using their color
+				//ALTunderlineStart = i;
+				//ALTunderlineEnd = i;
+				
+				//fm = AbstractRenderer.expFontMetrics;
+				//int charWidth = fm.stringWidth("" + c);
+				//int charHighth = fm.getHeight()
 			}
 							
 			//Wenn gemalt werden soll, also die Maus über einem Buchstaben steht
-			//TODO Aufpassen, dass die Liste ab und zu neu gesetzt wird!
+			//Damit die Liste mit jeder neuen Expression neu gesetzt wird, wird in CopoundExpression neu gesetz
 			if (toListenForMouse.getMark() && isInListe(i, annotationsList) != -1)
 				{
-				
-				//TODO Hier lasse ich mir mal alle Positionen angeben, die in der Liste stehen!
-				//mach mal
-				
-				
-				
 				//System.out.println("Der Mauszeiger ist über einem Buchstaben, der gemalt werden soll");
 				  //TODO hier muss überprüft werden, ob die Position des Mauszeigers auf der annotationList liegt
-					//Das ist die Xposition des Mauszeigers
-				  int xPos = toListenForMouse.getHereIam()[0];
+					
+				//Das ist die Xposition des Mauszeigers
+				int xPos = toListenForMouse.getHereIam()[0];
 					//System.out.println("Hier ist die Maus "+xPos);
 					
 					//fm = AbstractRenderer.expFontMetrics;
@@ -463,12 +457,14 @@ public class PrettyStringRenderer extends AbstractRenderer {
 						//TODO TEstausgaben
 						//System.out.println("Er ist über einem anzunakdenden Zeichen: "+c);
 						//System.out.println("Es steht in der Liste : "+isInListe(i, annotationsList));
-						if (isInListe(i, annotationsList) != -1) 
-							{
-								toListenForMouse.setRightList(isInListe(i, annotationsList));		
-							}
+						
+						//Nur Werte größer gleich 0 sind sinnvolle Werte für die Liste, alle anderen sind Fehlerfälle
+						if (isInListe(i, annotationsList) > -1) 
+						{
+							toListenForMouse.setRightList(isInListe(i, annotationsList));		
+						}
 					 }
-					if (isInListe(i, annotationsList) != -1)
+					if (isInListe(i, annotationsList) > -1)
 					{
 						if (isInListe(i, annotationsList) == toListenForMouse.getRightList())
 						{

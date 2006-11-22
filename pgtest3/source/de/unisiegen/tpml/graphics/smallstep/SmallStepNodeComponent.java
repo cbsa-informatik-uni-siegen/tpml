@@ -285,7 +285,7 @@ public class SmallStepNodeComponent extends JComponent {
 					MenuButton button = (MenuButton)event.getSource ();
 					SmallStepNodeComponent.this.updateUnderlineExpression(button);
 				}
-				else if (event.getSource () instanceof CompoundExpression )
+				/*else if (event.getSource () instanceof CompoundExpression )
 				{
 					//TODO jetzt wollen wir doch mal gucken, wo wir eigentlich sind!
 					
@@ -312,7 +312,8 @@ public class SmallStepNodeComponent extends JComponent {
 						
 						
 						//Herausfinden, ob ich auf einem erwarteten Zeichen bin!
-						if ((event.getX() >= pX) && (event.getX() <= pX1) && (event.getY() >= pY-4) && (event.getY() <= pY1-14))
+						//if ((event.getX() >= pX) && (event.getX() <= pX1) && (event.getY() >= pY-4) && (event.getY() <= pY1-14))
+						if ((event.getX() >= pX) && (event.getX() <= pX1))
 						{
 							//TODO TestausgbaetoListenForMouse.setElementAt(0, 1);
 							//System.out.println("JA, JETZT MUSS DER MOUSEFFEKT ANGEHEN");
@@ -324,7 +325,7 @@ public class SmallStepNodeComponent extends JComponent {
 					//System.out.println(" Event: "+event);
 					//System.out.println("Typ: "+event.getSource());
 					//System.out.println("Position "+event.getX() +", "+ event.getY());
-				}
+				}*/
 				else
 				{
 					SmallStepNodeComponent.this.expression.repaint();
@@ -332,6 +333,7 @@ public class SmallStepNodeComponent extends JComponent {
 				
 			}
 		};
+		
 		
 		this.addMouseMotionListener(underlineThisAdapter);
 		this.expression.addMouseMotionListener(underlineThisAdapter);
