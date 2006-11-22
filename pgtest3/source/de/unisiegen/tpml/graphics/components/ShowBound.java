@@ -2,7 +2,9 @@ package de.unisiegen.tpml.graphics.components;
 
 import java.util.Enumeration;
 import java.util.LinkedList;
+import java.util.Properties;
 
+import de.unisiegen.tpml.Debug;
 import de.unisiegen.tpml.core.expressions.CurriedLet;
 import de.unisiegen.tpml.core.expressions.CurriedLetRec;
 import de.unisiegen.tpml.core.expressions.Expression;
@@ -18,29 +20,20 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyString;
 
 public class ShowBound
 {
-	static Expression holeExpression;
+	private Expression holeExpression;
 
-	private static ShowBound bound = null;
+	
 	private static LinkedList<Bound> tmp = new LinkedList<Bound>();
 	private boolean debug = false;
+	public ShowBound() {}
 	
-	public static ShowBound getInstance()
-	{
-		if (bound == null)
-		{
-			bound = new ShowBound();
-			return bound;
-		}
-		else
-		{
-
-			return bound;
-		}
-	}
+	
+	
 
 	public void check(Expression pExpression)
 	{
-
+		
+			
 		{
 
 			if (pExpression instanceof Lambda)
@@ -398,7 +391,7 @@ public class ShowBound
 							}
 							if (!exists)
 							{
-								Bound addToList = new Bound(start, length);
+								Bound addToList = new Bound(start, length, e,id.toString());
 								addToList.getMarks().add(mark2);
 								addToList.getExpressions().add(e);
 								tmp.add(addToList);
@@ -551,14 +544,15 @@ public class ShowBound
 		return start;
 	}
 
-	public static void setHoleExpression(Expression holeExpression)
+	public void setHoleExpression(Expression pExpression)
 	{
-		ShowBound.holeExpression = holeExpression;
+		holeExpression = pExpression;
 
 		tmp = new LinkedList<Bound>();
+		Debug.print("Hallo");
 	}
 
-	public LinkedList getAnnotations()
+	public LinkedList<Bound> getAnnotations()
 	{
 		return tmp;
 	}
