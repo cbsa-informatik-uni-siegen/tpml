@@ -118,7 +118,8 @@ public class CompoundExpression<S, E> extends JComponent {
 			public void mouseExited(MouseEvent e) {
 				//TODO hier sollte eigentlich das Ereignis sein, dass die Maus den Ausdruck verlässt, und der dann neu gemalt wird, funktioniert aber nicht
 				//System.err.println("Ladidal");
-				ToListenForMouseContainer.getInstanceOf().reset();
+				//ToListenForMouseContainer.getInstanceOf().reset();
+				ToListenForMouseContainer.getInstanceOf().setMark(false);
 				CompoundExpression.this.repaint();
 			}
 			
@@ -184,14 +185,14 @@ public class CompoundExpression<S, E> extends JComponent {
 	 * @param event
 	 */
 	private void handleMouseMoved (MouseEvent event) {
-		System.out.println("Event geworfen: "+event);
-		System.out.println("Incence: "+event.getSource());
+		//TODO Testausgaben
+		//System.out.println("Event geworfen: "+event);
+		//System.out.println("Incence: "+event.getSource());
 		if (event.getSource () instanceof CompoundExpression )
 		{
 			//TODO jetzt wollen wir doch mal gucken, wo wir eigentlich sind!
 			
 			ToListenForMouseContainer toListenForMouse = ToListenForMouseContainer.getInstanceOf();
-			
 			toListenForMouse.setHereIam(event.getX(), event.getY());
 			
 			//TODO Testausgabe
