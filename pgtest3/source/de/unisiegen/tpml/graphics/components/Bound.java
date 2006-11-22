@@ -10,14 +10,17 @@ public class Bound
 	
 	private int startOffset;
 	private int endOffset;
+	private String identifier;
+	private Expression expression;
 	private LinkedList<PrettyAnnotation> marks = new LinkedList<PrettyAnnotation>();
 	private LinkedList<Expression>expressions=new LinkedList<Expression>();
 	
-	public Bound( int start, int end)
+	public Bound( int start, int end, Expression pExpression,String id)
 	{
-		
+		expression=pExpression;
 		startOffset =start;
 		endOffset=end;
+		identifier=id;
 	}
 	public Bound( int start, int end,LinkedList<PrettyAnnotation> list)
 	{
@@ -44,5 +47,13 @@ public class Bound
 	public LinkedList<Expression> getExpressions()
 	{
 		return expressions;
+	}
+	public Expression getExpression()
+	{
+		return expression;
+	}
+	public String getIdentifier()
+	{
+		return identifier;
 	}
 }
