@@ -306,7 +306,7 @@ public class CompoundExpression<S, E> extends JComponent {
 						Debug.printerr(tmp.getMarks().get(j).getStartOffset()+"->"+tmp.getMarks().get(j).getEndOffset()+"  ","Benjamin");
 					}
 					Debug.printerrln("","Benjamin");
-					Debug.printerrln("BM- "+tmp.getExpressions().size(),"Benjamin");
+					
 				}
 				
 				
