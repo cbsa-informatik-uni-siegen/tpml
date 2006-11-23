@@ -2,9 +2,11 @@ package de.unisiegen.tpml.graphics.smallstep;
 
 import de.unisiegen.tpml.graphics.components.CompoundExpression;
 
+import java.awt.Color;
 import java.awt.Container;
 import java.awt.Cursor;
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
@@ -344,6 +346,17 @@ public class SmallStepNodeComponent extends JComponent {
 		// apply the advanced setting
 		setAdvanced(advanced);
 	}
+	
+	@Override
+	protected void paintComponent(Graphics gc)
+	{
+		// TODO Automatisch erstellter Methoden-Stub
+		System.out.println("Ramen zeichnen");
+		gc.setColor(Color.BLACK);
+		gc.drawRect(0, 0, getWidth()-1, getHeight()-1);
+		super.paintComponent(gc);
+	}
+	
 	
 	/**
 	 * Causes the expression and the resultexpression
