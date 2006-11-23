@@ -3,7 +3,7 @@ package de.unisiegen.tpml.ui.abstractsyntaxtree.listener ;
 
 import javax.swing.event.TreeModelEvent ;
 import javax.swing.event.TreeModelListener ;
-import de.unisiegen.tpml.core.smallstep.SmallStepProofModel ;
+import de.unisiegen.tpml.core.AbstractProofModel ;
 import de.unisiegen.tpml.ui.abstractsyntaxtree.AbstractSyntaxTree ;
 
 
@@ -12,11 +12,11 @@ public class ASTTreeModelListener implements TreeModelListener
   public AbstractSyntaxTree abstractSyntaxTree ;
 
 
-  public SmallStepProofModel model ;
+  public AbstractProofModel model ;
 
 
   public ASTTreeModelListener ( AbstractSyntaxTree pAbstractSyntaxTree ,
-      SmallStepProofModel pModel )
+      AbstractProofModel pModel )
   {
     this.abstractSyntaxTree = pAbstractSyntaxTree ;
     this.model = pModel ;
