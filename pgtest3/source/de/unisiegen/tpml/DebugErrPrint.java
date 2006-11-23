@@ -57,6 +57,11 @@ public class DebugErrPrint
   {
     print ( String.valueOf ( toPrint ) , username ) ;
   }
+  
+  public void print ( Object toPrint , String username )
+  {
+    print ( String.valueOf ( toPrint.toString() ) , username ) ;
+  }
 
 
   public void print ( String toPrint , String username )
@@ -115,6 +120,11 @@ public class DebugErrPrint
     print ( toPrint + "\n" , username ) ;
   }
 
+  
+  public void println ( Object toPrint , String username )
+  {
+    println ( String.valueOf ( toPrint.toString()+"\n" ) , username ) ;
+  }
 
   public void remove ( String username )
   {

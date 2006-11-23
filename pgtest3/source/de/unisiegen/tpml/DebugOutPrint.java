@@ -57,6 +57,12 @@ public class DebugOutPrint
   {
     print ( String.valueOf ( toPrint ) , username ) ;
   }
+  
+  
+  public void print ( Object toPrint , String username )
+  {
+    print ( String.valueOf ( toPrint.toString() ) , username ) ;
+  }
 
 
   public void print ( String toPrint , String username )
@@ -113,6 +119,11 @@ public class DebugOutPrint
   public void println ( String toPrint , String username )
   {
     print ( toPrint + "\n" , username ) ;
+  }
+  
+  public void println ( Object toPrint , String username )
+  {
+    println ( String.valueOf ( toPrint.toString()+"\n" ) , username ) ;
   }
 
 
