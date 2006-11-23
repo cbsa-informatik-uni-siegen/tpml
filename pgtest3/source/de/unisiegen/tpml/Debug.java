@@ -1,5 +1,7 @@
 package de.unisiegen.tpml ;
 
+import java.util.Properties;
+
 
 public class Debug
 {
@@ -9,9 +11,21 @@ public class Debug
   public static DebugErrPrint err = new DebugErrPrint ( ) ;
 
 
-  public static void addUser ( String name )
+  public static void addUser ( String username )
   {
-    out.getUserDebug ( ).add ( name ) ;
-    err.getUserDebug ( ).add ( name ) ;
+    out.getUserDebug ( ).add ( username ) ;
+    err.getUserDebug ( ).add ( username ) ;
+  }
+  public static void removeUser(String username)
+  {
+  	 out.remove ( username ) ;
+     err.remove ( username ) ;
+  }
+  public static void removeMe()
+  {
+  	Properties prop = System.getProperties ( ) ;
+    String username= prop.getProperty ( "user.name" )  ;
+  	 out.remove ( username ) ;
+     err.remove ( username ) ;
   }
 }

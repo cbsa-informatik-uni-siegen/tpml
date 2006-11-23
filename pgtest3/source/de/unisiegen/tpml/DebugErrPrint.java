@@ -54,4 +54,16 @@ public class DebugErrPrint
   {
     return this.userDebug ;
   }
+  
+  public void remove(String username)
+  {
+  	for ( int i = 0 ; i < this.userDebug.size ( ) ; i ++ )
+    {
+      if ( username.equalsIgnoreCase ( this.userDebug.get ( i ) ) )
+      {
+        userDebug.remove(i);
+        i-- ;
+      }
+    }
+  }
 }
