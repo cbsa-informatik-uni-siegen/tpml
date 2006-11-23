@@ -107,7 +107,7 @@ public class ToListenForMouseContainer
 	{
 		if (x == -1)
 		{
-			System.err.println("Der will verbotener weise -1 setzen, scheiﬂe!");
+			//System.err.println("Der will verbotener weise -1 setzen, scheiﬂe!");
 			//System.exit(125);
 		}
 			
