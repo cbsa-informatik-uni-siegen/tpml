@@ -246,7 +246,7 @@ public class CompoundExpression<S, E> extends JComponent {
 				//System.out.println("JA, JETZT MUSS DER MOUSEFFEKT ANGEHEN");
 				toListenForMouse.setMark(true);
 			}
-			Debug.out.println("Setze neue Position, wo ich bin...", "Feivel");
+			
 			toListenForMouse.setHereIam(event.getX(), event.getY());
 			Debug.out.println("neu malen, falls setMark jetzt true ist, dann sieht man was", "Feivel");
 			Debug.out.println("setMark ist: "+toListenForMouse.getMark(), "Feivel");
