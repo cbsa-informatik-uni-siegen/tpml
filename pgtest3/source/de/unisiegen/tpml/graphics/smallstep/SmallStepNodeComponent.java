@@ -351,7 +351,7 @@ public class SmallStepNodeComponent extends JComponent {
 	protected void paintComponent(Graphics gc)
 	{
 		// TODO Automatisch erstellter Methoden-Stub
-		System.out.println("Ramen zeichnen");
+		
 		gc.setColor(Color.BLACK);
 		gc.drawRect(0, 0, getWidth()-1, getHeight()-1);
 		super.paintComponent(gc);
