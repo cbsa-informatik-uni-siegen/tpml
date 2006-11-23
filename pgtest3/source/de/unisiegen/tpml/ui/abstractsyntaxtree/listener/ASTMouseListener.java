@@ -5,7 +5,6 @@ import java.awt.event.MouseEvent ;
 import java.awt.event.MouseListener ;
 import javax.swing.tree.DefaultMutableTreeNode ;
 import javax.swing.tree.TreePath ;
-import de.unisiegen.tpml.Debug;
 import de.unisiegen.tpml.ui.abstractsyntaxtree.ASTUI ;
 
 
@@ -68,12 +67,8 @@ public class ASTMouseListener implements MouseListener
 
   public void mousePressed ( MouseEvent pMouseEvent )
   {
-    Debug.out.println ("MousePressed", "christian" );
-    Debug.out.println ("MousePressed", "benjamin" );
     if ( pMouseEvent.isPopupTrigger ( ) )
     {
-      Debug.out.println ("IsPopup", "christian" );
-      Debug.out.println ("IsPopup", "benjamin" );
       int x = pMouseEvent.getX ( ) ;
       int y = pMouseEvent.getY ( ) ;
       TreePath treePath = this.aSTUI.getJAbstractSyntaxTree ( )
@@ -89,10 +84,22 @@ public class ASTMouseListener implements MouseListener
   }
 
 
-  public void mouseReleased ( @ SuppressWarnings ( "unused" )
-  MouseEvent pMouseEvent )
+  public void mouseReleased ( MouseEvent pMouseEvent )
   {
-    // Do Nothing
+    if ( pMouseEvent.isPopupTrigger ( ) )
+    {
+      int x = pMouseEvent.getX ( ) ;
+      int y = pMouseEvent.getY ( ) ;
+      TreePath treePath = this.aSTUI.getJAbstractSyntaxTree ( )
+          .getPathForLocation ( x , y ) ;
+      if ( treePath == null )
+      {
+        return ;
+      }
+      this.aSTUI.getJAbstractSyntaxTree ( ).setSelectionPath ( treePath ) ;
+      this.aSTUI.getJPopupMenu ( ).show ( pMouseEvent.getComponent ( ) , x , y ) ;
+    }
+    setStatus ( ) ;
   }
 
 
