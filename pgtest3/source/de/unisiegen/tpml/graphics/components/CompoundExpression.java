@@ -204,12 +204,12 @@ public class CompoundExpression<S, E> extends JComponent {
 	 */
 	private void handleMouseMoved (MouseEvent event) {
 		//TODO Testausgaben
-		Debug.out.println("Event geworfen: "+event, "Feivel" );
+		//Debug.out.println("Event geworfen: "+event, "Feivel" );
 		Debug.out.println("Incence: "+event.getSource(), "Feivel");
 		if (event.getSource () instanceof CompoundExpression )
 		{
 			//TODO jetzt wollen wir doch mal gucken, wo wir eigentlich sind!
-			
+			Debug.out.println("Ok, es ist einen CompoundExpression", "Feivel");
 			//toListenForMouse = new ToListenForMouseContainer();
 			if (! toListenForMouse.setExpression (expression))
 			{
@@ -219,6 +219,7 @@ public class CompoundExpression<S, E> extends JComponent {
 			
 			//TODO Testausgabe
 			//System.out.println("ncihts malen");
+			Debug.out.println("Erstmal nichts mehr malen", "Feivel");
 			toListenForMouse.setMark(false);
 			CompoundExpression.this.repaint();
 			for (int t = 0; t<toListenForMouse.size(); t=t+4)
@@ -240,11 +241,15 @@ public class CompoundExpression<S, E> extends JComponent {
 				//if ((event.getX() >= pX) && (event.getX() <= pX1) && (event.getY() >= pY-4) && (event.getY() <= pY1-14))
 				if ((event.getX() >= pX) && (event.getX() <= pX1))
 				{
+					Debug.out.println("Ok, hier muss wieder gemalt werden!", "Feivel");
 					//TODO TestausgbaetoListenForMouse.setElementAt(0, 1);
 					//System.out.println("JA, JETZT MUSS DER MOUSEFFEKT ANGEHEN");
 					toListenForMouse.setMark(true);
 				}
+				Debug.out.println("Setze neue Position, wo ich bin...", "Feivel");
 				toListenForMouse.setHereIam(event.getX(), event.getY());
+				Debug.out.println("neu malen, falls setMark jetzt true ist, dann sieht man was", "Feivel");
+				Debug.out.println("setMark ist: "+toListenForMouse.getMark(), "Feivel");
 				CompoundExpression.this.repaint();
 			}
 			//System.out.println(" Event: "+event);
