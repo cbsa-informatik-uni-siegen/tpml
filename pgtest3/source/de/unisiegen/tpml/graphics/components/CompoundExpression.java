@@ -104,12 +104,17 @@ public class CompoundExpression<S, E> extends JComponent {
 	 */
 	
 	//TODO Kommentar erstellen
-	private ShowBound bound = new ShowBound();
+	//private ShowBound bound = new ShowBound();
+	private ShowBound bound;
 	
-	private ToListenForMouseContainer toListenForMouse = new ToListenForMouseContainer();
+	//private ToListenForMouseContainer toListenForMouse = new ToListenForMouseContainer();
+	private ToListenForMouseContainer toListenForMouse;
 	
 	public CompoundExpression () {
 		super ();
+		
+		this.bound = new ShowBound();
+		this.toListenForMouse = new ToListenForMouseContainer();
 		
 		this.alternativeColor 		= null;
 		this.braceSize 						= 10;
@@ -194,8 +199,8 @@ public class CompoundExpression<S, E> extends JComponent {
 	 */
 	private void handleMouseMoved (MouseEvent event) {
 		//TODO Testausgaben
-		System.out.println("Event geworfen: "+event);
-		System.out.println("Incence: "+event.getSource());
+		Debug.out.println("Event geworfen: "+event, "Feivel" );
+		Debug.out.println("Incence: "+event.getSource(), "Feivel");
 		if (event.getSource () instanceof CompoundExpression )
 		{
 			//TODO jetzt wollen wir doch mal gucken, wo wir eigentlich sind!
