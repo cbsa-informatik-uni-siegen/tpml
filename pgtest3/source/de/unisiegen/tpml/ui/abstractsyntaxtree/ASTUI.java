@@ -137,6 +137,7 @@ public class ASTUI
 
   public ASTUI ( AbstractSyntaxTree pAbstractSyntaxTree )
   {
+    Insets insets = new Insets ( 0 , 0 , 0 , 0 ) ;
     // Preferences
     this.resourceBundle = ResourceBundle
         .getBundle ( "de/unisiegen/tpml/ui/abstractsyntaxtree/ast" ) ;
@@ -253,10 +254,12 @@ public class ASTUI
     this.jTreeAbstractSyntax.setRowHeight ( 22 ) ;
     this.jTreeAbstractSyntax.addMouseListener ( this.aSTMouseListener ) ;
     this.jScrollPaneAbstractSyntax = new JScrollPane ( this.jTreeAbstractSyntax ) ;
-    this.jScrollPaneAbstractSyntax.setBorder ( new TitledBorder ( BorderFactory
-        .createLineBorder ( Color.black , 1 ) , "" ,
-        TitledBorder.DEFAULT_JUSTIFICATION , TitledBorder.TOP , new Font (
-            "SansSerif" , Font.PLAIN , 12 ) ) ) ;
+    /*
+     * this.jScrollPaneAbstractSyntax.setBorder ( new TitledBorder (
+     * BorderFactory .createLineBorder ( Color.black , 1 ) , "" ,
+     * TitledBorder.DEFAULT_JUSTIFICATION , TitledBorder.TOP , new Font (
+     * "SansSerif" , Font.PLAIN , 12 ) ) ) ;
+     */
     // Button Expand
     this.jButtonExpand = new JButton ( this.resourceBundle
         .getString ( "expand" ) ) ;
@@ -331,14 +334,7 @@ public class ASTUI
         .getASTPreferences ( ).isReplace ( ) ) ;
     this.jCheckBoxReplace.setFocusable ( false ) ;
     this.jCheckBoxReplace.addItemListener ( this.aSTItemListener ) ;
-    // ScrollPane AbstractSyntax
-    this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
-    this.gridBagConstraints.insets = new Insets ( 0 , 0 , 0 , 0 ) ;
-    this.gridBagConstraints.gridx = 0 ;
-    this.gridBagConstraints.gridy = 0 ;
-    this.gridBagConstraints.weightx = 10 ;
-    this.gridBagConstraints.weighty = 10 ;
-    // Panel South
+    // Panel Preferences
     this.jPanelPreferences = new JPanel ( ) ;
     this.jPanelPreferences.setLayout ( this.gridBagLayout ) ;
     this.jPanelPreferences.setBorder ( new TitledBorder ( BorderFactory
@@ -347,7 +343,8 @@ public class ASTUI
             "SansSerif" , Font.PLAIN , 12 ) ) ) ;
     // CheckBox Selected
     this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
-    this.gridBagConstraints.insets = new Insets ( 4 , 4 , 4 , 4 ) ;
+    insets.set ( 4 , 4 , 4 , 4 ) ;
+    this.gridBagConstraints.insets = insets ;
     this.gridBagConstraints.gridx = 0 ;
     this.gridBagConstraints.gridy = 0 ;
     this.gridBagConstraints.weightx = 0 ;
@@ -356,7 +353,8 @@ public class ASTUI
         this.gridBagConstraints ) ;
     // CheckBox Bindings
     this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
-    this.gridBagConstraints.insets = new Insets ( 4 , 4 , 4 , 4 ) ;
+    insets.set ( 4 , 4 , 4 , 4 ) ;
+    this.gridBagConstraints.insets = insets ;
     this.gridBagConstraints.gridx = 0 ;
     this.gridBagConstraints.gridy = 1 ;
     this.gridBagConstraints.weightx = 0 ;
@@ -365,7 +363,8 @@ public class ASTUI
         this.gridBagConstraints ) ;
     // CheckBox Replace
     this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
-    this.gridBagConstraints.insets = new Insets ( 4 , 4 , 4 , 4 ) ;
+    insets.set ( 4 , 4 , 4 , 4 ) ;
+    this.gridBagConstraints.insets = insets ;
     this.gridBagConstraints.gridx = 1 ;
     this.gridBagConstraints.gridy = 0 ;
     this.gridBagConstraints.weightx = 10 ;
@@ -374,7 +373,8 @@ public class ASTUI
         this.gridBagConstraints ) ;
     // Button Expand
     this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
-    this.gridBagConstraints.insets = new Insets ( 4 , 4 , 4 , 4 ) ;
+    insets.set ( 4 , 4 , 4 , 4 ) ;
+    this.gridBagConstraints.insets = insets ;
     this.gridBagConstraints.gridx = 2 ;
     this.gridBagConstraints.gridy = 0 ;
     this.gridBagConstraints.weightx = 0 ;
@@ -382,7 +382,8 @@ public class ASTUI
     this.jPanelPreferences.add ( this.jButtonExpand , this.gridBagConstraints ) ;
     // Button ExpandAll
     this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
-    this.gridBagConstraints.insets = new Insets ( 4 , 4 , 4 , 4 ) ;
+    insets.set ( 4 , 4 , 4 , 4 ) ;
+    this.gridBagConstraints.insets = insets ;
     this.gridBagConstraints.gridx = 2 ;
     this.gridBagConstraints.gridy = 1 ;
     this.gridBagConstraints.weightx = 0 ;
@@ -391,7 +392,8 @@ public class ASTUI
         this.gridBagConstraints ) ;
     // Button Collapse
     this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
-    this.gridBagConstraints.insets = new Insets ( 4 , 4 , 4 , 4 ) ;
+    insets.set ( 4 , 4 , 4 , 4 ) ;
+    this.gridBagConstraints.insets = insets ;
     this.gridBagConstraints.gridx = 3 ;
     this.gridBagConstraints.gridy = 0 ;
     this.gridBagConstraints.weightx = 0 ;
@@ -400,7 +402,8 @@ public class ASTUI
         .add ( this.jButtonCollapse , this.gridBagConstraints ) ;
     // Button CollapseAll
     this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
-    this.gridBagConstraints.insets = new Insets ( 4 , 4 , 4 , 4 ) ;
+    insets.set ( 4 , 4 , 4 , 4 ) ;
+    this.gridBagConstraints.insets = insets ;
     this.gridBagConstraints.gridx = 3 ;
     this.gridBagConstraints.gridy = 1 ;
     this.gridBagConstraints.weightx = 0 ;
@@ -409,7 +412,8 @@ public class ASTUI
         this.gridBagConstraints ) ;
     // Button Close
     this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
-    this.gridBagConstraints.insets = new Insets ( 4 , 4 , 4 , 4 ) ;
+    insets.set ( 4 , 4 , 4 , 4 ) ;
+    this.gridBagConstraints.insets = insets ;
     this.gridBagConstraints.gridx = 4 ;
     this.gridBagConstraints.gridy = 0 ;
     this.gridBagConstraints.weightx = 0 ;
@@ -417,44 +421,31 @@ public class ASTUI
     this.jPanelPreferences.add ( this.jButtonClose , this.gridBagConstraints ) ;
     // Button CloseAll
     this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
-    this.gridBagConstraints.insets = new Insets ( 4 , 4 , 4 , 4 ) ;
+    insets.set ( 4 , 4 , 4 , 4 ) ;
+    this.gridBagConstraints.insets = insets ;
     this.gridBagConstraints.gridx = 4 ;
     this.gridBagConstraints.gridy = 1 ;
     this.gridBagConstraints.weightx = 0 ;
     this.gridBagConstraints.weighty = 10 ;
     this.jPanelPreferences
         .add ( this.jButtonCloseAll , this.gridBagConstraints ) ;
-    // Frame
-    /*
-     * this.jFrameAbstractSyntaxTree = new JFrame ( ) ;
-     * this.jFrameAbstractSyntaxTree.setLayout ( this.gridBagLayout ) ;
-     * this.jFrameAbstractSyntaxTree.setTitle ( "AbstractSyntaxTree" ) ;
-     * this.jFrameAbstractSyntaxTree.setSize ( this.abstractSyntaxTree
-     * .getASTPreferences ( ).getWidth ( ) , this.abstractSyntaxTree
-     * .getASTPreferences ( ).getHeight ( ) ) ;
-     * this.jFrameAbstractSyntaxTree.setLocation ( this.abstractSyntaxTree
-     * .getASTPreferences ( ).getPositionX ( ) , this.abstractSyntaxTree
-     * .getASTPreferences ( ).getPositionY ( ) ) ;
-     * this.jFrameAbstractSyntaxTree.setIconImage ( null ) ;
-     * this.jFrameAbstractSyntaxTree .setDefaultCloseOperation (
-     * WindowConstants.HIDE_ON_CLOSE ) ;
-     * this.jFrameAbstractSyntaxTree.addWindowListener ( new ASTWindowListener (
-     * this ) ) ;
-     */
+    // Panel Main
     this.jPanelMain = new JPanel ( ) ;
     this.jPanelMain.setLayout ( this.gridBagLayout ) ;
     // ScrollPane AbstractSyntax
     this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
-    this.gridBagConstraints.insets = new Insets ( 0 , 0 , 0 , 0 ) ;
+    insets.set ( 0 , 0 , 1 , 0 ) ;
+    this.gridBagConstraints.insets = insets ;
     this.gridBagConstraints.gridx = 0 ;
     this.gridBagConstraints.gridy = 0 ;
     this.gridBagConstraints.weightx = 10 ;
     this.gridBagConstraints.weighty = 10 ;
     this.jPanelMain.add ( this.jScrollPaneAbstractSyntax ,
         this.gridBagConstraints ) ;
-    // Panel South
+    // Panel Preferences
     this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
-    this.gridBagConstraints.insets = new Insets ( 2 , 0 , 0 , 0 ) ;
+    insets.set ( 1 , 0 , 0 , 1 ) ;
+    this.gridBagConstraints.insets = insets ;
     this.gridBagConstraints.gridx = 0 ;
     this.gridBagConstraints.gridy = 1 ;
     this.gridBagConstraints.weightx = 0 ;

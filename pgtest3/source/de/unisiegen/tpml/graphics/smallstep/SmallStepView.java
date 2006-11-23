@@ -2,7 +2,6 @@ package de.unisiegen.tpml.graphics.smallstep ;
 
 
 import java.awt.Color ;
-import java.awt.Dimension ;
 import java.awt.GridBagConstraints ;
 import java.awt.GridBagLayout ;
 import java.awt.Insets ;
@@ -15,6 +14,7 @@ import de.unisiegen.tpml.core.ProofGuessException ;
 import de.unisiegen.tpml.core.smallstep.SmallStepProofModel ;
 import de.unisiegen.tpml.graphics.AbstractProofView ;
 import de.unisiegen.tpml.ui.abstractsyntaxtree.AbstractSyntaxTree ;
+import de.unisiegen.tpml.ui.abstractsyntaxtree.listener.ASTSplitPaneListener ;
 import de.unisiegen.tpml.ui.abstractsyntaxtree.listener.ASTTreeModelListener ;
 
 
@@ -55,7 +55,7 @@ public class SmallStepView extends AbstractProofView
   protected JScrollPane scrollPane ;
 
 
-  private JSplitPane jSplitPane ;
+  protected JSplitPane jSplitPane ;
 
 
   //
@@ -74,19 +74,18 @@ public class SmallStepView extends AbstractProofView
     {
       throw new NullPointerException ( "model is null" ) ;
     }
-    AbstractSyntaxTree abstractSyntaxTree = AbstractSyntaxTree
-        .getNewInstance ( ) ;
+    AbstractSyntaxTree abstractSyntaxTree = new AbstractSyntaxTree ( ) ;
     abstractSyntaxTree.setExpression ( model.getRoot ( ).getLastLeaf ( )
         .getExpression ( ) ) ;
     model.addTreeModelListener ( new ASTTreeModelListener ( abstractSyntaxTree ,
         model ) ) ;
     GridBagConstraints gridBagConstraints = new GridBagConstraints ( ) ;
-    setLayout ( new GridBagLayout ( ) ) ;
+    this.jSplitPane = new JSplitPane ( JSplitPane.VERTICAL_SPLIT ) ;
+    this.setLayout ( new GridBagLayout ( ) ) ;
     this.scrollPane = new JScrollPane ( ) ;
     this.component = new SmallStepComponent ( model , isAdvanced ( ) ) ;
     this.scrollPane.setViewportView ( this.component ) ;
     this.scrollPane.getViewport ( ).setBackground ( Color.WHITE ) ;
-    this.scrollPane.setPreferredSize ( new Dimension ( 10000 , 10000 ) ) ;
     this.scrollPane.addComponentListener ( new ComponentAdapter ( )
     {
       @ Override
@@ -98,19 +97,22 @@ public class SmallStepView extends AbstractProofView
                 .getWidth ( ) ) ;
       }
     } ) ;
-    JPanel ast = abstractSyntaxTree.getASTUI ( ).getJPanelMain ( ) ;
-    ast.getPreferredSize ( ).getHeight ( ) ;
-    this.jSplitPane = new JSplitPane ( JSplitPane.VERTICAL_SPLIT ,
-        this.scrollPane , ast ) ;
+    JPanel jMainPanel = abstractSyntaxTree.getASTUI ( ).getJPanelMain ( ) ;
+    jMainPanel.getPreferredSize ( ).getHeight ( ) ;
+    this.jSplitPane.setLeftComponent ( this.scrollPane ) ;
+    this.jSplitPane.setRightComponent ( jMainPanel ) ;
     this.jSplitPane.setOneTouchExpandable ( true ) ;
-    this.jSplitPane.setResizeWeight ( 0.75 ) ;
     gridBagConstraints.fill = GridBagConstraints.BOTH ;
     gridBagConstraints.insets = new Insets ( 0 , 0 , 0 , 0 ) ;
     gridBagConstraints.gridx = 0 ;
     gridBagConstraints.gridy = 0 ;
     gridBagConstraints.weightx = 10 ;
     gridBagConstraints.weighty = 10 ;
-    add ( this.jSplitPane , gridBagConstraints ) ;
+    this.add ( this.jSplitPane , gridBagConstraints ) ;
+    this.addPropertyChangeListener ( new ASTSplitPaneListener (
+        this.jSplitPane , abstractSyntaxTree ) ) ;
+    jMainPanel.addComponentListener ( new ASTSplitPaneListener (
+        this.jSplitPane , abstractSyntaxTree ) ) ;
   }
 
 

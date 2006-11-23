@@ -14,6 +14,7 @@ import de.unisiegen.tpml.core.ProofGuessException ;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel ;
 import de.unisiegen.tpml.graphics.AbstractProofView ;
 import de.unisiegen.tpml.ui.abstractsyntaxtree.AbstractSyntaxTree ;
+import de.unisiegen.tpml.ui.abstractsyntaxtree.listener.ASTSplitPaneListener;
 import de.unisiegen.tpml.ui.abstractsyntaxtree.listener.ASTTreeModelListener ;
 
 
@@ -45,14 +46,14 @@ public class TypeCheckerView extends AbstractProofView
   public TypeCheckerView ( TypeCheckerProofModel model )
   {
     super ( ) ;
-    AbstractSyntaxTree abstractSyntaxTree = AbstractSyntaxTree
-        .getNewInstance ( ) ;
+    AbstractSyntaxTree abstractSyntaxTree = new AbstractSyntaxTree ( ) ;
     abstractSyntaxTree.setExpression ( model.getRoot ( ).getLastLeaf ( )
         .getExpression ( ) ) ;
     model.addTreeModelListener ( new ASTTreeModelListener ( abstractSyntaxTree ,
         model ) ) ;
     GridBagConstraints gridBagConstraints = new GridBagConstraints ( ) ;
-    setLayout ( new GridBagLayout ( ) ) ;
+    this.jSplitPane = new JSplitPane ( JSplitPane.VERTICAL_SPLIT ) ;
+    this.setLayout ( new GridBagLayout ( ) ) ;
     this.scrollPane = new JScrollPane ( ) ;
     this.component = new TypeCheckerComponent ( model ) ;
     this.scrollPane.setViewportView ( this.component ) ;
@@ -68,19 +69,22 @@ public class TypeCheckerView extends AbstractProofView
                 .getWidth ( ) ) ;
       }
     } ) ;
-    JPanel ast = abstractSyntaxTree.getASTUI ( ).getJPanelMain ( ) ;
-    ast.getPreferredSize ( ).getHeight ( ) ;
-    this.jSplitPane = new JSplitPane ( JSplitPane.VERTICAL_SPLIT ,
-        this.scrollPane , ast ) ;
+    JPanel jMainPanel = abstractSyntaxTree.getASTUI ( ).getJPanelMain ( ) ;
+    jMainPanel.getPreferredSize ( ).getHeight ( ) ;
+    this.jSplitPane.setLeftComponent ( this.scrollPane ) ;
+    this.jSplitPane.setRightComponent ( jMainPanel ) ;
     this.jSplitPane.setOneTouchExpandable ( true ) ;
-    this.jSplitPane.setResizeWeight ( 0.75 ) ;
     gridBagConstraints.fill = GridBagConstraints.BOTH ;
     gridBagConstraints.insets = new Insets ( 0 , 0 , 0 , 0 ) ;
     gridBagConstraints.gridx = 0 ;
     gridBagConstraints.gridy = 0 ;
     gridBagConstraints.weightx = 10 ;
     gridBagConstraints.weighty = 10 ;
-    add ( this.jSplitPane , gridBagConstraints ) ;
+    this.add ( this.jSplitPane , gridBagConstraints ) ;
+    this.addPropertyChangeListener ( new ASTSplitPaneListener (
+        this.jSplitPane , abstractSyntaxTree ) ) ;
+    jMainPanel.addComponentListener ( new ASTSplitPaneListener (
+        this.jSplitPane , abstractSyntaxTree ) ) ;
   }
 
 

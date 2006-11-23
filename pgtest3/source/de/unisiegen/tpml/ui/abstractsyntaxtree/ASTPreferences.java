@@ -30,11 +30,20 @@ public class ASTPreferences
   private int positionY ;
 
 
+  private int dividerLocation ;
+
+
   public ASTPreferences ( )
   {
     this.preferences = Preferences
         .userNodeForPackage ( AbstractSyntaxTree.class ) ;
     updatePreferences ( ) ;
+  }
+
+
+  public int getDividerLocation ( )
+  {
+    return this.dividerLocation ;
   }
 
 
@@ -84,6 +93,13 @@ public class ASTPreferences
   {
     this.bindings = pBindings ;
     this.preferences.putBoolean ( "bindings" , pBindings ) ;
+  }
+
+
+  public void setDividerLocation ( int pDividerLocation )
+  {
+    this.dividerLocation = pDividerLocation ;
+    this.preferences.putInt ( "dividerLocation" , pDividerLocation ) ;
   }
 
 
@@ -141,5 +157,6 @@ public class ASTPreferences
     this.height = this.preferences.getInt ( "jFrameHeight" , 450 ) ;
     this.positionX = this.preferences.getInt ( "jFramePositionX" , 100 ) ;
     this.positionY = this.preferences.getInt ( "jFramePositionY" , 100 ) ;
+    this.dividerLocation = this.preferences.getInt ( "dividerLocation" , 300 ) ;
   }
 }

@@ -26,9 +26,6 @@ import de.unisiegen.tpml.ui.abstractsyntaxtree.binding.ASTPair ;
 
 public class AbstractSyntaxTree
 {
-  private static AbstractSyntaxTree abstractSyntaxTree = null ;
-
-
   private static final String BEFORE = "" ;
 
 
@@ -36,23 +33,6 @@ public class AbstractSyntaxTree
 
 
   private static final int ONLY_ONE_EXPRESSION = - 1 ;
-
-
-  public static AbstractSyntaxTree getInstance ( )
-  {
-    if ( abstractSyntaxTree == null )
-    {
-      abstractSyntaxTree = new AbstractSyntaxTree ( ) ;
-      return abstractSyntaxTree ;
-    }
-    return abstractSyntaxTree ;
-  }
-
-
-  public static AbstractSyntaxTree getNewInstance ( )
-  {
-    return new AbstractSyntaxTree ( ) ;
-  }
 
 
   private ASTUI aSTUI ;
@@ -64,7 +44,7 @@ public class AbstractSyntaxTree
   private Expression oldExpression ;
 
 
-  private AbstractSyntaxTree ( )
+  public AbstractSyntaxTree ( )
   {
     this.oldExpression = null ;
     this.aSTPreferences = new ASTPreferences ( ) ;
