@@ -1,6 +1,8 @@
 package de.unisiegen.tpml.graphics.renderer;
 
 import java.util.Vector;
+
+import de.unisiegen.tpml.core.expressions.Expression;
 /**
  * TODO Kommentare schreiebn
  * @author Feivel
@@ -16,6 +18,8 @@ public class ToListenForMouseContainer
 	
 	private int rightList;
 	
+	private Expression expression;
+	
 	//private static ToListenForMouseContainer myToListenForMouseContainer = null;
 	
 	public ToListenForMouseContainer()
@@ -26,6 +30,7 @@ public class ToListenForMouseContainer
 		hereIam[0] = 0;
 		hereIam[1] = 0;
 		rightList = -2;
+		expression = null;
 		
 	}
 	
@@ -114,4 +119,29 @@ public class ToListenForMouseContainer
 		return rightList;
 	}
 	
+	public boolean setExpression (Expression e)
+	{
+		if (expression == null)
+		{
+			expression = e;
+			return true;
+		}
+		else 
+		{
+			if (expression == e)
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+		
+	}
+	
+	public Expression getExpression ()
+	{
+		return expression;
+	}
 }
