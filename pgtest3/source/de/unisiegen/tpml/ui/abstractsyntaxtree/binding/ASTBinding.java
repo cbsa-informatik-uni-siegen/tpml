@@ -118,6 +118,12 @@ public class ASTBinding
   }
 
 
+  public int getNoBindingSize ( )
+  {
+    return this.noBinding.size ( ) ;
+  }
+
+
   public LinkedList < Expression > getNotFree ( )
   {
     return this.notFree ;

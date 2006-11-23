@@ -254,6 +254,28 @@ public class ASTNode
   }
 
 
+  @ SuppressWarnings ( "unused" )
+  private boolean isNoBinding ( int pCharIndex )
+  {
+    if ( ( this.aSTBinding == null )
+        || ( this.aSTBinding.getNoBindingSize ( ) == 0 ) )
+    {
+      return false ;
+    }
+    for ( int i = 0 ; i < this.aSTBinding.getNoBindingSize ( ) ; i ++ )
+    {
+      PrettyAnnotation prettyAnnotation = this.expression.toPrettyString ( )
+          .getAnnotationForPrintable ( this.aSTBinding.getNoBinding ( i ) ) ;
+      if ( ( pCharIndex >= prettyAnnotation.getStartOffset ( ) )
+          && ( pCharIndex <= prettyAnnotation.getEndOffset ( ) ) )
+      {
+        return true ;
+      }
+    }
+    return false ;
+  }
+
+
   public void resetCaption ( )
   {
     if ( this.expression == null )
@@ -398,6 +420,14 @@ public class ASTNode
         }
         result.append ( "</font></b>" ) ;
       }
+      /*
+       * else if ( ( this.aSTBinding != null ) && (
+       * this.aSTBinding.getNoBindingSize ( ) > 0 ) && ( isNoBinding ( charIndex ) ) ) {
+       * Debug.out.println ( charIndex , "christian" ) ; result.append ( "<b><font
+       * color=\"#" + "00FF00" + "\">" ) ; while ( isNoBinding ( charIndex ) ) {
+       * result.append ( this.expressionString.charAt ( charIndex ) ) ; // Next
+       * character charIndex ++ ; prettyCharIterator.next ( ) ; } result.append ( "</font></b>" ) ; }
+       */
       // Else
       else
       {
