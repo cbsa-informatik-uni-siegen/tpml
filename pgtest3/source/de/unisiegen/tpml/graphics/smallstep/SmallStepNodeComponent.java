@@ -236,7 +236,7 @@ public class SmallStepNodeComponent extends JComponent {
 		
 		this.translateItem = new MenuTranslateItem();
 		
-		Debug.addUser("feivel");
+	
 		
 		this.rules.getMenuButton().addMenuButtonListener(new MenuButtonListener () {
 			public void menuClosed (MenuButton source) { }
