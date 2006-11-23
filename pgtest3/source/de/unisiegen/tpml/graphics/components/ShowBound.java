@@ -550,8 +550,8 @@ public class ShowBound
 		holeExpression = pExpression;
 
 		tmp = new LinkedList<Bound>();
-		Debug.removeUser("feivel");
-		Debug.err.println("michaels sachen werden gedruckt","feivel");
+		
+		
 	
 	}
 
