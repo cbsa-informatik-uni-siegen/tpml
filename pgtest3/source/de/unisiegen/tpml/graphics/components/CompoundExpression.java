@@ -139,8 +139,7 @@ public class CompoundExpression<S, E> extends JComponent {
 				
 				toListenForMouse.setMark(false);
 				CompoundExpression.this.repaint();
-				Debug.out.println("test " +e, "benjamin");
-				Debug.out.println(expression, "benjamin");
+				
 			}
 			
 		});
