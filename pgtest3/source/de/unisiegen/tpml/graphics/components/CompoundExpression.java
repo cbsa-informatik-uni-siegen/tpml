@@ -216,8 +216,9 @@ public class CompoundExpression<S, E> extends JComponent {
 			{
 				int pX = toListenForMouse.get(t);
 				int pX1 = toListenForMouse.get(t+1);
-				int pY = toListenForMouse.get(t+2);
-				int pY1 = toListenForMouse.get(t+3);
+				//Y-Werte werden nicht weiter beachet. Wenn die Maus die Compoundexpresson verlässt, dann wird der MouseExit ausgelöst
+				//int pY = toListenForMouse.get(t+2);
+				//int pY1 = toListenForMouse.get(t+3);
 				//brauche uch zur Zeit nicht
 				//int pY = toListenForMouse.get(t+2);
 			  //int pY1 = toListenForMouse.get(t+3);
