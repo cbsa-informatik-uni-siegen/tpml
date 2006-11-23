@@ -240,6 +240,7 @@ public class ShowBound
 
 		checkChild(let);
 		
+		//Debugoutput
 		if (false)
 
 		{
@@ -297,7 +298,8 @@ public class ShowBound
 		// von lambda
 		Object[] a = rec.free().toArray();
 		Object[] b = rec.getE().free().toArray();
-
+		
+		
 		checkChild(rec);
 
 		LinkedList<String> list = listWithBounds(a, b);
