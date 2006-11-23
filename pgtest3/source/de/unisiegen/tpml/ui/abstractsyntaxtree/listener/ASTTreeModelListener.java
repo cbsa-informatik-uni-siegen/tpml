@@ -3,6 +3,7 @@ package de.unisiegen.tpml.ui.abstractsyntaxtree.listener ;
 
 import javax.swing.event.TreeModelEvent ;
 import javax.swing.event.TreeModelListener ;
+import de.unisiegen.tpml.Debug ;
 import de.unisiegen.tpml.core.AbstractProofModel ;
 import de.unisiegen.tpml.ui.abstractsyntaxtree.AbstractSyntaxTree ;
 
@@ -26,28 +27,29 @@ public class ASTTreeModelListener implements TreeModelListener
   public void treeNodesChanged ( @ SuppressWarnings ( "unused" )
   TreeModelEvent pTreeModelEvent )
   {
-    this.abstractSyntaxTree.setExpression ( this.model.getRoot ( )
-        .getLastLeaf ( ).getExpression ( ) ) ;
+    // Do Nothing
   }
 
 
   public void treeNodesInserted ( @ SuppressWarnings ( "unused" )
   TreeModelEvent pTreeModelEvent )
   {
-    // Do Nothing
+    this.abstractSyntaxTree.setExpression ( this.model.getRoot ( )
+        .getLastLeaf ( ).getExpression ( ) ) ;
   }
 
 
   public void treeNodesRemoved ( @ SuppressWarnings ( "unused" )
   TreeModelEvent pTreeModelEvent )
   {
-    // Do Nothing
+    this.abstractSyntaxTree.setExpression ( this.model.getRoot ( )
+        .getLastLeaf ( ).getExpression ( ) ) ;
   }
 
 
   public void treeStructureChanged ( @ SuppressWarnings ( "unused" )
   TreeModelEvent pTreeModelEvent )
   {
-    // Do Nothing
+    Debug.out.println ( "StructureChanged" , "christian" ) ;
   }
 }

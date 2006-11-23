@@ -385,9 +385,7 @@ public class AbstractSyntaxTree
 
   public void setExpression ( Expression pExpression )
   {
-    // Debug.addUser ( "benjamin" ) ;
-    // Debug.addUser ( "michael" ) ;
-    Debug.out.println ( "AbstractSyntaxTree.setExpression" , "christian" ) ;
+    Debug.out.println ( "setExpression" , "christian" ) ;
     if ( pExpression == null )
     {
       Debug.err.println ( "Expression is null" , "christian" ) ;
