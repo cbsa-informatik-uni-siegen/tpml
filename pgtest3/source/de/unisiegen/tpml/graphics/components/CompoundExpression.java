@@ -211,6 +211,10 @@ public class CompoundExpression<S, E> extends JComponent {
 			//TODO jetzt wollen wir doch mal gucken, wo wir eigentlich sind!
 			
 			//toListenForMouse = new ToListenForMouseContainer();
+			if (! toListenForMouse.setExpression (expression))
+			{
+			Debug.out.print("Scheiﬂe, es ist ein anderer Ausdruck: "+expression.toPrettyString().toString(), "Feivel");
+			} 
 			toListenForMouse.setHereIam(event.getX(), event.getY());
 			
 			//TODO Testausgabe
