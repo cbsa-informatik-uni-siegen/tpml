@@ -329,7 +329,7 @@ public class CompoundExpression<S, E> extends JComponent {
 					
 					
 				}
-				
+				Debug.out.println(" ", "benjamin");
 				
 		
 		  // CHANGE BENJAMIN END
