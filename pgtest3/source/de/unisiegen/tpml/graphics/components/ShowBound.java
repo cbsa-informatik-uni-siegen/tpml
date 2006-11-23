@@ -2,7 +2,6 @@ package de.unisiegen.tpml.graphics.components;
 
 import java.util.Enumeration;
 import java.util.LinkedList;
-import java.util.Properties;
 
 import de.unisiegen.tpml.Debug;
 import de.unisiegen.tpml.core.expressions.CurriedLet;
@@ -24,7 +23,7 @@ public class ShowBound
 
 	
 	private static LinkedList<Bound> tmp = new LinkedList<Bound>();
-	private boolean debug = false;
+	private String me = "Benjamin";
 	public ShowBound() {}
 	
 	
@@ -98,20 +97,20 @@ public class ShowBound
 			{
 				check(child.get(i));
 
-				if (debug)
+				if (false)
 				{
-					System.out.print(child.get(i).toPrettyString());
+					Debug.out.print(child.get(i).toString(),me);
 
 					try
 					{
 						PrettyString ps = holeExpression.toPrettyString();
 						PrettyAnnotation mark = ps.getAnnotationForPrintable(child
 								.get(i));
-						System.out.println("start:" + mark.getStartOffset());
+						Debug.out.println("start:" + mark.getStartOffset(),me);
 					}
 					catch (Exception e)
 					{
-						System.out.println("Kein Startoffset für diesen Ausdruck verfügbar!");
+						Debug.out.println("Kein Startoffset für diesen Ausdruck verfügbar!",me);
 					}
 				}
 			}
@@ -176,20 +175,20 @@ public class ShowBound
 		Object[] b = let.getE2().free().toArray();
 		Object[] c = let.free().toArray();
 		
-		if (debug)
+		if (false)
 
 		{
-			System.out.println(let.toString());
+			Debug.out.println(let,me);
 		
-			System.out.println("b");
+			Debug.out.println("b",me);
 			for (int i = 0; i < b.length; i++)
 			{
-				System.out.println(b[i]);
+				Debug.out.println(b[i],me);
 			}
-			System.out.println("c");
+			Debug.out.println("c",me);
 			for (int i = 0; i < c.length; i++)
 			{
-				System.out.println(c[i]);
+				Debug.out.println(c[i],me);
 			}
 
 		}
@@ -241,23 +240,23 @@ public class ShowBound
 
 		checkChild(let);
 		
-		if (debug)
+		if (false)
 
 		{
-			System.out.println("a");
+			Debug.out.println("a",me);
 			for (int i = 0; i < a.length; i++)
 			{
-				System.out.println(a[i]);
+				Debug.out.println(a[i],me);
 			}
-			System.out.println("b");
+			Debug.out.println("b",me);
 			for (int i = 0; i < b.length; i++)
 			{
-				System.out.println(b[i]);
+				Debug.out.println(b[i],me);
 			}
-			System.out.println("c");
+			Debug.out.println("c",me);
 			for (int i = 0; i < c.length; i++)
 			{
-				System.out.println(c[i]);
+				Debug.out.println(c[i],me);
 			}
 
 		}
@@ -373,11 +372,11 @@ public class ShowBound
 							//TODO old debug output
 							if (false)
 							{
-								System.err.println("Für den Identifier: Startoffset: " + start
-										+ "Endoffset" + length);
-								System.err.println("Für die Variable " + id.getName()
+								Debug.err.println("Für den Identifier: Startoffset: " + start
+										+ "Endoffset" + length,me);
+								Debug.err.println("Für die Variable " + id.getName()
 										+ " Startoffset: " + mark2.getStartOffset()
-										+ " Endoffset: " + mark2.getEndOffset());
+										+ " Endoffset: " + mark2.getEndOffset(),me);
 							}
 							boolean exists = false;
 							for (int k = 0; k < tmp.size(); k++)
@@ -557,11 +556,4 @@ public class ShowBound
 		return tmp;
 	}
 
-	/**
-	 * often needed to Debug System.out.println("a"); for (int i=0;i<a.length;i++) {
-	 * System.out.println(a[i]); }
-	 * 
-	 * System.out.println("b"); for (int i=0;i<b.length;i++) {
-	 * System.out.println(b[i]); }
-	 */
 }
