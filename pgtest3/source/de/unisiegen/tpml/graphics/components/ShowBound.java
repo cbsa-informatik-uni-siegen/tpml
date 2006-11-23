@@ -22,7 +22,7 @@ public class ShowBound
 	private Expression holeExpression;
 
 	
-	private static LinkedList<Bound> tmp = new LinkedList<Bound>();
+	private LinkedList<Bound> tmp = new LinkedList<Bound>();
 	private String me = "Benjamin";
 	public ShowBound() {}
 	
