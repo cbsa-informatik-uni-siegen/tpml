@@ -132,6 +132,11 @@ public class CompoundExpression<S, E> extends JComponent {
 				//TODO hier sollte eigentlich das Ereignis sein, dass die Maus den Ausdruck verlï¿½sst, und der dann neu gemalt wird, funktioniert aber nicht
 				//System.err.println("Ladidal");
 				//ToListenForMouseContainer.getInstanceOf().reset();
+				if (! toListenForMouse.setExpression (expression))
+				{
+				Debug.out.print("Scheiße, es ist ein anderer Ausdruck: "+expression.toPrettyString().toString(), "Feivel");
+				}
+				
 				toListenForMouse.setMark(false);
 				CompoundExpression.this.repaint();
 			}
