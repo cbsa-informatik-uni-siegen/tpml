@@ -13,6 +13,7 @@ import java.util.Vector;
 
 import javax.swing.text.StyledEditorKit.ItalicAction;
 
+import de.unisiegen.tpml.Debug;
 import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation;
 import de.unisiegen.tpml.core.prettyprinter.PrettyCharIterator;
 import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable;
@@ -420,6 +421,15 @@ public class PrettyStringRenderer extends AbstractRenderer {
 			if (isIn(i, annotationsList))
 			{
 				//Dann werden sie in die Liste gepackt, wo später Mauslistener reagieren
+				try
+				{
+					Debug.out.println(toListenForMouse.getExpression().toPrettyString().toString(), "Feivel");
+				}
+				catch (NullPointerException e)
+				{
+					Debug.out.println("Hier gibt es keine Expression", "Feivel");
+				}
+				
 				toListenForMouse.add(posX);
 				toListenForMouse.add(posX+charWidth);
 				toListenForMouse.add(posY);
