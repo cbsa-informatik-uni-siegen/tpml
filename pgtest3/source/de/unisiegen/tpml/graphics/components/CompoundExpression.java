@@ -320,7 +320,7 @@ public class CompoundExpression<S, E> extends JComponent {
 				for (int i=0; i< bounds.size(); i++)
 				{
 					Bound tmp = bounds.get(i);
-					Debug.err.print("BM- Id: " +tmp.getStartOffset()+"->"+tmp.getEndOffset()+" Bindung: ","Benjamin");
+					Debug.err.print("BM- Id: "+tmp.getIdentifier()+" "  +tmp.getStartOffset()+"->"+tmp.getEndOffset()+" Bindung: ","Benjamin");
 					for (int j=0; j<tmp.getMarks().size();j++)
 					{
 						Debug.err.print(tmp.getMarks().get(j).getStartOffset()+"->"+tmp.getMarks().get(j).getEndOffset()+"  ","Benjamin");
