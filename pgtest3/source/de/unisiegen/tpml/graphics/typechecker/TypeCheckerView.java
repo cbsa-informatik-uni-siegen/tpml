@@ -111,6 +111,7 @@ public class TypeCheckerView extends AbstractProofView
     this.jSplitPane.setLeftComponent ( this.scrollPane ) ;
     this.jSplitPane.setRightComponent ( jMainPanel ) ;
     this.jSplitPane.setOneTouchExpandable ( true ) ;
+    this.jSplitPane.setResizeWeight ( 0.5 ) ;
     gridBagConstraints.fill = GridBagConstraints.BOTH ;
     gridBagConstraints.insets = new Insets ( 0 , 0 , 0 , 0 ) ;
     gridBagConstraints.gridx = 0 ;
