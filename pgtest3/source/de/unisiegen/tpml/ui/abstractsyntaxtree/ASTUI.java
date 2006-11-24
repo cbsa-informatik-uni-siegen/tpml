@@ -425,7 +425,7 @@ public class ASTUI
             "SansSerif" , Font.PLAIN , 12 ) ) ) ;
     // CheckBox Selected
     this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
-    insets.set ( 4 , 4 , 4 , 4 ) ;
+    insets.set ( 0 , 4 , 0 , 4 ) ;
     this.gridBagConstraints.insets = insets ;
     this.gridBagConstraints.gridx = 0 ;
     this.gridBagConstraints.gridy = 0 ;
@@ -435,19 +435,19 @@ public class ASTUI
         this.gridBagConstraints ) ;
     // CheckBox Bindings
     this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
-    insets.set ( 4 , 4 , 4 , 4 ) ;
+    //insets.set ( 4 , 4 , 4 , 4 ) ;
     this.gridBagConstraints.insets = insets ;
-    this.gridBagConstraints.gridx = 0 ;
-    this.gridBagConstraints.gridy = 1 ;
+    this.gridBagConstraints.gridx = 1 ;
+    this.gridBagConstraints.gridy = 0 ;
     this.gridBagConstraints.weightx = 0 ;
     this.gridBagConstraints.weighty = 10 ;
     this.jPanelPreferences.add ( this.jCheckBoxBinding ,
         this.gridBagConstraints ) ;
     // CheckBox Replace
     this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
-    insets.set ( 4 , 4 , 4 , 4 ) ;
+    //insets.set ( 4 , 4 , 4 , 4 ) ;
     this.gridBagConstraints.insets = insets ;
-    this.gridBagConstraints.gridx = 1 ;
+    this.gridBagConstraints.gridx = 2 ;
     this.gridBagConstraints.gridy = 0 ;
     this.gridBagConstraints.weightx = 0 ;
     this.gridBagConstraints.weighty = 10 ;
@@ -455,10 +455,10 @@ public class ASTUI
         this.gridBagConstraints ) ;
     // CheckBox AutoUpdate
     this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
-    insets.set ( 4 , 4 , 4 , 4 ) ;
+    //insets.set ( 4 , 4 , 4 , 4 ) ;
     this.gridBagConstraints.insets = insets ;
-    this.gridBagConstraints.gridx = 1 ;
-    this.gridBagConstraints.gridy = 1 ;
+    this.gridBagConstraints.gridx = 3 ;
+    this.gridBagConstraints.gridy = 0 ;
     this.gridBagConstraints.weightx = 0 ;
     this.gridBagConstraints.weighty = 10 ;
     this.jPanelPreferences.add ( this.jCheckBoxAutoUpdate ,
@@ -471,7 +471,8 @@ public class ASTUI
     this.gridBagConstraints.gridy = 0 ;
     this.gridBagConstraints.weightx = 10 ;
     this.gridBagConstraints.weighty = 10 ;
-    this.jPanelPreferences.add ( this.jButtonExpand , this.gridBagConstraints ) ;
+    // this.jPanelPreferences.add ( this.jButtonExpand , this.gridBagConstraints
+    // ) ;
     // Button ExpandAll
     this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
     insets.set ( 4 , 4 , 4 , 4 ) ;
@@ -480,8 +481,8 @@ public class ASTUI
     this.gridBagConstraints.gridy = 1 ;
     this.gridBagConstraints.weightx = 10 ;
     this.gridBagConstraints.weighty = 10 ;
-    this.jPanelPreferences.add ( this.jButtonExpandAll ,
-        this.gridBagConstraints ) ;
+    // this.jPanelPreferences.add ( this.jButtonExpandAll ,
+    // this.gridBagConstraints ) ;
     // Button Collapse
     this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
     insets.set ( 4 , 4 , 4 , 4 ) ;
@@ -490,8 +491,8 @@ public class ASTUI
     this.gridBagConstraints.gridy = 0 ;
     this.gridBagConstraints.weightx = 10 ;
     this.gridBagConstraints.weighty = 10 ;
-    this.jPanelPreferences
-        .add ( this.jButtonCollapse , this.gridBagConstraints ) ;
+    // this.jPanelPreferences.add ( this.jButtonCollapse ,
+    // this.gridBagConstraints ) ;
     // Button CollapseAll
     this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
     insets.set ( 4 , 4 , 4 , 4 ) ;
@@ -500,8 +501,8 @@ public class ASTUI
     this.gridBagConstraints.gridy = 1 ;
     this.gridBagConstraints.weightx = 10 ;
     this.gridBagConstraints.weighty = 10 ;
-    this.jPanelPreferences.add ( this.jButtonCollapseAll ,
-        this.gridBagConstraints ) ;
+    // this.jPanelPreferences.add ( this.jButtonCollapseAll
+    // ,this.gridBagConstraints ) ;
     // Button Close
     this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
     insets.set ( 4 , 4 , 4 , 4 ) ;
@@ -510,7 +511,8 @@ public class ASTUI
     this.gridBagConstraints.gridy = 0 ;
     this.gridBagConstraints.weightx = 10 ;
     this.gridBagConstraints.weighty = 10 ;
-    this.jPanelPreferences.add ( this.jButtonClose , this.gridBagConstraints ) ;
+    // this.jPanelPreferences.add ( this.jButtonClose , this.gridBagConstraints
+    // ) ;
     // Button CloseAll
     this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
     insets.set ( 4 , 4 , 4 , 4 ) ;
@@ -519,8 +521,8 @@ public class ASTUI
     this.gridBagConstraints.gridy = 1 ;
     this.gridBagConstraints.weightx = 10 ;
     this.gridBagConstraints.weighty = 10 ;
-    this.jPanelPreferences
-        .add ( this.jButtonCloseAll , this.gridBagConstraints ) ;
+    // this.jPanelPreferences.add ( this.jButtonCloseAll ,
+    // this.gridBagConstraints ) ;
     // Panel Main
     this.jPanelMain = new JPanel ( ) ;
     this.jPanelMain.setLayout ( this.gridBagLayout ) ;
