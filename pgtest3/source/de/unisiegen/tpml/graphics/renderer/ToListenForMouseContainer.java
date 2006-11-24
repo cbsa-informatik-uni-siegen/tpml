@@ -15,6 +15,7 @@ public class ToListenForMouseContainer
 	private int [] hereIam;
 	
 	private boolean mark;
+	private boolean mark1;
 	
 	private int rightList;
 	
@@ -89,7 +90,20 @@ public class ToListenForMouseContainer
 	
 	public void setMark(boolean b)
 	{
-		mark = b;
+		if ( b == false )
+		{
+			mark = b;
+			mark1 = b;
+		}
+		
+		if (mark1 == b == true) {
+			mark = b;
+		}
+		else
+		{
+			mark1 = b;
+		}
+		
 	}
 	
 	public void setHereIam(int x, int y)
