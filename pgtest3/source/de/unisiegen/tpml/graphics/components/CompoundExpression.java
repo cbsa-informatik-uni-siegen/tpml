@@ -233,7 +233,7 @@ public class CompoundExpression < S , E > extends JComponent
     // toListenForMouse = new ToListenForMouseContainer();
     if ( ! toListenForMouse.setExpression ( expression ) )
     {
-      Debug.out.print ( "Schei�e, es ist ein anderer Ausdruck: "
+      Debug.err.print ( "Schei�e, es ist ein anderer Ausdruck: "
           + expression.toPrettyString ( ).toString ( ) , "Feivel" ) ;
     }
     toListenForMouse.setHereIam ( event.getX ( ) , event.getY ( ) ) ;
@@ -248,8 +248,8 @@ public class CompoundExpression < S , E > extends JComponent
       int pX1 = toListenForMouse.get ( t + 1 ) ;
       // Y-Werte werden nicht weiter beachet. Wenn die Maus die
       // Compoundexpresson verl�sst, dann wird der MouseExit ausgel�st
-      // int pY = toListenForMouse.get(t+2);
-      // int pY1 = toListenForMouse.get(t+3);
+      int pY = toListenForMouse.get(t+2);
+      int pY1 = toListenForMouse.get(t+3);
       // brauche uch zur Zeit nicht
       // int pY = toListenForMouse.get(t+2);
       // int pY1 = toListenForMouse.get(t+3);
@@ -257,9 +257,9 @@ public class CompoundExpression < S , E > extends JComponent
       // System.out.println(pX+" " +pX1 + " " + pY + " " + pY1);
       // System.out.println(event.getX()+" " +event.getY());
       // Herausfinden, ob ich auf einem erwarteten Zeichen bin!
-      // if ((event.getX() >= pX) && (event.getX() <= pX1) && (event.getY() >=
-      // pY-4) && (event.getY() <= pY1-14))
-      if ( ( event.getX ( ) >= pX ) && ( event.getX ( ) <= pX1 ) )
+      //if ((event.getX() >= pX) && (event.getX() <= pX1) && (event.getY() >= pY-2) && (event.getY() <= pY1-12))
+      if ((event.getX() >= pX) && (event.getX() <= pX1) && (event.getY() >= pY) && (event.getY() <= pY1))	
+      //if ( ( event.getX ( ) >= pX ) && ( event.getX ( ) <= pX1 ) )
       {
         Debug.out.println ( "Ok, hier muss wieder gemalt werden!" , "Feivel" ) ;
         // TODO TestausgbaetoListenForMouse.setElementAt(0, 1);
@@ -472,7 +472,11 @@ public class CompoundExpression < S , E > extends JComponent
   @ Override
   protected void paintComponent ( Graphics gc )
   {
-    // make sure that we have an expression renderer
+  	//TODO Only for test
+  	gc.setColor (Color.YELLOW);
+		gc.fillRect(0, 0, getWidth () - 1, getHeight () - 1);
+  	
+  	// make sure that we have an expression renderer
     if ( this.expressionRenderer == null )
     {
       return ;
@@ -528,6 +532,11 @@ public class CompoundExpression < S , E > extends JComponent
       this.expressionRenderer.render ( posX , posY , getHeight ( ) , gc ,
           bound , toListenForMouse ) ;
     }
+    
+    //gc.setColor (Color.YELLOW);
+		//gc.fillRect(0, 0, getWidth () - 1, getHeight () - 1);
+    
+    
   }
 
 
@@ -535,4 +544,5 @@ public class CompoundExpression < S , E > extends JComponent
   {
     return expression ;
   }
+ 
 }
