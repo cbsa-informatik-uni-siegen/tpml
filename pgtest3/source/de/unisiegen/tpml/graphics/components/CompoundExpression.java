@@ -264,7 +264,8 @@ public class CompoundExpression < S , E > extends JComponent
         //Debug.out.println ( "Ok, hier muss wieder gemalt werden!" , "Feivel" ) ;
         // TODO TestausgbaetoListenForMouse.setElementAt(0, 1);
         // System.out.println("JA, JETZT MUSS DER MOUSEFFEKT ANGEHEN");
-        toListenForMouse.setMark ( true ) ;
+      	CompoundExpression.this.repaint ( ) ;
+      	toListenForMouse.setMark ( true ) ;
       }
       toListenForMouse.setHereIam ( event.getX ( ) , event.getY ( ) ) ;
       //Debug.out.println (
@@ -272,7 +273,7 @@ public class CompoundExpression < S , E > extends JComponent
       //    "Feivel" ) ;
       //Debug.out.println ( "setMark ist: " + toListenForMouse.getMark ( ) ,
       //    "Feivel" ) ;
-      CompoundExpression.this.repaint ( ) ;
+      //CompoundExpression.this.repaint ( ) ;
     }
     // System.out.println(" Event: "+event);
     // System.out.println("Typ: "+event.getSource());
