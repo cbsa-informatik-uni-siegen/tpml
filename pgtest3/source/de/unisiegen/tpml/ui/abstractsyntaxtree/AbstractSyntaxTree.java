@@ -5,7 +5,6 @@ import java.lang.reflect.Method ;
 import java.util.Enumeration ;
 import java.util.LinkedList ;
 import javax.swing.tree.DefaultMutableTreeNode ;
-import de.unisiegen.tpml.Debug ;
 import de.unisiegen.tpml.core.expressions.BinaryOperator ;
 import de.unisiegen.tpml.core.expressions.CurriedLet ;
 import de.unisiegen.tpml.core.expressions.CurriedLetRec ;
@@ -383,18 +382,30 @@ public class AbstractSyntaxTree
   }
 
 
-  public void setExpression ( Expression pExpression )
+  public void setExpression ( Expression pExpression , String pDescription )
   {
-    Debug.out.println ( "setExpression" , "christian" ) ;
     if ( pExpression == null )
     {
-      Debug.err.println ( "Expression is null" , "christian" ) ;
       return ;
     }
     if ( ( this.oldExpression != null )
         && ( pExpression.equals ( this.oldExpression ) ) )
     {
-      Debug.err.println ( "Expression has not changed" , "christian " ) ;
+      return ;
+    }
+    if ( ( ! this.aSTPreferences.isAutoUpdate ( ) )
+        && ( pDescription.startsWith ( "change" ) ) )
+    {
+      return ;
+    }
+    if ( ( pDescription.endsWith ( "bigstep" ) )
+        && ( pDescription.startsWith ( "change" ) ) )
+    {
+      return ;
+    }
+    if ( ( pDescription.endsWith ( "typechecker" ) )
+        && ( pDescription.startsWith ( "change" ) ) )
+    {
       return ;
     }
     this.oldExpression = pExpression ;

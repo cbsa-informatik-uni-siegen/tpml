@@ -5,6 +5,10 @@ import java.awt.event.MouseEvent ;
 import java.awt.event.MouseListener ;
 import javax.swing.tree.DefaultMutableTreeNode ;
 import javax.swing.tree.TreePath ;
+import de.unisiegen.tpml.graphics.bigstep.BigStepView ;
+import de.unisiegen.tpml.graphics.components.CompoundExpression ;
+import de.unisiegen.tpml.graphics.smallstep.SmallStepView ;
+import de.unisiegen.tpml.graphics.typechecker.TypeCheckerView ;
 import de.unisiegen.tpml.ui.abstractsyntaxtree.ASTUI ;
 
 
@@ -13,9 +17,20 @@ public class ASTMouseListener implements MouseListener
   private ASTUI aSTUI ;
 
 
+  private CompoundExpression < ? , ? > compoundExpression ;
+
+
   public ASTMouseListener ( ASTUI pASTUI )
   {
     this.aSTUI = pASTUI ;
+    this.compoundExpression = null ;
+  }
+
+
+  public ASTMouseListener ( CompoundExpression < ? , ? > pCompoundExpression )
+  {
+    this.aSTUI = null ;
+    this.compoundExpression = pCompoundExpression ;
   }
 
 
@@ -44,6 +59,61 @@ public class ASTMouseListener implements MouseListener
   }
 
 
+  private void handleMouseEvent ( MouseEvent pMouseEvent )
+  {
+    if ( ( this.aSTUI != null )
+        && ( pMouseEvent.getSource ( ).equals ( this.aSTUI
+            .getJAbstractSyntaxTree ( ) ) ) )
+    {
+      if ( pMouseEvent.isPopupTrigger ( ) )
+      {
+        int x = pMouseEvent.getX ( ) ;
+        int y = pMouseEvent.getY ( ) ;
+        TreePath treePath = this.aSTUI.getJAbstractSyntaxTree ( )
+            .getPathForLocation ( x , y ) ;
+        if ( treePath == null )
+        {
+          return ;
+        }
+        this.aSTUI.getJAbstractSyntaxTree ( ).setSelectionPath ( treePath ) ;
+        this.aSTUI.getJPopupMenu ( ).show ( pMouseEvent.getComponent ( ) , x ,
+            y ) ;
+      }
+      setStatus ( ) ;
+    }
+    else if ( pMouseEvent.getSource ( ) instanceof CompoundExpression )
+    {
+      if ( this.compoundExpression.getParent ( ).getParent ( ).getParent ( )
+          .getParent ( ).getParent ( ).getParent ( ) instanceof SmallStepView )
+      {
+        SmallStepView view = ( SmallStepView ) this.compoundExpression
+            .getParent ( ).getParent ( ).getParent ( ).getParent ( )
+            .getParent ( ).getParent ( ) ;
+        view.getAbstractSyntaxTree ( ).setExpression (
+            this.compoundExpression.getExpression ( ) , "mouse_smallstep" ) ;
+      }
+      else if ( this.compoundExpression.getParent ( ).getParent ( )
+          .getParent ( ).getParent ( ).getParent ( ).getParent ( ) instanceof BigStepView )
+      {
+        BigStepView view = ( BigStepView ) this.compoundExpression.getParent ( )
+            .getParent ( ).getParent ( ).getParent ( ).getParent ( )
+            .getParent ( ) ;
+        view.getAbstractSyntaxTree ( ).setExpression (
+            this.compoundExpression.getExpression ( ) , "mouse_bigstep" ) ;
+      }
+      else if ( this.compoundExpression.getParent ( ).getParent ( )
+          .getParent ( ).getParent ( ).getParent ( ).getParent ( ) instanceof TypeCheckerView )
+      {
+        TypeCheckerView view = ( TypeCheckerView ) this.compoundExpression
+            .getParent ( ).getParent ( ).getParent ( ).getParent ( )
+            .getParent ( ).getParent ( ) ;
+        view.getAbstractSyntaxTree ( ).setExpression (
+            this.compoundExpression.getExpression ( ) , "mouse_typechecker" ) ;
+      }
+    }
+  }
+
+
   public void mouseClicked ( @ SuppressWarnings ( "unused" )
   MouseEvent pMouseEvent )
   {
@@ -67,39 +137,13 @@ public class ASTMouseListener implements MouseListener
 
   public void mousePressed ( MouseEvent pMouseEvent )
   {
-    if ( pMouseEvent.isPopupTrigger ( ) )
-    {
-      int x = pMouseEvent.getX ( ) ;
-      int y = pMouseEvent.getY ( ) ;
-      TreePath treePath = this.aSTUI.getJAbstractSyntaxTree ( )
-          .getPathForLocation ( x , y ) ;
-      if ( treePath == null )
-      {
-        return ;
-      }
-      this.aSTUI.getJAbstractSyntaxTree ( ).setSelectionPath ( treePath ) ;
-      this.aSTUI.getJPopupMenu ( ).show ( pMouseEvent.getComponent ( ) , x , y ) ;
-    }
-    setStatus ( ) ;
+    handleMouseEvent ( pMouseEvent ) ;
   }
 
 
   public void mouseReleased ( MouseEvent pMouseEvent )
   {
-    if ( pMouseEvent.isPopupTrigger ( ) )
-    {
-      int x = pMouseEvent.getX ( ) ;
-      int y = pMouseEvent.getY ( ) ;
-      TreePath treePath = this.aSTUI.getJAbstractSyntaxTree ( )
-          .getPathForLocation ( x , y ) ;
-      if ( treePath == null )
-      {
-        return ;
-      }
-      this.aSTUI.getJAbstractSyntaxTree ( ).setSelectionPath ( treePath ) ;
-      this.aSTUI.getJPopupMenu ( ).show ( pMouseEvent.getComponent ( ) , x , y ) ;
-    }
-    setStatus ( ) ;
+    handleMouseEvent ( pMouseEvent ) ;
   }
 
 

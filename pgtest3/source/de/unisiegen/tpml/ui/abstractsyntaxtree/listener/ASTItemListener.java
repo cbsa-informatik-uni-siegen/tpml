@@ -64,5 +64,14 @@ public class ASTItemListener implements ItemListener
       this.aSTUI.getJCheckBoxSelection ( ).setSelected ( pSelected ) ;
       this.aSTUI.getJMenuItemSelection ( ).setSelected ( pSelected ) ;
     }
+    else if ( ( pActionCommand.equals ( "autoupdate" ) )
+        || ( ( pSource != null ) && ( pSource.equals ( this.aSTUI
+            .getJCheckBoxAutoUpdate ( ) ) ) ) )
+    {
+      this.aSTUI.getAbstractSyntaxTree ( ).getASTPreferences ( ).setAutoUpdate (
+          pSelected ) ;
+      this.aSTUI.getJCheckBoxAutoUpdate ( ).setSelected ( pSelected ) ;
+      this.aSTUI.getJMenuItemAutoUpdate ( ).setSelected ( pSelected ) ;
+    }
   }
 }

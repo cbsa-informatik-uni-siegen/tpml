@@ -84,6 +84,9 @@ public class ASTUI
   private JCheckBox jCheckBoxSelection ;
 
 
+  private JCheckBox jCheckBoxAutoUpdate ;
+
+
   private ASTTreeSelectionListener aSTTreeSelectionListener ;
 
 
@@ -121,6 +124,9 @@ public class ASTUI
 
 
   private JCheckBoxMenuItem jMenuItemBinding ;
+
+
+  private JCheckBoxMenuItem jMenuItemAutoUpdate ;
 
 
   private JMenuItem jMenuItemCloseAll ;
@@ -228,6 +234,16 @@ public class ASTUI
     this.jMenuItemReplace.setSelected ( this.abstractSyntaxTree
         .getASTPreferences ( ).isReplace ( ) ) ;
     this.jMenuItemPreferences.add ( this.jMenuItemReplace ) ;
+    // jMenuItem AutoUpdate
+    this.jMenuItemAutoUpdate = new JCheckBoxMenuItem ( this.resourceBundle
+        .getString ( "autoupdate" ) ) ;
+    this.jMenuItemAutoUpdate.setMnemonic ( this.resourceBundle.getString (
+        "autoupdateMnemonic" ).charAt ( 0 ) ) ;
+    this.jMenuItemAutoUpdate.setActionCommand ( "autoupdate" ) ;
+    this.jMenuItemAutoUpdate.addActionListener ( this.aSTActionListener ) ;
+    this.jMenuItemAutoUpdate.setSelected ( this.abstractSyntaxTree
+        .getASTPreferences ( ).isAutoUpdate ( ) ) ;
+    this.jMenuItemPreferences.add ( this.jMenuItemAutoUpdate ) ;
     // Layout
     this.gridBagLayout = new GridBagLayout ( ) ;
     this.gridBagConstraints = new GridBagConstraints ( ) ;
@@ -254,12 +270,6 @@ public class ASTUI
     this.jTreeAbstractSyntax.setRowHeight ( 22 ) ;
     this.jTreeAbstractSyntax.addMouseListener ( this.aSTMouseListener ) ;
     this.jScrollPaneAbstractSyntax = new JScrollPane ( this.jTreeAbstractSyntax ) ;
-    /*
-     * this.jScrollPaneAbstractSyntax.setBorder ( new TitledBorder (
-     * BorderFactory .createLineBorder ( Color.black , 1 ) , "" ,
-     * TitledBorder.DEFAULT_JUSTIFICATION , TitledBorder.TOP , new Font (
-     * "SansSerif" , Font.PLAIN , 12 ) ) ) ;
-     */
     // Button Expand
     this.jButtonExpand = new JButton ( this.resourceBundle
         .getString ( "expand" ) ) ;
@@ -334,6 +344,15 @@ public class ASTUI
         .getASTPreferences ( ).isReplace ( ) ) ;
     this.jCheckBoxReplace.setFocusable ( false ) ;
     this.jCheckBoxReplace.addItemListener ( this.aSTItemListener ) ;
+    // CheckBox AutoUpdate
+    this.jCheckBoxAutoUpdate = new JCheckBox ( this.resourceBundle
+        .getString ( "autoupdate" ) ) ;
+    this.jCheckBoxAutoUpdate.setMnemonic ( this.resourceBundle.getString (
+        "autoupdateMnemonic" ).charAt ( 0 ) ) ;
+    this.jCheckBoxAutoUpdate.setSelected ( this.abstractSyntaxTree
+        .getASTPreferences ( ).isAutoUpdate ( ) ) ;
+    this.jCheckBoxAutoUpdate.setFocusable ( false ) ;
+    this.jCheckBoxAutoUpdate.addItemListener ( this.aSTItemListener ) ;
     // Panel Preferences
     this.jPanelPreferences = new JPanel ( ) ;
     this.jPanelPreferences.setLayout ( this.gridBagLayout ) ;
@@ -370,6 +389,16 @@ public class ASTUI
     this.gridBagConstraints.weightx = 10 ;
     this.gridBagConstraints.weighty = 10 ;
     this.jPanelPreferences.add ( this.jCheckBoxReplace ,
+        this.gridBagConstraints ) ;
+    // CheckBox AutoUpdate
+    this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
+    insets.set ( 4 , 4 , 4 , 4 ) ;
+    this.gridBagConstraints.insets = insets ;
+    this.gridBagConstraints.gridx = 1 ;
+    this.gridBagConstraints.gridy = 1 ;
+    this.gridBagConstraints.weightx = 10 ;
+    this.gridBagConstraints.weighty = 10 ;
+    this.jPanelPreferences.add ( this.jCheckBoxAutoUpdate ,
         this.gridBagConstraints ) ;
     // Button Expand
     this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
@@ -540,6 +569,12 @@ public class ASTUI
   }
 
 
+  public JCheckBox getJCheckBoxAutoUpdate ( )
+  {
+    return this.jCheckBoxAutoUpdate ;
+  }
+
+
   public JCheckBox getJCheckBoxBinding ( )
   {
     return this.jCheckBoxBinding ;
@@ -555,6 +590,12 @@ public class ASTUI
   public JCheckBox getJCheckBoxSelection ( )
   {
     return this.jCheckBoxSelection ;
+  }
+
+
+  public JCheckBoxMenuItem getJMenuItemAutoUpdate ( )
+  {
+    return this.jMenuItemAutoUpdate ;
   }
 
 
@@ -616,6 +657,16 @@ public class ASTUI
   }
 
 
+  /*
+   * public void setVisible ( boolean pVisible ) {
+   * this.jFrameAbstractSyntaxTree.setVisible ( pVisible ) ; }
+   */
+  public JPanel getJPanelMain ( )
+  {
+    return this.jPanelMain ;
+  }
+
+
   public JPopupMenu getJPopupMenu ( )
   {
     return this.jPopupMenu ;
@@ -638,15 +689,5 @@ public class ASTUI
   {
     this.rootNode = pRootNode ;
     this.treeModel.setRoot ( this.rootNode ) ;
-  }
-
-
-  /*
-   * public void setVisible ( boolean pVisible ) {
-   * this.jFrameAbstractSyntaxTree.setVisible ( pVisible ) ; }
-   */
-  public JPanel getJPanelMain ( )
-  {
-    return this.jPanelMain ;
   }
 }

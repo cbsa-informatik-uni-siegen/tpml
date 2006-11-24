@@ -68,6 +68,12 @@ public class ASTActionListener implements ActionListener
       this.aSTUI.getASTItemListener ( ).update (
           this.aSTUI.getJMenuItemReplace ( ).isSelected ( ) , null , "replace" ) ;
     }
+    else if ( actionCommand.equals ( "autoupdate" ) )
+    {
+      this.aSTUI.getASTItemListener ( ).update (
+          this.aSTUI.getJMenuItemAutoUpdate ( ).isSelected ( ) , null ,
+          "autoupdate" ) ;
+    }
   }
 
 

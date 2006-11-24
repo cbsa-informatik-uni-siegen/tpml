@@ -58,6 +58,9 @@ public class SmallStepView extends AbstractProofView
   protected JSplitPane jSplitPane ;
 
 
+  private AbstractSyntaxTree abstractSyntaxTree ;
+
+
   //
   // Constructor
   //
@@ -74,11 +77,11 @@ public class SmallStepView extends AbstractProofView
     {
       throw new NullPointerException ( "model is null" ) ;
     }
-    AbstractSyntaxTree abstractSyntaxTree = new AbstractSyntaxTree ( ) ;
-    abstractSyntaxTree.setExpression ( model.getRoot ( ).getLastLeaf ( )
-        .getExpression ( ) ) ;
-    model.addTreeModelListener ( new ASTTreeModelListener ( abstractSyntaxTree ,
-        model ) ) ;
+    this.abstractSyntaxTree = new AbstractSyntaxTree ( ) ;
+    this.abstractSyntaxTree.setExpression ( model.getRoot ( ).getLastLeaf ( )
+        .getExpression ( ) , "first_smallstep" ) ;
+    model.addTreeModelListener ( new ASTTreeModelListener (
+        this.abstractSyntaxTree , model ) ) ;
     GridBagConstraints gridBagConstraints = new GridBagConstraints ( ) ;
     this.jSplitPane = new JSplitPane ( JSplitPane.VERTICAL_SPLIT ) ;
     this.setLayout ( new GridBagLayout ( ) ) ;
@@ -97,7 +100,7 @@ public class SmallStepView extends AbstractProofView
                 .getWidth ( ) ) ;
       }
     } ) ;
-    JPanel jMainPanel = abstractSyntaxTree.getASTUI ( ).getJPanelMain ( ) ;
+    JPanel jMainPanel = this.abstractSyntaxTree.getASTUI ( ).getJPanelMain ( ) ;
     jMainPanel.getPreferredSize ( ).getHeight ( ) ;
     this.jSplitPane.setLeftComponent ( this.scrollPane ) ;
     this.jSplitPane.setRightComponent ( jMainPanel ) ;
@@ -110,9 +113,15 @@ public class SmallStepView extends AbstractProofView
     gridBagConstraints.weighty = 10 ;
     this.add ( this.jSplitPane , gridBagConstraints ) ;
     this.addPropertyChangeListener ( new ASTSplitPaneListener (
-        this.jSplitPane , abstractSyntaxTree ) ) ;
+        this.jSplitPane , this.abstractSyntaxTree ) ) ;
     jMainPanel.addComponentListener ( new ASTSplitPaneListener (
-        this.jSplitPane , abstractSyntaxTree ) ) ;
+        this.jSplitPane , this.abstractSyntaxTree ) ) ;
+  }
+
+
+  public AbstractSyntaxTree getAbstractSyntaxTree ( )
+  {
+    return this.abstractSyntaxTree ;
   }
 
 

@@ -6,7 +6,6 @@ import java.awt.event.ComponentListener ;
 import java.beans.PropertyChangeEvent ;
 import java.beans.PropertyChangeListener ;
 import javax.swing.JSplitPane ;
-import de.unisiegen.tpml.Debug ;
 import de.unisiegen.tpml.ui.abstractsyntaxtree.AbstractSyntaxTree ;
 
 
@@ -67,7 +66,6 @@ public class ASTSplitPaneListener implements PropertyChangeListener ,
   public void componentShown ( @ SuppressWarnings ( "unused" )
   ComponentEvent pComponentEvent )
   {
-    Debug.out.println ( "componentShown: "
-        + this.jSplitPane.getDividerLocation ( ) , "christian" ) ;
+    // Do nothing
   }
 }

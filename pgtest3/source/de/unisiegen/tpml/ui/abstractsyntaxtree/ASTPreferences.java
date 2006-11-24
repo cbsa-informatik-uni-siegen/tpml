@@ -13,6 +13,9 @@ public class ASTPreferences
 
 
   private boolean selected ;
+  
+  
+  private boolean autoUpdate ;
 
 
   private Preferences preferences ;
@@ -71,6 +74,12 @@ public class ASTPreferences
   }
 
 
+  public boolean isAutoUpdate ( )
+  {
+    return this.autoUpdate ;
+  }
+
+
   public boolean isBindings ( )
   {
     return this.bindings ;
@@ -86,6 +95,13 @@ public class ASTPreferences
   public boolean isSelected ( )
   {
     return this.selected ;
+  }
+
+
+  public void setAutoUpdate ( boolean pAutoupdate )
+  {
+    this.autoUpdate = pAutoupdate ;
+    this.preferences.putBoolean ( "autoupdate" , pAutoupdate ) ;
   }
 
 
@@ -150,6 +166,7 @@ public class ASTPreferences
     this.replace = this.preferences.getBoolean ( "replace" , true ) ;
     this.bindings = this.preferences.getBoolean ( "bindings" , true ) ;
     this.selected = this.preferences.getBoolean ( "selected" , true ) ;
+    this.autoUpdate = this.preferences.getBoolean ( "autoupdate" , true ) ;
     ASTNode.setReplace ( this.replace ) ;
     ASTNode.setBinding ( this.bindings ) ;
     ASTNode.setSelection ( this.selected ) ;
