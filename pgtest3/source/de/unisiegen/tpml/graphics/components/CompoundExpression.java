@@ -150,11 +150,11 @@ public class CompoundExpression < S , E > extends JComponent
         // nicht
         // System.err.println("Ladidal");
         // ToListenForMouseContainer.getInstanceOf().reset();
-        if ( ! toListenForMouse.setExpression ( expression ) )
-        {
-          Debug.out.print ( "Schei�e, es ist ein anderer Ausdruck: "
-              + expression.toPrettyString ( ).toString ( ) , "Feivel" ) ;
-        }
+        //if ( ! toListenForMouse.setExpression ( expression ) )
+        //{
+        //  Debug.out.print ( "Schei�e, es ist ein anderer Ausdruck: "
+        //      + expression.toPrettyString ( ).toString ( ) , "Feivel" ) ;
+        //}
         toListenForMouse.setMark ( false ) ;
         CompoundExpression.this.repaint ( ) ;
       }
@@ -227,19 +227,19 @@ public class CompoundExpression < S , E > extends JComponent
   {
     // TODO Testausgaben
     // Debug.out.println("Event geworfen: "+event, "Feivel" );
-    Debug.out.println ( "Incence: " + event.getSource ( ) , "Feivel" ) ;
+    //Debug.out.println ( "Incence: " + event.getSource ( ) , "Feivel" ) ;
     // TODO jetzt wollen wir doch mal gucken, wo wir eigentlich sind!
-    Debug.out.println ( "Ok, es ist einen CompoundExpression" , "Feivel" ) ;
+    //Debug.out.println ( "Ok, es ist einen CompoundExpression" , "Feivel" ) ;
     // toListenForMouse = new ToListenForMouseContainer();
-    if ( ! toListenForMouse.setExpression ( expression ) )
-    {
-      Debug.err.print ( "Schei�e, es ist ein anderer Ausdruck: "
-          + expression.toPrettyString ( ).toString ( ) , "Feivel" ) ;
-    }
+    //if ( ! toListenForMouse.setExpression ( expression ) )
+    //{
+    //  Debug.err.print ( "Schei�e, es ist ein anderer Ausdruck: "
+    //      + expression.toPrettyString ( ).toString ( ) , "Feivel" ) ;
+    //}
     toListenForMouse.setHereIam ( event.getX ( ) , event.getY ( ) ) ;
     // TODO Testausgabe
     // System.out.println("ncihts malen");
-    Debug.out.println ( "Erstmal nichts mehr malen" , "Feivel" ) ;
+    //Debug.out.println ( "Erstmal nichts mehr malen" , "Feivel" ) ;
     toListenForMouse.setMark ( false ) ;
     CompoundExpression.this.repaint ( ) ;
     for ( int t = 0 ; t < toListenForMouse.size ( ) ; t = t + 4 )
@@ -261,17 +261,17 @@ public class CompoundExpression < S , E > extends JComponent
       if ((event.getX() >= pX) && (event.getX() <= pX1) && (event.getY() >= pY) && (event.getY() <= pY1))	
       //if ( ( event.getX ( ) >= pX ) && ( event.getX ( ) <= pX1 ) )
       {
-        Debug.out.println ( "Ok, hier muss wieder gemalt werden!" , "Feivel" ) ;
+        //Debug.out.println ( "Ok, hier muss wieder gemalt werden!" , "Feivel" ) ;
         // TODO TestausgbaetoListenForMouse.setElementAt(0, 1);
         // System.out.println("JA, JETZT MUSS DER MOUSEFFEKT ANGEHEN");
         toListenForMouse.setMark ( true ) ;
       }
       toListenForMouse.setHereIam ( event.getX ( ) , event.getY ( ) ) ;
-      Debug.out.println (
-          "neu malen, falls setMark jetzt true ist, dann sieht man was" ,
-          "Feivel" ) ;
-      Debug.out.println ( "setMark ist: " + toListenForMouse.getMark ( ) ,
-          "Feivel" ) ;
+      //Debug.out.println (
+      //   "neu malen, falls setMark jetzt true ist, dann sieht man was" ,
+      //    "Feivel" ) ;
+      //Debug.out.println ( "setMark ist: " + toListenForMouse.getMark ( ) ,
+      //    "Feivel" ) ;
       CompoundExpression.this.repaint ( ) ;
     }
     // System.out.println(" Event: "+event);
@@ -472,9 +472,9 @@ public class CompoundExpression < S , E > extends JComponent
   @ Override
   protected void paintComponent ( Graphics gc )
   {
-  	//TODO Only for test
-  	gc.setColor (Color.YELLOW);
-		gc.fillRect(0, 0, getWidth () - 1, getHeight () - 1);
+  	//TODO Only for test to make yompoundexpression visible
+  	//gc.setColor (Color.YELLOW);
+		//gc.fillRect(0, 0, getWidth () - 1, getHeight () - 1);
   	
   	// make sure that we have an expression renderer
     if ( this.expressionRenderer == null )
