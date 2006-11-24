@@ -29,7 +29,6 @@ import de.unisiegen.tpml.ui.abstractsyntaxtree.listener.ASTTreeSelectionListener
 
 public class ASTUI
 {
-  // private JFrame jFrameAbstractSyntaxTree ;
   private GridBagConstraints gridBagConstraints ;
 
 
@@ -280,7 +279,7 @@ public class ASTUI
     // Layout
     this.gridBagLayout = new GridBagLayout ( ) ;
     this.gridBagConstraints = new GridBagConstraints ( ) ;
-    // Tree
+    // CellRenderer
     this.cellRenderer = new DefaultTreeCellRenderer ( ) ;
     this.cellRenderer.setIcon ( null ) ;
     this.cellRenderer.setLeafIcon ( null ) ;
@@ -292,17 +291,18 @@ public class ASTUI
     this.cellRenderer.setBackgroundNonSelectionColor ( Color.WHITE ) ;
     this.cellRenderer
         .setBackgroundSelectionColor ( new Color ( 225 , 225 , 255 ) ) ;
+    this.cellRenderer.setFont ( new Font ( "SansSerif" , Font.PLAIN , 14 ) ) ;
     this.cellRenderer.setBorderSelectionColor ( Color.BLUE ) ;
     this.cellRenderer.setTextSelectionColor ( Color.BLACK ) ;
     this.cellRenderer.setTextNonSelectionColor ( Color.BLACK ) ;
+    // TreeModel
     this.treeModel = new DefaultTreeModel ( this.rootNode ) ;
+    // Tree AbstractSyntaxTree
     this.jTreeAbstractSyntax = new JTree ( this.treeModel ) ;
     this.jTreeAbstractSyntax.setCellRenderer ( this.cellRenderer ) ;
     this.jTreeAbstractSyntax.getSelectionModel ( ).addTreeSelectionListener (
         this.aSTTreeSelectionListener ) ;
-    this.jTreeAbstractSyntax.setRowHeight ( 22 ) ;
-    this.jTreeAbstractSyntax
-        .setFont ( new Font ( "SansSerif" , Font.PLAIN , 12 ) ) ;
+    this.jTreeAbstractSyntax.setRowHeight ( 20 ) ;
     this.jTreeAbstractSyntax.addMouseListener ( this.aSTMouseListener ) ;
     this.jScrollPaneAbstractSyntax = new JScrollPane ( this.jTreeAbstractSyntax ) ;
     // Button Expand
@@ -549,12 +549,6 @@ public class ASTUI
   {
     this.treeModel
         .insertNodeInto ( pChild , pParent , pParent.getChildCount ( ) ) ;
-  }
-
-
-  public void expandRow ( int pIndex )
-  {
-    this.jTreeAbstractSyntax.expandRow ( pIndex ) ;
   }
 
 
