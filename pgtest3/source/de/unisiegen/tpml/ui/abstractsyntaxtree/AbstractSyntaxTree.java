@@ -28,7 +28,7 @@ import de.unisiegen.tpml.ui.abstractsyntaxtree.binding.ASTPair ;
  * TODO
  * 
  * @author Christian Fehler
- * @version $Rev$
+ * @version $Rev: 753 $
  */
 public class AbstractSyntaxTree
 {
