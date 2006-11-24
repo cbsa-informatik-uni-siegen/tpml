@@ -155,51 +155,73 @@ public class ASTUI
     this.aSTMouseListener = new ASTMouseListener ( this ) ;
     // PopupMenu
     this.jPopupMenu = new JPopupMenu ( ) ;
+    // MenuItem Expand
     this.jMenuItemExpand = new JMenuItem ( this.resourceBundle
         .getString ( "expand" ) ) ;
     this.jMenuItemExpand.setMnemonic ( this.resourceBundle.getString (
         "expandMnemonic" ).charAt ( 0 ) ) ;
+    this.jMenuItemExpand.setToolTipText ( this.resourceBundle
+        .getString ( "expandToolTip" ) ) ;
     this.jMenuItemExpand.setActionCommand ( "expand" ) ;
     this.jMenuItemExpand.addActionListener ( this.aSTActionListener ) ;
     this.jPopupMenu.add ( this.jMenuItemExpand ) ;
+    // MenuItem ExpandAll
     this.jMenuItemExpandAll = new JMenuItem ( this.resourceBundle
-        .getString ( "expand_all" ) ) ;
+        .getString ( "expandAll" ) ) ;
     this.jMenuItemExpandAll.setMnemonic ( this.resourceBundle.getString (
-        "expand_allMnemonic" ).charAt ( 0 ) ) ;
-    this.jMenuItemExpandAll.setActionCommand ( "expand_all" ) ;
+        "expandAllMnemonic" ).charAt ( 0 ) ) ;
+    this.jMenuItemExpandAll.setToolTipText ( this.resourceBundle
+        .getString ( "expandAllToolTip" ) ) ;
+    this.jMenuItemExpandAll.setActionCommand ( "expandAll" ) ;
     this.jMenuItemExpandAll.addActionListener ( this.aSTActionListener ) ;
     this.jPopupMenu.add ( this.jMenuItemExpandAll ) ;
+    // Separator
     this.jPopupMenu.addSeparator ( ) ;
+    // MenuItem Collapse
     this.jMenuItemCollapse = new JMenuItem ( this.resourceBundle
         .getString ( "collapse" ) ) ;
     this.jMenuItemCollapse.setMnemonic ( this.resourceBundle.getString (
         "collapseMnemonic" ).charAt ( 0 ) ) ;
+    this.jMenuItemCollapse.setToolTipText ( this.resourceBundle
+        .getString ( "collapseToolTip" ) ) ;
     this.jMenuItemCollapse.setActionCommand ( "collapse" ) ;
     this.jMenuItemCollapse.addActionListener ( this.aSTActionListener ) ;
     this.jPopupMenu.add ( this.jMenuItemCollapse ) ;
+    // MenuItem CollapseAll
     this.jMenuItemCollapseAll = new JMenuItem ( this.resourceBundle
-        .getString ( "collapse_all" ) ) ;
+        .getString ( "collapseAll" ) ) ;
     this.jMenuItemCollapseAll.setMnemonic ( this.resourceBundle.getString (
-        "collapse_allMnemonic" ).charAt ( 0 ) ) ;
-    this.jMenuItemCollapseAll.setActionCommand ( "collapse_all" ) ;
+        "collapseAllMnemonic" ).charAt ( 0 ) ) ;
+    this.jMenuItemCollapseAll.setToolTipText ( this.resourceBundle
+        .getString ( "collapseAllToolTip" ) ) ;
+    this.jMenuItemCollapseAll.setActionCommand ( "collapseAll" ) ;
     this.jMenuItemCollapseAll.addActionListener ( this.aSTActionListener ) ;
     this.jPopupMenu.add ( this.jMenuItemCollapseAll ) ;
+    // Separator
     this.jPopupMenu.addSeparator ( ) ;
+    // MenuItem Close
     this.jMenuItemClose = new JMenuItem ( this.resourceBundle
         .getString ( "close" ) ) ;
     this.jMenuItemClose.setMnemonic ( this.resourceBundle.getString (
         "closeMnemonic" ).charAt ( 0 ) ) ;
+    this.jMenuItemClose.setToolTipText ( this.resourceBundle
+        .getString ( "closeToolTip" ) ) ;
     this.jMenuItemClose.setActionCommand ( "close" ) ;
     this.jMenuItemClose.addActionListener ( this.aSTActionListener ) ;
     this.jPopupMenu.add ( this.jMenuItemClose ) ;
+    // MenuItem CloseAll
     this.jMenuItemCloseAll = new JMenuItem ( this.resourceBundle
-        .getString ( "close_all" ) ) ;
+        .getString ( "closeAll" ) ) ;
     this.jMenuItemCloseAll.setMnemonic ( this.resourceBundle.getString (
-        "close_allMnemonic" ).charAt ( 0 ) ) ;
-    this.jMenuItemCloseAll.setActionCommand ( "close_all" ) ;
+        "closeAllMnemonic" ).charAt ( 0 ) ) ;
+    this.jMenuItemCloseAll.setToolTipText ( this.resourceBundle
+        .getString ( "closeAllToolTip" ) ) ;
+    this.jMenuItemCloseAll.setActionCommand ( "closeAll" ) ;
     this.jMenuItemCloseAll.addActionListener ( this.aSTActionListener ) ;
     this.jPopupMenu.add ( this.jMenuItemCloseAll ) ;
+    // Separator
     this.jPopupMenu.addSeparator ( ) ;
+    // MenuItem Preferences
     this.jMenuItemPreferences = new JMenu ( this.resourceBundle
         .getString ( "preferences" ) ) ;
     this.jMenuItemPreferences.setMnemonic ( this.resourceBundle.getString (
@@ -207,39 +229,50 @@ public class ASTUI
     this.jMenuItemPreferences.setActionCommand ( "preferences" ) ;
     this.jMenuItemPreferences.addActionListener ( this.aSTActionListener ) ;
     this.jPopupMenu.add ( this.jMenuItemPreferences ) ;
+    // MenuItem Selection
     this.jMenuItemSelection = new JCheckBoxMenuItem ( this.resourceBundle
         .getString ( "selection" ) ) ;
     this.jMenuItemSelection.setMnemonic ( this.resourceBundle.getString (
         "selectionMnemonic" ).charAt ( 0 ) ) ;
+    this.jMenuItemSelection.setToolTipText ( this.resourceBundle
+        .getString ( "selectionToolTip" ) ) ;
     this.jMenuItemSelection.setActionCommand ( "selection" ) ;
     this.jMenuItemSelection.addActionListener ( this.aSTActionListener ) ;
     this.jMenuItemSelection.setSelected ( this.abstractSyntaxTree
         .getASTPreferences ( ).isSelected ( ) ) ;
     this.jMenuItemPreferences.add ( this.jMenuItemSelection ) ;
+    // MenuItem Binding
     this.jMenuItemBinding = new JCheckBoxMenuItem ( this.resourceBundle
         .getString ( "binding" ) ) ;
     this.jMenuItemBinding.setMnemonic ( this.resourceBundle.getString (
         "bindingMnemonic" ).charAt ( 0 ) ) ;
+    this.jMenuItemBinding.setToolTipText ( this.resourceBundle
+        .getString ( "bindingToolTip" ) ) ;
     this.jMenuItemBinding.setActionCommand ( "binding" ) ;
     this.jMenuItemBinding.addActionListener ( this.aSTActionListener ) ;
     this.jMenuItemBinding.setSelected ( this.abstractSyntaxTree
         .getASTPreferences ( ).isBindings ( ) ) ;
     this.jMenuItemPreferences.add ( this.jMenuItemBinding ) ;
+    // MenuItem Replace
     this.jMenuItemReplace = new JCheckBoxMenuItem ( this.resourceBundle
         .getString ( "replace" ) ) ;
     this.jMenuItemReplace.setMnemonic ( this.resourceBundle.getString (
         "replaceMnemonic" ).charAt ( 0 ) ) ;
+    this.jMenuItemReplace.setToolTipText ( this.resourceBundle
+        .getString ( "replaceToolTip" ) ) ;
     this.jMenuItemReplace.setActionCommand ( "replace" ) ;
     this.jMenuItemReplace.addActionListener ( this.aSTActionListener ) ;
     this.jMenuItemReplace.setSelected ( this.abstractSyntaxTree
         .getASTPreferences ( ).isReplace ( ) ) ;
     this.jMenuItemPreferences.add ( this.jMenuItemReplace ) ;
-    // jMenuItem AutoUpdate
+    // MenuItem AutoUpdate
     this.jMenuItemAutoUpdate = new JCheckBoxMenuItem ( this.resourceBundle
-        .getString ( "autoupdate" ) ) ;
+        .getString ( "autoUpdate" ) ) ;
     this.jMenuItemAutoUpdate.setMnemonic ( this.resourceBundle.getString (
-        "autoupdateMnemonic" ).charAt ( 0 ) ) ;
-    this.jMenuItemAutoUpdate.setActionCommand ( "autoupdate" ) ;
+        "autoUpdateMnemonic" ).charAt ( 0 ) ) ;
+    this.jMenuItemAutoUpdate.setToolTipText ( this.resourceBundle
+        .getString ( "autoUpdateToolTip" ) ) ;
+    this.jMenuItemAutoUpdate.setActionCommand ( "autoUpdate" ) ;
     this.jMenuItemAutoUpdate.addActionListener ( this.aSTActionListener ) ;
     this.jMenuItemAutoUpdate.setSelected ( this.abstractSyntaxTree
         .getASTPreferences ( ).isAutoUpdate ( ) ) ;
@@ -268,6 +301,8 @@ public class ASTUI
     this.jTreeAbstractSyntax.getSelectionModel ( ).addTreeSelectionListener (
         this.aSTTreeSelectionListener ) ;
     this.jTreeAbstractSyntax.setRowHeight ( 22 ) ;
+    this.jTreeAbstractSyntax
+        .setFont ( new Font ( "SansSerif" , Font.PLAIN , 12 ) ) ;
     this.jTreeAbstractSyntax.addMouseListener ( this.aSTMouseListener ) ;
     this.jScrollPaneAbstractSyntax = new JScrollPane ( this.jTreeAbstractSyntax ) ;
     // Button Expand
@@ -275,53 +310,73 @@ public class ASTUI
         .getString ( "expand" ) ) ;
     this.jButtonExpand.setMnemonic ( this.resourceBundle.getString (
         "expandMnemonic" ).charAt ( 0 ) ) ;
+    this.jButtonExpand.setToolTipText ( this.resourceBundle
+        .getString ( "expandToolTip" ) ) ;
     this.jButtonExpand.setActionCommand ( "expand" ) ;
     this.jButtonExpand.setFocusable ( false ) ;
+    this.jButtonExpand.setEnabled ( false ) ;
     this.jButtonExpand.addActionListener ( this.aSTActionListener ) ;
     // Button ExpandAll
     this.jButtonExpandAll = new JButton ( this.resourceBundle
-        .getString ( "expand_all" ) ) ;
+        .getString ( "expandAll" ) ) ;
     this.jButtonExpandAll.setMnemonic ( this.resourceBundle.getString (
-        "expand_allMnemonic" ).charAt ( 0 ) ) ;
-    this.jButtonExpandAll.setActionCommand ( "expand_all" ) ;
+        "expandAllMnemonic" ).charAt ( 0 ) ) ;
+    this.jButtonExpandAll.setToolTipText ( this.resourceBundle
+        .getString ( "expandAllToolTip" ) ) ;
+    this.jButtonExpandAll.setActionCommand ( "expandAll" ) ;
     this.jButtonExpandAll.setFocusable ( false ) ;
+    this.jButtonExpandAll.setEnabled ( false ) ;
     this.jButtonExpandAll.addActionListener ( this.aSTActionListener ) ;
-    // Button CollapseAll
-    this.jButtonCollapseAll = new JButton ( this.resourceBundle
-        .getString ( "collapse_all" ) ) ;
-    this.jButtonCollapseAll.setMnemonic ( this.resourceBundle.getString (
-        "collapse_allMnemonic" ).charAt ( 0 ) ) ;
-    this.jButtonCollapseAll.setActionCommand ( "collapse_all" ) ;
-    this.jButtonCollapseAll.setFocusable ( false ) ;
-    this.jButtonCollapseAll.addActionListener ( this.aSTActionListener ) ;
     // Button Collapse
     this.jButtonCollapse = new JButton ( this.resourceBundle
         .getString ( "collapse" ) ) ;
     this.jButtonCollapse.setMnemonic ( this.resourceBundle.getString (
         "collapseMnemonic" ).charAt ( 0 ) ) ;
+    this.jButtonCollapse.setToolTipText ( this.resourceBundle
+        .getString ( "collapseToolTip" ) ) ;
     this.jButtonCollapse.setActionCommand ( "collapse" ) ;
     this.jButtonCollapse.setFocusable ( false ) ;
+    this.jButtonCollapse.setEnabled ( false ) ;
     this.jButtonCollapse.addActionListener ( this.aSTActionListener ) ;
+    // Button CollapseAll
+    this.jButtonCollapseAll = new JButton ( this.resourceBundle
+        .getString ( "collapseAll" ) ) ;
+    this.jButtonCollapseAll.setMnemonic ( this.resourceBundle.getString (
+        "collapseAllMnemonic" ).charAt ( 0 ) ) ;
+    this.jButtonCollapseAll.setToolTipText ( this.resourceBundle
+        .getString ( "collapseAllToolTip" ) ) ;
+    this.jButtonCollapseAll.setActionCommand ( "collapseAll" ) ;
+    this.jButtonCollapseAll.setFocusable ( false ) ;
+    this.jButtonCollapseAll.setEnabled ( false ) ;
+    this.jButtonCollapseAll.addActionListener ( this.aSTActionListener ) ;
     // Button Close
     this.jButtonClose = new JButton ( this.resourceBundle.getString ( "close" ) ) ;
     this.jButtonClose.setMnemonic ( this.resourceBundle.getString (
         "closeMnemonic" ).charAt ( 0 ) ) ;
+    this.jButtonClose.setToolTipText ( this.resourceBundle
+        .getString ( "closeToolTip" ) ) ;
     this.jButtonClose.setActionCommand ( "close" ) ;
     this.jButtonClose.setFocusable ( false ) ;
+    this.jButtonClose.setEnabled ( false ) ;
     this.jButtonClose.addActionListener ( this.aSTActionListener ) ;
     // Button Close All
     this.jButtonCloseAll = new JButton ( this.resourceBundle
-        .getString ( "close_all" ) ) ;
+        .getString ( "closeAll" ) ) ;
     this.jButtonCloseAll.setMnemonic ( this.resourceBundle.getString (
-        "close_allMnemonic" ).charAt ( 0 ) ) ;
-    this.jButtonCloseAll.setActionCommand ( "close_all" ) ;
+        "closeAllMnemonic" ).charAt ( 0 ) ) ;
+    this.jButtonCloseAll.setToolTipText ( this.resourceBundle
+        .getString ( "closeAllToolTip" ) ) ;
+    this.jButtonCloseAll.setActionCommand ( "closeAll" ) ;
     this.jButtonCloseAll.setFocusable ( false ) ;
+    this.jButtonCloseAll.setEnabled ( false ) ;
     this.jButtonCloseAll.addActionListener ( this.aSTActionListener ) ;
     // CheckBox Selected
     this.jCheckBoxSelection = new JCheckBox ( this.resourceBundle
         .getString ( "selection" ) ) ;
     this.jCheckBoxSelection.setMnemonic ( this.resourceBundle.getString (
         "selectionMnemonic" ).charAt ( 0 ) ) ;
+    this.jCheckBoxSelection.setToolTipText ( this.resourceBundle
+        .getString ( "selectionToolTip" ) ) ;
     this.jCheckBoxSelection.setSelected ( this.abstractSyntaxTree
         .getASTPreferences ( ).isSelected ( ) ) ;
     this.jCheckBoxSelection.setFocusable ( false ) ;
@@ -331,6 +386,8 @@ public class ASTUI
         .getString ( "binding" ) ) ;
     this.jCheckBoxBinding.setMnemonic ( this.resourceBundle.getString (
         "bindingMnemonic" ).charAt ( 0 ) ) ;
+    this.jCheckBoxBinding.setToolTipText ( this.resourceBundle
+        .getString ( "bindingToolTip" ) ) ;
     this.jCheckBoxBinding.setSelected ( this.abstractSyntaxTree
         .getASTPreferences ( ).isBindings ( ) ) ;
     this.jCheckBoxBinding.setFocusable ( false ) ;
@@ -340,15 +397,19 @@ public class ASTUI
         .getString ( "replace" ) ) ;
     this.jCheckBoxReplace.setMnemonic ( this.resourceBundle.getString (
         "replaceMnemonic" ).charAt ( 0 ) ) ;
+    this.jCheckBoxReplace.setToolTipText ( this.resourceBundle
+        .getString ( "replaceToolTip" ) ) ;
     this.jCheckBoxReplace.setSelected ( this.abstractSyntaxTree
         .getASTPreferences ( ).isReplace ( ) ) ;
     this.jCheckBoxReplace.setFocusable ( false ) ;
     this.jCheckBoxReplace.addItemListener ( this.aSTItemListener ) ;
     // CheckBox AutoUpdate
     this.jCheckBoxAutoUpdate = new JCheckBox ( this.resourceBundle
-        .getString ( "autoupdate" ) ) ;
+        .getString ( "autoUpdate" ) ) ;
     this.jCheckBoxAutoUpdate.setMnemonic ( this.resourceBundle.getString (
-        "autoupdateMnemonic" ).charAt ( 0 ) ) ;
+        "autoUpdateMnemonic" ).charAt ( 0 ) ) ;
+    this.jCheckBoxAutoUpdate.setToolTipText ( this.resourceBundle
+        .getString ( "autoUpdateToolTip" ) ) ;
     this.jCheckBoxAutoUpdate.setSelected ( this.abstractSyntaxTree
         .getASTPreferences ( ).isAutoUpdate ( ) ) ;
     this.jCheckBoxAutoUpdate.setFocusable ( false ) ;
@@ -386,7 +447,7 @@ public class ASTUI
     this.gridBagConstraints.insets = insets ;
     this.gridBagConstraints.gridx = 1 ;
     this.gridBagConstraints.gridy = 0 ;
-    this.gridBagConstraints.weightx = 10 ;
+    this.gridBagConstraints.weightx = 0 ;
     this.gridBagConstraints.weighty = 10 ;
     this.jPanelPreferences.add ( this.jCheckBoxReplace ,
         this.gridBagConstraints ) ;
@@ -396,7 +457,7 @@ public class ASTUI
     this.gridBagConstraints.insets = insets ;
     this.gridBagConstraints.gridx = 1 ;
     this.gridBagConstraints.gridy = 1 ;
-    this.gridBagConstraints.weightx = 10 ;
+    this.gridBagConstraints.weightx = 0 ;
     this.gridBagConstraints.weighty = 10 ;
     this.jPanelPreferences.add ( this.jCheckBoxAutoUpdate ,
         this.gridBagConstraints ) ;
@@ -406,7 +467,7 @@ public class ASTUI
     this.gridBagConstraints.insets = insets ;
     this.gridBagConstraints.gridx = 2 ;
     this.gridBagConstraints.gridy = 0 ;
-    this.gridBagConstraints.weightx = 0 ;
+    this.gridBagConstraints.weightx = 10 ;
     this.gridBagConstraints.weighty = 10 ;
     this.jPanelPreferences.add ( this.jButtonExpand , this.gridBagConstraints ) ;
     // Button ExpandAll
@@ -415,7 +476,7 @@ public class ASTUI
     this.gridBagConstraints.insets = insets ;
     this.gridBagConstraints.gridx = 2 ;
     this.gridBagConstraints.gridy = 1 ;
-    this.gridBagConstraints.weightx = 0 ;
+    this.gridBagConstraints.weightx = 10 ;
     this.gridBagConstraints.weighty = 10 ;
     this.jPanelPreferences.add ( this.jButtonExpandAll ,
         this.gridBagConstraints ) ;
@@ -425,7 +486,7 @@ public class ASTUI
     this.gridBagConstraints.insets = insets ;
     this.gridBagConstraints.gridx = 3 ;
     this.gridBagConstraints.gridy = 0 ;
-    this.gridBagConstraints.weightx = 0 ;
+    this.gridBagConstraints.weightx = 10 ;
     this.gridBagConstraints.weighty = 10 ;
     this.jPanelPreferences
         .add ( this.jButtonCollapse , this.gridBagConstraints ) ;
@@ -435,7 +496,7 @@ public class ASTUI
     this.gridBagConstraints.insets = insets ;
     this.gridBagConstraints.gridx = 3 ;
     this.gridBagConstraints.gridy = 1 ;
-    this.gridBagConstraints.weightx = 0 ;
+    this.gridBagConstraints.weightx = 10 ;
     this.gridBagConstraints.weighty = 10 ;
     this.jPanelPreferences.add ( this.jButtonCollapseAll ,
         this.gridBagConstraints ) ;
@@ -445,7 +506,7 @@ public class ASTUI
     this.gridBagConstraints.insets = insets ;
     this.gridBagConstraints.gridx = 4 ;
     this.gridBagConstraints.gridy = 0 ;
-    this.gridBagConstraints.weightx = 0 ;
+    this.gridBagConstraints.weightx = 10 ;
     this.gridBagConstraints.weighty = 10 ;
     this.jPanelPreferences.add ( this.jButtonClose , this.gridBagConstraints ) ;
     // Button CloseAll
@@ -454,7 +515,7 @@ public class ASTUI
     this.gridBagConstraints.insets = insets ;
     this.gridBagConstraints.gridx = 4 ;
     this.gridBagConstraints.gridy = 1 ;
-    this.gridBagConstraints.weightx = 0 ;
+    this.gridBagConstraints.weightx = 10 ;
     this.gridBagConstraints.weighty = 10 ;
     this.jPanelPreferences
         .add ( this.jButtonCloseAll , this.gridBagConstraints ) ;

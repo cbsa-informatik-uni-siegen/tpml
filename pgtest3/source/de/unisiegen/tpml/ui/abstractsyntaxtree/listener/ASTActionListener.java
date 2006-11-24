@@ -27,7 +27,7 @@ public class ASTActionListener implements ActionListener
       close ( ) ;
       this.aSTUI.getASTMouseListener ( ).setStatus ( ) ;
     }
-    else if ( actionCommand.equals ( "close_all" ) )
+    else if ( actionCommand.equals ( "closeAll" ) )
     {
       closeAll ( ) ;
       this.aSTUI.getASTMouseListener ( ).setStatus ( ) ;
@@ -37,7 +37,7 @@ public class ASTActionListener implements ActionListener
       expand ( ) ;
       this.aSTUI.getASTMouseListener ( ).setStatus ( ) ;
     }
-    else if ( actionCommand.equals ( "expand_all" ) )
+    else if ( actionCommand.equals ( "expandAll" ) )
     {
       expandAll ( ) ;
       this.aSTUI.getASTMouseListener ( ).setStatus ( ) ;
@@ -47,7 +47,7 @@ public class ASTActionListener implements ActionListener
       collapse ( ) ;
       this.aSTUI.getASTMouseListener ( ).setStatus ( ) ;
     }
-    else if ( actionCommand.equals ( "collapse_all" ) )
+    else if ( actionCommand.equals ( "collapseAll" ) )
     {
       collapseAll ( ) ;
       this.aSTUI.getASTMouseListener ( ).setStatus ( ) ;
@@ -68,7 +68,7 @@ public class ASTActionListener implements ActionListener
       this.aSTUI.getASTItemListener ( ).update (
           this.aSTUI.getJMenuItemReplace ( ).isSelected ( ) , null , "replace" ) ;
     }
-    else if ( actionCommand.equals ( "autoupdate" ) )
+    else if ( actionCommand.equals ( "autoUpdate" ) )
     {
       this.aSTUI.getASTItemListener ( ).update (
           this.aSTUI.getJMenuItemAutoUpdate ( ).isSelected ( ) , null ,
