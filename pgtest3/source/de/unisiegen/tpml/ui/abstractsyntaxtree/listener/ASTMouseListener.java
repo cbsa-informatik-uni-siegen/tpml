@@ -3,6 +3,7 @@ package de.unisiegen.tpml.ui.abstractsyntaxtree.listener ;
 
 import java.awt.event.MouseEvent ;
 import java.awt.event.MouseListener ;
+import javax.swing.JLabel ;
 import javax.swing.tree.DefaultMutableTreeNode ;
 import javax.swing.tree.TreePath ;
 import de.unisiegen.tpml.graphics.bigstep.BigStepView ;
@@ -114,7 +115,8 @@ public class ASTMouseListener implements MouseListener
       }
       setStatus ( ) ;
     }
-    else if ( pMouseEvent.getSource ( ) instanceof CompoundExpression )
+    else if ( ( pMouseEvent.getSource ( ) instanceof CompoundExpression )
+        || ( pMouseEvent.getSource ( ) instanceof JLabel ) )
     {
       if ( pMouseEvent.getButton ( ) == MouseEvent.BUTTON1 )
       {

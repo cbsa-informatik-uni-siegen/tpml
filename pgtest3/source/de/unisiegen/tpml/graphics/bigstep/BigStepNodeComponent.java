@@ -33,6 +33,7 @@ import de.unisiegen.tpml.graphics.components.MenuRuleItem;
 import de.unisiegen.tpml.graphics.components.MenuTranslateItem;
 import de.unisiegen.tpml.graphics.renderer.AbstractRenderer;
 import de.unisiegen.tpml.graphics.tree.TreeNodeComponent;
+import de.unisiegen.tpml.ui.abstractsyntaxtree.listener.ASTMouseListener;
 
 
 /**
@@ -183,8 +184,13 @@ public class BigStepNodeComponent extends JComponent implements TreeNodeComponen
 		
 		this.expression					= new CompoundExpression<Location, Expression> ();
 		add (this.expression);
-		
+    
+    // CHANGE CHRISTIAN
+    this.indexLabel.addMouseListener ( new ASTMouseListener ( this.expression ) ) ;
+    // CHANGE CHRISTIAN END
+     
 		this.downArrowLabel			= new JLabel ();
+
 		add (this.downArrowLabel);
 		this.downArrowLabel.setText(" \u21d3 "); // \u21d3 is the double arrow down //$NON-NLS-1$ //$NON-NLS-1$ //$NON-NLS-1$
 		
