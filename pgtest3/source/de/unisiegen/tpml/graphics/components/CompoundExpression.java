@@ -321,6 +321,29 @@ public class CompoundExpression < S , E > extends JComponent
     {
       // update to the new expression
       this.expression = expression ;
+      
+      // CHANGE BENJAMIN
+      bound.setHoleExpression ( this.expression ) ;
+      bound.check ( this.expression ) ;
+      // Debug
+      LinkedList < Bound > bounds = bound.getAnnotations ( ) ;
+      for ( int i = 0 ; i < bounds.size ( ) ; i ++ )
+      {
+        Bound tmp = bounds.get ( i ) ;
+        Debug.err.print ( "BM- Id: " + tmp.getIdentifier ( ) + " "
+            + tmp.getStartOffset ( ) + "->" + tmp.getEndOffset ( )
+            + " Bindung: " , "Benjamin" ) ;
+        for ( int j = 0 ; j < tmp.getMarks ( ).size ( ) ; j ++ )
+        {
+          Debug.err.print ( tmp.getMarks ( ).get ( j ).getStartOffset ( )
+              + "->" + tmp.getMarks ( ).get ( j ).getEndOffset ( ) + "  " ,
+              "Benjamin" ) ;
+        }
+        Debug.err.println ( " " , "Benjamin" ) ;
+      }
+      Debug.out.println ( " " , "benjamin" ) ;
+      // CHANGE BENJAMIN END
+      
       // check what to do with the renderer
       if ( this.expression == null )
       {
@@ -330,33 +353,14 @@ public class CompoundExpression < S , E > extends JComponent
       {
         if ( this.expressionRenderer == null )
         {
-          // CHANGE BENJAMIN
+          
           // bound = new ShowBound();
           // CHANGE MICHAEL
           // with ervery new expression renderd by the PrettyStringRenderer the
           // elements listen by mouse will be resetet
           // toListenForMouse.reset();
           // CHANGE MICHAEL
-          bound.setHoleExpression ( this.expression ) ;
-          bound.check ( this.expression ) ;
-          // Debug
-          LinkedList < Bound > bounds = bound.getAnnotations ( ) ;
-          for ( int i = 0 ; i < bounds.size ( ) ; i ++ )
-          {
-            Bound tmp = bounds.get ( i ) ;
-            Debug.err.print ( "BM- Id: " + tmp.getIdentifier ( ) + " "
-                + tmp.getStartOffset ( ) + "->" + tmp.getEndOffset ( )
-                + " Bindung: " , "Benjamin" ) ;
-            for ( int j = 0 ; j < tmp.getMarks ( ).size ( ) ; j ++ )
-            {
-              Debug.err.print ( tmp.getMarks ( ).get ( j ).getStartOffset ( )
-                  + "->" + tmp.getMarks ( ).get ( j ).getEndOffset ( ) + "  " ,
-                  "Benjamin" ) ;
-            }
-            Debug.err.println ( " " , "Benjamin" ) ;
-          }
-          Debug.out.println ( " " , "benjamin" ) ;
-          // CHANGE BENJAMIN END
+          
           this.expressionRenderer = new PrettyStringRenderer ( ) ;
           this.expressionRenderer.setAlternativeColor ( this.alternativeColor ) ;
         }
