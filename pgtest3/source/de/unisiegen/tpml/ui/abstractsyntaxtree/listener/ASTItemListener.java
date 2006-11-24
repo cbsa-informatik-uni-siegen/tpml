@@ -7,17 +7,37 @@ import de.unisiegen.tpml.ui.abstractsyntaxtree.ASTNode ;
 import de.unisiegen.tpml.ui.abstractsyntaxtree.ASTUI ;
 
 
+/**
+ * TODO
+ *
+ * @author Christian Fehler
+ * @version $Rev$
+ */
 public class ASTItemListener implements ItemListener
 {
+  /**
+   * TODO
+   */
   private ASTUI aSTUI ;
 
 
+  /**
+   * TODO
+   *
+   * @param pASTUI
+   */
   public ASTItemListener ( ASTUI pASTUI )
   {
     this.aSTUI = pASTUI ;
   }
 
 
+  /**
+   * TODO
+   * 
+   * @param pItemEvent
+   * @see java.awt.event.ItemListener#itemStateChanged(java.awt.event.ItemEvent)
+   */
   public void itemStateChanged ( ItemEvent pItemEvent )
   {
     update ( pItemEvent.getStateChange ( ) == ItemEvent.SELECTED , pItemEvent
@@ -25,6 +45,13 @@ public class ASTItemListener implements ItemListener
   }
 
 
+  /**
+   * TODO
+   *
+   * @param pSelected
+   * @param pSource
+   * @param pActionCommand
+   */
   public void update ( boolean pSelected , Object pSource ,
       String pActionCommand )
   {
@@ -34,7 +61,7 @@ public class ASTItemListener implements ItemListener
     {
       ASTNode.setReplace ( pSelected ) ;
       this.aSTUI.getASTTreeSelectionListener ( ).update (
-          this.aSTUI.getJAbstractSyntaxTree ( ).getSelectionPath ( ) ) ;
+          this.aSTUI.getJTreeAbstractSyntaxTree ( ).getSelectionPath ( ) ) ;
       this.aSTUI.getAbstractSyntaxTree ( ).getASTPreferences ( ).setReplace (
           pSelected ) ;
       this.aSTUI.getJCheckBoxReplace ( ).setSelected ( pSelected ) ;
@@ -46,8 +73,8 @@ public class ASTItemListener implements ItemListener
     {
       ASTNode.setBinding ( pSelected ) ;
       this.aSTUI.getASTTreeSelectionListener ( ).update (
-          this.aSTUI.getJAbstractSyntaxTree ( ).getSelectionPath ( ) ) ;
-      this.aSTUI.getAbstractSyntaxTree ( ).getASTPreferences ( ).setBindings (
+          this.aSTUI.getJTreeAbstractSyntaxTree ( ).getSelectionPath ( ) ) ;
+      this.aSTUI.getAbstractSyntaxTree ( ).getASTPreferences ( ).setBinding (
           pSelected ) ;
       this.aSTUI.getJCheckBoxBinding ( ).setSelected ( pSelected ) ;
       this.aSTUI.getJMenuItemBinding ( ).setSelected ( pSelected ) ;
@@ -58,8 +85,8 @@ public class ASTItemListener implements ItemListener
     {
       ASTNode.setSelection ( pSelected ) ;
       this.aSTUI.getASTTreeSelectionListener ( ).update (
-          this.aSTUI.getJAbstractSyntaxTree ( ).getSelectionPath ( ) ) ;
-      this.aSTUI.getAbstractSyntaxTree ( ).getASTPreferences ( ).setSelected (
+          this.aSTUI.getJTreeAbstractSyntaxTree ( ).getSelectionPath ( ) ) ;
+      this.aSTUI.getAbstractSyntaxTree ( ).getASTPreferences ( ).setSelection (
           pSelected ) ;
       this.aSTUI.getJCheckBoxSelection ( ).setSelected ( pSelected ) ;
       this.aSTUI.getJMenuItemSelection ( ).setSelected ( pSelected ) ;

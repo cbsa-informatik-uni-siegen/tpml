@@ -10,14 +10,32 @@ import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel ;
 import de.unisiegen.tpml.ui.abstractsyntaxtree.AbstractSyntaxTree ;
 
 
+/**
+ * TODO
+ * 
+ * @author Christian Fehler
+ * @version $Rev$
+ */
 public class ASTTreeModelListener implements TreeModelListener
 {
+  /**
+   * TODO
+   */
   public AbstractSyntaxTree abstractSyntaxTree ;
 
 
+  /**
+   * TODO
+   */
   public AbstractProofModel model ;
 
 
+  /**
+   * TODO
+   * 
+   * @param pAbstractSyntaxTree
+   * @param pModel
+   */
   public ASTTreeModelListener ( AbstractSyntaxTree pAbstractSyntaxTree ,
       AbstractProofModel pModel )
   {
@@ -26,6 +44,12 @@ public class ASTTreeModelListener implements TreeModelListener
   }
 
 
+  /**
+   * TODO
+   * 
+   * @param pTreeModelEvent
+   * @see javax.swing.event.TreeModelListener#treeNodesChanged(javax.swing.event.TreeModelEvent)
+   */
   public void treeNodesChanged ( TreeModelEvent pTreeModelEvent )
   {
     if ( pTreeModelEvent.getSource ( ) instanceof SmallStepProofModel )
@@ -46,6 +70,12 @@ public class ASTTreeModelListener implements TreeModelListener
   }
 
 
+  /**
+   * TODO
+   * 
+   * @param pTreeModelEvent
+   * @see javax.swing.event.TreeModelListener#treeNodesInserted(javax.swing.event.TreeModelEvent)
+   */
   public void treeNodesInserted ( @ SuppressWarnings ( "unused" )
   TreeModelEvent pTreeModelEvent )
   {
@@ -53,6 +83,12 @@ public class ASTTreeModelListener implements TreeModelListener
   }
 
 
+  /**
+   * TODO
+   * 
+   * @param pTreeModelEvent
+   * @see javax.swing.event.TreeModelListener#treeNodesRemoved(javax.swing.event.TreeModelEvent)
+   */
   public void treeNodesRemoved ( @ SuppressWarnings ( "unused" )
   TreeModelEvent pTreeModelEvent )
   {
@@ -60,6 +96,12 @@ public class ASTTreeModelListener implements TreeModelListener
   }
 
 
+  /**
+   * TODO
+   * 
+   * @param pTreeModelEvent
+   * @see javax.swing.event.TreeModelListener#treeStructureChanged(javax.swing.event.TreeModelEvent)
+   */
   public void treeStructureChanged ( @ SuppressWarnings ( "unused" )
   TreeModelEvent pTreeModelEvent )
   {

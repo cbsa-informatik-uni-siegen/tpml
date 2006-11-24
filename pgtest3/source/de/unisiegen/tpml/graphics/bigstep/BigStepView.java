@@ -34,18 +34,35 @@ public class BigStepView extends AbstractProofView
   private static final long serialVersionUID = - 8529052541636149376L ;
 
 
+  /**
+   * TODO
+   */
   protected BigStepComponent component ;
 
 
+  /**
+   * TODO
+   */
   protected JScrollPane scrollPane ;
 
 
+  /**
+   * TODO
+   */
   private JSplitPane jSplitPane ;
 
 
+  /**
+   * TODO
+   */
   private AbstractSyntaxTree abstractSyntaxTree ;
 
 
+  /**
+   * TODO
+   * 
+   * @param model
+   */
   public BigStepView ( BigStepProofModel model )
   {
     super ( ) ;
@@ -108,6 +125,11 @@ public class BigStepView extends AbstractProofView
   }
 
 
+  /**
+   * TODO
+   * 
+   * @return TODO
+   */
   public AbstractSyntaxTree getAbstractSyntaxTree ( )
   {
     return this.abstractSyntaxTree ;
@@ -116,6 +138,9 @@ public class BigStepView extends AbstractProofView
 
   /**
    * Guesses the first node with the tree that is not already prooven.
+   * 
+   * @throws IllegalStateException
+   * @throws ProofGuessException
    */
   public void guess ( ) throws IllegalStateException , ProofGuessException
   {

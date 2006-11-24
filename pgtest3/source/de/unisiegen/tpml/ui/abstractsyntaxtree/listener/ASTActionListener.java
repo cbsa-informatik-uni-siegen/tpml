@@ -8,17 +8,37 @@ import javax.swing.tree.TreePath ;
 import de.unisiegen.tpml.ui.abstractsyntaxtree.ASTUI ;
 
 
+/**
+ * TODO
+ * 
+ * @author Christian Fehler
+ * @version $Rev$
+ */
 public class ASTActionListener implements ActionListener
 {
+  /**
+   * TODO
+   */
   private ASTUI aSTUI ;
 
 
+  /**
+   * TODO
+   * 
+   * @param pASTUI
+   */
   public ASTActionListener ( ASTUI pASTUI )
   {
     this.aSTUI = pASTUI ;
   }
 
 
+  /**
+   * TODO
+   * 
+   * @param pActionEvent
+   * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+   */
   public void actionPerformed ( ActionEvent pActionEvent )
   {
     String actionCommand = pActionEvent.getActionCommand ( ) ;
@@ -77,65 +97,90 @@ public class ASTActionListener implements ActionListener
   }
 
 
+  /**
+   * TODO
+   */
   public void close ( )
   {
-    int selectionRows[] = this.aSTUI.getJAbstractSyntaxTree ( )
+    int selectionRows[] = this.aSTUI.getJTreeAbstractSyntaxTree ( )
         .getSelectionRows ( ) ;
     if ( selectionRows == null )
     {
       return ;
     }
-    for ( int i = this.aSTUI.getJAbstractSyntaxTree ( ).getRowCount ( ) - 1 ; i >= selectionRows [ 0 ] ; i -- )
+    for ( int i = this.aSTUI.getJTreeAbstractSyntaxTree ( ).getRowCount ( ) - 1 ; i >= selectionRows [ 0 ] ; i -- )
     {
-      this.aSTUI.getJAbstractSyntaxTree ( ).collapseRow ( i ) ;
+      this.aSTUI.getJTreeAbstractSyntaxTree ( ).collapseRow ( i ) ;
     }
   }
 
 
+  /**
+   * TODO
+   */
   public void closeAll ( )
   {
-    for ( int i = this.aSTUI.getJAbstractSyntaxTree ( ).getRowCount ( ) - 1 ; i >= 0 ; i -- )
+    for ( int i = this.aSTUI.getJTreeAbstractSyntaxTree ( ).getRowCount ( ) - 1 ; i >= 0 ; i -- )
     {
-      this.aSTUI.getJAbstractSyntaxTree ( ).collapseRow ( i ) ;
+      this.aSTUI.getJTreeAbstractSyntaxTree ( ).collapseRow ( i ) ;
     }
   }
 
 
+  /**
+   * TODO
+   */
   public void collapse ( )
   {
-    int selectionRows[] = this.aSTUI.getJAbstractSyntaxTree ( )
+    int selectionRows[] = this.aSTUI.getJTreeAbstractSyntaxTree ( )
         .getSelectionRows ( ) ;
     if ( selectionRows == null )
     {
       return ;
     }
-    this.aSTUI.getJAbstractSyntaxTree ( ).collapseRow ( selectionRows [ 0 ] ) ;
+    this.aSTUI.getJTreeAbstractSyntaxTree ( )
+        .collapseRow ( selectionRows [ 0 ] ) ;
   }
 
 
+  /**
+   * TODO
+   */
   public void collapseAll ( )
   {
-    this.aSTUI.getJAbstractSyntaxTree ( ).collapseRow ( 0 ) ;
+    this.aSTUI.getJTreeAbstractSyntaxTree ( ).collapseRow ( 0 ) ;
   }
 
 
+  /**
+   * TODO
+   */
   public void expand ( )
   {
-    expandTreePath ( this.aSTUI.getJAbstractSyntaxTree ( ).getSelectionPath ( ) ) ;
+    expandTreePath ( this.aSTUI.getJTreeAbstractSyntaxTree ( )
+        .getSelectionPath ( ) ) ;
   }
 
 
+  /**
+   * TODO
+   */
   public void expandAll ( )
   {
     int i = 0 ;
-    while ( i < this.aSTUI.getJAbstractSyntaxTree ( ).getRowCount ( ) )
+    while ( i < this.aSTUI.getJTreeAbstractSyntaxTree ( ).getRowCount ( ) )
     {
-      this.aSTUI.getJAbstractSyntaxTree ( ).expandRow ( i ) ;
+      this.aSTUI.getJTreeAbstractSyntaxTree ( ).expandRow ( i ) ;
       i ++ ;
     }
   }
 
 
+  /**
+   * TODO
+   * 
+   * @param pTreePath
+   */
   private void expandTreePath ( TreePath pTreePath )
   {
     if ( pTreePath == null )
@@ -148,6 +193,6 @@ public class ASTActionListener implements ActionListener
     {
       expandTreePath ( pTreePath.pathByAddingChild ( lastNode.getChildAt ( i ) ) ) ;
     }
-    this.aSTUI.getJAbstractSyntaxTree ( ).expandPath ( pTreePath ) ;
+    this.aSTUI.getJTreeAbstractSyntaxTree ( ).expandPath ( pTreePath ) ;
   }
 }

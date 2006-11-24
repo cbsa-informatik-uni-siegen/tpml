@@ -12,14 +12,31 @@ import de.unisiegen.tpml.graphics.typechecker.TypeCheckerView ;
 import de.unisiegen.tpml.ui.abstractsyntaxtree.ASTUI ;
 
 
+/**
+ * TODO
+ * 
+ * @author Christian Fehler
+ * @version $Rev$
+ */
 public class ASTMouseListener implements MouseListener
 {
+  /**
+   * TODO
+   */
   private ASTUI aSTUI ;
 
 
+  /**
+   * TODO
+   */
   private CompoundExpression < ? , ? > compoundExpression ;
 
 
+  /**
+   * TODO
+   * 
+   * @param pASTUI
+   */
   public ASTMouseListener ( ASTUI pASTUI )
   {
     this.aSTUI = pASTUI ;
@@ -27,6 +44,11 @@ public class ASTMouseListener implements MouseListener
   }
 
 
+  /**
+   * TODO
+   * 
+   * @param pCompoundExpression
+   */
   public ASTMouseListener ( CompoundExpression < ? , ? > pCompoundExpression )
   {
     this.aSTUI = null ;
@@ -34,6 +56,12 @@ public class ASTMouseListener implements MouseListener
   }
 
 
+  /**
+   * TODO
+   * 
+   * @param pTreePath
+   * @return TODO
+   */
   private boolean allChildrenVisible ( TreePath pTreePath )
   {
     DefaultMutableTreeNode lastNode = ( DefaultMutableTreeNode ) pTreePath
@@ -46,7 +74,7 @@ public class ASTMouseListener implements MouseListener
     final int count = lastNode.getChildCount ( ) ;
     for ( int i = 0 ; i < count ; i ++ )
     {
-      if ( ! this.aSTUI.getJAbstractSyntaxTree ( ).isVisible (
+      if ( ! this.aSTUI.getJTreeAbstractSyntaxTree ( ).isVisible (
           pTreePath.pathByAddingChild ( lastNode.getChildAt ( i ) ) ) )
       {
         return false ;
@@ -59,23 +87,28 @@ public class ASTMouseListener implements MouseListener
   }
 
 
+  /**
+   * TODO
+   * 
+   * @param pMouseEvent
+   */
   private void handleMouseEvent ( MouseEvent pMouseEvent )
   {
     if ( ( this.aSTUI != null )
         && ( pMouseEvent.getSource ( ).equals ( this.aSTUI
-            .getJAbstractSyntaxTree ( ) ) ) )
+            .getJTreeAbstractSyntaxTree ( ) ) ) )
     {
       if ( pMouseEvent.isPopupTrigger ( ) )
       {
         int x = pMouseEvent.getX ( ) ;
         int y = pMouseEvent.getY ( ) ;
-        TreePath treePath = this.aSTUI.getJAbstractSyntaxTree ( )
+        TreePath treePath = this.aSTUI.getJTreeAbstractSyntaxTree ( )
             .getPathForLocation ( x , y ) ;
         if ( treePath == null )
         {
           return ;
         }
-        this.aSTUI.getJAbstractSyntaxTree ( ).setSelectionPath ( treePath ) ;
+        this.aSTUI.getJTreeAbstractSyntaxTree ( ).setSelectionPath ( treePath ) ;
         this.aSTUI.getJPopupMenu ( ).show ( pMouseEvent.getComponent ( ) , x ,
             y ) ;
       }
@@ -117,6 +150,12 @@ public class ASTMouseListener implements MouseListener
   }
 
 
+  /**
+   * TODO
+   * 
+   * @param pMouseEvent
+   * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
+   */
   public void mouseClicked ( @ SuppressWarnings ( "unused" )
   MouseEvent pMouseEvent )
   {
@@ -124,6 +163,12 @@ public class ASTMouseListener implements MouseListener
   }
 
 
+  /**
+   * TODO
+   * 
+   * @param pMouseEvent
+   * @see java.awt.event.MouseListener#mouseEntered(java.awt.event.MouseEvent)
+   */
   public void mouseEntered ( @ SuppressWarnings ( "unused" )
   MouseEvent pMouseEvent )
   {
@@ -131,6 +176,12 @@ public class ASTMouseListener implements MouseListener
   }
 
 
+  /**
+   * TODO
+   * 
+   * @param pMouseEvent
+   * @see java.awt.event.MouseListener#mouseExited(java.awt.event.MouseEvent)
+   */
   public void mouseExited ( @ SuppressWarnings ( "unused" )
   MouseEvent pMouseEvent )
   {
@@ -138,21 +189,36 @@ public class ASTMouseListener implements MouseListener
   }
 
 
+  /**
+   * TODO
+   * 
+   * @param pMouseEvent
+   * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
+   */
   public void mousePressed ( MouseEvent pMouseEvent )
   {
     handleMouseEvent ( pMouseEvent ) ;
   }
 
 
+  /**
+   * TODO
+   * 
+   * @param pMouseEvent
+   * @see java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
+   */
   public void mouseReleased ( MouseEvent pMouseEvent )
   {
     handleMouseEvent ( pMouseEvent ) ;
   }
 
 
+  /**
+   * TODO
+   */
   public void setStatus ( )
   {
-    TreePath treePath = this.aSTUI.getJAbstractSyntaxTree ( )
+    TreePath treePath = this.aSTUI.getJTreeAbstractSyntaxTree ( )
         .getSelectionPath ( ) ;
     if ( treePath == null )
     {
@@ -173,19 +239,19 @@ public class ASTMouseListener implements MouseListener
     this.aSTUI.getJMenuItemCloseAll ( ).setEnabled ( true ) ;
     this.aSTUI.getJButtonCloseAll ( ).setEnabled ( true ) ;
     boolean allVisible = allChildrenVisible ( this.aSTUI
-        .getJAbstractSyntaxTree ( ).getPathForRow ( 0 ) ) ;
+        .getJTreeAbstractSyntaxTree ( ).getPathForRow ( 0 ) ) ;
     this.aSTUI.getJMenuItemExpandAll ( ).setEnabled ( ! allVisible ) ;
     this.aSTUI.getJButtonExpandAll ( ).setEnabled ( ! allVisible ) ;
     // Selected node is not a leaf
     if ( selectedNode.getChildCount ( ) > 0 )
     {
       boolean allChildrenVisible = allChildrenVisible ( treePath ) ;
-      boolean selectedChildVisible = this.aSTUI.getJAbstractSyntaxTree ( )
+      boolean selectedChildVisible = this.aSTUI.getJTreeAbstractSyntaxTree ( )
           .isVisible (
               treePath.pathByAddingChild ( selectedNode.getChildAt ( 0 ) ) ) ;
-      boolean rootChildVisible = this.aSTUI.getJAbstractSyntaxTree ( )
+      boolean rootChildVisible = this.aSTUI.getJTreeAbstractSyntaxTree ( )
           .isVisible (
-              this.aSTUI.getJAbstractSyntaxTree ( ).getPathForRow ( 0 )
+              this.aSTUI.getJTreeAbstractSyntaxTree ( ).getPathForRow ( 0 )
                   .pathByAddingChild ( selectedNode.getChildAt ( 0 ) ) ) ;
       this.aSTUI.getJMenuItemExpand ( ).setEnabled ( ! allChildrenVisible ) ;
       this.aSTUI.getJButtonExpand ( ).setEnabled ( ! allChildrenVisible ) ;

@@ -19,17 +19,38 @@ import de.unisiegen.tpml.ui.abstractsyntaxtree.ASTNode ;
 import de.unisiegen.tpml.ui.abstractsyntaxtree.ASTUI ;
 
 
+/**
+ * TODO
+ * 
+ * @author Christian Fehler
+ * @version $Rev$
+ */
 public class ASTTreeSelectionListener implements TreeSelectionListener
 {
+  /**
+   * TODO
+   */
   private ASTUI aSTUI ;
 
 
+  /**
+   * TODO
+   * 
+   * @param pASTUI
+   */
   public ASTTreeSelectionListener ( ASTUI pASTUI )
   {
     this.aSTUI = pASTUI ;
   }
 
 
+  /**
+   * TODO
+   * 
+   * @param pParent
+   * @param pChild
+   * @return TODO
+   */
   private int childIndex ( DefaultMutableTreeNode pParent ,
       DefaultMutableTreeNode pChild )
   {
@@ -44,6 +65,11 @@ public class ASTTreeSelectionListener implements TreeSelectionListener
   }
 
 
+  /**
+   * TODO
+   * 
+   * @param pNode
+   */
   private void repaint ( DefaultMutableTreeNode pNode )
   {
     this.aSTUI.nodeChanged ( pNode ) ;
@@ -54,6 +80,11 @@ public class ASTTreeSelectionListener implements TreeSelectionListener
   }
 
 
+  /**
+   * TODO
+   * 
+   * @param pNode
+   */
   private void reset ( DefaultMutableTreeNode pNode )
   {
     ASTNode aSTNode = ( ASTNode ) pNode.getUserObject ( ) ;
@@ -66,6 +97,11 @@ public class ASTTreeSelectionListener implements TreeSelectionListener
   }
 
 
+  /**
+   * TODO
+   * 
+   * @param pTreePath
+   */
   public void update ( TreePath pTreePath )
   {
     if ( pTreePath == null )
@@ -150,6 +186,12 @@ public class ASTTreeSelectionListener implements TreeSelectionListener
   }
 
 
+  /**
+   * TODO
+   * 
+   * @param pTreeSelectionEvent
+   * @see javax.swing.event.TreeSelectionListener#valueChanged(javax.swing.event.TreeSelectionEvent)
+   */
   public void valueChanged ( TreeSelectionEvent pTreeSelectionEvent )
   {
     update ( pTreeSelectionEvent.getPath ( ) ) ;

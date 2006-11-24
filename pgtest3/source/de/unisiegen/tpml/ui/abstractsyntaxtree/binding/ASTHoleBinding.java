@@ -15,17 +15,37 @@ import de.unisiegen.tpml.core.expressions.Recursion ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation ;
 
 
+/**
+ * TODO
+ * 
+ * @author Christian Fehler
+ * @version $Rev$
+ */
 public class ASTHoleBinding
 {
+  /**
+   * TODO
+   */
   private Expression expression ;
 
 
+  /**
+   * TODO
+   */
   private LinkedList < ASTBinding > list ;
 
 
+  /**
+   * TODO
+   */
   private LinkedList < ASTPair > listASTPair ;
 
 
+  /**
+   * TODO
+   * 
+   * @param pExpression
+   */
   public ASTHoleBinding ( Expression pExpression )
   {
     this.expression = pExpression ;
@@ -34,6 +54,12 @@ public class ASTHoleBinding
   }
 
 
+  /**
+   * TODO
+   * 
+   * @param pList
+   * @param pExpression
+   */
   private void calculateList ( LinkedList < ASTBinding > pList ,
       Expression pExpression )
   {
@@ -152,6 +178,9 @@ public class ASTHoleBinding
   }
 
 
+  /**
+   * TODO
+   */
   private void calculate ( )
   {
     this.list = new LinkedList < ASTBinding > ( ) ;
@@ -334,6 +363,12 @@ public class ASTHoleBinding
   }
 
 
+  /**
+   * TODO
+   * 
+   * @param pASTPair
+   * @return TODO
+   */
   private boolean isNewIdentifier ( ASTPair pASTPair )
   {
     for ( int i = 0 ; i < this.listASTPair.size ( ) ; i ++ )
@@ -347,6 +382,12 @@ public class ASTHoleBinding
   }
 
 
+  /**
+   * TODO
+   * 
+   * @param pIdentifier
+   * @param pBinding
+   */
   private void addNewBinding ( ASTPair pIdentifier , ASTPair pBinding )
   {
     for ( int i = 0 ; i < this.listASTPair.size ( ) ; i ++ )
@@ -360,6 +401,11 @@ public class ASTHoleBinding
   }
 
 
+  /**
+   * TODO
+   * 
+   * @return TODO
+   */
   public LinkedList < ASTPair > getASTPairs ( )
   {
     return this.listASTPair ;

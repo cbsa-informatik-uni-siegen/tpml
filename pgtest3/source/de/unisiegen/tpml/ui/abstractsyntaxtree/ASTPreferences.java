@@ -4,38 +4,53 @@ package de.unisiegen.tpml.ui.abstractsyntaxtree ;
 import java.util.prefs.Preferences ;
 
 
+/**
+ * TODO
+ * 
+ * @author Christian Fehler
+ * @version $Rev$
+ */
 public class ASTPreferences
 {
+  /**
+   * TODO
+   */
   private boolean replace ;
 
 
-  private boolean bindings ;
+  /**
+   * TODO
+   */
+  private boolean binding ;
 
 
-  private boolean selected ;
-  
-  
+  /**
+   * TODO
+   */
+  private boolean selection ;
+
+
+  /**
+   * TODO
+   */
   private boolean autoUpdate ;
 
 
+  /**
+   * TODO
+   */
   private Preferences preferences ;
 
 
-  private int width ;
-
-
-  private int height ;
-
-
-  private int positionX ;
-
-
-  private int positionY ;
-
-
+  /**
+   * TODO
+   */
   private int dividerLocation ;
 
 
+  /**
+   * TODO
+   */
   public ASTPreferences ( )
   {
     this.preferences = Preferences
@@ -44,60 +59,66 @@ public class ASTPreferences
   }
 
 
+  /**
+   * TODO
+   * 
+   * @return TODO
+   */
   public int getDividerLocation ( )
   {
     return this.dividerLocation ;
   }
 
 
-  public int getHeight ( )
-  {
-    return this.height ;
-  }
-
-
-  public int getPositionX ( )
-  {
-    return this.positionX ;
-  }
-
-
-  public int getPositionY ( )
-  {
-    return this.positionY ;
-  }
-
-
-  public int getWidth ( )
-  {
-    return this.width ;
-  }
-
-
+  /**
+   * TODO
+   * 
+   * @return TODO
+   */
   public boolean isAutoUpdate ( )
   {
     return this.autoUpdate ;
   }
 
 
-  public boolean isBindings ( )
+  /**
+   * TODO
+   * 
+   * @return TODO
+   */
+  public boolean isBinding ( )
   {
-    return this.bindings ;
+    return this.binding ;
   }
 
 
+  /**
+   * TODO
+   * 
+   * @return TODO
+   */
   public boolean isReplace ( )
   {
     return this.replace ;
   }
 
 
-  public boolean isSelected ( )
+  /**
+   * TODO
+   * 
+   * @return TODO
+   */
+  public boolean isSelection ( )
   {
-    return this.selected ;
+    return this.selection ;
   }
 
 
+  /**
+   * TODO
+   * 
+   * @param pAutoupdate
+   */
   public void setAutoUpdate ( boolean pAutoupdate )
   {
     this.autoUpdate = pAutoupdate ;
@@ -105,13 +126,23 @@ public class ASTPreferences
   }
 
 
-  public void setBindings ( boolean pBindings )
+  /**
+   * TODO
+   * 
+   * @param pBinding
+   */
+  public void setBinding ( boolean pBinding )
   {
-    this.bindings = pBindings ;
-    this.preferences.putBoolean ( "bindings" , pBindings ) ;
+    this.binding = pBinding ;
+    this.preferences.putBoolean ( "bindings" , pBinding ) ;
   }
 
 
+  /**
+   * TODO
+   * 
+   * @param pDividerLocation
+   */
   public void setDividerLocation ( int pDividerLocation )
   {
     this.dividerLocation = pDividerLocation ;
@@ -119,27 +150,11 @@ public class ASTPreferences
   }
 
 
-  public void setHeight ( int pHeight )
-  {
-    this.height = pHeight ;
-    this.preferences.putInt ( "jFrameHeight" , pHeight ) ;
-  }
-
-
-  public void setPositionX ( int pPositionX )
-  {
-    this.positionX = pPositionX ;
-    this.preferences.putInt ( "jFramePositionX" , pPositionX ) ;
-  }
-
-
-  public void setPositionY ( int pPositionY )
-  {
-    this.positionY = pPositionY ;
-    this.preferences.putInt ( "jFramePositionY" , pPositionY ) ;
-  }
-
-
+  /**
+   * TODO
+   * 
+   * @param pReplace
+   */
   public void setReplace ( boolean pReplace )
   {
     this.replace = pReplace ;
@@ -147,33 +162,30 @@ public class ASTPreferences
   }
 
 
-  public void setSelected ( boolean pSelected )
+  /**
+   * TODO
+   * 
+   * @param pSelection
+   */
+  public void setSelection ( boolean pSelection )
   {
-    this.selected = pSelected ;
-    this.preferences.putBoolean ( "selected" , pSelected ) ;
+    this.selection = pSelection ;
+    this.preferences.putBoolean ( "selected" , pSelection ) ;
   }
 
 
-  public void setWidth ( int pWidth )
-  {
-    this.width = pWidth ;
-    this.preferences.putInt ( "jFrameWidth" , pWidth ) ;
-  }
-
-
+  /**
+   * TODO
+   */
   public void updatePreferences ( )
   {
     this.replace = this.preferences.getBoolean ( "replace" , true ) ;
-    this.bindings = this.preferences.getBoolean ( "bindings" , true ) ;
-    this.selected = this.preferences.getBoolean ( "selected" , true ) ;
+    this.binding = this.preferences.getBoolean ( "bindings" , true ) ;
+    this.selection = this.preferences.getBoolean ( "selected" , true ) ;
     this.autoUpdate = this.preferences.getBoolean ( "autoupdate" , true ) ;
     ASTNode.setReplace ( this.replace ) ;
-    ASTNode.setBinding ( this.bindings ) ;
-    ASTNode.setSelection ( this.selected ) ;
-    this.width = this.preferences.getInt ( "jFrameWidth" , 600 ) ;
-    this.height = this.preferences.getInt ( "jFrameHeight" , 450 ) ;
-    this.positionX = this.preferences.getInt ( "jFramePositionX" , 100 ) ;
-    this.positionY = this.preferences.getInt ( "jFramePositionY" , 100 ) ;
+    ASTNode.setBinding ( this.binding ) ;
+    ASTNode.setSelection ( this.selection ) ;
     this.dividerLocation = this.preferences.getInt ( "dividerLocation" , 300 ) ;
   }
 }

@@ -55,9 +55,15 @@ public class SmallStepView extends AbstractProofView
   protected JScrollPane scrollPane ;
 
 
+  /**
+   * TODO
+   */
   protected JSplitPane jSplitPane ;
 
 
+  /**
+   * TODO
+   */
   private AbstractSyntaxTree abstractSyntaxTree ;
 
 
@@ -119,6 +125,11 @@ public class SmallStepView extends AbstractProofView
   }
 
 
+  /**
+   * TODO
+   * 
+   * @return TODO
+   */
   public AbstractSyntaxTree getAbstractSyntaxTree ( )
   {
     return this.abstractSyntaxTree ;

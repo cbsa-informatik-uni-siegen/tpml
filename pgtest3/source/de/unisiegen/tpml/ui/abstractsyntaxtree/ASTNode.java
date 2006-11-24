@@ -14,83 +14,166 @@ import de.unisiegen.tpml.ui.abstractsyntaxtree.binding.ASTBinding ;
 import de.unisiegen.tpml.ui.abstractsyntaxtree.binding.ASTPair ;
 
 
+/**
+ * TODO
+ * 
+ * @author Christian Fehler
+ * @version $Rev$
+ */
 public class ASTNode
 {
+  /**
+   * TODO
+   */
   public static final int NO_BINDING = - 1 ;
 
 
+  /**
+   * TODO
+   */
   public static final int NO_SELECTION = - 1 ;
 
 
+  /**
+   * TODO
+   */
   private static final String BEFORE_DESCRIPTION = "" ;
 
 
+  /**
+   * TODO
+   */
   private static final String AFTER_DESCRIPTION = "" ;
 
 
+  /**
+   * TODO
+   */
   private static final String BETWEEN = "&nbsp;&nbsp;&nbsp;&nbsp;" ;
 
 
-  private static final String BEFOR_NAME = "[&nbsp;" ;
+  /**
+   * TODO
+   */
+  private static final String BEFORE_NAME = "[&nbsp;" ;
 
 
+  /**
+   * TODO
+   */
   private static final String AFTER_NAME = "&nbsp;]" ;
 
 
+  /**
+   * TODO
+   */
   private static final String REPLACE_STRING = "..." ;
 
 
+  /**
+   * TODO
+   */
   private static boolean selection = true ;
 
 
+  /**
+   * TODO
+   */
   private static boolean replace = true ;
 
 
+  /**
+   * TODO
+   */
   private static boolean binding = true ;
 
 
+  /**
+   * TODO
+   * 
+   * @param pBinding
+   */
   public static void setBinding ( boolean pBinding )
   {
     binding = pBinding ;
   }
 
 
+  /**
+   * TODO
+   * 
+   * @param pReplace
+   */
   public static void setReplace ( boolean pReplace )
   {
     replace = pReplace ;
   }
 
 
+  /**
+   * TODO
+   * 
+   * @param pSelection
+   */
   public static void setSelection ( boolean pSelection )
   {
     selection = pSelection ;
   }
 
 
+  /**
+   * TODO
+   */
   private boolean replaceInThisNode ;
 
 
+  /**
+   * TODO
+   */
   private String description ;
 
 
+  /**
+   * TODO
+   */
   private String expressionString ;
 
 
+  /**
+   * TODO
+   */
   private String caption ;
 
 
+  /**
+   * TODO
+   */
   private Expression expression ;
 
 
+  /**
+   * TODO
+   */
   private ASTBinding aSTBinding ;
 
 
+  /**
+   * TODO
+   */
   private ASTPair aSTPair ;
 
 
+  /**
+   * TODO
+   */
   private ResourceBundle resourceBundle ;
 
 
+  /**
+   * TODO
+   * 
+   * @param pExpression
+   */
   public ASTNode ( Expression pExpression )
   {
     // Preferences
@@ -116,6 +199,14 @@ public class ASTNode
   }
 
 
+  /**
+   * TODO
+   * 
+   * @param pDescription
+   * @param pExpressionString
+   * @param pASTPair
+   * @param pASTBindings
+   */
   public ASTNode ( String pDescription , String pExpressionString ,
       ASTPair pASTPair , ASTBinding pASTBindings )
   {
@@ -141,12 +232,20 @@ public class ASTNode
   }
 
 
+  /**
+   * TODO
+   * 
+   * @param pDescription
+   */
   public void appendDescription ( String pDescription )
   {
     this.description = pDescription + this.description ;
   }
 
 
+  /**
+   * TODO
+   */
   public void enableSelectedColor ( )
   {
     if ( this.expression == null )
@@ -156,7 +255,7 @@ public class ASTNode
       result.append ( this.description ) ;
       result.append ( AFTER_DESCRIPTION ) ;
       result.append ( BETWEEN ) ;
-      result.append ( BEFOR_NAME ) ;
+      result.append ( BEFORE_NAME ) ;
       result.append ( "<font color=\"#"
           + getHex ( Theme.currentTheme ( ).getExpressionColor ( ) ) + "\">" ) ;
       if ( selection )
@@ -182,24 +281,45 @@ public class ASTNode
   }
 
 
+  /**
+   * TODO
+   * 
+   * @return TODO
+   */
   public ASTBinding getASTBinding ( )
   {
     return this.aSTBinding ;
   }
 
 
+  /**
+   * TODO
+   * 
+   * @return TODO
+   */
   public ASTPair getASTPair ( )
   {
     return this.aSTPair ;
   }
 
 
+  /**
+   * TODO
+   * 
+   * @return TODO
+   */
   public Expression getExpression ( )
   {
     return this.expression ;
   }
 
 
+  /**
+   * TODO
+   * 
+   * @param pColor
+   * @return TODO
+   */
   private String getHex ( Color pColor )
   {
     return ( getHex ( pColor.getRed ( ) ) + getHex ( pColor.getGreen ( ) ) + getHex ( pColor
@@ -207,6 +327,12 @@ public class ASTNode
   }
 
 
+  /**
+   * TODO
+   * 
+   * @param pNumber
+   * @return TODO
+   */
   private String getHex ( int pNumber )
   {
     String result = "" ;
@@ -232,6 +358,13 @@ public class ASTNode
   }
 
 
+  /**
+   * TODO
+   * 
+   * @param pBindingIndex
+   * @param pCharIndex
+   * @return TODO
+   */
   private boolean isBinding ( int pBindingIndex , int pCharIndex )
   {
     if ( ( this.aSTBinding == null ) || ( pBindingIndex < 0 )
@@ -254,6 +387,12 @@ public class ASTNode
   }
 
 
+  /**
+   * TODO
+   * 
+   * @param pCharIndex
+   * @return TODO
+   */
   @ SuppressWarnings ( "unused" )
   private boolean isNoBinding ( int pCharIndex )
   {
@@ -276,6 +415,9 @@ public class ASTNode
   }
 
 
+  /**
+   * TODO
+   */
   public void resetCaption ( )
   {
     if ( this.expression == null )
@@ -285,7 +427,7 @@ public class ASTNode
       result.append ( this.description ) ;
       result.append ( AFTER_DESCRIPTION ) ;
       result.append ( BETWEEN ) ;
-      result.append ( BEFOR_NAME ) ;
+      result.append ( BEFORE_NAME ) ;
       result.append ( "<font color=\"#"
           + getHex ( Theme.currentTheme ( ).getExpressionColor ( ) ) + "\">" ) ;
       result.append ( this.expressionString ) ;
@@ -302,18 +444,33 @@ public class ASTNode
   }
 
 
+  /**
+   * TODO
+   * 
+   * @param pASTBinding
+   */
   public void setASTBinding ( ASTBinding pASTBinding )
   {
     this.aSTBinding = pASTBinding ;
   }
 
 
-  public void setReplaceInThisNode ( boolean pReplaceExpression )
+  /**
+   * TODO
+   * 
+   * @param pReplaceInThisNode
+   */
+  public void setReplaceInThisNode ( boolean pReplaceInThisNode )
   {
-    this.replaceInThisNode = pReplaceExpression ;
+    this.replaceInThisNode = pReplaceInThisNode ;
   }
 
 
+  /**
+   * TODO
+   * 
+   * @see java.lang.Object#toString()
+   */
   @ Override
   public String toString ( )
   {
@@ -321,6 +478,13 @@ public class ASTNode
   }
 
 
+  /**
+   * TODO
+   * 
+   * @param pSelectionStart
+   * @param pSelectionEnd
+   * @param pBindingIndex
+   */
   public void updateCaption ( int pSelectionStart , int pSelectionEnd ,
       int pBindingIndex )
   {
@@ -339,7 +503,7 @@ public class ASTNode
     result.append ( this.description ) ;
     result.append ( AFTER_DESCRIPTION ) ;
     result.append ( BETWEEN ) ;
-    result.append ( BEFOR_NAME ) ;
+    result.append ( BEFORE_NAME ) ;
     result.append ( "<font color=\"#" + expressionColor + "\">" ) ;
     prettyCharIterator.first ( ) ;
     int charIndex = 0 ;
@@ -420,6 +584,7 @@ public class ASTNode
         }
         result.append ( "</font></b>" ) ;
       }
+      // Maybe later for highlighting unbound Indentifiers
       /*
        * else if ( ( this.aSTBinding != null ) && (
        * this.aSTBinding.getNoBindingSize ( ) > 0 ) && ( isNoBinding ( charIndex ) ) ) {

@@ -34,18 +34,35 @@ public class TypeCheckerView extends AbstractProofView
   private static final long serialVersionUID = - 425214200136389228L ;
 
 
+  /**
+   * TODO
+   */
   protected TypeCheckerComponent component ;
 
 
+  /**
+   * TODO
+   */
   protected JScrollPane scrollPane ;
 
 
+  /**
+   * TODO
+   */
   private JSplitPane jSplitPane ;
 
 
+  /**
+   * TODO
+   */
   private AbstractSyntaxTree abstractSyntaxTree ;
 
 
+  /**
+   * TODO
+   * 
+   * @param model
+   */
   public TypeCheckerView ( TypeCheckerProofModel model )
   {
     super ( ) ;
@@ -108,12 +125,24 @@ public class TypeCheckerView extends AbstractProofView
   }
 
 
+  /**
+   * TODO
+   * 
+   * @return TODO
+   */
   public AbstractSyntaxTree getAbstractSyntaxTree ( )
   {
     return this.abstractSyntaxTree ;
   }
 
 
+  /**
+   * TODO
+   * 
+   * @throws IllegalStateException
+   * @throws ProofGuessException
+   * @see de.unisiegen.tpml.graphics.ProofView#guess()
+   */
   public void guess ( ) throws IllegalStateException , ProofGuessException
   {
     this.component.guess ( ) ;
