@@ -83,32 +83,35 @@ public class ASTMouseListener implements MouseListener
     }
     else if ( pMouseEvent.getSource ( ) instanceof CompoundExpression )
     {
-      if ( this.compoundExpression.getParent ( ).getParent ( ).getParent ( )
-          .getParent ( ).getParent ( ).getParent ( ) instanceof SmallStepView )
+      if ( pMouseEvent.getButton ( ) == MouseEvent.BUTTON1 )
       {
-        SmallStepView view = ( SmallStepView ) this.compoundExpression
-            .getParent ( ).getParent ( ).getParent ( ).getParent ( )
-            .getParent ( ).getParent ( ) ;
-        view.getAbstractSyntaxTree ( ).setExpression (
-            this.compoundExpression.getExpression ( ) , "mouse_smallstep" ) ;
-      }
-      else if ( this.compoundExpression.getParent ( ).getParent ( )
-          .getParent ( ).getParent ( ).getParent ( ).getParent ( ) instanceof BigStepView )
-      {
-        BigStepView view = ( BigStepView ) this.compoundExpression.getParent ( )
-            .getParent ( ).getParent ( ).getParent ( ).getParent ( )
-            .getParent ( ) ;
-        view.getAbstractSyntaxTree ( ).setExpression (
-            this.compoundExpression.getExpression ( ) , "mouse_bigstep" ) ;
-      }
-      else if ( this.compoundExpression.getParent ( ).getParent ( )
-          .getParent ( ).getParent ( ).getParent ( ).getParent ( ) instanceof TypeCheckerView )
-      {
-        TypeCheckerView view = ( TypeCheckerView ) this.compoundExpression
-            .getParent ( ).getParent ( ).getParent ( ).getParent ( )
-            .getParent ( ).getParent ( ) ;
-        view.getAbstractSyntaxTree ( ).setExpression (
-            this.compoundExpression.getExpression ( ) , "mouse_typechecker" ) ;
+        if ( this.compoundExpression.getParent ( ).getParent ( ).getParent ( )
+            .getParent ( ).getParent ( ).getParent ( ) instanceof SmallStepView )
+        {
+          SmallStepView view = ( SmallStepView ) this.compoundExpression
+              .getParent ( ).getParent ( ).getParent ( ).getParent ( )
+              .getParent ( ).getParent ( ) ;
+          view.getAbstractSyntaxTree ( ).setExpression (
+              this.compoundExpression.getExpression ( ) , "mouse_smallstep" ) ;
+        }
+        else if ( this.compoundExpression.getParent ( ).getParent ( )
+            .getParent ( ).getParent ( ).getParent ( ).getParent ( ) instanceof BigStepView )
+        {
+          BigStepView view = ( BigStepView ) this.compoundExpression
+              .getParent ( ).getParent ( ).getParent ( ).getParent ( )
+              .getParent ( ).getParent ( ) ;
+          view.getAbstractSyntaxTree ( ).setExpression (
+              this.compoundExpression.getExpression ( ) , "mouse_bigstep" ) ;
+        }
+        else if ( this.compoundExpression.getParent ( ).getParent ( )
+            .getParent ( ).getParent ( ).getParent ( ).getParent ( ) instanceof TypeCheckerView )
+        {
+          TypeCheckerView view = ( TypeCheckerView ) this.compoundExpression
+              .getParent ( ).getParent ( ).getParent ( ).getParent ( )
+              .getParent ( ).getParent ( ) ;
+          view.getAbstractSyntaxTree ( ).setExpression (
+              this.compoundExpression.getExpression ( ) , "mouse_typechecker" ) ;
+        }
       }
     }
   }
