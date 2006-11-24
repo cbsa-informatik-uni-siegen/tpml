@@ -15,7 +15,7 @@ public class ToListenForMouseContainer
 	private int [] hereIam;
 	
 	private boolean mark;
-	private boolean mark1;
+	private int markCount;
 	
 	private int rightList;
 	
@@ -93,15 +93,15 @@ public class ToListenForMouseContainer
 		if ( b == false )
 		{
 			mark = b;
-			mark1 = b;
+			markCount = 0;
 		}
 		
-		if (mark1 == b == true) {
+		if ((markCount >= 5) && (b == true)) {
 			mark = b;
 		}
 		else
 		{
-			mark1 = b;
+			markCount++;
 		}
 		
 	}
