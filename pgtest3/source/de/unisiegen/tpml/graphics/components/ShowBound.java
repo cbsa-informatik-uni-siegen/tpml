@@ -173,7 +173,7 @@ public class ShowBound
 		// von lambda
 		
 		Object[] b = let.getE2().free().toArray();
-		Object[] c = let.free().toArray();
+		Object[] c = new Object[0];//let.free().toArray();
 		
 		if (false)
 
