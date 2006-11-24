@@ -423,7 +423,7 @@ public class ASTUI
         .createLineBorder ( Color.black , 1 ) , "" ,
         TitledBorder.DEFAULT_JUSTIFICATION , TitledBorder.TOP , new Font (
             "SansSerif" , Font.PLAIN , 12 ) ) ) ;
-    // CheckBox Selected
+    // CheckBox Selection
     this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
     insets.set ( 0 , 4 , 0 , 4 ) ;
     this.gridBagConstraints.insets = insets ;
@@ -435,7 +435,7 @@ public class ASTUI
         this.gridBagConstraints ) ;
     // CheckBox Bindings
     this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
-    //insets.set ( 4 , 4 , 4 , 4 ) ;
+    // insets.set ( 4 , 4 , 4 , 4 ) ;
     this.gridBagConstraints.insets = insets ;
     this.gridBagConstraints.gridx = 1 ;
     this.gridBagConstraints.gridy = 0 ;
@@ -445,7 +445,7 @@ public class ASTUI
         this.gridBagConstraints ) ;
     // CheckBox Replace
     this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
-    //insets.set ( 4 , 4 , 4 , 4 ) ;
+    // insets.set ( 4 , 4 , 4 , 4 ) ;
     this.gridBagConstraints.insets = insets ;
     this.gridBagConstraints.gridx = 2 ;
     this.gridBagConstraints.gridy = 0 ;
@@ -455,11 +455,11 @@ public class ASTUI
         this.gridBagConstraints ) ;
     // CheckBox AutoUpdate
     this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
-    //insets.set ( 4 , 4 , 4 , 4 ) ;
+    // insets.set ( 4 , 4 , 4 , 4 ) ;
     this.gridBagConstraints.insets = insets ;
     this.gridBagConstraints.gridx = 3 ;
     this.gridBagConstraints.gridy = 0 ;
-    this.gridBagConstraints.weightx = 0 ;
+    this.gridBagConstraints.weightx = 10 ;
     this.gridBagConstraints.weighty = 10 ;
     this.jPanelPreferences.add ( this.jCheckBoxAutoUpdate ,
         this.gridBagConstraints ) ;
