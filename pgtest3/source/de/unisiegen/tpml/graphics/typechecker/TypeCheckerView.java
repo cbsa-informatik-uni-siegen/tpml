@@ -50,6 +50,10 @@ public class TypeCheckerView extends AbstractProofView
   {
     super ( ) ;
     this.abstractSyntaxTree = new AbstractSyntaxTree ( ) ;
+    this.abstractSyntaxTree.getASTUI ( ).getJCheckBoxAutoUpdate ( ).setEnabled (
+        false ) ;
+    this.abstractSyntaxTree.getASTUI ( ).getJMenuItemAutoUpdate ( ).setEnabled (
+        false ) ;
     this.abstractSyntaxTree.setExpression ( model.getRoot ( ).getLastLeaf ( )
         .getExpression ( ) , "first_typechecker" ) ;
     model.addTreeModelListener ( new ASTTreeModelListener (

@@ -50,6 +50,10 @@ public class BigStepView extends AbstractProofView
   {
     super ( ) ;
     this.abstractSyntaxTree = new AbstractSyntaxTree ( ) ;
+    this.abstractSyntaxTree.getASTUI ( ).getJCheckBoxAutoUpdate ( ).setEnabled (
+        false ) ;
+    this.abstractSyntaxTree.getASTUI ( ).getJMenuItemAutoUpdate ( ).setEnabled (
+        false ) ;
     this.abstractSyntaxTree.setExpression ( model.getRoot ( ).getLastLeaf ( )
         .getExpression ( ) , "first_bigstep" ) ;
     model.addTreeModelListener ( new ASTTreeModelListener (
