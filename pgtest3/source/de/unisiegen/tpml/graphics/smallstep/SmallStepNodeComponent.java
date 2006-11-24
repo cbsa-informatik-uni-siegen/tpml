@@ -3,6 +3,7 @@ package de.unisiegen.tpml.graphics.smallstep;
 import de.unisiegen.tpml.Debug;
 import de.unisiegen.tpml.graphics.components.CompoundExpression;
 
+import java.awt.AWTEvent;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
@@ -236,7 +237,7 @@ public class SmallStepNodeComponent extends JComponent {
 		
 		this.translateItem = new MenuTranslateItem();
 		
-	
+	  enableEvents ( AWTEvent.MOUSE_EVENT_MASK );
 		
 		this.rules.getMenuButton().addMenuButtonListener(new MenuButtonListener () {
 			public void menuClosed (MenuButton source) { }
@@ -363,7 +364,48 @@ public class SmallStepNodeComponent extends JComponent {
 	}
 
 	// WORKAROUND: START
-	@Override
+  @Override
+  protected void processMouseEvent(MouseEvent e)
+  {
+    // let this component handle the event first
+    super.processMouseEvent(e);
+    
+    try {
+      // check if we have a next SmallStepProofNode
+      ProofNode node = this.proofNode.getChildAt(0);
+      
+      // determine the SmallStepNodeComponent for the next proof node
+      SmallStepNodeComponent nextComponent = 
+        (SmallStepNodeComponent)node.getUserObject();
+      if (nextComponent != null) {
+        // translate x/y to world coordinates
+        int x = e.getX() + getX();
+        int y = e.getY() + getY();
+        
+        // translate x/y to nextComponent coordinates
+        x -= nextComponent.getX();
+        y -= nextComponent.getY();
+        
+        // check if we have a CompoundExpression at x/y
+        Component c = nextComponent.getComponentAt(x, y);
+        if (c != null) {
+          // translate and dispatch the event for the CompoundExpression
+          MouseEvent ne = new MouseEvent(c, e.getID(), e.getWhen(), e.getModifiers(), x - c.getX(), y - c.getY(), e.getClickCount(), e.isPopupTrigger(), e.getButton());
+          c.dispatchEvent(ne);
+        }
+      }
+    }
+    catch (ArrayIndexOutOfBoundsException exn) 
+    {
+      // ignore, no child then
+    }  
+  
+  }
+  
+  
+  
+  
+  @Override
 	protected void processMouseMotionEvent(MouseEvent e)
 	{
 		// let this component handle the event first
