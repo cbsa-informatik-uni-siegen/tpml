@@ -50,10 +50,23 @@ public class TypeCheckerView extends AbstractProofView
   {
     super ( ) ;
     this.abstractSyntaxTree = new AbstractSyntaxTree ( ) ;
+    // Disable AutoUpdate, remove Listener and deselect
     this.abstractSyntaxTree.getASTUI ( ).getJCheckBoxAutoUpdate ( ).setEnabled (
         false ) ;
+    this.abstractSyntaxTree.getASTUI ( ).getJCheckBoxAutoUpdate ( )
+        .removeItemListener (
+            this.abstractSyntaxTree.getASTUI ( ).getJCheckBoxAutoUpdate ( )
+                .getItemListeners ( ) [ 0 ] ) ;
+    this.abstractSyntaxTree.getASTUI ( ).getJCheckBoxAutoUpdate ( )
+        .setSelected ( false ) ;
     this.abstractSyntaxTree.getASTUI ( ).getJMenuItemAutoUpdate ( ).setEnabled (
         false ) ;
+    this.abstractSyntaxTree.getASTUI ( ).getJMenuItemAutoUpdate ( )
+        .removeActionListener (
+            this.abstractSyntaxTree.getASTUI ( ).getJMenuItemAutoUpdate ( )
+                .getActionListeners ( ) [ 0 ] ) ;
+    this.abstractSyntaxTree.getASTUI ( ).getJMenuItemAutoUpdate ( )
+        .setSelected ( false ) ;
     this.abstractSyntaxTree.setExpression ( model.getRoot ( ).getLastLeaf ( )
         .getExpression ( ) , "first_typechecker" ) ;
     model.addTreeModelListener ( new ASTTreeModelListener (
