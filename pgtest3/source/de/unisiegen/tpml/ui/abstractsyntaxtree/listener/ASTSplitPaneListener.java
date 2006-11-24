@@ -29,10 +29,10 @@ public class ASTSplitPaneListener implements PropertyChangeListener ,
   }
 
 
-  public void propertyChange ( PropertyChangeEvent pPropertyChangeEvent )
+  public void propertyChange ( @ SuppressWarnings ( "unused" )
+  PropertyChangeEvent pPropertyChangeEvent )
   {
-    if ( ( pPropertyChangeEvent.getPropertyName ( ).equals ( "advanced" ) )
-        && ( ! this.setDivider ) )
+    if ( ! this.setDivider )
     {
       this.setDivider = true ;
       this.jSplitPane.setDividerLocation ( this.abstractSyntaxTree
