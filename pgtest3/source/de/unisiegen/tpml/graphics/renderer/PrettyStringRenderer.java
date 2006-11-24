@@ -421,19 +421,19 @@ public class PrettyStringRenderer extends AbstractRenderer {
 			if (isIn(i, annotationsList))
 			{
 				//Dann werden sie in die Liste gepackt, wo später Mauslistener reagieren
-				try
-				{
-					Debug.out.println(toListenForMouse.getExpression().toPrettyString().toString(), "Feivel");
-				}
-				catch (NullPointerException e)
-				{
-					Debug.out.println("Hier gibt es keine Expression", "Feivel");
-				}
+				//try
+				//{
+				//	Debug.out.println(toListenForMouse.getExpression().toPrettyString().toString(), "Feivel");
+				//}
+				//catch (NullPointerException e)
+				//{
+				//	Debug.out.println("Hier gibt es keine Expression", "Feivel");
+				//}
 				
 				toListenForMouse.add(posX);
 				toListenForMouse.add(posX+charWidth);
-				toListenForMouse.add(posY);
-				toListenForMouse.add(posY+charHighth);
+				toListenForMouse.add(posY-fm.getAscent());
+				toListenForMouse.add(posY+fm.getDescent());
 				//TODO Testausgaben
 				//System.out.println("Der Buchstabe wird der Liste hinzugefügt: "+c);
 				//System.out.println("Der Buchstabe steht an Position : "+i);
