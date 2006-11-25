@@ -187,7 +187,7 @@ public class ASTNode
     catch ( MissingResourceException e )
     {
       Debug.err.println ( "MissingResourceException: "
-          + pExpression.getClass ( ).getSimpleName ( ) , "christian" ) ;
+          + pExpression.getClass ( ).getSimpleName ( ) , Debug.CHRISTIAN ) ;
       this.description = pExpression.getClass ( ).getSimpleName ( ) ;
     }
     this.expressionString = pExpression.toPrettyString ( ).toString ( ) ;
@@ -220,7 +220,7 @@ public class ASTNode
     catch ( MissingResourceException e )
     {
       Debug.err.println ( "MissingResourceException: " + pDescription ,
-          "christian" ) ;
+          Debug.CHRISTIAN ) ;
       this.description = pDescription ;
     }
     this.expressionString = pExpressionString ;
@@ -377,34 +377,6 @@ public class ASTNode
       PrettyAnnotation prettyAnnotation = this.expression
           .toPrettyString ( )
           .getAnnotationForPrintable ( this.aSTBinding.get ( pBindingIndex , i ) ) ;
-      if ( ( pCharIndex >= prettyAnnotation.getStartOffset ( ) )
-          && ( pCharIndex <= prettyAnnotation.getEndOffset ( ) ) )
-      {
-        return true ;
-      }
-    }
-    return false ;
-  }
-
-
-  /**
-   * TODO
-   * 
-   * @param pCharIndex
-   * @return TODO
-   */
-  @ SuppressWarnings ( "unused" )
-  private boolean isNoBinding ( int pCharIndex )
-  {
-    if ( ( this.aSTBinding == null )
-        || ( this.aSTBinding.getNoBindingSize ( ) == 0 ) )
-    {
-      return false ;
-    }
-    for ( int i = 0 ; i < this.aSTBinding.getNoBindingSize ( ) ; i ++ )
-    {
-      PrettyAnnotation prettyAnnotation = this.expression.toPrettyString ( )
-          .getAnnotationForPrintable ( this.aSTBinding.getNoBinding ( i ) ) ;
       if ( ( pCharIndex >= prettyAnnotation.getStartOffset ( ) )
           && ( pCharIndex <= prettyAnnotation.getEndOffset ( ) ) )
       {

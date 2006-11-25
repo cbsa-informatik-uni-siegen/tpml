@@ -3,8 +3,13 @@ package de.unisiegen.tpml.ui.abstractsyntaxtree.binding ;
 
 import java.util.Enumeration ;
 import java.util.LinkedList ;
+import de.unisiegen.tpml.core.expressions.CurriedLet ;
+import de.unisiegen.tpml.core.expressions.CurriedLetRec ;
 import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.expressions.Identifier ;
+import de.unisiegen.tpml.core.expressions.Let ;
+import de.unisiegen.tpml.core.expressions.LetRec ;
+import de.unisiegen.tpml.core.expressions.MultiLet ;
 
 
 /**
@@ -30,12 +35,6 @@ public class ASTBinding
   /**
    * TODO
    */
-  private LinkedList < Expression > noBinding ;
-
-
-  /**
-   * TODO
-   */
   private Expression holeExpression ;
 
 
@@ -48,7 +47,6 @@ public class ASTBinding
   {
     this.list = new LinkedList < LinkedList < Expression >> ( ) ;
     this.notFree = new LinkedList < Expression > ( ) ;
-    this.noBinding = new LinkedList < Expression > ( ) ;
     this.holeExpression = pHoleExpression ;
   }
 
@@ -65,7 +63,6 @@ public class ASTBinding
   {
     this.list = new LinkedList < LinkedList < Expression >> ( ) ;
     this.notFree = new LinkedList < Expression > ( ) ;
-    this.noBinding = new LinkedList < Expression > ( ) ;
     this.holeExpression = pHoleExpression ;
     add ( pExpression , pId ) ;
   }
@@ -83,7 +80,6 @@ public class ASTBinding
   {
     this.list = new LinkedList < LinkedList < Expression >> ( ) ;
     this.notFree = new LinkedList < Expression > ( ) ;
-    this.noBinding = new LinkedList < Expression > ( ) ;
     this.holeExpression = pHoleExpression ;
     add ( pExpression , pIdentifiers ) ;
   }
@@ -133,26 +129,100 @@ public class ASTBinding
         result.add ( pExpression ) ;
         return result ;
       }
-      this.noBinding.add ( pExpression ) ;
     }
-    Enumeration < Expression > children = pExpression.children ( ) ;
-    while ( children.hasMoreElements ( ) )
+    if ( ( pExpression instanceof CurriedLetRec )
+        && ( identifierIndex ( ( ( CurriedLetRec ) pExpression )
+            .getIdentifiers ( ) , pId ) >= 0 )
+        && ( ! pExpression.equals ( this.holeExpression ) ) )
     {
-      Expression current = children.nextElement ( ) ;
-      if ( ! current.free ( ).isEmpty ( ) )
+      int index = identifierIndex ( ( ( CurriedLetRec ) pExpression )
+          .getIdentifiers ( ) , pId ) ;
+      LinkedList < Expression > tmpList ;
+      if ( index == 0 )
       {
-        LinkedList < Expression > tmpList = free ( current , pId ) ;
-        for ( Expression tmpExpr : tmpList )
-        {
-          result.add ( tmpExpr ) ;
-        }
+        return result ;
+      }
+      tmpList = free ( ( ( CurriedLetRec ) pExpression ).getE2 ( ) , pId ) ;
+      for ( Expression tmpExpr : tmpList )
+      {
+        result.add ( tmpExpr ) ;
+      }
+      return result ;
+    }
+    else if ( ( pExpression instanceof CurriedLet )
+        && ( identifierIndex (
+            ( ( CurriedLet ) pExpression ).getIdentifiers ( ) , pId ) >= 0 )
+        && ( ! pExpression.equals ( this.holeExpression ) ) )
+    {
+      int index = identifierIndex ( ( ( CurriedLet ) pExpression )
+          .getIdentifiers ( ) , pId ) ;
+      LinkedList < Expression > tmpList ;
+      if ( index == 0 )
+      {
+        tmpList = free ( ( ( CurriedLet ) pExpression ).getE1 ( ) , pId ) ;
       }
       else
       {
-        this.notFree.add ( current ) ;
+        tmpList = free ( ( ( CurriedLet ) pExpression ).getE2 ( ) , pId ) ;
       }
+      for ( Expression tmpExpr : tmpList )
+      {
+        result.add ( tmpExpr ) ;
+      }
+      return result ;
     }
-    return result ;
+    else if ( ( pExpression instanceof MultiLet )
+        && ( identifierIndex ( ( ( MultiLet ) pExpression ).getIdentifiers ( ) ,
+            pId ) >= 0 ) && ( ! pExpression.equals ( this.holeExpression ) ) )
+    {
+      LinkedList < Expression > tmpList ;
+      tmpList = free ( ( ( MultiLet ) pExpression ).getE1 ( ) , pId ) ;
+      for ( Expression tmpExpr : tmpList )
+      {
+        result.add ( tmpExpr ) ;
+      }
+      return result ;
+    }
+    else if ( ( pExpression instanceof LetRec )
+        && ( ( ( LetRec ) pExpression ).getId ( ).equals ( pId ) )
+        && ( ! pExpression.equals ( this.holeExpression ) ) )
+    {
+      return result ;
+    }
+    else if ( ( pExpression instanceof Let )
+        && ( ( ( Let ) pExpression ).getId ( ).equals ( pId ) )
+        && ( ! pExpression.equals ( this.holeExpression ) ) )
+    {
+      LinkedList < Expression > tmpList ;
+      tmpList = free ( ( ( Let ) pExpression ).getE1 ( ) , pId ) ;
+      for ( Expression tmpExpr : tmpList )
+      {
+        result.add ( tmpExpr ) ;
+      }
+      return result ;
+    }
+    else
+    {
+      Enumeration < Expression > children = pExpression.children ( ) ;
+      while ( children.hasMoreElements ( ) )
+      {
+        Expression current = children.nextElement ( ) ;
+        if ( ! current.free ( ).isEmpty ( ) )
+        {
+          LinkedList < Expression > tmpList ;
+          tmpList = free ( current , pId ) ;
+          for ( Expression tmpExpr : tmpList )
+          {
+            result.add ( tmpExpr ) ;
+          }
+        }
+        else
+        {
+          this.notFree.add ( current ) ;
+        }
+      }
+      return result ;
+    }
   }
 
 
@@ -183,34 +253,31 @@ public class ASTBinding
   /**
    * TODO
    * 
-   * @param pIndex
-   * @return TODO
-   */
-  public Expression getNoBinding ( int pIndex )
-  {
-    return this.noBinding.get ( pIndex ) ;
-  }
-
-
-  /**
-   * TODO
-   * 
-   * @return TODO
-   */
-  public int getNoBindingSize ( )
-  {
-    return this.noBinding.size ( ) ;
-  }
-
-
-  /**
-   * TODO
-   * 
    * @return TODO
    */
   public LinkedList < Expression > getNotFree ( )
   {
     return this.notFree ;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @param pIdentifiers
+   * @param pId
+   * @return TODO
+   */
+  private int identifierIndex ( String [ ] pIdentifiers , String pId )
+  {
+    for ( int i = 0 ; i < pIdentifiers.length ; i ++ )
+    {
+      if ( pIdentifiers [ i ].equals ( pId ) )
+      {
+        return i ;
+      }
+    }
+    return - 1 ;
   }
 
 

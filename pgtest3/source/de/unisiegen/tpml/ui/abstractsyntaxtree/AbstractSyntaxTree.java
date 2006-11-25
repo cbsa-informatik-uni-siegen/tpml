@@ -28,7 +28,7 @@ import de.unisiegen.tpml.ui.abstractsyntaxtree.binding.ASTPair ;
  * TODO
  * 
  * @author Christian Fehler
- * @version $Rev: 753 $
+ * @version $Rev$
  */
 public class AbstractSyntaxTree
 {
@@ -526,10 +526,6 @@ public class AbstractSyntaxTree
    */
   public void setExpression ( Expression pExpression , String pDescription )
   {
-    if ( pExpression == null )
-    {
-      return ;
-    }
     if ( ( this.oldExpression != null )
         && ( pExpression.equals ( this.oldExpression ) ) )
     {
