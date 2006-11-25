@@ -28,12 +28,12 @@ public class Bound
 	private Expression expression;
 	
 	/**
-	 * List of Annotations with all Variables which are bound at the Identifier
+	 * List of Annotations with all Variables which are bound to the Identifier
 	 */
 	private LinkedList<PrettyAnnotation> marks = new LinkedList<PrettyAnnotation>();
 	
 	/**
-	 * List of Expressions with all Variables which are bound at the Identifier
+	 * List of Expressions with all Variables which are bound to the Identifier
 	 */
 	private LinkedList<Expression>expressions=new LinkedList<Expression>();
 	
