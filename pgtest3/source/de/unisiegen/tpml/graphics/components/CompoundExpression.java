@@ -112,7 +112,7 @@ public class CompoundExpression < S , E > extends JComponent
    * {@link AbstractRenderer} are ignored.
    */
   // TODO Kommentar erstellen
-  // private ShowBonds bound = new ShowBonds();
+  // private ShowBonds bonds = new ShowBonds();
   private ShowBonds bonds ;
 
 

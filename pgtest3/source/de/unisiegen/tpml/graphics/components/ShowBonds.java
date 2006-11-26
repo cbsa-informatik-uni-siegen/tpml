@@ -704,10 +704,10 @@ public class ShowBonds
 									 * bond to another identifier. It just makes sense if we have different
 									 * Identifiers with the same name in different expressions
 									 */
-									for (int y = 0; y < tmpBound.getMarks().size(); y++)
+									for (int y = 0; y < tmpBound2.getMarks().size(); y++)
 									{
 
-										if (mark2.getStartOffset() == tmpBound.getMark(y)
+										if (mark2.getStartOffset() == tmpBound2.getMark(y)
 												.getStartOffset())
 										{
 											inList = true;
@@ -930,6 +930,7 @@ public class ShowBonds
 	public void setHoleExpression(Expression pExpression)
 	{
 		holeExpression = pExpression;
+
 
 		result = new LinkedList<Bonds>();
 
