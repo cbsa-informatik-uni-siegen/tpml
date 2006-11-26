@@ -27,6 +27,7 @@ public class ToListenForMouseContainer
 	{
 		toListenForMouse = new Vector();
 		mark = false;
+		markCount = 0;
 		hereIam = new int [2];
 		hereIam[0] = 0;
 		hereIam[1] = 0;
@@ -90,13 +91,12 @@ public class ToListenForMouseContainer
 	
 	public void setMark(boolean b)
 	{
-		if ( b == false )
+		if (!b)
 		{
 			mark = b;
-			markCount = 0;
 		}
-		
-		if ((markCount >= 5) && (b == true)) {
+		else if (markCount >= 1)
+		{
 			mark = b;
 		}
 		else
