@@ -330,6 +330,7 @@ public class ShowBonds
 		 * Enumeration with all childs of the expression
 		 */
 		Enumeration tmpChild = pLet.children();
+		tmpChild.nextElement();
 		
 		/**
 		 * converting from Enumeration to Linked List for better handling
