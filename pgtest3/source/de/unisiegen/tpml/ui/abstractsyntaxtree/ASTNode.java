@@ -15,7 +15,7 @@ import de.unisiegen.tpml.ui.abstractsyntaxtree.binding.ASTPair ;
 
 
 /**
- * TODO
+ * This class represents the nodes in the AbstractSyntaxTree.
  * 
  * @author Christian Fehler
  * @version $Rev$
@@ -23,75 +23,76 @@ import de.unisiegen.tpml.ui.abstractsyntaxtree.binding.ASTPair ;
 public class ASTNode
 {
   /**
-   * TODO
+   * No bindings should be shown in the nodes.
    */
   public static final int NO_BINDING = - 1 ;
 
 
   /**
-   * TODO
+   * Expressions should not be shown in the nodes.
    */
   public static final int NO_SELECTION = - 1 ;
 
 
   /**
-   * TODO
+   * String, placed before the description in the nodes.
    */
   private static final String BEFORE_DESCRIPTION = "" ;
 
 
   /**
-   * TODO
+   * String, placed after the description in the nodes.
    */
   private static final String AFTER_DESCRIPTION = "" ;
 
 
   /**
-   * TODO
+   * String, placed between the description and the name in the nodes.
    */
   private static final String BETWEEN = "&nbsp;&nbsp;&nbsp;&nbsp;" ;
 
 
   /**
-   * TODO
+   * String, placed before the name in the nodes.
    */
   private static final String BEFORE_NAME = "[&nbsp;" ;
 
 
   /**
-   * TODO
+   * String, placed after the name in the nodes.
    */
   private static final String AFTER_NAME = "&nbsp;]" ;
 
 
   /**
-   * TODO
+   * String, placed when a expression should be replaced
    */
   private static final String REPLACE_STRING = "..." ;
 
 
   /**
-   * TODO
+   * The selected expression should be highlighted in higher nodes.
    */
   private static boolean selection = true ;
 
 
   /**
-   * TODO
+   * The selected expression should be replaced in higher nodes.
    */
   private static boolean replace = true ;
 
 
   /**
-   * TODO
+   * Selected identifier and bindings should be highlighted in higher nodes.
    */
   private static boolean binding = true ;
 
 
   /**
-   * TODO
+   * Sets the binding value. Selected identifier and bindings should be
+   * highlighted in higher nodes.
    * 
-   * @param pBinding
+   * @param pBinding Should be highlighted or should not be highlighted.
    */
   public static void setBinding ( boolean pBinding )
   {
@@ -100,9 +101,10 @@ public class ASTNode
 
 
   /**
-   * TODO
+   * Sets the replace value. The selected expression should be replaced in
+   * higher nodes.
    * 
-   * @param pReplace
+   * @param pReplace Should be replaced or should not be replaced.
    */
   public static void setReplace ( boolean pReplace )
   {
@@ -111,7 +113,8 @@ public class ASTNode
 
 
   /**
-   * TODO
+   * Sets the selection value. The selected expression should be highlighted in
+   * higher nodes.
    * 
    * @param pSelection
    */
@@ -122,61 +125,62 @@ public class ASTNode
 
 
   /**
-   * TODO
+   * The selected expression should be replaced in this node.
    */
   private boolean replaceInThisNode ;
 
 
   /**
-   * TODO
+   * The description of the node.
    */
   private String description ;
 
 
   /**
-   * TODO
+   * The expression as a string.
    */
   private String expressionString ;
 
 
   /**
-   * TODO
+   * The hole caption in html format.
    */
   private String caption ;
 
 
   /**
-   * TODO
+   * The expression repressented by this node.
    */
   private Expression expression ;
 
 
   /**
-   * TODO
+   * The bindings in this node.
    */
   private ASTBinding aSTBinding ;
 
 
   /**
-   * TODO
+   * The ASTPair which repressents the start and the end offset of Identifiers
+   * in the node.
    */
   private ASTPair aSTPair ;
 
 
   /**
-   * TODO
+   * The ResourceBundle, to set the description from the ast.properties.
    */
   private ResourceBundle resourceBundle ;
 
 
   /**
-   * TODO
+   * Initialies the values and loads the description.
    * 
-   * @param pExpression
+   * @param pExpression The expression repressented by this node.
    */
   public ASTNode ( Expression pExpression )
   {
-    // Preferences
+    // Load the description
     this.resourceBundle = ResourceBundle
         .getBundle ( "de/unisiegen/tpml/ui/abstractsyntaxtree/ast" ) ;
     try
@@ -190,6 +194,7 @@ public class ASTNode
           + pExpression.getClass ( ).getSimpleName ( ) , Debug.CHRISTIAN ) ;
       this.description = pExpression.getClass ( ).getSimpleName ( ) ;
     }
+    // Initialies the values
     this.expressionString = pExpression.toPrettyString ( ).toString ( ) ;
     this.expression = pExpression ;
     this.aSTPair = null ;
@@ -200,15 +205,16 @@ public class ASTNode
 
 
   /**
-   * TODO
+   * Initialies the values and loads the description.
    * 
-   * @param pDescription
-   * @param pExpressionString
-   * @param pASTPair
-   * @param pASTBindings
+   * @param pDescription The description of this node.
+   * @param pExpressionString The expression as a string.
+   * @param pASTPair The ASTPair which repressent the start and the end offset
+   *        of Identifiers in the node.
+   * @param pASTBinding The bindings in this node.
    */
   public ASTNode ( String pDescription , String pExpressionString ,
-      ASTPair pASTPair , ASTBinding pASTBindings )
+      ASTPair pASTPair , ASTBinding pASTBinding )
   {
     // Preferences
     this.resourceBundle = ResourceBundle
@@ -226,25 +232,26 @@ public class ASTNode
     this.expressionString = pExpressionString ;
     this.expression = null ;
     this.aSTPair = pASTPair ;
-    this.aSTBinding = pASTBindings ;
+    this.aSTBinding = pASTBinding ;
     this.replaceInThisNode = false ;
     resetCaption ( ) ;
   }
 
 
   /**
-   * TODO
+   * Insert a string before the current description.
    * 
-   * @param pDescription
+   * @param pAppendDescription The string which should be inserted before the
+   *        current description.
    */
-  public void appendDescription ( String pDescription )
+  public void appendDescription ( String pAppendDescription )
   {
-    this.description = pDescription + this.description ;
+    this.description = pAppendDescription + this.description ;
   }
 
 
   /**
-   * TODO
+   * Highlight the selected Identifier.
    */
   public void enableSelectedColor ( )
   {
@@ -257,11 +264,13 @@ public class ASTNode
       result.append ( BETWEEN ) ;
       result.append ( BEFORE_NAME ) ;
       result.append ( "<font color=\"#"
-          + getHex ( Theme.currentTheme ( ).getExpressionColor ( ) ) + "\">" ) ;
+          + getHTMLFormat ( Theme.currentTheme ( ).getExpressionColor ( ) )
+          + "\">" ) ;
       if ( selection )
       {
         result.append ( "<b><font color=\"#"
-            + getHex ( Theme.currentTheme ( ).getSelectionColor ( ) ) + "\">" ) ;
+            + getHTMLFormat ( Theme.currentTheme ( ).getSelectionColor ( ) )
+            + "\">" ) ;
       }
       result.append ( this.expressionString ) ;
       if ( selection )
@@ -282,9 +291,9 @@ public class ASTNode
 
 
   /**
-   * TODO
+   * Returns the binding in this node.
    * 
-   * @return TODO
+   * @return The binding in this node.
    */
   public ASTBinding getASTBinding ( )
   {
@@ -293,9 +302,10 @@ public class ASTNode
 
 
   /**
-   * TODO
+   * Returns the ASTPair which repressents the start and the end offset of
+   * Identifiers in the node.
    * 
-   * @return TODO
+   * @return The ASTPair in this node.
    */
   public ASTPair getASTPair ( )
   {
@@ -304,9 +314,9 @@ public class ASTNode
 
 
   /**
-   * TODO
+   * Returns the expression repressented by this node.
    * 
-   * @return TODO
+   * @return The expression in this node.
    */
   public Expression getExpression ( )
   {
@@ -315,12 +325,12 @@ public class ASTNode
 
 
   /**
-   * TODO
+   * Returns the color in HTML formatting.
    * 
-   * @param pColor
-   * @return TODO
+   * @param pColor The Color which should be returned.
+   * @return The color in HTML formatting.
    */
-  private String getHex ( Color pColor )
+  private String getHTMLFormat ( Color pColor )
   {
     return ( getHex ( pColor.getRed ( ) ) + getHex ( pColor.getGreen ( ) ) + getHex ( pColor
         .getBlue ( ) ) ) ;
@@ -328,10 +338,10 @@ public class ASTNode
 
 
   /**
-   * TODO
+   * Returns the hex value of a given integer.
    * 
-   * @param pNumber
-   * @return TODO
+   * @param pNumber The input integer value.
+   * @return The hex value of a given integer.
    */
   private String getHex ( int pNumber )
   {
@@ -359,24 +369,28 @@ public class ASTNode
 
 
   /**
-   * TODO
+   * This method returns true if a given pCharIndex should be highlighted as a
+   * binding. The pIdentifierIndex indicates in which list the pCharIndex should
+   * be searched for. This is only used if an Expression has more than one
+   * Identifier like MultiLet.
    * 
-   * @param pBindingIndex
-   * @param pCharIndex
-   * @return TODO
+   * @param pIdentifierIndex The Identifier index in the expression.
+   * @param pCharIndex The index of the char in the expression.
+   * @return True, if a given pCharIndex should be highlighted as a binding.
+   *         Otherwise false.
    */
-  private boolean isBinding ( int pBindingIndex , int pCharIndex )
+  private boolean isBinding ( int pIdentifierIndex , int pCharIndex )
   {
-    if ( ( this.aSTBinding == null ) || ( pBindingIndex < 0 )
-        || ( pBindingIndex >= this.aSTBinding.size ( ) ) )
+    if ( ( this.aSTBinding == null ) || ( pIdentifierIndex < 0 )
+        || ( pIdentifierIndex >= this.aSTBinding.size ( ) ) )
     {
       return false ;
     }
-    for ( int i = 0 ; i < this.aSTBinding.size ( pBindingIndex ) ; i ++ )
+    for ( int i = 0 ; i < this.aSTBinding.size ( pIdentifierIndex ) ; i ++ )
     {
-      PrettyAnnotation prettyAnnotation = this.expression
-          .toPrettyString ( )
-          .getAnnotationForPrintable ( this.aSTBinding.get ( pBindingIndex , i ) ) ;
+      PrettyAnnotation prettyAnnotation = this.expression.toPrettyString ( )
+          .getAnnotationForPrintable (
+              this.aSTBinding.get ( pIdentifierIndex , i ) ) ;
       if ( ( pCharIndex >= prettyAnnotation.getStartOffset ( ) )
           && ( pCharIndex <= prettyAnnotation.getEndOffset ( ) ) )
       {
@@ -388,7 +402,7 @@ public class ASTNode
 
 
   /**
-   * TODO
+   * Resets the caption of the node.
    */
   public void resetCaption ( )
   {
@@ -401,7 +415,8 @@ public class ASTNode
       result.append ( BETWEEN ) ;
       result.append ( BEFORE_NAME ) ;
       result.append ( "<font color=\"#"
-          + getHex ( Theme.currentTheme ( ).getExpressionColor ( ) ) + "\">" ) ;
+          + getHTMLFormat ( Theme.currentTheme ( ).getExpressionColor ( ) )
+          + "\">" ) ;
       result.append ( this.expressionString ) ;
       result.append ( "</font>" ) ;
       result.append ( AFTER_NAME ) ;
@@ -417,9 +432,9 @@ public class ASTNode
 
 
   /**
-   * TODO
+   * Sets the binding in this node.
    * 
-   * @param pASTBinding
+   * @param pASTBinding The ASTBinding in this node.
    */
   public void setASTBinding ( ASTBinding pASTBinding )
   {
@@ -428,9 +443,10 @@ public class ASTNode
 
 
   /**
-   * TODO
+   * Set the value replaceInThisNode.
    * 
-   * @param pReplaceInThisNode
+   * @param pReplaceInThisNode True, if the selected expression should be
+   *        replaced in this node.
    */
   public void setReplaceInThisNode ( boolean pReplaceInThisNode )
   {
@@ -439,7 +455,7 @@ public class ASTNode
 
 
   /**
-   * TODO
+   * Returns this Object as a String.
    * 
    * @see java.lang.Object#toString()
    */
@@ -451,24 +467,29 @@ public class ASTNode
 
 
   /**
-   * TODO
+   * Updates the caption of the node. This methode checks each character of the
+   * name, if it is a keyword, a constant, a binding, selected or normal.
    * 
-   * @param pSelectionStart
-   * @param pSelectionEnd
-   * @param pBindingIndex
+   * @param pSelectionStart The start offset of the selection in this node.
+   * @param pSelectionEnd The end offset of the selection in this node.
+   * @param pIdentifierIndex The index of the Identifier, used by Expressions
+   *        which have more than more Identifier like MultiLet.
    */
   public void updateCaption ( int pSelectionStart , int pSelectionEnd ,
-      int pBindingIndex )
+      int pIdentifierIndex )
   {
     PrettyCharIterator prettyCharIterator = this.expression.toPrettyString ( )
         .toCharacterIterator ( ) ;
-    String expressionColor = getHex ( Theme.currentTheme ( )
+    String expressionColor = getHTMLFormat ( Theme.currentTheme ( )
         .getExpressionColor ( ) ) ;
-    String keywordColor = getHex ( Theme.currentTheme ( ).getKeywordColor ( ) ) ;
-    String constantColor = getHex ( Theme.currentTheme ( ).getConstantColor ( ) ) ;
-    String selectionColor = getHex ( Theme.currentTheme ( )
+    String keywordColor = getHTMLFormat ( Theme.currentTheme ( )
+        .getKeywordColor ( ) ) ;
+    String constantColor = getHTMLFormat ( Theme.currentTheme ( )
+        .getConstantColor ( ) ) ;
+    String selectionColor = getHTMLFormat ( Theme.currentTheme ( )
         .getSelectionColor ( ) ) ;
-    String bindingColor = getHex ( Theme.currentTheme ( ).getBindingColor ( ) ) ;
+    String bindingColor = getHTMLFormat ( Theme.currentTheme ( )
+        .getBindingColor ( ) ) ;
     StringBuffer result = new StringBuffer ( ) ;
     result.append ( "<html>" ) ;
     result.append ( BEFORE_DESCRIPTION ) ;
@@ -517,11 +538,11 @@ public class ASTNode
       }
       // Binding
       else if ( ( binding ) && ( this.aSTBinding != null )
-          && ( pBindingIndex >= 0 )
-          && ( isBinding ( pBindingIndex , charIndex ) ) )
+          && ( pIdentifierIndex >= 0 )
+          && ( isBinding ( pIdentifierIndex , charIndex ) ) )
       {
         result.append ( "<b><font color=\"#" + bindingColor + "\">" ) ;
-        while ( isBinding ( pBindingIndex , charIndex ) )
+        while ( isBinding ( pIdentifierIndex , charIndex ) )
         {
           result.append ( this.expressionString.charAt ( charIndex ) ) ;
           // Next character
@@ -556,16 +577,7 @@ public class ASTNode
         }
         result.append ( "</font></b>" ) ;
       }
-      // Maybe later for highlighting unbound Indentifiers
-      /*
-       * else if ( ( this.aSTBinding != null ) && (
-       * this.aSTBinding.getNoBindingSize ( ) > 0 ) && ( isNoBinding ( charIndex ) ) ) {
-       * Debug.out.println ( charIndex , "christian" ) ; result.append ( "<b><font
-       * color=\"#" + "00FF00" + "\">" ) ; while ( isNoBinding ( charIndex ) ) {
-       * result.append ( this.expressionString.charAt ( charIndex ) ) ; // Next
-       * character charIndex ++ ; prettyCharIterator.next ( ) ; } result.append ( "</font></b>" ) ; }
-       */
-      // Else
+      // Normal Character
       else
       {
         result.append ( this.expressionString.charAt ( charIndex ) ) ;
