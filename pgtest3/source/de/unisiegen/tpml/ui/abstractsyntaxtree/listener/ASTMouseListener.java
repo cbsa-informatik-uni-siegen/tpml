@@ -99,16 +99,19 @@ public class ASTMouseListener implements MouseListener
         && ( pMouseEvent.getSource ( ).equals ( this.aSTUI
             .getJTreeAbstractSyntaxTree ( ) ) ) )
     {
+      int x = pMouseEvent.getX ( ) ;
+      int y = pMouseEvent.getY ( ) ;
+      TreePath treePath = this.aSTUI.getJTreeAbstractSyntaxTree ( )
+          .getPathForLocation ( x , y ) ;
+      if ( treePath == null )
+      {
+        this.aSTUI.getJTreeAbstractSyntaxTree ( ).setSelectionPath ( null ) ;
+        this.aSTUI.getASTTreeSelectionListener ( ).reset (
+            ( DefaultMutableTreeNode ) this.aSTUI.getTreeModel ( ).getRoot ( ) ) ;
+        return ;
+      }
       if ( pMouseEvent.isPopupTrigger ( ) )
       {
-        int x = pMouseEvent.getX ( ) ;
-        int y = pMouseEvent.getY ( ) ;
-        TreePath treePath = this.aSTUI.getJTreeAbstractSyntaxTree ( )
-            .getPathForLocation ( x , y ) ;
-        if ( treePath == null )
-        {
-          return ;
-        }
         this.aSTUI.getJTreeAbstractSyntaxTree ( ).setSelectionPath ( treePath ) ;
         this.aSTUI.getJPopupMenu ( ).show ( pMouseEvent.getComponent ( ) , x ,
             y ) ;

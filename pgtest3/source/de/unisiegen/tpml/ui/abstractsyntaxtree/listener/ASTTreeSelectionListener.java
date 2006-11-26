@@ -85,7 +85,7 @@ public class ASTTreeSelectionListener implements TreeSelectionListener
    * 
    * @param pNode
    */
-  private void reset ( DefaultMutableTreeNode pNode )
+  public void reset ( DefaultMutableTreeNode pNode )
   {
     ASTNode aSTNode = ( ASTNode ) pNode.getUserObject ( ) ;
     aSTNode.resetCaption ( ) ;
