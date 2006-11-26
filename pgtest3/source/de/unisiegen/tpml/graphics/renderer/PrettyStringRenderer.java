@@ -19,8 +19,8 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyCharIterator;
 import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable;
 import de.unisiegen.tpml.core.prettyprinter.PrettyString;
 import de.unisiegen.tpml.graphics.Theme;
-import de.unisiegen.tpml.graphics.components.Bound;
-import de.unisiegen.tpml.graphics.components.ShowBound;
+import de.unisiegen.tpml.graphics.components.Bonds;
+import de.unisiegen.tpml.graphics.components.ShowBonds;
 
 
 /**
@@ -254,7 +254,7 @@ public class PrettyStringRenderer extends AbstractRenderer {
 	 * Hilfmethode, umd zu überprüfen, ob ein int in der Liste liegt
 	 * 
 	 */
-	public static boolean isIn (int test, LinkedList <Bound> list)
+	public static boolean isIn (int test, LinkedList <Bonds> list)
 	{
 		//System.out.println("Nun wird überprüft, ob die Zahl in der Liste steht...");
 		//System.out.println("Länge der komischen Liste: "+list.size());
@@ -296,7 +296,7 @@ public class PrettyStringRenderer extends AbstractRenderer {
 	}
 	
 	
-	public static int isInListe (int test, LinkedList <Bound> list)
+	public static int isInListe (int test, LinkedList <Bonds> list)
 	{
 		//System.out.println("Nun wird überprüft, ob die Zahl in der Liste steht...");
 		//System.out.println("Länge der komischen Liste: "+list.size());
@@ -350,7 +350,7 @@ public class PrettyStringRenderer extends AbstractRenderer {
 	 * @param gc The Graphics context that will be used to render
 	 * @return The width of the expression will get returned.
 	 */
-	public void render (int x, int y, int height,  Graphics gc, ShowBound bound, ToListenForMouseContainer toListenForMouse) {
+	public void render (int x, int y, int height,  Graphics gc, ShowBonds bound, ToListenForMouseContainer toListenForMouse) {
 		
 		//Eine Instanz, die Instanz von toLitenForMouse
 		//toListenForMouse = ToListenForMouseContainer.getInstanceOf();
@@ -410,9 +410,9 @@ public class PrettyStringRenderer extends AbstractRenderer {
 			
 			//TODO: Vielleicht unterstreichen
 			//gets singelton instance of showbound to show bindings
-			ShowBound instanceOfShowBound = bound; 
+			ShowBonds instanceOfShowBound = bound; 
 			LinkedList annotationsList = instanceOfShowBound.getAnnotations();
-			//LinkedList <Bound> sbl = sb.result;
+			//LinkedList <Bonds> sbl = sb.result;
 			
 			
 			//Indexes indexes = sb.getIndexes();

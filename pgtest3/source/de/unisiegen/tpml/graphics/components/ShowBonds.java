@@ -17,7 +17,7 @@ import de.unisiegen.tpml.core.expressions.Recursion;
 import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation;
 import de.unisiegen.tpml.core.prettyprinter.PrettyString;
 
-public class ShowBound
+public class ShowBonds
 {
 	/**
 	 * the actual expression in the GUI
@@ -27,7 +27,7 @@ public class ShowBound
 	/**
 	 * List of all Bounds in holeExpression
 	 */
-	private LinkedList<Bound> result = new LinkedList<Bound>();
+	private LinkedList<Bonds> result = new LinkedList<Bonds>();
 	
 	//CHANGE BENJAMIN just for Debug
 	private String me = "Benjamin";
@@ -636,28 +636,58 @@ public class ShowBound
 
 	}
 
-	private Bound checkRec(LinkedList<Expression> child, Expression e,
+	/**
+	 * the recursive method to check for bonds to the Identifier of the expression
+	 * in inner expressions
+	 * @param child
+	 * @param e
+	 * @param list
+	 * @return
+	 */
+	private Bonds checkRec(LinkedList<Expression> child, Expression e,
 			LinkedList<String> list)
 	{
-		Bound tmpBound = null;
+		Bonds tmpBound = null;
 		boolean inList = false;
 
+		/**
+		 * this lopp is needed to search in every child
+		 */
 		for (int j = 0; j < child.size(); j++)
 		{
 			inList = false;
+			
+			/**
+			 * the actual child is now actualExpression
+			 */
 			Expression actualExpression = child.get(j);
-
+			
+			/**
+			 * check if in the actual Expression is something free.
+			 * if anything is free nothing could be bound
+			 */
 			if (actualExpression.free().toArray().length > 0)
 			{
-				
+				/**
+				 * if the child is a leaf we have to check if it is an Identifier
+				 */
 				if (actualExpression instanceof Identifier)
 				{
-
+					
+					/**
+					 * the actual child is casted to Identifier
+					 */
 					Identifier id = (Identifier) actualExpression;
 
+					/**
+					 * now we check if the identifier is in the list of bound variables
+					 */
 					for (int i = 0; i < list.size(); i++)
 					{
-
+						/**
+						 * if it is bound we create an Object of Bond an put it to the list
+						 * of all bonds
+						 */
 						if (id.getName().equals(list.get(i)))
 						{
 							PrettyString ps1 = holeExpression.toPrettyString();
@@ -667,7 +697,13 @@ public class ShowBound
 							{
 								for (int z = 0; z < result.size(); z++)
 								{
-									Bound tmpBound2 = result.get(z);
+									Bonds tmpBound2 = result.get(z);
+									
+									/**
+									 * befor it is added to list, we have to check if the variable is
+									 * bond to another identifier. It just makes sense if we have different
+									 * Identifiers with the same name in different expressions
+									 */
 									for (int y = 0; y < tmpBound.getMarks().size(); y++)
 									{
 
@@ -689,6 +725,11 @@ public class ShowBound
 
 								
 								boolean exists = false;
+								
+								/**
+								 * check if there had been another bond to same Identifier.
+								 * if there was another bond add to this
+								 */
 								for (int k = 0; k < result.size(); k++)
 								{
 									if (start == result.get(k).getStartOffset())
@@ -698,9 +739,12 @@ public class ShowBound
 										result.get(k).getExpressions().add(e);
 									}
 								}
+								/**
+								 * else create a new bond
+								 */
 								if (!exists)
 								{
-									Bound addToList = new Bound(start, length, e, id
+									Bonds addToList = new Bonds(start, length, e, id
 											.toString());
 									addToList.getMarks().add(mark2);
 									addToList.getExpressions().add(e);
@@ -712,6 +756,9 @@ public class ShowBound
 
 					}
 				}
+				/**
+				 * just do the same for all childrens of the actual child
+				 */
 				else
 				{
 					LinkedList<Expression> childtmp = new LinkedList<Expression>();
@@ -729,6 +776,13 @@ public class ShowBound
 		return tmpBound;
 	}
 
+	/**
+	 * This method compares to Arrays and puts just this variables into a Linked List 
+	 * which are bound in the expression
+	 * @param a
+	 * @param b
+	 * @return
+	 */
 	public LinkedList<String> listWithBounds(Object[] a, Object[] b)
 	{
 		LinkedList<String> e1 = new LinkedList<String>();
@@ -753,6 +807,11 @@ public class ShowBound
 		return e2;
 	}
 
+	/**
+	 * just take an Array and put it into a Linked List
+	 * @param a
+	 * @return LinkedList tmp
+	 */
 	private LinkedList<String> castArray(Object[] a)
 	{
 		LinkedList<String> tmp = new LinkedList<String>();
@@ -766,6 +825,15 @@ public class ShowBound
 		return tmp;
 	}
 
+	/**
+	 * This method calculates the right Startoffset of the Identifier for every
+	 * type of Expression. This is needed because the Identifier of the Expression
+	 * is not an Expression itself. So we can't go over PrettyAnnotation.getStartOffset
+	 * @param e
+	 * @param id
+	 * @param mark1
+	 * @return
+	 */
 	private int getStartOffset(Expression e, Identifier id, PrettyAnnotation mark1)
 	{
 		int start = 0;
@@ -855,15 +923,23 @@ public class ShowBound
 		return start;
 	}
 
+	/**
+	 * set the Expression to get the bonds
+	 * @param pExpression
+	 */
 	public void setHoleExpression(Expression pExpression)
 	{
 		holeExpression = pExpression;
 
-		result = new LinkedList<Bound>();
+		result = new LinkedList<Bonds>();
 
 	}
 
-	public LinkedList<Bound> getAnnotations()
+	/**
+	 * returns a list with all bonds in the actual Expression
+	 * @return 
+	 */
+	public LinkedList<Bonds> getAnnotations()
 	{
 		return result;
 	}

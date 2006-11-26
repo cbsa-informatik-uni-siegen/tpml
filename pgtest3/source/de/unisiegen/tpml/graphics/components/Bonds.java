@@ -5,7 +5,7 @@ import java.util.LinkedList;
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation;
 
-public class Bound
+public class Bonds
 {
 	/**
 	 * Startoffset of the Identifier
@@ -37,14 +37,14 @@ public class Bound
 	 */
 	private LinkedList<Expression>expressions=new LinkedList<Expression>();
 	
-	public Bound( int start, int end, Expression pExpression,String id)
+	public Bonds( int start, int end, Expression pExpression,String id)
 	{
 		expression=pExpression;
 		startOffset =start;
 		endOffset=end;
 		identifier=id;
 	}
-	public Bound( int start, int end,LinkedList<PrettyAnnotation> list)
+	public Bonds( int start, int end,LinkedList<PrettyAnnotation> list)
 	{
 		
 		startOffset =start;

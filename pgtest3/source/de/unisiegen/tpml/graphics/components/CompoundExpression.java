@@ -112,8 +112,8 @@ public class CompoundExpression < S , E > extends JComponent
    * {@link AbstractRenderer} are ignored.
    */
   // TODO Kommentar erstellen
-  // private ShowBound bound = new ShowBound();
-  private ShowBound bound ;
+  // private ShowBonds bound = new ShowBonds();
+  private ShowBonds bonds ;
 
 
   // private ToListenForMouseContainer toListenForMouse = new
@@ -124,7 +124,7 @@ public class CompoundExpression < S , E > extends JComponent
   public CompoundExpression ( )
   {
     super ( ) ;
-    this.bound = new ShowBound ( ) ;
+    this.bonds = new ShowBonds ( ) ;
     this.toListenForMouse = new ToListenForMouseContainer ( ) ;
     this.alternativeColor = null ;
     this.braceSize = 10 ;
@@ -323,13 +323,13 @@ public class CompoundExpression < S , E > extends JComponent
       this.expression = expression ;
       
       // CHANGE BENJAMIN
-      bound.setHoleExpression ( this.expression ) ;
-      bound.check ( this.expression ) ;
+      bonds.setHoleExpression ( this.expression ) ;
+      bonds.check ( this.expression ) ;
       // Debug
-      LinkedList < Bound > bounds = bound.getAnnotations ( ) ;
-      for ( int i = 0 ; i < bounds.size ( ) ; i ++ )
+      LinkedList < Bonds > bondsList = bonds.getAnnotations ( ) ;
+      for ( int i = 0 ; i < bondsList.size ( ) ; i ++ )
       {
-        Bound tmp = bounds.get ( i ) ;
+        Bonds tmp = bondsList.get ( i ) ;
         Debug.err.print ( "BM- Id: " + tmp.getIdentifier ( ) + " "
             + tmp.getStartOffset ( ) + "->" + tmp.getEndOffset ( )
             + " Bindung: " , "Benjamin" ) ;
@@ -354,7 +354,7 @@ public class CompoundExpression < S , E > extends JComponent
         if ( this.expressionRenderer == null )
         {
           
-          // bound = new ShowBound();
+          // bound = new ShowBonds();
           // CHANGE MICHAEL
           // with ervery new expression renderd by the PrettyStringRenderer the
           // elements listen by mouse will be resetet
@@ -509,7 +509,7 @@ public class CompoundExpression < S , E > extends JComponent
     if ( this.environment == null || this.environment instanceof Store )
     {
       this.expressionRenderer.render ( posX , posY , getHeight ( ) , gc ,
-          bound , toListenForMouse ) ;
+          bonds , toListenForMouse ) ;
       posX += this.expressionSize.width ;
       // if there is an environment render it now
       if ( this.environment != null )
@@ -535,7 +535,7 @@ public class CompoundExpression < S , E > extends JComponent
           CompoundExpression.arrowStr ) ;
       // draw the expression at the last position.
       this.expressionRenderer.render ( posX , posY , getHeight ( ) , gc ,
-          bound , toListenForMouse ) ;
+          bonds , toListenForMouse ) ;
     }
     
     //gc.setColor (Color.YELLOW);
