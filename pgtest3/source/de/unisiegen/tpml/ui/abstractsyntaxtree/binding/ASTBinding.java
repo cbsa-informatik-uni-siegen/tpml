@@ -144,6 +144,8 @@ public class ASTBinding
    * @param pExpression
    * @param pId
    */
+  
+  // TODO Test, test, test ...
   private void findBinding ( LinkedList < Expression > pResult ,
       LinkedList < String > pBound , Expression pExpression , String pId )
   {
@@ -207,12 +209,8 @@ public class ASTBinding
             pId ) >= 0 ) )
     {
       MultiLet multiLet = ( MultiLet ) pExpression ;
-      LinkedList < String > newBound1 = copyList ( pBound ) ;
-      LinkedList < String > newBound2 = copyList ( pBound ) ;
-      newBound2.add ( multiLet.getIdentifiers ( identifierIndex ( multiLet
-          .getIdentifiers ( ) , pId ) ) ) ;
-      findBinding ( pResult , newBound1 , multiLet.getE1 ( ) , pId ) ;
-      findBinding ( pResult , newBound2 , multiLet.getE2 ( ) , pId ) ;
+      LinkedList < String > newBound = copyList ( pBound ) ;
+      findBinding ( pResult , newBound , multiLet.getE1 ( ) , pId ) ;
       return ;
     }
     else if ( ( pExpression instanceof MultiLambda )
