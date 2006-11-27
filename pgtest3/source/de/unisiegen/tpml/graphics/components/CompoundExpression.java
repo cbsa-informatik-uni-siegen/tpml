@@ -228,78 +228,52 @@ public class CompoundExpression < S , E > extends JComponent
    */
   private void handleMouseMoved ( MouseEvent event )
   {
-    // TODO Testausgaben
-    // Debug.out.println("Event geworfen: "+event, "Feivel" );
-    //Debug.out.println ( "Incence: " + event.getSource ( ) , "Feivel" ) ;
-    // TODO jetzt wollen wir doch mal gucken, wo wir eigentlich sind!
-    //Debug.out.println ( "Ok, es ist einen CompoundExpression" , "Feivel" ) ;
-    // toListenForMouse = new ToListenForMouseContainer();
-    //if ( ! toListenForMouse.setExpression ( expression ) )
-    //{
-    //  Debug.err.print ( "Schei�e, es ist ein anderer Ausdruck: "
-    //      + expression.toPrettyString ( ).toString ( ) , "Feivel" ) ;
-    //}
-    toListenForMouse.setHereIam ( event.getX ( ) , event.getY ( ) ) ;
-    // TODO Testausgabe
-    // System.out.println("ncihts malen");
-    //Debug.out.println ( "Erstmal nichts mehr malen" , "Feivel" ) ;
-    toListenForMouse.setMark ( false ) ;
-    CompoundExpression.this.repaint ( ) ;
     
-    boolean mark = false;
+	  //tell the PrettyStringRenderer where the mouse pointer is
+	  toListenForMouse.setHereIam ( event.getX ( ) , event.getY ( ) ) ;
+
+	  //first, we do not want to mark anything, we are waiting for mouse pointer is over one bounded id
+	  toListenForMouse.setMark ( false ) ;
+	  CompoundExpression.this.repaint ( ) ;
+    
+	  //note if to mark or not to mark
+	  boolean mark = false;
     
     for ( int t = 0 ; t < toListenForMouse.size ( ) ; t = t + 4 )
     {
-      int pX = toListenForMouse.get ( t ) ;
+      //get position of pointer
+    	int pX = toListenForMouse.get ( t ) ;
       int pX1 = toListenForMouse.get ( t + 1 ) ;
-      // Y-Werte werden nicht weiter beachet. Wenn die Maus die
-      // Compoundexpresson verl�sst, dann wird der MouseExit ausgel�st
       int pY = toListenForMouse.get(t+2);
       int pY1 = toListenForMouse.get(t+3);
-      // brauche uch zur Zeit nicht
-      // int pY = toListenForMouse.get(t+2);
-      // int pY1 = toListenForMouse.get(t+3);
-      // TODO TEstausgabe
-      // System.out.println(pX+" " +pX1 + " " + pY + " " + pY1);
-      // System.out.println(event.getX()+" " +event.getY());
-      // Herausfinden, ob ich auf einem erwarteten Zeichen bin!
-      //if ((event.getX() >= pX) && (event.getX() <= pX1) && (event.getY() >= pY-2) && (event.getY() <= pY1-12))
+    
+      // fnde out if pointer is on one of the chars to mark
       if ((event.getX() >= pX) && (event.getX() <= pX1) && (event.getY() >= pY) && (event.getY() <= pY1))	
       //if ( ( event.getX ( ) >= pX ) && ( event.getX ( ) <= pX1 ) )
       {
-        //Debug.out.println ( "Ok, hier muss wieder gemalt werden!" , "Feivel" ) ;
-        // TODO TestausgbaetoListenForMouse.setElementAt(0, 1);
-        // System.out.println("JA, JETZT MUSS DER MOUSEFFEKT ANGEHEN");
-      	//CompoundExpression.this.repaint ( ) ;
-      	//toListenForMouse.setMark ( true ) ;
+        //just note it
     	  mark = true;
       }
-      
-      //toListenForMouse.setHereIam ( event.getX ( ) , event.getY ( ) ) ;
-      //Debug.out.println (
-      //   "neu malen, falls setMark jetzt true ist, dann sieht man was" ,
-      //    "Feivel" ) ;
-      //Debug.out.println ( "setMark ist: " + toListenForMouse.getMark ( ) ,
-      //    "Feivel" ) ;
-      //CompoundExpression.this.repaint ( ) ;
     }
     
+    //if the pointer is on one of the bounded chars
     if (mark)
     {
-      toListenForMouse.setMark ( true ) ;
+      //we want to habe marked
+    	toListenForMouse.setMark ( true ) ;
   	  CompoundExpression.this.repaint ( ) ;
     }
     else
     {
+    	//we do not want to see anything marked
      toListenForMouse.setMark ( false ) ;
      toListenForMouse.reset();
      toListenForMouse.setRightList(-1);
      toListenForMouse.reset();
      CompoundExpression.this.repaint ( ) ;
     }
-    // System.out.println(" Event: "+event);
-    // System.out.println("Typ: "+event.getSource());
-    // System.out.println("Position "+event.getX() +", "+ event.getY());
+    
+    
     if ( this.environmentRenderer != null
         && this.environmentRenderer.isCollapsed ( ) )
     {
