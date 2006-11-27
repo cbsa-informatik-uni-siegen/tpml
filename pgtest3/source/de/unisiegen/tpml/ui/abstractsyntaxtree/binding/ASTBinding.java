@@ -97,7 +97,7 @@ public class ASTBinding
   public void add ( Expression pExpression , String pId )
   {
     LinkedList < Expression > tmpList = new LinkedList < Expression > ( ) ;
-    findBinding ( tmpList , new LinkedList < String > ( ) , pExpression , pId ) ;
+    findBinding ( tmpList , pExpression , pId ) ;
     this.list.add ( tmpList ) ;
   }
 
@@ -113,7 +113,7 @@ public class ASTBinding
     for ( String id : pIdentifiers )
     {
       LinkedList < Expression > tmpList = new LinkedList < Expression > ( ) ;
-      findBinding ( tmpList , new LinkedList < String > ( ) , pExpression , id ) ;
+      findBinding ( tmpList , pExpression , id ) ;
       this.list.add ( tmpList ) ;
     }
   }
@@ -122,35 +122,16 @@ public class ASTBinding
   /**
    * TODO
    * 
-   * @param pList
-   * @return TODO
-   */
-  private LinkedList < String > copyList ( LinkedList < String > pList )
-  {
-    LinkedList < String > result = new LinkedList < String > ( ) ;
-    for ( String s : pList )
-    {
-      result.add ( s ) ;
-    }
-    return result ;
-  }
-
-
-  /**
-   * TODO
-   * 
    * @param pResult
-   * @param pBound
    * @param pExpression
    * @param pId
    */
   private void findBinding ( LinkedList < Expression > pResult ,
-      LinkedList < String > pBound , Expression pExpression , String pId )
+      Expression pExpression , String pId )
   {
     // Identifier
     if ( ( pExpression instanceof Identifier )
-        && ( ! pBound.contains ( ( ( Identifier ) pExpression ).getName ( ) ) && ( ( Identifier ) pExpression )
-            .getName ( ).equals ( pId ) ) )
+        && ( ( ( Identifier ) pExpression ).getName ( ).equals ( pId ) ) )
     {
       pResult.add ( pExpression ) ;
       return ;
@@ -164,14 +145,17 @@ public class ASTBinding
       CurriedLetRec curriedLetRec = ( CurriedLetRec ) pExpression ;
       if ( curriedLetRec.getIdentifiers ( 0 ).equals ( pId ) )
       {
+        /*
+         * Search is finished, because all Identifiers in E1 and E2 are bounded
+         * to the Identifier in this child expression.
+         */
         return ;
       }
       /*
-       * Search only in E2, because all Identifiers in E1 are bounded to this
-       * child expression.
+       * Search only in E2, because all Identifiers in E1 are bounded to the
+       * Identifier in this child expression.
        */
-      findBinding ( pResult , copyList ( pBound ) , curriedLetRec.getE2 ( ) ,
-          pId ) ;
+      findBinding ( pResult , curriedLetRec.getE2 ( ) , pId ) ;
       return ;
     }
     // CurriedLet
@@ -184,18 +168,17 @@ public class ASTBinding
       if ( curriedLet.getIdentifiers ( 0 ).equals ( pId ) )
       {
         /*
-         * Search only in E1, because all Identifiers in E2 are bounded to this
-         * child expression.
+         * Search only in E1, because all Identifiers in E2 are bounded to the
+         * Identifier in this child expression.
          */
-        findBinding ( pResult , copyList ( pBound ) , curriedLet.getE1 ( ) ,
-            pId ) ;
+        findBinding ( pResult , curriedLet.getE1 ( ) , pId ) ;
         return ;
       }
       /*
-       * Search only in E2, because all Identifiers in E1 are bounded to this
-       * child expression.
+       * Search only in E2, because all Identifiers in E1 are bounded to the
+       * Identifier in this child expression.
        */
-      findBinding ( pResult , copyList ( pBound ) , curriedLet.getE2 ( ) , pId ) ;
+      findBinding ( pResult , curriedLet.getE2 ( ) , pId ) ;
       return ;
     }
     // MultiLet
@@ -205,11 +188,10 @@ public class ASTBinding
             pId ) >= 0 ) )
     {
       /*
-       * Search only in E1, because all Identifiers in E2 are bounded to this
-       * child expression.
+       * Search only in E1, because all Identifiers in E2 are bounded to the
+       * Identifier in this child expression.
        */
-      findBinding ( pResult , copyList ( pBound ) , ( ( MultiLet ) pExpression )
-          .getE1 ( ) , pId ) ;
+      findBinding ( pResult , ( ( MultiLet ) pExpression ).getE1 ( ) , pId ) ;
       return ;
     }
     // MultiLambda
@@ -218,6 +200,10 @@ public class ASTBinding
         && ( identifierIndex ( ( ( MultiLambda ) pExpression )
             .getIdentifiers ( ) , pId ) >= 0 ) )
     {
+      /*
+       * Search is finished, because all Identifiers in E are bounded to the
+       * Identifier in this child expression.
+       */
       return ;
     }
     // Lambda
@@ -225,6 +211,10 @@ public class ASTBinding
         && ( ! pExpression.equals ( this.holeExpression ) )
         && ( ( ( Lambda ) pExpression ).getId ( ).equals ( pId ) ) )
     {
+      /*
+       * Search is finished, because all Identifiers in E are bounded to the
+       * Identifier in this child expression.
+       */
       return ;
     }
     // LetRec
@@ -232,6 +222,10 @@ public class ASTBinding
         && ( ! pExpression.equals ( this.holeExpression ) )
         && ( ( ( LetRec ) pExpression ).getId ( ).equals ( pId ) ) )
     {
+      /*
+       * Search is finished, because all Identifiers in E1 and E2 are bounded to
+       * the Identifier in this child expression.
+       */
       return ;
     }
     // Let
@@ -240,11 +234,10 @@ public class ASTBinding
         && ( ( ( Let ) pExpression ).getId ( ).equals ( pId ) ) )
     {
       /*
-       * Search only in E1, because all Identifiers in E2 are bounded to this
-       * child expression.
+       * Search only in E1, because all Identifiers in E2 are bounded to the
+       * Identifier in this child expression.
        */
-      findBinding ( pResult , copyList ( pBound ) , ( ( Let ) pExpression )
-          .getE1 ( ) , pId ) ;
+      findBinding ( pResult , ( ( Let ) pExpression ).getE1 ( ) , pId ) ;
       return ;
     }
     // Recursion
@@ -252,173 +245,23 @@ public class ASTBinding
         && ( ! pExpression.equals ( this.holeExpression ) )
         && ( ( ( Recursion ) pExpression ).getId ( ).equals ( pId ) ) )
     {
+      /*
+       * Search is finished, because all Identifiers in E are bounded to the
+       * Identifier in this child expression.
+       */
       return ;
     }
     // Other
     else
     {
+      /*
+       * Search in all children.
+       */
       Enumeration < Expression > children = pExpression.children ( ) ;
       while ( children.hasMoreElements ( ) )
       {
-        Expression child = children.nextElement ( ) ;
-        findBinding ( pResult , pBound , child , pId ) ;
+        findBinding ( pResult , children.nextElement ( ) , pId ) ;
       }
-    }
-  }
-
-
-  /**
-   * TODO
-   * 
-   * @param pExpression
-   * @param pId
-   * @return TODO
-   */
-  @ SuppressWarnings ( "unused" )
-  private LinkedList < Expression > findBindingOld ( Expression pExpression ,
-      String pId )
-  {
-    LinkedList < Expression > result = new LinkedList < Expression > ( ) ;
-    if ( pExpression instanceof Identifier )
-    {
-      if ( ( ( Identifier ) pExpression ).getName ( ).equals ( pId ) )
-      {
-        result.add ( pExpression ) ;
-        return result ;
-      }
-    }
-    if ( ( pExpression instanceof CurriedLetRec )
-        && ( identifierIndex ( ( ( CurriedLetRec ) pExpression )
-            .getIdentifiers ( ) , pId ) >= 0 )
-    /* && ( ! pExpression.equals ( this.holeExpression ) ) */)
-    {
-      int index = identifierIndex ( ( ( CurriedLetRec ) pExpression )
-          .getIdentifiers ( ) , pId ) ;
-      LinkedList < Expression > tmpList ;
-      if ( index == 0 )
-      {
-        return result ;
-      }
-      tmpList = findBindingOld ( ( ( CurriedLetRec ) pExpression ).getE2 ( ) ,
-          pId ) ;
-      for ( Expression tmpExpr : tmpList )
-      {
-        result.add ( tmpExpr ) ;
-      }
-      return result ;
-    }
-    else if ( ( pExpression instanceof CurriedLet )
-        && ( identifierIndex (
-            ( ( CurriedLet ) pExpression ).getIdentifiers ( ) , pId ) >= 0 )
-    /* && ( ! pExpression.equals ( this.holeExpression ) ) */)
-    {
-      int index = identifierIndex ( ( ( CurriedLet ) pExpression )
-          .getIdentifiers ( ) , pId ) ;
-      LinkedList < Expression > tmpList ;
-      if ( index == 0 )
-      {
-        tmpList = findBindingOld ( ( ( CurriedLet ) pExpression ).getE1 ( ) ,
-            pId ) ;
-      }
-      else
-      {
-        tmpList = findBindingOld ( ( ( CurriedLet ) pExpression ).getE2 ( ) ,
-            pId ) ;
-      }
-      for ( Expression tmpExpr : tmpList )
-      {
-        result.add ( tmpExpr ) ;
-      }
-      return result ;
-    }
-    else if ( ( pExpression instanceof MultiLet )
-        && ( identifierIndex ( ( ( MultiLet ) pExpression ).getIdentifiers ( ) ,
-            pId ) >= 0 ) && ( ! pExpression.equals ( this.holeExpression ) ) )
-    {
-      LinkedList < Expression > tmpList ;
-      tmpList = findBindingOld ( ( ( MultiLet ) pExpression ).getE1 ( ) , pId ) ;
-      for ( Expression tmpExpr : tmpList )
-      {
-        result.add ( tmpExpr ) ;
-      }
-      return result ;
-    }
-    else if ( ( pExpression instanceof LetRec )
-        && ( ( ( LetRec ) pExpression ).getId ( ).equals ( pId ) )
-    /* && ( ! pExpression.equals ( this.holeExpression ) ) */)
-    {
-      return result ;
-    }
-    else if ( ( pExpression instanceof Let )
-        && ( ( ( Let ) pExpression ).getId ( ).equals ( pId ) )
-        && ( ! pExpression.equals ( this.holeExpression ) ) )
-    {
-      LinkedList < Expression > tmpList ;
-      tmpList = findBindingOld ( ( ( Let ) pExpression ).getE1 ( ) , pId ) ;
-      for ( Expression tmpExpr : tmpList )
-      {
-        result.add ( tmpExpr ) ;
-      }
-      return result ;
-    }
-    else if ( ( pExpression instanceof MultiLambda )
-        && ( identifierIndex ( ( ( MultiLambda ) pExpression )
-            .getIdentifiers ( ) , pId ) >= 0 )
-        && ( ! pExpression.equals ( this.holeExpression ) ) )
-    {
-      LinkedList < Expression > tmpList ;
-      tmpList = findBindingOld ( ( ( MultiLambda ) pExpression ).getE ( ) , pId ) ;
-      for ( Expression tmpExpr : tmpList )
-      {
-        result.add ( tmpExpr ) ;
-      }
-      return result ;
-    }
-    else if ( ( pExpression instanceof Lambda )
-        && ( ( ( Lambda ) pExpression ).getId ( ).equals ( pId ) )
-        && ( ! pExpression.equals ( this.holeExpression ) ) )
-    {
-      LinkedList < Expression > tmpList ;
-      tmpList = findBindingOld ( ( ( Lambda ) pExpression ).getE ( ) , pId ) ;
-      for ( Expression tmpExpr : tmpList )
-      {
-        result.add ( tmpExpr ) ;
-      }
-      return result ;
-    }
-    else if ( ( pExpression instanceof Recursion )
-        && ( ( ( Recursion ) pExpression ).getId ( ).equals ( pId ) )
-        && ( ! pExpression.equals ( this.holeExpression ) ) )
-    {
-      LinkedList < Expression > tmpList ;
-      tmpList = findBindingOld ( ( ( Recursion ) pExpression ).getE ( ) , pId ) ;
-      for ( Expression tmpExpr : tmpList )
-      {
-        result.add ( tmpExpr ) ;
-      }
-      return result ;
-    }
-    else
-    {
-      Enumeration < Expression > children = pExpression.children ( ) ;
-      while ( children.hasMoreElements ( ) )
-      {
-        Expression current = children.nextElement ( ) ;
-        if ( ! current.free ( ).isEmpty ( ) )
-        {
-          LinkedList < Expression > tmpList ;
-          tmpList = findBindingOld ( current , pId ) ;
-          for ( Expression tmpExpr : tmpList )
-          {
-            result.add ( tmpExpr ) ;
-          }
-        }
-        else
-        {
-          this.notFree.add ( current ) ;
-        }
-      }
-      return result ;
     }
   }
 
