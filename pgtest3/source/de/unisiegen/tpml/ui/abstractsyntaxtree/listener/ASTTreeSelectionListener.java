@@ -106,6 +106,10 @@ public class ASTTreeSelectionListener implements TreeSelectionListener
   {
     if ( pTreePath == null )
     {
+      DefaultMutableTreeNode rootNode = ( DefaultMutableTreeNode ) this.aSTUI
+          .getTreeModel ( ).getRoot ( ) ;
+      reset ( rootNode ) ;
+      repaint ( rootNode ) ;
       return ;
     }
     LinkedList < ASTNode > list = new LinkedList < ASTNode > ( ) ;
