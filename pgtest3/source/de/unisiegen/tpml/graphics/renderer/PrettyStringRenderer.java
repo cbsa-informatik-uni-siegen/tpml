@@ -339,6 +339,7 @@ public class PrettyStringRenderer extends AbstractRenderer {
 	
 	public static boolean isFirstInListe (int test, LinkedList <Bonds> list)
 	{
+		//it is not first in List
 		boolean result = false;
 		
 		for (int i=0; i<list.size(); i++)
@@ -346,18 +347,15 @@ public class PrettyStringRenderer extends AbstractRenderer {
 			int min = list.get(i).getStartOffset();
 			int max = list.get(i).getEndOffset();
 			
+			//if it is first in List
 			if ((test <= max) && (test >= min)) 
 				{
-				Debug.out.println("ist Identifier", "feivel");	
+				//return true	
 				return true;
 				}
-			else
-			{
-				return false;
-			}
 		}
-		Debug.out.println("hier sollte er nie vorbeikommen", "feivel");		
-	return result;
+		//return false if for was alway wrong
+		return result;
 	}
 
 	
