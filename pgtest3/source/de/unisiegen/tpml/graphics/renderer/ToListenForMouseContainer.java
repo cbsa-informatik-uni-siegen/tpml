@@ -10,18 +10,30 @@ import de.unisiegen.tpml.core.expressions.Expression;
  */
 public class ToListenForMouseContainer
 {
+	/**
+	 * will contain the positions where bounded identifiers are
+	 */
 	private Vector toListenForMouse;
 	
+	/**
+	 * saves teh psoition, where the mouse pointer is.
+	 * [0] represets the x-koordinate
+	 * [1] represents the y-koordiante
+	 */
 	private int [] hereIam;
 	
+	/**
+	 * shows if the highliter is aktive or not
+	 */
 	private boolean mark;
+	//counts the marks: the first time, mark is set to true will be ignored
 	private int markCount;
 	
+	/**
+	 * saves informations about the right anootationlist in wich the chars are that shoeld be marked
+	 */
 	private int rightList;
 	
-	private Expression expression;
-	
-	//private static ToListenForMouseContainer myToListenForMouseContainer = null;
 	
 	public ToListenForMouseContainer()
 	{
@@ -32,30 +44,22 @@ public class ToListenForMouseContainer
 		hereIam[0] = 0;
 		hereIam[1] = 0;
 		rightList = -2;
-		expression = null;
-		
 	}
-	
-	/*public static ToListenForMouseContainer getInstanceOf()
-	{
-		if (myToListenForMouseContainer == null)
-		{
-			myToListenForMouseContainer = new ToListenForMouseContainer();
-		return myToListenForMouseContainer;
-		}
-		else
-		{
-			return myToListenForMouseContainer;	
-		}
-		}
-	*/	
-	
-	
+	/**
+	 * adds a position to the vector
+	 * TODO 4 ints heve to be added. mybe a method with 4 ints...
+	 * @param toadd - int with x, y, x1 or y1 position
+	 */
 	public void add (int toadd)
 	{
 		toListenForMouse.add(toadd);
 	}
 	
+	/**
+	 * returns one part of a position of vector
+	 * @param i - int witch value to return
+	 * @return int with value
+	 */
 	public int get (int i)
 	{
 		int result = 0;
@@ -63,32 +67,58 @@ public class ToListenForMouseContainer
 		return result;
 	}
 	
+	/**
+	 * get the infromation if the vector ist empty or not
+	 * @return - booelan, true if empty
+	 */
 	public boolean isEmpty ()
 	{
 		if (toListenForMouse.size()!= 0 ) return false;
 		return true;
 	}
 	
+	/**
+	 * clears all entris from vector
+	 *
+	 */
 	public void reset ()
 	{
 		toListenForMouse.removeAllElements();	
 	}
 	
+	/**
+	 * returns the size of the vector
+	 * @return
+	 */
 	public int size()
 	{
 		return toListenForMouse.size();
 	}
 	
+	/**
+	 * let you set an position at a specified position
+	 * @param pos - int position
+	 * @param val - int value
+	 */
 	public void setElementAt (int pos, int val)
 	{
 		toListenForMouse.setElementAt(val, pos);
 	}
 	
+	/**
+	 * returns true if it should be marked teh bindings
+	 * @return
+	 */
 	public boolean getMark()
 	{
 		return mark;
 	}
 	
+	/**
+	 * sets the boolean if ist should be marked or not
+	 * CATION the first time, mark is set to true, it will be ignored. 
+	 * @param b
+	 */
 	public void setMark(boolean b)
 	{
 		if (!b)
@@ -103,59 +133,43 @@ public class ToListenForMouseContainer
 		{
 			markCount++;
 		}
-		
 	}
 	
+	/**
+	 * sets the position where the pointer is
+	 * @param x
+	 * @param y
+	 */
 	public void setHereIam(int x, int y)
 	{
 		hereIam[0] = x;
 		hereIam[1] = y;
 	}
 	
+	/**
+	 * returns the position where the pointer is
+	 * @return
+	 */
 	public int [] getHereIam ()
 	{
 		return hereIam;
 	}
 	
+	/**
+	 * sets the list where the mouseover effect will be activated
+	 * @param x
+	 */
 	public void setRightList (int x)
 	{
-		if (x == -1)
-		{
-			//System.err.println("Der will verbotener weise -1 setzen, scheiﬂe!");
-			//System.exit(125);
-		}
-			
 		rightList = x;
   }
 	
+	/**
+	 * returns the list where the mouseovereffect will be activated
+	 * @return
+	 */
 	public int getRightList ()
 	{
 		return rightList;
-	}
-	
-	public boolean setExpression (Expression e)
-	{
-		if (expression == null)
-		{
-			expression = e;
-			return true;
-		}
-		else 
-		{
-			if (expression == e)
-			{
-				return true;
-			}
-			else
-			{
-				return false;
-			}
-		}
-		
-	}
-	
-	public Expression getExpression ()
-	{
-		return expression;
 	}
 }
