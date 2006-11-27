@@ -12,6 +12,7 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStyle ;
 import de.unisiegen.tpml.graphics.Theme ;
 import de.unisiegen.tpml.ui.abstractsyntaxtree.binding.ASTBinding ;
 import de.unisiegen.tpml.ui.abstractsyntaxtree.binding.ASTPair ;
+import de.unisiegen.tpml.ui.abstractsyntaxtree.binding.ASTUnbound ;
 
 
 /**
@@ -89,6 +90,12 @@ public class ASTNode
 
 
   /**
+   * TODO
+   */
+  private static boolean unbound = true ;
+
+
+  /**
    * Sets the binding value. Selected identifier and bindings should be
    * highlighted in higher nodes.
    * 
@@ -121,6 +128,17 @@ public class ASTNode
   public static void setSelection ( boolean pSelection )
   {
     selection = pSelection ;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @param pUnbound
+   */
+  public static void setUnbound ( boolean pUnbound )
+  {
+    unbound = pUnbound ;
   }
 
 
@@ -168,6 +186,12 @@ public class ASTNode
 
 
   /**
+   * TODO
+   */
+  private ASTUnbound aSTUnbound ;
+
+
+  /**
    * The ResourceBundle, to set the description from the ast.properties.
    */
   private ResourceBundle resourceBundle ;
@@ -177,8 +201,9 @@ public class ASTNode
    * Initialies the values and loads the description.
    * 
    * @param pExpression The expression repressented by this node.
+   * @param pASTUnbound TODO
    */
-  public ASTNode ( Expression pExpression )
+  public ASTNode ( Expression pExpression , ASTUnbound pASTUnbound )
   {
     // Load the description
     this.resourceBundle = ResourceBundle
@@ -199,6 +224,7 @@ public class ASTNode
     this.expression = pExpression ;
     this.aSTPair = null ;
     this.aSTBinding = null ;
+    this.aSTUnbound = pASTUnbound ;
     this.replaceInThisNode = false ;
     resetCaption ( ) ;
   }
@@ -212,9 +238,10 @@ public class ASTNode
    * @param pASTPair The ASTPair which repressent the start and the end offset
    *        of Identifiers in the node.
    * @param pASTBinding The bindings in this node.
+   * @param pASTUnbound TODO
    */
   public ASTNode ( String pDescription , String pExpressionString ,
-      ASTPair pASTPair , ASTBinding pASTBinding )
+      ASTPair pASTPair , ASTBinding pASTBinding , ASTUnbound pASTUnbound )
   {
     // Preferences
     this.resourceBundle = ResourceBundle
@@ -233,6 +260,7 @@ public class ASTNode
     this.expression = null ;
     this.aSTPair = pASTPair ;
     this.aSTBinding = pASTBinding ;
+    this.aSTUnbound = pASTUnbound ;
     this.replaceInThisNode = false ;
     resetCaption ( ) ;
   }
@@ -325,19 +353,6 @@ public class ASTNode
 
 
   /**
-   * Returns the color in HTML formatting.
-   * 
-   * @param pColor The Color which should be returned.
-   * @return The color in HTML formatting.
-   */
-  private String getHTMLFormat ( Color pColor )
-  {
-    return ( getHex ( pColor.getRed ( ) ) + getHex ( pColor.getGreen ( ) ) + getHex ( pColor
-        .getBlue ( ) ) ) ;
-  }
-
-
-  /**
    * Returns the hex value of a given integer.
    * 
    * @param pNumber The input integer value.
@@ -369,6 +384,19 @@ public class ASTNode
 
 
   /**
+   * Returns the color in HTML formatting.
+   * 
+   * @param pColor The Color which should be returned.
+   * @return The color in HTML formatting.
+   */
+  private String getHTMLFormat ( Color pColor )
+  {
+    return ( getHex ( pColor.getRed ( ) ) + getHex ( pColor.getGreen ( ) ) + getHex ( pColor
+        .getBlue ( ) ) ) ;
+  }
+
+
+  /**
    * This method returns true if a given pCharIndex should be highlighted as a
    * binding. The pIdentifierIndex indicates in which list the pCharIndex should
    * be searched for. This is only used if an Expression has more than one
@@ -395,6 +423,35 @@ public class ASTNode
           && ( pCharIndex <= prettyAnnotation.getEndOffset ( ) ) )
       {
         return true ;
+      }
+    }
+    return false ;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @param pCharIndex
+   * @return TODO
+   */
+  private boolean isUnbound ( int pCharIndex )
+  {
+    for ( int i = 0 ; i < this.aSTUnbound.size ( ) ; i ++ )
+    {
+      try
+      {
+        PrettyAnnotation prettyAnnotation = this.expression.toPrettyString ( )
+            .getAnnotationForPrintable ( this.aSTUnbound.get ( i ) ) ;
+        if ( ( pCharIndex >= prettyAnnotation.getStartOffset ( ) )
+            && ( pCharIndex <= prettyAnnotation.getEndOffset ( ) ) )
+        {
+          return true ;
+        }
+      }
+      catch ( IllegalArgumentException e )
+      {
+        // Happens if the unbound Identifiers are not placed in this node.
       }
     }
     return false ;
@@ -490,6 +547,8 @@ public class ASTNode
         .getSelectionColor ( ) ) ;
     String bindingColor = getHTMLFormat ( Theme.currentTheme ( )
         .getBindingColor ( ) ) ;
+    String unboundColor = getHTMLFormat ( Theme.currentTheme ( )
+        .getUnboundColor ( ) ) ;
     StringBuffer result = new StringBuffer ( ) ;
     result.append ( "<html>" ) ;
     result.append ( BEFORE_DESCRIPTION ) ;
@@ -543,6 +602,20 @@ public class ASTNode
       {
         result.append ( "<b><font color=\"#" + bindingColor + "\">" ) ;
         while ( isBinding ( pIdentifierIndex , charIndex ) )
+        {
+          result.append ( this.expressionString.charAt ( charIndex ) ) ;
+          // Next character
+          charIndex ++ ;
+          prettyCharIterator.next ( ) ;
+        }
+        result.append ( "</font></b>" ) ;
+      }
+      // Unbound
+      else if ( ( unbound ) && ( this.aSTUnbound != null )
+          && ( isUnbound ( charIndex ) ) )
+      {
+        result.append ( "<b><font color=\"#" + unboundColor + "\">" ) ;
+        while ( isUnbound ( charIndex ) )
         {
           result.append ( this.expressionString.charAt ( charIndex ) ) ;
           // Next character

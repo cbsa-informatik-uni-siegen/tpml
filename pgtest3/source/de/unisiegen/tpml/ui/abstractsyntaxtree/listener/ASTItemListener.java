@@ -9,7 +9,7 @@ import de.unisiegen.tpml.ui.abstractsyntaxtree.ASTUI ;
 
 /**
  * TODO
- *
+ * 
  * @author Christian Fehler
  * @version $Rev$
  */
@@ -23,7 +23,7 @@ public class ASTItemListener implements ItemListener
 
   /**
    * TODO
-   *
+   * 
    * @param pASTUI
    */
   public ASTItemListener ( ASTUI pASTUI )
@@ -47,7 +47,7 @@ public class ASTItemListener implements ItemListener
 
   /**
    * TODO
-   *
+   * 
    * @param pSelected
    * @param pSource
    * @param pActionCommand
@@ -78,6 +78,18 @@ public class ASTItemListener implements ItemListener
           pSelected ) ;
       this.aSTUI.getJCheckBoxBinding ( ).setSelected ( pSelected ) ;
       this.aSTUI.getJMenuItemBinding ( ).setSelected ( pSelected ) ;
+    }
+    else if ( ( pActionCommand.equals ( "unbound" ) )
+        || ( ( pSource != null ) && ( pSource.equals ( this.aSTUI
+            .getJCheckBoxUnbound ( ) ) ) ) )
+    {
+      ASTNode.setUnbound ( pSelected ) ;
+      this.aSTUI.getASTTreeSelectionListener ( ).update (
+          this.aSTUI.getJTreeAbstractSyntaxTree ( ).getSelectionPath ( ) ) ;
+      this.aSTUI.getAbstractSyntaxTree ( ).getASTPreferences ( ).setUnbound (
+          pSelected ) ;
+      this.aSTUI.getJCheckBoxUnbound ( ).setSelected ( pSelected ) ;
+      this.aSTUI.getJMenuItemUnbound ( ).setSelected ( pSelected ) ;
     }
     else if ( ( pActionCommand.equals ( "selection" ) )
         || ( ( pSource != null ) && ( pSource.equals ( this.aSTUI

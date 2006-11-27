@@ -7,9 +7,12 @@ import de.unisiegen.tpml.core.expressions.CurriedLet ;
 import de.unisiegen.tpml.core.expressions.CurriedLetRec ;
 import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.expressions.Identifier ;
+import de.unisiegen.tpml.core.expressions.Lambda ;
 import de.unisiegen.tpml.core.expressions.Let ;
 import de.unisiegen.tpml.core.expressions.LetRec ;
+import de.unisiegen.tpml.core.expressions.MultiLambda ;
 import de.unisiegen.tpml.core.expressions.MultiLet ;
+import de.unisiegen.tpml.core.expressions.Recursion ;
 
 
 /**
@@ -195,6 +198,43 @@ public class ASTBinding
     {
       LinkedList < Expression > tmpList ;
       tmpList = free ( ( ( Let ) pExpression ).getE1 ( ) , pId ) ;
+      for ( Expression tmpExpr : tmpList )
+      {
+        result.add ( tmpExpr ) ;
+      }
+      return result ;
+    }
+    else if ( ( pExpression instanceof MultiLambda )
+        && ( identifierIndex ( ( ( MultiLambda ) pExpression )
+            .getIdentifiers ( ) , pId ) >= 0 )
+        && ( ! pExpression.equals ( this.holeExpression ) ) )
+    {
+      LinkedList < Expression > tmpList ;
+      tmpList = free ( ( ( MultiLambda ) pExpression ).getE ( ) , pId ) ;
+      for ( Expression tmpExpr : tmpList )
+      {
+        result.add ( tmpExpr ) ;
+      }
+      return result ;
+    }
+    else if ( ( pExpression instanceof Lambda )
+        && ( ( ( Lambda ) pExpression ).getId ( ).equals ( pId ) )
+        && ( ! pExpression.equals ( this.holeExpression ) ) )
+    {
+      LinkedList < Expression > tmpList ;
+      tmpList = free ( ( ( Lambda ) pExpression ).getE ( ) , pId ) ;
+      for ( Expression tmpExpr : tmpList )
+      {
+        result.add ( tmpExpr ) ;
+      }
+      return result ;
+    }
+    else if ( ( pExpression instanceof Recursion )
+        && ( ( ( Recursion ) pExpression ).getId ( ).equals ( pId ) )
+        && ( ! pExpression.equals ( this.holeExpression ) ) )
+    {
+      LinkedList < Expression > tmpList ;
+      tmpList = free ( ( ( Recursion ) pExpression ).getE ( ) , pId ) ;
       for ( Expression tmpExpr : tmpList )
       {
         result.add ( tmpExpr ) ;

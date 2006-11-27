@@ -83,6 +83,11 @@ public class ASTActionListener implements ActionListener
       this.aSTUI.getASTItemListener ( ).update (
           this.aSTUI.getJMenuItemBinding ( ).isSelected ( ) , null , "binding" ) ;
     }
+    else if ( actionCommand.equals ( "unbound" ) )
+    {
+      this.aSTUI.getASTItemListener ( ).update (
+          this.aSTUI.getJMenuItemUnbound ( ).isSelected ( ) , null , "unbound" ) ;
+    }
     else if ( actionCommand.equals ( "replace" ) )
     {
       this.aSTUI.getASTItemListener ( ).update (

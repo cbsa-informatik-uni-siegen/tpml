@@ -140,6 +140,12 @@ public class ASTUI
   /**
    * TODO
    */
+  private JCheckBox jCheckBoxUnbound ;
+
+
+  /**
+   * TODO
+   */
   private JCheckBox jCheckBoxSelection ;
 
 
@@ -225,6 +231,12 @@ public class ASTUI
    * TODO
    */
   private JCheckBoxMenuItem jMenuItemBinding ;
+
+
+  /**
+   * TODO
+   */
+  private JCheckBoxMenuItem jMenuItemUnbound ;
 
 
   /**
@@ -394,6 +406,17 @@ public class ASTUI
         .getASTPreferences ( ).isBinding ( ) ) ;
     this.jCheckBoxBinding.setFocusable ( false ) ;
     this.jCheckBoxBinding.addItemListener ( this.aSTItemListener ) ;
+    // CheckBox Bindings
+    this.jCheckBoxUnbound = new JCheckBox ( this.resourceBundle
+        .getString ( "unbound" ) ) ;
+    this.jCheckBoxUnbound.setMnemonic ( this.resourceBundle.getString (
+        "unboundMnemonic" ).charAt ( 0 ) ) ;
+    this.jCheckBoxUnbound.setToolTipText ( this.resourceBundle
+        .getString ( "unboundToolTip" ) ) ;
+    this.jCheckBoxUnbound.setSelected ( this.abstractSyntaxTree
+        .getASTPreferences ( ).isUnbound ( ) ) ;
+    this.jCheckBoxUnbound.setFocusable ( false ) ;
+    this.jCheckBoxUnbound.addItemListener ( this.aSTItemListener ) ;
     // CheckBox Replace
     this.jCheckBoxReplace = new JCheckBox ( this.resourceBundle
         .getString ( "replace" ) ) ;
@@ -435,7 +458,7 @@ public class ASTUI
         this.gridBagConstraints ) ;
     // CheckBox Bindings
     this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
-    // insets.set ( 4 , 4 , 4 , 4 ) ;
+    insets.set ( 0 , 4 , 0 , 4 ) ;
     this.gridBagConstraints.insets = insets ;
     this.gridBagConstraints.gridx = 1 ;
     this.gridBagConstraints.gridy = 0 ;
@@ -443,11 +466,21 @@ public class ASTUI
     this.gridBagConstraints.weighty = 10 ;
     this.jPanelPreferences.add ( this.jCheckBoxBinding ,
         this.gridBagConstraints ) ;
-    // CheckBox Replace
+    // CheckBox Unbound
     this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
-    // insets.set ( 4 , 4 , 4 , 4 ) ;
+    insets.set ( 0 , 4 , 0 , 4 ) ;
     this.gridBagConstraints.insets = insets ;
     this.gridBagConstraints.gridx = 2 ;
+    this.gridBagConstraints.gridy = 0 ;
+    this.gridBagConstraints.weightx = 0 ;
+    this.gridBagConstraints.weighty = 10 ;
+    this.jPanelPreferences.add ( this.jCheckBoxUnbound ,
+        this.gridBagConstraints ) ;
+    // CheckBox Replace
+    this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
+    insets.set ( 0 , 4 , 0 , 4 ) ;
+    this.gridBagConstraints.insets = insets ;
+    this.gridBagConstraints.gridx = 3 ;
     this.gridBagConstraints.gridy = 0 ;
     this.gridBagConstraints.weightx = 0 ;
     this.gridBagConstraints.weighty = 10 ;
@@ -455,9 +488,9 @@ public class ASTUI
         this.gridBagConstraints ) ;
     // CheckBox AutoUpdate
     this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
-    // insets.set ( 4 , 4 , 4 , 4 ) ;
+    insets.set ( 0 , 4 , 0 , 4 ) ;
     this.gridBagConstraints.insets = insets ;
-    this.gridBagConstraints.gridx = 3 ;
+    this.gridBagConstraints.gridx = 4 ;
     this.gridBagConstraints.gridy = 0 ;
     this.gridBagConstraints.weightx = 10 ;
     this.gridBagConstraints.weighty = 10 ;
@@ -667,6 +700,18 @@ public class ASTUI
     this.jMenuItemBinding.setSelected ( this.abstractSyntaxTree
         .getASTPreferences ( ).isBinding ( ) ) ;
     this.jMenuItemPreferences.add ( this.jMenuItemBinding ) ;
+    // MenuItem Unbound
+    this.jMenuItemUnbound = new JCheckBoxMenuItem ( this.resourceBundle
+        .getString ( "unbound" ) ) ;
+    this.jMenuItemUnbound.setMnemonic ( this.resourceBundle.getString (
+        "unboundMnemonic" ).charAt ( 0 ) ) ;
+    this.jMenuItemUnbound.setToolTipText ( this.resourceBundle
+        .getString ( "unboundToolTip" ) ) ;
+    this.jMenuItemUnbound.setActionCommand ( "unbound" ) ;
+    this.jMenuItemUnbound.addActionListener ( this.aSTActionListener ) ;
+    this.jMenuItemUnbound.setSelected ( this.abstractSyntaxTree
+        .getASTPreferences ( ).isUnbound ( ) ) ;
+    this.jMenuItemPreferences.add ( this.jMenuItemUnbound ) ;
     // MenuItem Replace
     this.jMenuItemReplace = new JCheckBoxMenuItem ( this.resourceBundle
         .getString ( "replace" ) ) ;
@@ -864,6 +909,17 @@ public class ASTUI
    * 
    * @return TODO
    */
+  public JCheckBox getJCheckBoxUnbound ( )
+  {
+    return this.jCheckBoxUnbound ;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @return TODO
+   */
   public JCheckBoxMenuItem getJMenuItemAutoUpdate ( )
   {
     return this.jMenuItemAutoUpdate ;
@@ -966,6 +1022,17 @@ public class ASTUI
   public JCheckBoxMenuItem getJMenuItemSelection ( )
   {
     return this.jMenuItemSelection ;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @return TODO
+   */
+  public JCheckBoxMenuItem getJMenuItemUnbound ( )
+  {
+    return this.jMenuItemUnbound ;
   }
 
 
