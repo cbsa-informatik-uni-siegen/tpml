@@ -358,8 +358,8 @@ public class SmallStepNodeComponent extends JComponent {
 	{
 		// TODO Automatisch erstellter Methoden-Stub
 		
-		gc.setColor(Color.BLACK);
-		gc.drawRect(0, 0, getWidth()-1, getHeight()-1);
+		//gc.setColor(Color.BLACK);
+		//gc.drawRect(0, 0, getWidth()-1, getHeight()-1);
 		super.paintComponent(gc);
 	}
 
