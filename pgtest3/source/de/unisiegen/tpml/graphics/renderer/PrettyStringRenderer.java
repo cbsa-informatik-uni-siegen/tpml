@@ -478,7 +478,7 @@ public class PrettyStringRenderer extends AbstractRenderer {
 					//let font be in right color
 					if (isFirstInListe (i, annotationsList))
 					{
-						gc.setColor(Theme.currentTheme().getSelectionColor());
+						gc.setColor(Theme.currentTheme().getIdColor());
 					}
 					else
 					{
