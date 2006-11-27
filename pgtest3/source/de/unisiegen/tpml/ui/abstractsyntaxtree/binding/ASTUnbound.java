@@ -44,6 +44,23 @@ public class ASTUnbound
   /**
    * TODO
    * 
+   * @param pList
+   * @return TODO
+   */
+  private LinkedList < String > copyList ( LinkedList < String > pList )
+  {
+    LinkedList < String > list = new LinkedList < String > ( ) ;
+    for ( String tmp : pList )
+    {
+      list.add ( tmp ) ;
+    }
+    return list ;
+  }
+
+
+  /**
+   * TODO
+   * 
    * @param pExpression
    * @return TODO
    */
@@ -79,126 +96,102 @@ public class ASTUnbound
     if ( pExpression instanceof CurriedLetRec )
     {
       CurriedLetRec curriedLetRec = ( CurriedLetRec ) pExpression ;
-      LinkedList < String > newUnbound1 = new LinkedList < String > ( ) ;
-      LinkedList < String > newUnbound2 = new LinkedList < String > ( ) ;
-      for ( String unbound : pUnbound )
-      {
-        newUnbound1.add ( unbound ) ;
-        newUnbound2.add ( unbound ) ;
-      }
+      LinkedList < String > unbound1 = copyList ( pUnbound ) ;
+      LinkedList < String > unbound2 = copyList ( pUnbound ) ;
+      // New bindings in E1, Identifier 0 to n
       for ( int i = 0 ; i < curriedLetRec.getIdentifiers ( ).length ; i ++ )
       {
-        newUnbound1.add ( curriedLetRec.getIdentifiers ( i ) ) ;
+        unbound1.add ( curriedLetRec.getIdentifiers ( i ) ) ;
       }
-      newUnbound2.add ( curriedLetRec.getIdentifiers ( 0 ) ) ;
-      findUnbound ( pResult , newUnbound1 , curriedLetRec.getE1 ( ) ) ;
-      findUnbound ( pResult , newUnbound2 , curriedLetRec.getE2 ( ) ) ;
+      findUnbound ( pResult , unbound1 , curriedLetRec.getE1 ( ) ) ;
+      // New bindings in E2, Identifier 0
+      unbound2.add ( curriedLetRec.getIdentifiers ( 0 ) ) ;
+      findUnbound ( pResult , unbound2 , curriedLetRec.getE2 ( ) ) ;
     }
     else if ( pExpression instanceof CurriedLet )
     {
       CurriedLet curriedLet = ( CurriedLet ) pExpression ;
-      LinkedList < String > newUnbound1 = new LinkedList < String > ( ) ;
-      LinkedList < String > newUnbound2 = new LinkedList < String > ( ) ;
-      for ( String unbound : pUnbound )
-      {
-        newUnbound1.add ( unbound ) ;
-        newUnbound2.add ( unbound ) ;
-      }
+      LinkedList < String > unbound1 = copyList ( pUnbound ) ;
+      LinkedList < String > unbound2 = copyList ( pUnbound ) ;
+      // New bindings in E1, Identifier 1 to n
       for ( int i = 1 ; i < curriedLet.getIdentifiers ( ).length ; i ++ )
       {
-        newUnbound1.add ( curriedLet.getIdentifiers ( i ) ) ;
+        unbound1.add ( curriedLet.getIdentifiers ( i ) ) ;
       }
-      newUnbound2.add ( curriedLet.getIdentifiers ( 0 ) ) ;
-      findUnbound ( pResult , newUnbound1 , curriedLet.getE1 ( ) ) ;
-      findUnbound ( pResult , newUnbound2 , curriedLet.getE2 ( ) ) ;
+      findUnbound ( pResult , unbound1 , curriedLet.getE1 ( ) ) ;
+      // New bindings in E2, Identifier 0
+      unbound2.add ( curriedLet.getIdentifiers ( 0 ) ) ;
+      findUnbound ( pResult , unbound2 , curriedLet.getE2 ( ) ) ;
     }
     else if ( pExpression instanceof MultiLet )
     {
       MultiLet multiLet = ( MultiLet ) pExpression ;
-      LinkedList < String > newUnbound1 = new LinkedList < String > ( ) ;
-      LinkedList < String > newUnbound2 = new LinkedList < String > ( ) ;
-      for ( String unbound : pUnbound )
-      {
-        newUnbound1.add ( unbound ) ;
-        newUnbound2.add ( unbound ) ;
-      }
+      LinkedList < String > unbound1 = copyList ( pUnbound ) ;
+      LinkedList < String > unbound2 = copyList ( pUnbound ) ;
+      // No new binding in E1
+      findUnbound ( pResult , unbound1 , multiLet.getE1 ( ) ) ;
+      // New bindings in E2
       for ( int i = 0 ; i < multiLet.getIdentifiers ( ).length ; i ++ )
       {
-        newUnbound2.add ( multiLet.getIdentifiers ( i ) ) ;
+        unbound2.add ( multiLet.getIdentifiers ( i ) ) ;
       }
-      findUnbound ( pResult , newUnbound1 , multiLet.getE1 ( ) ) ;
-      findUnbound ( pResult , newUnbound2 , multiLet.getE2 ( ) ) ;
+      findUnbound ( pResult , unbound2 , multiLet.getE2 ( ) ) ;
     }
     else if ( pExpression instanceof MultiLambda )
     {
       MultiLambda multiLambda = ( MultiLambda ) pExpression ;
-      LinkedList < String > newUnbound = new LinkedList < String > ( ) ;
-      for ( String unbound : pUnbound )
-      {
-        newUnbound.add ( unbound ) ;
-      }
+      LinkedList < String > unbound = copyList ( pUnbound ) ;
+      // New bindings in E
       for ( int i = 0 ; i < multiLambda.getIdentifiers ( ).length ; i ++ )
       {
-        newUnbound.add ( multiLambda.getIdentifiers ( i ) ) ;
+        unbound.add ( multiLambda.getIdentifiers ( i ) ) ;
       }
-      findUnbound ( pResult , newUnbound , multiLambda.getE ( ) ) ;
+      findUnbound ( pResult , unbound , multiLambda.getE ( ) ) ;
     }
     else if ( pExpression instanceof LetRec )
     {
       LetRec letRec = ( LetRec ) pExpression ;
-      LinkedList < String > newUnbound1 = new LinkedList < String > ( ) ;
-      LinkedList < String > newUnbound2 = new LinkedList < String > ( ) ;
-      for ( String unbound : pUnbound )
-      {
-        newUnbound1.add ( unbound ) ;
-        newUnbound2.add ( unbound ) ;
-      }
-      newUnbound1.add ( letRec.getId ( ) ) ;
-      newUnbound2.add ( letRec.getId ( ) ) ;
-      findUnbound ( pResult , newUnbound1 , letRec.getE1 ( ) ) ;
-      findUnbound ( pResult , newUnbound2 , letRec.getE2 ( ) ) ;
+      LinkedList < String > unbound1 = copyList ( pUnbound ) ;
+      LinkedList < String > unbound2 = copyList ( pUnbound ) ;
+      // New binding in E1
+      unbound1.add ( letRec.getId ( ) ) ;
+      findUnbound ( pResult , unbound1 , letRec.getE1 ( ) ) ;
+      // New binding in E2
+      unbound2.add ( letRec.getId ( ) ) ;
+      findUnbound ( pResult , unbound2 , letRec.getE2 ( ) ) ;
     }
     else if ( pExpression instanceof Let )
     {
       Let let = ( Let ) pExpression ;
-      LinkedList < String > newUnbound = new LinkedList < String > ( ) ;
-      for ( String unbound : pUnbound )
-      {
-        newUnbound.add ( unbound ) ;
-      }
-      newUnbound.add ( let.getId ( ) ) ;
+      LinkedList < String > unbound = copyList ( pUnbound ) ;
+      // No new binding in E1
       findUnbound ( pResult , pUnbound , let.getE1 ( ) ) ;
-      findUnbound ( pResult , newUnbound , let.getE2 ( ) ) ;
+      // New binding in E2
+      unbound.add ( let.getId ( ) ) ;
+      findUnbound ( pResult , unbound , let.getE2 ( ) ) ;
     }
     else if ( pExpression instanceof Lambda )
     {
       Lambda lambda = ( Lambda ) pExpression ;
-      LinkedList < String > newUnbound = new LinkedList < String > ( ) ;
-      for ( String unbound : pUnbound )
-      {
-        newUnbound.add ( unbound ) ;
-      }
-      newUnbound.add ( lambda.getId ( ) ) ;
-      findUnbound ( pResult , newUnbound , lambda.getE ( ) ) ;
+      LinkedList < String > unbound = copyList ( pUnbound ) ;
+      // New binding in E
+      unbound.add ( lambda.getId ( ) ) ;
+      findUnbound ( pResult , unbound , lambda.getE ( ) ) ;
     }
     else if ( pExpression instanceof Recursion )
     {
       Recursion recursion = ( Recursion ) pExpression ;
-      LinkedList < String > newUnbound = new LinkedList < String > ( ) ;
-      for ( String unbound : pUnbound )
-      {
-        newUnbound.add ( unbound ) ;
-      }
-      newUnbound.add ( recursion.getId ( ) ) ;
-      findUnbound ( pResult , newUnbound , recursion.getE ( ) ) ;
+      LinkedList < String > unbound = copyList ( pUnbound ) ;
+      // New binding in E2
+      unbound.add ( recursion.getId ( ) ) ;
+      findUnbound ( pResult , unbound , recursion.getE ( ) ) ;
     }
     else
     {
       Enumeration < Expression > children = pExpression.children ( ) ;
       while ( children.hasMoreElements ( ) )
       {
-        Expression child = children.nextElement ( ) ;
-        findUnbound ( pResult , pUnbound , child ) ;
+        findUnbound ( pResult , pUnbound , children.nextElement ( ) ) ;
       }
     }
   }
