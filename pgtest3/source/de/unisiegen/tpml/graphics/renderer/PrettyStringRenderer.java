@@ -253,7 +253,7 @@ public class PrettyStringRenderer extends AbstractRenderer {
 	/**
 	 * Hilfmethode, umd zu überprüfen, ob ein int in der Liste liegt
 	 * 
-	 */
+	 *//*
 	public static boolean isIn (int test, LinkedList <Bonds> list)
 	{
 		//System.out.println("Nun wird überprüft, ob die Zahl in der Liste steht...");
@@ -293,10 +293,10 @@ public class PrettyStringRenderer extends AbstractRenderer {
 		}
 		//nur nachsehen, ob diese Methode geht, damit tatsächlich was gemalt wird
 		return result;
-	}
+	}*/
 	
 	
-	public static int isInListe (int test, LinkedList <Bonds> list)
+	public static int isInList (int test, LinkedList <Bonds> list)
 	{
 		//System.out.println("Nun wird überprüft, ob die Zahl in der Liste steht...");
 		//System.out.println("Länge der komischen Liste: "+list.size());
@@ -351,11 +351,10 @@ public class PrettyStringRenderer extends AbstractRenderer {
 	 * @return The width of the expression will get returned.
 	 */
 	public void render (int x, int y, int height,  Graphics gc, ShowBonds bound, ToListenForMouseContainer toListenForMouse) {
+		//TODO Das muss noch schöner weerden, diese Forschleife ersetzt vernünftige Logik leider nicht...
 		for (int schei = 0; schei<=2 ; schei++)
 		{
-		//Eine Instanz, die Instanz von toLitenForMouse
-		//toListenForMouse = ToListenForMouseContainer.getInstanceOf();
-		
+				
 		int[] breakOffsets = null;
 		if (this.result.annotation != null) {
 			breakOffsets = this.result.annotation.getBreakOffsets();
@@ -385,20 +384,17 @@ public class PrettyStringRenderer extends AbstractRenderer {
 			underlineStart	= this.underlineAnnotation.getStartOffset();
 			underlineEnd		= this.underlineAnnotation.getEndOffset();
 		}
+		
 		// now we can start to render the expression
 		PrettyCharIterator it = this.prettyString.toCharacterIterator();
-		int number=-1;
 		for (char c = it.first(); c != CharacterIterator.DONE; c = it.next(), i++) 
 		{
-			number++;
 			for (int j=0; j<breakOffsets.length; j++) 
 			{
 				if (breakOffsets [j] == i) {
 					posY += AbstractRenderer.fontHeight;
 					
 					posX = x;
-					//				Komische TEstausgabe TODO komische Testausgabe
-					//System.out.println("Position in X-Richtung ist: "+x);
 				}
 			}
 			
@@ -408,90 +404,57 @@ public class PrettyStringRenderer extends AbstractRenderer {
 			int charWidth = fm.stringWidth("" + c);
 			int charHighth = fm.getHeight();
 			
-			
-			//TODO: Vielleicht unterstreichen
-			//gets singelton instance of showbound to show bindings
+			//Here we get the information where bindings exists in positions
 			ShowBonds instanceOfShowBound = bound; 
 			LinkedList annotationsList = instanceOfShowBound.getAnnotations();
-			//LinkedList <Bonds> sbl = sb.result;
-			
-			
-			//Indexes indexes = sb.getIndexes();
-			//if i == get
-			//Wenn Elemnt in der Liste der zu makierend sind, in iregend einer
-			if (isIn(i, annotationsList))
+
+			//look for aktual char is in this list (-1 stands for false)
+			if (!(toListenForMouse.getMark()) && (isInList(i, annotationsList)) > -1)
 			{
-				//Dann werden sie in die Liste gepackt, wo später Mauslistener reagieren
-				//try
-				//{
-				//	Debug.out.println(toListenForMouse.getExpression().toPrettyString().toString(), "Feivel");
-				//}
-				//catch (NullPointerException e)
-				//{
-				//	Debug.out.println("Hier gibt es keine Expression", "Feivel");
-				//}
-				
+				//tell mouselistener in CompoundExpression to react at these positions
 				toListenForMouse.add(posX);
 				toListenForMouse.add(posX+charWidth);
 				toListenForMouse.add(posY-fm.getAscent());
 				toListenForMouse.add(posY+fm.getDescent());
-				//TODO Testausgaben
-				//System.out.println("Der Buchstabe wird der Liste hinzugefügt: "+c);
-				//System.out.println("Der Buchstabe steht an Position : "+i);
-				
-				//ALTusing thes variables will underline with the existing underlinealgo using their color
-				//ALTunderlineStart = i;
-				//ALTunderlineEnd = i;
-				
-				//fm = AbstractRenderer.expFontMetrics;
-				//int charWidth = fm.stringWidth("" + c);
-				//int charHighth = fm.getHeight()
 			}
 							
 			//Wenn gemalt werden soll, also die Maus über einem Buchstaben steht
 			//Damit die Liste mit jeder neuen Expression neu gesetzt wird, wird in CopoundExpression neu gesetz
-			if (toListenForMouse.getMark() && isInListe(i, annotationsList) != -1)
+			if (toListenForMouse.getMark() && isInList(i, annotationsList) != -1)
 				{
-				//System.out.println("Der Mauszeiger ist über einem Buchstaben, der gemalt werden soll");
-				  //TODO hier muss überprüft werden, ob die Position des Mauszeigers auf der annotationList liegt
-					
-				//Das ist die Xposition des Mauszeigers
+		
+				//get X-Pos of MousePointer
 				int xPos = toListenForMouse.getHereIam()[0];
-					//System.out.println("Hier ist die Maus "+xPos);
-					
-					//fm = AbstractRenderer.expFontMetrics;
-					//int charWidth = fm.stringWidth("" + c);
-					//int charHighth = fm.getHeight();
 					
 					//Pürfen, auf welchem Zeichen die Maus ist...
-					if ((xPos >= posX) && (xPos <= posX+charWidth))
+				if ((xPos >= posX) && (xPos <= posX+charWidth))
+				{
+					//TODO TEstausgaben
+					//System.out.println("Er ist über einem anzunakdenden Zeichen: "+c);
+					//System.out.println("Es steht in der Liste : "+isInListe(i, annotationsList));
+					
+					//Nur Werte größer gleich 0 sind sinnvolle Werte für die Liste, alle anderen sind Fehlerfälle
+					if (isInList(i, annotationsList) > -1) 
 					{
-						//TODO TEstausgaben
-						//System.out.println("Er ist über einem anzunakdenden Zeichen: "+c);
-						//System.out.println("Es steht in der Liste : "+isInListe(i, annotationsList));
-						
-						//Nur Werte größer gleich 0 sind sinnvolle Werte für die Liste, alle anderen sind Fehlerfälle
-						if (isInListe(i, annotationsList) > -1) 
-						{
-							toListenForMouse.setRightList(isInListe(i, annotationsList));		
-						}
-					 }
-					if (isInListe(i, annotationsList) > -1)
+						toListenForMouse.setRightList(isInList(i, annotationsList));		
+					}
+				 }
+				if (isInList(i, annotationsList) > -1)
+				{
+					if (isInList(i, annotationsList) == toListenForMouse.getRightList())
 					{
-						if (isInListe(i, annotationsList) == toListenForMouse.getRightList())
-						{
-							Font orginalFont = gc.getFont();
-							String fontName = orginalFont.getName();
-							int fontSize = orginalFont.getSize();
-							Font newFont = new Font(fontName, Font.BOLD|Font.ITALIC, fontSize);
-							gc.setColor(Theme.currentTheme().getBindingColor());
-							//gc.setColor(Color.orange);
-							gc.setFont(newFont);
-							//int charWidth = fm.stringWidth("" + c);
-							gc.drawLine(posX, posY + 1, posX + charWidth, posY + 1);
-						}
+						Font orginalFont = gc.getFont();
+						String fontName = orginalFont.getName();
+						int fontSize = orginalFont.getSize();
+						Font newFont = new Font(fontName, Font.BOLD|Font.ITALIC, fontSize);
+						gc.setColor(Theme.currentTheme().getBindingColor());
+						//gc.setColor(Color.orange);
+						gc.setFont(newFont);
+						//int charWidth = fm.stringWidth("" + c);
+						gc.drawLine(posX, posY + 1, posX + charWidth, posY + 1);
 					}
 				}
+			}
 			//manipulating font
 			
 			
