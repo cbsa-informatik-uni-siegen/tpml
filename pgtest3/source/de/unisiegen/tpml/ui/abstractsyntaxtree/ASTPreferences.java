@@ -6,8 +6,8 @@ import java.util.prefs.Preferences ;
 
 /**
  * This class saves and loads the several values, like the CheckBox values
- * replace, binding, selection and autoUpdate. Also the divider location of the
- * JSplitPane.
+ * replace, binding, unbound, selection and autoUpdate. Also the divider
+ * location of the JSplitPane.
  * 
  * @author Christian Fehler
  * @version $Rev$
@@ -17,6 +17,9 @@ public class ASTPreferences
   /**
    * The replace value. The selected expression should be replaced in higher
    * nodes.
+   * 
+   * @see #isReplace()
+   * @see #setReplace(boolean)
    */
   private boolean replace ;
 
@@ -24,12 +27,19 @@ public class ASTPreferences
   /**
    * The binding value. The bindings of the selected Identifier should be
    * highlighted in higher nodes.
+   * 
+   * @see #isBinding()
+   * @see #setBinding(boolean)
    */
   private boolean binding ;
 
 
   /**
-   * TODO
+   * The unbound value. The unbounded Identifiers should be highlighted in all
+   * nodes.
+   * 
+   * @see #isUnbound()
+   * @see #setUnbound(boolean)
    */
   private boolean unbound ;
 
@@ -37,44 +47,65 @@ public class ASTPreferences
   /**
    * The selection value. The selected expression should be highlighted in
    * higher nodes.
+   * 
+   * @see #isSelection()
+   * @see #setSelection(boolean)
    */
   private boolean selection ;
 
 
   /**
-   * The autoUpdate value. If the user does a SmallStep the outline should be
+   * The auto update value. If the user does a SmallStep the outline should be
    * updated automatically.
+   * 
+   * @see #isAutoUpdate()
+   * @see #setAutoUpdate(boolean)
    */
   private boolean autoUpdate ;
 
 
   /**
-   * TODO
+   * The preferences
    */
   private Preferences preferences ;
 
 
   /**
-   * TODO
+   * The divider location as an int value.
+   * 
+   * @see #getDividerLocation()
+   * @see #setDividerLocation(int)
    */
   private int dividerLocation ;
 
 
   /**
-   * TODO
+   * Initialize the preferences. Load the last saved values from it. Set the
+   * replace, binding, unbound and selection value of the ASTNode.
    */
   public ASTPreferences ( )
   {
     this.preferences = Preferences
         .userNodeForPackage ( AbstractSyntaxTree.class ) ;
-    updatePreferences ( ) ;
+    this.replace = this.preferences.getBoolean ( "replace" , true ) ;
+    this.binding = this.preferences.getBoolean ( "bindings" , true ) ;
+    this.unbound = this.preferences.getBoolean ( "unbound" , true ) ;
+    this.selection = this.preferences.getBoolean ( "selected" , true ) ;
+    this.autoUpdate = this.preferences.getBoolean ( "autoupdate" , true ) ;
+    this.dividerLocation = this.preferences.getInt ( "dividerLocation" , 300 ) ;
+    ASTNode.setReplace ( this.replace ) ;
+    ASTNode.setBinding ( this.binding ) ;
+    ASTNode.setUnbound ( this.unbound ) ;
+    ASTNode.setSelection ( this.selection ) ;
   }
 
 
   /**
-   * TODO
+   * Return the divider location as an int value.
    * 
-   * @return TODO
+   * @return The divider location.
+   * @see #dividerLocation
+   * @see #setDividerLocation(int)
    */
   public int getDividerLocation ( )
   {
@@ -83,9 +114,12 @@ public class ASTPreferences
 
 
   /**
-   * TODO
+   * Return true, if the auto update of the outline is enabled, otherwise false.
    * 
-   * @return TODO
+   * @return True, if the auto update of the outline is enabled, otherwise
+   *         false.
+   * @see #autoUpdate
+   * @see #setAutoUpdate(boolean)
    */
   public boolean isAutoUpdate ( )
   {
@@ -94,9 +128,13 @@ public class ASTPreferences
 
 
   /**
-   * TODO
+   * Return true, if the bindings of the selected Identifier should be
+   * highlighted in higher nodes, otherwise false.
    * 
-   * @return TODO
+   * @return True, if the bindings of the selected Identifier should be
+   *         highlighted in higher nodes, otherwise false.
+   * @see #binding
+   * @see #setBinding(boolean)
    */
   public boolean isBinding ( )
   {
@@ -105,9 +143,13 @@ public class ASTPreferences
 
 
   /**
-   * TODO
+   * Return true, if the selected expression should be replaced in higher nodes,
+   * otherwise false.
    * 
-   * @return TODO
+   * @return True, if the selected expression should be replaced in higher
+   *         nodes, otherwise false.
+   * @see #replace
+   * @see #setReplace(boolean)
    */
   public boolean isReplace ( )
   {
@@ -116,9 +158,13 @@ public class ASTPreferences
 
 
   /**
-   * TODO
+   * Return true, if the selected expression should be highlighted in higher
+   * nodes, otherwise false.
    * 
-   * @return TODO
+   * @return True, if the selected expression should be highlighted in higher
+   *         nodes, otherwise false.
+   * @see #selection
+   * @see #setSelection(boolean)
    */
   public boolean isSelection ( )
   {
@@ -127,9 +173,13 @@ public class ASTPreferences
 
 
   /**
-   * TODO
+   * Return true, if the unbounded Identifiers should be highlighted in all
+   * nodes, otherwise false.
    * 
-   * @return TODO
+   * @return True, if the unbounded Identifiers should be highlighted in all
+   *         nodes, otherwise false.
+   * @see #unbound
+   * @see #setUnbound(boolean)
    */
   public boolean isUnbound ( )
   {
@@ -138,9 +188,12 @@ public class ASTPreferences
 
 
   /**
-   * TODO
+   * Set the auto update value and writes the value to the preferences. If the
+   * user does a SmallStep the outline should be updated automatically.
    * 
-   * @param pAutoupdate
+   * @param pAutoupdate The auto update value.
+   * @see #autoUpdate
+   * @see #isAutoUpdate()
    */
   public void setAutoUpdate ( boolean pAutoupdate )
   {
@@ -150,9 +203,12 @@ public class ASTPreferences
 
 
   /**
-   * TODO
+   * Set the binding value and writes the value to the preferences. The bindings
+   * of the selected Identifier should be highlighted in higher nodes.
    * 
-   * @param pBinding
+   * @param pBinding The binding value.
+   * @see #binding
+   * @see #isBinding()
    */
   public void setBinding ( boolean pBinding )
   {
@@ -162,9 +218,12 @@ public class ASTPreferences
 
 
   /**
-   * TODO
+   * Set the divider location value and writes the value to the preferences. The
+   * divider location as an int value.
    * 
-   * @param pDividerLocation
+   * @param pDividerLocation The divider location value.
+   * @see #dividerLocation
+   * @see #getDividerLocation()
    */
   public void setDividerLocation ( int pDividerLocation )
   {
@@ -174,9 +233,12 @@ public class ASTPreferences
 
 
   /**
-   * TODO
+   * Set the replace value and writes the value to the preferences. The selected
+   * expression should be replaced in higher nodes.
    * 
-   * @param pReplace
+   * @param pReplace The replace value.
+   * @see #replace
+   * @see #isReplace()
    */
   public void setReplace ( boolean pReplace )
   {
@@ -186,9 +248,12 @@ public class ASTPreferences
 
 
   /**
-   * TODO
+   * Set the selection value and writes the value to the preferences. The
+   * selected expression should be highlighted in higher nodes.
    * 
-   * @param pSelection
+   * @param pSelection The selection value.
+   * @see #selection
+   * @see #isSelection()
    */
   public void setSelection ( boolean pSelection )
   {
@@ -198,31 +263,16 @@ public class ASTPreferences
 
 
   /**
-   * TODO
+   * Set the unbound value and writes the value to the preferences. The
+   * unbounded Identifiers should be highlighted in all nodes.
    * 
-   * @param pUnbound
+   * @param pUnbound The unbound value.
+   * @see #unbound
+   * @see #isUnbound()
    */
   public void setUnbound ( boolean pUnbound )
   {
     this.unbound = pUnbound ;
     this.preferences.putBoolean ( "unbound" , pUnbound ) ;
-  }
-
-
-  /**
-   * TODO
-   */
-  public void updatePreferences ( )
-  {
-    this.replace = this.preferences.getBoolean ( "replace" , true ) ;
-    this.binding = this.preferences.getBoolean ( "bindings" , true ) ;
-    this.unbound = this.preferences.getBoolean ( "unbound" , true ) ;
-    this.selection = this.preferences.getBoolean ( "selected" , true ) ;
-    this.autoUpdate = this.preferences.getBoolean ( "autoupdate" , true ) ;
-    ASTNode.setReplace ( this.replace ) ;
-    ASTNode.setBinding ( this.binding ) ;
-    ASTNode.setUnbound ( this.unbound ) ;
-    ASTNode.setSelection ( this.selection ) ;
-    this.dividerLocation = this.preferences.getInt ( "dividerLocation" , 300 ) ;
   }
 }
