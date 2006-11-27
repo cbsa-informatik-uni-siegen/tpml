@@ -73,24 +73,32 @@ public class ASTNode
 
   /**
    * The selected expression should be highlighted in higher nodes.
+   * 
+   * @see #setSelection(boolean)
    */
   private static boolean selection = true ;
 
 
   /**
    * The selected expression should be replaced in higher nodes.
+   * 
+   * @see #setReplace(boolean)
    */
   private static boolean replace = true ;
 
 
   /**
    * Selected identifier and bindings should be highlighted in higher nodes.
+   * 
+   * @see #setBinding(boolean)
    */
   private static boolean binding = true ;
 
 
   /**
-   * TODO
+   * Unbound Identifiers should be highlighted in all nodes.
+   * 
+   * @see #setUnbound(boolean)
    */
   private static boolean unbound = true ;
 
@@ -99,7 +107,8 @@ public class ASTNode
    * Sets the binding value. Selected identifier and bindings should be
    * highlighted in higher nodes.
    * 
-   * @param pBinding Should be highlighted or should not be highlighted.
+   * @param pBinding Should or should not be highlighted.
+   * @see #binding
    */
   public static void setBinding ( boolean pBinding )
   {
@@ -111,7 +120,8 @@ public class ASTNode
    * Sets the replace value. The selected expression should be replaced in
    * higher nodes.
    * 
-   * @param pReplace Should be replaced or should not be replaced.
+   * @param pReplace Should or should not be replaced.
+   * @see #replace
    */
   public static void setReplace ( boolean pReplace )
   {
@@ -123,7 +133,8 @@ public class ASTNode
    * Sets the selection value. The selected expression should be highlighted in
    * higher nodes.
    * 
-   * @param pSelection
+   * @param pSelection Should or should not be highlighted.
+   * @see #selection
    */
   public static void setSelection ( boolean pSelection )
   {
@@ -132,9 +143,11 @@ public class ASTNode
 
 
   /**
-   * TODO
+   * Sets the unbound value. Unbound Identifiers should be highlighted in all
+   * nodes.
    * 
-   * @param pUnbound
+   * @param pUnbound Should or should not be highlighted.
+   * @see #unbound
    */
   public static void setUnbound ( boolean pUnbound )
   {
@@ -144,12 +157,16 @@ public class ASTNode
 
   /**
    * The selected expression should be replaced in this node.
+   * 
+   * @see #setReplaceInThisNode(boolean)
    */
   private boolean replaceInThisNode ;
 
 
   /**
    * The description of the node.
+   * 
+   * @see #appendDescription(String)
    */
   private String description ;
 
@@ -168,12 +185,17 @@ public class ASTNode
 
   /**
    * The expression repressented by this node.
+   * 
+   * @see #getExpression()
    */
   private Expression expression ;
 
 
   /**
    * The bindings in this node.
+   * 
+   * @see #getASTBinding()
+   * @see #setASTBinding(ASTBinding)
    */
   private ASTBinding aSTBinding ;
 
@@ -181,12 +203,14 @@ public class ASTNode
   /**
    * The ASTPair which repressents the start and the end offset of Identifiers
    * in the node.
+   * 
+   * @see #getASTPair()
    */
   private ASTPair aSTPair ;
 
 
   /**
-   * TODO
+   * The ASTUnbound which repressents the unbound Identifiers in all nodes.
    */
   private ASTUnbound aSTUnbound ;
 
@@ -198,10 +222,11 @@ public class ASTNode
 
 
   /**
-   * Initialies the values and loads the description.
+   * This method initializes the values and loads the description.
    * 
    * @param pExpression The expression repressented by this node.
-   * @param pASTUnbound TODO
+   * @param pASTUnbound The ASTUnbound which repressents the unbound Identifiers
+   *          in all nodes.
    */
   public ASTNode ( Expression pExpression , ASTUnbound pASTUnbound )
   {
@@ -231,14 +256,15 @@ public class ASTNode
 
 
   /**
-   * Initialies the values and loads the description.
+   * This method initializes the values and loads the description.
    * 
    * @param pDescription The description of this node.
    * @param pExpressionString The expression as a string.
    * @param pASTPair The ASTPair which repressent the start and the end offset
-   *        of Identifiers in the node.
+   *          of Identifiers in the node.
    * @param pASTBinding The bindings in this node.
-   * @param pASTUnbound TODO
+   * @param pASTUnbound The ASTUnbound which repressents the unbound Identifiers
+   *          in all nodes
    */
   public ASTNode ( String pDescription , String pExpressionString ,
       ASTPair pASTPair , ASTBinding pASTBinding , ASTUnbound pASTUnbound )
@@ -270,7 +296,8 @@ public class ASTNode
    * Insert a string before the current description.
    * 
    * @param pAppendDescription The string which should be inserted before the
-   *        current description.
+   *          current description.
+   * @see #description
    */
   public void appendDescription ( String pAppendDescription )
   {
@@ -322,6 +349,8 @@ public class ASTNode
    * Returns the binding in this node.
    * 
    * @return The binding in this node.
+   * @see #aSTBinding
+   * @see #setASTBinding(ASTBinding)
    */
   public ASTBinding getASTBinding ( )
   {
@@ -334,6 +363,7 @@ public class ASTNode
    * Identifiers in the node.
    * 
    * @return The ASTPair in this node.
+   * @see #aSTPair
    */
   public ASTPair getASTPair ( )
   {
@@ -345,6 +375,7 @@ public class ASTNode
    * Returns the expression repressented by this node.
    * 
    * @return The expression in this node.
+   * @see #expression
    */
   public Expression getExpression ( )
   {
@@ -404,8 +435,8 @@ public class ASTNode
    * 
    * @param pIdentifierIndex The Identifier index in the expression.
    * @param pCharIndex The index of the char in the expression.
-   * @return True, if a given pCharIndex should be highlighted as a binding.
-   *         Otherwise false.
+   * @return True, if a given pCharIndex should be highlighted as a binding,
+   *         otherwise false.
    */
   private boolean isBinding ( int pIdentifierIndex , int pCharIndex )
   {
@@ -430,10 +461,12 @@ public class ASTNode
 
 
   /**
-   * TODO
+   * This method returns true if a given pCharIndex should be highlighted as a
+   * unbound Identifier.
    * 
-   * @param pCharIndex
-   * @return TODO
+   * @param pCharIndex pCharIndex The index of the char in the expression.
+   * @return True, if a given pCharIndex should be highlighted as a unbound
+   *         Identifier, otherwise false.
    */
   private boolean isUnbound ( int pCharIndex )
   {
@@ -492,6 +525,8 @@ public class ASTNode
    * Sets the binding in this node.
    * 
    * @param pASTBinding The ASTBinding in this node.
+   * @see #aSTBinding
+   * @see #getASTBinding()
    */
   public void setASTBinding ( ASTBinding pASTBinding )
   {
@@ -503,7 +538,8 @@ public class ASTNode
    * Set the value replaceInThisNode.
    * 
    * @param pReplaceInThisNode True, if the selected expression should be
-   *        replaced in this node.
+   *          replaced in this node.
+   * @see #replaceInThisNode
    */
   public void setReplaceInThisNode ( boolean pReplaceInThisNode )
   {
@@ -530,13 +566,15 @@ public class ASTNode
    * @param pSelectionStart The start offset of the selection in this node.
    * @param pSelectionEnd The end offset of the selection in this node.
    * @param pIdentifierIndex The index of the Identifier, used by Expressions
-   *        which have more than more Identifier like MultiLet.
+   *          which have more than more Identifier like MultiLet.
    */
   public void updateCaption ( int pSelectionStart , int pSelectionEnd ,
       int pIdentifierIndex )
   {
+    // Load the PrettyCharIterator
     PrettyCharIterator prettyCharIterator = this.expression.toPrettyString ( )
         .toCharacterIterator ( ) ;
+    // Load the current color settings
     String expressionColor = getHTMLFormat ( Theme.currentTheme ( )
         .getExpressionColor ( ) ) ;
     String keywordColor = getHTMLFormat ( Theme.currentTheme ( )
@@ -550,7 +588,9 @@ public class ASTNode
         .getBindingColor ( ) ) ;
     String unboundColor = getHTMLFormat ( Theme.currentTheme ( )
         .getUnboundColor ( ) ) ;
+    // Initialize the result as a StringBuffer
     StringBuffer result = new StringBuffer ( ) ;
+    // Build the first part of the node caption
     result.append ( "<html>" ) ;
     result.append ( BEFORE_DESCRIPTION ) ;
     result.append ( this.description ) ;
@@ -558,14 +598,26 @@ public class ASTNode
     result.append ( BETWEEN ) ;
     result.append ( BEFORE_NAME ) ;
     result.append ( "<font color=\"#" + expressionColor + "\">" ) ;
+    // Set the position to the first character
     prettyCharIterator.first ( ) ;
     int charIndex = 0 ;
     while ( charIndex < this.expressionString.length ( ) )
     {
       // Selection
-      if ( ( selection ) && ( charIndex == pSelectionStart ) )
+      if ( ( selection || binding ) && ( charIndex == pSelectionStart ) )
       {
-        result.append ( "<b><font color=\"#" + selectionColor + "\">" ) ;
+        /*
+         * Highlight Identifier in bindingColor, if selection is deactivated.
+         * Otherwise in selectionColor.
+         */
+        if ( ( ! selection ) && ( binding ) )
+        {
+          result.append ( "<b><font color=\"#" + bindingColor + "\">" ) ;
+        }
+        else
+        {
+          result.append ( "<b><font color=\"#" + selectionColor + "\">" ) ;
+        }
         // Replace selected Expression
         if ( replace && this.replaceInThisNode )
         {
@@ -584,7 +636,10 @@ public class ASTNode
         }
         result.append ( "</font></b>" ) ;
       }
-      // No selection highlighting and replace the selection
+      /*
+       * No selection highlighting and displacement of the selected Expression
+       * in higher nodes.
+       */
       else if ( ! ( selection ) && ( replace ) && ( this.replaceInThisNode )
           && ( charIndex == pSelectionStart ) )
       {
