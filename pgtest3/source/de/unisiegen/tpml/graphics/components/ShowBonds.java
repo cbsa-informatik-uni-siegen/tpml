@@ -364,20 +364,7 @@ public class ShowBonds
 		 */
 		LinkedList<Expression> child = new LinkedList<Expression>();
 		
-		/**
-		 * Enumeration with all childs of the expression
-		 */
-		Enumeration tmpChild = pLet.children();
-		
-		/**
-		 * converting from Enumeration to Linked List for better handling
-		 */
-		while (tmpChild.hasMoreElements())
-		{
-
-			child.add((Expression) tmpChild.nextElement());
-
-		}
+		child.add(pLet.getE2());
 
 		checkRec(child, pLet, list);
 
