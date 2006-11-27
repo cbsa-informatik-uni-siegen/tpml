@@ -473,7 +473,8 @@ public class PrettyStringRenderer extends AbstractRenderer {
 					int fontSize = orginalFont.getSize();
 					
 					//new font with same attributes but bold and / or italic
-					Font newFont = new Font(fontName, Font.BOLD|Font.ITALIC, fontSize);
+					//Font newFont = new Font(fontName, Font.BOLD|Font.ITALIC, fontSize);
+					//Font newFont = new Font(fontName, , fontSize);
 					
 					//let font be in right color
 					if (isFirstInListe (i, annotationsList))
@@ -486,7 +487,7 @@ public class PrettyStringRenderer extends AbstractRenderer {
 					}
 					
 		
-					gc.setFont(newFont);
+					gc.setFont(orginalFont);
 					
 					//underline the actual char
 					gc.drawLine(posX, posY + 1, posX + charWidth, posY + 1);
