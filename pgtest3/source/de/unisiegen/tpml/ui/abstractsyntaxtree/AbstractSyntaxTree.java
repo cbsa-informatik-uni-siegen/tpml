@@ -3,7 +3,6 @@ package de.unisiegen.tpml.ui.abstractsyntaxtree ;
 
 import java.lang.reflect.Method ;
 import java.util.Enumeration ;
-import java.util.LinkedList ;
 import javax.swing.tree.DefaultMutableTreeNode ;
 import de.unisiegen.tpml.Debug ;
 import de.unisiegen.tpml.core.expressions.BinaryOperator ;
@@ -19,7 +18,6 @@ import de.unisiegen.tpml.core.expressions.MultiLambda ;
 import de.unisiegen.tpml.core.expressions.MultiLet ;
 import de.unisiegen.tpml.core.expressions.Recursion ;
 import de.unisiegen.tpml.ui.abstractsyntaxtree.binding.ASTBinding ;
-import de.unisiegen.tpml.ui.abstractsyntaxtree.binding.ASTHoleBinding ;
 import de.unisiegen.tpml.ui.abstractsyntaxtree.binding.ASTPair ;
 import de.unisiegen.tpml.ui.abstractsyntaxtree.binding.ASTUnbound ;
 
@@ -88,30 +86,6 @@ public class AbstractSyntaxTree
     this.oldExpression = null ;
     this.aSTPreferences = new ASTPreferences ( ) ;
     this.aSTUI = new ASTUI ( this ) ;
-  }
-
-
-  /**
-   * TODO
-   * 
-   * @param pExpression
-   */
-  public void calculateBindings ( Expression pExpression )
-  {
-    ASTHoleBinding aSTHoleBinding = new ASTHoleBinding ( pExpression ) ;
-    LinkedList < ASTPair > list = aSTHoleBinding.getASTPairs ( ) ;
-    for ( ASTPair identifier : list )
-    {
-      Debug.out.println ( "Identifier " + identifier.getStart ( ) + " -> "
-          + identifier.getEnd ( ) , Debug.CHRISTIAN ) ;
-      for ( int i = 0 ; i < identifier.size ( ) ; i ++ )
-      {
-        ASTPair binding = identifier.get ( i ) ;
-        Debug.out.println ( "Cf - Binding    " + binding.getStart ( ) + " -> "
-            + binding.getEnd ( ) , Debug.CHRISTIAN ) ;
-      }
-      Debug.out.println ( "" , Debug.CHRISTIAN ) ;
-    }
   }
 
 
