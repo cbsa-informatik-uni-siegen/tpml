@@ -155,7 +155,10 @@ public class CompoundExpression < S , E > extends JComponent
         //  Debug.out.print ( "Schei�e, es ist ein anderer Ausdruck: "
         //      + expression.toPrettyString ( ).toString ( ) , "Feivel" ) ;
         //}
-        toListenForMouse.setMark ( false ) ;
+        
+    	  toListenForMouse.reset();
+          toListenForMouse.setRightList(-1);
+    	  toListenForMouse.setMark ( false ) ;
         CompoundExpression.this.repaint ( ) ;
       }
     } ) ;
