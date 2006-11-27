@@ -351,7 +351,8 @@ public class PrettyStringRenderer extends AbstractRenderer {
 	 * @return The width of the expression will get returned.
 	 */
 	public void render (int x, int y, int height,  Graphics gc, ShowBonds bound, ToListenForMouseContainer toListenForMouse) {
-		
+		for (int schei = 0; schei<=2 ; schei++)
+		{
 		//Eine Instanz, die Instanz von toLitenForMouse
 		//toListenForMouse = ToListenForMouseContainer.getInstanceOf();
 		
@@ -555,6 +556,8 @@ public class PrettyStringRenderer extends AbstractRenderer {
 			// go on to the next character
 		}		
 	}
+	}
+	
 }
 
 

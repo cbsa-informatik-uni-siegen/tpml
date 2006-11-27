@@ -242,6 +242,9 @@ public class CompoundExpression < S , E > extends JComponent
     //Debug.out.println ( "Erstmal nichts mehr malen" , "Feivel" ) ;
     toListenForMouse.setMark ( false ) ;
     CompoundExpression.this.repaint ( ) ;
+    
+    boolean mark = false;
+    
     for ( int t = 0 ; t < toListenForMouse.size ( ) ; t = t + 4 )
     {
       int pX = toListenForMouse.get ( t ) ;
@@ -264,16 +267,32 @@ public class CompoundExpression < S , E > extends JComponent
         //Debug.out.println ( "Ok, hier muss wieder gemalt werden!" , "Feivel" ) ;
         // TODO TestausgbaetoListenForMouse.setElementAt(0, 1);
         // System.out.println("JA, JETZT MUSS DER MOUSEFFEKT ANGEHEN");
-      	CompoundExpression.this.repaint ( ) ;
-      	toListenForMouse.setMark ( true ) ;
+      	//CompoundExpression.this.repaint ( ) ;
+      	//toListenForMouse.setMark ( true ) ;
+    	  mark = true;
       }
-      toListenForMouse.setHereIam ( event.getX ( ) , event.getY ( ) ) ;
+      
+      //toListenForMouse.setHereIam ( event.getX ( ) , event.getY ( ) ) ;
       //Debug.out.println (
       //   "neu malen, falls setMark jetzt true ist, dann sieht man was" ,
       //    "Feivel" ) ;
       //Debug.out.println ( "setMark ist: " + toListenForMouse.getMark ( ) ,
       //    "Feivel" ) ;
       //CompoundExpression.this.repaint ( ) ;
+    }
+    
+    if (mark)
+    {
+      toListenForMouse.setMark ( true ) ;
+  	  CompoundExpression.this.repaint ( ) ;
+    }
+    else
+    {
+     toListenForMouse.setMark ( false ) ;
+     
+     System.err.println("Reset");
+     toListenForMouse.reset();
+     CompoundExpression.this.repaint ( ) ;
     }
     // System.out.println(" Event: "+event);
     // System.out.println("Typ: "+event.getSource());
