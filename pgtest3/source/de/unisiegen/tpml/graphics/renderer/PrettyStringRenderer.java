@@ -73,14 +73,8 @@ public class PrettyStringRenderer extends AbstractRenderer {
 	
 	
 	/**
-	 * TODO
-	 * Hier werden die Positionen gespeichert, auf denen die Maus reagieren muss...
+	 * saves the positions where the mouse will react
 	 */
-	//private Vector<Integer> 											toListenForMouse;
-	//public Vector getToListenForMouse()
-	//{
-	//	return toListenForMouse;
-	//}
 	private ToListenForMouseContainer					toListenForMouse;
 	
 	/**
@@ -376,7 +370,7 @@ public class PrettyStringRenderer extends AbstractRenderer {
 	 */
 	public void render (int x, int y, int height,  Graphics gc, ShowBonds bound, ToListenForMouseContainer toListenForMouse) {
 		//TODO Das muss noch schöner weerden, diese Forschleife ersetzt vernünftige Logik leider nicht...
-		for (int schei = 0; schei<=2 ; schei++)
+		for (int schei = 0; schei<=1 ; schei++)
 		{
 				
 		int[] breakOffsets = null;
@@ -473,7 +467,7 @@ public class PrettyStringRenderer extends AbstractRenderer {
 					int fontSize = orginalFont.getSize();
 					
 					//new font with same attributes but bold and / or italic
-					//Font newFont = new Font(fontName, Font.BOLD|Font.ITALIC, fontSize);
+					Font newFont = new Font(fontName, Font.BOLD, fontSize);
 					//Font newFont = new Font(fontName, , fontSize);
 					
 					//let font be in right color
@@ -485,9 +479,7 @@ public class PrettyStringRenderer extends AbstractRenderer {
 					{
 						gc.setColor(Theme.currentTheme().getBindingColor());
 					}
-					
-		
-					gc.setFont(orginalFont);
+					gc.setFont(newFont);
 					
 					//underline the actual char
 					gc.drawLine(posX, posY + 1, posX + charWidth, posY + 1);
