@@ -438,6 +438,8 @@ public class PrettyStringRenderer extends AbstractRenderer {
 				//if actual char is in the same List as the list in wich the char where MousePointer is
 				if (isInList(i, annotationsList) == toListenForMouse.getRightList())
 				{
+					//Prüfen, ob es der erste in der Liste ist, und dann anders anmalen...
+					
 					//get font and attributes
 					Font orginalFont = gc.getFont();
 					String fontName = orginalFont.getName();
