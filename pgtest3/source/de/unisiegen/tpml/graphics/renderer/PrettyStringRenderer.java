@@ -435,27 +435,33 @@ public class PrettyStringRenderer extends AbstractRenderer {
 		
 				 }
 				
+				//if actual char is in the same List as the list in wich the char where MousePointer is
 				if (isInList(i, annotationsList) == toListenForMouse.getRightList())
 				{
+					//get font and attributes
 					Font orginalFont = gc.getFont();
 					String fontName = orginalFont.getName();
 					int fontSize = orginalFont.getSize();
+					
+					//new font with same attributes but bold and / or italic
 					Font newFont = new Font(fontName, Font.BOLD|Font.ITALIC, fontSize);
+					
+					//let font be in right color
 					gc.setColor(Theme.currentTheme().getBindingColor());
-					//gc.setColor(Color.orange);
+		
 					gc.setFont(newFont);
-					//int charWidth = fm.stringWidth("" + c);
+					
+					//underline the actual char
 					gc.drawLine(posX, posY + 1, posX + charWidth, posY + 1);
 				}
 				
 			}
-			//manipulating font
 			
-			
+			//manipulating font witch is not marked as bounded
 			else
 			{
-//			 select the proppert font and color for the character
 				
+				//select the proppert font and color for the character
 				switch (it.getStyle()) {
 				case NONE:
 					gc.setFont(AbstractRenderer.expFont);
