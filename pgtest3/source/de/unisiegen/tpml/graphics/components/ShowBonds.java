@@ -333,21 +333,8 @@ public class ShowBonds
 		 */
 		LinkedList<Expression> child = new LinkedList<Expression>();
 		
-		/**
-		 * Enumeration with all childs of the expression
-		 */
-		Enumeration tmpChild = pLet.children();
-		tmpChild.nextElement();
+		child.add(pLet.getE2());
 		
-		/**
-		 * converting from Enumeration to Linked List for better handling
-		 */
-		while (tmpChild.hasMoreElements())
-		{
-
-			child.add((Expression) tmpChild.nextElement());
-
-		}
 
 		checkRec(child, pLet, list);
 
@@ -852,9 +839,11 @@ public class ShowBonds
 	private int getStartOffset(Expression e, Identifier id, PrettyAnnotation mark1)
 	{
 		
-
-		String exp = holeExpression.toPrettyString().toString();
-		int start=exp.indexOf(id.toString());
+//TODO
+		String exp = e.toPrettyString().toString();
+		
+		
+		int start=exp.indexOf(id.toString())+mark1.getStartOffset();
 		
 		return start;
 	}
