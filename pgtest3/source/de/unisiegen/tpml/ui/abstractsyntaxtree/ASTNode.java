@@ -543,6 +543,7 @@ public class ASTNode
         .getKeywordColor ( ) ) ;
     String constantColor = getHTMLFormat ( Theme.currentTheme ( )
         .getConstantColor ( ) ) ;
+    String typeColor = getHTMLFormat ( Theme.currentTheme ( ).getTypeColor ( ) ) ;
     String selectionColor = getHTMLFormat ( Theme.currentTheme ( )
         .getSelectionColor ( ) ) ;
     String bindingColor = getHTMLFormat ( Theme.currentTheme ( )
@@ -642,6 +643,19 @@ public class ASTNode
       {
         result.append ( "<b><font color=\"#" + constantColor + "\">" ) ;
         while ( prettyCharIterator.getStyle ( ) == PrettyStyle.CONSTANT )
+        {
+          result.append ( this.expressionString.charAt ( charIndex ) ) ;
+          // Next character
+          charIndex ++ ;
+          prettyCharIterator.next ( ) ;
+        }
+        result.append ( "</font></b>" ) ;
+      }
+      // Type
+      else if ( prettyCharIterator.getStyle ( ) == PrettyStyle.TYPE )
+      {
+        result.append ( "<b><font color=\"#" + typeColor + "\">" ) ;
+        while ( prettyCharIterator.getStyle ( ) == PrettyStyle.TYPE )
         {
           result.append ( this.expressionString.charAt ( charIndex ) ) ;
           // Next character
