@@ -851,90 +851,11 @@ public class ShowBonds
 	 */
 	private int getStartOffset(Expression e, Identifier id, PrettyAnnotation mark1)
 	{
-		int start = 0;
+		
 
-		if (e instanceof CurriedLetRec)
-		{
-			CurriedLetRec let = (CurriedLetRec) e;
-			start = mark1.getStartOffset() + 8;
-			for (int z = 0; z < let.getIdentifiers().length; z++)
-
-				if (let.getIdentifiers(z).equals(id.toString()))
-				{
-					for (int y = 0; y < z; y++)
-					{
-						start += 1 + let.getIdentifiers(y).toString().length();
-					}
-				}
-			return start;
-		}
-		else if (e instanceof LetRec)
-		{
-			start = mark1.getStartOffset() + 8;
-			return start;
-		}
-		else if (e instanceof Lambda)
-		{
-			start = mark1.getStartOffset() + 1;
-			return start;
-		}
-		else if (e instanceof Let)
-		{
-			start = mark1.getStartOffset() + 4;
-			return start;
-
-		}
-		else if (e instanceof MultiLambda)
-		{
-			MultiLambda lambda = (MultiLambda) e;
-			start = 2 + mark1.getStartOffset();
-			for (int z = 0; z < lambda.getIdentifiers().length; z++)
-
-				if (lambda.getIdentifiers(z).equals(id.toString()))
-				{
-					for (int y = 0; y < z; y++)
-					{
-						start += 2 + lambda.getIdentifiers(y).toString().length();
-					}
-				}
-			return start;
-		}
-
-		else if (e instanceof MultiLet)
-		{
-			MultiLet let = (MultiLet) e;
-			start = mark1.getStartOffset() + 5;
-			for (int z = 0; z < let.getIdentifiers().length; z++)
-
-				if (let.getIdentifiers(z).equals(id.toString()))
-				{
-					for (int y = 0; y < z; y++)
-					{
-						start += 2 + let.getIdentifiers(y).toString().length();
-					}
-				}
-			return start;
-		}
-		else if (e instanceof CurriedLet)
-		{
-			CurriedLet let = (CurriedLet) e;
-			start = mark1.getStartOffset() + 4;
-			for (int z = 0; z < let.getIdentifiers().length; z++)
-
-				if (let.getIdentifiers(z).equals(id.toString()))
-				{
-					for (int y = 0; y < z; y++)
-					{
-						start += 1 + let.getIdentifiers(y).toString().length();
-					}
-				}
-			return start;
-		}
-		else if (e instanceof Recursion)
-		{
-			start = mark1.getStartOffset() + 4;
-			return start;
-		}
+		String exp = holeExpression.toPrettyString().toString();
+		int start=exp.indexOf(id.toString());
+		
 		return start;
 	}
 
