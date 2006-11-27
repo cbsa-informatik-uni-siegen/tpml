@@ -426,34 +426,28 @@ public class PrettyStringRenderer extends AbstractRenderer {
 				//get X-Pos of MousePointer
 				int xPos = toListenForMouse.getHereIam()[0];
 					
-					//Pürfen, auf welchem Zeichen die Maus ist...
+				//checks if MousePointer stands on the actual char
 				if ((xPos >= posX) && (xPos <= posX+charWidth))
 				{
-					//TODO TEstausgaben
-					//System.out.println("Er ist über einem anzunakdenden Zeichen: "+c);
-					//System.out.println("Es steht in der Liste : "+isInListe(i, annotationsList));
-					
-					//Nur Werte größer gleich 0 sind sinnvolle Werte für die Liste, alle anderen sind Fehlerfälle
-					if (isInList(i, annotationsList) > -1) 
-					{
-						toListenForMouse.setRightList(isInList(i, annotationsList));		
-					}
+					//TODO in diesem Fall muss er neu anfangen, er darf nicht mit den nächsten Buchstaben weiter machen...
+					// - Vielleicht prüfen, ob die setRightList schon gesertzt, dann überspringen, sonst vorner anfangen. also die gleiche Funktion einfach nochmal aufrufen...
+					toListenForMouse.setRightList(isInList(i, annotationsList));
+		
 				 }
-				if (isInList(i, annotationsList) > -1)
+				
+				if (isInList(i, annotationsList) == toListenForMouse.getRightList())
 				{
-					if (isInList(i, annotationsList) == toListenForMouse.getRightList())
-					{
-						Font orginalFont = gc.getFont();
-						String fontName = orginalFont.getName();
-						int fontSize = orginalFont.getSize();
-						Font newFont = new Font(fontName, Font.BOLD|Font.ITALIC, fontSize);
-						gc.setColor(Theme.currentTheme().getBindingColor());
-						//gc.setColor(Color.orange);
-						gc.setFont(newFont);
-						//int charWidth = fm.stringWidth("" + c);
-						gc.drawLine(posX, posY + 1, posX + charWidth, posY + 1);
-					}
+					Font orginalFont = gc.getFont();
+					String fontName = orginalFont.getName();
+					int fontSize = orginalFont.getSize();
+					Font newFont = new Font(fontName, Font.BOLD|Font.ITALIC, fontSize);
+					gc.setColor(Theme.currentTheme().getBindingColor());
+					//gc.setColor(Color.orange);
+					gc.setFont(newFont);
+					//int charWidth = fm.stringWidth("" + c);
+					gc.drawLine(posX, posY + 1, posX + charWidth, posY + 1);
 				}
+				
 			}
 			//manipulating font
 			
