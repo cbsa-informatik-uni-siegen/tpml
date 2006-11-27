@@ -3,7 +3,6 @@ package de.unisiegen.tpml.ui.abstractsyntaxtree.binding ;
 
 import java.util.Enumeration ;
 import java.util.LinkedList ;
-import de.unisiegen.tpml.Debug ;
 import de.unisiegen.tpml.core.expressions.CurriedLet ;
 import de.unisiegen.tpml.core.expressions.CurriedLetRec ;
 import de.unisiegen.tpml.core.expressions.Expression ;
@@ -113,7 +112,6 @@ public class ASTBinding
   {
     for ( String id : pIdentifiers )
     {
-      // this.list.add ( free ( pExpression , id ) ) ;
       LinkedList < Expression > tmpList = new LinkedList < Expression > ( ) ;
       findBinding ( tmpList , new LinkedList < String > ( ) , pExpression , id ) ;
       this.list.add ( tmpList ) ;
@@ -162,10 +160,10 @@ public class ASTBinding
             .getIdentifiers ( ) , pId ) >= 0 ) )
     {
       CurriedLetRec curriedLetRec = ( CurriedLetRec ) pExpression ;
-      LinkedList < String > newBound1 = copyList ( pBound ) ;
-      LinkedList < String > newBound2 = copyList ( pBound ) ;
       if ( curriedLetRec.getIdentifiers ( 0 ).equals ( pId ) )
       {
+        LinkedList < String > newBound1 = copyList ( pBound ) ;
+        LinkedList < String > newBound2 = copyList ( pBound ) ;
         newBound1.add ( curriedLetRec.getIdentifiers ( 0 ) ) ;
         newBound2.add ( curriedLetRec.getIdentifiers ( 0 ) ) ;
         findBinding ( pResult , newBound1 , curriedLetRec.getE1 ( ) , pId ) ;
@@ -174,12 +172,12 @@ public class ASTBinding
       }
       else if ( identifierIndex ( curriedLetRec.getIdentifiers ( ) , pId ) > 0 )
       {
-        newBound1.add ( curriedLetRec.getIdentifiers ( identifierIndex (
+        LinkedList < String > newBound = copyList ( pBound ) ;
+        newBound.add ( curriedLetRec.getIdentifiers ( identifierIndex (
             curriedLetRec.getIdentifiers ( ) , pId ) ) ) ;
-        findBinding ( pResult , newBound1 , curriedLetRec.getE1 ( ) , pId ) ;
+        findBinding ( pResult , newBound , curriedLetRec.getE1 ( ) , pId ) ;
         return ;
       }
-      Debug.err.println ( "You should not see this" , Debug.CHRISTIAN ) ;
     }
     else if ( ( pExpression instanceof CurriedLet )
         && ( ! pExpression.equals ( this.holeExpression ) )
@@ -187,22 +185,21 @@ public class ASTBinding
             ( ( CurriedLet ) pExpression ).getIdentifiers ( ) , pId ) >= 0 ) )
     {
       CurriedLet curriedLet = ( CurriedLet ) pExpression ;
-      LinkedList < String > newBound1 = copyList ( pBound ) ;
-      LinkedList < String > newBound2 = copyList ( pBound ) ;
       if ( curriedLet.getIdentifiers ( 0 ).equals ( pId ) )
       {
-        newBound2.add ( curriedLet.getIdentifiers ( 0 ) ) ;
-        findBinding ( pResult , newBound2 , curriedLet.getE2 ( ) , pId ) ;
+        LinkedList < String > newBound = copyList ( pBound ) ;
+        newBound.add ( curriedLet.getIdentifiers ( 0 ) ) ;
+        findBinding ( pResult , newBound , curriedLet.getE2 ( ) , pId ) ;
         return ;
       }
       else if ( identifierIndex ( curriedLet.getIdentifiers ( ) , pId ) > 0 )
       {
-        newBound1.add ( curriedLet.getIdentifiers ( identifierIndex (
-            curriedLet.getIdentifiers ( ) , pId ) ) ) ;
-        findBinding ( pResult , newBound1 , curriedLet.getE1 ( ) , pId ) ;
+        LinkedList < String > newBound = copyList ( pBound ) ;
+        newBound.add ( curriedLet.getIdentifiers ( identifierIndex ( curriedLet
+            .getIdentifiers ( ) , pId ) ) ) ;
+        findBinding ( pResult , newBound , curriedLet.getE1 ( ) , pId ) ;
         return ;
       }
-      Debug.err.println ( "You should not see this" , Debug.CHRISTIAN ) ;
     }
     else if ( ( pExpression instanceof MultiLet )
         && ( ! pExpression.equals ( this.holeExpression ) )
@@ -210,10 +207,12 @@ public class ASTBinding
             pId ) >= 0 ) )
     {
       MultiLet multiLet = ( MultiLet ) pExpression ;
-      LinkedList < String > newBound = copyList ( pBound ) ;
-      newBound.add ( multiLet.getIdentifiers ( identifierIndex ( multiLet
+      LinkedList < String > newBound1 = copyList ( pBound ) ;
+      LinkedList < String > newBound2 = copyList ( pBound ) ;
+      newBound2.add ( multiLet.getIdentifiers ( identifierIndex ( multiLet
           .getIdentifiers ( ) , pId ) ) ) ;
-      findBinding ( pResult , newBound , multiLet.getE2 ( ) , pId ) ;
+      findBinding ( pResult , newBound1 , multiLet.getE1 ( ) , pId ) ;
+      findBinding ( pResult , newBound2 , multiLet.getE2 ( ) , pId ) ;
       return ;
     }
     else if ( ( pExpression instanceof MultiLambda )
