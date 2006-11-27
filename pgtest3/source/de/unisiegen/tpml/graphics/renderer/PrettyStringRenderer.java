@@ -295,6 +295,9 @@ public class PrettyStringRenderer extends AbstractRenderer {
 		return result;
 	}*/
 	
+	/**
+	 * 
+	 */
 	
 	public static int isInList (int test, LinkedList <Bonds> list)
 	{
@@ -332,6 +335,29 @@ public class PrettyStringRenderer extends AbstractRenderer {
 			}
 		}
 		return result;
+	}
+	
+	public static boolean isFirstInListe (int test, LinkedList <Bonds> list)
+	{
+		boolean result = false;
+		
+		for (int i=0; i<list.size(); i++)
+		{
+			int min = list.get(i).getStartOffset();
+			int max = list.get(i).getEndOffset();
+			
+			if ((test <= max) && (test >= min)) 
+				{
+				Debug.out.println("ist Identifier", "feivel");	
+				return true;
+				}
+			else
+			{
+				return false;
+			}
+		}
+		Debug.out.println("hier sollte er nie vorbeikommen", "feivel");		
+	return result;
 	}
 
 	
@@ -430,6 +456,9 @@ public class PrettyStringRenderer extends AbstractRenderer {
 				if ((xPos >= posX) && (xPos <= posX+charWidth))
 				{
 					//TODO in diesem Fall muss er neu anfangen, er darf nicht mit den nächsten Buchstaben weiter machen...
+					
+					
+					
 					// - Vielleicht prüfen, ob die setRightList schon gesertzt, dann überspringen, sonst vorner anfangen. also die gleiche Funktion einfach nochmal aufrufen...
 					toListenForMouse.setRightList(isInList(i, annotationsList));
 		
@@ -449,7 +478,15 @@ public class PrettyStringRenderer extends AbstractRenderer {
 					Font newFont = new Font(fontName, Font.BOLD|Font.ITALIC, fontSize);
 					
 					//let font be in right color
-					gc.setColor(Theme.currentTheme().getBindingColor());
+					if (isFirstInListe (i, annotationsList))
+					{
+						gc.setColor(Theme.currentTheme().getSelectionColor());
+					}
+					else
+					{
+						gc.setColor(Theme.currentTheme().getBindingColor());
+					}
+					
 		
 					gc.setFont(newFont);
 					
