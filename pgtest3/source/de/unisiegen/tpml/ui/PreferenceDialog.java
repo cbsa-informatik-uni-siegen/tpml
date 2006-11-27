@@ -197,6 +197,7 @@ public class PreferenceDialog extends javax.swing.JDialog {
         colorsModel.addElement(new ColorItem("selectionColor"));
         colorsModel.addElement(new ColorItem("bindingColor"));
         colorsModel.addElement(new ColorItem("unboundColor"));
+        colorsModel.addElement(new ColorItem("idColor"));
         this.colorsList.setCellRenderer(new ColorItemRenderer());
         this.colorsList.setModel(colorsModel);
     }
