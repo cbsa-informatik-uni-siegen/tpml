@@ -105,9 +105,12 @@ public class ASTMouseListener implements MouseListener
           .getPathForLocation ( x , y ) ;
       if ( treePath == null )
       {
-        this.aSTUI.getJTreeAbstractSyntaxTree ( ).setSelectionPath ( null ) ;
-        this.aSTUI.getASTTreeSelectionListener ( ).reset (
-            ( DefaultMutableTreeNode ) this.aSTUI.getTreeModel ( ).getRoot ( ) ) ;
+        // TODO
+        /*
+         * this.aSTUI.getJTreeAbstractSyntaxTree ( ).setSelectionPath ( null ) ;
+         * this.aSTUI.getASTTreeSelectionListener ( ).reset ( (
+         * DefaultMutableTreeNode ) this.aSTUI.getTreeModel ( ).getRoot ( ) ) ;
+         */
         return ;
       }
       if ( pMouseEvent.isPopupTrigger ( ) )
