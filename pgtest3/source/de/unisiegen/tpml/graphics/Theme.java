@@ -95,6 +95,14 @@ public final class Theme extends AbstractBean {
    */  
   private Color bindingColor;
 	
+  /**
+   * The {@link Color} used to render unbound Identifier.
+   * 
+   * @see #getUnboundColor()
+   * @see #setUnboundColor(Color)
+   */  
+  private Color unboundColor;
+  
 	/**
 	 * The {@link Preferences} used to store the settings.
 	 * 
@@ -174,6 +182,10 @@ public final class Theme extends AbstractBean {
     
     // load the bindingColor setting
     this.bindingColor = Color.decode(this.preferences.get("bindingColor", "#FFAA33"));
+    
+    // load the bindingColor setting
+    this.unboundColor = Color.decode(this.preferences.get("unboundColor", "#3333FF"));
+    
     
 		// load the font setting
 		/* FIXME: This doesn't work on Windows! (*surprise*)
@@ -451,6 +463,17 @@ public final class Theme extends AbstractBean {
     return this.bindingColor;
   }
   
+  /**
+   * Returns the {@link Color} used to render unbound Identifier.
+   * 
+   * @return the color for the unbound Identifier.
+   * 
+   * @see #setUnboundColor(Color)
+   * @see Color
+   */
+  public Color getUnboundColor() {
+    return this.unboundColor;
+  } 
   
 	/**
 	 * Sets the color that should be used to render keywords to the specified <code>keywordColor</code>.
@@ -524,6 +547,31 @@ public final class Theme extends AbstractBean {
       
       // save the new setting
       this.preferences.put("bindingColor", encodeColor(bindingColor));
+    }
+  }
+  
+  /**
+   * Sets the color that should be used to render unbound Identifier to the specified <code>unboundColor</code>.
+   * 
+   * @param unboundColor the color for unbound Identifier.
+   * 
+   * @see #getUnboundColor()
+   * @see Color
+   * 
+   * @throws NullPointerException if <code>selectionColor</code> is <code>null</code>.
+   */
+  public void setUnboundColor(Color unboundColor) {
+    if (unboundColor == null) {
+      throw new NullPointerException("unboundColor is null");
+    }
+    if (!this.unboundColor.equals(unboundColor)) {
+      // update the keywordColor
+      Color oldKeywordColor = this.unboundColor;
+      this.unboundColor = unboundColor;
+      firePropertyChange("unboundColor", oldKeywordColor, unboundColor);
+      
+      // save the new setting
+      this.preferences.put("unboundColor", encodeColor(unboundColor));
     }
   }
   
