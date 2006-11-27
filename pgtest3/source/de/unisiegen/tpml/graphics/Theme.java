@@ -103,6 +103,14 @@ public final class Theme extends AbstractBean {
    */  
   private Color unboundColor;
   
+  /**
+   * The {@link Color} used to render first Identifier.
+   * 
+   * @see #getIdColor()
+   * @see #setIdColor(Color)
+   */  
+  private Color idColor;
+  
 	/**
 	 * The {@link Preferences} used to store the settings.
 	 * 
@@ -183,8 +191,11 @@ public final class Theme extends AbstractBean {
     // load the bindingColor setting
     this.bindingColor = Color.decode(this.preferences.get("bindingColor", "#FFAA33"));
     
-    // load the bindingColor setting
+    // load the unboundColor setting
     this.unboundColor = Color.decode(this.preferences.get("unboundColor", "#3333FF"));
+    
+    //load the idColor setting
+    this.idColor = Color.decode(this.preferences.get("idColor", "#FF0000"));
     
     
 		// load the font setting
@@ -475,6 +486,18 @@ public final class Theme extends AbstractBean {
     return this.unboundColor;
   } 
   
+  /**
+   * Returns the {@link Color} used to render first Identifier.
+   * 
+   * @return the color for the first Identifier.
+   * 
+   * @see #setIdColor(Color)
+   * @see Color
+   */
+  public Color getIdColor() {
+    return this.idColor;
+  } 
+  
 	/**
 	 * Sets the color that should be used to render keywords to the specified <code>keywordColor</code>.
 	 * 
@@ -533,7 +556,7 @@ public final class Theme extends AbstractBean {
    * @see #getBindingColor()
    * @see Color
    * 
-   * @throws NullPointerException if <code>selectionColor</code> is <code>null</code>.
+   * @throws NullPointerException if <code>bindingColor</code> is <code>null</code>.
    */
   public void setBindingColor(Color bindingColor) {
     if (bindingColor == null) {
@@ -558,7 +581,7 @@ public final class Theme extends AbstractBean {
    * @see #getUnboundColor()
    * @see Color
    * 
-   * @throws NullPointerException if <code>selectionColor</code> is <code>null</code>.
+   * @throws NullPointerException if <code>unboundColor</code> is <code>null</code>.
    */
   public void setUnboundColor(Color unboundColor) {
     if (unboundColor == null) {
@@ -572,6 +595,31 @@ public final class Theme extends AbstractBean {
       
       // save the new setting
       this.preferences.put("unboundColor", encodeColor(unboundColor));
+    }
+  }
+  
+  /**
+   * Sets the color that should be used to render first Identifier to the specified <code>idColor</code>.
+   * 
+   * @param idColor the color for first Identifier.
+   * 
+   * @see #getIdColor()
+   * @see Color
+   * 
+   * @throws NullPointerException if <code>idColor</code> is <code>null</code>.
+   */
+  public void setIdColor(Color idColor) {
+    if (idColor == null) {
+      throw new NullPointerException("idColor is null");
+    }
+    if (!this.idColor.equals(idColor)) {
+      // update the keywordColorid
+      Color oldKeywordColor = this.idColor;
+      this.idColor = idColor;
+      firePropertyChange("idColor", oldKeywordColor, idColor);
+      
+      // save the new setting
+      this.preferences.put("idColor", encodeColor(idColor));
     }
   }
   
