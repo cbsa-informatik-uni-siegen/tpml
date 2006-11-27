@@ -5,6 +5,11 @@ import java.util.LinkedList;
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation;
 
+/**
+ * 
+ * @author Benjamin
+ *
+ */
 public class Bonds
 {
 	/**

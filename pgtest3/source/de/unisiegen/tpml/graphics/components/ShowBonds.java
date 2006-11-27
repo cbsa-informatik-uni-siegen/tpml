@@ -449,7 +449,13 @@ public class ShowBonds
 		 */
 		LinkedList<String> list = listWithBounds(a, c);
 		LinkedList<String> list2 = listWithBounds(a, b);
-		list.add(pLet.getIdentifiers(1));
+		
+		for( int i=1; i<pLet.getIdentifiers().length;i++)
+		{
+			list.add(pLet.getIdentifiers(i));
+		}
+		
+		
 		
 		/**
 		 * the Identifier of the Expression is added to the list of E2, because Variables 
