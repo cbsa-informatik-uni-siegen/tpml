@@ -292,8 +292,8 @@ public class CompoundExpression < S , E > extends JComponent
     else
     {
      toListenForMouse.setMark ( false ) ;
-     
-     System.err.println("Reset");
+     toListenForMouse.reset();
+     toListenForMouse.setRightList(-1);
      toListenForMouse.reset();
      CompoundExpression.this.repaint ( ) ;
     }
