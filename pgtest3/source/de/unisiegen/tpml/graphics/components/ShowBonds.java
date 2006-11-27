@@ -16,7 +16,12 @@ import de.unisiegen.tpml.core.expressions.MultiLet;
 import de.unisiegen.tpml.core.expressions.Recursion;
 import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation;
 import de.unisiegen.tpml.core.prettyprinter.PrettyString;
-
+import de.unisiegen.tpml.core.types.MonoType;
+/**
+ * 
+ * @author Benjamin
+ *
+ */
 public class ShowBonds
 {
 	/**
@@ -44,7 +49,7 @@ public class ShowBonds
 
 			if (pExpression instanceof Lambda)
 			{
-
+				
 				checkLambda((Lambda) pExpression);
 			}
 			else if (pExpression instanceof MultiLambda)
@@ -157,7 +162,9 @@ public class ShowBonds
 	 * @param pLambda
 	 */
 	private void checkLambda(Lambda pLambda)
-	{
+	{	
+		
+	
 		/**
 		 * get the body of the lambda expression
 		 */
@@ -415,7 +422,7 @@ public class ShowBonds
 		/**
 		 * Debug output. will be deleted if everything works fine
 		 */
-		if (false)
+		if (true)
 
 		{
 			Debug.out.println("a", me);
@@ -440,8 +447,9 @@ public class ShowBonds
 		 * in this method two different lists are needed for the two different Expressions
 		 * E1 and E2
 		 */
-		LinkedList<String> list = listWithBounds(new Object[a.length], a);
-		LinkedList<String> list2 = listWithBounds(c, b);
+		LinkedList<String> list = listWithBounds(a, c);
+		LinkedList<String> list2 = listWithBounds(a, b);
+		list.add(pLet.getIdentifiers(1));
 		
 		/**
 		 * the Identifier of the Expression is added to the list of E2, because Variables 
