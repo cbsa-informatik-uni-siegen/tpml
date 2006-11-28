@@ -588,8 +588,12 @@ public class ShowBonds
 		 * the Identifier of the Expression is added to the list of E2, because Variables 
 		 * in this Expression with the same name are bond to this Identifier
 		 */
-		list2.add(pRec.getIdentifiers(1));
-
+		for( int i=1; i<pRec.getIdentifiers().length;i++)
+		{
+			list.add(pRec.getIdentifiers(i));
+		}
+		
+	
 		/**
 		 * list with all childs of the Expression
 		 */
