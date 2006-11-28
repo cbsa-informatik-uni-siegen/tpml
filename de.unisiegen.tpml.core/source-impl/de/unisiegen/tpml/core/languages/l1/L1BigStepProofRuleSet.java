@@ -98,16 +98,21 @@ public class L1BigStepProofRuleSet extends L0BigStepProofRuleSet {
     if (node.getChildCount() == 1 && node.getChildAt(0).isProven()) {
       // determine the result of the first child node
       BigStepProofResult result0 = node.getChildAt(0).getResult();
-      
-      // the value of the child node must be a boolean value
-      if (result0.getValue() == BooleanConstant.TRUE) {
-        // let (AND-TRUE) handle the node
-        context.setProofNodeRule(node, (BigStepProofRule)getRuleByName("AND-TRUE"));
-        updateAndTrue(context, node);
+      try {
+        // the value of the child node must be a boolean constant
+        BooleanConstant value0 = (BooleanConstant)result0.getValue();
+        if (value0.booleanValue()) {
+          // let (AND-TRUE) handle the node
+          context.setProofNodeRule(node, (BigStepProofRule)getRuleByName("AND-TRUE"));
+          updateAndTrue(context, node);
+        }
+        else {
+          // we're done with this node
+          context.setProofNodeResult(node, result0);
+        }
       }
-      else if (result0.getValue() == BooleanConstant.FALSE) {
-        // we're done with this node
-        context.setProofNodeResult(node, result0);
+      catch (ClassCastException cause) {
+        // not a boolean constant...
       }
     }
     else if (node.getChildCount() == 2 && node.getChildAt(0).isProven() && node.getChildAt(1).isProven()) {
@@ -127,16 +132,21 @@ public class L1BigStepProofRuleSet extends L0BigStepProofRuleSet {
     if (node.getChildCount() == 1 && node.getChildAt(0).isProven()) {
       // determine the result of the first child node
       BigStepProofResult result0 = node.getChildAt(0).getResult();
-      
-      // the value of the child node must be a boolean value
-      if (result0.getValue() == BooleanConstant.TRUE) {
-        // add a child node for the second expression
-        context.addProofNode(node, ((And)node.getExpression()).getE2());
+      try {
+        // the value of the child node must be a boolean value
+        BooleanConstant value0 = (BooleanConstant)result0.getValue();
+        if (value0.booleanValue()) {
+          // add a child node for the second expression
+          context.addProofNode(node, ((And)node.getExpression()).getE2());
+        }
+        else {
+          // let (AND-FALSE) handle the node
+          context.setProofNodeRule(node, (BigStepProofRule)getRuleByName("AND-FALSE"));
+          updateAndFalse(context, node);
+        }
       }
-      else if (result0.getValue() == BooleanConstant.FALSE) {
-        // let (AND-FALSE) handle the node
-        context.setProofNodeRule(node, (BigStepProofRule)getRuleByName("AND-FALSE"));
-        updateAndFalse(context, node);
+      catch (ClassCastException cause) {
+        // not a boolean constant...
       }
     }
     else if (node.getChildCount() == 2 && node.getChildAt(0).isProven() && node.getChildAt(1).isProven()) {
@@ -182,24 +192,29 @@ public class L1BigStepProofRuleSet extends L0BigStepProofRuleSet {
     if (node.getChildCount() == 1 && node.getChildAt(0).isProven()) {
       // determine the result of the first child node
       BigStepProofResult result0 = node.getChildAt(0).getResult();
-      
-      // the value of the child node must be a boolean value
-      if (result0.getValue() == BooleanConstant.TRUE) {
-        // let (COND-TRUE) handle the node
-        context.setProofNodeRule(node, (BigStepProofRule)getRuleByName("COND-TRUE")); //$NON-NLS-1$
-        updateCondTrue(context, node);
-      }
-      else if (result0.getValue() == BooleanConstant.FALSE) {
-        // can be applied to Condition and Condition1
-        Expression e = node.getExpression();
-        if (e instanceof Condition) {
-          // add next proof node for e2
-          context.addProofNode(node, ((Condition)e).getE2());
+      try {
+        // the value of the child node must be a boolean value
+        BooleanConstant value0 = (BooleanConstant)result0.getValue();
+        if (value0.booleanValue()) {
+          // let (COND-TRUE) handle the node
+          context.setProofNodeRule(node, (BigStepProofRule)getRuleByName("COND-TRUE")); //$NON-NLS-1$
+          updateCondTrue(context, node);
         }
         else {
-          // result is the unit constant
-          context.setProofNodeResult(node, UnitConstant.UNIT);
+          // can be applied to Condition and Condition1
+          Expression e = node.getExpression();
+          if (e instanceof Condition) {
+            // add next proof node for e2
+            context.addProofNode(node, ((Condition)e).getE2());
+          }
+          else {
+            // result is the unit constant
+            context.setProofNodeResult(node, new UnitConstant());
+          }
         }
+      }
+      catch (ClassCastException cause) {
+        // not a boolean constant...
       }
     }
     else if (node.getChildCount() == 2 && node.getChildAt(0).isProven() && node.getChildAt(1).isProven()) {
@@ -219,24 +234,29 @@ public class L1BigStepProofRuleSet extends L0BigStepProofRuleSet {
     if (node.getChildCount() == 1 && node.getChildAt(0).isProven()) {
       // determine the result of the first child node
       BigStepProofResult result0 = node.getChildAt(0).getResult();
-      
-      // the result of the child node must be a boolean value
-      if (result0.getValue() == BooleanConstant.FALSE) {
-        // let (COND-FALSE) handle the node
-        context.setProofNodeRule(node, (BigStepProofRule)getRuleByName("COND-FALSE")); //$NON-NLS-1$
-        updateCondFalse(context, node);
-      }
-      else if (result0.getValue() == BooleanConstant.TRUE) {
-        // can be applied to Condition and Condition1
-        Expression e = node.getExpression();
-        if (e instanceof Condition) {
-          // add next proof node for e1
-          context.addProofNode(node, ((Condition)e).getE1());
+      try {
+        // the result of the child node must be a boolean value
+        BooleanConstant value0 = (BooleanConstant)result0.getValue();
+        if (value0.booleanValue()) {
+          // let (COND-FALSE) handle the node
+          context.setProofNodeRule(node, (BigStepProofRule)getRuleByName("COND-FALSE")); //$NON-NLS-1$
+          updateCondFalse(context, node);
         }
         else {
-          // add next proof node for e1
-          context.addProofNode(node, ((Condition1)e).getE1());
+          // can be applied to Condition and Condition1
+          Expression e = node.getExpression();
+          if (e instanceof Condition) {
+            // add next proof node for e1
+            context.addProofNode(node, ((Condition)e).getE1());
+          }
+          else {
+            // add next proof node for e1
+            context.addProofNode(node, ((Condition1)e).getE1());
+          }
         }
+      }
+      catch (ClassCastException cause) {
+        // not a boolean constant...
       }
     }
     else if (node.getChildCount() == 2 && node.getChildAt(0).isProven() && node.getChildAt(1).isProven()) {
@@ -442,16 +462,21 @@ public class L1BigStepProofRuleSet extends L0BigStepProofRuleSet {
     if (node.getChildCount() == 1 && node.getChildAt(0).isProven()) {
       // determine the result of the first child node
       BigStepProofResult result0 = node.getChildAt(0).getResult();
-      
-      // the value of the child node must be a boolean value
-      if (result0.getValue() == BooleanConstant.TRUE) {
-        // let (OR-TRUE) handle the node
-        context.setProofNodeRule(node, (BigStepProofRule)getRuleByName("OR-TRUE"));
-        updateOrTrue(context, node);
+      try {
+        // the value of the child node must be a boolean value
+        BooleanConstant value0 = (BooleanConstant)result0.getValue();
+        if (value0.booleanValue()) {
+          // let (OR-TRUE) handle the node
+          context.setProofNodeRule(node, (BigStepProofRule)getRuleByName("OR-TRUE"));
+          updateOrTrue(context, node);
+        }
+        else {
+          // add a child node for the second expression
+          context.addProofNode(node, ((Or)node.getExpression()).getE2());
+        }
       }
-      else if (result0.getValue() == BooleanConstant.FALSE) {
-        // add a child node for the second expression
-        context.addProofNode(node, ((Or)node.getExpression()).getE2());
+      catch (ClassCastException cause) {
+        // not a boolean constant...
       }
     }
     else if (node.getChildCount() == 2 && node.getChildAt(0).isProven() && node.getChildAt(1).isProven()) {
@@ -471,16 +496,21 @@ public class L1BigStepProofRuleSet extends L0BigStepProofRuleSet {
     if (node.getChildCount() == 1 && node.getChildAt(0).isProven()) {
       // determine the result of the first child node
       BigStepProofResult result0 = node.getChildAt(0).getResult();
-      
-      // the value of the child node must be a boolean value
-      if (result0.getValue() == BooleanConstant.TRUE) {
-        // we're done with this node
-        context.setProofNodeResult(node, result0);
+      try {
+        // the value of the child node must be a boolean value
+        BooleanConstant value0 = (BooleanConstant)result0.getValue();
+        if (value0.booleanValue()) {
+          // we're done with this node
+          context.setProofNodeResult(node, result0);
+        }
+        else {
+          // let (OR-FALSE) handle the node
+          context.setProofNodeRule(node, (BigStepProofRule)getRuleByName("OR-FALSE"));
+          updateOrFalse(context, node);
+        }
       }
-      else if (result0.getValue() == BooleanConstant.FALSE) {
-        // let (OR-FALSE) handle the node
-        context.setProofNodeRule(node, (BigStepProofRule)getRuleByName("OR-FALSE"));
-        updateOrFalse(context, node);
+      catch (ClassCastException cause) {
+        // not a boolean constant...
       }
     }
     else if (node.getChildCount() == 2 && node.getChildAt(0).isProven() && node.getChildAt(1).isProven()) {

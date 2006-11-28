@@ -11,28 +11,29 @@ package de.unisiegen.tpml.core.expressions;
  */
 public final class UnaryCons extends Constant {
   //
-  // Constants
-  //
-  
-  /**
-   * The single instance of the <code>UnaryCons</code> class.
-   * 
-   * @see #UnaryCons()
-   */
-  public static final UnaryCons CONS = new UnaryCons();
-  
-  
-  
-  //
-  // Constructor (private)
+  // Constructor
   //
   
   /**
    * Constructs a new <code>UnaryCons</code> instance.
-   * 
-   * @see #CONS
    */
-  private UnaryCons() {
+  public UnaryCons() {
     super("cons");
+  }
+  
+  
+  
+  //
+  // Primitives
+  //
+  
+  /**
+   * {@inheritDoc}
+   *
+   * @see de.unisiegen.tpml.core.expressions.Expression#clone()
+   */
+  @Override
+  public UnaryCons clone() {
+    return new UnaryCons();
   }
 }

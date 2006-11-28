@@ -1,9 +1,8 @@
 package de.unisiegen.tpml.core.expressions;
 
 /**
- * The {@link #FALSE} and {@link #TRUE} instances of the <code>BooleanConstant</code> class
- * are used to represent the logic <code>false</code> and <code>true</code> values in the
- * expression hierarchy.
+ * Instances of the <code>BooleanConstant</code> class are used to represent the logic 
+ * <code>false</code> and <code>true</code> values in the expression hierarchy.
  *
  * @author Benedikt Meurer
  * @version $Rev$
@@ -13,39 +12,57 @@ package de.unisiegen.tpml.core.expressions;
  */
 public final class BooleanConstant extends Constant {
   //
-  // Constants
+  // Attributes
   //
   
   /**
-   * The <code>false</code> expression.
+   * The boolean value of the constant.
    * 
-   * @see #TRUE
+   * @see #booleanValue()
    */
-  public static final BooleanConstant FALSE = new BooleanConstant("false");
-
-  /**
-   * The <code>true</code> expression.
-   * 
-   * @see #FALSE
-   */
-  public static final BooleanConstant TRUE = new BooleanConstant("true");
+  private boolean booleanValue;
   
   
   
   //
-  // Constructor (private)
+  // Constructor
   //
 
   /**
    * Allocates a new <code>BooleanConstant</code> with the
-   * string representation given in <code>text</code>.
+   * value given in <code>booleanValue</code>.
    * 
-   * @param text the string representation of the constant.
+   * @param booleanValue the boolean value.
    * 
-   * @see #FALSE
-   * @see #TRUE
+   * @see #booleanValue()
    */
-  private BooleanConstant(String text) {
-    super(text);
+  public BooleanConstant(boolean booleanValue) {
+    super(booleanValue ? "true" : "false");
+    this.booleanValue = booleanValue;
+  }
+  
+  
+  
+  //
+  // Primitives
+  //
+  
+  /**
+   * Returns the value of this <code>BooleanConstant</code> object as a boolean primitive.
+   * 
+   * @return the primitive <code>boolean</code> value of this object.
+   */
+  public boolean booleanValue() {
+    return this.booleanValue;
+  }
+  
+  /**
+   * {@inheritDoc}
+   *
+   * @see de.unisiegen.tpml.core.expressions.Expression#clone()
+   */
+  @Override
+  public BooleanConstant clone() {
+    return new BooleanConstant(this.booleanValue);
   }
 }

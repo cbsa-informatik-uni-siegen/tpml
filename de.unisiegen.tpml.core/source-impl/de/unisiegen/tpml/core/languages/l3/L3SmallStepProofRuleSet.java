@@ -179,7 +179,7 @@ public class L3SmallStepProofRuleSet extends L2SmallStepProofRuleSet {
    */
   public Expression applyHd(SmallStepProofContext context, Application application, Hd e1, Expression e2) {
     // check if e2 is the empty list
-    if (e2 == EmptyList.EMPTY_LIST) {
+    if (e2 instanceof EmptyList) {
       context.addProofStep(getRuleByName("HD-EMPTY"), application);
       return Exn.EMPTY_LIST;
     }
@@ -224,16 +224,16 @@ public class L3SmallStepProofRuleSet extends L2SmallStepProofRuleSet {
    */
   public Expression applyIsEmpty(SmallStepProofContext context, Application application, IsEmpty e1, Expression e2) {
     // check if e2 is the empty list, or an application of cons to a value, or a list
-    if (e2 == EmptyList.EMPTY_LIST) {
+    if (e2 instanceof EmptyList) {
       context.addProofStep(getRuleByName("IS-EMPTY-TRUE"), application);
-      return BooleanConstant.TRUE;
+      return new BooleanConstant(true);
     }
     else if ((e2 instanceof List)
         || (e2 instanceof Application
          && ((Application)e2).getE1() instanceof UnaryCons
          && ((Application)e2).getE2().isValue())) {
       context.addProofStep(getRuleByName("IS-EMPTY-FALSE"), application);
-      return BooleanConstant.FALSE;
+      return new BooleanConstant(false);
     }
     else {
       // we're stuck
@@ -411,7 +411,7 @@ public class L3SmallStepProofRuleSet extends L2SmallStepProofRuleSet {
    */
   public Expression applyTl(SmallStepProofContext context, Application application, Tl e1, Expression e2) {
     // check if e is the empty list
-    if (e2 == EmptyList.EMPTY_LIST) {
+    if (e2 instanceof EmptyList) {
       context.addProofStep(getRuleByName("TL-EMPTY"), application);
       return Exn.EMPTY_LIST;
     }

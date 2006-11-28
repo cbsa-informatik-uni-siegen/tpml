@@ -116,9 +116,19 @@ public class Projection extends UnaryOperator {
       }
       return expressions[this.index - 1];
     }
-    catch (ClassCastException exception) {
+    catch (ClassCastException cause) {
       // cast of expression to tuple failed
-      throw new UnaryOperatorException(this, e);
+      throw new UnaryOperatorException(this, e, cause);
     }
+  }
+  
+  /**
+   * {@inheritDoc}
+   *
+   * @see de.unisiegen.tpml.core.expressions.Expression#clone()
+   */
+  @Override
+  public Projection clone() {
+    return new Projection(this.arity, this.index, getText());
   }
 }

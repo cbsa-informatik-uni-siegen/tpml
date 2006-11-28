@@ -60,7 +60,7 @@ public class L1LanguageTranslator extends L0LanguageTranslator {
       }
       
       // generate the condition
-      return new Condition(e1, e2, BooleanConstant.FALSE);
+      return new Condition(e1, e2, new BooleanConstant(false));
     }
     else if (expression instanceof Condition && recursive) {
       // determine the sub expressions
@@ -141,7 +141,7 @@ public class L1LanguageTranslator extends L0LanguageTranslator {
       }
       
       // generate the condition
-      return new Condition(e1, BooleanConstant.TRUE, e2);
+      return new Condition(e1, new BooleanConstant(true), e2);
     }
     else {
       // dunno, let the parent class handle it

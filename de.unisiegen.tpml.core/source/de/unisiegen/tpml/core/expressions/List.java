@@ -181,7 +181,7 @@ public final class List extends Expression {
       return new List(expressions);
     }
     else {
-      return EmptyList.EMPTY_LIST;
+      return new EmptyList();
     }
   }
   

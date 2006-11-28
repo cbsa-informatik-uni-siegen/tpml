@@ -72,7 +72,7 @@ public class L4SmallStepProofRuleSet extends L3SmallStepProofRuleSet {
       // assign is simple, just assign the value to the location :-)
       context.getStore().put((Location)e1, e2);
       context.addProofStep(getRuleByName("ASSIGN"), applicationOrInfix);
-      return UnitConstant.UNIT;
+      return new UnitConstant();
     }
     else {
       // let the parent class handle this operator application 
@@ -112,7 +112,7 @@ public class L4SmallStepProofRuleSet extends L3SmallStepProofRuleSet {
     }
     
     // determine the boolean constant value
-    if (e0 == BooleanConstant.TRUE) {
+    if (((BooleanConstant)e0).booleanValue()) {
       // jep, that's (COND-1-TRUE) then
       context.addProofStep(getRuleByName("COND-1-TRUE"), condition1);
       return e1;
@@ -120,7 +120,7 @@ public class L4SmallStepProofRuleSet extends L3SmallStepProofRuleSet {
     else {
       // jep, that's (COND-1-FALSE) then
       context.addProofStep(getRuleByName("COND-1-FALSE"), condition1);
-      return UnitConstant.UNIT;
+      return new UnitConstant();
     }
   }
   

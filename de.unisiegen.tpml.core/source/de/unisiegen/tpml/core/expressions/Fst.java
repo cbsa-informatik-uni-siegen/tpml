@@ -7,34 +7,34 @@ package de.unisiegen.tpml.core.expressions;
  * @author Benedikt Meurer
  * @version $Rev$
  *
- * @see #FST
  * @see de.unisiegen.tpml.core.expressions.Projection
  */
 public final class Fst extends Projection {
   //
-  // Constants
-  //
-  
-  /**
-   * The single instance of the <code>Fst</code> class.
-   * 
-   * @see #Fst()
-   */
-  public static final Fst FST = new Fst();
-  
-  
-  
-  //
-  // Constructor (private)
+  // Constructor
   //
   
   /**
    * Allocates a new instance of the <code>fst</code> operator which is a special case of the projection
    * that returns the first item of a pair.
-   * 
-   * @see #FST
    */
-  private Fst() {
+  public Fst() {
     super(2, 1, "fst");
+  }
+  
+  
+  
+  //
+  // Primitives
+  //
+  
+  /**
+   * {@inheritDoc}
+   *
+   * @see de.unisiegen.tpml.core.expressions.Projection#clone()
+   */
+  @Override
+  public Fst clone() {
+    return new Fst();
   }
 }

@@ -1,7 +1,7 @@
 package de.unisiegen.tpml.core.expressions;
 
 /**
- * The {@link #ASSIGN} constant in this class represents the <code>:=</code> operator in the expression
+ * Instances of this class represent the <code>Assign</code> operator in the expression
  * hierarchy.
  *
  * @author Benedikt Meurer
@@ -13,28 +13,13 @@ package de.unisiegen.tpml.core.expressions;
  */
 public final class Assign extends BinaryOperator {
   //
-  // Constants
-  //
-  
-  /**
-   * The single instance of the <code>Assign</code> operator.
-   * 
-   * @see #Assign()
-   */
-  public static final Assign ASSIGN = new Assign();
-  
-  
-  
-  //
-  // Constructor (private)
+  // Constructor
   //
   
   /**
    * Allocates a new <code>Assign</code> operator.
-   * 
-   * @see #ASSIGN
    */
-  private Assign() {
+  public Assign() {
     super(":=", PRIO_ASSIGN);
   }
   
@@ -60,5 +45,15 @@ public final class Assign extends BinaryOperator {
   @Override
   public Expression applyTo(Expression e1, Expression e2) throws BinaryOperatorException {
     throw new UnsupportedOperationException("assign operator must be handled by the interpreter");
+  }
+  
+  /**
+   * {@inheritDoc}
+   *
+   * @see de.unisiegen.tpml.core.expressions.Expression#clone()
+   */
+  @Override
+  public Assign clone() {
+    return new Assign();
   }
 }

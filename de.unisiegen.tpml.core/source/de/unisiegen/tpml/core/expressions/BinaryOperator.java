@@ -83,6 +83,14 @@ public abstract class BinaryOperator extends Constant {
    */
   public abstract Expression applyTo(Expression e1, Expression e2) throws BinaryOperatorException;
   
+  /**
+   * {@inheritDoc}
+   *
+   * @see de.unisiegen.tpml.core.expressions.Expression#clone()
+   */
+  @Override
+  public abstract BinaryOperator clone();
+  
   
   
   //

@@ -1,5 +1,6 @@
 package de.unisiegen.tpml.core.expressions;
 
+
 /**
  * Instances of this class represent arithmetic operators in the expression hierarchy.
  *
@@ -11,33 +12,53 @@ package de.unisiegen.tpml.core.expressions;
  */
 public final class ArithmeticOperator extends BinaryOperator {
   //
-  // Constants
+  // Class methods
   //
   
   /**
-   * The arithmetic plus operator.
+   * Returns the arithmetic plus operator.
+   * 
+   * @return a new instance of the plus operator.
    */
-  public static final ArithmeticOperator PLUS = new ArithmeticOperator("+", PRIO_PLUS);
+  public static final ArithmeticOperator newPlus() {
+    return new ArithmeticOperator("+", PRIO_PLUS);
+  }
   
   /**
-   * The arithmetic minus operator.
+   * Returns the arithmetic minus operator.
+   * 
+   * @return a new instance of the minus operator.
    */
-  public static final ArithmeticOperator MINUS = new ArithmeticOperator("-", PRIO_MINUS);
+  public static final ArithmeticOperator newMinus() {
+    return new ArithmeticOperator("-", PRIO_MINUS);
+  }
   
   /**
-   * The arithmetic multiplication operator.
+   * Returns the arithmetic multiplication operator.
+   * 
+   * @return a new instance of the mult operator.
    */
-  public static final ArithmeticOperator MULT = new ArithmeticOperator("*", PRIO_MULT);
+  public static final ArithmeticOperator newMult() {
+    return new ArithmeticOperator("*", PRIO_MULT);
+  }
   
   /**
-   * The arithmetic division operator.
+   * Returns the arithmetic division operator.
+   * 
+   * @return a new instance of the div operator.
    */
-  public static final ArithmeticOperator DIV = new ArithmeticOperator("/", PRIO_DIV);
+  public static final ArithmeticOperator newDiv() {
+    return new ArithmeticOperator("/", PRIO_DIV);
+  }
   
   /**
-   * The arithmetic modulo operator.
+   * Returns the arithmetic modulo operator.
+   * 
+   * @return a new instance of the mod operator.
    */
-  public static final ArithmeticOperator MOD = new ArithmeticOperator("mod", PRIO_MOD);
+  public static final ArithmeticOperator newMod() {
+    return new ArithmeticOperator("mod", PRIO_MOD);
+  }
 
   
   
@@ -81,23 +102,23 @@ public final class ArithmeticOperator extends BinaryOperator {
     }
     try {
       // determine the integer values of the operands
-      int n1 = ((IntegerConstant)e1).getNumber();
-      int n2 = ((IntegerConstant)e2).getNumber();
+      int n1 = ((IntegerConstant)e1).intValue();
+      int n2 = ((IntegerConstant)e2).intValue();
       
       // try to perform the application
-      if (this == PLUS) {
+      if (getPrettyPriority() == PRIO_PLUS) {
         return new IntegerConstant(n1 + n2);
       }
-      else if (this == MINUS) {
+      else if (getPrettyPriority() == PRIO_MINUS) {
         return new IntegerConstant(n1 - n2);
       }
-      else if (this == MULT) {
+      else if (getPrettyPriority() == PRIO_MULT) {
         return new IntegerConstant(n1 * n2);
       }
-      else if (this == DIV) {
+      else if (getPrettyPriority() == PRIO_DIV) {
         return new IntegerConstant(n1 / n2);
       }
-      else if (this == MOD) {
+      else if (getPrettyPriority() == PRIO_MOD) {
         return new IntegerConstant(n1 % n2);
       }
       else {
@@ -113,5 +134,15 @@ public final class ArithmeticOperator extends BinaryOperator {
       // internal Java operators throw this on divide-by-zero
       return Exn.DIVIDE_BY_ZERO;
     }
+  }
+  
+  /**
+   * {@inheritDoc}
+   *
+   * @see de.unisiegen.tpml.core.expressions.Expression#clone()
+   */
+  @Override
+  public ArithmeticOperator clone() {
+    return new ArithmeticOperator(getText(), getPrettyPriority());
   }
 }

@@ -7,34 +7,34 @@ package de.unisiegen.tpml.core.expressions;
  * @author Benedikt Meurer
  * @version $Rev$
  *
- * @see #SND
  * @see de.unisiegen.tpml.core.expressions.Projection
  */
 public final class Snd extends Projection {
   //
-  // Constants
-  //
-  
-  /**
-   * The single instance of the <code>Snd</code> class.
-   * 
-   * @see #Snd()
-   */
-  public static final Snd SND = new Snd();
-  
-  
-  
-  //
-  // Constructor (private)
+  // Constructor
   //
   
   /**
    * Allocates a new instance of the <code>snd</code> operator which is a special case of the projection
    * that returns the second item of a pair.
-   * 
-   * @see #SND
    */
-  private Snd() {
+  public Snd() {
     super(2, 2, "snd");
+  }
+  
+  
+  
+  //
+  // Primitives
+  //
+  
+  /**
+   * {@inheritDoc}
+   *
+   * @see de.unisiegen.tpml.core.expressions.Projection#clone()
+   */
+  @Override
+  public Snd clone() {
+    return new Snd();
   }
 }

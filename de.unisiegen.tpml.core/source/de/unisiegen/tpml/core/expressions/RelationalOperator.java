@@ -12,33 +12,53 @@ package de.unisiegen.tpml.core.expressions;
  */
 public final class RelationalOperator extends BinaryOperator {
   //
-  // Constants
+  // Class methods
   //
   
   /**
-   * The equals operator.
+   * Returns the equals operator.
+   * 
+   * @return the equals operator.
    */
-  public static final RelationalOperator EQUALS = new RelationalOperator("=");
+  public static final RelationalOperator newEquals() {
+    return new RelationalOperator("=");
+  }
   
   /**
-   * The lower-than operator.
+   * Returns the lower-than operator.
+   * 
+   * @return the lower-than operator.
    */
-  public static final RelationalOperator LOWER_THAN = new RelationalOperator("<");
+  public static final RelationalOperator newLowerThan() {
+    return new RelationalOperator("<");
+  }
   
   /**
-   * The greater-than operator.
+   * Returns the greater-than operator.
+   * 
+   * @return the greater-than operator.
    */
-  public static final RelationalOperator GREATER_THAN = new RelationalOperator(">");
+  public static final RelationalOperator newGreaterThan() {
+    return new RelationalOperator(">");
+  }
   
   /**
-   * The lower-equal operator.
+   * Returns the lower-equal operator.
+   * 
+   * @return the lower-equal operator.
    */
-  public static final RelationalOperator LOWER_EQUAL = new RelationalOperator("<=");
+  public static final RelationalOperator newLowerEqual() {
+    return new RelationalOperator("<=");
+  }
   
   /**
-   * The greater-equal operator.
+   * Returns the greater-equal operator.
+   * 
+   * @return the greater-equal operator.
    */
-  public static final RelationalOperator GREATER_EQUAL = new RelationalOperator(">=");
+  public static final RelationalOperator newGreaterEqual() {
+    return new RelationalOperator(">=");
+  }
 
   
   
@@ -79,24 +99,24 @@ public final class RelationalOperator extends BinaryOperator {
     }
     try {
       // determine the numeric values of the operands
-      int n1 = ((IntegerConstant)e1).getNumber();
-      int n2 = ((IntegerConstant)e2).getNumber();
+      int n1 = ((IntegerConstant)e1).intValue();
+      int n2 = ((IntegerConstant)e2).intValue();
       
       // perform the requested comparison
-      if (this == EQUALS) {
-        return (n1 == n2) ? BooleanConstant.TRUE : BooleanConstant.FALSE;
+      if (getText() == "=") {
+        return new BooleanConstant(n1 == n2);
       }
-      else if (this == LOWER_THAN) {
-        return (n1 < n2) ? BooleanConstant.TRUE : BooleanConstant.FALSE;
+      else if (getText() == "<") {
+        return new BooleanConstant(n1 < n2);
       }
-      else if (this == GREATER_THAN) {
-        return (n1 > n2) ? BooleanConstant.TRUE : BooleanConstant.FALSE;
+      else if (getText() == ">") {
+        return new BooleanConstant(n1 > n2);
       }
-      else if (this == LOWER_EQUAL) {
-        return (n1 <= n2) ? BooleanConstant.TRUE : BooleanConstant.FALSE;
+      else if (getText() == "<=") {
+        return new BooleanConstant(n1 <= n2);
       }
-      else if (this == GREATER_EQUAL) {
-        return (n1 >= n2) ? BooleanConstant.TRUE : BooleanConstant.FALSE;
+      else if (getText() == ">=") {
+        return new BooleanConstant(n1 >= n2);
       }
       else {
         // programming error
@@ -107,5 +127,15 @@ public final class RelationalOperator extends BinaryOperator {
       // one of the Expression to IntegerConstant casts failed
       throw new BinaryOperatorException(this, e1, e2);
     }
+  }
+  
+  /**
+   * {@inheritDoc}
+   *
+   * @see de.unisiegen.tpml.core.expressions.Expression#clone()
+   */
+  @Override
+  public RelationalOperator clone() {
+    return new RelationalOperator(getText());
   }
 }

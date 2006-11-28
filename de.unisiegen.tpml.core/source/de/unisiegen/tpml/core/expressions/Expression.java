@@ -33,13 +33,9 @@ public abstract class Expression implements Cloneable, PrettyPrintable, PrettyPr
    * Clones this expression, so that the result is an expression equal to this expression, but
    * with a different object identity. This is used in the substitution of expressions to be
    * able to distinguish different appearances of the same identifier in the pretty printer,
-   * as required by the highlighting of bound variables. But note that for certain kinds of
-   * {@link Expression}s, like {@link Constant}s, this method returns the same object, as
-   * constants are not affected by the highlighting of bound variables.
+   * as required by the highlighting of bound variables.
    *  
-   * @return a deep clone of this object, or a reference to <code>this</code> if the expression
-   *         is a constant or another special kind of expression not affected by the highlighting
-   *         of bound variables.
+   * @return a deep clone of this object.
    *         
    * @see Object#clone()
    */
@@ -68,7 +64,7 @@ public abstract class Expression implements Cloneable, PrettyPrintable, PrettyPr
     Enumeration<Expression> enumeration = levelOrderEnumeration();
     while (enumeration.hasMoreElements()) {
       Expression e = enumeration.nextElement();
-      if (e == Assign.ASSIGN || e == Deref.DEREF || e == Ref.REF) {
+      if ((e instanceof Assign) || (e instanceof Deref) || (e instanceof Ref)) {
         return true;
       }
     }

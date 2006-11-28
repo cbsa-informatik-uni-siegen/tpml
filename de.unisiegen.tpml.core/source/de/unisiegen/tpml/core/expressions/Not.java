@@ -1,8 +1,7 @@
 package de.unisiegen.tpml.core.expressions;
 
 /**
- * The {@link #NOT} instance of this class represents the <code>not</code> operator in the expression
- * hierarchy. 
+ * Instances of this class represent the <code>not</code> operator in the expression hierarchy. 
  *
  * @author Benedikt Meurer
  * @version $Rev$
@@ -11,26 +10,13 @@ package de.unisiegen.tpml.core.expressions;
  */
 public final class Not extends UnaryOperator {
   //
-  // Constants
-  //
-  
-  /**
-   * The single instance of the <code>Not</code> class.
-   */
-  public static final Not NOT = new Not();
-  
-  
-  
-  //
-  // Constructor (private)
+  // Constructor
   //
   
   /**
    * Allocates a new <code>Not</code> operator.
-   * 
-   * @see #NOT
    */
-  private Not() {
+  public Not() {
     super("not");
   }
   
@@ -47,14 +33,21 @@ public final class Not extends UnaryOperator {
    */
   @Override
   public Expression applyTo(Expression e) throws UnaryOperatorException {
-    if (e == BooleanConstant.TRUE) {
-      return BooleanConstant.FALSE;
+    try {
+      return new BooleanConstant(!((BooleanConstant)e).booleanValue());
     }
-    else if (e == BooleanConstant.FALSE) {
-      return BooleanConstant.TRUE;
+    catch (ClassCastException cause) {
+      throw new UnaryOperatorException(this, e, cause);
     }
-    else {
-      throw new UnaryOperatorException(this, e);
-    }
+  }
+  
+  /**
+   * {@inheritDoc}
+   *
+   * @see de.unisiegen.tpml.core.expressions.Expression#clone()
+   */
+  @Override
+  public Expression clone() {
+    return new Not();
   }
 }

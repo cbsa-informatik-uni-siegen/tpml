@@ -17,9 +17,9 @@ public final class IntegerConstant extends Constant {
   /**
    * The numeric value of the integer constant.
    * 
-   * @see #getNumber()
+   * @see #intValue()
    */
-  private int number;
+  private int intValue;
   
   
   
@@ -28,29 +28,39 @@ public final class IntegerConstant extends Constant {
   //
   
   /**
-   * Allocates a new <code>IntegerConstant</code> with the given <code>number</code>.
+   * Allocates a new <code>IntegerConstant</code> with the given <code>intValue</code>.
    * 
-   * @param number the numeric value for the integer constant.
+   * @param intValue the numeric value for the integer constant.
    * 
-   * @see #getNumber()
+   * @see #intValue()
    */
-  public IntegerConstant(int number) {
-    super(String.valueOf(number));
-    this.number = number;
+  public IntegerConstant(int intValue) {
+    super(String.valueOf(intValue));
+    this.intValue = intValue;
   }
   
   
   
   //
-  // Accessors
+  // Primitives
   //
   
   /**
-   * Returns the numeric value of this integer constant.
+   * Returns the value of this <code>IntegerConstant</code> as an <code>int</code>.
    * 
-   * @return the numeric value.
+   * @return the numeric value represented by this object after conversion to type <code>int</code>.
    */
-  public int getNumber() {
-    return this.number;
+  public int intValue() {
+    return this.intValue;
+  }
+  
+  /**
+   * {@inheritDoc}
+   *
+   * @see de.unisiegen.tpml.core.expressions.Expression#clone()
+   */
+  @Override
+  public IntegerConstant clone() {
+    return new IntegerConstant(this.intValue);
   }
 }

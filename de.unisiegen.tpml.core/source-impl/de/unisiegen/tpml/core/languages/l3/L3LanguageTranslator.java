@@ -60,13 +60,13 @@ public class L3LanguageTranslator extends L2LanguageTranslator {
     else if (expression instanceof List) {
       List list = (List)expression;
       Expression[] expressions = list.getExpressions();
-      expression = EmptyList.EMPTY_LIST;
+      expression = new EmptyList();
       for (int n = expressions.length - 1; n >= 0; --n) {
         Expression e = expressions[n];
         if (recursive) {
           e = translateToCoreSyntax(e, true);
         }
-        expression = new Application(UnaryCons.CONS, new Tuple(new Expression[] { e, expression }));
+        expression = new Application(new UnaryCons(), new Tuple(new Expression[] { e, expression }));
       }
       return expression;
     }

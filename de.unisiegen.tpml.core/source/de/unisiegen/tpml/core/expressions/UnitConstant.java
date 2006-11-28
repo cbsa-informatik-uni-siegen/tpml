@@ -1,8 +1,8 @@
 package de.unisiegen.tpml.core.expressions;
 
 /**
- * The single {@link UnitConstant#UNIT} instance of this class represents the constant unit
- * value in the expression hierarchy. The string representation is <tt>()</tt>.
+ * Instances of this class represent the constant unit value in the expression hierarchy.
+ * The string representation is <tt>()</tt>.
  *
  * @author Benedikt Meurer
  * @version $Rev$
@@ -12,26 +12,29 @@ package de.unisiegen.tpml.core.expressions;
  */
 public final class UnitConstant extends Constant {
   //
-  // Constants
-  //
-  
-  /**
-   * The single <code>UnitConstant</code> instance, which represents the unit value, written as <tt>()</tt>.
-   */
-  public static final UnitConstant UNIT = new UnitConstant();
-  
-  
-  
-  //
-  // Constructor (private)
+  // Constructor
   //
   
   /**
    * Allocates a new <code>UnitConstant</code>.
-   * 
-   * @see #UNIT
    */
-  private UnitConstant() {
+  public UnitConstant() {
     super("()");
+  }
+  
+  
+  
+  //
+  // Primitives
+  //
+  
+  /**
+   * {@inheritDoc}
+   *
+   * @see de.unisiegen.tpml.core.expressions.Expression#clone()
+   */
+  @Override
+  public UnitConstant clone() {
+    return new UnitConstant();
   }
 }

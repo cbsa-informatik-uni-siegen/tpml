@@ -13,28 +13,29 @@ package de.unisiegen.tpml.core.expressions;
  */
 public final class IsEmpty extends UnaryListOperator {
   //
-  // Constants
-  //
-  
-  /**
-   * The single instance of the <code>IsEmpty</code> class.
-   * 
-   * @see #IsEmpty()
-   */
-  public static final IsEmpty IS_EMPTY = new IsEmpty();
-  
-  
-  
-  //
-  // Constructor (private)
+  // Constructor
   //
   
   /**
    * Allocates a new <code>IsEmpty</code> instance.
-   * 
-   * @see #IS_EMPTY
    */
-  private IsEmpty() {
+  public IsEmpty() {
     super("is_empty");
+  }
+  
+  
+  
+  //
+  // Primitives
+  //
+  
+  /**
+   * {@inheritDoc}
+   *
+   * @see de.unisiegen.tpml.core.expressions.Expression#clone()
+   */
+  @Override
+  public IsEmpty clone() {
+    return new IsEmpty();
   }
 }

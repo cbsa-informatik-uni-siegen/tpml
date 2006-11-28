@@ -19,6 +19,7 @@ public abstract class Constant extends Value {
   /**
    * The text representation of the constant.
    * 
+   * @see #getText()
    * @see #toPrettyStringBuilder(PrettyStringBuilderFactory)
    */
   protected String text;
@@ -46,22 +47,25 @@ public abstract class Constant extends Value {
   
   
   //
-  // Primitives
+  // Accessors
   //
   
   /**
-   * {@inheritDoc}
-   *
-   * Cloning constants doesn't make sense usually since they're mostly singletons, and
-   * is also not required for the highlighting of bound variables, so this method always
-   * returns <code>this</code> for all kinds of {@link Constant}s.
+   * Returns the text representation for this constant, just like {@link #toString()}.
    * 
-   * @see de.unisiegen.tpml.core.expressions.Expression#clone()
+   * @return the text representation.
+   * 
+   * @see #toString()
    */
-  @Override
-  public Constant clone() {
-    return this;
+  public String getText() {
+    return this.text;
   }
+  
+  
+  
+  //
+  // Primitives
+  //
   
   /**
    * {@inheritDoc}

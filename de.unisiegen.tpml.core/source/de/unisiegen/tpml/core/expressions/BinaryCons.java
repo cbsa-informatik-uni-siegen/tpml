@@ -12,28 +12,13 @@ package de.unisiegen.tpml.core.expressions;
  */
 public final class BinaryCons extends BinaryOperator {
   //
-  // Constants
-  //
-  
-  /**
-   * The single instance of the <code>BinaryCons</code> class.
-   * 
-   * @see #BinaryCons()
-   */
-  public static final BinaryCons CONS = new BinaryCons();
-  
-  
-  
-  //
-  // Constructor (private)
+  // Constructor
   //
   
   /**
    * Allocates a new <code>BinaryCons</code> instances.
-   * 
-   * @see #CONS
    */
-  private BinaryCons() {
+  public BinaryCons() {
     super("::", PRIO_BINARY_CONS);
   }
   
@@ -58,5 +43,15 @@ public final class BinaryCons extends BinaryOperator {
       // we're stuck
       throw new BinaryOperatorException(this, e1, e2);
     }
+  }
+  
+  /**
+   * {@inheritDoc}
+   *
+   * @see de.unisiegen.tpml.core.expressions.Expression#clone()
+   */
+  @Override
+  public BinaryCons clone() {
+    return new BinaryCons();
   }
 }

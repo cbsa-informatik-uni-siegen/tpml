@@ -65,7 +65,7 @@ public class L4LanguageTranslator extends L3LanguageTranslator {
       }
       
       // generate: cons (e1,2)
-      return new Application(UnaryCons.CONS, new Tuple(new Expression[] { e1, e2 }));
+      return new Application(new UnaryCons(), new Tuple(new Expression[] { e1, e2 }));
     }
     else if (expression instanceof Condition1) {
       // translate to: if e0 then e1 else ()
@@ -80,7 +80,7 @@ public class L4LanguageTranslator extends L3LanguageTranslator {
       }
       
       // generate the condition
-      return new Condition(e0, e1, UnitConstant.UNIT);
+      return new Condition(e0, e1, new UnitConstant());
     }
     else if (expression instanceof Sequence) {
       // translate to: let u = e1 in e2

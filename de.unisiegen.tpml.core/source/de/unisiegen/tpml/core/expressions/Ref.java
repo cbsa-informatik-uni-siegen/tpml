@@ -1,8 +1,7 @@
 package de.unisiegen.tpml.core.expressions;
 
 /**
- * The {@link #REF} constant in this class represents the <code>ref</code> operator in the expression
- * hierarchy.
+ * Instances of this class represent the <code>ref</code> operator in the expression hierarchy.
  *
  * @author Benedikt Meurer
  * @version $Rev$
@@ -13,28 +12,13 @@ package de.unisiegen.tpml.core.expressions;
  */
 public final class Ref extends UnaryOperator {
   //
-  // Constants
-  //
-  
-  /**
-   * The single instance of the <code>Ref</code> class.
-   * 
-   * @see #Ref()
-   */
-  public static final Ref REF = new Ref();
-  
-  
-  
-  //
-  // Constructor (private)
+  // Constructor
   //
   
   /**
    * Allocates a new <code>Ref</code> instance.
-   * 
-   * @see #REF
    */
-  private Ref() {
+  public Ref() {
     super("ref");
   }
   
@@ -58,5 +42,15 @@ public final class Ref extends UnaryOperator {
   @Override
   public Expression applyTo(Expression e) throws UnaryOperatorException {
     throw new UnsupportedOperationException("ref operator must be handled by the interpreter");
+  }
+  
+  /**
+   * {@inheritDoc}
+   *
+   * @see de.unisiegen.tpml.core.expressions.Expression#clone()
+   */
+  @Override
+  public Ref clone() {
+    return new Ref();
   }
 }

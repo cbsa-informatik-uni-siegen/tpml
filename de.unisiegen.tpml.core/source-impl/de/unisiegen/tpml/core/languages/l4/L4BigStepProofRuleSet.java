@@ -90,7 +90,7 @@ public class L4BigStepProofRuleSet extends L3BigStepProofRuleSet {
     // assign a new value to the location
     Store store = node.getStore();
     store.put((Location)e1, e2);
-    context.setProofNodeResult(node, UnitConstant.UNIT, store);
+    context.setProofNodeResult(node, new UnitConstant(), store);
   }
 
   

@@ -1,6 +1,5 @@
 package de.unisiegen.tpml.core.prettyprinter;
 
-import java.util.HashMap;
 import java.util.IdentityHashMap;
 import java.util.LinkedList;
 import java.util.Map;

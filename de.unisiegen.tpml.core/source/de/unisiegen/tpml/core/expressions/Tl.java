@@ -13,28 +13,29 @@ package de.unisiegen.tpml.core.expressions;
  */
 public final class Tl extends UnaryListOperator {
   //
-  // Constants
-  //
-  
-  /**
-   * The single instance of the <code>Tl</code> class.
-   * 
-   * @see #Tl()
-   */
-  public static final Tl TL = new Tl();
-  
-  
-  
-  //
-  // Constructor (private)
+  // Constructor
   //
   
   /**
    * Allocates a new <code>Tl</code> instance.
-   * 
-   * @see #TL
    */
-  private Tl() {
+  public Tl() {
     super("tl");
+  }
+  
+  
+  
+  //
+  // Primitives
+  //
+  
+  /**
+   * {@inheritDoc}
+   *
+   * @see de.unisiegen.tpml.core.expressions.Expression#clone()
+   */
+  @Override
+  public Tl clone() {
+    return new Tl();
   }
 }

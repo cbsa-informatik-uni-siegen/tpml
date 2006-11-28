@@ -166,7 +166,7 @@ public class L1SmallStepProofRuleSet extends L0SmallStepProofRuleSet {
     }
     
     // determine the boolean constant value
-    if (e1 == BooleanConstant.TRUE) {
+    if (((BooleanConstant)e1).booleanValue()) {
       // jep, that's (AND-TRUE) then
       context.addProofStep(getRuleByName("AND-TRUE"), and);
       return e2;
@@ -174,7 +174,7 @@ public class L1SmallStepProofRuleSet extends L0SmallStepProofRuleSet {
     else {
       // jep, that's (AND-FALSE) then
       context.addProofStep(getRuleByName("AND-FALSE"), and);
-      return BooleanConstant.FALSE;
+      return new BooleanConstant(false);
     }
   }
   
@@ -260,7 +260,7 @@ public class L1SmallStepProofRuleSet extends L0SmallStepProofRuleSet {
     }
     
     // determine the boolean constant value
-    if (e0 == BooleanConstant.TRUE) {
+    if (((BooleanConstant)e0).booleanValue()) {
       // jep, that's (COND-TRUE) then
       context.addProofStep(getRuleByName("COND-TRUE"), condition);
       return e1;
@@ -368,10 +368,10 @@ public class L1SmallStepProofRuleSet extends L0SmallStepProofRuleSet {
     }
     
     // determine the boolean constant value
-    if (e1 == BooleanConstant.TRUE) {
+    if (((BooleanConstant)e1).booleanValue()) {
       // jep, that's (OR-TRUE) then
       context.addProofStep(getRuleByName("OR-TRUE"), or);
-      return BooleanConstant.TRUE;
+      return new BooleanConstant(true);
     }
     else {
       // jep, that's (OR-FALSE) then

@@ -1,8 +1,7 @@
 package de.unisiegen.tpml.core.expressions;
 
 /**
- * The {@link #DEREF} constant in this class represents the <code>!</code> operator in the expression
- * hierarchy.
+ * Instances of this class represent the <code>!</code> operator in the expression hierarchy.
  *
  * @author Benedikt Meurer
  * @version $Rev$
@@ -13,28 +12,13 @@ package de.unisiegen.tpml.core.expressions;
  */
 public final class Deref extends UnaryOperator {
   //
-  // Constants
-  //
-  
-  /**
-   * The single instance of the <code>Deref</code> class.
-   * 
-   * @see #Deref()
-   */
-  public static final Deref DEREF = new Deref();
-  
-  
-  
-  //
-  // Constructor (private)
+  // Constructor
   //
   
   /**
    * Allocates a new <code>Deref</code> instance.
-   * 
-   * @see #DEREF
    */
-  private Deref() {
+  public Deref() {
     super("!");
   }
   
@@ -58,5 +42,15 @@ public final class Deref extends UnaryOperator {
   @Override
   public Expression applyTo(Expression e) throws UnaryOperatorException {
     throw new UnsupportedOperationException("deref operator must be handled by the interpreter");
+  }
+  
+  /**
+   * {@inheritDoc}
+   *
+   * @see de.unisiegen.tpml.core.expressions.Expression#clone()
+   */
+  @Override
+  public Deref clone() {
+    return new Deref();
   }
 }

@@ -100,29 +100,29 @@ expr				::=	simple_expr:e
 
 					/* Infix Operations */
 					|	expr:e1 PLUS expr:e2
-						{: RESULT = new InfixOperation(ArithmeticOperator.PLUS, e1, e2); :}
+						{: RESULT = new InfixOperation(ArithmeticOperator.newPlus(), e1, e2); :}
 					|	expr:e1 MINUS expr:e2
-						{: RESULT = new InfixOperation(ArithmeticOperator.MINUS, e1, e2); :}
+						{: RESULT = new InfixOperation(ArithmeticOperator.newMinus(), e1, e2); :}
 					|	expr:e1 STAR expr:e2
-						{: RESULT = new InfixOperation(ArithmeticOperator.MULT, e1, e2); :}
+						{: RESULT = new InfixOperation(ArithmeticOperator.newMult(), e1, e2); :}
 					|	expr:e1 SLASH expr:e2
-						{: RESULT = new InfixOperation(ArithmeticOperator.DIV, e1, e2); :}
+						{: RESULT = new InfixOperation(ArithmeticOperator.newDiv(), e1, e2); :}
 					|	expr:e1 MOD expr:e2
-						{: RESULT = new InfixOperation(ArithmeticOperator.MOD, e1, e2); :}
+						{: RESULT = new InfixOperation(ArithmeticOperator.newMod(), e1, e2); :}
 
 					|	expr:e1 EQUAL expr:e2
-						{: RESULT = new InfixOperation(RelationalOperator.EQUALS, e1, e2); :}
+						{: RESULT = new InfixOperation(RelationalOperator.newEquals(), e1, e2); :}
 					|	expr:e1 LESS expr:e2
-						{: RESULT = new InfixOperation(RelationalOperator.LOWER_THAN, e1, e2); :}
+						{: RESULT = new InfixOperation(RelationalOperator.newLowerThan(), e1, e2); :}
 					|	expr:e1 GREATER expr:e2
-						{: RESULT = new InfixOperation(RelationalOperator.GREATER_THAN, e1, e2); :}
+						{: RESULT = new InfixOperation(RelationalOperator.newGreaterThan(), e1, e2); :}
 					|	expr:e1 LESSEQUAL expr:e2
-						{: RESULT = new InfixOperation(RelationalOperator.LOWER_EQUAL, e1, e2); :}
+						{: RESULT = new InfixOperation(RelationalOperator.newLowerEqual(), e1, e2); :}
 					|	expr:e1 GREATEREQUAL expr:e2
-						{: RESULT = new InfixOperation(RelationalOperator.GREATER_EQUAL, e1, e2); :}
+						{: RESULT = new InfixOperation(RelationalOperator.newGreaterEqual(), e1, e2); :}
 
 					|	expr:e1 COLONCOLON expr:e2
-						{: RESULT = new InfixOperation(BinaryCons.CONS, e1, e2); :}
+						{: RESULT = new InfixOperation(new BinaryCons(), e1, e2); :}
 
 					/* Logical operators */
 					|	expr:e1 AMPERAMPER expr:e2
@@ -235,41 +235,41 @@ simple_expr_list	::=	simple_expr:e
 					;
 
 
-constant			::=	PARENPAREN		{: RESULT = UnitConstant.UNIT; :}
-					|	BRACKETBRACKET	{: RESULT = EmptyList.EMPTY_LIST; :}
-					|	TRUE			{: RESULT = BooleanConstant.TRUE; :}
-					|	FALSE			{: RESULT = BooleanConstant.FALSE; :}
+constant			::=	PARENPAREN		{: RESULT = new UnitConstant(); :}
+					|	BRACKETBRACKET	{: RESULT = new EmptyList(); :}
+					|	TRUE			{: RESULT = new BooleanConstant(true); :}
+					|	FALSE			{: RESULT = new BooleanConstant(false); :}
 					|	NUMBER:n		{: RESULT = new IntegerConstant(n.intValue()); :}
 					
 					/* Logical operators */
-					|	NOT				{: RESULT = Not.NOT; :}
+					|	NOT				{: RESULT = new Not(); :}
 
 					/* Tuple operators */
 					|	PROJECTION:proj	{: RESULT = new Projection(proj[0], proj[1]); :}
-					|	FST				{: RESULT = Fst.FST; :}
-					|	SND				{: RESULT = Snd.SND; :}
+					|	FST				{: RESULT = new Fst(); :}
+					|	SND				{: RESULT = new Snd(); :}
 					
 					/* List operators */
-					|	CONS			{: RESULT = UnaryCons.CONS; :}
-					|	IS_EMPTY		{: RESULT = IsEmpty.IS_EMPTY; :}
-					|	HD				{: RESULT = Hd.HD; :}
-					|	TL				{: RESULT = Tl.TL; :}
+					|	CONS			{: RESULT = new UnaryCons(); :}
+					|	IS_EMPTY		{: RESULT = new IsEmpty(); :}
+					|	HD				{: RESULT = new Hd(); :}
+					|	TL				{: RESULT = new Tl(); :}
 					;
 
 
-operator			::=	PLUS			{: RESULT = ArithmeticOperator.PLUS; :}
-					|	MINUS			{: RESULT = ArithmeticOperator.MINUS; :}
-					|	STAR			{: RESULT = ArithmeticOperator.MULT; :}
-					|	SLASH			{: RESULT = ArithmeticOperator.DIV; :}
-					|	MOD				{: RESULT = ArithmeticOperator.MOD; :}
-					|	EQUAL			{: RESULT = RelationalOperator.EQUALS; :}
-					|	LESS			{: RESULT = RelationalOperator.LOWER_THAN; :}
-					|	GREATER			{: RESULT = RelationalOperator.GREATER_THAN; :}
-					|	LESSEQUAL		{: RESULT = RelationalOperator.LOWER_EQUAL; :}
-					|	GREATEREQUAL	{: RESULT = RelationalOperator.GREATER_EQUAL; :}
+operator			::=	PLUS			{: RESULT = ArithmeticOperator.newPlus(); :}
+					|	MINUS			{: RESULT = ArithmeticOperator.newMinus(); :}
+					|	STAR			{: RESULT = ArithmeticOperator.newMult(); :}
+					|	SLASH			{: RESULT = ArithmeticOperator.newDiv(); :}
+					|	MOD				{: RESULT = ArithmeticOperator.newMod(); :}
+					|	EQUAL			{: RESULT = RelationalOperator.newEquals(); :}
+					|	LESS			{: RESULT = RelationalOperator.newLowerThan(); :}
+					|	GREATER			{: RESULT = RelationalOperator.newGreaterThan(); :}
+					|	LESSEQUAL		{: RESULT = RelationalOperator.newLowerEqual(); :}
+					|	GREATEREQUAL	{: RESULT = RelationalOperator.newGreaterEqual(); :}
 					
 					/* List operators */
-					|	COLONCOLON		{: RESULT = BinaryCons.CONS; :}
+					|	COLONCOLON		{: RESULT = new BinaryCons(); :}
 					;
 
 

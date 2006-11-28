@@ -11,28 +11,29 @@ package de.unisiegen.tpml.core.expressions;
  */
 public final class EmptyList extends Constant {
   //
-  // Constant
-  //
-  
-  /**
-   * The single instance of the <code>EmptyList</code> class.
-   * 
-   * @see #EmptyList()
-   */
-  public static final EmptyList EMPTY_LIST = new EmptyList();
-  
-  
-  
-  //
-  // Constructor (private)
+  // Constructor
   //
   
   /**
    * Allocates a new <code>EmptyList</code> instance.
-   * 
-   * @see #EMPTY_LIST
    */
-  private EmptyList() {
+  public EmptyList() {
     super("[]");
+  }
+  
+  
+  
+  //
+  // Primitives
+  //
+  
+  /**
+   * {@inheritDoc}
+   *
+   * @see de.unisiegen.tpml.core.expressions.Expression#clone()
+   */
+  @Override
+  public Expression clone() {
+    return new EmptyList();
   }
 }

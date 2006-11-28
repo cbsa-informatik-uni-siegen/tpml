@@ -129,7 +129,7 @@ public final class InfixOperation extends Expression {
    */
   @Override
   public InfixOperation clone() {
-    return new InfixOperation(this.op, this.e1.clone(), this.e2.clone());
+    return new InfixOperation(this.op.clone(), this.e1.clone(), this.e2.clone());
   }
   
   /**

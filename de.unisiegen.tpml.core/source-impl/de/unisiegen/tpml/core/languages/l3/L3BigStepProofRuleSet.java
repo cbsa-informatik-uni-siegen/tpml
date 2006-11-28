@@ -150,7 +150,7 @@ public class L3BigStepProofRuleSet extends L2BigStepProofRuleSet {
     }
     
     // check if e2 is the empty list
-    if (e2 == EmptyList.EMPTY_LIST) {
+    if (e2 instanceof EmptyList) {
       context.setProofNodeResult(node, Exn.EMPTY_LIST);
       context.setProofNodeRule(node, context.newNoopRule("HD-EMPTY")); //$NON-NLS-1$
       return;
@@ -200,14 +200,14 @@ public class L3BigStepProofRuleSet extends L2BigStepProofRuleSet {
     }
     
     // check if e2 is the empty list
-    if (e2 == EmptyList.EMPTY_LIST) {
+    if (e2 instanceof EmptyList) {
       // let (IS-EMPTY-TRUE) handle the node
       context.setProofNodeRule(node, (BigStepProofRule)getRuleByName("IS-EMPTY-TRUE")); //$NON-NLS-1$
       applyIsEmptyTrue(context, node);
     }
     else if (e2 instanceof List) {
       // Lists aren't empty
-      context.setProofNodeResult(node, BooleanConstant.FALSE);
+      context.setProofNodeResult(node, new BooleanConstant(false));
     }
     else {
       try {
@@ -215,7 +215,7 @@ public class L3BigStepProofRuleSet extends L2BigStepProofRuleSet {
         Application a1 = (Application)e2;
         Tuple tuple = (Tuple)a1.getE2();
         if (a1.getE1() instanceof UnaryCons && tuple.getExpressions().length == 2) {
-          context.setProofNodeResult(node, BooleanConstant.FALSE);
+          context.setProofNodeResult(node, new BooleanConstant(false));
         }
         else {
           throw new ClassCastException();
@@ -249,9 +249,9 @@ public class L3BigStepProofRuleSet extends L2BigStepProofRuleSet {
     }
     
     // check if e2 is the empty list
-    if (e2 == EmptyList.EMPTY_LIST) {
+    if (e2 instanceof EmptyList) {
       // EmptyList is always empty
-      context.setProofNodeResult(node, BooleanConstant.TRUE);
+      context.setProofNodeResult(node, new BooleanConstant(true));
     }
     else {
       // let (IS-EMPTY-FALSE) handle the node
@@ -387,7 +387,7 @@ public class L3BigStepProofRuleSet extends L2BigStepProofRuleSet {
     }
     
     // check if e2 is the empty list
-    if (e2 == EmptyList.EMPTY_LIST) {
+    if (e2 instanceof EmptyList) {
       context.setProofNodeResult(node, Exn.EMPTY_LIST);
       context.setProofNodeRule(node, context.newNoopRule("TL-EMPTY")); //$NON-NLS-1$
       return;

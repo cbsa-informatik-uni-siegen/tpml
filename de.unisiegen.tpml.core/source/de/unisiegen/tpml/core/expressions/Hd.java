@@ -13,28 +13,30 @@ package de.unisiegen.tpml.core.expressions;
  */
 public final class Hd extends UnaryListOperator {
   //
-  // Constants
-  //
-  
-  /**
-   * The single instance of the <code>Hd</code> class.
-   * 
-   * @see #Hd()
-   */
-  public static final Hd HD = new Hd();
-  
-  
-  
-  //
-  // Constructor (private)
+  // Constructor
   //
   
   /**
    * Allocates a new <code>Hd</code> instance.
-   * 
-   * @see #HD
    */
-  private Hd() {
+  public Hd() {
     super("hd");
   }
+  
+  
+  
+  //
+  // Primitives
+  //
+ 
+  /**
+   * {@inheritDoc}
+   *
+   * @see de.unisiegen.tpml.core.expressions.Expression#clone()
+   */
+  @Override
+  public Hd clone() {
+    return new Hd();
+  }
 }
+
