@@ -133,25 +133,7 @@ public class ShowBonds
 			{
 				check(child.get(i));
 
-				/**
-				 * Debug output. will be deleted if everything works fine
-				 */
-				if (false)
-				{
-					Debug.out.print(child.get(i).toString(), me);
-
-					try
-					{
-						PrettyString ps = holeExpression.toPrettyString();
-						PrettyAnnotation mark = ps.getAnnotationForPrintable(child.get(i));
-						Debug.out.println("start:" + mark.getStartOffset(), me);
-					}
-					catch (Exception e)
-					{
-						Debug.out.println(
-								"Kein Startoffset für diesen Ausdruck verfügbar!", me);
-					}
-				}
+	
 			}
 		}
 
@@ -194,22 +176,8 @@ public class ShowBonds
 		 * list with all childs of the expression
 		 */
 		LinkedList<Expression> child = new LinkedList<Expression>();
-		
-		/**
-		 * Enumeration with all childs of the expression
-		 */
-		Enumeration tmpChild = pLambda.children();
-		
-		/**
-		 * converting from Enumeration to Linked List for better handling
-		 */
-		while (tmpChild.hasMoreElements())
-		{
-
-			child.add((Expression) tmpChild.nextElement());
-
-		}
-	
+		child.add(pLambda.getE());
+			
 		checkRec(child, pLambda, list);
 
 	}
@@ -240,21 +208,9 @@ public class ShowBonds
 		 * list with all childs of the expression
 		 */
 		LinkedList<Expression> child = new LinkedList<Expression>();
+		child.add(pRec.getE1());
+		child.add(pRec.getE2());
 		
-		/**
-		 * Enumeration with all childs of the expression
-		 */
-		Enumeration tmpChild = pRec.children();
-		
-		/**
-		 * converting from Enumeration to Linked List for better handling
-		 */
-		while (tmpChild.hasMoreElements())
-		{
-
-			child.add((Expression) tmpChild.nextElement());
-
-		}
 
 		checkRec(child, pRec, list);
 
@@ -287,21 +243,8 @@ public class ShowBonds
 		 * list with all childs of the expression
 		 */
 		LinkedList<Expression> child = new LinkedList<Expression>();
-		
-		/**
-		 * Enumeration with all childs of the expression
-		 */
-		Enumeration tmpChild = pLambda.children();
-		
-		/**
-		 * converting from Enumeration to Linked List for better handling
-		 */
-		while (tmpChild.hasMoreElements())
-		{
-
-			child.add((Expression) tmpChild.nextElement());
-
-		}
+		child.add(pLambda.getE());
+	
 
 		checkRec(child, pLambda, list);
 
@@ -424,17 +367,14 @@ public class ShowBonds
 		LinkedList<String> list = listWithBounds(a, c);
 		LinkedList<String> list2 = listWithBounds(a, b);
 		
+		/**
+		 * the Identifiers of the Expression are added to the list of E2, because Variables 
+		 * in this Expression with the same names are bond to this Identifiers
+		 */
 		for( int i=1; i<pLet.getIdentifiers().length;i++)
 		{
 			list.add(pLet.getIdentifiers(i));
 		}
-		
-		
-		
-		/**
-		 * the Identifier of the Expression is added to the list of E2, because Variables 
-		 * in this Expression with the same name are bond to this Identifier
-		 */
 		list2.add(pLet.getIdentifiers(0));
 
 		/**
@@ -454,36 +394,23 @@ public class ShowBonds
 		}
 
 		/**
-		 * list with all childs of the Expression
+		 * list with E1
 		 */
 		LinkedList<Expression> child = new LinkedList<Expression>();
 		
-		/**
-		 * Enumeration with all childs of the Expression
-		 */
-		Enumeration tmpChild = pLet.children();
-		
-		/**
-		 * converting from Enumeration to Linked List for better handling
-		 */
-		while (tmpChild.hasMoreElements())
-		{
-
-			child.add((Expression) tmpChild.nextElement());
-
-		}
+		child.add(pLet.getE1());
 		
 		/**
 		 * list with just the last child of the Expression
 		 */
 		LinkedList<Expression> child2 = new LinkedList<Expression>();
-		child2.add((child.getLast()));
+		child2.add(pLet.getE2());
 		
 		/**
 		 * different calls for E1 and E2 with a different list of bounds
 		 */
 		checkRec(child2, pLet, list2);
-		child.remove(child.size() - 1);
+		
 		checkRec(child, pLet, list);
 
 	}
@@ -512,21 +439,8 @@ public class ShowBonds
 		 * list with all childs of the Expression
 		 */
 		LinkedList<Expression> child = new LinkedList<Expression>();
+		child.add(pRec.getE());
 		
-		/**
-		 * Enumeration with all childs of the Expression
-		 */
-		Enumeration tmpChild = pRec.children();
-		
-		/**
-		 * converting from Enumeration to Linked List for better handling
-		 */
-		while (tmpChild.hasMoreElements())
-		{
-
-			child.add((Expression) tmpChild.nextElement());
-
-		}
 		checkRec(child, pRec, list);
 	}
 
@@ -598,27 +512,15 @@ public class ShowBonds
 		 * list with all childs of the Expression
 		 */
 		LinkedList<Expression> child = new LinkedList<Expression>();
+		child.add(pRec.getE1());
+		child.add(pRec.getE2());
 		
-		/**
-		 * Enumeration with all childs of the Expression
-		 */
-		Enumeration tmpChild = pRec.children();
-		
-		/**
-		 * converting from Enumeration to Linked List for better handling
-		 */
-		while (tmpChild.hasMoreElements())
-		{
-
-			child.add((Expression) tmpChild.nextElement());
-
-		}
 		
 		/**
 		 * list with just the last child of the Expression
 		 */
 		LinkedList<Expression> child2 = new LinkedList<Expression>();
-		child2.add((child.getLast()));
+		child2.add(pRec.getE2());
 		
 		/**
 		 * different calls for E1 and E2 with a different list of bounds
@@ -832,11 +734,22 @@ public class ShowBonds
 		
 //TODO
 		String exp = e.toPrettyString().toString();
-		
-		
-		int start=exp.indexOf(id.toString())+mark1.getStartOffset();
-		
-		return start;
+		if (e instanceof MultiLet)
+		{
+			String newString=exp.substring(0,exp.indexOf("=" ));
+			return newString.lastIndexOf(id.toString())+mark1.getStartOffset();
+			
+		}
+		else if (e instanceof MultiLambda)
+		{
+			String newString=exp.substring(0,exp.indexOf("." ));
+			return newString.lastIndexOf(id.toString())+mark1.getStartOffset();
+			
+		}
+		else
+		{
+			return exp.indexOf(id.toString())+mark1.getStartOffset();
+		}
 	}
 
 	/**
