@@ -244,10 +244,7 @@ public class PrettyStringRenderer extends AbstractRenderer {
 		return result;
 	}
 	
-	/**
-	 * Hilfmethode, umd zu überprüfen, ob ein int in der Liste liegt
-	 * 
-	 *//*
+/*
 	public static boolean isIn (int test, LinkedList <Bonds> list)
 	{
 		//System.out.println("Nun wird überprüft, ob die Zahl in der Liste steht...");
@@ -288,10 +285,6 @@ public class PrettyStringRenderer extends AbstractRenderer {
 		//nur nachsehen, ob diese Methode geht, damit tatsächlich was gemalt wird
 		return result;
 	}*/
-	
-	/**
-	 * 
-	 */
 	
 	public static int isInList (int test, LinkedList <Bonds> list)
 	{
@@ -368,7 +361,10 @@ public class PrettyStringRenderer extends AbstractRenderer {
 	 * @param gc The Graphics context that will be used to render
 	 * @return The width of the expression will get returned.
 	 */
-	public void render (int x, int y, int height,  Graphics gc, ShowBonds bound, ToListenForMouseContainer toListenForMouse) {
+	public void render (int x, int y, int height,  Graphics gc, ShowBonds bound, ToListenForMouseContainer toListenForM) {
+		
+		toListenForMouse = toListenForM;
+		
 		//TODO Das muss noch schöner weerden, diese Forschleife ersetzt vernünftige Logik leider nicht...
 		for (int schei = 0; schei<=1 ; schei++)
 		{
@@ -420,11 +416,11 @@ public class PrettyStringRenderer extends AbstractRenderer {
 			
 			fm = AbstractRenderer.expFontMetrics;
 			int charWidth = fm.stringWidth("" + c);
-			int charHighth = fm.getHeight();
+			//int charHighth = fm.getHeight();
 			
 			//Here we get the information where bindings exists in positions
 			ShowBonds instanceOfShowBound = bound; 
-			LinkedList annotationsList = instanceOfShowBound.getAnnotations();
+			LinkedList <Bonds> annotationsList = instanceOfShowBound.getAnnotations();
 
 			//look for aktual char is in this list (-1 stands for false)
 			if (!(toListenForMouse.getMark()) && (isInList(i, annotationsList)) > -1)
@@ -540,10 +536,7 @@ public class PrettyStringRenderer extends AbstractRenderer {
 			}
 			
 			// draw the character and move the position
-			gc.drawString("" + c, posX, posY);
-			//			Komische TEstausgabe TODO komische Testausgabe
-			//System.out.println("Position in X-Richtung, in Y-Richtung ist: "+posX + " " + posY );
-			
+			gc.drawString("" + c, posX, posY);			
 			posX += fm.stringWidth("" + c);
 			
 			// go on to the next character
