@@ -144,25 +144,25 @@ public class AbstractSyntaxTree
     int lengthIdentifier = 0 ;
     int start ;
     int end ;
-    DefaultMutableTreeNode node0 ;
+    boolean hasType ;
     for ( int i = 0 ; i < idList.length ; i ++ )
     {
+      hasType = pExpression.getTypes ( i ) != null ;
       start = lengthIdentifier + 4 + i ;
-      if ( ( pExpression.getTypes ( i ) != null ) && ( i != 0 ) )
+      if ( ( hasType ) && ( i != 0 ) )
       {
         start ++ ;
       }
       end = start - 1 + idList [ i ].length ( ) ;
       lengthIdentifier += idList [ i ].length ( ) ;
-      if ( ( pExpression.getTypes ( i ) != null ) && ( i != 0 ) )
+      if ( ( hasType ) && ( i != 0 ) )
       {
         lengthIdentifier += 4 + pExpression.getTypes ( i ).toPrettyString ( )
             .toString ( ).length ( ) ;
       }
-      node0 = new DefaultMutableTreeNode ( new ASTNode ( IDENTIFIER ,
+      node.add ( new DefaultMutableTreeNode ( new ASTNode ( IDENTIFIER ,
           idList [ i ] , new ASTPair ( start , end ) , aSTBinding ,
-          this.aSTUnbound ) ) ;
-      node.add ( node0 ) ;
+          this.aSTUnbound ) ) ) ;
     }
     createChildren ( pExpression , node ) ;
     return node ;
@@ -190,25 +190,25 @@ public class AbstractSyntaxTree
     int lengthIdentifier = 0 ;
     int start ;
     int end ;
-    DefaultMutableTreeNode node0 ;
+    boolean hasType ;
     for ( int i = 0 ; i < idList.length ; i ++ )
     {
+      hasType = pExpression.getTypes ( i ) != null ;
       start = lengthIdentifier + 8 + i ;
-      if ( ( pExpression.getTypes ( i ) != null ) && ( i != 0 ) )
+      if ( ( hasType ) && ( i != 0 ) )
       {
         start ++ ;
       }
       end = start - 1 + idList [ i ].length ( ) ;
       lengthIdentifier += idList [ i ].length ( ) ;
-      if ( ( pExpression.getTypes ( i ) != null ) && ( i != 0 ) )
+      if ( ( hasType ) && ( i != 0 ) )
       {
         lengthIdentifier += 4 + pExpression.getTypes ( i ).toPrettyString ( )
             .toString ( ).length ( ) ;
       }
-      node0 = new DefaultMutableTreeNode ( new ASTNode ( IDENTIFIER ,
+      node.add ( new DefaultMutableTreeNode ( new ASTNode ( IDENTIFIER ,
           idList [ i ] , new ASTPair ( start , end ) , aSTBinding ,
-          this.aSTUnbound ) ) ;
-      node.add ( node0 ) ;
+          this.aSTUnbound ) ) ) ;
     }
     createChildren ( pExpression , node ) ;
     return node ;
@@ -455,16 +455,14 @@ public class AbstractSyntaxTree
     int lengthIdentifier = 0 ;
     int start ;
     int end ;
-    DefaultMutableTreeNode node0 ;
     for ( int i = 0 ; i < idList.length ; i ++ )
     {
       start = lengthIdentifier + 2 + ( i * 2 ) ;
       end = start - 1 + idList [ i ].length ( ) ;
       lengthIdentifier += idList [ i ].length ( ) ;
-      node0 = new DefaultMutableTreeNode ( new ASTNode ( IDENTIFIER ,
+      node.add ( new DefaultMutableTreeNode ( new ASTNode ( IDENTIFIER ,
           idList [ i ] , new ASTPair ( start , end ) , aSTBinding ,
-          this.aSTUnbound ) ) ;
-      node.add ( node0 ) ;
+          this.aSTUnbound ) ) ) ;
     }
     createChildren ( pExpression , node ) ;
     return node ;
@@ -487,17 +485,15 @@ public class AbstractSyntaxTree
     int lengthIdentifier = 0 ;
     int start ;
     int end ;
-    DefaultMutableTreeNode node0 ;
     final int length = idList.length ;
     for ( int i = 0 ; i < length ; i ++ )
     {
       start = lengthIdentifier + 5 + ( i * 2 ) ;
       end = start - 1 + idList [ i ].length ( ) ;
       lengthIdentifier += idList [ i ].length ( ) ;
-      node0 = new DefaultMutableTreeNode ( new ASTNode ( IDENTIFIER ,
+      node.add ( new DefaultMutableTreeNode ( new ASTNode ( IDENTIFIER ,
           idList [ i ] , new ASTPair ( start , end ) , aSTBinding ,
-          this.aSTUnbound ) ) ;
-      node.add ( node0 ) ;
+          this.aSTUnbound ) ) ) ;
     }
     createChildren ( pExpression , node ) ;
     return node ;
@@ -575,6 +571,7 @@ public class AbstractSyntaxTree
           .println ( "No update in the TypeChecker View" , Debug.CHRISTIAN ) ;
       return ;
     }
+    Debug.out.println ( "New Expression" , Debug.CHRISTIAN ) ;
     this.aSTUnbound = new ASTUnbound ( pExpression ) ;
     this.oldExpression = pExpression ;
     this.aSTUI.setRootNode ( expression ( pExpression ) ) ;
