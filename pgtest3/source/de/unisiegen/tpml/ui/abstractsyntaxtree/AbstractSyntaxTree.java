@@ -333,9 +333,8 @@ public class AbstractSyntaxTree
   {
     DefaultMutableTreeNode node = new DefaultMutableTreeNode ( new ASTNode (
         pExpression , this.aSTUnbound ) ) ;
-    int start = pExpression.toPrettyString ( ).toString ( ).indexOf (
-        pExpression.getId ( ) ) ;
-    int end = start + pExpression.getId ( ).length ( ) - 1 ;
+    int start = 1 ;
+    int end = start - 1 + pExpression.getId ( ).length ( ) ;
     ASTBinding aSTBinding = new ASTBinding ( pExpression ) ;
     aSTBinding.add ( pExpression , pExpression.getId ( ) ) ;
     node.add ( new DefaultMutableTreeNode ( new ASTNode ( IDENTIFIER ,
@@ -356,9 +355,8 @@ public class AbstractSyntaxTree
   {
     DefaultMutableTreeNode node = new DefaultMutableTreeNode ( new ASTNode (
         pExpression , this.aSTUnbound ) ) ;
-    int start = pExpression.toPrettyString ( ).toString ( ).indexOf (
-        pExpression.getId ( ) ) ;
-    int end = start + pExpression.getId ( ).length ( ) - 1 ;
+    int start = 4 ;
+    int end = start - 1 + pExpression.getId ( ).length ( ) ;
     ASTBinding aSTBinding = new ASTBinding ( pExpression ) ;
     aSTBinding.add ( pExpression.getE2 ( ) , pExpression.getId ( ) ) ;
     node.add ( new DefaultMutableTreeNode ( new ASTNode ( IDENTIFIER ,
@@ -379,9 +377,8 @@ public class AbstractSyntaxTree
   {
     DefaultMutableTreeNode node = new DefaultMutableTreeNode ( new ASTNode (
         pExpression , this.aSTUnbound ) ) ;
-    int start = pExpression.toPrettyString ( ).toString ( ).indexOf (
-        pExpression.getId ( ) ) ;
-    int end = start + pExpression.getId ( ).length ( ) - 1 ;
+    int start = 8 ;
+    int end = start - 1 + pExpression.getId ( ).length ( ) ;
     ASTBinding aSTBinding = new ASTBinding ( pExpression ) ;
     aSTBinding.add ( pExpression , pExpression.getId ( ) ) ;
     node.add ( new DefaultMutableTreeNode ( new ASTNode ( IDENTIFIER ,
@@ -526,9 +523,8 @@ public class AbstractSyntaxTree
     String id = pExpression.getId ( ) ;
     DefaultMutableTreeNode node = new DefaultMutableTreeNode ( new ASTNode (
         pExpression , this.aSTUnbound ) ) ;
-    int start = pExpression.toPrettyString ( ).toString ( ).indexOf (
-        pExpression.getId ( ) ) ;
-    int end = start + pExpression.getId ( ).length ( ) - 1 ;
+    int start = 4 ;
+    int end = start - 1 + pExpression.getId ( ).length ( ) ;
     ASTBinding aSTBinding = new ASTBinding ( pExpression ) ;
     aSTBinding.add ( pExpression , pExpression.getId ( ) ) ;
     node.add ( new DefaultMutableTreeNode ( new ASTNode ( IDENTIFIER , id ,
