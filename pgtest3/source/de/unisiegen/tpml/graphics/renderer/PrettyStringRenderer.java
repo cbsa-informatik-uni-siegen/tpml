@@ -416,7 +416,7 @@ public class PrettyStringRenderer extends AbstractRenderer {
 			
 			fm = AbstractRenderer.expFontMetrics;
 			int charWidth = fm.stringWidth("" + c);
-			//int charHighth = fm.getHeight();
+			int charHighth = fm.getHeight();
 			
 			//Here we get the information where bindings exists in positions
 			ShowBonds instanceOfShowBound = bound; 
@@ -439,9 +439,10 @@ public class PrettyStringRenderer extends AbstractRenderer {
 		
 				//get X-Pos of MousePointer
 				int xPos = toListenForMouse.getHereIam()[0];
+				int yPos = toListenForMouse.getHereIam()[1];
 					
 				//checks if MousePointer stands on the actual char
-				if ((xPos >= posX) && (xPos <= posX+charWidth))
+				if ( ( (xPos >= posX) && (xPos <= posX+charWidth) ) && ( (yPos >= posY-fm.getDescent()) && (yPos <=posY+fm.getAscent()) ) ) 
 				{
 					//TODO in diesem Fall muss er neu anfangen, er darf nicht mit den nächsten Buchstaben weiter machen...
 					
