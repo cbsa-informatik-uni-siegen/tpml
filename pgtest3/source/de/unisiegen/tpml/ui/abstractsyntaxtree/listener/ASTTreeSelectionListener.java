@@ -125,14 +125,14 @@ public class ASTTreeSelectionListener implements TreeSelectionListener
     DefaultMutableTreeNode rootNode = ( DefaultMutableTreeNode ) pTreePath
         .getPath ( ) [ 0 ] ;
     reset ( rootNode ) ;
-    ASTNode last = list.get ( list.size ( ) -1 ) ;
+    ASTNode last = list.get ( list.size ( ) - 1 ) ;
     ASTNode secondlast = null ;
     if ( list.size ( ) >= 2 )
     {
       secondlast = list.get ( list.size ( ) - 2 ) ;
     }
     // No Expression
-    if ( last.getASTPair ( ) != null )
+    if ( ( last.getStartIndex ( ) != - 1 ) && ( last.getEndIndex ( ) != - 1 ) )
     {
       if ( secondlast == null )
       {
@@ -162,12 +162,10 @@ public class ASTTreeSelectionListener implements TreeSelectionListener
         }
         list.get ( i ).setASTBinding ( last.getASTBinding ( ) ) ;
         list.get ( i ).setReplaceInThisNode ( true ) ;
-        list.get ( i )
-            .updateCaption (
-                prettyAnnotation.getStartOffset ( )
-                    + last.getASTPair ( ).getStart ( ) ,
-                prettyAnnotation.getStartOffset ( )
-                    + last.getASTPair ( ).getEnd ( ) , childIndex ) ;
+        list.get ( i ).updateCaption (
+            prettyAnnotation.getStartOffset ( ) + last.getStartIndex ( ) ,
+            prettyAnnotation.getStartOffset ( ) + last.getEndIndex ( ) ,
+            childIndex ) ;
       }
     }
     // Expression

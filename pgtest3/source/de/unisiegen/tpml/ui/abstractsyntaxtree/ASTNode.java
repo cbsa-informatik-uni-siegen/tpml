@@ -11,7 +11,6 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyCharIterator ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStyle ;
 import de.unisiegen.tpml.graphics.Theme ;
 import de.unisiegen.tpml.ui.abstractsyntaxtree.binding.ASTBinding ;
-import de.unisiegen.tpml.ui.abstractsyntaxtree.binding.ASTPair ;
 import de.unisiegen.tpml.ui.abstractsyntaxtree.binding.ASTUnbound ;
 
 
@@ -201,12 +200,15 @@ public class ASTNode
 
 
   /**
-   * The ASTPair which repressents the start and the end offset of Identifiers
-   * in the node.
-   * 
-   * @see #getASTPair()
+   * TODO
    */
-  private ASTPair aSTPair ;
+  private int startIndex ;
+
+
+  /**
+   * TODO
+   */
+  private int endIndex ;
 
 
   /**
@@ -247,7 +249,8 @@ public class ASTNode
     // Initialies the values
     this.expressionString = pExpression.toPrettyString ( ).toString ( ) ;
     this.expression = pExpression ;
-    this.aSTPair = null ;
+    this.startIndex = - 1 ;
+    this.endIndex = - 1 ;
     this.aSTBinding = null ;
     this.aSTUnbound = pASTUnbound ;
     this.replaceInThisNode = false ;
@@ -260,14 +263,15 @@ public class ASTNode
    * 
    * @param pDescription The description of this node.
    * @param pExpressionString The expression as a string.
-   * @param pASTPair The ASTPair which repressent the start and the end offset
-   *          of Identifiers in the node.
+   * @param pStartIndex TODO
+   * @param pEndIndex TODO
    * @param pASTBinding The bindings in this node.
    * @param pASTUnbound The ASTUnbound which repressents the unbound Identifiers
    *          in all nodes
    */
   public ASTNode ( String pDescription , String pExpressionString ,
-      ASTPair pASTPair , ASTBinding pASTBinding , ASTUnbound pASTUnbound )
+      int pStartIndex , int pEndIndex , ASTBinding pASTBinding ,
+      ASTUnbound pASTUnbound )
   {
     // Preferences
     this.resourceBundle = ResourceBundle
@@ -284,7 +288,8 @@ public class ASTNode
     }
     this.expressionString = pExpressionString ;
     this.expression = null ;
-    this.aSTPair = pASTPair ;
+    this.startIndex = pStartIndex ;
+    this.endIndex = pEndIndex ;
     this.aSTBinding = pASTBinding ;
     this.aSTUnbound = pASTUnbound ;
     this.replaceInThisNode = false ;
@@ -359,15 +364,13 @@ public class ASTNode
 
 
   /**
-   * Returns the ASTPair which repressents the start and the end offset of
-   * Identifiers in the node.
+   * TODO
    * 
-   * @return The ASTPair in this node.
-   * @see #aSTPair
+   * @return TODO
    */
-  public ASTPair getASTPair ( )
+  public int getEndIndex ( )
   {
-    return this.aSTPair ;
+    return this.endIndex ;
   }
 
 
@@ -424,6 +427,17 @@ public class ASTNode
   {
     return ( getHex ( pColor.getRed ( ) ) + getHex ( pColor.getGreen ( ) ) + getHex ( pColor
         .getBlue ( ) ) ) ;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @return TODO
+   */
+  public int getStartIndex ( )
+  {
+    return this.startIndex ;
   }
 
 
