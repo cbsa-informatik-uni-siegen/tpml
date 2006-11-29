@@ -125,7 +125,7 @@ public class ASTTreeSelectionListener implements TreeSelectionListener
     DefaultMutableTreeNode rootNode = ( DefaultMutableTreeNode ) pTreePath
         .getPath ( ) [ 0 ] ;
     reset ( rootNode ) ;
-    ASTNode last = list.get ( list.size ( ) ) ;
+    ASTNode last = list.get ( list.size ( ) -1 ) ;
     ASTNode secondlast = null ;
     if ( list.size ( ) >= 2 )
     {
