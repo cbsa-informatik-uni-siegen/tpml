@@ -1,8 +1,8 @@
 package de.unisiegen.tpml.ui.abstractsyntaxtree.binding ;
 
 
+import java.util.ArrayList ;
 import java.util.Enumeration ;
-import java.util.LinkedList ;
 import de.unisiegen.tpml.core.expressions.CurriedLet ;
 import de.unisiegen.tpml.core.expressions.CurriedLetRec ;
 import de.unisiegen.tpml.core.expressions.Expression ;
@@ -26,7 +26,7 @@ public class ASTBinding
   /**
    * TODO
    */
-  private LinkedList < LinkedList < Expression >> list ;
+  private ArrayList < ArrayList < Expression >> list ;
 
 
   /**
@@ -38,7 +38,7 @@ public class ASTBinding
   /**
    * TODO
    */
-  private LinkedList < String > identifier ;
+  private ArrayList < String > identifier ;
 
 
   /**
@@ -48,8 +48,8 @@ public class ASTBinding
    */
   public ASTBinding ( Expression pHoleExpression )
   {
-    this.list = new LinkedList < LinkedList < Expression >> ( ) ;
-    this.identifier = new LinkedList < String > ( ) ;
+    this.list = new ArrayList < ArrayList < Expression >> ( ) ;
+    this.identifier = new ArrayList < String > ( ) ;
     this.holeExpression = pHoleExpression ;
   }
 
@@ -62,7 +62,7 @@ public class ASTBinding
    */
   public void add ( Expression pExpression , String pId )
   {
-    LinkedList < Expression > tmpList = new LinkedList < Expression > ( ) ;
+    ArrayList < Expression > tmpList = new ArrayList < Expression > ( ) ;
     findBinding ( tmpList , pExpression , pId ) ;
     int found = - 1 ;
     for ( int i = 0 ; i < this.identifier.size ( ) ; i ++ )
@@ -75,7 +75,7 @@ public class ASTBinding
     }
     if ( found != - 1 )
     {
-      this.list.set ( found , new LinkedList < Expression > ( ) ) ;
+      this.list.set ( found , new ArrayList < Expression > ( ) ) ;
       this.identifier.set ( found , "" ) ;
     }
     this.identifier.add ( pId ) ;
@@ -105,7 +105,7 @@ public class ASTBinding
    * @param pExpression
    * @param pId
    */
-  private void findBinding ( LinkedList < Expression > pResult ,
+  private void findBinding ( ArrayList < Expression > pResult ,
       Expression pExpression , String pId )
   {
     // Identifier

@@ -1,8 +1,8 @@
 package de.unisiegen.tpml.ui.abstractsyntaxtree.binding ;
 
 
+import java.util.ArrayList ;
 import java.util.Enumeration ;
-import java.util.LinkedList ;
 import de.unisiegen.tpml.core.expressions.CurriedLet ;
 import de.unisiegen.tpml.core.expressions.CurriedLetRec ;
 import de.unisiegen.tpml.core.expressions.Expression ;
@@ -26,7 +26,7 @@ public class ASTUnbound
   /**
    * TODO
    */
-  private LinkedList < Expression > unboundList ;
+  private ArrayList < Expression > unboundList ;
 
 
   /**
@@ -36,7 +36,7 @@ public class ASTUnbound
    */
   public ASTUnbound ( Expression pExpression )
   {
-    this.unboundList = new LinkedList < Expression > ( ) ;
+    this.unboundList = new ArrayList < Expression > ( ) ;
     this.unboundList = findUnbound ( pExpression ) ;
   }
 
@@ -47,9 +47,9 @@ public class ASTUnbound
    * @param pList
    * @return TODO
    */
-  private LinkedList < String > copyList ( LinkedList < String > pList )
+  private ArrayList < String > copyList ( ArrayList < String > pList )
   {
-    LinkedList < String > list = new LinkedList < String > ( ) ;
+    ArrayList < String > list = new ArrayList < String > ( ) ;
     for ( String tmp : pList )
     {
       list.add ( tmp ) ;
@@ -64,10 +64,10 @@ public class ASTUnbound
    * @param pExpression
    * @return TODO
    */
-  public LinkedList < Expression > findUnbound ( Expression pExpression )
+  public ArrayList < Expression > findUnbound ( Expression pExpression )
   {
-    LinkedList < Expression > result = new LinkedList < Expression > ( ) ;
-    LinkedList < String > unbound = new LinkedList < String > ( ) ;
+    ArrayList < Expression > result = new ArrayList < Expression > ( ) ;
+    ArrayList < String > unbound = new ArrayList < String > ( ) ;
     findUnbound ( result , unbound , pExpression ) ;
     return result ;
   }
@@ -80,8 +80,8 @@ public class ASTUnbound
    * @param pUnbound
    * @param pExpression
    */
-  private void findUnbound ( LinkedList < Expression > pResult ,
-      LinkedList < String > pUnbound , Expression pExpression )
+  private void findUnbound ( ArrayList < Expression > pResult ,
+      ArrayList < String > pUnbound , Expression pExpression )
   {
     if ( pExpression.free ( ).size ( ) == 0 )
     {
@@ -96,8 +96,8 @@ public class ASTUnbound
     if ( pExpression instanceof CurriedLetRec )
     {
       CurriedLetRec curriedLetRec = ( CurriedLetRec ) pExpression ;
-      LinkedList < String > unbound1 = copyList ( pUnbound ) ;
-      LinkedList < String > unbound2 = copyList ( pUnbound ) ;
+      ArrayList < String > unbound1 = copyList ( pUnbound ) ;
+      ArrayList < String > unbound2 = copyList ( pUnbound ) ;
       // New bindings in E1, Identifier 0 to n
       for ( int i = 0 ; i < curriedLetRec.getIdentifiers ( ).length ; i ++ )
       {
@@ -111,8 +111,8 @@ public class ASTUnbound
     else if ( pExpression instanceof CurriedLet )
     {
       CurriedLet curriedLet = ( CurriedLet ) pExpression ;
-      LinkedList < String > unbound1 = copyList ( pUnbound ) ;
-      LinkedList < String > unbound2 = copyList ( pUnbound ) ;
+      ArrayList < String > unbound1 = copyList ( pUnbound ) ;
+      ArrayList < String > unbound2 = copyList ( pUnbound ) ;
       // New bindings in E1, Identifier 1 to n
       for ( int i = 1 ; i < curriedLet.getIdentifiers ( ).length ; i ++ )
       {
@@ -126,8 +126,8 @@ public class ASTUnbound
     else if ( pExpression instanceof MultiLet )
     {
       MultiLet multiLet = ( MultiLet ) pExpression ;
-      LinkedList < String > unbound1 = copyList ( pUnbound ) ;
-      LinkedList < String > unbound2 = copyList ( pUnbound ) ;
+      ArrayList < String > unbound1 = copyList ( pUnbound ) ;
+      ArrayList < String > unbound2 = copyList ( pUnbound ) ;
       // No new binding in E1
       findUnbound ( pResult , unbound1 , multiLet.getE1 ( ) ) ;
       // New bindings in E2
@@ -140,7 +140,7 @@ public class ASTUnbound
     else if ( pExpression instanceof MultiLambda )
     {
       MultiLambda multiLambda = ( MultiLambda ) pExpression ;
-      LinkedList < String > unbound = copyList ( pUnbound ) ;
+      ArrayList < String > unbound = copyList ( pUnbound ) ;
       // New bindings in E
       for ( int i = 0 ; i < multiLambda.getIdentifiers ( ).length ; i ++ )
       {
@@ -151,8 +151,8 @@ public class ASTUnbound
     else if ( pExpression instanceof LetRec )
     {
       LetRec letRec = ( LetRec ) pExpression ;
-      LinkedList < String > unbound1 = copyList ( pUnbound ) ;
-      LinkedList < String > unbound2 = copyList ( pUnbound ) ;
+      ArrayList < String > unbound1 = copyList ( pUnbound ) ;
+      ArrayList < String > unbound2 = copyList ( pUnbound ) ;
       // New binding in E1
       unbound1.add ( letRec.getId ( ) ) ;
       findUnbound ( pResult , unbound1 , letRec.getE1 ( ) ) ;
@@ -163,7 +163,7 @@ public class ASTUnbound
     else if ( pExpression instanceof Let )
     {
       Let let = ( Let ) pExpression ;
-      LinkedList < String > unbound = copyList ( pUnbound ) ;
+      ArrayList < String > unbound = copyList ( pUnbound ) ;
       // No new binding in E1
       findUnbound ( pResult , pUnbound , let.getE1 ( ) ) ;
       // New binding in E2
@@ -173,7 +173,7 @@ public class ASTUnbound
     else if ( pExpression instanceof Lambda )
     {
       Lambda lambda = ( Lambda ) pExpression ;
-      LinkedList < String > unbound = copyList ( pUnbound ) ;
+      ArrayList < String > unbound = copyList ( pUnbound ) ;
       // New binding in E
       unbound.add ( lambda.getId ( ) ) ;
       findUnbound ( pResult , unbound , lambda.getE ( ) ) ;
@@ -181,7 +181,7 @@ public class ASTUnbound
     else if ( pExpression instanceof Recursion )
     {
       Recursion recursion = ( Recursion ) pExpression ;
-      LinkedList < String > unbound = copyList ( pUnbound ) ;
+      ArrayList < String > unbound = copyList ( pUnbound ) ;
       // New binding in E2
       unbound.add ( recursion.getId ( ) ) ;
       findUnbound ( pResult , unbound , recursion.getE ( ) ) ;

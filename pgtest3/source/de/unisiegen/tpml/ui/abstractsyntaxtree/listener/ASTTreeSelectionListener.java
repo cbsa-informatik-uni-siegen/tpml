@@ -1,7 +1,7 @@
 package de.unisiegen.tpml.ui.abstractsyntaxtree.listener ;
 
 
-import java.util.LinkedList ;
+import java.util.ArrayList ;
 import javax.swing.event.TreeSelectionEvent ;
 import javax.swing.event.TreeSelectionListener ;
 import javax.swing.tree.DefaultMutableTreeNode ;
@@ -112,7 +112,7 @@ public class ASTTreeSelectionListener implements TreeSelectionListener
       repaint ( rootNode ) ;
       return ;
     }
-    LinkedList < ASTNode > list = new LinkedList < ASTNode > ( ) ;
+    ArrayList < ASTNode > list = new ArrayList < ASTNode > ( ) ;
     for ( int i = 0 ; i < pTreePath.getPathCount ( ) ; i ++ )
     {
       Object tmp = ( ( DefaultMutableTreeNode ) pTreePath.getPath ( ) [ i ] )
@@ -125,7 +125,7 @@ public class ASTTreeSelectionListener implements TreeSelectionListener
     DefaultMutableTreeNode rootNode = ( DefaultMutableTreeNode ) pTreePath
         .getPath ( ) [ 0 ] ;
     reset ( rootNode ) ;
-    ASTNode last = list.getLast ( ) ;
+    ASTNode last = list.get ( list.size ( ) ) ;
     ASTNode secondlast = null ;
     if ( list.size ( ) >= 2 )
     {

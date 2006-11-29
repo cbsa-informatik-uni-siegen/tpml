@@ -1,7 +1,7 @@
 package de.unisiegen.tpml.ui.abstractsyntaxtree.binding ;
 
 
-import java.util.LinkedList ;
+import java.util.ArrayList ;
 
 
 /**
@@ -27,7 +27,7 @@ public class ASTPair
   /**
    * TODO
    */
-  private LinkedList < ASTPair > list ;
+  private ArrayList < ASTPair > list ;
 
 
   /**
@@ -40,7 +40,7 @@ public class ASTPair
   {
     this.start = pStart ;
     this.end = pEnd ;
-    this.list = new LinkedList < ASTPair > ( ) ;
+    this.list = new ArrayList < ASTPair > ( ) ;
   }
 
 
