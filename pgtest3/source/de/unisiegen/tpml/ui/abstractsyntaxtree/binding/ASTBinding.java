@@ -32,13 +32,13 @@ public class ASTBinding
   /**
    * TODO
    */
-  private LinkedList < Expression > notFree ;
+  private Expression holeExpression ;
 
 
   /**
    * TODO
    */
-  private Expression holeExpression ;
+  private LinkedList < String > identifier ;
 
 
   /**
@@ -49,42 +49,8 @@ public class ASTBinding
   public ASTBinding ( Expression pHoleExpression )
   {
     this.list = new LinkedList < LinkedList < Expression >> ( ) ;
-    this.notFree = new LinkedList < Expression > ( ) ;
+    this.identifier = new LinkedList < String > ( ) ;
     this.holeExpression = pHoleExpression ;
-  }
-
-
-  /**
-   * TODO
-   * 
-   * @param pHoleExpression
-   * @param pExpression
-   * @param pId
-   */
-  public ASTBinding ( Expression pHoleExpression , Expression pExpression ,
-      String pId )
-  {
-    this.list = new LinkedList < LinkedList < Expression >> ( ) ;
-    this.notFree = new LinkedList < Expression > ( ) ;
-    this.holeExpression = pHoleExpression ;
-    add ( pExpression , pId ) ;
-  }
-
-
-  /**
-   * TODO
-   * 
-   * @param pHoleExpression
-   * @param pExpression
-   * @param pIdentifiers
-   */
-  public ASTBinding ( Expression pHoleExpression , Expression pExpression ,
-      String pIdentifiers[] )
-  {
-    this.list = new LinkedList < LinkedList < Expression >> ( ) ;
-    this.notFree = new LinkedList < Expression > ( ) ;
-    this.holeExpression = pHoleExpression ;
-    add ( pExpression , pIdentifiers ) ;
   }
 
 
@@ -98,6 +64,21 @@ public class ASTBinding
   {
     LinkedList < Expression > tmpList = new LinkedList < Expression > ( ) ;
     findBinding ( tmpList , pExpression , pId ) ;
+    int found = - 1 ;
+    for ( int i = 0 ; i < this.identifier.size ( ) ; i ++ )
+    {
+      if ( this.identifier.get ( i ).equals ( pId ) )
+      {
+        found = i ;
+        break ;
+      }
+    }
+    if ( found != - 1 )
+    {
+      this.list.set ( found , new LinkedList < Expression > ( ) ) ;
+      this.identifier.set ( found , "" ) ;
+    }
+    this.identifier.add ( pId ) ;
     this.list.add ( tmpList ) ;
   }
 
@@ -112,9 +93,7 @@ public class ASTBinding
   {
     for ( String id : pIdentifiers )
     {
-      LinkedList < Expression > tmpList = new LinkedList < Expression > ( ) ;
-      findBinding ( tmpList , pExpression , id ) ;
-      this.list.add ( tmpList ) ;
+      add ( pExpression , id ) ;
     }
   }
 
@@ -276,28 +255,6 @@ public class ASTBinding
   public Expression get ( int pListIndex , int pExpressionIndex )
   {
     return this.list.get ( pListIndex ).get ( pExpressionIndex ) ;
-  }
-
-
-  /**
-   * TODO
-   * 
-   * @return TODO
-   */
-  public Expression getHoleExpression ( )
-  {
-    return this.holeExpression ;
-  }
-
-
-  /**
-   * TODO
-   * 
-   * @return TODO
-   */
-  public LinkedList < Expression > getNotFree ( )
-  {
-    return this.notFree ;
   }
 
 
