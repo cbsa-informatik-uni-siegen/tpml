@@ -116,6 +116,15 @@ final class DefaultPrettyStringBuilder implements PrettyStringBuilder {
 
   /**
    * {@inheritDoc}
+   * 
+   * @see de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder#addIdentifier(java.lang.String)
+   */
+  public void addIdentifier(String identifier) {
+    this.items.add(new TextItem(identifier, PrettyStyle.IDENTIFIER));
+  }
+  
+  /**
+   * {@inheritDoc}
    *
    * @see de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder#addKeyword(java.lang.String)
    */

@@ -186,7 +186,8 @@ public final class Recursion extends Expression {
   public PrettyStringBuilder toPrettyStringBuilder(PrettyStringBuilderFactory factory) {
     PrettyStringBuilder builder = factory.newBuilder(this, PRIO_REC);
     builder.addKeyword("rec");
-    builder.addText(" " + this.id);
+    builder.addText(" ");
+    builder.addIdentifier(this.id);
     if (this.tau != null) {
       builder.addText(":");
       builder.addBuilder(this.tau.toPrettyStringBuilder(factory), PRIO_REC_TAU);

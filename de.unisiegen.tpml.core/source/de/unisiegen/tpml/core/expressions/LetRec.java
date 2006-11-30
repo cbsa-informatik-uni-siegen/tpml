@@ -126,7 +126,8 @@ public final class LetRec extends Let {
     builder.addKeyword("let");
     builder.addText(" ");
     builder.addKeyword("rec");
-    builder.addText(" " + this.id);
+    builder.addText(" ");
+    builder.addIdentifier(this.id);
     if (this.tau != null) {
       builder.addText(":");
       builder.addBuilder(this.tau.toPrettyStringBuilder(factory), PRIO_LET_TAU);

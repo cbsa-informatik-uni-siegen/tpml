@@ -154,13 +154,14 @@ public final class CurriedLetRec extends CurriedLet {
     builder.addKeyword("let");
     builder.addText(" ");
     builder.addKeyword("rec");
-    builder.addText(" " + this.identifiers[0]);
+    builder.addText(" ");
+    builder.addIdentifier(this.identifiers[0]);
     for (int n = 1; n < this.identifiers.length; ++n) {
       builder.addText(" ");
       if (this.types[n] != null) {
         builder.addText("(");
       }
-      builder.addText(this.identifiers[n]);
+      builder.addIdentifier(this.identifiers[n]);
       if (this.types[n] != null) {
         builder.addText(": ");
         builder.addBuilder(this.types[n].toPrettyStringBuilder(factory), PRIO_LET_TAU);

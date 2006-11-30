@@ -226,7 +226,7 @@ public final class Lambda extends Value {
   public @Override PrettyStringBuilder toPrettyStringBuilder(PrettyStringBuilderFactory factory) {
     PrettyStringBuilder builder = factory.newBuilder(this, PRIO_LAMBDA);
     builder.addKeyword("\u03bb");
-    builder.addText(this.id);
+    builder.addIdentifier(this.id);
     if (this.tau != null) {
       builder.addText(":");
       builder.addBuilder(this.tau.toPrettyStringBuilder(factory), PRIO_LAMBDA_TAU);

@@ -33,4 +33,9 @@ public enum PrettyStyle {
    * Style for data types.
    */
   TYPE,
+  
+  /**
+   * 
+   */
+  IDENTIFIER,
 }

@@ -8,7 +8,6 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
 import de.unisiegen.tpml.core.types.MonoType;
-import de.unisiegen.tpml.core.util.StringUtilities;
 
 /**
  * Represents a multi lambda abstract, which takes a single tuple argument as parameter and splits
@@ -221,7 +220,14 @@ public final class MultiLambda extends Value {
   public PrettyStringBuilder toPrettyStringBuilder(PrettyStringBuilderFactory factory) {
     PrettyStringBuilder builder = factory.newBuilder(this, PRIO_LAMBDA);
     builder.addKeyword("\u03bb");
-    builder.addText("(" + StringUtilities.join(", ", this.identifiers) + ")");
+    builder.addText("(");
+    for (int i = 0; i < this.identifiers.length; ++i) {
+      if (i > 0) {
+        builder.addText(", ");
+      }
+      builder.addIdentifier(this.identifiers[i]);
+    }
+    builder.addText(")");
     if (this.tau != null) {
       builder.addText(":");
       builder.addBuilder(this.tau.toPrettyStringBuilder(factory), PRIO_LAMBDA_TAU);

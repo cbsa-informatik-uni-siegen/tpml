@@ -299,13 +299,14 @@ public class CurriedLet extends Expression {
   public PrettyStringBuilder toPrettyStringBuilder(PrettyStringBuilderFactory factory) {
     PrettyStringBuilder builder = factory.newBuilder(this, PRIO_LET);
     builder.addKeyword("let");
-    builder.addText(" " + this.identifiers[0]);
+    builder.addText(" ");
+    builder.addIdentifier(this.identifiers[0]);
     for (int n = 1; n < this.identifiers.length; ++n) {
       builder.addText(" ");
       if (this.types[n] != null) {
         builder.addText("(");
       }
-      builder.addText(this.identifiers[n]);
+      builder.addIdentifier(this.identifiers[n]);
       if (this.types[n] != null) {
         builder.addText(": ");
         builder.addBuilder(this.types[n].toPrettyStringBuilder(factory), PRIO_LET_TAU);

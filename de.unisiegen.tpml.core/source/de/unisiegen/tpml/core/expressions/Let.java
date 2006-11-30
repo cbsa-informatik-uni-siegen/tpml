@@ -188,7 +188,8 @@ public class Let extends Expression {
   public @Override PrettyStringBuilder toPrettyStringBuilder(PrettyStringBuilderFactory factory) {
     PrettyStringBuilder builder = factory.newBuilder(this, PRIO_LET);
     builder.addKeyword("let");
-    builder.addText(" " + this.id);
+    builder.addText(" ");
+    builder.addIdentifier(this.id);
     if (this.tau != null) {
       builder.addText(":");
       builder.addBuilder(this.tau.toPrettyStringBuilder(factory), PRIO_LET_TAU);

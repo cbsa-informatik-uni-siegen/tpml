@@ -46,11 +46,26 @@ public interface PrettyStringBuilder {
    *
    * @throws NullPointerException if <code>constant</code> is <code>null</code>.
    * 
+   * @see #addIdentifier(String)
    * @see #addKeyword(String)
    * @see #addText(String)
    * @see PrettyStyle#CONSTANT
    */
   public void addConstant(String constant);
+  
+  /**
+   * Appends the given <code>identifier</code> to the pretty string builder.
+   * 
+   * @param identifier the identifier to append.
+   * 
+   * @throws NullPointerException if <code>identifier</code> is <code>null</code>.
+   * 
+   * @see #addConstant(String)
+   * @see #addKeyword(String)
+   * @see #addText(String)
+   * @see PrettyStyle#IDENTIFIER
+   */
+  public void addIdentifier(String identifier);
   
   /**
    * Appends the given <code>keyword</code> to the pretty string builder. Keywords will be
@@ -61,6 +76,7 @@ public interface PrettyStringBuilder {
    * @throws NullPointerException if <code>keyword</code> is <code>null</code>.
    * 
    * @see #addConstant(String)
+   * @see #addIdentifier(String)
    * @see #addText(String)
    * @see PrettyStyle#KEYWORD
    */

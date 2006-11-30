@@ -8,7 +8,6 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
 import de.unisiegen.tpml.core.types.MonoType;
-import de.unisiegen.tpml.core.util.StringUtilities;
 
 /**
  * Instances of this class represent multi let expressions in the expression hierarchy, which assign
@@ -247,7 +246,14 @@ public final class MultiLet extends Expression {
   public PrettyStringBuilder toPrettyStringBuilder(PrettyStringBuilderFactory factory) {
     PrettyStringBuilder builder = factory.newBuilder(this, PRIO_LET);
     builder.addKeyword("let");
-    builder.addText(" (" + StringUtilities.join(", ", this.identifiers) + ")");
+    builder.addText("(");
+    for (int i = 0; i < this.identifiers.length; ++i) {
+      if (i > 0) {
+        builder.addText(", ");
+      }
+      builder.addIdentifier(this.identifiers[i]);
+    }
+    builder.addText(")");
     if (this.tau != null) {
       builder.addText(":");
       builder.addBuilder(this.tau.toPrettyStringBuilder(factory), PRIO_CONSTANT);
