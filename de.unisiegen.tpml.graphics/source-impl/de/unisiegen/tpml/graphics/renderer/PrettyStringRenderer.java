@@ -210,6 +210,7 @@ public class PrettyStringRenderer extends AbstractRenderer {
 			
 			switch (it.getStyle()) {
 			case NONE:
+			case IDENTIFIER:
 				w += AbstractRenderer.expFontMetrics.charWidth(c);
 				break;
 			case KEYWORD:
@@ -290,6 +291,7 @@ public class PrettyStringRenderer extends AbstractRenderer {
 			// select the proppert font and color for the character
 			FontMetrics fm = null;
 			switch (it.getStyle()) {
+			case IDENTIFIER:
 			case NONE:
 				gc.setFont(AbstractRenderer.expFont);
 				gc.setColor(AbstractRenderer.expColor);
