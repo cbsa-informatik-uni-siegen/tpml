@@ -5,15 +5,9 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
-import java.awt.font.TextAttribute;
 import java.text.CharacterIterator;
 import java.util.LinkedList;
-import java.util.Map;
-import java.util.Vector;
 
-import javax.swing.text.StyledEditorKit.ItalicAction;
-
-import de.unisiegen.tpml.Debug;
 import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation;
 import de.unisiegen.tpml.core.prettyprinter.PrettyCharIterator;
 import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable;
@@ -223,6 +217,7 @@ public class PrettyStringRenderer extends AbstractRenderer {
 			}
 			
 			switch (it.getStyle()) {
+			case IDENTIFIER:
 			case NONE:
 				w += AbstractRenderer.expFontMetrics.charWidth(c);
 				break;
@@ -490,6 +485,7 @@ public class PrettyStringRenderer extends AbstractRenderer {
 				
 				//select the proppert font and color for the character
 				switch (it.getStyle()) {
+				case IDENTIFIER:
 				case NONE:
 					gc.setFont(AbstractRenderer.expFont);
 					gc.setColor(AbstractRenderer.expColor);
