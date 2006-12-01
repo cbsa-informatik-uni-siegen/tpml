@@ -239,9 +239,10 @@ public class CompoundExpression < S , E > extends JComponent
 	  //note if to mark or not to mark
 	  boolean mark = false;
     
+	  //walk throu the postions where to mark
     for ( int t = 0 ; t < toListenForMouse.size ( ) ; t = t + 4 )
     {
-      //get position of pointer
+      //get position of pointer, these are rectangles. These positions are made by the PrettyStringRenderer
     	int pX = toListenForMouse.get ( t ) ;
       int pX1 = toListenForMouse.get ( t + 1 ) ;
       int pY = toListenForMouse.get(t+2);
