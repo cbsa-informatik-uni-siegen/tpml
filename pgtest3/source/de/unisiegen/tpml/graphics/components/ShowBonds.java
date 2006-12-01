@@ -17,6 +17,8 @@ import de.unisiegen.tpml.core.expressions.Recursion;
 import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation;
 import de.unisiegen.tpml.core.prettyprinter.PrettyString;
 import de.unisiegen.tpml.core.types.MonoType;
+import de.unisiegen.tpml.core.util.IdentifierList;
+import de.unisiegen.tpml.core.util.IdentifierUtilities;
 /**
  * 
  * @author Benjamin
@@ -157,15 +159,15 @@ public class ShowBonds
 		 */
 		checkChild(pLambda);
 
-		/**
-		 * this array contains all free Variables of the lambda expression
-		 */
-		Object[] a = pLambda.free().toArray();
-		
+				
 		/**
 		 * this array contains all free Variables of the lambda body
 		 */
-		Object[] b = e.free().toArray();
+		Object[] a = e.free().toArray();
+		
+		LinkedList<String> b = new LinkedList<String>();
+		b.add(pLambda.getId());
+		
 		
 		/**
 		 * this list contains all bounded Varibles in the lambda expression
@@ -192,17 +194,15 @@ public class ShowBonds
 		/**
 		 * this array contains all free Variables of the second Expression
 		 */
-		Object[] b = pRec.getE2().free().toArray();
+		Object[] a = pRec.getE2().free().toArray();
 		
-		/**
-		 * this array contains all free Variables of the LetRec Expression
-		 */
-		Object[] c = pRec.free().toArray();
+		LinkedList<String> b = new LinkedList<String>();
+		b.add(pRec.getId());
 		
 		checkChild(pRec);
 
-		LinkedList<String> list = listWithBounds(c, b);
-		list.add(pRec.getId());
+		LinkedList<String> list = listWithBounds(a, b);
+		
 
 		/**
 		 * list with all childs of the expression
@@ -227,15 +227,13 @@ public class ShowBonds
 		Expression e = pLambda.getE();
 		checkChild(pLambda);
 
-		/**
-		 * this array contains all free Variables of the Multi Lambda Expression
-		 */
-		Object[] a = pLambda.free().toArray();
 		
 		/**
 		 * this array contains all free Variables of the Lambda body
 		 */
-		Object[] b = e.free().toArray();
+		Object[] a = e.free().toArray();
+		
+		LinkedList<String> b = castArray(pLambda.getIdentifiers());
 
 		LinkedList<String> list = listWithBounds(a, b);
 
@@ -259,17 +257,16 @@ public class ShowBonds
 		/**
 		 * this array contains all free Variables of second Expression
 		 */
-		Object[] b = pLet.getE2().free().toArray();
+		Object[] a = pLet.getE2().free().toArray();
 		
-		/**
-		 * this array contains all free Variables of the Let Expression
-		 */
-		Object[] c = pLet.free().toArray();
+		LinkedList<String> b = new LinkedList<String>();
+		b.add(pLet.getId());
+		
 
+		LinkedList<String> list = listWithBounds(a, b);
+		
+		
 		checkChild(pLet);
-
-		LinkedList<String> list = listWithBounds(c, b);
-		list.add(pLet.getId());
 
 		/**
 		 * list with all childs of the expression
@@ -289,25 +286,24 @@ public class ShowBonds
 	 */
 	private void checkMultiLet(MultiLet pLet)
 	{
-		/**
-		 * this array contains all free Variables of the Let Expression
-		 */
-		Object[] a = pLet.free().toArray();
-		
+				
 		/**
 		 * this array contains all free Variables of the second Expression
 		 */
-		Object[] b = pLet.getE2().free().toArray();
+		Object[] a = pLet.getE1().free().toArray();
 
+		LinkedList<String> b = castArray(pLet.getIdentifiers());
+		
+		LinkedList<String> list = listWithBounds(a, b);
+		
 		checkChild(pLet);
-		LinkedList<String> list = listWithBounds(new Object[0], b);
 
 		/**
 		 * list with all childs of the expression
 		 */
 		LinkedList<Expression> child = new LinkedList<Expression>();
 		
-		child.add(pLet.getE2());
+		child.add(pLet.getE1());
 
 		checkRec(child, pLet, list);
 
@@ -322,19 +318,15 @@ public class ShowBonds
 		/**
 		 * this array contains all free Variables of second Expression
 		 */
-		Object[] c = pLet.getE2().free().toArray();
+		Object[] a = pLet.getE1().free().toArray();
 		
 		/**
 		 * this array contains all free Variables of the first Expression
 		 */
-		Object[] b = pLet.getE1().free().toArray();
+		Object[] b = pLet.getE2().free().toArray();
 		
-		/**
-		 * this array contains all free Variables of the Let Expression
-		 */
-		Object[] a = pLet.free().toArray();
-
-		checkChild(pLet);
+		LinkedList<String> c = castArray(pLet.getIdentifiers());
+		
 
 		/**
 		 * Debug output. will be deleted if everything works fine
@@ -352,11 +344,7 @@ public class ShowBonds
 			{
 				Debug.out.println(b[i], me);
 			}
-			Debug.out.println("c", me);
-			for (int i = 0; i < c.length; i++)
-			{
-				Debug.out.println(c[i], me);
-			}
+			
 
 		}
 		
@@ -365,17 +353,10 @@ public class ShowBonds
 		 * E1 and E2
 		 */
 		LinkedList<String> list = listWithBounds(a, c);
-		LinkedList<String> list2 = listWithBounds(a, b);
-		
-		/**
-		 * the Identifiers of the Expression are added to the list of E2, because Variables 
-		 * in this Expression with the same names are bond to this Identifiers
-		 */
-		for( int i=1; i<pLet.getIdentifiers().length;i++)
-		{
-			list.add(pLet.getIdentifiers(i));
-		}
+		LinkedList<String> list2 = new LinkedList<String>();
 		list2.add(pLet.getIdentifiers(0));
+		
+		
 
 		/**
 		 * if the Identifier of the Expression is in E1 it is removed from the list
@@ -421,19 +402,20 @@ public class ShowBonds
 	 */
 	private void checkRecursion(Recursion pRec)
 	{
-		/**
-		 * this array contains all free Variables of the Recursion Expression
-		 */
-		Object[] a = pRec.free().toArray();
+	
 		
 		/**
 		 * this array contains all free Variables of the Recursion body
 		 */
-		Object[] b = pRec.getE().free().toArray();
+		Object[] a = pRec.getE().free().toArray();
 
-		checkChild(pRec);
+		LinkedList<String> b = new LinkedList<String>();
+		b.add(pRec.getId());
+	
 
 		LinkedList<String> list = listWithBounds(a, b);
+		
+		checkChild(pRec);
 
 		/**
 		 * list with all childs of the Expression
@@ -453,17 +435,14 @@ public class ShowBonds
 		/**
 		 * this array contains all free Variables of the second Expression
 		 */
-		Object[] a = pRec.getE2().free().toArray();
+		Object[] a = pRec.getE1().free().toArray();
 		
 		/**
 		 * this array contains all free Variables of the first Expression
 		 */
-		Object[] b = pRec.getE1().free().toArray();
+		Object[] b = pRec.getE2().free().toArray();
 		
-		/**
-		 * this array contains all free Variables of the CurriedLetRec Expression
-		 */
-		Object[] c = pRec.free().toArray();
+		LinkedList<String> c = castArray(pRec.getIdentifiers());
 
 		/**
 		 * Debug output. will be deleted if everything works fine
@@ -481,11 +460,7 @@ public class ShowBonds
 			{
 				Debug.out.println(b[i], me);
 			}
-			Debug.out.println("c", me);
-			for (int i = 0; i < c.length; i++)
-			{
-				Debug.out.println(c[i], me);
-			}
+		
 
 		}
 
@@ -495,17 +470,10 @@ public class ShowBonds
 		 * in this method two different lists are needed for the two different Expressions
 		 * E1 and E2
 		 */
-		LinkedList<String> list = listWithBounds(c, a);
-		LinkedList<String> list2 = listWithBounds(c, b);
+		LinkedList<String> list = listWithBounds(a, c);
 		
-		/**
-		 * the Identifier of the Expression is added to the list of E2, because Variables 
-		 * in this Expression with the same name are bond to this Identifier
-		 */
-		for( int i=1; i<pRec.getIdentifiers().length;i++)
-		{
-			list.add(pRec.getIdentifiers(i));
-		}
+		
+		
 		
 	
 		/**
@@ -522,12 +490,15 @@ public class ShowBonds
 		LinkedList<Expression> child2 = new LinkedList<Expression>();
 		child2.add(pRec.getE2());
 		
+		LinkedList<String> list2 = new LinkedList<String>();
+		list2.add(pRec.getIdentifiers(0));
+		
 		/**
 		 * different calls for E1 and E2 with a different list of bounds
 		 */
-		checkRec(child2, pRec, list);
+		checkRec(child2, pRec, list2);
 		child.remove(child.size() - 1);
-		checkRec(child, pRec, list2);
+		checkRec(child, pRec, list);
 
 	}
 
@@ -585,6 +556,7 @@ public class ShowBonds
 						 */
 						if (id.getName().equals(list.get(i)))
 						{
+							
 							PrettyString ps1 = holeExpression.toPrettyString();
 							PrettyAnnotation mark1 = ps1.getAnnotationForPrintable(e);
 							PrettyAnnotation mark2 = ps1.getAnnotationForPrintable(id);
@@ -678,24 +650,34 @@ public class ShowBonds
 	 * @param b
 	 * @return
 	 */
-	public LinkedList<String> listWithBounds(Object[] a, Object[] b)
+	public LinkedList<String> listWithBounds(Object[] a, LinkedList<String> e2)
 	{
 		LinkedList<String> e1 = new LinkedList<String>();
-		LinkedList<String> e2 = new LinkedList<String>();
+		
 
 		e1 = castArray(a);
-		e2 = castArray(b);
-
-		for (int i = 0; i < e1.size(); i++)
+		
+		if (false)
 		{
-			for (int j = 0; j < e2.size(); j++)
+			System.out.println("e1");
+			for (int i=0; i<e1.size(); i++)
 			{
-				if (e1.get(i).equals(e2.get(j)))
-				{
-					e2.remove(j);
-					j--;
-				}
+				System.out.println(e1.get(i));
 			}
+			System.out.println("e2");
+		}
+		
+		for (int i = 0; i < e2.size(); i++)
+		{
+			if (false)
+			System.out.println(e2.get(i));
+			if (!e1.contains(e2.get(i)))
+			{
+				e2.remove(i);
+				i--;
+			}
+				
+			
 
 		}
 
@@ -729,27 +711,19 @@ public class ShowBonds
 	 * @param mark1
 	 * @return
 	 */
-	private int getStartOffset(Expression e, Identifier id, PrettyAnnotation mark1)
+	private int getStartOffset(Expression pExpression, Identifier id, PrettyAnnotation mark1)
 	{
+	
+		IdentifierList ids= IdentifierUtilities.getIdentifierPositions(pExpression);
 		
-//TODO
-		String exp = e.toPrettyString().toString();
-		if (e instanceof MultiLet)
+		for (int i=0; i<ids.length();i++)
 		{
-			String newString=exp.substring(0,exp.indexOf("=" ));
-			return newString.lastIndexOf(id.toString())+mark1.getStartOffset();
-			
+			if (ids.getIdentifier(i).equals(id.toString()))
+			{
+				return mark1.getStartOffset()+ids.getIdentifierStartoffset(i);
+			}
 		}
-		else if (e instanceof MultiLambda)
-		{
-			String newString=exp.substring(0,exp.indexOf("." ));
-			return newString.lastIndexOf(id.toString())+mark1.getStartOffset();
-			
-		}
-		else
-		{
-			return exp.indexOf(id.toString())+mark1.getStartOffset();
-		}
+		return 0;
 	}
 
 	/**
