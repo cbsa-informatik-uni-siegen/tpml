@@ -8,6 +8,7 @@ import java.awt.Graphics;
 import java.text.CharacterIterator;
 import java.util.LinkedList;
 
+import de.unisiegen.tpml.Debug;
 import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation;
 import de.unisiegen.tpml.core.prettyprinter.PrettyCharIterator;
 import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable;
@@ -411,6 +412,8 @@ public class PrettyStringRenderer extends AbstractRenderer {
 			
 			fm = AbstractRenderer.expFontMetrics;
 			int charWidth = fm.stringWidth("" + c);
+			//TODO find out how to find the right baseline
+			int posYC = posY - 12;
 			int charHighth = fm.getHeight();
 			
 			//Here we get the information where bindings exists in positions
@@ -421,10 +424,25 @@ public class PrettyStringRenderer extends AbstractRenderer {
 			if (!(toListenForMouse.getMark()) && (isInList(i, annotationsList)) > -1)
 			{
 				//tell mouselistener in CompoundExpression to react at these positions
-				toListenForMouse.add(posX);
-				toListenForMouse.add(posX+charWidth);
-				toListenForMouse.add(posY-fm.getAscent());
-				toListenForMouse.add(posY+fm.getDescent());
+				//posY dose not stand for the baseline but for the center, so we have zu use corrected values for posY
+				toListenForMouse.add(posX-1);
+				toListenForMouse.add(posX+charWidth+1);
+				//toListenForMouse.add(posY-fm.getDescent());
+				toListenForMouse.add(posY-12);
+				toListenForMouse.add(posY-12+fm.getAscent());
+				Debug.out.println("Es geht um Char: " + c, "feivel");
+				Debug.out.println("Differenz: " + (posY-(posY+fm.getAscent())) , "feivel");
+				Debug.out.println("Höhe: " + (fm.getHeight()) , "feivel");
+				Debug.out.println("Position: " + posX + "," +posY , "feivel");
+				Debug.out.println("Position: " + x + "," +y , "feivel");
+				Debug.out.println("Maus ist: " + toListenForMouse.getHereIam()[0] + "," +toListenForMouse.getHereIam()[1] , "feivel");
+				//fm.get
+				
+				
+				//fm.get
+				//toListenForMouse.add(posY);
+				
+				//toListenForMouse.add(posY);
 			}
 							
 			//Wenn gemalt werden soll, also die Maus über einem Buchstaben steht
@@ -437,7 +455,8 @@ public class PrettyStringRenderer extends AbstractRenderer {
 				int yPos = toListenForMouse.getHereIam()[1];
 					
 				//checks if MousePointer stands on the actual char
-				if ( ( (xPos >= posX) && (xPos <= posX+charWidth) ) && ( (yPos >= posY-fm.getDescent()) && (yPos <=posY+fm.getAscent()) ) ) 
+				//if ( ( (xPos >= posX) && (xPos <= posX+charWidth) ) && ( (yPos >= posY-fm.getDescent()) && (yPos <=posY+fm.getAscent()) ) ) 
+					if ( ( (xPos >= posX-1) && (xPos <= posX+charWidth+1) ) && ( (yPos >= posY-12) && (yPos <=posY-12+fm.getAscent()) ) )
 				{
 					//TODO in diesem Fall muss er neu anfangen, er darf nicht mit den nächsten Buchstaben weiter machen...
 					
