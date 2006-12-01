@@ -10,7 +10,7 @@ import de.unisiegen.tpml.core.types.MonoType;
  *
  * @see de.unisiegen.tpml.core.typechecker.TypeEquationList
  */
-final class TypeEquation {
+public final class TypeEquation {
   //
   // Attributes
   //
@@ -44,7 +44,7 @@ final class TypeEquation {
    * 
    * @throws NullPointerException if <code>left</code> or <code>right</code> is <code>null</code>.
    */
-  TypeEquation(MonoType left, MonoType right) {
+  public TypeEquation(MonoType left, MonoType right) {
     if (left == null) {
       throw new NullPointerException("left is null");
     }
@@ -95,7 +95,7 @@ final class TypeEquation {
    * 
    * @see de.unisiegen.tpml.core.types.Type#substitute(TypeSubstitution)
    */
-  TypeEquation substitute(TypeSubstitution s) {
+  public TypeEquation substitute(TypeSubstitution s) {
     // apply the substitution to the left and the right side
     return new TypeEquation(this.left.substitute(s), this.right.substitute(s));
   }
