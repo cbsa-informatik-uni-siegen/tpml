@@ -125,7 +125,7 @@ public class ASTNode
   /**
    * String, if a expression should be replaced and selection is active.
    */
-  private static final String REPLACE_BOLD = "<b>+REPLACE+</b>" ;
+  private static final String REPLACE_BOLD = "<b>&nbsp;...&nbsp;</b>" ;
 
 
   /**
