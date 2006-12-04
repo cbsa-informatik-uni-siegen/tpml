@@ -126,7 +126,7 @@ public class ASTTreeSelectionListener implements TreeSelectionListener
     {
       ASTNode secondlast = list.get ( list.size ( ) - 2 ) ;
       // Highlight the selected Identifier
-      last.enableSelectedColor ( ) ;
+      last.enableSelectionColor ( ) ;
       this.aSTUI.getTreeModel ( ).nodeChanged (
           ( ( DefaultMutableTreeNode ) pTreePath.getLastPathComponent ( ) ) ) ;
       for ( int i = 0 ; i < list.size ( ) - 1 ; i ++ )

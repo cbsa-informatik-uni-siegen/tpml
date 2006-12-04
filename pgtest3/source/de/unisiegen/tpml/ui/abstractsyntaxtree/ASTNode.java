@@ -35,24 +35,6 @@ public class ASTNode
 
 
   /**
-   * String, placed before the name in the nodes.
-   */
-  private static final String BEFORE_NAME = "&nbsp;&nbsp;&nbsp;&nbsp;[&nbsp;" ;
-
-
-  /**
-   * String, placed after the name in the nodes.
-   */
-  private static final String AFTER_NAME = "&nbsp;]" ;
-
-
-  /**
-   * String, placed when a expression should be replaced
-   */
-  private static final String REPLACE_STRING = "..." ;
-
-
-  /**
    * The selected expression should be highlighted in higher nodes.
    * 
    * @see #setSelection(boolean)
@@ -82,6 +64,98 @@ public class ASTNode
    * @see #setUnbound(boolean)
    */
   private static boolean unbound = true ;
+
+
+  /**
+   * The hex values.
+   */
+  private static final String HEX_VALUES[] =
+  { "0" , "1" , "2" , "3" , "4" , "5" , "6" , "7" , "8" , "9" , "A" , "B" ,
+      "C" , "D" , "E" , "F" } ;
+
+
+  /**
+   * Lower than.
+   */
+  private static final String LOWER_THAN = "<" ;
+
+
+  /**
+   * Lower than replace.
+   */
+  private static final String LOWER_THAN_REPLACE = "&lt" ;
+
+
+  /**
+   * Greater than.
+   */
+  private static final String GREATER_THAN = "<" ;
+
+
+  /**
+   * Greater than replace.
+   */
+  private static final String GREATER_THAN_REPLACE = "&gt" ;
+
+
+  /**
+   * Ampersand.
+   */
+  private static final String AMPERSAND_THAN = "&" ;
+
+
+  /**
+   * Ampersand replace.
+   */
+  private static final String AMPERSAND_THAN_REPLACE = "&amp" ;
+
+
+  /**
+   * The beginning of the caption.
+   */
+  private static final String BEGIN = "&nbsp;&nbsp;&nbsp;&nbsp;[&nbsp;<font color=\"#" ;
+
+
+  /**
+   * The end of the caption.
+   */
+  private static final String END = "</font>&nbsp;]</html>" ;
+
+
+  /**
+   * String, if a expression should be replaced and selection is active.
+   */
+  private static final String REPLACE_BOLD = "<b>+REPLACE+</b>" ;
+
+
+  /**
+   * String, if a expression should be replaced.
+   */
+  private static final String REPLACE = "&nbsp;...&nbsp;" ;
+
+
+  /**
+   * Begin of HTML.
+   */
+  private static final String HTML = "<html>" ;
+
+
+  /**
+   * After the color.
+   */
+  private static final String FONT_AFTER_COLOR = "\">" ;
+
+
+  /**
+   * Begin of font and bold.
+   */
+  private static final String FONT_BOLD_BEGIN = "<b><font color=\"#" ;
+
+
+  /**
+   * End of font and bold.
+   */
+  private static final String FONT_BOLD_END = "</font></b>" ;
 
 
   /**
@@ -299,30 +373,28 @@ public class ASTNode
   /**
    * Highlight the selected Identifier.
    */
-  public void enableSelectedColor ( )
+  public void enableSelectionColor ( )
   {
     if ( this.expression == null )
     {
-      StringBuffer result = new StringBuffer ( "<html>" ) ;
+      StringBuffer result = new StringBuffer ( HTML ) ;
       result.append ( this.description ) ;
-      result.append ( BEFORE_NAME ) ;
-      result.append ( "<font color=\"#"
-          + getHTMLFormat ( Theme.currentTheme ( ).getExpressionColor ( ) )
-          + "\">" ) ;
+      result.append ( BEGIN ) ;
+      result.append ( getHTMLFormat ( Theme.currentTheme ( )
+          .getExpressionColor ( ) ) ) ;
+      result.append ( FONT_AFTER_COLOR ) ;
       if ( selection )
       {
-        result.append ( "<b><font color=\"#"
+        result.append ( FONT_BOLD_BEGIN
             + getHTMLFormat ( Theme.currentTheme ( ).getSelectionColor ( ) )
-            + "\">" ) ;
+            + FONT_AFTER_COLOR ) ;
       }
       result.append ( getHTMLCode ( this.expressionString ) ) ;
       if ( selection )
       {
-        result.append ( "</font></b>" ) ;
+        result.append ( FONT_BOLD_END ) ;
       }
-      result.append ( "</font>" ) ;
-      result.append ( AFTER_NAME ) ;
-      result.append ( "</html>" ) ;
+      result.append ( END ) ;
       this.caption = result.toString ( ) ;
     }
     else
@@ -378,10 +450,7 @@ public class ASTNode
    */
   private String getHex ( int pNumber )
   {
-    String result = "" ;
-    String hex[] =
-    { "0" , "1" , "2" , "3" , "4" , "5" , "6" , "7" , "8" , "9" , "A" , "B" ,
-        "C" , "D" , "E" , "F" } ;
+    StringBuffer result = new StringBuffer ( ) ;
     int remainder = Math.abs ( pNumber ) ;
     int base = 0 ;
     if ( remainder > 0 )
@@ -390,14 +459,14 @@ public class ASTNode
       {
         base = remainder % 16 ;
         remainder = ( remainder / 16 ) ;
-        result = hex [ base ] + result ;
+        result.insert ( 0 , HEX_VALUES [ base ] ) ;
       }
     }
     else
     {
-      result = "00" ;
+      return "00" ;
     }
-    return result ;
+    return result.toString ( ) ;
   }
 
 
@@ -411,15 +480,15 @@ public class ASTNode
   {
     if ( pChar == '&' )
     {
-      return "&amp" ;
+      return AMPERSAND_THAN_REPLACE ;
     }
     if ( pChar == '<' )
     {
-      return "&lt" ;
+      return LOWER_THAN_REPLACE ;
     }
     if ( pChar == '>' )
     {
-      return "&gt" ;
+      return GREATER_THAN_REPLACE ;
     }
     return String.valueOf ( pChar ) ;
   }
@@ -433,9 +502,9 @@ public class ASTNode
    */
   private String getHTMLCode ( String pText )
   {
-    String s = pText.replaceAll ( "&" , "&amp" ) ;
-    s = s.replaceAll ( "<" , "&lt" ) ;
-    s = s.replaceAll ( ">" , "&gt" ) ;
+    String s = pText.replaceAll ( AMPERSAND_THAN , AMPERSAND_THAN_REPLACE ) ;
+    s = s.replaceAll ( LOWER_THAN , LOWER_THAN_REPLACE ) ;
+    s = s.replaceAll ( GREATER_THAN , GREATER_THAN_REPLACE ) ;
     return s ;
   }
 
@@ -538,16 +607,14 @@ public class ASTNode
   {
     if ( this.expression == null )
     {
-      StringBuffer result = new StringBuffer ( "<html>" ) ;
+      StringBuffer result = new StringBuffer ( HTML ) ;
       result.append ( this.description ) ;
-      result.append ( BEFORE_NAME ) ;
-      result.append ( "<font color=\"#"
-          + getHTMLFormat ( Theme.currentTheme ( ).getExpressionColor ( ) )
-          + "\">" ) ;
+      result.append ( BEGIN ) ;
+      result.append ( getHTMLFormat ( Theme.currentTheme ( )
+          .getExpressionColor ( ) ) ) ;
+      result.append ( FONT_AFTER_COLOR ) ;
       result.append ( getHTMLCode ( this.expressionString ) ) ;
-      result.append ( "</font>" ) ;
-      result.append ( AFTER_NAME ) ;
-      result.append ( "</html>" ) ;
+      result.append ( END ) ;
       this.caption = result.toString ( ) ;
     }
     else
@@ -628,23 +695,24 @@ public class ASTNode
     // Initialize the result as a StringBuffer
     StringBuffer result = new StringBuffer ( ) ;
     // Build the first part of the node caption
-    result.append ( "<html>" ) ;
+    result.append ( HTML ) ;
     result.append ( this.description ) ;
-    result.append ( BEFORE_NAME ) ;
-    result.append ( "<font color=\"#" + expressionColor + "\">" ) ;
-    // Set the position to the first character
-    // prettyCharIterator.first ( ) ;
+    result.append ( BEGIN ) ;
+    result.append ( expressionColor ) ;
+    result.append ( FONT_AFTER_COLOR ) ;
     int charIndex = 0 ;
     while ( charIndex < this.expressionString.length ( ) )
     {
       // Selection
       if ( ( selection ) && ( charIndex == pSelectionStart ) )
       {
-        result.append ( "<b><font color=\"#" + selectionColor + "\">" ) ;
+        result.append ( FONT_BOLD_BEGIN ) ;
+        result.append ( selectionColor ) ;
+        result.append ( FONT_AFTER_COLOR ) ;
         // Replace selected Expression
         if ( replace && this.replaceInThisNode )
         {
-          result.append ( "&nbsp;" + REPLACE_STRING + "&nbsp;" ) ;
+          result.append ( REPLACE ) ;
         }
         while ( charIndex <= pSelectionEnd )
         {
@@ -658,7 +726,7 @@ public class ASTNode
           charIndex ++ ;
           prettyCharIterator.next ( ) ;
         }
-        result.append ( "</font></b>" ) ;
+        result.append ( FONT_BOLD_END ) ;
       }
       /*
        * No selection highlighting and displacement of the selected Expression
@@ -667,7 +735,7 @@ public class ASTNode
       else if ( ! ( selection ) && ( replace ) && ( this.replaceInThisNode )
           && ( charIndex == pSelectionStart ) )
       {
-        result.append ( "<b>&nbsp;" + REPLACE_STRING + "&nbsp;</b>" ) ;
+        result.append ( REPLACE_BOLD ) ;
         while ( charIndex <= pSelectionEnd )
         {
           // Next character
@@ -680,7 +748,9 @@ public class ASTNode
           && ( pIdentifierIndex >= 0 )
           && ( isBinding ( pIdentifierIndex , charIndex ) ) )
       {
-        result.append ( "<b><font color=\"#" + bindingColor + "\">" ) ;
+        result.append ( FONT_BOLD_BEGIN ) ;
+        result.append ( bindingColor ) ;
+        result.append ( FONT_AFTER_COLOR ) ;
         while ( isBinding ( pIdentifierIndex , charIndex ) )
         {
           result.append ( getHTMLCode ( this.expressionString
@@ -689,13 +759,15 @@ public class ASTNode
           charIndex ++ ;
           prettyCharIterator.next ( ) ;
         }
-        result.append ( "</font></b>" ) ;
+        result.append ( FONT_BOLD_END ) ;
       }
       // Unbound
       else if ( ( unbound ) && ( this.aSTUnbound != null )
           && ( isUnbound ( charIndex ) ) )
       {
-        result.append ( "<b><font color=\"#" + unboundColor + "\">" ) ;
+        result.append ( FONT_BOLD_BEGIN ) ;
+        result.append ( unboundColor ) ;
+        result.append ( FONT_AFTER_COLOR ) ;
         while ( isUnbound ( charIndex ) )
         {
           result.append ( getHTMLCode ( this.expressionString
@@ -704,12 +776,14 @@ public class ASTNode
           charIndex ++ ;
           prettyCharIterator.next ( ) ;
         }
-        result.append ( "</font></b>" ) ;
+        result.append ( FONT_BOLD_END ) ;
       }
       // Keyword
       else if ( prettyCharIterator.getStyle ( ) == PrettyStyle.KEYWORD )
       {
-        result.append ( "<b><font color=\"#" + keywordColor + "\">" ) ;
+        result.append ( FONT_BOLD_BEGIN ) ;
+        result.append ( keywordColor ) ;
+        result.append ( FONT_AFTER_COLOR ) ;
         while ( prettyCharIterator.getStyle ( ) == PrettyStyle.KEYWORD )
         {
           result.append ( getHTMLCode ( this.expressionString
@@ -718,12 +792,14 @@ public class ASTNode
           charIndex ++ ;
           prettyCharIterator.next ( ) ;
         }
-        result.append ( "</font></b>" ) ;
+        result.append ( FONT_BOLD_END ) ;
       }
       // Constant
       else if ( prettyCharIterator.getStyle ( ) == PrettyStyle.CONSTANT )
       {
-        result.append ( "<b><font color=\"#" + constantColor + "\">" ) ;
+        result.append ( FONT_BOLD_BEGIN ) ;
+        result.append ( constantColor ) ;
+        result.append ( FONT_AFTER_COLOR ) ;
         while ( prettyCharIterator.getStyle ( ) == PrettyStyle.CONSTANT )
         {
           result.append ( getHTMLCode ( this.expressionString
@@ -732,12 +808,14 @@ public class ASTNode
           charIndex ++ ;
           prettyCharIterator.next ( ) ;
         }
-        result.append ( "</font></b>" ) ;
+        result.append ( FONT_BOLD_END ) ;
       }
       // Type
       else if ( prettyCharIterator.getStyle ( ) == PrettyStyle.TYPE )
       {
-        result.append ( "<b><font color=\"#" + typeColor + "\">" ) ;
+        result.append ( FONT_BOLD_BEGIN ) ;
+        result.append ( typeColor ) ;
+        result.append ( FONT_AFTER_COLOR ) ;
         while ( prettyCharIterator.getStyle ( ) == PrettyStyle.TYPE )
         {
           result.append ( getHTMLCode ( this.expressionString
@@ -746,7 +824,7 @@ public class ASTNode
           charIndex ++ ;
           prettyCharIterator.next ( ) ;
         }
-        result.append ( "</font></b>" ) ;
+        result.append ( FONT_BOLD_END ) ;
       }
       // Normal Character
       else
@@ -758,9 +836,7 @@ public class ASTNode
         prettyCharIterator.next ( ) ;
       }
     }
-    result.append ( "</font>" ) ;
-    result.append ( AFTER_NAME ) ;
-    result.append ( "</html>" ) ;
+    result.append ( END ) ;
     this.caption = result.toString ( ) ;
   }
 }
