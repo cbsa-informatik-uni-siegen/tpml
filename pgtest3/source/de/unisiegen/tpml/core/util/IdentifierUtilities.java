@@ -1,7 +1,12 @@
 package de.unisiegen.tpml.core.util;
 
+import java.util.ArrayList;
+import java.util.Enumeration;
+
 import de.unisiegen.tpml.core.expressions.Expression;
+import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation;
 import de.unisiegen.tpml.core.prettyprinter.PrettyCharIterator;
+import de.unisiegen.tpml.core.prettyprinter.PrettyString;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStyle;
 
 public final class IdentifierUtilities
@@ -10,19 +15,35 @@ public final class IdentifierUtilities
 	private IdentifierUtilities()
 	{}
 	
-	public static IdentifierList getIdentifierPositions(Expression pExpression)
+	public static ArrayList<Identifier> getIdentifierPositions(Expression pExpression)
 	{
 		
-		IdentifierList list= new IdentifierList();
+		ArrayList<Identifier> list= new ArrayList<Identifier>();
 		
 		 PrettyCharIterator prettyCharIterator = pExpression.toPrettyString ( )
      .toCharacterIterator ( ) ;
 		
 		 int idCount=0;
 		 int charIndex = 0 ;
+		 int end= pExpression.toString().length();
 		 boolean found=false;
+		 
+		 
+		 Enumeration children= pExpression.children();
+		 
+		 if (children.hasMoreElements())
+		 {
+			 Expression e = (Expression) children.nextElement();
+			 PrettyString ps1 = pExpression.toPrettyString();
+			 PrettyAnnotation mark1 = ps1.getAnnotationForPrintable(e);
+			 end=mark1.getStartOffset();
+				
+				
+		 }
+		 
+		 
 		
-	    while ( charIndex < pExpression.toString().length ( ) )
+	    while ( charIndex < end )
 	    {
 	    	
 	    	String tmp="";
@@ -39,7 +60,8 @@ public final class IdentifierUtilities
 	    	if (found)
 	    	{
 	    		
-	    		list.addIdentifier(tmp, charIndex-length, charIndex, idCount);
+	    		Identifier addToList = new Identifier(tmp, charIndex-length, charIndex, idCount);
+	    		list.add(addToList);
 	    		idCount++;
 	    		found=false;
 	    	}
