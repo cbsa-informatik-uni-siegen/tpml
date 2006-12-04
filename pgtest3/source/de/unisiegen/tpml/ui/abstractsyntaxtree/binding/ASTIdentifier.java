@@ -2,6 +2,8 @@ package de.unisiegen.tpml.ui.abstractsyntaxtree.binding ;
 
 
 import java.util.ArrayList ;
+import java.util.Enumeration ;
+import de.unisiegen.tpml.Debug ;
 import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyCharIterator ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStyle ;
@@ -25,17 +27,23 @@ public abstract class ASTIdentifier
    * @return A list of ASTPair, in which the start and the end index of the
    *         Identifiers is saved.
    */
-  
-  // TODO wrong result.
   public final static ArrayList < ASTPair > getIndex ( Expression pExpression )
   {
     ArrayList < ASTPair > list = new ArrayList < ASTPair > ( ) ;
     PrettyCharIterator prettyCharIterator = pExpression.toPrettyString ( )
         .toCharacterIterator ( ) ;
+    int beginChild = pExpression.toPrettyString ( ).toString ( ).length ( ) ;
+    Enumeration < Expression > children = pExpression.children ( ) ;
+    if ( children.hasMoreElements ( ) )
+    {
+      beginChild = pExpression.toPrettyString ( ).getAnnotationForPrintable (
+          children.nextElement ( ) ).getStartOffset ( ) ;
+    }
+    Debug.out.println ( beginChild , Debug.CHRISTIAN ) ;
     int charIndex = 0 ;
     int start = 0 ;
     int end = 0 ;
-    while ( charIndex < pExpression.toPrettyString ( ).toString ( ).length ( ) )
+    while ( charIndex < beginChild )
     {
       if ( prettyCharIterator.getStyle ( ) == PrettyStyle.IDENTIFIER )
       {
