@@ -443,6 +443,18 @@ public class ASTNode
 
 
   /**
+   * Returns the expressionString.
+   * 
+   * @return The expressionString.
+   * @see #expressionString
+   */
+  public String getExpressionString ( )
+  {
+    return this.expressionString ;
+  }
+
+
+  /**
    * Returns the hex value of a given integer.
    * 
    * @param pNumber The input integer value.

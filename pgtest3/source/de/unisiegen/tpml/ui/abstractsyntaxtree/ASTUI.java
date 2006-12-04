@@ -18,7 +18,6 @@ import javax.swing.JScrollPane ;
 import javax.swing.JTree ;
 import javax.swing.border.TitledBorder ;
 import javax.swing.tree.DefaultMutableTreeNode ;
-import javax.swing.tree.DefaultTreeCellRenderer ;
 import javax.swing.tree.DefaultTreeModel ;
 import de.unisiegen.tpml.ui.abstractsyntaxtree.listener.ASTActionListener ;
 import de.unisiegen.tpml.ui.abstractsyntaxtree.listener.ASTItemListener ;
@@ -68,12 +67,6 @@ public class ASTUI
    * @see #getTreeModel()
    */
   private DefaultTreeModel treeModel ;
-
-
-  /**
-   * The cell renderer.
-   */
-  private DefaultTreeCellRenderer cellRenderer ;
 
 
   /**
@@ -423,27 +416,15 @@ public class ASTUI
     // Panel Main
     this.jPanelMain = new JPanel ( ) ;
     this.jPanelMain.setLayout ( this.gridBagLayout ) ;
-    // CellRenderer
-    this.cellRenderer = new DefaultTreeCellRenderer ( ) ;
-    this.cellRenderer.setIcon ( null ) ;
-    this.cellRenderer.setLeafIcon ( null ) ;
-    this.cellRenderer.setOpenIcon ( null ) ;
-    this.cellRenderer.setClosedIcon ( null ) ;
-    this.cellRenderer.setDisabledIcon ( null ) ;
-    this.cellRenderer.setFont ( new Font ( "SansSerif" , Font.PLAIN , 16 ) ) ;
-    this.cellRenderer.setBackground ( Color.WHITE ) ;
-    this.cellRenderer.setBackgroundNonSelectionColor ( Color.WHITE ) ;
-    this.cellRenderer
-        .setBackgroundSelectionColor ( new Color ( 225 , 225 , 255 ) ) ;
-    this.cellRenderer.setFont ( new Font ( "SansSerif" , Font.PLAIN , 14 ) ) ;
-    this.cellRenderer.setBorderSelectionColor ( Color.BLUE ) ;
-    this.cellRenderer.setTextSelectionColor ( Color.BLACK ) ;
-    this.cellRenderer.setTextNonSelectionColor ( Color.BLACK ) ;
     // TreeModel
     this.treeModel = new DefaultTreeModel ( this.rootNode ) ;
     // Tree AbstractSyntaxTree
     this.jTreeAbstractSyntaxTree = new JTree ( this.treeModel ) ;
-    this.jTreeAbstractSyntaxTree.setCellRenderer ( this.cellRenderer ) ;
+    /*
+     * ToolTipManager.sharedInstance ( ).registerComponent (
+     * this.jTreeAbstractSyntaxTree ) ;
+     */
+    this.jTreeAbstractSyntaxTree.setCellRenderer ( new ASTCellRenderer ( ) ) ;
     this.jTreeAbstractSyntaxTree.getSelectionModel ( )
         .addTreeSelectionListener ( this.aSTTreeSelectionListener ) ;
     this.jTreeAbstractSyntaxTree.setRowHeight ( 20 ) ;
