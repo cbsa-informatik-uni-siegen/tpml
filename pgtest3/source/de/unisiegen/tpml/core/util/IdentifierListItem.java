@@ -2,13 +2,13 @@ package de.unisiegen.tpml.core.util;
 
 
 
-	public class Identifier
+	public class IdentifierListItem
 	{
 		private String id;
 		private int startOffset;
 		private int endOffset;
 		private int idNumber;
-		public Identifier(String pId, int start, int end, int number)
+		public IdentifierListItem(String pId, int start, int end, int number)
 		{
 			id=pId;
 			startOffset=start;

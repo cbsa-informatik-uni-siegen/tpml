@@ -15,10 +15,10 @@ public final class IdentifierUtilities
 	private IdentifierUtilities()
 	{}
 	
-	public static ArrayList<Identifier> getIdentifierPositions(Expression pExpression)
+	public static ArrayList<IdentifierListItem> getIdentifierPositions(Expression pExpression)
 	{
 		
-		ArrayList<Identifier> list= new ArrayList<Identifier>();
+		ArrayList<IdentifierListItem> list= new ArrayList<IdentifierListItem>();
 		
 		 PrettyCharIterator prettyCharIterator = pExpression.toPrettyString ( )
      .toCharacterIterator ( ) ;
@@ -29,11 +29,11 @@ public final class IdentifierUtilities
 		 boolean found=false;
 		 
 		 
-		 Enumeration children= pExpression.children();
+		 Enumeration<Expression> children= pExpression.children();
 		 
 		 if (children.hasMoreElements())
 		 {
-			 Expression e = (Expression) children.nextElement();
+			 Expression e =  children.nextElement();
 			 PrettyString ps1 = pExpression.toPrettyString();
 			 PrettyAnnotation mark1 = ps1.getAnnotationForPrintable(e);
 			 end=mark1.getStartOffset();
@@ -60,7 +60,7 @@ public final class IdentifierUtilities
 	    	if (found)
 	    	{
 	    		
-	    		Identifier addToList = new Identifier(tmp, charIndex-length, charIndex, idCount);
+	    		IdentifierListItem addToList = new IdentifierListItem(tmp, charIndex-length, charIndex, idCount);
 	    		list.add(addToList);
 	    		idCount++;
 	    		found=false;
