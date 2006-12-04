@@ -138,7 +138,7 @@ public final class Optimizer
       {
         end = 1 ;
       }
-      double last = 0 ;
+      long last = 0 ;
       final DecimalFormat df1 = new DecimalFormat ( "00" ) ;
       final DecimalFormat df2 = new DecimalFormat ( "00,000 ms" ) ;
       final DecimalFormat df3 = new DecimalFormat ( "00.0" ) ;
