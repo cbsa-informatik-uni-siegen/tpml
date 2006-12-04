@@ -3,46 +3,38 @@ package de.unisiegen.tpml.ui.abstractsyntaxtree.listener ;
 
 import java.awt.event.ComponentEvent ;
 import java.awt.event.ComponentListener ;
-import java.beans.PropertyChangeEvent ;
-import java.beans.PropertyChangeListener ;
 import javax.swing.JSplitPane ;
 import de.unisiegen.tpml.ui.abstractsyntaxtree.AbstractSyntaxTree ;
 
 
 /**
- * TODO
+ * This class listens for component events. It saves the divider location in the
+ * ASTPreferences when the component was resized.
  * 
  * @author Christian Fehler
  * @version $Rev$
  */
-public class ASTSplitPaneListener implements PropertyChangeListener ,
-    ComponentListener
+public class ASTComponentListener implements ComponentListener
 {
   /**
-   * TODO
+   * The JSplitPane.
    */
   private JSplitPane jSplitPane ;
 
 
   /**
-   * TODO
-   */
-  private boolean setDivider = false ;
-
-
-  /**
-   * TODO
+   * The AbstractSyntaxTree.
    */
   private AbstractSyntaxTree abstractSyntaxTree ;
 
 
   /**
-   * TODO
+   * Initializes the ASTComponentListener.
    * 
-   * @param pJSplitPane
-   * @param pAbstractSyntaxTree
+   * @param pJSplitPane The JSplitPane.
+   * @param pAbstractSyntaxTree The AbstractSyntaxTree.
    */
-  public ASTSplitPaneListener ( JSplitPane pJSplitPane ,
+  public ASTComponentListener ( JSplitPane pJSplitPane ,
       AbstractSyntaxTree pAbstractSyntaxTree )
   {
     this.jSplitPane = pJSplitPane ;
@@ -51,27 +43,9 @@ public class ASTSplitPaneListener implements PropertyChangeListener ,
 
 
   /**
-   * TODO
+   * Component was hidden.
    * 
-   * @param pPropertyChangeEvent
-   * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
-   */
-  public void propertyChange ( @ SuppressWarnings ( "unused" )
-  PropertyChangeEvent pPropertyChangeEvent )
-  {
-    if ( ! this.setDivider )
-    {
-      this.setDivider = true ;
-      this.jSplitPane.setDividerLocation ( this.abstractSyntaxTree
-          .getASTPreferences ( ).getDividerLocation ( ) ) ;
-    }
-  }
-
-
-  /**
-   * TODO
-   * 
-   * @param pComponentEvent
+   * @param pComponentEvent The component event.
    * @see java.awt.event.ComponentListener#componentHidden(java.awt.event.ComponentEvent)
    */
   public void componentHidden ( @ SuppressWarnings ( "unused" )
@@ -82,9 +56,9 @@ public class ASTSplitPaneListener implements PropertyChangeListener ,
 
 
   /**
-   * TODO
+   * Component was moved.
    * 
-   * @param pComponentEvent
+   * @param pComponentEvent The component event.
    * @see java.awt.event.ComponentListener#componentMoved(java.awt.event.ComponentEvent)
    */
   public void componentMoved ( @ SuppressWarnings ( "unused" )
@@ -95,9 +69,9 @@ public class ASTSplitPaneListener implements PropertyChangeListener ,
 
 
   /**
-   * TODO
+   * Component was resized.
    * 
-   * @param pComponentEvent
+   * @param pComponentEvent The component event.
    * @see java.awt.event.ComponentListener#componentResized(java.awt.event.ComponentEvent)
    */
   public void componentResized ( @ SuppressWarnings ( "unused" )
@@ -109,9 +83,9 @@ public class ASTSplitPaneListener implements PropertyChangeListener ,
 
 
   /**
-   * TODO
+   * Component was shown.
    * 
-   * @param pComponentEvent
+   * @param pComponentEvent The component event.
    * @see java.awt.event.ComponentListener#componentShown(java.awt.event.ComponentEvent)
    */
   public void componentShown ( @ SuppressWarnings ( "unused" )

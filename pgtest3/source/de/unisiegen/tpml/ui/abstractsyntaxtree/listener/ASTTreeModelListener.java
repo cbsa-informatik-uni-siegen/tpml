@@ -11,7 +11,7 @@ import de.unisiegen.tpml.ui.abstractsyntaxtree.AbstractSyntaxTree ;
 
 
 /**
- * TODO
+ * Sets the new Expression in the AbstractSyntaxTree, if a node changed.
  * 
  * @author Christian Fehler
  * @version $Rev$
@@ -19,61 +19,64 @@ import de.unisiegen.tpml.ui.abstractsyntaxtree.AbstractSyntaxTree ;
 public class ASTTreeModelListener implements TreeModelListener
 {
   /**
-   * TODO
+   * The AbstractSyntaxTree.
    */
   public AbstractSyntaxTree abstractSyntaxTree ;
 
 
   /**
-   * TODO
+   * The AbstractProofModel.
    */
-  public AbstractProofModel model ;
+  public AbstractProofModel abstractProofModel ;
 
 
   /**
-   * TODO
+   * Initializes the ASTTreeModelListener with the given AbstractSyntaxTree and
+   * the AbstractProofModel.
    * 
-   * @param pAbstractSyntaxTree
-   * @param pModel
+   * @param pAbstractSyntaxTree The AbstractSyntaxTree.
+   * @param pAbstractProofModel The AbstractProofModel.
    */
   public ASTTreeModelListener ( AbstractSyntaxTree pAbstractSyntaxTree ,
-      AbstractProofModel pModel )
+      AbstractProofModel pAbstractProofModel )
   {
     this.abstractSyntaxTree = pAbstractSyntaxTree ;
-    this.model = pModel ;
+    this.abstractProofModel = pAbstractProofModel ;
   }
 
 
   /**
-   * TODO
+   * Sets the new Expression in the AbstractSyntaxTree, if a node changed.
    * 
-   * @param pTreeModelEvent
+   * @param pTreeModelEvent The tree model event.
    * @see javax.swing.event.TreeModelListener#treeNodesChanged(javax.swing.event.TreeModelEvent)
    */
   public void treeNodesChanged ( TreeModelEvent pTreeModelEvent )
   {
-    if ( pTreeModelEvent.getSource ( ) instanceof SmallStepProofModel )
+    Object source = pTreeModelEvent.getSource ( ) ;
+    if ( source instanceof SmallStepProofModel )
     {
-      this.abstractSyntaxTree.setExpression ( this.model.getRoot ( )
-          .getLastLeaf ( ).getExpression ( ) , "change_smallstep" ) ;
+      this.abstractSyntaxTree.loadNewExpression ( this.abstractProofModel
+          .getRoot ( ).getLastLeaf ( ).getExpression ( ) , "change_smallstep" ) ;
     }
-    else if ( pTreeModelEvent.getSource ( ) instanceof BigStepProofModel )
+    else if ( source instanceof BigStepProofModel )
     {
-      this.abstractSyntaxTree.setExpression ( this.model.getRoot ( )
-          .getLastLeaf ( ).getExpression ( ) , "change_bigstep" ) ;
+      this.abstractSyntaxTree.loadNewExpression ( this.abstractProofModel
+          .getRoot ( ).getLastLeaf ( ).getExpression ( ) , "change_bigstep" ) ;
     }
-    else if ( pTreeModelEvent.getSource ( ) instanceof TypeCheckerProofModel )
+    else if ( source instanceof TypeCheckerProofModel )
     {
-      this.abstractSyntaxTree.setExpression ( this.model.getRoot ( )
-          .getLastLeaf ( ).getExpression ( ) , "change_typechecker" ) ;
+      this.abstractSyntaxTree
+          .loadNewExpression ( this.abstractProofModel.getRoot ( )
+              .getLastLeaf ( ).getExpression ( ) , "change_typechecker" ) ;
     }
   }
 
 
   /**
-   * TODO
+   * A node is inserted.
    * 
-   * @param pTreeModelEvent
+   * @param pTreeModelEvent The tree model event.
    * @see javax.swing.event.TreeModelListener#treeNodesInserted(javax.swing.event.TreeModelEvent)
    */
   public void treeNodesInserted ( @ SuppressWarnings ( "unused" )
@@ -84,9 +87,9 @@ public class ASTTreeModelListener implements TreeModelListener
 
 
   /**
-   * TODO
+   * A node is removed.
    * 
-   * @param pTreeModelEvent
+   * @param pTreeModelEvent The tree model event.
    * @see javax.swing.event.TreeModelListener#treeNodesRemoved(javax.swing.event.TreeModelEvent)
    */
   public void treeNodesRemoved ( @ SuppressWarnings ( "unused" )
@@ -97,9 +100,9 @@ public class ASTTreeModelListener implements TreeModelListener
 
 
   /**
-   * TODO
+   * The structure has changed.
    * 
-   * @param pTreeModelEvent
+   * @param pTreeModelEvent The tree model event.
    * @see javax.swing.event.TreeModelListener#treeStructureChanged(javax.swing.event.TreeModelEvent)
    */
   public void treeStructureChanged ( @ SuppressWarnings ( "unused" )

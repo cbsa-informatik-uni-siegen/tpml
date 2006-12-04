@@ -1,6 +1,7 @@
 package de.unisiegen.tpml.ui.abstractsyntaxtree.listener ;
 
 
+import java.awt.Container ;
 import java.awt.event.MouseEvent ;
 import java.awt.event.MouseListener ;
 import javax.swing.JLabel ;
@@ -14,7 +15,10 @@ import de.unisiegen.tpml.ui.abstractsyntaxtree.ASTUI ;
 
 
 /**
- * TODO
+ * This class listens for mouse events. It handles mouse events on the
+ * components AbstractSyntaxTree, SmallStepView, BigStepView and
+ * TypeCheckerView. Sets a new Expression in the AbstractSyntaxTree. Views the
+ * JPopupMenu in the AbstractSyntaxTree.
  * 
  * @author Christian Fehler
  * @version $Rev$
@@ -22,46 +26,59 @@ import de.unisiegen.tpml.ui.abstractsyntaxtree.ASTUI ;
 public class ASTMouseListener implements MouseListener
 {
   /**
-   * TODO
+   * The AbstractSyntaxTree UI.
    */
   private ASTUI aSTUI ;
 
 
   /**
-   * TODO
+   * The CompoundExpression.
    */
   private CompoundExpression < ? , ? > compoundExpression ;
 
 
   /**
-   * TODO
+   * The view, one of SmallStepView, BigStepView or TypeCheckerView.
+   */
+  private Container view ;
+
+
+  /**
+   * Initializes the ASTMouseListener with the given ASTUI. This constructer is
+   * used, if the ASTMouseListener listens for mouse events on the AST.
    * 
-   * @param pASTUI
+   * @param pASTUI The ASTUI.
    */
   public ASTMouseListener ( ASTUI pASTUI )
   {
     this.aSTUI = pASTUI ;
     this.compoundExpression = null ;
+    this.view = null ;
   }
 
 
   /**
-   * TODO
+   * Initializes the ASTMouseListener with the given ASTUI. This constructer is
+   * used, if the ASTMouseListener listens for mouse events on the
+   * SmallStepView, BigStepView or TypeCheckerView.
    * 
-   * @param pCompoundExpression
+   * @param pCompoundExpression The CompoundExpression.
    */
   public ASTMouseListener ( CompoundExpression < ? , ? > pCompoundExpression )
   {
     this.aSTUI = null ;
     this.compoundExpression = pCompoundExpression ;
+    this.view = null ;
   }
 
 
   /**
-   * TODO
+   * Returns true, if all children of the given TreePath are visible, otherwise
+   * false.
    * 
-   * @param pTreePath
-   * @return TODO
+   * @param pTreePath The TreePath to check for.
+   * @return True, if all children of the given TreePath are visible, otherwise
+   *         false.
    */
   private boolean allChildrenVisible ( TreePath pTreePath )
   {
@@ -89,68 +106,69 @@ public class ASTMouseListener implements MouseListener
 
 
   /**
-   * TODO
+   * Handles mouse events on the components AbstractSyntaxTree, SmallStepView,
+   * BigStepView and TypeCheckerView. Sets a new Expression in the
+   * AbstractSyntaxTree. Views the JPopupMenu in the AbstractSyntaxTree.
    * 
-   * @param pMouseEvent
+   * @param pMouseEvent The mouse event.
    */
   private void handleMouseEvent ( MouseEvent pMouseEvent )
   {
+    // AbstractSyntaxTree
     if ( ( this.aSTUI != null )
         && ( pMouseEvent.getSource ( ).equals ( this.aSTUI
             .getJTreeAbstractSyntaxTree ( ) ) ) )
     {
-      int x = pMouseEvent.getX ( ) ;
-      int y = pMouseEvent.getY ( ) ;
-      TreePath treePath = this.aSTUI.getJTreeAbstractSyntaxTree ( )
-          .getPathForLocation ( x , y ) ;
-      if ( treePath == null )
-      {
-        /*
-         * this.aSTUI.getJTreeAbstractSyntaxTree ( ).setSelectionPath ( null ) ;
-         * this.aSTUI.getASTTreeSelectionListener ( ).reset ( (
-         * DefaultMutableTreeNode ) this.aSTUI.getTreeModel ( ).getRoot ( ) ) ;
-         */
-        return ;
-      }
       if ( pMouseEvent.isPopupTrigger ( ) )
       {
+        int x = pMouseEvent.getX ( ) ;
+        int y = pMouseEvent.getY ( ) ;
+        TreePath treePath = this.aSTUI.getJTreeAbstractSyntaxTree ( )
+            .getPathForLocation ( x , y ) ;
+        if ( treePath == null )
+        {
+          return ;
+        }
         this.aSTUI.getJTreeAbstractSyntaxTree ( ).setSelectionPath ( treePath ) ;
+        setStatus ( ) ;
         this.aSTUI.getJPopupMenu ( ).show ( pMouseEvent.getComponent ( ) , x ,
             y ) ;
       }
-      setStatus ( ) ;
     }
+    /*
+     * MouseEvent on one of the view SmallStepView, BigStepView and
+     * TypeCheckerView.
+     */
     else if ( ( pMouseEvent.getSource ( ) instanceof CompoundExpression )
         || ( pMouseEvent.getSource ( ) instanceof JLabel ) )
     {
+      if ( this.view == null )
+      {
+        this.view = this.compoundExpression.getParent ( ).getParent ( )
+            .getParent ( ).getParent ( ).getParent ( ).getParent ( ) ;
+      }
+      // SmallStepView
       if ( pMouseEvent.getButton ( ) == MouseEvent.BUTTON1 )
       {
-        if ( this.compoundExpression.getParent ( ).getParent ( ).getParent ( )
-            .getParent ( ).getParent ( ).getParent ( ) instanceof SmallStepView )
+        if ( this.view instanceof SmallStepView )
         {
-          SmallStepView view = ( SmallStepView ) this.compoundExpression
-              .getParent ( ).getParent ( ).getParent ( ).getParent ( )
-              .getParent ( ).getParent ( ) ;
-          view.getAbstractSyntaxTree ( ).setExpression (
-              this.compoundExpression.getExpression ( ) , "mouse_smallstep" ) ;
+          ( ( SmallStepView ) this.view ).getAbstractSyntaxTree ( )
+              .loadNewExpression ( this.compoundExpression.getExpression ( ) ,
+                  "mouse_smallstep" ) ;
         }
-        else if ( this.compoundExpression.getParent ( ).getParent ( )
-            .getParent ( ).getParent ( ).getParent ( ).getParent ( ) instanceof BigStepView )
+        // BigStepView
+        else if ( this.view instanceof BigStepView )
         {
-          BigStepView view = ( BigStepView ) this.compoundExpression
-              .getParent ( ).getParent ( ).getParent ( ).getParent ( )
-              .getParent ( ).getParent ( ) ;
-          view.getAbstractSyntaxTree ( ).setExpression (
-              this.compoundExpression.getExpression ( ) , "mouse_bigstep" ) ;
+          ( ( BigStepView ) this.view ).getAbstractSyntaxTree ( )
+              .loadNewExpression ( this.compoundExpression.getExpression ( ) ,
+                  "mouse_bigstep" ) ;
         }
-        else if ( this.compoundExpression.getParent ( ).getParent ( )
-            .getParent ( ).getParent ( ).getParent ( ).getParent ( ) instanceof TypeCheckerView )
+        // TypeCheckerView
+        else if ( this.view instanceof TypeCheckerView )
         {
-          TypeCheckerView view = ( TypeCheckerView ) this.compoundExpression
-              .getParent ( ).getParent ( ).getParent ( ).getParent ( )
-              .getParent ( ).getParent ( ) ;
-          view.getAbstractSyntaxTree ( ).setExpression (
-              this.compoundExpression.getExpression ( ) , "mouse_typechecker" ) ;
+          ( ( TypeCheckerView ) this.view ).getAbstractSyntaxTree ( )
+              .loadNewExpression ( this.compoundExpression.getExpression ( ) ,
+                  "mouse_typechecker" ) ;
         }
       }
     }
@@ -158,9 +176,9 @@ public class ASTMouseListener implements MouseListener
 
 
   /**
-   * TODO
+   * Mouse is clicked on the component, which listens on mouse events.
    * 
-   * @param pMouseEvent
+   * @param pMouseEvent The mouse event.
    * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
    */
   public void mouseClicked ( @ SuppressWarnings ( "unused" )
@@ -171,9 +189,9 @@ public class ASTMouseListener implements MouseListener
 
 
   /**
-   * TODO
+   * Mouse entered the component, which listens on mouse events.
    * 
-   * @param pMouseEvent
+   * @param pMouseEvent The mouse event.
    * @see java.awt.event.MouseListener#mouseEntered(java.awt.event.MouseEvent)
    */
   public void mouseEntered ( @ SuppressWarnings ( "unused" )
@@ -184,9 +202,9 @@ public class ASTMouseListener implements MouseListener
 
 
   /**
-   * TODO
+   * Mouse exited the component, which listens on mouse events.
    * 
-   * @param pMouseEvent
+   * @param pMouseEvent The mouse event.
    * @see java.awt.event.MouseListener#mouseExited(java.awt.event.MouseEvent)
    */
   public void mouseExited ( @ SuppressWarnings ( "unused" )
@@ -197,9 +215,9 @@ public class ASTMouseListener implements MouseListener
 
 
   /**
-   * TODO
+   * Mouse is pressed on the component, which listens on mouse events.
    * 
-   * @param pMouseEvent
+   * @param pMouseEvent The mouse event.
    * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
    */
   public void mousePressed ( MouseEvent pMouseEvent )
@@ -209,9 +227,9 @@ public class ASTMouseListener implements MouseListener
 
 
   /**
-   * TODO
+   * Mouse is released on the component, which listens on mouse events.
    * 
-   * @param pMouseEvent
+   * @param pMouseEvent The mouse event.
    * @see java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
    */
   public void mouseReleased ( MouseEvent pMouseEvent )
@@ -221,34 +239,29 @@ public class ASTMouseListener implements MouseListener
 
 
   /**
-   * TODO
+   * Sets the status of the menu items in the popup menu in the
+   * AbstractSyntaxTree.
    */
-  public void setStatus ( )
+  private void setStatus ( )
   {
     TreePath treePath = this.aSTUI.getJTreeAbstractSyntaxTree ( )
         .getSelectionPath ( ) ;
     if ( treePath == null )
     {
+      // No node is selected.
       return ;
     }
     DefaultMutableTreeNode selectedNode = ( DefaultMutableTreeNode ) treePath
         .getLastPathComponent ( ) ;
     this.aSTUI.getJMenuItemExpand ( ).setEnabled ( true ) ;
-    this.aSTUI.getJButtonExpand ( ).setEnabled ( true ) ;
     this.aSTUI.getJMenuItemExpandAll ( ).setEnabled ( true ) ;
-    this.aSTUI.getJButtonExpandAll ( ).setEnabled ( true ) ;
     this.aSTUI.getJMenuItemCollapse ( ).setEnabled ( true ) ;
-    this.aSTUI.getJButtonCollapse ( ).setEnabled ( true ) ;
     this.aSTUI.getJMenuItemCollapseAll ( ).setEnabled ( true ) ;
-    this.aSTUI.getJButtonCollapseAll ( ).setEnabled ( true ) ;
     this.aSTUI.getJMenuItemClose ( ).setEnabled ( true ) ;
-    this.aSTUI.getJButtonClose ( ).setEnabled ( true ) ;
     this.aSTUI.getJMenuItemCloseAll ( ).setEnabled ( true ) ;
-    this.aSTUI.getJButtonCloseAll ( ).setEnabled ( true ) ;
     boolean allVisible = allChildrenVisible ( this.aSTUI
         .getJTreeAbstractSyntaxTree ( ).getPathForRow ( 0 ) ) ;
     this.aSTUI.getJMenuItemExpandAll ( ).setEnabled ( ! allVisible ) ;
-    this.aSTUI.getJButtonExpandAll ( ).setEnabled ( ! allVisible ) ;
     // Selected node is not a leaf
     if ( selectedNode.getChildCount ( ) > 0 )
     {
@@ -261,32 +274,22 @@ public class ASTMouseListener implements MouseListener
               this.aSTUI.getJTreeAbstractSyntaxTree ( ).getPathForRow ( 0 )
                   .pathByAddingChild ( selectedNode.getChildAt ( 0 ) ) ) ;
       this.aSTUI.getJMenuItemExpand ( ).setEnabled ( ! allChildrenVisible ) ;
-      this.aSTUI.getJButtonExpand ( ).setEnabled ( ! allChildrenVisible ) ;
       this.aSTUI.getJMenuItemCollapse ( ).setEnabled ( selectedChildVisible ) ;
-      this.aSTUI.getJButtonCollapse ( ).setEnabled ( selectedChildVisible ) ;
       this.aSTUI.getJMenuItemCollapseAll ( ).setEnabled ( rootChildVisible ) ;
-      this.aSTUI.getJButtonCollapseAll ( ).setEnabled ( rootChildVisible ) ;
       this.aSTUI.getJMenuItemClose ( ).setEnabled ( selectedChildVisible ) ;
-      this.aSTUI.getJButtonClose ( ).setEnabled ( selectedChildVisible ) ;
       this.aSTUI.getJMenuItemCloseAll ( ).setEnabled ( rootChildVisible ) ;
-      this.aSTUI.getJButtonCloseAll ( ).setEnabled ( rootChildVisible ) ;
     }
     // Selected node is a leaf
     else
     {
       this.aSTUI.getJMenuItemExpand ( ).setEnabled ( false ) ;
-      this.aSTUI.getJButtonExpand ( ).setEnabled ( false ) ;
       this.aSTUI.getJMenuItemCollapse ( ).setEnabled ( false ) ;
-      this.aSTUI.getJButtonCollapse ( ).setEnabled ( false ) ;
       this.aSTUI.getJMenuItemClose ( ).setEnabled ( false ) ;
-      this.aSTUI.getJButtonClose ( ).setEnabled ( false ) ;
-      // If the root is the only node, disable buttons
+      // If the root is the only node, disable items
       DefaultMutableTreeNode root = ( DefaultMutableTreeNode ) this.aSTUI
           .getTreeModel ( ).getRoot ( ) ;
       this.aSTUI.getJMenuItemCloseAll ( ).setEnabled ( ! root.isLeaf ( ) ) ;
-      this.aSTUI.getJButtonCloseAll ( ).setEnabled ( ! root.isLeaf ( ) ) ;
       this.aSTUI.getJMenuItemCollapseAll ( ).setEnabled ( ! root.isLeaf ( ) ) ;
-      this.aSTUI.getJButtonCollapseAll ( ).setEnabled ( ! root.isLeaf ( ) ) ;
     }
   }
 }

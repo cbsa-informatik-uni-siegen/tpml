@@ -14,7 +14,8 @@ import de.unisiegen.tpml.core.ProofGuessException ;
 import de.unisiegen.tpml.core.smallstep.SmallStepProofModel ;
 import de.unisiegen.tpml.graphics.AbstractProofView ;
 import de.unisiegen.tpml.ui.abstractsyntaxtree.AbstractSyntaxTree ;
-import de.unisiegen.tpml.ui.abstractsyntaxtree.listener.ASTSplitPaneListener ;
+import de.unisiegen.tpml.ui.abstractsyntaxtree.listener.ASTComponentListener ;
+import de.unisiegen.tpml.ui.abstractsyntaxtree.listener.ASTPropertyChangeListener ;
 import de.unisiegen.tpml.ui.abstractsyntaxtree.listener.ASTTreeModelListener ;
 
 
@@ -84,8 +85,8 @@ public class SmallStepView extends AbstractProofView
       throw new NullPointerException ( "model is null" ) ;
     }
     this.abstractSyntaxTree = new AbstractSyntaxTree ( ) ;
-    this.abstractSyntaxTree.setExpression ( model.getRoot ( ).getLastLeaf ( )
-        .getExpression ( ) , "first_smallstep" ) ;
+    this.abstractSyntaxTree.loadNewExpression ( model.getRoot ( )
+        .getLastLeaf ( ).getExpression ( ) , "first_smallstep" ) ;
     model.addTreeModelListener ( new ASTTreeModelListener (
         this.abstractSyntaxTree , model ) ) ;
     GridBagConstraints gridBagConstraints = new GridBagConstraints ( ) ;
@@ -119,9 +120,9 @@ public class SmallStepView extends AbstractProofView
     gridBagConstraints.weightx = 10 ;
     gridBagConstraints.weighty = 10 ;
     this.add ( this.jSplitPane , gridBagConstraints ) ;
-    this.addPropertyChangeListener ( new ASTSplitPaneListener (
+    this.addPropertyChangeListener ( new ASTPropertyChangeListener (
         this.jSplitPane , this.abstractSyntaxTree ) ) ;
-    jMainPanel.addComponentListener ( new ASTSplitPaneListener (
+    jMainPanel.addComponentListener ( new ASTComponentListener (
         this.jSplitPane , this.abstractSyntaxTree ) ) ;
   }
 

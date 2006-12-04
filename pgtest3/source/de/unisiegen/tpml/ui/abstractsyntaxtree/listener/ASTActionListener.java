@@ -9,7 +9,8 @@ import de.unisiegen.tpml.ui.abstractsyntaxtree.ASTUI ;
 
 
 /**
- * TODO
+ * This class listens for action events. It implements the methods for closing,
+ * collapsing and expanding the current node and all nodes.
  * 
  * @author Christian Fehler
  * @version $Rev$
@@ -17,15 +18,15 @@ import de.unisiegen.tpml.ui.abstractsyntaxtree.ASTUI ;
 public class ASTActionListener implements ActionListener
 {
   /**
-   * TODO
+   * The AbstractSyntaxTree UI.
    */
   private ASTUI aSTUI ;
 
 
   /**
-   * TODO
+   * Initializes the ASTActionListener.
    * 
-   * @param pASTUI
+   * @param pASTUI The AbstractSyntaxTree UI.
    */
   public ASTActionListener ( ASTUI pASTUI )
   {
@@ -34,9 +35,9 @@ public class ASTActionListener implements ActionListener
 
 
   /**
-   * TODO
+   * This method is invoked if a menu item is pushed.
    * 
-   * @param pActionEvent
+   * @param pActionEvent The action event
    * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
    */
   public void actionPerformed ( ActionEvent pActionEvent )
@@ -45,32 +46,26 @@ public class ASTActionListener implements ActionListener
     if ( actionCommand.equals ( "close" ) )
     {
       close ( ) ;
-      this.aSTUI.getASTMouseListener ( ).setStatus ( ) ;
     }
     else if ( actionCommand.equals ( "closeAll" ) )
     {
       closeAll ( ) ;
-      this.aSTUI.getASTMouseListener ( ).setStatus ( ) ;
     }
     else if ( actionCommand.equals ( "expand" ) )
     {
       expand ( ) ;
-      this.aSTUI.getASTMouseListener ( ).setStatus ( ) ;
     }
     else if ( actionCommand.equals ( "expandAll" ) )
     {
       expandAll ( ) ;
-      this.aSTUI.getASTMouseListener ( ).setStatus ( ) ;
     }
     else if ( actionCommand.equals ( "collapse" ) )
     {
       collapse ( ) ;
-      this.aSTUI.getASTMouseListener ( ).setStatus ( ) ;
     }
     else if ( actionCommand.equals ( "collapseAll" ) )
     {
       collapseAll ( ) ;
-      this.aSTUI.getASTMouseListener ( ).setStatus ( ) ;
     }
     else if ( actionCommand.equals ( "selection" ) )
     {
@@ -103,7 +98,7 @@ public class ASTActionListener implements ActionListener
 
 
   /**
-   * TODO
+   * Closes the selected node.
    */
   public void close ( )
   {
@@ -121,7 +116,7 @@ public class ASTActionListener implements ActionListener
 
 
   /**
-   * TODO
+   * Closes all nodes.
    */
   public void closeAll ( )
   {
@@ -133,7 +128,7 @@ public class ASTActionListener implements ActionListener
 
 
   /**
-   * TODO
+   * Collapses the selected node.
    */
   public void collapse ( )
   {
@@ -149,7 +144,7 @@ public class ASTActionListener implements ActionListener
 
 
   /**
-   * TODO
+   * Collapses all nodes.
    */
   public void collapseAll ( )
   {
@@ -158,7 +153,7 @@ public class ASTActionListener implements ActionListener
 
 
   /**
-   * TODO
+   * Expands the selected node.
    */
   public void expand ( )
   {
@@ -168,7 +163,7 @@ public class ASTActionListener implements ActionListener
 
 
   /**
-   * TODO
+   * Expands all nodes.
    */
   public void expandAll ( )
   {
@@ -182,9 +177,9 @@ public class ASTActionListener implements ActionListener
 
 
   /**
-   * TODO
+   * This method expands the given TreePath.
    * 
-   * @param pTreePath
+   * @param pTreePath The TreePath, which should be expand.
    */
   private void expandTreePath ( TreePath pTreePath )
   {

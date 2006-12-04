@@ -35,27 +35,9 @@ public class ASTNode
 
 
   /**
-   * String, placed before the description in the nodes.
-   */
-  private static final String BEFORE_DESCRIPTION = "" ;
-
-
-  /**
-   * String, placed after the description in the nodes.
-   */
-  private static final String AFTER_DESCRIPTION = "" ;
-
-
-  /**
-   * String, placed between the description and the name in the nodes.
-   */
-  private static final String BETWEEN = "&nbsp;&nbsp;&nbsp;&nbsp;" ;
-
-
-  /**
    * String, placed before the name in the nodes.
    */
-  private static final String BEFORE_NAME = "[&nbsp;" ;
+  private static final String BEFORE_NAME = "&nbsp;&nbsp;&nbsp;&nbsp;[&nbsp;" ;
 
 
   /**
@@ -200,13 +182,17 @@ public class ASTNode
 
 
   /**
-   * TODO
+   * The start index of the Identifier.
+   * 
+   * @see #getEndIndex()
    */
   private int startIndex ;
 
 
   /**
-   * TODO
+   * The end index of the Identifier.
+   * 
+   * @see #getStartIndex()
    */
   private int endIndex ;
 
@@ -224,7 +210,7 @@ public class ASTNode
 
 
   /**
-   * This method initializes the values and loads the description.
+   * This constructor initializes the values and loads the description.
    * 
    * @param pExpression The expression repressented by this node.
    * @param pASTUnbound The ASTUnbound which repressents the unbound Identifiers
@@ -259,12 +245,12 @@ public class ASTNode
 
 
   /**
-   * This method initializes the values and loads the description.
+   * This constructor initializes the values and loads the description.
    * 
    * @param pDescription The description of this node.
    * @param pExpressionString The expression as a string.
-   * @param pStartIndex TODO
-   * @param pEndIndex TODO
+   * @param pStartIndex The start index of the Identifier.
+   * @param pEndIndex The end index of the Identifier.
    * @param pASTBinding The bindings in this node.
    * @param pASTUnbound The ASTUnbound which repressents the unbound Identifiers
    *          in all nodes
@@ -318,10 +304,7 @@ public class ASTNode
     if ( this.expression == null )
     {
       StringBuffer result = new StringBuffer ( "<html>" ) ;
-      result.append ( BEFORE_DESCRIPTION ) ;
       result.append ( this.description ) ;
-      result.append ( AFTER_DESCRIPTION ) ;
-      result.append ( BETWEEN ) ;
       result.append ( BEFORE_NAME ) ;
       result.append ( "<font color=\"#"
           + getHTMLFormat ( Theme.currentTheme ( ).getExpressionColor ( ) )
@@ -332,7 +315,7 @@ public class ASTNode
             + getHTMLFormat ( Theme.currentTheme ( ).getSelectionColor ( ) )
             + "\">" ) ;
       }
-      result.append ( this.expressionString ) ;
+      result.append ( getHTMLCode ( this.expressionString ) ) ;
       if ( selection )
       {
         result.append ( "</font></b>" ) ;
@@ -364,9 +347,10 @@ public class ASTNode
 
 
   /**
-   * TODO
+   * Returns the end index of the Identifier.
    * 
-   * @return TODO
+   * @return The end index of the Identifier.
+   * @see #endIndex
    */
   public int getEndIndex ( )
   {
@@ -418,6 +402,45 @@ public class ASTNode
 
 
   /**
+   * Returns the HTML code of the given character.
+   * 
+   * @param pChar The character.
+   * @return The HTML code of the given character.
+   */
+  private String getHTMLCode ( char pChar )
+  {
+    if ( pChar == '&' )
+    {
+      return "&amp" ;
+    }
+    if ( pChar == '<' )
+    {
+      return "&lt" ;
+    }
+    if ( pChar == '>' )
+    {
+      return "&gt" ;
+    }
+    return String.valueOf ( pChar ) ;
+  }
+
+
+  /**
+   * Returns the replaced string.
+   * 
+   * @param pText Input string.
+   * @return The replaced string.
+   */
+  private String getHTMLCode ( String pText )
+  {
+    String s = pText.replaceAll ( "&" , "&amp" ) ;
+    s = s.replaceAll ( "<" , "&lt" ) ;
+    s = s.replaceAll ( ">" , "&gt" ) ;
+    return s ;
+  }
+
+
+  /**
    * Returns the color in HTML formatting.
    * 
    * @param pColor The Color which should be returned.
@@ -431,9 +454,10 @@ public class ASTNode
 
 
   /**
-   * TODO
+   * Returns the start index of the Identifier.
    * 
-   * @return TODO
+   * @return The start index of the Identifier.
+   * @see #startIndex
    */
   public int getStartIndex ( )
   {
@@ -498,7 +522,9 @@ public class ASTNode
       }
       catch ( IllegalArgumentException e )
       {
-        // Happens if the unbound Identifiers are not placed in this node.
+        /*
+         * Happens if the unbound Identifiers are not placed in this node.
+         */
       }
     }
     return false ;
@@ -513,15 +539,12 @@ public class ASTNode
     if ( this.expression == null )
     {
       StringBuffer result = new StringBuffer ( "<html>" ) ;
-      result.append ( BEFORE_DESCRIPTION ) ;
       result.append ( this.description ) ;
-      result.append ( AFTER_DESCRIPTION ) ;
-      result.append ( BETWEEN ) ;
       result.append ( BEFORE_NAME ) ;
       result.append ( "<font color=\"#"
           + getHTMLFormat ( Theme.currentTheme ( ).getExpressionColor ( ) )
           + "\">" ) ;
-      result.append ( this.expressionString ) ;
+      result.append ( getHTMLCode ( this.expressionString ) ) ;
       result.append ( "</font>" ) ;
       result.append ( AFTER_NAME ) ;
       result.append ( "</html>" ) ;
@@ -574,7 +597,7 @@ public class ASTNode
 
 
   /**
-   * Updates the caption of the node. This methode checks each character of the
+   * Updates the caption of the node. This method checks each character of the
    * name, if it is a keyword, a constant, a binding, selected or normal.
    * 
    * @param pSelectionStart The start offset of the selection in this node.
@@ -606,32 +629,18 @@ public class ASTNode
     StringBuffer result = new StringBuffer ( ) ;
     // Build the first part of the node caption
     result.append ( "<html>" ) ;
-    result.append ( BEFORE_DESCRIPTION ) ;
     result.append ( this.description ) ;
-    result.append ( AFTER_DESCRIPTION ) ;
-    result.append ( BETWEEN ) ;
     result.append ( BEFORE_NAME ) ;
     result.append ( "<font color=\"#" + expressionColor + "\">" ) ;
     // Set the position to the first character
-    prettyCharIterator.first ( ) ;
+    // prettyCharIterator.first ( ) ;
     int charIndex = 0 ;
     while ( charIndex < this.expressionString.length ( ) )
     {
       // Selection
-      if ( ( selection || binding ) && ( charIndex == pSelectionStart ) )
+      if ( ( selection ) && ( charIndex == pSelectionStart ) )
       {
-        /*
-         * Highlight Identifier in bindingColor, if selection is deactivated.
-         * Otherwise in selectionColor.
-         */
-        if ( ( ! selection ) && ( binding ) )
-        {
-          result.append ( "<b><font color=\"#" + bindingColor + "\">" ) ;
-        }
-        else
-        {
-          result.append ( "<b><font color=\"#" + selectionColor + "\">" ) ;
-        }
+        result.append ( "<b><font color=\"#" + selectionColor + "\">" ) ;
         // Replace selected Expression
         if ( replace && this.replaceInThisNode )
         {
@@ -642,7 +651,8 @@ public class ASTNode
           // Do not replace selected Expression
           if ( ! ( replace && this.replaceInThisNode ) )
           {
-            result.append ( this.expressionString.charAt ( charIndex ) ) ;
+            result.append ( getHTMLCode ( this.expressionString
+                .charAt ( charIndex ) ) ) ;
           }
           // Next character
           charIndex ++ ;
@@ -673,7 +683,8 @@ public class ASTNode
         result.append ( "<b><font color=\"#" + bindingColor + "\">" ) ;
         while ( isBinding ( pIdentifierIndex , charIndex ) )
         {
-          result.append ( this.expressionString.charAt ( charIndex ) ) ;
+          result.append ( getHTMLCode ( this.expressionString
+              .charAt ( charIndex ) ) ) ;
           // Next character
           charIndex ++ ;
           prettyCharIterator.next ( ) ;
@@ -687,7 +698,8 @@ public class ASTNode
         result.append ( "<b><font color=\"#" + unboundColor + "\">" ) ;
         while ( isUnbound ( charIndex ) )
         {
-          result.append ( this.expressionString.charAt ( charIndex ) ) ;
+          result.append ( getHTMLCode ( this.expressionString
+              .charAt ( charIndex ) ) ) ;
           // Next character
           charIndex ++ ;
           prettyCharIterator.next ( ) ;
@@ -700,7 +712,8 @@ public class ASTNode
         result.append ( "<b><font color=\"#" + keywordColor + "\">" ) ;
         while ( prettyCharIterator.getStyle ( ) == PrettyStyle.KEYWORD )
         {
-          result.append ( this.expressionString.charAt ( charIndex ) ) ;
+          result.append ( getHTMLCode ( this.expressionString
+              .charAt ( charIndex ) ) ) ;
           // Next character
           charIndex ++ ;
           prettyCharIterator.next ( ) ;
@@ -713,7 +726,8 @@ public class ASTNode
         result.append ( "<b><font color=\"#" + constantColor + "\">" ) ;
         while ( prettyCharIterator.getStyle ( ) == PrettyStyle.CONSTANT )
         {
-          result.append ( this.expressionString.charAt ( charIndex ) ) ;
+          result.append ( getHTMLCode ( this.expressionString
+              .charAt ( charIndex ) ) ) ;
           // Next character
           charIndex ++ ;
           prettyCharIterator.next ( ) ;
@@ -726,7 +740,8 @@ public class ASTNode
         result.append ( "<b><font color=\"#" + typeColor + "\">" ) ;
         while ( prettyCharIterator.getStyle ( ) == PrettyStyle.TYPE )
         {
-          result.append ( this.expressionString.charAt ( charIndex ) ) ;
+          result.append ( getHTMLCode ( this.expressionString
+              .charAt ( charIndex ) ) ) ;
           // Next character
           charIndex ++ ;
           prettyCharIterator.next ( ) ;
@@ -736,7 +751,8 @@ public class ASTNode
       // Normal Character
       else
       {
-        result.append ( this.expressionString.charAt ( charIndex ) ) ;
+        result
+            .append ( getHTMLCode ( this.expressionString.charAt ( charIndex ) ) ) ;
         // Next character
         charIndex ++ ;
         prettyCharIterator.next ( ) ;

@@ -16,7 +16,7 @@ import de.unisiegen.tpml.core.expressions.Recursion ;
 
 
 /**
- * TODO
+ * Finds the unbound Identifiers in a given Expression.
  * 
  * @author Christian Fehler
  * @version $Rev$
@@ -24,28 +24,29 @@ import de.unisiegen.tpml.core.expressions.Recursion ;
 public class ASTUnbound
 {
   /**
-   * TODO
+   * The list of unbound Identifiers in the Expression.
    */
-  private ArrayList < Expression > unboundList ;
+  private ArrayList < Identifier > unboundList ;
 
 
   /**
-   * TODO
+   * Initilizes the lists and finds the unbound Identifiers.
    * 
-   * @param pExpression
+   * @param pExpression The input Expression.
    */
   public ASTUnbound ( Expression pExpression )
   {
-    this.unboundList = new ArrayList < Expression > ( ) ;
-    this.unboundList = findUnbound ( pExpression ) ;
+    this.unboundList = new ArrayList < Identifier > ( ) ;
+    ArrayList < String > bounded = new ArrayList < String > ( ) ;
+    find ( this.unboundList , bounded , pExpression ) ;
   }
 
 
   /**
-   * TODO
+   * Makes a copy of a ArrayList.
    * 
-   * @param pList
-   * @return TODO
+   * @param pList Input ArrayList.
+   * @return The copy of the list.
    */
   private ArrayList < String > copyList ( ArrayList < String > pList )
   {
@@ -59,160 +60,145 @@ public class ASTUnbound
 
 
   /**
-   * TODO
+   * Finds the unbounded Identifiers in the given Expression.
    * 
-   * @param pExpression
-   * @return TODO
+   * @param pResult The list of the unbounded Identifiers.
+   * @param pBounded The list of bounded Identifiers.
+   * @param pExpression The input Expression.
    */
-  public ArrayList < Expression > findUnbound ( Expression pExpression )
+  private void find ( ArrayList < Identifier > pResult ,
+      ArrayList < String > pBounded , Expression pExpression )
   {
-    ArrayList < Expression > result = new ArrayList < Expression > ( ) ;
-    ArrayList < String > unbound = new ArrayList < String > ( ) ;
-    findUnbound ( result , unbound , pExpression ) ;
-    return result ;
-  }
-
-
-  /**
-   * TODO
-   * 
-   * @param pResult
-   * @param pUnbound
-   * @param pExpression
-   */
-  private void findUnbound ( ArrayList < Expression > pResult ,
-      ArrayList < String > pUnbound , Expression pExpression )
-  {
-    if ( pExpression.free ( ).size ( ) == 0 )
-    {
-      return ;
-    }
+    /*
+     * if ( pExpression.free ( ).size ( ) == 0 ) { return ; }
+     */
     if ( ( pExpression instanceof Identifier )
-        && ( ! pUnbound.contains ( ( ( Identifier ) pExpression ).getName ( ) ) ) )
+        && ( ! pBounded.contains ( ( ( Identifier ) pExpression ).getName ( ) ) ) )
     {
-      pResult.add ( pExpression ) ;
+      pResult.add ( ( Identifier ) pExpression ) ;
       return ;
     }
     if ( pExpression instanceof CurriedLetRec )
     {
       CurriedLetRec curriedLetRec = ( CurriedLetRec ) pExpression ;
-      ArrayList < String > unbound1 = copyList ( pUnbound ) ;
-      ArrayList < String > unbound2 = copyList ( pUnbound ) ;
+      ArrayList < String > unbound1 = copyList ( pBounded ) ;
+      ArrayList < String > unbound2 = copyList ( pBounded ) ;
       // New bindings in E1, Identifier 0 to n
       for ( int i = 0 ; i < curriedLetRec.getIdentifiers ( ).length ; i ++ )
       {
         unbound1.add ( curriedLetRec.getIdentifiers ( i ) ) ;
       }
-      findUnbound ( pResult , unbound1 , curriedLetRec.getE1 ( ) ) ;
+      find ( pResult , unbound1 , curriedLetRec.getE1 ( ) ) ;
       // New bindings in E2, Identifier 0
       unbound2.add ( curriedLetRec.getIdentifiers ( 0 ) ) ;
-      findUnbound ( pResult , unbound2 , curriedLetRec.getE2 ( ) ) ;
+      find ( pResult , unbound2 , curriedLetRec.getE2 ( ) ) ;
     }
     else if ( pExpression instanceof CurriedLet )
     {
       CurriedLet curriedLet = ( CurriedLet ) pExpression ;
-      ArrayList < String > unbound1 = copyList ( pUnbound ) ;
-      ArrayList < String > unbound2 = copyList ( pUnbound ) ;
+      ArrayList < String > unbound1 = copyList ( pBounded ) ;
+      ArrayList < String > unbound2 = copyList ( pBounded ) ;
       // New bindings in E1, Identifier 1 to n
       for ( int i = 1 ; i < curriedLet.getIdentifiers ( ).length ; i ++ )
       {
         unbound1.add ( curriedLet.getIdentifiers ( i ) ) ;
       }
-      findUnbound ( pResult , unbound1 , curriedLet.getE1 ( ) ) ;
+      find ( pResult , unbound1 , curriedLet.getE1 ( ) ) ;
       // New bindings in E2, Identifier 0
       unbound2.add ( curriedLet.getIdentifiers ( 0 ) ) ;
-      findUnbound ( pResult , unbound2 , curriedLet.getE2 ( ) ) ;
+      find ( pResult , unbound2 , curriedLet.getE2 ( ) ) ;
     }
     else if ( pExpression instanceof MultiLet )
     {
       MultiLet multiLet = ( MultiLet ) pExpression ;
-      ArrayList < String > unbound1 = copyList ( pUnbound ) ;
-      ArrayList < String > unbound2 = copyList ( pUnbound ) ;
+      ArrayList < String > unbound1 = copyList ( pBounded ) ;
+      ArrayList < String > unbound2 = copyList ( pBounded ) ;
       // No new binding in E1
-      findUnbound ( pResult , unbound1 , multiLet.getE1 ( ) ) ;
+      find ( pResult , unbound1 , multiLet.getE1 ( ) ) ;
       // New bindings in E2
       for ( int i = 0 ; i < multiLet.getIdentifiers ( ).length ; i ++ )
       {
         unbound2.add ( multiLet.getIdentifiers ( i ) ) ;
       }
-      findUnbound ( pResult , unbound2 , multiLet.getE2 ( ) ) ;
+      find ( pResult , unbound2 , multiLet.getE2 ( ) ) ;
     }
     else if ( pExpression instanceof MultiLambda )
     {
       MultiLambda multiLambda = ( MultiLambda ) pExpression ;
-      ArrayList < String > unbound = copyList ( pUnbound ) ;
+      ArrayList < String > unbound = copyList ( pBounded ) ;
       // New bindings in E
       for ( int i = 0 ; i < multiLambda.getIdentifiers ( ).length ; i ++ )
       {
         unbound.add ( multiLambda.getIdentifiers ( i ) ) ;
       }
-      findUnbound ( pResult , unbound , multiLambda.getE ( ) ) ;
+      find ( pResult , unbound , multiLambda.getE ( ) ) ;
     }
     else if ( pExpression instanceof LetRec )
     {
       LetRec letRec = ( LetRec ) pExpression ;
-      ArrayList < String > unbound1 = copyList ( pUnbound ) ;
-      ArrayList < String > unbound2 = copyList ( pUnbound ) ;
+      ArrayList < String > unbound1 = copyList ( pBounded ) ;
+      ArrayList < String > unbound2 = copyList ( pBounded ) ;
       // New binding in E1
       unbound1.add ( letRec.getId ( ) ) ;
-      findUnbound ( pResult , unbound1 , letRec.getE1 ( ) ) ;
+      find ( pResult , unbound1 , letRec.getE1 ( ) ) ;
       // New binding in E2
       unbound2.add ( letRec.getId ( ) ) ;
-      findUnbound ( pResult , unbound2 , letRec.getE2 ( ) ) ;
+      find ( pResult , unbound2 , letRec.getE2 ( ) ) ;
     }
     else if ( pExpression instanceof Let )
     {
       Let let = ( Let ) pExpression ;
-      ArrayList < String > unbound = copyList ( pUnbound ) ;
+      ArrayList < String > unbound = copyList ( pBounded ) ;
       // No new binding in E1
-      findUnbound ( pResult , pUnbound , let.getE1 ( ) ) ;
+      find ( pResult , pBounded , let.getE1 ( ) ) ;
       // New binding in E2
       unbound.add ( let.getId ( ) ) ;
-      findUnbound ( pResult , unbound , let.getE2 ( ) ) ;
+      find ( pResult , unbound , let.getE2 ( ) ) ;
     }
     else if ( pExpression instanceof Lambda )
     {
       Lambda lambda = ( Lambda ) pExpression ;
-      ArrayList < String > unbound = copyList ( pUnbound ) ;
+      ArrayList < String > unbound = copyList ( pBounded ) ;
       // New binding in E
       unbound.add ( lambda.getId ( ) ) ;
-      findUnbound ( pResult , unbound , lambda.getE ( ) ) ;
+      find ( pResult , unbound , lambda.getE ( ) ) ;
     }
     else if ( pExpression instanceof Recursion )
     {
       Recursion recursion = ( Recursion ) pExpression ;
-      ArrayList < String > unbound = copyList ( pUnbound ) ;
+      ArrayList < String > unbound = copyList ( pBounded ) ;
       // New binding in E2
       unbound.add ( recursion.getId ( ) ) ;
-      findUnbound ( pResult , unbound , recursion.getE ( ) ) ;
+      find ( pResult , unbound , recursion.getE ( ) ) ;
     }
     else
     {
       Enumeration < Expression > children = pExpression.children ( ) ;
       while ( children.hasMoreElements ( ) )
       {
-        findUnbound ( pResult , pUnbound , children.nextElement ( ) ) ;
+        find ( pResult , pBounded , children.nextElement ( ) ) ;
       }
     }
   }
 
 
   /**
-   * TODO
+   * Returns the unbound Identifier in the Expression.
    * 
-   * @param pIndex
-   * @return TODO
+   * @param pIndex The index of the unbound Identifier.
+   * @return The unbound Identifier in the Expression.
    */
-  public Expression get ( int pIndex )
+  public Identifier get ( int pIndex )
   {
     return this.unboundList.get ( pIndex ) ;
   }
 
 
   /**
-   * TODO
+   * Returns the size of the list. The size is equal to the number of unbound
+   * Identifiers.
    * 
-   * @return TODO
+   * @return The number of unbound Identifiers.
    */
   public int size ( )
   {

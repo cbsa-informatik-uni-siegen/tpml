@@ -2,9 +2,11 @@ package de.unisiegen.tpml.ui.abstractsyntaxtree ;
 
 
 import java.lang.reflect.Method ;
+import java.util.ArrayList ;
 import java.util.Enumeration ;
 import javax.swing.tree.DefaultMutableTreeNode ;
 import de.unisiegen.tpml.Debug ;
+import de.unisiegen.tpml.Optimizer ;
 import de.unisiegen.tpml.core.expressions.BinaryOperator ;
 import de.unisiegen.tpml.core.expressions.CurriedLet ;
 import de.unisiegen.tpml.core.expressions.CurriedLetRec ;
@@ -18,11 +20,14 @@ import de.unisiegen.tpml.core.expressions.MultiLambda ;
 import de.unisiegen.tpml.core.expressions.MultiLet ;
 import de.unisiegen.tpml.core.expressions.Recursion ;
 import de.unisiegen.tpml.ui.abstractsyntaxtree.binding.ASTBinding ;
+import de.unisiegen.tpml.ui.abstractsyntaxtree.binding.ASTIdentifier ;
+import de.unisiegen.tpml.ui.abstractsyntaxtree.binding.ASTPair ;
 import de.unisiegen.tpml.ui.abstractsyntaxtree.binding.ASTUnbound ;
 
 
 /**
- * TODO
+ * This class is the main class of the AbstractSyntaxTree. It loads the
+ * preferences, creates the GUI and loads new Expressions.
  * 
  * @author Christian Fehler
  * @version $Rev$
@@ -30,55 +35,55 @@ import de.unisiegen.tpml.ui.abstractsyntaxtree.binding.ASTUnbound ;
 public class AbstractSyntaxTree
 {
   /**
-   * TODO
+   * String, between the description of the parent node, like e1, and the
+   * description of the current node, like Identifier.
    */
-  private static final String BEFORE = "" ;
+  private static final String BETWEEN = "  -  " ;
 
 
   /**
-   * TODO
+   * Indicates, that an Expression has only one child.
    */
-  private static final String AFTER = "  -  " ;
+  private static final int ONLY_ONE_CHILD = - 1 ;
 
 
   /**
-   * TODO
-   */
-  private static final int ONLY_ONE_EXPRESSION = - 1 ;
-
-
-  /**
-   * TODO
+   * Caption of the Identifiers.
    */
   private static final String IDENTIFIER = "Identifier" ;
 
 
   /**
-   * TODO
+   * The AbstractSyntaxTree UI.
+   * 
+   * @see #getASTUI()
    */
   private ASTUI aSTUI ;
 
 
   /**
-   * TODO
+   * The AbstractSyntaxTree Preferences.
+   * 
+   * @see #getASTPreferences()
    */
   private ASTPreferences aSTPreferences ;
 
 
   /**
-   * TODO
+   * The old Expression to check if the Expression has changed.
    */
   private Expression oldExpression ;
 
 
   /**
-   * TODO
+   * The aSTUnbound, in which the unbound Identifiers in the given Expression
+   * are saved.
    */
   private ASTUnbound aSTUnbound ;
 
 
   /**
-   * TODO
+   * Initilizes the preferences and the AbstractSyntaxTree GUI.
    */
   public AbstractSyntaxTree ( )
   {
@@ -89,134 +94,114 @@ public class AbstractSyntaxTree
 
 
   /**
-   * TODO
+   * Creates the children with the given Expression and adds them to the given
+   * node.
    * 
-   * @param pExpression
-   * @param pNode
+   * @param pExpression The Expression, with which the children should be
+   *          created.
+   * @param pNode The node where the children should be added.
    */
   private void createChildren ( Expression pExpression ,
       DefaultMutableTreeNode pNode )
   {
     Enumeration < Expression > children = pExpression.children ( ) ;
-    int startIndex = minimumChildExpression ( pExpression ) ;
+    int childIndex = minimumChildIndex ( pExpression ) ;
     Expression child ;
     DefaultMutableTreeNode treeNode ;
-    ASTNode node1 ;
+    ASTNode node ;
     while ( children.hasMoreElements ( ) )
     {
       child = children.nextElement ( ) ;
       treeNode = expression ( child ) ;
-      node1 = ( ASTNode ) treeNode.getUserObject ( ) ;
-      if ( startIndex == ONLY_ONE_EXPRESSION )
+      node = ( ASTNode ) treeNode.getUserObject ( ) ;
+      if ( childIndex == ONLY_ONE_CHILD )
       {
-        node1.appendDescription ( BEFORE + "e" + AFTER ) ;
+        node.appendDescription ( "e" + BETWEEN ) ;
       }
       else
       {
-        node1.appendDescription ( BEFORE + "e" + startIndex + AFTER ) ;
+        node.appendDescription ( "e" + childIndex + BETWEEN ) ;
       }
-      node1.resetCaption ( ) ;
+      node.resetCaption ( ) ;
       pNode.add ( treeNode ) ;
-      startIndex ++ ;
+      childIndex ++ ;
     }
   }
 
 
   /**
-   * TODO
+   * Returns the node, which represents the given CurriedLet.
    * 
-   * @param pExpression
-   * @return TODO
+   * @param pCurriedLet The input Expression.
+   * @return The node, which represents the given CurriedLet.
    */
-  private DefaultMutableTreeNode curriedLet ( CurriedLet pExpression )
+  private DefaultMutableTreeNode curriedLet ( CurriedLet pCurriedLet )
   {
-    String [ ] idList = pExpression.getIdentifiers ( ) ;
-    ASTBinding aSTBinding = new ASTBinding ( pExpression ) ;
-    aSTBinding.add ( pExpression.getE2 ( ) , pExpression.getIdentifiers ( 0 ) ) ;
-    for ( int i = 1 ; i < pExpression.getIdentifiers ( ).length ; i ++ )
+    String [ ] idList = pCurriedLet.getIdentifiers ( ) ;
+    ASTBinding aSTBinding = new ASTBinding ( pCurriedLet ) ;
+    aSTBinding.add ( pCurriedLet.getE2 ( ) , pCurriedLet.getIdentifiers ( 0 ) ) ;
+    for ( int i = 1 ; i < pCurriedLet.getIdentifiers ( ).length ; i ++ )
     {
       aSTBinding
-          .add ( pExpression.getE1 ( ) , pExpression.getIdentifiers ( i ) ) ;
+          .add ( pCurriedLet.getE1 ( ) , pCurriedLet.getIdentifiers ( i ) ) ;
     }
+    aSTBinding.find ( ) ;
     DefaultMutableTreeNode node = new DefaultMutableTreeNode ( new ASTNode (
-        pExpression , this.aSTUnbound ) ) ;
-    int lengthIdentifier = 0 ;
-    int start ;
-    int end ;
-    boolean hasType ;
-    for ( int i = 0 ; i < idList.length ; i ++ )
+        pCurriedLet , this.aSTUnbound ) ) ;
+    ArrayList < ASTPair > index = ASTIdentifier.getIndex ( pCurriedLet ) ;
+    ASTPair aSTPair ;
+    final int length = idList.length ;
+    for ( int i = 0 ; i < length ; i ++ )
     {
-      hasType = pExpression.getTypes ( i ) != null ;
-      start = lengthIdentifier + 4 + i ;
-      if ( ( hasType ) && ( i != 0 ) )
-      {
-        start ++ ;
-      }
-      end = start - 1 + idList [ i ].length ( ) ;
-      lengthIdentifier += idList [ i ].length ( ) ;
-      if ( ( hasType ) && ( i != 0 ) )
-      {
-        lengthIdentifier += 4 + pExpression.getTypes ( i ).toPrettyString ( )
-            .toString ( ).length ( ) ;
-      }
+      aSTPair = index.get ( i ) ;
       node.add ( new DefaultMutableTreeNode ( new ASTNode ( IDENTIFIER ,
-          idList [ i ] , start , end , aSTBinding , this.aSTUnbound ) ) ) ;
+          idList [ i ] , aSTPair.getStart ( ) , aSTPair.getEnd ( ) ,
+          aSTBinding , this.aSTUnbound ) ) ) ;
     }
-    createChildren ( pExpression , node ) ;
+    createChildren ( pCurriedLet , node ) ;
     return node ;
   }
 
 
   /**
-   * TODO
+   * Returns the node, which represents the given CurriedLetRec.
    * 
-   * @param pExpression
-   * @return TODO
+   * @param pCurriedLetRec The input Expression.
+   * @return The node, which represents the given CurriedLetRec.
    */
-  private DefaultMutableTreeNode curriedLetRec ( CurriedLetRec pExpression )
+  private DefaultMutableTreeNode curriedLetRec ( CurriedLetRec pCurriedLetRec )
   {
-    String [ ] idList = pExpression.getIdentifiers ( ) ;
-    ASTBinding aSTBinding = new ASTBinding ( pExpression ) ;
-    aSTBinding.add ( pExpression , pExpression.getIdentifiers ( 0 ) ) ;
-    for ( int i = 1 ; i < pExpression.getIdentifiers ( ).length ; i ++ )
+    String [ ] idList = pCurriedLetRec.getIdentifiers ( ) ;
+    ASTBinding aSTBinding = new ASTBinding ( pCurriedLetRec ) ;
+    aSTBinding.add ( pCurriedLetRec , pCurriedLetRec.getIdentifiers ( 0 ) ) ;
+    for ( int i = 1 ; i < pCurriedLetRec.getIdentifiers ( ).length ; i ++ )
     {
-      aSTBinding
-          .add ( pExpression.getE1 ( ) , pExpression.getIdentifiers ( i ) ) ;
+      aSTBinding.add ( pCurriedLetRec.getE1 ( ) , pCurriedLetRec
+          .getIdentifiers ( i ) ) ;
     }
+    aSTBinding.find ( ) ;
     DefaultMutableTreeNode node = new DefaultMutableTreeNode ( new ASTNode (
-        pExpression , this.aSTUnbound ) ) ;
-    int lengthIdentifier = 0 ;
-    int start ;
-    int end ;
-    boolean hasType ;
-    for ( int i = 0 ; i < idList.length ; i ++ )
+        pCurriedLetRec , this.aSTUnbound ) ) ;
+    ArrayList < ASTPair > index = ASTIdentifier.getIndex ( pCurriedLetRec ) ;
+    ASTPair aSTPair ;
+    final int length = idList.length ;
+    for ( int i = 0 ; i < length ; i ++ )
     {
-      hasType = pExpression.getTypes ( i ) != null ;
-      start = lengthIdentifier + 8 + i ;
-      if ( ( hasType ) && ( i != 0 ) )
-      {
-        start ++ ;
-      }
-      end = start - 1 + idList [ i ].length ( ) ;
-      lengthIdentifier += idList [ i ].length ( ) ;
-      if ( ( hasType ) && ( i != 0 ) )
-      {
-        lengthIdentifier += 4 + pExpression.getTypes ( i ).toPrettyString ( )
-            .toString ( ).length ( ) ;
-      }
+      aSTPair = index.get ( i ) ;
       node.add ( new DefaultMutableTreeNode ( new ASTNode ( IDENTIFIER ,
-          idList [ i ] , start , end , aSTBinding , this.aSTUnbound ) ) ) ;
+          idList [ i ] , aSTPair.getStart ( ) , aSTPair.getEnd ( ) ,
+          aSTBinding , this.aSTUnbound ) ) ) ;
     }
-    createChildren ( pExpression , node ) ;
+    createChildren ( pCurriedLetRec , node ) ;
     return node ;
   }
 
 
   /**
-   * TODO
+   * Returns the node, which represents the given Expression.
    * 
-   * @param pExpression
-   * @return TODO
+   * @param pExpression The input Expression.
+   * @return The node, which represents the given Expression.
    */
   private DefaultMutableTreeNode expression ( Expression pExpression )
   {
@@ -265,9 +250,10 @@ public class AbstractSyntaxTree
 
 
   /**
-   * TODO
+   * Returns the AbstractSyntaxTree Preferences.
    * 
-   * @return TODO
+   * @return The AbstractSyntaxTree Preferences.
+   * @see #aSTPreferences
    */
   public ASTPreferences getASTPreferences ( )
   {
@@ -276,9 +262,10 @@ public class AbstractSyntaxTree
 
 
   /**
-   * TODO
+   * Returns the AbstractSyntaxTree UI.
    * 
-   * @return TODO
+   * @return The AbstractSyntaxTree UI.
+   * @see #aSTUI
    */
   public ASTUI getASTUI ( )
   {
@@ -287,24 +274,28 @@ public class AbstractSyntaxTree
 
 
   /**
-   * TODO
+   * Returns the node, which represents the given InfixOperation.
    * 
-   * @param pExpression
-   * @return TODO
+   * @param pInfixOperation The input Expression.
+   * @return The node, which represents the given InfixOperation.
    */
-  private DefaultMutableTreeNode infixOperation ( InfixOperation pExpression )
+  private DefaultMutableTreeNode infixOperation ( InfixOperation pInfixOperation )
   {
-    Expression e1 = pExpression.getE1 ( ) ;
-    Expression e2 = pExpression.getE2 ( ) ;
-    BinaryOperator binary = pExpression.getOp ( ) ;
+    Expression e1 = pInfixOperation.getE1 ( ) ;
+    Expression e2 = pInfixOperation.getE2 ( ) ;
+    BinaryOperator binary = pInfixOperation.getOp ( ) ;
     DefaultMutableTreeNode node = new DefaultMutableTreeNode ( new ASTNode (
-        pExpression , this.aSTUnbound ) ) ;
+        pInfixOperation , this.aSTUnbound ) ) ;
     DefaultMutableTreeNode node0 = expression ( e1 ) ;
     ASTNode astNode0 = ( ASTNode ) node0.getUserObject ( ) ;
-    astNode0.appendDescription ( BEFORE + "e1" + AFTER ) ;
+    astNode0.appendDescription ( "e1" + BETWEEN ) ;
     astNode0.resetCaption ( ) ;
     node.add ( node0 ) ;
-    int start = pExpression.toPrettyString ( ).toString ( ).indexOf (
+    /*
+     * PrettyAnnotation prettyAnnotation = pExpression .toPrettyString (
+     * ).getAnnotationForPrintable ( binary ) ;
+     */
+    int start = pInfixOperation.toPrettyString ( ).toString ( ).indexOf (
         binary.toString ( ) , e1.toPrettyString ( ).toString ( ).length ( ) ) ;
     int end = start + binary.toString ( ).length ( ) - 1 ;
     DefaultMutableTreeNode node1 = new DefaultMutableTreeNode ( new ASTNode (
@@ -313,7 +304,7 @@ public class AbstractSyntaxTree
     node.add ( node1 ) ;
     DefaultMutableTreeNode ex2 = expression ( e2 ) ;
     ASTNode node2 = ( ASTNode ) ex2.getUserObject ( ) ;
-    node2.appendDescription ( BEFORE + "e2" + AFTER ) ;
+    node2.appendDescription ( "e2" + BETWEEN ) ;
     node2.resetCaption ( ) ;
     node.add ( ex2 ) ;
     return node ;
@@ -321,108 +312,112 @@ public class AbstractSyntaxTree
 
 
   /**
-   * TODO
+   * Returns the node, which represents the given Lambda.
    * 
-   * @param pExpression
-   * @return TODO
+   * @param pLambda The input Expression.
+   * @return The node, which represents the given Lambda.
    */
-  private DefaultMutableTreeNode lambda ( Lambda pExpression )
+  private DefaultMutableTreeNode lambda ( Lambda pLambda )
   {
     DefaultMutableTreeNode node = new DefaultMutableTreeNode ( new ASTNode (
-        pExpression , this.aSTUnbound ) ) ;
-    int start = 1 ;
-    int end = start - 1 + pExpression.getId ( ).length ( ) ;
-    ASTBinding aSTBinding = new ASTBinding ( pExpression ) ;
-    aSTBinding.add ( pExpression , pExpression.getId ( ) ) ;
-    node.add ( new DefaultMutableTreeNode ( new ASTNode ( IDENTIFIER ,
-        pExpression.getId ( ) , start , end , aSTBinding , this.aSTUnbound ) ) ) ;
-    createChildren ( pExpression , node ) ;
+        pLambda , this.aSTUnbound ) ) ;
+    ASTPair aSTPair = ASTIdentifier.getIndex ( pLambda ).get ( 0 ) ;
+    ASTBinding aSTBinding = new ASTBinding ( pLambda ) ;
+    aSTBinding.add ( pLambda , pLambda.getId ( ) ) ;
+    aSTBinding.find ( ) ;
+    node.add ( new DefaultMutableTreeNode ( new ASTNode ( IDENTIFIER , pLambda
+        .getId ( ) , aSTPair.getStart ( ) , aSTPair.getEnd ( ) , aSTBinding ,
+        this.aSTUnbound ) ) ) ;
+    createChildren ( pLambda , node ) ;
     return node ;
   }
 
 
   /**
-   * TODO
+   * Returns the node, which represents the given Let.
    * 
-   * @param pExpression
-   * @return TODO
+   * @param pLet The input Expression.
+   * @return The node, which represents the given Let.
    */
-  private DefaultMutableTreeNode let ( Let pExpression )
+  private DefaultMutableTreeNode let ( Let pLet )
   {
     DefaultMutableTreeNode node = new DefaultMutableTreeNode ( new ASTNode (
-        pExpression , this.aSTUnbound ) ) ;
-    int start = 4 ;
-    int end = start - 1 + pExpression.getId ( ).length ( ) ;
-    ASTBinding aSTBinding = new ASTBinding ( pExpression ) ;
-    aSTBinding.add ( pExpression.getE2 ( ) , pExpression.getId ( ) ) ;
-    node.add ( new DefaultMutableTreeNode ( new ASTNode ( IDENTIFIER ,
-        pExpression.getId ( ) , start , end , aSTBinding , this.aSTUnbound ) ) ) ;
-    createChildren ( pExpression , node ) ;
+        pLet , this.aSTUnbound ) ) ;
+    ASTPair aSTPair = ASTIdentifier.getIndex ( pLet ).get ( 0 ) ;
+    ASTBinding aSTBinding = new ASTBinding ( pLet ) ;
+    aSTBinding.add ( pLet.getE2 ( ) , pLet.getId ( ) ) ;
+    aSTBinding.find ( ) ;
+    node.add ( new DefaultMutableTreeNode ( new ASTNode ( IDENTIFIER , pLet
+        .getId ( ) , aSTPair.getStart ( ) , aSTPair.getEnd ( ) , aSTBinding ,
+        this.aSTUnbound ) ) ) ;
+    createChildren ( pLet , node ) ;
     return node ;
   }
 
 
   /**
-   * TODO
+   * Returns the node, which represents the given LetRec.
    * 
-   * @param pExpression
-   * @return TODO
+   * @param pLetRec The input Expression.
+   * @return The node, which represents the given LetRec.
    */
-  private DefaultMutableTreeNode letRec ( LetRec pExpression )
+  private DefaultMutableTreeNode letRec ( LetRec pLetRec )
   {
     DefaultMutableTreeNode node = new DefaultMutableTreeNode ( new ASTNode (
-        pExpression , this.aSTUnbound ) ) ;
-    int start = 8 ;
-    int end = start - 1 + pExpression.getId ( ).length ( ) ;
-    ASTBinding aSTBinding = new ASTBinding ( pExpression ) ;
-    aSTBinding.add ( pExpression , pExpression.getId ( ) ) ;
-    node.add ( new DefaultMutableTreeNode ( new ASTNode ( IDENTIFIER ,
-        pExpression.getId ( ) , start , end , aSTBinding , this.aSTUnbound ) ) ) ;
-    createChildren ( pExpression , node ) ;
+        pLetRec , this.aSTUnbound ) ) ;
+    ASTPair aSTPair = ASTIdentifier.getIndex ( pLetRec ).get ( 0 ) ;
+    ASTBinding aSTBinding = new ASTBinding ( pLetRec ) ;
+    aSTBinding.add ( pLetRec , pLetRec.getId ( ) ) ;
+    aSTBinding.find ( ) ;
+    node.add ( new DefaultMutableTreeNode ( new ASTNode ( IDENTIFIER , pLetRec
+        .getId ( ) , aSTPair.getStart ( ) , aSTPair.getEnd ( ) , aSTBinding ,
+        this.aSTUnbound ) ) ) ;
+    createChildren ( pLetRec , node ) ;
     return node ;
   }
 
 
   /**
-   * TODO
+   * Returns the node, which represents the given Location.
    * 
-   * @param pExpression
-   * @return TODO
+   * @param pLocation The input Expression.
+   * @return The node, which represents the given Location.
    */
-  private DefaultMutableTreeNode location ( Location pExpression )
+  private DefaultMutableTreeNode location ( Location pLocation )
   {
     DefaultMutableTreeNode node = new DefaultMutableTreeNode ( new ASTNode (
-        pExpression , this.aSTUnbound ) ) ;
+        pLocation , this.aSTUnbound ) ) ;
     int start = 0 ;
-    int end = start - 1 + pExpression.getName ( ).length ( ) ;
-    node.add ( new DefaultMutableTreeNode ( new ASTNode ( "Name" , pExpression
+    int end = start - 1 + pLocation.getName ( ).length ( ) ;
+    node.add ( new DefaultMutableTreeNode ( new ASTNode ( "Name" , pLocation
         .getName ( ) , start , end , null , this.aSTUnbound ) ) ) ;
     return node ;
   }
 
 
   /**
-   * TODO
+   * Returns the minimum child index. For example 0 if the Expression is an
+   * instance of Condition, or 1 if the Expression is an instance of Let.
    * 
-   * @param pExpression
-   * @return TODO
+   * @param pExpression The Expression to check for.
+   * @return The minimum child index.
    */
-  private int minimumChildExpression ( Expression pExpression )
+  private int minimumChildIndex ( Expression pExpression )
   {
-    int result = Integer.MAX_VALUE ;
+    int result = 10 ;
     for ( Method method : pExpression.getClass ( ).getMethods ( ) )
     {
+      if ( method.getName ( ).equals ( "getE" ) )
+      {
+        return ONLY_ONE_CHILD ;
+      }
       if ( method.getName ( ).matches ( "getE[0-9]{1}" ) )
       {
         result = Math.min ( result , Integer.parseInt ( String.valueOf ( method
             .getName ( ).charAt ( 4 ) ) ) ) ;
       }
-      if ( method.getName ( ).matches ( "getE" ) )
-      {
-        return ONLY_ONE_EXPRESSION ;
-      }
     }
-    if ( result == Integer.MAX_VALUE )
+    if ( result == 10 )
     {
       return 1 ;
     }
@@ -431,69 +426,74 @@ public class AbstractSyntaxTree
 
 
   /**
-   * TODO
+   * Returns the node, which represents the given MultiLambda.
    * 
-   * @param pExpression
-   * @return TODO
+   * @param pMultiLambda The input Expression.
+   * @return The node, which represents the given MultiLambda.
    */
-  private DefaultMutableTreeNode multiLambda ( MultiLambda pExpression )
+  private DefaultMutableTreeNode multiLambda ( MultiLambda pMultiLambda )
   {
-    ASTBinding aSTBinding = new ASTBinding ( pExpression ) ;
-    aSTBinding.add ( pExpression , pExpression.getIdentifiers ( ) ) ;
-    String idList[] = pExpression.getIdentifiers ( ) ;
-    DefaultMutableTreeNode node = new DefaultMutableTreeNode ( new ASTNode (
-        pExpression , this.aSTUnbound ) ) ;
-    int lengthIdentifier = 0 ;
-    int start ;
-    int end ;
-    for ( int i = 0 ; i < idList.length ; i ++ )
+    ASTBinding aSTBinding = new ASTBinding ( pMultiLambda ) ;
+    for ( String id : pMultiLambda.getIdentifiers ( ) )
     {
-      start = lengthIdentifier + 2 + ( i * 2 ) ;
-      end = start - 1 + idList [ i ].length ( ) ;
-      lengthIdentifier += idList [ i ].length ( ) ;
-      node.add ( new DefaultMutableTreeNode ( new ASTNode ( IDENTIFIER ,
-          idList [ i ] , start , end , aSTBinding , this.aSTUnbound ) ) ) ;
+      aSTBinding.add ( pMultiLambda.getE ( ) , id ) ;
     }
-    createChildren ( pExpression , node ) ;
-    return node ;
-  }
-
-
-  /**
-   * TODO
-   * 
-   * @param pExpression
-   * @return TODO
-   */
-  private DefaultMutableTreeNode multiLet ( MultiLet pExpression )
-  {
-    ASTBinding aSTBinding = new ASTBinding ( pExpression ) ;
-    aSTBinding.add ( pExpression.getE2 ( ) , pExpression.getIdentifiers ( ) ) ;
-    String [ ] idList = pExpression.getIdentifiers ( ) ;
+    aSTBinding.find ( ) ;
+    String idList[] = pMultiLambda.getIdentifiers ( ) ;
     DefaultMutableTreeNode node = new DefaultMutableTreeNode ( new ASTNode (
-        pExpression , this.aSTUnbound ) ) ;
-    int lengthIdentifier = 0 ;
-    int start ;
-    int end ;
+        pMultiLambda , this.aSTUnbound ) ) ;
+    ArrayList < ASTPair > index = ASTIdentifier.getIndex ( pMultiLambda ) ;
+    ASTPair aSTPair ;
     final int length = idList.length ;
     for ( int i = 0 ; i < length ; i ++ )
     {
-      start = lengthIdentifier + 5 + ( i * 2 ) ;
-      end = start - 1 + idList [ i ].length ( ) ;
-      lengthIdentifier += idList [ i ].length ( ) ;
+      aSTPair = index.get ( i ) ;
       node.add ( new DefaultMutableTreeNode ( new ASTNode ( IDENTIFIER ,
-          idList [ i ] , start , end , aSTBinding , this.aSTUnbound ) ) ) ;
+          idList [ i ] , aSTPair.getStart ( ) , aSTPair.getEnd ( ) ,
+          aSTBinding , this.aSTUnbound ) ) ) ;
     }
-    createChildren ( pExpression , node ) ;
+    createChildren ( pMultiLambda , node ) ;
     return node ;
   }
 
 
   /**
-   * TODO
+   * Returns the node, which represents the given MultiLet.
    * 
-   * @param pExpression
-   * @return TODO
+   * @param pMultiLet The input Expression.
+   * @return The node, which represents the given MultiLet.
+   */
+  private DefaultMutableTreeNode multiLet ( MultiLet pMultiLet )
+  {
+    ASTBinding aSTBinding = new ASTBinding ( pMultiLet ) ;
+    for ( String id : pMultiLet.getIdentifiers ( ) )
+    {
+      aSTBinding.add ( pMultiLet.getE2 ( ) , id ) ;
+    }
+    aSTBinding.find ( ) ;
+    String [ ] idList = pMultiLet.getIdentifiers ( ) ;
+    DefaultMutableTreeNode node = new DefaultMutableTreeNode ( new ASTNode (
+        pMultiLet , this.aSTUnbound ) ) ;
+    ArrayList < ASTPair > index = ASTIdentifier.getIndex ( pMultiLet ) ;
+    ASTPair aSTPair ;
+    final int length = idList.length ;
+    for ( int i = 0 ; i < length ; i ++ )
+    {
+      aSTPair = index.get ( i ) ;
+      node.add ( new DefaultMutableTreeNode ( new ASTNode ( IDENTIFIER ,
+          idList [ i ] , aSTPair.getStart ( ) , aSTPair.getEnd ( ) ,
+          aSTBinding , this.aSTUnbound ) ) ) ;
+    }
+    createChildren ( pMultiLet , node ) ;
+    return node ;
+  }
+
+
+  /**
+   * Returns the node, which represents the given Expression.
+   * 
+   * @param pExpression The input Expression.
+   * @return The node, which represents the given Expression.
    */
   private DefaultMutableTreeNode other ( Expression pExpression )
   {
@@ -505,34 +505,40 @@ public class AbstractSyntaxTree
 
 
   /**
-   * TODO
+   * Returns the node, which represents the given Recursion.
    * 
-   * @param pExpression
-   * @return TODO
+   * @param pRecursion The input Expression.
+   * @return The node, which represents the given Recursion.
    */
-  private DefaultMutableTreeNode recursion ( Recursion pExpression )
+  private DefaultMutableTreeNode recursion ( Recursion pRecursion )
   {
-    String id = pExpression.getId ( ) ;
+    String id = pRecursion.getId ( ) ;
     DefaultMutableTreeNode node = new DefaultMutableTreeNode ( new ASTNode (
-        pExpression , this.aSTUnbound ) ) ;
-    int start = 4 ;
-    int end = start - 1 + pExpression.getId ( ).length ( ) ;
-    ASTBinding aSTBinding = new ASTBinding ( pExpression ) ;
-    aSTBinding.add ( pExpression , pExpression.getId ( ) ) ;
+        pRecursion , this.aSTUnbound ) ) ;
+    ASTPair aSTPair = ASTIdentifier.getIndex ( pRecursion ).get ( 0 ) ;
+    ASTBinding aSTBinding = new ASTBinding ( pRecursion ) ;
+    aSTBinding.add ( pRecursion , pRecursion.getId ( ) ) ;
+    aSTBinding.find ( ) ;
     node.add ( new DefaultMutableTreeNode ( new ASTNode ( IDENTIFIER , id ,
-        start , end , aSTBinding , this.aSTUnbound ) ) ) ;
-    createChildren ( pExpression , node ) ;
+        aSTPair.getStart ( ) , aSTPair.getEnd ( ) , aSTBinding ,
+        this.aSTUnbound ) ) ) ;
+    createChildren ( pRecursion , node ) ;
     return node ;
   }
 
 
   /**
-   * TODO
+   * This method loads a new Expression into the AbstractSyntaxTree. It checks
+   * if the new Expression is different to the current loaded Expression, if not
+   * it does nothing and returns. It does also nothing if the auto update is
+   * disabled and the change does not come from a mouse event. In the BigStep
+   * and the TypeChecker view it does also nothing if the change does not come
+   * from a mouse event.
    * 
-   * @param pExpression
-   * @param pDescription
+   * @param pExpression The new Expression.
+   * @param pDescription The description who is calling this method.
    */
-  public void setExpression ( Expression pExpression , String pDescription )
+  public void loadNewExpression ( Expression pExpression , String pDescription )
   {
     if ( ( this.oldExpression != null )
         && ( pExpression.equals ( this.oldExpression ) ) )
@@ -546,22 +552,23 @@ public class AbstractSyntaxTree
       Debug.err.println ( "No AutoUpdate selected" , Debug.CHRISTIAN ) ;
       return ;
     }
-    if ( ( pDescription.endsWith ( "bigstep" ) )
-        && ( pDescription.startsWith ( "change" ) ) )
+    if ( pDescription.equals ( "change_bigstep" ) )
     {
       Debug.err.println ( "No update in the BigStep view" , Debug.CHRISTIAN ) ;
       return ;
     }
-    if ( ( pDescription.endsWith ( "typechecker" ) )
-        && ( pDescription.startsWith ( "change" ) ) )
+    if ( pDescription.equals ( "change_typechecker" ) )
     {
       Debug.err
           .println ( "No update in the TypeChecker View" , Debug.CHRISTIAN ) ;
       return ;
     }
-    Debug.out.println ( "New Expression" , Debug.CHRISTIAN ) ;
+    Optimizer optimizer = new Optimizer ( "AST" ) ;
     this.aSTUnbound = new ASTUnbound ( pExpression ) ;
+    optimizer.setTimeTag ( "unbound" ) ;
     this.oldExpression = pExpression ;
     this.aSTUI.setRootNode ( expression ( pExpression ) ) ;
+    optimizer.setTimeTag ( "nodes" ) ;
+    Debug.out.println ( optimizer.getTimeTags ( ) , Debug.CHRISTIAN ) ;
   }
 }

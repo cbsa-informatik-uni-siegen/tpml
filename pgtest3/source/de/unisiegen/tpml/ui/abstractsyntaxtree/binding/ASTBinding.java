@@ -16,7 +16,7 @@ import de.unisiegen.tpml.core.expressions.Recursion ;
 
 
 /**
- * TODO
+ * Finds the bounded Identifiers in a given Expression.
  * 
  * @author Christian Fehler
  * @version $Rev$
@@ -24,95 +24,177 @@ import de.unisiegen.tpml.core.expressions.Recursion ;
 public class ASTBinding
 {
   /**
-   * TODO
+   * The list of lists of Identifiers, which are bounded by the given Identifier
+   * in the hole Expression.
    */
-  private ArrayList < ArrayList < Expression >> list ;
+  private ArrayList < ArrayList < Identifier >> list ;
 
 
   /**
-   * TODO
+   * The hole Expression.
    */
   private Expression holeExpression ;
 
 
   /**
-   * TODO
+   * The list of Identifiers.
    */
-  private ArrayList < String > identifier ;
+  private ArrayList < String > identifierList ;
 
 
   /**
-   * TODO
+   * The list of Expressions.
+   */
+  private ArrayList < Expression > expressionList ;
+
+
+  /**
+   * Initilizes the lists and sets the hole Expression.
    * 
    * @param pHoleExpression
    */
   public ASTBinding ( Expression pHoleExpression )
   {
-    this.list = new ArrayList < ArrayList < Expression >> ( ) ;
-    this.identifier = new ArrayList < String > ( ) ;
+    this.list = new ArrayList < ArrayList < Identifier >> ( ) ;
+    this.identifierList = new ArrayList < String > ( ) ;
+    this.expressionList = new ArrayList < Expression > ( ) ;
     this.holeExpression = pHoleExpression ;
   }
 
 
   /**
-   * TODO
+   * Adds a Expression and the name of the Identifier to their list. After
+   * adding all Expressions, the search prozess can be started by calling the
+   * find method.
    * 
-   * @param pExpression
-   * @param pId
+   * @param pExpression The Expression.
+   * @param pId The Identifier.
    */
   public void add ( Expression pExpression , String pId )
   {
-    ArrayList < Expression > tmpList = new ArrayList < Expression > ( ) ;
-    findBinding ( tmpList , pExpression , pId ) ;
-    int found = - 1 ;
-    for ( int i = 0 ; i < this.identifier.size ( ) ; i ++ )
+    this.expressionList.add ( pExpression ) ;
+    this.identifierList.add ( pId ) ;
+  }
+
+
+  /**
+   * Finds the bounded Identifiers in the given Expression.
+   */
+  public void find ( )
+  {
+    // MultiLet || MultiLambda
+    if ( ( this.holeExpression instanceof MultiLet )
+        || ( this.holeExpression instanceof MultiLambda ) )
     {
-      if ( this.identifier.get ( i ).equals ( pId ) )
+      /*
+       * Search for an Identifier with the same name as the current, starting
+       * with the first Identifier. If someone is found, the current Expression
+       * and the current Identifier is set to null, because he has no bindings.
+       */
+      for ( int i = 0 ; i < this.identifierList.size ( ) - 1 ; i ++ )
       {
-        found = i ;
-        break ;
+        for ( int j = i + 1 ; j < this.identifierList.size ( ) ; j ++ )
+        {
+          if ( this.identifierList.get ( i ).equals (
+              this.identifierList.get ( j ) ) )
+          {
+            this.identifierList.set ( i , null ) ;
+            this.expressionList.set ( i , null ) ;
+            break ;
+          }
+        }
       }
     }
-    if ( found != - 1 )
+    // CurriedLet
+    else if ( this.holeExpression instanceof CurriedLet )
     {
-      this.list.set ( found , new ArrayList < Expression > ( ) ) ;
-      this.identifier.set ( found , "" ) ;
+      /*
+       * Search for an Identifier with the same name as the current, starting
+       * with the second Identifier. If someone is found, the current Expression
+       * and the current Identifier is set to null, because he has no bindings.
+       */
+      for ( int i = 1 ; i < this.identifierList.size ( ) - 1 ; i ++ )
+      {
+        for ( int j = i + 1 ; j < this.identifierList.size ( ) ; j ++ )
+        {
+          if ( this.identifierList.get ( i ).equals (
+              this.identifierList.get ( j ) ) )
+          {
+            this.identifierList.set ( i , null ) ;
+            this.expressionList.set ( i , null ) ;
+            break ;
+          }
+        }
+      }
     }
-    this.identifier.add ( pId ) ;
-    this.list.add ( tmpList ) ;
+    // CurriedLetRec
+    else if ( this.holeExpression instanceof CurriedLetRec )
+    {
+      /*
+       * Search for an Identifier with the same name as the first Identifier. If
+       * someone is found, the first Identifier binds only in E2.
+       */
+      for ( int i = 1 ; i < this.identifierList.size ( ) ; i ++ )
+      {
+        if ( this.identifierList.get ( 0 ).equals (
+            this.identifierList.get ( i ) ) )
+        {
+          this.expressionList.set ( 0 , this.expressionList.get ( 1 ) ) ;
+          break ;
+        }
+      }
+      /*
+       * Search for an Identifier with the same name as the current, starting
+       * with the second Identifier. If someone is found, the current Expression
+       * and the current Identifier is set to null, because he has no bindings.
+       */
+      for ( int i = 1 ; i < this.identifierList.size ( ) - 1 ; i ++ )
+      {
+        for ( int j = i + 1 ; j < this.identifierList.size ( ) ; j ++ )
+        {
+          if ( this.identifierList.get ( i ).equals (
+              this.identifierList.get ( j ) ) )
+          {
+            this.identifierList.set ( i , null ) ;
+            this.expressionList.set ( i , null ) ;
+            break ;
+          }
+        }
+      }
+    }
+    ArrayList < Identifier > tmpList ;
+    for ( int i = 0 ; i < this.identifierList.size ( ) ; i ++ )
+    {
+      tmpList = new ArrayList < Identifier > ( ) ;
+      /*
+       * If the current Identifier is null, he has no bindings, so it is not
+       * necessary to search for them.
+       */
+      if ( this.identifierList.get ( i ) != null )
+      {
+        find ( tmpList , this.expressionList.get ( i ) , this.identifierList
+            .get ( i ) ) ;
+      }
+      this.list.add ( tmpList ) ;
+    }
   }
 
 
   /**
-   * TODO
+   * Finds the bounded Identifiers in the given Expression.
    * 
-   * @param pExpression
-   * @param pIdentifiers
+   * @param pResult The list of the bounded Identifiers.
+   * @param pExpression The input Expression.
+   * @param pId The name of the Identifier.
    */
-  public void add ( Expression pExpression , String pIdentifiers[] )
-  {
-    for ( String id : pIdentifiers )
-    {
-      add ( pExpression , id ) ;
-    }
-  }
-
-
-  /**
-   * TODO
-   * 
-   * @param pResult
-   * @param pExpression
-   * @param pId
-   */
-  private void findBinding ( ArrayList < Expression > pResult ,
+  private void find ( ArrayList < Identifier > pResult ,
       Expression pExpression , String pId )
   {
     // Identifier
     if ( ( pExpression instanceof Identifier )
         && ( ( ( Identifier ) pExpression ).getName ( ).equals ( pId ) ) )
     {
-      pResult.add ( pExpression ) ;
+      pResult.add ( ( Identifier ) pExpression ) ;
       return ;
     }
     // CurriedLetRec
@@ -134,7 +216,7 @@ public class ASTBinding
        * Search only in E2, because all Identifiers in E1 are bounded to the
        * Identifier in this child expression.
        */
-      findBinding ( pResult , curriedLetRec.getE2 ( ) , pId ) ;
+      find ( pResult , curriedLetRec.getE2 ( ) , pId ) ;
       return ;
     }
     // CurriedLet
@@ -150,14 +232,14 @@ public class ASTBinding
          * Search only in E1, because all Identifiers in E2 are bounded to the
          * Identifier in this child expression.
          */
-        findBinding ( pResult , curriedLet.getE1 ( ) , pId ) ;
+        find ( pResult , curriedLet.getE1 ( ) , pId ) ;
         return ;
       }
       /*
        * Search only in E2, because all Identifiers in E1 are bounded to the
        * Identifier in this child expression.
        */
-      findBinding ( pResult , curriedLet.getE2 ( ) , pId ) ;
+      find ( pResult , curriedLet.getE2 ( ) , pId ) ;
       return ;
     }
     // MultiLet
@@ -170,7 +252,7 @@ public class ASTBinding
        * Search only in E1, because all Identifiers in E2 are bounded to the
        * Identifier in this child expression.
        */
-      findBinding ( pResult , ( ( MultiLet ) pExpression ).getE1 ( ) , pId ) ;
+      find ( pResult , ( ( MultiLet ) pExpression ).getE1 ( ) , pId ) ;
       return ;
     }
     // MultiLambda
@@ -216,7 +298,7 @@ public class ASTBinding
        * Search only in E1, because all Identifiers in E2 are bounded to the
        * Identifier in this child expression.
        */
-      findBinding ( pResult , ( ( Let ) pExpression ).getE1 ( ) , pId ) ;
+      find ( pResult , ( ( Let ) pExpression ).getE1 ( ) , pId ) ;
       return ;
     }
     // Recursion
@@ -239,31 +321,33 @@ public class ASTBinding
       Enumeration < Expression > children = pExpression.children ( ) ;
       while ( children.hasMoreElements ( ) )
       {
-        findBinding ( pResult , children.nextElement ( ) , pId ) ;
+        find ( pResult , children.nextElement ( ) , pId ) ;
       }
     }
   }
 
 
   /**
-   * TODO
+   * Returns the bounded Identifier in the Expression.
    * 
-   * @param pListIndex
-   * @param pExpressionIndex
-   * @return TODO
+   * @param pIdentifierIndex The index of the Identifier.
+   * @param pBindingIndex The index of the binding.
+   * @return The bounded Identifier in the Expression.
    */
-  public Expression get ( int pListIndex , int pExpressionIndex )
+  public Identifier get ( int pIdentifierIndex , int pBindingIndex )
   {
-    return this.list.get ( pListIndex ).get ( pExpressionIndex ) ;
+    return this.list.get ( pIdentifierIndex ).get ( pBindingIndex ) ;
   }
 
 
   /**
-   * TODO
+   * Returns the index of the given Identifier in the given Identifiers Array.
+   * If the Identifier is not in the array it returns -1.
    * 
    * @param pIdentifiers
    * @param pId
-   * @return TODO
+   * @return The index of the given Identifier in the given Identifiers Array.
+   *         If the Identifier is not in the array it returns -1.
    */
   private int identifierIndex ( String [ ] pIdentifiers , String pId )
   {
@@ -279,9 +363,10 @@ public class ASTBinding
 
 
   /**
-   * TODO
+   * Returns the size of the list. The size is equal to the number of
+   * Identifiers.
    * 
-   * @return TODO
+   * @return The number of Identifiers.
    */
   public int size ( )
   {
@@ -290,13 +375,13 @@ public class ASTBinding
 
 
   /**
-   * TODO
+   * Returns the number of bindings from a given Identifier.
    * 
-   * @param pListIndex
-   * @return TODO
+   * @param pIdentifierIndex The index of the Identifier.
+   * @return The number of bindings from a given Identifier.
    */
-  public int size ( int pListIndex )
+  public int size ( int pIdentifierIndex )
   {
-    return this.list.get ( pListIndex ).size ( ) ;
+    return this.list.get ( pIdentifierIndex ).size ( ) ;
   }
 }

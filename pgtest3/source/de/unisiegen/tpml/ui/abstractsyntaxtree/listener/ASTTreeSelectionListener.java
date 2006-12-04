@@ -20,7 +20,8 @@ import de.unisiegen.tpml.ui.abstractsyntaxtree.ASTUI ;
 
 
 /**
- * TODO
+ * This class listens for tree selection events. It updates the caption of the
+ * selected node and its higher nodes.
  * 
  * @author Christian Fehler
  * @version $Rev$
@@ -28,15 +29,15 @@ import de.unisiegen.tpml.ui.abstractsyntaxtree.ASTUI ;
 public class ASTTreeSelectionListener implements TreeSelectionListener
 {
   /**
-   * TODO
+   * The AbstractSyntaxTree UI.
    */
   private ASTUI aSTUI ;
 
 
   /**
-   * TODO
+   * Initializes the ASTTreeSelectionListener with the given ASTUI.
    * 
-   * @param pASTUI
+   * @param pASTUI The AbstractSyntaxTree UI.
    */
   public ASTTreeSelectionListener ( ASTUI pASTUI )
   {
@@ -45,18 +46,18 @@ public class ASTTreeSelectionListener implements TreeSelectionListener
 
 
   /**
-   * TODO
+   * Returns the index of the Identifier in the parent node.
    * 
-   * @param pParent
-   * @param pChild
-   * @return TODO
+   * @param pParent The parent node.
+   * @param pIdentifier The Identifier node.
+   * @return The index of the Identifier in the parent node.
    */
-  private int childIndex ( DefaultMutableTreeNode pParent ,
-      DefaultMutableTreeNode pChild )
+  private int identifierIndex ( DefaultMutableTreeNode pParent ,
+      DefaultMutableTreeNode pIdentifier )
   {
     for ( int i = 0 ; i < pParent.getChildCount ( ) ; i ++ )
     {
-      if ( pParent.getChildAt ( i ).equals ( pChild ) )
+      if ( pParent.getChildAt ( i ).equals ( pIdentifier ) )
       {
         return i ;
       }
@@ -66,13 +67,13 @@ public class ASTTreeSelectionListener implements TreeSelectionListener
 
 
   /**
-   * TODO
+   * Repaints the given node and all its children.
    * 
-   * @param pNode
+   * @param pNode The node, which should be repainted.
    */
   private void repaint ( DefaultMutableTreeNode pNode )
   {
-    this.aSTUI.nodeChanged ( pNode ) ;
+    this.aSTUI.getTreeModel ( ).nodeChanged ( pNode ) ;
     for ( int i = 0 ; i < pNode.getChildCount ( ) ; i ++ )
     {
       repaint ( ( DefaultMutableTreeNode ) pNode.getChildAt ( i ) ) ;
@@ -81,11 +82,11 @@ public class ASTTreeSelectionListener implements TreeSelectionListener
 
 
   /**
-   * TODO
+   * Resets the given node and all its children.
    * 
-   * @param pNode
+   * @param pNode The node, which should be reseted.
    */
-  public void reset ( DefaultMutableTreeNode pNode )
+  private void reset ( DefaultMutableTreeNode pNode )
   {
     ASTNode aSTNode = ( ASTNode ) pNode.getUserObject ( ) ;
     aSTNode.resetCaption ( ) ;
@@ -98,9 +99,9 @@ public class ASTTreeSelectionListener implements TreeSelectionListener
 
 
   /**
-   * TODO
+   * Updates the caption of the selected node and its higher nodes.
    * 
-   * @param pTreePath
+   * @param pTreePath The selected TreePath.
    */
   public void update ( TreePath pTreePath )
   {
@@ -124,28 +125,18 @@ public class ASTTreeSelectionListener implements TreeSelectionListener
     }
     DefaultMutableTreeNode rootNode = ( DefaultMutableTreeNode ) pTreePath
         .getPath ( ) [ 0 ] ;
+    // TODO not very good, because everything is reseted.
     reset ( rootNode ) ;
     ASTNode last = list.get ( list.size ( ) - 1 ) ;
-    ASTNode secondlast = null ;
-    if ( list.size ( ) >= 2 )
-    {
-      secondlast = list.get ( list.size ( ) - 2 ) ;
-    }
-    // No Expression
+    // Identifier
     if ( ( last.getStartIndex ( ) != - 1 ) && ( last.getEndIndex ( ) != - 1 ) )
     {
-      if ( secondlast == null )
-      {
-        return ;
-      }
+      ASTNode secondlast = list.get ( list.size ( ) - 2 ) ;
       // Highlight the selected Identifier
       last.enableSelectedColor ( ) ;
       for ( int i = 0 ; i < list.size ( ) - 1 ; i ++ )
       {
-        PrettyAnnotation prettyAnnotation = list.get ( i ).getExpression ( )
-            .toPrettyString ( ).getAnnotationForPrintable (
-                secondlast.getExpression ( ) ) ;
-        int childIndex = childIndex ( ( DefaultMutableTreeNode ) pTreePath
+        int childIndex = identifierIndex ( ( DefaultMutableTreeNode ) pTreePath
             .getPath ( ) [ pTreePath.getPathCount ( ) - 2 ] ,
             ( DefaultMutableTreeNode ) pTreePath.getPath ( ) [ pTreePath
                 .getPathCount ( ) - 1 ] ) ;
@@ -160,6 +151,9 @@ public class ASTTreeSelectionListener implements TreeSelectionListener
         {
           childIndex = ASTNode.NO_BINDING ;
         }
+        PrettyAnnotation prettyAnnotation = list.get ( i ).getExpression ( )
+            .toPrettyString ( ).getAnnotationForPrintable (
+                secondlast.getExpression ( ) ) ;
         list.get ( i ).setASTBinding ( last.getASTBinding ( ) ) ;
         list.get ( i ).setReplaceInThisNode ( true ) ;
         list.get ( i ).updateCaption (
@@ -189,13 +183,18 @@ public class ASTTreeSelectionListener implements TreeSelectionListener
 
 
   /**
-   * TODO
+   * This method is invoked if a node value has changed.
    * 
    * @param pTreeSelectionEvent
    * @see javax.swing.event.TreeSelectionListener#valueChanged(javax.swing.event.TreeSelectionEvent)
    */
   public void valueChanged ( TreeSelectionEvent pTreeSelectionEvent )
   {
+    TreePath t = pTreeSelectionEvent.getOldLeadSelectionPath ( ) ;
+    if ( ( t != null ) && ( t.getPathCount ( ) > 1 ) )
+    {
+      reset ( ( DefaultMutableTreeNode ) t.getPathComponent ( 1 ) ) ;
+    }
     update ( pTreeSelectionEvent.getPath ( ) ) ;
   }
 }
