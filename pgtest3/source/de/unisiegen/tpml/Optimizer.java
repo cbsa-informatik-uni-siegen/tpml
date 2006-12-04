@@ -132,22 +132,33 @@ public final class Optimizer
         this.commentList.set ( i , t ) ;
       }
       final long start = this.timeList.get ( 0 ).longValue ( ) ;
-      long end = this.timeList.get ( this.timeList.size ( ) - 1 ).longValue ( )
+      double end = this.timeList.get ( this.timeList.size ( ) - 1 )
+          .longValue ( )
           - start ;
       if ( end == 0 )
       {
-        end = 1 ;
+        end = 0.0000000001 ;
       }
       long last = 0 ;
-      final DecimalFormat df1 = new DecimalFormat ( "00" ) ;
-      final DecimalFormat df2 = new DecimalFormat ( "00,000 ms" ) ;
-      final DecimalFormat df3 = new DecimalFormat ( "00.0" ) ;
+      final DecimalFormat decimalFormat1 = new DecimalFormat ( "00" ) ;
+      final DecimalFormat decimalFormat2 = new DecimalFormat ( "#0,000 ms" ) ;
+      final DecimalFormat decimalFormat3 = new DecimalFormat ( "#00.0" ) ;
       for ( int i = 1 ; i < this.timeList.size ( ) ; i ++ )
       {
         final long current = ( this.timeList.get ( i ).longValue ( ) - start ) ;
-        s += this.tagName + " " + df1.format ( i ) + " ("
-            + this.commentList.get ( i ) + "):   " + df2.format ( current )
-            + "   " + df3.format ( ( current - last ) * 100 / end ) + " %"
+        double percent = ( ( current - last ) * 100 ) / end ;
+        if ( percent < 0 )
+        {
+          percent = 0 ;
+        }
+        else if ( percent > 100 )
+        {
+          percent = 100 ;
+        }
+        s += this.tagName + "   " + decimalFormat1.format ( i ) + "   ("
+            + this.commentList.get ( i ) + ")   "
+            + decimalFormat2.format ( current ) + "   "
+            + decimalFormat3.format ( percent ) + " %"
             + System.getProperty ( "line.separator" ) ;
         last = current ;
       }
