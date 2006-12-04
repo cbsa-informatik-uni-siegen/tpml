@@ -10,6 +10,7 @@ package de.unisiegen.tpml.ui;
 /**
  *
  * @author  TPPool15
+ * @author Christian Fehler
  */
 public class AboutDialog extends javax.swing.JDialog {
     
