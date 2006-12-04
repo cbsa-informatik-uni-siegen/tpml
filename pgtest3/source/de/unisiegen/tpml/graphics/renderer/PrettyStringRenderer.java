@@ -412,9 +412,11 @@ public class PrettyStringRenderer extends AbstractRenderer {
 			
 			fm = AbstractRenderer.expFontMetrics;
 			int charWidth = fm.stringWidth("" + c);
-			//TODO find out how to find the right baseline
-			int posYC = posY - 12;
-			int charHighth = fm.getHeight();
+			//TODO Testausgaben
+			//Debug.out.println("lasss mal die Höhe der Schrift sehen: "+(fm.getHeight()-fm.getDescent()), "feivel");
+			//just corrects the posY to start at baseline instead of the middel
+			int posYC = posY - (fm.getHeight()-fm.getDescent());
+			//int charHighth = fm.getHeight();
 			
 			//Here we get the information where bindings exists in positions
 			ShowBonds instanceOfShowBound = bound; 
@@ -428,14 +430,16 @@ public class PrettyStringRenderer extends AbstractRenderer {
 				toListenForMouse.add(posX-1);
 				toListenForMouse.add(posX+charWidth+1);
 				//toListenForMouse.add(posY-fm.getDescent());
-				toListenForMouse.add(posY-12);
-				toListenForMouse.add(posY-12+fm.getAscent());
-				Debug.out.println("Es geht um Char: " + c, "feivel");
-				Debug.out.println("Differenz: " + (posY-(posY+fm.getAscent())) , "feivel");
-				Debug.out.println("Höhe: " + (fm.getHeight()) , "feivel");
-				Debug.out.println("Position: " + posX + "," +posY , "feivel");
-				Debug.out.println("Position: " + x + "," +y , "feivel");
-				Debug.out.println("Maus ist: " + toListenForMouse.getHereIam()[0] + "," +toListenForMouse.getHereIam()[1] , "feivel");
+				//he will just react from baseline to upper corner of char, not to lower corner of char
+				toListenForMouse.add(posYC);
+				toListenForMouse.add(posYC+fm.getAscent());
+				//TODO Testausgaben
+				//Debug.out.println("Es geht um Char: " + c, "feivel");
+				//Debug.out.println("Differenz: " + (posY-(posY+fm.getAscent())) , "feivel");
+				//Debug.out.println("Höhe: " + (fm.getHeight()) , "feivel");
+				//Debug.out.println("Position: " + posX + "," +posY , "feivel");
+				//Debug.out.println("Position: " + x + "," +y , "feivel");
+				//Debug.out.println("Maus ist: " + toListenForMouse.getHereIam()[0] + "," +toListenForMouse.getHereIam()[1] , "feivel");
 				//fm.get
 				
 				
@@ -456,7 +460,7 @@ public class PrettyStringRenderer extends AbstractRenderer {
 					
 				//checks if MousePointer stands on the actual char
 				//if ( ( (xPos >= posX) && (xPos <= posX+charWidth) ) && ( (yPos >= posY-fm.getDescent()) && (yPos <=posY+fm.getAscent()) ) ) 
-					if ( ( (xPos >= posX-1) && (xPos <= posX+charWidth+1) ) && ( (yPos >= posY-12) && (yPos <=posY-12+fm.getAscent()) ) )
+					if ( ( (xPos >= posX-1) && (xPos <= posX+charWidth+1) ) && ( (yPos >= posYC) && (yPos <=posYC+fm.getAscent()) ) )
 				{
 					//TODO in diesem Fall muss er neu anfangen, er darf nicht mit den nächsten Buchstaben weiter machen...
 					
@@ -490,7 +494,8 @@ public class PrettyStringRenderer extends AbstractRenderer {
 					{
 						gc.setColor(Theme.currentTheme().getBindingColor());
 					}
-					gc.setFont(newFont);
+					//gc.setFont(newFont);
+					gc.setFont(orginalFont);
 					
 					//underline the actual char
 					gc.drawLine(posX, posY + 1, posX + charWidth, posY + 1);
