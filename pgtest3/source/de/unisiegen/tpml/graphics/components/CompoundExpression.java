@@ -12,6 +12,7 @@ import java.awt.event.MouseMotionAdapter ;
 import java.util.LinkedList ;
 import javax.swing.JComponent ;
 import de.unisiegen.tpml.Debug ;
+import de.unisiegen.tpml.Optimizer;
 import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.interpreters.Store ;
 import de.unisiegen.tpml.core.typechecker.TypeEnvironment ;
@@ -320,6 +321,8 @@ public class CompoundExpression < S , E > extends JComponent
       this.expression = expression ;
       
       // CHANGE BENJAMIN
+      Optimizer o = new Optimizer("Benjamin");
+     
       bonds.setHoleExpression ( this.expression ) ;
       bonds.check ( this.expression ) ;
       // Debug
@@ -339,6 +342,8 @@ public class CompoundExpression < S , E > extends JComponent
         Debug.err.println ( " " , "Benjamin" ) ;
       }
       Debug.out.println ( " " , "benjamin" ) ;
+      o.setTimeTag("Ganze ShowBonds");
+      System.out.println(o.getTimeTags());
       // CHANGE BENJAMIN END
       
       // check what to do with the renderer
