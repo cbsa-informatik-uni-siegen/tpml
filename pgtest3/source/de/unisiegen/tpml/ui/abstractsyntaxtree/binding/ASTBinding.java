@@ -230,6 +230,18 @@ public class ASTBinding
       if ( curriedLet.getIdentifiers ( 0 ).equals ( pId ) )
       {
         /*
+         * Search is finished, if the searched Identifier is also equal to
+         * another bounded Identifier in the CurriedLet, because all Identifiers
+         * in E1 are bounded to the Identifier in this child expression.
+         */
+        for ( int i = 1 ; i < curriedLet.getIdentifiers ( ).length ; i ++ )
+        {
+          if ( curriedLet.getIdentifiers ( i ).equals ( pId ) )
+          {
+            return ;
+          }
+        }
+        /*
          * Search only in E1, because all Identifiers in E2 are bounded to the
          * Identifier in this child expression.
          */
