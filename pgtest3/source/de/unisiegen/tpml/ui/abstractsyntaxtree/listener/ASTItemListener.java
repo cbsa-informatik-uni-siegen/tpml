@@ -3,6 +3,7 @@ package de.unisiegen.tpml.ui.abstractsyntaxtree.listener ;
 
 import java.awt.event.ItemEvent ;
 import java.awt.event.ItemListener ;
+import javax.swing.tree.DefaultMutableTreeNode ;
 import de.unisiegen.tpml.ui.abstractsyntaxtree.ASTNode ;
 import de.unisiegen.tpml.ui.abstractsyntaxtree.ASTUI ;
 
@@ -60,6 +61,8 @@ public class ASTItemListener implements ItemListener
   private void binding ( boolean pSelected )
   {
     ASTNode.setBinding ( pSelected ) ;
+    this.aSTUI.getASTTreeSelectionListener ( ).reset (
+        ( DefaultMutableTreeNode ) this.aSTUI.getTreeModel ( ).getRoot ( ) ) ;
     this.aSTUI.getASTTreeSelectionListener ( ).update (
         this.aSTUI.getJTreeAbstractSyntaxTree ( ).getSelectionPath ( ) ) ;
     this.aSTUI.getAbstractSyntaxTree ( ).getASTPreferences ( ).setBinding (
@@ -92,6 +95,8 @@ public class ASTItemListener implements ItemListener
   private void replace ( boolean pSelected )
   {
     ASTNode.setReplace ( pSelected ) ;
+    this.aSTUI.getASTTreeSelectionListener ( ).reset (
+        ( DefaultMutableTreeNode ) this.aSTUI.getTreeModel ( ).getRoot ( ) ) ;
     this.aSTUI.getASTTreeSelectionListener ( ).update (
         this.aSTUI.getJTreeAbstractSyntaxTree ( ).getSelectionPath ( ) ) ;
     this.aSTUI.getAbstractSyntaxTree ( ).getASTPreferences ( ).setReplace (
@@ -111,6 +116,8 @@ public class ASTItemListener implements ItemListener
   private void selection ( boolean pSelected )
   {
     ASTNode.setSelection ( pSelected ) ;
+    this.aSTUI.getASTTreeSelectionListener ( ).reset (
+        ( DefaultMutableTreeNode ) this.aSTUI.getTreeModel ( ).getRoot ( ) ) ;
     this.aSTUI.getASTTreeSelectionListener ( ).update (
         this.aSTUI.getJTreeAbstractSyntaxTree ( ).getSelectionPath ( ) ) ;
     this.aSTUI.getAbstractSyntaxTree ( ).getASTPreferences ( ).setSelection (
@@ -130,6 +137,8 @@ public class ASTItemListener implements ItemListener
   private void unbound ( boolean pSelected )
   {
     ASTNode.setUnbound ( pSelected ) ;
+    this.aSTUI.getASTTreeSelectionListener ( ).reset (
+        ( DefaultMutableTreeNode ) this.aSTUI.getTreeModel ( ).getRoot ( ) ) ;
     this.aSTUI.getASTTreeSelectionListener ( ).update (
         this.aSTUI.getJTreeAbstractSyntaxTree ( ).getSelectionPath ( ) ) ;
     this.aSTUI.getAbstractSyntaxTree ( ).getASTPreferences ( ).setUnbound (

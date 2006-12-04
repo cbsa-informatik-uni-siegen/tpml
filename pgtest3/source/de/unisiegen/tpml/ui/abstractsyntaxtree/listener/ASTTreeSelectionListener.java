@@ -86,7 +86,7 @@ public class ASTTreeSelectionListener implements TreeSelectionListener
    * 
    * @param pNode The node, which should be reseted.
    */
-  private void reset ( DefaultMutableTreeNode pNode )
+  public void reset ( DefaultMutableTreeNode pNode )
   {
     ASTNode aSTNode = ( ASTNode ) pNode.getUserObject ( ) ;
     aSTNode.resetCaption ( ) ;
@@ -125,8 +125,6 @@ public class ASTTreeSelectionListener implements TreeSelectionListener
     }
     DefaultMutableTreeNode rootNode = ( DefaultMutableTreeNode ) pTreePath
         .getPath ( ) [ 0 ] ;
-    // TODO not very good, because everything is reseted.
-    reset ( rootNode ) ;
     ASTNode last = list.get ( list.size ( ) - 1 ) ;
     // Identifier
     if ( ( last.getStartIndex ( ) != - 1 ) && ( last.getEndIndex ( ) != - 1 ) )
