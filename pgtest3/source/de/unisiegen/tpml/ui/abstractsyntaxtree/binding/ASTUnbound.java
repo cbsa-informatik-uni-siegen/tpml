@@ -43,23 +43,6 @@ public class ASTUnbound
 
 
   /**
-   * Makes a copy of a ArrayList.
-   * 
-   * @param pList Input ArrayList.
-   * @return The copy of the list.
-   */
-  private ArrayList < String > copyList ( ArrayList < String > pList )
-  {
-    ArrayList < String > list = new ArrayList < String > ( ) ;
-    for ( String tmp : pList )
-    {
-      list.add ( tmp ) ;
-    }
-    return list ;
-  }
-
-
-  /**
    * Finds the unbounded Identifiers in the given Expression.
    * 
    * @param pResult The list of the unbounded Identifiers.
@@ -69,9 +52,6 @@ public class ASTUnbound
   private void find ( ArrayList < Identifier > pResult ,
       ArrayList < String > pBounded , Expression pExpression )
   {
-    /*
-     * if ( pExpression.free ( ).size ( ) == 0 ) { return ; }
-     */
     if ( ( pExpression instanceof Identifier )
         && ( ! pBounded.contains ( ( ( Identifier ) pExpression ).getName ( ) ) ) )
     {
@@ -81,8 +61,8 @@ public class ASTUnbound
     if ( pExpression instanceof CurriedLetRec )
     {
       CurriedLetRec curriedLetRec = ( CurriedLetRec ) pExpression ;
-      ArrayList < String > unbound1 = copyList ( pBounded ) ;
-      ArrayList < String > unbound2 = copyList ( pBounded ) ;
+      ArrayList < String > unbound1 = new ArrayList < String > ( pBounded ) ;
+      ArrayList < String > unbound2 = new ArrayList < String > ( pBounded ) ;
       // New bindings in E1, Identifier 0 to n
       for ( int i = 0 ; i < curriedLetRec.getIdentifiers ( ).length ; i ++ )
       {
@@ -96,8 +76,8 @@ public class ASTUnbound
     else if ( pExpression instanceof CurriedLet )
     {
       CurriedLet curriedLet = ( CurriedLet ) pExpression ;
-      ArrayList < String > unbound1 = copyList ( pBounded ) ;
-      ArrayList < String > unbound2 = copyList ( pBounded ) ;
+      ArrayList < String > unbound1 = new ArrayList < String > ( pBounded ) ;
+      ArrayList < String > unbound2 = new ArrayList < String > ( pBounded ) ;
       // New bindings in E1, Identifier 1 to n
       for ( int i = 1 ; i < curriedLet.getIdentifiers ( ).length ; i ++ )
       {
@@ -111,8 +91,8 @@ public class ASTUnbound
     else if ( pExpression instanceof MultiLet )
     {
       MultiLet multiLet = ( MultiLet ) pExpression ;
-      ArrayList < String > unbound1 = copyList ( pBounded ) ;
-      ArrayList < String > unbound2 = copyList ( pBounded ) ;
+      ArrayList < String > unbound1 = new ArrayList < String > ( pBounded ) ;
+      ArrayList < String > unbound2 = new ArrayList < String > ( pBounded ) ;
       // No new binding in E1
       find ( pResult , unbound1 , multiLet.getE1 ( ) ) ;
       // New bindings in E2
@@ -125,7 +105,7 @@ public class ASTUnbound
     else if ( pExpression instanceof MultiLambda )
     {
       MultiLambda multiLambda = ( MultiLambda ) pExpression ;
-      ArrayList < String > unbound = copyList ( pBounded ) ;
+      ArrayList < String > unbound = new ArrayList < String > ( pBounded ) ;
       // New bindings in E
       for ( int i = 0 ; i < multiLambda.getIdentifiers ( ).length ; i ++ )
       {
@@ -136,8 +116,8 @@ public class ASTUnbound
     else if ( pExpression instanceof LetRec )
     {
       LetRec letRec = ( LetRec ) pExpression ;
-      ArrayList < String > unbound1 = copyList ( pBounded ) ;
-      ArrayList < String > unbound2 = copyList ( pBounded ) ;
+      ArrayList < String > unbound1 = new ArrayList < String > ( pBounded ) ;
+      ArrayList < String > unbound2 = new ArrayList < String > ( pBounded ) ;
       // New binding in E1
       unbound1.add ( letRec.getId ( ) ) ;
       find ( pResult , unbound1 , letRec.getE1 ( ) ) ;
@@ -148,17 +128,18 @@ public class ASTUnbound
     else if ( pExpression instanceof Let )
     {
       Let let = ( Let ) pExpression ;
-      ArrayList < String > unbound = copyList ( pBounded ) ;
+      ArrayList < String > unbound1 = new ArrayList < String > ( pBounded ) ;
+      ArrayList < String > unbound2 = new ArrayList < String > ( pBounded ) ;
       // No new binding in E1
-      find ( pResult , pBounded , let.getE1 ( ) ) ;
+      find ( pResult , unbound1 , let.getE1 ( ) ) ;
       // New binding in E2
-      unbound.add ( let.getId ( ) ) ;
-      find ( pResult , unbound , let.getE2 ( ) ) ;
+      unbound2.add ( let.getId ( ) ) ;
+      find ( pResult , unbound2 , let.getE2 ( ) ) ;
     }
     else if ( pExpression instanceof Lambda )
     {
       Lambda lambda = ( Lambda ) pExpression ;
-      ArrayList < String > unbound = copyList ( pBounded ) ;
+      ArrayList < String > unbound = new ArrayList < String > ( pBounded ) ;
       // New binding in E
       unbound.add ( lambda.getId ( ) ) ;
       find ( pResult , unbound , lambda.getE ( ) ) ;
@@ -166,8 +147,8 @@ public class ASTUnbound
     else if ( pExpression instanceof Recursion )
     {
       Recursion recursion = ( Recursion ) pExpression ;
-      ArrayList < String > unbound = copyList ( pBounded ) ;
-      // New binding in E2
+      ArrayList < String > unbound = new ArrayList < String > ( pBounded ) ;
+      // New binding in E
       unbound.add ( recursion.getId ( ) ) ;
       find ( pResult , unbound , recursion.getE ( ) ) ;
     }
