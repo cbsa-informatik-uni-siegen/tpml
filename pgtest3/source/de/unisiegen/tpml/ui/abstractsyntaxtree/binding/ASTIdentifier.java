@@ -3,7 +3,6 @@ package de.unisiegen.tpml.ui.abstractsyntaxtree.binding ;
 
 import java.util.ArrayList ;
 import java.util.Enumeration ;
-import de.unisiegen.tpml.Debug ;
 import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyCharIterator ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStyle ;
@@ -39,7 +38,6 @@ public abstract class ASTIdentifier
       beginChild = pExpression.toPrettyString ( ).getAnnotationForPrintable (
           children.nextElement ( ) ).getStartOffset ( ) ;
     }
-    Debug.out.println ( beginChild , Debug.CHRISTIAN ) ;
     int charIndex = 0 ;
     int start = 0 ;
     int end = 0 ;
