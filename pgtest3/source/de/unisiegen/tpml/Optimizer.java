@@ -144,7 +144,7 @@ public final class Optimizer
       final DecimalFormat df3 = new DecimalFormat ( "00.0" ) ;
       for ( int i = 1 ; i < this.timeList.size ( ) ; i ++ )
       {
-        final double current = ( this.timeList.get ( i ).longValue ( ) - start ) ;
+        final long current = ( this.timeList.get ( i ).longValue ( ) - start ) ;
         s += this.tagName + " " + df1.format ( i ) + " ("
             + this.commentList.get ( i ) + "):   " + df2.format ( current )
             + "   " + df3.format ( ( current - last ) * 100 / end ) + " %"
