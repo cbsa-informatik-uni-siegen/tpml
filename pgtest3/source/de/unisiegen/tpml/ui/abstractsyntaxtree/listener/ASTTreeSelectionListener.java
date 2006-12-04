@@ -116,15 +116,10 @@ public class ASTTreeSelectionListener implements TreeSelectionListener
     ArrayList < ASTNode > list = new ArrayList < ASTNode > ( ) ;
     for ( int i = 0 ; i < pTreePath.getPathCount ( ) ; i ++ )
     {
-      Object tmp = ( ( DefaultMutableTreeNode ) pTreePath.getPath ( ) [ i ] )
-          .getUserObject ( ) ;
-      if ( ( tmp instanceof ASTNode ) )
-      {
-        list.add ( ( ASTNode ) tmp ) ;
-      }
+      list
+          .add ( ( ASTNode ) ( ( DefaultMutableTreeNode ) pTreePath.getPath ( ) [ i ] )
+              .getUserObject ( ) ) ;
     }
-    DefaultMutableTreeNode rootNode = ( DefaultMutableTreeNode ) pTreePath
-        .getPath ( ) [ 0 ] ;
     ASTNode last = list.get ( list.size ( ) - 1 ) ;
     // Identifier
     if ( ( last.getStartIndex ( ) != - 1 ) && ( last.getEndIndex ( ) != - 1 ) )
@@ -132,6 +127,8 @@ public class ASTTreeSelectionListener implements TreeSelectionListener
       ASTNode secondlast = list.get ( list.size ( ) - 2 ) ;
       // Highlight the selected Identifier
       last.enableSelectedColor ( ) ;
+      this.aSTUI.getTreeModel ( ).nodeChanged (
+          ( ( DefaultMutableTreeNode ) pTreePath.getLastPathComponent ( ) ) ) ;
       for ( int i = 0 ; i < list.size ( ) - 1 ; i ++ )
       {
         int childIndex = identifierIndex ( ( DefaultMutableTreeNode ) pTreePath
@@ -158,6 +155,8 @@ public class ASTTreeSelectionListener implements TreeSelectionListener
             prettyAnnotation.getStartOffset ( ) + last.getStartIndex ( ) ,
             prettyAnnotation.getStartOffset ( ) + last.getEndIndex ( ) ,
             childIndex ) ;
+        this.aSTUI.getTreeModel ( ).nodeChanged (
+            ( ( DefaultMutableTreeNode ) pTreePath.getPath ( ) [ i ] ) ) ;
       }
     }
     // Expression
@@ -174,9 +173,10 @@ public class ASTTreeSelectionListener implements TreeSelectionListener
         }
         list.get ( i ).updateCaption ( prettyAnnotation.getStartOffset ( ) ,
             prettyAnnotation.getEndOffset ( ) , ASTNode.NO_BINDING ) ;
+        this.aSTUI.getTreeModel ( ).nodeChanged (
+            ( ( DefaultMutableTreeNode ) pTreePath.getPath ( ) [ i ] ) ) ;
       }
     }
-    repaint ( rootNode ) ;
   }
 
 
