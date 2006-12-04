@@ -715,8 +715,40 @@ public class ASTNode
     int charIndex = 0 ;
     while ( charIndex < this.expressionString.length ( ) )
     {
-      // Selection
+      /*
+       * Selection
+       */
       if ( ( selection ) && ( charIndex == pSelectionStart ) )
+      {
+        result.append ( FONT_BOLD_BEGIN ) ;
+        result.append ( selectionColor ) ;
+        result.append ( FONT_AFTER_COLOR ) ;
+        // Replace selected Expression
+        if ( replace && this.replaceInThisNode )
+        {
+          result.append ( REPLACE ) ;
+        }
+        while ( charIndex <= pSelectionEnd )
+        {
+          // Do not replace selected Expression
+          if ( ! ( replace && this.replaceInThisNode ) )
+          {
+            result.append ( getHTMLCode ( this.expressionString
+                .charAt ( charIndex ) ) ) ;
+          }
+          // Next character
+          charIndex ++ ;
+          prettyCharIterator.next ( ) ;
+        }
+        result.append ( FONT_BOLD_END ) ;
+      }
+      /*
+       * No selection and binding
+       */
+      else if ( ( ! selection ) && ( binding ) && ( this.aSTBinding != null )
+          && ( pIdentifierIndex >= 0 )
+          && ( this.aSTBinding.size ( pIdentifierIndex ) > 0 )
+          && ( charIndex == pSelectionStart ) )
       {
         result.append ( FONT_BOLD_BEGIN ) ;
         result.append ( selectionColor ) ;
@@ -744,7 +776,7 @@ public class ASTNode
        * No selection highlighting and displacement of the selected Expression
        * in higher nodes.
        */
-      else if ( ! ( selection ) && ( replace ) && ( this.replaceInThisNode )
+      else if ( ( ! selection ) && ( replace ) && ( this.replaceInThisNode )
           && ( charIndex == pSelectionStart ) )
       {
         result.append ( REPLACE_BOLD ) ;
@@ -755,7 +787,9 @@ public class ASTNode
           prettyCharIterator.next ( ) ;
         }
       }
-      // Binding
+      /*
+       * Binding
+       */
       else if ( ( binding ) && ( this.aSTBinding != null )
           && ( pIdentifierIndex >= 0 )
           && ( isBinding ( pIdentifierIndex , charIndex ) ) )
@@ -773,7 +807,9 @@ public class ASTNode
         }
         result.append ( FONT_BOLD_END ) ;
       }
-      // Unbound
+      /*
+       * Unbound
+       */
       else if ( ( unbound ) && ( this.aSTUnbound != null )
           && ( isUnbound ( charIndex ) ) )
       {
@@ -790,7 +826,9 @@ public class ASTNode
         }
         result.append ( FONT_BOLD_END ) ;
       }
-      // Keyword
+      /*
+       * Keyword
+       */
       else if ( prettyCharIterator.getStyle ( ) == PrettyStyle.KEYWORD )
       {
         result.append ( FONT_BOLD_BEGIN ) ;
@@ -806,7 +844,9 @@ public class ASTNode
         }
         result.append ( FONT_BOLD_END ) ;
       }
-      // Constant
+      /*
+       * Constant
+       */
       else if ( prettyCharIterator.getStyle ( ) == PrettyStyle.CONSTANT )
       {
         result.append ( FONT_BOLD_BEGIN ) ;
@@ -822,7 +862,9 @@ public class ASTNode
         }
         result.append ( FONT_BOLD_END ) ;
       }
-      // Type
+      /*
+       * Type
+       */
       else if ( prettyCharIterator.getStyle ( ) == PrettyStyle.TYPE )
       {
         result.append ( FONT_BOLD_BEGIN ) ;
@@ -838,7 +880,9 @@ public class ASTNode
         }
         result.append ( FONT_BOLD_END ) ;
       }
-      // Normal Character
+      /*
+       * Normal Character
+       */
       else
       {
         result
