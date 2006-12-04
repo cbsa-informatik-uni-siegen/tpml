@@ -1,5 +1,6 @@
 package de.unisiegen.tpml.graphics.components;
 
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.LinkedList;
 
@@ -16,8 +17,6 @@ import de.unisiegen.tpml.core.expressions.MultiLet;
 import de.unisiegen.tpml.core.expressions.Recursion;
 import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation;
 import de.unisiegen.tpml.core.prettyprinter.PrettyString;
-import de.unisiegen.tpml.core.types.MonoType;
-import de.unisiegen.tpml.core.util.IdentifierList;
 import de.unisiegen.tpml.core.util.IdentifierUtilities;
 /**
  * 
@@ -714,13 +713,13 @@ public class ShowBonds
 	private int getStartOffset(Expression pExpression, Identifier id, PrettyAnnotation mark1)
 	{
 	
-		IdentifierList ids= IdentifierUtilities.getIdentifierPositions(pExpression);
+		ArrayList<de.unisiegen.tpml.core.util.Identifier> ids= IdentifierUtilities.getIdentifierPositions(pExpression);
 		
-		for (int i=0; i<ids.length();i++)
+		for (int i=0; i<ids.size();i++)
 		{
-			if (ids.getIdentifier(i).equals(id.toString()))
+			if (ids.get(i).getId().equals(id.toString()))
 			{
-				return mark1.getStartOffset()+ids.getIdentifierStartoffset(i);
+				return mark1.getStartOffset()+ids.get(i).getStartOffset();
 			}
 		}
 		return 0;
