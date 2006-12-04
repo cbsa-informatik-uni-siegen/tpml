@@ -105,9 +105,23 @@ public class ASTBinding
         }
       }
     }
-    // CurriedLet
-    else if ( this.holeExpression instanceof CurriedLet )
+    // CurriedLetRec
+    else if ( this.holeExpression instanceof CurriedLetRec )
     {
+      /*
+       * Search for an Identifier with the same name as the first Identifier. If
+       * someone is found, the first Identifier binds only in E2.
+       */
+      for ( int i = 1 ; i < this.identifierList.size ( ) ; i ++ )
+      {
+        if ( this.identifierList.get ( 0 ).equals (
+            this.identifierList.get ( i ) ) )
+        {
+          this.expressionList.set ( 0 ,
+              ( ( CurriedLetRec ) this.holeExpression ).getE2 ( ) ) ;
+          break ;
+        }
+      }
       /*
        * Search for an Identifier with the same name as the current, starting
        * with the second Identifier. If someone is found, the current Expression
@@ -127,22 +141,9 @@ public class ASTBinding
         }
       }
     }
-    // CurriedLetRec
-    else if ( this.holeExpression instanceof CurriedLetRec )
+    // CurriedLet
+    else if ( this.holeExpression instanceof CurriedLet )
     {
-      /*
-       * Search for an Identifier with the same name as the first Identifier. If
-       * someone is found, the first Identifier binds only in E2.
-       */
-      for ( int i = 1 ; i < this.identifierList.size ( ) ; i ++ )
-      {
-        if ( this.identifierList.get ( 0 ).equals (
-            this.identifierList.get ( i ) ) )
-        {
-          this.expressionList.set ( 0 , this.expressionList.get ( 1 ) ) ;
-          break ;
-        }
-      }
       /*
        * Search for an Identifier with the same name as the current, starting
        * with the second Identifier. If someone is found, the current Expression
