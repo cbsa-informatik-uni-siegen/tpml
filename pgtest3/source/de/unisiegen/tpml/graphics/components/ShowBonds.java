@@ -17,6 +17,7 @@ import de.unisiegen.tpml.core.expressions.MultiLet;
 import de.unisiegen.tpml.core.expressions.Recursion;
 import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation;
 import de.unisiegen.tpml.core.prettyprinter.PrettyString;
+import de.unisiegen.tpml.core.util.IdentifierListItem;
 import de.unisiegen.tpml.core.util.IdentifierUtilities;
 /**
  * 
@@ -289,7 +290,7 @@ public class ShowBonds
 		/**
 		 * this array contains all free Variables of the second Expression
 		 */
-		Object[] a = pLet.getE1().free().toArray();
+		Object[] a = pLet.getE2().free().toArray();
 
 		LinkedList<String> b = castArray(pLet.getIdentifiers());
 		
@@ -302,7 +303,7 @@ public class ShowBonds
 		 */
 		LinkedList<Expression> child = new LinkedList<Expression>();
 		
-		child.add(pLet.getE1());
+		child.add(pLet.getE2());
 
 		checkRec(child, pLet, list);
 
@@ -712,17 +713,17 @@ public class ShowBonds
 	 */
 	private int getStartOffset(Expression pExpression, Identifier id, PrettyAnnotation mark1)
 	{
-	
-		ArrayList<de.unisiegen.tpml.core.util.Identifier> ids= IdentifierUtilities.getIdentifierPositions(pExpression);
+		int last=0;
+		ArrayList<IdentifierListItem> ids= IdentifierUtilities.getIdentifierPositions(pExpression);
 		
 		for (int i=0; i<ids.size();i++)
 		{
 			if (ids.get(i).getId().equals(id.toString()))
 			{
-				return mark1.getStartOffset()+ids.get(i).getStartOffset();
+				last=i;
 			}
 		}
-		return 0;
+		return mark1.getStartOffset()+ids.get(last).getStartOffset();
 	}
 
 	/**
