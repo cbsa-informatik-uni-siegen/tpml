@@ -157,10 +157,10 @@ public final class SmallStepProofModel extends AbstractInterpreterProofModel {
     }
     
     // evaluate the next step for the node
-    DefaultSmallStepProofContext context = new DefaultSmallStepProofContext(node, this.ruleSet);
+    DefaultSmallStepProofContext context = new DefaultSmallStepProofContext((SmallStepProofNode)node, this.ruleSet);
     
     // determine the completed/evaluated steps
-    ProofStep[] completedSteps = node.getSteps();
+    ProofStep[] completedSteps = ((SmallStepProofNode)node).getSteps();
     ProofStep[] evaluatedSteps = context.getSteps();
 
     // generate the remaining steps

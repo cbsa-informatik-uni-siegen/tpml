@@ -1,6 +1,6 @@
 package de.unisiegen.tpml.core.interpreters;
 
-import de.unisiegen.tpml.core.ProofNode;
+import de.unisiegen.tpml.core.ExpressionProofNode;
 
 /**
  * Base interface for big and small step interpreter proof nodes, used in the
@@ -10,9 +10,9 @@ import de.unisiegen.tpml.core.ProofNode;
  * @version $Rev$
  *
  * @see de.unisiegen.tpml.core.interpreters.InterpreterProofModel
- * @see de.unisiegen.tpml.core.ProofNode
+ * @see de.unisiegen.tpml.core.ExpressionProofNode
  */
-public interface InterpreterProofNode extends ProofNode {
+public interface InterpreterProofNode extends ExpressionProofNode {
   //
   // Accessors
   //

@@ -2,7 +2,6 @@ package de.unisiegen.tpml.core.smallstep;
 
 import java.util.Vector;
 
-import de.unisiegen.tpml.core.ProofNode;
 import de.unisiegen.tpml.core.ProofRule;
 import de.unisiegen.tpml.core.ProofRuleSet;
 import de.unisiegen.tpml.core.ProofStep;
@@ -54,14 +53,14 @@ final class DefaultSmallStepProofContext implements SmallStepProofContext {
    * Allocates a new <code>DefaultSmallStepProofContext</code> instance using the specified <code>node</code>
    * and the small step proof <code>ruleSet</code>.
    *
-   * @param node the {@link ProofNode} for which to determine the next small steps. The expression
+   * @param node the {@link SmallStepProofNode} for which to determine the next small steps. The expression
    *             and the store from the <code>node</code> are relevant here.
    * @param ruleSet the {@link AbstractSmallStepProofRuleSet} to use for the evaluation of the next
    *                small steps.
    * 
    * @throws NullPointerException if <code>node</code> or <code>ruleSet</code> is <code>null</code>.
    */
-  DefaultSmallStepProofContext(ProofNode node, ProofRuleSet ruleSet) {
+  DefaultSmallStepProofContext(SmallStepProofNode node, ProofRuleSet ruleSet) {
     if (node == null) {
       throw new NullPointerException("node is null");
     }
@@ -71,7 +70,7 @@ final class DefaultSmallStepProofContext implements SmallStepProofContext {
     
     // setup the initial expression and store
     this.expression = node.getExpression();
-    this.store = new DefaultStore((DefaultStore)((SmallStepProofNode)node).getStore());
+    this.store = new DefaultStore((DefaultStore)node.getStore());
     
     // evaluate the next steps
     this.expression = ((AbstractSmallStepProofRuleSet)ruleSet).evaluate(this, this.expression);

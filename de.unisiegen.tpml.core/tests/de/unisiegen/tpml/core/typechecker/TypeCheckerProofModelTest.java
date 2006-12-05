@@ -19,6 +19,7 @@ import javax.swing.JPanel;
 import javax.swing.JTree;
 import javax.swing.tree.TreePath;
 
+import de.unisiegen.tpml.core.ExpressionProofNode;
 import de.unisiegen.tpml.core.ProofNode;
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.languages.Language;
@@ -142,7 +143,7 @@ public final class TypeCheckerProofModelTest extends JFrame {
           // translate the last node
           TreePath path = tree.getSelectionPath();
           if (path != null) {
-            model.translateToCoreSyntax((ProofNode)path.getLastPathComponent(), false);
+            model.translateToCoreSyntax((ExpressionProofNode)path.getLastPathComponent(), false);
           }
         }
         catch (Exception e) {
@@ -167,7 +168,7 @@ public final class TypeCheckerProofModelTest extends JFrame {
     nodes.add(model.getRoot());
     while (!nodes.isEmpty()) {
       ProofNode node = nodes.poll();
-      if (node.getSteps().length == 0) {
+      if (node.getRules().length == 0) {
         return node;
       }
       for (int n = 0; n < node.getChildCount(); ++n) {

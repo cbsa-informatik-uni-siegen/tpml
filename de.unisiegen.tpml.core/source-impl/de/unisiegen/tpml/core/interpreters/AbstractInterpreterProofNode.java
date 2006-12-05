@@ -1,5 +1,6 @@
 package de.unisiegen.tpml.core.interpreters;
 
+import de.unisiegen.tpml.core.AbstractExpressionProofNode;
 import de.unisiegen.tpml.core.AbstractProofNode;
 import de.unisiegen.tpml.core.expressions.Expression;
 
@@ -13,7 +14,7 @@ import de.unisiegen.tpml.core.expressions.Expression;
  * @see de.unisiegen.tpml.core.interpreters.InterpreterProofNode
  * @see de.unisiegen.tpml.core.AbstractProofNode
  */
-public abstract class AbstractInterpreterProofNode extends AbstractProofNode implements InterpreterProofNode {
+public abstract class AbstractInterpreterProofNode extends AbstractExpressionProofNode implements InterpreterProofNode {
   //
   // Attributes
   //

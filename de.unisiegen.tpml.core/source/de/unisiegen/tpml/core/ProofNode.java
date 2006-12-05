@@ -5,10 +5,9 @@ import java.util.NoSuchElementException;
 
 import javax.swing.tree.TreeNode;
 
-import de.unisiegen.tpml.core.expressions.Expression;
-
 /**
- * Base class for proof nodes that present the fundamental parts of the {@link de.unisiegen.tpml.core.ProofModel}s.
+ * Base interface for proof nodes that present the fundamental parts
+ * of the {@link de.unisiegen.tpml.core.ProofModel}s.
  * 
  * @author Benedikt Meurer
  * @version $Rev$
@@ -21,38 +20,15 @@ public interface ProofNode extends TreeNode {
   //
 
   /**
-   * Returns the {@link Expression} associated with this proof node. This is garantied to never return
-   * <code>null</code>.
-   * 
-   * @return the {@link Expression} for this proof node.
-   * 
-   * @see #getSteps()
-   */
-  public Expression getExpression();
-
-  /**
-   * Convenience wrapper for the {@link #getSteps()} method, which returns only the {@link ProofRule}s
-   * from the {@link ProofStep}s.
+   * Returns the {@link ProofRule}s which were already applied to this proof node. If no rules have been
+   * applied so far, the empty array is returned instead.
    * 
    * @return the already applied {@link ProofRule}s.
    * 
-   * @see #getSteps()
+   * @see ProofRule
    */
   public ProofRule[] getRules();
-  
-  /**
-   * Returns the {@link ProofStep}s which were already performed on this proof node. The steps represent
-   * the {@link ProofRule}s that were applied to this node already and the associated expressions (which
-   * may be sub expressions of the expression associated with this proof node), to which the rules were
-   * applied.
-   * 
-   * @return the {@link ProofStep}s or an empty array if no rules were applied to this node yet.
-   * 
-   * @see #getExpression()
-   * @see #getRules()
-   */
-  public ProofStep[] getSteps();
-  
+
   /**
    * Returns <code>true</code> if this node is already proven, that is, whether no more rules can be applied
    * to this node. If <code>false</code> is returned the user must still apply additional rules to complete
@@ -60,7 +36,7 @@ public interface ProofNode extends TreeNode {
    * 
    * @return <code>true</code> if this node is already proven.
    * 
-   * @see #getSteps()
+   * @see #getRules()
    */
   public boolean isProven();
   

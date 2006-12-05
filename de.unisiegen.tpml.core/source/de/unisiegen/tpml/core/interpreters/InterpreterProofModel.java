@@ -1,19 +1,19 @@
 package de.unisiegen.tpml.core.interpreters;
 
-import de.unisiegen.tpml.core.ProofModel;
+import de.unisiegen.tpml.core.ExpressionProofModel;
 
 /**
  * Base interface for the big and small step interpreter proof models. It extends the
- * {@link de.unisiegen.tpml.core.ProofModel} interface with functionality to query
- * whether memory operations are enabled during the evaluation of the expression.
+ * {@link de.unisiegen.tpml.core.ExpressionProofModel} interface with functionality to
+ * query whether memory operations are enabled during the evaluation of the expression.
  *
  * @author Benedikt Meurer
  * @version $Rev$
  *
  * @see de.unisiegen.tpml.core.interpreters.InterpreterProofNode
- * @see de.unisiegen.tpml.core.ProofModel
+ * @see de.unisiegen.tpml.core.ExpressionProofModel
  */
-public interface InterpreterProofModel extends ProofModel {
+public interface InterpreterProofModel extends ExpressionProofModel {
   //
   // Accessors
   //

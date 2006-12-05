@@ -2,6 +2,7 @@ package de.unisiegen.tpml.core.interpreters;
 
 import java.util.Arrays;
 
+import de.unisiegen.tpml.core.AbstractExpressionProofModel;
 import de.unisiegen.tpml.core.AbstractProofModel;
 import de.unisiegen.tpml.core.AbstractProofNode;
 import de.unisiegen.tpml.core.AbstractProofRuleSet;
@@ -17,9 +18,9 @@ import de.unisiegen.tpml.core.ProofRule;
  * @version $Rev$
  *
  * @see de.unisiegen.tpml.core.interpreters.InterpreterProofModel
- * @see de.unisiegen.tpml.core.AbstractProofModel
+ * @see de.unisiegen.tpml.core.AbstractExpressionProofModel
  */
-public abstract class AbstractInterpreterProofModel extends AbstractProofModel implements InterpreterProofModel {
+public abstract class AbstractInterpreterProofModel extends AbstractExpressionProofModel implements InterpreterProofModel {
   //
   // Attributes
   //

@@ -77,7 +77,7 @@ public final class BigStepProofModel extends AbstractInterpreterProofModel {
     if (node == null) {
       throw new NullPointerException("node is null"); //$NON-NLS-1$
     }
-    if (node.getSteps().length > 0) {
+    if (node.getRules().length > 0) {
       throw new IllegalArgumentException("The node is already completed"); //$NON-NLS-1$
     }
     if (!this.root.isNodeRelated(node)) {
@@ -151,7 +151,7 @@ public final class BigStepProofModel extends AbstractInterpreterProofModel {
     if (!this.root.isNodeRelated(node)) {
       throw new IllegalArgumentException("The node is invalid for the model"); //$NON-NLS-1$
     }
-    if (node.getSteps().length > 0) {
+    if (node.getRules().length > 0) {
       throw new IllegalArgumentException("The node is already completed"); //$NON-NLS-1$
     }
    

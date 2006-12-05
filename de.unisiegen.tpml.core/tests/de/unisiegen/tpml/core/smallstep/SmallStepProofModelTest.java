@@ -19,6 +19,7 @@ import javax.swing.JPanel;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
+import de.unisiegen.tpml.core.ExpressionProofNode;
 import de.unisiegen.tpml.core.ProofNode;
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.languages.Language;
@@ -181,7 +182,7 @@ public class SmallStepProofModelTest extends JFrame {
       public void actionPerformed(ActionEvent event) {
         try {
           // translate the last node
-          ProofNode node = model.getRoot().getLastLeaf();
+          ExpressionProofNode node = model.getRoot().getLastLeaf();
           model.translateToCoreSyntax(node, false);
         }
         catch (Exception e) {

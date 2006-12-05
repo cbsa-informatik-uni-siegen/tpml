@@ -6,14 +6,12 @@ import java.util.Vector;
 
 import javax.swing.tree.TreeNode;
 
-import de.unisiegen.tpml.core.expressions.Expression;
-
 /**
- * Abstract base class for proof nodes that present the fundamental
- * parts of the {@link common.AbstractProofModel}s. The user interface
+ * Abstract base class for proof nodes that present the fundamental parts of
+ * the {@link de.unisiegen.tpml.core.AbstractProofModel}s. The user interface
  * and other modules should never access methods of this class directly,
  * as they are subject to change, instead the upper layer should restrict
- * usage to the {@link common.ProofNode} interface.
+ * usage to the {@link de.unisiegen.tpml.core.ProofNode} interface.
  * 
  * @author Benedikt Meurer
  * @version $Rev$
@@ -30,13 +28,7 @@ public abstract class AbstractProofNode implements ProofNode {
    * Empty {@link ProofRule} array which is returned from {@link #getRules()}
    * when no steps have been added to a proof node. 
    */
-  private static final ProofRule[] EMPTY_RULES_ARRAY = new ProofRule[0];
-  
-  /**
-   * Empty {@link ProofStep} array which is returned from {@link #getSteps()}
-   * when no steps have been added to a proof node. 
-   */
-  private static final ProofStep[] EMPTY_STEPS_ARRAY = new ProofStep[0];
+  private static final ProofRule[] EMPTY_ARRAY = new ProofRule[0];
   
   /**
    * An enumeration that is always empty. This is used when an enumeration of a
@@ -64,13 +56,6 @@ public abstract class AbstractProofNode implements ProofNode {
   protected Vector<AbstractProofNode> children;
   
   /**
-   * The {@link Expression} associated with this proof node.
-   * 
-   * @see #getExpression()
-   */
-  protected Expression expression;
-
-  /**
    * The parent node of this node, or <code>null</code> if this is the root
    * node of a proof tree.
    * 
@@ -80,21 +65,13 @@ public abstract class AbstractProofNode implements ProofNode {
   protected AbstractProofNode parent;
   
   /**
-   * Cached array for the {@link #getRules()} method, so the rules do not
-   * need to be determined each time.
+   * The rules that have been applied to this proof node so far, or <code>null</code> if no
+   * rules have been applied yet.
    * 
    * @see #getRules()
+   * @see #setRules(ProofRule[])
    */
   private ProofRule[] rules;
-  
-  /**
-   * The proof steps that were already performed on this {@link ProofNode},
-   * which consist of both the {@link ProofRule} and the {@link Expression}.
-   * 
-   * @see #getSteps()
-   * @see #setSteps(ProofStep[])
-   */
-  private ProofStep[] steps;
   
   /**
    * The user object associated with this {@link ProofNode}.
@@ -111,20 +88,11 @@ public abstract class AbstractProofNode implements ProofNode {
   //
   
   /**
-   * Allocates a new {@link AbstractProofNode} for the given
-   * <code>expression</code>. The list of {@link ProofStep}s
-   * starts as an empty list.
-   * 
-   * @param expression the {@link Expression} for this proof node.
-   * 
-   * @throws NullPointerException if <code>expression</code>
-   *                              is <code>null</code>.
+   * Allocates a new {@link AbstractProofNode} without any children and no
+   * link to a parent.
    */
-  protected AbstractProofNode(Expression expression) {
-    if (expression == null) {
-      throw new NullPointerException("expression is null");
-    }
-    this.expression = expression;
+  protected AbstractProofNode() {
+    this.rules = EMPTY_ARRAY;
   }
   
   
@@ -135,78 +103,22 @@ public abstract class AbstractProofNode implements ProofNode {
 
   /**
    * {@inheritDoc}
-   * 
-   * @see ProofNode#getExpression()
-   */
-  public Expression getExpression() {
-    return this.expression;
-  }
-  
-  /**
-   * Sets the {@link Expression} which is associated
-   * with this proof node. This method is used by proof
-   * model implementations, for example to implement the
-   * {@link ProofModel#translateToCoreSyntax(ProofNode)}
-   * method.
-   * 
-   * @param expression the new {@link Expression}.
-   */
-  public void setExpression(Expression expression) {
-    this.expression = expression;
-  }
-
-  /**
-   * {@inheritDoc}
    *
    * @see de.unisiegen.tpml.core.ProofNode#getRules()
    */
   public ProofRule[] getRules() {
-    // determine the rules on-demand
-    if (this.rules == null) {
-      // check if we have any steps
-      if (this.steps == null) {
-        return EMPTY_RULES_ARRAY;
-      }
-      else {
-        // determine the rules from the steps
-        this.rules = new ProofRule[this.steps.length];
-        for (int n = 0; n < this.steps.length; ++n) {
-          this.rules[n] = this.steps[n].getRule();
-        }
-      }
-    }
     return this.rules;
   }
   
   /**
-   * {@inheritDoc}
+   * Sets the {@link ProofRule}s that have been applied to this node so far to
+   * the specified <code>rules</code>. If <code>rules</code> is <code>null</code>
+   * it is assumed that no rules have been applied yet.
    * 
-   * @see ProofNode#getSteps()
+   * @param rules the new proof rules for this node.
    */
-  public ProofStep[] getSteps() {
-    if (this.steps == null) {
-      return EMPTY_STEPS_ARRAY;
-    }
-    else {
-      return this.steps;
-    }
-  }
-  
-  /**
-   * Sets the {@link ProofStep}s which should be marked as
-   * completed for this proof node. This method should only
-   * be used by proof node and model implementations. Other
-   * modules, like the user interface, should never try to
-   * explicitly set the steps for a node.
-   * 
-   * @param steps list of {@link ProofStep}s that should
-   *              be marked as completed for this node.
-   *              
-   * @see #getSteps()              
-   */
-  public void setSteps(ProofStep[] steps) {
-    this.rules = null;
-    this.steps = steps;
+  public void setRules(ProofRule[] rules) {
+    this.rules = (rules != null) ? rules : EMPTY_ARRAY;
   }
   
   /**

@@ -2,7 +2,7 @@ package de.unisiegen.tpml.core.typechecker;
 
 import javax.swing.tree.TreeNode;
 
-import de.unisiegen.tpml.core.AbstractProofNode;
+import de.unisiegen.tpml.core.AbstractExpressionProofNode;
 import de.unisiegen.tpml.core.ProofStep;
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.types.MonoType;
@@ -14,10 +14,10 @@ import de.unisiegen.tpml.core.types.MonoType;
  * @author Benedikt Meurer
  * @version $Rev$
  *
- * @see de.unisiegen.tpml.core.AbstractProofNode
+ * @see de.unisiegen.tpml.core.AbstractExpressionProofNode
  * @see de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode
  */
-final class DefaultTypeCheckerProofNode extends AbstractProofNode implements TypeCheckerProofNode {
+final class DefaultTypeCheckerProofNode extends AbstractExpressionProofNode implements TypeCheckerProofNode {
   //
   // Attributes
   //

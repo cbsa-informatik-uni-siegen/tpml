@@ -4,6 +4,7 @@ import java.util.Enumeration;
 
 import org.apache.log4j.Logger;
 
+import de.unisiegen.tpml.core.AbstractExpressionProofModel;
 import de.unisiegen.tpml.core.AbstractProofModel;
 import de.unisiegen.tpml.core.AbstractProofNode;
 import de.unisiegen.tpml.core.AbstractProofRuleSet;
@@ -24,11 +25,11 @@ import de.unisiegen.tpml.core.types.TypeVariable;
  * @author Benedikt Meurer
  * @version $Rev$
  *
- * @see de.unisiegen.tpml.core.AbstractProofModel
+ * @see de.unisiegen.tpml.core.AbstractExpressionProofModel
  * @see de.unisiegen.tpml.core.typechecker.TypeCheckerProofContext
  * @see de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode
  */
-public final class TypeCheckerProofModel extends AbstractProofModel {
+public final class TypeCheckerProofModel extends AbstractExpressionProofModel {
   //
   // Constants
   //
@@ -181,7 +182,7 @@ public final class TypeCheckerProofModel extends AbstractProofModel {
     if (!this.root.isNodeRelated(node)) {
       throw new IllegalArgumentException("The node is invalid for the model");
     }
-    if (node.getSteps().length > 0) {
+    if (node.getRules().length > 0) {
       throw new IllegalArgumentException("The node is already completed");
     }
     

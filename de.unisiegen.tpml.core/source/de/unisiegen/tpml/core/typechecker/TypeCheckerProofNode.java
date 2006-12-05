@@ -2,6 +2,7 @@ package de.unisiegen.tpml.core.typechecker;
 
 import javax.swing.tree.TreeNode;
 
+import de.unisiegen.tpml.core.ExpressionProofNode;
 import de.unisiegen.tpml.core.ProofNode;
 import de.unisiegen.tpml.core.types.MonoType;
 
@@ -11,10 +12,10 @@ import de.unisiegen.tpml.core.types.MonoType;
  * @author Benedikt Meurer
  * @version $Rev$
  *
- * @see de.unisiegen.tpml.core.ProofNode
+ * @see de.unisiegen.tpml.core.ExpressionProofNode
  * @see de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel
  */
-public interface TypeCheckerProofNode extends ProofNode {
+public interface TypeCheckerProofNode extends ExpressionProofNode {
   //
   // Accessors
   //
