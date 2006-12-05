@@ -8,6 +8,7 @@ import java.awt.GridBagLayout ;
 import java.awt.Insets ;
 import java.util.ResourceBundle ;
 import javax.swing.BorderFactory ;
+import javax.swing.ImageIcon ;
 import javax.swing.JCheckBox ;
 import javax.swing.JCheckBoxMenuItem ;
 import javax.swing.JMenu ;
@@ -229,6 +230,14 @@ public class ASTUI
    * @see #getJMenuItemCloseAll()
    */
   private JMenuItem jMenuItemCloseAll ;
+
+
+  /**
+   * The menu item copy.
+   * 
+   * @see #getJMenuItemCopy()
+   */
+  private JMenuItem jMenuItemCopy ;
 
 
   /**
@@ -467,6 +476,8 @@ public class ASTUI
         "expandMnemonic" ).charAt ( 0 ) ) ; //$NON-NLS-1$
     this.jMenuItemExpand.setToolTipText ( this.resourceBundle
         .getString ( "expandToolTip" ) ) ; //$NON-NLS-1$
+    this.jMenuItemExpand.setIcon ( new ImageIcon ( getClass ( ).getResource (
+        "/de/unisiegen/tpml/ui/icons/empty16.gif" ) ) ) ; //$NON-NLS-1$
     this.jMenuItemExpand.setActionCommand ( "expand" ) ; //$NON-NLS-1$
     this.jMenuItemExpand.addActionListener ( this.aSTActionListener ) ;
     this.jPopupMenu.add ( this.jMenuItemExpand ) ;
@@ -477,6 +488,8 @@ public class ASTUI
         "expandAllMnemonic" ).charAt ( 0 ) ) ; //$NON-NLS-1$
     this.jMenuItemExpandAll.setToolTipText ( this.resourceBundle
         .getString ( "expandAllToolTip" ) ) ; //$NON-NLS-1$
+    this.jMenuItemExpandAll.setIcon ( new ImageIcon ( getClass ( ).getResource (
+        "/de/unisiegen/tpml/ui/icons/empty16.gif" ) ) ) ; //$NON-NLS-1$
     this.jMenuItemExpandAll.setActionCommand ( "expandAll" ) ; //$NON-NLS-1$
     this.jMenuItemExpandAll.addActionListener ( this.aSTActionListener ) ;
     this.jPopupMenu.add ( this.jMenuItemExpandAll ) ;
@@ -489,6 +502,8 @@ public class ASTUI
         "collapseMnemonic" ).charAt ( 0 ) ) ; //$NON-NLS-1$
     this.jMenuItemCollapse.setToolTipText ( this.resourceBundle
         .getString ( "collapseToolTip" ) ) ; //$NON-NLS-1$
+    this.jMenuItemCollapse.setIcon ( new ImageIcon ( getClass ( ).getResource (
+        "/de/unisiegen/tpml/ui/icons/empty16.gif" ) ) ) ; //$NON-NLS-1$
     this.jMenuItemCollapse.setActionCommand ( "collapse" ) ; //$NON-NLS-1$
     this.jMenuItemCollapse.addActionListener ( this.aSTActionListener ) ;
     this.jPopupMenu.add ( this.jMenuItemCollapse ) ;
@@ -499,6 +514,8 @@ public class ASTUI
         "collapseAllMnemonic" ).charAt ( 0 ) ) ; //$NON-NLS-1$
     this.jMenuItemCollapseAll.setToolTipText ( this.resourceBundle
         .getString ( "collapseAllToolTip" ) ) ; //$NON-NLS-1$
+    this.jMenuItemCollapseAll.setIcon ( new ImageIcon ( getClass ( )
+        .getResource ( "/de/unisiegen/tpml/ui/icons/empty16.gif" ) ) ) ; //$NON-NLS-1$
     this.jMenuItemCollapseAll.setActionCommand ( "collapseAll" ) ; //$NON-NLS-1$
     this.jMenuItemCollapseAll.addActionListener ( this.aSTActionListener ) ;
     this.jPopupMenu.add ( this.jMenuItemCollapseAll ) ;
@@ -511,6 +528,8 @@ public class ASTUI
         "closeMnemonic" ).charAt ( 0 ) ) ; //$NON-NLS-1$
     this.jMenuItemClose.setToolTipText ( this.resourceBundle
         .getString ( "closeToolTip" ) ) ; //$NON-NLS-1$
+    this.jMenuItemClose.setIcon ( new ImageIcon ( getClass ( ).getResource (
+        "/de/unisiegen/tpml/ui/icons/empty16.gif" ) ) ) ; //$NON-NLS-1$
     this.jMenuItemClose.setActionCommand ( "close" ) ; //$NON-NLS-1$
     this.jMenuItemClose.addActionListener ( this.aSTActionListener ) ;
     this.jPopupMenu.add ( this.jMenuItemClose ) ;
@@ -521,9 +540,25 @@ public class ASTUI
         "closeAllMnemonic" ).charAt ( 0 ) ) ; //$NON-NLS-1$
     this.jMenuItemCloseAll.setToolTipText ( this.resourceBundle
         .getString ( "closeAllToolTip" ) ) ; //$NON-NLS-1$
+    this.jMenuItemCloseAll.setIcon ( new ImageIcon ( getClass ( ).getResource (
+        "/de/unisiegen/tpml/ui/icons/empty16.gif" ) ) ) ; //$NON-NLS-1$
     this.jMenuItemCloseAll.setActionCommand ( "closeAll" ) ; //$NON-NLS-1$
     this.jMenuItemCloseAll.addActionListener ( this.aSTActionListener ) ;
     this.jPopupMenu.add ( this.jMenuItemCloseAll ) ;
+    // Separator
+    this.jPopupMenu.addSeparator ( ) ;
+    // MenuItem Copy
+    this.jMenuItemCopy = new JMenuItem ( this.resourceBundle
+        .getString ( "copy" ) ) ; //$NON-NLS-1$
+    this.jMenuItemCopy.setMnemonic ( this.resourceBundle.getString (
+        "copyMnemonic" ).charAt ( 0 ) ) ; //$NON-NLS-1$
+    this.jMenuItemCopy.setToolTipText ( this.resourceBundle
+        .getString ( "copyToolTip" ) ) ; //$NON-NLS-1$
+    this.jMenuItemCopy.setIcon ( new ImageIcon ( getClass ( ).getResource (
+        "/de/unisiegen/tpml/ui/icons/copy16.gif" ) ) ) ; //$NON-NLS-1$
+    this.jMenuItemCopy.setActionCommand ( "copy" ) ; //$NON-NLS-1$
+    this.jMenuItemCopy.addActionListener ( this.aSTActionListener ) ;
+    this.jPopupMenu.add ( this.jMenuItemCopy ) ;
     // Separator
     this.jPopupMenu.addSeparator ( ) ;
     // MenuItem Preferences
@@ -531,6 +566,8 @@ public class ASTUI
         .getString ( "preferences" ) ) ; //$NON-NLS-1$
     this.jMenuPreferences.setMnemonic ( this.resourceBundle.getString (
         "preferencesMnemonic" ).charAt ( 0 ) ) ; //$NON-NLS-1$
+    this.jMenuPreferences.setIcon ( new ImageIcon ( getClass ( ).getResource (
+        "/de/unisiegen/tpml/ui/icons/empty16.gif" ) ) ) ; //$NON-NLS-1$  
     this.jMenuPreferences.setActionCommand ( "preferences" ) ; //$NON-NLS-1$
     this.jMenuPreferences.addActionListener ( this.aSTActionListener ) ;
     this.jPopupMenu.add ( this.jMenuPreferences ) ;
@@ -786,6 +823,18 @@ public class ASTUI
   public JMenuItem getJMenuItemCollapseAll ( )
   {
     return this.jMenuItemCollapseAll ;
+  }
+
+
+  /**
+   * Returns the jMenuItemCopy.
+   * 
+   * @return The jMenuItemCopy.
+   * @see #jMenuItemCopy
+   */
+  public JMenuItem getJMenuItemCopy ( )
+  {
+    return this.jMenuItemCopy ;
   }
 
 

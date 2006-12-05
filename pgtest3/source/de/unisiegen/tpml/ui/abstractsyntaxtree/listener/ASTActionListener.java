@@ -1,10 +1,16 @@
 package de.unisiegen.tpml.ui.abstractsyntaxtree.listener ;
 
 
+import java.awt.Toolkit ;
+import java.awt.datatransfer.Clipboard ;
+import java.awt.datatransfer.ClipboardOwner ;
+import java.awt.datatransfer.StringSelection ;
+import java.awt.datatransfer.Transferable ;
 import java.awt.event.ActionEvent ;
 import java.awt.event.ActionListener ;
 import javax.swing.tree.DefaultMutableTreeNode ;
 import javax.swing.tree.TreePath ;
+import de.unisiegen.tpml.ui.abstractsyntaxtree.ASTNode ;
 import de.unisiegen.tpml.ui.abstractsyntaxtree.ASTUI ;
 
 
@@ -15,12 +21,18 @@ import de.unisiegen.tpml.ui.abstractsyntaxtree.ASTUI ;
  * @author Christian Fehler
  * @version $Rev$
  */
-public class ASTActionListener implements ActionListener
+public class ASTActionListener implements ActionListener , ClipboardOwner
 {
   /**
    * The AbstractSyntaxTree UI.
    */
   private ASTUI aSTUI ;
+
+
+  /**
+   * The clipboard.
+   */
+  private Clipboard clipboard ;
 
 
   /**
@@ -31,6 +43,7 @@ public class ASTActionListener implements ActionListener
   public ASTActionListener ( ASTUI pASTUI )
   {
     this.aSTUI = pASTUI ;
+    this.clipboard = Toolkit.getDefaultToolkit ( ).getSystemClipboard ( ) ;
   }
 
 
@@ -66,6 +79,10 @@ public class ASTActionListener implements ActionListener
     else if ( actionCommand.equals ( "collapseAll" ) ) //$NON-NLS-1$
     {
       collapseAll ( ) ;
+    }
+    else if ( actionCommand.equals ( "copy" ) ) //$NON-NLS-1$
+    {
+      copy ( ) ;
     }
     else if ( actionCommand.equals ( "selection" ) ) //$NON-NLS-1$
     {
@@ -153,6 +170,23 @@ public class ASTActionListener implements ActionListener
 
 
   /**
+   * Copies the selection into the clipboard.
+   */
+  public void copy ( )
+  {
+    DefaultMutableTreeNode node = ( DefaultMutableTreeNode ) this.aSTUI
+        .getJTreeAbstractSyntaxTree ( ).getSelectionPath ( )
+        .getLastPathComponent ( ) ;
+    if ( node != null )
+    {
+      StringSelection stringSelection = new StringSelection (
+          ( ( ASTNode ) node.getUserObject ( ) ).getExpressionString ( ) ) ;
+      this.clipboard.setContents ( stringSelection , this ) ;
+    }
+  }
+
+
+  /**
    * Expands the selected node.
    */
   public void expand ( )
@@ -194,5 +228,21 @@ public class ASTActionListener implements ActionListener
       expandTreePath ( pTreePath.pathByAddingChild ( lastNode.getChildAt ( i ) ) ) ;
     }
     this.aSTUI.getJTreeAbstractSyntaxTree ( ).expandPath ( pTreePath ) ;
+  }
+
+
+  /**
+   * This method is invoked if the ownership is lost.
+   * 
+   * @param pClipboard The clipboard.
+   * @param pContents The contests.
+   * @see java.awt.datatransfer.ClipboardOwner#lostOwnership(java.awt.datatransfer.Clipboard,
+   *      java.awt.datatransfer.Transferable)
+   */
+  public void lostOwnership ( @ SuppressWarnings ( "unused" )
+  Clipboard pClipboard , @ SuppressWarnings ( "unused" )
+  Transferable pContents )
+  {
+    // Do Nothing
   }
 }
