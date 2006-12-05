@@ -565,7 +565,7 @@ public class AbstractSyntaxTree
     }
     if ( pDescription.equals ( "change_typechecker" ) ) //$NON-NLS-1$
     {
-      Debug.err
+      Debug.err 
           .println ( "No update in the TypeChecker View" , Debug.CHRISTIAN ) ; //$NON-NLS-1$
       return ;
     }
@@ -575,6 +575,6 @@ public class AbstractSyntaxTree
     this.oldExpression = pExpression ;
     this.aSTUI.setRootNode ( expression ( pExpression ) ) ;
     optimizer.setTimeTag ( "nodes" ) ; //$NON-NLS-1$
-    Debug.out.println ( optimizer.getTimeTags ( ) , Debug.CHRISTIAN ) ;
+    System.out.println ( optimizer.getTimeTags ( ) ) ;
   }
 }
