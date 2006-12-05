@@ -83,7 +83,7 @@ LineTerminator	= \r|\n|\r\n
 WhiteSpace		= {LineTerminator} | [ \t\f]
 
 Number			= [:digit:]+
-Identifier		= [:jletter:] [:jletterdigit:]*
+Identifier		= [a-zA-Z] [a-zA-Z0-9]* '*
 LetterAX		= [a-x]
 LetterGreek		= [\u03b1-\u03c1\u03c3-\u03c9]
 

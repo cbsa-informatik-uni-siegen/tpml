@@ -66,7 +66,7 @@ import de.unisiegen.tpml.core.languages.LanguageSymbol;
 LineTerminator	= \r|\n|\r\n
 WhiteSpace		= {LineTerminator} | [ \t\f]
 
-Identifier		= [:jletter:] [:jletterdigit:]*
+Identifier		= [a-zA-Z] [a-zA-Z0-9]* '*
 
 %state YYCOMMENT, YYCOMMENTEOF
 
