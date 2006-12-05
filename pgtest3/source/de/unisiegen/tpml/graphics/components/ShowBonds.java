@@ -23,7 +23,7 @@ import de.unisiegen.tpml.graphics.components.Bonds;
 /**
  * 
  * @author Benjamin
- *
+ * 
  */
 public class ShowBonds
 {
@@ -36,15 +36,16 @@ public class ShowBonds
 	 * List of all Bounds in holeExpression
 	 */
 	private LinkedList<Bonds> result = new LinkedList<Bonds>();
-	
-	//CHANGE BENJAMIN just for Debug
+
+	// CHANGE BENJAMIN just for Debug
 	private String me = "Benjamin";
-	
-/**
- * first check what kind of expression is given.
- * next call right method to handle this expressiontype
- * @param pExpression
- */
+
+	/**
+	 * first check what kind of expression is given. next call right method to
+	 * handle this expressiontype
+	 * 
+	 * @param pExpression
+	 */
 	public void check(Expression pExpression)
 	{
 
@@ -52,7 +53,7 @@ public class ShowBonds
 
 			if (pExpression instanceof Lambda)
 			{
-				
+
 				checkLambda((Lambda) pExpression);
 			}
 			else if (pExpression instanceof MultiLambda)
@@ -102,6 +103,7 @@ public class ShowBonds
 
 	/**
 	 * recursive call of check for children
+	 * 
 	 * @param pExpression
 	 */
 	private void checkChild(Expression pExpression)
@@ -110,12 +112,12 @@ public class ShowBonds
 		 * list with all childs of the expression
 		 */
 		LinkedList<Expression> child = new LinkedList<Expression>();
-		
+
 		/**
 		 * Enumeration with all childs of the expression
 		 */
 		Enumeration tmpChild = pExpression.children();
-		
+
 		/**
 		 * converting from Enumeration to Linked List for better handling
 		 */
@@ -126,7 +128,6 @@ public class ShowBonds
 
 		}
 
-		
 		/**
 		 * calls the check method with any child of the expression
 		 */
@@ -136,7 +137,6 @@ public class ShowBonds
 			{
 				check(child.get(i));
 
-	
 			}
 		}
 
@@ -144,32 +144,29 @@ public class ShowBonds
 
 	/**
 	 * handling if Expression is instance of Expression type Lambda
+	 * 
 	 * @param pLambda
 	 */
 	private void checkLambda(Lambda pLambda)
-	{	
-		
-	
-		/**
-		 * get the body of the lambda expression
-		 */
-		Expression e = pLambda.getE();
-		
+	{
 		/**
 		 * check the body of lambda for other expression with bounds
 		 */
 		checkChild(pLambda);
 
-				
+		/**
+		 * get the body of the lambda expression
+		 */
+		Expression e = pLambda.getE();
+
 		/**
 		 * this array contains all free Variables of the lambda body
 		 */
 		Object[] a = e.free().toArray();
-		
+
 		LinkedList<String> b = new LinkedList<String>();
 		b.add(pLambda.getId());
-		
-		
+
 		/**
 		 * this list contains all bounded Varibles in the lambda expression
 		 */
@@ -180,30 +177,30 @@ public class ShowBonds
 		 */
 		LinkedList<Expression> child = new LinkedList<Expression>();
 		child.add(pLambda.getE());
-			
+
 		checkRec(child, pLambda, list, false);
 
 	}
 
 	/**
-	 * handling if Expression is instance of  Expression type LetRec
+	 * handling if Expression is instance of Expression type LetRec
+	 * 
 	 * @param pRec
 	 */
 	private void checkLetRec(LetRec pRec)
 	{
-		
+
+		checkChild(pRec);
+
 		/**
 		 * this array contains all free Variables of the second Expression
 		 */
 		Object[] a = pRec.getE2().free().toArray();
-		
+
 		LinkedList<String> b = new LinkedList<String>();
 		b.add(pRec.getId());
-		
-		checkChild(pRec);
 
 		LinkedList<String> list = listWithBounds(a, b);
-		
 
 		/**
 		 * list with all childs of the expression
@@ -211,14 +208,14 @@ public class ShowBonds
 		LinkedList<Expression> child = new LinkedList<Expression>();
 		child.add(pRec.getE1());
 		child.add(pRec.getE2());
-		
 
-		checkRec(child, pRec, list,false);
+		checkRec(child, pRec, list, false);
 
 	}
 
 	/**
 	 * handling if Expression is instance of Expression type Multi Lambda
+	 * 
 	 * @param pLambda
 	 */
 	private void checkMultiLambda(MultiLambda pLambda)
@@ -228,12 +225,11 @@ public class ShowBonds
 		Expression e = pLambda.getE();
 		checkChild(pLambda);
 
-		
 		/**
 		 * this array contains all free Variables of the Lambda body
 		 */
 		Object[] a = e.free().toArray();
-		
+
 		LinkedList<String> b = castArray(pLambda.getIdentifiers());
 
 		LinkedList<String> list = listWithBounds(a, b);
@@ -243,92 +239,91 @@ public class ShowBonds
 		 */
 		LinkedList<Expression> child = new LinkedList<Expression>();
 		child.add(pLambda.getE());
-	
 
-		checkRec(child, pLambda, list,false);
+		checkRec(child, pLambda, list, false);
 
 	}
 
 	/**
 	 * handling if Expression is instance of Expression type Let
+	 * 
 	 * @param pLet
 	 */
 	private void checkLet(Let pLet)
 	{
+
+		checkChild(pLet);
 		/**
 		 * this array contains all free Variables of second Expression
 		 */
 		Object[] a = pLet.getE2().free().toArray();
-		
+
 		LinkedList<String> b = new LinkedList<String>();
 		b.add(pLet.getId());
-		
 
 		LinkedList<String> list = listWithBounds(a, b);
-		
-		
-		checkChild(pLet);
 
 		/**
 		 * list with all childs of the expression
 		 */
 		LinkedList<Expression> child = new LinkedList<Expression>();
-		
-		child.add(pLet.getE2());
-		
 
-		checkRec(child, pLet, list,false);
+		child.add(pLet.getE2());
+
+		checkRec(child, pLet, list, false);
 
 	}
 
 	/**
 	 * handling if Expression is instance of Expression type MultiLet
+	 * 
 	 * @param pLet
 	 */
 	private void checkMultiLet(MultiLet pLet)
 	{
-				
+
+		checkChild(pLet);
+
 		/**
 		 * this array contains all free Variables of the second Expression
 		 */
 		Object[] a = pLet.getE2().free().toArray();
 
 		LinkedList<String> b = castArray(pLet.getIdentifiers());
-		
+
 		LinkedList<String> list = listWithBounds(a, b);
-		
-		checkChild(pLet);
 
 		/**
 		 * list with all childs of the expression
 		 */
 		LinkedList<Expression> child = new LinkedList<Expression>();
-		
+
 		child.add(pLet.getE2());
 
-		checkRec(child, pLet, list,false);
+		checkRec(child, pLet, list, false);
 
 	}
 
 	/**
 	 * handling if Expression is instance of Expression type CurriedLet
+	 * 
 	 * @param pLet
 	 */
 	private void checkCurriedLet(CurriedLet pLet)
 	{
+		checkChild(pLet);
 		/**
 		 * this array contains all free Variables of second Expression
 		 */
 		Object[] a = pLet.getE1().free().toArray();
-		
+
 		/**
 		 * this array contains all free Variables of the first Expression
 		 */
 		Object[] b = pLet.getE2().free().toArray();
-		
+
 		LinkedList<String> c = castArray(pLet.getIdentifiers());
 		c.remove(0);
-		
 
 		/**
 		 * Debug output. will be deleted if everything works fine
@@ -346,79 +341,69 @@ public class ShowBonds
 			{
 				Debug.out.println(b[i], me);
 			}
-			
 
 		}
-		
+
 		/**
-		 * in this method two different lists are needed for the two different Expressions
-		 * E1 and E2
+		 * in this method two different lists are needed for the two different
+		 * Expressions E1 and E2
 		 */
 		LinkedList<String> list = listWithBounds(a, c);
 		LinkedList<String> list2 = new LinkedList<String>();
 		list2.add(pLet.getIdentifiers(0));
-		
-		
 
 		/**
 		 * if the Identifier of the Expression is in E1 it is removed from the list
 		 * because it is not bond to this Identifier
 		 */
 		/**
-		if (list.contains(pLet.getIdentifiers(0)))
-		{
-			for (int i = 0; i < list.size(); i++)
-			{
-				if (list.get(i).equals(pLet.getIdentifiers(0)))
-				{
-					list.remove(i);
-					i--;
-				}
-			}
-		}
-		*/
+		 * if (list.contains(pLet.getIdentifiers(0))) { for (int i = 0; i <
+		 * list.size(); i++) { if (list.get(i).equals(pLet.getIdentifiers(0))) {
+		 * list.remove(i); i--; } } }
+		 */
 		/**
 		 * list with E1
 		 */
 		LinkedList<Expression> child = new LinkedList<Expression>();
-		
+
 		child.add(pLet.getE1());
-		
+
 		/**
 		 * list with just the last child of the Expression
 		 */
 		LinkedList<Expression> child2 = new LinkedList<Expression>();
 		child2.add(pLet.getE2());
-		
-		boolean duplicate=false;
-		for (int i=1; i<list.size();i++)
+
+		boolean duplicate = false;
+		for (int i = 1; i < list.size(); i++)
 		{
-			
-				if (list.get(i).equals(list.get(0)))
-				{
-					duplicate=true;
-					break;
-				}
-			
+
+			if (list.get(i).equals(list.get(0)))
+			{
+				duplicate = true;
+				break;
+			}
+
 		}
-		
+
 		/**
 		 * different calls for E1 and E2 with a different list of bounds
 		 */
 		checkRec(child2, pLet, list2, duplicate);
-		
+
 		checkRec(child, pLet, list, false);
 
 	}
 
 	/**
 	 * handling if Expression is instance of Expression type Recursion
+	 * 
 	 * @param pRec
 	 */
 	private void checkRecursion(Recursion pRec)
 	{
-	
-		
+		checkChild(pRec);
+
 		/**
 		 * this array contains all free Variables of the Recursion body
 		 */
@@ -426,37 +411,36 @@ public class ShowBonds
 
 		LinkedList<String> b = new LinkedList<String>();
 		b.add(pRec.getId());
-	
 
 		LinkedList<String> list = listWithBounds(a, b);
-		
-		checkChild(pRec);
 
 		/**
 		 * list with all childs of the Expression
 		 */
 		LinkedList<Expression> child = new LinkedList<Expression>();
 		child.add(pRec.getE());
-		
-		checkRec(child, pRec, list,false);
+
+		checkRec(child, pRec, list, false);
 	}
 
 	/**
 	 * handling if Expression is instance of Expression type CurriedLetRec
+	 * 
 	 * @param pRec
 	 */
 	private void checkCurriedLetRec(CurriedLetRec pRec)
 	{
+		checkChild(pRec);
 		/**
 		 * this array contains all free Variables of the second Expression
 		 */
 		Object[] a = pRec.getE1().free().toArray();
-		
+
 		/**
 		 * this array contains all free Variables of the first Expression
 		 */
 		Object[] b = pRec.getE2().free().toArray();
-		
+
 		LinkedList<String> c = castArray(pRec.getIdentifiers());
 
 		/**
@@ -475,64 +459,55 @@ public class ShowBonds
 			{
 				Debug.out.println(b[i], me);
 			}
-		
 
 		}
 
-		checkChild(pRec);
-
 		/**
-		 * in this method two different lists are needed for the two different Expressions
-		 * E1 and E2
+		 * in this method two different lists are needed for the two different
+		 * Expressions E1 and E2
 		 */
 		LinkedList<String> list = listWithBounds(a, c);
-		
-		
-		
-		
-	
+
 		/**
 		 * list with all childs of the Expression
 		 */
 		LinkedList<Expression> child = new LinkedList<Expression>();
 		child.add(pRec.getE1());
-		
-		
-		
+
 		/**
 		 * list with just the last child of the Expression
 		 */
 		LinkedList<Expression> child2 = new LinkedList<Expression>();
 		child2.add(pRec.getE2());
-		
+
 		LinkedList<String> list2 = new LinkedList<String>();
 		list2.add(pRec.getIdentifiers(0));
-		
-		
-		boolean duplicate=false;
-		for (int i=1; i<list.size();i++)
+
+		boolean duplicate = false;
+		for (int i = 1; i < list.size(); i++)
 		{
-			
-				if (list.get(i).equals(list.get(0)))
-				{
-					duplicate=true;
-					break;
-				}
-			
+
+			if (list.get(i).equals(list.get(0)))
+			{
+				duplicate = true;
+				break;
+			}
+
 		}
-		
+
 		/**
 		 * different calls for E1 and E2 with a different list of bounds
 		 */
-		checkRec(child2, pRec, list2,duplicate);
-		
-		checkRec(child, pRec, list,false);
+		checkRec(child2, pRec, list2, duplicate);
+
+		checkRec(child, pRec, list, false);
 
 	}
 
 	/**
 	 * the recursive method to check for bonds to the Identifier of the expression
 	 * in inner expressions
+	 * 
 	 * @param child
 	 * @param e
 	 * @param list
@@ -550,15 +525,15 @@ public class ShowBonds
 		for (int j = 0; j < child.size(); j++)
 		{
 			inList = false;
-			
+
 			/**
 			 * the actual child is now actualExpression
 			 */
 			Expression actualExpression = child.get(j);
-			
+
 			/**
-			 * check if in the actual Expression is something free.
-			 * if anything is free nothing could be bound
+			 * check if in the actual Expression is something free. if anything is
+			 * free nothing could be bound
 			 */
 			if (actualExpression.free().toArray().length > 0)
 			{
@@ -567,7 +542,7 @@ public class ShowBonds
 				 */
 				if (actualExpression instanceof Identifier)
 				{
-					
+
 					/**
 					 * the actual child is casted to Identifier
 					 */
@@ -584,7 +559,7 @@ public class ShowBonds
 						 */
 						if (id.getName().equals(list.get(i)))
 						{
-							
+
 							PrettyString ps1 = holeExpression.toPrettyString();
 							PrettyAnnotation mark1 = ps1.getAnnotationForPrintable(e);
 							PrettyAnnotation mark2 = ps1.getAnnotationForPrintable(id);
@@ -593,11 +568,12 @@ public class ShowBonds
 								for (int z = 0; z < result.size(); z++)
 								{
 									Bonds tmpBound2 = result.get(z);
-									
+
 									/**
-									 * befor it is added to list, we have to check if the variable is
-									 * bond to another identifier. It just makes sense if we have different
-									 * Identifiers with the same name in different expressions
+									 * befor it is added to list, we have to check if the variable
+									 * is bond to another identifier. It just makes sense if we
+									 * have different Identifiers with the same name in different
+									 * expressions
 									 */
 									for (int y = 0; y < tmpBound2.getMarks().size(); y++)
 									{
@@ -607,23 +583,23 @@ public class ShowBonds
 										{
 											inList = true;
 										}
-										
+
 									}
 								}
 							}
 							if (!inList)
 
 							{
-								int start = getStartOffset(e, id, mark1, actualExpression,different);
+								int start = getStartOffset(e, id, mark1, actualExpression,
+										different);
 
 								int length = start + id.toString().length() - 1;
 
-								
 								boolean exists = false;
-								
+
 								/**
-								 * check if there had been another bond to same Identifier.
-								 * if there was another bond add to this
+								 * check if there had been another bond to same Identifier. if
+								 * there was another bond add to this
 								 */
 								for (int k = 0; k < result.size(); k++)
 								{
@@ -639,8 +615,7 @@ public class ShowBonds
 								 */
 								if (!exists)
 								{
-									Bonds addToList = new Bonds(start, length, e, id
-											.toString());
+									Bonds addToList = new Bonds(start, length, e, id.toString());
 									addToList.getMarks().add(mark2);
 									addToList.getExpressions().add(e);
 									result.add(addToList);
@@ -667,13 +642,14 @@ public class ShowBonds
 			}
 
 		}
-		
+
 		return tmpBound;
 	}
 
 	/**
-	 * This method compares to Arrays and puts just this variables into a Linked List 
-	 * which are bound in the expression
+	 * This method compares to Arrays and puts just this variables into a Linked
+	 * List which are bound in the expression
+	 * 
 	 * @param a
 	 * @param b
 	 * @return
@@ -681,31 +657,28 @@ public class ShowBonds
 	public LinkedList<String> listWithBounds(Object[] a, LinkedList<String> e2)
 	{
 		LinkedList<String> e1 = new LinkedList<String>();
-		
 
 		e1 = castArray(a);
-		
+
 		if (false)
 		{
 			System.out.println("e1");
-			for (int i=0; i<e1.size(); i++)
+			for (int i = 0; i < e1.size(); i++)
 			{
 				System.out.println(e1.get(i));
 			}
 			System.out.println("e2");
 		}
-		
+
 		for (int i = 0; i < e2.size(); i++)
 		{
 			if (false)
-			System.out.println(e2.get(i));
+				System.out.println(e2.get(i));
 			if (!e1.contains(e2.get(i)))
 			{
 				e2.remove(i);
 				i--;
 			}
-				
-			
 
 		}
 
@@ -714,6 +687,7 @@ public class ShowBonds
 
 	/**
 	 * just take an Array and put it into a Linked List
+	 * 
 	 * @param a
 	 * @return LinkedList tmp
 	 */
@@ -733,47 +707,51 @@ public class ShowBonds
 	/**
 	 * This method calculates the right Startoffset of the Identifier for every
 	 * type of Expression. This is needed because the Identifier of the Expression
-	 * is not an Expression itself. So we can't go over PrettyAnnotation.getStartOffset
+	 * is not an Expression itself. So we can't go over
+	 * PrettyAnnotation.getStartOffset
+	 * 
 	 * @param e
 	 * @param id
 	 * @param mark1
 	 * @return
 	 */
-	private int getStartOffset(Expression pExpression, Identifier id, PrettyAnnotation mark1, Expression child, boolean different)
+	private int getStartOffset(Expression pExpression, Identifier id,
+			PrettyAnnotation mark1, Expression child, boolean different)
 	{
-		int last=0;
-		ArrayList<IdentifierListItem> ids= IdentifierUtilities.getIdentifierPositions(pExpression);
-		
+		int last = 0;
+		ArrayList<IdentifierListItem> ids = IdentifierUtilities
+				.getIdentifierPositions(pExpression);
+
 		if (different)
 		{
-			for (int i=0; i<ids.size();i++)
+			for (int i = 0; i < ids.size(); i++)
 			{
 				if (ids.get(i).getId().equals(id.toString()))
 				{
-					return mark1.getStartOffset()+ids.get(i).getStartOffset();
+					return mark1.getStartOffset() + ids.get(i).getStartOffset();
 				}
 			}
-			
+
 		}
-		
-		for (int i=0; i<ids.size();i++)
+
+		for (int i = 0; i < ids.size(); i++)
 		{
 			if (ids.get(i).getId().equals(id.toString()))
 			{
-				last=i;
+				last = i;
 			}
 		}
-		return mark1.getStartOffset()+ids.get(last).getStartOffset();
+		return mark1.getStartOffset() + ids.get(last).getStartOffset();
 	}
 
 	/**
 	 * set the Expression to get the bonds
+	 * 
 	 * @param pExpression
 	 */
 	public void setHoleExpression(Expression pExpression)
 	{
 		holeExpression = pExpression;
-
 
 		result = new LinkedList<Bonds>();
 
@@ -781,12 +759,12 @@ public class ShowBonds
 
 	/**
 	 * returns a list with all bonds in the actual Expression
-	 * @return 
+	 * 
+	 * @return
 	 */
 	public LinkedList<Bonds> getAnnotations()
 	{
 		return result;
 	}
-	
-	
+
 }
