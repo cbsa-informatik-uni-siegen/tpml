@@ -1,8 +1,6 @@
 package de.unisiegen.tpml.graphics.renderer;
 
 import java.util.Vector;
-
-import de.unisiegen.tpml.core.expressions.Expression;
 /**
  * TODO Kommentare schreiebn
  * @author Feivel
@@ -13,7 +11,7 @@ public class ToListenForMouseContainer
 	/**
 	 * will contain the positions where bounded identifiers are
 	 */
-	private Vector toListenForMouse;
+	private Vector<Integer> toListenForMouse;
 	
 	/**
 	 * saves teh psoition, where the mouse pointer is.
@@ -37,13 +35,13 @@ public class ToListenForMouseContainer
 	
 	public ToListenForMouseContainer()
 	{
-		toListenForMouse = new Vector();
-		mark = false;
-		markCount = 0;
-		hereIam = new int [2];
-		hereIam[0] = 0;
-		hereIam[1] = 0;
-		rightList = -2;
+		this.toListenForMouse = new Vector<Integer>();
+        this.mark = false;
+        this.markCount = 0;
+        this.hereIam = new int [2];
+        this.hereIam[0] = 0;
+        this.hereIam[1] = 0;
+        this.rightList = -2;
 	}
 	/**
 	 * adds a position to the vector

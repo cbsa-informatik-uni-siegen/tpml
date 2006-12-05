@@ -1,13 +1,14 @@
 package de.unisiegen.tpml.ui.abstractsyntaxtree.listener ;
 
 
-import javax.swing.event.TreeModelEvent ;
-import javax.swing.event.TreeModelListener ;
-import de.unisiegen.tpml.core.AbstractProofModel ;
-import de.unisiegen.tpml.core.bigstep.BigStepProofModel ;
-import de.unisiegen.tpml.core.smallstep.SmallStepProofModel ;
-import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel ;
-import de.unisiegen.tpml.ui.abstractsyntaxtree.AbstractSyntaxTree ;
+import javax.swing.event.TreeModelEvent;
+import javax.swing.event.TreeModelListener;
+
+import de.unisiegen.tpml.core.ExpressionProofModel;
+import de.unisiegen.tpml.core.bigstep.BigStepProofModel;
+import de.unisiegen.tpml.core.smallstep.SmallStepProofModel;
+import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel;
+import de.unisiegen.tpml.ui.abstractsyntaxtree.AbstractSyntaxTree;
 
 
 /**
@@ -25,23 +26,23 @@ public class ASTTreeModelListener implements TreeModelListener
 
 
   /**
-   * The AbstractProofModel.
+   * The ExpressionProofModel.
    */
-  public AbstractProofModel abstractProofModel ;
+  public ExpressionProofModel expressionProofModel ;
 
 
   /**
    * Initializes the ASTTreeModelListener with the given AbstractSyntaxTree and
-   * the AbstractProofModel.
+   * the ExpressionProofModel.
    * 
    * @param pAbstractSyntaxTree The AbstractSyntaxTree.
-   * @param pAbstractProofModel The AbstractProofModel.
+   * @param pExpressionProofModel The ExpressionProofModel.
    */
   public ASTTreeModelListener ( AbstractSyntaxTree pAbstractSyntaxTree ,
-      AbstractProofModel pAbstractProofModel )
+      ExpressionProofModel pExpressionProofModel )
   {
     this.abstractSyntaxTree = pAbstractSyntaxTree ;
-    this.abstractProofModel = pAbstractProofModel ;
+    this.expressionProofModel = pExpressionProofModel ;
   }
 
 
@@ -56,18 +57,18 @@ public class ASTTreeModelListener implements TreeModelListener
     Object source = pTreeModelEvent.getSource ( ) ;
     if ( source instanceof SmallStepProofModel )
     {
-      this.abstractSyntaxTree.loadNewExpression ( this.abstractProofModel
+      this.abstractSyntaxTree.loadNewExpression ( this.expressionProofModel
           .getRoot ( ).getLastLeaf ( ).getExpression ( ) , "change_smallstep" ) ; //$NON-NLS-1$
     }
     else if ( source instanceof BigStepProofModel )
     {
-      this.abstractSyntaxTree.loadNewExpression ( this.abstractProofModel
+      this.abstractSyntaxTree.loadNewExpression ( this.expressionProofModel
           .getRoot ( ).getLastLeaf ( ).getExpression ( ) , "change_bigstep" ) ; //$NON-NLS-1$
     }
     else if ( source instanceof TypeCheckerProofModel )
     {
       this.abstractSyntaxTree
-          .loadNewExpression ( this.abstractProofModel.getRoot ( )
+          .loadNewExpression ( this.expressionProofModel.getRoot ( )
               .getLastLeaf ( ).getExpression ( ) , "change_typechecker" ) ; //$NON-NLS-1$
     }
   }

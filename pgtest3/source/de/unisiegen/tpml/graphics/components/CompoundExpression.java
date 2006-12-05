@@ -1,29 +1,28 @@
 package de.unisiegen.tpml.graphics.components ;
 
 
-import java.awt.Color ;
-import java.awt.Dimension ;
-import java.awt.Graphics ;
-import java.awt.Rectangle ;
-import java.awt.event.MouseAdapter ;
-import java.awt.event.MouseEvent ;
-import java.awt.event.MouseListener ;
-import java.awt.event.MouseMotionAdapter ;
-import java.util.LinkedList ;
-import javax.swing.JComponent ;
-import de.unisiegen.tpml.Debug ;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Rectangle;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
+import java.util.LinkedList;
+
+import javax.swing.JComponent;
+
+import de.unisiegen.tpml.Debug;
 import de.unisiegen.tpml.Optimizer;
-import de.unisiegen.tpml.core.expressions.Expression ;
-import de.unisiegen.tpml.core.interpreters.Store ;
-import de.unisiegen.tpml.core.typechecker.TypeEnvironment ;
-import de.unisiegen.tpml.core.util.Environment ;
-import de.unisiegen.tpml.graphics.renderer.AbstractRenderer ;
-import de.unisiegen.tpml.graphics.renderer.EnvironmentRenderer ;
-import de.unisiegen.tpml.graphics.renderer.PrettyStringRenderer ;
-import de.unisiegen.tpml.graphics.renderer.ToListenForMouseContainer ;
-import de.unisiegen.tpml.graphics.smallstep.SmallStepNodeComponent ;
-import de.unisiegen.tpml.ui.abstractsyntaxtree.AbstractSyntaxTree ;
-import de.unisiegen.tpml.ui.abstractsyntaxtree.listener.ASTMouseListener ;
+import de.unisiegen.tpml.core.expressions.Expression;
+import de.unisiegen.tpml.core.interpreters.Store;
+import de.unisiegen.tpml.core.typechecker.TypeEnvironment;
+import de.unisiegen.tpml.core.util.Environment;
+import de.unisiegen.tpml.graphics.renderer.AbstractRenderer;
+import de.unisiegen.tpml.graphics.renderer.EnvironmentRenderer;
+import de.unisiegen.tpml.graphics.renderer.PrettyStringRenderer;
+import de.unisiegen.tpml.graphics.renderer.ToListenForMouseContainer;
+import de.unisiegen.tpml.ui.abstractsyntaxtree.listener.ASTMouseListener;
 
 
 public class CompoundExpression < S , E > extends JComponent

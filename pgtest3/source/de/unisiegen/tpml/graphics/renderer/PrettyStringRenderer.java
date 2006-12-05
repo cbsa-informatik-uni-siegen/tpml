@@ -2,13 +2,11 @@ package de.unisiegen.tpml.graphics.renderer;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.text.CharacterIterator;
 import java.util.LinkedList;
 
-import de.unisiegen.tpml.Debug;
 import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation;
 import de.unisiegen.tpml.core.prettyprinter.PrettyCharIterator;
 import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable;
@@ -243,9 +241,9 @@ public class PrettyStringRenderer extends AbstractRenderer {
 /*
 	public static boolean isIn (int test, LinkedList <Bonds> list)
 	{
-		//System.out.println("Nun wird überprüft, ob die Zahl in der Liste steht...");
-		//System.out.println("Länge der komischen Liste: "+list.size());
-		boolean result = false;	//steht für false, positive Werte werden als Position und true missbraucht
+		//System.out.println("Nun wird ï¿½berprï¿½ft, ob die Zahl in der Liste steht...");
+		//System.out.println("Lï¿½nge der komischen Liste: "+list.size());
+		boolean result = false;	//steht fï¿½r false, positive Werte werden als Position und true missbraucht
 		
 		for (int i=0; i<list.size(); i++)
 		{
@@ -278,14 +276,14 @@ public class PrettyStringRenderer extends AbstractRenderer {
 				}
 			}
 		}
-		//nur nachsehen, ob diese Methode geht, damit tatsächlich was gemalt wird
+		//nur nachsehen, ob diese Methode geht, damit tatsï¿½chlich was gemalt wird
 		return result;
 	}*/
 	
 	public static int isInList (int test, LinkedList <Bonds> list)
 	{
-		//System.out.println("Nun wird überprüft, ob die Zahl in der Liste steht...");
-		//System.out.println("Länge der komischen Liste: "+list.size());
+		//System.out.println("Nun wird ï¿½berprï¿½ft, ob die Zahl in der Liste steht...");
+		//System.out.println("Lï¿½nge der komischen Liste: "+list.size());
 		int result = -1;
 		
 		for (int i=0; i<list.size(); i++)
@@ -361,7 +359,7 @@ public class PrettyStringRenderer extends AbstractRenderer {
 		
 		toListenForMouse = toListenForM;
 		
-		//TODO Das muss noch schöner weerden, diese Forschleife ersetzt vernünftige Logik leider nicht...
+		//TODO Das muss noch schï¿½ner weerden, diese Forschleife ersetzt vernï¿½nftige Logik leider nicht...
 		for (int schei = 0; schei<=1 ; schei++)
 		{
 				
@@ -413,7 +411,7 @@ public class PrettyStringRenderer extends AbstractRenderer {
 			fm = AbstractRenderer.expFontMetrics;
 			int charWidth = fm.stringWidth("" + c);
 			//TODO Testausgaben
-			//Debug.out.println("lasss mal die Höhe der Schrift sehen: "+(fm.getHeight()-fm.getDescent()), "feivel");
+			//Debug.out.println("lasss mal die Hï¿½he der Schrift sehen: "+(fm.getHeight()-fm.getDescent()), "feivel");
 			//just corrects the posY to start at baseline instead of the middel
 			int posYC = posY - (fm.getHeight()-fm.getDescent());
 			//int charHighth = fm.getHeight();
@@ -436,7 +434,7 @@ public class PrettyStringRenderer extends AbstractRenderer {
 				//TODO Testausgaben
 				//Debug.out.println("Es geht um Char: " + c, "feivel");
 				//Debug.out.println("Differenz: " + (posY-(posY+fm.getAscent())) , "feivel");
-				//Debug.out.println("Höhe: " + (fm.getHeight()) , "feivel");
+				//Debug.out.println("Hï¿½he: " + (fm.getHeight()) , "feivel");
 				//Debug.out.println("Position: " + posX + "," +posY , "feivel");
 				//Debug.out.println("Position: " + x + "," +y , "feivel");
 				//Debug.out.println("Maus ist: " + toListenForMouse.getHereIam()[0] + "," +toListenForMouse.getHereIam()[1] , "feivel");
@@ -449,7 +447,7 @@ public class PrettyStringRenderer extends AbstractRenderer {
 				//toListenForMouse.add(posY);
 			}
 							
-			//Wenn gemalt werden soll, also die Maus über einem Buchstaben steht
+			//Wenn gemalt werden soll, also die Maus ï¿½ber einem Buchstaben steht
 			//Damit die Liste mit jeder neuen Expression neu gesetzt wird, wird in CopoundExpression neu gesetz
 			if (toListenForMouse.getMark() && isInList(i, annotationsList) != -1)
 				{
@@ -462,11 +460,11 @@ public class PrettyStringRenderer extends AbstractRenderer {
 				//if ( ( (xPos >= posX) && (xPos <= posX+charWidth) ) && ( (yPos >= posY-fm.getDescent()) && (yPos <=posY+fm.getAscent()) ) ) 
 					if ( ( (xPos >= posX-1) && (xPos <= posX+charWidth+1) ) && ( (yPos >= posYC) && (yPos <=posYC+fm.getAscent()) ) )
 				{
-					//TODO in diesem Fall muss er neu anfangen, er darf nicht mit den nächsten Buchstaben weiter machen...
+					//TODO in diesem Fall muss er neu anfangen, er darf nicht mit den nï¿½chsten Buchstaben weiter machen...
 					
 					
 					
-					// - Vielleicht prüfen, ob die setRightList schon gesertzt, dann überspringen, sonst vorner anfangen. also die gleiche Funktion einfach nochmal aufrufen...
+					// - Vielleicht prï¿½fen, ob die setRightList schon gesertzt, dann ï¿½berspringen, sonst vorner anfangen. also die gleiche Funktion einfach nochmal aufrufen...
 					toListenForMouse.setRightList(isInList(i, annotationsList));
 		
 				 }
@@ -474,16 +472,7 @@ public class PrettyStringRenderer extends AbstractRenderer {
 				//if actual char is in the same List as the list in wich the char where MousePointer is
 				if (isInList(i, annotationsList) == toListenForMouse.getRightList())
 				{
-					//Prüfen, ob es der erste in der Liste ist, und dann anders anmalen...
-					
-					//get font and attributes
-					Font orginalFont = gc.getFont();
-					String fontName = orginalFont.getName();
-					int fontSize = orginalFont.getSize();
-					
-					//new font with same attributes but bold and / or italic
-					Font newFont = new Font(fontName, Font.BOLD, fontSize);
-					//Font newFont = new Font(fontName, , fontSize);
+					//PrÃ¼fen, ob es der erste in der Liste ist, und dann anders anmalen...
 					
 					//let font be in right color
 					if (isFirstInListe (i, annotationsList))
@@ -494,8 +483,6 @@ public class PrettyStringRenderer extends AbstractRenderer {
 					{
 						gc.setColor(Theme.currentTheme().getBindingColor());
 					}
-					//gc.setFont(newFont);
-					gc.setFont(orginalFont);
 					
 					//underline the actual char
 					gc.drawLine(posX, posY + 1, posX + charWidth, posY + 1);

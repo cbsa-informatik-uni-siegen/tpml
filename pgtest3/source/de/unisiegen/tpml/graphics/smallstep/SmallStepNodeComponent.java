@@ -1,10 +1,6 @@
 package de.unisiegen.tpml.graphics.smallstep;
 
-import de.unisiegen.tpml.Debug;
-import de.unisiegen.tpml.graphics.components.CompoundExpression;
-
 import java.awt.AWTEvent;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Cursor;
@@ -32,13 +28,13 @@ import de.unisiegen.tpml.core.smallstep.SmallStepProofModel;
 import de.unisiegen.tpml.core.smallstep.SmallStepProofNode;
 import de.unisiegen.tpml.core.smallstep.SmallStepProofRule;
 import de.unisiegen.tpml.graphics.Messages;
+import de.unisiegen.tpml.graphics.components.CompoundExpression;
 import de.unisiegen.tpml.graphics.components.MenuButton;
 import de.unisiegen.tpml.graphics.components.MenuButtonListener;
 import de.unisiegen.tpml.graphics.components.MenuGuessItem;
 import de.unisiegen.tpml.graphics.components.MenuGuessTreeItem;
 import de.unisiegen.tpml.graphics.components.MenuRuleItem;
 import de.unisiegen.tpml.graphics.components.MenuTranslateItem;
-import de.unisiegen.tpml.graphics.renderer.ToListenForMouseContainer;
 
 /**
  * The graphical representation of a 
