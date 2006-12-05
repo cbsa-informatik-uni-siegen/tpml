@@ -138,7 +138,9 @@ public final class Or extends Expression {
   public PrettyStringBuilder toPrettyStringBuilder(PrettyStringBuilderFactory factory) {
     PrettyStringBuilder builder = factory.newBuilder(this, PRIO_OR);
     builder.addBuilder(this.e1.toPrettyStringBuilder(factory), PRIO_OR_E1);
-    builder.addText(" || ");
+    builder.addText(" ");
+    builder.addKeyword("||");
+    builder.addText(" ");
     builder.addBuilder(this.e2.toPrettyStringBuilder(factory), PRIO_OR_E2);
     return builder;
   }
