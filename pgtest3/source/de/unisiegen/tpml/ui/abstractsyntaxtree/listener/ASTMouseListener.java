@@ -154,21 +154,21 @@ public class ASTMouseListener implements MouseListener
         {
           ( ( SmallStepView ) this.view ).getAbstractSyntaxTree ( )
               .loadNewExpression ( this.compoundExpression.getExpression ( ) ,
-                  "mouse_smallstep" ) ;
+                  "mouse_smallstep" ) ; //$NON-NLS-1$
         }
         // BigStepView
         else if ( this.view instanceof BigStepView )
         {
           ( ( BigStepView ) this.view ).getAbstractSyntaxTree ( )
               .loadNewExpression ( this.compoundExpression.getExpression ( ) ,
-                  "mouse_bigstep" ) ;
+                  "mouse_bigstep" ) ; //$NON-NLS-1$
         }
         // TypeCheckerView
         else if ( this.view instanceof TypeCheckerView )
         {
           ( ( TypeCheckerView ) this.view ).getAbstractSyntaxTree ( )
               .loadNewExpression ( this.compoundExpression.getExpression ( ) ,
-                  "mouse_typechecker" ) ;
+                  "mouse_typechecker" ) ; //$NON-NLS-1$
         }
       }
     }

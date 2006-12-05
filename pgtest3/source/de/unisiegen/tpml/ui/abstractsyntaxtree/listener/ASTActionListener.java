@@ -43,56 +43,56 @@ public class ASTActionListener implements ActionListener
   public void actionPerformed ( ActionEvent pActionEvent )
   {
     String actionCommand = pActionEvent.getActionCommand ( ) ;
-    if ( actionCommand.equals ( "close" ) )
+    if ( actionCommand.equals ( "close" ) ) //$NON-NLS-1$
     {
       close ( ) ;
     }
-    else if ( actionCommand.equals ( "closeAll" ) )
+    else if ( actionCommand.equals ( "closeAll" ) ) //$NON-NLS-1$
     {
       closeAll ( ) ;
     }
-    else if ( actionCommand.equals ( "expand" ) )
+    else if ( actionCommand.equals ( "expand" ) ) //$NON-NLS-1$
     {
       expand ( ) ;
     }
-    else if ( actionCommand.equals ( "expandAll" ) )
+    else if ( actionCommand.equals ( "expandAll" ) ) //$NON-NLS-1$
     {
       expandAll ( ) ;
     }
-    else if ( actionCommand.equals ( "collapse" ) )
+    else if ( actionCommand.equals ( "collapse" ) ) //$NON-NLS-1$
     {
       collapse ( ) ;
     }
-    else if ( actionCommand.equals ( "collapseAll" ) )
+    else if ( actionCommand.equals ( "collapseAll" ) ) //$NON-NLS-1$
     {
       collapseAll ( ) ;
     }
-    else if ( actionCommand.equals ( "selection" ) )
+    else if ( actionCommand.equals ( "selection" ) ) //$NON-NLS-1$
     {
       this.aSTUI.getASTItemListener ( ).update (
           this.aSTUI.getJMenuItemSelection ( ).isSelected ( ) , null ,
-          "selection" ) ;
+          "selection" ) ; //$NON-NLS-1$
     }
-    else if ( actionCommand.equals ( "binding" ) )
+    else if ( actionCommand.equals ( "binding" ) ) //$NON-NLS-1$
     {
       this.aSTUI.getASTItemListener ( ).update (
-          this.aSTUI.getJMenuItemBinding ( ).isSelected ( ) , null , "binding" ) ;
+          this.aSTUI.getJMenuItemBinding ( ).isSelected ( ) , null , "binding" ) ; //$NON-NLS-1$
     }
-    else if ( actionCommand.equals ( "unbound" ) )
+    else if ( actionCommand.equals ( "unbound" ) ) //$NON-NLS-1$
     {
       this.aSTUI.getASTItemListener ( ).update (
-          this.aSTUI.getJMenuItemUnbound ( ).isSelected ( ) , null , "unbound" ) ;
+          this.aSTUI.getJMenuItemUnbound ( ).isSelected ( ) , null , "unbound" ) ; //$NON-NLS-1$
     }
-    else if ( actionCommand.equals ( "replace" ) )
+    else if ( actionCommand.equals ( "replace" ) ) //$NON-NLS-1$
     {
       this.aSTUI.getASTItemListener ( ).update (
-          this.aSTUI.getJMenuItemReplace ( ).isSelected ( ) , null , "replace" ) ;
+          this.aSTUI.getJMenuItemReplace ( ).isSelected ( ) , null , "replace" ) ; //$NON-NLS-1$
     }
-    else if ( actionCommand.equals ( "autoUpdate" ) )
+    else if ( actionCommand.equals ( "autoUpdate" ) ) //$NON-NLS-1$
     {
       this.aSTUI.getASTItemListener ( ).update (
           this.aSTUI.getJMenuItemAutoUpdate ( ).isSelected ( ) , null ,
-          "autoupdate" ) ;
+          "autoupdate" ) ; //$NON-NLS-1$
     }
   }
 

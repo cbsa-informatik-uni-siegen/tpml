@@ -57,18 +57,18 @@ public class ASTTreeModelListener implements TreeModelListener
     if ( source instanceof SmallStepProofModel )
     {
       this.abstractSyntaxTree.loadNewExpression ( this.abstractProofModel
-          .getRoot ( ).getLastLeaf ( ).getExpression ( ) , "change_smallstep" ) ;
+          .getRoot ( ).getLastLeaf ( ).getExpression ( ) , "change_smallstep" ) ; //$NON-NLS-1$
     }
     else if ( source instanceof BigStepProofModel )
     {
       this.abstractSyntaxTree.loadNewExpression ( this.abstractProofModel
-          .getRoot ( ).getLastLeaf ( ).getExpression ( ) , "change_bigstep" ) ;
+          .getRoot ( ).getLastLeaf ( ).getExpression ( ) , "change_bigstep" ) ; //$NON-NLS-1$
     }
     else if ( source instanceof TypeCheckerProofModel )
     {
       this.abstractSyntaxTree
           .loadNewExpression ( this.abstractProofModel.getRoot ( )
-              .getLastLeaf ( ).getExpression ( ) , "change_typechecker" ) ;
+              .getLastLeaf ( ).getExpression ( ) , "change_typechecker" ) ; //$NON-NLS-1$
     }
   }
 

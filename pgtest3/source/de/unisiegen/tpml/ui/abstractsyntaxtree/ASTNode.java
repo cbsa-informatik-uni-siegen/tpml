@@ -70,92 +70,92 @@ public class ASTNode
    * The hex values.
    */
   private static final String HEX_VALUES[] =
-  { "0" , "1" , "2" , "3" , "4" , "5" , "6" , "7" , "8" , "9" , "A" , "B" ,
-      "C" , "D" , "E" , "F" } ;
+  { "0" , "1" , "2" , "3" , "4" , "5" , "6" , "7" , "8" , "9" , "A" , "B" , //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$ //$NON-NLS-11$ //$NON-NLS-12$
+      "C" , "D" , "E" , "F" } ; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 
 
   /**
    * Lower than.
    */
-  private static final String LOWER_THAN = "<" ;
+  private static final String LOWER_THAN = "<" ; //$NON-NLS-1$
 
 
   /**
    * Lower than replace.
    */
-  private static final String LOWER_THAN_REPLACE = "&lt" ;
+  private static final String LOWER_THAN_REPLACE = "&lt" ; //$NON-NLS-1$
 
 
   /**
    * Greater than.
    */
-  private static final String GREATER_THAN = "<" ;
+  private static final String GREATER_THAN = "<" ; //$NON-NLS-1$
 
 
   /**
    * Greater than replace.
    */
-  private static final String GREATER_THAN_REPLACE = "&gt" ;
+  private static final String GREATER_THAN_REPLACE = "&gt" ; //$NON-NLS-1$
 
 
   /**
    * Ampersand.
    */
-  private static final String AMPERSAND_THAN = "&" ;
+  private static final String AMPERSAND_THAN = "&" ; //$NON-NLS-1$
 
 
   /**
    * Ampersand replace.
    */
-  private static final String AMPERSAND_THAN_REPLACE = "&amp" ;
+  private static final String AMPERSAND_THAN_REPLACE = "&amp" ; //$NON-NLS-1$
 
 
   /**
    * The beginning of the caption.
    */
-  private static final String BEGIN = "&nbsp;&nbsp;&nbsp;&nbsp;[&nbsp;<font color=\"#" ;
+  private static final String BEGIN = "&nbsp;&nbsp;&nbsp;&nbsp;[&nbsp;<font color=\"#" ; //$NON-NLS-1$
 
 
   /**
    * The end of the caption.
    */
-  private static final String END = "</font>&nbsp;]</html>" ;
+  private static final String END = "</font>&nbsp;]</html>" ; //$NON-NLS-1$
 
 
   /**
    * String, if a expression should be replaced and selection is active.
    */
-  private static final String REPLACE_BOLD = "<b>&nbsp;...&nbsp;</b>" ;
+  private static final String REPLACE_BOLD = "<b>&nbsp;...&nbsp;</b>" ; //$NON-NLS-1$
 
 
   /**
    * String, if a expression should be replaced.
    */
-  private static final String REPLACE = "&nbsp;...&nbsp;" ;
+  private static final String REPLACE = "&nbsp;...&nbsp;" ; //$NON-NLS-1$
 
 
   /**
    * Begin of HTML.
    */
-  private static final String HTML = "<html>" ;
+  private static final String HTML = "<html>" ; //$NON-NLS-1$
 
 
   /**
    * After the color.
    */
-  private static final String FONT_AFTER_COLOR = "\">" ;
+  private static final String FONT_AFTER_COLOR = "\">" ; //$NON-NLS-1$
 
 
   /**
    * Begin of font and bold.
    */
-  private static final String FONT_BOLD_BEGIN = "<b><font color=\"#" ;
+  private static final String FONT_BOLD_BEGIN = "<b><font color=\"#" ; //$NON-NLS-1$
 
 
   /**
    * End of font and bold.
    */
-  private static final String FONT_BOLD_END = "</font></b>" ;
+  private static final String FONT_BOLD_END = "</font></b>" ; //$NON-NLS-1$
 
 
   /**
@@ -294,7 +294,7 @@ public class ASTNode
   {
     // Load the description
     this.resourceBundle = ResourceBundle
-        .getBundle ( "de/unisiegen/tpml/ui/abstractsyntaxtree/ast" ) ;
+        .getBundle ( "de/unisiegen/tpml/ui/abstractsyntaxtree/ast" ) ; //$NON-NLS-1$
     try
     {
       this.description = this.resourceBundle.getString ( pExpression
@@ -302,7 +302,7 @@ public class ASTNode
     }
     catch ( MissingResourceException e )
     {
-      Debug.err.println ( "MissingResourceException: "
+      Debug.err.println ( "MissingResourceException: " //$NON-NLS-1$
           + pExpression.getClass ( ).getSimpleName ( ) , Debug.CHRISTIAN ) ;
       this.description = pExpression.getClass ( ).getSimpleName ( ) ;
     }
@@ -335,14 +335,14 @@ public class ASTNode
   {
     // Preferences
     this.resourceBundle = ResourceBundle
-        .getBundle ( "de/unisiegen/tpml/ui/abstractsyntaxtree/ast" ) ;
+        .getBundle ( "de/unisiegen/tpml/ui/abstractsyntaxtree/ast" ) ; //$NON-NLS-1$
     try
     {
       this.description = this.resourceBundle.getString ( pDescription ) ;
     }
     catch ( MissingResourceException e )
     {
-      Debug.err.println ( "MissingResourceException: " + pDescription ,
+      Debug.err.println ( "MissingResourceException: " + pDescription , //$NON-NLS-1$
           Debug.CHRISTIAN ) ;
       this.description = pDescription ;
     }
@@ -476,7 +476,7 @@ public class ASTNode
     }
     else
     {
-      return "00" ;
+      return "00" ; //$NON-NLS-1$
     }
     return result.toString ( ) ;
   }

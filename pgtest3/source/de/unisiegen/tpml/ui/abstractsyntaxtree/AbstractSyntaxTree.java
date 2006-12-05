@@ -38,7 +38,7 @@ public class AbstractSyntaxTree
    * String, between the description of the parent node, like e1, and the
    * description of the current node, like Identifier.
    */
-  private static final String BETWEEN = "  -  " ;
+  private static final String BETWEEN = "  -  " ; //$NON-NLS-1$
 
 
   /**
@@ -50,7 +50,13 @@ public class AbstractSyntaxTree
   /**
    * Caption of the Identifiers.
    */
-  private static final String IDENTIFIER = "Identifier" ;
+  private static final String IDENTIFIER = "Identifier" ; //$NON-NLS-1$
+
+
+  /**
+   * Caption of the Expression.
+   */
+  private static final String EXPRESSION = "e" ; //$NON-NLS-1$
 
 
   /**
@@ -116,11 +122,11 @@ public class AbstractSyntaxTree
       node = ( ASTNode ) treeNode.getUserObject ( ) ;
       if ( childIndex == ONLY_ONE_CHILD )
       {
-        node.appendDescription ( "e" + BETWEEN ) ;
+        node.appendDescription ( EXPRESSION + BETWEEN ) ;
       }
       else
       {
-        node.appendDescription ( "e" + childIndex + BETWEEN ) ;
+        node.appendDescription ( EXPRESSION + childIndex + BETWEEN ) ;
       }
       node.resetCaption ( ) ;
       pNode.add ( treeNode ) ;
@@ -288,7 +294,7 @@ public class AbstractSyntaxTree
         pInfixOperation , this.aSTUnbound ) ) ;
     DefaultMutableTreeNode node0 = expression ( e1 ) ;
     ASTNode astNode0 = ( ASTNode ) node0.getUserObject ( ) ;
-    astNode0.appendDescription ( "e1" + BETWEEN ) ;
+    astNode0.appendDescription ( EXPRESSION + "1" + BETWEEN ) ; //$NON-NLS-1$
     astNode0.resetCaption ( ) ;
     node.add ( node0 ) ;
     /*
@@ -304,7 +310,7 @@ public class AbstractSyntaxTree
     node.add ( node1 ) ;
     DefaultMutableTreeNode ex2 = expression ( e2 ) ;
     ASTNode node2 = ( ASTNode ) ex2.getUserObject ( ) ;
-    node2.appendDescription ( "e2" + BETWEEN ) ;
+    node2.appendDescription ( EXPRESSION + "2" + BETWEEN ) ; //$NON-NLS-1$
     node2.resetCaption ( ) ;
     node.add ( ex2 ) ;
     return node ;
@@ -389,7 +395,7 @@ public class AbstractSyntaxTree
         pLocation , this.aSTUnbound ) ) ;
     int start = 0 ;
     int end = start - 1 + pLocation.getName ( ).length ( ) ;
-    node.add ( new DefaultMutableTreeNode ( new ASTNode ( "Name" , pLocation
+    node.add ( new DefaultMutableTreeNode ( new ASTNode ( "Name" , pLocation //$NON-NLS-1$
         .getName ( ) , start , end , null , this.aSTUnbound ) ) ) ;
     return node ;
   }
@@ -407,11 +413,11 @@ public class AbstractSyntaxTree
     int result = 10 ;
     for ( Method method : pExpression.getClass ( ).getMethods ( ) )
     {
-      if ( method.getName ( ).equals ( "getE" ) )
+      if ( method.getName ( ).equals ( "getE" ) ) //$NON-NLS-1$
       {
         return ONLY_ONE_CHILD ;
       }
-      if ( method.getName ( ).matches ( "getE[0-9]{1}" ) )
+      if ( method.getName ( ).matches ( "getE[0-9]{1}" ) ) //$NON-NLS-1$
       {
         result = Math.min ( result , Integer.parseInt ( String.valueOf ( method
             .getName ( ).charAt ( 4 ) ) ) ) ;
@@ -543,32 +549,32 @@ public class AbstractSyntaxTree
     if ( ( this.oldExpression != null )
         && ( pExpression.equals ( this.oldExpression ) ) )
     {
-      Debug.err.println ( "Expression has not changed" , Debug.CHRISTIAN ) ;
+      Debug.err.println ( "Expression has not changed" , Debug.CHRISTIAN ) ; //$NON-NLS-1$
       return ;
     }
     if ( ( ! this.aSTPreferences.isAutoUpdate ( ) )
-        && ( pDescription.startsWith ( "change" ) ) )
+        && ( pDescription.startsWith ( "change" ) ) ) //$NON-NLS-1$
     {
-      Debug.err.println ( "No AutoUpdate selected" , Debug.CHRISTIAN ) ;
+      Debug.err.println ( "No AutoUpdate selected" , Debug.CHRISTIAN ) ; //$NON-NLS-1$
       return ;
     }
-    if ( pDescription.equals ( "change_bigstep" ) )
+    if ( pDescription.equals ( "change_bigstep" ) ) //$NON-NLS-1$
     {
-      Debug.err.println ( "No update in the BigStep view" , Debug.CHRISTIAN ) ;
+      Debug.err.println ( "No update in the BigStep view" , Debug.CHRISTIAN ) ; //$NON-NLS-1$
       return ;
     }
-    if ( pDescription.equals ( "change_typechecker" ) )
+    if ( pDescription.equals ( "change_typechecker" ) ) //$NON-NLS-1$
     {
       Debug.err
-          .println ( "No update in the TypeChecker View" , Debug.CHRISTIAN ) ;
+          .println ( "No update in the TypeChecker View" , Debug.CHRISTIAN ) ; //$NON-NLS-1$
       return ;
     }
-    Optimizer optimizer = new Optimizer ( "AST" ) ;
+    Optimizer optimizer = new Optimizer ( "AST" ) ; //$NON-NLS-1$
     this.aSTUnbound = new ASTUnbound ( pExpression ) ;
-    optimizer.setTimeTag ( "unbound" ) ;
+    optimizer.setTimeTag ( "unbound" ) ; //$NON-NLS-1$
     this.oldExpression = pExpression ;
     this.aSTUI.setRootNode ( expression ( pExpression ) ) ;
-    optimizer.setTimeTag ( "nodes" ) ;
+    optimizer.setTimeTag ( "nodes" ) ; //$NON-NLS-1$
     Debug.out.println ( optimizer.getTimeTags ( ) , Debug.CHRISTIAN ) ;
   }
 }

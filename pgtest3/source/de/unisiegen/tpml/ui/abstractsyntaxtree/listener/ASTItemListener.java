@@ -81,7 +81,7 @@ public class ASTItemListener implements ItemListener
   public void itemStateChanged ( ItemEvent pItemEvent )
   {
     update ( pItemEvent.getStateChange ( ) == ItemEvent.SELECTED , pItemEvent
-        .getSource ( ) , "" ) ;
+        .getSource ( ) , "" ) ; //$NON-NLS-1$
   }
 
 
@@ -163,35 +163,35 @@ public class ASTItemListener implements ItemListener
       String pActionCommand )
   {
     // Replace
-    if ( ( pActionCommand.equals ( "replace" ) )
+    if ( ( pActionCommand.equals ( "replace" ) ) //$NON-NLS-1$
         || ( ( pSource != null ) && ( pSource.equals ( this.aSTUI
             .getJCheckBoxReplace ( ) ) ) ) )
     {
       replace ( pSelected ) ;
     }
     // Binding
-    else if ( ( pActionCommand.equals ( "binding" ) )
+    else if ( ( pActionCommand.equals ( "binding" ) ) //$NON-NLS-1$
         || ( ( pSource != null ) && ( pSource.equals ( this.aSTUI
             .getJCheckBoxBinding ( ) ) ) ) )
     {
       binding ( pSelected ) ;
     }
     // Unbound
-    else if ( ( pActionCommand.equals ( "unbound" ) )
+    else if ( ( pActionCommand.equals ( "unbound" ) ) //$NON-NLS-1$
         || ( ( pSource != null ) && ( pSource.equals ( this.aSTUI
             .getJCheckBoxUnbound ( ) ) ) ) )
     {
       unbound ( pSelected ) ;
     }
     // Selection
-    else if ( ( pActionCommand.equals ( "selection" ) )
+    else if ( ( pActionCommand.equals ( "selection" ) ) //$NON-NLS-1$
         || ( ( pSource != null ) && ( pSource.equals ( this.aSTUI
             .getJCheckBoxSelection ( ) ) ) ) )
     {
       selection ( pSelected ) ;
     }
     // AutoUpdate
-    else if ( ( pActionCommand.equals ( "autoupdate" ) )
+    else if ( ( pActionCommand.equals ( "autoupdate" ) ) //$NON-NLS-1$
         || ( ( pSource != null ) && ( pSource.equals ( this.aSTUI
             .getJCheckBoxAutoUpdate ( ) ) ) ) )
     {

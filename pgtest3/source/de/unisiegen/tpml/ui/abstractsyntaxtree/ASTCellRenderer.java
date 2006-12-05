@@ -36,7 +36,7 @@ public class ASTCellRenderer extends DefaultTreeCellRenderer
     this.setBackground ( Color.WHITE ) ;
     this.setBackgroundNonSelectionColor ( Color.WHITE ) ;
     this.setBackgroundSelectionColor ( new Color ( 225 , 225 , 255 ) ) ;
-    this.setFont ( new Font ( "SansSerif" , Font.PLAIN , 14 ) ) ;
+    this.setFont ( new Font ( "SansSerif" , Font.PLAIN , 14 ) ) ; //$NON-NLS-1$
     this.setBorderSelectionColor ( Color.BLUE ) ;
     this.setTextSelectionColor ( Color.BLACK ) ;
     this.setTextNonSelectionColor ( Color.BLACK ) ;

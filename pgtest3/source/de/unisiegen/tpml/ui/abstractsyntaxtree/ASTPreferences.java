@@ -87,12 +87,12 @@ public class ASTPreferences
   {
     this.preferences = Preferences
         .userNodeForPackage ( AbstractSyntaxTree.class ) ;
-    this.replace = this.preferences.getBoolean ( "replace" , true ) ;
-    this.binding = this.preferences.getBoolean ( "bindings" , true ) ;
-    this.unbound = this.preferences.getBoolean ( "unbound" , true ) ;
-    this.selection = this.preferences.getBoolean ( "selected" , true ) ;
-    this.autoUpdate = this.preferences.getBoolean ( "autoupdate" , true ) ;
-    this.dividerLocation = this.preferences.getInt ( "dividerLocation" , 300 ) ;
+    this.replace = this.preferences.getBoolean ( "replace" , true ) ; //$NON-NLS-1$
+    this.binding = this.preferences.getBoolean ( "bindings" , true ) ; //$NON-NLS-1$
+    this.unbound = this.preferences.getBoolean ( "unbound" , true ) ; //$NON-NLS-1$
+    this.selection = this.preferences.getBoolean ( "selected" , true ) ; //$NON-NLS-1$
+    this.autoUpdate = this.preferences.getBoolean ( "autoupdate" , true ) ; //$NON-NLS-1$
+    this.dividerLocation = this.preferences.getInt ( "dividerLocation" , 300 ) ; //$NON-NLS-1$
     ASTNode.setReplace ( this.replace ) ;
     ASTNode.setBinding ( this.binding ) ;
     ASTNode.setUnbound ( this.unbound ) ;
@@ -198,7 +198,7 @@ public class ASTPreferences
   public void setAutoUpdate ( boolean pAutoupdate )
   {
     this.autoUpdate = pAutoupdate ;
-    this.preferences.putBoolean ( "autoupdate" , pAutoupdate ) ;
+    this.preferences.putBoolean ( "autoupdate" , pAutoupdate ) ; //$NON-NLS-1$
   }
 
 
@@ -213,7 +213,7 @@ public class ASTPreferences
   public void setBinding ( boolean pBinding )
   {
     this.binding = pBinding ;
-    this.preferences.putBoolean ( "bindings" , pBinding ) ;
+    this.preferences.putBoolean ( "bindings" , pBinding ) ; //$NON-NLS-1$
   }
 
 
@@ -228,7 +228,7 @@ public class ASTPreferences
   public void setDividerLocation ( int pDividerLocation )
   {
     this.dividerLocation = pDividerLocation ;
-    this.preferences.putInt ( "dividerLocation" , pDividerLocation ) ;
+    this.preferences.putInt ( "dividerLocation" , pDividerLocation ) ; //$NON-NLS-1$
   }
 
 
@@ -243,7 +243,7 @@ public class ASTPreferences
   public void setReplace ( boolean pReplace )
   {
     this.replace = pReplace ;
-    this.preferences.putBoolean ( "replace" , pReplace ) ;
+    this.preferences.putBoolean ( "replace" , pReplace ) ; //$NON-NLS-1$
   }
 
 
@@ -258,7 +258,7 @@ public class ASTPreferences
   public void setSelection ( boolean pSelection )
   {
     this.selection = pSelection ;
-    this.preferences.putBoolean ( "selected" , pSelection ) ;
+    this.preferences.putBoolean ( "selected" , pSelection ) ; //$NON-NLS-1$
   }
 
 
@@ -273,6 +273,6 @@ public class ASTPreferences
   public void setUnbound ( boolean pUnbound )
   {
     this.unbound = pUnbound ;
-    this.preferences.putBoolean ( "unbound" , pUnbound ) ;
+    this.preferences.putBoolean ( "unbound" , pUnbound ) ; //$NON-NLS-1$
   }
 }

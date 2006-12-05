@@ -295,7 +295,7 @@ public class ASTUI
     this.insets = new Insets ( 0 , 0 , 0 , 0 ) ;
     // Preferences
     this.resourceBundle = ResourceBundle
-        .getBundle ( "de/unisiegen/tpml/ui/abstractsyntaxtree/ast" ) ;
+        .getBundle ( "de/unisiegen/tpml/ui/abstractsyntaxtree/ast" ) ; //$NON-NLS-1$
     // Listener
     this.aSTItemListener = new ASTItemListener ( this ) ;
     this.aSTActionListener = new ASTActionListener ( this ) ;
@@ -310,16 +310,16 @@ public class ASTUI
     this.jPanelPreferences = new JPanel ( ) ;
     this.jPanelPreferences.setLayout ( this.gridBagLayout ) ;
     this.jPanelPreferences.setBorder ( new TitledBorder ( BorderFactory
-        .createLineBorder ( Color.black , 1 ) , "" ,
+        .createLineBorder ( Color.black , 1 ) , "" , //$NON-NLS-1$
         TitledBorder.DEFAULT_JUSTIFICATION , TitledBorder.TOP , new Font (
-            "SansSerif" , Font.PLAIN , 12 ) ) ) ;
+            "SansSerif" , Font.PLAIN , 12 ) ) ) ; //$NON-NLS-1$
     // CheckBox Selection
     this.jCheckBoxSelection = new JCheckBox ( this.resourceBundle
-        .getString ( "selection" ) ) ;
+        .getString ( "selection" ) ) ; //$NON-NLS-1$
     this.jCheckBoxSelection.setMnemonic ( this.resourceBundle.getString (
-        "selectionMnemonic" ).charAt ( 0 ) ) ;
+        "selectionMnemonic" ).charAt ( 0 ) ) ; //$NON-NLS-1$
     this.jCheckBoxSelection.setToolTipText ( this.resourceBundle
-        .getString ( "selectionToolTip" ) ) ;
+        .getString ( "selectionToolTip" ) ) ; //$NON-NLS-1$
     this.jCheckBoxSelection.setSelected ( this.abstractSyntaxTree
         .getASTPreferences ( ).isSelection ( ) ) ;
     this.jCheckBoxSelection.setFocusable ( false ) ;
@@ -335,11 +335,11 @@ public class ASTUI
         this.gridBagConstraints ) ;
     // CheckBox Binding
     this.jCheckBoxBinding = new JCheckBox ( this.resourceBundle
-        .getString ( "binding" ) ) ;
+        .getString ( "binding" ) ) ; //$NON-NLS-1$
     this.jCheckBoxBinding.setMnemonic ( this.resourceBundle.getString (
-        "bindingMnemonic" ).charAt ( 0 ) ) ;
+        "bindingMnemonic" ).charAt ( 0 ) ) ; //$NON-NLS-1$
     this.jCheckBoxBinding.setToolTipText ( this.resourceBundle
-        .getString ( "bindingToolTip" ) ) ;
+        .getString ( "bindingToolTip" ) ) ; //$NON-NLS-1$
     this.jCheckBoxBinding.setSelected ( this.abstractSyntaxTree
         .getASTPreferences ( ).isBinding ( ) ) ;
     this.jCheckBoxBinding.setFocusable ( false ) ;
@@ -355,11 +355,11 @@ public class ASTUI
         this.gridBagConstraints ) ;
     // CheckBox Unbound
     this.jCheckBoxUnbound = new JCheckBox ( this.resourceBundle
-        .getString ( "unbound" ) ) ;
+        .getString ( "unbound" ) ) ; //$NON-NLS-1$
     this.jCheckBoxUnbound.setMnemonic ( this.resourceBundle.getString (
-        "unboundMnemonic" ).charAt ( 0 ) ) ;
+        "unboundMnemonic" ).charAt ( 0 ) ) ; //$NON-NLS-1$
     this.jCheckBoxUnbound.setToolTipText ( this.resourceBundle
-        .getString ( "unboundToolTip" ) ) ;
+        .getString ( "unboundToolTip" ) ) ; //$NON-NLS-1$
     this.jCheckBoxUnbound.setSelected ( this.abstractSyntaxTree
         .getASTPreferences ( ).isUnbound ( ) ) ;
     this.jCheckBoxUnbound.setFocusable ( false ) ;
@@ -375,11 +375,11 @@ public class ASTUI
         this.gridBagConstraints ) ;
     // CheckBox Replace
     this.jCheckBoxReplace = new JCheckBox ( this.resourceBundle
-        .getString ( "replace" ) ) ;
+        .getString ( "replace" ) ) ; //$NON-NLS-1$
     this.jCheckBoxReplace.setMnemonic ( this.resourceBundle.getString (
-        "replaceMnemonic" ).charAt ( 0 ) ) ;
+        "replaceMnemonic" ).charAt ( 0 ) ) ; //$NON-NLS-1$
     this.jCheckBoxReplace.setToolTipText ( this.resourceBundle
-        .getString ( "replaceToolTip" ) ) ;
+        .getString ( "replaceToolTip" ) ) ; //$NON-NLS-1$
     this.jCheckBoxReplace.setSelected ( this.abstractSyntaxTree
         .getASTPreferences ( ).isReplace ( ) ) ;
     this.jCheckBoxReplace.setFocusable ( false ) ;
@@ -395,11 +395,11 @@ public class ASTUI
         this.gridBagConstraints ) ;
     // CheckBox AutoUpdate
     this.jCheckBoxAutoUpdate = new JCheckBox ( this.resourceBundle
-        .getString ( "autoUpdate" ) ) ;
+        .getString ( "autoUpdate" ) ) ; //$NON-NLS-1$
     this.jCheckBoxAutoUpdate.setMnemonic ( this.resourceBundle.getString (
-        "autoUpdateMnemonic" ).charAt ( 0 ) ) ;
+        "autoUpdateMnemonic" ).charAt ( 0 ) ) ; //$NON-NLS-1$
     this.jCheckBoxAutoUpdate.setToolTipText ( this.resourceBundle
-        .getString ( "autoUpdateToolTip" ) ) ;
+        .getString ( "autoUpdateToolTip" ) ) ; //$NON-NLS-1$
     this.jCheckBoxAutoUpdate.setSelected ( this.abstractSyntaxTree
         .getASTPreferences ( ).isAutoUpdate ( ) ) ;
     this.jCheckBoxAutoUpdate.setFocusable ( false ) ;
@@ -462,134 +462,134 @@ public class ASTUI
     this.jPopupMenu = new JPopupMenu ( ) ;
     // MenuItem Expand
     this.jMenuItemExpand = new JMenuItem ( this.resourceBundle
-        .getString ( "expand" ) ) ;
+        .getString ( "expand" ) ) ; //$NON-NLS-1$
     this.jMenuItemExpand.setMnemonic ( this.resourceBundle.getString (
-        "expandMnemonic" ).charAt ( 0 ) ) ;
+        "expandMnemonic" ).charAt ( 0 ) ) ; //$NON-NLS-1$
     this.jMenuItemExpand.setToolTipText ( this.resourceBundle
-        .getString ( "expandToolTip" ) ) ;
-    this.jMenuItemExpand.setActionCommand ( "expand" ) ;
+        .getString ( "expandToolTip" ) ) ; //$NON-NLS-1$
+    this.jMenuItemExpand.setActionCommand ( "expand" ) ; //$NON-NLS-1$
     this.jMenuItemExpand.addActionListener ( this.aSTActionListener ) ;
     this.jPopupMenu.add ( this.jMenuItemExpand ) ;
     // MenuItem ExpandAll
     this.jMenuItemExpandAll = new JMenuItem ( this.resourceBundle
-        .getString ( "expandAll" ) ) ;
+        .getString ( "expandAll" ) ) ; //$NON-NLS-1$
     this.jMenuItemExpandAll.setMnemonic ( this.resourceBundle.getString (
-        "expandAllMnemonic" ).charAt ( 0 ) ) ;
+        "expandAllMnemonic" ).charAt ( 0 ) ) ; //$NON-NLS-1$
     this.jMenuItemExpandAll.setToolTipText ( this.resourceBundle
-        .getString ( "expandAllToolTip" ) ) ;
-    this.jMenuItemExpandAll.setActionCommand ( "expandAll" ) ;
+        .getString ( "expandAllToolTip" ) ) ; //$NON-NLS-1$
+    this.jMenuItemExpandAll.setActionCommand ( "expandAll" ) ; //$NON-NLS-1$
     this.jMenuItemExpandAll.addActionListener ( this.aSTActionListener ) ;
     this.jPopupMenu.add ( this.jMenuItemExpandAll ) ;
     // Separator
     this.jPopupMenu.addSeparator ( ) ;
     // MenuItem Collapse
     this.jMenuItemCollapse = new JMenuItem ( this.resourceBundle
-        .getString ( "collapse" ) ) ;
+        .getString ( "collapse" ) ) ; //$NON-NLS-1$
     this.jMenuItemCollapse.setMnemonic ( this.resourceBundle.getString (
-        "collapseMnemonic" ).charAt ( 0 ) ) ;
+        "collapseMnemonic" ).charAt ( 0 ) ) ; //$NON-NLS-1$
     this.jMenuItemCollapse.setToolTipText ( this.resourceBundle
-        .getString ( "collapseToolTip" ) ) ;
-    this.jMenuItemCollapse.setActionCommand ( "collapse" ) ;
+        .getString ( "collapseToolTip" ) ) ; //$NON-NLS-1$
+    this.jMenuItemCollapse.setActionCommand ( "collapse" ) ; //$NON-NLS-1$
     this.jMenuItemCollapse.addActionListener ( this.aSTActionListener ) ;
     this.jPopupMenu.add ( this.jMenuItemCollapse ) ;
     // MenuItem CollapseAll
     this.jMenuItemCollapseAll = new JMenuItem ( this.resourceBundle
-        .getString ( "collapseAll" ) ) ;
+        .getString ( "collapseAll" ) ) ; //$NON-NLS-1$
     this.jMenuItemCollapseAll.setMnemonic ( this.resourceBundle.getString (
-        "collapseAllMnemonic" ).charAt ( 0 ) ) ;
+        "collapseAllMnemonic" ).charAt ( 0 ) ) ; //$NON-NLS-1$
     this.jMenuItemCollapseAll.setToolTipText ( this.resourceBundle
-        .getString ( "collapseAllToolTip" ) ) ;
-    this.jMenuItemCollapseAll.setActionCommand ( "collapseAll" ) ;
+        .getString ( "collapseAllToolTip" ) ) ; //$NON-NLS-1$
+    this.jMenuItemCollapseAll.setActionCommand ( "collapseAll" ) ; //$NON-NLS-1$
     this.jMenuItemCollapseAll.addActionListener ( this.aSTActionListener ) ;
     this.jPopupMenu.add ( this.jMenuItemCollapseAll ) ;
     // Separator
     this.jPopupMenu.addSeparator ( ) ;
     // MenuItem Close
     this.jMenuItemClose = new JMenuItem ( this.resourceBundle
-        .getString ( "close" ) ) ;
+        .getString ( "close" ) ) ; //$NON-NLS-1$
     this.jMenuItemClose.setMnemonic ( this.resourceBundle.getString (
-        "closeMnemonic" ).charAt ( 0 ) ) ;
+        "closeMnemonic" ).charAt ( 0 ) ) ; //$NON-NLS-1$
     this.jMenuItemClose.setToolTipText ( this.resourceBundle
-        .getString ( "closeToolTip" ) ) ;
-    this.jMenuItemClose.setActionCommand ( "close" ) ;
+        .getString ( "closeToolTip" ) ) ; //$NON-NLS-1$
+    this.jMenuItemClose.setActionCommand ( "close" ) ; //$NON-NLS-1$
     this.jMenuItemClose.addActionListener ( this.aSTActionListener ) ;
     this.jPopupMenu.add ( this.jMenuItemClose ) ;
     // MenuItem CloseAll
     this.jMenuItemCloseAll = new JMenuItem ( this.resourceBundle
-        .getString ( "closeAll" ) ) ;
+        .getString ( "closeAll" ) ) ; //$NON-NLS-1$
     this.jMenuItemCloseAll.setMnemonic ( this.resourceBundle.getString (
-        "closeAllMnemonic" ).charAt ( 0 ) ) ;
+        "closeAllMnemonic" ).charAt ( 0 ) ) ; //$NON-NLS-1$
     this.jMenuItemCloseAll.setToolTipText ( this.resourceBundle
-        .getString ( "closeAllToolTip" ) ) ;
-    this.jMenuItemCloseAll.setActionCommand ( "closeAll" ) ;
+        .getString ( "closeAllToolTip" ) ) ; //$NON-NLS-1$
+    this.jMenuItemCloseAll.setActionCommand ( "closeAll" ) ; //$NON-NLS-1$
     this.jMenuItemCloseAll.addActionListener ( this.aSTActionListener ) ;
     this.jPopupMenu.add ( this.jMenuItemCloseAll ) ;
     // Separator
     this.jPopupMenu.addSeparator ( ) ;
     // MenuItem Preferences
     this.jMenuPreferences = new JMenu ( this.resourceBundle
-        .getString ( "preferences" ) ) ;
+        .getString ( "preferences" ) ) ; //$NON-NLS-1$
     this.jMenuPreferences.setMnemonic ( this.resourceBundle.getString (
-        "preferencesMnemonic" ).charAt ( 0 ) ) ;
-    this.jMenuPreferences.setActionCommand ( "preferences" ) ;
+        "preferencesMnemonic" ).charAt ( 0 ) ) ; //$NON-NLS-1$
+    this.jMenuPreferences.setActionCommand ( "preferences" ) ; //$NON-NLS-1$
     this.jMenuPreferences.addActionListener ( this.aSTActionListener ) ;
     this.jPopupMenu.add ( this.jMenuPreferences ) ;
     // MenuItem Selection
     this.jMenuItemSelection = new JCheckBoxMenuItem ( this.resourceBundle
-        .getString ( "selection" ) ) ;
+        .getString ( "selection" ) ) ; //$NON-NLS-1$
     this.jMenuItemSelection.setMnemonic ( this.resourceBundle.getString (
-        "selectionMnemonic" ).charAt ( 0 ) ) ;
+        "selectionMnemonic" ).charAt ( 0 ) ) ; //$NON-NLS-1$
     this.jMenuItemSelection.setToolTipText ( this.resourceBundle
-        .getString ( "selectionToolTip" ) ) ;
-    this.jMenuItemSelection.setActionCommand ( "selection" ) ;
+        .getString ( "selectionToolTip" ) ) ; //$NON-NLS-1$
+    this.jMenuItemSelection.setActionCommand ( "selection" ) ; //$NON-NLS-1$
     this.jMenuItemSelection.addActionListener ( this.aSTActionListener ) ;
     this.jMenuItemSelection.setSelected ( this.abstractSyntaxTree
         .getASTPreferences ( ).isSelection ( ) ) ;
     this.jMenuPreferences.add ( this.jMenuItemSelection ) ;
     // MenuItem Binding
     this.jMenuItemBinding = new JCheckBoxMenuItem ( this.resourceBundle
-        .getString ( "binding" ) ) ;
+        .getString ( "binding" ) ) ; //$NON-NLS-1$
     this.jMenuItemBinding.setMnemonic ( this.resourceBundle.getString (
-        "bindingMnemonic" ).charAt ( 0 ) ) ;
+        "bindingMnemonic" ).charAt ( 0 ) ) ; //$NON-NLS-1$
     this.jMenuItemBinding.setToolTipText ( this.resourceBundle
-        .getString ( "bindingToolTip" ) ) ;
-    this.jMenuItemBinding.setActionCommand ( "binding" ) ;
+        .getString ( "bindingToolTip" ) ) ; //$NON-NLS-1$
+    this.jMenuItemBinding.setActionCommand ( "binding" ) ; //$NON-NLS-1$
     this.jMenuItemBinding.addActionListener ( this.aSTActionListener ) ;
     this.jMenuItemBinding.setSelected ( this.abstractSyntaxTree
         .getASTPreferences ( ).isBinding ( ) ) ;
     this.jMenuPreferences.add ( this.jMenuItemBinding ) ;
     // MenuItem Unbound
     this.jMenuItemUnbound = new JCheckBoxMenuItem ( this.resourceBundle
-        .getString ( "unbound" ) ) ;
+        .getString ( "unbound" ) ) ; //$NON-NLS-1$
     this.jMenuItemUnbound.setMnemonic ( this.resourceBundle.getString (
-        "unboundMnemonic" ).charAt ( 0 ) ) ;
+        "unboundMnemonic" ).charAt ( 0 ) ) ; //$NON-NLS-1$
     this.jMenuItemUnbound.setToolTipText ( this.resourceBundle
-        .getString ( "unboundToolTip" ) ) ;
-    this.jMenuItemUnbound.setActionCommand ( "unbound" ) ;
+        .getString ( "unboundToolTip" ) ) ; //$NON-NLS-1$
+    this.jMenuItemUnbound.setActionCommand ( "unbound" ) ; //$NON-NLS-1$
     this.jMenuItemUnbound.addActionListener ( this.aSTActionListener ) ;
     this.jMenuItemUnbound.setSelected ( this.abstractSyntaxTree
         .getASTPreferences ( ).isUnbound ( ) ) ;
     this.jMenuPreferences.add ( this.jMenuItemUnbound ) ;
     // MenuItem Replace
     this.jMenuItemReplace = new JCheckBoxMenuItem ( this.resourceBundle
-        .getString ( "replace" ) ) ;
+        .getString ( "replace" ) ) ; //$NON-NLS-1$
     this.jMenuItemReplace.setMnemonic ( this.resourceBundle.getString (
-        "replaceMnemonic" ).charAt ( 0 ) ) ;
+        "replaceMnemonic" ).charAt ( 0 ) ) ; //$NON-NLS-1$
     this.jMenuItemReplace.setToolTipText ( this.resourceBundle
-        .getString ( "replaceToolTip" ) ) ;
-    this.jMenuItemReplace.setActionCommand ( "replace" ) ;
+        .getString ( "replaceToolTip" ) ) ; //$NON-NLS-1$
+    this.jMenuItemReplace.setActionCommand ( "replace" ) ; //$NON-NLS-1$
     this.jMenuItemReplace.addActionListener ( this.aSTActionListener ) ;
     this.jMenuItemReplace.setSelected ( this.abstractSyntaxTree
         .getASTPreferences ( ).isReplace ( ) ) ;
     this.jMenuPreferences.add ( this.jMenuItemReplace ) ;
     // MenuItem AutoUpdate
     this.jMenuItemAutoUpdate = new JCheckBoxMenuItem ( this.resourceBundle
-        .getString ( "autoUpdate" ) ) ;
+        .getString ( "autoUpdate" ) ) ; //$NON-NLS-1$
     this.jMenuItemAutoUpdate.setMnemonic ( this.resourceBundle.getString (
-        "autoUpdateMnemonic" ).charAt ( 0 ) ) ;
+        "autoUpdateMnemonic" ).charAt ( 0 ) ) ; //$NON-NLS-1$
     this.jMenuItemAutoUpdate.setToolTipText ( this.resourceBundle
-        .getString ( "autoUpdateToolTip" ) ) ;
-    this.jMenuItemAutoUpdate.setActionCommand ( "autoUpdate" ) ;
+        .getString ( "autoUpdateToolTip" ) ) ; //$NON-NLS-1$
+    this.jMenuItemAutoUpdate.setActionCommand ( "autoUpdate" ) ; //$NON-NLS-1$
     this.jMenuItemAutoUpdate.addActionListener ( this.aSTActionListener ) ;
     this.jMenuItemAutoUpdate.setSelected ( this.abstractSyntaxTree
         .getASTPreferences ( ).isAutoUpdate ( ) ) ;
