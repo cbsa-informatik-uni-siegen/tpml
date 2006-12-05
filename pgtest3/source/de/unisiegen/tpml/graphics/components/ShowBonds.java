@@ -19,6 +19,7 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation;
 import de.unisiegen.tpml.core.prettyprinter.PrettyString;
 import de.unisiegen.tpml.core.util.IdentifierListItem;
 import de.unisiegen.tpml.core.util.IdentifierUtilities;
+import de.unisiegen.tpml.graphics.components.Bonds;
 /**
  * 
  * @author Benjamin
@@ -180,7 +181,7 @@ public class ShowBonds
 		LinkedList<Expression> child = new LinkedList<Expression>();
 		child.add(pLambda.getE());
 			
-		checkRec(child, pLambda, list);
+		checkRec(child, pLambda, list, false);
 
 	}
 
@@ -212,7 +213,7 @@ public class ShowBonds
 		child.add(pRec.getE2());
 		
 
-		checkRec(child, pRec, list);
+		checkRec(child, pRec, list,false);
 
 	}
 
@@ -244,7 +245,7 @@ public class ShowBonds
 		child.add(pLambda.getE());
 	
 
-		checkRec(child, pLambda, list);
+		checkRec(child, pLambda, list,false);
 
 	}
 
@@ -276,7 +277,7 @@ public class ShowBonds
 		child.add(pLet.getE2());
 		
 
-		checkRec(child, pLet, list);
+		checkRec(child, pLet, list,false);
 
 	}
 
@@ -305,7 +306,7 @@ public class ShowBonds
 		
 		child.add(pLet.getE2());
 
-		checkRec(child, pLet, list);
+		checkRec(child, pLet, list,false);
 
 	}
 
@@ -326,12 +327,13 @@ public class ShowBonds
 		Object[] b = pLet.getE2().free().toArray();
 		
 		LinkedList<String> c = castArray(pLet.getIdentifiers());
+		c.remove(0);
 		
 
 		/**
 		 * Debug output. will be deleted if everything works fine
 		 */
-		if (true)
+		if (false)
 
 		{
 			Debug.out.println("a", me);
@@ -362,6 +364,7 @@ public class ShowBonds
 		 * if the Identifier of the Expression is in E1 it is removed from the list
 		 * because it is not bond to this Identifier
 		 */
+		/**
 		if (list.contains(pLet.getIdentifiers(0)))
 		{
 			for (int i = 0; i < list.size(); i++)
@@ -373,7 +376,7 @@ public class ShowBonds
 				}
 			}
 		}
-
+		*/
 		/**
 		 * list with E1
 		 */
@@ -387,12 +390,24 @@ public class ShowBonds
 		LinkedList<Expression> child2 = new LinkedList<Expression>();
 		child2.add(pLet.getE2());
 		
+		boolean duplicate=false;
+		for (int i=1; i<list.size();i++)
+		{
+			
+				if (list.get(i).equals(list.get(0)))
+				{
+					duplicate=true;
+					break;
+				}
+			
+		}
+		
 		/**
 		 * different calls for E1 and E2 with a different list of bounds
 		 */
-		checkRec(child2, pLet, list2);
+		checkRec(child2, pLet, list2, duplicate);
 		
-		checkRec(child, pLet, list);
+		checkRec(child, pLet, list, false);
 
 	}
 
@@ -423,7 +438,7 @@ public class ShowBonds
 		LinkedList<Expression> child = new LinkedList<Expression>();
 		child.add(pRec.getE());
 		
-		checkRec(child, pRec, list);
+		checkRec(child, pRec, list,false);
 	}
 
 	/**
@@ -481,7 +496,7 @@ public class ShowBonds
 		 */
 		LinkedList<Expression> child = new LinkedList<Expression>();
 		child.add(pRec.getE1());
-		child.add(pRec.getE2());
+		
 		
 		
 		/**
@@ -493,12 +508,25 @@ public class ShowBonds
 		LinkedList<String> list2 = new LinkedList<String>();
 		list2.add(pRec.getIdentifiers(0));
 		
+		
+		boolean duplicate=false;
+		for (int i=1; i<list.size();i++)
+		{
+			
+				if (list.get(i).equals(list.get(0)))
+				{
+					duplicate=true;
+					break;
+				}
+			
+		}
+		
 		/**
 		 * different calls for E1 and E2 with a different list of bounds
 		 */
-		checkRec(child2, pRec, list2);
-		child.remove(child.size() - 1);
-		checkRec(child, pRec, list);
+		checkRec(child2, pRec, list2,duplicate);
+		
+		checkRec(child, pRec, list,false);
 
 	}
 
@@ -511,7 +539,7 @@ public class ShowBonds
 	 * @return
 	 */
 	private Bonds checkRec(LinkedList<Expression> child, Expression e,
-			LinkedList<String> list)
+			LinkedList<String> list, boolean different)
 	{
 		Bonds tmpBound = null;
 		boolean inList = false;
@@ -586,7 +614,7 @@ public class ShowBonds
 							if (!inList)
 
 							{
-								int start = getStartOffset(e, id, mark1);
+								int start = getStartOffset(e, id, mark1, actualExpression,different);
 
 								int length = start + id.toString().length() - 1;
 
@@ -634,12 +662,12 @@ public class ShowBonds
 					{
 						child.add((Expression) tmpChild.nextElement());
 					}
-					checkRec(childtmp, e, list);
+					checkRec(childtmp, e, list, different);
 				}
 			}
 
 		}
-
+		
 		return tmpBound;
 	}
 
@@ -711,10 +739,22 @@ public class ShowBonds
 	 * @param mark1
 	 * @return
 	 */
-	private int getStartOffset(Expression pExpression, Identifier id, PrettyAnnotation mark1)
+	private int getStartOffset(Expression pExpression, Identifier id, PrettyAnnotation mark1, Expression child, boolean different)
 	{
 		int last=0;
 		ArrayList<IdentifierListItem> ids= IdentifierUtilities.getIdentifierPositions(pExpression);
+		
+		if (different)
+		{
+			for (int i=0; i<ids.size();i++)
+			{
+				if (ids.get(i).getId().equals(id.toString()))
+				{
+					return mark1.getStartOffset()+ids.get(i).getStartOffset();
+				}
+			}
+			
+		}
 		
 		for (int i=0; i<ids.size();i++)
 		{
@@ -747,5 +787,6 @@ public class ShowBonds
 	{
 		return result;
 	}
-
+	
+	
 }

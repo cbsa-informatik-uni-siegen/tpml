@@ -120,4 +120,9 @@ public class Bonds
 	{
 		return identifier;
 	}
+	
+	public void addMark(PrettyAnnotation mark)
+	{
+		marks.add(mark);
+	}
 }
