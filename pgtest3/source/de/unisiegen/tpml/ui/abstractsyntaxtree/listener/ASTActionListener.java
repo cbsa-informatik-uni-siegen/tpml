@@ -1,15 +1,14 @@
 package de.unisiegen.tpml.ui.abstractsyntaxtree.listener ;
 
 
-import java.awt.Toolkit ;
 import java.awt.datatransfer.Clipboard ;
 import java.awt.datatransfer.ClipboardOwner ;
-import java.awt.datatransfer.StringSelection ;
 import java.awt.datatransfer.Transferable ;
 import java.awt.event.ActionEvent ;
 import java.awt.event.ActionListener ;
 import javax.swing.tree.DefaultMutableTreeNode ;
 import javax.swing.tree.TreePath ;
+import de.unisiegen.tpml.ui.abstractsyntaxtree.ASTClipboard ;
 import de.unisiegen.tpml.ui.abstractsyntaxtree.ASTNode ;
 import de.unisiegen.tpml.ui.abstractsyntaxtree.ASTUI ;
 
@@ -30,9 +29,9 @@ public class ASTActionListener implements ActionListener , ClipboardOwner
 
 
   /**
-   * The clipboard.
+   * The aSTClipboard.
    */
-  private Clipboard clipboard ;
+  private ASTClipboard aSTClipboard ;
 
 
   /**
@@ -43,7 +42,7 @@ public class ASTActionListener implements ActionListener , ClipboardOwner
   public ASTActionListener ( ASTUI pASTUI )
   {
     this.aSTUI = pASTUI ;
-    this.clipboard = Toolkit.getDefaultToolkit ( ).getSystemClipboard ( ) ;
+    this.aSTClipboard = new ASTClipboard ( ) ;
   }
 
 
@@ -179,9 +178,8 @@ public class ASTActionListener implements ActionListener , ClipboardOwner
         .getLastPathComponent ( ) ;
     if ( node != null )
     {
-      StringSelection stringSelection = new StringSelection (
-          ( ( ASTNode ) node.getUserObject ( ) ).getExpressionString ( ) ) ;
-      this.clipboard.setContents ( stringSelection , this ) ;
+      this.aSTClipboard.copy ( ( ( ASTNode ) node.getUserObject ( ) )
+          .getExpressionString ( ) ) ;
     }
   }
 
