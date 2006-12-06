@@ -342,7 +342,7 @@ public class CompoundExpression < S , E > extends JComponent
       }
       Debug.out.println ( " " , "benjamin" ) ;
       o.setTimeTag("Ganze ShowBonds");
-      System.out.println(o.getTimeTags());
+      Debug.out.println(o.getTimeTags(),"benjamin");
       // CHANGE BENJAMIN END
       
       // check what to do with the renderer
