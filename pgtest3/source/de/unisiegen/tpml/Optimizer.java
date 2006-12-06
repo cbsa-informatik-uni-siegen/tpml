@@ -47,7 +47,7 @@ public final class Optimizer
   /**
    * The name of the tags.
    */
-  private String tagName = "" ;
+  private String tagName = "" ; //$NON-NLS-1$
 
 
   /**
@@ -59,7 +59,7 @@ public final class Optimizer
   {
     this.tagName = pName ;
     this.timeList.add ( new Long ( System.currentTimeMillis ( ) ) ) ;
-    this.commentList.add ( "" ) ;
+    this.commentList.add ( "" ) ; //$NON-NLS-1$
   }
 
 
@@ -75,7 +75,7 @@ public final class Optimizer
     this.timeList.clear ( ) ;
     this.timeList.add ( new Long ( System.currentTimeMillis ( ) ) ) ;
     this.commentList.clear ( ) ;
-    this.commentList.add ( "" ) ;
+    this.commentList.add ( "" ) ; //$NON-NLS-1$
   }
 
 
@@ -85,7 +85,7 @@ public final class Optimizer
   public final void setTimeTag ( )
   {
     this.timeList.add ( new Long ( System.currentTimeMillis ( ) ) ) ;
-    this.commentList.add ( "" ) ;
+    this.commentList.add ( "" ) ; //$NON-NLS-1$
   }
 
 
@@ -109,7 +109,7 @@ public final class Optimizer
    */
   public final String getTimeTags ( )
   {
-    String s = "" ;
+    String s = "" ; //$NON-NLS-1$
     if ( this.timeList.size ( ) > 1 )
     {
       int bc = 0 ;
@@ -127,7 +127,7 @@ public final class Optimizer
         final int k = t.length ( ) ;
         for ( int j = 0 ; j < bc - k ; j ++ )
         {
-          t = t + " " ;
+          t = t + " " ; //$NON-NLS-1$
         }
         this.commentList.set ( i , t ) ;
       }
@@ -140,9 +140,9 @@ public final class Optimizer
         end = 0.0000000001 ;
       }
       long last = 0 ;
-      final DecimalFormat decimalFormat1 = new DecimalFormat ( "00" ) ;
-      final DecimalFormat decimalFormat2 = new DecimalFormat ( "#0,000 ms" ) ;
-      final DecimalFormat decimalFormat3 = new DecimalFormat ( "#00.0" ) ;
+      final DecimalFormat decimalFormat1 = new DecimalFormat ( "00" ) ; //$NON-NLS-1$
+      final DecimalFormat decimalFormat2 = new DecimalFormat ( "#0,000 ms" ) ; //$NON-NLS-1$
+      final DecimalFormat decimalFormat3 = new DecimalFormat ( "#00.0" ) ; //$NON-NLS-1$
       for ( int i = 1 ; i < this.timeList.size ( ) ; i ++ )
       {
         final long current = ( this.timeList.get ( i ).longValue ( ) - start ) ;
@@ -155,11 +155,11 @@ public final class Optimizer
         {
           percent = 100 ;
         }
-        s += this.tagName + "   " + decimalFormat1.format ( i ) + "   ("
-            + this.commentList.get ( i ) + ")   "
-            + decimalFormat2.format ( current ) + "   "
-            + decimalFormat3.format ( percent ) + " %"
-            + System.getProperty ( "line.separator" ) ;
+        s += this.tagName + "   " + decimalFormat1.format ( i ) + "   (" //$NON-NLS-1$ //$NON-NLS-2$
+            + this.commentList.get ( i ) + ")   " //$NON-NLS-1$
+            + decimalFormat2.format ( current ) + "   " //$NON-NLS-1$
+            + decimalFormat3.format ( percent ) + " %" //$NON-NLS-1$
+            + System.getProperty ( "line.separator" ) ; //$NON-NLS-1$
         last = current ;
       }
     }
