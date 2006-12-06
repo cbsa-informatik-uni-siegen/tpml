@@ -1,9 +1,6 @@
 package de.unisiegen.tpml.ui.abstractsyntaxtree.listener ;
 
 
-import java.awt.datatransfer.Clipboard ;
-import java.awt.datatransfer.ClipboardOwner ;
-import java.awt.datatransfer.Transferable ;
 import java.awt.event.ActionEvent ;
 import java.awt.event.ActionListener ;
 import javax.swing.tree.DefaultMutableTreeNode ;
@@ -20,7 +17,7 @@ import de.unisiegen.tpml.ui.abstractsyntaxtree.ASTUI ;
  * @author Christian Fehler
  * @version $Rev$
  */
-public class ASTActionListener implements ActionListener , ClipboardOwner
+public class ASTActionListener implements ActionListener
 {
   /**
    * The AbstractSyntaxTree UI.
@@ -226,21 +223,5 @@ public class ASTActionListener implements ActionListener , ClipboardOwner
       expandTreePath ( pTreePath.pathByAddingChild ( lastNode.getChildAt ( i ) ) ) ;
     }
     this.aSTUI.getJTreeAbstractSyntaxTree ( ).expandPath ( pTreePath ) ;
-  }
-
-
-  /**
-   * This method is invoked if the ownership is lost.
-   * 
-   * @param pClipboard The clipboard.
-   * @param pContents The contests.
-   * @see java.awt.datatransfer.ClipboardOwner#lostOwnership(java.awt.datatransfer.Clipboard,
-   *      java.awt.datatransfer.Transferable)
-   */
-  public void lostOwnership ( @ SuppressWarnings ( "unused" )
-  Clipboard pClipboard , @ SuppressWarnings ( "unused" )
-  Transferable pContents )
-  {
-    // Do Nothing
   }
 }
