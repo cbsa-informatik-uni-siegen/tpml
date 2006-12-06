@@ -85,7 +85,7 @@ public class BigStepView extends AbstractProofView
                 .getActionListeners ( ) [ 0 ] ) ;
     this.abstractSyntaxTree.getASTUI ( ).getJMenuItemAutoUpdate ( )
         .setSelected ( false ) ;
-    this.abstractSyntaxTree.loadNewExpression ( model.getRoot ( )
+    this.abstractSyntaxTree.loadExpression ( model.getRoot ( )
         .getLastLeaf ( ).getExpression ( ) , "first_bigstep" ) ;
     model.addTreeModelListener ( new ASTTreeModelListener (
         this.abstractSyntaxTree , model ) ) ;

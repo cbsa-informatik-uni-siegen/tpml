@@ -4,8 +4,11 @@ package de.unisiegen.tpml.ui.abstractsyntaxtree ;
 import java.awt.Toolkit ;
 import java.awt.datatransfer.Clipboard ;
 import java.awt.datatransfer.ClipboardOwner ;
+import java.awt.datatransfer.DataFlavor ;
 import java.awt.datatransfer.StringSelection ;
 import java.awt.datatransfer.Transferable ;
+import java.awt.datatransfer.UnsupportedFlavorException ;
+import java.io.IOException ;
 
 
 /**
@@ -56,5 +59,30 @@ public class ASTClipboard implements ClipboardOwner
   Transferable pContents )
   {
     // Do Nothing
+  }
+
+
+  /**
+   * Returns the string, which is current saved in the clipboard.
+   * 
+   * @return The string, which is current saved in the clipboard.
+   */
+  public String paste ( )
+  {
+    Transferable transfer = this.clipboard.getContents ( null ) ;
+    String s = "" ; //$NON-NLS-1$
+    try
+    {
+      s = ( String ) transfer.getTransferData ( DataFlavor.stringFlavor ) ;
+    }
+    catch ( UnsupportedFlavorException e )
+    {
+      // Do Nothing
+    }
+    catch ( IOException e )
+    {
+      // Do Nothing
+    }
+    return s ;
   }
 }

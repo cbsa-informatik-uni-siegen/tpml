@@ -4,9 +4,10 @@ package de.unisiegen.tpml.ui.abstractsyntaxtree ;
 import java.lang.reflect.Method ;
 import java.util.ArrayList ;
 import java.util.Enumeration ;
+import java.util.Timer ;
+import javax.swing.SwingUtilities ;
 import javax.swing.tree.DefaultMutableTreeNode ;
 import de.unisiegen.tpml.Debug ;
-import de.unisiegen.tpml.Optimizer ;
 import de.unisiegen.tpml.core.expressions.BinaryOperator ;
 import de.unisiegen.tpml.core.expressions.CurriedLet ;
 import de.unisiegen.tpml.core.expressions.CurriedLetRec ;
@@ -86,6 +87,12 @@ public class AbstractSyntaxTree
    * are saved.
    */
   private ASTUnbound aSTUnbound ;
+
+
+  /**
+   * The timer for executing.
+   */
+  private Timer aSTTimer ;
 
 
   /**
@@ -204,6 +211,24 @@ public class AbstractSyntaxTree
 
 
   /**
+   * Execute the AbstractSyntaxTree UI.
+   */
+  public void execute ( )
+  {
+    Debug.out.println ( "Execute" , Debug.CHRISTIAN ) ; //$NON-NLS-1$
+    this.aSTUnbound = new ASTUnbound ( this.oldExpression ) ;
+    final DefaultMutableTreeNode root = expression ( this.oldExpression ) ;
+    SwingUtilities.invokeLater ( new Runnable ( )
+    {
+      public void run ( )
+      {
+        AbstractSyntaxTree.this.getASTUI ( ).setRootNode ( root ) ;
+      }
+    } ) ;
+  }
+
+
+  /**
    * Returns the node, which represents the given Expression.
    * 
    * @param pExpression The input Expression.
@@ -276,6 +301,18 @@ public class AbstractSyntaxTree
   public ASTUI getASTUI ( )
   {
     return this.aSTUI ;
+  }
+
+
+  /**
+   * Returns the oldExpression.
+   * 
+   * @return The oldExpression.
+   * @see #oldExpression
+   */
+  public Expression getOldExpression ( )
+  {
+    return this.oldExpression ;
   }
 
 
@@ -380,6 +417,54 @@ public class AbstractSyntaxTree
         this.aSTUnbound ) ) ) ;
     createChildren ( pLetRec , node ) ;
     return node ;
+  }
+
+
+  /**
+   * This method loads a new Expression into the AbstractSyntaxTree. It checks
+   * if the new Expression is different to the current loaded Expression, if not
+   * it does nothing and returns. It does also nothing if the auto update is
+   * disabled and the change does not come from a mouse event. In the BigStep
+   * and the TypeChecker view it does also nothing if the change does not come
+   * from a mouse event.
+   * 
+   * @param pExpression The new Expression.
+   * @param pDescription The description who is calling this method.
+   */
+  public void loadExpression ( Expression pExpression , String pDescription )
+  {
+    if ( ( this.oldExpression != null )
+        && ( pExpression.equals ( this.oldExpression ) ) )
+    {
+      Debug.err.println ( "Expression has not changed" , Debug.CHRISTIAN ) ; //$NON-NLS-1$
+      return ;
+    }
+    if ( ( ! this.aSTPreferences.isAutoUpdate ( ) )
+        && ( pDescription.startsWith ( "change" ) ) ) //$NON-NLS-1$
+    {
+      Debug.err.println ( "No AutoUpdate selected" , Debug.CHRISTIAN ) ; //$NON-NLS-1$
+      return ;
+    }
+    if ( pDescription.equals ( "change_bigstep" ) ) //$NON-NLS-1$
+    {
+      Debug.err.println ( "No update in the BigStep view" , Debug.CHRISTIAN ) ; //$NON-NLS-1$
+      return ;
+    }
+    if ( pDescription.equals ( "change_typechecker" ) ) //$NON-NLS-1$
+    {
+      Debug.err
+          .println ( "No update in the TypeChecker View" , Debug.CHRISTIAN ) ; //$NON-NLS-1$
+      return ;
+    }
+    this.oldExpression = pExpression ;
+    if ( this.aSTTimer != null )
+    {
+      this.aSTTimer.cancel ( ) ;
+      this.aSTTimer = null ;
+    }
+    Debug.out.println ( "Load" , Debug.CHRISTIAN ) ; //$NON-NLS-1$
+    this.aSTTimer = new Timer ( ) ;
+    this.aSTTimer.schedule ( new ASTTimerTask ( this ) , 500 ) ;
   }
 
 
@@ -530,51 +615,5 @@ public class AbstractSyntaxTree
         this.aSTUnbound ) ) ) ;
     createChildren ( pRecursion , node ) ;
     return node ;
-  }
-
-
-  /**
-   * This method loads a new Expression into the AbstractSyntaxTree. It checks
-   * if the new Expression is different to the current loaded Expression, if not
-   * it does nothing and returns. It does also nothing if the auto update is
-   * disabled and the change does not come from a mouse event. In the BigStep
-   * and the TypeChecker view it does also nothing if the change does not come
-   * from a mouse event.
-   * 
-   * @param pExpression The new Expression.
-   * @param pDescription The description who is calling this method.
-   */
-  public void loadNewExpression ( Expression pExpression , String pDescription )
-  {
-    if ( ( this.oldExpression != null )
-        && ( pExpression.equals ( this.oldExpression ) ) )
-    {
-      Debug.err.println ( "Expression has not changed" , Debug.CHRISTIAN ) ; //$NON-NLS-1$
-      return ;
-    }
-    if ( ( ! this.aSTPreferences.isAutoUpdate ( ) )
-        && ( pDescription.startsWith ( "change" ) ) ) //$NON-NLS-1$
-    {
-      Debug.err.println ( "No AutoUpdate selected" , Debug.CHRISTIAN ) ; //$NON-NLS-1$
-      return ;
-    }
-    if ( pDescription.equals ( "change_bigstep" ) ) //$NON-NLS-1$
-    {
-      Debug.err.println ( "No update in the BigStep view" , Debug.CHRISTIAN ) ; //$NON-NLS-1$
-      return ;
-    }
-    if ( pDescription.equals ( "change_typechecker" ) ) //$NON-NLS-1$
-    {
-      Debug.err 
-          .println ( "No update in the TypeChecker View" , Debug.CHRISTIAN ) ; //$NON-NLS-1$
-      return ;
-    }
-    Optimizer optimizer = new Optimizer ( "AST" ) ; //$NON-NLS-1$
-    this.aSTUnbound = new ASTUnbound ( pExpression ) ;
-    optimizer.setTimeTag ( "unbound" ) ; //$NON-NLS-1$
-    this.oldExpression = pExpression ;
-    this.aSTUI.setRootNode ( expression ( pExpression ) ) ;
-    optimizer.setTimeTag ( "nodes" ) ; //$NON-NLS-1$
-    System.out.println ( optimizer.getTimeTags ( ) ) ;
   }
 }

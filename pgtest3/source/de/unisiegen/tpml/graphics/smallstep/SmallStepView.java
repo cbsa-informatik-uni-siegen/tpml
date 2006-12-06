@@ -85,7 +85,7 @@ public class SmallStepView extends AbstractProofView
       throw new NullPointerException ( "model is null" ) ;
     }
     this.abstractSyntaxTree = new AbstractSyntaxTree ( ) ;
-    this.abstractSyntaxTree.loadNewExpression ( model.getRoot ( )
+    this.abstractSyntaxTree.loadExpression ( model.getRoot ( )
         .getLastLeaf ( ).getExpression ( ) , "first_smallstep" ) ;
     model.addTreeModelListener ( new ASTTreeModelListener (
         this.abstractSyntaxTree , model ) ) ;
