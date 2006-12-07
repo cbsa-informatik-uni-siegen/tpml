@@ -20,7 +20,6 @@ import de.unisiegen.tpml.core.expressions.MultiLambda ;
 import de.unisiegen.tpml.core.expressions.MultiLet ;
 import de.unisiegen.tpml.core.expressions.Recursion ;
 import de.unisiegen.tpml.core.util.Debug ;
-import de.unisiegen.tpml.core.util.Optimizer ;
 import de.unisiegen.tpml.graphics.abstractsyntaxtree.binding.ASTBinding ;
 import de.unisiegen.tpml.graphics.abstractsyntaxtree.binding.ASTIdentifier ;
 import de.unisiegen.tpml.graphics.abstractsyntaxtree.binding.ASTPair ;
@@ -221,12 +220,8 @@ public class AbstractSyntaxTree
   public void execute ( )
   {
     Debug.out.println ( "execute" , Debug.CHRISTIAN ) ; //$NON-NLS-1$
-    Optimizer optimizer = Optimizer.getInstance ( ) ;
     this.aSTUnbound = new ASTUnbound ( this.oldExpression ) ;
-    optimizer.setTimeTag ( "unbound" ) ; //$NON-NLS-1$
     DefaultMutableTreeNode root = expression ( this.oldExpression ) ;
-    optimizer.setTimeTag ( "nodes" ) ; //$NON-NLS-1$
-    Debug.out.println ( optimizer.getTimeTags ( ) , Debug.CHRISTIAN ) ;
     SwingUtilities.invokeLater ( new ASTDisplayTree ( this.aSTUI , root ) ) ;
   }
 
@@ -465,8 +460,6 @@ public class AbstractSyntaxTree
       this.aSTTimer.cancel ( ) ;
       this.aSTTimer = null ;
     }
-    Optimizer optimizer = Optimizer.getInstance ( ) ;
-    optimizer.setTimeTag ( "load" ) ; //$NON-NLS-1$
     Debug.out.println ( "load" , Debug.CHRISTIAN ) ; //$NON-NLS-1$
     this.aSTTimer = new Timer ( ) ;
     this.aSTTimer.schedule ( new ASTTimerTask ( this ) , 250 ) ;
