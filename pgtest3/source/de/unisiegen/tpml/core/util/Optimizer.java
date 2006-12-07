@@ -164,8 +164,8 @@ public final class Optimizer
       }
       long last = 0 ;
       final DecimalFormat decimalFormat1 = new DecimalFormat ( "00" ) ; //$NON-NLS-1$
-      final DecimalFormat decimalFormat2 = new DecimalFormat ( "#0,000 ms" ) ; //$NON-NLS-1$
-      final DecimalFormat decimalFormat3 = new DecimalFormat ( "#00.0" ) ; //$NON-NLS-1$
+      final DecimalFormat decimalFormat2 = new DecimalFormat ( "0,000 ms" ) ; //$NON-NLS-1$
+      final DecimalFormat decimalFormat3 = new DecimalFormat ( "00.0" ) ; //$NON-NLS-1$
       for ( int i = 1 ; i < this.timeList.size ( ) ; i ++ )
       {
         final long current = ( this.timeList.get ( i ).longValue ( ) - start ) ;
