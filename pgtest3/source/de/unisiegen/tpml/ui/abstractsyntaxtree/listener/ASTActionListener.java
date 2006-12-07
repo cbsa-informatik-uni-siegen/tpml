@@ -26,12 +26,6 @@ public class ASTActionListener implements ActionListener
 
 
   /**
-   * The aSTClipboard.
-   */
-  private ASTClipboard aSTClipboard ;
-
-
-  /**
    * Initializes the ASTActionListener.
    * 
    * @param pASTUI The AbstractSyntaxTree UI.
@@ -39,7 +33,6 @@ public class ASTActionListener implements ActionListener
   public ASTActionListener ( ASTUI pASTUI )
   {
     this.aSTUI = pASTUI ;
-    this.aSTClipboard = new ASTClipboard ( ) ;
   }
 
 
@@ -175,8 +168,8 @@ public class ASTActionListener implements ActionListener
         .getLastPathComponent ( ) ;
     if ( node != null )
     {
-      this.aSTClipboard.copy ( ( ( ASTNode ) node.getUserObject ( ) )
-          .getExpressionString ( ) ) ;
+      ASTClipboard.getInstance ( ).copy (
+          ( ( ASTNode ) node.getUserObject ( ) ).getExpressionString ( ) ) ;
     }
   }
 

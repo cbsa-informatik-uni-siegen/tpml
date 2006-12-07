@@ -26,11 +26,32 @@ public class ASTClipboard implements ClipboardOwner
 
 
   /**
+   * The single object of ASTClipboard.
+   */
+  private static ASTClipboard aSTClipboard = null ;
+
+
+  /**
    * Initializes the ASTClipboard.
    */
-  public ASTClipboard ( )
+  private ASTClipboard ( )
   {
     this.clipboard = Toolkit.getDefaultToolkit ( ).getSystemClipboard ( ) ;
+  }
+
+
+  /**
+   * Returns the single object of ASTClipboard.
+   * 
+   * @return The single object of ASTClipboard.
+   */
+  public static ASTClipboard getInstance ( )
+  {
+    if ( aSTClipboard == null )
+    {
+      aSTClipboard = new ASTClipboard ( ) ;
+    }
+    return aSTClipboard ;
   }
 
 

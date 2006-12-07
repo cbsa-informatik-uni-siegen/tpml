@@ -216,8 +216,8 @@ public class AbstractSyntaxTree
    */
   public void execute ( )
   {
-    Debug.out.println ( "Execute" , Debug.CHRISTIAN ) ; //$NON-NLS-1$
-    Optimizer optimizer = new Optimizer ( "AST" ) ; //$NON-NLS-1$
+    Debug.out.println ( "execute" , Debug.CHRISTIAN ) ; //$NON-NLS-1$
+    Optimizer optimizer = Optimizer.getInstance ( ) ;
     this.aSTUnbound = new ASTUnbound ( this.oldExpression ) ;
     optimizer.setTimeTag ( "unbound" ) ; //$NON-NLS-1$
     DefaultMutableTreeNode root = expression ( this.oldExpression ) ;
@@ -461,7 +461,9 @@ public class AbstractSyntaxTree
       this.aSTTimer.cancel ( ) ;
       this.aSTTimer = null ;
     }
-    Debug.out.println ( "Load" , Debug.CHRISTIAN ) ; //$NON-NLS-1$
+    Optimizer optimizer = Optimizer.getInstance ( ) ;
+    optimizer.setTimeTag ( "load" ) ; //$NON-NLS-1$
+    Debug.out.println ( "load" , Debug.CHRISTIAN ) ; //$NON-NLS-1$
     this.aSTTimer = new Timer ( ) ;
     this.aSTTimer.schedule ( new ASTTimerTask ( this ) , 250 ) ;
   }

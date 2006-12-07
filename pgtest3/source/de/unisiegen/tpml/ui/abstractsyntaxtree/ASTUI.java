@@ -6,6 +6,9 @@ import java.awt.Font ;
 import java.awt.GridBagConstraints ;
 import java.awt.GridBagLayout ;
 import java.awt.Insets ;
+import java.awt.event.InputEvent ;
+import java.awt.event.KeyEvent ;
+import java.awt.event.KeyListener;
 import java.util.ResourceBundle ;
 import javax.swing.BorderFactory ;
 import javax.swing.ImageIcon ;
@@ -17,6 +20,7 @@ import javax.swing.JPanel ;
 import javax.swing.JPopupMenu ;
 import javax.swing.JScrollPane ;
 import javax.swing.JTree ;
+import javax.swing.KeyStroke ;
 import javax.swing.border.TitledBorder ;
 import javax.swing.tree.DefaultMutableTreeNode ;
 import javax.swing.tree.DefaultTreeModel ;
@@ -438,6 +442,26 @@ public class ASTUI
         .addTreeSelectionListener ( this.aSTTreeSelectionListener ) ;
     this.jTreeAbstractSyntaxTree.setRowHeight ( 20 ) ;
     this.jTreeAbstractSyntaxTree.addMouseListener ( this.aSTMouseListener ) ;
+    
+    this.jTreeAbstractSyntaxTree.addKeyListener ( 
+        new KeyListener ()
+            {
+              public void keyTyped(KeyEvent pKeyEvent )
+              {
+                
+              }
+              public void keyReleased(KeyEvent pKeyEvent )
+              {
+                
+              }
+              public void keyPressed(KeyEvent pKeyEvent )
+              {
+                
+              }
+             
+            }
+        ) ;
+    
     // ScrollPane AbstractSyntax
     this.jScrollPaneAbstractSyntaxTree = new JScrollPane (
         this.jTreeAbstractSyntaxTree ) ;
@@ -558,6 +582,8 @@ public class ASTUI
         "/de/unisiegen/tpml/ui/icons/copy16.gif" ) ) ) ; //$NON-NLS-1$
     this.jMenuItemCopy.setActionCommand ( "copy" ) ; //$NON-NLS-1$
     this.jMenuItemCopy.addActionListener ( this.aSTActionListener ) ;
+    this.jMenuItemCopy.setAccelerator ( KeyStroke.getKeyStroke ( KeyEvent.VK_C ,
+        InputEvent.CTRL_MASK ) ) ;
     this.jPopupMenu.add ( this.jMenuItemCopy ) ;
     // Separator
     this.jPopupMenu.addSeparator ( ) ;
