@@ -4,7 +4,7 @@ package de.unisiegen.tpml.graphics.abstractsyntaxtree.listener ;
 import java.awt.event.ComponentEvent ;
 import java.awt.event.ComponentListener ;
 import javax.swing.JSplitPane ;
-import de.unisiegen.tpml.graphics.abstractsyntaxtree.AbstractSyntaxTree;
+import de.unisiegen.tpml.graphics.abstractsyntaxtree.AbstractSyntaxTree ;
 
 
 /**
@@ -74,11 +74,14 @@ public class ASTComponentListener implements ComponentListener
    * @param pComponentEvent The component event.
    * @see java.awt.event.ComponentListener#componentResized(java.awt.event.ComponentEvent)
    */
-  public void componentResized ( @ SuppressWarnings ( "unused" )
-  ComponentEvent pComponentEvent )
+  public void componentResized ( ComponentEvent pComponentEvent )
   {
-    this.abstractSyntaxTree.getASTPreferences ( ).setDividerLocation (
-        this.jSplitPane.getDividerLocation ( ) ) ;
+    if ( pComponentEvent.getSource ( ).equals (
+        this.abstractSyntaxTree.getASTUI ( ).getJPanelMain ( ) ) )
+    {
+      this.abstractSyntaxTree.getASTPreferences ( ).setDividerLocation (
+          this.jSplitPane.getDividerLocation ( ) ) ;
+    }
   }
 
 

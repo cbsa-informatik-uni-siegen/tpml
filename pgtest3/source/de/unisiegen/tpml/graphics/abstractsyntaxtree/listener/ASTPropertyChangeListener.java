@@ -4,7 +4,8 @@ package de.unisiegen.tpml.graphics.abstractsyntaxtree.listener ;
 import java.beans.PropertyChangeEvent ;
 import java.beans.PropertyChangeListener ;
 import javax.swing.JSplitPane ;
-import de.unisiegen.tpml.graphics.abstractsyntaxtree.AbstractSyntaxTree;
+import de.unisiegen.tpml.graphics.AbstractProofView ;
+import de.unisiegen.tpml.graphics.abstractsyntaxtree.AbstractSyntaxTree ;
 
 
 /**
@@ -56,14 +57,16 @@ public class ASTPropertyChangeListener implements PropertyChangeListener
    * @param pPropertyChangeEvent The property change event.
    * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
    */
-  public void propertyChange ( @ SuppressWarnings ( "unused" )
-  PropertyChangeEvent pPropertyChangeEvent )
+  public void propertyChange ( PropertyChangeEvent pPropertyChangeEvent )
   {
-    if ( ! this.setDivider )
+    if ( pPropertyChangeEvent.getSource ( ) instanceof AbstractProofView )
     {
-      this.setDivider = true ;
-      this.jSplitPane.setDividerLocation ( this.abstractSyntaxTree
-          .getASTPreferences ( ).getDividerLocation ( ) ) ;
+      if ( ! this.setDivider )
+      {
+        this.setDivider = true ;
+        this.jSplitPane.setDividerLocation ( this.abstractSyntaxTree
+            .getASTPreferences ( ).getDividerLocation ( ) ) ;
+      }
     }
   }
 }

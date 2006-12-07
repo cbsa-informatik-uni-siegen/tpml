@@ -15,8 +15,8 @@ import de.unisiegen.tpml.core.expressions.MultiLambda ;
 import de.unisiegen.tpml.core.expressions.MultiLet ;
 import de.unisiegen.tpml.core.expressions.Recursion ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation ;
-import de.unisiegen.tpml.graphics.abstractsyntaxtree.ASTNode;
-import de.unisiegen.tpml.graphics.abstractsyntaxtree.ui.ASTUI;
+import de.unisiegen.tpml.graphics.abstractsyntaxtree.ASTNode ;
+import de.unisiegen.tpml.graphics.abstractsyntaxtree.ui.ASTUI ;
 
 
 /**
@@ -188,11 +188,15 @@ public class ASTTreeSelectionListener implements TreeSelectionListener
    */
   public void valueChanged ( TreeSelectionEvent pTreeSelectionEvent )
   {
-    TreePath t = pTreeSelectionEvent.getOldLeadSelectionPath ( ) ;
-    if ( ( t != null ) && ( t.getPathCount ( ) > 1 ) )
+    if ( pTreeSelectionEvent.getSource ( ).equals (
+        this.aSTUI.getJTreeAbstractSyntaxTree ( ).getSelectionModel ( ) ) )
     {
-      reset ( ( DefaultMutableTreeNode ) t.getPathComponent ( 1 ) ) ;
+      TreePath treePath = pTreeSelectionEvent.getOldLeadSelectionPath ( ) ;
+      if ( ( treePath != null ) && ( treePath.getPathCount ( ) > 1 ) )
+      {
+        reset ( ( DefaultMutableTreeNode ) treePath.getPathComponent ( 1 ) ) ;
+      }
+      update ( pTreeSelectionEvent.getPath ( ) ) ;
     }
-    update ( pTreeSelectionEvent.getPath ( ) ) ;
   }
 }
