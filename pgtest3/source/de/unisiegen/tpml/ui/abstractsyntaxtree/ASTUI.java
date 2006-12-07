@@ -8,7 +8,6 @@ import java.awt.GridBagLayout ;
 import java.awt.Insets ;
 import java.awt.event.InputEvent ;
 import java.awt.event.KeyEvent ;
-import java.awt.event.KeyListener;
 import java.util.ResourceBundle ;
 import javax.swing.BorderFactory ;
 import javax.swing.ImageIcon ;
@@ -26,6 +25,7 @@ import javax.swing.tree.DefaultMutableTreeNode ;
 import javax.swing.tree.DefaultTreeModel ;
 import de.unisiegen.tpml.ui.abstractsyntaxtree.listener.ASTActionListener ;
 import de.unisiegen.tpml.ui.abstractsyntaxtree.listener.ASTItemListener ;
+import de.unisiegen.tpml.ui.abstractsyntaxtree.listener.ASTKeyListener ;
 import de.unisiegen.tpml.ui.abstractsyntaxtree.listener.ASTMouseListener ;
 import de.unisiegen.tpml.ui.abstractsyntaxtree.listener.ASTTreeSelectionListener ;
 
@@ -442,26 +442,7 @@ public class ASTUI
         .addTreeSelectionListener ( this.aSTTreeSelectionListener ) ;
     this.jTreeAbstractSyntaxTree.setRowHeight ( 20 ) ;
     this.jTreeAbstractSyntaxTree.addMouseListener ( this.aSTMouseListener ) ;
-    
-    this.jTreeAbstractSyntaxTree.addKeyListener ( 
-        new KeyListener ()
-            {
-              public void keyTyped(KeyEvent pKeyEvent )
-              {
-                
-              }
-              public void keyReleased(KeyEvent pKeyEvent )
-              {
-                
-              }
-              public void keyPressed(KeyEvent pKeyEvent )
-              {
-                
-              }
-             
-            }
-        ) ;
-    
+    this.jTreeAbstractSyntaxTree.addKeyListener ( new ASTKeyListener ( this ) ) ;
     // ScrollPane AbstractSyntax
     this.jScrollPaneAbstractSyntaxTree = new JScrollPane (
         this.jTreeAbstractSyntaxTree ) ;
