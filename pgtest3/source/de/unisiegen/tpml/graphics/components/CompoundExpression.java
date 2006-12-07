@@ -12,12 +12,12 @@ import java.util.LinkedList;
 
 import javax.swing.JComponent;
 
-import de.unisiegen.tpml.Debug;
-import de.unisiegen.tpml.Optimizer;
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.interpreters.Store;
 import de.unisiegen.tpml.core.typechecker.TypeEnvironment;
+import de.unisiegen.tpml.core.util.Debug;
 import de.unisiegen.tpml.core.util.Environment;
+import de.unisiegen.tpml.core.util.Optimizer;
 import de.unisiegen.tpml.graphics.renderer.AbstractRenderer;
 import de.unisiegen.tpml.graphics.renderer.EnvironmentRenderer;
 import de.unisiegen.tpml.graphics.renderer.PrettyStringRenderer;

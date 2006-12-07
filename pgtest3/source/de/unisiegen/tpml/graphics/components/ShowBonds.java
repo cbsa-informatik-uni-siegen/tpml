@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.LinkedList;
 
-import de.unisiegen.tpml.Debug;
 import de.unisiegen.tpml.core.expressions.CurriedLet;
 import de.unisiegen.tpml.core.expressions.CurriedLetRec;
 import de.unisiegen.tpml.core.expressions.Expression;
@@ -17,6 +16,7 @@ import de.unisiegen.tpml.core.expressions.MultiLet;
 import de.unisiegen.tpml.core.expressions.Recursion;
 import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation;
 import de.unisiegen.tpml.core.prettyprinter.PrettyString;
+import de.unisiegen.tpml.core.util.Debug;
 import de.unisiegen.tpml.core.util.IdentifierListItem;
 import de.unisiegen.tpml.core.util.IdentifierUtilities;
 import de.unisiegen.tpml.graphics.components.Bonds;
@@ -221,7 +221,7 @@ public class ShowBonds
 	private void checkMultiLambda(MultiLambda pLambda)
 	{
 
-		// rekursiver Aufruf für Ausdruck e von lambda
+		// rekursiver Aufruf fï¿½r Ausdruck e von lambda
 		Expression e = pLambda.getE();
 		checkChild(pLambda);
 

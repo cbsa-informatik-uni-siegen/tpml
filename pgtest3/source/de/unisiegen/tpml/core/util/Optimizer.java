@@ -1,4 +1,4 @@
-package de.unisiegen.tpml ;
+package de.unisiegen.tpml.core.util ;
 
 
 import java.text.DecimalFormat ;
