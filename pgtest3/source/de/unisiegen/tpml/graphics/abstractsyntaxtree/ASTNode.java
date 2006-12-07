@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.ui.abstractsyntaxtree ;
+package de.unisiegen.tpml.graphics.abstractsyntaxtree ;
 
 
 import java.awt.Color ;
@@ -8,10 +8,10 @@ import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyCharIterator ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStyle ;
-import de.unisiegen.tpml.core.util.Debug;
+import de.unisiegen.tpml.core.util.Debug ;
 import de.unisiegen.tpml.graphics.Theme ;
-import de.unisiegen.tpml.ui.abstractsyntaxtree.binding.ASTBinding ;
-import de.unisiegen.tpml.ui.abstractsyntaxtree.binding.ASTUnbound ;
+import de.unisiegen.tpml.graphics.abstractsyntaxtree.binding.ASTBinding ;
+import de.unisiegen.tpml.graphics.abstractsyntaxtree.binding.ASTUnbound ;
 
 
 /**
@@ -294,7 +294,7 @@ public class ASTNode
   {
     // Load the description
     this.resourceBundle = ResourceBundle
-        .getBundle ( "de/unisiegen/tpml/ui/abstractsyntaxtree/ast" ) ; //$NON-NLS-1$
+        .getBundle ( "de/unisiegen/tpml/graphics/abstractsyntaxtree/ast" ) ; //$NON-NLS-1$
     try
     {
       this.description = this.resourceBundle.getString ( pExpression
@@ -335,7 +335,7 @@ public class ASTNode
   {
     // Preferences
     this.resourceBundle = ResourceBundle
-        .getBundle ( "de/unisiegen/tpml/ui/abstractsyntaxtree/ast" ) ; //$NON-NLS-1$
+        .getBundle ( "de/unisiegen/tpml/graphics/abstractsyntaxtree/ast" ) ; //$NON-NLS-1$
     try
     {
       this.description = this.resourceBundle.getString ( pDescription ) ;

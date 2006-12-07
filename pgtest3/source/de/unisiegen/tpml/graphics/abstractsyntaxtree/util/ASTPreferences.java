@@ -1,7 +1,9 @@
-package de.unisiegen.tpml.ui.abstractsyntaxtree ;
+package de.unisiegen.tpml.graphics.abstractsyntaxtree.util ;
 
 
 import java.util.prefs.Preferences ;
+import de.unisiegen.tpml.graphics.abstractsyntaxtree.ASTNode;
+import de.unisiegen.tpml.graphics.abstractsyntaxtree.AbstractSyntaxTree;
 
 
 /**

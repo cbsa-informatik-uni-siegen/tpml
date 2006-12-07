@@ -18,11 +18,11 @@ import de.unisiegen.tpml.core.typechecker.TypeEnvironment;
 import de.unisiegen.tpml.core.util.Debug;
 import de.unisiegen.tpml.core.util.Environment;
 import de.unisiegen.tpml.core.util.Optimizer;
+import de.unisiegen.tpml.graphics.abstractsyntaxtree.listener.ASTMouseListener;
 import de.unisiegen.tpml.graphics.renderer.AbstractRenderer;
 import de.unisiegen.tpml.graphics.renderer.EnvironmentRenderer;
 import de.unisiegen.tpml.graphics.renderer.PrettyStringRenderer;
 import de.unisiegen.tpml.graphics.renderer.ToListenForMouseContainer;
-import de.unisiegen.tpml.ui.abstractsyntaxtree.listener.ASTMouseListener;
 
 
 public class CompoundExpression < S , E > extends JComponent

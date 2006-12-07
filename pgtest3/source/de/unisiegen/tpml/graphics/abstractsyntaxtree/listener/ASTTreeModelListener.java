@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.ui.abstractsyntaxtree.listener ;
+package de.unisiegen.tpml.graphics.abstractsyntaxtree.listener ;
 
 
 import javax.swing.event.TreeModelEvent ;
@@ -7,7 +7,7 @@ import de.unisiegen.tpml.core.ExpressionProofModel ;
 import de.unisiegen.tpml.core.bigstep.BigStepProofModel ;
 import de.unisiegen.tpml.core.smallstep.SmallStepProofModel ;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel ;
-import de.unisiegen.tpml.ui.abstractsyntaxtree.AbstractSyntaxTree ;
+import de.unisiegen.tpml.graphics.abstractsyntaxtree.AbstractSyntaxTree;
 
 
 /**

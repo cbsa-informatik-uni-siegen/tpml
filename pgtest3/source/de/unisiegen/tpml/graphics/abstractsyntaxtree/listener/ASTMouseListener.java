@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.ui.abstractsyntaxtree.listener ;
+package de.unisiegen.tpml.graphics.abstractsyntaxtree.listener ;
 
 
 import java.awt.Container ;
@@ -7,11 +7,11 @@ import java.awt.event.MouseListener ;
 import javax.swing.JLabel ;
 import javax.swing.tree.DefaultMutableTreeNode ;
 import javax.swing.tree.TreePath ;
+import de.unisiegen.tpml.graphics.abstractsyntaxtree.ui.ASTUI;
 import de.unisiegen.tpml.graphics.bigstep.BigStepView ;
 import de.unisiegen.tpml.graphics.components.CompoundExpression ;
 import de.unisiegen.tpml.graphics.smallstep.SmallStepView ;
 import de.unisiegen.tpml.graphics.typechecker.TypeCheckerView ;
-import de.unisiegen.tpml.ui.abstractsyntaxtree.ASTUI ;
 
 
 /**

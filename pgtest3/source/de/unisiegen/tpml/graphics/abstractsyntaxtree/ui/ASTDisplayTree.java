@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.ui.abstractsyntaxtree ;
+package de.unisiegen.tpml.graphics.abstractsyntaxtree.ui ;
 
 
 import javax.swing.tree.DefaultMutableTreeNode ;

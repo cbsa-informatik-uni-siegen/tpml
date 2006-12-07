@@ -1,11 +1,11 @@
-package de.unisiegen.tpml.ui.abstractsyntaxtree.listener ;
+package de.unisiegen.tpml.graphics.abstractsyntaxtree.listener ;
 
 
 import java.awt.event.ItemEvent ;
 import java.awt.event.ItemListener ;
 import javax.swing.tree.DefaultMutableTreeNode ;
-import de.unisiegen.tpml.ui.abstractsyntaxtree.ASTNode ;
-import de.unisiegen.tpml.ui.abstractsyntaxtree.ASTUI ;
+import de.unisiegen.tpml.graphics.abstractsyntaxtree.ASTNode;
+import de.unisiegen.tpml.graphics.abstractsyntaxtree.ui.ASTUI;
 
 
 /**

@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.ui.abstractsyntaxtree.binding ;
+package de.unisiegen.tpml.graphics.abstractsyntaxtree.binding ;
 
 
 /**

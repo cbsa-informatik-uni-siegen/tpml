@@ -13,10 +13,10 @@ import javax.swing.JSplitPane ;
 import de.unisiegen.tpml.core.ProofGuessException ;
 import de.unisiegen.tpml.core.bigstep.BigStepProofModel ;
 import de.unisiegen.tpml.graphics.AbstractProofView ;
-import de.unisiegen.tpml.ui.abstractsyntaxtree.AbstractSyntaxTree ;
-import de.unisiegen.tpml.ui.abstractsyntaxtree.listener.ASTComponentListener ;
-import de.unisiegen.tpml.ui.abstractsyntaxtree.listener.ASTPropertyChangeListener ;
-import de.unisiegen.tpml.ui.abstractsyntaxtree.listener.ASTTreeModelListener ;
+import de.unisiegen.tpml.graphics.abstractsyntaxtree.AbstractSyntaxTree;
+import de.unisiegen.tpml.graphics.abstractsyntaxtree.listener.ASTComponentListener;
+import de.unisiegen.tpml.graphics.abstractsyntaxtree.listener.ASTPropertyChangeListener;
+import de.unisiegen.tpml.graphics.abstractsyntaxtree.listener.ASTTreeModelListener;
 
 
 /**

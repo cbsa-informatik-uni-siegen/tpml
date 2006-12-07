@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.ui.abstractsyntaxtree.listener ;
+package de.unisiegen.tpml.graphics.abstractsyntaxtree.listener ;
 
 
 import java.util.ArrayList ;
@@ -15,8 +15,8 @@ import de.unisiegen.tpml.core.expressions.MultiLambda ;
 import de.unisiegen.tpml.core.expressions.MultiLet ;
 import de.unisiegen.tpml.core.expressions.Recursion ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation ;
-import de.unisiegen.tpml.ui.abstractsyntaxtree.ASTNode ;
-import de.unisiegen.tpml.ui.abstractsyntaxtree.ASTUI ;
+import de.unisiegen.tpml.graphics.abstractsyntaxtree.ASTNode;
+import de.unisiegen.tpml.graphics.abstractsyntaxtree.ui.ASTUI;
 
 
 /**

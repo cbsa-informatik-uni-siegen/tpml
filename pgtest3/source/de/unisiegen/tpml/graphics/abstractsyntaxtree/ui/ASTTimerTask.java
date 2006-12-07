@@ -1,7 +1,8 @@
-package de.unisiegen.tpml.ui.abstractsyntaxtree ;
+package de.unisiegen.tpml.graphics.abstractsyntaxtree.ui ;
 
 
 import java.util.TimerTask ;
+import de.unisiegen.tpml.graphics.abstractsyntaxtree.AbstractSyntaxTree;
 
 
 /**

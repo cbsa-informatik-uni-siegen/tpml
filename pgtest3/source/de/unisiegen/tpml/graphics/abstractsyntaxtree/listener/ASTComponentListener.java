@@ -1,10 +1,10 @@
-package de.unisiegen.tpml.ui.abstractsyntaxtree.listener ;
+package de.unisiegen.tpml.graphics.abstractsyntaxtree.listener ;
 
 
 import java.awt.event.ComponentEvent ;
 import java.awt.event.ComponentListener ;
 import javax.swing.JSplitPane ;
-import de.unisiegen.tpml.ui.abstractsyntaxtree.AbstractSyntaxTree ;
+import de.unisiegen.tpml.graphics.abstractsyntaxtree.AbstractSyntaxTree;
 
 
 /**

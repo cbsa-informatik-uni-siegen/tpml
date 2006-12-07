@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.ui.abstractsyntaxtree ;
+package de.unisiegen.tpml.graphics.abstractsyntaxtree.ui ;
 
 
 import java.awt.Color ;
@@ -23,11 +23,12 @@ import javax.swing.KeyStroke ;
 import javax.swing.border.TitledBorder ;
 import javax.swing.tree.DefaultMutableTreeNode ;
 import javax.swing.tree.DefaultTreeModel ;
-import de.unisiegen.tpml.ui.abstractsyntaxtree.listener.ASTActionListener ;
-import de.unisiegen.tpml.ui.abstractsyntaxtree.listener.ASTItemListener ;
-import de.unisiegen.tpml.ui.abstractsyntaxtree.listener.ASTKeyListener ;
-import de.unisiegen.tpml.ui.abstractsyntaxtree.listener.ASTMouseListener ;
-import de.unisiegen.tpml.ui.abstractsyntaxtree.listener.ASTTreeSelectionListener ;
+import de.unisiegen.tpml.graphics.abstractsyntaxtree.AbstractSyntaxTree ;
+import de.unisiegen.tpml.graphics.abstractsyntaxtree.listener.ASTActionListener ;
+import de.unisiegen.tpml.graphics.abstractsyntaxtree.listener.ASTItemListener ;
+import de.unisiegen.tpml.graphics.abstractsyntaxtree.listener.ASTKeyListener ;
+import de.unisiegen.tpml.graphics.abstractsyntaxtree.listener.ASTMouseListener ;
+import de.unisiegen.tpml.graphics.abstractsyntaxtree.listener.ASTTreeSelectionListener ;
 
 
 /**
@@ -308,7 +309,7 @@ public class ASTUI
     this.insets = new Insets ( 0 , 0 , 0 , 0 ) ;
     // Preferences
     this.resourceBundle = ResourceBundle
-        .getBundle ( "de/unisiegen/tpml/ui/abstractsyntaxtree/ast" ) ; //$NON-NLS-1$
+        .getBundle ( "de/unisiegen/tpml/graphics/abstractsyntaxtree/ast" ) ; //$NON-NLS-1$
     // Listener
     this.aSTItemListener = new ASTItemListener ( this ) ;
     this.aSTActionListener = new ASTActionListener ( this ) ;

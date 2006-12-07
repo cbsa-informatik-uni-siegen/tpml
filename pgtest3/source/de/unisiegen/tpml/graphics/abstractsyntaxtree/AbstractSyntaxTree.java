@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.ui.abstractsyntaxtree ;
+package de.unisiegen.tpml.graphics.abstractsyntaxtree ;
 
 
 import java.lang.reflect.Method ;
@@ -19,12 +19,16 @@ import de.unisiegen.tpml.core.expressions.Location ;
 import de.unisiegen.tpml.core.expressions.MultiLambda ;
 import de.unisiegen.tpml.core.expressions.MultiLet ;
 import de.unisiegen.tpml.core.expressions.Recursion ;
-import de.unisiegen.tpml.core.util.Debug;
-import de.unisiegen.tpml.core.util.Optimizer;
-import de.unisiegen.tpml.ui.abstractsyntaxtree.binding.ASTBinding ;
-import de.unisiegen.tpml.ui.abstractsyntaxtree.binding.ASTIdentifier ;
-import de.unisiegen.tpml.ui.abstractsyntaxtree.binding.ASTPair ;
-import de.unisiegen.tpml.ui.abstractsyntaxtree.binding.ASTUnbound ;
+import de.unisiegen.tpml.core.util.Debug ;
+import de.unisiegen.tpml.core.util.Optimizer ;
+import de.unisiegen.tpml.graphics.abstractsyntaxtree.binding.ASTBinding ;
+import de.unisiegen.tpml.graphics.abstractsyntaxtree.binding.ASTIdentifier ;
+import de.unisiegen.tpml.graphics.abstractsyntaxtree.binding.ASTPair ;
+import de.unisiegen.tpml.graphics.abstractsyntaxtree.binding.ASTUnbound ;
+import de.unisiegen.tpml.graphics.abstractsyntaxtree.ui.ASTDisplayTree ;
+import de.unisiegen.tpml.graphics.abstractsyntaxtree.ui.ASTTimerTask ;
+import de.unisiegen.tpml.graphics.abstractsyntaxtree.ui.ASTUI ;
+import de.unisiegen.tpml.graphics.abstractsyntaxtree.util.ASTPreferences ;
 
 
 /**
