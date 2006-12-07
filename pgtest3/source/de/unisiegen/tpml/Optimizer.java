@@ -15,6 +15,12 @@ import java.util.ArrayList ;
 public final class Optimizer
 {
   /**
+   * The single optimizer object.
+   */
+  private static Optimizer optimizer = null ;
+
+
+  /**
    * Free and total memory is returned in MegaByte.
    */
   public static final int MEGABYTE = 0 ;
@@ -35,13 +41,13 @@ public final class Optimizer
   /**
    * Time tags are saved in this <code>ArrayList</code>.
    */
-  private final ArrayList < Long > timeList = new ArrayList < Long > ( ) ;
+  private ArrayList < Long > timeList ;
 
 
   /**
    * Time tag comment are saved in this <code>ArrayList</code>.
    */
-  private final ArrayList < String > commentList = new ArrayList < String > ( ) ;
+  private ArrayList < String > commentList ;
 
 
   /**
@@ -58,8 +64,25 @@ public final class Optimizer
   public Optimizer ( final String pName )
   {
     this.tagName = pName ;
+    this.timeList = new ArrayList < Long > ( ) ;
+    this.commentList = new ArrayList < String > ( ) ;
     this.timeList.add ( new Long ( System.currentTimeMillis ( ) ) ) ;
     this.commentList.add ( "" ) ; //$NON-NLS-1$
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @return TODO
+   */
+  public static Optimizer getInstance ( )
+  {
+    if ( optimizer == null )
+    {
+      optimizer = new Optimizer ( "Singleton" ) ; //$NON-NLS-1$
+    }
+    return optimizer ;
   }
 
 
@@ -132,12 +155,12 @@ public final class Optimizer
         this.commentList.set ( i , t ) ;
       }
       final long start = this.timeList.get ( 0 ).longValue ( ) ;
-      double end = this.timeList.get ( this.timeList.size ( ) - 1 )
+      double holeTime = this.timeList.get ( this.timeList.size ( ) - 1 )
           .longValue ( )
           - start ;
-      if ( end == 0 )
+      if ( holeTime == 0 )
       {
-        end = 0.0000000001 ;
+        holeTime = 0.0000000001 ;
       }
       long last = 0 ;
       final DecimalFormat decimalFormat1 = new DecimalFormat ( "00" ) ; //$NON-NLS-1$
@@ -146,7 +169,7 @@ public final class Optimizer
       for ( int i = 1 ; i < this.timeList.size ( ) ; i ++ )
       {
         final long current = ( this.timeList.get ( i ).longValue ( ) - start ) ;
-        double percent = ( ( current - last ) * 100 ) / end ;
+        double percent = ( ( current - last ) * 100 ) / holeTime ;
         if ( percent < 0 )
         {
           percent = 0 ;
@@ -157,13 +180,14 @@ public final class Optimizer
         }
         s += this.tagName + "   " + decimalFormat1.format ( i ) + "   (" //$NON-NLS-1$ //$NON-NLS-2$
             + this.commentList.get ( i ) + ")   " //$NON-NLS-1$
+            + decimalFormat2.format ( current - last ) + "   " //$NON-NLS-1$
+            + decimalFormat3.format ( percent ) + " %   " //$NON-NLS-1$
             + decimalFormat2.format ( current ) + "   " //$NON-NLS-1$
-            + decimalFormat3.format ( percent ) + " %" //$NON-NLS-1$
             + System.getProperty ( "line.separator" ) ; //$NON-NLS-1$
         last = current ;
       }
     }
-    return s.substring ( 0 , s.length ( ) - 1 ) ;
+    return s ;
   }
 
 
