@@ -8,7 +8,6 @@ import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyCharIterator ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStyle ;
-import de.unisiegen.tpml.core.util.Debug ;
 import de.unisiegen.tpml.graphics.Theme ;
 import de.unisiegen.tpml.graphics.abstractsyntaxtree.binding.ASTBinding ;
 import de.unisiegen.tpml.graphics.abstractsyntaxtree.binding.ASTUnbound ;
@@ -302,8 +301,6 @@ public class ASTNode
     }
     catch ( MissingResourceException e )
     {
-      Debug.err.println ( "MissingResourceException: " //$NON-NLS-1$
-          + pExpression.getClass ( ).getSimpleName ( ) , Debug.CHRISTIAN ) ;
       this.description = pExpression.getClass ( ).getSimpleName ( ) ;
     }
     // Initialies the values
@@ -342,8 +339,6 @@ public class ASTNode
     }
     catch ( MissingResourceException e )
     {
-      Debug.err.println ( "MissingResourceException: " + pDescription , //$NON-NLS-1$
-          Debug.CHRISTIAN ) ;
       this.description = pDescription ;
     }
     this.expressionString = pExpressionString ;

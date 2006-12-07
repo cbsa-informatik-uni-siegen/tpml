@@ -19,7 +19,6 @@ import de.unisiegen.tpml.core.expressions.Location ;
 import de.unisiegen.tpml.core.expressions.MultiLambda ;
 import de.unisiegen.tpml.core.expressions.MultiLet ;
 import de.unisiegen.tpml.core.expressions.Recursion ;
-import de.unisiegen.tpml.core.util.Debug ;
 import de.unisiegen.tpml.graphics.abstractsyntaxtree.binding.ASTBinding ;
 import de.unisiegen.tpml.graphics.abstractsyntaxtree.binding.ASTIdentifier ;
 import de.unisiegen.tpml.graphics.abstractsyntaxtree.binding.ASTPair ;
@@ -219,7 +218,6 @@ public class AbstractSyntaxTree
    */
   public void execute ( )
   {
-    Debug.out.println ( "execute" , Debug.CHRISTIAN ) ; //$NON-NLS-1$
     this.aSTUnbound = new ASTUnbound ( this.oldExpression ) ;
     DefaultMutableTreeNode root = expression ( this.oldExpression ) ;
     SwingUtilities.invokeLater ( new ASTDisplayTree ( this.aSTUI , root ) ) ;
@@ -434,24 +432,19 @@ public class AbstractSyntaxTree
     if ( ( this.oldExpression != null )
         && ( pExpression.equals ( this.oldExpression ) ) )
     {
-      Debug.err.println ( "Expression has not changed" , Debug.CHRISTIAN ) ; //$NON-NLS-1$
       return ;
     }
     if ( ( ! this.aSTPreferences.isAutoUpdate ( ) )
         && ( pDescription.startsWith ( "change" ) ) ) //$NON-NLS-1$
     {
-      Debug.err.println ( "No AutoUpdate selected" , Debug.CHRISTIAN ) ; //$NON-NLS-1$
       return ;
     }
     if ( pDescription.equals ( "change_bigstep" ) ) //$NON-NLS-1$
     {
-      Debug.err.println ( "No update in the BigStep view" , Debug.CHRISTIAN ) ; //$NON-NLS-1$
       return ;
     }
     if ( pDescription.equals ( "change_typechecker" ) ) //$NON-NLS-1$
     {
-      Debug.err
-          .println ( "No update in the TypeChecker View" , Debug.CHRISTIAN ) ; //$NON-NLS-1$
       return ;
     }
     this.oldExpression = pExpression ;
@@ -460,7 +453,6 @@ public class AbstractSyntaxTree
       this.aSTTimer.cancel ( ) ;
       this.aSTTimer = null ;
     }
-    Debug.out.println ( "load" , Debug.CHRISTIAN ) ; //$NON-NLS-1$
     this.aSTTimer = new Timer ( ) ;
     this.aSTTimer.schedule ( new ASTTimerTask ( this ) , 250 ) ;
   }
