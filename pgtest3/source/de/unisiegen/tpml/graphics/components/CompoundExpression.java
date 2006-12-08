@@ -15,7 +15,7 @@ import javax.swing.JComponent;
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.interpreters.Store;
 import de.unisiegen.tpml.core.typechecker.TypeEnvironment;
-import de.unisiegen.tpml.core.util.Debug;
+//import de.unisiegen.tpml.core.util.Debug;
 import de.unisiegen.tpml.core.util.Environment;
 import de.unisiegen.tpml.core.util.Optimizer;
 import de.unisiegen.tpml.graphics.abstractsyntaxtree.listener.ASTMouseListener;
@@ -329,20 +329,20 @@ public class CompoundExpression < S , E > extends JComponent
       for ( int i = 0 ; i < bondsList.size ( ) ; i ++ )
       {
         Bonds tmp = bondsList.get ( i ) ;
-        Debug.err.print ( "BM- Id: " + tmp.getIdentifier ( ) + " "
+        /*Debug.err.print ( "BM- Id: " + tmp.getIdentifier ( ) + " "
             + tmp.getStartOffset ( ) + "->" + tmp.getEndOffset ( )
-            + " Bindung: " , "Benjamin" ) ;
+            + " Bindung: " , "Benjamin" ) ;*/
         for ( int j = 0 ; j < tmp.getMarks ( ).size ( ) ; j ++ )
         {
-          Debug.err.print ( tmp.getMarks ( ).get ( j ).getStartOffset ( )
+          /*Debug.err.print ( tmp.getMarks ( ).get ( j ).getStartOffset ( )
               + "->" + tmp.getMarks ( ).get ( j ).getEndOffset ( ) + "  " ,
-              "Benjamin" ) ;
+              "Benjamin" ) ;*/
         }
-        Debug.err.println ( " " , "Benjamin" ) ;
+        //Debug.err.println ( " " , "Benjamin" ) ;
       }
-      Debug.out.println ( " " , "benjamin" ) ;
+      //Debug.out.println ( " " , "benjamin" ) ;
       o.setTimeTag("Ganze ShowBonds");
-      Debug.out.println(o.getTimeTags(),"benjamin");
+      //Debug.out.println(o.getTimeTags(),"benjamin");
       // CHANGE BENJAMIN END
       
       // check what to do with the renderer
