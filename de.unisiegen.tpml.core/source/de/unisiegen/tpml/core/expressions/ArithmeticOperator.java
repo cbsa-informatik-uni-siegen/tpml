@@ -106,19 +106,19 @@ public final class ArithmeticOperator extends BinaryOperator {
       int n2 = ((IntegerConstant)e2).intValue();
       
       // try to perform the application
-      if (getPrettyPriority() == PRIO_PLUS) {
+      if (getText() == "+") {
         return new IntegerConstant(n1 + n2);
       }
-      else if (getPrettyPriority() == PRIO_MINUS) {
+      else if (getText() == "-") {
         return new IntegerConstant(n1 - n2);
       }
-      else if (getPrettyPriority() == PRIO_MULT) {
+      else if (getText() == "*") {
         return new IntegerConstant(n1 * n2);
       }
-      else if (getPrettyPriority() == PRIO_DIV) {
+      else if (getText() == "/") {
         return new IntegerConstant(n1 / n2);
       }
-      else if (getPrettyPriority() == PRIO_MOD) {
+      else if (getText() == "mod") {
         return new IntegerConstant(n1 % n2);
       }
       else {
