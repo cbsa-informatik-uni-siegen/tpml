@@ -1,0 +1,94 @@
+
+\myslide {Die Renderer - Allgemein} {
+
+  \begin{itemgroup}{Das {\tt de.unisiegen.tpml.graphics} Projekt}
+    \item graphische Repr"asentation der Kernkomponenten
+    \item realisiert den \cemph{Editor} (mit Syntaxhightlighting) und die \cemph{Renderer}
+    \item ein Renderer pro Beweiswerkzeug (Small/Bigstep Interpreter, Type Checker)
+    \item Renderer sind Schnittstelle zwischen Benutzer und Kernkomponenten
+    \item Renderer absolut \cemph{sprachneutral}
+  \end{itemgroup}
+}
+
+
+
+\myslide {Die Renderer - Basiskomponenten I} {
+
+  \begin{itemgroup} {Der {\tt PrettyStringRenderer} }
+    \item zeichnet vom {\tt ProofModel} erzeugte {\tt PrettyStrings}
+    \item syntaxhighlighting erfolgt "uber Characterattributes
+    \item anpassung an Fensterbreite "uber Zeilenumbr"uche
+    \item Zeilenumbr"uche werden "uber Annotations aus Prettystring ermittelt
+  \end{itemgroup}
+}
+
+\myslide {Die Renderer - Basiskomponenten II} {
+  \begin{itemgroup} {Der {\tt EnvironmentRenderer} }
+    \item zeichnet vom {\tt ProofModel} erzeugte {\tt Environment}
+    \item Zeichnen erfolgt einfach "uber {\tt JLabel}
+    \item nur Darstellung des ersten Eintrags, weiter Eintr"age durch {\tt ,...}
+    \item Komplette Umgebung im {\it Tooltipp} zu sehen
+  \end{itemgroup}
+}
+
+\myslide {Die Renderer - Basiskomponenten III} {
+  \begin{itemgroup} {Der {\tt CompoundExpressionRenderer} }
+    \item Kapselung des {\tt PrettyStringRenderer}s und {\tt EnvironmentRenderer}s
+    \item Aussehen wird an Typ der Umgebung unterschieden 
+    \begin {itemgroup} {}
+      \item bei {\tt Small/BigStepper} Umgebung hinter Ausdruck; geklammerte Darstellung
+      \item beim {\tt TypeChecker} Umgebung vor Ausdruck
+    \end{itemgroup}
+  \end{itemgroup}
+
+}
+
+\myslide {Die Renderer - Basiskomponenten IV} {
+
+  \begin{itemgroup}{Der Menubutton}
+    \item haupt Interaktionswerkzeug
+    \item eigenes Erscheinungsbild
+    \item Auswahlm"oglichkeit von Regeln oder Anweisungen ({\it Guess, Typ eingeben, usw...})
+    \item Auswahlmenu durch {\tt JPopupMenu} dargestellt
+  \end{itemgroup}
+
+}
+
+\myslide {Die Renderer - Beweiswerkzeuge I} {
+  \begin{itemgroup}{Allgemeine Struktur der Komponenten}
+    \item f"ur jedes Beweiswerkzeug eine \cemph{View} (z.B. {\tt SmallStepView})
+    \item View implementiert Schnittstelle zur {\it Haupt}-GUI (Kommandos wie {\it Guess}, usw...)
+    \item in jeder View liegt eine \cemph{Component} (z.B. {\tt SmallStepComponent})
+    \item die Component entscheidet "uber das Layouting der einzelnen Knoten
+    \item repr"asentation der einzelnen Knoten erfolgt durch \cemph{NodeComponents} (z.B. {\tt SmallStepNodeComponent})
+    \item NodeComponent als {\it Userobject} an \cemph{ProofNode} gebunden
+    
+  \end{itemgroup}
+}
+
+\myslide {Die Renderer - Beweiswerkzeuge II} {
+
+  \begin{itemgroup}{Bigstepper und Typechecker}
+    \item echte Baumstruktur
+    \item daher graphisch {\it fast} Identisch
+    \item Layouting erfolgt rekursive "uber den {\it ProofTree}
+    \item Zeichnen der Baumdekoration durch {\tt TreeArrowRenderer}
+    \item \cemph{NodeComponents} implementieren {\tt TreeNodeComponent}???
+% TODO: irgendwas fehlt hier noch :-(
+  \end{itemgroup}
+
+}
+
+\myslide {Die Renderer - Beweiswerkzeuge III} {
+
+  \begin{itemgroup}{Smallstepper}
+    \item obwol Darstellung als Liste, interne Darstellung ebenfalls Baum
+    \item {\tt SmallStepNodeComponent} hat versetzte Darstellung, deswegen kein einfaches Layouting
+    \item Platzierung und wahl der Dimensionen abh"angig von {\it Vater-} und {\it KindKnoten}
+  
+  
+  \end{itemgroup}
+ 
+}
+
+
