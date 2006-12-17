@@ -20,7 +20,6 @@
 \maketitle
 
 \addoverviewitem{Einleitung}
-\addoverviewitem{Die Kernkomponenten}
 \addoverviewitem{Die Sprachen}
 \addoverviewitem{Die Renderer}
 \addoverviewitem{Die Benutzerschnittstelle}
@@ -82,12 +81,85 @@
   \begin{itemgroup}{Ziele der Entwicklung}
     \item Geeignete Visualierung von Abl"aufen.
     \item Leichter Zugang zum Regelwerk.
-    \item Leicht erweiterbar ($\to$ Vorlesung sehr dynamisch)
+    \item Leicht erweiterbar ($\to$ Vorlesung sehr dynamisch).
     \item Plattformunabh"angig einsetzbar.
+    \item Flache Lernkurve ($\to$ IDE)
   \end{itemgroup}
 }
 
+\myslide{Planung I}{
+  {\bf Dazu:} Planung der Ziele im einzelnen.
+
+  \animate{1}{
+    \begin{itemgroup}{Geeignete Visualierung von Abl"aufen}
+      \item User Interface soll Darstellung aus der Vorlesung bzw. "Ubung\\ entsprechen.
+      \item Benutzer kann selbstst"andig t"atig werden.
+      \item Programm kann automatisch vervollst"andigen\\ (Schrittweise/Komplett).
+    \end{itemgroup}
+  }
+}
+
+\myslide{Planung II}{
+  \begin{itemgroup}{Leichter Zugang zum Regelwerk}
+    \item Unterschiedliche Sprachen verf"ugbar (derzeit ${\cal L}_0$ bis ${\cal L}_4$).
+    \item Inkrementelles Erlernen komplexerer Sprachfeatures m"oglich.
+    \item Benutzer wird nicht direkt mit der M"achtigkeit\\ ($\to$ Un"ubersichtlichkeit) von ${\cal L}_4$ konfrontiert.
+  \end{itemgroup}
+}
+
+\myslide{Planung III}{
+  \begin{itemgroup}{Leicht erweiterbar}
+    \item Vorlesung ,,Theorie der Programmierung'' "andert sich j"ahrlich.
+    \item Neue Konzepte kommen hinzu.
+    \item Programm soll einfach um neue Sprachen erweiterbar sein.
+    \item Benutzerschnittstelle soll um neue Features erweiterbar sein \\ ($\to$ Highlighting von Bindungen).
+  \end{itemgroup}
+}
+
+\myslide{Planung IV}{
+  \begin{itemgroup}{Plattformunabh"angig einsetzbar}
+    \item Programm sollte ,,out-of-the-box'' funktionieren \\ ($\to$ keine Installation).
+    \item M"oglichst unabh"angig von einer speziellen Plattform \\ ($\to$ nur ein Binary/Download).
+    \item Wahl zugunsten Java 5.0, O'Caml Framework ungeeignet \\ f"ur die Benutzerschnittstelle.
+  \end{itemgroup}
+
+  \animate{1}{
+    \begin{itemgroup}{Flache Lernkurve}
+      \item Benutzerschnittstelle angelehnt an g"angige IDEs.
+      \item M"oglichst keine Einrichtung notwendig.
+    \end{itemgroup}
+  }
+}
+
+\myslide{Realisierung}{
+  \begin{itemgroup}{Werkzeuge}
+    \item Plattform: JavaSE 5.0
+    \item Entwicklungsumgebung: Eclipse 3.1.2
+    \item GUI Builder: NetBeans 5.0
+    \item Lexer Generator: JFlex 1.4.1
+    \item Parser Generator: JavaCUP 11a
+    \item Protokollierung: log4j 1.2.14
+  \end{itemgroup}
+
+  \begin{itemgroup}{Grundlage}
+    \item Vorlesungsinhalt ,,Theorie der Programmierung I'' (2005/2006)
+    \item OCaml 3.09.3
+  \end{itemgroup}
+}
+
+
+
+%%
+%% Die Sprachen
+%%
+
 \makeoverviewslide
+
+
+
+
+\makeoverviewslide
+
 \include{renderer}
 
 \end{document}
