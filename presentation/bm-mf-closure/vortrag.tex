@@ -1,0 +1,93 @@
+\documentclass[fleqn,landscape,titlepage,german]{myslides}
+%
+% Praesentation der Projektgruppe TPML, 2006
+%
+% 2006 Benedikt Meurer <benny@xfce.org>
+% 2006 Marcell Fischbach <marcellfischbach@gmx.de>
+%
+ 
+\usepackage{amssymb}
+\usepackage[latin1]{inputenc}
+\usepackage{german}
+\usepackage{ngerman}
+
+% Einkommentieren, um Handouts zu generieren
+%\createhandoutstrue
+
+\begin{document}
+  
+\presentation[TPML 1.0]{Marcell\,Fischbach,\,Benedikt\,Meurer}{TPML 1.0 - Ein interaktives Lernwerkzeug}
+\maketitle
+
+\addoverviewitem{Einleitung}
+\addoverviewitem{Die Kernkomponenten}
+\addoverviewitem{Die Sprachen}
+\addoverviewitem{Die Renderer}
+\addoverviewitem{Die Benutzerschnittstelle}
+\addoverviewitem{TPML 2.0}
+\addoverviewitem{Fazit}
+
+\CenteredGraphics
+
+
+
+%%
+%% Einleitung
+%%
+
+\makeoverviewslide
+
+\myslide{Die Vorlesung ,,Theorie der Programmierung I''}{
+  \begin{itemgroup}{,,Theorie der Programmierung I''}
+    \item Vermittelt Grundlagen von Programmiersprachen anhand einfacher funktionaler Programmiersprache (orientiert an O'Caml)
+    \item Operationelle Semantik anhand von small und big steps
+    \item Typsysteme (Polymorphie, Typinferenz)
+    \item Pflichtveranstaltung f"ur Informatik-Studenten
+  \end{itemgroup}
+
+  \animate{1}{
+    {\bf Problem:} Einstieg in den Stoff wird als schwierig empfunden!
+  }
+}
+
+\myslide{Motivation I}{
+  {\bf Frage:} Warum ein Programm zur ,,Theorie der Programmierung''?
+
+  \animate{1}{
+    \begin{itemgroup}{Gr"unde}
+      \item Erleichterter Zugang zu theoretischen Inhalten.
+      \item Regelwerk durch ,,praktisches Arbeiten'' besser zu verstehen.
+      \item ,,Gef"uhl'' f"ur Interpreter und Typsysteme vermitteln.
+      \item Hilfestellung bei der Pr"ufungsvorbereitung ($\to$ nicht auf Beispiele aus "Ubung/Vorlesung beschr"anken)
+      \item Verst"andnis f"ur Zusammenhang von Programmtext und Ausf"uhrung auf einer Maschine.
+    \end{itemgroup}
+  }
+}
+
+\myslide{Motivation II}{
+  \begin{itemgroup}{Warum nicht O'Caml?}
+    \item ,,Echte Implementierungen'' ungeeignet.
+    \item Abl"aufe nicht sichtbar f"ur den Benutzer
+    \item Typfehler von O'Caml schwer verst"andlich
+    \item Semantik nicht zug"anglich ($\to$ wird in Byte/native Code kompiliert)
+    \item Fehlende formale Spezifikation!
+  \end{itemgroup}
+
+  \animate{1}{
+    {\bf Folgerung:} Spezielles Lernprogramm besser geeignet.
+  }
+}
+
+\myslide{Ziele}{
+  \begin{itemgroup}{Ziele der Entwicklung}
+    \item Geeignete Visualierung von Abl"aufen.
+    \item Leichter Zugang zum Regelwerk.
+    \item Leicht erweiterbar ($\to$ Vorlesung sehr dynamisch)
+    \item Plattformunabh"angig einsetzbar.
+  \end{itemgroup}
+}
+
+
+
+\end{document}
+
