@@ -14,8 +14,9 @@
 
 \myslide {Die Renderer - Basiskomponenten I} {
 
+  \graphicxbox{20cm}{images/prettystring.png}
   \begin{itemgroup} {Der {\tt PrettyStringRenderer} }
-    \item zeichnet vom {\tt ProofModel} erzeugte {\tt PrettyStrings}
+	  \item zeichnet vom {\tt ProofModel} erzeugte {\tt PrettyStrings}
     \item syntaxhighlighting erfolgt "uber Characterattributes
     \item anpassung an Fensterbreite "uber Zeilenumbr"uche
     \item Zeilenumbr"uche werden "uber Annotations aus Prettystring ermittelt
@@ -32,6 +33,7 @@
 }
 
 \myslide {Die Renderer - Basiskomponenten III} {
+  \graphicxbox{20cm}{images/compoundexpression.png}
   \begin{itemgroup} {Der {\tt CompoundExpressionRenderer} }
     \item Kapselung des {\tt PrettyStringRenderer}s und {\tt EnvironmentRenderer}s
     \item Aussehen wird an Typ der Umgebung unterschieden 
@@ -45,6 +47,7 @@
 
 \myslide {Die Renderer - Basiskomponenten IV} {
 
+  \graphicxbox{7cm}{images/menubutton.png}
   \begin{itemgroup}{Der Menubutton}
     \item haupt Interaktionswerkzeug
     \item eigenes Erscheinungsbild
@@ -66,21 +69,37 @@
   \end{itemgroup}
 }
 
-\myslide {Die Renderer - Beweiswerkzeuge II} {
+\myslide {Die Renderer - Beweiswerkzeug II} {
+
+  \begin{itemgroup}{Graphischer Abgleich mit Kernkomponenten}
+    \item {\tt ProofModel} informiert "uber "Anderungen (hinzuf"ugen, l"oschen ...)
+    \item geringer Bearbeitungsbedarf, da {\tt NodeComponent Userobject} 
+    \item im {\tt Normalfall} nur Relayout
+  \end{itemgroup}
+
+  \animate{1}{
+    \begin{itemgroup}{Anweisungen an Kernkomponenten}
+      \item {\tt NodeComponent} informatiert "uber Aktivit"at
+      \item {\tt Component} leitet Knoten und Kommando (Regelauswahl, Knoten raten... ) an {\tt ProofModel} weiter
+      \item {\tt ProofModel} regiert seinerseits mit "Anderungen
+    \end{itemgroup}
+  }
+}
+
+\myslide {Die Renderer - Beweiswerkzeuge III} {
 
   \begin{itemgroup}{Bigstepper und Typechecker}
     \item echte Baumstruktur
     \item daher graphisch {\it fast} Identisch
     \item Layouting erfolgt rekursive "uber den {\it ProofTree}
     \item Zeichnen der Baumdekoration durch {\tt TreeArrowRenderer}
-    \item \cemph{NodeComponents} implementieren {\tt TreeNodeComponent}???
-% TODO: irgendwas fehlt hier noch :-(
   \end{itemgroup}
 
 }
 
-\myslide {Die Renderer - Beweiswerkzeuge III} {
+\myslide {Die Renderer - Beweiswerkzeuge IV} {
 
+  \graphicxbox{20cm}{images/smallstepnode.png}
   \begin{itemgroup}{Smallstepper}
     \item obwol Darstellung als Liste, interne Darstellung ebenfalls Baum
     \item {\tt SmallStepNodeComponent} hat versetzte Darstellung, deswegen kein einfaches Layouting
