@@ -110,4 +110,29 @@
  
 }
 
+\myslide{Die Benutzerschnittstelle I}{
+  \begin{itemgroup}{Die Benutzerschnittstelle}
+    \item Bindeglied zwischen den Teilprojekten
+    \item Basierend auf AWT/Swing f"ur m"oglichst einfache Installation
+    \item Orientiert an bekannten IDEs (Eclipse, NetBeans)
+    \item Ein-Fenster-Anwendung mit einem Tab pro Datei
+    \item Pro Tab {\tt Source}, {\tt Big Step}, {\tt Small Step} und {\tt Type Checker}
+    \item Verbindung Datei $\leftrightarrow$ Sprache
+  \end{itemgroup}
+}
+
+\myslide{Die Benutzerschnittstelle II}{
+  \begin{itemgroup}{Details}
+    \item GUI Entwurf mit NetBeans
+    \item Verschiedene \cemph{Schichten}: {\tt MainWindow} $\to$ {\tt EditorPanel} $\to$ {\tt EditorComponent}
+    \item Kommunikation zu h"oheren Schichten "uber \cemph{Bean Properties} (z.B. Zustand der Undo/Redo Button)
+    \item Session Management (Fensterposition/gr"o"se und Dateien merken)
+  \end{itemgroup}
+
+  \begin{itemgroup}{Zusatzfeatures}
+    \item Starter f"ur Unix/Linux und Windows, mit Pr"ufung auf JavaSE 5.0
+    \item Integration in das Betriebssystem "uber MIME und Application Database (bisher nur unter Unix/Linux)
+  \end{itemgroup}
+}
+
 
