@@ -266,6 +266,26 @@
 }
 
 \myslide{Die abstrakte Syntax I}{
+  {\bf Vorlesung:} Abstrakte Syntax der Ausdr"ucke
+  \begin{eqnarray*}
+    op & ::= & +\,|\,-\,|\,*\,|\,\textbf{mod}\,|\,\ldots \\
+    \\
+    c & ::= & op \\
+      & |   & n \quad \quad (n \in {\mathord{\mathbb Z}}) \\
+      & |   & \ldots \\
+    \\
+    e & ::= & c \\
+      & |   & id \\
+      & |   & \lambda id.e_1 \\
+      & |   & e_1\,e_2 \\
+      & |   & \textbf{rec}\,id.e_1 \\
+      & |   & \textbf{let}\,id = e_1\,\textbf{in}\,e_2 \\
+      & |   & \textbf{if}\,e_0\,\textbf{then}\,e_1\,\textbf{else}\,e_2 \\
+      & |   & \ldots
+  \end{eqnarray*}
+}
+
+\myslide{Die abstrakte Syntax II}{
   \begin{itemgroup}{Abstrakte Syntax}
     \item Darstellung m"oglichst nahe an der Vorlesung
     \item Realisierung durch \cemph{Vererbung} in Java (einfache Hierarchie)
@@ -274,7 +294,7 @@
   \graphicybox{10cm}{images/ast.pdf}
 }
 
-\myslide{Die abstrakte Syntax II}{
+\myslide{Die abstrakte Syntax III}{
   \begin{itemgroup}{Syntaktischer Zucker}
     \item eigene Klassen f"ur syntaktischen Zucker
     \item z.B. {\tt LetRec} f"ur $\textbf{let rec}\,id=e_1\,\textbf{in}\,e_2$
