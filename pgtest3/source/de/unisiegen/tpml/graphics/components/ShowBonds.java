@@ -93,6 +93,7 @@ public class ShowBonds
 			}
 			else
 			{
+				if (pExpression!=null)
 				checkChild(pExpression);
 
 			}
