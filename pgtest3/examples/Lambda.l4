@@ -1,1 +1,1 @@
-(lambda x.x+1)2
+(lambda x.x)(5+5)
