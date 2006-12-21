@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.text.CharacterIterator;
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation;
@@ -280,7 +281,7 @@ public class PrettyStringRenderer extends AbstractRenderer {
 		return result;
 	}*/
 	
-	public static int isInList (int test, LinkedList <Bonds> list)
+	public static int isInList (int test, ArrayList <Bonds> list)
 	{
 		//System.out.println("Nun wird �berpr�ft, ob die Zahl in der Liste steht...");
 		//System.out.println("L�nge der komischen Liste: "+list.size());
@@ -302,7 +303,7 @@ public class PrettyStringRenderer extends AbstractRenderer {
 				}
 			else
 			{
-				LinkedList <PrettyAnnotation> rest = list.get(i).getMarks();
+				ArrayList <PrettyAnnotation> rest = list.get(i).getMarks();
 				for (int j = 0 ; j<rest.size(); j++)
 				{
 					PrettyAnnotation tmp = rest.get(j);
@@ -318,7 +319,7 @@ public class PrettyStringRenderer extends AbstractRenderer {
 		return result;
 	}
 	
-	public static boolean isFirstInListe (int test, LinkedList <Bonds> list)
+	public static boolean isFirstInListe (int test, ArrayList <Bonds> list)
 	{
 		//it is not first in List
 		boolean result = false;
@@ -418,7 +419,7 @@ public class PrettyStringRenderer extends AbstractRenderer {
 			
 			//Here we get the information where bindings exists in positions
 			ShowBonds instanceOfShowBound = bound; 
-			LinkedList <Bonds> annotationsList = instanceOfShowBound.getAnnotations();
+			ArrayList <Bonds> annotationsList = instanceOfShowBound.getAnnotations();
 
 			//look for aktual char is in this list (-1 stands for false)
 			if (!(toListenForMouse.getMark()) && (isInList(i, annotationsList)) > -1)

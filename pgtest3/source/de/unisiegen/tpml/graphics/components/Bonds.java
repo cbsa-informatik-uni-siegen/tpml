@@ -1,6 +1,6 @@
 package de.unisiegen.tpml.graphics.components;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation;
@@ -35,12 +35,12 @@ public class Bonds
 	/**
 	 * List of Annotations with all Variables which are bound to the Identifier
 	 */
-	private LinkedList<PrettyAnnotation> marks = new LinkedList<PrettyAnnotation>();
+	private ArrayList<PrettyAnnotation> marks = new ArrayList<PrettyAnnotation>();
 	
 	/**
 	 * List of Expressions with all Variables which are bound to the Identifier
 	 */
-	private LinkedList<Expression>expressions=new LinkedList<Expression>();
+	private ArrayList<Expression>expressions=new ArrayList<Expression>();
 	
 	public Bonds( int start, int end, Expression pExpression,String id)
 	{
@@ -49,7 +49,7 @@ public class Bonds
 		endOffset=end;
 		identifier=id;
 	}
-	public Bonds( int start, int end,LinkedList<PrettyAnnotation> list)
+	public Bonds( int start, int end,ArrayList<PrettyAnnotation> list)
 	{
 		
 		startOffset =start;
@@ -70,7 +70,7 @@ public class Bonds
 	 * returns a list of marks of Variables
 	 * @return
 	 */
-	public LinkedList<PrettyAnnotation> getMarks()
+	public ArrayList<PrettyAnnotation> getMarks()
 	{
 		return marks;
 	}
@@ -98,7 +98,7 @@ public class Bonds
 	 * returns a list of Expressions with all Variables
 	 * @return
 	 */
-	public LinkedList<Expression> getExpressions()
+	public ArrayList<Expression> getExpressions()
 	{
 		return expressions;
 	}

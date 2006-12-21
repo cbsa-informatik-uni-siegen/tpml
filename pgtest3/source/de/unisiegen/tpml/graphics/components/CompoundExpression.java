@@ -8,6 +8,7 @@ import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 import javax.swing.JComponent;
@@ -325,7 +326,7 @@ public class CompoundExpression < S , E > extends JComponent
       bonds.setHoleExpression ( this.expression ) ;
       bonds.check ( this.expression ) ;
       // Debug
-      LinkedList < Bonds > bondsList = bonds.getAnnotations ( ) ;
+      ArrayList < Bonds > bondsList = bonds.getAnnotations ( ) ;
       for ( int i = 0 ; i < bondsList.size ( ) ; i ++ )
       {
         Bonds tmp = bondsList.get ( i ) ;
