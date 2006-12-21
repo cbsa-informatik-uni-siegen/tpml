@@ -1,6 +1,7 @@
 package de.unisiegen.tpml.core.languages.l2cbn ;
 
 
+import de.unisiegen.tpml.core.Messages ;
 import de.unisiegen.tpml.core.bigstep.BigStepProofContext ;
 import de.unisiegen.tpml.core.bigstep.BigStepProofNode ;
 import de.unisiegen.tpml.core.expressions.Application ;
@@ -45,44 +46,46 @@ public class L2CBNBigStepProofRuleSet extends L2BigStepProofRuleSet
   public L2CBNBigStepProofRuleSet ( L2Language language )
   {
     super ( language ) ;
-    unregister ( "APP" ) ;
-    registerByMethodName ( L0Language.L0 , "APP-LEFT" , "applyApplicationLeft" ,
-        "updateApplication" ) ;
-    registerByMethodName ( L0Language.L0 , "APP-RIGHT" ,
-        "applyApplicationRight" , "updateApplication" ) ;
-    unregister ( "BETA-V" ) ;
-    registerByMethodName ( L0Language.L0 , "BETA" , "applyBeta" ,
-        "updateBetaValue" ) ;
-    // Unregister and register because the guess function does not work
-    unregister ( "VAL" ) ;
-    registerByMethodName ( L0Language.L0 , "VAL" , "applyValue" ) ;
-    unregister ( "AND-FALSE" ) ;
+    unregister ( "APP" ) ; //$NON-NLS-1$
+    registerByMethodName ( L0Language.L0 , "APP-LEFT" , "applyApplicationLeft" , //$NON-NLS-1$ //$NON-NLS-2$
+        "updateApplication" ) ; //$NON-NLS-1$
+    registerByMethodName ( L0Language.L0 , "APP-RIGHT" , //$NON-NLS-1$
+        "applyApplicationRight" , "updateApplication" ) ; //$NON-NLS-1$ //$NON-NLS-2$
+    unregister ( "BETA-V" ) ; //$NON-NLS-1$
+    registerByMethodName ( L0Language.L0 , "BETA" , "applyBeta" , //$NON-NLS-1$ //$NON-NLS-2$
+        "updateBetaValue" ) ; //$NON-NLS-1$
+    /*
+     * Unregister and register, because the guess does otherwise not work.
+     */
+    unregister ( "VAL" ) ; //$NON-NLS-1$
+    registerByMethodName ( L0Language.L0 , "VAL" , "applyValue" ) ; //$NON-NLS-1$ //$NON-NLS-2$
+    unregister ( "AND-FALSE" ) ; //$NON-NLS-1$
     registerByMethodName ( L2Language.L2 ,
         "AND-FALSE" , "applyAnd" , "updateAndFalse" ) ; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-    unregister ( "AND-TRUE" ) ;
+    unregister ( "AND-TRUE" ) ; //$NON-NLS-1$
     registerByMethodName ( L2Language.L2 ,
         "AND-TRUE" , "applyAnd" , "updateAndTrue" ) ; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-    unregister ( "COND-FALSE" ) ;
+    unregister ( "COND-FALSE" ) ; //$NON-NLS-1$
     registerByMethodName ( L1Language.L1 ,
         "COND-FALSE" , "applyCond" , "updateCondFalse" ) ; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-    unregister ( "COND-TRUE" ) ;
+    unregister ( "COND-TRUE" ) ; //$NON-NLS-1$
     registerByMethodName ( L1Language.L1 ,
         "COND-TRUE" , "applyCond" , "updateCondTrue" ) ; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-    unregister ( "LET" ) ;
+    unregister ( "LET" ) ; //$NON-NLS-1$
     registerByMethodName ( L1Language.L1 , "LET" , "applyLet" , "updateLet" ) ; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-    unregister ( "NOT" ) ;
+    unregister ( "NOT" ) ; //$NON-NLS-1$
     registerByMethodName ( L1Language.L1 , "NOT" , "applyNot" ) ; //$NON-NLS-1$ //$NON-NLS-2$
-    unregister ( "OP" ) ;
+    unregister ( "OP" ) ; //$NON-NLS-1$
     registerByMethodName ( L1Language.L1 , "OP" , "applyOp" ) ; //$NON-NLS-1$ //$NON-NLS-2$
-    unregister ( "OR-FALSE" ) ;
+    unregister ( "OR-FALSE" ) ; //$NON-NLS-1$
     registerByMethodName ( L2Language.L2 ,
         "OR-FALSE" , "applyOr" , "updateOrFalse" ) ; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-    unregister ( "OR-TRUE" ) ;
+    unregister ( "OR-TRUE" ) ; //$NON-NLS-1$
     registerByMethodName ( L2Language.L2 ,
         "OR-TRUE" , "applyOr" , "updateOrTrue" ) ; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-    unregister ( "UNFOLD" ) ;
-    registerByMethodName ( L2Language.L2 , "UNFOLD" , "applyUnfold" ,
-        "updateUnfold" ) ;
+    unregister ( "UNFOLD" ) ; //$NON-NLS-1$
+    registerByMethodName ( L2Language.L2 , "UNFOLD" , "applyUnfold" , //$NON-NLS-1$ //$NON-NLS-2$
+        "updateUnfold" ) ; //$NON-NLS-1$
   }
 
 
@@ -104,8 +107,8 @@ public class L2CBNBigStepProofRuleSet extends L2BigStepProofRuleSet
       Application application = ( Application ) e ;
       if ( application.getE1 ( ).isValue ( ) )
       {
-        throw new IllegalArgumentException (
-            "(APP-LEFT) can only be applied if e1 is not already a value" ) ;
+        throw new IllegalArgumentException ( Messages
+            .getString ( "L2CBNBigStepProofRuleSet.0" ) ) ; //$NON-NLS-1$
       }
       context.addProofNode ( node , application.getE1 ( ) ) ;
       // we can add the second node as well if memory is disabled
@@ -120,8 +123,8 @@ public class L2CBNBigStepProofRuleSet extends L2BigStepProofRuleSet
       InfixOperation infixOperation = ( InfixOperation ) e ;
       if ( infixOperation.getE1 ( ).isValue ( ) )
       {
-        throw new IllegalArgumentException (
-            "(APP-LEFT) can only be applied if e1 is not already a value" ) ;
+        throw new IllegalArgumentException ( Messages
+            .getString ( "L2CBNBigStepProofRuleSet.0" ) ) ; //$NON-NLS-1$
       }
       context.addProofNode ( node , new Application ( infixOperation.getOp ( ) ,
           infixOperation.getE1 ( ) ) ) ;
@@ -152,13 +155,13 @@ public class L2CBNBigStepProofRuleSet extends L2BigStepProofRuleSet
       Application application = ( Application ) e ;
       if ( ! application.getE1 ( ).isValue ( ) )
       {
-        throw new IllegalArgumentException (
-            "(APP-RIGHT) can only be applied if e1 is already a value" ) ;
+        throw new IllegalArgumentException ( Messages
+            .getString ( "L2CBNBigStepProofRuleSet.1" ) ) ; //$NON-NLS-1$
       }
       if ( application.getE1 ( ) instanceof Lambda )
       {
-        throw new IllegalArgumentException (
-            "(APP-RIGHT) can only be applied if v1 is a instance of Lambda" ) ;
+        throw new IllegalArgumentException ( Messages
+            .getString ( "L2CBNBigStepProofRuleSet.2" ) ) ; //$NON-NLS-1$
       }
       context.addProofNode ( node , application.getE1 ( ) ) ;
       // we can add the second node as well if memory is disabled
@@ -173,13 +176,13 @@ public class L2CBNBigStepProofRuleSet extends L2BigStepProofRuleSet
       InfixOperation infixOperation = ( InfixOperation ) e ;
       if ( ! infixOperation.getE1 ( ).isValue ( ) )
       {
-        throw new IllegalArgumentException (
-            "(APP-RIGHT) can only be applied if e1 is already a value" ) ;
+        throw new IllegalArgumentException ( Messages
+            .getString ( "L2CBNBigStepProofRuleSet.1" ) ) ; //$NON-NLS-1$
       }
       if ( infixOperation.getE1 ( ) instanceof Lambda )
       {
-        throw new IllegalArgumentException (
-            "(APP-RIGHT) can only be applied if v1 is a instance of Lambda" ) ;
+        throw new IllegalArgumentException ( Messages
+            .getString ( "L2CBNBigStepProofRuleSet.2" ) ) ; //$NON-NLS-1$
       }
       context.addProofNode ( node , new Application ( infixOperation.getOp ( ) ,
           infixOperation.getE1 ( ) ) ) ;
@@ -206,7 +209,6 @@ public class L2CBNBigStepProofRuleSet extends L2BigStepProofRuleSet
     Expression e2 = application.getE2 ( ) ;
     // ...with a lambda or multi lambda expression
     Expression e1 = application.getE1 ( ) ;
-    // TODO MultiLambda
     if ( e1 instanceof MultiLambda )
     {
       // multi lambda is special
@@ -243,7 +245,6 @@ public class L2CBNBigStepProofRuleSet extends L2BigStepProofRuleSet
   public void applyLet ( BigStepProofContext context , BigStepProofNode node )
   {
     Expression e = node.getExpression ( ) ;
-    // TODO CurriedLet || CurriedLetRec
     if ( e instanceof CurriedLet || e instanceof CurriedLetRec )
     {
       // determine the first sub expression
@@ -263,7 +264,6 @@ public class L2CBNBigStepProofRuleSet extends L2BigStepProofRuleSet
       // add the proof node
       context.addProofNode ( node , e1 ) ;
     }
-    // TODO MultiLet
     else if ( e instanceof MultiLet )
     {
       // prove the first sub expression
@@ -281,7 +281,6 @@ public class L2CBNBigStepProofRuleSet extends L2BigStepProofRuleSet
         e1 = new Recursion ( letRec.getId ( ) , letRec.getTau ( ) , e1 ) ;
       }
       // add the proof node
-      // CALL BY NAME
       context.addProofNode ( node , let.getE2 ( ).substitute ( let.getId ( ) ,
           let.getE1 ( ) ) ) ;
     }
@@ -306,7 +305,6 @@ public class L2CBNBigStepProofRuleSet extends L2BigStepProofRuleSet
       // determine the expression for the node
       Expression e = node.getExpression ( ) ;
       // check the expression type
-      // TODO CurriedLet
       if ( e instanceof CurriedLet )
       {
         // add a proof node for e2 (CurriedLet/CurriedLetRec)
@@ -314,7 +312,6 @@ public class L2CBNBigStepProofRuleSet extends L2BigStepProofRuleSet
         context.addProofNode ( node , curriedLet.getE2 ( ).substitute (
             curriedLet.getIdentifiers ( ) [ 0 ] , value0 ) ) ;
       }
-      // TODO MultiLet
       else if ( e instanceof MultiLet )
       {
         // determine the second sub expression e2 (MultiLet)
@@ -335,7 +332,6 @@ public class L2CBNBigStepProofRuleSet extends L2BigStepProofRuleSet
       {
         // add a proof node for e2 (Let/LetRec)
         Let let = ( Let ) e ;
-        // CALL BY NAME
         context.addProofNode ( node , let.getE2 ( ).substitute ( let.getId ( ) ,
             let.getE1 ( ) ) ) ;
       }

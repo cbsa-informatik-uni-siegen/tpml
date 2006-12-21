@@ -78,7 +78,7 @@ public final class LanguageFactory
   public Language getLanguageByFile ( File file )
       throws NoSuchLanguageException
   {
-    String [ ] components = file.getName ( ).split ( "\\." ) ;
+    String [ ] components = file.getName ( ).split ( "\\." ) ; //$NON-NLS-1$
     return getLanguageById ( components [ components.length - 1 ] ) ;
   }
 
@@ -98,8 +98,8 @@ public final class LanguageFactory
     try
     {
       // determine the class name for the language class
-      String clazzName = getClass ( ).getPackage ( ).getName ( ) + "."
-          + id.toLowerCase ( ) + "." + id.toUpperCase ( ) + "Language" ;
+      String clazzName = getClass ( ).getPackage ( ).getName ( ) + "." //$NON-NLS-1$
+          + id.toLowerCase ( ) + "." + id.toUpperCase ( ) + "Language" ; //$NON-NLS-1$//$NON-NLS-2$
       // determine the language class
       Class < ? > clazz = Class.forName ( clazzName ) ;
       // instantiate the language class

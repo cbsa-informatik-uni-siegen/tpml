@@ -13,7 +13,7 @@ import de.unisiegen.tpml.core.smallstep.SmallStepProofModel ;
  * language L2, but uses Call By Name.
  * 
  * @author Christian Fehler
- * @version $Rev: 415 $
+ * @version $Rev$
  * @see de.unisiegen.tpml.core.languages.Language
  * @see de.unisiegen.tpml.core.languages.LanguageParser
  * @see de.unisiegen.tpml.core.languages.LanguageScanner
@@ -41,7 +41,7 @@ public class L2CBNLanguage extends L2Language
   @ Override
   public String getDescription ( )
   {
-    return Messages.getString ( "L2CBNLanguage.0" ) ;
+    return Messages.getString ( "L2CBNLanguage.0" ) ; //$NON-NLS-1$
   }
 
 
@@ -65,7 +65,7 @@ public class L2CBNLanguage extends L2Language
   @ Override
   public String getTitle ( )
   {
-    return Messages.getString ( "L2CBNLanguage.1" ) ;
+    return Messages.getString ( "L2CBNLanguage.1" ) ; //$NON-NLS-1$
   }
 
 

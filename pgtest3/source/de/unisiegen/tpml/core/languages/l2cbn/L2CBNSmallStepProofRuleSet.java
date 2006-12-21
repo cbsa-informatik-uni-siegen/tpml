@@ -22,6 +22,7 @@ import de.unisiegen.tpml.core.types.MonoType ;
  * Small step proof rules for the <code>L2CBN</code> language.
  * 
  * @author Christian Fehler
+ * @version $Rev$
  * @see de.unisiegen.tpml.core.languages.l0.L0SmallStepProofRuleSet
  * @see de.unisiegen.tpml.core.languages.l1.L1SmallStepProofRuleSet
  * @see de.unisiegen.tpml.core.languages.l2.L2SmallStepProofRuleSet
@@ -43,39 +44,39 @@ public class L2CBNSmallStepProofRuleSet extends L2SmallStepProofRuleSet
   public L2CBNSmallStepProofRuleSet ( L2Language language )
   {
     super ( language ) ;
-    unregister ( "LET-EVAL" ) ;
-    unregister ( "APP-LEFT" ) ;
-    register ( L0Language.L0 , "APP-LEFT" , false ) ;
-    unregister ( "APP-RIGHT" ) ;
-    register ( L0Language.L0 , "APP-RIGHT" , false ) ;
-    unregister ( "BETA-V" ) ;
-    register ( L0Language.L0 , "BETA" , true ) ;
-    unregister ( "AND-EVAL" ) ;
-    register ( L2Language.L2 , "AND-EVAL" , false ) ;
-    unregister ( "AND-FALSE" ) ;
-    register ( L2Language.L2 , "AND-FALSE" , true ) ;
-    unregister ( "AND-TRUE" ) ;
-    register ( L2Language.L2 , "AND-TRUE" , true ) ;
-    unregister ( "COND-EVAL" ) ;
-    register ( L1Language.L1 , "COND-EVAL" , false ) ;
-    unregister ( "COND-TRUE" ) ;
-    register ( L1Language.L1 , "COND-TRUE" , true ) ;
-    unregister ( "COND-FALSE" ) ;
-    register ( L1Language.L1 , "COND-FALSE" , true ) ;
-    unregister ( "LET-EXEC" ) ;
-    register ( L1Language.L1 , "LET-EXEC" , true ) ;
-    unregister ( "NOT" ) ;
-    register ( L1Language.L1 , "NOT" , true ) ;
-    unregister ( "OP" ) ;
-    register ( L1Language.L1 , "OP" , true ) ;
-    unregister ( "OR-EVAL" ) ;
-    register ( L2Language.L2 , "OR-EVAL" , false ) ;
-    unregister ( "OR-FALSE" ) ;
-    register ( L2Language.L2 , "OR-FALSE" , true ) ;
-    unregister ( "OR-TRUE" ) ;
-    register ( L2Language.L2 , "OR-TRUE" , true ) ;
-    unregister ( "UNFOLD" ) ;
-    register ( L2Language.L2 , "UNFOLD" , true ) ;
+    unregister ( "LET-EVAL" ) ; //$NON-NLS-1$
+    unregister ( "APP-LEFT" ) ; //$NON-NLS-1$
+    register ( L0Language.L0 , "APP-LEFT" , false ) ; //$NON-NLS-1$
+    unregister ( "APP-RIGHT" ) ; //$NON-NLS-1$
+    register ( L0Language.L0 , "APP-RIGHT" , false ) ; //$NON-NLS-1$
+    unregister ( "BETA-V" ) ; //$NON-NLS-1$
+    register ( L0Language.L0 , "BETA" , true ) ; //$NON-NLS-1$
+    unregister ( "AND-EVAL" ) ; //$NON-NLS-1$
+    register ( L2Language.L2 , "AND-EVAL" , false ) ; //$NON-NLS-1$
+    unregister ( "AND-FALSE" ) ; //$NON-NLS-1$
+    register ( L2Language.L2 , "AND-FALSE" , true ) ; //$NON-NLS-1$
+    unregister ( "AND-TRUE" ) ; //$NON-NLS-1$
+    register ( L2Language.L2 , "AND-TRUE" , true ) ; //$NON-NLS-1$
+    unregister ( "COND-EVAL" ) ; //$NON-NLS-1$
+    register ( L1Language.L1 , "COND-EVAL" , false ) ; //$NON-NLS-1$
+    unregister ( "COND-TRUE" ) ; //$NON-NLS-1$
+    register ( L1Language.L1 , "COND-TRUE" , true ) ; //$NON-NLS-1$
+    unregister ( "COND-FALSE" ) ; //$NON-NLS-1$
+    register ( L1Language.L1 , "COND-FALSE" , true ) ; //$NON-NLS-1$
+    unregister ( "LET-EXEC" ) ; //$NON-NLS-1$
+    register ( L1Language.L1 , "LET-EXEC" , true ) ; //$NON-NLS-1$
+    unregister ( "NOT" ) ; //$NON-NLS-1$
+    register ( L1Language.L1 , "NOT" , true ) ; //$NON-NLS-1$
+    unregister ( "OP" ) ; //$NON-NLS-1$
+    register ( L1Language.L1 , "OP" , true ) ; //$NON-NLS-1$
+    unregister ( "OR-EVAL" ) ; //$NON-NLS-1$
+    register ( L2Language.L2 , "OR-EVAL" , false ) ; //$NON-NLS-1$
+    unregister ( "OR-FALSE" ) ; //$NON-NLS-1$
+    register ( L2Language.L2 , "OR-FALSE" , true ) ; //$NON-NLS-1$
+    unregister ( "OR-TRUE" ) ; //$NON-NLS-1$
+    register ( L2Language.L2 , "OR-TRUE" , true ) ; //$NON-NLS-1$
+    unregister ( "UNFOLD" ) ; //$NON-NLS-1$
+    register ( L2Language.L2 , "UNFOLD" , true ) ; //$NON-NLS-1$
   }
 
 
@@ -85,15 +86,15 @@ public class L2CBNSmallStepProofRuleSet extends L2SmallStepProofRuleSet
    * @param context the small step proof context.
    * @param application the application.
    * @param lambda the first operand of the <code>application</code>.
-   * @param v the second operand of the <code>application</code>.
+   * @param e the second operand of the <code>application</code>.
    * @return the resulting expression.
    */
   @ Override
   public Expression applyLambda ( SmallStepProofContext context ,
-      Application application , Lambda lambda , Expression v )
+      Application application , Lambda lambda , Expression e )
   {
-    context.addProofStep ( getRuleByName ( "BETA" ) , application ) ;
-    return lambda.getE ( ).substitute ( lambda.getId ( ) , v ) ;
+    context.addProofStep ( getRuleByName ( "BETA" ) , application ) ; //$NON-NLS-1$
+    return lambda.getE ( ).substitute ( lambda.getId ( ) , e ) ;
   }
 
 
@@ -115,17 +116,17 @@ public class L2CBNSmallStepProofRuleSet extends L2SmallStepProofRuleSet
     if ( ! e1.isValue ( ) )
     {
       // we're about to perform (APP-LEFT)
-      context.addProofStep ( getRuleByName ( "APP-LEFT" ) , application ) ;
+      context.addProofStep ( getRuleByName ( "APP-LEFT" ) , application ) ; //$NON-NLS-1$
       // try to evaluate e1
       e1 = evaluate ( context , e1 ) ;
       // exceptions need special handling
       return e1.isException ( ) ? e1 : new Application ( e1 , e2 ) ;
     }
-    // check if e2 is not already a value
+    // check if e2 is not already a value and e1 is not an instance of Lambda
     if ( ( ! e2.isValue ( ) ) && ( ! ( e1 instanceof Lambda ) ) )
     {
       // we're about to perform (APP-RIGHT)
-      context.addProofStep ( getRuleByName ( "APP-RIGHT" ) , application ) ;
+      context.addProofStep ( getRuleByName ( "APP-RIGHT" ) , application ) ; //$NON-NLS-1$
       // try to evaluate e2
       e2 = evaluate ( context , e2 ) ; // exceptions need special handling
       return e2.isException ( ) ? e2 : new Application ( e1 , e2 ) ;
@@ -145,15 +146,10 @@ public class L2CBNSmallStepProofRuleSet extends L2SmallStepProofRuleSet
   @ Override
   public Expression evaluateLet ( SmallStepProofContext context , Let let )
   {
-    // determine the sub expressions and the identifier
-    Expression e1 = let.getE1 ( ) ;
-    Expression e2 = let.getE2 ( ) ;
-    String id = let.getId ( ) ;
-    // TODO Exception
     // we can perform (LET-EXEC)
-    context.addProofStep ( getRuleByName ( "LET-EXEC" ) , let ) ;
+    context.addProofStep ( getRuleByName ( "LET-EXEC" ) , let ) ; //$NON-NLS-1$
     // and perform the substitution
-    return e2.substitute ( id , e1 ) ;
+    return let.getE2 ( ).substitute ( let.getId ( ) , let.getE1 ( ) ) ;
   }
 
 
@@ -173,9 +169,8 @@ public class L2CBNSmallStepProofRuleSet extends L2SmallStepProofRuleSet
     Expression e1 = letRec.getE1 ( ) ;
     Expression e2 = letRec.getE2 ( ) ;
     String id = letRec.getId ( ) ;
-    // we perform (UNFOLD), which includes a (LET-EVAL)
-    // context.addProofStep(getRuleByName("LET-EVAL"), letRec);
-    context.addProofStep ( getRuleByName ( "UNFOLD" ) , letRec ) ;
+    // we perform (UNFOLD)
+    context.addProofStep ( getRuleByName ( "UNFOLD" ) , letRec ) ; //$NON-NLS-1$
     // perform the substitution on e1
     e1 = e1.substitute ( id , new Recursion ( id , letRec.getTau ( ) , e1 ) ) ;
     // generate the new (LET) expression
@@ -205,9 +200,8 @@ public class L2CBNSmallStepProofRuleSet extends L2SmallStepProofRuleSet
     {
       e1 = new Lambda ( identifiers [ n ] , types [ n ] , e1 ) ;
     }
-    // we can perform (UNFOLD), which includes a (LET-EVAL)
-    // context.addProofStep(getRuleByName("LET-EVAL"), curriedLetRec);
-    context.addProofStep ( getRuleByName ( "UNFOLD" ) , curriedLetRec ) ;
+    // we can perform (UNFOLD)
+    context.addProofStep ( getRuleByName ( "UNFOLD" ) , curriedLetRec ) ; //$NON-NLS-1$
     // perform the substitution on e1
     e1 = e1.substitute ( identifiers [ 0 ] , new Recursion ( identifiers [ 0 ] ,
         types [ 0 ] , e1 ) ) ;
