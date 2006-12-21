@@ -15,7 +15,7 @@ import de.unisiegen.tpml.core.types.TypeVariable;
  *
  * @see de.unisiegen.tpml.core.typechecker.TypeEquation
  */
-final class TypeEquationList {
+public final class TypeEquationList {
   //
   // Constants
   //
