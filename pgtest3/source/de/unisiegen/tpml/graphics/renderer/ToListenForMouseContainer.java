@@ -1,6 +1,6 @@
 package de.unisiegen.tpml.graphics.renderer;
 
-import java.util.Vector;
+import java.util.ArrayList;
 /**
  * TODO Kommentare schreiebn
  * @author Feivel
@@ -11,7 +11,7 @@ public class ToListenForMouseContainer
 	/**
 	 * will contain the positions where bounded identifiers are
 	 */
-	private Vector<Integer> toListenForMouse;
+	private ArrayList<Integer> toListenForMouse;
 	
 	/**
 	 * saves teh psoition, where the mouse pointer is.
@@ -35,7 +35,7 @@ public class ToListenForMouseContainer
 	
 	public ToListenForMouseContainer()
 	{
-		this.toListenForMouse = new Vector<Integer>();
+		this.toListenForMouse = new ArrayList<Integer>();
         this.mark = false;
         this.markCount = 0;
         this.hereIam = new int [2];
@@ -44,7 +44,7 @@ public class ToListenForMouseContainer
         this.rightList = -2;
 	}
 	/**
-	 * adds a position to the vector
+	 * adds a position to the ArrayList
 	 * TODO 4 ints heve to be added. mybe a method with 4 ints...
 	 * @param toadd - int with x, y, x1 or y1 position
 	 */
@@ -54,7 +54,7 @@ public class ToListenForMouseContainer
 	}
 	
 	/**
-	 * returns one part of a position of vector
+	 * returns one part of a position of ArrayList
 	 * @param i - int witch value to return
 	 * @return int with value
 	 */
@@ -66,7 +66,7 @@ public class ToListenForMouseContainer
 	}
 	
 	/**
-	 * get the infromation if the vector ist empty or not
+	 * get the infromation if the ArrayList ist empty or not
 	 * @return - booelan, true if empty
 	 */
 	public boolean isEmpty ()
@@ -76,32 +76,23 @@ public class ToListenForMouseContainer
 	}
 	
 	/**
-	 * clears all entris from vector
+	 * clears all entris from ArrayList
 	 *
 	 */
 	public void reset ()
 	{
-		toListenForMouse.removeAllElements();	
+		toListenForMouse = new ArrayList<Integer>();	
 	}
 	
 	/**
-	 * returns the size of the vector
+	 * returns the size of the ArrayList
 	 * @return
 	 */
 	public int size()
 	{
 		return toListenForMouse.size();
 	}
-	
-	/**
-	 * let you set an position at a specified position
-	 * @param pos - int position
-	 * @param val - int value
-	 */
-	public void setElementAt (int pos, int val)
-	{
-		toListenForMouse.setElementAt(val, pos);
-	}
+
 	
 	/**
 	 * returns true if it should be marked teh bindings
