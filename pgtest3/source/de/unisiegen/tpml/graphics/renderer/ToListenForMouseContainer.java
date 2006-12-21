@@ -2,8 +2,15 @@ package de.unisiegen.tpml.graphics.renderer;
 
 import java.util.ArrayList;
 /**
- * TODO Kommentare schreiebn
+ * here, the mousepositions where the mous over effekt will be aktivated
+ * are safed. <br>
+ * this class privides the comunication between the PrittyStringRenderer and the 
+ * CompoundExpression
+ * 
  * @author Feivel
+ * 
+ * @see de.unisiegen.tpml.graphics.components.CompoundExpression
+ * @see de.unisiegen.tpml.graphics.renderer.PrettyStringRenderer
  *
  */
 public class ToListenForMouseContainer
