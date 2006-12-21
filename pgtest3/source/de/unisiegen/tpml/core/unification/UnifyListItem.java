@@ -1,8 +1,8 @@
 package de.unisiegen.tpml.core.unification;
 
-import de.unisiegen.tpml.core.typechecker.DefaultTypeSubstitution;
-import de.unisiegen.tpml.core.typechecker.TypeEquationList;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
+import de.unisiegen.tpml.core.typechecker.TypeEquationList;
+
 
 //TODO Doku
 public interface UnifyListItem 
