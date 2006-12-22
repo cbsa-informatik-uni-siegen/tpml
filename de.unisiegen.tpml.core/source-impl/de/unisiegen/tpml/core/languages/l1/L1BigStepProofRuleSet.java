@@ -237,7 +237,7 @@ public class L1BigStepProofRuleSet extends L0BigStepProofRuleSet {
       try {
         // the result of the child node must be a boolean value
         BooleanConstant value0 = (BooleanConstant)result0.getValue();
-        if (value0.booleanValue()) {
+        if (!value0.booleanValue()) {
           // let (COND-FALSE) handle the node
           context.setProofNodeRule(node, (BigStepProofRule)getRuleByName("COND-FALSE")); //$NON-NLS-1$
           updateCondFalse(context, node);
