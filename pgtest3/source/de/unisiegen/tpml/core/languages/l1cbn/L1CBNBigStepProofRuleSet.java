@@ -367,10 +367,5 @@ public class L1CBNBigStepProofRuleSet extends L1BigStepProofRuleSet
       // forward the result of the first child node
       context.setProofNodeResult ( node , node.getChildAt ( 0 ).getResult ( ) ) ;
     }
-    else if ( node.getChildCount ( ) == 2 )
-    {
-      // forward the result of the second child node
-      context.setProofNodeResult ( node , node.getChildAt ( 1 ).getResult ( ) ) ;
-    }
   }
 }
