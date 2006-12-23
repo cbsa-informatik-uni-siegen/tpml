@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.core.languages.l2cbn ;
+package de.unisiegen.tpml.core.languages.l1cbn ;
 
 
 import de.unisiegen.tpml.core.Messages ;
@@ -20,30 +20,28 @@ import de.unisiegen.tpml.core.languages.l0.L0BigStepProofRuleSet ;
 import de.unisiegen.tpml.core.languages.l0.L0Language ;
 import de.unisiegen.tpml.core.languages.l1.L1BigStepProofRuleSet ;
 import de.unisiegen.tpml.core.languages.l1.L1Language ;
-import de.unisiegen.tpml.core.languages.l2.L2BigStepProofRuleSet ;
 import de.unisiegen.tpml.core.languages.l2.L2Language ;
 
 
 /**
- * Big step proof rules for the <b>L2CBN</b> and derived languages.
+ * Big step proof rules for the <b>L1CBN</b> and derived languages.
  * 
  * @author Christian Fehler
  * @version $Rev$
  */
-public class L2CBNBigStepProofRuleSet extends L2BigStepProofRuleSet
+public class L1CBNBigStepProofRuleSet extends L1BigStepProofRuleSet
 {
   /**
-   * Allocates a new <code>L2CBNBigStepProofRuleSet</code> with the specified
-   * <code>language</code>, which is the <b>L2CBN</b> or a derived language.
+   * Allocates a new <code>L1CBNBigStepProofRuleSet</code> with the specified
+   * <code>language</code>, which is the <b>L1CBN</b> or a derived language.
    * 
    * @param language the language for the proof rule set.
    * @throws NullPointerException if <code>language</code> is
    *           <code>null</code>.
    * @see L0BigStepProofRuleSet#L0BigStepProofRuleSet(L0Language)
    * @see L1BigStepProofRuleSet#L1BigStepProofRuleSet(L1Language)
-   * @see L2BigStepProofRuleSet#L2BigStepProofRuleSet(L2Language)
    */
-  public L2CBNBigStepProofRuleSet ( L2Language language )
+  public L1CBNBigStepProofRuleSet ( L1Language language )
   {
     super ( language ) ;
     unregister ( "APP" ) ; //$NON-NLS-1$
@@ -83,9 +81,6 @@ public class L2CBNBigStepProofRuleSet extends L2BigStepProofRuleSet
     unregister ( "OR-TRUE" ) ; //$NON-NLS-1$
     registerByMethodName ( L2Language.L2 ,
         "OR-TRUE" , "applyOr" , "updateOrTrue" ) ; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-    unregister ( "UNFOLD" ) ; //$NON-NLS-1$
-    registerByMethodName ( L2Language.L2 , "UNFOLD" , "applyUnfold" , //$NON-NLS-1$ //$NON-NLS-2$
-        "updateUnfold" ) ; //$NON-NLS-1$
   }
 
 

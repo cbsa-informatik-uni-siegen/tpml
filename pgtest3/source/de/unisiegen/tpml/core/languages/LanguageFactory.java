@@ -4,7 +4,9 @@ package de.unisiegen.tpml.core.languages ;
 import java.io.File ;
 import java.lang.reflect.InvocationTargetException ;
 import de.unisiegen.tpml.core.languages.l0.L0Language ;
+import de.unisiegen.tpml.core.languages.l0cbn.L0CBNLanguage ;
 import de.unisiegen.tpml.core.languages.l1.L1Language ;
+import de.unisiegen.tpml.core.languages.l1cbn.L1CBNLanguage ;
 import de.unisiegen.tpml.core.languages.l2.L2Language ;
 import de.unisiegen.tpml.core.languages.l2cbn.L2CBNLanguage ;
 import de.unisiegen.tpml.core.languages.l3.L3Language ;
@@ -59,8 +61,9 @@ public final class LanguageFactory
   public Language [ ] getAvailableLanguages ( )
   {
     return new Language [ ]
-    { new L0Language ( ) , new L1Language ( ) , new L2Language ( ) ,
-        new L2CBNLanguage ( ) , new L3Language ( ) , new L4Language ( ) , } ;
+    { new L0Language ( ) , new L0CBNLanguage ( ) , new L1Language ( ) ,
+        new L1CBNLanguage ( ) , new L2Language ( ) , new L2CBNLanguage ( ) ,
+        new L3Language ( ) , new L4Language ( ) , } ;
   }
 
 
