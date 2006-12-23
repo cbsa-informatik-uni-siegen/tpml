@@ -330,16 +330,10 @@ public class L2CBNBigStepProofRuleSet extends L2BigStepProofRuleSet
       }
       else
       {
-        // add a proof node for e2 (Let/LetRec)
-        Let let = ( Let ) e ;
-        context.addProofNode ( node , let.getE2 ( ).substitute ( let.getId ( ) ,
-            let.getE1 ( ) ) ) ;
+        // forward the result of the first child node
+        context
+            .setProofNodeResult ( node , node.getChildAt ( 0 ).getResult ( ) ) ;
       }
-    }
-    else if ( node.getChildCount ( ) == 2 )
-    {
-      // forward the result of the second child node
-      context.setProofNodeResult ( node , node.getChildAt ( 1 ).getResult ( ) ) ;
     }
   }
 }
