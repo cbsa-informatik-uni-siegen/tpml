@@ -34,7 +34,7 @@ cat > "$XDG_DATA_HOME/mime/packages/tpml.xml" <<EOF
     <comment>TPML source code</comment>
     <comment xml:lang="de">TPML-Quelltext</comment>
     <glob pattern="*.[Ll][01234]" />
-    <glob pattern="*.[Ll]2[Cc][Bb][Nn]" />
+    <glob pattern="*.[Ll][012][Cc][Bb][Nn]" />
   </mime-type>
 </mime-info>
 EOF
