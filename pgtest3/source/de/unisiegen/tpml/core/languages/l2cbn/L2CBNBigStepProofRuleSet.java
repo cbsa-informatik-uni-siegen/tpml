@@ -13,7 +13,6 @@ import de.unisiegen.tpml.core.expressions.Lambda ;
 import de.unisiegen.tpml.core.expressions.Let ;
 import de.unisiegen.tpml.core.expressions.LetRec ;
 import de.unisiegen.tpml.core.expressions.MultiLambda ;
-import de.unisiegen.tpml.core.expressions.MultiLet ;
 import de.unisiegen.tpml.core.expressions.Projection ;
 import de.unisiegen.tpml.core.expressions.Recursion ;
 import de.unisiegen.tpml.core.languages.l0.L0BigStepProofRuleSet ;
@@ -262,12 +261,8 @@ public class L2CBNBigStepProofRuleSet extends L2BigStepProofRuleSet
         e1 = new Recursion ( identifiers [ 0 ] , null , e1 ) ;
       }
       // add the proof node
-      context.addProofNode ( node , e1 ) ;
-    }
-    else if ( e instanceof MultiLet )
-    {
-      // prove the first sub expression
-      context.addProofNode ( node , ( ( MultiLet ) e ).getE1 ( ) ) ;
+      context.addProofNode ( node , curriedLet.getE2 ( ).substitute (
+          curriedLet.getIdentifiers ( ) [ 0 ] , e1 ) ) ;
     }
     else
     {
@@ -300,40 +295,13 @@ public class L2CBNBigStepProofRuleSet extends L2BigStepProofRuleSet
     // check if we have exactly one proven child node
     if ( node.getChildCount ( ) == 1 && node.getChildAt ( 0 ).isProven ( ) )
     {
-      // determine the value of the first child node
-      Expression value0 = node.getChildAt ( 0 ).getResult ( ).getValue ( ) ;
-      // determine the expression for the node
-      Expression e = node.getExpression ( ) ;
-      // check the expression type
-      if ( e instanceof CurriedLet )
-      {
-        // add a proof node for e2 (CurriedLet/CurriedLetRec)
-        CurriedLet curriedLet = ( CurriedLet ) e ;
-        context.addProofNode ( node , curriedLet.getE2 ( ).substitute (
-            curriedLet.getIdentifiers ( ) [ 0 ] , value0 ) ) ;
-      }
-      else if ( e instanceof MultiLet )
-      {
-        // determine the second sub expression e2 (MultiLet)
-        MultiLet multiLet = ( MultiLet ) e ;
-        Expression e2 = multiLet.getE2 ( ) ;
-        // perform the required substitutions
-        String [ ] identifiers = multiLet.getIdentifiers ( ) ;
-        for ( int n = 0 ; n < identifiers.length ; ++ n )
-        {
-          // substitute: (#l_n value0) for id
-          e2 = e2.substitute ( identifiers [ n ] , new Application (
-              new Projection ( identifiers.length , n + 1 ) , value0 ) ) ;
-        }
-        // add a proof node for e2
-        context.addProofNode ( node , e2 ) ;
-      }
-      else
-      {
-        // forward the result of the first child node
-        context
-            .setProofNodeResult ( node , node.getChildAt ( 0 ).getResult ( ) ) ;
-      }
+      // forward the result of the first child node
+      context.setProofNodeResult ( node , node.getChildAt ( 0 ).getResult ( ) ) ;
+    }
+    else if ( node.getChildCount ( ) == 2 )
+    {
+      // forward the result of the second child node
+      context.setProofNodeResult ( node , node.getChildAt ( 1 ).getResult ( ) ) ;
     }
   }
 }
