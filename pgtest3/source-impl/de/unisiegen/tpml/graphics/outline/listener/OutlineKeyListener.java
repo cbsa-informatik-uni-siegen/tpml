@@ -1,12 +1,12 @@
-package de.unisiegen.tpml.graphics.abstractsyntaxtree.listener ;
+package de.unisiegen.tpml.graphics.outline.listener ;
 
 
 import java.awt.event.KeyEvent ;
 import java.awt.event.KeyListener ;
 import javax.swing.tree.DefaultMutableTreeNode ;
-import de.unisiegen.tpml.graphics.abstractsyntaxtree.ASTNode;
-import de.unisiegen.tpml.graphics.abstractsyntaxtree.ui.ASTUI;
-import de.unisiegen.tpml.graphics.abstractsyntaxtree.util.ASTClipboard;
+import de.unisiegen.tpml.graphics.outline.OutlineNode;
+import de.unisiegen.tpml.graphics.outline.ui.OutlineUI;
+import de.unisiegen.tpml.graphics.outline.util.OutlineClipboard;
 
 
 /**
@@ -15,22 +15,22 @@ import de.unisiegen.tpml.graphics.abstractsyntaxtree.util.ASTClipboard;
  * 
  * @author Christian Fehler
  */
-public class ASTKeyListener implements KeyListener
+public class OutlineKeyListener implements KeyListener
 {
   /**
-   * The AbstractSyntaxTree UI.
+   * The AbstractOutline UI.
    */
-  private ASTUI aSTUI ;
+  private OutlineUI outlineUI ;
 
 
   /**
-   * Initializes the ASTKeyListener.
+   * Initializes the OutlineKeyListener.
    * 
-   * @param pASTUI The AbstractSyntaxTree UI.
+   * @param pASTUI The AbstractOutline UI.
    */
-  public ASTKeyListener ( ASTUI pASTUI )
+  public OutlineKeyListener ( OutlineUI pASTUI )
   {
-    this.aSTUI = pASTUI ;
+    this.outlineUI = pASTUI ;
   }
 
 
@@ -39,13 +39,13 @@ public class ASTKeyListener implements KeyListener
    */
   public void copy ( )
   {
-    DefaultMutableTreeNode node = ( DefaultMutableTreeNode ) this.aSTUI
+    DefaultMutableTreeNode node = ( DefaultMutableTreeNode ) this.outlineUI
         .getJTreeAbstractSyntaxTree ( ).getSelectionPath ( )
         .getLastPathComponent ( ) ;
     if ( node != null )
     {
-      ASTClipboard.getInstance ( ).copy (
-          ( ( ASTNode ) node.getUserObject ( ) ).getExpressionString ( ) ) ;
+      OutlineClipboard.getInstance ( ).copy (
+          ( ( OutlineNode ) node.getUserObject ( ) ).getExpressionString ( ) ) ;
     }
   }
 
@@ -61,7 +61,7 @@ public class ASTKeyListener implements KeyListener
      * jTreeAbstractSyntaxTree
      */
     if ( pKeyEvent.getSource ( ).equals (
-        this.aSTUI.getJTreeAbstractSyntaxTree ( ) ) )
+        this.outlineUI.getJTreeAbstractSyntaxTree ( ) ) )
     {
       /*
        * Copy the selected node as a string into the clipboard.

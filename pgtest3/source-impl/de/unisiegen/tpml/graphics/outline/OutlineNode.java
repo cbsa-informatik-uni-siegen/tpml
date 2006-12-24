@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.graphics.abstractsyntaxtree ;
+package de.unisiegen.tpml.graphics.outline ;
 
 
 import java.awt.Color ;
@@ -9,17 +9,17 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyCharIterator ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStyle ;
 import de.unisiegen.tpml.graphics.Theme ;
-import de.unisiegen.tpml.graphics.abstractsyntaxtree.binding.ASTBinding ;
-import de.unisiegen.tpml.graphics.abstractsyntaxtree.binding.ASTUnbound ;
+import de.unisiegen.tpml.graphics.outline.binding.OutlineBinding;
+import de.unisiegen.tpml.graphics.outline.binding.OutlineUnbound;
 
 
 /**
- * This class represents the nodes in the AbstractSyntaxTree.
+ * This class represents the nodes in the AbstractOutline.
  * 
  * @author Christian Fehler
  * @version $Rev$
  */
-public class ASTNode
+public class OutlineNode
 {
   /**
    * No bindings should be shown in the nodes.
@@ -249,9 +249,9 @@ public class ASTNode
    * The bindings in this node.
    * 
    * @see #getASTBinding()
-   * @see #setASTBinding(ASTBinding)
+   * @see #setASTBinding(OutlineBinding)
    */
-  private ASTBinding aSTBinding ;
+  private OutlineBinding outlineBinding ;
 
 
   /**
@@ -271,9 +271,9 @@ public class ASTNode
 
 
   /**
-   * The ASTUnbound which repressents the unbound Identifiers in all nodes.
+   * The OutlineUnbound which repressents the unbound Identifiers in all nodes.
    */
-  private ASTUnbound aSTUnbound ;
+  private OutlineUnbound outlineUnbound ;
 
 
   /**
@@ -286,14 +286,14 @@ public class ASTNode
    * This constructor initializes the values and loads the description.
    * 
    * @param pExpression The expression repressented by this node.
-   * @param pASTUnbound The ASTUnbound which repressents the unbound Identifiers
+   * @param pASTUnbound The OutlineUnbound which repressents the unbound Identifiers
    *          in all nodes.
    */
-  public ASTNode ( Expression pExpression , ASTUnbound pASTUnbound )
+  public OutlineNode ( Expression pExpression , OutlineUnbound pASTUnbound )
   {
     // Load the description
     this.resourceBundle = ResourceBundle
-        .getBundle ( "de/unisiegen/tpml/graphics/abstractsyntaxtree/ast" ) ; //$NON-NLS-1$
+        .getBundle ( "de/unisiegen/tpml/graphics/outline/outline" ) ; //$NON-NLS-1$
     try
     {
       this.description = this.resourceBundle.getString ( pExpression
@@ -308,8 +308,8 @@ public class ASTNode
     this.expression = pExpression ;
     this.startIndex = - 1 ;
     this.endIndex = - 1 ;
-    this.aSTBinding = null ;
-    this.aSTUnbound = pASTUnbound ;
+    this.outlineBinding = null ;
+    this.outlineUnbound = pASTUnbound ;
     this.replaceInThisNode = false ;
     resetCaption ( ) ;
   }
@@ -323,16 +323,16 @@ public class ASTNode
    * @param pStartIndex The start index of the Identifier.
    * @param pEndIndex The end index of the Identifier.
    * @param pASTBinding The bindings in this node.
-   * @param pASTUnbound The ASTUnbound which repressents the unbound Identifiers
+   * @param pASTUnbound The OutlineUnbound which repressents the unbound Identifiers
    *          in all nodes
    */
-  public ASTNode ( String pDescription , String pExpressionString ,
-      int pStartIndex , int pEndIndex , ASTBinding pASTBinding ,
-      ASTUnbound pASTUnbound )
+  public OutlineNode ( String pDescription , String pExpressionString ,
+      int pStartIndex , int pEndIndex , OutlineBinding pASTBinding ,
+      OutlineUnbound pASTUnbound )
   {
     // Preferences
     this.resourceBundle = ResourceBundle
-        .getBundle ( "de/unisiegen/tpml/graphics/abstractsyntaxtree/ast" ) ; //$NON-NLS-1$
+        .getBundle ( "de/unisiegen/tpml/graphics/outline/outline" ) ; //$NON-NLS-1$
     try
     {
       this.description = this.resourceBundle.getString ( pDescription ) ;
@@ -345,8 +345,8 @@ public class ASTNode
     this.expression = null ;
     this.startIndex = pStartIndex ;
     this.endIndex = pEndIndex ;
-    this.aSTBinding = pASTBinding ;
-    this.aSTUnbound = pASTUnbound ;
+    this.outlineBinding = pASTBinding ;
+    this.outlineUnbound = pASTUnbound ;
     this.replaceInThisNode = false ;
     resetCaption ( ) ;
   }
@@ -394,8 +394,8 @@ public class ASTNode
     }
     else
     {
-      updateCaption ( ASTNode.NO_SELECTION , ASTNode.NO_SELECTION ,
-          ASTNode.NO_BINDING ) ;
+      updateCaption ( OutlineNode.NO_SELECTION , OutlineNode.NO_SELECTION ,
+          OutlineNode.NO_BINDING ) ;
     }
   }
 
@@ -404,12 +404,12 @@ public class ASTNode
    * Returns the binding in this node.
    * 
    * @return The binding in this node.
-   * @see #aSTBinding
-   * @see #setASTBinding(ASTBinding)
+   * @see #outlineBinding
+   * @see #setASTBinding(OutlineBinding)
    */
-  public ASTBinding getASTBinding ( )
+  public OutlineBinding getASTBinding ( )
   {
-    return this.aSTBinding ;
+    return this.outlineBinding ;
   }
 
 
@@ -554,16 +554,16 @@ public class ASTNode
    */
   private boolean isBinding ( int pIdentifierIndex , int pCharIndex )
   {
-    if ( ( this.aSTBinding == null ) || ( pIdentifierIndex < 0 )
-        || ( pIdentifierIndex >= this.aSTBinding.size ( ) ) )
+    if ( ( this.outlineBinding == null ) || ( pIdentifierIndex < 0 )
+        || ( pIdentifierIndex >= this.outlineBinding.size ( ) ) )
     {
       return false ;
     }
-    for ( int i = 0 ; i < this.aSTBinding.size ( pIdentifierIndex ) ; i ++ )
+    for ( int i = 0 ; i < this.outlineBinding.size ( pIdentifierIndex ) ; i ++ )
     {
       PrettyAnnotation prettyAnnotation = this.expression.toPrettyString ( )
           .getAnnotationForPrintable (
-              this.aSTBinding.get ( pIdentifierIndex , i ) ) ;
+              this.outlineBinding.get ( pIdentifierIndex , i ) ) ;
       if ( ( pCharIndex >= prettyAnnotation.getStartOffset ( ) )
           && ( pCharIndex <= prettyAnnotation.getEndOffset ( ) ) )
       {
@@ -584,12 +584,12 @@ public class ASTNode
    */
   private boolean isUnbound ( int pCharIndex )
   {
-    for ( int i = 0 ; i < this.aSTUnbound.size ( ) ; i ++ )
+    for ( int i = 0 ; i < this.outlineUnbound.size ( ) ; i ++ )
     {
       try
       {
         PrettyAnnotation prettyAnnotation = this.expression.toPrettyString ( )
-            .getAnnotationForPrintable ( this.aSTUnbound.get ( i ) ) ;
+            .getAnnotationForPrintable ( this.outlineUnbound.get ( i ) ) ;
         if ( ( pCharIndex >= prettyAnnotation.getStartOffset ( ) )
             && ( pCharIndex <= prettyAnnotation.getEndOffset ( ) ) )
         {
@@ -626,8 +626,8 @@ public class ASTNode
     }
     else
     {
-      updateCaption ( ASTNode.NO_SELECTION , ASTNode.NO_SELECTION ,
-          ASTNode.NO_BINDING ) ;
+      updateCaption ( OutlineNode.NO_SELECTION , OutlineNode.NO_SELECTION ,
+          OutlineNode.NO_BINDING ) ;
     }
   }
 
@@ -635,13 +635,13 @@ public class ASTNode
   /**
    * Sets the binding in this node.
    * 
-   * @param pASTBinding The ASTBinding in this node.
-   * @see #aSTBinding
+   * @param pASTBinding The OutlineBinding in this node.
+   * @see #outlineBinding
    * @see #getASTBinding()
    */
-  public void setASTBinding ( ASTBinding pASTBinding )
+  public void setASTBinding ( OutlineBinding pASTBinding )
   {
-    this.aSTBinding = pASTBinding ;
+    this.outlineBinding = pASTBinding ;
   }
 
 
@@ -740,9 +740,9 @@ public class ASTNode
       /*
        * No selection and binding
        */
-      else if ( ( ! selection ) && ( binding ) && ( this.aSTBinding != null )
+      else if ( ( ! selection ) && ( binding ) && ( this.outlineBinding != null )
           && ( pIdentifierIndex >= 0 )
-          && ( this.aSTBinding.size ( pIdentifierIndex ) > 0 )
+          && ( this.outlineBinding.size ( pIdentifierIndex ) > 0 )
           && ( charIndex == pSelectionStart ) )
       {
         result.append ( FONT_BOLD_BEGIN ) ;
@@ -785,7 +785,7 @@ public class ASTNode
       /*
        * Binding
        */
-      else if ( ( binding ) && ( this.aSTBinding != null )
+      else if ( ( binding ) && ( this.outlineBinding != null )
           && ( pIdentifierIndex >= 0 )
           && ( isBinding ( pIdentifierIndex , charIndex ) ) )
       {
@@ -805,7 +805,7 @@ public class ASTNode
       /*
        * Unbound
        */
-      else if ( ( unbound ) && ( this.aSTUnbound != null )
+      else if ( ( unbound ) && ( this.outlineUnbound != null )
           && ( isUnbound ( charIndex ) ) )
       {
         result.append ( FONT_BOLD_BEGIN ) ;

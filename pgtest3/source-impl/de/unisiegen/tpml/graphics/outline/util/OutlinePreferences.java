@@ -1,9 +1,9 @@
-package de.unisiegen.tpml.graphics.abstractsyntaxtree.util ;
+package de.unisiegen.tpml.graphics.outline.util ;
 
 
 import java.util.prefs.Preferences ;
-import de.unisiegen.tpml.graphics.abstractsyntaxtree.ASTNode;
-import de.unisiegen.tpml.graphics.abstractsyntaxtree.AbstractSyntaxTree;
+import de.unisiegen.tpml.graphics.outline.AbstractOutline;
+import de.unisiegen.tpml.graphics.outline.OutlineNode;
 
 
 /**
@@ -14,7 +14,7 @@ import de.unisiegen.tpml.graphics.abstractsyntaxtree.AbstractSyntaxTree;
  * @author Christian Fehler
  * @version $Rev$
  */
-public class ASTPreferences
+public class OutlinePreferences
 {
   /**
    * The replace value. The selected expression should be replaced in higher
@@ -83,22 +83,22 @@ public class ASTPreferences
 
   /**
    * Initialize the preferences. Load the last saved values from it. Set the
-   * replace, binding, unbound and selection value of the ASTNode.
+   * replace, binding, unbound and selection value of the OutlineNode.
    */
-  public ASTPreferences ( )
+  public OutlinePreferences ( )
   {
     this.preferences = Preferences
-        .userNodeForPackage ( AbstractSyntaxTree.class ) ;
+        .userNodeForPackage ( AbstractOutline.class ) ;
     this.replace = this.preferences.getBoolean ( "replace" , true ) ; //$NON-NLS-1$
     this.binding = this.preferences.getBoolean ( "bindings" , true ) ; //$NON-NLS-1$
     this.unbound = this.preferences.getBoolean ( "unbound" , true ) ; //$NON-NLS-1$
     this.selection = this.preferences.getBoolean ( "selected" , true ) ; //$NON-NLS-1$
     this.autoUpdate = this.preferences.getBoolean ( "autoupdate" , true ) ; //$NON-NLS-1$
     this.dividerLocation = this.preferences.getInt ( "dividerLocation" , 300 ) ; //$NON-NLS-1$
-    ASTNode.setReplace ( this.replace ) ;
-    ASTNode.setBinding ( this.binding ) ;
-    ASTNode.setUnbound ( this.unbound ) ;
-    ASTNode.setSelection ( this.selection ) ;
+    OutlineNode.setReplace ( this.replace ) ;
+    OutlineNode.setBinding ( this.binding ) ;
+    OutlineNode.setUnbound ( this.unbound ) ;
+    OutlineNode.setSelection ( this.selection ) ;
   }
 
 

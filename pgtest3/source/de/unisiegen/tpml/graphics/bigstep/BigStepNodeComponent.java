@@ -24,7 +24,6 @@ import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.expressions.Location;
 import de.unisiegen.tpml.core.languages.LanguageTranslator;
 import de.unisiegen.tpml.graphics.Messages;
-import de.unisiegen.tpml.graphics.abstractsyntaxtree.listener.ASTMouseListener;
 import de.unisiegen.tpml.graphics.components.CompoundExpression;
 import de.unisiegen.tpml.graphics.components.MenuButton;
 import de.unisiegen.tpml.graphics.components.MenuButtonListener;
@@ -32,6 +31,7 @@ import de.unisiegen.tpml.graphics.components.MenuGuessItem;
 import de.unisiegen.tpml.graphics.components.MenuGuessTreeItem;
 import de.unisiegen.tpml.graphics.components.MenuRuleItem;
 import de.unisiegen.tpml.graphics.components.MenuTranslateItem;
+import de.unisiegen.tpml.graphics.outline.listener.OutlineMouseListener;
 import de.unisiegen.tpml.graphics.renderer.AbstractRenderer;
 import de.unisiegen.tpml.graphics.tree.TreeNodeComponent;
 
@@ -186,7 +186,7 @@ public class BigStepNodeComponent extends JComponent implements TreeNodeComponen
 		add (this.expression);
     
     // CHANGE CHRISTIAN
-    this.indexLabel.addMouseListener ( new ASTMouseListener ( this.expression ) ) ;
+    this.indexLabel.addMouseListener ( new OutlineMouseListener ( this.expression ) ) ;
     // CHANGE CHRISTIAN END
      
 		this.downArrowLabel			= new JLabel ();

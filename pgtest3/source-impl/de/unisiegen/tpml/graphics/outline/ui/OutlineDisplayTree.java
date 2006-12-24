@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.graphics.abstractsyntaxtree.ui ;
+package de.unisiegen.tpml.graphics.outline.ui ;
 
 
 import javax.swing.tree.DefaultMutableTreeNode ;
@@ -10,12 +10,12 @@ import javax.swing.tree.DefaultMutableTreeNode ;
  * @author Christian Fehler
  * @version $Rev$
  */
-public class ASTDisplayTree implements Runnable
+public class OutlineDisplayTree implements Runnable
 {
   /**
-   * The AbstractSyntaxTree UI.
+   * The AbstractOutline UI.
    */
-  private ASTUI aSTUI ;
+  private OutlineUI outlineUI ;
 
 
   /**
@@ -25,14 +25,14 @@ public class ASTDisplayTree implements Runnable
 
 
   /**
-   * Initilizes the ASTDisplayTree.
+   * Initilizes the OutlineDisplayTree.
    * 
-   * @param pASTUI The AbstractSyntaxTree UI.
+   * @param pASTUI The AbstractOutline UI.
    * @param pRootNode The root node.
    */
-  public ASTDisplayTree ( ASTUI pASTUI , DefaultMutableTreeNode pRootNode )
+  public OutlineDisplayTree ( OutlineUI pASTUI , DefaultMutableTreeNode pRootNode )
   {
-    this.aSTUI = pASTUI ;
+    this.outlineUI = pASTUI ;
     this.rootNode = pRootNode ;
   }
 
@@ -44,6 +44,6 @@ public class ASTDisplayTree implements Runnable
    */
   public void run ( )
   {
-    this.aSTUI.setRootNode ( this.rootNode ) ;
+    this.outlineUI.setRootNode ( this.rootNode ) ;
   }
 }

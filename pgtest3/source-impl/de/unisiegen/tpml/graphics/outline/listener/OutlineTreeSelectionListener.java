@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.graphics.abstractsyntaxtree.listener ;
+package de.unisiegen.tpml.graphics.outline.listener ;
 
 
 import java.util.ArrayList ;
@@ -15,8 +15,8 @@ import de.unisiegen.tpml.core.expressions.MultiLambda ;
 import de.unisiegen.tpml.core.expressions.MultiLet ;
 import de.unisiegen.tpml.core.expressions.Recursion ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation ;
-import de.unisiegen.tpml.graphics.abstractsyntaxtree.ASTNode ;
-import de.unisiegen.tpml.graphics.abstractsyntaxtree.ui.ASTUI ;
+import de.unisiegen.tpml.graphics.outline.OutlineNode;
+import de.unisiegen.tpml.graphics.outline.ui.OutlineUI;
 
 
 /**
@@ -26,22 +26,22 @@ import de.unisiegen.tpml.graphics.abstractsyntaxtree.ui.ASTUI ;
  * @author Christian Fehler
  * @version $Rev$
  */
-public class ASTTreeSelectionListener implements TreeSelectionListener
+public class OutlineTreeSelectionListener implements TreeSelectionListener
 {
   /**
-   * The AbstractSyntaxTree UI.
+   * The AbstractOutline UI.
    */
-  private ASTUI aSTUI ;
+  private OutlineUI outlineUI ;
 
 
   /**
-   * Initializes the ASTTreeSelectionListener with the given ASTUI.
+   * Initializes the OutlineTreeSelectionListener with the given OutlineUI.
    * 
-   * @param pASTUI The AbstractSyntaxTree UI.
+   * @param pASTUI The AbstractOutline UI.
    */
-  public ASTTreeSelectionListener ( ASTUI pASTUI )
+  public OutlineTreeSelectionListener ( OutlineUI pASTUI )
   {
-    this.aSTUI = pASTUI ;
+    this.outlineUI = pASTUI ;
   }
 
 
@@ -62,7 +62,7 @@ public class ASTTreeSelectionListener implements TreeSelectionListener
         return i ;
       }
     }
-    return ASTNode.NO_BINDING ;
+    return OutlineNode.NO_BINDING ;
   }
 
 
@@ -73,7 +73,7 @@ public class ASTTreeSelectionListener implements TreeSelectionListener
    */
   private void repaint ( DefaultMutableTreeNode pNode )
   {
-    this.aSTUI.getTreeModel ( ).nodeChanged ( pNode ) ;
+    this.outlineUI.getTreeModel ( ).nodeChanged ( pNode ) ;
     for ( int i = 0 ; i < pNode.getChildCount ( ) ; i ++ )
     {
       repaint ( ( DefaultMutableTreeNode ) pNode.getChildAt ( i ) ) ;
@@ -88,9 +88,9 @@ public class ASTTreeSelectionListener implements TreeSelectionListener
    */
   public void reset ( DefaultMutableTreeNode pNode )
   {
-    ASTNode aSTNode = ( ASTNode ) pNode.getUserObject ( ) ;
-    aSTNode.resetCaption ( ) ;
-    aSTNode.setReplaceInThisNode ( false ) ;
+    OutlineNode outlineNode = ( OutlineNode ) pNode.getUserObject ( ) ;
+    outlineNode.resetCaption ( ) ;
+    outlineNode.setReplaceInThisNode ( false ) ;
     for ( int i = 0 ; i < pNode.getChildCount ( ) ; i ++ )
     {
       reset ( ( DefaultMutableTreeNode ) pNode.getChildAt ( i ) ) ;
@@ -107,27 +107,27 @@ public class ASTTreeSelectionListener implements TreeSelectionListener
   {
     if ( pTreePath == null )
     {
-      DefaultMutableTreeNode rootNode = ( DefaultMutableTreeNode ) this.aSTUI
+      DefaultMutableTreeNode rootNode = ( DefaultMutableTreeNode ) this.outlineUI
           .getTreeModel ( ).getRoot ( ) ;
       reset ( rootNode ) ;
       repaint ( rootNode ) ;
       return ;
     }
-    ArrayList < ASTNode > list = new ArrayList < ASTNode > ( ) ;
+    ArrayList < OutlineNode > list = new ArrayList < OutlineNode > ( ) ;
     for ( int i = 0 ; i < pTreePath.getPathCount ( ) ; i ++ )
     {
       list
-          .add ( ( ASTNode ) ( ( DefaultMutableTreeNode ) pTreePath.getPath ( ) [ i ] )
+          .add ( ( OutlineNode ) ( ( DefaultMutableTreeNode ) pTreePath.getPath ( ) [ i ] )
               .getUserObject ( ) ) ;
     }
-    ASTNode last = list.get ( list.size ( ) - 1 ) ;
+    OutlineNode last = list.get ( list.size ( ) - 1 ) ;
     // Identifier
     if ( ( last.getStartIndex ( ) != - 1 ) && ( last.getEndIndex ( ) != - 1 ) )
     {
-      ASTNode secondlast = list.get ( list.size ( ) - 2 ) ;
+      OutlineNode secondlast = list.get ( list.size ( ) - 2 ) ;
       // Highlight the selected Identifier
       last.enableSelectionColor ( ) ;
-      this.aSTUI.getTreeModel ( ).nodeChanged (
+      this.outlineUI.getTreeModel ( ).nodeChanged (
           ( ( DefaultMutableTreeNode ) pTreePath.getLastPathComponent ( ) ) ) ;
       for ( int i = 0 ; i < list.size ( ) - 1 ; i ++ )
       {
@@ -144,7 +144,7 @@ public class ASTTreeSelectionListener implements TreeSelectionListener
             && ! ( secondlast.getExpression ( ) instanceof CurriedLet )
             && ! ( secondlast.getExpression ( ) instanceof Recursion ) )
         {
-          childIndex = ASTNode.NO_BINDING ;
+          childIndex = OutlineNode.NO_BINDING ;
         }
         PrettyAnnotation prettyAnnotation = list.get ( i ).getExpression ( )
             .toPrettyString ( ).getAnnotationForPrintable (
@@ -155,7 +155,7 @@ public class ASTTreeSelectionListener implements TreeSelectionListener
             prettyAnnotation.getStartOffset ( ) + last.getStartIndex ( ) ,
             prettyAnnotation.getStartOffset ( ) + last.getEndIndex ( ) ,
             childIndex ) ;
-        this.aSTUI.getTreeModel ( ).nodeChanged (
+        this.outlineUI.getTreeModel ( ).nodeChanged (
             ( ( DefaultMutableTreeNode ) pTreePath.getPath ( ) [ i ] ) ) ;
       }
     }
@@ -172,8 +172,8 @@ public class ASTTreeSelectionListener implements TreeSelectionListener
           list.get ( i ).setReplaceInThisNode ( true ) ;
         }
         list.get ( i ).updateCaption ( prettyAnnotation.getStartOffset ( ) ,
-            prettyAnnotation.getEndOffset ( ) , ASTNode.NO_BINDING ) ;
-        this.aSTUI.getTreeModel ( ).nodeChanged (
+            prettyAnnotation.getEndOffset ( ) , OutlineNode.NO_BINDING ) ;
+        this.outlineUI.getTreeModel ( ).nodeChanged (
             ( ( DefaultMutableTreeNode ) pTreePath.getPath ( ) [ i ] ) ) ;
       }
     }
@@ -189,7 +189,7 @@ public class ASTTreeSelectionListener implements TreeSelectionListener
   public void valueChanged ( TreeSelectionEvent pTreeSelectionEvent )
   {
     if ( pTreeSelectionEvent.getSource ( ).equals (
-        this.aSTUI.getJTreeAbstractSyntaxTree ( ).getSelectionModel ( ) ) )
+        this.outlineUI.getJTreeAbstractSyntaxTree ( ).getSelectionModel ( ) ) )
     {
       TreePath treePath = pTreeSelectionEvent.getOldLeadSelectionPath ( ) ;
       if ( ( treePath != null ) && ( treePath.getPathCount ( ) > 1 ) )

@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.graphics.abstractsyntaxtree.binding ;
+package de.unisiegen.tpml.graphics.outline.binding ;
 
 
 import java.util.ArrayList ;
@@ -21,7 +21,7 @@ import de.unisiegen.tpml.core.expressions.Recursion ;
  * @author Christian Fehler
  * @version $Rev$
  */
-public class ASTBinding
+public class OutlineBinding
 {
   /**
    * The list of lists of Identifiers, which are bounded by the given Identifier
@@ -53,7 +53,7 @@ public class ASTBinding
    * 
    * @param pHoleExpression
    */
-  public ASTBinding ( Expression pHoleExpression )
+  public OutlineBinding ( Expression pHoleExpression )
   {
     this.list = new ArrayList < ArrayList < Identifier >> ( ) ;
     this.identifierList = new ArrayList < String > ( ) ;

@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.graphics.abstractsyntaxtree.listener ;
+package de.unisiegen.tpml.graphics.outline.listener ;
 
 
 import java.awt.Container ;
@@ -7,28 +7,28 @@ import java.awt.event.MouseListener ;
 import javax.swing.JLabel ;
 import javax.swing.tree.DefaultMutableTreeNode ;
 import javax.swing.tree.TreePath ;
-import de.unisiegen.tpml.graphics.abstractsyntaxtree.ui.ASTUI;
 import de.unisiegen.tpml.graphics.bigstep.BigStepView ;
 import de.unisiegen.tpml.graphics.components.CompoundExpression ;
+import de.unisiegen.tpml.graphics.outline.ui.OutlineUI;
 import de.unisiegen.tpml.graphics.smallstep.SmallStepView ;
 import de.unisiegen.tpml.graphics.typechecker.TypeCheckerView ;
 
 
 /**
  * This class listens for mouse events. It handles mouse events on the
- * components AbstractSyntaxTree, SmallStepView, BigStepView and
- * TypeCheckerView. Sets a new Expression in the AbstractSyntaxTree. Views the
- * JPopupMenu in the AbstractSyntaxTree.
+ * components AbstractOutline, SmallStepView, BigStepView and
+ * TypeCheckerView. Sets a new Expression in the AbstractOutline. Views the
+ * JPopupMenu in the AbstractOutline.
  * 
  * @author Christian Fehler
  * @version $Rev$
  */
-public class ASTMouseListener implements MouseListener
+public class OutlineMouseListener implements MouseListener
 {
   /**
-   * The AbstractSyntaxTree UI.
+   * The AbstractOutline UI.
    */
-  private ASTUI aSTUI ;
+  private OutlineUI outlineUI ;
 
 
   /**
@@ -44,29 +44,29 @@ public class ASTMouseListener implements MouseListener
 
 
   /**
-   * Initializes the ASTMouseListener with the given ASTUI. This constructer is
-   * used, if the ASTMouseListener listens for mouse events on the AST.
+   * Initializes the OutlineMouseListener with the given OutlineUI. This constructer is
+   * used, if the OutlineMouseListener listens for mouse events on the AST.
    * 
-   * @param pASTUI The ASTUI.
+   * @param pASTUI The OutlineUI.
    */
-  public ASTMouseListener ( ASTUI pASTUI )
+  public OutlineMouseListener ( OutlineUI pASTUI )
   {
-    this.aSTUI = pASTUI ;
+    this.outlineUI = pASTUI ;
     this.compoundExpression = null ;
     this.view = null ;
   }
 
 
   /**
-   * Initializes the ASTMouseListener with the given ASTUI. This constructer is
-   * used, if the ASTMouseListener listens for mouse events on the
+   * Initializes the OutlineMouseListener with the given OutlineUI. This constructer is
+   * used, if the OutlineMouseListener listens for mouse events on the
    * SmallStepView, BigStepView or TypeCheckerView.
    * 
    * @param pCompoundExpression The CompoundExpression.
    */
-  public ASTMouseListener ( CompoundExpression < ? , ? > pCompoundExpression )
+  public OutlineMouseListener ( CompoundExpression < ? , ? > pCompoundExpression )
   {
-    this.aSTUI = null ;
+    this.outlineUI = null ;
     this.compoundExpression = pCompoundExpression ;
     this.view = null ;
   }
@@ -92,7 +92,7 @@ public class ASTMouseListener implements MouseListener
     final int count = lastNode.getChildCount ( ) ;
     for ( int i = 0 ; i < count ; i ++ )
     {
-      if ( ! this.aSTUI.getJTreeAbstractSyntaxTree ( ).isVisible (
+      if ( ! this.outlineUI.getJTreeAbstractSyntaxTree ( ).isVisible (
           pTreePath.pathByAddingChild ( lastNode.getChildAt ( i ) ) ) )
       {
         return false ;
@@ -106,32 +106,32 @@ public class ASTMouseListener implements MouseListener
 
 
   /**
-   * Handles mouse events on the components AbstractSyntaxTree, SmallStepView,
+   * Handles mouse events on the components AbstractOutline, SmallStepView,
    * BigStepView and TypeCheckerView. Sets a new Expression in the
-   * AbstractSyntaxTree. Views the JPopupMenu in the AbstractSyntaxTree.
+   * AbstractOutline. Views the JPopupMenu in the AbstractOutline.
    * 
    * @param pMouseEvent The mouse event.
    */
   private void handleMouseEvent ( MouseEvent pMouseEvent )
   {
-    // AbstractSyntaxTree
-    if ( ( this.aSTUI != null )
-        && ( pMouseEvent.getSource ( ).equals ( this.aSTUI
+    // AbstractOutline
+    if ( ( this.outlineUI != null )
+        && ( pMouseEvent.getSource ( ).equals ( this.outlineUI
             .getJTreeAbstractSyntaxTree ( ) ) ) )
     {
       if ( pMouseEvent.isPopupTrigger ( ) )
       {
         int x = pMouseEvent.getX ( ) ;
         int y = pMouseEvent.getY ( ) ;
-        TreePath treePath = this.aSTUI.getJTreeAbstractSyntaxTree ( )
+        TreePath treePath = this.outlineUI.getJTreeAbstractSyntaxTree ( )
             .getPathForLocation ( x , y ) ;
         if ( treePath == null )
         {
           return ;
         }
-        this.aSTUI.getJTreeAbstractSyntaxTree ( ).setSelectionPath ( treePath ) ;
+        this.outlineUI.getJTreeAbstractSyntaxTree ( ).setSelectionPath ( treePath ) ;
         setStatus ( ) ;
-        this.aSTUI.getJPopupMenu ( ).show ( pMouseEvent.getComponent ( ) , x ,
+        this.outlineUI.getJPopupMenu ( ).show ( pMouseEvent.getComponent ( ) , x ,
             y ) ;
       }
     }
@@ -240,11 +240,11 @@ public class ASTMouseListener implements MouseListener
 
   /**
    * Sets the status of the menu items in the popup menu in the
-   * AbstractSyntaxTree.
+   * AbstractOutline.
    */
   private void setStatus ( )
   {
-    TreePath treePath = this.aSTUI.getJTreeAbstractSyntaxTree ( )
+    TreePath treePath = this.outlineUI.getJTreeAbstractSyntaxTree ( )
         .getSelectionPath ( ) ;
     if ( treePath == null )
     {
@@ -253,43 +253,43 @@ public class ASTMouseListener implements MouseListener
     }
     DefaultMutableTreeNode selectedNode = ( DefaultMutableTreeNode ) treePath
         .getLastPathComponent ( ) ;
-    this.aSTUI.getJMenuItemExpand ( ).setEnabled ( true ) ;
-    this.aSTUI.getJMenuItemExpandAll ( ).setEnabled ( true ) ;
-    this.aSTUI.getJMenuItemCollapse ( ).setEnabled ( true ) ;
-    this.aSTUI.getJMenuItemCollapseAll ( ).setEnabled ( true ) ;
-    this.aSTUI.getJMenuItemClose ( ).setEnabled ( true ) ;
-    this.aSTUI.getJMenuItemCloseAll ( ).setEnabled ( true ) ;
-    boolean allVisible = allChildrenVisible ( this.aSTUI
+    this.outlineUI.getJMenuItemExpand ( ).setEnabled ( true ) ;
+    this.outlineUI.getJMenuItemExpandAll ( ).setEnabled ( true ) ;
+    this.outlineUI.getJMenuItemCollapse ( ).setEnabled ( true ) ;
+    this.outlineUI.getJMenuItemCollapseAll ( ).setEnabled ( true ) ;
+    this.outlineUI.getJMenuItemClose ( ).setEnabled ( true ) ;
+    this.outlineUI.getJMenuItemCloseAll ( ).setEnabled ( true ) ;
+    boolean allVisible = allChildrenVisible ( this.outlineUI
         .getJTreeAbstractSyntaxTree ( ).getPathForRow ( 0 ) ) ;
-    this.aSTUI.getJMenuItemExpandAll ( ).setEnabled ( ! allVisible ) ;
+    this.outlineUI.getJMenuItemExpandAll ( ).setEnabled ( ! allVisible ) ;
     // Selected node is not a leaf
     if ( selectedNode.getChildCount ( ) > 0 )
     {
       boolean allChildrenVisible = allChildrenVisible ( treePath ) ;
-      boolean selectedChildVisible = this.aSTUI.getJTreeAbstractSyntaxTree ( )
+      boolean selectedChildVisible = this.outlineUI.getJTreeAbstractSyntaxTree ( )
           .isVisible (
               treePath.pathByAddingChild ( selectedNode.getChildAt ( 0 ) ) ) ;
-      boolean rootChildVisible = this.aSTUI.getJTreeAbstractSyntaxTree ( )
+      boolean rootChildVisible = this.outlineUI.getJTreeAbstractSyntaxTree ( )
           .isVisible (
-              this.aSTUI.getJTreeAbstractSyntaxTree ( ).getPathForRow ( 0 )
+              this.outlineUI.getJTreeAbstractSyntaxTree ( ).getPathForRow ( 0 )
                   .pathByAddingChild ( selectedNode.getChildAt ( 0 ) ) ) ;
-      this.aSTUI.getJMenuItemExpand ( ).setEnabled ( ! allChildrenVisible ) ;
-      this.aSTUI.getJMenuItemCollapse ( ).setEnabled ( selectedChildVisible ) ;
-      this.aSTUI.getJMenuItemCollapseAll ( ).setEnabled ( rootChildVisible ) ;
-      this.aSTUI.getJMenuItemClose ( ).setEnabled ( selectedChildVisible ) ;
-      this.aSTUI.getJMenuItemCloseAll ( ).setEnabled ( rootChildVisible ) ;
+      this.outlineUI.getJMenuItemExpand ( ).setEnabled ( ! allChildrenVisible ) ;
+      this.outlineUI.getJMenuItemCollapse ( ).setEnabled ( selectedChildVisible ) ;
+      this.outlineUI.getJMenuItemCollapseAll ( ).setEnabled ( rootChildVisible ) ;
+      this.outlineUI.getJMenuItemClose ( ).setEnabled ( selectedChildVisible ) ;
+      this.outlineUI.getJMenuItemCloseAll ( ).setEnabled ( rootChildVisible ) ;
     }
     // Selected node is a leaf
     else
     {
-      this.aSTUI.getJMenuItemExpand ( ).setEnabled ( false ) ;
-      this.aSTUI.getJMenuItemCollapse ( ).setEnabled ( false ) ;
-      this.aSTUI.getJMenuItemClose ( ).setEnabled ( false ) ;
+      this.outlineUI.getJMenuItemExpand ( ).setEnabled ( false ) ;
+      this.outlineUI.getJMenuItemCollapse ( ).setEnabled ( false ) ;
+      this.outlineUI.getJMenuItemClose ( ).setEnabled ( false ) ;
       // If the root is the only node, disable items
-      DefaultMutableTreeNode root = ( DefaultMutableTreeNode ) this.aSTUI
+      DefaultMutableTreeNode root = ( DefaultMutableTreeNode ) this.outlineUI
           .getTreeModel ( ).getRoot ( ) ;
-      this.aSTUI.getJMenuItemCloseAll ( ).setEnabled ( ! root.isLeaf ( ) ) ;
-      this.aSTUI.getJMenuItemCollapseAll ( ).setEnabled ( ! root.isLeaf ( ) ) ;
+      this.outlineUI.getJMenuItemCloseAll ( ).setEnabled ( ! root.isLeaf ( ) ) ;
+      this.outlineUI.getJMenuItemCollapseAll ( ).setEnabled ( ! root.isLeaf ( ) ) ;
     }
   }
 }

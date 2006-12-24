@@ -28,7 +28,6 @@ import de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode;
 import de.unisiegen.tpml.core.types.MonoType;
 import de.unisiegen.tpml.core.types.Type;
 import de.unisiegen.tpml.graphics.Messages;
-import de.unisiegen.tpml.graphics.abstractsyntaxtree.listener.ASTMouseListener;
 import de.unisiegen.tpml.graphics.components.CompoundExpression;
 import de.unisiegen.tpml.graphics.components.MenuButton;
 import de.unisiegen.tpml.graphics.components.MenuButtonListener;
@@ -37,6 +36,7 @@ import de.unisiegen.tpml.graphics.components.MenuGuessItem;
 import de.unisiegen.tpml.graphics.components.MenuGuessTreeItem;
 import de.unisiegen.tpml.graphics.components.MenuRuleItem;
 import de.unisiegen.tpml.graphics.components.MenuTranslateItem;
+import de.unisiegen.tpml.graphics.outline.listener.OutlineMouseListener;
 import de.unisiegen.tpml.graphics.renderer.AbstractRenderer;
 import de.unisiegen.tpml.graphics.tree.TreeNodeComponent;
 
@@ -201,7 +201,7 @@ public class TypeCheckerNodeComponent extends JComponent  implements TreeNodeCom
 		add (this.expression);
     
     // CHANGE CHRISTIAN
-    this.indexLabel.addMouseListener ( new ASTMouseListener ( this.expression ) ) ;
+    this.indexLabel.addMouseListener ( new OutlineMouseListener ( this.expression ) ) ;
     // CHANGE CHRISTIAN END
     
 		changeNode ();

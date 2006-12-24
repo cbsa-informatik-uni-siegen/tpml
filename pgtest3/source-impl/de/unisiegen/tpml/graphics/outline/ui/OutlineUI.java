@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.graphics.abstractsyntaxtree.ui ;
+package de.unisiegen.tpml.graphics.outline.ui ;
 
 
 import java.awt.Color ;
@@ -23,21 +23,21 @@ import javax.swing.KeyStroke ;
 import javax.swing.border.TitledBorder ;
 import javax.swing.tree.DefaultMutableTreeNode ;
 import javax.swing.tree.DefaultTreeModel ;
-import de.unisiegen.tpml.graphics.abstractsyntaxtree.AbstractSyntaxTree ;
-import de.unisiegen.tpml.graphics.abstractsyntaxtree.listener.ASTActionListener ;
-import de.unisiegen.tpml.graphics.abstractsyntaxtree.listener.ASTItemListener ;
-import de.unisiegen.tpml.graphics.abstractsyntaxtree.listener.ASTKeyListener ;
-import de.unisiegen.tpml.graphics.abstractsyntaxtree.listener.ASTMouseListener ;
-import de.unisiegen.tpml.graphics.abstractsyntaxtree.listener.ASTTreeSelectionListener ;
+import de.unisiegen.tpml.graphics.outline.AbstractOutline;
+import de.unisiegen.tpml.graphics.outline.listener.OutlineActionListener;
+import de.unisiegen.tpml.graphics.outline.listener.OutlineItemListener;
+import de.unisiegen.tpml.graphics.outline.listener.OutlineKeyListener;
+import de.unisiegen.tpml.graphics.outline.listener.OutlineMouseListener;
+import de.unisiegen.tpml.graphics.outline.listener.OutlineTreeSelectionListener;
 
 
 /**
- * This class creates the GUI of the AbstractSyntaxTree.
+ * This class creates the GUI of the AbstractOutline.
  * 
  * @author Christian Fehler
  * @version $Rev$
  */
-public class ASTUI
+public class OutlineUI
 {
   /**
    * The GridBagConstraints.
@@ -140,7 +140,7 @@ public class ASTUI
    * 
    * @see #getASTTreeSelectionListener()
    */
-  private ASTTreeSelectionListener aSTTreeSelectionListener ;
+  private OutlineTreeSelectionListener outlineTreeSelectionListener ;
 
 
   /**
@@ -148,7 +148,7 @@ public class ASTUI
    * 
    * @see #getASTActionListener()
    */
-  private ASTActionListener aSTActionListener ;
+  private OutlineActionListener outlineActionListener ;
 
 
   /**
@@ -156,15 +156,15 @@ public class ASTUI
    * 
    * @see #getASTItemListener()
    */
-  private ASTItemListener aSTItemListener ;
+  private OutlineItemListener outlineItemListener ;
 
 
   /**
-   * The AbstractSyntaxTree.
+   * The AbstractOutline.
    * 
    * @see #getAbstractSyntaxTree()
    */
-  private AbstractSyntaxTree abstractSyntaxTree ;
+  private AbstractOutline abstractOutline ;
 
 
   /**
@@ -172,7 +172,7 @@ public class ASTUI
    * 
    * @see #getASTMouseListener()
    */
-  private ASTMouseListener aSTMouseListener ;
+  private OutlineMouseListener outlineMouseListener ;
 
 
   /**
@@ -298,23 +298,23 @@ public class ASTUI
 
 
   /**
-   * This constructor creates the GUI of the AbstractSyntaxTree.
+   * This constructor creates the GUI of the AbstractOutline.
    * 
-   * @param pAbstractSyntaxTree The AbstractSyntaxTree.
+   * @param pAbstractSyntaxTree The AbstractOutline.
    */
-  public ASTUI ( AbstractSyntaxTree pAbstractSyntaxTree )
+  public OutlineUI ( AbstractOutline pAbstractSyntaxTree )
   {
-    this.abstractSyntaxTree = pAbstractSyntaxTree ;
+    this.abstractOutline = pAbstractSyntaxTree ;
     // Insets
     this.insets = new Insets ( 0 , 0 , 0 , 0 ) ;
     // Preferences
     this.resourceBundle = ResourceBundle
-        .getBundle ( "de/unisiegen/tpml/graphics/abstractsyntaxtree/ast" ) ; //$NON-NLS-1$
+        .getBundle ( "de/unisiegen/tpml/graphics/outline/outline" ) ; //$NON-NLS-1$
     // Listener
-    this.aSTItemListener = new ASTItemListener ( this ) ;
-    this.aSTActionListener = new ASTActionListener ( this ) ;
-    this.aSTTreeSelectionListener = new ASTTreeSelectionListener ( this ) ;
-    this.aSTMouseListener = new ASTMouseListener ( this ) ;
+    this.outlineItemListener = new OutlineItemListener ( this ) ;
+    this.outlineActionListener = new OutlineActionListener ( this ) ;
+    this.outlineTreeSelectionListener = new OutlineTreeSelectionListener ( this ) ;
+    this.outlineMouseListener = new OutlineMouseListener ( this ) ;
     // PopupMenu
     createPopupMenu ( ) ;
     // Layout
@@ -334,10 +334,10 @@ public class ASTUI
         "selectionMnemonic" ).charAt ( 0 ) ) ; //$NON-NLS-1$
     this.jCheckBoxSelection.setToolTipText ( this.resourceBundle
         .getString ( "selectionToolTip" ) ) ; //$NON-NLS-1$
-    this.jCheckBoxSelection.setSelected ( this.abstractSyntaxTree
+    this.jCheckBoxSelection.setSelected ( this.abstractOutline
         .getASTPreferences ( ).isSelection ( ) ) ;
     this.jCheckBoxSelection.setFocusable ( false ) ;
-    this.jCheckBoxSelection.addItemListener ( this.aSTItemListener ) ;
+    this.jCheckBoxSelection.addItemListener ( this.outlineItemListener ) ;
     this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
     this.insets.set ( 0 , 4 , 0 , 4 ) ;
     this.gridBagConstraints.insets = this.insets ;
@@ -354,10 +354,10 @@ public class ASTUI
         "bindingMnemonic" ).charAt ( 0 ) ) ; //$NON-NLS-1$
     this.jCheckBoxBinding.setToolTipText ( this.resourceBundle
         .getString ( "bindingToolTip" ) ) ; //$NON-NLS-1$
-    this.jCheckBoxBinding.setSelected ( this.abstractSyntaxTree
+    this.jCheckBoxBinding.setSelected ( this.abstractOutline
         .getASTPreferences ( ).isBinding ( ) ) ;
     this.jCheckBoxBinding.setFocusable ( false ) ;
-    this.jCheckBoxBinding.addItemListener ( this.aSTItemListener ) ;
+    this.jCheckBoxBinding.addItemListener ( this.outlineItemListener ) ;
     this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
     this.insets.set ( 0 , 4 , 0 , 4 ) ;
     this.gridBagConstraints.insets = this.insets ;
@@ -374,10 +374,10 @@ public class ASTUI
         "unboundMnemonic" ).charAt ( 0 ) ) ; //$NON-NLS-1$
     this.jCheckBoxUnbound.setToolTipText ( this.resourceBundle
         .getString ( "unboundToolTip" ) ) ; //$NON-NLS-1$
-    this.jCheckBoxUnbound.setSelected ( this.abstractSyntaxTree
+    this.jCheckBoxUnbound.setSelected ( this.abstractOutline
         .getASTPreferences ( ).isUnbound ( ) ) ;
     this.jCheckBoxUnbound.setFocusable ( false ) ;
-    this.jCheckBoxUnbound.addItemListener ( this.aSTItemListener ) ;
+    this.jCheckBoxUnbound.addItemListener ( this.outlineItemListener ) ;
     this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
     this.insets.set ( 0 , 4 , 0 , 4 ) ;
     this.gridBagConstraints.insets = this.insets ;
@@ -394,10 +394,10 @@ public class ASTUI
         "replaceMnemonic" ).charAt ( 0 ) ) ; //$NON-NLS-1$
     this.jCheckBoxReplace.setToolTipText ( this.resourceBundle
         .getString ( "replaceToolTip" ) ) ; //$NON-NLS-1$
-    this.jCheckBoxReplace.setSelected ( this.abstractSyntaxTree
+    this.jCheckBoxReplace.setSelected ( this.abstractOutline
         .getASTPreferences ( ).isReplace ( ) ) ;
     this.jCheckBoxReplace.setFocusable ( false ) ;
-    this.jCheckBoxReplace.addItemListener ( this.aSTItemListener ) ;
+    this.jCheckBoxReplace.addItemListener ( this.outlineItemListener ) ;
     this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
     this.insets.set ( 0 , 4 , 0 , 4 ) ;
     this.gridBagConstraints.insets = this.insets ;
@@ -414,10 +414,10 @@ public class ASTUI
         "autoUpdateMnemonic" ).charAt ( 0 ) ) ; //$NON-NLS-1$
     this.jCheckBoxAutoUpdate.setToolTipText ( this.resourceBundle
         .getString ( "autoUpdateToolTip" ) ) ; //$NON-NLS-1$
-    this.jCheckBoxAutoUpdate.setSelected ( this.abstractSyntaxTree
+    this.jCheckBoxAutoUpdate.setSelected ( this.abstractOutline
         .getASTPreferences ( ).isAutoUpdate ( ) ) ;
     this.jCheckBoxAutoUpdate.setFocusable ( false ) ;
-    this.jCheckBoxAutoUpdate.addItemListener ( this.aSTItemListener ) ;
+    this.jCheckBoxAutoUpdate.addItemListener ( this.outlineItemListener ) ;
     this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
     this.insets.set ( 0 , 4 , 0 , 4 ) ;
     this.gridBagConstraints.insets = this.insets ;
@@ -432,18 +432,18 @@ public class ASTUI
     this.jPanelMain.setLayout ( this.gridBagLayout ) ;
     // TreeModel
     this.treeModel = new DefaultTreeModel ( this.rootNode ) ;
-    // Tree AbstractSyntaxTree
+    // Tree AbstractOutline
     this.jTreeAbstractSyntaxTree = new JTree ( this.treeModel ) ;
     /*
      * ToolTipManager.sharedInstance ( ).registerComponent (
      * this.jTreeAbstractSyntaxTree ) ;
      */
-    this.jTreeAbstractSyntaxTree.setCellRenderer ( new ASTCellRenderer ( ) ) ;
+    this.jTreeAbstractSyntaxTree.setCellRenderer ( new OutlineCellRenderer ( ) ) ;
     this.jTreeAbstractSyntaxTree.getSelectionModel ( )
-        .addTreeSelectionListener ( this.aSTTreeSelectionListener ) ;
+        .addTreeSelectionListener ( this.outlineTreeSelectionListener ) ;
     this.jTreeAbstractSyntaxTree.setRowHeight ( 20 ) ;
-    this.jTreeAbstractSyntaxTree.addMouseListener ( this.aSTMouseListener ) ;
-    this.jTreeAbstractSyntaxTree.addKeyListener ( new ASTKeyListener ( this ) ) ;
+    this.jTreeAbstractSyntaxTree.addMouseListener ( this.outlineMouseListener ) ;
+    this.jTreeAbstractSyntaxTree.addKeyListener ( new OutlineKeyListener ( this ) ) ;
     // ScrollPane AbstractSyntax
     this.jScrollPaneAbstractSyntaxTree = new JScrollPane (
         this.jTreeAbstractSyntaxTree ) ;
@@ -469,7 +469,7 @@ public class ASTUI
 
 
   /**
-   * Creates the popup menu of the AbstractSyntaxTree.
+   * Creates the popup menu of the AbstractOutline.
    */
   private void createPopupMenu ( )
   {
@@ -485,7 +485,7 @@ public class ASTUI
     this.jMenuItemExpand.setIcon ( new ImageIcon ( getClass ( ).getResource (
         "/de/unisiegen/tpml/ui/icons/empty16.gif" ) ) ) ; //$NON-NLS-1$
     this.jMenuItemExpand.setActionCommand ( "expand" ) ; //$NON-NLS-1$
-    this.jMenuItemExpand.addActionListener ( this.aSTActionListener ) ;
+    this.jMenuItemExpand.addActionListener ( this.outlineActionListener ) ;
     this.jPopupMenu.add ( this.jMenuItemExpand ) ;
     // MenuItem ExpandAll
     this.jMenuItemExpandAll = new JMenuItem ( this.resourceBundle
@@ -497,7 +497,7 @@ public class ASTUI
     this.jMenuItemExpandAll.setIcon ( new ImageIcon ( getClass ( ).getResource (
         "/de/unisiegen/tpml/ui/icons/empty16.gif" ) ) ) ; //$NON-NLS-1$
     this.jMenuItemExpandAll.setActionCommand ( "expandAll" ) ; //$NON-NLS-1$
-    this.jMenuItemExpandAll.addActionListener ( this.aSTActionListener ) ;
+    this.jMenuItemExpandAll.addActionListener ( this.outlineActionListener ) ;
     this.jPopupMenu.add ( this.jMenuItemExpandAll ) ;
     // Separator
     this.jPopupMenu.addSeparator ( ) ;
@@ -511,7 +511,7 @@ public class ASTUI
     this.jMenuItemCollapse.setIcon ( new ImageIcon ( getClass ( ).getResource (
         "/de/unisiegen/tpml/ui/icons/empty16.gif" ) ) ) ; //$NON-NLS-1$
     this.jMenuItemCollapse.setActionCommand ( "collapse" ) ; //$NON-NLS-1$
-    this.jMenuItemCollapse.addActionListener ( this.aSTActionListener ) ;
+    this.jMenuItemCollapse.addActionListener ( this.outlineActionListener ) ;
     this.jPopupMenu.add ( this.jMenuItemCollapse ) ;
     // MenuItem CollapseAll
     this.jMenuItemCollapseAll = new JMenuItem ( this.resourceBundle
@@ -523,7 +523,7 @@ public class ASTUI
     this.jMenuItemCollapseAll.setIcon ( new ImageIcon ( getClass ( )
         .getResource ( "/de/unisiegen/tpml/ui/icons/empty16.gif" ) ) ) ; //$NON-NLS-1$
     this.jMenuItemCollapseAll.setActionCommand ( "collapseAll" ) ; //$NON-NLS-1$
-    this.jMenuItemCollapseAll.addActionListener ( this.aSTActionListener ) ;
+    this.jMenuItemCollapseAll.addActionListener ( this.outlineActionListener ) ;
     this.jPopupMenu.add ( this.jMenuItemCollapseAll ) ;
     // Separator
     this.jPopupMenu.addSeparator ( ) ;
@@ -537,7 +537,7 @@ public class ASTUI
     this.jMenuItemClose.setIcon ( new ImageIcon ( getClass ( ).getResource (
         "/de/unisiegen/tpml/ui/icons/empty16.gif" ) ) ) ; //$NON-NLS-1$
     this.jMenuItemClose.setActionCommand ( "close" ) ; //$NON-NLS-1$
-    this.jMenuItemClose.addActionListener ( this.aSTActionListener ) ;
+    this.jMenuItemClose.addActionListener ( this.outlineActionListener ) ;
     this.jPopupMenu.add ( this.jMenuItemClose ) ;
     // MenuItem CloseAll
     this.jMenuItemCloseAll = new JMenuItem ( this.resourceBundle
@@ -549,7 +549,7 @@ public class ASTUI
     this.jMenuItemCloseAll.setIcon ( new ImageIcon ( getClass ( ).getResource (
         "/de/unisiegen/tpml/ui/icons/empty16.gif" ) ) ) ; //$NON-NLS-1$
     this.jMenuItemCloseAll.setActionCommand ( "closeAll" ) ; //$NON-NLS-1$
-    this.jMenuItemCloseAll.addActionListener ( this.aSTActionListener ) ;
+    this.jMenuItemCloseAll.addActionListener ( this.outlineActionListener ) ;
     this.jPopupMenu.add ( this.jMenuItemCloseAll ) ;
     // Separator
     this.jPopupMenu.addSeparator ( ) ;
@@ -563,7 +563,7 @@ public class ASTUI
     this.jMenuItemCopy.setIcon ( new ImageIcon ( getClass ( ).getResource (
         "/de/unisiegen/tpml/ui/icons/copy16.gif" ) ) ) ; //$NON-NLS-1$
     this.jMenuItemCopy.setActionCommand ( "copy" ) ; //$NON-NLS-1$
-    this.jMenuItemCopy.addActionListener ( this.aSTActionListener ) ;
+    this.jMenuItemCopy.addActionListener ( this.outlineActionListener ) ;
     this.jMenuItemCopy.setAccelerator ( KeyStroke.getKeyStroke ( KeyEvent.VK_C ,
         InputEvent.CTRL_MASK ) ) ;
     this.jPopupMenu.add ( this.jMenuItemCopy ) ;
@@ -577,7 +577,7 @@ public class ASTUI
     this.jMenuPreferences.setIcon ( new ImageIcon ( getClass ( ).getResource (
         "/de/unisiegen/tpml/ui/icons/empty16.gif" ) ) ) ; //$NON-NLS-1$  
     this.jMenuPreferences.setActionCommand ( "preferences" ) ; //$NON-NLS-1$
-    this.jMenuPreferences.addActionListener ( this.aSTActionListener ) ;
+    this.jMenuPreferences.addActionListener ( this.outlineActionListener ) ;
     this.jPopupMenu.add ( this.jMenuPreferences ) ;
     // MenuItem Selection
     this.jMenuItemSelection = new JCheckBoxMenuItem ( this.resourceBundle
@@ -587,8 +587,8 @@ public class ASTUI
     this.jMenuItemSelection.setToolTipText ( this.resourceBundle
         .getString ( "selectionToolTip" ) ) ; //$NON-NLS-1$
     this.jMenuItemSelection.setActionCommand ( "selection" ) ; //$NON-NLS-1$
-    this.jMenuItemSelection.addActionListener ( this.aSTActionListener ) ;
-    this.jMenuItemSelection.setSelected ( this.abstractSyntaxTree
+    this.jMenuItemSelection.addActionListener ( this.outlineActionListener ) ;
+    this.jMenuItemSelection.setSelected ( this.abstractOutline
         .getASTPreferences ( ).isSelection ( ) ) ;
     this.jMenuPreferences.add ( this.jMenuItemSelection ) ;
     // MenuItem Binding
@@ -599,8 +599,8 @@ public class ASTUI
     this.jMenuItemBinding.setToolTipText ( this.resourceBundle
         .getString ( "bindingToolTip" ) ) ; //$NON-NLS-1$
     this.jMenuItemBinding.setActionCommand ( "binding" ) ; //$NON-NLS-1$
-    this.jMenuItemBinding.addActionListener ( this.aSTActionListener ) ;
-    this.jMenuItemBinding.setSelected ( this.abstractSyntaxTree
+    this.jMenuItemBinding.addActionListener ( this.outlineActionListener ) ;
+    this.jMenuItemBinding.setSelected ( this.abstractOutline
         .getASTPreferences ( ).isBinding ( ) ) ;
     this.jMenuPreferences.add ( this.jMenuItemBinding ) ;
     // MenuItem Unbound
@@ -611,8 +611,8 @@ public class ASTUI
     this.jMenuItemUnbound.setToolTipText ( this.resourceBundle
         .getString ( "unboundToolTip" ) ) ; //$NON-NLS-1$
     this.jMenuItemUnbound.setActionCommand ( "unbound" ) ; //$NON-NLS-1$
-    this.jMenuItemUnbound.addActionListener ( this.aSTActionListener ) ;
-    this.jMenuItemUnbound.setSelected ( this.abstractSyntaxTree
+    this.jMenuItemUnbound.addActionListener ( this.outlineActionListener ) ;
+    this.jMenuItemUnbound.setSelected ( this.abstractOutline
         .getASTPreferences ( ).isUnbound ( ) ) ;
     this.jMenuPreferences.add ( this.jMenuItemUnbound ) ;
     // MenuItem Replace
@@ -623,8 +623,8 @@ public class ASTUI
     this.jMenuItemReplace.setToolTipText ( this.resourceBundle
         .getString ( "replaceToolTip" ) ) ; //$NON-NLS-1$
     this.jMenuItemReplace.setActionCommand ( "replace" ) ; //$NON-NLS-1$
-    this.jMenuItemReplace.addActionListener ( this.aSTActionListener ) ;
-    this.jMenuItemReplace.setSelected ( this.abstractSyntaxTree
+    this.jMenuItemReplace.addActionListener ( this.outlineActionListener ) ;
+    this.jMenuItemReplace.setSelected ( this.abstractOutline
         .getASTPreferences ( ).isReplace ( ) ) ;
     this.jMenuPreferences.add ( this.jMenuItemReplace ) ;
     // MenuItem AutoUpdate
@@ -635,70 +635,70 @@ public class ASTUI
     this.jMenuItemAutoUpdate.setToolTipText ( this.resourceBundle
         .getString ( "autoUpdateToolTip" ) ) ; //$NON-NLS-1$
     this.jMenuItemAutoUpdate.setActionCommand ( "autoUpdate" ) ; //$NON-NLS-1$
-    this.jMenuItemAutoUpdate.addActionListener ( this.aSTActionListener ) ;
-    this.jMenuItemAutoUpdate.setSelected ( this.abstractSyntaxTree
+    this.jMenuItemAutoUpdate.addActionListener ( this.outlineActionListener ) ;
+    this.jMenuItemAutoUpdate.setSelected ( this.abstractOutline
         .getASTPreferences ( ).isAutoUpdate ( ) ) ;
     this.jMenuPreferences.add ( this.jMenuItemAutoUpdate ) ;
   }
 
 
   /**
-   * Returns the abstractSyntaxTree.
+   * Returns the abstractOutline.
    * 
-   * @return The abstractSyntaxTree.
-   * @see #abstractSyntaxTree
+   * @return The abstractOutline.
+   * @see #abstractOutline
    */
-  public AbstractSyntaxTree getAbstractSyntaxTree ( )
+  public AbstractOutline getAbstractSyntaxTree ( )
   {
-    return this.abstractSyntaxTree ;
+    return this.abstractOutline ;
   }
 
 
   /**
-   * Returns the aSTActionListener.
+   * Returns the outlineActionListener.
    * 
-   * @return The aSTActionListener.
-   * @see #aSTActionListener
+   * @return The outlineActionListener.
+   * @see #outlineActionListener
    */
-  public ASTActionListener getASTActionListener ( )
+  public OutlineActionListener getASTActionListener ( )
   {
-    return this.aSTActionListener ;
+    return this.outlineActionListener ;
   }
 
 
   /**
-   * Returns the aSTItemListener.
+   * Returns the outlineItemListener.
    * 
-   * @return The aSTItemListener.
-   * @see #aSTItemListener
+   * @return The outlineItemListener.
+   * @see #outlineItemListener
    */
-  public ASTItemListener getASTItemListener ( )
+  public OutlineItemListener getASTItemListener ( )
   {
-    return this.aSTItemListener ;
+    return this.outlineItemListener ;
   }
 
 
   /**
-   * Returns the aSTMouseListener.
+   * Returns the outlineMouseListener.
    * 
-   * @return The aSTMouseListener.
-   * @see #aSTMouseListener
+   * @return The outlineMouseListener.
+   * @see #outlineMouseListener
    */
-  public ASTMouseListener getASTMouseListener ( )
+  public OutlineMouseListener getASTMouseListener ( )
   {
-    return this.aSTMouseListener ;
+    return this.outlineMouseListener ;
   }
 
 
   /**
-   * Returns the aSTTreeSelectionListener.
+   * Returns the outlineTreeSelectionListener.
    * 
-   * @return The aSTTreeSelectionListener.
-   * @see #aSTTreeSelectionListener
+   * @return The outlineTreeSelectionListener.
+   * @see #outlineTreeSelectionListener
    */
-  public ASTTreeSelectionListener getASTTreeSelectionListener ( )
+  public OutlineTreeSelectionListener getASTTreeSelectionListener ( )
   {
-    return this.aSTTreeSelectionListener ;
+    return this.outlineTreeSelectionListener ;
   }
 
 

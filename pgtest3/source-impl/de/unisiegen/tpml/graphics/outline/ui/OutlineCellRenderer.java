@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.graphics.abstractsyntaxtree.ui ;
+package de.unisiegen.tpml.graphics.outline.ui ;
 
 
 import java.awt.Color ;
@@ -15,7 +15,7 @@ import javax.swing.tree.DefaultTreeCellRenderer ;
  * @author Christian Fehler
  * @version $Rev$
  */
-public class ASTCellRenderer extends DefaultTreeCellRenderer
+public class OutlineCellRenderer extends DefaultTreeCellRenderer
 {
   /**
    * TODO
@@ -26,7 +26,7 @@ public class ASTCellRenderer extends DefaultTreeCellRenderer
   /**
    * TODO
    */
-  public ASTCellRenderer ( )
+  public OutlineCellRenderer ( )
   {
     this.setIcon ( null ) ;
     this.setLeafIcon ( null ) ;

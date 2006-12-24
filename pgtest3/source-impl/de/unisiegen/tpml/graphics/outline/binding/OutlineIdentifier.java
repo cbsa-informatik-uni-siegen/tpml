@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.graphics.abstractsyntaxtree.binding ;
+package de.unisiegen.tpml.graphics.outline.binding ;
 
 
 import java.util.ArrayList ;
@@ -9,26 +9,26 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStyle ;
 
 
 /**
- * This class has a static method, which returns a list of ASTPair, in which the
+ * This class has a static method, which returns a list of OutlinePair, in which the
  * start and the end index of the Identifiers is saved.
  * 
  * @author Christian Fehler
  * @version $Rev$
  */
-public abstract class ASTIdentifier
+public abstract class OutlineIdentifier
 {
   /**
-   * Returns a list of ASTPair, in which the start and the end index of the
+   * Returns a list of OutlinePair, in which the start and the end index of the
    * Identifiers is saved.
    * 
    * @param pExpression The Expression in which the Identifiers should be
    *          searched for.
-   * @return A list of ASTPair, in which the start and the end index of the
+   * @return A list of OutlinePair, in which the start and the end index of the
    *         Identifiers is saved.
    */
-  public final static ArrayList < ASTPair > getIndex ( Expression pExpression )
+  public final static ArrayList < OutlinePair > getIndex ( Expression pExpression )
   {
-    ArrayList < ASTPair > list = new ArrayList < ASTPair > ( ) ;
+    ArrayList < OutlinePair > list = new ArrayList < OutlinePair > ( ) ;
     PrettyCharIterator prettyCharIterator = pExpression.toPrettyString ( )
         .toCharacterIterator ( ) ;
     int beginChild = pExpression.toPrettyString ( ).toString ( ).length ( ) ;
@@ -52,7 +52,7 @@ public abstract class ASTIdentifier
           prettyCharIterator.next ( ) ;
         }
         end = charIndex - 1 ;
-        list.add ( new ASTPair ( start , end ) ) ;
+        list.add ( new OutlinePair ( start , end ) ) ;
       }
       charIndex ++ ;
       prettyCharIterator.next ( ) ;

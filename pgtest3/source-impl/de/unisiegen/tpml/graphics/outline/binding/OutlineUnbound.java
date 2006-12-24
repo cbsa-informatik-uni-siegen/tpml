@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.graphics.abstractsyntaxtree.binding ;
+package de.unisiegen.tpml.graphics.outline.binding ;
 
 
 import java.util.ArrayList ;
@@ -21,7 +21,7 @@ import de.unisiegen.tpml.core.expressions.Recursion ;
  * @author Christian Fehler
  * @version $Rev$
  */
-public class ASTUnbound
+public class OutlineUnbound
 {
   /**
    * The list of unbound Identifiers in the Expression.
@@ -34,7 +34,7 @@ public class ASTUnbound
    * 
    * @param pExpression The input Expression.
    */
-  public ASTUnbound ( Expression pExpression )
+  public OutlineUnbound ( Expression pExpression )
   {
     this.unboundList = new ArrayList < Identifier > ( ) ;
     ArrayList < String > bounded = new ArrayList < String > ( ) ;

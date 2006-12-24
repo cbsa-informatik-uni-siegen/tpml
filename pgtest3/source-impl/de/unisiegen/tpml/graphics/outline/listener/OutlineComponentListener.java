@@ -1,20 +1,20 @@
-package de.unisiegen.tpml.graphics.abstractsyntaxtree.listener ;
+package de.unisiegen.tpml.graphics.outline.listener ;
 
 
 import java.awt.event.ComponentEvent ;
 import java.awt.event.ComponentListener ;
 import javax.swing.JSplitPane ;
-import de.unisiegen.tpml.graphics.abstractsyntaxtree.AbstractSyntaxTree ;
+import de.unisiegen.tpml.graphics.outline.Outline;
 
 
 /**
  * This class listens for component events. It saves the divider location in the
- * ASTPreferences when the component was resized.
+ * OutlinePreferences when the component was resized.
  * 
  * @author Christian Fehler
  * @version $Rev$
  */
-public class ASTComponentListener implements ComponentListener
+public class OutlineComponentListener implements ComponentListener
 {
   /**
    * The JSplitPane.
@@ -23,19 +23,19 @@ public class ASTComponentListener implements ComponentListener
 
 
   /**
-   * The AbstractSyntaxTree.
+   * The AbstractOutline.
    */
-  private AbstractSyntaxTree abstractSyntaxTree ;
+  private Outline abstractSyntaxTree ;
 
 
   /**
-   * Initializes the ASTComponentListener.
+   * Initializes the OutlineComponentListener.
    * 
    * @param pJSplitPane The JSplitPane.
-   * @param pAbstractSyntaxTree The AbstractSyntaxTree.
+   * @param pAbstractSyntaxTree The AbstractOutline.
    */
-  public ASTComponentListener ( JSplitPane pJSplitPane ,
-      AbstractSyntaxTree pAbstractSyntaxTree )
+  public OutlineComponentListener ( JSplitPane pJSplitPane ,
+      Outline pAbstractSyntaxTree )
   {
     this.jSplitPane = pJSplitPane ;
     this.abstractSyntaxTree = pAbstractSyntaxTree ;

@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.graphics.abstractsyntaxtree.listener ;
+package de.unisiegen.tpml.graphics.outline.listener ;
 
 
 import javax.swing.event.TreeModelEvent ;
@@ -7,21 +7,21 @@ import de.unisiegen.tpml.core.ExpressionProofModel ;
 import de.unisiegen.tpml.core.bigstep.BigStepProofModel ;
 import de.unisiegen.tpml.core.smallstep.SmallStepProofModel ;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel ;
-import de.unisiegen.tpml.graphics.abstractsyntaxtree.AbstractSyntaxTree;
+import de.unisiegen.tpml.graphics.outline.Outline;
 
 
 /**
- * Sets the new Expression in the AbstractSyntaxTree, if a node changed.
+ * Sets the new Expression in the AbstractOutline, if a node changed.
  * 
  * @author Christian Fehler
  * @version $Rev$
  */
-public class ASTTreeModelListener implements TreeModelListener
+public class OutlineTreeModelListener implements TreeModelListener
 {
   /**
-   * The AbstractSyntaxTree.
+   * The AbstractOutline.
    */
-  public AbstractSyntaxTree abstractSyntaxTree ;
+  public Outline abstractSyntaxTree ;
 
 
   /**
@@ -31,13 +31,13 @@ public class ASTTreeModelListener implements TreeModelListener
 
 
   /**
-   * Initializes the ASTTreeModelListener with the given AbstractSyntaxTree and
+   * Initializes the OutlineTreeModelListener with the given AbstractOutline and
    * the ExpressionProofModel.
    * 
-   * @param pAbstractSyntaxTree The AbstractSyntaxTree.
+   * @param pAbstractSyntaxTree The AbstractOutline.
    * @param pExpressionProofModel The ExpressionProofModel.
    */
-  public ASTTreeModelListener ( AbstractSyntaxTree pAbstractSyntaxTree ,
+  public OutlineTreeModelListener ( Outline pAbstractSyntaxTree ,
       ExpressionProofModel pExpressionProofModel )
   {
     this.abstractSyntaxTree = pAbstractSyntaxTree ;
@@ -46,7 +46,7 @@ public class ASTTreeModelListener implements TreeModelListener
 
 
   /**
-   * Sets the new Expression in the AbstractSyntaxTree, if a node changed.
+   * Sets the new Expression in the AbstractOutline, if a node changed.
    * 
    * @param pTreeModelEvent The tree model event.
    * @see javax.swing.event.TreeModelListener#treeNodesChanged(javax.swing.event.TreeModelEvent)

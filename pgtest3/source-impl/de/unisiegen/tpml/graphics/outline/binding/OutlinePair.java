@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.graphics.abstractsyntaxtree.binding ;
+package de.unisiegen.tpml.graphics.outline.binding ;
 
 
 /**
@@ -7,7 +7,7 @@ package de.unisiegen.tpml.graphics.abstractsyntaxtree.binding ;
  * @author Christian Fehler
  * @version $Rev$
  */
-public class ASTPair
+public class OutlinePair
 {
   /**
    * The start index.
@@ -31,7 +31,7 @@ public class ASTPair
    * @param pStart
    * @param pEnd
    */
-  public ASTPair ( int pStart , int pEnd )
+  public OutlinePair ( int pStart , int pEnd )
   {
     this.start = pStart ;
     this.end = pEnd ;

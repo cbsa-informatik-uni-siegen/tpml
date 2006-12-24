@@ -13,10 +13,11 @@ import javax.swing.JSplitPane ;
 import de.unisiegen.tpml.core.ProofGuessException ;
 import de.unisiegen.tpml.core.smallstep.SmallStepProofModel ;
 import de.unisiegen.tpml.graphics.AbstractProofView ;
-import de.unisiegen.tpml.graphics.abstractsyntaxtree.AbstractSyntaxTree;
-import de.unisiegen.tpml.graphics.abstractsyntaxtree.listener.ASTComponentListener;
-import de.unisiegen.tpml.graphics.abstractsyntaxtree.listener.ASTPropertyChangeListener;
-import de.unisiegen.tpml.graphics.abstractsyntaxtree.listener.ASTTreeModelListener;
+import de.unisiegen.tpml.graphics.outline.AbstractOutline ;
+import de.unisiegen.tpml.graphics.outline.Outline ;
+import de.unisiegen.tpml.graphics.outline.listener.OutlineComponentListener ;
+import de.unisiegen.tpml.graphics.outline.listener.OutlinePropertyChangeListener ;
+import de.unisiegen.tpml.graphics.outline.listener.OutlineTreeModelListener ;
 
 
 /**
@@ -65,7 +66,7 @@ public class SmallStepView extends AbstractProofView
   /**
    * TODO
    */
-  private AbstractSyntaxTree abstractSyntaxTree ;
+  private Outline abstractSyntaxTree ;
 
 
   //
@@ -82,12 +83,12 @@ public class SmallStepView extends AbstractProofView
   {
     if ( model == null )
     {
-      throw new NullPointerException ( "model is null" ) ;
+      throw new NullPointerException ( "model is null" ) ; //$NON-NLS-1$
     }
-    this.abstractSyntaxTree = new AbstractSyntaxTree ( ) ;
-    this.abstractSyntaxTree.loadExpression ( model.getRoot ( )
-        .getLastLeaf ( ).getExpression ( ) , "first_smallstep" ) ;
-    model.addTreeModelListener ( new ASTTreeModelListener (
+    this.abstractSyntaxTree = new AbstractOutline ( ) ;
+    this.abstractSyntaxTree.loadExpression ( model.getRoot ( ).getLastLeaf ( )
+        .getExpression ( ) , "first_smallstep" ) ; //$NON-NLS-1$
+    model.addTreeModelListener ( new OutlineTreeModelListener (
         this.abstractSyntaxTree , model ) ) ;
     GridBagConstraints gridBagConstraints = new GridBagConstraints ( ) ;
     this.jSplitPane = new JSplitPane ( JSplitPane.VERTICAL_SPLIT ) ;
@@ -120,9 +121,9 @@ public class SmallStepView extends AbstractProofView
     gridBagConstraints.weightx = 10 ;
     gridBagConstraints.weighty = 10 ;
     this.add ( this.jSplitPane , gridBagConstraints ) ;
-    this.addPropertyChangeListener ( new ASTPropertyChangeListener (
+    this.addPropertyChangeListener ( new OutlinePropertyChangeListener (
         this.jSplitPane , this.abstractSyntaxTree ) ) ;
-    jMainPanel.addComponentListener ( new ASTComponentListener (
+    jMainPanel.addComponentListener ( new OutlineComponentListener (
         this.jSplitPane , this.abstractSyntaxTree ) ) ;
   }
 
@@ -132,7 +133,7 @@ public class SmallStepView extends AbstractProofView
    * 
    * @return TODO
    */
-  public AbstractSyntaxTree getAbstractSyntaxTree ( )
+  public Outline getAbstractSyntaxTree ( )
   {
     return this.abstractSyntaxTree ;
   }

@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.graphics.abstractsyntaxtree ;
+package de.unisiegen.tpml.graphics.outline ;
 
 
 import java.lang.reflect.Method ;
@@ -19,24 +19,24 @@ import de.unisiegen.tpml.core.expressions.Location ;
 import de.unisiegen.tpml.core.expressions.MultiLambda ;
 import de.unisiegen.tpml.core.expressions.MultiLet ;
 import de.unisiegen.tpml.core.expressions.Recursion ;
-import de.unisiegen.tpml.graphics.abstractsyntaxtree.binding.ASTBinding ;
-import de.unisiegen.tpml.graphics.abstractsyntaxtree.binding.ASTIdentifier ;
-import de.unisiegen.tpml.graphics.abstractsyntaxtree.binding.ASTPair ;
-import de.unisiegen.tpml.graphics.abstractsyntaxtree.binding.ASTUnbound ;
-import de.unisiegen.tpml.graphics.abstractsyntaxtree.ui.ASTDisplayTree ;
-import de.unisiegen.tpml.graphics.abstractsyntaxtree.ui.ASTTimerTask ;
-import de.unisiegen.tpml.graphics.abstractsyntaxtree.ui.ASTUI ;
-import de.unisiegen.tpml.graphics.abstractsyntaxtree.util.ASTPreferences ;
+import de.unisiegen.tpml.graphics.outline.binding.OutlineBinding;
+import de.unisiegen.tpml.graphics.outline.binding.OutlineIdentifier;
+import de.unisiegen.tpml.graphics.outline.binding.OutlinePair;
+import de.unisiegen.tpml.graphics.outline.binding.OutlineUnbound;
+import de.unisiegen.tpml.graphics.outline.ui.OutlineDisplayTree;
+import de.unisiegen.tpml.graphics.outline.ui.OutlineTimerTask;
+import de.unisiegen.tpml.graphics.outline.ui.OutlineUI;
+import de.unisiegen.tpml.graphics.outline.util.OutlinePreferences;
 
 
 /**
- * This class is the main class of the AbstractSyntaxTree. It loads the
+ * This class is the main class of the AbstractOutline. It loads the
  * preferences, creates the GUI and loads new Expressions.
  * 
  * @author Christian Fehler
  * @version $Rev$
  */
-public class AbstractSyntaxTree
+public class AbstractOutline implements Outline
 {
   /**
    * String, between the description of the parent node, like e1, and the
@@ -64,19 +64,19 @@ public class AbstractSyntaxTree
 
 
   /**
-   * The AbstractSyntaxTree UI.
+   * The AbstractOutline UI.
    * 
    * @see #getASTUI()
    */
-  private ASTUI aSTUI ;
+  private OutlineUI outlineUI ;
 
 
   /**
-   * The AbstractSyntaxTree Preferences.
+   * The AbstractOutline Preferences.
    * 
    * @see #getASTPreferences()
    */
-  private ASTPreferences aSTPreferences ;
+  private OutlinePreferences outlinePreferences ;
 
 
   /**
@@ -86,10 +86,10 @@ public class AbstractSyntaxTree
 
 
   /**
-   * The aSTUnbound, in which the unbound Identifiers in the given Expression
+   * The outlineUnbound, in which the unbound Identifiers in the given Expression
    * are saved.
    */
-  private ASTUnbound aSTUnbound ;
+  private OutlineUnbound outlineUnbound ;
 
 
   /**
@@ -99,13 +99,13 @@ public class AbstractSyntaxTree
 
 
   /**
-   * Initilizes the preferences and the AbstractSyntaxTree GUI.
+   * Initilizes the preferences and the AbstractOutline GUI.
    */
-  public AbstractSyntaxTree ( )
+  public AbstractOutline ( )
   {
     this.oldExpression = null ;
-    this.aSTPreferences = new ASTPreferences ( ) ;
-    this.aSTUI = new ASTUI ( this ) ;
+    this.outlinePreferences = new OutlinePreferences ( ) ;
+    this.outlineUI = new OutlineUI ( this ) ;
   }
 
 
@@ -124,12 +124,12 @@ public class AbstractSyntaxTree
     int childIndex = minimumChildIndex ( pExpression ) ;
     Expression child ;
     DefaultMutableTreeNode treeNode ;
-    ASTNode node ;
+    OutlineNode node ;
     while ( children.hasMoreElements ( ) )
     {
       child = children.nextElement ( ) ;
       treeNode = expression ( child ) ;
-      node = ( ASTNode ) treeNode.getUserObject ( ) ;
+      node = ( OutlineNode ) treeNode.getUserObject ( ) ;
       if ( childIndex == ONLY_ONE_CHILD )
       {
         node.appendDescription ( EXPRESSION + BETWEEN ) ;
@@ -154,7 +154,7 @@ public class AbstractSyntaxTree
   private DefaultMutableTreeNode curriedLet ( CurriedLet pCurriedLet )
   {
     String [ ] idList = pCurriedLet.getIdentifiers ( ) ;
-    ASTBinding aSTBinding = new ASTBinding ( pCurriedLet ) ;
+    OutlineBinding aSTBinding = new OutlineBinding ( pCurriedLet ) ;
     aSTBinding.add ( pCurriedLet.getE2 ( ) , pCurriedLet.getIdentifiers ( 0 ) ) ;
     for ( int i = 1 ; i < pCurriedLet.getIdentifiers ( ).length ; i ++ )
     {
@@ -162,17 +162,17 @@ public class AbstractSyntaxTree
           .add ( pCurriedLet.getE1 ( ) , pCurriedLet.getIdentifiers ( i ) ) ;
     }
     aSTBinding.find ( ) ;
-    DefaultMutableTreeNode node = new DefaultMutableTreeNode ( new ASTNode (
-        pCurriedLet , this.aSTUnbound ) ) ;
-    ArrayList < ASTPair > index = ASTIdentifier.getIndex ( pCurriedLet ) ;
-    ASTPair aSTPair ;
+    DefaultMutableTreeNode node = new DefaultMutableTreeNode ( new OutlineNode (
+        pCurriedLet , this.outlineUnbound ) ) ;
+    ArrayList < OutlinePair > index = OutlineIdentifier.getIndex ( pCurriedLet ) ;
+    OutlinePair outlinePair ;
     final int length = idList.length ;
     for ( int i = 0 ; i < length ; i ++ )
     {
-      aSTPair = index.get ( i ) ;
-      node.add ( new DefaultMutableTreeNode ( new ASTNode ( IDENTIFIER ,
-          idList [ i ] , aSTPair.getStart ( ) , aSTPair.getEnd ( ) ,
-          aSTBinding , this.aSTUnbound ) ) ) ;
+      outlinePair = index.get ( i ) ;
+      node.add ( new DefaultMutableTreeNode ( new OutlineNode ( IDENTIFIER ,
+          idList [ i ] , outlinePair.getStart ( ) , outlinePair.getEnd ( ) ,
+          aSTBinding , this.outlineUnbound ) ) ) ;
     }
     createChildren ( pCurriedLet , node ) ;
     return node ;
@@ -188,7 +188,7 @@ public class AbstractSyntaxTree
   private DefaultMutableTreeNode curriedLetRec ( CurriedLetRec pCurriedLetRec )
   {
     String [ ] idList = pCurriedLetRec.getIdentifiers ( ) ;
-    ASTBinding aSTBinding = new ASTBinding ( pCurriedLetRec ) ;
+    OutlineBinding aSTBinding = new OutlineBinding ( pCurriedLetRec ) ;
     aSTBinding.add ( pCurriedLetRec , pCurriedLetRec.getIdentifiers ( 0 ) ) ;
     for ( int i = 1 ; i < pCurriedLetRec.getIdentifiers ( ).length ; i ++ )
     {
@@ -196,17 +196,17 @@ public class AbstractSyntaxTree
           .getIdentifiers ( i ) ) ;
     }
     aSTBinding.find ( ) ;
-    DefaultMutableTreeNode node = new DefaultMutableTreeNode ( new ASTNode (
-        pCurriedLetRec , this.aSTUnbound ) ) ;
-    ArrayList < ASTPair > index = ASTIdentifier.getIndex ( pCurriedLetRec ) ;
-    ASTPair aSTPair ;
+    DefaultMutableTreeNode node = new DefaultMutableTreeNode ( new OutlineNode (
+        pCurriedLetRec , this.outlineUnbound ) ) ;
+    ArrayList < OutlinePair > index = OutlineIdentifier.getIndex ( pCurriedLetRec ) ;
+    OutlinePair outlinePair ;
     final int length = idList.length ;
     for ( int i = 0 ; i < length ; i ++ )
     {
-      aSTPair = index.get ( i ) ;
-      node.add ( new DefaultMutableTreeNode ( new ASTNode ( IDENTIFIER ,
-          idList [ i ] , aSTPair.getStart ( ) , aSTPair.getEnd ( ) ,
-          aSTBinding , this.aSTUnbound ) ) ) ;
+      outlinePair = index.get ( i ) ;
+      node.add ( new DefaultMutableTreeNode ( new OutlineNode ( IDENTIFIER ,
+          idList [ i ] , outlinePair.getStart ( ) , outlinePair.getEnd ( ) ,
+          aSTBinding , this.outlineUnbound ) ) ) ;
     }
     createChildren ( pCurriedLetRec , node ) ;
     return node ;
@@ -214,13 +214,13 @@ public class AbstractSyntaxTree
 
 
   /**
-   * Execute the AbstractSyntaxTree UI.
+   * Execute the AbstractOutline UI.
    */
   public void execute ( )
   {
-    this.aSTUnbound = new ASTUnbound ( this.oldExpression ) ;
+    this.outlineUnbound = new OutlineUnbound ( this.oldExpression ) ;
     DefaultMutableTreeNode root = expression ( this.oldExpression ) ;
-    SwingUtilities.invokeLater ( new ASTDisplayTree ( this.aSTUI , root ) ) ;
+    SwingUtilities.invokeLater ( new OutlineDisplayTree ( this.outlineUI , root ) ) ;
   }
 
 
@@ -277,26 +277,26 @@ public class AbstractSyntaxTree
 
 
   /**
-   * Returns the AbstractSyntaxTree Preferences.
+   * Returns the AbstractOutline Preferences.
    * 
-   * @return The AbstractSyntaxTree Preferences.
-   * @see #aSTPreferences
+   * @return The AbstractOutline Preferences.
+   * @see #outlinePreferences
    */
-  public ASTPreferences getASTPreferences ( )
+  public OutlinePreferences getASTPreferences ( )
   {
-    return this.aSTPreferences ;
+    return this.outlinePreferences ;
   }
 
 
   /**
-   * Returns the AbstractSyntaxTree UI.
+   * Returns the AbstractOutline UI.
    * 
-   * @return The AbstractSyntaxTree UI.
-   * @see #aSTUI
+   * @return The AbstractOutline UI.
+   * @see #outlineUI
    */
-  public ASTUI getASTUI ( )
+  public OutlineUI getASTUI ( )
   {
-    return this.aSTUI ;
+    return this.outlineUI ;
   }
 
 
@@ -323,10 +323,10 @@ public class AbstractSyntaxTree
     Expression e1 = pInfixOperation.getE1 ( ) ;
     Expression e2 = pInfixOperation.getE2 ( ) ;
     BinaryOperator binary = pInfixOperation.getOp ( ) ;
-    DefaultMutableTreeNode node = new DefaultMutableTreeNode ( new ASTNode (
-        pInfixOperation , this.aSTUnbound ) ) ;
+    DefaultMutableTreeNode node = new DefaultMutableTreeNode ( new OutlineNode (
+        pInfixOperation , this.outlineUnbound ) ) ;
     DefaultMutableTreeNode node0 = expression ( e1 ) ;
-    ASTNode astNode0 = ( ASTNode ) node0.getUserObject ( ) ;
+    OutlineNode astNode0 = ( OutlineNode ) node0.getUserObject ( ) ;
     astNode0.appendDescription ( EXPRESSION + "1" + BETWEEN ) ; //$NON-NLS-1$
     astNode0.resetCaption ( ) ;
     node.add ( node0 ) ;
@@ -337,12 +337,12 @@ public class AbstractSyntaxTree
     int start = pInfixOperation.toPrettyString ( ).toString ( ).indexOf (
         binary.toString ( ) , e1.toPrettyString ( ).toString ( ).length ( ) ) ;
     int end = start + binary.toString ( ).length ( ) - 1 ;
-    DefaultMutableTreeNode node1 = new DefaultMutableTreeNode ( new ASTNode (
+    DefaultMutableTreeNode node1 = new DefaultMutableTreeNode ( new OutlineNode (
         binary.getClass ( ).getSimpleName ( ) , binary.toString ( ) , start ,
-        end , null , this.aSTUnbound ) ) ;
+        end , null , this.outlineUnbound ) ) ;
     node.add ( node1 ) ;
     DefaultMutableTreeNode ex2 = expression ( e2 ) ;
-    ASTNode node2 = ( ASTNode ) ex2.getUserObject ( ) ;
+    OutlineNode node2 = ( OutlineNode ) ex2.getUserObject ( ) ;
     node2.appendDescription ( EXPRESSION + "2" + BETWEEN ) ; //$NON-NLS-1$
     node2.resetCaption ( ) ;
     node.add ( ex2 ) ;
@@ -358,15 +358,15 @@ public class AbstractSyntaxTree
    */
   private DefaultMutableTreeNode lambda ( Lambda pLambda )
   {
-    DefaultMutableTreeNode node = new DefaultMutableTreeNode ( new ASTNode (
-        pLambda , this.aSTUnbound ) ) ;
-    ASTPair aSTPair = ASTIdentifier.getIndex ( pLambda ).get ( 0 ) ;
-    ASTBinding aSTBinding = new ASTBinding ( pLambda ) ;
-    aSTBinding.add ( pLambda , pLambda.getId ( ) ) ;
-    aSTBinding.find ( ) ;
-    node.add ( new DefaultMutableTreeNode ( new ASTNode ( IDENTIFIER , pLambda
-        .getId ( ) , aSTPair.getStart ( ) , aSTPair.getEnd ( ) , aSTBinding ,
-        this.aSTUnbound ) ) ) ;
+    DefaultMutableTreeNode node = new DefaultMutableTreeNode ( new OutlineNode (
+        pLambda , this.outlineUnbound ) ) ;
+    OutlinePair outlinePair = OutlineIdentifier.getIndex ( pLambda ).get ( 0 ) ;
+    OutlineBinding outlineBinding = new OutlineBinding ( pLambda ) ;
+    outlineBinding.add ( pLambda , pLambda.getId ( ) ) ;
+    outlineBinding.find ( ) ;
+    node.add ( new DefaultMutableTreeNode ( new OutlineNode ( IDENTIFIER , pLambda
+        .getId ( ) , outlinePair.getStart ( ) , outlinePair.getEnd ( ) , outlineBinding ,
+        this.outlineUnbound ) ) ) ;
     createChildren ( pLambda , node ) ;
     return node ;
   }
@@ -380,15 +380,15 @@ public class AbstractSyntaxTree
    */
   private DefaultMutableTreeNode let ( Let pLet )
   {
-    DefaultMutableTreeNode node = new DefaultMutableTreeNode ( new ASTNode (
-        pLet , this.aSTUnbound ) ) ;
-    ASTPair aSTPair = ASTIdentifier.getIndex ( pLet ).get ( 0 ) ;
-    ASTBinding aSTBinding = new ASTBinding ( pLet ) ;
-    aSTBinding.add ( pLet.getE2 ( ) , pLet.getId ( ) ) ;
-    aSTBinding.find ( ) ;
-    node.add ( new DefaultMutableTreeNode ( new ASTNode ( IDENTIFIER , pLet
-        .getId ( ) , aSTPair.getStart ( ) , aSTPair.getEnd ( ) , aSTBinding ,
-        this.aSTUnbound ) ) ) ;
+    DefaultMutableTreeNode node = new DefaultMutableTreeNode ( new OutlineNode (
+        pLet , this.outlineUnbound ) ) ;
+    OutlinePair outlinePair = OutlineIdentifier.getIndex ( pLet ).get ( 0 ) ;
+    OutlineBinding outlineBinding = new OutlineBinding ( pLet ) ;
+    outlineBinding.add ( pLet.getE2 ( ) , pLet.getId ( ) ) ;
+    outlineBinding.find ( ) ;
+    node.add ( new DefaultMutableTreeNode ( new OutlineNode ( IDENTIFIER , pLet
+        .getId ( ) , outlinePair.getStart ( ) , outlinePair.getEnd ( ) , outlineBinding ,
+        this.outlineUnbound ) ) ) ;
     createChildren ( pLet , node ) ;
     return node ;
   }
@@ -402,22 +402,22 @@ public class AbstractSyntaxTree
    */
   private DefaultMutableTreeNode letRec ( LetRec pLetRec )
   {
-    DefaultMutableTreeNode node = new DefaultMutableTreeNode ( new ASTNode (
-        pLetRec , this.aSTUnbound ) ) ;
-    ASTPair aSTPair = ASTIdentifier.getIndex ( pLetRec ).get ( 0 ) ;
-    ASTBinding aSTBinding = new ASTBinding ( pLetRec ) ;
-    aSTBinding.add ( pLetRec , pLetRec.getId ( ) ) ;
-    aSTBinding.find ( ) ;
-    node.add ( new DefaultMutableTreeNode ( new ASTNode ( IDENTIFIER , pLetRec
-        .getId ( ) , aSTPair.getStart ( ) , aSTPair.getEnd ( ) , aSTBinding ,
-        this.aSTUnbound ) ) ) ;
+    DefaultMutableTreeNode node = new DefaultMutableTreeNode ( new OutlineNode (
+        pLetRec , this.outlineUnbound ) ) ;
+    OutlinePair outlinePair = OutlineIdentifier.getIndex ( pLetRec ).get ( 0 ) ;
+    OutlineBinding outlineBinding = new OutlineBinding ( pLetRec ) ;
+    outlineBinding.add ( pLetRec , pLetRec.getId ( ) ) ;
+    outlineBinding.find ( ) ;
+    node.add ( new DefaultMutableTreeNode ( new OutlineNode ( IDENTIFIER , pLetRec
+        .getId ( ) , outlinePair.getStart ( ) , outlinePair.getEnd ( ) , outlineBinding ,
+        this.outlineUnbound ) ) ) ;
     createChildren ( pLetRec , node ) ;
     return node ;
   }
 
 
   /**
-   * This method loads a new Expression into the AbstractSyntaxTree. It checks
+   * This method loads a new Expression into the AbstractOutline. It checks
    * if the new Expression is different to the current loaded Expression, if not
    * it does nothing and returns. It does also nothing if the auto update is
    * disabled and the change does not come from a mouse event. In the BigStep
@@ -434,7 +434,7 @@ public class AbstractSyntaxTree
     {
       return ;
     }
-    if ( ( ! this.aSTPreferences.isAutoUpdate ( ) )
+    if ( ( ! this.outlinePreferences.isAutoUpdate ( ) )
         && ( pDescription.startsWith ( "change" ) ) ) //$NON-NLS-1$
     {
       return ;
@@ -454,7 +454,7 @@ public class AbstractSyntaxTree
       this.aSTTimer = null ;
     }
     this.aSTTimer = new Timer ( ) ;
-    this.aSTTimer.schedule ( new ASTTimerTask ( this ) , 250 ) ;
+    this.aSTTimer.schedule ( new OutlineTimerTask ( this ) , 250 ) ;
   }
 
 
@@ -466,12 +466,12 @@ public class AbstractSyntaxTree
    */
   private DefaultMutableTreeNode location ( Location pLocation )
   {
-    DefaultMutableTreeNode node = new DefaultMutableTreeNode ( new ASTNode (
-        pLocation , this.aSTUnbound ) ) ;
+    DefaultMutableTreeNode node = new DefaultMutableTreeNode ( new OutlineNode (
+        pLocation , this.outlineUnbound ) ) ;
     int start = 0 ;
     int end = start - 1 + pLocation.getName ( ).length ( ) ;
-    node.add ( new DefaultMutableTreeNode ( new ASTNode ( "Name" , pLocation //$NON-NLS-1$
-        .getName ( ) , start , end , null , this.aSTUnbound ) ) ) ;
+    node.add ( new DefaultMutableTreeNode ( new OutlineNode ( "Name" , pLocation //$NON-NLS-1$
+        .getName ( ) , start , end , null , this.outlineUnbound ) ) ) ;
     return node ;
   }
 
@@ -514,24 +514,24 @@ public class AbstractSyntaxTree
    */
   private DefaultMutableTreeNode multiLambda ( MultiLambda pMultiLambda )
   {
-    ASTBinding aSTBinding = new ASTBinding ( pMultiLambda ) ;
+    OutlineBinding aSTBinding = new OutlineBinding ( pMultiLambda ) ;
     for ( String id : pMultiLambda.getIdentifiers ( ) )
     {
       aSTBinding.add ( pMultiLambda.getE ( ) , id ) ;
     }
     aSTBinding.find ( ) ;
     String idList[] = pMultiLambda.getIdentifiers ( ) ;
-    DefaultMutableTreeNode node = new DefaultMutableTreeNode ( new ASTNode (
-        pMultiLambda , this.aSTUnbound ) ) ;
-    ArrayList < ASTPair > index = ASTIdentifier.getIndex ( pMultiLambda ) ;
-    ASTPair aSTPair ;
+    DefaultMutableTreeNode node = new DefaultMutableTreeNode ( new OutlineNode (
+        pMultiLambda , this.outlineUnbound ) ) ;
+    ArrayList < OutlinePair > index = OutlineIdentifier.getIndex ( pMultiLambda ) ;
+    OutlinePair outlinePair ;
     final int length = idList.length ;
     for ( int i = 0 ; i < length ; i ++ )
     {
-      aSTPair = index.get ( i ) ;
-      node.add ( new DefaultMutableTreeNode ( new ASTNode ( IDENTIFIER ,
-          idList [ i ] , aSTPair.getStart ( ) , aSTPair.getEnd ( ) ,
-          aSTBinding , this.aSTUnbound ) ) ) ;
+      outlinePair = index.get ( i ) ;
+      node.add ( new DefaultMutableTreeNode ( new OutlineNode ( IDENTIFIER ,
+          idList [ i ] , outlinePair.getStart ( ) , outlinePair.getEnd ( ) ,
+          aSTBinding , this.outlineUnbound ) ) ) ;
     }
     createChildren ( pMultiLambda , node ) ;
     return node ;
@@ -546,24 +546,24 @@ public class AbstractSyntaxTree
    */
   private DefaultMutableTreeNode multiLet ( MultiLet pMultiLet )
   {
-    ASTBinding aSTBinding = new ASTBinding ( pMultiLet ) ;
+    OutlineBinding aSTBinding = new OutlineBinding ( pMultiLet ) ;
     for ( String id : pMultiLet.getIdentifiers ( ) )
     {
       aSTBinding.add ( pMultiLet.getE2 ( ) , id ) ;
     }
     aSTBinding.find ( ) ;
     String [ ] idList = pMultiLet.getIdentifiers ( ) ;
-    DefaultMutableTreeNode node = new DefaultMutableTreeNode ( new ASTNode (
-        pMultiLet , this.aSTUnbound ) ) ;
-    ArrayList < ASTPair > index = ASTIdentifier.getIndex ( pMultiLet ) ;
-    ASTPair aSTPair ;
+    DefaultMutableTreeNode node = new DefaultMutableTreeNode ( new OutlineNode (
+        pMultiLet , this.outlineUnbound ) ) ;
+    ArrayList < OutlinePair > index = OutlineIdentifier.getIndex ( pMultiLet ) ;
+    OutlinePair outlinePair ;
     final int length = idList.length ;
     for ( int i = 0 ; i < length ; i ++ )
     {
-      aSTPair = index.get ( i ) ;
-      node.add ( new DefaultMutableTreeNode ( new ASTNode ( IDENTIFIER ,
-          idList [ i ] , aSTPair.getStart ( ) , aSTPair.getEnd ( ) ,
-          aSTBinding , this.aSTUnbound ) ) ) ;
+      outlinePair = index.get ( i ) ;
+      node.add ( new DefaultMutableTreeNode ( new OutlineNode ( IDENTIFIER ,
+          idList [ i ] , outlinePair.getStart ( ) , outlinePair.getEnd ( ) ,
+          aSTBinding , this.outlineUnbound ) ) ) ;
     }
     createChildren ( pMultiLet , node ) ;
     return node ;
@@ -578,8 +578,8 @@ public class AbstractSyntaxTree
    */
   private DefaultMutableTreeNode other ( Expression pExpression )
   {
-    DefaultMutableTreeNode node = new DefaultMutableTreeNode ( new ASTNode (
-        pExpression , this.aSTUnbound ) ) ;
+    DefaultMutableTreeNode node = new DefaultMutableTreeNode ( new OutlineNode (
+        pExpression , this.outlineUnbound ) ) ;
     createChildren ( pExpression , node ) ;
     return node ;
   }
@@ -594,15 +594,15 @@ public class AbstractSyntaxTree
   private DefaultMutableTreeNode recursion ( Recursion pRecursion )
   {
     String id = pRecursion.getId ( ) ;
-    DefaultMutableTreeNode node = new DefaultMutableTreeNode ( new ASTNode (
-        pRecursion , this.aSTUnbound ) ) ;
-    ASTPair aSTPair = ASTIdentifier.getIndex ( pRecursion ).get ( 0 ) ;
-    ASTBinding aSTBinding = new ASTBinding ( pRecursion ) ;
-    aSTBinding.add ( pRecursion , pRecursion.getId ( ) ) ;
-    aSTBinding.find ( ) ;
-    node.add ( new DefaultMutableTreeNode ( new ASTNode ( IDENTIFIER , id ,
-        aSTPair.getStart ( ) , aSTPair.getEnd ( ) , aSTBinding ,
-        this.aSTUnbound ) ) ) ;
+    DefaultMutableTreeNode node = new DefaultMutableTreeNode ( new OutlineNode (
+        pRecursion , this.outlineUnbound ) ) ;
+    OutlinePair outlinePair = OutlineIdentifier.getIndex ( pRecursion ).get ( 0 ) ;
+    OutlineBinding outlineBinding = new OutlineBinding ( pRecursion ) ;
+    outlineBinding.add ( pRecursion , pRecursion.getId ( ) ) ;
+    outlineBinding.find ( ) ;
+    node.add ( new DefaultMutableTreeNode ( new OutlineNode ( IDENTIFIER , id ,
+        outlinePair.getStart ( ) , outlinePair.getEnd ( ) , outlineBinding ,
+        this.outlineUnbound ) ) ) ;
     createChildren ( pRecursion , node ) ;
     return node ;
   }

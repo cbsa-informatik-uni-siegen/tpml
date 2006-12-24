@@ -1,11 +1,11 @@
-package de.unisiegen.tpml.graphics.abstractsyntaxtree.listener ;
+package de.unisiegen.tpml.graphics.outline.listener ;
 
 
 import java.beans.PropertyChangeEvent ;
 import java.beans.PropertyChangeListener ;
 import javax.swing.JSplitPane ;
 import de.unisiegen.tpml.graphics.AbstractProofView ;
-import de.unisiegen.tpml.graphics.abstractsyntaxtree.AbstractSyntaxTree ;
+import de.unisiegen.tpml.graphics.outline.Outline;
 
 
 /**
@@ -15,7 +15,7 @@ import de.unisiegen.tpml.graphics.abstractsyntaxtree.AbstractSyntaxTree ;
  * @author Christian Fehler
  * @version $Rev$
  */
-public class ASTPropertyChangeListener implements PropertyChangeListener
+public class OutlinePropertyChangeListener implements PropertyChangeListener
 {
   /**
    * The JSplitPane.
@@ -30,19 +30,19 @@ public class ASTPropertyChangeListener implements PropertyChangeListener
 
 
   /**
-   * The AbstractSyntaxTree.
+   * The AbstractOutline.
    */
-  private AbstractSyntaxTree abstractSyntaxTree ;
+  private Outline abstractSyntaxTree ;
 
 
   /**
-   * Initializes the ASTPropertyChangeListener.
+   * Initializes the OutlinePropertyChangeListener.
    * 
    * @param pJSplitPane The JSplitPane.
-   * @param pAbstractSyntaxTree The AbstractSyntaxTree.
+   * @param pAbstractSyntaxTree The AbstractOutline.
    */
-  public ASTPropertyChangeListener ( JSplitPane pJSplitPane ,
-      AbstractSyntaxTree pAbstractSyntaxTree )
+  public OutlinePropertyChangeListener ( JSplitPane pJSplitPane ,
+      Outline pAbstractSyntaxTree )
   {
     this.jSplitPane = pJSplitPane ;
     this.abstractSyntaxTree = pAbstractSyntaxTree ;

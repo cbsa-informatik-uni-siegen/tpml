@@ -19,7 +19,7 @@ import de.unisiegen.tpml.core.typechecker.TypeEnvironment;
 //import de.unisiegen.tpml.core.util.Debug;
 import de.unisiegen.tpml.core.util.Environment;
 import de.unisiegen.tpml.core.util.Optimizer;
-import de.unisiegen.tpml.graphics.abstractsyntaxtree.listener.ASTMouseListener;
+import de.unisiegen.tpml.graphics.outline.listener.OutlineMouseListener;
 import de.unisiegen.tpml.graphics.renderer.AbstractRenderer;
 import de.unisiegen.tpml.graphics.renderer.EnvironmentRenderer;
 import de.unisiegen.tpml.graphics.renderer.PrettyStringRenderer;
@@ -139,7 +139,7 @@ public class CompoundExpression < S , E > extends JComponent
       }
     } ) ;
     // CHANGE CHRISTIAN
-    this.addMouseListener ( new ASTMouseListener ( this ) ) ;
+    this.addMouseListener ( new OutlineMouseListener ( this ) ) ;
     // CHANGE CHRISTIAN END
     this.addMouseListener ( new MouseAdapter ( )
     {

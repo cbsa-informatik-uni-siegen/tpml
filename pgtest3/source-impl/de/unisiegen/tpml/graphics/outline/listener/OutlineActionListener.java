@@ -1,13 +1,13 @@
-package de.unisiegen.tpml.graphics.abstractsyntaxtree.listener ;
+package de.unisiegen.tpml.graphics.outline.listener ;
 
 
 import java.awt.event.ActionEvent ;
 import java.awt.event.ActionListener ;
 import javax.swing.tree.DefaultMutableTreeNode ;
 import javax.swing.tree.TreePath ;
-import de.unisiegen.tpml.graphics.abstractsyntaxtree.ASTNode;
-import de.unisiegen.tpml.graphics.abstractsyntaxtree.ui.ASTUI;
-import de.unisiegen.tpml.graphics.abstractsyntaxtree.util.ASTClipboard;
+import de.unisiegen.tpml.graphics.outline.OutlineNode;
+import de.unisiegen.tpml.graphics.outline.ui.OutlineUI;
+import de.unisiegen.tpml.graphics.outline.util.OutlineClipboard;
 
 
 /**
@@ -17,22 +17,22 @@ import de.unisiegen.tpml.graphics.abstractsyntaxtree.util.ASTClipboard;
  * @author Christian Fehler
  * @version $Rev$
  */
-public class ASTActionListener implements ActionListener
+public class OutlineActionListener implements ActionListener
 {
   /**
-   * The AbstractSyntaxTree UI.
+   * The AbstractOutline UI.
    */
-  private ASTUI aSTUI ;
+  private OutlineUI outlineUI ;
 
 
   /**
-   * Initializes the ASTActionListener.
+   * Initializes the OutlineActionListener.
    * 
-   * @param pASTUI The AbstractSyntaxTree UI.
+   * @param pASTUI The AbstractOutline UI.
    */
-  public ASTActionListener ( ASTUI pASTUI )
+  public OutlineActionListener ( OutlineUI pASTUI )
   {
-    this.aSTUI = pASTUI ;
+    this.outlineUI = pASTUI ;
   }
 
 
@@ -75,29 +75,29 @@ public class ASTActionListener implements ActionListener
     }
     else if ( actionCommand.equals ( "selection" ) ) //$NON-NLS-1$
     {
-      this.aSTUI.getASTItemListener ( ).update (
-          this.aSTUI.getJMenuItemSelection ( ).isSelected ( ) , null ,
+      this.outlineUI.getASTItemListener ( ).update (
+          this.outlineUI.getJMenuItemSelection ( ).isSelected ( ) , null ,
           "selection" ) ; //$NON-NLS-1$
     }
     else if ( actionCommand.equals ( "binding" ) ) //$NON-NLS-1$
     {
-      this.aSTUI.getASTItemListener ( ).update (
-          this.aSTUI.getJMenuItemBinding ( ).isSelected ( ) , null , "binding" ) ; //$NON-NLS-1$
+      this.outlineUI.getASTItemListener ( ).update (
+          this.outlineUI.getJMenuItemBinding ( ).isSelected ( ) , null , "binding" ) ; //$NON-NLS-1$
     }
     else if ( actionCommand.equals ( "unbound" ) ) //$NON-NLS-1$
     {
-      this.aSTUI.getASTItemListener ( ).update (
-          this.aSTUI.getJMenuItemUnbound ( ).isSelected ( ) , null , "unbound" ) ; //$NON-NLS-1$
+      this.outlineUI.getASTItemListener ( ).update (
+          this.outlineUI.getJMenuItemUnbound ( ).isSelected ( ) , null , "unbound" ) ; //$NON-NLS-1$
     }
     else if ( actionCommand.equals ( "replace" ) ) //$NON-NLS-1$
     {
-      this.aSTUI.getASTItemListener ( ).update (
-          this.aSTUI.getJMenuItemReplace ( ).isSelected ( ) , null , "replace" ) ; //$NON-NLS-1$
+      this.outlineUI.getASTItemListener ( ).update (
+          this.outlineUI.getJMenuItemReplace ( ).isSelected ( ) , null , "replace" ) ; //$NON-NLS-1$
     }
     else if ( actionCommand.equals ( "autoUpdate" ) ) //$NON-NLS-1$
     {
-      this.aSTUI.getASTItemListener ( ).update (
-          this.aSTUI.getJMenuItemAutoUpdate ( ).isSelected ( ) , null ,
+      this.outlineUI.getASTItemListener ( ).update (
+          this.outlineUI.getJMenuItemAutoUpdate ( ).isSelected ( ) , null ,
           "autoupdate" ) ; //$NON-NLS-1$
     }
   }
@@ -108,15 +108,15 @@ public class ASTActionListener implements ActionListener
    */
   public void close ( )
   {
-    int selectionRows[] = this.aSTUI.getJTreeAbstractSyntaxTree ( )
+    int selectionRows[] = this.outlineUI.getJTreeAbstractSyntaxTree ( )
         .getSelectionRows ( ) ;
     if ( selectionRows == null )
     {
       return ;
     }
-    for ( int i = this.aSTUI.getJTreeAbstractSyntaxTree ( ).getRowCount ( ) - 1 ; i >= selectionRows [ 0 ] ; i -- )
+    for ( int i = this.outlineUI.getJTreeAbstractSyntaxTree ( ).getRowCount ( ) - 1 ; i >= selectionRows [ 0 ] ; i -- )
     {
-      this.aSTUI.getJTreeAbstractSyntaxTree ( ).collapseRow ( i ) ;
+      this.outlineUI.getJTreeAbstractSyntaxTree ( ).collapseRow ( i ) ;
     }
   }
 
@@ -126,9 +126,9 @@ public class ASTActionListener implements ActionListener
    */
   public void closeAll ( )
   {
-    for ( int i = this.aSTUI.getJTreeAbstractSyntaxTree ( ).getRowCount ( ) - 1 ; i >= 0 ; i -- )
+    for ( int i = this.outlineUI.getJTreeAbstractSyntaxTree ( ).getRowCount ( ) - 1 ; i >= 0 ; i -- )
     {
-      this.aSTUI.getJTreeAbstractSyntaxTree ( ).collapseRow ( i ) ;
+      this.outlineUI.getJTreeAbstractSyntaxTree ( ).collapseRow ( i ) ;
     }
   }
 
@@ -138,13 +138,13 @@ public class ASTActionListener implements ActionListener
    */
   public void collapse ( )
   {
-    int selectionRows[] = this.aSTUI.getJTreeAbstractSyntaxTree ( )
+    int selectionRows[] = this.outlineUI.getJTreeAbstractSyntaxTree ( )
         .getSelectionRows ( ) ;
     if ( selectionRows == null )
     {
       return ;
     }
-    this.aSTUI.getJTreeAbstractSyntaxTree ( )
+    this.outlineUI.getJTreeAbstractSyntaxTree ( )
         .collapseRow ( selectionRows [ 0 ] ) ;
   }
 
@@ -154,7 +154,7 @@ public class ASTActionListener implements ActionListener
    */
   public void collapseAll ( )
   {
-    this.aSTUI.getJTreeAbstractSyntaxTree ( ).collapseRow ( 0 ) ;
+    this.outlineUI.getJTreeAbstractSyntaxTree ( ).collapseRow ( 0 ) ;
   }
 
 
@@ -163,13 +163,13 @@ public class ASTActionListener implements ActionListener
    */
   public void copy ( )
   {
-    DefaultMutableTreeNode node = ( DefaultMutableTreeNode ) this.aSTUI
+    DefaultMutableTreeNode node = ( DefaultMutableTreeNode ) this.outlineUI
         .getJTreeAbstractSyntaxTree ( ).getSelectionPath ( )
         .getLastPathComponent ( ) ;
     if ( node != null )
     {
-      ASTClipboard.getInstance ( ).copy (
-          ( ( ASTNode ) node.getUserObject ( ) ).getExpressionString ( ) ) ;
+      OutlineClipboard.getInstance ( ).copy (
+          ( ( OutlineNode ) node.getUserObject ( ) ).getExpressionString ( ) ) ;
     }
   }
 
@@ -179,7 +179,7 @@ public class ASTActionListener implements ActionListener
    */
   public void expand ( )
   {
-    expandTreePath ( this.aSTUI.getJTreeAbstractSyntaxTree ( )
+    expandTreePath ( this.outlineUI.getJTreeAbstractSyntaxTree ( )
         .getSelectionPath ( ) ) ;
   }
 
@@ -190,9 +190,9 @@ public class ASTActionListener implements ActionListener
   public void expandAll ( )
   {
     int i = 0 ;
-    while ( i < this.aSTUI.getJTreeAbstractSyntaxTree ( ).getRowCount ( ) )
+    while ( i < this.outlineUI.getJTreeAbstractSyntaxTree ( ).getRowCount ( ) )
     {
-      this.aSTUI.getJTreeAbstractSyntaxTree ( ).expandRow ( i ) ;
+      this.outlineUI.getJTreeAbstractSyntaxTree ( ).expandRow ( i ) ;
       i ++ ;
     }
   }
@@ -215,6 +215,6 @@ public class ASTActionListener implements ActionListener
     {
       expandTreePath ( pTreePath.pathByAddingChild ( lastNode.getChildAt ( i ) ) ) ;
     }
-    this.aSTUI.getJTreeAbstractSyntaxTree ( ).expandPath ( pTreePath ) ;
+    this.outlineUI.getJTreeAbstractSyntaxTree ( ).expandPath ( pTreePath ) ;
   }
 }

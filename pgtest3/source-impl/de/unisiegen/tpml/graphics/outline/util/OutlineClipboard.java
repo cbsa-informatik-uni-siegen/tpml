@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.graphics.abstractsyntaxtree.util ;
+package de.unisiegen.tpml.graphics.outline.util ;
 
 
 import java.awt.Toolkit ;
@@ -17,7 +17,7 @@ import java.io.IOException ;
  * @author Christian Fehler
  * @version $Rev$
  */
-public class ASTClipboard implements ClipboardOwner
+public class OutlineClipboard implements ClipboardOwner
 {
   /**
    * The clipboard.
@@ -26,32 +26,32 @@ public class ASTClipboard implements ClipboardOwner
 
 
   /**
-   * The single object of ASTClipboard.
+   * The single object of OutlineClipboard.
    */
-  private static ASTClipboard aSTClipboard = null ;
+  private static OutlineClipboard outlineClipboard = null ;
 
 
   /**
-   * Initializes the ASTClipboard.
+   * Initializes the OutlineClipboard.
    */
-  private ASTClipboard ( )
+  private OutlineClipboard ( )
   {
     this.clipboard = Toolkit.getDefaultToolkit ( ).getSystemClipboard ( ) ;
   }
 
 
   /**
-   * Returns the single object of ASTClipboard.
+   * Returns the single object of OutlineClipboard.
    * 
-   * @return The single object of ASTClipboard.
+   * @return The single object of OutlineClipboard.
    */
-  public static ASTClipboard getInstance ( )
+  public static OutlineClipboard getInstance ( )
   {
-    if ( aSTClipboard == null )
+    if ( outlineClipboard == null )
     {
-      aSTClipboard = new ASTClipboard ( ) ;
+      outlineClipboard = new OutlineClipboard ( ) ;
     }
-    return aSTClipboard ;
+    return outlineClipboard ;
   }
 
 
