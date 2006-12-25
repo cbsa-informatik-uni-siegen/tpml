@@ -103,11 +103,6 @@ public class L1CBNBigStepProofRuleSet extends L1BigStepProofRuleSet
             .getString ( "LxCBNBigStepProofRuleSet.0" ) ) ; //$NON-NLS-1$
       }
       context.addProofNode ( node , application.getE1 ( ) ) ;
-      // we can add the second node as well if memory is disabled
-      if ( ! context.isMemoryEnabled ( ) )
-      {
-        context.addProofNode ( node , application.getE2 ( ) ) ;
-      }
     }
     else
     {
@@ -120,11 +115,6 @@ public class L1CBNBigStepProofRuleSet extends L1BigStepProofRuleSet
       }
       context.addProofNode ( node , new Application ( infixOperation.getOp ( ) ,
           infixOperation.getE1 ( ) ) ) ;
-      // we can add the second as well if memory is disabled
-      if ( ! context.isMemoryEnabled ( ) )
-      {
-        // context.addProofNode ( node , infixOperation.getE2 ( ) ) ;
-      }
     }
   }
 
