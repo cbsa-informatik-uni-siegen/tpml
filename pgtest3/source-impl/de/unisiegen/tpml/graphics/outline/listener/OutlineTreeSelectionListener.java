@@ -148,7 +148,7 @@ public class OutlineTreeSelectionListener implements TreeSelectionListener
         PrettyAnnotation prettyAnnotation = list.get ( i ).getExpression ( )
             .toPrettyString ( ).getAnnotationForPrintable (
                 secondlast.getExpression ( ) ) ;
-        list.get ( i ).setASTBinding ( last.getASTBinding ( ) ) ;
+        list.get ( i ).setOutlineBinding ( last.getOutlineBinding ( ) ) ;
         list.get ( i ).setReplaceInThisNode ( true ) ;
         list.get ( i ).updateCaption (
             prettyAnnotation.getStartOffset ( ) + last.getStartIndex ( ) ,

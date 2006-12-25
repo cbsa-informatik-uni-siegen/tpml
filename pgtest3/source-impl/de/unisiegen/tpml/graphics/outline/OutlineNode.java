@@ -2,8 +2,6 @@ package de.unisiegen.tpml.graphics.outline ;
 
 
 import java.awt.Color ;
-import java.util.MissingResourceException ;
-import java.util.ResourceBundle ;
 import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyCharIterator ;
@@ -248,8 +246,8 @@ public class OutlineNode
   /**
    * The bindings in this node.
    * 
-   * @see #getASTBinding()
-   * @see #setASTBinding(OutlineBinding)
+   * @see #getOutlineBinding()
+   * @see #setOutlineBinding(OutlineBinding)
    */
   private OutlineBinding outlineBinding ;
 
@@ -277,12 +275,6 @@ public class OutlineNode
 
 
   /**
-   * The ResourceBundle, to set the description from the ast.properties.
-   */
-  private ResourceBundle resourceBundle ;
-
-
-  /**
    * This constructor initializes the values and loads the description.
    * 
    * @param pExpression The expression repressented by this node.
@@ -291,19 +283,7 @@ public class OutlineNode
    */
   public OutlineNode ( Expression pExpression , OutlineUnbound pASTUnbound )
   {
-    // Load the description
-    this.resourceBundle = ResourceBundle
-        .getBundle ( "de/unisiegen/tpml/graphics/outline/outline" ) ; //$NON-NLS-1$
-    try
-    {
-      this.description = this.resourceBundle.getString ( pExpression
-          .getClass ( ).getSimpleName ( ) ) ;
-    }
-    catch ( MissingResourceException e )
-    {
-      this.description = pExpression.getClass ( ).getSimpleName ( ) ;
-    }
-    // Initialies the values
+    this.description = pExpression.getClass ( ).getSimpleName ( ) ;
     this.expressionString = pExpression.toPrettyString ( ).toString ( ) ;
     this.expression = pExpression ;
     this.startIndex = - 1 ;
@@ -330,17 +310,7 @@ public class OutlineNode
       int pStartIndex , int pEndIndex , OutlineBinding pASTBinding ,
       OutlineUnbound pASTUnbound )
   {
-    // Preferences
-    this.resourceBundle = ResourceBundle
-        .getBundle ( "de/unisiegen/tpml/graphics/outline/outline" ) ; //$NON-NLS-1$
-    try
-    {
-      this.description = this.resourceBundle.getString ( pDescription ) ;
-    }
-    catch ( MissingResourceException e )
-    {
-      this.description = pDescription ;
-    }
+    this.description = pDescription ;
     this.expressionString = pExpressionString ;
     this.expression = null ;
     this.startIndex = pStartIndex ;
@@ -405,9 +375,9 @@ public class OutlineNode
    * 
    * @return The binding in this node.
    * @see #outlineBinding
-   * @see #setASTBinding(OutlineBinding)
+   * @see #setOutlineBinding(OutlineBinding)
    */
-  public OutlineBinding getASTBinding ( )
+  public OutlineBinding getOutlineBinding ( )
   {
     return this.outlineBinding ;
   }
@@ -620,7 +590,19 @@ public class OutlineNode
       result.append ( getHTMLFormat ( Theme.currentTheme ( )
           .getExpressionColor ( ) ) ) ;
       result.append ( FONT_AFTER_COLOR ) ;
+      if ( this.description.equals ( "ArithmeticOperator" ) ) //$NON-NLS-1$
+      {
+        String constantColor = getHTMLFormat ( Theme.currentTheme ( )
+            .getConstantColor ( ) ) ;
+        result.append ( FONT_BOLD_BEGIN ) ;
+        result.append ( constantColor ) ;
+        result.append ( FONT_AFTER_COLOR ) ;
+      }
       result.append ( getHTMLCode ( this.expressionString ) ) ;
+      if ( this.description.equals ( "ArithmeticOperator" ) ) //$NON-NLS-1$
+      {
+        result.append ( FONT_BOLD_END ) ;
+      }
       result.append ( END ) ;
       this.caption = result.toString ( ) ;
     }
@@ -635,13 +617,13 @@ public class OutlineNode
   /**
    * Sets the binding in this node.
    * 
-   * @param pASTBinding The OutlineBinding in this node.
+   * @param pOutlineBinding The OutlineBinding in this node.
    * @see #outlineBinding
-   * @see #getASTBinding()
+   * @see #getOutlineBinding()
    */
-  public void setASTBinding ( OutlineBinding pASTBinding )
+  public void setOutlineBinding ( OutlineBinding pOutlineBinding )
   {
-    this.outlineBinding = pASTBinding ;
+    this.outlineBinding = pOutlineBinding ;
   }
 
 
