@@ -5,9 +5,9 @@ import java.awt.event.ActionEvent ;
 import java.awt.event.ActionListener ;
 import javax.swing.tree.DefaultMutableTreeNode ;
 import javax.swing.tree.TreePath ;
-import de.unisiegen.tpml.graphics.outline.OutlineNode;
-import de.unisiegen.tpml.graphics.outline.ui.OutlineUI;
-import de.unisiegen.tpml.graphics.outline.util.OutlineClipboard;
+import de.unisiegen.tpml.graphics.outline.OutlineNode ;
+import de.unisiegen.tpml.graphics.outline.ui.OutlineUI ;
+import de.unisiegen.tpml.graphics.outline.util.OutlineClipboard ;
 
 
 /**
@@ -20,7 +20,7 @@ import de.unisiegen.tpml.graphics.outline.util.OutlineClipboard;
 public class OutlineActionListener implements ActionListener
 {
   /**
-   * The AbstractOutline UI.
+   * The Outline UI.
    */
   private OutlineUI outlineUI ;
 
@@ -28,11 +28,11 @@ public class OutlineActionListener implements ActionListener
   /**
    * Initializes the OutlineActionListener.
    * 
-   * @param pASTUI The AbstractOutline UI.
+   * @param pOutlineUI The Outline UI.
    */
-  public OutlineActionListener ( OutlineUI pASTUI )
+  public OutlineActionListener ( OutlineUI pOutlineUI )
   {
-    this.outlineUI = pASTUI ;
+    this.outlineUI = pOutlineUI ;
   }
 
 
@@ -75,28 +75,31 @@ public class OutlineActionListener implements ActionListener
     }
     else if ( actionCommand.equals ( "selection" ) ) //$NON-NLS-1$
     {
-      this.outlineUI.getASTItemListener ( ).update (
+      this.outlineUI.getOutlineItemListener ( ).update (
           this.outlineUI.getJMenuItemSelection ( ).isSelected ( ) , null ,
           "selection" ) ; //$NON-NLS-1$
     }
     else if ( actionCommand.equals ( "binding" ) ) //$NON-NLS-1$
     {
-      this.outlineUI.getASTItemListener ( ).update (
-          this.outlineUI.getJMenuItemBinding ( ).isSelected ( ) , null , "binding" ) ; //$NON-NLS-1$
+      this.outlineUI.getOutlineItemListener ( ).update (
+          this.outlineUI.getJMenuItemBinding ( ).isSelected ( ) , null ,
+          "binding" ) ; //$NON-NLS-1$
     }
     else if ( actionCommand.equals ( "unbound" ) ) //$NON-NLS-1$
     {
-      this.outlineUI.getASTItemListener ( ).update (
-          this.outlineUI.getJMenuItemUnbound ( ).isSelected ( ) , null , "unbound" ) ; //$NON-NLS-1$
+      this.outlineUI.getOutlineItemListener ( ).update (
+          this.outlineUI.getJMenuItemUnbound ( ).isSelected ( ) , null ,
+          "unbound" ) ; //$NON-NLS-1$
     }
     else if ( actionCommand.equals ( "replace" ) ) //$NON-NLS-1$
     {
-      this.outlineUI.getASTItemListener ( ).update (
-          this.outlineUI.getJMenuItemReplace ( ).isSelected ( ) , null , "replace" ) ; //$NON-NLS-1$
+      this.outlineUI.getOutlineItemListener ( ).update (
+          this.outlineUI.getJMenuItemReplace ( ).isSelected ( ) , null ,
+          "replace" ) ; //$NON-NLS-1$
     }
     else if ( actionCommand.equals ( "autoUpdate" ) ) //$NON-NLS-1$
     {
-      this.outlineUI.getASTItemListener ( ).update (
+      this.outlineUI.getOutlineItemListener ( ).update (
           this.outlineUI.getJMenuItemAutoUpdate ( ).isSelected ( ) , null ,
           "autoupdate" ) ; //$NON-NLS-1$
     }
@@ -144,8 +147,8 @@ public class OutlineActionListener implements ActionListener
     {
       return ;
     }
-    this.outlineUI.getJTreeAbstractSyntaxTree ( )
-        .collapseRow ( selectionRows [ 0 ] ) ;
+    this.outlineUI.getJTreeAbstractSyntaxTree ( ).collapseRow (
+        selectionRows [ 0 ] ) ;
   }
 
 

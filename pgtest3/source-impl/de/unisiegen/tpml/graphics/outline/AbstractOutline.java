@@ -5,6 +5,7 @@ import java.lang.reflect.Method ;
 import java.util.ArrayList ;
 import java.util.Enumeration ;
 import java.util.Timer ;
+import javax.swing.JPanel ;
 import javax.swing.SwingUtilities ;
 import javax.swing.tree.DefaultMutableTreeNode ;
 import de.unisiegen.tpml.core.expressions.BinaryOperator ;
@@ -19,19 +20,19 @@ import de.unisiegen.tpml.core.expressions.Location ;
 import de.unisiegen.tpml.core.expressions.MultiLambda ;
 import de.unisiegen.tpml.core.expressions.MultiLet ;
 import de.unisiegen.tpml.core.expressions.Recursion ;
-import de.unisiegen.tpml.graphics.outline.binding.OutlineBinding;
-import de.unisiegen.tpml.graphics.outline.binding.OutlineIdentifier;
-import de.unisiegen.tpml.graphics.outline.binding.OutlinePair;
-import de.unisiegen.tpml.graphics.outline.binding.OutlineUnbound;
-import de.unisiegen.tpml.graphics.outline.ui.OutlineDisplayTree;
-import de.unisiegen.tpml.graphics.outline.ui.OutlineTimerTask;
-import de.unisiegen.tpml.graphics.outline.ui.OutlineUI;
-import de.unisiegen.tpml.graphics.outline.util.OutlinePreferences;
+import de.unisiegen.tpml.graphics.outline.binding.OutlineBinding ;
+import de.unisiegen.tpml.graphics.outline.binding.OutlineIdentifier ;
+import de.unisiegen.tpml.graphics.outline.binding.OutlinePair ;
+import de.unisiegen.tpml.graphics.outline.binding.OutlineUnbound ;
+import de.unisiegen.tpml.graphics.outline.ui.OutlineDisplayTree ;
+import de.unisiegen.tpml.graphics.outline.ui.OutlineTimerTask ;
+import de.unisiegen.tpml.graphics.outline.ui.OutlineUI ;
+import de.unisiegen.tpml.graphics.outline.util.OutlinePreferences ;
 
 
 /**
- * This class is the main class of the AbstractOutline. It loads the
- * preferences, creates the GUI and loads new Expressions.
+ * This class is the main class of the Outline. It loads the preferences,
+ * creates the OutlineUI and loads new Expressions.
  * 
  * @author Christian Fehler
  * @version $Rev$
@@ -64,9 +65,7 @@ public class AbstractOutline implements Outline
 
 
   /**
-   * The AbstractOutline UI.
-   * 
-   * @see #getASTUI()
+   * The OutlineUI.
    */
   private OutlineUI outlineUI ;
 
@@ -74,7 +73,7 @@ public class AbstractOutline implements Outline
   /**
    * The AbstractOutline Preferences.
    * 
-   * @see #getASTPreferences()
+   * @see #getOutlinePreferences()
    */
   private OutlinePreferences outlinePreferences ;
 
@@ -86,8 +85,8 @@ public class AbstractOutline implements Outline
 
 
   /**
-   * The outlineUnbound, in which the unbound Identifiers in the given Expression
-   * are saved.
+   * The outlineUnbound, in which the unbound Identifiers in the given
+   * Expression are saved.
    */
   private OutlineUnbound outlineUnbound ;
 
@@ -95,11 +94,11 @@ public class AbstractOutline implements Outline
   /**
    * The timer for executing.
    */
-  private Timer aSTTimer ;
+  private Timer outlineTimer ;
 
 
   /**
-   * Initilizes the preferences and the AbstractOutline GUI.
+   * Initilizes the preferences and the OutlineUI.
    */
   public AbstractOutline ( )
   {
@@ -198,7 +197,8 @@ public class AbstractOutline implements Outline
     aSTBinding.find ( ) ;
     DefaultMutableTreeNode node = new DefaultMutableTreeNode ( new OutlineNode (
         pCurriedLetRec , this.outlineUnbound ) ) ;
-    ArrayList < OutlinePair > index = OutlineIdentifier.getIndex ( pCurriedLetRec ) ;
+    ArrayList < OutlinePair > index = OutlineIdentifier
+        .getIndex ( pCurriedLetRec ) ;
     OutlinePair outlinePair ;
     final int length = idList.length ;
     for ( int i = 0 ; i < length ; i ++ )
@@ -214,13 +214,31 @@ public class AbstractOutline implements Outline
 
 
   /**
-   * Execute the AbstractOutline UI.
+   * Disables the AutoUpdate check box and the menu item. Removes the listeners.
+   */
+  public void disableAutoUpdate ( )
+  {
+    // Disable AutoUpdate, remove Listener and deselect
+    this.outlineUI.getJCheckBoxAutoUpdate ( ).setEnabled ( false ) ;
+    this.outlineUI.getJCheckBoxAutoUpdate ( ).removeItemListener (
+        this.outlineUI.getJCheckBoxAutoUpdate ( ).getItemListeners ( ) [ 0 ] ) ;
+    this.outlineUI.getJCheckBoxAutoUpdate ( ).setSelected ( false ) ;
+    this.outlineUI.getJMenuItemAutoUpdate ( ).setEnabled ( false ) ;
+    this.outlineUI.getJMenuItemAutoUpdate ( ).removeActionListener (
+        this.outlineUI.getJMenuItemAutoUpdate ( ).getActionListeners ( ) [ 0 ] ) ;
+    this.outlineUI.getJMenuItemAutoUpdate ( ).setSelected ( false ) ;
+  }
+
+
+  /**
+   * Execute the rebuild of a new tree in the Outline.
    */
   public void execute ( )
   {
     this.outlineUnbound = new OutlineUnbound ( this.oldExpression ) ;
     DefaultMutableTreeNode root = expression ( this.oldExpression ) ;
-    SwingUtilities.invokeLater ( new OutlineDisplayTree ( this.outlineUI , root ) ) ;
+    SwingUtilities
+        .invokeLater ( new OutlineDisplayTree ( this.outlineUI , root ) ) ;
   }
 
 
@@ -277,38 +295,26 @@ public class AbstractOutline implements Outline
 
 
   /**
-   * Returns the AbstractOutline Preferences.
+   * Returns the jMainPanel of the OutlineUI.
    * 
-   * @return The AbstractOutline Preferences.
+   * @return The jMainPanel of the OutlineUI.
+   * @see de.unisiegen.tpml.graphics.outline.Outline#getJPanelOutline()
+   */
+  public JPanel getJPanelOutline ( )
+  {
+    return this.outlineUI.getJPanelMain ( ) ;
+  }
+
+
+  /**
+   * Returns the OutlinePreferences.
+   * 
+   * @return The OutlinePreferences.
    * @see #outlinePreferences
    */
-  public OutlinePreferences getASTPreferences ( )
+  public OutlinePreferences getOutlinePreferences ( )
   {
     return this.outlinePreferences ;
-  }
-
-
-  /**
-   * Returns the AbstractOutline UI.
-   * 
-   * @return The AbstractOutline UI.
-   * @see #outlineUI
-   */
-  public OutlineUI getASTUI ( )
-  {
-    return this.outlineUI ;
-  }
-
-
-  /**
-   * Returns the oldExpression.
-   * 
-   * @return The oldExpression.
-   * @see #oldExpression
-   */
-  public Expression getOldExpression ( )
-  {
-    return this.oldExpression ;
   }
 
 
@@ -330,16 +336,12 @@ public class AbstractOutline implements Outline
     astNode0.appendDescription ( EXPRESSION + "1" + BETWEEN ) ; //$NON-NLS-1$
     astNode0.resetCaption ( ) ;
     node.add ( node0 ) ;
-    /*
-     * PrettyAnnotation prettyAnnotation = pExpression .toPrettyString (
-     * ).getAnnotationForPrintable ( binary ) ;
-     */
     int start = pInfixOperation.toPrettyString ( ).toString ( ).indexOf (
         binary.toString ( ) , e1.toPrettyString ( ).toString ( ).length ( ) ) ;
     int end = start + binary.toString ( ).length ( ) - 1 ;
-    DefaultMutableTreeNode node1 = new DefaultMutableTreeNode ( new OutlineNode (
-        binary.getClass ( ).getSimpleName ( ) , binary.toString ( ) , start ,
-        end , null , this.outlineUnbound ) ) ;
+    DefaultMutableTreeNode node1 = new DefaultMutableTreeNode (
+        new OutlineNode ( binary.getClass ( ).getSimpleName ( ) , binary
+            .toString ( ) , start , end , null , this.outlineUnbound ) ) ;
     node.add ( node1 ) ;
     DefaultMutableTreeNode ex2 = expression ( e2 ) ;
     OutlineNode node2 = ( OutlineNode ) ex2.getUserObject ( ) ;
@@ -364,9 +366,9 @@ public class AbstractOutline implements Outline
     OutlineBinding outlineBinding = new OutlineBinding ( pLambda ) ;
     outlineBinding.add ( pLambda , pLambda.getId ( ) ) ;
     outlineBinding.find ( ) ;
-    node.add ( new DefaultMutableTreeNode ( new OutlineNode ( IDENTIFIER , pLambda
-        .getId ( ) , outlinePair.getStart ( ) , outlinePair.getEnd ( ) , outlineBinding ,
-        this.outlineUnbound ) ) ) ;
+    node.add ( new DefaultMutableTreeNode ( new OutlineNode ( IDENTIFIER ,
+        pLambda.getId ( ) , outlinePair.getStart ( ) , outlinePair.getEnd ( ) ,
+        outlineBinding , this.outlineUnbound ) ) ) ;
     createChildren ( pLambda , node ) ;
     return node ;
   }
@@ -387,8 +389,8 @@ public class AbstractOutline implements Outline
     outlineBinding.add ( pLet.getE2 ( ) , pLet.getId ( ) ) ;
     outlineBinding.find ( ) ;
     node.add ( new DefaultMutableTreeNode ( new OutlineNode ( IDENTIFIER , pLet
-        .getId ( ) , outlinePair.getStart ( ) , outlinePair.getEnd ( ) , outlineBinding ,
-        this.outlineUnbound ) ) ) ;
+        .getId ( ) , outlinePair.getStart ( ) , outlinePair.getEnd ( ) ,
+        outlineBinding , this.outlineUnbound ) ) ) ;
     createChildren ( pLet , node ) ;
     return node ;
   }
@@ -408,21 +410,21 @@ public class AbstractOutline implements Outline
     OutlineBinding outlineBinding = new OutlineBinding ( pLetRec ) ;
     outlineBinding.add ( pLetRec , pLetRec.getId ( ) ) ;
     outlineBinding.find ( ) ;
-    node.add ( new DefaultMutableTreeNode ( new OutlineNode ( IDENTIFIER , pLetRec
-        .getId ( ) , outlinePair.getStart ( ) , outlinePair.getEnd ( ) , outlineBinding ,
-        this.outlineUnbound ) ) ) ;
+    node.add ( new DefaultMutableTreeNode ( new OutlineNode ( IDENTIFIER ,
+        pLetRec.getId ( ) , outlinePair.getStart ( ) , outlinePair.getEnd ( ) ,
+        outlineBinding , this.outlineUnbound ) ) ) ;
     createChildren ( pLetRec , node ) ;
     return node ;
   }
 
 
   /**
-   * This method loads a new Expression into the AbstractOutline. It checks
-   * if the new Expression is different to the current loaded Expression, if not
-   * it does nothing and returns. It does also nothing if the auto update is
-   * disabled and the change does not come from a mouse event. In the BigStep
-   * and the TypeChecker view it does also nothing if the change does not come
-   * from a mouse event.
+   * This method loads a new Expression into the Outline. It checks if the new
+   * Expression is different to the current loaded Expression, if not it does
+   * nothing and returns. It does also nothing if the auto update is disabled
+   * and the change does not come from a mouse event. In the BigStep and the
+   * TypeChecker view it does also nothing if the change does not come from a
+   * mouse event.
    * 
    * @param pExpression The new Expression.
    * @param pDescription The description who is calling this method.
@@ -448,13 +450,13 @@ public class AbstractOutline implements Outline
       return ;
     }
     this.oldExpression = pExpression ;
-    if ( this.aSTTimer != null )
+    if ( this.outlineTimer != null )
     {
-      this.aSTTimer.cancel ( ) ;
-      this.aSTTimer = null ;
+      this.outlineTimer.cancel ( ) ;
+      this.outlineTimer = null ;
     }
-    this.aSTTimer = new Timer ( ) ;
-    this.aSTTimer.schedule ( new OutlineTimerTask ( this ) , 250 ) ;
+    this.outlineTimer = new Timer ( ) ;
+    this.outlineTimer.schedule ( new OutlineTimerTask ( this ) , 250 ) ;
   }
 
 
@@ -470,8 +472,9 @@ public class AbstractOutline implements Outline
         pLocation , this.outlineUnbound ) ) ;
     int start = 0 ;
     int end = start - 1 + pLocation.getName ( ).length ( ) ;
-    node.add ( new DefaultMutableTreeNode ( new OutlineNode ( "Name" , pLocation //$NON-NLS-1$
-        .getName ( ) , start , end , null , this.outlineUnbound ) ) ) ;
+    node.add ( new DefaultMutableTreeNode ( new OutlineNode (
+        "Name" , pLocation //$NON-NLS-1$
+            .getName ( ) , start , end , null , this.outlineUnbound ) ) ) ;
     return node ;
   }
 
@@ -523,7 +526,8 @@ public class AbstractOutline implements Outline
     String idList[] = pMultiLambda.getIdentifiers ( ) ;
     DefaultMutableTreeNode node = new DefaultMutableTreeNode ( new OutlineNode (
         pMultiLambda , this.outlineUnbound ) ) ;
-    ArrayList < OutlinePair > index = OutlineIdentifier.getIndex ( pMultiLambda ) ;
+    ArrayList < OutlinePair > index = OutlineIdentifier
+        .getIndex ( pMultiLambda ) ;
     OutlinePair outlinePair ;
     final int length = idList.length ;
     for ( int i = 0 ; i < length ; i ++ )
@@ -596,7 +600,8 @@ public class AbstractOutline implements Outline
     String id = pRecursion.getId ( ) ;
     DefaultMutableTreeNode node = new DefaultMutableTreeNode ( new OutlineNode (
         pRecursion , this.outlineUnbound ) ) ;
-    OutlinePair outlinePair = OutlineIdentifier.getIndex ( pRecursion ).get ( 0 ) ;
+    OutlinePair outlinePair = OutlineIdentifier.getIndex ( pRecursion )
+        .get ( 0 ) ;
     OutlineBinding outlineBinding = new OutlineBinding ( pRecursion ) ;
     outlineBinding.add ( pRecursion , pRecursion.getId ( ) ) ;
     outlineBinding.find ( ) ;

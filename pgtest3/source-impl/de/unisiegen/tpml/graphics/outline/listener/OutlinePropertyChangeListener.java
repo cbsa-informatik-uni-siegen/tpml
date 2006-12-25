@@ -5,7 +5,7 @@ import java.beans.PropertyChangeEvent ;
 import java.beans.PropertyChangeListener ;
 import javax.swing.JSplitPane ;
 import de.unisiegen.tpml.graphics.AbstractProofView ;
-import de.unisiegen.tpml.graphics.outline.Outline;
+import de.unisiegen.tpml.graphics.outline.Outline ;
 
 
 /**
@@ -30,22 +30,22 @@ public class OutlinePropertyChangeListener implements PropertyChangeListener
 
 
   /**
-   * The AbstractOutline.
+   * The Outline.
    */
-  private Outline abstractSyntaxTree ;
+  private Outline outline ;
 
 
   /**
    * Initializes the OutlinePropertyChangeListener.
    * 
    * @param pJSplitPane The JSplitPane.
-   * @param pAbstractSyntaxTree The AbstractOutline.
+   * @param pOutline The Outline.
    */
   public OutlinePropertyChangeListener ( JSplitPane pJSplitPane ,
-      Outline pAbstractSyntaxTree )
+      Outline pOutline )
   {
     this.jSplitPane = pJSplitPane ;
-    this.abstractSyntaxTree = pAbstractSyntaxTree ;
+    this.outline = pOutline ;
     this.setDivider = false ;
   }
 
@@ -64,8 +64,8 @@ public class OutlinePropertyChangeListener implements PropertyChangeListener
       if ( ! this.setDivider )
       {
         this.setDivider = true ;
-        this.jSplitPane.setDividerLocation ( this.abstractSyntaxTree
-            .getASTPreferences ( ).getDividerLocation ( ) ) ;
+        this.jSplitPane.setDividerLocation ( this.outline
+            .getOutlinePreferences ( ).getDividerLocation ( ) ) ;
       }
     }
   }

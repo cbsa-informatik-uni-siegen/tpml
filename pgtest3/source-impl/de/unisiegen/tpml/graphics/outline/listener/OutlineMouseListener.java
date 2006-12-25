@@ -9,16 +9,15 @@ import javax.swing.tree.DefaultMutableTreeNode ;
 import javax.swing.tree.TreePath ;
 import de.unisiegen.tpml.graphics.bigstep.BigStepView ;
 import de.unisiegen.tpml.graphics.components.CompoundExpression ;
-import de.unisiegen.tpml.graphics.outline.ui.OutlineUI;
+import de.unisiegen.tpml.graphics.outline.ui.OutlineUI ;
 import de.unisiegen.tpml.graphics.smallstep.SmallStepView ;
 import de.unisiegen.tpml.graphics.typechecker.TypeCheckerView ;
 
 
 /**
  * This class listens for mouse events. It handles mouse events on the
- * components AbstractOutline, SmallStepView, BigStepView and
- * TypeCheckerView. Sets a new Expression in the AbstractOutline. Views the
- * JPopupMenu in the AbstractOutline.
+ * components Outline, SmallStepView, BigStepView and TypeCheckerView. Sets a
+ * new Expression in the Outline. Views the JPopupMenu in the Outline.
  * 
  * @author Christian Fehler
  * @version $Rev$
@@ -26,7 +25,7 @@ import de.unisiegen.tpml.graphics.typechecker.TypeCheckerView ;
 public class OutlineMouseListener implements MouseListener
 {
   /**
-   * The AbstractOutline UI.
+   * The Outline UI.
    */
   private OutlineUI outlineUI ;
 
@@ -44,23 +43,24 @@ public class OutlineMouseListener implements MouseListener
 
 
   /**
-   * Initializes the OutlineMouseListener with the given OutlineUI. This constructer is
-   * used, if the OutlineMouseListener listens for mouse events on the AST.
+   * Initializes the OutlineMouseListener with the given OutlineUI. This
+   * constructer is used, if the OutlineMouseListener listens for mouse events
+   * on the Outline.
    * 
-   * @param pASTUI The OutlineUI.
+   * @param pOutlineUI The Outline UI.
    */
-  public OutlineMouseListener ( OutlineUI pASTUI )
+  public OutlineMouseListener ( OutlineUI pOutlineUI )
   {
-    this.outlineUI = pASTUI ;
+    this.outlineUI = pOutlineUI ;
     this.compoundExpression = null ;
     this.view = null ;
   }
 
 
   /**
-   * Initializes the OutlineMouseListener with the given OutlineUI. This constructer is
-   * used, if the OutlineMouseListener listens for mouse events on the
-   * SmallStepView, BigStepView or TypeCheckerView.
+   * Initializes the OutlineMouseListener with the given OutlineUI. This
+   * constructer is used, if the OutlineMouseListener listens for mouse events
+   * on the SmallStepView, BigStepView or TypeCheckerView.
    * 
    * @param pCompoundExpression The CompoundExpression.
    */
@@ -108,7 +108,7 @@ public class OutlineMouseListener implements MouseListener
   /**
    * Handles mouse events on the components AbstractOutline, SmallStepView,
    * BigStepView and TypeCheckerView. Sets a new Expression in the
-   * AbstractOutline. Views the JPopupMenu in the AbstractOutline.
+   * AbstractOutline. Views the JPopupMenu in the Outline.
    * 
    * @param pMouseEvent The mouse event.
    */
@@ -129,10 +129,11 @@ public class OutlineMouseListener implements MouseListener
         {
           return ;
         }
-        this.outlineUI.getJTreeAbstractSyntaxTree ( ).setSelectionPath ( treePath ) ;
+        this.outlineUI.getJTreeAbstractSyntaxTree ( ).setSelectionPath (
+            treePath ) ;
         setStatus ( ) ;
-        this.outlineUI.getJPopupMenu ( ).show ( pMouseEvent.getComponent ( ) , x ,
-            y ) ;
+        this.outlineUI.getJPopupMenu ( ).show ( pMouseEvent.getComponent ( ) ,
+            x , y ) ;
       }
     }
     /*
@@ -152,21 +153,21 @@ public class OutlineMouseListener implements MouseListener
       {
         if ( this.view instanceof SmallStepView )
         {
-          ( ( SmallStepView ) this.view ).getAbstractSyntaxTree ( )
+          ( ( SmallStepView ) this.view ).getOutline ( )
               .loadExpression ( this.compoundExpression.getExpression ( ) ,
                   "mouse_smallstep" ) ; //$NON-NLS-1$
         }
         // BigStepView
         else if ( this.view instanceof BigStepView )
         {
-          ( ( BigStepView ) this.view ).getAbstractSyntaxTree ( )
+          ( ( BigStepView ) this.view ).getOutline ( )
               .loadExpression ( this.compoundExpression.getExpression ( ) ,
                   "mouse_bigstep" ) ; //$NON-NLS-1$
         }
         // TypeCheckerView
         else if ( this.view instanceof TypeCheckerView )
         {
-          ( ( TypeCheckerView ) this.view ).getAbstractSyntaxTree ( )
+          ( ( TypeCheckerView ) this.view ).getOutline ( )
               .loadExpression ( this.compoundExpression.getExpression ( ) ,
                   "mouse_typechecker" ) ; //$NON-NLS-1$
         }
@@ -239,8 +240,7 @@ public class OutlineMouseListener implements MouseListener
 
 
   /**
-   * Sets the status of the menu items in the popup menu in the
-   * AbstractOutline.
+   * Sets the status of the menu items in the popup menu in the Outline.
    */
   private void setStatus ( )
   {
@@ -266,15 +266,16 @@ public class OutlineMouseListener implements MouseListener
     if ( selectedNode.getChildCount ( ) > 0 )
     {
       boolean allChildrenVisible = allChildrenVisible ( treePath ) ;
-      boolean selectedChildVisible = this.outlineUI.getJTreeAbstractSyntaxTree ( )
-          .isVisible (
+      boolean selectedChildVisible = this.outlineUI
+          .getJTreeAbstractSyntaxTree ( ).isVisible (
               treePath.pathByAddingChild ( selectedNode.getChildAt ( 0 ) ) ) ;
       boolean rootChildVisible = this.outlineUI.getJTreeAbstractSyntaxTree ( )
           .isVisible (
               this.outlineUI.getJTreeAbstractSyntaxTree ( ).getPathForRow ( 0 )
                   .pathByAddingChild ( selectedNode.getChildAt ( 0 ) ) ) ;
       this.outlineUI.getJMenuItemExpand ( ).setEnabled ( ! allChildrenVisible ) ;
-      this.outlineUI.getJMenuItemCollapse ( ).setEnabled ( selectedChildVisible ) ;
+      this.outlineUI.getJMenuItemCollapse ( )
+          .setEnabled ( selectedChildVisible ) ;
       this.outlineUI.getJMenuItemCollapseAll ( ).setEnabled ( rootChildVisible ) ;
       this.outlineUI.getJMenuItemClose ( ).setEnabled ( selectedChildVisible ) ;
       this.outlineUI.getJMenuItemCloseAll ( ).setEnabled ( rootChildVisible ) ;
@@ -289,7 +290,8 @@ public class OutlineMouseListener implements MouseListener
       DefaultMutableTreeNode root = ( DefaultMutableTreeNode ) this.outlineUI
           .getTreeModel ( ).getRoot ( ) ;
       this.outlineUI.getJMenuItemCloseAll ( ).setEnabled ( ! root.isLeaf ( ) ) ;
-      this.outlineUI.getJMenuItemCollapseAll ( ).setEnabled ( ! root.isLeaf ( ) ) ;
+      this.outlineUI.getJMenuItemCollapseAll ( )
+          .setEnabled ( ! root.isLeaf ( ) ) ;
     }
   }
 }

@@ -26,7 +26,7 @@ public class OutlinePair
 
 
   /**
-   * Initializes the start and end index.
+   * Initializes the start and the end index.
    * 
    * @param pStart
    * @param pEnd

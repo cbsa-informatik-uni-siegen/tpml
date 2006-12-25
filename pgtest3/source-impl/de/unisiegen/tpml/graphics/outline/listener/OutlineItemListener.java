@@ -4,14 +4,14 @@ package de.unisiegen.tpml.graphics.outline.listener ;
 import java.awt.event.ItemEvent ;
 import java.awt.event.ItemListener ;
 import javax.swing.tree.DefaultMutableTreeNode ;
-import de.unisiegen.tpml.graphics.outline.OutlineNode;
-import de.unisiegen.tpml.graphics.outline.ui.OutlineUI;
+import de.unisiegen.tpml.graphics.outline.OutlineNode ;
+import de.unisiegen.tpml.graphics.outline.ui.OutlineUI ;
 
 
 /**
  * This class listens for item events. It updates the CheckBox selection and the
- * MenuItem selection. It sets the OutlineNode values replace, binding, unbound and
- * autoupdate.
+ * MenuItem selection. It sets the OutlineNode values replace, binding, unbound
+ * and autoupdate.
  * 
  * @author Christian Fehler
  * @version $Rev$
@@ -19,7 +19,7 @@ import de.unisiegen.tpml.graphics.outline.ui.OutlineUI;
 public class OutlineItemListener implements ItemListener
 {
   /**
-   * The AbstractOutline UI.
+   * The Outline UI.
    */
   private OutlineUI outlineUI ;
 
@@ -27,11 +27,11 @@ public class OutlineItemListener implements ItemListener
   /**
    * Initializes the OutlineItemListener.
    * 
-   * @param pASTUI The AbstractOutline UI.
+   * @param pOutlineUI The Outline UI.
    */
-  public OutlineItemListener ( OutlineUI pASTUI )
+  public OutlineItemListener ( OutlineUI pOutlineUI )
   {
-    this.outlineUI = pASTUI ;
+    this.outlineUI = pOutlineUI ;
   }
 
 
@@ -44,8 +44,8 @@ public class OutlineItemListener implements ItemListener
    */
   private void autoUpdate ( boolean pSelected )
   {
-    this.outlineUI.getAbstractSyntaxTree ( ).getASTPreferences ( ).setAutoUpdate (
-        pSelected ) ;
+    this.outlineUI.getAbstractOutline ( ).getOutlinePreferences ( )
+        .setAutoUpdate ( pSelected ) ;
     this.outlineUI.getJCheckBoxAutoUpdate ( ).setSelected ( pSelected ) ;
     this.outlineUI.getJMenuItemAutoUpdate ( ).setSelected ( pSelected ) ;
   }
@@ -61,11 +61,11 @@ public class OutlineItemListener implements ItemListener
   private void binding ( boolean pSelected )
   {
     OutlineNode.setBinding ( pSelected ) ;
-    this.outlineUI.getASTTreeSelectionListener ( ).reset (
+    this.outlineUI.getOutlineTreeSelectionListener ( ).reset (
         ( DefaultMutableTreeNode ) this.outlineUI.getTreeModel ( ).getRoot ( ) ) ;
-    this.outlineUI.getASTTreeSelectionListener ( ).update (
+    this.outlineUI.getOutlineTreeSelectionListener ( ).update (
         this.outlineUI.getJTreeAbstractSyntaxTree ( ).getSelectionPath ( ) ) ;
-    this.outlineUI.getAbstractSyntaxTree ( ).getASTPreferences ( ).setBinding (
+    this.outlineUI.getAbstractOutline ( ).getOutlinePreferences ( ).setBinding (
         pSelected ) ;
     this.outlineUI.getJCheckBoxBinding ( ).setSelected ( pSelected ) ;
     this.outlineUI.getJMenuItemBinding ( ).setSelected ( pSelected ) ;
@@ -95,11 +95,11 @@ public class OutlineItemListener implements ItemListener
   private void replace ( boolean pSelected )
   {
     OutlineNode.setReplace ( pSelected ) ;
-    this.outlineUI.getASTTreeSelectionListener ( ).reset (
+    this.outlineUI.getOutlineTreeSelectionListener ( ).reset (
         ( DefaultMutableTreeNode ) this.outlineUI.getTreeModel ( ).getRoot ( ) ) ;
-    this.outlineUI.getASTTreeSelectionListener ( ).update (
+    this.outlineUI.getOutlineTreeSelectionListener ( ).update (
         this.outlineUI.getJTreeAbstractSyntaxTree ( ).getSelectionPath ( ) ) ;
-    this.outlineUI.getAbstractSyntaxTree ( ).getASTPreferences ( ).setReplace (
+    this.outlineUI.getAbstractOutline ( ).getOutlinePreferences ( ).setReplace (
         pSelected ) ;
     this.outlineUI.getJCheckBoxReplace ( ).setSelected ( pSelected ) ;
     this.outlineUI.getJMenuItemReplace ( ).setSelected ( pSelected ) ;
@@ -116,12 +116,12 @@ public class OutlineItemListener implements ItemListener
   private void selection ( boolean pSelected )
   {
     OutlineNode.setSelection ( pSelected ) ;
-    this.outlineUI.getASTTreeSelectionListener ( ).reset (
+    this.outlineUI.getOutlineTreeSelectionListener ( ).reset (
         ( DefaultMutableTreeNode ) this.outlineUI.getTreeModel ( ).getRoot ( ) ) ;
-    this.outlineUI.getASTTreeSelectionListener ( ).update (
+    this.outlineUI.getOutlineTreeSelectionListener ( ).update (
         this.outlineUI.getJTreeAbstractSyntaxTree ( ).getSelectionPath ( ) ) ;
-    this.outlineUI.getAbstractSyntaxTree ( ).getASTPreferences ( ).setSelection (
-        pSelected ) ;
+    this.outlineUI.getAbstractOutline ( ).getOutlinePreferences ( )
+        .setSelection ( pSelected ) ;
     this.outlineUI.getJCheckBoxSelection ( ).setSelected ( pSelected ) ;
     this.outlineUI.getJMenuItemSelection ( ).setSelected ( pSelected ) ;
   }
@@ -137,11 +137,11 @@ public class OutlineItemListener implements ItemListener
   private void unbound ( boolean pSelected )
   {
     OutlineNode.setUnbound ( pSelected ) ;
-    this.outlineUI.getASTTreeSelectionListener ( ).reset (
+    this.outlineUI.getOutlineTreeSelectionListener ( ).reset (
         ( DefaultMutableTreeNode ) this.outlineUI.getTreeModel ( ).getRoot ( ) ) ;
-    this.outlineUI.getASTTreeSelectionListener ( ).update (
+    this.outlineUI.getOutlineTreeSelectionListener ( ).update (
         this.outlineUI.getJTreeAbstractSyntaxTree ( ).getSelectionPath ( ) ) ;
-    this.outlineUI.getAbstractSyntaxTree ( ).getASTPreferences ( ).setUnbound (
+    this.outlineUI.getAbstractOutline ( ).getOutlinePreferences ( ).setUnbound (
         pSelected ) ;
     this.outlineUI.getJCheckBoxUnbound ( ).setSelected ( pSelected ) ;
     this.outlineUI.getJMenuItemUnbound ( ).setSelected ( pSelected ) ;

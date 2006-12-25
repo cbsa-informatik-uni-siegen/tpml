@@ -9,12 +9,12 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyCharIterator ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStyle ;
 import de.unisiegen.tpml.graphics.Theme ;
-import de.unisiegen.tpml.graphics.outline.binding.OutlineBinding;
-import de.unisiegen.tpml.graphics.outline.binding.OutlineUnbound;
+import de.unisiegen.tpml.graphics.outline.binding.OutlineBinding ;
+import de.unisiegen.tpml.graphics.outline.binding.OutlineUnbound ;
 
 
 /**
- * This class represents the nodes in the AbstractOutline.
+ * This class represents the nodes in the Outline.
  * 
  * @author Christian Fehler
  * @version $Rev$
@@ -286,8 +286,8 @@ public class OutlineNode
    * This constructor initializes the values and loads the description.
    * 
    * @param pExpression The expression repressented by this node.
-   * @param pASTUnbound The OutlineUnbound which repressents the unbound Identifiers
-   *          in all nodes.
+   * @param pASTUnbound The OutlineUnbound which repressents the unbound
+   *          Identifiers in all nodes.
    */
   public OutlineNode ( Expression pExpression , OutlineUnbound pASTUnbound )
   {
@@ -323,8 +323,8 @@ public class OutlineNode
    * @param pStartIndex The start index of the Identifier.
    * @param pEndIndex The end index of the Identifier.
    * @param pASTBinding The bindings in this node.
-   * @param pASTUnbound The OutlineUnbound which repressents the unbound Identifiers
-   *          in all nodes
+   * @param pASTUnbound The OutlineUnbound which repressents the unbound
+   *          Identifiers in all nodes
    */
   public OutlineNode ( String pDescription , String pExpressionString ,
       int pStartIndex , int pEndIndex , OutlineBinding pASTBinding ,
@@ -740,8 +740,8 @@ public class OutlineNode
       /*
        * No selection and binding
        */
-      else if ( ( ! selection ) && ( binding ) && ( this.outlineBinding != null )
-          && ( pIdentifierIndex >= 0 )
+      else if ( ( ! selection ) && ( binding )
+          && ( this.outlineBinding != null ) && ( pIdentifierIndex >= 0 )
           && ( this.outlineBinding.size ( pIdentifierIndex ) > 0 )
           && ( charIndex == pSelectionStart ) )
       {

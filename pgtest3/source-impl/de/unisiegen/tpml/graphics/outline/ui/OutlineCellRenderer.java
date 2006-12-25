@@ -10,7 +10,7 @@ import javax.swing.tree.DefaultTreeCellRenderer ;
 
 
 /**
- * TODO
+ * This class renders a cell in the Outline.
  * 
  * @author Christian Fehler
  * @version $Rev$
@@ -18,13 +18,13 @@ import javax.swing.tree.DefaultTreeCellRenderer ;
 public class OutlineCellRenderer extends DefaultTreeCellRenderer
 {
   /**
-   * TODO
+   * The unique serialization identifier for this class.
    */
   private static final long serialVersionUID = 3053444302287643623L ;
 
 
   /**
-   * TODO
+   * Initializes the OutlineCellRenderer.
    */
   public OutlineCellRenderer ( )
   {
@@ -44,18 +44,7 @@ public class OutlineCellRenderer extends DefaultTreeCellRenderer
 
 
   /**
-   * TODO
-   * 
-   * @param pTree
-   * @param pValue
-   * @param pSel
-   * @param pExpanded
-   * @param pLeaf
-   * @param pRow
-   * @param pHasFocus
-   * @return TODO
-   * @see javax.swing.tree.DefaultTreeCellRenderer#getTreeCellRendererComponent(javax.swing.JTree,
-   *      java.lang.Object, boolean, boolean, boolean, int, boolean)
+   * {@inheritDoc}
    */
   @ Override
   public Component getTreeCellRendererComponent ( JTree pTree , Object pValue ,
@@ -69,10 +58,7 @@ public class OutlineCellRenderer extends DefaultTreeCellRenderer
 
 
   /**
-   * TODO
-   * 
-   * @param pGraphics
-   * @see javax.swing.JComponent#paintComponent(java.awt.Graphics)
+   * {@inheritDoc}
    */
   @ Override
   protected void paintComponent ( Graphics pGraphics )

@@ -4,7 +4,7 @@ package de.unisiegen.tpml.graphics.outline.listener ;
 import java.awt.event.ComponentEvent ;
 import java.awt.event.ComponentListener ;
 import javax.swing.JSplitPane ;
-import de.unisiegen.tpml.graphics.outline.Outline;
+import de.unisiegen.tpml.graphics.outline.Outline ;
 
 
 /**
@@ -23,22 +23,21 @@ public class OutlineComponentListener implements ComponentListener
 
 
   /**
-   * The AbstractOutline.
+   * The Outline.
    */
-  private Outline abstractSyntaxTree ;
+  private Outline outline ;
 
 
   /**
    * Initializes the OutlineComponentListener.
    * 
    * @param pJSplitPane The JSplitPane.
-   * @param pAbstractSyntaxTree The AbstractOutline.
+   * @param pOutline The AbstractOutline.
    */
-  public OutlineComponentListener ( JSplitPane pJSplitPane ,
-      Outline pAbstractSyntaxTree )
+  public OutlineComponentListener ( JSplitPane pJSplitPane , Outline pOutline )
   {
     this.jSplitPane = pJSplitPane ;
-    this.abstractSyntaxTree = pAbstractSyntaxTree ;
+    this.outline = pOutline ;
   }
 
 
@@ -77,9 +76,9 @@ public class OutlineComponentListener implements ComponentListener
   public void componentResized ( ComponentEvent pComponentEvent )
   {
     if ( pComponentEvent.getSource ( ).equals (
-        this.abstractSyntaxTree.getASTUI ( ).getJPanelMain ( ) ) )
+        this.outline.getJPanelOutline ( ) ) )
     {
-      this.abstractSyntaxTree.getASTPreferences ( ).setDividerLocation (
+      this.outline.getOutlinePreferences ( ).setDividerLocation (
           this.jSplitPane.getDividerLocation ( ) ) ;
     }
   }

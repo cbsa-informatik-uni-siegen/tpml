@@ -7,11 +7,11 @@ import de.unisiegen.tpml.core.ExpressionProofModel ;
 import de.unisiegen.tpml.core.bigstep.BigStepProofModel ;
 import de.unisiegen.tpml.core.smallstep.SmallStepProofModel ;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel ;
-import de.unisiegen.tpml.graphics.outline.Outline;
+import de.unisiegen.tpml.graphics.outline.Outline ;
 
 
 /**
- * Sets the new Expression in the AbstractOutline, if a node changed.
+ * Sets the new Expression in the Outline, if a node changed.
  * 
  * @author Christian Fehler
  * @version $Rev$
@@ -21,7 +21,7 @@ public class OutlineTreeModelListener implements TreeModelListener
   /**
    * The AbstractOutline.
    */
-  public Outline abstractSyntaxTree ;
+  public Outline outline ;
 
 
   /**
@@ -31,22 +31,22 @@ public class OutlineTreeModelListener implements TreeModelListener
 
 
   /**
-   * Initializes the OutlineTreeModelListener with the given AbstractOutline and
-   * the ExpressionProofModel.
+   * Initializes the OutlineTreeModelListener with the given Outline and the
+   * ExpressionProofModel.
    * 
-   * @param pAbstractSyntaxTree The AbstractOutline.
+   * @param pOutline The Outline.
    * @param pExpressionProofModel The ExpressionProofModel.
    */
-  public OutlineTreeModelListener ( Outline pAbstractSyntaxTree ,
+  public OutlineTreeModelListener ( Outline pOutline ,
       ExpressionProofModel pExpressionProofModel )
   {
-    this.abstractSyntaxTree = pAbstractSyntaxTree ;
+    this.outline = pOutline ;
     this.expressionProofModel = pExpressionProofModel ;
   }
 
 
   /**
-   * Sets the new Expression in the AbstractOutline, if a node changed.
+   * Sets the new Expression in the Outline, if a node changed.
    * 
    * @param pTreeModelEvent The tree model event.
    * @see javax.swing.event.TreeModelListener#treeNodesChanged(javax.swing.event.TreeModelEvent)
@@ -56,19 +56,18 @@ public class OutlineTreeModelListener implements TreeModelListener
     Object source = pTreeModelEvent.getSource ( ) ;
     if ( source instanceof SmallStepProofModel )
     {
-      this.abstractSyntaxTree.loadExpression ( this.expressionProofModel
-          .getRoot ( ).getLastLeaf ( ).getExpression ( ) , "change_smallstep" ) ; //$NON-NLS-1$
+      this.outline.loadExpression ( this.expressionProofModel.getRoot ( )
+          .getLastLeaf ( ).getExpression ( ) , "change_smallstep" ) ; //$NON-NLS-1$
     }
     else if ( source instanceof BigStepProofModel )
     {
-      this.abstractSyntaxTree.loadExpression ( this.expressionProofModel
-          .getRoot ( ).getLastLeaf ( ).getExpression ( ) , "change_bigstep" ) ; //$NON-NLS-1$
+      this.outline.loadExpression ( this.expressionProofModel.getRoot ( )
+          .getLastLeaf ( ).getExpression ( ) , "change_bigstep" ) ; //$NON-NLS-1$
     }
     else if ( source instanceof TypeCheckerProofModel )
     {
-      this.abstractSyntaxTree
-          .loadExpression ( this.expressionProofModel.getRoot ( )
-              .getLastLeaf ( ).getExpression ( ) , "change_typechecker" ) ; //$NON-NLS-1$
+      this.outline.loadExpression ( this.expressionProofModel.getRoot ( )
+          .getLastLeaf ( ).getExpression ( ) , "change_typechecker" ) ; //$NON-NLS-1$
     }
   }
 

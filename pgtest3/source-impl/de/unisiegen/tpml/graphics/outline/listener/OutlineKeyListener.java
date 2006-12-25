@@ -4,9 +4,9 @@ package de.unisiegen.tpml.graphics.outline.listener ;
 import java.awt.event.KeyEvent ;
 import java.awt.event.KeyListener ;
 import javax.swing.tree.DefaultMutableTreeNode ;
-import de.unisiegen.tpml.graphics.outline.OutlineNode;
-import de.unisiegen.tpml.graphics.outline.ui.OutlineUI;
-import de.unisiegen.tpml.graphics.outline.util.OutlineClipboard;
+import de.unisiegen.tpml.graphics.outline.OutlineNode ;
+import de.unisiegen.tpml.graphics.outline.ui.OutlineUI ;
+import de.unisiegen.tpml.graphics.outline.util.OutlineClipboard ;
 
 
 /**
@@ -18,7 +18,7 @@ import de.unisiegen.tpml.graphics.outline.util.OutlineClipboard;
 public class OutlineKeyListener implements KeyListener
 {
   /**
-   * The AbstractOutline UI.
+   * The Outline UI.
    */
   private OutlineUI outlineUI ;
 
@@ -26,11 +26,11 @@ public class OutlineKeyListener implements KeyListener
   /**
    * Initializes the OutlineKeyListener.
    * 
-   * @param pASTUI The AbstractOutline UI.
+   * @param pOutlineUI The Outline UI.
    */
-  public OutlineKeyListener ( OutlineUI pASTUI )
+  public OutlineKeyListener ( OutlineUI pOutlineUI )
   {
-    this.outlineUI = pASTUI ;
+    this.outlineUI = pOutlineUI ;
   }
 
 

@@ -21,7 +21,8 @@ import de.unisiegen.tpml.graphics.outline.listener.OutlineTreeModelListener ;
 
 
 /**
- * Add documentation here.
+ * The implementation of the {@link de.unisiegen.tpml.graphics.ProofView}
+ * interface for the type checker interpreter user interface.
  * 
  * @author Marcell Fischbach
  * @author Christian Fehler
@@ -31,65 +32,52 @@ import de.unisiegen.tpml.graphics.outline.listener.OutlineTreeModelListener ;
 public class TypeCheckerView extends AbstractProofView
 {
   /**
-   * 
+   * The unique serialization identifier for this class.
    */
   private static final long serialVersionUID = - 425214200136389228L ;
 
 
   /**
-   * TODO
+   * The tyoe checker component.
    */
   protected TypeCheckerComponent component ;
 
 
   /**
-   * TODO
+   * The scroll pane for the <code>component</code>.
    */
   protected JScrollPane scrollPane ;
 
 
   /**
-   * TODO
+   * The split pane for the <code>component</code>.
    */
   private JSplitPane jSplitPane ;
 
 
   /**
-   * TODO
+   * The Outline of this view.
+   * 
+   * @see #getOutline()
    */
-  private Outline abstractSyntaxTree ;
+  private Outline outline ;
 
 
   /**
-   * TODO
+   * Allocates a new <code>TypeCheckerView</code> for the specified
+   * <code>model</code>.
    * 
-   * @param model
+   * @param model the proof model for the type checker view.
    */
   public TypeCheckerView ( TypeCheckerProofModel model )
   {
     super ( ) ;
-    this.abstractSyntaxTree = new AbstractOutline ( ) ;
-    // Disable AutoUpdate, remove Listener and deselect
-    this.abstractSyntaxTree.getASTUI ( ).getJCheckBoxAutoUpdate ( ).setEnabled (
-        false ) ;
-    this.abstractSyntaxTree.getASTUI ( ).getJCheckBoxAutoUpdate ( )
-        .removeItemListener (
-            this.abstractSyntaxTree.getASTUI ( ).getJCheckBoxAutoUpdate ( )
-                .getItemListeners ( ) [ 0 ] ) ;
-    this.abstractSyntaxTree.getASTUI ( ).getJCheckBoxAutoUpdate ( )
-        .setSelected ( false ) ;
-    this.abstractSyntaxTree.getASTUI ( ).getJMenuItemAutoUpdate ( ).setEnabled (
-        false ) ;
-    this.abstractSyntaxTree.getASTUI ( ).getJMenuItemAutoUpdate ( )
-        .removeActionListener (
-            this.abstractSyntaxTree.getASTUI ( ).getJMenuItemAutoUpdate ( )
-                .getActionListeners ( ) [ 0 ] ) ;
-    this.abstractSyntaxTree.getASTUI ( ).getJMenuItemAutoUpdate ( )
-        .setSelected ( false ) ;
-    this.abstractSyntaxTree.loadExpression ( model.getRoot ( ).getLastLeaf ( )
+    this.outline = new AbstractOutline ( ) ;
+    this.outline.disableAutoUpdate ( ) ;
+    this.outline.loadExpression ( model.getRoot ( ).getLastLeaf ( )
         .getExpression ( ) , "first_typechecker" ) ; //$NON-NLS-1$
-    model.addTreeModelListener ( new OutlineTreeModelListener (
-        this.abstractSyntaxTree , model ) ) ;
+    model.addTreeModelListener ( new OutlineTreeModelListener ( this.outline ,
+        model ) ) ;
     GridBagConstraints gridBagConstraints = new GridBagConstraints ( ) ;
     this.jSplitPane = new JSplitPane ( JSplitPane.VERTICAL_SPLIT ) ;
     this.setLayout ( new GridBagLayout ( ) ) ;
@@ -108,10 +96,10 @@ public class TypeCheckerView extends AbstractProofView
                 .getWidth ( ) ) ;
       }
     } ) ;
-    JPanel jMainPanel = this.abstractSyntaxTree.getASTUI ( ).getJPanelMain ( ) ;
-    jMainPanel.getPreferredSize ( ).getHeight ( ) ;
+    JPanel jPanelOutline = this.outline.getJPanelOutline ( ) ;
+    jPanelOutline.getPreferredSize ( ).getHeight ( ) ;
     this.jSplitPane.setLeftComponent ( this.scrollPane ) ;
-    this.jSplitPane.setRightComponent ( jMainPanel ) ;
+    this.jSplitPane.setRightComponent ( jPanelOutline ) ;
     this.jSplitPane.setOneTouchExpandable ( true ) ;
     this.jSplitPane.setResizeWeight ( 0.5 ) ;
     gridBagConstraints.fill = GridBagConstraints.BOTH ;
@@ -122,28 +110,26 @@ public class TypeCheckerView extends AbstractProofView
     gridBagConstraints.weighty = 10 ;
     this.add ( this.jSplitPane , gridBagConstraints ) ;
     this.addPropertyChangeListener ( new OutlinePropertyChangeListener (
-        this.jSplitPane , this.abstractSyntaxTree ) ) ;
-    jMainPanel.addComponentListener ( new OutlineComponentListener (
-        this.jSplitPane , this.abstractSyntaxTree ) ) ;
+        this.jSplitPane , this.outline ) ) ;
+    jPanelOutline.addComponentListener ( new OutlineComponentListener (
+        this.jSplitPane , this.outline ) ) ;
   }
 
 
   /**
-   * TODO
+   * Returns the Outline of this view.
    * 
-   * @return TODO
+   * @return The Outline of this view.
    */
-  public Outline getAbstractSyntaxTree ( )
+  public Outline getOutline ( )
   {
-    return this.abstractSyntaxTree ;
+    return this.outline ;
   }
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @throws IllegalStateException
-   * @throws ProofGuessException
    * @see de.unisiegen.tpml.graphics.ProofView#guess()
    */
   public void guess ( ) throws IllegalStateException , ProofGuessException

@@ -357,8 +357,8 @@ public class OutlineBinding
    * Returns the index of the given Identifier in the given Identifiers Array.
    * If the Identifier is not in the array it returns -1.
    * 
-   * @param pIdentifiers
-   * @param pId
+   * @param pIdentifiers The Identifier array.
+   * @param pId The single Identifier.
    * @return The index of the given Identifier in the given Identifiers Array.
    *         If the Identifier is not in the array it returns -1.
    */

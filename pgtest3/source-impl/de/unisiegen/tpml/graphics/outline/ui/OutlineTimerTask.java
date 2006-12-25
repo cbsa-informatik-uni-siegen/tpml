@@ -22,11 +22,11 @@ public class OutlineTimerTask extends TimerTask
   /**
    * Initilizes the OutlineTimerTask.
    * 
-   * @param pAbstractSyntaxTree The AbstractOutline.
+   * @param pAbstractOutline The AbstractOutline.
    */
-  public OutlineTimerTask ( AbstractOutline pAbstractSyntaxTree )
+  public OutlineTimerTask ( AbstractOutline pAbstractOutline )
   {
-    this.abstractOutline = pAbstractSyntaxTree ;
+    this.abstractOutline = pAbstractOutline ;
   }
 
 

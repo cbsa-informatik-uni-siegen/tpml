@@ -2,8 +2,8 @@ package de.unisiegen.tpml.graphics.outline.util ;
 
 
 import java.util.prefs.Preferences ;
-import de.unisiegen.tpml.graphics.outline.AbstractOutline;
-import de.unisiegen.tpml.graphics.outline.OutlineNode;
+import de.unisiegen.tpml.graphics.outline.AbstractOutline ;
+import de.unisiegen.tpml.graphics.outline.OutlineNode ;
 
 
 /**
@@ -87,8 +87,7 @@ public class OutlinePreferences
    */
   public OutlinePreferences ( )
   {
-    this.preferences = Preferences
-        .userNodeForPackage ( AbstractOutline.class ) ;
+    this.preferences = Preferences.userNodeForPackage ( AbstractOutline.class ) ;
     this.replace = this.preferences.getBoolean ( "replace" , true ) ; //$NON-NLS-1$
     this.binding = this.preferences.getBoolean ( "bindings" , true ) ; //$NON-NLS-1$
     this.unbound = this.preferences.getBoolean ( "unbound" , true ) ; //$NON-NLS-1$

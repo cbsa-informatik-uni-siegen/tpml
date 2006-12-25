@@ -15,8 +15,8 @@ import de.unisiegen.tpml.core.expressions.MultiLambda ;
 import de.unisiegen.tpml.core.expressions.MultiLet ;
 import de.unisiegen.tpml.core.expressions.Recursion ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation ;
-import de.unisiegen.tpml.graphics.outline.OutlineNode;
-import de.unisiegen.tpml.graphics.outline.ui.OutlineUI;
+import de.unisiegen.tpml.graphics.outline.OutlineNode ;
+import de.unisiegen.tpml.graphics.outline.ui.OutlineUI ;
 
 
 /**
@@ -29,7 +29,7 @@ import de.unisiegen.tpml.graphics.outline.ui.OutlineUI;
 public class OutlineTreeSelectionListener implements TreeSelectionListener
 {
   /**
-   * The AbstractOutline UI.
+   * The OutlineUI.
    */
   private OutlineUI outlineUI ;
 
@@ -37,11 +37,11 @@ public class OutlineTreeSelectionListener implements TreeSelectionListener
   /**
    * Initializes the OutlineTreeSelectionListener with the given OutlineUI.
    * 
-   * @param pASTUI The AbstractOutline UI.
+   * @param pOutlineUI The OutlineUI.
    */
-  public OutlineTreeSelectionListener ( OutlineUI pASTUI )
+  public OutlineTreeSelectionListener ( OutlineUI pOutlineUI )
   {
-    this.outlineUI = pASTUI ;
+    this.outlineUI = pOutlineUI ;
   }
 
 
@@ -116,9 +116,8 @@ public class OutlineTreeSelectionListener implements TreeSelectionListener
     ArrayList < OutlineNode > list = new ArrayList < OutlineNode > ( ) ;
     for ( int i = 0 ; i < pTreePath.getPathCount ( ) ; i ++ )
     {
-      list
-          .add ( ( OutlineNode ) ( ( DefaultMutableTreeNode ) pTreePath.getPath ( ) [ i ] )
-              .getUserObject ( ) ) ;
+      list.add ( ( OutlineNode ) ( ( DefaultMutableTreeNode ) pTreePath
+          .getPath ( ) [ i ] ).getUserObject ( ) ) ;
     }
     OutlineNode last = list.get ( list.size ( ) - 1 ) ;
     // Identifier
