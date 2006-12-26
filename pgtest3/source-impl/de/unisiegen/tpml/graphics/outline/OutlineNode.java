@@ -2,6 +2,7 @@ package de.unisiegen.tpml.graphics.outline ;
 
 
 import java.awt.Color ;
+import de.unisiegen.tpml.core.expressions.BinaryOperator ;
 import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyCharIterator ;
@@ -298,6 +299,34 @@ public class OutlineNode
   /**
    * This constructor initializes the values and loads the description.
    * 
+   * @param pExpression The expression repressented by this node.
+   * @param pDescription The description of this node.
+   * @param pExpressionString The expression as a string.
+   * @param pStartIndex The start index of the Identifier.
+   * @param pEndIndex The end index of the Identifier.
+   * @param pASTBinding The bindings in this node.
+   * @param pASTUnbound The OutlineUnbound which repressents the unbound
+   *          Identifiers in all nodes
+   */
+  public OutlineNode ( Expression pExpression , String pDescription ,
+      String pExpressionString , int pStartIndex , int pEndIndex ,
+      OutlineBinding pASTBinding , OutlineUnbound pASTUnbound )
+  {
+    this.expression = pExpression ;
+    this.description = pDescription ;
+    this.expressionString = pExpressionString ;
+    this.startIndex = pStartIndex ;
+    this.endIndex = pEndIndex ;
+    this.outlineBinding = pASTBinding ;
+    this.outlineUnbound = pASTUnbound ;
+    this.replaceInThisNode = false ;
+    resetCaption ( ) ;
+  }
+
+
+  /**
+   * This constructor initializes the values and loads the description.
+   * 
    * @param pDescription The description of this node.
    * @param pExpressionString The expression as a string.
    * @param pStartIndex The start index of the Identifier.
@@ -340,7 +369,7 @@ public class OutlineNode
    */
   public void enableSelectionColor ( )
   {
-    if ( this.expression == null )
+    if ( this.startIndex != - 1 )
     {
       StringBuffer result = new StringBuffer ( HTML ) ;
       result.append ( this.description ) ;
@@ -350,12 +379,20 @@ public class OutlineNode
       result.append ( FONT_AFTER_COLOR ) ;
       if ( selection )
       {
-        result.append ( FONT_BOLD_BEGIN
-            + getHTMLFormat ( Theme.currentTheme ( ).getSelectionColor ( ) )
-            + FONT_AFTER_COLOR ) ;
+        result.append ( FONT_BOLD_BEGIN ) ;
+        result.append ( getHTMLFormat ( Theme.currentTheme ( )
+            .getSelectionColor ( ) ) ) ;
+        result.append ( FONT_AFTER_COLOR ) ;
+      }
+      else if ( this.expression instanceof BinaryOperator )
+      {
+        result.append ( FONT_BOLD_BEGIN ) ;
+        result.append ( getHTMLFormat ( Theme.currentTheme ( )
+            .getConstantColor ( ) ) ) ;
+        result.append ( FONT_AFTER_COLOR ) ;
       }
       result.append ( getHTMLCode ( this.expressionString ) ) ;
-      if ( selection )
+      if ( ( selection ) || ( this.expression instanceof BinaryOperator ) )
       {
         result.append ( FONT_BOLD_END ) ;
       }
@@ -582,7 +619,7 @@ public class OutlineNode
    */
   public void resetCaption ( )
   {
-    if ( this.expression == null )
+    if ( this.startIndex != - 1 )
     {
       StringBuffer result = new StringBuffer ( HTML ) ;
       result.append ( this.description ) ;
@@ -590,18 +627,18 @@ public class OutlineNode
       result.append ( getHTMLFormat ( Theme.currentTheme ( )
           .getExpressionColor ( ) ) ) ;
       result.append ( FONT_AFTER_COLOR ) ;
-      if ( this.description.equals ( "ArithmeticOperator" ) ) //$NON-NLS-1$
+      if ( this.expression instanceof BinaryOperator )
       {
-        String constantColor = getHTMLFormat ( Theme.currentTheme ( )
-            .getConstantColor ( ) ) ;
         result.append ( FONT_BOLD_BEGIN ) ;
-        result.append ( constantColor ) ;
+        result.append ( getHTMLFormat ( Theme.currentTheme ( )
+            .getConstantColor ( ) ) ) ;
         result.append ( FONT_AFTER_COLOR ) ;
-      }
-      result.append ( getHTMLCode ( this.expressionString ) ) ;
-      if ( this.description.equals ( "ArithmeticOperator" ) ) //$NON-NLS-1$
-      {
+        result.append ( getHTMLCode ( this.expressionString ) ) ;
         result.append ( FONT_BOLD_END ) ;
+      }
+      else
+      {
+        result.append ( getHTMLCode ( this.expressionString ) ) ;
       }
       result.append ( END ) ;
       this.caption = result.toString ( ) ;
