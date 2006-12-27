@@ -24,6 +24,7 @@ import javax.swing.border.TitledBorder ;
 import javax.swing.tree.DefaultMutableTreeNode ;
 import javax.swing.tree.DefaultTreeModel ;
 import de.unisiegen.tpml.graphics.outline.AbstractOutline ;
+import de.unisiegen.tpml.graphics.outline.Outline ;
 import de.unisiegen.tpml.graphics.outline.listener.OutlineActionListener ;
 import de.unisiegen.tpml.graphics.outline.listener.OutlineItemListener ;
 import de.unisiegen.tpml.graphics.outline.listener.OutlineKeyListener ;
@@ -32,7 +33,7 @@ import de.unisiegen.tpml.graphics.outline.listener.OutlineTreeSelectionListener 
 
 
 /**
- * This class creates the UI of the <code>Outline</code>.
+ * This class creates the UI of the {@link Outline}.
  * 
  * @author Christian Fehler
  * @version $Rev$
@@ -52,7 +53,7 @@ public class OutlineUI
 
 
   /**
-   * The tree.
+   * The <code>JTree</code>.
    * 
    * @see #getJTreeAbstractSyntaxTree()
    */
@@ -76,7 +77,7 @@ public class OutlineUI
 
 
   /**
-   * The <code>JScrollPane</code> of the <code>Outline</code>.
+   * The <code>JScrollPane</code> of the {@link Outline}.
    */
   private JScrollPane jScrollPaneAbstractSyntaxTree ;
 
@@ -136,7 +137,7 @@ public class OutlineUI
 
 
   /**
-   * The <code>OutlineTreeSelectionListener</code>.
+   * The {@link OutlineTreeSelectionListener}.
    * 
    * @see #getOutlineTreeSelectionListener()
    */
@@ -144,7 +145,7 @@ public class OutlineUI
 
 
   /**
-   * The <code>OutlineActionListener</code>.
+   * The {@link OutlineActionListener}.
    * 
    * @see #getOutlineActionListener()
    */
@@ -152,7 +153,7 @@ public class OutlineUI
 
 
   /**
-   * The <code>OutlineItemListener</code>.
+   * The {@link OutlineItemListener}.
    * 
    * @see #getOutlineItemListener()
    */
@@ -160,7 +161,7 @@ public class OutlineUI
 
 
   /**
-   * The <code>AbstractOutline</code>.
+   * The {@link AbstractOutline}.
    * 
    * @see #getAbstractOutline()
    */
@@ -168,7 +169,7 @@ public class OutlineUI
 
 
   /**
-   * The <code>OutlineMouseListener</code>.
+   * The {@link OutlineMouseListener}.
    * 
    * @see #getOutlineMouseListener()
    */
@@ -298,9 +299,9 @@ public class OutlineUI
 
 
   /**
-   * This constructor creates the UI of the <code>Outline</code>.
+   * This constructor creates the UI of the {@link Outline}.
    * 
-   * @param pAbstractOutline The <code>Outline</code>.
+   * @param pAbstractOutline The {@link AbstractOutline}.
    */
   public OutlineUI ( AbstractOutline pAbstractOutline )
   {
@@ -470,7 +471,7 @@ public class OutlineUI
 
 
   /**
-   * Creates the <code>JPopupMenu</code> of the <code>Outline</code>.
+   * Creates the <code>JPopupMenu</code> of the {@link Outline}.
    */
   private void createPopupMenu ( )
   {
@@ -644,9 +645,9 @@ public class OutlineUI
 
 
   /**
-   * Returns the <code>AbstractOutline</code>.
+   * Returns the {@link AbstractOutline}.
    * 
-   * @return The <code>AbstractOutline</code>.
+   * @return The {@link AbstractOutline}.
    * @see #abstractOutline
    */
   public AbstractOutline getAbstractOutline ( )
@@ -656,9 +657,9 @@ public class OutlineUI
 
 
   /**
-   * Returns the <code>OutlineActionListener</code>.
+   * Returns the {@link OutlineActionListener}.
    * 
-   * @return The <code>OutlineActionListener</code>.
+   * @return The {@link OutlineActionListener}.
    * @see #outlineActionListener
    */
   public OutlineActionListener getOutlineActionListener ( )
@@ -668,9 +669,9 @@ public class OutlineUI
 
 
   /**
-   * Returns the <code>OutlineItemListener</code>.
+   * Returns the {@link OutlineItemListener}.
    * 
-   * @return The <code>OutlineItemListener</code>.
+   * @return The {@link OutlineItemListener}.
    * @see #outlineItemListener
    */
   public OutlineItemListener getOutlineItemListener ( )
@@ -680,9 +681,9 @@ public class OutlineUI
 
 
   /**
-   * Returns the <code>OutlineMouseListener</code>.
+   * Returns the {@link OutlineMouseListener}.
    * 
-   * @return The <code>OutlineMouseListener</code>.
+   * @return The {@link OutlineMouseListener}.
    * @see #outlineMouseListener
    */
   public OutlineMouseListener getOutlineMouseListener ( )
@@ -692,9 +693,9 @@ public class OutlineUI
 
 
   /**
-   * Returns the <code>OutlineTreeSelectionListener</code>.
+   * Returns the {@link OutlineTreeSelectionListener}.
    * 
-   * @return The <code>OutlineTreeSelectionListener</code>.
+   * @return The {@link OutlineTreeSelectionListener}.
    * @see #outlineTreeSelectionListener
    */
   public OutlineTreeSelectionListener getOutlineTreeSelectionListener ( )

@@ -5,7 +5,7 @@ import javax.swing.tree.DefaultMutableTreeNode ;
 
 
 /**
- * Displays the tree in the <code>OutlineUI</code>.
+ * Displays the tree in the {@link OutlineUI}.
  * 
  * @author Christian Fehler
  * @version $Rev$
@@ -13,7 +13,7 @@ import javax.swing.tree.DefaultMutableTreeNode ;
 public class OutlineDisplayTree implements Runnable
 {
   /**
-   * The <code>OutlineUI</code>.
+   * The {@link OutlineUI}.
    */
   private OutlineUI outlineUI ;
 
@@ -25,9 +25,9 @@ public class OutlineDisplayTree implements Runnable
 
 
   /**
-   * Initilizes the <code>OutlineDisplayTree</code>.
+   * Initilizes the {@link OutlineDisplayTree}.
    * 
-   * @param pOutlineUI The <code>OutlineUI</code>.
+   * @param pOutlineUI The {@link OutlineUI}.
    * @param pRootNode The root node.
    */
   public OutlineDisplayTree ( OutlineUI pOutlineUI ,
@@ -39,7 +39,7 @@ public class OutlineDisplayTree implements Runnable
 
 
   /**
-   * Displays the tree in the <code>OutlineUI</code>.
+   * Displays the tree in the {@link OutlineUI}.
    * 
    * @see Runnable#run()
    */

@@ -40,25 +40,25 @@ public class SmallStepView extends AbstractProofView
 
 
   /**
-   * The small step component.
+   * The <code>SmallStep</code> component.
    */
   protected SmallStepComponent component ;
 
 
   /**
-   * The scroll pane for the <code>component</code>.
+   * The <code>JScrollPane</code> for the <code>component</code>.
    */
   protected JScrollPane scrollPane ;
 
 
   /**
-   * The split pane for the <code>component</code>.
+   * The <code>JSplitPane</code> for the <code>component</code>.
    */
   private JSplitPane jSplitPane ;
 
 
   /**
-   * The <code>Outline</code> of this view.
+   * The {@link Outline} of this view.
    * 
    * @see #getOutline()
    */
@@ -66,28 +66,31 @@ public class SmallStepView extends AbstractProofView
 
 
   /**
-   * Allocates a new <code>SmallStepView</code> for the specified
-   * <code>model</code>.
+   * Allocates a new {@link SmallStepView} for the specified
+   * {@link SmallStepProofModel}.
    * 
-   * @param model the proof model for the small step view.
-   * @throws NullPointerException if <code>model</code> is <code>null</code>.
+   * @param pSmallStepProofModel The {@link SmallStepProofModel} for the
+   *          <code>SmallStepView</code>.
+   * @throws NullPointerException If {@link SmallStepProofModel} is
+   *           <code>null</code>.
    */
-  public SmallStepView ( SmallStepProofModel model )
+  public SmallStepView ( SmallStepProofModel pSmallStepProofModel )
   {
-    if ( model == null )
+    if ( pSmallStepProofModel == null )
     {
       throw new NullPointerException ( "model is null" ) ; //$NON-NLS-1$
     }
     this.outline = new AbstractOutline ( ) ;
-    this.outline.loadExpression ( model.getRoot ( ).getLastLeaf ( )
-        .getExpression ( ) , "first_smallstep" ) ; //$NON-NLS-1$
-    model.addTreeModelListener ( new OutlineTreeModelListener ( this.outline ,
-        model ) ) ;
+    this.outline.loadExpression ( pSmallStepProofModel.getRoot ( )
+        .getLastLeaf ( ).getExpression ( ) , "first_smallstep" ) ; //$NON-NLS-1$
+    pSmallStepProofModel.addTreeModelListener ( new OutlineTreeModelListener (
+        this.outline , pSmallStepProofModel ) ) ;
     GridBagConstraints gridBagConstraints = new GridBagConstraints ( ) ;
     this.jSplitPane = new JSplitPane ( JSplitPane.VERTICAL_SPLIT ) ;
     this.setLayout ( new GridBagLayout ( ) ) ;
     this.scrollPane = new JScrollPane ( ) ;
-    this.component = new SmallStepComponent ( model , isAdvanced ( ) ) ;
+    this.component = new SmallStepComponent ( pSmallStepProofModel ,
+        isAdvanced ( ) ) ;
     this.scrollPane.setViewportView ( this.component ) ;
     this.scrollPane.getViewport ( ).setBackground ( Color.WHITE ) ;
     this.scrollPane.addComponentListener ( new ComponentAdapter ( )
@@ -122,9 +125,9 @@ public class SmallStepView extends AbstractProofView
 
 
   /**
-   * Returns the <code>Outline</code> of this view.
+   * Returns the {@link Outline} of this view.
    * 
-   * @return The <code>Outline</code> of this view.
+   * @return The {@link Outline} of this view.
    */
   public Outline getOutline ( )
   {

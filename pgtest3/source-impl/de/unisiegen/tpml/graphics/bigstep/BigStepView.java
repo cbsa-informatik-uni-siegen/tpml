@@ -38,25 +38,25 @@ public class BigStepView extends AbstractProofView
 
 
   /**
-   * The big step component.
+   * The <code>BigStep</code> component.
    */
   protected BigStepComponent component ;
 
 
   /**
-   * The scroll pane for the <code>component</code>.
+   * The <code>JScrollPane</code> for the <code>component</code>.
    */
   protected JScrollPane scrollPane ;
 
 
   /**
-   * The split pane for the <code>component</code>.
+   * The <code>JSplitPane</code> for the <code>component</code>.
    */
   private JSplitPane jSplitPane ;
 
 
   /**
-   * The <code>Outline</code> of this view.
+   * The {@link Outline} of this view.
    * 
    * @see #getOutline()
    */
@@ -65,24 +65,25 @@ public class BigStepView extends AbstractProofView
 
   /**
    * Allocates a new <code>BigStepView</code> for the specified
-   * <code>model</code>.
+   * {@link BigStepProofModel}.
    * 
-   * @param model the proof model for the big step view.
+   * @param pBigStepProofModel The {@link BigStepProofModel} for the
+   *          <code>BigStepView</code>.
    */
-  public BigStepView ( BigStepProofModel model )
+  public BigStepView ( BigStepProofModel pBigStepProofModel )
   {
     super ( ) ;
     this.outline = new AbstractOutline ( ) ;
     this.outline.disableAutoUpdate ( ) ;
-    this.outline.loadExpression ( model.getRoot ( ).getLastLeaf ( )
+    this.outline.loadExpression ( pBigStepProofModel.getRoot ( ).getLastLeaf ( )
         .getExpression ( ) , "first_bigstep" ) ; //$NON-NLS-1$
-    model.addTreeModelListener ( new OutlineTreeModelListener ( this.outline ,
-        model ) ) ;
+    pBigStepProofModel.addTreeModelListener ( new OutlineTreeModelListener (
+        this.outline , pBigStepProofModel ) ) ;
     GridBagConstraints gridBagConstraints = new GridBagConstraints ( ) ;
     this.jSplitPane = new JSplitPane ( JSplitPane.VERTICAL_SPLIT ) ;
     this.setLayout ( new GridBagLayout ( ) ) ;
     this.scrollPane = new JScrollPane ( ) ;
-    this.component = new BigStepComponent ( model ) ;
+    this.component = new BigStepComponent ( pBigStepProofModel ) ;
     this.scrollPane.setViewportView ( this.component ) ;
     this.scrollPane.getViewport ( ).setBackground ( Color.WHITE ) ;
     this.scrollPane.addComponentListener ( new ComponentAdapter ( )

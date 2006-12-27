@@ -4,14 +4,14 @@ package de.unisiegen.tpml.graphics.outline.binding ;
 import java.util.ArrayList ;
 import java.util.Enumeration ;
 import de.unisiegen.tpml.core.expressions.Expression ;
+import de.unisiegen.tpml.core.expressions.Identifier ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyCharIterator ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStyle ;
 
 
 /**
- * This class has a static method, which returns a list of
- * <code>OutlinePair</code>, in which the start and the end index of the
- * <code>Identifiers</code> is saved.
+ * This class has a static method, which returns a list of {@link OutlinePair},
+ * in which the start and the end index of the {@link Identifier}s is saved.
  * 
  * @author Christian Fehler
  * @version $Rev$
@@ -19,13 +19,13 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStyle ;
 public abstract class OutlineIdentifier
 {
   /**
-   * Returns a list of <code>OutlinePair</code>, in which the start and the
-   * end index of the <code>Identifiers</code> is saved.
+   * Returns a list of {@link OutlinePair}, in which the start and the end
+   * index of the {@link Identifier}s is saved.
    * 
-   * @param pExpression The <code>Expression</code> in which the
-   *          <code>Identifiers</code> should be searched for.
-   * @return A list of <code>OutlinePair</code>, in which the start and the
-   *         end index of the <code>Identifiers</code> is saved.
+   * @param pExpression The {@link Expression} in which the {@link Identifier}s
+   *          should be searched for.
+   * @return A list of {@link OutlinePair}, in which the start and the end
+   *         index of the {@link Identifier}s is saved.
    */
   public final static ArrayList < OutlinePair > getIndex (
       Expression pExpression )

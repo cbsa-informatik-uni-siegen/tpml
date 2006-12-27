@@ -6,7 +6,7 @@ import de.unisiegen.tpml.graphics.outline.AbstractOutline ;
 
 
 /**
- * Invokes the execute method in the <code>Outline</code>.
+ * Invokes the execute method in the {@link AbstractOutline}.
  * 
  * @author Christian Fehler
  * @version $Rev$
@@ -14,15 +14,15 @@ import de.unisiegen.tpml.graphics.outline.AbstractOutline ;
 public class OutlineTimerTask extends TimerTask
 {
   /**
-   * The <code>AbstractOutline</code>.
+   * The {@link AbstractOutline}.
    */
   private AbstractOutline abstractOutline ;
 
 
   /**
-   * Initilizes the <code>OutlineTimerTask</code>.
+   * Initilizes the {@link OutlineTimerTask}.
    * 
-   * @param pAbstractOutline The <code>AbstractOutline</code>.
+   * @param pAbstractOutline The {@link AbstractOutline}.
    */
   public OutlineTimerTask ( AbstractOutline pAbstractOutline )
   {
@@ -31,7 +31,7 @@ public class OutlineTimerTask extends TimerTask
 
 
   /**
-   * Invokes the execute method in the <code>AbstractOutline</code>.
+   * Invokes the execute method in the {@link AbstractOutline}.
    * 
    * @see TimerTask#run()
    */

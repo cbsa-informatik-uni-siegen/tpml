@@ -38,25 +38,25 @@ public class TypeCheckerView extends AbstractProofView
 
 
   /**
-   * The tyoe checker component.
+   * The <code>TypeChecker</code> component.
    */
   protected TypeCheckerComponent component ;
 
 
   /**
-   * The scroll pane for the <code>component</code>.
+   * The <code>JScrollPane</code> for the <code>component</code>.
    */
   protected JScrollPane scrollPane ;
 
 
   /**
-   * The split pane for the <code>component</code>.
+   * The <code>JSplitPane</code> for the <code>component</code>.
    */
   private JSplitPane jSplitPane ;
 
 
   /**
-   * The <code>Outline</code> of this view.
+   * The {@link Outline} of this view.
    * 
    * @see #getOutline()
    */
@@ -64,25 +64,26 @@ public class TypeCheckerView extends AbstractProofView
 
 
   /**
-   * Allocates a new <code>TypeCheckerView</code> for the specified
-   * <code>model</code>.
+   * Allocates a new {@link TypeCheckerView} for the specified
+   * {@link TypeCheckerProofModel}.
    * 
-   * @param model the proof model for the type checker view.
+   * @param pTypeCheckerProofModel The {@link TypeCheckerProofModel} for the
+   *          <code>TypeCheckerView</code>.
    */
-  public TypeCheckerView ( TypeCheckerProofModel model )
+  public TypeCheckerView ( TypeCheckerProofModel pTypeCheckerProofModel )
   {
     super ( ) ;
     this.outline = new AbstractOutline ( ) ;
     this.outline.disableAutoUpdate ( ) ;
-    this.outline.loadExpression ( model.getRoot ( ).getLastLeaf ( )
-        .getExpression ( ) , "first_typechecker" ) ; //$NON-NLS-1$
-    model.addTreeModelListener ( new OutlineTreeModelListener ( this.outline ,
-        model ) ) ;
+    this.outline.loadExpression ( pTypeCheckerProofModel.getRoot ( )
+        .getLastLeaf ( ).getExpression ( ) , "first_typechecker" ) ; //$NON-NLS-1$
+    pTypeCheckerProofModel.addTreeModelListener ( new OutlineTreeModelListener (
+        this.outline , pTypeCheckerProofModel ) ) ;
     GridBagConstraints gridBagConstraints = new GridBagConstraints ( ) ;
     this.jSplitPane = new JSplitPane ( JSplitPane.VERTICAL_SPLIT ) ;
     this.setLayout ( new GridBagLayout ( ) ) ;
     this.scrollPane = new JScrollPane ( ) ;
-    this.component = new TypeCheckerComponent ( model ) ;
+    this.component = new TypeCheckerComponent ( pTypeCheckerProofModel ) ;
     this.scrollPane.setViewportView ( this.component ) ;
     this.scrollPane.getViewport ( ).setBackground ( Color.WHITE ) ;
     this.scrollPane.addComponentListener ( new ComponentAdapter ( )
@@ -117,9 +118,9 @@ public class TypeCheckerView extends AbstractProofView
 
 
   /**
-   * Returns the <code>Outline</code> of this view.
+   * Returns the {@link Outline} of this view.
    * 
-   * @return The <code>Outline</code> of this view.
+   * @return The {@link Outline} of this view.
    */
   public Outline getOutline ( )
   {

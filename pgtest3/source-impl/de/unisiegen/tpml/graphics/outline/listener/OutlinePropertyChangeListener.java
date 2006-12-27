@@ -31,16 +31,16 @@ public class OutlinePropertyChangeListener implements PropertyChangeListener
 
 
   /**
-   * The <code>Outline</code>.
+   * The {@link Outline}.
    */
   private Outline outline ;
 
 
   /**
-   * Initializes the <code>OutlinePropertyChangeListener</code>.
+   * Initializes the {@link OutlinePropertyChangeListener}.
    * 
    * @param pJSplitPane The <code>JSplitPane</code>.
-   * @param pOutline The <code>Outline</code>.
+   * @param pOutline The {@link Outline}.
    */
   public OutlinePropertyChangeListener ( JSplitPane pJSplitPane ,
       Outline pOutline )

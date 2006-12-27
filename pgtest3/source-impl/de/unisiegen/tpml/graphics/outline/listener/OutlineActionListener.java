@@ -11,8 +11,8 @@ import de.unisiegen.tpml.graphics.outline.util.OutlineClipboard ;
 
 
 /**
- * This class listens for action events. It implements the methods for closing,
- * collapsing and expanding the current node and all nodes.
+ * This class listens for <code>ActionEvents</code>. It implements the
+ * methods for closing, collapsing and expanding the current node and all nodes.
  * 
  * @author Christian Fehler
  * @version $Rev$
@@ -20,7 +20,7 @@ import de.unisiegen.tpml.graphics.outline.util.OutlineClipboard ;
 public class OutlineActionListener implements ActionListener
 {
   /**
-   * The <code>OutlineUI</code>.
+   * The {@link OutlineUI}.
    */
   private OutlineUI outlineUI ;
 
@@ -37,7 +37,7 @@ public class OutlineActionListener implements ActionListener
 
 
   /**
-   * This method is invoked if a menu item is pushed.
+   * This method is invoked if a <code>JMenuItem</code> is pushed.
    * 
    * @param pActionEvent The <code>ActionEvent</code>
    * @see ActionListener#actionPerformed(ActionEvent)
@@ -162,7 +162,7 @@ public class OutlineActionListener implements ActionListener
 
 
   /**
-   * Copies the selection into the clipboard.
+   * Copies the selection into the {@link OutlineClipboard}.
    */
   public void copy ( )
   {

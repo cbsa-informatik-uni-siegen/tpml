@@ -8,6 +8,7 @@ import javax.swing.tree.DefaultMutableTreeNode ;
 import javax.swing.tree.TreePath ;
 import de.unisiegen.tpml.core.expressions.CurriedLet ;
 import de.unisiegen.tpml.core.expressions.CurriedLetRec ;
+import de.unisiegen.tpml.core.expressions.Identifier ;
 import de.unisiegen.tpml.core.expressions.Lambda ;
 import de.unisiegen.tpml.core.expressions.Let ;
 import de.unisiegen.tpml.core.expressions.LetRec ;
@@ -29,16 +30,16 @@ import de.unisiegen.tpml.graphics.outline.ui.OutlineUI ;
 public class OutlineTreeSelectionListener implements TreeSelectionListener
 {
   /**
-   * The <code>OutlineUI</code>.
+   * The {@link OutlineUI}.
    */
   private OutlineUI outlineUI ;
 
 
   /**
-   * Initializes the <code>OutlineTreeSelectionListener</code> with the given
-   * <code>OutlineUI</code>.
+   * Initializes the {@link OutlineTreeSelectionListener} with the given
+   * {@link OutlineUI}.
    * 
-   * @param pOutlineUI The <code>OutlineUI</code>.
+   * @param pOutlineUI The {@link OutlineUI}.
    */
   public OutlineTreeSelectionListener ( OutlineUI pOutlineUI )
   {
@@ -47,11 +48,11 @@ public class OutlineTreeSelectionListener implements TreeSelectionListener
 
 
   /**
-   * Returns the index of the <code>Identifier</code> in the parent node.
+   * Returns the index of the {@link Identifier} in the parent node.
    * 
    * @param pParent The parent node.
-   * @param pIdentifier The <code>Identifier</code> node.
-   * @return The index of the <code>Identifier</code> in the parent node.
+   * @param pIdentifier The {@link Identifier} node.
+   * @return The index of the {@link Identifier} in the parent node.
    */
   private int identifierIndex ( DefaultMutableTreeNode pParent ,
       DefaultMutableTreeNode pIdentifier )

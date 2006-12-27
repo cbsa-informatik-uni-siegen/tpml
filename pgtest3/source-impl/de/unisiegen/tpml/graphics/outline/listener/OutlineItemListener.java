@@ -11,7 +11,7 @@ import de.unisiegen.tpml.graphics.outline.ui.OutlineUI ;
 /**
  * This class listens for item events. It updates the <code>JCheckBox</code>
  * selection and the <code>JCheckBoxMenuItem</code> selection. It sets the
- * <code>OutlineNode</code> values replace, binding, unbound and autoupdate.
+ * {@link OutlineNode} values replace, binding, unbound and autoupdate.
  * 
  * @author Christian Fehler
  * @version $Rev$
@@ -19,15 +19,15 @@ import de.unisiegen.tpml.graphics.outline.ui.OutlineUI ;
 public class OutlineItemListener implements ItemListener
 {
   /**
-   * The <code>OutlineUI</code>.
+   * The {@link OutlineUI}.
    */
   private OutlineUI outlineUI ;
 
 
   /**
-   * Initializes the <code>OutlineItemListener</code>.
+   * Initializes the {@link OutlineItemListener}.
    * 
-   * @param pOutlineUI The <code>OutlineUI</code>.
+   * @param pOutlineUI The {@link OutlineUI}.
    */
   public OutlineItemListener ( OutlineUI pOutlineUI )
   {
@@ -53,8 +53,8 @@ public class OutlineItemListener implements ItemListener
 
   /**
    * This method updates the <code>JCheckBox</code> selection and the
-   * <code>JCheckBoxMenuItem</code> selection. It sets the
-   * <code>OutlineNode</code> value binding.
+   * <code>JCheckBoxMenuItem</code> selection. It sets the {@link OutlineNode}
+   * value binding.
    * 
    * @param pSelected The selection of the <code>JCheckBox</code> selection or
    *          the <code>JCheckBoxMenuItem</code> selection.
@@ -88,8 +88,8 @@ public class OutlineItemListener implements ItemListener
 
   /**
    * This method updates the <code>JCheckBox</code> selection and the
-   * <code>JCheckBoxMenuItem</code> selection. It sets the
-   * <code>OutlineNode</code> value replace.
+   * <code>JCheckBoxMenuItem</code> selection. It sets the {@link OutlineNode}
+   * value replace.
    * 
    * @param pSelected The selection of the <code>JCheckBox</code> selection or
    *          the <code>JCheckBoxMenuItem</code> selection.
@@ -110,8 +110,8 @@ public class OutlineItemListener implements ItemListener
 
   /**
    * This method updates the <code>JCheckBox</code> selection and the
-   * <code>JCheckBoxMenuItem</code> selection. It sets the
-   * <code>OutlineNode</code> value selection.
+   * <code>JCheckBoxMenuItem</code> selection. It sets the {@link OutlineNode}
+   * value selection.
    * 
    * @param pSelected The selection of the <code>JCheckBox</code> selection or
    *          the <code>JCheckBoxMenuItem</code> selection.
@@ -132,8 +132,8 @@ public class OutlineItemListener implements ItemListener
 
   /**
    * This method updates the <code>JCheckBox</code> selection and the
-   * <code>JCheckBoxMenuItem</code> selection. It sets the
-   * <code>OutlineNode</code> value unbound.
+   * <code>JCheckBoxMenuItem</code> selection. It sets the {@link OutlineNode}
+   * value unbound.
    * 
    * @param pSelected The selection of the <code>JCheckBox</code> selection or
    *          the <code>JCheckBoxMenuItem</code> selection.
@@ -154,8 +154,8 @@ public class OutlineItemListener implements ItemListener
 
   /**
    * This method updates the <code>JCheckBox</code> selection and the
-   * <code>JCheckBoxMenuItem</code> selection. It sets the
-   * <code>OutlineNode</code> values replace, binding, unbound and selection.
+   * <code>JCheckBoxMenuItem</code> selection. It sets the {@link OutlineNode}
+   * values replace, binding, unbound and selection.
    * 
    * @param pSelected The selection of the <code>JCheckBox</code> selection or
    *          the <code>JCheckBoxMenuItem</code> selection.

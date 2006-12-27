@@ -9,9 +9,11 @@ import javax.swing.JPanel ;
 import javax.swing.SwingUtilities ;
 import javax.swing.tree.DefaultMutableTreeNode ;
 import de.unisiegen.tpml.core.expressions.BinaryOperator ;
+import de.unisiegen.tpml.core.expressions.Condition ;
 import de.unisiegen.tpml.core.expressions.CurriedLet ;
 import de.unisiegen.tpml.core.expressions.CurriedLetRec ;
 import de.unisiegen.tpml.core.expressions.Expression ;
+import de.unisiegen.tpml.core.expressions.Identifier ;
 import de.unisiegen.tpml.core.expressions.InfixOperation ;
 import de.unisiegen.tpml.core.expressions.Lambda ;
 import de.unisiegen.tpml.core.expressions.Let ;
@@ -31,9 +33,9 @@ import de.unisiegen.tpml.graphics.outline.util.OutlinePreferences ;
 
 
 /**
- * This class is the main class of the <code>Outline</code>. It loads the
- * <code>OutlinePreferences</code>, creates the <code>OutlineUI</code> and
- * loads new <code>Expressions</code>.
+ * This class is the main class of the {@link Outline}. It loads the
+ * {@link OutlinePreferences}, creates the {@link OutlineUI} and loads new
+ * {@link Expression}s.
  * 
  * @author Christian Fehler
  * @version $Rev$
@@ -48,31 +50,31 @@ public class AbstractOutline implements Outline
 
 
   /**
-   * Indicates, that an <code>Expression</code> has only one child.
+   * Indicates, that an {@link Expression} has only one child.
    */
   private static final int ONLY_ONE_CHILD = - 1 ;
 
 
   /**
-   * Caption of the <code>Identifiers</code>.
+   * Caption of the {@link Identifier}s.
    */
   private static final String IDENTIFIER = "Identifier" ; //$NON-NLS-1$
 
 
   /**
-   * Caption of the <code>Expression</code>.
+   * Caption of the {@link Expression}.
    */
   private static final String EXPRESSION = "e" ; //$NON-NLS-1$
 
 
   /**
-   * The <code>OutlineUI</code>.
+   * The {@link OutlineUI}.
    */
   private OutlineUI outlineUI ;
 
 
   /**
-   * The <code>OutlinePreferences</code>.
+   * The {@link OutlinePreferences}.
    * 
    * @see #getOutlinePreferences()
    */
@@ -80,16 +82,14 @@ public class AbstractOutline implements Outline
 
 
   /**
-   * The old <code>Expression</code> to check if the <code>Expression</code>
-   * has changed.
+   * The old {@link Expression} to check if the {@link Expression} has changed.
    */
   private Expression oldExpression ;
 
 
   /**
-   * The <code>OutlineUnbound</code>, in which the unbound
-   * <code>Identifiers</code> in the given <code>Expression</code> are
-   * saved.
+   * The {@link OutlineUnbound}, in which the unbound {@link Identifier}s in
+   * the given {@link Expression} are saved.
    */
   private OutlineUnbound outlineUnbound ;
 
@@ -101,8 +101,7 @@ public class AbstractOutline implements Outline
 
 
   /**
-   * Initilizes the <code>OutlinePreferences</code> and the
-   * <code>OutlineUI</code>.
+   * Initilizes the {@link OutlinePreferences} and the {@link OutlineUI}.
    */
   public AbstractOutline ( )
   {
@@ -113,11 +112,11 @@ public class AbstractOutline implements Outline
 
 
   /**
-   * Creates the children with the given <code>Expression</code> and adds them
-   * to the given node.
+   * Creates the children with the given {@link Expression} and adds them to the
+   * given node.
    * 
-   * @param pExpression The <code>Expression</code>, with which the children
-   *          should be created.
+   * @param pExpression The {@link Expression}, with which the children should
+   *          be created.
    * @param pNode The node where the children should be added.
    */
   private void createChildren ( Expression pExpression ,
@@ -149,10 +148,10 @@ public class AbstractOutline implements Outline
 
 
   /**
-   * Returns the node, which represents the given <code>CurriedLet</code>.
+   * Returns the node, which represents the given {@link CurriedLet}.
    * 
-   * @param pCurriedLet The input <code>Expression</code>.
-   * @return The node, which represents the given <code>CurriedLet</code>.
+   * @param pCurriedLet The input {@link Expression}.
+   * @return The node, which represents the given {@link CurriedLet}.
    */
   private DefaultMutableTreeNode curriedLet ( CurriedLet pCurriedLet )
   {
@@ -183,10 +182,10 @@ public class AbstractOutline implements Outline
 
 
   /**
-   * Returns the node, which represents the given <code>CurriedLetRec</code>.
+   * Returns the node, which represents the given {@link CurriedLetRec}.
    * 
-   * @param pCurriedLetRec The input <code>Expression</code>.
-   * @return The node, which represents the given <code>CurriedLetRec</code>.
+   * @param pCurriedLetRec The input {@link Expression}.
+   * @return The node, which represents the given {@link CurriedLetRec}.
    */
   private DefaultMutableTreeNode curriedLetRec ( CurriedLetRec pCurriedLetRec )
   {
@@ -237,7 +236,7 @@ public class AbstractOutline implements Outline
 
 
   /**
-   * Execute the rebuild of a new tree in the <code>Outline</code>.
+   * Execute the rebuild of a new tree in the {@link Outline}.
    */
   public void execute ( )
   {
@@ -249,10 +248,10 @@ public class AbstractOutline implements Outline
 
 
   /**
-   * Returns the node, which represents the given <code>Expression</code>.
+   * Returns the node, which represents the given {@link Expression}.
    * 
-   * @param pExpression The input <code>Expression</code>.
-   * @return The node, which represents the given <code>Expression</code>.
+   * @param pExpression The input {@link Expression}.
+   * @return The node, which represents the given {@link Expression}.
    */
   private DefaultMutableTreeNode checkExpression ( Expression pExpression )
   {
@@ -301,9 +300,9 @@ public class AbstractOutline implements Outline
 
 
   /**
-   * Returns the <code>JPanel</code> of the <code>OutlineUI</code>.
+   * Returns the <code>JPanel</code> of the {@link OutlineUI}.
    * 
-   * @return The <code>JPanel</code> of the <code>OutlineUI</code>.
+   * @return The <code>JPanel</code> of the {@link OutlineUI}.
    * @see de.unisiegen.tpml.graphics.outline.Outline#getJPanelOutline()
    */
   public JPanel getJPanelOutline ( )
@@ -313,9 +312,9 @@ public class AbstractOutline implements Outline
 
 
   /**
-   * Returns the <code>OutlinePreferences</code>.
+   * Returns the {@link OutlinePreferences}.
    * 
-   * @return The <code>OutlinePreferences</code>.
+   * @return The {@link OutlinePreferences}.
    * @see #outlinePreferences
    */
   public OutlinePreferences getOutlinePreferences ( )
@@ -325,10 +324,10 @@ public class AbstractOutline implements Outline
 
 
   /**
-   * Returns the node, which represents the given <code>InfixOperation</code>.
+   * Returns the node, which represents the given {@link InfixOperation}.
    * 
-   * @param pInfixOperation The input <code>Expression</code>.
-   * @return The node, which represents the given <code>InfixOperation</code>.
+   * @param pInfixOperation The input {@link Expression}.
+   * @return The node, which represents the given {@link InfixOperation}.
    */
   private DefaultMutableTreeNode infixOperation ( InfixOperation pInfixOperation )
   {
@@ -359,10 +358,10 @@ public class AbstractOutline implements Outline
 
 
   /**
-   * Returns the node, which represents the given <code>Lambda</code>.
+   * Returns the node, which represents the given {@link Lambda}.
    * 
-   * @param pLambda The input <code>Expression</code>.
-   * @return The node, which represents the given <code>Lambda</code>.
+   * @param pLambda The input {@link Expression}.
+   * @return The node, which represents the given {@link Lambda}.
    */
   private DefaultMutableTreeNode lambda ( Lambda pLambda )
   {
@@ -381,10 +380,10 @@ public class AbstractOutline implements Outline
 
 
   /**
-   * Returns the node, which represents the given <code>Let</code>.
+   * Returns the node, which represents the given {@link Let}.
    * 
-   * @param pLet The input <code>Expression</code>.
-   * @return The node, which represents the given <code>Let</code>.
+   * @param pLet The input {@link Expression}.
+   * @return The node, which represents the given {@link Let}.
    */
   private DefaultMutableTreeNode let ( Let pLet )
   {
@@ -403,10 +402,10 @@ public class AbstractOutline implements Outline
 
 
   /**
-   * Returns the node, which represents the given <code>LetRec</code>.
+   * Returns the node, which represents the given {@link LetRec}.
    * 
-   * @param pLetRec The input <code>Expression</code>.
-   * @return The node, which represents the given <code>LetRec</code>.
+   * @param pLetRec The input {@link Expression}.
+   * @return The node, which represents the given {@link LetRec}.
    */
   private DefaultMutableTreeNode letRec ( LetRec pLetRec )
   {
@@ -425,15 +424,15 @@ public class AbstractOutline implements Outline
 
 
   /**
-   * This method loads a new <code>Expression</code> into the
-   * <code>Outline</code>. It checks if the new <code>Expression</code> is
-   * different to the current loaded <code>Expression</code>, if not it does
-   * nothing and returns. It does also nothing if the auto update is disabled
-   * and the change does not come from a <code>MouseEvent</code>. In the
-   * <code>BigStep</code> and the <code>TypeChecker</code> view it does also
-   * nothing if the change does not come from a <code>MouseEvent</code>.
+   * This method loads a new {@link Expression} into the {@link Outline}. It
+   * checks if the new {@link Expression} is different to the current loaded
+   * {@link Expression}, if not it does nothing and returns. It does also
+   * nothing if the auto update is disabled and the change does not come from a
+   * <code>MouseEvent</code>. In the <code>BigStep</code> and the
+   * <code>TypeChecker</code> view it does also nothing if the change does not
+   * come from a <code>MouseEvent</code>.
    * 
-   * @param pExpression The new <code>Expression</code>.
+   * @param pExpression The new {@link Expression}.
    * @param pDescription The description who is calling this method.
    */
   public void loadExpression ( Expression pExpression , String pDescription )
@@ -468,10 +467,10 @@ public class AbstractOutline implements Outline
 
 
   /**
-   * Returns the node, which represents the given <code>Location</code>.
+   * Returns the node, which represents the given {@link Location}.
    * 
-   * @param pLocation The input <code>Expression</code>.
-   * @return The node, which represents the given <code>Location</code>.
+   * @param pLocation The input {@link Expression}.
+   * @return The node, which represents the given {@link Location}.
    */
   private DefaultMutableTreeNode location ( Location pLocation )
   {
@@ -487,11 +486,11 @@ public class AbstractOutline implements Outline
 
 
   /**
-   * Returns the minimum child index. For example 0 if the
-   * <code>Expression</code> is an instance of <code>Condition</code>, or 1
-   * if the <code>Expression</code> is an instance of <code>Let</code>.
+   * Returns the minimum child index. For example 0 if the {@link Expression} is
+   * an instance of {@link Condition}, or 1 if the {@link Expression} is an
+   * instance of {@link Let}.
    * 
-   * @param pExpression The <code>Expression</code> to check for.
+   * @param pExpression The {@link Expression} to check for.
    * @return The minimum child index.
    */
   private int minimumChildIndex ( Expression pExpression )
@@ -518,10 +517,10 @@ public class AbstractOutline implements Outline
 
 
   /**
-   * Returns the node, which represents the given <code>MultiLambda</code>.
+   * Returns the node, which represents the given {@link MultiLambda}.
    * 
-   * @param pMultiLambda The input <code>Expression</code>.
-   * @return The node, which represents the given <code>MultiLambda</code>.
+   * @param pMultiLambda The input {@link Expression}.
+   * @return The node, which represents the given {@link MultiLambda}.
    */
   private DefaultMutableTreeNode multiLambda ( MultiLambda pMultiLambda )
   {
@@ -551,10 +550,10 @@ public class AbstractOutline implements Outline
 
 
   /**
-   * Returns the node, which represents the given <code>MultiLet</code>.
+   * Returns the node, which represents the given {@link MultiLet}.
    * 
-   * @param pMultiLet The input <code>Expression</code>.
-   * @return The node, which represents the given <code>MultiLet</code>.
+   * @param pMultiLet The input {@link Expression}.
+   * @return The node, which represents the given {@link MultiLet}.
    */
   private DefaultMutableTreeNode multiLet ( MultiLet pMultiLet )
   {
@@ -583,10 +582,10 @@ public class AbstractOutline implements Outline
 
 
   /**
-   * Returns the node, which represents the given <code>Expression</code>.
+   * Returns the node, which represents the given {@link Expression}.
    * 
-   * @param pExpression The input <code>Expression</code>.
-   * @return The node, which represents the given <code>Expression</code>.
+   * @param pExpression The input {@link Expression}.
+   * @return The node, which represents the given {@link Expression}.
    */
   private DefaultMutableTreeNode otherExpression ( Expression pExpression )
   {
@@ -598,10 +597,10 @@ public class AbstractOutline implements Outline
 
 
   /**
-   * Returns the node, which represents the given <code>Recursion</code>.
+   * Returns the node, which represents the given {@link Recursion}.
    * 
-   * @param pRecursion The input <code>Expression</code>.
-   * @return The node, which represents the given <code>Recursion</code>.
+   * @param pRecursion The input {@link Expression}.
+   * @return The node, which represents the given {@link Recursion}.
    */
   private DefaultMutableTreeNode recursion ( Recursion pRecursion )
   {

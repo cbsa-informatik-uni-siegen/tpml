@@ -5,12 +5,13 @@ import java.awt.event.ComponentEvent ;
 import java.awt.event.ComponentListener ;
 import javax.swing.JSplitPane ;
 import de.unisiegen.tpml.graphics.outline.Outline ;
+import de.unisiegen.tpml.graphics.outline.util.OutlinePreferences ;
 
 
 /**
- * This class listens for component events. It saves the
- * <code>DividerLocation</code> in the <code>OutlinePreferences</code> when
- * the component was resized.
+ * This class listens for <code>ComponentEvents</code>. It saves the
+ * <code>DividerLocation</code> in the {@link OutlinePreferences} when the
+ * component was resized.
  * 
  * @author Christian Fehler
  * @version $Rev$
@@ -24,16 +25,16 @@ public class OutlineComponentListener implements ComponentListener
 
 
   /**
-   * The <code>Outline</code>.
+   * The {@link Outline}.
    */
   private Outline outline ;
 
 
   /**
-   * Initializes the <code>OutlineComponentListener</code>.
+   * Initializes the {@link OutlineComponentListener}.
    * 
    * @param pJSplitPane The <code>JSplitPane</code>.
-   * @param pOutline The <code>Outline</code>.
+   * @param pOutline The {@link Outline}.
    */
   public OutlineComponentListener ( JSplitPane pJSplitPane , Outline pOutline )
   {

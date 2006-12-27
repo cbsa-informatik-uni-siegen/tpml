@@ -16,8 +16,7 @@ import de.unisiegen.tpml.core.expressions.Recursion ;
 
 
 /**
- * Finds the unbound <code>Identifiers</code> in a given
- * <code>Expression</code>.
+ * Finds the unbound {@link Identifier}s in a given {@link Expression}.
  * 
  * @author Christian Fehler
  * @version $Rev$
@@ -25,16 +24,15 @@ import de.unisiegen.tpml.core.expressions.Recursion ;
 public class OutlineUnbound
 {
   /**
-   * The list of unbound <code>Identifiers</code> in the
-   * <code>Expression</code>.
+   * The list of unbound {@link Identifier}s in the {@link Expression}.
    */
   private ArrayList < Identifier > unboundList ;
 
 
   /**
-   * Initilizes the lists and finds the unbound <code>Identifiers</code>.
+   * Initilizes the lists and finds the unbound {@link Identifier}s.
    * 
-   * @param pExpression The input <code>Expression</code>.
+   * @param pExpression The input {@link Expression}.
    */
   public OutlineUnbound ( Expression pExpression )
   {
@@ -45,12 +43,11 @@ public class OutlineUnbound
 
 
   /**
-   * Finds the unbounded <code>Identifiers</code> in the given
-   * <code>Expression</code>.
+   * Finds the unbounded {@link Identifier}s in the given {@link Expression}.
    * 
-   * @param pResult The list of the unbounded <code>Identifiers</code>.
-   * @param pBounded The list of bounded <code>Identifiers</code>.
-   * @param pExpression The input <code>Expression</code>.
+   * @param pResult The list of the unbounded {@link Identifier}s.
+   * @param pBounded The list of bounded {@link Identifier}s.
+   * @param pExpression The input {@link Expression}.
    */
   private void find ( ArrayList < Identifier > pResult ,
       ArrayList < String > pBounded , Expression pExpression )
@@ -167,12 +164,10 @@ public class OutlineUnbound
 
 
   /**
-   * Returns the unbound <code>Identifier</code> in the
-   * <code>Expression</code>.
+   * Returns the unbound {@link Identifier} in the {@link Expression}.
    * 
-   * @param pIndex The index of the unbound <code>Identifier</code>.
-   * @return The unbound <code>Identifier</code> in the
-   *         <code>Expression</code>.
+   * @param pIndex The index of the unbound {@link Identifier}.
+   * @return The unbound {@link Identifier} in the {@link Expression}.
    */
   public Identifier get ( int pIndex )
   {
@@ -182,9 +177,9 @@ public class OutlineUnbound
 
   /**
    * Returns the size of the list. The size is equal to the number of unbound
-   * <code>Identifiers</code>.
+   * {@link Identifier}s.
    * 
-   * @return The number of unbound Identifiers.
+   * @return The number of unbound {@link Identifier}s.
    */
   public int size ( )
   {

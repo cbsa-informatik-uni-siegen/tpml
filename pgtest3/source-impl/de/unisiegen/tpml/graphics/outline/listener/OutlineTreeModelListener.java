@@ -5,14 +5,14 @@ import javax.swing.event.TreeModelEvent ;
 import javax.swing.event.TreeModelListener ;
 import de.unisiegen.tpml.core.ExpressionProofModel ;
 import de.unisiegen.tpml.core.bigstep.BigStepProofModel ;
+import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.smallstep.SmallStepProofModel ;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel ;
 import de.unisiegen.tpml.graphics.outline.Outline ;
 
 
 /**
- * Sets the new <code>Expression</code> in the <code>Outline</code>, if a
- * node changed.
+ * Sets the new {@link Expression} in the {@link Outline}, if a node changed.
  * 
  * @author Christian Fehler
  * @version $Rev$
@@ -20,23 +20,23 @@ import de.unisiegen.tpml.graphics.outline.Outline ;
 public class OutlineTreeModelListener implements TreeModelListener
 {
   /**
-   * The <code>Outline</code>.
+   * The {@link Outline}.
    */
   public Outline outline ;
 
 
   /**
-   * The <code>ExpressionProofModel</code>.
+   * The {@link ExpressionProofModel}.
    */
   public ExpressionProofModel expressionProofModel ;
 
 
   /**
-   * Initializes the <code>OutlineTreeModelListener</code> with the given
-   * <code>Outline</code> and the <code>ExpressionProofModel</code>.
+   * Initializes the {@link OutlineTreeModelListener} with the given
+   * {@link Outline} and the {@link ExpressionProofModel}.
    * 
-   * @param pOutline The <code>Outline</code>.
-   * @param pExpressionProofModel The <code>ExpressionProofModel</code>.
+   * @param pOutline The {@link Outline}.
+   * @param pExpressionProofModel The {@link ExpressionProofModel}.
    */
   public OutlineTreeModelListener ( Outline pOutline ,
       ExpressionProofModel pExpressionProofModel )
@@ -47,8 +47,7 @@ public class OutlineTreeModelListener implements TreeModelListener
 
 
   /**
-   * Sets the new <code>Expression</code> in the <code>Outline</code>, if a
-   * node changed.
+   * Sets the new {@link Expression} in the {@link Outline}, if a node changed.
    * 
    * @param pTreeModelEvent The <code>TreeModelEvent</code>.
    * @see TreeModelListener#treeNodesChanged(TreeModelEvent)

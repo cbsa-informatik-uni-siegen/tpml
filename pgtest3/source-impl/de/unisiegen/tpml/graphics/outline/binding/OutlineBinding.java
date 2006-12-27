@@ -16,8 +16,7 @@ import de.unisiegen.tpml.core.expressions.Recursion ;
 
 
 /**
- * Finds the bounded <code>Identifiers</code> in a given
- * <code>Expression</code>.
+ * Finds the bounded {@link Identifier}s in a given {@link Expression}.
  * 
  * @author Christian Fehler
  * @version $Rev$
@@ -25,34 +24,34 @@ import de.unisiegen.tpml.core.expressions.Recursion ;
 public class OutlineBinding
 {
   /**
-   * The list of lists of <code>Identifiers</code>, which are bounded by the
-   * given <code>Identifier</code> in the hole <code>Expression</code>.
+   * The list of lists of {@link Identifier}s, which are bounded by the given
+   * {@link Identifier} in the hole {@link Expression}.
    */
   private ArrayList < ArrayList < Identifier >> list ;
 
 
   /**
-   * The hole <code>Expression</code>.
+   * The hole {@link Expression}.
    */
   private Expression holeExpression ;
 
 
   /**
-   * The list of <code>Identifiers</code>.
+   * The list of {@link Identifier}s.
    */
   private ArrayList < String > identifierList ;
 
 
   /**
-   * The list of <code>Expressions</code>.
+   * The list of {@link Expression}s.
    */
   private ArrayList < Expression > expressionList ;
 
 
   /**
-   * Initilizes the lists and sets the hole <code>Expression</code>.
+   * Initilizes the lists and sets the hole {@link Expression}.
    * 
-   * @param pHoleExpression
+   * @param pHoleExpression The hole {@link Expression}.
    */
   public OutlineBinding ( Expression pHoleExpression )
   {
@@ -64,13 +63,12 @@ public class OutlineBinding
 
 
   /**
-   * Adds a <code>Expression</code> and the name of the
-   * <code>Identifier</code> to their list. After adding all
-   * <code>Expressions</code>, the search prozess can be started by calling
-   * the find method.
+   * Adds a {@link Expression} and the name of the {@link Identifier} to their
+   * list. After adding all {@link Expression}s, the search prozess can be
+   * started by calling the find method.
    * 
-   * @param pExpression The <code>Expression</code>.
-   * @param pId The <code>Identifier</code>.
+   * @param pExpression The {@link Expression}.
+   * @param pId The {@link Identifier}.
    */
   public void add ( Expression pExpression , String pId )
   {
@@ -80,8 +78,7 @@ public class OutlineBinding
 
 
   /**
-   * Finds the bounded <code>Identifiers</code> in the given
-   * <code>Expression</code>.
+   * Finds the bounded {@link Identifier}s in the given {@link Expression}.
    */
   public void find ( )
   {
@@ -185,12 +182,11 @@ public class OutlineBinding
 
 
   /**
-   * Finds the bounded <code>Identifiers</code> in the given
-   * <code>Expression</code>.
+   * Finds the bounded {@link Identifier}s in the given {@link Expression}.
    * 
-   * @param pResult The list of the bounded <code>Identifiers</code>.
-   * @param pExpression The input <code>Expression</code>.
-   * @param pId The name of the <code>Identifier</code>.
+   * @param pResult The list of the bounded {@link Identifier}s.
+   * @param pExpression The input {@link Expression}.
+   * @param pId The name of the {@link Identifier}.
    */
   private void find ( ArrayList < Identifier > pResult ,
       Expression pExpression , String pId )
@@ -345,13 +341,11 @@ public class OutlineBinding
 
 
   /**
-   * Returns the bounded <code>Identifier</code> in the
-   * <code>Expression</code>.
+   * Returns the bounded {@link Identifier} in the {@link Expression}.
    * 
-   * @param pIdentifierIndex The index of the <code>Identifier</code>.
+   * @param pIdentifierIndex The index of the {@link Identifier}.
    * @param pBindingIndex The index of the binding.
-   * @return The bounded <code>Identifier</code> in the
-   *         <code>Expression</code>.
+   * @return The bounded {@link Identifier} in the {@link Expression}.
    */
   public Identifier get ( int pIdentifierIndex , int pBindingIndex )
   {
@@ -360,15 +354,15 @@ public class OutlineBinding
 
 
   /**
-   * Returns the index of the given <code>Identifier</code> in the given
-   * <code>Identifiers</code> array. If the <code>Identifier</code> is not
-   * in the array it returns -1.
+   * Returns the index of the given {@link Identifier} in the given
+   * {@link Identifier}s array. If the {@link Identifier} is not in the array
+   * it returns -1.
    * 
-   * @param pIdentifiers The <code>Identifier</code> array.
-   * @param pId The single <code>Identifier</code>.
-   * @return The index of the given <code>Identifier</code> in the given
-   *         <code>Identifiers</code> array. If the <code>Identifier</code>
-   *         is not in the array it returns -1.
+   * @param pIdentifiers The {@link Identifier} array.
+   * @param pId The single {@link Identifier}.
+   * @return The index of the given {@link Identifier} in the given
+   *         {@link Identifier}s array. If the {@link Identifier} is not in the
+   *         array it returns -1.
    */
   private int identifierIndex ( String [ ] pIdentifiers , String pId )
   {
@@ -385,9 +379,9 @@ public class OutlineBinding
 
   /**
    * Returns the size of the list. The size is equal to the number of
-   * <code>Identifiers</code>.
+   * {@link Identifier}s.
    * 
-   * @return The number of <code>Identifiers</code>.
+   * @return The number of {@link Identifier}s.
    */
   public int size ( )
   {
@@ -396,10 +390,10 @@ public class OutlineBinding
 
 
   /**
-   * Returns the number of bindings from a given <code>Identifier</code>.
+   * Returns the number of bindings from a given {@link Identifier}.
    * 
-   * @param pIdentifierIndex The index of the <code>Identifier</code>.
-   * @return The number of bindings from a given <code>Identifier</code>.
+   * @param pIdentifierIndex The index of the {@link Identifier}.
+   * @return The number of bindings from a given {@link Identifier}.
    */
   public int size ( int pIdentifierIndex )
   {

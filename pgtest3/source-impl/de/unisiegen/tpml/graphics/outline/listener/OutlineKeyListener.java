@@ -4,6 +4,7 @@ package de.unisiegen.tpml.graphics.outline.listener ;
 import java.awt.event.KeyEvent ;
 import java.awt.event.KeyListener ;
 import javax.swing.tree.DefaultMutableTreeNode ;
+import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.graphics.outline.OutlineNode ;
 import de.unisiegen.tpml.graphics.outline.ui.OutlineUI ;
 import de.unisiegen.tpml.graphics.outline.util.OutlineClipboard ;
@@ -18,15 +19,15 @@ import de.unisiegen.tpml.graphics.outline.util.OutlineClipboard ;
 public class OutlineKeyListener implements KeyListener
 {
   /**
-   * The <code>OutlineUI</code>.
+   * The {@link OutlineUI}.
    */
   private OutlineUI outlineUI ;
 
 
   /**
-   * Initializes the <code>OutlineKeyListener</code>.
+   * Initializes the {@link OutlineKeyListener}.
    * 
-   * @param pOutlineUI The <code>OutlineUI</code>.
+   * @param pOutlineUI The {@link OutlineUI}.
    */
   public OutlineKeyListener ( OutlineUI pOutlineUI )
   {
@@ -35,8 +36,8 @@ public class OutlineKeyListener implements KeyListener
 
 
   /**
-   * Copies the <code>Expression</code> as a <code>String</code> of the
-   * selected node into the clipboard using the <code>OutlineClipboard</code>.
+   * Copies the {@link Expression} as a <code>String</code> of the selected
+   * node into the clipboard using the {@link OutlineClipboard}.
    */
   public void copy ( )
   {

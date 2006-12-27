@@ -7,10 +7,11 @@ import java.awt.Font ;
 import java.awt.Graphics ;
 import javax.swing.JTree ;
 import javax.swing.tree.DefaultTreeCellRenderer ;
+import de.unisiegen.tpml.graphics.outline.Outline ;
 
 
 /**
- * This class renders a cell in the <code>Outline</code>.
+ * This class renders a cell in the {@link Outline}.
  * 
  * @author Christian Fehler
  * @version $Rev$
@@ -24,7 +25,7 @@ public class OutlineCellRenderer extends DefaultTreeCellRenderer
 
 
   /**
-   * Initializes the <code>OutlineCellRenderer</code>.
+   * Initializes the {@link OutlineCellRenderer}.
    */
   public OutlineCellRenderer ( )
   {
