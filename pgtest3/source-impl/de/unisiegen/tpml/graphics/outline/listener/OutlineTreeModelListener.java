@@ -11,7 +11,8 @@ import de.unisiegen.tpml.graphics.outline.Outline ;
 
 
 /**
- * Sets the new Expression in the Outline, if a node changed.
+ * Sets the new <code>Expression</code> in the <code>Outline</code>, if a
+ * node changed.
  * 
  * @author Christian Fehler
  * @version $Rev$
@@ -19,23 +20,23 @@ import de.unisiegen.tpml.graphics.outline.Outline ;
 public class OutlineTreeModelListener implements TreeModelListener
 {
   /**
-   * The AbstractOutline.
+   * The <code>Outline</code>.
    */
   public Outline outline ;
 
 
   /**
-   * The ExpressionProofModel.
+   * The <code>ExpressionProofModel</code>.
    */
   public ExpressionProofModel expressionProofModel ;
 
 
   /**
-   * Initializes the OutlineTreeModelListener with the given Outline and the
-   * ExpressionProofModel.
+   * Initializes the <code>OutlineTreeModelListener</code> with the given
+   * <code>Outline</code> and the <code>ExpressionProofModel</code>.
    * 
-   * @param pOutline The Outline.
-   * @param pExpressionProofModel The ExpressionProofModel.
+   * @param pOutline The <code>Outline</code>.
+   * @param pExpressionProofModel The <code>ExpressionProofModel</code>.
    */
   public OutlineTreeModelListener ( Outline pOutline ,
       ExpressionProofModel pExpressionProofModel )
@@ -46,10 +47,11 @@ public class OutlineTreeModelListener implements TreeModelListener
 
 
   /**
-   * Sets the new Expression in the Outline, if a node changed.
+   * Sets the new <code>Expression</code> in the <code>Outline</code>, if a
+   * node changed.
    * 
-   * @param pTreeModelEvent The tree model event.
-   * @see javax.swing.event.TreeModelListener#treeNodesChanged(javax.swing.event.TreeModelEvent)
+   * @param pTreeModelEvent The <code>TreeModelEvent</code>.
+   * @see TreeModelListener#treeNodesChanged(TreeModelEvent)
    */
   public void treeNodesChanged ( TreeModelEvent pTreeModelEvent )
   {
@@ -75,8 +77,8 @@ public class OutlineTreeModelListener implements TreeModelListener
   /**
    * A node is inserted.
    * 
-   * @param pTreeModelEvent The tree model event.
-   * @see javax.swing.event.TreeModelListener#treeNodesInserted(javax.swing.event.TreeModelEvent)
+   * @param pTreeModelEvent The <code>TreeModelEvent</code>.
+   * @see TreeModelListener#treeNodesInserted(TreeModelEvent)
    */
   public void treeNodesInserted ( @ SuppressWarnings ( "unused" )
   TreeModelEvent pTreeModelEvent )
@@ -88,8 +90,8 @@ public class OutlineTreeModelListener implements TreeModelListener
   /**
    * A node is removed.
    * 
-   * @param pTreeModelEvent The tree model event.
-   * @see javax.swing.event.TreeModelListener#treeNodesRemoved(javax.swing.event.TreeModelEvent)
+   * @param pTreeModelEvent The <code>TreeModelEvent</code>.
+   * @see TreeModelListener#treeNodesRemoved(TreeModelEvent)
    */
   public void treeNodesRemoved ( @ SuppressWarnings ( "unused" )
   TreeModelEvent pTreeModelEvent )
@@ -101,8 +103,8 @@ public class OutlineTreeModelListener implements TreeModelListener
   /**
    * The structure has changed.
    * 
-   * @param pTreeModelEvent The tree model event.
-   * @see javax.swing.event.TreeModelListener#treeStructureChanged(javax.swing.event.TreeModelEvent)
+   * @param pTreeModelEvent The <code>TreeModelEvent</code>.
+   * @see TreeModelListener#treeStructureChanged(TreeModelEvent)
    */
   public void treeStructureChanged ( @ SuppressWarnings ( "unused" )
   TreeModelEvent pTreeModelEvent )

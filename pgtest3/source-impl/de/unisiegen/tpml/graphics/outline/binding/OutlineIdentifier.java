@@ -9,8 +9,9 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStyle ;
 
 
 /**
- * This class has a static method, which returns a list of OutlinePair, in which
- * the start and the end index of the Identifiers is saved.
+ * This class has a static method, which returns a list of
+ * <code>OutlinePair</code>, in which the start and the end index of the
+ * <code>Identifiers</code> is saved.
  * 
  * @author Christian Fehler
  * @version $Rev$
@@ -18,13 +19,13 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStyle ;
 public abstract class OutlineIdentifier
 {
   /**
-   * Returns a list of OutlinePair, in which the start and the end index of the
-   * Identifiers is saved.
+   * Returns a list of <code>OutlinePair</code>, in which the start and the
+   * end index of the <code>Identifiers</code> is saved.
    * 
-   * @param pExpression The Expression in which the Identifiers should be
-   *          searched for.
-   * @return A list of OutlinePair, in which the start and the end index of the
-   *         Identifiers is saved.
+   * @param pExpression The <code>Expression</code> in which the
+   *          <code>Identifiers</code> should be searched for.
+   * @return A list of <code>OutlinePair</code>, in which the start and the
+   *         end index of the <code>Identifiers</code> is saved.
    */
   public final static ArrayList < OutlinePair > getIndex (
       Expression pExpression )

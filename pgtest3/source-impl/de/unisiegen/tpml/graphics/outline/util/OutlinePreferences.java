@@ -7,9 +7,10 @@ import de.unisiegen.tpml.graphics.outline.OutlineNode ;
 
 
 /**
- * This class saves and loads the several values, like the CheckBox values
- * replace, binding, unbound, selection and autoUpdate. Also the divider
- * location of the JSplitPane.
+ * This class saves and loads the several values, like the
+ * <code>JCheckBox</code> values replace, binding, unbound, selection and
+ * autoUpdate. Also the <code>DividerLocation</code> of the
+ * <code>JSplitPane</code>.
  * 
  * @author Christian Fehler
  * @version $Rev$
@@ -17,8 +18,8 @@ import de.unisiegen.tpml.graphics.outline.OutlineNode ;
 public class OutlinePreferences
 {
   /**
-   * The replace value. The selected expression should be replaced in higher
-   * nodes.
+   * The replace value. The selected <code>Expression</code> should be
+   * replaced in higher nodes.
    * 
    * @see #isReplace()
    * @see #setReplace(boolean)
@@ -27,8 +28,8 @@ public class OutlinePreferences
 
 
   /**
-   * The binding value. The bindings of the selected Identifier should be
-   * highlighted in higher nodes.
+   * The binding value. The bindings of the selected <code>Identifier</code>
+   * should be highlighted in higher nodes.
    * 
    * @see #isBinding()
    * @see #setBinding(boolean)
@@ -37,8 +38,8 @@ public class OutlinePreferences
 
 
   /**
-   * The unbound value. The unbounded Identifiers should be highlighted in all
-   * nodes.
+   * The unbound value. The unbounded <code>Identifiers</code> should be
+   * highlighted in all nodes.
    * 
    * @see #isUnbound()
    * @see #setUnbound(boolean)
@@ -47,8 +48,8 @@ public class OutlinePreferences
 
 
   /**
-   * The selection value. The selected expression should be highlighted in
-   * higher nodes.
+   * The selection value. The selected <code>Expression</code> should be
+   * highlighted in higher nodes.
    * 
    * @see #isSelection()
    * @see #setSelection(boolean)
@@ -57,8 +58,8 @@ public class OutlinePreferences
 
 
   /**
-   * The auto update value. If the user does a SmallStep the outline should be
-   * updated automatically.
+   * The auto update value. If the user does a <code>SmallStep</code> the
+   * <code>Outline</code> should be updated automatically.
    * 
    * @see #isAutoUpdate()
    * @see #setAutoUpdate(boolean)
@@ -67,13 +68,13 @@ public class OutlinePreferences
 
 
   /**
-   * The preferences
+   * The <code>Preferences</code>.
    */
   private Preferences preferences ;
 
 
   /**
-   * The divider location as an int value.
+   * The <code>DividerLocation</code> as an int value.
    * 
    * @see #getDividerLocation()
    * @see #setDividerLocation(int)
@@ -82,8 +83,9 @@ public class OutlinePreferences
 
 
   /**
-   * Initialize the preferences. Load the last saved values from it. Set the
-   * replace, binding, unbound and selection value of the OutlineNode.
+   * Initialize the <code>Preferences</code>. Load the last saved values from
+   * it. Set the replace, binding, unbound and selection value of the
+   * <code>OutlineNode</code>.
    */
   public OutlinePreferences ( )
   {
@@ -102,9 +104,9 @@ public class OutlinePreferences
 
 
   /**
-   * Return the divider location as an int value.
+   * Return the <code>DividerLocation</code> as an int value.
    * 
-   * @return The divider location.
+   * @return The <code>DividerLocation</code>.
    * @see #dividerLocation
    * @see #setDividerLocation(int)
    */
@@ -115,10 +117,11 @@ public class OutlinePreferences
 
 
   /**
-   * Return true, if the auto update of the outline is enabled, otherwise false.
+   * Return true, if the auto update of the <code>Outline</code> is enabled,
+   * otherwise false.
    * 
-   * @return True, if the auto update of the outline is enabled, otherwise
-   *         false.
+   * @return True, if the auto update of the <code>Outline</code> is enabled,
+   *         otherwise false.
    * @see #autoUpdate
    * @see #setAutoUpdate(boolean)
    */
@@ -129,11 +132,11 @@ public class OutlinePreferences
 
 
   /**
-   * Return true, if the bindings of the selected Identifier should be
-   * highlighted in higher nodes, otherwise false.
+   * Return true, if the bindings of the selected <code>Identifier</code>
+   * should be highlighted in higher nodes, otherwise false.
    * 
-   * @return True, if the bindings of the selected Identifier should be
-   *         highlighted in higher nodes, otherwise false.
+   * @return True, if the bindings of the selected <code>Identifier</code>
+   *         should be highlighted in higher nodes, otherwise false.
    * @see #binding
    * @see #setBinding(boolean)
    */
@@ -144,11 +147,11 @@ public class OutlinePreferences
 
 
   /**
-   * Return true, if the selected expression should be replaced in higher nodes,
-   * otherwise false.
+   * Return true, if the selected <code>Expression</code> should be replaced
+   * in higher nodes, otherwise false.
    * 
-   * @return True, if the selected expression should be replaced in higher
-   *         nodes, otherwise false.
+   * @return True, if the selected <code>Expression</code> should be replaced
+   *         in higher nodes, otherwise false.
    * @see #replace
    * @see #setReplace(boolean)
    */
@@ -159,11 +162,11 @@ public class OutlinePreferences
 
 
   /**
-   * Return true, if the selected expression should be highlighted in higher
-   * nodes, otherwise false.
+   * Return true, if the selected <code>Expression</code> should be
+   * highlighted in higher nodes, otherwise false.
    * 
-   * @return True, if the selected expression should be highlighted in higher
-   *         nodes, otherwise false.
+   * @return True, if the selected <code>Expression</code> should be
+   *         highlighted in higher nodes, otherwise false.
    * @see #selection
    * @see #setSelection(boolean)
    */
@@ -174,11 +177,11 @@ public class OutlinePreferences
 
 
   /**
-   * Return true, if the unbounded Identifiers should be highlighted in all
-   * nodes, otherwise false.
+   * Return true, if the unbounded <code>Identifiers</code> should be
+   * highlighted in all nodes, otherwise false.
    * 
-   * @return True, if the unbounded Identifiers should be highlighted in all
-   *         nodes, otherwise false.
+   * @return True, if the unbounded <code>Identifiers</code> should be
+   *         highlighted in all nodes, otherwise false.
    * @see #unbound
    * @see #setUnbound(boolean)
    */
@@ -189,8 +192,9 @@ public class OutlinePreferences
 
 
   /**
-   * Set the auto update value and writes the value to the preferences. If the
-   * user does a SmallStep the outline should be updated automatically.
+   * Set the auto update value and writes the value to the
+   * <code>Preferences</code>. If the user does a <code>SmallStep</code>
+   * the <code>Outline</code> should be updated automatically.
    * 
    * @param pAutoupdate The auto update value.
    * @see #autoUpdate
@@ -204,8 +208,9 @@ public class OutlinePreferences
 
 
   /**
-   * Set the binding value and writes the value to the preferences. The bindings
-   * of the selected Identifier should be highlighted in higher nodes.
+   * Set the binding value and writes the value to the <code>Preferences</code>.
+   * The bindings of the selected <code>Identifier</code> should be
+   * highlighted in higher nodes.
    * 
    * @param pBinding The binding value.
    * @see #binding
@@ -219,10 +224,11 @@ public class OutlinePreferences
 
 
   /**
-   * Set the divider location value and writes the value to the preferences. The
-   * divider location as an int value.
+   * Set the <code>DividerLocation</code> value and writes the value to the
+   * <code>Preferences</code>. The <code>DividerLocation</code> as an int
+   * value.
    * 
-   * @param pDividerLocation The divider location value.
+   * @param pDividerLocation The <code>DividerLocation</code> value.
    * @see #dividerLocation
    * @see #getDividerLocation()
    */
@@ -234,8 +240,8 @@ public class OutlinePreferences
 
 
   /**
-   * Set the replace value and writes the value to the preferences. The selected
-   * expression should be replaced in higher nodes.
+   * Set the replace value and writes the value to the <code>Preferences</code>.
+   * The selected <code>Expression</code> should be replaced in higher nodes.
    * 
    * @param pReplace The replace value.
    * @see #replace
@@ -249,8 +255,9 @@ public class OutlinePreferences
 
 
   /**
-   * Set the selection value and writes the value to the preferences. The
-   * selected expression should be highlighted in higher nodes.
+   * Set the selection value and writes the value to the
+   * <code>Preferences</code>. The selected <code>Expression</code> should
+   * be highlighted in higher nodes.
    * 
    * @param pSelection The selection value.
    * @see #selection
@@ -264,8 +271,9 @@ public class OutlinePreferences
 
 
   /**
-   * Set the unbound value and writes the value to the preferences. The
-   * unbounded Identifiers should be highlighted in all nodes.
+   * Set the unbound value and writes the value to the <code>Preferences</code>.
+   * The unbounded <code>Identifiers</code> should be highlighted in all
+   * nodes.
    * 
    * @param pUnbound The unbound value.
    * @see #unbound

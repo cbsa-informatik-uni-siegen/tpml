@@ -533,18 +533,18 @@ public final class Theme extends AbstractBean {
    * 
    * @throws NullPointerException if <code>selectionColor</code> is <code>null</code>.
    */
-  public void setSelectionColor(Color selectedColor) {
-    if (selectedColor == null) {
+  public void setSelectionColor(Color selectionColor) {
+    if (selectionColor == null) {
       throw new NullPointerException("selectionColor is null");
     }
-    if (!this.selectionColor.equals(selectedColor)) {
+    if (!this.selectionColor.equals(selectionColor)) {
       // update the keywordColor
       Color oldKeywordColor = this.selectionColor;
-      this.selectionColor = selectedColor;
-      firePropertyChange("selectionColor", oldKeywordColor, selectedColor);
+      this.selectionColor = selectionColor;
+      firePropertyChange("selectionColor", oldKeywordColor, selectionColor);
       
       // save the new setting
-      this.preferences.put("selectionColor", encodeColor(selectedColor));
+      this.preferences.put("selectionColor", encodeColor(selectionColor));
     }
   }
   

@@ -10,7 +10,7 @@ import javax.swing.tree.DefaultTreeCellRenderer ;
 
 
 /**
- * This class renders a cell in the Outline.
+ * This class renders a cell in the <code>Outline</code>.
  * 
  * @author Christian Fehler
  * @version $Rev$
@@ -24,7 +24,7 @@ public class OutlineCellRenderer extends DefaultTreeCellRenderer
 
 
   /**
-   * Initializes the OutlineCellRenderer.
+   * Initializes the <code>OutlineCellRenderer</code>.
    */
   public OutlineCellRenderer ( )
   {

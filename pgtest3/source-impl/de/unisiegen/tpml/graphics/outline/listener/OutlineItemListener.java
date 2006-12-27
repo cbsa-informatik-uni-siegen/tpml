@@ -9,9 +9,9 @@ import de.unisiegen.tpml.graphics.outline.ui.OutlineUI ;
 
 
 /**
- * This class listens for item events. It updates the CheckBox selection and the
- * MenuItem selection. It sets the OutlineNode values replace, binding, unbound
- * and autoupdate.
+ * This class listens for item events. It updates the <code>JCheckBox</code>
+ * selection and the <code>JCheckBoxMenuItem</code> selection. It sets the
+ * <code>OutlineNode</code> values replace, binding, unbound and autoupdate.
  * 
  * @author Christian Fehler
  * @version $Rev$
@@ -19,15 +19,15 @@ import de.unisiegen.tpml.graphics.outline.ui.OutlineUI ;
 public class OutlineItemListener implements ItemListener
 {
   /**
-   * The Outline UI.
+   * The <code>OutlineUI</code>.
    */
   private OutlineUI outlineUI ;
 
 
   /**
-   * Initializes the OutlineItemListener.
+   * Initializes the <code>OutlineItemListener</code>.
    * 
-   * @param pOutlineUI The Outline UI.
+   * @param pOutlineUI The <code>OutlineUI</code>.
    */
   public OutlineItemListener ( OutlineUI pOutlineUI )
   {
@@ -36,11 +36,11 @@ public class OutlineItemListener implements ItemListener
 
 
   /**
-   * This method updates the JCheckBox selection and the JCheckBoxMenuItem
-   * selection.
+   * This method updates the <code>JCheckBox</code> selection and the
+   * <code>JCheckBoxMenuItem</code> selection.
    * 
-   * @param pSelected The selection of the JCheckBox selection or the
-   *          JCheckBoxMenuItem selection.
+   * @param pSelected The selection of the <code>JCheckBox</code> selection or
+   *          the <code>JCheckBoxMenuItem</code> selection.
    */
   private void autoUpdate ( boolean pSelected )
   {
@@ -52,11 +52,12 @@ public class OutlineItemListener implements ItemListener
 
 
   /**
-   * This method updates the JCheckBox selection and the JCheckBoxMenuItem
-   * selection. It sets the OutlineNode value binding.
+   * This method updates the <code>JCheckBox</code> selection and the
+   * <code>JCheckBoxMenuItem</code> selection. It sets the
+   * <code>OutlineNode</code> value binding.
    * 
-   * @param pSelected The selection of the JCheckBox selection or the
-   *          JCheckBoxMenuItem selection.
+   * @param pSelected The selection of the <code>JCheckBox</code> selection or
+   *          the <code>JCheckBoxMenuItem</code> selection.
    */
   private void binding ( boolean pSelected )
   {
@@ -75,8 +76,8 @@ public class OutlineItemListener implements ItemListener
   /**
    * This method is invoked if a item state has changed.
    * 
-   * @param pItemEvent The item event.
-   * @see java.awt.event.ItemListener#itemStateChanged(java.awt.event.ItemEvent)
+   * @param pItemEvent The <code>ItemEvent</code>.
+   * @see ItemListener#itemStateChanged(ItemEvent)
    */
   public void itemStateChanged ( ItemEvent pItemEvent )
   {
@@ -86,11 +87,12 @@ public class OutlineItemListener implements ItemListener
 
 
   /**
-   * This method updates the JCheckBox selection and the JCheckBoxMenuItem
-   * selection. It sets the OutlineNode value replace.
+   * This method updates the <code>JCheckBox</code> selection and the
+   * <code>JCheckBoxMenuItem</code> selection. It sets the
+   * <code>OutlineNode</code> value replace.
    * 
-   * @param pSelected The selection of the JCheckBox selection or the
-   *          JCheckBoxMenuItem selection.
+   * @param pSelected The selection of the <code>JCheckBox</code> selection or
+   *          the <code>JCheckBoxMenuItem</code> selection.
    */
   private void replace ( boolean pSelected )
   {
@@ -107,11 +109,12 @@ public class OutlineItemListener implements ItemListener
 
 
   /**
-   * This method updates the JCheckBox selection and the JCheckBoxMenuItem
-   * selection. It sets the OutlineNode value selection.
+   * This method updates the <code>JCheckBox</code> selection and the
+   * <code>JCheckBoxMenuItem</code> selection. It sets the
+   * <code>OutlineNode</code> value selection.
    * 
-   * @param pSelected The selection of the JCheckBox selection or the
-   *          JCheckBoxMenuItem selection.
+   * @param pSelected The selection of the <code>JCheckBox</code> selection or
+   *          the <code>JCheckBoxMenuItem</code> selection.
    */
   private void selection ( boolean pSelected )
   {
@@ -128,11 +131,12 @@ public class OutlineItemListener implements ItemListener
 
 
   /**
-   * This method updates the JCheckBox selection and the JCheckBoxMenuItem
-   * selection. It sets the OutlineNode value unbound.
+   * This method updates the <code>JCheckBox</code> selection and the
+   * <code>JCheckBoxMenuItem</code> selection. It sets the
+   * <code>OutlineNode</code> value unbound.
    * 
-   * @param pSelected The selection of the JCheckBox selection or the
-   *          JCheckBoxMenuItem selection.
+   * @param pSelected The selection of the <code>JCheckBox</code> selection or
+   *          the <code>JCheckBoxMenuItem</code> selection.
    */
   private void unbound ( boolean pSelected )
   {
@@ -149,15 +153,16 @@ public class OutlineItemListener implements ItemListener
 
 
   /**
-   * This method updates the JCheckBox selection and the JCheckBoxMenuItem
-   * selection. It sets the OutlineNode values replace, binding, unbound and
-   * selection.
+   * This method updates the <code>JCheckBox</code> selection and the
+   * <code>JCheckBoxMenuItem</code> selection. It sets the
+   * <code>OutlineNode</code> values replace, binding, unbound and selection.
    * 
-   * @param pSelected The selection of the JCheckBox selection or the
-   *          JCheckBoxMenuItem selection.
-   * @param pSource The source if it is a instance of JCheckBox, otherwise null.
-   * @param pActionCommand The action command, if the source is a instance of
-   *          JCheckBoxMenuItem.
+   * @param pSelected The selection of the <code>JCheckBox</code> selection or
+   *          the <code>JCheckBoxMenuItem</code> selection.
+   * @param pSource The source if it is a instance of <code>JCheckBox</code>,
+   *          otherwise null.
+   * @param pActionCommand The <code>ActionCommand</code>, if the source is a
+   *          instance of <code>JCheckBoxMenuItem</code>.
    */
   public void update ( boolean pSelected , Object pSource ,
       String pActionCommand )

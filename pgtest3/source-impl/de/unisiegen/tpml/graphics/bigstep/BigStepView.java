@@ -56,7 +56,7 @@ public class BigStepView extends AbstractProofView
 
 
   /**
-   * The Outline of this view.
+   * The <code>Outline</code> of this view.
    * 
    * @see #getOutline()
    */
@@ -117,9 +117,9 @@ public class BigStepView extends AbstractProofView
 
 
   /**
-   * Returns the Outline of this view.
+   * Returns the <code>Outline</code> of this view.
    * 
-   * @return The Outline of this view.
+   * @return The <code>Outline</code> of this view.
    */
   public Outline getOutline ( )
   {

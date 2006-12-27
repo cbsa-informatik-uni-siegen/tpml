@@ -9,8 +9,9 @@ import de.unisiegen.tpml.graphics.outline.Outline ;
 
 
 /**
- * Sets the divider location, if it was not set before. The divider location can
- * not be set when the JSplitPane is created, so this is done here.
+ * Sets the <code>DividerLocation</code>, if it was not set before. The
+ * <code>DividerLocation</code> can not be set when the
+ * <code>JSplitPane</code> is created, so this is done here.
  * 
  * @author Christian Fehler
  * @version $Rev$
@@ -18,28 +19,28 @@ import de.unisiegen.tpml.graphics.outline.Outline ;
 public class OutlinePropertyChangeListener implements PropertyChangeListener
 {
   /**
-   * The JSplitPane.
+   * The <code>JSplitPane</code>.
    */
   private JSplitPane jSplitPane ;
 
 
   /**
-   * Used to indicate that the divider location was set before.
+   * Used to indicate that the <code>DividerLocation</code> was set before.
    */
   private boolean setDivider ;
 
 
   /**
-   * The Outline.
+   * The <code>Outline</code>.
    */
   private Outline outline ;
 
 
   /**
-   * Initializes the OutlinePropertyChangeListener.
+   * Initializes the <code>OutlinePropertyChangeListener</code>.
    * 
-   * @param pJSplitPane The JSplitPane.
-   * @param pOutline The Outline.
+   * @param pJSplitPane The <code>JSplitPane</code>.
+   * @param pOutline The <code>Outline</code>.
    */
   public OutlinePropertyChangeListener ( JSplitPane pJSplitPane ,
       Outline pOutline )
@@ -51,11 +52,12 @@ public class OutlinePropertyChangeListener implements PropertyChangeListener
 
 
   /**
-   * Sets the divider location, if it was not set before. The divider location
-   * can not be set when the JSplitPane is created, so this is done here.
+   * Sets the <code>DividerLocation</code>, if it was not set before. The
+   * <code>DividerLocation</code> can not be set when the
+   * <code>JSplitPane</code> is created, so this is done here.
    * 
-   * @param pPropertyChangeEvent The property change event.
-   * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
+   * @param pPropertyChangeEvent The <code>PropertyChangeEvent</code>.
+   * @see PropertyChangeListener#propertyChange(PropertyChangeEvent)
    */
   public void propertyChange ( PropertyChangeEvent pPropertyChangeEvent )
   {

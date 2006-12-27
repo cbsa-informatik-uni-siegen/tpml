@@ -8,8 +8,9 @@ import de.unisiegen.tpml.graphics.outline.Outline ;
 
 
 /**
- * This class listens for component events. It saves the divider location in the
- * OutlinePreferences when the component was resized.
+ * This class listens for component events. It saves the
+ * <code>DividerLocation</code> in the <code>OutlinePreferences</code> when
+ * the component was resized.
  * 
  * @author Christian Fehler
  * @version $Rev$
@@ -17,22 +18,22 @@ import de.unisiegen.tpml.graphics.outline.Outline ;
 public class OutlineComponentListener implements ComponentListener
 {
   /**
-   * The JSplitPane.
+   * The <code>JSplitPane</code>.
    */
   private JSplitPane jSplitPane ;
 
 
   /**
-   * The Outline.
+   * The <code>Outline</code>.
    */
   private Outline outline ;
 
 
   /**
-   * Initializes the OutlineComponentListener.
+   * Initializes the <code>OutlineComponentListener</code>.
    * 
-   * @param pJSplitPane The JSplitPane.
-   * @param pOutline The AbstractOutline.
+   * @param pJSplitPane The <code>JSplitPane</code>.
+   * @param pOutline The <code>Outline</code>.
    */
   public OutlineComponentListener ( JSplitPane pJSplitPane , Outline pOutline )
   {
@@ -44,8 +45,8 @@ public class OutlineComponentListener implements ComponentListener
   /**
    * Component was hidden.
    * 
-   * @param pComponentEvent The component event.
-   * @see java.awt.event.ComponentListener#componentHidden(java.awt.event.ComponentEvent)
+   * @param pComponentEvent The <code>ComponentEvent</code>.
+   * @see ComponentListener#componentHidden(ComponentEvent)
    */
   public void componentHidden ( @ SuppressWarnings ( "unused" )
   ComponentEvent pComponentEvent )
@@ -57,8 +58,8 @@ public class OutlineComponentListener implements ComponentListener
   /**
    * Component was moved.
    * 
-   * @param pComponentEvent The component event.
-   * @see java.awt.event.ComponentListener#componentMoved(java.awt.event.ComponentEvent)
+   * @param pComponentEvent The <code>ComponentEvent</code>.
+   * @see ComponentListener#componentMoved(ComponentEvent)
    */
   public void componentMoved ( @ SuppressWarnings ( "unused" )
   ComponentEvent pComponentEvent )
@@ -70,8 +71,8 @@ public class OutlineComponentListener implements ComponentListener
   /**
    * Component was resized.
    * 
-   * @param pComponentEvent The component event.
-   * @see java.awt.event.ComponentListener#componentResized(java.awt.event.ComponentEvent)
+   * @param pComponentEvent The <code>ComponentEvent</code>.
+   * @see ComponentListener#componentResized(ComponentEvent)
    */
   public void componentResized ( ComponentEvent pComponentEvent )
   {
@@ -87,8 +88,8 @@ public class OutlineComponentListener implements ComponentListener
   /**
    * Component was shown.
    * 
-   * @param pComponentEvent The component event.
-   * @see java.awt.event.ComponentListener#componentShown(java.awt.event.ComponentEvent)
+   * @param pComponentEvent The <code>ComponentEvent</code>.
+   * @see ComponentListener#componentShown(ComponentEvent)
    */
   public void componentShown ( @ SuppressWarnings ( "unused" )
   ComponentEvent pComponentEvent )

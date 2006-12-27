@@ -7,8 +7,7 @@ import de.unisiegen.tpml.graphics.outline.util.OutlinePreferences ;
 
 
 /**
- * This interface is the main interface of the AbstractOutline. It loads new
- * Expressions, returns the GUI and the preferences.
+ * This interface is the main interface of the <code>Outline</code>.
  * 
  * @author Christian Fehler
  * @version $Rev$
@@ -16,36 +15,39 @@ import de.unisiegen.tpml.graphics.outline.util.OutlinePreferences ;
 public interface Outline
 {
   /**
-   * Disables the AutoUpdate check box and the menu item. Removes the listeners.
+   * Disables the auto update <code>JCheckBox</code> and the
+   * <code>JMenuItem</code>. Removes the <code>ItemListener</code> and the
+   * <code>ActionListener</code>.
    */
   public void disableAutoUpdate ( ) ;
 
 
   /**
-   * Returns the jMainPanel of the OutlineUI.
+   * Returns the <code>JPanel</code> of the <code>OutlineUI</code>.
    * 
-   * @return The jMainPanel of the OutlineUI.
+   * @return The <code>JPanel</code> of the <code>OutlineUI</code>.
    */
   public JPanel getJPanelOutline ( ) ;
 
 
   /**
-   * Returns the OutlinePreferences.
+   * Returns the <code>OutlinePreferences</code>.
    * 
-   * @return The OutlinePreferences.
+   * @return The <code>OutlinePreferences</code>.
    */
   public OutlinePreferences getOutlinePreferences ( ) ;
 
 
   /**
-   * This method loads a new Expression into the Outline. It checks if the new
-   * Expression is different to the current loaded Expression, if not it does
+   * This method loads a new <code>Expression</code> into the
+   * <code>Outline</code>. It checks if the new <code>Expression</code> is
+   * different to the current loaded <code>Expression</code>, if not it does
    * nothing and returns. It does also nothing if the auto update is disabled
-   * and the change does not come from a mouse event. In the BigStep and the
-   * TypeChecker view it does also nothing if the change does not come from a
-   * mouse event.
+   * and the change does not come from a <code>MouseEvent</code>. In the
+   * <code>BigStep</code> and the <code>TypeChecker</code> view it does also
+   * nothing if the change does not come from a <code>MouseEvent</code>.
    * 
-   * @param pExpression The new Expression.
+   * @param pExpression The new <code>Expression</code>.
    * @param pDescription The description who is calling this method.
    */
   public void loadExpression ( Expression pExpression , String pDescription ) ;

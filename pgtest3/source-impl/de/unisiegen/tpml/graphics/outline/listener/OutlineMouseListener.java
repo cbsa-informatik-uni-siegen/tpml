@@ -15,9 +15,12 @@ import de.unisiegen.tpml.graphics.typechecker.TypeCheckerView ;
 
 
 /**
- * This class listens for mouse events. It handles mouse events on the
- * components Outline, SmallStepView, BigStepView and TypeCheckerView. Sets a
- * new Expression in the Outline. Views the JPopupMenu in the Outline.
+ * This class listens for <code>MouseEvents</code>. It handles
+ * <code>MouseEvents</code> on the components <code>Outline</code>,
+ * <code>SmallStepView</code>, <code>BigStepView</code> and
+ * <code>TypeCheckerView</code>. Sets a new <code>Expression</code> in the
+ * <code>Outline</code>. It views the <code>JPopupMenu</code> in the
+ * <code>Outline</code>.
  * 
  * @author Christian Fehler
  * @version $Rev$
@@ -25,29 +28,31 @@ import de.unisiegen.tpml.graphics.typechecker.TypeCheckerView ;
 public class OutlineMouseListener implements MouseListener
 {
   /**
-   * The Outline UI.
+   * The <code>OutlineUI</code>.
    */
   private OutlineUI outlineUI ;
 
 
   /**
-   * The CompoundExpression.
+   * The <code>CompoundExpression</code>.
    */
   private CompoundExpression < ? , ? > compoundExpression ;
 
 
   /**
-   * The view, one of SmallStepView, BigStepView or TypeCheckerView.
+   * The view, one of <code>SmallStepView</code>, <code>BigStepView</code>
+   * or <code>TypeCheckerView</code>.
    */
   private Container view ;
 
 
   /**
-   * Initializes the OutlineMouseListener with the given OutlineUI. This
-   * constructer is used, if the OutlineMouseListener listens for mouse events
-   * on the Outline.
+   * Initializes the <code>OutlineMouseListener</code> with the given
+   * <code>OutlineUI</code>. This constructer is used, if the
+   * <code>OutlineMouseListener</code> listens for <code>MouseEvents</code>
+   * on the <code>Outline</code>.
    * 
-   * @param pOutlineUI The Outline UI.
+   * @param pOutlineUI The <code>OutlineUI</code>.
    */
   public OutlineMouseListener ( OutlineUI pOutlineUI )
   {
@@ -58,11 +63,13 @@ public class OutlineMouseListener implements MouseListener
 
 
   /**
-   * Initializes the OutlineMouseListener with the given OutlineUI. This
-   * constructer is used, if the OutlineMouseListener listens for mouse events
-   * on the SmallStepView, BigStepView or TypeCheckerView.
+   * Initializes the <code>OutlineMouseListener</code> with the given
+   * <code>OutlineUI</code>. This constructer is used, if the
+   * <code>OutlineMouseListener</code> listens for <code>MouseEvents</code>
+   * on the <code>SmallStepView</code>, <code>BigStepView</code> or
+   * <code>TypeCheckerView</code>.
    * 
-   * @param pCompoundExpression The CompoundExpression.
+   * @param pCompoundExpression The <code>CompoundExpression</code>.
    */
   public OutlineMouseListener ( CompoundExpression < ? , ? > pCompoundExpression )
   {
@@ -73,12 +80,12 @@ public class OutlineMouseListener implements MouseListener
 
 
   /**
-   * Returns true, if all children of the given TreePath are visible, otherwise
-   * false.
+   * Returns true, if all children of the given <code>TreePath</code> are
+   * visible, otherwise false.
    * 
-   * @param pTreePath The TreePath to check for.
-   * @return True, if all children of the given TreePath are visible, otherwise
-   *         false.
+   * @param pTreePath The <code>TreePath</code> to check for.
+   * @return True, if all children of the given <code>TreePath</code> are
+   *         visible, otherwise false.
    */
   private boolean allChildrenVisible ( TreePath pTreePath )
   {
@@ -106,11 +113,13 @@ public class OutlineMouseListener implements MouseListener
 
 
   /**
-   * Handles mouse events on the components AbstractOutline, SmallStepView,
-   * BigStepView and TypeCheckerView. Sets a new Expression in the
-   * AbstractOutline. Views the JPopupMenu in the Outline.
+   * Handles <code>MouseEvents</code> on the components <code>Outline</code>,
+   * <code>SmallStepView</code>, <code>BigStepView</code> and
+   * <code>TypeCheckerView</code>. Sets a new <code>Expression</code> in
+   * the <code>Outline</code>. Views the <code>JPopupMenu</code> in the
+   * <code>Outline</code>.
    * 
-   * @param pMouseEvent The mouse event.
+   * @param pMouseEvent The <code>MouseEvent</code>.
    */
   private void handleMouseEvent ( MouseEvent pMouseEvent )
   {
@@ -153,23 +162,20 @@ public class OutlineMouseListener implements MouseListener
       {
         if ( this.view instanceof SmallStepView )
         {
-          ( ( SmallStepView ) this.view ).getOutline ( )
-              .loadExpression ( this.compoundExpression.getExpression ( ) ,
-                  "mouse_smallstep" ) ; //$NON-NLS-1$
+          ( ( SmallStepView ) this.view ).getOutline ( ).loadExpression (
+              this.compoundExpression.getExpression ( ) , "mouse_smallstep" ) ; //$NON-NLS-1$
         }
         // BigStepView
         else if ( this.view instanceof BigStepView )
         {
-          ( ( BigStepView ) this.view ).getOutline ( )
-              .loadExpression ( this.compoundExpression.getExpression ( ) ,
-                  "mouse_bigstep" ) ; //$NON-NLS-1$
+          ( ( BigStepView ) this.view ).getOutline ( ).loadExpression (
+              this.compoundExpression.getExpression ( ) , "mouse_bigstep" ) ; //$NON-NLS-1$
         }
         // TypeCheckerView
         else if ( this.view instanceof TypeCheckerView )
         {
-          ( ( TypeCheckerView ) this.view ).getOutline ( )
-              .loadExpression ( this.compoundExpression.getExpression ( ) ,
-                  "mouse_typechecker" ) ; //$NON-NLS-1$
+          ( ( TypeCheckerView ) this.view ).getOutline ( ).loadExpression (
+              this.compoundExpression.getExpression ( ) , "mouse_typechecker" ) ; //$NON-NLS-1$
         }
       }
     }
@@ -179,8 +185,8 @@ public class OutlineMouseListener implements MouseListener
   /**
    * Mouse is clicked on the component, which listens on mouse events.
    * 
-   * @param pMouseEvent The mouse event.
-   * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
+   * @param pMouseEvent The <code>MouseEvent</code>.
+   * @see MouseListener#mouseClicked(MouseEvent)
    */
   public void mouseClicked ( @ SuppressWarnings ( "unused" )
   MouseEvent pMouseEvent )
@@ -192,8 +198,8 @@ public class OutlineMouseListener implements MouseListener
   /**
    * Mouse entered the component, which listens on mouse events.
    * 
-   * @param pMouseEvent The mouse event.
-   * @see java.awt.event.MouseListener#mouseEntered(java.awt.event.MouseEvent)
+   * @param pMouseEvent The <code>MouseEvent</code>.
+   * @see MouseListener#mouseEntered(MouseEvent)
    */
   public void mouseEntered ( @ SuppressWarnings ( "unused" )
   MouseEvent pMouseEvent )
@@ -205,8 +211,8 @@ public class OutlineMouseListener implements MouseListener
   /**
    * Mouse exited the component, which listens on mouse events.
    * 
-   * @param pMouseEvent The mouse event.
-   * @see java.awt.event.MouseListener#mouseExited(java.awt.event.MouseEvent)
+   * @param pMouseEvent The <code>MouseEvent</code>.
+   * @see MouseListener#mouseExited(MouseEvent)
    */
   public void mouseExited ( @ SuppressWarnings ( "unused" )
   MouseEvent pMouseEvent )
@@ -218,8 +224,8 @@ public class OutlineMouseListener implements MouseListener
   /**
    * Mouse is pressed on the component, which listens on mouse events.
    * 
-   * @param pMouseEvent The mouse event.
-   * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
+   * @param pMouseEvent The <code>MouseEvent</code>.
+   * @see MouseListener#mousePressed(MouseEvent)
    */
   public void mousePressed ( MouseEvent pMouseEvent )
   {
@@ -230,8 +236,8 @@ public class OutlineMouseListener implements MouseListener
   /**
    * Mouse is released on the component, which listens on mouse events.
    * 
-   * @param pMouseEvent The mouse event.
-   * @see java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
+   * @param pMouseEvent The <code>MouseEvent</code>.
+   * @see MouseListener#mouseReleased(MouseEvent)
    */
   public void mouseReleased ( MouseEvent pMouseEvent )
   {

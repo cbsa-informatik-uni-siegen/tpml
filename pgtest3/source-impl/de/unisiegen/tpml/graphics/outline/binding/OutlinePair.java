@@ -2,7 +2,8 @@ package de.unisiegen.tpml.graphics.outline.binding ;
 
 
 /**
- * In this class the start and the end index of the Identifiers is saved.
+ * In this class the start and the end index of the <code>Identifiers</code>
+ * is saved.
  * 
  * @author Christian Fehler
  * @version $Rev$

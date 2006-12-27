@@ -13,7 +13,7 @@ import de.unisiegen.tpml.graphics.outline.binding.OutlineUnbound ;
 
 
 /**
- * This class represents the nodes in the Outline.
+ * This class represents the nodes in the <code>Outline</code>.
  * 
  * @author Christian Fehler
  * @version $Rev$
@@ -27,13 +27,14 @@ public class OutlineNode
 
 
   /**
-   * Expressions should not be shown in the nodes.
+   * The <code>Expression</code> should not be shown in this nodes.
    */
   public static final int NO_SELECTION = - 1 ;
 
 
   /**
-   * The selected expression should be highlighted in higher nodes.
+   * The selected <code>Expression</code> should be highlighted in higher
+   * nodes.
    * 
    * @see #setSelection(boolean)
    */
@@ -41,7 +42,7 @@ public class OutlineNode
 
 
   /**
-   * The selected expression should be replaced in higher nodes.
+   * The selected <code>Expression</code> should be replaced in higher nodes.
    * 
    * @see #setReplace(boolean)
    */
@@ -49,7 +50,8 @@ public class OutlineNode
 
 
   /**
-   * Selected identifier and bindings should be highlighted in higher nodes.
+   * Selected <code>Identifier</code> and bindings should be highlighted in
+   * higher nodes.
    * 
    * @see #setBinding(boolean)
    */
@@ -57,7 +59,7 @@ public class OutlineNode
 
 
   /**
-   * Unbound Identifiers should be highlighted in all nodes.
+   * Unbound <code>Identifiers</code> should be highlighted in all nodes.
    * 
    * @see #setUnbound(boolean)
    */
@@ -121,13 +123,14 @@ public class OutlineNode
 
 
   /**
-   * String, if a expression should be replaced and selection is active.
+   * String, if a <code>Expression</code> should be replaced and selection is
+   * active.
    */
   private static final String REPLACE_BOLD = "<b>&nbsp;...&nbsp;</b>" ; //$NON-NLS-1$
 
 
   /**
-   * String, if a expression should be replaced.
+   * String, if a <code>Expression</code> should be replaced.
    */
   private static final String REPLACE = "&nbsp;...&nbsp;" ; //$NON-NLS-1$
 
@@ -157,8 +160,8 @@ public class OutlineNode
 
 
   /**
-   * Sets the binding value. Selected identifier and bindings should be
-   * highlighted in higher nodes.
+   * Sets the binding value. Selected <code>Identifier</code> and bindings
+   * should be highlighted in higher nodes.
    * 
    * @param pBinding Should or should not be highlighted.
    * @see #binding
@@ -170,8 +173,8 @@ public class OutlineNode
 
 
   /**
-   * Sets the replace value. The selected expression should be replaced in
-   * higher nodes.
+   * Sets the replace value. The selected <code>Expression</code> should be
+   * replaced in higher nodes.
    * 
    * @param pReplace Should or should not be replaced.
    * @see #replace
@@ -183,8 +186,8 @@ public class OutlineNode
 
 
   /**
-   * Sets the selection value. The selected expression should be highlighted in
-   * higher nodes.
+   * Sets the selection value. The selected <code>Expression</code> should be
+   * highlighted in higher nodes.
    * 
    * @param pSelection Should or should not be highlighted.
    * @see #selection
@@ -196,8 +199,8 @@ public class OutlineNode
 
 
   /**
-   * Sets the unbound value. Unbound Identifiers should be highlighted in all
-   * nodes.
+   * Sets the unbound value. Unbound <code>Identifiers</code> should be
+   * highlighted in all nodes.
    * 
    * @param pUnbound Should or should not be highlighted.
    * @see #unbound
@@ -209,7 +212,7 @@ public class OutlineNode
 
 
   /**
-   * The selected expression should be replaced in this node.
+   * The selected <code>Expression</code> should be replaced in this node.
    * 
    * @see #setReplaceInThisNode(boolean)
    */
@@ -225,19 +228,19 @@ public class OutlineNode
 
 
   /**
-   * The expression as a string.
+   * The <code>Expression</code> as a <code>String</code>.
    */
   private String expressionString ;
 
 
   /**
-   * The hole caption in html format.
+   * The hole caption in HTML format.
    */
   private String caption ;
 
 
   /**
-   * The expression repressented by this node.
+   * The <code>Expression</code> repressented by this node.
    * 
    * @see #getExpression()
    */
@@ -254,7 +257,7 @@ public class OutlineNode
 
 
   /**
-   * The start index of the Identifier.
+   * The start index of the <code>Identifier</code>.
    * 
    * @see #getEndIndex()
    */
@@ -262,7 +265,7 @@ public class OutlineNode
 
 
   /**
-   * The end index of the Identifier.
+   * The end index of the <code>Identifier</code>.
    * 
    * @see #getStartIndex()
    */
@@ -270,7 +273,8 @@ public class OutlineNode
 
 
   /**
-   * The OutlineUnbound which repressents the unbound Identifiers in all nodes.
+   * The <code>OutlineUnbound</code> which repressents the unbound
+   * <code>Identifiers</code> in all nodes.
    */
   private OutlineUnbound outlineUnbound ;
 
@@ -278,11 +282,11 @@ public class OutlineNode
   /**
    * This constructor initializes the values and loads the description.
    * 
-   * @param pExpression The expression repressented by this node.
-   * @param pASTUnbound The OutlineUnbound which repressents the unbound
-   *          Identifiers in all nodes.
+   * @param pExpression The <code>Expression</code> repressented by this node.
+   * @param pOutlineUnbound The <code>OutlineUnbound</code> which repressents
+   *          the unbound <code>Identifiers</code> in all nodes.
    */
-  public OutlineNode ( Expression pExpression , OutlineUnbound pASTUnbound )
+  public OutlineNode ( Expression pExpression , OutlineUnbound pOutlineUnbound )
   {
     this.description = pExpression.getClass ( ).getSimpleName ( ) ;
     this.expressionString = pExpression.toPrettyString ( ).toString ( ) ;
@@ -290,7 +294,7 @@ public class OutlineNode
     this.startIndex = - 1 ;
     this.endIndex = - 1 ;
     this.outlineBinding = null ;
-    this.outlineUnbound = pASTUnbound ;
+    this.outlineUnbound = pOutlineUnbound ;
     this.replaceInThisNode = false ;
     resetCaption ( ) ;
   }
@@ -299,26 +303,27 @@ public class OutlineNode
   /**
    * This constructor initializes the values and loads the description.
    * 
-   * @param pExpression The expression repressented by this node.
+   * @param pExpression The <code>Expression</code> repressented by this node.
    * @param pDescription The description of this node.
-   * @param pExpressionString The expression as a string.
-   * @param pStartIndex The start index of the Identifier.
-   * @param pEndIndex The end index of the Identifier.
-   * @param pASTBinding The bindings in this node.
-   * @param pASTUnbound The OutlineUnbound which repressents the unbound
-   *          Identifiers in all nodes
+   * @param pExpressionString The <code>Expression</code> as a
+   *          <code>String</code>.
+   * @param pStartIndex The start index of the <code>Identifier</code>.
+   * @param pEndIndex The end index of the <code>Identifier</code>.
+   * @param pOutlineBinding The bindings in this node.
+   * @param pOutlineUnbound The <code>OutlineUnbound</code> which repressents
+   *          the unbound <code>Identifiers</code> in all nodes
    */
   public OutlineNode ( Expression pExpression , String pDescription ,
       String pExpressionString , int pStartIndex , int pEndIndex ,
-      OutlineBinding pASTBinding , OutlineUnbound pASTUnbound )
+      OutlineBinding pOutlineBinding , OutlineUnbound pOutlineUnbound )
   {
     this.expression = pExpression ;
     this.description = pDescription ;
     this.expressionString = pExpressionString ;
     this.startIndex = pStartIndex ;
     this.endIndex = pEndIndex ;
-    this.outlineBinding = pASTBinding ;
-    this.outlineUnbound = pASTUnbound ;
+    this.outlineBinding = pOutlineBinding ;
+    this.outlineUnbound = pOutlineUnbound ;
     this.replaceInThisNode = false ;
     resetCaption ( ) ;
   }
@@ -328,34 +333,35 @@ public class OutlineNode
    * This constructor initializes the values and loads the description.
    * 
    * @param pDescription The description of this node.
-   * @param pExpressionString The expression as a string.
-   * @param pStartIndex The start index of the Identifier.
-   * @param pEndIndex The end index of the Identifier.
-   * @param pASTBinding The bindings in this node.
-   * @param pASTUnbound The OutlineUnbound which repressents the unbound
-   *          Identifiers in all nodes
+   * @param pExpressionString The <code>Expression</code> as a
+   *          <code>String</code>.
+   * @param pStartIndex The start index of the <code>Identifier</code>.
+   * @param pEndIndex The end index of the <code>Identifier</code>.
+   * @param pOutlineBinding The bindings in this node.
+   * @param pOutlineUnbound The <code>OutlineUnbound</code> which repressents
+   *          the unbound <code>Identifiers</code> in all nodes
    */
   public OutlineNode ( String pDescription , String pExpressionString ,
-      int pStartIndex , int pEndIndex , OutlineBinding pASTBinding ,
-      OutlineUnbound pASTUnbound )
+      int pStartIndex , int pEndIndex , OutlineBinding pOutlineBinding ,
+      OutlineUnbound pOutlineUnbound )
   {
     this.description = pDescription ;
     this.expressionString = pExpressionString ;
     this.expression = null ;
     this.startIndex = pStartIndex ;
     this.endIndex = pEndIndex ;
-    this.outlineBinding = pASTBinding ;
-    this.outlineUnbound = pASTUnbound ;
+    this.outlineBinding = pOutlineBinding ;
+    this.outlineUnbound = pOutlineUnbound ;
     this.replaceInThisNode = false ;
     resetCaption ( ) ;
   }
 
 
   /**
-   * Insert a string before the current description.
+   * Insert a <code>String</code> before the current description.
    * 
-   * @param pAppendDescription The string which should be inserted before the
-   *          current description.
+   * @param pAppendDescription The <code>String</code> which should be
+   *          inserted before the current description.
    * @see #description
    */
   public void appendDescription ( String pAppendDescription )
@@ -365,7 +371,7 @@ public class OutlineNode
 
 
   /**
-   * Highlight the selected Identifier.
+   * Highlight the selected <code>Identifier</code>.
    */
   public void enableSelectionColor ( )
   {
@@ -421,9 +427,9 @@ public class OutlineNode
 
 
   /**
-   * Returns the end index of the Identifier.
+   * Returns the end index of the <code>Identifier</code>.
    * 
-   * @return The end index of the Identifier.
+   * @return The end index of the <code>Identifier</code>.
    * @see #endIndex
    */
   public int getEndIndex ( )
@@ -433,9 +439,9 @@ public class OutlineNode
 
 
   /**
-   * Returns the expression repressented by this node.
+   * Returns the <code>Expression</code> repressented by this node.
    * 
-   * @return The expression in this node.
+   * @return The <code>Expression</code> in this node.
    * @see #expression
    */
   public Expression getExpression ( )
@@ -509,10 +515,10 @@ public class OutlineNode
 
 
   /**
-   * Returns the replaced string.
+   * Returns the replaced <code>String</code>.
    * 
-   * @param pText Input string.
-   * @return The replaced string.
+   * @param pText Input <code>String</code>.
+   * @return The replaced <code>String</code>.
    */
   private String getHTMLCode ( String pText )
   {
@@ -526,7 +532,7 @@ public class OutlineNode
   /**
    * Returns the color in HTML formatting.
    * 
-   * @param pColor The Color which should be returned.
+   * @param pColor The color which should be returned.
    * @return The color in HTML formatting.
    */
   private String getHTMLFormat ( Color pColor )
@@ -537,9 +543,9 @@ public class OutlineNode
 
 
   /**
-   * Returns the start index of the Identifier.
+   * Returns the start index of the <code>Identifier</code>.
    * 
-   * @return The start index of the Identifier.
+   * @return The start index of the <code>Identifier</code>.
    * @see #startIndex
    */
   public int getStartIndex ( )
@@ -551,11 +557,12 @@ public class OutlineNode
   /**
    * This method returns true if a given pCharIndex should be highlighted as a
    * binding. The pIdentifierIndex indicates in which list the pCharIndex should
-   * be searched for. This is only used if an Expression has more than one
-   * Identifier like MultiLet.
+   * be searched for. This is only used if an <code>Expression</code> has more
+   * than one <code>Identifier</code> like <code>MultiLet</code>.
    * 
-   * @param pIdentifierIndex The Identifier index in the expression.
-   * @param pCharIndex The index of the char in the expression.
+   * @param pIdentifierIndex The <code>Identifier</code> index in the
+   *          <code>Expression</code>.
+   * @param pCharIndex The index of the char in the </code>Expression</code>.
    * @return True, if a given pCharIndex should be highlighted as a binding,
    *         otherwise false.
    */
@@ -583,9 +590,9 @@ public class OutlineNode
 
   /**
    * This method returns true if a given pCharIndex should be highlighted as a
-   * unbound Identifier.
+   * unbound <code>Identifier</code>.
    * 
-   * @param pCharIndex pCharIndex The index of the char in the expression.
+   * @param pCharIndex pCharIndex The index of the char in the </code>Expression</code>.
    * @return True, if a given pCharIndex should be highlighted as a unbound
    *         Identifier, otherwise false.
    */
@@ -652,9 +659,9 @@ public class OutlineNode
 
 
   /**
-   * Sets the binding in this node.
+   * Sets the <code>OutlineBinding</code> in this node.
    * 
-   * @param pOutlineBinding The OutlineBinding in this node.
+   * @param pOutlineBinding The <code>OutlineBinding</code> in this node.
    * @see #outlineBinding
    * @see #getOutlineBinding()
    */
@@ -667,8 +674,8 @@ public class OutlineNode
   /**
    * Set the value replaceInThisNode.
    * 
-   * @param pReplaceInThisNode True, if the selected expression should be
-   *          replaced in this node.
+   * @param pReplaceInThisNode True, if the selected <code>Expression</code>
+   *          should be replaced in this node.
    * @see #replaceInThisNode
    */
   public void setReplaceInThisNode ( boolean pReplaceInThisNode )
@@ -678,9 +685,9 @@ public class OutlineNode
 
 
   /**
-   * Returns this Object as a String.
+   * Returns this <code>Object</code> as a <code>String</code>.
    * 
-   * @see java.lang.Object#toString()
+   * @see Object#toString()
    */
   @ Override
   public String toString ( )
@@ -695,8 +702,9 @@ public class OutlineNode
    * 
    * @param pSelectionStart The start offset of the selection in this node.
    * @param pSelectionEnd The end offset of the selection in this node.
-   * @param pIdentifierIndex The index of the Identifier, used by Expressions
-   *          which have more than more Identifier like MultiLet.
+   * @param pIdentifierIndex The index of the <code>Identifier</code>, used
+   *          by <code>Expressions</code> which have more than more
+   *          <code>Identifier</code> like <code>MultiLet</code>.
    */
   public void updateCaption ( int pSelectionStart , int pSelectionEnd ,
       int pIdentifierIndex )

@@ -20,8 +20,8 @@ import de.unisiegen.tpml.graphics.outline.ui.OutlineUI ;
 
 
 /**
- * This class listens for tree selection events. It updates the caption of the
- * selected node and its higher nodes.
+ * This class listens for <code>TreeSelectionEvent</code>. It updates the
+ * caption of the selected node and its higher nodes.
  * 
  * @author Christian Fehler
  * @version $Rev$
@@ -29,15 +29,16 @@ import de.unisiegen.tpml.graphics.outline.ui.OutlineUI ;
 public class OutlineTreeSelectionListener implements TreeSelectionListener
 {
   /**
-   * The OutlineUI.
+   * The <code>OutlineUI</code>.
    */
   private OutlineUI outlineUI ;
 
 
   /**
-   * Initializes the OutlineTreeSelectionListener with the given OutlineUI.
+   * Initializes the <code>OutlineTreeSelectionListener</code> with the given
+   * <code>OutlineUI</code>.
    * 
-   * @param pOutlineUI The OutlineUI.
+   * @param pOutlineUI The <code>OutlineUI</code>.
    */
   public OutlineTreeSelectionListener ( OutlineUI pOutlineUI )
   {
@@ -46,11 +47,11 @@ public class OutlineTreeSelectionListener implements TreeSelectionListener
 
 
   /**
-   * Returns the index of the Identifier in the parent node.
+   * Returns the index of the <code>Identifier</code> in the parent node.
    * 
    * @param pParent The parent node.
-   * @param pIdentifier The Identifier node.
-   * @return The index of the Identifier in the parent node.
+   * @param pIdentifier The <code>Identifier</code> node.
+   * @return The index of the <code>Identifier</code> in the parent node.
    */
   private int identifierIndex ( DefaultMutableTreeNode pParent ,
       DefaultMutableTreeNode pIdentifier )
@@ -101,7 +102,7 @@ public class OutlineTreeSelectionListener implements TreeSelectionListener
   /**
    * Updates the caption of the selected node and its higher nodes.
    * 
-   * @param pTreePath The selected TreePath.
+   * @param pTreePath The selected <code>TreePath</code>.
    */
   public void update ( TreePath pTreePath )
   {
@@ -182,8 +183,8 @@ public class OutlineTreeSelectionListener implements TreeSelectionListener
   /**
    * This method is invoked if a node value has changed.
    * 
-   * @param pTreeSelectionEvent
-   * @see javax.swing.event.TreeSelectionListener#valueChanged(javax.swing.event.TreeSelectionEvent)
+   * @param pTreeSelectionEvent The <code>TreeSelectionEvent</code>
+   * @see TreeSelectionListener#valueChanged(TreeSelectionEvent)
    */
   public void valueChanged ( TreeSelectionEvent pTreeSelectionEvent )
   {

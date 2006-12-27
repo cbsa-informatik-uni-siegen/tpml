@@ -20,15 +20,15 @@ import de.unisiegen.tpml.graphics.outline.util.OutlineClipboard ;
 public class OutlineActionListener implements ActionListener
 {
   /**
-   * The Outline UI.
+   * The <code>OutlineUI</code>.
    */
   private OutlineUI outlineUI ;
 
 
   /**
-   * Initializes the OutlineActionListener.
+   * Initializes the <code>OutlineActionListener</code>.
    * 
-   * @param pOutlineUI The Outline UI.
+   * @param pOutlineUI The <code>OutlineUI</code>.
    */
   public OutlineActionListener ( OutlineUI pOutlineUI )
   {
@@ -39,8 +39,8 @@ public class OutlineActionListener implements ActionListener
   /**
    * This method is invoked if a menu item is pushed.
    * 
-   * @param pActionEvent The action event
-   * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+   * @param pActionEvent The <code>ActionEvent</code>
+   * @see ActionListener#actionPerformed(ActionEvent)
    */
   public void actionPerformed ( ActionEvent pActionEvent )
   {
@@ -202,9 +202,9 @@ public class OutlineActionListener implements ActionListener
 
 
   /**
-   * This method expands the given TreePath.
+   * This method expands the given <code>TreePath</code>.
    * 
-   * @param pTreePath The TreePath, which should be expand.
+   * @param pTreePath The <code>TreePath</code>, which should be expand.
    */
   private void expandTreePath ( TreePath pTreePath )
   {

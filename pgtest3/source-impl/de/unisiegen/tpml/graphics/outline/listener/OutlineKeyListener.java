@@ -10,23 +10,23 @@ import de.unisiegen.tpml.graphics.outline.util.OutlineClipboard ;
 
 
 /**
- * This class listens for key events. It can copy the selected node as a string
- * into the clipboard.
+ * This class listens for <code>KeyEvents</code>. It can copy the selected
+ * node as a <code>String</code> into the clipboard.
  * 
  * @author Christian Fehler
  */
 public class OutlineKeyListener implements KeyListener
 {
   /**
-   * The Outline UI.
+   * The <code>OutlineUI</code>.
    */
   private OutlineUI outlineUI ;
 
 
   /**
-   * Initializes the OutlineKeyListener.
+   * Initializes the <code>OutlineKeyListener</code>.
    * 
-   * @param pOutlineUI The Outline UI.
+   * @param pOutlineUI The <code>OutlineUI</code>.
    */
   public OutlineKeyListener ( OutlineUI pOutlineUI )
   {
@@ -35,7 +35,8 @@ public class OutlineKeyListener implements KeyListener
 
 
   /**
-   * Copies the selection into the clipboard.
+   * Copies the <code>Expression</code> as a <code>String</code> of the
+   * selected node into the clipboard using the <code>OutlineClipboard</code>.
    */
   public void copy ( )
   {
@@ -51,9 +52,9 @@ public class OutlineKeyListener implements KeyListener
 
 
   /**
-   * Handles the key event.
+   * Handles the <code>KeyEvent</code>.
    * 
-   * @param pKeyEvent The key event.
+   * @param pKeyEvent The <code>KeyEvent</code>.
    */
   private void handleKeyEvent ( KeyEvent pKeyEvent )
   {
@@ -79,8 +80,8 @@ public class OutlineKeyListener implements KeyListener
   /**
    * This method is invoked if a key is pressed.
    * 
-   * @param pKeyEvent The key event.
-   * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
+   * @param pKeyEvent The <code>KeyEvent</code>.
+   * @see KeyListener#keyPressed(KeyEvent)
    */
   public void keyPressed ( KeyEvent pKeyEvent )
   {
@@ -91,8 +92,8 @@ public class OutlineKeyListener implements KeyListener
   /**
    * This method is invoked if a key is released.
    * 
-   * @param pKeyEvent The key event.
-   * @see java.awt.event.KeyListener#keyReleased(java.awt.event.KeyEvent)
+   * @param pKeyEvent The <code>KeyEvent</code>.
+   * @see KeyListener#keyReleased(KeyEvent)
    */
   public void keyReleased ( KeyEvent pKeyEvent )
   {
@@ -103,7 +104,8 @@ public class OutlineKeyListener implements KeyListener
   /**
    * This method is invoked if a key is typed.
    * 
-   * @param pKeyEvent The key event.
+   * @param pKeyEvent The <code>KeyEvent</code>.
+   * @see KeyListener#keyTyped(KeyEvent)
    */
   public void keyTyped ( @ SuppressWarnings ( "unused" )
   KeyEvent pKeyEvent )

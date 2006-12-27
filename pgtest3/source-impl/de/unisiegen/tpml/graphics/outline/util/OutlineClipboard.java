@@ -12,7 +12,8 @@ import java.io.IOException ;
 
 
 /**
- * Copies the a text into the clipboard.
+ * Can copy a text into the clipboard and can read the <code>String</code>,
+ * which is current saved in the clipboard.
  * 
  * @author Christian Fehler
  * @version $Rev$
@@ -26,13 +27,13 @@ public class OutlineClipboard implements ClipboardOwner
 
 
   /**
-   * The single object of OutlineClipboard.
+   * The single object of <code>OutlineClipboard</code>.
    */
   private static OutlineClipboard outlineClipboard = null ;
 
 
   /**
-   * Initializes the OutlineClipboard.
+   * Initializes the <code>OutlineClipboard</code>.
    */
   private OutlineClipboard ( )
   {
@@ -41,9 +42,9 @@ public class OutlineClipboard implements ClipboardOwner
 
 
   /**
-   * Returns the single object of OutlineClipboard.
+   * Returns the single object of <code>OutlineClipboard</code>.
    * 
-   * @return The single object of OutlineClipboard.
+   * @return The single object of <code>OutlineClipboard</code>.
    */
   public static OutlineClipboard getInstance ( )
   {
@@ -70,10 +71,9 @@ public class OutlineClipboard implements ClipboardOwner
   /**
    * This method is invoked if the ownership is lost.
    * 
-   * @param pClipboard The clipboard.
-   * @param pContents The contests.
-   * @see java.awt.datatransfer.ClipboardOwner#lostOwnership(java.awt.datatransfer.Clipboard,
-   *      java.awt.datatransfer.Transferable)
+   * @param pClipboard The <code>Clipboard</code>.
+   * @param pContents The <code>Contests</code>.
+   * @see ClipboardOwner#lostOwnership(Clipboard, Transferable)
    */
   public void lostOwnership ( @ SuppressWarnings ( "unused" )
   Clipboard pClipboard , @ SuppressWarnings ( "unused" )
@@ -84,9 +84,11 @@ public class OutlineClipboard implements ClipboardOwner
 
 
   /**
-   * Returns the string, which is current saved in the clipboard.
+   * Returns the <code>String</code>, which is current saved in the
+   * clipboard.
    * 
-   * @return The string, which is current saved in the clipboard.
+   * @return The <code>String</code>, which is current saved in the
+   *         clipboard.
    */
   public String paste ( )
   {
