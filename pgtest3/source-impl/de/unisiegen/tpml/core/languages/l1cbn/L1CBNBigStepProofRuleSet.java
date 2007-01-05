@@ -244,8 +244,9 @@ public class L1CBNBigStepProofRuleSet extends L1BigStepProofRuleSet
       {
         // the InfixOperation case
         InfixOperation infixOperation = ( InfixOperation ) e ;
-        Application tmp = new Application ( infixOperation.getE1 ( ) , node0
-            .getResult ( ).getValue ( ) ) ;
+        Application tmp = new Application ( new Application ( infixOperation
+            .getOp ( ) , infixOperation.getE1 ( ) ) , node0.getResult ( )
+            .getValue ( ) ) ;
         context.addProofNode ( node , tmp ) ;
       }
     }
@@ -336,7 +337,7 @@ public class L1CBNBigStepProofRuleSet extends L1BigStepProofRuleSet
       }
       // add the proof node
       context.addProofNode ( node , let.getE2 ( ).substitute ( let.getId ( ) ,
-          let.getE1 ( ) ) ) ;
+          e1 ) ) ;
     }
   }
 

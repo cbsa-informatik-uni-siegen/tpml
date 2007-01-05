@@ -211,8 +211,9 @@ public class L0CBNBigStepProofRuleSet extends L0BigStepProofRuleSet
       {
         // the InfixOperation case
         InfixOperation infixOperation = ( InfixOperation ) e ;
-        Application tmp = new Application ( infixOperation.getE1 ( ) , node0
-            .getResult ( ).getValue ( ) ) ;
+        Application tmp = new Application ( new Application ( infixOperation
+            .getOp ( ) , infixOperation.getE1 ( ) ) , node0.getResult ( )
+            .getValue ( ) ) ;
         context.addProofNode ( node , tmp ) ;
       }
     }
