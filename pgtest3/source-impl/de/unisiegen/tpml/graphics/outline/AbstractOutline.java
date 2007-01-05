@@ -112,6 +112,71 @@ public class AbstractOutline implements Outline
 
 
   /**
+   * Cancels the execute <code>Timer</code>.
+   */
+  private void cancelExecuteTimer ( )
+  {
+    if ( this.outlineTimer != null )
+    {
+      this.outlineTimer.cancel ( ) ;
+      this.outlineTimer = null ;
+    }
+  }
+
+
+  /**
+   * Returns the node, which represents the given {@link Expression}.
+   * 
+   * @param pExpression The input {@link Expression}.
+   * @return The node, which represents the given {@link Expression}.
+   */
+  private DefaultMutableTreeNode checkExpression ( Expression pExpression )
+  {
+    if ( pExpression instanceof MultiLambda )
+    {
+      return multiLambda ( ( MultiLambda ) pExpression ) ;
+    }
+    else if ( pExpression instanceof Lambda )
+    {
+      return lambda ( ( Lambda ) pExpression ) ;
+    }
+    else if ( pExpression instanceof Location )
+    {
+      return location ( ( Location ) pExpression ) ;
+    }
+    else if ( pExpression instanceof LetRec )
+    {
+      return letRec ( ( LetRec ) pExpression ) ;
+    }
+    else if ( pExpression instanceof Let )
+    {
+      return let ( ( Let ) pExpression ) ;
+    }
+    else if ( pExpression instanceof CurriedLetRec )
+    {
+      return curriedLetRec ( ( CurriedLetRec ) pExpression ) ;
+    }
+    else if ( pExpression instanceof CurriedLet )
+    {
+      return curriedLet ( ( CurriedLet ) pExpression ) ;
+    }
+    else if ( pExpression instanceof MultiLet )
+    {
+      return multiLet ( ( MultiLet ) pExpression ) ;
+    }
+    else if ( pExpression instanceof Recursion )
+    {
+      return recursion ( ( Recursion ) pExpression ) ;
+    }
+    else if ( pExpression instanceof InfixOperation )
+    {
+      return infixOperation ( ( InfixOperation ) pExpression ) ;
+    }
+    return otherExpression ( pExpression ) ;
+  }
+
+
+  /**
    * Creates the children with the given {@link Expression} and adds them to the
    * given node.
    * 
@@ -244,58 +309,6 @@ public class AbstractOutline implements Outline
     DefaultMutableTreeNode root = checkExpression ( this.oldExpression ) ;
     SwingUtilities
         .invokeLater ( new OutlineDisplayTree ( this.outlineUI , root ) ) ;
-  }
-
-
-  /**
-   * Returns the node, which represents the given {@link Expression}.
-   * 
-   * @param pExpression The input {@link Expression}.
-   * @return The node, which represents the given {@link Expression}.
-   */
-  private DefaultMutableTreeNode checkExpression ( Expression pExpression )
-  {
-    if ( pExpression instanceof MultiLambda )
-    {
-      return multiLambda ( ( MultiLambda ) pExpression ) ;
-    }
-    else if ( pExpression instanceof Lambda )
-    {
-      return lambda ( ( Lambda ) pExpression ) ;
-    }
-    else if ( pExpression instanceof Location )
-    {
-      return location ( ( Location ) pExpression ) ;
-    }
-    else if ( pExpression instanceof LetRec )
-    {
-      return letRec ( ( LetRec ) pExpression ) ;
-    }
-    else if ( pExpression instanceof Let )
-    {
-      return let ( ( Let ) pExpression ) ;
-    }
-    else if ( pExpression instanceof CurriedLetRec )
-    {
-      return curriedLetRec ( ( CurriedLetRec ) pExpression ) ;
-    }
-    else if ( pExpression instanceof CurriedLet )
-    {
-      return curriedLet ( ( CurriedLet ) pExpression ) ;
-    }
-    else if ( pExpression instanceof MultiLet )
-    {
-      return multiLet ( ( MultiLet ) pExpression ) ;
-    }
-    else if ( pExpression instanceof Recursion )
-    {
-      return recursion ( ( Recursion ) pExpression ) ;
-    }
-    else if ( pExpression instanceof InfixOperation )
-    {
-      return infixOperation ( ( InfixOperation ) pExpression ) ;
-    }
-    return otherExpression ( pExpression ) ;
   }
 
 
@@ -447,7 +460,7 @@ public class AbstractOutline implements Outline
     {
       return ;
     }
-    if ( pDescription.equals ( "change_bigstep" ) ) //$NON-NLS-1$
+    if ( "change_bigstep".equals ( pDescription ) ) //$NON-NLS-1$
     {
       return ;
     }
@@ -456,13 +469,15 @@ public class AbstractOutline implements Outline
       return ;
     }
     this.oldExpression = pExpression ;
-    if ( this.outlineTimer != null )
+    cancelExecuteTimer ( ) ;
+    if ( pDescription.startsWith ( "mouse" ) ) //$NON-NLS-1$
     {
-      this.outlineTimer.cancel ( ) ;
-      this.outlineTimer = null ;
+      execute ( ) ;
     }
-    this.outlineTimer = new Timer ( ) ;
-    this.outlineTimer.schedule ( new OutlineTimerTask ( this ) , 250 ) ;
+    else
+    {
+      startExecuteTimer ( ) ;
+    }
   }
 
 
@@ -617,5 +632,17 @@ public class AbstractOutline implements Outline
         this.outlineUnbound ) ) ) ;
     createChildren ( pRecursion , node ) ;
     return node ;
+  }
+
+
+  /**
+   * Starts the execute <code>Timer</code>, which will execute the rebuild of
+   * a new tree in the {@link Outline} after 250ms, if it is not canceled during
+   * this time.
+   */
+  private void startExecuteTimer ( )
+  {
+    this.outlineTimer = new Timer ( ) ;
+    this.outlineTimer.schedule ( new OutlineTimerTask ( this ) , 250 ) ;
   }
 }
