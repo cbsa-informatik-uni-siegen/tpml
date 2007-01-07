@@ -141,27 +141,27 @@ public class L1CBNBigStepProofRuleSet extends L1BigStepProofRuleSet
       {
         // the Application case
         Application application = ( Application ) e ;
-        Application tmp = new Application ( node0.getResult ( ).getValue ( ) ,
-            application.getE2 ( ) ) ;
-        context.addProofNode ( node , tmp ) ;
+        Application newNode = new Application (
+            node0.getResult ( ).getValue ( ) , application.getE2 ( ) ) ;
+        context.addProofNode ( node , newNode ) ;
       }
       else
       {
         // the InfixOperation case
         InfixOperation infixOperation = ( InfixOperation ) e ;
-        Application tmp = new Application ( node0.getResult ( ).getValue ( ) ,
-            infixOperation.getE2 ( ) ) ;
-        context.addProofNode ( node , tmp ) ;
+        Application newNode = new Application (
+            node0.getResult ( ).getValue ( ) , infixOperation.getE2 ( ) ) ;
+        context.addProofNode ( node , newNode ) ;
       }
     }
     else if ( node.getChildCount ( ) == 2 )
     {
       // check if both child nodes are proven
-      BigStepProofNode node0 = node.getChildAt ( 0 ) ;
-      BigStepProofNode node1 = node.getChildAt ( 1 ) ;
-      if ( node0.isProven ( ) && node1.isProven ( ) )
+      if ( node.getChildAt ( 0 ).isProven ( )
+          && node.getChildAt ( 1 ).isProven ( ) )
       {
-        context.setProofNodeResult ( node , node1.getResult ( ) ) ;
+        context
+            .setProofNodeResult ( node , node.getChildAt ( 1 ).getResult ( ) ) ;
       }
     }
   }
@@ -236,28 +236,28 @@ public class L1CBNBigStepProofRuleSet extends L1BigStepProofRuleSet
       {
         // the Application case
         Application application = ( Application ) e ;
-        Application tmp = new Application ( application.getE1 ( ) , node0
+        Application newNode = new Application ( application.getE1 ( ) , node0
             .getResult ( ).getValue ( ) ) ;
-        context.addProofNode ( node , tmp ) ;
+        context.addProofNode ( node , newNode ) ;
       }
       else
       {
         // the InfixOperation case
         InfixOperation infixOperation = ( InfixOperation ) e ;
-        Application tmp = new Application ( new Application ( infixOperation
-            .getOp ( ) , infixOperation.getE1 ( ) ) , node0.getResult ( )
-            .getValue ( ) ) ;
-        context.addProofNode ( node , tmp ) ;
+        Application newNode = new Application ( new Application (
+            infixOperation.getOp ( ) , infixOperation.getE1 ( ) ) , node0
+            .getResult ( ).getValue ( ) ) ;
+        context.addProofNode ( node , newNode ) ;
       }
     }
     else if ( node.getChildCount ( ) == 2 )
     {
       // check if both child nodes are proven
-      BigStepProofNode node0 = node.getChildAt ( 0 ) ;
-      BigStepProofNode node1 = node.getChildAt ( 1 ) ;
-      if ( node0.isProven ( ) && node1.isProven ( ) )
+      if ( node.getChildAt ( 0 ).isProven ( )
+          && node.getChildAt ( 1 ).isProven ( ) )
       {
-        context.setProofNodeResult ( node , node1.getResult ( ) ) ;
+        context
+            .setProofNodeResult ( node , node.getChildAt ( 1 ).getResult ( ) ) ;
       }
     }
   }
