@@ -20,6 +20,12 @@ import de.unisiegen.tpml.graphics.outline.Outline ;
 public class OutlineTreeModelListener implements TreeModelListener
 {
   /**
+   * The unused <code>String</code> for the <code>SuppressWarnings</code>.
+   */
+  private static final String UNUSED = "unused" ; //$NON-NLS-1$
+
+
+  /**
    * The {@link Outline}.
    */
   public Outline outline ;
@@ -58,17 +64,17 @@ public class OutlineTreeModelListener implements TreeModelListener
     if ( source instanceof SmallStepProofModel )
     {
       this.outline.loadExpression ( this.expressionProofModel.getRoot ( )
-          .getLastLeaf ( ).getExpression ( ) , "change_smallstep" ) ; //$NON-NLS-1$
+          .getLastLeaf ( ).getExpression ( ) , Outline.CHANGE_SMALLSTEP ) ;
     }
     else if ( source instanceof BigStepProofModel )
     {
       this.outline.loadExpression ( this.expressionProofModel.getRoot ( )
-          .getLastLeaf ( ).getExpression ( ) , "change_bigstep" ) ; //$NON-NLS-1$
+          .getLastLeaf ( ).getExpression ( ) , Outline.CHANGE_BIGSTEP ) ;
     }
     else if ( source instanceof TypeCheckerProofModel )
     {
       this.outline.loadExpression ( this.expressionProofModel.getRoot ( )
-          .getLastLeaf ( ).getExpression ( ) , "change_typechecker" ) ; //$NON-NLS-1$
+          .getLastLeaf ( ).getExpression ( ) , Outline.CHANGE_TYPECHECKER ) ;
     }
   }
 
@@ -79,7 +85,7 @@ public class OutlineTreeModelListener implements TreeModelListener
    * @param pTreeModelEvent The <code>TreeModelEvent</code>.
    * @see TreeModelListener#treeNodesInserted(TreeModelEvent)
    */
-  public void treeNodesInserted ( @ SuppressWarnings ( "unused" )
+  public void treeNodesInserted ( @ SuppressWarnings ( UNUSED )
   TreeModelEvent pTreeModelEvent )
   {
     // Do Nothing
@@ -92,7 +98,7 @@ public class OutlineTreeModelListener implements TreeModelListener
    * @param pTreeModelEvent The <code>TreeModelEvent</code>.
    * @see TreeModelListener#treeNodesRemoved(TreeModelEvent)
    */
-  public void treeNodesRemoved ( @ SuppressWarnings ( "unused" )
+  public void treeNodesRemoved ( @ SuppressWarnings ( UNUSED )
   TreeModelEvent pTreeModelEvent )
   {
     // Do Nothing
@@ -105,7 +111,7 @@ public class OutlineTreeModelListener implements TreeModelListener
    * @param pTreeModelEvent The <code>TreeModelEvent</code>.
    * @see TreeModelListener#treeStructureChanged(TreeModelEvent)
    */
-  public void treeStructureChanged ( @ SuppressWarnings ( "unused" )
+  public void treeStructureChanged ( @ SuppressWarnings ( UNUSED )
   TreeModelEvent pTreeModelEvent )
   {
     // Do Nothing

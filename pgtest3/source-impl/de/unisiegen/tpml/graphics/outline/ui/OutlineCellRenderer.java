@@ -19,6 +19,12 @@ import de.unisiegen.tpml.graphics.outline.Outline ;
 public class OutlineCellRenderer extends DefaultTreeCellRenderer
 {
   /**
+   * The <code>Font</code>.
+   */
+  private static final String FONT = "SansSerif" ; //$NON-NLS-1$
+
+
+  /**
    * The unique serialization identifier for this class.
    */
   private static final long serialVersionUID = 3053444302287643623L ;
@@ -29,6 +35,15 @@ public class OutlineCellRenderer extends DefaultTreeCellRenderer
    */
   public OutlineCellRenderer ( )
   {
+    initialize ( ) ;
+  }
+
+
+  /**
+   * Initializes the {@link OutlineCellRenderer}.
+   */
+  public final void initialize ( )
+  {
     this.setIcon ( null ) ;
     this.setLeafIcon ( null ) ;
     this.setOpenIcon ( null ) ;
@@ -37,7 +52,7 @@ public class OutlineCellRenderer extends DefaultTreeCellRenderer
     this.setBackground ( Color.WHITE ) ;
     this.setBackgroundNonSelectionColor ( Color.WHITE ) ;
     this.setBackgroundSelectionColor ( new Color ( 225 , 225 , 255 ) ) ;
-    this.setFont ( new Font ( "SansSerif" , Font.PLAIN , 14 ) ) ; //$NON-NLS-1$
+    this.setFont ( new Font ( FONT , Font.PLAIN , 14 ) ) ;
     this.setBorderSelectionColor ( Color.BLUE ) ;
     this.setTextSelectionColor ( Color.BLACK ) ;
     this.setTextNonSelectionColor ( Color.BLACK ) ;

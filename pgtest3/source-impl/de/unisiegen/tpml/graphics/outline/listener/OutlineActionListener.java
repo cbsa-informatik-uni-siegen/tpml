@@ -45,63 +45,63 @@ public class OutlineActionListener implements ActionListener
   public void actionPerformed ( ActionEvent pActionEvent )
   {
     String actionCommand = pActionEvent.getActionCommand ( ) ;
-    if ( actionCommand.equals ( "close" ) ) //$NON-NLS-1$
+    if ( OutlineUI.CLOSE.equals ( actionCommand ) )
     {
       close ( ) ;
     }
-    else if ( actionCommand.equals ( "closeAll" ) ) //$NON-NLS-1$
+    else if ( OutlineUI.CLOSEALL.equals ( actionCommand ) )
     {
       closeAll ( ) ;
     }
-    else if ( actionCommand.equals ( "expand" ) ) //$NON-NLS-1$
+    else if ( OutlineUI.EXPAND.equals ( actionCommand ) )
     {
       expand ( ) ;
     }
-    else if ( actionCommand.equals ( "expandAll" ) ) //$NON-NLS-1$
+    else if ( OutlineUI.EXPANDALL.equals ( actionCommand ) )
     {
       expandAll ( ) ;
     }
-    else if ( actionCommand.equals ( "collapse" ) ) //$NON-NLS-1$
+    else if ( OutlineUI.COLLAPSE.equals ( actionCommand ) )
     {
       collapse ( ) ;
     }
-    else if ( actionCommand.equals ( "collapseAll" ) ) //$NON-NLS-1$
+    else if ( OutlineUI.COLLAPSEALL.equals ( actionCommand ) )
     {
       collapseAll ( ) ;
     }
-    else if ( actionCommand.equals ( "copy" ) ) //$NON-NLS-1$
+    else if ( OutlineUI.COPY.equals ( actionCommand ) )
     {
       copy ( ) ;
     }
-    else if ( actionCommand.equals ( "selection" ) ) //$NON-NLS-1$
+    else if ( OutlineUI.SELECTION.equals ( actionCommand ) )
     {
       this.outlineUI.getOutlineItemListener ( ).update (
           this.outlineUI.getJMenuItemSelection ( ).isSelected ( ) , null ,
-          "selection" ) ; //$NON-NLS-1$
+          OutlineUI.SELECTION ) ;
     }
-    else if ( actionCommand.equals ( "binding" ) ) //$NON-NLS-1$
+    else if ( OutlineUI.BINDING.equals ( actionCommand ) )
     {
       this.outlineUI.getOutlineItemListener ( ).update (
           this.outlineUI.getJMenuItemBinding ( ).isSelected ( ) , null ,
-          "binding" ) ; //$NON-NLS-1$
+          OutlineUI.BINDING ) ;
     }
-    else if ( actionCommand.equals ( "unbound" ) ) //$NON-NLS-1$
+    else if ( OutlineUI.UNBOUND.equals ( actionCommand ) )
     {
       this.outlineUI.getOutlineItemListener ( ).update (
           this.outlineUI.getJMenuItemUnbound ( ).isSelected ( ) , null ,
-          "unbound" ) ; //$NON-NLS-1$
+          OutlineUI.UNBOUND ) ;
     }
-    else if ( actionCommand.equals ( "replace" ) ) //$NON-NLS-1$
+    else if ( OutlineUI.REPLACE.equals ( actionCommand ) )
     {
       this.outlineUI.getOutlineItemListener ( ).update (
           this.outlineUI.getJMenuItemReplace ( ).isSelected ( ) , null ,
-          "replace" ) ; //$NON-NLS-1$
+          OutlineUI.REPLACE ) ;
     }
-    else if ( actionCommand.equals ( "autoUpdate" ) ) //$NON-NLS-1$
+    else if ( OutlineUI.AUTOUPDATE.equals ( actionCommand ) )
     {
       this.outlineUI.getOutlineItemListener ( ).update (
           this.outlineUI.getJMenuItemAutoUpdate ( ).isSelected ( ) , null ,
-          "autoupdate" ) ; //$NON-NLS-1$
+          OutlineUI.AUTOUPDATE ) ;
     }
   }
 
@@ -111,13 +111,12 @@ public class OutlineActionListener implements ActionListener
    */
   public void close ( )
   {
-    int selectionRows[] = this.outlineUI.getJTreeAbstractSyntaxTree ( )
-        .getSelectionRows ( ) ;
-    if ( selectionRows == null )
+    if ( this.outlineUI.getJTreeAbstractSyntaxTree ( ).getSelectionRows ( ) == null )
     {
       return ;
     }
-    for ( int i = this.outlineUI.getJTreeAbstractSyntaxTree ( ).getRowCount ( ) - 1 ; i >= selectionRows [ 0 ] ; i -- )
+    for ( int i = this.outlineUI.getJTreeAbstractSyntaxTree ( ).getRowCount ( ) - 1 ; i >= this.outlineUI
+        .getJTreeAbstractSyntaxTree ( ).getSelectionRows ( ) [ 0 ] ; i -- )
     {
       this.outlineUI.getJTreeAbstractSyntaxTree ( ).collapseRow ( i ) ;
     }
@@ -141,14 +140,14 @@ public class OutlineActionListener implements ActionListener
    */
   public void collapse ( )
   {
-    int selectionRows[] = this.outlineUI.getJTreeAbstractSyntaxTree ( )
-        .getSelectionRows ( ) ;
-    if ( selectionRows == null )
+    if ( this.outlineUI.getJTreeAbstractSyntaxTree ( ).getSelectionRows ( ) == null )
     {
       return ;
     }
-    this.outlineUI.getJTreeAbstractSyntaxTree ( ).collapseRow (
-        selectionRows [ 0 ] ) ;
+    this.outlineUI
+        .getJTreeAbstractSyntaxTree ( )
+        .collapseRow (
+            this.outlineUI.getJTreeAbstractSyntaxTree ( ).getSelectionRows ( ) [ 0 ] ) ;
   }
 
 

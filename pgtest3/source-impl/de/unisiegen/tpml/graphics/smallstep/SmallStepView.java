@@ -82,7 +82,7 @@ public class SmallStepView extends AbstractProofView
     }
     this.outline = new AbstractOutline ( ) ;
     this.outline.loadExpression ( pSmallStepProofModel.getRoot ( )
-        .getLastLeaf ( ).getExpression ( ) , "first_smallstep" ) ; //$NON-NLS-1$
+        .getLastLeaf ( ).getExpression ( ) , Outline.INIT ) ;
     pSmallStepProofModel.addTreeModelListener ( new OutlineTreeModelListener (
         this.outline , pSmallStepProofModel ) ) ;
     GridBagConstraints gridBagConstraints = new GridBagConstraints ( ) ;

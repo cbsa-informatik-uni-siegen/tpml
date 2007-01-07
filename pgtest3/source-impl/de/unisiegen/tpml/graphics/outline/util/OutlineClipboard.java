@@ -21,6 +21,18 @@ import java.io.IOException ;
 public class OutlineClipboard implements ClipboardOwner
 {
   /**
+   * An empty <code>String</code>.
+   */
+  private static final String EMPTY = "" ; //$NON-NLS-1$
+
+
+  /**
+   * The unused <code>String</code> for the <code>SuppressWarnings</code>.
+   */
+  private static final String UNUSED = "unused" ; //$NON-NLS-1$
+
+
+  /**
    * The clipboard.
    */
   private Clipboard clipboard ;
@@ -75,8 +87,8 @@ public class OutlineClipboard implements ClipboardOwner
    * @param pContents The <code>Contests</code>.
    * @see ClipboardOwner#lostOwnership(Clipboard, Transferable)
    */
-  public void lostOwnership ( @ SuppressWarnings ( "unused" )
-  Clipboard pClipboard , @ SuppressWarnings ( "unused" )
+  public void lostOwnership ( @ SuppressWarnings ( UNUSED )
+  Clipboard pClipboard , @ SuppressWarnings ( UNUSED )
   Transferable pContents )
   {
     // Do Nothing
@@ -93,10 +105,9 @@ public class OutlineClipboard implements ClipboardOwner
   public String paste ( )
   {
     Transferable transfer = this.clipboard.getContents ( null ) ;
-    String s = "" ; //$NON-NLS-1$
     try
     {
-      s = ( String ) transfer.getTransferData ( DataFlavor.stringFlavor ) ;
+      return ( String ) transfer.getTransferData ( DataFlavor.stringFlavor ) ;
     }
     catch ( UnsupportedFlavorException e )
     {
@@ -106,6 +117,6 @@ public class OutlineClipboard implements ClipboardOwner
     {
       // Do Nothing
     }
-    return s ;
+    return EMPTY ;
   }
 }

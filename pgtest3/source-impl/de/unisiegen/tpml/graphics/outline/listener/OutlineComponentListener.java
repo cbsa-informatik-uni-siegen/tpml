@@ -19,6 +19,12 @@ import de.unisiegen.tpml.graphics.outline.util.OutlinePreferences ;
 public class OutlineComponentListener implements ComponentListener
 {
   /**
+   * The unused <code>String</code> for the <code>SuppressWarnings</code>.
+   */
+  private static final String UNUSED = "unused" ; //$NON-NLS-1$
+
+
+  /**
    * The <code>JSplitPane</code>.
    */
   private JSplitPane jSplitPane ;
@@ -49,7 +55,7 @@ public class OutlineComponentListener implements ComponentListener
    * @param pComponentEvent The <code>ComponentEvent</code>.
    * @see ComponentListener#componentHidden(ComponentEvent)
    */
-  public void componentHidden ( @ SuppressWarnings ( "unused" )
+  public void componentHidden ( @ SuppressWarnings ( UNUSED )
   ComponentEvent pComponentEvent )
   {
     // Do nothing
@@ -62,7 +68,7 @@ public class OutlineComponentListener implements ComponentListener
    * @param pComponentEvent The <code>ComponentEvent</code>.
    * @see ComponentListener#componentMoved(ComponentEvent)
    */
-  public void componentMoved ( @ SuppressWarnings ( "unused" )
+  public void componentMoved ( @ SuppressWarnings ( UNUSED )
   ComponentEvent pComponentEvent )
   {
     // Do nothing
@@ -92,7 +98,7 @@ public class OutlineComponentListener implements ComponentListener
    * @param pComponentEvent The <code>ComponentEvent</code>.
    * @see ComponentListener#componentShown(ComponentEvent)
    */
-  public void componentShown ( @ SuppressWarnings ( "unused" )
+  public void componentShown ( @ SuppressWarnings ( UNUSED )
   ComponentEvent pComponentEvent )
   {
     // Do nothing

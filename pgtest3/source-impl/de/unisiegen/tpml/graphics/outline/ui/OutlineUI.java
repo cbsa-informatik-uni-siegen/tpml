@@ -41,6 +41,139 @@ import de.unisiegen.tpml.graphics.outline.listener.OutlineTreeSelectionListener 
 public class OutlineUI
 {
   /**
+   * The <code>String</code> preferences, used for the
+   * <code>ActionCommand</code> and the <code>ResourceBundle</code>.
+   */
+  private static final String PREFERENCES = "preferences" ; //$NON-NLS-1$
+
+
+  /**
+   * The empty <code>Icon</code> path.
+   */
+  private static final String EMPTYICON = "/de/unisiegen/tpml/ui/icons/empty16.gif" ; //$NON-NLS-1$
+
+
+  /**
+   * The copy <code>Icon</code> path.
+   */
+  private static final String COPYICON = "/de/unisiegen/tpml/ui/icons/copy16.gif" ; //$NON-NLS-1$
+
+
+  /**
+   * The <code>String</code> copy, used for the <code>ActionCommand</code>
+   * and the <code>ResourceBundle</code>.
+   */
+  public static final String COPY = "copy" ; //$NON-NLS-1$
+
+
+  /**
+   * The <code>String</code> closeAll, used for the <code>ActionCommand</code>
+   * and the <code>ResourceBundle</code>.
+   */
+  public static final String CLOSEALL = "closeAll" ; //$NON-NLS-1$
+
+
+  /**
+   * The <code>String</code> close, used for the <code>ActionCommand</code>
+   * and the <code>ResourceBundle</code>.
+   */
+  public static final String CLOSE = "close" ; //$NON-NLS-1$
+
+
+  /**
+   * The <code>String</code> collapseAll, used for the
+   * <code>ActionCommand</code> and the <code>ResourceBundle</code>.
+   */
+  public static final String COLLAPSEALL = "collapseAll" ; //$NON-NLS-1$
+
+
+  /**
+   * The <code>String</code> collapse, used for the <code>ActionCommand</code>
+   * and the <code>ResourceBundle</code>.
+   */
+  public static final String COLLAPSE = "collapse" ; //$NON-NLS-1$
+
+
+  /**
+   * The <code>String</code> expandAll, used for the
+   * <code>ActionCommand</code> and the <code>ResourceBundle</code>.
+   */
+  public static final String EXPANDALL = "expandAll" ; //$NON-NLS-1$
+
+
+  /**
+   * The <code>String</code> expand, used for the <code>ActionCommand</code>
+   * and the <code>ResourceBundle</code>.
+   */
+  public static final String EXPAND = "expand" ; //$NON-NLS-1$
+
+
+  /**
+   * The <code>Font</code>.
+   */
+  private static final String FONT = "SansSerif" ; //$NON-NLS-1$
+
+
+  /**
+   * An empty <code>String</code>.
+   */
+  private static final String EMPTY = "" ; //$NON-NLS-1$
+
+
+  /**
+   * The <code>ResourceBundle</code> path.
+   */
+  private static final String RESOURCE = "de/unisiegen/tpml/graphics/outline/outline" ; //$NON-NLS-1$
+
+
+  /**
+   * The <code>String</code> binding, used for the <code>ActionCommand</code>
+   * and the <code>ResourceBundle</code>.
+   */
+  public static final String BINDING = "binding" ; //$NON-NLS-1$
+
+
+  /**
+   * The <code>String</code> selection, used for the
+   * <code>ActionCommand</code> and the <code>ResourceBundle</code>.
+   */
+  public static final String SELECTION = "selection" ; //$NON-NLS-1$
+
+
+  /**
+   * The <code>String</code> unbound, used for the <code>ActionCommand</code>
+   * and the <code>ResourceBundle</code>.
+   */
+  public static final String UNBOUND = "unbound" ; //$NON-NLS-1$
+
+
+  /**
+   * The <code>String</code> replace, used for the <code>ActionCommand</code>
+   * and the <code>ResourceBundle</code>.
+   */
+  public static final String REPLACE = "replace" ; //$NON-NLS-1$
+
+
+  /**
+   * The <code>String</code> autoUpdate, used for the
+   * <code>ActionCommand</code> and the <code>ResourceBundle</code>.
+   */
+  public static final String AUTOUPDATE = "autoUpdate" ; //$NON-NLS-1$
+
+
+  /**
+   * The mnemonic <code>String</code>.
+   */
+  private static final String MNEMONIC = "Mnemonic" ; //$NON-NLS-1$
+
+
+  /**
+   * The tool tip <code>String</code>.
+   */
+  private static final String TOOLTIP = "ToolTip" ; //$NON-NLS-1$
+
+
+  /**
    * The <code>GridBagConstraints</code>.
    */
   private GridBagConstraints gridBagConstraints ;
@@ -309,8 +442,7 @@ public class OutlineUI
     // Insets
     this.insets = new Insets ( 0 , 0 , 0 , 0 ) ;
     // Preferences
-    this.resourceBundle = ResourceBundle
-        .getBundle ( "de/unisiegen/tpml/graphics/outline/outline" ) ; //$NON-NLS-1$
+    this.resourceBundle = ResourceBundle.getBundle ( RESOURCE ) ;
     // Listener
     this.outlineItemListener = new OutlineItemListener ( this ) ;
     this.outlineActionListener = new OutlineActionListener ( this ) ;
@@ -325,16 +457,16 @@ public class OutlineUI
     this.jPanelPreferences = new JPanel ( ) ;
     this.jPanelPreferences.setLayout ( this.gridBagLayout ) ;
     this.jPanelPreferences.setBorder ( new TitledBorder ( BorderFactory
-        .createLineBorder ( Color.black , 1 ) , "" , //$NON-NLS-1$
+        .createLineBorder ( Color.black , 1 ) , EMPTY ,
         TitledBorder.DEFAULT_JUSTIFICATION , TitledBorder.TOP , new Font (
-            "SansSerif" , Font.PLAIN , 12 ) ) ) ; //$NON-NLS-1$
+            FONT , Font.PLAIN , 12 ) ) ) ;
     // CheckBox Selection
     this.jCheckBoxSelection = new JCheckBox ( this.resourceBundle
-        .getString ( "selection" ) ) ; //$NON-NLS-1$
+        .getString ( SELECTION ) ) ;
     this.jCheckBoxSelection.setMnemonic ( this.resourceBundle.getString (
-        "selectionMnemonic" ).charAt ( 0 ) ) ; //$NON-NLS-1$
+        SELECTION + MNEMONIC ).charAt ( 0 ) ) ;
     this.jCheckBoxSelection.setToolTipText ( this.resourceBundle
-        .getString ( "selectionToolTip" ) ) ; //$NON-NLS-1$
+        .getString ( SELECTION + TOOLTIP ) ) ;
     this.jCheckBoxSelection.setSelected ( this.abstractOutline
         .getOutlinePreferences ( ).isSelection ( ) ) ;
     this.jCheckBoxSelection.setFocusable ( false ) ;
@@ -350,11 +482,11 @@ public class OutlineUI
         this.gridBagConstraints ) ;
     // CheckBox Binding
     this.jCheckBoxBinding = new JCheckBox ( this.resourceBundle
-        .getString ( "binding" ) ) ; //$NON-NLS-1$
+        .getString ( BINDING ) ) ;
     this.jCheckBoxBinding.setMnemonic ( this.resourceBundle.getString (
-        "bindingMnemonic" ).charAt ( 0 ) ) ; //$NON-NLS-1$
+        BINDING + MNEMONIC ).charAt ( 0 ) ) ;
     this.jCheckBoxBinding.setToolTipText ( this.resourceBundle
-        .getString ( "bindingToolTip" ) ) ; //$NON-NLS-1$
+        .getString ( BINDING + TOOLTIP ) ) ;
     this.jCheckBoxBinding.setSelected ( this.abstractOutline
         .getOutlinePreferences ( ).isBinding ( ) ) ;
     this.jCheckBoxBinding.setFocusable ( false ) ;
@@ -370,11 +502,11 @@ public class OutlineUI
         this.gridBagConstraints ) ;
     // CheckBox Unbound
     this.jCheckBoxUnbound = new JCheckBox ( this.resourceBundle
-        .getString ( "unbound" ) ) ; //$NON-NLS-1$
+        .getString ( UNBOUND ) ) ;
     this.jCheckBoxUnbound.setMnemonic ( this.resourceBundle.getString (
-        "unboundMnemonic" ).charAt ( 0 ) ) ; //$NON-NLS-1$
+        UNBOUND + MNEMONIC ).charAt ( 0 ) ) ;
     this.jCheckBoxUnbound.setToolTipText ( this.resourceBundle
-        .getString ( "unboundToolTip" ) ) ; //$NON-NLS-1$
+        .getString ( UNBOUND + TOOLTIP ) ) ;
     this.jCheckBoxUnbound.setSelected ( this.abstractOutline
         .getOutlinePreferences ( ).isUnbound ( ) ) ;
     this.jCheckBoxUnbound.setFocusable ( false ) ;
@@ -390,11 +522,11 @@ public class OutlineUI
         this.gridBagConstraints ) ;
     // CheckBox Replace
     this.jCheckBoxReplace = new JCheckBox ( this.resourceBundle
-        .getString ( "replace" ) ) ; //$NON-NLS-1$
+        .getString ( REPLACE ) ) ;
     this.jCheckBoxReplace.setMnemonic ( this.resourceBundle.getString (
-        "replaceMnemonic" ).charAt ( 0 ) ) ; //$NON-NLS-1$
+        REPLACE + MNEMONIC ).charAt ( 0 ) ) ;
     this.jCheckBoxReplace.setToolTipText ( this.resourceBundle
-        .getString ( "replaceToolTip" ) ) ; //$NON-NLS-1$
+        .getString ( REPLACE + TOOLTIP ) ) ;
     this.jCheckBoxReplace.setSelected ( this.abstractOutline
         .getOutlinePreferences ( ).isReplace ( ) ) ;
     this.jCheckBoxReplace.setFocusable ( false ) ;
@@ -410,11 +542,11 @@ public class OutlineUI
         this.gridBagConstraints ) ;
     // CheckBox AutoUpdate
     this.jCheckBoxAutoUpdate = new JCheckBox ( this.resourceBundle
-        .getString ( "autoUpdate" ) ) ; //$NON-NLS-1$
+        .getString ( AUTOUPDATE ) ) ;
     this.jCheckBoxAutoUpdate.setMnemonic ( this.resourceBundle.getString (
-        "autoUpdateMnemonic" ).charAt ( 0 ) ) ; //$NON-NLS-1$
+        AUTOUPDATE + MNEMONIC ).charAt ( 0 ) ) ;
     this.jCheckBoxAutoUpdate.setToolTipText ( this.resourceBundle
-        .getString ( "autoUpdateToolTip" ) ) ; //$NON-NLS-1$
+        .getString ( AUTOUPDATE + TOOLTIP ) ) ;
     this.jCheckBoxAutoUpdate.setSelected ( this.abstractOutline
         .getOutlinePreferences ( ).isAutoUpdate ( ) ) ;
     this.jCheckBoxAutoUpdate.setFocusable ( false ) ;
@@ -435,10 +567,6 @@ public class OutlineUI
     this.treeModel = new DefaultTreeModel ( this.rootNode ) ;
     // Tree AbstractOutline
     this.jTreeAbstractSyntaxTree = new JTree ( this.treeModel ) ;
-    /*
-     * ToolTipManager.sharedInstance ( ).registerComponent (
-     * this.jTreeAbstractSyntaxTree ) ;
-     */
     this.jTreeAbstractSyntaxTree.setCellRenderer ( new OutlineCellRenderer ( ) ) ;
     this.jTreeAbstractSyntaxTree.getSelectionModel ( )
         .addTreeSelectionListener ( this.outlineTreeSelectionListener ) ;
@@ -479,92 +607,91 @@ public class OutlineUI
     this.jPopupMenu = new JPopupMenu ( ) ;
     // MenuItem Expand
     this.jMenuItemExpand = new JMenuItem ( this.resourceBundle
-        .getString ( "expand" ) ) ; //$NON-NLS-1$
+        .getString ( EXPAND ) ) ;
     this.jMenuItemExpand.setMnemonic ( this.resourceBundle.getString (
-        "expandMnemonic" ).charAt ( 0 ) ) ; //$NON-NLS-1$
+        EXPAND + MNEMONIC ).charAt ( 0 ) ) ;
     this.jMenuItemExpand.setToolTipText ( this.resourceBundle
-        .getString ( "expandToolTip" ) ) ; //$NON-NLS-1$
+        .getString ( EXPAND + TOOLTIP ) ) ;
     this.jMenuItemExpand.setIcon ( new ImageIcon ( getClass ( ).getResource (
-        "/de/unisiegen/tpml/ui/icons/empty16.gif" ) ) ) ; //$NON-NLS-1$
-    this.jMenuItemExpand.setActionCommand ( "expand" ) ; //$NON-NLS-1$
+        EMPTYICON ) ) ) ;
+    this.jMenuItemExpand.setActionCommand ( EXPAND ) ;
     this.jMenuItemExpand.addActionListener ( this.outlineActionListener ) ;
     this.jPopupMenu.add ( this.jMenuItemExpand ) ;
     // MenuItem ExpandAll
     this.jMenuItemExpandAll = new JMenuItem ( this.resourceBundle
-        .getString ( "expandAll" ) ) ; //$NON-NLS-1$
+        .getString ( EXPANDALL ) ) ;
     this.jMenuItemExpandAll.setMnemonic ( this.resourceBundle.getString (
-        "expandAllMnemonic" ).charAt ( 0 ) ) ; //$NON-NLS-1$
+        EXPANDALL + MNEMONIC ).charAt ( 0 ) ) ;
     this.jMenuItemExpandAll.setToolTipText ( this.resourceBundle
-        .getString ( "expandAllToolTip" ) ) ; //$NON-NLS-1$
+        .getString ( EXPANDALL + TOOLTIP ) ) ;
     this.jMenuItemExpandAll.setIcon ( new ImageIcon ( getClass ( ).getResource (
-        "/de/unisiegen/tpml/ui/icons/empty16.gif" ) ) ) ; //$NON-NLS-1$
-    this.jMenuItemExpandAll.setActionCommand ( "expandAll" ) ; //$NON-NLS-1$
+        EMPTYICON ) ) ) ;
+    this.jMenuItemExpandAll.setActionCommand ( EXPANDALL ) ;
     this.jMenuItemExpandAll.addActionListener ( this.outlineActionListener ) ;
     this.jPopupMenu.add ( this.jMenuItemExpandAll ) ;
     // Separator
     this.jPopupMenu.addSeparator ( ) ;
     // MenuItem Collapse
     this.jMenuItemCollapse = new JMenuItem ( this.resourceBundle
-        .getString ( "collapse" ) ) ; //$NON-NLS-1$
+        .getString ( COLLAPSE ) ) ;
     this.jMenuItemCollapse.setMnemonic ( this.resourceBundle.getString (
-        "collapseMnemonic" ).charAt ( 0 ) ) ; //$NON-NLS-1$
+        COLLAPSE + MNEMONIC ).charAt ( 0 ) ) ;
     this.jMenuItemCollapse.setToolTipText ( this.resourceBundle
-        .getString ( "collapseToolTip" ) ) ; //$NON-NLS-1$
+        .getString ( COLLAPSE + TOOLTIP ) ) ;
     this.jMenuItemCollapse.setIcon ( new ImageIcon ( getClass ( ).getResource (
-        "/de/unisiegen/tpml/ui/icons/empty16.gif" ) ) ) ; //$NON-NLS-1$
-    this.jMenuItemCollapse.setActionCommand ( "collapse" ) ; //$NON-NLS-1$
+        EMPTYICON ) ) ) ;
+    this.jMenuItemCollapse.setActionCommand ( COLLAPSE ) ;
     this.jMenuItemCollapse.addActionListener ( this.outlineActionListener ) ;
     this.jPopupMenu.add ( this.jMenuItemCollapse ) ;
     // MenuItem CollapseAll
     this.jMenuItemCollapseAll = new JMenuItem ( this.resourceBundle
-        .getString ( "collapseAll" ) ) ; //$NON-NLS-1$
+        .getString ( COLLAPSEALL ) ) ;
     this.jMenuItemCollapseAll.setMnemonic ( this.resourceBundle.getString (
-        "collapseAllMnemonic" ).charAt ( 0 ) ) ; //$NON-NLS-1$
+        COLLAPSEALL + MNEMONIC ).charAt ( 0 ) ) ;
     this.jMenuItemCollapseAll.setToolTipText ( this.resourceBundle
-        .getString ( "collapseAllToolTip" ) ) ; //$NON-NLS-1$
+        .getString ( COLLAPSEALL + TOOLTIP ) ) ;
     this.jMenuItemCollapseAll.setIcon ( new ImageIcon ( getClass ( )
-        .getResource ( "/de/unisiegen/tpml/ui/icons/empty16.gif" ) ) ) ; //$NON-NLS-1$
-    this.jMenuItemCollapseAll.setActionCommand ( "collapseAll" ) ; //$NON-NLS-1$
+        .getResource ( EMPTYICON ) ) ) ;
+    this.jMenuItemCollapseAll.setActionCommand ( COLLAPSEALL ) ;
     this.jMenuItemCollapseAll.addActionListener ( this.outlineActionListener ) ;
     this.jPopupMenu.add ( this.jMenuItemCollapseAll ) ;
     // Separator
     this.jPopupMenu.addSeparator ( ) ;
     // MenuItem Close
     this.jMenuItemClose = new JMenuItem ( this.resourceBundle
-        .getString ( "close" ) ) ; //$NON-NLS-1$
+        .getString ( CLOSE ) ) ;
     this.jMenuItemClose.setMnemonic ( this.resourceBundle.getString (
-        "closeMnemonic" ).charAt ( 0 ) ) ; //$NON-NLS-1$
-    this.jMenuItemClose.setToolTipText ( this.resourceBundle
-        .getString ( "closeToolTip" ) ) ; //$NON-NLS-1$
+        CLOSE + MNEMONIC ).charAt ( 0 ) ) ;
+    this.jMenuItemClose.setToolTipText ( this.resourceBundle.getString ( CLOSE
+        + TOOLTIP ) ) ;
     this.jMenuItemClose.setIcon ( new ImageIcon ( getClass ( ).getResource (
-        "/de/unisiegen/tpml/ui/icons/empty16.gif" ) ) ) ; //$NON-NLS-1$
-    this.jMenuItemClose.setActionCommand ( "close" ) ; //$NON-NLS-1$
+        EMPTYICON ) ) ) ;
+    this.jMenuItemClose.setActionCommand ( CLOSE ) ;
     this.jMenuItemClose.addActionListener ( this.outlineActionListener ) ;
     this.jPopupMenu.add ( this.jMenuItemClose ) ;
     // MenuItem CloseAll
     this.jMenuItemCloseAll = new JMenuItem ( this.resourceBundle
-        .getString ( "closeAll" ) ) ; //$NON-NLS-1$
+        .getString ( CLOSEALL ) ) ;
     this.jMenuItemCloseAll.setMnemonic ( this.resourceBundle.getString (
-        "closeAllMnemonic" ).charAt ( 0 ) ) ; //$NON-NLS-1$
+        CLOSEALL + MNEMONIC ).charAt ( 0 ) ) ;
     this.jMenuItemCloseAll.setToolTipText ( this.resourceBundle
-        .getString ( "closeAllToolTip" ) ) ; //$NON-NLS-1$
+        .getString ( CLOSEALL + TOOLTIP ) ) ;
     this.jMenuItemCloseAll.setIcon ( new ImageIcon ( getClass ( ).getResource (
-        "/de/unisiegen/tpml/ui/icons/empty16.gif" ) ) ) ; //$NON-NLS-1$
-    this.jMenuItemCloseAll.setActionCommand ( "closeAll" ) ; //$NON-NLS-1$
+        EMPTYICON ) ) ) ;
+    this.jMenuItemCloseAll.setActionCommand ( CLOSEALL ) ;
     this.jMenuItemCloseAll.addActionListener ( this.outlineActionListener ) ;
     this.jPopupMenu.add ( this.jMenuItemCloseAll ) ;
     // Separator
     this.jPopupMenu.addSeparator ( ) ;
     // MenuItem Copy
-    this.jMenuItemCopy = new JMenuItem ( this.resourceBundle
-        .getString ( "copy" ) ) ; //$NON-NLS-1$
+    this.jMenuItemCopy = new JMenuItem ( this.resourceBundle.getString ( COPY ) ) ;
     this.jMenuItemCopy.setMnemonic ( this.resourceBundle.getString (
-        "copyMnemonic" ).charAt ( 0 ) ) ; //$NON-NLS-1$
-    this.jMenuItemCopy.setToolTipText ( this.resourceBundle
-        .getString ( "copyToolTip" ) ) ; //$NON-NLS-1$
+        COPY + MNEMONIC ).charAt ( 0 ) ) ;
+    this.jMenuItemCopy.setToolTipText ( this.resourceBundle.getString ( COPY
+        + TOOLTIP ) ) ;
     this.jMenuItemCopy.setIcon ( new ImageIcon ( getClass ( ).getResource (
-        "/de/unisiegen/tpml/ui/icons/copy16.gif" ) ) ) ; //$NON-NLS-1$
-    this.jMenuItemCopy.setActionCommand ( "copy" ) ; //$NON-NLS-1$
+        COPYICON ) ) ) ;
+    this.jMenuItemCopy.setActionCommand ( COPY ) ;
     this.jMenuItemCopy.addActionListener ( this.outlineActionListener ) ;
     this.jMenuItemCopy.setAccelerator ( KeyStroke.getKeyStroke ( KeyEvent.VK_C ,
         InputEvent.CTRL_MASK ) ) ;
@@ -573,70 +700,70 @@ public class OutlineUI
     this.jPopupMenu.addSeparator ( ) ;
     // MenuItem Preferences
     this.jMenuPreferences = new JMenu ( this.resourceBundle
-        .getString ( "preferences" ) ) ; //$NON-NLS-1$
+        .getString ( PREFERENCES ) ) ;
     this.jMenuPreferences.setMnemonic ( this.resourceBundle.getString (
-        "preferencesMnemonic" ).charAt ( 0 ) ) ; //$NON-NLS-1$
+        PREFERENCES + MNEMONIC ).charAt ( 0 ) ) ;
     this.jMenuPreferences.setIcon ( new ImageIcon ( getClass ( ).getResource (
-        "/de/unisiegen/tpml/ui/icons/empty16.gif" ) ) ) ; //$NON-NLS-1$  
-    this.jMenuPreferences.setActionCommand ( "preferences" ) ; //$NON-NLS-1$
+        EMPTYICON ) ) ) ;
+    this.jMenuPreferences.setActionCommand ( PREFERENCES ) ;
     this.jMenuPreferences.addActionListener ( this.outlineActionListener ) ;
     this.jPopupMenu.add ( this.jMenuPreferences ) ;
     // MenuItem Selection
     this.jMenuItemSelection = new JCheckBoxMenuItem ( this.resourceBundle
-        .getString ( "selection" ) ) ; //$NON-NLS-1$
+        .getString ( SELECTION ) ) ;
     this.jMenuItemSelection.setMnemonic ( this.resourceBundle.getString (
-        "selectionMnemonic" ).charAt ( 0 ) ) ; //$NON-NLS-1$
+        SELECTION + MNEMONIC ).charAt ( 0 ) ) ;
     this.jMenuItemSelection.setToolTipText ( this.resourceBundle
-        .getString ( "selectionToolTip" ) ) ; //$NON-NLS-1$
-    this.jMenuItemSelection.setActionCommand ( "selection" ) ; //$NON-NLS-1$
+        .getString ( SELECTION + TOOLTIP ) ) ;
+    this.jMenuItemSelection.setActionCommand ( SELECTION ) ;
     this.jMenuItemSelection.addActionListener ( this.outlineActionListener ) ;
     this.jMenuItemSelection.setSelected ( this.abstractOutline
         .getOutlinePreferences ( ).isSelection ( ) ) ;
     this.jMenuPreferences.add ( this.jMenuItemSelection ) ;
     // MenuItem Binding
     this.jMenuItemBinding = new JCheckBoxMenuItem ( this.resourceBundle
-        .getString ( "binding" ) ) ; //$NON-NLS-1$
+        .getString ( BINDING ) ) ;
     this.jMenuItemBinding.setMnemonic ( this.resourceBundle.getString (
-        "bindingMnemonic" ).charAt ( 0 ) ) ; //$NON-NLS-1$
+        BINDING + MNEMONIC ).charAt ( 0 ) ) ;
     this.jMenuItemBinding.setToolTipText ( this.resourceBundle
-        .getString ( "bindingToolTip" ) ) ; //$NON-NLS-1$
-    this.jMenuItemBinding.setActionCommand ( "binding" ) ; //$NON-NLS-1$
+        .getString ( BINDING + TOOLTIP ) ) ;
+    this.jMenuItemBinding.setActionCommand ( BINDING ) ;
     this.jMenuItemBinding.addActionListener ( this.outlineActionListener ) ;
     this.jMenuItemBinding.setSelected ( this.abstractOutline
         .getOutlinePreferences ( ).isBinding ( ) ) ;
     this.jMenuPreferences.add ( this.jMenuItemBinding ) ;
     // MenuItem Unbound
     this.jMenuItemUnbound = new JCheckBoxMenuItem ( this.resourceBundle
-        .getString ( "unbound" ) ) ; //$NON-NLS-1$
+        .getString ( UNBOUND ) ) ;
     this.jMenuItemUnbound.setMnemonic ( this.resourceBundle.getString (
-        "unboundMnemonic" ).charAt ( 0 ) ) ; //$NON-NLS-1$
+        UNBOUND + MNEMONIC ).charAt ( 0 ) ) ;
     this.jMenuItemUnbound.setToolTipText ( this.resourceBundle
-        .getString ( "unboundToolTip" ) ) ; //$NON-NLS-1$
-    this.jMenuItemUnbound.setActionCommand ( "unbound" ) ; //$NON-NLS-1$
+        .getString ( UNBOUND + TOOLTIP ) ) ;
+    this.jMenuItemUnbound.setActionCommand ( UNBOUND ) ;
     this.jMenuItemUnbound.addActionListener ( this.outlineActionListener ) ;
     this.jMenuItemUnbound.setSelected ( this.abstractOutline
         .getOutlinePreferences ( ).isUnbound ( ) ) ;
     this.jMenuPreferences.add ( this.jMenuItemUnbound ) ;
     // MenuItem Replace
     this.jMenuItemReplace = new JCheckBoxMenuItem ( this.resourceBundle
-        .getString ( "replace" ) ) ; //$NON-NLS-1$
+        .getString ( REPLACE ) ) ;
     this.jMenuItemReplace.setMnemonic ( this.resourceBundle.getString (
-        "replaceMnemonic" ).charAt ( 0 ) ) ; //$NON-NLS-1$
+        REPLACE + MNEMONIC ).charAt ( 0 ) ) ;
     this.jMenuItemReplace.setToolTipText ( this.resourceBundle
-        .getString ( "replaceToolTip" ) ) ; //$NON-NLS-1$
-    this.jMenuItemReplace.setActionCommand ( "replace" ) ; //$NON-NLS-1$
+        .getString ( REPLACE + TOOLTIP ) ) ;
+    this.jMenuItemReplace.setActionCommand ( REPLACE ) ;
     this.jMenuItemReplace.addActionListener ( this.outlineActionListener ) ;
     this.jMenuItemReplace.setSelected ( this.abstractOutline
         .getOutlinePreferences ( ).isReplace ( ) ) ;
     this.jMenuPreferences.add ( this.jMenuItemReplace ) ;
     // MenuItem AutoUpdate
     this.jMenuItemAutoUpdate = new JCheckBoxMenuItem ( this.resourceBundle
-        .getString ( "autoUpdate" ) ) ; //$NON-NLS-1$
+        .getString ( AUTOUPDATE ) ) ;
     this.jMenuItemAutoUpdate.setMnemonic ( this.resourceBundle.getString (
-        "autoUpdateMnemonic" ).charAt ( 0 ) ) ; //$NON-NLS-1$
+        AUTOUPDATE + MNEMONIC ).charAt ( 0 ) ) ;
     this.jMenuItemAutoUpdate.setToolTipText ( this.resourceBundle
-        .getString ( "autoUpdateToolTip" ) ) ; //$NON-NLS-1$
-    this.jMenuItemAutoUpdate.setActionCommand ( "autoUpdate" ) ; //$NON-NLS-1$
+        .getString ( AUTOUPDATE + TOOLTIP ) ) ;
+    this.jMenuItemAutoUpdate.setActionCommand ( AUTOUPDATE ) ;
     this.jMenuItemAutoUpdate.addActionListener ( this.outlineActionListener ) ;
     this.jMenuItemAutoUpdate.setSelected ( this.abstractOutline
         .getOutlinePreferences ( ).isAutoUpdate ( ) ) ;
@@ -653,54 +780,6 @@ public class OutlineUI
   public AbstractOutline getAbstractOutline ( )
   {
     return this.abstractOutline ;
-  }
-
-
-  /**
-   * Returns the {@link OutlineActionListener}.
-   * 
-   * @return The {@link OutlineActionListener}.
-   * @see #outlineActionListener
-   */
-  public OutlineActionListener getOutlineActionListener ( )
-  {
-    return this.outlineActionListener ;
-  }
-
-
-  /**
-   * Returns the {@link OutlineItemListener}.
-   * 
-   * @return The {@link OutlineItemListener}.
-   * @see #outlineItemListener
-   */
-  public OutlineItemListener getOutlineItemListener ( )
-  {
-    return this.outlineItemListener ;
-  }
-
-
-  /**
-   * Returns the {@link OutlineMouseListener}.
-   * 
-   * @return The {@link OutlineMouseListener}.
-   * @see #outlineMouseListener
-   */
-  public OutlineMouseListener getOutlineMouseListener ( )
-  {
-    return this.outlineMouseListener ;
-  }
-
-
-  /**
-   * Returns the {@link OutlineTreeSelectionListener}.
-   * 
-   * @return The {@link OutlineTreeSelectionListener}.
-   * @see #outlineTreeSelectionListener
-   */
-  public OutlineTreeSelectionListener getOutlineTreeSelectionListener ( )
-  {
-    return this.outlineTreeSelectionListener ;
   }
 
 
@@ -941,6 +1020,54 @@ public class OutlineUI
   public JTree getJTreeAbstractSyntaxTree ( )
   {
     return this.jTreeAbstractSyntaxTree ;
+  }
+
+
+  /**
+   * Returns the {@link OutlineActionListener}.
+   * 
+   * @return The {@link OutlineActionListener}.
+   * @see #outlineActionListener
+   */
+  public OutlineActionListener getOutlineActionListener ( )
+  {
+    return this.outlineActionListener ;
+  }
+
+
+  /**
+   * Returns the {@link OutlineItemListener}.
+   * 
+   * @return The {@link OutlineItemListener}.
+   * @see #outlineItemListener
+   */
+  public OutlineItemListener getOutlineItemListener ( )
+  {
+    return this.outlineItemListener ;
+  }
+
+
+  /**
+   * Returns the {@link OutlineMouseListener}.
+   * 
+   * @return The {@link OutlineMouseListener}.
+   * @see #outlineMouseListener
+   */
+  public OutlineMouseListener getOutlineMouseListener ( )
+  {
+    return this.outlineMouseListener ;
+  }
+
+
+  /**
+   * Returns the {@link OutlineTreeSelectionListener}.
+   * 
+   * @return The {@link OutlineTreeSelectionListener}.
+   * @see #outlineTreeSelectionListener
+   */
+  public OutlineTreeSelectionListener getOutlineTreeSelectionListener ( )
+  {
+    return this.outlineTreeSelectionListener ;
   }
 
 

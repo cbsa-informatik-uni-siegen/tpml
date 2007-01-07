@@ -7,6 +7,7 @@ import de.unisiegen.tpml.core.expressions.Identifier ;
 import de.unisiegen.tpml.graphics.outline.AbstractOutline ;
 import de.unisiegen.tpml.graphics.outline.Outline ;
 import de.unisiegen.tpml.graphics.outline.OutlineNode ;
+import de.unisiegen.tpml.graphics.outline.ui.OutlineUI ;
 
 
 /**
@@ -20,6 +21,12 @@ import de.unisiegen.tpml.graphics.outline.OutlineNode ;
  */
 public class OutlinePreferences
 {
+  /**
+   * The <code>String</code> dividerLocation.
+   */
+  private static final String DIVIDERLOCATION = "dividerLocation" ; //$NON-NLS-1$
+
+
   /**
    * The replace value. The selected {@link Expression} should be replaced in
    * higher nodes.
@@ -93,12 +100,13 @@ public class OutlinePreferences
   public OutlinePreferences ( )
   {
     this.preferences = Preferences.userNodeForPackage ( AbstractOutline.class ) ;
-    this.replace = this.preferences.getBoolean ( "replace" , true ) ; //$NON-NLS-1$
-    this.binding = this.preferences.getBoolean ( "bindings" , true ) ; //$NON-NLS-1$
-    this.unbound = this.preferences.getBoolean ( "unbound" , true ) ; //$NON-NLS-1$
-    this.selection = this.preferences.getBoolean ( "selected" , true ) ; //$NON-NLS-1$
-    this.autoUpdate = this.preferences.getBoolean ( "autoupdate" , true ) ; //$NON-NLS-1$
-    this.dividerLocation = this.preferences.getInt ( "dividerLocation" , 300 ) ; //$NON-NLS-1$
+    this.replace = this.preferences.getBoolean ( OutlineUI.REPLACE , true ) ;
+    this.binding = this.preferences.getBoolean ( OutlineUI.BINDING , true ) ;
+    this.unbound = this.preferences.getBoolean ( OutlineUI.UNBOUND , true ) ;
+    this.selection = this.preferences.getBoolean ( OutlineUI.SELECTION , true ) ;
+    this.autoUpdate = this.preferences
+        .getBoolean ( OutlineUI.AUTOUPDATE , true ) ;
+    this.dividerLocation = this.preferences.getInt ( DIVIDERLOCATION , 300 ) ;
     OutlineNode.setReplace ( this.replace ) ;
     OutlineNode.setBinding ( this.binding ) ;
     OutlineNode.setUnbound ( this.unbound ) ;
@@ -206,7 +214,7 @@ public class OutlinePreferences
   public void setAutoUpdate ( boolean pAutoupdate )
   {
     this.autoUpdate = pAutoupdate ;
-    this.preferences.putBoolean ( "autoupdate" , pAutoupdate ) ; //$NON-NLS-1$
+    this.preferences.putBoolean ( OutlineUI.AUTOUPDATE , pAutoupdate ) ;
   }
 
 
@@ -222,7 +230,7 @@ public class OutlinePreferences
   public void setBinding ( boolean pBinding )
   {
     this.binding = pBinding ;
-    this.preferences.putBoolean ( "bindings" , pBinding ) ; //$NON-NLS-1$
+    this.preferences.putBoolean ( OutlineUI.BINDING , pBinding ) ;
   }
 
 
@@ -238,7 +246,7 @@ public class OutlinePreferences
   public void setDividerLocation ( int pDividerLocation )
   {
     this.dividerLocation = pDividerLocation ;
-    this.preferences.putInt ( "dividerLocation" , pDividerLocation ) ; //$NON-NLS-1$
+    this.preferences.putInt ( DIVIDERLOCATION , pDividerLocation ) ;
   }
 
 
@@ -253,7 +261,7 @@ public class OutlinePreferences
   public void setReplace ( boolean pReplace )
   {
     this.replace = pReplace ;
-    this.preferences.putBoolean ( "replace" , pReplace ) ; //$NON-NLS-1$
+    this.preferences.putBoolean ( OutlineUI.REPLACE , pReplace ) ;
   }
 
 
@@ -269,7 +277,7 @@ public class OutlinePreferences
   public void setSelection ( boolean pSelection )
   {
     this.selection = pSelection ;
-    this.preferences.putBoolean ( "selected" , pSelection ) ; //$NON-NLS-1$
+    this.preferences.putBoolean ( OutlineUI.SELECTION , pSelection ) ;
   }
 
 
@@ -284,6 +292,6 @@ public class OutlinePreferences
   public void setUnbound ( boolean pUnbound )
   {
     this.unbound = pUnbound ;
-    this.preferences.putBoolean ( "unbound" , pUnbound ) ; //$NON-NLS-1$
+    this.preferences.putBoolean ( OutlineUI.UNBOUND , pUnbound ) ;
   }
 }

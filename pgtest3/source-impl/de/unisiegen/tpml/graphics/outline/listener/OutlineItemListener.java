@@ -82,7 +82,7 @@ public class OutlineItemListener implements ItemListener
   public void itemStateChanged ( ItemEvent pItemEvent )
   {
     update ( pItemEvent.getStateChange ( ) == ItemEvent.SELECTED , pItemEvent
-        .getSource ( ) , "" ) ; //$NON-NLS-1$
+        .getSource ( ) , null ) ;
   }
 
 
@@ -168,35 +168,35 @@ public class OutlineItemListener implements ItemListener
       String pActionCommand )
   {
     // Replace
-    if ( ( pActionCommand.equals ( "replace" ) ) //$NON-NLS-1$
+    if ( ( OutlineUI.REPLACE.equals ( pActionCommand ) )
         || ( ( pSource != null ) && ( pSource.equals ( this.outlineUI
             .getJCheckBoxReplace ( ) ) ) ) )
     {
       replace ( pSelected ) ;
     }
     // Binding
-    else if ( ( pActionCommand.equals ( "binding" ) ) //$NON-NLS-1$
+    else if ( ( OutlineUI.BINDING.equals ( pActionCommand ) )
         || ( ( pSource != null ) && ( pSource.equals ( this.outlineUI
             .getJCheckBoxBinding ( ) ) ) ) )
     {
       binding ( pSelected ) ;
     }
     // Unbound
-    else if ( ( pActionCommand.equals ( "unbound" ) ) //$NON-NLS-1$
+    else if ( ( OutlineUI.UNBOUND.equals ( pActionCommand ) )
         || ( ( pSource != null ) && ( pSource.equals ( this.outlineUI
             .getJCheckBoxUnbound ( ) ) ) ) )
     {
       unbound ( pSelected ) ;
     }
     // Selection
-    else if ( ( pActionCommand.equals ( "selection" ) ) //$NON-NLS-1$
+    else if ( ( OutlineUI.SELECTION.equals ( pActionCommand ) )
         || ( ( pSource != null ) && ( pSource.equals ( this.outlineUI
             .getJCheckBoxSelection ( ) ) ) ) )
     {
       selection ( pSelected ) ;
     }
     // AutoUpdate
-    else if ( ( pActionCommand.equals ( "autoupdate" ) ) //$NON-NLS-1$
+    else if ( ( OutlineUI.AUTOUPDATE.equals ( pActionCommand ) )
         || ( ( pSource != null ) && ( pSource.equals ( this.outlineUI
             .getJCheckBoxAutoUpdate ( ) ) ) ) )
     {

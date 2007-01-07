@@ -45,10 +45,11 @@ public abstract class OutlineIdentifier
     int end = 0 ;
     while ( charIndex < beginChild )
     {
-      if ( prettyCharIterator.getStyle ( ) == PrettyStyle.IDENTIFIER )
+      if ( PrettyStyle.IDENTIFIER.equals ( prettyCharIterator.getStyle ( ) ) )
       {
         start = charIndex ;
-        while ( prettyCharIterator.getStyle ( ) == PrettyStyle.IDENTIFIER )
+        while ( PrettyStyle.IDENTIFIER
+            .equals ( prettyCharIterator.getStyle ( ) ) )
         {
           charIndex ++ ;
           prettyCharIterator.next ( ) ;

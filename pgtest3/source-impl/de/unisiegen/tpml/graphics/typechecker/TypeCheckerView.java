@@ -76,7 +76,7 @@ public class TypeCheckerView extends AbstractProofView
     this.outline = new AbstractOutline ( ) ;
     this.outline.disableAutoUpdate ( ) ;
     this.outline.loadExpression ( pTypeCheckerProofModel.getRoot ( )
-        .getLastLeaf ( ).getExpression ( ) , "first_typechecker" ) ; //$NON-NLS-1$
+        .getLastLeaf ( ).getExpression ( ) , Outline.INIT ) ;
     pTypeCheckerProofModel.addTreeModelListener ( new OutlineTreeModelListener (
         this.outline , pTypeCheckerProofModel ) ) ;
     GridBagConstraints gridBagConstraints = new GridBagConstraints ( ) ;

@@ -16,6 +16,36 @@ import de.unisiegen.tpml.graphics.outline.util.OutlinePreferences ;
 public interface Outline
 {
   /**
+   * Initialized change.
+   */
+  public static final int INIT = 0 ;
+
+
+  /**
+   * Change by mouse cick.
+   */
+  public static final int MOUSE_CLICK = 1 ;
+
+
+  /**
+   * Auto change from the <code>SmallStep</code>.
+   */
+  public static final int CHANGE_SMALLSTEP = 2 ;
+
+
+  /**
+   * Auto change from the <code>BigStep</code>.
+   */
+  public static final int CHANGE_BIGSTEP = 3 ;
+
+
+  /**
+   * Auto change from the <code>TypeChecker</code>.
+   */
+  public static final int CHANGE_TYPECHECKER = 4 ;
+
+
+  /**
    * Disables the auto update <code>JCheckBox</code> and the
    * <code>JMenuItem</code>. Removes the <code>ItemListener</code> and the
    * <code>ActionListener</code>.
@@ -49,7 +79,7 @@ public interface Outline
    * come from a <code>MouseEvent</code>.
    * 
    * @param pExpression The new {@link Expression}.
-   * @param pDescription The description who is calling this method.
+   * @param pModus The modus who is calling this method.
    */
-  public void loadExpression ( Expression pExpression , String pDescription ) ;
+  public void loadExpression ( Expression pExpression , int pModus ) ;
 }

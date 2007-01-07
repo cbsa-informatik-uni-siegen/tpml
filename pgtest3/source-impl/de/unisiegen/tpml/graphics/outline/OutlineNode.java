@@ -70,9 +70,9 @@ public class OutlineNode
   /**
    * The hex values.
    */
-  private static final String HEX_VALUES[] =
+  private static final String [ ] HEX_VALUES =
   { "0" , "1" , "2" , "3" , "4" , "5" , "6" , "7" , "8" , "9" , "A" , "B" , //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$ //$NON-NLS-11$ //$NON-NLS-12$
-      "C" , "D" , "E" , "F" } ; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+      "C" , "D" , "E" , "F" , "00" } ; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 
 
   /**
@@ -482,7 +482,7 @@ public class OutlineNode
     }
     else
     {
-      return "00" ; //$NON-NLS-1$
+      return HEX_VALUES [ 16 ] ;
     }
     return result.toString ( ) ;
   }
@@ -623,7 +623,7 @@ public class OutlineNode
   /**
    * Resets the caption of the node.
    */
-  public void resetCaption ( )
+  public final void resetCaption ( )
   {
     if ( this.startIndex != - 1 )
     {
@@ -850,12 +850,12 @@ public class OutlineNode
       /*
        * Keyword
        */
-      else if ( prettyCharIterator.getStyle ( ) == PrettyStyle.KEYWORD )
+      else if ( PrettyStyle.KEYWORD.equals ( prettyCharIterator.getStyle ( ) ) )
       {
         result.append ( FONT_BOLD_BEGIN ) ;
         result.append ( keywordColor ) ;
         result.append ( FONT_AFTER_COLOR ) ;
-        while ( prettyCharIterator.getStyle ( ) == PrettyStyle.KEYWORD )
+        while ( PrettyStyle.KEYWORD.equals ( prettyCharIterator.getStyle ( ) ) )
         {
           result.append ( getHTMLCode ( this.expressionString
               .charAt ( charIndex ) ) ) ;
@@ -868,12 +868,12 @@ public class OutlineNode
       /*
        * Constant
        */
-      else if ( prettyCharIterator.getStyle ( ) == PrettyStyle.CONSTANT )
+      else if ( PrettyStyle.CONSTANT.equals ( prettyCharIterator.getStyle ( ) ) )
       {
         result.append ( FONT_BOLD_BEGIN ) ;
         result.append ( constantColor ) ;
         result.append ( FONT_AFTER_COLOR ) ;
-        while ( prettyCharIterator.getStyle ( ) == PrettyStyle.CONSTANT )
+        while ( PrettyStyle.CONSTANT.equals ( prettyCharIterator.getStyle ( ) ) )
         {
           result.append ( getHTMLCode ( this.expressionString
               .charAt ( charIndex ) ) ) ;
@@ -886,12 +886,12 @@ public class OutlineNode
       /*
        * Type
        */
-      else if ( prettyCharIterator.getStyle ( ) == PrettyStyle.TYPE )
+      else if ( PrettyStyle.TYPE.equals ( prettyCharIterator.getStyle ( ) ) )
       {
         result.append ( FONT_BOLD_BEGIN ) ;
         result.append ( typeColor ) ;
         result.append ( FONT_AFTER_COLOR ) ;
-        while ( prettyCharIterator.getStyle ( ) == PrettyStyle.TYPE )
+        while ( PrettyStyle.TYPE.equals ( prettyCharIterator.getStyle ( ) ) )
         {
           result.append ( getHTMLCode ( this.expressionString
               .charAt ( charIndex ) ) ) ;

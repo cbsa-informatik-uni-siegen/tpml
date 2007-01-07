@@ -43,6 +43,36 @@ import de.unisiegen.tpml.graphics.outline.util.OutlinePreferences ;
 public class AbstractOutline implements Outline
 {
   /**
+   * The <code>String</code> for the name of a {@link Location}.
+   */
+  private static final String NAME = "Name" ; //$NON-NLS-1$
+
+
+  /**
+   * The <code>String</code> for more than one child.
+   */
+  private static final String GETEX = "getE[0-9]{1}" ; //$NON-NLS-1$
+
+
+  /**
+   * The <code>String</code> for only one child.
+   */
+  private static final String GETE = "getE" ; //$NON-NLS-1$
+
+
+  /**
+   * The <code>String</code> for the integer one.
+   */
+  private static final String ONE = "1" ; //$NON-NLS-1$
+
+
+  /**
+   * The <code>String</code> for the integer two.
+   */
+  private static final String TWO = "2" ; //$NON-NLS-1$
+
+
+  /**
    * String, between the description of the parent node, like e1, and the
    * description of the current node, like Identifier.
    */
@@ -351,7 +381,7 @@ public class AbstractOutline implements Outline
         pInfixOperation , this.outlineUnbound ) ) ;
     DefaultMutableTreeNode node0 = checkExpression ( e1 ) ;
     OutlineNode astNode0 = ( OutlineNode ) node0.getUserObject ( ) ;
-    astNode0.appendDescription ( EXPRESSION + "1" + BETWEEN ) ; //$NON-NLS-1$
+    astNode0.appendDescription ( EXPRESSION + ONE + BETWEEN ) ;
     astNode0.resetCaption ( ) ;
     node.add ( node0 ) ;
     int start = pInfixOperation.toPrettyString ( ).toString ( ).indexOf (
@@ -363,7 +393,7 @@ public class AbstractOutline implements Outline
     node.add ( node1 ) ;
     DefaultMutableTreeNode ex2 = checkExpression ( e2 ) ;
     OutlineNode node2 = ( OutlineNode ) ex2.getUserObject ( ) ;
-    node2.appendDescription ( EXPRESSION + "2" + BETWEEN ) ; //$NON-NLS-1$
+    node2.appendDescription ( EXPRESSION + TWO + BETWEEN ) ;
     node2.resetCaption ( ) ;
     node.add ( ex2 ) ;
     return node ;
@@ -446,31 +476,31 @@ public class AbstractOutline implements Outline
    * come from a <code>MouseEvent</code>.
    * 
    * @param pExpression The new {@link Expression}.
-   * @param pDescription The description who is calling this method.
+   * @param pModus The modus who is calling this method.
    */
-  public void loadExpression ( Expression pExpression , String pDescription )
+  public void loadExpression ( Expression pExpression , int pModus )
   {
     if ( ( this.oldExpression != null )
         && ( pExpression.equals ( this.oldExpression ) ) )
     {
       return ;
     }
-    if ( ( ! this.outlinePreferences.isAutoUpdate ( ) )
-        && ( pDescription.startsWith ( "change" ) ) ) //$NON-NLS-1$
+    if ( ( pModus == Outline.CHANGE_SMALLSTEP )
+        && ( ! this.outlinePreferences.isAutoUpdate ( ) ) )
     {
       return ;
     }
-    if ( "change_bigstep".equals ( pDescription ) ) //$NON-NLS-1$
+    if ( pModus == Outline.CHANGE_BIGSTEP )
     {
       return ;
     }
-    if ( pDescription.equals ( "change_typechecker" ) ) //$NON-NLS-1$
+    if ( pModus == Outline.CHANGE_TYPECHECKER )
     {
       return ;
     }
     this.oldExpression = pExpression ;
     cancelExecuteTimer ( ) ;
-    if ( pDescription.startsWith ( "mouse" ) ) //$NON-NLS-1$
+    if ( ( pModus == Outline.INIT ) || ( pModus == Outline.MOUSE_CLICK ) )
     {
       execute ( ) ;
     }
@@ -493,9 +523,8 @@ public class AbstractOutline implements Outline
         pLocation , this.outlineUnbound ) ) ;
     int start = 0 ;
     int end = start - 1 + pLocation.getName ( ).length ( ) ;
-    node.add ( new DefaultMutableTreeNode ( new OutlineNode (
-        "Name" , pLocation //$NON-NLS-1$
-            .getName ( ) , start , end , null , this.outlineUnbound ) ) ) ;
+    node.add ( new DefaultMutableTreeNode ( new OutlineNode ( NAME , pLocation
+        .getName ( ) , start , end , null , this.outlineUnbound ) ) ) ;
     return node ;
   }
 
@@ -513,11 +542,11 @@ public class AbstractOutline implements Outline
     int result = 10 ;
     for ( Method method : pExpression.getClass ( ).getMethods ( ) )
     {
-      if ( method.getName ( ).equals ( "getE" ) ) //$NON-NLS-1$
+      if ( GETE.equals ( method.getName ( ) ) )
       {
         return ONLY_ONE_CHILD ;
       }
-      if ( method.getName ( ).matches ( "getE[0-9]{1}" ) ) //$NON-NLS-1$
+      if ( method.getName ( ).matches ( GETEX ) )
       {
         result = Math.min ( result , Integer.parseInt ( String.valueOf ( method
             .getName ( ).charAt ( 4 ) ) ) ) ;
@@ -545,19 +574,18 @@ public class AbstractOutline implements Outline
       aSTBinding.add ( pMultiLambda.getE ( ) , id ) ;
     }
     aSTBinding.find ( ) ;
-    String idList[] = pMultiLambda.getIdentifiers ( ) ;
     DefaultMutableTreeNode node = new DefaultMutableTreeNode ( new OutlineNode (
         pMultiLambda , this.outlineUnbound ) ) ;
     ArrayList < OutlinePair > index = OutlineIdentifier
         .getIndex ( pMultiLambda ) ;
     OutlinePair outlinePair ;
-    final int length = idList.length ;
+    final int length = pMultiLambda.getIdentifiers ( ).length ;
     for ( int i = 0 ; i < length ; i ++ )
     {
       outlinePair = index.get ( i ) ;
       node.add ( new DefaultMutableTreeNode ( new OutlineNode ( IDENTIFIER ,
-          idList [ i ] , outlinePair.getStart ( ) , outlinePair.getEnd ( ) ,
-          aSTBinding , this.outlineUnbound ) ) ) ;
+          pMultiLambda.getIdentifiers ( ) [ i ] , outlinePair.getStart ( ) ,
+          outlinePair.getEnd ( ) , aSTBinding , this.outlineUnbound ) ) ) ;
     }
     createChildren ( pMultiLambda , node ) ;
     return node ;

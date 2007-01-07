@@ -76,7 +76,7 @@ public class BigStepView extends AbstractProofView
     this.outline = new AbstractOutline ( ) ;
     this.outline.disableAutoUpdate ( ) ;
     this.outline.loadExpression ( pBigStepProofModel.getRoot ( ).getLastLeaf ( )
-        .getExpression ( ) , "first_bigstep" ) ; //$NON-NLS-1$
+        .getExpression ( ) , Outline.INIT ) ;
     pBigStepProofModel.addTreeModelListener ( new OutlineTreeModelListener (
         this.outline , pBigStepProofModel ) ) ;
     GridBagConstraints gridBagConstraints = new GridBagConstraints ( ) ;

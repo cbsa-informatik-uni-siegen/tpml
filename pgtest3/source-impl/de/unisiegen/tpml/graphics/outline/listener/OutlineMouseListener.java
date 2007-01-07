@@ -29,6 +29,12 @@ import de.unisiegen.tpml.graphics.typechecker.TypeCheckerView ;
 public class OutlineMouseListener implements MouseListener
 {
   /**
+   * The unused <code>String</code> for the <code>SuppressWarnings</code>.
+   */
+  private static final String UNUSED = "unused" ; //$NON-NLS-1$
+
+
+  /**
    * The {@link OutlineUI}.
    */
   private OutlineUI outlineUI ;
@@ -162,19 +168,19 @@ public class OutlineMouseListener implements MouseListener
         if ( this.view instanceof SmallStepView )
         {
           ( ( SmallStepView ) this.view ).getOutline ( ).loadExpression (
-              this.compoundExpression.getExpression ( ) , "mouse_smallstep" ) ; //$NON-NLS-1$
+              this.compoundExpression.getExpression ( ) , Outline.MOUSE_CLICK ) ;
         }
         // BigStepView
         else if ( this.view instanceof BigStepView )
         {
           ( ( BigStepView ) this.view ).getOutline ( ).loadExpression (
-              this.compoundExpression.getExpression ( ) , "mouse_bigstep" ) ; //$NON-NLS-1$
+              this.compoundExpression.getExpression ( ) , Outline.MOUSE_CLICK ) ;
         }
         // TypeCheckerView
         else if ( this.view instanceof TypeCheckerView )
         {
           ( ( TypeCheckerView ) this.view ).getOutline ( ).loadExpression (
-              this.compoundExpression.getExpression ( ) , "mouse_typechecker" ) ; //$NON-NLS-1$
+              this.compoundExpression.getExpression ( ) , Outline.MOUSE_CLICK ) ;
         }
       }
     }
@@ -188,7 +194,7 @@ public class OutlineMouseListener implements MouseListener
    * @param pMouseEvent The <code>MouseEvent</code>.
    * @see MouseListener#mouseClicked(MouseEvent)
    */
-  public void mouseClicked ( @ SuppressWarnings ( "unused" )
+  public void mouseClicked ( @ SuppressWarnings ( UNUSED )
   MouseEvent pMouseEvent )
   {
     // Do Nothing
@@ -201,7 +207,7 @@ public class OutlineMouseListener implements MouseListener
    * @param pMouseEvent The <code>MouseEvent</code>.
    * @see MouseListener#mouseEntered(MouseEvent)
    */
-  public void mouseEntered ( @ SuppressWarnings ( "unused" )
+  public void mouseEntered ( @ SuppressWarnings ( UNUSED )
   MouseEvent pMouseEvent )
   {
     // Do Nothing
@@ -214,7 +220,7 @@ public class OutlineMouseListener implements MouseListener
    * @param pMouseEvent The <code>MouseEvent</code>.
    * @see MouseListener#mouseExited(MouseEvent)
    */
-  public void mouseExited ( @ SuppressWarnings ( "unused" )
+  public void mouseExited ( @ SuppressWarnings ( UNUSED )
   MouseEvent pMouseEvent )
   {
     // Do Nothing

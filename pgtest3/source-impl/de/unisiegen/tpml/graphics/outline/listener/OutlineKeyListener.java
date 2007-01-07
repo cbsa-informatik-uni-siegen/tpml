@@ -19,6 +19,12 @@ import de.unisiegen.tpml.graphics.outline.util.OutlineClipboard ;
 public class OutlineKeyListener implements KeyListener
 {
   /**
+   * The unused <code>String</code> for the <code>SuppressWarnings</code>.
+   */
+  private static final String UNUSED = "unused" ; //$NON-NLS-1$
+
+
+  /**
    * The {@link OutlineUI}.
    */
   private OutlineUI outlineUI ;
@@ -108,7 +114,7 @@ public class OutlineKeyListener implements KeyListener
    * @param pKeyEvent The <code>KeyEvent</code>.
    * @see KeyListener#keyTyped(KeyEvent)
    */
-  public void keyTyped ( @ SuppressWarnings ( "unused" )
+  public void keyTyped ( @ SuppressWarnings ( UNUSED )
   KeyEvent pKeyEvent )
   {
     // Do nothing.
