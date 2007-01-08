@@ -65,6 +65,45 @@ herleiten l"asst.
 
 
 
+\section{Die Sprache \LZEROCBN}
+
+\index{Unterschiede}
+Die Sprache \LZEROCBN \ bietet den gleichen Funktionsumfang wie die Sprache \LZERO, benutzt aber statt der 
+Call by Value eine Call by Name Semantik. Um dies zu realisieren werden verschiedene Regeln in der Big step 
+und der Small step Semantik gel"oscht oder ge"andert. Nur diese ge"anderten bzw. gel"oschten Regeln werden hier
+aufgef"uhrt.
+
+\subsection{Big step Semantik von \LZEROCBN}
+
+Ein \notation{big step} hei"st g"ultig f"ur \LZEROCBN, wenn er sich mit den big step Regeln von \LZERO\ und den ge"anderten bzw. gel"oschten Regeln\\[5mm]
+  \begin{tabular}{ll}
+     \mbox{(BETA-V)}      & nicht vorhanden \\[3mm]
+     \mbox{(BETA)}        & $\regel{e_1[e_2/\id] \eval v}
+                                   {(\abstr{id}{e_1})\,e_2 \eval v}$ \\[5mm]
+     \mbox{(APP)}         & nicht vorhanden \\[3mm]
+     \mbox{(APP-LEFT)}    & $\regel{e_1 \eval v_1 \quad v_1\,e_2 \eval v}
+                                   {e_1\,e_2 \eval v}$ \\[3mm]
+     \mbox{(APP-RIGHT)}   & $\regel{e_2 \eval v_2 \quad v_1\,v_2 \eval v}
+                                   {v_1\,e_2 \eval v}$   \ 
+                                   falls ${v_1}$ nicht von der Form $\abstr{id}{e}$ \\[5mm]
+  \end{tabular}\\[7mm]
+herleiten l"asst.
+
+
+\subsection{Small step Semantik von \LZEROCBN}
+
+Ein \notation{small step} hei"st g"ultig f"ur \LZEROCBN, wenn er sich mit den small step Regeln von \LZERO und den ge"anderten bzw. gel"oschten Regeln\\[5mm]
+  \begin{tabular}{ll}
+     \mbox{(BETA-V)}      & nicht vorhanden \\[3mm]
+     \mbox{(BETA)}        & $(\abstr{id}{e_1})\,e_2 \to e_1[e_2/\id]$ \\[5mm]
+     \mbox{(APP-RIGHT)\ } & $\regel{e \to e'}
+                                   {v\,e \to v\,e'}$   \ 
+                                   falls ${v}$ nicht von der Form $\abstr{id}{e_0}$ \\[5mm]
+  \end{tabular}\\[7mm]
+herleiten l"asst.
+
+
+
 \section{Die Sprache \LONE}
 
 Die Sprache \LONE\ erweitert \LZERO\ um Konstanten, bedingte Ausf"uhrung, den Bindungsmechanismus $\blet$, Ausnahmen
@@ -277,6 +316,49 @@ Dies sei aber nur am Rande erw"ahnt.
 
 
 
+\section{Die Sprache \LONECBN}
+
+\index{Unterschiede}
+Die Sprache \LONECBN \ bietet den gleichen Funktionsumfang wie die Sprache \LONE, benutzt aber statt der 
+Call by Value eine Call by Name Semantik. Um dies zu realisieren werden verschiedene Regeln in der Big step 
+und der Small step Semantik gel"oscht oder ge"andert. Nur diese ge"anderten bzw. gel"oschten Regeln werden hier
+aufgef"uhrt.
+
+\subsection{Big step Semantik von \LONECBN}
+
+Ein \notation{big step} hei"st g"ultig f"ur \LONECBN, wenn er sich mit den big step Regeln von \LONE\ und den ge"anderten bzw. gel"oschten Regeln\\[5mm]
+  \begin{tabular}{ll}
+     \mbox{(BETA-V)}      & nicht vorhanden \\[3mm]
+     \mbox{(BETA)}        & $\regel{e_1[e_2/\id] \eval v}
+                                   {(\abstr{id}{e_1})\,e_2 \eval v}$ \\[5mm]
+     \mbox{(APP)}         & nicht vorhanden \\[3mm]
+     \mbox{(APP-LEFT)}    & $\regel{e_1 \eval v_1 \quad v_1\,e_2 \eval v}
+                                   {e_1\,e_2 \eval v}$ \\[3mm]
+     \mbox{(APP-RIGHT)}   & $\regel{e_2 \eval v_2 \quad v_1\,v_2 \eval v}
+                                   {v_1\,e_2 \eval v}$   \ 
+                                   falls ${v_1}$ nicht von der Form $\abstr{id}{e}$ \\[5mm]
+     \mbox{(LET)}         & $\regel{e_2[e_1/\id] \eval v}
+                                   {\bli{\id}{e_1}{e_2} \eval v}$ \\[5mm]
+  \end{tabular}\\[7mm]
+herleiten l"asst.
+
+
+\subsection{Small step Semantik von \LONECBN}
+
+Ein \notation{small step} hei"st g"ultig f"ur \LONECBN, wenn er sich mit den small step Regeln von \LONE und den ge"anderten bzw. gel"oschten Regeln\\[5mm]
+  \begin{tabular}{ll}
+     \mbox{(BETA-V)}      & nicht vorhanden \\[3mm]
+     \mbox{(BETA)}        & $(\abstr{id}{e_1})\,e_2 \to e_1[e_2/\id]$ \\[5mm]
+     \mbox{(APP-RIGHT)\ } & $\regel{e \to e'}
+                                   {v\,e \to v\,e'}$   \ 
+                                   falls ${v}$ nicht von der Form $\abstr{id}{e_0}$ \\[5mm]
+     \mbox{(LET-EVAL)\  } & nicht vorhanden \\[3mm]
+     \mbox{(LET-EXEC)}    & $\bli{\id}{e_1}{e_2} \to e_2[e_1/\id]$ \\[5mm]
+  \end{tabular}\\[7mm]
+herleiten l"asst.
+
+
+
 \section{Die Sprache \LTWO}
 
 \index{Rekursion}
@@ -349,7 +431,50 @@ eine "Ubersetzung in \notation{Kernsyntax} vorgenommen.
 
 
 
+\section{Die Sprache \LTWOCBN}
+
+\index{Unterschiede}
+Die Sprache \LTWOCBN \ bietet den gleichen Funktionsumfang wie die Sprache \LTWO, benutzt aber statt der 
+Call by Value eine Call by Name Semantik. Um dies zu realisieren werden verschiedene Regeln in der Big step 
+und der Small step Semantik gel"oscht oder ge"andert. Nur diese ge"anderten bzw. gel"oschten Regeln werden hier
+aufgef"uhrt.
+
+\subsection{Big step Semantik von \LTWOCBN}
+
+Ein \notation{big step} hei"st g"ultig f"ur \LTWOCBN, wenn er sich mit den big step Regeln von \LTWO\ und den ge"anderten bzw. gel"oschten Regeln\\[5mm]
+  \begin{tabular}{ll}
+     \mbox{(BETA-V)}      & nicht vorhanden \\[3mm]
+     \mbox{(BETA)}        & $\regel{e_1[e_2/\id] \eval v}
+                                   {(\abstr{id}{e_1})\,e_2 \eval v}$ \\[5mm]
+     \mbox{(APP)}         & nicht vorhanden \\[3mm]
+     \mbox{(APP-LEFT)}    & $\regel{e_1 \eval v_1 \quad v_1\,e_2 \eval v}
+                                   {e_1\,e_2 \eval v}$ \\[3mm]
+     \mbox{(APP-RIGHT)}   & $\regel{e_2 \eval v_2 \quad v_1\,v_2 \eval v}
+                                   {v_1\,e_2 \eval v}$   \ 
+                                   falls ${v_1}$ nicht von der Form $\abstr{id}{e}$ \\[5mm]
+     \mbox{(LET)}         & $\regel{e_2[e_1/\id] \eval v}
+                                   {\bli{\id}{e_1}{e_2} \eval v}$ \\[5mm]
+  \end{tabular}\\[7mm]
+herleiten l"asst.
+
+
+\subsection{Small step Semantik von \LTWOCBN}
+
+Ein \notation{small step} hei"st g"ultig f"ur \LTWOCBN, wenn er sich mit den small step Regeln von \LTWO und den ge"anderten bzw. gel"oschten Regeln\\[5mm]
+  \begin{tabular}{ll}
+     \mbox{(BETA-V)}      & nicht vorhanden \\[3mm]
+     \mbox{(BETA)}        & $(\abstr{id}{e_1})\,e_2 \to e_1[e_2/\id]$ \\[5mm]
+     \mbox{(APP-RIGHT)\ } & $\regel{e \to e'}
+                                   {v\,e \to v\,e'}$   \ 
+                                   falls ${v}$ nicht von der Form $\abstr{id}{e_0}$ \\[5mm]
+     \mbox{(LET-EVAL)\  } & nicht vorhanden \\[3mm]
+     \mbox{(LET-EXEC)}    & $\bli{\id}{e_1}{e_2} \to e_2[e_1/\id]$ \\[5mm]
+  \end{tabular}\\[7mm]
+herleiten l"asst.
+
+
 \section{Die Sprache \LTHREE}
+
 
 \index{Polymorphie}
 Die Sprache \LTHREE\ erweitert die Sprache \LTWO\ um ein polymorphes \notation{Typsystem}, sowie \notation{Tupel} und 
