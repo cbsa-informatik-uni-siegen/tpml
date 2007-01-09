@@ -85,7 +85,7 @@ Ein \notation{big step} hei"st g"ultig f"ur \LZEROCBN, wenn er sich mit den big 
                                    {e_1\,e_2 \eval v}$ \\[3mm]
      \mbox{(APP-RIGHT)}   & $\regel{e_2 \eval v_2 \quad v_1\,v_2 \eval v}
                                    {v_1\,e_2 \eval v}$   \ 
-                                   falls ${v_1}$ nicht von der Form $\abstr{id}{e}$ \\[5mm]
+                                   falls ${v_1}$ nicht von der Form $\abstr{id}{e}$
   \end{tabular}\\[7mm]
 herleiten l"asst.
 
@@ -98,7 +98,7 @@ Ein \notation{small step} hei"st g"ultig f"ur \LZEROCBN, wenn er sich mit den sm
      \mbox{(BETA)}        & $(\abstr{id}{e_1})\,e_2 \to e_1[e_2/\id]$ \\[5mm]
      \mbox{(APP-RIGHT)\ } & $\regel{e \to e'}
                                    {v\,e \to v\,e'}$   \ 
-                                   falls ${v}$ nicht von der Form $\abstr{id}{e_0}$ \\[5mm]
+                                   falls ${v}$ nicht von der Form $\abstr{id}{e_0}$
   \end{tabular}\\[7mm]
 herleiten l"asst.
 
@@ -338,7 +338,7 @@ Ein \notation{big step} hei"st g"ultig f"ur \LONECBN, wenn er sich mit den big s
                                    {v_1\,e_2 \eval v}$   \ 
                                    falls ${v_1}$ nicht von der Form $\abstr{id}{e}$ \\[5mm]
      \mbox{(LET)}         & $\regel{e_2[e_1/\id] \eval v}
-                                   {\bli{\id}{e_1}{e_2} \eval v}$ \\[5mm]
+                                   {\bli{\id}{e_1}{e_2} \eval v}$
   \end{tabular}\\[7mm]
 herleiten l"asst.
 
@@ -353,7 +353,7 @@ Ein \notation{small step} hei"st g"ultig f"ur \LONECBN, wenn er sich mit den sma
                                    {v\,e \to v\,e'}$   \ 
                                    falls ${v}$ nicht von der Form $\abstr{id}{e_0}$ \\[5mm]
      \mbox{(LET-EVAL)\  } & nicht vorhanden \\[3mm]
-     \mbox{(LET-EXEC)}    & $\bli{\id}{e_1}{e_2} \to e_2[e_1/\id]$ \\[5mm]
+     \mbox{(LET-EXEC)}    & $\bli{\id}{e_1}{e_2} \to e_2[e_1/\id]$
   \end{tabular}\\[7mm]
 herleiten l"asst.
 
@@ -453,7 +453,7 @@ Ein \notation{big step} hei"st g"ultig f"ur \LTWOCBN, wenn er sich mit den big s
                                    {v_1\,e_2 \eval v}$   \ 
                                    falls ${v_1}$ nicht von der Form $\abstr{id}{e}$ \\[5mm]
      \mbox{(LET)}         & $\regel{e_2[e_1/\id] \eval v}
-                                   {\bli{\id}{e_1}{e_2} \eval v}$ \\[5mm]
+                                   {\bli{\id}{e_1}{e_2} \eval v}$
   \end{tabular}\\[7mm]
 herleiten l"asst.
 
@@ -468,7 +468,7 @@ Ein \notation{small step} hei"st g"ultig f"ur \LTWOCBN, wenn er sich mit den sma
                                    {v\,e \to v\,e'}$   \ 
                                    falls ${v}$ nicht von der Form $\abstr{id}{e_0}$ \\[5mm]
      \mbox{(LET-EVAL)\  } & nicht vorhanden \\[3mm]
-     \mbox{(LET-EXEC)}    & $\bli{\id}{e_1}{e_2} \to e_2[e_1/\id]$ \\[5mm]
+     \mbox{(LET-EXEC)}    & $\bli{\id}{e_1}{e_2} \to e_2[e_1/\id]$
   \end{tabular}\\[7mm]
 herleiten l"asst.
 
