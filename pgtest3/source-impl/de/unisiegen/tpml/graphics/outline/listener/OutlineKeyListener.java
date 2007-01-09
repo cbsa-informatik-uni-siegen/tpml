@@ -16,7 +16,7 @@ import de.unisiegen.tpml.graphics.outline.util.OutlineClipboard ;
  * 
  * @author Christian Fehler
  */
-public class OutlineKeyListener implements KeyListener
+public final class OutlineKeyListener implements KeyListener
 {
   /**
    * The unused <code>String</code> for the <code>SuppressWarnings</code>.
@@ -45,7 +45,7 @@ public class OutlineKeyListener implements KeyListener
    * Copies the {@link Expression} as a <code>String</code> of the selected
    * node into the clipboard using the {@link OutlineClipboard}.
    */
-  public void copy ( )
+  public final void copy ( )
   {
     DefaultMutableTreeNode node = ( DefaultMutableTreeNode ) this.outlineUI
         .getJTreeAbstractSyntaxTree ( ).getSelectionPath ( )
@@ -63,7 +63,7 @@ public class OutlineKeyListener implements KeyListener
    * 
    * @param pKeyEvent The <code>KeyEvent</code>.
    */
-  private void handleKeyEvent ( KeyEvent pKeyEvent )
+  private final void handleKeyEvent ( KeyEvent pKeyEvent )
   {
     /*
      * jTreeAbstractSyntaxTree
@@ -90,7 +90,7 @@ public class OutlineKeyListener implements KeyListener
    * @param pKeyEvent The <code>KeyEvent</code>.
    * @see KeyListener#keyPressed(KeyEvent)
    */
-  public void keyPressed ( KeyEvent pKeyEvent )
+  public final void keyPressed ( KeyEvent pKeyEvent )
   {
     handleKeyEvent ( pKeyEvent ) ;
   }
@@ -102,7 +102,7 @@ public class OutlineKeyListener implements KeyListener
    * @param pKeyEvent The <code>KeyEvent</code>.
    * @see KeyListener#keyReleased(KeyEvent)
    */
-  public void keyReleased ( KeyEvent pKeyEvent )
+  public final void keyReleased ( KeyEvent pKeyEvent )
   {
     handleKeyEvent ( pKeyEvent ) ;
   }
@@ -114,7 +114,7 @@ public class OutlineKeyListener implements KeyListener
    * @param pKeyEvent The <code>KeyEvent</code>.
    * @see KeyListener#keyTyped(KeyEvent)
    */
-  public void keyTyped ( @ SuppressWarnings ( UNUSED )
+  public final void keyTyped ( @ SuppressWarnings ( UNUSED )
   KeyEvent pKeyEvent )
   {
     // Do nothing.

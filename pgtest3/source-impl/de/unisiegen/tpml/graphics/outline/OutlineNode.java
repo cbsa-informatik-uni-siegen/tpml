@@ -20,7 +20,7 @@ import de.unisiegen.tpml.graphics.outline.binding.OutlineUnbound ;
  * @author Christian Fehler
  * @version $Rev$
  */
-public class OutlineNode
+public final class OutlineNode
 {
   /**
    * No bindings should be shown in the nodes.
@@ -166,7 +166,7 @@ public class OutlineNode
    * @param pBinding Should or should not be highlighted.
    * @see #binding
    */
-  public static void setBinding ( boolean pBinding )
+  public final static void setBinding ( boolean pBinding )
   {
     binding = pBinding ;
   }
@@ -179,7 +179,7 @@ public class OutlineNode
    * @param pReplace Should or should not be replaced.
    * @see #replace
    */
-  public static void setReplace ( boolean pReplace )
+  public final static void setReplace ( boolean pReplace )
   {
     replace = pReplace ;
   }
@@ -192,7 +192,7 @@ public class OutlineNode
    * @param pSelection Should or should not be highlighted.
    * @see #selection
    */
-  public static void setSelection ( boolean pSelection )
+  public final static void setSelection ( boolean pSelection )
   {
     selection = pSelection ;
   }
@@ -205,7 +205,7 @@ public class OutlineNode
    * @param pUnbound Should or should not be highlighted.
    * @see #unbound
    */
-  public static void setUnbound ( boolean pUnbound )
+  public final static void setUnbound ( boolean pUnbound )
   {
     unbound = pUnbound ;
   }
@@ -362,7 +362,7 @@ public class OutlineNode
    *          inserted before the current description.
    * @see #description
    */
-  public void appendDescription ( String pAppendDescription )
+  public final void appendDescription ( String pAppendDescription )
   {
     this.description = pAppendDescription + this.description ;
   }
@@ -371,7 +371,7 @@ public class OutlineNode
   /**
    * Highlight the selected {@link Identifier}.
    */
-  public void enableSelectionColor ( )
+  public final void enableSelectionColor ( )
   {
     if ( this.startIndex != - 1 )
     {
@@ -418,7 +418,7 @@ public class OutlineNode
    * @see #outlineBinding
    * @see #setOutlineBinding(OutlineBinding)
    */
-  public OutlineBinding getOutlineBinding ( )
+  public final OutlineBinding getOutlineBinding ( )
   {
     return this.outlineBinding ;
   }
@@ -430,7 +430,7 @@ public class OutlineNode
    * @return The end index of the {@link Identifier}.
    * @see #endIndex
    */
-  public int getEndIndex ( )
+  public final int getEndIndex ( )
   {
     return this.endIndex ;
   }
@@ -442,7 +442,7 @@ public class OutlineNode
    * @return The {@link Expression} in this node.
    * @see #expression
    */
-  public Expression getExpression ( )
+  public final Expression getExpression ( )
   {
     return this.expression ;
   }
@@ -454,7 +454,7 @@ public class OutlineNode
    * @return The expressionString.
    * @see #expressionString
    */
-  public String getExpressionString ( )
+  public final String getExpressionString ( )
   {
     return this.expressionString ;
   }
@@ -466,7 +466,7 @@ public class OutlineNode
    * @param pNumber The input integer value.
    * @return The hex value of a given integer.
    */
-  private String getHex ( int pNumber )
+  private final String getHex ( int pNumber )
   {
     StringBuffer result = new StringBuffer ( ) ;
     int remainder = Math.abs ( pNumber ) ;
@@ -494,7 +494,7 @@ public class OutlineNode
    * @param pChar The character.
    * @return The HTML code of the given character.
    */
-  private String getHTMLCode ( char pChar )
+  private final String getHTMLCode ( char pChar )
   {
     if ( pChar == '&' )
     {
@@ -518,7 +518,7 @@ public class OutlineNode
    * @param pText Input <code>String</code>.
    * @return The replaced <code>String</code>.
    */
-  private String getHTMLCode ( String pText )
+  private final String getHTMLCode ( String pText )
   {
     String s = pText.replaceAll ( AMPERSAND_THAN , AMPERSAND_THAN_REPLACE ) ;
     s = s.replaceAll ( LOWER_THAN , LOWER_THAN_REPLACE ) ;
@@ -533,7 +533,7 @@ public class OutlineNode
    * @param pColor The color which should be returned.
    * @return The color in HTML formatting.
    */
-  private String getHTMLFormat ( Color pColor )
+  private final String getHTMLFormat ( Color pColor )
   {
     return ( getHex ( pColor.getRed ( ) ) + getHex ( pColor.getGreen ( ) ) + getHex ( pColor
         .getBlue ( ) ) ) ;
@@ -546,7 +546,7 @@ public class OutlineNode
    * @return The start index of the {@link Identifier}.
    * @see #startIndex
    */
-  public int getStartIndex ( )
+  public final int getStartIndex ( )
   {
     return this.startIndex ;
   }
@@ -564,7 +564,7 @@ public class OutlineNode
    * @return True, if a given pCharIndex should be highlighted as a binding,
    *         otherwise false.
    */
-  private boolean isBinding ( int pIdentifierIndex , int pCharIndex )
+  private final boolean isBinding ( int pIdentifierIndex , int pCharIndex )
   {
     if ( ( this.outlineBinding == null ) || ( pIdentifierIndex < 0 )
         || ( pIdentifierIndex >= this.outlineBinding.size ( ) ) )
@@ -595,7 +595,7 @@ public class OutlineNode
    * @return True, if a given pCharIndex should be highlighted as a unbound
    *         Identifier, otherwise false.
    */
-  private boolean isUnbound ( int pCharIndex )
+  private final boolean isUnbound ( int pCharIndex )
   {
     for ( int i = 0 ; i < this.outlineUnbound.size ( ) ; i ++ )
     {
@@ -664,7 +664,7 @@ public class OutlineNode
    * @see #outlineBinding
    * @see #getOutlineBinding()
    */
-  public void setOutlineBinding ( OutlineBinding pOutlineBinding )
+  public final void setOutlineBinding ( OutlineBinding pOutlineBinding )
   {
     this.outlineBinding = pOutlineBinding ;
   }
@@ -677,7 +677,7 @@ public class OutlineNode
    *          be replaced in this node.
    * @see #replaceInThisNode
    */
-  public void setReplaceInThisNode ( boolean pReplaceInThisNode )
+  public final void setReplaceInThisNode ( boolean pReplaceInThisNode )
   {
     this.replaceInThisNode = pReplaceInThisNode ;
   }
@@ -689,7 +689,7 @@ public class OutlineNode
    * @see Object#toString()
    */
   @ Override
-  public String toString ( )
+  public final String toString ( )
   {
     return this.caption ;
   }
@@ -705,7 +705,7 @@ public class OutlineNode
    *          {@link Expression}s which have more than more {@link Identifier}
    *          like {@link MultiLet}.
    */
-  public void updateCaption ( int pSelectionStart , int pSelectionEnd ,
+  public final void updateCaption ( int pSelectionStart , int pSelectionEnd ,
       int pIdentifierIndex )
   {
     // Load the PrettyCharIterator

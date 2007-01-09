@@ -16,7 +16,7 @@ import de.unisiegen.tpml.graphics.outline.ui.OutlineUI ;
  * @author Christian Fehler
  * @version $Rev$
  */
-public class OutlineItemListener implements ItemListener
+public final class OutlineItemListener implements ItemListener
 {
   /**
    * The {@link OutlineUI}.
@@ -42,7 +42,7 @@ public class OutlineItemListener implements ItemListener
    * @param pSelected The selection of the <code>JCheckBox</code> selection or
    *          the <code>JCheckBoxMenuItem</code> selection.
    */
-  private void autoUpdate ( boolean pSelected )
+  private final void autoUpdate ( boolean pSelected )
   {
     this.outlineUI.getAbstractOutline ( ).getOutlinePreferences ( )
         .setAutoUpdate ( pSelected ) ;
@@ -59,7 +59,7 @@ public class OutlineItemListener implements ItemListener
    * @param pSelected The selection of the <code>JCheckBox</code> selection or
    *          the <code>JCheckBoxMenuItem</code> selection.
    */
-  private void binding ( boolean pSelected )
+  private final void binding ( boolean pSelected )
   {
     OutlineNode.setBinding ( pSelected ) ;
     this.outlineUI.getOutlineTreeSelectionListener ( ).reset (
@@ -79,7 +79,7 @@ public class OutlineItemListener implements ItemListener
    * @param pItemEvent The <code>ItemEvent</code>.
    * @see ItemListener#itemStateChanged(ItemEvent)
    */
-  public void itemStateChanged ( ItemEvent pItemEvent )
+  public final void itemStateChanged ( ItemEvent pItemEvent )
   {
     update ( pItemEvent.getStateChange ( ) == ItemEvent.SELECTED , pItemEvent
         .getSource ( ) , null ) ;
@@ -94,7 +94,7 @@ public class OutlineItemListener implements ItemListener
    * @param pSelected The selection of the <code>JCheckBox</code> selection or
    *          the <code>JCheckBoxMenuItem</code> selection.
    */
-  private void replace ( boolean pSelected )
+  private final void replace ( boolean pSelected )
   {
     OutlineNode.setReplace ( pSelected ) ;
     this.outlineUI.getOutlineTreeSelectionListener ( ).reset (
@@ -116,7 +116,7 @@ public class OutlineItemListener implements ItemListener
    * @param pSelected The selection of the <code>JCheckBox</code> selection or
    *          the <code>JCheckBoxMenuItem</code> selection.
    */
-  private void selection ( boolean pSelected )
+  private final void selection ( boolean pSelected )
   {
     OutlineNode.setSelection ( pSelected ) ;
     this.outlineUI.getOutlineTreeSelectionListener ( ).reset (
@@ -138,7 +138,7 @@ public class OutlineItemListener implements ItemListener
    * @param pSelected The selection of the <code>JCheckBox</code> selection or
    *          the <code>JCheckBoxMenuItem</code> selection.
    */
-  private void unbound ( boolean pSelected )
+  private final void unbound ( boolean pSelected )
   {
     OutlineNode.setUnbound ( pSelected ) ;
     this.outlineUI.getOutlineTreeSelectionListener ( ).reset (
@@ -164,7 +164,7 @@ public class OutlineItemListener implements ItemListener
    * @param pActionCommand The <code>ActionCommand</code>, if the source is a
    *          instance of <code>JCheckBoxMenuItem</code>.
    */
-  public void update ( boolean pSelected , Object pSource ,
+  public final void update ( boolean pSelected , Object pSource ,
       String pActionCommand )
   {
     // Replace

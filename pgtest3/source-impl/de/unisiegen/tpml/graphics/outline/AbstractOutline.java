@@ -40,7 +40,7 @@ import de.unisiegen.tpml.graphics.outline.util.OutlinePreferences ;
  * @author Christian Fehler
  * @version $Rev$
  */
-public class AbstractOutline implements Outline
+public final class AbstractOutline implements Outline
 {
   /**
    * The <code>String</code> for the name of a {@link Location}.
@@ -144,7 +144,7 @@ public class AbstractOutline implements Outline
   /**
    * Cancels the execute <code>Timer</code>.
    */
-  private void cancelExecuteTimer ( )
+  private final void cancelExecuteTimer ( )
   {
     if ( this.outlineTimer != null )
     {
@@ -160,7 +160,7 @@ public class AbstractOutline implements Outline
    * @param pExpression The input {@link Expression}.
    * @return The node, which represents the given {@link Expression}.
    */
-  private DefaultMutableTreeNode checkExpression ( Expression pExpression )
+  private final DefaultMutableTreeNode checkExpression ( Expression pExpression )
   {
     if ( pExpression instanceof MultiLambda )
     {
@@ -214,7 +214,7 @@ public class AbstractOutline implements Outline
    *          be created.
    * @param pNode The node where the children should be added.
    */
-  private void createChildren ( Expression pExpression ,
+  private final void createChildren ( Expression pExpression ,
       DefaultMutableTreeNode pNode )
   {
     Enumeration < Expression > children = pExpression.children ( ) ;
@@ -248,7 +248,7 @@ public class AbstractOutline implements Outline
    * @param pCurriedLet The input {@link Expression}.
    * @return The node, which represents the given {@link CurriedLet}.
    */
-  private DefaultMutableTreeNode curriedLet ( CurriedLet pCurriedLet )
+  private final DefaultMutableTreeNode curriedLet ( CurriedLet pCurriedLet )
   {
     String [ ] idList = pCurriedLet.getIdentifiers ( ) ;
     OutlineBinding aSTBinding = new OutlineBinding ( pCurriedLet ) ;
@@ -282,7 +282,8 @@ public class AbstractOutline implements Outline
    * @param pCurriedLetRec The input {@link Expression}.
    * @return The node, which represents the given {@link CurriedLetRec}.
    */
-  private DefaultMutableTreeNode curriedLetRec ( CurriedLetRec pCurriedLetRec )
+  private final DefaultMutableTreeNode curriedLetRec (
+      CurriedLetRec pCurriedLetRec )
   {
     String [ ] idList = pCurriedLetRec.getIdentifiers ( ) ;
     OutlineBinding aSTBinding = new OutlineBinding ( pCurriedLetRec ) ;
@@ -316,7 +317,7 @@ public class AbstractOutline implements Outline
    * <code>JMenuItem</code>. Removes the <code>ItemListener</code> and the
    * <code>ActionListener</code>.
    */
-  public void disableAutoUpdate ( )
+  public final void disableAutoUpdate ( )
   {
     // Disable AutoUpdate, remove Listener and deselect
     this.outlineUI.getJCheckBoxAutoUpdate ( ).setEnabled ( false ) ;
@@ -333,7 +334,7 @@ public class AbstractOutline implements Outline
   /**
    * Execute the rebuild of a new tree in the {@link Outline}.
    */
-  public void execute ( )
+  public final void execute ( )
   {
     this.outlineUnbound = new OutlineUnbound ( this.oldExpression ) ;
     DefaultMutableTreeNode root = checkExpression ( this.oldExpression ) ;
@@ -348,7 +349,7 @@ public class AbstractOutline implements Outline
    * @return The <code>JPanel</code> of the {@link OutlineUI}.
    * @see de.unisiegen.tpml.graphics.outline.Outline#getJPanelOutline()
    */
-  public JPanel getJPanelOutline ( )
+  public final JPanel getJPanelOutline ( )
   {
     return this.outlineUI.getJPanelMain ( ) ;
   }
@@ -360,7 +361,7 @@ public class AbstractOutline implements Outline
    * @return The {@link OutlinePreferences}.
    * @see #outlinePreferences
    */
-  public OutlinePreferences getOutlinePreferences ( )
+  public final OutlinePreferences getOutlinePreferences ( )
   {
     return this.outlinePreferences ;
   }
@@ -372,7 +373,8 @@ public class AbstractOutline implements Outline
    * @param pInfixOperation The input {@link Expression}.
    * @return The node, which represents the given {@link InfixOperation}.
    */
-  private DefaultMutableTreeNode infixOperation ( InfixOperation pInfixOperation )
+  private final DefaultMutableTreeNode infixOperation (
+      InfixOperation pInfixOperation )
   {
     Expression e1 = pInfixOperation.getE1 ( ) ;
     Expression e2 = pInfixOperation.getE2 ( ) ;
@@ -406,7 +408,7 @@ public class AbstractOutline implements Outline
    * @param pLambda The input {@link Expression}.
    * @return The node, which represents the given {@link Lambda}.
    */
-  private DefaultMutableTreeNode lambda ( Lambda pLambda )
+  private final DefaultMutableTreeNode lambda ( Lambda pLambda )
   {
     DefaultMutableTreeNode node = new DefaultMutableTreeNode ( new OutlineNode (
         pLambda , this.outlineUnbound ) ) ;
@@ -428,7 +430,7 @@ public class AbstractOutline implements Outline
    * @param pLet The input {@link Expression}.
    * @return The node, which represents the given {@link Let}.
    */
-  private DefaultMutableTreeNode let ( Let pLet )
+  private final DefaultMutableTreeNode let ( Let pLet )
   {
     DefaultMutableTreeNode node = new DefaultMutableTreeNode ( new OutlineNode (
         pLet , this.outlineUnbound ) ) ;
@@ -450,7 +452,7 @@ public class AbstractOutline implements Outline
    * @param pLetRec The input {@link Expression}.
    * @return The node, which represents the given {@link LetRec}.
    */
-  private DefaultMutableTreeNode letRec ( LetRec pLetRec )
+  private final DefaultMutableTreeNode letRec ( LetRec pLetRec )
   {
     DefaultMutableTreeNode node = new DefaultMutableTreeNode ( new OutlineNode (
         pLetRec , this.outlineUnbound ) ) ;
@@ -478,7 +480,7 @@ public class AbstractOutline implements Outline
    * @param pExpression The new {@link Expression}.
    * @param pModus The modus who is calling this method.
    */
-  public void loadExpression ( Expression pExpression , int pModus )
+  public final void loadExpression ( Expression pExpression , int pModus )
   {
     if ( ( this.oldExpression != null )
         && ( pExpression.equals ( this.oldExpression ) ) )
@@ -517,7 +519,7 @@ public class AbstractOutline implements Outline
    * @param pLocation The input {@link Expression}.
    * @return The node, which represents the given {@link Location}.
    */
-  private DefaultMutableTreeNode location ( Location pLocation )
+  private final DefaultMutableTreeNode location ( Location pLocation )
   {
     DefaultMutableTreeNode node = new DefaultMutableTreeNode ( new OutlineNode (
         pLocation , this.outlineUnbound ) ) ;
@@ -537,7 +539,7 @@ public class AbstractOutline implements Outline
    * @param pExpression The {@link Expression} to check for.
    * @return The minimum child index.
    */
-  private int minimumChildIndex ( Expression pExpression )
+  private final int minimumChildIndex ( Expression pExpression )
   {
     int result = 10 ;
     for ( Method method : pExpression.getClass ( ).getMethods ( ) )
@@ -566,7 +568,7 @@ public class AbstractOutline implements Outline
    * @param pMultiLambda The input {@link Expression}.
    * @return The node, which represents the given {@link MultiLambda}.
    */
-  private DefaultMutableTreeNode multiLambda ( MultiLambda pMultiLambda )
+  private final DefaultMutableTreeNode multiLambda ( MultiLambda pMultiLambda )
   {
     OutlineBinding aSTBinding = new OutlineBinding ( pMultiLambda ) ;
     for ( String id : pMultiLambda.getIdentifiers ( ) )
@@ -598,7 +600,7 @@ public class AbstractOutline implements Outline
    * @param pMultiLet The input {@link Expression}.
    * @return The node, which represents the given {@link MultiLet}.
    */
-  private DefaultMutableTreeNode multiLet ( MultiLet pMultiLet )
+  private final DefaultMutableTreeNode multiLet ( MultiLet pMultiLet )
   {
     OutlineBinding aSTBinding = new OutlineBinding ( pMultiLet ) ;
     for ( String id : pMultiLet.getIdentifiers ( ) )
@@ -630,7 +632,7 @@ public class AbstractOutline implements Outline
    * @param pExpression The input {@link Expression}.
    * @return The node, which represents the given {@link Expression}.
    */
-  private DefaultMutableTreeNode otherExpression ( Expression pExpression )
+  private final DefaultMutableTreeNode otherExpression ( Expression pExpression )
   {
     DefaultMutableTreeNode node = new DefaultMutableTreeNode ( new OutlineNode (
         pExpression , this.outlineUnbound ) ) ;
@@ -645,7 +647,7 @@ public class AbstractOutline implements Outline
    * @param pRecursion The input {@link Expression}.
    * @return The node, which represents the given {@link Recursion}.
    */
-  private DefaultMutableTreeNode recursion ( Recursion pRecursion )
+  private final DefaultMutableTreeNode recursion ( Recursion pRecursion )
   {
     String id = pRecursion.getId ( ) ;
     DefaultMutableTreeNode node = new DefaultMutableTreeNode ( new OutlineNode (
@@ -668,7 +670,7 @@ public class AbstractOutline implements Outline
    * a new tree in the {@link Outline} after 250ms, if it is not canceled during
    * this time.
    */
-  private void startExecuteTimer ( )
+  private final void startExecuteTimer ( )
   {
     this.outlineTimer = new Timer ( ) ;
     this.outlineTimer.schedule ( new OutlineTimerTask ( this ) , 250 ) ;

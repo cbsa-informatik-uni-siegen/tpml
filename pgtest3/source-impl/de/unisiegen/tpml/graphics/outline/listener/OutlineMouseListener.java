@@ -26,7 +26,7 @@ import de.unisiegen.tpml.graphics.typechecker.TypeCheckerView ;
  * @author Christian Fehler
  * @version $Rev$
  */
-public class OutlineMouseListener implements MouseListener
+public final class OutlineMouseListener implements MouseListener
 {
   /**
    * The unused <code>String</code> for the <code>SuppressWarnings</code>.
@@ -93,7 +93,7 @@ public class OutlineMouseListener implements MouseListener
    * @return True, if all children of the given <code>TreePath</code> are
    *         visible, otherwise false.
    */
-  private boolean allChildrenVisible ( TreePath pTreePath )
+  private final boolean allChildrenVisible ( TreePath pTreePath )
   {
     DefaultMutableTreeNode lastNode = ( DefaultMutableTreeNode ) pTreePath
         .getLastPathComponent ( ) ;
@@ -126,7 +126,7 @@ public class OutlineMouseListener implements MouseListener
    * 
    * @param pMouseEvent The <code>MouseEvent</code>.
    */
-  private void handleMouseEvent ( MouseEvent pMouseEvent )
+  private final void handleMouseEvent ( MouseEvent pMouseEvent )
   {
     // AbstractOutline
     if ( ( this.outlineUI != null )
@@ -194,7 +194,7 @@ public class OutlineMouseListener implements MouseListener
    * @param pMouseEvent The <code>MouseEvent</code>.
    * @see MouseListener#mouseClicked(MouseEvent)
    */
-  public void mouseClicked ( @ SuppressWarnings ( UNUSED )
+  public final void mouseClicked ( @ SuppressWarnings ( UNUSED )
   MouseEvent pMouseEvent )
   {
     // Do Nothing
@@ -207,7 +207,7 @@ public class OutlineMouseListener implements MouseListener
    * @param pMouseEvent The <code>MouseEvent</code>.
    * @see MouseListener#mouseEntered(MouseEvent)
    */
-  public void mouseEntered ( @ SuppressWarnings ( UNUSED )
+  public final void mouseEntered ( @ SuppressWarnings ( UNUSED )
   MouseEvent pMouseEvent )
   {
     // Do Nothing
@@ -220,7 +220,7 @@ public class OutlineMouseListener implements MouseListener
    * @param pMouseEvent The <code>MouseEvent</code>.
    * @see MouseListener#mouseExited(MouseEvent)
    */
-  public void mouseExited ( @ SuppressWarnings ( UNUSED )
+  public final void mouseExited ( @ SuppressWarnings ( UNUSED )
   MouseEvent pMouseEvent )
   {
     // Do Nothing
@@ -234,7 +234,7 @@ public class OutlineMouseListener implements MouseListener
    * @param pMouseEvent The <code>MouseEvent</code>.
    * @see MouseListener#mousePressed(MouseEvent)
    */
-  public void mousePressed ( MouseEvent pMouseEvent )
+  public final void mousePressed ( MouseEvent pMouseEvent )
   {
     handleMouseEvent ( pMouseEvent ) ;
   }
@@ -247,7 +247,7 @@ public class OutlineMouseListener implements MouseListener
    * @param pMouseEvent The <code>MouseEvent</code>.
    * @see MouseListener#mouseReleased(MouseEvent)
    */
-  public void mouseReleased ( MouseEvent pMouseEvent )
+  public final void mouseReleased ( MouseEvent pMouseEvent )
   {
     handleMouseEvent ( pMouseEvent ) ;
   }
@@ -257,7 +257,7 @@ public class OutlineMouseListener implements MouseListener
    * Sets the status of the <code>JMenuItems</code> in the
    * <code>JPopupMenu</code> in the {@link Outline}.
    */
-  private void setStatus ( )
+  private final void setStatus ( )
   {
     TreePath treePath = this.outlineUI.getJTreeAbstractSyntaxTree ( )
         .getSelectionPath ( ) ;

@@ -11,7 +11,7 @@ import de.unisiegen.tpml.graphics.outline.AbstractOutline ;
  * @author Christian Fehler
  * @version $Rev$
  */
-public class OutlineTimerTask extends TimerTask
+public final class OutlineTimerTask extends TimerTask
 {
   /**
    * The {@link AbstractOutline}.
@@ -36,7 +36,7 @@ public class OutlineTimerTask extends TimerTask
    * @see TimerTask#run()
    */
   @ Override
-  public void run ( )
+  public final void run ( )
   {
     this.abstractOutline.execute ( ) ;
   }

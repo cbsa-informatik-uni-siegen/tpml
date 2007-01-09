@@ -11,7 +11,7 @@ import de.unisiegen.tpml.core.expressions.Identifier ;
  * @author Christian Fehler
  * @version $Rev$
  */
-public class OutlinePair
+public final class OutlinePair
 {
   /**
    * The start index.
@@ -48,7 +48,7 @@ public class OutlinePair
    * @return The end index.
    * @see #end
    */
-  public int getEnd ( )
+  public final int getEnd ( )
   {
     return this.end ;
   }
@@ -60,7 +60,7 @@ public class OutlinePair
    * @return The start index.
    * @see #start
    */
-  public int getStart ( )
+  public final int getStart ( )
   {
     return this.start ;
   }

@@ -21,7 +21,7 @@ import de.unisiegen.tpml.core.expressions.Recursion ;
  * @author Christian Fehler
  * @version $Rev$
  */
-public class OutlineBinding
+public final class OutlineBinding
 {
   /**
    * The list of lists of {@link Identifier}s, which are bounded by the given
@@ -70,7 +70,7 @@ public class OutlineBinding
    * @param pExpression The {@link Expression}.
    * @param pId The {@link Identifier}.
    */
-  public void add ( Expression pExpression , String pId )
+  public final void add ( Expression pExpression , String pId )
   {
     this.expressionList.add ( pExpression ) ;
     this.identifierList.add ( pId ) ;
@@ -80,7 +80,7 @@ public class OutlineBinding
   /**
    * Finds the bounded {@link Identifier}s in the given {@link Expression}.
    */
-  public void find ( )
+  public final void find ( )
   {
     // MultiLet || MultiLambda
     if ( ( this.holeExpression instanceof MultiLet )
@@ -188,7 +188,7 @@ public class OutlineBinding
    * @param pExpression The input {@link Expression}.
    * @param pId The name of the {@link Identifier}.
    */
-  private void find ( ArrayList < Identifier > pResult ,
+  private final void find ( ArrayList < Identifier > pResult ,
       Expression pExpression , String pId )
   {
     // Identifier
@@ -347,7 +347,7 @@ public class OutlineBinding
    * @param pBindingIndex The index of the binding.
    * @return The bounded {@link Identifier} in the {@link Expression}.
    */
-  public Identifier get ( int pIdentifierIndex , int pBindingIndex )
+  public final Identifier get ( int pIdentifierIndex , int pBindingIndex )
   {
     return this.list.get ( pIdentifierIndex ).get ( pBindingIndex ) ;
   }
@@ -364,7 +364,7 @@ public class OutlineBinding
    *         {@link Identifier}s array. If the {@link Identifier} is not in the
    *         array it returns -1.
    */
-  private int identifierIndex ( String [ ] pIdentifiers , String pId )
+  private final int identifierIndex ( String [ ] pIdentifiers , String pId )
   {
     for ( int i = 0 ; i < pIdentifiers.length ; i ++ )
     {
@@ -383,7 +383,7 @@ public class OutlineBinding
    * 
    * @return The number of {@link Identifier}s.
    */
-  public int size ( )
+  public final int size ( )
   {
     return this.list.size ( ) ;
   }
@@ -395,7 +395,7 @@ public class OutlineBinding
    * @param pIdentifierIndex The index of the {@link Identifier}.
    * @return The number of bindings from a given {@link Identifier}.
    */
-  public int size ( int pIdentifierIndex )
+  public final int size ( int pIdentifierIndex )
   {
     return this.list.get ( pIdentifierIndex ).size ( ) ;
   }

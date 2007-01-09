@@ -58,7 +58,7 @@ public class OutlineTreeModelListener implements TreeModelListener
    * @param pTreeModelEvent The <code>TreeModelEvent</code>.
    * @see TreeModelListener#treeNodesChanged(TreeModelEvent)
    */
-  public void treeNodesChanged ( TreeModelEvent pTreeModelEvent )
+  public final void treeNodesChanged ( TreeModelEvent pTreeModelEvent )
   {
     Object source = pTreeModelEvent.getSource ( ) ;
     if ( source instanceof SmallStepProofModel )
@@ -85,7 +85,7 @@ public class OutlineTreeModelListener implements TreeModelListener
    * @param pTreeModelEvent The <code>TreeModelEvent</code>.
    * @see TreeModelListener#treeNodesInserted(TreeModelEvent)
    */
-  public void treeNodesInserted ( @ SuppressWarnings ( UNUSED )
+  public final void treeNodesInserted ( @ SuppressWarnings ( UNUSED )
   TreeModelEvent pTreeModelEvent )
   {
     // Do Nothing
@@ -98,7 +98,7 @@ public class OutlineTreeModelListener implements TreeModelListener
    * @param pTreeModelEvent The <code>TreeModelEvent</code>.
    * @see TreeModelListener#treeNodesRemoved(TreeModelEvent)
    */
-  public void treeNodesRemoved ( @ SuppressWarnings ( UNUSED )
+  public final void treeNodesRemoved ( @ SuppressWarnings ( UNUSED )
   TreeModelEvent pTreeModelEvent )
   {
     // Do Nothing
@@ -111,7 +111,7 @@ public class OutlineTreeModelListener implements TreeModelListener
    * @param pTreeModelEvent The <code>TreeModelEvent</code>.
    * @see TreeModelListener#treeStructureChanged(TreeModelEvent)
    */
-  public void treeStructureChanged ( @ SuppressWarnings ( UNUSED )
+  public final void treeStructureChanged ( @ SuppressWarnings ( UNUSED )
   TreeModelEvent pTreeModelEvent )
   {
     // Do Nothing

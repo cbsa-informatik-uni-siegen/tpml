@@ -16,7 +16,7 @@ import de.unisiegen.tpml.graphics.outline.util.OutlinePreferences ;
  * @author Christian Fehler
  * @version $Rev$
  */
-public class OutlineComponentListener implements ComponentListener
+public final class OutlineComponentListener implements ComponentListener
 {
   /**
    * The unused <code>String</code> for the <code>SuppressWarnings</code>.
@@ -55,7 +55,7 @@ public class OutlineComponentListener implements ComponentListener
    * @param pComponentEvent The <code>ComponentEvent</code>.
    * @see ComponentListener#componentHidden(ComponentEvent)
    */
-  public void componentHidden ( @ SuppressWarnings ( UNUSED )
+  public final void componentHidden ( @ SuppressWarnings ( UNUSED )
   ComponentEvent pComponentEvent )
   {
     // Do nothing
@@ -68,7 +68,7 @@ public class OutlineComponentListener implements ComponentListener
    * @param pComponentEvent The <code>ComponentEvent</code>.
    * @see ComponentListener#componentMoved(ComponentEvent)
    */
-  public void componentMoved ( @ SuppressWarnings ( UNUSED )
+  public final void componentMoved ( @ SuppressWarnings ( UNUSED )
   ComponentEvent pComponentEvent )
   {
     // Do nothing
@@ -81,7 +81,7 @@ public class OutlineComponentListener implements ComponentListener
    * @param pComponentEvent The <code>ComponentEvent</code>.
    * @see ComponentListener#componentResized(ComponentEvent)
    */
-  public void componentResized ( ComponentEvent pComponentEvent )
+  public final void componentResized ( ComponentEvent pComponentEvent )
   {
     if ( pComponentEvent.getSource ( ).equals (
         this.outline.getJPanelOutline ( ) ) )
@@ -98,7 +98,7 @@ public class OutlineComponentListener implements ComponentListener
    * @param pComponentEvent The <code>ComponentEvent</code>.
    * @see ComponentListener#componentShown(ComponentEvent)
    */
-  public void componentShown ( @ SuppressWarnings ( UNUSED )
+  public final void componentShown ( @ SuppressWarnings ( UNUSED )
   ComponentEvent pComponentEvent )
   {
     // Do nothing

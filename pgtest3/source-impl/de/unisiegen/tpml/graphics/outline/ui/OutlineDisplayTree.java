@@ -10,7 +10,7 @@ import javax.swing.tree.DefaultMutableTreeNode ;
  * @author Christian Fehler
  * @version $Rev$
  */
-public class OutlineDisplayTree implements Runnable
+public final class OutlineDisplayTree implements Runnable
 {
   /**
    * The {@link OutlineUI}.
@@ -43,7 +43,7 @@ public class OutlineDisplayTree implements Runnable
    * 
    * @see Runnable#run()
    */
-  public void run ( )
+  public final void run ( )
   {
     this.outlineUI.setRootNode ( this.rootNode ) ;
   }

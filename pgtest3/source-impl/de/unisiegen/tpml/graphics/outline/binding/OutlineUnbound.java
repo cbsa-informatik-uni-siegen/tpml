@@ -21,7 +21,7 @@ import de.unisiegen.tpml.core.expressions.Recursion ;
  * @author Christian Fehler
  * @version $Rev$
  */
-public class OutlineUnbound
+public final class OutlineUnbound
 {
   /**
    * The list of unbound {@link Identifier}s in the {@link Expression}.
@@ -49,7 +49,7 @@ public class OutlineUnbound
    * @param pBounded The list of bounded {@link Identifier}s.
    * @param pExpression The input {@link Expression}.
    */
-  private void find ( ArrayList < Identifier > pResult ,
+  private final void find ( ArrayList < Identifier > pResult ,
       ArrayList < String > pBounded , Expression pExpression )
   {
     if ( ( pExpression instanceof Identifier )
@@ -169,7 +169,7 @@ public class OutlineUnbound
    * @param pIndex The index of the unbound {@link Identifier}.
    * @return The unbound {@link Identifier} in the {@link Expression}.
    */
-  public Identifier get ( int pIndex )
+  public final Identifier get ( int pIndex )
   {
     return this.unboundList.get ( pIndex ) ;
   }
@@ -181,7 +181,7 @@ public class OutlineUnbound
    * 
    * @return The number of unbound {@link Identifier}s.
    */
-  public int size ( )
+  public final int size ( )
   {
     return this.unboundList.size ( ) ;
   }

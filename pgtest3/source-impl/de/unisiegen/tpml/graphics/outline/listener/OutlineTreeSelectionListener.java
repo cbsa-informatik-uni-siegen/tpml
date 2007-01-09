@@ -27,7 +27,8 @@ import de.unisiegen.tpml.graphics.outline.ui.OutlineUI ;
  * @author Christian Fehler
  * @version $Rev$
  */
-public class OutlineTreeSelectionListener implements TreeSelectionListener
+public final class OutlineTreeSelectionListener implements
+    TreeSelectionListener
 {
   /**
    * The {@link OutlineUI}.
@@ -54,7 +55,7 @@ public class OutlineTreeSelectionListener implements TreeSelectionListener
    * @param pIdentifier The {@link Identifier} node.
    * @return The index of the {@link Identifier} in the parent node.
    */
-  private int identifierIndex ( DefaultMutableTreeNode pParent ,
+  private final int identifierIndex ( DefaultMutableTreeNode pParent ,
       DefaultMutableTreeNode pIdentifier )
   {
     for ( int i = 0 ; i < pParent.getChildCount ( ) ; i ++ )
@@ -73,7 +74,7 @@ public class OutlineTreeSelectionListener implements TreeSelectionListener
    * 
    * @param pNode The node, which should be repainted.
    */
-  private void repaint ( DefaultMutableTreeNode pNode )
+  private final void repaint ( DefaultMutableTreeNode pNode )
   {
     this.outlineUI.getTreeModel ( ).nodeChanged ( pNode ) ;
     for ( int i = 0 ; i < pNode.getChildCount ( ) ; i ++ )
@@ -88,7 +89,7 @@ public class OutlineTreeSelectionListener implements TreeSelectionListener
    * 
    * @param pNode The node, which should be reseted.
    */
-  public void reset ( DefaultMutableTreeNode pNode )
+  public final void reset ( DefaultMutableTreeNode pNode )
   {
     OutlineNode outlineNode = ( OutlineNode ) pNode.getUserObject ( ) ;
     outlineNode.resetCaption ( ) ;
@@ -105,7 +106,7 @@ public class OutlineTreeSelectionListener implements TreeSelectionListener
    * 
    * @param pTreePath The selected <code>TreePath</code>.
    */
-  public void update ( TreePath pTreePath )
+  public final void update ( TreePath pTreePath )
   {
     if ( pTreePath == null )
     {
@@ -187,7 +188,7 @@ public class OutlineTreeSelectionListener implements TreeSelectionListener
    * @param pTreeSelectionEvent The <code>TreeSelectionEvent</code>
    * @see TreeSelectionListener#valueChanged(TreeSelectionEvent)
    */
-  public void valueChanged ( TreeSelectionEvent pTreeSelectionEvent )
+  public final void valueChanged ( TreeSelectionEvent pTreeSelectionEvent )
   {
     if ( pTreeSelectionEvent.getSource ( ).equals (
         this.outlineUI.getJTreeAbstractSyntaxTree ( ).getSelectionModel ( ) ) )

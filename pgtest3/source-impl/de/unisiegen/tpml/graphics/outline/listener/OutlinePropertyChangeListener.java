@@ -16,7 +16,8 @@ import de.unisiegen.tpml.graphics.outline.Outline ;
  * @author Christian Fehler
  * @version $Rev$
  */
-public class OutlinePropertyChangeListener implements PropertyChangeListener
+public final class OutlinePropertyChangeListener implements
+    PropertyChangeListener
 {
   /**
    * The <code>JSplitPane</code>.
@@ -59,7 +60,7 @@ public class OutlinePropertyChangeListener implements PropertyChangeListener
    * @param pPropertyChangeEvent The <code>PropertyChangeEvent</code>.
    * @see PropertyChangeListener#propertyChange(PropertyChangeEvent)
    */
-  public void propertyChange ( PropertyChangeEvent pPropertyChangeEvent )
+  public final void propertyChange ( PropertyChangeEvent pPropertyChangeEvent )
   {
     if ( pPropertyChangeEvent.getSource ( ) instanceof AbstractProofView )
     {

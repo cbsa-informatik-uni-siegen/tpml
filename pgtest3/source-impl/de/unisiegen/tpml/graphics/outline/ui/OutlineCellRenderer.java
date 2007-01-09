@@ -16,7 +16,7 @@ import de.unisiegen.tpml.graphics.outline.Outline ;
  * @author Christian Fehler
  * @version $Rev$
  */
-public class OutlineCellRenderer extends DefaultTreeCellRenderer
+public final class OutlineCellRenderer extends DefaultTreeCellRenderer
 {
   /**
    * The <code>Font</code>.
@@ -63,9 +63,9 @@ public class OutlineCellRenderer extends DefaultTreeCellRenderer
    * {@inheritDoc}
    */
   @ Override
-  public Component getTreeCellRendererComponent ( JTree pTree , Object pValue ,
-      boolean pSel , boolean pExpanded , boolean pLeaf , int pRow ,
-      boolean pHasFocus )
+  public final Component getTreeCellRendererComponent ( JTree pTree ,
+      Object pValue , boolean pSel , boolean pExpanded , boolean pLeaf ,
+      int pRow , boolean pHasFocus )
   {
     super.getTreeCellRendererComponent ( pTree , pValue , pSel , pExpanded ,
         pLeaf , pRow , pHasFocus ) ;
@@ -77,7 +77,7 @@ public class OutlineCellRenderer extends DefaultTreeCellRenderer
    * {@inheritDoc}
    */
   @ Override
-  protected void paintComponent ( Graphics pGraphics )
+  protected final void paintComponent ( Graphics pGraphics )
   {
     super.paintComponent ( pGraphics ) ;
   }

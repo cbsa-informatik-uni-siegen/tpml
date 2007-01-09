@@ -19,7 +19,7 @@ import de.unisiegen.tpml.graphics.outline.ui.OutlineUI ;
  * @author Christian Fehler
  * @version $Rev$
  */
-public class OutlinePreferences
+public final class OutlinePreferences
 {
   /**
    * The <code>String</code> dividerLocation.
@@ -121,7 +121,7 @@ public class OutlinePreferences
    * @see #dividerLocation
    * @see #setDividerLocation(int)
    */
-  public int getDividerLocation ( )
+  public final int getDividerLocation ( )
   {
     return this.dividerLocation ;
   }
@@ -136,7 +136,7 @@ public class OutlinePreferences
    * @see #autoUpdate
    * @see #setAutoUpdate(boolean)
    */
-  public boolean isAutoUpdate ( )
+  public final boolean isAutoUpdate ( )
   {
     return this.autoUpdate ;
   }
@@ -151,7 +151,7 @@ public class OutlinePreferences
    * @see #binding
    * @see #setBinding(boolean)
    */
-  public boolean isBinding ( )
+  public final boolean isBinding ( )
   {
     return this.binding ;
   }
@@ -166,7 +166,7 @@ public class OutlinePreferences
    * @see #replace
    * @see #setReplace(boolean)
    */
-  public boolean isReplace ( )
+  public final boolean isReplace ( )
   {
     return this.replace ;
   }
@@ -181,7 +181,7 @@ public class OutlinePreferences
    * @see #selection
    * @see #setSelection(boolean)
    */
-  public boolean isSelection ( )
+  public final boolean isSelection ( )
   {
     return this.selection ;
   }
@@ -196,7 +196,7 @@ public class OutlinePreferences
    * @see #unbound
    * @see #setUnbound(boolean)
    */
-  public boolean isUnbound ( )
+  public final boolean isUnbound ( )
   {
     return this.unbound ;
   }
@@ -211,7 +211,7 @@ public class OutlinePreferences
    * @see #autoUpdate
    * @see #isAutoUpdate()
    */
-  public void setAutoUpdate ( boolean pAutoupdate )
+  public final void setAutoUpdate ( boolean pAutoupdate )
   {
     this.autoUpdate = pAutoupdate ;
     this.preferences.putBoolean ( OutlineUI.AUTOUPDATE , pAutoupdate ) ;
@@ -227,7 +227,7 @@ public class OutlinePreferences
    * @see #binding
    * @see #isBinding()
    */
-  public void setBinding ( boolean pBinding )
+  public final void setBinding ( boolean pBinding )
   {
     this.binding = pBinding ;
     this.preferences.putBoolean ( OutlineUI.BINDING , pBinding ) ;
@@ -243,7 +243,7 @@ public class OutlinePreferences
    * @see #dividerLocation
    * @see #getDividerLocation()
    */
-  public void setDividerLocation ( int pDividerLocation )
+  public final void setDividerLocation ( int pDividerLocation )
   {
     this.dividerLocation = pDividerLocation ;
     this.preferences.putInt ( DIVIDERLOCATION , pDividerLocation ) ;
@@ -258,7 +258,7 @@ public class OutlinePreferences
    * @see #replace
    * @see #isReplace()
    */
-  public void setReplace ( boolean pReplace )
+  public final void setReplace ( boolean pReplace )
   {
     this.replace = pReplace ;
     this.preferences.putBoolean ( OutlineUI.REPLACE , pReplace ) ;
@@ -274,7 +274,7 @@ public class OutlinePreferences
    * @see #selection
    * @see #isSelection()
    */
-  public void setSelection ( boolean pSelection )
+  public final void setSelection ( boolean pSelection )
   {
     this.selection = pSelection ;
     this.preferences.putBoolean ( OutlineUI.SELECTION , pSelection ) ;
@@ -289,7 +289,7 @@ public class OutlinePreferences
    * @see #unbound
    * @see #isUnbound()
    */
-  public void setUnbound ( boolean pUnbound )
+  public final void setUnbound ( boolean pUnbound )
   {
     this.unbound = pUnbound ;
     this.preferences.putBoolean ( OutlineUI.UNBOUND , pUnbound ) ;

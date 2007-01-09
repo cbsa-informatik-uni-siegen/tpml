@@ -18,7 +18,7 @@ import java.io.IOException ;
  * @author Christian Fehler
  * @version $Rev$
  */
-public class OutlineClipboard implements ClipboardOwner
+public final class OutlineClipboard implements ClipboardOwner
 {
   /**
    * An empty <code>String</code>.
@@ -58,7 +58,7 @@ public class OutlineClipboard implements ClipboardOwner
    * 
    * @return The single object of <code>OutlineClipboard</code>.
    */
-  public static OutlineClipboard getInstance ( )
+  public final static OutlineClipboard getInstance ( )
   {
     if ( outlineClipboard == null )
     {
@@ -73,7 +73,7 @@ public class OutlineClipboard implements ClipboardOwner
    * 
    * @param pText The text, which should be copied into the clipboard.
    */
-  public void copy ( String pText )
+  public final void copy ( String pText )
   {
     StringSelection stringSelection = new StringSelection ( pText ) ;
     this.clipboard.setContents ( stringSelection , this ) ;
@@ -87,7 +87,7 @@ public class OutlineClipboard implements ClipboardOwner
    * @param pContents The <code>Contests</code>.
    * @see ClipboardOwner#lostOwnership(Clipboard, Transferable)
    */
-  public void lostOwnership ( @ SuppressWarnings ( UNUSED )
+  public final void lostOwnership ( @ SuppressWarnings ( UNUSED )
   Clipboard pClipboard , @ SuppressWarnings ( UNUSED )
   Transferable pContents )
   {
@@ -102,7 +102,7 @@ public class OutlineClipboard implements ClipboardOwner
    * @return The <code>String</code>, which is current saved in the
    *         clipboard.
    */
-  public String paste ( )
+  public final String paste ( )
   {
     Transferable transfer = this.clipboard.getContents ( null ) ;
     try

@@ -38,7 +38,7 @@ import de.unisiegen.tpml.graphics.outline.listener.OutlineTreeSelectionListener 
  * @author Christian Fehler
  * @version $Rev$
  */
-public class OutlineUI
+public final class OutlineUI
 {
   /**
    * The <code>String</code> preferences, used for the
@@ -601,7 +601,7 @@ public class OutlineUI
   /**
    * Creates the <code>JPopupMenu</code> of the {@link Outline}.
    */
-  private void createPopupMenu ( )
+  private final void createPopupMenu ( )
   {
     // PopupMenu
     this.jPopupMenu = new JPopupMenu ( ) ;
@@ -777,7 +777,7 @@ public class OutlineUI
    * @return The {@link AbstractOutline}.
    * @see #abstractOutline
    */
-  public AbstractOutline getAbstractOutline ( )
+  public final AbstractOutline getAbstractOutline ( )
   {
     return this.abstractOutline ;
   }
@@ -789,7 +789,7 @@ public class OutlineUI
    * @return The <code>jCheckBoxAutoUpdate</code>.
    * @see #jCheckBoxAutoUpdate
    */
-  public JCheckBox getJCheckBoxAutoUpdate ( )
+  public final JCheckBox getJCheckBoxAutoUpdate ( )
   {
     return this.jCheckBoxAutoUpdate ;
   }
@@ -801,7 +801,7 @@ public class OutlineUI
    * @return The <code>jCheckBoxBinding</code>.
    * @see #jCheckBoxBinding
    */
-  public JCheckBox getJCheckBoxBinding ( )
+  public final JCheckBox getJCheckBoxBinding ( )
   {
     return this.jCheckBoxBinding ;
   }
@@ -813,7 +813,7 @@ public class OutlineUI
    * @return The <code>jCheckBoxReplace</code>.
    * @see #jCheckBoxReplace
    */
-  public JCheckBox getJCheckBoxReplace ( )
+  public final JCheckBox getJCheckBoxReplace ( )
   {
     return this.jCheckBoxReplace ;
   }
@@ -825,7 +825,7 @@ public class OutlineUI
    * @return The <code>jCheckBoxSelection</code>.
    * @see #jCheckBoxSelection
    */
-  public JCheckBox getJCheckBoxSelection ( )
+  public final JCheckBox getJCheckBoxSelection ( )
   {
     return this.jCheckBoxSelection ;
   }
@@ -837,7 +837,7 @@ public class OutlineUI
    * @return The <code>jCheckBoxUnbound</code>.
    * @see #jCheckBoxUnbound
    */
-  public JCheckBox getJCheckBoxUnbound ( )
+  public final JCheckBox getJCheckBoxUnbound ( )
   {
     return this.jCheckBoxUnbound ;
   }
@@ -849,7 +849,7 @@ public class OutlineUI
    * @return The <code>jMenuItemAutoUpdate</code>.
    * @see #jMenuItemAutoUpdate
    */
-  public JCheckBoxMenuItem getJMenuItemAutoUpdate ( )
+  public final JCheckBoxMenuItem getJMenuItemAutoUpdate ( )
   {
     return this.jMenuItemAutoUpdate ;
   }
@@ -861,7 +861,7 @@ public class OutlineUI
    * @return The <code>jMenuItemBinding</code>.
    * @see #jMenuItemBinding
    */
-  public JCheckBoxMenuItem getJMenuItemBinding ( )
+  public final JCheckBoxMenuItem getJMenuItemBinding ( )
   {
     return this.jMenuItemBinding ;
   }
@@ -873,7 +873,7 @@ public class OutlineUI
    * @return The <code>jMenuItemClose</code>.
    * @see #jMenuItemClose
    */
-  public JMenuItem getJMenuItemClose ( )
+  public final JMenuItem getJMenuItemClose ( )
   {
     return this.jMenuItemClose ;
   }
@@ -885,7 +885,7 @@ public class OutlineUI
    * @return The <code>jMenuItemCloseAll</code>.
    * @see #jMenuItemCloseAll
    */
-  public JMenuItem getJMenuItemCloseAll ( )
+  public final JMenuItem getJMenuItemCloseAll ( )
   {
     return this.jMenuItemCloseAll ;
   }
@@ -897,7 +897,7 @@ public class OutlineUI
    * @return The <code>jMenuItemCollapse</code>.
    * @see #jMenuItemCollapse
    */
-  public JMenuItem getJMenuItemCollapse ( )
+  public final JMenuItem getJMenuItemCollapse ( )
   {
     return this.jMenuItemCollapse ;
   }
@@ -909,7 +909,7 @@ public class OutlineUI
    * @return The <code>jMenuItemCollapseAll</code>.
    * @see #jMenuItemCollapseAll
    */
-  public JMenuItem getJMenuItemCollapseAll ( )
+  public final JMenuItem getJMenuItemCollapseAll ( )
   {
     return this.jMenuItemCollapseAll ;
   }
@@ -921,7 +921,7 @@ public class OutlineUI
    * @return The <code>jMenuItemCopy</code>.
    * @see #jMenuItemCopy
    */
-  public JMenuItem getJMenuItemCopy ( )
+  public final JMenuItem getJMenuItemCopy ( )
   {
     return this.jMenuItemCopy ;
   }
@@ -933,7 +933,7 @@ public class OutlineUI
    * @return The <code>jMenuItemExpand</code>.
    * @see #jMenuItemExpand
    */
-  public JMenuItem getJMenuItemExpand ( )
+  public final JMenuItem getJMenuItemExpand ( )
   {
     return this.jMenuItemExpand ;
   }
@@ -945,7 +945,7 @@ public class OutlineUI
    * @return The <code>jMenuItemExpandAll</code>.
    * @see #jMenuItemExpandAll
    */
-  public JMenuItem getJMenuItemExpandAll ( )
+  public final JMenuItem getJMenuItemExpandAll ( )
   {
     return this.jMenuItemExpandAll ;
   }
@@ -957,7 +957,7 @@ public class OutlineUI
    * @return The <code>jMenuItemReplace</code>.
    * @see #jMenuItemReplace
    */
-  public JCheckBoxMenuItem getJMenuItemReplace ( )
+  public final JCheckBoxMenuItem getJMenuItemReplace ( )
   {
     return this.jMenuItemReplace ;
   }
@@ -969,7 +969,7 @@ public class OutlineUI
    * @return The <code>jMenuItemSelection</code>.
    * @see #jMenuItemSelection
    */
-  public JCheckBoxMenuItem getJMenuItemSelection ( )
+  public final JCheckBoxMenuItem getJMenuItemSelection ( )
   {
     return this.jMenuItemSelection ;
   }
@@ -981,7 +981,7 @@ public class OutlineUI
    * @return The <code>jMenuItemUnbound</code>.
    * @see #jMenuItemUnbound
    */
-  public JCheckBoxMenuItem getJMenuItemUnbound ( )
+  public final JCheckBoxMenuItem getJMenuItemUnbound ( )
   {
     return this.jMenuItemUnbound ;
   }
@@ -993,7 +993,7 @@ public class OutlineUI
    * @return The <code>jPanelMain</code>.
    * @see #jPanelMain
    */
-  public JPanel getJPanelMain ( )
+  public final JPanel getJPanelMain ( )
   {
     return this.jPanelMain ;
   }
@@ -1005,7 +1005,7 @@ public class OutlineUI
    * @return The <code>jPopupMenu</code>.
    * @see #jPopupMenu
    */
-  public JPopupMenu getJPopupMenu ( )
+  public final JPopupMenu getJPopupMenu ( )
   {
     return this.jPopupMenu ;
   }
@@ -1017,7 +1017,7 @@ public class OutlineUI
    * @return The <code>jTreeAbstractSyntaxTree</code>.
    * @see #jTreeAbstractSyntaxTree
    */
-  public JTree getJTreeAbstractSyntaxTree ( )
+  public final JTree getJTreeAbstractSyntaxTree ( )
   {
     return this.jTreeAbstractSyntaxTree ;
   }
@@ -1029,7 +1029,7 @@ public class OutlineUI
    * @return The {@link OutlineActionListener}.
    * @see #outlineActionListener
    */
-  public OutlineActionListener getOutlineActionListener ( )
+  public final OutlineActionListener getOutlineActionListener ( )
   {
     return this.outlineActionListener ;
   }
@@ -1041,7 +1041,7 @@ public class OutlineUI
    * @return The {@link OutlineItemListener}.
    * @see #outlineItemListener
    */
-  public OutlineItemListener getOutlineItemListener ( )
+  public final OutlineItemListener getOutlineItemListener ( )
   {
     return this.outlineItemListener ;
   }
@@ -1053,7 +1053,7 @@ public class OutlineUI
    * @return The {@link OutlineMouseListener}.
    * @see #outlineMouseListener
    */
-  public OutlineMouseListener getOutlineMouseListener ( )
+  public final OutlineMouseListener getOutlineMouseListener ( )
   {
     return this.outlineMouseListener ;
   }
@@ -1065,7 +1065,7 @@ public class OutlineUI
    * @return The {@link OutlineTreeSelectionListener}.
    * @see #outlineTreeSelectionListener
    */
-  public OutlineTreeSelectionListener getOutlineTreeSelectionListener ( )
+  public final OutlineTreeSelectionListener getOutlineTreeSelectionListener ( )
   {
     return this.outlineTreeSelectionListener ;
   }
@@ -1077,7 +1077,7 @@ public class OutlineUI
    * @return The </code>treeModel</code>.
    * @see #treeModel
    */
-  public DefaultTreeModel getTreeModel ( )
+  public final DefaultTreeModel getTreeModel ( )
   {
     return this.treeModel ;
   }
@@ -1088,7 +1088,7 @@ public class OutlineUI
    * 
    * @param pRootNode The new root node.
    */
-  public void setRootNode ( DefaultMutableTreeNode pRootNode )
+  public final void setRootNode ( DefaultMutableTreeNode pRootNode )
   {
     this.rootNode = pRootNode ;
     this.treeModel.setRoot ( this.rootNode ) ;

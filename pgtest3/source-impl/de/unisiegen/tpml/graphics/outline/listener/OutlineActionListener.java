@@ -17,7 +17,7 @@ import de.unisiegen.tpml.graphics.outline.util.OutlineClipboard ;
  * @author Christian Fehler
  * @version $Rev$
  */
-public class OutlineActionListener implements ActionListener
+public final class OutlineActionListener implements ActionListener
 {
   /**
    * The {@link OutlineUI}.
@@ -42,7 +42,7 @@ public class OutlineActionListener implements ActionListener
    * @param pActionEvent The <code>ActionEvent</code>
    * @see ActionListener#actionPerformed(ActionEvent)
    */
-  public void actionPerformed ( ActionEvent pActionEvent )
+  public final void actionPerformed ( ActionEvent pActionEvent )
   {
     String actionCommand = pActionEvent.getActionCommand ( ) ;
     if ( OutlineUI.CLOSE.equals ( actionCommand ) )
@@ -109,7 +109,7 @@ public class OutlineActionListener implements ActionListener
   /**
    * Closes the selected node.
    */
-  public void close ( )
+  public final void close ( )
   {
     if ( this.outlineUI.getJTreeAbstractSyntaxTree ( ).getSelectionRows ( ) == null )
     {
@@ -126,7 +126,7 @@ public class OutlineActionListener implements ActionListener
   /**
    * Closes all nodes.
    */
-  public void closeAll ( )
+  public final void closeAll ( )
   {
     for ( int i = this.outlineUI.getJTreeAbstractSyntaxTree ( ).getRowCount ( ) - 1 ; i >= 0 ; i -- )
     {
@@ -138,7 +138,7 @@ public class OutlineActionListener implements ActionListener
   /**
    * Collapses the selected node.
    */
-  public void collapse ( )
+  public final void collapse ( )
   {
     if ( this.outlineUI.getJTreeAbstractSyntaxTree ( ).getSelectionRows ( ) == null )
     {
@@ -154,7 +154,7 @@ public class OutlineActionListener implements ActionListener
   /**
    * Collapses all nodes.
    */
-  public void collapseAll ( )
+  public final void collapseAll ( )
   {
     this.outlineUI.getJTreeAbstractSyntaxTree ( ).collapseRow ( 0 ) ;
   }
@@ -163,7 +163,7 @@ public class OutlineActionListener implements ActionListener
   /**
    * Copies the selection into the {@link OutlineClipboard}.
    */
-  public void copy ( )
+  public final void copy ( )
   {
     DefaultMutableTreeNode node = ( DefaultMutableTreeNode ) this.outlineUI
         .getJTreeAbstractSyntaxTree ( ).getSelectionPath ( )
@@ -179,7 +179,7 @@ public class OutlineActionListener implements ActionListener
   /**
    * Expands the selected node.
    */
-  public void expand ( )
+  public final void expand ( )
   {
     expandTreePath ( this.outlineUI.getJTreeAbstractSyntaxTree ( )
         .getSelectionPath ( ) ) ;
@@ -189,7 +189,7 @@ public class OutlineActionListener implements ActionListener
   /**
    * Expands all nodes.
    */
-  public void expandAll ( )
+  public final void expandAll ( )
   {
     int i = 0 ;
     while ( i < this.outlineUI.getJTreeAbstractSyntaxTree ( ).getRowCount ( ) )
@@ -205,7 +205,7 @@ public class OutlineActionListener implements ActionListener
    * 
    * @param pTreePath The <code>TreePath</code>, which should be expand.
    */
-  private void expandTreePath ( TreePath pTreePath )
+  private final void expandTreePath ( TreePath pTreePath )
   {
     if ( pTreePath == null )
     {
