@@ -6,6 +6,7 @@ package de.unisiegen.tpml.core.typeinference;
 import javax.swing.tree.TreeNode;
 
 import de.unisiegen.tpml.core.AbstractExpressionProofNode;
+import de.unisiegen.tpml.core.ProofStep;
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.typechecker.TypeEnvironment;
 import de.unisiegen.tpml.core.types.MonoType;
@@ -16,50 +17,88 @@ import de.unisiegen.tpml.core.types.MonoType;
  */
 public final class DefaultTypeInferenceProofNode extends
 		AbstractExpressionProofNode implements TypeInferenceProofNode {
+	
+	  /**
+	   * The type environment for this type checker proof node.
+	   * 
+	   * @see #getEnvironment()
+	   * @see #setEnvironment(TypeEnvironment)
+	   */
+	private TypeEnvironment environment;
+	  
+	  /**
+	   * The type for this type node, which is either a type variable or a monorphic type.
+	   * 
+	   * @see #getType()
+	   * @see #setType(MonoType)
+	   */
+	  private MonoType type;
 
 	protected DefaultTypeInferenceProofNode(Expression expression) {
 		super(expression);
-		// TODO Auto-generated constructor stub
+	    setEnvironment(environment);
+	    setType(type);
+	}
+
+	void setType(MonoType pType) {
+		this.type=pType;
+		
+	}
+
+	void setEnvironment(TypeEnvironment pEnvironment) {
+		this.environment=pEnvironment;
+		
 	}
 
 	/* (non-Javadoc)
 	 * @see de.unisiegen.tpml.core.typeinference.TypeInferenceProofNode#getEnvironment()
 	 */
 	public TypeEnvironment getEnvironment() {
-		// TODO Auto-generated method stub
-		return null;
+		
+		return environment;
 	}
 
 	/* (non-Javadoc)
 	 * @see de.unisiegen.tpml.core.typeinference.TypeInferenceProofNode#getRule()
 	 */
 	public TypeInferenceProofRule getRule() {
-		// TODO Auto-generated method stub
-		return null;
+		 ProofStep[] steps = getSteps();
+		    if (steps.length > 0) {
+		      return (TypeInferenceProofRule)steps[0].getRule();
+		    }
+		    else {
+		      return null;
+		    }
 	}
 
 	/* (non-Javadoc)
 	 * @see de.unisiegen.tpml.core.typeinference.TypeInferenceProofNode#getType()
 	 */
 	public MonoType getType() {
-		// TODO Auto-generated method stub
-		return null;
+		
+		return type;
 	}
 
 	/* (non-Javadoc)
 	 * @see de.unisiegen.tpml.core.typeinference.TypeInferenceProofNode#isFinished()
 	 */
 	public boolean isFinished() {
-		// TODO Auto-generated method stub
-		return false;
+		if (!isProven()) {
+		      return false;
+		    }
+		    for (int n = 0; n < getChildCount(); ++n) {
+		      if (!getChildAt(n).isFinished()) {
+		        return false;
+		      }
+		    }
+		    return true;
 	}
 
 	/* (non-Javadoc)
 	 * @see de.unisiegen.tpml.core.ProofNode#isProven()
 	 */
 	public boolean isProven() {
-		// TODO Auto-generated method stub
-		return false;
+		return (getSteps().length > 0);
 	}
 	
 	 /**
