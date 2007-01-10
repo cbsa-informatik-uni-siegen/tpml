@@ -10,6 +10,7 @@ package de.unisiegen.tpml.ui;
 /**
  *
  * @author  TPPool15
+ * @author Christian Fehler
  */
 public class AboutDialog extends javax.swing.JDialog {
     
@@ -31,6 +32,10 @@ public class AboutDialog extends javax.swing.JDialog {
         javax.swing.JLabel authorsLabelTarget1;
         javax.swing.JLabel authorsLabelTarget2;
         javax.swing.JLabel authorsLabelTarget3;
+        javax.swing.JLabel authorsLabelTarget4;
+        javax.swing.JLabel authorsLabelTarget5;
+        javax.swing.JLabel authorsLabelTarget6;
+        javax.swing.JLabel authorsLabelTarget7;
         javax.swing.JPanel bodyPanel;
         javax.swing.JPanel buttonPanel;
         javax.swing.JLabel copyrightLabel;
@@ -53,6 +58,10 @@ public class AboutDialog extends javax.swing.JDialog {
         authorsLabelTarget1 = new javax.swing.JLabel();
         authorsLabelTarget2 = new javax.swing.JLabel();
         authorsLabelTarget3 = new javax.swing.JLabel();
+        authorsLabelTarget4 = new javax.swing.JLabel();
+        authorsLabelTarget5 = new javax.swing.JLabel();
+        authorsLabelTarget6 = new javax.swing.JLabel();
+        authorsLabelTarget7 = new javax.swing.JLabel();
         buttonPanel = new javax.swing.JPanel();
         closeButton = new javax.swing.JButton();
 
@@ -119,6 +128,7 @@ public class AboutDialog extends javax.swing.JDialog {
 
         websiteLabelTarget.setText("http://www.informatik.uni-siegen.de/theo/tpml/");
         gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridwidth = 2 ;
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
@@ -159,9 +169,45 @@ public class AboutDialog extends javax.swing.JDialog {
         gridBagConstraints.gridy = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(0, 6, 12, 12);
+        gridBagConstraints.insets = new java.awt.Insets(0, 6, 6, 12);
         bodyPanel.add(authorsLabelTarget3, gridBagConstraints);
 
+        authorsLabelTarget4.setText("Christian Fehler");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(6, 6, 6, 12);
+        bodyPanel.add(authorsLabelTarget4, gridBagConstraints);
+        
+        authorsLabelTarget5.setText("Daniel Graf");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 6, 6, 12);
+        //bodyPanel.add(authorsLabelTarget5, gridBagConstraints);
+        
+        authorsLabelTarget6.setText("Benjamin Mies");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 6, 6, 12);
+        bodyPanel.add(authorsLabelTarget6, gridBagConstraints);
+        
+        authorsLabelTarget7.setText("Michael Oeste");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 6, 12, 12);
+        bodyPanel.add(authorsLabelTarget7, gridBagConstraints);
+         
         getContentPane().add(bodyPanel, java.awt.BorderLayout.CENTER);
 
         buttonPanel.setLayout(new java.awt.GridBagLayout());

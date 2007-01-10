@@ -1,55 +1,43 @@
 package de.unisiegen.tpml.ui;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.FlowLayout;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.lang.reflect.Method;
 import java.util.ResourceBundle;
-
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JColorChooser;
-import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JList;
-import javax.swing.JPanel;
-
 import de.unisiegen.tpml.core.util.StringUtilities;
 import de.unisiegen.tpml.graphics.Theme;
-import de.unisiegen.tpml.ui.beans.FontChooser;
 
 /**
  * TODO Add documentation here.
  *
  * @author Benedikt Meurer
  * @author Christoph Fehling
+ * @author Christian Fehler
  */
 public class PreferenceDialog extends javax.swing.JDialog {
-		//
-	  // Constants
-	  //
-	
+    //
+    // Constants
+    //
+  
     /**
-  	 * The unique serialization identifier of this class. 
-	   */
-	  private static final long serialVersionUID = 6823003123624975539L;
+     * The unique serialization identifier of this class. 
+     */
+    private static final long serialVersionUID = 6823003123624975539L;
 
-	
-	
-	  //
+  
+  
+    //
     // Inner classes
     //
     
@@ -158,8 +146,8 @@ public class PreferenceDialog extends javax.swing.JDialog {
         
         // listen to key events
         KeyboardFocusManager.getCurrentKeyboardFocusManager()
-				.addKeyEventDispatcher(new KeyEventDispatcher() {
-					public boolean dispatchKeyEvent(KeyEvent evt) {
+        .addKeyEventDispatcher(new KeyEventDispatcher() {
+          public boolean dispatchKeyEvent(KeyEvent evt) {
                                             if (evt.getKeyCode() == KeyEvent.VK_ESCAPE){
                                                 dispose();
                                                 return true;
@@ -168,8 +156,8 @@ public class PreferenceDialog extends javax.swing.JDialog {
                                                 return false;
                                             }
                                         }
-						
-				});
+            
+        });
         
         // connect the font button to the theme
         /* FIXME: Windows and custom fonts
@@ -194,6 +182,10 @@ public class PreferenceDialog extends javax.swing.JDialog {
         colorsModel.addElement(new ColorItem("ruleColor"));
         colorsModel.addElement(new ColorItem("underlineColor"));
         colorsModel.addElement(new ColorItem("typeColor"));
+        colorsModel.addElement(new ColorItem("selectionColor"));
+        colorsModel.addElement(new ColorItem("bindingColor"));
+        colorsModel.addElement(new ColorItem("unboundColor"));
+        colorsModel.addElement(new ColorItem("idColor"));
         this.colorsList.setCellRenderer(new ColorItemRenderer());
         this.colorsList.setModel(colorsModel);
     }
