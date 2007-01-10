@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package de.unisiegen.tpml.core.typeinference;
 
 import javax.swing.tree.TreeNode;
@@ -8,6 +6,7 @@ import javax.swing.tree.TreeNode;
 import de.unisiegen.tpml.core.AbstractExpressionProofNode;
 import de.unisiegen.tpml.core.ProofStep;
 import de.unisiegen.tpml.core.expressions.Expression;
+import de.unisiegen.tpml.core.typechecker.TypeCheckerProofRule;
 import de.unisiegen.tpml.core.typechecker.TypeEnvironment;
 import de.unisiegen.tpml.core.types.MonoType;
 
@@ -50,38 +49,22 @@ public final class DefaultTypeInferenceProofNode extends
 		
 	}
 
-	/* (non-Javadoc)
-	 * @see de.unisiegen.tpml.core.typeinference.TypeInferenceProofNode#getEnvironment()
-	 */
+	
 	public TypeEnvironment getEnvironment() {
 		
 		return environment;
 	}
 
-	/* (non-Javadoc)
-	 * @see de.unisiegen.tpml.core.typeinference.TypeInferenceProofNode#getRule()
-	 */
-	public TypeInferenceProofRule getRule() {
-		 ProofStep[] steps = getSteps();
-		    if (steps.length > 0) {
-		      return (TypeInferenceProofRule)steps[0].getRule();
-		    }
-		    else {
-		      return null;
-		    }
-	}
+	
 
-	/* (non-Javadoc)
-	 * @see de.unisiegen.tpml.core.typeinference.TypeInferenceProofNode#getType()
-	 */
+
+	
 	public MonoType getType() {
 		
 		return type;
 	}
 
-	/* (non-Javadoc)
-	 * @see de.unisiegen.tpml.core.typeinference.TypeInferenceProofNode#isFinished()
-	 */
+	
 	public boolean isFinished() {
 		if (!isProven()) {
 		      return false;
@@ -94,9 +77,7 @@ public final class DefaultTypeInferenceProofNode extends
 		    return true;
 	}
 
-	/* (non-Javadoc)
-	 * @see de.unisiegen.tpml.core.ProofNode#isProven()
-	 */
+	
 	public boolean isProven() {
 		return (getSteps().length > 0);
 	}
@@ -195,4 +176,9 @@ public final class DefaultTypeInferenceProofNode extends
 	  public DefaultTypeInferenceProofNode getChildBefore(TreeNode aChild) {
 	    return (DefaultTypeInferenceProofNode)super.getChildBefore(aChild);
 	  }
+
+	public TypeInferenceProofRule getRule() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
