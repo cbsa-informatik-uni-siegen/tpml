@@ -28,13 +28,12 @@
 	<property name="distdir" value="${basedir}/dist" />
 	<property name="classesdir" value="${distdir}/classes" />
 	
-	<target name="dist" depends="generate,dist-graphics,dist-preclean,dist-compile,dist-jar,dist-clean" description="Build distribution">
+	<target name="dist" depends="generate,dist-graphics,dist-preclean,dist-compile,dist-jar,exe,dist-clean" description="Build distribution">
 		<mkdir dir="${distdir}/tpml-${de.unisiegen.tpml.ui.version}" />
 		<copy todir="${distdir}/tpml-${de.unisiegen.tpml.ui.version}">
 			<fileset dir="${core.distdir}" includes="*.jar" />
 			<fileset dir="${graphics.distdir}" includes="*.jar" />
 			<fileset dir="${distdir}" includes="*.jar" />
-			<fileset dir="${basedir}" includes="tpml.exe" />
 			<fileset dir="${basedir}/doc" includes="LICENSE" />
 		</copy>
 		<copy todir="${distdir}/tpml-${de.unisiegen.tpml.ui.version}" file="${basedir}/tpml.sh">
@@ -111,6 +110,23 @@
 		</jar>
 		<delete file="${distdir}/MANIFEST.MF" />
 	</target>
+	
+	<target name="exe" depends="dist-jar">
+			<copy todir="${distdir}" file="${basedir}/build/tpml.xml">
+				<filterset>
+								<filter token="de.unisiegen.tpml.ui.version" value="${de.unisiegen.tpml.ui.version}" />
+					      <filter token="path" value="${distdir}/tpml-${de.unisiegen.tpml.ui.version}" />
+				</filterset>
+			</copy>
+			<taskdef name="launch4j"
+			    	classname="net.sf.launch4j.ant.Launch4jTask"
+			    	classpath="${basedir}/build/launch4j.jar:${basedir}/build/xstream.jar" 
+			/>
+			<launch4j configFile="${distdir}/tpml.xml" />
+			
+			<copy todir="${distdir}/tpml-${de.unisiegen.tpml.ui.version}" file="${distdir}/tpml.exe">
+			</copy>
+		</target>
 	
 	<target name="dist-clean">
 		<delete dir="${classesdir}" />

@@ -483,6 +483,32 @@ public class EditorPanel extends javax.swing.JPanel {
 					"TypeChecker", JOptionPane.ERROR_MESSAGE);
 		}
 	}
+	
+	/**
+	 * Starts the Type Equation.
+	 */
+	public void handleTypEquation() {
+		setTexteditor(false);
+		try {
+			TypeCheckerProofModel model = language
+					.newTypeCheckerProofModel(code.getDocument()
+							.getExpression());
+			typechecker = new ProofViewComponent(ProofViewFactory
+					.newTypeCheckerView(model), model);
+			editorPanel.removeAll();
+			activateFunction(typecheckerButton, typechecker);
+			typechecker.setAdvanced(this.advanced);
+			paintAll(getGraphics());
+			
+
+		} catch (Exception e) {
+			logger.error("Could not create new TypeCheckerView", e);
+			JOptionPane.showMessageDialog(this,
+					java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("CouldNotTypeChecker")+
+					"\n"+e.getMessage()+".",
+					"TypeChecker", JOptionPane.ERROR_MESSAGE);
+		}
+	}
 
 	public void handleCut() {
 		this.code.handleCut();
