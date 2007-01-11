@@ -136,7 +136,6 @@ public class Start
 		int neededMaster = MASTERN;
 		int neededSlave = SLAVEN;
 		boolean force = false;
-		int forceInt = -1;
 
 		if (countArgs > 0)
 		{
@@ -144,7 +143,6 @@ public class Start
 			{
 				if (args[i].equalsIgnoreCase("-f"))
 				{
-					forceInt = i;
 					force = true;
 				}
 			}
