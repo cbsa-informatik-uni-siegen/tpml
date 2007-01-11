@@ -1,16 +1,28 @@
-package de.unisiegen.tpml.ui ;
+package de.unisiegen.tpml.ui;
 
 /**
+ * this class first checks the javaversion. If ist is under 1.5 it shows an errormessage. Otherwise it starts the
+ * main.java. This class should be compiled with target 1.1.
+ * 
  * @author Feivel
  * 
  */
 public class Start
 {
-	//Here you can definde the needed JAVA-Version MASTERN.SLAVAN
-	//It is MASTERN = 1;
-	//			SLAVEN = 5;
-	//for JAVA 1.5 needed. The Programm will start with all JAVA 1.5 and above versions 
+	/**
+	 * The needed Java-version is represented by the MSTERN and the SLAVEN. Example: Java 1.4.2: MASTERN: 1, SLAVEN 4
+	 * Java 1.5.0: MASTERN: 1, SLAVEN 5 all digits after the second dot will be ignored.
+	 */
+	// Here you can definde the needed JAVA-Version MASTERN.SLAVAN
+	// It is MASTERN = 1;
+	// SLAVEN = 5;
+	// for JAVA 1.5 needed. The Programm will start with all JAVA 1.5 and above versions
 	final static int MASTERN = 1;
+
+	/**
+	 * The needed Java-version is represented by the MSTERN and the SLAVEN. Example: Java 1.4.2: MASTERN: 1, SLAVEN 4
+	 * Java 1.5.0: MASTERN: 1, SLAVEN 5 all digits after the second dot will be ignored.
+	 */
 	final static int SLAVEN = 5;
 
 	/**
@@ -25,35 +37,35 @@ public class Start
 	 */
 	public static String[] split(String toDiv, char div)
 	{
-		//TO work with String put it into an array
+		// TO work with String put it into an array
 		char[] toDivC = toDiv.toCharArray();
-		//length of array that will be returned
+		// length of array that will be returned
 		int lengthWihtoutDiv = toDivC.length;
-		//lets count the split-char
-		int countdiv=0;
-		//walk through the array
+		// lets count the split-char
+		int countdiv = 0;
+		// walk through the array
 		for (int i = 0; i < toDivC.length; i++)
 		{
-			//div-char is found
+			// div-char is found
 			if (toDivC[i] == div)
 			{
-				//because the div-chars will not be returned
+				// because the div-chars will not be returned
 				lengthWihtoutDiv--;
 				countdiv++;
 			}
 		}
-		//build result
-		String result[] = new String [countdiv+1];
-		//these strings will be added to the result[]
+		// build result
+		String result[] = new String[countdiv + 1];
+		// these strings will be added to the result[]
 		String tmp1 = "";
-		//second count, at j the tmp will be added
+		// second count, at j the tmp will be added
 		int j = 0;
 		for (int i = 0; i < toDivC.length; i++)
 		{
-			//only chars != to div will be added 
+			// only chars != to div will be added
 			if (toDivC[i] != div)
 			{
-				tmp1 = tmp1+toDivC[i];
+				tmp1 = tmp1 + toDivC[i];
 			}
 			else
 			{
@@ -96,9 +108,10 @@ public class Start
 		}
 		catch (NumberFormatException e)
 		{
-			new MsgFrame( "Unbekannte Version", "Das Ergebnis der Java-versionsprüfung ist ungültig! Es wurde "+ versionA[0] +"." + versionA[1] + "als Version zurückgegeben.");
+			new MsgFrame("Unbekannte Version", "Das Ergebnis der Java-versionsprï¿½fung ist ungï¿½ltig! Es wurde "
+					+ versionA[0] + "." + versionA[1] + "als Version zurï¿½ckgegeben.");
 		}
-		
+
 		// lexografik order: in 2.5, the 5 isn't important
 		if (first > neededMaster)
 		{
@@ -136,11 +149,11 @@ public class Start
 				}
 			}
 		}
-		//if -f is set- programm starts wihtout any test
+		// if -f is set- programm starts wihtout any test
 		if (force)
 		{
-			//alle Argumente werden gebaut, damit Dateien gestartet geöffnet werden können
-			String Arguments[] = new String[args.length-1];
+			// alle Argumente werden gebaut, damit Dateien gestartet geï¿½ffnet werden kï¿½nnen
+			String Arguments[] = new String[args.length - 1];
 			int j = 0;
 			for (int i = 0; i < args.length; i++)
 			{
@@ -156,27 +169,28 @@ public class Start
 			}
 			Main.main(Arguments);
 		}
-		else //no force
+		else
+		// no force
 		{
 			try
-			{				
-				// Problem: Split gibt es früher noch nicht 1.4
+			{
+				// Problem: Split gibt es frï¿½her noch nicht 1.4
 				// String [] neededVersionA = neededVersion.split("[.]");
-				//String[] actualVersionA = split(actualVersion, '.');
-				//actualMaster = Integer.parseInt(actualVersionA[0]);
-				//actualSlave = Integer.parseInt(actualVersionA[1]);
-				// Testausgabe für die Java-Version
+				// String[] actualVersionA = split(actualVersion, '.');
+				// actualMaster = Integer.parseInt(actualVersionA[0]);
+				// actualSlave = Integer.parseInt(actualVersionA[1]);
+				// Testausgabe fï¿½r die Java-Version
 				// System.out.println(System.getProperty("java.version"));
-				//JavaTest javaTest = new JavaTest();
-				
-				//For errormessages bevor 1.2
-				//For nicer errormessages
+				// JavaTest javaTest = new JavaTest();
+
+				// For errormessages bevor 1.2
+				// For nicer errormessages
 				boolean is12 = isJavaRightVersion(1, 2);
-				//boolean is12 = false;
-				
-				//checks fersion
+				// boolean is12 = false;
+
+				// checks fersion
 				boolean isRight = isJavaRightVersion(neededMaster, neededSlave);
-				
+
 				if (isRight)
 				{
 					try
@@ -201,7 +215,8 @@ public class Start
 				}
 				else
 				{
-					String message = "Java "+neededMaster+"."+neededSlave+ " NICHT erkannt! Installieren Sie bitte die benötigte Verion.";
+					String message = "Java " + neededMaster + "." + neededSlave
+							+ " NICHT erkannt! Installieren Sie bitte die benï¿½tigte Verion.";
 					String title = "Falsche Java-Version";
 					if (is12)
 					{
@@ -216,17 +231,17 @@ public class Start
 			}
 			catch (IndexOutOfBoundsException e)
 			{
-				// Fehlermeldungen für Entwickler
-				System.out.println("Die benötigte Versionsnummer und das zu startende Programm müssen übergeben werden.");
+				// Fehlermeldungen fï¿½r Entwickler
+				System.out.println("Die benï¿½tigte Versionsnummer und das zu startende Programm mï¿½ssen ï¿½bergeben werden.");
 				System.out.println("JavaTest version programm");
 				System.out.println("z.B.: JavaTest 1.4 main");
 				System.exit(125);
 			}
 			catch (NumberFormatException e)
 			{
-				// Fehlermeldungen für Entwickler
-				System.out.println("Die Version muss korrekt übergeben werden! Es wurde " + args[0]
-						+ " als Version übergeben!");
+				// Fehlermeldungen fï¿½r Entwickler
+				System.out.println("Die Version muss korrekt ï¿½bergeben werden! Es wurde " + args[0]
+						+ " als Version ï¿½bergeben!");
 				System.out.println("JavaTest version programm");
 				System.out.println("z.B.: JavaTest 1.4 main");
 				System.exit(125);

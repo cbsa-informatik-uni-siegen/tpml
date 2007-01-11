@@ -14,13 +14,18 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 /**
- * @author Feivel
+ * @author Michael Oeste
  * this class will be used instead of JOptionPane(); because of the compatibility to old versions
- * you can give a titel and the message as strings with constructor
- * if the button ist pushed the programm will be exit                   
+ * This class should be compiled with target 1.1                   
  */
 public class MsgFrame extends Frame implements ActionListener
 {
+	/**
+	 * displays a simpel message like a JOptionPane. After OK is pressed the programm will exit with errorcode 1
+	 *
+	 * @param titel		the titel of the window
+	 * @param message	the message that should displayed
+	 */
 	public MsgFrame (String titel, String message)
 	{
 		super(titel);
@@ -51,7 +56,7 @@ public class MsgFrame extends Frame implements ActionListener
 			public void windowClosing(WindowEvent e)
 			{
 				dispose();
-				System.exit(0);
+				System.exit(1);
 			}
 		});
 		pack();
@@ -63,7 +68,7 @@ public class MsgFrame extends Frame implements ActionListener
 		setLocation(x,y);
 		
 		
-		//TODO Muss noch gekärt werden, warum show() nicht verwendet werden sollte.
+		//TODO Muss noch gekï¿½rt werden, warum show() nicht verwendet werden sollte.
 		show();
 	}
 
@@ -72,7 +77,7 @@ public class MsgFrame extends Frame implements ActionListener
 		if (e.getActionCommand().equals("Close"))
 		{
 			dispose();
-			System.exit(0);
+			System.exit(1);
 		}
 	}
 }
