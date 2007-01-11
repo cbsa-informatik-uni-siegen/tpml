@@ -28,7 +28,7 @@
 	<property name="distdir" value="${basedir}/dist" />
 	<property name="classesdir" value="${distdir}/classes" />
 	
-	<target name="dist" depends="generate,dist-graphics,dist-preclean,dist-compile,dist-jar,exe,dist-clean" description="Build distribution">
+	<target name="dist" depends="generate,dist-graphics,dist-preclean,dist-compile,version-check,dist-jar,exe,dist-clean" description="Build distribution">
 		<mkdir dir="${distdir}/tpml-${de.unisiegen.tpml.ui.version}" />
 		<copy todir="${distdir}/tpml-${de.unisiegen.tpml.ui.version}">
 			<fileset dir="${core.distdir}" includes="*.jar" />
@@ -71,7 +71,7 @@
 	<target name="dist-compile">
 		<delete dir="${classesdir}" includeemptydirs="true" />
 		<mkdir dir="${classesdir}" />
-		<javac debug="on" destdir="${classesdir}" encoding="UTF-8" optimize="on" source="1.5" target="1.5">
+		<javac excludes="JOpFrame.java,MsgFrame.java,Start.java" debug="on" destdir="${classesdir}" encoding="UTF-8" optimize="on" source="1.5" target="1.5" >
 			<src path="${basedir}/source" />
 			<src path="${basedir}/source-generated" />
 			<classpath>
@@ -83,10 +83,25 @@
 		</javac>
 	</target>
 	
+	<target name="version-check" depends="dist-compile">
+
+					<javac 
+										  
+										 includes="JOpFrame.java,MsgFrame.java,Start.java"
+										 debug="on" 
+										 destdir="${classesdir}" 
+										 optimize="on" 
+										 source="1.2" 
+										 target="1.1"
+										 failonerror="false">
+								<src path="${basedir}/source/de/unisiegen/tpml/ui" />
+						</javac>
+		</target>
+	
 	<target name="dist-jar" depends="dist-compile">
 		<manifest file="${distdir}/MANIFEST.MF">
 			<attribute name="Built-By" value="${user.name}" />
-			<attribute name="Main-Class" value="de.unisiegen.tpml.ui.Main" />
+			<attribute name="Main-Class" value="de.unisiegen.tpml.ui.Start" />
 			<attribute name="Class-Path" value="de.unisiegen.tpml.core-${de.unisiegen.tpml.core.version}.jar de.unisiegen.tpml.graphics-${de.unisiegen.tpml.graphics.version}.jar java-cup-11a-runtime.jar log4j-1.2.14.jar" />
 			<section name="de.unisiegen.tpml.ui">
 				<attribute name="Specification-Title" value="TPML UI" />
@@ -112,7 +127,7 @@
 	</target>
 	
 	<target name="exe" depends="dist-jar">
-			<copy todir="${distdir}" file="${basedir}/build/tpml.xml">
+			<copy todir="${distdir}" file="${basedir}/dist_build/tpml.xml">
 				<filterset>
 								<filter token="de.unisiegen.tpml.ui.version" value="${de.unisiegen.tpml.ui.version}" />
 					      <filter token="path" value="${distdir}/tpml-${de.unisiegen.tpml.ui.version}" />
@@ -120,7 +135,7 @@
 			</copy>
 			<taskdef name="launch4j"
 			    	classname="net.sf.launch4j.ant.Launch4jTask"
-			    	classpath="${basedir}/build/launch4j.jar:${basedir}/build/xstream.jar" 
+			    	classpath="${basedir}/dist_build/launch4j.jar:${basedir}/dist_build/lib/xstream.jar" 
 			/>
 			<launch4j configFile="${distdir}/tpml.xml" />
 			
