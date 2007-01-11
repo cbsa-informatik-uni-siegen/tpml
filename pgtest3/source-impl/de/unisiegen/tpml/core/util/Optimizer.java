@@ -15,6 +15,54 @@ import java.util.ArrayList ;
 public final class Optimizer
 {
   /**
+   * The static final string.
+   */
+  private static final String PERCENT = "%" ; //$NON-NLS-1$
+
+
+  /**
+   * The static final string.
+   */
+  private static final String OPEN = "(" ; //$NON-NLS-1$
+
+
+  /**
+   * The static final string.
+   */
+  private static final String CLOSE = ")" ; //$NON-NLS-1$
+
+
+  /**
+   * The static final string.
+   */
+  private static final String THREESPACES = "   " ; //$NON-NLS-1$
+
+
+  /**
+   * The static final string.
+   */
+  private static final String LINESEPARATOR = "line.separator" ; //$NON-NLS-1$
+
+
+  /**
+   * The static final string.
+   */
+  private static final String SPACE = " " ; //$NON-NLS-1$
+
+
+  /**
+   * The static final string.
+   */
+  private static final String SINGLETON = "Singleton" ; //$NON-NLS-1$
+
+
+  /**
+   * The static final string.
+   */
+  private static final String EMPTY = "" ; //$NON-NLS-1$
+
+
+  /**
    * The single optimizer object.
    */
   private static Optimizer optimizer = null ;
@@ -53,7 +101,7 @@ public final class Optimizer
   /**
    * The name of the tags.
    */
-  private String tagName = "" ; //$NON-NLS-1$
+  private String tagName = EMPTY ;
 
 
   /**
@@ -67,20 +115,20 @@ public final class Optimizer
     this.timeList = new ArrayList < Long > ( ) ;
     this.commentList = new ArrayList < String > ( ) ;
     this.timeList.add ( new Long ( System.currentTimeMillis ( ) ) ) ;
-    this.commentList.add ( "" ) ; //$NON-NLS-1$
+    this.commentList.add ( EMPTY ) ;
   }
 
 
   /**
-   * TODO
+   * Returns the single instance of this class.
    * 
-   * @return TODO
+   * @return The single instance of this class.
    */
   public static Optimizer getInstance ( )
   {
     if ( optimizer == null )
     {
-      optimizer = new Optimizer ( "Singleton" ) ; //$NON-NLS-1$
+      optimizer = new Optimizer ( SINGLETON ) ;
     }
     return optimizer ;
   }
@@ -98,7 +146,7 @@ public final class Optimizer
     this.timeList.clear ( ) ;
     this.timeList.add ( new Long ( System.currentTimeMillis ( ) ) ) ;
     this.commentList.clear ( ) ;
-    this.commentList.add ( "" ) ; //$NON-NLS-1$
+    this.commentList.add ( EMPTY ) ;
   }
 
 
@@ -108,7 +156,7 @@ public final class Optimizer
   public final void setTimeTag ( )
   {
     this.timeList.add ( new Long ( System.currentTimeMillis ( ) ) ) ;
-    this.commentList.add ( "" ) ; //$NON-NLS-1$
+    this.commentList.add ( EMPTY ) ;
   }
 
 
@@ -132,7 +180,7 @@ public final class Optimizer
    */
   public final String getTimeTags ( )
   {
-    String s = "" ; //$NON-NLS-1$
+    String s = EMPTY ;
     if ( this.timeList.size ( ) > 1 )
     {
       int bc = 0 ;
@@ -150,7 +198,7 @@ public final class Optimizer
         final int k = t.length ( ) ;
         for ( int j = 0 ; j < bc - k ; j ++ )
         {
-          t = t + " " ; //$NON-NLS-1$
+          t = t + SPACE ;
         }
         this.commentList.set ( i , t ) ;
       }
@@ -178,12 +226,12 @@ public final class Optimizer
         {
           percent = 100 ;
         }
-        s += this.tagName + "   " + decimalFormat1.format ( i ) + "   (" //$NON-NLS-1$ //$NON-NLS-2$
-            + this.commentList.get ( i ) + ")   " //$NON-NLS-1$
-            + decimalFormat2.format ( current - last ) + "   " //$NON-NLS-1$
-            + decimalFormat3.format ( percent ) + " %   " //$NON-NLS-1$
-            + decimalFormat2.format ( current ) + "   " //$NON-NLS-1$
-            + System.getProperty ( "line.separator" ) ; //$NON-NLS-1$
+        s += this.tagName + THREESPACES + decimalFormat1.format ( i )
+            + THREESPACES + OPEN + this.commentList.get ( i ) + CLOSE
+            + THREESPACES + decimalFormat2.format ( current - last )
+            + THREESPACES + decimalFormat3.format ( percent ) + SPACE + PERCENT
+            + THREESPACES + decimalFormat2.format ( current ) + THREESPACES
+            + System.getProperty ( LINESEPARATOR ) ;
         last = current ;
       }
     }
