@@ -28,5 +28,6 @@ clean:
 	rm -f *.idx
 	rm -f *.ilg
 	rm -f *.ind
+	rm -f *.out
 
 # vi:set ts=8 sw=8 noet syntax=make:
