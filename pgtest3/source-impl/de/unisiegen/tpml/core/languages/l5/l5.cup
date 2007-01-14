@@ -2,12 +2,18 @@ import de.unisiegen.tpml.core.expressions.*;
 import de.unisiegen.tpml.core.types.*;
 
 
-/* Helper class */
+/* Helper classes */
 action code {:
   private static class IdTypePair {
     public IdTypePair(String id, MonoType tau) { this.id = id; this.tau = tau; }
     String id;
     MonoType tau;
+  }
+  
+  private static class IdExprPair {
+    public IdExprPair(String id, Expression e) { this.id = id; this.e = e; }
+    String id;
+    Expression e;
   }
 :}
 
@@ -64,6 +70,7 @@ non terminal Expression[]	expr_comma_list;	/* list of expressions separated by c
 non terminal IdTypePair[]	id_type_list;		/* list of identifiers and optionally types */
 non terminal IdTypePair		id_type_pair;		/* (id:type) or id */
 non terminal String[]		id_comma_list;		/* list of identifiers separated by comma */
+non terminal IdExprPair[]	method_list;		/* list of methods */
 non terminal MonoType		type;
 non terminal MonoType		simple_type;
 non terminal MonoType[]		type_star_list;		/* list of types separated by star */
@@ -109,11 +116,14 @@ expr				::=	simple_expr:e
 						{: RESULT = e; :}
 				
 					/* Objects */
-					|	OBJECT METHOD IDENTIFIER:id EQUAL expr:e END
-						{: String[] identifiers = new String[1];
-						   Expression[] expressions = new Expression [1];
-						   identifiers[0]=id;
-						   expressions[0]=e;
+					|	OBJECT method_list:ml END
+						{: String[] identifiers = new String[ml.length];
+						   Expression[] expressions = new Expression [ml.length];
+						   for (int n = 0 ; n < ml.length; n++)
+						   {
+						     identifiers[n]=ml[n].id;
+						     expressions[n]=ml[n].e;
+						   }
 						RESULT = new Objects(identifiers,expressions); :}
 					
 					/* Applications */
@@ -330,8 +340,16 @@ expr_comma_list		::=	expr_comma_list:el COMMA seq_expr:e
 					|	seq_expr:e1 COMMA seq_expr:e2
 						{: RESULT = new Expression[] { e1, e2 }; :}
 					;
-				
-				
+
+method_list			::=	method_list:ml METHOD IDENTIFIER:id EQUAL expr:e
+						{: RESULT = new IdExprPair [ml.length + 1];
+						   System.arraycopy(ml, 0, RESULT, 0, ml.length);
+						   RESULT[ml.length] = new IdExprPair(id,e); :}
+					|	METHOD IDENTIFIER:id EQUAL expr:e
+						{: RESULT = new IdExprPair [1];
+						   RESULT[0]=new IdExprPair(id,e); :}
+					;
+
 id_type_list		::= id_type_list:l id_type_pair:itp
 						{: RESULT = new IdTypePair[l.length + 1];
 						   System.arraycopy(l, 0, RESULT, 0, l.length);

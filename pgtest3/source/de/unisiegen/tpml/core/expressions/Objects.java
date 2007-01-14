@@ -95,14 +95,15 @@ public final class Objects extends Expression
     PrettyStringBuilder builder = pPrettyStringBuilderFactory.newBuilder (
         this , PRIO_OBJECT ) ;
     builder.addKeyword ( "object" ) ;
-    builder.addText ( " " ) ;
-    builder.addKeyword ( "method" ) ;
     int index = 0 ;
     while ( index < this.expressions.length )
     {
       builder.addText ( " " ) ;
+      builder.addBreak ( ) ;
+      builder.addKeyword ( "method" ) ;
+      builder.addText ( " " ) ;
       builder.addIdentifier ( this.identifiers [ index ] ) ;
-      builder.addText ( "=" ) ;
+      builder.addText ( " = " ) ;
       builder.addBuilder ( this.expressions [ index ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
           PRIO_OBJECT_E ) ;

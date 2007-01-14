@@ -1,1 +1,1 @@
-object method two = 1+1 end
+object method one = 1 method two = 1+1 method three = 1+1+1 end
