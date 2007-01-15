@@ -11,7 +11,7 @@
 	
 	<property name="libdir" value="${basedir}/lib" />
 
-    <target name="generate" depends="l5" description="Generate parsers and lexers" />
+    <target name="generate" depends="generate-clean,l5" description="Generate parsers and lexers" />
 	
 	<property name="impldir" value="${basedir}/source-impl" />
 	<property name="generateddir" value="${basedir}/source-generated" />
@@ -19,6 +19,10 @@
 	<taskdef name="cup" classname="java_cup.anttask.CUPTask" classpath="${libdir}/java-cup-11a.jar" />
 	<taskdef name="jflex" classname="JFlex.anttask.JFlexTask" classpath="${libdir}/JFlex-1.4.1.jar" />
 	
+	<target name="generate-clean">
+		<delete dir="${generateddir}/de/unisiegen/tpml/core/languages/l5" />
+	</target>
+		
 	<target name="l5" description="Generates lexer and parser for L5">
 		<!-- Expressions -->
 		<jflex 
