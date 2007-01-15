@@ -45,7 +45,7 @@ terminal			COLONEQUAL, EXCLAMATION;
 /* Keywords */
 terminal			LAMBDA, LET, REC, REF, IN, IF, THEN, ELSE, WHILE, DO;
 terminal			TRUE, FALSE;
-terminal			OBJECT, METHOD, END;
+terminal			OBJECT, METHOD, END , NUMBERSIGN;
 
 /* Types */
 terminal			BOOL, INT, UNIT, LIST;
@@ -61,6 +61,7 @@ terminal			COMMENT;
 /* Non-Terminals */
 non terminal Expression		seq_expr;
 non terminal Expression		expr;
+non terminal Objects		objects;
 non terminal Expression		simple_expr;
 non terminal Expression[]	simple_expr_list;
 non terminal Expression		constant;
@@ -98,7 +99,6 @@ precedence left		PLUS, MINUS;
 precedence left		STAR, SLASH, MOD;
 
 
-
 /***************
  * Expressions *
  ***************/
@@ -111,12 +111,7 @@ seq_expr			::= expr:e
 						{: RESULT = new Sequence(e1, e2); :}
 					;
 					
-					
-expr				::=	simple_expr:e
-						{: RESULT = e; :}
-				
-					/* Objects */
-					|	OBJECT method_list:ml END
+objects				::= OBJECT method_list:ml END
 						{: String[] identifiers = new String[ml.length];
 						   Expression[] expressions = new Expression [ml.length];
 						   for (int n = 0 ; n < ml.length; n++)
@@ -125,7 +120,19 @@ expr				::=	simple_expr:e
 						     expressions[n]=ml[n].e;
 						   }
 						RESULT = new Objects(identifiers,expressions); :}
+					;
 					
+expr				::=	simple_expr:e
+						{: RESULT = e; :}
+				
+					/* Objects */
+					|	objects:o
+						{: RESULT = o; :}
+					|   objects:o NUMBERSIGN IDENTIFIER:id
+						{: RESULT = new Objects (o.getIdentifiers(),o.getExpressions(),id); :}
+					|	simple_expr:e NUMBERSIGN IDENTIFIER:id
+						{: RESULT = e; :}
+
 					/* Applications */
 					|	simple_expr:e simple_expr_list:l
 						{: for (int n = 0; n < l.length; ++n) {
@@ -289,7 +296,8 @@ constant			::=	PARENPAREN		{: RESULT = new UnitConstant(); :}
 					|	NOT				{: RESULT = new Not(); :}
 
 					/* Tuple operators */
-					|	PROJECTION:proj	{: RESULT = new Projection(proj[0], proj[1]); :}
+					|	NUMBERSIGN PROJECTION:proj	
+					    {: RESULT = new Projection(proj[0], proj[1]); :}
 					|	FST				{: RESULT = new Fst(); :}
 					|	SND				{: RESULT = new Snd(); :}
 					

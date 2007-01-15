@@ -7,10 +7,13 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 
 public final class Objects extends Expression
 {
-  protected String [ ] identifiers ;
+  private String [ ] identifiers ;
 
 
   private Expression [ ] expressions ;
+
+
+  private String method ;
 
 
   public Objects ( String [ ] pIdentifiers , Expression [ ] pExpressions )
@@ -25,6 +28,36 @@ public final class Objects extends Expression
     }
     this.identifiers = pIdentifiers ;
     this.expressions = pExpressions ;
+    this.method = null ;
+  }
+
+
+  public Objects ( String [ ] pIdentifiers , Expression [ ] pExpressions ,
+      String pMethod )
+  {
+    if ( pExpressions == null )
+    {
+      throw new NullPointerException ( "expressions is null" ) ;
+    }
+    if ( pExpressions.length == 0 )
+    {
+      throw new IllegalArgumentException ( "expressions is empty" ) ;
+    }
+    this.identifiers = pIdentifiers ;
+    this.expressions = pExpressions ;
+    this.method = pMethod ;
+  }
+
+
+  public String [ ] getIdentifiers ( )
+  {
+    return this.identifiers ;
+  }
+
+
+  public String getIdentifiers ( int n )
+  {
+    return this.identifiers [ n ] ;
   }
 
 
@@ -37,6 +70,12 @@ public final class Objects extends Expression
   public Expression getExpressions ( int pIndex )
   {
     return this.expressions [ pIndex ] ;
+  }
+
+
+  public String getMethod ( )
+  {
+    return this.method ;
   }
 
 
@@ -53,7 +92,11 @@ public final class Objects extends Expression
     {
       tmpE [ n ] = this.expressions [ n ].clone ( ) ;
     }
-    return new Objects ( tmpI , tmpE ) ;
+    if ( this.method == null )
+    {
+      return new Objects ( tmpI , tmpE ) ;
+    }
+    return new Objects ( tmpI , tmpE , new String ( this.method ) ) ;
   }
 
 
@@ -84,6 +127,10 @@ public final class Objects extends Expression
         return false ;
       }
     }
+    if ( this.method != null ) 
+    {
+      return false ;
+    }
     return true ;
   }
 
@@ -111,6 +158,13 @@ public final class Objects extends Expression
     }
     builder.addText ( " " ) ;
     builder.addKeyword ( "end" ) ;
+    if ( this.method != null )
+    {
+      builder.addText ( " " ) ;
+      builder.addKeyword ( "#" ) ;
+      builder.addText ( " " ) ;
+      builder.addIdentifier ( this.method ) ;
+    }
     return builder ;
   }
 

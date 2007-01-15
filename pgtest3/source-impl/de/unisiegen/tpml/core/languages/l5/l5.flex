@@ -62,7 +62,7 @@ import de.unisiegen.tpml.core.languages.LanguageSymbol;
 		case LAMBDA: case LET: case REC: case IN: case IF: case THEN:
 		case ELSE: case WHILE: case DO: case AMPERAMPER: case BARBAR: 
 		
-		case OBJECT: case METHOD: case END:
+		case OBJECT: case METHOD: case END: case NUMBERSIGN:
 			return PrettyStyle.KEYWORD;
 			
 		case BOOL: case INT: case UNIT: case TYPEVARIABLE: case LIST:
@@ -187,7 +187,7 @@ LetterGreek		= [\u03b1-\u03c1\u03c3-\u03c9]
 	{Identifier}		{ return symbol("IDENTIFIER", IDENTIFIER, yytext()); }
 	
 	// projections
-	"#"					{ yyprojChar = yychar; yybegin(YYPROJARITY); }
+	"#"					{ yyprojChar = yychar; yybegin(YYPROJARITY); return symbol("NUMBERSIGN", NUMBERSIGN); }
 
 	// comments
 	"(*"				{ yycommentChar = yychar; yybegin(YYCOMMENT); }
@@ -196,24 +196,30 @@ LetterGreek		= [\u03b1-\u03c1\u03c3-\u03c9]
 	{WhiteSpace}		{ /* ignore */ }
 }
 
-<YYCOMMENT> {
+<YYCOMMENT> 
+{
 	<<EOF>>				{ yybegin(YYCOMMENTEOF); return symbol("COMMENT", COMMENT, yycommentChar, yychar, null); }
 	"*)"				{ yybegin(YYINITIAL); return symbol("COMMENT", COMMENT, yycommentChar, yychar + yylength(), null); }
 	.|\n				{ /* ignore */ }
 }
 
-<YYCOMMENTEOF> {
+<YYCOMMENTEOF> 
+{
 	<<EOF>>				{ throw new LanguageScannerException(yycommentChar, yychar, "Unexpected end of comment"); }
 }
 
-<YYPROJARITY> {
+<YYPROJARITY> 
+{
+	{Identifier}		{ yybegin(YYINITIAL); return symbol("IDENTIFIER", IDENTIFIER, yytext()); }
 	{Number}			{ yyprojArity = Integer.valueOf(yytext()); yybegin(YYPROJUNDERLINE); }
 	<<EOF>>				{ throw new LanguageScannerException(yyprojChar, yychar, "Unexpected end of projection"); }
 	\r|\n				{ throw new LanguageScannerException(yyprojChar, yychar, "Unexpected end of projection"); }
+	{WhiteSpace}		{ /* ignore */ }
 	.					{ throw new LanguageScannerException(yyprojChar, yychar + yylength(), "Unexpected character \"" + yytext() + "\" in projection"); }
 }
 
-<YYPROJUNDERLINE> {
+<YYPROJUNDERLINE> 
+{
 	"_"					{ yybegin(YYPROJINDEX); }
 	<<EOF>>				{ throw new LanguageScannerException(yyprojChar, yychar, "Unexpected end of projection"); }
 	\r|\n				{ throw new LanguageScannerException(yyprojChar, yychar, "Unexpected end of projection"); }
