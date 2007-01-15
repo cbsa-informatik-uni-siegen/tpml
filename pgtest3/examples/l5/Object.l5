@@ -1,1 +1,1 @@
-object method one = 1 method two = 1+1 method three = 1+1+1 end
+object method inc = (lambda x.x+1) method dec = (lambda x.x-1) method test = 1*2*3 end # inc
