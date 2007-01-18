@@ -52,7 +52,7 @@ import de.unisiegen.tpml.core.languages.LanguageSymbol;
 
 		case LAMBDA: case LET: case REC: case IN: case IF: case THEN: case ELSE:
 		case AMPERAMPER: case BARBAR:
-		case OBJECT: case METHOD: case END: case NUMBERSIGN:
+		case OBJECT: case END: case NUMBERSIGN: case ATTR: case METH: case SEMI:
 			return PrettyStyle.KEYWORD;
 
 			
@@ -121,9 +121,11 @@ LetterGreek		= [\u03b1-\u03c1\u03c3-\u03c9]
 	"else"				{ return symbol("ELSE", ELSE); }
 	
 	"object"			{ return symbol("OBJECT", OBJECT); }
-	"method"			{ return symbol("METHOD", METHOD); }
 	"end"				{ return symbol("END", END); }
 	"#"					{ return symbol("NUMBERSIGN", NUMBERSIGN); }
+	"attr"				{ return symbol("ATTR", ATTR); }
+	"meth"				{ return symbol("METH", METH); }
+	";"					{ return symbol("SEMI", SEMI); }
 	
 	// constants
 	"()"				{ return symbol("PARENPAREN", PARENPAREN); }

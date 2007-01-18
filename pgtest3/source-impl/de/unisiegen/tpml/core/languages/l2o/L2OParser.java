@@ -13,7 +13,7 @@ import de.unisiegen.tpml.core.languages.LanguageScanner ;
  * 
  * @author Christian Fehler
  * @version $Rev$
- * @see de.unisiegen.tpml.core.languages.l5.L5AbstractParser
+ * @see de.unisiegen.tpml.core.languages.l2.L2AbstractParser
  */
 final class L2OParser extends L2OAbstractParser
 {
@@ -49,7 +49,8 @@ final class L2OParser extends L2OAbstractParser
     Symbol symbol = ( Symbol ) info ;
     if ( symbol.sym == EOF_sym ( ) )
     {
-      message = Messages.getString ( "Parser.0" ) ; //$NON-NLS-1$
+      throw new LanguageParserException ( Messages.getString ( "Parser.0" ) ,
+          symbol.left , symbol.right ) ;
     }
     throw new LanguageParserException ( message , symbol.left , symbol.right ) ;
   }

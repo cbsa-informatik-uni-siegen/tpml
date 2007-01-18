@@ -37,7 +37,9 @@ terminal			PARENPAREN;
 /* Keywords */
 terminal			LAMBDA, LET, REC, IN, IF, THEN, ELSE;
 terminal			TRUE, FALSE;
-terminal			OBJECT, METHOD, END, NUMBERSIGN;
+
+terminal			OBJECT, END, NUMBERSIGN;
+terminal			ATTR, METH, SEMI;
 
 /* Types */
 terminal			BOOL, INT, UNIT;
@@ -61,7 +63,9 @@ non terminal MonoType		type;
 non terminal MonoType		simple_type;
 
 non terminal ObjectExpr		objectexpr;
-non terminal IdExprPair[]	method_list;
+non terminal Row			row;
+non terminal Attr			attr;
+non terminal Meth			meth;
 
 
 /* Precedences, based on http://caml.inria.fr/pub/docs/manual-ocaml/manual015.html */
@@ -93,6 +97,8 @@ expr				::=	simple_expr:e
 					/* Message */
 					|	expr:e NUMBERSIGN IDENTIFIER:id
 						{: RESULT = new Message ( e , id ) ; :}
+					|	row:r NUMBERSIGN IDENTIFIER:id
+						{: RESULT = new Message ( r , id ) ; :}	
 							
 					/* Applications */
 					|	simple_expr:e simple_expr_list:l
@@ -207,27 +213,36 @@ simple_expr			::=	constant:c
 					|	LPAREN expr:e RPAREN
 						{: RESULT = e; :}
 					;
+					
+objectexpr			::= OBJECT row:r END
+						{: RESULT = new ObjectExpr (r); :}
+					;
+					
+row					::= attr:a
+						{: Row tmp = new Row ();
+						   tmp.addAttr (a);
+						   RESULT = tmp; :}
+					|	attr:a row:r
+						{: r.addAttr (a);
+						   RESULT = r; :}
+					|	meth:m
+						{: Row tmp = new Row ();
+						   tmp.addMeth (m);
+						   RESULT = tmp; :}
+					|	meth:m row:r
+						{: r.addMeth (m);
+						   RESULT = r; :}
+					;
 
-objectexpr			::= OBJECT method_list:ml END
-						{: String[] identifiers = new String[ml.length];
-						   Expression[] expressions = new Expression [ml.length];
-						   for (int n = 0 ; n < ml.length; n++)
-						   {
-						     identifiers[n]=ml[n].id;
-						     expressions[n]=ml[n].e;
-						   }
-						RESULT = new ObjectExpr (identifiers,expressions); :}
+attr				::=	ATTR IDENTIFIER:id EQUAL expr:e SEMI
+						{: RESULT = new Attr ( id , e ); :}
 					;
-					
-method_list			::=	method_list:ml METHOD IDENTIFIER:id EQUAL expr:e
-						{: RESULT = new IdExprPair [ml.length + 1];
-						   System.arraycopy(ml, 0, RESULT, 0, ml.length);
-						   RESULT[ml.length] = new IdExprPair(id,e); :}
-					|	METHOD IDENTIFIER:id EQUAL expr:e
-						{: RESULT = new IdExprPair [1];
-						   RESULT[0]=new IdExprPair(id,e); :}
+
+meth				::=	METH IDENTIFIER:id EQUAL expr:e SEMI
+						{: RESULT = new Meth ( id , e ); :}
 					;
-					
+
+
 /* for applications */
 simple_expr_list	::=	simple_expr:e
 						{: RESULT = new Expression[] { e }; :}
