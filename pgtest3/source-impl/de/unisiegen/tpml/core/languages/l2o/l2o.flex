@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.core.languages.l5;
+package de.unisiegen.tpml.core.languages.l2o;
 
 import java.io.Reader;
 
@@ -8,13 +8,13 @@ import de.unisiegen.tpml.core.languages.LanguageScannerException;
 import de.unisiegen.tpml.core.languages.LanguageSymbol;
 
 /**
- * This is the lexer class for L5.
+ * This is the lexer class for L2O.
  */
 %%
 
-%class L5Scanner
+%class L2OScanner
 %extends AbstractLanguageScanner
-%implements L5Terminals
+%implements L2OTerminals
 
 %function nextSymbol
 %type LanguageSymbol
@@ -33,12 +33,6 @@ import de.unisiegen.tpml.core.languages.LanguageSymbol;
 	/** The starting character position of the comment. */
 	private int yycommentChar = 0;
 	
-	/** The starting character position of the projection. */
-	private int yyprojChar = 0;
-	
-	/** The parsed arity of the projection. */
-	private Integer yyprojArity;
-
 	private LanguageSymbol symbol(String name, int id) {
 		return symbol(name, id, yychar, yychar + yylength(), yytext());
 	}
@@ -53,19 +47,16 @@ import de.unisiegen.tpml.core.languages.LanguageSymbol;
 		case COMMENT:
 			return PrettyStyle.COMMENT;
 
-		case TRUE: case FALSE: case NUMBER: case PARENPAREN: case MOD:
-		case COLONEQUAL: case REF: case FST: case SND: case PROJECTION:
-		case CONS: case IS_EMPTY: case HD: case TL: case BRACKETBRACKET:
-		case NOT:
+		case TRUE: case FALSE: case NUMBER: case PARENPAREN: case MOD: case NOT:
 			return PrettyStyle.CONSTANT;
 
-		case LAMBDA: case LET: case REC: case IN: case IF: case THEN:
-		case ELSE: case WHILE: case DO: case AMPERAMPER: case BARBAR: 
-		
+		case LAMBDA: case LET: case REC: case IN: case IF: case THEN: case ELSE:
+		case AMPERAMPER: case BARBAR:
 		case OBJECT: case METHOD: case END: case NUMBERSIGN:
 			return PrettyStyle.KEYWORD;
+
 			
-		case BOOL: case INT: case UNIT: case TYPEVARIABLE: case LIST:
+		case BOOL: case INT: case UNIT: case TYPEVARIABLE:
 			return PrettyStyle.TYPE;
 			
 		default:
@@ -90,7 +81,6 @@ LetterAX		= [a-x]
 LetterGreek		= [\u03b1-\u03c1\u03c3-\u03c9]
 
 %state YYCOMMENT, YYCOMMENTEOF
-%state YYPROJARITY, YYPROJUNDERLINE, YYPROJINDEX
 
 %%
 
@@ -109,17 +99,6 @@ LetterGreek		= [\u03b1-\u03c1\u03c3-\u03c9]
 	"<="				{ return symbol("LESSEQUAL", LESSEQUAL); }
 	">="				{ return symbol("GREATEREQUAL", GREATEREQUAL); }
 	
-	// tuple operators
-	"fst"				{ return symbol("FST", FST); }
-	"snd"				{ return symbol("SND", SND); }
-
-	// list operators
-	"cons"				{ return symbol("CONS", CONS); }
-	"is_empty"			{ return symbol("IS_EMPTY", IS_EMPTY); }
-	"hd"				{ return symbol("HD", HD); }
-	"tl"				{ return symbol("TL", TL); }
-	"::"				{ return symbol("COLONCOLON", COLONCOLON); }
-
 	// logical operators
 	"&&"				{ return symbol("AMPERAMPER", AMPERAMPER); }
 	"||"				{ return symbol("BARBAR", BARBAR); }
@@ -127,36 +106,27 @@ LetterGreek		= [\u03b1-\u03c1\u03c3-\u03c9]
 	
 	// interpunctation
 	"."					{ return symbol("DOT", DOT); }
-	","					{ return symbol("COMMA", COMMA); }
-	";"					{ return symbol("SEMI", SEMI); }
 	":"					{ return symbol("COLON", COLON); }
-	":="				{ return symbol("COLONEQUAL", COLONEQUAL); }
 	"("					{ return symbol("LPAREN", LPAREN); }
 	")"					{ return symbol("RPAREN", RPAREN); }
-	"["					{ return symbol("LBRACKET", LBRACKET); }
-	"]"					{ return symbol("RBRACKET", RBRACKET); }
-	"!"					{ return symbol("EXCLAMATION", EXCLAMATION); }
 	"->"|"\u2192"		{ return symbol("ARROW", ARROW); }
 	
 	// keywords
 	"lambda"|"\u03bb"	{ return symbol("LAMBDA", LAMBDA); }
 	"let"				{ return symbol("LET", LET); }
 	"rec"				{ return symbol("REC", REC); }
-	"ref"				{ return symbol("REF", REF); }
 	"in"				{ return symbol("IN", IN); }
 	"if"				{ return symbol("IF", IF); }
 	"then"				{ return symbol("THEN", THEN); }
 	"else"				{ return symbol("ELSE", ELSE); }
-	"while"				{ return symbol("WHILE", WHILE); }
-	"do"				{ return symbol("DO", DO); }
 	
 	"object"			{ return symbol("OBJECT", OBJECT); }
 	"method"			{ return symbol("METHOD", METHOD); }
 	"end"				{ return symbol("END", END); }
+	"#"					{ return symbol("NUMBERSIGN", NUMBERSIGN); }
 	
 	// constants
 	"()"				{ return symbol("PARENPAREN", PARENPAREN); }
-	"[]"				{ return symbol("BRACKETBRACKET", BRACKETBRACKET); }
 	"true"				{ return symbol("TRUE", TRUE); }
 	"false"				{ return symbol("FALSE", FALSE); }
 	
@@ -164,7 +134,6 @@ LetterGreek		= [\u03b1-\u03c1\u03c3-\u03c9]
 	"bool"				{ return symbol("BOOL", BOOL); }
 	"int"				{ return symbol("INT", INT); }
 	"unit"				{ return symbol("UNIT", UNIT); }
-	"list"				{ return symbol("LIST", LIST); }
 	"'"{LetterAX}		{ return symbol("TYPEVARIABLE", TYPEVARIABLE, (int)(yycharat(1) - 'a')); }
 	{LetterGreek}		{
 							int c = yycharat(0);
@@ -186,9 +155,6 @@ LetterGreek		= [\u03b1-\u03c1\u03c3-\u03c9]
 						}
 	{Identifier}		{ return symbol("IDENTIFIER", IDENTIFIER, yytext()); }
 	
-	// projections
-	"#"					{ yyprojChar = yychar; yybegin(YYPROJARITY); return symbol("NUMBERSIGN", NUMBERSIGN); }
-
 	// comments
 	"(*"				{ yycommentChar = yychar; yybegin(YYCOMMENT); }
 	
@@ -196,41 +162,14 @@ LetterGreek		= [\u03b1-\u03c1\u03c3-\u03c9]
 	{WhiteSpace}		{ /* ignore */ }
 }
 
-<YYCOMMENT> 
-{
+<YYCOMMENT> {
 	<<EOF>>				{ yybegin(YYCOMMENTEOF); return symbol("COMMENT", COMMENT, yycommentChar, yychar, null); }
 	"*)"				{ yybegin(YYINITIAL); return symbol("COMMENT", COMMENT, yycommentChar, yychar + yylength(), null); }
 	.|\n				{ /* ignore */ }
 }
 
-<YYCOMMENTEOF> 
-{
+<YYCOMMENTEOF> {
 	<<EOF>>				{ throw new LanguageScannerException(yycommentChar, yychar, "Unexpected end of comment"); }
-}
-
-<YYPROJARITY> 
-{
-	{Identifier}		{ yybegin(YYINITIAL); return symbol("IDENTIFIER", IDENTIFIER, yytext()); }
-	{Number}			{ yyprojArity = Integer.valueOf(yytext()); yybegin(YYPROJUNDERLINE); }
-	<<EOF>>				{ throw new LanguageScannerException(yyprojChar, yychar, "Unexpected end of projection"); }
-	\r|\n				{ throw new LanguageScannerException(yyprojChar, yychar, "Unexpected end of projection"); }
-	{WhiteSpace}		{ /* ignore */ }
-	.					{ throw new LanguageScannerException(yyprojChar, yychar + yylength(), "Unexpected character \"" + yytext() + "\" in projection"); }
-}
-
-<YYPROJUNDERLINE> 
-{
-	"_"					{ yybegin(YYPROJINDEX); }
-	<<EOF>>				{ throw new LanguageScannerException(yyprojChar, yychar, "Unexpected end of projection"); }
-	\r|\n				{ throw new LanguageScannerException(yyprojChar, yychar, "Unexpected end of projection"); }
-	.					{ throw new LanguageScannerException(yyprojChar, yychar + yylength(), "Unexpected character \"" + yytext() + "\" in projection"); }
-}
-
-<YYPROJINDEX> {
-	{Number}			{ yybegin(YYINITIAL); return symbol("PROJECTION", PROJECTION, yyprojChar, yychar + yylength(), new Integer[] { yyprojArity, Integer.valueOf(yytext()) }); }
-	<<EOF>>				{ throw new LanguageScannerException(yyprojChar, yychar, "Unexpected end of projection"); }
-	\r|\n				{ throw new LanguageScannerException(yyprojChar, yychar, "Unexpected end of projection"); }
-	.					{ throw new LanguageScannerException(yyprojChar, yychar + yylength(), "Unexpected character \"" + yytext() + "\" in projection"); }
 }
 
 .|\n					{ throw new LanguageScannerException(yychar, yychar + yylength(), "Syntax error on token \"" + yytext() + "\""); }

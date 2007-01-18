@@ -1,33 +1,34 @@
-package de.unisiegen.tpml.core.languages.l5 ;
+package de.unisiegen.tpml.core.languages.l2o ;
 
 
 import java.text.MessageFormat ;
 import java_cup.runtime.Symbol ;
 import de.unisiegen.tpml.core.Messages ;
 import de.unisiegen.tpml.core.languages.LanguageParserException ;
-import de.unisiegen.tpml.core.languages.LanguageTypeScanner ;
+import de.unisiegen.tpml.core.languages.LanguageScanner ;
 
 
 /**
- * The type parser class for the <code>L5</code> language.
+ * The parser class for the <code>L2O</code> language.
  * 
  * @author Christian Fehler
  * @version $Rev$
- * @see de.unisiegen.tpml.core.languages.l5.L5AbstractTypeParser
+ * @see de.unisiegen.tpml.core.languages.l5.L5AbstractParser
  */
-final class L5TypeParser extends L5AbstractTypeParser
+final class L2OParser extends L2OAbstractParser
 {
   //
   // Constructor (package)
   //
   /**
-   * Allocates a new <code>L5TypeParser</code> that operates on tokens from
-   * the specified <code>scanner</code>.
+   * Allocates a new <code>L2OParser</code> that operates on tokens from the
+   * specified <code>scanner</code>.
    * 
-   * @param scanner the {@link LanguageTypeScanner} to query the tokens from.
+   * @param scanner the {@link de.unisiegen.tpml.core.languages.LanguageScanner}
+   *          to query tokens from.
    * @throws NullPointerException if <code>scanner</code> is <code>null</code>.
    */
-  L5TypeParser ( LanguageTypeScanner scanner )
+  L2OParser ( LanguageScanner scanner )
   {
     super ( scanner ) ;
   }

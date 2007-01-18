@@ -5,7 +5,7 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 
 
-public final class Objects extends Expression
+public final class ObjectExpr extends Expression
 {
   private String [ ] identifiers ;
 
@@ -16,7 +16,7 @@ public final class Objects extends Expression
   private String method ;
 
 
-  public Objects ( String [ ] pIdentifiers , Expression [ ] pExpressions )
+  public ObjectExpr ( String [ ] pIdentifiers , Expression [ ] pExpressions )
   {
     if ( pExpressions == null )
     {
@@ -32,7 +32,7 @@ public final class Objects extends Expression
   }
 
 
-  public Objects ( String [ ] pIdentifiers , Expression [ ] pExpressions ,
+  public ObjectExpr ( String [ ] pIdentifiers , Expression [ ] pExpressions ,
       String pMethod )
   {
     if ( pExpressions == null )
@@ -80,7 +80,7 @@ public final class Objects extends Expression
 
 
   @ Override
-  public Objects clone ( )
+  public ObjectExpr clone ( )
   {
     String [ ] tmpI = new String [ this.identifiers.length ] ;
     Expression [ ] tmpE = new Expression [ this.expressions.length ] ;
@@ -94,14 +94,14 @@ public final class Objects extends Expression
     }
     if ( this.method == null )
     {
-      return new Objects ( tmpI , tmpE ) ;
+      return new ObjectExpr ( tmpI , tmpE ) ;
     }
-    return new Objects ( tmpI , tmpE , new String ( this.method ) ) ;
+    return new ObjectExpr ( tmpI , tmpE , new String ( this.method ) ) ;
   }
 
 
   @ Override
-  public Objects substitute ( String pID , Expression pExpression )
+  public ObjectExpr substitute ( String pID , Expression pExpression )
   {
     String [ ] tmpI = new String [ this.identifiers.length ] ;
     Expression [ ] tmpE = new Expression [ this.expressions.length ] ;
@@ -113,7 +113,7 @@ public final class Objects extends Expression
     {
       tmpE [ n ] = this.expressions [ n ].substitute ( pID , pExpression ) ;
     }
-    return new Objects ( tmpI , tmpE ) ;
+    return new ObjectExpr ( tmpI , tmpE ) ;
   }
 
 
@@ -172,9 +172,9 @@ public final class Objects extends Expression
   @ Override
   public boolean equals ( Object pObject )
   {
-    if ( pObject instanceof Objects )
+    if ( pObject instanceof ObjectExpr )
     {
-      Objects other = ( Objects ) pObject ;
+      ObjectExpr other = ( ObjectExpr ) pObject ;
       return ( this.expressions.equals ( other.expressions ) ) ;
     }
     return false ;

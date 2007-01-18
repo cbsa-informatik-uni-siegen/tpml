@@ -1,25 +1,25 @@
-package de.unisiegen.tpml.core.languages.l5 ;
+package de.unisiegen.tpml.core.languages.l2o ;
 
 
 import de.unisiegen.tpml.core.expressions.Expression ;
-import de.unisiegen.tpml.core.expressions.Objects ;
-import de.unisiegen.tpml.core.languages.l4.L4SmallStepProofRuleSet ;
+import de.unisiegen.tpml.core.expressions.ObjectExpr ;
+import de.unisiegen.tpml.core.languages.l2.L2SmallStepProofRuleSet ;
 import de.unisiegen.tpml.core.smallstep.SmallStepProofContext ;
 
 
-public class L5SmallStepProofRuleSet extends L4SmallStepProofRuleSet
+public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
 {
-  public L5SmallStepProofRuleSet ( L5Language language )
+  public L2OSmallStepProofRuleSet ( L2OLanguage language )
   {
     super ( language ) ;
-    register ( L5Language.L5 , "OBJECT" , true ) ;
-    register ( L5Language.L5 , "METHOD-EVAL" , false ) ;
-    register ( L5Language.L5 , "METHOD-EXEC" , true ) ;
+    register ( L2OLanguage.L2O , "OBJECT" , true ) ;
+    register ( L2OLanguage.L2O , "METHOD-EVAL" , false ) ;
+    register ( L2OLanguage.L2O , "METHOD-EXEC" , true ) ;
   }
 
 
   public Expression evaluateObjects ( SmallStepProofContext context ,
-      Objects objects )
+      ObjectExpr objects )
   {
     // determine the sub expressions
     Expression [ ] expressions = objects.getExpressions ( ) ;
@@ -55,9 +55,9 @@ public class L5SmallStepProofRuleSet extends L4SmallStepProofRuleSet
         }
         if ( objects.getMethod ( ) == null )
         {
-          return new Objects ( tmpID , newExpressions ) ;
+          return new ObjectExpr ( tmpID , newExpressions ) ;
         }
-        return new Objects ( tmpID , newExpressions , new String ( objects
+        return new ObjectExpr ( tmpID , newExpressions , new String ( objects
             .getMethod ( ) ) ) ;
       }
     }
