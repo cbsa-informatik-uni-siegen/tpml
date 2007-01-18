@@ -2,10 +2,10 @@ package de.unisiegen.tpml.graphics.outline ;
 
 
 import java.awt.Color ;
+import java.lang.reflect.InvocationTargetException ;
+import java.lang.reflect.Method ;
 import de.unisiegen.tpml.core.expressions.BinaryOperator ;
 import de.unisiegen.tpml.core.expressions.Expression ;
-import de.unisiegen.tpml.core.expressions.Identifier ;
-import de.unisiegen.tpml.core.expressions.MultiLet ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyCharIterator ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStyle ;
@@ -160,6 +160,12 @@ public final class OutlineNode
 
 
   /**
+   * Get the caption of an {@link Expression}.
+   */
+  private static final String GETCAPTION = "getCaption" ; //$NON-NLS-1$
+
+
+  /**
    * Sets the binding value. Selected {@link Identifier} and bindings should be
    * highlighted in higher nodes.
    * 
@@ -289,6 +295,29 @@ public final class OutlineNode
   public OutlineNode ( Expression pExpression , OutlineUnbound pOutlineUnbound )
   {
     this.description = pExpression.getClass ( ).getSimpleName ( ) ;
+    for ( Method method : pExpression.getClass ( ).getMethods ( ) )
+    {
+      if ( GETCAPTION.equals ( method.getName ( ) ) )
+      {
+        try
+        {
+          this.description = ( String ) method.invoke ( pExpression ,
+              new Object [ 0 ] ) ;
+        }
+        catch ( IllegalArgumentException e )
+        {
+          // Do nothing
+        }
+        catch ( IllegalAccessException e )
+        {
+          // Do nothing
+        }
+        catch ( InvocationTargetException e )
+        {
+          // Do nothing
+        }
+      }
+    }
     this.expressionString = pExpression.toPrettyString ( ).toString ( ) ;
     this.expression = pExpression ;
     this.startIndex = - 1 ;

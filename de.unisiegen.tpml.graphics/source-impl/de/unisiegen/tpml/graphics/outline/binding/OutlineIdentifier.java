@@ -4,7 +4,6 @@ package de.unisiegen.tpml.graphics.outline.binding ;
 import java.util.ArrayList ;
 import java.util.Enumeration ;
 import de.unisiegen.tpml.core.expressions.Expression ;
-import de.unisiegen.tpml.core.expressions.Identifier ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyCharIterator ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStyle ;
 

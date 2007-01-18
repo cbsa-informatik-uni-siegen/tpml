@@ -3,7 +3,6 @@ package de.unisiegen.tpml.graphics.outline ;
 
 import javax.swing.JPanel ;
 import de.unisiegen.tpml.core.expressions.Expression ;
-import de.unisiegen.tpml.graphics.outline.ui.OutlineUI ;
 import de.unisiegen.tpml.graphics.outline.util.OutlinePreferences ;
 
 

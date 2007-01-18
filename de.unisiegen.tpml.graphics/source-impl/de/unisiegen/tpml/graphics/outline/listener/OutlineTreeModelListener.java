@@ -5,7 +5,6 @@ import javax.swing.event.TreeModelEvent ;
 import javax.swing.event.TreeModelListener ;
 import de.unisiegen.tpml.core.ExpressionProofModel ;
 import de.unisiegen.tpml.core.bigstep.BigStepProofModel ;
-import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.smallstep.SmallStepProofModel ;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel ;
 import de.unisiegen.tpml.graphics.outline.Outline ;

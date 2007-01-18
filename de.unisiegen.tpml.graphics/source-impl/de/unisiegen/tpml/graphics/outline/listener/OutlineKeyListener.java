@@ -4,7 +4,6 @@ package de.unisiegen.tpml.graphics.outline.listener ;
 import java.awt.event.KeyEvent ;
 import java.awt.event.KeyListener ;
 import javax.swing.tree.DefaultMutableTreeNode ;
-import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.graphics.outline.OutlineNode ;
 import de.unisiegen.tpml.graphics.outline.ui.OutlineUI ;
 import de.unisiegen.tpml.graphics.outline.util.OutlineClipboard ;
