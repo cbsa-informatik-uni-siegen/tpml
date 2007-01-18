@@ -1,10 +1,5 @@
-#Sat Dec 10 15:07:38 CET 2005
+#Thu Jan 18 22:24:56 CET 2007
 eclipse.preferences.version=1
-formatter_settings_version=8
+formatter_settings_version=10
 internal.default.compliance=default
-org.eclipse.jdt.ui.exception.name=e
-org.eclipse.jdt.ui.gettersetter.use.is=true
-org.eclipse.jdt.ui.javadoc=true
-org.eclipse.jdt.ui.keywordthis=true
-org.eclipse.jdt.ui.overrideannotation=true
-org.eclipse.jdt.ui.text.custom_code_templates=<?xml version\="1.0" encoding\="UTF-8"?>\n<templates/>
+org.eclipse.jdt.ui.text.custom_code_templates=<?xml version\="1.0" encoding\="UTF-8"?><templates/>
