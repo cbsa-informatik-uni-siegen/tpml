@@ -20,7 +20,7 @@
 	<taskdef name="jflex" classname="JFlex.anttask.JFlexTask" classpath="${libdir}/JFlex-1.4.1.jar" />
 	
 	<target name="generate-clean">
-		<delete dir="${generateddir}/de/unisiegen/tpml/core/languages/l2o" />
+		<delete dir="${generateddir}/de/unisiegen/tpml/core/languages" />
 	</target>
 		
 	<target name="l2o" description="Generates lexer and parser for L2O">
