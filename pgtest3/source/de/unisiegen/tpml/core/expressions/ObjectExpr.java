@@ -52,6 +52,13 @@ public final class ObjectExpr extends Expression
 
 
   @ Override
+  public boolean isValue ( )
+  {
+    return this.row.isValue ( ) ;
+  }
+
+
+  @ Override
   public int hashCode ( )
   {
     return this.row.hashCode ( ) ;
@@ -73,9 +80,11 @@ public final class ObjectExpr extends Expression
         this , PRIO_OBJECT ) ;
     builder.addKeyword ( "object" ) ;
     builder.addText ( " " ) ;
+    builder.addBreak ( ) ;
     builder.addBuilder ( this.row
         .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_OBJECT_E ) ;
     builder.addText ( " " ) ;
+    builder.addBreak ( ) ;
     builder.addKeyword ( "end" ) ;
     return builder ;
   }

@@ -62,10 +62,11 @@ non terminal IdTypePair		id_type_pair;		/* (id:type) or id */
 non terminal MonoType		type;
 non terminal MonoType		simple_type;
 
-non terminal ObjectExpr		objectexpr;
+non terminal ObjectExpr		object_expr;
 non terminal Row			row;
 non terminal Attr			attr;
 non terminal Meth			meth;
+non terminal CurriedMeth	curried_meth;
 
 
 /* Precedences, based on http://caml.inria.fr/pub/docs/manual-ocaml/manual015.html */
@@ -91,7 +92,7 @@ expr				::=	simple_expr:e
 						{: RESULT = e; :}
 					
 					/* ObjectExpr */
-					|	objectexpr:o
+					|	object_expr:o
 						{: RESULT = o; :}
 					
 					/* Message */
@@ -214,7 +215,7 @@ simple_expr			::=	constant:c
 						{: RESULT = e; :}
 					;
 					
-objectexpr			::= OBJECT row:r END
+object_expr			::= OBJECT row:r END
 						{: RESULT = new ObjectExpr (r); :}
 					;
 					
@@ -232,6 +233,13 @@ row					::= attr:a
 					|	meth:m row:r
 						{: r.addMeth (m);
 						   RESULT = r; :}
+					|	curried_meth:cm
+						{: Row tmp = new Row ();
+						   tmp.addCurriedMeth (cm);
+						   RESULT = tmp; :}
+					|	curried_meth:cm row:r
+						{: r.addCurriedMeth (cm);
+						   RESULT = r; :}
 					;
 
 attr				::=	ATTR IDENTIFIER:id EQUAL expr:e SEMI
@@ -240,6 +248,17 @@ attr				::=	ATTR IDENTIFIER:id EQUAL expr:e SEMI
 
 meth				::=	METH IDENTIFIER:id EQUAL expr:e SEMI
 						{: RESULT = new Meth ( id , e ); :}
+					;
+
+curried_meth		::=	METH IDENTIFIER:id id_type_list:itl EQUAL expr:e SEMI
+						{: String[] identifiers = new String[itl.length];
+						   MonoType[] types = new MonoType[itl.length];
+						   for (int n = 0; n < itl.length; n++) 
+						   {
+						     identifiers[n] = itl[n].id;
+						     types[n] = itl[n].tau;
+						   }
+						   RESULT = new CurriedMeth ( id , identifiers , e ); :}
 					;
 
 

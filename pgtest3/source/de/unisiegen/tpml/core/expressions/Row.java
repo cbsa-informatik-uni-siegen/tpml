@@ -38,8 +38,8 @@ public final class Row extends Expression
   {
     Expression [ ] tmp = new Expression [ this.expressions.length + 1 ] ;
     System
-        .arraycopy ( this.expressions , 0 , tmp , 0 , this.expressions.length ) ;
-    tmp [ this.expressions.length ] = pAttr ;
+        .arraycopy ( this.expressions , 0 , tmp , 1 , this.expressions.length ) ;
+    tmp [ 0 ] = pAttr ;
     this.expressions = tmp ;
   }
 
@@ -48,8 +48,18 @@ public final class Row extends Expression
   {
     Expression [ ] tmp = new Expression [ this.expressions.length + 1 ] ;
     System
-        .arraycopy ( this.expressions , 0 , tmp , 0 , this.expressions.length ) ;
-    tmp [ this.expressions.length ] = pMeth ;
+        .arraycopy ( this.expressions , 0 , tmp , 1 , this.expressions.length ) ;
+    tmp [ 0 ] = pMeth ;
+    this.expressions = tmp ;
+  }
+
+
+  public void addCurriedMeth ( CurriedMeth pCurriedMeth )
+  {
+    Expression [ ] tmp = new Expression [ this.expressions.length + 1 ] ;
+    System
+        .arraycopy ( this.expressions , 0 , tmp , 1 , this.expressions.length ) ;
+    tmp [ 0 ] = pCurriedMeth ;
     this.expressions = tmp ;
   }
 
@@ -58,18 +68,32 @@ public final class Row extends Expression
   public Row clone ( )
   {
     Row tmp = new Row ( ) ;
-    for ( int i = 0 ; i < this.expressions.length ; i ++ )
+    for ( Expression e : this.expressions )
     {
-      if ( this.expressions [ i ] instanceof Attr )
+      if ( e instanceof Attr )
       {
-        tmp.addAttr ( ( ( Attr ) this.expressions [ i ] ).clone ( ) ) ;
+        tmp.addAttr ( ( ( Attr ) e ).clone ( ) ) ;
       }
       else
       {
-        tmp.addMeth ( ( ( Meth ) this.expressions [ i ] ).clone ( ) ) ;
+        tmp.addMeth ( ( ( Meth ) e ).clone ( ) ) ;
       }
     }
     return tmp ;
+  }
+
+
+  @ Override
+  public boolean isValue ( )
+  {
+    for ( Expression e : this.expressions )
+    {
+      if ( ( e instanceof Attr ) && ( ! ( ( Attr ) e ).isValue ( ) ) )
+      {
+        return false ;
+      }
+    }
+    return true ;
   }
 
 
@@ -115,7 +139,11 @@ public final class Row extends Expression
       builder.addBuilder ( this.expressions [ i ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
           PRIO_OBJECT_E ) ;
-      builder.addText ( " " ) ;
+      if ( i != this.expressions.length - 1 )
+      {
+        builder.addText ( " " ) ;
+        builder.addBreak ( ) ;
+      }
     }
     return builder ;
   }

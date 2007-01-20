@@ -1,1 +1,1 @@
-object method one = 1 method test = let x = 5 in x*x end # test
+object attr a = 4 ; meth inc x = x+2 ; attr b = 2+2 ; end

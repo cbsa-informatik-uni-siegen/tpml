@@ -57,6 +57,13 @@ public class Meth extends Expression
 
 
   @ Override
+  public boolean isValue ( )
+  {
+    return this.expression.isValue ( ) ;
+  }
+
+
+  @ Override
   public int hashCode ( )
   {
     return this.name.hashCode ( ) + this.expression.hashCode ( ) ;

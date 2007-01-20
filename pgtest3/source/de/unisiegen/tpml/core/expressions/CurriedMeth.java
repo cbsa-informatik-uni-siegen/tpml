@@ -5,21 +5,34 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 
 
-public class Attr extends Expression
+public class CurriedMeth extends Expression
 {
-  private String identifier ;
+  private String name ;
+
+
+  private String [ ] identifiers ;
 
 
   private Expression expression ;
 
 
-  public Attr ( String pIdentifier , Expression pExpression )
+  public CurriedMeth ( String pName , String [ ] pIdentifiers ,
+      Expression pExpression )
   {
+    if ( pName == null )
+    {
+      throw new NullPointerException ( "name is null" ) ;
+    }
+    if ( pIdentifiers == null )
+    {
+      throw new NullPointerException ( "identifiers is null" ) ;
+    }
     if ( pExpression == null )
     {
-      throw new NullPointerException ( "attr is null" ) ;
+      throw new NullPointerException ( "expression is null" ) ;
     }
-    this.identifier = pIdentifier ;
+    this.name = pName ;
+    this.identifiers = pIdentifiers ;
     this.expression = pExpression ;
   }
 
@@ -30,26 +43,27 @@ public class Attr extends Expression
   }
 
 
-  public String getIdentifier ( )
+  public String getName ( )
   {
-    return this.identifier ;
+    return this.name ;
   }
 
 
   @ Override
-  public Attr clone ( )
+  public CurriedMeth clone ( )
   {
-    return new Attr ( this.identifier , this.expression.clone ( ) ) ;
+    return new CurriedMeth ( this.name , this.identifiers.clone ( ) ,
+        this.expression.clone ( ) ) ;
   }
 
 
   @ Override
   public boolean equals ( Object pObject )
   {
-    if ( pObject instanceof Attr )
+    if ( pObject instanceof CurriedMeth )
     {
-      Attr other = ( Attr ) pObject ;
-      return ( ( this.identifier.equals ( other.identifier ) ) && ( this.expression
+      CurriedMeth other = ( CurriedMeth ) pObject ;
+      return ( ( this.name.equals ( other.name ) ) && ( this.expression
           .equals ( other.expression ) ) ) ;
     }
     return false ;
@@ -66,15 +80,15 @@ public class Attr extends Expression
   @ Override
   public int hashCode ( )
   {
-    return this.identifier.hashCode ( ) + this.expression.hashCode ( ) ;
+    return this.name.hashCode ( ) + this.expression.hashCode ( ) ;
   }
 
 
   @ Override
   public Expression substitute ( String pID , Expression pExpression )
   {
-    return new Attr ( this.identifier , this.expression.substitute ( pID ,
-        pExpression ) ) ;
+    return new CurriedMeth ( this.name , this.identifiers.clone ( ) ,
+        this.expression.substitute ( pID , pExpression ) ) ;
   }
 
 
@@ -84,9 +98,14 @@ public class Attr extends Expression
   {
     PrettyStringBuilder builder = pPrettyStringBuilderFactory.newBuilder (
         this , PRIO_OBJECT ) ;
-    builder.addKeyword ( "attr" ) ;
+    builder.addKeyword ( "meth" ) ;
     builder.addText ( " " ) ;
-    builder.addIdentifier ( this.identifier ) ;
+    builder.addIdentifier ( this.name ) ;
+    for ( String id : this.identifiers )
+    {
+      builder.addText ( " " ) ;
+      builder.addIdentifier ( id ) ;
+    }
     builder.addText ( " = " ) ;
     builder.addBuilder ( this.expression
         .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_OBJECT_E ) ;
