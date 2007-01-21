@@ -1,29 +1,39 @@
-package de.unisiegen.tpml.core.expressions;
+package de.unisiegen.tpml.core.expressions ;
+
 
 /**
- * Abstract base class for expression classes, whose instances are always values,
- * for example {@link de.unisiegen.tpml.core.expressions.Lambda} expressions.
- *
+ * Abstract base class for expression classes, whose instances are always
+ * values, for example {@link de.unisiegen.tpml.core.expressions.Lambda}
+ * expressions.
+ * 
  * @author Benedikt Meurer
  * @version $Rev$
- * 
  * @see de.unisiegen.tpml.core.expressions.Expression
  */
-public abstract class Value extends Expression {
+public abstract class Value extends Expression
+{
   //
   // Primitives
   //
-
   /**
    * {@inheritDoc}
-   *
-   * The implementation in the <code>Value</code> always returns <code>true</code>
-   * and cannot be overwritten by derived classes.
+   */
+  @ Override
+  public String getCaption ( )
+  {
+    return "Value" ; //$NON-NLS-1$
+  }
+
+
+  /**
+   * {@inheritDoc} The implementation in the <code>Value</code> always returns
+   * <code>true</code> and cannot be overwritten by derived classes.
    * 
    * @see de.unisiegen.tpml.core.expressions.Expression#isValue()
    */
-  @Override
-  public final boolean isValue() {
-    return true;
+  @ Override
+  public final boolean isValue ( )
+  {
+    return true ;
   }
 }

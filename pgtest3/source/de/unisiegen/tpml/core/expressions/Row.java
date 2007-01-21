@@ -22,6 +22,16 @@ public final class Row extends Expression
   }
 
 
+  /**
+   * {@inheritDoc}
+   */
+  @ Override
+  public String getCaption ( )
+  {
+    return "Row" ; //$NON-NLS-1$
+  }
+
+
   public Expression [ ] getExpressions ( )
   {
     return this.expressions ;

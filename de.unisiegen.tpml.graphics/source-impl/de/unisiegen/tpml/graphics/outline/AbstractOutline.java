@@ -388,8 +388,8 @@ public final class AbstractOutline implements Outline
         binary.toString ( ) , e1.toPrettyString ( ).toString ( ).length ( ) ) ;
     int end = start + binary.toString ( ).length ( ) - 1 ;
     DefaultMutableTreeNode node1 = new DefaultMutableTreeNode (
-        new OutlineNode ( binary , binary.getClass ( ).getSimpleName ( ) ,
-            binary.toString ( ) , start , end , null , this.outlineUnbound ) ) ;
+        new OutlineNode ( binary , binary.toString ( ) , start , end , null ,
+            this.outlineUnbound ) ) ;
     node.add ( node1 ) ;
     DefaultMutableTreeNode ex2 = checkExpression ( e2 ) ;
     OutlineNode node2 = ( OutlineNode ) ex2.getUserObject ( ) ;

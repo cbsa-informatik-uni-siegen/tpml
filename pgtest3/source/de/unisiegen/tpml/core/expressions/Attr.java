@@ -24,6 +24,16 @@ public class Attr extends Expression
   }
 
 
+  /**
+   * {@inheritDoc}
+   */
+  @ Override
+  public String getCaption ( )
+  {
+    return "Attribute" ; //$NON-NLS-1$
+  }
+
+
   public Expression getE ( )
   {
     return this.expression ;

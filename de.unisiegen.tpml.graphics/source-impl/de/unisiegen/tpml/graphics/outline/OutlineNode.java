@@ -2,8 +2,6 @@ package de.unisiegen.tpml.graphics.outline ;
 
 
 import java.awt.Color ;
-import java.lang.reflect.InvocationTargetException ;
-import java.lang.reflect.Method ;
 import de.unisiegen.tpml.core.expressions.BinaryOperator ;
 import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation ;
@@ -160,12 +158,6 @@ public final class OutlineNode
 
 
   /**
-   * Get the caption of an {@link Expression}.
-   */
-  private static final String GETCAPTION = "getCaption" ; //$NON-NLS-1$
-
-
-  /**
    * Sets the binding value. Selected {@link Identifier} and bindings should be
    * highlighted in higher nodes.
    * 
@@ -294,32 +286,9 @@ public final class OutlineNode
    */
   public OutlineNode ( Expression pExpression , OutlineUnbound pOutlineUnbound )
   {
-    this.description = pExpression.getClass ( ).getSimpleName ( ) ;
-    for ( Method method : pExpression.getClass ( ).getMethods ( ) )
-    {
-      if ( GETCAPTION.equals ( method.getName ( ) ) )
-      {
-        try
-        {
-          this.description = ( String ) method.invoke ( pExpression ,
-              new Object [ 0 ] ) ;
-        }
-        catch ( IllegalArgumentException e )
-        {
-          // Do nothing
-        }
-        catch ( IllegalAccessException e )
-        {
-          // Do nothing
-        }
-        catch ( InvocationTargetException e )
-        {
-          // Do nothing
-        }
-      }
-    }
     this.expressionString = pExpression.toPrettyString ( ).toString ( ) ;
     this.expression = pExpression ;
+    this.description = pExpression.getCaption ( ) ;
     this.startIndex = - 1 ;
     this.endIndex = - 1 ;
     this.outlineBinding = null ;
@@ -333,7 +302,6 @@ public final class OutlineNode
    * This constructor initializes the values and loads the description.
    * 
    * @param pExpression The {@link Expression} repressented by this node.
-   * @param pDescription The description of this node.
    * @param pExpressionString The {@link Expression} as a <code>String</code>.
    * @param pStartIndex The start index of the {@link Identifier}.
    * @param pEndIndex The end index of the {@link Identifier}.
@@ -341,12 +309,12 @@ public final class OutlineNode
    * @param pOutlineUnbound The {@link OutlineUnbound} which repressents the
    *          unbound {@link Identifier}s in all nodes
    */
-  public OutlineNode ( Expression pExpression , String pDescription ,
-      String pExpressionString , int pStartIndex , int pEndIndex ,
-      OutlineBinding pOutlineBinding , OutlineUnbound pOutlineUnbound )
+  public OutlineNode ( Expression pExpression , String pExpressionString ,
+      int pStartIndex , int pEndIndex , OutlineBinding pOutlineBinding ,
+      OutlineUnbound pOutlineUnbound )
   {
     this.expression = pExpression ;
-    this.description = pDescription ;
+    this.description = pExpression.getCaption ( ) ;
     this.expressionString = pExpressionString ;
     this.startIndex = pStartIndex ;
     this.endIndex = pEndIndex ;

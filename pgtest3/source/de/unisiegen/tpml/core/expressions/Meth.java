@@ -24,6 +24,16 @@ public class Meth extends Expression
   }
 
 
+  /**
+   * {@inheritDoc}
+   */
+  @ Override
+  public String getCaption ( )
+  {
+    return "Method" ; //$NON-NLS-1$
+  }
+
+
   public Expression getE ( )
   {
     return this.expression ;

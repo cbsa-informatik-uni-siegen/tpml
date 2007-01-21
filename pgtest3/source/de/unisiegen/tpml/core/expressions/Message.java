@@ -24,6 +24,16 @@ public final class Message extends Expression
   }
 
 
+  /**
+   * {@inheritDoc}
+   */
+  @ Override
+  public String getCaption ( )
+  {
+    return "Message" ; //$NON-NLS-1$
+  }
+
+
   public String getIdentifier ( )
   {
     return this.identifier ;

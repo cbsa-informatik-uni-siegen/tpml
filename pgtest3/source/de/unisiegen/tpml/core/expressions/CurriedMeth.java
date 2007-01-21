@@ -37,6 +37,16 @@ public class CurriedMeth extends Expression
   }
 
 
+  /**
+   * {@inheritDoc}
+   */
+  @ Override
+  public String getCaption ( )
+  {
+    return "Curried-Method" ; //$NON-NLS-1$
+  }
+
+
   public Expression getE ( )
   {
     return this.expression ;

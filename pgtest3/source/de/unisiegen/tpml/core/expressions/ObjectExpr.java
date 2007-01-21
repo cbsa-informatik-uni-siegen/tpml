@@ -20,9 +20,13 @@ public final class ObjectExpr extends Expression
   }
 
 
+  /**
+   * {@inheritDoc}
+   */
+  @ Override
   public String getCaption ( )
   {
-    return "Object" ;
+    return "Object" ; //$NON-NLS-1$
   }
 
 
