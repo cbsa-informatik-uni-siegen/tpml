@@ -43,6 +43,18 @@ public class CurriedMeth extends Expression
   }
 
 
+  public String [ ] getIdentifiers ( )
+  {
+    return this.identifiers ;
+  }
+
+
+  public String getIdentifiers ( int pIndex )
+  {
+    return this.identifiers [ pIndex ] ;
+  }
+
+
   public String getName ( )
   {
     return this.name ;
