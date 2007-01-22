@@ -10,12 +10,6 @@ public final class Row extends Expression
   private Expression [ ] expressions ;
 
 
-  public Row ( )
-  {
-    this.expressions = new Expression [ 0 ] ;
-  }
-
-
   public Row ( Expression [ ] pExpressions )
   {
     this.expressions = pExpressions ;
@@ -44,52 +38,10 @@ public final class Row extends Expression
   }
 
 
-  public void addAttr ( Attr pAttr )
-  {
-    Expression [ ] tmp = new Expression [ this.expressions.length + 1 ] ;
-    System
-        .arraycopy ( this.expressions , 0 , tmp , 1 , this.expressions.length ) ;
-    tmp [ 0 ] = pAttr ;
-    this.expressions = tmp ;
-  }
-
-
-  public void addMeth ( Meth pMeth )
-  {
-    Expression [ ] tmp = new Expression [ this.expressions.length + 1 ] ;
-    System
-        .arraycopy ( this.expressions , 0 , tmp , 1 , this.expressions.length ) ;
-    tmp [ 0 ] = pMeth ;
-    this.expressions = tmp ;
-  }
-
-
-  public void addCurriedMeth ( CurriedMeth pCurriedMeth )
-  {
-    Expression [ ] tmp = new Expression [ this.expressions.length + 1 ] ;
-    System
-        .arraycopy ( this.expressions , 0 , tmp , 1 , this.expressions.length ) ;
-    tmp [ 0 ] = pCurriedMeth ;
-    this.expressions = tmp ;
-  }
-
-
   @ Override
   public Row clone ( )
   {
-    Row tmp = new Row ( ) ;
-    for ( Expression e : this.expressions )
-    {
-      if ( e instanceof Attr )
-      {
-        tmp.addAttr ( ( ( Attr ) e ).clone ( ) ) ;
-      }
-      else
-      {
-        tmp.addMeth ( ( ( Meth ) e ).clone ( ) ) ;
-      }
-    }
-    return tmp ;
+    return new Row ( this.expressions.clone ( ) ) ;
   }
 
 

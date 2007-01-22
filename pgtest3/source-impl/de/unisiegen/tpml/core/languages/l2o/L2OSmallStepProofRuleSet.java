@@ -4,6 +4,7 @@ package de.unisiegen.tpml.core.languages.l2o ;
 import de.unisiegen.tpml.core.expressions.Attr ;
 import de.unisiegen.tpml.core.expressions.CurriedMeth ;
 import de.unisiegen.tpml.core.expressions.Expression ;
+import de.unisiegen.tpml.core.expressions.Message ;
 import de.unisiegen.tpml.core.expressions.Meth ;
 import de.unisiegen.tpml.core.expressions.ObjectExpr ;
 import de.unisiegen.tpml.core.expressions.Row ;
@@ -16,10 +17,19 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
   public L2OSmallStepProofRuleSet ( L2OLanguage language )
   {
     super ( language ) ;
+    // Obj
     register ( L2OLanguage.L2O , "OBJ-EVAL" , false ) ; //$NON-NLS-1$
+    register ( L2OLanguage.L2O , "OBJ-SEND" , true ) ; //$NON-NLS-1$
+    // Attr
     register ( L2OLanguage.L2O , "ATTR-EVAL" , false ) ; //$NON-NLS-1$
-    register ( L2OLanguage.L2O , "ATTR-RIGHT" , true ) ; //$NON-NLS-1$
-    register ( L2OLanguage.L2O , "METH-RIGHT" , true ) ; //$NON-NLS-1$
+    register ( L2OLanguage.L2O , "ATTR-RIGHT" , false ) ; //$NON-NLS-1$
+    // Meth
+    register ( L2OLanguage.L2O , "METH-RIGHT" , false ) ; //$NON-NLS-1$
+    // Send
+    register ( L2OLanguage.L2O , "SEND-EVAL" , false ) ; //$NON-NLS-1$  
+    register ( L2OLanguage.L2O , "SEND-ATTR" , true ) ; //$NON-NLS-1$
+    register ( L2OLanguage.L2O , "SEND-SKIP" , true ) ; //$NON-NLS-1$
+    register ( L2OLanguage.L2O , "SEND-EXEC" , true ) ; //$NON-NLS-1$
   }
 
 
@@ -33,6 +43,45 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
       return row ;
     }
     return new ObjectExpr ( ( Row ) row ) ;
+  }
+
+
+  public Expression evaluateMessage ( SmallStepProofContext pContext ,
+      Message pMessage )
+  {
+    if ( ! pMessage.getE ( ).isValue ( ) )
+    {
+      pContext.addProofStep ( getRuleByName ( "SEND-EVAL" ) , pMessage ) ;
+      Expression e = evaluate ( pContext , pMessage.getE ( ) ) ;
+      if ( e.isException ( ) )
+      {
+        return e ;
+      }
+      return new Message ( e , pMessage.getIdentifier ( ) ) ;
+    }
+    if ( pMessage.getE ( ) instanceof ObjectExpr )
+    {
+      pContext.addProofStep ( getRuleByName ( "OBJ-SEND" ) , pMessage ) ;
+      ObjectExpr o = ( ObjectExpr ) pMessage.getE ( ) ;
+      Row r = ( Row ) o.getE ( ) ;
+      Expression newRow = r.substitute ( "self" , o.clone ( ) ) ;
+      return new Message ( newRow , pMessage.getIdentifier ( ) ) ;
+    }
+    if ( ( pMessage.getE ( ) instanceof Row )
+        && ( ( ( Row ) pMessage.getE ( ) ).getExpressions ( 0 ) instanceof Attr ) )
+    {
+      Row r = ( Row ) pMessage.getE ( ) ;
+      Attr a = ( Attr ) r.getExpressions ( 0 ) ;
+      pContext.addProofStep ( getRuleByName ( "SEND-ATTR" ) , a ) ;
+      Expression [ ] newE = new Expression [ r.getExpressions ( ).length - 1 ] ;
+      for ( int i = 0 ; i < newE.length ; i ++ )
+      {
+        newE [ i ] = r.getExpressions ( i + 1 ).substitute (
+            a.getIdentifier ( ) , a.getE ( ) ) ;
+      }
+      return new Message ( new Row ( newE ) , pMessage.getIdentifier ( ) ) ;
+    }
+    return pMessage ;
   }
 
 

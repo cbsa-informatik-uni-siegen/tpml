@@ -38,8 +38,8 @@ terminal			PARENPAREN;
 terminal			LAMBDA, LET, REC, IN, IF, THEN, ELSE;
 terminal			TRUE, FALSE;
 
-terminal			OBJECT, END, NUMBERSIGN;
-terminal			ATTR, METH, SEMI;
+terminal			OBJECT, END, NUMBERSIGN, SELF;
+terminal			ATTR, METH, SEMI, LCURLYBRACE, RCURLYBRACE , COMMA;
 
 /* Types */
 terminal			BOOL, INT, UNIT;
@@ -63,10 +63,13 @@ non terminal MonoType		type;
 non terminal MonoType		simple_type;
 
 non terminal ObjectExpr		object_expr;
+non terminal DuplicatedRow	duplicated_row;
+non terminal Message		message;
 non terminal Row			row;
 non terminal Attr			attr;
 non terminal Meth			meth;
 non terminal CurriedMeth	curried_meth;
+non terminal IdExprPair[]	id_expr_list;
 
 
 /* Precedences, based on http://caml.inria.fr/pub/docs/manual-ocaml/manual015.html */
@@ -91,15 +94,15 @@ precedence right	NUMBERSIGN;
 expr				::=	simple_expr:e
 						{: RESULT = e; :}
 					
-					/* ObjectExpr */
+					/* Object */
 					|	object_expr:o
 						{: RESULT = o; :}
-					
-					/* Message */
-					|	expr:e NUMBERSIGN IDENTIFIER:id
-						{: RESULT = new Message ( e , id ) ; :}
-					|	row:r NUMBERSIGN IDENTIFIER:id
-						{: RESULT = new Message ( r , id ) ; :}	
+					|	SELF:s
+						{: RESULT = new Self (); :}
+					|	message:m
+						{: RESULT = m; :}
+					|   duplicated_row:dr
+						{: RESULT = dr; :}
 							
 					/* Applications */
 					|	simple_expr:e simple_expr_list:l
@@ -219,27 +222,48 @@ object_expr			::= OBJECT row:r END
 						{: RESULT = new ObjectExpr (r); :}
 					;
 					
+duplicated_row		::= LCURLYBRACE LESS id_expr_list:iel GREATER RCURLYBRACE
+						{: Expression [] tmpE = new Expression [iel.length];
+						   String [] tmpI = new String [iel.length];
+						   for ( int i = 0 ; i < iel.length ; i++ )
+						   {
+						     tmpE [i] = iel [i].e;
+						     tmpI [i] = iel [i].id;
+						   }
+						   RESULT = new DuplicatedRow ( tmpI , tmpE ); :}
+					;
+					
+message				::= expr:e NUMBERSIGN IDENTIFIER:id
+						{: RESULT = new Message ( e , id ) ; :}
+					;
+					
 row					::= attr:a
-						{: Row tmp = new Row ();
-						   tmp.addAttr (a);
-						   RESULT = tmp; :}
+						{: Expression [] e = new Expression [1];
+						   e [0] = a;
+						   RESULT = new Row (e); :}
 					|	attr:a row:r
-						{: r.addAttr (a);
-						   RESULT = r; :}
+						{: Expression [ ] e = new Expression [ r.getExpressions().length + 1 ] ;
+    					   System.arraycopy ( r.getExpressions() , 0 , e , 1 , r.getExpressions().length ) ;
+    					   e [0] = a ;
+						   RESULT = new Row (e); :}
 					|	meth:m
-						{: Row tmp = new Row ();
-						   tmp.addMeth (m);
-						   RESULT = tmp; :}
+						{: Expression [] e = new Expression [1];
+						   e [0] = m;
+						   RESULT = new Row (e); :}
 					|	meth:m row:r
-						{: r.addMeth (m);
-						   RESULT = r; :}
+						{: Expression [ ] e = new Expression [ r.getExpressions().length + 1 ] ;
+    					   System.arraycopy ( r.getExpressions() , 0 , e , 1 , r.getExpressions().length ) ;
+    					   e [0] = m ;
+						   RESULT = new Row (e); :}
 					|	curried_meth:cm
-						{: Row tmp = new Row ();
-						   tmp.addCurriedMeth (cm);
-						   RESULT = tmp; :}
+						{: Expression [] e = new Expression [1];
+						   e [0] = cm;
+						   RESULT = new Row (e); :}
 					|	curried_meth:cm row:r
-						{: r.addCurriedMeth (cm);
-						   RESULT = r; :}
+						{: Expression [ ] e = new Expression [ r.getExpressions().length + 1 ] ;
+    					   System.arraycopy ( r.getExpressions() , 0 , e , 1 , r.getExpressions().length ) ;
+    					   e [0] = cm ;
+						   RESULT = new Row (e); :}
 					;
 
 attr				::=	ATTR IDENTIFIER:id EQUAL expr:e SEMI
@@ -261,6 +285,16 @@ curried_meth		::=	METH IDENTIFIER:id id_type_list:itl EQUAL expr:e SEMI
 						   RESULT = new CurriedMeth ( id , identifiers , e ); :}
 					;
 
+id_expr_list		::= IDENTIFIER:id EQUAL expr:e
+						{: IdExprPair [] list = new IdExprPair [1];
+						   list [0] = new IdExprPair (id, e);
+						   RESULT = list; :}
+					|	IDENTIFIER:id EQUAL expr:e COMMA id_expr_list:iel
+						{: IdExprPair [] list = new IdExprPair [iel.length+1];
+						   System.arraycopy(iel, 0, list, 1, iel.length);
+						   list [0] = new IdExprPair (id, e);
+						   RESULT = list; :}
+					;
 
 /* for applications */
 simple_expr_list	::=	simple_expr:e

@@ -15,7 +15,7 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
  * @version $Rev$
  * @see de.unisiegen.tpml.core.expressions.Value
  */
-public final class Identifier extends Value
+public class Identifier extends Value
 {
   //
   // Attributes

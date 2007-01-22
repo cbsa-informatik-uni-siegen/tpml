@@ -65,7 +65,7 @@ public final class Message extends Expression
   @ Override
   public boolean isValue ( )
   {
-    return this.expression.isValue ( ) ;
+    return false ;
   }
 
 
