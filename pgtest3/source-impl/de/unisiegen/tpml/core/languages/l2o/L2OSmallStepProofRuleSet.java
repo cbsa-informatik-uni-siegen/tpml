@@ -89,8 +89,22 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
       Meth m = ( Meth ) r.getExpressions ( 0 ) ;
       if ( pMessage.getIdentifier ( ).equals ( m.getName ( ) ) )
       {
-        pContext.addProofStep ( getRuleByName ( "SEND-EXEC" ) , m ) ;
-        return new Identifier ( "TODO" ) ;
+        boolean definedLater = false ;
+        for ( int i = 1 ; i < r.getExpressions ( ).length ; i ++ )
+        {
+          if ( ( r.getExpressions ( i ) instanceof Meth )
+              && ( ( ( Meth ) r.getExpressions ( i ) ).getName ( )
+                  .equals ( pMessage.getIdentifier ( ) ) ) )
+          {
+            definedLater = true ;
+            break ;
+          }
+        }
+        if ( ! definedLater )
+        {
+          pContext.addProofStep ( getRuleByName ( "SEND-EXEC" ) , m ) ;
+          return new Identifier ( "TODO" ) ;
+        }
       }
       pContext.addProofStep ( getRuleByName ( "SEND-SKIP" ) , m ) ;
       Expression [ ] newE = new Expression [ r.getExpressions ( ).length - 1 ] ;
