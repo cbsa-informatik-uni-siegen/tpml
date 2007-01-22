@@ -4,6 +4,7 @@ package de.unisiegen.tpml.core.languages.l2o ;
 import de.unisiegen.tpml.core.expressions.Attr ;
 import de.unisiegen.tpml.core.expressions.CurriedMeth ;
 import de.unisiegen.tpml.core.expressions.Expression ;
+import de.unisiegen.tpml.core.expressions.Identifier ;
 import de.unisiegen.tpml.core.expressions.Message ;
 import de.unisiegen.tpml.core.expressions.Meth ;
 import de.unisiegen.tpml.core.expressions.ObjectExpr ;
@@ -78,6 +79,24 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
       {
         newE [ i ] = r.getExpressions ( i + 1 ).substitute (
             a.getIdentifier ( ) , a.getE ( ) ) ;
+      }
+      return new Message ( new Row ( newE ) , pMessage.getIdentifier ( ) ) ;
+    }
+    if ( ( pMessage.getE ( ) instanceof Row )
+        && ( ( ( Row ) pMessage.getE ( ) ).getExpressions ( 0 ) instanceof Meth ) )
+    {
+      Row r = ( Row ) pMessage.getE ( ) ;
+      Meth m = ( Meth ) r.getExpressions ( 0 ) ;
+      if ( pMessage.getIdentifier ( ).equals ( m.getName ( ) ) )
+      {
+        pContext.addProofStep ( getRuleByName ( "SEND-EXEC" ) , m ) ;
+        return new Identifier ( "TODO" ) ;
+      }
+      pContext.addProofStep ( getRuleByName ( "SEND-SKIP" ) , m ) ;
+      Expression [ ] newE = new Expression [ r.getExpressions ( ).length - 1 ] ;
+      for ( int i = 0 ; i < newE.length ; i ++ )
+      {
+        newE [ i ] = r.getExpressions ( i + 1 ).clone ( ) ;
       }
       return new Message ( new Row ( newE ) , pMessage.getIdentifier ( ) ) ;
     }
