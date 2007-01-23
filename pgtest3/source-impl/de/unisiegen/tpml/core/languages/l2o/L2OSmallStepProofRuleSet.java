@@ -146,6 +146,10 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
             return e ;
           }
         }
+        if ( r.getExpressions ( ).length == 1 )
+        {
+          return pMessage ;
+        }
         pContext.addProofStep ( getRuleByName ( "SEND-SKIP" ) , cm ) ;
         Expression [ ] newE = new Expression [ r.getExpressions ( ).length - 1 ] ;
         for ( int i = 0 ; i < newE.length ; i ++ )
