@@ -4,7 +4,7 @@ package de.unisiegen.tpml.core.languages.l2o ;
 import de.unisiegen.tpml.core.expressions.Attr ;
 import de.unisiegen.tpml.core.expressions.CurriedMeth ;
 import de.unisiegen.tpml.core.expressions.Expression ;
-import de.unisiegen.tpml.core.expressions.Identifier ;
+import de.unisiegen.tpml.core.expressions.Lambda ;
 import de.unisiegen.tpml.core.expressions.Message ;
 import de.unisiegen.tpml.core.expressions.Meth ;
 import de.unisiegen.tpml.core.expressions.ObjectExpr ;
@@ -68,51 +68,105 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
       Expression newRow = r.substitute ( "self" , o.clone ( ) ) ;
       return new Message ( newRow , pMessage.getIdentifier ( ) ) ;
     }
-    if ( ( pMessage.getE ( ) instanceof Row )
-        && ( ( ( Row ) pMessage.getE ( ) ).getExpressions ( 0 ) instanceof Attr ) )
+    if ( pMessage.getE ( ) instanceof Row )
     {
-      Row r = ( Row ) pMessage.getE ( ) ;
-      Attr a = ( Attr ) r.getExpressions ( 0 ) ;
-      pContext.addProofStep ( getRuleByName ( "SEND-ATTR" ) , a ) ;
-      Expression [ ] newE = new Expression [ r.getExpressions ( ).length - 1 ] ;
-      for ( int i = 0 ; i < newE.length ; i ++ )
+      Expression firstExpr = ( ( Row ) pMessage.getE ( ) ).getExpressions ( 0 ) ;
+      if ( firstExpr instanceof Meth )
       {
-        newE [ i ] = r.getExpressions ( i + 1 ).substitute (
-            a.getIdentifier ( ) , a.getE ( ) ) ;
-      }
-      return new Message ( new Row ( newE ) , pMessage.getIdentifier ( ) ) ;
-    }
-    if ( ( pMessage.getE ( ) instanceof Row )
-        && ( ( ( Row ) pMessage.getE ( ) ).getExpressions ( 0 ) instanceof Meth ) )
-    {
-      Row r = ( Row ) pMessage.getE ( ) ;
-      Meth m = ( Meth ) r.getExpressions ( 0 ) ;
-      if ( pMessage.getIdentifier ( ).equals ( m.getName ( ) ) )
-      {
-        boolean definedLater = false ;
-        for ( int i = 1 ; i < r.getExpressions ( ).length ; i ++ )
+        Row r = ( Row ) pMessage.getE ( ) ;
+        Meth m = ( Meth ) r.getExpressions ( 0 ) ;
+        if ( pMessage.getIdentifier ( ).equals ( m.getName ( ) ) )
         {
-          if ( ( r.getExpressions ( i ) instanceof Meth )
-              && ( ( ( Meth ) r.getExpressions ( i ) ).getName ( )
-                  .equals ( pMessage.getIdentifier ( ) ) ) )
+          boolean definedLater = false ;
+          for ( int i = 1 ; i < r.getExpressions ( ).length ; i ++ )
           {
-            definedLater = true ;
-            break ;
+            Expression tmp = r.getExpressions ( i ) ;
+            if ( ( tmp instanceof Meth )
+                && ( ( ( Meth ) tmp ).getName ( ).equals ( pMessage
+                    .getIdentifier ( ) ) ) )
+            {
+              definedLater = true ;
+              break ;
+            }
+            if ( ( tmp instanceof CurriedMeth )
+                && ( ( ( CurriedMeth ) tmp ).getName ( ).equals ( pMessage
+                    .getIdentifier ( ) ) ) )
+            {
+              definedLater = true ;
+              break ;
+            }
+          }
+          if ( ! definedLater )
+          {
+            pContext.addProofStep ( getRuleByName ( "SEND-EXEC" ) , m ) ;
+            return m.getE ( ) ;
           }
         }
-        if ( ! definedLater )
+        pContext.addProofStep ( getRuleByName ( "SEND-SKIP" ) , m ) ;
+        Expression [ ] newE = new Expression [ r.getExpressions ( ).length - 1 ] ;
+        for ( int i = 0 ; i < newE.length ; i ++ )
         {
-          pContext.addProofStep ( getRuleByName ( "SEND-EXEC" ) , m ) ;
-          return new Identifier ( "TODO" ) ;
+          newE [ i ] = r.getExpressions ( i + 1 ).clone ( ) ;
         }
+        return new Message ( new Row ( newE ) , pMessage.getIdentifier ( ) ) ;
       }
-      pContext.addProofStep ( getRuleByName ( "SEND-SKIP" ) , m ) ;
-      Expression [ ] newE = new Expression [ r.getExpressions ( ).length - 1 ] ;
-      for ( int i = 0 ; i < newE.length ; i ++ )
+      else if ( firstExpr instanceof CurriedMeth )
       {
-        newE [ i ] = r.getExpressions ( i + 1 ).clone ( ) ;
+        Row r = ( Row ) pMessage.getE ( ) ;
+        CurriedMeth cm = ( CurriedMeth ) r.getExpressions ( 0 ) ;
+        if ( pMessage.getIdentifier ( ).equals ( cm.getName ( ) ) )
+        {
+          boolean definedLater = false ;
+          for ( int i = 1 ; i < r.getExpressions ( ).length ; i ++ )
+          {
+            Expression tmp = r.getExpressions ( i ) ;
+            if ( ( tmp instanceof Meth )
+                && ( ( ( Meth ) tmp ).getName ( ).equals ( pMessage
+                    .getIdentifier ( ) ) ) )
+            {
+              definedLater = true ;
+              break ;
+            }
+            if ( ( tmp instanceof CurriedMeth )
+                && ( ( ( CurriedMeth ) tmp ).getName ( ).equals ( pMessage
+                    .getIdentifier ( ) ) ) )
+            {
+              definedLater = true ;
+              break ;
+            }
+          }
+          if ( ! definedLater )
+          {
+            pContext.addProofStep ( getRuleByName ( "SEND-EXEC" ) , cm ) ;
+            Expression e = cm.getE ( ) ;
+            for ( int i = cm.getIdentifiers ( ).length - 1 ; i >= 0 ; i -- )
+            {
+              e = new Lambda ( cm.getIdentifiers ( i ) , null , e ) ;
+            }
+            return e ;
+          }
+        }
+        pContext.addProofStep ( getRuleByName ( "SEND-SKIP" ) , cm ) ;
+        Expression [ ] newE = new Expression [ r.getExpressions ( ).length - 1 ] ;
+        for ( int i = 0 ; i < newE.length ; i ++ )
+        {
+          newE [ i ] = r.getExpressions ( i + 1 ).clone ( ) ;
+        }
+        return new Message ( new Row ( newE ) , pMessage.getIdentifier ( ) ) ;
       }
-      return new Message ( new Row ( newE ) , pMessage.getIdentifier ( ) ) ;
+      else if ( firstExpr instanceof Attr )
+      {
+        Row r = ( Row ) pMessage.getE ( ) ;
+        Attr a = ( Attr ) r.getExpressions ( 0 ) ;
+        pContext.addProofStep ( getRuleByName ( "SEND-ATTR" ) , a ) ;
+        Expression [ ] newE = new Expression [ r.getExpressions ( ).length - 1 ] ;
+        for ( int i = 0 ; i < newE.length ; i ++ )
+        {
+          newE [ i ] = r.getExpressions ( i + 1 ).substitute (
+              a.getIdentifier ( ) , a.getE ( ) ) ;
+        }
+        return new Message ( new Row ( newE ) , pMessage.getIdentifier ( ) ) ;
+      }
     }
     return pMessage ;
   }
