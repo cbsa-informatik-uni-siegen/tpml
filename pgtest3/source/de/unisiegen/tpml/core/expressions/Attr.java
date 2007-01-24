@@ -13,6 +13,9 @@ public class Attr extends Expression
   private Expression expression ;
 
 
+  private Row parentRow ;
+
+
   public Attr ( String pIdentifier , Expression pExpression )
   {
     if ( pExpression == null )
@@ -21,6 +24,12 @@ public class Attr extends Expression
     }
     this.identifier = pIdentifier ;
     this.expression = pExpression ;
+  }
+
+
+  public void parentRow ( Row pRow )
+  {
+    this.parentRow = pRow ;
   }
 
 
@@ -103,5 +112,11 @@ public class Attr extends Expression
     builder.addText ( " " ) ;
     builder.addKeyword ( ";" ) ;
     return builder ;
+  }
+
+
+  public Row returnParentRow ( )
+  {
+    return this.parentRow ;
   }
 }

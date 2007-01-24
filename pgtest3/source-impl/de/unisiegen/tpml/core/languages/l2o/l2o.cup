@@ -220,6 +220,8 @@ simple_expr			::=	constant:c
 					
 object_expr			::= OBJECT row:r END
 						{: RESULT = new ObjectExpr (r); :}
+					|	OBJECT LPAREN IDENTIFIER:id RPAREN row:r END
+						{: RESULT = new ObjectExpr (id, r); :}
 					;
 					
 duplicated_row		::= LCURLYBRACE LESS id_expr_list:iel GREATER RCURLYBRACE
@@ -275,14 +277,15 @@ meth				::=	METH IDENTIFIER:id EQUAL expr:e SEMI
 					;
 
 curried_meth		::=	METH IDENTIFIER:id id_type_list:itl EQUAL expr:e SEMI
-						{: String[] identifiers = new String[itl.length];
-						   MonoType[] types = new MonoType[itl.length];
+						{: String[] identifiers = new String[itl.length + 1];
+						   MonoType[] types = new MonoType[itl.length + 1 ];
 						   for (int n = 0; n < itl.length; n++) 
 						   {
-						     identifiers[n] = itl[n].id;
-						     types[n] = itl[n].tau;
+						     identifiers[n + 1] = itl[n].id;
+						     types[n + 1] = itl[n].tau;
 						   }
-						   RESULT = new CurriedMeth ( id , identifiers , e ); :}
+						   identifiers [0] = id ;
+						   RESULT = new CurriedMeth ( identifiers , e ); :}
 					;
 
 id_expr_list		::= IDENTIFIER:id EQUAL expr:e

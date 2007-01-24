@@ -10,12 +10,31 @@ public final class ObjectExpr extends Expression
   private Row row ;
 
 
+  private String identifier ;
+
+
   public ObjectExpr ( Row pRow )
   {
     if ( pRow == null )
     {
       throw new NullPointerException ( "row is null" ) ;
     }
+    this.row = pRow ;
+    this.identifier = null ;
+  }
+
+
+  public ObjectExpr ( String pIdentifier , Row pRow )
+  {
+    if ( pIdentifier == null )
+    {
+      throw new NullPointerException ( "identifier is null" ) ;
+    }
+    if ( pRow == null )
+    {
+      throw new NullPointerException ( "row is null" ) ;
+    }
+    this.identifier = pIdentifier ;
     this.row = pRow ;
   }
 
@@ -30,6 +49,12 @@ public final class ObjectExpr extends Expression
   }
 
 
+  public String getIdentifier ( )
+  {
+    return this.identifier ;
+  }
+
+
   public Expression getE ( )
   {
     return this.row ;
@@ -39,7 +64,11 @@ public final class ObjectExpr extends Expression
   @ Override
   public ObjectExpr clone ( )
   {
-    return new ObjectExpr ( this.row.clone ( ) ) ;
+    if ( this.identifier == null )
+    {
+      return new ObjectExpr ( this.row.clone ( ) ) ;
+    }
+    return new ObjectExpr ( this.identifier , this.row.clone ( ) ) ;
   }
 
 
@@ -49,7 +78,23 @@ public final class ObjectExpr extends Expression
     if ( pObject instanceof ObjectExpr )
     {
       ObjectExpr other = ( ObjectExpr ) pObject ;
-      return this.row.equals ( other.row ) ;
+      if ( ! this.row.equals ( other.row ) )
+      {
+        return false ;
+      }
+      if ( ( this.identifier == null ) && other.identifier != null )
+      {
+        return false ;
+      }
+      if ( ( this.identifier != null ) && other.identifier == null )
+      {
+        return false ;
+      }
+      if ( ( this.identifier == null ) && other.identifier == null )
+      {
+        return true ;
+      }
+      return this.identifier.equals ( other.identifier ) ;
     }
     return false ;
   }
@@ -65,7 +110,9 @@ public final class ObjectExpr extends Expression
   @ Override
   public int hashCode ( )
   {
-    return this.row.hashCode ( ) ;
+    return this.identifier == null ? this.row.hashCode ( ) : this.identifier
+        .hashCode ( )
+        + this.row.hashCode ( ) ;
   }
 
 
@@ -84,6 +131,12 @@ public final class ObjectExpr extends Expression
         this , PRIO_OBJECTEXPR ) ;
     builder.addKeyword ( "object" ) ;
     builder.addText ( " " ) ;
+    if ( this.identifier != null )
+    {
+      builder.addText ( "( " ) ;
+      builder.addIdentifier ( this.identifier ) ;
+      builder.addText ( " ) " ) ;
+    }
     builder.addBreak ( ) ;
     builder.addBuilder ( this.row
         .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,

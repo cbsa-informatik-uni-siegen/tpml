@@ -43,7 +43,8 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
     {
       return row ;
     }
-    return new ObjectExpr ( ( Row ) row ) ;
+    return pObjectExpr.getIdentifier ( ) == null ? new ObjectExpr ( ( Row ) row )
+        : new ObjectExpr ( pObjectExpr.getIdentifier ( ) , ( Row ) row ) ;
   }
 
 
@@ -75,22 +76,22 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
       {
         Row r = ( Row ) pMessage.getE ( ) ;
         Meth m = ( Meth ) r.getExpressions ( 0 ) ;
-        if ( pMessage.getIdentifier ( ).equals ( m.getName ( ) ) )
+        if ( pMessage.getIdentifier ( ).equals ( m.getIdentifier ( ) ) )
         {
           boolean definedLater = false ;
           for ( int i = 1 ; i < r.getExpressions ( ).length ; i ++ )
           {
             Expression tmp = r.getExpressions ( i ) ;
             if ( ( tmp instanceof Meth )
-                && ( ( ( Meth ) tmp ).getName ( ).equals ( pMessage
+                && ( ( ( Meth ) tmp ).getIdentifier ( ).equals ( pMessage
                     .getIdentifier ( ) ) ) )
             {
               definedLater = true ;
               break ;
             }
             if ( ( tmp instanceof CurriedMeth )
-                && ( ( ( CurriedMeth ) tmp ).getName ( ).equals ( pMessage
-                    .getIdentifier ( ) ) ) )
+                && ( ( ( CurriedMeth ) tmp ).getIdentifiers ( 0 )
+                    .equals ( pMessage.getIdentifier ( ) ) ) )
             {
               definedLater = true ;
               break ;
@@ -114,22 +115,22 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
       {
         Row r = ( Row ) pMessage.getE ( ) ;
         CurriedMeth cm = ( CurriedMeth ) r.getExpressions ( 0 ) ;
-        if ( pMessage.getIdentifier ( ).equals ( cm.getName ( ) ) )
+        if ( pMessage.getIdentifier ( ).equals ( cm.getIdentifiers ( 0 ) ) )
         {
           boolean definedLater = false ;
           for ( int i = 1 ; i < r.getExpressions ( ).length ; i ++ )
           {
             Expression tmp = r.getExpressions ( i ) ;
             if ( ( tmp instanceof Meth )
-                && ( ( ( Meth ) tmp ).getName ( ).equals ( pMessage
+                && ( ( ( Meth ) tmp ).getIdentifier ( ).equals ( pMessage
                     .getIdentifier ( ) ) ) )
             {
               definedLater = true ;
               break ;
             }
             if ( ( tmp instanceof CurriedMeth )
-                && ( ( ( CurriedMeth ) tmp ).getName ( ).equals ( pMessage
-                    .getIdentifier ( ) ) ) )
+                && ( ( ( CurriedMeth ) tmp ).getIdentifiers ( 0 )
+                    .equals ( pMessage.getIdentifier ( ) ) ) )
             {
               definedLater = true ;
               break ;
@@ -139,7 +140,7 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
           {
             pContext.addProofStep ( getRuleByName ( "SEND-EXEC" ) , cm ) ;
             Expression e = cm.getE ( ) ;
-            for ( int i = cm.getIdentifiers ( ).length - 1 ; i >= 0 ; i -- )
+            for ( int i = cm.getIdentifiers ( ).length - 1 ; i > 0 ; i -- )
             {
               e = new Lambda ( cm.getIdentifiers ( i ) , null , e ) ;
             }

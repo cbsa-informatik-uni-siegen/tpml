@@ -1,26 +1,37 @@
 package de.unisiegen.tpml.core.expressions ;
 
 
+import java.util.Set ;
+import java.util.TreeSet ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 
 
 public class Meth extends Expression
 {
-  private String name ;
+  private String identifier ;
 
 
   private Expression expression ;
 
 
-  public Meth ( String pName , Expression pExpression )
+  private Row parentRow ;
+
+
+  public Meth ( String pIdentifier , Expression pExpression )
   {
     if ( pExpression == null )
     {
       throw new NullPointerException ( "meth is null" ) ;
     }
-    this.name = pName ;
+    this.identifier = pIdentifier ;
     this.expression = pExpression ;
+  }
+
+
+  public void parentRow ( Row pRow )
+  {
+    this.parentRow = pRow ;
   }
 
 
@@ -40,16 +51,41 @@ public class Meth extends Expression
   }
 
 
-  public String getName ( )
+  public String getIdentifier ( )
   {
-    return this.name ;
+    return this.identifier ;
+  }
+
+
+  @ Override
+  public Set < String > free ( )
+  {
+    TreeSet < String > free = new TreeSet < String > ( ) ;
+    free.addAll ( this.expression.free ( ) ) ;
+    int index = 0 ;
+    while ( ! this.parentRow.getExpressions ( index ).equals ( this ) )
+    {
+      index ++ ;
+    }
+    for ( int i = 0 ; i < index ; i ++ )
+    {
+      if ( this.parentRow.getExpressions ( i ) instanceof Attr )
+      {
+        Attr attr = ( Attr ) this.parentRow.getExpressions ( i ) ;
+        if ( free.contains ( attr.getIdentifier ( ) ) )
+        {
+          free.remove ( attr.getIdentifier ( ) ) ;
+        }
+      }
+    }
+    return free ;
   }
 
 
   @ Override
   public Meth clone ( )
   {
-    return new Meth ( this.name , this.expression.clone ( ) ) ;
+    return new Meth ( this.identifier , this.expression.clone ( ) ) ;
   }
 
 
@@ -59,7 +95,7 @@ public class Meth extends Expression
     if ( pObject instanceof Meth )
     {
       Meth other = ( Meth ) pObject ;
-      return ( ( this.name.equals ( other.name ) ) && ( this.expression
+      return ( ( this.identifier.equals ( other.identifier ) ) && ( this.expression
           .equals ( other.expression ) ) ) ;
     }
     return false ;
@@ -76,14 +112,14 @@ public class Meth extends Expression
   @ Override
   public int hashCode ( )
   {
-    return this.name.hashCode ( ) + this.expression.hashCode ( ) ;
+    return this.identifier.hashCode ( ) + this.expression.hashCode ( ) ;
   }
 
 
   @ Override
   public Expression substitute ( String pID , Expression pExpression )
   {
-    return new Meth ( this.name , this.expression.substitute ( pID ,
+    return new Meth ( this.identifier , this.expression.substitute ( pID ,
         pExpression ) ) ;
   }
 
@@ -96,12 +132,18 @@ public class Meth extends Expression
         this , PRIO_METH ) ;
     builder.addKeyword ( "meth" ) ;
     builder.addText ( " " ) ;
-    builder.addIdentifier ( this.name ) ;
+    builder.addIdentifier ( this.identifier ) ;
     builder.addText ( " = " ) ;
     builder.addBuilder ( this.expression
         .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_METH_E ) ;
     builder.addText ( " " ) ;
     builder.addKeyword ( ";" ) ;
     return builder ;
+  }
+
+
+  public Row returnParentRow ( )
+  {
+    return this.parentRow ;
   }
 }

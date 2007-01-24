@@ -13,6 +13,21 @@ public final class Row extends Expression
   public Row ( Expression [ ] pExpressions )
   {
     this.expressions = pExpressions ;
+    for ( Expression e : this.expressions )
+    {
+      if ( e instanceof Attr )
+      {
+        ( ( Attr ) e ).parentRow ( this ) ;
+      }
+      if ( e instanceof Meth )
+      {
+        ( ( Meth ) e ).parentRow ( this ) ;
+      }
+      if ( e instanceof CurriedMeth )
+      {
+        ( ( CurriedMeth ) e ).parentRow ( this ) ;
+      }
+    }
   }
 
 

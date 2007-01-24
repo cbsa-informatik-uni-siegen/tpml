@@ -1,28 +1,25 @@
 package de.unisiegen.tpml.core.expressions ;
 
 
+import java.util.Set ;
+import java.util.TreeSet ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 
 
 public class CurriedMeth extends Expression
 {
-  private String name ;
-
-
   private String [ ] identifiers ;
 
 
   private Expression expression ;
 
 
-  public CurriedMeth ( String pName , String [ ] pIdentifiers ,
-      Expression pExpression )
+  private Row parentRow ;
+
+
+  public CurriedMeth ( String [ ] pIdentifiers , Expression pExpression )
   {
-    if ( pName == null )
-    {
-      throw new NullPointerException ( "name is null" ) ;
-    }
     if ( pIdentifiers == null )
     {
       throw new NullPointerException ( "identifiers is null" ) ;
@@ -31,9 +28,19 @@ public class CurriedMeth extends Expression
     {
       throw new NullPointerException ( "expression is null" ) ;
     }
-    this.name = pName ;
+    if ( pIdentifiers.length < 2 )
+    {
+      throw new IllegalArgumentException (
+          "identifiers must contain atleast two items" ) ;
+    }
     this.identifiers = pIdentifiers ;
     this.expression = pExpression ;
+  }
+
+
+  public void parentRow ( Row pRow )
+  {
+    this.parentRow = pRow ;
   }
 
 
@@ -65,17 +72,40 @@ public class CurriedMeth extends Expression
   }
 
 
-  public String getName ( )
+  @ Override
+  public Set < String > free ( )
   {
-    return this.name ;
+    TreeSet < String > free = new TreeSet < String > ( ) ;
+    free.addAll ( this.expression.free ( ) ) ;
+    int index = 0 ;
+    while ( ! this.parentRow.getExpressions ( index ).equals ( this ) )
+    {
+      index ++ ;
+    }
+    for ( int i = 0 ; i < index ; i ++ )
+    {
+      if ( this.parentRow.getExpressions ( i ) instanceof Attr )
+      {
+        Attr attr = ( Attr ) this.parentRow.getExpressions ( i ) ;
+        if ( free.contains ( attr.getIdentifier ( ) ) )
+        {
+          free.remove ( attr.getIdentifier ( ) ) ;
+        }
+      }
+    }
+    for ( int i = 1 ; i < this.identifiers.length ; i ++ )
+    {
+      free.remove ( this.identifiers [ i ] ) ;
+    }
+    return free ;
   }
 
 
   @ Override
   public CurriedMeth clone ( )
   {
-    return new CurriedMeth ( this.name , this.identifiers.clone ( ) ,
-        this.expression.clone ( ) ) ;
+    return new CurriedMeth ( this.identifiers.clone ( ) , this.expression
+        .clone ( ) ) ;
   }
 
 
@@ -85,7 +115,7 @@ public class CurriedMeth extends Expression
     if ( pObject instanceof CurriedMeth )
     {
       CurriedMeth other = ( CurriedMeth ) pObject ;
-      return ( ( this.name.equals ( other.name ) ) && ( this.expression
+      return ( ( this.identifiers.equals ( other.identifiers ) ) && ( this.expression
           .equals ( other.expression ) ) ) ;
     }
     return false ;
@@ -102,15 +132,15 @@ public class CurriedMeth extends Expression
   @ Override
   public int hashCode ( )
   {
-    return this.name.hashCode ( ) + this.expression.hashCode ( ) ;
+    return this.identifiers.hashCode ( ) + this.expression.hashCode ( ) ;
   }
 
 
   @ Override
   public Expression substitute ( String pID , Expression pExpression )
   {
-    return new CurriedMeth ( this.name , this.identifiers.clone ( ) ,
-        this.expression.substitute ( pID , pExpression ) ) ;
+    return new CurriedMeth ( this.identifiers.clone ( ) , this.expression
+        .substitute ( pID , pExpression ) ) ;
   }
 
 
@@ -121,8 +151,6 @@ public class CurriedMeth extends Expression
     PrettyStringBuilder builder = pPrettyStringBuilderFactory.newBuilder (
         this , PRIO_CURRIED_METH ) ;
     builder.addKeyword ( "meth" ) ;
-    builder.addText ( " " ) ;
-    builder.addIdentifier ( this.name ) ;
     for ( String id : this.identifiers )
     {
       builder.addText ( " " ) ;
@@ -135,5 +163,11 @@ public class CurriedMeth extends Expression
     builder.addText ( " " ) ;
     builder.addKeyword ( ";" ) ;
     return builder ;
+  }
+
+
+  public Row returnParentRow ( )
+  {
+    return this.parentRow ;
   }
 }
