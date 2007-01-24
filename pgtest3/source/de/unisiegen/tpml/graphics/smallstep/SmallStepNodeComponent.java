@@ -12,6 +12,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.prefs.Preferences;
 
 import javax.swing.JComponent;
 import javax.swing.JMenu;
@@ -38,6 +40,8 @@ import de.unisiegen.tpml.graphics.components.MenuGuessItem;
 import de.unisiegen.tpml.graphics.components.MenuGuessTreeItem;
 import de.unisiegen.tpml.graphics.components.MenuRuleItem;
 import de.unisiegen.tpml.graphics.components.MenuTranslateItem;
+import de.unisiegen.tpml.graphics.outline.AbstractOutline;
+import de.unisiegen.tpml.graphics.outline.ui.OutlineUI;
 
 /**
  * The graphical representation of a 
@@ -179,6 +183,9 @@ public class SmallStepNodeComponent extends JComponent {
    */
   private MouseMotionAdapter                        underlineRuleAdapter;
   
+  private  ArrayList <MenuRuleItem> last10Elements;
+  private Preferences preferences;
+  
   /**
    * Used internaly. When the underlining is cleared it will be done recursively over the entire tree.
    * It needs to be done in two times one time directed to the parent and one time directed to the
@@ -210,6 +217,9 @@ public class SmallStepNodeComponent extends JComponent {
                                  int                  spacing,
                                  boolean              advanced) {
     super ();
+    
+    last10Elements 			      			= new ArrayList();
+    
     this.proofNode                  = proofNode;
     
     this.proofModel                 = proofModel;
@@ -457,54 +467,271 @@ public class SmallStepNodeComponent extends JComponent {
    * @see SmallStepComponent#setAdvanced(boolean)
    */
   void setAdvanced(boolean advanced) {
-    // Fill the menu with menuitems
+    final int max = 10;
+  	// Fill the menu with menuitems
     
     ProofRule[] rules = this.proofModel.getRules();
-    JPopupMenu menu = new JPopupMenu (Messages.getString("Language.0")+ " " +rules[0].getGroup());
-    if (rules.length > 0) {
-      int group = rules[0].getGroup();
-      JMenu Smenu=new JMenu(Messages.getString("Language.0")+ " " +rules[0].getGroup());
-      for (ProofRule r : rules) {
-        if (((SmallStepProofRule)r).isAxiom() || !advanced) 
+    
+    //final JPopupMenu menu = new JPopupMenu (Messages.getString("Language.0")+ " " +rules[0].getGroup());
+    final JPopupMenu menu = new JPopupMenu ("L0");
+    
+    if (rules.length>15)
+    {
+      if (rules.length > 0) {
+      	
+      	
+      	//zunächst die letzen last10Elements einfügen
+      	preferences = Preferences.userNodeForPackage ( SmallStepNodeComponent.class ) ;
+        for (int i=max-1; i>=0; i--)
         {
-          if (r.getGroup() != group) {
-          	if(Smenu!=null)
-          	{
-          		menu.add(Smenu);
-          	}
-          	Smenu  = new JMenu (Messages.getString("Language.0")+ " " +r.getGroup());
-          	//menu.add(Smenu);
-            //menu.addSeparator();
-          }
-          //menu.add(new MenuRuleItem (r));
-          int anzahl = menu.getComponentCount();
-          //if ((anzahl > 1) && (menu.getComponent(anzahl-1) instanceof JMenu))
-					{
-          	System.out.println("Hier sollte er ins Menü einfügen...");
-          	//((JMenu) menu.getComponent()).add(new MenuRuleItem(r));
-          	MenuRuleItem tmp = new MenuRuleItem(r);
-          	ActionListener al = new ActionListener() {
-              public void actionPerformed( ActionEvent e ) {
-                System.out.println("ja, gedrückt");
-                menuItemActivated((JMenuItem)e.getSource());
-                
-              }
-            };
-          	tmp.addActionListener(al);
-          	
-          	Smenu.add(tmp);
-						
-					}
-          //else
-          {
-         // 	menu.add(new MenuRuleItem(r));
-          }
-          
-          group = r.getGroup();
+        	String name = preferences.get("rule"+i, "");
+        	if (name.equalsIgnoreCase(""))
+        	{
+        	
+        	}
+        	else
+        	{
+        		//Regel aus Regelsortiment suchen
+        		ProofRule[] allRules = proofModel.getRules();
+        		for (ProofRule a : allRules)
+        		{
+        			if (new MenuRuleItem(a).getLabel().equalsIgnoreCase(name))
+        			{
+        				last10Elements.add(new MenuRuleItem (a));
+        				menu.insert(new MenuRuleItem(a),0);
+        			}
+        		}
+        	}
         }
-        menu.add(Smenu);
-      }
+        
+        //Untermenüs bauen
+        int group = rules[0].getGroup();
+        menu.addSeparator();
+        //JMenu Smenu=new JMenu(Messages.getString("Language.0")+ " " +rules[0].getGroup());
+        JMenu Smenu;
+        if (rules[0].getGroup() == 0)
+        {
+        	 Smenu=new JMenu("L0");
+        }
+        else if (rules[0].getGroup() == 1)
+        {
+        	 Smenu=new JMenu("L1");
+        }
+        else if (rules[0].getGroup() == 2)
+        {
+        	 Smenu=new JMenu("L2");
+        }
+        else if ((rules[0].getGroup() == 3))
+        {
+        	 Smenu=new JMenu("L3");
+        }
+        else if ((rules[0].getGroup() == 4))
+        {
+        	 Smenu=new JMenu("L4");
+        }
+        else if (rules[0].getGroup() == 5)
+        {
+        	 Smenu=new JMenu("L2 O");
+        }
+        else
+        {
+        	 Smenu=new JMenu("andere Sprachen");
+        }
+        
+//        for (int i = 0; i<last10Elements.size(); i++)
+//        {
+//        	System.out.println("hinzufügen: "+i);
+//        	menu.add(last10Elements.get(i));
+//        }
+        for (final ProofRule r : rules) {
+          if (((SmallStepProofRule)r).isAxiom() || !advanced) 
+          {
+            if (r.getGroup() != group) {
+            	if(Smenu!=null)
+            	{
+            		menu.add(Smenu);
+            	}
+            	
+            	//Smenu  = new JMenu (Messages.getString("Language.0")+ " " +r.getGroup());
+            	if (r.getGroup() == 0)
+              {
+              	 Smenu=new JMenu("L0");
+              }
+              else if (r.getGroup() == 1)
+              {
+              	 Smenu=new JMenu("L1");
+              }
+              else if (r.getGroup() == 2)
+              {
+              	 Smenu=new JMenu("L2");
+              }
+              else if ((r.getGroup() == 3))
+              {
+              	 Smenu=new JMenu("L3");
+              }
+              else if ((r.getGroup() == 4))
+              {
+              	 Smenu=new JMenu("L4");
+              }
+              else if (r.getGroup() == 5)
+              {
+              	 Smenu=new JMenu("L2 O");
+              }
+              else
+              {
+              	 Smenu=new JMenu("andere Sprachen");
+              }
+            	//menu.add(Smenu);
+              //menu.addSeparator();
+            }
+            //menu.add(new MenuRuleItem (r));
+            int anzahl = menu.getComponentCount();
+            //if ((anzahl > 1) && (menu.getComponent(anzahl-1) instanceof JMenu))
+  					{
+            	//System.out.println("Hier sollte er ins Menü einfügen...");
+            	//((JMenu) menu.getComponent()).add(new MenuRuleItem(r));
+            	MenuRuleItem tmp = new MenuRuleItem(r);
+            	ActionListener al = new ActionListener() {
+                public void actionPerformed( ActionEvent e  ) {
+                  //System.out.println("ja, gedrückt");
+                  //Wir wollen uns merken, dass dieser Knopf gedrückt wurde...
+                	
+                  //zunächst die gespeciherten abholen
+                  
+                  if (last10Elements.size()<max)
+                  {
+                  	//e.get
+                    //menu.insert(last10Elements.get(0),0);
+                    //menu.add(last10Elements.get(0).getLabel());
+                    MenuRuleItem lastUsed = new MenuRuleItem(r);
+                    //Überprüfen, ob das Element schon bei den letzten ist...
+                    boolean isIn = false;
+                    for (int i= 0; i<max; i++)
+                    {
+                    	//if (last10Elements.contains(lastUsed))
+                    	int schleife = Math.min(max, last10Elements.size());
+                    	for (int j = 0; j<schleife; j++)
+                    	{
+                    		//System.out.println(last10Elements.size());
+                    		//MenuRuleItem tmp = last10Elements.get(j);
+                    		//String f1 = last10Elements.get(j).getLabel();
+                    		//String f2 = lastUsed.getLabel();
+                    		if (last10Elements.get(j).getLabel().equals(lastUsed.getLabel()))
+                    		{
+                    			isIn = true;
+                    		}
+                    	}
+                    }
+                    ActionListener al = new ActionListener() {
+                      public void actionPerformed( ActionEvent e  ) {
+                        menuItemActivated((JMenuItem)e.getSource());
+                        
+                      }
+                    };
+                    lastUsed.addActionListener(al);
+                    if (!isIn)
+                    	{
+                    		menu.insert(lastUsed,0);
+                    		last10Elements.add(0, lastUsed  );
+                    	}
+//                    else
+//                    {
+//                    	menu.remove(lastUsed);
+//                    	last10Elements.remove(lastUsed);
+//                    	menu.insert(lastUsed,0);
+//                  		last10Elements.add(0, lastUsed);
+//                    }
+                    
+                    //Jetzt noch alle in der Liste in die preferences schreiben
+                    for (int i = 0; i<last10Elements.size(); i++)
+                    {
+                    	//System.out.println(last10Elements.get(i).getLabel());
+                    	preferences.put( "rule"+i , last10Elements.get(i).getLabel() ) ;
+                    }
+                    //System.out.println(last10Elements.size());
+                  }
+                  else
+                  {
+                  	//System.out.println("es sollten entfernt werden");
+                  	MenuRuleItem lastUsed = new MenuRuleItem(r);
+                    ActionListener al = new ActionListener() {
+                      public void actionPerformed( ActionEvent e  ) {
+                        menuItemActivated((JMenuItem)e.getSource());
+                        
+                      }
+                    };
+                    lastUsed.addActionListener(al);
+                    boolean isIn = false;
+                    for (int i= 0; i<max; i++)
+                    {
+                    	//if (last10Elements.contains(lastUsed))
+                    	int schleife = Math.min(max, last10Elements.size());
+                    	for (int j = 0; j<schleife; j++)
+                    	{
+                    		if (last10Elements.get(j).getLabel().equals(lastUsed.getLabel()))
+                    		{
+                    			isIn = true;
+                    		}
+                    	}
+                    }
+                    if (!isIn)
+                    {
+                    	last10Elements.add(0, lastUsed  );
+                    	menu.insert(lastUsed,0);
+                    	last10Elements.remove(max);
+                      menu.remove(max);
+                    }
+//                    else
+//                    {
+//                    	last10Elements.remove(lastUsed);
+//                    	menu.remove(lastUsed);
+//                    	last10Elements.add(0, lastUsed  );
+//                    	menu.insert(lastUsed,0);
+//                    }
+                    //Jetzt noch alle in der Liste in die preferences schreiben
+                    for (int i = 0; i<max; i++)
+                    {
+                    	preferences.put( "rule"+i , last10Elements.get(i).getLabel() ) ;
+                    }
+                    //System.out.println(last10Elements.size());
+                  }
+                  
+                  menuItemActivated((JMenuItem)e.getSource());
+                  
+                }
+              };
+            	tmp.addActionListener(al);
+            	
+            	Smenu.add(tmp);
+  						
+  					}
+            //else
+            {
+           // 	menu.add(new MenuRuleItem(r));
+            }
+            
+            group = r.getGroup();
+          }
+          menu.add(Smenu);
+        }
+      }	
     }
+    else
+    {
+    	if (rules.length > 0) {
+        int group = rules[0].getGroup();
+        for (ProofRule r : rules) {
+          if (((SmallStepProofRule)r).isAxiom() || !advanced) {
+            if (r.getGroup() != group) {
+              menu.addSeparator();
+            }
+            menu.add(new MenuRuleItem (r));
+            group = r.getGroup();
+          }
+        }
+      }	
+    }
+    
     menu.addSeparator();
     menu.add(new MenuGuessItem());
     menu.add(new MenuGuessTreeItem());
