@@ -95,12 +95,11 @@ public final class Row extends Expression
       PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
     PrettyStringBuilder builder = pPrettyStringBuilderFactory.newBuilder (
-        this , PRIO_OBJECT ) ;
+        this , PRIO_ROW ) ;
     for ( int i = 0 ; i < this.expressions.length ; i ++ )
     {
       builder.addBuilder ( this.expressions [ i ]
-          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-          PRIO_OBJECT_E ) ;
+          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_ROW_E ) ;
       if ( i != this.expressions.length - 1 )
       {
         builder.addText ( " " ) ;

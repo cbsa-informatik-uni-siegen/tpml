@@ -133,7 +133,7 @@ public final class DuplicatedRow extends Expression
       PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
     PrettyStringBuilder builder = pPrettyStringBuilderFactory.newBuilder (
-        this , PRIO_OBJECT ) ;
+        this , PRIO_DUPLICATED_ROW ) ;
     builder.addKeyword ( "{" ) ;
     builder.addKeyword ( "<" ) ;
     builder.addText ( " " ) ;
@@ -143,7 +143,7 @@ public final class DuplicatedRow extends Expression
       builder.addText ( " = " ) ;
       builder.addBuilder ( this.expressions [ i ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-          PRIO_OBJECT_E ) ;
+          PRIO_DUPLICATED_ROW_E ) ;
       if ( i != this.expressions.length - 1 )
       {
         builder.addText ( ", " ) ;

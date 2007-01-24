@@ -81,12 +81,13 @@ public final class ObjectExpr extends Expression
       PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
     PrettyStringBuilder builder = pPrettyStringBuilderFactory.newBuilder (
-        this , PRIO_OBJECT ) ;
+        this , PRIO_OBJECTEXPR ) ;
     builder.addKeyword ( "object" ) ;
     builder.addText ( " " ) ;
     builder.addBreak ( ) ;
     builder.addBuilder ( this.row
-        .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_OBJECT_E ) ;
+        .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
+        PRIO_OBJECTEXPR_E ) ;
     builder.addText ( " " ) ;
     builder.addBreak ( ) ;
     builder.addKeyword ( "end" ) ;

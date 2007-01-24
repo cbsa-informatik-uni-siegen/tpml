@@ -93,13 +93,13 @@ public class Attr extends Expression
       PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
     PrettyStringBuilder builder = pPrettyStringBuilderFactory.newBuilder (
-        this , PRIO_OBJECT ) ;
+        this , PRIO_ATTR ) ;
     builder.addKeyword ( "attr" ) ;
     builder.addText ( " " ) ;
     builder.addIdentifier ( this.identifier ) ;
     builder.addText ( " = " ) ;
     builder.addBuilder ( this.expression
-        .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_OBJECT_E ) ;
+        .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_ATTR_E ) ;
     builder.addText ( " " ) ;
     builder.addKeyword ( ";" ) ;
     return builder ;

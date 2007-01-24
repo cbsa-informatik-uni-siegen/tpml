@@ -93,13 +93,13 @@ public class Meth extends Expression
       PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
     PrettyStringBuilder builder = pPrettyStringBuilderFactory.newBuilder (
-        this , PRIO_OBJECT ) ;
+        this , PRIO_METH ) ;
     builder.addKeyword ( "meth" ) ;
     builder.addText ( " " ) ;
     builder.addIdentifier ( this.name ) ;
     builder.addText ( " = " ) ;
     builder.addBuilder ( this.expression
-        .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_OBJECT_E ) ;
+        .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_METH_E ) ;
     builder.addText ( " " ) ;
     builder.addKeyword ( ";" ) ;
     return builder ;

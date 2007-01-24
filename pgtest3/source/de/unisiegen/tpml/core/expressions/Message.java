@@ -74,9 +74,11 @@ public final class Message extends Expression
       PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
     PrettyStringBuilder builder = pPrettyStringBuilderFactory.newBuilder (
-        this , PRIO_OBJECT ) ;
-    builder.addBuilder ( this.expression
-        .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_OBJECT_E ) ;
+        this , PRIO_MESSAGE ) ;
+    builder
+        .addBuilder ( this.expression
+            .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
+            PRIO_MESSAGE_E ) ;
     builder.addText ( " " ) ;
     builder.addKeyword ( "#" ) ;
     builder.addText ( " " ) ;
