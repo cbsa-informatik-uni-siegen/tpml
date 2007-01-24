@@ -1,1 +1,1 @@
-object attr a = 4 ; meth add = a + b + 2 ; attr b = 2+2 ; meth sub = 1 ; meth sub x = x - 1 ; end # sub
+object attr a = 1 ; attr b = 1 + 2 ; meth add = a + b + c + 2 ; meth dec x = x - a ; end # dec
