@@ -172,6 +172,10 @@ public final class OutlineTreeSelectionListener implements
         {
           list.get ( i ).setReplaceInThisNode ( true ) ;
         }
+        if ( list.size ( ) == 1 )
+        {
+          list.get ( i ).setReplaceInThisNode ( false ) ;
+        }
         list.get ( i ).updateCaption ( prettyAnnotation.getStartOffset ( ) ,
             prettyAnnotation.getEndOffset ( ) , OutlineNode.NO_BINDING ) ;
         this.outlineUI.getTreeModel ( ).nodeChanged (
