@@ -44,213 +44,226 @@ import de.unisiegen.tpml.graphics.outline.AbstractOutline;
 import de.unisiegen.tpml.graphics.outline.ui.OutlineUI;
 
 /**
- * The graphical representation of a 
+ * The graphical representation of a
  * {@link de.unisiegen.tpml.core.smallstep.SmallStepProofNode}.<br>
  * <br>
- * The <code>SmallStepNodeComponent</code> is a bit more complicated than
- * the node from the other two GUIs because the rules applied to this node
- * are pointing on the expression of the next node.<br>
- * To handle this right, <b>one</b> <code>SmallStepNodeComponent</code> is 
+ * The <code>SmallStepNodeComponent</code> is a bit more complicated than the
+ * node from the other two GUIs because the rules applied to this node are
+ * pointing on the expression of the next node.<br>
+ * To handle this right, <b>one</b> <code>SmallStepNodeComponent</code> is
  * build like the following image shows:<br>
  * <img src="../../../../../../images/smallstepnode.png" /><br>
  * <br>
  * Actualy there are only two elements to handle here (that is they are handled
- * in the {@link de.unisiegen.tpml.graphics.smallstep.SmallStepComponent#placeNode(SmallStepProofNode, int, int)}-method).
- * Those two elements are the {@link #expression} at the top right and 
- * the {@link #rules} at the bottom left.
- * <img src="../../../../../../images/smallstepnode_scheme.png" /><br>
+ * in the
+ * {@link de.unisiegen.tpml.graphics.smallstep.SmallStepComponent#placeNode(SmallStepProofNode, int, int)}-method).
+ * Those two elements are the {@link #expression} at the top right and the
+ * {@link #rules} at the bottom left. <img
+ * src="../../../../../../images/smallstepnode_scheme.png" /><br>
  * <br>
- * Because the elements of this node need to get layed out in an arrangement 
- * with the  elements of the parent-node and the child-node, both components 
- * have a dimension containing the size they need for themeself and an additional 
- * information on the actual size they need to fill(this is alway more or equal as
- * the size of itself). The <code>rules</code> of the parent node needs to get
- * verticaly centered and aligned with the <code>expression</code> of this node.
- * Usualy the <code>rules</code> are higher than the <code>expression</code>s. So the
- * height of the {@link #expressionDimension} is less than the {@link #actualExpressionHeight}.
- * When the <code>expression</code> gets placed the <code>actualExpressionHeight</code> is used
- * for the height. The {@link #actualRuleHeight} of the parent node than is the same
- * as this <code>actualExpressionHeight</code>.
- * <br>
- * Analog the same is done for the <code>rules</code> of this node and the 
- * <code>expression</code> of the child-node. The only difference is:
- * when the <code>rules</code> are placed theire vertical-center-alignment
- * needs to get calculated menualy, because the 
- * {@link de.unisiegen.tpml.graphics.smallstep.SmallStepRulesComponent}
- * is always top-aligned.<br> 
- *  
- *  
- *
+ * Because the elements of this node need to get layed out in an arrangement
+ * with the elements of the parent-node and the child-node, both components have
+ * a dimension containing the size they need for themeself and an additional
+ * information on the actual size they need to fill(this is alway more or equal
+ * as the size of itself). The <code>rules</code> of the parent node needs to
+ * get verticaly centered and aligned with the <code>expression</code> of this
+ * node. Usualy the <code>rules</code> are higher than the
+ * <code>expression</code>s. So the height of the
+ * {@link #expressionDimension} is less than the {@link #actualExpressionHeight}.
+ * When the <code>expression</code> gets placed the
+ * <code>actualExpressionHeight</code> is used for the height. The
+ * {@link #actualRuleHeight} of the parent node than is the same as this
+ * <code>actualExpressionHeight</code>. <br>
+ * Analog the same is done for the <code>rules</code> of this node and the
+ * <code>expression</code> of the child-node. The only difference is: when the
+ * <code>rules</code> are placed theire vertical-center-alignment needs to get
+ * calculated menualy, because the
+ * {@link de.unisiegen.tpml.graphics.smallstep.SmallStepRulesComponent} is
+ * always top-aligned.<br>
+ * 
+ * 
+ * 
  * @author Marcell Fischbach
  * @author Benedikt Meurer
  * @version $Rev$
- *
+ * 
  * @see de.unisiegen.tpml.graphics.smallstep.SmallStepView
  * @see de.unisiegen.tpml.graphics.smallstep.SmallStepComponent
  * @see de.unisiegen.tpml.graphics.smallstep.SmallStepRulesComponent
  * @see de.unisiegen.tpml.graphics.smallstep.SmallStepRuleLabel
- * @see CompoundExpression 
+ * @see CompoundExpression
  */
-public class SmallStepNodeComponent extends JComponent {
+public class SmallStepNodeComponent extends JComponent
+{
 
   /**
    * 
    */
   private static final long serialVersionUID = 5536947349690384851L;
-  
+
   /**
-   * The origin {@link SmallStepProofNode}  
+   * The origin {@link SmallStepProofNode}
    */
-  private SmallStepProofNode                        proofNode;
-  
+  private SmallStepProofNode proofNode;
+
   /**
-   * The {@link SmallStepProofModel} 
+   * The {@link SmallStepProofModel}
    */
-  private SmallStepProofModel                       proofModel;
-  
+  private SmallStepProofModel proofModel;
+
   /**
-   * The {@link SmallStepRulesComponent} containing the Labels of
-   * already evaluated Rules and the MenuButton for Rules not yet
-   * evaluated. 
+   * The {@link SmallStepRulesComponent} containing the Labels of already
+   * evaluated Rules and the MenuButton for Rules not yet evaluated.
    */
-  private SmallStepRulesComponent                   rules;
-  
+  private SmallStepRulesComponent rules;
+
   /**
    * The {@link Dimension} the rules needs to get drawn correctly.
    */
-  private Dimension                                 ruleDimension;
-  
+  private Dimension ruleDimension;
+
   /**
    * The actual height the rules should use. This is >= ruleDimension.height.
    * This height is determined by the expression height of the child node.
    */
-  private int                                       actualRuleHeight;
-  
+  private int actualRuleHeight;
+
   /**
    * The Compound expression that is used to display the expression.
    */
-  private CompoundExpression<Location, Expression>  expression;
-  
+  private CompoundExpression<Location, Expression> expression;
+
   /**
    * The {@link Dimension} the expression needs to get drawn correctly.
    */
-  private Dimension                                 expressionDimension;
-  
+  private Dimension expressionDimension;
+
   /**
-   * The actual height the expression should use. This is >= expressionDimension.height.
-   * This height is determined by the rule height of the parent node.
+   * The actual height the expression should use. This is >=
+   * expressionDimension.height. This height is determined by the rule height of
+   * the parent node.
    */
-  private int                                       actualExpressionHeight;
-  
+  private int actualExpressionHeight;
+
   /**
    * The top-left-most position where the entire node should located.
    */
-  private Point                                     origin;
+  private Point origin;
 
   /**
    * Flags that contains whether the expression has memory.
    */
-  private boolean                                   memoryEnabled;
-  
+  private boolean memoryEnabled;
+
   /**
-   * The free space in pixels that should be hold between the components  
+   * The free space in pixels that should be hold between the components
    */
-  private int                                       spacing;
-  
+  private int spacing;
+
   /**
    * Entry within the context menu. Need to hold this value because is value can
    * change. This item is enabled/disable in the {@link #update()}-Method.
    * 
    * @see #update()
    */
-  private MenuTranslateItem                         translateItem;
-  
+  private MenuTranslateItem translateItem;
+
   /**
-   * Translator that is used to determine whether the expression contains syntactical sugar.
+   * Translator that is used to determine whether the expression contains
+   * syntactical sugar.
    */
-  private LanguageTranslator                        translator;
-  
+  private LanguageTranslator translator;
+
   /**
-   * The expression that should be underlined. When the user moves the mouse over a rule (not
-   * not grouped rules) or the MenuButton, that a part of the entire expressions needs to get
-   * underlined.
+   * The expression that should be underlined. When the user moves the mouse
+   * over a rule (not not grouped rules) or the MenuButton, that a part of the
+   * entire expressions needs to get underlined.
    */
-  private Expression                                currentUnderlineExpression;
-  
+  private Expression currentUnderlineExpression;
+
   /**
-   * Adapter that is used to get added to every object that can cause the gui to underline
-   * an expression. It is bound to every {@link SmallStepRuleLabel} and to every {@link MenuButton}.
+   * Adapter that is used to get added to every object that can cause the gui to
+   * underline an expression. It is bound to every {@link SmallStepRuleLabel}
+   * and to every {@link MenuButton}.
    */
-  private MouseMotionAdapter                        underlineRuleAdapter;
-  
-  private  ArrayList <MenuRuleItem> last10Elements;
+  private MouseMotionAdapter underlineRuleAdapter;
+
+  private ArrayList<MenuRuleItem> last10Elements;
+
   private Preferences preferences;
-  
+
   /**
-   * Used internaly. When the underlining is cleared it will be done recursively over the entire tree.
-   * It needs to be done in two times one time directed to the parent and one time directed to the
-   * children. This enum is used by {@link SmallStepNodeComponent#freeUnderliningSibling(boolean, Direction)};
+   * Used internaly. When the underlining is cleared it will be done recursively
+   * over the entire tree. It needs to be done in two times one time directed to
+   * the parent and one time directed to the children. This enum is used by
+   * {@link SmallStepNodeComponent#freeUnderliningSibling(boolean, Direction)};
+   * 
    * @author marcell
-   *
+   * 
    */
-  private enum Direction {
-    DIRECTION_PARENT,
-    DIRECTION_CHILD,
+  private enum Direction
+  {
+    DIRECTION_PARENT, DIRECTION_CHILD,
   }
 
   /**
    * Constructs a SmallStepNodeComponent.<br>
    * <br>
-   * All objects needed for one SmallStepNodeComponent are created and
-   * added to the {@link JComponent}. 
-   *  
-   * @param proofNode   The origin node from the model.
-   * @param proofModel  The model.
-   * @param translator  The translator that should be used to determine whether the
-   *                    Expression of this node contains syntactical sugar.
-   * @param spacing     The spacing between the elements of the node.
-   * @param advanced    Whether the small step view operates in advanced or beginner mode.
+   * All objects needed for one SmallStepNodeComponent are created and added to
+   * the {@link JComponent}.
+   * 
+   * @param proofNode
+   *          The origin node from the model.
+   * @param proofModel
+   *          The model.
+   * @param translator
+   *          The translator that should be used to determine whether the
+   *          Expression of this node contains syntactical sugar.
+   * @param spacing
+   *          The spacing between the elements of the node.
+   * @param advanced
+   *          Whether the small step view operates in advanced or beginner mode.
    */
-  public SmallStepNodeComponent (SmallStepProofNode   proofNode, 
-                                 SmallStepProofModel  proofModel,
-                                 LanguageTranslator   translator,
-                                 int                  spacing,
-                                 boolean              advanced) {
-    super ();
-    
-    last10Elements 			      			= new ArrayList();
-    
-    this.proofNode                  = proofNode;
-    
-    this.proofModel                 = proofModel;
-    
-    this.translator                 = translator;
-    
+  public SmallStepNodeComponent(SmallStepProofNode proofNode, SmallStepProofModel proofModel, LanguageTranslator translator, int spacing, boolean advanced)
+  {
+    super();
+
+    last10Elements = new ArrayList();
+
+    this.proofNode = proofNode;
+
+    this.proofModel = proofModel;
+
+    this.translator = translator;
+
     this.currentUnderlineExpression = null;
-    
+
     // the dimension for the rules initialy (0, 0)
-    this.ruleDimension              = new Dimension (0, 0);
-    
+    this.ruleDimension = new Dimension(0, 0);
+
     // the dimension for the expression initialy (0, 0)
-    this.expressionDimension        = new Dimension (0, 0);
-    
-    
-    this.expression = new CompoundExpression<Location, Expression> ();
-    add (this.expression);
-    
-    this.rules      = new SmallStepRulesComponent (proofNode);
-    add (this.rules);
-    
-    this.memoryEnabled  = this.proofModel.isMemoryEnabled();
-    this.spacing        = 10;
-    
+    this.expressionDimension = new Dimension(0, 0);
+
+    this.expression = new CompoundExpression<Location, Expression>();
+    add(this.expression);
+
+    this.rules = new SmallStepRulesComponent(proofNode);
+    add(this.rules);
+
+    this.memoryEnabled = this.proofModel.isMemoryEnabled();
+    this.spacing = 10;
+
     this.translateItem = new MenuTranslateItem();
-    
-    enableEvents ( AWTEvent.MOUSE_EVENT_MASK );
-    
-    this.rules.getMenuButton().addMenuButtonListener(new MenuButtonListener () {
-      public void menuClosed (MenuButton source) { }
-      public void menuItemActivated (MenuButton source, final JMenuItem item) {
+
+    enableEvents(AWTEvent.MOUSE_EVENT_MASK);
+
+    this.rules.getMenuButton().addMenuButtonListener(new MenuButtonListener() {
+      public void menuClosed(MenuButton source)
+      {
+      }
+
+      public void menuItemActivated(MenuButton source, final JMenuItem item)
+      {
         // setup a wait cursor for the toplevel ancestor
         final Container toplevel = getTopLevelAncestor();
         final Cursor cursor = toplevel.getCursor();
@@ -258,13 +271,15 @@ public class SmallStepNodeComponent extends JComponent {
 
         // avoid blocking the popup menu
         SwingUtilities.invokeLater(new Runnable() {
-          public void run() {
+          public void run()
+          {
             // handle the menu action
-            SmallStepNodeComponent.this.menuItemActivated (item);
-            
+            SmallStepNodeComponent.this.menuItemActivated(item);
+
             // wait for the repaint before resetting the cursor
             SwingUtilities.invokeLater(new Runnable() {
-              public void run() {
+              public void run()
+              {
                 // reset the cursor
                 toplevel.setCursor(cursor);
               }
@@ -274,91 +289,87 @@ public class SmallStepNodeComponent extends JComponent {
       }
     });
 
-    
-    // create the adapters that will be used to determine 
+    // create the adapters that will be used to determine
     // whether an expression needs to get underlined
-    MouseMotionAdapter underlineThisAdapter = new MouseMotionAdapter () {
+    MouseMotionAdapter underlineThisAdapter = new MouseMotionAdapter() {
       @Override
-      public void mouseMoved (MouseEvent event) {
-        
-        SmallStepNodeComponent.this.updateUnderlineExpression((Expression)null);
+      public void mouseMoved(MouseEvent event)
+      {
+
+        SmallStepNodeComponent.this.updateUnderlineExpression((Expression) null);
       }
     };
-    
-    this.underlineRuleAdapter = new MouseMotionAdapter () {
+
+    this.underlineRuleAdapter = new MouseMotionAdapter() {
       @Override
-      public void mouseMoved (MouseEvent event) {
-        //System.out.println(" Event: "+event);
-        //System.out.println("Typ: "+event.getSource());
-        //System.out.println("Position "+event.getX() +", "+ event.getY());
-        
-        if (event.getSource () instanceof SmallStepRuleLabel) {
-          SmallStepRuleLabel label = (SmallStepRuleLabel)event.getSource();
+      public void mouseMoved(MouseEvent event)
+      {
+        // System.out.println(" Event: "+event);
+        // System.out.println("Typ: "+event.getSource());
+        // System.out.println("Position "+event.getX() +", "+ event.getY());
+
+        if (event.getSource() instanceof SmallStepRuleLabel)
+        {
+          SmallStepRuleLabel label = (SmallStepRuleLabel) event.getSource();
           SmallStepNodeComponent.this.updateUnderlineExpression(label);
         }
-        else if (event.getSource () instanceof MenuButton) {
-          MenuButton button = (MenuButton)event.getSource ();
+        else if (event.getSource() instanceof MenuButton)
+        {
+          MenuButton button = (MenuButton) event.getSource();
           SmallStepNodeComponent.this.updateUnderlineExpression(button);
         }
-        /*else if (event.getSource () instanceof CompoundExpression )
-        {
-          //TODO jetzt wollen wir doch mal gucken, wo wir eigentlich sind!
-          
-          ToListenForMouseContainer toListenForMouse = ToListenForMouseContainer.getInstanceOf();
-          
-          toListenForMouse.setHereIam(event.getX(), event.getY());
-          
-          //TODO Testausgabe
-          //System.out.println("ncihts malen");
-          toListenForMouse.setMark(false);
-          SmallStepNodeComponent.this.expression.repaint();
-          for (int t = 0; t<toListenForMouse.size(); t=t+4)
-          {
-            int pX = toListenForMouse.get(t);
-            int pX1 = toListenForMouse.get(t+1);
-            int pY = toListenForMouse.get(t+2);
-            int pY1 = toListenForMouse.get(t+3);
-            //brauche uch zur Zeit nicht
-            //int pY = toListenForMouse.get(t+2);
-            //int pY1 = toListenForMouse.get(t+3);
-            //TODO TEstausgabe
-            //System.out.println(pX+" " +pX1 + " " + pY + " " + pY1);
-            //System.out.println(event.getX()+"    " +event.getY());
-            
-            
-            //Herausfinden, ob ich auf einem erwarteten Zeichen bin!
-            //if ((event.getX() >= pX) && (event.getX() <= pX1) && (event.getY() >= pY-4) && (event.getY() <= pY1-14))
-            if ((event.getX() >= pX) && (event.getX() <= pX1))
-            {
-              //TODO TestausgbaetoListenForMouse.setElementAt(0, 1);
-              //System.out.println("JA, JETZT MUSS DER MOUSEFFEKT ANGEHEN");
-              toListenForMouse.setMark(true);
-            }
-            toListenForMouse.setHereIam(event.getX(), event.getY());
-            SmallStepNodeComponent.this.expression.repaint();
-          }
-          //System.out.println(" Event: "+event);
-          //System.out.println("Typ: "+event.getSource());
-          //System.out.println("Position "+event.getX() +", "+ event.getY());
-        }*/
+        /*
+         * else if (event.getSource () instanceof CompoundExpression ) { //TODO
+         * jetzt wollen wir doch mal gucken, wo wir eigentlich sind!
+         * 
+         * ToListenForMouseContainer toListenForMouse =
+         * ToListenForMouseContainer.getInstanceOf();
+         * 
+         * toListenForMouse.setHereIam(event.getX(), event.getY());
+         * 
+         * //TODO Testausgabe //System.out.println("ncihts malen");
+         * toListenForMouse.setMark(false);
+         * SmallStepNodeComponent.this.expression.repaint(); for (int t = 0; t<toListenForMouse.size();
+         * t=t+4) { int pX = toListenForMouse.get(t); int pX1 =
+         * toListenForMouse.get(t+1); int pY = toListenForMouse.get(t+2); int
+         * pY1 = toListenForMouse.get(t+3); //brauche uch zur Zeit nicht //int
+         * pY = toListenForMouse.get(t+2); //int pY1 =
+         * toListenForMouse.get(t+3); //TODO TEstausgabe
+         * //System.out.println(pX+" " +pX1 + " " + pY + " " + pY1);
+         * //System.out.println(event.getX()+" " +event.getY());
+         * 
+         * 
+         * //Herausfinden, ob ich auf einem erwarteten Zeichen bin! //if
+         * ((event.getX() >= pX) && (event.getX() <= pX1) && (event.getY() >=
+         * pY-4) && (event.getY() <= pY1-14)) if ((event.getX() >= pX) &&
+         * (event.getX() <= pX1)) { //TODO
+         * TestausgbaetoListenForMouse.setElementAt(0, 1);
+         * //System.out.println("JA, JETZT MUSS DER MOUSEFFEKT ANGEHEN");
+         * toListenForMouse.setMark(true); }
+         * toListenForMouse.setHereIam(event.getX(), event.getY());
+         * SmallStepNodeComponent.this.expression.repaint(); }
+         * //System.out.println(" Event: "+event); //System.out.println("Typ:
+         * "+event.getSource()); //System.out.println("Position "+event.getX()
+         * +", "+ event.getY()); }
+         */
         else
         {
           SmallStepNodeComponent.this.expression.repaint();
         }
-        
+
       }
     };
-    
-    
+
     this.addMouseMotionListener(underlineThisAdapter);
     this.expression.addMouseMotionListener(underlineThisAdapter);
     this.expression.addMouseMotionListener(this.underlineRuleAdapter);
     this.rules.getMenuButton().addMouseMotionListener(this.underlineRuleAdapter);
     this.addMouseMotionListener(underlineThisAdapter);
-    
+
     // apply the advanced setting
     setAdvanced(advanced);
   }
+
   /**
    * Just paints a Rect arround the silly BopoundExpression to see failure
    */
@@ -366,9 +377,9 @@ public class SmallStepNodeComponent extends JComponent {
   protected void paintComponent(Graphics gc)
   {
     // TODO Automatisch erstellter Methoden-Stub
-    
-    //gc.setColor(Color.BLACK);
-    //gc.drawRect(0, 0, getWidth()-1, getHeight()-1);
+
+    // gc.setColor(Color.BLACK);
+    // gc.drawRect(0, 0, getWidth()-1, getHeight()-1);
     super.paintComponent(gc);
   }
 
@@ -378,487 +389,618 @@ public class SmallStepNodeComponent extends JComponent {
   {
     // let this component handle the event first
     super.processMouseEvent(e);
-    
-    try {
+
+    try
+    {
       // check if we have a next SmallStepProofNode
       ProofNode node = this.proofNode.getChildAt(0);
-      
+
       // determine the SmallStepNodeComponent for the next proof node
-      SmallStepNodeComponent nextComponent = 
-        (SmallStepNodeComponent)node.getUserObject();
-      if (nextComponent != null) {
+      SmallStepNodeComponent nextComponent = (SmallStepNodeComponent) node.getUserObject();
+      if (nextComponent != null)
+      {
         // translate x/y to world coordinates
         int x = e.getX() + getX();
         int y = e.getY() + getY();
-        
+
         // translate x/y to nextComponent coordinates
         x -= nextComponent.getX();
         y -= nextComponent.getY();
-        
+
         // check if we have a CompoundExpression at x/y
         Component c = nextComponent.getComponentAt(x, y);
-        if (c != null) {
+        if (c != null)
+        {
           // translate and dispatch the event for the CompoundExpression
-          MouseEvent ne = new MouseEvent(c, e.getID(), e.getWhen(), e.getModifiers(), x - c.getX(), y - c.getY(), e.getClickCount(), e.isPopupTrigger(), e.getButton());
+          MouseEvent ne = new MouseEvent(c, e.getID(), e.getWhen(), e.getModifiers(), x - c.getX(), y - c.getY(), e.getClickCount(), e.isPopupTrigger(), e
+              .getButton());
           c.dispatchEvent(ne);
         }
       }
     }
-    catch (ArrayIndexOutOfBoundsException exn) 
+    catch (ArrayIndexOutOfBoundsException exn)
     {
       // ignore, no child then
-    }  
-  
+    }
+
   }
-  
-  
-  
-  
+
   @Override
   protected void processMouseMotionEvent(MouseEvent e)
   {
     // let this component handle the event first
     super.processMouseMotionEvent(e);
-    
-    try {
+
+    try
+    {
       // check if we have a next SmallStepProofNode
       ProofNode node = this.proofNode.getChildAt(0);
-      
+
       // determine the SmallStepNodeComponent for the next proof node
-      SmallStepNodeComponent nextComponent = (SmallStepNodeComponent)node.getUserObject();
-      if (nextComponent != null) {
+      SmallStepNodeComponent nextComponent = (SmallStepNodeComponent) node.getUserObject();
+      if (nextComponent != null)
+      {
         // translate x/y to world coordinates
         int x = e.getX() + getX();
         int y = e.getY() + getY();
-        
+
         // translate x/y to nextComponent coordinates
         x -= nextComponent.getX();
         y -= nextComponent.getY();
-        
+
         // check if we have a CompoundExpression at x/y
         Component c = nextComponent.getComponentAt(x, y);
-        if (c != null) {
+        if (c != null)
+        {
           // translate and dispatch the event for the CompoundExpression
-          MouseEvent ne = new MouseEvent(c, e.getID(), e.getWhen(), e.getModifiers(), x - c.getX(), y - c.getY(), e.getClickCount(), e.isPopupTrigger(), e.getButton());
+          MouseEvent ne = new MouseEvent(c, e.getID(), e.getWhen(), e.getModifiers(), x - c.getX(), y - c.getY(), e.getClickCount(), e.isPopupTrigger(), e
+              .getButton());
           c.dispatchEvent(ne);
         }
       }
     }
-    catch (ArrayIndexOutOfBoundsException exn) {
+    catch (ArrayIndexOutOfBoundsException exn)
+    {
       // ignore, no child then
     }
   }
+
   // WORKAROUND: END
-  
+
   /**
-   * Causes the expression and the resultexpression
-   * to recalculate their layout.
-   *
+   * Causes the expression and the resultexpression to recalculate their layout.
+   * 
    */
-  public void reset () {
+  public void reset()
+  {
     this.expression.reset();
   }
 
   /**
    * Sets whether the small step view operates in advanced or beginner mode.
    * 
-   * @param advanced <code>true</code> to display only axiom rules in the menu.
+   * @param advanced
+   *          <code>true</code> to display only axiom rules in the menu.
    * 
    * @see SmallStepComponent#setAdvanced(boolean)
    */
-  void setAdvanced(boolean advanced) {
+  void setAdvanced(boolean advanced)
+  {
     final int max = 10;
-  	// Fill the menu with menuitems
-    
+    // Fill the menu with menuitems
+
     ProofRule[] rules = this.proofModel.getRules();
-    
-    //final JPopupMenu menu = new JPopupMenu (Messages.getString("Language.0")+ " " +rules[0].getGroup());
-    final JPopupMenu menu = new JPopupMenu ("L0");
-    
-    if (rules.length>15)
+
+    // final JPopupMenu menu = new JPopupMenu (Messages.getString("Language.0")+
+    // " " +rules[0].getGroup());
+    final JPopupMenu menu = new JPopupMenu("L0");
+
+    //wenn das so ist, dann teilen wir es in Unter und Obermenüs auf, sonst werden nur Spereratoren eingefügt...
+    if (rules.length > 15)
     {
-      if (rules.length > 0) {
-      	
-      	
-      	//zunächst die letzen last10Elements einfügen
-      	preferences = Preferences.userNodeForPackage ( SmallStepNodeComponent.class ) ;
-        for (int i=max-1; i>=0; i--)
+      if (rules.length > 0)
+      {
+
+        // zunächst die letzen last10Elements einfügen
+
+        // erst holen wir uns die Namen der Regeln aus den Preferences
+        preferences = Preferences.userNodeForPackage(SmallStepNodeComponent.class);
+        // rückwärts jede Regel
+        for (int i = max - 1; i >= 0; i--)
         {
-        	String name = preferences.get("rule"+i, "");
-        	if (name.equalsIgnoreCase(""))
-        	{
-        	
-        	}
-        	else
-        	{
-        		//Regel aus Regelsortiment suchen
-        		ProofRule[] allRules = proofModel.getRules();
-        		for (ProofRule a : allRules)
-        		{
-        			if (new MenuRuleItem(a).getLabel().equalsIgnoreCase(name))
-        			{
-        				last10Elements.add(new MenuRuleItem (a));
-        				menu.insert(new MenuRuleItem(a),0);
-        			}
-        		}
-        	}
+          String name = preferences.get("rule" + i, "");
+
+          if (name.equalsIgnoreCase(""))
+          {
+            // wenn die Regel keinen Namen hat, bzw nicht existiert, dann mache
+            // nichts
+          }
+          else
+          {
+            // Regel aus Regelsortiment suchen
+            ProofRule[] allRules = proofModel.getRules();
+            // Jede Regel druchlaufen
+            for (ProofRule a : allRules)
+            {
+              // Wenn die Bezecihnugnen der Regeln geich sind, also die Regel,
+              // die in der Regestry steht auch in den verfügbaren Regeln
+              // vorkommt
+              if (new MenuRuleItem(a).getLabel().equalsIgnoreCase(name))
+              {
+                // hinzufügen
+                last10Elements.add(new MenuRuleItem(a));
+                MenuRuleItem tmp = new MenuRuleItem(a);
+                // dieser ActionListener wird gebraucht, damit Elemente in der
+                // Liste aufsteigen können...
+                ActionListener al = new ActionListener() {
+                  public void actionPerformed(ActionEvent e)
+                  {
+                    // Wenn ein Elemtnt aus dem Hauptmenü gedrückt wurde wird
+                    // die Regel nach oben verschoben
+                    for (int i = 0; i < max; i++)
+                    {
+                      try
+                      {
+                        MenuRuleItem kacke = (MenuRuleItem) menu.getComponent(i);
+                        // vergleiche die Namen, wenn sie übereinstimmen
+                        if (kacke.getLabel().equals(((MenuRuleItem) e.getSource()).getLabel()))
+                        {
+                          // System.out.println("wieder nach oben!");
+                          // nach oeben schieben
+                          menu.add(menu.getComponent(i), 0);
+                          // die anderen sind uninteressant, wenn wir einen
+                          // Treffer hatten
+                          break;
+                        }
+                      }
+                      catch (ClassCastException ex)
+                      {
+                        // Sollte eigentlich nie ausgeführt werden...
+                      }
+
+                    }
+                    // wird nicht benötigt, macht ein MenuRuleItem automatisch
+                    // menuItemActivated((JMenuItem)e.getSource());
+                  }
+                };
+                // Den Actionlistener hinzufügen
+                tmp.addActionListener(al);
+                // menu.insert(new MenuRuleItem(a),0);
+                // ab nach oben ins Menü
+                menu.insert(tmp, 0);
+              }
+            }
+          }
         }
-        
-        //Untermenüs bauen
+
+        // Untermenüs bauen
         int group = rules[0].getGroup();
-        menu.addSeparator();
-        //JMenu Smenu=new JMenu(Messages.getString("Language.0")+ " " +rules[0].getGroup());
-        JMenu Smenu;
+        // Wenn es schon Regeln gibt, die oben stehen sollen, dann wollen wir
+        // als erstes einen Seperator
+        if (last10Elements.size() > 0)
+        {
+          menu.addSeparator();
+        }
+
+        // JMenu Smenu=new JMenu(Messages.getString("Language.0")+ " "
+        // +rules[0].getGroup());
+        JMenu subMenu;
+        // TODO nicht hard vercoded
         if (rules[0].getGroup() == 0)
         {
-        	 Smenu=new JMenu("L0");
+          subMenu = new JMenu("L0");
         }
         else if (rules[0].getGroup() == 1)
         {
-        	 Smenu=new JMenu("L1");
+          subMenu = new JMenu("L1");
         }
         else if (rules[0].getGroup() == 2)
         {
-        	 Smenu=new JMenu("L2");
+          subMenu = new JMenu("L2");
         }
         else if ((rules[0].getGroup() == 3))
         {
-        	 Smenu=new JMenu("L3");
+          subMenu = new JMenu("L3");
         }
         else if ((rules[0].getGroup() == 4))
         {
-        	 Smenu=new JMenu("L4");
+          subMenu = new JMenu("L4");
         }
         else if (rules[0].getGroup() == 5)
         {
-        	 Smenu=new JMenu("L2 O");
+          subMenu = new JMenu("L2O");
         }
         else
         {
-        	 Smenu=new JMenu("andere Sprachen");
+          subMenu = new JMenu("andere Sprachen" + group);
         }
-        
-//        for (int i = 0; i<last10Elements.size(); i++)
-//        {
-//        	System.out.println("hinzufügen: "+i);
-//        	menu.add(last10Elements.get(i));
-//        }
-        for (final ProofRule r : rules) {
-          if (((SmallStepProofRule)r).isAxiom() || !advanced) 
+
+        // for (int i = 0; i<last10Elements.size(); i++)
+        // {
+        // System.out.println("hinzufügen: "+i);
+        // menu.add(last10Elements.get(i));
+        // }
+        // Jede Regel
+        for (final ProofRule r : rules)
+        {
+          if (((SmallStepProofRule) r).isAxiom() || !advanced)
           {
-            if (r.getGroup() != group) {
-            	if(Smenu!=null)
-            	{
-            		menu.add(Smenu);
-            	}
-            	
-            	//Smenu  = new JMenu (Messages.getString("Language.0")+ " " +r.getGroup());
-            	if (r.getGroup() == 0)
+            if (r.getGroup() != group)
+            {
+              if (subMenu != null)
               {
-              	 Smenu=new JMenu("L0");
+                menu.add(subMenu);
+              }
+
+              // Smenu = new JMenu (Messages.getString("Language.0")+ " "
+              // +r.getGroup());
+              if (r.getGroup() == 0)
+              {
+                subMenu = new JMenu("L0");
               }
               else if (r.getGroup() == 1)
               {
-              	 Smenu=new JMenu("L1");
+                subMenu = new JMenu("L1");
               }
               else if (r.getGroup() == 2)
               {
-              	 Smenu=new JMenu("L2");
+                subMenu = new JMenu("L2");
               }
               else if ((r.getGroup() == 3))
               {
-              	 Smenu=new JMenu("L3");
+                subMenu = new JMenu("L3");
               }
               else if ((r.getGroup() == 4))
               {
-              	 Smenu=new JMenu("L4");
+                subMenu = new JMenu("L4");
               }
               else if (r.getGroup() == 5)
               {
-              	 Smenu=new JMenu("L2 O");
+                subMenu = new JMenu("L2O");
               }
               else
               {
-              	 Smenu=new JMenu("andere Sprachen");
+                subMenu = new JMenu("andere Sprachen" + r.getGroup());
               }
-            	//menu.add(Smenu);
-              //menu.addSeparator();
+              // menu.add(Smenu);
+              // menu.addSeparator();
             }
-            //menu.add(new MenuRuleItem (r));
+            // menu.add(new MenuRuleItem (r));
             int anzahl = menu.getComponentCount();
-            //if ((anzahl > 1) && (menu.getComponent(anzahl-1) instanceof JMenu))
-  					{
-            	//System.out.println("Hier sollte er ins Menü einfügen...");
-            	//((JMenu) menu.getComponent()).add(new MenuRuleItem(r));
-            	MenuRuleItem tmp = new MenuRuleItem(r);
-            	ActionListener al = new ActionListener() {
-                public void actionPerformed( ActionEvent e  ) {
-                  //System.out.println("ja, gedrückt");
-                  //Wir wollen uns merken, dass dieser Knopf gedrückt wurde...
-                	
-                  //zunächst die gespeciherten abholen
-                  
-                  if (last10Elements.size()<max)
+            // if ((anzahl > 1) && (menu.getComponent(anzahl-1) instanceof
+            // JMenu))
+
+            // System.out.println("Hier sollte er ins Menü einfügen...");
+            // ((JMenu) menu.getComponent()).add(new MenuRuleItem(r));
+            MenuRuleItem tmp = new MenuRuleItem(r);
+            ActionListener al = new ActionListener() {
+              public void actionPerformed(ActionEvent e)
+              {
+                // System.out.println("ja, gedrückt");
+                // Wir wollen uns merken, dass dieser Knopf gedrückt wurde...
+
+                // zunächst die gespeciherten abholen
+                
+                
+                //Wenn die Liste mit den letzen noch nicht voll ist
+                if (last10Elements.size() < max)
+                {
+                  MenuRuleItem lastUsed = new MenuRuleItem(r);
+                  // Überprüfen, ob das Element schon bei den letzten ist...
+                  boolean isIn = false;
+                  for (int i = 0; i < max; i++)
                   {
-                  	//e.get
-                    //menu.insert(last10Elements.get(0),0);
-                    //menu.add(last10Elements.get(0).getLabel());
-                    MenuRuleItem lastUsed = new MenuRuleItem(r);
-                    //Überprüfen, ob das Element schon bei den letzten ist...
-                    boolean isIn = false;
-                    for (int i= 0; i<max; i++)
+                    // if (last10Elements.contains(lastUsed))
+                    int schleife = Math.min(max, last10Elements.size());
+                    for (int j = 0; j < schleife; j++)
                     {
-                    	//if (last10Elements.contains(lastUsed))
-                    	int schleife = Math.min(max, last10Elements.size());
-                    	for (int j = 0; j<schleife; j++)
-                    	{
-                    		//System.out.println(last10Elements.size());
-                    		//MenuRuleItem tmp = last10Elements.get(j);
-                    		//String f1 = last10Elements.get(j).getLabel();
-                    		//String f2 = lastUsed.getLabel();
-                    		if (last10Elements.get(j).getLabel().equals(lastUsed.getLabel()))
-                    		{
-                    			isIn = true;
-                    		}
-                    	}
-                    }
-                    ActionListener al = new ActionListener() {
-                      public void actionPerformed( ActionEvent e  ) {
-                        menuItemActivated((JMenuItem)e.getSource());
-                        
+                      // System.out.println(last10Elements.size());
+                      // MenuRuleItem tmp = last10Elements.get(j);
+                      // String f1 = last10Elements.get(j).getLabel();
+                      // String f2 = lastUsed.getLabel();
+                      if (last10Elements.get(j).getLabel().equals(lastUsed.getLabel()))
+                      {
+                        isIn = true;
                       }
-                    };
-                    lastUsed.addActionListener(al);
-                    if (!isIn)
-                    	{
-                    		menu.insert(lastUsed,0);
-                    		last10Elements.add(0, lastUsed  );
-                    	}
-//                    else
-//                    {
-//                    	menu.remove(lastUsed);
-//                    	last10Elements.remove(lastUsed);
-//                    	menu.insert(lastUsed,0);
-//                  		last10Elements.add(0, lastUsed);
-//                    }
-                    
-                    //Jetzt noch alle in der Liste in die preferences schreiben
-                    for (int i = 0; i<last10Elements.size(); i++)
-                    {
-                    	//System.out.println(last10Elements.get(i).getLabel());
-                    	preferences.put( "rule"+i , last10Elements.get(i).getLabel() ) ;
                     }
-                    //System.out.println(last10Elements.size());
                   }
-                  else
+                  ActionListener al = new ActionListener() {
+                    public void actionPerformed(ActionEvent e)
+                    {
+                      for (int i = 0; i < max; i++)
+                      {
+                        try
+                        {
+                          MenuRuleItem kacke = (MenuRuleItem) menu.getComponent(i);
+                          if (kacke.getLabel().equals(((MenuRuleItem) e.getSource()).getLabel()))
+                          {
+                            // System.out.println("wieder nach oben!");
+                            menu.add(menu.getComponent(i), 0);
+                            break;
+                          }
+                        }
+                        catch (ClassCastException ex)
+                        {
+
+                        }
+
+                      }
+                      //Muss hier gemacht werden, da es nicht automatisch ausgeführt wird, wenn es in einem Untermenü ist
+                      menuItemActivated((JMenuItem) e.getSource());
+                    }
+                  };
+                  lastUsed.addActionListener(al);
+                  if (!isIn)
                   {
-                  	//System.out.println("es sollten entfernt werden");
-                  	MenuRuleItem lastUsed = new MenuRuleItem(r);
-                    ActionListener al = new ActionListener() {
-                      public void actionPerformed( ActionEvent e  ) {
-                        menuItemActivated((JMenuItem)e.getSource());
-                        
-                      }
-                    };
-                    lastUsed.addActionListener(al);
-                    boolean isIn = false;
-                    for (int i= 0; i<max; i++)
-                    {
-                    	//if (last10Elements.contains(lastUsed))
-                    	int schleife = Math.min(max, last10Elements.size());
-                    	for (int j = 0; j<schleife; j++)
-                    	{
-                    		if (last10Elements.get(j).getLabel().equals(lastUsed.getLabel()))
-                    		{
-                    			isIn = true;
-                    		}
-                    	}
-                    }
-                    if (!isIn)
-                    {
-                    	last10Elements.add(0, lastUsed  );
-                    	menu.insert(lastUsed,0);
-                    	last10Elements.remove(max);
-                      menu.remove(max);
-                    }
-//                    else
-//                    {
-//                    	last10Elements.remove(lastUsed);
-//                    	menu.remove(lastUsed);
-//                    	last10Elements.add(0, lastUsed  );
-//                    	menu.insert(lastUsed,0);
-//                    }
-                    //Jetzt noch alle in der Liste in die preferences schreiben
-                    for (int i = 0; i<max; i++)
-                    {
-                    	preferences.put( "rule"+i , last10Elements.get(i).getLabel() ) ;
-                    }
-                    //System.out.println(last10Elements.size());
+                    menu.insert(lastUsed, 0);
+                    last10Elements.add(0, lastUsed);
                   }
-                  
-                  menuItemActivated((JMenuItem)e.getSource());
-                  
+                  //Eventuell noch nach oben schieben...
+                  // else
+                  // {
+                  // menu.remove(lastUsed);
+                  // last10Elements.remove(lastUsed);
+                  // menu.insert(lastUsed,0);
+                  // last10Elements.add(0, lastUsed);
+                  // }
+
+                  // Jetzt noch alle in der Liste in die preferences schreiben
+                  for (int i = 0; i < last10Elements.size(); i++)
+                  {
+                    // System.out.println(last10Elements.get(i).getLabel());
+                    preferences.put("rule" + i, last10Elements.get(i).getLabel());
+                  }
+                  // System.out.println(last10Elements.size());
                 }
-              };
-            	tmp.addActionListener(al);
-            	
-            	Smenu.add(tmp);
-  						
-  					}
-            //else
-            {
-           // 	menu.add(new MenuRuleItem(r));
-            }
-            
+                //Wenn die Liste schon voll ist, dann muss das jeweils letzte herausgenommen werden
+                else
+                {
+                  // System.out.println("es sollten entfernt werden");
+                  MenuRuleItem lastUsed = new MenuRuleItem(r);
+                  ActionListener al = new ActionListener() {
+                    public void actionPerformed(ActionEvent e)
+                    {
+                      for (int i = 0; i < max; i++)
+                      {
+                        try
+                        {
+                          MenuRuleItem kacke = (MenuRuleItem) menu.getComponent(i);
+                          if (kacke.getLabel().equals(((MenuRuleItem) e.getSource()).getLabel()))
+                          {
+                            // System.out.println("wieder nach oben!");
+                            menu.add(menu.getComponent(i), 0);
+                            break;
+                          }
+                        }
+                        catch (ClassCastException ex)
+                        {
+
+                        }
+
+                      }
+                      menuItemActivated((JMenuItem) e.getSource());
+                    }
+                  };
+                  lastUsed.addActionListener(al);
+                  boolean isIn = false;
+                  for (int i = 0; i < max; i++)
+                  {
+                    // if (last10Elements.contains(lastUsed))
+                    //Überprüfen, ob es in der Liste schon drin ist
+                    int schleife = Math.min(max, last10Elements.size());
+                    for (int j = 0; j < schleife; j++)
+                    {
+                      if (last10Elements.get(j).getLabel().equals(lastUsed.getLabel()))
+                      {
+                        isIn = true;
+                      }
+                    }
+                  }
+                  //WEnn es nicht in der Liste ist wird es eingefügt, und das letze herausgenommen (es sind max elemente, das max. wird herausgenommen)
+                  if (!isIn)
+                  {
+                    last10Elements.add(0, lastUsed);
+                    menu.insert(lastUsed, 0);
+                    last10Elements.remove(max);
+                    menu.remove(max);
+                  }
+                  //Eventuell noch, wenn es schon drin ist, nach oben schieben
+                  // else
+                  // {
+                  // last10Elements.remove(lastUsed);
+                  // menu.remove(lastUsed);
+                  // last10Elements.add(0, lastUsed );
+                  // menu.insert(lastUsed,0);
+                  // }
+                  // Jetzt noch alle in der Liste in die preferences schreiben
+                  for (int i = 0; i < max; i++)
+                  {
+                    preferences.put("rule" + i, last10Elements.get(i).getLabel());
+                  }
+                  // System.out.println(last10Elements.size());
+                }
+                
+                //DAs muss gemacht weden, weil die es nicht automatisch ausgeführt wird, wenn es nicht in der Liste ist
+                menuItemActivated((JMenuItem) e.getSource());
+
+              }
+            };
+            tmp.addActionListener(al);
+            subMenu.add(tmp);
             group = r.getGroup();
           }
-          menu.add(Smenu);
+          menu.add(subMenu);
         }
-      }	
+      }
     }
+    //Wenn es nicht mehr als 15 Regeln sind, dann werden keine Untermenüs angelegt
     else
     {
-    	if (rules.length > 0) {
+      if (rules.length > 0)
+      {
         int group = rules[0].getGroup();
-        for (ProofRule r : rules) {
-          if (((SmallStepProofRule)r).isAxiom() || !advanced) {
-            if (r.getGroup() != group) {
+        for (ProofRule r : rules)
+        {
+          if (((SmallStepProofRule) r).isAxiom() || !advanced)
+          {
+            if (r.getGroup() != group)
+            {
               menu.addSeparator();
             }
-            menu.add(new MenuRuleItem (r));
+            menu.add(new MenuRuleItem(r));
             group = r.getGroup();
           }
         }
-      }	
+      }
     }
-    
+
     menu.addSeparator();
     menu.add(new MenuGuessItem());
     menu.add(new MenuGuessTreeItem());
     menu.add(this.translateItem);
-    
+
     this.rules.getMenuButton().setMenu(menu);
   }
-  
+
   /**
-   * Resets the expression of the {@link #currentUnderlineExpression}, if
-   * it has changed, and informs the {@link #expression}-Renderer that is
-   * has changed. Causes all other nodes within the tree to free theire 
-   * underlining.
+   * Resets the expression of the {@link #currentUnderlineExpression}, if it
+   * has changed, and informs the {@link #expression}-Renderer that is has
+   * changed. Causes all other nodes within the tree to free theire underlining.
    * 
    * @param expression
    */
-  private void updateUnderlineExpression (Expression expression) {
-    if (this.currentUnderlineExpression == expression) {
+  private void updateUnderlineExpression(Expression expression)
+  {
+    if (this.currentUnderlineExpression == expression)
+    {
       return;
     }
-    
+
     this.currentUnderlineExpression = expression;
-    
+
     this.expression.setUnderlineExpression(this.currentUnderlineExpression);
-    
+
     // free all the other nodes
     freeUnderliningSibling(true, Direction.DIRECTION_CHILD);
     freeUnderliningSibling(true, Direction.DIRECTION_PARENT);
-    
+
   }
-  
+
   /**
    * Delegates the updating of the underline to
-   * {@link #updateUnderlineExpression(Expression)} with the
-   * expression stored within the label.
+   * {@link #updateUnderlineExpression(Expression)} with the expression stored
+   * within the label.
    * 
-   * @param label The label from the {@link SmallStepRulesComponent}.
+   * @param label
+   *          The label from the {@link SmallStepRulesComponent}.
    */
-  private void updateUnderlineExpression (SmallStepRuleLabel label) {
-    updateUnderlineExpression (label.getStepExpression());
+  private void updateUnderlineExpression(SmallStepRuleLabel label)
+  {
+    updateUnderlineExpression(label.getStepExpression());
   }
-  
+
   /**
    * Delegates the updating of the underline to
-   * {@link #updateUnderlineExpression(Expression)} with the
-   * expression of the first unproved {@link ProofStep}.
+   * {@link #updateUnderlineExpression(Expression)} with the expression of the
+   * first unproved {@link ProofStep}.
    * 
-   * @param button The button from the {@link SmallStepRulesComponent}.
-   */ 
-  private void updateUnderlineExpression (MenuButton button) {
+   * @param button
+   *          The button from the {@link SmallStepRulesComponent}.
+   */
+  private void updateUnderlineExpression(MenuButton button)
+  {
     ProofStep[] steps = this.proofModel.remaining(this.proofNode);
-    
-    if (steps.length == 0) {
+
+    if (steps.length == 0)
+    {
       return;
     }
-    
-    updateUnderlineExpression (steps [0].getExpression());
+
+    updateUnderlineExpression(steps[0].getExpression());
   }
-  
+
   /**
    * Called when an {@link JMenuItem} from the Menu was selected.<br>
    * <br>
-   * No matter what item was selected the underlining of <b>all</b> nodes
-   * is cleared.<br>
+   * No matter what item was selected the underlining of <b>all</b> nodes is
+   * cleared.<br>
    * There are four possible actions to be done when an item is selected.<br>
    * 1. a rule could have been selected, that should be used to proov this step.<br>
-   * 2. the model should guess the current node.
-   * 3. the model should complete the entire expression
-   * 4. the model should translate the current expression into core-syntax. This item
-   *    mab be disable if there is no syntactical sugar within the expression.
+   * 2. the model should guess the current node. 3. the model should complete
+   * the entire expression 4. the model should translate the current expression
+   * into core-syntax. This item mab be disable if there is no syntactical sugar
+   * within the expression.
    * 
    * @param item
    */
-  private void menuItemActivated (JMenuItem item) {
-    freeUnderlining ();
-    if (item instanceof MenuRuleItem) {
+  private void menuItemActivated(JMenuItem item)
+  {
+    freeUnderlining();
+    if (item instanceof MenuRuleItem)
+    {
       MenuRuleItem ruleItem = (MenuRuleItem) item;
       ProofRule rule = ruleItem.getRule();
-      
-      try {
+
+      try
+      {
         this.proofModel.prove(rule, this.proofNode);
         this.rules.setRightRule();
       }
-      catch (Exception exc) {
+      catch (Exception exc)
+      {
         this.rules.setWrongRule(rule);
-        
+
       }
-      fireNodeChanged ();
+      fireNodeChanged();
     }
-    else if (item instanceof MenuGuessItem) {
-      try {
+    else if (item instanceof MenuGuessItem)
+    {
+      try
+      {
         this.proofModel.guess(this.proofNode);
-      } catch (final ProofGuessException e) {
+      }
+      catch (final ProofGuessException e)
+      {
         fireRequstJumpToNode(e.getNode());
         SwingUtilities.invokeLater(new Runnable() {
-          public void run() {
-            JOptionPane.showMessageDialog(getTopLevelAncestor(), MessageFormat.format(Messages.getString("NodeComponent.5"), e.getMessage()), Messages.getString("NodeComponent.6"), JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
+          public void run()
+          {
+            JOptionPane.showMessageDialog(getTopLevelAncestor(),
+                MessageFormat.format(Messages.getString("NodeComponent.5"), e.getMessage()), Messages.getString("NodeComponent.6"), JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
           }
         });
       }
     }
-    else if (item instanceof MenuGuessTreeItem) {
-      try {
+    else if (item instanceof MenuGuessTreeItem)
+    {
+      try
+      {
         this.proofModel.complete(this.proofNode);
       }
-      catch (final ProofGuessException e) {
+      catch (final ProofGuessException e)
+      {
         fireRequstJumpToNode(e.getNode());
         SwingUtilities.invokeLater(new Runnable() {
-          public void run() {
-            JOptionPane.showMessageDialog(getTopLevelAncestor(), MessageFormat.format(Messages.getString("NodeComponent.7"), e.getMessage()), Messages.getString("NodeComponent.8"), JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
+          public void run()
+          {
+            JOptionPane.showMessageDialog(getTopLevelAncestor(),
+                MessageFormat.format(Messages.getString("NodeComponent.7"), e.getMessage()), Messages.getString("NodeComponent.8"), JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
           }
         });
       }
     }
-    else if (item instanceof MenuTranslateItem) {
+    else if (item instanceof MenuTranslateItem)
+    {
       int answer = 1;
-      if (this.proofModel.containsSyntacticSugar(this.proofNode, false)) {
+      if (this.proofModel.containsSyntacticSugar(this.proofNode, false))
+      {
         String[] answers = { Messages.getString("NodeComponent.0"), Messages.getString("NodeComponent.1"), Messages.getString("NodeComponent.2") }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         answer = JOptionPane.showOptionDialog(getTopLevelAncestor(), Messages.getString("NodeComponent.3"), //$NON-NLS-1$
             Messages.getString("NodeComponent.4"), //$NON-NLS-1$
-            JOptionPane.YES_NO_CANCEL_OPTION,
-            JOptionPane.QUESTION_MESSAGE,
-            null,
-            answers,
-            answers[0]);
+            JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, answers, answers[0]);
       }
-      switch (answer) {
+      switch (answer)
+      {
       case 0:
         this.proofModel.translateToCoreSyntax(this.proofNode, false);
         break;
@@ -871,280 +1013,321 @@ public class SmallStepNodeComponent extends JComponent {
       fireNodeChanged();
     }
   }
-  
+
   /**
    * Sets the top-left position where the stuff should be appear
+   * 
    * @param origin
    */
-  public void setOrigion (Point origin) {
+  public void setOrigion(Point origin)
+  {
     this.origin = origin;
   }
-  
+
   /**
-   * Delegate the call to the {@link Component#setBounds(int, int, int, int)} method.<br>
-   * The position comes directly from the {@link #origin}. The size is a compined needed
-   * dimension of the {@link #ruleDimension} and the {@link #expressionDimension}. 
-   *
+   * Delegate the call to the {@link Component#setBounds(int, int, int, int)}
+   * method.<br>
+   * The position comes directly from the {@link #origin}. The size is a
+   * compined needed dimension of the {@link #ruleDimension} and the
+   * {@link #expressionDimension}.
+   * 
    */
-  public void setBounds () {
-    setBounds (this.origin.x, this.origin.y, 
-        this.ruleDimension.width + this.expressionDimension.width + this.spacing, 
-        this.actualRuleHeight + this.actualExpressionHeight + this.spacing);
+  public void setBounds()
+  {
+    setBounds(this.origin.x, this.origin.y, this.ruleDimension.width + this.expressionDimension.width + this.spacing, this.actualRuleHeight
+        + this.actualExpressionHeight + this.spacing);
   }
-  
+
   /**
    * Causes an update of the {@link #expression} and the {@link #translateItem}.<br>
    * Hands the store to the expression if memory is enabled.<br>
-   * Whether the expression of the {@link #proofNode} contains syntactical sugar the 
-   * {@link #translateItem} is enabled or disabled at this point. 
-   *
+   * Whether the expression of the {@link #proofNode} contains syntactical sugar
+   * the {@link #translateItem} is enabled or disabled at this point.
+   * 
    */
-  public void update () {
-    
+  public void update()
+  {
+
     this.expression.setExpression(this.proofNode.getExpression());
-    if (this.memoryEnabled) {
+    if (this.memoryEnabled)
+    {
       this.expression.setEnvironment(this.proofNode.getStore());
     }
-    else {
+    else
+    {
       this.expression.setEnvironment(null);
     }
-    
-    
+
     this.translateItem.setEnabled(this.translator.containsSyntacticSugar(this.proofNode.getExpression(), true));
   }
 
   //
   // Stuff for the rules
   // 
-  
+
   /**
    * Returns the minmal size the rules need to render themself.<br>
-   * The {@link #actualRuleHeight} is initiated at this point with
-   * the minimum height.
+   * The {@link #actualRuleHeight} is initiated at this point with the minimum
+   * height.
    * 
    * @return The minimum size the rules need to render themself.
    */
-  public Dimension getMinRuleSize () {
+  public Dimension getMinRuleSize()
+  {
     this.ruleDimension = this.rules.getNeededSize(this.underlineRuleAdapter);
     this.actualRuleHeight = this.ruleDimension.height;
     return this.ruleDimension;
   }
-  
+
   /**
    * Returns the current {@link #ruleDimension}.<br>
-   * This is not necessarily the minimum Size. It may be altered
-   * by {@link #setActualRuleHeight(int)} and {@link #setMaxRuleWidth(int)}.
+   * This is not necessarily the minimum Size. It may be altered by
+   * {@link #setActualRuleHeight(int)} and {@link #setMaxRuleWidth(int)}.
    * 
    * @return Returns the currently set size of the rules.
    */
-  public Dimension getRuleSize () {
+  public Dimension getRuleSize()
+  {
     return this.ruleDimension;
   }
-  
+
   /**
    * Sets the width the {@link #rules} have to use.<br>
-   * This is needed because all rules, no matter how big they are,
-   * need to use all the same size.
+   * This is needed because all rules, no matter how big they are, need to use
+   * all the same size.
    * 
-   * @param maxRuleWidth The width of the biggest rule within the tree.
+   * @param maxRuleWidth
+   *          The width of the biggest rule within the tree.
    */
-  public void setMaxRuleWidth (int maxRuleWidth) {
+  public void setMaxRuleWidth(int maxRuleWidth)
+  {
     this.rules.setActualWidth(maxRuleWidth);
     this.ruleDimension.width = maxRuleWidth;
   }
-  
+
   /**
    * Sets the actual height the rule should use.<br>
-   * This is needed because right of this {@link #rules} item
-   * the expression of the child nodes is located and they needed
-   * to be aligned.
+   * This is needed because right of this {@link #rules} item the expression of
+   * the child nodes is located and they needed to be aligned.
    * 
    * @param actualRuleHeight
    */
-  public void setActualRuleHeight (int actualRuleHeight) {
+  public void setActualRuleHeight(int actualRuleHeight)
+  {
     this.actualRuleHeight = actualRuleHeight;
   }
-  
+
   /**
    * Returns the actual rule height.
+   * 
    * @return The actual rule height.
    */
-  public int getActualRuleHeight () {
+  public int getActualRuleHeight()
+  {
     return this.actualRuleHeight;
   }
-  
+
   /**
    * Returns the top position of the {@link #rules}.<br>
-   * That actualy is the bottom position of the {@link #expression}
-   * added with some {@link #spacing}.
+   * That actualy is the bottom position of the {@link #expression} added with
+   * some {@link #spacing}.
    * 
    * @return
    */
-  public int getRuleTop () {
+  public int getRuleTop()
+  {
     return this.actualExpressionHeight + this.spacing;
   }
-  
+
   /**
    * Hides the rules.<br>
-   * This is done if the this node is the last node witin the tree.
-   * So no further rules could be applied.
-   *
+   * This is done if the this node is the last node witin the tree. So no
+   * further rules could be applied.
+   * 
    */
-  public void hideRules () {
+  public void hideRules()
+  {
     this.rules.setVisible(false);
   }
-  
+
   /**
    * Unhides the rules.
-   *
+   * 
    */
-  public void showRules () {
+  public void showRules()
+  {
     this.rules.setVisible(true);
   }
-  
+
   /**
    * Causes the rules to get places.<br>
-   * The top position of the rules is chosen that the {@link #rules}-item is 
+   * The top position of the rules is chosen that the {@link #rules}-item is
    * verticaly centered in the space available.
-   *
+   * 
    */
-  public void placeRules () {
-    
+  public void placeRules()
+  {
+
     int top = getRuleTop() + (this.actualRuleHeight - this.ruleDimension.height) / 2;
     this.rules.setBounds(0, top, this.ruleDimension.width, this.ruleDimension.height);
   }
-  
+
   /**
-   * Causes every node, including this one, to get freed from the underlining. 
-   *
+   * Causes every node, including this one, to get freed from the underlining.
+   * 
    */
-  private void freeUnderlining () {
-    freeUnderliningSibling (false, Direction.DIRECTION_CHILD);
-    freeUnderliningSibling (false, Direction.DIRECTION_PARENT);
+  private void freeUnderlining()
+  {
+    freeUnderliningSibling(false, Direction.DIRECTION_CHILD);
+    freeUnderliningSibling(false, Direction.DIRECTION_PARENT);
   }
-  
+
   /**
    * Frees every node in the given direction to be freed from the underlining.
    * If <i>ignoreThis</i> is <i>false</i> the current nodes is freed aswell.
    * 
-   * @param ignoreThis Whether the current node should not be freed aswell.
-   * @param direction The direction how the freeing should be done.
+   * @param ignoreThis
+   *          Whether the current node should not be freed aswell.
+   * @param direction
+   *          The direction how the freeing should be done.
    */
-  private void freeUnderliningSibling (boolean ignoreThis, Direction direction) {
-    if (!ignoreThis) {
+  private void freeUnderliningSibling(boolean ignoreThis, Direction direction)
+  {
+    if (!ignoreThis)
+    {
       this.expression.setUnderlineExpression(null);
     }
 
     SmallStepProofNode nextNode = null;
-    switch (direction) {
+    switch (direction)
+    {
     case DIRECTION_CHILD:
-      try {
+      try
+      {
         nextNode = this.proofNode.getFirstChild();
-      } catch (Exception e) {
+      }
+      catch (Exception e)
+      {
       }
       break;
     case DIRECTION_PARENT:
       nextNode = this.proofNode.getParent();
       break;
     }
-    
-    if (nextNode == null) {
+
+    if (nextNode == null)
+    {
       // no next node, so we're done here
       return;
     }
-    
-    SmallStepNodeComponent nextNodeComponent = (SmallStepNodeComponent)nextNode.getUserObject();
+
+    SmallStepNodeComponent nextNodeComponent = (SmallStepNodeComponent) nextNode.getUserObject();
     nextNodeComponent.freeUnderliningSibling(false, direction);
   }
-  
-  
+
   //
   // Stuff for the expressions
   // 
-  
+
   /**
    * Returns the minimum size needed to correctly render the {@link expression}.
-   * The {@link #actualExpressionHeight} is initiated with the heigth of the minimum
-   * size.
+   * The {@link #actualExpressionHeight} is initiated with the heigth of the
+   * minimum size.
    * 
-   * @param maxWidth Max width is given for the entire component.
+   * @param maxWidth
+   *          Max width is given for the entire component.
    * @return
    */
-  public Dimension checkNeededExpressionSize (int maxWidth) {
+  public Dimension checkNeededExpressionSize(int maxWidth)
+  {
     maxWidth -= this.ruleDimension.width + this.spacing;
-    
+
     this.expressionDimension = this.expression.getNeededSize(maxWidth);
-    
+
     // use the calculated expression height for the actual height
     // until it will be changed by the SmallStepComponent
     this.actualExpressionHeight = this.expressionDimension.height;
-    
+
     return this.expressionDimension;
   }
-  
+
   /**
-   * Returns the size of the expression. 
+   * Returns the size of the expression.
+   * 
    * @return
    */
-  public Dimension getExpressionSize () {
+  public Dimension getExpressionSize()
+  {
     return this.expressionDimension;
   }
-  
+
   /**
    * Sets the actual expression height.
+   * 
    * @param actualExpressionHeight
    */
-  public void setActualExpressionHeight (int actualExpressionHeight) {
+  public void setActualExpressionHeight(int actualExpressionHeight)
+  {
     this.actualExpressionHeight = actualExpressionHeight;
   }
-  
+
   /**
    * Returns the actual height of the expression.
+   * 
    * @return
    */
-  public int getActualExpressionHeight () {
+  public int getActualExpressionHeight()
+  {
     return this.actualExpressionHeight;
   }
-  
+
   /**
    * Causes the {@link #expression} to get placed.<br>
-   * The left position of the expression is actualy the width of the rules
-   * added with some {@link #spacing}.
-   *
+   * The left position of the expression is actualy the width of the rules added
+   * with some {@link #spacing}.
+   * 
    */
-  public void placeExpression () {
+  public void placeExpression()
+  {
     this.expression.setBounds(this.ruleDimension.width + this.spacing, 0, this.expressionDimension.width, this.actualExpressionHeight);
   }
-  
-  
-  public void addSmallStepNodeListener (SmallStepNodeListener listener) {
+
+  public void addSmallStepNodeListener(SmallStepNodeListener listener)
+  {
     this.listenerList.add(SmallStepNodeListener.class, listener);
   }
-  
-  public void removeSmallStepNodeListener (SmallStepNodeListener listener) {
+
+  public void removeSmallStepNodeListener(SmallStepNodeListener listener)
+  {
     this.listenerList.remove(SmallStepNodeListener.class, listener);
   }
-  
-  private void fireNodeChanged () {
+
+  private void fireNodeChanged()
+  {
     Object[] listeners = this.listenerList.getListenerList();
-    for (int i=0; i<listeners.length; i+=2) {
-      if (listeners [i] != SmallStepNodeListener.class) {
+    for (int i = 0; i < listeners.length; i += 2)
+    {
+      if (listeners[i] != SmallStepNodeListener.class)
+      {
         continue;
       }
-      
-      ((SmallStepNodeListener)listeners [i+1]).nodeChanged(this);
+
+      ((SmallStepNodeListener) listeners[i + 1]).nodeChanged(this);
     }
   }
-  
-  private void fireRequstJumpToNode (ProofNode node) {
+
+  private void fireRequstJumpToNode(ProofNode node)
+  {
     Object[] listeners = this.listenerList.getListenerList();
-    for (int i=0; i<listeners.length; i+=2) {
-      if (listeners [i] != SmallStepNodeListener.class) {
+    for (int i = 0; i < listeners.length; i += 2)
+    {
+      if (listeners[i] != SmallStepNodeListener.class)
+      {
         continue;
       }
-      
-      ((SmallStepNodeListener)listeners [i+1]).requestJumpToNode(node);
+
+      ((SmallStepNodeListener) listeners[i + 1]).requestJumpToNode(node);
     }
   }
-  
+
 }
