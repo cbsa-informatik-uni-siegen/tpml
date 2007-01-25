@@ -26,10 +26,6 @@ public final class ObjectExpr extends Expression
 
   public ObjectExpr ( String pIdentifier , Row pRow )
   {
-    if ( pIdentifier == null )
-    {
-      throw new NullPointerException ( "identifier is null" ) ;
-    }
     if ( pRow == null )
     {
       throw new NullPointerException ( "row is null" ) ;
@@ -64,10 +60,6 @@ public final class ObjectExpr extends Expression
   @ Override
   public ObjectExpr clone ( )
   {
-    if ( this.identifier == null )
-    {
-      return new ObjectExpr ( this.row.clone ( ) ) ;
-    }
     return new ObjectExpr ( this.identifier , this.row.clone ( ) ) ;
   }
 
@@ -119,7 +111,12 @@ public final class ObjectExpr extends Expression
   @ Override
   public Expression substitute ( String pID , Expression pExpression )
   {
-    return new ObjectExpr ( ( Row ) this.row.substitute ( pID , pExpression ) ) ;
+    if ( "self".equals ( pID ) )
+    {
+      return this ;
+    }
+    return new ObjectExpr ( this.identifier , ( Row ) this.row.substitute (
+        pID , pExpression ) ) ;
   }
 
 

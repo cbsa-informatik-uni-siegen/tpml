@@ -77,22 +77,6 @@ public class CurriedMeth extends Expression
   {
     TreeSet < String > free = new TreeSet < String > ( ) ;
     free.addAll ( this.expression.free ( ) ) ;
-    int index = 0 ;
-    while ( ! this.parentRow.getExpressions ( index ).equals ( this ) )
-    {
-      index ++ ;
-    }
-    for ( int i = 0 ; i < index ; i ++ )
-    {
-      if ( this.parentRow.getExpressions ( i ) instanceof Attr )
-      {
-        Attr attr = ( Attr ) this.parentRow.getExpressions ( i ) ;
-        if ( free.contains ( attr.getIdentifier ( ) ) )
-        {
-          free.remove ( attr.getIdentifier ( ) ) ;
-        }
-      }
-    }
     for ( int i = 1 ; i < this.identifiers.length ; i ++ )
     {
       free.remove ( this.identifiers [ i ] ) ;
@@ -139,8 +123,8 @@ public class CurriedMeth extends Expression
   @ Override
   public Expression substitute ( String pID , Expression pExpression )
   {
-    return new CurriedMeth ( this.identifiers.clone ( ) , this.expression
-        .substitute ( pID , pExpression ) ) ;
+    return new CurriedMeth ( this.identifiers , this.expression.substitute (
+        pID , pExpression ) ) ;
   }
 
 

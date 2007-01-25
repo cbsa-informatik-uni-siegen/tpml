@@ -1,8 +1,6 @@
 package de.unisiegen.tpml.core.expressions ;
 
 
-import java.util.Set ;
-import java.util.TreeSet ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 
@@ -54,31 +52,6 @@ public class Meth extends Expression
   public String getIdentifier ( )
   {
     return this.identifier ;
-  }
-
-
-  @ Override
-  public Set < String > free ( )
-  {
-    TreeSet < String > free = new TreeSet < String > ( ) ;
-    free.addAll ( this.expression.free ( ) ) ;
-    int index = 0 ;
-    while ( ! this.parentRow.getExpressions ( index ).equals ( this ) )
-    {
-      index ++ ;
-    }
-    for ( int i = 0 ; i < index ; i ++ )
-    {
-      if ( this.parentRow.getExpressions ( i ) instanceof Attr )
-      {
-        Attr attr = ( Attr ) this.parentRow.getExpressions ( i ) ;
-        if ( free.contains ( attr.getIdentifier ( ) ) )
-        {
-          free.remove ( attr.getIdentifier ( ) ) ;
-        }
-      }
-    }
-    return free ;
   }
 
 

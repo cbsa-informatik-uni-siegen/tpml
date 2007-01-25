@@ -58,7 +58,7 @@ public final class Message extends Expression
   public Message substitute ( String pID , Expression pExpression )
   {
     return new Message ( this.expression.substitute ( pID , pExpression ) ,
-        new String ( this.identifier ) ) ;
+        this.identifier ) ;
   }
 
 

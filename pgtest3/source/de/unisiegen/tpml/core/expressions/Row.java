@@ -96,10 +96,42 @@ public final class Row extends Expression
   @ Override
   public Expression substitute ( String pID , Expression pExpression )
   {
-    Expression [ ] tmp = new Expression [ this.expressions.length ] ;
-    for ( int n = 0 ; n < tmp.length ; ++ n )
+    Expression [ ] tmp = this.expressions.clone ( ) ;
+    for ( int i = 0 ; i < tmp.length ; i ++ )
     {
-      tmp [ n ] = this.expressions [ n ].substitute ( pID , pExpression ) ;
+      Expression e = tmp [ i ] ;
+      if ( e instanceof Attr )
+      {
+        // TODO "with a new name ... not only append '"
+        Attr attr = ( Attr ) e ;
+        // first case id == id'
+        if ( attr.getIdentifier ( ).equals ( pID ) )
+        {
+          tmp [ i ] = new Attr ( attr.getIdentifier ( ) , attr.getE ( )
+              .substitute ( pID , pExpression ) ) ;
+          break ;
+        }
+        // second case id != id'
+        tmp [ i ] = new Attr ( attr.getIdentifier ( ) + "'" , attr.getE ( )
+            .substitute ( pID , pExpression ) ) ;
+        for ( int j = i + 1 ; j < tmp.length ; j ++ )
+        {
+          tmp [ j ] = tmp [ j ].substitute ( attr.getIdentifier ( ) ,
+              new Identifier ( attr.getIdentifier ( ) + "'" ) ) ;
+        }
+      }
+      else if ( e instanceof Meth )
+      {
+        Meth meth = ( Meth ) e ;
+        tmp [ i ] = new Meth ( meth.getIdentifier ( ) , meth.getE ( )
+            .substitute ( pID , pExpression ) ) ;
+      }
+      else if ( e instanceof CurriedMeth )
+      {
+        CurriedMeth curriedMeth = ( CurriedMeth ) e ;
+        tmp [ i ] = new CurriedMeth ( curriedMeth.getIdentifiers ( ) ,
+            curriedMeth.getE ( ).substitute ( pID , pExpression ) ) ;
+      }
     }
     return new Row ( tmp ) ;
   }
