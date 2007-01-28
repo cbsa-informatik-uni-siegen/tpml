@@ -1,1 +1,1 @@
-object attr a = 4 ; meth m = 1 ; attr b = 1/0 ; end
+object attr a = 4 ; meth m x = x + 1 ; attr b = 1/0 ; end
