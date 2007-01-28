@@ -1,6 +1,9 @@
 package de.unisiegen.tpml.graphics.outline.binding ;
 
 
+import de.unisiegen.tpml.core.expressions.Identifier ;
+
+
 /**
  * In this class the start and the end index of the {@link Identifier}s is
  * saved.

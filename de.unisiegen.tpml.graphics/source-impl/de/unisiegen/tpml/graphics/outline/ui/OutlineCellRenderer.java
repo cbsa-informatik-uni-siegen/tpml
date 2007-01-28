@@ -7,6 +7,7 @@ import java.awt.Font ;
 import java.awt.Graphics ;
 import javax.swing.JTree ;
 import javax.swing.tree.DefaultTreeCellRenderer ;
+import de.unisiegen.tpml.graphics.outline.Outline ;
 
 
 /**

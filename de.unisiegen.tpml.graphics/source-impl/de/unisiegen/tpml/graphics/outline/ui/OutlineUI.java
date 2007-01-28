@@ -24,6 +24,7 @@ import javax.swing.border.TitledBorder ;
 import javax.swing.tree.DefaultMutableTreeNode ;
 import javax.swing.tree.DefaultTreeModel ;
 import de.unisiegen.tpml.graphics.outline.AbstractOutline ;
+import de.unisiegen.tpml.graphics.outline.Outline ;
 import de.unisiegen.tpml.graphics.outline.listener.OutlineActionListener ;
 import de.unisiegen.tpml.graphics.outline.listener.OutlineItemListener ;
 import de.unisiegen.tpml.graphics.outline.listener.OutlineKeyListener ;

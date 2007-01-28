@@ -7,6 +7,7 @@ import java.awt.event.MouseListener ;
 import javax.swing.JLabel ;
 import javax.swing.tree.DefaultMutableTreeNode ;
 import javax.swing.tree.TreePath ;
+import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.graphics.bigstep.BigStepView ;
 import de.unisiegen.tpml.graphics.components.CompoundExpression ;
 import de.unisiegen.tpml.graphics.outline.Outline ;
