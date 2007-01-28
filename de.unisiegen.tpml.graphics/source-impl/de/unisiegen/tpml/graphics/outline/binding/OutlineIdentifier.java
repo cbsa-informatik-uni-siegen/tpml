@@ -19,7 +19,9 @@ public abstract class OutlineIdentifier
 {
   /**
    * Returns a list of {@link OutlinePair}, in which the start and the end
-   * index of the {@link Identifier}s is saved.
+   * index of the {@link Identifier}s is saved. This method searches for
+   * {@link Identifier}s only to the beginning of the first child
+   * {@link Expression}.
    * 
    * @param pExpression The {@link Expression} in which the {@link Identifier}s
    *          should be searched for.
@@ -39,6 +41,47 @@ public abstract class OutlineIdentifier
       beginChild = pExpression.toPrettyString ( ).getAnnotationForPrintable (
           children.nextElement ( ) ).getStartOffset ( ) ;
     }
+    int charIndex = 0 ;
+    int start = 0 ;
+    int end = 0 ;
+    while ( charIndex < beginChild )
+    {
+      if ( PrettyStyle.IDENTIFIER.equals ( prettyCharIterator.getStyle ( ) ) )
+      {
+        start = charIndex ;
+        while ( PrettyStyle.IDENTIFIER
+            .equals ( prettyCharIterator.getStyle ( ) ) )
+        {
+          charIndex ++ ;
+          prettyCharIterator.next ( ) ;
+        }
+        end = charIndex - 1 ;
+        list.add ( new OutlinePair ( start , end ) ) ;
+      }
+      charIndex ++ ;
+      prettyCharIterator.next ( ) ;
+    }
+    return list ;
+  }
+
+
+  /**
+   * Returns a list of {@link OutlinePair}, in which the start and the end
+   * index of the {@link Identifier}s is saved. This method searches for
+   * {@link Identifier}s in the whole {@link Expression}.
+   * 
+   * @param pExpression The {@link Expression} in which the {@link Identifier}s
+   *          should be searched for.
+   * @return A list of {@link OutlinePair}, in which the start and the end
+   *         index of the {@link Identifier}s is saved.
+   */
+  public final static ArrayList < OutlinePair > getAllIndices (
+      Expression pExpression )
+  {
+    ArrayList < OutlinePair > list = new ArrayList < OutlinePair > ( ) ;
+    PrettyCharIterator prettyCharIterator = pExpression.toPrettyString ( )
+        .toCharacterIterator ( ) ;
+    int beginChild = pExpression.toPrettyString ( ).toString ( ).length ( ) ;
     int charIndex = 0 ;
     int start = 0 ;
     int end = 0 ;
