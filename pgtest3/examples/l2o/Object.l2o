@@ -1,1 +1,1 @@
-object attr a = 1 ; attr b = 1 + 2 ; meth add = a + b + c + 2 ; meth dec x = x - a ; end # dec
+let o = object attr a = 1 ; attr b = 1 + 2 ; meth add = a + b + c + 2 ; meth dec x = x - a ; end # dec in o 5

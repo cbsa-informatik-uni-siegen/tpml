@@ -1,1 +1,1 @@
-object (id) attr a = 4+1 ; meth m x = a + 1 ; attr b = 1+1 ; end
+object (id) attr id = 4+1 ; meth m = id#b + a + 1 ; attr id = 1+1 ; end

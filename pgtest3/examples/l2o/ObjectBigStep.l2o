@@ -1,0 +1,1 @@
+object attr a = 1+1 ; attr b = 3 ; meth add = 1 ; meth add = a + b ; end # add
