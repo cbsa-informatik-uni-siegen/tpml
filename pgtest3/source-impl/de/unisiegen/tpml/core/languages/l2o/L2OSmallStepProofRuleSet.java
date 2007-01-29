@@ -61,8 +61,7 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
     {
       return row ;
     }
-    return pObjectExpr.getIdentifier ( ) == null ? new ObjectExpr ( ( Row ) row )
-        : new ObjectExpr ( pObjectExpr.getIdentifier ( ) , ( Row ) row ) ;
+    return new ObjectExpr ( pObjectExpr.getIdentifier ( ) , ( Row ) row ) ;
   }
 
 
