@@ -53,10 +53,6 @@ public final class ObjectExpr extends Expression
    */
   public ObjectExpr ( String pIdentifier , Row pRow )
   {
-    if ( pIdentifier == null )
-    {
-      throw new NullPointerException ( "Identifier is null" ) ; //$NON-NLS-1$
-    }
     if ( pRow == null )
     {
       throw new NullPointerException ( "Row is null" ) ; //$NON-NLS-1$
