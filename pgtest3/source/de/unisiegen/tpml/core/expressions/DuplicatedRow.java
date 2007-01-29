@@ -16,6 +16,11 @@ public final class DuplicatedRow extends Expression
 
   public DuplicatedRow ( String [ ] pIdentifiers , Expression [ ] pExpressions )
   {
+    if ( pIdentifiers.length != pExpressions.length )
+    {
+      throw new IllegalArgumentException (
+          "Identifiers length and Expression length must be equal" ) ;
+    }
     ArrayList < String > id = new ArrayList < String > ( ) ;
     ArrayList < Expression > expr = new ArrayList < Expression > ( ) ;
     for ( int i = pIdentifiers.length - 1 ; i >= 0 ; i -- )
