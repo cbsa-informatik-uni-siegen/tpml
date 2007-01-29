@@ -232,14 +232,14 @@ public final class AbstractOutline implements Outline
       CurriedLetRec pCurriedLetRec )
   {
     String [ ] idList = pCurriedLetRec.getIdentifiers ( ) ;
-    OutlineBinding outlinePair = new OutlineBinding ( pCurriedLetRec ) ;
-    outlinePair.add ( pCurriedLetRec , pCurriedLetRec.getIdentifiers ( 0 ) ) ;
+    OutlineBinding outlineBinding = new OutlineBinding ( pCurriedLetRec ) ;
+    outlineBinding.add ( pCurriedLetRec , pCurriedLetRec.getIdentifiers ( 0 ) ) ;
     for ( int i = 1 ; i < pCurriedLetRec.getIdentifiers ( ).length ; i ++ )
     {
-      outlinePair.add ( pCurriedLetRec.getE1 ( ) , pCurriedLetRec
+      outlineBinding.add ( pCurriedLetRec.getE1 ( ) , pCurriedLetRec
           .getIdentifiers ( i ) ) ;
     }
-    outlinePair.find ( ) ;
+    outlineBinding.find ( ) ;
     DefaultMutableTreeNode node = new DefaultMutableTreeNode ( new OutlineNode (
         pCurriedLetRec , this.outlineUnbound ) ) ;
     ArrayList < OutlinePair > index = OutlineIdentifier
@@ -250,7 +250,7 @@ public final class AbstractOutline implements Outline
     {
       tmp = index.get ( i ) ;
       node.add ( new DefaultMutableTreeNode ( new OutlineNode ( IDENTIFIER ,
-          idList [ i ] , tmp.getStart ( ) , tmp.getEnd ( ) , outlinePair ,
+          idList [ i ] , tmp.getStart ( ) , tmp.getEnd ( ) , outlineBinding ,
           this.outlineUnbound ) ) ) ;
     }
     createChildren ( pCurriedLetRec , node ) ;
@@ -267,9 +267,16 @@ public final class AbstractOutline implements Outline
   private final DefaultMutableTreeNode checkCurriedMeth (
       CurriedMeth pCurriedMeth )
   {
-    OutlineBinding outlinePair = new OutlineBinding ( pCurriedMeth ) ;
     DefaultMutableTreeNode node = new DefaultMutableTreeNode ( new OutlineNode (
         pCurriedMeth , this.outlineUnbound ) ) ;
+    OutlineBinding outlineBinding = new OutlineBinding ( pCurriedMeth ) ;
+    outlineBinding.add ( null , null ) ;
+    for ( int i = 1 ; i < pCurriedMeth.getIdentifiers ( ).length ; i ++ )
+    {
+      outlineBinding.add ( pCurriedMeth.getE ( ) , pCurriedMeth
+          .getIdentifiers ( i ) ) ;
+    }
+    outlineBinding.find ( ) ;
     ArrayList < OutlinePair > index = OutlineIdentifier
         .getIndex ( pCurriedMeth ) ;
     OutlinePair tmp ;
@@ -278,8 +285,8 @@ public final class AbstractOutline implements Outline
     {
       tmp = index.get ( i ) ;
       node.add ( new DefaultMutableTreeNode ( new OutlineNode ( METHODNAME ,
-          pCurriedMeth.getIdentifiers ( ) [ i ] , tmp.getStart ( ) , tmp
-              .getEnd ( ) , outlinePair , this.outlineUnbound ) ) ) ;
+          pCurriedMeth.getIdentifiers ( i ) , tmp.getStart ( ) ,
+          tmp.getEnd ( ) , outlineBinding , this.outlineUnbound ) ) ) ;
     }
     createChildren ( pCurriedMeth , node ) ;
     return node ;
@@ -589,12 +596,12 @@ public final class AbstractOutline implements Outline
   private final DefaultMutableTreeNode checkMultiLambda (
       MultiLambda pMultiLambda )
   {
-    OutlineBinding aSTBinding = new OutlineBinding ( pMultiLambda ) ;
+    OutlineBinding outlineBinding = new OutlineBinding ( pMultiLambda ) ;
     for ( String id : pMultiLambda.getIdentifiers ( ) )
     {
-      aSTBinding.add ( pMultiLambda.getE ( ) , id ) ;
+      outlineBinding.add ( pMultiLambda.getE ( ) , id ) ;
     }
-    aSTBinding.find ( ) ;
+    outlineBinding.find ( ) ;
     DefaultMutableTreeNode node = new DefaultMutableTreeNode ( new OutlineNode (
         pMultiLambda , this.outlineUnbound ) ) ;
     ArrayList < OutlinePair > index = OutlineIdentifier
@@ -606,7 +613,7 @@ public final class AbstractOutline implements Outline
       outlinePair = index.get ( i ) ;
       node.add ( new DefaultMutableTreeNode ( new OutlineNode ( IDENTIFIER ,
           pMultiLambda.getIdentifiers ( ) [ i ] , outlinePair.getStart ( ) ,
-          outlinePair.getEnd ( ) , aSTBinding , this.outlineUnbound ) ) ) ;
+          outlinePair.getEnd ( ) , outlineBinding , this.outlineUnbound ) ) ) ;
     }
     createChildren ( pMultiLambda , node ) ;
     return node ;
@@ -621,12 +628,12 @@ public final class AbstractOutline implements Outline
    */
   private final DefaultMutableTreeNode checkMultiLet ( MultiLet pMultiLet )
   {
-    OutlineBinding aSTBinding = new OutlineBinding ( pMultiLet ) ;
+    OutlineBinding outlineBinding = new OutlineBinding ( pMultiLet ) ;
     for ( String id : pMultiLet.getIdentifiers ( ) )
     {
-      aSTBinding.add ( pMultiLet.getE2 ( ) , id ) ;
+      outlineBinding.add ( pMultiLet.getE2 ( ) , id ) ;
     }
-    aSTBinding.find ( ) ;
+    outlineBinding.find ( ) ;
     String [ ] idList = pMultiLet.getIdentifiers ( ) ;
     DefaultMutableTreeNode node = new DefaultMutableTreeNode ( new OutlineNode (
         pMultiLet , this.outlineUnbound ) ) ;
@@ -638,7 +645,7 @@ public final class AbstractOutline implements Outline
       outlinePair = index.get ( i ) ;
       node.add ( new DefaultMutableTreeNode ( new OutlineNode ( IDENTIFIER ,
           idList [ i ] , outlinePair.getStart ( ) , outlinePair.getEnd ( ) ,
-          aSTBinding , this.outlineUnbound ) ) ) ;
+          outlineBinding , this.outlineUnbound ) ) ) ;
     }
     createChildren ( pMultiLet , node ) ;
     return node ;
