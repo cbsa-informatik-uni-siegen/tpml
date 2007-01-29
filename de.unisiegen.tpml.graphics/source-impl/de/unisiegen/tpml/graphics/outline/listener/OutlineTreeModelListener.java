@@ -15,7 +15,7 @@ import de.unisiegen.tpml.graphics.outline.Outline ;
  * Sets the new {@link Expression} in the {@link Outline}, if a node changed.
  * 
  * @author Christian Fehler
- * @version $Rev$
+ * @version $Rev: 1075 $
  */
 public class OutlineTreeModelListener implements TreeModelListener
 {

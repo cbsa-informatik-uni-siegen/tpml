@@ -16,7 +16,7 @@ import de.unisiegen.tpml.core.languages.l0.L0Language ;
  * Big step proof rules for the <b>L0CBN</b> and derived languages.
  * 
  * @author Christian Fehler
- * @version $Rev$
+ * @version $Rev: 995 $
  */
 public class L0CBNBigStepProofRuleSet extends L0BigStepProofRuleSet
 {

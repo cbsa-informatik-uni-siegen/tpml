@@ -14,7 +14,7 @@ import de.unisiegen.tpml.graphics.outline.Outline ;
  * <code>JSplitPane</code> is created, so this is done here.
  * 
  * @author Christian Fehler
- * @version $Rev$
+ * @version $Rev: 995 $
  */
 public final class OutlinePropertyChangeListener implements
     PropertyChangeListener

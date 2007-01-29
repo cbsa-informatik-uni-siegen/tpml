@@ -14,7 +14,7 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStyle ;
  * in which the start and the end index of the {@link Identifier}s is saved.
  * 
  * @author Christian Fehler
- * @version $Rev$
+ * @version $Rev: 1078 $
  */
 public abstract class OutlineIdentifier
 {

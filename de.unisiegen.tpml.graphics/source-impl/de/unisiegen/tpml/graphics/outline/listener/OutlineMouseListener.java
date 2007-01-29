@@ -24,7 +24,7 @@ import de.unisiegen.tpml.graphics.typechecker.TypeCheckerView ;
  * <code>JPopupMenu</code> in the {@link Outline}.
  * 
  * @author Christian Fehler
- * @version $Rev$
+ * @version $Rev: 1075 $
  */
 public final class OutlineMouseListener implements MouseListener
 {

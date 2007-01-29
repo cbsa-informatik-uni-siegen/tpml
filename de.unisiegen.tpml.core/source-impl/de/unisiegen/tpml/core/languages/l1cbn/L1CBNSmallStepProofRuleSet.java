@@ -6,6 +6,7 @@ import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.expressions.Lambda ;
 import de.unisiegen.tpml.core.expressions.Let ;
 import de.unisiegen.tpml.core.languages.l0.L0Language ;
+import de.unisiegen.tpml.core.languages.l0.L0SmallStepProofRuleSet ;
 import de.unisiegen.tpml.core.languages.l1.L1Language ;
 import de.unisiegen.tpml.core.languages.l1.L1SmallStepProofRuleSet ;
 import de.unisiegen.tpml.core.languages.l2.L2Language ;
@@ -16,7 +17,7 @@ import de.unisiegen.tpml.core.smallstep.SmallStepProofContext ;
  * Small step proof rules for the <code>L1CBN</code> language.
  * 
  * @author Christian Fehler
- * @version $Rev$
+ * @version $Rev: 1069 $
  * @see de.unisiegen.tpml.core.languages.l0.L0SmallStepProofRuleSet
  * @see de.unisiegen.tpml.core.languages.l1.L1SmallStepProofRuleSet
  */

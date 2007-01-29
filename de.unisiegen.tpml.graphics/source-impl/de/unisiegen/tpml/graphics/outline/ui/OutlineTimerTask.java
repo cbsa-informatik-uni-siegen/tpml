@@ -9,7 +9,7 @@ import de.unisiegen.tpml.graphics.outline.AbstractOutline ;
  * Invokes the execute method in the {@link AbstractOutline}.
  * 
  * @author Christian Fehler
- * @version $Rev$
+ * @version $Rev: 995 $
  */
 public final class OutlineTimerTask extends TimerTask
 {

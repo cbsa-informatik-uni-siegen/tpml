@@ -24,6 +24,7 @@ import de.unisiegen.tpml.graphics.Theme;
  * @author Benedikt Meurer
  * @author Christoph Fehling
  * @author Christian Fehler
+ * @version $Rev: 995 $
  */
 public class PreferenceDialog extends javax.swing.JDialog {
     //

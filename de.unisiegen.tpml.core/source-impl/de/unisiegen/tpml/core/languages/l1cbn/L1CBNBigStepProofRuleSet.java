@@ -13,6 +13,7 @@ import de.unisiegen.tpml.core.expressions.Lambda ;
 import de.unisiegen.tpml.core.expressions.Let ;
 import de.unisiegen.tpml.core.expressions.LetRec ;
 import de.unisiegen.tpml.core.expressions.Recursion ;
+import de.unisiegen.tpml.core.languages.l0.L0BigStepProofRuleSet ;
 import de.unisiegen.tpml.core.languages.l0.L0Language ;
 import de.unisiegen.tpml.core.languages.l1.L1BigStepProofRuleSet ;
 import de.unisiegen.tpml.core.languages.l1.L1Language ;
@@ -23,7 +24,7 @@ import de.unisiegen.tpml.core.languages.l2.L2Language ;
  * Big step proof rules for the <b>L1CBN</b> and derived languages.
  * 
  * @author Christian Fehler
- * @version $Rev$
+ * @version $Rev: 1069 $
  */
 public class L1CBNBigStepProofRuleSet extends L1BigStepProofRuleSet
 {

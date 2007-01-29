@@ -8,7 +8,7 @@ import javax.swing.tree.DefaultMutableTreeNode ;
  * Displays the tree in the {@link OutlineUI}.
  * 
  * @author Christian Fehler
- * @version $Rev$
+ * @version $Rev: 995 $
  */
 public final class OutlineDisplayTree implements Runnable
 {

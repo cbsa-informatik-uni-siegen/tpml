@@ -10,7 +10,7 @@ import java.util.ArrayList ;
  * the VM.
  * 
  * @author Christian Fehler
- * @version $Rev$
+ * @version $Rev: 1030 $
  */
 public final class Optimizer
 {

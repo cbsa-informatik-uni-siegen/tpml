@@ -36,7 +36,7 @@ import de.unisiegen.tpml.graphics.outline.listener.OutlineTreeSelectionListener 
  * This class creates the UI of the {@link Outline}.
  * 
  * @author Christian Fehler
- * @version $Rev$
+ * @version $Rev: 1075 $
  */
 public final class OutlineUI
 {

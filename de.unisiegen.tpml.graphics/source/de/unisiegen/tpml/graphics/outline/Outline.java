@@ -11,7 +11,7 @@ import de.unisiegen.tpml.graphics.outline.util.OutlinePreferences ;
  * This interface is the main interface of the <code>Outline</code>.
  * 
  * @author Christian Fehler
- * @version $Rev$
+ * @version $Rev: 1075 $
  */
 public interface Outline
 {

@@ -13,7 +13,7 @@ import de.unisiegen.tpml.core.smallstep.SmallStepProofModel ;
  * language L0, but uses Call By Name.
  * 
  * @author Christian Fehler
- * @version $Rev$
+ * @version $Rev: 995 $
  * @see de.unisiegen.tpml.core.languages.Language
  * @see de.unisiegen.tpml.core.languages.LanguageParser
  * @see de.unisiegen.tpml.core.languages.LanguageScanner

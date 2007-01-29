@@ -26,7 +26,7 @@ import de.unisiegen.tpml.graphics.outline.listener.OutlineTreeModelListener ;
  * 
  * @author Marcell Fischbach
  * @author Christian Fehler
- * @version $Rev$
+ * @version $Rev: 995 $
  * @see de.unisiegen.tpml.graphics.AbstractProofView
  */
 public class TypeCheckerView extends AbstractProofView

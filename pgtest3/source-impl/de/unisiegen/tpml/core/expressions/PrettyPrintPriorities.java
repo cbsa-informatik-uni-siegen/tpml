@@ -10,7 +10,7 @@ package de.unisiegen.tpml.core.expressions ;
  * 
  * @author Benedikt Meurer
  * @author Christian Fehler
- * @version $Rev:343 $
+ * @version $Rev: 1061 $
  * @see de.unisiegen.tpml.core.expressions.Expression
  * @see de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder
  */

@@ -19,7 +19,7 @@ import de.unisiegen.tpml.core.expressions.Recursion ;
  * Finds the unbound {@link Identifier}s in a given {@link Expression}.
  * 
  * @author Christian Fehler
- * @version $Rev$
+ * @version $Rev: 995 $
  */
 public final class OutlineUnbound
 {

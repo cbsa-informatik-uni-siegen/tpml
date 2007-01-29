@@ -9,7 +9,7 @@ import de.unisiegen.tpml.core.expressions.Identifier ;
  * saved.
  * 
  * @author Christian Fehler
- * @version $Rev$
+ * @version $Rev: 1075 $
  */
 public final class OutlinePair
 {
