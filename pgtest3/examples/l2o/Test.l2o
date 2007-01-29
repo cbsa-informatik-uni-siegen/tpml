@@ -1,1 +1,1 @@
-{< hallo=1, test=2, test=3 >}
+let x = 5 in object attr a = 4 ; meth m x = m + x + 1 ; attr b = 1/0 ; end
