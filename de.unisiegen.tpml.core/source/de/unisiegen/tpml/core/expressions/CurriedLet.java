@@ -102,7 +102,7 @@ public class CurriedLet extends Expression
     if ( identifiers.length < 2 )
     {
       throw new IllegalArgumentException (
-          "identifiers must contain atleast two items" ) ;
+          "identifiers must contain at least two items" ) ;
     }
     if ( identifiers.length != types.length )
     {
