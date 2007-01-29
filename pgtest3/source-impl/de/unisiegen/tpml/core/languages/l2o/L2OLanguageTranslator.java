@@ -16,14 +16,26 @@ import de.unisiegen.tpml.core.expressions.Self ;
 import de.unisiegen.tpml.core.languages.l2.L2LanguageTranslator ;
 
 
+/**
+ * TODO
+ * 
+ * @author Christian Fehler
+ * @version $Rev: 1066 $
+ */
 public class L2OLanguageTranslator extends L2LanguageTranslator
 {
+  /**
+   * TODO
+   */
   public L2OLanguageTranslator ( )
   {
     super ( ) ;
   }
 
 
+  /**
+   * {@inheritDoc}
+   */
   @ Override
   public Expression translateToCoreSyntax ( Expression pExpression ,
       boolean pRecursive )
@@ -65,11 +77,11 @@ public class L2OLanguageTranslator extends L2LanguageTranslator
           Attr attr = ( Attr ) e ;
           if ( objectExpr.getIdentifier ( ).equals ( attr.getIdentifier ( ) ) )
           {
-            tmp [ i ] = new Attr ( attr.getIdentifier ( ) + "'" , attr.getE ( ) ) ;
+            tmp [ i ] = new Attr ( attr.getIdentifier ( ) + "'" , attr.getE ( ) ) ; //$NON-NLS-1$
             for ( int j = i + 1 ; j < tmp.length ; j ++ )
             {
               tmp [ j ] = tmp [ j ].substitute ( attr.getIdentifier ( ) ,
-                  new Identifier ( attr.getIdentifier ( ) + "'" ) ) ;
+                  new Identifier ( attr.getIdentifier ( ) + "'" ) ) ; //$NON-NLS-1$
             }
           }
         }

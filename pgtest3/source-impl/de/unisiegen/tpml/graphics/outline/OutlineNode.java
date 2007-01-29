@@ -18,7 +18,7 @@ import de.unisiegen.tpml.graphics.outline.binding.OutlineUnbound ;
  * This class represents the nodes in the {@link Outline}.
  * 
  * @author Christian Fehler
- * @version $Rev$
+ * @version $Rev: 1061 $
  */
 public final class OutlineNode
 {

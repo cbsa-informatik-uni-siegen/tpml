@@ -5,11 +5,23 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 
 
+/**
+ * TODO
+ * 
+ * @author Christian Fehler
+ * @version $Rev: 1066 $
+ */
 public class Self extends Identifier
 {
-  private final static String NAME = "self" ;
+  /**
+   * TODO
+   */
+  private final static String NAME = "self" ; //$NON-NLS-1$
 
 
+  /**
+   * TODO
+   */
   public Self ( )
   {
     super ( NAME ) ;
@@ -26,6 +38,9 @@ public class Self extends Identifier
   }
 
 
+  /**
+   * {@inheritDoc}
+   */
   @ Override
   public PrettyStringBuilder toPrettyStringBuilder (
       PrettyStringBuilderFactory factory )

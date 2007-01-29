@@ -17,26 +17,21 @@ import de.unisiegen.tpml.core.languages.LanguageScanner ;
  */
 final class L2OParser extends L2OAbstractParser
 {
-  //
-  // Constructor (package)
-  //
   /**
    * Allocates a new <code>L2OParser</code> that operates on tokens from the
    * specified <code>scanner</code>.
    * 
-   * @param scanner the {@link de.unisiegen.tpml.core.languages.LanguageScanner}
-   *          to query tokens from.
+   * @param pLanguageScanner the
+   *          {@link de.unisiegen.tpml.core.languages.LanguageScanner} to query
+   *          tokens from.
    * @throws NullPointerException if <code>scanner</code> is <code>null</code>.
    */
-  L2OParser ( LanguageScanner scanner )
+  L2OParser ( LanguageScanner pLanguageScanner )
   {
-    super ( scanner ) ;
+    super ( pLanguageScanner ) ;
   }
 
 
-  //
-  // Error reporting
-  //
   /**
    * {@inheritDoc}
    * 
@@ -44,15 +39,15 @@ final class L2OParser extends L2OAbstractParser
    *      java.lang.Object)
    */
   @ Override
-  public void report_error ( String message , Object info )
+  public void report_error ( String pMessage , Object pInfo )
   {
-    Symbol symbol = ( Symbol ) info ;
+    Symbol symbol = ( Symbol ) pInfo ;
     if ( symbol.sym == EOF_sym ( ) )
     {
-      throw new LanguageParserException ( Messages.getString ( "Parser.0" ) ,
+      throw new LanguageParserException ( Messages.getString ( "Parser.0" ) , //$NON-NLS-1$
           symbol.left , symbol.right ) ;
     }
-    throw new LanguageParserException ( message , symbol.left , symbol.right ) ;
+    throw new LanguageParserException ( pMessage , symbol.left , symbol.right ) ;
   }
 
 
@@ -63,10 +58,10 @@ final class L2OParser extends L2OAbstractParser
    *      java.lang.Object)
    */
   @ Override
-  public void report_fatal_error ( String message , Object info )
+  public void report_fatal_error ( String pMessage , Object pInfo )
       throws Exception
   {
-    report_error ( message , info ) ;
+    report_error ( pMessage , pInfo ) ;
   }
 
 
@@ -76,9 +71,9 @@ final class L2OParser extends L2OAbstractParser
    * @see java_cup.runtime.lr_parser#syntax_error(java_cup.runtime.Symbol)
    */
   @ Override
-  public void syntax_error ( Symbol symbol )
+  public void syntax_error ( Symbol pSymbol )
   {
     report_error ( MessageFormat.format (
-        Messages.getString ( "Parser.1" ) , symbol.value ) , symbol ) ; //$NON-NLS-1$
+        Messages.getString ( "Parser.1" ) , pSymbol.value ) , pSymbol ) ; //$NON-NLS-1$
   }
 }

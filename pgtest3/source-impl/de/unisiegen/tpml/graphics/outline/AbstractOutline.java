@@ -45,7 +45,7 @@ import de.unisiegen.tpml.graphics.outline.util.OutlinePreferences ;
  * {@link Expression}s.
  * 
  * @author Christian Fehler
- * @version $Rev$
+ * @version $Rev: 1061 $
  */
 public final class AbstractOutline implements Outline
 {

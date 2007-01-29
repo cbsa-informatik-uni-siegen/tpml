@@ -5,13 +5,34 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 
 
+/**
+ * TODO
+ * 
+ * @author Christian Fehler
+ * @version $Rev: 1066 $
+ */
 public final class Row extends Expression
 {
+  /**
+   * TODO
+   * 
+   * @see #getExpressions()
+   * @see #getExpressions(int)
+   */
   private Expression [ ] expressions ;
 
 
+  /**
+   * TODO
+   * 
+   * @param pExpressions TODO
+   */
   public Row ( Expression [ ] pExpressions )
   {
+    if ( pExpressions == null )
+    {
+      throw new NullPointerException ( "Expressions is null" ) ; //$NON-NLS-1$
+    }
     this.expressions = pExpressions ;
     for ( Expression e : this.expressions )
     {
@@ -35,31 +56,77 @@ public final class Row extends Expression
    * {@inheritDoc}
    */
   @ Override
-  public String getCaption ( )
-  {
-    return "Row" ; //$NON-NLS-1$
-  }
-
-
-  public Expression [ ] getExpressions ( )
-  {
-    return this.expressions ;
-  }
-
-
-  public Expression getExpressions ( int pIndex )
-  {
-    return this.expressions [ pIndex ] ;
-  }
-
-
-  @ Override
   public Row clone ( )
   {
     return new Row ( this.expressions.clone ( ) ) ;
   }
 
 
+  /**
+   * {@inheritDoc}
+   */
+  @ Override
+  public boolean equals ( Object pObject )
+  {
+    if ( pObject instanceof Row )
+    {
+      Row other = ( Row ) pObject ;
+      return this.expressions.equals ( other.expressions ) ;
+    }
+    return false ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   */
+  @ Override
+  public String getCaption ( )
+  {
+    return "Row" ; //$NON-NLS-1$
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @return TODO
+   * @see #expressions
+   * @see #getExpressions(int)
+   */
+  public Expression [ ] getExpressions ( )
+  {
+    return this.expressions ;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @param pIndex TODO
+   * @return TODO
+   * @see #expressions
+   * @see #getExpressions()
+   */
+  public Expression getExpressions ( int pIndex )
+  {
+    return this.expressions [ pIndex ] ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   */
+  @ Override
+  public int hashCode ( )
+  {
+    return this.expressions.hashCode ( ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   */
   @ Override
   public boolean isValue ( )
   {
@@ -74,25 +141,9 @@ public final class Row extends Expression
   }
 
 
-  @ Override
-  public boolean equals ( Object pObject )
-  {
-    if ( pObject instanceof Row )
-    {
-      Row other = ( Row ) pObject ;
-      return this.expressions.equals ( other.expressions ) ;
-    }
-    return false ;
-  }
-
-
-  @ Override
-  public int hashCode ( )
-  {
-    return this.expressions.hashCode ( ) ;
-  }
-
-
+  /**
+   * {@inheritDoc}
+   */
   @ Override
   public Expression substitute ( String pID , Expression pExpression )
   {
@@ -112,12 +163,12 @@ public final class Row extends Expression
           break ;
         }
         // second case id != id'
-        tmp [ i ] = new Attr ( attr.getIdentifier ( ) + "'" , attr.getE ( )
+        tmp [ i ] = new Attr ( attr.getIdentifier ( ) + "'" , attr.getE ( ) //$NON-NLS-1$
             .substitute ( pID , pExpression ) ) ;
         for ( int j = i + 1 ; j < tmp.length ; j ++ )
         {
           tmp [ j ] = tmp [ j ].substitute ( attr.getIdentifier ( ) ,
-              new Identifier ( attr.getIdentifier ( ) + "'" ) ) ;
+              new Identifier ( attr.getIdentifier ( ) + "'" ) ) ; //$NON-NLS-1$
         }
       }
       else if ( e instanceof Meth )
@@ -137,6 +188,9 @@ public final class Row extends Expression
   }
 
 
+  /**
+   * {@inheritDoc}
+   */
   @ Override
   public PrettyStringBuilder toPrettyStringBuilder (
       PrettyStringBuilderFactory pPrettyStringBuilderFactory )
@@ -149,7 +203,7 @@ public final class Row extends Expression
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_ROW_E ) ;
       if ( i != this.expressions.length - 1 )
       {
-        builder.addText ( " " ) ;
+        builder.addText ( " " ) ; //$NON-NLS-1$
         builder.addBreak ( ) ;
       }
     }

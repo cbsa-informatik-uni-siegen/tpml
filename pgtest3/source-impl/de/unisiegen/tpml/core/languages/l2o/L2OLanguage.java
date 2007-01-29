@@ -15,75 +15,103 @@ import de.unisiegen.tpml.core.smallstep.SmallStepProofModel ;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel ;
 
 
+/**
+ * TODO
+ * 
+ * @author Christian Fehler
+ * @version $Rev: 1066 $
+ */
 public class L2OLanguage extends L2Language
 {
+  /**
+   * TODO
+   */
   public static final int L2O = L4Language.L4 + 1 ;
 
 
+  /**
+   * TODO
+   */
   public L2OLanguage ( )
   {
     super ( ) ;
   }
 
 
+  /**
+   * {@inheritDoc}
+   */
   @ Override
   public String getDescription ( )
   {
-    return Messages.getString ( "L2OLanguage.0" ) ;
+    return Messages.getString ( "L2OLanguage.0" ) ; //$NON-NLS-1$
   }
 
 
+  /**
+   * {@inheritDoc}
+   */
   @ Override
   public String getName ( )
   {
-    return "L2O" ;
+    return "L2O" ; //$NON-NLS-1$
   }
 
 
+  /**
+   * {@inheritDoc}
+   */
   @ Override
   public String getTitle ( )
   {
-    return Messages.getString ( "L2OLanguage.1" ) ;
+    return Messages.getString ( "L2OLanguage.1" ) ; //$NON-NLS-1$
   }
 
 
+  /**
+   * {@inheritDoc}
+   */
   @ Override
-  public BigStepProofModel newBigStepProofModel ( Expression expression )
+  public BigStepProofModel newBigStepProofModel ( Expression pExpression )
   {
-    return new BigStepProofModel ( expression , new L2OBigStepProofRuleSet (
+    return new BigStepProofModel ( pExpression , new L2OBigStepProofRuleSet (
         this ) ) ;
   }
 
 
+  /**
+   * {@inheritDoc}
+   */
   @ Override
-  public SmallStepProofModel newSmallStepProofModel ( Expression expression )
+  public SmallStepProofModel newSmallStepProofModel ( Expression pExpression )
   {
-    return new SmallStepProofModel ( expression , new L2OSmallStepProofRuleSet (
-        this ) ) ;
+    return new SmallStepProofModel ( pExpression ,
+        new L2OSmallStepProofRuleSet ( this ) ) ;
   }
 
 
+  /**
+   * {@inheritDoc}
+   */
   @ Override
-  public TypeCheckerProofModel newTypeCheckerProofModel ( Expression expression )
+  public TypeCheckerProofModel newTypeCheckerProofModel ( Expression pExpression )
   {
-    return new TypeCheckerProofModel ( expression ,
+    return new TypeCheckerProofModel ( pExpression ,
         new L2OTypeCheckerProofRuleSet ( this ) ) ;
   }
 
 
   /**
    * {@inheritDoc}
-   * 
-   * @see languages.Language#newParser(languages.LanguageScanner)
    */
   @ Override
-  public LanguageParser newParser ( LanguageScanner scanner )
+  public LanguageParser newParser ( LanguageScanner pLanguageScanner )
   {
-    if ( scanner == null )
+    if ( pLanguageScanner == null )
     {
       throw new NullPointerException ( "scanner is null" ) ; //$NON-NLS-1$
     }
-    final lr_parser parser = new L2OParser ( scanner ) ;
+    final lr_parser parser = new L2OParser ( pLanguageScanner ) ;
     return new LanguageParser ( )
     {
       public Expression parse ( ) throws Exception
@@ -94,17 +122,23 @@ public class L2OLanguage extends L2Language
   }
 
 
+  /**
+   * {@inheritDoc}
+   */
   @ Override
-  public LanguageScanner newScanner ( Reader reader )
+  public LanguageScanner newScanner ( Reader pReader )
   {
-    if ( reader == null )
+    if ( pReader == null )
     {
       throw new NullPointerException ( "reader is null" ) ; //$NON-NLS-1$
     }
-    return new L2OScanner ( reader ) ;
+    return new L2OScanner ( pReader ) ;
   }
 
 
+  /**
+   * {@inheritDoc}
+   */
   @ Override
   public LanguageTranslator newTranslator ( )
   {

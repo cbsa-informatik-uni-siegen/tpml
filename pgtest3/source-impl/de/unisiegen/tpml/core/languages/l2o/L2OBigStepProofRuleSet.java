@@ -11,34 +11,58 @@ import de.unisiegen.tpml.core.expressions.Row ;
 import de.unisiegen.tpml.core.languages.l2.L2BigStepProofRuleSet ;
 
 
+/**
+ * TODO
+ * 
+ * @author Christian Fehler
+ * @version $Rev: 1066 $
+ */
 public class L2OBigStepProofRuleSet extends L2BigStepProofRuleSet
 {
-  public L2OBigStepProofRuleSet ( L2OLanguage language )
+  /**
+   * TODO
+   * 
+   * @param pL2OLanguage TODO
+   */
+  public L2OBigStepProofRuleSet ( L2OLanguage pL2OLanguage )
   {
-    super ( language ) ;
-    registerByMethodName ( L2OLanguage.L2O , "OBJ-EVAL" , "applyObjEval" ,
-        "updateObjEval" ) ;
-    registerByMethodName ( L2OLanguage.L2O , "ATTR" , "applyAttr" ,
-        "updateAttr" ) ;
-    registerByMethodName ( L2OLanguage.L2O , "SEND" , "applySend" ,
-        "updateSend" ) ;
+    super ( pL2OLanguage ) ;
+    registerByMethodName ( L2OLanguage.L2O , "OBJ-EVAL" , "applyObjEval" , //$NON-NLS-1$//$NON-NLS-2$
+        "updateObjEval" ) ; //$NON-NLS-1$
+    registerByMethodName ( L2OLanguage.L2O , "ATTR" , "applyAttr" , //$NON-NLS-1$ //$NON-NLS-2$
+        "updateAttr" ) ; //$NON-NLS-1$
+    registerByMethodName ( L2OLanguage.L2O , "SEND" , "applySend" , //$NON-NLS-1$//$NON-NLS-2$
+        "updateSend" ) ; //$NON-NLS-1$
   }
 
 
-  public void applyObjEval ( BigStepProofContext context , BigStepProofNode node )
+  /**
+   * TODO
+   * 
+   * @param pContext TODO
+   * @param pNode TODO
+   */
+  public void applyObjEval ( BigStepProofContext pContext ,
+      BigStepProofNode pNode )
   {
-    ObjectExpr objectExpr = ( ObjectExpr ) node.getExpression ( ) ;
-    context.addProofNode ( node , objectExpr.getE ( ) ) ;
+    ObjectExpr objectExpr = ( ObjectExpr ) pNode.getExpression ( ) ;
+    pContext.addProofNode ( pNode , objectExpr.getE ( ) ) ;
   }
 
 
-  public void updateObjEval ( BigStepProofContext context ,
-      BigStepProofNode node )
+  /**
+   * TODO
+   * 
+   * @param pContext TODO
+   * @param pNode TODO
+   */
+  public void updateObjEval ( BigStepProofContext pContext ,
+      BigStepProofNode pNode )
   {
     boolean allNodesProven = true ;
-    for ( int i = 0 ; i < node.getChildCount ( ) ; i ++ )
+    for ( int i = 0 ; i < pNode.getChildCount ( ) ; i ++ )
     {
-      if ( ! node.getChildAt ( i ).isProven ( ) )
+      if ( ! pNode.getChildAt ( i ).isProven ( ) )
       {
         allNodesProven = false ;
         break ;
@@ -46,15 +70,21 @@ public class L2OBigStepProofRuleSet extends L2BigStepProofRuleSet
     }
     if ( allNodesProven )
     {
-      Row row = ( Row ) node.getChildAt ( 0 ).getResult ( ).getValue ( ) ;
-      context.setProofNodeResult ( node , new ObjectExpr ( row ) ) ;
+      Row row = ( Row ) pNode.getChildAt ( 0 ).getResult ( ).getValue ( ) ;
+      pContext.setProofNodeResult ( pNode , new ObjectExpr ( row ) ) ;
     }
   }
 
 
-  public void applyAttr ( BigStepProofContext context , BigStepProofNode node )
+  /**
+   * TODO
+   * 
+   * @param pContext TODO
+   * @param pNode TODO
+   */
+  public void applyAttr ( BigStepProofContext pContext , BigStepProofNode pNode )
   {
-    Row row = ( Row ) node.getExpression ( ) ;
+    Row row = ( Row ) pNode.getExpression ( ) ;
     boolean allValues = true ;
     for ( int i = 0 ; i < row.getExpressions ( ).length ; i ++ )
     {
@@ -71,25 +101,31 @@ public class L2OBigStepProofRuleSet extends L2BigStepProofRuleSet
     if ( allValues )
     {
       throw new IllegalArgumentException (
-          "Can not apply ATTR if all attributes are values." ) ;
+          "Can not apply ATTR if all attributes are values." ) ; //$NON-NLS-1$
     }
     for ( int i = 0 ; i < row.getExpressions ( ).length ; i ++ )
     {
       if ( row.getExpressions ( i ) instanceof Attr )
       {
         Attr attr = ( Attr ) row.getExpressions ( i ) ;
-        context.addProofNode ( node , attr.getE ( ) ) ;
+        pContext.addProofNode ( pNode , attr.getE ( ) ) ;
       }
     }
   }
 
 
-  public void updateAttr ( BigStepProofContext context , BigStepProofNode node )
+  /**
+   * TODO
+   * 
+   * @param pContext TODO
+   * @param pNode TODO
+   */
+  public void updateAttr ( BigStepProofContext pContext , BigStepProofNode pNode )
   {
     boolean allNodesProven = true ;
-    for ( int i = 0 ; i < node.getChildCount ( ) ; i ++ )
+    for ( int i = 0 ; i < pNode.getChildCount ( ) ; i ++ )
     {
-      if ( ! node.getChildAt ( i ).isProven ( ) )
+      if ( ! pNode.getChildAt ( i ).isProven ( ) )
       {
         allNodesProven = false ;
         break ;
@@ -97,7 +133,7 @@ public class L2OBigStepProofRuleSet extends L2BigStepProofRuleSet
     }
     if ( allNodesProven )
     {
-      Row row = ( Row ) node.getExpression ( ) ;
+      Row row = ( Row ) pNode.getExpression ( ) ;
       Expression [ ] tmp = row.getExpressions ( ).clone ( ) ;
       int nodeCount = 0 ;
       for ( int i = 0 ; i < row.getExpressions ( ).length ; i ++ )
@@ -105,35 +141,47 @@ public class L2OBigStepProofRuleSet extends L2BigStepProofRuleSet
         if ( row.getExpressions ( i ) instanceof Attr )
         {
           Attr attr = ( Attr ) row.getExpressions ( i ) ;
-          tmp [ i ] = new Attr ( attr.getIdentifier ( ) , node.getChildAt (
+          tmp [ i ] = new Attr ( attr.getIdentifier ( ) , pNode.getChildAt (
               nodeCount ).getResult ( ).getValue ( ) ) ;
           nodeCount ++ ;
         }
       }
-      context.setProofNodeResult ( node , new Row ( tmp ) ) ;
+      pContext.setProofNodeResult ( pNode , new Row ( tmp ) ) ;
     }
   }
 
 
-  public void applySend ( BigStepProofContext context , BigStepProofNode node )
+  /**
+   * TODO
+   * 
+   * @param pContext TODO
+   * @param pNode TODO
+   */
+  public void applySend ( BigStepProofContext pContext , BigStepProofNode pNode )
   {
-    Message message = ( Message ) node.getExpression ( ) ;
+    Message message = ( Message ) pNode.getExpression ( ) ;
     if ( ! message.getE ( ).isValue ( ) )
     {
-      context.addProofNode ( node , message.getE ( ) ) ;
+      pContext.addProofNode ( pNode , message.getE ( ) ) ;
     }
   }
 
 
-  public void updateSend ( BigStepProofContext context , BigStepProofNode node )
+  /**
+   * TODO
+   * 
+   * @param pContext TODO
+   * @param pNode TODO
+   */
+  public void updateSend ( BigStepProofContext pContext , BigStepProofNode pNode )
   {
-    if ( ( node.getChildCount ( ) == 1 )
-        && ( node.getChildAt ( 0 ).isProven ( ) ) )
+    if ( ( pNode.getChildCount ( ) == 1 )
+        && ( pNode.getChildAt ( 0 ).isProven ( ) ) )
     {
-      ObjectExpr objectExpr = ( ObjectExpr ) node.getChildAt ( 0 ).getResult ( )
-          .getValue ( ) ;
-      context.addProofNode ( node , new Message ( objectExpr ,
-          ( ( Message ) node.getExpression ( ) ).getIdentifier ( ) ) ) ;
+      ObjectExpr objectExpr = ( ObjectExpr ) pNode.getChildAt ( 0 )
+          .getResult ( ).getValue ( ) ;
+      pContext.addProofNode ( pNode , new Message ( objectExpr ,
+          ( ( Message ) pNode.getExpression ( ) ).getIdentifier ( ) ) ) ;
     }
   }
 }
