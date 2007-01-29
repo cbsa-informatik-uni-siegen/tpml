@@ -299,6 +299,7 @@ public final class AbstractOutline implements Outline
         pDuplicatedRow , this.outlineUnbound ) ) ;
     OutlineBinding outlineBinding = new OutlineBinding ( pDuplicatedRow ) ;
     OutlinePair outlinePair = null ;
+    OutlineNode outlineNode ;
     int start ;
     int end ;
     for ( int i = 0 ; i < pDuplicatedRow.getIdentifiers ( ).length ; i ++ )
@@ -324,7 +325,12 @@ public final class AbstractOutline implements Outline
       node.add ( new DefaultMutableTreeNode ( new OutlineNode ( IDENTIFIER ,
           pDuplicatedRow.getIdentifiers ( i ) , outlinePair.getStart ( ) ,
           outlinePair.getEnd ( ) , outlineBinding , this.outlineUnbound ) ) ) ;
-      node.add ( checkExpression ( pDuplicatedRow.getExpressions ( i ) ) ) ;
+      DefaultMutableTreeNode treeNode ;
+      treeNode = checkExpression ( pDuplicatedRow.getExpressions ( i ) ) ;
+      outlineNode = ( OutlineNode ) treeNode.getUserObject ( ) ;
+      outlineNode.appendDescription ( EXPRESSION + ( i + 1 ) + BETWEEN ) ;
+      outlineNode.resetCaption ( ) ;
+      node.add ( treeNode ) ;
     }
     return node ;
   }
