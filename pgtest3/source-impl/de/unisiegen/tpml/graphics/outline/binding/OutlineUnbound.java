@@ -5,6 +5,7 @@ import java.util.ArrayList ;
 import java.util.Enumeration ;
 import de.unisiegen.tpml.core.expressions.CurriedLet ;
 import de.unisiegen.tpml.core.expressions.CurriedLetRec ;
+import de.unisiegen.tpml.core.expressions.CurriedMeth ;
 import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.expressions.Identifier ;
 import de.unisiegen.tpml.core.expressions.Lambda ;
@@ -87,6 +88,17 @@ public final class OutlineUnbound
       // New bindings in E2, Identifier 0
       unbound2.add ( curriedLet.getIdentifiers ( 0 ) ) ;
       find ( pResult , unbound2 , curriedLet.getE2 ( ) ) ;
+    }
+    else if ( pExpression instanceof CurriedMeth )
+    {
+      CurriedMeth curriedMeth = ( CurriedMeth ) pExpression ;
+      ArrayList < String > unbound = new ArrayList < String > ( pBounded ) ;
+      // New bindings in E, Identifier 1 to n
+      for ( int i = 1 ; i < curriedMeth.getIdentifiers ( ).length ; i ++ )
+      {
+        unbound.add ( curriedMeth.getIdentifiers ( i ) ) ;
+      }
+      find ( pResult , unbound , curriedMeth.getE ( ) ) ;
     }
     else if ( pExpression instanceof MultiLet )
     {
