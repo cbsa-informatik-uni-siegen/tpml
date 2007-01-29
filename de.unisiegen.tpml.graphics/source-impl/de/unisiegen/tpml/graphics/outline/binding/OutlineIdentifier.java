@@ -35,29 +35,29 @@ public abstract class OutlineIdentifier
     ArrayList < OutlinePair > list = new ArrayList < OutlinePair > ( ) ;
     PrettyCharIterator prettyCharIterator = pExpression.toPrettyString ( )
         .toCharacterIterator ( ) ;
-    int beginChild = pExpression.toPrettyString ( ).toString ( ).length ( ) ;
+    int end = pExpression.toPrettyString ( ).toString ( ).length ( ) ;
     Enumeration < Expression > children = pExpression.children ( ) ;
     if ( children.hasMoreElements ( ) )
     {
-      beginChild = pExpression.toPrettyString ( ).getAnnotationForPrintable (
+      end = pExpression.toPrettyString ( ).getAnnotationForPrintable (
           children.nextElement ( ) ).getStartOffset ( ) ;
     }
     int charIndex = 0 ;
-    int start = 0 ;
-    int end = 0 ;
-    while ( charIndex < beginChild )
+    int startIndex = 0 ;
+    int endIndex = 0 ;
+    while ( charIndex < end )
     {
       if ( PrettyStyle.IDENTIFIER.equals ( prettyCharIterator.getStyle ( ) ) )
       {
-        start = charIndex ;
+        startIndex = charIndex ;
         while ( PrettyStyle.IDENTIFIER
             .equals ( prettyCharIterator.getStyle ( ) ) )
         {
           charIndex ++ ;
           prettyCharIterator.next ( ) ;
         }
-        end = charIndex - 1 ;
-        list.add ( new OutlinePair ( start , end ) ) ;
+        endIndex = charIndex - 1 ;
+        list.add ( new OutlinePair ( startIndex , endIndex ) ) ;
       }
       charIndex ++ ;
       prettyCharIterator.next ( ) ;
@@ -69,36 +69,42 @@ public abstract class OutlineIdentifier
   /**
    * Returns a list of {@link OutlinePair}, in which the start and the end
    * index of the {@link Identifier}s is saved. This method searches for
-   * {@link Identifier}s in the whole {@link Expression}.
+   * {@link Identifier}s from the start to the end index.
    * 
    * @param pExpression The {@link Expression} in which the {@link Identifier}s
    *          should be searched for.
+   * @param pStartSearchIndex The start index of the search.
+   * @param pEndSearchIndex The end index if the search.
    * @return A list of {@link OutlinePair}, in which the start and the end
    *         index of the {@link Identifier}s is saved.
    */
-  public final static ArrayList < OutlinePair > getAllIndices (
-      Expression pExpression )
+  public final static ArrayList < OutlinePair > getIndexBetween (
+      Expression pExpression , int pStartSearchIndex , int pEndSearchIndex )
   {
     ArrayList < OutlinePair > list = new ArrayList < OutlinePair > ( ) ;
     PrettyCharIterator prettyCharIterator = pExpression.toPrettyString ( )
         .toCharacterIterator ( ) ;
-    int beginChild = pExpression.toPrettyString ( ).toString ( ).length ( ) ;
-    int charIndex = 0 ;
-    int start = 0 ;
-    int end = 0 ;
-    while ( charIndex < beginChild )
+    int charIndex = pStartSearchIndex ;
+    int startIndex ;
+    int endIndex ;
+    for ( int i = 0 ; i < charIndex ; i ++ )
+    {
+      prettyCharIterator.next ( ) ;
+    }
+    while ( charIndex < pEndSearchIndex )
     {
       if ( PrettyStyle.IDENTIFIER.equals ( prettyCharIterator.getStyle ( ) ) )
       {
-        start = charIndex ;
-        while ( PrettyStyle.IDENTIFIER
-            .equals ( prettyCharIterator.getStyle ( ) ) )
+        startIndex = charIndex ;
+        while ( ( charIndex < pEndSearchIndex )
+            && ( PrettyStyle.IDENTIFIER
+                .equals ( prettyCharIterator.getStyle ( ) ) ) )
         {
           charIndex ++ ;
           prettyCharIterator.next ( ) ;
         }
-        end = charIndex - 1 ;
-        list.add ( new OutlinePair ( start , end ) ) ;
+        endIndex = charIndex - 1 ;
+        list.add ( new OutlinePair ( startIndex , endIndex ) ) ;
       }
       charIndex ++ ;
       prettyCharIterator.next ( ) ;

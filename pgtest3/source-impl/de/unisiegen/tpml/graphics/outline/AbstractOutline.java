@@ -14,6 +14,7 @@ import de.unisiegen.tpml.core.expressions.Condition ;
 import de.unisiegen.tpml.core.expressions.CurriedLet ;
 import de.unisiegen.tpml.core.expressions.CurriedLetRec ;
 import de.unisiegen.tpml.core.expressions.CurriedMeth ;
+import de.unisiegen.tpml.core.expressions.DuplicatedRow ;
 import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.expressions.Identifier ;
 import de.unisiegen.tpml.core.expressions.InfixOperation ;
@@ -286,6 +287,50 @@ public final class AbstractOutline implements Outline
 
 
   /**
+   * Returns the node, which represents the given {@link DuplicatedRow}.
+   * 
+   * @param pDuplicatedRow The input {@link Expression}.
+   * @return The node, which represents the given {@link DuplicatedRow}.
+   */
+  private final DefaultMutableTreeNode checkDuplicatedRow (
+      DuplicatedRow pDuplicatedRow )
+  {
+    DefaultMutableTreeNode node = new DefaultMutableTreeNode ( new OutlineNode (
+        pDuplicatedRow , this.outlineUnbound ) ) ;
+    OutlineBinding outlineBinding = new OutlineBinding ( pDuplicatedRow ) ;
+    OutlinePair outlinePair = null ;
+    int start ;
+    int end ;
+    for ( int i = 0 ; i < pDuplicatedRow.getIdentifiers ( ).length ; i ++ )
+    {
+      if ( i == 0 )
+      {
+        outlinePair = OutlineIdentifier.getIndexBetween (
+            pDuplicatedRow ,
+            0 ,
+            pDuplicatedRow.toPrettyString ( ).getAnnotationForPrintable (
+                pDuplicatedRow.getExpressions ( 0 ) ).getStartOffset ( ) ).get (
+            0 ) ;
+      }
+      else
+      {
+        start = pDuplicatedRow.toPrettyString ( ).getAnnotationForPrintable (
+            pDuplicatedRow.getExpressions ( i - 1 ) ).getEndOffset ( ) ;
+        end = pDuplicatedRow.toPrettyString ( ).getAnnotationForPrintable (
+            pDuplicatedRow.getExpressions ( i ) ).getStartOffset ( ) ;
+        outlinePair = OutlineIdentifier.getIndexBetween ( pDuplicatedRow ,
+            start , end ).get ( 0 ) ;
+      }
+      node.add ( new DefaultMutableTreeNode ( new OutlineNode ( IDENTIFIER ,
+          pDuplicatedRow.getIdentifiers ( i ) , outlinePair.getStart ( ) ,
+          outlinePair.getEnd ( ) , outlineBinding , this.outlineUnbound ) ) ) ;
+      node.add ( checkExpression ( pDuplicatedRow.getExpressions ( i ) ) ) ;
+    }
+    return node ;
+  }
+
+
+  /**
    * Returns the node, which represents the given {@link Expression}.
    * 
    * @param pExpression The input {@link Expression}.
@@ -344,6 +389,10 @@ public final class AbstractOutline implements Outline
     else if ( pExpression instanceof Row )
     {
       return checkRow ( ( Row ) pExpression ) ;
+    }
+    else if ( pExpression instanceof DuplicatedRow )
+    {
+      return checkDuplicatedRow ( ( DuplicatedRow ) pExpression ) ;
     }
     else if ( pExpression instanceof Attr )
     {
@@ -490,9 +539,12 @@ public final class AbstractOutline implements Outline
   {
     DefaultMutableTreeNode node = new DefaultMutableTreeNode ( new OutlineNode (
         pMessage , this.outlineUnbound ) ) ;
-    ArrayList < OutlinePair > outlinePairs = OutlineIdentifier
-        .getAllIndices ( pMessage ) ;
-    OutlinePair outlinePair = outlinePairs.get ( outlinePairs.size ( ) - 1 ) ;
+    int start = pMessage.toPrettyString ( ).getAnnotationForPrintable (
+        pMessage.getE ( ) ).getEndOffset ( ) ;
+    int end = pMessage.toPrettyString ( ).toString ( ).length ( ) ;
+    ArrayList < OutlinePair > outlinePairs = OutlineIdentifier.getIndexBetween (
+        pMessage , start , end ) ;
+    OutlinePair outlinePair = outlinePairs.get ( 0 ) ;
     OutlineBinding outlineBinding = new OutlineBinding ( pMessage ) ;
     createChildren ( pMessage , node ) ;
     node.add ( new DefaultMutableTreeNode ( new OutlineNode ( METHODNAME ,
