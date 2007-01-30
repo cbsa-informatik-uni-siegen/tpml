@@ -5,6 +5,8 @@ import java.util.Set ;
 import java.util.TreeSet ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
+import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
+import de.unisiegen.tpml.core.types.MonoType ;
 
 
 /**
@@ -22,6 +24,15 @@ public class CurriedMeth extends Expression
    * @see #getIdentifiers(int)
    */
   private String [ ] identifiers ;
+
+
+  /**
+   * TODO
+   * 
+   * @see #getTypes()
+   * @see #getTypes(int)
+   */
+  private MonoType [ ] types ;
 
 
   /**
@@ -45,9 +56,11 @@ public class CurriedMeth extends Expression
    * TODO
    * 
    * @param pIdentifiers TODO
+   * @param pTypes TODO
    * @param pExpression TODO
    */
-  public CurriedMeth ( String [ ] pIdentifiers , Expression pExpression )
+  public CurriedMeth ( String [ ] pIdentifiers , MonoType [ ] pTypes ,
+      Expression pExpression )
   {
     if ( pIdentifiers == null )
     {
@@ -62,7 +75,13 @@ public class CurriedMeth extends Expression
       throw new IllegalArgumentException (
           "Identifiers must contain at least two items" ) ; //$NON-NLS-1$
     }
+    if ( pIdentifiers.length != pTypes.length )
+    {
+      throw new IllegalArgumentException (
+          "The arity of identifiers and types must match" ) ; //$NON-NLS-1$
+    }
     this.identifiers = pIdentifiers ;
+    this.types = pTypes ;
     this.expression = pExpression ;
   }
 
@@ -73,8 +92,8 @@ public class CurriedMeth extends Expression
   @ Override
   public CurriedMeth clone ( )
   {
-    return new CurriedMeth ( this.identifiers.clone ( ) , this.expression
-        .clone ( ) ) ;
+    return new CurriedMeth ( this.identifiers.clone ( ) , this.types.clone ( ) ,
+        this.expression.clone ( ) ) ;
   }
 
 
@@ -87,7 +106,8 @@ public class CurriedMeth extends Expression
     if ( pObject instanceof CurriedMeth )
     {
       CurriedMeth other = ( CurriedMeth ) pObject ;
-      return ( ( this.identifiers.equals ( other.identifiers ) ) && ( this.expression
+      return ( ( this.identifiers.equals ( other.identifiers ) )
+          && ( this.types.equals ( other.types ) ) && ( this.expression
           .equals ( other.expression ) ) ) ;
     }
     return false ;
@@ -160,6 +180,33 @@ public class CurriedMeth extends Expression
 
 
   /**
+   * TODO
+   * 
+   * @return TODO
+   * @see #types
+   * @see #getTypes(int)
+   */
+  public MonoType [ ] getTypes ( )
+  {
+    return this.types ;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @param pIndex TODO
+   * @return TODO
+   * @see #types
+   * @see #getTypes()
+   */
+  public MonoType getTypes ( int pIndex )
+  {
+    return this.types [ pIndex ] ;
+  }
+
+
+  /**
    * {@inheritDoc}
    */
   @ Override
@@ -211,8 +258,25 @@ public class CurriedMeth extends Expression
   @ Override
   public Expression substitute ( String pID , Expression pExpression )
   {
-    return new CurriedMeth ( this.identifiers , this.expression.substitute (
-        pID , pExpression ) ) ;
+    return new CurriedMeth ( this.identifiers , this.types , this.expression
+        .substitute ( pID , pExpression ) ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   */
+  @ Override
+  public CurriedMeth substitute ( TypeSubstitution substitution )
+  {
+    MonoType [ ] tmp = new MonoType [ this.types.length ] ;
+    for ( int n = 0 ; n < tmp.length ; ++ n )
+    {
+      tmp [ n ] = ( this.types [ n ] != null ) ? this.types [ n ]
+          .substitute ( substitution ) : null ;
+    }
+    return new CurriedMeth ( this.identifiers , tmp , this.expression
+        .substitute ( substitution ) ) ;
   }
 
 
@@ -226,10 +290,32 @@ public class CurriedMeth extends Expression
     PrettyStringBuilder builder = pPrettyStringBuilderFactory.newBuilder (
         this , PRIO_CURRIED_METH ) ;
     builder.addKeyword ( "meth" ) ; //$NON-NLS-1$
-    for ( String id : this.identifiers )
+    builder.addText ( " " ) ; //$NON-NLS-1$
+    builder.addIdentifier ( this.identifiers [ 0 ] ) ;
+    for ( int i = 1 ; i < this.identifiers.length ; i ++ )
     {
       builder.addText ( " " ) ; //$NON-NLS-1$
-      builder.addIdentifier ( id ) ;
+      if ( this.types [ i ] != null )
+      {
+        builder.addText ( "(" ) ; //$NON-NLS-1$
+      }
+      builder.addIdentifier ( this.identifiers [ i ] ) ;
+      if ( this.types [ i ] != null )
+      {
+        builder.addText ( ": " ) ; //$NON-NLS-1$
+        builder.addBuilder ( this.types [ i ]
+            .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
+            PRIO_CURRIED_METH_TAU ) ;
+        builder.addText ( ")" ) ; //$NON-NLS-1$
+      }
+    }
+    if ( this.types [ 0 ] != null )
+    {
+      builder.addText ( ": " ) ; //$NON-NLS-1$
+      builder
+          .addBuilder ( this.types [ 0 ]
+              .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
+              PRIO_LET_TAU ) ;
     }
     builder.addText ( " = " ) ; //$NON-NLS-1$
     builder.addBuilder ( this.expression

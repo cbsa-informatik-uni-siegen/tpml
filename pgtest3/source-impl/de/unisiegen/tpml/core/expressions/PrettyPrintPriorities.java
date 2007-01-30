@@ -312,6 +312,12 @@ interface PrettyPrintPriorities
 
 
   /**
+   * The pretty print priority for the type of curried methods.
+   */
+  public static final int PRIO_CURRIED_METH_TAU = 0 ;
+
+
+  /**
    * The pretty print priority for attributes.
    */
   public static final int PRIO_ATTR = 6 ;

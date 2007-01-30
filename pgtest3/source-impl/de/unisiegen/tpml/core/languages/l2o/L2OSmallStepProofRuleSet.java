@@ -137,14 +137,14 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
       }
       else if ( firstExpr instanceof CurriedMeth )
       {
-        Row r = ( Row ) pMessage.getE ( ) ;
-        CurriedMeth cm = ( CurriedMeth ) r.getExpressions ( 0 ) ;
+        Row row = ( Row ) pMessage.getE ( ) ;
+        CurriedMeth cm = ( CurriedMeth ) row.getExpressions ( 0 ) ;
         if ( pMessage.getIdentifier ( ).equals ( cm.getIdentifiers ( 0 ) ) )
         {
           boolean definedLater = false ;
-          for ( int i = 1 ; i < r.getExpressions ( ).length ; i ++ )
+          for ( int i = 1 ; i < row.getExpressions ( ).length ; i ++ )
           {
-            Expression tmp = r.getExpressions ( i ) ;
+            Expression tmp = row.getExpressions ( i ) ;
             if ( ( tmp instanceof Meth )
                 && ( ( ( Meth ) tmp ).getIdentifier ( ).equals ( pMessage
                     .getIdentifier ( ) ) ) )
@@ -168,18 +168,19 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
             {
               e = new Lambda ( cm.getIdentifiers ( i ) , null , e ) ;
             }
+            // TODO Problem
             return e ;
           }
         }
-        if ( r.getExpressions ( ).length == 1 )
+        if ( row.getExpressions ( ).length == 1 )
         {
           return pMessage ;
         }
         pContext.addProofStep ( getRuleByName ( "SEND-SKIP" ) , cm ) ; //$NON-NLS-1$
-        Expression [ ] newE = new Expression [ r.getExpressions ( ).length - 1 ] ;
+        Expression [ ] newE = new Expression [ row.getExpressions ( ).length - 1 ] ;
         for ( int i = 0 ; i < newE.length ; i ++ )
         {
-          newE [ i ] = r.getExpressions ( i + 1 ).clone ( ) ;
+          newE [ i ] = row.getExpressions ( i + 1 ).clone ( ) ;
         }
         return new Message ( new Row ( newE ) , pMessage.getIdentifier ( ) ) ;
       }

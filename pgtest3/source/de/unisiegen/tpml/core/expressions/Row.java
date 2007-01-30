@@ -181,7 +181,8 @@ public final class Row extends Expression
       {
         CurriedMeth curriedMeth = ( CurriedMeth ) e ;
         tmp [ i ] = new CurriedMeth ( curriedMeth.getIdentifiers ( ) ,
-            curriedMeth.getE ( ).substitute ( pID , pExpression ) ) ;
+            curriedMeth.getTypes ( ) , curriedMeth.getE ( ).substitute ( pID ,
+                pExpression ) ) ;
       }
     }
     return new Row ( tmp ) ;
