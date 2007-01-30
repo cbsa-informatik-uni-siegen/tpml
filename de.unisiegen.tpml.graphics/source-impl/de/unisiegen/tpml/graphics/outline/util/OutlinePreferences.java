@@ -100,7 +100,7 @@ public final class OutlinePreferences
   public OutlinePreferences ( )
   {
     this.preferences = Preferences.userNodeForPackage ( AbstractOutline.class ) ;
-    this.replace = this.preferences.getBoolean ( OutlineUI.REPLACE , true ) ;
+    this.replace = this.preferences.getBoolean ( OutlineUI.REPLACE , false ) ;
     this.binding = this.preferences.getBoolean ( OutlineUI.BINDING , true ) ;
     this.unbound = this.preferences.getBoolean ( OutlineUI.UNBOUND , true ) ;
     this.selection = this.preferences.getBoolean ( OutlineUI.SELECTION , true ) ;
