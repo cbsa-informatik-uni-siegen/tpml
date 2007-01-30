@@ -280,11 +280,15 @@ public final class AbstractOutline implements Outline
     ArrayList < OutlinePair > index = OutlineIdentifier
         .getIndex ( pCurriedMeth ) ;
     OutlinePair tmp ;
+    tmp = index.get ( 0 ) ;
+    node.add ( new DefaultMutableTreeNode ( new OutlineNode ( METHODNAME ,
+        pCurriedMeth.getIdentifiers ( 0 ) , tmp.getStart ( ) , tmp.getEnd ( ) ,
+        outlineBinding , this.outlineUnbound ) ) ) ;
     final int length = pCurriedMeth.getIdentifiers ( ).length ;
-    for ( int i = 0 ; i < length ; i ++ )
+    for ( int i = 1 ; i < length ; i ++ )
     {
       tmp = index.get ( i ) ;
-      node.add ( new DefaultMutableTreeNode ( new OutlineNode ( METHODNAME ,
+      node.add ( new DefaultMutableTreeNode ( new OutlineNode ( IDENTIFIER ,
           pCurriedMeth.getIdentifiers ( i ) , tmp.getStart ( ) ,
           tmp.getEnd ( ) , outlineBinding , this.outlineUnbound ) ) ) ;
     }
