@@ -191,6 +191,15 @@ public final class AbstractOutline implements Outline
     node.add ( new DefaultMutableTreeNode ( new OutlineNode ( IDENTIFIER ,
         pAttr.getIdentifier ( ) , outlinePair.getStart ( ) , outlinePair
             .getEnd ( ) , null , this.outlineUnbound ) ) ) ;
+    if ( pAttr.getTau ( ) != null )
+    {
+      OutlinePair outlinePairType = OutlineStyle.getIndex ( pAttr ,
+          PrettyStyle.TYPE ).get ( 0 ) ;
+      node.add ( new DefaultMutableTreeNode ( new OutlineNode ( TYPE , pAttr
+          .getTau ( ).toPrettyString ( ).toString ( ) , outlinePairType
+          .getStart ( ) , outlinePairType.getEnd ( ) , null ,
+          this.outlineUnbound ) ) ) ;
+    }
     createChildren ( pAttr , node ) ;
     return node ;
   }

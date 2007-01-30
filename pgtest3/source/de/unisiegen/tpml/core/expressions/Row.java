@@ -159,13 +159,14 @@ public final class Row extends Expression
         // first case id == id'
         if ( attr.getIdentifier ( ).equals ( pID ) )
         {
-          tmp [ i ] = new Attr ( attr.getIdentifier ( ) , attr.getE ( )
-              .substitute ( pID , pExpression ) ) ;
+          tmp [ i ] = new Attr ( attr.getIdentifier ( ) , attr.getTau ( ) ,
+              attr.getE ( ).substitute ( pID , pExpression ) ) ;
           break ;
         }
         // second case id != id'
-        tmp [ i ] = new Attr ( attr.getIdentifier ( ) + "'" , attr.getE ( ) //$NON-NLS-1$
-            .substitute ( pID , pExpression ) ) ;
+        tmp [ i ] = new Attr (
+            attr.getIdentifier ( ) + "'" , attr.getTau ( ) , attr.getE ( ) //$NON-NLS-1$
+                .substitute ( pID , pExpression ) ) ;
         for ( int j = i + 1 ; j < tmp.length ; j ++ )
         {
           tmp [ j ] = tmp [ j ].substitute ( attr.getIdentifier ( ) ,

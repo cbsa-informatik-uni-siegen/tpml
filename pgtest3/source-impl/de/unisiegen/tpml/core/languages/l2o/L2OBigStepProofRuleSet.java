@@ -141,8 +141,8 @@ public class L2OBigStepProofRuleSet extends L2BigStepProofRuleSet
         if ( row.getExpressions ( i ) instanceof Attr )
         {
           Attr attr = ( Attr ) row.getExpressions ( i ) ;
-          tmp [ i ] = new Attr ( attr.getIdentifier ( ) , pNode.getChildAt (
-              nodeCount ).getResult ( ).getValue ( ) ) ;
+          tmp [ i ] = new Attr ( attr.getIdentifier ( ) , attr.getTau ( ) ,
+              pNode.getChildAt ( nodeCount ).getResult ( ).getValue ( ) ) ;
           nodeCount ++ ;
         }
       }

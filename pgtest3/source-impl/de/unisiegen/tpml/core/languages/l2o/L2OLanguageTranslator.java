@@ -79,7 +79,8 @@ public class L2OLanguageTranslator extends L2LanguageTranslator
           Attr attr = ( Attr ) e ;
           if ( objectExpr.getIdentifier ( ).equals ( attr.getIdentifier ( ) ) )
           {
-            tmp [ i ] = new Attr ( attr.getIdentifier ( ) + "'" , attr.getE ( ) ) ; //$NON-NLS-1$
+            tmp [ i ] = new Attr (
+                attr.getIdentifier ( ) + "'" , attr.getTau ( ) , attr.getE ( ) ) ; //$NON-NLS-1$
             for ( int j = i + 1 ; j < tmp.length ; j ++ )
             {
               tmp [ j ] = tmp [ j ].substitute ( attr.getIdentifier ( ) ,
@@ -127,7 +128,7 @@ public class L2OLanguageTranslator extends L2LanguageTranslator
         Attr attr = ( Attr ) pExpression ;
         Expression attrE = attr.getE ( ) ;
         attrE = translateToCoreSyntax ( attrE , pRecursive ) ;
-        return new Attr ( attr.getIdentifier ( ) , attrE ) ;
+        return new Attr ( attr.getIdentifier ( ) , attr.getTau ( ) , attrE ) ;
       }
       return pExpression ;
     }

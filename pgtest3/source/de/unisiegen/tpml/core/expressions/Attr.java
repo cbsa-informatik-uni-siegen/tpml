@@ -4,6 +4,7 @@ package de.unisiegen.tpml.core.expressions ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
+import de.unisiegen.tpml.core.types.MonoType ;
 
 
 /**
@@ -20,6 +21,14 @@ public class Attr extends Expression
    * @see #getIdentifier()
    */
   private String identifier ;
+
+
+  /**
+   * TODO
+   * 
+   * @see #getTau()
+   */
+  private MonoType tau ;
 
 
   /**
@@ -43,15 +52,17 @@ public class Attr extends Expression
    * TODO
    * 
    * @param pIdentifier TODO
+   * @param pTau TODO
    * @param pExpression TODO
    */
-  public Attr ( String pIdentifier , Expression pExpression )
+  public Attr ( String pIdentifier , MonoType pTau , Expression pExpression )
   {
     if ( pExpression == null )
     {
       throw new NullPointerException ( "Expression is null" ) ; //$NON-NLS-1$
     }
     this.identifier = pIdentifier ;
+    this.tau = pTau ;
     this.expression = pExpression ;
   }
 
@@ -62,7 +73,7 @@ public class Attr extends Expression
   @ Override
   public Attr clone ( )
   {
-    return new Attr ( this.identifier , this.expression.clone ( ) ) ;
+    return new Attr ( this.identifier , this.tau , this.expression.clone ( ) ) ;
   }
 
 
@@ -75,8 +86,9 @@ public class Attr extends Expression
     if ( pObject instanceof Attr )
     {
       Attr other = ( Attr ) pObject ;
-      return ( ( this.identifier.equals ( other.identifier ) ) && ( this.expression
-          .equals ( other.expression ) ) ) ;
+      return ( ( this.identifier.equals ( other.identifier ) )
+          && ( this.expression.equals ( other.expression ) ) && ( ( this.tau == null ) ? ( other.tau == null )
+          : ( this.tau.equals ( other.tau ) ) ) ) ;
     }
     return false ;
   }
@@ -117,12 +129,25 @@ public class Attr extends Expression
 
 
   /**
+   * TODO
+   * 
+   * @return TODO
+   * @see #tau
+   */
+  public MonoType getTau ( )
+  {
+    return this.tau ;
+  }
+
+
+  /**
    * {@inheritDoc}
    */
   @ Override
   public int hashCode ( )
   {
-    return this.identifier.hashCode ( ) + this.expression.hashCode ( ) ;
+    return this.tau == null ? 0 : this.tau.hashCode ( )
+        + this.identifier.hashCode ( ) + this.expression.hashCode ( ) ;
   }
 
 
@@ -168,8 +193,8 @@ public class Attr extends Expression
   @ Override
   public Attr substitute ( String pID , Expression pExpression )
   {
-    return new Attr ( this.identifier , this.expression.substitute ( pID ,
-        pExpression ) ) ;
+    return new Attr ( this.identifier , this.tau , this.expression.substitute (
+        pID , pExpression ) ) ;
   }
 
 
@@ -182,9 +207,10 @@ public class Attr extends Expression
   @ Override
   public Attr substitute ( TypeSubstitution pTypeSubstitution )
   {
-    Expression tmp = this.expression.substitute ( pTypeSubstitution ) ;
-    return ( this.expression.equals ( tmp ) ) ? this : new Attr (
-        this.identifier , tmp ) ;
+    MonoType tmp = ( this.tau != null ) ? this.tau
+        .substitute ( pTypeSubstitution ) : null ;
+    return new Attr ( this.identifier , tmp , this.expression
+        .substitute ( pTypeSubstitution ) ) ;
   }
 
 
@@ -200,6 +226,13 @@ public class Attr extends Expression
     builder.addKeyword ( "attr" ) ; //$NON-NLS-1$
     builder.addText ( " " ) ; //$NON-NLS-1$
     builder.addIdentifier ( this.identifier ) ;
+    if ( this.tau != null )
+    {
+      builder.addText ( ": " ) ; //$NON-NLS-1$
+      builder.addBuilder ( this.tau
+          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
+          PRIO_ATTR_TAU ) ;
+    }
     builder.addText ( " = " ) ; //$NON-NLS-1$
     builder.addBuilder ( this.expression
         .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_ATTR_E ) ;

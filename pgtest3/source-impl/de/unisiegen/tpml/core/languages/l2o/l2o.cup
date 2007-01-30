@@ -278,7 +278,9 @@ row					::= attr:a
 					;
 
 attr				::=	ATTR IDENTIFIER:id EQUAL expr:e SEMI
-						{: RESULT = new Attr ( id , e ); :}
+						{: RESULT = new Attr ( id , null , e ); :}
+					|	ATTR IDENTIFIER:id COLON type:tau EQUAL expr:e SEMI
+						{: RESULT = new Attr ( id , tau , e ); :}
 					;
 
 meth				::=	METH IDENTIFIER:id EQUAL expr:e SEMI
