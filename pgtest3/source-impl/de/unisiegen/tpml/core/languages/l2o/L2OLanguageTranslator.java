@@ -50,9 +50,11 @@ public class L2OLanguageTranslator extends L2LanguageTranslator
       }
       for ( int i = curriedMeth.getIdentifiers ( ).length - 1 ; i > 0 ; i -- )
       {
-        e = new Lambda ( curriedMeth.getIdentifiers ( i ) , null , e ) ;
+        e = new Lambda ( curriedMeth.getIdentifiers ( i ) , curriedMeth
+            .getTypes ( i ) , e ) ;
       }
-      return new Meth ( curriedMeth.getIdentifiers ( 0 ) , e ) ;
+      return new Meth ( curriedMeth.getIdentifiers ( 0 ) , curriedMeth
+          .getTypes ( 0 ) , e ) ;
     }
     else if ( pExpression instanceof ObjectExpr )
     {
@@ -65,7 +67,7 @@ public class L2OLanguageTranslator extends L2LanguageTranslator
       }
       if ( objectExpr.getIdentifier ( ) == null )
       {
-        return new ObjectExpr ( row ) ;
+        return new ObjectExpr ( null , row ) ;
       }
       Expression [ ] tmp = row.getExpressions ( ).clone ( ) ;
       for ( int i = 0 ; i < tmp.length ; i ++ )
@@ -91,9 +93,9 @@ public class L2OLanguageTranslator extends L2LanguageTranslator
           Meth meth = ( Meth ) e ;
           if ( meth.getE ( ).free ( ).contains ( objectExpr.getIdentifier ( ) ) )
           {
-            tmp [ i ] = new Meth ( meth.getIdentifier ( ) , new Let (
-                objectExpr.getIdentifier ( ) , null , new Self ( ) , meth
-                    .getE ( ) ) ) ;
+            tmp [ i ] = new Meth ( meth.getIdentifier ( ) , meth.getTau ( ) ,
+                new Let ( objectExpr.getIdentifier ( ) , null , new Self ( ) ,
+                    meth.getE ( ) ) ) ;
           }
         }
         else if ( e instanceof CurriedMeth )
@@ -101,7 +103,7 @@ public class L2OLanguageTranslator extends L2LanguageTranslator
           // TODO
         }
       }
-      return new ObjectExpr ( new Row ( tmp ) ) ;
+      return new ObjectExpr ( null , new Row ( tmp ) ) ;
     }
     else if ( pExpression instanceof Row )
     {
@@ -136,7 +138,7 @@ public class L2OLanguageTranslator extends L2LanguageTranslator
         Meth meth = ( Meth ) pExpression ;
         Expression methE = meth.getE ( ) ;
         methE = translateToCoreSyntax ( methE , pRecursive ) ;
-        return new Meth ( meth.getIdentifier ( ) , methE ) ;
+        return new Meth ( meth.getIdentifier ( ) , meth.getTau ( ) , methE ) ;
       }
       return pExpression ;
     }

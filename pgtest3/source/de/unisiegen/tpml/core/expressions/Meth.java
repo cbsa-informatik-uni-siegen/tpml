@@ -3,6 +3,8 @@ package de.unisiegen.tpml.core.expressions ;
 
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
+import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
+import de.unisiegen.tpml.core.types.MonoType ;
 
 
 /**
@@ -19,6 +21,14 @@ public class Meth extends Expression
    * @see #getIdentifier()
    */
   private String identifier ;
+
+
+  /**
+   * TODO
+   * 
+   * @see #getTau()
+   */
+  private MonoType tau ;
 
 
   /**
@@ -42,15 +52,17 @@ public class Meth extends Expression
    * TODO
    * 
    * @param pIdentifier TODO
+   * @param pTau TODO
    * @param pExpression TODO
    */
-  public Meth ( String pIdentifier , Expression pExpression )
+  public Meth ( String pIdentifier , MonoType pTau , Expression pExpression )
   {
     if ( pExpression == null )
     {
       throw new NullPointerException ( "Expression is null" ) ; //$NON-NLS-1$
     }
     this.identifier = pIdentifier ;
+    this.tau = pTau ;
     this.expression = pExpression ;
   }
 
@@ -61,7 +73,7 @@ public class Meth extends Expression
   @ Override
   public Meth clone ( )
   {
-    return new Meth ( this.identifier , this.expression.clone ( ) ) ;
+    return new Meth ( this.identifier , this.tau , this.expression.clone ( ) ) ;
   }
 
 
@@ -74,8 +86,9 @@ public class Meth extends Expression
     if ( pObject instanceof Meth )
     {
       Meth other = ( Meth ) pObject ;
-      return ( ( this.identifier.equals ( other.identifier ) ) && ( this.expression
-          .equals ( other.expression ) ) ) ;
+      return ( ( this.identifier.equals ( other.identifier ) )
+          && ( this.expression.equals ( other.expression ) ) && ( ( this.tau == null ) ? ( other.tau == null )
+          : ( this.tau.equals ( other.tau ) ) ) ) ;
     }
     return false ;
   }
@@ -116,12 +129,25 @@ public class Meth extends Expression
 
 
   /**
+   * TODO
+   * 
+   * @return TODO
+   * @see #tau
+   */
+  public MonoType getTau ( )
+  {
+    return this.tau ;
+  }
+
+
+  /**
    * {@inheritDoc}
    */
   @ Override
   public int hashCode ( )
   {
-    return this.identifier.hashCode ( ) + this.expression.hashCode ( ) ;
+    return this.tau == null ? 0 : this.tau.hashCode ( )
+        + this.identifier.hashCode ( ) + this.expression.hashCode ( ) ;
   }
 
 
@@ -165,10 +191,23 @@ public class Meth extends Expression
    * {@inheritDoc}
    */
   @ Override
-  public Expression substitute ( String pID , Expression pExpression )
+  public Meth substitute ( String pID , Expression pExpression )
   {
-    return new Meth ( this.identifier , this.expression.substitute ( pID ,
-        pExpression ) ) ;
+    return new Meth ( this.identifier , this.tau , this.expression.substitute (
+        pID , pExpression ) ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   */
+  @ Override
+  public Meth substitute ( TypeSubstitution pTypeSubstitution )
+  {
+    MonoType tmp = ( this.tau != null ) ? this.tau
+        .substitute ( pTypeSubstitution ) : null ;
+    return new Meth ( this.identifier , tmp , this.expression
+        .substitute ( pTypeSubstitution ) ) ;
   }
 
 
@@ -184,6 +223,13 @@ public class Meth extends Expression
     builder.addKeyword ( "meth" ) ; //$NON-NLS-1$
     builder.addText ( " " ) ; //$NON-NLS-1$
     builder.addIdentifier ( this.identifier ) ;
+    if ( this.tau != null )
+    {
+      builder.addText ( ": " ) ; //$NON-NLS-1$
+      builder.addBuilder ( this.tau
+          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
+          PRIO_METH_TAU ) ;
+    }
     builder.addText ( " = " ) ; //$NON-NLS-1$
     builder.addBuilder ( this.expression
         .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_METH_E ) ;

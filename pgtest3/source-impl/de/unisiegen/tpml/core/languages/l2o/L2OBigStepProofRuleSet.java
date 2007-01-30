@@ -71,7 +71,7 @@ public class L2OBigStepProofRuleSet extends L2BigStepProofRuleSet
     if ( allNodesProven )
     {
       Row row = ( Row ) pNode.getChildAt ( 0 ).getResult ( ).getValue ( ) ;
-      pContext.setProofNodeResult ( pNode , new ObjectExpr ( row ) ) ;
+      pContext.setProofNodeResult ( pNode , new ObjectExpr ( null , row ) ) ;
     }
   }
 

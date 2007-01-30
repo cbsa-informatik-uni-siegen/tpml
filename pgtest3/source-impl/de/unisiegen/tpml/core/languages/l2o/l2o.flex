@@ -52,11 +52,19 @@ import de.unisiegen.tpml.core.languages.LanguageSymbol;
 
 		case LAMBDA: case LET: case REC: case IN: case IF: case THEN: case ELSE:
 		case AMPERAMPER: case BARBAR:
-		case OBJECT: case END: case NUMBERSIGN: 
-		case ATTR: case METH: case SEMI: case SELF: 
-		case LCURLYBRACE: case RCURLYBRACE: case COMMA:
+		
+		/* Object */
+		case OBJECT: 
+		case END: 
+		case NUMBERSIGN: 
+		case ATTR: 
+		case METH: 
+		case SEMI: 
+		case SELF: 
+		case LCURLYBRACE: 
+		case RCURLYBRACE: 
+		case COMMA:
 			return PrettyStyle.KEYWORD;
-
 			
 		case BOOL: case INT: case UNIT: case TYPEVARIABLE:
 			return PrettyStyle.TYPE;

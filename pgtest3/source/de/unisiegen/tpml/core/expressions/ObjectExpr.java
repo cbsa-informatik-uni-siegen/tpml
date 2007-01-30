@@ -3,6 +3,7 @@ package de.unisiegen.tpml.core.expressions ;
 
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
+import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
 
 
 /**
@@ -18,7 +19,7 @@ public final class ObjectExpr extends Expression
    * 
    * @see #getE()
    */
-  private Row row ;
+  private Expression expression ;
 
 
   /**
@@ -32,33 +33,21 @@ public final class ObjectExpr extends Expression
   /**
    * TODO
    * 
-   * @param pRow TODO
-   */
-  public ObjectExpr ( Row pRow )
-  {
-    if ( pRow == null )
-    {
-      throw new NullPointerException ( "Row is null" ) ; //$NON-NLS-1$
-    }
-    this.row = pRow ;
-    this.identifier = null ;
-  }
-
-
-  /**
-   * TODO
-   * 
    * @param pIdentifier TODO
-   * @param pRow TODO
+   * @param pExpression TODO
    */
-  public ObjectExpr ( String pIdentifier , Row pRow )
+  public ObjectExpr ( String pIdentifier , Expression pExpression )
   {
-    if ( pRow == null )
+    if ( pExpression == null )
     {
-      throw new NullPointerException ( "Row is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "Expression is null" ) ; //$NON-NLS-1$
+    }
+    if ( ! ( pExpression instanceof Row ) )
+    {
+      throw new IllegalArgumentException ( "The expression must be a Row" ) ; //$NON-NLS-1$
     }
     this.identifier = pIdentifier ;
-    this.row = pRow ;
+    this.expression = pExpression ;
   }
 
 
@@ -68,7 +57,7 @@ public final class ObjectExpr extends Expression
   @ Override
   public ObjectExpr clone ( )
   {
-    return new ObjectExpr ( this.identifier , this.row.clone ( ) ) ;
+    return new ObjectExpr ( this.identifier , this.expression.clone ( ) ) ;
   }
 
 
@@ -81,7 +70,7 @@ public final class ObjectExpr extends Expression
     if ( pObject instanceof ObjectExpr )
     {
       ObjectExpr other = ( ObjectExpr ) pObject ;
-      if ( ! this.row.equals ( other.row ) )
+      if ( ! this.expression.equals ( other.expression ) )
       {
         return false ;
       }
@@ -117,11 +106,11 @@ public final class ObjectExpr extends Expression
    * TODO
    * 
    * @return TODO
-   * @see #row
+   * @see #expression
    */
   public Expression getE ( )
   {
-    return this.row ;
+    return this.expression ;
   }
 
 
@@ -143,9 +132,8 @@ public final class ObjectExpr extends Expression
   @ Override
   public int hashCode ( )
   {
-    return this.identifier == null ? this.row.hashCode ( ) : this.identifier
-        .hashCode ( )
-        + this.row.hashCode ( ) ;
+    return this.identifier == null ? this.expression.hashCode ( )
+        : this.identifier.hashCode ( ) + this.expression.hashCode ( ) ;
   }
 
 
@@ -155,7 +143,7 @@ public final class ObjectExpr extends Expression
   @ Override
   public boolean isValue ( )
   {
-    return this.row.isValue ( ) ;
+    return this.expression.isValue ( ) ;
   }
 
 
@@ -163,14 +151,29 @@ public final class ObjectExpr extends Expression
    * {@inheritDoc}
    */
   @ Override
-  public Expression substitute ( String pID , Expression pExpression )
+  public ObjectExpr substitute ( String pID , Expression pExpression )
   {
     if ( "self".equals ( pID ) ) //$NON-NLS-1$
     {
       return this ;
     }
-    return new ObjectExpr ( this.identifier , ( Row ) this.row.substitute (
-        pID , pExpression ) ) ;
+    return new ObjectExpr ( this.identifier , this.expression.substitute ( pID ,
+        pExpression ) ) ;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @param pTypeSubstitution TODO
+   * @return TODO
+   */
+  @ Override
+  public ObjectExpr substitute ( TypeSubstitution pTypeSubstitution )
+  {
+    Expression tmp = this.expression.substitute ( pTypeSubstitution ) ;
+    return ( this.expression.equals ( tmp ) ) ? this : new ObjectExpr (
+        this.identifier , tmp ) ;
   }
 
 
@@ -192,7 +195,7 @@ public final class ObjectExpr extends Expression
       builder.addText ( " ) " ) ; //$NON-NLS-1$
     }
     builder.addBreak ( ) ;
-    builder.addBuilder ( this.row
+    builder.addBuilder ( this.expression
         .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
         PRIO_OBJECTEXPR_E ) ;
     builder.addText ( " " ) ; //$NON-NLS-1$

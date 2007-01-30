@@ -256,7 +256,7 @@ public class CurriedMeth extends Expression
    * {@inheritDoc}
    */
   @ Override
-  public Expression substitute ( String pID , Expression pExpression )
+  public CurriedMeth substitute ( String pID , Expression pExpression )
   {
     return new CurriedMeth ( this.identifiers , this.types , this.expression
         .substitute ( pID , pExpression ) ) ;
@@ -267,16 +267,16 @@ public class CurriedMeth extends Expression
    * {@inheritDoc}
    */
   @ Override
-  public CurriedMeth substitute ( TypeSubstitution substitution )
+  public CurriedMeth substitute ( TypeSubstitution pTypeSubstitution )
   {
     MonoType [ ] tmp = new MonoType [ this.types.length ] ;
     for ( int n = 0 ; n < tmp.length ; ++ n )
     {
       tmp [ n ] = ( this.types [ n ] != null ) ? this.types [ n ]
-          .substitute ( substitution ) : null ;
+          .substitute ( pTypeSubstitution ) : null ;
     }
     return new CurriedMeth ( this.identifiers , tmp , this.expression
-        .substitute ( substitution ) ) ;
+        .substitute ( pTypeSubstitution ) ) ;
   }
 
 

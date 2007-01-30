@@ -3,6 +3,7 @@ package de.unisiegen.tpml.core.expressions ;
 
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
+import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
 
 
 /**
@@ -133,6 +134,21 @@ public final class Message extends Expression
   public Message substitute ( String pID , Expression pExpression )
   {
     return new Message ( this.expression.substitute ( pID , pExpression ) ,
+        this.identifier ) ;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @param pTypeSubstitution TODO
+   * @return TODO
+   */
+  @ Override
+  public Message substitute ( TypeSubstitution pTypeSubstitution )
+  {
+    Expression tmp = this.expression.substitute ( pTypeSubstitution ) ;
+    return ( this.expression.equals ( tmp ) ) ? this : new Message ( tmp ,
         this.identifier ) ;
   }
 

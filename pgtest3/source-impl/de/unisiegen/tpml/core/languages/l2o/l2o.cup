@@ -38,8 +38,17 @@ terminal			PARENPAREN;
 terminal			LAMBDA, LET, REC, IN, IF, THEN, ELSE;
 terminal			TRUE, FALSE;
 
-terminal			OBJECT, END, NUMBERSIGN, SELF;
-terminal			ATTR, METH, SEMI, LCURLYBRACE, RCURLYBRACE , COMMA;
+/* Object */
+terminal			OBJECT ;
+terminal			END ;
+terminal			NUMBERSIGN ;
+terminal			SELF ;
+terminal			ATTR ;
+terminal			METH ;
+terminal			SEMI ;
+terminal			LCURLYBRACE ;
+terminal			RCURLYBRACE ;
+terminal			COMMA ;
 
 /* Types */
 terminal			BOOL, INT, UNIT;
@@ -82,7 +91,7 @@ precedence left		EQUAL, LESS, GREATER, LESSEQUAL, GREATEREQUAL;
 precedence left		PLUS, MINUS;
 precedence left		STAR, SLASH, MOD;
 
-precedence right	NUMBERSIGN;
+precedence right	NUMBERSIGN ;
 
 
 /***************
@@ -97,8 +106,6 @@ expr				::=	simple_expr:e
 					/* Object */
 					|	object_expr:o
 						{: RESULT = o; :}
-					|	SELF:s
-						{: RESULT = new Self (); :}
 					|	message:m
 						{: RESULT = m; :}
 					|   duplicated_row:dr
@@ -210,6 +217,8 @@ simple_expr			::=	constant:c
 						{: RESULT = c; :}
 					|	IDENTIFIER:id
 						{: RESULT = new Identifier(id); :}
+					|	SELF:s
+						{: RESULT = new Self (); :}
 
 					/* Parenthized operators/expressions */
 					|	LPAREN operator:o RPAREN
@@ -219,7 +228,7 @@ simple_expr			::=	constant:c
 					;
 					
 object_expr			::= OBJECT row:r END
-						{: RESULT = new ObjectExpr (r); :}
+						{: RESULT = new ObjectExpr (null, r); :}
 					|	OBJECT LPAREN IDENTIFIER:id RPAREN row:r END
 						{: RESULT = new ObjectExpr (id, r); :}
 					;
@@ -273,7 +282,9 @@ attr				::=	ATTR IDENTIFIER:id EQUAL expr:e SEMI
 					;
 
 meth				::=	METH IDENTIFIER:id EQUAL expr:e SEMI
-						{: RESULT = new Meth ( id , e ); :}
+						{: RESULT = new Meth ( id , null, e ); :}
+					|	METH IDENTIFIER:id COLON type:tau EQUAL expr:e SEMI
+						{: RESULT = new Meth ( id ,tau, e ); :}
 					;
 
 curried_meth		::=	METH IDENTIFIER:id id_type_list:itl EQUAL expr:e SEMI

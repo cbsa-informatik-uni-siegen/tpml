@@ -3,6 +3,7 @@ package de.unisiegen.tpml.core.expressions ;
 
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
+import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
 
 
 /**
@@ -165,10 +166,25 @@ public class Attr extends Expression
    * {@inheritDoc}
    */
   @ Override
-  public Expression substitute ( String pID , Expression pExpression )
+  public Attr substitute ( String pID , Expression pExpression )
   {
     return new Attr ( this.identifier , this.expression.substitute ( pID ,
         pExpression ) ) ;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @param pTypeSubstitution TODO
+   * @return TODO
+   */
+  @ Override
+  public Attr substitute ( TypeSubstitution pTypeSubstitution )
+  {
+    Expression tmp = this.expression.substitute ( pTypeSubstitution ) ;
+    return ( this.expression.equals ( tmp ) ) ? this : new Attr (
+        this.identifier , tmp ) ;
   }
 
 

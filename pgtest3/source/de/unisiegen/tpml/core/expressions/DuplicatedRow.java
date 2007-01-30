@@ -4,6 +4,7 @@ package de.unisiegen.tpml.core.expressions ;
 import java.util.ArrayList ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
+import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
 
 
 /**
@@ -191,7 +192,7 @@ public final class DuplicatedRow extends Expression
    * {@inheritDoc}
    */
   @ Override
-  public Expression substitute ( String pID , Expression pExpression )
+  public DuplicatedRow substitute ( String pID , Expression pExpression )
   {
     Expression [ ] tmp = new Expression [ this.expressions.length ] ;
     for ( int n = 0 ; n < tmp.length ; ++ n )
@@ -199,6 +200,25 @@ public final class DuplicatedRow extends Expression
       tmp [ n ] = this.expressions [ n ].substitute ( pID , pExpression ) ;
     }
     return new DuplicatedRow ( this.identifiers , tmp ) ;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @param pTypeSubstitution TODO
+   * @return TODO
+   */
+  @ Override
+  public DuplicatedRow substitute ( TypeSubstitution pTypeSubstitution )
+  {
+    Expression [ ] tmp = new Expression [ this.expressions.length ] ;
+    for ( int i = 0 ; i < this.expressions.length ; i ++ )
+    {
+      tmp [ i ] = this.expressions [ i ].substitute ( pTypeSubstitution ) ;
+    }
+    return ( this.expressions.equals ( tmp ) ) ? this : new DuplicatedRow (
+        this.identifiers , tmp ) ;
   }
 
 

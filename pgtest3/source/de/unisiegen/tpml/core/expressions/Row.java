@@ -3,6 +3,7 @@ package de.unisiegen.tpml.core.expressions ;
 
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
+import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
 
 
 /**
@@ -145,7 +146,7 @@ public final class Row extends Expression
    * {@inheritDoc}
    */
   @ Override
-  public Expression substitute ( String pID , Expression pExpression )
+  public Row substitute ( String pID , Expression pExpression )
   {
     Expression [ ] tmp = this.expressions.clone ( ) ;
     for ( int i = 0 ; i < tmp.length ; i ++ )
@@ -174,8 +175,8 @@ public final class Row extends Expression
       else if ( e instanceof Meth )
       {
         Meth meth = ( Meth ) e ;
-        tmp [ i ] = new Meth ( meth.getIdentifier ( ) , meth.getE ( )
-            .substitute ( pID , pExpression ) ) ;
+        tmp [ i ] = new Meth ( meth.getIdentifier ( ) , meth.getTau ( ) , meth
+            .getE ( ).substitute ( pID , pExpression ) ) ;
       }
       else if ( e instanceof CurriedMeth )
       {
@@ -186,6 +187,24 @@ public final class Row extends Expression
       }
     }
     return new Row ( tmp ) ;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @param pTypeSubstitution TODO
+   * @return TODO
+   */
+  @ Override
+  public Row substitute ( TypeSubstitution pTypeSubstitution )
+  {
+    Expression [ ] tmp = new Expression [ this.expressions.length ] ;
+    for ( int i = 0 ; i < this.expressions.length ; i ++ )
+    {
+      tmp [ i ] = this.expressions [ i ].substitute ( pTypeSubstitution ) ;
+    }
+    return ( this.expressions.equals ( tmp ) ) ? this : new Row ( tmp ) ;
   }
 
 
