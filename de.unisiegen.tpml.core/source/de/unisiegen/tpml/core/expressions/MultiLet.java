@@ -286,7 +286,7 @@ public final class MultiLet extends Expression
     builder.addText ( ")" ) ;
     if ( this.tau != null )
     {
-      builder.addText ( ":" ) ;
+      builder.addText ( ": " ) ;
       builder.addBuilder ( this.tau.toPrettyStringBuilder ( factory ) ,
           PRIO_CONSTANT ) ;
     }

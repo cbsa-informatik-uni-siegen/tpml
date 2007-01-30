@@ -157,7 +157,7 @@ public final class LetRec extends Let
     builder.addIdentifier ( this.id ) ;
     if ( this.tau != null )
     {
-      builder.addText ( ":" ) ;
+      builder.addText ( ": " ) ;
       builder.addBuilder ( this.tau.toPrettyStringBuilder ( factory ) ,
           PRIO_LET_TAU ) ;
     }

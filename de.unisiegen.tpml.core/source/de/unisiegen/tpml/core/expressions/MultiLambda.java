@@ -260,7 +260,7 @@ public final class MultiLambda extends Value
     builder.addText ( ")" ) ;
     if ( this.tau != null )
     {
-      builder.addText ( ":" ) ;
+      builder.addText ( ": " ) ;
       builder.addBuilder ( this.tau.toPrettyStringBuilder ( factory ) ,
           PRIO_LAMBDA_TAU ) ;
     }

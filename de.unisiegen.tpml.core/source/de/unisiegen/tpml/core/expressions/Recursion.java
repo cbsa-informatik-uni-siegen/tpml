@@ -214,7 +214,7 @@ public final class Recursion extends Expression
     builder.addIdentifier ( this.id ) ;
     if ( this.tau != null )
     {
-      builder.addText ( ":" ) ;
+      builder.addText ( ": " ) ;
       builder.addBuilder ( this.tau.toPrettyStringBuilder ( factory ) ,
           PRIO_REC_TAU ) ;
     }
