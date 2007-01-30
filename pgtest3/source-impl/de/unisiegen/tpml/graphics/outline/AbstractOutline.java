@@ -29,9 +29,12 @@ import de.unisiegen.tpml.core.expressions.MultiLet ;
 import de.unisiegen.tpml.core.expressions.ObjectExpr ;
 import de.unisiegen.tpml.core.expressions.Recursion ;
 import de.unisiegen.tpml.core.expressions.Row ;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStyle ;
+import de.unisiegen.tpml.core.types.MonoType ;
+import de.unisiegen.tpml.core.types.Type ;
 import de.unisiegen.tpml.graphics.outline.binding.OutlineBinding ;
-import de.unisiegen.tpml.graphics.outline.binding.OutlineIdentifier ;
 import de.unisiegen.tpml.graphics.outline.binding.OutlinePair ;
+import de.unisiegen.tpml.graphics.outline.binding.OutlineStyle ;
 import de.unisiegen.tpml.graphics.outline.binding.OutlineUnbound ;
 import de.unisiegen.tpml.graphics.outline.ui.OutlineDisplayTree ;
 import de.unisiegen.tpml.graphics.outline.ui.OutlineTimerTask ;
@@ -53,6 +56,12 @@ public final class AbstractOutline implements Outline
    * Caption of the {@link Identifier}s.
    */
   private static final String IDENTIFIER = "Identifier" ; //$NON-NLS-1$
+
+
+  /**
+   * Caption of the {@link Type}s.
+   */
+  private static final String TYPE = "Type" ; //$NON-NLS-1$
 
 
   /**
@@ -177,11 +186,11 @@ public final class AbstractOutline implements Outline
   {
     DefaultMutableTreeNode node = new DefaultMutableTreeNode ( new OutlineNode (
         pAttr , this.outlineUnbound ) ) ;
-    OutlinePair outlinePair = OutlineIdentifier.getIndex ( pAttr ).get ( 0 ) ;
-    OutlineBinding outlineBinding = new OutlineBinding ( pAttr ) ;
+    OutlinePair outlinePair = OutlineStyle.getIndex ( pAttr ,
+        PrettyStyle.IDENTIFIER ).get ( 0 ) ;
     node.add ( new DefaultMutableTreeNode ( new OutlineNode ( IDENTIFIER ,
         pAttr.getIdentifier ( ) , outlinePair.getStart ( ) , outlinePair
-            .getEnd ( ) , outlineBinding , this.outlineUnbound ) ) ) ;
+            .getEnd ( ) , null , this.outlineUnbound ) ) ) ;
     createChildren ( pAttr , node ) ;
     return node ;
   }
@@ -207,14 +216,51 @@ public final class AbstractOutline implements Outline
     outlineBinding.find ( ) ;
     DefaultMutableTreeNode node = new DefaultMutableTreeNode ( new OutlineNode (
         pCurriedLet , this.outlineUnbound ) ) ;
-    ArrayList < OutlinePair > index = OutlineIdentifier.getIndex ( pCurriedLet ) ;
-    OutlinePair tmp ;
+    ArrayList < OutlinePair > outlinePairIdList = OutlineStyle.getIndex (
+        pCurriedLet , PrettyStyle.IDENTIFIER ) ;
+    OutlinePair outlinePairId = outlinePairIdList.get ( 0 ) ;
+    node.add ( new DefaultMutableTreeNode ( new OutlineNode ( IDENTIFIER ,
+        idList [ 0 ] , outlinePairId.getStart ( ) , outlinePairId.getEnd ( ) ,
+        outlineBinding , this.outlineUnbound ) ) ) ;
+    int noType = 0 ;
     final int length = idList.length ;
-    for ( int i = 0 ; i < length ; i ++ )
+    for ( int i = 1 ; i < length ; i ++ )
     {
-      tmp = index.get ( i ) ;
-      node.add ( new DefaultMutableTreeNode ( new OutlineNode ( IDENTIFIER ,
-          idList [ i ] , tmp.getStart ( ) , tmp.getEnd ( ) , outlineBinding ,
+      outlinePairId = outlinePairIdList.get ( i ) ;
+      DefaultMutableTreeNode identifier = new DefaultMutableTreeNode (
+          new OutlineNode ( IDENTIFIER , idList [ i ] , outlinePairId
+              .getStart ( ) , outlinePairId.getEnd ( ) , outlineBinding ,
+              this.outlineUnbound ) ) ;
+      if ( pCurriedLet.getTypes ( i ) != null )
+      {
+        OutlinePair outlinePairType = OutlineStyle.getIndex ( pCurriedLet ,
+            PrettyStyle.TYPE ).get ( i - noType - 1 ) ;
+        identifier.add ( new DefaultMutableTreeNode ( new OutlineNode ( TYPE ,
+            pCurriedLet.getTypes ( i ).toPrettyString ( ).toString ( ) ,
+            outlinePairType.getStart ( ) , outlinePairType.getEnd ( ) , null ,
+            this.outlineUnbound ) ) ) ;
+      }
+      else
+      {
+        noType ++ ;
+      }
+      node.add ( identifier ) ;
+    }
+    int countTypes = 0 ;
+    for ( MonoType tau : pCurriedLet.getTypes ( ) )
+    {
+      if ( tau != null )
+      {
+        countTypes ++ ;
+      }
+    }
+    if ( pCurriedLet.getTypes ( 0 ) != null )
+    {
+      OutlinePair outlinePairType = OutlineStyle.getIndex ( pCurriedLet ,
+          PrettyStyle.TYPE ).get ( countTypes - 1 ) ;
+      node.add ( new DefaultMutableTreeNode ( new OutlineNode ( TYPE ,
+          pCurriedLet.getTypes ( 0 ).toPrettyString ( ).toString ( ) ,
+          outlinePairType.getStart ( ) , outlinePairType.getEnd ( ) , null ,
           this.outlineUnbound ) ) ) ;
     }
     createChildren ( pCurriedLet , node ) ;
@@ -242,15 +288,51 @@ public final class AbstractOutline implements Outline
     outlineBinding.find ( ) ;
     DefaultMutableTreeNode node = new DefaultMutableTreeNode ( new OutlineNode (
         pCurriedLetRec , this.outlineUnbound ) ) ;
-    ArrayList < OutlinePair > index = OutlineIdentifier
-        .getIndex ( pCurriedLetRec ) ;
-    OutlinePair tmp ;
+    ArrayList < OutlinePair > outlinePairIdList = OutlineStyle.getIndex (
+        pCurriedLetRec , PrettyStyle.IDENTIFIER ) ;
+    OutlinePair outlinePairId = outlinePairIdList.get ( 0 ) ;
+    node.add ( new DefaultMutableTreeNode ( new OutlineNode ( IDENTIFIER ,
+        idList [ 0 ] , outlinePairId.getStart ( ) , outlinePairId.getEnd ( ) ,
+        outlineBinding , this.outlineUnbound ) ) ) ;
+    int noType = 0 ;
     final int length = idList.length ;
-    for ( int i = 0 ; i < length ; i ++ )
+    for ( int i = 1 ; i < length ; i ++ )
     {
-      tmp = index.get ( i ) ;
-      node.add ( new DefaultMutableTreeNode ( new OutlineNode ( IDENTIFIER ,
-          idList [ i ] , tmp.getStart ( ) , tmp.getEnd ( ) , outlineBinding ,
+      outlinePairId = outlinePairIdList.get ( i ) ;
+      DefaultMutableTreeNode identifier = new DefaultMutableTreeNode (
+          new OutlineNode ( IDENTIFIER , idList [ i ] , outlinePairId
+              .getStart ( ) , outlinePairId.getEnd ( ) , outlineBinding ,
+              this.outlineUnbound ) ) ;
+      if ( pCurriedLetRec.getTypes ( i ) != null )
+      {
+        OutlinePair outlinePairType = OutlineStyle.getIndex ( pCurriedLetRec ,
+            PrettyStyle.TYPE ).get ( i - noType - 1 ) ;
+        identifier.add ( new DefaultMutableTreeNode ( new OutlineNode ( TYPE ,
+            pCurriedLetRec.getTypes ( i ).toPrettyString ( ).toString ( ) ,
+            outlinePairType.getStart ( ) , outlinePairType.getEnd ( ) , null ,
+            this.outlineUnbound ) ) ) ;
+      }
+      else
+      {
+        noType ++ ;
+      }
+      node.add ( identifier ) ;
+    }
+    int countTypes = 0 ;
+    for ( MonoType tau : pCurriedLetRec.getTypes ( ) )
+    {
+      if ( tau != null )
+      {
+        countTypes ++ ;
+      }
+    }
+    if ( pCurriedLetRec.getTypes ( 0 ) != null )
+    {
+      OutlinePair outlinePairType = OutlineStyle.getIndex ( pCurriedLetRec ,
+          PrettyStyle.TYPE ).get ( countTypes - 1 ) ;
+      node.add ( new DefaultMutableTreeNode ( new OutlineNode ( TYPE ,
+          pCurriedLetRec.getTypes ( 0 ).toPrettyString ( ).toString ( ) ,
+          outlinePairType.getStart ( ) , outlinePairType.getEnd ( ) , null ,
           this.outlineUnbound ) ) ) ;
     }
     createChildren ( pCurriedLetRec , node ) ;
@@ -267,8 +349,7 @@ public final class AbstractOutline implements Outline
   private final DefaultMutableTreeNode checkCurriedMeth (
       CurriedMeth pCurriedMeth )
   {
-    DefaultMutableTreeNode node = new DefaultMutableTreeNode ( new OutlineNode (
-        pCurriedMeth , this.outlineUnbound ) ) ;
+    String [ ] idList = pCurriedMeth.getIdentifiers ( ) ;
     OutlineBinding outlineBinding = new OutlineBinding ( pCurriedMeth ) ;
     outlineBinding.add ( null , null ) ;
     for ( int i = 1 ; i < pCurriedMeth.getIdentifiers ( ).length ; i ++ )
@@ -277,20 +358,54 @@ public final class AbstractOutline implements Outline
           .getIdentifiers ( i ) ) ;
     }
     outlineBinding.find ( ) ;
-    ArrayList < OutlinePair > index = OutlineIdentifier
-        .getIndex ( pCurriedMeth ) ;
-    OutlinePair tmp ;
-    tmp = index.get ( 0 ) ;
+    DefaultMutableTreeNode node = new DefaultMutableTreeNode ( new OutlineNode (
+        pCurriedMeth , this.outlineUnbound ) ) ;
+    ArrayList < OutlinePair > outlinePairIdList = OutlineStyle.getIndex (
+        pCurriedMeth , PrettyStyle.IDENTIFIER ) ;
+    OutlinePair outlinePairId = outlinePairIdList.get ( 0 ) ;
     node.add ( new DefaultMutableTreeNode ( new OutlineNode ( METHODNAME ,
-        pCurriedMeth.getIdentifiers ( 0 ) , tmp.getStart ( ) , tmp.getEnd ( ) ,
+        idList [ 0 ] , outlinePairId.getStart ( ) , outlinePairId.getEnd ( ) ,
         outlineBinding , this.outlineUnbound ) ) ) ;
-    final int length = pCurriedMeth.getIdentifiers ( ).length ;
+    int noType = 0 ;
+    final int length = idList.length ;
     for ( int i = 1 ; i < length ; i ++ )
     {
-      tmp = index.get ( i ) ;
-      node.add ( new DefaultMutableTreeNode ( new OutlineNode ( IDENTIFIER ,
-          pCurriedMeth.getIdentifiers ( i ) , tmp.getStart ( ) ,
-          tmp.getEnd ( ) , outlineBinding , this.outlineUnbound ) ) ) ;
+      outlinePairId = outlinePairIdList.get ( i ) ;
+      DefaultMutableTreeNode identifier = new DefaultMutableTreeNode (
+          new OutlineNode ( IDENTIFIER , idList [ i ] , outlinePairId
+              .getStart ( ) , outlinePairId.getEnd ( ) , outlineBinding ,
+              this.outlineUnbound ) ) ;
+      if ( pCurriedMeth.getTypes ( i ) != null )
+      {
+        OutlinePair outlinePairType = OutlineStyle.getIndex ( pCurriedMeth ,
+            PrettyStyle.TYPE ).get ( i - noType - 1 ) ;
+        identifier.add ( new DefaultMutableTreeNode ( new OutlineNode ( TYPE ,
+            pCurriedMeth.getTypes ( i ).toPrettyString ( ).toString ( ) ,
+            outlinePairType.getStart ( ) , outlinePairType.getEnd ( ) , null ,
+            this.outlineUnbound ) ) ) ;
+      }
+      else
+      {
+        noType ++ ;
+      }
+      node.add ( identifier ) ;
+    }
+    int countTypes = 0 ;
+    for ( MonoType tau : pCurriedMeth.getTypes ( ) )
+    {
+      if ( tau != null )
+      {
+        countTypes ++ ;
+      }
+    }
+    if ( pCurriedMeth.getTypes ( 0 ) != null )
+    {
+      OutlinePair outlinePairType = OutlineStyle.getIndex ( pCurriedMeth ,
+          PrettyStyle.TYPE ).get ( countTypes - 1 ) ;
+      node.add ( new DefaultMutableTreeNode ( new OutlineNode ( TYPE ,
+          pCurriedMeth.getTypes ( 0 ).toPrettyString ( ).toString ( ) ,
+          outlinePairType.getStart ( ) , outlinePairType.getEnd ( ) , null ,
+          this.outlineUnbound ) ) ) ;
     }
     createChildren ( pCurriedMeth , node ) ;
     return node ;
@@ -308,7 +423,6 @@ public final class AbstractOutline implements Outline
   {
     DefaultMutableTreeNode node = new DefaultMutableTreeNode ( new OutlineNode (
         pDuplicatedRow , this.outlineUnbound ) ) ;
-    OutlineBinding outlineBinding = new OutlineBinding ( pDuplicatedRow ) ;
     OutlinePair outlinePair = null ;
     OutlineNode outlineNode ;
     int start ;
@@ -317,8 +431,9 @@ public final class AbstractOutline implements Outline
     {
       if ( i == 0 )
       {
-        outlinePair = OutlineIdentifier.getIndexBetween (
+        outlinePair = OutlineStyle.getIndexBetween (
             pDuplicatedRow ,
+            PrettyStyle.IDENTIFIER ,
             0 ,
             pDuplicatedRow.toPrettyString ( ).getAnnotationForPrintable (
                 pDuplicatedRow.getExpressions ( 0 ) ).getStartOffset ( ) ).get (
@@ -330,12 +445,12 @@ public final class AbstractOutline implements Outline
             pDuplicatedRow.getExpressions ( i - 1 ) ).getEndOffset ( ) ;
         end = pDuplicatedRow.toPrettyString ( ).getAnnotationForPrintable (
             pDuplicatedRow.getExpressions ( i ) ).getStartOffset ( ) ;
-        outlinePair = OutlineIdentifier.getIndexBetween ( pDuplicatedRow ,
-            start , end ).get ( 0 ) ;
+        outlinePair = OutlineStyle.getIndexBetween ( pDuplicatedRow ,
+            PrettyStyle.IDENTIFIER , start , end ).get ( 0 ) ;
       }
       node.add ( new DefaultMutableTreeNode ( new OutlineNode ( IDENTIFIER ,
           pDuplicatedRow.getIdentifiers ( i ) , outlinePair.getStart ( ) ,
-          outlinePair.getEnd ( ) , outlineBinding , this.outlineUnbound ) ) ) ;
+          outlinePair.getEnd ( ) , null , this.outlineUnbound ) ) ) ;
       DefaultMutableTreeNode treeNode ;
       treeNode = checkExpression ( pDuplicatedRow.getExpressions ( i ) ) ;
       outlineNode = ( OutlineNode ) treeNode.getUserObject ( ) ;
@@ -472,13 +587,23 @@ public final class AbstractOutline implements Outline
   {
     DefaultMutableTreeNode node = new DefaultMutableTreeNode ( new OutlineNode (
         pLambda , this.outlineUnbound ) ) ;
-    OutlinePair outlinePair = OutlineIdentifier.getIndex ( pLambda ).get ( 0 ) ;
+    OutlinePair outlinePairId = OutlineStyle.getIndex ( pLambda ,
+        PrettyStyle.IDENTIFIER ).get ( 0 ) ;
     OutlineBinding outlineBinding = new OutlineBinding ( pLambda ) ;
     outlineBinding.add ( pLambda , pLambda.getId ( ) ) ;
     outlineBinding.find ( ) ;
     node.add ( new DefaultMutableTreeNode ( new OutlineNode ( IDENTIFIER ,
-        pLambda.getId ( ) , outlinePair.getStart ( ) , outlinePair.getEnd ( ) ,
-        outlineBinding , this.outlineUnbound ) ) ) ;
+        pLambda.getId ( ) , outlinePairId.getStart ( ) , outlinePairId
+            .getEnd ( ) , outlineBinding , this.outlineUnbound ) ) ) ;
+    if ( pLambda.getTau ( ) != null )
+    {
+      OutlinePair outlinePairType = OutlineStyle.getIndex ( pLambda ,
+          PrettyStyle.TYPE ).get ( 0 ) ;
+      node.add ( new DefaultMutableTreeNode ( new OutlineNode ( TYPE , pLambda
+          .getTau ( ).toPrettyString ( ).toString ( ) , outlinePairType
+          .getStart ( ) , outlinePairType.getEnd ( ) , null ,
+          this.outlineUnbound ) ) ) ;
+    }
     createChildren ( pLambda , node ) ;
     return node ;
   }
@@ -494,13 +619,23 @@ public final class AbstractOutline implements Outline
   {
     DefaultMutableTreeNode node = new DefaultMutableTreeNode ( new OutlineNode (
         pLet , this.outlineUnbound ) ) ;
-    OutlinePair outlinePair = OutlineIdentifier.getIndex ( pLet ).get ( 0 ) ;
+    OutlinePair outlinePairId = OutlineStyle.getIndex ( pLet ,
+        PrettyStyle.IDENTIFIER ).get ( 0 ) ;
     OutlineBinding outlineBinding = new OutlineBinding ( pLet ) ;
     outlineBinding.add ( pLet.getE2 ( ) , pLet.getId ( ) ) ;
     outlineBinding.find ( ) ;
     node.add ( new DefaultMutableTreeNode ( new OutlineNode ( IDENTIFIER , pLet
-        .getId ( ) , outlinePair.getStart ( ) , outlinePair.getEnd ( ) ,
+        .getId ( ) , outlinePairId.getStart ( ) , outlinePairId.getEnd ( ) ,
         outlineBinding , this.outlineUnbound ) ) ) ;
+    if ( pLet.getTau ( ) != null )
+    {
+      OutlinePair outlinePairType = OutlineStyle.getIndex ( pLet ,
+          PrettyStyle.TYPE ).get ( 0 ) ;
+      node.add ( new DefaultMutableTreeNode ( new OutlineNode ( TYPE , pLet
+          .getTau ( ).toPrettyString ( ).toString ( ) , outlinePairType
+          .getStart ( ) , outlinePairType.getEnd ( ) , null ,
+          this.outlineUnbound ) ) ) ;
+    }
     createChildren ( pLet , node ) ;
     return node ;
   }
@@ -516,13 +651,23 @@ public final class AbstractOutline implements Outline
   {
     DefaultMutableTreeNode node = new DefaultMutableTreeNode ( new OutlineNode (
         pLetRec , this.outlineUnbound ) ) ;
-    OutlinePair outlinePair = OutlineIdentifier.getIndex ( pLetRec ).get ( 0 ) ;
+    OutlinePair outlinePairId = OutlineStyle.getIndex ( pLetRec ,
+        PrettyStyle.IDENTIFIER ).get ( 0 ) ;
     OutlineBinding outlineBinding = new OutlineBinding ( pLetRec ) ;
     outlineBinding.add ( pLetRec , pLetRec.getId ( ) ) ;
     outlineBinding.find ( ) ;
     node.add ( new DefaultMutableTreeNode ( new OutlineNode ( IDENTIFIER ,
-        pLetRec.getId ( ) , outlinePair.getStart ( ) , outlinePair.getEnd ( ) ,
-        outlineBinding , this.outlineUnbound ) ) ) ;
+        pLetRec.getId ( ) , outlinePairId.getStart ( ) , outlinePairId
+            .getEnd ( ) , outlineBinding , this.outlineUnbound ) ) ) ;
+    if ( pLetRec.getTau ( ) != null )
+    {
+      OutlinePair outlinePairType = OutlineStyle.getIndex ( pLetRec ,
+          PrettyStyle.TYPE ).get ( 0 ) ;
+      node.add ( new DefaultMutableTreeNode ( new OutlineNode ( TYPE , pLetRec
+          .getTau ( ).toPrettyString ( ).toString ( ) , outlinePairType
+          .getStart ( ) , outlinePairType.getEnd ( ) , null ,
+          this.outlineUnbound ) ) ) ;
+    }
     createChildren ( pLetRec , node ) ;
     return node ;
   }
@@ -559,14 +704,13 @@ public final class AbstractOutline implements Outline
     int start = pMessage.toPrettyString ( ).getAnnotationForPrintable (
         pMessage.getE ( ) ).getEndOffset ( ) ;
     int end = pMessage.toPrettyString ( ).toString ( ).length ( ) ;
-    ArrayList < OutlinePair > outlinePairs = OutlineIdentifier.getIndexBetween (
-        pMessage , start , end ) ;
+    ArrayList < OutlinePair > outlinePairs = OutlineStyle.getIndexBetween (
+        pMessage , PrettyStyle.IDENTIFIER , start , end ) ;
     OutlinePair outlinePair = outlinePairs.get ( 0 ) ;
-    OutlineBinding outlineBinding = new OutlineBinding ( pMessage ) ;
     createChildren ( pMessage , node ) ;
     node.add ( new DefaultMutableTreeNode ( new OutlineNode ( METHODNAME ,
         pMessage.getIdentifier ( ) , outlinePair.getStart ( ) , outlinePair
-            .getEnd ( ) , outlineBinding , this.outlineUnbound ) ) ) ;
+            .getEnd ( ) , null , this.outlineUnbound ) ) ) ;
     return node ;
   }
 
@@ -581,11 +725,20 @@ public final class AbstractOutline implements Outline
   {
     DefaultMutableTreeNode node = new DefaultMutableTreeNode ( new OutlineNode (
         pMeth , this.outlineUnbound ) ) ;
-    OutlinePair outlinePair = OutlineIdentifier.getIndex ( pMeth ).get ( 0 ) ;
-    OutlineBinding outlineBinding = new OutlineBinding ( pMeth ) ;
+    OutlinePair outlinePair = OutlineStyle.getIndex ( pMeth ,
+        PrettyStyle.IDENTIFIER ).get ( 0 ) ;
     node.add ( new DefaultMutableTreeNode ( new OutlineNode ( METHODNAME ,
         pMeth.getIdentifier ( ) , outlinePair.getStart ( ) , outlinePair
-            .getEnd ( ) , outlineBinding , this.outlineUnbound ) ) ) ;
+            .getEnd ( ) , null , this.outlineUnbound ) ) ) ;
+    if ( pMeth.getTau ( ) != null )
+    {
+      OutlinePair outlinePairType = OutlineStyle.getIndex ( pMeth ,
+          PrettyStyle.TYPE ).get ( 0 ) ;
+      node.add ( new DefaultMutableTreeNode ( new OutlineNode ( TYPE , pMeth
+          .getTau ( ).toPrettyString ( ).toString ( ) , outlinePairType
+          .getStart ( ) , outlinePairType.getEnd ( ) , null ,
+          this.outlineUnbound ) ) ) ;
+    }
     createChildren ( pMeth , node ) ;
     return node ;
   }
@@ -608,16 +761,25 @@ public final class AbstractOutline implements Outline
     outlineBinding.find ( ) ;
     DefaultMutableTreeNode node = new DefaultMutableTreeNode ( new OutlineNode (
         pMultiLambda , this.outlineUnbound ) ) ;
-    ArrayList < OutlinePair > index = OutlineIdentifier
-        .getIndex ( pMultiLambda ) ;
-    OutlinePair outlinePair ;
+    ArrayList < OutlinePair > outlinePairIdList = OutlineStyle.getIndex (
+        pMultiLambda , PrettyStyle.IDENTIFIER ) ;
+    OutlinePair outlinePairId ;
     final int length = pMultiLambda.getIdentifiers ( ).length ;
     for ( int i = 0 ; i < length ; i ++ )
     {
-      outlinePair = index.get ( i ) ;
+      outlinePairId = outlinePairIdList.get ( i ) ;
       node.add ( new DefaultMutableTreeNode ( new OutlineNode ( IDENTIFIER ,
-          pMultiLambda.getIdentifiers ( ) [ i ] , outlinePair.getStart ( ) ,
-          outlinePair.getEnd ( ) , outlineBinding , this.outlineUnbound ) ) ) ;
+          pMultiLambda.getIdentifiers ( i ) , outlinePairId.getStart ( ) ,
+          outlinePairId.getEnd ( ) , outlineBinding , this.outlineUnbound ) ) ) ;
+    }
+    if ( pMultiLambda.getTau ( ) != null )
+    {
+      OutlinePair outlinePairType = OutlineStyle.getIndex ( pMultiLambda ,
+          PrettyStyle.TYPE ).get ( 0 ) ;
+      node.add ( new DefaultMutableTreeNode ( new OutlineNode ( TYPE ,
+          pMultiLambda.getTau ( ).toPrettyString ( ).toString ( ) ,
+          outlinePairType.getStart ( ) , outlinePairType.getEnd ( ) , null ,
+          this.outlineUnbound ) ) ) ;
     }
     createChildren ( pMultiLambda , node ) ;
     return node ;
@@ -641,15 +803,25 @@ public final class AbstractOutline implements Outline
     String [ ] idList = pMultiLet.getIdentifiers ( ) ;
     DefaultMutableTreeNode node = new DefaultMutableTreeNode ( new OutlineNode (
         pMultiLet , this.outlineUnbound ) ) ;
-    ArrayList < OutlinePair > index = OutlineIdentifier.getIndex ( pMultiLet ) ;
-    OutlinePair outlinePair ;
+    ArrayList < OutlinePair > outlinePairIdList = OutlineStyle.getIndex (
+        pMultiLet , PrettyStyle.IDENTIFIER ) ;
+    OutlinePair outlinePairId ;
     final int length = idList.length ;
     for ( int i = 0 ; i < length ; i ++ )
     {
-      outlinePair = index.get ( i ) ;
+      outlinePairId = outlinePairIdList.get ( i ) ;
       node.add ( new DefaultMutableTreeNode ( new OutlineNode ( IDENTIFIER ,
-          idList [ i ] , outlinePair.getStart ( ) , outlinePair.getEnd ( ) ,
+          idList [ i ] , outlinePairId.getStart ( ) , outlinePairId.getEnd ( ) ,
           outlineBinding , this.outlineUnbound ) ) ) ;
+    }
+    if ( pMultiLet.getTau ( ) != null )
+    {
+      OutlinePair outlinePairType = OutlineStyle.getIndex ( pMultiLet ,
+          PrettyStyle.TYPE ).get ( 0 ) ;
+      node.add ( new DefaultMutableTreeNode ( new OutlineNode ( TYPE ,
+          pMultiLet.getTau ( ).toPrettyString ( ).toString ( ) ,
+          outlinePairType.getStart ( ) , outlinePairType.getEnd ( ) , null ,
+          this.outlineUnbound ) ) ) ;
     }
     createChildren ( pMultiLet , node ) ;
     return node ;
@@ -668,12 +840,11 @@ public final class AbstractOutline implements Outline
         pObjectExpr , this.outlineUnbound ) ) ;
     if ( pObjectExpr.getIdentifier ( ) != null )
     {
-      OutlinePair outlinePair = OutlineIdentifier.getIndex ( pObjectExpr ).get (
-          0 ) ;
-      OutlineBinding outlineBinding = new OutlineBinding ( pObjectExpr ) ;
+      OutlinePair outlinePair = OutlineStyle.getIndex ( pObjectExpr ,
+          PrettyStyle.IDENTIFIER ).get ( 0 ) ;
       node.add ( new DefaultMutableTreeNode ( new OutlineNode ( IDENTIFIER ,
           pObjectExpr.getIdentifier ( ) , outlinePair.getStart ( ) ,
-          outlinePair.getEnd ( ) , outlineBinding , this.outlineUnbound ) ) ) ;
+          outlinePair.getEnd ( ) , null , this.outlineUnbound ) ) ) ;
     }
     createChildren ( pObjectExpr , node ) ;
     return node ;
@@ -707,14 +878,23 @@ public final class AbstractOutline implements Outline
     String id = pRecursion.getId ( ) ;
     DefaultMutableTreeNode node = new DefaultMutableTreeNode ( new OutlineNode (
         pRecursion , this.outlineUnbound ) ) ;
-    OutlinePair outlinePair = OutlineIdentifier.getIndex ( pRecursion )
-        .get ( 0 ) ;
+    OutlinePair outlinePairId = OutlineStyle.getIndex ( pRecursion ,
+        PrettyStyle.IDENTIFIER ).get ( 0 ) ;
     OutlineBinding outlineBinding = new OutlineBinding ( pRecursion ) ;
     outlineBinding.add ( pRecursion , pRecursion.getId ( ) ) ;
     outlineBinding.find ( ) ;
     node.add ( new DefaultMutableTreeNode ( new OutlineNode ( IDENTIFIER , id ,
-        outlinePair.getStart ( ) , outlinePair.getEnd ( ) , outlineBinding ,
+        outlinePairId.getStart ( ) , outlinePairId.getEnd ( ) , outlineBinding ,
         this.outlineUnbound ) ) ) ;
+    if ( pRecursion.getTau ( ) != null )
+    {
+      OutlinePair outlinePairType = OutlineStyle.getIndex ( pRecursion ,
+          PrettyStyle.TYPE ).get ( 0 ) ;
+      node.add ( new DefaultMutableTreeNode ( new OutlineNode ( TYPE ,
+          pRecursion.getTau ( ).toPrettyString ( ).toString ( ) ,
+          outlinePairType.getStart ( ) , outlinePairType.getEnd ( ) , null ,
+          this.outlineUnbound ) ) ) ;
+    }
     createChildren ( pRecursion , node ) ;
     return node ;
   }

@@ -124,10 +124,52 @@ public final class OutlineTreeSelectionListener implements
           .getPath ( ) [ i ] ).getUserObject ( ) ) ;
     }
     OutlineNode last = list.get ( list.size ( ) - 1 ) ;
-    // Identifier
-    if ( ( last.getStartIndex ( ) != - 1 ) && ( last.getEndIndex ( ) != - 1 ) )
+    // Type
+    if ( ( last.getStartIndex ( ) != - 1 ) && ( last.getEndIndex ( ) != - 1 )
+        && ( list.get ( list.size ( ) - 2 ).getStartIndex ( ) != - 1 )
+        && ( list.get ( list.size ( ) - 2 ).getEndIndex ( ) != - 1 ) )
     {
-      OutlineNode secondlast = list.get ( list.size ( ) - 2 ) ;
+      OutlineNode lastButTwo = list.get ( list.size ( ) - 3 ) ;
+      // Highlight the selected Type
+      last.enableSelectionColor ( ) ;
+      this.outlineUI.getTreeModel ( ).nodeChanged (
+          ( ( DefaultMutableTreeNode ) pTreePath.getLastPathComponent ( ) ) ) ;
+      for ( int i = 0 ; i < list.size ( ) - 2 ; i ++ )
+      {
+        int childIndex = identifierIndex ( ( DefaultMutableTreeNode ) pTreePath
+            .getPath ( ) [ pTreePath.getPathCount ( ) - 2 ] ,
+            ( DefaultMutableTreeNode ) pTreePath.getPath ( ) [ pTreePath
+                .getPathCount ( ) - 1 ] ) ;
+        if ( ! ( lastButTwo.getExpression ( ) instanceof Lambda )
+            && ! ( lastButTwo.getExpression ( ) instanceof MultiLambda )
+            && ! ( lastButTwo.getExpression ( ) instanceof MultiLet )
+            && ! ( lastButTwo.getExpression ( ) instanceof LetRec )
+            && ! ( lastButTwo.getExpression ( ) instanceof Let )
+            && ! ( lastButTwo.getExpression ( ) instanceof CurriedLetRec )
+            && ! ( lastButTwo.getExpression ( ) instanceof CurriedLet )
+            && ! ( lastButTwo.getExpression ( ) instanceof Recursion )
+            && ! ( lastButTwo.getExpression ( ) instanceof CurriedMeth ) )
+        {
+          childIndex = OutlineNode.NO_BINDING ;
+        }
+        PrettyAnnotation prettyAnnotation = list.get ( i ).getExpression ( )
+            .toPrettyString ( ).getAnnotationForPrintable (
+                lastButTwo.getExpression ( ) ) ;
+        list.get ( i ).setOutlineBinding ( last.getOutlineBinding ( ) ) ;
+        list.get ( i ).setReplaceInThisNode ( true ) ;
+        list.get ( i ).updateCaption (
+            prettyAnnotation.getStartOffset ( ) + last.getStartIndex ( ) ,
+            prettyAnnotation.getStartOffset ( ) + last.getEndIndex ( ) ,
+            childIndex ) ;
+        this.outlineUI.getTreeModel ( ).nodeChanged (
+            ( ( DefaultMutableTreeNode ) pTreePath.getPath ( ) [ i ] ) ) ;
+      }
+    }
+    // Identifier
+    else if ( ( last.getStartIndex ( ) != - 1 )
+        && ( last.getEndIndex ( ) != - 1 ) )
+    {
+      OutlineNode secondLast = list.get ( list.size ( ) - 2 ) ;
       // Highlight the selected Identifier
       last.enableSelectionColor ( ) ;
       this.outlineUI.getTreeModel ( ).nodeChanged (
@@ -138,21 +180,21 @@ public final class OutlineTreeSelectionListener implements
             .getPath ( ) [ pTreePath.getPathCount ( ) - 2 ] ,
             ( DefaultMutableTreeNode ) pTreePath.getPath ( ) [ pTreePath
                 .getPathCount ( ) - 1 ] ) ;
-        if ( ! ( secondlast.getExpression ( ) instanceof Lambda )
-            && ! ( secondlast.getExpression ( ) instanceof MultiLambda )
-            && ! ( secondlast.getExpression ( ) instanceof MultiLet )
-            && ! ( secondlast.getExpression ( ) instanceof LetRec )
-            && ! ( secondlast.getExpression ( ) instanceof Let )
-            && ! ( secondlast.getExpression ( ) instanceof CurriedLetRec )
-            && ! ( secondlast.getExpression ( ) instanceof CurriedLet )
-            && ! ( secondlast.getExpression ( ) instanceof Recursion )
-            && ! ( secondlast.getExpression ( ) instanceof CurriedMeth ) )
+        if ( ! ( secondLast.getExpression ( ) instanceof Lambda )
+            && ! ( secondLast.getExpression ( ) instanceof MultiLambda )
+            && ! ( secondLast.getExpression ( ) instanceof MultiLet )
+            && ! ( secondLast.getExpression ( ) instanceof LetRec )
+            && ! ( secondLast.getExpression ( ) instanceof Let )
+            && ! ( secondLast.getExpression ( ) instanceof CurriedLetRec )
+            && ! ( secondLast.getExpression ( ) instanceof CurriedLet )
+            && ! ( secondLast.getExpression ( ) instanceof Recursion )
+            && ! ( secondLast.getExpression ( ) instanceof CurriedMeth ) )
         {
           childIndex = OutlineNode.NO_BINDING ;
         }
         PrettyAnnotation prettyAnnotation = list.get ( i ).getExpression ( )
             .toPrettyString ( ).getAnnotationForPrintable (
-                secondlast.getExpression ( ) ) ;
+                secondLast.getExpression ( ) ) ;
         list.get ( i ).setOutlineBinding ( last.getOutlineBinding ( ) ) ;
         list.get ( i ).setReplaceInThisNode ( true ) ;
         list.get ( i ).updateCaption (
