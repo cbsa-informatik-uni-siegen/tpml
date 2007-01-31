@@ -27,8 +27,8 @@ public class L2OBigStepProofRuleSet extends L2BigStepProofRuleSet
   public L2OBigStepProofRuleSet ( L2OLanguage pL2OLanguage )
   {
     super ( pL2OLanguage ) ;
-    registerByMethodName ( L2OLanguage.L2O , "OBJ-EVAL" , "applyObjEval" , //$NON-NLS-1$//$NON-NLS-2$
-        "updateObjEval" ) ; //$NON-NLS-1$
+    registerByMethodName ( L2OLanguage.L2O , "OBJ" , "applyObj" , //$NON-NLS-1$//$NON-NLS-2$
+        "updateObj" ) ; //$NON-NLS-1$
     registerByMethodName ( L2OLanguage.L2O , "ATTR" , "applyAttr" , //$NON-NLS-1$ //$NON-NLS-2$
         "updateAttr" ) ; //$NON-NLS-1$
     registerByMethodName ( L2OLanguage.L2O , "SEND" , "applySend" , //$NON-NLS-1$//$NON-NLS-2$
@@ -42,7 +42,7 @@ public class L2OBigStepProofRuleSet extends L2BigStepProofRuleSet
    * @param pContext TODO
    * @param pNode TODO
    */
-  public void applyObjEval ( BigStepProofContext pContext ,
+  public void applyObj ( BigStepProofContext pContext ,
       BigStepProofNode pNode )
   {
     ObjectExpr objectExpr = ( ObjectExpr ) pNode.getExpression ( ) ;
@@ -56,7 +56,7 @@ public class L2OBigStepProofRuleSet extends L2BigStepProofRuleSet
    * @param pContext TODO
    * @param pNode TODO
    */
-  public void updateObjEval ( BigStepProofContext pContext ,
+  public void updateObj ( BigStepProofContext pContext ,
       BigStepProofNode pNode )
   {
     boolean allNodesProven = true ;
@@ -180,7 +180,7 @@ public class L2OBigStepProofRuleSet extends L2BigStepProofRuleSet
     {
       ObjectExpr objectExpr = ( ObjectExpr ) pNode.getChildAt ( 0 )
           .getResult ( ).getValue ( ) ;
-      pContext.addProofNode ( pNode , new Message ( objectExpr ,
+      pContext.addProofNode ( pNode , new Message ( objectExpr.getE ( ) ,
           ( ( Message ) pNode.getExpression ( ) ).getIdentifier ( ) ) ) ;
     }
   }
