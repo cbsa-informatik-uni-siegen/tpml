@@ -242,7 +242,7 @@ interface PrettyPrintPriorities
   /**
    * The pretty print priority for objects.
    */
-  public static final int PRIO_OBJECTEXPR = 6 ;
+  public static final int PRIO_OBJECTEXPR = 0 ;
 
 
   /**
@@ -254,7 +254,7 @@ interface PrettyPrintPriorities
   /**
    * The pretty print priority for rows.
    */
-  public static final int PRIO_ROW = 6 ;
+  public static final int PRIO_ROW = 0 ;
 
 
   /**
@@ -264,15 +264,21 @@ interface PrettyPrintPriorities
 
 
   /**
+   * The pretty print priority for sub expressions of duplicated rows.
+   */
+  public static final int PRIO_DUPLICATED_ROW_E_BEFORE = 0 ;
+
+
+  /**
    * The pretty print priority for duplicated rows.
    */
-  public static final int PRIO_DUPLICATED_ROW = 6 ;
+  public static final int PRIO_DUPLICATED_ROW = 5 ;
 
 
   /**
    * The pretty print priority for sub expressions of duplicated rows.
    */
-  public static final int PRIO_DUPLICATED_ROW_E = 0 ;
+  public static final int PRIO_DUPLICATED_ROW_E = 1 ;
 
 
   /**
@@ -284,13 +290,13 @@ interface PrettyPrintPriorities
   /**
    * The pretty print priority for sub expressions of messages.
    */
-  public static final int PRIO_MESSAGE_E = 0 ;
+  public static final int PRIO_MESSAGE_E = 6 ;
 
 
   /**
    * The pretty print priority for methods.
    */
-  public static final int PRIO_METH = 6 ;
+  public static final int PRIO_METH = 0 ;
 
 
   /**
@@ -308,7 +314,7 @@ interface PrettyPrintPriorities
   /**
    * The pretty print priority for curried methods.
    */
-  public static final int PRIO_CURRIED_METH = 6 ;
+  public static final int PRIO_CURRIED_METH = 0 ;
 
 
   /**
@@ -326,7 +332,7 @@ interface PrettyPrintPriorities
   /**
    * The pretty print priority for attributes.
    */
-  public static final int PRIO_ATTR = 6 ;
+  public static final int PRIO_ATTR = 0 ;
 
 
   /**
