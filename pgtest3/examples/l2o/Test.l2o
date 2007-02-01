@@ -1,1 +1,1 @@
-let x = 5 in object attr a = 4 ; meth m x = m + x + 1 ; attr b = 1/0 ; end
+object attr a = 2 ; attr b = 3 ; meth add = 1 ; meth add = a + b ; end # add

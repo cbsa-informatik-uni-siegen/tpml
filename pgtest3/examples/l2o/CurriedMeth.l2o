@@ -1,0 +1,1 @@
+object attr c = 1 ; meth add (a:int) (b:int): int = a + b ; meth const = 1 ; end
