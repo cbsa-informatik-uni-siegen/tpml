@@ -252,6 +252,12 @@ interface PrettyPrintPriorities
 
 
   /**
+   * The pretty print priority for the type of objects.
+   */
+  public static final int PRIO_OBJECTEXPR_TAU = 0 ;
+
+
+  /**
    * The pretty print priority for rows.
    */
   public static final int PRIO_ROW = 0 ;

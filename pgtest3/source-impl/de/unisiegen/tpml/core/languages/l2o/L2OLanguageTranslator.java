@@ -67,7 +67,8 @@ public class L2OLanguageTranslator extends L2LanguageTranslator
       }
       if ( objectExpr.getIdentifier ( ) == null )
       {
-        return new ObjectExpr ( null , row ) ;
+        return new ObjectExpr ( objectExpr.getIdentifier ( ) , objectExpr
+            .getTau ( ) , row ) ;
       }
       Expression [ ] tmp = row.getExpressions ( ).clone ( ) ;
       for ( int i = 0 ; i < tmp.length ; i ++ )
@@ -104,7 +105,7 @@ public class L2OLanguageTranslator extends L2LanguageTranslator
           // TODO
         }
       }
-      return new ObjectExpr ( null , new Row ( tmp ) ) ;
+      return new ObjectExpr ( null , objectExpr.getTau ( ) , new Row ( tmp ) ) ;
     }
     else if ( pExpression instanceof Row )
     {

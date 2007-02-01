@@ -42,7 +42,7 @@ terminal			TRUE, FALSE;
 terminal			OBJECT ;
 terminal			END ;
 terminal			NUMBERSIGN ;
-terminal			SELF ;
+terminal String		SELF ;
 terminal			ATTR ;
 terminal			METH ;
 terminal			SEMI ;
@@ -228,9 +228,15 @@ simple_expr			::=	constant:c
 					;
 					
 object_expr			::= OBJECT row:r END
-						{: RESULT = new ObjectExpr (null, r); :}
+						{: RESULT = new ObjectExpr (null, null, r); :}
 					|	OBJECT LPAREN IDENTIFIER:id RPAREN row:r END
-						{: RESULT = new ObjectExpr (id, r); :}
+						{: RESULT = new ObjectExpr (id, null, r); :}
+					|	OBJECT LPAREN SELF:s RPAREN row:r END
+						{: RESULT = new ObjectExpr (s, null, r); :}
+					|	OBJECT LPAREN IDENTIFIER:id COLON type:tau RPAREN row:r END
+						{: RESULT = new ObjectExpr (id, tau, r); :}
+					|	OBJECT LPAREN SELF:s COLON type:tau RPAREN row:r END
+						{: RESULT = new ObjectExpr (s, tau, r); :}
 					;
 					
 duplicated_row		::= LCURLYBRACE LESS id_expr_list:iel GREATER RCURLYBRACE

@@ -67,7 +67,8 @@ public final class Message extends Expression
     if ( pObject instanceof Message )
     {
       Message other = ( Message ) pObject ;
-      return ( this.expression.equals ( other.expression ) ) ;
+      return ( ( this.expression.equals ( other.expression ) ) && ( this.identifier
+          .equals ( other.identifier ) ) ) ;
     }
     return false ;
   }

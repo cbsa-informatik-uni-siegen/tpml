@@ -497,15 +497,18 @@ public final class AbstractOutline implements Outline
         }
         catch ( IllegalArgumentException e )
         {
-          // Do nothing
+          System.err.println ( "IllegalArgumentException: " + CHECK //$NON-NLS-1$
+              + pExpression.getClass ( ).getSimpleName ( ) ) ;
         }
         catch ( IllegalAccessException e )
         {
-          // Do nothing
+          System.err.println ( "IllegalAccessException: " + CHECK //$NON-NLS-1$
+              + pExpression.getClass ( ).getSimpleName ( ) ) ;
         }
         catch ( InvocationTargetException e )
         {
-          // Do nothing
+          System.err.println ( "InvocationTargetException: " + CHECK //$NON-NLS-1$
+              + pExpression.getClass ( ).getSimpleName ( ) ) ;
         }
       }
     }
@@ -822,13 +825,24 @@ public final class AbstractOutline implements Outline
   {
     DefaultMutableTreeNode node = new DefaultMutableTreeNode ( new OutlineNode (
         pExpression , this.outlineUnbound ) ) ;
-    if ( pExpression.getIdentifier ( ) != null )
+    ArrayList < OutlinePair > list = OutlineStyle.getIndex ( pExpression ,
+        PrettyStyle.IDENTIFIER ) ;
+    if ( ( pExpression.getIdentifier ( ) != null ) && ( list.size ( ) > 0 ) )
     {
-      OutlinePair outlinePair = OutlineStyle.getIndex ( pExpression ,
-          PrettyStyle.IDENTIFIER ).get ( 0 ) ;
+      OutlinePair outlinePair = list.get ( 0 ) ;
       node.add ( new DefaultMutableTreeNode ( new OutlineNode ( IDENTIFIER ,
           pExpression.getIdentifier ( ) , outlinePair.getStart ( ) ,
           outlinePair.getEnd ( ) , null , this.outlineUnbound ) ) ) ;
+    }
+    if ( pExpression.getTau ( ) != null )
+    {
+      OutlinePair outlinePairType = OutlineStyle.getIndex ( pExpression ,
+          PrettyStyle.TYPE ).get ( 0 ) ;
+      String tau = pExpression.getTau ( ).toPrettyString ( ).toString ( ) ;
+      node.add ( new DefaultMutableTreeNode ( new OutlineNode ( TYPE ,
+          pExpression.getTau ( ).toPrettyString ( ).toString ( ) ,
+          outlinePairType.getStart ( ) , outlinePairType.getStart ( )
+              + tau.length ( ) - 1 , null , this.outlineUnbound ) ) ) ;
     }
     createChildren ( pExpression , node ) ;
     return node ;

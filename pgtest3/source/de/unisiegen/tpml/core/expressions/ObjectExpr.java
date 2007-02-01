@@ -4,6 +4,7 @@ package de.unisiegen.tpml.core.expressions ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
+import de.unisiegen.tpml.core.types.MonoType ;
 
 
 /**
@@ -33,10 +34,20 @@ public final class ObjectExpr extends Expression
   /**
    * TODO
    * 
+   * @see #getTau()
+   */
+  private MonoType tau ;
+
+
+  /**
+   * TODO
+   * 
    * @param pIdentifier TODO
+   * @param pTau TODO
    * @param pExpression TODO
    */
-  public ObjectExpr ( String pIdentifier , Expression pExpression )
+  public ObjectExpr ( String pIdentifier , MonoType pTau ,
+      Expression pExpression )
   {
     if ( pExpression == null )
     {
@@ -47,6 +58,7 @@ public final class ObjectExpr extends Expression
       throw new IllegalArgumentException ( "The expression must be a Row" ) ; //$NON-NLS-1$
     }
     this.identifier = pIdentifier ;
+    this.tau = pTau ;
     this.expression = pExpression ;
   }
 
@@ -57,7 +69,8 @@ public final class ObjectExpr extends Expression
   @ Override
   public ObjectExpr clone ( )
   {
-    return new ObjectExpr ( this.identifier , this.expression.clone ( ) ) ;
+    return new ObjectExpr ( this.identifier , this.tau , this.expression
+        .clone ( ) ) ;
   }
 
 
@@ -70,23 +83,11 @@ public final class ObjectExpr extends Expression
     if ( pObject instanceof ObjectExpr )
     {
       ObjectExpr other = ( ObjectExpr ) pObject ;
-      if ( ! this.expression.equals ( other.expression ) )
-      {
-        return false ;
-      }
-      if ( ( this.identifier == null ) && other.identifier != null )
-      {
-        return false ;
-      }
-      if ( ( this.identifier != null ) && other.identifier == null )
-      {
-        return false ;
-      }
-      if ( ( this.identifier == null ) && other.identifier == null )
-      {
-        return true ;
-      }
-      return this.identifier.equals ( other.identifier ) ;
+      return ( this.expression.equals ( other.expression ) )
+          && ( ( this.tau == null ) ? ( other.tau == null ) : ( this.tau
+              .equals ( other.tau ) )
+              && ( ( this.identifier == null ) ? ( other.identifier == null )
+                  : ( this.identifier.equals ( other.identifier ) ) ) ) ;
     }
     return false ;
   }
@@ -127,6 +128,18 @@ public final class ObjectExpr extends Expression
 
 
   /**
+   * TODO
+   * 
+   * @return TODO
+   * @see #tau
+   */
+  public MonoType getTau ( )
+  {
+    return this.tau ;
+  }
+
+
+  /**
    * {@inheritDoc}
    */
   @ Override
@@ -157,8 +170,8 @@ public final class ObjectExpr extends Expression
     {
       return this ;
     }
-    return new ObjectExpr ( this.identifier , this.expression.substitute ( pID ,
-        pExpression ) ) ;
+    return new ObjectExpr ( this.identifier , this.tau , this.expression
+        .substitute ( pID , pExpression ) ) ;
   }
 
 
@@ -171,9 +184,10 @@ public final class ObjectExpr extends Expression
   @ Override
   public ObjectExpr substitute ( TypeSubstitution pTypeSubstitution )
   {
-    Expression tmp = this.expression.substitute ( pTypeSubstitution ) ;
-    return ( this.expression.equals ( tmp ) ) ? this : new ObjectExpr (
-        this.identifier , tmp ) ;
+    MonoType tmp = ( this.tau != null ) ? this.tau
+        .substitute ( pTypeSubstitution ) : null ;
+    return new ObjectExpr ( this.identifier , tmp , this.expression
+        .substitute ( pTypeSubstitution ) ) ;
   }
 
 
@@ -190,9 +204,32 @@ public final class ObjectExpr extends Expression
     builder.addText ( " " ) ; //$NON-NLS-1$
     if ( this.identifier != null )
     {
-      builder.addText ( "( " ) ; //$NON-NLS-1$
-      builder.addIdentifier ( this.identifier ) ;
-      builder.addText ( " ) " ) ; //$NON-NLS-1$
+      if ( this.identifier.equals ( "self" ) ) //$NON-NLS-1$
+      {
+        if ( this.tau != null )
+        {
+          builder.addText ( "( " ) ; //$NON-NLS-1$
+          builder.addIdentifier ( this.identifier ) ;
+          builder.addText ( ": " ) ; //$NON-NLS-1$
+          builder.addBuilder ( this.tau
+              .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
+              PRIO_OBJECTEXPR_TAU ) ;
+          builder.addText ( " ) " ) ; //$NON-NLS-1$
+        }
+      }
+      else
+      {
+        builder.addText ( "( " ) ; //$NON-NLS-1$
+        builder.addIdentifier ( this.identifier ) ;
+        if ( this.tau != null )
+        {
+          builder.addText ( ": " ) ; //$NON-NLS-1$
+          builder.addBuilder ( this.tau
+              .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
+              PRIO_OBJECTEXPR_TAU ) ;
+        }
+        builder.addText ( " ) " ) ; //$NON-NLS-1$
+      }
     }
     builder.addBreak ( ) ;
     builder.addBuilder ( this.expression
