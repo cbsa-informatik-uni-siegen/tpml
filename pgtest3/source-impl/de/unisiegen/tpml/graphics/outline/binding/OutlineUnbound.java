@@ -5,6 +5,7 @@ import java.lang.reflect.InvocationTargetException ;
 import java.lang.reflect.Method ;
 import java.util.ArrayList ;
 import java.util.Enumeration ;
+import de.unisiegen.tpml.core.expressions.Attr ;
 import de.unisiegen.tpml.core.expressions.CurriedLet ;
 import de.unisiegen.tpml.core.expressions.CurriedLetRec ;
 import de.unisiegen.tpml.core.expressions.CurriedMeth ;
@@ -13,9 +14,11 @@ import de.unisiegen.tpml.core.expressions.Identifier ;
 import de.unisiegen.tpml.core.expressions.Lambda ;
 import de.unisiegen.tpml.core.expressions.Let ;
 import de.unisiegen.tpml.core.expressions.LetRec ;
+import de.unisiegen.tpml.core.expressions.Meth ;
 import de.unisiegen.tpml.core.expressions.MultiLambda ;
 import de.unisiegen.tpml.core.expressions.MultiLet ;
 import de.unisiegen.tpml.core.expressions.Recursion ;
+import de.unisiegen.tpml.core.expressions.Row ;
 
 
 /**
@@ -307,6 +310,66 @@ public final class OutlineUnbound
     // New binding in E
     unbound.add ( pExpression.getId ( ) ) ;
     find ( pResult , unbound , pExpression.getE ( ) ) ;
+  }
+
+
+  /**
+   * Finds the unbounded {@link Identifier}s in the given {@link Expression}.
+   * 
+   * @param pResult The list of the unbounded {@link Identifier}s.
+   * @param pBounded The list of bounded {@link Identifier}s.
+   * @param pExpression The input {@link Expression}.
+   */
+  @ SuppressWarnings ( "unused" )
+  private final void findRow ( ArrayList < Identifier > pResult ,
+      ArrayList < String > pBounded , Row pExpression )
+  {
+    ArrayList < String > id = new ArrayList < String > ( ) ;
+    for ( int i = 0 ; i < pExpression.getExpressions ( ).length ; i ++ )
+    {
+      if ( pExpression.getExpressions ( i ) instanceof Attr )
+      {
+        Attr expr = ( Attr ) pExpression.getExpressions ( i ) ;
+        ArrayList < String > unbound = new ArrayList < String > ( pBounded ) ;
+        for ( int j = 0 ; j < i ; j ++ )
+        {
+          if ( id.get ( j ) != null )
+          {
+            unbound.add ( id.get ( j ) ) ;
+          }
+        }
+        find ( pResult , unbound , expr ) ;
+        id.add ( expr.getIdentifier ( ) ) ;
+      }
+      else if ( pExpression.getExpressions ( i ) instanceof Meth )
+      {
+        Meth expr = ( Meth ) pExpression.getExpressions ( i ) ;
+        ArrayList < String > unbound = new ArrayList < String > ( pBounded ) ;
+        for ( int j = 0 ; j < i ; j ++ )
+        {
+          if ( id.get ( j ) != null )
+          {
+            unbound.add ( id.get ( j ) ) ;
+          }
+        }
+        find ( pResult , unbound , expr ) ;
+        id.add ( null ) ;
+      }
+      else if ( pExpression.getExpressions ( i ) instanceof CurriedMeth )
+      {
+        CurriedMeth expr = ( CurriedMeth ) pExpression.getExpressions ( i ) ;
+        ArrayList < String > unbound = new ArrayList < String > ( pBounded ) ;
+        for ( int j = 0 ; j < i ; j ++ )
+        {
+          if ( id.get ( j ) != null )
+          {
+            unbound.add ( id.get ( j ) ) ;
+          }
+        }
+        find ( pResult , unbound , expr ) ;
+        id.add ( null ) ;
+      }
+    }
   }
 
 
