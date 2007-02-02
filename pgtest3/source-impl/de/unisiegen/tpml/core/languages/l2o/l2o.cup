@@ -228,11 +228,11 @@ simple_expr			::=	constant:c
 					;
 					
 object_expr			::= OBJECT row:r END
-						{: RESULT = new ObjectExpr (null, null, r); :}
+						{: RESULT = new ObjectExpr ( "self", null, r); :}
 					|	OBJECT LPAREN IDENTIFIER:id RPAREN row:r END
 						{: RESULT = new ObjectExpr (id, null, r); :}
 					|	OBJECT LPAREN SELF:s RPAREN row:r END
-						{: RESULT = new ObjectExpr (s, null, r); :}
+						{: RESULT = new ObjectExpr (s , null, r); :}
 					|	OBJECT LPAREN IDENTIFIER:id COLON type:tau RPAREN row:r END
 						{: RESULT = new ObjectExpr (id, tau, r); :}
 					|	OBJECT LPAREN SELF:s COLON type:tau RPAREN row:r END

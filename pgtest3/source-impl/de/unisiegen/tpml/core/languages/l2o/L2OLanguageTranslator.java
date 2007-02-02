@@ -65,7 +65,7 @@ public class L2OLanguageTranslator extends L2LanguageTranslator
       {
         row = ( Row ) translateToCoreSyntax ( row , pRecursive ) ;
       }
-      if ( objectExpr.getIdentifier ( ) == null )
+      if ( objectExpr.getIdentifier ( ).equals ( "self" ) ) //$NON-NLS-1$
       {
         return new ObjectExpr ( objectExpr.getIdentifier ( ) , objectExpr
             .getTau ( ) , row ) ;
@@ -105,7 +105,7 @@ public class L2OLanguageTranslator extends L2LanguageTranslator
           // TODO
         }
       }
-      return new ObjectExpr ( null , objectExpr.getTau ( ) , new Row ( tmp ) ) ;
+      return new ObjectExpr ( "self" , objectExpr.getTau ( ) , new Row ( tmp ) ) ; //$NON-NLS-1$
     }
     else if ( pExpression instanceof Row )
     {

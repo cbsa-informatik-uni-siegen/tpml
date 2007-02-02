@@ -827,7 +827,7 @@ public final class AbstractOutline implements Outline
         pExpression , this.outlineUnbound ) ) ;
     ArrayList < OutlinePair > list = OutlineStyle.getIndex ( pExpression ,
         PrettyStyle.IDENTIFIER ) ;
-    if ( ( pExpression.getIdentifier ( ) != null ) && ( list.size ( ) > 0 ) )
+    if ( ( ! pExpression.getIdentifier ( ).equals ( "self" ) ) && ( list.size ( ) > 0 ) ) //$NON-NLS-1$
     {
       OutlinePair outlinePair = list.get ( 0 ) ;
       node.add ( new DefaultMutableTreeNode ( new OutlineNode ( IDENTIFIER ,

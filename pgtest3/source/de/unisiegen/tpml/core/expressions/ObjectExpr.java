@@ -1,6 +1,8 @@
 package de.unisiegen.tpml.core.expressions ;
 
 
+import java.util.Set ;
+import java.util.TreeSet ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
@@ -49,6 +51,10 @@ public final class ObjectExpr extends Expression
   public ObjectExpr ( String pIdentifier , MonoType pTau ,
       Expression pExpression )
   {
+    if ( pIdentifier == null )
+    {
+      throw new NullPointerException ( "Identifier is null" ) ; //$NON-NLS-1$
+    }
     if ( pExpression == null )
     {
       throw new NullPointerException ( "Expression is null" ) ; //$NON-NLS-1$
@@ -90,6 +96,19 @@ public final class ObjectExpr extends Expression
                   : ( this.identifier.equals ( other.identifier ) ) ) ) ;
     }
     return false ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   */
+  @ Override
+  public Set < String > free ( )
+  {
+    TreeSet < String > free = new TreeSet < String > ( ) ;
+    free.addAll ( this.expression.free ( ) ) ;
+    free.remove ( this.identifier ) ;
+    return free ;
   }
 
 
