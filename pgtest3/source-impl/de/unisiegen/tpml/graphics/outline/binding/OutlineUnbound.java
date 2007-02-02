@@ -17,6 +17,7 @@ import de.unisiegen.tpml.core.expressions.LetRec ;
 import de.unisiegen.tpml.core.expressions.Meth ;
 import de.unisiegen.tpml.core.expressions.MultiLambda ;
 import de.unisiegen.tpml.core.expressions.MultiLet ;
+import de.unisiegen.tpml.core.expressions.ObjectExpr ;
 import de.unisiegen.tpml.core.expressions.Recursion ;
 import de.unisiegen.tpml.core.expressions.Row ;
 
@@ -111,17 +112,17 @@ public final class OutlineUnbound
   private final void findCurriedLet ( ArrayList < Identifier > pResult ,
       ArrayList < String > pBounded , CurriedLet pExpression )
   {
-    ArrayList < String > unbound1 = new ArrayList < String > ( pBounded ) ;
-    ArrayList < String > unbound2 = new ArrayList < String > ( pBounded ) ;
+    ArrayList < String > bounded1 = new ArrayList < String > ( pBounded ) ;
+    ArrayList < String > bounded2 = new ArrayList < String > ( pBounded ) ;
     // New bindings in E1, Identifier 1 to n
     for ( int i = 1 ; i < pExpression.getIdentifiers ( ).length ; i ++ )
     {
-      unbound1.add ( pExpression.getIdentifiers ( i ) ) ;
+      bounded1.add ( pExpression.getIdentifiers ( i ) ) ;
     }
-    find ( pResult , unbound1 , pExpression.getE1 ( ) ) ;
+    find ( pResult , bounded1 , pExpression.getE1 ( ) ) ;
     // New bindings in E2, Identifier 0
-    unbound2.add ( pExpression.getIdentifiers ( 0 ) ) ;
-    find ( pResult , unbound2 , pExpression.getE2 ( ) ) ;
+    bounded2.add ( pExpression.getIdentifiers ( 0 ) ) ;
+    find ( pResult , bounded2 , pExpression.getE2 ( ) ) ;
   }
 
 
@@ -136,17 +137,17 @@ public final class OutlineUnbound
   private final void findCurriedLetRec ( ArrayList < Identifier > pResult ,
       ArrayList < String > pBounded , CurriedLetRec pExpression )
   {
-    ArrayList < String > unbound1 = new ArrayList < String > ( pBounded ) ;
-    ArrayList < String > unbound2 = new ArrayList < String > ( pBounded ) ;
+    ArrayList < String > bounded1 = new ArrayList < String > ( pBounded ) ;
+    ArrayList < String > bounded2 = new ArrayList < String > ( pBounded ) ;
     // New bindings in E1, Identifier 0 to n
     for ( int i = 0 ; i < pExpression.getIdentifiers ( ).length ; i ++ )
     {
-      unbound1.add ( pExpression.getIdentifiers ( i ) ) ;
+      bounded1.add ( pExpression.getIdentifiers ( i ) ) ;
     }
-    find ( pResult , unbound1 , pExpression.getE1 ( ) ) ;
+    find ( pResult , bounded1 , pExpression.getE1 ( ) ) ;
     // New bindings in E2, Identifier 0
-    unbound2.add ( pExpression.getIdentifiers ( 0 ) ) ;
-    find ( pResult , unbound2 , pExpression.getE2 ( ) ) ;
+    bounded2.add ( pExpression.getIdentifiers ( 0 ) ) ;
+    find ( pResult , bounded2 , pExpression.getE2 ( ) ) ;
   }
 
 
@@ -161,13 +162,13 @@ public final class OutlineUnbound
   private final void findCurriedMeth ( ArrayList < Identifier > pResult ,
       ArrayList < String > pBounded , CurriedMeth pExpression )
   {
-    ArrayList < String > unbound = new ArrayList < String > ( pBounded ) ;
+    ArrayList < String > bounded = new ArrayList < String > ( pBounded ) ;
     // New bindings in E, Identifier 1 to n
     for ( int i = 1 ; i < pExpression.getIdentifiers ( ).length ; i ++ )
     {
-      unbound.add ( pExpression.getIdentifiers ( i ) ) ;
+      bounded.add ( pExpression.getIdentifiers ( i ) ) ;
     }
-    find ( pResult , unbound , pExpression.getE ( ) ) ;
+    find ( pResult , bounded , pExpression.getE ( ) ) ;
   }
 
 
@@ -200,10 +201,10 @@ public final class OutlineUnbound
   private final void findLambda ( ArrayList < Identifier > pResult ,
       ArrayList < String > pBounded , Lambda pExpression )
   {
-    ArrayList < String > unbound = new ArrayList < String > ( pBounded ) ;
+    ArrayList < String > bounded = new ArrayList < String > ( pBounded ) ;
     // New binding in E
-    unbound.add ( pExpression.getId ( ) ) ;
-    find ( pResult , unbound , pExpression.getE ( ) ) ;
+    bounded.add ( pExpression.getId ( ) ) ;
+    find ( pResult , bounded , pExpression.getE ( ) ) ;
   }
 
 
@@ -218,13 +219,13 @@ public final class OutlineUnbound
   private final void findLet ( ArrayList < Identifier > pResult ,
       ArrayList < String > pBounded , Let pExpression )
   {
-    ArrayList < String > unbound1 = new ArrayList < String > ( pBounded ) ;
-    ArrayList < String > unbound2 = new ArrayList < String > ( pBounded ) ;
+    ArrayList < String > bounded1 = new ArrayList < String > ( pBounded ) ;
+    ArrayList < String > bounded2 = new ArrayList < String > ( pBounded ) ;
     // No new binding in E1
-    find ( pResult , unbound1 , pExpression.getE1 ( ) ) ;
+    find ( pResult , bounded1 , pExpression.getE1 ( ) ) ;
     // New binding in E2
-    unbound2.add ( pExpression.getId ( ) ) ;
-    find ( pResult , unbound2 , pExpression.getE2 ( ) ) ;
+    bounded2.add ( pExpression.getId ( ) ) ;
+    find ( pResult , bounded2 , pExpression.getE2 ( ) ) ;
   }
 
 
@@ -239,14 +240,14 @@ public final class OutlineUnbound
   private final void findLetRec ( ArrayList < Identifier > pResult ,
       ArrayList < String > pBounded , LetRec pExpression )
   {
-    ArrayList < String > unbound1 = new ArrayList < String > ( pBounded ) ;
-    ArrayList < String > unbound2 = new ArrayList < String > ( pBounded ) ;
+    ArrayList < String > bounded1 = new ArrayList < String > ( pBounded ) ;
+    ArrayList < String > bounded2 = new ArrayList < String > ( pBounded ) ;
     // New binding in E1
-    unbound1.add ( pExpression.getId ( ) ) ;
-    find ( pResult , unbound1 , pExpression.getE1 ( ) ) ;
+    bounded1.add ( pExpression.getId ( ) ) ;
+    find ( pResult , bounded1 , pExpression.getE1 ( ) ) ;
     // New binding in E2
-    unbound2.add ( pExpression.getId ( ) ) ;
-    find ( pResult , unbound2 , pExpression.getE2 ( ) ) ;
+    bounded2.add ( pExpression.getId ( ) ) ;
+    find ( pResult , bounded2 , pExpression.getE2 ( ) ) ;
   }
 
 
@@ -261,13 +262,13 @@ public final class OutlineUnbound
   private final void findMultiLambda ( ArrayList < Identifier > pResult ,
       ArrayList < String > pBounded , MultiLambda pExpression )
   {
-    ArrayList < String > unbound = new ArrayList < String > ( pBounded ) ;
+    ArrayList < String > bounded = new ArrayList < String > ( pBounded ) ;
     // New bindings in E
     for ( int i = 0 ; i < pExpression.getIdentifiers ( ).length ; i ++ )
     {
-      unbound.add ( pExpression.getIdentifiers ( i ) ) ;
+      bounded.add ( pExpression.getIdentifiers ( i ) ) ;
     }
-    find ( pResult , unbound , pExpression.getE ( ) ) ;
+    find ( pResult , bounded , pExpression.getE ( ) ) ;
   }
 
 
@@ -282,16 +283,16 @@ public final class OutlineUnbound
   private final void findMultiLet ( ArrayList < Identifier > pResult ,
       ArrayList < String > pBounded , MultiLet pExpression )
   {
-    ArrayList < String > unbound1 = new ArrayList < String > ( pBounded ) ;
-    ArrayList < String > unbound2 = new ArrayList < String > ( pBounded ) ;
+    ArrayList < String > bounded1 = new ArrayList < String > ( pBounded ) ;
+    ArrayList < String > bounded2 = new ArrayList < String > ( pBounded ) ;
     // No new binding in E1
-    find ( pResult , unbound1 , pExpression.getE1 ( ) ) ;
+    find ( pResult , bounded1 , pExpression.getE1 ( ) ) ;
     // New bindings in E2
     for ( int i = 0 ; i < pExpression.getIdentifiers ( ).length ; i ++ )
     {
-      unbound2.add ( pExpression.getIdentifiers ( i ) ) ;
+      bounded2.add ( pExpression.getIdentifiers ( i ) ) ;
     }
-    find ( pResult , unbound2 , pExpression.getE2 ( ) ) ;
+    find ( pResult , bounded2 , pExpression.getE2 ( ) ) ;
   }
 
 
@@ -306,10 +307,28 @@ public final class OutlineUnbound
   private final void findRecursion ( ArrayList < Identifier > pResult ,
       ArrayList < String > pBounded , Recursion pExpression )
   {
-    ArrayList < String > unbound = new ArrayList < String > ( pBounded ) ;
+    ArrayList < String > bounded = new ArrayList < String > ( pBounded ) ;
     // New binding in E
-    unbound.add ( pExpression.getId ( ) ) ;
-    find ( pResult , unbound , pExpression.getE ( ) ) ;
+    bounded.add ( pExpression.getId ( ) ) ;
+    find ( pResult , bounded , pExpression.getE ( ) ) ;
+  }
+
+
+  /**
+   * Finds the unbounded {@link Identifier}s in the given {@link Expression}.
+   * 
+   * @param pResult The list of the unbounded {@link Identifier}s.
+   * @param pBounded The list of bounded {@link Identifier}s.
+   * @param pExpression The input {@link Expression}.
+   */
+  @ SuppressWarnings ( "unused" )
+  private final void findObjectExpr ( ArrayList < Identifier > pResult ,
+      ArrayList < String > pBounded , ObjectExpr pExpression )
+  {
+    ArrayList < String > bounded = new ArrayList < String > ( pBounded ) ;
+    // New binding in E
+    bounded.add ( pExpression.getIdentifier ( ) ) ;
+    find ( pResult , bounded , pExpression.getE ( ) ) ;
   }
 
 
@@ -325,49 +344,23 @@ public final class OutlineUnbound
       ArrayList < String > pBounded , Row pExpression )
   {
     ArrayList < String > id = new ArrayList < String > ( ) ;
+    ArrayList < String > bounded = new ArrayList < String > ( pBounded ) ;
     for ( int i = 0 ; i < pExpression.getExpressions ( ).length ; i ++ )
     {
       if ( pExpression.getExpressions ( i ) instanceof Attr )
       {
         Attr expr = ( Attr ) pExpression.getExpressions ( i ) ;
-        ArrayList < String > unbound = new ArrayList < String > ( pBounded ) ;
-        for ( int j = 0 ; j < i ; j ++ )
-        {
-          if ( id.get ( j ) != null )
-          {
-            unbound.add ( id.get ( j ) ) ;
-          }
-        }
-        find ( pResult , unbound , expr ) ;
-        id.add ( expr.getIdentifier ( ) ) ;
+        find ( pResult , bounded , expr ) ;
+        // New binding in the rest of the row
+        bounded.add ( expr.getIdentifier ( ) ) ;
       }
       else if ( pExpression.getExpressions ( i ) instanceof Meth )
       {
-        Meth expr = ( Meth ) pExpression.getExpressions ( i ) ;
-        ArrayList < String > unbound = new ArrayList < String > ( pBounded ) ;
-        for ( int j = 0 ; j < i ; j ++ )
-        {
-          if ( id.get ( j ) != null )
-          {
-            unbound.add ( id.get ( j ) ) ;
-          }
-        }
-        find ( pResult , unbound , expr ) ;
-        id.add ( null ) ;
+        find ( pResult , bounded , pExpression.getExpressions ( i ) ) ;
       }
       else if ( pExpression.getExpressions ( i ) instanceof CurriedMeth )
       {
-        CurriedMeth expr = ( CurriedMeth ) pExpression.getExpressions ( i ) ;
-        ArrayList < String > unbound = new ArrayList < String > ( pBounded ) ;
-        for ( int j = 0 ; j < i ; j ++ )
-        {
-          if ( id.get ( j ) != null )
-          {
-            unbound.add ( id.get ( j ) ) ;
-          }
-        }
-        find ( pResult , unbound , expr ) ;
-        id.add ( null ) ;
+        find ( pResult , bounded , pExpression.getExpressions ( i ) ) ;
       }
     }
   }
