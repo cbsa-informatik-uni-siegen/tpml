@@ -7,7 +7,6 @@ import java.util.TreeSet ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
-import de.unisiegen.tpml.core.util.Debug ;
 
 
 /**
@@ -280,12 +279,6 @@ public final class Row extends Expression
   public PrettyStringBuilder toPrettyStringBuilder (
       PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
-    Debug.out.println ( "Free Row:" , Debug.CHRISTIAN ) ; //$NON-NLS-1$
-    for ( String s : free ( ) )
-    {
-      Debug.out.print ( s + " " , Debug.CHRISTIAN ) ; //$NON-NLS-1$
-    }
-    Debug.out.println ( "" , Debug.CHRISTIAN ) ; //$NON-NLS-1$
     PrettyStringBuilder builder = pPrettyStringBuilderFactory.newBuilder (
         this , PRIO_ROW ) ;
     for ( int i = 0 ; i < this.expressions.length ; i ++ )
