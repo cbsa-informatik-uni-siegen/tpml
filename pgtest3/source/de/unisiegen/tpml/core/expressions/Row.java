@@ -1,7 +1,6 @@
 package de.unisiegen.tpml.core.expressions ;
 
 
-import java.util.ArrayList ;
 import java.util.Set ;
 import java.util.TreeSet ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
@@ -88,7 +87,7 @@ public final class Row extends Expression
   public Set < String > free ( )
   {
     TreeSet < String > free = new TreeSet < String > ( ) ;
-    ArrayList < String > id = new ArrayList < String > ( ) ;
+    TreeSet < String > bounded = new TreeSet < String > ( ) ;
     for ( int i = 0 ; i < this.expressions.length ; i ++ )
     {
       if ( this.expressions [ i ] instanceof Attr )
@@ -96,45 +95,25 @@ public final class Row extends Expression
         Attr expr = ( Attr ) this.expressions [ i ] ;
         TreeSet < String > freeExpr = new TreeSet < String > ( ) ;
         freeExpr.addAll ( expr.free ( ) ) ;
-        for ( int j = 0 ; j < i ; j ++ )
-        {
-          if ( id.get ( j ) != null )
-          {
-            freeExpr.remove ( id.get ( j ) ) ;
-          }
-        }
+        freeExpr.removeAll ( bounded ) ;
         free.addAll ( freeExpr ) ;
-        id.add ( expr.getIdentifier ( ) ) ;
+        bounded.add ( expr.getIdentifier ( ) ) ;
       }
       else if ( this.expressions [ i ] instanceof Meth )
       {
         Meth expr = ( Meth ) this.expressions [ i ] ;
         TreeSet < String > freeExpr = new TreeSet < String > ( ) ;
         freeExpr.addAll ( expr.free ( ) ) ;
-        for ( int j = 0 ; j < i ; j ++ )
-        {
-          if ( id.get ( j ) != null )
-          {
-            freeExpr.remove ( id.get ( j ) ) ;
-          }
-        }
+        freeExpr.removeAll ( bounded ) ;
         free.addAll ( freeExpr ) ;
-        id.add ( null ) ;
       }
       else if ( this.expressions [ i ] instanceof CurriedMeth )
       {
         CurriedMeth expr = ( CurriedMeth ) this.expressions [ i ] ;
         TreeSet < String > freeExpr = new TreeSet < String > ( ) ;
         freeExpr.addAll ( expr.free ( ) ) ;
-        for ( int j = 0 ; j < i ; j ++ )
-        {
-          if ( id.get ( j ) != null )
-          {
-            freeExpr.remove ( id.get ( j ) ) ;
-          }
-        }
+        freeExpr.removeAll ( bounded ) ;
         free.addAll ( freeExpr ) ;
-        id.add ( null ) ;
       }
     }
     return free ;
@@ -279,6 +258,10 @@ public final class Row extends Expression
   public PrettyStringBuilder toPrettyStringBuilder (
       PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
+    /*
+     * System.out.println ( "Free Row:" ) ; for ( String s : free ( ) ) {
+     * System.out.print ( s + " " ) ; } System.out.println ( ) ;
+     */
     PrettyStringBuilder builder = pPrettyStringBuilderFactory.newBuilder (
         this , PRIO_ROW ) ;
     for ( int i = 0 ; i < this.expressions.length ; i ++ )

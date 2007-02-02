@@ -343,7 +343,6 @@ public final class OutlineUnbound
   private final void findRow ( ArrayList < Identifier > pResult ,
       ArrayList < String > pBounded , Row pExpression )
   {
-    ArrayList < String > id = new ArrayList < String > ( ) ;
     ArrayList < String > bounded = new ArrayList < String > ( pBounded ) ;
     for ( int i = 0 ; i < pExpression.getExpressions ( ).length ; i ++ )
     {
