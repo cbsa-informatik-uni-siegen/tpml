@@ -1,1 +1,1 @@
-let id = 4 in object attr a = id + 5 ; attr id2 = a + id ; meth x = id ; end
+let c = a in object (self) attr a = a + 5 ; attr b = a + 1 ; meth result = b ; end # result
