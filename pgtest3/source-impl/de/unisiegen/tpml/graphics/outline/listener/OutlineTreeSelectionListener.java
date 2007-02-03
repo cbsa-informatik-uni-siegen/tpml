@@ -6,6 +6,7 @@ import javax.swing.event.TreeSelectionEvent ;
 import javax.swing.event.TreeSelectionListener ;
 import javax.swing.tree.DefaultMutableTreeNode ;
 import javax.swing.tree.TreePath ;
+import de.unisiegen.tpml.core.expressions.Attr ;
 import de.unisiegen.tpml.core.expressions.CurriedLet ;
 import de.unisiegen.tpml.core.expressions.CurriedLetRec ;
 import de.unisiegen.tpml.core.expressions.CurriedMeth ;
@@ -13,6 +14,7 @@ import de.unisiegen.tpml.core.expressions.Identifier ;
 import de.unisiegen.tpml.core.expressions.Lambda ;
 import de.unisiegen.tpml.core.expressions.Let ;
 import de.unisiegen.tpml.core.expressions.LetRec ;
+import de.unisiegen.tpml.core.expressions.Meth ;
 import de.unisiegen.tpml.core.expressions.MultiLambda ;
 import de.unisiegen.tpml.core.expressions.MultiLet ;
 import de.unisiegen.tpml.core.expressions.Recursion ;
@@ -148,6 +150,8 @@ public final class OutlineTreeSelectionListener implements
             && ! ( lastButTwo.getExpression ( ) instanceof CurriedLetRec )
             && ! ( lastButTwo.getExpression ( ) instanceof CurriedLet )
             && ! ( lastButTwo.getExpression ( ) instanceof Recursion )
+            && ! ( lastButTwo.getExpression ( ) instanceof Attr )
+            && ! ( lastButTwo.getExpression ( ) instanceof Meth )
             && ! ( lastButTwo.getExpression ( ) instanceof CurriedMeth ) )
         {
           childIndex = OutlineNode.NO_BINDING ;
@@ -188,6 +192,8 @@ public final class OutlineTreeSelectionListener implements
             && ! ( secondLast.getExpression ( ) instanceof CurriedLetRec )
             && ! ( secondLast.getExpression ( ) instanceof CurriedLet )
             && ! ( secondLast.getExpression ( ) instanceof Recursion )
+            && ! ( secondLast.getExpression ( ) instanceof Attr )
+            && ! ( secondLast.getExpression ( ) instanceof Meth )
             && ! ( secondLast.getExpression ( ) instanceof CurriedMeth ) )
         {
           childIndex = OutlineNode.NO_BINDING ;

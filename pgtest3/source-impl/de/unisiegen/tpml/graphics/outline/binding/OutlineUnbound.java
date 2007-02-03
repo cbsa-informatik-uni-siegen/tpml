@@ -304,12 +304,12 @@ public final class OutlineUnbound
    * @param pExpression The input {@link Expression}.
    */
   @ SuppressWarnings ( "unused" )
-  private final void findRecursion ( ArrayList < Identifier > pResult ,
-      ArrayList < String > pBounded , Recursion pExpression )
+  private final void findObjectExpr ( ArrayList < Identifier > pResult ,
+      ArrayList < String > pBounded , ObjectExpr pExpression )
   {
     ArrayList < String > bounded = new ArrayList < String > ( pBounded ) ;
     // New binding in E
-    bounded.add ( pExpression.getId ( ) ) ;
+    bounded.add ( pExpression.getIdentifier ( ) ) ;
     find ( pResult , bounded , pExpression.getE ( ) ) ;
   }
 
@@ -322,12 +322,12 @@ public final class OutlineUnbound
    * @param pExpression The input {@link Expression}.
    */
   @ SuppressWarnings ( "unused" )
-  private final void findObjectExpr ( ArrayList < Identifier > pResult ,
-      ArrayList < String > pBounded , ObjectExpr pExpression )
+  private final void findRecursion ( ArrayList < Identifier > pResult ,
+      ArrayList < String > pBounded , Recursion pExpression )
   {
     ArrayList < String > bounded = new ArrayList < String > ( pBounded ) ;
     // New binding in E
-    bounded.add ( pExpression.getIdentifier ( ) ) ;
+    bounded.add ( pExpression.getId ( ) ) ;
     find ( pResult , bounded , pExpression.getE ( ) ) ;
   }
 
@@ -348,10 +348,10 @@ public final class OutlineUnbound
     {
       if ( pExpression.getExpressions ( i ) instanceof Attr )
       {
-        Attr expr = ( Attr ) pExpression.getExpressions ( i ) ;
-        find ( pResult , bounded , expr ) ;
+        Attr attr = ( Attr ) pExpression.getExpressions ( i ) ;
+        find ( pResult , bounded , attr ) ;
         // New binding in the rest of the row
-        bounded.add ( expr.getIdentifier ( ) ) ;
+        bounded.add ( attr.getIdentifier ( ) ) ;
       }
       else if ( pExpression.getExpressions ( i ) instanceof Meth )
       {

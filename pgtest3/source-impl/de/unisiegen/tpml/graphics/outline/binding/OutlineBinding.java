@@ -5,6 +5,7 @@ import java.lang.reflect.InvocationTargetException ;
 import java.lang.reflect.Method ;
 import java.util.ArrayList ;
 import java.util.Enumeration ;
+import de.unisiegen.tpml.core.expressions.Attr ;
 import de.unisiegen.tpml.core.expressions.CurriedLet ;
 import de.unisiegen.tpml.core.expressions.CurriedLetRec ;
 import de.unisiegen.tpml.core.expressions.CurriedMeth ;
@@ -13,6 +14,7 @@ import de.unisiegen.tpml.core.expressions.Identifier ;
 import de.unisiegen.tpml.core.expressions.Lambda ;
 import de.unisiegen.tpml.core.expressions.Let ;
 import de.unisiegen.tpml.core.expressions.LetRec ;
+import de.unisiegen.tpml.core.expressions.Meth ;
 import de.unisiegen.tpml.core.expressions.MultiLambda ;
 import de.unisiegen.tpml.core.expressions.MultiLet ;
 import de.unisiegen.tpml.core.expressions.Recursion ;
@@ -250,6 +252,19 @@ public final class OutlineBinding
 
 
   /**
+   * Moves all {@link Identifier}s to the first list.
+   */
+  public void collect ( )
+  {
+    while ( this.list.size ( ) > 1 )
+    {
+      this.list.get ( 0 ).addAll ( this.list.get ( 1 ) ) ;
+      this.list.remove ( 1 ) ;
+    }
+  }
+
+
+  /**
    * Finds the bounded {@link Identifier}s in the given {@link Expression}.
    */
   public final void find ( )
@@ -277,6 +292,21 @@ public final class OutlineBinding
       }
       this.list.add ( tmpList ) ;
     }
+  }
+
+
+  /**
+   * Finds the bounded {@link Identifier}s in the given {@link Expression}.
+   * 
+   * @param pResult The list of the bounded {@link Identifier}s.
+   * @param pExpression The input {@link Expression}.
+   * @param pId The name of the {@link Identifier}.
+   */
+  @ SuppressWarnings ( "unused" )
+  private final void findAttr ( ArrayList < Identifier > pResult ,
+      Attr pExpression , String pId )
+  {
+    findExpression ( pResult , pExpression.getE ( ) , pId ) ;
   }
 
 
@@ -373,6 +403,7 @@ public final class OutlineBinding
    * @param pId The name of the {@link Identifier}.
    */
   @ SuppressWarnings ( "unused" )
+  // TODO
   private final void findCurriedMeth ( ArrayList < Identifier > pResult ,
       CurriedMeth pExpression , String pId )
   {
@@ -548,6 +579,21 @@ public final class OutlineBinding
       findExpression ( pResult , pExpression.getE1 ( ) , pId ) ;
       findExpression ( pResult , pExpression.getE2 ( ) , pId ) ;
     }
+  }
+
+
+  /**
+   * Finds the bounded {@link Identifier}s in the given {@link Expression}.
+   * 
+   * @param pResult The list of the bounded {@link Identifier}s.
+   * @param pExpression The input {@link Expression}.
+   * @param pId The name of the {@link Identifier}.
+   */
+  @ SuppressWarnings ( "unused" )
+  private final void findMeth ( ArrayList < Identifier > pResult ,
+      Meth pExpression , String pId )
+  {
+    findExpression ( pResult , pExpression.getE ( ) , pId ) ;
   }
 
 
