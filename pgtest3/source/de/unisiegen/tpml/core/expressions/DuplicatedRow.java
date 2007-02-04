@@ -2,6 +2,8 @@ package de.unisiegen.tpml.core.expressions ;
 
 
 import java.util.ArrayList ;
+import java.util.Set ;
+import java.util.TreeSet ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
@@ -94,6 +96,21 @@ public final class DuplicatedRow extends Expression
           .equals ( other.identifiers ) ) ;
     }
     return false ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   */
+  @ Override
+  public Set < String > free ( )
+  {
+    TreeSet < String > free = new TreeSet < String > ( ) ;
+    for ( Expression e : this.expressions )
+    {
+      free.addAll ( e.free ( ) ) ;
+    }
+    return free ;
   }
 
 
