@@ -17,7 +17,9 @@ import de.unisiegen.tpml.core.expressions.LetRec ;
 import de.unisiegen.tpml.core.expressions.Meth ;
 import de.unisiegen.tpml.core.expressions.MultiLambda ;
 import de.unisiegen.tpml.core.expressions.MultiLet ;
+import de.unisiegen.tpml.core.expressions.ObjectExpr ;
 import de.unisiegen.tpml.core.expressions.Recursion ;
+import de.unisiegen.tpml.core.expressions.Row ;
 
 
 /**
@@ -35,47 +37,30 @@ public final class OutlineBinding
 
 
   /**
-   * The <code>String</code> for the beginning of the check methods.
-   */
-  private static final String CHECK = "check" ; //$NON-NLS-1$
-
-
-  /**
    * The list of lists of {@link Identifier}s, which are bounded by the given
    * {@link Identifier} in the hole {@link Expression}.
    */
-  private ArrayList < ArrayList < Identifier >> list ;
-
-
-  /**
-   * The hole {@link Expression}.
-   */
-  private Expression holeExpression ;
+  private ArrayList < Identifier > list ;
 
 
   /**
    * The list of {@link Identifier}s.
    */
-  private ArrayList < String > identifierList ;
+  private String identifier ;
 
 
   /**
    * The list of {@link Expression}s.
    */
-  private ArrayList < Expression > expressionList ;
+  private Expression expression ;
 
 
   /**
    * Initilizes the lists and sets the hole {@link Expression}.
-   * 
-   * @param pHoleExpression The hole {@link Expression}.
    */
-  public OutlineBinding ( Expression pHoleExpression )
+  public OutlineBinding ( )
   {
-    this.list = new ArrayList < ArrayList < Identifier >> ( ) ;
-    this.identifierList = new ArrayList < String > ( ) ;
-    this.expressionList = new ArrayList < Expression > ( ) ;
-    this.holeExpression = pHoleExpression ;
+    this.list = new ArrayList < Identifier > ( ) ;
   }
 
 
@@ -87,244 +72,37 @@ public final class OutlineBinding
    * @param pExpression The {@link Expression}.
    * @param pId The {@link Identifier}.
    */
-  public final void add ( Expression pExpression , String pId )
+  public final void find ( Expression pExpression , String pId )
   {
-    this.expressionList.add ( pExpression ) ;
-    this.identifierList.add ( pId ) ;
-  }
-
-
-  /**
-   * Search for an {@link Identifier} with the same name as the current,
-   * starting with the second {@link Identifier}. If someone is found, the
-   * current {@link Expression} and the current {@link Identifier} is set to
-   * <code>null</code>, because he has no bindings.
-   */
-  @ SuppressWarnings ( "unused" )
-  private final void checkCurriedLet ( )
-  {
-    for ( int i = 1 ; i < this.identifierList.size ( ) - 1 ; i ++ )
-    {
-      for ( int j = i + 1 ; j < this.identifierList.size ( ) ; j ++ )
-      {
-        if ( this.identifierList.get ( i ).equals (
-            this.identifierList.get ( j ) ) )
-        {
-          this.identifierList.set ( i , null ) ;
-          this.expressionList.set ( i , null ) ;
-          break ;
-        }
-      }
-    }
-  }
-
-
-  /**
-   * Search for an {@link Identifier} with the same name as the first
-   * {@link Identifier}. If someone is found, the first {@link Identifier}
-   * binds only in E2. Search for an {@link Identifier} with the same name as
-   * the current, starting with the second {@link Identifier}. If someone is
-   * found, the current {@link Expression} and the current {@link Identifier} is
-   * set to <code>null</code>, because he has no bindings.
-   */
-  @ SuppressWarnings ( "unused" )
-  private final void checkCurriedLetRec ( )
-  {
-    for ( int i = 1 ; i < this.identifierList.size ( ) ; i ++ )
-    {
-      if ( this.identifierList.get ( 0 )
-          .equals ( this.identifierList.get ( i ) ) )
-      {
-        this.expressionList.set ( 0 , ( ( CurriedLetRec ) this.holeExpression )
-            .getE2 ( ) ) ;
-        break ;
-      }
-    }
-    for ( int i = 1 ; i < this.identifierList.size ( ) - 1 ; i ++ )
-    {
-      for ( int j = i + 1 ; j < this.identifierList.size ( ) ; j ++ )
-      {
-        if ( this.identifierList.get ( i ).equals (
-            this.identifierList.get ( j ) ) )
-        {
-          this.identifierList.set ( i , null ) ;
-          this.expressionList.set ( i , null ) ;
-          break ;
-        }
-      }
-    }
-  }
-
-
-  /**
-   * Search for an {@link Identifier} with the same name as the current,
-   * starting with the second {@link Identifier}. If someone is found, the
-   * current {@link Expression} and the current {@link Identifier} is set to
-   * <code>null</code>, because he has no bindings.
-   */
-  @ SuppressWarnings ( "unused" )
-  private final void checkCurriedMeth ( )
-  {
-    for ( int i = 1 ; i < this.identifierList.size ( ) - 1 ; i ++ )
-    {
-      for ( int j = i + 1 ; j < this.identifierList.size ( ) ; j ++ )
-      {
-        if ( this.identifierList.get ( i ).equals (
-            this.identifierList.get ( j ) ) )
-        {
-          this.identifierList.set ( i , null ) ;
-          this.expressionList.set ( i , null ) ;
-          break ;
-        }
-      }
-    }
-  }
-
-
-  /**
-   * Checks if there are bindings in {@link Expression}s with more than one
-   * {@link Identifier}.
-   */
-  private final void checkExpression ( )
-  {
-    for ( Method method : this.getClass ( ).getDeclaredMethods ( ) )
-    {
-      if ( method.getName ( ).equals (
-          CHECK + this.holeExpression.getClass ( ).getSimpleName ( ) ) )
-      {
-        try
-        {
-          Object [ ] argument = new Object [ 0 ] ;
-          method.invoke ( this , argument ) ;
-        }
-        catch ( IllegalArgumentException e )
-        {
-          // Do nothing
-        }
-        catch ( IllegalAccessException e )
-        {
-          // Do nothing
-        }
-        catch ( InvocationTargetException e )
-        {
-          // Do nothing
-        }
-      }
-    }
-  }
-
-
-  /**
-   * Search for an {@link Identifier} with the same name as the current,
-   * starting with the first {@link Identifier}. If someone is found, the
-   * current {@link Expression} and the current {@link Identifier} is set to
-   * <code>null</code>, because he has no bindings.
-   */
-  @ SuppressWarnings ( "unused" )
-  private final void checkMultiLambda ( )
-  {
-    checkMultiLet ( ) ;
-  }
-
-
-  /**
-   * Search for an {@link Identifier} with the same name as the current,
-   * starting with the first {@link Identifier}. If someone is found, the
-   * current {@link Expression} and the current {@link Identifier} is set to
-   * <code>null</code>, because he has no bindings.
-   */
-  private final void checkMultiLet ( )
-  {
-    for ( int i = 0 ; i < this.identifierList.size ( ) - 1 ; i ++ )
-    {
-      for ( int j = i + 1 ; j < this.identifierList.size ( ) ; j ++ )
-      {
-        if ( this.identifierList.get ( i ).equals (
-            this.identifierList.get ( j ) ) )
-        {
-          this.identifierList.set ( i , null ) ;
-          this.expressionList.set ( i , null ) ;
-          break ;
-        }
-      }
-    }
-  }
-
-
-  /**
-   * Moves all {@link Identifier}s to the first list.
-   */
-  public void collect ( )
-  {
-    while ( this.list.size ( ) > 1 )
-    {
-      this.list.get ( 0 ).addAll ( this.list.get ( 1 ) ) ;
-      this.list.remove ( 1 ) ;
-    }
-  }
-
-
-  /**
-   * Finds the bounded {@link Identifier}s in the given {@link Expression}.
-   */
-  public final void find ( )
-  {
-    /*
-     * Checks if there are bindings in Expressions with more than one
-     * Identifier.
-     */
-    checkExpression ( ) ;
-    /*
-     * Find the bindings in the expressions.
-     */
-    ArrayList < Identifier > tmpList ;
-    for ( int i = 0 ; i < this.identifierList.size ( ) ; i ++ )
-    {
-      tmpList = new ArrayList < Identifier > ( ) ;
-      /*
-       * If the current Identifier is null, he has no bindings, so it is not
-       * necessary to search for them.
-       */
-      if ( this.identifierList.get ( i ) != null )
-      {
-        findExpression ( tmpList , this.expressionList.get ( i ) ,
-            this.identifierList.get ( i ) ) ;
-      }
-      this.list.add ( tmpList ) ;
-    }
+    this.expression = pExpression ;
+    this.identifier = pId ;
+    findExpression ( this.expression ) ;
   }
 
 
   /**
    * Finds the bounded {@link Identifier}s in the given {@link Expression}.
    * 
-   * @param pResult The list of the bounded {@link Identifier}s.
    * @param pExpression The input {@link Expression}.
-   * @param pId The name of the {@link Identifier}.
    */
   @ SuppressWarnings ( "unused" )
-  private final void findAttr ( ArrayList < Identifier > pResult ,
-      Attr pExpression , String pId )
+  private final void findAttr ( Attr pExpression )
   {
-    findExpression ( pResult , pExpression.getE ( ) , pId ) ;
+    findExpression ( pExpression.getE ( ) ) ;
   }
 
 
   /**
    * Finds the bounded {@link Identifier}s in the given {@link Expression}.
    * 
-   * @param pResult The list of the bounded {@link Identifier}s.
    * @param pExpression The input {@link Expression}.
-   * @param pId The name of the {@link Identifier}.
    */
   @ SuppressWarnings ( "unused" )
-  private final void findCurriedLet ( ArrayList < Identifier > pResult ,
-      CurriedLet pExpression , String pId )
+  private final void findCurriedLet ( CurriedLet pExpression )
   {
-    if ( ( ! pExpression.equals ( this.holeExpression ) )
-        && ( isInArray ( pExpression.getIdentifiers ( ) , pId ) ) )
+    if ( isInArray ( pExpression.getIdentifiers ( ) , this.identifier ) )
     {
-      if ( pExpression.getIdentifiers ( 0 ).equals ( pId ) )
+      if ( pExpression.getIdentifiers ( 0 ).equals ( this.identifier ) )
       {
         /*
          * Search is finished, if the searched Identifier is also equal to
@@ -333,7 +111,7 @@ public final class OutlineBinding
          */
         for ( int i = 1 ; i < pExpression.getIdentifiers ( ).length ; i ++ )
         {
-          if ( pExpression.getIdentifiers ( i ).equals ( pId ) )
+          if ( pExpression.getIdentifiers ( i ).equals ( this.identifier ) )
           {
             return ;
           }
@@ -342,19 +120,19 @@ public final class OutlineBinding
          * Search only in E1, because all Identifiers in E2 are bounded to the
          * Identifier in this child expression.
          */
-        findExpression ( pResult , pExpression.getE1 ( ) , pId ) ;
+        findExpression ( pExpression.getE1 ( ) ) ;
         return ;
       }
       /*
        * Search only in E2, because all Identifiers in E1 are bounded to the
        * Identifier in this child expression.
        */
-      findExpression ( pResult , pExpression.getE2 ( ) , pId ) ;
+      findExpression ( pExpression.getE2 ( ) ) ;
     }
     else
     {
-      findExpression ( pResult , pExpression.getE1 ( ) , pId ) ;
-      findExpression ( pResult , pExpression.getE2 ( ) , pId ) ;
+      findExpression ( pExpression.getE1 ( ) ) ;
+      findExpression ( pExpression.getE2 ( ) ) ;
     }
   }
 
@@ -362,18 +140,14 @@ public final class OutlineBinding
   /**
    * Finds the bounded {@link Identifier}s in the given {@link Expression}.
    * 
-   * @param pResult The list of the bounded {@link Identifier}s.
    * @param pExpression The input {@link Expression}.
-   * @param pId The name of the {@link Identifier}.
    */
   @ SuppressWarnings ( "unused" )
-  private final void findCurriedLetRec ( ArrayList < Identifier > pResult ,
-      CurriedLetRec pExpression , String pId )
+  private final void findCurriedLetRec ( CurriedLetRec pExpression )
   {
-    if ( ( ! pExpression.equals ( this.holeExpression ) )
-        && ( isInArray ( pExpression.getIdentifiers ( ) , pId ) ) )
+    if ( isInArray ( pExpression.getIdentifiers ( ) , this.identifier ) )
     {
-      if ( pExpression.getIdentifiers ( 0 ).equals ( pId ) )
+      if ( pExpression.getIdentifiers ( 0 ).equals ( this.identifier ) )
       {
         /*
          * Search is finished, because all Identifiers in E1 and E2 are bounded
@@ -385,12 +159,12 @@ public final class OutlineBinding
        * Search only in E2, because all Identifiers in E1 are bounded to the
        * Identifier in this child expression.
        */
-      findExpression ( pResult , pExpression.getE2 ( ) , pId ) ;
+      findExpression ( pExpression.getE2 ( ) ) ;
     }
     else
     {
-      findExpression ( pResult , pExpression.getE1 ( ) , pId ) ;
-      findExpression ( pResult , pExpression.getE2 ( ) , pId ) ;
+      findExpression ( pExpression.getE1 ( ) ) ;
+      findExpression ( pExpression.getE2 ( ) ) ;
     }
   }
 
@@ -398,17 +172,12 @@ public final class OutlineBinding
   /**
    * Finds the bounded {@link Identifier}s in the given {@link Expression}.
    * 
-   * @param pResult The list of the bounded {@link Identifier}s.
    * @param pExpression The input {@link Expression}.
-   * @param pId The name of the {@link Identifier}.
    */
   @ SuppressWarnings ( "unused" )
-  // TODO
-  private final void findCurriedMeth ( ArrayList < Identifier > pResult ,
-      CurriedMeth pExpression , String pId )
+  private final void findCurriedMeth ( CurriedMeth pExpression )
   {
-    if ( ( ! pExpression.equals ( this.holeExpression ) )
-        && ( isInArray ( pExpression.getIdentifiers ( ) , pId ) ) )
+    if ( isInArray ( pExpression.getIdentifiers ( ) , this.identifier ) )
     {
       /*
        * Search is finished, if the searched Identifier is also equal to another
@@ -417,7 +186,7 @@ public final class OutlineBinding
        */
       for ( int i = 1 ; i < pExpression.getIdentifiers ( ).length ; i ++ )
       {
-        if ( pExpression.getIdentifiers ( i ).equals ( pId ) )
+        if ( pExpression.getIdentifiers ( i ).equals ( this.identifier ) )
         {
           return ;
         }
@@ -425,11 +194,11 @@ public final class OutlineBinding
       /*
        * Continue search in E.
        */
-      findExpression ( pResult , pExpression.getE ( ) , pId ) ;
+      findExpression ( pExpression.getE ( ) ) ;
     }
     else
     {
-      findExpression ( pResult , pExpression.getE ( ) , pId ) ;
+      findExpression ( pExpression.getE ( ) ) ;
     }
   }
 
@@ -437,12 +206,9 @@ public final class OutlineBinding
   /**
    * Finds the bounded {@link Identifier}s in the given {@link Expression}.
    * 
-   * @param pResult The list of the bounded {@link Identifier}s.
    * @param pExpression The input {@link Expression}.
-   * @param pId The name of the {@link Identifier}.
    */
-  private final void findExpression ( ArrayList < Identifier > pResult ,
-      Expression pExpression , String pId )
+  private final void findExpression ( Expression pExpression )
   {
     for ( Method method : this.getClass ( ).getDeclaredMethods ( ) )
     {
@@ -451,10 +217,8 @@ public final class OutlineBinding
       {
         try
         {
-          Object [ ] argument = new Object [ 3 ] ;
-          argument [ 0 ] = pResult ;
-          argument [ 1 ] = pExpression ;
-          argument [ 2 ] = pId ;
+          Object [ ] argument = new Object [ 1 ] ;
+          argument [ 0 ] = pExpression ;
           method.invoke ( this , argument ) ;
           return ;
         }
@@ -478,7 +242,7 @@ public final class OutlineBinding
     Enumeration < Expression > children = pExpression.children ( ) ;
     while ( children.hasMoreElements ( ) )
     {
-      findExpression ( pResult , children.nextElement ( ) , pId ) ;
+      findExpression ( children.nextElement ( ) ) ;
     }
   }
 
@@ -486,17 +250,14 @@ public final class OutlineBinding
   /**
    * Finds the bounded {@link Identifier}s in the given {@link Expression}.
    * 
-   * @param pResult The list of the bounded {@link Identifier}s.
    * @param pExpression The input {@link Expression}.
-   * @param pId The name of the {@link Identifier}.
    */
   @ SuppressWarnings ( "unused" )
-  private final void findIdentifier ( ArrayList < Identifier > pResult ,
-      Identifier pExpression , String pId )
+  private final void findIdentifier ( Identifier pExpression )
   {
-    if ( pExpression.getName ( ).equals ( pId ) )
+    if ( pExpression.getName ( ).equals ( this.identifier ) )
     {
-      pResult.add ( pExpression ) ;
+      this.list.add ( pExpression ) ;
     }
   }
 
@@ -504,16 +265,12 @@ public final class OutlineBinding
   /**
    * Finds the bounded {@link Identifier}s in the given {@link Expression}.
    * 
-   * @param pResult The list of the bounded {@link Identifier}s.
    * @param pExpression The input {@link Expression}.
-   * @param pId The name of the {@link Identifier}.
    */
   @ SuppressWarnings ( "unused" )
-  private final void findLambda ( ArrayList < Identifier > pResult ,
-      Lambda pExpression , String pId )
+  private final void findLambda ( Lambda pExpression )
   {
-    if ( ( ! pExpression.equals ( this.holeExpression ) )
-        && ( pExpression.getId ( ).equals ( pId ) ) )
+    if ( pExpression.getId ( ).equals ( this.identifier ) )
     {
       /*
        * Search is finished, because all Identifiers in E are bounded to the
@@ -522,7 +279,7 @@ public final class OutlineBinding
     }
     else
     {
-      findExpression ( pResult , pExpression.getE ( ) , pId ) ;
+      findExpression ( pExpression.getE ( ) ) ;
     }
   }
 
@@ -530,27 +287,23 @@ public final class OutlineBinding
   /**
    * Finds the bounded {@link Identifier}s in the given {@link Expression}.
    * 
-   * @param pResult The list of the bounded {@link Identifier}s.
    * @param pExpression The input {@link Expression}.
-   * @param pId The name of the {@link Identifier}.
    */
   @ SuppressWarnings ( "unused" )
-  private final void findLet ( ArrayList < Identifier > pResult ,
-      Let pExpression , String pId )
+  private final void findLet ( Let pExpression )
   {
-    if ( ( ! pExpression.equals ( this.holeExpression ) )
-        && ( pExpression.getId ( ).equals ( pId ) ) )
+    if ( pExpression.getId ( ).equals ( this.identifier ) )
     {
       /*
        * Search only in E1, because all Identifiers in E2 are bounded to the
        * Identifier in this child expression.
        */
-      findExpression ( pResult , pExpression.getE1 ( ) , pId ) ;
+      findExpression ( pExpression.getE1 ( ) ) ;
     }
     else
     {
-      findExpression ( pResult , pExpression.getE1 ( ) , pId ) ;
-      findExpression ( pResult , pExpression.getE2 ( ) , pId ) ;
+      findExpression ( pExpression.getE1 ( ) ) ;
+      findExpression ( pExpression.getE2 ( ) ) ;
     }
   }
 
@@ -558,16 +311,12 @@ public final class OutlineBinding
   /**
    * Finds the bounded {@link Identifier}s in the given {@link Expression}.
    * 
-   * @param pResult The list of the bounded {@link Identifier}s.
    * @param pExpression The input {@link Expression}.
-   * @param pId The name of the {@link Identifier}.
    */
   @ SuppressWarnings ( "unused" )
-  private final void findLetRec ( ArrayList < Identifier > pResult ,
-      LetRec pExpression , String pId )
+  private final void findLetRec ( LetRec pExpression )
   {
-    if ( ( ! pExpression.equals ( this.holeExpression ) )
-        && ( pExpression.getId ( ).equals ( pId ) ) )
+    if ( pExpression.getId ( ).equals ( this.identifier ) )
     {
       /*
        * Search is finished, because all Identifiers in E1 and E2 are bounded to
@@ -576,8 +325,8 @@ public final class OutlineBinding
     }
     else
     {
-      findExpression ( pResult , pExpression.getE1 ( ) , pId ) ;
-      findExpression ( pResult , pExpression.getE2 ( ) , pId ) ;
+      findExpression ( pExpression.getE1 ( ) ) ;
+      findExpression ( pExpression.getE2 ( ) ) ;
     }
   }
 
@@ -585,31 +334,24 @@ public final class OutlineBinding
   /**
    * Finds the bounded {@link Identifier}s in the given {@link Expression}.
    * 
-   * @param pResult The list of the bounded {@link Identifier}s.
    * @param pExpression The input {@link Expression}.
-   * @param pId The name of the {@link Identifier}.
    */
   @ SuppressWarnings ( "unused" )
-  private final void findMeth ( ArrayList < Identifier > pResult ,
-      Meth pExpression , String pId )
+  private final void findMeth ( Meth pExpression )
   {
-    findExpression ( pResult , pExpression.getE ( ) , pId ) ;
+    findExpression ( pExpression.getE ( ) ) ;
   }
 
 
   /**
    * Finds the bounded {@link Identifier}s in the given {@link Expression}.
    * 
-   * @param pResult The list of the bounded {@link Identifier}s.
    * @param pExpression The input {@link Expression}.
-   * @param pId The name of the {@link Identifier}.
    */
   @ SuppressWarnings ( "unused" )
-  private final void findMultiLambda ( ArrayList < Identifier > pResult ,
-      MultiLambda pExpression , String pId )
+  private final void findMultiLambda ( MultiLambda pExpression )
   {
-    if ( ( ! pExpression.equals ( this.holeExpression ) )
-        && ( isInArray ( pExpression.getIdentifiers ( ) , pId ) ) )
+    if ( isInArray ( pExpression.getIdentifiers ( ) , this.identifier ) )
     {
       /*
        * Search is finished, because all Identifiers in E are bounded to the
@@ -618,7 +360,7 @@ public final class OutlineBinding
     }
     else
     {
-      findExpression ( pResult , pExpression.getE ( ) , pId ) ;
+      findExpression ( pExpression.getE ( ) ) ;
     }
   }
 
@@ -626,27 +368,23 @@ public final class OutlineBinding
   /**
    * Finds the bounded {@link Identifier}s in the given {@link Expression}.
    * 
-   * @param pResult The list of the bounded {@link Identifier}s.
    * @param pExpression The input {@link Expression}.
-   * @param pId The name of the {@link Identifier}.
    */
   @ SuppressWarnings ( "unused" )
-  private final void findMultiLet ( ArrayList < Identifier > pResult ,
-      MultiLet pExpression , String pId )
+  private final void findMultiLet ( MultiLet pExpression )
   {
-    if ( ( ! pExpression.equals ( this.holeExpression ) )
-        && ( isInArray ( pExpression.getIdentifiers ( ) , pId ) ) )
+    if ( isInArray ( pExpression.getIdentifiers ( ) , this.identifier ) )
     {
       /*
        * Search only in E1, because all Identifiers in E2 are bounded to the
        * Identifier in this child expression.
        */
-      findExpression ( pResult , pExpression.getE1 ( ) , pId ) ;
+      findExpression ( pExpression.getE1 ( ) ) ;
     }
     else
     {
-      findExpression ( pResult , pExpression.getE1 ( ) , pId ) ;
-      findExpression ( pResult , pExpression.getE2 ( ) , pId ) ;
+      findExpression ( pExpression.getE1 ( ) ) ;
+      findExpression ( pExpression.getE2 ( ) ) ;
     }
   }
 
@@ -654,16 +392,12 @@ public final class OutlineBinding
   /**
    * Finds the bounded {@link Identifier}s in the given {@link Expression}.
    * 
-   * @param pResult The list of the bounded {@link Identifier}s.
    * @param pExpression The input {@link Expression}.
-   * @param pId The name of the {@link Identifier}.
    */
   @ SuppressWarnings ( "unused" )
-  private final void findRecursion ( ArrayList < Identifier > pResult ,
-      Recursion pExpression , String pId )
+  private final void findObjectExpr ( ObjectExpr pExpression )
   {
-    if ( ( ! pExpression.equals ( this.holeExpression ) )
-        && ( pExpression.getId ( ).equals ( pId ) ) )
+    if ( pExpression.getId ( ).equals ( this.identifier ) )
     {
       /*
        * Search is finished, because all Identifiers in E are bounded to the
@@ -672,7 +406,60 @@ public final class OutlineBinding
     }
     else
     {
-      findExpression ( pResult , pExpression.getE ( ) , pId ) ;
+      findExpression ( pExpression.getE ( ) ) ;
+    }
+  }
+
+
+  /**
+   * Finds the bounded {@link Identifier}s in the given {@link Expression}.
+   * 
+   * @param pExpression The input {@link Expression}.
+   */
+  @ SuppressWarnings ( "unused" )
+  private final void findRecursion ( Recursion pExpression )
+  {
+    if ( pExpression.getId ( ).equals ( this.identifier ) )
+    {
+      /*
+       * Search is finished, because all Identifiers in E are bounded to the
+       * Identifier in this child expression.
+       */
+    }
+    else
+    {
+      findExpression ( pExpression.getE ( ) ) ;
+    }
+  }
+
+
+  /**
+   * Finds the bounded {@link Identifier}s in the given {@link Expression}.
+   * 
+   * @param pExpression The input {@link Expression}.
+   */
+  @ SuppressWarnings ( "unused" )
+  private final void findRow ( Row pExpression )
+  {
+    for ( int i = 0 ; i < pExpression.getExpressions ( ).length ; i ++ )
+    {
+      if ( pExpression.getExpressions ( i ) instanceof Attr )
+      {
+        Attr attr = ( Attr ) pExpression.getExpressions ( i ) ;
+        findExpression ( attr ) ;
+        if ( attr.getId ( ).equals ( this.identifier ) )
+        {
+          /*
+           * Search is finished, because all Identifiers in the Row are bounded
+           * to the Identifier in this child expression.
+           */
+          return ;
+        }
+      }
+      else
+      {
+        findExpression ( pExpression.getExpressions ( i ) ) ;
+      }
     }
   }
 
@@ -681,12 +468,11 @@ public final class OutlineBinding
    * Returns the bounded {@link Identifier} in the {@link Expression}.
    * 
    * @param pIdentifierIndex The index of the {@link Identifier}.
-   * @param pBindingIndex The index of the binding.
    * @return The bounded {@link Identifier} in the {@link Expression}.
    */
-  public final Identifier get ( int pIdentifierIndex , int pBindingIndex )
+  public final Identifier get ( int pIdentifierIndex )
   {
-    return this.list.get ( pIdentifierIndex ).get ( pBindingIndex ) ;
+    return this.list.get ( pIdentifierIndex ) ;
   }
 
 
@@ -721,17 +507,5 @@ public final class OutlineBinding
   public final int size ( )
   {
     return this.list.size ( ) ;
-  }
-
-
-  /**
-   * Returns the number of bindings from a given {@link Identifier}.
-   * 
-   * @param pIdentifierIndex The index of the {@link Identifier}.
-   * @return The number of bindings from a given {@link Identifier}.
-   */
-  public final int size ( int pIdentifierIndex )
-  {
-    return this.list.get ( pIdentifierIndex ).size ( ) ;
   }
 }

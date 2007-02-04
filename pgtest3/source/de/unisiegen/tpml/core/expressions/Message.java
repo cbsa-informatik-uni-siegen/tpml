@@ -17,7 +17,7 @@ public final class Message extends Expression
   /**
    * TODO
    * 
-   * @see #getIdentifier()
+   * @see #getId()
    */
   private String identifier ;
 
@@ -102,7 +102,7 @@ public final class Message extends Expression
    * @return TODO
    * @see #identifier
    */
-  public String getIdentifier ( )
+  public String getId ( )
   {
     return this.identifier ;
   }

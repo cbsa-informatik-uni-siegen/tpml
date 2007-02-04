@@ -71,7 +71,7 @@ public class L2OBigStepProofRuleSet extends L2BigStepProofRuleSet
       Row row = ( Row ) pNode.getChildAt ( 0 ).getResult ( ).getValue ( ) ;
       ObjectExpr objectExpr = ( ObjectExpr ) pNode.getExpression ( ) ;
       pContext.setProofNodeResult ( pNode , new ObjectExpr ( objectExpr
-          .getIdentifier ( ) , objectExpr.getTau ( ) , row ) ) ;
+          .getId ( ) , objectExpr.getTau ( ) , row ) ) ;
     }
   }
 
@@ -141,7 +141,7 @@ public class L2OBigStepProofRuleSet extends L2BigStepProofRuleSet
         if ( row.getExpressions ( i ) instanceof Attr )
         {
           Attr attr = ( Attr ) row.getExpressions ( i ) ;
-          tmp [ i ] = new Attr ( attr.getIdentifier ( ) , attr.getTau ( ) ,
+          tmp [ i ] = new Attr ( attr.getId ( ) , attr.getTau ( ) ,
               pNode.getChildAt ( nodeCount ).getResult ( ).getValue ( ) ) ;
           nodeCount ++ ;
         }
@@ -181,7 +181,7 @@ public class L2OBigStepProofRuleSet extends L2BigStepProofRuleSet
       ObjectExpr objectExpr = ( ObjectExpr ) pNode.getChildAt ( 0 )
           .getResult ( ).getValue ( ) ;
       pContext.addProofNode ( pNode , new Message ( objectExpr.getE ( ) ,
-          ( ( Message ) pNode.getExpression ( ) ).getIdentifier ( ) ) ) ;
+          ( ( Message ) pNode.getExpression ( ) ).getId ( ) ) ) ;
     }
   }
 }

@@ -28,7 +28,7 @@ public final class ObjectExpr extends Expression
   /**
    * TODO
    * 
-   * @see #getIdentifier()
+   * @see #getId()
    */
   private String identifier ;
 
@@ -140,7 +140,7 @@ public final class ObjectExpr extends Expression
    * @return TODO
    * @see #identifier
    */
-  public String getIdentifier ( )
+  public String getId ( )
   {
     return this.identifier ;
   }

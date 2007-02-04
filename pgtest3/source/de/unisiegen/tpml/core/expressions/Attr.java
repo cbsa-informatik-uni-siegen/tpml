@@ -18,7 +18,7 @@ public class Attr extends Expression
   /**
    * TODO
    * 
-   * @see #getIdentifier()
+   * @see #getId()
    */
   private String identifier ;
 
@@ -122,7 +122,7 @@ public class Attr extends Expression
    * @return TODO
    * @see #identifier
    */
-  public String getIdentifier ( )
+  public String getId ( )
   {
     return this.identifier ;
   }

@@ -6,18 +6,6 @@ import javax.swing.event.TreeSelectionEvent ;
 import javax.swing.event.TreeSelectionListener ;
 import javax.swing.tree.DefaultMutableTreeNode ;
 import javax.swing.tree.TreePath ;
-import de.unisiegen.tpml.core.expressions.Attr ;
-import de.unisiegen.tpml.core.expressions.CurriedLet ;
-import de.unisiegen.tpml.core.expressions.CurriedLetRec ;
-import de.unisiegen.tpml.core.expressions.CurriedMeth ;
-import de.unisiegen.tpml.core.expressions.Identifier ;
-import de.unisiegen.tpml.core.expressions.Lambda ;
-import de.unisiegen.tpml.core.expressions.Let ;
-import de.unisiegen.tpml.core.expressions.LetRec ;
-import de.unisiegen.tpml.core.expressions.Meth ;
-import de.unisiegen.tpml.core.expressions.MultiLambda ;
-import de.unisiegen.tpml.core.expressions.MultiLet ;
-import de.unisiegen.tpml.core.expressions.Recursion ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation ;
 import de.unisiegen.tpml.graphics.outline.OutlineNode ;
 import de.unisiegen.tpml.graphics.outline.ui.OutlineUI ;
@@ -52,27 +40,6 @@ public final class OutlineTreeSelectionListener implements
 
 
   /**
-   * Returns the index of the {@link Identifier} in the parent node.
-   * 
-   * @param pParent The parent node.
-   * @param pIdentifier The {@link Identifier} node.
-   * @return The index of the {@link Identifier} in the parent node.
-   */
-  private final int identifierIndex ( DefaultMutableTreeNode pParent ,
-      DefaultMutableTreeNode pIdentifier )
-  {
-    for ( int i = 0 ; i < pParent.getChildCount ( ) ; i ++ )
-    {
-      if ( pParent.getChildAt ( i ).equals ( pIdentifier ) )
-      {
-        return i ;
-      }
-    }
-    return OutlineNode.NO_BINDING ;
-  }
-
-
-  /**
    * Repaints the given node and all its children.
    * 
    * @param pNode The node, which should be repainted.
@@ -95,8 +62,9 @@ public final class OutlineTreeSelectionListener implements
   public final void reset ( DefaultMutableTreeNode pNode )
   {
     OutlineNode outlineNode = ( OutlineNode ) pNode.getUserObject ( ) ;
-    outlineNode.resetCaption ( ) ;
     outlineNode.setReplaceInThisNode ( false ) ;
+    outlineNode.setOutlineBinding ( null ) ;
+    outlineNode.resetCaption ( ) ;
     for ( int i = 0 ; i < pNode.getChildCount ( ) ; i ++ )
     {
       reset ( ( DefaultMutableTreeNode ) pNode.getChildAt ( i ) ) ;
@@ -138,24 +106,6 @@ public final class OutlineTreeSelectionListener implements
           ( ( DefaultMutableTreeNode ) pTreePath.getLastPathComponent ( ) ) ) ;
       for ( int i = 0 ; i < list.size ( ) - 2 ; i ++ )
       {
-        int childIndex = identifierIndex ( ( DefaultMutableTreeNode ) pTreePath
-            .getPath ( ) [ pTreePath.getPathCount ( ) - 2 ] ,
-            ( DefaultMutableTreeNode ) pTreePath.getPath ( ) [ pTreePath
-                .getPathCount ( ) - 1 ] ) ;
-        if ( ! ( lastButTwo.getExpression ( ) instanceof Lambda )
-            && ! ( lastButTwo.getExpression ( ) instanceof MultiLambda )
-            && ! ( lastButTwo.getExpression ( ) instanceof MultiLet )
-            && ! ( lastButTwo.getExpression ( ) instanceof LetRec )
-            && ! ( lastButTwo.getExpression ( ) instanceof Let )
-            && ! ( lastButTwo.getExpression ( ) instanceof CurriedLetRec )
-            && ! ( lastButTwo.getExpression ( ) instanceof CurriedLet )
-            && ! ( lastButTwo.getExpression ( ) instanceof Recursion )
-            && ! ( lastButTwo.getExpression ( ) instanceof Attr )
-            && ! ( lastButTwo.getExpression ( ) instanceof Meth )
-            && ! ( lastButTwo.getExpression ( ) instanceof CurriedMeth ) )
-        {
-          childIndex = OutlineNode.NO_BINDING ;
-        }
         PrettyAnnotation prettyAnnotation = list.get ( i ).getExpression ( )
             .toPrettyString ( ).getAnnotationForPrintable (
                 lastButTwo.getExpression ( ) ) ;
@@ -163,8 +113,7 @@ public final class OutlineTreeSelectionListener implements
         list.get ( i ).setReplaceInThisNode ( true ) ;
         list.get ( i ).updateCaption (
             prettyAnnotation.getStartOffset ( ) + last.getStartIndex ( ) ,
-            prettyAnnotation.getStartOffset ( ) + last.getEndIndex ( ) ,
-            childIndex ) ;
+            prettyAnnotation.getStartOffset ( ) + last.getEndIndex ( ) ) ;
         this.outlineUI.getTreeModel ( ).nodeChanged (
             ( ( DefaultMutableTreeNode ) pTreePath.getPath ( ) [ i ] ) ) ;
       }
@@ -180,24 +129,6 @@ public final class OutlineTreeSelectionListener implements
           ( ( DefaultMutableTreeNode ) pTreePath.getLastPathComponent ( ) ) ) ;
       for ( int i = 0 ; i < list.size ( ) - 1 ; i ++ )
       {
-        int childIndex = identifierIndex ( ( DefaultMutableTreeNode ) pTreePath
-            .getPath ( ) [ pTreePath.getPathCount ( ) - 2 ] ,
-            ( DefaultMutableTreeNode ) pTreePath.getPath ( ) [ pTreePath
-                .getPathCount ( ) - 1 ] ) ;
-        if ( ! ( secondLast.getExpression ( ) instanceof Lambda )
-            && ! ( secondLast.getExpression ( ) instanceof MultiLambda )
-            && ! ( secondLast.getExpression ( ) instanceof MultiLet )
-            && ! ( secondLast.getExpression ( ) instanceof LetRec )
-            && ! ( secondLast.getExpression ( ) instanceof Let )
-            && ! ( secondLast.getExpression ( ) instanceof CurriedLetRec )
-            && ! ( secondLast.getExpression ( ) instanceof CurriedLet )
-            && ! ( secondLast.getExpression ( ) instanceof Recursion )
-            && ! ( secondLast.getExpression ( ) instanceof Attr )
-            && ! ( secondLast.getExpression ( ) instanceof Meth )
-            && ! ( secondLast.getExpression ( ) instanceof CurriedMeth ) )
-        {
-          childIndex = OutlineNode.NO_BINDING ;
-        }
         PrettyAnnotation prettyAnnotation = list.get ( i ).getExpression ( )
             .toPrettyString ( ).getAnnotationForPrintable (
                 secondLast.getExpression ( ) ) ;
@@ -205,8 +136,7 @@ public final class OutlineTreeSelectionListener implements
         list.get ( i ).setReplaceInThisNode ( true ) ;
         list.get ( i ).updateCaption (
             prettyAnnotation.getStartOffset ( ) + last.getStartIndex ( ) ,
-            prettyAnnotation.getStartOffset ( ) + last.getEndIndex ( ) ,
-            childIndex ) ;
+            prettyAnnotation.getStartOffset ( ) + last.getEndIndex ( ) ) ;
         this.outlineUI.getTreeModel ( ).nodeChanged (
             ( ( DefaultMutableTreeNode ) pTreePath.getPath ( ) [ i ] ) ) ;
       }
@@ -227,8 +157,9 @@ public final class OutlineTreeSelectionListener implements
         {
           list.get ( i ).setReplaceInThisNode ( false ) ;
         }
+        list.get ( i ).setOutlineBinding ( null ) ;
         list.get ( i ).updateCaption ( prettyAnnotation.getStartOffset ( ) ,
-            prettyAnnotation.getEndOffset ( ) , OutlineNode.NO_BINDING ) ;
+            prettyAnnotation.getEndOffset ( ) ) ;
         this.outlineUI.getTreeModel ( ).nodeChanged (
             ( ( DefaultMutableTreeNode ) pTreePath.getPath ( ) [ i ] ) ) ;
       }

@@ -61,7 +61,7 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
     {
       return row ;
     }
-    return new ObjectExpr ( pObjectExpr.getIdentifier ( ) , pObjectExpr
+    return new ObjectExpr ( pObjectExpr.getId ( ) , pObjectExpr
         .getTau ( ) , row ) ;
   }
 
@@ -84,7 +84,7 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
       {
         return e ;
       }
-      return new Message ( e , pMessage.getIdentifier ( ) ) ;
+      return new Message ( e , pMessage.getId ( ) ) ;
     }
     if ( pMessage.getE ( ) instanceof ObjectExpr )
     {
@@ -92,7 +92,7 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
       ObjectExpr o = ( ObjectExpr ) pMessage.getE ( ) ;
       Row r = ( Row ) o.getE ( ) ;
       Expression newRow = r.substitute ( "self" , o.clone ( ) ) ; //$NON-NLS-1$
-      return new Message ( newRow , pMessage.getIdentifier ( ) ) ;
+      return new Message ( newRow , pMessage.getId ( ) ) ;
     }
     if ( pMessage.getE ( ) instanceof Row )
     {
@@ -101,22 +101,22 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
       {
         Row r = ( Row ) pMessage.getE ( ) ;
         Meth m = ( Meth ) r.getExpressions ( 0 ) ;
-        if ( pMessage.getIdentifier ( ).equals ( m.getIdentifier ( ) ) )
+        if ( pMessage.getId ( ).equals ( m.getId ( ) ) )
         {
           boolean definedLater = false ;
           for ( int i = 1 ; i < r.getExpressions ( ).length ; i ++ )
           {
             Expression tmp = r.getExpressions ( i ) ;
             if ( ( tmp instanceof Meth )
-                && ( ( ( Meth ) tmp ).getIdentifier ( ).equals ( pMessage
-                    .getIdentifier ( ) ) ) )
+                && ( ( ( Meth ) tmp ).getId ( ).equals ( pMessage
+                    .getId ( ) ) ) )
             {
               definedLater = true ;
               break ;
             }
             if ( ( tmp instanceof CurriedMeth )
                 && ( ( ( CurriedMeth ) tmp ).getIdentifiers ( 0 )
-                    .equals ( pMessage.getIdentifier ( ) ) ) )
+                    .equals ( pMessage.getId ( ) ) ) )
             {
               definedLater = true ;
               break ;
@@ -134,28 +134,28 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
         {
           newE [ i ] = r.getExpressions ( i + 1 ).clone ( ) ;
         }
-        return new Message ( new Row ( newE ) , pMessage.getIdentifier ( ) ) ;
+        return new Message ( new Row ( newE ) , pMessage.getId ( ) ) ;
       }
       else if ( firstExpr instanceof CurriedMeth )
       {
         Row row = ( Row ) pMessage.getE ( ) ;
         CurriedMeth cm = ( CurriedMeth ) row.getExpressions ( 0 ) ;
-        if ( pMessage.getIdentifier ( ).equals ( cm.getIdentifiers ( 0 ) ) )
+        if ( pMessage.getId ( ).equals ( cm.getIdentifiers ( 0 ) ) )
         {
           boolean definedLater = false ;
           for ( int i = 1 ; i < row.getExpressions ( ).length ; i ++ )
           {
             Expression tmp = row.getExpressions ( i ) ;
             if ( ( tmp instanceof Meth )
-                && ( ( ( Meth ) tmp ).getIdentifier ( ).equals ( pMessage
-                    .getIdentifier ( ) ) ) )
+                && ( ( ( Meth ) tmp ).getId ( ).equals ( pMessage
+                    .getId ( ) ) ) )
             {
               definedLater = true ;
               break ;
             }
             if ( ( tmp instanceof CurriedMeth )
                 && ( ( ( CurriedMeth ) tmp ).getIdentifiers ( 0 )
-                    .equals ( pMessage.getIdentifier ( ) ) ) )
+                    .equals ( pMessage.getId ( ) ) ) )
             {
               definedLater = true ;
               break ;
@@ -183,7 +183,7 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
         {
           newE [ i ] = row.getExpressions ( i + 1 ).clone ( ) ;
         }
-        return new Message ( new Row ( newE ) , pMessage.getIdentifier ( ) ) ;
+        return new Message ( new Row ( newE ) , pMessage.getId ( ) ) ;
       }
       else if ( firstExpr instanceof Attr )
       {
@@ -194,9 +194,9 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
         for ( int i = 0 ; i < newE.length ; i ++ )
         {
           newE [ i ] = r.getExpressions ( i + 1 ).substitute (
-              a.getIdentifier ( ) , a.getE ( ) ) ;
+              a.getId ( ) , a.getE ( ) ) ;
         }
-        return new Message ( new Row ( newE ) , pMessage.getIdentifier ( ) ) ;
+        return new Message ( new Row ( newE ) , pMessage.getId ( ) ) ;
       }
     }
     return pMessage ;
@@ -229,7 +229,7 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
       {
         return attrE ;
       }
-      return new Attr ( pAttr.getIdentifier ( ) , pAttr.getTau ( ) , attrE ) ;
+      return new Attr ( pAttr.getId ( ) , pAttr.getTau ( ) , attrE ) ;
     }
     return pAttr ;
   }

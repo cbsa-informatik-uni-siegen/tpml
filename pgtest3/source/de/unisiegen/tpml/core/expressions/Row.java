@@ -97,7 +97,7 @@ public final class Row extends Expression
         freeExpr.addAll ( expr.free ( ) ) ;
         freeExpr.removeAll ( bounded ) ;
         free.addAll ( freeExpr ) ;
-        bounded.add ( expr.getIdentifier ( ) ) ;
+        bounded.add ( expr.getId ( ) ) ;
       }
       else if ( this.expressions [ i ] instanceof Meth )
       {
@@ -199,26 +199,26 @@ public final class Row extends Expression
         // TODO "with a new name ... not only append '"
         Attr attr = ( Attr ) e ;
         // first case id == id'
-        if ( attr.getIdentifier ( ).equals ( pID ) )
+        if ( attr.getId ( ).equals ( pID ) )
         {
-          tmp [ i ] = new Attr ( attr.getIdentifier ( ) , attr.getTau ( ) ,
+          tmp [ i ] = new Attr ( attr.getId ( ) , attr.getTau ( ) ,
               attr.getE ( ).substitute ( pID , pExpression ) ) ;
           break ;
         }
         // second case id != id'
         tmp [ i ] = new Attr (
-            attr.getIdentifier ( ) + "'" , attr.getTau ( ) , attr.getE ( ) //$NON-NLS-1$
+            attr.getId ( ) + "'" , attr.getTau ( ) , attr.getE ( ) //$NON-NLS-1$
                 .substitute ( pID , pExpression ) ) ;
         for ( int j = i + 1 ; j < tmp.length ; j ++ )
         {
-          tmp [ j ] = tmp [ j ].substitute ( attr.getIdentifier ( ) ,
-              new Identifier ( attr.getIdentifier ( ) + "'" ) ) ; //$NON-NLS-1$
+          tmp [ j ] = tmp [ j ].substitute ( attr.getId ( ) ,
+              new Identifier ( attr.getId ( ) + "'" ) ) ; //$NON-NLS-1$
         }
       }
       else if ( e instanceof Meth )
       {
         Meth meth = ( Meth ) e ;
-        tmp [ i ] = new Meth ( meth.getIdentifier ( ) , meth.getTau ( ) , meth
+        tmp [ i ] = new Meth ( meth.getId ( ) , meth.getTau ( ) , meth
             .getE ( ).substitute ( pID , pExpression ) ) ;
       }
       else if ( e instanceof CurriedMeth )

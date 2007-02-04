@@ -280,6 +280,12 @@ public final class OutlineNode
 
 
   /**
+   * True, if this node has a {@link OutlineBinding} when it is initialized.
+   */
+  private boolean hasBinding ;
+
+
+  /**
    * This constructor initializes the values and loads the description.
    * 
    * @param pExpression The {@link Expression} repressented by this node.
@@ -296,6 +302,7 @@ public final class OutlineNode
     this.outlineBinding = null ;
     this.outlineUnbound = pOutlineUnbound ;
     this.replaceInThisNode = false ;
+    this.hasBinding = false ;
     resetCaption ( ) ;
   }
 
@@ -323,6 +330,7 @@ public final class OutlineNode
     this.outlineBinding = pOutlineBinding ;
     this.outlineUnbound = pOutlineUnbound ;
     this.replaceInThisNode = false ;
+    this.hasBinding = false ;
     resetCaption ( ) ;
   }
 
@@ -350,6 +358,7 @@ public final class OutlineNode
     this.outlineBinding = pOutlineBinding ;
     this.outlineUnbound = pOutlineUnbound ;
     this.replaceInThisNode = false ;
+    this.hasBinding = true ;
     resetCaption ( ) ;
   }
 
@@ -404,22 +413,8 @@ public final class OutlineNode
     }
     else
     {
-      updateCaption ( OutlineNode.NO_SELECTION , OutlineNode.NO_SELECTION ,
-          OutlineNode.NO_BINDING ) ;
+      updateCaption ( OutlineNode.NO_SELECTION , OutlineNode.NO_SELECTION ) ;
     }
-  }
-
-
-  /**
-   * Returns the binding in this node.
-   * 
-   * @return The binding in this node.
-   * @see #outlineBinding
-   * @see #setOutlineBinding(OutlineBinding)
-   */
-  public final OutlineBinding getOutlineBinding ( )
-  {
-    return this.outlineBinding ;
   }
 
 
@@ -540,6 +535,19 @@ public final class OutlineNode
 
 
   /**
+   * Returns the binding in this node.
+   * 
+   * @return The binding in this node.
+   * @see #outlineBinding
+   * @see #setOutlineBinding(OutlineBinding)
+   */
+  public final OutlineBinding getOutlineBinding ( )
+  {
+    return this.outlineBinding ;
+  }
+
+
+  /**
    * Returns the start index of the {@link Identifier}.
    * 
    * @return The start index of the {@link Identifier}.
@@ -557,27 +565,23 @@ public final class OutlineNode
    * be searched for. This is only used if an {@link Expression} has more than
    * one {@link Identifier} like {@link MultiLet}.
    * 
-   * @param pIdentifierIndex The {@link Identifier} index in the
-   *          {@link Expression}.
    * @param pCharIndex The index of the char in the {@link Expression}.
    * @return True, if a given pCharIndex should be highlighted as a binding,
    *         otherwise false.
    */
-  private final boolean isBinding ( int pIdentifierIndex , int pCharIndex )
+  private final boolean isBinding ( int pCharIndex )
   {
-    if ( ( this.outlineBinding == null ) || ( pIdentifierIndex < 0 )
-        || ( pIdentifierIndex >= this.outlineBinding.size ( ) ) )
+    if ( this.outlineBinding == null )
     {
       return false ;
     }
-    for ( int i = 0 ; i < this.outlineBinding.size ( pIdentifierIndex ) ; i ++ )
+    for ( int i = 0 ; i < this.outlineBinding.size ( ) ; i ++ )
     {
       PrettyAnnotation prettyAnnotation ;
       try
       {
         prettyAnnotation = this.expression.toPrettyString ( )
-            .getAnnotationForPrintable (
-                this.outlineBinding.get ( pIdentifierIndex , i ) ) ;
+            .getAnnotationForPrintable ( this.outlineBinding.get ( i ) ) ;
       }
       catch ( IllegalArgumentException e )
       {
@@ -658,8 +662,7 @@ public final class OutlineNode
     }
     else
     {
-      updateCaption ( OutlineNode.NO_SELECTION , OutlineNode.NO_SELECTION ,
-          OutlineNode.NO_BINDING ) ;
+      updateCaption ( OutlineNode.NO_SELECTION , OutlineNode.NO_SELECTION ) ;
     }
   }
 
@@ -673,7 +676,10 @@ public final class OutlineNode
    */
   public final void setOutlineBinding ( OutlineBinding pOutlineBinding )
   {
-    this.outlineBinding = pOutlineBinding ;
+    if ( ! this.hasBinding )
+    {
+      this.outlineBinding = pOutlineBinding ;
+    }
   }
 
 
@@ -708,12 +714,8 @@ public final class OutlineNode
    * 
    * @param pSelectionStart The start offset of the selection in this node.
    * @param pSelectionEnd The end offset of the selection in this node.
-   * @param pIdentifierIndex The index of the {@link Identifier}, used by
-   *          {@link Expression}s which have more than more {@link Identifier}
-   *          like {@link MultiLet}.
    */
-  public final void updateCaption ( int pSelectionStart , int pSelectionEnd ,
-      int pIdentifierIndex )
+  public final void updateCaption ( int pSelectionStart , int pSelectionEnd )
   {
     // Load the PrettyCharIterator
     PrettyCharIterator prettyCharIterator = this.expression.toPrettyString ( )
@@ -774,8 +776,8 @@ public final class OutlineNode
        * No selection and binding
        */
       else if ( ( ! selection ) && ( binding )
-          && ( this.outlineBinding != null ) && ( pIdentifierIndex >= 0 )
-          && ( this.outlineBinding.size ( pIdentifierIndex ) > 0 )
+          && ( this.outlineBinding != null )
+          && ( this.outlineBinding.size ( ) > 0 )
           && ( charIndex == pSelectionStart ) )
       {
         result.append ( FONT_BOLD_BEGIN ) ;
@@ -819,13 +821,12 @@ public final class OutlineNode
        * Binding
        */
       else if ( ( binding ) && ( this.outlineBinding != null )
-          && ( pIdentifierIndex >= 0 )
-          && ( isBinding ( pIdentifierIndex , charIndex ) ) )
+          && ( isBinding ( charIndex ) ) )
       {
         result.append ( FONT_BOLD_BEGIN ) ;
         result.append ( bindingColor ) ;
         result.append ( FONT_AFTER_COLOR ) ;
-        while ( isBinding ( pIdentifierIndex , charIndex ) )
+        while ( isBinding ( charIndex ) )
         {
           result.append ( getHTMLCode ( this.expressionString
               .charAt ( charIndex ) ) ) ;

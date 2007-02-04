@@ -65,9 +65,9 @@ public class L2OLanguageTranslator extends L2LanguageTranslator
       {
         row = ( Row ) translateToCoreSyntax ( row , pRecursive ) ;
       }
-      if ( objectExpr.getIdentifier ( ).equals ( "self" ) ) //$NON-NLS-1$
+      if ( objectExpr.getId ( ).equals ( "self" ) ) //$NON-NLS-1$
       {
-        return new ObjectExpr ( objectExpr.getIdentifier ( ) , objectExpr
+        return new ObjectExpr ( objectExpr.getId ( ) , objectExpr
             .getTau ( ) , row ) ;
       }
       Expression [ ] tmp = row.getExpressions ( ).clone ( ) ;
@@ -78,14 +78,14 @@ public class L2OLanguageTranslator extends L2LanguageTranslator
         if ( e instanceof Attr )
         {
           Attr attr = ( Attr ) e ;
-          if ( objectExpr.getIdentifier ( ).equals ( attr.getIdentifier ( ) ) )
+          if ( objectExpr.getId ( ).equals ( attr.getId ( ) ) )
           {
             tmp [ i ] = new Attr (
-                attr.getIdentifier ( ) + "'" , attr.getTau ( ) , attr.getE ( ) ) ; //$NON-NLS-1$
+                attr.getId ( ) + "'" , attr.getTau ( ) , attr.getE ( ) ) ; //$NON-NLS-1$
             for ( int j = i + 1 ; j < tmp.length ; j ++ )
             {
-              tmp [ j ] = tmp [ j ].substitute ( attr.getIdentifier ( ) ,
-                  new Identifier ( attr.getIdentifier ( ) + "'" ) ) ; //$NON-NLS-1$
+              tmp [ j ] = tmp [ j ].substitute ( attr.getId ( ) ,
+                  new Identifier ( attr.getId ( ) + "'" ) ) ; //$NON-NLS-1$
             }
           }
         }
@@ -93,10 +93,10 @@ public class L2OLanguageTranslator extends L2LanguageTranslator
         {
           // TODO
           Meth meth = ( Meth ) e ;
-          if ( meth.getE ( ).free ( ).contains ( objectExpr.getIdentifier ( ) ) )
+          if ( meth.getE ( ).free ( ).contains ( objectExpr.getId ( ) ) )
           {
-            tmp [ i ] = new Meth ( meth.getIdentifier ( ) , meth.getTau ( ) ,
-                new Let ( objectExpr.getIdentifier ( ) , null , new Self ( ) ,
+            tmp [ i ] = new Meth ( meth.getId ( ) , meth.getTau ( ) ,
+                new Let ( objectExpr.getId ( ) , null , new Self ( ) ,
                     meth.getE ( ) ) ) ;
           }
         }
@@ -129,7 +129,7 @@ public class L2OLanguageTranslator extends L2LanguageTranslator
         Attr attr = ( Attr ) pExpression ;
         Expression attrE = attr.getE ( ) ;
         attrE = translateToCoreSyntax ( attrE , pRecursive ) ;
-        return new Attr ( attr.getIdentifier ( ) , attr.getTau ( ) , attrE ) ;
+        return new Attr ( attr.getId ( ) , attr.getTau ( ) , attrE ) ;
       }
       return pExpression ;
     }
@@ -140,7 +140,7 @@ public class L2OLanguageTranslator extends L2LanguageTranslator
         Meth meth = ( Meth ) pExpression ;
         Expression methE = meth.getE ( ) ;
         methE = translateToCoreSyntax ( methE , pRecursive ) ;
-        return new Meth ( meth.getIdentifier ( ) , meth.getTau ( ) , methE ) ;
+        return new Meth ( meth.getId ( ) , meth.getTau ( ) , methE ) ;
       }
       return pExpression ;
     }
@@ -151,7 +151,7 @@ public class L2OLanguageTranslator extends L2LanguageTranslator
         Message message = ( Message ) pExpression ;
         Expression messageE = message.getE ( ) ;
         messageE = translateToCoreSyntax ( messageE , pRecursive ) ;
-        return new Message ( messageE , message.getIdentifier ( ) ) ;
+        return new Message ( messageE , message.getId ( ) ) ;
       }
       return pExpression ;
     }
