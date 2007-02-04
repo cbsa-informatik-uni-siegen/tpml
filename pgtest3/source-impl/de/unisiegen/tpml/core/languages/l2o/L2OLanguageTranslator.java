@@ -5,7 +5,6 @@ import de.unisiegen.tpml.core.expressions.Attr ;
 import de.unisiegen.tpml.core.expressions.CurriedMeth ;
 import de.unisiegen.tpml.core.expressions.DuplicatedRow ;
 import de.unisiegen.tpml.core.expressions.Expression ;
-import de.unisiegen.tpml.core.expressions.Identifier ;
 import de.unisiegen.tpml.core.expressions.Lambda ;
 import de.unisiegen.tpml.core.expressions.Let ;
 import de.unisiegen.tpml.core.expressions.Message ;
@@ -58,7 +57,6 @@ public class L2OLanguageTranslator extends L2LanguageTranslator
     }
     else if ( pExpression instanceof ObjectExpr )
     {
-      // TODO Translate to core syntax
       ObjectExpr objectExpr = ( ObjectExpr ) pExpression ;
       Row row = ( Row ) objectExpr.getE ( ) ;
       if ( pRecursive )
@@ -67,42 +65,39 @@ public class L2OLanguageTranslator extends L2LanguageTranslator
       }
       if ( objectExpr.getId ( ).equals ( "self" ) ) //$NON-NLS-1$
       {
-        return new ObjectExpr ( objectExpr.getId ( ) , objectExpr
-            .getTau ( ) , row ) ;
+        return new ObjectExpr ( objectExpr.getId ( ) , objectExpr.getTau ( ) ,
+            row ) ;
       }
       Expression [ ] tmp = row.getExpressions ( ).clone ( ) ;
       for ( int i = 0 ; i < tmp.length ; i ++ )
       {
-        // TODO "with a new name ... not only append '"
         Expression e = tmp [ i ] ;
         if ( e instanceof Attr )
         {
           Attr attr = ( Attr ) e ;
           if ( objectExpr.getId ( ).equals ( attr.getId ( ) ) )
           {
-            tmp [ i ] = new Attr (
-                attr.getId ( ) + "'" , attr.getTau ( ) , attr.getE ( ) ) ; //$NON-NLS-1$
-            for ( int j = i + 1 ; j < tmp.length ; j ++ )
-            {
-              tmp [ j ] = tmp [ j ].substitute ( attr.getId ( ) ,
-                  new Identifier ( attr.getId ( ) + "'" ) ) ; //$NON-NLS-1$
-            }
+            break ;
           }
         }
         else if ( e instanceof Meth )
         {
-          // TODO
           Meth meth = ( Meth ) e ;
           if ( meth.getE ( ).free ( ).contains ( objectExpr.getId ( ) ) )
           {
-            tmp [ i ] = new Meth ( meth.getId ( ) , meth.getTau ( ) ,
-                new Let ( objectExpr.getId ( ) , null , new Self ( ) ,
-                    meth.getE ( ) ) ) ;
+            tmp [ i ] = new Meth ( meth.getId ( ) , meth.getTau ( ) , new Let (
+                objectExpr.getId ( ) , null , new Self ( ) , meth.getE ( ) ) ) ;
           }
         }
         else if ( e instanceof CurriedMeth )
         {
-          // TODO
+          CurriedMeth curriedMeth = ( CurriedMeth ) e ;
+          if ( curriedMeth.getE ( ).free ( ).contains ( objectExpr.getId ( ) ) )
+          {
+            tmp [ i ] = new Meth ( curriedMeth.getIdentifiers ( 0 ) ,
+                curriedMeth.getTypes ( 0 ) , new Let ( objectExpr.getId ( ) ,
+                    null , new Self ( ) , curriedMeth.getE ( ) ) ) ;
+          }
         }
       }
       return new ObjectExpr ( "self" , objectExpr.getTau ( ) , new Row ( tmp ) ) ; //$NON-NLS-1$
