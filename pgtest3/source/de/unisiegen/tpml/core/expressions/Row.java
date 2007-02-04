@@ -196,30 +196,43 @@ public final class Row extends Expression
       Expression e = tmp [ i ] ;
       if ( e instanceof Attr )
       {
-        // TODO "with a new name ... not only append '"
         Attr attr = ( Attr ) e ;
         // first case id == id'
         if ( attr.getId ( ).equals ( pID ) )
         {
-          tmp [ i ] = new Attr ( attr.getId ( ) , attr.getTau ( ) ,
-              attr.getE ( ).substitute ( pID , pExpression ) ) ;
+          tmp [ i ] = new Attr ( attr.getId ( ) , attr.getTau ( ) , attr
+              .getE ( ).substitute ( pID , pExpression ) ) ;
           break ;
         }
         // second case id != id'
-        tmp [ i ] = new Attr (
-            attr.getId ( ) + "'" , attr.getTau ( ) , attr.getE ( ) //$NON-NLS-1$
-                .substitute ( pID , pExpression ) ) ;
+        TreeSet < String > freeRow = new TreeSet < String > ( ) ;
+        freeRow.addAll ( pExpression.free ( ) ) ;
         for ( int j = i + 1 ; j < tmp.length ; j ++ )
         {
-          tmp [ j ] = tmp [ j ].substitute ( attr.getId ( ) ,
-              new Identifier ( attr.getId ( ) + "'" ) ) ; //$NON-NLS-1$
+          Set < String > freeRowE = tmp [ j ].free ( ) ;
+          freeRow.addAll ( freeRowE ) ;
+        }
+        String newId = attr.getId ( ) ;
+        while ( freeRow.contains ( newId ) )
+        {
+          newId = newId + "'" ; //$NON-NLS-1$
+        }
+        tmp [ i ] = new Attr ( newId , attr.getTau ( ) , attr.getE ( )
+            .substitute ( pID , pExpression ) ) ;
+        if ( ! attr.getId ( ).equals ( newId ) )
+        {
+          for ( int j = i + 1 ; j < tmp.length ; j ++ )
+          {
+            tmp [ j ] = tmp [ j ].substitute ( attr.getId ( ) , new Identifier (
+                newId ) ) ;
+          }
         }
       }
       else if ( e instanceof Meth )
       {
         Meth meth = ( Meth ) e ;
-        tmp [ i ] = new Meth ( meth.getId ( ) , meth.getTau ( ) , meth
-            .getE ( ).substitute ( pID , pExpression ) ) ;
+        tmp [ i ] = new Meth ( meth.getId ( ) , meth.getTau ( ) , meth.getE ( )
+            .substitute ( pID , pExpression ) ) ;
       }
       else if ( e instanceof CurriedMeth )
       {
