@@ -206,14 +206,15 @@ public final class Row extends Expression
         }
         // second case id != id'
         TreeSet < String > freeRow = new TreeSet < String > ( ) ;
-        freeRow.addAll ( pExpression.free ( ) ) ;
+        TreeSet < String > freeE = new TreeSet < String > ( ) ;
+        freeE.addAll ( pExpression.free ( ) ) ;
         for ( int j = i + 1 ; j < tmp.length ; j ++ )
         {
           Set < String > freeRowE = tmp [ j ].free ( ) ;
           freeRow.addAll ( freeRowE ) ;
         }
         String newId = attr.getId ( ) ;
-        while ( freeRow.contains ( newId ) )
+        while ( ( freeE.contains ( newId ) ) && ( freeRow.contains ( pID ) ) )
         {
           newId = newId + "'" ; //$NON-NLS-1$
         }
