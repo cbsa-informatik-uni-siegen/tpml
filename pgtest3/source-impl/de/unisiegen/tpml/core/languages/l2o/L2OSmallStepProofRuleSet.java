@@ -4,6 +4,7 @@ package de.unisiegen.tpml.core.languages.l2o ;
 import de.unisiegen.tpml.core.expressions.Attr ;
 import de.unisiegen.tpml.core.expressions.CurriedMeth ;
 import de.unisiegen.tpml.core.expressions.Expression ;
+import de.unisiegen.tpml.core.expressions.Identifier ;
 import de.unisiegen.tpml.core.expressions.Lambda ;
 import de.unisiegen.tpml.core.expressions.Message ;
 import de.unisiegen.tpml.core.expressions.Meth ;
@@ -35,6 +36,7 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
     // Attr
     register ( L2OLanguage.L2O , "ATTR-EVAL" , false ) ; //$NON-NLS-1$
     register ( L2OLanguage.L2O , "ATTR-RIGHT" , false ) ; //$NON-NLS-1$
+    register ( L2OLanguage.L2O , "ATTR-RENAME" , true ) ; //$NON-NLS-1$
     // Meth
     register ( L2OLanguage.L2O , "METH-RIGHT" , false ) ; //$NON-NLS-1$
     // Send
@@ -61,8 +63,8 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
     {
       return row ;
     }
-    return new ObjectExpr ( pObjectExpr.getId ( ) , pObjectExpr
-        .getTau ( ) , row ) ;
+    return new ObjectExpr ( pObjectExpr.getId ( ) , pObjectExpr.getTau ( ) ,
+        row ) ;
   }
 
 
@@ -108,8 +110,7 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
           {
             Expression tmp = r.getExpressions ( i ) ;
             if ( ( tmp instanceof Meth )
-                && ( ( ( Meth ) tmp ).getId ( ).equals ( pMessage
-                    .getId ( ) ) ) )
+                && ( ( ( Meth ) tmp ).getId ( ).equals ( pMessage.getId ( ) ) ) )
             {
               definedLater = true ;
               break ;
@@ -147,8 +148,7 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
           {
             Expression tmp = row.getExpressions ( i ) ;
             if ( ( tmp instanceof Meth )
-                && ( ( ( Meth ) tmp ).getId ( ).equals ( pMessage
-                    .getId ( ) ) ) )
+                && ( ( ( Meth ) tmp ).getId ( ).equals ( pMessage.getId ( ) ) ) )
             {
               definedLater = true ;
               break ;
@@ -193,8 +193,8 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
         Expression [ ] newE = new Expression [ r.getExpressions ( ).length - 1 ] ;
         for ( int i = 0 ; i < newE.length ; i ++ )
         {
-          newE [ i ] = r.getExpressions ( i + 1 ).substitute (
-              a.getId ( ) , a.getE ( ) ) ;
+          newE [ i ] = r.getExpressions ( i + 1 ).substitute ( a.getId ( ) ,
+              a.getE ( ) ) ;
         }
         return new Message ( new Row ( newE ) , pMessage.getId ( ) ) ;
       }
@@ -278,9 +278,10 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
       // Attr
       if ( pRow.getExpressions ( i ) instanceof Attr )
       {
+        Attr attr = ( Attr ) pRow.getExpressions ( i ) ;
         if ( pRow.getExpressions ( i ).isValue ( ) )
         {
-          Attr attr = ( Attr ) pRow.getExpressions ( i ) ;
+          // ATTR-RIGHT
           Expression newAttr = evaluate ( pContext , attr ) ;
           if ( newAttr.isException ( ) )
           {
@@ -289,17 +290,60 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
         }
         else
         {
-          Attr attr = ( Attr ) pRow.getExpressions ( i ) ;
+          boolean attrRename = false ;
+          for ( int j = i + 1 ; j < pRow.getExpressions ( ).length ; j ++ )
+          {
+            if ( ( pRow.getExpressions ( j ) instanceof Attr )
+                && ( ( Attr ) pRow.getExpressions ( j ) ).getId ( ).equals (
+                    attr.getId ( ) ) )
+            {
+              attrRename = true ;
+              break ;
+            }
+          }
+          if ( attrRename )
+          {
+            pContext.addProofStep ( getRuleByName ( "ATTR-RENAME" ) , attr ) ; //$NON-NLS-1$
+            Expression [ ] tmp = pRow.getExpressions ( ).clone ( ) ;
+            String newId = attr.getId ( ) + "'" ; //$NON-NLS-1$
+            while ( attrRename )
+            {
+              attrRename = false ;
+              for ( int j = i + 1 ; j < pRow.getExpressions ( ).length ; j ++ )
+              {
+                if ( ( pRow.getExpressions ( j ) instanceof Attr )
+                    && ( ( Attr ) pRow.getExpressions ( j ) ).getId ( ).equals (
+                        newId ) )
+                {
+                  newId += "'" ; //$NON-NLS-1$
+                  attrRename = true ;
+                  break ;
+                }
+              }
+            }
+            Attr newAttr = new Attr ( newId , attr.getTau ( ) , attr.getE ( )
+                .clone ( ) ) ;
+            tmp [ i ] = newAttr ;
+            for ( int j = i + 1 ; j < tmp.length ; j ++ )
+            {
+              tmp [ j ] = tmp [ j ].substitute ( attr.getId ( ) ,
+                  new Identifier ( newId ) ) ;
+              if ( ( tmp [ j ] instanceof Attr )
+                  && ( ( ( Attr ) tmp [ j ] ).getId ( )
+                      .equals ( attr.getId ( ) ) ) )
+              {
+                break ;
+              }
+            }
+            return new Row ( tmp ) ;
+          }
+          // ATTR-EVAL
           Expression newAttr = evaluate ( pContext , attr ) ;
           if ( newAttr.isException ( ) )
           {
             return newAttr ;
           }
-          Expression [ ] tmp = new Expression [ pRow.getExpressions ( ).length ] ;
-          for ( int j = 0 ; j < tmp.length ; j ++ )
-          {
-            tmp [ j ] = pRow.getExpressions ( j ).clone ( ) ;
-          }
+          Expression [ ] tmp = pRow.getExpressions ( ).clone ( ) ;
           tmp [ i ] = newAttr ;
           return new Row ( tmp ) ;
         }
