@@ -170,29 +170,6 @@ public final class AbstractOutline implements Outline
 
 
   /**
-   * Returns the node, which represents the given {@link Attr}.
-   * 
-   * @param pExpression The input {@link Expression}.
-   * @return The node, which represents the given {@link Attr}.
-   */
-  /*
-   * @ SuppressWarnings ( "unused" ) private final DefaultMutableTreeNode
-   * checkAttr ( Attr pExpression ) { DefaultMutableTreeNode node = new
-   * DefaultMutableTreeNode ( new OutlineNode ( pExpression ,
-   * this.outlineUnbound ) ) ; OutlinePair outlinePair = OutlineStyle.getIndex (
-   * pExpression , PrettyStyle.IDENTIFIER ).get ( 0 ) ; node.add ( new
-   * DefaultMutableTreeNode ( new OutlineNode ( IDENTIFIER ,
-   * pExpression.getIdentifier ( ) , outlinePair.getStart ( ) , outlinePair
-   * .getEnd ( ) , null , this.outlineUnbound ) ) ) ; if ( pExpression.getTau ( ) !=
-   * null ) { OutlinePair outlinePairType = OutlineStyle.getIndex ( pExpression ,
-   * PrettyStyle.TYPE ).get ( 0 ) ; String tau = pExpression.getTau (
-   * ).toPrettyString ( ).toString ( ) ; node.add ( new DefaultMutableTreeNode (
-   * new OutlineNode ( TYPE , pExpression.getTau ( ).toPrettyString ( ).toString ( ) ,
-   * outlinePairType.getStart ( ) , outlinePairType.getStart ( ) + tau.length ( ) -
-   * 1 , null , this.outlineUnbound ) ) ) ; } createChildren ( pExpression ,
-   * node ) ; return node ; }
-   */
-  /**
    * Returns the node, which represents the given {@link CurriedLet}.
    * 
    * @param pExpression The input {@link Expression}.

@@ -37,26 +37,26 @@ public final class OutlineBinding
 
 
   /**
-   * The list of lists of {@link Identifier}s, which are bounded by the given
-   * {@link Identifier} in the hole {@link Expression}.
+   * The list of {@link Identifier}s, which are bounded by the given
+   * {@link Identifier} in the given {@link Expression}.
    */
   private ArrayList < Identifier > list ;
 
 
   /**
-   * The list of {@link Identifier}s.
+   * The {@link Identifier} which binds.
    */
   private String identifier ;
 
 
   /**
-   * The list of {@link Expression}s.
+   * The {@link Expression} in which should be searched.
    */
   private Expression expression ;
 
 
   /**
-   * Initilizes the lists and sets the hole {@link Expression}.
+   * Initilizes the list.
    */
   public OutlineBinding ( )
   {
@@ -65,9 +65,7 @@ public final class OutlineBinding
 
 
   /**
-   * Adds a {@link Expression} and the name of the {@link Identifier} to their
-   * list. After adding all {@link Expression}s, the search prozess can be
-   * started by calling the find method.
+   * Finds the bounded {@link Identifier}s in the given {@link Expression}.
    * 
    * @param pExpression The {@link Expression}.
    * @param pId The {@link Identifier}.
@@ -81,9 +79,9 @@ public final class OutlineBinding
 
 
   /**
-   * Finds the bounded {@link Identifier}s in the given {@link Expression}.
+   * Finds the bounded {@link Identifier}s in the given {@link Attr}.
    * 
-   * @param pExpression The input {@link Expression}.
+   * @param pExpression The input {@link Attr}.
    */
   @ SuppressWarnings ( "unused" )
   private final void findAttr ( Attr pExpression )
@@ -93,9 +91,9 @@ public final class OutlineBinding
 
 
   /**
-   * Finds the bounded {@link Identifier}s in the given {@link Expression}.
+   * Finds the bounded {@link Identifier}s in the given {@link CurriedLet}.
    * 
-   * @param pExpression The input {@link Expression}.
+   * @param pExpression The input {@link CurriedLet}.
    */
   @ SuppressWarnings ( "unused" )
   private final void findCurriedLet ( CurriedLet pExpression )
@@ -138,9 +136,9 @@ public final class OutlineBinding
 
 
   /**
-   * Finds the bounded {@link Identifier}s in the given {@link Expression}.
+   * Finds the bounded {@link Identifier}s in the given {@link CurriedLetRec}.
    * 
-   * @param pExpression The input {@link Expression}.
+   * @param pExpression The input {@link CurriedLetRec}.
    */
   @ SuppressWarnings ( "unused" )
   private final void findCurriedLetRec ( CurriedLetRec pExpression )
@@ -170,9 +168,9 @@ public final class OutlineBinding
 
 
   /**
-   * Finds the bounded {@link Identifier}s in the given {@link Expression}.
+   * Finds the bounded {@link Identifier}s in the given {@link CurriedMeth}.
    * 
-   * @param pExpression The input {@link Expression}.
+   * @param pExpression The input {@link CurriedMeth}.
    */
   @ SuppressWarnings ( "unused" )
   private final void findCurriedMeth ( CurriedMeth pExpression )
@@ -248,9 +246,9 @@ public final class OutlineBinding
 
 
   /**
-   * Finds the bounded {@link Identifier}s in the given {@link Expression}.
+   * Finds the bounded {@link Identifier}s in the given {@link Identifier}.
    * 
-   * @param pExpression The input {@link Expression}.
+   * @param pExpression The input {@link Identifier}.
    */
   @ SuppressWarnings ( "unused" )
   private final void findIdentifier ( Identifier pExpression )
@@ -263,9 +261,9 @@ public final class OutlineBinding
 
 
   /**
-   * Finds the bounded {@link Identifier}s in the given {@link Expression}.
+   * Finds the bounded {@link Identifier}s in the given {@link Lambda}.
    * 
-   * @param pExpression The input {@link Expression}.
+   * @param pExpression The input {@link Lambda}.
    */
   @ SuppressWarnings ( "unused" )
   private final void findLambda ( Lambda pExpression )
@@ -285,9 +283,9 @@ public final class OutlineBinding
 
 
   /**
-   * Finds the bounded {@link Identifier}s in the given {@link Expression}.
+   * Finds the bounded {@link Identifier}s in the given {@link Let}.
    * 
-   * @param pExpression The input {@link Expression}.
+   * @param pExpression The input {@link Let}.
    */
   @ SuppressWarnings ( "unused" )
   private final void findLet ( Let pExpression )
@@ -309,9 +307,9 @@ public final class OutlineBinding
 
 
   /**
-   * Finds the bounded {@link Identifier}s in the given {@link Expression}.
+   * Finds the bounded {@link Identifier}s in the given {@link LetRec}.
    * 
-   * @param pExpression The input {@link Expression}.
+   * @param pExpression The input {@link LetRec}.
    */
   @ SuppressWarnings ( "unused" )
   private final void findLetRec ( LetRec pExpression )
@@ -332,9 +330,9 @@ public final class OutlineBinding
 
 
   /**
-   * Finds the bounded {@link Identifier}s in the given {@link Expression}.
+   * Finds the bounded {@link Identifier}s in the given {@link Meth}.
    * 
-   * @param pExpression The input {@link Expression}.
+   * @param pExpression The input {@link Meth}.
    */
   @ SuppressWarnings ( "unused" )
   private final void findMeth ( Meth pExpression )
@@ -344,9 +342,9 @@ public final class OutlineBinding
 
 
   /**
-   * Finds the bounded {@link Identifier}s in the given {@link Expression}.
+   * Finds the bounded {@link Identifier}s in the given {@link MultiLambda}.
    * 
-   * @param pExpression The input {@link Expression}.
+   * @param pExpression The input {@link MultiLambda}.
    */
   @ SuppressWarnings ( "unused" )
   private final void findMultiLambda ( MultiLambda pExpression )
@@ -366,9 +364,9 @@ public final class OutlineBinding
 
 
   /**
-   * Finds the bounded {@link Identifier}s in the given {@link Expression}.
+   * Finds the bounded {@link Identifier}s in the given {@link MultiLet}.
    * 
-   * @param pExpression The input {@link Expression}.
+   * @param pExpression The input {@link MultiLet}.
    */
   @ SuppressWarnings ( "unused" )
   private final void findMultiLet ( MultiLet pExpression )
@@ -390,9 +388,9 @@ public final class OutlineBinding
 
 
   /**
-   * Finds the bounded {@link Identifier}s in the given {@link Expression}.
+   * Finds the bounded {@link Identifier}s in the given {@link ObjectExpr}.
    * 
-   * @param pExpression The input {@link Expression}.
+   * @param pExpression The input {@link ObjectExpr}.
    */
   @ SuppressWarnings ( "unused" )
   private final void findObjectExpr ( ObjectExpr pExpression )
@@ -412,9 +410,9 @@ public final class OutlineBinding
 
 
   /**
-   * Finds the bounded {@link Identifier}s in the given {@link Expression}.
+   * Finds the bounded {@link Identifier}s in the given {@link Recursion}.
    * 
-   * @param pExpression The input {@link Expression}.
+   * @param pExpression The input {@link Recursion}.
    */
   @ SuppressWarnings ( "unused" )
   private final void findRecursion ( Recursion pExpression )
@@ -434,9 +432,9 @@ public final class OutlineBinding
 
 
   /**
-   * Finds the bounded {@link Identifier}s in the given {@link Expression}.
+   * Finds the bounded {@link Identifier}s in the given {@link Row}.
    * 
-   * @param pExpression The input {@link Expression}.
+   * @param pExpression The input {@link Row}.
    */
   @ SuppressWarnings ( "unused" )
   private final void findRow ( Row pExpression )
@@ -467,12 +465,12 @@ public final class OutlineBinding
   /**
    * Returns the bounded {@link Identifier} in the {@link Expression}.
    * 
-   * @param pIdentifierIndex The index of the {@link Identifier}.
+   * @param pIndex The index of the {@link Identifier}.
    * @return The bounded {@link Identifier} in the {@link Expression}.
    */
-  public final Identifier get ( int pIdentifierIndex )
+  public final Identifier get ( int pIndex )
   {
-    return this.list.get ( pIdentifierIndex ) ;
+    return this.list.get ( pIndex ) ;
   }
 
 
@@ -499,7 +497,7 @@ public final class OutlineBinding
 
 
   /**
-   * Returns the size of the list. The size is equal to the number of
+   * Returns the size of the list. The size is equal to the number of bounded
    * {@link Identifier}s.
    * 
    * @return The number of {@link Identifier}s.

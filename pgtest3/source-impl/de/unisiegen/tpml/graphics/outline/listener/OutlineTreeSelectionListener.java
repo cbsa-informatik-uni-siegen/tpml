@@ -13,7 +13,7 @@ import de.unisiegen.tpml.graphics.outline.ui.OutlineUI ;
 
 /**
  * This class listens for <code>TreeSelectionEvent</code>. It updates the
- * caption of the selected node and its higher nodes.
+ * caption of the selected and higher nodes.
  * 
  * @author Christian Fehler
  * @version $Rev: 1075 $
@@ -94,49 +94,77 @@ public final class OutlineTreeSelectionListener implements
           .getPath ( ) [ i ] ).getUserObject ( ) ) ;
     }
     OutlineNode last = list.get ( list.size ( ) - 1 ) ;
-    // Type
+    // Expression - Identifier - Type
     if ( ( last.getStartIndex ( ) != - 1 ) && ( last.getEndIndex ( ) != - 1 )
         && ( list.get ( list.size ( ) - 2 ).getStartIndex ( ) != - 1 )
         && ( list.get ( list.size ( ) - 2 ).getEndIndex ( ) != - 1 ) )
     {
       OutlineNode lastButTwo = list.get ( list.size ( ) - 3 ) ;
-      // Highlight the selected Type
+      /*
+       * Highlight the selected Type
+       */
       last.enableSelectionColor ( ) ;
       this.outlineUI.getTreeModel ( ).nodeChanged (
           ( ( DefaultMutableTreeNode ) pTreePath.getLastPathComponent ( ) ) ) ;
       for ( int i = 0 ; i < list.size ( ) - 2 ; i ++ )
       {
+        /*
+         * Sets the new binding in higher nodes
+         */
+        list.get ( i ).setOutlineBinding ( last.getOutlineBinding ( ) ) ;
+        /*
+         * It should be replaced in higher nodes
+         */
+        list.get ( i ).setReplaceInThisNode ( true ) ;
+        /*
+         * Update the caption of the node
+         */
         PrettyAnnotation prettyAnnotation = list.get ( i ).getExpression ( )
             .toPrettyString ( ).getAnnotationForPrintable (
                 lastButTwo.getExpression ( ) ) ;
-        list.get ( i ).setOutlineBinding ( last.getOutlineBinding ( ) ) ;
-        list.get ( i ).setReplaceInThisNode ( true ) ;
         list.get ( i ).updateCaption (
             prettyAnnotation.getStartOffset ( ) + last.getStartIndex ( ) ,
             prettyAnnotation.getStartOffset ( ) + last.getEndIndex ( ) ) ;
+        /*
+         * Node has changed and can be repainted
+         */
         this.outlineUI.getTreeModel ( ).nodeChanged (
             ( ( DefaultMutableTreeNode ) pTreePath.getPath ( ) [ i ] ) ) ;
       }
     }
-    // Identifier
+    // Expression - Identifier or Expression - Type
     else if ( ( last.getStartIndex ( ) != - 1 )
         && ( last.getEndIndex ( ) != - 1 ) )
     {
       OutlineNode secondLast = list.get ( list.size ( ) - 2 ) ;
-      // Highlight the selected Identifier
+      /*
+       * Highlight the selected Type
+       */
       last.enableSelectionColor ( ) ;
       this.outlineUI.getTreeModel ( ).nodeChanged (
           ( ( DefaultMutableTreeNode ) pTreePath.getLastPathComponent ( ) ) ) ;
       for ( int i = 0 ; i < list.size ( ) - 1 ; i ++ )
       {
+        /*
+         * Sets the new binding in higher nodes
+         */
+        list.get ( i ).setOutlineBinding ( last.getOutlineBinding ( ) ) ;
+        /*
+         * It should be replaced in higher nodes
+         */
+        list.get ( i ).setReplaceInThisNode ( true ) ;
+        /*
+         * Update the caption of the node
+         */
         PrettyAnnotation prettyAnnotation = list.get ( i ).getExpression ( )
             .toPrettyString ( ).getAnnotationForPrintable (
                 secondLast.getExpression ( ) ) ;
-        list.get ( i ).setOutlineBinding ( last.getOutlineBinding ( ) ) ;
-        list.get ( i ).setReplaceInThisNode ( true ) ;
         list.get ( i ).updateCaption (
             prettyAnnotation.getStartOffset ( ) + last.getStartIndex ( ) ,
             prettyAnnotation.getStartOffset ( ) + last.getEndIndex ( ) ) ;
+        /*
+         * Node has changed and can be repainted
+         */
         this.outlineUI.getTreeModel ( ).nodeChanged (
             ( ( DefaultMutableTreeNode ) pTreePath.getPath ( ) [ i ] ) ) ;
       }
@@ -146,20 +174,35 @@ public final class OutlineTreeSelectionListener implements
     {
       for ( int i = 0 ; i < list.size ( ) ; i ++ )
       {
-        PrettyAnnotation prettyAnnotation = list.get ( i ).getExpression ( )
-            .toPrettyString ( ).getAnnotationForPrintable (
-                last.getExpression ( ) ) ;
+        /*
+         * It should be replaced in higher nodes, but not the selected node
+         */
         if ( i < list.size ( ) - 1 )
         {
           list.get ( i ).setReplaceInThisNode ( true ) ;
         }
+        /*
+         * If only the root is selected, there should not be replaced
+         */
         if ( list.size ( ) == 1 )
         {
           list.get ( i ).setReplaceInThisNode ( false ) ;
         }
+        /*
+         * If a Expression is selected, any node has a no binding
+         */
         list.get ( i ).setOutlineBinding ( null ) ;
+        /*
+         * Update the caption of the node
+         */
+        PrettyAnnotation prettyAnnotation = list.get ( i ).getExpression ( )
+            .toPrettyString ( ).getAnnotationForPrintable (
+                last.getExpression ( ) ) ;
         list.get ( i ).updateCaption ( prettyAnnotation.getStartOffset ( ) ,
             prettyAnnotation.getEndOffset ( ) ) ;
+        /*
+         * Node has changed and can be repainted
+         */
         this.outlineUI.getTreeModel ( ).nodeChanged (
             ( ( DefaultMutableTreeNode ) pTreePath.getPath ( ) [ i ] ) ) ;
       }

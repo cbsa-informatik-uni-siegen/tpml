@@ -43,7 +43,7 @@ public final class OutlineUnbound
 
 
   /**
-   * Initilizes the lists and finds the unbound {@link Identifier}s.
+   * Initilizes the list and finds the unbound {@link Identifier}s.
    * 
    * @param pExpression The input {@link Expression}.
    */
@@ -99,10 +99,10 @@ public final class OutlineUnbound
 
 
   /**
-   * Finds the unbounded {@link Identifier}s in the given {@link Expression}.
+   * Finds the unbounded {@link Identifier}s in the given {@link CurriedLet}.
    * 
    * @param pBounded The list of bounded {@link Identifier}s.
-   * @param pExpression The input {@link Expression}.
+   * @param pExpression The input {@link CurriedLet}.
    */
   @ SuppressWarnings ( "unused" )
   private final void findCurriedLet ( ArrayList < String > pBounded ,
@@ -123,10 +123,10 @@ public final class OutlineUnbound
 
 
   /**
-   * Finds the unbounded {@link Identifier}s in the given {@link Expression}.
+   * Finds the unbounded {@link Identifier}s in the given {@link CurriedLetRec}.
    * 
    * @param pBounded The list of bounded {@link Identifier}s.
-   * @param pExpression The input {@link Expression}.
+   * @param pExpression The input {@link CurriedLetRec}.
    */
   @ SuppressWarnings ( "unused" )
   private final void findCurriedLetRec ( ArrayList < String > pBounded ,
@@ -147,10 +147,10 @@ public final class OutlineUnbound
 
 
   /**
-   * Finds the unbounded {@link Identifier}s in the given {@link Expression}.
+   * Finds the unbounded {@link Identifier}s in the given {@link CurriedMeth}.
    * 
    * @param pBounded The list of bounded {@link Identifier}s.
-   * @param pExpression The input {@link Expression}.
+   * @param pExpression The input {@link CurriedMeth}.
    */
   @ SuppressWarnings ( "unused" )
   private final void findCurriedMeth ( ArrayList < String > pBounded ,
@@ -167,10 +167,10 @@ public final class OutlineUnbound
 
 
   /**
-   * Finds the unbounded {@link Identifier}s in the given {@link Expression}.
+   * Finds the unbounded {@link Identifier}s in the given {@link Identifier}.
    * 
    * @param pBounded The list of bounded {@link Identifier}s.
-   * @param pExpression The input {@link Expression}.
+   * @param pExpression The input {@link Identifier}.
    */
   @ SuppressWarnings ( "unused" )
   private final void findIdentifier ( ArrayList < String > pBounded ,
@@ -184,10 +184,10 @@ public final class OutlineUnbound
 
 
   /**
-   * Finds the unbounded {@link Identifier}s in the given {@link Expression}.
+   * Finds the unbounded {@link Identifier}s in the given {@link Lambda}.
    * 
    * @param pBounded The list of bounded {@link Identifier}s.
-   * @param pExpression The input {@link Expression}.
+   * @param pExpression The input {@link Lambda}.
    */
   @ SuppressWarnings ( "unused" )
   private final void findLambda ( ArrayList < String > pBounded ,
@@ -201,10 +201,10 @@ public final class OutlineUnbound
 
 
   /**
-   * Finds the unbounded {@link Identifier}s in the given {@link Expression}.
+   * Finds the unbounded {@link Identifier}s in the given {@link Let}.
    * 
    * @param pBounded The list of bounded {@link Identifier}s.
-   * @param pExpression The input {@link Expression}.
+   * @param pExpression The input {@link Let}.
    */
   @ SuppressWarnings ( "unused" )
   private final void findLet ( ArrayList < String > pBounded , Let pExpression )
@@ -220,10 +220,10 @@ public final class OutlineUnbound
 
 
   /**
-   * Finds the unbounded {@link Identifier}s in the given {@link Expression}.
+   * Finds the unbounded {@link Identifier}s in the given {@link LetRec}.
    * 
    * @param pBounded The list of bounded {@link Identifier}s.
-   * @param pExpression The input {@link Expression}.
+   * @param pExpression The input {@link LetRec}.
    */
   @ SuppressWarnings ( "unused" )
   private final void findLetRec ( ArrayList < String > pBounded ,
@@ -241,10 +241,10 @@ public final class OutlineUnbound
 
 
   /**
-   * Finds the unbounded {@link Identifier}s in the given {@link Expression}.
+   * Finds the unbounded {@link Identifier}s in the given {@link MultiLambda}.
    * 
    * @param pBounded The list of bounded {@link Identifier}s.
-   * @param pExpression The input {@link Expression}.
+   * @param pExpression The input {@link MultiLambda}.
    */
   @ SuppressWarnings ( "unused" )
   private final void findMultiLambda ( ArrayList < String > pBounded ,
@@ -261,10 +261,10 @@ public final class OutlineUnbound
 
 
   /**
-   * Finds the unbounded {@link Identifier}s in the given {@link Expression}.
+   * Finds the unbounded {@link Identifier}s in the given {@link MultiLet}.
    * 
    * @param pBounded The list of bounded {@link Identifier}s.
-   * @param pExpression The input {@link Expression}.
+   * @param pExpression The input {@link MultiLet}.
    */
   @ SuppressWarnings ( "unused" )
   private final void findMultiLet ( ArrayList < String > pBounded ,
@@ -284,10 +284,10 @@ public final class OutlineUnbound
 
 
   /**
-   * Finds the unbounded {@link Identifier}s in the given {@link Expression}.
+   * Finds the unbounded {@link Identifier}s in the given {@link ObjectExpr}.
    * 
    * @param pBounded The list of bounded {@link Identifier}s.
-   * @param pExpression The input {@link Expression}.
+   * @param pExpression The input {@link ObjectExpr}.
    */
   @ SuppressWarnings ( "unused" )
   private final void findObjectExpr ( ArrayList < String > pBounded ,
@@ -301,10 +301,10 @@ public final class OutlineUnbound
 
 
   /**
-   * Finds the unbounded {@link Identifier}s in the given {@link Expression}.
+   * Finds the unbounded {@link Identifier}s in the given {@link Recursion}.
    * 
    * @param pBounded The list of bounded {@link Identifier}s.
-   * @param pExpression The input {@link Expression}.
+   * @param pExpression The input {@link Recursion}.
    */
   @ SuppressWarnings ( "unused" )
   private final void findRecursion ( ArrayList < String > pBounded ,
@@ -318,10 +318,10 @@ public final class OutlineUnbound
 
 
   /**
-   * Finds the unbounded {@link Identifier}s in the given {@link Expression}.
+   * Finds the unbounded {@link Identifier}s in the given {@link Row}.
    * 
    * @param pBounded The list of bounded {@link Identifier}s.
-   * @param pExpression The input {@link Expression}.
+   * @param pExpression The input {@link Row}.
    */
   @ SuppressWarnings ( "unused" )
   private final void findRow ( ArrayList < String > pBounded , Row pExpression )
