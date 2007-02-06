@@ -1,0 +1,1 @@
+object attr a = 2 ; attr a = a ; attr a' = a ; meth add x x = x + 1 ; meth add = a + b ; attr b = a ; end
