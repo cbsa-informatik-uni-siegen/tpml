@@ -184,7 +184,8 @@ public final class AbstractOutline implements Outline
         pExpression , PrettyStyle.IDENTIFIER ) ;
     OutlinePair outlinePairId = outlinePairIdList.get ( 0 ) ;
     OutlinePair outlinePairType = null ;
-    OutlineBinding outlineBinding = new OutlineBinding ( ) ;
+    OutlineBinding outlineBinding = new OutlineBinding ( pExpression ,
+        outlinePairId.getStart ( ) , outlinePairId.getEnd ( ) , 0 ) ;
     outlineBinding.find ( pExpression.getE2 ( ) , pExpression
         .getIdentifiers ( 0 ) ) ;
     node.add ( new DefaultMutableTreeNode ( new OutlineNode ( IDENTIFIER ,
@@ -194,7 +195,8 @@ public final class AbstractOutline implements Outline
     for ( int i = 1 ; i < length ; i ++ )
     {
       outlinePairId = outlinePairIdList.get ( i ) ;
-      outlineBinding = new OutlineBinding ( ) ;
+      outlineBinding = new OutlineBinding ( pExpression , outlinePairId
+          .getStart ( ) , outlinePairId.getEnd ( ) , i ) ;
       outlineBinding.find ( pExpression.getE1 ( ) , pExpression
           .getIdentifiers ( i ) ) ;
       for ( int j = i + 1 ; j < length ; j ++ )
@@ -264,7 +266,8 @@ public final class AbstractOutline implements Outline
         pExpression , PrettyStyle.IDENTIFIER ) ;
     OutlinePair outlinePairId = outlinePairIdList.get ( 0 ) ;
     OutlinePair outlinePairType = null ;
-    OutlineBinding outlineBinding = new OutlineBinding ( ) ;
+    OutlineBinding outlineBinding = new OutlineBinding ( pExpression ,
+        outlinePairId.getStart ( ) , outlinePairId.getEnd ( ) , 0 ) ;
     boolean searchInE1 = true ;
     for ( int i = 1 ; i < pExpression.getIdentifiers ( ).length ; i ++ )
     {
@@ -289,7 +292,8 @@ public final class AbstractOutline implements Outline
     for ( int i = 1 ; i < length ; i ++ )
     {
       outlinePairId = outlinePairIdList.get ( i ) ;
-      outlineBinding = new OutlineBinding ( ) ;
+      outlineBinding = new OutlineBinding ( pExpression , outlinePairId
+          .getStart ( ) , outlinePairId.getEnd ( ) , i ) ;
       outlineBinding.find ( pExpression.getE1 ( ) , pExpression
           .getIdentifiers ( i ) ) ;
       for ( int j = i + 1 ; j < length ; j ++ )
@@ -368,7 +372,8 @@ public final class AbstractOutline implements Outline
     for ( int i = 1 ; i < length ; i ++ )
     {
       outlinePairId = outlinePairIdList.get ( i ) ;
-      outlineBinding = new OutlineBinding ( ) ;
+      outlineBinding = new OutlineBinding ( pExpression , outlinePairId
+          .getStart ( ) , outlinePairId.getEnd ( ) , i ) ;
       outlineBinding.find ( pExpression.getE ( ) , pExpression
           .getIdentifiers ( i ) ) ;
       for ( int j = i + 1 ; j < length ; j ++ )
@@ -532,9 +537,9 @@ public final class AbstractOutline implements Outline
     DefaultMutableTreeNode node = new DefaultMutableTreeNode ( new OutlineNode (
         pExpression , this.outlineUnbound ) ) ;
     DefaultMutableTreeNode node0 = checkExpression ( e1 ) ;
-    OutlineNode astNode0 = ( OutlineNode ) node0.getUserObject ( ) ;
-    astNode0.appendDescription ( EXPRESSION + ONE + BETWEEN ) ;
-    astNode0.resetCaption ( ) ;
+    OutlineNode outlineNode0 = ( OutlineNode ) node0.getUserObject ( ) ;
+    outlineNode0.appendDescription ( EXPRESSION + ONE + BETWEEN ) ;
+    outlineNode0.resetCaption ( ) ;
     node.add ( node0 ) ;
     int start = pExpression.toPrettyString ( ).toString ( ).indexOf (
         binary.toString ( ) , e1.toPrettyString ( ).toString ( ).length ( ) ) ;
@@ -543,11 +548,11 @@ public final class AbstractOutline implements Outline
         new OutlineNode ( binary , binary.toString ( ) , start , end , null ,
             this.outlineUnbound ) ) ;
     node.add ( node1 ) ;
-    DefaultMutableTreeNode ex2 = checkExpression ( e2 ) ;
-    OutlineNode node2 = ( OutlineNode ) ex2.getUserObject ( ) ;
-    node2.appendDescription ( EXPRESSION + TWO + BETWEEN ) ;
-    node2.resetCaption ( ) ;
-    node.add ( ex2 ) ;
+    DefaultMutableTreeNode node2 = checkExpression ( e2 ) ;
+    OutlineNode outlineNode2 = ( OutlineNode ) node2.getUserObject ( ) ;
+    outlineNode2.appendDescription ( EXPRESSION + TWO + BETWEEN ) ;
+    outlineNode2.resetCaption ( ) ;
+    node.add ( node2 ) ;
     return node ;
   }
 
@@ -565,7 +570,8 @@ public final class AbstractOutline implements Outline
         pExpression , this.outlineUnbound ) ) ;
     OutlinePair outlinePairId = OutlineStyle.getIndex ( pExpression ,
         PrettyStyle.IDENTIFIER ).get ( 0 ) ;
-    OutlineBinding outlineBinding = new OutlineBinding ( ) ;
+    OutlineBinding outlineBinding = new OutlineBinding ( pExpression ,
+        outlinePairId.getStart ( ) , outlinePairId.getEnd ( ) , 0 ) ;
     outlineBinding.find ( pExpression.getE ( ) , pExpression.getId ( ) ) ;
     node.add ( new DefaultMutableTreeNode ( new OutlineNode ( IDENTIFIER ,
         pExpression.getId ( ) , outlinePairId.getStart ( ) , outlinePairId
@@ -597,7 +603,8 @@ public final class AbstractOutline implements Outline
         pExpression , this.outlineUnbound ) ) ;
     OutlinePair outlinePairId = OutlineStyle.getIndex ( pExpression ,
         PrettyStyle.IDENTIFIER ).get ( 0 ) ;
-    OutlineBinding outlineBinding = new OutlineBinding ( ) ;
+    OutlineBinding outlineBinding = new OutlineBinding ( pExpression ,
+        outlinePairId.getStart ( ) , outlinePairId.getEnd ( ) , 0 ) ;
     outlineBinding.find ( pExpression.getE2 ( ) , pExpression.getId ( ) ) ;
     node.add ( new DefaultMutableTreeNode ( new OutlineNode ( IDENTIFIER ,
         pExpression.getId ( ) , outlinePairId.getStart ( ) , outlinePairId
@@ -629,7 +636,8 @@ public final class AbstractOutline implements Outline
         pExpression , this.outlineUnbound ) ) ;
     OutlinePair outlinePairId = OutlineStyle.getIndex ( pExpression ,
         PrettyStyle.IDENTIFIER ).get ( 0 ) ;
-    OutlineBinding outlineBinding = new OutlineBinding ( ) ;
+    OutlineBinding outlineBinding = new OutlineBinding ( pExpression ,
+        outlinePairId.getStart ( ) , outlinePairId.getEnd ( ) , 0 ) ;
     outlineBinding.find ( pExpression.getE1 ( ) , pExpression.getId ( ) ) ;
     outlineBinding.find ( pExpression.getE2 ( ) , pExpression.getId ( ) ) ;
     node.add ( new DefaultMutableTreeNode ( new OutlineNode ( IDENTIFIER ,
@@ -743,7 +751,8 @@ public final class AbstractOutline implements Outline
     for ( int i = 0 ; i < length ; i ++ )
     {
       outlinePairId = outlinePairIdList.get ( i ) ;
-      outlineBinding = new OutlineBinding ( ) ;
+      outlineBinding = new OutlineBinding ( pExpression , outlinePairId
+          .getStart ( ) , outlinePairId.getEnd ( ) , i ) ;
       outlineBinding.find ( pExpression.getE ( ) , pExpression
           .getIdentifiers ( i ) ) ;
       for ( int j = i + 1 ; j < length ; j ++ )
@@ -792,7 +801,8 @@ public final class AbstractOutline implements Outline
     for ( int i = 0 ; i < length ; i ++ )
     {
       outlinePairId = outlinePairIdList.get ( i ) ;
-      outlineBinding = new OutlineBinding ( ) ;
+      outlineBinding = new OutlineBinding ( pExpression , outlinePairId
+          .getStart ( ) , outlinePairId.getEnd ( ) , i ) ;
       outlineBinding.find ( pExpression.getE2 ( ) , pExpression
           .getIdentifiers ( i ) ) ;
       for ( int j = i + 1 ; j < length ; j ++ )
@@ -836,11 +846,12 @@ public final class AbstractOutline implements Outline
         PrettyStyle.IDENTIFIER ) ;
     if ( ( ! pExpression.getId ( ).equals ( "self" ) ) && ( list.size ( ) > 0 ) ) //$NON-NLS-1$
     {
-      OutlinePair outlinePair = list.get ( 0 ) ;
-      OutlineBinding outlineBinding = new OutlineBinding ( ) ;
+      OutlinePair outlinePairId = list.get ( 0 ) ;
+      OutlineBinding outlineBinding = new OutlineBinding ( pExpression ,
+          outlinePairId.getStart ( ) , outlinePairId.getEnd ( ) , 0 ) ;
       outlineBinding.find ( pExpression.getE ( ) , pExpression.getId ( ) ) ;
       node.add ( new DefaultMutableTreeNode ( new OutlineNode ( IDENTIFIER ,
-          pExpression.getId ( ) , outlinePair.getStart ( ) , outlinePair
+          pExpression.getId ( ) , outlinePairId.getStart ( ) , outlinePairId
               .getEnd ( ) , outlineBinding , this.outlineUnbound ) ) ) ;
     }
     if ( pExpression.getTau ( ) != null )
@@ -872,7 +883,8 @@ public final class AbstractOutline implements Outline
         pExpression , this.outlineUnbound ) ) ;
     OutlinePair outlinePairId = OutlineStyle.getIndex ( pExpression ,
         PrettyStyle.IDENTIFIER ).get ( 0 ) ;
-    OutlineBinding outlineBinding = new OutlineBinding ( ) ;
+    OutlineBinding outlineBinding = new OutlineBinding ( pExpression ,
+        outlinePairId.getStart ( ) , outlinePairId.getEnd ( ) , 0 ) ;
     outlineBinding.find ( pExpression.getE ( ) , pExpression.getId ( ) ) ;
     node.add ( new DefaultMutableTreeNode ( new OutlineNode ( IDENTIFIER , id ,
         outlinePairId.getStart ( ) , outlinePairId.getEnd ( ) , outlineBinding ,
@@ -912,7 +924,10 @@ public final class AbstractOutline implements Outline
         outlineNode.resetCaption ( ) ;
         DefaultMutableTreeNode nodeAttr = new DefaultMutableTreeNode (
             outlineNode ) ;
-        OutlineBinding outlineBinding = new OutlineBinding ( ) ;
+        OutlinePair outlinePairId = OutlineStyle.getIndex ( attr ,
+            PrettyStyle.IDENTIFIER ).get ( 0 ) ;
+        OutlineBinding outlineBinding = new OutlineBinding ( attr ,
+            outlinePairId.getStart ( ) , outlinePairId.getEnd ( ) , 0 ) ;
         for ( int j = i + 1 ; j < pExpression.getExpressions ( ).length ; j ++ )
         {
           Expression child = pExpression.getExpressions ( j ) ;
@@ -923,11 +938,10 @@ public final class AbstractOutline implements Outline
             break ;
           }
         }
-        OutlinePair outlinePair = OutlineStyle.getIndex ( attr ,
-            PrettyStyle.IDENTIFIER ).get ( 0 ) ;
-        nodeAttr.add ( new DefaultMutableTreeNode ( new OutlineNode (
-            IDENTIFIER , attr.getId ( ) , outlinePair.getStart ( ) ,
-            outlinePair.getEnd ( ) , outlineBinding , this.outlineUnbound ) ) ) ;
+        nodeAttr
+            .add ( new DefaultMutableTreeNode ( new OutlineNode ( IDENTIFIER ,
+                attr.getId ( ) , outlinePairId.getStart ( ) , outlinePairId
+                    .getEnd ( ) , outlineBinding , this.outlineUnbound ) ) ) ;
         if ( attr.getTau ( ) != null )
         {
           OutlinePair outlinePairType = OutlineStyle.getIndex ( attr ,

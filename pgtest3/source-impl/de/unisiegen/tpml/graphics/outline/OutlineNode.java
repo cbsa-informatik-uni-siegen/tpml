@@ -5,7 +5,6 @@ import java.awt.Color ;
 import de.unisiegen.tpml.core.expressions.BinaryOperator ;
 import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.expressions.Identifier ;
-import de.unisiegen.tpml.core.expressions.MultiLet ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyCharIterator ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStyle ;
@@ -26,6 +25,12 @@ public final class OutlineNode
    * The {@link Expression} should not be shown in this nodes.
    */
   private static final int NO_SELECTION = - 1 ;
+
+
+  /**
+   * Bindings should not be highlighted in higher nodes.
+   */
+  public static final int NO_BINDING = - 1 ;
 
 
   /**
@@ -280,6 +285,18 @@ public final class OutlineNode
 
 
   /**
+   * The start index of the {@link Identifier}.
+   */
+  private int boundedStart ;
+
+
+  /**
+   * The end index of the {@link Identifier}.
+   */
+  private int boundedEnd ;
+
+
+  /**
    * This constructor initializes the values and loads the description.
    * 
    * @param pExpression The {@link Expression} repressented by this node.
@@ -297,6 +314,8 @@ public final class OutlineNode
     this.outlineUnbound = pOutlineUnbound ;
     this.replaceInThisNode = false ;
     this.hasBinding = false ;
+    this.boundedStart = NO_BINDING ;
+    this.boundedEnd = NO_BINDING ;
     resetCaption ( ) ;
   }
 
@@ -325,6 +344,8 @@ public final class OutlineNode
     this.outlineUnbound = pOutlineUnbound ;
     this.replaceInThisNode = false ;
     this.hasBinding = false ;
+    this.boundedStart = NO_BINDING ;
+    this.boundedEnd = NO_BINDING ;
     resetCaption ( ) ;
   }
 
@@ -353,6 +374,8 @@ public final class OutlineNode
     this.outlineUnbound = pOutlineUnbound ;
     this.replaceInThisNode = false ;
     this.hasBinding = true ;
+    this.boundedStart = NO_BINDING ;
+    this.boundedEnd = NO_BINDING ;
     resetCaption ( ) ;
   }
 
@@ -367,6 +390,34 @@ public final class OutlineNode
   public final void appendDescription ( String pAppendDescription )
   {
     this.description = pAppendDescription + this.description ;
+  }
+
+
+  /**
+   * Highlight the selected {@link Identifier}.
+   */
+  public final void enableBindingColor ( )
+  {
+    StringBuffer result = new StringBuffer ( HTML ) ;
+    result.append ( this.description ) ;
+    result.append ( BEGIN ) ;
+    result.append ( getHTMLFormat ( Theme.currentTheme ( )
+        .getExpressionColor ( ) ) ) ;
+    result.append ( FONT_AFTER_COLOR ) ;
+    if ( binding )
+    {
+      result.append ( FONT_BOLD_BEGIN ) ;
+      result
+          .append ( getHTMLFormat ( Theme.currentTheme ( ).getBindingColor ( ) ) ) ;
+      result.append ( FONT_AFTER_COLOR ) ;
+    }
+    result.append ( getHTMLCode ( this.expressionString ) ) ;
+    if ( binding )
+    {
+      result.append ( FONT_BOLD_END ) ;
+    }
+    result.append ( END ) ;
+    this.caption = result.toString ( ) ;
   }
 
 
@@ -477,30 +528,6 @@ public final class OutlineNode
 
 
   /**
-   * Returns the HTML code of the given character.
-   * 
-   * @param pChar The character.
-   * @return The HTML code of the given character.
-   */
-  private final String getHTMLCode ( char pChar )
-  {
-    if ( pChar == '&' )
-    {
-      return AMPERSAND_THAN_REPLACE ;
-    }
-    if ( pChar == '<' )
-    {
-      return LOWER_THAN_REPLACE ;
-    }
-    if ( pChar == '>' )
-    {
-      return GREATER_THAN_REPLACE ;
-    }
-    return String.valueOf ( pChar ) ;
-  }
-
-
-  /**
    * Returns the replaced <code>String</code>.
    * 
    * @param pText Input <code>String</code>.
@@ -554,54 +581,73 @@ public final class OutlineNode
 
 
   /**
-   * This method returns true if a given pCharIndex should be highlighted as a
-   * binding. The pIdentifierIndex indicates in which list the pCharIndex should
-   * be searched for. This is only used if an {@link Expression} has more than
-   * one {@link Identifier} like {@link MultiLet}.
+   * This method returns the length of the bounded {@link Identifier}, if the
+   * {@link Identifier} begins at the given pCharIndex.
    * 
    * @param pCharIndex The index of the char in the {@link Expression}.
-   * @return True, if a given pCharIndex should be highlighted as a binding,
-   *         otherwise false.
+   * @return The length of the {@link Identifier}, if the {@link Identifier}
+   *         begins at the given pCharIndex.
    */
-  private final boolean isBinding ( int pCharIndex )
+  private final int isBinding ( int pCharIndex )
   {
     if ( this.outlineBinding == null )
     {
-      return false ;
+      return - 1 ;
     }
+    PrettyAnnotation prettyAnnotation ;
     for ( int i = 0 ; i < this.outlineBinding.size ( ) ; i ++ )
     {
-      PrettyAnnotation prettyAnnotation = null ;
       try
       {
         prettyAnnotation = this.expression.toPrettyString ( )
             .getAnnotationForPrintable ( this.outlineBinding.get ( i ) ) ;
+        if ( ( pCharIndex >= prettyAnnotation.getStartOffset ( ) )
+            && ( pCharIndex <= prettyAnnotation.getEndOffset ( ) ) )
+        {
+          return prettyAnnotation.getEndOffset ( )
+              - prettyAnnotation.getStartOffset ( ) + 1 ;
+        }
       }
       catch ( IllegalArgumentException e )
       {
-        // Do nothing
-      }
-      if ( ( prettyAnnotation != null )
-          && ( pCharIndex >= prettyAnnotation.getStartOffset ( ) )
-          && ( pCharIndex <= prettyAnnotation.getEndOffset ( ) ) )
-      {
-        return true ;
+        /*
+         * Happens if the bounded Identifiers are not in this node.
+         */
       }
     }
-    return false ;
+    return - 1 ;
   }
 
 
   /**
-   * This method returns true if a given pCharIndex should be highlighted as a
-   * unbound {@link Identifier}.
+   * This method returns the length of the bounded {@link Identifier}, if the
+   * {@link Identifier} begins at the given pCharIndex.
+   * 
+   * @param pCharIndex The index of the char in the {@link Expression}.
+   * @return The length of the {@link Identifier}, if the {@link Identifier}
+   *         begins at the given pCharIndex.
+   */
+  private final int isSelectedBounded ( int pCharIndex )
+  {
+    if ( ( pCharIndex >= this.boundedStart )
+        && ( pCharIndex <= this.boundedEnd ) )
+    {
+      return this.boundedEnd - this.boundedStart + 1 ;
+    }
+    return - 1 ;
+  }
+
+
+  /**
+   * This method returns the length of the unbound {@link Identifier}, if the
+   * {@link Identifier} begins at the given pCharIndex.
    * 
    * @param pCharIndex pCharIndex The index of the char in the
    *          {@link Expression}.
-   * @return True, if a given pCharIndex should be highlighted as a unbound
-   *         Identifier, otherwise false.
+   * @return The length of the {@link Identifier}, if the {@link Identifier}
+   *         begins at the given pCharIndex.
    */
-  private final boolean isUnbound ( int pCharIndex )
+  private final int isUnbound ( int pCharIndex )
   {
     for ( int i = 0 ; i < this.outlineUnbound.size ( ) ; i ++ )
     {
@@ -612,17 +658,18 @@ public final class OutlineNode
         if ( ( pCharIndex >= prettyAnnotation.getStartOffset ( ) )
             && ( pCharIndex <= prettyAnnotation.getEndOffset ( ) ) )
         {
-          return true ;
+          return prettyAnnotation.getEndOffset ( )
+              - prettyAnnotation.getStartOffset ( ) + 1 ;
         }
       }
       catch ( IllegalArgumentException e )
       {
         /*
-         * Happens if the unbound Identifiers are not placed in this node.
+         * Happens if the unbound Identifiers are not in this node.
          */
       }
     }
-    return false ;
+    return - 1 ;
   }
 
 
@@ -659,6 +706,28 @@ public final class OutlineNode
     {
       updateCaption ( NO_SELECTION , NO_SELECTION ) ;
     }
+  }
+
+
+  /**
+   * Sets the end index of the {@link Identifier}.
+   * 
+   * @param pBoundEnd The end index of the {@link Identifier}.
+   */
+  public void setBoundedEnd ( int pBoundEnd )
+  {
+    this.boundedEnd = pBoundEnd ;
+  }
+
+
+  /**
+   * Sets the start index of the {@link Identifier}.
+   * 
+   * @param pBoundStart The start index of the {@link Identifier}.
+   */
+  public void setBoundedStart ( int pBoundStart )
+  {
+    this.boundedStart = pBoundStart ;
   }
 
 
@@ -748,8 +817,13 @@ public final class OutlineNode
     result.append ( BEGIN ) ;
     result.append ( expressionColor ) ;
     result.append ( FONT_AFTER_COLOR ) ;
+    int isBinding = - 1 ;
+    int isSelectedBounded = - 1 ;
+    int isUnbound = - 1 ;
+    int oldCharIndex = - 1 ;
     int charIndex = 0 ;
-    while ( charIndex < this.expressionString.length ( ) )
+    final int length = this.expressionString.length ( ) ;
+    while ( charIndex < length )
     {
       /*
        * Selection
@@ -764,14 +838,13 @@ public final class OutlineNode
         {
           result.append ( REPLACE ) ;
         }
+        else
+        {
+          result.append ( getHTMLCode ( this.expressionString.substring (
+              pSelectionStart , pSelectionEnd + 1 ) ) ) ;
+        }
         while ( charIndex <= pSelectionEnd )
         {
-          // Do not replace selected Expression
-          if ( ! ( replace && this.replaceInThisNode ) )
-          {
-            result.append ( getHTMLCode ( this.expressionString
-                .charAt ( charIndex ) ) ) ;
-          }
           // Next character
           charIndex ++ ;
           prettyCharIterator.next ( ) ;
@@ -779,7 +852,8 @@ public final class OutlineNode
         result.append ( FONT_BOLD_END ) ;
       }
       /*
-       * No selection and binding
+       * No selection and binding. The selected Identifier should be
+       * highlighted.
        */
       else if ( ( ! selection ) && ( binding )
           && ( this.outlineBinding != null )
@@ -794,14 +868,13 @@ public final class OutlineNode
         {
           result.append ( REPLACE ) ;
         }
+        else
+        {
+          result.append ( getHTMLCode ( this.expressionString.substring (
+              pSelectionStart , pSelectionEnd + 1 ) ) ) ;
+        }
         while ( charIndex <= pSelectionEnd )
         {
-          // Do not replace selected Expression
-          if ( ! ( replace && this.replaceInThisNode ) )
-          {
-            result.append ( getHTMLCode ( this.expressionString
-                .charAt ( charIndex ) ) ) ;
-          }
           // Next character
           charIndex ++ ;
           prettyCharIterator.next ( ) ;
@@ -809,8 +882,8 @@ public final class OutlineNode
         result.append ( FONT_BOLD_END ) ;
       }
       /*
-       * No selection highlighting and displacement of the selected Expression
-       * in higher nodes.
+       * No selection highlighting and replace of the selected Expression in
+       * higher nodes.
        */
       else if ( ( ! selection ) && ( replace ) && ( this.replaceInThisNode )
           && ( charIndex == pSelectionStart ) )
@@ -826,16 +899,64 @@ public final class OutlineNode
       /*
        * Binding
        */
-      else if ( ( binding ) && ( this.outlineBinding != null )
-          && ( isBinding ( charIndex ) ) )
+      else if ( ( this.outlineBinding != null ) && ( binding )
+          && ( ( isBinding = isBinding ( charIndex ) ) >= 0 ) )
       {
         result.append ( FONT_BOLD_BEGIN ) ;
         result.append ( bindingColor ) ;
         result.append ( FONT_AFTER_COLOR ) ;
-        while ( isBinding ( charIndex ) )
+        result.append ( this.expressionString.substring ( charIndex , charIndex
+            + isBinding ) ) ;
+        charIndex += isBinding ;
+        while ( isBinding > 0 )
         {
-          result.append ( getHTMLCode ( this.expressionString
-              .charAt ( charIndex ) ) ) ;
+          // Next character
+          isBinding -- ;
+          prettyCharIterator.next ( ) ;
+        }
+        result.append ( FONT_BOLD_END ) ;
+      }
+      /*
+       * The selected Identifier is bounded
+       */
+      else if ( ( binding )
+          && ( ( isSelectedBounded = isSelectedBounded ( charIndex ) ) >= 0 ) )
+      {
+        result.append ( FONT_BOLD_BEGIN ) ;
+        result.append ( bindingColor ) ;
+        result.append ( FONT_AFTER_COLOR ) ;
+        result.append ( this.expressionString.substring ( charIndex , charIndex
+            + isSelectedBounded ) ) ;
+        charIndex += isSelectedBounded ;
+        while ( isSelectedBounded > 0 )
+        {
+          // Next character
+          isSelectedBounded -- ;
+          prettyCharIterator.next ( ) ;
+        }
+        result.append ( FONT_BOLD_END ) ;
+      }
+      /*
+       * The selected Identifier is bounded, but should not be selected
+       */
+      else if ( ( ! selection ) && ( binding ) && ( this.boundedStart != - 1 )
+          && ( this.boundedEnd != - 1 ) && ( charIndex == pSelectionStart ) )
+      {
+        result.append ( FONT_BOLD_BEGIN ) ;
+        result.append ( selectionColor ) ;
+        result.append ( FONT_AFTER_COLOR ) ;
+        // Replace selected Expression
+        if ( replace && this.replaceInThisNode )
+        {
+          result.append ( REPLACE ) ;
+        }
+        else
+        {
+          result.append ( getHTMLCode ( this.expressionString.substring (
+              pSelectionStart , pSelectionEnd + 1 ) ) ) ;
+        }
+        while ( charIndex <= pSelectionEnd )
+        {
           // Next character
           charIndex ++ ;
           prettyCharIterator.next ( ) ;
@@ -843,20 +964,21 @@ public final class OutlineNode
         result.append ( FONT_BOLD_END ) ;
       }
       /*
-       * Unbound
+       * Unbound Identifier
        */
       else if ( ( unbound ) && ( this.outlineUnbound != null )
-          && ( isUnbound ( charIndex ) ) )
+          && ( ( isUnbound = isUnbound ( charIndex ) ) >= 0 ) )
       {
         result.append ( FONT_BOLD_BEGIN ) ;
         result.append ( unboundColor ) ;
         result.append ( FONT_AFTER_COLOR ) ;
-        while ( isUnbound ( charIndex ) )
+        result.append ( this.expressionString.substring ( charIndex , charIndex
+            + isUnbound ) ) ;
+        charIndex += isUnbound ;
+        while ( isUnbound > 0 )
         {
-          result.append ( getHTMLCode ( this.expressionString
-              .charAt ( charIndex ) ) ) ;
           // Next character
-          charIndex ++ ;
+          isUnbound -- ;
           prettyCharIterator.next ( ) ;
         }
         result.append ( FONT_BOLD_END ) ;
@@ -869,14 +991,15 @@ public final class OutlineNode
         result.append ( FONT_BOLD_BEGIN ) ;
         result.append ( keywordColor ) ;
         result.append ( FONT_AFTER_COLOR ) ;
+        oldCharIndex = charIndex ;
         while ( PrettyStyle.KEYWORD.equals ( prettyCharIterator.getStyle ( ) ) )
         {
-          result.append ( getHTMLCode ( this.expressionString
-              .charAt ( charIndex ) ) ) ;
           // Next character
           charIndex ++ ;
           prettyCharIterator.next ( ) ;
         }
+        result.append ( getHTMLCode ( this.expressionString.substring (
+            oldCharIndex , charIndex ) ) ) ;
         result.append ( FONT_BOLD_END ) ;
       }
       /*
@@ -887,14 +1010,15 @@ public final class OutlineNode
         result.append ( FONT_BOLD_BEGIN ) ;
         result.append ( constantColor ) ;
         result.append ( FONT_AFTER_COLOR ) ;
+        oldCharIndex = charIndex ;
         while ( PrettyStyle.CONSTANT.equals ( prettyCharIterator.getStyle ( ) ) )
         {
-          result.append ( getHTMLCode ( this.expressionString
-              .charAt ( charIndex ) ) ) ;
           // Next character
           charIndex ++ ;
           prettyCharIterator.next ( ) ;
         }
+        result.append ( getHTMLCode ( this.expressionString.substring (
+            oldCharIndex , charIndex ) ) ) ;
         result.append ( FONT_BOLD_END ) ;
       }
       /*
@@ -905,23 +1029,39 @@ public final class OutlineNode
         result.append ( FONT_BOLD_BEGIN ) ;
         result.append ( typeColor ) ;
         result.append ( FONT_AFTER_COLOR ) ;
+        oldCharIndex = charIndex ;
         while ( PrettyStyle.TYPE.equals ( prettyCharIterator.getStyle ( ) ) )
         {
-          result.append ( getHTMLCode ( this.expressionString
-              .charAt ( charIndex ) ) ) ;
           // Next character
           charIndex ++ ;
           prettyCharIterator.next ( ) ;
         }
+        result.append ( getHTMLCode ( this.expressionString.substring (
+            oldCharIndex , charIndex ) ) ) ;
         result.append ( FONT_BOLD_END ) ;
       }
       /*
-       * Normal Character
+       * Normal character
        */
       else
       {
-        result
-            .append ( getHTMLCode ( this.expressionString.charAt ( charIndex ) ) ) ;
+        char currentChar = this.expressionString.charAt ( charIndex ) ;
+        if ( currentChar == '&' )
+        {
+          result.append ( AMPERSAND_THAN_REPLACE ) ;
+        }
+        else if ( currentChar == '<' )
+        {
+          result.append ( LOWER_THAN_REPLACE ) ;
+        }
+        else if ( currentChar == '>' )
+        {
+          result.append ( GREATER_THAN_REPLACE ) ;
+        }
+        else
+        {
+          result.append ( currentChar ) ;
+        }
         // Next character
         charIndex ++ ;
         prettyCharIterator.next ( ) ;

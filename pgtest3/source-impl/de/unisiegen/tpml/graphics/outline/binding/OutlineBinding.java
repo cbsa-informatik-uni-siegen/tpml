@@ -20,6 +20,7 @@ import de.unisiegen.tpml.core.expressions.MultiLet ;
 import de.unisiegen.tpml.core.expressions.ObjectExpr ;
 import de.unisiegen.tpml.core.expressions.Recursion ;
 import de.unisiegen.tpml.core.expressions.Row ;
+import de.unisiegen.tpml.graphics.outline.OutlineNode ;
 
 
 /**
@@ -56,11 +57,62 @@ public final class OutlineBinding
 
 
   /**
+   * The {@link Expression} in which the {@link Identifier} is bounded.
+   */
+  private Expression boundedExpression ;
+
+
+  /**
+   * The start index of the {@link Identifier} in the boundedExpression.
+   */
+  private int boundedStart ;
+
+
+  /**
+   * The end index of the {@link Identifier} in the boundedExpression.
+   */
+  private int boundedEnd ;
+
+
+  /**
+   * The index of the {@link Identifier} in the boundedExpression.
+   */
+  private int boundedIdentifierIndex ;
+
+
+  /**
    * Initilizes the list.
    */
   public OutlineBinding ( )
   {
     this.list = new ArrayList < Identifier > ( ) ;
+    this.boundedExpression = null ;
+    this.boundedStart = OutlineNode.NO_BINDING ;
+    this.boundedEnd = OutlineNode.NO_BINDING ;
+    this.boundedIdentifierIndex = OutlineNode.NO_BINDING ;
+  }
+
+
+  /**
+   * Initilizes the list and sets the bounded values.
+   * 
+   * @param pBoundedExpression The {@link Expression} in which this
+   *          {@link Identifier} is bounded.
+   * @param pBoundedStart The start index of this {@link Identifier} in the
+   *          boundedExpression.
+   * @param pBoundedEnd The end index of this {@link Identifier} in the
+   *          boundedExpression.
+   * @param pBoundedIdentifierIndex The index of this {@link Identifier} in the
+   *          boundedExpression.
+   */
+  public OutlineBinding ( Expression pBoundedExpression , int pBoundedStart ,
+      int pBoundedEnd , int pBoundedIdentifierIndex )
+  {
+    this.list = new ArrayList < Identifier > ( ) ;
+    this.boundedExpression = pBoundedExpression ;
+    this.boundedStart = pBoundedStart ;
+    this.boundedEnd = pBoundedEnd ;
+    this.boundedIdentifierIndex = pBoundedIdentifierIndex ;
   }
 
 
@@ -256,6 +308,10 @@ public final class OutlineBinding
     if ( pExpression.getName ( ).equals ( this.identifier ) )
     {
       this.list.add ( pExpression ) ;
+      pExpression.setBoundedExpression ( this.boundedExpression ) ;
+      pExpression.setBoundedStart ( this.boundedStart ) ;
+      pExpression.setBoundedEnd ( this.boundedEnd ) ;
+      pExpression.setBoundedIdentifierIndex ( this.boundedIdentifierIndex ) ;
     }
   }
 

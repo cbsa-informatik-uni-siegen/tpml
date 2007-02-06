@@ -7,8 +7,12 @@ import javax.swing.event.TreeSelectionListener ;
 import javax.swing.tree.DefaultMutableTreeNode ;
 import javax.swing.tree.TreePath ;
 import de.unisiegen.tpml.core.expressions.Attr ;
+import de.unisiegen.tpml.core.expressions.CurriedMeth ;
+import de.unisiegen.tpml.core.expressions.Identifier ;
+import de.unisiegen.tpml.core.expressions.Meth ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation ;
 import de.unisiegen.tpml.graphics.outline.OutlineNode ;
+import de.unisiegen.tpml.graphics.outline.binding.OutlineBinding ;
 import de.unisiegen.tpml.graphics.outline.ui.OutlineUI ;
 
 
@@ -48,6 +52,12 @@ public final class OutlineTreeSelectionListener implements
   private final void repaint ( DefaultMutableTreeNode pNode )
   {
     this.outlineUI.getTreeModel ( ).nodeChanged ( pNode ) ;
+    OutlineNode tmp = ( OutlineNode ) pNode.getUserObject ( ) ;
+    if ( tmp.getExpression ( ) != null )
+    {
+      System.out
+          .println ( tmp.getExpression ( ).toPrettyString ( ).toString ( ) ) ;
+    }
     for ( int i = 0 ; i < pNode.getChildCount ( ) ; i ++ )
     {
       repaint ( ( DefaultMutableTreeNode ) pNode.getChildAt ( i ) ) ;
@@ -65,10 +75,37 @@ public final class OutlineTreeSelectionListener implements
     OutlineNode outlineNode = ( OutlineNode ) pNode.getUserObject ( ) ;
     outlineNode.setReplaceInThisNode ( false ) ;
     outlineNode.setOutlineBinding ( null ) ;
+    outlineNode.setBoundedStart ( OutlineNode.NO_BINDING ) ;
+    outlineNode.setBoundedEnd ( OutlineNode.NO_BINDING ) ;
     outlineNode.resetCaption ( ) ;
     for ( int i = 0 ; i < pNode.getChildCount ( ) ; i ++ )
     {
       reset ( ( DefaultMutableTreeNode ) pNode.getChildAt ( i ) ) ;
+    }
+  }
+
+
+  /**
+   * Sets the {@link OutlineBinding} to all children of the node.
+   * 
+   * @param pParent The parent node.
+   * @param pOutlineBinding The {@link OutlineBinding}.
+   */
+  private final void setBindingToChildren ( DefaultMutableTreeNode pParent ,
+      OutlineBinding pOutlineBinding )
+  {
+    for ( int i = 0 ; i < pParent.getChildCount ( ) ; i ++ )
+    {
+      DefaultMutableTreeNode child = ( DefaultMutableTreeNode ) pParent
+          .getChildAt ( i ) ;
+      OutlineNode node = ( OutlineNode ) child.getUserObject ( ) ;
+      if ( node.getExpression ( ) != null )
+      {
+        node.setOutlineBinding ( pOutlineBinding ) ;
+        node.updateCaption ( ) ;
+        this.outlineUI.getTreeModel ( ).nodeChanged ( child ) ;
+      }
+      setBindingToChildren ( child , pOutlineBinding ) ;
     }
   }
 
@@ -80,11 +117,11 @@ public final class OutlineTreeSelectionListener implements
    */
   public final void update ( TreePath pTreePath )
   {
+    DefaultMutableTreeNode rootNode = ( DefaultMutableTreeNode ) this.outlineUI
+        .getTreeModel ( ).getRoot ( ) ;
+    reset ( rootNode ) ;
     if ( pTreePath == null )
     {
-      DefaultMutableTreeNode rootNode = ( DefaultMutableTreeNode ) this.outlineUI
-          .getTreeModel ( ).getRoot ( ) ;
-      reset ( rootNode ) ;
       repaint ( rootNode ) ;
       return ;
     }
@@ -95,7 +132,7 @@ public final class OutlineTreeSelectionListener implements
           .getPath ( ) [ i ] ).getUserObject ( ) ) ;
     }
     OutlineNode last = list.get ( list.size ( ) - 1 ) ;
-    // Expression - Identifier - Type
+    // Type
     if ( ( last.getStartIndex ( ) != - 1 ) && ( last.getEndIndex ( ) != - 1 )
         && ( list.get ( list.size ( ) - 2 ).getStartIndex ( ) != - 1 )
         && ( list.get ( list.size ( ) - 2 ).getEndIndex ( ) != - 1 ) )
@@ -133,7 +170,7 @@ public final class OutlineTreeSelectionListener implements
             ( ( DefaultMutableTreeNode ) pTreePath.getPath ( ) [ i ] ) ) ;
       }
     }
-    // Expression - Identifier or Expression - Type
+    // Identifier
     else if ( ( last.getStartIndex ( ) != - 1 )
         && ( last.getEndIndex ( ) != - 1 ) )
     {
@@ -157,12 +194,14 @@ public final class OutlineTreeSelectionListener implements
         for ( int i = nodeRow.getIndex ( nodeAttr ) + 1 ; i < nodeRow
             .getChildCount ( ) ; i ++ )
         {
-          OutlineNode outlineNodeRowChild = ( OutlineNode ) ( ( DefaultMutableTreeNode ) nodeRow
-              .getChildAt ( i ) ).getUserObject ( ) ;
+          DefaultMutableTreeNode child = ( DefaultMutableTreeNode ) nodeRow
+              .getChildAt ( i ) ;
+          setBindingToChildren ( child , last.getOutlineBinding ( ) ) ;
+          OutlineNode outlineNodeRowChild = ( OutlineNode ) child
+              .getUserObject ( ) ;
           outlineNodeRowChild.setOutlineBinding ( last.getOutlineBinding ( ) ) ;
           outlineNodeRowChild.updateCaption ( ) ;
-          this.outlineUI.getTreeModel ( )
-              .nodeChanged ( nodeRow.getChildAt ( i ) ) ;
+          this.outlineUI.getTreeModel ( ).nodeChanged ( child ) ;
         }
       }
       for ( int i = 0 ; i < list.size ( ) - 1 ; i ++ )
@@ -196,6 +235,87 @@ public final class OutlineTreeSelectionListener implements
     {
       for ( int i = 0 ; i < list.size ( ) ; i ++ )
       {
+        if ( ( last.getExpression ( ) instanceof Identifier )
+            && ( i < list.size ( ) - 1 )
+            && ( ( ( Identifier ) last.getExpression ( ) )
+                .getBoundedExpression ( ) != null ) )
+        {
+          try
+          {
+            Identifier identifier = ( Identifier ) last.getExpression ( ) ;
+            /*
+             * Highlight the bounded Identifiers in the other childs of a parent
+             * row.
+             */
+            if ( ( list.get ( i ).getExpression ( ) instanceof Attr )
+                || ( list.get ( i ).getExpression ( ) instanceof Meth )
+                || ( list.get ( i ).getExpression ( ) instanceof CurriedMeth ) )
+            {
+              DefaultMutableTreeNode nodeRowChild = ( DefaultMutableTreeNode ) pTreePath
+                  .getPath ( ) [ i ] ;
+              DefaultMutableTreeNode nodeRow = ( DefaultMutableTreeNode ) pTreePath
+                  .getPath ( ) [ i - 1 ] ;
+              for ( int j = nodeRow.getIndex ( nodeRowChild ) ; j >= 0 ; j -- )
+              {
+                DefaultMutableTreeNode currentRowChild = ( DefaultMutableTreeNode ) nodeRow
+                    .getChildAt ( j ) ;
+                OutlineNode currentOutlineNode = ( OutlineNode ) currentRowChild
+                    .getUserObject ( ) ;
+                if ( currentOutlineNode.getExpression ( ) == identifier
+                    .getBoundedExpression ( ) )
+                {
+                  /*
+                   * Highlight the first identifier
+                   */
+                  currentOutlineNode.setBoundedStart ( identifier
+                      .getBoundedStart ( ) ) ;
+                  currentOutlineNode.setBoundedEnd ( identifier
+                      .getBoundedEnd ( ) ) ;
+                  currentOutlineNode.updateCaption ( ) ;
+                  this.outlineUI.getTreeModel ( )
+                      .nodeChanged ( currentRowChild ) ;
+                  /*
+                   * Highlight the identifier in the first child
+                   */
+                  DefaultMutableTreeNode nodeId = ( DefaultMutableTreeNode ) currentRowChild
+                      .getChildAt ( identifier.getBoundedIdentifierIndex ( ) ) ;
+                  OutlineNode idOutlineNode = ( OutlineNode ) nodeId
+                      .getUserObject ( ) ;
+                  idOutlineNode.enableBindingColor ( ) ;
+                  this.outlineUI.getTreeModel ( ).nodeChanged ( nodeId ) ;
+                  break ;
+                }
+              }
+            }
+            else
+            {
+              if ( list.get ( i ).getExpression ( ) == identifier
+                  .getBoundedExpression ( ) )
+              {
+                DefaultMutableTreeNode node = ( DefaultMutableTreeNode ) ( ( DefaultMutableTreeNode ) pTreePath
+                    .getPath ( ) [ i ] ).getChildAt ( identifier
+                    .getBoundedIdentifierIndex ( ) ) ;
+                ( ( OutlineNode ) node.getUserObject ( ) )
+                    .enableBindingColor ( ) ;
+                this.outlineUI.getTreeModel ( ).nodeChanged ( node ) ;
+              }
+              PrettyAnnotation prettyAnnotation = list.get ( i )
+                  .getExpression ( ).toPrettyString ( )
+                  .getAnnotationForPrintable (
+                      identifier.getBoundedExpression ( ) ) ;
+              list.get ( i ).setBoundedStart (
+                  prettyAnnotation.getStartOffset ( )
+                      + identifier.getBoundedStart ( ) ) ;
+              list.get ( i ).setBoundedEnd (
+                  prettyAnnotation.getStartOffset ( )
+                      + identifier.getBoundedEnd ( ) ) ;
+            }
+          }
+          catch ( IllegalArgumentException e )
+          {
+            // Do nothing
+          }
+        }
         /*
          * It should be replaced in higher nodes, but not the selected node
          */
@@ -210,10 +330,6 @@ public final class OutlineTreeSelectionListener implements
         {
           list.get ( i ).setReplaceInThisNode ( false ) ;
         }
-        /*
-         * If a Expression is selected, any node has a no binding
-         */
-        list.get ( i ).setOutlineBinding ( null ) ;
         /*
          * Update the caption of the node
          */
@@ -243,11 +359,6 @@ public final class OutlineTreeSelectionListener implements
     if ( pTreeSelectionEvent.getSource ( ).equals (
         this.outlineUI.getJTreeAbstractSyntaxTree ( ).getSelectionModel ( ) ) )
     {
-      TreePath treePath = pTreeSelectionEvent.getOldLeadSelectionPath ( ) ;
-      if ( ( treePath != null ) && ( treePath.getPathCount ( ) > 1 ) )
-      {
-        reset ( ( DefaultMutableTreeNode ) treePath.getPathComponent ( 1 ) ) ;
-      }
       update ( pTreeSelectionEvent.getPath ( ) ) ;
     }
   }
