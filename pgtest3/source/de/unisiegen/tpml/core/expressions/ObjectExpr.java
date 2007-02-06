@@ -164,8 +164,8 @@ public final class ObjectExpr extends Expression
   @ Override
   public int hashCode ( )
   {
-    return this.identifier == null ? this.expression.hashCode ( )
-        : this.identifier.hashCode ( ) + this.expression.hashCode ( ) ;
+    return this.identifier.hashCode ( ) + this.expression.hashCode ( )
+        + ( this.tau == null ? 0 : this.tau.hashCode ( ) ) ;
   }
 
 

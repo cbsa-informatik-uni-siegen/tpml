@@ -212,7 +212,8 @@ public class CurriedMeth extends Expression
   @ Override
   public int hashCode ( )
   {
-    return this.identifiers.hashCode ( ) + this.expression.hashCode ( ) ;
+    return this.identifiers.hashCode ( ) + this.expression.hashCode ( )
+        + ( this.types == null ? 0 : this.types.hashCode ( ) ) ;
   }
 
 

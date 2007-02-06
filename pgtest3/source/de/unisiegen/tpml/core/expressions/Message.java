@@ -114,7 +114,7 @@ public final class Message extends Expression
   @ Override
   public int hashCode ( )
   {
-    return this.expression.hashCode ( ) ;
+    return this.expression.hashCode ( ) + this.identifier.hashCode ( ) ;
   }
 
 

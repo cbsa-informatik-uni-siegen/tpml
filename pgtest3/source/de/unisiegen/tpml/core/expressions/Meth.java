@@ -146,8 +146,8 @@ public class Meth extends Expression
   @ Override
   public int hashCode ( )
   {
-    return this.tau == null ? 0 : this.tau.hashCode ( )
-        + this.identifier.hashCode ( ) + this.expression.hashCode ( ) ;
+    return this.identifier.hashCode ( ) + this.expression.hashCode ( )
+        + ( this.tau == null ? 0 : this.tau.hashCode ( ) ) ;
   }
 
 
