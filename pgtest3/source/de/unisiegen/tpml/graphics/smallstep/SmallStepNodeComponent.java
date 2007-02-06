@@ -188,6 +188,8 @@ public class SmallStepNodeComponent extends JComponent
    */
   private MouseMotionAdapter underlineRuleAdapter;
 
+  private JPopupMenu menu;
+  
   private ArrayList<MenuRuleItem> last10Elements;
 
   private Preferences preferences;
@@ -493,7 +495,8 @@ public class SmallStepNodeComponent extends JComponent
 
     // final JPopupMenu menu = new JPopupMenu (Messages.getString("Language.0")+
     // " " +rules[0].getGroup());
-    final JPopupMenu menu = new JPopupMenu("L0");
+    //    final JPopupMenu menu = new JPopupMenu("L0");
+    menu = new JPopupMenu();
 
     //wenn das so ist, dann teilen wir es in Unter und Obermenüs auf, sonst werden nur Spereratoren eingefügt...
     if (rules.length > 15)
@@ -528,7 +531,7 @@ public class SmallStepNodeComponent extends JComponent
               if (new MenuRuleItem(a).getLabel().equalsIgnoreCase(name))
               {
                 // hinzufügen
-                last10Elements.add(new MenuRuleItem(a));
+                last10Elements.add(0, new MenuRuleItem(a));
                 MenuRuleItem tmp = new MenuRuleItem(a);
                 // dieser ActionListener wird gebraucht, damit Elemente in der
                 // Liste aufsteigen können...
@@ -537,28 +540,9 @@ public class SmallStepNodeComponent extends JComponent
                   {
                     // Wenn ein Elemtnt aus dem Hauptmenü gedrückt wurde wird
                     // die Regel nach oben verschoben
-                    for (int i = 0; i < max; i++)
-                    {
-                      try
-                      {
-                        MenuRuleItem kacke = (MenuRuleItem) menu.getComponent(i);
-                        // vergleiche die Namen, wenn sie übereinstimmen
-                        if (kacke.getLabel().equals(((MenuRuleItem) e.getSource()).getLabel()))
-                        {
-                          // System.out.println("wieder nach oben!");
-                          // nach oeben schieben
-                          menu.add(menu.getComponent(i), 0);
-                          // die anderen sind uninteressant, wenn wir einen
-                          // Treffer hatten
-                          break;
-                        }
-                      }
-                      catch (ClassCastException ex)
-                      {
-                        // Sollte eigentlich nie ausgeführt werden...
-                      }
-
-                    }
+                  	moveToTop(((MenuRuleItem) e.getSource()).getLabel(), max);
+                  	
+                    
                     // wird nicht benötigt, macht ein MenuRuleItem automatisch
                     // menuItemActivated((JMenuItem)e.getSource());
                   }
@@ -707,24 +691,9 @@ public class SmallStepNodeComponent extends JComponent
                   ActionListener al = new ActionListener() {
                     public void actionPerformed(ActionEvent e)
                     {
-                      for (int i = 0; i < max; i++)
-                      {
-                        try
-                        {
-                          MenuRuleItem kacke = (MenuRuleItem) menu.getComponent(i);
-                          if (kacke.getLabel().equals(((MenuRuleItem) e.getSource()).getLabel()))
-                          {
-                            // System.out.println("wieder nach oben!");
-                            menu.add(menu.getComponent(i), 0);
-                            break;
-                          }
-                        }
-                        catch (ClassCastException ex)
-                        {
-
-                        }
-
-                      }
+                      //nach oben schieben
+                    	moveToTop(((MenuRuleItem) e.getSource()).getLabel(), max);
+                 
                       //Muss hier gemacht werden, da es nicht automatisch ausgeführt wird, wenn es in einem Untermenü ist
                       menuItemActivated((JMenuItem) e.getSource());
                     }
@@ -745,11 +714,7 @@ public class SmallStepNodeComponent extends JComponent
                   // }
 
                   // Jetzt noch alle in der Liste in die preferences schreiben
-                  for (int i = 0; i < last10Elements.size(); i++)
-                  {
-                    // System.out.println(last10Elements.get(i).getLabel());
-                    preferences.put("rule" + i, last10Elements.get(i).getLabel());
-                  }
+                  save();
                   // System.out.println(last10Elements.size());
                 }
                 //Wenn die Liste schon voll ist, dann muss das jeweils letzte herausgenommen werden
@@ -760,24 +725,7 @@ public class SmallStepNodeComponent extends JComponent
                   ActionListener al = new ActionListener() {
                     public void actionPerformed(ActionEvent e)
                     {
-                      for (int i = 0; i < max; i++)
-                      {
-                        try
-                        {
-                          MenuRuleItem kacke = (MenuRuleItem) menu.getComponent(i);
-                          if (kacke.getLabel().equals(((MenuRuleItem) e.getSource()).getLabel()))
-                          {
-                            // System.out.println("wieder nach oben!");
-                            menu.add(menu.getComponent(i), 0);
-                            break;
-                          }
-                        }
-                        catch (ClassCastException ex)
-                        {
-
-                        }
-
-                      }
+                      moveToTop(((MenuRuleItem) e.getSource()).getLabel(), max);
                       menuItemActivated((JMenuItem) e.getSource());
                     }
                   };
@@ -813,10 +761,7 @@ public class SmallStepNodeComponent extends JComponent
                   // menu.insert(lastUsed,0);
                   // }
                   // Jetzt noch alle in der Liste in die preferences schreiben
-                  for (int i = 0; i < max; i++)
-                  {
-                    preferences.put("rule" + i, last10Elements.get(i).getLabel());
-                  }
+                 save();
                   // System.out.println(last10Elements.size());
                 }
                 
@@ -863,6 +808,59 @@ public class SmallStepNodeComponent extends JComponent
   }
 
   /**
+   * Moves the first element of the menu to top, corresponding to the label.
+   * only elements from 0 to max will be recognized.
+   *
+   * @param label
+   * 					the label of the element should be moved
+   * @param max
+   * 					the index of the last element should be moved.
+   */
+  private void moveToTop(String label, int max)
+	{
+		for (int i = 0; i < max; i++)
+    {
+      try
+      {
+        MenuRuleItem kacke = (MenuRuleItem) menu.getComponent(i);
+        MenuRuleItem tmp2 = last10Elements.get(i);
+        // vergleiche die Namen, wenn sie übereinstimmen
+        if (kacke.getLabel().equals(label))
+        {
+          //System.out.println("wieder nach oben!");
+          // nach oeben schieben
+          menu.add(menu.getComponent(i), 0);
+          // die anderen sind uninteressant, wenn wir einen
+          // Treffer hatten
+          //break;
+        }
+        
+        if (tmp2.getLabel().equals(label))
+        {
+        	last10Elements.remove(i);
+        	last10Elements.add(0, tmp2);        	
+        } 
+      }
+      catch (ClassCastException ex)
+      {
+        // Sollte eigentlich nie ausgeführt werden...
+      	//System.out.println("NEIN!");
+      }
+      save();
+    }
+	}
+
+	private void save()
+	{
+		for (int i = 0; i < last10Elements.size(); i++)
+    {
+      // System.out.println(last10Elements.get(i).getLabel());
+      preferences.put("rule" + i, last10Elements.get(i).getLabel());
+    }
+		
+	}
+
+	/**
    * Resets the expression of the {@link #currentUnderlineExpression}, if it
    * has changed, and informs the {@link #expression}-Renderer that is has
    * changed. Causes all other nodes within the tree to free theire underlining.
