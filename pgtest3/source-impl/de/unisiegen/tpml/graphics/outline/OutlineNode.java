@@ -23,15 +23,9 @@ import de.unisiegen.tpml.graphics.outline.binding.OutlineUnbound ;
 public final class OutlineNode
 {
   /**
-   * No bindings should be shown in the nodes.
-   */
-  public static final int NO_BINDING = - 1 ;
-
-
-  /**
    * The {@link Expression} should not be shown in this nodes.
    */
-  public static final int NO_SELECTION = - 1 ;
+  private static final int NO_SELECTION = - 1 ;
 
 
   /**
@@ -413,7 +407,7 @@ public final class OutlineNode
     }
     else
     {
-      updateCaption ( OutlineNode.NO_SELECTION , OutlineNode.NO_SELECTION ) ;
+      updateCaption ( NO_SELECTION , NO_SELECTION ) ;
     }
   }
 
@@ -577,7 +571,7 @@ public final class OutlineNode
     }
     for ( int i = 0 ; i < this.outlineBinding.size ( ) ; i ++ )
     {
-      PrettyAnnotation prettyAnnotation ;
+      PrettyAnnotation prettyAnnotation = null ;
       try
       {
         prettyAnnotation = this.expression.toPrettyString ( )
@@ -585,9 +579,10 @@ public final class OutlineNode
       }
       catch ( IllegalArgumentException e )
       {
-        return false ;
+        // Do nothing
       }
-      if ( ( pCharIndex >= prettyAnnotation.getStartOffset ( ) )
+      if ( ( prettyAnnotation != null )
+          && ( pCharIndex >= prettyAnnotation.getStartOffset ( ) )
           && ( pCharIndex <= prettyAnnotation.getEndOffset ( ) ) )
       {
         return true ;
@@ -662,7 +657,7 @@ public final class OutlineNode
     }
     else
     {
-      updateCaption ( OutlineNode.NO_SELECTION , OutlineNode.NO_SELECTION ) ;
+      updateCaption ( NO_SELECTION , NO_SELECTION ) ;
     }
   }
 
@@ -705,6 +700,17 @@ public final class OutlineNode
   public final String toString ( )
   {
     return this.caption ;
+  }
+
+
+  /**
+   * Updates the caption of the node. This method checks each character of the
+   * name, if it is a keyword, a constant, a binding, selected or normal. This
+   * method updates the caption without selection.
+   */
+  public final void updateCaption ( )
+  {
+    updateCaption ( NO_SELECTION , NO_SELECTION ) ;
   }
 
 

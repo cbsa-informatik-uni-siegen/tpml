@@ -6,6 +6,7 @@ import javax.swing.event.TreeSelectionEvent ;
 import javax.swing.event.TreeSelectionListener ;
 import javax.swing.tree.DefaultMutableTreeNode ;
 import javax.swing.tree.TreePath ;
+import de.unisiegen.tpml.core.expressions.Attr ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation ;
 import de.unisiegen.tpml.graphics.outline.OutlineNode ;
 import de.unisiegen.tpml.graphics.outline.ui.OutlineUI ;
@@ -143,6 +144,27 @@ public final class OutlineTreeSelectionListener implements
       last.enableSelectionColor ( ) ;
       this.outlineUI.getTreeModel ( ).nodeChanged (
           ( ( DefaultMutableTreeNode ) pTreePath.getLastPathComponent ( ) ) ) ;
+      /*
+       * Highlight the bounded Identifiers of an Attribute in the other childs
+       * of the parent row.
+       */
+      if ( secondLast.getExpression ( ) instanceof Attr )
+      {
+        DefaultMutableTreeNode nodeRow = ( DefaultMutableTreeNode ) pTreePath
+            .getPath ( ) [ pTreePath.getPathCount ( ) - 3 ] ;
+        DefaultMutableTreeNode nodeAttr = ( DefaultMutableTreeNode ) pTreePath
+            .getPath ( ) [ pTreePath.getPathCount ( ) - 2 ] ;
+        for ( int i = nodeRow.getIndex ( nodeAttr ) + 1 ; i < nodeRow
+            .getChildCount ( ) ; i ++ )
+        {
+          OutlineNode outlineNodeRowChild = ( OutlineNode ) ( ( DefaultMutableTreeNode ) nodeRow
+              .getChildAt ( i ) ).getUserObject ( ) ;
+          outlineNodeRowChild.setOutlineBinding ( last.getOutlineBinding ( ) ) ;
+          outlineNodeRowChild.updateCaption ( ) ;
+          this.outlineUI.getTreeModel ( )
+              .nodeChanged ( nodeRow.getChildAt ( i ) ) ;
+        }
+      }
       for ( int i = 0 ; i < list.size ( ) - 1 ; i ++ )
       {
         /*
