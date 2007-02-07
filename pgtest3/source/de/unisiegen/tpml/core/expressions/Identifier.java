@@ -21,8 +21,8 @@ public class Identifier extends Value
   /**
    * The {@link Expression} in which this {@link Identifier} is bounded.
    * 
-   * @see #getBoundedExpression()
-   * @see #setBoundedExpression(Expression)
+   * @see #boundedExpression()
+   * @see #boundedExpression(Expression)
    */
   private Expression boundedExpression ;
 
@@ -30,8 +30,8 @@ public class Identifier extends Value
   /**
    * The start index of this {@link Identifier} in the boundedExpression.
    * 
-   * @see #getBoundedStart()
-   * @see #setBoundedStart(int)
+   * @see #boundedStart()
+   * @see #boundedStart(int)
    */
   private int boundedStart ;
 
@@ -39,8 +39,8 @@ public class Identifier extends Value
   /**
    * The end index of this {@link Identifier} in the boundedExpression.
    * 
-   * @see #getBoundedEnd()
-   * @see #setBoundedEnd(int)
+   * @see #boundedEnd()
+   * @see #boundedEnd(int)
    */
   private int boundedEnd ;
 
@@ -48,8 +48,8 @@ public class Identifier extends Value
   /**
    * The index of this {@link Identifier} in the boundedExpression.
    * 
-   * @see #getBoundedIdentifierIndex()
-   * @see #setBoundedIdentifierIndex(int)
+   * @see #boundedIdentifierIndex()
+   * @see #boundedIdentifierIndex(int)
    */
   private int boundedIdentifierIndex ;
 
@@ -74,6 +74,116 @@ public class Identifier extends Value
     this.boundedStart = - 1 ;
     this.boundedEnd = - 1 ;
     this.boundedIdentifierIndex = - 1 ;
+  }
+
+
+  /**
+   * Returns the end index of this {@link Identifier} in the boundedExpression.
+   * 
+   * @return The end index of this {@link Identifier} in the boundedExpression.
+   * @see #boundedEnd
+   * @see #boundedEnd(int)
+   */
+  public int boundedEnd ( )
+  {
+    return this.boundedEnd ;
+  }
+
+
+  /**
+   * Sets the end index of this {@link Identifier} in the boundedExpression.
+   * 
+   * @param pBoundedEnd The end index of this {@link Identifier} in the
+   *          boundedExpression.
+   * @see #boundedEnd
+   * @see #boundedEnd()
+   */
+  public void boundedEnd ( int pBoundedEnd )
+  {
+    this.boundedEnd = pBoundedEnd ;
+  }
+
+
+  /**
+   * Returns the {@link Expression} in which this {@link Identifier} is bounded.
+   * 
+   * @return The {@link Expression} in which this {@link Identifier} is bounded.
+   * @see #boundedExpression
+   * @see #boundedExpression(Expression)
+   */
+  public Expression boundedExpression ( )
+  {
+    return this.boundedExpression ;
+  }
+
+
+  /**
+   * Sets the Expression in which this {@link Identifier} is bounded.
+   * 
+   * @param pBoundedExpression The {@link Expression} in which this
+   *          {@link Identifier} is bounded.
+   * @see #boundedExpression
+   * @see #boundedExpression()
+   */
+  public void boundedExpression ( Expression pBoundedExpression )
+  {
+    this.boundedExpression = pBoundedExpression ;
+  }
+
+
+  /**
+   * Returns the index of this {@link Identifier} in the boundedExpression.
+   * 
+   * @return The index of this {@link Identifier} in the boundedExpression.
+   * @see #boundedIdentifierIndex
+   * @see #boundedIdentifierIndex(int)
+   */
+  public int boundedIdentifierIndex ( )
+  {
+    return this.boundedIdentifierIndex ;
+  }
+
+
+  /**
+   * Sets the index of this {@link Identifier} in the boundedExpression.
+   * 
+   * @param pBoundedIdentifierIndex The index of this {@link Identifier} in the
+   *          boundedExpression.
+   * @see #boundedIdentifierIndex
+   * @see #boundedIdentifierIndex()
+   */
+  public void boundedIdentifierIndex ( int pBoundedIdentifierIndex )
+  {
+    this.boundedIdentifierIndex = pBoundedIdentifierIndex ;
+  }
+
+
+  /**
+   * Returns the start index of this {@link Identifier} in the
+   * boundedExpression.
+   * 
+   * @return The start index of this {@link Identifier} in the
+   *         boundedExpression.
+   * @see #boundedStart
+   * @see #boundedStart(int)
+   */
+  public int boundedStart ( )
+  {
+    return this.boundedStart ;
+  }
+
+
+  /**
+   * Sets the start index of this {@link Identifier} in the boundedExpression.
+   * 
+   * @param pBoundedStart The start index of this {@link Identifier} in the
+   *          boundedExpression.
+   * @see #boundedStart
+   * @see #boundedStart()
+   */
+  public void boundedStart ( int pBoundedStart )
+  {
+    this.boundedStart = pBoundedStart ;
   }
 
 
@@ -122,60 +232,6 @@ public class Identifier extends Value
 
 
   /**
-   * Returns the end index of this {@link Identifier} in the boundedExpression.
-   * 
-   * @return The end index of this {@link Identifier} in the boundedExpression.
-   * @see #boundedEnd
-   * @see #setBoundedEnd(int)
-   */
-  public int getBoundedEnd ( )
-  {
-    return this.boundedEnd ;
-  }
-
-
-  /**
-   * Returns the {@link Expression} in which this {@link Identifier} is bounded.
-   * 
-   * @return The {@link Expression} in which this {@link Identifier} is bounded.
-   * @see #boundedExpression
-   * @see #setBoundedExpression(Expression)
-   */
-  public Expression getBoundedExpression ( )
-  {
-    return this.boundedExpression ;
-  }
-
-
-  /**
-   * Returns the index of this {@link Identifier} in the boundedExpression.
-   * 
-   * @return The index of this {@link Identifier} in the boundedExpression.
-   * @see #boundedIdentifierIndex
-   * @see #setBoundedIdentifierIndex(int)
-   */
-  public int getBoundedIdentifierIndex ( )
-  {
-    return this.boundedIdentifierIndex ;
-  }
-
-
-  /**
-   * Returns the start index of this {@link Identifier} in the
-   * boundedExpression.
-   * 
-   * @return The start index of this {@link Identifier} in the
-   *         boundedExpression.
-   * @see #boundedStart
-   * @see #setBoundedStart(int)
-   */
-  public int getBoundedStart ( )
-  {
-    return this.boundedStart ;
-  }
-
-
-  /**
    * {@inheritDoc}
    */
   @ Override
@@ -205,62 +261,6 @@ public class Identifier extends Value
   public int hashCode ( )
   {
     return this.name.hashCode ( ) ;
-  }
-
-
-  /**
-   * Sets the end index of this {@link Identifier} in the boundedExpression.
-   * 
-   * @param pBoundedEnd The end index of this {@link Identifier} in the
-   *          boundedExpression.
-   * @see #boundedEnd
-   * @see #getBoundedEnd()
-   */
-  public void setBoundedEnd ( int pBoundedEnd )
-  {
-    this.boundedEnd = pBoundedEnd ;
-  }
-
-
-  /**
-   * Sets the Expression in which this {@link Identifier} is bounded.
-   * 
-   * @param pBoundedExpression The {@link Expression} in which this
-   *          {@link Identifier} is bounded.
-   * @see #boundedExpression
-   * @see #getBoundedExpression()
-   */
-  public void setBoundedExpression ( Expression pBoundedExpression )
-  {
-    this.boundedExpression = pBoundedExpression ;
-  }
-
-
-  /**
-   * Sets the index of this {@link Identifier} in the boundedExpression.
-   * 
-   * @param pBoundedIdentifierIndex The index of this {@link Identifier} in the
-   *          boundedExpression.
-   * @see #boundedIdentifierIndex
-   * @see #getBoundedIdentifierIndex()
-   */
-  public void setBoundedIdentifierIndex ( int pBoundedIdentifierIndex )
-  {
-    this.boundedIdentifierIndex = pBoundedIdentifierIndex ;
-  }
-
-
-  /**
-   * Sets the start index of this {@link Identifier} in the boundedExpression.
-   * 
-   * @param pBoundedStart The start index of this {@link Identifier} in the
-   *          boundedExpression.
-   * @see #boundedStart
-   * @see #getBoundedStart()
-   */
-  public void setBoundedStart ( int pBoundedStart )
-  {
-    this.boundedStart = pBoundedStart ;
   }
 
 

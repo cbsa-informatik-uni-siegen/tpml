@@ -237,8 +237,7 @@ public final class OutlineTreeSelectionListener implements
       {
         if ( ( last.getExpression ( ) instanceof Identifier )
             && ( i < list.size ( ) - 1 )
-            && ( ( ( Identifier ) last.getExpression ( ) )
-                .getBoundedExpression ( ) != null ) )
+            && ( ( ( Identifier ) last.getExpression ( ) ).boundedExpression ( ) != null ) )
         {
           try
           {
@@ -262,15 +261,14 @@ public final class OutlineTreeSelectionListener implements
                 OutlineNode currentOutlineNode = ( OutlineNode ) currentRowChild
                     .getUserObject ( ) ;
                 if ( currentOutlineNode.getExpression ( ) == identifier
-                    .getBoundedExpression ( ) )
+                    .boundedExpression ( ) )
                 {
                   /*
                    * Highlight the first identifier
                    */
                   currentOutlineNode.setBoundedStart ( identifier
-                      .getBoundedStart ( ) ) ;
-                  currentOutlineNode.setBoundedEnd ( identifier
-                      .getBoundedEnd ( ) ) ;
+                      .boundedStart ( ) ) ;
+                  currentOutlineNode.setBoundedEnd ( identifier.boundedEnd ( ) ) ;
                   currentOutlineNode.updateCaption ( ) ;
                   this.outlineUI.getTreeModel ( )
                       .nodeChanged ( currentRowChild ) ;
@@ -278,7 +276,7 @@ public final class OutlineTreeSelectionListener implements
                    * Highlight the identifier in the first child
                    */
                   DefaultMutableTreeNode nodeId = ( DefaultMutableTreeNode ) currentRowChild
-                      .getChildAt ( identifier.getBoundedIdentifierIndex ( ) ) ;
+                      .getChildAt ( identifier.boundedIdentifierIndex ( ) ) ;
                   OutlineNode idOutlineNode = ( OutlineNode ) nodeId
                       .getUserObject ( ) ;
                   idOutlineNode.enableBindingColor ( ) ;
@@ -290,25 +288,26 @@ public final class OutlineTreeSelectionListener implements
             else
             {
               if ( list.get ( i ).getExpression ( ) == identifier
-                  .getBoundedExpression ( ) )
+                  .boundedExpression ( ) )
               {
                 DefaultMutableTreeNode node = ( DefaultMutableTreeNode ) ( ( DefaultMutableTreeNode ) pTreePath
                     .getPath ( ) [ i ] ).getChildAt ( identifier
-                    .getBoundedIdentifierIndex ( ) ) ;
+                    .boundedIdentifierIndex ( ) ) ;
                 ( ( OutlineNode ) node.getUserObject ( ) )
                     .enableBindingColor ( ) ;
                 this.outlineUI.getTreeModel ( ).nodeChanged ( node ) ;
               }
-              PrettyAnnotation prettyAnnotation = list.get ( i )
-                  .getExpression ( ).toPrettyString ( )
-                  .getAnnotationForPrintable (
-                      identifier.getBoundedExpression ( ) ) ;
+              PrettyAnnotation prettyAnnotation = list
+                  .get ( i )
+                  .getExpression ( )
+                  .toPrettyString ( )
+                  .getAnnotationForPrintable ( identifier.boundedExpression ( ) ) ;
               list.get ( i ).setBoundedStart (
                   prettyAnnotation.getStartOffset ( )
-                      + identifier.getBoundedStart ( ) ) ;
+                      + identifier.boundedStart ( ) ) ;
               list.get ( i ).setBoundedEnd (
                   prettyAnnotation.getStartOffset ( )
-                      + identifier.getBoundedEnd ( ) ) ;
+                      + identifier.boundedEnd ( ) ) ;
             }
           }
           catch ( IllegalArgumentException e )
