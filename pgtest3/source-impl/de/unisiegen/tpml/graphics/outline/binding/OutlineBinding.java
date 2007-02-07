@@ -308,10 +308,10 @@ public final class OutlineBinding
     if ( pExpression.getName ( ).equals ( this.identifier ) )
     {
       this.list.add ( pExpression ) ;
-      pExpression.setBoundedExpression ( this.boundedExpression ) ;
-      pExpression.setBoundedStart ( this.boundedStart ) ;
-      pExpression.setBoundedEnd ( this.boundedEnd ) ;
-      pExpression.setBoundedIdentifierIndex ( this.boundedIdentifierIndex ) ;
+      //pExpression.setBoundedExpression ( this.boundedExpression ) ;
+      //pExpression.setBoundedStart ( this.boundedStart ) ;
+      //pExpression.setBoundedEnd ( this.boundedEnd ) ;
+      //pExpression.setBoundedIdentifierIndex ( this.boundedIdentifierIndex ) ;
     }
   }
 
