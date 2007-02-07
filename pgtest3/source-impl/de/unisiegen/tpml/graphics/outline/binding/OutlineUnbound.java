@@ -77,15 +77,21 @@ public final class OutlineUnbound
         }
         catch ( IllegalArgumentException e )
         {
-          // Do nothing
+          System.err.println ( "IllegalArgumentException: " //$NON-NLS-1$
+              + this.getClass ( ).getCanonicalName ( ) + "." + FIND //$NON-NLS-1$
+              + pExpression.getClass ( ).getSimpleName ( ) ) ;
         }
         catch ( IllegalAccessException e )
         {
-          // Do nothing
+          System.err.println ( "IllegalAccessException: " //$NON-NLS-1$
+              + this.getClass ( ).getCanonicalName ( ) + "." + FIND //$NON-NLS-1$
+              + pExpression.getClass ( ).getSimpleName ( ) ) ;
         }
         catch ( InvocationTargetException e )
         {
-          // Do nothing
+          System.err.println ( "InvocationTargetException: " //$NON-NLS-1$
+              + this.getClass ( ).getCanonicalName ( ) + "." + FIND //$NON-NLS-1$
+              + pExpression.getClass ( ).getSimpleName ( ) ) ;
         }
         return ;
       }
