@@ -33,6 +33,10 @@ public interface Language {
    */
   public String getName();
   
+  
+  public int getId () ;
+  
+  
   /**
    * Returns the title of the language, i.e. <tt>"Pure untyped lambda calculus"</tt>.
    * 

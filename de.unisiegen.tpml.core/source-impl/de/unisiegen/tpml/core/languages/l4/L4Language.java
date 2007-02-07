@@ -11,6 +11,7 @@ import de.unisiegen.tpml.core.languages.LanguageScanner;
 import de.unisiegen.tpml.core.languages.LanguageTranslator;
 import de.unisiegen.tpml.core.languages.LanguageTypeParser;
 import de.unisiegen.tpml.core.languages.LanguageTypeScanner;
+import de.unisiegen.tpml.core.languages.l0.L0Language;
 import de.unisiegen.tpml.core.languages.l3.L3Language;
 import de.unisiegen.tpml.core.smallstep.SmallStepProofModel;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel;
@@ -84,6 +85,13 @@ public class L4Language extends L3Language {
   public String getName() {
     return "L4"; //$NON-NLS-1$
   }
+  
+  
+  public int getId ()
+  {
+    return L4Language.L4;
+  }
+  
   
   /**
    * {@inheritDoc}

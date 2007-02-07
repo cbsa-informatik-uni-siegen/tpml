@@ -9,6 +9,7 @@ import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.languages.LanguageParser;
 import de.unisiegen.tpml.core.languages.LanguageScanner;
 import de.unisiegen.tpml.core.languages.LanguageTranslator;
+import de.unisiegen.tpml.core.languages.l0.L0Language;
 import de.unisiegen.tpml.core.languages.l1.L1Language;
 import de.unisiegen.tpml.core.smallstep.SmallStepProofModel;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel;
@@ -77,6 +78,13 @@ public class L2Language extends L1Language {
   public String getName() {
     return "L2"; //$NON-NLS-1$
   }
+  
+  
+  public int getId ()
+  {
+    return L2Language.L2;
+  }
+  
   
   /**
    * {@inheritDoc}

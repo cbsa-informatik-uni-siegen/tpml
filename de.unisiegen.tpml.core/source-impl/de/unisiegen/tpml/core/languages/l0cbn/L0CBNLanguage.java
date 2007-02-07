@@ -56,7 +56,13 @@ public class L0CBNLanguage extends L0Language
     return "L0CBN" ; //$NON-NLS-1$
   }
 
+  
+  public int getId ()
+  {
+    return L0Language.L0;
+  }
 
+  
   /**
    * {@inheritDoc}
    * 

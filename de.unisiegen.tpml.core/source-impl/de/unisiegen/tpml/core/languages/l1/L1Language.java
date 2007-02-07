@@ -80,6 +80,13 @@ public class L1Language extends L0Language {
     return "L1"; //$NON-NLS-1$
   }
   
+  
+  public int getId ()
+  {
+    return L1Language.L1;
+  }
+  
+  
   /**
    * {@inheritDoc}
    *

@@ -73,6 +73,13 @@ public class L0Language extends AbstractLanguage {
     return "L0"; //$NON-NLS-1$
   }
   
+  
+  public int getId ()
+  {
+    return L0Language.L0;
+  }
+  
+  
   /**
    * {@inheritDoc}
    *
