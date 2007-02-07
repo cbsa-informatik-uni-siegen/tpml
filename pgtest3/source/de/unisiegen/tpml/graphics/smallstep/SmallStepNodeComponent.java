@@ -85,6 +85,7 @@ import de.unisiegen.tpml.graphics.outline.ui.OutlineUI;
  * 
  * @author Marcell Fischbach
  * @author Benedikt Meurer
+ * @author Michael Oeste
  * @version $Rev$
  * 
  * @see de.unisiegen.tpml.graphics.smallstep.SmallStepView
@@ -189,8 +190,10 @@ public class SmallStepNodeComponent extends JComponent
   private MouseMotionAdapter underlineRuleAdapter;
 
   private JPopupMenu menu;
+  private ArrayList <MenuRuleItem> revertMenu = new  ArrayList <MenuRuleItem> ();
   
   private ArrayList<MenuRuleItem> last10Elements;
+  private ArrayList<MenuRuleItem> revertLast10Elements = new ArrayList <MenuRuleItem>();;
 
   private Preferences preferences;
 
@@ -538,10 +541,12 @@ public class SmallStepNodeComponent extends JComponent
                 ActionListener al = new ActionListener() {
                   public void actionPerformed(ActionEvent e)
                   {
-                    // Wenn ein Elemtnt aus dem Hauptmenü gedrückt wurde wird
+                    //zum erventuellen Rückgänging machen zustand speichern
+                  	saveToRevert();
+                  	// Wenn ein Elemtnt aus dem Hauptmenü gedrückt wurde wird
                     // die Regel nach oben verschoben
                   	moveToTop(((MenuRuleItem) e.getSource()).getLabel(), max);
-                  	
+                  	save();
                     
                     // wird nicht benötigt, macht ein MenuRuleItem automatisch
                     // menuItemActivated((JMenuItem)e.getSource());
@@ -701,6 +706,7 @@ public class SmallStepNodeComponent extends JComponent
                   lastUsed.addActionListener(al);
                   if (!isIn)
                   {
+                  	saveToRevert();
                     menu.insert(lastUsed, 0);
                     last10Elements.add(0, lastUsed);
                   }
@@ -747,6 +753,7 @@ public class SmallStepNodeComponent extends JComponent
                   //WEnn es nicht in der Liste ist wird es eingefügt, und das letze herausgenommen (es sind max elemente, das max. wird herausgenommen)
                   if (!isIn)
                   {
+                  	saveToRevert();
                     last10Elements.add(0, lastUsed);
                     menu.insert(lastUsed, 0);
                     last10Elements.remove(max);
@@ -850,6 +857,10 @@ public class SmallStepNodeComponent extends JComponent
     }
 	}
 
+	/**
+	 * saves the state of the menu (last 10 elements) to the windows regestry
+	 *
+	 */
 	private void save()
 	{
 		for (int i = 0; i < last10Elements.size(); i++)
@@ -857,7 +868,78 @@ public class SmallStepNodeComponent extends JComponent
       // System.out.println(last10Elements.get(i).getLabel());
       preferences.put("rule" + i, last10Elements.get(i).getLabel());
     }
+	}
+	
+	private void saveToRevert()
+	{
+		//als erstes das Menü durchlaufen und in die Liste packen
+		if (revertMenu.size()>0)
+			{
+				revertMenu.clear();
+			}
 		
+		boolean isRuleItem = false;
+		
+		int i = 0;
+		
+		if (menu.getComponent(i) instanceof MenuRuleItem)
+		{
+			isRuleItem = true;
+		}
+		
+		while (isRuleItem)
+		{
+			revertMenu.add(i, (MenuRuleItem)menu.getComponent(i));
+			i++;
+			if (menu.getComponent(i) instanceof MenuRuleItem)
+			{
+				isRuleItem = true;
+			}
+			else
+			{
+				isRuleItem = false;
+			}
+		}
+		
+		//jetzt die Last10Elements sichern
+		revertLast10Elements.clear();
+		revertLast10Elements.addAll(last10Elements);
+	}
+	
+	private void revertMenu()
+	{
+		//als erstes das Menü von den Einträgen befreien
+		boolean isRuleItem = false;
+		
+		int i = 0;
+		
+		if (menu.getComponent(i) instanceof MenuRuleItem)
+		{
+			isRuleItem = true;
+		}
+		
+		while (isRuleItem)
+		{
+			menu.remove(i);
+			if (menu.getComponent(i) instanceof MenuRuleItem)
+			{
+				isRuleItem = true;
+			}
+			else
+			{
+				isRuleItem = false;
+			}
+		}
+		
+		//Die Einträge wieder hinzufügen
+		for (i=0; i<revertMenu.size(); i++)
+		{
+			menu.insert(revertMenu.get(i),i);
+		}
+		
+		//last10Elements zurücksetzen
+		last10Elements.clear();
+		last10Elements.addAll(revertLast10Elements);
 	}
 
 	/**
@@ -946,6 +1028,9 @@ public class SmallStepNodeComponent extends JComponent
       }
       catch (Exception exc)
       {
+      	//Die Änderung an dem Menü rückgängig machen
+      	revertMenu();
+      	save();
         this.rules.setWrongRule(rule);
 
       }
