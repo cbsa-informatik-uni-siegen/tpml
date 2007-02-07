@@ -274,15 +274,21 @@ public final class OutlineBinding
         }
         catch ( IllegalArgumentException e )
         {
-          // Do nothing
+          System.err.println ( "IllegalArgumentException: " //$NON-NLS-1$
+              + this.getClass ( ).getCanonicalName ( ) + "." + FIND //$NON-NLS-1$
+              + pExpression.getClass ( ).getSimpleName ( ) ) ;
         }
         catch ( IllegalAccessException e )
         {
-          // Do nothing
+          System.err.println ( "IllegalAccessException: " //$NON-NLS-1$
+              + this.getClass ( ).getCanonicalName ( ) + "." + FIND //$NON-NLS-1$
+              + pExpression.getClass ( ).getSimpleName ( ) ) ;
         }
         catch ( InvocationTargetException e )
         {
-          // Do nothing
+          System.err.println ( "InvocationTargetException: " //$NON-NLS-1$
+              + this.getClass ( ).getCanonicalName ( ) + "." + FIND //$NON-NLS-1$
+              + pExpression.getClass ( ).getSimpleName ( ) ) ;
         }
       }
     }
@@ -495,24 +501,38 @@ public final class OutlineBinding
   @ SuppressWarnings ( "unused" )
   private final void findRow ( Row pExpression )
   {
+    boolean equalIdFound = false ;
     for ( int i = 0 ; i < pExpression.getExpressions ( ).length ; i ++ )
     {
-      if ( pExpression.getExpressions ( i ) instanceof Attr )
+      Expression child = pExpression.getExpressions ( i ) ;
+      if ( child instanceof Attr )
       {
-        Attr attr = ( Attr ) pExpression.getExpressions ( i ) ;
+        Attr attr = ( Attr ) child ;
         findExpression ( attr ) ;
         if ( attr.getId ( ).equals ( this.identifier ) )
         {
           /*
-           * Search is finished, because all Identifiers in the Row are bounded
-           * to the Identifier in this child expression.
+           * Search is finished for Meth and CurriedMeth, because all
+           * Identifiers in the Row are bounded to the Identifier in this Attr.
+           * Identifiers in Attr can still be bound, so the search is not
+           * finished.
            */
-          return ;
+          equalIdFound = true ;
         }
       }
-      else
+      else if ( child instanceof Meth )
       {
-        findExpression ( pExpression.getExpressions ( i ) ) ;
+        if ( ! equalIdFound )
+        {
+          findExpression ( child ) ;
+        }
+      }
+      else if ( child instanceof CurriedMeth )
+      {
+        if ( ! equalIdFound )
+        {
+          findExpression ( child ) ;
+        }
       }
     }
   }

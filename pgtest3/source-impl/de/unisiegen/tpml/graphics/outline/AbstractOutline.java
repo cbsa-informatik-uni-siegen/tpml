@@ -499,17 +499,20 @@ public final class AbstractOutline implements Outline
         }
         catch ( IllegalArgumentException e )
         {
-          System.err.println ( "IllegalArgumentException: " + CHECK //$NON-NLS-1$
+          System.err.println ( "IllegalArgumentException: " //$NON-NLS-1$
+              + this.getClass ( ).getCanonicalName ( ) + "." + CHECK //$NON-NLS-1$
               + pExpression.getClass ( ).getSimpleName ( ) ) ;
         }
         catch ( IllegalAccessException e )
         {
-          System.err.println ( "IllegalAccessException: " + CHECK //$NON-NLS-1$
+          System.err.println ( "IllegalAccessException: " //$NON-NLS-1$
+              + this.getClass ( ).getCanonicalName ( ) + "." + CHECK //$NON-NLS-1$
               + pExpression.getClass ( ).getSimpleName ( ) ) ;
         }
         catch ( InvocationTargetException e )
         {
-          System.err.println ( "InvocationTargetException: " + CHECK //$NON-NLS-1$
+          System.err.println ( "InvocationTargetException: " //$NON-NLS-1$
+              + this.getClass ( ).getCanonicalName ( ) + "." + CHECK //$NON-NLS-1$
               + pExpression.getClass ( ).getSimpleName ( ) ) ;
         }
       }
@@ -916,9 +919,10 @@ public final class AbstractOutline implements Outline
         pExpression , this.outlineUnbound ) ) ;
     for ( int i = 0 ; i < pExpression.getExpressions ( ).length ; i ++ )
     {
-      if ( pExpression.getExpressions ( i ) instanceof Attr )
+      Expression currentChild = pExpression.getExpressions ( i ) ;
+      if ( currentChild instanceof Attr )
       {
-        Attr attr = ( Attr ) pExpression.getExpressions ( i ) ;
+        Attr attr = ( Attr ) currentChild ;
         OutlineNode outlineNode = new OutlineNode ( attr , this.outlineUnbound ) ;
         outlineNode.appendDescription ( EXPRESSION + ( i + 1 ) + BETWEEN ) ;
         outlineNode.resetCaption ( ) ;
@@ -930,10 +934,13 @@ public final class AbstractOutline implements Outline
             outlinePairId.getStart ( ) , outlinePairId.getEnd ( ) , 0 ) ;
         for ( int j = i + 1 ; j < pExpression.getExpressions ( ).length ; j ++ )
         {
-          Expression child = pExpression.getExpressions ( j ) ;
-          outlineBinding.find ( child , attr.getId ( ) ) ;
-          if ( ( child instanceof Attr )
-              && ( ( ( Attr ) child ).getId ( ).equals ( attr.getId ( ) ) ) )
+          Expression tmpChild = pExpression.getExpressions ( j ) ;
+          if ( ! ( tmpChild instanceof Attr ) )
+          {
+            outlineBinding.find ( tmpChild , attr.getId ( ) ) ;
+          }
+          if ( ( tmpChild instanceof Attr )
+              && ( ( ( Attr ) tmpChild ).getId ( ).equals ( attr.getId ( ) ) ) )
           {
             break ;
           }
@@ -955,19 +962,17 @@ public final class AbstractOutline implements Outline
         createChildren ( attr , nodeAttr ) ;
         node.add ( nodeAttr ) ;
       }
-      else if ( pExpression.getExpressions ( i ) instanceof Meth )
+      else if ( currentChild instanceof Meth )
       {
-        DefaultMutableTreeNode treeNode = checkExpression ( pExpression
-            .getExpressions ( i ) ) ;
+        DefaultMutableTreeNode treeNode = checkExpression ( currentChild ) ;
         OutlineNode outlineNode = ( OutlineNode ) treeNode.getUserObject ( ) ;
         outlineNode.appendDescription ( EXPRESSION + ( i + 1 ) + BETWEEN ) ;
         outlineNode.resetCaption ( ) ;
         node.add ( treeNode ) ;
       }
-      else if ( pExpression.getExpressions ( i ) instanceof CurriedMeth )
+      else if ( currentChild instanceof CurriedMeth )
       {
-        DefaultMutableTreeNode treeNode = checkExpression ( pExpression
-            .getExpressions ( i ) ) ;
+        DefaultMutableTreeNode treeNode = checkExpression ( currentChild ) ;
         OutlineNode outlineNode = ( OutlineNode ) treeNode.getUserObject ( ) ;
         outlineNode.appendDescription ( EXPRESSION + ( i + 1 ) + BETWEEN ) ;
         outlineNode.resetCaption ( ) ;
