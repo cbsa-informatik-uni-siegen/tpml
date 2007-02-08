@@ -5,11 +5,14 @@ import java.awt.Color ;
 import de.unisiegen.tpml.core.expressions.BinaryOperator ;
 import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.expressions.Identifier ;
+import de.unisiegen.tpml.core.expressions.InfixOperation ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyCharIterator ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStyle ;
+import de.unisiegen.tpml.core.types.Type ;
 import de.unisiegen.tpml.graphics.Theme ;
 import de.unisiegen.tpml.graphics.outline.binding.OutlineBinding ;
+import de.unisiegen.tpml.graphics.outline.binding.OutlinePair ;
 import de.unisiegen.tpml.graphics.outline.binding.OutlineUnbound ;
 
 
@@ -25,6 +28,12 @@ public final class OutlineNode
    * The {@link Expression} should not be shown in this nodes.
    */
   private static final int NO_SELECTION = - 1 ;
+
+
+  /**
+   * There is no {@link Identifier} in this {@link Expression}.
+   */
+  private static final int NO_IDENTIFIER = - 1 ;
 
 
   /**
@@ -297,7 +306,8 @@ public final class OutlineNode
 
 
   /**
-   * This constructor initializes the values and loads the description.
+   * This constructor initializes the values and loads the description. It is
+   * used for {@link Expression}s.
    * 
    * @param pExpression The {@link Expression} repressented by this node.
    * @param pOutlineUnbound The {@link OutlineUnbound} which repressents the
@@ -305,11 +315,11 @@ public final class OutlineNode
    */
   public OutlineNode ( Expression pExpression , OutlineUnbound pOutlineUnbound )
   {
-    this.expressionString = pExpression.toPrettyString ( ).toString ( ) ;
     this.expression = pExpression ;
     this.description = pExpression.getCaption ( ) ;
-    this.startIndex = - 1 ;
-    this.endIndex = - 1 ;
+    this.expressionString = pExpression.toPrettyString ( ).toString ( ) ;
+    this.startIndex = NO_IDENTIFIER ;
+    this.endIndex = NO_IDENTIFIER ;
     this.outlineBinding = null ;
     this.outlineUnbound = pOutlineUnbound ;
     this.replaceInThisNode = false ;
@@ -321,26 +331,25 @@ public final class OutlineNode
 
 
   /**
-   * This constructor initializes the values and loads the description.
+   * This constructor initializes the values and loads the description. It is
+   * used for {@link InfixOperation}.
    * 
    * @param pExpression The {@link Expression} repressented by this node.
    * @param pExpressionString The {@link Expression} as a <code>String</code>.
    * @param pStartIndex The start index of the {@link Identifier}.
    * @param pEndIndex The end index of the {@link Identifier}.
-   * @param pOutlineBinding The bindings in this node.
    * @param pOutlineUnbound The {@link OutlineUnbound} which repressents the
    *          unbound {@link Identifier}s in all nodes
    */
   public OutlineNode ( Expression pExpression , String pExpressionString ,
-      int pStartIndex , int pEndIndex , OutlineBinding pOutlineBinding ,
-      OutlineUnbound pOutlineUnbound )
+      int pStartIndex , int pEndIndex , OutlineUnbound pOutlineUnbound )
   {
     this.expression = pExpression ;
     this.description = pExpression.getCaption ( ) ;
     this.expressionString = pExpressionString ;
     this.startIndex = pStartIndex ;
     this.endIndex = pEndIndex ;
-    this.outlineBinding = pOutlineBinding ;
+    this.outlineBinding = null ;
     this.outlineUnbound = pOutlineUnbound ;
     this.replaceInThisNode = false ;
     this.hasBinding = false ;
@@ -351,7 +360,8 @@ public final class OutlineNode
 
 
   /**
-   * This constructor initializes the values and loads the description.
+   * This constructor initializes the values and loads the description. It is
+   * used for {@link Type}s.
    * 
    * @param pDescription The description of this node.
    * @param pExpressionString The {@link Expression} as a <code>String</code>.
@@ -365,11 +375,41 @@ public final class OutlineNode
       int pStartIndex , int pEndIndex , OutlineBinding pOutlineBinding ,
       OutlineUnbound pOutlineUnbound )
   {
+    this.expression = null ;
     this.description = pDescription ;
     this.expressionString = pExpressionString ;
-    this.expression = null ;
     this.startIndex = pStartIndex ;
     this.endIndex = pEndIndex ;
+    this.outlineBinding = pOutlineBinding ;
+    this.outlineUnbound = pOutlineUnbound ;
+    this.replaceInThisNode = false ;
+    this.hasBinding = true ;
+    this.boundedStart = NO_BINDING ;
+    this.boundedEnd = NO_BINDING ;
+    resetCaption ( ) ;
+  }
+
+
+  /**
+   * This constructor initializes the values and loads the description. It is
+   * used for {@link Identifier}s.
+   * 
+   * @param pDescription The description of this node.
+   * @param pExpressionString The {@link Expression} as a <code>String</code>.
+   * @param pOutlinePair The start and the end index of the {@link Identifier}.
+   * @param pOutlineBinding The bindings in this node.
+   * @param pOutlineUnbound The {@link OutlineUnbound} which repressents the
+   *          unbound {@link Identifier}s in all nodes
+   */
+  public OutlineNode ( String pDescription , String pExpressionString ,
+      OutlinePair pOutlinePair , OutlineBinding pOutlineBinding ,
+      OutlineUnbound pOutlineUnbound )
+  {
+    this.expression = null ;
+    this.description = pDescription ;
+    this.expressionString = pExpressionString ;
+    this.startIndex = pOutlinePair.getStart ( ) ;
+    this.endIndex = pOutlinePair.getEnd ( ) ;
     this.outlineBinding = pOutlineBinding ;
     this.outlineUnbound = pOutlineUnbound ;
     this.replaceInThisNode = false ;
@@ -426,7 +466,7 @@ public final class OutlineNode
    */
   public final void enableSelectionColor ( )
   {
-    if ( this.startIndex != - 1 )
+    if ( this.startIndex != NO_IDENTIFIER )
     {
       StringBuffer result = new StringBuffer ( HTML ) ;
       result.append ( this.description ) ;
@@ -678,7 +718,7 @@ public final class OutlineNode
    */
   public final void resetCaption ( )
   {
-    if ( this.startIndex != - 1 )
+    if ( this.startIndex != NO_IDENTIFIER )
     {
       StringBuffer result = new StringBuffer ( HTML ) ;
       result.append ( this.description ) ;
