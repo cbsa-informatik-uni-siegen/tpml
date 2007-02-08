@@ -1,6 +1,7 @@
 package de.unisiegen.tpml.core.expressions ;
 
 
+import java.util.ArrayList ;
 import java.util.Set ;
 import java.util.TreeSet ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
@@ -173,11 +174,21 @@ public final class Row extends Expression
   @ Override
   public boolean isValue ( )
   {
+    ArrayList < String > attrNames = new ArrayList < String > ( ) ;
     for ( Expression e : this.expressions )
     {
-      if ( ( e instanceof Attr ) && ( ! ( ( Attr ) e ).isValue ( ) ) )
+      if ( e instanceof Attr )
       {
-        return false ;
+        Attr attr = ( Attr ) e ;
+        if ( ! attr.isValue ( ) )
+        {
+          return false ;
+        }
+        if ( attrNames.contains ( attr.getId ( ) ) )
+        {
+          return false ;
+        }
+        attrNames.add ( attr.getId ( ) ) ;
       }
     }
     return true ;
