@@ -4,7 +4,7 @@ package de.unisiegen.tpml.core.languages.l1cbn ;
 import de.unisiegen.tpml.core.Messages ;
 import de.unisiegen.tpml.core.bigstep.BigStepProofModel ;
 import de.unisiegen.tpml.core.expressions.Expression ;
-import de.unisiegen.tpml.core.languages.l0.L0Language;
+import de.unisiegen.tpml.core.languages.l0.L0Language ;
 import de.unisiegen.tpml.core.languages.l1.L1Language ;
 import de.unisiegen.tpml.core.smallstep.SmallStepProofModel ;
 
@@ -24,6 +24,14 @@ import de.unisiegen.tpml.core.smallstep.SmallStepProofModel ;
  */
 public class L1CBNLanguage extends L1Language
 {
+  /**
+   * The group id for proof rules of this language.
+   * 
+   * @see de.unisiegen.tpml.core.AbstractProofRule#getGroup()
+   */
+  public static final int L1CBN = L1Language.L1 + 1 ;
+
+
   /**
    * Allocates a new <code>L1CBNLanguage</code> instance.
    */
@@ -56,13 +64,13 @@ public class L1CBNLanguage extends L1Language
     return "L1CBN" ; //$NON-NLS-1$
   }
 
-  
-  public int getId ()
+
+  public int getId ( )
   {
-    return L1Language.L1;
+    return L1CBNLanguage.L1CBN ;
   }
-  
-  
+
+
   /**
    * {@inheritDoc}
    * 

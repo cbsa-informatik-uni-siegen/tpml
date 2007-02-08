@@ -25,6 +25,14 @@ import de.unisiegen.tpml.core.smallstep.SmallStepProofModel ;
 public class L0CBNLanguage extends L0Language
 {
   /**
+   * The group id for proof rules of this language.
+   * 
+   * @see de.unisiegen.tpml.core.AbstractProofRule#getGroup()
+   */
+  public static final int L0CBN = L0Language.L0 + 1 ;
+
+
+  /**
    * Allocates a new <code>L2CBNLanguage</code> instance.
    */
   public L0CBNLanguage ( )
@@ -56,13 +64,13 @@ public class L0CBNLanguage extends L0Language
     return "L0CBN" ; //$NON-NLS-1$
   }
 
-  
-  public int getId ()
+
+  public int getId ( )
   {
-    return L0Language.L0;
+    return L0CBNLanguage.L0CBN ;
   }
 
-  
+
   /**
    * {@inheritDoc}
    * 

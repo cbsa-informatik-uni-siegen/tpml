@@ -9,9 +9,8 @@ import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.languages.LanguageParser ;
 import de.unisiegen.tpml.core.languages.LanguageScanner ;
 import de.unisiegen.tpml.core.languages.LanguageTranslator ;
-import de.unisiegen.tpml.core.languages.l0.L0Language;
 import de.unisiegen.tpml.core.languages.l2.L2Language ;
-import de.unisiegen.tpml.core.languages.l4.L4Language ;
+import de.unisiegen.tpml.core.languages.l2cbn.L2CBNLanguage ;
 import de.unisiegen.tpml.core.smallstep.SmallStepProofModel ;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel ;
 
@@ -27,7 +26,7 @@ public class L2OLanguage extends L2Language
   /**
    * TODO
    */
-  public static final int L2O = L4Language.L4 + 1 ;
+  public static final int L2O = L2CBNLanguage.L2CBN + 1 ;
 
 
   /**
@@ -57,14 +56,14 @@ public class L2OLanguage extends L2Language
   {
     return "L2O" ; //$NON-NLS-1$
   }
-  
-  
-  public int getId ()
+
+
+  public int getId ( )
   {
-    return L2OLanguage.L2O;
+    return L2OLanguage.L2O ;
   }
-  
-  
+
+
   /**
    * {@inheritDoc}
    */

@@ -4,7 +4,6 @@ package de.unisiegen.tpml.core.languages.l2cbn ;
 import de.unisiegen.tpml.core.Messages ;
 import de.unisiegen.tpml.core.bigstep.BigStepProofModel ;
 import de.unisiegen.tpml.core.expressions.Expression ;
-import de.unisiegen.tpml.core.languages.l0.L0Language;
 import de.unisiegen.tpml.core.languages.l2.L2Language ;
 import de.unisiegen.tpml.core.smallstep.SmallStepProofModel ;
 
@@ -25,6 +24,12 @@ import de.unisiegen.tpml.core.smallstep.SmallStepProofModel ;
  */
 public class L2CBNLanguage extends L2Language
 {
+  /**
+   * TODO
+   */
+  public static final int L2CBN = L2Language.L2 + 1 ;
+
+
   /**
    * Allocates a new <code>L2CBNLanguage</code> instance.
    */
@@ -58,12 +63,12 @@ public class L2CBNLanguage extends L2Language
   }
 
 
-  public int getId ()
+  public int getId ( )
   {
-    return L2Language.L2;
+    return L2CBNLanguage.L2CBN ;
   }
-  
-  
+
+
   /**
    * {@inheritDoc}
    * 
