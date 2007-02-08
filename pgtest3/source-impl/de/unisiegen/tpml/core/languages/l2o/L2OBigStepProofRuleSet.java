@@ -27,12 +27,14 @@ public class L2OBigStepProofRuleSet extends L2BigStepProofRuleSet
   public L2OBigStepProofRuleSet ( L2OLanguage pL2OLanguage )
   {
     super ( pL2OLanguage ) ;
-    registerByMethodName ( L2OLanguage.L2O , "OBJ" , "applyObj" , //$NON-NLS-1$//$NON-NLS-2$
-        "updateObj" ) ; //$NON-NLS-1$
-    registerByMethodName ( L2OLanguage.L2O , "ATTR" , "applyAttr" , //$NON-NLS-1$ //$NON-NLS-2$
-        "updateAttr" ) ; //$NON-NLS-1$
-    registerByMethodName ( L2OLanguage.L2O , "SEND" , "applySend" , //$NON-NLS-1$//$NON-NLS-2$
-        "updateSend" ) ; //$NON-NLS-1$
+    /*
+     * registerByMethodName ( L2OLanguage.L2O , "OBJ" , "applyObj" ,
+     * //$NON-NLS-1$//$NON-NLS-2$ "updateObj" ) ; //$NON-NLS-1$
+     * registerByMethodName ( L2OLanguage.L2O , "ATTR" , "applyAttr" ,
+     * //$NON-NLS-1$ //$NON-NLS-2$ "updateAttr" ) ; //$NON-NLS-1$
+     * registerByMethodName ( L2OLanguage.L2O , "SEND" , "applySend" ,
+     * //$NON-NLS-1$//$NON-NLS-2$ "updateSend" ) ; //$NON-NLS-1$
+     */
   }
 
 
@@ -141,8 +143,8 @@ public class L2OBigStepProofRuleSet extends L2BigStepProofRuleSet
         if ( row.getExpressions ( i ) instanceof Attr )
         {
           Attr attr = ( Attr ) row.getExpressions ( i ) ;
-          tmp [ i ] = new Attr ( attr.getId ( ) , attr.getTau ( ) ,
-              pNode.getChildAt ( nodeCount ).getResult ( ).getValue ( ) ) ;
+          tmp [ i ] = new Attr ( attr.getId ( ) , attr.getTau ( ) , pNode
+              .getChildAt ( nodeCount ).getResult ( ).getValue ( ) ) ;
           nodeCount ++ ;
         }
       }
