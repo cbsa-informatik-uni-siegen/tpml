@@ -133,9 +133,10 @@ public final class AbstractOutline implements Outline
 
 
   /**
-   * The old {@link Expression} to check if the {@link Expression} has changed.
+   * The loaded {@link Expression} to check if the {@link Expression} has
+   * changed.
    */
-  private Expression oldExpression ;
+  private Expression loadedExpression ;
 
 
   /**
@@ -156,7 +157,7 @@ public final class AbstractOutline implements Outline
    */
   public AbstractOutline ( )
   {
-    this.oldExpression = null ;
+    this.loadedExpression = null ;
     this.outlinePreferences = new OutlinePreferences ( ) ;
     this.outlineUI = new OutlineUI ( this ) ;
   }
@@ -1007,21 +1008,17 @@ public final class AbstractOutline implements Outline
   {
     DefaultMutableTreeNode node = new DefaultMutableTreeNode ( new OutlineNode (
         pExpression , this.outlineUnbound ) ) ;
-    ArrayList < OutlinePair > list = OutlineStyle.getIndex ( pExpression ,
-        PrettyStyle.IDENTIFIER ) ;
     /*
      * Create the Identifier.
      */
-    if ( ( ! pExpression.getId ( ).equals ( "self" ) ) && ( list.size ( ) > 0 ) ) //$NON-NLS-1$
-    {
-      OutlinePair outlinePairId = list.get ( 0 ) ;
-      OutlineBinding outlineBinding = new OutlineBinding ( pExpression ,
-          outlinePairId.getStart ( ) , outlinePairId.getEnd ( ) , 0 ) ;
-      outlineBinding.find ( pExpression.getE ( ) , pExpression.getId ( ) ) ;
-      node.add ( new DefaultMutableTreeNode ( new OutlineNode ( IDENTIFIER ,
-          pExpression.getId ( ) , outlinePairId , outlineBinding ,
-          this.outlineUnbound ) ) ) ;
-    }
+    OutlinePair outlinePairId = OutlineStyle.getIndex ( pExpression ,
+        PrettyStyle.IDENTIFIER ).get ( 0 ) ;
+    OutlineBinding outlineBinding = new OutlineBinding ( pExpression ,
+        outlinePairId.getStart ( ) , outlinePairId.getEnd ( ) , 0 ) ;
+    outlineBinding.find ( pExpression.getE ( ) , pExpression.getId ( ) ) ;
+    node.add ( new DefaultMutableTreeNode ( new OutlineNode ( IDENTIFIER ,
+        pExpression.getId ( ) , outlinePairId , outlineBinding ,
+        this.outlineUnbound ) ) ) ;
     /*
      * Create the Type of this Expression if it is not null.
      */
@@ -1221,8 +1218,8 @@ public final class AbstractOutline implements Outline
    */
   public final void execute ( )
   {
-    this.outlineUnbound = new OutlineUnbound ( this.oldExpression ) ;
-    DefaultMutableTreeNode root = checkExpression ( this.oldExpression ) ;
+    this.outlineUnbound = new OutlineUnbound ( this.loadedExpression ) ;
+    DefaultMutableTreeNode root = checkExpression ( this.loadedExpression ) ;
     SwingUtilities
         .invokeLater ( new OutlineDisplayTree ( this.outlineUI , root ) ) ;
   }
@@ -1318,8 +1315,8 @@ public final class AbstractOutline implements Outline
    */
   public final void loadExpression ( Expression pExpression , int pModus )
   {
-    if ( ( this.oldExpression != null )
-        && ( pExpression.equals ( this.oldExpression ) ) )
+    if ( ( this.loadedExpression != null )
+        && ( pExpression.equals ( this.loadedExpression ) ) )
     {
       return ;
     }
@@ -1336,7 +1333,7 @@ public final class AbstractOutline implements Outline
     {
       return ;
     }
-    this.oldExpression = pExpression ;
+    this.loadedExpression = pExpression ;
     executeTimerCancel ( ) ;
     if ( ( pModus == Outline.INIT ) || ( pModus == Outline.MOUSE_CLICK ) )
     {
