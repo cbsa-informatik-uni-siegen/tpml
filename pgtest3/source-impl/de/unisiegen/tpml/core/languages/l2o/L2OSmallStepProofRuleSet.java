@@ -32,7 +32,7 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
     super ( pL2OLanguage ) ;
     // Obj
     register ( L2OLanguage.L2O , "OBJ-EVAL" , false ) ; //$NON-NLS-1$
-    register ( L2OLanguage.L2O , "OBJ-SEND" , true ) ; //$NON-NLS-1$
+    register ( L2OLanguage.L2O , "OBJ-UNFOLD" , true ) ; //$NON-NLS-1$
     // Attr
     register ( L2OLanguage.L2O , "ATTR-EVAL" , false ) ; //$NON-NLS-1$
     register ( L2OLanguage.L2O , "ATTR-RIGHT" , false ) ; //$NON-NLS-1$
@@ -80,69 +80,48 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
   {
     if ( ! pMessage.getE ( ).isValue ( ) )
     {
+      // SEND-EVAL
       pContext.addProofStep ( getRuleByName ( "SEND-EVAL" ) , pMessage ) ; //$NON-NLS-1$
-      Expression e = evaluate ( pContext , pMessage.getE ( ) ) ;
-      if ( e.isException ( ) )
+      Expression expr = evaluate ( pContext , pMessage.getE ( ) ) ;
+      if ( expr.isException ( ) )
       {
-        return e ;
+        return expr ;
       }
-      return new Message ( e , pMessage.getId ( ) ) ;
+      return new Message ( expr , pMessage.getId ( ) ) ;
     }
-    if ( pMessage.getE ( ) instanceof ObjectExpr )
+    else if ( pMessage.getE ( ) instanceof ObjectExpr )
     {
-      pContext.addProofStep ( getRuleByName ( "OBJ-SEND" ) , pMessage ) ; //$NON-NLS-1$
-      ObjectExpr o = ( ObjectExpr ) pMessage.getE ( ) ;
-      Row r = ( Row ) o.getE ( ) ;
-      Expression newRow = r.substitute ( "self" , o.clone ( ) ) ; //$NON-NLS-1$
+      // OBJ-UNFOLD
+      pContext.addProofStep ( getRuleByName ( "OBJ-UNFOLD" ) , pMessage ) ; //$NON-NLS-1$
+      ObjectExpr objectExpr = ( ObjectExpr ) pMessage.getE ( ) ;
+      Row row = ( Row ) objectExpr.getE ( ) ;
+      Expression newRow = row.substitute ( objectExpr.getId ( ) , objectExpr
+          .clone ( ) ) ;
       return new Message ( newRow , pMessage.getId ( ) ) ;
     }
-    if ( pMessage.getE ( ) instanceof Row )
+    else if ( pMessage.getE ( ) instanceof Row )
     {
-      Expression firstExpr = ( ( Row ) pMessage.getE ( ) ).getExpressions ( 0 ) ;
-      if ( firstExpr instanceof Meth )
+      Row row = ( Row ) pMessage.getE ( ) ;
+      Expression firstRowChild = row.getExpressions ( 0 ) ;
+      if ( firstRowChild instanceof Attr )
       {
-        Row r = ( Row ) pMessage.getE ( ) ;
-        Meth m = ( Meth ) r.getExpressions ( 0 ) ;
-        if ( pMessage.getId ( ).equals ( m.getId ( ) ) )
+        // SEND-ATTR
+        Attr attr = ( Attr ) row.getExpressions ( 0 ) ;
+        pContext.addProofStep ( getRuleByName ( "SEND-ATTR" ) , attr ) ; //$NON-NLS-1$
+        Expression [ ] newRowE = new Expression [ row.getExpressions ( ).length - 1 ] ;
+        for ( int i = 0 ; i < newRowE.length ; i ++ )
         {
-          boolean definedLater = false ;
-          for ( int i = 1 ; i < r.getExpressions ( ).length ; i ++ )
-          {
-            Expression tmp = r.getExpressions ( i ) ;
-            if ( ( tmp instanceof Meth )
-                && ( ( ( Meth ) tmp ).getId ( ).equals ( pMessage.getId ( ) ) ) )
-            {
-              definedLater = true ;
-              break ;
-            }
-            if ( ( tmp instanceof CurriedMeth )
-                && ( ( ( CurriedMeth ) tmp ).getIdentifiers ( 0 )
-                    .equals ( pMessage.getId ( ) ) ) )
-            {
-              definedLater = true ;
-              break ;
-            }
-          }
-          if ( ! definedLater )
-          {
-            pContext.addProofStep ( getRuleByName ( "SEND-EXEC" ) , m ) ; //$NON-NLS-1$
-            return m.getE ( ) ;
-          }
+          newRowE [ i ] = row.getExpressions ( i + 1 ).substitute (
+              attr.getId ( ) , attr.getE ( ) ) ;
         }
-        pContext.addProofStep ( getRuleByName ( "SEND-SKIP" ) , m ) ; //$NON-NLS-1$
-        Expression [ ] newE = new Expression [ r.getExpressions ( ).length - 1 ] ;
-        for ( int i = 0 ; i < newE.length ; i ++ )
-        {
-          newE [ i ] = r.getExpressions ( i + 1 ).clone ( ) ;
-        }
-        return new Message ( new Row ( newE ) , pMessage.getId ( ) ) ;
+        return new Message ( new Row ( newRowE ) , pMessage.getId ( ) ) ;
       }
-      else if ( firstExpr instanceof CurriedMeth )
+      else if ( firstRowChild instanceof Meth )
       {
-        Row row = ( Row ) pMessage.getE ( ) ;
-        CurriedMeth cm = ( CurriedMeth ) row.getExpressions ( 0 ) ;
-        if ( pMessage.getId ( ).equals ( cm.getIdentifiers ( 0 ) ) )
+        Meth meth = ( Meth ) row.getExpressions ( 0 ) ;
+        if ( pMessage.getId ( ).equals ( meth.getId ( ) ) )
         {
+          // SEND-EXEC
           boolean definedLater = false ;
           for ( int i = 1 ; i < row.getExpressions ( ).length ; i ++ )
           {
@@ -163,104 +142,83 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
           }
           if ( ! definedLater )
           {
-            pContext.addProofStep ( getRuleByName ( "SEND-EXEC" ) , cm ) ; //$NON-NLS-1$
-            Expression e = cm.getE ( ) ;
-            for ( int i = cm.getIdentifiers ( ).length - 1 ; i > 0 ; i -- )
-            {
-              e = new Lambda ( cm.getIdentifiers ( i ) , null , e ) ;
-            }
-            // TODO Problem
-            return e ;
+            pContext.addProofStep ( getRuleByName ( "SEND-EXEC" ) , meth ) ; //$NON-NLS-1$
+            return meth.getE ( ) ;
           }
         }
+        /*
+         * If the row has only one child and the Message Identifier is not equal
+         * to the Identifier of the Meth, it can not be skipped.
+         */
         if ( row.getExpressions ( ).length == 1 )
         {
           return pMessage ;
         }
-        pContext.addProofStep ( getRuleByName ( "SEND-SKIP" ) , cm ) ; //$NON-NLS-1$
-        Expression [ ] newE = new Expression [ row.getExpressions ( ).length - 1 ] ;
-        for ( int i = 0 ; i < newE.length ; i ++ )
+        // SEND-SKIP
+        pContext.addProofStep ( getRuleByName ( "SEND-SKIP" ) , meth ) ; //$NON-NLS-1$
+        Expression [ ] newRowE = new Expression [ row.getExpressions ( ).length - 1 ] ;
+        for ( int i = 0 ; i < newRowE.length ; i ++ )
         {
-          newE [ i ] = row.getExpressions ( i + 1 ).clone ( ) ;
+          newRowE [ i ] = row.getExpressions ( i + 1 ).clone ( ) ;
         }
-        return new Message ( new Row ( newE ) , pMessage.getId ( ) ) ;
+        return new Message ( new Row ( newRowE ) , pMessage.getId ( ) ) ;
       }
-      else if ( firstExpr instanceof Attr )
+      else if ( firstRowChild instanceof CurriedMeth )
       {
-        Row r = ( Row ) pMessage.getE ( ) ;
-        Attr a = ( Attr ) r.getExpressions ( 0 ) ;
-        pContext.addProofStep ( getRuleByName ( "SEND-ATTR" ) , a ) ; //$NON-NLS-1$
-        Expression [ ] newE = new Expression [ r.getExpressions ( ).length - 1 ] ;
-        for ( int i = 0 ; i < newE.length ; i ++ )
+        CurriedMeth curriedMeth = ( CurriedMeth ) row.getExpressions ( 0 ) ;
+        if ( pMessage.getId ( ).equals ( curriedMeth.getIdentifiers ( 0 ) ) )
         {
-          newE [ i ] = r.getExpressions ( i + 1 ).substitute ( a.getId ( ) ,
-              a.getE ( ) ) ;
+          // SEND-EXEC
+          boolean definedLater = false ;
+          for ( int i = 1 ; i < row.getExpressions ( ).length ; i ++ )
+          {
+            Expression tmp = row.getExpressions ( i ) ;
+            if ( ( tmp instanceof Meth )
+                && ( ( ( Meth ) tmp ).getId ( ).equals ( pMessage.getId ( ) ) ) )
+            {
+              definedLater = true ;
+              break ;
+            }
+            if ( ( tmp instanceof CurriedMeth )
+                && ( ( ( CurriedMeth ) tmp ).getIdentifiers ( 0 )
+                    .equals ( pMessage.getId ( ) ) ) )
+            {
+              definedLater = true ;
+              break ;
+            }
+          }
+          if ( ! definedLater )
+          {
+            pContext
+                .addProofStep ( getRuleByName ( "SEND-EXEC" ) , curriedMeth ) ; //$NON-NLS-1$
+            Expression expr = curriedMeth.getE ( ) ;
+            for ( int i = curriedMeth.getIdentifiers ( ).length - 1 ; i > 0 ; i -- )
+            {
+              expr = new Lambda ( curriedMeth.getIdentifiers ( i ) ,
+                  curriedMeth.getTypes ( i ) , expr ) ;
+            }
+            return expr ;
+          }
         }
-        return new Message ( new Row ( newE ) , pMessage.getId ( ) ) ;
+        /*
+         * If the row has only one child and the Message Identifier is not equal
+         * to the Identifier of the CurriedMeth, it can not be skipped.
+         */
+        if ( row.getExpressions ( ).length == 1 )
+        {
+          return pMessage ;
+        }
+        // SEND-SKIP
+        pContext.addProofStep ( getRuleByName ( "SEND-SKIP" ) , curriedMeth ) ; //$NON-NLS-1$
+        Expression [ ] newRowE = new Expression [ row.getExpressions ( ).length - 1 ] ;
+        for ( int i = 0 ; i < newRowE.length ; i ++ )
+        {
+          newRowE [ i ] = row.getExpressions ( i + 1 ).clone ( ) ;
+        }
+        return new Message ( new Row ( newRowE ) , pMessage.getId ( ) ) ;
       }
     }
     return pMessage ;
-  }
-
-
-  /**
-   * TODO
-   * 
-   * @param pContext TODO
-   * @param pAttr TODO
-   * @return TODO
-   */
-  public Expression evaluateAttr ( SmallStepProofContext pContext , Attr pAttr )
-  {
-    if ( pAttr.isValue ( ) )
-    {
-      pContext.addProofStep ( getRuleByName ( "ATTR-RIGHT" ) , pAttr ) ; //$NON-NLS-1$
-      Expression attrE = evaluate ( pContext , pAttr.getE ( ) ) ;
-      if ( attrE.isException ( ) )
-      {
-        return attrE ;
-      }
-    }
-    else
-    {
-      pContext.addProofStep ( getRuleByName ( "ATTR-EVAL" ) , pAttr ) ; //$NON-NLS-1$
-      Expression attrE = evaluate ( pContext , pAttr.getE ( ) ) ;
-      if ( attrE.isException ( ) )
-      {
-        return attrE ;
-      }
-      return new Attr ( pAttr.getId ( ) , pAttr.getTau ( ) , attrE ) ;
-    }
-    return pAttr ;
-  }
-
-
-  /**
-   * TODO
-   * 
-   * @param pContext TODO
-   * @param pMeth TODO
-   * @return TODO
-   */
-  public Expression evaluateMeth ( SmallStepProofContext pContext , Meth pMeth )
-  {
-    pContext.addProofStep ( getRuleByName ( "METH-RIGHT" ) , pMeth ) ; //$NON-NLS-1$
-    return pMeth ;
-  }
-
-
-  /**
-   * TODO
-   * 
-   * @param pContext TODO
-   * @param pCurriedMeth TODO
-   * @return TODO
-   */
-  public Expression evaluateCurriedMeth ( SmallStepProofContext pContext ,
-      CurriedMeth pCurriedMeth )
-  {
-    pContext.addProofStep ( getRuleByName ( "METH-RIGHT" ) , pCurriedMeth ) ; //$NON-NLS-1$
-    return pCurriedMeth ;
   }
 
 
@@ -275,98 +233,83 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
   {
     for ( int i = 0 ; i < pRow.getExpressions ( ).length ; i ++ )
     {
-      // Attr
       if ( pRow.getExpressions ( i ) instanceof Attr )
       {
+        // Attr
         Attr attr = ( Attr ) pRow.getExpressions ( i ) ;
-        if ( pRow.getExpressions ( i ).isValue ( ) )
+        if ( ! attr.isValue ( ) )
         {
-          // ATTR-RIGHT
-          Expression newAttr = evaluate ( pContext , attr ) ;
-          if ( newAttr.isException ( ) )
+          // ATTR-EVAL
+          pContext.addProofStep ( getRuleByName ( "ATTR-EVAL" ) , attr ) ; //$NON-NLS-1$
+          Expression attrE = evaluate ( pContext , attr.getE ( ) ) ;
+          if ( attrE.isException ( ) )
           {
-            return newAttr ;
+            return attrE ;
+          }
+          Expression [ ] tmp = pRow.getExpressions ( ).clone ( ) ;
+          tmp [ i ] = new Attr ( attr.getId ( ) , attr.getTau ( ) , attrE ) ;
+          return new Row ( tmp ) ;
+        }
+        // ATTR-RENAME or ATTR-RIGHT
+        boolean attrRename = false ;
+        for ( int j = i + 1 ; j < pRow.getExpressions ( ).length ; j ++ )
+        {
+          if ( ( pRow.getExpressions ( j ) instanceof Attr )
+              && ( ( Attr ) pRow.getExpressions ( j ) ).getId ( ).equals (
+                  attr.getId ( ) ) )
+          {
+            attrRename = true ;
+            break ;
           }
         }
-        else
+        if ( attrRename )
         {
-          boolean attrRename = false ;
-          for ( int j = i + 1 ; j < pRow.getExpressions ( ).length ; j ++ )
+          // ATTR-RENAME
+          pContext.addProofStep ( getRuleByName ( "ATTR-RENAME" ) , attr ) ; //$NON-NLS-1$ 
+          Expression [ ] tmp = pRow.getExpressions ( ).clone ( ) ;
+          String newId = attr.getId ( ) + "'" ; //$NON-NLS-1$ 
+          while ( attrRename )
           {
-            if ( ( pRow.getExpressions ( j ) instanceof Attr )
-                && ( ( Attr ) pRow.getExpressions ( j ) ).getId ( ).equals (
-                    attr.getId ( ) ) )
+            attrRename = false ;
+            for ( int j = i + 1 ; j < pRow.getExpressions ( ).length ; j ++ )
             {
-              attrRename = true ;
-              break ;
-            }
-          }
-          if ( attrRename )
-          {
-            pContext.addProofStep ( getRuleByName ( "ATTR-RENAME" ) , attr ) ; //$NON-NLS-1$
-            Expression [ ] tmp = pRow.getExpressions ( ).clone ( ) ;
-            String newId = attr.getId ( ) + "'" ; //$NON-NLS-1$
-            while ( attrRename )
-            {
-              attrRename = false ;
-              for ( int j = i + 1 ; j < pRow.getExpressions ( ).length ; j ++ )
+              if ( ( pRow.getExpressions ( j ) instanceof Attr )
+                  && ( ( Attr ) pRow.getExpressions ( j ) ).getId ( ).equals (
+                      newId ) )
               {
-                if ( ( pRow.getExpressions ( j ) instanceof Attr )
-                    && ( ( Attr ) pRow.getExpressions ( j ) ).getId ( ).equals (
-                        newId ) )
-                {
-                  newId += "'" ; //$NON-NLS-1$
-                  attrRename = true ;
-                  break ;
-                }
-              }
-            }
-            Attr newAttr = new Attr ( newId , attr.getTau ( ) , attr.getE ( )
-                .clone ( ) ) ;
-            tmp [ i ] = newAttr ;
-            for ( int j = i + 1 ; j < tmp.length ; j ++ )
-            {
-              tmp [ j ] = tmp [ j ].substitute ( attr.getId ( ) ,
-                  new Identifier ( newId ) ) ;
-              if ( ( tmp [ j ] instanceof Attr )
-                  && ( ( ( Attr ) tmp [ j ] ).getId ( )
-                      .equals ( attr.getId ( ) ) ) )
-              {
+                newId += "'" ;//$NON-NLS-1$ 
+                attrRename = true ;
                 break ;
               }
             }
-            return new Row ( tmp ) ;
           }
-          // ATTR-EVAL
-          Expression newAttr = evaluate ( pContext , attr ) ;
-          if ( newAttr.isException ( ) )
+          tmp [ i ] = new Attr ( newId , attr.getTau ( ) , attr.getE ( )
+              .clone ( ) ) ;
+          for ( int j = i + 1 ; j < tmp.length ; j ++ )
           {
-            return newAttr ;
+            tmp [ j ] = tmp [ j ].substitute ( attr.getId ( ) , new Identifier (
+                newId ) ) ;
+            if ( ( tmp [ j ] instanceof Attr )
+                && ( ( ( Attr ) tmp [ j ] ).getId ( ).equals ( attr.getId ( ) ) ) )
+            {
+              break ;
+            }
           }
-          Expression [ ] tmp = pRow.getExpressions ( ).clone ( ) ;
-          tmp [ i ] = newAttr ;
           return new Row ( tmp ) ;
         }
-      }
-      // Meth
-      else if ( pRow.getExpressions ( i ) instanceof Meth )
-      {
-        Meth meth = ( Meth ) pRow.getExpressions ( i ) ;
-        Expression newMeth = evaluate ( pContext , meth ) ;
-        if ( newMeth.isException ( ) )
+        // ATTR-RIGHT
+        pContext.addProofStep ( getRuleByName ( "ATTR-RIGHT" ) , attr ) ; //$NON-NLS-1$
+        Expression attrE = evaluate ( pContext , attr.getE ( ) ) ;
+        if ( attrE.isException ( ) )
         {
-          return newMeth ;
+          return attrE ;
         }
       }
-      // CurriedMeth
-      else if ( pRow.getExpressions ( i ) instanceof CurriedMeth )
+      else
       {
-        CurriedMeth curriedMeth = ( CurriedMeth ) pRow.getExpressions ( i ) ;
-        Expression newCurriedMeth = evaluate ( pContext , curriedMeth ) ;
-        if ( newCurriedMeth.isException ( ) )
-        {
-          return newCurriedMeth ;
-        }
+        // Meth or CurriedMeth
+        pContext.addProofStep (
+            getRuleByName ( "METH-RIGHT" ) , pRow.getExpressions ( i ) ) ; //$NON-NLS-1$
       }
     }
     return pRow ;
