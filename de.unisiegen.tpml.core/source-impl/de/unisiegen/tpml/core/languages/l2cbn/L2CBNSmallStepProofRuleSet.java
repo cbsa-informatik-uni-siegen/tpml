@@ -48,15 +48,15 @@ public class L2CBNSmallStepProofRuleSet extends L2SmallStepProofRuleSet
     unregister ( "APP-LEFT" ) ; //$NON-NLS-1$
     register ( L0Language.L0 , "APP-LEFT" , false ) ; //$NON-NLS-1$
     unregister ( "APP-RIGHT" ) ; //$NON-NLS-1$
-    register ( L0Language.L0 , "APP-RIGHT" , false ) ; //$NON-NLS-1$
+    register ( L2CBNLanguage.L2CBN , "APP-RIGHT" , false ) ; //$NON-NLS-1$
     unregister ( "BETA-V" ) ; //$NON-NLS-1$
-    register ( L0Language.L0 , "BETA" , true ) ; //$NON-NLS-1$
+    register ( L2CBNLanguage.L2CBN , "BETA" , true ) ; //$NON-NLS-1$
     unregister ( "AND-EVAL" ) ; //$NON-NLS-1$
-    register ( L2Language.L2 , "AND-EVAL" , false ) ; //$NON-NLS-1$
+    register ( L1Language.L1 , "AND-EVAL" , false ) ; //$NON-NLS-1$
     unregister ( "AND-FALSE" ) ; //$NON-NLS-1$
-    register ( L2Language.L2 , "AND-FALSE" , true ) ; //$NON-NLS-1$
+    register ( L1Language.L1 , "AND-FALSE" , true ) ; //$NON-NLS-1$
     unregister ( "AND-TRUE" ) ; //$NON-NLS-1$
-    register ( L2Language.L2 , "AND-TRUE" , true ) ; //$NON-NLS-1$
+    register ( L1Language.L1 , "AND-TRUE" , true ) ; //$NON-NLS-1$
     unregister ( "COND-EVAL" ) ; //$NON-NLS-1$
     register ( L1Language.L1 , "COND-EVAL" , false ) ; //$NON-NLS-1$
     unregister ( "COND-TRUE" ) ; //$NON-NLS-1$
@@ -64,17 +64,17 @@ public class L2CBNSmallStepProofRuleSet extends L2SmallStepProofRuleSet
     unregister ( "COND-FALSE" ) ; //$NON-NLS-1$
     register ( L1Language.L1 , "COND-FALSE" , true ) ; //$NON-NLS-1$
     unregister ( "LET-EXEC" ) ; //$NON-NLS-1$
-    register ( L1Language.L1 , "LET-EXEC" , true ) ; //$NON-NLS-1$
+    register ( L2CBNLanguage.L2CBN , "LET-EXEC" , true ) ; //$NON-NLS-1$
     unregister ( "NOT" ) ; //$NON-NLS-1$
     register ( L1Language.L1 , "NOT" , true ) ; //$NON-NLS-1$
     unregister ( "OP" ) ; //$NON-NLS-1$
     register ( L1Language.L1 , "OP" , true ) ; //$NON-NLS-1$
     unregister ( "OR-EVAL" ) ; //$NON-NLS-1$
-    register ( L2Language.L2 , "OR-EVAL" , false ) ; //$NON-NLS-1$
+    register ( L1Language.L1 , "OR-EVAL" , false ) ; //$NON-NLS-1$
     unregister ( "OR-FALSE" ) ; //$NON-NLS-1$
-    register ( L2Language.L2 , "OR-FALSE" , true ) ; //$NON-NLS-1$
+    register ( L1Language.L1 , "OR-FALSE" , true ) ; //$NON-NLS-1$
     unregister ( "OR-TRUE" ) ; //$NON-NLS-1$
-    register ( L2Language.L2 , "OR-TRUE" , true ) ; //$NON-NLS-1$
+    register ( L1Language.L1 , "OR-TRUE" , true ) ; //$NON-NLS-1$
     unregister ( "UNFOLD" ) ; //$NON-NLS-1$
     register ( L2Language.L2 , "UNFOLD" , true ) ; //$NON-NLS-1$
   }

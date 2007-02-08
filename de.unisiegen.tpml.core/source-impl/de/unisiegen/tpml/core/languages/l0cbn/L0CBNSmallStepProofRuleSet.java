@@ -34,9 +34,9 @@ public class L0CBNSmallStepProofRuleSet extends L0SmallStepProofRuleSet
     unregister ( "APP-LEFT" ) ; //$NON-NLS-1$
     register ( L0Language.L0 , "APP-LEFT" , false ) ; //$NON-NLS-1$
     unregister ( "APP-RIGHT" ) ; //$NON-NLS-1$
-    register ( L0Language.L0 , "APP-RIGHT" , false ) ; //$NON-NLS-1$
+    register ( L0CBNLanguage.L0CBN , "APP-RIGHT" , false ) ; //$NON-NLS-1$
     unregister ( "BETA-V" ) ; //$NON-NLS-1$
-    register ( L0Language.L0 , "BETA" , true ) ; //$NON-NLS-1$
+    register ( L0CBNLanguage.L0CBN , "BETA" , true ) ; //$NON-NLS-1$
   }
 
 

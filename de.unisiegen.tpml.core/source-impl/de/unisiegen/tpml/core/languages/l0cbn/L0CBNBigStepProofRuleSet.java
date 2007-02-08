@@ -33,12 +33,13 @@ public class L0CBNBigStepProofRuleSet extends L0BigStepProofRuleSet
   {
     super ( language ) ;
     unregister ( "APP" ) ; //$NON-NLS-1$
-    registerByMethodName ( L0Language.L0 , "APP-LEFT" , "applyApplicationLeft" , //$NON-NLS-1$ //$NON-NLS-2$
+    registerByMethodName ( L0CBNLanguage.L0CBN ,
+        "APP-LEFT" , "applyApplicationLeft" , //$NON-NLS-1$ //$NON-NLS-2$
         "updateApplicationLeft" ) ; //$NON-NLS-1$
-    registerByMethodName ( L0Language.L0 , "APP-RIGHT" , //$NON-NLS-1$
+    registerByMethodName ( L0CBNLanguage.L0CBN , "APP-RIGHT" , //$NON-NLS-1$
         "applyApplicationRight" , "updateApplicationRight" ) ; //$NON-NLS-1$ //$NON-NLS-2$
     unregister ( "BETA-V" ) ; //$NON-NLS-1$
-    registerByMethodName ( L0Language.L0 , "BETA" , "applyBeta" , //$NON-NLS-1$ //$NON-NLS-2$
+    registerByMethodName ( L0CBNLanguage.L0CBN , "BETA" , "applyBeta" , //$NON-NLS-1$ //$NON-NLS-2$
         "updateBeta" ) ; //$NON-NLS-1$
     /*
      * Unregister and register, because the guess does otherwise not work.

@@ -17,7 +17,6 @@ import de.unisiegen.tpml.core.languages.l0.L0BigStepProofRuleSet ;
 import de.unisiegen.tpml.core.languages.l0.L0Language ;
 import de.unisiegen.tpml.core.languages.l1.L1BigStepProofRuleSet ;
 import de.unisiegen.tpml.core.languages.l1.L1Language ;
-import de.unisiegen.tpml.core.languages.l2.L2Language ;
 
 
 /**
@@ -42,12 +41,13 @@ public class L1CBNBigStepProofRuleSet extends L1BigStepProofRuleSet
   {
     super ( language ) ;
     unregister ( "APP" ) ; //$NON-NLS-1$
-    registerByMethodName ( L0Language.L0 , "APP-LEFT" , "applyApplicationLeft" , //$NON-NLS-1$ //$NON-NLS-2$
+    registerByMethodName ( L1CBNLanguage.L1CBN ,
+        "APP-LEFT" , "applyApplicationLeft" , //$NON-NLS-1$ //$NON-NLS-2$
         "updateApplicationLeft" ) ; //$NON-NLS-1$
-    registerByMethodName ( L0Language.L0 , "APP-RIGHT" , //$NON-NLS-1$
+    registerByMethodName ( L1CBNLanguage.L1CBN , "APP-RIGHT" , //$NON-NLS-1$
         "applyApplicationRight" , "updateApplicationRight" ) ; //$NON-NLS-1$ //$NON-NLS-2$
     unregister ( "BETA-V" ) ; //$NON-NLS-1$
-    registerByMethodName ( L0Language.L0 , "BETA" , "applyBeta" , //$NON-NLS-1$ //$NON-NLS-2$
+    registerByMethodName ( L1CBNLanguage.L1CBN , "BETA" , "applyBeta" , //$NON-NLS-1$ //$NON-NLS-2$
         "updateBeta" ) ; //$NON-NLS-1$
     /*
      * Unregister and register, because the guess does otherwise not work.
@@ -55,10 +55,10 @@ public class L1CBNBigStepProofRuleSet extends L1BigStepProofRuleSet
     unregister ( "VAL" ) ; //$NON-NLS-1$
     registerByMethodName ( L0Language.L0 , "VAL" , "applyValue" ) ; //$NON-NLS-1$ //$NON-NLS-2$
     unregister ( "AND-FALSE" ) ; //$NON-NLS-1$
-    registerByMethodName ( L2Language.L2 ,
+    registerByMethodName ( L1Language.L1 ,
         "AND-FALSE" , "applyAnd" , "updateAndFalse" ) ; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     unregister ( "AND-TRUE" ) ; //$NON-NLS-1$
-    registerByMethodName ( L2Language.L2 ,
+    registerByMethodName ( L1Language.L1 ,
         "AND-TRUE" , "applyAnd" , "updateAndTrue" ) ; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     unregister ( "COND-FALSE" ) ; //$NON-NLS-1$
     registerByMethodName ( L1Language.L1 ,
@@ -67,16 +67,17 @@ public class L1CBNBigStepProofRuleSet extends L1BigStepProofRuleSet
     registerByMethodName ( L1Language.L1 ,
         "COND-TRUE" , "applyCond" , "updateCondTrue" ) ; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     unregister ( "LET" ) ; //$NON-NLS-1$
-    registerByMethodName ( L1Language.L1 , "LET" , "applyLet" , "updateLet" ) ; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    registerByMethodName ( L1CBNLanguage.L1CBN ,
+        "LET" , "applyLet" , "updateLet" ) ; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     unregister ( "NOT" ) ; //$NON-NLS-1$
     registerByMethodName ( L1Language.L1 , "NOT" , "applyNot" ) ; //$NON-NLS-1$ //$NON-NLS-2$
     unregister ( "OP" ) ; //$NON-NLS-1$
     registerByMethodName ( L1Language.L1 , "OP" , "applyOp" ) ; //$NON-NLS-1$ //$NON-NLS-2$
     unregister ( "OR-FALSE" ) ; //$NON-NLS-1$
-    registerByMethodName ( L2Language.L2 ,
+    registerByMethodName ( L1Language.L1 ,
         "OR-FALSE" , "applyOr" , "updateOrFalse" ) ; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     unregister ( "OR-TRUE" ) ; //$NON-NLS-1$
-    registerByMethodName ( L2Language.L2 ,
+    registerByMethodName ( L1Language.L1 ,
         "OR-TRUE" , "applyOr" , "updateOrTrue" ) ; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
   }
 
