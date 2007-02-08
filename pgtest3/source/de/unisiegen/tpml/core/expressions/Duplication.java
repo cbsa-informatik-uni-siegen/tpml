@@ -15,7 +15,7 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
  * @author Christian Fehler
  * @version $Rev: 1066 $
  */
-public final class DuplicatedRow extends Expression
+public final class Duplication extends Expression
 {
   /**
    * TODO
@@ -41,7 +41,7 @@ public final class DuplicatedRow extends Expression
    * @param pIdentifiers TODO
    * @param pExpressions TODO
    */
-  public DuplicatedRow ( String [ ] pIdentifiers , Expression [ ] pExpressions )
+  public Duplication ( String [ ] pIdentifiers , Expression [ ] pExpressions )
   {
     if ( pIdentifiers.length != pExpressions.length )
     {
@@ -72,14 +72,14 @@ public final class DuplicatedRow extends Expression
    * {@inheritDoc}
    */
   @ Override
-  public DuplicatedRow clone ( )
+  public Duplication clone ( )
   {
     Expression [ ] tmpE = new Expression [ this.expressions.length ] ;
     for ( int i = 0 ; i < this.expressions.length ; i ++ )
     {
       tmpE [ i ] = this.expressions [ i ].clone ( ) ;
     }
-    return new DuplicatedRow ( this.identifiers , tmpE ) ;
+    return new Duplication ( this.identifiers , tmpE ) ;
   }
 
 
@@ -89,9 +89,9 @@ public final class DuplicatedRow extends Expression
   @ Override
   public boolean equals ( Object pObject )
   {
-    if ( pObject instanceof DuplicatedRow )
+    if ( pObject instanceof Duplication )
     {
-      DuplicatedRow other = ( DuplicatedRow ) pObject ;
+      Duplication other = ( Duplication ) pObject ;
       return ( this.expressions.equals ( other.expressions ) && this.identifiers
           .equals ( other.identifiers ) ) ;
     }
@@ -120,7 +120,7 @@ public final class DuplicatedRow extends Expression
   @ Override
   public String getCaption ( )
   {
-    return "Duplicated-Row" ; //$NON-NLS-1$
+    return "Duplication" ; //$NON-NLS-1$
   }
 
 
@@ -209,14 +209,14 @@ public final class DuplicatedRow extends Expression
    * {@inheritDoc}
    */
   @ Override
-  public DuplicatedRow substitute ( String pID , Expression pExpression )
+  public Duplication substitute ( String pID , Expression pExpression )
   {
     Expression [ ] tmp = new Expression [ this.expressions.length ] ;
     for ( int n = 0 ; n < tmp.length ; ++ n )
     {
       tmp [ n ] = this.expressions [ n ].substitute ( pID , pExpression ) ;
     }
-    return new DuplicatedRow ( this.identifiers , tmp ) ;
+    return new Duplication ( this.identifiers , tmp ) ;
   }
 
 
@@ -227,14 +227,14 @@ public final class DuplicatedRow extends Expression
    * @return TODO
    */
   @ Override
-  public DuplicatedRow substitute ( TypeSubstitution pTypeSubstitution )
+  public Duplication substitute ( TypeSubstitution pTypeSubstitution )
   {
     Expression [ ] tmp = new Expression [ this.expressions.length ] ;
     for ( int i = 0 ; i < this.expressions.length ; i ++ )
     {
       tmp [ i ] = this.expressions [ i ].substitute ( pTypeSubstitution ) ;
     }
-    return ( this.expressions.equals ( tmp ) ) ? this : new DuplicatedRow (
+    return ( this.expressions.equals ( tmp ) ) ? this : new Duplication (
         this.identifiers , tmp ) ;
   }
 

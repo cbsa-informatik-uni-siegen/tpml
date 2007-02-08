@@ -1,1 +1,1 @@
-let b = x in object attr x = 1 ; attr x' = 2 ; attr c = b ; end
+let b = x in object (self) val x = 1 ; val x' = 2 ; val c = b ; end

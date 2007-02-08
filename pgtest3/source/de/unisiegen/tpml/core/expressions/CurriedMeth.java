@@ -290,7 +290,7 @@ public class CurriedMeth extends Expression
   {
     PrettyStringBuilder builder = pPrettyStringBuilderFactory.newBuilder (
         this , PRIO_CURRIED_METH ) ;
-    builder.addKeyword ( "meth" ) ; //$NON-NLS-1$
+    builder.addKeyword ( "method" ) ; //$NON-NLS-1$
     builder.addText ( " " ) ; //$NON-NLS-1$
     builder.addIdentifier ( this.identifiers [ 0 ] ) ;
     for ( int i = 1 ; i < this.identifiers.length ; i ++ )

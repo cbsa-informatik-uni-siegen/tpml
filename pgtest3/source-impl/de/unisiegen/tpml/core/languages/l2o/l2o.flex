@@ -60,7 +60,6 @@ import de.unisiegen.tpml.core.languages.LanguageSymbol;
 		case ATTR: 
 		case METH: 
 		case SEMI: 
-		case SELF: 
 		case LCURLYBRACE: 
 		case RCURLYBRACE: 
 		case COMMA:
@@ -133,10 +132,9 @@ LetterGreek		= [\u03b1-\u03c1\u03c3-\u03c9]
 	"object"			{ return symbol("OBJECT", OBJECT); }
 	"end"				{ return symbol("END", END); }
 	"#"					{ return symbol("NUMBERSIGN", NUMBERSIGN); }
-	"attr"				{ return symbol("ATTR", ATTR); }
-	"meth"				{ return symbol("METH", METH); }
+	"val"				{ return symbol("ATTR", ATTR); }
+	"method"			{ return symbol("METH", METH); }
 	";"					{ return symbol("SEMI", SEMI); }
-	"self"				{ return symbol("SELF", SELF); }
 	"{"					{ return symbol("LCURLYBRACE", LCURLYBRACE); }
 	"}"					{ return symbol("RCURLYBRACE", RCURLYBRACE); }
 	","					{ return symbol("COMMA", COMMA); }

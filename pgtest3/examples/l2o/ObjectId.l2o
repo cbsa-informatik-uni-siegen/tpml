@@ -1,1 +1,1 @@
-object (id) attr a =1+1 ; meth m = id # add ; end
+object (id) val a =1+1 ; val m = id # add ; end

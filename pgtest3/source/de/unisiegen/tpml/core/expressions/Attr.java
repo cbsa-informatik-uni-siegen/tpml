@@ -223,7 +223,7 @@ public class Attr extends Expression
   {
     PrettyStringBuilder builder = pPrettyStringBuilderFactory.newBuilder (
         this , PRIO_ATTR ) ;
-    builder.addKeyword ( "attr" ) ; //$NON-NLS-1$
+    builder.addKeyword ( "val" ) ; //$NON-NLS-1$
     builder.addText ( " " ) ; //$NON-NLS-1$
     builder.addIdentifier ( this.identifier ) ;
     if ( this.tau != null )

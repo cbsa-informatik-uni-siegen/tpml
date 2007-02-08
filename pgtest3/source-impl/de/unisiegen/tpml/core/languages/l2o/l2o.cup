@@ -42,7 +42,6 @@ terminal			TRUE, FALSE;
 terminal			OBJECT ;
 terminal			END ;
 terminal			NUMBERSIGN ;
-terminal String		SELF ;
 terminal			ATTR ;
 terminal			METH ;
 terminal			SEMI ;
@@ -72,7 +71,7 @@ non terminal MonoType		type;
 non terminal MonoType		simple_type;
 
 non terminal ObjectExpr		object_expr;
-non terminal DuplicatedRow	duplicated_row;
+non terminal Duplication	duplication;
 non terminal Message		message;
 non terminal Row			row;
 non terminal Attr			attr;
@@ -108,8 +107,8 @@ expr				::=	simple_expr:e
 						{: RESULT = o; :}
 					|	message:m
 						{: RESULT = m; :}
-					|   duplicated_row:dr
-						{: RESULT = dr; :}
+					|   duplication:d
+						{: RESULT = d; :}
 							
 					/* Applications */
 					|	simple_expr:e simple_expr_list:l
@@ -217,8 +216,6 @@ simple_expr			::=	constant:c
 						{: RESULT = c; :}
 					|	IDENTIFIER:id
 						{: RESULT = new Identifier(id); :}
-					|	SELF:s
-						{: RESULT = new Self (); :}
 
 					/* Parenthized operators/expressions */
 					|	LPAREN operator:o RPAREN
@@ -227,19 +224,13 @@ simple_expr			::=	constant:c
 						{: RESULT = e; :}
 					;
 					
-object_expr			::= OBJECT row:r END
-						{: RESULT = new ObjectExpr ( "self", null, r); :}
-					|	OBJECT LPAREN IDENTIFIER:id RPAREN row:r END
+object_expr			::= OBJECT LPAREN IDENTIFIER:id RPAREN row:r END
 						{: RESULT = new ObjectExpr (id, null, r); :}
-					|	OBJECT LPAREN SELF:s RPAREN row:r END
-						{: RESULT = new ObjectExpr (s , null, r); :}
 					|	OBJECT LPAREN IDENTIFIER:id COLON type:tau RPAREN row:r END
 						{: RESULT = new ObjectExpr (id, tau, r); :}
-					|	OBJECT LPAREN SELF:s COLON type:tau RPAREN row:r END
-						{: RESULT = new ObjectExpr (s, tau, r); :}
 					;
 					
-duplicated_row		::= LCURLYBRACE LESS id_expr_list:iel GREATER RCURLYBRACE
+duplication			::= LCURLYBRACE LESS id_expr_list:iel GREATER RCURLYBRACE
 						{: Expression [] tmpE = new Expression [iel.length];
 						   String [] tmpI = new String [iel.length];
 						   for ( int i = 0 ; i < iel.length ; i++ )
@@ -247,7 +238,7 @@ duplicated_row		::= LCURLYBRACE LESS id_expr_list:iel GREATER RCURLYBRACE
 						     tmpE [i] = iel [i].e;
 						     tmpI [i] = iel [i].id;
 						   }
-						   RESULT = new DuplicatedRow ( tmpI , tmpE ); :}
+						   RESULT = new Duplication ( tmpI , tmpE ); :}
 					;
 					
 message				::= expr:e NUMBERSIGN IDENTIFIER:id

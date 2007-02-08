@@ -220,36 +220,16 @@ public final class ObjectExpr extends Expression
     PrettyStringBuilder builder = pPrettyStringBuilderFactory.newBuilder (
         this , PRIO_OBJECTEXPR ) ;
     builder.addKeyword ( "object" ) ; //$NON-NLS-1$
-    builder.addText ( " " ) ; //$NON-NLS-1$
-    if ( this.identifier != null )
+    builder.addText ( " (" ) ; //$NON-NLS-1$
+    builder.addIdentifier ( this.identifier ) ;
+    if ( this.tau != null )
     {
-      if ( this.identifier.equals ( "self" ) ) //$NON-NLS-1$
-      {
-        if ( this.tau != null )
-        {
-          builder.addText ( "( " ) ; //$NON-NLS-1$
-          builder.addIdentifier ( this.identifier ) ;
-          builder.addText ( ": " ) ; //$NON-NLS-1$
-          builder.addBuilder ( this.tau
-              .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-              PRIO_OBJECTEXPR_TAU ) ;
-          builder.addText ( " ) " ) ; //$NON-NLS-1$
-        }
-      }
-      else
-      {
-        builder.addText ( "( " ) ; //$NON-NLS-1$
-        builder.addIdentifier ( this.identifier ) ;
-        if ( this.tau != null )
-        {
-          builder.addText ( ": " ) ; //$NON-NLS-1$
-          builder.addBuilder ( this.tau
-              .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-              PRIO_OBJECTEXPR_TAU ) ;
-        }
-        builder.addText ( " ) " ) ; //$NON-NLS-1$
-      }
+      builder.addText ( ": " ) ; //$NON-NLS-1$
+      builder.addBuilder ( this.tau
+          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
+          PRIO_OBJECTEXPR_TAU ) ;
     }
+    builder.addText ( ") " ) ; //$NON-NLS-1$
     builder.addBreak ( ) ;
     builder.addBuilder ( this.expression
         .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,

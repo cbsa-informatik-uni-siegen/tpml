@@ -1,1 +1,1 @@
-object attr a = 2 + 1 ; attr a = a + 1 ; attr a' = 3 ; meth add x = x + a ; end
+object (self) val a = 2 + 1 ; val a = a + 1 ; val a' = 3 ; method add x = x + a ; end

@@ -1,1 +1,1 @@
-let id = 5 in object (id) attr x = 1 ; attr b = a + b ; meth add x = x id + a + b ; attr c = x b + a ; meth result = b + a + c ; end
+let id = 5 in object (id) val x = 1 ; val b = a + b ; method add x = x id + a + b ; val c = x b + a ; method result = b + a + c ; end

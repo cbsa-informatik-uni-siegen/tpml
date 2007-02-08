@@ -3,15 +3,13 @@ package de.unisiegen.tpml.core.languages.l2o ;
 
 import de.unisiegen.tpml.core.expressions.Attr ;
 import de.unisiegen.tpml.core.expressions.CurriedMeth ;
-import de.unisiegen.tpml.core.expressions.DuplicatedRow ;
+import de.unisiegen.tpml.core.expressions.Duplication ;
 import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.expressions.Lambda ;
-import de.unisiegen.tpml.core.expressions.Let ;
 import de.unisiegen.tpml.core.expressions.Message ;
 import de.unisiegen.tpml.core.expressions.Meth ;
 import de.unisiegen.tpml.core.expressions.ObjectExpr ;
 import de.unisiegen.tpml.core.expressions.Row ;
-import de.unisiegen.tpml.core.expressions.Self ;
 import de.unisiegen.tpml.core.languages.l2.L2LanguageTranslator ;
 
 
@@ -58,49 +56,12 @@ public class L2OLanguageTranslator extends L2LanguageTranslator
     else if ( pExpression instanceof ObjectExpr )
     {
       ObjectExpr objectExpr = ( ObjectExpr ) pExpression ;
-      Row row = ( Row ) objectExpr.getE ( ) ;
       if ( pRecursive )
       {
-        row = ( Row ) translateToCoreSyntax ( row , pRecursive ) ;
-      }
-      if ( objectExpr.getId ( ).equals ( "self" ) ) //$NON-NLS-1$
-      {
         return new ObjectExpr ( objectExpr.getId ( ) , objectExpr.getTau ( ) ,
-            row ) ;
+            translateToCoreSyntax ( objectExpr.getE ( ) , pRecursive ) ) ;
       }
-      Expression [ ] tmp = row.getExpressions ( ).clone ( ) ;
-      for ( int i = 0 ; i < tmp.length ; i ++ )
-      {
-        Expression e = tmp [ i ] ;
-        if ( e instanceof Attr )
-        {
-          Attr attr = ( Attr ) e ;
-          if ( objectExpr.getId ( ).equals ( attr.getId ( ) ) )
-          {
-            break ;
-          }
-        }
-        else if ( e instanceof Meth )
-        {
-          Meth meth = ( Meth ) e ;
-          if ( meth.getE ( ).free ( ).contains ( objectExpr.getId ( ) ) )
-          {
-            tmp [ i ] = new Meth ( meth.getId ( ) , meth.getTau ( ) , new Let (
-                objectExpr.getId ( ) , null , new Self ( ) , meth.getE ( ) ) ) ;
-          }
-        }
-        else if ( e instanceof CurriedMeth )
-        {
-          CurriedMeth curriedMeth = ( CurriedMeth ) e ;
-          if ( curriedMeth.getE ( ).free ( ).contains ( objectExpr.getId ( ) ) )
-          {
-            tmp [ i ] = new Meth ( curriedMeth.getIdentifiers ( 0 ) ,
-                curriedMeth.getTypes ( 0 ) , new Let ( objectExpr.getId ( ) ,
-                    null , new Self ( ) , curriedMeth.getE ( ) ) ) ;
-          }
-        }
-      }
-      return new ObjectExpr ( "self" , objectExpr.getTau ( ) , new Row ( tmp ) ) ; //$NON-NLS-1$
+      return pExpression ;
     }
     else if ( pExpression instanceof Row )
     {
@@ -150,11 +111,11 @@ public class L2OLanguageTranslator extends L2LanguageTranslator
       }
       return pExpression ;
     }
-    else if ( pExpression instanceof DuplicatedRow )
+    else if ( pExpression instanceof Duplication )
     {
       if ( pRecursive )
       {
-        DuplicatedRow duplicatedRow = ( DuplicatedRow ) pExpression ;
+        Duplication duplicatedRow = ( Duplication ) pExpression ;
         Expression [ ] duplicatedRowE = new Expression [ duplicatedRow
             .getExpressions ( ).length ] ;
         for ( int i = 0 ; i < duplicatedRow.getExpressions ( ).length ; i ++ )
@@ -162,7 +123,7 @@ public class L2OLanguageTranslator extends L2LanguageTranslator
           duplicatedRowE [ i ] = translateToCoreSyntax ( duplicatedRow
               .getExpressions ( i ) , pRecursive ) ;
         }
-        return new DuplicatedRow ( duplicatedRow.getIdentifiers ( ) ,
+        return new Duplication ( duplicatedRow.getIdentifiers ( ) ,
             duplicatedRowE ) ;
       }
       return pExpression ;

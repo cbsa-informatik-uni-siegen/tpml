@@ -15,7 +15,7 @@ import de.unisiegen.tpml.core.expressions.Condition ;
 import de.unisiegen.tpml.core.expressions.CurriedLet ;
 import de.unisiegen.tpml.core.expressions.CurriedLetRec ;
 import de.unisiegen.tpml.core.expressions.CurriedMeth ;
-import de.unisiegen.tpml.core.expressions.DuplicatedRow ;
+import de.unisiegen.tpml.core.expressions.Duplication ;
 import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.expressions.Identifier ;
 import de.unisiegen.tpml.core.expressions.InfixOperation ;
@@ -501,14 +501,14 @@ public final class AbstractOutline implements Outline
 
 
   /**
-   * Returns the node, which represents the given {@link DuplicatedRow}.
+   * Returns the node, which represents the given {@link Duplication}.
    * 
    * @param pExpression The input {@link Expression}.
-   * @return The node, which represents the given {@link DuplicatedRow}.
+   * @return The node, which represents the given {@link Duplication}.
    */
   @ SuppressWarnings ( "unused" )
-  private final DefaultMutableTreeNode checkDuplicatedRow (
-      DuplicatedRow pExpression )
+  private final DefaultMutableTreeNode checkDuplication (
+      Duplication pExpression )
   {
     DefaultMutableTreeNode node = new DefaultMutableTreeNode ( new OutlineNode (
         pExpression , this.outlineUnbound ) ) ;

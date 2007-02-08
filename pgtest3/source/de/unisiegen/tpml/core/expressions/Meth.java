@@ -220,7 +220,7 @@ public class Meth extends Expression
   {
     PrettyStringBuilder builder = pPrettyStringBuilderFactory.newBuilder (
         this , PRIO_METH ) ;
-    builder.addKeyword ( "meth" ) ; //$NON-NLS-1$
+    builder.addKeyword ( "method" ) ; //$NON-NLS-1$
     builder.addText ( " " ) ; //$NON-NLS-1$
     builder.addIdentifier ( this.identifier ) ;
     if ( this.tau != null )
