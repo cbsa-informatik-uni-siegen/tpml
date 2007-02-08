@@ -13,6 +13,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.prefs.Preferences;
 
 import javax.swing.JComponent;
@@ -28,6 +29,7 @@ import de.unisiegen.tpml.core.ProofRule;
 import de.unisiegen.tpml.core.ProofStep;
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.expressions.Location;
+import de.unisiegen.tpml.core.languages.Language;
 import de.unisiegen.tpml.core.languages.LanguageTranslator;
 import de.unisiegen.tpml.core.smallstep.SmallStepProofModel;
 import de.unisiegen.tpml.core.smallstep.SmallStepProofNode;
@@ -189,12 +191,43 @@ public class SmallStepNodeComponent extends JComponent
    */
   private MouseMotionAdapter underlineRuleAdapter;
 
-  private JPopupMenu menu;
-  private ArrayList <MenuRuleItem> revertMenu = new  ArrayList <MenuRuleItem> ();
   
-  private ArrayList<MenuRuleItem> last10Elements;
-  private ArrayList<MenuRuleItem> revertLast10Elements = new ArrayList <MenuRuleItem>();;
+  /**
+   * containing the rules
+   * it may contain submenus if to many (set in TOMANY) rules are in the popupmenu
+   */
+  private JPopupMenu menu;
+  
+  /**
+   * until TOMANY rules are in the menu, no submenus will be crated
+   */
+  private static final int TOMANY = 15;
+  
+  /**
+   * saves the last used elements MAX elements will be saved
+   */
+  private ArrayList<MenuRuleItem> lastUsedElements;
+  
+  /**
+   * defines how many rules will be displayed as last used elements
+   */
+  private static final int MAX = 10;
+  
+  /**
+   * saves the state of the menu to be able to revert it. It will be used if the selected
+   * rule throws an exception. By this rules will not be set at the top of the menu if
+   * they are wrong
+   */
+  private ArrayList <MenuRuleItem> revertMenu = new  ArrayList <MenuRuleItem> ();
+ 
+  /**
+   * look at revertMenu
+   */
+  private ArrayList<MenuRuleItem> revertLastUsedElements = new ArrayList <MenuRuleItem>();;
 
+  /**
+   * saves the state of the menu in the preferences to restor at the next start
+   */
   private Preferences preferences;
 
   /**
@@ -233,7 +266,7 @@ public class SmallStepNodeComponent extends JComponent
   {
     super();
 
-    last10Elements = new ArrayList();
+    lastUsedElements = new ArrayList();
 
     this.proofNode = proofNode;
 
@@ -491,82 +524,67 @@ public class SmallStepNodeComponent extends JComponent
    */
   void setAdvanced(boolean advanced)
   {
-    final int max = 10;
     // Fill the menu with menuitems
 
     ProofRule[] rules = this.proofModel.getRules();
 
-    // final JPopupMenu menu = new JPopupMenu (Messages.getString("Language.0")+
-    // " " +rules[0].getGroup());
-    //    final JPopupMenu menu = new JPopupMenu("L0");
     menu = new JPopupMenu();
 
-    //wenn das so ist, dann teilen wir es in Unter und Obermenüs auf, sonst werden nur Spereratoren eingefügt...
-    if (rules.length > 15)
+    //if to many rules we will devide in menu and submenus, otherwise there will be only seperators 
+    //between the rules coming from the different languages
+    if (rules.length > TOMANY)
     {
       if (rules.length > 0)
       {
 
-        // zunächst die letzen last10Elements einfügen
+        //first get the lastUsedRules of the preferences (last state of the programm)
 
-        // erst holen wir uns die Namen der Regeln aus den Preferences
+        //get the names from the preferences, compare each with the list of all usable rules, add them
         preferences = Preferences.userNodeForPackage(SmallStepNodeComponent.class);
-        // rückwärts jede Regel
-        for (int i = max - 1; i >= 0; i--)
+        //backwards to save the ordering
+        for (int i = MAX - 1; i >= 0; i--)
         {
           String name = preferences.get("rule" + i, "");
 
           if (name.equalsIgnoreCase(""))
           {
-            // wenn die Regel keinen Namen hat, bzw nicht existiert, dann mache
-            // nichts
+            // do nothing if the rule has no name, the rule dose not exist
           }
           else
           {
-            // Regel aus Regelsortiment suchen
             ProofRule[] allRules = proofModel.getRules();
-            // Jede Regel druchlaufen
             for (ProofRule a : allRules)
             {
-              // Wenn die Bezecihnugnen der Regeln geich sind, also die Regel,
-              // die in der Regestry steht auch in den verfügbaren Regeln
-              // vorkommt
               if (new MenuRuleItem(a).getLabel().equalsIgnoreCase(name))
               {
-                // hinzufügen
-                last10Elements.add(0, new MenuRuleItem(a));
+                //add at the beginning of the list to save the order
+                lastUsedElements.add(0, new MenuRuleItem(a));
                 MenuRuleItem tmp = new MenuRuleItem(a);
-                // dieser ActionListener wird gebraucht, damit Elemente in der
-                // Liste aufsteigen können...
+                //the actionlistener ist needed to be able to set the position of a selected 
+                //rule
                 ActionListener al = new ActionListener() {
                   public void actionPerformed(ActionEvent e)
                   {
-                    //zum erventuellen Rückgänging machen zustand speichern
+                    //to be able to revert the changes in the menu if the rule throws an exception
                   	saveToRevert();
-                  	// Wenn ein Elemtnt aus dem Hauptmenü gedrückt wurde wird
-                    // die Regel nach oben verschoben
-                  	moveToTop(((MenuRuleItem) e.getSource()).getLabel(), max);
+                  	//if the rule is selected it will be moved to the top of the menu
+                  	moveToTop(((MenuRuleItem) e.getSource()).getLabel(), MAX);
+                  	//save this state of the menu to the preferences
                   	save();
-                    
-                    // wird nicht benötigt, macht ein MenuRuleItem automatisch
-                    // menuItemActivated((JMenuItem)e.getSource());
                   }
                 };
-                // Den Actionlistener hinzufügen
                 tmp.addActionListener(al);
-                // menu.insert(new MenuRuleItem(a),0);
-                // ab nach oben ins Menü
+                //inset at the top of the meun (the preferences are walked throu 
                 menu.insert(tmp, 0);
               }
             }
           }
         }
 
-        // Untermenüs bauen
+        //build the submenu
         int group = rules[0].getGroup();
-        // Wenn es schon Regeln gibt, die oben stehen sollen, dann wollen wir
-        // als erstes einen Seperator
-        if (last10Elements.size() > 0)
+        //a seperator ist needed if there are last used elements
+        if (lastUsedElements.size() > 0)
         {
           menu.addSeparator();
         }
@@ -575,34 +593,39 @@ public class SmallStepNodeComponent extends JComponent
         // +rules[0].getGroup());
         JMenu subMenu;
         // TODO nicht hard vercoded
-        if (rules[0].getGroup() == 0)
-        {
-          subMenu = new JMenu("L0");
-        }
-        else if (rules[0].getGroup() == 1)
-        {
-          subMenu = new JMenu("L1");
-        }
-        else if (rules[0].getGroup() == 2)
-        {
-          subMenu = new JMenu("L2");
-        }
-        else if ((rules[0].getGroup() == 3))
-        {
-          subMenu = new JMenu("L3");
-        }
-        else if ((rules[0].getGroup() == 4))
-        {
-          subMenu = new JMenu("L4");
-        }
-        else if (rules[0].getGroup() == 5)
-        {
-          subMenu = new JMenu("L2O");
-        }
-        else
-        {
-          subMenu = new JMenu("andere Sprachen" + group);
-        }
+        Language lang = proofModel.getLanguage();
+        HashMap <Number,String>names = getLanguageNames(lang);
+        subMenu = new JMenu(names.get(rules[0].getGroup()));
+        //int langId = lang.get  .getName();
+        System.out.println(proofModel.getLanguage().getName());
+        //if (rules[0].getGroup() == 0)
+        //{
+        //  subMenu = new JMenu("L0");
+        //}
+//        else if (rules[0].getGroup() == 1)
+//        {
+//          subMenu = new JMenu("L1");
+//        }
+//        else if (rules[0].getGroup() == 2)
+//        {
+//          subMenu = new JMenu("L2");
+//        }
+//        else if ((rules[0].getGroup() == 3))
+//        {
+//          subMenu = new JMenu("L3");
+//        }
+//        else if ((rules[0].getGroup() == 4))
+//        {
+//          subMenu = new JMenu("L4");
+//        }
+//        else if (rules[0].getGroup() == 5)
+//        {
+//          subMenu = new JMenu("L2O");
+//        }
+//        else
+//        {
+//          subMenu = new JMenu("andere Sprachen" + group);
+//        }
 
         // for (int i = 0; i<last10Elements.size(); i++)
         // {
@@ -620,37 +643,39 @@ public class SmallStepNodeComponent extends JComponent
               {
                 menu.add(subMenu);
               }
+              
+              subMenu = new JMenu(names.get(r.getGroup()));
 
               // Smenu = new JMenu (Messages.getString("Language.0")+ " "
               // +r.getGroup());
-              if (r.getGroup() == 0)
-              {
-                subMenu = new JMenu("L0");
-              }
-              else if (r.getGroup() == 1)
-              {
-                subMenu = new JMenu("L1");
-              }
-              else if (r.getGroup() == 2)
-              {
-                subMenu = new JMenu("L2");
-              }
-              else if ((r.getGroup() == 3))
-              {
-                subMenu = new JMenu("L3");
-              }
-              else if ((r.getGroup() == 4))
-              {
-                subMenu = new JMenu("L4");
-              }
-              else if (r.getGroup() == 5)
-              {
-                subMenu = new JMenu("L2O");
-              }
-              else
-              {
-                subMenu = new JMenu("andere Sprachen" + r.getGroup());
-              }
+//              if (r.getGroup() == 0)
+//              {
+//                subMenu = new JMenu("L0");
+//              }
+//              else if (r.getGroup() == 1)
+//              {
+//                subMenu = new JMenu("L1");
+//              }
+//              else if (r.getGroup() == 2)
+//              {
+//                subMenu = new JMenu("L2");
+//              }
+//              else if ((r.getGroup() == 3))
+//              {
+//                subMenu = new JMenu("L3");
+//              }
+//              else if ((r.getGroup() == 4))
+//              {
+//                subMenu = new JMenu("L4");
+//              }
+//              else if (r.getGroup() == 5)
+//              {
+//                subMenu = new JMenu("L2O");
+//              }
+//              else
+//              {
+//                subMenu = new JMenu("andere Sprachen" + r.getGroup());
+//              }
               // menu.add(Smenu);
               // menu.addSeparator();
             }
@@ -672,22 +697,22 @@ public class SmallStepNodeComponent extends JComponent
                 
                 
                 //Wenn die Liste mit den letzen noch nicht voll ist
-                if (last10Elements.size() < max)
+                if (lastUsedElements.size() < MAX)
                 {
                   MenuRuleItem lastUsed = new MenuRuleItem(r);
                   // Überprüfen, ob das Element schon bei den letzten ist...
                   boolean isIn = false;
-                  for (int i = 0; i < max; i++)
+                  for (int i = 0; i < MAX; i++)
                   {
                     // if (last10Elements.contains(lastUsed))
-                    int schleife = Math.min(max, last10Elements.size());
+                    int schleife = Math.min(MAX, lastUsedElements.size());
                     for (int j = 0; j < schleife; j++)
                     {
                       // System.out.println(last10Elements.size());
                       // MenuRuleItem tmp = last10Elements.get(j);
                       // String f1 = last10Elements.get(j).getLabel();
                       // String f2 = lastUsed.getLabel();
-                      if (last10Elements.get(j).getLabel().equals(lastUsed.getLabel()))
+                      if (lastUsedElements.get(j).getLabel().equals(lastUsed.getLabel()))
                       {
                         isIn = true;
                       }
@@ -697,7 +722,7 @@ public class SmallStepNodeComponent extends JComponent
                     public void actionPerformed(ActionEvent e)
                     {
                       //nach oben schieben
-                    	moveToTop(((MenuRuleItem) e.getSource()).getLabel(), max);
+                    	moveToTop(((MenuRuleItem) e.getSource()).getLabel(), MAX);
                  
                       //Muss hier gemacht werden, da es nicht automatisch ausgeführt wird, wenn es in einem Untermenü ist
                       menuItemActivated((JMenuItem) e.getSource());
@@ -708,7 +733,7 @@ public class SmallStepNodeComponent extends JComponent
                   {
                   	saveToRevert();
                     menu.insert(lastUsed, 0);
-                    last10Elements.add(0, lastUsed);
+                    lastUsedElements.add(0, lastUsed);
                   }
                   //Eventuell noch nach oben schieben...
                   // else
@@ -731,20 +756,20 @@ public class SmallStepNodeComponent extends JComponent
                   ActionListener al = new ActionListener() {
                     public void actionPerformed(ActionEvent e)
                     {
-                      moveToTop(((MenuRuleItem) e.getSource()).getLabel(), max);
+                      moveToTop(((MenuRuleItem) e.getSource()).getLabel(), MAX);
                       menuItemActivated((JMenuItem) e.getSource());
                     }
                   };
                   lastUsed.addActionListener(al);
                   boolean isIn = false;
-                  for (int i = 0; i < max; i++)
+                  for (int i = 0; i < MAX; i++)
                   {
                     // if (last10Elements.contains(lastUsed))
                     //Überprüfen, ob es in der Liste schon drin ist
-                    int schleife = Math.min(max, last10Elements.size());
+                    int schleife = Math.min(MAX, lastUsedElements.size());
                     for (int j = 0; j < schleife; j++)
                     {
-                      if (last10Elements.get(j).getLabel().equals(lastUsed.getLabel()))
+                      if (lastUsedElements.get(j).getLabel().equals(lastUsed.getLabel()))
                       {
                         isIn = true;
                       }
@@ -754,10 +779,10 @@ public class SmallStepNodeComponent extends JComponent
                   if (!isIn)
                   {
                   	saveToRevert();
-                    last10Elements.add(0, lastUsed);
+                    lastUsedElements.add(0, lastUsed);
                     menu.insert(lastUsed, 0);
-                    last10Elements.remove(max);
-                    menu.remove(max);
+                    lastUsedElements.remove(MAX);
+                    menu.remove(MAX);
                   }
                   //Eventuell noch, wenn es schon drin ist, nach oben schieben
                   // else
@@ -814,7 +839,47 @@ public class SmallStepNodeComponent extends JComponent
     this.rules.getMenuButton().setMenu(menu);
   }
 
-  /**
+  private HashMap getLanguageNames(Language language)
+	{
+		HashMap <Number,String> result = new HashMap<Number,String>();
+		while ( language.getId ( ) > 0 )
+    {
+      System.out.println ( language.getId ( ) + " " + language.getName ( ) ) ;
+      result.put(language.getId ( ), language.getName ( ));
+      try
+      {
+        language = ( Language ) language.getClass ( ).getSuperclass ( )
+            .newInstance ( ) ;
+      }
+      catch ( InstantiationException e )
+      {
+        // Do nothing
+      }
+      catch ( IllegalAccessException e )
+      {
+        // Do nothing
+      }
+    }
+    try
+    {
+      language = ( Language ) language.getClass ( ).getSuperclass ( )
+          .newInstance ( ) ;
+    }
+    catch ( InstantiationException e )
+    {
+      // Do nothing
+    }
+    catch ( IllegalAccessException e )
+    {
+      // Do nothing
+    }
+    System.out.println ( language.getId ( ) + " " + language.getName ( ) ) ;
+    result.put(language.getId ( ), language.getName ( ));
+		
+		return result;
+	}
+
+	/**
    * Moves the first element of the menu to top, corresponding to the label.
    * only elements from 0 to max will be recognized.
    *
@@ -830,7 +895,7 @@ public class SmallStepNodeComponent extends JComponent
       try
       {
         MenuRuleItem kacke = (MenuRuleItem) menu.getComponent(i);
-        MenuRuleItem tmp2 = last10Elements.get(i);
+        MenuRuleItem tmp2 = lastUsedElements.get(i);
         // vergleiche die Namen, wenn sie übereinstimmen
         if (kacke.getLabel().equals(label))
         {
@@ -844,8 +909,8 @@ public class SmallStepNodeComponent extends JComponent
         
         if (tmp2.getLabel().equals(label))
         {
-        	last10Elements.remove(i);
-        	last10Elements.add(0, tmp2);        	
+        	lastUsedElements.remove(i);
+        	lastUsedElements.add(0, tmp2);        	
         } 
       }
       catch (ClassCastException ex)
@@ -863,10 +928,10 @@ public class SmallStepNodeComponent extends JComponent
 	 */
 	private void save()
 	{
-		for (int i = 0; i < last10Elements.size(); i++)
+		for (int i = 0; i < lastUsedElements.size(); i++)
     {
       // System.out.println(last10Elements.get(i).getLabel());
-      preferences.put("rule" + i, last10Elements.get(i).getLabel());
+      preferences.put("rule" + i, lastUsedElements.get(i).getLabel());
     }
 	}
 	
@@ -902,8 +967,8 @@ public class SmallStepNodeComponent extends JComponent
 		}
 		
 		//jetzt die Last10Elements sichern
-		revertLast10Elements.clear();
-		revertLast10Elements.addAll(last10Elements);
+		revertLastUsedElements.clear();
+		revertLastUsedElements.addAll(lastUsedElements);
 	}
 	
 	private void revertMenu()
@@ -938,8 +1003,8 @@ public class SmallStepNodeComponent extends JComponent
 		}
 		
 		//last10Elements zurücksetzen
-		last10Elements.clear();
-		last10Elements.addAll(revertLast10Elements);
+		lastUsedElements.clear();
+		lastUsedElements.addAll(revertLastUsedElements);
 	}
 
 	/**
