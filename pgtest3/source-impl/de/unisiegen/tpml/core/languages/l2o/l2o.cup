@@ -47,7 +47,6 @@ terminal			METH ;
 terminal			SEMI ;
 terminal			LCURLYBRACE ;
 terminal			RCURLYBRACE ;
-terminal			COMMA ;
 
 /* Types */
 terminal			BOOL, INT, UNIT;
@@ -91,6 +90,9 @@ precedence left		PLUS, MINUS;
 precedence left		STAR, SLASH, MOD;
 
 precedence right	NUMBERSIGN ;
+
+// TODO Only for testing
+// precedence right	LCURLYBRACE ;
 
 
 /***************
@@ -230,7 +232,7 @@ object_expr			::= OBJECT LPAREN IDENTIFIER:id RPAREN row:r END
 						{: RESULT = new ObjectExpr (id, tau, r); :}
 					;
 					
-duplication			::= LCURLYBRACE LESS id_expr_list:iel GREATER RCURLYBRACE
+duplication			::= IDENTIFIER:id LCURLYBRACE LESS id_expr_list:iel GREATER RCURLYBRACE
 						{: Expression [] tmpE = new Expression [iel.length];
 						   String [] tmpI = new String [iel.length];
 						   for ( int i = 0 ; i < iel.length ; i++ )
@@ -238,7 +240,18 @@ duplication			::= LCURLYBRACE LESS id_expr_list:iel GREATER RCURLYBRACE
 						     tmpE [i] = iel [i].e;
 						     tmpI [i] = iel [i].id;
 						   }
-						   RESULT = new Duplication ( tmpI , tmpE ); :}
+						   RESULT = new Duplication ( new Identifier (id) , tmpI , tmpE ); :}
+					
+					// TODO Only for testing
+					/*|	expr:e LCURLYBRACE LESS id_expr_list:iel GREATER RCURLYBRACE
+						{: Expression [] tmpE = new Expression [iel.length];
+						   String [] tmpI = new String [iel.length];
+						   for ( int i = 0 ; i < iel.length ; i++ )
+						   {
+						     tmpE [i] = iel [i].e;
+						     tmpI [i] = iel [i].id;
+						   }
+						   RESULT = new Duplication ( e , tmpI , tmpE ); :}*/
 					;
 					
 message				::= expr:e NUMBERSIGN IDENTIFIER:id
@@ -314,7 +327,7 @@ id_expr_list		::= IDENTIFIER:id EQUAL expr:e
 						{: IdExprPair [] list = new IdExprPair [1];
 						   list [0] = new IdExprPair (id, e);
 						   RESULT = list; :}
-					|	IDENTIFIER:id EQUAL expr:e COMMA id_expr_list:iel
+					|	IDENTIFIER:id EQUAL expr:e SEMI id_expr_list:iel
 						{: IdExprPair [] list = new IdExprPair [iel.length+1];
 						   System.arraycopy(iel, 0, list, 1, iel.length);
 						   list [0] = new IdExprPair (id, e);

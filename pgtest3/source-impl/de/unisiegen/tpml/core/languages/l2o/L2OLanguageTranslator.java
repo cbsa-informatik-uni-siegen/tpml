@@ -115,16 +115,16 @@ public class L2OLanguageTranslator extends L2LanguageTranslator
     {
       if ( pRecursive )
       {
-        Duplication duplicatedRow = ( Duplication ) pExpression ;
-        Expression [ ] duplicatedRowE = new Expression [ duplicatedRow
+        Duplication duplication = ( Duplication ) pExpression ;
+        Expression [ ] duplicatedRowE = new Expression [ duplication
             .getExpressions ( ).length ] ;
-        for ( int i = 0 ; i < duplicatedRow.getExpressions ( ).length ; i ++ )
+        for ( int i = 0 ; i < duplication.getExpressions ( ).length ; i ++ )
         {
-          duplicatedRowE [ i ] = translateToCoreSyntax ( duplicatedRow
+          duplicatedRowE [ i ] = translateToCoreSyntax ( duplication
               .getExpressions ( i ) , pRecursive ) ;
         }
-        return new Duplication ( duplicatedRow.getIdentifiers ( ) ,
-            duplicatedRowE ) ;
+        return new Duplication ( duplication.getE ( ) , duplication
+            .getIdentifiers ( ) , duplicatedRowE ) ;
       }
       return pExpression ;
     }

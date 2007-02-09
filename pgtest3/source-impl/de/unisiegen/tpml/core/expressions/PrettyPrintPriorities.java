@@ -270,21 +270,21 @@ interface PrettyPrintPriorities
 
 
   /**
-   * The pretty print priority for sub expressions of duplicated rows.
+   * The pretty print priority for the first expression of duplication.
    */
-  public static final int PRIO_DUPLICATED_ROW_E_BEFORE = 0 ;
+  public static final int PRIO_DUPLICATION_FIRST_E = 0 ;
 
 
   /**
-   * The pretty print priority for duplicated rows.
+   * The pretty print priority for duplication.
    */
-  public static final int PRIO_DUPLICATED_ROW = 5 ;
+  public static final int PRIO_DUPLICATION = 5 ;
 
 
   /**
-   * The pretty print priority for sub expressions of duplicated rows.
+   * The pretty print priority for sub expressions of duplication.
    */
-  public static final int PRIO_DUPLICATED_ROW_E = 1 ;
+  public static final int PRIO_DUPLICATION_E = 1 ;
 
 
   /**

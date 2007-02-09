@@ -3,6 +3,7 @@ package de.unisiegen.tpml.core.languages.l2o ;
 
 import de.unisiegen.tpml.core.expressions.Attr ;
 import de.unisiegen.tpml.core.expressions.CurriedMeth ;
+import de.unisiegen.tpml.core.expressions.Duplication ;
 import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.expressions.Identifier ;
 import de.unisiegen.tpml.core.expressions.Lambda ;
@@ -44,6 +45,9 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
     register ( L2OLanguage.L2O , "SEND-ATTR" , true ) ; //$NON-NLS-1$
     register ( L2OLanguage.L2O , "SEND-SKIP" , true ) ; //$NON-NLS-1$
     register ( L2OLanguage.L2O , "SEND-EXEC" , true ) ; //$NON-NLS-1$
+    // Dupl
+    register ( L2OLanguage.L2O , "DUPL-EVAL" , false ) ; //$NON-NLS-1$  
+    register ( L2OLanguage.L2O , "DUPL-EXEC" , true ) ; //$NON-NLS-1$
   }
 
 
@@ -219,6 +223,71 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
       }
     }
     return pMessage ;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @param pContext TODO
+   * @param pDuplication TODO
+   * @return TODO
+   */
+  public Expression evaluateDuplication ( SmallStepProofContext pContext ,
+      Duplication pDuplication )
+  {
+    boolean allChildrenAreValues = true ;
+    for ( Expression expr : pDuplication.getExpressions ( ) )
+    {
+      if ( ! expr.isValue ( ) )
+      {
+        allChildrenAreValues = false ;
+        break ;
+      }
+    }
+    if ( ( ! allChildrenAreValues ) && ( pDuplication.getE ( ).isValue ( ) ) )
+    {
+      // DUPL-EVAL
+      pContext.addProofStep ( getRuleByName ( "DUPL-EVAL" ) , pDuplication ) ; //$NON-NLS-1$
+      Expression [ ] newDuplicationE = pDuplication.getExpressions ( ).clone ( ) ;
+      for ( int i = 0 ; i < newDuplicationE.length ; i ++ )
+      {
+        if ( ! newDuplicationE [ i ].isValue ( ) )
+        {
+          newDuplicationE [ i ] = evaluate ( pContext , newDuplicationE [ i ] ) ;
+          return new Duplication ( pDuplication.getE ( ).clone ( ) ,
+              pDuplication.getIdentifiers ( ) , newDuplicationE ) ;
+        }
+      }
+    }
+    if ( ( allChildrenAreValues )
+        && ( pDuplication.getE ( ) instanceof ObjectExpr )
+        && ( pDuplication.getE ( ).isValue ( ) ) )
+    {
+      // DUPL-EXEC
+      pContext.addProofStep ( getRuleByName ( "DUPL-EXEC" ) , pDuplication ) ; //$NON-NLS-1$
+      ObjectExpr objectExpr = ( ObjectExpr ) pDuplication.getE ( ) ;
+      Row row = ( Row ) objectExpr.getE ( ) ;
+      Expression [ ] newRowE = row.getExpressions ( ).clone ( ) ;
+      for ( int i = 0 ; i < newRowE.length ; i ++ )
+      {
+        if ( newRowE [ i ] instanceof Attr )
+        {
+          Attr attr = ( Attr ) newRowE [ i ] ;
+          for ( int j = 0 ; j < pDuplication.getIdentifiers ( ).length ; j ++ )
+          {
+            if ( attr.getId ( ).equals ( pDuplication.getIdentifiers ( j ) ) )
+            {
+              newRowE [ i ] = new Attr ( attr.getId ( ) , attr.getTau ( ) ,
+                  pDuplication.getExpressions ( j ) ) ;
+            }
+          }
+        }
+      }
+      return new ObjectExpr ( objectExpr.getId ( ) , objectExpr.getTau ( ) ,
+          new Row ( newRowE ) ) ;
+    }
+    return pDuplication ;
   }
 
 

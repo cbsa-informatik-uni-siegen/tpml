@@ -62,7 +62,6 @@ import de.unisiegen.tpml.core.languages.LanguageSymbol;
 		case SEMI: 
 		case LCURLYBRACE: 
 		case RCURLYBRACE: 
-		case COMMA:
 			return PrettyStyle.KEYWORD;
 			
 		case BOOL: case INT: case UNIT: case TYPEVARIABLE:
@@ -137,7 +136,6 @@ LetterGreek		= [\u03b1-\u03c1\u03c3-\u03c9]
 	";"					{ return symbol("SEMI", SEMI); }
 	"{"					{ return symbol("LCURLYBRACE", LCURLYBRACE); }
 	"}"					{ return symbol("RCURLYBRACE", RCURLYBRACE); }
-	","					{ return symbol("COMMA", COMMA); }
 	
 	// constants
 	"()"				{ return symbol("PARENPAREN", PARENPAREN); }

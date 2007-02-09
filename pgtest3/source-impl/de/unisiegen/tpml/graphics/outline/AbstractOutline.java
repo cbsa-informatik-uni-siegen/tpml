@@ -514,10 +514,19 @@ public final class AbstractOutline implements Outline
     DefaultMutableTreeNode node = new DefaultMutableTreeNode ( new OutlineNode (
         pExpression , this.outlineUnbound ) ) ;
     /*
+     * Create the first Expression.
+     */
+    DefaultMutableTreeNode treeNode ;
+    OutlineNode outlineNode ;
+    treeNode = checkExpression ( pExpression.getE ( ) ) ;
+    outlineNode = ( OutlineNode ) treeNode.getUserObject ( ) ;
+    outlineNode.appendDescription ( EXPRESSION + BETWEEN ) ;
+    outlineNode.resetCaption ( ) ;
+    node.add ( treeNode ) ;
+    /*
      * Create all Identifiers.
      */
     OutlinePair outlinePairId = null ;
-    OutlineNode outlineNode ;
     int start ;
     int end ;
     for ( int i = 0 ; i < pExpression.getIdentifiers ( ).length ; i ++ )
@@ -530,7 +539,8 @@ public final class AbstractOutline implements Outline
         outlinePairId = OutlineStyle.getIndex (
             pExpression ,
             PrettyStyle.IDENTIFIER ,
-            0 ,
+            pExpression.toPrettyString ( ).getAnnotationForPrintable (
+                pExpression.getE ( ) ).getEndOffset ( ) ,
             pExpression.toPrettyString ( ).getAnnotationForPrintable (
                 pExpression.getExpressions ( 0 ) ).getStartOffset ( ) )
             .get ( 0 ) ;
@@ -547,7 +557,6 @@ public final class AbstractOutline implements Outline
       node.add ( new DefaultMutableTreeNode ( new OutlineNode ( IDENTIFIER ,
           pExpression.getIdentifiers ( i ) , outlinePairId , null ,
           this.outlineUnbound ) ) ) ;
-      DefaultMutableTreeNode treeNode ;
       treeNode = checkExpression ( pExpression.getExpressions ( i ) ) ;
       outlineNode = ( OutlineNode ) treeNode.getUserObject ( ) ;
       outlineNode.appendDescription ( EXPRESSION + ( i + 1 ) + BETWEEN ) ;
