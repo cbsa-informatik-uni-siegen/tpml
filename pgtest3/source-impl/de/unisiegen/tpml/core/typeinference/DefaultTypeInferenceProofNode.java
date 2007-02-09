@@ -6,8 +6,12 @@ import javax.swing.tree.TreeNode;
 import de.unisiegen.tpml.core.AbstractExpressionProofNode;
 import de.unisiegen.tpml.core.ProofStep;
 import de.unisiegen.tpml.core.expressions.Expression;
+import de.unisiegen.tpml.core.typechecker.AbstractTypeCheckerProofRuleSet;
+import de.unisiegen.tpml.core.typechecker.TypeCheckerProofContext;
+import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofRule;
 import de.unisiegen.tpml.core.typechecker.TypeEnvironment;
+import de.unisiegen.tpml.core.typechecker.TypeEquationList;
 import de.unisiegen.tpml.core.types.MonoType;
 
 /**
@@ -18,7 +22,7 @@ public final class DefaultTypeInferenceProofNode extends
 		AbstractExpressionProofNode implements TypeInferenceProofNode {
 	
 	  /**
-	   * The type environment for this type checker proof node.
+	   * The type environment for this type inference proof node.
 	   * 
 	   * @see #getEnvironment()
 	   * @see #setEnvironment(TypeEnvironment)
@@ -32,12 +36,17 @@ public final class DefaultTypeInferenceProofNode extends
 	   * @see #setType(MonoType)
 	   */
 	  private MonoType type;
-
-	protected DefaultTypeInferenceProofNode(Expression expression) {
-		super(expression);
-	    setEnvironment(environment);
-	    setType(type);
-	}
+	  
+	  private TypeEquationList typeEquations;
+	  
+	  
+	  
+	 
+	  DefaultTypeInferenceProofNode(TypeEnvironment environment, Expression expression, MonoType type) {
+		    super(expression);
+		    setEnvironment(environment);
+		    setType(type);
+		  }
 
 	void setType(MonoType pType) {
 		this.type=pType;
@@ -181,4 +190,26 @@ public final class DefaultTypeInferenceProofNode extends
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	  /**
+	   * {@inheritDoc}
+	   * 
+	   * Mainly useful for debugging purposes.
+	   * 
+	   * @see java.lang.Object#toString()
+	   */
+	  @Override
+	  public String toString() {
+	    StringBuilder builder = new StringBuilder();
+	    builder.append(this.environment);
+	    builder.append(" \u22b3 ");
+	    builder.append(this.expression);
+	    builder.append(" :: ");
+	    builder.append(this.type);
+	    if (getRule() != null) {
+	      builder.append(" (" + getRule() + ")");
+	    }
+	    return builder.toString();
+	  }
+	
 }
