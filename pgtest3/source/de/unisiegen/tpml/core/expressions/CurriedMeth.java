@@ -46,15 +46,6 @@ public class CurriedMeth extends Expression
   /**
    * TODO
    * 
-   * @see #parentRow(Row) ;
-   * @see #returnParentRow() ;
-   */
-  private Row parentRow ;
-
-
-  /**
-   * TODO
-   * 
    * @param pIdentifiers TODO
    * @param pTypes TODO
    * @param pExpression TODO
@@ -224,32 +215,6 @@ public class CurriedMeth extends Expression
   public boolean isValue ( )
   {
     return this.expression.isValue ( ) ;
-  }
-
-
-  /**
-   * TODO
-   * 
-   * @param pRow TODO
-   * @see #parentRow
-   * @see #returnParentRow()
-   */
-  public void parentRow ( Row pRow )
-  {
-    this.parentRow = pRow ;
-  }
-
-
-  /**
-   * TODO
-   * 
-   * @return TODO
-   * @see #parentRow
-   * @see #parentRow(Row)
-   */
-  public Row returnParentRow ( )
-  {
-    return this.parentRow ;
   }
 
 

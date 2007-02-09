@@ -38,19 +38,13 @@ public final class Row extends Expression
       throw new NullPointerException ( "Expressions is null" ) ; //$NON-NLS-1$
     }
     this.expressions = pExpressions ;
-    for ( Expression e : this.expressions )
+    for ( Expression expr : this.expressions )
     {
-      if ( e instanceof Attr )
+      if ( ( ! ( expr instanceof Attr ) ) && ( ! ( expr instanceof Meth ) )
+          && ( ! ( expr instanceof CurriedMeth ) ) )
       {
-        ( ( Attr ) e ).parentRow ( this ) ;
-      }
-      if ( e instanceof Meth )
-      {
-        ( ( Meth ) e ).parentRow ( this ) ;
-      }
-      if ( e instanceof CurriedMeth )
-      {
-        ( ( CurriedMeth ) e ).parentRow ( this ) ;
+        throw new IllegalArgumentException (
+            "A Expression is not an instance of Attr, Meth or CurriedMeth" ) ; //$NON-NLS-1$
       }
     }
   }
