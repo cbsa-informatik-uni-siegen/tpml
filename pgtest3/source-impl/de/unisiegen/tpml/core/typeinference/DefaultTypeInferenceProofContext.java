@@ -3,7 +3,9 @@ package de.unisiegen.tpml.core.typeinference;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.TreeSet;
+import java.util.Vector;
 
+import de.unisiegen.tpml.core.AbstractProofNode;
 import de.unisiegen.tpml.core.ProofRuleException;
 import de.unisiegen.tpml.core.expressions.ArithmeticOperator;
 import de.unisiegen.tpml.core.expressions.Assign;
@@ -22,9 +24,11 @@ import de.unisiegen.tpml.core.expressions.RelationalOperator;
 import de.unisiegen.tpml.core.expressions.Tl;
 import de.unisiegen.tpml.core.expressions.UnaryCons;
 import de.unisiegen.tpml.core.expressions.UnitConstant;
+import de.unisiegen.tpml.core.typechecker.DefaultTypeCheckerProofNode;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofContext;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode;
+import de.unisiegen.tpml.core.typechecker.TypeCheckerProofRule;
 import de.unisiegen.tpml.core.typechecker.TypeEnvironment;
 import de.unisiegen.tpml.core.typechecker.TypeEquationList;
 import de.unisiegen.tpml.core.typechecker.TypeUtilities;
@@ -97,6 +101,12 @@ public class DefaultTypeInferenceProofContext  implements TypeInferenceProofCont
 	   * @see #getUndoActions()
 	   */
 	  private LinkedList<Runnable> undoActions = new LinkedList<Runnable>();
+	  
+	  private TmpTree tmpTree;
+	  
+	  private MonoType type;
+	  
+	  protected Vector<AbstractProofNode> children;
 
 	
 	/**
@@ -109,6 +119,8 @@ public class DefaultTypeInferenceProofContext  implements TypeInferenceProofCont
 		      throw new NullPointerException("model is null");
 		    }
 		    this.model = model;
+		    children=new Vector<AbstractProofNode>();
+		    
 		    
 		    // increment the model index
 		    final int index = model.getIndex();
@@ -117,8 +129,14 @@ public class DefaultTypeInferenceProofContext  implements TypeInferenceProofCont
 	
 	  }
 	  
-	  public void addProofNode(TypeInferenceProofNode node, TypeEnvironment environment, Expression expression, MonoType type) {
-		    this.model.contextAddProofNode(this, (DefaultTypeInferenceProofNode)node, environment, expression, type);
+	  
+	  // TODO
+	  
+	  
+	  //hier muss die node an den tmp baum angehangen werden und die Daten so gespeichert werden
+	  //dass sie in den neuen Baum aufgenommen werden können
+	  public void addProofNode(TypeCheckerProofNode node, TypeEnvironment environment, Expression expression, MonoType type) {
+		    this.model.contextAddProofNode(this, (DefaultTypeCheckerProofNode)node, environment, expression, type);
 		  }
 	
 	/**
@@ -227,18 +245,30 @@ public class DefaultTypeInferenceProofContext  implements TypeInferenceProofCont
 	   * @throws UnificationException if an error occurs while unifying the type equations that resulted
 	   *                              from the application of <code>rule</code> to <code>node</code>.
 	   */
-	  void apply(TypeInferenceProofRule rule, TypeInferenceProofNode node, MonoType type) throws ProofRuleException, UnificationException {
+	  void apply(TypeCheckerProofRule rule, TypeInferenceProofNode pNode, MonoType pType) throws ProofRuleException, UnificationException {
 	    // record the proof step for the node
-	    this.model.contextSetProofNodeRule(this, (DefaultTypeInferenceProofNode)node, rule);
+	    this.model.contextSetProofNodeRule(this, (DefaultTypeInferenceProofNode)pNode, rule);
 	    
+	    
+	    	
+	
+	    
+	    
+	    tmpTree= new TmpTree(new DefaultTypeCheckerProofNode(pNode.getEnvironment(), pNode.getExpression(), new TypeVariable(1, 0)));
 	    // try to apply the rule to the node
-	    rule.apply(this, node);
+	    System.out.println(tmpTree.getRoot().toString());
+	    rule.apply(this, tmpTree.getRoot());
 	    
-	    // check if the user specified a type
-	    if (type != null) {
+	    System.out.println(tmpTree.getRoot().getChildAt(0).toString());
+	    System.out.println();
+	    System.out.println(tmpTree.type);
+	    
+//	  check if the user specified a type
+	    if (pType != null) {
 	      // add an equation for { node.getType() = type }
-	      addEquation(node.getType(), type);
+	      addEquation(pNode.getType(), type);
 	    }
+
 	    
 	    //changes benjamin
 	    // unify the type equations and apply the substitution to the model
@@ -248,7 +278,7 @@ public class DefaultTypeInferenceProofContext  implements TypeInferenceProofCont
 	    // update all super nodes
 	    for (;;) {
 	      // determine the parent node
-	      TypeInferenceProofNode parentNode = node.getParent();
+	      TypeInferenceProofNode parentNode = pNode.getParent();
 	      if (parentNode == null) {
 	        break;
 	      }
@@ -257,7 +287,7 @@ public class DefaultTypeInferenceProofContext  implements TypeInferenceProofCont
 	      parentNode.getRule().update(this, parentNode);
 	      
 	      // continue with the next one
-	      node = parentNode;
+	      pNode = parentNode;
 	    }
 	  }
 	  
@@ -390,7 +420,8 @@ public class DefaultTypeInferenceProofContext  implements TypeInferenceProofCont
 		    
 		  }
 
-	public void addProofNode(TypeCheckerProofNode node, TypeEnvironment environment, Expression expression, MonoType type) {
+
+	public void addProofNode(TypeInferenceProofNode node, TypeEnvironment environment, Expression expression, MonoType type) {
 		// TODO Auto-generated method stub
 		
 	}

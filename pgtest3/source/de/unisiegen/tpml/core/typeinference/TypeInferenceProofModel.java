@@ -54,6 +54,8 @@ public final class TypeInferenceProofModel extends AbstractExpressionProofModel 
 
 	  private int index = 1;
 	  
+	  private Expression expression;
+	  
 	
 	  
 	  //
@@ -74,7 +76,7 @@ public final class TypeInferenceProofModel extends AbstractExpressionProofModel 
 	   */
 	  public TypeInferenceProofModel(Expression pExpression, AbstractTypeCheckerProofRuleSet ruleSet) {
 	    super(new DefaultTypeInferenceProofNode(new DefaultTypeEnvironment(), pExpression, new TypeVariable(1, 0)), ruleSet);
-	        
+	      expression=pExpression;  
 	  }
 	  
 	  public int getIndex() {
@@ -158,7 +160,7 @@ public final class TypeInferenceProofModel extends AbstractExpressionProofModel 
 		    for (ProofRule rule : this.ruleSet.getRules()) { // MUST be the getRules() from the ProofRuleSet
 		      try {
 		        // try to apply the rule to the specified node
-		        applyInternal((TypeInferenceProofRule)rule, node, type);
+		        applyInternal((TypeCheckerProofRule)rule, node, type);
 		        
 		        // remember that the user cheated
 		        setCheating(true);
@@ -194,7 +196,7 @@ public final class TypeInferenceProofModel extends AbstractExpressionProofModel 
 	   * @see #guess(ProofNode)
 	   * @see #prove(ProofRule, ProofNode)
 	   */
-	  private void applyInternal(TypeInferenceProofRule rule, DefaultTypeInferenceProofNode node, MonoType type) throws ProofRuleException {
+	  private void applyInternal(TypeCheckerProofRule rule, DefaultTypeInferenceProofNode node, MonoType type) throws ProofRuleException {
 		//allocate a new TypeCheckerContext
 		DefaultTypeInferenceProofContext context;
 	  	context = new DefaultTypeInferenceProofContext(this);
@@ -204,7 +206,7 @@ public final class TypeInferenceProofModel extends AbstractExpressionProofModel 
 	      context.apply(rule, node, type);
 	      
 	      // check if we are finished
-	      final TypeCheckerProofNode root = (TypeCheckerProofNode)getRoot();
+	      final TypeInferenceProofNode root = (TypeInferenceProofNode)getRoot();
 	      context.addRedoAction(new Runnable() { public void run() { setFinished(root.isFinished()); } });
 	      context.addUndoAction(new Runnable() { public void run() { setFinished(false); } });
 	      
@@ -327,7 +329,7 @@ public final class TypeInferenceProofModel extends AbstractExpressionProofModel 
 	   * 
 	   * @see DefaultTypeCheckerProofContext#apply(TypeCheckerProofRule, TypeCheckerProofNode)
 	   */
-	  void contextSetProofNodeRule(DefaultTypeInferenceProofContext context, final DefaultTypeInferenceProofNode node, final TypeInferenceProofRule rule) {
+	  void contextSetProofNodeRule(DefaultTypeInferenceProofContext context, final DefaultTypeInferenceProofNode node, final TypeCheckerProofRule rule) {
 	    final ProofStep[] oldSteps = node.getSteps();
 	    
 	    context.addRedoAction(new Runnable() {
@@ -337,6 +339,31 @@ public final class TypeInferenceProofModel extends AbstractExpressionProofModel 
 	      }
 	    });
 	  }
+	  
+	  void contextAddProofNode(DefaultTypeInferenceProofContext context, final DefaultTypeCheckerProofNode node, TypeEnvironment environment, Expression expression, MonoType type) {
+		    if (context == null) {
+		      throw new NullPointerException("context is null");
+		    }
+		    if (node == null) {
+		      throw new NullPointerException("node is null");
+		    }
+		    if (environment == null) {
+		      throw new NullPointerException("environment is null");
+		    }
+		    if (expression == null) {
+		      throw new NullPointerException("expression is null");
+		    }
+		    if (type == null) {
+		      throw new NullPointerException("type is null");
+		    }
+		    if (!this.root.isNodeRelated(node)) {
+		      throw new IllegalArgumentException("node is invalid");
+		    }
+	  }
+
+	public Expression getExpression() {
+		return expression;
+	}
 	  
 	
 	}
