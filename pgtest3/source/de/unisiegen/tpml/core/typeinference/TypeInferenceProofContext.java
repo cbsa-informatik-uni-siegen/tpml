@@ -41,7 +41,7 @@ public interface TypeInferenceProofContext {
 	   *                                  with this proof context.
 	   * @throws NullPointerException if any of the parameters is <code>null</code>.
 	   */
-	  public void addProofNode(TypeInferenceProofNode node, TypeEnvironment environment, Expression expression, MonoType type);
+	  public void addProofNode(TypeCheckerProofNode node, TypeEnvironment environment, Expression expression, MonoType type);
 	  
 	  /**
 	   * Returns the {@link Type} for the given <code>expression</code> if possible, i.e. <b>(BOOL)</b> if

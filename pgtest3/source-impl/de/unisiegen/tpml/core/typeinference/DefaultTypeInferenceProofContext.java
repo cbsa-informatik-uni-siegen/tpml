@@ -102,7 +102,7 @@ public class DefaultTypeInferenceProofContext  implements TypeInferenceProofCont
 	   */
 	  private LinkedList<Runnable> undoActions = new LinkedList<Runnable>();
 	  
-	  private TmpTree tmpTree;
+	  private DefaultTypeCheckerProofNode tmpTree;
 	  
 	  private MonoType type;
 	  
@@ -247,21 +247,28 @@ public class DefaultTypeInferenceProofContext  implements TypeInferenceProofCont
 	   */
 	  void apply(TypeCheckerProofRule rule, TypeInferenceProofNode pNode, MonoType pType) throws ProofRuleException, UnificationException {
 	    // record the proof step for the node
-	    this.model.contextSetProofNodeRule(this, (DefaultTypeInferenceProofNode)pNode, rule);
+	    TypeCheckerProofModel typemodel =this.model.getLanguage().newTypeCheckerProofModel(pNode.getExpression());
+		  //this.model.contextSetProofNodeRule(this, (DefaultTypeInferenceProofNode)pNode, rule);
 	    
-	    
+	    tmpTree= new TmpTree(pNode.getEnvironment(), pNode.getExpression(), new TypeVariable(1, 0));
+	    typemodel.contextSetProofNodeRule(typemodel.context,tmpTree , rule);
+	    System.out.println("Typeinferenz");
+	    System.out.println(pNode.toString());
+	    System.out.println(rule.getName());
+	    System.out.println(pType);
 	    	
 	
 	    
 	    
-	    tmpTree= new TmpTree(new DefaultTypeCheckerProofNode(pNode.getEnvironment(), pNode.getExpression(), new TypeVariable(1, 0)));
-	    // try to apply the rule to the node
-	    System.out.println(tmpTree.getRoot().toString());
-	    rule.apply(this, tmpTree.getRoot());
 	    
-	    System.out.println(tmpTree.getRoot().getChildAt(0).toString());
-	    System.out.println();
-	    System.out.println(tmpTree.type);
+	    // try to apply the rule to the node
+	    System.out.println("Typechecker");
+	    System.out.println("Try to apply rule");
+	    System.out.println(tmpTree.getRoot().toString());
+	    System.out.println(rule.getName());
+	    rule.apply(typemodel.context, tmpTree.getRoot());
+	    
+	    System.err.println("TEST");
 	    
 //	  check if the user specified a type
 	    if (pType != null) {
@@ -421,10 +428,6 @@ public class DefaultTypeInferenceProofContext  implements TypeInferenceProofCont
 		  }
 
 
-	public void addProofNode(TypeInferenceProofNode node, TypeEnvironment environment, Expression expression, MonoType type) {
-		// TODO Auto-generated method stub
-		
-	}
 
 
 }

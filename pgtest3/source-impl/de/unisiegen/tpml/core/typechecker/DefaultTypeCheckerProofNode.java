@@ -28,7 +28,7 @@ public class DefaultTypeCheckerProofNode extends AbstractExpressionProofNode imp
    * @see #getEnvironment()
    * @see #setEnvironment(TypeEnvironment)
    */
-  private TypeEnvironment environment;
+  protected TypeEnvironment environment;
   
   /**
    * The type for this type node, which is either a type variable or a monorphic type.
@@ -36,7 +36,7 @@ public class DefaultTypeCheckerProofNode extends AbstractExpressionProofNode imp
    * @see #getType()
    * @see #setType(MonoType)
    */
-  private MonoType type;
+  	protected MonoType type;
   
   
   

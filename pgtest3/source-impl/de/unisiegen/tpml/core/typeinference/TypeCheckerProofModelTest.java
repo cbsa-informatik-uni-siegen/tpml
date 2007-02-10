@@ -1,6 +1,5 @@
 package de.unisiegen.tpml.core.typeinference;
 
-
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -21,11 +20,11 @@ import javax.swing.JTree;
 import javax.swing.tree.TreePath;
 
 import de.unisiegen.tpml.core.ExpressionProofNode;
-import de.unisiegen.tpml.core.ProofGuessException;
 import de.unisiegen.tpml.core.ProofNode;
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.languages.Language;
 import de.unisiegen.tpml.core.languages.LanguageFactory;
+import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel;
 
 /**
  * Test class for the {@link de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel} class.
@@ -36,15 +35,13 @@ import de.unisiegen.tpml.core.languages.LanguageFactory;
  * @see de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel
  */
 @SuppressWarnings("serial")
-public final class TypeInferenceProofModelTest extends JFrame {
+public final class TypeCheckerProofModelTest extends JFrame {
   /**
    * Simple test expression.
    */
-  //private static final String SIMPLE = "(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30)";
+//	private static final String SIMPLE = "(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30)";
 	private static final String SIMPLE = "lambda f:'a->'b. lambda x.f (f x)";
-
   
-	
   
   //
   // Constructor
@@ -53,11 +50,11 @@ public final class TypeInferenceProofModelTest extends JFrame {
   /**
    * Default constructor.
    */
-  public TypeInferenceProofModelTest(final TypeInferenceProofModel model) {
+  public TypeCheckerProofModelTest(final TypeCheckerProofModel model) {
     // setup the frame
     setLayout(new BorderLayout());
     setSize(630, 580);
-    setTitle("TypeInferenceProofModel Test");
+    setTitle("TypeCheckerProofModel Test");
 
     // setup the tree panel
     JPanel treePanel = new JPanel(new BorderLayout());
@@ -78,18 +75,16 @@ public final class TypeInferenceProofModelTest extends JFrame {
       public void actionPerformed(ActionEvent event) {
         try {
           // guess the last node
-        	model.guess(nextNode(model));
+          model.guess(nextNode(model));
           
           // expand to the all nodes
           for (int n = 0; n < tree.getRowCount(); ++n) {
             tree.expandRow(n);
           }
         }
-        
-        catch (ProofGuessException e) {
-          JOptionPane.showMessageDialog(TypeInferenceProofModelTest.this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        catch (Exception e) {
+          JOptionPane.showMessageDialog(TypeCheckerProofModelTest.this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
-        
       }
     });
     buttons.add(guessButton);
@@ -104,7 +99,7 @@ public final class TypeInferenceProofModelTest extends JFrame {
           model.undo();
         }
         catch (Exception e) {
-          JOptionPane.showMessageDialog(TypeInferenceProofModelTest.this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+          JOptionPane.showMessageDialog(TypeCheckerProofModelTest.this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
       }
     });
@@ -130,7 +125,7 @@ public final class TypeInferenceProofModelTest extends JFrame {
           }
         }
         catch (Exception e) {
-          JOptionPane.showMessageDialog(TypeInferenceProofModelTest.this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+          JOptionPane.showMessageDialog(TypeCheckerProofModelTest.this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
       }
     });
@@ -153,7 +148,7 @@ public final class TypeInferenceProofModelTest extends JFrame {
           }
         }
         catch (Exception e) {
-          JOptionPane.showMessageDialog(TypeInferenceProofModelTest.this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+          JOptionPane.showMessageDialog(TypeCheckerProofModelTest.this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
       }
     });
@@ -169,13 +164,12 @@ public final class TypeInferenceProofModelTest extends JFrame {
     buttons.add(closeButton);
   }
   
-  private static ProofNode nextNode(TypeInferenceProofModel model) {
+  private static ProofNode nextNode(TypeCheckerProofModel model) {
     LinkedList<ProofNode> nodes = new LinkedList<ProofNode>();
     nodes.add(model.getRoot());
     while (!nodes.isEmpty()) {
       ProofNode node = nodes.poll();
       if (node.getRules().length == 0) {
-    	  System.out.println("Node =0");
         return node;
       }
       for (int n = 0; n < node.getChildCount(); ++n) {
@@ -202,10 +196,10 @@ public final class TypeInferenceProofModelTest extends JFrame {
       LanguageFactory factory = LanguageFactory.newInstance();
       Language language = factory.getLanguageById("l4");
       Expression expression = language.newParser(new StringReader(SIMPLE)).parse();
-      TypeInferenceProofModel model = language.newTypeInferenceProofModel(expression);
+      TypeCheckerProofModel model = language.newTypeCheckerProofModel(expression);
       
       // evaluate the resulting small step expression
-      TypeInferenceProofModelTest window = new TypeInferenceProofModelTest(model);
+      TypeCheckerProofModelTest window = new TypeCheckerProofModelTest(model);
       window.addWindowListener(new WindowAdapter() {
         @Override
         public void windowClosing(WindowEvent e) {
@@ -219,4 +213,3 @@ public final class TypeInferenceProofModelTest extends JFrame {
     }
   }
 }
-

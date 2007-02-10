@@ -59,7 +59,7 @@ public class TypeCheckerProofModel extends AbstractExpressionProofModel {
    */
   private int index = 1;
   
-  
+  public DefaultTypeCheckerProofContext context;
   
   
   
@@ -81,7 +81,7 @@ public class TypeCheckerProofModel extends AbstractExpressionProofModel {
    */
   public TypeCheckerProofModel(Expression expression, AbstractTypeCheckerProofRuleSet ruleSet) {
     super(new DefaultTypeCheckerProofNode(new DefaultTypeEnvironment(), expression, new TypeVariable(1, 0)), ruleSet);
-    //context = new DefaultTypeCheckerProofContext(this);
+    context = new DefaultTypeCheckerProofContext(this);
   }
   
 
@@ -338,7 +338,7 @@ public class TypeCheckerProofModel extends AbstractExpressionProofModel {
    * @throws IllegalArgumentException if <code>node</code> is invalid for this tree.
    * @throws NullPointerException if any of the parameters is <code>null</code>.
    */
-  void contextAddProofNode(DefaultTypeCheckerProofContext context, final DefaultTypeCheckerProofNode node, TypeEnvironment environment, Expression expression, MonoType type) {
+  public void contextAddProofNode(DefaultTypeCheckerProofContext context, final DefaultTypeCheckerProofNode node, TypeEnvironment environment, Expression expression, MonoType type) {
     if (context == null) {
       throw new NullPointerException("context is null");
     }
@@ -434,7 +434,7 @@ public class TypeCheckerProofModel extends AbstractExpressionProofModel {
    * 
    * @see DefaultTypeCheckerProofContext#apply(TypeCheckerProofRule, TypeCheckerProofNode)
    */
-  void contextSetProofNodeRule(DefaultTypeCheckerProofContext context, final DefaultTypeCheckerProofNode node, final TypeCheckerProofRule rule) {
+  public void contextSetProofNodeRule(DefaultTypeCheckerProofContext context, final DefaultTypeCheckerProofNode node, final TypeCheckerProofRule rule) {
     final ProofStep[] oldSteps = node.getSteps();
     
     context.addRedoAction(new Runnable() {

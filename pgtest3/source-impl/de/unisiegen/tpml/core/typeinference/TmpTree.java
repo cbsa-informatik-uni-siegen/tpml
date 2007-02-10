@@ -2,7 +2,10 @@ package de.unisiegen.tpml.core.typeinference;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
+import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.typechecker.DefaultTypeCheckerProofNode;
+import de.unisiegen.tpml.core.typechecker.TypeEnvironment;
+import de.unisiegen.tpml.core.types.MonoType;
 
 
 /**
@@ -11,26 +14,20 @@ import de.unisiegen.tpml.core.typechecker.DefaultTypeCheckerProofNode;
  * @author Benjamin Mies
  *
  */
-public class TmpTree extends DefaultMutableTreeNode {
+public class TmpTree extends DefaultTypeCheckerProofNode {
 	
-	public final CharSequence environment = null;
-	public final CharSequence expression = null;
-	public final CharSequence type = null;
-	private DefaultTypeCheckerProofNode root;
+	public TmpTree(TypeEnvironment environment, Expression expression, MonoType type) {
+		super(environment, expression, type);
+		
+	}
+	
+	
 
 	
 
-	public TmpTree (DefaultTypeCheckerProofNode pRoot)
-	{
-		root = pRoot;
-	}
 
 
-
-
-	public DefaultTypeCheckerProofNode getRoot() {
-		return root;
-	}
+	
 	
 	  //
 	  // Base methods
