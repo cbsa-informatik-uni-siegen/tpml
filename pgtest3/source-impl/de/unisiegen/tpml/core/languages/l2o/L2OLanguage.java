@@ -52,15 +52,19 @@ public class L2OLanguage extends L2Language
    * {@inheritDoc}
    */
   @ Override
-  public String getName ( )
-  {
-    return "L2O" ; //$NON-NLS-1$
-  }
-
-
   public int getId ( )
   {
     return L2OLanguage.L2O ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   */
+  @ Override
+  public String getName ( )
+  {
+    return "L2O" ; //$NON-NLS-1$
   }
 
 
@@ -82,28 +86,6 @@ public class L2OLanguage extends L2Language
   {
     return new BigStepProofModel ( pExpression , new L2OBigStepProofRuleSet (
         this ) ) ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   */
-  @ Override
-  public SmallStepProofModel newSmallStepProofModel ( Expression pExpression )
-  {
-    return new SmallStepProofModel ( pExpression ,
-        new L2OSmallStepProofRuleSet ( this ) ) ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   */
-  @ Override
-  public TypeCheckerProofModel newTypeCheckerProofModel ( Expression pExpression )
-  {
-    return new TypeCheckerProofModel ( pExpression ,
-        new L2OTypeCheckerProofRuleSet ( this ) ) ;
   }
 
 
@@ -146,8 +128,30 @@ public class L2OLanguage extends L2Language
    * {@inheritDoc}
    */
   @ Override
+  public SmallStepProofModel newSmallStepProofModel ( Expression pExpression )
+  {
+    return new SmallStepProofModel ( pExpression ,
+        new L2OSmallStepProofRuleSet ( this ) ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   */
+  @ Override
   public LanguageTranslator newTranslator ( )
   {
     return new L2OLanguageTranslator ( ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   */
+  @ Override
+  public TypeCheckerProofModel newTypeCheckerProofModel ( Expression pExpression )
+  {
+    return new TypeCheckerProofModel ( pExpression ,
+        new L2OTypeCheckerProofRuleSet ( this ) ) ;
   }
 }
