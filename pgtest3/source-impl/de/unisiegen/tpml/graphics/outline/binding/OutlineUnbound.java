@@ -338,7 +338,11 @@ public final class OutlineUnbound
       if ( pExpression.getExpressions ( i ) instanceof Attr )
       {
         Attr attr = ( Attr ) pExpression.getExpressions ( i ) ;
-        find ( bounded , attr ) ;
+        /*
+         * Search in the old list, because the Identifiers of Attributes are not
+         * bound in other Attributes.
+         */
+        find ( pBounded , attr ) ;
         // New binding in the rest of the row
         bounded.add ( attr.getId ( ) ) ;
       }
