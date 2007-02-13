@@ -1,1 +1,1 @@
-let b = x in object (self) val x = 1 ; val x' = 2 ; val c = b ; end
+let x = tmp in object (tmp) val a = c + tmp' ; method b = tmp +x  ; end

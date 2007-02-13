@@ -1,1 +1,1 @@
-let a = 5 in object (self) val a = 1 ; val a = a ; method add = a + 1 ; method sub x = a - x ; end
+(object (self) val a = 1 ; method test = self {< a = 3 >} ; val a = 2 ; end) # test
