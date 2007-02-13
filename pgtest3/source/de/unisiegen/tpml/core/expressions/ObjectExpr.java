@@ -185,12 +185,26 @@ public final class ObjectExpr extends Expression
   @ Override
   public ObjectExpr substitute ( String pID , Expression pExpression )
   {
-    if ( "self".equals ( pID ) ) //$NON-NLS-1$
+    if ( this.identifier.equals ( pID ) )
     {
       return this ;
     }
-    return new ObjectExpr ( this.identifier , this.tau , this.expression
-        .substitute ( pID , pExpression ) ) ;
+    Set < String > free = this.free ( ) ;
+    Set < String > freeE = pExpression.free ( ) ;
+    String newID = this.identifier ;
+    while ( ( ( newID.equals ( pID ) ) || ( free.contains ( newID ) ) || ( freeE
+        .contains ( newID ) ) )
+        && ( free.contains ( pID ) ) )
+    {
+      newID = newID + "'" ; //$NON-NLS-1$
+    }
+    Expression row = this.expression ;
+    if ( ! newID.equals ( this.identifier ) )
+    {
+      row = row.substitute ( this.identifier , new Identifier ( newID ) ) ;
+    }
+    return new ObjectExpr ( newID , this.tau , row.substitute ( pID ,
+        pExpression ) ) ;
   }
 
 
