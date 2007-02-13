@@ -6,6 +6,7 @@ import java_cup.runtime.lr_parser ;
 import de.unisiegen.tpml.core.Messages ;
 import de.unisiegen.tpml.core.bigstep.BigStepProofModel ;
 import de.unisiegen.tpml.core.expressions.Expression ;
+import de.unisiegen.tpml.core.languages.Language ;
 import de.unisiegen.tpml.core.languages.LanguageParser ;
 import de.unisiegen.tpml.core.languages.LanguageScanner ;
 import de.unisiegen.tpml.core.languages.LanguageTranslator ;
@@ -31,9 +32,6 @@ import de.unisiegen.tpml.core.types.MonoType ;
  */
 public class L1Language extends L0Language
 {
-  //
-  // Constants
-  //
   /**
    * The group id for proof rules of this language.
    * 
@@ -42,9 +40,6 @@ public class L1Language extends L0Language
   public static final int L1 = L0Language.L0 + 10 ;
 
 
-  //
-  // Constructor
-  //
   /**
    * Allocates a new <code>L1Language</code> instance.
    */
@@ -54,13 +49,10 @@ public class L1Language extends L0Language
   }
 
 
-  //
-  // Accessors
-  //
   /**
    * {@inheritDoc}
    * 
-   * @see languages.Language#getDescription()
+   * @see Language#getDescription()
    */
   @ Override
   public String getDescription ( )
@@ -72,7 +64,7 @@ public class L1Language extends L0Language
   /**
    * {@inheritDoc}
    * 
-   * @see languages.Language#getName()
+   * @see Language#getName()
    */
   @ Override
   public String getName ( )
@@ -81,6 +73,12 @@ public class L1Language extends L0Language
   }
 
 
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Language#getTitle()
+   */
+  @ Override
   public int getId ( )
   {
     return L1Language.L1 ;
@@ -90,7 +88,7 @@ public class L1Language extends L0Language
   /**
    * {@inheritDoc}
    * 
-   * @see languages.Language#getTitle()
+   * @see Language#getTitle()
    */
   @ Override
   public String getTitle ( )
@@ -99,13 +97,10 @@ public class L1Language extends L0Language
   }
 
 
-  //
-  // Primitives
-  //
   /**
    * {@inheritDoc}
    * 
-   * @see de.unisiegen.tpml.core.languages.Language#newBigStepProofModel(de.unisiegen.tpml.core.expressions.Expression)
+   * @see Language#newBigStepProofModel(de.unisiegen.tpml.core.expressions.Expression)
    */
   @ Override
   public BigStepProofModel newBigStepProofModel ( Expression expression )
@@ -144,7 +139,7 @@ public class L1Language extends L0Language
   /**
    * {@inheritDoc}
    * 
-   * @see languages.Language#newParser(languages.LanguageScanner)
+   * @see Language#newParser(LanguageScanner)
    */
   @ Override
   public LanguageParser newParser ( LanguageScanner scanner )

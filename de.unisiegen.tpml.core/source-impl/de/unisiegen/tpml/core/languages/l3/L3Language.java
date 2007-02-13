@@ -6,12 +6,12 @@ import java_cup.runtime.lr_parser ;
 import de.unisiegen.tpml.core.Messages ;
 import de.unisiegen.tpml.core.bigstep.BigStepProofModel ;
 import de.unisiegen.tpml.core.expressions.Expression ;
+import de.unisiegen.tpml.core.languages.Language ;
 import de.unisiegen.tpml.core.languages.LanguageParser ;
 import de.unisiegen.tpml.core.languages.LanguageScanner ;
 import de.unisiegen.tpml.core.languages.LanguageTranslator ;
 import de.unisiegen.tpml.core.languages.LanguageTypeParser ;
 import de.unisiegen.tpml.core.languages.LanguageTypeScanner ;
-import de.unisiegen.tpml.core.languages.l0.L0Language ;
 import de.unisiegen.tpml.core.languages.l2.L2Language ;
 import de.unisiegen.tpml.core.smallstep.SmallStepProofModel ;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel ;
@@ -34,9 +34,6 @@ import de.unisiegen.tpml.core.types.MonoType ;
  */
 public class L3Language extends L2Language
 {
-  //
-  // Constants
-  //
   /**
    * The group id for proof rules of this language.
    * 
@@ -45,9 +42,6 @@ public class L3Language extends L2Language
   public static final int L3 = L2Language.L2 + 10 ;
 
 
-  //
-  // Constructor
-  //
   /**
    * Allocates a new <code>L3Language</code> instance.
    * 
@@ -59,13 +53,10 @@ public class L3Language extends L2Language
   }
 
 
-  //
-  // Accessors
-  //
   /**
    * {@inheritDoc}
    * 
-   * @see languages.Language#getDescription()
+   * @see Language#getDescription()
    */
   @ Override
   public String getDescription ( )
@@ -77,7 +68,7 @@ public class L3Language extends L2Language
   /**
    * {@inheritDoc}
    * 
-   * @see languages.Language#getName()
+   * @see Language#getName()
    */
   @ Override
   public String getName ( )
@@ -86,6 +77,12 @@ public class L3Language extends L2Language
   }
 
 
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Language#getTitle()
+   */
+  @ Override
   public int getId ( )
   {
     return L3Language.L3 ;
@@ -95,7 +92,7 @@ public class L3Language extends L2Language
   /**
    * {@inheritDoc}
    * 
-   * @see languages.Language#getTitle()
+   * @see Language#getTitle()
    */
   @ Override
   public String getTitle ( )
@@ -104,9 +101,6 @@ public class L3Language extends L2Language
   }
 
 
-  //
-  // Primitives
-  //
   /**
    * {@inheritDoc}
    * 
@@ -149,7 +143,7 @@ public class L3Language extends L2Language
   /**
    * {@inheritDoc}
    * 
-   * @see languages.Language#newParser(languages.LanguageScanner)
+   * @see Language#newParser(LanguageScanner)
    */
   @ Override
   public LanguageParser newParser ( LanguageScanner scanner )
@@ -172,7 +166,7 @@ public class L3Language extends L2Language
   /**
    * {@inheritDoc}
    * 
-   * @see languages.Language#newScanner(java.io.Reader)
+   * @see Language#newScanner(java.io.Reader)
    */
   @ Override
   public LanguageScanner newScanner ( Reader reader )

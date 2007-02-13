@@ -4,7 +4,7 @@ package de.unisiegen.tpml.core.languages.l1cbn ;
 import de.unisiegen.tpml.core.Messages ;
 import de.unisiegen.tpml.core.bigstep.BigStepProofModel ;
 import de.unisiegen.tpml.core.expressions.Expression ;
-import de.unisiegen.tpml.core.languages.l0.L0Language ;
+import de.unisiegen.tpml.core.languages.Language ;
 import de.unisiegen.tpml.core.languages.l1.L1Language ;
 import de.unisiegen.tpml.core.smallstep.SmallStepProofModel ;
 
@@ -65,6 +65,12 @@ public class L1CBNLanguage extends L1Language
   }
 
 
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Language#getTitle()
+   */
+  @ Override
   public int getId ( )
   {
     return L1CBNLanguage.L1CBN ;
@@ -83,9 +89,6 @@ public class L1CBNLanguage extends L1Language
   }
 
 
-  //
-  // Primitives
-  //
   /**
    * {@inheritDoc}
    * 

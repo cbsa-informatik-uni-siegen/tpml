@@ -8,6 +8,7 @@ import de.unisiegen.tpml.core.bigstep.BigStepProofModel ;
 import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.languages.AbstractLanguage ;
 import de.unisiegen.tpml.core.languages.AbstractLanguageTranslator ;
+import de.unisiegen.tpml.core.languages.Language ;
 import de.unisiegen.tpml.core.languages.LanguageParser ;
 import de.unisiegen.tpml.core.languages.LanguageScanner ;
 import de.unisiegen.tpml.core.languages.LanguageTranslator ;
@@ -27,9 +28,6 @@ import de.unisiegen.tpml.core.smallstep.SmallStepProofModel ;
  */
 public class L0Language extends AbstractLanguage
 {
-  //
-  // Constants
-  //
   /**
    * The group id for proof rules of this language.
    * 
@@ -38,9 +36,6 @@ public class L0Language extends AbstractLanguage
   public static final int L0 = 0 ;
 
 
-  //
-  // Constructor
-  //
   /**
    * Allocates a new <code>L0Language</code> instance.
    */
@@ -50,13 +45,10 @@ public class L0Language extends AbstractLanguage
   }
 
 
-  //
-  // Accessors
-  //
   /**
    * {@inheritDoc}
    * 
-   * @see languages.Language#getDescription()
+   * @see Language#getDescription()
    */
   public String getDescription ( )
   {
@@ -67,7 +59,7 @@ public class L0Language extends AbstractLanguage
   /**
    * {@inheritDoc}
    * 
-   * @see languages.Language#getName()
+   * @see Language#getName()
    */
   public String getName ( )
   {
@@ -75,6 +67,11 @@ public class L0Language extends AbstractLanguage
   }
 
 
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Language#getTitle()
+   */
   public int getId ( )
   {
     return L0Language.L0 ;
@@ -84,7 +81,7 @@ public class L0Language extends AbstractLanguage
   /**
    * {@inheritDoc}
    * 
-   * @see languages.Language#getTitle()
+   * @see Language#getTitle()
    */
   public String getTitle ( )
   {
@@ -92,9 +89,6 @@ public class L0Language extends AbstractLanguage
   }
 
 
-  //
-  // Primitives
-  //
   /**
    * {@inheritDoc}
    * 
@@ -122,7 +116,7 @@ public class L0Language extends AbstractLanguage
   /**
    * {@inheritDoc}
    * 
-   * @see languages.Language#newParser(languages.LanguageScanner)
+   * @see Language#newParser(LanguageScanner)
    */
   public LanguageParser newParser ( LanguageScanner scanner )
   {
@@ -144,7 +138,7 @@ public class L0Language extends AbstractLanguage
   /**
    * {@inheritDoc}
    * 
-   * @see languages.Language#newScanner(java.io.Reader)
+   * @see Language#newScanner(java.io.Reader)
    */
   public LanguageScanner newScanner ( Reader reader )
   {
@@ -159,7 +153,7 @@ public class L0Language extends AbstractLanguage
   /**
    * {@inheritDoc}
    * 
-   * @see de.unisiegen.tpml.core.languages.Language#newTranslator()
+   * @see Language#newTranslator()
    */
   public LanguageTranslator newTranslator ( )
   {

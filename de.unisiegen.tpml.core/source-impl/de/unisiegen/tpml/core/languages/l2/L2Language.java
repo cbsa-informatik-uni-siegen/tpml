@@ -6,6 +6,7 @@ import java_cup.runtime.lr_parser ;
 import de.unisiegen.tpml.core.Messages ;
 import de.unisiegen.tpml.core.bigstep.BigStepProofModel ;
 import de.unisiegen.tpml.core.expressions.Expression ;
+import de.unisiegen.tpml.core.languages.Language ;
 import de.unisiegen.tpml.core.languages.LanguageParser ;
 import de.unisiegen.tpml.core.languages.LanguageScanner ;
 import de.unisiegen.tpml.core.languages.LanguageTranslator ;
@@ -29,9 +30,6 @@ import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel ;
  */
 public class L2Language extends L1Language
 {
-  //
-  // Constants
-  //
   /**
    * The group id for proof rules of this language.
    * 
@@ -40,9 +38,6 @@ public class L2Language extends L1Language
   public static final int L2 = L1Language.L1 + 10 ;
 
 
-  //
-  // Constructor
-  //
   /**
    * Allocates a new <code>L2Language</code> instance.
    */
@@ -52,13 +47,10 @@ public class L2Language extends L1Language
   }
 
 
-  //
-  // Accessors
-  //
   /**
    * {@inheritDoc}
    * 
-   * @see languages.Language#getDescription()
+   * @see Language#getDescription()
    */
   @ Override
   public String getDescription ( )
@@ -70,7 +62,7 @@ public class L2Language extends L1Language
   /**
    * {@inheritDoc}
    * 
-   * @see languages.Language#getName()
+   * @see Language#getName()
    */
   @ Override
   public String getName ( )
@@ -79,6 +71,12 @@ public class L2Language extends L1Language
   }
 
 
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Language#getTitle()
+   */
+  @ Override
   public int getId ( )
   {
     return L2Language.L2 ;
@@ -88,7 +86,7 @@ public class L2Language extends L1Language
   /**
    * {@inheritDoc}
    * 
-   * @see languages.Language#getTitle()
+   * @see Language#getTitle()
    */
   @ Override
   public String getTitle ( )
@@ -97,9 +95,6 @@ public class L2Language extends L1Language
   }
 
 
-  //
-  // Primitives
-  //
   /**
    * {@inheritDoc}
    * 
@@ -142,7 +137,7 @@ public class L2Language extends L1Language
   /**
    * {@inheritDoc}
    * 
-   * @see languages.Language#newParser(languages.LanguageScanner)
+   * @see Language#newParser(LanguageScanner)
    */
   @ Override
   public LanguageParser newParser ( LanguageScanner scanner )
@@ -165,7 +160,7 @@ public class L2Language extends L1Language
   /**
    * {@inheritDoc}
    * 
-   * @see languages.Language#newScanner(java.io.Reader)
+   * @see Language#newScanner(java.io.Reader)
    */
   @ Override
   public LanguageScanner newScanner ( Reader reader )

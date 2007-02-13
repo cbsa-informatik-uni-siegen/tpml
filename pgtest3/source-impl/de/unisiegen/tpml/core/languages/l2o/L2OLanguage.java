@@ -6,6 +6,7 @@ import java_cup.runtime.lr_parser ;
 import de.unisiegen.tpml.core.Messages ;
 import de.unisiegen.tpml.core.bigstep.BigStepProofModel ;
 import de.unisiegen.tpml.core.expressions.Expression ;
+import de.unisiegen.tpml.core.languages.Language ;
 import de.unisiegen.tpml.core.languages.LanguageParser ;
 import de.unisiegen.tpml.core.languages.LanguageScanner ;
 import de.unisiegen.tpml.core.languages.LanguageTranslator ;
@@ -50,6 +51,8 @@ public class L2OLanguage extends L2Language
 
   /**
    * {@inheritDoc}
+   * 
+   * @see Language#getTitle()
    */
   @ Override
   public int getId ( )

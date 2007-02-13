@@ -4,6 +4,7 @@ package de.unisiegen.tpml.core.languages.l0cbn ;
 import de.unisiegen.tpml.core.Messages ;
 import de.unisiegen.tpml.core.bigstep.BigStepProofModel ;
 import de.unisiegen.tpml.core.expressions.Expression ;
+import de.unisiegen.tpml.core.languages.Language ;
 import de.unisiegen.tpml.core.languages.l0.L0Language ;
 import de.unisiegen.tpml.core.smallstep.SmallStepProofModel ;
 
@@ -65,6 +66,12 @@ public class L0CBNLanguage extends L0Language
   }
 
 
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Language#getTitle()
+   */
+  @ Override
   public int getId ( )
   {
     return L0CBNLanguage.L0CBN ;

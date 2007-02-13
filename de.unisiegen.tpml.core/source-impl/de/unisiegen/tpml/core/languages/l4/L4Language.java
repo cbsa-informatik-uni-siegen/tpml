@@ -6,6 +6,7 @@ import java_cup.runtime.lr_parser ;
 import de.unisiegen.tpml.core.Messages ;
 import de.unisiegen.tpml.core.bigstep.BigStepProofModel ;
 import de.unisiegen.tpml.core.expressions.Expression ;
+import de.unisiegen.tpml.core.languages.Language ;
 import de.unisiegen.tpml.core.languages.LanguageParser ;
 import de.unisiegen.tpml.core.languages.LanguageScanner ;
 import de.unisiegen.tpml.core.languages.LanguageTranslator ;
@@ -34,9 +35,6 @@ import de.unisiegen.tpml.core.types.MonoType ;
  */
 public class L4Language extends L3Language
 {
-  //
-  // Constants
-  //
   /**
    * The group id for proof rules of this language.
    * 
@@ -45,9 +43,6 @@ public class L4Language extends L3Language
   public static final int L4 = L3Language.L3 + 10 ;
 
 
-  //
-  // Constructor
-  //
   /**
    * Allocates a new <code>L4Language</code> instance.
    * 
@@ -59,13 +54,10 @@ public class L4Language extends L3Language
   }
 
 
-  //
-  // Accessors
-  //
   /**
    * {@inheritDoc}
    * 
-   * @see languages.Language#getDescription()
+   * @see Language#getDescription()
    */
   @ Override
   public String getDescription ( )
@@ -77,7 +69,7 @@ public class L4Language extends L3Language
   /**
    * {@inheritDoc}
    * 
-   * @see languages.Language#getName()
+   * @see Language#getName()
    */
   @ Override
   public String getName ( )
@@ -86,6 +78,12 @@ public class L4Language extends L3Language
   }
 
 
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Language#getTitle()
+   */
+  @ Override
   public int getId ( )
   {
     return L4Language.L4 ;
@@ -95,7 +93,7 @@ public class L4Language extends L3Language
   /**
    * {@inheritDoc}
    * 
-   * @see languages.Language#getTitle()
+   * @see Language#getTitle()
    */
   @ Override
   public String getTitle ( )
@@ -104,9 +102,6 @@ public class L4Language extends L3Language
   }
 
 
-  //
-  // Primitives
-  //
   /**
    * {@inheritDoc}
    * 
@@ -149,7 +144,7 @@ public class L4Language extends L3Language
   /**
    * {@inheritDoc}
    * 
-   * @see languages.Language#newParser(languages.LanguageScanner)
+   * @see Language#newParser(LanguageScanner)
    */
   @ Override
   public LanguageParser newParser ( LanguageScanner scanner )
@@ -172,7 +167,7 @@ public class L4Language extends L3Language
   /**
    * {@inheritDoc}
    * 
-   * @see languages.Language#newScanner(java.io.Reader)
+   * @see Language#newScanner(java.io.Reader)
    */
   @ Override
   public LanguageScanner newScanner ( Reader reader )
