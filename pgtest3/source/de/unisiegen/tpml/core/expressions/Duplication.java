@@ -128,9 +128,10 @@ public final class Duplication extends Expression
   public Set < String > free ( )
   {
     TreeSet < String > free = new TreeSet < String > ( ) ;
-    for ( Expression e : this.expressions )
+    free.addAll ( this.expression.free ( ) ) ;
+    for ( Expression expr : this.expressions )
     {
-      free.addAll ( e.free ( ) ) ;
+      free.addAll ( expr.free ( ) ) ;
     }
     return free ;
   }
