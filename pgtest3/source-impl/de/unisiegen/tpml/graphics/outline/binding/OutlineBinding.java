@@ -460,9 +460,16 @@ public final class OutlineBinding
     if ( pExpression.getId ( ).equals ( this.identifier ) )
     {
       /*
-       * Search is finished, because all Identifiers in E are bounded to the
-       * Identifier in this child expression.
+       * Search can be continued, but only in Attributes.
        */
+      Row row = ( Row ) pExpression.getE ( ) ;
+      for ( Expression expr : row.getExpressions ( ) )
+      {
+        if ( expr instanceof Attr )
+        {
+          findExpression ( expr ) ;
+        }
+      }
     }
     else
     {

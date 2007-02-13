@@ -1024,7 +1024,26 @@ public final class AbstractOutline implements Outline
         PrettyStyle.IDENTIFIER ).get ( 0 ) ;
     OutlineBinding outlineBinding = new OutlineBinding ( pExpression ,
         outlinePairId.getStart ( ) , outlinePairId.getEnd ( ) , 0 ) ;
-    outlineBinding.find ( pExpression.getE ( ) , pExpression.getId ( ) ) ;
+    Row row = ( Row ) pExpression.getE ( ) ;
+    boolean equalIdFound = false ;
+    for ( Expression expr : row.getExpressions ( ) )
+    {
+      if ( expr instanceof Attr )
+      {
+        Attr attr = ( Attr ) expr ;
+        if ( pExpression.getId ( ).equals ( attr.getId ( ) ) )
+        {
+          equalIdFound = true ;
+        }
+      }
+      else
+      {
+        if ( ! equalIdFound )
+        {
+          outlineBinding.find ( expr , pExpression.getId ( ) ) ;
+        }
+      }
+    }
     node.add ( new DefaultMutableTreeNode ( new OutlineNode ( IDENTIFIER ,
         pExpression.getId ( ) , outlinePairId , outlineBinding ,
         this.outlineUnbound ) ) ) ;

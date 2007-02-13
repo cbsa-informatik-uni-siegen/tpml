@@ -14,7 +14,6 @@ import de.unisiegen.tpml.core.expressions.Identifier ;
 import de.unisiegen.tpml.core.expressions.Lambda ;
 import de.unisiegen.tpml.core.expressions.Let ;
 import de.unisiegen.tpml.core.expressions.LetRec ;
-import de.unisiegen.tpml.core.expressions.Meth ;
 import de.unisiegen.tpml.core.expressions.MultiLambda ;
 import de.unisiegen.tpml.core.expressions.MultiLet ;
 import de.unisiegen.tpml.core.expressions.ObjectExpr ;
@@ -299,10 +298,28 @@ public final class OutlineUnbound
   private final void findObjectExpr ( ArrayList < String > pBounded ,
       ObjectExpr pExpression )
   {
+    Row row = ( Row ) pExpression.getE ( ) ;
     ArrayList < String > bounded = new ArrayList < String > ( pBounded ) ;
-    // New binding in E
     bounded.add ( pExpression.getId ( ) ) ;
-    find ( bounded , pExpression.getE ( ) ) ;
+    for ( Expression expr : row.getExpressions ( ) )
+    {
+      if ( expr instanceof Attr )
+      {
+        Attr attr = ( Attr ) expr ;
+        /*
+         * Search in the old list, because the Identifiers of Attributes are not
+         * bound in other Attributes.
+         */
+        ArrayList < String > boundedAttr = new ArrayList < String > ( pBounded ) ;
+        find ( boundedAttr , attr ) ;
+        // New binding in the rest of the row
+        bounded.add ( attr.getId ( ) ) ;
+      }
+      else
+      {
+        find ( bounded , expr ) ;
+      }
+    }
   }
 
 
@@ -333,26 +350,23 @@ public final class OutlineUnbound
   private final void findRow ( ArrayList < String > pBounded , Row pExpression )
   {
     ArrayList < String > bounded = new ArrayList < String > ( pBounded ) ;
-    for ( int i = 0 ; i < pExpression.getExpressions ( ).length ; i ++ )
+    for ( Expression expr : pExpression.getExpressions ( ) )
     {
-      if ( pExpression.getExpressions ( i ) instanceof Attr )
+      if ( expr instanceof Attr )
       {
-        Attr attr = ( Attr ) pExpression.getExpressions ( i ) ;
+        Attr attr = ( Attr ) expr ;
         /*
          * Search in the old list, because the Identifiers of Attributes are not
          * bound in other Attributes.
          */
-        find ( pBounded , attr ) ;
+        ArrayList < String > boundedAttr = new ArrayList < String > ( pBounded ) ;
+        find ( boundedAttr , attr ) ;
         // New binding in the rest of the row
         bounded.add ( attr.getId ( ) ) ;
       }
-      else if ( pExpression.getExpressions ( i ) instanceof Meth )
+      else
       {
-        find ( bounded , pExpression.getExpressions ( i ) ) ;
-      }
-      else if ( pExpression.getExpressions ( i ) instanceof CurriedMeth )
-      {
-        find ( bounded , pExpression.getExpressions ( i ) ) ;
+        find ( bounded , expr ) ;
       }
     }
   }
