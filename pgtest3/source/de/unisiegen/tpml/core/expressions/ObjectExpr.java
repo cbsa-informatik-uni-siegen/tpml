@@ -22,7 +22,7 @@ public final class ObjectExpr extends Expression
    * 
    * @see #getE()
    */
-  private Expression expression ;
+  private Row expression ;
 
 
   /**
@@ -48,8 +48,7 @@ public final class ObjectExpr extends Expression
    * @param pTau TODO
    * @param pExpression TODO
    */
-  public ObjectExpr ( String pIdentifier , MonoType pTau ,
-      Expression pExpression )
+  public ObjectExpr ( String pIdentifier , MonoType pTau , Row pExpression )
   {
     if ( pIdentifier == null )
     {
@@ -58,10 +57,6 @@ public final class ObjectExpr extends Expression
     if ( pExpression == null )
     {
       throw new NullPointerException ( "Expression is null" ) ; //$NON-NLS-1$
-    }
-    if ( ! ( pExpression instanceof Row ) )
-    {
-      throw new IllegalArgumentException ( "The expression must be a Row" ) ; //$NON-NLS-1$
     }
     this.identifier = pIdentifier ;
     this.tau = pTau ;
@@ -108,6 +103,7 @@ public final class ObjectExpr extends Expression
     TreeSet < String > free = new TreeSet < String > ( ) ;
     free.addAll ( this.expression.free ( ) ) ;
     free.remove ( this.identifier ) ;
+    free.addAll ( this.expression.freeVal ( ) ) ;
     return free ;
   }
 
@@ -128,7 +124,7 @@ public final class ObjectExpr extends Expression
    * @return TODO
    * @see #expression
    */
-  public Expression getE ( )
+  public Row getE ( )
   {
     return this.expression ;
   }
@@ -198,12 +194,12 @@ public final class ObjectExpr extends Expression
     {
       newID = newID + "'" ; //$NON-NLS-1$
     }
-    Expression row = this.expression ;
+    Row newRow = this.expression ;
     if ( ! newID.equals ( this.identifier ) )
     {
-      row = row.substitute ( this.identifier , new Identifier ( newID ) ) ;
+      newRow = newRow.substitute ( this.identifier , new Identifier ( newID ) ) ;
     }
-    return new ObjectExpr ( newID , this.tau , row.substitute ( pID ,
+    return new ObjectExpr ( newID , this.tau , newRow.substitute ( pID ,
         pExpression ) ) ;
   }
 
@@ -231,6 +227,10 @@ public final class ObjectExpr extends Expression
   public PrettyStringBuilder toPrettyStringBuilder (
       PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
+    /*
+     * System.out.println ( "Free ObjectExpr:" ) ; for ( String s : free ( ) ) {
+     * System.out.print ( s + " " ) ; } System.out.println ( ) ;
+     */
     PrettyStringBuilder builder = pPrettyStringBuilderFactory.newBuilder (
         this , PRIO_OBJECTEXPR ) ;
     builder.addKeyword ( "object" ) ; //$NON-NLS-1$

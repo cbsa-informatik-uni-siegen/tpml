@@ -39,95 +39,184 @@ public class L2OLanguageTranslator extends L2LanguageTranslator
   {
     if ( pExpression instanceof CurriedMeth )
     {
-      CurriedMeth curriedMeth = ( CurriedMeth ) pExpression ;
-      Expression e = curriedMeth.getE ( ) ;
-      if ( pRecursive )
-      {
-        e = translateToCoreSyntax ( e , pRecursive ) ;
-      }
-      for ( int i = curriedMeth.getIdentifiers ( ).length - 1 ; i > 0 ; i -- )
-      {
-        e = new Lambda ( curriedMeth.getIdentifiers ( i ) , curriedMeth
-            .getTypes ( i ) , e ) ;
-      }
-      return new Meth ( curriedMeth.getIdentifiers ( 0 ) , curriedMeth
-          .getTypes ( 0 ) , e ) ;
+      return translateToCoreSyntaxCurriedMeth ( ( CurriedMeth ) pExpression ,
+          pRecursive ) ;
     }
     else if ( pExpression instanceof ObjectExpr )
     {
-      ObjectExpr objectExpr = ( ObjectExpr ) pExpression ;
-      if ( pRecursive )
-      {
-        return new ObjectExpr ( objectExpr.getId ( ) , objectExpr.getTau ( ) ,
-            translateToCoreSyntax ( objectExpr.getE ( ) , pRecursive ) ) ;
-      }
-      return pExpression ;
+      return translateToCoreSyntaxObjectExpr ( ( ObjectExpr ) pExpression ,
+          pRecursive ) ;
     }
     else if ( pExpression instanceof Row )
     {
-      if ( pRecursive )
-      {
-        Row row = ( Row ) pExpression ;
-        Expression [ ] e = row.getExpressions ( ) ;
-        Expression [ ] newE = new Expression [ e.length ] ;
-        for ( int i = 0 ; i < newE.length ; i ++ )
-        {
-          newE [ i ] = translateToCoreSyntax ( e [ i ] , pRecursive ) ;
-        }
-        return new Row ( newE ) ;
-      }
-      return pExpression ;
+      return translateToCoreSyntaxRow ( ( Row ) pExpression , pRecursive ) ;
     }
     else if ( pExpression instanceof Attr )
     {
-      if ( pRecursive )
-      {
-        Attr attr = ( Attr ) pExpression ;
-        Expression attrE = attr.getE ( ) ;
-        attrE = translateToCoreSyntax ( attrE , pRecursive ) ;
-        return new Attr ( attr.getId ( ) , attr.getTau ( ) , attrE ) ;
-      }
-      return pExpression ;
+      return translateToCoreSyntaxAttr ( ( Attr ) pExpression , pRecursive ) ;
     }
     else if ( pExpression instanceof Meth )
     {
-      if ( pRecursive )
-      {
-        Meth meth = ( Meth ) pExpression ;
-        Expression methE = meth.getE ( ) ;
-        methE = translateToCoreSyntax ( methE , pRecursive ) ;
-        return new Meth ( meth.getId ( ) , meth.getTau ( ) , methE ) ;
-      }
-      return pExpression ;
+      return translateToCoreSyntaxMeth ( ( Meth ) pExpression , pRecursive ) ;
     }
     else if ( pExpression instanceof Message )
     {
-      if ( pRecursive )
-      {
-        Message message = ( Message ) pExpression ;
-        Expression messageE = message.getE ( ) ;
-        messageE = translateToCoreSyntax ( messageE , pRecursive ) ;
-        return new Message ( messageE , message.getId ( ) ) ;
-      }
-      return pExpression ;
+      return translateToCoreSyntaxMessage ( ( Message ) pExpression ,
+          pRecursive ) ;
     }
     else if ( pExpression instanceof Duplication )
     {
-      if ( pRecursive )
-      {
-        Duplication duplication = ( Duplication ) pExpression ;
-        Expression [ ] duplicatedRowE = new Expression [ duplication
-            .getExpressions ( ).length ] ;
-        for ( int i = 0 ; i < duplication.getExpressions ( ).length ; i ++ )
-        {
-          duplicatedRowE [ i ] = translateToCoreSyntax ( duplication
-              .getExpressions ( i ) , pRecursive ) ;
-        }
-        return new Duplication ( duplication.getE ( ) , duplication
-            .getIdentifiers ( ) , duplicatedRowE ) ;
-      }
-      return pExpression ;
+      return translateToCoreSyntaxDuplication ( ( Duplication ) pExpression ,
+          pRecursive ) ;
     }
     return super.translateToCoreSyntax ( pExpression , pRecursive ) ;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @param pAttr TODO
+   * @param pRecursive TODO
+   * @return TODO
+   */
+  private Expression translateToCoreSyntaxAttr ( Attr pAttr , boolean pRecursive )
+  {
+    if ( pRecursive )
+    {
+      return new Attr ( pAttr.getId ( ) , pAttr.getTau ( ) ,
+          translateToCoreSyntax ( pAttr.getE ( ) , pRecursive ) ) ;
+    }
+    return pAttr ;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @param pCurriedMeth TODO
+   * @param pRecursive TODO
+   * @return TODO
+   */
+  private Expression translateToCoreSyntaxCurriedMeth (
+      CurriedMeth pCurriedMeth , boolean pRecursive )
+  {
+    Expression curriedMethE = pCurriedMeth.getE ( ) ;
+    if ( pRecursive )
+    {
+      curriedMethE = translateToCoreSyntax ( curriedMethE , pRecursive ) ;
+    }
+    for ( int i = pCurriedMeth.getIdentifiers ( ).length - 1 ; i > 0 ; i -- )
+    {
+      curriedMethE = new Lambda ( pCurriedMeth.getIdentifiers ( i ) ,
+          pCurriedMeth.getTypes ( i ) , curriedMethE ) ;
+    }
+    return new Meth ( pCurriedMeth.getIdentifiers ( 0 ) , pCurriedMeth
+        .getTypes ( 0 ) , curriedMethE ) ;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @param pDuplication TODO
+   * @param pRecursive TODO
+   * @return TODO
+   */
+  private Expression translateToCoreSyntaxDuplication (
+      Duplication pDuplication , boolean pRecursive )
+  {
+    if ( pRecursive )
+    {
+      Expression [ ] newDuplicationE = new Expression [ pDuplication
+          .getExpressions ( ).length ] ;
+      for ( int i = 0 ; i < pDuplication.getExpressions ( ).length ; i ++ )
+      {
+        newDuplicationE [ i ] = translateToCoreSyntax ( pDuplication
+            .getExpressions ( i ) , pRecursive ) ;
+      }
+      return new Duplication ( pDuplication.getE ( ) , pDuplication
+          .getIdentifiers ( ) , newDuplicationE ) ;
+    }
+    return pDuplication ;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @param pMessage TODO
+   * @param pRecursive TODO
+   * @return TODO
+   */
+  private Expression translateToCoreSyntaxMessage ( Message pMessage ,
+      boolean pRecursive )
+  {
+    if ( pRecursive )
+    {
+      return new Message ( translateToCoreSyntax ( pMessage.getE ( ) ,
+          pRecursive ) , pMessage.getId ( ) ) ;
+    }
+    return pMessage ;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @param pMeth TODO
+   * @param pRecursive TODO
+   * @return TODO
+   */
+  private Expression translateToCoreSyntaxMeth ( Meth pMeth , boolean pRecursive )
+  {
+    if ( pRecursive )
+    {
+      return new Meth ( pMeth.getId ( ) , pMeth.getTau ( ) ,
+          translateToCoreSyntax ( pMeth.getE ( ) , pRecursive ) ) ;
+    }
+    return pMeth ;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @param pObjectExpr TODO
+   * @param pRecursive TODO
+   * @return TODO
+   */
+  private Expression translateToCoreSyntaxObjectExpr ( ObjectExpr pObjectExpr ,
+      boolean pRecursive )
+  {
+    if ( pRecursive )
+    {
+      return new ObjectExpr ( pObjectExpr.getId ( ) , pObjectExpr.getTau ( ) ,
+          ( Row ) translateToCoreSyntax ( pObjectExpr.getE ( ) , pRecursive ) ) ;
+    }
+    return pObjectExpr ;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @param pRow TODO
+   * @param pRecursive TODO
+   * @return TODO
+   */
+  private Expression translateToCoreSyntaxRow ( Row pRow , boolean pRecursive )
+  {
+    if ( pRecursive )
+    {
+      Expression [ ] newRowE = new Expression [ pRow.getExpressions ( ).length ] ;
+      for ( int i = 0 ; i < newRowE.length ; i ++ )
+      {
+        newRowE [ i ] = translateToCoreSyntax ( pRow.getExpressions ( i ) ,
+            pRecursive ) ;
+      }
+      return new Row ( newRowE ) ;
+    }
+    return pRow ;
   }
 }

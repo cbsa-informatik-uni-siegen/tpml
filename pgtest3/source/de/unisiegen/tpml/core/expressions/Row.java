@@ -83,28 +83,18 @@ public final class Row extends Expression
   {
     TreeSet < String > free = new TreeSet < String > ( ) ;
     TreeSet < String > bounded = new TreeSet < String > ( ) ;
-    for ( int i = 0 ; i < this.expressions.length ; i ++ )
+    for ( Expression expr : this.expressions )
     {
-      if ( this.expressions [ i ] instanceof Attr )
+      if ( expr instanceof Attr )
       {
-        Attr expr = ( Attr ) this.expressions [ i ] ;
+        Attr attr = ( Attr ) expr ;
         TreeSet < String > freeExpr = new TreeSet < String > ( ) ;
-        freeExpr.addAll ( expr.free ( ) ) ;
-        freeExpr.removeAll ( bounded ) ;
+        freeExpr.addAll ( attr.free ( ) ) ;
         free.addAll ( freeExpr ) ;
-        bounded.add ( expr.getId ( ) ) ;
+        bounded.add ( attr.getId ( ) ) ;
       }
-      else if ( this.expressions [ i ] instanceof Meth )
+      else
       {
-        Meth expr = ( Meth ) this.expressions [ i ] ;
-        TreeSet < String > freeExpr = new TreeSet < String > ( ) ;
-        freeExpr.addAll ( expr.free ( ) ) ;
-        freeExpr.removeAll ( bounded ) ;
-        free.addAll ( freeExpr ) ;
-      }
-      else if ( this.expressions [ i ] instanceof CurriedMeth )
-      {
-        CurriedMeth expr = ( CurriedMeth ) this.expressions [ i ] ;
         TreeSet < String > freeExpr = new TreeSet < String > ( ) ;
         freeExpr.addAll ( expr.free ( ) ) ;
         freeExpr.removeAll ( bounded ) ;
@@ -112,6 +102,25 @@ public final class Row extends Expression
       }
     }
     return free ;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @return TODO
+   */
+  public Set < String > freeVal ( )
+  {
+    TreeSet < String > freeVal = new TreeSet < String > ( ) ;
+    for ( Expression expr : this.expressions )
+    {
+      if ( expr instanceof Attr )
+      {
+        freeVal.addAll ( expr.free ( ) ) ;
+      }
+    }
+    return freeVal ;
   }
 
 
@@ -196,6 +205,7 @@ public final class Row extends Expression
   public Row substitute ( String pID , Expression pExpression )
   {
     Expression [ ] tmp = this.expressions.clone ( ) ;
+    boolean equalIdFound = false ;
     for ( int i = 0 ; i < tmp.length ; i ++ )
     {
       Expression e = tmp [ i ] ;
@@ -207,45 +217,54 @@ public final class Row extends Expression
         {
           tmp [ i ] = new Attr ( attr.getId ( ) , attr.getTau ( ) , attr
               .getE ( ).substitute ( pID , pExpression ) ) ;
-          break ;
+          equalIdFound = true ;
         }
-        // second case id != id'
-        TreeSet < String > freeRow = new TreeSet < String > ( ) ;
-        TreeSet < String > freeE = new TreeSet < String > ( ) ;
-        freeE.addAll ( pExpression.free ( ) ) ;
-        for ( int j = i + 1 ; j < tmp.length ; j ++ )
+        else
         {
-          Set < String > freeRowE = tmp [ j ].free ( ) ;
-          freeRow.addAll ( freeRowE ) ;
-        }
-        String newId = attr.getId ( ) ;
-        while ( ( freeE.contains ( newId ) ) && ( freeRow.contains ( pID ) ) )
-        {
-          newId = newId + "'" ; //$NON-NLS-1$
-        }
-        tmp [ i ] = new Attr ( newId , attr.getTau ( ) , attr.getE ( )
-            .substitute ( pID , pExpression ) ) ;
-        if ( ! attr.getId ( ).equals ( newId ) )
-        {
+          // second case id != id'
+          TreeSet < String > freeRow = new TreeSet < String > ( ) ;
+          TreeSet < String > freeE = new TreeSet < String > ( ) ;
+          freeE.addAll ( pExpression.free ( ) ) ;
           for ( int j = i + 1 ; j < tmp.length ; j ++ )
           {
-            tmp [ j ] = tmp [ j ].substitute ( attr.getId ( ) , new Identifier (
-                newId ) ) ;
+            Set < String > freeRowE = tmp [ j ].free ( ) ;
+            freeRow.addAll ( freeRowE ) ;
+          }
+          String newId = attr.getId ( ) ;
+          while ( ( freeE.contains ( newId ) ) && ( freeRow.contains ( pID ) ) )
+          {
+            newId = newId + "'" ; //$NON-NLS-1$
+          }
+          tmp [ i ] = new Attr ( newId , attr.getTau ( ) , attr.getE ( )
+              .substitute ( pID , pExpression ) ) ;
+          if ( ! attr.getId ( ).equals ( newId ) )
+          {
+            for ( int j = i + 1 ; j < tmp.length ; j ++ )
+            {
+              tmp [ j ] = tmp [ j ].substitute ( attr.getId ( ) ,
+                  new Identifier ( newId ) ) ;
+            }
           }
         }
       }
       else if ( e instanceof Meth )
       {
-        Meth meth = ( Meth ) e ;
-        tmp [ i ] = new Meth ( meth.getId ( ) , meth.getTau ( ) , meth.getE ( )
-            .substitute ( pID , pExpression ) ) ;
+        if ( ! equalIdFound )
+        {
+          Meth meth = ( Meth ) e ;
+          tmp [ i ] = new Meth ( meth.getId ( ) , meth.getTau ( ) , meth
+              .getE ( ).substitute ( pID , pExpression ) ) ;
+        }
       }
       else if ( e instanceof CurriedMeth )
       {
-        CurriedMeth curriedMeth = ( CurriedMeth ) e ;
-        tmp [ i ] = new CurriedMeth ( curriedMeth.getIdentifiers ( ) ,
-            curriedMeth.getTypes ( ) , curriedMeth.getE ( ).substitute ( pID ,
-                pExpression ) ) ;
+        if ( ! equalIdFound )
+        {
+          CurriedMeth curriedMeth = ( CurriedMeth ) e ;
+          tmp [ i ] = new CurriedMeth ( curriedMeth.getIdentifiers ( ) ,
+              curriedMeth.getTypes ( ) , curriedMeth.getE ( ).substitute ( pID ,
+                  pExpression ) ) ;
+        }
       }
     }
     return new Row ( tmp ) ;

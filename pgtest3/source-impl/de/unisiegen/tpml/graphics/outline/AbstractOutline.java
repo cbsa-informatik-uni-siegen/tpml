@@ -1024,7 +1024,7 @@ public final class AbstractOutline implements Outline
         PrettyStyle.IDENTIFIER ).get ( 0 ) ;
     OutlineBinding outlineBinding = new OutlineBinding ( pExpression ,
         outlinePairId.getStart ( ) , outlinePairId.getEnd ( ) , 0 ) ;
-    Row row = ( Row ) pExpression.getE ( ) ;
+    Row row = pExpression.getE ( ) ;
     boolean equalIdFound = false ;
     for ( Expression expr : row.getExpressions ( ) )
     {

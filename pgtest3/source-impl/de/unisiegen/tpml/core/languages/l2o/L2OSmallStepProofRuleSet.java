@@ -68,7 +68,7 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
       return row ;
     }
     return new ObjectExpr ( pObjectExpr.getId ( ) , pObjectExpr.getTau ( ) ,
-        row ) ;
+        ( Row ) row ) ;
   }
 
 
@@ -98,7 +98,7 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
       // OBJ-UNFOLD
       pContext.addProofStep ( getRuleByName ( "OBJ-UNFOLD" ) , pMessage ) ; //$NON-NLS-1$
       ObjectExpr objectExpr = ( ObjectExpr ) pMessage.getE ( ) ;
-      Row row = ( Row ) objectExpr.getE ( ) ;
+      Row row = objectExpr.getE ( ) ;
       Expression newRow = row.substitute ( objectExpr.getId ( ) , objectExpr
           .clone ( ) ) ;
       return new Message ( newRow , pMessage.getId ( ) ) ;
@@ -267,7 +267,7 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
       // DUPL-EXEC
       pContext.addProofStep ( getRuleByName ( "DUPL-EXEC" ) , pDuplication ) ; //$NON-NLS-1$
       ObjectExpr objectExpr = ( ObjectExpr ) pDuplication.getE ( ) ;
-      Row row = ( Row ) objectExpr.getE ( ) ;
+      Row row = objectExpr.getE ( ) ;
       Expression [ ] newRowE = row.getExpressions ( ).clone ( ) ;
       for ( int i = 0 ; i < newRowE.length ; i ++ )
       {

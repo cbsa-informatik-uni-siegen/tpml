@@ -298,7 +298,7 @@ public final class OutlineUnbound
   private final void findObjectExpr ( ArrayList < String > pBounded ,
       ObjectExpr pExpression )
   {
-    Row row = ( Row ) pExpression.getE ( ) ;
+    Row row = pExpression.getE ( ) ;
     ArrayList < String > bounded = new ArrayList < String > ( pBounded ) ;
     bounded.add ( pExpression.getId ( ) ) ;
     for ( Expression expr : row.getExpressions ( ) )

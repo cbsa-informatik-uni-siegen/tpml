@@ -462,7 +462,7 @@ public final class OutlineBinding
       /*
        * Search can be continued, but only in Attributes.
        */
-      Row row = ( Row ) pExpression.getE ( ) ;
+      Row row = pExpression.getE ( ) ;
       for ( Expression expr : row.getExpressions ( ) )
       {
         if ( expr instanceof Attr )
