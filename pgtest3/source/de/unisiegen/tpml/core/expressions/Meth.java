@@ -180,6 +180,17 @@ public class Meth extends Expression
    * {@inheritDoc}
    */
   @ Override
+  public Meth substituteAttr ( String pID , Expression pExpression )
+  {
+    return new Meth ( this.identifier , this.tau , this.expression
+        .substituteAttr ( pID , pExpression ) ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   */
+  @ Override
   public PrettyStringBuilder toPrettyStringBuilder (
       PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {

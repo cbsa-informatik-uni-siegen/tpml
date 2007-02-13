@@ -259,6 +259,28 @@ public final class Duplication extends Expression
 
 
   /**
+   * {@inheritDoc}
+   */
+  @ Override
+  public Duplication substituteAttr ( String pID , Expression pExpression )
+  {
+    Expression [ ] newExpr = new Expression [ this.expressions.length ] ;
+    String [ ] newId = this.identifiers.clone ( ) ;
+    for ( int i = 0 ; i < newExpr.length ; i ++ )
+    {
+      if ( ( this.identifiers [ i ].equals ( pID ) )
+          && ( pExpression instanceof Identifier ) )
+      {
+        newId [ i ] = ( ( Identifier ) pExpression ).getName ( ) ;
+      }
+      newExpr [ i ] = this.expressions [ i ].substitute ( pID , pExpression ) ;
+    }
+    return new Duplication ( this.expression.substitute ( pID , pExpression ) ,
+        newId , newExpr ) ;
+  }
+
+
+  /**
    * TODO
    * 
    * @param pTypeSubstitution TODO

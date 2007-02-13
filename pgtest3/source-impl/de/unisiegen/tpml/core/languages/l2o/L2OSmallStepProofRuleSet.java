@@ -356,12 +356,40 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
               .clone ( ) ) ;
           for ( int j = i + 1 ; j < tmp.length ; j ++ )
           {
-            tmp [ j ] = tmp [ j ].substitute ( attr.getId ( ) , new Identifier (
-                newId ) ) ;
             if ( ( tmp [ j ] instanceof Attr )
                 && ( ( ( Attr ) tmp [ j ] ).getId ( ).equals ( attr.getId ( ) ) ) )
             {
               break ;
+            }
+            // Meth
+            if ( tmp [ j ] instanceof Meth )
+            {
+              Meth meth = ( Meth ) tmp [ j ] ;
+              if ( meth.getE ( ) instanceof Duplication )
+              {
+                tmp [ j ] = meth.substituteAttr ( attr.getId ( ) ,
+                    new Identifier ( newId ) ) ;
+              }
+              else
+              {
+                tmp [ j ] = meth.substitute ( attr.getId ( ) , new Identifier (
+                    newId ) ) ;
+              }
+            }
+            // CurriedMeth
+            else if ( tmp [ j ] instanceof CurriedMeth )
+            {
+              CurriedMeth curriedMeth = ( CurriedMeth ) tmp [ j ] ;
+              if ( curriedMeth.getE ( ) instanceof Duplication )
+              {
+                tmp [ j ] = curriedMeth.substituteAttr ( attr.getId ( ) ,
+                    new Identifier ( newId ) ) ;
+              }
+              else
+              {
+                tmp [ j ] = curriedMeth.substitute ( attr.getId ( ) ,
+                    new Identifier ( newId ) ) ;
+              }
             }
           }
           return new Row ( tmp ) ;
