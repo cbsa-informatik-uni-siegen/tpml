@@ -183,7 +183,16 @@ public final class ObjectExpr extends Expression
   {
     if ( this.identifier.equals ( pID ) )
     {
-      return this ;
+      Row row = this.expression ;
+      Expression [ ] newRowE = row.getExpressions ( ).clone ( ) ;
+      for ( int i = 0 ; i < newRowE.length ; i ++ )
+      {
+        if ( newRowE [ i ] instanceof Attr )
+        {
+          newRowE [ i ] = newRowE [ i ].substitute ( pID , pExpression ) ;
+        }
+      }
+      return new ObjectExpr ( this.identifier , this.tau , new Row ( newRowE ) ) ;
     }
     Set < String > free = this.free ( ) ;
     Set < String > freeE = pExpression.free ( ) ;
