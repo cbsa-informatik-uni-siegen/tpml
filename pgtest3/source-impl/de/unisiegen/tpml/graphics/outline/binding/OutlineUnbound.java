@@ -21,18 +21,11 @@ public final class OutlineUnbound
 
 
   /**
-   * The list of all removed {@link Identifier}s in the {@link Expression}.
-   */
-  private ArrayList < Identifier > listRemoved ;
-
-
-  /**
    * Initilizes the list.
    */
   public OutlineUnbound ( )
   {
     this.list = new ArrayList < Identifier > ( ) ;
-    this.listRemoved = new ArrayList < Identifier > ( ) ;
   }
 
 
@@ -68,58 +61,22 @@ public final class OutlineUnbound
    */
   public final void remove ( Identifier pIdentifier )
   {
-    this.listRemoved.add ( pIdentifier ) ;
+    boolean removed = false ;
     for ( int i = 0 ; i < this.list.size ( ) ; i ++ )
     {
       // Have to use '==' and not 'equals()'
       if ( pIdentifier == this.list.get ( i ) )
       {
         this.list.remove ( i ) ;
+        removed = true ;
         break ;
       }
     }
-  }
-
-
-  /**
-   * Checks, if an {@link Identifier} has more than one Expression to which he
-   * is bound.
-   */
-  public final void check ( )
-  {
-    ArrayList < Identifier > tmp = new ArrayList < Identifier > ( ) ;
-    for ( int i = 0 ; i < this.listRemoved.size ( ) ; i ++ )
+    if ( ! removed )
     {
-      for ( int j = 0 ; j < this.listRemoved.size ( ) ; j ++ )
-      {
-        if ( ( i != j )
-            && ( this.listRemoved.get ( i ) == this.listRemoved.get ( j ) ) )
-        {
-          tmp.add ( this.listRemoved.get ( i ) ) ;
-        }
-      }
-    }
-    while ( tmp.size ( ) > 0 )
-    {
-      Identifier identifier = tmp.get ( 0 ) ;
       System.err.println ( "Outline: The Identifier \"" //$NON-NLS-1$
-          + identifier.toPrettyString ( ).toString ( )
-          + "\" has more than one Expression, to which it is bound:" ) ; //$NON-NLS-1$
-      System.err.println ( "- \"" //$NON-NLS-1$
-          + identifier.boundedExpression ( ).toPrettyString ( ).toString ( )
-          + "\"" ) ; //$NON-NLS-1$
-      for ( int i = 1 ; i < tmp.size ( ) ; i ++ )
-      {
-        if ( identifier == tmp.get ( i ) )
-        {
-          System.err.println ( "- \"" //$NON-NLS-1$
-              + identifier.boundedExpression ( ).toPrettyString ( ).toString ( )
-              + "\"" ) ; //$NON-NLS-1$
-          tmp.remove ( i ) ;
-          i -- ;
-        }
-      }
-      tmp.remove ( 0 ) ;
+          + pIdentifier.toPrettyString ( ).toString ( )
+          + "\" has more than one Expression to which it is bound!" ) ; //$NON-NLS-1$
     }
   }
 

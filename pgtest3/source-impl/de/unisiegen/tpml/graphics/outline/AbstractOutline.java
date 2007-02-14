@@ -1280,7 +1280,6 @@ public final class AbstractOutline implements Outline
     this.outlineUnbound = new OutlineUnbound ( ) ;
     findAllIdentifiers ( this.loadedExpression ) ;
     DefaultMutableTreeNode rootNode = checkExpression ( this.loadedExpression ) ;
-    this.outlineUnbound.check ( ) ;
     repaint ( rootNode ) ;
     SwingUtilities.invokeLater ( new OutlineDisplayTree ( this.outlineUI ,
         rootNode ) ) ;
