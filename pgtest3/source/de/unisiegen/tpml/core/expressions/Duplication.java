@@ -328,7 +328,11 @@ public final class Duplication extends Expression
         builder.addBreak ( ) ;
       }
     }
-    builder.addText ( " " ) ; //$NON-NLS-1$
+    // Only one space for '{< >}'
+    if ( this.expressions.length > 0 )
+    {
+      builder.addText ( " " ) ; //$NON-NLS-1$
+    }
     builder.addKeyword ( ">" ) ; //$NON-NLS-1$
     builder.addKeyword ( "}" ) ; //$NON-NLS-1$
     return builder ;

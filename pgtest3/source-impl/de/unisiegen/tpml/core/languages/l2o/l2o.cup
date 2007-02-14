@@ -91,9 +91,6 @@ precedence left		STAR, SLASH, MOD;
 
 precedence right	NUMBERSIGN ;
 
-// TODO Only for testing
-// precedence right	LCURLYBRACE ;
-
 
 /***************
  * Expressions *
@@ -241,17 +238,10 @@ duplication			::= IDENTIFIER:id LCURLYBRACE LESS id_expr_list:iel GREATER RCURLY
 						     tmpI [i] = iel [i].id;
 						   }
 						   RESULT = new Duplication ( new Identifier (id) , tmpI , tmpE ); :}
-					
-					// TODO Only for testing
-					/*|	expr:e LCURLYBRACE LESS id_expr_list:iel GREATER RCURLYBRACE
-						{: Expression [] tmpE = new Expression [iel.length];
-						   String [] tmpI = new String [iel.length];
-						   for ( int i = 0 ; i < iel.length ; i++ )
-						   {
-						     tmpE [i] = iel [i].e;
-						     tmpI [i] = iel [i].id;
-						   }
-						   RESULT = new Duplication ( e , tmpI , tmpE ); :}*/
+					|	IDENTIFIER:id LCURLYBRACE LESS GREATER RCURLYBRACE
+						{: Expression [] tmpE = new Expression [0];
+						   String [] tmpI = new String [0];
+						   RESULT = new Duplication ( new Identifier (id) , tmpI , tmpE ); :}
 					;
 					
 message				::= expr:e NUMBERSIGN IDENTIFIER:id
