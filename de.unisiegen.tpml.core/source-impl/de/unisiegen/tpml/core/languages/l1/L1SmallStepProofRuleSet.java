@@ -340,7 +340,7 @@ public class L1SmallStepProofRuleSet extends L0SmallStepProofRuleSet
    * Evaluates the <code>or</code> expression using the <code>context</code>.
    * 
    * @param context the small step proof context.
-   * @param and the {@link And} expression to evaluate.
+   * @param or the {@link Or} expression to evaluate.
    * @return the resulting expression.
    */
   public Expression evaluateOr ( SmallStepProofContext context , Or or )
