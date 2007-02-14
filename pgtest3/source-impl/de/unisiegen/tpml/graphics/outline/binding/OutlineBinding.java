@@ -20,7 +20,6 @@ import de.unisiegen.tpml.core.expressions.MultiLet ;
 import de.unisiegen.tpml.core.expressions.ObjectExpr ;
 import de.unisiegen.tpml.core.expressions.Recursion ;
 import de.unisiegen.tpml.core.expressions.Row ;
-import de.unisiegen.tpml.graphics.outline.OutlineNode ;
 
 
 /**
@@ -57,6 +56,13 @@ public final class OutlineBinding
 
 
   /**
+   * The {@link OutlineUnbound} from which the founded {@link Identifier}s
+   * should be removed.
+   */
+  private OutlineUnbound outlineUnbound ;
+
+
+  /**
    * The {@link Expression} in which the {@link Identifier} is bounded.
    */
   private Expression boundedExpression ;
@@ -78,19 +84,6 @@ public final class OutlineBinding
    * The index of the {@link Identifier} in the boundedExpression.
    */
   private int boundedIdentifierIndex ;
-
-
-  /**
-   * Initilizes the list.
-   */
-  public OutlineBinding ( )
-  {
-    this.list = new ArrayList < Identifier > ( ) ;
-    this.boundedExpression = null ;
-    this.boundedStart = OutlineNode.NO_BINDING ;
-    this.boundedEnd = OutlineNode.NO_BINDING ;
-    this.boundedIdentifierIndex = OutlineNode.NO_BINDING ;
-  }
 
 
   /**
@@ -121,11 +114,14 @@ public final class OutlineBinding
    * 
    * @param pExpression The {@link Expression}.
    * @param pId The {@link Identifier}.
+   * @param pOutlineUnbound The {@link OutlineUnbound}.
    */
-  public final void find ( Expression pExpression , String pId )
+  public final void find ( Expression pExpression , String pId ,
+      OutlineUnbound pOutlineUnbound )
   {
     this.expression = pExpression ;
     this.identifier = pId ;
+    this.outlineUnbound = pOutlineUnbound ;
     findExpression ( this.expression ) ;
   }
 
@@ -314,6 +310,7 @@ public final class OutlineBinding
     if ( pExpression.getName ( ).equals ( this.identifier ) )
     {
       this.list.add ( pExpression ) ;
+      this.outlineUnbound.remove ( pExpression ) ;
       pExpression.boundedExpression ( this.boundedExpression ) ;
       pExpression.boundedStart ( this.boundedStart ) ;
       pExpression.boundedEnd ( this.boundedEnd ) ;
