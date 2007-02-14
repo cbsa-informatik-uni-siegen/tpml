@@ -26,6 +26,7 @@ import de.unisiegen.tpml.core.ProofNode;
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.languages.Language;
 import de.unisiegen.tpml.core.languages.LanguageFactory;
+import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel;
 
 /**
  * Test class for the {@link de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel} class.
@@ -79,6 +80,9 @@ public final class TypeInferenceProofModelTest extends JFrame {
         try {
           // guess the last node
         	model.guess(nextNode(model));
+        	
+      
+        	
           
           // expand to the all nodes
           for (int n = 0; n < tree.getRowCount(); ++n) {
@@ -170,21 +174,20 @@ public final class TypeInferenceProofModelTest extends JFrame {
   }
   
   private static ProofNode nextNode(TypeInferenceProofModel model) {
-    LinkedList<ProofNode> nodes = new LinkedList<ProofNode>();
-    nodes.add(model.getRoot());
-    while (!nodes.isEmpty()) {
-      ProofNode node = nodes.poll();
-      if (node.getRules().length == 0) {
-    	  System.out.println("Node =0");
-        return node;
-      }
-      for (int n = 0; n < node.getChildCount(); ++n) {
-        nodes.add(node.getChildAt(n));
-      }
-    }
-    throw new IllegalStateException("Unable to find next node");
-  }
-  
+	    LinkedList<ProofNode> nodes = new LinkedList<ProofNode>();
+	    nodes.add(model.getRoot());
+	    while (!nodes.isEmpty()) {
+	      ProofNode node = nodes.poll();
+	      if (node.getRules().length == 0) {
+	        return node;
+	      }
+	      for (int n = 0; n < node.getChildCount(); ++n) {
+	        nodes.add(node.getChildAt(n));
+	      }
+	    }
+	    throw new IllegalStateException("Unable to find next node");
+	  }
+	  
   
   
   //
@@ -203,6 +206,7 @@ public final class TypeInferenceProofModelTest extends JFrame {
       Language language = factory.getLanguageById("l4");
       Expression expression = language.newParser(new StringReader(SIMPLE)).parse();
       TypeInferenceProofModel model = language.newTypeInferenceProofModel(expression);
+      
       
       // evaluate the resulting small step expression
       TypeInferenceProofModelTest window = new TypeInferenceProofModelTest(model);

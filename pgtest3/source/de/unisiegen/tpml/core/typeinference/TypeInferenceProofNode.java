@@ -5,6 +5,7 @@ import javax.swing.tree.TreeNode;
 import de.unisiegen.tpml.core.ProofNode;
 import de.unisiegen.tpml.core.expressions.And;
 import de.unisiegen.tpml.core.expressions.Expression;
+import de.unisiegen.tpml.core.typechecker.TypeCheckerProofRule;
 import de.unisiegen.tpml.core.typechecker.TypeEnvironment;
 import de.unisiegen.tpml.core.types.MonoType;
 
@@ -49,10 +50,11 @@ public interface TypeInferenceProofNode extends ProofNode
 	   * @see TypeCheckerProofRule
 	   * @see de.unisiegen.tpml.core.ProofStep
 	   */
-	  public TypeInferenceProofRule getRule();
+	  public TypeCheckerProofRule getRule();
 	  
 	  
-	  
+	 
+		
 	  //
 	  // Primitives
 	  //
@@ -140,6 +142,8 @@ public interface TypeInferenceProofNode extends ProofNode
 
 	
 	  public Expression getExpression();
+
+	public void addEquation(MonoType left, MonoType right);
 	
 	
 }

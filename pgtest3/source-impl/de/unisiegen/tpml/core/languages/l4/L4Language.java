@@ -150,7 +150,7 @@ public class L4Language extends L3Language
   public TypeInferenceProofModel newTypeInferenceProofModel ( Expression expression )
   {
     return new TypeInferenceProofModel ( expression ,
-        new L4TypeCheckerProofRuleSet ( this ) ) ;
+        new L4TypeInferenceProofRuleSet ( this ) ) ;
   }
 
 

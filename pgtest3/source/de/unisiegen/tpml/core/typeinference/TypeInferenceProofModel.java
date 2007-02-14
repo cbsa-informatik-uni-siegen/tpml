@@ -56,6 +56,8 @@ public final class TypeInferenceProofModel extends AbstractExpressionProofModel 
 	  
 	  private Expression expression;
 	  
+	 // private DefaultTypeInferenceProofNode actualNode;
+	  
 	
 	  
 	  //
@@ -74,10 +76,12 @@ public final class TypeInferenceProofModel extends AbstractExpressionProofModel 
 	   *
 	   * @see AbstractProofModel#AbstractProofModel(AbstractProofNode, AbstractProofRuleSet)
 	   */
-	  public TypeInferenceProofModel(Expression pExpression, AbstractTypeCheckerProofRuleSet ruleSet) {
-	    super(new DefaultTypeInferenceProofNode(new DefaultTypeEnvironment(), pExpression, new TypeVariable(1, 0)), ruleSet);
+	  public TypeInferenceProofModel(Expression pExpression, AbstractTypeCheckerProofRuleSet pRuleSet) {
+	    super(new DefaultTypeInferenceProofNode(new DefaultTypeEnvironment(), pExpression, new TypeVariable(1, 0)), pRuleSet);
 	      expression=pExpression;  
-	  }
+	      ruleSet=pRuleSet;
+	      
+	      }
 	  
 	  public int getIndex() {
 		    return this.index;
@@ -91,42 +95,7 @@ public final class TypeInferenceProofModel extends AbstractExpressionProofModel 
 		    this.index = index;
 		  }
 		  
-	  void contextAddProofNode(DefaultTypeInferenceProofContext context, final DefaultTypeInferenceProofNode node, TypeEnvironment environment, Expression expression, MonoType type) {
-		    if (context == null) {
-		      throw new NullPointerException("context is null");
-		    }
-		    if (node == null) {
-		      throw new NullPointerException("node is null");
-		    }
-		    if (environment == null) {
-		      throw new NullPointerException("environment is null");
-		    }
-		    if (expression == null) {
-		      throw new NullPointerException("expression is null");
-		    }
-		    if (type == null) {
-		      throw new NullPointerException("type is null");
-		    }
-		    if (!this.root.isNodeRelated(node)) {
-		      throw new IllegalArgumentException("node is invalid");
-		    }
-		    
-		    final DefaultTypeInferenceProofNode child = new DefaultTypeInferenceProofNode(environment, expression, type);
-		     context.addRedoAction(new Runnable() {
-		      public void run() {
-		        node.add(child);
-		        nodesWereInserted(node, new int[] { node.getIndex(child) });
-		      }
-		    });
-		    
-		    context.addUndoAction(new Runnable() {
-		      public void run() {
-		        int index = node.getIndex(child);
-		        node.remove(index);
-		        nodesWereRemoved(node, new int[] { index }, new Object[] { child });
-		      }
-		    });
-		  }
+
 	  
 	  
 	  /**
@@ -137,7 +106,8 @@ public final class TypeInferenceProofModel extends AbstractExpressionProofModel 
 	 * @see de.unisiegen.tpml.core.AbstractProofModel#guess(de.unisiegen.tpml.core.ProofNode)
 	 */
 	public void guess(ProofNode node) throws ProofGuessException {
-		    guessInternal((DefaultTypeInferenceProofNode)node, null);
+		   guessInternal((DefaultTypeInferenceProofNode)node, null);
+		
 		  }
 
 
@@ -199,7 +169,8 @@ public final class TypeInferenceProofModel extends AbstractExpressionProofModel 
 	  private void applyInternal(TypeCheckerProofRule rule, DefaultTypeInferenceProofNode node, MonoType type) throws ProofRuleException {
 		//allocate a new TypeCheckerContext
 		DefaultTypeInferenceProofContext context;
-	  	context = new DefaultTypeInferenceProofContext(this);
+	  	context = new DefaultTypeInferenceProofContext(this, node);
+	 
 	    try {
 	    	
 	      // try to apply the rule to the node
@@ -245,7 +216,7 @@ public final class TypeInferenceProofModel extends AbstractExpressionProofModel 
 		
 
 	
-	 private static ProofNode nextNode(TypeInferenceProofModel model) {
+	 private static ProofNode nextNode(TypeCheckerProofModel model) {
 		    LinkedList<ProofNode> nodes = new LinkedList<ProofNode>();
 		    nodes.add(model.getRoot());
 		    while (!nodes.isEmpty()) {
@@ -263,12 +234,26 @@ public final class TypeInferenceProofModel extends AbstractExpressionProofModel 
 
 
 
-	@Override
-	public void prove(ProofRule rule, ProofNode node) throws ProofRuleException {
-		
-		
-		
-	}
+	  /**
+	   * {@inheritDoc}
+	   *
+	   * @see de.unisiegen.tpml.core.AbstractProofModel#prove(de.unisiegen.tpml.core.ProofRule, de.unisiegen.tpml.core.ProofNode)
+	   */
+	  @Override
+	  public void prove(ProofRule rule, ProofNode node) throws ProofRuleException {
+	    if (!this.ruleSet.contains(rule)) {
+	      throw new IllegalArgumentException("The rule is invalid for the model");
+	    }
+	    if (!this.root.isNodeRelated(node)) {
+	      throw new IllegalArgumentException("The node is invalid for the model");
+	    }
+	    if (node.getRules().length > 0) {
+	      throw new IllegalArgumentException("The node is already completed");
+	    }
+	    
+	    // try to apply the rule to the specified node
+	    applyInternal((TypeCheckerProofRule)rule, (DefaultTypeInferenceProofNode)node, null);
+	  }
 	
 	 /**
 	   * @param s the {@link TypeSubstitution} to apply to all nodes in the proof tree.
@@ -331,6 +316,7 @@ public final class TypeInferenceProofModel extends AbstractExpressionProofModel 
 	   */
 	  void contextSetProofNodeRule(DefaultTypeInferenceProofContext context, final DefaultTypeInferenceProofNode node, final TypeCheckerProofRule rule) {
 	    final ProofStep[] oldSteps = node.getSteps();
+	   
 	    
 	    context.addRedoAction(new Runnable() {
 	      public void run() {
@@ -340,12 +326,14 @@ public final class TypeInferenceProofModel extends AbstractExpressionProofModel 
 	    });
 	  }
 	  
-	  void contextAddProofNode(DefaultTypeInferenceProofContext context, final DefaultTypeCheckerProofNode node, TypeEnvironment environment, Expression expression, MonoType type) {
-		    if (context == null) {
-		      throw new NullPointerException("context is null");
+	  void contextAddProofNode(DefaultTypeInferenceProofContext context, final DefaultTypeInferenceProofNode node, TypeEnvironment environment, Expression expression, MonoType type) {
+		   
+		  if (context == null) {
+		     throw new NullPointerException("context is null");
+		      
 		    }
 		    if (node == null) {
-		      throw new NullPointerException("node is null");
+		    	throw new NullPointerException("node is null");
 		    }
 		    if (environment == null) {
 		      throw new NullPointerException("environment is null");
@@ -359,11 +347,31 @@ public final class TypeInferenceProofModel extends AbstractExpressionProofModel 
 		    if (!this.root.isNodeRelated(node)) {
 		      throw new IllegalArgumentException("node is invalid");
 		    }
+		    final DefaultTypeInferenceProofNode child = new DefaultTypeInferenceProofNode(environment, expression, type, node.getEquations());
+		     context.addRedoAction(new Runnable() {
+		      public void run() {
+		        node.add(child);
+		       
+		        nodesWereInserted(node, new int[] { node.getIndex(child) });
+		        
+		      }
+		    });
+		    
+		    context.addUndoAction(new Runnable() {
+		      public void run() {
+		        int index = node.getIndex(child);
+		        node.remove(index);
+		        nodesWereRemoved(node, new int[] { index }, new Object[] { child });
+		      }
+		    });
 	  }
 
 	public Expression getExpression() {
 		return expression;
 	}
+
+
+
 	  
 	
 	}

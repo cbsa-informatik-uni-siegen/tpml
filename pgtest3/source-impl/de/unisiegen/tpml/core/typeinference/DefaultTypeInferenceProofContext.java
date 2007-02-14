@@ -69,6 +69,8 @@ public class DefaultTypeInferenceProofContext  implements TypeInferenceProofCont
 	   * @see #newTypeVariable()
 	   * @see TypeVariable
 	   */
+	
+	private int count =0;
 	  private int offset = 0;
 
 	  /**
@@ -107,6 +109,8 @@ public class DefaultTypeInferenceProofContext  implements TypeInferenceProofCont
 	  private MonoType type;
 	  
 	  protected Vector<AbstractProofNode> children;
+	  
+	  private DefaultTypeInferenceProofNode node;
 
 	
 	/**
@@ -114,13 +118,14 @@ public class DefaultTypeInferenceProofContext  implements TypeInferenceProofCont
 	 *
 	 * @param model
 	 */
-	  public DefaultTypeInferenceProofContext(final TypeInferenceProofModel model) {
+	  public DefaultTypeInferenceProofContext(final TypeInferenceProofModel model, DefaultTypeInferenceProofNode pNode) {
 		    if (model == null) {
 		      throw new NullPointerException("model is null");
 		    }
 		    this.model = model;
 		    children=new Vector<AbstractProofNode>();
 		    
+		    node=pNode;
 		    
 		    // increment the model index
 		    final int index = model.getIndex();
@@ -136,8 +141,8 @@ public class DefaultTypeInferenceProofContext  implements TypeInferenceProofCont
 	  //hier muss die node an den tmp baum angehangen werden und die Daten so gespeichert werden
 	  //dass sie in den neuen Baum aufgenommen werden können
 	  public void addProofNode(TypeCheckerProofNode node, TypeEnvironment environment, Expression expression, MonoType type) {
-		    this.model.contextAddProofNode(this, (DefaultTypeCheckerProofNode)node, environment, expression, type);
-		  }
+		    this.model.contextAddProofNode(this, (DefaultTypeInferenceProofNode)node, environment, expression, type);
+	  	}
 	
 	/**
 	 * TODO
@@ -222,7 +227,10 @@ public class DefaultTypeInferenceProofContext  implements TypeInferenceProofCont
 	 * @param right
 	 */
 	public void addEquation(MonoType left, MonoType right) {
+			node.addEquation(left, right);
 		    this.equations = this.equations.extend(left, right);
+		    
+		 
 		  }
 		  
 	  
@@ -231,88 +239,50 @@ public class DefaultTypeInferenceProofContext  implements TypeInferenceProofCont
 	  // Rule application
 	  //
 	  
-	  /**
-	   * Applies the specified proof <code>rule</code> to the given <code>node</code>.
-	   * 
-	   * @param rule the proof rule to apply to the <code>node</code>.
-	   * @param node the proof node to which to apply the <code>rule</code>.
-	   * @param type the type the user guessed for the <code>node</code> or <code>null</code>
-	   *             if the user didn't enter a type.
-	   * 
-	   * @throws NullPointerException if <code>rule</code> or <code>node</code> is <code>null</code>.
-	   * @throws ProofRuleException if the application of the <code>rule</code> to the
-	   *                            <code>node</code> failed for some reason.
-	   * @throws UnificationException if an error occurs while unifying the type equations that resulted
-	   *                              from the application of <code>rule</code> to <code>node</code>.
-	   */
-	  void apply(TypeCheckerProofRule rule, TypeInferenceProofNode pNode, MonoType pType) throws ProofRuleException, UnificationException {
+	void apply(TypeCheckerProofRule rule, TypeInferenceProofNode pNode, MonoType type) throws ProofRuleException, UnificationException {
 	    // record the proof step for the node
-	    TypeCheckerProofModel typemodel =this.model.getLanguage().newTypeCheckerProofModel(pNode.getExpression());
-		  //this.model.contextSetProofNodeRule(this, (DefaultTypeInferenceProofNode)pNode, rule);
-	    
-	    tmpTree= new TmpTree(pNode.getEnvironment(), pNode.getExpression(), new TypeVariable(1, 0));
-	    typemodel.contextSetProofNodeRule(typemodel.context,tmpTree , rule);
-	    System.out.println("Typeinferenz");
-	    System.out.println(pNode.toString());
-	    System.out.println(rule.getName());
-	    System.out.println(pType);
-	    	
-	
+	    this.model.contextSetProofNodeRule(this, (DefaultTypeInferenceProofNode)pNode, rule);
 	    
 	    
+	    //Test
+	    //TmpTree tmpTree = new TmpTree(node.getExpression(), model.getRuleSet());
+	    
+	    DefaultTypeInferenceProofNode node = (DefaultTypeInferenceProofNode) pNode;
 	    
 	    // try to apply the rule to the node
-	    System.out.println("Typechecker");
-	    System.out.println("Try to apply rule");
-	    System.out.println(tmpTree.getRoot().toString());
-	    System.out.println(rule.getName());
-	    rule.apply(typemodel.context, tmpTree.getRoot());
+	    //rule.apply(this, node);
+	    rule.apply(this, node);
 	    
-	    System.err.println("TEST");
 	    
-//	  check if the user specified a type
-	    if (pType != null) {
+	    // check if the user specified a type
+	    if (type != null) {
 	      // add an equation for { node.getType() = type }
-	      addEquation(pNode.getType(), type);
+	      addEquation(node.getType(), type);
 	    }
-
-	    
-	    //changes benjamin
+	
 	    // unify the type equations and apply the substitution to the model
 	    //this.model.contextApplySubstitution(this, this.equations.unify());
-	    
-	   
 	    // update all super nodes
 	    for (;;) {
 	      // determine the parent node
-	      TypeInferenceProofNode parentNode = pNode.getParent();
-	      if (parentNode == null) {
+	      DefaultTypeInferenceProofNode parentNode = (DefaultTypeInferenceProofNode) node.getParent();
+	     if (parentNode == null) {
 	        break;
 	      }
+	     if (parentNode.getRule()==null)
+	     {
+	    	 System.out.println("get Rule = null");
+	    	 break;
+	     }
+	      
 	      
 	      // update the parent node (using the previously applied rule)
 	      parentNode.getRule().update(this, parentNode);
 	      
 	      // continue with the next one
-	      pNode = parentNode;
+	      node = parentNode;
 	    }
 	  }
-	  
-
-	  /**
-	   * Invokes all previously registered undo actions and clears the list of undo actions.
-	   * 
-	   * @see #addUndoAction(Runnable)
-	   * @see #getUndoActions()
-	   */
-	  void revert() {
-	    // undo all already performed changes
-	    for (Runnable undoAction : this.undoActions) {
-	      undoAction.run();
-	    }
-	    this.undoActions.clear();
-	  }
-	  
 	  
 	
 	
@@ -426,6 +396,21 @@ public class DefaultTypeInferenceProofContext  implements TypeInferenceProofCont
 		    return new TypeVariable(this.model.getIndex(), this.offset++);
 		    
 		  }
+	  
+	  /**
+	   * Invokes all previously registered undo actions and clears the list of undo actions.
+	   * 
+	   * @see #addUndoAction(Runnable)
+	   * @see #getUndoActions()
+	   */
+	  void revert() {
+	    // undo all already performed changes
+	    for (Runnable undoAction : this.undoActions) {
+	      undoAction.run();
+	    }
+	    this.undoActions.clear();
+	  }
+	  
 
 
 

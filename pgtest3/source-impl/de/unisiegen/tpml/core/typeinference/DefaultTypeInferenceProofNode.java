@@ -9,6 +9,7 @@ import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.typechecker.AbstractTypeCheckerProofRuleSet;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofContext;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel;
+import de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofRule;
 import de.unisiegen.tpml.core.typechecker.TypeEnvironment;
 import de.unisiegen.tpml.core.typechecker.TypeEquationList;
@@ -18,8 +19,7 @@ import de.unisiegen.tpml.core.types.MonoType;
  * @author benjamin
  *
  */
-public final class DefaultTypeInferenceProofNode extends
-		AbstractExpressionProofNode implements TypeInferenceProofNode {
+public final class DefaultTypeInferenceProofNode extends AbstractExpressionProofNode implements TypeCheckerProofNode, TypeInferenceProofNode {
 	
 	  /**
 	   * The type environment for this type inference proof node.
@@ -37,7 +37,7 @@ public final class DefaultTypeInferenceProofNode extends
 	   */
 	  private MonoType type;
 	  
-	  private TypeEquationList typeEquations;
+	  private TypeEquationList equations = TypeEquationList.EMPTY_LIST;
 	  
 	  
 	  
@@ -46,6 +46,13 @@ public final class DefaultTypeInferenceProofNode extends
 		    super(expression);
 		    setEnvironment(environment);
 		    setType(type);
+		  }
+	  
+	  DefaultTypeInferenceProofNode(TypeEnvironment environment, Expression expression, MonoType type, TypeEquationList pEquations) {
+		    super(expression);
+		    setEnvironment(environment);
+		    setType(type);
+		    equations=pEquations;
 		  }
 
 	void setType(MonoType pType) {
@@ -186,10 +193,19 @@ public final class DefaultTypeInferenceProofNode extends
 	    return (DefaultTypeInferenceProofNode)super.getChildBefore(aChild);
 	  }
 
-	public TypeInferenceProofRule getRule() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	  public TypeCheckerProofRule getRule() {
+		    ProofStep[] steps = getSteps();
+		    if (steps.length > 0) {
+		      return (TypeCheckerProofRule)steps[0].getRule();
+		    }
+		    else {
+		      return null;
+		    }
+		  }
+	  
+	  public void addEquation(MonoType left, MonoType right) {
+		    this.equations = this.equations.extend(left, right);
+		  }
 	
 	  /**
 	   * {@inheritDoc}
@@ -201,15 +217,26 @@ public final class DefaultTypeInferenceProofNode extends
 	  @Override
 	  public String toString() {
 	    StringBuilder builder = new StringBuilder();
+	    builder.append("<html>");
+	    
 	    builder.append(this.environment);
 	    builder.append(" \u22b3 ");
 	    builder.append(this.expression);
 	    builder.append(" :: ");
 	    builder.append(this.type);
+	    builder.append("<br>");
+	    builder.append(equations);
 	    if (getRule() != null) {
 	      builder.append(" (" + getRule() + ")");
+	      builder.append("<html>");
 	    }
 	    return builder.toString();
 	  }
+
+
+	  
+	public TypeEquationList getEquations() {
+		return this.equations;
+	}
 	
 }
