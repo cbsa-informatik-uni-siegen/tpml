@@ -274,13 +274,20 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
         if ( newRowE [ i ] instanceof Attr )
         {
           Attr attr = ( Attr ) newRowE [ i ] ;
+          boolean found = false ;
           for ( int j = 0 ; j < pDuplication.getIdentifiers ( ).length ; j ++ )
           {
             if ( attr.getId ( ).equals ( pDuplication.getIdentifiers ( j ) ) )
             {
               newRowE [ i ] = new Attr ( attr.getId ( ) , attr.getTau ( ) ,
                   pDuplication.getExpressions ( j ) ) ;
+              found = true ;
             }
+          }
+          if ( ! found )
+          {
+            // TODO Exception
+            return null ;
           }
         }
       }
