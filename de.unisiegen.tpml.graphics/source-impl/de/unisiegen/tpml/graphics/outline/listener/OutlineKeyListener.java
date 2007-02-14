@@ -49,8 +49,7 @@ public final class OutlineKeyListener implements KeyListener
   public final void copy ( )
   {
     DefaultMutableTreeNode node = ( DefaultMutableTreeNode ) this.outlineUI
-        .getJTreeAbstractSyntaxTree ( ).getSelectionPath ( )
-        .getLastPathComponent ( ) ;
+        .getJTreeOutline ( ).getSelectionPath ( ).getLastPathComponent ( ) ;
     if ( node != null )
     {
       OutlineClipboard.getInstance ( ).copy (
@@ -69,8 +68,7 @@ public final class OutlineKeyListener implements KeyListener
     /*
      * jTreeAbstractSyntaxTree
      */
-    if ( pKeyEvent.getSource ( ).equals (
-        this.outlineUI.getJTreeAbstractSyntaxTree ( ) ) )
+    if ( pKeyEvent.getSource ( ).equals ( this.outlineUI.getJTreeOutline ( ) ) )
     {
       /*
        * Copy the selected node as a string into the clipboard.

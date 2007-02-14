@@ -571,10 +571,11 @@ public final class Theme extends AbstractBean
     }
     if ( ! this.selectionColor.equals ( pSelectionColor ) )
     {
-      // update the keywordColor
-      Color oldKeywordColor = this.selectionColor ;
+      // update the selectionColor
+      Color oldSelectionColor = this.selectionColor ;
       this.selectionColor = pSelectionColor ;
-      firePropertyChange ( "selectionColor" , oldKeywordColor , pSelectionColor ) ; //$NON-NLS-1$
+      firePropertyChange (
+          "selectionColor" , oldSelectionColor , pSelectionColor ) ; //$NON-NLS-1$
       // save the new setting
       this.preferences
           .put ( "selectionColor" , encodeColor ( pSelectionColor ) ) ; //$NON-NLS-1$
@@ -596,14 +597,14 @@ public final class Theme extends AbstractBean
   {
     if ( pBindingColor == null )
     {
-      throw new NullPointerException ( "selectionColor is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "pBindingColor is null" ) ; //$NON-NLS-1$
     }
     if ( ! this.bindingColor.equals ( pBindingColor ) )
     {
-      // update the keywordColor
-      Color oldKeywordColor = this.bindingColor ;
+      // update the bindingColor
+      Color oldBindingColor = this.bindingColor ;
       this.bindingColor = pBindingColor ;
-      firePropertyChange ( "bindingColor" , oldKeywordColor , pBindingColor ) ; //$NON-NLS-1$
+      firePropertyChange ( "bindingColor" , oldBindingColor , pBindingColor ) ; //$NON-NLS-1$
       // save the new setting
       this.preferences.put ( "bindingColor" , encodeColor ( pBindingColor ) ) ; //$NON-NLS-1$
     }
@@ -628,10 +629,10 @@ public final class Theme extends AbstractBean
     }
     if ( ! this.unboundColor.equals ( pUnboundColor ) )
     {
-      // update the keywordColor
-      Color oldKeywordColor = this.unboundColor ;
+      // update the unboundColor
+      Color oldUnboundColor = this.unboundColor ;
       this.unboundColor = pUnboundColor ;
-      firePropertyChange ( "unboundColor" , oldKeywordColor , pUnboundColor ) ; //$NON-NLS-1$
+      firePropertyChange ( "unboundColor" , oldUnboundColor , pUnboundColor ) ; //$NON-NLS-1$
       // save the new setting
       this.preferences.put ( "unboundColor" , encodeColor ( pUnboundColor ) ) ; //$NON-NLS-1$
     }
@@ -656,9 +657,9 @@ public final class Theme extends AbstractBean
     if ( ! this.idColor.equals ( pIDColor ) )
     {
       // update the keywordColorid
-      Color oldKeywordColor = this.idColor ;
+      Color oldIdColor = this.idColor ;
       this.idColor = pIDColor ;
-      firePropertyChange ( "idColor" , oldKeywordColor , pIDColor ) ; //$NON-NLS-1$
+      firePropertyChange ( "idColor" , oldIdColor , pIDColor ) ; //$NON-NLS-1$
       // save the new setting
       this.preferences.put ( "idColor" , encodeColor ( pIDColor ) ) ; //$NON-NLS-1$
     }

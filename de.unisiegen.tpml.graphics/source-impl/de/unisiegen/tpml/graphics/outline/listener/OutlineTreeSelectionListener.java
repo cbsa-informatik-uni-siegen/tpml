@@ -195,7 +195,7 @@ public final class OutlineTreeSelectionListener implements
   public final void valueChanged ( TreeSelectionEvent pTreeSelectionEvent )
   {
     if ( pTreeSelectionEvent.getSource ( ).equals (
-        this.outlineUI.getJTreeAbstractSyntaxTree ( ).getSelectionModel ( ) ) )
+        this.outlineUI.getJTreeOutline ( ).getSelectionModel ( ) ) )
     {
       TreePath treePath = pTreeSelectionEvent.getOldLeadSelectionPath ( ) ;
       if ( ( treePath != null ) && ( treePath.getPathCount ( ) > 1 ) )

@@ -188,9 +188,9 @@ public final class OutlineUI
   /**
    * The <code>JTree</code>.
    * 
-   * @see #getJTreeAbstractSyntaxTree()
+   * @see #getJTreeOutline()
    */
-  private JTree jTreeAbstractSyntaxTree ;
+  private JTree jTreeOutline ;
 
 
   /**
@@ -212,7 +212,7 @@ public final class OutlineUI
   /**
    * The <code>JScrollPane</code> of the {@link Outline}.
    */
-  private JScrollPane jScrollPaneAbstractSyntaxTree ;
+  private JScrollPane jScrollPaneOutline ;
 
 
   /**
@@ -566,17 +566,15 @@ public final class OutlineUI
     // TreeModel
     this.treeModel = new DefaultTreeModel ( this.rootNode ) ;
     // Tree AbstractOutline
-    this.jTreeAbstractSyntaxTree = new JTree ( this.treeModel ) ;
-    this.jTreeAbstractSyntaxTree.setCellRenderer ( new OutlineCellRenderer ( ) ) ;
-    this.jTreeAbstractSyntaxTree.getSelectionModel ( )
-        .addTreeSelectionListener ( this.outlineTreeSelectionListener ) ;
-    this.jTreeAbstractSyntaxTree.setRowHeight ( 20 ) ;
-    this.jTreeAbstractSyntaxTree.addMouseListener ( this.outlineMouseListener ) ;
-    this.jTreeAbstractSyntaxTree
-        .addKeyListener ( new OutlineKeyListener ( this ) ) ;
+    this.jTreeOutline = new JTree ( this.treeModel ) ;
+    this.jTreeOutline.setCellRenderer ( new OutlineCellRenderer ( ) ) ;
+    this.jTreeOutline.getSelectionModel ( ).addTreeSelectionListener (
+        this.outlineTreeSelectionListener ) ;
+    this.jTreeOutline.setRowHeight ( 20 ) ;
+    this.jTreeOutline.addMouseListener ( this.outlineMouseListener ) ;
+    this.jTreeOutline.addKeyListener ( new OutlineKeyListener ( this ) ) ;
     // ScrollPane AbstractSyntax
-    this.jScrollPaneAbstractSyntaxTree = new JScrollPane (
-        this.jTreeAbstractSyntaxTree ) ;
+    this.jScrollPaneOutline = new JScrollPane ( this.jTreeOutline ) ;
     this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
     this.insets.set ( 0 , 0 , 1 , 0 ) ;
     this.gridBagConstraints.insets = this.insets ;
@@ -584,8 +582,7 @@ public final class OutlineUI
     this.gridBagConstraints.gridy = 0 ;
     this.gridBagConstraints.weightx = 10 ;
     this.gridBagConstraints.weighty = 10 ;
-    this.jPanelMain.add ( this.jScrollPaneAbstractSyntaxTree ,
-        this.gridBagConstraints ) ;
+    this.jPanelMain.add ( this.jScrollPaneOutline , this.gridBagConstraints ) ;
     // Panel Preferences
     this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
     this.insets.set ( 1 , 0 , 0 , 1 ) ;
@@ -1015,11 +1012,11 @@ public final class OutlineUI
    * Returns the <code>jTreeAbstractSyntaxTree</code>.
    * 
    * @return The <code>jTreeAbstractSyntaxTree</code>.
-   * @see #jTreeAbstractSyntaxTree
+   * @see #jTreeOutline
    */
-  public final JTree getJTreeAbstractSyntaxTree ( )
+  public final JTree getJTreeOutline ( )
   {
-    return this.jTreeAbstractSyntaxTree ;
+    return this.jTreeOutline ;
   }
 
 

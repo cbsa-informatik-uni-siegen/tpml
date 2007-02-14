@@ -105,7 +105,7 @@ public final class OutlineMouseListener implements MouseListener
     final int count = lastNode.getChildCount ( ) ;
     for ( int i = 0 ; i < count ; i ++ )
     {
-      if ( ! this.outlineUI.getJTreeAbstractSyntaxTree ( ).isVisible (
+      if ( ! this.outlineUI.getJTreeOutline ( ).isVisible (
           pTreePath.pathByAddingChild ( lastNode.getChildAt ( i ) ) ) )
       {
         return false ;
@@ -131,20 +131,19 @@ public final class OutlineMouseListener implements MouseListener
     // AbstractOutline
     if ( ( this.outlineUI != null )
         && ( pMouseEvent.getSource ( ).equals ( this.outlineUI
-            .getJTreeAbstractSyntaxTree ( ) ) ) )
+            .getJTreeOutline ( ) ) ) )
     {
       if ( pMouseEvent.isPopupTrigger ( ) )
       {
         int x = pMouseEvent.getX ( ) ;
         int y = pMouseEvent.getY ( ) ;
-        TreePath treePath = this.outlineUI.getJTreeAbstractSyntaxTree ( )
+        TreePath treePath = this.outlineUI.getJTreeOutline ( )
             .getPathForLocation ( x , y ) ;
         if ( treePath == null )
         {
           return ;
         }
-        this.outlineUI.getJTreeAbstractSyntaxTree ( ).setSelectionPath (
-            treePath ) ;
+        this.outlineUI.getJTreeOutline ( ).setSelectionPath ( treePath ) ;
         setStatus ( ) ;
         this.outlineUI.getJPopupMenu ( ).show ( pMouseEvent.getComponent ( ) ,
             x , y ) ;
@@ -259,8 +258,7 @@ public final class OutlineMouseListener implements MouseListener
    */
   private final void setStatus ( )
   {
-    TreePath treePath = this.outlineUI.getJTreeAbstractSyntaxTree ( )
-        .getSelectionPath ( ) ;
+    TreePath treePath = this.outlineUI.getJTreeOutline ( ).getSelectionPath ( ) ;
     if ( treePath == null )
     {
       // No node is selected.
@@ -274,20 +272,19 @@ public final class OutlineMouseListener implements MouseListener
     this.outlineUI.getJMenuItemCollapseAll ( ).setEnabled ( true ) ;
     this.outlineUI.getJMenuItemClose ( ).setEnabled ( true ) ;
     this.outlineUI.getJMenuItemCloseAll ( ).setEnabled ( true ) ;
-    boolean allVisible = allChildrenVisible ( this.outlineUI
-        .getJTreeAbstractSyntaxTree ( ).getPathForRow ( 0 ) ) ;
+    boolean allVisible = allChildrenVisible ( this.outlineUI.getJTreeOutline ( )
+        .getPathForRow ( 0 ) ) ;
     this.outlineUI.getJMenuItemExpandAll ( ).setEnabled ( ! allVisible ) ;
     // Selected node is not a leaf
     if ( selectedNode.getChildCount ( ) > 0 )
     {
       boolean allChildrenVisible = allChildrenVisible ( treePath ) ;
-      boolean selectedChildVisible = this.outlineUI
-          .getJTreeAbstractSyntaxTree ( ).isVisible (
-              treePath.pathByAddingChild ( selectedNode.getChildAt ( 0 ) ) ) ;
-      boolean rootChildVisible = this.outlineUI.getJTreeAbstractSyntaxTree ( )
+      boolean selectedChildVisible = this.outlineUI.getJTreeOutline ( )
           .isVisible (
-              this.outlineUI.getJTreeAbstractSyntaxTree ( ).getPathForRow ( 0 )
-                  .pathByAddingChild ( selectedNode.getChildAt ( 0 ) ) ) ;
+              treePath.pathByAddingChild ( selectedNode.getChildAt ( 0 ) ) ) ;
+      boolean rootChildVisible = this.outlineUI.getJTreeOutline ( ).isVisible (
+          this.outlineUI.getJTreeOutline ( ).getPathForRow ( 0 )
+              .pathByAddingChild ( selectedNode.getChildAt ( 0 ) ) ) ;
       this.outlineUI.getJMenuItemExpand ( ).setEnabled ( ! allChildrenVisible ) ;
       this.outlineUI.getJMenuItemCollapse ( )
           .setEnabled ( selectedChildVisible ) ;

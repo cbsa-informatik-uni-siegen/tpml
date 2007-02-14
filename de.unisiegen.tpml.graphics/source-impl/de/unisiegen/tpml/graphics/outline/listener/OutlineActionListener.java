@@ -111,14 +111,14 @@ public final class OutlineActionListener implements ActionListener
    */
   public final void close ( )
   {
-    if ( this.outlineUI.getJTreeAbstractSyntaxTree ( ).getSelectionRows ( ) == null )
+    if ( this.outlineUI.getJTreeOutline ( ).getSelectionRows ( ) == null )
     {
       return ;
     }
-    for ( int i = this.outlineUI.getJTreeAbstractSyntaxTree ( ).getRowCount ( ) - 1 ; i >= this.outlineUI
-        .getJTreeAbstractSyntaxTree ( ).getSelectionRows ( ) [ 0 ] ; i -- )
+    for ( int i = this.outlineUI.getJTreeOutline ( ).getRowCount ( ) - 1 ; i >= this.outlineUI
+        .getJTreeOutline ( ).getSelectionRows ( ) [ 0 ] ; i -- )
     {
-      this.outlineUI.getJTreeAbstractSyntaxTree ( ).collapseRow ( i ) ;
+      this.outlineUI.getJTreeOutline ( ).collapseRow ( i ) ;
     }
   }
 
@@ -128,9 +128,9 @@ public final class OutlineActionListener implements ActionListener
    */
   public final void closeAll ( )
   {
-    for ( int i = this.outlineUI.getJTreeAbstractSyntaxTree ( ).getRowCount ( ) - 1 ; i >= 0 ; i -- )
+    for ( int i = this.outlineUI.getJTreeOutline ( ).getRowCount ( ) - 1 ; i >= 0 ; i -- )
     {
-      this.outlineUI.getJTreeAbstractSyntaxTree ( ).collapseRow ( i ) ;
+      this.outlineUI.getJTreeOutline ( ).collapseRow ( i ) ;
     }
   }
 
@@ -140,14 +140,12 @@ public final class OutlineActionListener implements ActionListener
    */
   public final void collapse ( )
   {
-    if ( this.outlineUI.getJTreeAbstractSyntaxTree ( ).getSelectionRows ( ) == null )
+    if ( this.outlineUI.getJTreeOutline ( ).getSelectionRows ( ) == null )
     {
       return ;
     }
-    this.outlineUI
-        .getJTreeAbstractSyntaxTree ( )
-        .collapseRow (
-            this.outlineUI.getJTreeAbstractSyntaxTree ( ).getSelectionRows ( ) [ 0 ] ) ;
+    this.outlineUI.getJTreeOutline ( ).collapseRow (
+        this.outlineUI.getJTreeOutline ( ).getSelectionRows ( ) [ 0 ] ) ;
   }
 
 
@@ -156,7 +154,7 @@ public final class OutlineActionListener implements ActionListener
    */
   public final void collapseAll ( )
   {
-    this.outlineUI.getJTreeAbstractSyntaxTree ( ).collapseRow ( 0 ) ;
+    this.outlineUI.getJTreeOutline ( ).collapseRow ( 0 ) ;
   }
 
 
@@ -166,8 +164,7 @@ public final class OutlineActionListener implements ActionListener
   public final void copy ( )
   {
     DefaultMutableTreeNode node = ( DefaultMutableTreeNode ) this.outlineUI
-        .getJTreeAbstractSyntaxTree ( ).getSelectionPath ( )
-        .getLastPathComponent ( ) ;
+        .getJTreeOutline ( ).getSelectionPath ( ).getLastPathComponent ( ) ;
     if ( node != null )
     {
       OutlineClipboard.getInstance ( ).copy (
@@ -181,8 +178,7 @@ public final class OutlineActionListener implements ActionListener
    */
   public final void expand ( )
   {
-    expandTreePath ( this.outlineUI.getJTreeAbstractSyntaxTree ( )
-        .getSelectionPath ( ) ) ;
+    expandTreePath ( this.outlineUI.getJTreeOutline ( ).getSelectionPath ( ) ) ;
   }
 
 
@@ -192,9 +188,9 @@ public final class OutlineActionListener implements ActionListener
   public final void expandAll ( )
   {
     int i = 0 ;
-    while ( i < this.outlineUI.getJTreeAbstractSyntaxTree ( ).getRowCount ( ) )
+    while ( i < this.outlineUI.getJTreeOutline ( ).getRowCount ( ) )
     {
-      this.outlineUI.getJTreeAbstractSyntaxTree ( ).expandRow ( i ) ;
+      this.outlineUI.getJTreeOutline ( ).expandRow ( i ) ;
       i ++ ;
     }
   }
@@ -217,6 +213,6 @@ public final class OutlineActionListener implements ActionListener
     {
       expandTreePath ( pTreePath.pathByAddingChild ( lastNode.getChildAt ( i ) ) ) ;
     }
-    this.outlineUI.getJTreeAbstractSyntaxTree ( ).expandPath ( pTreePath ) ;
+    this.outlineUI.getJTreeOutline ( ).expandPath ( pTreePath ) ;
   }
 }

@@ -1,6 +1,7 @@
 package de.unisiegen.tpml.graphics.outline ;
 
 
+import java.beans.PropertyChangeListener ;
 import java.lang.reflect.InvocationTargetException ;
 import java.lang.reflect.Method ;
 import java.util.ArrayList ;
@@ -31,6 +32,7 @@ import de.unisiegen.tpml.core.expressions.Recursion ;
 import de.unisiegen.tpml.core.expressions.Row ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStyle ;
 import de.unisiegen.tpml.core.types.Type ;
+import de.unisiegen.tpml.graphics.Theme ;
 import de.unisiegen.tpml.graphics.outline.binding.OutlineBinding ;
 import de.unisiegen.tpml.graphics.outline.binding.OutlinePair ;
 import de.unisiegen.tpml.graphics.outline.binding.OutlineStyle ;
@@ -160,6 +162,19 @@ public final class AbstractOutline implements Outline
     this.loadedExpression = null ;
     this.outlinePreferences = new OutlinePreferences ( ) ;
     this.outlineUI = new OutlineUI ( this ) ;
+    Theme.currentTheme ( ).addPropertyChangeListener (
+        new PropertyChangeListener ( )
+        {
+          @ SuppressWarnings ( "synthetic-access" )
+          public void propertyChange ( java.beans.PropertyChangeEvent evt )
+          {
+            if ( evt.getPropertyName ( ).endsWith ( "Color" ) ) //$NON-NLS-1$
+            {
+              repaint ( ( DefaultMutableTreeNode ) AbstractOutline.this.outlineUI
+                  .getTreeModel ( ).getRoot ( ) ) ;
+            }
+          }
+        } ) ;
   }
 
 
@@ -1412,6 +1427,16 @@ public final class AbstractOutline implements Outline
     {
       executeTimerStart ( ) ;
     }
+  }
+
+
+  /**
+   * Repaints the root node and all of its children.
+   */
+  public final void repaint ( )
+  {
+    repaint ( ( DefaultMutableTreeNode ) AbstractOutline.this.outlineUI
+        .getTreeModel ( ).getRoot ( ) ) ;
   }
 
 

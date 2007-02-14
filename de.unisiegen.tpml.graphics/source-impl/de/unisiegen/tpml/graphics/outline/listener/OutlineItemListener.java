@@ -65,7 +65,7 @@ public final class OutlineItemListener implements ItemListener
     this.outlineUI.getOutlineTreeSelectionListener ( ).reset (
         ( DefaultMutableTreeNode ) this.outlineUI.getTreeModel ( ).getRoot ( ) ) ;
     this.outlineUI.getOutlineTreeSelectionListener ( ).update (
-        this.outlineUI.getJTreeAbstractSyntaxTree ( ).getSelectionPath ( ) ) ;
+        this.outlineUI.getJTreeOutline ( ).getSelectionPath ( ) ) ;
     this.outlineUI.getAbstractOutline ( ).getOutlinePreferences ( ).setBinding (
         pSelected ) ;
     this.outlineUI.getJCheckBoxBinding ( ).setSelected ( pSelected ) ;
@@ -100,7 +100,7 @@ public final class OutlineItemListener implements ItemListener
     this.outlineUI.getOutlineTreeSelectionListener ( ).reset (
         ( DefaultMutableTreeNode ) this.outlineUI.getTreeModel ( ).getRoot ( ) ) ;
     this.outlineUI.getOutlineTreeSelectionListener ( ).update (
-        this.outlineUI.getJTreeAbstractSyntaxTree ( ).getSelectionPath ( ) ) ;
+        this.outlineUI.getJTreeOutline ( ).getSelectionPath ( ) ) ;
     this.outlineUI.getAbstractOutline ( ).getOutlinePreferences ( ).setReplace (
         pSelected ) ;
     this.outlineUI.getJCheckBoxReplace ( ).setSelected ( pSelected ) ;
@@ -122,7 +122,7 @@ public final class OutlineItemListener implements ItemListener
     this.outlineUI.getOutlineTreeSelectionListener ( ).reset (
         ( DefaultMutableTreeNode ) this.outlineUI.getTreeModel ( ).getRoot ( ) ) ;
     this.outlineUI.getOutlineTreeSelectionListener ( ).update (
-        this.outlineUI.getJTreeAbstractSyntaxTree ( ).getSelectionPath ( ) ) ;
+        this.outlineUI.getJTreeOutline ( ).getSelectionPath ( ) ) ;
     this.outlineUI.getAbstractOutline ( ).getOutlinePreferences ( )
         .setSelection ( pSelected ) ;
     this.outlineUI.getJCheckBoxSelection ( ).setSelected ( pSelected ) ;
@@ -144,7 +144,7 @@ public final class OutlineItemListener implements ItemListener
     this.outlineUI.getOutlineTreeSelectionListener ( ).reset (
         ( DefaultMutableTreeNode ) this.outlineUI.getTreeModel ( ).getRoot ( ) ) ;
     this.outlineUI.getOutlineTreeSelectionListener ( ).update (
-        this.outlineUI.getJTreeAbstractSyntaxTree ( ).getSelectionPath ( ) ) ;
+        this.outlineUI.getJTreeOutline ( ).getSelectionPath ( ) ) ;
     this.outlineUI.getAbstractOutline ( ).getOutlinePreferences ( ).setUnbound (
         pSelected ) ;
     this.outlineUI.getJCheckBoxUnbound ( ).setSelected ( pSelected ) ;
