@@ -1,0 +1,11 @@
+Unify
+ unify ∅ = [ ]
+ unify {  = } ∪ E = unify  E
+ unify {  =  } ∪ E = unify { =  } ∪ E
+   {                                                                             }
+     s s mit s1 = [ /] und s 2 = unify E s1  falls ∉ tvar  
+ = 12
+                                                    falls ∈ tvar   und  ≠ 
+     ' nicht unifizierbar '
+ unify { 1   2 =  1 ' 2 '} ∪ E = unify { 1 = 1 ' , 2  2 '} ∪ E
+ unify { 1 =  2 } ∪ E = 'nicht unifizierbar' in allen anderen Fällen
