@@ -269,26 +269,27 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
       ObjectExpr objectExpr = ( ObjectExpr ) pDuplication.getE ( ) ;
       Row row = objectExpr.getE ( ) ;
       Expression [ ] newRowE = row.getExpressions ( ).clone ( ) ;
-      for ( int i = 0 ; i < newRowE.length ; i ++ )
+      boolean found ;
+      for ( int i = 0 ; i < pDuplication.getIdentifiers ( ).length ; i ++ )
       {
-        if ( newRowE [ i ] instanceof Attr )
+        found = false ;
+        for ( int j = 0 ; j < newRowE.length ; j ++ )
         {
-          Attr attr = ( Attr ) newRowE [ i ] ;
-          boolean found = false ;
-          for ( int j = 0 ; j < pDuplication.getIdentifiers ( ).length ; j ++ )
+          if ( newRowE [ j ] instanceof Attr )
           {
-            if ( attr.getId ( ).equals ( pDuplication.getIdentifiers ( j ) ) )
+            Attr attr = ( Attr ) newRowE [ j ] ;
+            if ( attr.getId ( ).equals ( pDuplication.getIdentifiers ( i ) ) )
             {
-              newRowE [ i ] = new Attr ( attr.getId ( ) , attr.getTau ( ) ,
-                  pDuplication.getExpressions ( j ) ) ;
+              newRowE [ j ] = new Attr ( attr.getId ( ) , attr.getTau ( ) ,
+                  pDuplication.getExpressions ( i ) ) ;
               found = true ;
             }
           }
-          if ( ! found )
-          {
-            // TODO Exception
-            return null ;
-          }
+        }
+        if ( ! found )
+        {
+          // TODO Exception
+          return null ;
         }
       }
       return new ObjectExpr ( objectExpr.getId ( ) , objectExpr.getTau ( ) ,
