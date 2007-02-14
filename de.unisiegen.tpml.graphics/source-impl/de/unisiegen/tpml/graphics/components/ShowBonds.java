@@ -301,7 +301,7 @@ public class ShowBonds
 		/**
 		 * this array contains all free Variables of the first Expression
 		 */
-		Object[] b = pLet.getE2().free().toArray();
+		//Object[] b = pLet.getE2().free().toArray();
 
 		ArrayList<String> c = castArray(pLet.getIdentifiers());
 		c.remove(0);
@@ -403,7 +403,7 @@ public class ShowBonds
 		/**
 		 * this array contains all free Variables of the first Expression
 		 */
-		Object[] b = pRec.getE2().free().toArray();
+		//Object[] b = pRec.getE2().free().toArray();
 
 		ArrayList<String> c = castArray(pRec.getIdentifiers());
 
@@ -630,6 +630,7 @@ public class ShowBonds
 	 * List which are bound in the expression
 	 * 
 	 * @param a
+	 * @param e2 
 	 * @param b
 	 * @return
 	 */
