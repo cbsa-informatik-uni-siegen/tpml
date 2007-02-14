@@ -52,12 +52,6 @@ public final class OutlineTreeSelectionListener implements
   private final void repaint ( DefaultMutableTreeNode pNode )
   {
     this.outlineUI.getTreeModel ( ).nodeChanged ( pNode ) ;
-    OutlineNode tmp = ( OutlineNode ) pNode.getUserObject ( ) ;
-    if ( tmp.getExpression ( ) != null )
-    {
-      System.out
-          .println ( tmp.getExpression ( ).toPrettyString ( ).toString ( ) ) ;
-    }
     for ( int i = 0 ; i < pNode.getChildCount ( ) ; i ++ )
     {
       repaint ( ( DefaultMutableTreeNode ) pNode.getChildAt ( i ) ) ;
