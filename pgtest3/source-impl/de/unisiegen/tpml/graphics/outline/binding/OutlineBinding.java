@@ -14,7 +14,6 @@ import de.unisiegen.tpml.core.expressions.Identifier ;
 import de.unisiegen.tpml.core.expressions.Lambda ;
 import de.unisiegen.tpml.core.expressions.Let ;
 import de.unisiegen.tpml.core.expressions.LetRec ;
-import de.unisiegen.tpml.core.expressions.Meth ;
 import de.unisiegen.tpml.core.expressions.MultiLambda ;
 import de.unisiegen.tpml.core.expressions.MultiLet ;
 import de.unisiegen.tpml.core.expressions.ObjectExpr ;
@@ -127,58 +126,57 @@ public final class OutlineBinding
 
 
   /**
-   * Finds the bounded {@link Identifier}s in the given {@link Attr}.
-   * 
-   * @param pExpression The input {@link Attr}.
-   */
-  @ SuppressWarnings ( "unused" )
-  private final void findAttr ( Attr pExpression )
-  {
-    findExpression ( pExpression.getE ( ) ) ;
-  }
-
-
-  /**
    * Finds the bounded {@link Identifier}s in the given {@link CurriedLet}.
    * 
-   * @param pExpression The input {@link CurriedLet}.
+   * @param pCurriedLet The input {@link CurriedLet}.
    */
   @ SuppressWarnings ( "unused" )
-  private final void findCurriedLet ( CurriedLet pExpression )
+  private final void findCurriedLet ( CurriedLet pCurriedLet )
   {
-    if ( isInArray ( pExpression.getIdentifiers ( ) , this.identifier ) )
+    if ( pCurriedLet.getIdentifiers ( 0 ).equals ( this.identifier ) )
     {
-      if ( pExpression.getIdentifiers ( 0 ).equals ( this.identifier ) )
+      /*
+       * Search is finished, if the searched Identifier is also equal to another
+       * bounded Identifier in the CurriedLet, because all Identifiers in E1 are
+       * bounded to the Identifier in this child expression.
+       */
+      for ( int i = 1 ; i < pCurriedLet.getIdentifiers ( ).length ; i ++ )
       {
-        /*
-         * Search is finished, if the searched Identifier is also equal to
-         * another bounded Identifier in the CurriedLet, because all Identifiers
-         * in E1 are bounded to the Identifier in this child expression.
-         */
-        for ( int i = 1 ; i < pExpression.getIdentifiers ( ).length ; i ++ )
+        if ( pCurriedLet.getIdentifiers ( i ).equals ( this.identifier ) )
         {
-          if ( pExpression.getIdentifiers ( i ).equals ( this.identifier ) )
-          {
-            return ;
-          }
+          return ;
         }
+      }
+      /*
+       * Search only in E1, because all Identifiers in E2 are bounded to the
+       * Identifier in this child expression.
+       */
+      findExpression ( pCurriedLet.getE1 ( ) ) ;
+    }
+    else
+    {
+      boolean found = false ;
+      for ( int i = 1 ; i < pCurriedLet.getIdentifiers ( ).length ; i ++ )
+      {
+        if ( pCurriedLet.getIdentifiers ( i ).equals ( this.identifier ) )
+        {
+          found = true ;
+          break ;
+        }
+      }
+      if ( found )
+      {
         /*
          * Search only in E1, because all Identifiers in E2 are bounded to the
          * Identifier in this child expression.
          */
-        findExpression ( pExpression.getE1 ( ) ) ;
-        return ;
+        findExpression ( pCurriedLet.getE1 ( ) ) ;
       }
-      /*
-       * Search only in E2, because all Identifiers in E1 are bounded to the
-       * Identifier in this child expression.
-       */
-      findExpression ( pExpression.getE2 ( ) ) ;
-    }
-    else
-    {
-      findExpression ( pExpression.getE1 ( ) ) ;
-      findExpression ( pExpression.getE2 ( ) ) ;
+      else
+      {
+        findExpression ( pCurriedLet.getE1 ( ) ) ;
+        findExpression ( pCurriedLet.getE2 ( ) ) ;
+      }
     }
   }
 
@@ -186,31 +184,42 @@ public final class OutlineBinding
   /**
    * Finds the bounded {@link Identifier}s in the given {@link CurriedLetRec}.
    * 
-   * @param pExpression The input {@link CurriedLetRec}.
+   * @param pCurriedLetRec The input {@link CurriedLetRec}.
    */
   @ SuppressWarnings ( "unused" )
-  private final void findCurriedLetRec ( CurriedLetRec pExpression )
+  private final void findCurriedLetRec ( CurriedLetRec pCurriedLetRec )
   {
-    if ( isInArray ( pExpression.getIdentifiers ( ) , this.identifier ) )
+    if ( pCurriedLetRec.getIdentifiers ( 0 ).equals ( this.identifier ) )
     {
-      if ( pExpression.getIdentifiers ( 0 ).equals ( this.identifier ) )
-      {
-        /*
-         * Search is finished, because all Identifiers in E1 and E2 are bounded
-         * to the Identifier in this child expression.
-         */
-        return ;
-      }
       /*
-       * Search only in E2, because all Identifiers in E1 are bounded to the
-       * Identifier in this child expression.
+       * Search is finished, because all Identifiers in E1 and E2 are bounded to
+       * the Identifier in this child expression.
        */
-      findExpression ( pExpression.getE2 ( ) ) ;
     }
     else
     {
-      findExpression ( pExpression.getE1 ( ) ) ;
-      findExpression ( pExpression.getE2 ( ) ) ;
+      boolean found = false ;
+      for ( int i = 1 ; i < pCurriedLetRec.getIdentifiers ( ).length ; i ++ )
+      {
+        if ( pCurriedLetRec.getIdentifiers ( i ).equals ( this.identifier ) )
+        {
+          found = true ;
+          break ;
+        }
+      }
+      if ( found )
+      {
+        /*
+         * Search only in E2, because all Identifiers in E1 are bounded to the
+         * Identifier in this child expression.
+         */
+        findExpression ( pCurriedLetRec.getE2 ( ) ) ;
+      }
+      else
+      {
+        findExpression ( pCurriedLetRec.getE1 ( ) ) ;
+        findExpression ( pCurriedLetRec.getE2 ( ) ) ;
+      }
     }
   }
 
@@ -218,34 +227,27 @@ public final class OutlineBinding
   /**
    * Finds the bounded {@link Identifier}s in the given {@link CurriedMeth}.
    * 
-   * @param pExpression The input {@link CurriedMeth}.
+   * @param pCurriedMeth The input {@link CurriedMeth}.
    */
   @ SuppressWarnings ( "unused" )
-  private final void findCurriedMeth ( CurriedMeth pExpression )
+  private final void findCurriedMeth ( CurriedMeth pCurriedMeth )
   {
-    if ( isInArray ( pExpression.getIdentifiers ( ) , this.identifier ) )
+    /*
+     * Search is finished, if the searched Identifier is also equal to another
+     * bounded Identifier in the CurriedMeth, because all Identifiers in E are
+     * bounded to the Identifier in this child expression.
+     */
+    for ( int i = 1 ; i < pCurriedMeth.getIdentifiers ( ).length ; i ++ )
     {
-      /*
-       * Search is finished, if the searched Identifier is also equal to another
-       * bounded Identifier in the CurriedMeth, because all Identifiers in E are
-       * bounded to the Identifier in this child expression.
-       */
-      for ( int i = 1 ; i < pExpression.getIdentifiers ( ).length ; i ++ )
+      if ( pCurriedMeth.getIdentifiers ( i ).equals ( this.identifier ) )
       {
-        if ( pExpression.getIdentifiers ( i ).equals ( this.identifier ) )
-        {
-          return ;
-        }
+        return ;
       }
-      /*
-       * Continue search in E.
-       */
-      findExpression ( pExpression.getE ( ) ) ;
     }
-    else
-    {
-      findExpression ( pExpression.getE ( ) ) ;
-    }
+    /*
+     * Continue search in E.
+     */
+    findExpression ( pCurriedMeth.getE ( ) ) ;
   }
 
 
@@ -302,19 +304,19 @@ public final class OutlineBinding
   /**
    * Finds the bounded {@link Identifier}s in the given {@link Identifier}.
    * 
-   * @param pExpression The input {@link Identifier}.
+   * @param pIdentifier The input {@link Identifier}.
    */
   @ SuppressWarnings ( "unused" )
-  private final void findIdentifier ( Identifier pExpression )
+  private final void findIdentifier ( Identifier pIdentifier )
   {
-    if ( pExpression.getName ( ).equals ( this.identifier ) )
+    if ( pIdentifier.getName ( ).equals ( this.identifier ) )
     {
-      this.list.add ( pExpression ) ;
-      this.outlineUnbound.remove ( pExpression ) ;
-      pExpression.boundedExpression ( this.boundedExpression ) ;
-      pExpression.boundedStart ( this.boundedStart ) ;
-      pExpression.boundedEnd ( this.boundedEnd ) ;
-      pExpression.boundedIdentifierIndex ( this.boundedIdentifierIndex ) ;
+      this.list.add ( pIdentifier ) ;
+      this.outlineUnbound.remove ( pIdentifier ) ;
+      pIdentifier.boundedExpression ( this.boundedExpression ) ;
+      pIdentifier.boundedStart ( this.boundedStart ) ;
+      pIdentifier.boundedEnd ( this.boundedEnd ) ;
+      pIdentifier.boundedIdentifierIndex ( this.boundedIdentifierIndex ) ;
     }
   }
 
@@ -322,12 +324,12 @@ public final class OutlineBinding
   /**
    * Finds the bounded {@link Identifier}s in the given {@link Lambda}.
    * 
-   * @param pExpression The input {@link Lambda}.
+   * @param pLambda The input {@link Lambda}.
    */
   @ SuppressWarnings ( "unused" )
-  private final void findLambda ( Lambda pExpression )
+  private final void findLambda ( Lambda pLambda )
   {
-    if ( pExpression.getId ( ).equals ( this.identifier ) )
+    if ( pLambda.getId ( ).equals ( this.identifier ) )
     {
       /*
        * Search is finished, because all Identifiers in E are bounded to the
@@ -336,7 +338,7 @@ public final class OutlineBinding
     }
     else
     {
-      findExpression ( pExpression.getE ( ) ) ;
+      findExpression ( pLambda.getE ( ) ) ;
     }
   }
 
@@ -344,23 +346,23 @@ public final class OutlineBinding
   /**
    * Finds the bounded {@link Identifier}s in the given {@link Let}.
    * 
-   * @param pExpression The input {@link Let}.
+   * @param pLet The input {@link Let}.
    */
   @ SuppressWarnings ( "unused" )
-  private final void findLet ( Let pExpression )
+  private final void findLet ( Let pLet )
   {
-    if ( pExpression.getId ( ).equals ( this.identifier ) )
+    if ( pLet.getId ( ).equals ( this.identifier ) )
     {
       /*
        * Search only in E1, because all Identifiers in E2 are bounded to the
        * Identifier in this child expression.
        */
-      findExpression ( pExpression.getE1 ( ) ) ;
+      findExpression ( pLet.getE1 ( ) ) ;
     }
     else
     {
-      findExpression ( pExpression.getE1 ( ) ) ;
-      findExpression ( pExpression.getE2 ( ) ) ;
+      findExpression ( pLet.getE1 ( ) ) ;
+      findExpression ( pLet.getE2 ( ) ) ;
     }
   }
 
@@ -368,12 +370,12 @@ public final class OutlineBinding
   /**
    * Finds the bounded {@link Identifier}s in the given {@link LetRec}.
    * 
-   * @param pExpression The input {@link LetRec}.
+   * @param pLetRec The input {@link LetRec}.
    */
   @ SuppressWarnings ( "unused" )
-  private final void findLetRec ( LetRec pExpression )
+  private final void findLetRec ( LetRec pLetRec )
   {
-    if ( pExpression.getId ( ).equals ( this.identifier ) )
+    if ( pLetRec.getId ( ).equals ( this.identifier ) )
     {
       /*
        * Search is finished, because all Identifiers in E1 and E2 are bounded to
@@ -382,42 +384,36 @@ public final class OutlineBinding
     }
     else
     {
-      findExpression ( pExpression.getE1 ( ) ) ;
-      findExpression ( pExpression.getE2 ( ) ) ;
+      findExpression ( pLetRec.getE1 ( ) ) ;
+      findExpression ( pLetRec.getE2 ( ) ) ;
     }
-  }
-
-
-  /**
-   * Finds the bounded {@link Identifier}s in the given {@link Meth}.
-   * 
-   * @param pExpression The input {@link Meth}.
-   */
-  @ SuppressWarnings ( "unused" )
-  private final void findMeth ( Meth pExpression )
-  {
-    findExpression ( pExpression.getE ( ) ) ;
   }
 
 
   /**
    * Finds the bounded {@link Identifier}s in the given {@link MultiLambda}.
    * 
-   * @param pExpression The input {@link MultiLambda}.
+   * @param pMultiLambda The input {@link MultiLambda}.
    */
   @ SuppressWarnings ( "unused" )
-  private final void findMultiLambda ( MultiLambda pExpression )
+  private final void findMultiLambda ( MultiLambda pMultiLambda )
   {
-    if ( isInArray ( pExpression.getIdentifiers ( ) , this.identifier ) )
+    boolean found = false ;
+    for ( String id : pMultiLambda.getIdentifiers ( ) )
     {
-      /*
-       * Search is finished, because all Identifiers in E are bounded to the
-       * Identifier in this child expression.
-       */
+      if ( id.equals ( this.identifier ) )
+      {
+        found = true ;
+        break ;
+      }
     }
-    else
+    /*
+     * Search is finished, because all Identifiers in E are bounded to the
+     * Identifier in this child expression.
+     */
+    if ( ! found )
     {
-      findExpression ( pExpression.getE ( ) ) ;
+      findExpression ( pMultiLambda.getE ( ) ) ;
     }
   }
 
@@ -425,23 +421,32 @@ public final class OutlineBinding
   /**
    * Finds the bounded {@link Identifier}s in the given {@link MultiLet}.
    * 
-   * @param pExpression The input {@link MultiLet}.
+   * @param pMultiLet The input {@link MultiLet}.
    */
   @ SuppressWarnings ( "unused" )
-  private final void findMultiLet ( MultiLet pExpression )
+  private final void findMultiLet ( MultiLet pMultiLet )
   {
-    if ( isInArray ( pExpression.getIdentifiers ( ) , this.identifier ) )
+    boolean found = false ;
+    for ( String id : pMultiLet.getIdentifiers ( ) )
+    {
+      if ( id.equals ( this.identifier ) )
+      {
+        found = true ;
+        break ;
+      }
+    }
+    if ( found )
     {
       /*
        * Search only in E1, because all Identifiers in E2 are bounded to the
        * Identifier in this child expression.
        */
-      findExpression ( pExpression.getE1 ( ) ) ;
+      findExpression ( pMultiLet.getE1 ( ) ) ;
     }
     else
     {
-      findExpression ( pExpression.getE1 ( ) ) ;
-      findExpression ( pExpression.getE2 ( ) ) ;
+      findExpression ( pMultiLet.getE1 ( ) ) ;
+      findExpression ( pMultiLet.getE2 ( ) ) ;
     }
   }
 
@@ -449,17 +454,19 @@ public final class OutlineBinding
   /**
    * Finds the bounded {@link Identifier}s in the given {@link ObjectExpr}.
    * 
-   * @param pExpression The input {@link ObjectExpr}.
+   * @param pObjectExpr The input {@link ObjectExpr}.
    */
   @ SuppressWarnings ( "unused" )
-  private final void findObjectExpr ( ObjectExpr pExpression )
+  private final void findObjectExpr ( ObjectExpr pObjectExpr )
   {
-    if ( pExpression.getId ( ).equals ( this.identifier ) )
+    if ( pObjectExpr.getId ( ).equals ( this.identifier ) )
     {
       /*
-       * Search can be continued, but only in Attributes.
+       * Search can be continued, but only in Attributes, because all
+       * Identifiers on the right side of Methods are bounded to this child
+       * expression.
        */
-      Row row = pExpression.getE ( ) ;
+      Row row = pObjectExpr.getE ( ) ;
       for ( Expression expr : row.getExpressions ( ) )
       {
         if ( expr instanceof Attr )
@@ -470,7 +477,7 @@ public final class OutlineBinding
     }
     else
     {
-      findExpression ( pExpression.getE ( ) ) ;
+      findExpression ( pObjectExpr.getE ( ) ) ;
     }
   }
 
@@ -478,12 +485,12 @@ public final class OutlineBinding
   /**
    * Finds the bounded {@link Identifier}s in the given {@link Recursion}.
    * 
-   * @param pExpression The input {@link Recursion}.
+   * @param pRecursion The input {@link Recursion}.
    */
   @ SuppressWarnings ( "unused" )
-  private final void findRecursion ( Recursion pExpression )
+  private final void findRecursion ( Recursion pRecursion )
   {
-    if ( pExpression.getId ( ).equals ( this.identifier ) )
+    if ( pRecursion.getId ( ).equals ( this.identifier ) )
     {
       /*
        * Search is finished, because all Identifiers in E are bounded to the
@@ -492,7 +499,7 @@ public final class OutlineBinding
     }
     else
     {
-      findExpression ( pExpression.getE ( ) ) ;
+      findExpression ( pRecursion.getE ( ) ) ;
     }
   }
 
@@ -500,19 +507,18 @@ public final class OutlineBinding
   /**
    * Finds the bounded {@link Identifier}s in the given {@link Row}.
    * 
-   * @param pExpression The input {@link Row}.
+   * @param pRow The input {@link Row}.
    */
   @ SuppressWarnings ( "unused" )
-  private final void findRow ( Row pExpression )
+  private final void findRow ( Row pRow )
   {
-    boolean equalIdFound = false ;
-    for ( int i = 0 ; i < pExpression.getExpressions ( ).length ; i ++ )
+    boolean foundEqualAttrId = false ;
+    for ( Expression expr : pRow.getExpressions ( ) )
     {
-      Expression child = pExpression.getExpressions ( i ) ;
-      if ( child instanceof Attr )
+      if ( expr instanceof Attr )
       {
-        Attr attr = ( Attr ) child ;
-        findExpression ( attr ) ;
+        findExpression ( expr ) ;
+        Attr attr = ( Attr ) expr ;
         if ( attr.getId ( ).equals ( this.identifier ) )
         {
           /*
@@ -521,22 +527,16 @@ public final class OutlineBinding
            * Identifiers in Attr can still be bound, so the search is not
            * finished.
            */
-          equalIdFound = true ;
+          foundEqualAttrId = true ;
         }
       }
-      else if ( child instanceof Meth )
+      /*
+       * If the searched Identifier was not found before as an Identifier of an
+       * Attr, it can be searched in the child Expression.
+       */
+      else if ( ! foundEqualAttrId )
       {
-        if ( ! equalIdFound )
-        {
-          findExpression ( child ) ;
-        }
-      }
-      else if ( child instanceof CurriedMeth )
-      {
-        if ( ! equalIdFound )
-        {
-          findExpression ( child ) ;
-        }
+        findExpression ( expr ) ;
       }
     }
   }
@@ -551,28 +551,6 @@ public final class OutlineBinding
   public final Identifier get ( int pIndex )
   {
     return this.list.get ( pIndex ) ;
-  }
-
-
-  /**
-   * Returns true, if the given {@link Identifier} is in the given
-   * {@link Identifier}s array, otherwise false.
-   * 
-   * @param pIdentifiers The {@link Identifier} array.
-   * @param pId The single {@link Identifier}.
-   * @return True, if the given {@link Identifier} is in the given
-   *         {@link Identifier}s array, otherwise false.
-   */
-  private final boolean isInArray ( String [ ] pIdentifiers , String pId )
-  {
-    for ( String id : pIdentifiers )
-    {
-      if ( id.equals ( pId ) )
-      {
-        return true ;
-      }
-    }
-    return false ;
   }
 
 
