@@ -15,7 +15,7 @@ import de.unisiegen.tpml.core.types.MonoType ;
  * @author Christian Fehler
  * @version $Rev: 1067 $
  */
-public class CurriedMeth extends Expression
+public class CurriedMethod extends Expression
 {
   /**
    * TODO
@@ -50,7 +50,7 @@ public class CurriedMeth extends Expression
    * @param pTypes TODO
    * @param pExpression TODO
    */
-  public CurriedMeth ( String [ ] pIdentifiers , MonoType [ ] pTypes ,
+  public CurriedMethod ( String [ ] pIdentifiers , MonoType [ ] pTypes ,
       Expression pExpression )
   {
     if ( pIdentifiers == null )
@@ -81,9 +81,9 @@ public class CurriedMeth extends Expression
    * {@inheritDoc}
    */
   @ Override
-  public CurriedMeth clone ( )
+  public CurriedMethod clone ( )
   {
-    return new CurriedMeth ( this.identifiers.clone ( ) , this.types.clone ( ) ,
+    return new CurriedMethod ( this.identifiers.clone ( ) , this.types.clone ( ) ,
         this.expression.clone ( ) ) ;
   }
 
@@ -94,9 +94,9 @@ public class CurriedMeth extends Expression
   @ Override
   public boolean equals ( Object pObject )
   {
-    if ( pObject instanceof CurriedMeth )
+    if ( pObject instanceof CurriedMethod )
     {
-      CurriedMeth other = ( CurriedMeth ) pObject ;
+      CurriedMethod other = ( CurriedMethod ) pObject ;
       return ( ( this.identifiers.equals ( other.identifiers ) )
           && ( this.types.equals ( other.types ) ) && ( this.expression
           .equals ( other.expression ) ) ) ;
@@ -222,9 +222,9 @@ public class CurriedMeth extends Expression
    * {@inheritDoc}
    */
   @ Override
-  public CurriedMeth substitute ( String pID , Expression pExpression )
+  public CurriedMethod substitute ( String pID , Expression pExpression )
   {
-    return new CurriedMeth ( this.identifiers , this.types , this.expression
+    return new CurriedMethod ( this.identifiers , this.types , this.expression
         .substitute ( pID , pExpression ) ) ;
   }
 
@@ -233,7 +233,7 @@ public class CurriedMeth extends Expression
    * {@inheritDoc}
    */
   @ Override
-  public CurriedMeth substitute ( TypeSubstitution pTypeSubstitution )
+  public CurriedMethod substitute ( TypeSubstitution pTypeSubstitution )
   {
     MonoType [ ] tmp = new MonoType [ this.types.length ] ;
     for ( int n = 0 ; n < tmp.length ; ++ n )
@@ -241,7 +241,7 @@ public class CurriedMeth extends Expression
       tmp [ n ] = ( this.types [ n ] != null ) ? this.types [ n ]
           .substitute ( pTypeSubstitution ) : null ;
     }
-    return new CurriedMeth ( this.identifiers , tmp , this.expression
+    return new CurriedMethod ( this.identifiers , tmp , this.expression
         .substitute ( pTypeSubstitution ) ) ;
   }
 

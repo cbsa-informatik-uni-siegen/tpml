@@ -1,14 +1,14 @@
 package de.unisiegen.tpml.core.languages.l2o ;
 
 
-import de.unisiegen.tpml.core.expressions.Attr ;
-import de.unisiegen.tpml.core.expressions.CurriedMeth ;
+import de.unisiegen.tpml.core.expressions.Attribute ;
+import de.unisiegen.tpml.core.expressions.CurriedMethod ;
 import de.unisiegen.tpml.core.expressions.Duplication ;
 import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.expressions.Identifier ;
 import de.unisiegen.tpml.core.expressions.Lambda ;
 import de.unisiegen.tpml.core.expressions.Message ;
-import de.unisiegen.tpml.core.expressions.Meth ;
+import de.unisiegen.tpml.core.expressions.Method ;
 import de.unisiegen.tpml.core.expressions.ObjectExpr ;
 import de.unisiegen.tpml.core.expressions.Row ;
 import de.unisiegen.tpml.core.languages.l2.L2SmallStepProofRuleSet ;
@@ -34,11 +34,11 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
     // Obj
     register ( L2OLanguage.L2O , "OBJ-EVAL" , false ) ; //$NON-NLS-1$
     register ( L2OLanguage.L2O , "OBJ-UNFOLD" , true ) ; //$NON-NLS-1$
-    // Attr
+    // Attribute
     register ( L2OLanguage.L2O , "ATTR-EVAL" , false ) ; //$NON-NLS-1$
     register ( L2OLanguage.L2O , "ATTR-RIGHT" , false ) ; //$NON-NLS-1$
     register ( L2OLanguage.L2O , "ATTR-RENAME" , true ) ; //$NON-NLS-1$
-    // Meth
+    // Method
     register ( L2OLanguage.L2O , "METH-RIGHT" , false ) ; //$NON-NLS-1$
     // Send
     register ( L2OLanguage.L2O , "SEND-EVAL" , false ) ; //$NON-NLS-1$  
@@ -114,22 +114,22 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
         return pMessage ;
       }
       Expression firstRowChild = row.getExpressions ( 0 ) ;
-      if ( firstRowChild instanceof Attr )
+      if ( firstRowChild instanceof Attribute )
       {
         // SEND-ATTR
-        Attr attr = ( Attr ) row.getExpressions ( 0 ) ;
-        pContext.addProofStep ( getRuleByName ( "SEND-ATTR" ) , attr ) ; //$NON-NLS-1$
+        Attribute attribute = ( Attribute ) row.getExpressions ( 0 ) ;
+        pContext.addProofStep ( getRuleByName ( "SEND-ATTR" ) , attribute ) ; //$NON-NLS-1$
         Expression [ ] newRowE = new Expression [ row.getExpressions ( ).length - 1 ] ;
         for ( int i = 0 ; i < newRowE.length ; i ++ )
         {
           newRowE [ i ] = row.getExpressions ( i + 1 ).substitute (
-              attr.getId ( ) , attr.getE ( ) ) ;
+              attribute.getId ( ) , attribute.getE ( ) ) ;
         }
         return new Message ( new Row ( newRowE ) , pMessage.getId ( ) ) ;
       }
-      else if ( firstRowChild instanceof Meth )
+      else if ( firstRowChild instanceof Method )
       {
-        Meth meth = ( Meth ) row.getExpressions ( 0 ) ;
+        Method meth = ( Method ) row.getExpressions ( 0 ) ;
         if ( pMessage.getId ( ).equals ( meth.getId ( ) ) )
         {
           // SEND-EXEC
@@ -137,14 +137,14 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
           for ( int i = 1 ; i < row.getExpressions ( ).length ; i ++ )
           {
             Expression tmp = row.getExpressions ( i ) ;
-            if ( ( tmp instanceof Meth )
-                && ( ( ( Meth ) tmp ).getId ( ).equals ( pMessage.getId ( ) ) ) )
+            if ( ( tmp instanceof Method )
+                && ( ( ( Method ) tmp ).getId ( ).equals ( pMessage.getId ( ) ) ) )
             {
               definedLater = true ;
               break ;
             }
-            if ( ( tmp instanceof CurriedMeth )
-                && ( ( ( CurriedMeth ) tmp ).getIdentifiers ( 0 )
+            if ( ( tmp instanceof CurriedMethod )
+                && ( ( ( CurriedMethod ) tmp ).getIdentifiers ( 0 )
                     .equals ( pMessage.getId ( ) ) ) )
             {
               definedLater = true ;
@@ -166,9 +166,9 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
         }
         return new Message ( new Row ( newRowE ) , pMessage.getId ( ) ) ;
       }
-      else if ( firstRowChild instanceof CurriedMeth )
+      else if ( firstRowChild instanceof CurriedMethod )
       {
-        CurriedMeth curriedMeth = ( CurriedMeth ) row.getExpressions ( 0 ) ;
+        CurriedMethod curriedMeth = ( CurriedMethod ) row.getExpressions ( 0 ) ;
         if ( pMessage.getId ( ).equals ( curriedMeth.getIdentifiers ( 0 ) ) )
         {
           // SEND-EXEC
@@ -176,14 +176,14 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
           for ( int i = 1 ; i < row.getExpressions ( ).length ; i ++ )
           {
             Expression tmp = row.getExpressions ( i ) ;
-            if ( ( tmp instanceof Meth )
-                && ( ( ( Meth ) tmp ).getId ( ).equals ( pMessage.getId ( ) ) ) )
+            if ( ( tmp instanceof Method )
+                && ( ( ( Method ) tmp ).getId ( ).equals ( pMessage.getId ( ) ) ) )
             {
               definedLater = true ;
               break ;
             }
-            if ( ( tmp instanceof CurriedMeth )
-                && ( ( ( CurriedMeth ) tmp ).getIdentifiers ( 0 )
+            if ( ( tmp instanceof CurriedMethod )
+                && ( ( ( CurriedMethod ) tmp ).getIdentifiers ( 0 )
                     .equals ( pMessage.getId ( ) ) ) )
             {
               definedLater = true ;
@@ -265,13 +265,14 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
         found = false ;
         for ( int j = 0 ; j < newRowE.length ; j ++ )
         {
-          if ( newRowE [ j ] instanceof Attr )
+          if ( newRowE [ j ] instanceof Attribute )
           {
-            Attr attr = ( Attr ) newRowE [ j ] ;
-            if ( attr.getId ( ).equals ( pDuplication.getIdentifiers ( i ) ) )
+            Attribute attribute = ( Attribute ) newRowE [ j ] ;
+            if ( attribute.getId ( )
+                .equals ( pDuplication.getIdentifiers ( i ) ) )
             {
-              newRowE [ j ] = new Attr ( attr.getId ( ) , attr.getTau ( ) ,
-                  pDuplication.getExpressions ( i ) ) ;
+              newRowE [ j ] = new Attribute ( attribute.getId ( ) , attribute
+                  .getTau ( ) , pDuplication.getExpressions ( i ) ) ;
               found = true ;
             }
           }
@@ -300,10 +301,10 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
   {
     for ( int i = 0 ; i < pRow.getExpressions ( ).length ; i ++ )
     {
-      if ( pRow.getExpressions ( i ) instanceof Attr )
+      if ( pRow.getExpressions ( i ) instanceof Attribute )
       {
-        // Attr
-        Attr attr = ( Attr ) pRow.getExpressions ( i ) ;
+        // Attribute
+        Attribute attr = ( Attribute ) pRow.getExpressions ( i ) ;
         if ( ! attr.isValue ( ) )
         {
           // ATTR-EVAL
@@ -314,15 +315,15 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
             return attrE ;
           }
           Expression [ ] tmp = pRow.getExpressions ( ).clone ( ) ;
-          tmp [ i ] = new Attr ( attr.getId ( ) , attr.getTau ( ) , attrE ) ;
+          tmp [ i ] = new Attribute ( attr.getId ( ) , attr.getTau ( ) , attrE ) ;
           return new Row ( tmp ) ;
         }
         // ATTR-RENAME or ATTR-RIGHT
         boolean attrRename = false ;
         for ( int j = i + 1 ; j < pRow.getExpressions ( ).length ; j ++ )
         {
-          if ( ( pRow.getExpressions ( j ) instanceof Attr )
-              && ( ( Attr ) pRow.getExpressions ( j ) ).getId ( ).equals (
+          if ( ( pRow.getExpressions ( j ) instanceof Attribute )
+              && ( ( Attribute ) pRow.getExpressions ( j ) ).getId ( ).equals (
                   attr.getId ( ) ) )
           {
             attrRename = true ;
@@ -340,9 +341,9 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
             attrRename = false ;
             for ( int j = i + 1 ; j < pRow.getExpressions ( ).length ; j ++ )
             {
-              if ( ( pRow.getExpressions ( j ) instanceof Attr )
-                  && ( ( Attr ) pRow.getExpressions ( j ) ).getId ( ).equals (
-                      newId ) )
+              if ( ( pRow.getExpressions ( j ) instanceof Attribute )
+                  && ( ( Attribute ) pRow.getExpressions ( j ) ).getId ( )
+                      .equals ( newId ) )
               {
                 newId += "'" ;//$NON-NLS-1$ 
                 attrRename = true ;
@@ -350,42 +351,43 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
               }
             }
           }
-          tmp [ i ] = new Attr ( newId , attr.getTau ( ) , attr.getE ( )
+          tmp [ i ] = new Attribute ( newId , attr.getTau ( ) , attr.getE ( )
               .clone ( ) ) ;
           for ( int j = i + 1 ; j < tmp.length ; j ++ )
           {
-            if ( ( tmp [ j ] instanceof Attr )
-                && ( ( ( Attr ) tmp [ j ] ).getId ( ).equals ( attr.getId ( ) ) ) )
+            if ( ( tmp [ j ] instanceof Attribute )
+                && ( ( ( Attribute ) tmp [ j ] ).getId ( ).equals ( attr
+                    .getId ( ) ) ) )
             {
               break ;
             }
-            // Meth
-            if ( tmp [ j ] instanceof Meth )
+            // Method
+            if ( tmp [ j ] instanceof Method )
             {
-              Meth meth = ( Meth ) tmp [ j ] ;
-              if ( meth.getE ( ) instanceof Duplication )
+              Method method = ( Method ) tmp [ j ] ;
+              if ( method.getE ( ) instanceof Duplication )
               {
-                tmp [ j ] = meth.substituteAttr ( attr.getId ( ) ,
+                tmp [ j ] = method.substituteAttr ( attr.getId ( ) ,
                     new Identifier ( newId ) ) ;
               }
               else
               {
-                tmp [ j ] = meth.substitute ( attr.getId ( ) , new Identifier (
-                    newId ) ) ;
+                tmp [ j ] = method.substitute ( attr.getId ( ) ,
+                    new Identifier ( newId ) ) ;
               }
             }
-            // CurriedMeth
-            else if ( tmp [ j ] instanceof CurriedMeth )
+            // CurriedMethod
+            else if ( tmp [ j ] instanceof CurriedMethod )
             {
-              CurriedMeth curriedMeth = ( CurriedMeth ) tmp [ j ] ;
-              if ( curriedMeth.getE ( ) instanceof Duplication )
+              CurriedMethod curriedMethod = ( CurriedMethod ) tmp [ j ] ;
+              if ( curriedMethod.getE ( ) instanceof Duplication )
               {
-                tmp [ j ] = curriedMeth.substituteAttr ( attr.getId ( ) ,
+                tmp [ j ] = curriedMethod.substituteAttr ( attr.getId ( ) ,
                     new Identifier ( newId ) ) ;
               }
               else
               {
-                tmp [ j ] = curriedMeth.substitute ( attr.getId ( ) ,
+                tmp [ j ] = curriedMethod.substitute ( attr.getId ( ) ,
                     new Identifier ( newId ) ) ;
               }
             }
@@ -402,7 +404,7 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
       }
       else
       {
-        // Meth or CurriedMeth
+        // Method or CurriedMethod
         pContext.addProofStep (
             getRuleByName ( "METH-RIGHT" ) , pRow.getExpressions ( i ) ) ; //$NON-NLS-1$
       }

@@ -187,7 +187,7 @@ public final class ObjectExpr extends Expression
       Expression [ ] newRowE = row.getExpressions ( ).clone ( ) ;
       for ( int i = 0 ; i < newRowE.length ; i ++ )
       {
-        if ( newRowE [ i ] instanceof Attr )
+        if ( newRowE [ i ] instanceof Attribute )
         {
           newRowE [ i ] = newRowE [ i ].substitute ( pID , pExpression ) ;
         }

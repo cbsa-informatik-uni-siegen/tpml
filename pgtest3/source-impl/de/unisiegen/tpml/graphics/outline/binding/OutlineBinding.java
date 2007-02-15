@@ -5,10 +5,10 @@ import java.lang.reflect.InvocationTargetException ;
 import java.lang.reflect.Method ;
 import java.util.ArrayList ;
 import java.util.Enumeration ;
-import de.unisiegen.tpml.core.expressions.Attr ;
+import de.unisiegen.tpml.core.expressions.Attribute ;
 import de.unisiegen.tpml.core.expressions.CurriedLet ;
 import de.unisiegen.tpml.core.expressions.CurriedLetRec ;
-import de.unisiegen.tpml.core.expressions.CurriedMeth ;
+import de.unisiegen.tpml.core.expressions.CurriedMethod ;
 import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.expressions.Identifier ;
 import de.unisiegen.tpml.core.expressions.Lambda ;
@@ -225,21 +225,21 @@ public final class OutlineBinding
 
 
   /**
-   * Finds the bounded {@link Identifier}s in the given {@link CurriedMeth}.
+   * Finds the bounded {@link Identifier}s in the given {@link CurriedMethod}.
    * 
-   * @param pCurriedMeth The input {@link CurriedMeth}.
+   * @param pCurriedMethod The input {@link CurriedMethod}.
    */
   @ SuppressWarnings ( "unused" )
-  private final void findCurriedMeth ( CurriedMeth pCurriedMeth )
+  private final void findCurriedMethod ( CurriedMethod pCurriedMethod )
   {
     /*
      * Search is finished, if the searched Identifier is also equal to another
-     * bounded Identifier in the CurriedMeth, because all Identifiers in E are
+     * bounded Identifier in the CurriedMethod, because all Identifiers in E are
      * bounded to the Identifier in this child expression.
      */
-    for ( int i = 1 ; i < pCurriedMeth.getIdentifiers ( ).length ; i ++ )
+    for ( int i = 1 ; i < pCurriedMethod.getIdentifiers ( ).length ; i ++ )
     {
-      if ( pCurriedMeth.getIdentifiers ( i ).equals ( this.identifier ) )
+      if ( pCurriedMethod.getIdentifiers ( i ).equals ( this.identifier ) )
       {
         return ;
       }
@@ -247,7 +247,7 @@ public final class OutlineBinding
     /*
      * Continue search in E.
      */
-    findExpression ( pCurriedMeth.getE ( ) ) ;
+    findExpression ( pCurriedMethod.getE ( ) ) ;
   }
 
 
@@ -469,7 +469,7 @@ public final class OutlineBinding
       Row row = pObjectExpr.getE ( ) ;
       for ( Expression expr : row.getExpressions ( ) )
       {
-        if ( expr instanceof Attr )
+        if ( expr instanceof Attribute )
         {
           findExpression ( expr ) ;
         }
@@ -515,24 +515,24 @@ public final class OutlineBinding
     boolean foundEqualAttrId = false ;
     for ( Expression expr : pRow.getExpressions ( ) )
     {
-      if ( expr instanceof Attr )
+      if ( expr instanceof Attribute )
       {
         findExpression ( expr ) ;
-        Attr attr = ( Attr ) expr ;
-        if ( attr.getId ( ).equals ( this.identifier ) )
+        Attribute attribute = ( Attribute ) expr ;
+        if ( attribute.getId ( ).equals ( this.identifier ) )
         {
           /*
-           * Search is finished for Meth and CurriedMeth, because all
-           * Identifiers in the Row are bounded to the Identifier in this Attr.
-           * Identifiers in Attr can still be bound, so the search is not
-           * finished.
+           * Search is finished for Method and CurriedMethod, because all
+           * Identifiers in the Row are bounded to the Identifier in this
+           * Attribute. Identifiers in Attribute can still be bound, so the
+           * search is not finished.
            */
           foundEqualAttrId = true ;
         }
       }
       /*
        * If the searched Identifier was not found before as an Identifier of an
-       * Attr, it can be searched in the child Expression.
+       * Attribute, it can be searched in the child Expression.
        */
       else if ( ! foundEqualAttrId )
       {

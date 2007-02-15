@@ -1,13 +1,13 @@
 package de.unisiegen.tpml.core.languages.l2o ;
 
 
-import de.unisiegen.tpml.core.expressions.Attr ;
-import de.unisiegen.tpml.core.expressions.CurriedMeth ;
+import de.unisiegen.tpml.core.expressions.Attribute ;
+import de.unisiegen.tpml.core.expressions.CurriedMethod ;
 import de.unisiegen.tpml.core.expressions.Duplication ;
 import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.expressions.Lambda ;
 import de.unisiegen.tpml.core.expressions.Message ;
-import de.unisiegen.tpml.core.expressions.Meth ;
+import de.unisiegen.tpml.core.expressions.Method ;
 import de.unisiegen.tpml.core.expressions.ObjectExpr ;
 import de.unisiegen.tpml.core.expressions.Row ;
 import de.unisiegen.tpml.core.languages.l2.L2LanguageTranslator ;
@@ -37,10 +37,10 @@ public class L2OLanguageTranslator extends L2LanguageTranslator
   public Expression translateToCoreSyntax ( Expression pExpression ,
       boolean pRecursive )
   {
-    if ( pExpression instanceof CurriedMeth )
+    if ( pExpression instanceof CurriedMethod )
     {
-      return translateToCoreSyntaxCurriedMeth ( ( CurriedMeth ) pExpression ,
-          pRecursive ) ;
+      return translateToCoreSyntaxCurriedMethod (
+          ( CurriedMethod ) pExpression , pRecursive ) ;
     }
     else if ( pExpression instanceof ObjectExpr )
     {
@@ -51,13 +51,14 @@ public class L2OLanguageTranslator extends L2LanguageTranslator
     {
       return translateToCoreSyntaxRow ( ( Row ) pExpression , pRecursive ) ;
     }
-    else if ( pExpression instanceof Attr )
+    else if ( pExpression instanceof Attribute )
     {
-      return translateToCoreSyntaxAttr ( ( Attr ) pExpression , pRecursive ) ;
+      return translateToCoreSyntaxAttribute ( ( Attribute ) pExpression ,
+          pRecursive ) ;
     }
-    else if ( pExpression instanceof Meth )
+    else if ( pExpression instanceof Method )
     {
-      return translateToCoreSyntaxMeth ( ( Meth ) pExpression , pRecursive ) ;
+      return translateToCoreSyntaxMethod ( ( Method ) pExpression , pRecursive ) ;
     }
     else if ( pExpression instanceof Message )
     {
@@ -76,42 +77,43 @@ public class L2OLanguageTranslator extends L2LanguageTranslator
   /**
    * TODO
    * 
-   * @param pAttr TODO
+   * @param pAttribute TODO
    * @param pRecursive TODO
    * @return TODO
    */
-  private Expression translateToCoreSyntaxAttr ( Attr pAttr , boolean pRecursive )
+  private Expression translateToCoreSyntaxAttribute ( Attribute pAttribute ,
+      boolean pRecursive )
   {
     if ( pRecursive )
     {
-      return new Attr ( pAttr.getId ( ) , pAttr.getTau ( ) ,
-          translateToCoreSyntax ( pAttr.getE ( ) , pRecursive ) ) ;
+      return new Attribute ( pAttribute.getId ( ) , pAttribute.getTau ( ) ,
+          translateToCoreSyntax ( pAttribute.getE ( ) , pRecursive ) ) ;
     }
-    return pAttr ;
+    return pAttribute ;
   }
 
 
   /**
    * TODO
    * 
-   * @param pCurriedMeth TODO
+   * @param pCurriedMethod TODO
    * @param pRecursive TODO
    * @return TODO
    */
-  private Expression translateToCoreSyntaxCurriedMeth (
-      CurriedMeth pCurriedMeth , boolean pRecursive )
+  private Expression translateToCoreSyntaxCurriedMethod (
+      CurriedMethod pCurriedMethod , boolean pRecursive )
   {
-    Expression curriedMethE = pCurriedMeth.getE ( ) ;
+    Expression curriedMethE = pCurriedMethod.getE ( ) ;
     if ( pRecursive )
     {
       curriedMethE = translateToCoreSyntax ( curriedMethE , pRecursive ) ;
     }
-    for ( int i = pCurriedMeth.getIdentifiers ( ).length - 1 ; i > 0 ; i -- )
+    for ( int i = pCurriedMethod.getIdentifiers ( ).length - 1 ; i > 0 ; i -- )
     {
-      curriedMethE = new Lambda ( pCurriedMeth.getIdentifiers ( i ) ,
-          pCurriedMeth.getTypes ( i ) , curriedMethE ) ;
+      curriedMethE = new Lambda ( pCurriedMethod.getIdentifiers ( i ) ,
+          pCurriedMethod.getTypes ( i ) , curriedMethE ) ;
     }
-    return new Meth ( pCurriedMeth.getIdentifiers ( 0 ) , pCurriedMeth
+    return new Method ( pCurriedMethod.getIdentifiers ( 0 ) , pCurriedMethod
         .getTypes ( 0 ) , curriedMethE ) ;
   }
 
@@ -164,18 +166,19 @@ public class L2OLanguageTranslator extends L2LanguageTranslator
   /**
    * TODO
    * 
-   * @param pMeth TODO
+   * @param pMethod TODO
    * @param pRecursive TODO
    * @return TODO
    */
-  private Expression translateToCoreSyntaxMeth ( Meth pMeth , boolean pRecursive )
+  private Expression translateToCoreSyntaxMethod ( Method pMethod ,
+      boolean pRecursive )
   {
     if ( pRecursive )
     {
-      return new Meth ( pMeth.getId ( ) , pMeth.getTau ( ) ,
-          translateToCoreSyntax ( pMeth.getE ( ) , pRecursive ) ) ;
+      return new Method ( pMethod.getId ( ) , pMethod.getTau ( ) ,
+          translateToCoreSyntax ( pMethod.getE ( ) , pRecursive ) ) ;
     }
-    return pMeth ;
+    return pMethod ;
   }
 
 

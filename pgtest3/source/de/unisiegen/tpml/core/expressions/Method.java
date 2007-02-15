@@ -13,7 +13,7 @@ import de.unisiegen.tpml.core.types.MonoType ;
  * @author Christian Fehler
  * @version $Rev: 1067 $
  */
-public class Meth extends Expression
+public class Method extends Expression
 {
   /**
    * TODO
@@ -46,7 +46,7 @@ public class Meth extends Expression
    * @param pTau TODO
    * @param pExpression TODO
    */
-  public Meth ( String pIdentifier , MonoType pTau , Expression pExpression )
+  public Method ( String pIdentifier , MonoType pTau , Expression pExpression )
   {
     if ( pExpression == null )
     {
@@ -62,9 +62,9 @@ public class Meth extends Expression
    * {@inheritDoc}
    */
   @ Override
-  public Meth clone ( )
+  public Method clone ( )
   {
-    return new Meth ( this.identifier , this.tau , this.expression.clone ( ) ) ;
+    return new Method ( this.identifier , this.tau , this.expression.clone ( ) ) ;
   }
 
 
@@ -74,9 +74,9 @@ public class Meth extends Expression
   @ Override
   public boolean equals ( Object pObject )
   {
-    if ( pObject instanceof Meth )
+    if ( pObject instanceof Method )
     {
-      Meth other = ( Meth ) pObject ;
+      Method other = ( Method ) pObject ;
       return ( ( this.identifier.equals ( other.identifier ) )
           && ( this.expression.equals ( other.expression ) ) && ( ( this.tau == null ) ? ( other.tau == null )
           : ( this.tau.equals ( other.tau ) ) ) ) ;
@@ -156,9 +156,9 @@ public class Meth extends Expression
    * {@inheritDoc}
    */
   @ Override
-  public Meth substitute ( String pID , Expression pExpression )
+  public Method substitute ( String pID , Expression pExpression )
   {
-    return new Meth ( this.identifier , this.tau , this.expression.substitute (
+    return new Method ( this.identifier , this.tau , this.expression.substitute (
         pID , pExpression ) ) ;
   }
 
@@ -167,11 +167,11 @@ public class Meth extends Expression
    * {@inheritDoc}
    */
   @ Override
-  public Meth substitute ( TypeSubstitution pTypeSubstitution )
+  public Method substitute ( TypeSubstitution pTypeSubstitution )
   {
     MonoType tmp = ( this.tau != null ) ? this.tau
         .substitute ( pTypeSubstitution ) : null ;
-    return new Meth ( this.identifier , tmp , this.expression
+    return new Method ( this.identifier , tmp , this.expression
         .substitute ( pTypeSubstitution ) ) ;
   }
 
@@ -180,9 +180,9 @@ public class Meth extends Expression
    * {@inheritDoc}
    */
   @ Override
-  public Meth substituteAttr ( String pID , Expression pExpression )
+  public Method substituteAttr ( String pID , Expression pExpression )
   {
-    return new Meth ( this.identifier , this.tau , this.expression
+    return new Method ( this.identifier , this.tau , this.expression
         .substituteAttr ( pID , pExpression ) ) ;
   }
 

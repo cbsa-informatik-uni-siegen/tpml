@@ -13,7 +13,7 @@ import de.unisiegen.tpml.core.types.MonoType ;
  * @author Christian Fehler
  * @version $Rev: 1066 $
  */
-public class Attr extends Expression
+public class Attribute extends Expression
 {
   /**
    * TODO
@@ -46,7 +46,7 @@ public class Attr extends Expression
    * @param pTau TODO
    * @param pExpression TODO
    */
-  public Attr ( String pIdentifier , MonoType pTau , Expression pExpression )
+  public Attribute ( String pIdentifier , MonoType pTau , Expression pExpression )
   {
     if ( pExpression == null )
     {
@@ -62,9 +62,10 @@ public class Attr extends Expression
    * {@inheritDoc}
    */
   @ Override
-  public Attr clone ( )
+  public Attribute clone ( )
   {
-    return new Attr ( this.identifier , this.tau , this.expression.clone ( ) ) ;
+    return new Attribute ( this.identifier , this.tau , this.expression
+        .clone ( ) ) ;
   }
 
 
@@ -74,9 +75,9 @@ public class Attr extends Expression
   @ Override
   public boolean equals ( Object pObject )
   {
-    if ( pObject instanceof Attr )
+    if ( pObject instanceof Attribute )
     {
-      Attr other = ( Attr ) pObject ;
+      Attribute other = ( Attribute ) pObject ;
       return ( ( this.identifier.equals ( other.identifier ) )
           && ( this.expression.equals ( other.expression ) ) && ( ( this.tau == null ) ? ( other.tau == null )
           : ( this.tau.equals ( other.tau ) ) ) ) ;
@@ -156,10 +157,10 @@ public class Attr extends Expression
    * {@inheritDoc}
    */
   @ Override
-  public Attr substitute ( String pID , Expression pExpression )
+  public Attribute substitute ( String pID , Expression pExpression )
   {
-    return new Attr ( this.identifier , this.tau , this.expression.substitute (
-        pID , pExpression ) ) ;
+    return new Attribute ( this.identifier , this.tau , this.expression
+        .substitute ( pID , pExpression ) ) ;
   }
 
 
@@ -170,11 +171,11 @@ public class Attr extends Expression
    * @return TODO
    */
   @ Override
-  public Attr substitute ( TypeSubstitution pTypeSubstitution )
+  public Attribute substitute ( TypeSubstitution pTypeSubstitution )
   {
     MonoType tmp = ( this.tau != null ) ? this.tau
         .substitute ( pTypeSubstitution ) : null ;
-    return new Attr ( this.identifier , tmp , this.expression
+    return new Attribute ( this.identifier , tmp , this.expression
         .substitute ( pTypeSubstitution ) ) ;
   }
 

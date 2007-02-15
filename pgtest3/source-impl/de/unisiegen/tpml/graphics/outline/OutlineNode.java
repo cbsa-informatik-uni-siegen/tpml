@@ -3,11 +3,11 @@ package de.unisiegen.tpml.graphics.outline ;
 
 import java.awt.Color ;
 import de.unisiegen.tpml.core.expressions.BinaryOperator ;
-import de.unisiegen.tpml.core.expressions.CurriedMeth ;
+import de.unisiegen.tpml.core.expressions.CurriedMethod ;
 import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.expressions.Identifier ;
 import de.unisiegen.tpml.core.expressions.InfixOperation ;
-import de.unisiegen.tpml.core.expressions.Meth ;
+import de.unisiegen.tpml.core.expressions.Method ;
 import de.unisiegen.tpml.core.expressions.Value ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyCharIterator ;
@@ -183,7 +183,7 @@ public final class OutlineNode
 
 
   /**
-   * Caption of the {@link Meth} or {@link CurriedMeth}.
+   * Caption of the {@link Method} or {@link CurriedMethod}.
    */
   private static final String METH = "m" ; //$NON-NLS-1$
 
@@ -913,7 +913,7 @@ public final class OutlineNode
 
 
   /**
-   * Sets the child index of the {@link Meth} or {@link CurriedMeth}.
+   * Sets the child index of the {@link Method} or {@link CurriedMethod}.
    * 
    * @see #childIndex
    */
@@ -924,10 +924,10 @@ public final class OutlineNode
 
 
   /**
-   * Sets the child index of the {@link Meth} or {@link CurriedMeth}.
+   * Sets the child index of the {@link Method} or {@link CurriedMethod}.
    * 
-   * @param pChildIndexMeth The child index of the {@link Meth} or
-   *          {@link CurriedMeth}.
+   * @param pChildIndexMeth The child index of the {@link Method} or
+   *          {@link CurriedMethod}.
    * @see #childIndex
    */
   public final void setChildIndexMeth ( int pChildIndexMeth )

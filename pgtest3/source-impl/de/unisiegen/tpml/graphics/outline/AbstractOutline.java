@@ -2,19 +2,18 @@ package de.unisiegen.tpml.graphics.outline ;
 
 
 import java.lang.reflect.InvocationTargetException ;
-import java.lang.reflect.Method ;
 import java.util.ArrayList ;
 import java.util.Enumeration ;
 import java.util.Timer ;
 import javax.swing.JPanel ;
 import javax.swing.SwingUtilities ;
 import javax.swing.tree.DefaultMutableTreeNode ;
-import de.unisiegen.tpml.core.expressions.Attr ;
+import de.unisiegen.tpml.core.expressions.Attribute ;
 import de.unisiegen.tpml.core.expressions.BinaryOperator ;
 import de.unisiegen.tpml.core.expressions.Condition ;
 import de.unisiegen.tpml.core.expressions.CurriedLet ;
 import de.unisiegen.tpml.core.expressions.CurriedLetRec ;
-import de.unisiegen.tpml.core.expressions.CurriedMeth ;
+import de.unisiegen.tpml.core.expressions.CurriedMethod ;
 import de.unisiegen.tpml.core.expressions.Duplication ;
 import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.expressions.Identifier ;
@@ -23,7 +22,7 @@ import de.unisiegen.tpml.core.expressions.Lambda ;
 import de.unisiegen.tpml.core.expressions.Let ;
 import de.unisiegen.tpml.core.expressions.LetRec ;
 import de.unisiegen.tpml.core.expressions.Message ;
-import de.unisiegen.tpml.core.expressions.Meth ;
+import de.unisiegen.tpml.core.expressions.Method ;
 import de.unisiegen.tpml.core.expressions.MultiLambda ;
 import de.unisiegen.tpml.core.expressions.MultiLet ;
 import de.unisiegen.tpml.core.expressions.ObjectExpr ;
@@ -66,7 +65,7 @@ public final class AbstractOutline implements Outline
 
 
   /**
-   * The <code>String</code> for the name of a {@link Meth}.
+   * The <code>String</code> for the name of a {@link Method}.
    */
   private static final String METHODNAME = "Method-Name" ; //$NON-NLS-1$
 
@@ -393,14 +392,14 @@ public final class AbstractOutline implements Outline
 
 
   /**
-   * Returns the node, which represents the given {@link CurriedMeth}.
+   * Returns the node, which represents the given {@link CurriedMethod}.
    * 
    * @param pExpression The input {@link Expression}.
-   * @return The node, which represents the given {@link CurriedMeth}.
+   * @return The node, which represents the given {@link CurriedMethod}.
    */
   @ SuppressWarnings ( "unused" )
-  private final DefaultMutableTreeNode checkCurriedMeth (
-      CurriedMeth pExpression )
+  private final DefaultMutableTreeNode checkCurriedMethod (
+      CurriedMethod pExpression )
   {
     DefaultMutableTreeNode node = new DefaultMutableTreeNode ( new OutlineNode (
         pExpression , this.outlineUnbound ) ) ;
@@ -582,7 +581,8 @@ public final class AbstractOutline implements Outline
    */
   private final DefaultMutableTreeNode checkExpression ( Expression pExpression )
   {
-    for ( Method method : this.getClass ( ).getDeclaredMethods ( ) )
+    for ( java.lang.reflect.Method method : this.getClass ( )
+        .getDeclaredMethods ( ) )
     {
       if ( method.getName ( ).equals (
           CHECK + pExpression.getClass ( ).getSimpleName ( ) ) )
@@ -839,13 +839,13 @@ public final class AbstractOutline implements Outline
 
 
   /**
-   * Returns the node, which represents the given {@link Meth}.
+   * Returns the node, which represents the given {@link Method}.
    * 
    * @param pExpression The input {@link Expression}.
-   * @return The node, which represents the given {@link Meth}.
+   * @return The node, which represents the given {@link Method}.
    */
   @ SuppressWarnings ( "unused" )
-  private final DefaultMutableTreeNode checkMeth ( Meth pExpression )
+  private final DefaultMutableTreeNode checkMethod ( Method pExpression )
   {
     DefaultMutableTreeNode node = new DefaultMutableTreeNode ( new OutlineNode (
         pExpression , this.outlineUnbound ) ) ;
@@ -1061,10 +1061,10 @@ public final class AbstractOutline implements Outline
     boolean equalIdFound = false ;
     for ( Expression expr : row.getExpressions ( ) )
     {
-      if ( expr instanceof Attr )
+      if ( expr instanceof Attribute )
       {
-        Attr attr = ( Attr ) expr ;
-        if ( pExpression.getId ( ).equals ( attr.getId ( ) ) )
+        Attribute attribute = ( Attribute ) expr ;
+        if ( pExpression.getId ( ).equals ( attribute.getId ( ) ) )
         {
           equalIdFound = true ;
         }
@@ -1166,58 +1166,60 @@ public final class AbstractOutline implements Outline
     for ( int i = 0 ; i < pExpression.getExpressions ( ).length ; i ++ )
     {
       Expression currentChild = pExpression.getExpressions ( i ) ;
-      if ( currentChild instanceof Attr )
+      if ( currentChild instanceof Attribute )
       {
-        Attr attr = ( Attr ) currentChild ;
-        OutlineNode outlineNode = new OutlineNode ( attr , this.outlineUnbound ) ;
+        Attribute attribute = ( Attribute ) currentChild ;
+        OutlineNode outlineNode = new OutlineNode ( attribute ,
+            this.outlineUnbound ) ;
         outlineNode.setChildIndexExpression ( i + 1 ) ;
         DefaultMutableTreeNode nodeAttr = new DefaultMutableTreeNode (
             outlineNode ) ;
-        OutlinePair outlinePairId = OutlineStyle.getIndex ( attr ,
+        OutlinePair outlinePairId = OutlineStyle.getIndex ( attribute ,
             PrettyStyle.IDENTIFIER ).get ( 0 ) ;
-        OutlineBinding outlineBinding = new OutlineBinding ( attr ,
+        OutlineBinding outlineBinding = new OutlineBinding ( attribute ,
             outlinePairId.getStart ( ) , outlinePairId.getEnd ( ) , 0 ) ;
         for ( int j = i + 1 ; j < pExpression.getExpressions ( ).length ; j ++ )
         {
           Expression tmpChild = pExpression.getExpressions ( j ) ;
-          if ( ! ( tmpChild instanceof Attr ) )
+          if ( ! ( tmpChild instanceof Attribute ) )
           {
-            outlineBinding.find ( tmpChild , attr.getId ( ) ,
+            outlineBinding.find ( tmpChild , attribute.getId ( ) ,
                 this.outlineUnbound ) ;
           }
-          if ( ( tmpChild instanceof Attr )
-              && ( ( ( Attr ) tmpChild ).getId ( ).equals ( attr.getId ( ) ) ) )
+          if ( ( tmpChild instanceof Attribute )
+              && ( ( ( Attribute ) tmpChild ).getId ( ).equals ( attribute
+                  .getId ( ) ) ) )
           {
             break ;
           }
         }
-        outlineNode = new OutlineNode ( IDENTIFIER , attr.getId ( ) ,
+        outlineNode = new OutlineNode ( IDENTIFIER , attribute.getId ( ) ,
             outlinePairId , outlineBinding , this.outlineUnbound ) ;
         outlineNode.setChildIndexIdentifier ( ) ;
         nodeAttr.add ( new DefaultMutableTreeNode ( outlineNode ) ) ;
-        if ( attr.getTau ( ) != null )
+        if ( attribute.getTau ( ) != null )
         {
-          OutlinePair outlinePairType = OutlineStyle.getIndex ( attr ,
+          OutlinePair outlinePairType = OutlineStyle.getIndex ( attribute ,
               PrettyStyle.TYPE ).get ( 0 ) ;
-          String tau = attr.getTau ( ).toPrettyString ( ).toString ( ) ;
-          outlineNode = new OutlineNode ( TYPE , attr.getTau ( )
+          String tau = attribute.getTau ( ).toPrettyString ( ).toString ( ) ;
+          outlineNode = new OutlineNode ( TYPE , attribute.getTau ( )
               .toPrettyString ( ).toString ( ) , outlinePairType.getStart ( ) ,
               outlinePairType.getStart ( ) + tau.length ( ) - 1 , null ,
               this.outlineUnbound ) ;
           outlineNode.setChildIndexType ( ) ;
           nodeAttr.add ( new DefaultMutableTreeNode ( outlineNode ) ) ;
         }
-        createChildren ( attr , nodeAttr ) ;
+        createChildren ( attribute , nodeAttr ) ;
         node.add ( nodeAttr ) ;
       }
-      else if ( currentChild instanceof Meth )
+      else if ( currentChild instanceof Method )
       {
         DefaultMutableTreeNode treeNode = checkExpression ( currentChild ) ;
         OutlineNode outlineNode = ( OutlineNode ) treeNode.getUserObject ( ) ;
         outlineNode.setChildIndexExpression ( i + 1 ) ;
         node.add ( treeNode ) ;
       }
-      else if ( currentChild instanceof CurriedMeth )
+      else if ( currentChild instanceof CurriedMethod )
       {
         DefaultMutableTreeNode treeNode = checkExpression ( currentChild ) ;
         OutlineNode outlineNode = ( OutlineNode ) treeNode.getUserObject ( ) ;
@@ -1357,7 +1359,8 @@ public final class AbstractOutline implements Outline
   private final int getChildIndex ( Expression pExpression )
   {
     int result = Integer.MAX_VALUE ;
-    for ( Method method : pExpression.getClass ( ).getMethods ( ) )
+    for ( java.lang.reflect.Method method : pExpression.getClass ( )
+        .getMethods ( ) )
     {
       if ( GETE.equals ( method.getName ( ) ) )
       {

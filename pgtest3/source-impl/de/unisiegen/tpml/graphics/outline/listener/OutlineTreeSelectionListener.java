@@ -6,10 +6,10 @@ import javax.swing.event.TreeSelectionEvent ;
 import javax.swing.event.TreeSelectionListener ;
 import javax.swing.tree.DefaultMutableTreeNode ;
 import javax.swing.tree.TreePath ;
-import de.unisiegen.tpml.core.expressions.Attr ;
-import de.unisiegen.tpml.core.expressions.CurriedMeth ;
+import de.unisiegen.tpml.core.expressions.Attribute ;
+import de.unisiegen.tpml.core.expressions.CurriedMethod ;
 import de.unisiegen.tpml.core.expressions.Identifier ;
-import de.unisiegen.tpml.core.expressions.Meth ;
+import de.unisiegen.tpml.core.expressions.Method ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation ;
 import de.unisiegen.tpml.graphics.outline.OutlineNode ;
 import de.unisiegen.tpml.graphics.outline.binding.OutlineBinding ;
@@ -179,7 +179,7 @@ public final class OutlineTreeSelectionListener implements
        * Highlight the bounded Identifiers of an Attribute in the other childs
        * of the parent row.
        */
-      if ( secondLast.getExpression ( ) instanceof Attr )
+      if ( secondLast.getExpression ( ) instanceof Attribute )
       {
         DefaultMutableTreeNode nodeRow = ( DefaultMutableTreeNode ) pTreePath
             .getPath ( ) [ pTreePath.getPathCount ( ) - 3 ] ;
@@ -240,9 +240,9 @@ public final class OutlineTreeSelectionListener implements
              * Highlight the bounded Identifiers in the other childs of a parent
              * row.
              */
-            if ( ( list.get ( i ).getExpression ( ) instanceof Attr )
-                || ( list.get ( i ).getExpression ( ) instanceof Meth )
-                || ( list.get ( i ).getExpression ( ) instanceof CurriedMeth ) )
+            if ( ( list.get ( i ).getExpression ( ) instanceof Attribute )
+                || ( list.get ( i ).getExpression ( ) instanceof Method )
+                || ( list.get ( i ).getExpression ( ) instanceof CurriedMethod ) )
             {
               DefaultMutableTreeNode nodeRowChild = ( DefaultMutableTreeNode ) pTreePath
                   .getPath ( ) [ i ] ;
