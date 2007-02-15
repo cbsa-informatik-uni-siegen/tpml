@@ -222,8 +222,14 @@ simple_expr			::=	constant:c
 					|	LPAREN expr:e RPAREN
 						{: RESULT = e; :}
 					;
-					
-object_expr			::= OBJECT LPAREN IDENTIFIER:id RPAREN row:r END
+
+object_expr			::= OBJECT LPAREN IDENTIFIER:id RPAREN END
+						{: Expression [] e = new Expression [0];
+						   RESULT = new ObjectExpr (id, null, new Row (e)); :}
+					|   OBJECT LPAREN IDENTIFIER:id COLON type:tau RPAREN END
+						{: Expression [] e = new Expression [0];
+						   RESULT = new ObjectExpr (id, tau, new Row (e)); :}
+					|	OBJECT LPAREN IDENTIFIER:id RPAREN row:r END
 						{: RESULT = new ObjectExpr (id, null, r); :}
 					|	OBJECT LPAREN IDENTIFIER:id COLON type:tau RPAREN row:r END
 						{: RESULT = new ObjectExpr (id, tau, r); :}
