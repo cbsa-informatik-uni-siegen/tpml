@@ -1,1 +1,1 @@
-if true then 1 else 2
+(object (self) method test2 = 3 ; end) # tes
