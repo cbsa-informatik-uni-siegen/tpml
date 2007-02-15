@@ -832,6 +832,13 @@ public final class OutlineNode
    */
   public final void updateCaption ( int pSelectionStart , int pSelectionEnd )
   {
+    int selectionStart = pSelectionStart ;
+    int selectionEnd = pSelectionEnd ;
+    if ( selectionStart > selectionEnd )
+    {
+      selectionStart = NO_SELECTION ;
+      selectionEnd = NO_SELECTION ;
+    }
     // Load the PrettyCharIterator
     PrettyCharIterator prettyCharIterator = this.expression.toPrettyString ( )
         .toCharacterIterator ( ) ;
@@ -868,7 +875,7 @@ public final class OutlineNode
       /*
        * Selection
        */
-      if ( ( selection ) && ( charIndex == pSelectionStart ) )
+      if ( ( selection ) && ( charIndex == selectionStart ) )
       {
         result.append ( FONT_BOLD_BEGIN ) ;
         result.append ( selectionColor ) ;
@@ -881,9 +888,9 @@ public final class OutlineNode
         else
         {
           result.append ( getHTMLCode ( this.expressionString.substring (
-              pSelectionStart , pSelectionEnd + 1 ) ) ) ;
+              selectionStart , selectionEnd + 1 ) ) ) ;
         }
-        while ( charIndex <= pSelectionEnd )
+        while ( charIndex <= selectionEnd )
         {
           // Next character
           charIndex ++ ;
@@ -898,7 +905,7 @@ public final class OutlineNode
       else if ( ( ! selection ) && ( binding )
           && ( this.outlineBinding != null )
           && ( this.outlineBinding.size ( ) > 0 )
-          && ( charIndex == pSelectionStart ) )
+          && ( charIndex == selectionStart ) )
       {
         result.append ( FONT_BOLD_BEGIN ) ;
         result.append ( selectionColor ) ;
@@ -911,9 +918,9 @@ public final class OutlineNode
         else
         {
           result.append ( getHTMLCode ( this.expressionString.substring (
-              pSelectionStart , pSelectionEnd + 1 ) ) ) ;
+              selectionStart , selectionEnd + 1 ) ) ) ;
         }
-        while ( charIndex <= pSelectionEnd )
+        while ( charIndex <= selectionEnd )
         {
           // Next character
           charIndex ++ ;
@@ -926,10 +933,10 @@ public final class OutlineNode
        * higher nodes.
        */
       else if ( ( ! selection ) && ( replace ) && ( this.replaceInThisNode )
-          && ( charIndex == pSelectionStart ) )
+          && ( charIndex == selectionStart ) )
       {
         result.append ( REPLACE_BOLD ) ;
-        while ( charIndex <= pSelectionEnd )
+        while ( charIndex <= selectionEnd )
         {
           // Next character
           charIndex ++ ;
@@ -980,7 +987,7 @@ public final class OutlineNode
        * The selected Identifier is bounded, but should not be selected
        */
       else if ( ( ! selection ) && ( binding ) && ( this.boundedStart != - 1 )
-          && ( this.boundedEnd != - 1 ) && ( charIndex == pSelectionStart ) )
+          && ( this.boundedEnd != - 1 ) && ( charIndex == selectionStart ) )
       {
         result.append ( FONT_BOLD_BEGIN ) ;
         result.append ( selectionColor ) ;
@@ -993,9 +1000,9 @@ public final class OutlineNode
         else
         {
           result.append ( getHTMLCode ( this.expressionString.substring (
-              pSelectionStart , pSelectionEnd + 1 ) ) ) ;
+              selectionStart , selectionEnd + 1 ) ) ) ;
         }
-        while ( charIndex <= pSelectionEnd )
+        while ( charIndex <= selectionEnd )
         {
           // Next character
           charIndex ++ ;
