@@ -304,10 +304,6 @@ public final class Row extends Expression
      */
     PrettyStringBuilder builder = pPrettyStringBuilderFactory.newBuilder (
         this , PRIO_ROW ) ;
-    if ( this.expressions.length == 0 )
-    {
-      builder.addText ( "\u03B5" ) ; //$NON-NLS-1$
-    }
     for ( int i = 0 ; i < this.expressions.length ; i ++ )
     {
       builder.addBuilder ( this.expressions [ i ]
