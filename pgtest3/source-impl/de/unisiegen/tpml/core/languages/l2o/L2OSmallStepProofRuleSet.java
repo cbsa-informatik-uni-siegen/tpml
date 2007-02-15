@@ -106,6 +106,13 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
     else if ( pMessage.getE ( ) instanceof Row )
     {
       Row row = ( Row ) pMessage.getE ( ) ;
+      /*
+       * If the row has zero children it gets stuck.
+       */
+      if ( row.getExpressions ( ).length == 0 )
+      {
+        return pMessage ;
+      }
       Expression firstRowChild = row.getExpressions ( 0 ) ;
       if ( firstRowChild instanceof Attr )
       {
@@ -149,14 +156,6 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
             pContext.addProofStep ( getRuleByName ( "SEND-EXEC" ) , meth ) ; //$NON-NLS-1$
             return meth.getE ( ) ;
           }
-        }
-        /*
-         * If the row has only one child and the Message Identifier is not equal
-         * to the Identifier of the Meth, it can not be skipped.
-         */
-        if ( row.getExpressions ( ).length == 1 )
-        {
-          return pMessage ;
         }
         // SEND-SKIP
         pContext.addProofStep ( getRuleByName ( "SEND-SKIP" ) , meth ) ; //$NON-NLS-1$
@@ -203,14 +202,6 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
             }
             return expr ;
           }
-        }
-        /*
-         * If the row has only one child and the Message Identifier is not equal
-         * to the Identifier of the CurriedMeth, it can not be skipped.
-         */
-        if ( row.getExpressions ( ).length == 1 )
-        {
-          return pMessage ;
         }
         // SEND-SKIP
         pContext.addProofStep ( getRuleByName ( "SEND-SKIP" ) , curriedMeth ) ; //$NON-NLS-1$
@@ -265,7 +256,6 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
         && ( pDuplication.getE ( ).isValue ( ) ) )
     {
       // DUPL-EXEC
-      pContext.addProofStep ( getRuleByName ( "DUPL-EXEC" ) , pDuplication ) ; //$NON-NLS-1$
       ObjectExpr objectExpr = ( ObjectExpr ) pDuplication.getE ( ) ;
       Row row = objectExpr.getE ( ) ;
       Expression [ ] newRowE = row.getExpressions ( ).clone ( ) ;
@@ -288,10 +278,10 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
         }
         if ( ! found )
         {
-          // TODO Exception
-          return null ;
+          return pDuplication ;
         }
       }
+      pContext.addProofStep ( getRuleByName ( "DUPL-EXEC" ) , pDuplication ) ; //$NON-NLS-1$
       return new ObjectExpr ( objectExpr.getId ( ) , objectExpr.getTau ( ) ,
           new Row ( newRowE ) ) ;
     }
