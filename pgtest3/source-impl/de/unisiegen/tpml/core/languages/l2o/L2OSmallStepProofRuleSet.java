@@ -301,41 +301,53 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
   {
     for ( int i = 0 ; i < pRow.getExpressions ( ).length ; i ++ )
     {
+      // Attribute
       if ( pRow.getExpressions ( i ) instanceof Attribute )
       {
-        // Attribute
-        Attribute attr = ( Attribute ) pRow.getExpressions ( i ) ;
-        if ( ! attr.isValue ( ) )
+        Attribute attribute = ( Attribute ) pRow.getExpressions ( i ) ;
+        /*
+         * If the Attribute is not yet a value the ATTR-EVAL rule has to be
+         * applied.
+         */
+        if ( ! attribute.isValue ( ) )
         {
-          // ATTR-EVAL
-          pContext.addProofStep ( getRuleByName ( "ATTR-EVAL" ) , attr ) ; //$NON-NLS-1$
-          Expression attrE = evaluate ( pContext , attr.getE ( ) ) ;
+          pContext.addProofStep ( getRuleByName ( "ATTR-EVAL" ) , attribute ) ; //$NON-NLS-1$
+          Expression attrE = evaluate ( pContext , attribute.getE ( ) ) ;
           if ( attrE.isException ( ) )
           {
             return attrE ;
           }
           Expression [ ] tmp = pRow.getExpressions ( ).clone ( ) ;
-          tmp [ i ] = new Attribute ( attr.getId ( ) , attr.getTau ( ) , attrE ) ;
+          tmp [ i ] = new Attribute ( attribute.getId ( ) ,
+              attribute.getTau ( ) , attrE ) ;
           return new Row ( tmp ) ;
         }
-        // ATTR-RENAME or ATTR-RIGHT
+        /*
+         * Check, if the current Attribute has to be renamed with the rule
+         * ATTR-RENAME. It has to be renamed, if in the rest of the Row an
+         * Attribute with the same Identifier exists.
+         */
         boolean attrRename = false ;
         for ( int j = i + 1 ; j < pRow.getExpressions ( ).length ; j ++ )
         {
           if ( ( pRow.getExpressions ( j ) instanceof Attribute )
               && ( ( Attribute ) pRow.getExpressions ( j ) ).getId ( ).equals (
-                  attr.getId ( ) ) )
+                  attribute.getId ( ) ) )
           {
             attrRename = true ;
             break ;
           }
         }
+        /*
+         * Rename the current Attribute and all its bindings in the rest of the
+         * Row.
+         */
         if ( attrRename )
         {
           // ATTR-RENAME
-          pContext.addProofStep ( getRuleByName ( "ATTR-RENAME" ) , attr ) ; //$NON-NLS-1$ 
+          pContext.addProofStep ( getRuleByName ( "ATTR-RENAME" ) , attribute ) ; //$NON-NLS-1$ 
           Expression [ ] tmp = pRow.getExpressions ( ).clone ( ) ;
-          String newId = attr.getId ( ) + "'" ; //$NON-NLS-1$ 
+          String newId = attribute.getId ( ) + "'" ; //$NON-NLS-1$ 
           while ( attrRename )
           {
             attrRename = false ;
@@ -351,12 +363,12 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
               }
             }
           }
-          tmp [ i ] = new Attribute ( newId , attr.getTau ( ) , attr.getE ( )
-              .clone ( ) ) ;
+          tmp [ i ] = new Attribute ( newId , attribute.getTau ( ) , attribute
+              .getE ( ).clone ( ) ) ;
           for ( int j = i + 1 ; j < tmp.length ; j ++ )
           {
             if ( ( tmp [ j ] instanceof Attribute )
-                && ( ( ( Attribute ) tmp [ j ] ).getId ( ).equals ( attr
+                && ( ( ( Attribute ) tmp [ j ] ).getId ( ).equals ( attribute
                     .getId ( ) ) ) )
             {
               break ;
@@ -367,12 +379,12 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
               Method method = ( Method ) tmp [ j ] ;
               if ( method.getE ( ) instanceof Duplication )
               {
-                tmp [ j ] = method.substituteAttr ( attr.getId ( ) ,
+                tmp [ j ] = method.substituteAttr ( attribute.getId ( ) ,
                     new Identifier ( newId ) ) ;
               }
               else
               {
-                tmp [ j ] = method.substitute ( attr.getId ( ) ,
+                tmp [ j ] = method.substitute ( attribute.getId ( ) ,
                     new Identifier ( newId ) ) ;
               }
             }
@@ -382,29 +394,34 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
               CurriedMethod curriedMethod = ( CurriedMethod ) tmp [ j ] ;
               if ( curriedMethod.getE ( ) instanceof Duplication )
               {
-                tmp [ j ] = curriedMethod.substituteAttr ( attr.getId ( ) ,
+                tmp [ j ] = curriedMethod.substituteAttr ( attribute.getId ( ) ,
                     new Identifier ( newId ) ) ;
               }
               else
               {
-                tmp [ j ] = curriedMethod.substitute ( attr.getId ( ) ,
+                tmp [ j ] = curriedMethod.substitute ( attribute.getId ( ) ,
                     new Identifier ( newId ) ) ;
               }
             }
           }
           return new Row ( tmp ) ;
         }
-        // ATTR-RIGHT
-        pContext.addProofStep ( getRuleByName ( "ATTR-RIGHT" ) , attr ) ; //$NON-NLS-1$
-        Expression attrE = evaluate ( pContext , attr.getE ( ) ) ;
+        /*
+         * Apply the rule ATTR-RIGHT.
+         */
+        pContext.addProofStep ( getRuleByName ( "ATTR-RIGHT" ) , attribute ) ; //$NON-NLS-1$
+        Expression attrE = evaluate ( pContext , attribute.getE ( ) ) ;
         if ( attrE.isException ( ) )
         {
           return attrE ;
         }
       }
+      // Method or CurriedMethod
       else
       {
-        // Method or CurriedMethod
+        /*
+         * Apply the rule METH-RIGHT.
+         */
         pContext.addProofStep (
             getRuleByName ( "METH-RIGHT" ) , pRow.getExpressions ( i ) ) ; //$NON-NLS-1$
       }
