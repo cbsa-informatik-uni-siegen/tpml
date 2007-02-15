@@ -1,7 +1,6 @@
 package de.unisiegen.tpml.graphics.outline ;
 
 
-import java.beans.PropertyChangeListener ;
 import java.lang.reflect.InvocationTargetException ;
 import java.lang.reflect.Method ;
 import java.util.ArrayList ;
@@ -37,6 +36,7 @@ import de.unisiegen.tpml.graphics.outline.binding.OutlineBinding ;
 import de.unisiegen.tpml.graphics.outline.binding.OutlinePair ;
 import de.unisiegen.tpml.graphics.outline.binding.OutlineStyle ;
 import de.unisiegen.tpml.graphics.outline.binding.OutlineUnbound ;
+import de.unisiegen.tpml.graphics.outline.listener.OutlinePropertyChangeListener ;
 import de.unisiegen.tpml.graphics.outline.ui.OutlineDisplayTree ;
 import de.unisiegen.tpml.graphics.outline.ui.OutlineTimerTask ;
 import de.unisiegen.tpml.graphics.outline.ui.OutlineUI ;
@@ -163,18 +163,7 @@ public final class AbstractOutline implements Outline
     this.outlinePreferences = new OutlinePreferences ( ) ;
     this.outlineUI = new OutlineUI ( this ) ;
     Theme.currentTheme ( ).addPropertyChangeListener (
-        new PropertyChangeListener ( )
-        {
-          @ SuppressWarnings ( "synthetic-access" )
-          public void propertyChange ( java.beans.PropertyChangeEvent evt )
-          {
-            if ( evt.getPropertyName ( ).endsWith ( "Color" ) ) //$NON-NLS-1$
-            {
-              repaint ( ( DefaultMutableTreeNode ) AbstractOutline.this.outlineUI
-                  .getTreeModel ( ).getRoot ( ) ) ;
-            }
-          }
-        } ) ;
+        new OutlinePropertyChangeListener ( this ) ) ;
   }
 
 
