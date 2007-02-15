@@ -3,9 +3,12 @@ package de.unisiegen.tpml.graphics.outline ;
 
 import java.awt.Color ;
 import de.unisiegen.tpml.core.expressions.BinaryOperator ;
+import de.unisiegen.tpml.core.expressions.CurriedMeth ;
 import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.expressions.Identifier ;
 import de.unisiegen.tpml.core.expressions.InfixOperation ;
+import de.unisiegen.tpml.core.expressions.Meth ;
+import de.unisiegen.tpml.core.expressions.Value ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyCharIterator ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStyle ;
@@ -40,6 +43,12 @@ public final class OutlineNode
    * Bindings should not be highlighted in higher nodes.
    */
   public static final int NO_BINDING = - 1 ;
+
+
+  /**
+   * The {@link Expression} has no child index.
+   */
+  public static final int NO_CHILD_INDEX = - 1 ;
 
 
   /**
@@ -122,13 +131,13 @@ public final class OutlineNode
   /**
    * The beginning of the caption.
    */
-  private static final String BEGIN = "&nbsp;&nbsp;&nbsp;&nbsp;[&nbsp;<font color=\"#" ; //$NON-NLS-1$
+  private static final String EXPRESSION_BEGIN = "&nbsp;&nbsp;&nbsp;[&nbsp;<font color=\"#" ; //$NON-NLS-1$
 
 
   /**
    * The end of the caption.
    */
-  private static final String END = "</font>&nbsp;]</html>" ; //$NON-NLS-1$
+  private static final String EXPRESSION_END = "</font>&nbsp;]</html>" ; //$NON-NLS-1$
 
 
   /**
@@ -144,6 +153,48 @@ public final class OutlineNode
 
 
   /**
+   * Caption of the {@link Value}.
+   */
+  private static final String VALUE = "v" ; //$NON-NLS-1$
+
+
+  /**
+   * Caption of the {@link Expression}.
+   */
+  private static final String EXPRESSION = "e" ; //$NON-NLS-1$
+
+
+  /**
+   * Caption of the {@link Identifier}.
+   */
+  private static final String IDENTIFIER = "id" ; //$NON-NLS-1$
+
+
+  /**
+   * Caption of the {@link BinaryOperator}.
+   */
+  private static final String OP = "op" ; //$NON-NLS-1$
+
+
+  /**
+   * Caption of the {@link Type}.
+   */
+  private static final String TYPE = "\u03C4" ; //$NON-NLS-1$
+
+
+  /**
+   * Caption of the {@link Meth} or {@link CurriedMeth}.
+   */
+  private static final String METH = "m" ; //$NON-NLS-1$
+
+
+  /**
+   * String, between child index and description.
+   */
+  private static final String BETWEEN = "&nbsp;-&nbsp;" ; //$NON-NLS-1$
+
+
+  /**
    * Begin of HTML.
    */
   private static final String HTML = "<html>" ; //$NON-NLS-1$
@@ -153,6 +204,30 @@ public final class OutlineNode
    * After the color.
    */
   private static final String FONT_AFTER_COLOR = "\">" ; //$NON-NLS-1$
+
+
+  /**
+   * Begin of the smaller sub text.
+   */
+  private static final String SMALL_SUB_BEGIN = "<small><sub>" ; //$NON-NLS-1$
+
+
+  /**
+   * End of the smaller sub text.
+   */
+  private static final String SMALL_SUB_END = "</sub></small>" ; //$NON-NLS-1$
+
+
+  /**
+   * Before the description.
+   */
+  private static final String DESCRIPTION_BEGIN = "<font color=\"#0000FF\">" ; //$NON-NLS-1$
+
+
+  /**
+   * After the description.
+   */
+  private static final String DESCRIPTION_END = "</font>" ; //$NON-NLS-1$
 
 
   /**
@@ -229,10 +304,14 @@ public final class OutlineNode
 
   /**
    * The description of the node.
-   * 
-   * @see #appendDescription(String)
    */
   private String description ;
+
+
+  /**
+   * The child index of this {@link Expression}.
+   */
+  private String childIndex ;
 
 
   /**
@@ -317,6 +396,7 @@ public final class OutlineNode
   {
     this.expression = pExpression ;
     this.description = pExpression.getCaption ( ) ;
+    this.childIndex = "" ; //$NON-NLS-1$
     this.expressionString = pExpression.toPrettyString ( ).toString ( ) ;
     this.startIndex = NO_IDENTIFIER ;
     this.endIndex = NO_IDENTIFIER ;
@@ -346,6 +426,7 @@ public final class OutlineNode
   {
     this.expression = pExpression ;
     this.description = pExpression.getCaption ( ) ;
+    this.childIndex = "" ; //$NON-NLS-1$
     this.expressionString = pExpressionString ;
     this.startIndex = pStartIndex ;
     this.endIndex = pEndIndex ;
@@ -377,6 +458,7 @@ public final class OutlineNode
   {
     this.expression = null ;
     this.description = pDescription ;
+    this.childIndex = "" ; //$NON-NLS-1$
     this.expressionString = pExpressionString ;
     this.startIndex = pStartIndex ;
     this.endIndex = pEndIndex ;
@@ -407,6 +489,7 @@ public final class OutlineNode
   {
     this.expression = null ;
     this.description = pDescription ;
+    this.childIndex = "" ; //$NON-NLS-1$
     this.expressionString = pExpressionString ;
     this.startIndex = pOutlinePair.getStart ( ) ;
     this.endIndex = pOutlinePair.getEnd ( ) ;
@@ -421,26 +504,16 @@ public final class OutlineNode
 
 
   /**
-   * Insert a <code>String</code> before the current description.
-   * 
-   * @param pAppendDescription The <code>String</code> which should be
-   *          inserted before the current description.
-   * @see #description
-   */
-  public final void appendDescription ( String pAppendDescription )
-  {
-    this.description = pAppendDescription + this.description ;
-  }
-
-
-  /**
    * Highlight the selected {@link Identifier}.
    */
   public final void enableBindingColor ( )
   {
     StringBuffer result = new StringBuffer ( HTML ) ;
+    result.append ( this.childIndex ) ;
+    result.append ( DESCRIPTION_BEGIN ) ;
     result.append ( this.description ) ;
-    result.append ( BEGIN ) ;
+    result.append ( DESCRIPTION_END ) ;
+    result.append ( EXPRESSION_BEGIN ) ;
     result.append ( getHTMLFormat ( Theme.currentTheme ( )
         .getExpressionColor ( ) ) ) ;
     result.append ( FONT_AFTER_COLOR ) ;
@@ -456,7 +529,7 @@ public final class OutlineNode
     {
       result.append ( FONT_BOLD_END ) ;
     }
-    result.append ( END ) ;
+    result.append ( EXPRESSION_END ) ;
     this.caption = result.toString ( ) ;
   }
 
@@ -469,8 +542,11 @@ public final class OutlineNode
     if ( this.startIndex != NO_IDENTIFIER )
     {
       StringBuffer result = new StringBuffer ( HTML ) ;
+      result.append ( this.childIndex ) ;
+      result.append ( DESCRIPTION_BEGIN ) ;
       result.append ( this.description ) ;
-      result.append ( BEGIN ) ;
+      result.append ( DESCRIPTION_END ) ;
+      result.append ( EXPRESSION_BEGIN ) ;
       result.append ( getHTMLFormat ( Theme.currentTheme ( )
           .getExpressionColor ( ) ) ) ;
       result.append ( FONT_AFTER_COLOR ) ;
@@ -493,7 +569,7 @@ public final class OutlineNode
       {
         result.append ( FONT_BOLD_END ) ;
       }
-      result.append ( END ) ;
+      result.append ( EXPRESSION_END ) ;
       this.caption = result.toString ( ) ;
     }
     else
@@ -721,8 +797,11 @@ public final class OutlineNode
     if ( this.startIndex != NO_IDENTIFIER )
     {
       StringBuffer result = new StringBuffer ( HTML ) ;
+      result.append ( this.childIndex ) ;
+      result.append ( DESCRIPTION_BEGIN ) ;
       result.append ( this.description ) ;
-      result.append ( BEGIN ) ;
+      result.append ( DESCRIPTION_END ) ;
+      result.append ( EXPRESSION_BEGIN ) ;
       result.append ( getHTMLFormat ( Theme.currentTheme ( )
           .getExpressionColor ( ) ) ) ;
       result.append ( FONT_AFTER_COLOR ) ;
@@ -739,7 +818,7 @@ public final class OutlineNode
       {
         result.append ( getHTMLCode ( this.expressionString ) ) ;
       }
-      result.append ( END ) ;
+      result.append ( EXPRESSION_END ) ;
       this.caption = result.toString ( ) ;
     }
     else
@@ -768,6 +847,162 @@ public final class OutlineNode
   public void setBoundedStart ( int pBoundStart )
   {
     this.boundedStart = pBoundStart ;
+  }
+
+
+  /**
+   * Sets the child index of the {@link Expression}.
+   * 
+   * @see #childIndex
+   */
+  public final void setChildIndexExpression ( )
+  {
+    setChildIndexExpression ( NO_CHILD_INDEX ) ;
+  }
+
+
+  /**
+   * Sets the child index of the {@link Expression}.
+   * 
+   * @param pChildIndexExpression The child index of the {@link Expression}.
+   * @see #childIndex
+   */
+  public final void setChildIndexExpression ( int pChildIndexExpression )
+  {
+    if ( pChildIndexExpression == NO_CHILD_INDEX )
+    {
+      this.childIndex = BETWEEN ;
+    }
+    else
+    {
+      this.childIndex = SMALL_SUB_BEGIN + pChildIndexExpression + SMALL_SUB_END
+          + BETWEEN ;
+    }
+  }
+
+
+  /**
+   * Sets the child index of the {@link Identifier}.
+   * 
+   * @see #childIndex
+   */
+  public final void setChildIndexIdentifier ( )
+  {
+    setChildIndexIdentifier ( NO_CHILD_INDEX ) ;
+  }
+
+
+  /**
+   * Sets the child index of the {@link Identifier}.
+   * 
+   * @param pChildIndexIdentifier The child index of the {@link Identifier}.
+   * @see #childIndex
+   */
+  public final void setChildIndexIdentifier ( int pChildIndexIdentifier )
+  {
+    if ( pChildIndexIdentifier == OutlineNode.NO_CHILD_INDEX )
+    {
+      this.childIndex = IDENTIFIER + BETWEEN ;
+    }
+    else
+    {
+      this.childIndex = IDENTIFIER + SMALL_SUB_BEGIN + pChildIndexIdentifier
+          + SMALL_SUB_END + BETWEEN ;
+    }
+  }
+
+
+  /**
+   * Sets the child index of the {@link Meth} or {@link CurriedMeth}.
+   * 
+   * @see #childIndex
+   */
+  public final void setChildIndexMeth ( )
+  {
+    setChildIndexMeth ( NO_CHILD_INDEX ) ;
+  }
+
+
+  /**
+   * Sets the child index of the {@link Meth} or {@link CurriedMeth}.
+   * 
+   * @param pChildIndexMeth The child index of the {@link Meth} or
+   *          {@link CurriedMeth}.
+   * @see #childIndex
+   */
+  public final void setChildIndexMeth ( int pChildIndexMeth )
+  {
+    if ( pChildIndexMeth == OutlineNode.NO_CHILD_INDEX )
+    {
+      this.childIndex = METH + BETWEEN ;
+    }
+    else
+    {
+      this.childIndex = METH + SMALL_SUB_BEGIN + pChildIndexMeth
+          + SMALL_SUB_END + BETWEEN ;
+    }
+  }
+
+
+  /**
+   * Sets the child index of the {@link BinaryOperator}.
+   * 
+   * @see #childIndex
+   */
+  public final void setChildIndexOp ( )
+  {
+    setChildIndexOp ( NO_CHILD_INDEX ) ;
+  }
+
+
+  /**
+   * Sets the child index of the {@link BinaryOperator}.
+   * 
+   * @param pChildIndexOp The child index of the {@link BinaryOperator}.
+   * @see #childIndex
+   */
+  public final void setChildIndexOp ( int pChildIndexOp )
+  {
+    if ( pChildIndexOp == OutlineNode.NO_CHILD_INDEX )
+    {
+      this.childIndex = OP + BETWEEN ;
+    }
+    else
+    {
+      this.childIndex = OP + SMALL_SUB_BEGIN + pChildIndexOp + SMALL_SUB_END
+          + BETWEEN ;
+    }
+  }
+
+
+  /**
+   * Sets the child index of the {@link Type}.
+   * 
+   * @see #childIndex
+   */
+  public final void setChildIndexType ( )
+  {
+    setChildIndexType ( NO_CHILD_INDEX ) ;
+  }
+
+
+  /**
+   * Sets the child index of the {@link Type}.
+   * 
+   * @param pChildIndexType The child index of the {@link Type}.
+   * @see #childIndex
+   */
+  public final void setChildIndexType ( int pChildIndexType )
+  {
+    if ( pChildIndexType == OutlineNode.NO_CHILD_INDEX )
+    {
+      this.childIndex = TYPE + BETWEEN ;
+    }
+    else
+    {
+      this.childIndex = TYPE + SMALL_SUB_BEGIN + pChildIndexType
+          + SMALL_SUB_END + BETWEEN ;
+    }
   }
 
 
@@ -860,8 +1095,19 @@ public final class OutlineNode
     StringBuffer result = new StringBuffer ( ) ;
     // Build the first part of the node caption
     result.append ( HTML ) ;
+    if ( this.expression.isValue ( ) )
+    {
+      result.append ( VALUE ) ;
+    }
+    else
+    {
+      result.append ( EXPRESSION ) ;
+    }
+    result.append ( this.childIndex ) ;
+    result.append ( DESCRIPTION_BEGIN ) ;
     result.append ( this.description ) ;
-    result.append ( BEGIN ) ;
+    result.append ( DESCRIPTION_END ) ;
+    result.append ( EXPRESSION_BEGIN ) ;
     result.append ( expressionColor ) ;
     result.append ( FONT_AFTER_COLOR ) ;
     int isBinding = - 1 ;
@@ -1114,7 +1360,7 @@ public final class OutlineNode
         prettyCharIterator.next ( ) ;
       }
     }
-    result.append ( END ) ;
+    result.append ( EXPRESSION_END ) ;
     this.caption = result.toString ( ) ;
   }
 }
