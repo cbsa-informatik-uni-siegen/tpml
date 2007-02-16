@@ -55,13 +55,6 @@ public final class OutlineBinding
 
 
   /**
-   * The {@link OutlineUnbound} from which the founded {@link Identifier}s
-   * should be removed.
-   */
-  private OutlineUnbound outlineUnbound ;
-
-
-  /**
    * The {@link Expression} in which the {@link Identifier} is bounded.
    */
   private Expression boundedExpression ;
@@ -113,14 +106,11 @@ public final class OutlineBinding
    * 
    * @param pExpression The {@link Expression}.
    * @param pId The {@link Identifier}.
-   * @param pOutlineUnbound The {@link OutlineUnbound}.
    */
-  public final void find ( Expression pExpression , String pId ,
-      OutlineUnbound pOutlineUnbound )
+  public final void find ( Expression pExpression , String pId )
   {
     this.expression = pExpression ;
     this.identifier = pId ;
-    this.outlineUnbound = pOutlineUnbound ;
     findExpression ( this.expression ) ;
   }
 
@@ -312,7 +302,6 @@ public final class OutlineBinding
     if ( pIdentifier.getName ( ).equals ( this.identifier ) )
     {
       this.list.add ( pIdentifier ) ;
-      this.outlineUnbound.remove ( pIdentifier ) ;
       pIdentifier.boundedExpression ( this.boundedExpression ) ;
       pIdentifier.boundedStart ( this.boundedStart ) ;
       pIdentifier.boundedEnd ( this.boundedEnd ) ;

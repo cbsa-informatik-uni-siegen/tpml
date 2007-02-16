@@ -156,7 +156,7 @@ public final class AbstractOutline implements Outline
     OutlineBinding outlineBinding = new OutlineBinding ( pExpression ,
         outlinePairId.getStart ( ) , outlinePairId.getEnd ( ) , 0 ) ;
     outlineBinding.find ( pExpression.getE2 ( ) , pExpression
-        .getIdentifiers ( 0 ) , this.outlineUnbound ) ;
+        .getIdentifiers ( 0 ) ) ;
     OutlineNode outlineNode = new OutlineNode ( IDENTIFIER , pExpression
         .getIdentifiers ( 0 ) , outlinePairId , outlineBinding ,
         this.outlineUnbound ) ;
@@ -191,7 +191,7 @@ public final class AbstractOutline implements Outline
       if ( hasBinding )
       {
         outlineBinding.find ( pExpression.getE1 ( ) , pExpression
-            .getIdentifiers ( i ) , this.outlineUnbound ) ;
+            .getIdentifiers ( i ) ) ;
       }
       else
       {
@@ -293,10 +293,10 @@ public final class AbstractOutline implements Outline
     if ( searchInE1 )
     {
       outlineBinding.find ( pExpression.getE1 ( ) , pExpression
-          .getIdentifiers ( 0 ) , this.outlineUnbound ) ;
+          .getIdentifiers ( 0 ) ) ;
     }
     outlineBinding.find ( pExpression.getE2 ( ) , pExpression
-        .getIdentifiers ( 0 ) , this.outlineUnbound ) ;
+        .getIdentifiers ( 0 ) ) ;
     OutlineNode outlineNode = new OutlineNode ( IDENTIFIER , pExpression
         .getIdentifiers ( 0 ) , outlinePairId , outlineBinding ,
         this.outlineUnbound ) ;
@@ -327,7 +327,7 @@ public final class AbstractOutline implements Outline
       if ( hasBinding )
       {
         outlineBinding.find ( pExpression.getE1 ( ) , pExpression
-            .getIdentifiers ( i ) , this.outlineUnbound ) ;
+            .getIdentifiers ( i ) ) ;
       }
       else
       {
@@ -444,7 +444,7 @@ public final class AbstractOutline implements Outline
       if ( hasBinding )
       {
         outlineBinding.find ( pExpression.getE ( ) , pExpression
-            .getIdentifiers ( i ) , this.outlineUnbound ) ;
+            .getIdentifiers ( i ) ) ;
       }
       else
       {
@@ -684,8 +684,7 @@ public final class AbstractOutline implements Outline
         PrettyStyle.IDENTIFIER ).get ( 0 ) ;
     OutlineBinding outlineBinding = new OutlineBinding ( pExpression ,
         outlinePairId.getStart ( ) , outlinePairId.getEnd ( ) , 0 ) ;
-    outlineBinding.find ( pExpression.getE ( ) , pExpression.getId ( ) ,
-        this.outlineUnbound ) ;
+    outlineBinding.find ( pExpression.getE ( ) , pExpression.getId ( ) ) ;
     OutlineNode outlineNode = new OutlineNode ( IDENTIFIER , pExpression
         .getId ( ) , outlinePairId , outlineBinding , this.outlineUnbound ) ;
     outlineNode.setChildIndexIdentifier ( ) ;
@@ -730,8 +729,7 @@ public final class AbstractOutline implements Outline
         PrettyStyle.IDENTIFIER ).get ( 0 ) ;
     OutlineBinding outlineBinding = new OutlineBinding ( pExpression ,
         outlinePairId.getStart ( ) , outlinePairId.getEnd ( ) , 0 ) ;
-    outlineBinding.find ( pExpression.getE2 ( ) , pExpression.getId ( ) ,
-        this.outlineUnbound ) ;
+    outlineBinding.find ( pExpression.getE2 ( ) , pExpression.getId ( ) ) ;
     OutlineNode outlineNode = new OutlineNode ( IDENTIFIER , pExpression
         .getId ( ) , outlinePairId , outlineBinding , this.outlineUnbound ) ;
     outlineNode.setChildIndexIdentifier ( ) ;
@@ -776,10 +774,8 @@ public final class AbstractOutline implements Outline
         PrettyStyle.IDENTIFIER ).get ( 0 ) ;
     OutlineBinding outlineBinding = new OutlineBinding ( pExpression ,
         outlinePairId.getStart ( ) , outlinePairId.getEnd ( ) , 0 ) ;
-    outlineBinding.find ( pExpression.getE1 ( ) , pExpression.getId ( ) ,
-        this.outlineUnbound ) ;
-    outlineBinding.find ( pExpression.getE2 ( ) , pExpression.getId ( ) ,
-        this.outlineUnbound ) ;
+    outlineBinding.find ( pExpression.getE1 ( ) , pExpression.getId ( ) ) ;
+    outlineBinding.find ( pExpression.getE2 ( ) , pExpression.getId ( ) ) ;
     OutlineNode outlineNode = new OutlineNode ( IDENTIFIER , pExpression
         .getId ( ) , outlinePairId , outlineBinding , this.outlineUnbound ) ;
     outlineNode.setChildIndexIdentifier ( ) ;
@@ -926,7 +922,7 @@ public final class AbstractOutline implements Outline
       if ( hasBinding )
       {
         outlineBinding.find ( pExpression.getE ( ) , pExpression
-            .getIdentifiers ( i ) , this.outlineUnbound ) ;
+            .getIdentifiers ( i ) ) ;
       }
       else
       {
@@ -1006,7 +1002,7 @@ public final class AbstractOutline implements Outline
       if ( hasBinding )
       {
         outlineBinding.find ( pExpression.getE2 ( ) , pExpression
-            .getIdentifiers ( i ) , this.outlineUnbound ) ;
+            .getIdentifiers ( i ) ) ;
       }
       else
       {
@@ -1073,8 +1069,7 @@ public final class AbstractOutline implements Outline
       {
         if ( ! equalIdFound )
         {
-          outlineBinding.find ( expr , pExpression.getId ( ) ,
-              this.outlineUnbound ) ;
+          outlineBinding.find ( expr , pExpression.getId ( ) ) ;
         }
       }
     }
@@ -1124,8 +1119,7 @@ public final class AbstractOutline implements Outline
         PrettyStyle.IDENTIFIER ).get ( 0 ) ;
     OutlineBinding outlineBinding = new OutlineBinding ( pExpression ,
         outlinePairId.getStart ( ) , outlinePairId.getEnd ( ) , 0 ) ;
-    outlineBinding.find ( pExpression.getE ( ) , pExpression.getId ( ) ,
-        this.outlineUnbound ) ;
+    outlineBinding.find ( pExpression.getE ( ) , pExpression.getId ( ) ) ;
     OutlineNode outlineNode = new OutlineNode ( IDENTIFIER , id ,
         outlinePairId , outlineBinding , this.outlineUnbound ) ;
     outlineNode.setChildIndexIdentifier ( ) ;
@@ -1183,8 +1177,7 @@ public final class AbstractOutline implements Outline
           Expression tmpChild = pExpression.getExpressions ( j ) ;
           if ( ! ( tmpChild instanceof Attribute ) )
           {
-            outlineBinding.find ( tmpChild , attribute.getId ( ) ,
-                this.outlineUnbound ) ;
+            outlineBinding.find ( tmpChild , attribute.getId ( ) ) ;
           }
           if ( ( tmpChild instanceof Attribute )
               && ( ( ( Attribute ) tmpChild ).getId ( ).equals ( attribute
@@ -1290,8 +1283,7 @@ public final class AbstractOutline implements Outline
    */
   public final void execute ( )
   {
-    this.outlineUnbound = new OutlineUnbound ( ) ;
-    findAllIdentifiers ( this.loadedExpression ) ;
+    this.outlineUnbound = new OutlineUnbound ( this.loadedExpression ) ;
     DefaultMutableTreeNode rootNode = checkExpression ( this.loadedExpression ) ;
     OutlineNode outlineNode = ( OutlineNode ) rootNode.getUserObject ( ) ;
     outlineNode.setChildIndexExpression ( ) ;
@@ -1323,28 +1315,6 @@ public final class AbstractOutline implements Outline
   {
     this.outlineTimer = new Timer ( ) ;
     this.outlineTimer.schedule ( new OutlineTimerTask ( this ) , 250 ) ;
-  }
-
-
-  /**
-   * Finds all {@link Identifier}s and adds them to the {@link OutlineUnbound}.
-   * 
-   * @param pExpression The {@link Expression} in which should be searched.
-   */
-  private final void findAllIdentifiers ( Expression pExpression )
-  {
-    if ( pExpression instanceof Identifier )
-    {
-      this.outlineUnbound.add ( ( Identifier ) pExpression ) ;
-    }
-    else
-    {
-      Enumeration < Expression > children = pExpression.children ( ) ;
-      while ( children.hasMoreElements ( ) )
-      {
-        findAllIdentifiers ( children.nextElement ( ) ) ;
-      }
-    }
   }
 
 
