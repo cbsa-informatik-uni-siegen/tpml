@@ -1,0 +1,1 @@
+object (self) val a = 1 ; method test = self {< a = object (id) method a = id {< a = a >} ; end >} ; val a = 2 ; end

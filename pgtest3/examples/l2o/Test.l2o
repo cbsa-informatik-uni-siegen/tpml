@@ -1,1 +1,1 @@
-(object (self) method test2 = 3 ; end) # tes
+object (self) val a = 1 ; method test = self {< a = (let a = a in a) >} ; val a = 2 ; end
