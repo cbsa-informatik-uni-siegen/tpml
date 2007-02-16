@@ -6,7 +6,6 @@ import de.unisiegen.tpml.core.expressions.CurriedMethod ;
 import de.unisiegen.tpml.core.expressions.Duplication ;
 import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.expressions.Identifier ;
-import de.unisiegen.tpml.core.expressions.Lambda ;
 import de.unisiegen.tpml.core.expressions.Message ;
 import de.unisiegen.tpml.core.expressions.Method ;
 import de.unisiegen.tpml.core.expressions.ObjectExpr ;
@@ -31,20 +30,20 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
   public L2OSmallStepProofRuleSet ( L2OLanguage pL2OLanguage )
   {
     super ( pL2OLanguage ) ;
+    // Attr
+    register ( L2OLanguage.L2O , "ATTR-EVAL" , false ) ; //$NON-NLS-1$
+    register ( L2OLanguage.L2O , "ATTR-RENAME" , true ) ; //$NON-NLS-1$
+    register ( L2OLanguage.L2O , "ATTR-RIGHT" , false ) ; //$NON-NLS-1$
+    // Meth
+    register ( L2OLanguage.L2O , "METH-RIGHT" , false ) ; //$NON-NLS-1$
     // Obj
     register ( L2OLanguage.L2O , "OBJ-EVAL" , false ) ; //$NON-NLS-1$
     register ( L2OLanguage.L2O , "OBJ-UNFOLD" , true ) ; //$NON-NLS-1$
-    // Attribute
-    register ( L2OLanguage.L2O , "ATTR-EVAL" , false ) ; //$NON-NLS-1$
-    register ( L2OLanguage.L2O , "ATTR-RIGHT" , false ) ; //$NON-NLS-1$
-    register ( L2OLanguage.L2O , "ATTR-RENAME" , true ) ; //$NON-NLS-1$
-    // Method
-    register ( L2OLanguage.L2O , "METH-RIGHT" , false ) ; //$NON-NLS-1$
     // Send
-    register ( L2OLanguage.L2O , "SEND-EVAL" , false ) ; //$NON-NLS-1$  
     register ( L2OLanguage.L2O , "SEND-ATTR" , true ) ; //$NON-NLS-1$
     register ( L2OLanguage.L2O , "SEND-SKIP" , true ) ; //$NON-NLS-1$
     register ( L2OLanguage.L2O , "SEND-EXEC" , true ) ; //$NON-NLS-1$
+    register ( L2OLanguage.L2O , "SEND-EVAL" , false ) ; //$NON-NLS-1$  
     // Dupl
     register ( L2OLanguage.L2O , "DUPL-EVAL" , false ) ; //$NON-NLS-1$  
     register ( L2OLanguage.L2O , "DUPL-EXEC" , true ) ; //$NON-NLS-1$
@@ -61,6 +60,9 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
   public Expression evaluateObjectExpr ( SmallStepProofContext pContext ,
       ObjectExpr pObjectExpr )
   {
+    /*
+     * If the Expression is an ObjectExpr, we can only perform OBJ-EVAL.
+     */
     pContext.addProofStep ( getRuleByName ( "OBJ-EVAL" ) , pObjectExpr ) ; //$NON-NLS-1$
     Expression row = evaluate ( pContext , pObjectExpr.getE ( ) ) ;
     if ( row.isException ( ) )
@@ -84,7 +86,10 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
   {
     if ( ! pMessage.getE ( ).isValue ( ) )
     {
-      // SEND-EVAL
+      /*
+       * If the child Expression of the Message is not yet a value, we have to
+       * perform SEND-EVAL.
+       */
       pContext.addProofStep ( getRuleByName ( "SEND-EVAL" ) , pMessage ) ; //$NON-NLS-1$
       Expression expr = evaluate ( pContext , pMessage.getE ( ) ) ;
       if ( expr.isException ( ) )
@@ -95,7 +100,10 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
     }
     else if ( pMessage.getE ( ) instanceof ObjectExpr )
     {
-      // OBJ-UNFOLD
+      /*
+       * If the child Expression of the Message is an ObjectExpr and the
+       * ObjectExpr is a Value, we have to perform OBJ-UNFOLD.
+       */
       pContext.addProofStep ( getRuleByName ( "OBJ-UNFOLD" ) , pMessage ) ; //$NON-NLS-1$
       ObjectExpr objectExpr = ( ObjectExpr ) pMessage.getE ( ) ;
       Row row = objectExpr.getE ( ) ;
@@ -105,10 +113,10 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
     }
     else if ( pMessage.getE ( ) instanceof Row )
     {
-      Row row = ( Row ) pMessage.getE ( ) ;
       /*
-       * If the row has zero children it gets stuck.
+       * If the Row has zero children the Expression gets stuck.
        */
+      Row row = ( Row ) pMessage.getE ( ) ;
       if ( row.getExpressions ( ).length == 0 )
       {
         return pMessage ;
@@ -116,7 +124,10 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
       Expression firstRowChild = row.getExpressions ( 0 ) ;
       if ( firstRowChild instanceof Attribute )
       {
-        // SEND-ATTR
+        /*
+         * If the child Expression of the Message is a Row and the first child
+         * Expression of the Row is an Attribute, we have to perform SEND-ATTR.
+         */
         Attribute attribute = ( Attribute ) row.getExpressions ( 0 ) ;
         pContext.addProofStep ( getRuleByName ( "SEND-ATTR" ) , attribute ) ; //$NON-NLS-1$
         Expression [ ] newRowE = new Expression [ row.getExpressions ( ).length - 1 ] ;
@@ -127,91 +138,69 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
         }
         return new Message ( new Row ( newRowE ) , pMessage.getId ( ) ) ;
       }
-      else if ( firstRowChild instanceof Method )
+      // Method or CurriedMethod
+      String id ;
+      Expression methE ;
+      if ( firstRowChild instanceof Method )
       {
-        Method meth = ( Method ) row.getExpressions ( 0 ) ;
-        if ( pMessage.getId ( ).equals ( meth.getId ( ) ) )
-        {
-          // SEND-EXEC
-          boolean definedLater = false ;
-          for ( int i = 1 ; i < row.getExpressions ( ).length ; i ++ )
-          {
-            Expression tmp = row.getExpressions ( i ) ;
-            if ( ( tmp instanceof Method )
-                && ( ( ( Method ) tmp ).getId ( ).equals ( pMessage.getId ( ) ) ) )
-            {
-              definedLater = true ;
-              break ;
-            }
-            if ( ( tmp instanceof CurriedMethod )
-                && ( ( ( CurriedMethod ) tmp ).getIdentifiers ( 0 )
-                    .equals ( pMessage.getId ( ) ) ) )
-            {
-              definedLater = true ;
-              break ;
-            }
-          }
-          if ( ! definedLater )
-          {
-            pContext.addProofStep ( getRuleByName ( "SEND-EXEC" ) , meth ) ; //$NON-NLS-1$
-            return meth.getE ( ) ;
-          }
-        }
-        // SEND-SKIP
-        pContext.addProofStep ( getRuleByName ( "SEND-SKIP" ) , meth ) ; //$NON-NLS-1$
-        Expression [ ] newRowE = new Expression [ row.getExpressions ( ).length - 1 ] ;
-        for ( int i = 0 ; i < newRowE.length ; i ++ )
-        {
-          newRowE [ i ] = row.getExpressions ( i + 1 ).clone ( ) ;
-        }
-        return new Message ( new Row ( newRowE ) , pMessage.getId ( ) ) ;
+        Method method = ( Method ) firstRowChild ;
+        id = method.getId ( ) ;
+        methE = method.getE ( ) ;
       }
-      else if ( firstRowChild instanceof CurriedMethod )
+      else
       {
-        CurriedMethod curriedMeth = ( CurriedMethod ) row.getExpressions ( 0 ) ;
-        if ( pMessage.getId ( ).equals ( curriedMeth.getIdentifiers ( 0 ) ) )
-        {
-          // SEND-EXEC
-          boolean definedLater = false ;
-          for ( int i = 1 ; i < row.getExpressions ( ).length ; i ++ )
-          {
-            Expression tmp = row.getExpressions ( i ) ;
-            if ( ( tmp instanceof Method )
-                && ( ( ( Method ) tmp ).getId ( ).equals ( pMessage.getId ( ) ) ) )
-            {
-              definedLater = true ;
-              break ;
-            }
-            if ( ( tmp instanceof CurriedMethod )
-                && ( ( ( CurriedMethod ) tmp ).getIdentifiers ( 0 )
-                    .equals ( pMessage.getId ( ) ) ) )
-            {
-              definedLater = true ;
-              break ;
-            }
-          }
-          if ( ! definedLater )
-          {
-            pContext
-                .addProofStep ( getRuleByName ( "SEND-EXEC" ) , curriedMeth ) ; //$NON-NLS-1$
-            Expression expr = curriedMeth.getE ( ) ;
-            for ( int i = curriedMeth.getIdentifiers ( ).length - 1 ; i > 0 ; i -- )
-            {
-              expr = new Lambda ( curriedMeth.getIdentifiers ( i ) ,
-                  curriedMeth.getTypes ( i ) , expr ) ;
-            }
-            return expr ;
-          }
-        }
-        // SEND-SKIP
-        pContext.addProofStep ( getRuleByName ( "SEND-SKIP" ) , curriedMeth ) ; //$NON-NLS-1$
-        Expression [ ] newRowE = new Expression [ row.getExpressions ( ).length - 1 ] ;
-        for ( int i = 0 ; i < newRowE.length ; i ++ )
-        {
-          newRowE [ i ] = row.getExpressions ( i + 1 ).clone ( ) ;
-        }
-        return new Message ( new Row ( newRowE ) , pMessage.getId ( ) ) ;
+        CurriedMethod curriedMethod = ( CurriedMethod ) firstRowChild ;
+        id = curriedMethod.getIdentifiers ( 0 ) ;
+        methE = curriedMethod.getE ( ) ;
       }
+      if ( pMessage.getId ( ).equals ( id ) )
+      {
+        /*
+         * If the child Expression of the Message is a Row, the first child
+         * Expression of the Row is a (Curried-)Method, the Identifier of the
+         * Message is equal to the Identifier of the (Curried-)Method and there
+         * is no (Curried-)Method with the same Identifier in the rest of the
+         * Row, we have to perform SEND-EXEC.
+         */
+        boolean definedLater = false ;
+        for ( int i = 1 ; i < row.getExpressions ( ).length ; i ++ )
+        {
+          Expression tmp = row.getExpressions ( i ) ;
+          if ( ( tmp instanceof Method )
+              && ( ( ( Method ) tmp ).getId ( ).equals ( pMessage.getId ( ) ) ) )
+          {
+            definedLater = true ;
+            break ;
+          }
+          else if ( ( tmp instanceof CurriedMethod )
+              && ( ( ( CurriedMethod ) tmp ).getIdentifiers ( 0 )
+                  .equals ( pMessage.getId ( ) ) ) )
+          {
+            definedLater = true ;
+            break ;
+          }
+        }
+        if ( ! definedLater )
+        {
+          pContext
+              .addProofStep ( getRuleByName ( "SEND-EXEC" ) , firstRowChild ) ; //$NON-NLS-1$
+          return methE ;
+        }
+      }
+      /*
+       * If the child Expression of the Message is a Row, the first child
+       * Expression of the Row is a (Curried-)Method, the Identifier of the
+       * Message is not equal to the Identifier of the (Curried-)Method or there
+       * is a (Curried-)Method with the same Identifier in the rest of the Row,
+       * we have to perform SEND-SKIP.
+       */
+      pContext.addProofStep ( getRuleByName ( "SEND-SKIP" ) , firstRowChild ) ; //$NON-NLS-1$
+      Expression [ ] newRowE = new Expression [ row.getExpressions ( ).length - 1 ] ;
+      for ( int i = 0 ; i < newRowE.length ; i ++ )
+      {
+        newRowE [ i ] = row.getExpressions ( i + 1 ).clone ( ) ;
+      }
+      return new Message ( new Row ( newRowE ) , pMessage.getId ( ) ) ;
     }
     return pMessage ;
   }
