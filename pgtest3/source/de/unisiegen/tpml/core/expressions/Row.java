@@ -201,9 +201,22 @@ public final class Row extends Expression
 
   /**
    * {@inheritDoc}
+   * 
+   * @see Expression#substitute(String, Expression, boolean)
    */
   @ Override
-  public Row substitute ( String pID , Expression pExpression )
+  public Expression substitute ( String pId , Expression pExpression )
+  {
+    return substitute ( pId , pExpression , false ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   */
+  @ Override
+  public Row substitute ( String pID , Expression pExpression ,
+      boolean pAttributeRename )
   {
     Expression [ ] tmp = this.expressions.clone ( ) ;
     boolean equalIdFound = false ;
@@ -218,7 +231,7 @@ public final class Row extends Expression
         {
           tmp [ i ] = new Attribute ( attribute.getId ( ) ,
               attribute.getTau ( ) , attribute.getE ( ).substitute ( pID ,
-                  pExpression ) ) ;
+                  pExpression , pAttributeRename ) ) ;
           equalIdFound = true ;
         }
         else
@@ -238,13 +251,13 @@ public final class Row extends Expression
             newId = newId + "'" ; //$NON-NLS-1$
           }
           tmp [ i ] = new Attribute ( newId , attribute.getTau ( ) , attribute
-              .getE ( ).substitute ( pID , pExpression ) ) ;
+              .getE ( ).substitute ( pID , pExpression , pAttributeRename ) ) ;
           if ( ! attribute.getId ( ).equals ( newId ) )
           {
             for ( int j = i + 1 ; j < tmp.length ; j ++ )
             {
               tmp [ j ] = tmp [ j ].substitute ( attribute.getId ( ) ,
-                  new Identifier ( newId ) ) ;
+                  new Identifier ( newId ) , pAttributeRename ) ;
             }
           }
         }
@@ -255,7 +268,8 @@ public final class Row extends Expression
         {
           Method method = ( Method ) e ;
           tmp [ i ] = new Method ( method.getId ( ) , method.getTau ( ) ,
-              method.getE ( ).substitute ( pID , pExpression ) ) ;
+              method.getE ( )
+                  .substitute ( pID , pExpression , pAttributeRename ) ) ;
         }
       }
       else if ( e instanceof CurriedMethod )
@@ -265,7 +279,7 @@ public final class Row extends Expression
           CurriedMethod curriedMethod = ( CurriedMethod ) e ;
           tmp [ i ] = new CurriedMethod ( curriedMethod.getIdentifiers ( ) ,
               curriedMethod.getTypes ( ) , curriedMethod.getE ( ).substitute (
-                  pID , pExpression ) ) ;
+                  pID , pExpression , pAttributeRename ) ) ;
         }
       }
     }

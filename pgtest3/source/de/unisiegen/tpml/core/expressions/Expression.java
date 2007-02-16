@@ -23,7 +23,7 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
  * @author Benedikt Meurer
  * @author Christian Fehler
  * @version $Rev:1053 $
- * @see de.unisiegen.tpml.core.prettyprinter.PrettyPrintable
+ * @see PrettyPrintable
  */
 public abstract class Expression implements Cloneable , PrettyPrintable ,
     PrettyPrintPriorities
@@ -45,11 +45,11 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
     /**
      * Adds the Expression.
      * 
-     * @param expression The new Expression.
+     * @param pExpression The new Expression.
      */
-    LevelOrderEnumeration ( Expression expression )
+    LevelOrderEnumeration ( Expression pExpression )
     {
-      this.queue.add ( expression ) ;
+      this.queue.add ( pExpression ) ;
     }
 
 
@@ -57,7 +57,7 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
      * Returns true, if the enumeration has more elements.
      * 
      * @return True, if the enumeration has more elements.
-     * @see java.util.Enumeration#hasMoreElements()
+     * @see Enumeration#hasMoreElements()
      */
     public boolean hasMoreElements ( )
     {
@@ -69,7 +69,7 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
      * Returns the next element.
      * 
      * @return The next element.
-     * @see java.util.Enumeration#nextElement()
+     * @see Enumeration#nextElement()
      */
     public Expression nextElement ( )
     {
@@ -80,9 +80,6 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
   }
 
 
-  //
-  // Introspections
-  //
   /**
    * Cached vector of sub expressions, so the children do not need to be
    * determined on every invocation of {@link #children()}.
@@ -141,9 +138,6 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
   }
 
 
-  //
-  // Primitives
-  //
   /**
    * Clones this expression, so that the result is an expression equal to this
    * expression, but with a different object identity. This is used in the
@@ -192,16 +186,13 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
   }
 
 
-  //
-  // Base methods
-  //
   /**
    * {@inheritDoc}
    * 
-   * @see java.lang.Object#equals(java.lang.Object)
+   * @see Object#equals(Object)
    */
   @ Override
-  public abstract boolean equals ( Object obj ) ;
+  public abstract boolean equals ( Object pObject ) ;
 
 
   /**
@@ -239,7 +230,7 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
   /**
    * {@inheritDoc}
    * 
-   * @see java.lang.Object#hashCode()
+   * @see Object#hashCode()
    */
   @ Override
   public abstract int hashCode ( ) ;
@@ -280,9 +271,6 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
   }
 
 
-  //
-  // Expression Tree Traversal
-  //
   /**
    * Returns an {@link Enumeration} that enumerates the expression within the
    * expression hierarchy starting at this expression in level order (that is
@@ -304,13 +292,32 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
    * if no substitution took place, the same object. The method operates
    * recursively.
    * 
-   * @param id the name of the identifier.
-   * @param e the <code>Expression</code> to substitute.
+   * @param pId the name of the identifier.
+   * @param pExpression the <code>Expression</code> to substitute.
    * @return the resulting expression.
    * @throws NullPointerException if <code>id</code> or </code>e</code> is
    *           <code>null</code>.
    */
-  public abstract Expression substitute ( String id , Expression e ) ;
+  public abstract Expression substitute ( String pId , Expression pExpression ) ;
+
+
+  /**
+   * Substitutes the expression <code>e</code> for the identifier
+   * <code>id</code> in this expression, and returns the resulting expression.
+   * The resulting expression may be a new <code>Expression</code> object or
+   * if no substitution took place, the same object. The method operates
+   * recursively.
+   * 
+   * @param pId the name of the identifier.
+   * @param pExpression the <code>Expression</code> to substitute.
+   * @param pAttributeRename False, if a normal substitution should be
+   *          performed. True if a attribute rename should be performed.
+   * @return the resulting expression.
+   * @throws NullPointerException if <code>id</code> or </code>e</code> is
+   *           <code>null</code>.
+   */
+  public abstract Expression substitute ( String pId , Expression pExpression ,
+      boolean pAttributeRename ) ;
 
 
   /**
@@ -319,38 +326,22 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
    * with the new types. If the expression does not contain any types, this
    * method simply returns a reference to this expression.
    * 
-   * @param substitution the type substitution to apply.
+   * @param pTypeSubstitution the type substitution to apply.
    * @return the resulting expression.
    * @throws NullPointerException if <code>substitution</code> is
    *           <code>null</code>.
    */
   public Expression substitute ( @ SuppressWarnings ( "unused" )
-  TypeSubstitution substitution )
+  TypeSubstitution pTypeSubstitution )
   {
     return this ;
   }
 
 
   /**
-   * TODO
-   * 
-   * @param pID TODO
-   * @param pExpression TODO
-   * @return TODO
-   */
-  public Expression substituteAttr ( String pID , Expression pExpression )
-  {
-    return substitute ( pID , pExpression ) ;
-  }
-
-
-  //
-  // Pretty printing
-  //
-  /**
    * {@inheritDoc}
    * 
-   * @see de.unisiegen.tpml.core.prettyprinter.PrettyPrintable#toPrettyString()
+   * @see PrettyPrintable#toPrettyString()
    */
   public final PrettyString toPrettyString ( )
   {
@@ -365,15 +356,16 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
    * <code>factory</code>, which is currently always the default factory, but
    * may also be another factory in the future.
    * 
-   * @param factory the {@link PrettyStringBuilderFactory} used to allocate the
-   *          required pretty string builders to pretty print this expression.
+   * @param pPrettyStringBuilderFactory the {@link PrettyStringBuilderFactory}
+   *          used to allocate the required pretty string builders to pretty
+   *          print this expression.
    * @return the pretty string builder used to pretty print this expression.
    * @see #toPrettyString()
    * @see PrettyStringBuilder
    * @see PrettyStringBuilderFactory
    */
   public abstract PrettyStringBuilder toPrettyStringBuilder (
-      PrettyStringBuilderFactory factory ) ;
+      PrettyStringBuilderFactory pPrettyStringBuilderFactory ) ;
 
 
   /**
@@ -382,7 +374,7 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
    * 
    * @return the pretty printed string representation for this expression.
    * @see #toPrettyString()
-   * @see java.lang.Object#toString()
+   * @see Object#toString()
    */
   @ Override
   public String toString ( )

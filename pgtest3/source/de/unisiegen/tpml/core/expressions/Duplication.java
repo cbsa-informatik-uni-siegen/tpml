@@ -13,6 +13,7 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
  * TODO
  * 
  * @author Christian Fehler
+ * @author Christian Fehler
  * @version $Rev: 1066 $
  */
 public final class Duplication extends Expression
@@ -244,17 +245,13 @@ public final class Duplication extends Expression
 
   /**
    * {@inheritDoc}
+   * 
+   * @see Expression#substitute(String, Expression, boolean)
    */
   @ Override
-  public Duplication substitute ( String pID , Expression pExpression )
+  public Expression substitute ( String pId , Expression pExpression )
   {
-    Expression [ ] tmp = new Expression [ this.expressions.length ] ;
-    for ( int n = 0 ; n < tmp.length ; ++ n )
-    {
-      tmp [ n ] = this.expressions [ n ].substitute ( pID , pExpression ) ;
-    }
-    return new Duplication ( this.expression.substitute ( pID , pExpression ) ,
-        this.identifiers , tmp ) ;
+    return substitute ( pId , pExpression , false ) ;
   }
 
 
@@ -262,7 +259,32 @@ public final class Duplication extends Expression
    * {@inheritDoc}
    */
   @ Override
-  public Duplication substituteAttr ( String pID , Expression pExpression )
+  public Duplication substitute ( String pID , Expression pExpression ,
+      boolean pAttributeRename )
+  {
+    if ( pAttributeRename == true )
+    {
+      return substituteAttribute ( pID , pExpression ) ;
+    }
+    Expression [ ] newExpr = new Expression [ this.expressions.length ] ;
+    for ( int n = 0 ; n < newExpr.length ; ++ n )
+    {
+      newExpr [ n ] = this.expressions [ n ].substitute ( pID , pExpression ,
+          pAttributeRename ) ;
+    }
+    return new Duplication ( this.expression.substitute ( pID , pExpression ,
+        pAttributeRename ) , this.identifiers , newExpr ) ;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @param pID TODO
+   * @param pExpression TODO
+   * @return TODO
+   */
+  private Duplication substituteAttribute ( String pID , Expression pExpression )
   {
     Expression [ ] newExpr = new Expression [ this.expressions.length ] ;
     String [ ] newId = this.identifiers.clone ( ) ;
@@ -273,10 +295,11 @@ public final class Duplication extends Expression
       {
         newId [ i ] = ( ( Identifier ) pExpression ).getName ( ) ;
       }
-      newExpr [ i ] = this.expressions [ i ].substitute ( pID , pExpression ) ;
+      newExpr [ i ] = this.expressions [ i ].substitute ( pID , pExpression ,
+          true ) ;
     }
-    return new Duplication ( this.expression.substitute ( pID , pExpression ) ,
-        newId , newExpr ) ;
+    return new Duplication ( this.expression.substitute ( pID , pExpression ,
+        true ) , newId , newExpr ) ;
   }
 
 

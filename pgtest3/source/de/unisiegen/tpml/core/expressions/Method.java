@@ -154,12 +154,25 @@ public class Method extends Expression
 
   /**
    * {@inheritDoc}
+   * 
+   * @see Expression#substitute(String, Expression, boolean)
    */
   @ Override
-  public Method substitute ( String pID , Expression pExpression )
+  public Expression substitute ( String pId , Expression pExpression )
   {
-    return new Method ( this.identifier , this.tau , this.expression.substitute (
-        pID , pExpression ) ) ;
+    return substitute ( pId , pExpression , false ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   */
+  @ Override
+  public Method substitute ( String pID , Expression pExpression ,
+      boolean pAttributeRename )
+  {
+    return new Method ( this.identifier , this.tau , this.expression
+        .substitute ( pID , pExpression , pAttributeRename ) ) ;
   }
 
 
@@ -173,17 +186,6 @@ public class Method extends Expression
         .substitute ( pTypeSubstitution ) : null ;
     return new Method ( this.identifier , tmp , this.expression
         .substitute ( pTypeSubstitution ) ) ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   */
-  @ Override
-  public Method substituteAttr ( String pID , Expression pExpression )
-  {
-    return new Method ( this.identifier , this.tau , this.expression
-        .substituteAttr ( pID , pExpression ) ) ;
   }
 
 

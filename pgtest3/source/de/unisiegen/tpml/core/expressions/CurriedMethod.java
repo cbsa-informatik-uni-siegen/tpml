@@ -83,8 +83,8 @@ public class CurriedMethod extends Expression
   @ Override
   public CurriedMethod clone ( )
   {
-    return new CurriedMethod ( this.identifiers.clone ( ) , this.types.clone ( ) ,
-        this.expression.clone ( ) ) ;
+    return new CurriedMethod ( this.identifiers.clone ( ) ,
+        this.types.clone ( ) , this.expression.clone ( ) ) ;
   }
 
 
@@ -220,12 +220,25 @@ public class CurriedMethod extends Expression
 
   /**
    * {@inheritDoc}
+   * 
+   * @see Expression#substitute(String, Expression, boolean)
    */
   @ Override
-  public CurriedMethod substitute ( String pID , Expression pExpression )
+  public Expression substitute ( String pId , Expression pExpression )
+  {
+    return substitute ( pId , pExpression , false ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   */
+  @ Override
+  public CurriedMethod substitute ( String pID , Expression pExpression ,
+      boolean pAttributeRename )
   {
     return new CurriedMethod ( this.identifiers , this.types , this.expression
-        .substitute ( pID , pExpression ) ) ;
+        .substitute ( pID , pExpression , pAttributeRename ) ) ;
   }
 
 

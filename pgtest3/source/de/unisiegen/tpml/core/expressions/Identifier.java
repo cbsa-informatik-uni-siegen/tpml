@@ -265,17 +265,29 @@ public class Identifier extends Value
 
 
   /**
+   * {@inheritDoc}
+   * 
+   * @see Expression#substitute(String, Expression, boolean)
+   */
+  @ Override
+  public Expression substitute ( String pId , Expression pExpression )
+  {
+    return substitute ( pId , pExpression , false ) ;
+  }
+
+
+  /**
    * Returns <code>e</code> if <code>id</code> equals the name of the
    * identifier. Else the identifier itself is returned.
    * 
    * @return <code>e</code> if <code>id</code> equals the name of the
    *         identifier, else the identifier itself.
    * @see #getName()
-   * @see de.unisiegen.tpml.core.expressions.Expression#substitute(java.lang.String,
-   *      de.unisiegen.tpml.core.expressions.Expression)
    */
   @ Override
-  public Expression substitute ( String id , Expression e )
+  public Expression substitute ( String id , Expression e ,
+      @ SuppressWarnings ( "unused" )
+      boolean pAttributeRename )
   {
     if ( id.equals ( getName ( ) ) )
     {

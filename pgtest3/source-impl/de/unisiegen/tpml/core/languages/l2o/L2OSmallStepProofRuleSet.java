@@ -373,36 +373,9 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
             {
               break ;
             }
-            // Method
-            if ( tmp [ j ] instanceof Method )
-            {
-              Method method = ( Method ) tmp [ j ] ;
-              if ( method.getE ( ) instanceof Duplication )
-              {
-                tmp [ j ] = method.substituteAttr ( attribute.getId ( ) ,
-                    new Identifier ( newId ) ) ;
-              }
-              else
-              {
-                tmp [ j ] = method.substitute ( attribute.getId ( ) ,
-                    new Identifier ( newId ) ) ;
-              }
-            }
-            // CurriedMethod
-            else if ( tmp [ j ] instanceof CurriedMethod )
-            {
-              CurriedMethod curriedMethod = ( CurriedMethod ) tmp [ j ] ;
-              if ( curriedMethod.getE ( ) instanceof Duplication )
-              {
-                tmp [ j ] = curriedMethod.substituteAttr ( attribute.getId ( ) ,
-                    new Identifier ( newId ) ) ;
-              }
-              else
-              {
-                tmp [ j ] = curriedMethod.substitute ( attribute.getId ( ) ,
-                    new Identifier ( newId ) ) ;
-              }
-            }
+            // Method or CurriedMethod
+            tmp [ j ] = tmp [ j ].substitute ( attribute.getId ( ) ,
+                new Identifier ( newId ) , true ) ;
           }
           return new Row ( tmp ) ;
         }

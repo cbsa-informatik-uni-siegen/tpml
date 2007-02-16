@@ -130,12 +130,25 @@ public final class Message extends Expression
 
   /**
    * {@inheritDoc}
+   * 
+   * @see Expression#substitute(String, Expression, boolean)
    */
   @ Override
-  public Message substitute ( String pID , Expression pExpression )
+  public Expression substitute ( String pId , Expression pExpression )
   {
-    return new Message ( this.expression.substitute ( pID , pExpression ) ,
-        this.identifier ) ;
+    return substitute ( pId , pExpression , false ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   */
+  @ Override
+  public Message substitute ( String pID , Expression pExpression ,
+      boolean pAttributeRename )
+  {
+    return new Message ( this.expression.substitute ( pID , pExpression ,
+        pAttributeRename ) , this.identifier ) ;
   }
 
 

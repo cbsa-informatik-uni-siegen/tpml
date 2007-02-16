@@ -177,9 +177,23 @@ public final class ObjectExpr extends Expression
 
   /**
    * {@inheritDoc}
+   * 
+   * @see Expression#substitute(String, Expression, boolean)
    */
   @ Override
-  public ObjectExpr substitute ( String pID , Expression pExpression )
+  public Expression substitute ( String pId , Expression pExpression )
+  {
+    return substitute ( pId , pExpression , false ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   */
+  @ Override
+  public ObjectExpr substitute ( String pID , Expression pExpression ,
+      @ SuppressWarnings ( "unused" )
+      boolean pAttributeRename )
   {
     if ( this.identifier.equals ( pID ) )
     {
@@ -189,7 +203,7 @@ public final class ObjectExpr extends Expression
       {
         if ( newRowE [ i ] instanceof Attribute )
         {
-          newRowE [ i ] = newRowE [ i ].substitute ( pID , pExpression ) ;
+          newRowE [ i ] = newRowE [ i ].substitute ( pID , pExpression , false ) ;
         }
       }
       return new ObjectExpr ( this.identifier , this.tau , new Row ( newRowE ) ) ;
@@ -206,10 +220,11 @@ public final class ObjectExpr extends Expression
     Row newRow = this.expression ;
     if ( ! newID.equals ( this.identifier ) )
     {
-      newRow = newRow.substitute ( this.identifier , new Identifier ( newID ) ) ;
+      newRow = newRow.substitute ( this.identifier , new Identifier ( newID ) ,
+          false ) ;
     }
     return new ObjectExpr ( newID , this.tau , newRow.substitute ( pID ,
-        pExpression ) ) ;
+        pExpression , false ) ) ;
   }
 
 

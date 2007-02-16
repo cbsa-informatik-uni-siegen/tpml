@@ -155,12 +155,25 @@ public class Attribute extends Expression
 
   /**
    * {@inheritDoc}
+   * 
+   * @see Expression#substitute(String, Expression, boolean)
    */
   @ Override
-  public Attribute substitute ( String pID , Expression pExpression )
+  public Expression substitute ( String pId , Expression pExpression )
+  {
+    return substitute ( pId , pExpression , false ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   */
+  @ Override
+  public Attribute substitute ( String pID , Expression pExpression ,
+      boolean pAttributeRename )
   {
     return new Attribute ( this.identifier , this.tau , this.expression
-        .substitute ( pID , pExpression ) ) ;
+        .substitute ( pID , pExpression , pAttributeRename ) ) ;
   }
 
 
