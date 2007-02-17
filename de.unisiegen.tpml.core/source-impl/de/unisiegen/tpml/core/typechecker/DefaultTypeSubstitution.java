@@ -19,7 +19,7 @@ import de.unisiegen.tpml.core.types.TypeVariable;
  * 
  * @see de.unisiegen.tpml.core.typechecker.TypeSubstitution
  */
-final class DefaultTypeSubstitution implements TypeSubstitution {
+public final class DefaultTypeSubstitution implements TypeSubstitution {
   //
   // Constants
   //
@@ -76,7 +76,7 @@ final class DefaultTypeSubstitution implements TypeSubstitution {
    * 
    * @throws NullPointerException if any of the parameters is <code>null</code>.
    */
-  DefaultTypeSubstitution(TypeVariable tvar, MonoType type) {
+  public DefaultTypeSubstitution(TypeVariable tvar, MonoType type) {
     this(tvar, type, EMPTY_SUBSTITUTION);
   }
   

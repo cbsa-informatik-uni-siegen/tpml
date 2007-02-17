@@ -36,12 +36,12 @@ public final class TypeEquationList {
   /**
    * The first equation in the list.
    */
-  private TypeEquation first;
+  public TypeEquation first;
   
   /**
    * The remaining equations or <code>null</code>.
    */
-  private TypeEquationList remaining;
+  public TypeEquationList remaining;
   
   
   
@@ -109,7 +109,7 @@ public final class TypeEquationList {
    * 
    * @see Equation#substitute(Substitution)
    */
-  TypeEquationList substitute(TypeSubstitution s) {
+  public TypeEquationList substitute(TypeSubstitution s) {
     // nothing to substitute on the empty list
     if (this == EMPTY_LIST) {
       return this;
@@ -133,7 +133,7 @@ public final class TypeEquationList {
    * 
    * @throws UnificationException if one of the equations contained within this list could not be unified.
    */
-  DefaultTypeSubstitution unify() throws UnificationException {
+  public DefaultTypeSubstitution unify() throws UnificationException {
     // an empty type equation list is easy to unify
     if (this == EMPTY_LIST) {
     	

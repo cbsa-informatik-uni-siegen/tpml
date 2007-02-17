@@ -50,7 +50,7 @@ public final class UnificationException extends Exception {
    * 
    * @param equation the {@link TypeEquation} that could not be unified.
    */
-  UnificationException(TypeEquation equation) {
+  public UnificationException(TypeEquation equation) {
     super(MessageFormat.format(Messages.getString("UnificationException.0"), equation)); //$NON-NLS-1$
     this.equation = equation;
   }
