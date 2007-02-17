@@ -48,6 +48,10 @@ public class Method extends Expression
    */
   public Method ( String pIdentifier , MonoType pTau , Expression pExpression )
   {
+    if ( pIdentifier == null )
+    {
+      throw new NullPointerException ( "Identifier is null" ) ; //$NON-NLS-1$
+    }
     if ( pExpression == null )
     {
       throw new NullPointerException ( "Expression is null" ) ; //$NON-NLS-1$
@@ -182,9 +186,9 @@ public class Method extends Expression
   @ Override
   public Method substitute ( TypeSubstitution pTypeSubstitution )
   {
-    MonoType tmp = ( this.tau != null ) ? this.tau
-        .substitute ( pTypeSubstitution ) : null ;
-    return new Method ( this.identifier , tmp , this.expression
+    MonoType newTau = ( this.tau == null ) ? null : this.tau
+        .substitute ( pTypeSubstitution ) ;
+    return new Method ( this.identifier , newTau , this.expression
         .substitute ( pTypeSubstitution ) ) ;
   }
 
@@ -197,7 +201,7 @@ public class Method extends Expression
       PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
     PrettyStringBuilder builder = pPrettyStringBuilderFactory.newBuilder (
-        this , PRIO_METH ) ;
+        this , PRIO_METHOD ) ;
     builder.addKeyword ( "method" ) ; //$NON-NLS-1$
     builder.addText ( " " ) ; //$NON-NLS-1$
     builder.addIdentifier ( this.identifier ) ;
@@ -206,11 +210,11 @@ public class Method extends Expression
       builder.addText ( ": " ) ; //$NON-NLS-1$
       builder.addBuilder ( this.tau
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-          PRIO_METH_TAU ) ;
+          PRIO_METHOD_TAU ) ;
     }
     builder.addText ( " = " ) ; //$NON-NLS-1$
     builder.addBuilder ( this.expression
-        .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_METH_E ) ;
+        .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_METHOD_E ) ;
     builder.addText ( " " ) ; //$NON-NLS-1$
     builder.addKeyword ( ";" ) ; //$NON-NLS-1$
     return builder ;

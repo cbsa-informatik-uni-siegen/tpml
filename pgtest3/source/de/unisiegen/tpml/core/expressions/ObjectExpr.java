@@ -22,7 +22,7 @@ public final class ObjectExpr extends Expression
    * 
    * @see #getE()
    */
-  private Row expression ;
+  private Row row ;
 
 
   /**
@@ -46,21 +46,21 @@ public final class ObjectExpr extends Expression
    * 
    * @param pIdentifier TODO
    * @param pTau TODO
-   * @param pExpression TODO
+   * @param pRow TODO
    */
-  public ObjectExpr ( String pIdentifier , MonoType pTau , Row pExpression )
+  public ObjectExpr ( String pIdentifier , MonoType pTau , Row pRow )
   {
     if ( pIdentifier == null )
     {
       throw new NullPointerException ( "Identifier is null" ) ; //$NON-NLS-1$
     }
-    if ( pExpression == null )
+    if ( pRow == null )
     {
       throw new NullPointerException ( "Expression is null" ) ; //$NON-NLS-1$
     }
     this.identifier = pIdentifier ;
     this.tau = pTau ;
-    this.expression = pExpression ;
+    this.row = pRow ;
   }
 
 
@@ -70,8 +70,7 @@ public final class ObjectExpr extends Expression
   @ Override
   public ObjectExpr clone ( )
   {
-    return new ObjectExpr ( this.identifier , this.tau , this.expression
-        .clone ( ) ) ;
+    return new ObjectExpr ( this.identifier , this.tau , this.row.clone ( ) ) ;
   }
 
 
@@ -84,11 +83,10 @@ public final class ObjectExpr extends Expression
     if ( pObject instanceof ObjectExpr )
     {
       ObjectExpr other = ( ObjectExpr ) pObject ;
-      return ( this.expression.equals ( other.expression ) )
+      return ( this.row.equals ( other.row ) )
           && ( ( this.tau == null ) ? ( other.tau == null ) : ( this.tau
               .equals ( other.tau ) )
-              && ( ( this.identifier == null ) ? ( other.identifier == null )
-                  : ( this.identifier.equals ( other.identifier ) ) ) ) ;
+              && ( this.identifier.equals ( other.identifier ) ) ) ;
     }
     return false ;
   }
@@ -101,9 +99,18 @@ public final class ObjectExpr extends Expression
   public Set < String > free ( )
   {
     TreeSet < String > free = new TreeSet < String > ( ) ;
-    free.addAll ( this.expression.free ( ) ) ;
+    /*
+     * Add all free Identifiers of the Row.
+     */
+    free.addAll ( this.row.free ( ) ) ;
+    /*
+     * Remove the Identifier of this ObjectExpr.
+     */
     free.remove ( this.identifier ) ;
-    free.addAll ( this.expression.freeVal ( ) ) ;
+    /*
+     * Add all free Identifiers of all Attributes.
+     */
+    free.addAll ( this.row.freeVal ( ) ) ;
     return free ;
   }
 
@@ -122,11 +129,11 @@ public final class ObjectExpr extends Expression
    * TODO
    * 
    * @return TODO
-   * @see #expression
+   * @see #row
    */
   public Row getE ( )
   {
-    return this.expression ;
+    return this.row ;
   }
 
 
@@ -160,7 +167,7 @@ public final class ObjectExpr extends Expression
   @ Override
   public int hashCode ( )
   {
-    return this.identifier.hashCode ( ) + this.expression.hashCode ( )
+    return this.identifier.hashCode ( ) + this.row.hashCode ( )
         + ( this.tau == null ? 0 : this.tau.hashCode ( ) ) ;
   }
 
@@ -171,7 +178,7 @@ public final class ObjectExpr extends Expression
   @ Override
   public boolean isValue ( )
   {
-    return this.expression.isValue ( ) ;
+    return this.row.isValue ( ) ;
   }
 
 
@@ -195,10 +202,14 @@ public final class ObjectExpr extends Expression
       @ SuppressWarnings ( "unused" )
       boolean pAttributeRename )
   {
+    /*
+     * If the Identifier, which should be substituted, is equal to the
+     * Identifier of this ObjectExpr, it should only be substituted in
+     * Attributes.
+     */
     if ( this.identifier.equals ( pID ) )
     {
-      Row row = this.expression ;
-      Expression [ ] newRowE = row.getExpressions ( ).clone ( ) ;
+      Expression [ ] newRowE = this.row.getExpressions ( ).clone ( ) ;
       for ( int i = 0 ; i < newRowE.length ; i ++ )
       {
         if ( newRowE [ i ] instanceof Attribute )
@@ -211,13 +222,14 @@ public final class ObjectExpr extends Expression
     Set < String > free = this.free ( ) ;
     Set < String > freeE = pExpression.free ( ) ;
     String newID = this.identifier ;
+    // TODO check this
     while ( ( ( newID.equals ( pID ) ) || ( free.contains ( newID ) ) || ( freeE
         .contains ( newID ) ) )
         && ( free.contains ( pID ) ) )
     {
       newID = newID + "'" ; //$NON-NLS-1$
     }
-    Row newRow = this.expression ;
+    Row newRow = this.row ;
     if ( ! newID.equals ( this.identifier ) )
     {
       newRow = newRow.substitute ( this.identifier , new Identifier ( newID ) ,
@@ -237,9 +249,9 @@ public final class ObjectExpr extends Expression
   @ Override
   public ObjectExpr substitute ( TypeSubstitution pTypeSubstitution )
   {
-    MonoType tmp = ( this.tau != null ) ? this.tau
-        .substitute ( pTypeSubstitution ) : null ;
-    return new ObjectExpr ( this.identifier , tmp , this.expression
+    MonoType newTau = ( this.tau == null ) ? null : this.tau
+        .substitute ( pTypeSubstitution ) ;
+    return new ObjectExpr ( this.identifier , newTau , this.row
         .substitute ( pTypeSubstitution ) ) ;
   }
 
@@ -269,7 +281,7 @@ public final class ObjectExpr extends Expression
     }
     builder.addText ( ") " ) ; //$NON-NLS-1$
     builder.addBreak ( ) ;
-    builder.addBuilder ( this.expression
+    builder.addBuilder ( this.row
         .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
         PRIO_OBJECTEXPR_E ) ;
     builder.addText ( " " ) ; //$NON-NLS-1$

@@ -240,120 +240,6 @@ interface PrettyPrintPriorities
 
 
   /**
-   * The pretty print priority for objects.
-   */
-  public static final int PRIO_OBJECTEXPR = 0 ;
-
-
-  /**
-   * The pretty print priority for sub expressions of objects.
-   */
-  public static final int PRIO_OBJECTEXPR_E = 0 ;
-
-
-  /**
-   * The pretty print priority for the type of objects.
-   */
-  public static final int PRIO_OBJECTEXPR_TAU = 0 ;
-
-
-  /**
-   * The pretty print priority for rows.
-   */
-  public static final int PRIO_ROW = 0 ;
-
-
-  /**
-   * The pretty print priority for sub expressions of rows.
-   */
-  public static final int PRIO_ROW_E = 0 ;
-
-
-  /**
-   * The pretty print priority for the first expression of duplication.
-   */
-  public static final int PRIO_DUPLICATION_FIRST_E = 0 ;
-
-
-  /**
-   * The pretty print priority for duplication.
-   */
-  public static final int PRIO_DUPLICATION = 5 ;
-
-
-  /**
-   * The pretty print priority for sub expressions of duplication.
-   */
-  public static final int PRIO_DUPLICATION_E = 1 ;
-
-
-  /**
-   * The pretty print priority for messages.
-   */
-  public static final int PRIO_MESSAGE = 6 ;
-
-
-  /**
-   * The pretty print priority for sub expressions of messages.
-   */
-  public static final int PRIO_MESSAGE_E = 6 ;
-
-
-  /**
-   * The pretty print priority for methods.
-   */
-  public static final int PRIO_METH = 0 ;
-
-
-  /**
-   * The pretty print priority for sub expressions of methods.
-   */
-  public static final int PRIO_METH_E = 0 ;
-
-
-  /**
-   * The pretty print priority for the type of methods.
-   */
-  public static final int PRIO_METH_TAU = 0 ;
-
-
-  /**
-   * The pretty print priority for curried methods.
-   */
-  public static final int PRIO_CURRIED_METH = 0 ;
-
-
-  /**
-   * The pretty print priority for sub expressions of curried methods.
-   */
-  public static final int PRIO_CURRIED_METH_E = 0 ;
-
-
-  /**
-   * The pretty print priority for the type of curried methods.
-   */
-  public static final int PRIO_CURRIED_METH_TAU = 0 ;
-
-
-  /**
-   * The pretty print priority for attributes.
-   */
-  public static final int PRIO_ATTR = 0 ;
-
-
-  /**
-   * The pretty print priority for sub expressions of attributes.
-   */
-  public static final int PRIO_ATTR_E = 0 ;
-
-
-  /**
-   * The pretty print priority for the type of attributes.
-   */
-  public static final int PRIO_ATTR_TAU = 0 ;
-
-
-  /**
    * The pretty print priority for lists.
    */
   public static final int PRIO_LIST = 6 ;
@@ -399,4 +285,118 @@ interface PrettyPrintPriorities
    * The pretty print priority for the e2 of or expressions.
    */
   public static final int PRIO_OR_E2 = PRIO_OR_E1 + 1 ;
+
+
+  /**
+   * The pretty print priority for {@link ObjectExpr}s.
+   */
+  public static final int PRIO_OBJECTEXPR = 0 ;
+
+
+  /**
+   * The pretty print priority for sub expressions of {@link ObjectExpr}s.
+   */
+  public static final int PRIO_OBJECTEXPR_E = 0 ;
+
+
+  /**
+   * The pretty print priority for the type of {@link ObjectExpr}s.
+   */
+  public static final int PRIO_OBJECTEXPR_TAU = 0 ;
+
+
+  /**
+   * The pretty print priority for {@link Row}s.
+   */
+  public static final int PRIO_ROW = 0 ;
+
+
+  /**
+   * The pretty print priority for sub expressions of {@link Row}s.
+   */
+  public static final int PRIO_ROW_E = 0 ;
+
+
+  /**
+   * The pretty print priority for the first expression of {@link Duplication}s.
+   */
+  public static final int PRIO_DUPLICATION_FIRST_E = 0 ;
+
+
+  /**
+   * The pretty print priority for {@link Duplication}s.
+   */
+  public static final int PRIO_DUPLICATION = 5 ;
+
+
+  /**
+   * The pretty print priority for sub expressions of {@link Duplication}s.
+   */
+  public static final int PRIO_DUPLICATION_E = 1 ;
+
+
+  /**
+   * The pretty print priority for {@link Message}s.
+   */
+  public static final int PRIO_MESSAGE = 6 ;
+
+
+  /**
+   * The pretty print priority for sub expressions of {@link Message}s.
+   */
+  public static final int PRIO_MESSAGE_E = 6 ;
+
+
+  /**
+   * The pretty print priority for {@link Method}s.
+   */
+  public static final int PRIO_METHOD = 0 ;
+
+
+  /**
+   * The pretty print priority for sub expressions of {@link Method}s.
+   */
+  public static final int PRIO_METHOD_E = 0 ;
+
+
+  /**
+   * The pretty print priority for the type of {@link Method}s.
+   */
+  public static final int PRIO_METHOD_TAU = 0 ;
+
+
+  /**
+   * The pretty print priority for {@link CurriedMethod}s.
+   */
+  public static final int PRIO_CURRIED_METHOD = 0 ;
+
+
+  /**
+   * The pretty print priority for sub expressions of {@link CurriedMethod}s.
+   */
+  public static final int PRIO_CURRIED_METHOD_E = 0 ;
+
+
+  /**
+   * The pretty print priority for the type of {@link CurriedMethod}s.
+   */
+  public static final int PRIO_CURRIED_METHOD_TAU = 0 ;
+
+
+  /**
+   * The pretty print priority for {@link Attribute}s.
+   */
+  public static final int PRIO_ATTRIBUTE = 0 ;
+
+
+  /**
+   * The pretty print priority for sub expressions of {@link Attribute}s.
+   */
+  public static final int PRIO_ATTRIBUTE_E = 0 ;
+
+
+  /**
+   * The pretty print priority for the type of {@link Attribute}s.
+   */
+  public static final int PRIO_ATTRIBUTE_TAU = 0 ;
 }

@@ -48,6 +48,10 @@ public class Attribute extends Expression
    */
   public Attribute ( String pIdentifier , MonoType pTau , Expression pExpression )
   {
+    if ( pIdentifier == null )
+    {
+      throw new NullPointerException ( "Identifier is null" ) ; //$NON-NLS-1$
+    }
     if ( pExpression == null )
     {
       throw new NullPointerException ( "Expression is null" ) ; //$NON-NLS-1$
@@ -186,9 +190,9 @@ public class Attribute extends Expression
   @ Override
   public Attribute substitute ( TypeSubstitution pTypeSubstitution )
   {
-    MonoType tmp = ( this.tau != null ) ? this.tau
-        .substitute ( pTypeSubstitution ) : null ;
-    return new Attribute ( this.identifier , tmp , this.expression
+    MonoType newTau = ( this.tau == null ) ? null : this.tau
+        .substitute ( pTypeSubstitution ) ;
+    return new Attribute ( this.identifier , newTau , this.expression
         .substitute ( pTypeSubstitution ) ) ;
   }
 
@@ -201,7 +205,7 @@ public class Attribute extends Expression
       PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
     PrettyStringBuilder builder = pPrettyStringBuilderFactory.newBuilder (
-        this , PRIO_ATTR ) ;
+        this , PRIO_ATTRIBUTE ) ;
     builder.addKeyword ( "val" ) ; //$NON-NLS-1$
     builder.addText ( " " ) ; //$NON-NLS-1$
     builder.addIdentifier ( this.identifier ) ;
@@ -210,11 +214,12 @@ public class Attribute extends Expression
       builder.addText ( ": " ) ; //$NON-NLS-1$
       builder.addBuilder ( this.tau
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-          PRIO_ATTR_TAU ) ;
+          PRIO_ATTRIBUTE_TAU ) ;
     }
     builder.addText ( " = " ) ; //$NON-NLS-1$
     builder.addBuilder ( this.expression
-        .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_ATTR_E ) ;
+        .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
+        PRIO_ATTRIBUTE_E ) ;
     builder.addText ( " " ) ; //$NON-NLS-1$
     builder.addKeyword ( ";" ) ; //$NON-NLS-1$
     return builder ;

@@ -57,6 +57,10 @@ public class CurriedMethod extends Expression
     {
       throw new NullPointerException ( "Identifiers is null" ) ; //$NON-NLS-1$
     }
+    if ( pTypes == null )
+    {
+      throw new NullPointerException ( "Types is null" ) ; //$NON-NLS-1$
+    }
     if ( pExpression == null )
     {
       throw new NullPointerException ( "Expression is null" ) ; //$NON-NLS-1$
@@ -69,7 +73,7 @@ public class CurriedMethod extends Expression
     if ( pIdentifiers.length != pTypes.length )
     {
       throw new IllegalArgumentException (
-          "The arity of identifiers and types must match" ) ; //$NON-NLS-1$
+          "The arity of Identifiers and Types must match" ) ; //$NON-NLS-1$
     }
     this.identifiers = pIdentifiers ;
     this.types = pTypes ;
@@ -204,7 +208,7 @@ public class CurriedMethod extends Expression
   public int hashCode ( )
   {
     return this.identifiers.hashCode ( ) + this.expression.hashCode ( )
-        + ( this.types == null ? 0 : this.types.hashCode ( ) ) ;
+        + this.types.hashCode ( ) ;
   }
 
 
@@ -248,13 +252,13 @@ public class CurriedMethod extends Expression
   @ Override
   public CurriedMethod substitute ( TypeSubstitution pTypeSubstitution )
   {
-    MonoType [ ] tmp = new MonoType [ this.types.length ] ;
-    for ( int n = 0 ; n < tmp.length ; ++ n )
+    MonoType [ ] newTypes = new MonoType [ this.types.length ] ;
+    for ( int i = 0 ; i < newTypes.length ; i ++ )
     {
-      tmp [ n ] = ( this.types [ n ] != null ) ? this.types [ n ]
-          .substitute ( pTypeSubstitution ) : null ;
+      newTypes [ i ] = ( this.types [ i ] == null ) ? null : this.types [ i ]
+          .substitute ( pTypeSubstitution ) ;
     }
-    return new CurriedMethod ( this.identifiers , tmp , this.expression
+    return new CurriedMethod ( this.identifiers , newTypes , this.expression
         .substitute ( pTypeSubstitution ) ) ;
   }
 
@@ -267,7 +271,7 @@ public class CurriedMethod extends Expression
       PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
     PrettyStringBuilder builder = pPrettyStringBuilderFactory.newBuilder (
-        this , PRIO_CURRIED_METH ) ;
+        this , PRIO_CURRIED_METHOD ) ;
     builder.addKeyword ( "method" ) ; //$NON-NLS-1$
     builder.addText ( " " ) ; //$NON-NLS-1$
     builder.addIdentifier ( this.identifiers [ 0 ] ) ;
@@ -284,7 +288,7 @@ public class CurriedMethod extends Expression
         builder.addText ( ": " ) ; //$NON-NLS-1$
         builder.addBuilder ( this.types [ i ]
             .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-            PRIO_CURRIED_METH_TAU ) ;
+            PRIO_CURRIED_METHOD_TAU ) ;
         builder.addText ( ")" ) ; //$NON-NLS-1$
       }
     }
@@ -299,7 +303,7 @@ public class CurriedMethod extends Expression
     builder.addText ( " = " ) ; //$NON-NLS-1$
     builder.addBuilder ( this.expression
         .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-        PRIO_CURRIED_METH_E ) ;
+        PRIO_CURRIED_METHOD_E ) ;
     builder.addText ( " " ) ; //$NON-NLS-1$
     builder.addKeyword ( ";" ) ; //$NON-NLS-1$
     return builder ;
