@@ -374,6 +374,14 @@ public class L1TypeCheckerProofRuleSet extends AbstractTypeCheckerProofRuleSet {
   // The unify rule
   //
 
+/**
+ * TODO
+ *
+ * @param context
+ * @param pNode
+ * @return
+ * @throws UnificationException
+ */
 public DefaultTypeSubstitution applyunify(TypeCheckerProofContext context, TypeCheckerProofNode pNode) throws UnificationException {
 	
     if (!(pNode instanceof DefaultTypeInferenceProofNode)) {
@@ -385,6 +393,9 @@ public DefaultTypeSubstitution applyunify(TypeCheckerProofContext context, TypeC
     	
     	//TODO
     	// i have to implement this (just think about what to do here)
+    	
+    	 // generate new child nodes
+        context.addProofNode(node, node.getEnvironment(), node.getExpression(), node.getType());
     return DefaultTypeSubstitution.EMPTY_SUBSTITUTION;
     }
     
