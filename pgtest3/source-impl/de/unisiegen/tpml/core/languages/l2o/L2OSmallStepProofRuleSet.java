@@ -102,7 +102,7 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
     {
       /*
        * If the child Expression of the Message is an ObjectExpr and the
-       * ObjectExpr is a Value, we have to perform OBJ-UNFOLD.
+       * ObjectExpr is a value, we have to perform OBJ-UNFOLD.
        */
       pContext.addProofStep ( getRuleByName ( "OBJ-UNFOLD" ) , pMessage ) ; //$NON-NLS-1$
       ObjectExpr objectExpr = ( ObjectExpr ) pMessage.getE ( ) ;
@@ -114,7 +114,8 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
     else if ( pMessage.getE ( ) instanceof Row )
     {
       /*
-       * If the Row has zero children the Expression gets stuck.
+       * If the child Expression of the Message is a Row and the Row has zero
+       * children the Expression gets stuck.
        */
       Row row = ( Row ) pMessage.getE ( ) ;
       if ( row.getExpressions ( ).length == 0 )
@@ -122,6 +123,7 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
         return pMessage ;
       }
       Expression firstRowChild = row.getExpressions ( 0 ) ;
+      // Attribute
       if ( firstRowChild instanceof Attribute )
       {
         /*
@@ -139,68 +141,81 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
         return new Message ( new Row ( newRowE ) , pMessage.getId ( ) ) ;
       }
       // Method or CurriedMethod
-      String id ;
-      Expression methE ;
-      if ( firstRowChild instanceof Method )
+      else if ( ( firstRowChild instanceof Method )
+          || ( firstRowChild instanceof CurriedMethod ) )
       {
-        Method method = ( Method ) firstRowChild ;
-        id = method.getId ( ) ;
-        methE = method.getE ( ) ;
+        String id ;
+        Expression methE ;
+        if ( firstRowChild instanceof Method )
+        {
+          Method method = ( Method ) firstRowChild ;
+          id = method.getId ( ) ;
+          methE = method.getE ( ) ;
+        }
+        else
+        {
+          CurriedMethod curriedMethod = ( CurriedMethod ) firstRowChild ;
+          id = curriedMethod.getIdentifiers ( 0 ) ;
+          methE = curriedMethod.getE ( ) ;
+        }
+        if ( pMessage.getId ( ).equals ( id ) )
+        {
+          /*
+           * If the child Expression of the Message is a Row, the first child
+           * Expression of the Row is a Method or CurriedMethod, the Identifier
+           * of the Message is equal to the Identifier of the Method or
+           * CurriedMethod and there is no Method or CurriedMethod with the same
+           * Identifier in the rest of the Row, we have to perform SEND-EXEC.
+           */
+          boolean definedLater = false ;
+          for ( int i = 1 ; i < row.getExpressions ( ).length ; i ++ )
+          {
+            Expression tmp = row.getExpressions ( i ) ;
+            if ( ( tmp instanceof Method )
+                && ( ( ( Method ) tmp ).getId ( ).equals ( pMessage.getId ( ) ) ) )
+            {
+              definedLater = true ;
+              break ;
+            }
+            else if ( ( tmp instanceof CurriedMethod )
+                && ( ( ( CurriedMethod ) tmp ).getIdentifiers ( 0 )
+                    .equals ( pMessage.getId ( ) ) ) )
+            {
+              definedLater = true ;
+              break ;
+            }
+          }
+          if ( ! definedLater )
+          {
+            pContext.addProofStep (
+                getRuleByName ( "SEND-EXEC" ) , firstRowChild ) ; //$NON-NLS-1$
+            return methE ;
+          }
+        }
+        /*
+         * If the child Expression of the Message is a Row, the first child
+         * Expression of the Row is a Method or CurriedMethod, the Identifier of
+         * the Message is not equal to the Identifier of the Method or
+         * CurriedMethod or there is a Method or CurriedMethod with the same
+         * Identifier in the rest of the Row, we have to perform SEND-SKIP.
+         */
+        pContext.addProofStep ( getRuleByName ( "SEND-SKIP" ) , firstRowChild ) ; //$NON-NLS-1$
+        Expression [ ] newRowE = new Expression [ row.getExpressions ( ).length - 1 ] ;
+        for ( int i = 0 ; i < newRowE.length ; i ++ )
+        {
+          newRowE [ i ] = row.getExpressions ( i + 1 ).clone ( ) ;
+        }
+        return new Message ( new Row ( newRowE ) , pMessage.getId ( ) ) ;
       }
       else
       {
-        CurriedMethod curriedMethod = ( CurriedMethod ) firstRowChild ;
-        id = curriedMethod.getIdentifiers ( 0 ) ;
-        methE = curriedMethod.getE ( ) ;
-      }
-      if ( pMessage.getId ( ).equals ( id ) )
-      {
         /*
-         * If the child Expression of the Message is a Row, the first child
-         * Expression of the Row is a (Curried-)Method, the Identifier of the
-         * Message is equal to the Identifier of the (Curried-)Method and there
-         * is no (Curried-)Method with the same Identifier in the rest of the
-         * Row, we have to perform SEND-EXEC.
+         * Programming error: The child of the Row is not an Attribute, Method
+         * or CurriedMethod. This should not happen.
          */
-        boolean definedLater = false ;
-        for ( int i = 1 ; i < row.getExpressions ( ).length ; i ++ )
-        {
-          Expression tmp = row.getExpressions ( i ) ;
-          if ( ( tmp instanceof Method )
-              && ( ( ( Method ) tmp ).getId ( ).equals ( pMessage.getId ( ) ) ) )
-          {
-            definedLater = true ;
-            break ;
-          }
-          else if ( ( tmp instanceof CurriedMethod )
-              && ( ( ( CurriedMethod ) tmp ).getIdentifiers ( 0 )
-                  .equals ( pMessage.getId ( ) ) ) )
-          {
-            definedLater = true ;
-            break ;
-          }
-        }
-        if ( ! definedLater )
-        {
-          pContext
-              .addProofStep ( getRuleByName ( "SEND-EXEC" ) , firstRowChild ) ; //$NON-NLS-1$
-          return methE ;
-        }
+        throw new IllegalStateException (
+            "Inconsistent L20SmallStepProofRuleSet class." ) ; //$NON-NLS-1$
       }
-      /*
-       * If the child Expression of the Message is a Row, the first child
-       * Expression of the Row is a (Curried-)Method, the Identifier of the
-       * Message is not equal to the Identifier of the (Curried-)Method or there
-       * is a (Curried-)Method with the same Identifier in the rest of the Row,
-       * we have to perform SEND-SKIP.
-       */
-      pContext.addProofStep ( getRuleByName ( "SEND-SKIP" ) , firstRowChild ) ; //$NON-NLS-1$
-      Expression [ ] newRowE = new Expression [ row.getExpressions ( ).length - 1 ] ;
-      for ( int i = 0 ; i < newRowE.length ; i ++ )
-      {
-        newRowE [ i ] = row.getExpressions ( i + 1 ).clone ( ) ;
-      }
-      return new Message ( new Row ( newRowE ) , pMessage.getId ( ) ) ;
     }
     return pMessage ;
   }
@@ -216,6 +231,9 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
   public Expression evaluateDuplication ( SmallStepProofContext pContext ,
       Duplication pDuplication )
   {
+    /*
+     * Check if all children of the Duplication are values or not.
+     */
     boolean allChildrenAreValues = true ;
     for ( Expression expr : pDuplication.getExpressions ( ) )
     {
@@ -225,9 +243,12 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
         break ;
       }
     }
+    /*
+     * If not all children of the Duplication are values and the first
+     * Expression of the Duplication is a value, we have to perform DUPL-EVAL.
+     */
     if ( ( ! allChildrenAreValues ) && ( pDuplication.getE ( ).isValue ( ) ) )
     {
-      // DUPL-EVAL
       pContext.addProofStep ( getRuleByName ( "DUPL-EVAL" ) , pDuplication ) ; //$NON-NLS-1$
       Expression [ ] newDuplicationE = pDuplication.getExpressions ( ).clone ( ) ;
       for ( int i = 0 ; i < newDuplicationE.length ; i ++ )
@@ -240,14 +261,22 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
         }
       }
     }
+    /*
+     * If all children of the Duplication are values, the first Expression of
+     * the Duplication is an ObjectExpr and this ObjectExpr is a value, we have
+     * to perform DUPL-EXEC.
+     */
     if ( ( allChildrenAreValues )
         && ( pDuplication.getE ( ) instanceof ObjectExpr )
         && ( pDuplication.getE ( ).isValue ( ) ) )
     {
-      // DUPL-EXEC
       ObjectExpr objectExpr = ( ObjectExpr ) pDuplication.getE ( ) ;
       Row row = objectExpr.getE ( ) ;
       Expression [ ] newRowE = row.getExpressions ( ).clone ( ) ;
+      /*
+       * Search all Identifiers of the Duplication in the Row of the ObjectExpr
+       * and replace the Attribute, if the Identifiers are equal.
+       */
       boolean found ;
       for ( int i = 0 ; i < pDuplication.getIdentifiers ( ).length ; i ++ )
       {
@@ -266,6 +295,10 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
             }
           }
         }
+        /*
+         * If the Duplication contains an Identifier which is not found in the
+         * Row, the Expression gets stuck.
+         */
         if ( ! found )
         {
           return pDuplication ;
@@ -290,14 +323,17 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
   {
     for ( int i = 0 ; i < pRow.getExpressions ( ).length ; i ++ )
     {
-      // Attribute
-      if ( pRow.getExpressions ( i ) instanceof Attribute )
+      /*
+       * If the current child of the Row is an Attribute, we have to perform
+       * ATTR-EVAL, ATTR-RENAME or ATTR-RIGHT.
+       */
+      Expression currentRowChild = pRow.getExpressions ( i ) ;
+      if ( currentRowChild instanceof Attribute )
       {
-        Attribute attribute = ( Attribute ) pRow.getExpressions ( i ) ;
         /*
-         * If the Attribute is not yet a value the ATTR-EVAL rule has to be
-         * applied.
+         * If the Attribute is not yet a value, we have to perform ATTR-EVAL.
          */
+        Attribute attribute = ( Attribute ) currentRowChild ;
         if ( ! attribute.isValue ( ) )
         {
           pContext.addProofStep ( getRuleByName ( "ATTR-EVAL" ) , attribute ) ; //$NON-NLS-1$
@@ -328,12 +364,11 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
           }
         }
         /*
-         * Rename the current Attribute and all its bindings in the rest of the
-         * Row.
+         * Rename the current Attribute and all Identifiers, which are bound to
+         * the Identifier of the Attrbute.
          */
         if ( attrRename )
         {
-          // ATTR-RENAME
           pContext.addProofStep ( getRuleByName ( "ATTR-RENAME" ) , attribute ) ; //$NON-NLS-1$ 
           Expression [ ] tmp = pRow.getExpressions ( ).clone ( ) ;
           String newId = attribute.getId ( ) + "'" ; //$NON-NLS-1$ 
@@ -356,36 +391,56 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
               .getE ( ).clone ( ) ) ;
           for ( int j = i + 1 ; j < tmp.length ; j ++ )
           {
-            if ( ( tmp [ j ] instanceof Attribute )
-                && ( ( ( Attribute ) tmp [ j ] ).getId ( ).equals ( attribute
-                    .getId ( ) ) ) )
+            if ( tmp [ j ] instanceof Attribute )
             {
-              break ;
+              Attribute currentAttribute = ( Attribute ) tmp [ j ] ;
+              if ( currentAttribute.getId ( ).equals ( attribute.getId ( ) ) )
+              {
+                break ;
+              }
             }
-            // Method or CurriedMethod
-            tmp [ j ] = tmp [ j ].substitute ( attribute.getId ( ) ,
-                new Identifier ( newId ) , true ) ;
+            else if ( ( tmp [ j ] instanceof Method )
+                || ( tmp [ j ] instanceof CurriedMethod ) )
+            {
+              tmp [ j ] = tmp [ j ].substitute ( attribute.getId ( ) ,
+                  new Identifier ( newId ) , true ) ;
+            }
+            else
+            {
+              /*
+               * Programming error: The child of the Row is not an Attribute,
+               * Method or CurriedMethod. This should not happen.
+               */
+              throw new IllegalStateException (
+                  "Inconsistent L20SmallStepProofRuleSet class." ) ; //$NON-NLS-1$
+            }
           }
           return new Row ( tmp ) ;
         }
         /*
-         * Apply the rule ATTR-RIGHT.
+         * If the Attribute is a value and it has not to be renamed, we have to
+         * perform ATTR-RIGHT.
          */
         pContext.addProofStep ( getRuleByName ( "ATTR-RIGHT" ) , attribute ) ; //$NON-NLS-1$
-        Expression attrE = evaluate ( pContext , attribute.getE ( ) ) ;
-        if ( attrE.isException ( ) )
-        {
-          return attrE ;
-        }
       }
-      // Method or CurriedMethod
+      else if ( ( currentRowChild instanceof Method )
+          || ( currentRowChild instanceof CurriedMethod ) )
+      {
+        /*
+         * If the current child is a Method or CurriedMethod, we have to perform
+         * METH-RIGHT.
+         */
+        pContext.addProofStep (
+            getRuleByName ( "METH-RIGHT" ) , currentRowChild ) ; //$NON-NLS-1$
+      }
       else
       {
         /*
-         * Apply the rule METH-RIGHT.
+         * Programming error: The child of the Row is not an Attribute, Method
+         * or CurriedMethod. This should not happen.
          */
-        pContext.addProofStep (
-            getRuleByName ( "METH-RIGHT" ) , pRow.getExpressions ( i ) ) ; //$NON-NLS-1$
+        throw new IllegalStateException (
+            "Inconsistent L20SmallStepProofRuleSet class." ) ; //$NON-NLS-1$
       }
     }
     return pRow ;
