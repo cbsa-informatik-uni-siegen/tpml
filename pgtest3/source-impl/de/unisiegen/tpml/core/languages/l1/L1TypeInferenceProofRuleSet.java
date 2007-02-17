@@ -44,6 +44,30 @@ public class L1TypeInferenceProofRuleSet extends L1TypeCheckerProofRuleSet{
 	public L1TypeInferenceProofRuleSet(L1Language language) {
 		super(language);
 		
+//		unregister the type rules
+	    unregister("ABSTR");
+	    unregister("AND");
+	    unregister("APP");
+	    unregister("COND");
+	    unregister("CONST");
+	    unregister("ID");
+	    unregister("LET");
+	    unregister("OR");
+		
+//		 register the additional type typeinferencerule
+	    registerByMethodName(L1Language.L1, "UNIFY", "applyunify");
+		
+//		 register the type rules
+	    registerByMethodName(L1Language.L1, "ABSTR", "applyAbstr");
+	    registerByMethodName(L2Language.L2, "AND", "applyAnd");
+	    registerByMethodName(L1Language.L1, "APP", "applyApp");
+	    registerByMethodName(L1Language.L1, "COND", "applyCond");
+	    registerByMethodName(L1Language.L1, "CONST", "applyConst");
+	    registerByMethodName(L1Language.L1, "ID", "applyId");
+	    registerByMethodName(L1Language.L1, "LET", "applyLet");
+	    registerByMethodName(L2Language.L2, "OR", "applyOr");
+	   
+		
 	}
 
 

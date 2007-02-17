@@ -19,7 +19,7 @@ import de.unisiegen.tpml.core.types.MonoType;
  * @author benjamin
  *
  */
-public final class DefaultTypeInferenceProofNode extends AbstractExpressionProofNode implements TypeCheckerProofNode, TypeInferenceProofNode {
+public class DefaultTypeInferenceProofNode extends AbstractExpressionProofNode implements TypeCheckerProofNode, TypeInferenceProofNode {
 	
 	  /**
 	   * The type environment for this type inference proof node.
@@ -42,13 +42,13 @@ public final class DefaultTypeInferenceProofNode extends AbstractExpressionProof
 	  
 	  
 	 
-	  DefaultTypeInferenceProofNode(TypeEnvironment environment, Expression expression, MonoType type) {
+	  public DefaultTypeInferenceProofNode(TypeEnvironment environment, Expression expression, MonoType type) {
 		    super(expression);
 		    setEnvironment(environment);
 		    setType(type);
 		  }
 	  
-	  DefaultTypeInferenceProofNode(TypeEnvironment environment, Expression expression, MonoType type, TypeEquationList pEquations) {
+	  public DefaultTypeInferenceProofNode(TypeEnvironment environment, Expression expression, MonoType type, TypeEquationList pEquations) {
 		    super(expression);
 		    setEnvironment(environment);
 		    setType(type);
