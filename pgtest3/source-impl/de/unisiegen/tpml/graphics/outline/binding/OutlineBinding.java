@@ -157,10 +157,10 @@ public final class OutlineBinding
       if ( found )
       {
         /*
-         * Search only in E1, because all Identifiers in E2 are bounded to the
+         * Search only in E2, because all Identifiers in E1 are bounded to the
          * Identifier in this child expression.
          */
-        findExpression ( pCurriedLet.getE1 ( ) ) ;
+        findExpression ( pCurriedLet.getE2 ( ) ) ;
       }
       else
       {
