@@ -137,8 +137,8 @@ public class L2OLanguageTranslator extends L2LanguageTranslator
         newDuplicationE [ i ] = translateToCoreSyntax ( pDuplication
             .getExpressions ( i ) , pRecursive ) ;
       }
-      return new Duplication ( pDuplication.getE ( ) , pDuplication
-          .getIdentifiers ( ) , newDuplicationE ) ;
+      return new Duplication ( translateToCoreSyntax ( pDuplication.getE ( ) ,
+          pRecursive ) , pDuplication.getIdentifiers ( ) , newDuplicationE ) ;
     }
     return pDuplication ;
   }
