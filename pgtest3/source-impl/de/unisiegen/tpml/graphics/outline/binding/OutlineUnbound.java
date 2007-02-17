@@ -113,17 +113,16 @@ public final class OutlineUnbound
   private final void findCurriedLet ( ArrayList < String > pBounded ,
       CurriedLet pExpression )
   {
-    ArrayList < String > bounded1 = new ArrayList < String > ( pBounded ) ;
-    ArrayList < String > bounded2 = new ArrayList < String > ( pBounded ) ;
     // New bindings in E1, Identifier 1 to n
+    ArrayList < String > bounded = new ArrayList < String > ( pBounded ) ;
     for ( int i = 1 ; i < pExpression.getIdentifiers ( ).length ; i ++ )
     {
-      bounded1.add ( pExpression.getIdentifiers ( i ) ) ;
+      bounded.add ( pExpression.getIdentifiers ( i ) ) ;
     }
-    find ( bounded1 , pExpression.getE1 ( ) ) ;
+    find ( bounded , pExpression.getE1 ( ) ) ;
     // New bindings in E2, Identifier 0
-    bounded2.add ( pExpression.getIdentifiers ( 0 ) ) ;
-    find ( bounded2 , pExpression.getE2 ( ) ) ;
+    pBounded.add ( pExpression.getIdentifiers ( 0 ) ) ;
+    find ( pBounded , pExpression.getE2 ( ) ) ;
   }
 
 
@@ -137,17 +136,16 @@ public final class OutlineUnbound
   private final void findCurriedLetRec ( ArrayList < String > pBounded ,
       CurriedLetRec pExpression )
   {
-    ArrayList < String > bounded1 = new ArrayList < String > ( pBounded ) ;
-    ArrayList < String > bounded2 = new ArrayList < String > ( pBounded ) ;
     // New bindings in E1, Identifier 0 to n
+    ArrayList < String > bounded = new ArrayList < String > ( pBounded ) ;
     for ( int i = 0 ; i < pExpression.getIdentifiers ( ).length ; i ++ )
     {
-      bounded1.add ( pExpression.getIdentifiers ( i ) ) ;
+      bounded.add ( pExpression.getIdentifiers ( i ) ) ;
     }
-    find ( bounded1 , pExpression.getE1 ( ) ) ;
+    find ( bounded , pExpression.getE1 ( ) ) ;
     // New bindings in E2, Identifier 0
-    bounded2.add ( pExpression.getIdentifiers ( 0 ) ) ;
-    find ( bounded2 , pExpression.getE2 ( ) ) ;
+    pBounded.add ( pExpression.getIdentifiers ( 0 ) ) ;
+    find ( pBounded , pExpression.getE2 ( ) ) ;
   }
 
 
@@ -161,13 +159,12 @@ public final class OutlineUnbound
   private final void findCurriedMethod ( ArrayList < String > pBounded ,
       CurriedMethod pExpression )
   {
-    ArrayList < String > bounded = new ArrayList < String > ( pBounded ) ;
     // New bindings in E, Identifier 1 to n
     for ( int i = 1 ; i < pExpression.getIdentifiers ( ).length ; i ++ )
     {
-      bounded.add ( pExpression.getIdentifiers ( i ) ) ;
+      pBounded.add ( pExpression.getIdentifiers ( i ) ) ;
     }
-    find ( bounded , pExpression.getE ( ) ) ;
+    find ( pBounded , pExpression.getE ( ) ) ;
   }
 
 
@@ -198,10 +195,9 @@ public final class OutlineUnbound
   private final void findLambda ( ArrayList < String > pBounded ,
       Lambda pExpression )
   {
-    ArrayList < String > bounded = new ArrayList < String > ( pBounded ) ;
     // New binding in E
-    bounded.add ( pExpression.getId ( ) ) ;
-    find ( bounded , pExpression.getE ( ) ) ;
+    pBounded.add ( pExpression.getId ( ) ) ;
+    find ( pBounded , pExpression.getE ( ) ) ;
   }
 
 
@@ -214,13 +210,12 @@ public final class OutlineUnbound
   @ SuppressWarnings ( "unused" )
   private final void findLet ( ArrayList < String > pBounded , Let pExpression )
   {
-    ArrayList < String > bounded1 = new ArrayList < String > ( pBounded ) ;
-    ArrayList < String > bounded2 = new ArrayList < String > ( pBounded ) ;
     // No new binding in E1
-    find ( bounded1 , pExpression.getE1 ( ) ) ;
+    ArrayList < String > bounded = new ArrayList < String > ( pBounded ) ;
+    find ( bounded , pExpression.getE1 ( ) ) ;
     // New binding in E2
-    bounded2.add ( pExpression.getId ( ) ) ;
-    find ( bounded2 , pExpression.getE2 ( ) ) ;
+    pBounded.add ( pExpression.getId ( ) ) ;
+    find ( pBounded , pExpression.getE2 ( ) ) ;
   }
 
 
@@ -234,14 +229,13 @@ public final class OutlineUnbound
   private final void findLetRec ( ArrayList < String > pBounded ,
       LetRec pExpression )
   {
-    ArrayList < String > bounded1 = new ArrayList < String > ( pBounded ) ;
-    ArrayList < String > bounded2 = new ArrayList < String > ( pBounded ) ;
     // New binding in E1
-    bounded1.add ( pExpression.getId ( ) ) ;
-    find ( bounded1 , pExpression.getE1 ( ) ) ;
+    ArrayList < String > bounded = new ArrayList < String > ( pBounded ) ;
+    bounded.add ( pExpression.getId ( ) ) ;
+    find ( bounded , pExpression.getE1 ( ) ) ;
     // New binding in E2
-    bounded2.add ( pExpression.getId ( ) ) ;
-    find ( bounded2 , pExpression.getE2 ( ) ) ;
+    pBounded.add ( pExpression.getId ( ) ) ;
+    find ( pBounded , pExpression.getE2 ( ) ) ;
   }
 
 
@@ -255,13 +249,12 @@ public final class OutlineUnbound
   private final void findMultiLambda ( ArrayList < String > pBounded ,
       MultiLambda pExpression )
   {
-    ArrayList < String > bounded = new ArrayList < String > ( pBounded ) ;
     // New bindings in E
     for ( int i = 0 ; i < pExpression.getIdentifiers ( ).length ; i ++ )
     {
-      bounded.add ( pExpression.getIdentifiers ( i ) ) ;
+      pBounded.add ( pExpression.getIdentifiers ( i ) ) ;
     }
-    find ( bounded , pExpression.getE ( ) ) ;
+    find ( pBounded , pExpression.getE ( ) ) ;
   }
 
 
@@ -275,16 +268,15 @@ public final class OutlineUnbound
   private final void findMultiLet ( ArrayList < String > pBounded ,
       MultiLet pExpression )
   {
-    ArrayList < String > bounded1 = new ArrayList < String > ( pBounded ) ;
-    ArrayList < String > bounded2 = new ArrayList < String > ( pBounded ) ;
     // No new binding in E1
-    find ( bounded1 , pExpression.getE1 ( ) ) ;
+    ArrayList < String > bounded = new ArrayList < String > ( pBounded ) ;
+    find ( bounded , pExpression.getE1 ( ) ) ;
     // New bindings in E2
     for ( int i = 0 ; i < pExpression.getIdentifiers ( ).length ; i ++ )
     {
-      bounded2.add ( pExpression.getIdentifiers ( i ) ) ;
+      pBounded.add ( pExpression.getIdentifiers ( i ) ) ;
     }
-    find ( bounded2 , pExpression.getE2 ( ) ) ;
+    find ( pBounded , pExpression.getE2 ( ) ) ;
   }
 
 
@@ -333,10 +325,9 @@ public final class OutlineUnbound
   private final void findRecursion ( ArrayList < String > pBounded ,
       Recursion pExpression )
   {
-    ArrayList < String > bounded = new ArrayList < String > ( pBounded ) ;
     // New binding in E
-    bounded.add ( pExpression.getId ( ) ) ;
-    find ( bounded , pExpression.getE ( ) ) ;
+    pBounded.add ( pExpression.getId ( ) ) ;
+    find ( pBounded , pExpression.getE ( ) ) ;
   }
 
 
