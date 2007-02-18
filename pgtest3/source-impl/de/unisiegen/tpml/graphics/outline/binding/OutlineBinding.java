@@ -38,8 +38,11 @@ public final class OutlineBinding
   /**
    * The list of {@link Identifier}s, which are bounded by the given
    * {@link Identifier} in the given {@link Expression}.
+   * 
+   * @see #get(int)
+   * @see #size()
    */
-  private ArrayList < Identifier > list ;
+  private ArrayList < Identifier > identifierList ;
 
 
   /**
@@ -93,7 +96,7 @@ public final class OutlineBinding
   public OutlineBinding ( Expression pBoundedExpression , int pBoundedStart ,
       int pBoundedEnd , int pBoundedIdentifierIndex )
   {
-    this.list = new ArrayList < Identifier > ( ) ;
+    this.identifierList = new ArrayList < Identifier > ( ) ;
     this.boundedExpression = pBoundedExpression ;
     this.boundedStart = pBoundedStart ;
     this.boundedEnd = pBoundedEnd ;
@@ -223,7 +226,7 @@ public final class OutlineBinding
   private final void findCurriedMethod ( CurriedMethod pCurriedMethod )
   {
     /*
-     * Search is finished, if the searched Identifier is also equal to another
+     * Search is finished, if the searched Identifier is equal to another
      * bounded Identifier in the CurriedMethod, because all Identifiers in E are
      * bounded to the Identifier in this child expression.
      */
@@ -301,7 +304,7 @@ public final class OutlineBinding
   {
     if ( pIdentifier.getName ( ).equals ( this.identifier ) )
     {
-      this.list.add ( pIdentifier ) ;
+      this.identifierList.add ( pIdentifier ) ;
       pIdentifier.boundedExpression ( this.boundedExpression ) ;
       pIdentifier.boundedStart ( this.boundedStart ) ;
       pIdentifier.boundedEnd ( this.boundedEnd ) ;
@@ -387,23 +390,21 @@ public final class OutlineBinding
   @ SuppressWarnings ( "unused" )
   private final void findMultiLambda ( MultiLambda pMultiLambda )
   {
-    boolean found = false ;
     for ( String id : pMultiLambda.getIdentifiers ( ) )
     {
       if ( id.equals ( this.identifier ) )
       {
-        found = true ;
-        break ;
+        /*
+         * Search is finished, because all Identifiers in E are bounded to the
+         * Identifier in this child expression.
+         */
+        return ;
       }
     }
     /*
-     * Search is finished, because all Identifiers in E are bounded to the
-     * Identifier in this child expression.
+     * Continue search in E.
      */
-    if ( ! found )
-    {
-      findExpression ( pMultiLambda.getE ( ) ) ;
-    }
+    findExpression ( pMultiLambda.getE ( ) ) ;
   }
 
 
@@ -460,7 +461,7 @@ public final class OutlineBinding
       {
         if ( expr instanceof Attribute )
         {
-          findExpression ( expr ) ;
+          findExpression ( ( ( Attribute ) expr ).getE ( ) ) ;
         }
       }
     }
@@ -506,12 +507,12 @@ public final class OutlineBinding
     {
       if ( expr instanceof Attribute )
       {
-        findExpression ( expr ) ;
         Attribute attribute = ( Attribute ) expr ;
+        findExpression ( attribute.getE ( ) ) ;
         if ( attribute.getId ( ).equals ( this.identifier ) )
         {
           /*
-           * Search is finished for Method and CurriedMethod, because all
+           * Search is finished for Methods and CurriedMethods, because all
            * Identifiers in the Row are bounded to the Identifier in this
            * Attribute. Identifiers in Attribute can still be bound, so the
            * search is not finished.
@@ -536,10 +537,11 @@ public final class OutlineBinding
    * 
    * @param pIndex The index of the {@link Identifier}.
    * @return The bounded {@link Identifier} in the {@link Expression}.
+   * @see #identifierList
    */
   public final Identifier get ( int pIndex )
   {
-    return this.list.get ( pIndex ) ;
+    return this.identifierList.get ( pIndex ) ;
   }
 
 
@@ -548,9 +550,10 @@ public final class OutlineBinding
    * {@link Identifier}s.
    * 
    * @return The number of {@link Identifier}s.
+   * @see #identifierList
    */
   public final int size ( )
   {
-    return this.list.size ( ) ;
+    return this.identifierList.size ( ) ;
   }
 }
