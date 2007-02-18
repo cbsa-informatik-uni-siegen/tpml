@@ -23,6 +23,7 @@ import javax.swing.tree.TreePath;
 import de.unisiegen.tpml.core.ExpressionProofNode;
 import de.unisiegen.tpml.core.ProofGuessException;
 import de.unisiegen.tpml.core.ProofNode;
+import de.unisiegen.tpml.core.ProofRule;
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.languages.Language;
 import de.unisiegen.tpml.core.languages.LanguageFactory;
@@ -55,15 +56,23 @@ public final class TypeInferenceProofModelTest extends JFrame {
    * Default constructor.
    */
   public TypeInferenceProofModelTest(final TypeInferenceProofModel model) {
+	  
+
+	  
+	  
     // setup the frame
     setLayout(new BorderLayout());
     setSize(630, 580);
     setTitle("TypeInferenceProofModel Test");
+    
+ 
 
     // setup the tree panel
     JPanel treePanel = new JPanel(new BorderLayout());
     treePanel.setBorder(BorderFactory.createEtchedBorder());
     add(treePanel, BorderLayout.CENTER);
+    
+
     
     // setup the tree
     final JTree tree = new JTree(model);
@@ -78,10 +87,13 @@ public final class TypeInferenceProofModelTest extends JFrame {
     guessButton.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent event) {
         try {
+        	
+       
+  
           // guess the last node
         	model.guess(nextNode(model));
         	
-      
+        
         	
           
           // expand to the all nodes

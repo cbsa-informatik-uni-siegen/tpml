@@ -25,6 +25,7 @@ import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofRule;
 import de.unisiegen.tpml.core.typechecker.TypeEnvironment;
+import de.unisiegen.tpml.core.typechecker.TypeEquationList;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
 import de.unisiegen.tpml.core.typechecker.UnificationException;
 import de.unisiegen.tpml.core.types.MonoType;
@@ -50,7 +51,7 @@ public final class TypeInferenceProofModel extends AbstractExpressionProofModel 
 	   * 
 	   * @see Logger
 	   */
-	  private static final Logger logger = Logger.getLogger(TypeCheckerProofModel.class);
+	  private static final Logger logger = Logger.getLogger(TypeInferenceProofModel.class);
 
 	  private int index = 1;
 	  
@@ -81,6 +82,7 @@ public final class TypeInferenceProofModel extends AbstractExpressionProofModel 
 	      expression=pExpression;  
 	      ruleSet=pRuleSet;
 	      
+	           
 	      }
 	  
 	  public int getIndex() {
@@ -106,29 +108,40 @@ public final class TypeInferenceProofModel extends AbstractExpressionProofModel 
 	 * @see de.unisiegen.tpml.core.AbstractProofModel#guess(de.unisiegen.tpml.core.ProofNode)
 	 */
 	public void guess(ProofNode node) throws ProofGuessException {
+		
+		
 		   guessInternal((DefaultTypeInferenceProofNode)node, null);
 		
 		  }
 
 
 	 private void guessInternal(DefaultTypeInferenceProofNode node, MonoType type) throws ProofGuessException {
-		    if (node == null) {
+		   
+		 
+		 if (node == null) {
 		    	
 		      throw new NullPointerException("node is null");
 		    }
+		
+		 
 		    if (node.getSteps().length > 0) {
 		    	
 		      throw new IllegalArgumentException("The node is already completed");
 		    }
+		   
 		    if (!this.root.isNodeRelated(node)) {
 		    	
 		      throw new IllegalArgumentException("The node is invalid for the model");
 		    }
-		    
+	   		    
 		    // try to guess the next rule
 		    logger.debug("Trying to guess a rule for " + node);
+		    
+		    System.out.println("");
+		    
 		    for (ProofRule rule : this.ruleSet.getRules()) { // MUST be the getRules() from the ProofRuleSet
 		      try {
+		    	  System.out.println(rule.toString());
 		        // try to apply the rule to the specified node
 		        applyInternal((TypeCheckerProofRule)rule, node, type);
 		        
@@ -326,7 +339,7 @@ public final class TypeInferenceProofModel extends AbstractExpressionProofModel 
 	    });
 	  }
 	  
-	  void contextAddProofNode(DefaultTypeInferenceProofContext context, final DefaultTypeInferenceProofNode node, TypeEnvironment environment, Expression expression, MonoType type) {
+	  void contextAddProofNode(DefaultTypeInferenceProofContext context, final DefaultTypeInferenceProofNode node, TypeEnvironment environment, Expression expression, MonoType type, TypeEquationList eqns) {
 		   
 		  if (context == null) {
 		     throw new NullPointerException("context is null");
@@ -347,7 +360,16 @@ public final class TypeInferenceProofModel extends AbstractExpressionProofModel 
 		    if (!this.root.isNodeRelated(node)) {
 		      throw new IllegalArgumentException("node is invalid");
 		    }
-		    final DefaultTypeInferenceProofNode child = new DefaultTypeInferenceProofNode(environment, expression, type, node.getEquations());
+		    final DefaultTypeInferenceProofNode child;
+		    if (eqns==null)
+		    {
+		    	child = new DefaultTypeInferenceProofNode(environment, expression, type, node.getEquations());
+		    }
+		    else
+		    {
+		    	 child = new DefaultTypeInferenceProofNode(environment, expression, type, eqns);
+		    }
+		    
 		     context.addRedoAction(new Runnable() {
 		      public void run() {
 		        node.add(child);

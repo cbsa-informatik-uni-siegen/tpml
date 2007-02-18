@@ -382,10 +382,11 @@ public class L1TypeCheckerProofRuleSet extends AbstractTypeCheckerProofRuleSet {
  * @return
  * @throws UnificationException
  */
-public DefaultTypeSubstitution applyunify(TypeCheckerProofContext context, TypeCheckerProofNode pNode) throws UnificationException {
+public void applyUnify(TypeCheckerProofContext context, final TypeCheckerProofNode pNode) throws UnificationException {
 	
+	System.out.println("unify");
     if (!(pNode instanceof DefaultTypeInferenceProofNode)) {
-    	return DefaultTypeSubstitution.EMPTY_SUBSTITUTION;
+    	return ;
     }
     DefaultTypeInferenceProofNode node = (DefaultTypeInferenceProofNode) pNode;
     // an empty type equation list is easy to unify
@@ -394,12 +395,12 @@ public DefaultTypeSubstitution applyunify(TypeCheckerProofContext context, TypeC
     	//TODO
     	// i have to implement this (just think about what to do here)
     	
-    	 // generate new child nodes
-        context.addProofNode(node, node.getEnvironment(), node.getExpression(), node.getType());
-    return DefaultTypeSubstitution.EMPTY_SUBSTITUTION;
+    	
+    return ;
     }
     
     // otherwise, we examine the first equation in the list
+    
     MonoType left = node.getEquations().first.getLeft();
     MonoType right = node.getEquations().first.getRight();
     
@@ -411,13 +412,17 @@ public DefaultTypeSubstitution applyunify(TypeCheckerProofContext context, TypeC
       
       // either tvar equals tau or tvar is not present in tau
       if (tvar.equals(tau) || !tau.free().contains(tvar)) {
+    	  
+    	  System.out.println("Should not be here");
         DefaultTypeSubstitution s1 = new DefaultTypeSubstitution(tvar, tau);
 //	      TODO
 //	      i have to implement this (just think about what to do here)
         DefaultTypeSubstitution s2 = node.getEquations().remaining.substitute(s1).unify();
 //      TODO
 //      i have to implement this (just think about what to do here)
-        return s1.compose(s2);
+        //return s1.compose(s2);
+        
+        return;
       }
       
       // FALL-THROUGH: Otherwise it's a type error
@@ -432,10 +437,15 @@ public DefaultTypeSubstitution applyunify(TypeCheckerProofContext context, TypeC
       eqns = eqns.extend(taul.getTau2(), taur.getTau2());
       eqns = eqns.extend(taul.getTau1(), taur.getTau1());
       
-      // try to unify the new list
+      
+      
 //      TODO
 //      i have to implement this (just think about what to do here)
-      return eqns.unify();
+      
+//    generate new child nodes
+      context.addProofNode(node, node.getEnvironment(), node.getExpression(), node.getType(), eqns);
+      
+      return ;
     }
     else if (left instanceof TupleType && right instanceof TupleType) {
       // cast to TupleType instances (tau and tau')
@@ -457,8 +467,12 @@ public DefaultTypeSubstitution applyunify(TypeCheckerProofContext context, TypeC
         // try to unify the new list
 //	      TODO
 //	      i have to implement this (just think about what to do here)
+//      generate new child nodes
+        context.addProofNode(node, node.getEnvironment(), node.getExpression(), node.getType(), eqns);
         
-        return eqns.unify();
+        
+        
+        return;
       }
       
       // FALL-THROUGH: Otherwise it's a type error
@@ -475,7 +489,11 @@ public DefaultTypeSubstitution applyunify(TypeCheckerProofContext context, TypeC
       // try to unify the new list
 //      TODO
 //      i have to implement this (just think about what to do here)
-      return eqns.unify();
+      
+//    generate new child nodes
+      context.addProofNode(node, node.getEnvironment(), node.getExpression(), node.getType(), eqns);
+      
+      return;
     }
     else if (left instanceof ListType && right instanceof ListType) {
       // cast to ListType instances (tau and tau')
@@ -489,13 +507,21 @@ public DefaultTypeSubstitution applyunify(TypeCheckerProofContext context, TypeC
       // try to unify the new list
 //      TODO
 //      i have to implement this (just think about what to do here)
-      return eqns.unify();
+      
+//    generate new child nodes
+      context.addProofNode(node, node.getEnvironment(), node.getExpression(), node.getType(), eqns);
+      
+      return;
     }
     else if (left.equals(right)) {
       // the types equal, just unify the remaining equations then
 //	      TODO
 //	      i have to implement this (just think about what to do here)
-      return node.getEquations().remaining.unify();
+    	
+//    	 generate new child nodes
+        context.addProofNode(node, node.getEnvironment(), node.getExpression(), node.getType(), node.getEquations().remaining );
+        
+      return ;
     }
   
     // (left = right) cannot be unified

@@ -413,4 +413,11 @@ public class DefaultTypeCheckerProofContext implements TypeCheckerProofContext {
 public TypeEquationList getEquations() {
 	return this.equations;
 }
+
+
+
+public void addProofNode(TypeCheckerProofNode node, TypeEnvironment environment, Expression expression, MonoType type, TypeEquationList eqns) {
+	// TODO Auto-generated method stub
+	
+}
 }

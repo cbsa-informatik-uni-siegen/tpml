@@ -134,14 +134,12 @@ public class DefaultTypeInferenceProofContext  implements TypeInferenceProofCont
 	
 	  }
 	  
-	  
-	  // TODO
-	  
-	  
-	  //hier muss die node an den tmp baum angehangen werden und die Daten so gespeichert werden
-	  //dass sie in den neuen Baum aufgenommen werden können
+	  public void addProofNode(TypeCheckerProofNode node, TypeEnvironment environment, Expression expression, MonoType type, TypeEquationList eqns) {
+		    this.model.contextAddProofNode(this, (DefaultTypeInferenceProofNode)node, environment, expression, type, eqns);
+	  	}
+	
 	  public void addProofNode(TypeCheckerProofNode node, TypeEnvironment environment, Expression expression, MonoType type) {
-		    this.model.contextAddProofNode(this, (DefaultTypeInferenceProofNode)node, environment, expression, type);
+		    this.model.contextAddProofNode(this, (DefaultTypeInferenceProofNode)node, environment, expression, type, null);
 	  	}
 	
 	/**

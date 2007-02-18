@@ -64,7 +64,7 @@ final class DefaultTypeCheckerProofContext implements TypeCheckerProofContext {
    * 
    * @see typechecker.TypeEquations
    */
-  private TypeEquationList equations = TypeEquationList.EMPTY_LIST;
+  public TypeEquationList equations = TypeEquationList.EMPTY_LIST;
   
   /**
    * The type checker proof model with which this proof context is associated.
@@ -402,4 +402,11 @@ final class DefaultTypeCheckerProofContext implements TypeCheckerProofContext {
       }
     };
   }
+
+
+
+public void addProofNode(TypeCheckerProofNode node, TypeEnvironment environment, Expression expression, MonoType type, TypeEquationList eqns) {
+	// TODO Auto-generated method stub
+	
+}
 }
