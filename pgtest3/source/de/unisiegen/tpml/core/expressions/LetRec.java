@@ -125,7 +125,9 @@ public final class LetRec extends Let
     // generate a new unique identifier
     String newId = this.id ;
     while ( free.contains ( newId ) )
+    {
       newId = newId + "'" ; //$NON-NLS-1$
+    }
     // perform the bound renaming
     Expression newE1 = this.e1.substitute ( this.id , new Identifier ( newId ) ,
         pAttributeRename ) ;

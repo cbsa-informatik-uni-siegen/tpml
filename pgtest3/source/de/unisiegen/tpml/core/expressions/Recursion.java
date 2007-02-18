@@ -187,7 +187,9 @@ public final class Recursion extends Expression
     // generate a new unique identifier
     String newId = this.id ;
     while ( free.contains ( newId ) )
+    {
       newId = newId + "'" ; //$NON-NLS-1$
+    }
     // perform the bound renaming
     Expression newE = this.e.substitute ( this.id , new Identifier ( newId ) ,
         pAttributeRename ) ;

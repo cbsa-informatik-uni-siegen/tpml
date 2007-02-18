@@ -148,7 +148,9 @@ public final class CurriedLetRec extends CurriedLet
       {
         // generate a new unique identifier
         while ( freeE.contains ( newIdentifiers [ n ] ) )
+        {
           newIdentifiers [ n ] = newIdentifiers [ n ] + "'" ;//$NON-NLS-1$
+        }
         // perform the bound renaming
         newE1 = newE1.substitute ( this.identifiers [ n ] , new Identifier (
             newIdentifiers [ n ] ) , pAttributeRename ) ;
@@ -158,7 +160,9 @@ public final class CurriedLetRec extends CurriedLet
     }
     // substitute e2 if id is not bound in e2
     if ( ! this.identifiers [ 0 ].equals ( pId ) )
+    {
       newE2 = newE2.substitute ( pId , pExpression , pAttributeRename ) ;
+    }
     // generate the new expression
     return new CurriedLetRec ( newIdentifiers , this.types , newE1 , newE2 ) ;
   }

@@ -249,7 +249,9 @@ public final class MultiLet extends Expression
       {
         // generate a new unique identifier
         while ( freeE.contains ( newIdentifiers [ n ] ) )
+        {
           newIdentifiers [ n ] = newIdentifiers [ n ] + "'" ; //$NON-NLS-1$
+        }
         // perform the bound renaming
         newE2 = newE2.substitute ( this.identifiers [ n ] , new Identifier (
             newIdentifiers [ n ] ) , pAttributeRename ) ;

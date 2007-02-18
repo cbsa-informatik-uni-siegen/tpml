@@ -62,11 +62,15 @@ public class Projection extends UnaryOperator
     super ( pOp ) ;
     // validate the settings
     if ( pArity <= 0 )
+    {
       throw new IllegalArgumentException (
           "The arity of a projection must be greater than 0" ) ; //$NON-NLS-1$
+    }
     else if ( pIndex <= 0 || pIndex > pArity )
+    {
       throw new IllegalArgumentException (
           "The index of a projection must be greater than 0 and less than the arity" ) ; //$NON-NLS-1$
+    }
     this.arity = pArity ;
     this.index = pIndex ;
   }

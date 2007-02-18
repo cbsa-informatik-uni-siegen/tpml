@@ -231,7 +231,9 @@ public class CurriedLet extends Expression
     TreeSet < String > freeE1 = new TreeSet < String > ( ) ;
     freeE1.addAll ( this.e1.free ( ) ) ;
     for ( int n = 1 ; n < this.identifiers.length ; ++ n )
+    {
       freeE1.remove ( this.identifiers [ n ] ) ;
+    }
     TreeSet < String > free = new TreeSet < String > ( ) ;
     free.addAll ( freeE1 ) ;
     free.addAll ( freeE2 ) ;
