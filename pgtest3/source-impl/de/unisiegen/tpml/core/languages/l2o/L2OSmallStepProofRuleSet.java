@@ -129,14 +129,34 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
         /*
          * If the child Expression of the Message is a Row and the first child
          * Expression of the Row is an Attribute, we have to perform SEND-ATTR.
+         * We can only substitute in Methods and CurriedMethods, not in
+         * Attributes.
          */
         Attribute attribute = ( Attribute ) row.getExpressions ( 0 ) ;
         pContext.addProofStep ( getRuleByName ( "SEND-ATTR" ) , attribute ) ; //$NON-NLS-1$
         Expression [ ] newRowE = new Expression [ row.getExpressions ( ).length - 1 ] ;
         for ( int i = 0 ; i < newRowE.length ; i ++ )
         {
-          newRowE [ i ] = row.getExpressions ( i + 1 ).substitute (
-              attribute.getId ( ) , attribute.getE ( ) ) ;
+          Expression child = row.getExpressions ( i + 1 ) ;
+          if ( child instanceof Attribute )
+          {
+            newRowE [ i ] = child ;
+          }
+          else if ( ( child instanceof Method )
+              || ( child instanceof CurriedMethod ) )
+          {
+            newRowE [ i ] = child.substitute ( attribute.getId ( ) , attribute
+                .getE ( ) ) ;
+          }
+          else
+          {
+            /*
+             * Programming error: The child of the Row is not an Attribute,
+             * Method or CurriedMethod. This should not happen.
+             */
+            throw new IllegalStateException (
+                "Inconsistent L20SmallStepProofRuleSet class." ) ; //$NON-NLS-1$
+          }
         }
         return new Message ( new Row ( newRowE ) , pMessage.getId ( ) ) ;
       }
