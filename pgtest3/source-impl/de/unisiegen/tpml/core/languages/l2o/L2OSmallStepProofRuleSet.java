@@ -24,6 +24,78 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
 {
   /**
    * TODO
+   */
+  private static final String DUPL_EXEC = "DUPL-EXEC" ; //$NON-NLS-1$
+
+
+  /**
+   * TODO
+   */
+  private static final String DUPL_EVAL = "DUPL-EVAL" ; //$NON-NLS-1$
+
+
+  /**
+   * TODO
+   */
+  private static final String SEND_EVAL = "SEND-EVAL" ; //$NON-NLS-1$
+
+
+  /**
+   * TODO
+   */
+  private static final String SEND_EXEC = "SEND-EXEC" ; //$NON-NLS-1$
+
+
+  /**
+   * TODO
+   */
+  private static final String SEND_SKIP = "SEND-SKIP" ; //$NON-NLS-1$
+
+
+  /**
+   * TODO
+   */
+  private static final String SEND_ATTR = "SEND-ATTR" ; //$NON-NLS-1$
+
+
+  /**
+   * TODO
+   */
+  private static final String OBJ_UNFOLD = "OBJ-UNFOLD" ; //$NON-NLS-1$
+
+
+  /**
+   * TODO
+   */
+  private static final String OBJ_EVAL = "OBJ-EVAL" ; //$NON-NLS-1$
+
+
+  /**
+   * TODO
+   */
+  private static final String METH_RIGHT = "METH-RIGHT" ; //$NON-NLS-1$
+
+
+  /**
+   * TODO
+   */
+  private static final String ATTR_RIGHT = "ATTR-RIGHT" ; //$NON-NLS-1$
+
+
+  /**
+   * TODO
+   */
+  private static final String ATTR_RENAME = "ATTR-RENAME" ; //$NON-NLS-1$
+
+
+  /**
+   * TODO
+   */
+  private static final String ATTR_EVAL = "ATTR-EVAL" ; //$NON-NLS-1$
+
+
+  /**
+   * TODO
    * 
    * @param pL2OLanguage TODO
    */
@@ -31,22 +103,22 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
   {
     super ( pL2OLanguage ) ;
     // Attr
-    register ( L2OLanguage.L2O , "ATTR-EVAL" , false ) ; //$NON-NLS-1$
-    register ( L2OLanguage.L2O , "ATTR-RENAME" , true ) ; //$NON-NLS-1$
-    register ( L2OLanguage.L2O , "ATTR-RIGHT" , false ) ; //$NON-NLS-1$
+    register ( L2OLanguage.L2O , ATTR_EVAL , false ) ;
+    register ( L2OLanguage.L2O , ATTR_RENAME , true ) ;
+    register ( L2OLanguage.L2O , ATTR_RIGHT , false ) ;
     // Meth
-    register ( L2OLanguage.L2O , "METH-RIGHT" , false ) ; //$NON-NLS-1$
+    register ( L2OLanguage.L2O , METH_RIGHT , false ) ;
     // Obj
-    register ( L2OLanguage.L2O , "OBJ-EVAL" , false ) ; //$NON-NLS-1$
-    register ( L2OLanguage.L2O , "OBJ-UNFOLD" , true ) ; //$NON-NLS-1$
+    register ( L2OLanguage.L2O , OBJ_EVAL , false ) ;
+    register ( L2OLanguage.L2O , OBJ_UNFOLD , true ) ;
     // Send
-    register ( L2OLanguage.L2O , "SEND-ATTR" , true ) ; //$NON-NLS-1$
-    register ( L2OLanguage.L2O , "SEND-SKIP" , true ) ; //$NON-NLS-1$
-    register ( L2OLanguage.L2O , "SEND-EXEC" , true ) ; //$NON-NLS-1$
-    register ( L2OLanguage.L2O , "SEND-EVAL" , false ) ; //$NON-NLS-1$  
+    register ( L2OLanguage.L2O , SEND_ATTR , true ) ;
+    register ( L2OLanguage.L2O , SEND_SKIP , true ) ;
+    register ( L2OLanguage.L2O , SEND_EXEC , true ) ;
+    register ( L2OLanguage.L2O , SEND_EVAL , false ) ;
     // Dupl
-    register ( L2OLanguage.L2O , "DUPL-EVAL" , false ) ; //$NON-NLS-1$  
-    register ( L2OLanguage.L2O , "DUPL-EXEC" , true ) ; //$NON-NLS-1$
+    register ( L2OLanguage.L2O , DUPL_EVAL , false ) ;
+    register ( L2OLanguage.L2O , DUPL_EXEC , true ) ;
   }
 
 
@@ -63,7 +135,7 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
     /*
      * If the Expression is an ObjectExpr, we can only perform OBJ-EVAL.
      */
-    pContext.addProofStep ( getRuleByName ( "OBJ-EVAL" ) , pObjectExpr ) ; //$NON-NLS-1$
+    pContext.addProofStep ( getRuleByName ( OBJ_EVAL ) , pObjectExpr ) ;
     Expression row = evaluate ( pContext , pObjectExpr.getE ( ) ) ;
     if ( row.isException ( ) )
     {
@@ -90,7 +162,7 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
        * If the child Expression of the Message is not yet a value, we have to
        * perform SEND-EVAL.
        */
-      pContext.addProofStep ( getRuleByName ( "SEND-EVAL" ) , pMessage ) ; //$NON-NLS-1$
+      pContext.addProofStep ( getRuleByName ( SEND_EVAL ) , pMessage ) ;
       Expression expr = evaluate ( pContext , pMessage.getE ( ) ) ;
       if ( expr.isException ( ) )
       {
@@ -104,7 +176,7 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
        * If the child Expression of the Message is an ObjectExpr and the
        * ObjectExpr is a value, we have to perform OBJ-UNFOLD.
        */
-      pContext.addProofStep ( getRuleByName ( "OBJ-UNFOLD" ) , pMessage ) ; //$NON-NLS-1$
+      pContext.addProofStep ( getRuleByName ( OBJ_UNFOLD ) , pMessage ) ;
       ObjectExpr objectExpr = ( ObjectExpr ) pMessage.getE ( ) ;
       Row row = objectExpr.getE ( ) ;
       Expression newRow = row.substitute ( objectExpr.getId ( ) , objectExpr
@@ -133,7 +205,7 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
          * Attributes.
          */
         Attribute attribute = ( Attribute ) row.getExpressions ( 0 ) ;
-        pContext.addProofStep ( getRuleByName ( "SEND-ATTR" ) , attribute ) ; //$NON-NLS-1$
+        pContext.addProofStep ( getRuleByName ( SEND_ATTR ) , attribute ) ;
         Expression [ ] newRowE = new Expression [ row.getExpressions ( ).length - 1 ] ;
         for ( int i = 0 ; i < newRowE.length ; i ++ )
         {
@@ -207,8 +279,8 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
           }
           if ( ! definedLater )
           {
-            pContext.addProofStep (
-                getRuleByName ( "SEND-EXEC" ) , firstRowChild ) ; //$NON-NLS-1$
+            pContext
+                .addProofStep ( getRuleByName ( SEND_EXEC ) , firstRowChild ) ;
             return methE ;
           }
         }
@@ -219,7 +291,7 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
          * CurriedMethod or there is a Method or CurriedMethod with the same
          * Identifier in the rest of the Row, we have to perform SEND-SKIP.
          */
-        pContext.addProofStep ( getRuleByName ( "SEND-SKIP" ) , firstRowChild ) ; //$NON-NLS-1$
+        pContext.addProofStep ( getRuleByName ( SEND_SKIP ) , firstRowChild ) ;
         Expression [ ] newRowE = new Expression [ row.getExpressions ( ).length - 1 ] ;
         for ( int i = 0 ; i < newRowE.length ; i ++ )
         {
@@ -269,7 +341,7 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
      */
     if ( ( ! allChildrenAreValues ) && ( pDuplication.getE ( ).isValue ( ) ) )
     {
-      pContext.addProofStep ( getRuleByName ( "DUPL-EVAL" ) , pDuplication ) ; //$NON-NLS-1$
+      pContext.addProofStep ( getRuleByName ( DUPL_EVAL ) , pDuplication ) ;
       Expression [ ] newDuplicationE = pDuplication.getExpressions ( ).clone ( ) ;
       for ( int i = 0 ; i < newDuplicationE.length ; i ++ )
       {
@@ -324,7 +396,7 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
           return pDuplication ;
         }
       }
-      pContext.addProofStep ( getRuleByName ( "DUPL-EXEC" ) , pDuplication ) ; //$NON-NLS-1$
+      pContext.addProofStep ( getRuleByName ( DUPL_EXEC ) , pDuplication ) ;
       return new ObjectExpr ( objectExpr.getId ( ) , objectExpr.getTau ( ) ,
           new Row ( newRowE ) ) ;
     }
@@ -356,7 +428,7 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
         Attribute attribute = ( Attribute ) currentRowChild ;
         if ( ! attribute.isValue ( ) )
         {
-          pContext.addProofStep ( getRuleByName ( "ATTR-EVAL" ) , attribute ) ; //$NON-NLS-1$
+          pContext.addProofStep ( getRuleByName ( ATTR_EVAL ) , attribute ) ;
           Expression attrE = evaluate ( pContext , attribute.getE ( ) ) ;
           if ( attrE.isException ( ) )
           {
@@ -389,7 +461,7 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
          */
         if ( attrRename )
         {
-          pContext.addProofStep ( getRuleByName ( "ATTR-RENAME" ) , attribute ) ; //$NON-NLS-1$ 
+          pContext.addProofStep ( getRuleByName ( ATTR_RENAME ) , attribute ) ;
           Expression [ ] tmp = pRow.getExpressions ( ).clone ( ) ;
           String newId = attribute.getId ( ) + "'" ; //$NON-NLS-1$ 
           while ( attrRename )
@@ -441,7 +513,7 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
          * If the Attribute is a value and it has not to be renamed, we have to
          * perform ATTR-RIGHT.
          */
-        pContext.addProofStep ( getRuleByName ( "ATTR-RIGHT" ) , attribute ) ; //$NON-NLS-1$
+        pContext.addProofStep ( getRuleByName ( ATTR_RIGHT ) , attribute ) ;
       }
       else if ( ( currentRowChild instanceof Method )
           || ( currentRowChild instanceof CurriedMethod ) )
@@ -450,8 +522,7 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
          * If the current child is a Method or CurriedMethod, we have to perform
          * METH-RIGHT.
          */
-        pContext.addProofStep (
-            getRuleByName ( "METH-RIGHT" ) , currentRowChild ) ; //$NON-NLS-1$
+        pContext.addProofStep ( getRuleByName ( METH_RIGHT ) , currentRowChild ) ;
       }
       else
       {
