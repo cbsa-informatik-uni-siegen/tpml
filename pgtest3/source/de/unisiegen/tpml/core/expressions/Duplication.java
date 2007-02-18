@@ -265,7 +265,7 @@ public final class Duplication extends Expression
    * {@inheritDoc}
    */
   @ Override
-  public Duplication substitute ( String pID , Expression pExpression ,
+  public Duplication substitute ( String pId , Expression pExpression ,
       boolean pAttributeRename )
   {
     /*
@@ -273,7 +273,7 @@ public final class Duplication extends Expression
      */
     if ( pAttributeRename )
     {
-      return substituteAttribute ( pID , pExpression ) ;
+      return substituteAttribute ( pId , pExpression ) ;
     }
     /*
      * Perform the normal substitution.
@@ -281,9 +281,9 @@ public final class Duplication extends Expression
     Expression [ ] newExpr = new Expression [ this.expressions.length ] ;
     for ( int i = 0 ; i < newExpr.length ; i ++ )
     {
-      newExpr [ i ] = this.expressions [ i ].substitute ( pID , pExpression ) ;
+      newExpr [ i ] = this.expressions [ i ].substitute ( pId , pExpression ) ;
     }
-    return new Duplication ( this.firstExpression.substitute ( pID ,
+    return new Duplication ( this.firstExpression.substitute ( pId ,
         pExpression ) , this.identifiers , newExpr ) ;
   }
 
@@ -291,11 +291,11 @@ public final class Duplication extends Expression
   /**
    * TODO
    * 
-   * @param pID TODO
+   * @param pId TODO
    * @param pExpression TODO
    * @return TODO
    */
-  private Duplication substituteAttribute ( String pID , Expression pExpression )
+  private Duplication substituteAttribute ( String pId , Expression pExpression )
   {
     Expression [ ] newExpr = new Expression [ this.expressions.length ] ;
     String [ ] newId = this.identifiers.clone ( ) ;
@@ -305,15 +305,15 @@ public final class Duplication extends Expression
        * If the Identifier, which should be substituted, is equal to the
        * Identifier of a child of this Duplication, it should be renamed.
        */
-      if ( ( newId [ i ].equals ( pID ) )
+      if ( ( newId [ i ].equals ( pId ) )
           && ( pExpression instanceof Identifier ) )
       {
         newId [ i ] = ( ( Identifier ) pExpression ).getName ( ) ;
       }
-      newExpr [ i ] = this.expressions [ i ].substitute ( pID , pExpression ,
+      newExpr [ i ] = this.expressions [ i ].substitute ( pId , pExpression ,
           true ) ;
     }
-    return new Duplication ( this.firstExpression.substitute ( pID ,
+    return new Duplication ( this.firstExpression.substitute ( pId ,
         pExpression , true ) , newId , newExpr ) ;
   }
 

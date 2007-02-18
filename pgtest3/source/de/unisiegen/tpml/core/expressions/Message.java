@@ -144,10 +144,10 @@ public final class Message extends Expression
    * {@inheritDoc}
    */
   @ Override
-  public Message substitute ( String pID , Expression pExpression ,
+  public Message substitute ( String pId , Expression pExpression ,
       boolean pAttributeRename )
   {
-    return new Message ( this.expression.substitute ( pID , pExpression ,
+    return new Message ( this.expression.substitute ( pId , pExpression ,
         pAttributeRename ) , this.identifier ) ;
   }
 

@@ -173,11 +173,11 @@ public class Attribute extends Expression
    * {@inheritDoc}
    */
   @ Override
-  public Attribute substitute ( String pID , Expression pExpression ,
+  public Attribute substitute ( String pId , Expression pExpression ,
       boolean pAttributeRename )
   {
     return new Attribute ( this.identifier , this.tau , this.expression
-        .substitute ( pID , pExpression , pAttributeRename ) ) ;
+        .substitute ( pId , pExpression , pAttributeRename ) ) ;
   }
 
 
