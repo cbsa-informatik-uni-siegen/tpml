@@ -2,6 +2,7 @@ package de.unisiegen.tpml.core.languages.l4;
 
 import de.unisiegen.tpml.core.expressions.Condition1;
 import de.unisiegen.tpml.core.expressions.Expression;
+import de.unisiegen.tpml.core.expressions.Identifier;
 import de.unisiegen.tpml.core.expressions.Let;
 import de.unisiegen.tpml.core.expressions.MultiLet;
 import de.unisiegen.tpml.core.expressions.Sequence;
@@ -22,6 +23,7 @@ import de.unisiegen.tpml.core.types.ListType;
 import de.unisiegen.tpml.core.types.MonoType;
 import de.unisiegen.tpml.core.types.RefType;
 import de.unisiegen.tpml.core.types.TupleType;
+import de.unisiegen.tpml.core.types.Type;
 import de.unisiegen.tpml.core.types.TypeVariable;
 import de.unisiegen.tpml.core.types.UnitType;
 
@@ -67,8 +69,14 @@ public class L4TypeInferenceProofRuleSet extends L4TypeCheckerProofRuleSet {
 	}
 	
 	
-
-    
+	@Override
+	  public void applyPId(TypeCheckerProofContext context, TypeCheckerProofNode node) {
+			    Type type = node.getEnvironment().get(((Identifier)node.getExpression()).getName());
+			    context.addEquation(node.getType(), context.instantiate(type));
+//			    generate new child nodes
+			      context.addProofNode(node, node.getEnvironment(), node.getExpression(), node.getType());
+			      
+			  } 
     
     
     

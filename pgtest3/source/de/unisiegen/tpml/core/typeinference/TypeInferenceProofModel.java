@@ -137,26 +137,52 @@ public final class TypeInferenceProofModel extends AbstractExpressionProofModel 
 		    // try to guess the next rule
 		    logger.debug("Trying to guess a rule for " + node);
 		    
-		    System.out.println("");
+		    
 		    
 		    for (ProofRule rule : this.ruleSet.getRules()) { // MUST be the getRules() from the ProofRuleSet
-		      try {
-		    	  System.out.println(rule.toString());
-		        // try to apply the rule to the specified node
-		        applyInternal((TypeCheckerProofRule)rule, node, type);
+		      
+		    	boolean preUnify=true;
+		    	DefaultTypeInferenceProofNode parent = node.getParent();
+		    	
+		    	
+		    	if (parent!=null)
+		    	{
+		    		ProofRule tmpRule=parent.getRule();
+		    		if (tmpRule!=null)
+		    		{
+		    			if (parent.getRule().toString().equals("UNIFY")||parent.getRule().toString().equals("P-ID"))
+			    		{
+		    				
+			    			preUnify=false;
+			    			
+			    		}
+		    		}
+		    		
+		    		parent=parent.getParent();
+		    	}
+		    	
+		    	  //TODO
+		    	 //dirty workaround, think about another way!
+		    	 if (node.getParent()==null || (preUnify || rule.toString().equals("UNIFY"))) 
+		    	 {
+		    		 try {
+//		    			 try to apply the rule to the specified node
+		 		        applyInternal((TypeCheckerProofRule)rule, node, type);
+		 		        
+		 		        // remember that the user cheated
+		 		        setCheating(true);
+		 		        
+		 		        // yep, we did it
+		 		        logger.debug("Successfully applied (" + rule + ") to " + node);
+		 		        return;
+		 		      }
+		 		      catch (ProofRuleException e) {
+		 		        // rule failed to apply... so, next one, please
+		 		        logger.debug("Failed to apply (" + rule + ") to " + node, e);
+		 		        continue;
+		 		      }	 
+		    	 }
 		        
-		        // remember that the user cheated
-		        setCheating(true);
-		        
-		        // yep, we did it
-		        logger.debug("Successfully applied (" + rule + ") to " + node);
-		        return;
-		      }
-		      catch (ProofRuleException e) {
-		        // rule failed to apply... so, next one, please
-		        logger.debug("Failed to apply (" + rule + ") to " + node, e);
-		        continue;
-		      }
 		    }
 		    
 		    // unable to guess next step

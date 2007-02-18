@@ -1,7 +1,11 @@
 package de.unisiegen.tpml.core.languages.l3;
 
+import de.unisiegen.tpml.core.expressions.Identifier;
 import de.unisiegen.tpml.core.languages.l1.L1Language;
 import de.unisiegen.tpml.core.languages.l2.L2Language;
+import de.unisiegen.tpml.core.typechecker.TypeCheckerProofContext;
+import de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode;
+import de.unisiegen.tpml.core.types.Type;
 
 public class L3TypeInferenceProofRuleSet extends L3TypeCheckerProofRuleSet {
 
@@ -38,5 +42,14 @@ public class L3TypeInferenceProofRuleSet extends L3TypeCheckerProofRuleSet {
 	    registerByMethodName(L3Language.L3, "TUPLE", "applyTuple");
 	
 	}
+	
+	@Override
+	  public void applyPId(TypeCheckerProofContext context, TypeCheckerProofNode node) {
+		    Type type = node.getEnvironment().get(((Identifier)node.getExpression()).getName());
+		    context.addEquation(node.getType(), context.instantiate(type));
+//		    generate new child nodes
+		      context.addProofNode(node, node.getEnvironment(), node.getExpression(), node.getType());
+		      
+		  }
 
 }

@@ -384,7 +384,7 @@ public class L1TypeCheckerProofRuleSet extends AbstractTypeCheckerProofRuleSet {
  */
 public void applyUnify(TypeCheckerProofContext context, final TypeCheckerProofNode pNode) throws UnificationException {
 	
-	System.out.println("unify");
+	
     if (!(pNode instanceof DefaultTypeInferenceProofNode)) {
     	return ;
     }
@@ -415,13 +415,15 @@ public void applyUnify(TypeCheckerProofContext context, final TypeCheckerProofNo
     	  
     	  System.out.println("Should not be here");
         DefaultTypeSubstitution s1 = new DefaultTypeSubstitution(tvar, tau);
+        System.out.println(s1.toString());
 //	      TODO
 //	      i have to implement this (just think about what to do here)
-        DefaultTypeSubstitution s2 = node.getEquations().remaining.substitute(s1).unify();
+        TypeEquationList eqns=node.getEquations().remaining.substitute(s1);
 //      TODO
 //      i have to implement this (just think about what to do here)
         //return s1.compose(s2);
-        
+//      generate new child nodes
+        context.addProofNode(node, node.getEnvironment(), node.getExpression(), node.getType(), eqns);
         return;
       }
       
