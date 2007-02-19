@@ -254,7 +254,8 @@ public final class ObjectExpr extends Expression
       }
     }
     /*
-     * Only substitute the old Identifier, if the new is not equal to the old.
+     * Only substitute the old Identifier, if the new Identifier is not equal to
+     * the old Identifier.
      */
     Row newRow = this.row ;
     if ( ! newId.equals ( this.identifier ) )

@@ -269,6 +269,10 @@ public final class Row extends Expression
           }
           tmp [ i ] = new Attribute ( newId , attribute.getTau ( ) , attribute
               .getE ( ).substitute ( pID , pExpression , pAttributeRename ) ) ;
+          /*
+           * Only substitute the old Identifier, if the new Identifier is not equal to
+           * the old Identifier.
+           */
           if ( ! attribute.getId ( ).equals ( newId ) )
           {
             for ( int j = i + 1 ; j < tmp.length ; j ++ )
