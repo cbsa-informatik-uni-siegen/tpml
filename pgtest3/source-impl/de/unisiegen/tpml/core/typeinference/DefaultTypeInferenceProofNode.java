@@ -39,7 +39,7 @@ public class DefaultTypeInferenceProofNode extends AbstractExpressionProofNode i
 	  
 	  private TypeEquationList equations = TypeEquationList.EMPTY_LIST;
 	  
-	  private boolean tmpChild=false;
+	  private boolean tmpChild=true;
 	  private TypeEnvironment tmpEnvironment;
 	  private Expression tmpExpression;
 	  private MonoType tmpType;
@@ -266,6 +266,14 @@ public class DefaultTypeInferenceProofNode extends AbstractExpressionProofNode i
 
 	public void setTmpType(MonoType tmpType) {
 		this.tmpType = tmpType;
+	}
+
+	public boolean hasTmpChild() {
+		return tmpChild;
+	}
+
+	public void setTmpChild(boolean tmpChild) {
+		this.tmpChild = tmpChild;
 	}
 
 

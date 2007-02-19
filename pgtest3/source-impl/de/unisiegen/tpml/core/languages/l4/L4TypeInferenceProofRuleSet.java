@@ -120,6 +120,7 @@ public class L4TypeInferenceProofRuleSet extends L4TypeCheckerProofRuleSet {
 	      node.setTmpEnvironment(pNode.getEnvironment());
 	      node.setTmpExpression( application.getE2());
 	      node.setTmpType(tau2);
+	      node.setTmpChild(true);
 	     // context.addProofNode(pNode, pNode.getEnvironment(), infixOperation.getE2(), tau2);
 	    }
 	  }
@@ -138,10 +139,13 @@ public class L4TypeInferenceProofRuleSet extends L4TypeCheckerProofRuleSet {
 			}
 			
 		}
-		if (createchild)
+		
+		DefaultTypeInferenceProofNode node = (DefaultTypeInferenceProofNode)pNode;
+		if (createchild && node.hasTmpChild())
 		{
-			DefaultTypeInferenceProofNode node = (DefaultTypeInferenceProofNode)pNode;
+			
 			context.addProofNode(pNode, node.getTmpEnvironment(), node.getTmpExpression(), node.getTmpType());
+			node.setTmpChild(false);
 		}
 		 
 		
