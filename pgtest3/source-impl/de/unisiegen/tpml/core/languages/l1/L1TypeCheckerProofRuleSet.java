@@ -382,7 +382,7 @@ public class L1TypeCheckerProofRuleSet extends AbstractTypeCheckerProofRuleSet {
  * @return
  * @throws UnificationException
  */
-public void applyUnify(TypeCheckerProofContext context, final TypeCheckerProofNode pNode) throws UnificationException {
+public void applyUnify(TypeCheckerProofContext context, TypeCheckerProofNode pNode) throws UnificationException {
 	
 	
     if (!(pNode instanceof DefaultTypeInferenceProofNode)) {
@@ -413,9 +413,9 @@ public void applyUnify(TypeCheckerProofContext context, final TypeCheckerProofNo
       // either tvar equals tau or tvar is not present in tau
       if (tvar.equals(tau) || !tau.free().contains(tvar)) {
     	  
-    	  System.out.println("Should not be here");
+    	  
         DefaultTypeSubstitution s1 = new DefaultTypeSubstitution(tvar, tau);
-        System.out.println(s1.toString());
+        //System.out.println(s1.toString());
 //	      TODO
 //	      i have to implement this (just think about what to do here)
         TypeEquationList eqns=node.getEquations().remaining.substitute(s1);

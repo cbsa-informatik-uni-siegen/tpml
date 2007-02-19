@@ -25,7 +25,7 @@ public final class TypeEquationList {
    * 
    * @see #TypeEquationList()
    */
-  static final TypeEquationList EMPTY_LIST = new TypeEquationList();
+  public static final TypeEquationList EMPTY_LIST = new TypeEquationList();
 
   
   
@@ -95,7 +95,7 @@ public final class TypeEquationList {
    * 
    * @throws NullPointerException if <code>left</code> or <code>right</code> is <code>null</code>.
    */
-  TypeEquationList extend(MonoType left, MonoType right) {
+  public TypeEquationList extend(MonoType left, MonoType right) {
     return new TypeEquationList(new TypeEquation(left, right), this);
   }
 

@@ -1,8 +1,10 @@
 package de.unisiegen.tpml.core.languages.l4;
 
+import de.unisiegen.tpml.core.expressions.Application;
 import de.unisiegen.tpml.core.expressions.Condition1;
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.expressions.Identifier;
+import de.unisiegen.tpml.core.expressions.InfixOperation;
 import de.unisiegen.tpml.core.expressions.Let;
 import de.unisiegen.tpml.core.expressions.MultiLet;
 import de.unisiegen.tpml.core.expressions.Sequence;
@@ -51,7 +53,7 @@ public class L4TypeInferenceProofRuleSet extends L4TypeCheckerProofRuleSet {
 //		 register the type rules
 	    registerByMethodName(L1Language.L1, "ABSTR", "applyAbstr");
 	    registerByMethodName(L2Language.L2, "AND", "applyAnd");
-	    registerByMethodName(L1Language.L1, "APP", "applyApp");
+	    registerByMethodName(L1Language.L1, "APP", "applyApp", "updateApp");
 	    registerByMethodName(L1Language.L1, "COND", "applyCond");
 	    registerByMethodName(L1Language.L1, "LET", "applyLet");
 	    registerByMethodName(L2Language.L2, "OR", "applyOr");
@@ -74,11 +76,79 @@ public class L4TypeInferenceProofRuleSet extends L4TypeCheckerProofRuleSet {
 			    Type type = node.getEnvironment().get(((Identifier)node.getExpression()).getName());
 			    context.addEquation(node.getType(), context.instantiate(type));
 //			    generate new child nodes
-			      context.addProofNode(node, node.getEnvironment(), node.getExpression(), node.getType());
+			    //  context.addProofNode(node, node.getEnvironment(), node.getExpression(), node.getType());
 			      
 			  } 
+	
+	  //
+	  // The (APP) rule
+	  //
+	  
+	  /**
+	   * Applies the <b>(APP)</b> rule to the <code>node</code> using the <code>context</code>.
+	   * 
+	   * @param context the type checker proof context.
+	   * @param node the type checker proof node.
+	   */
+	@Override
+	  public void applyApp(TypeCheckerProofContext context, TypeCheckerProofNode pNode) {
+		
+		DefaultTypeInferenceProofNode node = (DefaultTypeInferenceProofNode) pNode;
+	    // split into tau1 and tau2 for the application
+		TypeVariable tau2 = context.newTypeVariable();
+	    ArrowType tau1 = new ArrowType(tau2, pNode.getType());
+	    
+	    // can be either an application or an infix operation
+	    try {
+	    	
+	    	//TODO Benny
+	    	//have to generate second child in update method
+	      // generate new child nodes
+	      Application application = (Application)pNode.getExpression();
+	      context.addProofNode(pNode, pNode.getEnvironment(), application.getE1(), tau1);
+	      node.setTmpEnvironment(pNode.getEnvironment());
+	      node.setTmpExpression( application.getE2());
+	      node.setTmpType(tau2);
+	      
+	      //context.addProofNode(pNode, pNode.getEnvironment(), application.getE2(), tau2);
+	    }
+	    catch (ClassCastException e) {
+	      // generate new child nodes
+	      InfixOperation infixOperation = (InfixOperation)pNode.getExpression();
+	      Application application = new Application(infixOperation.getOp(), infixOperation.getE1());
+	      context.addProofNode(pNode, pNode.getEnvironment(), application, tau1);
+	      node.setTmpEnvironment(pNode.getEnvironment());
+	      node.setTmpExpression( application.getE2());
+	      node.setTmpType(tau2);
+	     // context.addProofNode(pNode, pNode.getEnvironment(), infixOperation.getE2(), tau2);
+	    }
+	  }
+	  
     
-    
+	public void updateApp(TypeCheckerProofContext context, TypeCheckerProofNode pNode) {
+		
+		boolean createchild=true;
+		for (int i=0; i<pNode.getChildCount(); i++)
+		{
+			DefaultTypeInferenceProofNode child=(DefaultTypeInferenceProofNode)pNode.getChildAt(i);
+			if (!child.isFinished())
+			{
+				createchild=false;
+				break;
+			}
+			
+		}
+		if (createchild)
+		{
+			DefaultTypeInferenceProofNode node = (DefaultTypeInferenceProofNode)pNode;
+			context.addProofNode(pNode, node.getTmpEnvironment(), node.getTmpExpression(), node.getTmpType());
+		}
+		 
+		
+		
+	}
+
+
     
     	
       

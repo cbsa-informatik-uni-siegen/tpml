@@ -139,8 +139,12 @@ public final class TypeInferenceProofModel extends AbstractExpressionProofModel 
 		    
 		    
 		    
-		    for (ProofRule rule : this.ruleSet.getRules()) { // MUST be the getRules() from the ProofRuleSet
+		    for (ProofRule rule : this.ruleSet.getRules()) {
 		      
+		    	
+		    	 //TODO
+		    	 //dirty workaround, think about another way!
+		    	
 		    	boolean preUnify=true;
 		    	DefaultTypeInferenceProofNode parent = node.getParent();
 		    	
@@ -161,8 +165,7 @@ public final class TypeInferenceProofModel extends AbstractExpressionProofModel 
 		    		parent=parent.getParent();
 		    	}
 		    	
-		    	  //TODO
-		    	 //dirty workaround, think about another way!
+		    	 
 		    	 if (node.getParent()==null || (preUnify || rule.toString().equals("UNIFY"))) 
 		    	 {
 		    		 try {

@@ -267,15 +267,10 @@ public class DefaultTypeInferenceProofContext  implements TypeInferenceProofCont
 	     if (parentNode == null) {
 	        break;
 	      }
-	     if (parentNode.getRule()==null)
-	     {
-	    	 System.out.println("get Rule = null");
-	    	 break;
-	     }
-	      
-	      
+	        
 	      // update the parent node (using the previously applied rule)
 	      parentNode.getRule().update(this, parentNode);
+	      
 	      
 	      // continue with the next one
 	      node = parentNode;

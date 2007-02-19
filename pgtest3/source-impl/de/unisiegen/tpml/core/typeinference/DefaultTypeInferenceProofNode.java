@@ -39,6 +39,11 @@ public class DefaultTypeInferenceProofNode extends AbstractExpressionProofNode i
 	  
 	  private TypeEquationList equations = TypeEquationList.EMPTY_LIST;
 	  
+	  private boolean tmpChild=false;
+	  private TypeEnvironment tmpEnvironment;
+	  private Expression tmpExpression;
+	  private MonoType tmpType;
+	  
 	  
 	  
 	 
@@ -224,7 +229,7 @@ public class DefaultTypeInferenceProofNode extends AbstractExpressionProofNode i
 	    builder.append(this.expression);
 	    builder.append(" :: ");
 	    builder.append(this.type);
-	    builder.append("<br>");
+	    //builder.append("<br>");
 	    builder.append(equations);
 	    if (getRule() != null) {
 	      builder.append(" (" + getRule() + ")");
@@ -238,5 +243,30 @@ public class DefaultTypeInferenceProofNode extends AbstractExpressionProofNode i
 	public TypeEquationList getEquations() {
 		return this.equations;
 	}
-	
+
+	public TypeEnvironment getTmpEnvironment() {
+		return this.tmpEnvironment;
+	}
+
+	public void setTmpEnvironment(TypeEnvironment tmpEnvironment) {
+		this.tmpEnvironment = tmpEnvironment;
+	}
+
+	public Expression getTmpExpression() {
+		return this.tmpExpression;
+	}
+
+	public void setTmpExpression(Expression tmpExpression) {
+		this.tmpExpression = tmpExpression;
+	}
+
+	public MonoType getTmpType() {
+		return this.tmpType;
+	}
+
+	public void setTmpType(MonoType tmpType) {
+		this.tmpType = tmpType;
+	}
+
+
 }

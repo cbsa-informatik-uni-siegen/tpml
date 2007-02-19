@@ -62,7 +62,7 @@ public final class TypeInferenceProofModelTest extends JFrame {
 	  
     // setup the frame
     setLayout(new BorderLayout());
-    setSize(630, 580);
+   setSize(630, 580);
     setTitle("TypeInferenceProofModel Test");
     
  
@@ -77,6 +77,8 @@ public final class TypeInferenceProofModelTest extends JFrame {
     // setup the tree
     final JTree tree = new JTree(model);
     treePanel.add(tree, BorderLayout.CENTER);
+    
+    tree.setRowHeight(40);
     
     // setup the button panel
     JPanel buttons = new JPanel(new FlowLayout());
@@ -99,6 +101,7 @@ public final class TypeInferenceProofModelTest extends JFrame {
           // expand to the all nodes
           for (int n = 0; n < tree.getRowCount(); ++n) {
             tree.expandRow(n);
+            
           }
         }
         
