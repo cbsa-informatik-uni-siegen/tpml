@@ -38,7 +38,7 @@ public class L3TypeInferenceProofRuleSet extends L3TypeCheckerProofRuleSet {
 	    registerByMethodName(L2Language.L2, "REC", "applyRec");
 	    registerByMethodName(L3Language.L3, "LIST", "applyList");
 	    registerByMethodName(L3Language.L3, "P-CONST", "applyPConst");
-	    registerByMethodName(L3Language.L3, "P-ID", "applyPId");
+	    registerByMethodName(L3Language.L3, "P-ID", "applyPId", "updatePId");
 	    registerByMethodName(L3Language.L3, "P-LET", "applyPLet", "updatePLet");
 	    registerByMethodName(L3Language.L3, "TUPLE", "applyTuple");
 	
@@ -67,5 +67,17 @@ public class L3TypeInferenceProofRuleSet extends L3TypeCheckerProofRuleSet {
 		if (createchild)
 			context.addProofNode(node, node.getEnvironment(), node.getExpression(), node.getType());
 	}
+	
+	  public void updatePId(TypeCheckerProofContext context, TypeCheckerProofNode pNode) {
+		  System.out.println("War hier");
+		 TypeCheckerProofNode root =pNode.getRoot();
+		  if ( root.isFinished())
+		  {
+			  DefaultTypeInferenceProofNode node= (DefaultTypeInferenceProofNode) pNode;
+			  context.addProofNode(root, node.getEnvironment(), node.getExpression(), node.getType(), node.getEquations());
+				
+		  }
+	  }
+    
 
 }

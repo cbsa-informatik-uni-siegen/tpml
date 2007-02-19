@@ -1,33 +1,15 @@
 package de.unisiegen.tpml.core.languages.l4;
 
 import de.unisiegen.tpml.core.expressions.Application;
-import de.unisiegen.tpml.core.expressions.Condition1;
-import de.unisiegen.tpml.core.expressions.Expression;
-import de.unisiegen.tpml.core.expressions.Identifier;
 import de.unisiegen.tpml.core.expressions.InfixOperation;
-import de.unisiegen.tpml.core.expressions.Let;
-import de.unisiegen.tpml.core.expressions.MultiLet;
-import de.unisiegen.tpml.core.expressions.Sequence;
-import de.unisiegen.tpml.core.expressions.While;
 import de.unisiegen.tpml.core.languages.l1.L1Language;
 import de.unisiegen.tpml.core.languages.l2.L2Language;
 import de.unisiegen.tpml.core.languages.l3.L3Language;
-import de.unisiegen.tpml.core.languages.l3.L3TypeCheckerProofRuleSet;
-import de.unisiegen.tpml.core.typechecker.DefaultTypeSubstitution;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofContext;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode;
-import de.unisiegen.tpml.core.typechecker.TypeEquationList;
-import de.unisiegen.tpml.core.typechecker.UnificationException;
 import de.unisiegen.tpml.core.typeinference.DefaultTypeInferenceProofNode;
 import de.unisiegen.tpml.core.types.ArrowType;
-import de.unisiegen.tpml.core.types.BooleanType;
-import de.unisiegen.tpml.core.types.ListType;
-import de.unisiegen.tpml.core.types.MonoType;
-import de.unisiegen.tpml.core.types.RefType;
-import de.unisiegen.tpml.core.types.TupleType;
-import de.unisiegen.tpml.core.types.Type;
 import de.unisiegen.tpml.core.types.TypeVariable;
-import de.unisiegen.tpml.core.types.UnitType;
 
 public class L4TypeInferenceProofRuleSet extends L4TypeCheckerProofRuleSet {
 
@@ -51,13 +33,13 @@ public class L4TypeInferenceProofRuleSet extends L4TypeCheckerProofRuleSet {
 	    registerByMethodName(L1Language.L1, "UNIFY", "applyUnify");
 		
 //		 register the type rules
-	    registerByMethodName(L1Language.L1, "ABSTR", "applyAbstr");
+	    registerByMethodName(L1Language.L1, "ABSTR", "applyAbstr", "updateUnify");
 	    registerByMethodName(L2Language.L2, "AND", "applyAnd");
 	    registerByMethodName(L1Language.L1, "APP", "applyApp", "updateApp");
 	    registerByMethodName(L1Language.L1, "COND", "applyCond");
-	    registerByMethodName(L1Language.L1, "LET", "applyLet");
+	    registerByMethodName(L1Language.L1, "LET", "applyLet", "updateUnify");
 	    registerByMethodName(L2Language.L2, "OR", "applyOr");
-	    registerByMethodName(L2Language.L2, "REC", "applyRec");
+	    registerByMethodName(L2Language.L2, "REC", "applyRec", "updateUnify");
 	    registerByMethodName(L3Language.L3, "LIST", "applyList");
 	    registerByMethodName(L3Language.L3, "P-CONST", "applyPConst");
 	    registerByMethodName(L3Language.L3, "P-ID", "applyPId");
@@ -70,15 +52,7 @@ public class L4TypeInferenceProofRuleSet extends L4TypeCheckerProofRuleSet {
 		
 	}
 	
-	
-	@Override
-	  public void applyPId(TypeCheckerProofContext context, TypeCheckerProofNode node) {
-			    Type type = node.getEnvironment().get(((Identifier)node.getExpression()).getName());
-			    context.addEquation(node.getType(), context.instantiate(type));
-//			    generate new child nodes
-			    //  context.addProofNode(node, node.getEnvironment(), node.getExpression(), node.getType());
-			      
-			  } 
+
 	
 	  //
 	  // The (APP) rule
@@ -113,15 +87,17 @@ public class L4TypeInferenceProofRuleSet extends L4TypeCheckerProofRuleSet {
 	      //context.addProofNode(pNode, pNode.getEnvironment(), application.getE2(), tau2);
 	    }
 	    catch (ClassCastException e) {
-	      // generate new child nodes
+	     // generate new child node and a TmpChild which will be generated later
 	      InfixOperation infixOperation = (InfixOperation)pNode.getExpression();
 	      Application application = new Application(infixOperation.getOp(), infixOperation.getE1());
 	      context.addProofNode(pNode, pNode.getEnvironment(), application, tau1);
 	      node.setTmpEnvironment(pNode.getEnvironment());
 	      node.setTmpExpression( application.getE2());
 	      node.setTmpType(tau2);
+	      //Set Signal for waiting Child to be generated
 	      node.setTmpChild(true);
-	     // context.addProofNode(pNode, pNode.getEnvironment(), infixOperation.getE2(), tau2);
+	     // context.addProofNode(pNode, pNode.getEnvironment(),
+			// infixOperation.getE2(), tau2);
 	    }
 	  }
 	  
@@ -129,6 +105,8 @@ public class L4TypeInferenceProofRuleSet extends L4TypeCheckerProofRuleSet {
 	public void updateApp(TypeCheckerProofContext context, TypeCheckerProofNode pNode) {
 		
 		boolean createchild=true;
+		
+		//check if first child of App is finished
 		for (int i=0; i<pNode.getChildCount(); i++)
 		{
 			DefaultTypeInferenceProofNode child=(DefaultTypeInferenceProofNode)pNode.getChildAt(i);
@@ -143,18 +121,32 @@ public class L4TypeInferenceProofRuleSet extends L4TypeCheckerProofRuleSet {
 		DefaultTypeInferenceProofNode node = (DefaultTypeInferenceProofNode)pNode;
 		if (createchild && node.hasTmpChild())
 		{
-			
-			context.addProofNode(pNode, node.getTmpEnvironment(), node.getTmpExpression(), node.getTmpType());
+			//generate second child wiht Equations from first child and remove Signal
+			context.addProofNode(pNode, node.getTmpEnvironment(), node.getTmpExpression(), node.getTmpType(), node.getFirstChild().getEquations());
 			node.setTmpChild(false);
 		}
-		 
 		
-		
+		 TypeCheckerProofNode root =pNode.getRoot();
+		  if ( root.isFinished())
+		  {
+			
+			  context.addProofNode(root, node.getEnvironment(), node.getExpression(), node.getType(), node.getEquations());
+				
+		  }
+
 	}
 
-
-    
-    	
-      
+	  public void updateUnify(TypeCheckerProofContext context, TypeCheckerProofNode pNode) {
+		  
+		 TypeCheckerProofNode root =pNode.getRoot();
+		  if ( root.isFinished())
+		  {
+			  DefaultTypeInferenceProofNode node= (DefaultTypeInferenceProofNode) pNode;
+			  context.addProofNode(node, node.getEnvironment(), node.getExpression(), node.getType(), node.getEquations());
+				
+		  }
+	  }
+	    
+	 
 
 }

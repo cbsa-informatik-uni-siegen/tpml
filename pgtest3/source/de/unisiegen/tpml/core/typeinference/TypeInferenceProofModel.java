@@ -257,22 +257,6 @@ public final class TypeInferenceProofModel extends AbstractExpressionProofModel 
 	  }
 		
 
-	
-	 private static ProofNode nextNode(TypeCheckerProofModel model) {
-		    LinkedList<ProofNode> nodes = new LinkedList<ProofNode>();
-		    nodes.add(model.getRoot());
-		    while (!nodes.isEmpty()) {
-		      ProofNode node = nodes.poll();
-		      if (node.getRules().length == 0) {
-		    	  
-		    	  return node;
-		      }
-		      for (int n = 0; n < node.getChildCount(); ++n) {
-		        nodes.add(node.getChildAt(n));
-		      }
-		    }
-		    throw new IllegalStateException("Unable to find next node");
-		  }
 
 
 
