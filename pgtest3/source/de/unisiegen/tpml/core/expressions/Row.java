@@ -270,8 +270,8 @@ public final class Row extends Expression
           tmp [ i ] = new Attribute ( newId , attribute.getTau ( ) , attribute
               .getE ( ).substitute ( pID , pExpression , pAttributeRename ) ) ;
           /*
-           * Only substitute the old Identifier, if the new Identifier is not equal to
-           * the old Identifier.
+           * Only substitute the old Identifier, if the new Identifier is not
+           * equal to the old Identifier.
            */
           if ( ! attribute.getId ( ).equals ( newId ) )
           {
@@ -363,8 +363,8 @@ public final class Row extends Expression
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_ROW_E ) ;
       if ( i != this.expressions.length - 1 )
       {
-        builder.addText ( " " ) ; //$NON-NLS-1$
         builder.addBreak ( ) ;
+        builder.addText ( " " ) ; //$NON-NLS-1$
       }
     }
     return builder ;

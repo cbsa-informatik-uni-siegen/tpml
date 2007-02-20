@@ -362,8 +362,9 @@ public final class Duplication extends Expression
           PRIO_DUPLICATION_E ) ;
       if ( i != this.expressions.length - 1 )
       {
-        builder.addText ( "; " ) ; //$NON-NLS-1$
+        builder.addText ( ";" ) ; //$NON-NLS-1$
         builder.addBreak ( ) ;
+        builder.addText ( " " ) ; //$NON-NLS-1$
       }
     }
     // Only one space for '{< >}'

@@ -280,8 +280,9 @@ public final class List extends Expression
     {
       if ( n > 0 )
       {
-        builder.addText ( "; " ) ; //$NON-NLS-1$
+        builder.addText ( ";" ) ; //$NON-NLS-1$
         builder.addBreak ( ) ;
+        builder.addText ( " " ) ; //$NON-NLS-1$
       }
       builder.addBuilder ( this.expressions [ n ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_LIST_E ) ;

@@ -321,13 +321,14 @@ public final class ObjectExpr extends Expression
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
           PRIO_OBJECTEXPR_TAU ) ;
     }
-    builder.addText ( ") " ) ; //$NON-NLS-1$
+    builder.addText ( ")" ) ; //$NON-NLS-1$
     builder.addBreak ( ) ;
+    builder.addText ( " " ) ; //$NON-NLS-1$
     builder.addBuilder ( this.row
         .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
         PRIO_OBJECTEXPR_E ) ;
-    builder.addText ( " " ) ; //$NON-NLS-1$
     builder.addBreak ( ) ;
+    builder.addText ( " " ) ; //$NON-NLS-1$
     builder.addKeyword ( "end" ) ; //$NON-NLS-1$
     return builder ;
   }
