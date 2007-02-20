@@ -1,0 +1,1 @@
+(object (self) method add = 1 ; method sub = 2 ; end) # sub

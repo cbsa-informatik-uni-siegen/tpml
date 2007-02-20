@@ -1,1 +1,1 @@
-let id = 5 in object (id) val x = 1 ; val b = a + b ; method add x = x id + a + b ; val c = x b + a ; method result = b + a + c ; end
+let b = id in object (id) val id' = id ; method m = b +id ; end

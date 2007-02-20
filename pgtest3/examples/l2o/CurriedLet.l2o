@@ -1,1 +1,1 @@
-let function function x x y = function x + y in function (1+2) (3+4)
+let x = 5 in let function x y = function + x + y in function x y

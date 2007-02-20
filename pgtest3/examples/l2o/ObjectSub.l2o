@@ -1,1 +1,1 @@
-let x = tmp in object (tmp) val a = c + tmp' ; method b = tmp +x  ; end
+let x = tmp in object (tmp) val a = x + tmp' ; val x = 2 ; method b = tmp +x  ; val b = x ; end

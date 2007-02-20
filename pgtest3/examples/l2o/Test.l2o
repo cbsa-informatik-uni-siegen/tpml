@@ -1,1 +1,1 @@
-object (self) val a = 1 ; method test = self {< a = (let a = a in a) >} ; val a = 2 ; end
+object (self) val a = let x = 1 in x ; val b = let x = 1 in x ; method m = a ; end

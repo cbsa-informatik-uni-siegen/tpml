@@ -1,1 +1,1 @@
-(object (id) val a =1 ; method sub = a -1 ; method add = id # sub ; end) # add
+(object (id) val a =2 ; method sub = a -1 ; method add = a ; val b = a ; end) # add
