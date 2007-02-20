@@ -181,6 +181,7 @@ public final class Message extends Expression
             .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
             PRIO_MESSAGE_E ) ;
     builder.addText ( " " ) ; //$NON-NLS-1$
+    builder.addBreak ( ) ;
     builder.addKeyword ( "#" ) ; //$NON-NLS-1$
     builder.addText ( " " ) ; //$NON-NLS-1$
     builder.addIdentifier ( this.identifier ) ;
