@@ -213,6 +213,7 @@ public class Method extends Expression
           PRIO_METHOD_TAU ) ;
     }
     builder.addText ( " = " ) ; //$NON-NLS-1$
+    builder.addBreak ( ) ;
     builder.addBuilder ( this.expression
         .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_METHOD_E ) ;
     builder.addText ( " " ) ; //$NON-NLS-1$

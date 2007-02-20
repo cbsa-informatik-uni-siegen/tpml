@@ -301,6 +301,7 @@ public class CurriedMethod extends Expression
               PRIO_LET_TAU ) ;
     }
     builder.addText ( " = " ) ; //$NON-NLS-1$
+    builder.addBreak ( ) ;
     builder.addBuilder ( this.expression
         .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
         PRIO_CURRIED_METHOD_E ) ;
