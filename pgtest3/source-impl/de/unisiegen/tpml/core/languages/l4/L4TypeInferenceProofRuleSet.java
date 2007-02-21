@@ -7,6 +7,7 @@ import de.unisiegen.tpml.core.languages.l2.L2Language;
 import de.unisiegen.tpml.core.languages.l3.L3Language;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofContext;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode;
+import de.unisiegen.tpml.core.typeinference.DefaultTypeInferenceProofContext;
 import de.unisiegen.tpml.core.typeinference.DefaultTypeInferenceProofNode;
 import de.unisiegen.tpml.core.types.ArrowType;
 import de.unisiegen.tpml.core.types.TypeVariable;
@@ -105,7 +106,6 @@ public class L4TypeInferenceProofRuleSet extends L4TypeCheckerProofRuleSet {
 	public void updateApp(TypeCheckerProofContext context, TypeCheckerProofNode pNode) {
 		
 		boolean createchild=true;
-		
 		//check if first child of App is finished
 		for (int i=0; i<pNode.getChildCount(); i++)
 		{
@@ -126,27 +126,35 @@ public class L4TypeInferenceProofRuleSet extends L4TypeCheckerProofRuleSet {
 			node.setTmpChild(false);
 		}
 		
-		 TypeCheckerProofNode root =pNode.getRoot();
-		  if ( root.isFinished())
-		  {
-			
-			  context.addProofNode(root, node.getEnvironment(), node.getExpression(), node.getType(), node.getEquations());
-				
-		  }
-
+		
 	}
 
-	  public void updateUnify(TypeCheckerProofContext context, TypeCheckerProofNode pNode) {
+	  public void updateUnify(TypeCheckerProofContext pContext, TypeCheckerProofNode pNode) {
+		  DefaultTypeInferenceProofContext context =(DefaultTypeInferenceProofContext)pContext;
+		  DefaultTypeInferenceProofNode root = (DefaultTypeInferenceProofNode)context.getModel().getRoot();
+	
 		  
-		 TypeCheckerProofNode root =pNode.getRoot();
 		  if ( root.isFinished())
 		  {
-			  DefaultTypeInferenceProofNode node= (DefaultTypeInferenceProofNode) pNode;
-			  context.addProofNode(node, node.getEnvironment(), node.getExpression(), node.getType(), node.getEquations());
+			  
 				
-		  }
+			  DefaultTypeInferenceProofNode child= root;
+			  
+			  while (child.getChildCount()>0)
+			  {
+				  child=child.getLastChild();
+			  }
+			  
+			  
+			  
+			  
+			  DefaultTypeInferenceProofNode node= (DefaultTypeInferenceProofNode) pNode;
+			  context.addProofNode(root, child.getEnvironment(), root.getExpression(), node.getType(), child.getEquations());
+			  root.setChecked(true);
+				
+		  }	
 	  }
 	    
-	 
+
 
 }

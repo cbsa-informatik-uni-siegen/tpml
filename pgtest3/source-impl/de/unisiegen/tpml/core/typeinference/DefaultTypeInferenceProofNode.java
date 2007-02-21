@@ -44,6 +44,8 @@ public class DefaultTypeInferenceProofNode extends AbstractExpressionProofNode i
 	  private Expression tmpExpression;
 	  private MonoType tmpType;
 	  
+	  private boolean checked = false;
+	  
 	  
 	  
 	 
@@ -274,6 +276,14 @@ public class DefaultTypeInferenceProofNode extends AbstractExpressionProofNode i
 
 	public void setTmpChild(boolean tmpChild) {
 		this.tmpChild = tmpChild;
+	}
+
+	public boolean isChecked() {
+		return this.checked;
+	}
+
+	public void setChecked(boolean checked) {
+		this.checked = checked;
 	}
 
 

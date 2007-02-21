@@ -403,6 +403,10 @@ public class DefaultTypeInferenceProofContext  implements TypeInferenceProofCont
 	    }
 	    this.undoActions.clear();
 	  }
+
+	public TypeInferenceProofModel getModel() {
+		return this.model;
+	}
 	  
 
 

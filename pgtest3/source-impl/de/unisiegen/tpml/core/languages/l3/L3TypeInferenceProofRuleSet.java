@@ -69,14 +69,14 @@ public class L3TypeInferenceProofRuleSet extends L3TypeCheckerProofRuleSet {
 	}
 	
 	  public void updatePId(TypeCheckerProofContext context, TypeCheckerProofNode pNode) {
-		  System.out.println("War hier");
+	/**	  System.out.println("War hier");
 		 TypeCheckerProofNode root =pNode.getRoot();
 		  if ( root.isFinished())
 		  {
 			  DefaultTypeInferenceProofNode node= (DefaultTypeInferenceProofNode) pNode;
 			  context.addProofNode(root, node.getEnvironment(), node.getExpression(), node.getType(), node.getEquations());
 				
-		  }
+		  } */
 	  }
     
 

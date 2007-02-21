@@ -57,6 +57,8 @@ public final class TypeInferenceProofModel extends AbstractExpressionProofModel 
 	  
 	  private Expression expression;
 	  
+	 
+	  
 	 // private DefaultTypeInferenceProofNode actualNode;
 	  
 	
@@ -82,7 +84,7 @@ public final class TypeInferenceProofModel extends AbstractExpressionProofModel 
 	      expression=pExpression;  
 	      ruleSet=pRuleSet;
 	      
-	           
+	          
 	      }
 	  
 	  public int getIndex() {
@@ -137,37 +139,17 @@ public final class TypeInferenceProofModel extends AbstractExpressionProofModel 
 		    // try to guess the next rule
 		    logger.debug("Trying to guess a rule for " + node);
 		    
-		    
+		    DefaultTypeInferenceProofNode treeRoot = (DefaultTypeInferenceProofNode) root;
 		    
 		    for (ProofRule rule : this.ruleSet.getRules()) {
 		      
 		    	
-		    	 //TODO
-		    	 //dirty workaround, think about another way!
-		    	
-		    	boolean preUnify=true;
-		    	DefaultTypeInferenceProofNode parent = node.getParent();
-		    	
-		    	
-		    	if (parent!=null)
-		    	{
-		    		ProofRule tmpRule=parent.getRule();
-		    		if (tmpRule!=null)
-		    		{
-		    			if (parent.getRule().toString().equals("UNIFY")||parent.getRule().toString().equals("P-ID"))
-			    		{
-		    				
-			    			preUnify=false;
-			    			
-			    		}
-		    		}
-		    		
-		    		parent=parent.getParent();
-		    	}
+		    	 
 		    	
 		    	 
-		    	 if (node.getParent()==null || (preUnify || rule.toString().equals("UNIFY"))) 
+		    	 if (!treeRoot.isChecked() || (treeRoot.isChecked() && rule.toString().equals("UNIFY"))) 
 		    	 {
+		    		 
 		    		 try {
 //		    			 try to apply the rule to the specified node
 		 		        applyInternal((TypeCheckerProofRule)rule, node, type);
