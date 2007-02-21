@@ -17,17 +17,16 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTree;
 import javax.swing.tree.TreePath;
 
 import de.unisiegen.tpml.core.ExpressionProofNode;
 import de.unisiegen.tpml.core.ProofGuessException;
 import de.unisiegen.tpml.core.ProofNode;
-import de.unisiegen.tpml.core.ProofRule;
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.languages.Language;
 import de.unisiegen.tpml.core.languages.LanguageFactory;
-import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel;
 
 /**
  * Test class for the {@link de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel} class.
@@ -45,7 +44,7 @@ public final class TypeInferenceProofModelTest extends JFrame {
   //private static final String SIMPLE = "(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30)";
 	private static final String SIMPLE = "lambda f:'a->'b. lambda x.f (f x)";
 
-  
+	  private JScrollPane jScrollPane ;
 	
   
   //
@@ -70,6 +69,7 @@ public final class TypeInferenceProofModelTest extends JFrame {
     // setup the tree panel
     JPanel treePanel = new JPanel(new BorderLayout());
     treePanel.setBorder(BorderFactory.createEtchedBorder());
+   
     add(treePanel, BorderLayout.CENTER);
     
 
@@ -78,8 +78,9 @@ public final class TypeInferenceProofModelTest extends JFrame {
     final JTree tree = new JTree(model);
     treePanel.add(tree, BorderLayout.CENTER);
     
-    tree.setRowHeight(40);
-    
+    tree.setRowHeight(53);
+    this.jScrollPane = new JScrollPane ( treePanel ) ;
+    this.add(jScrollPane);
     // setup the button panel
     JPanel buttons = new JPanel(new FlowLayout());
     add(buttons, BorderLayout.SOUTH);
@@ -88,24 +89,24 @@ public final class TypeInferenceProofModelTest extends JFrame {
     JButton guessButton = new JButton("Guess");
     guessButton.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent event) {
-        try {
-        	
        
-  
-          // guess the last node
-        	model.guess(nextNode(model));
-        	
+    	  
         
-        	
+    	  
+    	  try {
+    		  while (nextNode(model)!=null)
+              {
+        	model.guess(nextNode(model));
           
           // expand to the all nodes
           for (int n = 0; n < tree.getRowCount(); ++n) {
             tree.expandRow(n);
             
           }
+        }   
         }
         
-        catch (ProofGuessException e) {
+        catch (Exception e) {
           JOptionPane.showMessageDialog(TypeInferenceProofModelTest.this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
         

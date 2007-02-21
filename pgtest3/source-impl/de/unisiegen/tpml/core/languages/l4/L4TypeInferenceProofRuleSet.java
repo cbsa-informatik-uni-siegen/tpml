@@ -34,13 +34,13 @@ public class L4TypeInferenceProofRuleSet extends L4TypeCheckerProofRuleSet {
 	    registerByMethodName(L1Language.L1, "UNIFY", "applyUnify");
 		
 //		 register the type rules
-	    registerByMethodName(L1Language.L1, "ABSTR", "applyAbstr", "updateUnify");
+	    registerByMethodName(L1Language.L1, "ABSTR", "applyAbstr", "updateDefault");
 	    registerByMethodName(L2Language.L2, "AND", "applyAnd");
 	    registerByMethodName(L1Language.L1, "APP", "applyApp", "updateApp");
 	    registerByMethodName(L1Language.L1, "COND", "applyCond");
-	    registerByMethodName(L1Language.L1, "LET", "applyLet", "updateUnify");
+	    registerByMethodName(L1Language.L1, "LET", "applyLet", "updateDefault");
 	    registerByMethodName(L2Language.L2, "OR", "applyOr");
-	    registerByMethodName(L2Language.L2, "REC", "applyRec", "updateUnify");
+	    registerByMethodName(L2Language.L2, "REC", "applyRec", "updateDefault");
 	    registerByMethodName(L3Language.L3, "LIST", "applyList");
 	    registerByMethodName(L3Language.L3, "P-CONST", "applyPConst");
 	    registerByMethodName(L3Language.L3, "P-ID", "applyPId");
@@ -129,31 +129,7 @@ public class L4TypeInferenceProofRuleSet extends L4TypeCheckerProofRuleSet {
 		
 	}
 
-	  public void updateUnify(TypeCheckerProofContext pContext, TypeCheckerProofNode pNode) {
-		  DefaultTypeInferenceProofContext context =(DefaultTypeInferenceProofContext)pContext;
-		  DefaultTypeInferenceProofNode root = (DefaultTypeInferenceProofNode)context.getModel().getRoot();
-	
-		  
-		  if ( root.isFinished())
-		  {
-			  
-				
-			  DefaultTypeInferenceProofNode child= root;
-			  
-			  while (child.getChildCount()>0)
-			  {
-				  child=child.getLastChild();
-			  }
-			  
-			  
-			  
-			  
-			  DefaultTypeInferenceProofNode node= (DefaultTypeInferenceProofNode) pNode;
-			  context.addProofNode(root, child.getEnvironment(), root.getExpression(), node.getType(), child.getEquations());
-			  root.setChecked(true);
-				
-		  }	
-	  }
+
 	    
 
 

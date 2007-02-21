@@ -134,12 +134,14 @@ public class DefaultTypeInferenceProofContext  implements TypeInferenceProofCont
 	
 	  }
 	  
-	  public void addProofNode(TypeCheckerProofNode node, TypeEnvironment environment, Expression expression, MonoType type, TypeEquationList eqns) {
-		    this.model.contextAddProofNode(this, (DefaultTypeInferenceProofNode)node, environment, expression, type, eqns);
+	  public void addProofNode(TypeCheckerProofNode pNode, TypeEnvironment environment, Expression expression, MonoType type, TypeEquationList eqns) {
+		  DefaultTypeInferenceProofNode node = (DefaultTypeInferenceProofNode) pNode;
+		    this.model.contextAddProofNode(this,node, environment, expression, type, eqns, node.getSubstitutions());
 	  	}
 	
-	  public void addProofNode(TypeCheckerProofNode node, TypeEnvironment environment, Expression expression, MonoType type) {
-		    this.model.contextAddProofNode(this, (DefaultTypeInferenceProofNode)node, environment, expression, type, null);
+	  public void addProofNode(TypeCheckerProofNode pNode, TypeEnvironment environment, Expression expression, MonoType type) {
+		  DefaultTypeInferenceProofNode node = (DefaultTypeInferenceProofNode) pNode;
+		    this.model.contextAddProofNode(this, node, environment, expression, type, null, node.getSubstitutions());
 	  	}
 	
 	/**

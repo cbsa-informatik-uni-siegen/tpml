@@ -334,7 +334,7 @@ public final class TypeInferenceProofModel extends AbstractExpressionProofModel 
 	    });
 	  }
 	  
-	  void contextAddProofNode(DefaultTypeInferenceProofContext context, final DefaultTypeInferenceProofNode node, TypeEnvironment environment, Expression expression, MonoType type, TypeEquationList eqns) {
+	  void contextAddProofNode(DefaultTypeInferenceProofContext context, final DefaultTypeInferenceProofNode node, TypeEnvironment environment, Expression expression, MonoType type, TypeEquationList eqns, TypeSubstitutionList pSubstitutions) {
 		   
 		  if (context == null) {
 		     throw new NullPointerException("context is null");
@@ -358,11 +358,11 @@ public final class TypeInferenceProofModel extends AbstractExpressionProofModel 
 		    final DefaultTypeInferenceProofNode child;
 		    if (eqns==null)
 		    {
-		    	child = new DefaultTypeInferenceProofNode(environment, expression, type, node.getEquations());
+		    	child = new DefaultTypeInferenceProofNode(environment, expression, type, node.getEquations(), node.getSubstitutions() );
 		    }
 		    else
 		    {
-		    	 child = new DefaultTypeInferenceProofNode(environment, expression, type, eqns);
+		    	 child = new DefaultTypeInferenceProofNode(environment, expression, type, eqns, node.getSubstitutions());
 		    }
 		    
 		     context.addRedoAction(new Runnable() {

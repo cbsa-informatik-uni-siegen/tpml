@@ -6,9 +6,7 @@ import javax.swing.tree.TreeNode;
 import de.unisiegen.tpml.core.AbstractExpressionProofNode;
 import de.unisiegen.tpml.core.ProofStep;
 import de.unisiegen.tpml.core.expressions.Expression;
-import de.unisiegen.tpml.core.typechecker.AbstractTypeCheckerProofRuleSet;
-import de.unisiegen.tpml.core.typechecker.TypeCheckerProofContext;
-import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel;
+import de.unisiegen.tpml.core.typechecker.DefaultTypeSubstitution;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofRule;
 import de.unisiegen.tpml.core.typechecker.TypeEnvironment;
@@ -39,6 +37,8 @@ public class DefaultTypeInferenceProofNode extends AbstractExpressionProofNode i
 	  
 	  private TypeEquationList equations = TypeEquationList.EMPTY_LIST;
 	  
+	  private TypeSubstitutionList substitutions = TypeSubstitutionList.EMPTY_LIST;
+	  
 	  private boolean tmpChild=true;
 	  private TypeEnvironment tmpEnvironment;
 	  private Expression tmpExpression;
@@ -46,23 +46,34 @@ public class DefaultTypeInferenceProofNode extends AbstractExpressionProofNode i
 	  
 	  private boolean checked = false;
 	  
+	  private boolean unified = false;
+	  
 	  
 	  
 	 
-	  public DefaultTypeInferenceProofNode(TypeEnvironment environment, Expression expression, MonoType type) {
+	  public boolean isUnified() {
+		return this.unified;
+	}
+
+	public void setUnified(boolean unified) {
+		this.unified = unified;
+	}
+
+	public DefaultTypeInferenceProofNode(TypeEnvironment environment, Expression expression, MonoType type) {
 		    super(expression);
 		    setEnvironment(environment);
 		    setType(type);
 		  }
 	  
-	  public DefaultTypeInferenceProofNode(TypeEnvironment environment, Expression expression, MonoType type, TypeEquationList pEquations) {
+	  public DefaultTypeInferenceProofNode(TypeEnvironment environment, Expression expression, MonoType type, TypeEquationList pEquations , TypeSubstitutionList pSubstitutions) {
 		    super(expression);
 		    setEnvironment(environment);
 		    setType(type);
-		    equations=pEquations;
+		    this.equations=pEquations;
+		    this.substitutions=pSubstitutions;
 		  }
 
-	void setType(MonoType pType) {
+	public void setType(MonoType pType) {
 		this.type=pType;
 		
 	}
@@ -213,6 +224,11 @@ public class DefaultTypeInferenceProofNode extends AbstractExpressionProofNode i
 	  public void addEquation(MonoType left, MonoType right) {
 		    this.equations = this.equations.extend(left, right);
 		  }
+	  
+	  public void addSubstitution(DefaultTypeSubstitution s)
+	  {
+		 this.substitutions= substitutions.extend(s);
+	  }
 	
 	  /**
 	   * {@inheritDoc}
@@ -231,7 +247,8 @@ public class DefaultTypeInferenceProofNode extends AbstractExpressionProofNode i
 	    builder.append(this.expression);
 	    builder.append(" :: ");
 	    builder.append(this.type);
-	    //builder.append("<br>");
+	    builder.append("<br>");
+	    builder.append(substitutions);
 	    builder.append(equations);
 	    if (getRule() != null) {
 	      builder.append(" (" + getRule() + ")");
@@ -286,5 +303,9 @@ public class DefaultTypeInferenceProofNode extends AbstractExpressionProofNode i
 		this.checked = checked;
 	}
 
+	public TypeSubstitutionList getSubstitutions() {
+		return this.substitutions;
+	}
+	
 
 }
