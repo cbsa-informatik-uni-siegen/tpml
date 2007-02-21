@@ -24,6 +24,7 @@ import de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode;
 import de.unisiegen.tpml.core.typechecker.TypeEnvironment;
 import de.unisiegen.tpml.core.typechecker.TypeEquationList;
 import de.unisiegen.tpml.core.typechecker.UnificationException;
+import de.unisiegen.tpml.core.typeinference.DefaultTypeInferenceProofContext;
 import de.unisiegen.tpml.core.typeinference.DefaultTypeInferenceProofNode;
 import de.unisiegen.tpml.core.types.ArrowType;
 import de.unisiegen.tpml.core.types.BooleanType;
@@ -415,10 +416,12 @@ public void applyUnify(TypeCheckerProofContext context, TypeCheckerProofNode pNo
     	  
     	  
         DefaultTypeSubstitution s1 = new DefaultTypeSubstitution(tvar, tau);
-        //System.out.println(s1.toString());
+        node.addSubstitution(s1);
+       
 //	      TODO
 //	      i have to implement this (just think about what to do here)
         TypeEquationList eqns=node.getEquations().remaining.substitute(s1);
+        node.setType(tau);
 //      TODO
 //      i have to implement this (just think about what to do here)
         //return s1.compose(s2);
@@ -529,5 +532,34 @@ public void applyUnify(TypeCheckerProofContext context, TypeCheckerProofNode pNo
     // (left = right) cannot be unified
     throw new UnificationException(node.getEquations().first);
   }
+
+public void updateDefault(TypeCheckerProofContext pContext, TypeCheckerProofNode pNode) {
+	  DefaultTypeInferenceProofContext context =(DefaultTypeInferenceProofContext)pContext;
+	  DefaultTypeInferenceProofNode root = (DefaultTypeInferenceProofNode)context.getModel().getRoot();
+
+	  if (!root.isUnified())
+	  {
+		  if ( root.isFinished())
+		  {
+			  
+				
+			  DefaultTypeInferenceProofNode child= root;
+			  
+			  while (child.getChildCount()>0)
+			  {
+				  child=child.getLastChild();
+			  }
+			  
+			  
+			  
+			  
+			  DefaultTypeInferenceProofNode node= (DefaultTypeInferenceProofNode) pNode;
+			  context.addProofNode(root, child.getEnvironment(), root.getExpression(), root.getType(), child.getEquations());
+			  root.setChecked(true);
+			  root.setUnified(true);
+			  return;	
+		  }	
+	  }
+}
 
 }
