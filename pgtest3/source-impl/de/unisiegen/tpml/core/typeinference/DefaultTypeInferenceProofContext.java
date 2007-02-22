@@ -240,19 +240,17 @@ public class DefaultTypeInferenceProofContext  implements TypeInferenceProofCont
 	  //
 	  
 	void apply(TypeCheckerProofRule rule, TypeInferenceProofNode pNode, MonoType type) throws ProofRuleException, UnificationException {
-	    // record the proof step for the node
-	    this.model.contextSetProofNodeRule(this, (DefaultTypeInferenceProofNode)pNode, rule);
 	    
 	    
-	    //Test
-	    //TmpTree tmpTree = new TmpTree(node.getExpression(), model.getRuleSet());
+	    
 	    
 	    DefaultTypeInferenceProofNode node = (DefaultTypeInferenceProofNode) pNode;
 	    
 	    // try to apply the rule to the node
-	    //rule.apply(this, node);
 	    rule.apply(this, node);
 	    
+//	  record the proof step for the node
+	    this.model.contextSetProofNodeRule(this, (DefaultTypeInferenceProofNode)pNode, rule);
 	    
 	    // check if the user specified a type
 	    if (type != null) {

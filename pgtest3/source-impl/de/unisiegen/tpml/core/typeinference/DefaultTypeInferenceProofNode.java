@@ -307,5 +307,6 @@ public class DefaultTypeInferenceProofNode extends AbstractExpressionProofNode i
 		return this.substitutions;
 	}
 	
+	
 
 }

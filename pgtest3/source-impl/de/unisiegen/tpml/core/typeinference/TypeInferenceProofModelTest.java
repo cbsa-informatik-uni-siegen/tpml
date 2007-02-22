@@ -5,6 +5,8 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.beans.PropertyChangeEvent;
@@ -14,6 +16,7 @@ import java.util.LinkedList;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -24,6 +27,8 @@ import javax.swing.tree.TreePath;
 import de.unisiegen.tpml.core.ExpressionProofNode;
 import de.unisiegen.tpml.core.ProofGuessException;
 import de.unisiegen.tpml.core.ProofNode;
+import de.unisiegen.tpml.core.ProofRule;
+import de.unisiegen.tpml.core.ProofRuleException;
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.languages.Language;
 import de.unisiegen.tpml.core.languages.LanguageFactory;
@@ -45,6 +50,7 @@ public final class TypeInferenceProofModelTest extends JFrame {
 	private static final String SIMPLE = "lambda f:'a->'b. lambda x.f (f x)";
 
 	  private JScrollPane jScrollPane ;
+	    ProofRule choosen=null;
 	
   
   //
@@ -61,7 +67,7 @@ public final class TypeInferenceProofModelTest extends JFrame {
 	  
     // setup the frame
     setLayout(new BorderLayout());
-   setSize(630, 580);
+    setSize(630, 580);
     setTitle("TypeInferenceProofModel Test");
     
  
@@ -94,7 +100,7 @@ public final class TypeInferenceProofModelTest extends JFrame {
         
     	  
     	  try {
-    		  while (nextNode(model)!=null)
+    		  
               {
         	model.guess(nextNode(model));
           
@@ -113,6 +119,77 @@ public final class TypeInferenceProofModelTest extends JFrame {
       }
     });
     buttons.add(guessButton);
+    
+    // setup the guess all button
+    JButton guessAllButton = new JButton("Guess all");
+    guessAllButton.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent event) {
+       
+    	  
+        
+    	  
+    	  try {
+    		  while (nextNode(model)!=null)
+              {
+        	model.guess(nextNode(model));
+          
+          // expand to the all nodes
+          for (int n = 0; n < tree.getRowCount(); ++n) {
+            tree.expandRow(n);
+            
+          }
+        }   
+        }
+        
+        catch (Exception e) {
+          JOptionPane.showMessageDialog(TypeInferenceProofModelTest.this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        
+      }
+    });
+    buttons.add(guessAllButton);
+    
+    
+
+    
+//  Setup combo box for prove
+    JComboBox combo1 = new JComboBox();
+    
+
+    for (ProofRule rule : model.ruleSet.getRules())
+    {
+    	 combo1.addItem( rule.getName() );
+    }
+    buttons.add( combo1);
+    combo1.addItemListener( new ItemListener() {
+      public void itemStateChanged( ItemEvent e ) {
+        JComboBox selectedChoice = (JComboBox)e.getSource();
+        if (e.getStateChange()==1)
+        {
+        	 for (ProofRule rules : model.ruleSet.getRules()){
+        		if( rules.getName().equals( selectedChoice.getSelectedItem()))
+        		 {
+        			choosen=rules;
+        			break;
+        		 }
+        	 }
+        	
+        	 try {
+      	          // prove  the last node
+      	          model.prove(choosen, nextNode(model));
+      	          
+      	          // expand to the all nodes
+      	          for (int n = 0; n < tree.getRowCount(); ++n) {
+      	            tree.expandRow(n);
+      	          }
+      	        }
+      	        catch (ProofRuleException e1) {
+      	          JOptionPane.showMessageDialog(TypeInferenceProofModelTest.this, e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+      	        }
+        	 
+   	      }
+      }
+    } );
     
     // setup the undo button
     final JButton undoButton = new JButton("Undo");
@@ -201,6 +278,7 @@ public final class TypeInferenceProofModelTest extends JFrame {
 	        nodes.add(node.getChildAt(n));
 	      }
 	    }
+	    
 	    throw new IllegalStateException("Unable to find next node");
 	  }
 	  

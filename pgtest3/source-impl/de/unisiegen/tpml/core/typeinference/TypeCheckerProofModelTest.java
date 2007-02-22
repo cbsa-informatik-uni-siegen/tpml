@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.beans.PropertyChangeEvent;
@@ -13,6 +15,7 @@ import java.util.LinkedList;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -21,6 +24,7 @@ import javax.swing.tree.TreePath;
 
 import de.unisiegen.tpml.core.ExpressionProofNode;
 import de.unisiegen.tpml.core.ProofNode;
+import de.unisiegen.tpml.core.ProofRule;
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.languages.Language;
 import de.unisiegen.tpml.core.languages.LanguageFactory;
@@ -69,8 +73,49 @@ public final class TypeCheckerProofModelTest extends JFrame {
     JPanel buttons = new JPanel(new FlowLayout());
     add(buttons, BorderLayout.SOUTH);
     
+//  Setup combo box for prove
+    JComboBox combo1 = new JComboBox();
+    for (ProofRule rule : model.ruleSet.getRules())
+      combo1.addItem( rule.getName() );
+    buttons.add( combo1);
+    combo1.addItemListener( new ItemListener() {
+      public void itemStateChanged( ItemEvent e ) {
+        JComboBox selectedChoice = (JComboBox)e.getSource();
+       
+        ProofRule choosen=null;
+        	 for (ProofRule rules : model.ruleSet.getRules()){
+        		if( rules.getName().equals( selectedChoice.getSelectedItem()))
+        		 {
+        			choosen=rules;
+        			break;
+        		 }
+        	 }
+        		  try {
+        	          // prove  the last node
+        	          model.prove(choosen, nextNode(model));
+        	          
+        	          // expand to the all nodes
+        	          for (int n = 0; n < tree.getRowCount(); ++n) {
+        	            tree.expandRow(n);
+        	          }
+        	        }
+        	        catch (Exception e1) {
+        	          JOptionPane.showMessageDialog(TypeCheckerProofModelTest.this, e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        	        }
+        	      }
+     
+      
+    } );
+    
+    
+    {
+    	
+    	
+    	
+    }
+    
     // setup the guess button
-    JButton guessButton = new JButton("Guess");
+    JButton guessButton = new JButton("Guess all");
     guessButton.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent event) {
         try {

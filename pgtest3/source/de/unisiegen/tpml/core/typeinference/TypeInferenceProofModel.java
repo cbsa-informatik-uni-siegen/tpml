@@ -225,14 +225,12 @@ public final class TypeInferenceProofModel extends AbstractExpressionProofModel 
 	    catch (UnificationException e) {
 	      // revert the actions performed so far
 	      context.revert();
-	      
 	      // re-throw the exception as proof rule exception
 	      throw new ProofRuleException(node, rule, e);
 	    }
 	    catch (RuntimeException e) {
 	      // revert the actions performed so far
 	      context.revert();
-	      
 	      // re-throw the exception
 	      throw e;
 	    }
