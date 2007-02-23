@@ -196,15 +196,15 @@ public final class Condition extends Expression
     builder.addBuilder ( this.e0
         .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
         PRIO_CONDITION_E0 ) ;
-    builder.addBreak ( ) ;
     builder.addText ( " " ) ; //$NON-NLS-1$
+    builder.addBreak ( ) ;
     builder.addKeyword ( "then" ) ; //$NON-NLS-1$
     builder.addText ( " " ) ; //$NON-NLS-1$
     builder.addBuilder ( this.e1
         .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
         PRIO_CONDITION_E1 ) ;
-    builder.addBreak ( ) ;
     builder.addText ( " " ) ; //$NON-NLS-1$
+    builder.addBreak ( ) ;
     builder.addKeyword ( "else" ) ; //$NON-NLS-1$
     builder.addText ( " " ) ; //$NON-NLS-1$
     builder.addBuilder ( this.e2

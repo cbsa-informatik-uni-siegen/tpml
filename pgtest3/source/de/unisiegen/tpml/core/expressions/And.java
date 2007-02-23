@@ -164,6 +164,7 @@ public final class And extends Expression
     builder.addBuilder ( this.e1
         .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_AND_E1 ) ;
     builder.addText ( " " ) ; //$NON-NLS-1$
+    builder.addBreak ( ) ;
     builder.addKeyword ( "&&" ) ; //$NON-NLS-1$
     builder.addText ( " " ) ; //$NON-NLS-1$
     builder.addBuilder ( this.e2

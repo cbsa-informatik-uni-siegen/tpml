@@ -199,6 +199,7 @@ public final class InfixOperation extends Expression
         .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , this.op
         .getPrettyPriority ( ) ) ;
     builder.addText ( " " ) ; //$NON-NLS-1$
+    builder.addBreak ( ) ;
     builder.addConstant ( this.op.toString ( ) ) ;
     builder.addText ( " " ) ; //$NON-NLS-1$
     builder.addBuilder ( this.e2

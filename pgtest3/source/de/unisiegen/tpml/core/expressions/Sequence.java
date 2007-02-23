@@ -162,6 +162,7 @@ public final class Sequence extends Expression
         .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
         PRIO_SEQUENCE_E1 ) ;
     builder.addText ( "; " ) ; //$NON-NLS-1$
+    builder.addBreak ( ) ;
     builder.addBuilder ( this.e2
         .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
         PRIO_SEQUENCE_E2 ) ;

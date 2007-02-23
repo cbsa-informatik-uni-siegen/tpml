@@ -164,6 +164,7 @@ public final class While extends Expression
         .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_WHILE_E1 ) ;
     builder.addBreak ( ) ;
     builder.addText ( " " ) ; //$NON-NLS-1$
+    builder.addBreak ( ) ;
     builder.addKeyword ( "do" ) ; //$NON-NLS-1$
     builder.addText ( " " ) ; //$NON-NLS-1$
     builder.addBuilder ( this.e2

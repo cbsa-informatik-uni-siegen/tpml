@@ -363,8 +363,8 @@ public final class Row extends Expression
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_ROW_E ) ;
       if ( i != this.expressions.length - 1 )
       {
-        builder.addBreak ( ) ;
         builder.addText ( " " ) ; //$NON-NLS-1$
+        builder.addBreak ( ) ;
       }
     }
     return builder ;

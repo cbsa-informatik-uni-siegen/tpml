@@ -162,13 +162,11 @@ public final class LetRec extends Let
               .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
               PRIO_LET_TAU ) ;
     }
-    builder.addText ( " =" ) ; //$NON-NLS-1$
-    builder.addBreak ( ) ;
-    builder.addText ( " " ) ; //$NON-NLS-1$
+    builder.addText ( " = " ) ; //$NON-NLS-1$
     builder.addBuilder ( this.e1
         .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_LET_E1 ) ;
-    builder.addBreak ( ) ;
     builder.addText ( " " ) ; //$NON-NLS-1$
+    builder.addBreak ( ) ;
     builder.addKeyword ( "in" ) ; //$NON-NLS-1$
     builder.addText ( " " ) ; //$NON-NLS-1$
     builder.addBuilder ( this.e2
