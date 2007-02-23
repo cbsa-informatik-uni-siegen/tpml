@@ -1,1 +1,1 @@
-object (self) val a = let x = 1 in x ; val b = let x = 1 in x ; method m = a ; end
+object (self) val a = let x = 1 in x ; val b = let x = 1 in x ; val c = let x = 1 in x ; method x = a ; end
