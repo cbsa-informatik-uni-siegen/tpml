@@ -6,8 +6,10 @@ import java.util.ArrayList ;
 import java.util.Enumeration ;
 import java.util.Timer ;
 import javax.swing.JPanel ;
+import javax.swing.JScrollPane ;
 import javax.swing.SwingUtilities ;
 import javax.swing.tree.DefaultMutableTreeNode ;
+import javax.swing.tree.TreePath ;
 import de.unisiegen.tpml.core.expressions.Attribute ;
 import de.unisiegen.tpml.core.expressions.BinaryOperator ;
 import de.unisiegen.tpml.core.expressions.Condition ;
@@ -35,6 +37,7 @@ import de.unisiegen.tpml.graphics.outline.binding.OutlineBinding ;
 import de.unisiegen.tpml.graphics.outline.binding.OutlinePair ;
 import de.unisiegen.tpml.graphics.outline.binding.OutlineStyle ;
 import de.unisiegen.tpml.graphics.outline.binding.OutlineUnbound ;
+import de.unisiegen.tpml.graphics.outline.listener.OutlineComponentListener ;
 import de.unisiegen.tpml.graphics.outline.listener.OutlinePropertyChangeListener ;
 import de.unisiegen.tpml.graphics.outline.ui.OutlineDisplayTree ;
 import de.unisiegen.tpml.graphics.outline.ui.OutlineTimerTask ;
@@ -123,15 +126,159 @@ public final class AbstractOutline implements Outline
 
 
   /**
+   * The root node.
+   */
+  private DefaultMutableTreeNode rootNode ;
+
+
+  /**
    * Initilizes the {@link OutlinePreferences} and the {@link OutlineUI}.
    */
   public AbstractOutline ( )
   {
     this.loadedExpression = null ;
+    this.rootNode = null ;
     this.outlinePreferences = new OutlinePreferences ( ) ;
     this.outlineUI = new OutlineUI ( this ) ;
     Theme.currentTheme ( ).addPropertyChangeListener (
         new OutlinePropertyChangeListener ( this ) ) ;
+    this.outlineUI.getJPanelMain ( ).addComponentListener (
+        new OutlineComponentListener ( this ) ) ;
+  }
+
+
+  /**
+   * Applies the breaks in the {@link OutlineNode}.
+   */
+  public final void applyBreaks ( )
+  {
+    // TODO If the second line is bigger than the first line ...
+    // TODO If the tree will expand ...
+    JScrollPane scroll = this.outlineUI.getJScrollPaneOutline ( ) ;
+    int currentDiff = scroll.getPreferredSize ( ).width
+        - scroll.getSize ( ).width ;
+    if ( currentDiff > 0 )
+    {
+      applyBreaksAdd ( ) ;
+    }
+    else
+    {
+      applyBreaksRemove ( ) ;
+    }
+  }
+
+
+  /**
+   * Adds breaks to the {@link OutlineNode}.
+   */
+  private final void applyBreaksAdd ( )
+  {
+    if ( this.rootNode == null )
+    {
+      return ;
+    }
+    JScrollPane scroll = this.outlineUI.getJScrollPaneOutline ( ) ;
+    int currentDiff = scroll.getPreferredSize ( ).width
+        - scroll.getSize ( ).width ;
+    int newDiff ;
+    ArrayList < DefaultMutableTreeNode > breakList = new ArrayList < DefaultMutableTreeNode > ( ) ;
+    Enumeration < ? > e = this.rootNode.breadthFirstEnumeration ( ) ;
+    while ( e.hasMoreElements ( ) )
+    {
+      DefaultMutableTreeNode node = ( DefaultMutableTreeNode ) e.nextElement ( ) ;
+      TreePath treePath = new TreePath ( node.getPath ( ) ) ;
+      boolean visible = this.outlineUI.getJTreeOutline ( )
+          .isVisible ( treePath ) ;
+      OutlineNode childNodeOutline = ( OutlineNode ) node.getUserObject ( ) ;
+      if ( ( childNodeOutline.getOutlineBreak ( ) != null )
+          && ( childNodeOutline.getOutlineBreak ( ).getBreakCountAll ( ) > 0 )
+          && ( visible ) )
+      {
+        breakList.add ( node ) ;
+      }
+    }
+    while ( ( currentDiff > 0 ) && ( breakList.size ( ) > 0 ) )
+    {
+      DefaultMutableTreeNode currentNode = breakList.get ( 0 ) ;
+      OutlineNode currentNodeOutline = ( OutlineNode ) currentNode
+          .getUserObject ( ) ;
+      boolean moreBreaksPossible = currentNodeOutline.breakCountInc ( ) ;
+      this.outlineUI.getTreeModel ( ).nodeChanged ( currentNode ) ;
+      newDiff = scroll.getPreferredSize ( ).width - scroll.getSize ( ).width ;
+      if ( ! moreBreaksPossible )
+      {
+        breakList.remove ( 0 ) ;
+      }
+      else if ( newDiff == currentDiff )
+      {
+        // currentNodeOutline.breakCountDec ( ) ;
+        // this.outlineUI.getTreeModel ( ).nodeChanged ( currentNode ) ;
+        // newDiff = scroll.getPreferredSize ( ).width - scroll.getSize (
+        // ).width ;
+        breakList.add ( currentNode ) ;
+        breakList.remove ( 0 ) ;
+      }
+      else
+      {
+        breakList.add ( currentNode ) ;
+        breakList.remove ( 0 ) ;
+      }
+      currentDiff = newDiff ;
+    }
+  }
+
+
+  /**
+   * Removes breaks to the {@link OutlineNode}.
+   */
+  private final void applyBreaksRemove ( )
+  {
+    if ( this.rootNode == null )
+    {
+      return ;
+    }
+    JScrollPane scroll = this.outlineUI.getJScrollPaneOutline ( ) ;
+    int currentDiff = scroll.getPreferredSize ( ).width
+        - scroll.getSize ( ).width ;
+    ArrayList < DefaultMutableTreeNode > breakList = new ArrayList < DefaultMutableTreeNode > ( ) ;
+    Enumeration < ? > e = this.rootNode.breadthFirstEnumeration ( ) ;
+    while ( e.hasMoreElements ( ) )
+    {
+      DefaultMutableTreeNode node = ( DefaultMutableTreeNode ) e.nextElement ( ) ;
+      TreePath treePath = new TreePath ( node.getPath ( ) ) ;
+      boolean visible = this.outlineUI.getJTreeOutline ( )
+          .isVisible ( treePath ) ;
+      OutlineNode childNodeOutline = ( OutlineNode ) node.getUserObject ( ) ;
+      if ( ( childNodeOutline.getOutlineBreak ( ) != null )
+          && ( childNodeOutline.hasBreaks ( ) ) && ( visible ) )
+      {
+        breakList.add ( node ) ;
+      }
+    }
+    while ( breakList.size ( ) > 0 )
+    {
+      DefaultMutableTreeNode currentNode = breakList.get ( 0 ) ;
+      OutlineNode currentNodeOutline = ( OutlineNode ) currentNode
+          .getUserObject ( ) ;
+      if ( currentNodeOutline.hasBreaks ( ) )
+      {
+        while ( ( currentDiff < 0 ) && ( currentNodeOutline.hasBreaks ( ) ) )
+        {
+          currentNodeOutline.breakCountDec ( ) ;
+          this.outlineUI.getTreeModel ( ).nodeChanged ( currentNode ) ;
+          currentDiff = scroll.getPreferredSize ( ).width
+              - scroll.getSize ( ).width ;
+        }
+        if ( currentDiff > 0 )
+        {
+          currentNodeOutline.breakCountInc ( ) ;
+          this.outlineUI.getTreeModel ( ).nodeChanged ( currentNode ) ;
+          currentDiff = scroll.getPreferredSize ( ).width
+              - scroll.getSize ( ).width ;
+        }
+      }
+      breakList.remove ( 0 ) ;
+    }
   }
 
 
@@ -1286,12 +1433,11 @@ public final class AbstractOutline implements Outline
   public final void execute ( )
   {
     this.outlineUnbound = new OutlineUnbound ( this.loadedExpression ) ;
-    DefaultMutableTreeNode rootNode = checkExpression ( this.loadedExpression ) ;
-    OutlineNode outlineNode = ( OutlineNode ) rootNode.getUserObject ( ) ;
+    this.rootNode = checkExpression ( this.loadedExpression ) ;
+    OutlineNode outlineNode = ( OutlineNode ) this.rootNode.getUserObject ( ) ;
     outlineNode.setChildIndexExpression ( ) ;
-    repaint ( rootNode ) ;
-    SwingUtilities.invokeLater ( new OutlineDisplayTree ( this.outlineUI ,
-        rootNode ) ) ;
+    repaint ( this.rootNode ) ;
+    SwingUtilities.invokeLater ( new OutlineDisplayTree ( this ) ) ;
   }
 
 
@@ -1434,14 +1580,23 @@ public final class AbstractOutline implements Outline
    */
   private final void repaint ( DefaultMutableTreeNode pDefaultMutableTreeNode )
   {
-    this.outlineUI.getTreeModel ( ).nodeChanged ( pDefaultMutableTreeNode ) ;
     OutlineNode outlineNode = ( OutlineNode ) pDefaultMutableTreeNode
         .getUserObject ( ) ;
     outlineNode.resetCaption ( ) ;
+    this.outlineUI.getTreeModel ( ).nodeChanged ( pDefaultMutableTreeNode ) ;
     for ( int i = 0 ; i < pDefaultMutableTreeNode.getChildCount ( ) ; i ++ )
     {
       repaint ( ( DefaultMutableTreeNode ) pDefaultMutableTreeNode
           .getChildAt ( i ) ) ;
     }
+  }
+
+
+  /**
+   * Sets the root node in the {@link OutlineUI}.
+   */
+  public final void setRootNode ( )
+  {
+    this.outlineUI.setRootNode ( this.rootNode ) ;
   }
 }

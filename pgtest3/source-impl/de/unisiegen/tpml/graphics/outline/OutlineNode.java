@@ -129,12 +129,6 @@ public final class OutlineNode
 
 
   /**
-   * The beginning of the caption.
-   */
-  private static final String EXPRESSION_BEGIN = "&nbsp;&nbsp;&nbsp;[&nbsp;<font color=\"#" ; //$NON-NLS-1$
-
-
-  /**
    * The end of the caption.
    */
   private static final String EXPRESSION_END = "</font>&nbsp;]</html>" ; //$NON-NLS-1$
@@ -191,19 +185,19 @@ public final class OutlineNode
   /**
    * String, between child index and description.
    */
-  private static final String BETWEEN = "&nbsp;-&nbsp;" ; //$NON-NLS-1$
+  private static final String BETWEEN1 = "&nbsp;-&nbsp;" ; //$NON-NLS-1$
+
+
+  /**
+   * String, between description and {@link Expression}.
+   */
+  private static final String BETWEEN2 = "&nbsp;&nbsp;&nbsp;[&nbsp;" ; //$NON-NLS-1$
 
 
   /**
    * Begin of HTML.
    */
   private static final String HTML = "<html>" ; //$NON-NLS-1$
-
-
-  /**
-   * After the color.
-   */
-  private static final String FONT_AFTER_COLOR = "\">" ; //$NON-NLS-1$
 
 
   /**
@@ -228,6 +222,30 @@ public final class OutlineNode
    * After the description.
    */
   private static final String DESCRIPTION_END = "</font>" ; //$NON-NLS-1$
+
+
+  /**
+   * The beginning of the caption.
+   */
+  private static final String FONT_BEGIN = "<font color=\"#" ; //$NON-NLS-1$
+
+
+  /**
+   * End of font.
+   */
+  private static final String FONT_END = "</font>" ; //$NON-NLS-1$
+
+
+  /**
+   * After the color.
+   */
+  private static final String FONT_AFTER_COLOR = "\">" ; //$NON-NLS-1$
+
+
+  /**
+   * String for a break.
+   */
+  private static final String BREAK = "<br>" ; //$NON-NLS-1$
 
 
   /**
@@ -367,12 +385,6 @@ public final class OutlineNode
 
 
   /**
-   * True, if this node has a {@link OutlineBinding} when it is initialized.
-   */
-  private boolean hasBinding ;
-
-
-  /**
    * The start index of the {@link Identifier}.
    */
   private int boundedStart ;
@@ -382,6 +394,62 @@ public final class OutlineNode
    * The end index of the {@link Identifier}.
    */
   private int boundedEnd ;
+
+
+  /**
+   * The break count.
+   */
+  private int breakCount ;
+
+
+  /**
+   * All breaks of this node.
+   * 
+   * @see #getOutlineBreak()
+   */
+  private OutlineBreak outlineBreak ;
+
+
+  /**
+   * The current breaks of this node.
+   */
+  private OutlineBreak currentOutlineBreak ;
+
+
+  /**
+   * Indicates, if this node is a {@link Type}.
+   */
+  private boolean isType ;
+
+
+  /**
+   * Indicates, if this node is a {@link Identifier}.
+   */
+  private boolean isIdentifier ;
+
+
+  /**
+   * Indicates, if this node is a {@link InfixOperation}.
+   */
+  private boolean isInfixOperation ;
+
+
+  /**
+   * Indicates, if this node is a {@link Expression}.
+   */
+  private boolean isExpression ;
+
+
+  /**
+   * The start index of the last selection.
+   */
+  private int lastSelectionStart ;
+
+
+  /**
+   * The end index of the last selection.
+   */
+  private int lastSelectionEnd ;
 
 
   /**
@@ -403,10 +471,17 @@ public final class OutlineNode
     this.outlineBinding = null ;
     this.outlineUnbound = pOutlineUnbound ;
     this.replaceInThisNode = false ;
-    this.hasBinding = false ;
     this.boundedStart = NO_BINDING ;
     this.boundedEnd = NO_BINDING ;
-    resetCaption ( ) ;
+    this.outlineBreak = new OutlineBreak ( this.expression ) ;
+    this.currentOutlineBreak = new OutlineBreak ( ) ;
+    this.breakCount = 0 ;
+    this.isType = false ;
+    this.isIdentifier = false ;
+    this.isInfixOperation = false ;
+    this.isExpression = true ;
+    this.lastSelectionStart = NO_SELECTION ;
+    this.lastSelectionEnd = NO_SELECTION ;
   }
 
 
@@ -424,7 +499,7 @@ public final class OutlineNode
   public OutlineNode ( Expression pExpression , String pExpressionString ,
       int pStartIndex , int pEndIndex , OutlineUnbound pOutlineUnbound )
   {
-    this.expression = pExpression ;
+    this.expression = null ;
     this.description = pExpression.getCaption ( ) ;
     this.childIndex = "" ; //$NON-NLS-1$
     this.expressionString = pExpressionString ;
@@ -433,10 +508,17 @@ public final class OutlineNode
     this.outlineBinding = null ;
     this.outlineUnbound = pOutlineUnbound ;
     this.replaceInThisNode = false ;
-    this.hasBinding = false ;
     this.boundedStart = NO_BINDING ;
     this.boundedEnd = NO_BINDING ;
-    resetCaption ( ) ;
+    this.outlineBreak = null ;
+    this.currentOutlineBreak = null ;
+    this.breakCount = 0 ;
+    this.isType = false ;
+    this.isIdentifier = false ;
+    this.isInfixOperation = true ;
+    this.isExpression = false ;
+    this.lastSelectionStart = NO_SELECTION ;
+    this.lastSelectionEnd = NO_SELECTION ;
   }
 
 
@@ -465,10 +547,17 @@ public final class OutlineNode
     this.outlineBinding = pOutlineBinding ;
     this.outlineUnbound = pOutlineUnbound ;
     this.replaceInThisNode = false ;
-    this.hasBinding = true ;
     this.boundedStart = NO_BINDING ;
     this.boundedEnd = NO_BINDING ;
-    resetCaption ( ) ;
+    this.outlineBreak = null ;
+    this.currentOutlineBreak = null ;
+    this.breakCount = 0 ;
+    this.isType = true ;
+    this.isIdentifier = false ;
+    this.isInfixOperation = false ;
+    this.isExpression = false ;
+    this.lastSelectionStart = NO_SELECTION ;
+    this.lastSelectionEnd = NO_SELECTION ;
   }
 
 
@@ -496,10 +585,68 @@ public final class OutlineNode
     this.outlineBinding = pOutlineBinding ;
     this.outlineUnbound = pOutlineUnbound ;
     this.replaceInThisNode = false ;
-    this.hasBinding = true ;
     this.boundedStart = NO_BINDING ;
     this.boundedEnd = NO_BINDING ;
-    resetCaption ( ) ;
+    this.outlineBreak = null ;
+    this.currentOutlineBreak = null ;
+    this.breakCount = 0 ;
+    this.isType = false ;
+    this.isIdentifier = true ;
+    this.isInfixOperation = false ;
+    this.isExpression = false ;
+    this.lastSelectionStart = NO_SELECTION ;
+    this.lastSelectionEnd = NO_SELECTION ;
+  }
+
+
+  /**
+   * Decrements the break count and resets the cpation.
+   * 
+   * @return True, if something has changed.
+   */
+  public final boolean breakCountDec ( )
+  {
+    if ( ! this.isExpression )
+    {
+      return false ;
+    }
+    if ( this.breakCount == 0 )
+    {
+      return false ;
+    }
+    this.breakCount -- ;
+    this.currentOutlineBreak = this.outlineBreak.getBreaks ( this.breakCount ) ;
+    updateCaption ( this.lastSelectionStart , this.lastSelectionEnd ) ;
+    return true ;
+  }
+
+
+  /**
+   * Increments the break count and resets the cpation.
+   * 
+   * @return True, if something has changed.
+   */
+  public final boolean breakCountInc ( )
+  {
+    if ( ! this.isExpression )
+    {
+      return false ;
+    }
+    this.breakCount ++ ;
+    this.currentOutlineBreak = this.outlineBreak.getBreaks ( this.breakCount ) ;
+    while ( ( this.currentOutlineBreak.getBreakCountOwn ( ) == 0 )
+        && ( this.currentOutlineBreak.hasBreaksAll ( ) ) )
+    {
+      this.breakCount ++ ;
+      this.currentOutlineBreak = this.outlineBreak.getBreaks ( this.breakCount ) ;
+    }
+    updateCaption ( this.lastSelectionStart , this.lastSelectionEnd ) ;
+    if ( this.outlineBreak.getBreakCountAll ( ) == this.currentOutlineBreak
+        .getBreakCountOwn ( ) )
+    {
+      return false ;
+    }
+    return true ;
   }
 
 
@@ -513,7 +660,8 @@ public final class OutlineNode
     result.append ( DESCRIPTION_BEGIN ) ;
     result.append ( this.description ) ;
     result.append ( DESCRIPTION_END ) ;
-    result.append ( EXPRESSION_BEGIN ) ;
+    result.append ( BETWEEN2 ) ;
+    result.append ( FONT_BEGIN ) ;
     result.append ( getHTMLFormat ( Theme.currentTheme ( )
         .getExpressionColor ( ) ) ) ;
     result.append ( FONT_AFTER_COLOR ) ;
@@ -523,11 +671,12 @@ public final class OutlineNode
       result
           .append ( getHTMLFormat ( Theme.currentTheme ( ).getBindingColor ( ) ) ) ;
       result.append ( FONT_AFTER_COLOR ) ;
-    }
-    result.append ( getHTMLCode ( this.expressionString ) ) ;
-    if ( binding )
-    {
+      result.append ( getHTMLCode ( this.expressionString ) ) ;
       result.append ( FONT_BOLD_END ) ;
+    }
+    else
+    {
+      result.append ( getHTMLCode ( this.expressionString ) ) ;
     }
     result.append ( EXPRESSION_END ) ;
     this.caption = result.toString ( ) ;
@@ -539,14 +688,15 @@ public final class OutlineNode
    */
   public final void enableSelectionColor ( )
   {
-    if ( this.startIndex != NO_IDENTIFIER )
+    if ( ! this.isExpression )
     {
       StringBuffer result = new StringBuffer ( HTML ) ;
       result.append ( this.childIndex ) ;
       result.append ( DESCRIPTION_BEGIN ) ;
       result.append ( this.description ) ;
       result.append ( DESCRIPTION_END ) ;
-      result.append ( EXPRESSION_BEGIN ) ;
+      result.append ( BETWEEN2 ) ;
+      result.append ( FONT_BEGIN ) ;
       result.append ( getHTMLFormat ( Theme.currentTheme ( )
           .getExpressionColor ( ) ) ) ;
       result.append ( FONT_AFTER_COLOR ) ;
@@ -557,7 +707,7 @@ public final class OutlineNode
             .getSelectionColor ( ) ) ) ;
         result.append ( FONT_AFTER_COLOR ) ;
       }
-      else if ( this.expression instanceof BinaryOperator )
+      else if ( this.isInfixOperation )
       {
         result.append ( FONT_BOLD_BEGIN ) ;
         result.append ( getHTMLFormat ( Theme.currentTheme ( )
@@ -565,17 +715,16 @@ public final class OutlineNode
         result.append ( FONT_AFTER_COLOR ) ;
       }
       result.append ( getHTMLCode ( this.expressionString ) ) ;
-      if ( ( selection ) || ( this.expression instanceof BinaryOperator ) )
+      if ( ( selection ) || ( this.isInfixOperation ) )
       {
         result.append ( FONT_BOLD_END ) ;
       }
       result.append ( EXPRESSION_END ) ;
       this.caption = result.toString ( ) ;
     }
-    else
-    {
-      updateCaption ( NO_SELECTION , NO_SELECTION ) ;
-    }
+    /*
+     * else { updateCaption ( NO_SELECTION , NO_SELECTION ) ; }
+     */
   }
 
 
@@ -659,6 +808,30 @@ public final class OutlineNode
 
 
   /**
+   * Returns the replaced <code>char</code>.
+   * 
+   * @param pChar Input <code>char</code>.
+   * @return The replaced <code>char</code>.
+   */
+  private final String getHTMLCode ( char pChar )
+  {
+    if ( pChar == '&' )
+    {
+      return AMPERSAND_THAN_REPLACE ;
+    }
+    if ( pChar == '<' )
+    {
+      return LOWER_THAN_REPLACE ;
+    }
+    if ( pChar == '>' )
+    {
+      return GREATER_THAN_REPLACE ;
+    }
+    return String.valueOf ( pChar ) ;
+  }
+
+
+  /**
    * Returns the color in HTML formatting.
    * 
    * @param pColor The color which should be returned.
@@ -685,6 +858,18 @@ public final class OutlineNode
 
 
   /**
+   * Returns the outlineBreak.
+   * 
+   * @return The outlineBreak.
+   * @see #outlineBreak
+   */
+  public final OutlineBreak getOutlineBreak ( )
+  {
+    return this.outlineBreak ;
+  }
+
+
+  /**
    * Returns the start index of the {@link Identifier}.
    * 
    * @return The start index of the {@link Identifier}.
@@ -693,6 +878,17 @@ public final class OutlineNode
   public final int getStartIndex ( )
   {
     return this.startIndex ;
+  }
+
+
+  /**
+   * Return true, if this {@link Expression} has one or more breaks.
+   * 
+   * @return True, if this {@link Expression} has one or more breaks.
+   */
+  public final boolean hasBreaks ( )
+  {
+    return this.breakCount > 0 ;
   }
 
 
@@ -736,6 +932,42 @@ public final class OutlineNode
 
 
   /**
+   * Returns the isExpression.
+   * 
+   * @return The isExpression.
+   * @see #isExpression
+   */
+  public final boolean isExpression ( )
+  {
+    return this.isExpression ;
+  }
+
+
+  /**
+   * Returns the isIdentifier.
+   * 
+   * @return The isIdentifier.
+   * @see #isIdentifier
+   */
+  public final boolean isIdentifier ( )
+  {
+    return this.isIdentifier ;
+  }
+
+
+  /**
+   * Returns the isInfixOperation.
+   * 
+   * @return The isInfixOperation.
+   * @see #isInfixOperation
+   */
+  public final boolean isInfixOperation ( )
+  {
+    return this.isInfixOperation ;
+  }
+
+
+  /**
    * This method returns the length of the bounded {@link Identifier}, if the
    * {@link Identifier} begins at the given pCharIndex.
    * 
@@ -751,6 +983,18 @@ public final class OutlineNode
       return this.boundedEnd - this.boundedStart + 1 ;
     }
     return - 1 ;
+  }
+
+
+  /**
+   * Returns the isType.
+   * 
+   * @return The isType.
+   * @see #isType
+   */
+  public final boolean isType ( )
+  {
+    return this.isType ;
   }
 
 
@@ -801,15 +1045,25 @@ public final class OutlineNode
       result.append ( DESCRIPTION_BEGIN ) ;
       result.append ( this.description ) ;
       result.append ( DESCRIPTION_END ) ;
-      result.append ( EXPRESSION_BEGIN ) ;
+      result.append ( BETWEEN2 ) ;
+      result.append ( FONT_BEGIN ) ;
       result.append ( getHTMLFormat ( Theme.currentTheme ( )
           .getExpressionColor ( ) ) ) ;
       result.append ( FONT_AFTER_COLOR ) ;
-      if ( this.expression instanceof BinaryOperator )
+      if ( this.isInfixOperation )
       {
         result.append ( FONT_BOLD_BEGIN ) ;
         result.append ( getHTMLFormat ( Theme.currentTheme ( )
             .getConstantColor ( ) ) ) ;
+        result.append ( FONT_AFTER_COLOR ) ;
+        result.append ( getHTMLCode ( this.expressionString ) ) ;
+        result.append ( FONT_BOLD_END ) ;
+      }
+      else if ( this.isType )
+      {
+        result.append ( FONT_BOLD_BEGIN ) ;
+        result
+            .append ( getHTMLFormat ( Theme.currentTheme ( ).getTypeColor ( ) ) ) ;
         result.append ( FONT_AFTER_COLOR ) ;
         result.append ( getHTMLCode ( this.expressionString ) ) ;
         result.append ( FONT_BOLD_END ) ;
@@ -833,7 +1087,7 @@ public final class OutlineNode
    * 
    * @param pBoundEnd The end index of the {@link Identifier}.
    */
-  public void setBoundedEnd ( int pBoundEnd )
+  public final void setBoundedEnd ( int pBoundEnd )
   {
     this.boundedEnd = pBoundEnd ;
   }
@@ -844,7 +1098,7 @@ public final class OutlineNode
    * 
    * @param pBoundStart The start index of the {@link Identifier}.
    */
-  public void setBoundedStart ( int pBoundStart )
+  public final void setBoundedStart ( int pBoundStart )
   {
     this.boundedStart = pBoundStart ;
   }
@@ -869,14 +1123,22 @@ public final class OutlineNode
    */
   public final void setChildIndexExpression ( int pChildIndexExpression )
   {
-    if ( pChildIndexExpression == NO_CHILD_INDEX )
+    if ( this.expression.isValue ( ) )
     {
-      this.childIndex = BETWEEN ;
+      this.childIndex = VALUE ;
     }
     else
     {
-      this.childIndex = SMALL_SUB_BEGIN + pChildIndexExpression + SMALL_SUB_END
-          + BETWEEN ;
+      this.childIndex = EXPRESSION ;
+    }
+    if ( pChildIndexExpression == NO_CHILD_INDEX )
+    {
+      this.childIndex += BETWEEN1 ;
+    }
+    else
+    {
+      this.childIndex += SMALL_SUB_BEGIN + pChildIndexExpression
+          + SMALL_SUB_END + BETWEEN1 ;
     }
   }
 
@@ -902,12 +1164,12 @@ public final class OutlineNode
   {
     if ( pChildIndexIdentifier == OutlineNode.NO_CHILD_INDEX )
     {
-      this.childIndex = IDENTIFIER + BETWEEN ;
+      this.childIndex = IDENTIFIER + BETWEEN1 ;
     }
     else
     {
       this.childIndex = IDENTIFIER + SMALL_SUB_BEGIN + pChildIndexIdentifier
-          + SMALL_SUB_END + BETWEEN ;
+          + SMALL_SUB_END + BETWEEN1 ;
     }
   }
 
@@ -934,12 +1196,12 @@ public final class OutlineNode
   {
     if ( pChildIndexMeth == OutlineNode.NO_CHILD_INDEX )
     {
-      this.childIndex = METH + BETWEEN ;
+      this.childIndex = METH + BETWEEN1 ;
     }
     else
     {
       this.childIndex = METH + SMALL_SUB_BEGIN + pChildIndexMeth
-          + SMALL_SUB_END + BETWEEN ;
+          + SMALL_SUB_END + BETWEEN1 ;
     }
   }
 
@@ -965,12 +1227,12 @@ public final class OutlineNode
   {
     if ( pChildIndexOp == OutlineNode.NO_CHILD_INDEX )
     {
-      this.childIndex = OP + BETWEEN ;
+      this.childIndex = OP + BETWEEN1 ;
     }
     else
     {
       this.childIndex = OP + SMALL_SUB_BEGIN + pChildIndexOp + SMALL_SUB_END
-          + BETWEEN ;
+          + BETWEEN1 ;
     }
   }
 
@@ -996,12 +1258,12 @@ public final class OutlineNode
   {
     if ( pChildIndexType == OutlineNode.NO_CHILD_INDEX )
     {
-      this.childIndex = TYPE + BETWEEN ;
+      this.childIndex = TYPE + BETWEEN1 ;
     }
     else
     {
       this.childIndex = TYPE + SMALL_SUB_BEGIN + pChildIndexType
-          + SMALL_SUB_END + BETWEEN ;
+          + SMALL_SUB_END + BETWEEN1 ;
     }
   }
 
@@ -1015,7 +1277,7 @@ public final class OutlineNode
    */
   public final void setOutlineBinding ( OutlineBinding pOutlineBinding )
   {
-    if ( ! this.hasBinding )
+    if ( this.isExpression )
     {
       this.outlineBinding = pOutlineBinding ;
     }
@@ -1074,6 +1336,8 @@ public final class OutlineNode
       selectionStart = NO_SELECTION ;
       selectionEnd = NO_SELECTION ;
     }
+    this.lastSelectionStart = selectionStart ;
+    this.lastSelectionEnd = selectionEnd ;
     // Load the PrettyCharIterator
     PrettyCharIterator prettyCharIterator = this.expression.toPrettyString ( )
         .toCharacterIterator ( ) ;
@@ -1095,91 +1359,48 @@ public final class OutlineNode
     StringBuffer result = new StringBuffer ( ) ;
     // Build the first part of the node caption
     result.append ( HTML ) ;
-    if ( this.expression.isValue ( ) )
-    {
-      result.append ( VALUE ) ;
-    }
-    else
-    {
-      result.append ( EXPRESSION ) ;
-    }
     result.append ( this.childIndex ) ;
     result.append ( DESCRIPTION_BEGIN ) ;
     result.append ( this.description ) ;
     result.append ( DESCRIPTION_END ) ;
-    result.append ( EXPRESSION_BEGIN ) ;
+    result.append ( BETWEEN2 ) ;
+    result.append ( FONT_BEGIN ) ;
     result.append ( expressionColor ) ;
     result.append ( FONT_AFTER_COLOR ) ;
-    int isBinding = - 1 ;
-    int isSelectedBounded = - 1 ;
-    int isUnbound = - 1 ;
-    int oldCharIndex = - 1 ;
+    int count = - 1 ;
     int charIndex = 0 ;
+    StringBuffer prefix = new StringBuffer ( ) ;
+    prefix.append ( "<font color=\"#FFFFFF\">" ) ; //$NON-NLS-1$
+    prefix.append ( this.childIndex ) ;
+    prefix.append ( this.description ) ;
+    prefix.append ( BETWEEN2 ) ;
+    prefix.append ( FONT_END ) ;
     final int length = this.expressionString.length ( ) ;
     while ( charIndex < length )
     {
       /*
        * Selection
        */
-      if ( ( selection ) && ( charIndex == selectionStart ) )
+      if ( ( charIndex == selectionStart ) && ( selection ) )
       {
-        result.append ( FONT_BOLD_BEGIN ) ;
-        result.append ( selectionColor ) ;
-        result.append ( FONT_AFTER_COLOR ) ;
-        // Replace selected Expression
-        if ( replace && this.replaceInThisNode )
-        {
-          result.append ( REPLACE ) ;
-        }
-        else
-        {
-          result.append ( getHTMLCode ( this.expressionString.substring (
-              selectionStart , selectionEnd + 1 ) ) ) ;
-        }
-        while ( charIndex <= selectionEnd )
-        {
-          // Next character
-          charIndex ++ ;
-          prettyCharIterator.next ( ) ;
-        }
-        result.append ( FONT_BOLD_END ) ;
+        charIndex = updateCaptionSelection ( charIndex , selectionEnd ,
+            prettyCharIterator , result , prefix , selectionColor ) ;
       }
       /*
-       * No selection and binding. The selected Identifier should be
-       * highlighted.
+       * No selection and binding.
        */
-      else if ( ( ! selection ) && ( binding )
-          && ( this.outlineBinding != null )
-          && ( this.outlineBinding.size ( ) > 0 )
-          && ( charIndex == selectionStart ) )
+      else if ( ( charIndex == selectionStart ) && ( ! selection )
+          && ( binding ) && ( this.outlineBinding != null )
+          && ( this.outlineBinding.size ( ) > 0 ) )
       {
-        result.append ( FONT_BOLD_BEGIN ) ;
-        result.append ( selectionColor ) ;
-        result.append ( FONT_AFTER_COLOR ) ;
-        // Replace selected Expression
-        if ( replace && this.replaceInThisNode )
-        {
-          result.append ( REPLACE ) ;
-        }
-        else
-        {
-          result.append ( getHTMLCode ( this.expressionString.substring (
-              selectionStart , selectionEnd + 1 ) ) ) ;
-        }
-        while ( charIndex <= selectionEnd )
-        {
-          // Next character
-          charIndex ++ ;
-          prettyCharIterator.next ( ) ;
-        }
-        result.append ( FONT_BOLD_END ) ;
+        charIndex = updateCaptionSelection ( charIndex , selectionEnd ,
+            prettyCharIterator , result , prefix , selectionColor ) ;
       }
       /*
-       * No selection highlighting and replace of the selected Expression in
-       * higher nodes.
+       * No selection and replace.
        */
-      else if ( ( ! selection ) && ( replace ) && ( this.replaceInThisNode )
-          && ( charIndex == selectionStart ) )
+      else if ( ( charIndex == selectionStart ) && ( ! selection )
+          && ( replace ) && ( this.replaceInThisNode ) )
       {
         result.append ( REPLACE_BOLD ) ;
         while ( charIndex <= selectionEnd )
@@ -1192,169 +1413,78 @@ public final class OutlineNode
       /*
        * Binding
        */
-      else if ( ( this.outlineBinding != null ) && ( binding )
-          && ( ( isBinding = isBinding ( charIndex ) ) >= 0 ) )
+      else if ( ( binding ) && ( this.outlineBinding != null )
+          && ( ( count = isBinding ( charIndex ) ) >= 0 ) )
       {
-        result.append ( FONT_BOLD_BEGIN ) ;
-        result.append ( bindingColor ) ;
-        result.append ( FONT_AFTER_COLOR ) ;
-        result.append ( this.expressionString.substring ( charIndex , charIndex
-            + isBinding ) ) ;
-        charIndex += isBinding ;
-        while ( isBinding > 0 )
-        {
-          // Next character
-          isBinding -- ;
-          prettyCharIterator.next ( ) ;
-        }
-        result.append ( FONT_BOLD_END ) ;
+        charIndex = updateCaptionBinding ( charIndex , count ,
+            prettyCharIterator , result , prefix , bindingColor ) ;
       }
       /*
-       * The selected Identifier is bounded
+       * The selected Identifier-Expression is bounded in this Expression.
        */
       else if ( ( binding )
-          && ( ( isSelectedBounded = isSelectedBounded ( charIndex ) ) >= 0 ) )
+          && ( ( count = isSelectedBounded ( charIndex ) ) >= 0 ) )
       {
-        result.append ( FONT_BOLD_BEGIN ) ;
-        result.append ( bindingColor ) ;
-        result.append ( FONT_AFTER_COLOR ) ;
-        result.append ( this.expressionString.substring ( charIndex , charIndex
-            + isSelectedBounded ) ) ;
-        charIndex += isSelectedBounded ;
-        while ( isSelectedBounded > 0 )
-        {
-          // Next character
-          isSelectedBounded -- ;
-          prettyCharIterator.next ( ) ;
-        }
-        result.append ( FONT_BOLD_END ) ;
+        charIndex = updateCaptionBinding ( charIndex , count ,
+            prettyCharIterator , result , prefix , bindingColor ) ;
       }
       /*
-       * The selected Identifier is bounded, but should not be selected
+       * The selected Identifier-Expression is bounded in this Expression, but
+       * should not be selected
        */
-      else if ( ( ! selection ) && ( binding ) && ( this.boundedStart != - 1 )
-          && ( this.boundedEnd != - 1 ) && ( charIndex == selectionStart ) )
+      else if ( ( ! selection ) && ( binding )
+          && ( this.boundedStart != NO_BINDING )
+          && ( this.boundedEnd != NO_BINDING )
+          && ( charIndex == selectionStart ) )
       {
-        result.append ( FONT_BOLD_BEGIN ) ;
-        result.append ( selectionColor ) ;
-        result.append ( FONT_AFTER_COLOR ) ;
-        // Replace selected Expression
-        if ( replace && this.replaceInThisNode )
-        {
-          result.append ( REPLACE ) ;
-        }
-        else
-        {
-          result.append ( getHTMLCode ( this.expressionString.substring (
-              selectionStart , selectionEnd + 1 ) ) ) ;
-        }
-        while ( charIndex <= selectionEnd )
-        {
-          // Next character
-          charIndex ++ ;
-          prettyCharIterator.next ( ) ;
-        }
-        result.append ( FONT_BOLD_END ) ;
+        charIndex = updateCaptionSelection ( charIndex , selectionEnd ,
+            prettyCharIterator , result , prefix , selectionColor ) ;
       }
       /*
        * Unbound Identifier
        */
       else if ( ( unbound ) && ( this.outlineUnbound != null )
-          && ( ( isUnbound = isUnbound ( charIndex ) ) >= 0 ) )
+          && ( ( count = isUnbound ( charIndex ) ) >= 0 ) )
       {
-        result.append ( FONT_BOLD_BEGIN ) ;
-        result.append ( unboundColor ) ;
-        result.append ( FONT_AFTER_COLOR ) ;
-        result.append ( this.expressionString.substring ( charIndex , charIndex
-            + isUnbound ) ) ;
-        charIndex += isUnbound ;
-        while ( isUnbound > 0 )
-        {
-          // Next character
-          isUnbound -- ;
-          prettyCharIterator.next ( ) ;
-        }
-        result.append ( FONT_BOLD_END ) ;
+        charIndex = updateCaptionBinding ( charIndex , count ,
+            prettyCharIterator , result , prefix , unboundColor ) ;
       }
       /*
        * Keyword
        */
       else if ( PrettyStyle.KEYWORD.equals ( prettyCharIterator.getStyle ( ) ) )
       {
-        result.append ( FONT_BOLD_BEGIN ) ;
-        result.append ( keywordColor ) ;
-        result.append ( FONT_AFTER_COLOR ) ;
-        oldCharIndex = charIndex ;
-        while ( PrettyStyle.KEYWORD.equals ( prettyCharIterator.getStyle ( ) ) )
-        {
-          // Next character
-          charIndex ++ ;
-          prettyCharIterator.next ( ) ;
-        }
-        result.append ( getHTMLCode ( this.expressionString.substring (
-            oldCharIndex , charIndex ) ) ) ;
-        result.append ( FONT_BOLD_END ) ;
+        charIndex = updateCaptionStyle ( charIndex , PrettyStyle.KEYWORD ,
+            prettyCharIterator , result , prefix , keywordColor ) ;
       }
       /*
        * Constant
        */
       else if ( PrettyStyle.CONSTANT.equals ( prettyCharIterator.getStyle ( ) ) )
       {
-        result.append ( FONT_BOLD_BEGIN ) ;
-        result.append ( constantColor ) ;
-        result.append ( FONT_AFTER_COLOR ) ;
-        oldCharIndex = charIndex ;
-        while ( PrettyStyle.CONSTANT.equals ( prettyCharIterator.getStyle ( ) ) )
-        {
-          // Next character
-          charIndex ++ ;
-          prettyCharIterator.next ( ) ;
-        }
-        result.append ( getHTMLCode ( this.expressionString.substring (
-            oldCharIndex , charIndex ) ) ) ;
-        result.append ( FONT_BOLD_END ) ;
+        charIndex = updateCaptionStyle ( charIndex , PrettyStyle.CONSTANT ,
+            prettyCharIterator , result , prefix , constantColor ) ;
       }
       /*
        * Type
        */
       else if ( PrettyStyle.TYPE.equals ( prettyCharIterator.getStyle ( ) ) )
       {
-        result.append ( FONT_BOLD_BEGIN ) ;
-        result.append ( typeColor ) ;
-        result.append ( FONT_AFTER_COLOR ) ;
-        oldCharIndex = charIndex ;
-        while ( PrettyStyle.TYPE.equals ( prettyCharIterator.getStyle ( ) ) )
-        {
-          // Next character
-          charIndex ++ ;
-          prettyCharIterator.next ( ) ;
-        }
-        result.append ( getHTMLCode ( this.expressionString.substring (
-            oldCharIndex , charIndex ) ) ) ;
-        result.append ( FONT_BOLD_END ) ;
+        charIndex = updateCaptionStyle ( charIndex , PrettyStyle.TYPE ,
+            prettyCharIterator , result , prefix , typeColor ) ;
       }
       /*
        * Normal character
        */
       else
       {
-        char currentChar = this.expressionString.charAt ( charIndex ) ;
-        if ( currentChar == '&' )
+        if ( this.currentOutlineBreak.isBreak ( charIndex ) )
         {
-          result.append ( AMPERSAND_THAN_REPLACE ) ;
+          result.append ( BREAK ) ;
+          result.append ( prefix ) ;
         }
-        else if ( currentChar == '<' )
-        {
-          result.append ( LOWER_THAN_REPLACE ) ;
-        }
-        else if ( currentChar == '>' )
-        {
-          result.append ( GREATER_THAN_REPLACE ) ;
-        }
-        else
-        {
-          result.append ( currentChar ) ;
-        }
+        result
+            .append ( getHTMLCode ( this.expressionString.charAt ( charIndex ) ) ) ;
         // Next character
         charIndex ++ ;
         prettyCharIterator.next ( ) ;
@@ -1362,5 +1492,137 @@ public final class OutlineNode
     }
     result.append ( EXPRESSION_END ) ;
     this.caption = result.toString ( ) ;
+  }
+
+
+  /**
+   * Updates the caption of the node.
+   * 
+   * @param pCharIndex The char index.
+   * @param pCount The number of characters.
+   * @param pPrettyCharIterator The {@link PrettyCharIterator}.
+   * @param pResult The result {@link StringBuffer}.
+   * @param pPrefix The prefix before a break.
+   * @param pColor The {@link Color} of the characters.
+   * @return The charIndex at the end of this method.
+   */
+  private final int updateCaptionBinding ( int pCharIndex , int pCount ,
+      PrettyCharIterator pPrettyCharIterator , StringBuffer pResult ,
+      StringBuffer pPrefix , String pColor )
+  {
+    int charIndex = pCharIndex ;
+    pPrettyCharIterator.setIndex ( pPrettyCharIterator.getIndex ( ) + pCount ) ;
+    pResult.append ( FONT_BOLD_BEGIN ) ;
+    pResult.append ( pColor ) ;
+    pResult.append ( FONT_AFTER_COLOR ) ;
+    while ( charIndex < pCharIndex + pCount )
+    {
+      if ( this.currentOutlineBreak.isBreak ( charIndex ) )
+      {
+        pResult.append ( FONT_BOLD_END ) ;
+        pResult.append ( BREAK ) ;
+        pResult.append ( pPrefix ) ;
+        pResult.append ( FONT_BOLD_BEGIN ) ;
+        pResult.append ( pColor ) ;
+        pResult.append ( FONT_AFTER_COLOR ) ;
+      }
+      pResult
+          .append ( getHTMLCode ( this.expressionString.charAt ( charIndex ) ) ) ;
+      // Next character
+      charIndex ++ ;
+    }
+    pResult.append ( FONT_BOLD_END ) ;
+    return charIndex ;
+  }
+
+
+  /**
+   * Updates the caption of the node.
+   * 
+   * @param pCharIndex The char index.
+   * @param pSelectionEnd The end index of the selection.
+   * @param pPrettyCharIterator The {@link PrettyCharIterator}.
+   * @param pResult The result {@link StringBuffer}.
+   * @param pPrefix The prefix before a break.
+   * @param pColor The {@link Color} of the characters.
+   * @return The charIndex at the end of this method.
+   */
+  private final int updateCaptionSelection ( int pCharIndex ,
+      int pSelectionEnd , PrettyCharIterator pPrettyCharIterator ,
+      StringBuffer pResult , StringBuffer pPrefix , String pColor )
+  {
+    int charIndex = pCharIndex ;
+    pPrettyCharIterator.setIndex ( pSelectionEnd + 1 ) ;
+    pResult.append ( FONT_BOLD_BEGIN ) ;
+    pResult.append ( pColor ) ;
+    pResult.append ( FONT_AFTER_COLOR ) ;
+    // Replace selected Expression
+    if ( ( replace ) && ( this.replaceInThisNode ) )
+    {
+      pResult.append ( REPLACE ) ;
+    }
+    while ( charIndex <= pSelectionEnd )
+    {
+      if ( ( this.currentOutlineBreak.isBreak ( charIndex ) )
+          && ( ! ( replace && this.replaceInThisNode ) ) )
+      {
+        pResult.append ( FONT_BOLD_END ) ;
+        pResult.append ( BREAK ) ;
+        pResult.append ( pPrefix ) ;
+        pResult.append ( FONT_BOLD_BEGIN ) ;
+        pResult.append ( pColor ) ;
+        pResult.append ( FONT_AFTER_COLOR ) ;
+      }
+      if ( ! ( replace && this.replaceInThisNode ) )
+      {
+        pResult.append ( getHTMLCode ( this.expressionString
+            .charAt ( charIndex ) ) ) ;
+      }
+      // Next character
+      charIndex ++ ;
+    }
+    pResult.append ( FONT_BOLD_END ) ;
+    return charIndex ;
+  }
+
+
+  /**
+   * Updates the caption of the node.
+   * 
+   * @param pCharIndex The char index.
+   * @param pPrettyStyle The {@link PrettyStyle}.
+   * @param pPrettyCharIterator The {@link PrettyCharIterator}.
+   * @param pResult The result {@link StringBuffer}.
+   * @param pPrefix The prefix before a break.
+   * @param pColor The {@link Color} of the characters.
+   * @return The charIndex at the end of this method.
+   */
+  private final int updateCaptionStyle ( int pCharIndex ,
+      PrettyStyle pPrettyStyle , PrettyCharIterator pPrettyCharIterator ,
+      StringBuffer pResult , StringBuffer pPrefix , String pColor )
+  {
+    int charIndex = pCharIndex ;
+    pResult.append ( FONT_BOLD_BEGIN ) ;
+    pResult.append ( pColor ) ;
+    pResult.append ( FONT_AFTER_COLOR ) ;
+    while ( pPrettyStyle.equals ( pPrettyCharIterator.getStyle ( ) ) )
+    {
+      if ( this.currentOutlineBreak.isBreak ( charIndex ) )
+      {
+        pResult.append ( FONT_BOLD_END ) ;
+        pResult.append ( BREAK ) ;
+        pResult.append ( pPrefix ) ;
+        pResult.append ( FONT_BOLD_BEGIN ) ;
+        pResult.append ( pColor ) ;
+        pResult.append ( FONT_AFTER_COLOR ) ;
+      }
+      pResult
+          .append ( getHTMLCode ( this.expressionString.charAt ( charIndex ) ) ) ;
+      // Next character
+      charIndex ++ ;
+      pPrettyCharIterator.next ( ) ;
+    }
+    pResult.append ( FONT_BOLD_END ) ;
+    return charIndex ;
   }
 }

@@ -46,6 +46,17 @@ public final class OutlineTreeSelectionListener implements
 
   /**
    * Repaints the given node and all its children.
+   */
+  private final void repaint ( )
+  {
+    DefaultMutableTreeNode rootNode = ( DefaultMutableTreeNode ) this.outlineUI
+        .getTreeModel ( ).getRoot ( ) ;
+    repaint ( rootNode ) ;
+  }
+
+
+  /**
+   * Repaints the given node and all its children.
    * 
    * @param pNode The node, which should be repainted.
    */
@@ -93,13 +104,47 @@ public final class OutlineTreeSelectionListener implements
       DefaultMutableTreeNode child = ( DefaultMutableTreeNode ) pParent
           .getChildAt ( i ) ;
       OutlineNode node = ( OutlineNode ) child.getUserObject ( ) ;
-      if ( node.getExpression ( ) != null )
+      if ( node.isExpression ( ) )
       {
         node.setOutlineBinding ( pOutlineBinding ) ;
         node.updateCaption ( ) ;
         this.outlineUI.getTreeModel ( ).nodeChanged ( child ) ;
       }
       setBindingToChildren ( child , pOutlineBinding ) ;
+    }
+  }
+
+
+  /**
+   * Sets the given {@link OutlineBinding} to all nodes.
+   * 
+   * @param pOutlineBinding The {@link OutlineBinding}.
+   */
+  @ SuppressWarnings ( "unused" )
+  private final void setOutlineBinding ( OutlineBinding pOutlineBinding )
+  {
+    DefaultMutableTreeNode rootNode = ( DefaultMutableTreeNode ) this.outlineUI
+        .getTreeModel ( ).getRoot ( ) ;
+    setOutlineBinding ( pOutlineBinding , rootNode ) ;
+  }
+
+
+  /**
+   * Sets the given {@link OutlineBinding} to the given node.
+   * 
+   * @param pOutlineBinding The {@link OutlineBinding}.
+   * @param pNode The node.
+   */
+  private final void setOutlineBinding ( OutlineBinding pOutlineBinding ,
+      DefaultMutableTreeNode pNode )
+  {
+    OutlineNode outlineNode = ( OutlineNode ) pNode.getUserObject ( ) ;
+    outlineNode.setOutlineBinding ( pOutlineBinding ) ;
+    outlineNode.resetCaption ( ) ;
+    for ( int i = 0 ; i < pNode.getChildCount ( ) ; i ++ )
+    {
+      setOutlineBinding ( pOutlineBinding , ( DefaultMutableTreeNode ) pNode
+          .getChildAt ( i ) ) ;
     }
   }
 
@@ -116,227 +161,274 @@ public final class OutlineTreeSelectionListener implements
     reset ( rootNode ) ;
     if ( pTreePath == null )
     {
-      repaint ( rootNode ) ;
+      repaint ( ) ;
       return ;
     }
     ArrayList < OutlineNode > list = new ArrayList < OutlineNode > ( ) ;
+    Object [ ] path = pTreePath.getPath ( ) ;
     for ( int i = 0 ; i < pTreePath.getPathCount ( ) ; i ++ )
     {
-      list.add ( ( OutlineNode ) ( ( DefaultMutableTreeNode ) pTreePath
-          .getPath ( ) [ i ] ).getUserObject ( ) ) ;
+      list.add ( ( OutlineNode ) ( ( DefaultMutableTreeNode ) path [ i ] )
+          .getUserObject ( ) ) ;
     }
-    OutlineNode last = list.get ( list.size ( ) - 1 ) ;
+    OutlineNode selectedNode = list.get ( list.size ( ) - 1 ) ;
     // Type
-    if ( ( last.getStartIndex ( ) != - 1 ) && ( last.getEndIndex ( ) != - 1 )
-        && ( list.get ( list.size ( ) - 2 ).getStartIndex ( ) != - 1 )
-        && ( list.get ( list.size ( ) - 2 ).getEndIndex ( ) != - 1 ) )
+    if ( ( selectedNode.getExpression ( ) == null )
+        && ( list.get ( list.size ( ) - 2 ).getExpression ( ) == null ) )
     {
-      OutlineNode lastButTwo = list.get ( list.size ( ) - 3 ) ;
-      /*
-       * Highlight the selected Type
-       */
-      last.enableSelectionColor ( ) ;
-      this.outlineUI.getTreeModel ( ).nodeChanged (
-          ( ( DefaultMutableTreeNode ) pTreePath.getLastPathComponent ( ) ) ) ;
-      for ( int i = 0 ; i < list.size ( ) - 2 ; i ++ )
-      {
-        /*
-         * Sets the new binding in higher nodes
-         */
-        list.get ( i ).setOutlineBinding ( last.getOutlineBinding ( ) ) ;
-        /*
-         * It should be replaced in higher nodes
-         */
-        list.get ( i ).setReplaceInThisNode ( true ) ;
-        /*
-         * Update the caption of the node
-         */
-        PrettyAnnotation prettyAnnotation = list.get ( i ).getExpression ( )
-            .toPrettyString ( ).getAnnotationForPrintable (
-                lastButTwo.getExpression ( ) ) ;
-        list.get ( i ).updateCaption (
-            prettyAnnotation.getStartOffset ( ) + last.getStartIndex ( ) ,
-            prettyAnnotation.getStartOffset ( ) + last.getEndIndex ( ) ) ;
-        /*
-         * Node has changed and can be repainted
-         */
-        this.outlineUI.getTreeModel ( ).nodeChanged (
-            ( ( DefaultMutableTreeNode ) pTreePath.getPath ( ) [ i ] ) ) ;
-      }
+      updateType ( list , pTreePath ) ;
     }
     // Identifier
-    else if ( ( last.getStartIndex ( ) != - 1 )
-        && ( last.getEndIndex ( ) != - 1 ) )
+    else if ( selectedNode.getExpression ( ) == null )
     {
-      OutlineNode secondLast = list.get ( list.size ( ) - 2 ) ;
-      /*
-       * Highlight the selected Type
-       */
-      last.enableSelectionColor ( ) ;
-      this.outlineUI.getTreeModel ( ).nodeChanged (
-          ( ( DefaultMutableTreeNode ) pTreePath.getLastPathComponent ( ) ) ) ;
-      /*
-       * Highlight the bounded Identifiers of an Attribute in the other childs
-       * of the parent row.
-       */
-      if ( secondLast.getExpression ( ) instanceof Attribute )
-      {
-        DefaultMutableTreeNode nodeRow = ( DefaultMutableTreeNode ) pTreePath
-            .getPath ( ) [ pTreePath.getPathCount ( ) - 3 ] ;
-        DefaultMutableTreeNode nodeAttr = ( DefaultMutableTreeNode ) pTreePath
-            .getPath ( ) [ pTreePath.getPathCount ( ) - 2 ] ;
-        for ( int i = nodeRow.getIndex ( nodeAttr ) + 1 ; i < nodeRow
-            .getChildCount ( ) ; i ++ )
-        {
-          DefaultMutableTreeNode child = ( DefaultMutableTreeNode ) nodeRow
-              .getChildAt ( i ) ;
-          setBindingToChildren ( child , last.getOutlineBinding ( ) ) ;
-          OutlineNode outlineNodeRowChild = ( OutlineNode ) child
-              .getUserObject ( ) ;
-          outlineNodeRowChild.setOutlineBinding ( last.getOutlineBinding ( ) ) ;
-          outlineNodeRowChild.updateCaption ( ) ;
-          this.outlineUI.getTreeModel ( ).nodeChanged ( child ) ;
-        }
-      }
-      for ( int i = 0 ; i < list.size ( ) - 1 ; i ++ )
-      {
-        /*
-         * Sets the new binding in higher nodes
-         */
-        list.get ( i ).setOutlineBinding ( last.getOutlineBinding ( ) ) ;
-        /*
-         * It should be replaced in higher nodes
-         */
-        list.get ( i ).setReplaceInThisNode ( true ) ;
-        /*
-         * Update the caption of the node
-         */
-        PrettyAnnotation prettyAnnotation = list.get ( i ).getExpression ( )
-            .toPrettyString ( ).getAnnotationForPrintable (
-                secondLast.getExpression ( ) ) ;
-        list.get ( i ).updateCaption (
-            prettyAnnotation.getStartOffset ( ) + last.getStartIndex ( ) ,
-            prettyAnnotation.getStartOffset ( ) + last.getEndIndex ( ) ) ;
-        /*
-         * Node has changed and can be repainted
-         */
-        this.outlineUI.getTreeModel ( ).nodeChanged (
-            ( ( DefaultMutableTreeNode ) pTreePath.getPath ( ) [ i ] ) ) ;
-      }
+      updateIdentifier ( list , pTreePath ) ;
     }
     // Expression
     else
     {
-      for ( int i = 0 ; i < list.size ( ) ; i ++ )
+      updateExpression ( list , pTreePath ) ;
+    }
+  }
+
+
+  /**
+   * Updates the caption of the selected node and its higher nodes.
+   * 
+   * @param pList The parent nodes of the selected node.
+   * @param pTreePath The selected <code>TreePath</code>.
+   */
+  public void updateExpression ( ArrayList < OutlineNode > pList ,
+      TreePath pTreePath )
+  {
+    OutlineNode selectedNode = pList.get ( pList.size ( ) - 1 ) ;
+    for ( int i = 0 ; i < pList.size ( ) ; i ++ )
+    {
+      if ( ( selectedNode.getExpression ( ) instanceof Identifier )
+          && ( i < pList.size ( ) - 1 )
+          && ( ( ( Identifier ) selectedNode.getExpression ( ) )
+              .boundedExpression ( ) != null ) )
       {
-        if ( ( last.getExpression ( ) instanceof Identifier )
-            && ( i < list.size ( ) - 1 )
-            && ( ( ( Identifier ) last.getExpression ( ) ).boundedExpression ( ) != null ) )
+        try
         {
-          try
+          Identifier identifier = ( Identifier ) selectedNode.getExpression ( ) ;
+          /*
+           * Highlight the bounded Identifiers in the other childs of a parent
+           * row.
+           */
+          if ( ( pList.get ( i ).getExpression ( ) instanceof Attribute )
+              || ( pList.get ( i ).getExpression ( ) instanceof Method )
+              || ( pList.get ( i ).getExpression ( ) instanceof CurriedMethod ) )
           {
-            Identifier identifier = ( Identifier ) last.getExpression ( ) ;
-            /*
-             * Highlight the bounded Identifiers in the other childs of a parent
-             * row.
-             */
-            if ( ( list.get ( i ).getExpression ( ) instanceof Attribute )
-                || ( list.get ( i ).getExpression ( ) instanceof Method )
-                || ( list.get ( i ).getExpression ( ) instanceof CurriedMethod ) )
+            DefaultMutableTreeNode nodeRowChild = ( DefaultMutableTreeNode ) pTreePath
+                .getPath ( ) [ i ] ;
+            DefaultMutableTreeNode nodeRow = ( DefaultMutableTreeNode ) pTreePath
+                .getPath ( ) [ i - 1 ] ;
+            for ( int j = nodeRow.getIndex ( nodeRowChild ) ; j >= 0 ; j -- )
             {
-              DefaultMutableTreeNode nodeRowChild = ( DefaultMutableTreeNode ) pTreePath
-                  .getPath ( ) [ i ] ;
-              DefaultMutableTreeNode nodeRow = ( DefaultMutableTreeNode ) pTreePath
-                  .getPath ( ) [ i - 1 ] ;
-              for ( int j = nodeRow.getIndex ( nodeRowChild ) ; j >= 0 ; j -- )
-              {
-                DefaultMutableTreeNode currentRowChild = ( DefaultMutableTreeNode ) nodeRow
-                    .getChildAt ( j ) ;
-                OutlineNode currentOutlineNode = ( OutlineNode ) currentRowChild
-                    .getUserObject ( ) ;
-                if ( currentOutlineNode.getExpression ( ) == identifier
-                    .boundedExpression ( ) )
-                {
-                  /*
-                   * Highlight the first identifier
-                   */
-                  currentOutlineNode.setBoundedStart ( identifier
-                      .boundedStart ( ) ) ;
-                  currentOutlineNode.setBoundedEnd ( identifier.boundedEnd ( ) ) ;
-                  currentOutlineNode.updateCaption ( ) ;
-                  this.outlineUI.getTreeModel ( )
-                      .nodeChanged ( currentRowChild ) ;
-                  /*
-                   * Highlight the identifier in the first child
-                   */
-                  DefaultMutableTreeNode nodeId = ( DefaultMutableTreeNode ) currentRowChild
-                      .getChildAt ( identifier.boundedIdentifierIndex ( ) ) ;
-                  OutlineNode idOutlineNode = ( OutlineNode ) nodeId
-                      .getUserObject ( ) ;
-                  idOutlineNode.enableBindingColor ( ) ;
-                  this.outlineUI.getTreeModel ( ).nodeChanged ( nodeId ) ;
-                  break ;
-                }
-              }
-            }
-            else
-            {
-              if ( list.get ( i ).getExpression ( ) == identifier
+              DefaultMutableTreeNode currentRowChild = ( DefaultMutableTreeNode ) nodeRow
+                  .getChildAt ( j ) ;
+              OutlineNode currentOutlineNode = ( OutlineNode ) currentRowChild
+                  .getUserObject ( ) ;
+              if ( currentOutlineNode.getExpression ( ) == identifier
                   .boundedExpression ( ) )
               {
-                DefaultMutableTreeNode node = ( DefaultMutableTreeNode ) ( ( DefaultMutableTreeNode ) pTreePath
-                    .getPath ( ) [ i ] ).getChildAt ( identifier
-                    .boundedIdentifierIndex ( ) ) ;
-                ( ( OutlineNode ) node.getUserObject ( ) )
-                    .enableBindingColor ( ) ;
-                this.outlineUI.getTreeModel ( ).nodeChanged ( node ) ;
+                /*
+                 * Highlight the first identifier
+                 */
+                currentOutlineNode
+                    .setBoundedStart ( identifier.boundedStart ( ) ) ;
+                currentOutlineNode.setBoundedEnd ( identifier.boundedEnd ( ) ) ;
+                currentOutlineNode.updateCaption ( ) ;
+                /*
+                 * Highlight the Identifier in the first child
+                 */
+                DefaultMutableTreeNode nodeId = ( DefaultMutableTreeNode ) currentRowChild
+                    .getChildAt ( identifier.boundedIdentifierIndex ( ) ) ;
+                OutlineNode idOutlineNode = ( OutlineNode ) nodeId
+                    .getUserObject ( ) ;
+                idOutlineNode.enableBindingColor ( ) ;
+                break ;
               }
-              PrettyAnnotation prettyAnnotation = list
-                  .get ( i )
-                  .getExpression ( )
-                  .toPrettyString ( )
-                  .getAnnotationForPrintable ( identifier.boundedExpression ( ) ) ;
-              list.get ( i ).setBoundedStart (
-                  prettyAnnotation.getStartOffset ( )
-                      + identifier.boundedStart ( ) ) ;
-              list.get ( i ).setBoundedEnd (
-                  prettyAnnotation.getStartOffset ( )
-                      + identifier.boundedEnd ( ) ) ;
             }
           }
-          catch ( IllegalArgumentException e )
+          else
           {
-            // Do nothing
+            /*
+             * Highlight the Identifier in the child node with the bounded
+             * Identifier index.
+             */
+            if ( pList.get ( i ).getExpression ( ) == identifier
+                .boundedExpression ( ) )
+            {
+              DefaultMutableTreeNode nodeIdentifier = ( DefaultMutableTreeNode ) ( ( DefaultMutableTreeNode ) pTreePath
+                  .getPath ( ) [ i ] ).getChildAt ( identifier
+                  .boundedIdentifierIndex ( ) ) ;
+              OutlineNode outlineNodeIdentifier = ( OutlineNode ) nodeIdentifier
+                  .getUserObject ( ) ;
+              outlineNodeIdentifier.enableBindingColor ( ) ;
+              // Highlight the other bounded Identifiers.
+              // pList.get ( i ).setOutlineBinding (
+              // outlineNodeId.getOutlineBinding ( ) ) ;
+            }
+            /*
+             * Highlight the Identifier in the node.
+             */
+            PrettyAnnotation prettyAnnotation = pList.get ( i )
+                .getExpression ( ).toPrettyString ( )
+                .getAnnotationForPrintable ( identifier.boundedExpression ( ) ) ;
+            pList.get ( i ).setBoundedStart (
+                prettyAnnotation.getStartOffset ( )
+                    + identifier.boundedStart ( ) ) ;
+            pList.get ( i )
+                .setBoundedEnd (
+                    prettyAnnotation.getStartOffset ( )
+                        + identifier.boundedEnd ( ) ) ;
           }
         }
-        /*
-         * It should be replaced in higher nodes, but not the selected node
-         */
-        if ( i < list.size ( ) - 1 )
+        catch ( IllegalArgumentException e )
         {
-          list.get ( i ).setReplaceInThisNode ( true ) ;
+          // Do nothing
         }
-        /*
-         * If only the root is selected, there should not be replaced
-         */
-        if ( list.size ( ) == 1 )
-        {
-          list.get ( i ).setReplaceInThisNode ( false ) ;
-        }
-        /*
-         * Update the caption of the node
-         */
-        PrettyAnnotation prettyAnnotation = list.get ( i ).getExpression ( )
-            .toPrettyString ( ).getAnnotationForPrintable (
-                last.getExpression ( ) ) ;
-        list.get ( i ).updateCaption ( prettyAnnotation.getStartOffset ( ) ,
-            prettyAnnotation.getEndOffset ( ) ) ;
-        /*
-         * Node has changed and can be repainted
-         */
-        this.outlineUI.getTreeModel ( ).nodeChanged (
-            ( ( DefaultMutableTreeNode ) pTreePath.getPath ( ) [ i ] ) ) ;
       }
+      /*
+       * It should be replaced in higher nodes, but not the selected node
+       */
+      if ( i < pList.size ( ) - 1 )
+      {
+        pList.get ( i ).setReplaceInThisNode ( true ) ;
+      }
+      /*
+       * If only the root is selected, there should not be replaced
+       */
+      if ( pList.size ( ) == 1 )
+      {
+        pList.get ( i ).setReplaceInThisNode ( false ) ;
+      }
+      /*
+       * Update the caption of the node
+       */
+      PrettyAnnotation prettyAnnotation = pList.get ( i ).getExpression ( )
+          .toPrettyString ( ).getAnnotationForPrintable (
+              selectedNode.getExpression ( ) ) ;
+      pList.get ( i ).updateCaption ( prettyAnnotation.getStartOffset ( ) ,
+          prettyAnnotation.getEndOffset ( ) ) ;
+      /*
+       * Node has changed and can be repainted
+       */
+      this.outlineUI.getTreeModel ( ).nodeChanged (
+          ( ( DefaultMutableTreeNode ) pTreePath.getPath ( ) [ i ] ) ) ;
+    }
+  }
+
+
+  /**
+   * Updates the caption of the selected node and its higher nodes.
+   * 
+   * @param pList The parent nodes of the selected node.
+   * @param pTreePath The selected <code>TreePath</code>.
+   */
+  public void updateIdentifier ( ArrayList < OutlineNode > pList ,
+      TreePath pTreePath )
+  {
+    OutlineNode selectedNode = pList.get ( pList.size ( ) - 1 ) ;
+    OutlineNode secondLast = pList.get ( pList.size ( ) - 2 ) ;
+    /*
+     * Highlight the selected Identifier
+     */
+    selectedNode.enableSelectionColor ( ) ;
+    /*
+     * Highlight the bounded Identifiers of an Attribute in the other childs of
+     * the parent row.
+     */
+    if ( secondLast.getExpression ( ) instanceof Attribute )
+    {
+      DefaultMutableTreeNode nodeRow = ( DefaultMutableTreeNode ) pTreePath
+          .getPath ( ) [ pTreePath.getPathCount ( ) - 3 ] ;
+      DefaultMutableTreeNode nodeAttribute = ( DefaultMutableTreeNode ) pTreePath
+          .getPath ( ) [ pTreePath.getPathCount ( ) - 2 ] ;
+      for ( int i = nodeRow.getIndex ( nodeAttribute ) + 1 ; i < nodeRow
+          .getChildCount ( ) ; i ++ )
+      {
+        DefaultMutableTreeNode currentRowChild = ( DefaultMutableTreeNode ) nodeRow
+            .getChildAt ( i ) ;
+        setBindingToChildren ( currentRowChild , selectedNode
+            .getOutlineBinding ( ) ) ;
+        OutlineNode outlineNodeRowChild = ( OutlineNode ) currentRowChild
+            .getUserObject ( ) ;
+        outlineNodeRowChild.setOutlineBinding ( selectedNode
+            .getOutlineBinding ( ) ) ;
+        outlineNodeRowChild.updateCaption ( ) ;
+      }
+    }
+    for ( int i = 0 ; i < pList.size ( ) - 1 ; i ++ )
+    {
+      /*
+       * Sets the new binding in higher nodes
+       */
+      pList.get ( i ).setOutlineBinding ( selectedNode.getOutlineBinding ( ) ) ;
+      /*
+       * It should be replaced in higher nodes
+       */
+      pList.get ( i ).setReplaceInThisNode ( true ) ;
+      /*
+       * Update the caption of the node
+       */
+      PrettyAnnotation prettyAnnotation = pList.get ( i ).getExpression ( )
+          .toPrettyString ( ).getAnnotationForPrintable (
+              secondLast.getExpression ( ) ) ;
+      pList.get ( i ).updateCaption (
+          prettyAnnotation.getStartOffset ( ) + selectedNode.getStartIndex ( ) ,
+          prettyAnnotation.getStartOffset ( ) + selectedNode.getEndIndex ( ) ) ;
+      /*
+       * Node has changed and can be repainted
+       */
+      this.outlineUI.getTreeModel ( ).nodeChanged (
+          ( ( DefaultMutableTreeNode ) pTreePath.getPath ( ) [ i ] ) ) ;
+    }
+    // Highlight the bounded Identifiers in the hole tree
+    // setOutlineBinding ( selectedNode.getOutlineBinding ( ) ) ;
+    // repaint();
+  }
+
+
+  /**
+   * Updates the caption of the selected node and its higher nodes.
+   * 
+   * @param pList The parent nodes of the selected node.
+   * @param pTreePath The selected <code>TreePath</code>.
+   */
+  public void updateType ( ArrayList < OutlineNode > pList , TreePath pTreePath )
+  {
+    OutlineNode selectedNode = pList.get ( pList.size ( ) - 1 ) ;
+    OutlineNode lastButTwo = pList.get ( pList.size ( ) - 3 ) ;
+    /*
+     * Highlight the selected Type
+     */
+    selectedNode.enableSelectionColor ( ) ;
+    for ( int i = 0 ; i < pList.size ( ) - 2 ; i ++ )
+    {
+      /*
+       * Sets the new binding in higher nodes
+       */
+      pList.get ( i ).setOutlineBinding ( selectedNode.getOutlineBinding ( ) ) ;
+      /*
+       * It should be replaced in higher nodes
+       */
+      pList.get ( i ).setReplaceInThisNode ( true ) ;
+      /*
+       * Update the caption of the node
+       */
+      PrettyAnnotation prettyAnnotation = pList.get ( i ).getExpression ( )
+          .toPrettyString ( ).getAnnotationForPrintable (
+              lastButTwo.getExpression ( ) ) ;
+      pList.get ( i ).updateCaption (
+          prettyAnnotation.getStartOffset ( ) + selectedNode.getStartIndex ( ) ,
+          prettyAnnotation.getStartOffset ( ) + selectedNode.getEndIndex ( ) ) ;
+      /*
+       * Node has changed and can be repainted
+       */
+      this.outlineUI.getTreeModel ( ).nodeChanged (
+          ( ( DefaultMutableTreeNode ) pTreePath.getPath ( ) [ i ] ) ) ;
     }
   }
 
@@ -353,6 +445,16 @@ public final class OutlineTreeSelectionListener implements
         this.outlineUI.getJTreeOutline ( ).getSelectionModel ( ) ) )
     {
       update ( pTreeSelectionEvent.getPath ( ) ) ;
+      TreePath treePath = pTreeSelectionEvent.getOldLeadSelectionPath ( ) ;
+      if ( treePath != null )
+      {
+        Object [ ] objects = treePath.getPath ( ) ;
+        for ( int i = 0 ; i < objects.length ; i ++ )
+        {
+          this.outlineUI.getTreeModel ( ).nodeChanged (
+              ( DefaultMutableTreeNode ) objects [ i ] ) ;
+        }
+      }
     }
   }
 }
