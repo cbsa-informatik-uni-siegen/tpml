@@ -38,7 +38,7 @@ public class OutlineTreeExpansionListener implements TreeExpansionListener
    * @param pTreeExpansionEvent The <code>TreeExpansionEvent</code>.
    * @see TreeExpansionListener#treeCollapsed(TreeExpansionEvent)
    */
-  public void treeCollapsed ( TreeExpansionEvent pTreeExpansionEvent )
+  public final void treeCollapsed ( TreeExpansionEvent pTreeExpansionEvent )
   {
     if ( pTreeExpansionEvent.getSource ( ).equals (
         this.abstractOutline.getOutlineUI ( ).getJTreeOutline ( ) ) )
@@ -54,7 +54,7 @@ public class OutlineTreeExpansionListener implements TreeExpansionListener
    * @param pTreeExpansionEvent The <code>TreeExpansionEvent</code>.
    * @see TreeExpansionListener#treeExpanded(TreeExpansionEvent)
    */
-  public void treeExpanded ( TreeExpansionEvent pTreeExpansionEvent )
+  public final void treeExpanded ( TreeExpansionEvent pTreeExpansionEvent )
   {
     if ( pTreeExpansionEvent.getSource ( ).equals (
         this.abstractOutline.getOutlineUI ( ).getJTreeOutline ( ) ) )

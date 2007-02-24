@@ -197,7 +197,7 @@ public final class OutlineTreeSelectionListener implements
    * @param pList The parent nodes of the selected node.
    * @param pTreePath The selected <code>TreePath</code>.
    */
-  public void updateExpression ( ArrayList < OutlineNode > pList ,
+  public final void updateExpression ( ArrayList < OutlineNode > pList ,
       TreePath pTreePath )
   {
     OutlineNode selectedNode = pList.get ( pList.size ( ) - 1 ) ;
@@ -327,7 +327,7 @@ public final class OutlineTreeSelectionListener implements
    * @param pList The parent nodes of the selected node.
    * @param pTreePath The selected <code>TreePath</code>.
    */
-  public void updateIdentifier ( ArrayList < OutlineNode > pList ,
+  public final void updateIdentifier ( ArrayList < OutlineNode > pList ,
       TreePath pTreePath )
   {
     OutlineNode selectedNode = pList.get ( pList.size ( ) - 1 ) ;
@@ -397,7 +397,8 @@ public final class OutlineTreeSelectionListener implements
    * @param pList The parent nodes of the selected node.
    * @param pTreePath The selected <code>TreePath</code>.
    */
-  public void updateType ( ArrayList < OutlineNode > pList , TreePath pTreePath )
+  public final void updateType ( ArrayList < OutlineNode > pList ,
+      TreePath pTreePath )
   {
     OutlineNode selectedNode = pList.get ( pList.size ( ) - 1 ) ;
     OutlineNode lastButTwo = pList.get ( pList.size ( ) - 3 ) ;
