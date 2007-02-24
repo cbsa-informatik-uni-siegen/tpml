@@ -340,6 +340,9 @@ public final class OutlineNode
 
   /**
    * The hole caption in HTML format.
+   * 
+   * @see #getCaption()
+   * @see #setCaption(String)
    */
   private String caption ;
 
@@ -729,6 +732,18 @@ public final class OutlineNode
 
 
   /**
+   * Returns the caption.
+   * 
+   * @return The caption.
+   * @see #caption
+   */
+  public String getCaption ( )
+  {
+    return this.caption ;
+  }
+
+
+  /**
    * Returns the end index of the {@link Identifier}.
    * 
    * @return The end index of the {@link Identifier}.
@@ -770,7 +785,7 @@ public final class OutlineNode
    * @param pNumber The input integer value.
    * @return The hex value of a given integer.
    */
-  private final String getHex ( int pNumber )
+  private static final String getHex ( int pNumber )
   {
     StringBuffer result = new StringBuffer ( ) ;
     int remainder = Math.abs ( pNumber ) ;
@@ -789,21 +804,6 @@ public final class OutlineNode
       return HEX_VALUES [ 16 ] ;
     }
     return result.toString ( ) ;
-  }
-
-
-  /**
-   * Returns the replaced <code>String</code>.
-   * 
-   * @param pText Input <code>String</code>.
-   * @return The replaced <code>String</code>.
-   */
-  private final String getHTMLCode ( String pText )
-  {
-    String s = pText.replaceAll ( AMPERSAND_THAN , AMPERSAND_THAN_REPLACE ) ;
-    s = s.replaceAll ( LOWER_THAN , LOWER_THAN_REPLACE ) ;
-    s = s.replaceAll ( GREATER_THAN , GREATER_THAN_REPLACE ) ;
-    return s ;
   }
 
 
@@ -832,12 +832,27 @@ public final class OutlineNode
 
 
   /**
+   * Returns the replaced <code>String</code>.
+   * 
+   * @param pText Input <code>String</code>.
+   * @return The replaced <code>String</code>.
+   */
+  private final String getHTMLCode ( String pText )
+  {
+    String s = pText.replaceAll ( AMPERSAND_THAN , AMPERSAND_THAN_REPLACE ) ;
+    s = s.replaceAll ( LOWER_THAN , LOWER_THAN_REPLACE ) ;
+    s = s.replaceAll ( GREATER_THAN , GREATER_THAN_REPLACE ) ;
+    return s ;
+  }
+
+
+  /**
    * Returns the color in HTML formatting.
    * 
    * @param pColor The color which should be returned.
    * @return The color in HTML formatting.
    */
-  private final String getHTMLFormat ( Color pColor )
+  public static final String getHTMLFormat ( Color pColor )
   {
     return ( getHex ( pColor.getRed ( ) ) + getHex ( pColor.getGreen ( ) ) + getHex ( pColor
         .getBlue ( ) ) ) ;
@@ -1101,6 +1116,18 @@ public final class OutlineNode
   public final void setBoundedStart ( int pBoundStart )
   {
     this.boundedStart = pBoundStart ;
+  }
+
+
+  /**
+   * Sets the caption of this node.
+   * 
+   * @param pCaption The caption of this node.
+   * @see #caption
+   */
+  public void setCaption ( String pCaption )
+  {
+    this.caption = pCaption ;
   }
 
 

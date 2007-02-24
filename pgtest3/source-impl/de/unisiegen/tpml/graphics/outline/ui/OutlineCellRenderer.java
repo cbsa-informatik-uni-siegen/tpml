@@ -7,8 +7,10 @@ import java.awt.Font ;
 import java.awt.Graphics ;
 import javax.swing.JTree ;
 import javax.swing.border.LineBorder ;
+import javax.swing.tree.DefaultMutableTreeNode ;
 import javax.swing.tree.DefaultTreeCellRenderer ;
 import de.unisiegen.tpml.graphics.outline.Outline ;
+import de.unisiegen.tpml.graphics.outline.OutlineNode ;
 
 
 /**
@@ -32,24 +34,39 @@ public final class OutlineCellRenderer extends DefaultTreeCellRenderer
 
 
   /**
-   * Initializes the {@link OutlineCellRenderer}.
-   */
-  public OutlineCellRenderer ( )
-  {
-    initialize ( ) ;
-  }
-
-
-  /**
    * The <code>Color</code> of the border.
    */
   private static final Color BORDER = new Color ( 235 , 235 , 255 ) ;
 
 
   /**
+   * The <code>Color</code> of the border as a hex string.
+   */
+  private static final String colorString = OutlineNode.getHTMLFormat ( BORDER ) ;
+
+
+  /**
+   * The white font in HTML code.
+   */
+  private static final String WHITE_FONT = "<font color=\"#FFFFFF\">" ; //$NON-NLS-1$
+
+
+  /**
+   * The font begin in HTML code.
+   */
+  private static final String FONT_BEGIN = "<font color=\"#" ; //$NON-NLS-1$
+
+
+  /**
+   * The font end in HTML code.
+   */
+  private static final String FONT_END = "\">" ; //$NON-NLS-1$
+
+
+  /**
    * Initializes the {@link OutlineCellRenderer}.
    */
-  public final void initialize ( )
+  public OutlineCellRenderer ( )
   {
     this.setIcon ( null ) ;
     this.setLeafIcon ( null ) ;
@@ -58,7 +75,7 @@ public final class OutlineCellRenderer extends DefaultTreeCellRenderer
     this.setDisabledIcon ( null ) ;
     this.setBackground ( Color.WHITE ) ;
     this.setBackgroundNonSelectionColor ( Color.WHITE ) ;
-    this.setBackgroundSelectionColor ( Color.WHITE ) ;
+    this.setBackgroundSelectionColor ( BORDER ) ;
     this.setFont ( new Font ( FONT , Font.PLAIN , 14 ) ) ;
     this.setBorderSelectionColor ( Color.BLUE ) ;
     this.setTextSelectionColor ( Color.BLACK ) ;
@@ -79,6 +96,10 @@ public final class OutlineCellRenderer extends DefaultTreeCellRenderer
         pLeaf , pRow , pHasFocus ) ;
     if ( pSel )
     {
+      DefaultMutableTreeNode node = ( DefaultMutableTreeNode ) pValue ;
+      OutlineNode outlineNode = ( OutlineNode ) node.getUserObject ( ) ;
+      outlineNode.setCaption ( outlineNode.getCaption ( ).replaceAll (
+          WHITE_FONT , FONT_BEGIN + colorString + FONT_END ) ) ;
       this.setBorder ( new LineBorder ( Color.BLUE ) ) ;
     }
     else
@@ -96,7 +117,5 @@ public final class OutlineCellRenderer extends DefaultTreeCellRenderer
   protected final void paintComponent ( Graphics pGraphics )
   {
     super.paintComponent ( pGraphics ) ;
-    // System.out.println ( this.getParent ( ));
-    // System.out.println ( this.getWidth ( ) );
   }
 }
