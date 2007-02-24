@@ -436,7 +436,7 @@ public final class OutlineTreeSelectionListener implements
   /**
    * This method is invoked if a node value has changed.
    * 
-   * @param pTreeSelectionEvent The <code>TreeSelectionEvent</code>
+   * @param pTreeSelectionEvent The <code>TreeSelectionEvent</code>.
    * @see TreeSelectionListener#valueChanged(TreeSelectionEvent)
    */
   public final void valueChanged ( TreeSelectionEvent pTreeSelectionEvent )
