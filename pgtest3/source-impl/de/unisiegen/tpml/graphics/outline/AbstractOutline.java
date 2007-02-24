@@ -39,6 +39,7 @@ import de.unisiegen.tpml.graphics.outline.binding.OutlineStyle ;
 import de.unisiegen.tpml.graphics.outline.binding.OutlineUnbound ;
 import de.unisiegen.tpml.graphics.outline.listener.OutlineComponentListener ;
 import de.unisiegen.tpml.graphics.outline.listener.OutlinePropertyChangeListener ;
+import de.unisiegen.tpml.graphics.outline.listener.OutlineTreeExpansionListener ;
 import de.unisiegen.tpml.graphics.outline.ui.OutlineDisplayTree ;
 import de.unisiegen.tpml.graphics.outline.ui.OutlineTimerTask ;
 import de.unisiegen.tpml.graphics.outline.ui.OutlineUI ;
@@ -93,6 +94,8 @@ public final class AbstractOutline implements Outline
 
   /**
    * The {@link OutlineUI}.
+   * 
+   * @see #getOutlineUI()
    */
   private OutlineUI outlineUI ;
 
@@ -144,6 +147,8 @@ public final class AbstractOutline implements Outline
         new OutlinePropertyChangeListener ( this ) ) ;
     this.outlineUI.getJPanelMain ( ).addComponentListener (
         new OutlineComponentListener ( this ) ) ;
+    this.outlineUI.getJTreeOutline ( ).addTreeExpansionListener (
+        new OutlineTreeExpansionListener ( this ) ) ;
   }
 
 
@@ -152,11 +157,9 @@ public final class AbstractOutline implements Outline
    */
   public final void applyBreaks ( )
   {
-    // TODO If the second line is bigger than the first line ...
-    // TODO If the tree will expand ...
-    JScrollPane scroll = this.outlineUI.getJScrollPaneOutline ( ) ;
-    int currentDiff = scroll.getPreferredSize ( ).width
-        - scroll.getSize ( ).width ;
+    JScrollPane jScrollPane = this.outlineUI.getJScrollPaneOutline ( ) ;
+    int currentDiff = jScrollPane.getPreferredSize ( ).width
+        - jScrollPane.getSize ( ).width ;
     if ( currentDiff > 0 )
     {
       applyBreaksAdd ( ) ;
@@ -177,9 +180,9 @@ public final class AbstractOutline implements Outline
     {
       return ;
     }
-    JScrollPane scroll = this.outlineUI.getJScrollPaneOutline ( ) ;
-    int currentDiff = scroll.getPreferredSize ( ).width
-        - scroll.getSize ( ).width ;
+    JScrollPane jScrollPane = this.outlineUI.getJScrollPaneOutline ( ) ;
+    int currentDiff = jScrollPane.getPreferredSize ( ).width
+        - jScrollPane.getSize ( ).width ;
     int newDiff ;
     ArrayList < DefaultMutableTreeNode > breakList = new ArrayList < DefaultMutableTreeNode > ( ) ;
     Enumeration < ? > e = this.rootNode.breadthFirstEnumeration ( ) ;
@@ -204,7 +207,8 @@ public final class AbstractOutline implements Outline
           .getUserObject ( ) ;
       boolean moreBreaksPossible = currentNodeOutline.breakCountInc ( ) ;
       this.outlineUI.getTreeModel ( ).nodeChanged ( currentNode ) ;
-      newDiff = scroll.getPreferredSize ( ).width - scroll.getSize ( ).width ;
+      newDiff = jScrollPane.getPreferredSize ( ).width
+          - jScrollPane.getSize ( ).width ;
       if ( ! moreBreaksPossible )
       {
         breakList.remove ( 0 ) ;
@@ -237,9 +241,9 @@ public final class AbstractOutline implements Outline
     {
       return ;
     }
-    JScrollPane scroll = this.outlineUI.getJScrollPaneOutline ( ) ;
-    int currentDiff = scroll.getPreferredSize ( ).width
-        - scroll.getSize ( ).width ;
+    JScrollPane jScrollPane = this.outlineUI.getJScrollPaneOutline ( ) ;
+    int currentDiff = jScrollPane.getPreferredSize ( ).width
+        - jScrollPane.getSize ( ).width ;
     ArrayList < DefaultMutableTreeNode > breakList = new ArrayList < DefaultMutableTreeNode > ( ) ;
     Enumeration < ? > e = this.rootNode.breadthFirstEnumeration ( ) ;
     while ( e.hasMoreElements ( ) )
@@ -266,15 +270,15 @@ public final class AbstractOutline implements Outline
         {
           currentNodeOutline.breakCountDec ( ) ;
           this.outlineUI.getTreeModel ( ).nodeChanged ( currentNode ) ;
-          currentDiff = scroll.getPreferredSize ( ).width
-              - scroll.getSize ( ).width ;
+          currentDiff = jScrollPane.getPreferredSize ( ).width
+              - jScrollPane.getSize ( ).width ;
         }
         if ( currentDiff > 0 )
         {
           currentNodeOutline.breakCountInc ( ) ;
           this.outlineUI.getTreeModel ( ).nodeChanged ( currentNode ) ;
-          currentDiff = scroll.getPreferredSize ( ).width
-              - scroll.getSize ( ).width ;
+          currentDiff = jScrollPane.getPreferredSize ( ).width
+              - jScrollPane.getSize ( ).width ;
         }
       }
       breakList.remove ( 0 ) ;
@@ -1515,6 +1519,18 @@ public final class AbstractOutline implements Outline
   public final OutlinePreferences getOutlinePreferences ( )
   {
     return this.outlinePreferences ;
+  }
+
+
+  /**
+   * Returns the {@link OutlineUI}.
+   * 
+   * @return The {@link OutlineUI}.
+   * @see #outlineUI
+   */
+  public OutlineUI getOutlineUI ( )
+  {
+    return this.outlineUI ;
   }
 
 
