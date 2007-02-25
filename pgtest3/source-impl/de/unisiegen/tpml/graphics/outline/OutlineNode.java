@@ -644,37 +644,18 @@ public final class OutlineNode
 
 
   /**
-   * Decrements the break count and resets the cpation.
-   * 
-   * @return True, if something has changed.
+   * Adds a break and resets the cpation.
    */
-  public final boolean breakCountDec ( )
+  public final void breakCountAdd ( )
   {
     if ( ! this.isExpression )
     {
-      return false ;
+      return ;
     }
-    if ( this.breakCount == 0 )
+    if ( this.outlineBreak.getBreakCountAll ( ) == this.currentOutlineBreak
+        .getBreakCountOwn ( ) )
     {
-      return false ;
-    }
-    this.breakCount -- ;
-    this.currentOutlineBreak = this.outlineBreak.getBreaks ( this.breakCount ) ;
-    updateCaption ( this.lastSelectionStart , this.lastSelectionEnd ) ;
-    return true ;
-  }
-
-
-  /**
-   * Increments the break count and resets the cpation.
-   * 
-   * @return True, if something has changed.
-   */
-  public final boolean breakCountInc ( )
-  {
-    if ( ! this.isExpression )
-    {
-      return false ;
+      return ;
     }
     this.breakCount ++ ;
     this.currentOutlineBreak = this.outlineBreak.getBreaks ( this.breakCount ) ;
@@ -685,12 +666,64 @@ public final class OutlineNode
       this.currentOutlineBreak = this.outlineBreak.getBreaks ( this.breakCount ) ;
     }
     updateCaption ( this.lastSelectionStart , this.lastSelectionEnd ) ;
-    if ( this.outlineBreak.getBreakCountAll ( ) == this.currentOutlineBreak
-        .getBreakCountOwn ( ) )
+  }
+
+
+  /**
+   * Removes a break and resets the cpation.
+   */
+  public final void breakCountRemove ( )
+  {
+    if ( ! this.isExpression )
+    {
+      return ;
+    }
+    if ( this.breakCount == 0 )
+    {
+      return ;
+    }
+    this.breakCount -- ;
+    this.currentOutlineBreak = this.outlineBreak.getBreaks ( this.breakCount ) ;
+    updateCaption ( this.lastSelectionStart , this.lastSelectionEnd ) ;
+  }
+
+
+  /**
+   * Returns true, if not all possible breaks are applied, otherwise false.
+   * 
+   * @return True, if not all possible breaks are applied, otherwise false.
+   */
+  public final boolean breaksCanAdd ( )
+  {
+    if ( this.outlineBreak == null )
     {
       return false ;
     }
-    return true ;
+    if ( this.currentOutlineBreak == null )
+    {
+      return false ;
+    }
+    return ( this.outlineBreak.getBreakCountAll ( ) > this.currentOutlineBreak
+        .getBreakCountOwn ( ) ) ;
+  }
+
+
+  /**
+   * Returns true, if not all possible breaks are removed, otherwise false.
+   * 
+   * @return True, if not all possible breaks are remove, otherwise false.
+   */
+  public final boolean breaksCanRemove ( )
+  {
+    if ( this.outlineBreak == null )
+    {
+      return false ;
+    }
+    if ( this.currentOutlineBreak == null )
+    {
+      return false ;
+    }
+    return ( this.currentOutlineBreak.getBreakCountOwn ( ) > 0 ) ;
   }
 
 
@@ -904,26 +937,6 @@ public final class OutlineNode
   public final boolean hasBreaks ( )
   {
     return this.breakCount > 0 ;
-  }
-
-
-  /**
-   * Returns true, if not all possible breaks are applied, otherwise false.
-   * 
-   * @return True, if not all possible breaks are applied, otherwise false.
-   */
-  public final boolean hasMoreBreaks ( )
-  {
-    if ( this.outlineBreak == null )
-    {
-      return false ;
-    }
-    if ( this.currentOutlineBreak == null )
-    {
-      return false ;
-    }
-    return ( ! ( this.outlineBreak.getBreakCountAll ( ) == this.currentOutlineBreak
-        .getBreakCountOwn ( ) ) ) ;
   }
 
 
