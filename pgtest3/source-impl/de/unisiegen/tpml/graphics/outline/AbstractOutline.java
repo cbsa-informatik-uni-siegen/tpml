@@ -1,6 +1,7 @@
 package de.unisiegen.tpml.graphics.outline ;
 
 
+import java.awt.Rectangle ;
 import java.lang.reflect.InvocationTargetException ;
 import java.util.ArrayList ;
 import java.util.Enumeration ;
@@ -158,9 +159,9 @@ public final class AbstractOutline implements Outline
   public final void applyBreaks ( )
   {
     JScrollPane jScrollPane = this.outlineUI.getJScrollPaneOutline ( ) ;
-    int currentDiff = jScrollPane.getPreferredSize ( ).width
+    int diff = jScrollPane.getPreferredSize ( ).width
         - jScrollPane.getSize ( ).width ;
-    if ( currentDiff > 0 )
+    if ( diff > 0 )
     {
       applyBreaksAdd ( ) ;
     }
@@ -172,62 +173,83 @@ public final class AbstractOutline implements Outline
 
 
   /**
+   * Returns the biggest node in the {@link Outline}.
+   * 
+   * @param pOnlyIfHasBreaks If this value is true, the biggest node which has
+   *          more breaks is returned. If this value is false, the biggest node
+   *          is returned.
+   * @return The biggest node in the {@link Outline}.
+   */
+  private DefaultMutableTreeNode findBiggestNode ( boolean pOnlyIfHasBreaks )
+  {
+    Enumeration < ? > enumeration = this.rootNode.breadthFirstEnumeration ( ) ;
+    DefaultMutableTreeNode biggestNode = null ;
+    DefaultMutableTreeNode currentNode ;
+    OutlineNode currentNodeOutline ;
+    Rectangle rectangle ;
+    int maxRight = 0 ;
+    while ( enumeration.hasMoreElements ( ) )
+    {
+      currentNode = ( DefaultMutableTreeNode ) enumeration.nextElement ( ) ;
+      rectangle = this.outlineUI.getJTreeOutline ( ).getPathBounds (
+          new TreePath ( currentNode.getPath ( ) ) ) ;
+      if ( ( rectangle != null )
+          && ( ( rectangle.x + rectangle.width ) > maxRight ) )
+      {
+        currentNodeOutline = ( OutlineNode ) currentNode.getUserObject ( ) ;
+        if ( ( ! pOnlyIfHasBreaks ) || ( currentNodeOutline.hasMoreBreaks ( ) ) )
+        {
+          maxRight = rectangle.x + rectangle.width ;
+          biggestNode = currentNode ;
+        }
+      }
+    }
+    return biggestNode ;
+  }
+
+
+  /**
    * Adds breaks to the {@link OutlineNode}.
    */
   private final void applyBreaksAdd ( )
   {
-    if ( this.rootNode == null )
-    {
-      return ;
-    }
     JScrollPane jScrollPane = this.outlineUI.getJScrollPaneOutline ( ) ;
-    int currentDiff = jScrollPane.getPreferredSize ( ).width
+    int diff = jScrollPane.getPreferredSize ( ).width
         - jScrollPane.getSize ( ).width ;
-    int newDiff ;
-    ArrayList < DefaultMutableTreeNode > breakList = new ArrayList < DefaultMutableTreeNode > ( ) ;
-    Enumeration < ? > e = this.rootNode.breadthFirstEnumeration ( ) ;
-    while ( e.hasMoreElements ( ) )
+    DefaultMutableTreeNode biggestNode ;
+    DefaultMutableTreeNode biggestNode2 ;
+    OutlineNode biggestNodeOutline ;
+    while ( diff > 0 )
     {
-      DefaultMutableTreeNode node = ( DefaultMutableTreeNode ) e.nextElement ( ) ;
-      TreePath treePath = new TreePath ( node.getPath ( ) ) ;
-      boolean visible = this.outlineUI.getJTreeOutline ( )
-          .isVisible ( treePath ) ;
-      OutlineNode childNodeOutline = ( OutlineNode ) node.getUserObject ( ) ;
-      if ( ( childNodeOutline.getOutlineBreak ( ) != null )
-          && ( childNodeOutline.getOutlineBreak ( ).getBreakCountAll ( ) > 0 )
-          && ( visible ) )
+      biggestNode = findBiggestNode ( true ) ;
+      biggestNode2 = findBiggestNode ( false ) ;
+      if ( biggestNode == null )
       {
-        breakList.add ( node ) ;
+        return ;
       }
-    }
-    while ( ( currentDiff > 0 ) && ( breakList.size ( ) > 0 ) )
-    {
-      DefaultMutableTreeNode currentNode = breakList.get ( 0 ) ;
-      OutlineNode currentNodeOutline = ( OutlineNode ) currentNode
-          .getUserObject ( ) ;
-      boolean moreBreaksPossible = currentNodeOutline.breakCountInc ( ) ;
-      this.outlineUI.getTreeModel ( ).nodeChanged ( currentNode ) ;
-      newDiff = jScrollPane.getPreferredSize ( ).width
-          - jScrollPane.getSize ( ).width ;
-      if ( ! moreBreaksPossible )
+      if ( biggestNode.equals ( biggestNode2 ) )
       {
-        breakList.remove ( 0 ) ;
-      }
-      else if ( newDiff == currentDiff )
-      {
-        // currentNodeOutline.breakCountDec ( ) ;
-        // this.outlineUI.getTreeModel ( ).nodeChanged ( currentNode ) ;
-        // newDiff = scroll.getPreferredSize ( ).width - scroll.getSize (
-        // ).width ;
-        breakList.add ( currentNode ) ;
-        breakList.remove ( 0 ) ;
+        biggestNodeOutline = ( OutlineNode ) biggestNode.getUserObject ( ) ;
+        biggestNodeOutline.breakCountInc ( ) ;
+        this.outlineUI.getTreeModel ( ).nodeChanged ( biggestNode ) ;
+        diff = jScrollPane.getPreferredSize ( ).width
+            - jScrollPane.getSize ( ).width ;
       }
       else
       {
-        breakList.add ( currentNode ) ;
-        breakList.remove ( 0 ) ;
+        Rectangle rectangle = this.outlineUI.getJTreeOutline ( ).getPathBounds (
+            new TreePath ( biggestNode.getPath ( ) ) ) ;
+        if ( ( rectangle != null )
+            && ( ( rectangle.x + rectangle.width ) > jScrollPane.getSize ( ).width ) )
+        {
+          biggestNodeOutline = ( OutlineNode ) biggestNode.getUserObject ( ) ;
+          biggestNodeOutline.breakCountInc ( ) ;
+          this.outlineUI.getTreeModel ( ).nodeChanged ( biggestNode ) ;
+          diff = jScrollPane.getPreferredSize ( ).width
+              - jScrollPane.getSize ( ).width ;
+        }
+        return ;
       }
-      currentDiff = newDiff ;
     }
   }
 
@@ -237,49 +259,45 @@ public final class AbstractOutline implements Outline
    */
   private final void applyBreaksRemove ( )
   {
-    if ( this.rootNode == null )
-    {
-      return ;
-    }
     JScrollPane jScrollPane = this.outlineUI.getJScrollPaneOutline ( ) ;
-    int currentDiff = jScrollPane.getPreferredSize ( ).width
+    int diff = jScrollPane.getPreferredSize ( ).width
         - jScrollPane.getSize ( ).width ;
     ArrayList < DefaultMutableTreeNode > breakList = new ArrayList < DefaultMutableTreeNode > ( ) ;
-    Enumeration < ? > e = this.rootNode.breadthFirstEnumeration ( ) ;
-    while ( e.hasMoreElements ( ) )
+    DefaultMutableTreeNode currentNode ;
+    OutlineNode currentNodeOutline ;
+    Rectangle rectangle ;
+    Enumeration < ? > enumeration = this.rootNode.breadthFirstEnumeration ( ) ;
+    while ( enumeration.hasMoreElements ( ) )
     {
-      DefaultMutableTreeNode node = ( DefaultMutableTreeNode ) e.nextElement ( ) ;
-      TreePath treePath = new TreePath ( node.getPath ( ) ) ;
-      boolean visible = this.outlineUI.getJTreeOutline ( )
-          .isVisible ( treePath ) ;
-      OutlineNode childNodeOutline = ( OutlineNode ) node.getUserObject ( ) ;
-      if ( ( childNodeOutline.getOutlineBreak ( ) != null )
-          && ( childNodeOutline.hasBreaks ( ) ) && ( visible ) )
+      currentNode = ( DefaultMutableTreeNode ) enumeration.nextElement ( ) ;
+      currentNodeOutline = ( OutlineNode ) currentNode.getUserObject ( ) ;
+      rectangle = this.outlineUI.getJTreeOutline ( ).getPathBounds (
+          new TreePath ( currentNode.getPath ( ) ) ) ;
+      if ( ( currentNodeOutline.hasBreaks ( ) )
+          && ( rectangle != null )
+          && ( ( rectangle.x + rectangle.width ) < jScrollPane.getSize ( ).width ) )
       {
-        breakList.add ( node ) ;
+        breakList.add ( currentNode ) ;
       }
     }
+    System.out.println ( breakList.size ( ) ) ;
     while ( breakList.size ( ) > 0 )
     {
-      DefaultMutableTreeNode currentNode = breakList.get ( 0 ) ;
-      OutlineNode currentNodeOutline = ( OutlineNode ) currentNode
-          .getUserObject ( ) ;
-      if ( currentNodeOutline.hasBreaks ( ) )
+      currentNode = breakList.get ( 0 ) ;
+      currentNodeOutline = ( OutlineNode ) currentNode.getUserObject ( ) ;
+      while ( ( diff < 0 ) && ( currentNodeOutline.hasBreaks ( ) ) )
       {
-        while ( ( currentDiff < 0 ) && ( currentNodeOutline.hasBreaks ( ) ) )
-        {
-          currentNodeOutline.breakCountDec ( ) ;
-          this.outlineUI.getTreeModel ( ).nodeChanged ( currentNode ) ;
-          currentDiff = jScrollPane.getPreferredSize ( ).width
-              - jScrollPane.getSize ( ).width ;
-        }
-        if ( currentDiff > 0 )
-        {
-          currentNodeOutline.breakCountInc ( ) ;
-          this.outlineUI.getTreeModel ( ).nodeChanged ( currentNode ) ;
-          currentDiff = jScrollPane.getPreferredSize ( ).width
-              - jScrollPane.getSize ( ).width ;
-        }
+        currentNodeOutline.breakCountDec ( ) ;
+        this.outlineUI.getTreeModel ( ).nodeChanged ( currentNode ) ;
+        diff = jScrollPane.getPreferredSize ( ).width
+            - jScrollPane.getSize ( ).width ;
+      }
+      if ( diff > 0 )
+      {
+        currentNodeOutline.breakCountInc ( ) ;
+        this.outlineUI.getTreeModel ( ).nodeChanged ( currentNode ) ;
+        diff = jScrollPane.getPreferredSize ( ).width
+            - jScrollPane.getSize ( ).width ;
       }
       breakList.remove ( 0 ) ;
     }
@@ -1528,7 +1546,7 @@ public final class AbstractOutline implements Outline
    * @return The {@link OutlineUI}.
    * @see #outlineUI
    */
-  public OutlineUI getOutlineUI ( )
+  public final OutlineUI getOutlineUI ( )
   {
     return this.outlineUI ;
   }

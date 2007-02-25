@@ -261,6 +261,47 @@ public final class OutlineNode
 
 
   /**
+   * Returns the hex value of a given integer.
+   * 
+   * @param pNumber The input integer value.
+   * @return The hex value of a given integer.
+   */
+  private static final String getHex ( int pNumber )
+  {
+    StringBuffer result = new StringBuffer ( ) ;
+    int remainder = Math.abs ( pNumber ) ;
+    int base = 0 ;
+    if ( remainder > 0 )
+    {
+      while ( remainder > 0 )
+      {
+        base = remainder % 16 ;
+        remainder = ( remainder / 16 ) ;
+        result.insert ( 0 , HEX_VALUES [ base ] ) ;
+      }
+    }
+    else
+    {
+      return HEX_VALUES [ 16 ] ;
+    }
+    return result.toString ( ) ;
+  }
+
+
+  /**
+   * Returns the color in HTML formatting.
+   * 
+   * @param pColor The color which should be returned.
+   * @return The color in HTML formatting.
+   */
+  public static final String getHTMLFormat ( Color pColor )
+  {
+    return ( getHex ( pColor.getRed ( ) ) + getHex ( pColor.getGreen ( ) ) + getHex ( pColor
+        .getBlue ( ) ) ) ;
+  }
+
+
+  /**
    * Sets the binding value. Selected {@link Identifier} and bindings should be
    * highlighted in higher nodes.
    * 
@@ -780,34 +821,6 @@ public final class OutlineNode
 
 
   /**
-   * Returns the hex value of a given integer.
-   * 
-   * @param pNumber The input integer value.
-   * @return The hex value of a given integer.
-   */
-  private static final String getHex ( int pNumber )
-  {
-    StringBuffer result = new StringBuffer ( ) ;
-    int remainder = Math.abs ( pNumber ) ;
-    int base = 0 ;
-    if ( remainder > 0 )
-    {
-      while ( remainder > 0 )
-      {
-        base = remainder % 16 ;
-        remainder = ( remainder / 16 ) ;
-        result.insert ( 0 , HEX_VALUES [ base ] ) ;
-      }
-    }
-    else
-    {
-      return HEX_VALUES [ 16 ] ;
-    }
-    return result.toString ( ) ;
-  }
-
-
-  /**
    * Returns the replaced <code>char</code>.
    * 
    * @param pChar Input <code>char</code>.
@@ -843,19 +856,6 @@ public final class OutlineNode
     s = s.replaceAll ( LOWER_THAN , LOWER_THAN_REPLACE ) ;
     s = s.replaceAll ( GREATER_THAN , GREATER_THAN_REPLACE ) ;
     return s ;
-  }
-
-
-  /**
-   * Returns the color in HTML formatting.
-   * 
-   * @param pColor The color which should be returned.
-   * @return The color in HTML formatting.
-   */
-  public static final String getHTMLFormat ( Color pColor )
-  {
-    return ( getHex ( pColor.getRed ( ) ) + getHex ( pColor.getGreen ( ) ) + getHex ( pColor
-        .getBlue ( ) ) ) ;
   }
 
 
@@ -904,6 +904,26 @@ public final class OutlineNode
   public final boolean hasBreaks ( )
   {
     return this.breakCount > 0 ;
+  }
+
+
+  /**
+   * Returns true, if not all possible breaks are applied, otherwise false.
+   * 
+   * @return True, if not all possible breaks are applied, otherwise false.
+   */
+  public final boolean hasMoreBreaks ( )
+  {
+    if ( this.outlineBreak == null )
+    {
+      return false ;
+    }
+    if ( this.currentOutlineBreak == null )
+    {
+      return false ;
+    }
+    return ( ! ( this.outlineBreak.getBreakCountAll ( ) == this.currentOutlineBreak
+        .getBreakCountOwn ( ) ) ) ;
   }
 
 
