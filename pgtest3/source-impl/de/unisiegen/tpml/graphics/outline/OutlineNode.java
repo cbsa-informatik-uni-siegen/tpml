@@ -799,9 +799,6 @@ public final class OutlineNode
       result.append ( EXPRESSION_END ) ;
       this.caption = result.toString ( ) ;
     }
-    /*
-     * else { updateCaption ( NO_SELECTION , NO_SELECTION ) ; }
-     */
   }
 
 
@@ -811,7 +808,7 @@ public final class OutlineNode
    * @return The caption.
    * @see #caption
    */
-  public String getCaption ( )
+  public final String getCaption ( )
   {
     return this.caption ;
   }
