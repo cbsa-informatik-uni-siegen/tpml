@@ -80,7 +80,7 @@ public final class OutlineCellRenderer extends DefaultTreeCellRenderer
     this.setBorderSelectionColor ( Color.BLUE ) ;
     this.setTextSelectionColor ( Color.BLACK ) ;
     this.setTextNonSelectionColor ( Color.BLACK ) ;
-    this.setBorder ( new LineBorder ( BORDER ) ) ;
+    this.setBorder ( new LineBorder ( Color.WHITE ) ) ;
   }
 
 
@@ -94,17 +94,25 @@ public final class OutlineCellRenderer extends DefaultTreeCellRenderer
   {
     super.getTreeCellRendererComponent ( pTree , pValue , pSel , pExpanded ,
         pLeaf , pRow , pHasFocus ) ;
-    if ( pSel )
+    DefaultMutableTreeNode node = ( DefaultMutableTreeNode ) pValue ;
+    OutlineNode outlineNode = ( OutlineNode ) node.getUserObject ( ) ;
+    if ( ( outlineNode.hasBreaks ( ) ) && ( pSel ) )
     {
-      DefaultMutableTreeNode node = ( DefaultMutableTreeNode ) pValue ;
-      OutlineNode outlineNode = ( OutlineNode ) node.getUserObject ( ) ;
       outlineNode.setCaption ( outlineNode.getCaption ( ).replaceAll (
           WHITE_FONT , FONT_BEGIN + colorString + FONT_END ) ) ;
       this.setBorder ( new LineBorder ( Color.BLUE ) ) ;
     }
-    else
+    else if ( ( outlineNode.hasBreaks ( ) ) && ( ! pSel ) )
     {
       this.setBorder ( new LineBorder ( BORDER ) ) ;
+    }
+    else if ( ( ! outlineNode.hasBreaks ( ) ) && ( pSel ) )
+    {
+      this.setBorder ( new LineBorder ( Color.BLUE ) ) ;
+    }
+    else if ( ( ! outlineNode.hasBreaks ( ) ) && ( ! pSel ) )
+    {
+      this.setBorder ( new LineBorder ( Color.WHITE ) ) ;
     }
     return this ;
   }
