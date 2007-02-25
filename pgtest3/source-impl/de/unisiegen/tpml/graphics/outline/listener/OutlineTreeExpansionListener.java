@@ -43,7 +43,7 @@ public class OutlineTreeExpansionListener implements TreeExpansionListener
     if ( pTreeExpansionEvent.getSource ( ).equals (
         this.abstractOutline.getOutlineUI ( ).getJTreeOutline ( ) ) )
     {
-      this.abstractOutline.applyBreaks ( ) ;
+      this.abstractOutline.updateBreaks ( ) ;
     }
   }
 
@@ -59,7 +59,7 @@ public class OutlineTreeExpansionListener implements TreeExpansionListener
     if ( pTreeExpansionEvent.getSource ( ).equals (
         this.abstractOutline.getOutlineUI ( ).getJTreeOutline ( ) ) )
     {
-      this.abstractOutline.applyBreaks ( ) ;
+      this.abstractOutline.updateBreaks ( ) ;
     }
   }
 }

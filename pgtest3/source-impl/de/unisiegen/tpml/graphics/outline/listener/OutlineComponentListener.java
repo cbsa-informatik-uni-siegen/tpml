@@ -118,7 +118,7 @@ public final class OutlineComponentListener implements ComponentListener
       if ( pComponentEvent.getSource ( ).equals (
           this.abstractOutline.getJPanelOutline ( ) ) )
       {
-        this.abstractOutline.applyBreaks ( ) ;
+        this.abstractOutline.updateBreaks ( ) ;
       }
     }
   }
