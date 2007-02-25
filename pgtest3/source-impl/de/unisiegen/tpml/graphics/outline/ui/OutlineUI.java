@@ -547,15 +547,15 @@ public final class OutlineUI
     this.jPanelMain.setLayout ( this.gridBagLayout ) ;
     // TreeModel
     this.treeModel = new DefaultTreeModel ( this.rootNode ) ;
-    // Tree AbstractOutline
+    // Tree
     this.jTreeOutline = new JTree ( this.treeModel ) ;
+    this.jTreeOutline.setDoubleBuffered ( true ) ;
     this.jTreeOutline.setCellRenderer ( new OutlineCellRenderer ( ) ) ;
     this.jTreeOutline.getSelectionModel ( ).addTreeSelectionListener (
         this.outlineTreeSelectionListener ) ;
-    // this.jTreeOutline.setRowHeight ( 20 ) ;
     this.jTreeOutline.addMouseListener ( this.outlineMouseListener ) ;
     this.jTreeOutline.addKeyListener ( new OutlineKeyListener ( this ) ) ;
-    // ScrollPane AbstractSyntax
+    // ScrollPane
     this.jScrollPaneOutline = new JScrollPane ( this.jTreeOutline ) ;
     this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
     this.insets.set ( 0 , 0 , 1 , 0 ) ;
