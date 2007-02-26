@@ -185,9 +185,7 @@ public class BigStepNodeComponent extends JComponent implements TreeNodeComponen
     this.expression         = new CompoundExpression<Location, Expression> ();
     add (this.expression);
     
-    // CHANGE CHRISTIAN
     this.indexLabel.addMouseListener ( new OutlineMouseListener ( this.expression ) ) ;
-    // CHANGE CHRISTIAN END
      
     this.downArrowLabel     = new JLabel ();
 

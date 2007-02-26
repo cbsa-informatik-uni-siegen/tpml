@@ -200,9 +200,7 @@ public class TypeCheckerNodeComponent extends JComponent  implements TreeNodeCom
     this.expression = new CompoundExpression<String, Type> ();
     add (this.expression);
     
-    // CHANGE CHRISTIAN
     this.indexLabel.addMouseListener ( new OutlineMouseListener ( this.expression ) ) ;
-    // CHANGE CHRISTIAN END
     
     changeNode ();
 
