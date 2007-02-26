@@ -17,7 +17,7 @@ import de.unisiegen.tpml.graphics.outline.Outline ;
  * @author Christian Fehler
  * @version $Rev: 1075 $
  */
-public class OutlineTreeModelListener implements TreeModelListener
+public final class OutlineTreeModelListener implements TreeModelListener
 {
   /**
    * The unused <code>String</code> for the <code>SuppressWarnings</code>.
