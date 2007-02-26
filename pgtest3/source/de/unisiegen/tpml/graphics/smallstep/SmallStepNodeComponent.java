@@ -42,8 +42,6 @@ import de.unisiegen.tpml.graphics.components.MenuGuessItem;
 import de.unisiegen.tpml.graphics.components.MenuGuessTreeItem;
 import de.unisiegen.tpml.graphics.components.MenuRuleItem;
 import de.unisiegen.tpml.graphics.components.MenuTranslateItem;
-import de.unisiegen.tpml.graphics.outline.AbstractOutline;
-import de.unisiegen.tpml.graphics.outline.ui.OutlineUI;
 
 /**
  * The graphical representation of a
