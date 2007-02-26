@@ -16,7 +16,7 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
  * @version $Rev:1056 $
  * @see de.unisiegen.tpml.core.expressions.Value
  */
-public class Identifier extends Value
+public final class Identifier extends Value
 {
   /**
    * The {@link Expression} in which this {@link Identifier} is bounded.
