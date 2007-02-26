@@ -3,7 +3,6 @@ package de.unisiegen.tpml.graphics.outline.listener ;
 
 import java.awt.event.ItemEvent ;
 import java.awt.event.ItemListener ;
-import javax.swing.tree.DefaultMutableTreeNode ;
 import de.unisiegen.tpml.graphics.outline.OutlineNode ;
 import de.unisiegen.tpml.graphics.outline.ui.OutlineUI ;
 
@@ -62,8 +61,7 @@ public final class OutlineItemListener implements ItemListener
   private final void binding ( boolean pSelected )
   {
     OutlineNode.setBinding ( pSelected ) ;
-    this.outlineUI.getOutlineTreeSelectionListener ( ).reset (
-        ( DefaultMutableTreeNode ) this.outlineUI.getTreeModel ( ).getRoot ( ) ) ;
+    this.outlineUI.getOutlineTreeSelectionListener ( ).reset ( ) ;
     this.outlineUI.getOutlineTreeSelectionListener ( ).update (
         this.outlineUI.getJTreeOutline ( ).getSelectionPath ( ) ) ;
     this.outlineUI.getAbstractOutline ( ).getOutlinePreferences ( ).setBinding (
@@ -97,8 +95,7 @@ public final class OutlineItemListener implements ItemListener
   private final void replace ( boolean pSelected )
   {
     OutlineNode.setReplace ( pSelected ) ;
-    this.outlineUI.getOutlineTreeSelectionListener ( ).reset (
-        ( DefaultMutableTreeNode ) this.outlineUI.getTreeModel ( ).getRoot ( ) ) ;
+    this.outlineUI.getOutlineTreeSelectionListener ( ).reset ( ) ;
     this.outlineUI.getOutlineTreeSelectionListener ( ).update (
         this.outlineUI.getJTreeOutline ( ).getSelectionPath ( ) ) ;
     this.outlineUI.getAbstractOutline ( ).getOutlinePreferences ( ).setReplace (
@@ -119,8 +116,7 @@ public final class OutlineItemListener implements ItemListener
   private final void selection ( boolean pSelected )
   {
     OutlineNode.setSelection ( pSelected ) ;
-    this.outlineUI.getOutlineTreeSelectionListener ( ).reset (
-        ( DefaultMutableTreeNode ) this.outlineUI.getTreeModel ( ).getRoot ( ) ) ;
+    this.outlineUI.getOutlineTreeSelectionListener ( ).reset ( ) ;
     this.outlineUI.getOutlineTreeSelectionListener ( ).update (
         this.outlineUI.getJTreeOutline ( ).getSelectionPath ( ) ) ;
     this.outlineUI.getAbstractOutline ( ).getOutlinePreferences ( )
@@ -141,8 +137,7 @@ public final class OutlineItemListener implements ItemListener
   private final void unbound ( boolean pSelected )
   {
     OutlineNode.setUnbound ( pSelected ) ;
-    this.outlineUI.getOutlineTreeSelectionListener ( ).reset (
-        ( DefaultMutableTreeNode ) this.outlineUI.getTreeModel ( ).getRoot ( ) ) ;
+    this.outlineUI.getOutlineTreeSelectionListener ( ).reset ( ) ;
     this.outlineUI.getOutlineTreeSelectionListener ( ).update (
         this.outlineUI.getJTreeOutline ( ).getSelectionPath ( ) ) ;
     this.outlineUI.getAbstractOutline ( ).getOutlinePreferences ( ).setUnbound (

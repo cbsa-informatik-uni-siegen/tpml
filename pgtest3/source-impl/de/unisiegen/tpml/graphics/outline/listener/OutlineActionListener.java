@@ -3,7 +3,6 @@ package de.unisiegen.tpml.graphics.outline.listener ;
 
 import java.awt.event.ActionEvent ;
 import java.awt.event.ActionListener ;
-import javax.swing.tree.DefaultMutableTreeNode ;
 import javax.swing.tree.TreePath ;
 import de.unisiegen.tpml.graphics.outline.OutlineNode ;
 import de.unisiegen.tpml.graphics.outline.ui.OutlineUI ;
@@ -163,12 +162,12 @@ public final class OutlineActionListener implements ActionListener
    */
   public final void copy ( )
   {
-    DefaultMutableTreeNode node = ( DefaultMutableTreeNode ) this.outlineUI
-        .getJTreeOutline ( ).getSelectionPath ( ).getLastPathComponent ( ) ;
-    if ( node != null )
+    OutlineNode outlineNode = ( OutlineNode ) this.outlineUI.getJTreeOutline ( )
+        .getSelectionPath ( ).getLastPathComponent ( ) ;
+    if ( outlineNode != null )
     {
       OutlineClipboard.getInstance ( ).copy (
-          ( ( OutlineNode ) node.getUserObject ( ) ).getExpressionString ( ) ) ;
+          outlineNode.getExpressionString ( ) ) ;
     }
   }
 
@@ -207,11 +206,11 @@ public final class OutlineActionListener implements ActionListener
     {
       return ;
     }
-    DefaultMutableTreeNode lastNode = ( DefaultMutableTreeNode ) pTreePath
-        .getLastPathComponent ( ) ;
-    for ( int i = 0 ; i < lastNode.getChildCount ( ) ; i ++ )
+    OutlineNode outlineNode = ( OutlineNode ) pTreePath.getLastPathComponent ( ) ;
+    for ( int i = 0 ; i < outlineNode.getChildCount ( ) ; i ++ )
     {
-      expandTreePath ( pTreePath.pathByAddingChild ( lastNode.getChildAt ( i ) ) ) ;
+      expandTreePath ( pTreePath.pathByAddingChild ( outlineNode
+          .getChildAt ( i ) ) ) ;
     }
     this.outlineUI.getJTreeOutline ( ).expandPath ( pTreePath ) ;
   }

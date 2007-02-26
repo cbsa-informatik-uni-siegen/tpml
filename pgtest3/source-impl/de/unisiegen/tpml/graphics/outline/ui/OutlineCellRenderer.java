@@ -7,7 +7,6 @@ import java.awt.Font ;
 import java.awt.Graphics ;
 import javax.swing.JTree ;
 import javax.swing.border.LineBorder ;
-import javax.swing.tree.DefaultMutableTreeNode ;
 import javax.swing.tree.DefaultTreeCellRenderer ;
 import de.unisiegen.tpml.graphics.outline.Outline ;
 import de.unisiegen.tpml.graphics.outline.OutlineNode ;
@@ -94,8 +93,7 @@ public final class OutlineCellRenderer extends DefaultTreeCellRenderer
   {
     super.getTreeCellRendererComponent ( pTree , pValue , pSel , pExpanded ,
         pLeaf , pRow , pHasFocus ) ;
-    DefaultMutableTreeNode node = ( DefaultMutableTreeNode ) pValue ;
-    OutlineNode outlineNode = ( OutlineNode ) node.getUserObject ( ) ;
+    OutlineNode outlineNode = ( OutlineNode ) pValue ;
     if ( ( outlineNode.hasBreaks ( ) ) && ( pSel ) )
     {
       outlineNode.setCaption ( outlineNode.getCaption ( ).replaceAll (

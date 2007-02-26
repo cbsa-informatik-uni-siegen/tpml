@@ -5,12 +5,12 @@ import java.awt.Container ;
 import java.awt.event.MouseEvent ;
 import java.awt.event.MouseListener ;
 import javax.swing.JLabel ;
-import javax.swing.tree.DefaultMutableTreeNode ;
 import javax.swing.tree.TreePath ;
 import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.graphics.bigstep.BigStepView ;
 import de.unisiegen.tpml.graphics.components.CompoundExpression ;
 import de.unisiegen.tpml.graphics.outline.Outline ;
+import de.unisiegen.tpml.graphics.outline.OutlineNode ;
 import de.unisiegen.tpml.graphics.outline.ui.OutlineUI ;
 import de.unisiegen.tpml.graphics.smallstep.SmallStepView ;
 import de.unisiegen.tpml.graphics.typechecker.TypeCheckerView ;
@@ -95,8 +95,7 @@ public final class OutlineMouseListener implements MouseListener
    */
   private final boolean allChildrenVisible ( TreePath pTreePath )
   {
-    DefaultMutableTreeNode lastNode = ( DefaultMutableTreeNode ) pTreePath
-        .getLastPathComponent ( ) ;
+    OutlineNode lastNode = ( OutlineNode ) pTreePath.getLastPathComponent ( ) ;
     if ( lastNode.getChildCount ( ) == 0 )
     {
       return true ;
@@ -264,8 +263,7 @@ public final class OutlineMouseListener implements MouseListener
       // No node is selected.
       return ;
     }
-    DefaultMutableTreeNode selectedNode = ( DefaultMutableTreeNode ) treePath
-        .getLastPathComponent ( ) ;
+    OutlineNode selectedNode = ( OutlineNode ) treePath.getLastPathComponent ( ) ;
     this.outlineUI.getJMenuItemExpand ( ).setEnabled ( true ) ;
     this.outlineUI.getJMenuItemExpandAll ( ).setEnabled ( true ) ;
     this.outlineUI.getJMenuItemCollapse ( ).setEnabled ( true ) ;
@@ -299,8 +297,8 @@ public final class OutlineMouseListener implements MouseListener
       this.outlineUI.getJMenuItemCollapse ( ).setEnabled ( false ) ;
       this.outlineUI.getJMenuItemClose ( ).setEnabled ( false ) ;
       // If the root is the only node, disable items
-      DefaultMutableTreeNode root = ( DefaultMutableTreeNode ) this.outlineUI
-          .getTreeModel ( ).getRoot ( ) ;
+      OutlineNode root = ( OutlineNode ) this.outlineUI.getTreeModel ( )
+          .getRoot ( ) ;
       this.outlineUI.getJMenuItemCloseAll ( ).setEnabled ( ! root.isLeaf ( ) ) ;
       this.outlineUI.getJMenuItemCollapseAll ( )
           .setEnabled ( ! root.isLeaf ( ) ) ;

@@ -2,6 +2,7 @@ package de.unisiegen.tpml.graphics.outline ;
 
 
 import java.awt.Color ;
+import javax.swing.tree.DefaultMutableTreeNode ;
 import de.unisiegen.tpml.core.expressions.BinaryOperator ;
 import de.unisiegen.tpml.core.expressions.CurriedMethod ;
 import de.unisiegen.tpml.core.expressions.Expression ;
@@ -25,8 +26,14 @@ import de.unisiegen.tpml.graphics.outline.binding.OutlineUnbound ;
  * @author Christian Fehler
  * @version $Rev: 1075 $
  */
-public final class OutlineNode
+public final class OutlineNode extends DefaultMutableTreeNode
 {
+  /**
+   * The serial version UID.
+   */
+  private static final long serialVersionUID = 1611765250060174993L ;
+
+
   /**
    * The {@link Expression} should not be shown in this nodes.
    */
@@ -574,13 +581,11 @@ public final class OutlineNode
    * @param pExpressionString The {@link Expression} as a <code>String</code>.
    * @param pStartIndex The start index of the {@link Identifier}.
    * @param pEndIndex The end index of the {@link Identifier}.
-   * @param pOutlineBinding The bindings in this node.
    * @param pOutlineUnbound The {@link OutlineUnbound} which repressents the
    *          unbound {@link Identifier}s in all nodes
    */
   public OutlineNode ( String pDescription , String pExpressionString ,
-      int pStartIndex , int pEndIndex , OutlineBinding pOutlineBinding ,
-      OutlineUnbound pOutlineUnbound )
+      int pStartIndex , int pEndIndex , OutlineUnbound pOutlineUnbound )
   {
     this.expression = null ;
     this.description = pDescription ;
@@ -588,7 +593,7 @@ public final class OutlineNode
     this.expressionString = pExpressionString ;
     this.startIndex = pStartIndex ;
     this.endIndex = pEndIndex ;
-    this.outlineBinding = pOutlineBinding ;
+    this.outlineBinding = null ;
     this.outlineUnbound = pOutlineUnbound ;
     this.replaceInThisNode = false ;
     this.boundedStart = NO_BINDING ;

@@ -19,12 +19,16 @@ import javax.swing.JTree ;
 import javax.swing.KeyStroke ;
 import javax.swing.tree.DefaultMutableTreeNode ;
 import javax.swing.tree.DefaultTreeModel ;
+import de.unisiegen.tpml.graphics.Theme ;
 import de.unisiegen.tpml.graphics.outline.AbstractOutline ;
 import de.unisiegen.tpml.graphics.outline.Outline ;
 import de.unisiegen.tpml.graphics.outline.listener.OutlineActionListener ;
+import de.unisiegen.tpml.graphics.outline.listener.OutlineComponentListener ;
 import de.unisiegen.tpml.graphics.outline.listener.OutlineItemListener ;
 import de.unisiegen.tpml.graphics.outline.listener.OutlineKeyListener ;
 import de.unisiegen.tpml.graphics.outline.listener.OutlineMouseListener ;
+import de.unisiegen.tpml.graphics.outline.listener.OutlinePropertyChangeListener ;
+import de.unisiegen.tpml.graphics.outline.listener.OutlineTreeExpansionListener ;
 import de.unisiegen.tpml.graphics.outline.listener.OutlineTreeSelectionListener ;
 
 
@@ -545,6 +549,8 @@ public final class OutlineUI
     // Panel Main
     this.jPanelMain = new JPanel ( ) ;
     this.jPanelMain.setLayout ( this.gridBagLayout ) ;
+    this.jPanelMain.addComponentListener ( new OutlineComponentListener (
+        this.abstractOutline ) ) ;
     // TreeModel
     this.treeModel = new DefaultTreeModel ( this.rootNode ) ;
     // Tree
@@ -553,6 +559,9 @@ public final class OutlineUI
     this.jTreeOutline.setCellRenderer ( new OutlineCellRenderer ( ) ) ;
     this.jTreeOutline.getSelectionModel ( ).addTreeSelectionListener (
         this.outlineTreeSelectionListener ) ;
+    this.jTreeOutline
+        .addTreeExpansionListener ( new OutlineTreeExpansionListener (
+            this.abstractOutline ) ) ;
     this.jTreeOutline.addMouseListener ( this.outlineMouseListener ) ;
     this.jTreeOutline.addKeyListener ( new OutlineKeyListener ( this ) ) ;
     // ScrollPane
@@ -574,6 +583,8 @@ public final class OutlineUI
     this.gridBagConstraints.weightx = 0 ;
     this.gridBagConstraints.weighty = 0 ;
     this.jPanelMain.add ( this.jPanelPreferences , this.gridBagConstraints ) ;
+    Theme.currentTheme ( ).addPropertyChangeListener (
+        new OutlinePropertyChangeListener ( this.abstractOutline ) ) ;
   }
 
 

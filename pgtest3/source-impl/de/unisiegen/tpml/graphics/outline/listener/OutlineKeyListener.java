@@ -3,7 +3,6 @@ package de.unisiegen.tpml.graphics.outline.listener ;
 
 import java.awt.event.KeyEvent ;
 import java.awt.event.KeyListener ;
-import javax.swing.tree.DefaultMutableTreeNode ;
 import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.graphics.outline.OutlineNode ;
 import de.unisiegen.tpml.graphics.outline.ui.OutlineUI ;
@@ -48,12 +47,12 @@ public final class OutlineKeyListener implements KeyListener
    */
   public final void copy ( )
   {
-    DefaultMutableTreeNode node = ( DefaultMutableTreeNode ) this.outlineUI
-        .getJTreeOutline ( ).getSelectionPath ( ).getLastPathComponent ( ) ;
-    if ( node != null )
+    OutlineNode outlineNode = ( OutlineNode ) this.outlineUI.getJTreeOutline ( )
+        .getSelectionPath ( ).getLastPathComponent ( ) ;
+    if ( outlineNode != null )
     {
       OutlineClipboard.getInstance ( ).copy (
-          ( ( OutlineNode ) node.getUserObject ( ) ).getExpressionString ( ) ) ;
+          outlineNode.getExpressionString ( ) ) ;
     }
   }
 
