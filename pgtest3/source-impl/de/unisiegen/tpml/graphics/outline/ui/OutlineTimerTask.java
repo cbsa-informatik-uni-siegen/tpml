@@ -2,11 +2,11 @@ package de.unisiegen.tpml.graphics.outline.ui ;
 
 
 import java.util.TimerTask ;
-import de.unisiegen.tpml.graphics.outline.AbstractOutline ;
+import de.unisiegen.tpml.graphics.outline.DefaultOutline ;
 
 
 /**
- * Invokes the execute method in the {@link AbstractOutline}.
+ * Invokes the execute method in the {@link DefaultOutline}.
  * 
  * @author Christian Fehler
  * @version $Rev: 995 $
@@ -14,30 +14,30 @@ import de.unisiegen.tpml.graphics.outline.AbstractOutline ;
 public final class OutlineTimerTask extends TimerTask
 {
   /**
-   * The {@link AbstractOutline}.
+   * The {@link DefaultOutline}.
    */
-  private AbstractOutline abstractOutline ;
+  private DefaultOutline defaultOutline ;
 
 
   /**
    * Initilizes the {@link OutlineTimerTask}.
    * 
-   * @param pAbstractOutline The {@link AbstractOutline}.
+   * @param pDefaultOutline The {@link DefaultOutline}.
    */
-  public OutlineTimerTask ( AbstractOutline pAbstractOutline )
+  public OutlineTimerTask ( DefaultOutline pDefaultOutline )
   {
-    this.abstractOutline = pAbstractOutline ;
+    this.defaultOutline = pDefaultOutline ;
   }
 
 
   /**
-   * Invokes the execute method in the {@link AbstractOutline}.
+   * Invokes the execute method in the {@link DefaultOutline}.
    * 
    * @see TimerTask#run()
    */
   @ Override
   public final void run ( )
   {
-    this.abstractOutline.execute ( ) ;
+    this.defaultOutline.execute ( ) ;
   }
 }

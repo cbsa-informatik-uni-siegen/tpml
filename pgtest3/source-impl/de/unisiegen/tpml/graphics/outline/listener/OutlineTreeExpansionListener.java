@@ -3,7 +3,7 @@ package de.unisiegen.tpml.graphics.outline.listener ;
 
 import javax.swing.event.TreeExpansionEvent ;
 import javax.swing.event.TreeExpansionListener ;
-import de.unisiegen.tpml.graphics.outline.AbstractOutline ;
+import de.unisiegen.tpml.graphics.outline.DefaultOutline ;
 
 
 /**
@@ -12,23 +12,24 @@ import de.unisiegen.tpml.graphics.outline.AbstractOutline ;
  * 
  * @author Christian Fehler
  */
-public class OutlineTreeExpansionListener implements TreeExpansionListener
+public final class OutlineTreeExpansionListener implements
+    TreeExpansionListener
 {
   /**
-   * The {@link AbstractOutline}.
+   * The {@link DefaultOutline}.
    */
-  private AbstractOutline abstractOutline ;
+  private DefaultOutline defaultOutline ;
 
 
   /**
    * Initializes the {@link OutlineTreeExpansionListener} with the given
-   * {@link AbstractOutline}.
+   * {@link DefaultOutline}.
    * 
-   * @param pAbstractOutline
+   * @param pDefaultOutline The {@link DefaultOutline}.
    */
-  public OutlineTreeExpansionListener ( AbstractOutline pAbstractOutline )
+  public OutlineTreeExpansionListener ( DefaultOutline pDefaultOutline )
   {
-    this.abstractOutline = pAbstractOutline ;
+    this.defaultOutline = pDefaultOutline ;
   }
 
 
@@ -41,9 +42,9 @@ public class OutlineTreeExpansionListener implements TreeExpansionListener
   public final void treeCollapsed ( TreeExpansionEvent pTreeExpansionEvent )
   {
     if ( pTreeExpansionEvent.getSource ( ).equals (
-        this.abstractOutline.getOutlineUI ( ).getJTreeOutline ( ) ) )
+        this.defaultOutline.getOutlineUI ( ).getJTreeOutline ( ) ) )
     {
-      this.abstractOutline.updateBreaks ( ) ;
+      this.defaultOutline.updateBreaks ( ) ;
     }
   }
 
@@ -57,9 +58,9 @@ public class OutlineTreeExpansionListener implements TreeExpansionListener
   public final void treeExpanded ( TreeExpansionEvent pTreeExpansionEvent )
   {
     if ( pTreeExpansionEvent.getSource ( ).equals (
-        this.abstractOutline.getOutlineUI ( ).getJTreeOutline ( ) ) )
+        this.defaultOutline.getOutlineUI ( ).getJTreeOutline ( ) ) )
     {
-      this.abstractOutline.updateBreaks ( ) ;
+      this.defaultOutline.updateBreaks ( ) ;
     }
   }
 }

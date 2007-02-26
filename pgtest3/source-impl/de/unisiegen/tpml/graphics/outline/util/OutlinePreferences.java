@@ -4,7 +4,6 @@ package de.unisiegen.tpml.graphics.outline.util ;
 import java.util.prefs.Preferences ;
 import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.expressions.Identifier ;
-import de.unisiegen.tpml.graphics.outline.AbstractOutline ;
 import de.unisiegen.tpml.graphics.outline.Outline ;
 import de.unisiegen.tpml.graphics.outline.OutlineNode ;
 import de.unisiegen.tpml.graphics.outline.ui.OutlineUI ;
@@ -99,7 +98,7 @@ public final class OutlinePreferences
    */
   public OutlinePreferences ( )
   {
-    this.preferences = Preferences.userNodeForPackage ( AbstractOutline.class ) ;
+    this.preferences = Preferences.userNodeForPackage ( Outline.class ) ;
     this.replace = this.preferences.getBoolean ( OutlineUI.REPLACE , false ) ;
     this.binding = this.preferences.getBoolean ( OutlineUI.BINDING , true ) ;
     this.unbound = this.preferences.getBoolean ( OutlineUI.UNBOUND , true ) ;

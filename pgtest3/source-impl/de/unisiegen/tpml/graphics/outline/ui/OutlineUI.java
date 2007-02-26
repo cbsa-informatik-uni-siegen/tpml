@@ -20,7 +20,7 @@ import javax.swing.KeyStroke ;
 import javax.swing.tree.DefaultMutableTreeNode ;
 import javax.swing.tree.DefaultTreeModel ;
 import de.unisiegen.tpml.graphics.Theme ;
-import de.unisiegen.tpml.graphics.outline.AbstractOutline ;
+import de.unisiegen.tpml.graphics.outline.DefaultOutline ;
 import de.unisiegen.tpml.graphics.outline.Outline ;
 import de.unisiegen.tpml.graphics.outline.listener.OutlineActionListener ;
 import de.unisiegen.tpml.graphics.outline.listener.OutlineComponentListener ;
@@ -284,11 +284,11 @@ public final class OutlineUI
 
 
   /**
-   * The {@link AbstractOutline}.
+   * The {@link DefaultOutline}.
    * 
    * @see #getAbstractOutline()
    */
-  private AbstractOutline abstractOutline ;
+  private DefaultOutline defaultOutline ;
 
 
   /**
@@ -424,11 +424,11 @@ public final class OutlineUI
   /**
    * This constructor creates the UI of the {@link Outline}.
    * 
-   * @param pAbstractOutline The {@link AbstractOutline}.
+   * @param pDefaultOutline The {@link DefaultOutline}.
    */
-  public OutlineUI ( AbstractOutline pAbstractOutline )
+  public OutlineUI ( DefaultOutline pDefaultOutline )
   {
-    this.abstractOutline = pAbstractOutline ;
+    this.defaultOutline = pDefaultOutline ;
     // Insets
     this.insets = new Insets ( 0 , 0 , 0 , 0 ) ;
     // Preferences
@@ -453,7 +453,7 @@ public final class OutlineUI
         SELECTION + MNEMONIC ).charAt ( 0 ) ) ;
     this.jCheckBoxSelection.setToolTipText ( this.resourceBundle
         .getString ( SELECTION + TOOLTIP ) ) ;
-    this.jCheckBoxSelection.setSelected ( this.abstractOutline
+    this.jCheckBoxSelection.setSelected ( this.defaultOutline
         .getOutlinePreferences ( ).isSelection ( ) ) ;
     this.jCheckBoxSelection.setFocusable ( false ) ;
     this.jCheckBoxSelection.addItemListener ( this.outlineItemListener ) ;
@@ -473,7 +473,7 @@ public final class OutlineUI
         BINDING + MNEMONIC ).charAt ( 0 ) ) ;
     this.jCheckBoxBinding.setToolTipText ( this.resourceBundle
         .getString ( BINDING + TOOLTIP ) ) ;
-    this.jCheckBoxBinding.setSelected ( this.abstractOutline
+    this.jCheckBoxBinding.setSelected ( this.defaultOutline
         .getOutlinePreferences ( ).isBinding ( ) ) ;
     this.jCheckBoxBinding.setFocusable ( false ) ;
     this.jCheckBoxBinding.addItemListener ( this.outlineItemListener ) ;
@@ -493,7 +493,7 @@ public final class OutlineUI
         UNBOUND + MNEMONIC ).charAt ( 0 ) ) ;
     this.jCheckBoxUnbound.setToolTipText ( this.resourceBundle
         .getString ( UNBOUND + TOOLTIP ) ) ;
-    this.jCheckBoxUnbound.setSelected ( this.abstractOutline
+    this.jCheckBoxUnbound.setSelected ( this.defaultOutline
         .getOutlinePreferences ( ).isUnbound ( ) ) ;
     this.jCheckBoxUnbound.setFocusable ( false ) ;
     this.jCheckBoxUnbound.addItemListener ( this.outlineItemListener ) ;
@@ -513,7 +513,7 @@ public final class OutlineUI
         REPLACE + MNEMONIC ).charAt ( 0 ) ) ;
     this.jCheckBoxReplace.setToolTipText ( this.resourceBundle
         .getString ( REPLACE + TOOLTIP ) ) ;
-    this.jCheckBoxReplace.setSelected ( this.abstractOutline
+    this.jCheckBoxReplace.setSelected ( this.defaultOutline
         .getOutlinePreferences ( ).isReplace ( ) ) ;
     this.jCheckBoxReplace.setFocusable ( false ) ;
     this.jCheckBoxReplace.addItemListener ( this.outlineItemListener ) ;
@@ -533,7 +533,7 @@ public final class OutlineUI
         AUTOUPDATE + MNEMONIC ).charAt ( 0 ) ) ;
     this.jCheckBoxAutoUpdate.setToolTipText ( this.resourceBundle
         .getString ( AUTOUPDATE + TOOLTIP ) ) ;
-    this.jCheckBoxAutoUpdate.setSelected ( this.abstractOutline
+    this.jCheckBoxAutoUpdate.setSelected ( this.defaultOutline
         .getOutlinePreferences ( ).isAutoUpdate ( ) ) ;
     this.jCheckBoxAutoUpdate.setFocusable ( false ) ;
     this.jCheckBoxAutoUpdate.addItemListener ( this.outlineItemListener ) ;
@@ -550,7 +550,7 @@ public final class OutlineUI
     this.jPanelMain = new JPanel ( ) ;
     this.jPanelMain.setLayout ( this.gridBagLayout ) ;
     this.jPanelMain.addComponentListener ( new OutlineComponentListener (
-        this.abstractOutline ) ) ;
+        this.defaultOutline ) ) ;
     // TreeModel
     this.treeModel = new DefaultTreeModel ( this.rootNode ) ;
     // Tree
@@ -561,7 +561,7 @@ public final class OutlineUI
         this.outlineTreeSelectionListener ) ;
     this.jTreeOutline
         .addTreeExpansionListener ( new OutlineTreeExpansionListener (
-            this.abstractOutline ) ) ;
+            this.defaultOutline ) ) ;
     this.jTreeOutline.addMouseListener ( this.outlineMouseListener ) ;
     this.jTreeOutline.addKeyListener ( new OutlineKeyListener ( this ) ) ;
     // ScrollPane
@@ -584,7 +584,7 @@ public final class OutlineUI
     this.gridBagConstraints.weighty = 0 ;
     this.jPanelMain.add ( this.jPanelPreferences , this.gridBagConstraints ) ;
     Theme.currentTheme ( ).addPropertyChangeListener (
-        new OutlinePropertyChangeListener ( this.abstractOutline ) ) ;
+        new OutlinePropertyChangeListener ( this.defaultOutline ) ) ;
   }
 
 
@@ -707,7 +707,7 @@ public final class OutlineUI
         .getString ( SELECTION + TOOLTIP ) ) ;
     this.jMenuItemSelection.setActionCommand ( SELECTION ) ;
     this.jMenuItemSelection.addActionListener ( this.outlineActionListener ) ;
-    this.jMenuItemSelection.setSelected ( this.abstractOutline
+    this.jMenuItemSelection.setSelected ( this.defaultOutline
         .getOutlinePreferences ( ).isSelection ( ) ) ;
     this.jMenuPreferences.add ( this.jMenuItemSelection ) ;
     // MenuItem Binding
@@ -719,7 +719,7 @@ public final class OutlineUI
         .getString ( BINDING + TOOLTIP ) ) ;
     this.jMenuItemBinding.setActionCommand ( BINDING ) ;
     this.jMenuItemBinding.addActionListener ( this.outlineActionListener ) ;
-    this.jMenuItemBinding.setSelected ( this.abstractOutline
+    this.jMenuItemBinding.setSelected ( this.defaultOutline
         .getOutlinePreferences ( ).isBinding ( ) ) ;
     this.jMenuPreferences.add ( this.jMenuItemBinding ) ;
     // MenuItem Unbound
@@ -731,7 +731,7 @@ public final class OutlineUI
         .getString ( UNBOUND + TOOLTIP ) ) ;
     this.jMenuItemUnbound.setActionCommand ( UNBOUND ) ;
     this.jMenuItemUnbound.addActionListener ( this.outlineActionListener ) ;
-    this.jMenuItemUnbound.setSelected ( this.abstractOutline
+    this.jMenuItemUnbound.setSelected ( this.defaultOutline
         .getOutlinePreferences ( ).isUnbound ( ) ) ;
     this.jMenuPreferences.add ( this.jMenuItemUnbound ) ;
     // MenuItem Replace
@@ -743,7 +743,7 @@ public final class OutlineUI
         .getString ( REPLACE + TOOLTIP ) ) ;
     this.jMenuItemReplace.setActionCommand ( REPLACE ) ;
     this.jMenuItemReplace.addActionListener ( this.outlineActionListener ) ;
-    this.jMenuItemReplace.setSelected ( this.abstractOutline
+    this.jMenuItemReplace.setSelected ( this.defaultOutline
         .getOutlinePreferences ( ).isReplace ( ) ) ;
     this.jMenuPreferences.add ( this.jMenuItemReplace ) ;
     // MenuItem AutoUpdate
@@ -755,21 +755,21 @@ public final class OutlineUI
         .getString ( AUTOUPDATE + TOOLTIP ) ) ;
     this.jMenuItemAutoUpdate.setActionCommand ( AUTOUPDATE ) ;
     this.jMenuItemAutoUpdate.addActionListener ( this.outlineActionListener ) ;
-    this.jMenuItemAutoUpdate.setSelected ( this.abstractOutline
+    this.jMenuItemAutoUpdate.setSelected ( this.defaultOutline
         .getOutlinePreferences ( ).isAutoUpdate ( ) ) ;
     this.jMenuPreferences.add ( this.jMenuItemAutoUpdate ) ;
   }
 
 
   /**
-   * Returns the {@link AbstractOutline}.
+   * Returns the {@link DefaultOutline}.
    * 
-   * @return The {@link AbstractOutline}.
-   * @see #abstractOutline
+   * @return The {@link DefaultOutline}.
+   * @see #defaultOutline
    */
-  public final AbstractOutline getAbstractOutline ( )
+  public final DefaultOutline getAbstractOutline ( )
   {
-    return this.abstractOutline ;
+    return this.defaultOutline ;
   }
 
 

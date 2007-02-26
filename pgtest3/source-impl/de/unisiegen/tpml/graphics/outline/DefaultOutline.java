@@ -50,7 +50,7 @@ import de.unisiegen.tpml.graphics.outline.util.OutlinePreferences ;
  * @author Christian Fehler
  * @version $Rev: 1061 $
  */
-public final class AbstractOutline implements Outline
+public final class DefaultOutline implements Outline
 {
   /**
    * Caption of the {@link Identifier}s.
@@ -133,7 +133,7 @@ public final class AbstractOutline implements Outline
   /**
    * Initilizes the {@link OutlinePreferences} and the {@link OutlineUI}.
    */
-  public AbstractOutline ( )
+  public DefaultOutline ( )
   {
     this.loadedExpression = null ;
     this.rootOutlineNode = null ;
@@ -1234,7 +1234,7 @@ public final class AbstractOutline implements Outline
          * Programming error: The child of the Row is not an Attribute, Method
          * or CurriedMethod. This should not happen.
          */
-        throw new IllegalStateException ( "Inconsistent AbstractOutline class." ) ; //$NON-NLS-1$
+        throw new IllegalStateException ( "Inconsistent DefaultOutline class." ) ; //$NON-NLS-1$
       }
     }
     return outlineNode ;
@@ -1445,8 +1445,7 @@ public final class AbstractOutline implements Outline
    */
   public final void repaint ( )
   {
-    repaint ( ( OutlineNode ) AbstractOutline.this.outlineUI.getTreeModel ( )
-        .getRoot ( ) ) ;
+    repaint ( ( OutlineNode ) this.outlineUI.getTreeModel ( ).getRoot ( ) ) ;
   }
 
 

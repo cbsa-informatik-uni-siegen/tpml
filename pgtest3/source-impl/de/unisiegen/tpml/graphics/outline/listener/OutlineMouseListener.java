@@ -127,7 +127,7 @@ public final class OutlineMouseListener implements MouseListener
    */
   private final void handleMouseEvent ( MouseEvent pMouseEvent )
   {
-    // AbstractOutline
+    // DefaultOutline
     if ( ( this.outlineUI != null )
         && ( pMouseEvent.getSource ( ).equals ( this.outlineUI
             .getJTreeOutline ( ) ) ) )

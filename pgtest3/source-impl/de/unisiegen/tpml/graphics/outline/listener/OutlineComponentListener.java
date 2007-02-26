@@ -4,7 +4,7 @@ package de.unisiegen.tpml.graphics.outline.listener ;
 import java.awt.event.ComponentEvent ;
 import java.awt.event.ComponentListener ;
 import javax.swing.JSplitPane ;
-import de.unisiegen.tpml.graphics.outline.AbstractOutline ;
+import de.unisiegen.tpml.graphics.outline.DefaultOutline ;
 import de.unisiegen.tpml.graphics.outline.Outline ;
 import de.unisiegen.tpml.graphics.outline.util.OutlinePreferences ;
 
@@ -38,9 +38,9 @@ public final class OutlineComponentListener implements ComponentListener
 
 
   /**
-   * The {@link AbstractOutline}.
+   * The {@link DefaultOutline}.
    */
-  private AbstractOutline abstractOutline ;
+  private DefaultOutline defaultOutline ;
 
 
   /**
@@ -53,20 +53,20 @@ public final class OutlineComponentListener implements ComponentListener
   {
     this.jSplitPane = pJSplitPane ;
     this.outline = pOutline ;
-    this.abstractOutline = null ;
+    this.defaultOutline = null ;
   }
 
 
   /**
    * Initializes the {@link OutlineComponentListener}.
    * 
-   * @param pAbstractOutline The {@link AbstractOutline}.
+   * @param pDefaultOutline The {@link DefaultOutline}.
    */
-  public OutlineComponentListener ( AbstractOutline pAbstractOutline )
+  public OutlineComponentListener ( DefaultOutline pDefaultOutline )
   {
     this.jSplitPane = null ;
     this.outline = null ;
-    this.abstractOutline = pAbstractOutline ;
+    this.defaultOutline = pDefaultOutline ;
   }
 
 
@@ -113,12 +113,12 @@ public final class OutlineComponentListener implements ComponentListener
             this.jSplitPane.getDividerLocation ( ) ) ;
       }
     }
-    if ( this.abstractOutline != null )
+    if ( this.defaultOutline != null )
     {
       if ( pComponentEvent.getSource ( ).equals (
-          this.abstractOutline.getJPanelOutline ( ) ) )
+          this.defaultOutline.getJPanelOutline ( ) ) )
       {
-        this.abstractOutline.updateBreaks ( ) ;
+        this.defaultOutline.updateBreaks ( ) ;
       }
     }
   }
