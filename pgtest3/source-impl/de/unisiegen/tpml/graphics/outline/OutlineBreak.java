@@ -12,7 +12,7 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation ;
  * 
  * @author Christian Fehler
  */
-public class OutlineBreak
+public final class OutlineBreak
 {
   /**
    * The list of breaks.
