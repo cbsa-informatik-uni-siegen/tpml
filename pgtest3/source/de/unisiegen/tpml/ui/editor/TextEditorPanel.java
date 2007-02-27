@@ -24,12 +24,14 @@ import javax.swing.event.DocumentEvent ;
 import javax.swing.event.DocumentListener ;
 import javax.swing.text.BadLocationException ;
 import org.apache.log4j.Logger ;
+import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.languages.Language ;
 import de.unisiegen.tpml.graphics.StyledLanguageDocument ;
 import de.unisiegen.tpml.graphics.StyledLanguageEditor ;
 import de.unisiegen.tpml.graphics.outline.DefaultOutline ;
 import de.unisiegen.tpml.graphics.outline.Outline ;
 import de.unisiegen.tpml.graphics.outline.listener.OutlineComponentListener ;
+import de.unisiegen.tpml.graphics.outline.listener.OutlineMouseListener ;
 import de.unisiegen.tpml.graphics.outline.listener.OutlinePropertyChangeListener ;
 import de.unisiegen.tpml.ui.EditorComponent ;
 import de.unisiegen.tpml.ui.SideBar ;
@@ -165,6 +167,7 @@ public class TextEditorPanel extends JPanel implements EditorComponent ,
     this.editor.setAutoscrolls ( false ) ;
     this.outline = new DefaultOutline ( Outline.Start.EDITOR ) ;
     JPanel jPanelOutline = this.outline.getJPanelOutline ( ) ;
+    this.editor.addMouseListener ( new OutlineMouseListener ( this ) ) ;
     this.jSplitPane = new JSplitPane ( JSplitPane.VERTICAL_SPLIT ) ;
     this.jSplitPane.setLeftComponent ( compoundPanel ) ;
     this.jSplitPane.setRightComponent ( jPanelOutline ) ;
@@ -387,7 +390,7 @@ public class TextEditorPanel extends JPanel implements EditorComponent ,
       this.undohistory.clear ( ) ;
       this.undohistory.push ( text ) ;
       this.document.addDocumentListener ( this.doclistener ) ;
-      loadOutlineExpression ( ) ;
+      loadOutlineExpression ( Outline.Execute.INIT_EDITOR ) ;
     }
     catch ( BadLocationException e )
     {
@@ -425,7 +428,7 @@ public class TextEditorPanel extends JPanel implements EditorComponent ,
       this.document.insertString ( 0 , this.redohistory.pop ( ) , null ) ;
       setUndoStatus ( true ) ;
       this.document.addDocumentListener ( this.doclistener ) ;
-      loadOutlineExpression ( ) ;
+      loadOutlineExpression ( Outline.Execute.AUTO_CHANGE_EDITOR ) ;
       if ( this.redohistory.size ( ) == 0 )
       {
         setRedoStatus ( false ) ;
@@ -459,7 +462,7 @@ public class TextEditorPanel extends JPanel implements EditorComponent ,
       this.redohistory.add ( doctext ) ;
       setRedoStatus ( true ) ;
       this.document.addDocumentListener ( this.doclistener ) ;
-      loadOutlineExpression ( ) ;
+      loadOutlineExpression ( Outline.Execute.AUTO_CHANGE_EDITOR ) ;
     }
     catch ( BadLocationException e )
     {
@@ -516,18 +519,21 @@ public class TextEditorPanel extends JPanel implements EditorComponent ,
   }
 
 
-  protected void loadOutlineExpression ( )
+  /**
+   * Loads a new {@link Expression} into the {@link Outline}.
+   * 
+   * @param pExecute Indicates who loads the new Expression.
+   */
+  protected void loadOutlineExpression ( Outline.Execute pExecute )
   {
     try
     {
       TextEditorPanel.this.outline.loadExpression (
-          TextEditorPanel.this.document.getExpression ( ) ,
-          Outline.Execute.AUTO_CHANGE_EDITOR ) ;
+          TextEditorPanel.this.document.getExpression ( ) , pExecute ) ;
     }
     catch ( Exception e )
     {
-      TextEditorPanel.this.outline.loadExpression ( null ,
-          Outline.Execute.AUTO_CHANGE_EDITOR ) ;
+      TextEditorPanel.this.outline.loadExpression ( null , pExecute ) ;
     }
   }
 
@@ -550,7 +556,7 @@ public class TextEditorPanel extends JPanel implements EditorComponent ,
         setRedoStatus ( false ) ;
         TextEditorPanel.this.redohistory.clear ( ) ;
         TextEditorPanel.this.currentContent = doctext ;
-        loadOutlineExpression ( ) ;
+        loadOutlineExpression ( Outline.Execute.AUTO_CHANGE_EDITOR ) ;
       }
       catch ( BadLocationException e )
       {
@@ -571,7 +577,7 @@ public class TextEditorPanel extends JPanel implements EditorComponent ,
         TextEditorPanel.this.redohistory.clear ( ) ;
         TextEditorPanel.this.currentContent = arg0.getDocument ( ).getText ( 0 ,
             arg0.getDocument ( ).getLength ( ) ) ;
-        loadOutlineExpression ( ) ;
+        loadOutlineExpression ( Outline.Execute.AUTO_CHANGE_EDITOR ) ;
       }
       catch ( BadLocationException e )
       {
@@ -657,5 +663,17 @@ public class TextEditorPanel extends JPanel implements EditorComponent ,
   public void setAdvanced ( boolean status )
   {
     // the editor does not have an advanced mode so this is ignored.
+  }
+
+
+  /**
+   * Returns the outline.
+   * 
+   * @return The outline.
+   * @see #outline
+   */
+  public Outline getOutline ( )
+  {
+    return this.outline ;
   }
 }

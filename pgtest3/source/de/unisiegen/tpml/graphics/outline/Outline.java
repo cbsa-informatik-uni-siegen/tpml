@@ -42,7 +42,7 @@ public interface Outline
 
 
   /**
-   * TODO
+   * Indicates who loads the new Expression.
    * 
    * @author Christian Fehler
    */
@@ -65,9 +65,21 @@ public interface Outline
      */
     INIT_TYPECHECKER ,
     /**
-     * Change by mouse cick.
+     * Change by mouse cick from the <code>Editor</code>.
      */
-    MOUSE_CLICK ,
+    MOUSE_CLICK_EDITOR ,
+    /**
+     * Change by mouse cick from the <code>SmallStep</code>.
+     */
+    MOUSE_CLICK_SMALLSTEP ,
+    /**
+     * Change by mouse cick from the <code>BigStep</code>.
+     */
+    MOUSE_CLICK_BIGSTEP ,
+    /**
+     * Change by mouse cick from the <code>TypeChecker</code>.
+     */
+    MOUSE_CLICK_TYPECHECKER ,
     /**
      * Auto change from the <code>Editor</code>.
      */

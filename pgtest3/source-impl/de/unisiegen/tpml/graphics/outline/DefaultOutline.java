@@ -149,8 +149,8 @@ public final class DefaultOutline implements Outline
     this.rootOutlineNode = null ;
     this.outlinePreferences = new OutlinePreferences ( ) ;
     this.outlineUI = new OutlineUI ( this ) ;
-    if ( ( this.outlineStart.equals ( Outline.Start.EDITOR ) )
-        || ( this.outlineStart.equals ( Outline.Start.BIGSTEP ) )
+    setEnabledUI ( false ) ;
+    if ( ( this.outlineStart.equals ( Outline.Start.BIGSTEP ) )
         || ( this.outlineStart.equals ( Outline.Start.TYPECHECKER ) ) )
     {
       disableAutoUpdate ( ) ;
@@ -1322,6 +1322,7 @@ public final class DefaultOutline implements Outline
     this.rootOutlineNode = checkExpression ( this.loadedExpression ) ;
     this.rootOutlineNode.setChildIndexExpression ( ) ;
     repaint ( this.rootOutlineNode ) ;
+    setEnabledUI ( true ) ;
     SwingUtilities.invokeLater ( new OutlineDisplayTree ( this ) ) ;
   }
 
@@ -1438,15 +1439,27 @@ public final class DefaultOutline implements Outline
   {
     if ( pExpression == null )
     {
-      setEnabledUI ( false ) ;
       executeTimerCancel ( ) ;
-      this.loadedExpression = null ;
-      this.outlineUI.setRootNode ( null ) ;
+      if ( ( this.outlinePreferences.isAutoUpdate ( ) )
+          || ( pExecute.equals ( Outline.Execute.MOUSE_CLICK_EDITOR ) ) )
+      {
+        setEnabledUI ( false ) ;
+        this.loadedExpression = null ;
+        this.outlineUI.setRootNode ( null ) ;
+      }
       return ;
     }
-    setEnabledUI ( true ) ;
     if ( ( this.loadedExpression != null )
         && ( pExpression.equals ( this.loadedExpression ) ) )
+    {
+      return ;
+    }
+    /*
+     * Do not update, if the the auto change comes from the Editor and the auto
+     * update is disabled.
+     */
+    if ( ( pExecute.equals ( Outline.Execute.AUTO_CHANGE_EDITOR ) )
+        && ( ! this.outlinePreferences.isAutoUpdate ( ) ) )
     {
       return ;
     }
@@ -1476,14 +1489,17 @@ public final class DefaultOutline implements Outline
     this.loadedExpression = pExpression ;
     executeTimerCancel ( ) ;
     /*
-     * Execute the new Expression immediately, if the change is an initialized
-     * change or a change because of a mouse click.
+     * Execute the new Expression immediately, if the change is an init change
+     * or a change because of a mouse click.
      */
     if ( ( pExecute.equals ( Outline.Execute.INIT_EDITOR ) )
         || ( pExecute.equals ( Outline.Execute.INIT_SMALLSTEP ) )
         || ( pExecute.equals ( Outline.Execute.INIT_BIGSTEP ) )
         || ( pExecute.equals ( Outline.Execute.INIT_TYPECHECKER ) )
-        || ( pExecute.equals ( Outline.Execute.MOUSE_CLICK ) ) )
+        || ( pExecute.equals ( Outline.Execute.MOUSE_CLICK_EDITOR ) )
+        || ( pExecute.equals ( Outline.Execute.MOUSE_CLICK_SMALLSTEP ) )
+        || ( pExecute.equals ( Outline.Execute.MOUSE_CLICK_BIGSTEP ) )
+        || ( pExecute.equals ( Outline.Execute.MOUSE_CLICK_TYPECHECKER ) ) )
     {
       execute ( ) ;
     }
@@ -1538,8 +1554,7 @@ public final class DefaultOutline implements Outline
     if ( pStatus )
     {
       this.outlineUI.getJTreeOutline ( ).setBackground ( Color.WHITE ) ;
-      if ( ! ( ( this.outlineStart.equals ( Outline.Start.EDITOR ) )
-          || ( this.outlineStart.equals ( Outline.Start.BIGSTEP ) ) || ( this.outlineStart
+      if ( ! ( ( this.outlineStart.equals ( Outline.Start.BIGSTEP ) ) || ( this.outlineStart
           .equals ( Outline.Start.TYPECHECKER ) ) ) )
       {
         this.outlineUI.getJCheckBoxAutoUpdate ( ).setEnabled ( true ) ;

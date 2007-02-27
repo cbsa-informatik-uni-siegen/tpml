@@ -7,6 +7,7 @@ import java.awt.event.MouseListener ;
 import javax.swing.JLabel ;
 import javax.swing.tree.TreePath ;
 import de.unisiegen.tpml.core.expressions.Expression ;
+import de.unisiegen.tpml.graphics.StyledLanguageDocument ;
 import de.unisiegen.tpml.graphics.bigstep.BigStepView ;
 import de.unisiegen.tpml.graphics.components.CompoundExpression ;
 import de.unisiegen.tpml.graphics.outline.Outline ;
@@ -14,6 +15,7 @@ import de.unisiegen.tpml.graphics.outline.OutlineNode ;
 import de.unisiegen.tpml.graphics.outline.ui.OutlineUI ;
 import de.unisiegen.tpml.graphics.smallstep.SmallStepView ;
 import de.unisiegen.tpml.graphics.typechecker.TypeCheckerView ;
+import de.unisiegen.tpml.ui.editor.TextEditorPanel ;
 
 
 /**
@@ -47,6 +49,12 @@ public final class OutlineMouseListener implements MouseListener
 
 
   /**
+   * The {@link TextEditorPanel}.
+   */
+  private TextEditorPanel textEditorPanel ;
+
+
+  /**
    * The view, one of {@link SmallStepView}, {@link BigStepView} or
    * {@link TypeCheckerView}.
    */
@@ -66,12 +74,13 @@ public final class OutlineMouseListener implements MouseListener
     this.outlineUI = pOutlineUI ;
     this.compoundExpression = null ;
     this.view = null ;
+    this.textEditorPanel = null ;
   }
 
 
   /**
    * Initializes the {@link OutlineMouseListener} with the given
-   * {@link OutlineUI}. This constructer is used, if the
+   * {@link CompoundExpression}. This constructer is used, if the
    * {@link OutlineMouseListener} listens for <code>MouseEvents</code> on the
    * {@link SmallStepView}, {@link BigStepView} or {@link TypeCheckerView}.
    * 
@@ -82,6 +91,22 @@ public final class OutlineMouseListener implements MouseListener
     this.outlineUI = null ;
     this.compoundExpression = pCompoundExpression ;
     this.view = null ;
+    this.textEditorPanel = null ;
+  }
+
+
+  /**
+   * Initializes the {@link OutlineMouseListener} with the given
+   * {@link StyledLanguageDocument}.
+   * 
+   * @param pTextEditorPanel The {@link StyledLanguageDocument}.
+   */
+  public OutlineMouseListener ( TextEditorPanel pTextEditorPanel )
+  {
+    this.outlineUI = null ;
+    this.compoundExpression = null ;
+    this.view = null ;
+    this.textEditorPanel = pTextEditorPanel ;
   }
 
 
@@ -127,7 +152,7 @@ public final class OutlineMouseListener implements MouseListener
    */
   private final void handleMouseEvent ( MouseEvent pMouseEvent )
   {
-    // DefaultOutline
+    // Outline
     if ( ( this.outlineUI != null )
         && ( pMouseEvent.getSource ( ).equals ( this.outlineUI
             .getJTreeOutline ( ) ) ) )
@@ -149,8 +174,29 @@ public final class OutlineMouseListener implements MouseListener
       }
     }
     /*
-     * MouseEvent on one of the view SmallStepView, BigStepView and
-     * TypeCheckerView.
+     * Editor
+     */
+    else if ( ( this.textEditorPanel != null )
+        && ( pMouseEvent.getSource ( ).equals ( this.textEditorPanel
+            .getEditor ( ) ) ) )
+    {
+      if ( pMouseEvent.getButton ( ) == MouseEvent.BUTTON1 )
+      {
+        Expression expression = null ;
+        try
+        {
+          expression = this.textEditorPanel.getDocument ( ).getExpression ( ) ;
+        }
+        catch ( Exception e )
+        {
+          // Do nothing
+        }
+        this.textEditorPanel.getOutline ( ).loadExpression ( expression ,
+            Outline.Execute.MOUSE_CLICK_EDITOR ) ;
+      }
+    }
+    /*
+     * SmallStepView, BigStepView and TypeCheckerView.
      */
     else if ( ( pMouseEvent.getSource ( ) instanceof CompoundExpression )
         || ( pMouseEvent.getSource ( ) instanceof JLabel ) )
@@ -167,21 +213,21 @@ public final class OutlineMouseListener implements MouseListener
         {
           ( ( SmallStepView ) this.view ).getOutline ( ).loadExpression (
               this.compoundExpression.getExpression ( ) ,
-              Outline.Execute.MOUSE_CLICK ) ;
+              Outline.Execute.MOUSE_CLICK_SMALLSTEP ) ;
         }
         // BigStepView
         else if ( this.view instanceof BigStepView )
         {
           ( ( BigStepView ) this.view ).getOutline ( ).loadExpression (
               this.compoundExpression.getExpression ( ) ,
-              Outline.Execute.MOUSE_CLICK ) ;
+              Outline.Execute.MOUSE_CLICK_BIGSTEP ) ;
         }
         // TypeCheckerView
         else if ( this.view instanceof TypeCheckerView )
         {
           ( ( TypeCheckerView ) this.view ).getOutline ( ).loadExpression (
               this.compoundExpression.getExpression ( ) ,
-              Outline.Execute.MOUSE_CLICK ) ;
+              Outline.Execute.MOUSE_CLICK_TYPECHECKER ) ;
         }
       }
     }
@@ -195,10 +241,9 @@ public final class OutlineMouseListener implements MouseListener
    * @param pMouseEvent The <code>MouseEvent</code>.
    * @see MouseListener#mouseClicked(MouseEvent)
    */
-  public final void mouseClicked ( @ SuppressWarnings ( UNUSED )
-  MouseEvent pMouseEvent )
+  public final void mouseClicked ( MouseEvent pMouseEvent )
   {
-    // Do Nothing
+    handleMouseEvent ( pMouseEvent ) ;
   }
 
 
@@ -235,9 +280,10 @@ public final class OutlineMouseListener implements MouseListener
    * @param pMouseEvent The <code>MouseEvent</code>.
    * @see MouseListener#mousePressed(MouseEvent)
    */
-  public final void mousePressed ( MouseEvent pMouseEvent )
+  public final void mousePressed ( @ SuppressWarnings ( UNUSED )
+  MouseEvent pMouseEvent )
   {
-    handleMouseEvent ( pMouseEvent ) ;
+    // Do Nothing
   }
 
 
@@ -248,9 +294,10 @@ public final class OutlineMouseListener implements MouseListener
    * @param pMouseEvent The <code>MouseEvent</code>.
    * @see MouseListener#mouseReleased(MouseEvent)
    */
-  public final void mouseReleased ( MouseEvent pMouseEvent )
+  public final void mouseReleased ( @ SuppressWarnings ( UNUSED )
+  MouseEvent pMouseEvent )
   {
-    handleMouseEvent ( pMouseEvent ) ;
+    // Do Nothing
   }
 
 
