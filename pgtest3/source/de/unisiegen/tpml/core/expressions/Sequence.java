@@ -181,7 +181,7 @@ public final class Sequence extends Expression
     if ( pObject instanceof Sequence )
     {
       Sequence other = ( Sequence ) pObject ;
-      return ( this.e1.equals ( other.e1 ) && this.e2.equals ( other.e2 ) ) ;
+      return ( ( this.e1.equals ( other.e1 ) ) && ( this.e2.equals ( other.e2 ) ) ) ;
     }
     return false ;
   }

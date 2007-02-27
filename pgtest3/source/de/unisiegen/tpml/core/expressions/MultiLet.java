@@ -317,8 +317,8 @@ public final class MultiLet extends Expression
     if ( pObject instanceof MultiLet )
     {
       MultiLet other = ( MultiLet ) pObject ;
-      return ( this.identifiers.equals ( other.identifiers )
-          && this.e1.equals ( other.e1 ) && this.e2.equals ( other.e2 ) && ( ( this.tau == null ) ? ( other.tau == null )
+      return ( ( Arrays.equals ( this.identifiers , other.identifiers ) )
+          && ( this.e1.equals ( other.e1 ) ) && ( this.e2.equals ( other.e2 ) ) && ( ( this.tau == null ) ? ( other.tau == null )
           : ( this.tau.equals ( other.tau ) ) ) ) ;
     }
     return false ;

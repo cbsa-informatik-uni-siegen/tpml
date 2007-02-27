@@ -225,8 +225,8 @@ public final class Condition extends Expression
     if ( pObject instanceof Condition )
     {
       Condition other = ( Condition ) pObject ;
-      return ( this.e0.equals ( other.e0 ) && this.e1.equals ( other.e1 ) && this.e2
-          .equals ( other.e2 ) ) ;
+      return ( ( this.e0.equals ( other.e0 ) )
+          && ( this.e1.equals ( other.e1 ) ) && ( this.e2.equals ( other.e2 ) ) ) ;
     }
     return false ;
   }

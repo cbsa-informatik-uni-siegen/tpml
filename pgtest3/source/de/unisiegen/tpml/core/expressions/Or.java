@@ -184,7 +184,7 @@ public final class Or extends Expression
     if ( pObject instanceof Or )
     {
       Or other = ( Or ) pObject ;
-      return ( this.e1.equals ( other.e1 ) && this.e2.equals ( other.e2 ) ) ;
+      return ( ( this.e1.equals ( other.e1 ) ) && ( this.e2.equals ( other.e2 ) ) ) ;
     }
     return false ;
   }

@@ -378,14 +378,13 @@ public class CurriedLet extends Expression
   @ Override
   public boolean equals ( Object pObject )
   {
-    if ( pObject instanceof CurriedLet
-        && getClass ( ).equals ( pObject.getClass ( ) ) )
+    if ( ( pObject instanceof CurriedLet )
+        && ( this.getClass ( ).equals ( pObject.getClass ( ) ) ) )
     {
       CurriedLet other = ( CurriedLet ) pObject ;
-      return ( this.identifiers.equals ( other.identifiers )
-          && ( ( this.types == null ) ? ( other.types == null ) : Arrays
-              .equals ( this.types , other.types ) )
-          && this.e1.equals ( other.e1 ) && this.e2.equals ( other.e2 ) ) ;
+      return ( ( Arrays.equals ( this.identifiers , other.identifiers ) )
+          && ( Arrays.equals ( this.types , other.types ) )
+          && ( this.e1.equals ( other.e1 ) ) && ( this.e2.equals ( other.e2 ) ) ) ;
     }
     return false ;
   }

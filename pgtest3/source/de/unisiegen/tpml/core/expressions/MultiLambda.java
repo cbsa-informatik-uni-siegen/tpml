@@ -280,8 +280,8 @@ public final class MultiLambda extends Value
     if ( pObject instanceof MultiLambda )
     {
       MultiLambda other = ( MultiLambda ) pObject ;
-      return ( Arrays.equals ( this.identifiers , other.identifiers )
-          && this.e.equals ( other.e ) && ( ( this.tau == null ) ? ( other.tau == null )
+      return ( ( Arrays.equals ( this.identifiers , other.identifiers ) )
+          && ( this.e.equals ( other.e ) ) && ( ( this.tau == null ) ? ( other.tau == null )
           : ( this.tau.equals ( other.tau ) ) ) ) ;
     }
     return false ;

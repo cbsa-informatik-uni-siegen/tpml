@@ -2,6 +2,7 @@ package de.unisiegen.tpml.core.expressions ;
 
 
 import java.util.ArrayList ;
+import java.util.Arrays ;
 import java.util.Set ;
 import java.util.TreeSet ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
@@ -123,8 +124,8 @@ public final class Duplication extends Expression
     {
       Duplication other = ( Duplication ) pObject ;
       return ( ( this.firstExpression.equals ( other.firstExpression ) )
-          && ( this.expressions.equals ( other.expressions ) ) && ( this.identifiers
-          .equals ( other.identifiers ) ) ) ;
+          && ( Arrays.equals ( this.expressions , other.expressions ) ) && ( Arrays
+          .equals ( this.identifiers , other.identifiers ) ) ) ;
     }
     return false ;
   }

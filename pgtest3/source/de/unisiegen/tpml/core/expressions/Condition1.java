@@ -185,7 +185,7 @@ public final class Condition1 extends Expression
     if ( pObject instanceof Condition1 )
     {
       Condition1 other = ( Condition1 ) pObject ;
-      return ( this.e0.equals ( other.e0 ) && this.e1.equals ( other.e1 ) ) ;
+      return ( ( this.e0.equals ( other.e0 ) ) && ( this.e1.equals ( other.e1 ) ) ) ;
     }
     return false ;
   }

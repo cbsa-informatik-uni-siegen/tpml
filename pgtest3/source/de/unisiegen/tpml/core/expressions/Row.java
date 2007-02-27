@@ -2,6 +2,7 @@ package de.unisiegen.tpml.core.expressions ;
 
 
 import java.util.ArrayList ;
+import java.util.Arrays ;
 import java.util.Set ;
 import java.util.TreeSet ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
@@ -68,7 +69,7 @@ public final class Row extends Expression
     if ( pObject instanceof Row )
     {
       Row other = ( Row ) pObject ;
-      return this.expressions.equals ( other.expressions ) ;
+      return Arrays.equals ( this.expressions , other.expressions ) ;
     }
     return false ;
   }

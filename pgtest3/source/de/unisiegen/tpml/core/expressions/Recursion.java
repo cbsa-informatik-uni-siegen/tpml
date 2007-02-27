@@ -239,7 +239,7 @@ public final class Recursion extends Expression
     if ( pObject instanceof Recursion )
     {
       Recursion other = ( Recursion ) pObject ;
-      return ( this.id.equals ( other.id ) && this.e.equals ( other.e ) && ( ( this.tau == null ) ? ( other.tau == null )
+      return ( ( this.id.equals ( other.id ) ) && ( this.e.equals ( other.e ) ) && ( ( this.tau == null ) ? ( other.tau == null )
           : ( this.tau.equals ( other.tau ) ) ) ) ;
     }
     return false ;

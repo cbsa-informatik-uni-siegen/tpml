@@ -1,6 +1,7 @@
 package de.unisiegen.tpml.core.expressions ;
 
 
+import java.util.Arrays ;
 import java.util.Set ;
 import java.util.TreeSet ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
@@ -101,8 +102,8 @@ public class CurriedMethod extends Expression
     if ( pObject instanceof CurriedMethod )
     {
       CurriedMethod other = ( CurriedMethod ) pObject ;
-      return ( ( this.identifiers.equals ( other.identifiers ) )
-          && ( this.types.equals ( other.types ) ) && ( this.expression
+      return ( ( Arrays.equals ( this.identifiers , other.identifiers ) )
+          && ( Arrays.equals ( this.types , other.types ) ) && ( this.expression
           .equals ( other.expression ) ) ) ;
     }
     return false ;

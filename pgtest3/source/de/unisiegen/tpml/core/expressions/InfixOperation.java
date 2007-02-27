@@ -219,8 +219,8 @@ public final class InfixOperation extends Expression
     if ( pObject instanceof InfixOperation )
     {
       InfixOperation other = ( InfixOperation ) pObject ;
-      return ( this.op.equals ( other.op ) && this.e1.equals ( other.e1 ) && this.e2
-          .equals ( other.e2 ) ) ;
+      return ( ( this.op.equals ( other.op ) )
+          && ( this.e1.equals ( other.e1 ) ) && ( this.e2.equals ( other.e2 ) ) ) ;
     }
     return false ;
   }

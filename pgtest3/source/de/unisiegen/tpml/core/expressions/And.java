@@ -184,7 +184,7 @@ public final class And extends Expression
     if ( pObject instanceof And )
     {
       And other = ( And ) pObject ;
-      return ( this.e1.equals ( other.e1 ) && this.e2.equals ( other.e2 ) ) ;
+      return ( ( this.e1.equals ( other.e1 ) ) && ( this.e2.equals ( other.e2 ) ) ) ;
     }
     return false ;
   }

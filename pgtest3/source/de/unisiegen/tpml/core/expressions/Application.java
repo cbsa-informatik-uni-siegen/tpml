@@ -201,7 +201,7 @@ public final class Application extends Expression
     if ( pObject instanceof Application )
     {
       Application other = ( Application ) pObject ;
-      return ( this.e1.equals ( other.e1 ) && this.e2.equals ( other.e2 ) ) ;
+      return ( ( this.e1.equals ( other.e1 ) ) && ( this.e2.equals ( other.e2 ) ) ) ;
     }
     return false ;
   }

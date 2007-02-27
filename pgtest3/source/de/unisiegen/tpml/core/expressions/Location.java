@@ -125,7 +125,7 @@ public final class Location extends Value
     if ( pObject instanceof Location )
     {
       Location other = ( Location ) pObject ;
-      return ( this.name.equals ( other.name ) ) ;
+      return this.name.equals ( other.name ) ;
     }
     return false ;
   }

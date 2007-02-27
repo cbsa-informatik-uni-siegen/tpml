@@ -261,11 +261,12 @@ public class Let extends Expression
   @ Override
   public boolean equals ( Object pObject )
   {
-    if ( pObject instanceof Let && getClass ( ).equals ( pObject.getClass ( ) ) )
+    if ( ( pObject instanceof Let )
+        && ( this.getClass ( ).equals ( pObject.getClass ( ) ) ) )
     {
       Let other = ( Let ) pObject ;
-      return ( this.id.equals ( other.id ) && this.e1.equals ( other.e1 )
-          && this.e2.equals ( other.e2 ) && ( ( this.tau == null ) ? ( other.tau == null )
+      return ( ( this.id.equals ( other.id ) )
+          && ( this.e1.equals ( other.e1 ) ) && ( this.e2.equals ( other.e2 ) ) && ( ( this.tau == null ) ? ( other.tau == null )
           : this.tau.equals ( other.tau ) ) ) ;
     }
     return false ;

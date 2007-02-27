@@ -1,6 +1,7 @@
 package de.unisiegen.tpml.core.expressions ;
 
 
+import java.util.Arrays ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 
@@ -191,7 +192,7 @@ public final class Tuple extends Expression
     if ( pObject instanceof Tuple )
     {
       Tuple other = ( Tuple ) pObject ;
-      return ( this.expressions.equals ( other.expressions ) ) ;
+      return Arrays.equals ( this.expressions , other.expressions ) ;
     }
     return false ;
   }

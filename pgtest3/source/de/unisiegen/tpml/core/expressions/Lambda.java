@@ -266,7 +266,7 @@ public final class Lambda extends Value
     if ( pObject instanceof Lambda )
     {
       Lambda other = ( Lambda ) pObject ;
-      return ( this.id.equals ( other.id ) && this.e.equals ( other.e ) && ( ( this.tau == null ) ? ( other.tau == null )
+      return ( ( this.id.equals ( other.id ) ) && ( this.e.equals ( other.e ) ) && ( ( this.tau == null ) ? ( other.tau == null )
           : ( this.tau.equals ( other.tau ) ) ) ) ;
     }
     return false ;
