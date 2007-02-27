@@ -166,19 +166,22 @@ public final class OutlineMouseListener implements MouseListener
         if ( this.view instanceof SmallStepView )
         {
           ( ( SmallStepView ) this.view ).getOutline ( ).loadExpression (
-              this.compoundExpression.getExpression ( ) , Outline.MOUSE_CLICK ) ;
+              this.compoundExpression.getExpression ( ) ,
+              Outline.Execute.MOUSE_CLICK ) ;
         }
         // BigStepView
         else if ( this.view instanceof BigStepView )
         {
           ( ( BigStepView ) this.view ).getOutline ( ).loadExpression (
-              this.compoundExpression.getExpression ( ) , Outline.MOUSE_CLICK ) ;
+              this.compoundExpression.getExpression ( ) ,
+              Outline.Execute.MOUSE_CLICK ) ;
         }
         // TypeCheckerView
         else if ( this.view instanceof TypeCheckerView )
         {
           ( ( TypeCheckerView ) this.view ).getOutline ( ).loadExpression (
-              this.compoundExpression.getExpression ( ) , Outline.MOUSE_CLICK ) ;
+              this.compoundExpression.getExpression ( ) ,
+              Outline.Execute.MOUSE_CLICK ) ;
         }
       }
     }

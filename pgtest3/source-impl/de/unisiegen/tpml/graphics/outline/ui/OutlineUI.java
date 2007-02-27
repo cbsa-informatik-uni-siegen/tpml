@@ -207,6 +207,8 @@ public final class OutlineUI
 
   /**
    * The preferences <code>JPanel</code>.
+   * 
+   * @see #getJPanelPreferences()
    */
   private JPanel jPanelPreferences ;
 
@@ -986,6 +988,18 @@ public final class OutlineUI
   public final JPanel getJPanelMain ( )
   {
     return this.jPanelMain ;
+  }
+
+
+  /**
+   * Returns the <code>jPanelPreferences</code>.
+   * 
+   * @return The <code>jPanelPreferences</code>.
+   * @see #jPanelPreferences
+   */
+  public JPanel getJPanelPreferences ( )
+  {
+    return this.jPanelPreferences ;
   }
 
 

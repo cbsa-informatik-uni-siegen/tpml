@@ -64,17 +64,20 @@ public final class OutlineTreeModelListener implements TreeModelListener
     if ( source instanceof SmallStepProofModel )
     {
       this.outline.loadExpression ( this.expressionProofModel.getRoot ( )
-          .getLastLeaf ( ).getExpression ( ) , Outline.CHANGE_SMALLSTEP ) ;
+          .getLastLeaf ( ).getExpression ( ) ,
+          Outline.Execute.AUTO_CHANGE_SMALLSTEP ) ;
     }
     else if ( source instanceof BigStepProofModel )
     {
       this.outline.loadExpression ( this.expressionProofModel.getRoot ( )
-          .getLastLeaf ( ).getExpression ( ) , Outline.CHANGE_BIGSTEP ) ;
+          .getLastLeaf ( ).getExpression ( ) ,
+          Outline.Execute.AUTO_CHANGE_BIGSTEP ) ;
     }
     else if ( source instanceof TypeCheckerProofModel )
     {
       this.outline.loadExpression ( this.expressionProofModel.getRoot ( )
-          .getLastLeaf ( ).getExpression ( ) , Outline.CHANGE_TYPECHECKER ) ;
+          .getLastLeaf ( ).getExpression ( ) ,
+          Outline.Execute.AUTO_CHANGE_TYPECHECKER ) ;
     }
   }
 

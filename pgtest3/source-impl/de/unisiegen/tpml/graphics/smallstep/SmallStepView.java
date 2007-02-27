@@ -80,9 +80,9 @@ public class SmallStepView extends AbstractProofView
     {
       throw new NullPointerException ( "model is null" ) ; //$NON-NLS-1$
     }
-    this.outline = new DefaultOutline ( ) ;
+    this.outline = new DefaultOutline ( Outline.Start.SMALLSTEP ) ;
     this.outline.loadExpression ( pSmallStepProofModel.getRoot ( )
-        .getLastLeaf ( ).getExpression ( ) , Outline.INIT ) ;
+        .getLastLeaf ( ).getExpression ( ) , Outline.Execute.INIT_SMALLSTEP ) ;
     pSmallStepProofModel.addTreeModelListener ( new OutlineTreeModelListener (
         this.outline , pSmallStepProofModel ) ) ;
     GridBagConstraints gridBagConstraints = new GridBagConstraints ( ) ;

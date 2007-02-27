@@ -73,10 +73,9 @@ public class TypeCheckerView extends AbstractProofView
   public TypeCheckerView ( TypeCheckerProofModel pTypeCheckerProofModel )
   {
     super ( ) ;
-    this.outline = new DefaultOutline ( ) ;
-    this.outline.disableAutoUpdate ( ) ;
+    this.outline = new DefaultOutline ( Outline.Start.TYPECHECKER ) ;
     this.outline.loadExpression ( pTypeCheckerProofModel.getRoot ( )
-        .getLastLeaf ( ).getExpression ( ) , Outline.INIT ) ;
+        .getLastLeaf ( ).getExpression ( ) , Outline.Execute.INIT_TYPECHECKER ) ;
     pTypeCheckerProofModel.addTreeModelListener ( new OutlineTreeModelListener (
         this.outline , pTypeCheckerProofModel ) ) ;
     GridBagConstraints gridBagConstraints = new GridBagConstraints ( ) ;

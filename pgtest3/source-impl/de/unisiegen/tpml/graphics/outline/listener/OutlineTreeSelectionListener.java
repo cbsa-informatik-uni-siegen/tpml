@@ -74,7 +74,13 @@ public final class OutlineTreeSelectionListener implements
    */
   public final void reset ( )
   {
-    reset ( ( OutlineNode ) this.outlineUI.getTreeModel ( ).getRoot ( ) ) ;
+    OutlineNode outlineNode = ( OutlineNode ) this.outlineUI.getTreeModel ( )
+        .getRoot ( ) ;
+    if ( outlineNode == null )
+    {
+      return ;
+    }
+    reset ( outlineNode ) ;
   }
 
 
@@ -162,6 +168,10 @@ public final class OutlineTreeSelectionListener implements
   {
     OutlineNode rootNode = ( OutlineNode ) this.outlineUI.getTreeModel ( )
         .getRoot ( ) ;
+    if ( rootNode == null )
+    {
+      return ;
+    }
     reset ( rootNode ) ;
     if ( pTreePath == null )
     {
@@ -438,11 +448,16 @@ public final class OutlineTreeSelectionListener implements
     if ( pTreeSelectionEvent.getSource ( ).equals (
         this.outlineUI.getJTreeOutline ( ).getSelectionModel ( ) ) )
     {
-      update ( pTreeSelectionEvent.getPath ( ) ) ;
-      TreePath treePath = pTreeSelectionEvent.getOldLeadSelectionPath ( ) ;
-      if ( treePath != null )
+      TreePath newTreePath = pTreeSelectionEvent.getPath ( ) ;
+      if ( newTreePath == null )
       {
-        Object [ ] objects = treePath.getPath ( ) ;
+        return ;
+      }
+      update ( newTreePath ) ;
+      TreePath oldTreePath = pTreeSelectionEvent.getOldLeadSelectionPath ( ) ;
+      if ( oldTreePath != null )
+      {
+        Object [ ] objects = oldTreePath.getPath ( ) ;
         for ( int i = 0 ; i < objects.length ; i ++ )
         {
           this.outlineUI.getTreeModel ( ).nodeChanged (

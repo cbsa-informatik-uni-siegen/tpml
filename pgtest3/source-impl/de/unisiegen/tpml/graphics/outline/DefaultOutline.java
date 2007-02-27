@@ -1,6 +1,7 @@
 package de.unisiegen.tpml.graphics.outline ;
 
 
+import java.awt.Color ;
 import java.awt.Rectangle ;
 import java.lang.reflect.InvocationTargetException ;
 import java.util.ArrayList ;
@@ -131,14 +132,29 @@ public final class DefaultOutline implements Outline
 
 
   /**
-   * Initilizes the {@link OutlinePreferences} and the {@link OutlineUI}.
+   * The {@link Outline.Start}.
    */
-  public DefaultOutline ( )
+  private Outline.Start outlineStart ;
+
+
+  /**
+   * Initilizes the {@link OutlinePreferences} and the {@link OutlineUI}.
+   * 
+   * @param pOutlineStart The {@link Outline.Start}.
+   */
+  public DefaultOutline ( Outline.Start pOutlineStart )
   {
+    this.outlineStart = pOutlineStart ;
     this.loadedExpression = null ;
     this.rootOutlineNode = null ;
     this.outlinePreferences = new OutlinePreferences ( ) ;
     this.outlineUI = new OutlineUI ( this ) ;
+    if ( ( this.outlineStart.equals ( Outline.Start.EDITOR ) )
+        || ( this.outlineStart.equals ( Outline.Start.BIGSTEP ) )
+        || ( this.outlineStart.equals ( Outline.Start.TYPECHECKER ) ) )
+    {
+      disableAutoUpdate ( ) ;
+    }
   }
 
 
@@ -1279,7 +1295,7 @@ public final class DefaultOutline implements Outline
    * <code>JMenuItem</code>. Removes the <code>ItemListener</code> and the
    * <code>ActionListener</code>.
    */
-  public final void disableAutoUpdate ( )
+  private final void disableAutoUpdate ( )
   {
     // Disable AutoUpdate, remove Listener and deselect
     this.outlineUI.getJCheckBoxAutoUpdate ( ).setEnabled ( false ) ;
@@ -1298,6 +1314,10 @@ public final class DefaultOutline implements Outline
    */
   public final void execute ( )
   {
+    if ( this.loadedExpression == null )
+    {
+      return ;
+    }
     this.outlineUnbound = new OutlineUnbound ( this.loadedExpression ) ;
     this.rootOutlineNode = checkExpression ( this.loadedExpression ) ;
     this.rootOutlineNode.setChildIndexExpression ( ) ;
@@ -1321,13 +1341,19 @@ public final class DefaultOutline implements Outline
 
   /**
    * Starts the execute <code>Timer</code>, which will execute the rebuild of
-   * a new tree in the {@link Outline} after 250ms, if it is not canceled during
-   * this time.
+   * a new tree in the {@link Outline} after the given delay, if it is not
+   * canceled during this time.
+   * 
+   * @param pDelay Delay in milliseconds before task is to be executed.
    */
-  private final void executeTimerStart ( )
+  private final void executeTimerStart ( int pDelay )
   {
+    if ( pDelay < 0 )
+    {
+      throw new RuntimeException ( "Delay is smaller than 0" ) ; //$NON-NLS-1$
+    }
     this.outlineTimer = new Timer ( ) ;
-    this.outlineTimer.schedule ( new OutlineTimerTask ( this ) , 250 ) ;
+    this.outlineTimer.schedule ( new OutlineTimerTask ( this ) , pDelay ) ;
   }
 
 
@@ -1405,37 +1431,69 @@ public final class DefaultOutline implements Outline
    * come from a <code>MouseEvent</code>.
    * 
    * @param pExpression The new {@link Expression}.
-   * @param pModus The modus who is calling this method.
+   * @param pExecute The {@link Outline.Execute}.
    */
-  public final void loadExpression ( Expression pExpression , int pModus )
+  public final void loadExpression ( Expression pExpression ,
+      Outline.Execute pExecute )
   {
+    if ( pExpression == null )
+    {
+      setEnabledUI ( false ) ;
+      executeTimerCancel ( ) ;
+      this.loadedExpression = null ;
+      this.outlineUI.setRootNode ( null ) ;
+      return ;
+    }
+    setEnabledUI ( true ) ;
     if ( ( this.loadedExpression != null )
         && ( pExpression.equals ( this.loadedExpression ) ) )
     {
       return ;
     }
-    if ( ( pModus == Outline.CHANGE_SMALLSTEP )
+    /*
+     * Do not update, if the the auto change comes from the SmallStepper and the
+     * auto update is disabled.
+     */
+    if ( ( pExecute.equals ( Outline.Execute.AUTO_CHANGE_SMALLSTEP ) )
         && ( ! this.outlinePreferences.isAutoUpdate ( ) ) )
     {
       return ;
     }
-    if ( pModus == Outline.CHANGE_BIGSTEP )
+    /*
+     * Do not update, if the the auto change comes from the BigStepper.
+     */
+    if ( pExecute.equals ( Outline.Execute.AUTO_CHANGE_BIGSTEP ) )
     {
       return ;
     }
-    if ( pModus == Outline.CHANGE_TYPECHECKER )
+    /*
+     * Do not update, if the the auto change comes from the TypeChecker.
+     */
+    if ( pExecute.equals ( Outline.Execute.AUTO_CHANGE_TYPECHECKER ) )
     {
       return ;
     }
     this.loadedExpression = pExpression ;
     executeTimerCancel ( ) ;
-    if ( ( pModus == Outline.INIT ) || ( pModus == Outline.MOUSE_CLICK ) )
+    /*
+     * Execute the new Expression immediately, if the change is an initialized
+     * change or a change because of a mouse click.
+     */
+    if ( ( pExecute.equals ( Outline.Execute.INIT_EDITOR ) )
+        || ( pExecute.equals ( Outline.Execute.INIT_SMALLSTEP ) )
+        || ( pExecute.equals ( Outline.Execute.INIT_BIGSTEP ) )
+        || ( pExecute.equals ( Outline.Execute.INIT_TYPECHECKER ) )
+        || ( pExecute.equals ( Outline.Execute.MOUSE_CLICK ) ) )
     {
       execute ( ) ;
     }
-    else
+    else if ( pExecute.equals ( Outline.Execute.AUTO_CHANGE_EDITOR ) )
     {
-      executeTimerStart ( ) ;
+      executeTimerStart ( 250 ) ;
+    }
+    else if ( pExecute.equals ( Outline.Execute.AUTO_CHANGE_SMALLSTEP ) )
+    {
+      executeTimerStart ( 250 ) ;
     }
   }
 
@@ -1466,11 +1524,42 @@ public final class DefaultOutline implements Outline
 
 
   /**
+   * Enables or disables the {@link OutlineUI}.
+   * 
+   * @param pStatus True to enable the {@link OutlineUI}, otherwise false.
+   */
+  private final void setEnabledUI ( boolean pStatus )
+  {
+    this.outlineUI.getJTreeOutline ( ).setEnabled ( pStatus ) ;
+    this.outlineUI.getJCheckBoxSelection ( ).setEnabled ( pStatus ) ;
+    this.outlineUI.getJCheckBoxBinding ( ).setEnabled ( pStatus ) ;
+    this.outlineUI.getJCheckBoxUnbound ( ).setEnabled ( pStatus ) ;
+    this.outlineUI.getJCheckBoxReplace ( ).setEnabled ( pStatus ) ;
+    if ( pStatus )
+    {
+      this.outlineUI.getJTreeOutline ( ).setBackground ( Color.WHITE ) ;
+      if ( ! ( ( this.outlineStart.equals ( Outline.Start.EDITOR ) )
+          || ( this.outlineStart.equals ( Outline.Start.BIGSTEP ) ) || ( this.outlineStart
+          .equals ( Outline.Start.TYPECHECKER ) ) ) )
+      {
+        this.outlineUI.getJCheckBoxAutoUpdate ( ).setEnabled ( true ) ;
+      }
+    }
+    else
+    {
+      this.outlineUI.getJTreeOutline ( ).setBackground ( Color.LIGHT_GRAY ) ;
+      this.outlineUI.getJCheckBoxAutoUpdate ( ).setEnabled ( false ) ;
+    }
+  }
+
+
+  /**
    * Sets the root node in the {@link OutlineUI}.
    */
   public final void setRootNode ( )
   {
     this.outlineUI.setRootNode ( this.rootOutlineNode ) ;
+    updateBreaks ( ) ;
   }
 
 
@@ -1479,7 +1568,11 @@ public final class DefaultOutline implements Outline
    */
   public final void updateBreaks ( )
   {
-    final int distance = 10 ;
+    if ( this.rootOutlineNode == null )
+    {
+      return ;
+    }
+    final int distance = 20 ;
     JScrollPane jScrollPaneOutline = this.outlineUI.getJScrollPaneOutline ( ) ;
     OutlineNode currentNode ;
     TreePath currentTreePath ;

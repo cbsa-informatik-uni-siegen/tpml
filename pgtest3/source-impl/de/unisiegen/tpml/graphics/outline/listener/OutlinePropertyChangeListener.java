@@ -7,6 +7,7 @@ import javax.swing.JSplitPane ;
 import de.unisiegen.tpml.graphics.AbstractProofView ;
 import de.unisiegen.tpml.graphics.Theme ;
 import de.unisiegen.tpml.graphics.outline.Outline ;
+import de.unisiegen.tpml.ui.editor.TextEditorPanel ;
 
 
 /**
@@ -76,7 +77,8 @@ public final class OutlinePropertyChangeListener implements
    */
   public final void propertyChange ( PropertyChangeEvent pPropertyChangeEvent )
   {
-    if ( pPropertyChangeEvent.getSource ( ) instanceof AbstractProofView )
+    if ( ( pPropertyChangeEvent.getSource ( ) instanceof AbstractProofView )
+        || ( pPropertyChangeEvent.getSource ( ) instanceof TextEditorPanel ) )
     {
       if ( ! this.setDivider )
       {
