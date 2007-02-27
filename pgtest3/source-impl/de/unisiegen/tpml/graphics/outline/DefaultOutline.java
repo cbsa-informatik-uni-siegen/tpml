@@ -1300,11 +1300,11 @@ public final class DefaultOutline implements Outline
     // Disable AutoUpdate, remove Listener and deselect
     this.outlineUI.getJCheckBoxAutoUpdate ( ).setEnabled ( false ) ;
     this.outlineUI.getJCheckBoxAutoUpdate ( ).removeItemListener (
-        this.outlineUI.getJCheckBoxAutoUpdate ( ).getItemListeners ( ) [ 0 ] ) ;
+        this.outlineUI.getOutlineItemListener ( ) ) ;
     this.outlineUI.getJCheckBoxAutoUpdate ( ).setSelected ( false ) ;
     this.outlineUI.getJMenuItemAutoUpdate ( ).setEnabled ( false ) ;
     this.outlineUI.getJMenuItemAutoUpdate ( ).removeActionListener (
-        this.outlineUI.getJMenuItemAutoUpdate ( ).getActionListeners ( ) [ 0 ] ) ;
+        this.outlineUI.getOutlineActionListener ( ) ) ;
     this.outlineUI.getJMenuItemAutoUpdate ( ).setSelected ( false ) ;
   }
 

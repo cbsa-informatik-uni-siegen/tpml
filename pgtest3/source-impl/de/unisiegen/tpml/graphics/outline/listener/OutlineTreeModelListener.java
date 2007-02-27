@@ -56,9 +56,8 @@ public final class OutlineTreeModelListener implements TreeModelListener
    * Sets the new {@link Expression} in the {@link Outline}, if a node changed.
    * 
    * @param pTreeModelEvent The <code>TreeModelEvent</code>.
-   * @see TreeModelListener#treeNodesChanged(TreeModelEvent)
    */
-  public final void treeNodesChanged ( TreeModelEvent pTreeModelEvent )
+  private final void handleEvent ( TreeModelEvent pTreeModelEvent )
   {
     Object source = pTreeModelEvent.getSource ( ) ;
     if ( source instanceof SmallStepProofModel )
@@ -83,15 +82,27 @@ public final class OutlineTreeModelListener implements TreeModelListener
 
 
   /**
+   * Sets the new {@link Expression} in the {@link Outline}, if a node changed.
+   * 
+   * @param pTreeModelEvent The <code>TreeModelEvent</code>.
+   * @see TreeModelListener#treeNodesChanged(TreeModelEvent)
+   */
+  public final void treeNodesChanged ( @ SuppressWarnings ( UNUSED )
+  TreeModelEvent pTreeModelEvent )
+  {
+    // Do Nothing
+  }
+
+
+  /**
    * A node is inserted.
    * 
    * @param pTreeModelEvent The <code>TreeModelEvent</code>.
    * @see TreeModelListener#treeNodesInserted(TreeModelEvent)
    */
-  public final void treeNodesInserted ( @ SuppressWarnings ( UNUSED )
-  TreeModelEvent pTreeModelEvent )
+  public final void treeNodesInserted ( TreeModelEvent pTreeModelEvent )
   {
-    // Do Nothing
+    handleEvent ( pTreeModelEvent ) ;
   }
 
 
@@ -101,10 +112,9 @@ public final class OutlineTreeModelListener implements TreeModelListener
    * @param pTreeModelEvent The <code>TreeModelEvent</code>.
    * @see TreeModelListener#treeNodesRemoved(TreeModelEvent)
    */
-  public final void treeNodesRemoved ( @ SuppressWarnings ( UNUSED )
-  TreeModelEvent pTreeModelEvent )
+  public final void treeNodesRemoved ( TreeModelEvent pTreeModelEvent )
   {
-    // Do Nothing
+    handleEvent ( pTreeModelEvent ) ;
   }
 
 
