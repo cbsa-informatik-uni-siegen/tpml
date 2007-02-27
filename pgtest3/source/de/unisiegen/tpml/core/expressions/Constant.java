@@ -135,11 +135,11 @@ public abstract class Constant extends Value
   @ Override
   public boolean equals ( Object pObject )
   {
-    if ( pObject instanceof Constant )
+    if ( ( pObject instanceof Constant )
+        && ( this.getClass ( ).equals ( pObject.getClass ( ) ) ) )
     {
       Constant other = ( Constant ) pObject ;
-      return ( this.text.equals ( other.text ) && getClass ( ).equals (
-          other.getClass ( ) ) ) ;
+      return this.text.equals ( other.text ) ;
     }
     return false ;
   }
