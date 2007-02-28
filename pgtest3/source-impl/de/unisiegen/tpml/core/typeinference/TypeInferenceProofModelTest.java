@@ -32,6 +32,7 @@ import de.unisiegen.tpml.core.ProofRuleException;
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.languages.Language;
 import de.unisiegen.tpml.core.languages.LanguageFactory;
+import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel;
 
 /**
  * Test class for the {@link de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel} class.
@@ -51,7 +52,7 @@ public final class TypeInferenceProofModelTest extends JFrame {
 
 	  private JScrollPane jScrollPane ;
 	    ProofRule choosen=null;
-	
+	private TypeCheckerProofModel typechecker;
   
   //
   // Constructor
@@ -62,7 +63,7 @@ public final class TypeInferenceProofModelTest extends JFrame {
    */
   public TypeInferenceProofModelTest(final TypeInferenceProofModel model) {
 	  
-
+	  
 	  
 	  
     // setup the frame
@@ -97,7 +98,7 @@ public final class TypeInferenceProofModelTest extends JFrame {
       public void actionPerformed(ActionEvent event) {
        
     	  
-        
+    	  
     	  
     	  try {
     		  
@@ -115,7 +116,6 @@ public final class TypeInferenceProofModelTest extends JFrame {
         catch (Exception e) {
           JOptionPane.showMessageDialog(TypeInferenceProofModelTest.this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
-        
       }
     });
     buttons.add(guessButton);
@@ -183,7 +183,7 @@ public final class TypeInferenceProofModelTest extends JFrame {
       	            tree.expandRow(n);
       	          }
       	        }
-      	        catch (ProofRuleException e1) {
+      	        catch (Exception e1) {
       	          JOptionPane.showMessageDialog(TypeInferenceProofModelTest.this, e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
       	        }
         	 
@@ -246,7 +246,7 @@ public final class TypeInferenceProofModelTest extends JFrame {
           // translate the last node
           TreePath path = tree.getSelectionPath();
           if (path != null) {
-            model.translateToCoreSyntax((ExpressionProofNode)path.getLastPathComponent(), false);
+         //   model.translateToCoreSyntax((ExpressionProofNode)path.getLastPathComponent(), false);
           }
         }
         catch (Exception e) {
@@ -304,6 +304,7 @@ public final class TypeInferenceProofModelTest extends JFrame {
       
       // evaluate the resulting small step expression
       TypeInferenceProofModelTest window = new TypeInferenceProofModelTest(model);
+      window.typechecker= language.newTypeCheckerProofModel(expression);
       window.addWindowListener(new WindowAdapter() {
         @Override
         public void windowClosing(WindowEvent e) {

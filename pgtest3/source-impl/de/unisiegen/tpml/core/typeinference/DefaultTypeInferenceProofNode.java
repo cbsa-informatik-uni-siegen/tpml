@@ -39,14 +39,12 @@ public class DefaultTypeInferenceProofNode extends AbstractExpressionProofNode i
 	  
 	  private TypeSubstitutionList substitutions = TypeSubstitutionList.EMPTY_LIST;
 	  
-	  private boolean tmpChild=true;
-	  private TypeEnvironment tmpEnvironment;
-	  private Expression tmpExpression;
-	  private MonoType tmpType;
 	  
 	  private boolean checked = false;
 	  
 	  private boolean unified = false;
+	  
+	//  private DefaultTypeInferenceProofNode link;
 	  
 	  
 	  
@@ -259,54 +257,76 @@ public class DefaultTypeInferenceProofNode extends AbstractExpressionProofNode i
 
 
 	  
+	/**
+	 * TODO
+	 *
+	 * @return
+	 */
 	public TypeEquationList getEquations() {
 		return this.equations;
 	}
 
-	public TypeEnvironment getTmpEnvironment() {
-		return this.tmpEnvironment;
-	}
-
-	public void setTmpEnvironment(TypeEnvironment tmpEnvironment) {
-		this.tmpEnvironment = tmpEnvironment;
-	}
-
-	public Expression getTmpExpression() {
-		return this.tmpExpression;
-	}
-
-	public void setTmpExpression(Expression tmpExpression) {
-		this.tmpExpression = tmpExpression;
-	}
-
-	public MonoType getTmpType() {
-		return this.tmpType;
-	}
-
-	public void setTmpType(MonoType tmpType) {
-		this.tmpType = tmpType;
-	}
-
-	public boolean hasTmpChild() {
-		return tmpChild;
-	}
-
-	public void setTmpChild(boolean tmpChild) {
-		this.tmpChild = tmpChild;
-	}
-
+	/**
+	 * TODO
+	 *
+	 * @return
+	 */
 	public boolean isChecked() {
 		return this.checked;
 	}
 
+	/**
+	 * TODO
+	 *
+	 * @param checked
+	 */
 	public void setChecked(boolean checked) {
 		this.checked = checked;
 	}
 
+	/**
+	 * TODO
+	 *
+	 * @return
+	 */
 	public TypeSubstitutionList getSubstitutions() {
 		return this.substitutions;
 	}
 	
-	
+	/**
+	 * TODO
+	 *
+	 */
+	public void removeRules(){
+		this.setSteps(null);
+		
+	}
+
+	/**
+	 * TODO
+	 *
+	 * @param equations
+	 */
+	public void setEquations(TypeEquationList equations) {
+		this.equations = equations;
+	}
+
+	/**
+	 * TODO
+	 *
+	 * @param substitutions
+	 */
+	public void setSubstitutions(TypeSubstitutionList substitutions) {
+		this.substitutions = substitutions;
+	}
+
+/**	public DefaultTypeInferenceProofNode getLink() {
+		return this.link;
+	}
+
+	public void setLink(DefaultTypeInferenceProofNode link) {
+		this.link = link;
+	}*/
+
 
 }

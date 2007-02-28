@@ -1,7 +1,10 @@
 package de.unisiegen.tpml.core.languages.l4;
 
 import de.unisiegen.tpml.core.expressions.Application;
+import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.expressions.InfixOperation;
+import de.unisiegen.tpml.core.expressions.Let;
+import de.unisiegen.tpml.core.expressions.MultiLet;
 import de.unisiegen.tpml.core.languages.l1.L1Language;
 import de.unisiegen.tpml.core.languages.l2.L2Language;
 import de.unisiegen.tpml.core.languages.l3.L3Language;
@@ -69,68 +72,35 @@ public class L4TypeInferenceProofRuleSet extends L4TypeCheckerProofRuleSet {
 	  public void applyApp(TypeCheckerProofContext context, TypeCheckerProofNode pNode) {
 		
 		DefaultTypeInferenceProofNode node = (DefaultTypeInferenceProofNode) pNode;
-	    // split into tau1 and tau2 for the application
 		TypeVariable tau2 = context.newTypeVariable();
-	    ArrowType tau1 = new ArrowType(tau2, pNode.getType());
+	    ArrowType tau1 = new ArrowType(tau2, node.getType());
+		 Expression e = node.getExpression ( ) ;
 	    
 	    // can be either an application or an infix operation
-	    try {
-	    	
-	    	//TODO Benny
-	    	//have to generate second child in update method
-	      // generate new child nodes
-	      Application application = (Application)pNode.getExpression();
-	      context.addProofNode(pNode, pNode.getEnvironment(), application.getE1(), tau1);
-	      node.setTmpEnvironment(pNode.getEnvironment());
-	      node.setTmpExpression( application.getE2());
-	      node.setTmpType(tau2);
-	      
-	      //context.addProofNode(pNode, pNode.getEnvironment(), application.getE2(), tau2);
+		try
+		{
+			// otherwise it must be an infix operation
+			Application application = (Application)e;
+			context.addProofNode(pNode, pNode.getEnvironment(), application.getE1(), tau1);
 	    }
-	    catch (ClassCastException e) {
+		catch (ClassCastException e1)
+		{
 	     // generate new child node and a TmpChild which will be generated later
-	      InfixOperation infixOperation = (InfixOperation)pNode.getExpression();
+	      InfixOperation infixOperation = (InfixOperation)e;
 	      Application application = new Application(infixOperation.getOp(), infixOperation.getE1());
 	      context.addProofNode(pNode, pNode.getEnvironment(), application, tau1);
-	      node.setTmpEnvironment(pNode.getEnvironment());
-	      node.setTmpExpression( application.getE2());
-	      node.setTmpType(tau2);
-	      //Set Signal for waiting Child to be generated
-	      node.setTmpChild(true);
-	     // context.addProofNode(pNode, pNode.getEnvironment(),
-			// infixOperation.getE2(), tau2);
 	    }
 	  }
-	  
+	
     
-	public void updateApp(TypeCheckerProofContext context, TypeCheckerProofNode pNode) {
+	public void applyLet(TypeCheckerProofContext context, TypeCheckerProofNode pNode) {
+		DefaultTypeInferenceProofNode node = (DefaultTypeInferenceProofNode) pNode;
+		TypeVariable tau = context.newTypeVariable();
+		Expression expression=node.getExpression();
 		
-		boolean createchild=true;
-		//check if first child of App is finished
-		for (int i=0; i<pNode.getChildCount(); i++)
-		{
-			DefaultTypeInferenceProofNode child=(DefaultTypeInferenceProofNode)pNode.getChildAt(i);
-			if (!child.isFinished())
-			{
-				createchild=false;
-				break;
-			}
-			
-		}
-		
-		DefaultTypeInferenceProofNode node = (DefaultTypeInferenceProofNode)pNode;
-		if (createchild && node.hasTmpChild())
-		{
-			//generate second child wiht Equations from first child and remove Signal
-			context.addProofNode(pNode, node.getTmpEnvironment(), node.getTmpExpression(), node.getTmpType(), node.getFirstChild().getEquations());
-			node.setTmpChild(false);
-		}
-		
-		
-	}
-
-
-	    
-
-
+//			 generate new child node, second Child will be generated in update
+		      Let let = (Let)expression;
+		      context.addProofNode(pNode, pNode.getEnvironment(), let.getE1(), tau);
+	} 
+	
 }

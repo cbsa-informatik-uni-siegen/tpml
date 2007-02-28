@@ -9,6 +9,7 @@ import de.unisiegen.tpml.core.AbstractExpressionProofModel;
 import de.unisiegen.tpml.core.AbstractProofModel;
 import de.unisiegen.tpml.core.AbstractProofNode;
 import de.unisiegen.tpml.core.AbstractProofRuleSet;
+import de.unisiegen.tpml.core.CannotUndoException;
 import de.unisiegen.tpml.core.ProofGuessException;
 import de.unisiegen.tpml.core.ProofNode;
 import de.unisiegen.tpml.core.ProofRule;
@@ -40,7 +41,7 @@ import de.unisiegen.tpml.core.types.TypeVariable;
  */
 
 
-public final class TypeInferenceProofModel extends AbstractExpressionProofModel {
+public final class TypeInferenceProofModel extends AbstractProofModel {
 	 
 	  //
 	  // Constants
@@ -56,6 +57,8 @@ public final class TypeInferenceProofModel extends AbstractExpressionProofModel 
 	  private int index = 1;
 	  
 	  private Expression expression;
+	  
+	 // private AbstractProofNode internRoot= this.root;
 	  
 	 
 	  
@@ -84,7 +87,6 @@ public final class TypeInferenceProofModel extends AbstractExpressionProofModel 
 	      expression=pExpression;  
 	      ruleSet=pRuleSet;
 	      
-	          
 	      }
 	  
 	  public int getIndex() {
@@ -190,9 +192,10 @@ public final class TypeInferenceProofModel extends AbstractExpressionProofModel 
 	   * @see #guess(ProofNode)
 	   * @see #prove(ProofRule, ProofNode)
 	   */
-	  private void applyInternal(TypeCheckerProofRule rule, DefaultTypeInferenceProofNode node, MonoType type) throws ProofRuleException {
+	  private void applyInternal(TypeCheckerProofRule rule, DefaultTypeInferenceProofNode pNode, MonoType type) throws ProofRuleException {
 		//allocate a new TypeCheckerContext
 		DefaultTypeInferenceProofContext context;
+		DefaultTypeInferenceProofNode node = pNode; //.getLink();
 	  	context = new DefaultTypeInferenceProofContext(this, node);
 	 
 	    try {
@@ -333,7 +336,6 @@ public final class TypeInferenceProofModel extends AbstractExpressionProofModel 
 	  }
 	  
 	  void contextAddProofNode(DefaultTypeInferenceProofContext context, final DefaultTypeInferenceProofNode node, TypeEnvironment environment, Expression expression, MonoType type, TypeEquationList eqns, TypeSubstitutionList pSubstitutions) {
-		   
 		  if (context == null) {
 		     throw new NullPointerException("context is null");
 		      
@@ -354,21 +356,29 @@ public final class TypeInferenceProofModel extends AbstractExpressionProofModel 
 		      throw new IllegalArgumentException("node is invalid");
 		    }
 		    final DefaultTypeInferenceProofNode child;
+		    final DefaultTypeInferenceProofNode childIntern;
 		    if (eqns==null)
 		    {
 		    	child = new DefaultTypeInferenceProofNode(environment, expression, type, node.getEquations(), node.getSubstitutions() );
+		    //	childIntern = new DefaultTypeInferenceProofNode(environment, expression, type, node.getEquations(), node.getSubstitutions() );
 		    }
 		    else
 		    {
 		    	 child = new DefaultTypeInferenceProofNode(environment, expression, type, eqns, node.getSubstitutions());
+		    //	 childIntern = new DefaultTypeInferenceProofNode(environment, expression, type, eqns, node.getSubstitutions());
 		    }
+		    
+		   // child.setLink(childIntern);
+		  //  childIntern.setLink(child);
 		    
 		     context.addRedoAction(new Runnable() {
 		      public void run() {
 		        node.add(child);
+		        
+		        // an richtig stelle einfügen!!!
+		       // node.getLink().add(child);
 		       
 		        nodesWereInserted(node, new int[] { node.getIndex(child) });
-		        
 		      }
 		    });
 		    
@@ -385,9 +395,60 @@ public final class TypeInferenceProofModel extends AbstractExpressionProofModel 
 		return expression;
 	}
 
-
-
-	  
-	
+	public void undo(){
+		LinkedList<ProofNode> nodes = new LinkedList<ProofNode>();
+	    nodes.add(getRoot());
+	    DefaultTypeInferenceProofNode node=null;
+	    while (!nodes.isEmpty()) {
+		      node = (DefaultTypeInferenceProofNode) nodes.poll();
+		      
+		      for (int n = 0; n < node.getChildCount(); ++n) {
+		        nodes.add(node.getChildAt(n));
+		      }
+	    }
+	    DefaultTypeInferenceProofNode parent=node.getParent();
+		
+	    try {
+			super.undo();
+		} catch (CannotUndoException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		  //first in both lists of parents have to be deleteted
+		    parent.removeRules();
+		    parent.setEquations(parent.getParent().getEquations());
+		    parent.setSubstitutions(parent.getParent().getSubstitutions());
 	}
+	/**
+	public void getList(){
+		LinkedList<DefaultTypeInferenceProofNode> list= new LinkedList<DefaultTypeInferenceProofNode>();
+		createList(root,list);
+		
+		
+		for (DefaultTypeInferenceProofNode current: list)
+		{
+			
+		}
+		
+	}
+	
+	private void createList(DefaultTypeInferenceProofNode child, LinkedList<DefaultTypeInferenceProofNode> list){
+	
+		if (child.getChildCount()>0)
+		{
+			for (int i=0; i< child.getChildCount(); i++)
+			{
+				list.add(child.getChildAt(i));
+				createList(child.getChildAt(i), list);
+			}
+		}
+		else
+		{
+			list.add(child.getChildAt(0));
+		}
+		
+	}
+	*/
+}
 

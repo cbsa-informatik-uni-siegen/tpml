@@ -533,6 +533,13 @@ public void applyUnify(TypeCheckerProofContext context, TypeCheckerProofNode pNo
     throw new UnificationException(node.getEquations().first);
   }
 
+
+/**
+ * TODO
+ *
+ * @param pContext
+ * @param pNode
+ */
 public void updateDefault(TypeCheckerProofContext pContext, TypeCheckerProofNode pNode) {
 	  DefaultTypeInferenceProofContext context =(DefaultTypeInferenceProofContext)pContext;
 	  DefaultTypeInferenceProofNode root = (DefaultTypeInferenceProofNode)context.getModel().getRoot();
@@ -541,8 +548,6 @@ public void updateDefault(TypeCheckerProofContext pContext, TypeCheckerProofNode
 	  {
 		  if ( root.isFinished())
 		  {
-			  
-				
 			  DefaultTypeInferenceProofNode child= root;
 			  
 			  while (child.getChildCount()>0)
@@ -550,10 +555,6 @@ public void updateDefault(TypeCheckerProofContext pContext, TypeCheckerProofNode
 				  child=child.getLastChild();
 			  }
 			  
-			  
-			  
-			  
-			  DefaultTypeInferenceProofNode node= (DefaultTypeInferenceProofNode) pNode;
 			  context.addProofNode(root, child.getEnvironment(), root.getExpression(), root.getType(), child.getEquations());
 			  root.setChecked(true);
 			  root.setUnified(true);
@@ -561,5 +562,62 @@ public void updateDefault(TypeCheckerProofContext pContext, TypeCheckerProofNode
 		  }	
 	  }
 }
+
+	/**
+	 * TODO
+	 *
+	 * @param context
+	 * @param node
+	 */
+	public void updateApp(TypeCheckerProofContext context, TypeCheckerProofNode node) {
+		Expression e = node.getExpression();
+		if ( node.getChildCount ( ) == 1 && node.getChildAt ( 0 ).isFinished() )
+	    {
+			
+			// determine the first child node
+			DefaultTypeInferenceProofNode node0=(DefaultTypeInferenceProofNode) node.getChildAt(0);
+			TypeVariable tau =(TypeVariable)((ArrowType)node0.getType()).getTau1();
+		  if ( e instanceof Application )
+		  {
+			  // the Application case
+		        Application application = ( Application ) e ;
+		        
+		        //node0.setType(new ArrowType(tau, node.getType()));
+				context.addProofNode(node, node0.getEnvironment(),application.getE2() , tau, node0.getEquations() );
+				
+		  }
+		  else
+	      {
+	        // the InfixOperation case
+	        InfixOperation infixOperation = ( InfixOperation ) e ;
+	        context.addProofNode ( node0 ,node0.getEnvironment(), infixOperation.getE2 ( ) ,tau, node0.getEquations()  ) ;
+	      }
+	    }
+
+	
+	}
+	
+	/**
+	 * TODO
+	 *
+	 * @param context
+	 * @param node
+	 */
+	public void updateLet(TypeCheckerProofContext context, TypeCheckerProofNode node) {
+		Expression e = node.getExpression();
+		if ( node.getChildCount ( ) == 1 && node.getChildAt ( 0 ).isProven ( ) )
+	    {
+		  if ( e instanceof Let )
+		  {
+		        Let let = ( Let ) e ;
+		        DefaultTypeInferenceProofNode node0=(DefaultTypeInferenceProofNode) node.getChildAt(0);
+		        TypeVariable tau = context.newTypeVariable();
+				context.addProofNode(node0, node0.getEnvironment(),let.getE2() , tau);
+				node0.setType(new ArrowType(tau, node.getType()));
+		  }
+		  
+	    }
+	
+	}
 
 }

@@ -6,7 +6,9 @@ import java.util.TreeSet;
 import java.util.Vector;
 
 import de.unisiegen.tpml.core.AbstractProofNode;
+import de.unisiegen.tpml.core.ProofRule;
 import de.unisiegen.tpml.core.ProofRuleException;
+import de.unisiegen.tpml.core.ProofStep;
 import de.unisiegen.tpml.core.expressions.ArithmeticOperator;
 import de.unisiegen.tpml.core.expressions.Assign;
 import de.unisiegen.tpml.core.expressions.BinaryCons;
@@ -110,7 +112,7 @@ public class DefaultTypeInferenceProofContext  implements TypeInferenceProofCont
 	  
 	  protected Vector<AbstractProofNode> children;
 	  
-	  private DefaultTypeInferenceProofNode node;
+	 private DefaultTypeInferenceProofNode node;
 
 	
 	/**
@@ -241,15 +243,12 @@ public class DefaultTypeInferenceProofContext  implements TypeInferenceProofCont
 	  
 	void apply(TypeCheckerProofRule rule, TypeInferenceProofNode pNode, MonoType type) throws ProofRuleException, UnificationException {
 	    
-	    
-	    
-	    
 	    DefaultTypeInferenceProofNode node = (DefaultTypeInferenceProofNode) pNode;
 	    
 	    // try to apply the rule to the node
 	    rule.apply(this, node);
 	    
-//	  record the proof step for the node
+	    //  record the proof step for the node
 	    this.model.contextSetProofNodeRule(this, (DefaultTypeInferenceProofNode)pNode, rule);
 	    
 	    // check if the user specified a type
@@ -408,7 +407,6 @@ public class DefaultTypeInferenceProofContext  implements TypeInferenceProofCont
 		return this.model;
 	}
 	  
-
 
 
 

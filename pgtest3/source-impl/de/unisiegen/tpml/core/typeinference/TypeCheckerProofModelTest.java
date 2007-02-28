@@ -73,49 +73,10 @@ public final class TypeCheckerProofModelTest extends JFrame {
     JPanel buttons = new JPanel(new FlowLayout());
     add(buttons, BorderLayout.SOUTH);
     
-//  Setup combo box for prove
-    JComboBox combo1 = new JComboBox();
-    for (ProofRule rule : model.ruleSet.getRules())
-      combo1.addItem( rule.getName() );
-    buttons.add( combo1);
-    combo1.addItemListener( new ItemListener() {
-      public void itemStateChanged( ItemEvent e ) {
-        JComboBox selectedChoice = (JComboBox)e.getSource();
-       
-        ProofRule choosen=null;
-        	 for (ProofRule rules : model.ruleSet.getRules()){
-        		if( rules.getName().equals( selectedChoice.getSelectedItem()))
-        		 {
-        			choosen=rules;
-        			break;
-        		 }
-        	 }
-        		  try {
-        	          // prove  the last node
-        	          model.prove(choosen, nextNode(model));
-        	          
-        	          // expand to the all nodes
-        	          for (int n = 0; n < tree.getRowCount(); ++n) {
-        	            tree.expandRow(n);
-        	          }
-        	        }
-        	        catch (Exception e1) {
-        	          JOptionPane.showMessageDialog(TypeCheckerProofModelTest.this, e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        	        }
-        	      }
-     
-      
-    } );
-    
-    
-    {
-    	
-    	
-    	
-    }
+
     
     // setup the guess button
-    JButton guessButton = new JButton("Guess all");
+    JButton guessButton = new JButton("Guess");
     guessButton.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent event) {
         try {
