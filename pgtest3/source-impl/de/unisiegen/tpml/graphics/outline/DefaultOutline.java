@@ -149,7 +149,7 @@ public final class DefaultOutline implements Outline
     this.rootOutlineNode = null ;
     this.outlinePreferences = new OutlinePreferences ( ) ;
     this.outlineUI = new OutlineUI ( this ) ;
-    setEnabledUI ( false ) ;
+    // setEnabledUI ( false ) ;
     if ( ( this.outlineStart.equals ( Outline.Start.BIGSTEP ) )
         || ( this.outlineStart.equals ( Outline.Start.TYPECHECKER ) ) )
     {
@@ -1322,7 +1322,8 @@ public final class DefaultOutline implements Outline
     this.rootOutlineNode = checkExpression ( this.loadedExpression ) ;
     this.rootOutlineNode.setChildIndexExpression ( ) ;
     repaint ( this.rootOutlineNode ) ;
-    setEnabledUI ( true ) ;
+    // setEnabledUI ( true ) ;
+    this.outlineUI.setError ( false ) ;
     SwingUtilities.invokeLater ( new OutlineDisplayTree ( this ) ) ;
   }
 
@@ -1443,15 +1444,11 @@ public final class DefaultOutline implements Outline
       if ( ( this.outlinePreferences.isAutoUpdate ( ) )
           || ( pExecute.equals ( Outline.Execute.MOUSE_CLICK_EDITOR ) ) )
       {
-        setEnabledUI ( false ) ;
-        this.loadedExpression = null ;
-        this.outlineUI.setRootNode ( null ) ;
+        // setEnabledUI ( false ) ;
+        this.outlineUI.setError ( true ) ;
+        // this.loadedExpression = null ;
+        // this.outlineUI.setRootNode ( null ) ;
       }
-      return ;
-    }
-    if ( ( this.loadedExpression != null )
-        && ( pExpression.equals ( this.loadedExpression ) ) )
-    {
       return ;
     }
     /*
@@ -1483,6 +1480,16 @@ public final class DefaultOutline implements Outline
      * Do not update, if the the auto change comes from the TypeChecker.
      */
     if ( pExecute.equals ( Outline.Execute.AUTO_CHANGE_TYPECHECKER ) )
+    {
+      return ;
+    }
+    this.outlineUI.setError ( false ) ;
+    /*
+     * Do not update, if the the loaded Expression is equal to the new
+     * Expression.
+     */
+    if ( ( this.loadedExpression != null )
+        && ( pExpression.equals ( this.loadedExpression ) ) )
     {
       return ;
     }
@@ -1544,6 +1551,7 @@ public final class DefaultOutline implements Outline
    * 
    * @param pStatus True to enable the {@link OutlineUI}, otherwise false.
    */
+  @ SuppressWarnings ( "unused" )
   private final void setEnabledUI ( boolean pStatus )
   {
     this.outlineUI.getJTreeOutline ( ).setEnabled ( pStatus ) ;

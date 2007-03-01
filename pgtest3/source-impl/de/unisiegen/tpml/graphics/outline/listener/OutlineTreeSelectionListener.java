@@ -10,9 +10,9 @@ import de.unisiegen.tpml.core.expressions.CurriedMethod ;
 import de.unisiegen.tpml.core.expressions.Identifier ;
 import de.unisiegen.tpml.core.expressions.Method ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation ;
+import de.unisiegen.tpml.graphics.outline.DefaultOutline ;
 import de.unisiegen.tpml.graphics.outline.OutlineNode ;
 import de.unisiegen.tpml.graphics.outline.binding.OutlineBinding ;
-import de.unisiegen.tpml.graphics.outline.ui.OutlineUI ;
 
 
 /**
@@ -26,20 +26,20 @@ public final class OutlineTreeSelectionListener implements
     TreeSelectionListener
 {
   /**
-   * The {@link OutlineUI}.
+   * The {@link DefaultOutline}.
    */
-  private OutlineUI outlineUI ;
+  private DefaultOutline defaultOutline ;
 
 
   /**
    * Initializes the {@link OutlineTreeSelectionListener} with the given
-   * {@link OutlineUI}.
+   * {@link DefaultOutline}.
    * 
-   * @param pOutlineUI The {@link OutlineUI}.
+   * @param pDefaultOutline The {@link DefaultOutline}.
    */
-  public OutlineTreeSelectionListener ( OutlineUI pOutlineUI )
+  public OutlineTreeSelectionListener ( DefaultOutline pDefaultOutline )
   {
-    this.outlineUI = pOutlineUI ;
+    this.defaultOutline = pDefaultOutline ;
   }
 
 
@@ -48,8 +48,8 @@ public final class OutlineTreeSelectionListener implements
    */
   private final void repaint ( )
   {
-    OutlineNode rootNode = ( OutlineNode ) this.outlineUI.getTreeModel ( )
-        .getRoot ( ) ;
+    OutlineNode rootNode = ( OutlineNode ) this.defaultOutline.getOutlineUI ( )
+        .getTreeModel ( ).getRoot ( ) ;
     repaint ( rootNode ) ;
   }
 
@@ -61,7 +61,8 @@ public final class OutlineTreeSelectionListener implements
    */
   private final void repaint ( OutlineNode pOutlineNode )
   {
-    this.outlineUI.getTreeModel ( ).nodeChanged ( pOutlineNode ) ;
+    this.defaultOutline.getOutlineUI ( ).getTreeModel ( ).nodeChanged (
+        pOutlineNode ) ;
     for ( int i = 0 ; i < pOutlineNode.getChildCount ( ) ; i ++ )
     {
       repaint ( ( OutlineNode ) pOutlineNode.getChildAt ( i ) ) ;
@@ -74,8 +75,8 @@ public final class OutlineTreeSelectionListener implements
    */
   public final void reset ( )
   {
-    OutlineNode outlineNode = ( OutlineNode ) this.outlineUI.getTreeModel ( )
-        .getRoot ( ) ;
+    OutlineNode outlineNode = ( OutlineNode ) this.defaultOutline
+        .getOutlineUI ( ).getTreeModel ( ).getRoot ( ) ;
     if ( outlineNode == null )
     {
       return ;
@@ -119,7 +120,8 @@ public final class OutlineTreeSelectionListener implements
       {
         child.setOutlineBinding ( pOutlineBinding ) ;
         child.updateCaption ( ) ;
-        this.outlineUI.getTreeModel ( ).nodeChanged ( child ) ;
+        this.defaultOutline.getOutlineUI ( ).getTreeModel ( ).nodeChanged (
+            child ) ;
       }
       setBindingToChildren ( child , pOutlineBinding ) ;
     }
@@ -134,8 +136,8 @@ public final class OutlineTreeSelectionListener implements
   @ SuppressWarnings ( "unused" )
   private final void setOutlineBinding ( OutlineBinding pOutlineBinding )
   {
-    OutlineNode rootNode = ( OutlineNode ) this.outlineUI.getTreeModel ( )
-        .getRoot ( ) ;
+    OutlineNode rootNode = ( OutlineNode ) this.defaultOutline.getOutlineUI ( )
+        .getTreeModel ( ).getRoot ( ) ;
     setOutlineBinding ( pOutlineBinding , rootNode ) ;
   }
 
@@ -166,8 +168,8 @@ public final class OutlineTreeSelectionListener implements
    */
   public final void update ( TreePath pTreePath )
   {
-    OutlineNode rootNode = ( OutlineNode ) this.outlineUI.getTreeModel ( )
-        .getRoot ( ) ;
+    OutlineNode rootNode = ( OutlineNode ) this.defaultOutline.getOutlineUI ( )
+        .getTreeModel ( ).getRoot ( ) ;
     if ( rootNode == null )
     {
       return ;
@@ -201,6 +203,7 @@ public final class OutlineTreeSelectionListener implements
     {
       updateExpression ( list , pTreePath ) ;
     }
+    this.defaultOutline.updateBreaks ( ) ;
   }
 
 
@@ -321,7 +324,7 @@ public final class OutlineTreeSelectionListener implements
       /*
        * Node has changed and can be repainted
        */
-      this.outlineUI.getTreeModel ( ).nodeChanged (
+      this.defaultOutline.getOutlineUI ( ).getTreeModel ( ).nodeChanged (
           ( ( OutlineNode ) pTreePath.getPath ( ) [ i ] ) ) ;
     }
   }
@@ -384,7 +387,7 @@ public final class OutlineTreeSelectionListener implements
       /*
        * Node has changed and can be repainted
        */
-      this.outlineUI.getTreeModel ( ).nodeChanged (
+      this.defaultOutline.getOutlineUI ( ).getTreeModel ( ).nodeChanged (
           ( ( OutlineNode ) pTreePath.getPath ( ) [ i ] ) ) ;
     }
     // Highlight the bounded Identifiers in the hole tree. Disabled because of
@@ -431,7 +434,7 @@ public final class OutlineTreeSelectionListener implements
       /*
        * Node has changed and can be repainted
        */
-      this.outlineUI.getTreeModel ( ).nodeChanged (
+      this.defaultOutline.getOutlineUI ( ).getTreeModel ( ).nodeChanged (
           ( ( OutlineNode ) pTreePath.getPath ( ) [ i ] ) ) ;
     }
   }
@@ -446,7 +449,8 @@ public final class OutlineTreeSelectionListener implements
   public final void valueChanged ( TreeSelectionEvent pTreeSelectionEvent )
   {
     if ( pTreeSelectionEvent.getSource ( ).equals (
-        this.outlineUI.getJTreeOutline ( ).getSelectionModel ( ) ) )
+        this.defaultOutline.getOutlineUI ( ).getJTreeOutline ( )
+            .getSelectionModel ( ) ) )
     {
       TreePath newTreePath = pTreeSelectionEvent.getPath ( ) ;
       if ( newTreePath == null )
@@ -460,7 +464,7 @@ public final class OutlineTreeSelectionListener implements
         Object [ ] objects = oldTreePath.getPath ( ) ;
         for ( int i = 0 ; i < objects.length ; i ++ )
         {
-          this.outlineUI.getTreeModel ( ).nodeChanged (
+          this.defaultOutline.getOutlineUI ( ).getTreeModel ( ).nodeChanged (
               ( OutlineNode ) objects [ i ] ) ;
         }
       }

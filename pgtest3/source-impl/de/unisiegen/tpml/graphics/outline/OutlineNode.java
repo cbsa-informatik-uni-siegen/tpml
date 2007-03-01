@@ -796,8 +796,15 @@ public final class OutlineNode extends DefaultMutableTreeNode
             .getConstantColor ( ) ) ) ;
         result.append ( FONT_AFTER_COLOR ) ;
       }
+      else if ( this.isType )
+      {
+        result.append ( FONT_BOLD_BEGIN ) ;
+        result
+            .append ( getHTMLFormat ( Theme.currentTheme ( ).getTypeColor ( ) ) ) ;
+        result.append ( FONT_AFTER_COLOR ) ;
+      }
       result.append ( getHTMLCode ( this.expressionString ) ) ;
-      if ( ( selection ) || ( this.isInfixOperation ) )
+      if ( ( selection ) || ( this.isInfixOperation ) || ( this.isType ) )
       {
         result.append ( FONT_BOLD_END ) ;
       }
