@@ -88,8 +88,8 @@ public class CurriedMethod extends Expression
   @ Override
   public CurriedMethod clone ( )
   {
-    return new CurriedMethod ( this.identifiers.clone ( ) ,
-        this.types.clone ( ) , this.expression.clone ( ) ) ;
+    return new CurriedMethod ( this.identifiers , this.types , this.expression
+        .clone ( ) ) ;
   }
 
 
@@ -242,6 +242,13 @@ public class CurriedMethod extends Expression
   public CurriedMethod substitute ( String pId , Expression pExpression ,
       boolean pAttributeRename )
   {
+    for ( int i = 1 ; i < this.identifiers.length ; i ++ )
+    {
+      if ( this.identifiers [ i ].equals ( pId ) )
+      {
+        return this ;
+      }
+    }
     return new CurriedMethod ( this.identifiers , this.types , this.expression
         .substitute ( pId , pExpression , pAttributeRename ) ) ;
   }
@@ -302,7 +309,6 @@ public class CurriedMethod extends Expression
               PRIO_LET_TAU ) ;
     }
     builder.addText ( " = " ) ; //$NON-NLS-1$
-    builder.addBreak ( ) ;
     builder.addBuilder ( this.expression
         .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
         PRIO_CURRIED_METHOD_E ) ;

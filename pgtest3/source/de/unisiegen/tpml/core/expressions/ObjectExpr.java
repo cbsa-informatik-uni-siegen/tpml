@@ -107,10 +107,6 @@ public final class ObjectExpr extends Expression
      * Remove the Identifier of this ObjectExpr.
      */
     free.remove ( this.identifier ) ;
-    /*
-     * Add all free Identifiers of all Attributes.
-     */
-    free.addAll ( this.row.freeVal ( ) ) ;
     return free ;
   }
 
@@ -202,82 +198,23 @@ public final class ObjectExpr extends Expression
       @ SuppressWarnings ( "unused" )
       boolean pAttributeRename )
   {
-    /*
-     * If the Identifier, which should be substituted, is equal to the
-     * Identifier of this ObjectExpr, it should only be substituted in
-     * Attributes.
-     */
     if ( this.identifier.equals ( pId ) )
     {
-      Expression [ ] newRowE = this.row.getExpressions ( ).clone ( ) ;
-      for ( int i = 0 ; i < newRowE.length ; i ++ )
-      {
-        if ( newRowE [ i ] instanceof Attribute )
-        {
-          /*
-           * Stop the Attribute rename with the parameter false.
-           */
-          newRowE [ i ] = newRowE [ i ].substitute ( pId , pExpression , false ) ;
-        }
-      }
-      return new ObjectExpr ( this.identifier , this.tau , new Row ( newRowE ) ) ;
+      return this ;
     }
-    Set < String > freeObj = this.free ( ) ;
-    Set < String > freeE = pExpression.free ( ) ;
+    Set < String > freeObjectExpr = free ( ) ;
+    Set < String > freeExpression = pExpression.free ( ) ;
     String newId = this.identifier ;
-    boolean changes = true ;
-    while ( changes )
+    while ( freeObjectExpr.contains ( newId )
+        || freeExpression.contains ( newId ) || newId.equals ( pId ) )
     {
-      /*
-       * Only rename the Identifier of this ObjectExpr if the Identifier, which
-       * should be substituted is free in this ObjectExpr and the Expression
-       * contains the newId.
-       */
-      changes = false ;
-      if ( ( freeE.contains ( newId ) ) && ( freeObj.contains ( pId ) ) )
-      {
-        newId = newId + "'" ; //$NON-NLS-1$
-        changes = true ;
-      }
-      /*
-       * Rename, if an Attribute with the same Identifier exists.
-       */
-      for ( int i = 0 ; i < this.row.getExpressions ( ).length ; i ++ )
-      {
-        if ( ( this.row.getExpressions ( i ) instanceof Attribute )
-            && ( ( ( Attribute ) this.row.getExpressions ( i ) ).getId ( )
-                .equals ( newId ) ) )
-        {
-          newId = newId + "'" ; //$NON-NLS-1$
-          changes = true ;
-        }
-      }
+      newId = newId + "'" ; //$NON-NLS-1$
     }
-    /*
-     * Only substitute the old Identifier, if the new Identifier is not equal to
-     * the old Identifier.
-     */
-    Row newRow = this.row ;
-    if ( ! newId.equals ( this.identifier ) )
-    {
-      Expression [ ] newRowE = newRow.getExpressions ( ).clone ( ) ;
-      for ( int i = 0 ; i < newRowE.length ; i ++ )
-      {
-        if ( ! ( newRowE [ i ] instanceof Attribute ) )
-        {
-          /*
-           * Stop the Attribute rename with the parameter false.
-           */
-          newRowE [ i ] = newRowE [ i ].substitute ( this.identifier ,
-              new Identifier ( newId ) , false ) ;
-        }
-      }
-      newRow = new Row ( newRowE ) ;
-    }
-    /*
-     * Stop the Attribute rename with the parameter false.
-     */
-    return new ObjectExpr ( newId , this.tau , newRow.substitute ( pId ,
+    Expression newRow = ( this.identifier.equals ( newId ) ) ? this.row
+        : this.row.substitute ( this.identifier , new Identifier ( newId ) ,
+            false ) ;
+    newRow = newRow.substitute ( pId , pExpression , pAttributeRename ) ;
+    return new ObjectExpr ( newId , this.tau , this.row.substitute ( pId ,
         pExpression , false ) ) ;
   }
 

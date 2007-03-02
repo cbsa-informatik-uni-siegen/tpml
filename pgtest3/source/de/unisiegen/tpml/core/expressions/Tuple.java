@@ -94,9 +94,9 @@ public final class Tuple extends Expression
   public Tuple clone ( )
   {
     Expression [ ] newExpressions = new Expression [ this.expressions.length ] ;
-    for ( int n = 0 ; n < newExpressions.length ; ++ n )
+    for ( int i = 0 ; i < newExpressions.length ; i ++ )
     {
-      newExpressions [ n ] = this.expressions [ n ].clone ( ) ;
+      newExpressions [ i ] = this.expressions [ i ].clone ( ) ;
     }
     return new Tuple ( newExpressions ) ;
   }

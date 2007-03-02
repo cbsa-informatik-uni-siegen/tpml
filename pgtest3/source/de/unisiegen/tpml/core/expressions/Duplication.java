@@ -104,13 +104,13 @@ public final class Duplication extends Expression
   @ Override
   public Duplication clone ( )
   {
-    Expression [ ] newE = new Expression [ this.expressions.length ] ;
+    Expression [ ] newExpressions = new Expression [ this.expressions.length ] ;
     for ( int i = 0 ; i < this.expressions.length ; i ++ )
     {
-      newE [ i ] = this.expressions [ i ].clone ( ) ;
+      newExpressions [ i ] = this.expressions [ i ].clone ( ) ;
     }
     return new Duplication ( this.firstExpression.clone ( ) , this.identifiers ,
-        newE ) ;
+        newExpressions ) ;
   }
 
 
@@ -279,13 +279,14 @@ public final class Duplication extends Expression
     /*
      * Perform the normal substitution.
      */
-    Expression [ ] newExpr = new Expression [ this.expressions.length ] ;
-    for ( int i = 0 ; i < newExpr.length ; i ++ )
+    Expression [ ] newExpressions = new Expression [ this.expressions.length ] ;
+    for ( int i = 0 ; i < newExpressions.length ; i ++ )
     {
-      newExpr [ i ] = this.expressions [ i ].substitute ( pId , pExpression ) ;
+      newExpressions [ i ] = this.expressions [ i ].substitute ( pId ,
+          pExpression ) ;
     }
     return new Duplication ( this.firstExpression.substitute ( pId ,
-        pExpression ) , this.identifiers , newExpr ) ;
+        pExpression ) , this.identifiers , newExpressions ) ;
   }
 
 
@@ -298,24 +299,28 @@ public final class Duplication extends Expression
    */
   private Duplication substituteAttribute ( String pId , Expression pExpression )
   {
+    if ( ! ( pExpression instanceof Identifier ) )
+    {
+      throw new IllegalArgumentException (
+          "Expression must be an instance of Identifier" ) ; //$NON-NLS-1$
+    }
     Expression [ ] newExpr = new Expression [ this.expressions.length ] ;
-    String [ ] newId = this.identifiers.clone ( ) ;
+    String [ ] newIdentifiers = this.identifiers.clone ( ) ;
     for ( int i = 0 ; i < newExpr.length ; i ++ )
     {
       /*
        * If the Identifier, which should be substituted, is equal to the
        * Identifier of a child of this Duplication, it should be renamed.
        */
-      if ( ( newId [ i ].equals ( pId ) )
-          && ( pExpression instanceof Identifier ) )
+      if ( newIdentifiers [ i ].equals ( pId ) )
       {
-        newId [ i ] = ( ( Identifier ) pExpression ).getName ( ) ;
+        newIdentifiers [ i ] = ( ( Identifier ) pExpression ).getName ( ) ;
       }
       newExpr [ i ] = this.expressions [ i ].substitute ( pId , pExpression ,
           true ) ;
     }
     return new Duplication ( this.firstExpression.substitute ( pId ,
-        pExpression , true ) , newId , newExpr ) ;
+        pExpression , true ) , newIdentifiers , newExpr ) ;
   }
 
 

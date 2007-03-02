@@ -1079,26 +1079,7 @@ public final class DefaultOutline implements Outline
         PrettyStyle.IDENTIFIER ).get ( 0 ) ;
     OutlineBinding outlineBinding = new OutlineBinding ( pObjectExpr ,
         outlinePairId.getStart ( ) , outlinePairId.getEnd ( ) , 0 ) ;
-    Row row = pObjectExpr.getE ( ) ;
-    boolean equalIdFound = false ;
-    for ( Expression expr : row.getExpressions ( ) )
-    {
-      if ( expr instanceof Attribute )
-      {
-        Attribute attribute = ( Attribute ) expr ;
-        if ( pObjectExpr.getId ( ).equals ( attribute.getId ( ) ) )
-        {
-          equalIdFound = true ;
-        }
-      }
-      else
-      {
-        if ( ! equalIdFound )
-        {
-          outlineBinding.find ( expr , pObjectExpr.getId ( ) ) ;
-        }
-      }
-    }
+    outlineBinding.find ( pObjectExpr.getE ( ) , pObjectExpr.getId ( ) ) ;
     outlineNodeId = new OutlineNode ( IDENTIFIER , pObjectExpr.getId ( ) ,
         outlinePairId , outlineBinding , this.outlineUnbound ) ;
     outlineNodeId.setChildIndexIdentifier ( ) ;
@@ -1202,10 +1183,7 @@ public final class DefaultOutline implements Outline
         for ( int j = i + 1 ; j < pRow.getExpressions ( ).length ; j ++ )
         {
           Expression tmpChild = pRow.getExpressions ( j ) ;
-          if ( ! ( tmpChild instanceof Attribute ) )
-          {
-            outlineBinding.find ( tmpChild , attribute.getId ( ) ) ;
-          }
+          outlineBinding.find ( tmpChild , attribute.getId ( ) ) ;
           if ( ( tmpChild instanceof Attribute )
               && ( ( ( Attribute ) tmpChild ).getId ( ).equals ( attribute
                   .getId ( ) ) ) )

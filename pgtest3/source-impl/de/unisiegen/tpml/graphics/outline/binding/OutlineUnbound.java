@@ -296,27 +296,9 @@ public final class OutlineUnbound
   private final void findObjectExpr ( ArrayList < String > pBounded ,
       ObjectExpr pObjectExpr )
   {
-    Row row = pObjectExpr.getE ( ) ;
     ArrayList < String > bounded = new ArrayList < String > ( pBounded ) ;
     bounded.add ( pObjectExpr.getId ( ) ) ;
-    for ( Expression expr : row.getExpressions ( ) )
-    {
-      if ( expr instanceof Attribute )
-      {
-        Attribute attribute = ( Attribute ) expr ;
-        /*
-         * Search in the old list, because the Identifiers of Attributes are not
-         * bound in other Attributes.
-         */
-        find ( new ArrayList < String > ( pBounded ) , attribute ) ;
-        // New binding in the rest of the row
-        bounded.add ( attribute.getId ( ) ) ;
-      }
-      else
-      {
-        find ( new ArrayList < String > ( bounded ) , expr ) ;
-      }
-    }
+    find ( new ArrayList < String > ( bounded ) , pObjectExpr.getE ( ) ) ;
   }
 
 
@@ -349,20 +331,12 @@ public final class OutlineUnbound
     ArrayList < String > bounded = new ArrayList < String > ( pBounded ) ;
     for ( Expression expr : pRow.getExpressions ( ) )
     {
+      find ( new ArrayList < String > ( bounded ) , expr ) ;
       if ( expr instanceof Attribute )
       {
         Attribute attribute = ( Attribute ) expr ;
-        /*
-         * Search in the old list, because the Identifiers of Attributes are not
-         * bound in other Attributes.
-         */
-        find ( new ArrayList < String > ( pBounded ) , attribute ) ;
         // New binding in the rest of the row
         bounded.add ( attribute.getId ( ) ) ;
-      }
-      else
-      {
-        find ( new ArrayList < String > ( bounded ) , expr ) ;
       }
     }
   }

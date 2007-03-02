@@ -452,18 +452,9 @@ public final class OutlineBinding
     if ( pObjectExpr.getId ( ).equals ( this.identifier ) )
     {
       /*
-       * Search can be continued, but only in Attributes, because all
-       * Identifiers on the right side of Methods are bounded to this child
-       * expression.
+       * Search is finished, because all Identifiers in E are bounded to the
+       * Identifier in this child expression.
        */
-      Row row = pObjectExpr.getE ( ) ;
-      for ( Expression expr : row.getExpressions ( ) )
-      {
-        if ( expr instanceof Attribute )
-        {
-          findExpression ( ( ( Attribute ) expr ).getE ( ) ) ;
-        }
-      }
     }
     else
     {
@@ -502,31 +493,17 @@ public final class OutlineBinding
   @ SuppressWarnings ( "unused" )
   private final void findRow ( Row pRow )
   {
-    boolean foundEqualAttrId = false ;
     for ( Expression expr : pRow.getExpressions ( ) )
     {
-      if ( expr instanceof Attribute )
+      findExpression ( expr ) ;
+      if ( ( expr instanceof Attribute )
+          && ( ( ( Attribute ) expr ).getId ( ).equals ( this.identifier ) ) )
       {
-        Attribute attribute = ( Attribute ) expr ;
-        findExpression ( attribute.getE ( ) ) ;
-        if ( attribute.getId ( ).equals ( this.identifier ) )
-        {
-          /*
-           * Search is finished for Methods and CurriedMethods, because all
-           * Identifiers in the Row are bounded to the Identifier in this
-           * Attribute. Identifiers in Attribute can still be bound, so the
-           * search is not finished.
-           */
-          foundEqualAttrId = true ;
-        }
-      }
-      /*
-       * If the searched Identifier was not found before as an Identifier of an
-       * Attribute, it can be searched in the child Expression.
-       */
-      else if ( ! foundEqualAttrId )
-      {
-        findExpression ( expr ) ;
+        /*
+         * Search is finished, because all Identifiers in the Row are bounded to
+         * the Identifier in this Attribute.
+         */
+        break ;
       }
     }
   }

@@ -53,8 +53,7 @@ public final class Message extends Expression
   @ Override
   public Message clone ( )
   {
-    return new Message ( this.expression.clone ( ) , new String (
-        this.identifier ) ) ;
+    return new Message ( this.expression.clone ( ) , this.identifier ) ;
   }
 
 
@@ -181,7 +180,6 @@ public final class Message extends Expression
             .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
             PRIO_MESSAGE_E ) ;
     builder.addText ( " " ) ; //$NON-NLS-1$
-    builder.addBreak ( ) ;
     builder.addKeyword ( "#" ) ; //$NON-NLS-1$
     builder.addText ( " " ) ; //$NON-NLS-1$
     builder.addIdentifier ( this.identifier ) ;

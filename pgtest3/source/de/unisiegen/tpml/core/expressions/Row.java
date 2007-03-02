@@ -56,7 +56,12 @@ public final class Row extends Expression
   @ Override
   public Row clone ( )
   {
-    return new Row ( this.expressions.clone ( ) ) ;
+    Expression [ ] newExpressions = new Expression [ this.expressions.length ] ;
+    for ( int i = 0 ; i < this.expressions.length ; i ++ )
+    {
+      newExpressions [ i ] = this.expressions [ i ].clone ( ) ;
+    }
+    return new Row ( newExpressions ) ;
   }
 
 
@@ -108,25 +113,6 @@ public final class Row extends Expression
       }
     }
     return free ;
-  }
-
-
-  /**
-   * TODO
-   * 
-   * @return TODO
-   */
-  public Set < String > freeVal ( )
-  {
-    TreeSet < String > freeVal = new TreeSet < String > ( ) ;
-    for ( Expression expr : this.expressions )
-    {
-      if ( expr instanceof Attribute )
-      {
-        freeVal.addAll ( expr.free ( ) ) ;
-      }
-    }
-    return freeVal ;
   }
 
 
@@ -226,104 +212,24 @@ public final class Row extends Expression
    * {@inheritDoc}
    */
   @ Override
-  // TODO check this
-  public Row substitute ( String pID , Expression pExpression ,
+  public Row substitute ( String pId , Expression pExpression ,
       boolean pAttributeRename )
   {
-    Expression [ ] tmp = this.expressions.clone ( ) ;
-    boolean equalAttributeIdFound = false ;
-    for ( int i = 0 ; i < tmp.length ; i ++ )
+    Expression [ ] newExpressions = this.expressions.clone ( ) ;
+    for ( int i = 0 ; i < newExpressions.length ; i ++ )
     {
-      Expression currentChild = tmp [ i ] ;
-      if ( currentChild instanceof Attribute )
+      newExpressions [ i ] = this.expressions [ i ].substitute ( pId ,
+          pExpression , pAttributeRename ) ;
+      if ( newExpressions [ i ] instanceof Attribute )
       {
-        Attribute attribute = ( Attribute ) currentChild ;
-        /*
-         * If the Attribute Identifier is equal to the Identifier, which should
-         * be substituted, the Identifier has to be substituted in the Attribute
-         * and the equalAttributeIdFound value has to be set to true, because
-         * the Identifier can not be substituted in Methods or CurriedMethods in
-         * the rest of the Row.
-         */
-        if ( attribute.getId ( ).equals ( pID ) )
+        Attribute attribute = ( Attribute ) newExpressions [ i ] ;
+        if ( pId.equals ( attribute.getId ( ) ) )
         {
-          tmp [ i ] = new Attribute ( attribute.getId ( ) ,
-              attribute.getTau ( ) , attribute.getE ( ).substitute ( pID ,
-                  pExpression , pAttributeRename ) ) ;
-          equalAttributeIdFound = true ;
+          break ;
         }
-        else
-        {
-          TreeSet < String > freeRestRow = new TreeSet < String > ( ) ;
-          TreeSet < String > freeE = new TreeSet < String > ( ) ;
-          freeE.addAll ( pExpression.free ( ) ) ;
-          for ( int j = i + 1 ; j < tmp.length ; j ++ )
-          {
-            Set < String > freeRowE = tmp [ j ].free ( ) ;
-            freeRestRow.addAll ( freeRowE ) ;
-          }
-          String newId = attribute.getId ( ) ;
-          while ( ( freeE.contains ( newId ) )
-              && ( freeRestRow.contains ( pID ) ) )
-          {
-            newId = newId + "'" ; //$NON-NLS-1$
-          }
-          tmp [ i ] = new Attribute ( newId , attribute.getTau ( ) , attribute
-              .getE ( ).substitute ( pID , pExpression , pAttributeRename ) ) ;
-          /*
-           * Only substitute the old Identifier, if the new Identifier is not
-           * equal to the old Identifier.
-           */
-          if ( ! attribute.getId ( ).equals ( newId ) )
-          {
-            for ( int j = i + 1 ; j < tmp.length ; j ++ )
-            {
-              tmp [ j ] = tmp [ j ].substitute ( attribute.getId ( ) ,
-                  new Identifier ( newId ) , pAttributeRename ) ;
-            }
-          }
-        }
-      }
-      else if ( currentChild instanceof Method )
-      {
-        /*
-         * Only if no Attribute Identifier with the same name as the Identifier,
-         * which should be substituted is found, the Identifier should be
-         * substituted in the Method.
-         */
-        if ( ! equalAttributeIdFound )
-        {
-          Method method = ( Method ) currentChild ;
-          tmp [ i ] = new Method ( method.getId ( ) , method.getTau ( ) ,
-              method.getE ( )
-                  .substitute ( pID , pExpression , pAttributeRename ) ) ;
-        }
-      }
-      else if ( currentChild instanceof CurriedMethod )
-      {
-        /*
-         * Only if no Attribute Identifier with the same name as the Identifier,
-         * which should be substituted is found, the Identifier should be
-         * substituted in the CurriedMethod.
-         */
-        if ( ! equalAttributeIdFound )
-        {
-          CurriedMethod curriedMethod = ( CurriedMethod ) currentChild ;
-          tmp [ i ] = new CurriedMethod ( curriedMethod.getIdentifiers ( ) ,
-              curriedMethod.getTypes ( ) , curriedMethod.getE ( ).substitute (
-                  pID , pExpression , pAttributeRename ) ) ;
-        }
-      }
-      else
-      {
-        /*
-         * Programming error: The child of the Row is not an Attribute, Method
-         * or CurriedMethod. This should not happen.
-         */
-        throw new IllegalStateException ( "Inconsistent Row class." ) ; //$NON-NLS-1$
       }
     }
-    return new Row ( tmp ) ;
+    return new Row ( newExpressions ) ;
   }
 
 

@@ -6,6 +6,7 @@ import de.unisiegen.tpml.core.expressions.CurriedMethod ;
 import de.unisiegen.tpml.core.expressions.Duplication ;
 import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.expressions.Identifier ;
+import de.unisiegen.tpml.core.expressions.Lambda ;
 import de.unisiegen.tpml.core.expressions.Message ;
 import de.unisiegen.tpml.core.expressions.Method ;
 import de.unisiegen.tpml.core.expressions.ObjectExpr ;
@@ -210,11 +211,7 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
         for ( int i = 0 ; i < newRowE.length ; i ++ )
         {
           Expression child = row.getExpressions ( i + 1 ) ;
-          if ( child instanceof Attribute )
-          {
-            newRowE [ i ] = child ;
-          }
-          else if ( ( child instanceof Method )
+          if ( ( child instanceof Attribute ) || ( child instanceof Method )
               || ( child instanceof CurriedMethod ) )
           {
             newRowE [ i ] = child.substitute ( attribute.getId ( ) , attribute
@@ -281,6 +278,15 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
           {
             pContext
                 .addProofStep ( getRuleByName ( SEND_EXEC ) , firstRowChild ) ;
+            if ( firstRowChild instanceof CurriedMethod )
+            {
+              CurriedMethod curriedMethod = ( CurriedMethod ) firstRowChild ;
+              for ( int i = curriedMethod.getIdentifiers ( ).length - 1 ; i > 0 ; i -- )
+              {
+                methE = new Lambda ( curriedMethod.getIdentifiers ( i ) ,
+                    curriedMethod.getTypes ( i ) , methE ) ;
+              }
+            }
             return methE ;
           }
         }
@@ -434,10 +440,15 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
           {
             return attrE ;
           }
-          Expression [ ] tmp = pRow.getExpressions ( ).clone ( ) ;
-          tmp [ i ] = new Attribute ( attribute.getId ( ) ,
+          Expression [ ] newRowExpressions = new Expression [ pRow
+              .getExpressions ( ).length ] ;
+          for ( int j = 0 ; j < newRowExpressions.length ; j ++ )
+          {
+            newRowExpressions [ j ] = pRow.getExpressions ( j ).clone ( ) ;
+          }
+          newRowExpressions [ i ] = new Attribute ( attribute.getId ( ) ,
               attribute.getTau ( ) , attrE ) ;
-          return new Row ( tmp ) ;
+          return new Row ( newRowExpressions ) ;
         }
         /*
          * Check, if the current Attribute has to be renamed with the rule
@@ -462,7 +473,12 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
         if ( attrRename )
         {
           pContext.addProofStep ( getRuleByName ( ATTR_RENAME ) , attribute ) ;
-          Expression [ ] tmp = pRow.getExpressions ( ).clone ( ) ;
+          Expression [ ] newRowExpressions = new Expression [ pRow
+              .getExpressions ( ).length ] ;
+          for ( int j = 0 ; j < newRowExpressions.length ; j ++ )
+          {
+            newRowExpressions [ j ] = pRow.getExpressions ( j ).clone ( ) ;
+          }
           String newId = attribute.getId ( ) + "'" ; //$NON-NLS-1$ 
           while ( attrRename )
           {
@@ -479,23 +495,23 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
               }
             }
           }
-          tmp [ i ] = new Attribute ( newId , attribute.getTau ( ) , attribute
-              .getE ( ).clone ( ) ) ;
-          for ( int j = i + 1 ; j < tmp.length ; j ++ )
+          newRowExpressions [ i ] = new Attribute ( newId ,
+              attribute.getTau ( ) , attribute.getE ( ).clone ( ) ) ;
+          for ( int j = i + 1 ; j < newRowExpressions.length ; j ++ )
           {
-            if ( tmp [ j ] instanceof Attribute )
+            if ( newRowExpressions [ j ] instanceof Attribute )
             {
-              Attribute currentAttribute = ( Attribute ) tmp [ j ] ;
+              Attribute currentAttribute = ( Attribute ) newRowExpressions [ j ] ;
               if ( currentAttribute.getId ( ).equals ( attribute.getId ( ) ) )
               {
                 break ;
               }
             }
-            else if ( ( tmp [ j ] instanceof Method )
-                || ( tmp [ j ] instanceof CurriedMethod ) )
+            else if ( ( newRowExpressions [ j ] instanceof Method )
+                || ( newRowExpressions [ j ] instanceof CurriedMethod ) )
             {
-              tmp [ j ] = tmp [ j ].substitute ( attribute.getId ( ) ,
-                  new Identifier ( newId ) , true ) ;
+              newRowExpressions [ j ] = newRowExpressions [ j ].substitute (
+                  attribute.getId ( ) , new Identifier ( newId ) , true ) ;
             }
             else
             {
@@ -507,7 +523,7 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
                   "Inconsistent L20SmallStepProofRuleSet class." ) ; //$NON-NLS-1$
             }
           }
-          return new Row ( tmp ) ;
+          return new Row ( newRowExpressions ) ;
         }
         /*
          * If the Attribute is a value and it has not to be renamed, we have to
