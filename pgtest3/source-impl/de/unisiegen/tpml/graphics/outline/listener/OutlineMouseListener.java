@@ -157,7 +157,7 @@ public final class OutlineMouseListener implements MouseListener
         && ( pMouseEvent.getSource ( ).equals ( this.outlineUI
             .getJTreeOutline ( ) ) ) )
     {
-      if ( pMouseEvent.isPopupTrigger ( ) )
+      if ( pMouseEvent.getButton ( ) == MouseEvent.BUTTON3 )
       {
         int x = pMouseEvent.getX ( ) ;
         int y = pMouseEvent.getY ( ) ;
