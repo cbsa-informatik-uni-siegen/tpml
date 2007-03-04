@@ -473,7 +473,7 @@ public class CompoundExpression < S , E > extends JComponent
     {
       // now check the size still available for the expression
     	//TODO Test for printing
-    	//this.expressionSize = this.expressionRenderer.getNeededSizeAll ( maxWidth ) ;
+    	//this.expressionSize = this.expressionRenderer.getNeededSizeAll_ ( maxWidth ) ;
       this.expressionSize = this.expressionRenderer.getNeededSize ( maxWidth ) ;
       result.width += this.expressionSize.width ;
       result.height = Math.max ( result.height , this.expressionSize.height ) ;
@@ -491,8 +491,26 @@ public class CompoundExpression < S , E > extends JComponent
   protected void paintComponent ( Graphics gc )
   {
     //TODO Only for test to make yompoundexpression visible
-    //gc.setColor (Color.lightGray);
+  	//it also displays whow often the exptresso is rednerd while srolling...
+    //gc.setColor (Color.yellow);
+  	//--------------------------------
+    //Color [] test = new Color [10];
+    //test[0] = Color.yellow;
+    //test[1] = Color.red;
+    //test[2] = Color.green;
+    //test[3] = Color.cyan;
+    //test[4] = Color.green;
+    //test[5] = Color.lightGray;
+    //test[6] = Color.blue;
+    //test[7] = Color.gray;
+    //test[8] = Color.magenta;
+    //test[9] = Color.orange;
+    
+    //double get = Math.random();
+    //int getR = (int) (get*10);
+    //gc.setColor (test[getR]);
     //gc.fillRect(0, 0, getWidth () - 1, getHeight () - 1);
+  	//--------------------------------
     
     // make sure that we have an expression renderer
     if ( this.expressionRenderer == null )
