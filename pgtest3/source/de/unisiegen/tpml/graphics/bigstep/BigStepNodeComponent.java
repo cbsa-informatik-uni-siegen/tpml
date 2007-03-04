@@ -420,7 +420,7 @@ public class BigStepNodeComponent extends JComponent implements TreeNodeComponen
                       }
                     }
                   }
-                  //if it is not int the list it will be added at the top and the last element will be deleted
+                  //if it is not in the list it will be added at the top and the last element will be deleted
                   if (!isIn)
                   {
                   	saveToRevert();
@@ -456,6 +456,7 @@ public class BigStepNodeComponent extends JComponent implements TreeNodeComponen
       }
     }
     //if ther are less than TOMANY rules ther will be no submenus, only seperators
+    //with this variable you would also be able to disable the submenufunction
     else
     {
       if (rules.length > 0)
@@ -746,7 +747,8 @@ public class BigStepNodeComponent extends JComponent implements TreeNodeComponen
     maxWidth -= labelSize.width;
     
     //  get the needed size for the expression
-    Dimension expSize = this.expression.getNeededSize(maxWidth);
+    //Dimension expSize = this.expression.getNeededSize(maxWidth);
+    Dimension expSize = this.expression.getNeededSize(maxWidth-this.dimension.width);
     this.dimension.width += expSize.width;
     this.dimension.height = Math.max(expSize.height, this.dimension.height);
 
@@ -756,9 +758,51 @@ public class BigStepNodeComponent extends JComponent implements TreeNodeComponen
 
     // the result should never be wrapped so we use 
     // the Integer.MAX_VALUE to prevent linewrapping
-    Dimension resultSize = this.resultExpression.getNeededSize(Integer.MAX_VALUE);
+    //wenn die von maxWidht jetzt nicht mehr übrig ist, dann muss umgebrochen werden...
+    boolean breakNeeded = false;
+    //if the expression is braken the result will be meshed mesPix pixels
+    int meshPix=50;
+    if (maxWidth-this.dimension.width < 10)
+    {
+    	breakNeeded = true;
+    }
+    Dimension resultSize=new Dimension(0,0);
+    if (!breakNeeded)
+    {
+    	resultSize = this.resultExpression.getNeededSize(maxWidth-this.dimension.width);
+    	//if the result is higher than the hight of one line the result will be in the next line
+    	
+    	if (resultSize.height > fm.getHeight())
+    	{
+    		breakNeeded = true;
+    		//TODO Testausgabe
+    		//System.out.println("hier");
+    	}
+    }
+    if (breakNeeded)
+    {
+    	//TODO Testausgabe
+    	//System.out.println("Er bircht um!");
+    	//we have to calculate the new size
+    	//-meshPix gives the pixels to mesh in the new line
+//    TODO Testausgabe    	
+    	//System.out.println("Bisherige GEsamthöhe: "+this.dimension.height);
+    	//System.out.println("Höhe des Ausdrucks: "+expSize.height);
+    	resultSize = this.resultExpression.getNeededSize(maxWidth-meshPix);
+//    TODO Testausgabe
+    	//System.out.println("result hat die Höhe:"+resultSize.height);
+    	//if the renderer breaks the expression will be higher
+    	this.dimension.height = Math.max ( this.dimension.height, (expSize.height + resultSize.height));
+
+//    TODO Testausgabe
+    	//System.out.println("nun ist die Gesamthöhe: "+this.dimension.height);
+    }
+       
     this.dimension.width += resultSize.width;
-    this.dimension.height = Math.max(resultSize.height, this.dimension.height);
+    if (!breakNeeded)
+    {
+    	this.dimension.height = Math.max(resultSize.height, this.dimension.height);
+    }
         
     // now place the elements
     int posX = 0;
@@ -766,13 +810,26 @@ public class BigStepNodeComponent extends JComponent implements TreeNodeComponen
     this.indexLabel.setBounds(posX, 0, labelSize.width, this.dimension.height);
     posX += labelSize.width + this.spacing;
     
-    this.expression.setBounds(posX, 0, expSize.width, this.dimension.height);
+    //this.expression.setBounds(posX, 0, expSize.width, this.dimension.height);
+    this.expression.setBounds(posX, 0, expSize.width, expSize.height);
     posX += expSize.width;
     
-    this.downArrowLabel.setBounds (posX, 0, arrowSize.width, this.dimension.height);
+    //this.downArrowLabel.setBounds (posX, 0, arrowSize.width, this.dimension.height);
+    this.downArrowLabel.setBounds (posX, 0, arrowSize.width, expSize.height);
     posX += arrowSize.width;
     
-    this.resultExpression.setBounds(posX, 0, resultSize.width, this.dimension.height);
+    if (!breakNeeded)
+    {
+    	//this.resultExpression.setBounds(posX, 0, resultSize.width, this.dimension.height);	
+    	this.resultExpression.setBounds(posX, 0, resultSize.width, resultSize.height);
+    }
+    else 
+    {
+//    TODO Testausgabe
+    	//System.out.println("Der Umbruch wird vollzogen, das Ergebnis beginnt jetzt: "+(this.dimension.height-resultSize.height)+", die Gesamtgröße ist jetzt: "+this.dimension.height);
+    	this.resultExpression.setBounds(meshPix, (this.dimension.height-resultSize.height) , resultSize.width, resultSize.height);
+    }
+    
     
     
     /*
@@ -920,10 +977,10 @@ public class BigStepNodeComponent extends JComponent implements TreeNodeComponen
     {
       try
       {
-        MenuRuleItem kacke = (MenuRuleItem) menu.getComponent(i);
+        MenuRuleItem toCompare = (MenuRuleItem) menu.getComponent(i);
         MenuRuleItem tmp2 = lastUsedElements.get(i);
         // vergleiche die Namen, wenn sie übereinstimmen
-        if (kacke.getText().equals(label))
+        if (toCompare.getText().equals(label))
         {
           //System.out.println("wieder nach oben!");
           // nach oeben schieben
