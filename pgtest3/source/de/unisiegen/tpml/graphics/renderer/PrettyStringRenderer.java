@@ -758,7 +758,14 @@ public class PrettyStringRenderer extends AbstractRenderer {
     	
     	
     	//packen wir diese Scheiße in ein Array
-    	int[] breakOffsets = new int [result.breakOffsets.size()];
+    	int arraySize=0;
+    	
+    	if (result != null)
+    	{
+    		arraySize = result.breakOffsets.size();
+    	}
+    	int[] breakOffsets = new int [arraySize];
+    	
     	//TODO Testausgabe
     	//System.out.println("----------------------------------------------"+result.breakOffsets.size());
     	//System.out.print("Umbruchstellen: ");
