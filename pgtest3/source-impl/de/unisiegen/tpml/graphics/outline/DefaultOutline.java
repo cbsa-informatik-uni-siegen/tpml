@@ -32,7 +32,6 @@ import de.unisiegen.tpml.core.expressions.ObjectExpr ;
 import de.unisiegen.tpml.core.expressions.Recursion ;
 import de.unisiegen.tpml.core.expressions.Row ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStyle ;
-import de.unisiegen.tpml.core.types.Type ;
 import de.unisiegen.tpml.graphics.outline.binding.OutlineBinding ;
 import de.unisiegen.tpml.graphics.outline.binding.OutlinePair ;
 import de.unisiegen.tpml.graphics.outline.binding.OutlineStyle ;
@@ -57,12 +56,6 @@ public final class DefaultOutline implements Outline
    * Caption of the {@link Identifier}s.
    */
   private static final String IDENTIFIER = "Identifier" ; //$NON-NLS-1$
-
-
-  /**
-   * Caption of the {@link Type}s.
-   */
-  private static final String TYPE = "Type" ; //$NON-NLS-1$
 
 
   /**
@@ -238,8 +231,9 @@ public final class DefaultOutline implements Outline
         outlinePairType = OutlineStyle.getIndex ( pCurriedLet ,
             PrettyStyle.TYPE , start , end ).get ( 0 ) ;
         String tau = pCurriedLet.getTypes ( i ).toPrettyString ( ).toString ( ) ;
-        outlineNodeType = new OutlineNode ( TYPE , tau , outlinePairType
-            .getStart ( ) , outlinePairType.getStart ( ) + tau.length ( ) - 1 ,
+        outlineNodeType = new OutlineNode ( pCurriedLet.getTypes ( i )
+            .getCaption ( ) , tau , outlinePairType.getStart ( ) ,
+            outlinePairType.getStart ( ) + tau.length ( ) - 1 ,
             this.outlineUnbound ) ;
         outlineNodeType.setChildIndexType ( i ) ;
         outlineNodeId.add ( outlineNodeType ) ;
@@ -264,8 +258,9 @@ public final class DefaultOutline implements Outline
       String tau = pCurriedLet.getTypes ( 0 ).toPrettyString ( ).toString ( ) ;
       outlinePairType = OutlineStyle.getIndex ( pCurriedLet , PrettyStyle.TYPE ,
           start , end ).get ( 0 ) ;
-      outlineNodeType = new OutlineNode ( TYPE , tau , outlinePairType
-          .getStart ( ) , outlinePairType.getStart ( ) + tau.length ( ) - 1 ,
+      outlineNodeType = new OutlineNode ( pCurriedLet.getTypes ( 0 )
+          .getCaption ( ) , tau , outlinePairType.getStart ( ) ,
+          outlinePairType.getStart ( ) + tau.length ( ) - 1 ,
           this.outlineUnbound ) ;
       outlineNodeType.setChildIndexType ( ) ;
       outlineNode.add ( outlineNodeType ) ;
@@ -374,8 +369,9 @@ public final class DefaultOutline implements Outline
             PrettyStyle.TYPE , start , end ).get ( 0 ) ;
         String tau = pCurriedLetRec.getTypes ( i ).toPrettyString ( )
             .toString ( ) ;
-        outlineNodeType = new OutlineNode ( TYPE , tau , outlinePairType
-            .getStart ( ) , outlinePairType.getStart ( ) + tau.length ( ) - 1 ,
+        outlineNodeType = new OutlineNode ( pCurriedLetRec.getTypes ( i )
+            .getCaption ( ) , tau , outlinePairType.getStart ( ) ,
+            outlinePairType.getStart ( ) + tau.length ( ) - 1 ,
             this.outlineUnbound ) ;
         outlineNodeType.setChildIndexType ( i ) ;
         outlineNodeId.add ( outlineNodeType ) ;
@@ -400,8 +396,9 @@ public final class DefaultOutline implements Outline
       String tau = pCurriedLetRec.getTypes ( 0 ).toPrettyString ( ).toString ( ) ;
       outlinePairType = OutlineStyle.getIndex ( pCurriedLetRec ,
           PrettyStyle.TYPE , start , end ).get ( 0 ) ;
-      outlineNodeType = new OutlineNode ( TYPE , tau , outlinePairType
-          .getStart ( ) , outlinePairType.getStart ( ) + tau.length ( ) - 1 ,
+      outlineNodeType = new OutlineNode ( pCurriedLetRec.getTypes ( 0 )
+          .getCaption ( ) , tau , outlinePairType.getStart ( ) ,
+          outlinePairType.getStart ( ) + tau.length ( ) - 1 ,
           this.outlineUnbound ) ;
       outlineNodeType.setChildIndexType ( ) ;
       outlineNode.add ( outlineNodeType ) ;
@@ -492,8 +489,9 @@ public final class DefaultOutline implements Outline
             PrettyStyle.TYPE , start , end ).get ( 0 ) ;
         String tau = pCurriedMethod.getTypes ( i ).toPrettyString ( )
             .toString ( ) ;
-        outlineNodeType = new OutlineNode ( TYPE , tau , outlinePairType
-            .getStart ( ) , outlinePairType.getStart ( ) + tau.length ( ) - 1 ,
+        outlineNodeType = new OutlineNode ( pCurriedMethod.getTypes ( i )
+            .getCaption ( ) , tau , outlinePairType.getStart ( ) ,
+            outlinePairType.getStart ( ) + tau.length ( ) - 1 ,
             this.outlineUnbound ) ;
         outlineNodeType.setChildIndexType ( i ) ;
         outlineNodeId.add ( outlineNodeType ) ;
@@ -518,8 +516,9 @@ public final class DefaultOutline implements Outline
       String tau = pCurriedMethod.getTypes ( 0 ).toPrettyString ( ).toString ( ) ;
       outlinePairType = OutlineStyle.getIndex ( pCurriedMethod ,
           PrettyStyle.TYPE , start , end ).get ( 0 ) ;
-      outlineNodeType = new OutlineNode ( TYPE , tau , outlinePairType
-          .getStart ( ) , outlinePairType.getStart ( ) + tau.length ( ) - 1 ,
+      outlineNodeType = new OutlineNode ( pCurriedMethod.getTypes ( 0 )
+          .getCaption ( ) , tau , outlinePairType.getStart ( ) ,
+          outlinePairType.getStart ( ) + tau.length ( ) - 1 ,
           this.outlineUnbound ) ;
       outlineNodeType.setChildIndexType ( ) ;
       outlineNode.add ( outlineNodeType ) ;
@@ -718,9 +717,9 @@ public final class DefaultOutline implements Outline
       OutlinePair outlinePairType = OutlineStyle.getIndex ( pLambda ,
           PrettyStyle.TYPE ).get ( 0 ) ;
       String tau = pLambda.getTau ( ).toPrettyString ( ).toString ( ) ;
-      outlineNodeType = new OutlineNode ( TYPE , tau , outlinePairType
-          .getStart ( ) , outlinePairType.getStart ( ) + tau.length ( ) - 1 ,
-          this.outlineUnbound ) ;
+      outlineNodeType = new OutlineNode ( pLambda.getTau ( ).getCaption ( ) ,
+          tau , outlinePairType.getStart ( ) , outlinePairType.getStart ( )
+              + tau.length ( ) - 1 , this.outlineUnbound ) ;
       outlineNodeType.setChildIndexType ( ) ;
       outlineNode.add ( outlineNodeType ) ;
     }
@@ -764,9 +763,9 @@ public final class DefaultOutline implements Outline
       OutlinePair outlinePairType = OutlineStyle.getIndex ( pLet ,
           PrettyStyle.TYPE ).get ( 0 ) ;
       String tau = pLet.getTau ( ).toPrettyString ( ).toString ( ) ;
-      outlineNodeType = new OutlineNode ( TYPE , tau , outlinePairType
-          .getStart ( ) , outlinePairType.getStart ( ) + tau.length ( ) - 1 ,
-          this.outlineUnbound ) ;
+      outlineNodeType = new OutlineNode ( pLet.getTau ( ).getCaption ( ) , tau ,
+          outlinePairType.getStart ( ) , outlinePairType.getStart ( )
+              + tau.length ( ) - 1 , this.outlineUnbound ) ;
       outlineNodeType.setChildIndexType ( ) ;
       outlineNode.add ( outlineNodeType ) ;
     }
@@ -811,9 +810,9 @@ public final class DefaultOutline implements Outline
       OutlinePair outlinePairType = OutlineStyle.getIndex ( pLetRec ,
           PrettyStyle.TYPE ).get ( 0 ) ;
       String tau = pLetRec.getTau ( ).toPrettyString ( ).toString ( ) ;
-      outlineNodeType = new OutlineNode ( TYPE , tau , outlinePairType
-          .getStart ( ) , outlinePairType.getStart ( ) + tau.length ( ) - 1 ,
-          this.outlineUnbound ) ;
+      outlineNodeType = new OutlineNode ( pLetRec.getTau ( ).getCaption ( ) ,
+          tau , outlinePairType.getStart ( ) , outlinePairType.getStart ( )
+              + tau.length ( ) - 1 , this.outlineUnbound ) ;
       outlineNodeType.setChildIndexType ( ) ;
       outlineNode.add ( outlineNodeType ) ;
     }
@@ -886,9 +885,9 @@ public final class DefaultOutline implements Outline
       OutlinePair outlinePairType = OutlineStyle.getIndex ( pMethod ,
           PrettyStyle.TYPE ).get ( 0 ) ;
       String tau = pMethod.getTau ( ).toPrettyString ( ).toString ( ) ;
-      outlineNodeType = new OutlineNode ( TYPE , tau , outlinePairType
-          .getStart ( ) , outlinePairType.getStart ( ) + tau.length ( ) - 1 ,
-          this.outlineUnbound ) ;
+      outlineNodeType = new OutlineNode ( pMethod.getTau ( ).getCaption ( ) ,
+          tau , outlinePairType.getStart ( ) , outlinePairType.getStart ( )
+              + tau.length ( ) - 1 , this.outlineUnbound ) ;
       outlineNodeType.setChildIndexType ( ) ;
       outlineNode.add ( outlineNodeType ) ;
     }
@@ -966,8 +965,10 @@ public final class DefaultOutline implements Outline
       OutlinePair outlinePairType = OutlineStyle.getIndex ( pMultiLambda ,
           PrettyStyle.TYPE ).get ( 0 ) ;
       String tau = pMultiLambda.getTau ( ).toPrettyString ( ).toString ( ) ;
-      outlineNodeType = new OutlineNode ( TYPE , tau , outlinePairType
-          .getStart ( ) , outlinePairType.getStart ( ) + tau.length ( ) - 1 ,
+      outlineNodeType = new OutlineNode (
+          pMultiLambda.getTau ( ).getCaption ( ) , tau , outlinePairType
+              .getStart ( ) ,
+          outlinePairType.getStart ( ) + tau.length ( ) - 1 ,
           this.outlineUnbound ) ;
       outlineNodeType.setChildIndexType ( ) ;
       outlineNode.add ( outlineNodeType ) ;
@@ -1045,9 +1046,9 @@ public final class DefaultOutline implements Outline
       OutlinePair outlinePairType = OutlineStyle.getIndex ( pMultiLet ,
           PrettyStyle.TYPE ).get ( 0 ) ;
       String tau = pMultiLet.getTau ( ).toPrettyString ( ).toString ( ) ;
-      outlineNodeType = new OutlineNode ( TYPE , tau , outlinePairType
-          .getStart ( ) , outlinePairType.getStart ( ) + tau.length ( ) - 1 ,
-          this.outlineUnbound ) ;
+      outlineNodeType = new OutlineNode ( pMultiLet.getTau ( ).getCaption ( ) ,
+          tau , outlinePairType.getStart ( ) , outlinePairType.getStart ( )
+              + tau.length ( ) - 1 , this.outlineUnbound ) ;
       outlineNodeType.setChildIndexType ( ) ;
       outlineNode.add ( outlineNodeType ) ;
     }
@@ -1092,8 +1093,9 @@ public final class DefaultOutline implements Outline
       OutlinePair outlinePairType = OutlineStyle.getIndex ( pObjectExpr ,
           PrettyStyle.TYPE ).get ( 0 ) ;
       String tau = pObjectExpr.getTau ( ).toPrettyString ( ).toString ( ) ;
-      outlineNodeType = new OutlineNode ( TYPE , pObjectExpr.getTau ( )
-          .toPrettyString ( ).toString ( ) , outlinePairType.getStart ( ) ,
+      outlineNodeType = new OutlineNode (
+          pObjectExpr.getTau ( ).getCaption ( ) , pObjectExpr.getTau ( )
+              .toPrettyString ( ).toString ( ) , outlinePairType.getStart ( ) ,
           outlinePairType.getStart ( ) + tau.length ( ) - 1 ,
           this.outlineUnbound ) ;
       outlineNodeType.setChildIndexType ( ) ;
@@ -1140,9 +1142,9 @@ public final class DefaultOutline implements Outline
       OutlinePair outlinePairType = OutlineStyle.getIndex ( pRecursion ,
           PrettyStyle.TYPE ).get ( 0 ) ;
       String tau = pRecursion.getTau ( ).toPrettyString ( ).toString ( ) ;
-      outlineNodeType = new OutlineNode ( TYPE , tau , outlinePairType
-          .getStart ( ) , outlinePairType.getStart ( ) + tau.length ( ) - 1 ,
-          this.outlineUnbound ) ;
+      outlineNodeType = new OutlineNode ( pRecursion.getTau ( ).getCaption ( ) ,
+          tau , outlinePairType.getStart ( ) , outlinePairType.getStart ( )
+              + tau.length ( ) - 1 , this.outlineUnbound ) ;
       outlineNodeType.setChildIndexType ( ) ;
       outlineNode.add ( outlineNodeType ) ;
     }
@@ -1200,10 +1202,11 @@ public final class DefaultOutline implements Outline
           OutlinePair outlinePairType = OutlineStyle.getIndex ( attribute ,
               PrettyStyle.TYPE ).get ( 0 ) ;
           String tau = attribute.getTau ( ).toPrettyString ( ).toString ( ) ;
-          outlineNodeType = new OutlineNode ( TYPE , attribute.getTau ( )
-              .toPrettyString ( ).toString ( ) , outlinePairType.getStart ( ) ,
-              outlinePairType.getStart ( ) + tau.length ( ) - 1 ,
-              this.outlineUnbound ) ;
+          outlineNodeType = new OutlineNode ( attribute.getTau ( )
+              .getCaption ( ) , attribute.getTau ( ).toPrettyString ( )
+              .toString ( ) , outlinePairType.getStart ( ) , outlinePairType
+              .getStart ( )
+              + tau.length ( ) - 1 , this.outlineUnbound ) ;
           outlineNodeType.setChildIndexType ( ) ;
           outlineNodeAttr.add ( outlineNodeType ) ;
         }
