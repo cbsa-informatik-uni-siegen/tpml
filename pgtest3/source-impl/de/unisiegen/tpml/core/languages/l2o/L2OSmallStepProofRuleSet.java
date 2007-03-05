@@ -259,15 +259,16 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
           boolean definedLater = false ;
           for ( int i = 1 ; i < row.getExpressions ( ).length ; i ++ )
           {
-            Expression tmp = row.getExpressions ( i ) ;
-            if ( ( tmp instanceof Method )
-                && ( ( ( Method ) tmp ).getId ( ).equals ( pMessage.getId ( ) ) ) )
+            Expression rowChild = row.getExpressions ( i ) ;
+            if ( ( rowChild instanceof Method )
+                && ( ( ( Method ) rowChild ).getId ( ).equals ( pMessage
+                    .getId ( ) ) ) )
             {
               definedLater = true ;
               break ;
             }
-            else if ( ( tmp instanceof CurriedMethod )
-                && ( ( ( CurriedMethod ) tmp ).getIdentifiers ( 0 )
+            else if ( ( rowChild instanceof CurriedMethod )
+                && ( ( ( CurriedMethod ) rowChild ).getIdentifiers ( 0 )
                     .equals ( pMessage.getId ( ) ) ) )
             {
               definedLater = true ;
