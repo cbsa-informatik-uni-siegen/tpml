@@ -889,7 +889,8 @@ public class BigStepNodeComponent extends JComponent implements TreeNodeComponen
    * the layout should attach the arrow.
    */
   public Point getBottomArrowConnection() {
-    return new Point (this.getX() + this.indexLabel.getWidth() / 2, this.getY() + this.indexLabel.getHeight());
+    //return new Point (this.getX() + this.indexLabel.getWidth() / 2, this.getY() + this.indexLabel.getHeight());
+  	return new Point (this.getX() + this.indexLabel.getWidth() / 2, this.getY() +  (this.dimension.height/2) );
   }
 
   /**
