@@ -798,10 +798,15 @@ public class BigStepNodeComponent extends JComponent implements TreeNodeComponen
     	//System.out.println("nun ist die Gesamthöhe: "+this.dimension.height);
     }
        
-    this.dimension.width += resultSize.width;
+    //this.dimension.width += resultSize.width;
     if (!breakNeeded)
     {
+    	this.dimension.width += resultSize.width;
     	this.dimension.height = Math.max(resultSize.height, this.dimension.height);
+    }
+    else
+    {
+    	this.dimension.width = Math.max((resultSize.width+meshPix), dimension.width);
     }
         
     // now place the elements
