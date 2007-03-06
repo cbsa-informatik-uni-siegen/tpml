@@ -1,6 +1,6 @@
 ((object (self)
-  val pi = 3 ;
-  method umfang r = pi * (self # durchmesser) r ; 
-  method durchmesser r = 5 * r ; 
+    val pi = 3 ;
+    method umfang r = pi * ((self # durchmesser) r)  ; 
+    method durchmesser r = 2 * r ; 
   end) 
-# umfang) 2
+# umfang) 5

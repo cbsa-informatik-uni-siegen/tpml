@@ -1,1 +1,1 @@
-let a = b in (let b = 4 in a)
+let a = b in let rec b = b in b + a
