@@ -562,6 +562,7 @@ public final class OutlineUI
     this.jTreeOutline = new JTree ( this.treeModel ) ;
     this.jTreeOutline.setDoubleBuffered ( true ) ;
     this.jTreeOutline.setCellRenderer ( new OutlineCellRenderer ( ) ) ;
+    this.jTreeOutline.setRowHeight ( 0 ) ;
     this.jTreeOutline.getSelectionModel ( ).addTreeSelectionListener (
         this.outlineTreeSelectionListener ) ;
     this.jTreeOutline
