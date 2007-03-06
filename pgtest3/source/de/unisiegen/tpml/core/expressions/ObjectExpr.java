@@ -7,6 +7,7 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
 import de.unisiegen.tpml.core.types.MonoType ;
+import de.unisiegen.tpml.core.util.Free ;
 
 
 /**
@@ -202,17 +203,17 @@ public final class ObjectExpr extends Expression
     {
       return this ;
     }
-    Set < String > freeObjectExpr = free ( ) ;
-    Set < String > freeExpression = pExpression.free ( ) ;
-    String newId = this.identifier ;
-    while ( freeObjectExpr.contains ( newId )
-        || freeExpression.contains ( newId ) || newId.equals ( pId ) )
+    TreeSet < String > free = new TreeSet < String > ( ) ;
+    free.addAll ( this.free ( ) ) ;
+    free.addAll ( pExpression.free ( ) ) ;
+    free.add ( pId ) ;
+    String newId = Free.newIdentifier ( this.identifier , free ) ;
+    Expression newRow = this.row ;
+    if ( ! this.identifier.equals ( newId ) )
     {
-      newId = newId + "'" ; //$NON-NLS-1$
+      newRow = this.row.substitute ( this.identifier ,
+          new Identifier ( newId ) , false ) ;
     }
-    Expression newRow = ( this.identifier.equals ( newId ) ) ? this.row
-        : this.row.substitute ( this.identifier , new Identifier ( newId ) ,
-            false ) ;
     newRow = newRow.substitute ( pId , pExpression , pAttributeRename ) ;
     return new ObjectExpr ( newId , this.tau , this.row.substitute ( pId ,
         pExpression , false ) ) ;

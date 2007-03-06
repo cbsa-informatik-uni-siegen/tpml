@@ -7,6 +7,7 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
 import de.unisiegen.tpml.core.types.MonoType ;
+import de.unisiegen.tpml.core.util.Free ;
 
 
 /**
@@ -200,31 +201,23 @@ public final class Lambda extends Value
   public Lambda substitute ( String pId , Expression pExpression ,
       boolean pAttributeRename )
   {
-    // check if the identifier is the same as our identifier,
-    // in which case no substitution is performed below the
-    // lambda expression
     if ( this.id.equals ( pId ) )
     {
       return this ;
     }
-    // determine the free identifiers of this lambda
-    Set < String > free = free ( ) ;
-    // determine the free identifiers for e
-    Set < String > freeE = pExpression.free ( ) ;
-    // generate a new unique identifier
-    String newId = this.id ;
-    while ( free.contains ( newId ) || freeE.contains ( newId )
-        || newId.equals ( pId ) )
+    TreeSet < String > free = new TreeSet < String > ( ) ;
+    free.addAll ( this.free ( ) ) ;
+    free.addAll ( pExpression.free ( ) ) ;
+    free.add ( pId ) ;
+    String newId = Free.newIdentifier ( this.id , free ) ;
+    Expression newE = this.e ;
+    if ( ! this.id.equals ( newId ) )
     {
-      newId = newId + "'" ; //$NON-NLS-1$
+      newE = newE.substitute ( this.id , new Identifier ( newId ) ,
+          pAttributeRename ) ;
     }
-    // perform the bound renaming (if required)
-    Expression newE = ( this.id == newId ) ? this.e : this.e.substitute (
-        this.id , new Identifier ( newId ) , pAttributeRename ) ;
-    // perform the substitution for e1
     newE = newE.substitute ( pId , pExpression , pAttributeRename ) ;
-    // reuse this abstraction object if possible
-    return ( this.e == newE ) ? this : new Lambda ( newId , this.tau , newE ) ;
+    return new Lambda ( newId , this.tau , newE ) ;
   }
 
 

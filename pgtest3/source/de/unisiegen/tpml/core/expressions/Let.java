@@ -7,6 +7,7 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
 import de.unisiegen.tpml.core.types.MonoType ;
+import de.unisiegen.tpml.core.util.Free ;
 
 
 /**
@@ -209,12 +210,27 @@ public class Let extends Expression
   public Expression substitute ( String pId , Expression pExpression ,
       boolean pAttributeRename )
   {
-    Expression newE1 = this.e1.substitute ( pId , pExpression ,
-        pAttributeRename ) ;
-    Expression newE2 = this.id.equals ( pId ) ? this.e2 : this.e2.substitute (
-        pId , pExpression , pAttributeRename ) ;
-    return ( this.e1 == newE1 && this.e2 == newE2 ) ? this : new Let ( this.id ,
-        this.tau , newE1 , newE2 ) ;
+    Expression newE2 = this.e2 ;
+    String newId = this.id ;
+    if ( ! this.id.equals ( pId ) )
+    {
+      TreeSet < String > free = new TreeSet < String > ( ) ;
+      TreeSet < String > freeE2 = new TreeSet < String > ( ) ;
+      freeE2.addAll ( this.e2.free ( ) ) ;
+      freeE2.remove ( this.id ) ;
+      free.addAll ( freeE2 ) ;
+      free.addAll ( pExpression.free ( ) ) ;
+      free.add ( pId ) ;
+      newId = Free.newIdentifier ( this.id , free ) ;
+      if ( ! this.id.equals ( newId ) )
+      {
+        newE2 = newE2.substitute ( this.id , new Identifier ( newId ) ,
+            pAttributeRename ) ;
+      }
+      newE2 = newE2.substitute ( pId , pExpression , pAttributeRename ) ;
+    }
+    return new Let ( newId , this.tau , this.e1.substitute ( pId , pExpression ,
+        pAttributeRename ) , newE2 ) ;
   }
 
 

@@ -7,6 +7,7 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
 import de.unisiegen.tpml.core.types.MonoType ;
+import de.unisiegen.tpml.core.util.Free ;
 
 
 /**
@@ -120,20 +121,22 @@ public final class LetRec extends Let
     {
       return this ;
     }
-    // determine the free identifiers for e
-    Set < String > free = pExpression.free ( ) ;
-    // generate a new unique identifier
-    String newId = this.id ;
-    while ( free.contains ( newId ) )
+    TreeSet < String > free = new TreeSet < String > ( ) ;
+    free.addAll ( this.free ( ) ) ;
+    free.addAll ( pExpression.free ( ) ) ;
+    free.add ( pId ) ;
+    String newId = Free.newIdentifier ( this.id , free ) ;
+    Expression newE1 = this.e1 ;
+    Expression newE2 = this.e2 ;
+    if ( ! this.id.equals ( newId ) )
     {
-      newId = newId + "'" ; //$NON-NLS-1$
+      newE1 = newE1.substitute ( this.id , new Identifier ( newId ) ,
+          pAttributeRename ) ;
+      newE2 = newE2.substitute ( this.id , new Identifier ( newId ) ,
+          pAttributeRename ) ;
     }
-    // perform the bound renaming
-    Expression newE1 = this.e1.substitute ( this.id , new Identifier ( newId ) ,
-        pAttributeRename ) ;
-    // perform the substitution
     return new LetRec ( newId , this.tau , newE1.substitute ( pId ,
-        pExpression , pAttributeRename ) , this.e2.substitute ( pId ,
+        pExpression , pAttributeRename ) , newE2.substitute ( pId ,
         pExpression , pAttributeRename ) ) ;
   }
 

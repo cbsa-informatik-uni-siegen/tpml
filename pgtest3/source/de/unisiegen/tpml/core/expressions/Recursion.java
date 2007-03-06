@@ -7,6 +7,7 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
 import de.unisiegen.tpml.core.types.MonoType ;
+import de.unisiegen.tpml.core.util.Free ;
 
 
 /**
@@ -182,18 +183,17 @@ public final class Recursion extends Expression
     {
       return this ;
     }
-    // determine the free identifiers for e
-    Set < String > free = pExpression.free ( ) ;
-    // generate a new unique identifier
-    String newId = this.id ;
-    while ( free.contains ( newId ) )
+    TreeSet < String > free = new TreeSet < String > ( ) ;
+    free.addAll ( this.free ( ) ) ;
+    free.addAll ( pExpression.free ( ) ) ;
+    free.add ( pId ) ;
+    String newId = Free.newIdentifier ( this.id , free ) ;
+    Expression newE = this.e ;
+    if ( ! this.id.equals ( newId ) )
     {
-      newId = newId + "'" ; //$NON-NLS-1$
+      newE = this.e.substitute ( this.id , new Identifier ( newId ) ,
+          pAttributeRename ) ;
     }
-    // perform the bound renaming
-    Expression newE = this.e.substitute ( this.id , new Identifier ( newId ) ,
-        pAttributeRename ) ;
-    // perform the substitution
     return new Recursion ( newId , this.tau , newE.substitute ( pId ,
         pExpression , pAttributeRename ) ) ;
   }

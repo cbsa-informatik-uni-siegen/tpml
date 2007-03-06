@@ -26,6 +26,14 @@ public class Attribute extends Expression
   /**
    * TODO
    * 
+   * @see #getNewId()
+   */
+  private String newIdentifier ;
+
+
+  /**
+   * TODO
+   * 
    * @see #getTau()
    */
   private MonoType tau ;
@@ -57,6 +65,7 @@ public class Attribute extends Expression
       throw new NullPointerException ( "Expression is null" ) ; //$NON-NLS-1$
     }
     this.identifier = pIdentifier ;
+    this.newIdentifier = null ;
     this.tau = pTau ;
     this.expression = pExpression ;
   }
@@ -128,6 +137,18 @@ public class Attribute extends Expression
    * TODO
    * 
    * @return TODO
+   * @see #identifier
+   */
+  public String getNewId ( )
+  {
+    return this.newIdentifier ;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @return TODO
    * @see #tau
    */
   public MonoType getTau ( )
@@ -154,6 +175,18 @@ public class Attribute extends Expression
   public boolean isValue ( )
   {
     return this.expression.isValue ( ) ;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @param pNewId TODO
+   * @see #identifier
+   */
+  public void setNewId ( String pNewId )
+  {
+    this.newIdentifier = pNewId ;
   }
 
 

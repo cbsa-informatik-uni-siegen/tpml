@@ -8,6 +8,7 @@ import java.util.TreeSet ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
+import de.unisiegen.tpml.core.util.Free ;
 
 
 /**
@@ -218,15 +219,42 @@ public final class Row extends Expression
     Expression [ ] newExpressions = this.expressions.clone ( ) ;
     for ( int i = 0 ; i < newExpressions.length ; i ++ )
     {
-      newExpressions [ i ] = this.expressions [ i ].substitute ( pId ,
-          pExpression , pAttributeRename ) ;
       if ( newExpressions [ i ] instanceof Attribute )
       {
         Attribute attribute = ( Attribute ) newExpressions [ i ] ;
         if ( pId.equals ( attribute.getId ( ) ) )
         {
+          newExpressions [ i ] = newExpressions [ i ].substitute ( pId ,
+              pExpression , pAttributeRename ) ;
           break ;
         }
+        TreeSet < String > freeR = new TreeSet < String > ( ) ;
+        for ( int j = i + 1 ; j < newExpressions.length ; j ++ )
+        {
+          freeR.addAll ( newExpressions [ j ].free ( ) ) ;
+        }
+        freeR.remove ( attribute.getId ( ) ) ;
+        TreeSet < String > free = new TreeSet < String > ( ) ;
+        free.addAll ( freeR ) ;
+        free.addAll ( pExpression.free ( ) ) ;
+        free.add ( pId ) ;
+        String newId = Free.newIdentifier ( attribute.getId ( ) , free ) ;
+        if ( ! attribute.getId ( ).equals ( newId ) )
+        {
+          for ( int j = i + 1 ; j < newExpressions.length ; j ++ )
+          {
+            newExpressions [ j ] = newExpressions [ j ].substitute ( attribute
+                .getId ( ) , new Identifier ( newId ) , pAttributeRename ) ;
+          }
+        }
+        newExpressions [ i ] = new Attribute ( newId , attribute.getTau ( ) ,
+            attribute.getE ( ).substitute ( pId , pExpression ,
+                pAttributeRename ) ) ;
+      }
+      else
+      {
+        newExpressions [ i ] = newExpressions [ i ].substitute ( pId ,
+            pExpression , pAttributeRename ) ;
       }
     }
     return new Row ( newExpressions ) ;
@@ -273,6 +301,10 @@ public final class Row extends Expression
         builder.addText ( " " ) ; //$NON-NLS-1$
         builder.addBreak ( ) ;
       }
+    }
+    if ( this.expressions.length == 0 )
+    {
+      builder.addKeyword ( "\u03B5" ) ; //$NON-NLS-1$
     }
     return builder ;
   }
