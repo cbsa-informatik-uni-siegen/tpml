@@ -89,8 +89,6 @@ precedence left		EQUAL, LESS, GREATER, LESSEQUAL, GREATEREQUAL;
 precedence left		PLUS, MINUS;
 precedence left		STAR, SLASH, MOD;
 
-precedence right	NUMBERSIGN ;
-
 
 /***************
  * Expressions *
@@ -104,8 +102,6 @@ expr				::=	simple_expr:e
 					/* Object */
 					|	object_expr:o
 						{: RESULT = o; :}
-					|	message:m
-						{: RESULT = m; :}
 					|   duplication:d
 						{: RESULT = d; :}
 							
@@ -210,12 +206,15 @@ expr				::=	simple_expr:e
 						   RESULT = new CurriedLetRec(identifiers, types, e1, e2); :}
 					;
 
-
 simple_expr			::=	constant:c
 						{: RESULT = c; :}
 					|	IDENTIFIER:id
 						{: RESULT = new Identifier(id); :}
 
+					/* Message */
+					|	message:m
+						{: RESULT = m; :}
+						
 					/* Parenthized operators/expressions */
 					|	LPAREN operator:o RPAREN
 						{: RESULT = o; :}
@@ -249,8 +248,8 @@ duplication			::= IDENTIFIER:id LCURLYBRACE LESS id_expr_list:iel GREATER RCURLY
 						   String [] tmpI = new String [0];
 						   RESULT = new Duplication ( new Identifier (id) , tmpI , tmpE ); :}
 					;
-					
-message				::= expr:e NUMBERSIGN IDENTIFIER:id
+
+message				::= simple_expr:e NUMBERSIGN IDENTIFIER:id
 						{: RESULT = new Message ( e , id ) ; :}
 					;
 					
