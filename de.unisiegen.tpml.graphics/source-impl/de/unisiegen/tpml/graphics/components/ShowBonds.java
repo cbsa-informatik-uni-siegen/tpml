@@ -93,7 +93,12 @@ public class ShowBonds
 			}
 
 		}
-
+		
+		System.out.println("Size is "+result.size());
+		for (int i=0; i<result.size(); i++)
+		{
+			System.out.println(result.get(i).toString());
+		}
 	}
 
 	/**
@@ -366,11 +371,25 @@ public class ShowBonds
 		 * this array contains all free Variables of the second Expression
 		 */
 		Object[] a = pRec.getE2().free().toArray();
+		Object[] c = pRec.getE1().free().toArray();
 
 		ArrayList<String> b = new ArrayList<String>();
 		b.add(pRec.getId());
 
 		ArrayList<String> list = listWithBounds(a, b);
+		ArrayList<String> list2 = listWithBounds (c, b);
+		
+		System.out.println("Bound in list1");
+		for (int i=0; i< list.size(); i++)
+		{
+			System.out.println(list.get(i).toString());
+		}
+		
+		System.out.println("Bound in list 2");
+		for (int i=0; i< list2.size(); i++)
+		{
+			System.out.println(list2.get(i).toString());
+		}
 
 		/**
 		 * list with all childs of the expression
@@ -378,8 +397,10 @@ public class ShowBonds
 		ArrayList<Expression> child = new ArrayList<Expression>();
 		child.add(pRec.getE1());
 		child.add(pRec.getE2());
-
+		
+		checkRec(child, pRec, list2, false);
 		checkRec(child, pRec, list, false);
+		
 
 	}
 	
@@ -642,18 +663,14 @@ public class ShowBonds
 
 		if (false)
 		{
-			System.out.println("e1");
 			for (int i = 0; i < e1.size(); i++)
 			{
-				System.out.println(e1.get(i));
 			}
-			System.out.println("e2");
 		}
 
 		for (int i = 0; i < e2.size(); i++)
 		{
 			if (false)
-				System.out.println(e2.get(i));
 			if (!e1.contains(e2.get(i)))
 			{
 				e2.remove(i);
