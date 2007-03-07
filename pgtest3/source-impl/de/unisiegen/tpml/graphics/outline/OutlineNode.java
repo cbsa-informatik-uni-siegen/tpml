@@ -9,6 +9,7 @@ import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.expressions.Identifier ;
 import de.unisiegen.tpml.core.expressions.InfixOperation ;
 import de.unisiegen.tpml.core.expressions.Method ;
+import de.unisiegen.tpml.core.expressions.Row ;
 import de.unisiegen.tpml.core.expressions.Value ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyCharIterator ;
@@ -156,13 +157,25 @@ public final class OutlineNode extends DefaultMutableTreeNode
   /**
    * Caption of the {@link Value}.
    */
-  private static final String VALUE = "v" ; //$NON-NLS-1$
+  private static final String VALUE_EXPRESSION = "v" ; //$NON-NLS-1$
 
 
   /**
    * Caption of the {@link Expression}.
    */
   private static final String EXPRESSION = "e" ; //$NON-NLS-1$
+
+
+  /**
+   * Caption of the {@link Row}, which is a value.
+   */
+  private static final String VALUE_ROW = "\u03C9" ; //$NON-NLS-1$
+
+
+  /**
+   * Caption of the {@link Row}.
+   */
+  private static final String ROW = "r" ; //$NON-NLS-1$
 
 
   /**
@@ -1194,11 +1207,19 @@ public final class OutlineNode extends DefaultMutableTreeNode
   {
     if ( this.expression.isValue ( ) )
     {
-      this.childIndex = VALUE ;
+      this.childIndex = VALUE_EXPRESSION ;
+      if ( this.expression instanceof Row )
+      {
+        this.childIndex = VALUE_ROW ;
+      }
     }
     else
     {
       this.childIndex = EXPRESSION ;
+      if ( this.expression instanceof Row )
+      {
+        this.childIndex = ROW ;
+      }
     }
     if ( pChildIndexExpression == NO_CHILD_INDEX )
     {
