@@ -277,6 +277,8 @@ public class BigStepNodeComponent extends JComponent implements TreeNodeComponen
         for (int i = MAX - 1; i >= 0; i--)
         {
           String name = preferences.get("rule" + i, "");
+          //TODO Testausgabe
+          //System.out.println("Auslesen: rule"+i+" = "+name);
 
           if (name.equalsIgnoreCase(""))
           {
@@ -291,28 +293,37 @@ public class BigStepNodeComponent extends JComponent implements TreeNodeComponen
             	if (new MenuRuleItem(a).getText().equalsIgnoreCase(name))
               {
                 //add at the beginning of the list to save the order
-                lastUsedElements.add(0, new MenuRuleItem(a));
-                MenuRuleItem tmp = new MenuRuleItem(a);
-                //the actionlistener ist needed to be able to set the position of a selected 
-                //rule
-                ActionListener al = new ActionListener() {
-                  public void actionPerformed(ActionEvent e)
-                  {
-                    //to be able to revert the changes in the menu if the rule throws an exception
-                  	saveToRevert();
-                  	//if the rule is selected it will be moved to the top of the menu
-                  	moveToTop(((MenuRuleItem) e.getSource()).getText(), MAX);
-                  	//save this state of the menu to the preferences
-                  	save();
-                  }
-                };
-                tmp.addActionListener(al);
-                //inset at the top of the meun (the preferences are walked throu 
-                menu.insert(tmp, 0);
+            		//TODO Baustelle, Menüs gehen nicht
+            		boolean isIn=isIn(name, lastUsedElements);
+            		
+                if(!isIn) 
+                	{
+		                lastUsedElements.add(0, new MenuRuleItem(a));
+		                	
+		                MenuRuleItem tmp = new MenuRuleItem(a);
+		                //the actionlistener ist needed to be able to set the position of a selected 
+		                //rule
+		                ActionListener al = new ActionListener() {
+		                  public void actionPerformed(ActionEvent e)
+		                  {
+		                    //to be able to revert the changes in the menu if the rule throws an exception
+		                  	saveToRevert();
+		                  	//if the rule is selected it will be moved to the top of the menu
+		                  	moveToTop(((MenuRuleItem) e.getSource()).getText(), MAX);
+		                  	//save this state of the menu to the preferences
+		                  	save();
+		                  }
+		                };
+		                tmp.addActionListener(al);
+		                //inset at the top of the meun (the preferences are walked throu 
+		                menu.insert(tmp, 0);
+                	}
               }
             }
           }
         }
+        save();
+        
 
         //build the submenu
         int group = rules[0].getGroup();
@@ -351,20 +362,23 @@ public class BigStepNodeComponent extends JComponent implements TreeNodeComponen
               	//look if the list is full
                 if (lastUsedElements.size() < MAX)
                 {
+                	
                   MenuRuleItem lastUsed = new MenuRuleItem(r);
                   //check if the element is in the list
-                  boolean isIn = false;
-                  for (int i = 0; i < MAX; i++)
-                  {
-                    int schleife = Math.min(MAX, lastUsedElements.size());
-                    for (int j = 0; j < schleife; j++)
-                    {
-                      if (lastUsedElements.get(j).getText().equals(lastUsed.getText()))
-                      {
-                        isIn = true;
-                      }
-                    }
-                  }
+//                  boolean isIn = false;
+//                  for (int i = 0; i < MAX; i++)
+//                  {
+//                    int schleife = Math.min(MAX, lastUsedElements.size());
+//                    for (int j = 0; j < schleife; j++)
+//                    {
+//                      if (lastUsedElements.get(j).getText().equals(lastUsed.getText()))
+//                      {
+//                        isIn = true;
+//                      }
+//                    }
+//                  }
+                  boolean isIn = isIn (lastUsed.getText(), lastUsedElements);
+                  
                   ActionListener al = new ActionListener() {
                     public void actionPerformed(ActionEvent e)
                     {
@@ -379,9 +393,14 @@ public class BigStepNodeComponent extends JComponent implements TreeNodeComponen
                   lastUsed.addActionListener(al);
                   if (!isIn)
                   {
+                  	//TODO Testuasgabe
+                  	//System.out.println();
+                    //System.out.println("Die Liste enthälten den Eintrag bisher: "+isIn);
                   	saveToRevert();
                     menu.insert(lastUsed, 0);
                     lastUsedElements.add(0, lastUsed);
+                    //TODO Testausgabe
+                    //System.out.println("jetzt sollte sie drin sein! "+isIn(lastUsed.getText(), lastUsedElements));
                   }
                   //may be we want to move it to top
                   // else
@@ -1019,7 +1038,8 @@ public class BigStepNodeComponent extends JComponent implements TreeNodeComponen
 	{
 		for (int i = 0; i < lastUsedElements.size(); i++)
     {
-      // System.out.println(last10Elements.get(i).getText());
+      //TODO Testausgabe
+			//System.out.println("rule"+i+" = "+lastUsedElements.get(i).getText());
       preferences.put("rule" + i, lastUsedElements.get(i).getText());
     }
 	}
@@ -1070,6 +1090,10 @@ public class BigStepNodeComponent extends JComponent implements TreeNodeComponen
 	 */
 	private void revertMenu()
 	{
+		//TODO Testausgabe
+		//System.out.println();
+    //System.out.println();
+		//System.out.println("Revert ist aufgerufen!");
 		//als erstes das Menü von den Einträgen befreien
 		boolean isRuleItem = false;
 		
@@ -1102,6 +1126,23 @@ public class BigStepNodeComponent extends JComponent implements TreeNodeComponen
 		//last10Elements zurücksetzen
 		lastUsedElements.clear();
 		lastUsedElements.addAll(revertLastUsedElements);
+	}
+	
+	private boolean isIn ( String label, ArrayList list )
+	{
+		boolean isIn = false;
+		//TODO Testausgabe
+		//System.out.println("in der Liste sind...");
+		for (int l = 0; l<list.size(); l++)
+		{
+			//TODO Testausgabe
+			//System.out.print(lastUsedElements.get(l).getText()+", ");
+			if (label.equalsIgnoreCase(lastUsedElements.get(l).getText()))
+			{
+				isIn=true;
+			}
+		}
+		return isIn;
 	}
 
 }
