@@ -1,7 +1,6 @@
 package de.unisiegen.tpml.core.languages.l2o ;
 
 
-import java.util.TreeSet ;
 import de.unisiegen.tpml.core.bigstep.BigStepProofContext ;
 import de.unisiegen.tpml.core.bigstep.BigStepProofNode ;
 import de.unisiegen.tpml.core.expressions.Attribute ;
@@ -15,7 +14,7 @@ import de.unisiegen.tpml.core.expressions.Method ;
 import de.unisiegen.tpml.core.expressions.ObjectExpr ;
 import de.unisiegen.tpml.core.expressions.Row ;
 import de.unisiegen.tpml.core.languages.l2.L2BigStepProofRuleSet ;
-import de.unisiegen.tpml.core.util.Free;
+import de.unisiegen.tpml.core.util.Free ;
 
 
 /**
@@ -218,8 +217,8 @@ public class L2OBigStepProofRuleSet extends L2BigStepProofRuleSet
       throw new IllegalArgumentException ( "Can not apply RENAME" ) ; //$NON-NLS-1$
     }
     context.addProofNode ( node , attribute.getE ( ) ) ;
-    TreeSet < String > free = new TreeSet < String > ( ) ;
-    free.addAll ( row.free ( ) ) ;
+    Free free = new Free ( ) ;
+    free.add ( row.free ( ) ) ;
     free.add ( attribute.getId ( ) ) ;
     for ( int i = 1 ; i < row.getExpressions ( ).length ; i ++ )
     {
@@ -229,7 +228,7 @@ public class L2OBigStepProofRuleSet extends L2BigStepProofRuleSet
         free.add ( currentAttribute.getId ( ) ) ;
       }
     }
-    String newId = Free.newIdentifier ( attribute.getId ( ) , free ) ;
+    String newId = free.newIdentifier ( attribute.getId ( ) ) ;
     Expression [ ] newRowExpressions = new Expression [ row.getExpressions ( ).length - 1 ] ;
     found = false ;
     for ( int i = 0 ; i < newRowExpressions.length ; i ++ )

@@ -214,12 +214,12 @@ public class Let extends Expression
     String newId = this.id ;
     if ( ! this.id.equals ( pId ) )
     {
-      TreeSet < String > free = new TreeSet < String > ( ) ;
-      free.addAll ( this.e2.free ( ) ) ;
+      Free free = new Free ( ) ;
+      free.add ( this.e2.free ( ) ) ;
       free.remove ( this.id ) ;
-      free.addAll ( pExpression.free ( ) ) ;
+      free.add ( pExpression.free ( ) ) ;
       free.add ( pId ) ;
-      newId = Free.newIdentifier ( this.id , free ) ;
+      newId = free.newIdentifier ( this.id ) ;
       if ( ! this.id.equals ( newId ) )
       {
         newE2 = newE2.substitute ( this.id , new Identifier ( newId ) ,

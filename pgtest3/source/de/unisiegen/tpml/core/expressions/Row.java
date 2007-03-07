@@ -228,17 +228,15 @@ public final class Row extends Expression
               pExpression , pAttributeRename ) ;
           break ;
         }
-        TreeSet < String > freeR = new TreeSet < String > ( ) ;
+        Free free = new Free ( ) ;
         for ( int j = i + 1 ; j < newExpressions.length ; j ++ )
         {
-          freeR.addAll ( newExpressions [ j ].free ( ) ) ;
+          free.add ( newExpressions [ j ].free ( ) ) ;
         }
-        freeR.remove ( attribute.getId ( ) ) ;
-        TreeSet < String > free = new TreeSet < String > ( ) ;
-        free.addAll ( freeR ) ;
-        free.addAll ( pExpression.free ( ) ) ;
+        free.remove ( attribute.getId ( ) ) ;
+        free.add ( pExpression.free ( ) ) ;
         free.add ( pId ) ;
-        String newId = Free.newIdentifier ( attribute.getId ( ) , free ) ;
+        String newId = free.newIdentifier ( attribute.getId ( ) ) ;
         if ( ! attribute.getId ( ).equals ( newId ) )
         {
           for ( int j = i + 1 ; j < newExpressions.length ; j ++ )

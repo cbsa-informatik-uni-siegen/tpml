@@ -203,11 +203,11 @@ public final class ObjectExpr extends Expression
     {
       return this ;
     }
-    TreeSet < String > free = new TreeSet < String > ( ) ;
-    free.addAll ( this.free ( ) ) ;
-    free.addAll ( pExpression.free ( ) ) ;
+    Free free = new Free ( ) ;
+    free.add ( this.free ( ) ) ;
+    free.add ( pExpression.free ( ) ) ;
     free.add ( pId ) ;
-    String newId = Free.newIdentifier ( this.identifier , free ) ;
+    String newId = free.newIdentifier ( this.identifier ) ;
     Expression newRow = this.row ;
     if ( ! this.identifier.equals ( newId ) )
     {

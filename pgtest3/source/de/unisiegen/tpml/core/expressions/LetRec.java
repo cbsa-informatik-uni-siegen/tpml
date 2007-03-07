@@ -121,11 +121,11 @@ public final class LetRec extends Let
     {
       return this ;
     }
-    TreeSet < String > free = new TreeSet < String > ( ) ;
-    free.addAll ( this.free ( ) ) ;
-    free.addAll ( pExpression.free ( ) ) ;
+    Free free = new Free ( ) ;
+    free.add ( this.free ( ) ) ;
+    free.add ( pExpression.free ( ) ) ;
     free.add ( pId ) ;
-    String newId = Free.newIdentifier ( this.id , free ) ;
+    String newId = free.newIdentifier ( this.id ) ;
     Expression newE1 = this.e1 ;
     Expression newE2 = this.e2 ;
     if ( ! this.id.equals ( newId ) )
