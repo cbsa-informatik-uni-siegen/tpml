@@ -215,10 +215,8 @@ public class Let extends Expression
     if ( ! this.id.equals ( pId ) )
     {
       TreeSet < String > free = new TreeSet < String > ( ) ;
-      TreeSet < String > freeE2 = new TreeSet < String > ( ) ;
-      freeE2.addAll ( this.e2.free ( ) ) ;
-      freeE2.remove ( this.id ) ;
-      free.addAll ( freeE2 ) ;
+      free.addAll ( this.e2.free ( ) ) ;
+      free.remove ( this.id ) ;
       free.addAll ( pExpression.free ( ) ) ;
       free.add ( pId ) ;
       newId = Free.newIdentifier ( this.id , free ) ;
