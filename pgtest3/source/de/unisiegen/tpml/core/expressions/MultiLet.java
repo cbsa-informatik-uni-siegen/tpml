@@ -2,12 +2,12 @@ package de.unisiegen.tpml.core.expressions ;
 
 
 import java.util.Arrays ;
-import java.util.Set ;
 import java.util.TreeSet ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
 import de.unisiegen.tpml.core.types.MonoType ;
+import de.unisiegen.tpml.core.util.Free ;
 
 
 /**
@@ -233,34 +233,44 @@ public final class MultiLet extends Expression
   public Expression substitute ( String pId , Expression pExpression ,
       boolean pAttributeRename )
   {
-    // determine the expressions and the identifiers
-    String [ ] newIdentifiers = this.identifiers ;
-    Expression newE1 = this.e1 ;
-    Expression newE2 = this.e2 ;
-    // substitute in e1
-    newE1 = newE1.substitute ( pId , pExpression , pAttributeRename ) ;
-    // check if we can substitute below e2
-    if ( ! Arrays.asList ( newIdentifiers ).contains ( pId ) )
+    for ( int i = 0 ; i < this.identifiers.length ; i ++ )
     {
-      // bound rename for substituting e in e2
-      newIdentifiers = newIdentifiers.clone ( ) ;
-      Set < String > freeE = pExpression.free ( ) ;
-      for ( int n = 0 ; n < newIdentifiers.length ; ++ n )
+      if ( this.identifiers [ i ].equals ( pId ) )
       {
-        // generate a new unique identifier
-        while ( freeE.contains ( newIdentifiers [ n ] ) )
-        {
-          newIdentifiers [ n ] = newIdentifiers [ n ] + "'" ; //$NON-NLS-1$
-        }
-        // perform the bound renaming
-        newE2 = newE2.substitute ( this.identifiers [ n ] , new Identifier (
-            newIdentifiers [ n ] ) , pAttributeRename ) ;
+        return new MultiLet ( this.identifiers , this.tau , this.e1.substitute (
+            pId , pExpression , pAttributeRename ) , this.e2.clone ( ) ) ;
       }
-      // substitute in e2
-      newE2 = newE2.substitute ( pId , pExpression , pAttributeRename ) ;
     }
-    // generate the new expression
-    return new MultiLet ( newIdentifiers , this.tau , newE1 , newE2 ) ;
+    String [ ] newIdentifiers = this.identifiers.clone ( ) ;
+    Expression newE2 = this.e2 ;
+    for ( int i = 0 ; i < newIdentifiers.length ; i ++ )
+    {
+      Free free = new Free ( ) ;
+      free.add ( this.e2.free ( ) ) ;
+      free.remove ( newIdentifiers [ i ] ) ;
+      free.add ( pExpression.free ( ) ) ;
+      free.add ( pId ) ;
+      if ( free.contains ( newIdentifiers [ i ] ) )
+      {
+        for ( int j = 0 ; j < newIdentifiers.length ; j ++ )
+        {
+          if ( i != j )
+          {
+            free.add ( this.identifiers [ j ] ) ;
+          }
+        }
+      }
+      String newId = free.newIdentifier ( newIdentifiers [ i ] ) ;
+      if ( ! newIdentifiers [ i ].equals ( newId ) )
+      {
+        newE2 = newE2.substitute ( newIdentifiers [ i ] , new Identifier (
+            newId ) , pAttributeRename ) ;
+        newIdentifiers [ i ] = newId ;
+      }
+    }
+    return new MultiLet ( newIdentifiers , this.tau , this.e1.substitute ( pId ,
+        pExpression , pAttributeRename ) , newE2.substitute ( pId ,
+        pExpression , pAttributeRename ) ) ;
   }
 
 

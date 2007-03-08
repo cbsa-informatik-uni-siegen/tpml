@@ -2,12 +2,12 @@ package de.unisiegen.tpml.core.expressions ;
 
 
 import java.util.Arrays ;
-import java.util.Set ;
 import java.util.TreeSet ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
 import de.unisiegen.tpml.core.types.MonoType ;
+import de.unisiegen.tpml.core.util.Free ;
 
 
 /**
@@ -204,32 +204,41 @@ public final class MultiLambda extends Value
   public Expression substitute ( String pId , Expression pExpression ,
       boolean pAttributeRename )
   {
-    // check if we can substitute below the lambda abstraction
-    if ( Arrays.asList ( this.identifiers ).contains ( pId ) )
+    for ( int i = 0 ; i < this.identifiers.length ; i ++ )
     {
-      return this ;
-    }
-    // bound rename for substituting e in this.e
-    Expression newE = this.e ;
-    Set < String > freeE = pExpression.free ( ) ;
-    String [ ] newIdentifiers = this.identifiers.clone ( ) ;
-    for ( int n = 0 ; n < newIdentifiers.length ; ++ n )
-    {
-      // generate a new unique identifier
-      while ( newE.free ( ).contains ( newIdentifiers [ n ] )
-          || freeE.contains ( newIdentifiers [ n ] )
-          || newIdentifiers [ n ].equals ( pId ) )
+      if ( this.identifiers [ i ].equals ( pId ) )
       {
-        newIdentifiers [ n ] = newIdentifiers [ n ] + "'" ; //$NON-NLS-1$
+        return this ;
       }
-      // perform the bound renaming
-      newE = newE.substitute ( this.identifiers [ n ] , new Identifier (
-          newIdentifiers [ n ] ) , pAttributeRename ) ;
     }
-    // perform the substitution
-    newE = newE.substitute ( pId , pExpression , pAttributeRename ) ;
-    // allocate the new multi lambda
-    return new MultiLambda ( newIdentifiers , this.tau , newE ) ;
+    Expression newE = this.e ;
+    String [ ] newIdentifiers = this.identifiers.clone ( ) ;
+    for ( int i = 0 ; i < newIdentifiers.length ; i ++ )
+    {
+      Free free = new Free ( ) ;
+      free.add ( this.free ( ) ) ;
+      free.add ( pExpression.free ( ) ) ;
+      free.add ( pId ) ;
+      if ( free.contains ( newIdentifiers [ i ] ) )
+      {
+        for ( int j = 0 ; j < newIdentifiers.length ; j ++ )
+        {
+          if ( i != j )
+          {
+            free.add ( this.identifiers [ j ] ) ;
+          }
+        }
+      }
+      String newId = free.newIdentifier ( newIdentifiers [ i ] ) ;
+      if ( ! newIdentifiers [ i ].equals ( newId ) )
+      {
+        newE = newE.substitute ( newIdentifiers [ i ] ,
+            new Identifier ( newId ) , pAttributeRename ) ;
+        newIdentifiers [ i ] = newId ;
+      }
+    }
+    return new MultiLambda ( newIdentifiers , this.tau , newE.substitute ( pId ,
+        pExpression , pAttributeRename ) ) ;
   }
 
 

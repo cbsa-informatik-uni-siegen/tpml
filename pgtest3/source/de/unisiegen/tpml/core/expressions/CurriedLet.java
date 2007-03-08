@@ -2,12 +2,12 @@ package de.unisiegen.tpml.core.expressions ;
 
 
 import java.util.Arrays ;
-import java.util.Set ;
 import java.util.TreeSet ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
 import de.unisiegen.tpml.core.types.MonoType ;
+import de.unisiegen.tpml.core.util.Free ;
 
 
 /**
@@ -282,38 +282,63 @@ public class CurriedLet extends Expression
   public CurriedLet substitute ( String pId , Expression pExpression ,
       boolean pAttributeRename )
   {
-    // determine the expressions and the identifiers
-    String [ ] newIdentifiers = this.identifiers ;
-    Expression newE1 = this.e1 ;
-    Expression newE2 = this.e2 ;
-    // check if we can substitute below e1
-    if ( ! Arrays.asList ( newIdentifiers )
-        .subList ( 1 , newIdentifiers.length ).contains ( pId ) )
+    String [ ] newIdentifiers = this.identifiers.clone ( ) ;
+    Expression newE1 = this.e1.clone ( ) ;
+    Expression newE2 = this.e2.clone ( ) ;
+    for ( int i = 1 ; i < this.identifiers.length ; i ++ )
     {
-      // bound rename for substituting e in e1
-      newIdentifiers = newIdentifiers.clone ( ) ;
-      Set < String > freeE = pExpression.free ( ) ;
-      for ( int n = 1 ; n < newIdentifiers.length ; ++ n )
+      if ( this.identifiers [ i ].equals ( pId ) )
       {
-        // generate a new unique identifier
-        while ( freeE.contains ( newIdentifiers [ n ] ) )
+        if ( ! ( this.identifiers [ 0 ].equals ( pId ) ) )
         {
-          newIdentifiers [ n ] = newIdentifiers [ n ] + "'" ; //$NON-NLS-1$
+          newE2 = newE2.substitute ( pId , pExpression , pAttributeRename ) ;
         }
-        // perform the bound renaming
-        newE1 = newE1.substitute ( this.identifiers [ n ] , new Identifier (
-            newIdentifiers [ n ] ) , pAttributeRename ) ;
+        return new CurriedLet ( this.identifiers , this.types , newE1 , newE2 ) ;
       }
-      // substitute in e1 if
-      newE1 = newE1.substitute ( pId , pExpression , pAttributeRename ) ;
     }
-    // substitute e2 if id is not bound in e2
-    if ( ! this.identifiers [ 0 ].equals ( pId ) )
+    for ( int i = 1 ; i < newIdentifiers.length ; i ++ )
     {
+      Free free = new Free ( ) ;
+      free.add ( this.e1.free ( ) ) ;
+      free.remove ( newIdentifiers [ i ] ) ;
+      free.add ( pExpression.free ( ) ) ;
+      free.add ( pId ) ;
+      if ( free.contains ( newIdentifiers [ i ] ) )
+      {
+        for ( int j = 1 ; j < newIdentifiers.length ; j ++ )
+        {
+          if ( i != j )
+          {
+            free.add ( this.identifiers [ j ] ) ;
+          }
+        }
+      }
+      String newId = free.newIdentifier ( newIdentifiers [ i ] ) ;
+      if ( ! newIdentifiers [ i ].equals ( newId ) )
+      {
+        newE1 = newE1.substitute ( newIdentifiers [ i ] , new Identifier (
+            newId ) , pAttributeRename ) ;
+        newIdentifiers [ i ] = newId ;
+      }
+    }
+    if ( ! ( this.identifiers [ 0 ].equals ( pId ) ) )
+    {
+      Free free = new Free ( ) ;
+      free.add ( this.e2.free ( ) ) ;
+      free.remove ( this.identifiers [ 0 ] ) ;
+      free.add ( pExpression.free ( ) ) ;
+      free.add ( pId ) ;
+      String newId = free.newIdentifier ( this.identifiers [ 0 ] ) ;
+      if ( ! this.identifiers [ 0 ].equals ( newId ) )
+      {
+        newE2 = newE2.substitute ( this.identifiers [ 0 ] , new Identifier (
+            newId ) , pAttributeRename ) ;
+        newIdentifiers [ 0 ] = newId ;
+      }
       newE2 = newE2.substitute ( pId , pExpression , pAttributeRename ) ;
     }
-    // generate the new expression
-    return new CurriedLet ( newIdentifiers , this.types , newE1 , newE2 ) ;
+    return new CurriedLet ( newIdentifiers , this.types , newE1.substitute (
+        pId , pExpression , pAttributeRename ) , newE2 ) ;
   }
 
 

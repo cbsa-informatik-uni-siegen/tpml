@@ -8,6 +8,7 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
 import de.unisiegen.tpml.core.types.MonoType ;
+import de.unisiegen.tpml.core.util.Free ;
 
 
 /**
@@ -249,8 +250,34 @@ public class CurriedMethod extends Expression
         return this ;
       }
     }
-    return new CurriedMethod ( this.identifiers , this.types , this.expression
-        .substitute ( pId , pExpression , pAttributeRename ) ) ;
+    Expression newE = this.expression ;
+    String [ ] newIdentifiers = this.identifiers.clone ( ) ;
+    for ( int i = 1 ; i < newIdentifiers.length ; i ++ )
+    {
+      Free free = new Free ( ) ;
+      free.add ( this.free ( ) ) ;
+      free.add ( pExpression.free ( ) ) ;
+      free.add ( pId ) ;
+      if ( free.contains ( newIdentifiers [ i ] ) )
+      {
+        for ( int j = 1 ; j < newIdentifiers.length ; j ++ )
+        {
+          if ( i != j )
+          {
+            free.add ( this.identifiers [ j ] ) ;
+          }
+        }
+      }
+      String newId = free.newIdentifier ( newIdentifiers [ i ] ) ;
+      if ( ! newIdentifiers [ i ].equals ( newId ) )
+      {
+        newE = newE.substitute ( newIdentifiers [ i ] ,
+            new Identifier ( newId ) , pAttributeRename ) ;
+        newIdentifiers [ i ] = newId ;
+      }
+    }
+    return new CurriedMethod ( newIdentifiers , this.types , newE.substitute (
+        pId , pExpression , pAttributeRename ) ) ;
   }
 
 

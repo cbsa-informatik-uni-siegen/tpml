@@ -61,6 +61,30 @@ public class Free
   /**
    * TODO
    * 
+   * @param pIdentifiers TODO
+   * @return TODO
+   */
+  public boolean contains ( Set < String > pIdentifiers )
+  {
+    return this.free.containsAll ( pIdentifiers ) ;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @param pId TODO
+   * @return TODO
+   */
+  public boolean contains ( String pId )
+  {
+    return this.free.contains ( pId ) ;
+  }
+
+
+  /**
+   * TODO
+   * 
    * @param pOldIdentifier TODO
    * @return TODO
    */
