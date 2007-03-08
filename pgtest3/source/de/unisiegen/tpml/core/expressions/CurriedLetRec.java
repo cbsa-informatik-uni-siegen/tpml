@@ -177,6 +177,10 @@ public final class CurriedLetRec extends CurriedLet
     free.add ( this.free ( ) ) ;
     free.add ( pExpression.free ( ) ) ;
     free.add ( pId ) ;
+    for ( int i = 1 ; i < newIdentifiers.length ; i ++ )
+    {
+      free.add ( this.identifiers [ i ] ) ;
+    }
     String newId = free.newIdentifier ( this.identifiers [ 0 ] ) ;
     if ( ! this.identifiers [ 0 ].equals ( newId ) )
     {
