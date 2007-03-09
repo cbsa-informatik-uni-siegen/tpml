@@ -5,6 +5,7 @@ import java.awt.Color ;
 import javax.swing.tree.DefaultMutableTreeNode ;
 import de.unisiegen.tpml.core.expressions.BinaryOperator ;
 import de.unisiegen.tpml.core.expressions.CurriedMethod ;
+import de.unisiegen.tpml.core.expressions.Exn ;
 import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.expressions.Identifier ;
 import de.unisiegen.tpml.core.expressions.InfixOperation ;
@@ -176,6 +177,12 @@ public final class OutlineNode extends DefaultMutableTreeNode
    * Caption of the {@link Row}.
    */
   private static final String ROW = "r" ; //$NON-NLS-1$
+
+
+  /**
+   * Caption of the {@link Exn}.
+   */
+  private static final String EXN = "ep" ; //$NON-NLS-1$
 
 
   /**
@@ -1207,18 +1214,32 @@ public final class OutlineNode extends DefaultMutableTreeNode
   {
     if ( this.expression.isValue ( ) )
     {
-      this.childIndex = VALUE_EXPRESSION ;
       if ( this.expression instanceof Row )
       {
         this.childIndex = VALUE_ROW ;
       }
+      else if ( this.expression instanceof Exn )
+      {
+        this.childIndex = EXN ;
+      }
+      else
+      {
+        this.childIndex = VALUE_EXPRESSION ;
+      }
     }
     else
     {
-      this.childIndex = EXPRESSION ;
       if ( this.expression instanceof Row )
       {
         this.childIndex = ROW ;
+      }
+      else if ( this.expression instanceof Exn )
+      {
+        this.childIndex = EXN ;
+      }
+      else
+      {
+        this.childIndex = EXPRESSION ;
       }
     }
     if ( pChildIndexExpression == NO_CHILD_INDEX )
