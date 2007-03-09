@@ -48,7 +48,7 @@ public final class Exn extends Expression
   {
     if ( pName == null )
     {
-      throw new NullPointerException ( "name is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "Name is null" ) ; //$NON-NLS-1$
     }
     this.name = pName ;
   }
@@ -156,7 +156,7 @@ public final class Exn extends Expression
     if ( pObject instanceof Exn )
     {
       Exn other = ( Exn ) pObject ;
-      return ( this.name.equals ( other.name ) ) ;
+      return this.name.equals ( other.name ) ;
     }
     return false ;
   }
