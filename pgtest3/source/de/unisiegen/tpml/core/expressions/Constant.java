@@ -44,6 +44,24 @@ public abstract class Constant extends Value
 
   /**
    * {@inheritDoc}
+   * 
+   * @see Expression#equals(Object)
+   */
+  @ Override
+  public boolean equals ( Object pObject )
+  {
+    if ( ( pObject instanceof Constant )
+        && ( this.getClass ( ).equals ( pObject.getClass ( ) ) ) )
+    {
+      Constant other = ( Constant ) pObject ;
+      return this.text.equals ( other.text ) ;
+    }
+    return false ;
+  }
+
+
+  /**
+   * {@inheritDoc}
    */
   @ Override
   public String getCaption ( )
@@ -62,6 +80,18 @@ public abstract class Constant extends Value
   public String getText ( )
   {
     return this.text ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Expression#hashCode()
+   */
+  @ Override
+  public int hashCode ( )
+  {
+    return this.text.hashCode ( ) + getClass ( ).hashCode ( ) ;
   }
 
 
@@ -124,35 +154,5 @@ public abstract class Constant extends Value
   public String toString ( )
   {
     return this.text ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Expression#equals(Object)
-   */
-  @ Override
-  public boolean equals ( Object pObject )
-  {
-    if ( ( pObject instanceof Constant )
-        && ( this.getClass ( ).equals ( pObject.getClass ( ) ) ) )
-    {
-      Constant other = ( Constant ) pObject ;
-      return this.text.equals ( other.text ) ;
-    }
-    return false ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Expression#hashCode()
-   */
-  @ Override
-  public int hashCode ( )
-  {
-    return this.text.hashCode ( ) + getClass ( ).hashCode ( ) ;
   }
 }

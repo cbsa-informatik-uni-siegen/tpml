@@ -24,16 +24,6 @@ public final class UnitConstant extends Constant
 
   /**
    * {@inheritDoc}
-   */
-  @ Override
-  public String getCaption ( )
-  {
-    return "Unit" ; //$NON-NLS-1$
-  }
-
-
-  /**
-   * {@inheritDoc}
    * 
    * @see Expression#clone()
    */
@@ -41,5 +31,15 @@ public final class UnitConstant extends Constant
   public UnitConstant clone ( )
   {
     return new UnitConstant ( ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   */
+  @ Override
+  public String getCaption ( )
+  {
+    return "Unit" ; //$NON-NLS-1$
   }
 }

@@ -7,7 +7,7 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
 import de.unisiegen.tpml.core.types.MonoType ;
-import de.unisiegen.tpml.core.util.Free ;
+import de.unisiegen.tpml.core.util.BoundRenaming ;
 
 
 /**
@@ -91,11 +91,84 @@ public class Let extends Expression
 
   /**
    * {@inheritDoc}
+   * 
+   * @see Expression#clone()
+   */
+  @ Override
+  public Let clone ( )
+  {
+    return new Let ( this.id , this.tau , this.e1.clone ( ) , this.e2.clone ( ) ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Expression#equals(Object)
+   */
+  @ Override
+  public boolean equals ( Object pObject )
+  {
+    if ( ( pObject instanceof Let )
+        && ( this.getClass ( ).equals ( pObject.getClass ( ) ) ) )
+    {
+      Let other = ( Let ) pObject ;
+      return ( ( this.id.equals ( other.id ) )
+          && ( this.e1.equals ( other.e1 ) ) && ( this.e2.equals ( other.e2 ) ) && ( ( this.tau == null ) ? ( other.tau == null )
+          : this.tau.equals ( other.tau ) ) ) ;
+    }
+    return false ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Expression#free()
+   */
+  @ Override
+  public TreeSet < String > free ( )
+  {
+    if ( this.free == null )
+    {
+      this.free = new TreeSet < String > ( ) ;
+      this.free.addAll ( this.e2.free ( ) ) ;
+      this.free.remove ( this.id ) ;
+      this.free.addAll ( this.e1.free ( ) ) ;
+    }
+    return this.free ;
+  }
+
+
+  /**
+   * {@inheritDoc}
    */
   @ Override
   public String getCaption ( )
   {
     return "Let" ; //$NON-NLS-1$
+  }
+
+
+  /**
+   * Returns the first expression.
+   * 
+   * @return the first expression.
+   */
+  public Expression getE1 ( )
+  {
+    return this.e1 ;
+  }
+
+
+  /**
+   * Returns the second expression.
+   * 
+   * @return the second expression.
+   */
+  public Expression getE2 ( )
+  {
+    return this.e2 ;
   }
 
 
@@ -124,68 +197,14 @@ public class Let extends Expression
 
 
   /**
-   * Returns the first expression.
-   * 
-   * @return the first expression.
-   */
-  public Expression getE1 ( )
-  {
-    return this.e1 ;
-  }
-
-
-  /**
-   * Returns the second expression.
-   * 
-   * @return the second expression.
-   */
-  public Expression getE2 ( )
-  {
-    return this.e2 ;
-  }
-
-
-  /**
    * {@inheritDoc}
    * 
-   * @see Expression#clone()
+   * @see Expression#hashCode()
    */
   @ Override
-  public Let clone ( )
+  public int hashCode ( )
   {
-    return new Let ( this.id , this.tau , this.e1.clone ( ) , this.e2.clone ( ) ) ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Expression#free()
-   */
-  @ Override
-  public Set < String > free ( )
-  {
-    TreeSet < String > free = new TreeSet < String > ( ) ;
-    free.addAll ( this.e2.free ( ) ) ;
-    free.remove ( this.id ) ;
-    free.addAll ( this.e1.free ( ) ) ;
-    return free ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Expression#substitute(TypeSubstitution)
-   */
-  @ Override
-  public Let substitute ( TypeSubstitution pTypeSubstitution )
-  {
-    MonoType newTau = ( this.tau != null ) ? this.tau
-        .substitute ( pTypeSubstitution ) : null ;
-    return new Let ( this.id , newTau ,
-        this.e1.substitute ( pTypeSubstitution ) , this.e2
-            .substitute ( pTypeSubstitution ) ) ;
+    return this.id.hashCode ( ) + this.e1.hashCode ( ) + this.e2.hashCode ( ) ;
   }
 
 
@@ -210,16 +229,22 @@ public class Let extends Expression
   public Expression substitute ( String pId , Expression pExpression ,
       boolean pAttributeRename )
   {
-    Expression newE2 = this.e2 ;
-    String newId = this.id ;
-    if ( ! this.id.equals ( pId ) )
+    if ( this.id.equals ( pId ) )
     {
-      Free free = new Free ( ) ;
-      free.add ( this.e2.free ( ) ) ;
-      free.remove ( this.id ) ;
-      free.add ( pExpression.free ( ) ) ;
-      free.add ( pId ) ;
-      newId = free.newIdentifier ( this.id ) ;
+      return new Let ( this.id , this.tau , this.e1.substitute ( pId ,
+          pExpression , pAttributeRename ) , this.e2 ) ;
+    }
+    Expression newE2 = this.e2.clone ( ) ;
+    String newId = this.id ;
+    Set < String > freeE2 = newE2.free ( ) ;
+    if ( freeE2.contains ( pId ) )
+    {
+      BoundRenaming boundRenaming = new BoundRenaming ( ) ;
+      boundRenaming.add ( freeE2 ) ;
+      boundRenaming.remove ( this.id ) ;
+      boundRenaming.add ( pExpression.free ( ) ) ;
+      boundRenaming.add ( pId ) ;
+      newId = boundRenaming.newIdentifier ( this.id ) ;
       if ( ! this.id.equals ( newId ) )
       {
         newE2 = newE2.substitute ( this.id , new Identifier ( newId ) ,
@@ -229,6 +254,22 @@ public class Let extends Expression
     }
     return new Let ( newId , this.tau , this.e1.substitute ( pId , pExpression ,
         pAttributeRename ) , newE2 ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Expression#substitute(TypeSubstitution)
+   */
+  @ Override
+  public Let substitute ( TypeSubstitution pTypeSubstitution )
+  {
+    MonoType newTau = ( this.tau != null ) ? this.tau
+        .substitute ( pTypeSubstitution ) : null ;
+    return new Let ( this.id , newTau ,
+        this.e1.substitute ( pTypeSubstitution ) , this.e2
+            .substitute ( pTypeSubstitution ) ) ;
   }
 
 
@@ -264,37 +305,5 @@ public class Let extends Expression
     builder.addBuilder ( this.e2
         .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_LET_E2 ) ;
     return builder ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Expression#equals(Object)
-   */
-  @ Override
-  public boolean equals ( Object pObject )
-  {
-    if ( ( pObject instanceof Let )
-        && ( this.getClass ( ).equals ( pObject.getClass ( ) ) ) )
-    {
-      Let other = ( Let ) pObject ;
-      return ( ( this.id.equals ( other.id ) )
-          && ( this.e1.equals ( other.e1 ) ) && ( this.e2.equals ( other.e2 ) ) && ( ( this.tau == null ) ? ( other.tau == null )
-          : this.tau.equals ( other.tau ) ) ) ;
-    }
-    return false ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Expression#hashCode()
-   */
-  @ Override
-  public int hashCode ( )
-  {
-    return this.id.hashCode ( ) + this.e1.hashCode ( ) + this.e2.hashCode ( ) ;
   }
 }

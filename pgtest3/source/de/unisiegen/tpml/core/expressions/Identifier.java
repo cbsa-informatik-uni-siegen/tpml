@@ -1,8 +1,7 @@
 package de.unisiegen.tpml.core.expressions ;
 
 
-import java.util.Collections ;
-import java.util.Set ;
+import java.util.TreeSet ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 
@@ -225,9 +224,14 @@ public final class Identifier extends Value
    * @see de.unisiegen.tpml.core.expressions.Expression#free()
    */
   @ Override
-  public Set < String > free ( )
+  public TreeSet < String > free ( )
   {
-    return Collections.singleton ( this.name ) ;
+    if ( this.free == null )
+    {
+      this.free = new TreeSet < String > ( ) ;
+      this.free.add ( this.name ) ;
+    }
+    return this.free ;
   }
 
 

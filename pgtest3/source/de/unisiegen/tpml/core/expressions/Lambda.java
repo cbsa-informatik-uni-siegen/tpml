@@ -1,13 +1,12 @@
 package de.unisiegen.tpml.core.expressions ;
 
 
-import java.util.Set ;
 import java.util.TreeSet ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
 import de.unisiegen.tpml.core.types.MonoType ;
-import de.unisiegen.tpml.core.util.Free ;
+import de.unisiegen.tpml.core.util.BoundRenaming ;
 
 
 /**
@@ -76,11 +75,76 @@ public final class Lambda extends Value
 
   /**
    * {@inheritDoc}
+   * 
+   * @see Expression#clone()
+   */
+  @ Override
+  public Expression clone ( )
+  {
+    return new Lambda ( this.id , this.tau , this.e.clone ( ) ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Expression#equals(Object)
+   */
+  @ Override
+  public boolean equals ( Object pObject )
+  {
+    if ( pObject instanceof Lambda )
+    {
+      Lambda other = ( Lambda ) pObject ;
+      return ( ( this.id.equals ( other.id ) ) && ( this.e.equals ( other.e ) ) && ( ( this.tau == null ) ? ( other.tau == null )
+          : ( this.tau.equals ( other.tau ) ) ) ) ;
+    }
+    return false ;
+  }
+
+
+  /**
+   * Returns the free (unbound) identifiers of the lambda abstraction. The free
+   * (unbound) identifiers of the lambda abstraction are determined by querying
+   * the free identifiers of the <code>e1</code> subexpression, and removing
+   * the identifier <code>id</code> from the returned set.
+   * 
+   * @return the free identifiers for the lambda abstraction.
+   * @see #getId()
+   * @see #getE()
+   * @see Expression#free()
+   */
+  @ Override
+  public TreeSet < String > free ( )
+  {
+    if ( this.free == null )
+    {
+      this.free = new TreeSet < String > ( ) ;
+      this.free.addAll ( this.e.free ( ) ) ;
+      this.free.remove ( this.id ) ;
+    }
+    return this.free ;
+  }
+
+
+  /**
+   * {@inheritDoc}
    */
   @ Override
   public String getCaption ( )
   {
     return "Lambda" ; //$NON-NLS-1$
+  }
+
+
+  /**
+   * Returns the body of the lambda expression.
+   * 
+   * @return the bodyof the lambda expression.
+   */
+  public Expression getE ( )
+  {
+    return this.e ;
   }
 
 
@@ -107,69 +171,16 @@ public final class Lambda extends Value
 
 
   /**
-   * Returns the body of the lambda expression.
-   * 
-   * @return the bodyof the lambda expression.
-   */
-  public Expression getE ( )
-  {
-    return this.e ;
-  }
-
-
-  /**
    * {@inheritDoc}
    * 
-   * @see Expression#clone()
+   * @see Expression#hashCode()
    */
   @ Override
-  public Expression clone ( )
+  public int hashCode ( )
   {
-    return new Lambda ( this.id , this.tau , this.e.clone ( ) ) ;
-  }
-
-
-  /**
-   * Returns the free (unbound) identifiers of the lambda abstraction. The free
-   * (unbound) identifiers of the lambda abstraction are determined by querying
-   * the free identifiers of the <code>e1</code> subexpression, and removing
-   * the identifier <code>id</code> from the returned set.
-   * 
-   * @return the free identifiers for the lambda abstraction.
-   * @see #getId()
-   * @see #getE()
-   * @see Expression#free()
-   */
-  @ Override
-  public Set < String > free ( )
-  {
-    // determine the free identifiers of e1, and
-    // make sure it doesn't contain our id
-    Set < String > freeE = this.e.free ( ) ;
-    if ( freeE.contains ( this.id ) )
-    {
-      // allocate a new set without the identifier
-      TreeSet < String > free = new TreeSet < String > ( freeE ) ;
-      free.remove ( this.id ) ;
-      return free ;
-    }
-    // we can just reuse the free set
-    return freeE ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Expression#substitute(TypeSubstitution)
-   */
-  @ Override
-  public Expression substitute ( TypeSubstitution pTypeSubstitution )
-  {
-    MonoType newTau = ( this.tau != null ) ? this.tau
-        .substitute ( pTypeSubstitution ) : null ;
-    return new Lambda ( this.id , newTau , this.e
-        .substitute ( pTypeSubstitution ) ) ;
+    return this.id.hashCode ( )
+        + ( ( this.tau != null ) ? this.tau.hashCode ( ) : 0 )
+        + this.e.hashCode ( ) ;
   }
 
 
@@ -205,19 +216,38 @@ public final class Lambda extends Value
     {
       return this ;
     }
-    Free free = new Free ( ) ;
-    free.add ( this.free ( ) ) ;
-    free.add ( pExpression.free ( ) ) ;
-    free.add ( pId ) ;
-    String newId = free.newIdentifier ( this.id ) ;
     Expression newE = this.e ;
-    if ( ! this.id.equals ( newId ) )
+    String newId = this.id ;
+    if ( this.e.free ( ).contains ( pId ) )
     {
-      newE = newE.substitute ( this.id , new Identifier ( newId ) ,
-          pAttributeRename ) ;
+      BoundRenaming boundRenaming = new BoundRenaming ( ) ;
+      boundRenaming.add ( this.free ( ) ) ;
+      boundRenaming.add ( pExpression.free ( ) ) ;
+      boundRenaming.add ( pId ) ;
+      newId = boundRenaming.newIdentifier ( this.id ) ;
+      if ( ! this.id.equals ( newId ) )
+      {
+        newE = newE.substitute ( this.id , new Identifier ( newId ) ,
+            pAttributeRename ) ;
+      }
     }
     newE = newE.substitute ( pId , pExpression , pAttributeRename ) ;
     return new Lambda ( newId , this.tau , newE ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Expression#substitute(TypeSubstitution)
+   */
+  @ Override
+  public Expression substitute ( TypeSubstitution pTypeSubstitution )
+  {
+    MonoType newTau = ( this.tau != null ) ? this.tau
+        .substitute ( pTypeSubstitution ) : null ;
+    return new Lambda ( this.id , newTau , this.e
+        .substitute ( pTypeSubstitution ) ) ;
   }
 
 
@@ -230,6 +260,10 @@ public final class Lambda extends Value
   PrettyStringBuilder toPrettyStringBuilder (
       PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
+    /*
+     * System.out.println ( "BoundRenaming Lambda:" ) ; for ( String s : free ( ) ) {
+     * System.out.print ( s + " " ) ; } System.out.println ( ) ;
+     */
     PrettyStringBuilder builder = pPrettyStringBuilderFactory.newBuilder (
         this , PRIO_LAMBDA ) ;
     builder.addKeyword ( "\u03bb" ) ; //$NON-NLS-1$
@@ -245,37 +279,5 @@ public final class Lambda extends Value
     builder.addBuilder ( this.e
         .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_LAMBDA_E ) ;
     return builder ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Expression#equals(Object)
-   */
-  @ Override
-  public boolean equals ( Object pObject )
-  {
-    if ( pObject instanceof Lambda )
-    {
-      Lambda other = ( Lambda ) pObject ;
-      return ( ( this.id.equals ( other.id ) ) && ( this.e.equals ( other.e ) ) && ( ( this.tau == null ) ? ( other.tau == null )
-          : ( this.tau.equals ( other.tau ) ) ) ) ;
-    }
-    return false ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Expression#hashCode()
-   */
-  @ Override
-  public int hashCode ( )
-  {
-    return this.id.hashCode ( )
-        + ( ( this.tau != null ) ? this.tau.hashCode ( ) : 0 )
-        + this.e.hashCode ( ) ;
   }
 }

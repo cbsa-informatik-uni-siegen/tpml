@@ -24,16 +24,6 @@ public final class Assign extends BinaryOperator
 
 
   /**
-   * {@inheritDoc}
-   */
-  @ Override
-  public String getCaption ( )
-  {
-    return "Assign" ; //$NON-NLS-1$
-  }
-
-
-  /**
    * {@inheritDoc} The assign operator does not a machine equivalent like the
    * arithmetic or relational operators, but instead operates on a store. So
    * applying an assign operator to its operands must be implemented in the
@@ -63,5 +53,15 @@ public final class Assign extends BinaryOperator
   public Assign clone ( )
   {
     return new Assign ( ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   */
+  @ Override
+  public String getCaption ( )
+  {
+    return "Assign" ; //$NON-NLS-1$
   }
 }

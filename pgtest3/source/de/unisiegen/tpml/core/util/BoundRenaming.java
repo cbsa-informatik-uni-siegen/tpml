@@ -10,7 +10,7 @@ import java.util.TreeSet ;
  * 
  * @author Christian Fehler
  */
-public class Free
+public class BoundRenaming
 {
   /**
    * TODO
@@ -21,7 +21,7 @@ public class Free
   /**
    * TODO
    */
-  public Free ( )
+  public BoundRenaming ( )
   {
     this.free = new TreeSet < String > ( ) ;
   }

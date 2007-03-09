@@ -92,17 +92,6 @@ public final class UnaryOperatorException extends Exception
 
 
   /**
-   * Returns the {@link UnaryOperator} that failed to apply.
-   * 
-   * @return the unary operator that failed to apply.
-   */
-  public UnaryOperator getOperator ( )
-  {
-    return this.operator ;
-  }
-
-
-  /**
    * Returns the operand to whch the operator could not be applied.
    * 
    * @return the operand of the failed application.
@@ -110,5 +99,16 @@ public final class UnaryOperatorException extends Exception
   public Expression getE ( )
   {
     return this.e ;
+  }
+
+
+  /**
+   * Returns the {@link UnaryOperator} that failed to apply.
+   * 
+   * @return the unary operator that failed to apply.
+   */
+  public UnaryOperator getOperator ( )
+  {
+    return this.operator ;
   }
 }

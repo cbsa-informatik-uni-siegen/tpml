@@ -2,13 +2,12 @@ package de.unisiegen.tpml.core.expressions ;
 
 
 import java.util.Arrays ;
-import java.util.Set ;
 import java.util.TreeSet ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
 import de.unisiegen.tpml.core.types.MonoType ;
-import de.unisiegen.tpml.core.util.Free ;
+import de.unisiegen.tpml.core.util.BoundRenaming ;
 
 
 /**
@@ -115,15 +114,18 @@ public class CurriedMethod extends Expression
    * {@inheritDoc}
    */
   @ Override
-  public Set < String > free ( )
+  public TreeSet < String > free ( )
   {
-    TreeSet < String > free = new TreeSet < String > ( ) ;
-    free.addAll ( this.expression.free ( ) ) ;
-    for ( int i = 1 ; i < this.identifiers.length ; i ++ )
+    if ( this.free == null )
     {
-      free.remove ( this.identifiers [ i ] ) ;
+      this.free = new TreeSet < String > ( ) ;
+      this.free.addAll ( this.expression.free ( ) ) ;
+      for ( int i = 1 ; i < this.identifiers.length ; i ++ )
+      {
+        this.free.remove ( this.identifiers [ i ] ) ;
+      }
     }
-    return free ;
+    return this.free ;
   }
 
 
@@ -252,28 +254,38 @@ public class CurriedMethod extends Expression
     }
     Expression newE = this.expression ;
     String [ ] newIdentifiers = this.identifiers.clone ( ) ;
-    for ( int i = 1 ; i < newIdentifiers.length ; i ++ )
+    if ( this.expression.free ( ).contains ( pId ) )
     {
-      Free free = new Free ( ) ;
-      free.add ( this.free ( ) ) ;
-      free.add ( pExpression.free ( ) ) ;
-      free.add ( pId ) ;
-      if ( free.contains ( newIdentifiers [ i ] ) )
+      for ( int i = 1 ; i < newIdentifiers.length ; i ++ )
       {
-        for ( int j = 1 ; j < newIdentifiers.length ; j ++ )
+        BoundRenaming boundRenaming = new BoundRenaming ( ) ;
+        boundRenaming.add ( this.free ( ) ) ;
+        boundRenaming.add ( pExpression.free ( ) ) ;
+        boundRenaming.add ( pId ) ;
+        if ( boundRenaming.contains ( newIdentifiers [ i ] ) )
         {
-          if ( i != j )
+          for ( int j = 1 ; j < newIdentifiers.length ; j ++ )
           {
-            free.add ( this.identifiers [ j ] ) ;
+            if ( i != j )
+            {
+              boundRenaming.add ( newIdentifiers [ j ] ) ;
+            }
           }
         }
-      }
-      String newId = free.newIdentifier ( newIdentifiers [ i ] ) ;
-      if ( ! newIdentifiers [ i ].equals ( newId ) )
-      {
-        newE = newE.substitute ( newIdentifiers [ i ] ,
-            new Identifier ( newId ) , pAttributeRename ) ;
-        newIdentifiers [ i ] = newId ;
+        String newId = boundRenaming.newIdentifier ( newIdentifiers [ i ] ) ;
+        for ( int j = 1 ; j < i ; j ++ )
+        {
+          if ( this.identifiers [ i ].equals ( this.identifiers [ j ] ) )
+          {
+            newId = newIdentifiers [ j ] ;
+          }
+        }
+        if ( ! newIdentifiers [ i ].equals ( newId ) )
+        {
+          newE = newE.substitute ( newIdentifiers [ i ] , new Identifier (
+              newId ) , pAttributeRename ) ;
+          newIdentifiers [ i ] = newId ;
+        }
       }
     }
     return new CurriedMethod ( newIdentifiers , this.types , newE.substitute (

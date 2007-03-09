@@ -50,6 +50,40 @@ public final class Tuple extends Expression
 
   /**
    * {@inheritDoc}
+   * 
+   * @see Expression#clone()
+   */
+  @ Override
+  public Tuple clone ( )
+  {
+    Expression [ ] newExpressions = new Expression [ this.expressions.length ] ;
+    for ( int i = 0 ; i < newExpressions.length ; i ++ )
+    {
+      newExpressions [ i ] = this.expressions [ i ].clone ( ) ;
+    }
+    return new Tuple ( newExpressions ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Expression#equals(Object)
+   */
+  @ Override
+  public boolean equals ( Object pObject )
+  {
+    if ( pObject instanceof Tuple )
+    {
+      Tuple other = ( Tuple ) pObject ;
+      return Arrays.equals ( this.expressions , other.expressions ) ;
+    }
+    return false ;
+  }
+
+
+  /**
+   * {@inheritDoc}
    */
   @ Override
   public String getCaption ( )
@@ -88,17 +122,31 @@ public final class Tuple extends Expression
   /**
    * {@inheritDoc}
    * 
-   * @see Expression#clone()
+   * @see Expression#hashCode()
    */
   @ Override
-  public Tuple clone ( )
+  public int hashCode ( )
   {
-    Expression [ ] newExpressions = new Expression [ this.expressions.length ] ;
-    for ( int i = 0 ; i < newExpressions.length ; i ++ )
+    return this.expressions.hashCode ( ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Expression#isValue()
+   */
+  @ Override
+  public boolean isValue ( )
+  {
+    for ( Expression e : this.expressions )
     {
-      newExpressions [ i ] = this.expressions [ i ].clone ( ) ;
+      if ( ! e.isValue ( ) )
+      {
+        return false ;
+      }
     }
-    return new Tuple ( newExpressions ) ;
+    return true ;
   }
 
 
@@ -136,25 +184,6 @@ public final class Tuple extends Expression
   /**
    * {@inheritDoc}
    * 
-   * @see Expression#isValue()
-   */
-  @ Override
-  public boolean isValue ( )
-  {
-    for ( Expression e : this.expressions )
-    {
-      if ( ! e.isValue ( ) )
-      {
-        return false ;
-      }
-    }
-    return true ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
    * @see Expression#toPrettyStringBuilder(PrettyStringBuilderFactory)
    */
   @ Override
@@ -178,34 +207,5 @@ public final class Tuple extends Expression
     }
     builder.addText ( ")" ) ; //$NON-NLS-1$
     return builder ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Expression#equals(Object)
-   */
-  @ Override
-  public boolean equals ( Object pObject )
-  {
-    if ( pObject instanceof Tuple )
-    {
-      Tuple other = ( Tuple ) pObject ;
-      return Arrays.equals ( this.expressions , other.expressions ) ;
-    }
-    return false ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Expression#hashCode()
-   */
-  @ Override
-  public int hashCode ( )
-  {
-    return this.expressions.hashCode ( ) ;
   }
 }

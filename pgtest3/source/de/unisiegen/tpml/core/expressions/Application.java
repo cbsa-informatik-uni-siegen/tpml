@@ -58,6 +58,35 @@ public final class Application extends Expression
 
   /**
    * {@inheritDoc}
+   * 
+   * @see de.unisiegen.tpml.core.expressions.Expression#clone()
+   */
+  @ Override
+  public Application clone ( )
+  {
+    return new Application ( this.e1.clone ( ) , this.e2.clone ( ) ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Expression#equals(Object)
+   */
+  @ Override
+  public boolean equals ( Object pObject )
+  {
+    if ( pObject instanceof Application )
+    {
+      Application other = ( Application ) pObject ;
+      return ( ( this.e1.equals ( other.e1 ) ) && ( this.e2.equals ( other.e2 ) ) ) ;
+    }
+    return false ;
+  }
+
+
+  /**
+   * {@inheritDoc}
    */
   @ Override
   public String getCaption ( )
@@ -91,12 +120,12 @@ public final class Application extends Expression
   /**
    * {@inheritDoc}
    * 
-   * @see de.unisiegen.tpml.core.expressions.Expression#clone()
+   * @see Expression#hashCode()
    */
   @ Override
-  public Application clone ( )
+  public int hashCode ( )
   {
-    return new Application ( this.e1.clone ( ) , this.e2.clone ( ) ) ;
+    return this.e1.hashCode ( ) + this.e2.hashCode ( ) ;
   }
 
 
@@ -130,21 +159,6 @@ public final class Application extends Expression
 
 
   /**
-   * {@inheritDoc}
-   * 
-   * @see de.unisiegen.tpml.core.expressions.Expression#substitute(de.unisiegen.tpml.core.typechecker.TypeSubstitution)
-   */
-  @ Override
-  public Application substitute ( TypeSubstitution pTypeSubstitution )
-  {
-    Expression newE1 = this.e1.substitute ( pTypeSubstitution ) ;
-    Expression newE2 = this.e2.substitute ( pTypeSubstitution ) ;
-    return ( this.e1 == newE1 && this.e2 == newE2 ) ? this : new Application (
-        newE1 , newE2 ) ;
-  }
-
-
-  /**
    * Substitutes <code>e</code> for <code>id</code> in the two sub
    * expressions of the application.
    * 
@@ -171,6 +185,21 @@ public final class Application extends Expression
   /**
    * {@inheritDoc}
    * 
+   * @see de.unisiegen.tpml.core.expressions.Expression#substitute(de.unisiegen.tpml.core.typechecker.TypeSubstitution)
+   */
+  @ Override
+  public Application substitute ( TypeSubstitution pTypeSubstitution )
+  {
+    Expression newE1 = this.e1.substitute ( pTypeSubstitution ) ;
+    Expression newE2 = this.e2.substitute ( pTypeSubstitution ) ;
+    return ( this.e1 == newE1 && this.e2 == newE2 ) ? this : new Application (
+        newE1 , newE2 ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
    * @see Expression#toPrettyStringBuilder(PrettyStringBuilderFactory)
    */
   @ Override
@@ -187,34 +216,5 @@ public final class Application extends Expression
         .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
         PRIO_APPLICATION_E2 ) ;
     return builder ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Expression#equals(Object)
-   */
-  @ Override
-  public boolean equals ( Object pObject )
-  {
-    if ( pObject instanceof Application )
-    {
-      Application other = ( Application ) pObject ;
-      return ( ( this.e1.equals ( other.e1 ) ) && ( this.e2.equals ( other.e2 ) ) ) ;
-    }
-    return false ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Expression#hashCode()
-   */
-  @ Override
-  public int hashCode ( )
-  {
-    return this.e1.hashCode ( ) + this.e2.hashCode ( ) ;
   }
 }

@@ -55,6 +55,36 @@ public final class Exn extends Expression
 
 
   /**
+   * {@inheritDoc} Cloning is not necessary for exceptions and as such, we just
+   * a return a reference to <code>this</code> here.
+   * 
+   * @see Expression#clone()
+   */
+  @ Override
+  public Exn clone ( )
+  {
+    return this ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Expression#equals(Object)
+   */
+  @ Override
+  public boolean equals ( Object pObject )
+  {
+    if ( pObject instanceof Exn )
+    {
+      Exn other = ( Exn ) pObject ;
+      return this.name.equals ( other.name ) ;
+    }
+    return false ;
+  }
+
+
+  /**
    * {@inheritDoc}
    */
   @ Override
@@ -76,15 +106,26 @@ public final class Exn extends Expression
 
 
   /**
-   * {@inheritDoc} Cloning is not necessary for exceptions and as such, we just
-   * a return a reference to <code>this</code> here.
+   * {@inheritDoc}
    * 
-   * @see Expression#clone()
+   * @see Expression#hashCode()
    */
   @ Override
-  public Exn clone ( )
+  public int hashCode ( )
   {
-    return this ;
+    return this.name.hashCode ( ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Expression#isException()
+   */
+  @ Override
+  public boolean isException ( )
+  {
+    return true ;
   }
 
 
@@ -120,18 +161,6 @@ public final class Exn extends Expression
   /**
    * {@inheritDoc}
    * 
-   * @see Expression#isException()
-   */
-  @ Override
-  public boolean isException ( )
-  {
-    return true ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
    * @see Expression#toPrettyStringBuilder(PrettyStringBuilderFactory)
    */
   @ Override
@@ -142,34 +171,5 @@ public final class Exn extends Expression
         this , PRIO_EXN ) ;
     builder.addText ( "\u2191 " + this.name ) ; //$NON-NLS-1$
     return builder ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Expression#equals(Object)
-   */
-  @ Override
-  public boolean equals ( Object pObject )
-  {
-    if ( pObject instanceof Exn )
-    {
-      Exn other = ( Exn ) pObject ;
-      return this.name.equals ( other.name ) ;
-    }
-    return false ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Expression#hashCode()
-   */
-  @ Override
-  public int hashCode ( )
-  {
-    return this.name.hashCode ( ) ;
   }
 }

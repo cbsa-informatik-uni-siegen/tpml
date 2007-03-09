@@ -7,7 +7,7 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
 import de.unisiegen.tpml.core.types.MonoType ;
-import de.unisiegen.tpml.core.util.Free ;
+import de.unisiegen.tpml.core.util.BoundRenaming ;
 
 
 /**
@@ -99,11 +99,87 @@ public final class MultiLet extends Expression
 
   /**
    * {@inheritDoc}
+   * 
+   * @see Expression#clone()
+   */
+  @ Override
+  public MultiLet clone ( )
+  {
+    return new MultiLet ( this.identifiers , this.tau , this.e1.clone ( ) ,
+        this.e2.clone ( ) ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Expression#equals(Object)
+   */
+  @ Override
+  public boolean equals ( Object pObject )
+  {
+    if ( pObject instanceof MultiLet )
+    {
+      MultiLet other = ( MultiLet ) pObject ;
+      return ( ( Arrays.equals ( this.identifiers , other.identifiers ) )
+          && ( this.e1.equals ( other.e1 ) ) && ( this.e2.equals ( other.e2 ) ) && ( ( this.tau == null ) ? ( other.tau == null )
+          : ( this.tau.equals ( other.tau ) ) ) ) ;
+    }
+    return false ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Expression#free()
+   */
+  @ Override
+  public TreeSet < String > free ( )
+  {
+    if ( this.free == null )
+    {
+      this.free = new TreeSet < String > ( ) ;
+      this.free.addAll ( this.e2.free ( ) ) ;
+      for ( int i = 0 ; i < this.identifiers.length ; i ++ )
+      {
+        this.free.remove ( this.identifiers [ i ] ) ;
+      }
+      this.free.addAll ( this.e1.free ( ) ) ;
+    }
+    return this.free ;
+  }
+
+
+  /**
+   * {@inheritDoc}
    */
   @ Override
   public String getCaption ( )
   {
     return "Multi-Let" ; //$NON-NLS-1$
+  }
+
+
+  /**
+   * Returns the first expression.
+   * 
+   * @return the first expression.
+   */
+  public Expression getE1 ( )
+  {
+    return this.e1 ;
+  }
+
+
+  /**
+   * Returns the second expression.
+   * 
+   * @return the second expression.
+   */
+  public Expression getE2 ( )
+  {
+    return this.e2 ;
   }
 
 
@@ -146,69 +222,16 @@ public final class MultiLet extends Expression
 
 
   /**
-   * Returns the first expression.
-   * 
-   * @return the first expression.
-   */
-  public Expression getE1 ( )
-  {
-    return this.e1 ;
-  }
-
-
-  /**
-   * Returns the second expression.
-   * 
-   * @return the second expression.
-   */
-  public Expression getE2 ( )
-  {
-    return this.e2 ;
-  }
-
-
-  /**
    * {@inheritDoc}
    * 
-   * @see Expression#clone()
+   * @see Expression#hashCode()
    */
   @ Override
-  public MultiLet clone ( )
+  public int hashCode ( )
   {
-    return new MultiLet ( this.identifiers , this.tau , this.e1.clone ( ) ,
-        this.e2.clone ( ) ) ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Expression#free()
-   */
-  @ Override
-  public TreeSet < String > free ( )
-  {
-    TreeSet < String > free = new TreeSet < String > ( ) ;
-    free.addAll ( this.e2.free ( ) ) ;
-    free.removeAll ( Arrays.asList ( this.identifiers ) ) ;
-    free.addAll ( this.e1.free ( ) ) ;
-    return free ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Expression#substitute(TypeSubstitution)
-   */
-  @ Override
-  public Expression substitute ( TypeSubstitution pTypeSubstitution )
-  {
-    MonoType newTau = ( this.tau != null ) ? this.tau
-        .substitute ( pTypeSubstitution ) : null ;
-    return new MultiLet ( this.identifiers , newTau , this.e1
-        .substitute ( pTypeSubstitution ) , this.e2
-        .substitute ( pTypeSubstitution ) ) ;
+    return this.identifiers.hashCode ( ) + this.e1.hashCode ( )
+        + this.e2.hashCode ( )
+        + ( ( this.tau != null ) ? this.tau.hashCode ( ) : 0 ) ;
   }
 
 
@@ -242,35 +265,61 @@ public final class MultiLet extends Expression
       }
     }
     String [ ] newIdentifiers = this.identifiers.clone ( ) ;
-    Expression newE2 = this.e2 ;
-    for ( int i = 0 ; i < newIdentifiers.length ; i ++ )
+    Expression newE2 = this.e2.clone ( ) ;
+    if ( this.e2.free ( ).contains ( pId ) )
     {
-      Free free = new Free ( ) ;
-      free.add ( this.e2.free ( ) ) ;
-      free.remove ( newIdentifiers [ i ] ) ;
-      free.add ( pExpression.free ( ) ) ;
-      free.add ( pId ) ;
-      if ( free.contains ( newIdentifiers [ i ] ) )
+      for ( int i = 0 ; i < newIdentifiers.length ; i ++ )
       {
-        for ( int j = 0 ; j < newIdentifiers.length ; j ++ )
+        BoundRenaming boundRenaming = new BoundRenaming ( ) ;
+        boundRenaming.add ( this.e2.free ( ) ) ;
+        boundRenaming.remove ( newIdentifiers [ i ] ) ;
+        boundRenaming.add ( pExpression.free ( ) ) ;
+        boundRenaming.add ( pId ) ;
+        if ( boundRenaming.contains ( newIdentifiers [ i ] ) )
         {
-          if ( i != j )
+          for ( int j = 0 ; j < newIdentifiers.length ; j ++ )
           {
-            free.add ( this.identifiers [ j ] ) ;
+            if ( i != j )
+            {
+              boundRenaming.add ( newIdentifiers [ j ] ) ;
+            }
           }
         }
+        String newId = boundRenaming.newIdentifier ( newIdentifiers [ i ] ) ;
+        for ( int j = 0 ; j < i ; j ++ )
+        {
+          if ( this.identifiers [ i ].equals ( this.identifiers [ j ] ) )
+          {
+            newId = newIdentifiers [ j ] ;
+          }
+        }
+        if ( ! newIdentifiers [ i ].equals ( newId ) )
+        {
+          newE2 = newE2.substitute ( newIdentifiers [ i ] , new Identifier (
+              newId ) , pAttributeRename ) ;
+          newIdentifiers [ i ] = newId ;
+        }
       }
-      String newId = free.newIdentifier ( newIdentifiers [ i ] ) ;
-      if ( ! newIdentifiers [ i ].equals ( newId ) )
-      {
-        newE2 = newE2.substitute ( newIdentifiers [ i ] , new Identifier (
-            newId ) , pAttributeRename ) ;
-        newIdentifiers [ i ] = newId ;
-      }
+      newE2 = newE2.substitute ( pId , pExpression , pAttributeRename ) ;
     }
     return new MultiLet ( newIdentifiers , this.tau , this.e1.substitute ( pId ,
-        pExpression , pAttributeRename ) , newE2.substitute ( pId ,
-        pExpression , pAttributeRename ) ) ;
+        pExpression , pAttributeRename ) , newE2 ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Expression#substitute(TypeSubstitution)
+   */
+  @ Override
+  public Expression substitute ( TypeSubstitution pTypeSubstitution )
+  {
+    MonoType newTau = ( this.tau != null ) ? this.tau
+        .substitute ( pTypeSubstitution ) : null ;
+    return new MultiLet ( this.identifiers , newTau , this.e1
+        .substitute ( pTypeSubstitution ) , this.e2
+        .substitute ( pTypeSubstitution ) ) ;
   }
 
 
@@ -313,38 +362,5 @@ public final class MultiLet extends Expression
     builder.addBuilder ( this.e2
         .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_LET_E2 ) ;
     return builder ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Expression#equals(Object)
-   */
-  @ Override
-  public boolean equals ( Object pObject )
-  {
-    if ( pObject instanceof MultiLet )
-    {
-      MultiLet other = ( MultiLet ) pObject ;
-      return ( ( Arrays.equals ( this.identifiers , other.identifiers ) )
-          && ( this.e1.equals ( other.e1 ) ) && ( this.e2.equals ( other.e2 ) ) && ( ( this.tau == null ) ? ( other.tau == null )
-          : ( this.tau.equals ( other.tau ) ) ) ) ;
-    }
-    return false ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Expression#hashCode()
-   */
-  @ Override
-  public int hashCode ( )
-  {
-    return this.identifiers.hashCode ( ) + this.e1.hashCode ( )
-        + this.e2.hashCode ( )
-        + ( ( this.tau != null ) ? this.tau.hashCode ( ) : 0 ) ;
   }
 }

@@ -78,25 +78,42 @@ public final class InfixOperation extends Expression
 
   /**
    * {@inheritDoc}
+   * 
+   * @see Expression#clone()
+   */
+  @ Override
+  public InfixOperation clone ( )
+  {
+    return new InfixOperation ( this.op.clone ( ) , this.e1.clone ( ) , this.e2
+        .clone ( ) ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Expression#equals(Object)
+   */
+  @ Override
+  public boolean equals ( Object pObject )
+  {
+    if ( pObject instanceof InfixOperation )
+    {
+      InfixOperation other = ( InfixOperation ) pObject ;
+      return ( ( this.op.equals ( other.op ) )
+          && ( this.e1.equals ( other.e1 ) ) && ( this.e2.equals ( other.e2 ) ) ) ;
+    }
+    return false ;
+  }
+
+
+  /**
+   * {@inheritDoc}
    */
   @ Override
   public String getCaption ( )
   {
     return "Infix-Operation" ; //$NON-NLS-1$
-  }
-
-
-  /**
-   * Returns the binary operator that is applied to <code>e1</code> and
-   * <code>e2</code>.
-   * 
-   * @return the binary operator.
-   * @see #getE1()
-   * @see #getE2()
-   */
-  public BinaryOperator getOp ( )
-  {
-    return this.op ;
   }
 
 
@@ -127,30 +144,28 @@ public final class InfixOperation extends Expression
 
 
   /**
-   * {@inheritDoc}
+   * Returns the binary operator that is applied to <code>e1</code> and
+   * <code>e2</code>.
    * 
-   * @see Expression#clone()
+   * @return the binary operator.
+   * @see #getE1()
+   * @see #getE2()
    */
-  @ Override
-  public InfixOperation clone ( )
+  public BinaryOperator getOp ( )
   {
-    return new InfixOperation ( this.op.clone ( ) , this.e1.clone ( ) , this.e2
-        .clone ( ) ) ;
+    return this.op ;
   }
 
 
   /**
    * {@inheritDoc}
    * 
-   * @see Expression#substitute(TypeSubstitution)
+   * @see Expression#hashCode()
    */
   @ Override
-  public InfixOperation substitute ( TypeSubstitution pTypeSubstitution )
+  public int hashCode ( )
   {
-    Expression newE1 = this.e1.substitute ( pTypeSubstitution ) ;
-    Expression newE2 = this.e2.substitute ( pTypeSubstitution ) ;
-    return ( this.e1 == newE1 && this.e2 == newE2 ) ? this
-        : new InfixOperation ( this.op , newE1 , newE2 ) ;
+    return this.op.hashCode ( ) + this.e1.hashCode ( ) + this.e2.hashCode ( ) ;
   }
 
 
@@ -187,6 +202,21 @@ public final class InfixOperation extends Expression
   /**
    * {@inheritDoc}
    * 
+   * @see Expression#substitute(TypeSubstitution)
+   */
+  @ Override
+  public InfixOperation substitute ( TypeSubstitution pTypeSubstitution )
+  {
+    Expression newE1 = this.e1.substitute ( pTypeSubstitution ) ;
+    Expression newE2 = this.e2.substitute ( pTypeSubstitution ) ;
+    return ( this.e1 == newE1 && this.e2 == newE2 ) ? this
+        : new InfixOperation ( this.op , newE1 , newE2 ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
    * @see Expression#toPrettyStringBuilder(PrettyStringBuilderFactory)
    */
   public @ Override
@@ -205,35 +235,5 @@ public final class InfixOperation extends Expression
         .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , this.op
         .getPrettyPriority ( ) + 1 ) ;
     return builder ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Expression#equals(Object)
-   */
-  @ Override
-  public boolean equals ( Object pObject )
-  {
-    if ( pObject instanceof InfixOperation )
-    {
-      InfixOperation other = ( InfixOperation ) pObject ;
-      return ( ( this.op.equals ( other.op ) )
-          && ( this.e1.equals ( other.e1 ) ) && ( this.e2.equals ( other.e2 ) ) ) ;
-    }
-    return false ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Expression#hashCode()
-   */
-  @ Override
-  public int hashCode ( )
-  {
-    return this.op.hashCode ( ) + this.e1.hashCode ( ) + this.e2.hashCode ( ) ;
   }
 }

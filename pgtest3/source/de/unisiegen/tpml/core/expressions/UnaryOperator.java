@@ -26,16 +26,6 @@ public abstract class UnaryOperator extends Constant
 
 
   /**
-   * {@inheritDoc}
-   */
-  @ Override
-  public String getCaption ( )
-  {
-    return "Unary-Operator" ; //$NON-NLS-1$
-  }
-
-
-  /**
    * Applies this unary operator to the specified expression <code>e</code>.
    * If the operator cannot be applied to the expression <code>e</code>, and
    * {@link UnaryOperatorException} is thrown.
@@ -48,4 +38,14 @@ public abstract class UnaryOperator extends Constant
    */
   public abstract Expression applyTo ( Expression pExpression )
       throws UnaryOperatorException ;
+
+
+  /**
+   * {@inheritDoc}
+   */
+  @ Override
+  public String getCaption ( )
+  {
+    return "Unary-Operator" ; //$NON-NLS-1$
+  }
 }

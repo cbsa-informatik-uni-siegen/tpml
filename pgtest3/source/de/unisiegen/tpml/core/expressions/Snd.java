@@ -24,16 +24,6 @@ public final class Snd extends Projection
 
   /**
    * {@inheritDoc}
-   */
-  @ Override
-  public String getCaption ( )
-  {
-    return "Second" ; //$NON-NLS-1$
-  }
-
-
-  /**
-   * {@inheritDoc}
    * 
    * @see Projection#clone()
    */
@@ -41,5 +31,15 @@ public final class Snd extends Projection
   public Snd clone ( )
   {
     return new Snd ( ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   */
+  @ Override
+  public String getCaption ( )
+  {
+    return "Second" ; //$NON-NLS-1$
   }
 }

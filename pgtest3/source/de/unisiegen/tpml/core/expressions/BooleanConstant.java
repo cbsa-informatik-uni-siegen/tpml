@@ -37,16 +37,6 @@ public final class BooleanConstant extends Constant
 
 
   /**
-   * {@inheritDoc}
-   */
-  @ Override
-  public String getCaption ( )
-  {
-    return "Boolean" ; //$NON-NLS-1$
-  }
-
-
-  /**
    * Returns the value of this <code>BooleanConstant</code> object as a
    * boolean primitive.
    * 
@@ -67,5 +57,15 @@ public final class BooleanConstant extends Constant
   public BooleanConstant clone ( )
   {
     return new BooleanConstant ( this.booleanValue ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   */
+  @ Override
+  public String getCaption ( )
+  {
+    return "Boolean" ; //$NON-NLS-1$
   }
 }

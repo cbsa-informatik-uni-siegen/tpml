@@ -37,6 +37,18 @@ public final class IntegerConstant extends Constant
 
   /**
    * {@inheritDoc}
+   * 
+   * @see Expression#clone()
+   */
+  @ Override
+  public IntegerConstant clone ( )
+  {
+    return new IntegerConstant ( this.intValue ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
    */
   @ Override
   public String getCaption ( )
@@ -55,17 +67,5 @@ public final class IntegerConstant extends Constant
   public int intValue ( )
   {
     return this.intValue ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Expression#clone()
-   */
-  @ Override
-  public IntegerConstant clone ( )
-  {
-    return new IntegerConstant ( this.intValue ) ;
   }
 }

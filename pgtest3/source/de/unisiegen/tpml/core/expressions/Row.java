@@ -3,12 +3,11 @@ package de.unisiegen.tpml.core.expressions ;
 
 import java.util.ArrayList ;
 import java.util.Arrays ;
-import java.util.Set ;
 import java.util.TreeSet ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
-import de.unisiegen.tpml.core.util.Free ;
+import de.unisiegen.tpml.core.util.BoundRenaming ;
 
 
 /**
@@ -85,35 +84,26 @@ public final class Row extends Expression
    * {@inheritDoc}
    */
   @ Override
-  public Set < String > free ( )
+  public TreeSet < String > free ( )
   {
-    TreeSet < String > free = new TreeSet < String > ( ) ;
-    TreeSet < String > bounded = new TreeSet < String > ( ) ;
-    for ( Expression expr : this.expressions )
+    if ( this.free == null )
     {
-      if ( expr instanceof Attribute )
+      this.free = new TreeSet < String > ( ) ;
+      TreeSet < String > bounded = new TreeSet < String > ( ) ;
+      for ( Expression expr : this.expressions )
       {
-        Attribute attribute = ( Attribute ) expr ;
-        free.addAll ( attribute.free ( ) ) ;
-        bounded.add ( attribute.getId ( ) ) ;
-      }
-      else if ( ( expr instanceof Method ) || ( expr instanceof CurriedMethod ) )
-      {
-        TreeSet < String > freeMethod = new TreeSet < String > ( ) ;
-        freeMethod.addAll ( expr.free ( ) ) ;
-        freeMethod.removeAll ( bounded ) ;
-        free.addAll ( freeMethod ) ;
-      }
-      else
-      {
-        /*
-         * Programming error: The child of the Row is not an Attribute, Method
-         * or CurriedMethod. This should not happen.
-         */
-        throw new IllegalStateException ( "Inconsistent Row class." ) ; //$NON-NLS-1$
+        TreeSet < String > freeCurrent = new TreeSet < String > ( ) ;
+        freeCurrent.addAll ( expr.free ( ) ) ;
+        freeCurrent.removeAll ( bounded ) ;
+        this.free.addAll ( freeCurrent ) ;
+        if ( expr instanceof Attribute )
+        {
+          Attribute attribute = ( Attribute ) expr ;
+          bounded.add ( attribute.getId ( ) ) ;
+        }
       }
     }
-    return free ;
+    return this.free ;
   }
 
 
@@ -217,42 +207,46 @@ public final class Row extends Expression
       boolean pAttributeRename )
   {
     Expression [ ] newExpressions = this.expressions.clone ( ) ;
-    for ( int i = 0 ; i < newExpressions.length ; i ++ )
+    if ( this.free ( ).contains ( pId ) )
     {
-      if ( newExpressions [ i ] instanceof Attribute )
+      for ( int i = 0 ; i < newExpressions.length ; i ++ )
       {
-        Attribute attribute = ( Attribute ) newExpressions [ i ] ;
-        if ( pId.equals ( attribute.getId ( ) ) )
+        if ( newExpressions [ i ] instanceof Attribute )
+        {
+          Attribute attribute = ( Attribute ) newExpressions [ i ] ;
+          if ( pId.equals ( attribute.getId ( ) ) )
+          {
+            newExpressions [ i ] = newExpressions [ i ].substitute ( pId ,
+                pExpression , pAttributeRename ) ;
+            break ;
+          }
+          BoundRenaming boundRenaming = new BoundRenaming ( ) ;
+          for ( int j = i + 1 ; j < newExpressions.length ; j ++ )
+          {
+            boundRenaming.add ( newExpressions [ j ].free ( ) ) ;
+          }
+          boundRenaming.remove ( attribute.getId ( ) ) ;
+          boundRenaming.add ( pExpression.free ( ) ) ;
+          boundRenaming.add ( pId ) ;
+          String newId = boundRenaming.newIdentifier ( attribute.getId ( ) ) ;
+          if ( ! attribute.getId ( ).equals ( newId ) )
+          {
+            for ( int j = i + 1 ; j < newExpressions.length ; j ++ )
+            {
+              newExpressions [ j ] = newExpressions [ j ].substitute (
+                  attribute.getId ( ) , new Identifier ( newId ) ,
+                  pAttributeRename ) ;
+            }
+          }
+          newExpressions [ i ] = new Attribute ( newId , attribute.getTau ( ) ,
+              attribute.getE ( ).substitute ( pId , pExpression ,
+                  pAttributeRename ) ) ;
+        }
+        else
         {
           newExpressions [ i ] = newExpressions [ i ].substitute ( pId ,
               pExpression , pAttributeRename ) ;
-          break ;
         }
-        Free free = new Free ( ) ;
-        for ( int j = i + 1 ; j < newExpressions.length ; j ++ )
-        {
-          free.add ( newExpressions [ j ].free ( ) ) ;
-        }
-        free.remove ( attribute.getId ( ) ) ;
-        free.add ( pExpression.free ( ) ) ;
-        free.add ( pId ) ;
-        String newId = free.newIdentifier ( attribute.getId ( ) ) ;
-        if ( ! attribute.getId ( ).equals ( newId ) )
-        {
-          for ( int j = i + 1 ; j < newExpressions.length ; j ++ )
-          {
-            newExpressions [ j ] = newExpressions [ j ].substitute ( attribute
-                .getId ( ) , new Identifier ( newId ) , pAttributeRename ) ;
-          }
-        }
-        newExpressions [ i ] = new Attribute ( newId , attribute.getTau ( ) ,
-            attribute.getE ( ).substitute ( pId , pExpression ,
-                pAttributeRename ) ) ;
-      }
-      else
-      {
-        newExpressions [ i ] = newExpressions [ i ].substitute ( pId ,
-            pExpression , pAttributeRename ) ;
       }
     }
     return new Row ( newExpressions ) ;
@@ -285,7 +279,7 @@ public final class Row extends Expression
       PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
     /*
-     * System.out.println ( "Free Row:" ) ; for ( String s : free ( ) ) {
+     * System.out.println ( "BoundRenaming Row:" ) ; for ( String s : free ( ) ) {
      * System.out.print ( s + " " ) ; } System.out.println ( ) ;
      */
     PrettyStringBuilder builder = pPrettyStringBuilderFactory.newBuilder (

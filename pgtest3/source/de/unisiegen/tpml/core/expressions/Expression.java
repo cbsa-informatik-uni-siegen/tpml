@@ -7,7 +7,6 @@ import java.util.Arrays ;
 import java.util.Collections ;
 import java.util.Enumeration ;
 import java.util.LinkedList ;
-import java.util.Set ;
 import java.util.TreeSet ;
 import java.util.Vector ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable ;
@@ -78,6 +77,15 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
       return e ;
     }
   }
+
+
+  /**
+   * Cached vector of the free Identifiers, so the free Identifier do not need
+   * to be determined on every invocation of {@link #free()}.
+   * 
+   * @see #free()
+   */
+  protected TreeSet < String > free = null ;
 
 
   /**
@@ -208,14 +216,18 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
    * 
    * @return the set of free (unbound) identifiers within the expression.
    */
-  public Set < String > free ( )
+  public TreeSet < String > free ( )
   {
-    TreeSet < String > free = new TreeSet < String > ( ) ;
-    for ( Enumeration < Expression > c = children ( ) ; c.hasMoreElements ( ) ; )
+    if ( this.free == null )
     {
-      free.addAll ( c.nextElement ( ).free ( ) ) ;
+      this.free = new TreeSet < String > ( ) ;
+      Enumeration < Expression > chidlren = children ( ) ;
+      while ( chidlren.hasMoreElements ( ) )
+      {
+        this.free.addAll ( chidlren.nextElement ( ).free ( ) ) ;
+      }
     }
-    return free ;
+    return this.free ;
   }
 
 

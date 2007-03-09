@@ -14,7 +14,7 @@ import de.unisiegen.tpml.core.expressions.Method ;
 import de.unisiegen.tpml.core.expressions.ObjectExpr ;
 import de.unisiegen.tpml.core.expressions.Row ;
 import de.unisiegen.tpml.core.languages.l2.L2BigStepProofRuleSet ;
-import de.unisiegen.tpml.core.util.Free ;
+import de.unisiegen.tpml.core.util.BoundRenaming ;
 
 
 /**
@@ -217,18 +217,18 @@ public class L2OBigStepProofRuleSet extends L2BigStepProofRuleSet
       throw new IllegalArgumentException ( "Can not apply RENAME" ) ; //$NON-NLS-1$
     }
     context.addProofNode ( node , attribute.getE ( ) ) ;
-    Free free = new Free ( ) ;
-    free.add ( row.free ( ) ) ;
-    free.add ( attribute.getId ( ) ) ;
+    BoundRenaming boundRenaming = new BoundRenaming ( ) ;
+    boundRenaming.add ( row.free ( ) ) ;
+    boundRenaming.add ( attribute.getId ( ) ) ;
     for ( int i = 1 ; i < row.getExpressions ( ).length ; i ++ )
     {
       if ( row.getExpressions ( i ) instanceof Attribute )
       {
         Attribute currentAttribute = ( Attribute ) row.getExpressions ( i ) ;
-        free.add ( currentAttribute.getId ( ) ) ;
+        boundRenaming.add ( currentAttribute.getId ( ) ) ;
       }
     }
-    String newId = free.newIdentifier ( attribute.getId ( ) ) ;
+    String newId = boundRenaming.newIdentifier ( attribute.getId ( ) ) ;
     Expression [ ] newRowExpressions = new Expression [ row.getExpressions ( ).length - 1 ] ;
     found = false ;
     for ( int i = 0 ; i < newRowExpressions.length ; i ++ )

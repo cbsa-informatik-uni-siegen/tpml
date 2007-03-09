@@ -60,6 +60,35 @@ public final class Condition1 extends Expression
 
   /**
    * {@inheritDoc}
+   * 
+   * @see Expression#clone()
+   */
+  @ Override
+  public Condition1 clone ( )
+  {
+    return new Condition1 ( this.e0.clone ( ) , this.e1.clone ( ) ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Expression#equals(Object)
+   */
+  @ Override
+  public boolean equals ( Object pObject )
+  {
+    if ( pObject instanceof Condition1 )
+    {
+      Condition1 other = ( Condition1 ) pObject ;
+      return ( ( this.e0.equals ( other.e0 ) ) && ( this.e1.equals ( other.e1 ) ) ) ;
+    }
+    return false ;
+  }
+
+
+  /**
+   * {@inheritDoc}
    */
   @ Override
   public String getCaption ( )
@@ -93,27 +122,12 @@ public final class Condition1 extends Expression
   /**
    * {@inheritDoc}
    * 
-   * @see Expression#clone()
+   * @see Expression#hashCode()
    */
   @ Override
-  public Condition1 clone ( )
+  public int hashCode ( )
   {
-    return new Condition1 ( this.e0.clone ( ) , this.e1.clone ( ) ) ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Expression#substitute(TypeSubstitution)
-   */
-  @ Override
-  public Expression substitute ( TypeSubstitution substitution )
-  {
-    Expression newE0 = this.e0.substitute ( substitution ) ;
-    Expression newE1 = this.e1.substitute ( substitution ) ;
-    return ( this.e0 == newE0 && this.e1 == newE1 ) ? this : new Condition1 (
-        newE0 , newE1 ) ;
+    return this.e0.hashCode ( ) + this.e1.hashCode ( ) ;
   }
 
 
@@ -150,6 +164,21 @@ public final class Condition1 extends Expression
   /**
    * {@inheritDoc}
    * 
+   * @see Expression#substitute(TypeSubstitution)
+   */
+  @ Override
+  public Expression substitute ( TypeSubstitution substitution )
+  {
+    Expression newE0 = this.e0.substitute ( substitution ) ;
+    Expression newE1 = this.e1.substitute ( substitution ) ;
+    return ( this.e0 == newE0 && this.e1 == newE1 ) ? this : new Condition1 (
+        newE0 , newE1 ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
    * @see Expression#toPrettyStringBuilder(PrettyStringBuilderFactory)
    */
   @ Override
@@ -171,34 +200,5 @@ public final class Condition1 extends Expression
         .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
         PRIO_CONDITION_E1 ) ;
     return builder ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Expression#equals(Object)
-   */
-  @ Override
-  public boolean equals ( Object pObject )
-  {
-    if ( pObject instanceof Condition1 )
-    {
-      Condition1 other = ( Condition1 ) pObject ;
-      return ( ( this.e0.equals ( other.e0 ) ) && ( this.e1.equals ( other.e1 ) ) ) ;
-    }
-    return false ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Expression#hashCode()
-   */
-  @ Override
-  public int hashCode ( )
-  {
-    return this.e0.hashCode ( ) + this.e1.hashCode ( ) ;
   }
 }

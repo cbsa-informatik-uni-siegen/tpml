@@ -25,16 +25,6 @@ public final class BinaryCons extends BinaryOperator
 
   /**
    * {@inheritDoc}
-   */
-  @ Override
-  public String getCaption ( )
-  {
-    return "BinaryCons" ; //$NON-NLS-1$
-  }
-
-
-  /**
-   * {@inheritDoc}
    * 
    * @see BinaryOperator#applyTo(Expression, Expression)
    */
@@ -64,5 +54,15 @@ public final class BinaryCons extends BinaryOperator
   public BinaryCons clone ( )
   {
     return new BinaryCons ( ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   */
+  @ Override
+  public String getCaption ( )
+  {
+    return "BinaryCons" ; //$NON-NLS-1$
   }
 }

@@ -43,28 +43,6 @@ public abstract class BinaryOperator extends Constant
 
 
   /**
-   * {@inheritDoc}
-   */
-  @ Override
-  public String getCaption ( )
-  {
-    return "Binary-Operator" ; //$NON-NLS-1$
-  }
-
-
-  /**
-   * Returns the base pretty print priority for this binary operator, when used
-   * within an {@link de.unisiegen.tpml.core.expressions.InfixOperation}.
-   * 
-   * @return the base pretty print priority for this binary operator.
-   */
-  public int getPrettyPriority ( )
-  {
-    return this.prettyPriority ;
-  }
-
-
-  /**
    * Applies the binary operator to the operands <code>e1</code> and
    * <code>e2</code> and returns the resulting expression. If the operator
    * cannot be applied to <code>e1</code> and <code>e2</code> because of a
@@ -89,6 +67,28 @@ public abstract class BinaryOperator extends Constant
    */
   @ Override
   public abstract BinaryOperator clone ( ) ;
+
+
+  /**
+   * {@inheritDoc}
+   */
+  @ Override
+  public String getCaption ( )
+  {
+    return "Binary-Operator" ; //$NON-NLS-1$
+  }
+
+
+  /**
+   * Returns the base pretty print priority for this binary operator, when used
+   * within an {@link de.unisiegen.tpml.core.expressions.InfixOperation}.
+   * 
+   * @return the base pretty print priority for this binary operator.
+   */
+  public int getPrettyPriority ( )
+  {
+    return this.prettyPriority ;
+  }
 
 
   /**

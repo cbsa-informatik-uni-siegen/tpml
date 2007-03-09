@@ -6,7 +6,7 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
 import de.unisiegen.tpml.core.types.MonoType ;
-import de.unisiegen.tpml.core.util.Free ;
+import de.unisiegen.tpml.core.util.BoundRenaming ;
 
 
 /**
@@ -49,16 +49,6 @@ public final class CurriedLetRec extends CurriedLet
 
   /**
    * {@inheritDoc}
-   */
-  @ Override
-  public String getCaption ( )
-  {
-    return "Curried-Let-Rec" ; //$NON-NLS-1$
-  }
-
-
-  /**
-   * {@inheritDoc}
    * 
    * @see CurriedLet#clone()
    */
@@ -78,37 +68,32 @@ public final class CurriedLetRec extends CurriedLet
   @ Override
   public TreeSet < String > free ( )
   {
-    TreeSet < String > freeE2 = new TreeSet < String > ( ) ;
-    freeE2.addAll ( this.e2.free ( ) ) ;
-    freeE2.remove ( this.identifiers [ 0 ] ) ;
-    TreeSet < String > freeE1 = new TreeSet < String > ( ) ;
-    freeE1.addAll ( this.e1.free ( ) ) ;
-    for ( String id : this.identifiers )
-      freeE1.remove ( id ) ;
-    TreeSet < String > free = new TreeSet < String > ( ) ;
-    free.addAll ( freeE1 ) ;
-    free.addAll ( freeE2 ) ;
-    return free ;
+    if ( this.free == null )
+    {
+      this.free = new TreeSet < String > ( ) ;
+      TreeSet < String > freeE1 = new TreeSet < String > ( ) ;
+      TreeSet < String > freeE2 = new TreeSet < String > ( ) ;
+      freeE1.addAll ( this.e1.free ( ) ) ;
+      for ( int i = 0 ; i < this.identifiers.length ; i ++ )
+      {
+        freeE1.remove ( this.identifiers [ i ] ) ;
+      }
+      freeE2.addAll ( this.e2.free ( ) ) ;
+      freeE2.remove ( this.identifiers [ 0 ] ) ;
+      this.free.addAll ( freeE1 ) ;
+      this.free.addAll ( freeE2 ) ;
+    }
+    return this.free ;
   }
 
 
   /**
    * {@inheritDoc}
-   * 
-   * @see CurriedLet#substitute(TypeSubstitution)
    */
   @ Override
-  public CurriedLetRec substitute ( TypeSubstitution pTypeSubstitution )
+  public String getCaption ( )
   {
-    MonoType [ ] newTypes = new MonoType [ this.types.length ] ;
-    for ( int n = 0 ; n < newTypes.length ; ++ n )
-    {
-      newTypes [ n ] = ( this.types [ n ] != null ) ? this.types [ n ]
-          .substitute ( pTypeSubstitution ) : null ;
-    }
-    return new CurriedLetRec ( this.identifiers , newTypes , this.e1
-        .substitute ( pTypeSubstitution ) , this.e2
-        .substitute ( pTypeSubstitution ) ) ;
+    return "Curried-Let-Rec" ; //$NON-NLS-1$
   }
 
 
@@ -140,59 +125,110 @@ public final class CurriedLetRec extends CurriedLet
     String [ ] newIdentifiers = this.identifiers.clone ( ) ;
     Expression newE1 = this.e1.clone ( ) ;
     Expression newE2 = this.e2.clone ( ) ;
+    boolean substE1_0 = true ;
+    boolean substE1_1_N = true ;
     for ( int i = 1 ; i < this.identifiers.length ; i ++ )
     {
       if ( this.identifiers [ i ].equals ( pId ) )
       {
-        return new CurriedLetRec ( this.identifiers , this.types , newE1 ,
-            newE2.substitute ( pId , pExpression , pAttributeRename ) ) ;
+        substE1_1_N = false ;
+      }
+      if ( this.identifiers [ i ].equals ( this.identifiers [ 0 ] ) )
+      {
+        substE1_0 = false ;
       }
     }
-    for ( int i = 1 ; i < newIdentifiers.length ; i ++ )
+    if ( ( substE1_1_N ) && ( this.e1.free ( ).contains ( pId ) ) )
     {
-      Free free = new Free ( ) ;
-      free.add ( this.e1.free ( ) ) ;
-      free.remove ( newIdentifiers [ i ] ) ;
-      free.add ( pExpression.free ( ) ) ;
-      free.add ( pId ) ;
-      if ( free.contains ( newIdentifiers [ i ] ) )
+      for ( int i = 1 ; i < newIdentifiers.length ; i ++ )
       {
-        for ( int j = 1 ; j < newIdentifiers.length ; j ++ )
+        BoundRenaming boundRenaming = new BoundRenaming ( ) ;
+        boundRenaming.add ( this.e1.free ( ) ) ;
+        boundRenaming.remove ( newIdentifiers [ i ] ) ;
+        boundRenaming.add ( pExpression.free ( ) ) ;
+        boundRenaming.add ( pId ) ;
+        if ( boundRenaming.contains ( newIdentifiers [ i ] ) )
         {
-          if ( i != j )
+          for ( int j = 1 ; j < newIdentifiers.length ; j ++ )
           {
-            free.add ( this.identifiers [ j ] ) ;
+            if ( i != j )
+            {
+              boundRenaming.add ( newIdentifiers [ j ] ) ;
+            }
           }
         }
-      }
-      String newId = free.newIdentifier ( newIdentifiers [ i ] ) ;
-      if ( ! newIdentifiers [ i ].equals ( newId ) )
-      {
-        newE1 = newE1.substitute ( newIdentifiers [ i ] , new Identifier (
-            newId ) , pAttributeRename ) ;
-        newIdentifiers [ i ] = newId ;
+        String newId = boundRenaming.newIdentifier ( newIdentifiers [ i ] ) ;
+        for ( int j = 1 ; j < i ; j ++ )
+        {
+          if ( this.identifiers [ i ].equals ( this.identifiers [ j ] ) )
+          {
+            newId = newIdentifiers [ j ] ;
+          }
+        }
+        if ( ! newIdentifiers [ i ].equals ( newId ) )
+        {
+          newE1 = newE1.substitute ( newIdentifiers [ i ] , new Identifier (
+              newId ) , pAttributeRename ) ;
+          newIdentifiers [ i ] = newId ;
+        }
       }
     }
-    Free free = new Free ( ) ;
-    free.add ( this.free ( ) ) ;
-    free.add ( pExpression.free ( ) ) ;
-    free.add ( pId ) ;
-    for ( int i = 1 ; i < newIdentifiers.length ; i ++ )
+    BoundRenaming boundRenaming = new BoundRenaming ( ) ;
+    boundRenaming.add ( this.free ( ) ) ;
+    boundRenaming.add ( pExpression.free ( ) ) ;
+    boundRenaming.add ( pId ) ;
+    if ( substE1_0 )
     {
-      free.add ( this.identifiers [ i ] ) ;
+      for ( int i = 1 ; i < newIdentifiers.length ; i ++ )
+      {
+        boundRenaming.add ( this.identifiers [ i ] ) ;
+      }
     }
-    String newId = free.newIdentifier ( this.identifiers [ 0 ] ) ;
+    String newId = boundRenaming.newIdentifier ( this.identifiers [ 0 ] ) ;
     if ( ! this.identifiers [ 0 ].equals ( newId ) )
     {
-      newE1 = newE1.substitute ( this.identifiers [ 0 ] , new Identifier (
-          newId ) , pAttributeRename ) ;
-      newE2 = newE2.substitute ( this.identifiers [ 0 ] , new Identifier (
-          newId ) , pAttributeRename ) ;
-      newIdentifiers [ 0 ] = newId ;
+      if ( ( substE1_0 ) && ( this.e1.free ( ).contains ( pId ) ) )
+      {
+        newE1 = newE1.substitute ( this.identifiers [ 0 ] , new Identifier (
+            newId ) , pAttributeRename ) ;
+        newIdentifiers [ 0 ] = newId ;
+      }
+      if ( this.e2.free ( ).contains ( pId ) )
+      {
+        newE2 = newE2.substitute ( this.identifiers [ 0 ] , new Identifier (
+            newId ) , pAttributeRename ) ;
+        newIdentifiers [ 0 ] = newId ;
+      }
     }
-    newE1 = newE1.substitute ( pId , pExpression , pAttributeRename ) ;
-    newE2 = newE2.substitute ( pId , pExpression , pAttributeRename ) ;
+    if ( ( substE1_0 || substE1_1_N ) && ( this.e1.free ( ).contains ( pId ) ) )
+    {
+      newE1 = newE1.substitute ( pId , pExpression , pAttributeRename ) ;
+    }
+    if ( this.e2.free ( ).contains ( pId ) )
+    {
+      newE2 = newE2.substitute ( pId , pExpression , pAttributeRename ) ;
+    }
     return new CurriedLetRec ( newIdentifiers , this.types , newE1 , newE2 ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see CurriedLet#substitute(TypeSubstitution)
+   */
+  @ Override
+  public CurriedLetRec substitute ( TypeSubstitution pTypeSubstitution )
+  {
+    MonoType [ ] newTypes = new MonoType [ this.types.length ] ;
+    for ( int n = 0 ; n < newTypes.length ; ++ n )
+    {
+      newTypes [ n ] = ( this.types [ n ] != null ) ? this.types [ n ]
+          .substitute ( pTypeSubstitution ) : null ;
+    }
+    return new CurriedLetRec ( this.identifiers , newTypes , this.e1
+        .substitute ( pTypeSubstitution ) , this.e2
+        .substitute ( pTypeSubstitution ) ) ;
   }
 
 

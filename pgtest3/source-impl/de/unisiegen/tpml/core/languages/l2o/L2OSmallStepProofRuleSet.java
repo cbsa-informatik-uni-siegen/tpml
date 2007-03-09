@@ -13,6 +13,7 @@ import de.unisiegen.tpml.core.expressions.ObjectExpr ;
 import de.unisiegen.tpml.core.expressions.Row ;
 import de.unisiegen.tpml.core.languages.l2.L2SmallStepProofRuleSet ;
 import de.unisiegen.tpml.core.smallstep.SmallStepProofContext ;
+import de.unisiegen.tpml.core.util.BoundRenaming ;
 
 
 /**
@@ -480,22 +481,19 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
           {
             newRowExpressions [ j ] = pRow.getExpressions ( j ).clone ( ) ;
           }
-          String newId = attribute.getId ( ) + "'" ; //$NON-NLS-1$ 
-          while ( attrRename )
+          BoundRenaming boundRenaming = new BoundRenaming ( ) ;
+          boundRenaming.add ( pRow.free ( ) ) ;
+          boundRenaming.add ( attribute.getId ( ) ) ;
+          for ( int j = 1 ; j < pRow.getExpressions ( ).length ; j ++ )
           {
-            attrRename = false ;
-            for ( int j = i + 1 ; j < pRow.getExpressions ( ).length ; j ++ )
+            if ( pRow.getExpressions ( j ) instanceof Attribute )
             {
-              if ( ( pRow.getExpressions ( j ) instanceof Attribute )
-                  && ( ( Attribute ) pRow.getExpressions ( j ) ).getId ( )
-                      .equals ( newId ) )
-              {
-                newId += "'" ;//$NON-NLS-1$ 
-                attrRename = true ;
-                break ;
-              }
+              Attribute currentAttribute = ( Attribute ) pRow
+                  .getExpressions ( j ) ;
+              boundRenaming.add ( currentAttribute.getId ( ) ) ;
             }
           }
+          String newId = boundRenaming.newIdentifier ( attribute.getId ( ) ) ;
           newRowExpressions [ i ] = new Attribute ( newId ,
               attribute.getTau ( ) , attribute.getE ( ).clone ( ) ) ;
           for ( int j = i + 1 ; j < newRowExpressions.length ; j ++ )

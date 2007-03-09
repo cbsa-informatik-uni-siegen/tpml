@@ -30,29 +30,6 @@ public final class List extends Expression
 
 
   /**
-   * Allocates a new <code>List</code> instance with the specified
-   * <code>expressions</code>.
-   * 
-   * @param pExpressions a non empty array of {@link Expression}s.
-   * @throws IllegalArgumentException if <code>expressions</code> is empty.
-   * @throws NullPointerException if <code>expressions</code> is
-   *           <code>null</code>.
-   */
-  public List ( Expression [ ] pExpressions )
-  {
-    if ( pExpressions == null )
-    {
-      throw new NullPointerException ( "expressions is null" ) ; //$NON-NLS-1$
-    }
-    if ( pExpressions.length == 0 )
-    {
-      throw new IllegalArgumentException ( "expressions is empty" ) ; //$NON-NLS-1$
-    }
-    this.expressions = pExpressions ;
-  }
-
-
-  /**
    * Creates a new <code>List</code> with <code>e1</code> as the first list
    * item. <code>e2</code> can either be the empty list, anoter
    * <code>List</code> instance, or an application of the {@link UnaryCons}
@@ -112,6 +89,63 @@ public final class List extends Expression
 
 
   /**
+   * Allocates a new <code>List</code> instance with the specified
+   * <code>expressions</code>.
+   * 
+   * @param pExpressions a non empty array of {@link Expression}s.
+   * @throws IllegalArgumentException if <code>expressions</code> is empty.
+   * @throws NullPointerException if <code>expressions</code> is
+   *           <code>null</code>.
+   */
+  public List ( Expression [ ] pExpressions )
+  {
+    if ( pExpressions == null )
+    {
+      throw new NullPointerException ( "expressions is null" ) ; //$NON-NLS-1$
+    }
+    if ( pExpressions.length == 0 )
+    {
+      throw new IllegalArgumentException ( "expressions is empty" ) ; //$NON-NLS-1$
+    }
+    this.expressions = pExpressions ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Expression#clone()
+   */
+  @ Override
+  public List clone ( )
+  {
+    Expression [ ] newExpressions = new Expression [ this.expressions.length ] ;
+    for ( int i = 0 ; i < newExpressions.length ; i ++ )
+    {
+      newExpressions [ i ] = this.expressions [ i ].clone ( ) ;
+    }
+    return new List ( newExpressions ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Expression#equals(Object)
+   */
+  @ Override
+  public boolean equals ( Object pObject )
+  {
+    if ( pObject instanceof List )
+    {
+      List other = ( List ) pObject ;
+      return Arrays.equals ( this.expressions , other.expressions ) ;
+    }
+    return false ;
+  }
+
+
+  /**
    * {@inheritDoc}
    */
   @ Override
@@ -149,17 +183,12 @@ public final class List extends Expression
   /**
    * {@inheritDoc}
    * 
-   * @see Expression#clone()
+   * @see Expression#hashCode()
    */
   @ Override
-  public List clone ( )
+  public int hashCode ( )
   {
-    Expression [ ] newExpressions = new Expression [ this.expressions.length ] ;
-    for ( int i = 0 ; i < newExpressions.length ; i ++ )
-    {
-      newExpressions [ i ] = this.expressions [ i ].clone ( ) ;
-    }
-    return new List ( newExpressions ) ;
+    return Arrays.hashCode ( this.expressions ) ;
   }
 
 
@@ -176,41 +205,21 @@ public final class List extends Expression
 
 
   /**
-   * Returns the list without the first expression which may be the empty list.
-   * 
-   * @return the list without the first expression.
-   * @see #head()
-   */
-  public Expression tail ( )
-  {
-    if ( this.expressions.length > 1 )
-    {
-      Expression [ ] newExpressions = new Expression [ this.expressions.length - 1 ] ;
-      for ( int n = 0 ; n < newExpressions.length ; ++ n )
-      {
-        newExpressions [ n ] = this.expressions [ n + 1 ] ;
-      }
-      return new List ( newExpressions ) ;
-    }
-    return new EmptyList ( ) ;
-  }
-
-
-  /**
    * {@inheritDoc}
    * 
-   * @see Expression#substitute(TypeSubstitution)
+   * @see Expression#isValue()
    */
   @ Override
-  public Expression substitute ( TypeSubstitution pTypeSubstitution )
+  public boolean isValue ( )
   {
-    Expression [ ] newExpressions = new Expression [ this.expressions.length ] ;
-    for ( int n = 0 ; n < newExpressions.length ; ++ n )
+    for ( Expression e : this.expressions )
     {
-      newExpressions [ n ] = this.expressions [ n ]
-          .substitute ( pTypeSubstitution ) ;
+      if ( ! e.isValue ( ) )
+      {
+        return false ;
+      }
     }
-    return new List ( newExpressions ) ;
+    return true ;
   }
 
 
@@ -248,19 +257,39 @@ public final class List extends Expression
   /**
    * {@inheritDoc}
    * 
-   * @see Expression#isValue()
+   * @see Expression#substitute(TypeSubstitution)
    */
   @ Override
-  public boolean isValue ( )
+  public Expression substitute ( TypeSubstitution pTypeSubstitution )
   {
-    for ( Expression e : this.expressions )
+    Expression [ ] newExpressions = new Expression [ this.expressions.length ] ;
+    for ( int n = 0 ; n < newExpressions.length ; ++ n )
     {
-      if ( ! e.isValue ( ) )
-      {
-        return false ;
-      }
+      newExpressions [ n ] = this.expressions [ n ]
+          .substitute ( pTypeSubstitution ) ;
     }
-    return true ;
+    return new List ( newExpressions ) ;
+  }
+
+
+  /**
+   * Returns the list without the first expression which may be the empty list.
+   * 
+   * @return the list without the first expression.
+   * @see #head()
+   */
+  public Expression tail ( )
+  {
+    if ( this.expressions.length > 1 )
+    {
+      Expression [ ] newExpressions = new Expression [ this.expressions.length - 1 ] ;
+      for ( int n = 0 ; n < newExpressions.length ; ++ n )
+      {
+        newExpressions [ n ] = this.expressions [ n + 1 ] ;
+      }
+      return new List ( newExpressions ) ;
+    }
+    return new EmptyList ( ) ;
   }
 
 
@@ -288,34 +317,5 @@ public final class List extends Expression
     }
     builder.addText ( "]" ) ; //$NON-NLS-1$
     return builder ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Expression#equals(Object)
-   */
-  @ Override
-  public boolean equals ( Object pObject )
-  {
-    if ( pObject instanceof List )
-    {
-      List other = ( List ) pObject ;
-      return Arrays.equals ( this.expressions , other.expressions ) ;
-    }
-    return false ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Expression#hashCode()
-   */
-  @ Override
-  public int hashCode ( )
-  {
-    return Arrays.hashCode ( this.expressions ) ;
   }
 }

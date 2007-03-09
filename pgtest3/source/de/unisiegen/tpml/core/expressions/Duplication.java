@@ -3,8 +3,6 @@ package de.unisiegen.tpml.core.expressions ;
 
 import java.util.ArrayList ;
 import java.util.Arrays ;
-import java.util.Set ;
-import java.util.TreeSet ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
@@ -128,28 +126,6 @@ public final class Duplication extends Expression
           .equals ( this.identifiers , other.identifiers ) ) ) ;
     }
     return false ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   */
-  @ Override
-  public Set < String > free ( )
-  {
-    TreeSet < String > free = new TreeSet < String > ( ) ;
-    /*
-     * Add all free Identifiers of the first Expression.
-     */
-    free.addAll ( this.firstExpression.free ( ) ) ;
-    /*
-     * Add all free Identifiers of each child Expression.
-     */
-    for ( Expression expr : this.expressions )
-    {
-      free.addAll ( expr.free ( ) ) ;
-    }
-    return free ;
   }
 
 

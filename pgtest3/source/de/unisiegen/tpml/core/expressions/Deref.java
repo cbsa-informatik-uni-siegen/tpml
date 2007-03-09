@@ -24,16 +24,6 @@ public final class Deref extends UnaryOperator
 
 
   /**
-   * {@inheritDoc}
-   */
-  @ Override
-  public String getCaption ( )
-  {
-    return "Deref" ; //$NON-NLS-1$
-  }
-
-
-  /**
    * {@inheritDoc} This method always throws
    * {@link UnsupportedOperationException} to indicate that it should not be
    * called. Instead the <code>!</code> operator requires special handling in
@@ -62,5 +52,15 @@ public final class Deref extends UnaryOperator
   public Deref clone ( )
   {
     return new Deref ( ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   */
+  @ Override
+  public String getCaption ( )
+  {
+    return "Deref" ; //$NON-NLS-1$
   }
 }

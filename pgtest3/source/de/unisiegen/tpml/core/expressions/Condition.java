@@ -76,6 +76,37 @@ public final class Condition extends Expression
 
   /**
    * {@inheritDoc}
+   * 
+   * @see Expression#clone()
+   */
+  @ Override
+  public Condition clone ( )
+  {
+    return new Condition ( this.e0.clone ( ) , this.e1.clone ( ) , this.e2
+        .clone ( ) ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Expression#equals(Object)
+   */
+  @ Override
+  public boolean equals ( Object pObject )
+  {
+    if ( pObject instanceof Condition )
+    {
+      Condition other = ( Condition ) pObject ;
+      return ( ( this.e0.equals ( other.e0 ) )
+          && ( this.e1.equals ( other.e1 ) ) && ( this.e2.equals ( other.e2 ) ) ) ;
+    }
+    return false ;
+  }
+
+
+  /**
+   * {@inheritDoc}
    */
   @ Override
   public String getCaption ( )
@@ -122,29 +153,12 @@ public final class Condition extends Expression
   /**
    * {@inheritDoc}
    * 
-   * @see Expression#clone()
+   * @see Expression#hashCode()
    */
   @ Override
-  public Condition clone ( )
+  public int hashCode ( )
   {
-    return new Condition ( this.e0.clone ( ) , this.e1.clone ( ) , this.e2
-        .clone ( ) ) ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Expression#substitute(TypeSubstitution)
-   */
-  @ Override
-  public Condition substitute ( TypeSubstitution pTypeSubstitution )
-  {
-    Expression newE0 = this.e0.substitute ( pTypeSubstitution ) ;
-    Expression newE1 = this.e1.substitute ( pTypeSubstitution ) ;
-    Expression newE2 = this.e2.substitute ( pTypeSubstitution ) ;
-    return ( this.e0 == newE0 && this.e1 == newE1 && this.e2 == newE2 ) ? this
-        : new Condition ( newE0 , newE1 , newE2 ) ;
+    return this.e0.hashCode ( ) + this.e1.hashCode ( ) + this.e2.hashCode ( ) ;
   }
 
 
@@ -183,6 +197,22 @@ public final class Condition extends Expression
   /**
    * {@inheritDoc}
    * 
+   * @see Expression#substitute(TypeSubstitution)
+   */
+  @ Override
+  public Condition substitute ( TypeSubstitution pTypeSubstitution )
+  {
+    Expression newE0 = this.e0.substitute ( pTypeSubstitution ) ;
+    Expression newE1 = this.e1.substitute ( pTypeSubstitution ) ;
+    Expression newE2 = this.e2.substitute ( pTypeSubstitution ) ;
+    return ( this.e0 == newE0 && this.e1 == newE1 && this.e2 == newE2 ) ? this
+        : new Condition ( newE0 , newE1 , newE2 ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
    * @see Expression#toPrettyStringBuilder(PrettyStringBuilderFactory)
    */
   @ Override
@@ -211,35 +241,5 @@ public final class Condition extends Expression
         .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
         PRIO_CONDITION_E2 ) ;
     return builder ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Expression#equals(Object)
-   */
-  @ Override
-  public boolean equals ( Object pObject )
-  {
-    if ( pObject instanceof Condition )
-    {
-      Condition other = ( Condition ) pObject ;
-      return ( ( this.e0.equals ( other.e0 ) )
-          && ( this.e1.equals ( other.e1 ) ) && ( this.e2.equals ( other.e2 ) ) ) ;
-    }
-    return false ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Expression#hashCode()
-   */
-  @ Override
-  public int hashCode ( )
-  {
-    return this.e0.hashCode ( ) + this.e1.hashCode ( ) + this.e2.hashCode ( ) ;
   }
 }

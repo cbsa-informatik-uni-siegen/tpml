@@ -26,16 +26,6 @@ public final class IsEmpty extends UnaryListOperator
 
   /**
    * {@inheritDoc}
-   */
-  @ Override
-  public String getCaption ( )
-  {
-    return "Is-Empty" ; //$NON-NLS-1$
-  }
-
-
-  /**
-   * {@inheritDoc}
    * 
    * @see Expression#clone()
    */
@@ -43,5 +33,15 @@ public final class IsEmpty extends UnaryListOperator
   public IsEmpty clone ( )
   {
     return new IsEmpty ( ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   */
+  @ Override
+  public String getCaption ( )
+  {
+    return "Is-Empty" ; //$NON-NLS-1$
   }
 }

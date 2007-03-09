@@ -24,16 +24,6 @@ public final class EmptyList extends Constant
 
   /**
    * {@inheritDoc}
-   */
-  @ Override
-  public String getCaption ( )
-  {
-    return "Empty-List" ; //$NON-NLS-1$
-  }
-
-
-  /**
-   * {@inheritDoc}
    * 
    * @see Expression#clone()
    */
@@ -41,5 +31,15 @@ public final class EmptyList extends Constant
   public Expression clone ( )
   {
     return new EmptyList ( ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   */
+  @ Override
+  public String getCaption ( )
+  {
+    return "Empty-List" ; //$NON-NLS-1$
   }
 }

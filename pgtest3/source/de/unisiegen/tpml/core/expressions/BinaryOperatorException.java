@@ -89,17 +89,6 @@ public final class BinaryOperatorException extends Exception
 
 
   /**
-   * Returns the {@link BinaryOperator} that failed to apply.
-   * 
-   * @return the binary operator that failed to apply.
-   */
-  public BinaryOperator getOperator ( )
-  {
-    return this.operator ;
-  }
-
-
-  /**
    * Returns the first operand of the operator application that failed.
    * 
    * @return the first operand.
@@ -118,5 +107,16 @@ public final class BinaryOperatorException extends Exception
   public Expression getE2 ( )
   {
     return this.e2 ;
+  }
+
+
+  /**
+   * Returns the {@link BinaryOperator} that failed to apply.
+   * 
+   * @return the binary operator that failed to apply.
+   */
+  public BinaryOperator getOperator ( )
+  {
+    return this.operator ;
   }
 }

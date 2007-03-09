@@ -63,6 +63,35 @@ public final class And extends Expression
 
   /**
    * {@inheritDoc}
+   * 
+   * @see de.unisiegen.tpml.core.expressions.Expression#clone()
+   */
+  @ Override
+  public And clone ( )
+  {
+    return new And ( this.e1.clone ( ) , this.e2.clone ( ) ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Expression#equals(Object)
+   */
+  @ Override
+  public boolean equals ( Object pObject )
+  {
+    if ( pObject instanceof And )
+    {
+      And other = ( And ) pObject ;
+      return ( ( this.e1.equals ( other.e1 ) ) && ( this.e2.equals ( other.e2 ) ) ) ;
+    }
+    return false ;
+  }
+
+
+  /**
+   * {@inheritDoc}
    */
   @ Override
   public String getCaption ( )
@@ -96,27 +125,12 @@ public final class And extends Expression
   /**
    * {@inheritDoc}
    * 
-   * @see de.unisiegen.tpml.core.expressions.Expression#clone()
+   * @see Expression#hashCode()
    */
   @ Override
-  public And clone ( )
+  public int hashCode ( )
   {
-    return new And ( this.e1.clone ( ) , this.e2.clone ( ) ) ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Expression#substitute(TypeSubstitution)
-   */
-  @ Override
-  public Expression substitute ( TypeSubstitution pTypeSubstitution )
-  {
-    Expression newE1 = this.e1.substitute ( pTypeSubstitution ) ;
-    Expression newE2 = this.e2.substitute ( pTypeSubstitution ) ;
-    return ( this.e1 == newE1 && this.e2 == newE2 ) ? this : new And ( newE1 ,
-        newE2 ) ;
+    return this.e1.hashCode ( ) + this.e2.hashCode ( ) ;
   }
 
 
@@ -153,6 +167,21 @@ public final class And extends Expression
   /**
    * {@inheritDoc}
    * 
+   * @see Expression#substitute(TypeSubstitution)
+   */
+  @ Override
+  public Expression substitute ( TypeSubstitution pTypeSubstitution )
+  {
+    Expression newE1 = this.e1.substitute ( pTypeSubstitution ) ;
+    Expression newE2 = this.e2.substitute ( pTypeSubstitution ) ;
+    return ( this.e1 == newE1 && this.e2 == newE2 ) ? this : new And ( newE1 ,
+        newE2 ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
    * @see Expression#toPrettyStringBuilder(PrettyStringBuilderFactory)
    */
   @ Override
@@ -170,34 +199,5 @@ public final class And extends Expression
     builder.addBuilder ( this.e2
         .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_AND_E2 ) ;
     return builder ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Expression#equals(Object)
-   */
-  @ Override
-  public boolean equals ( Object pObject )
-  {
-    if ( pObject instanceof And )
-    {
-      And other = ( And ) pObject ;
-      return ( ( this.e1.equals ( other.e1 ) ) && ( this.e2.equals ( other.e2 ) ) ) ;
-    }
-    return false ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Expression#hashCode()
-   */
-  @ Override
-  public int hashCode ( )
-  {
-    return this.e1.hashCode ( ) + this.e2.hashCode ( ) ;
   }
 }

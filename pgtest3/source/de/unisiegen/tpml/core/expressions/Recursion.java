@@ -1,13 +1,12 @@
 package de.unisiegen.tpml.core.expressions ;
 
 
-import java.util.Set ;
 import java.util.TreeSet ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
 import de.unisiegen.tpml.core.types.MonoType ;
-import de.unisiegen.tpml.core.util.Free ;
+import de.unisiegen.tpml.core.util.BoundRenaming ;
 
 
 /**
@@ -134,12 +133,15 @@ public final class Recursion extends Expression
    * @see Expression#free()
    */
   @ Override
-  public Set < String > free ( )
+  public TreeSet < String > free ( )
   {
-    TreeSet < String > free = new TreeSet < String > ( ) ;
-    free.addAll ( this.e.free ( ) ) ;
-    free.remove ( this.id ) ;
-    return free ;
+    if ( this.free == null )
+    {
+      this.free = new TreeSet < String > ( ) ;
+      this.free.addAll ( this.e.free ( ) ) ;
+      this.free.remove ( this.id ) ;
+    }
+    return this.free ;
   }
 
 
@@ -183,19 +185,23 @@ public final class Recursion extends Expression
     {
       return this ;
     }
-    Free free = new Free ( ) ;
-    free.add ( this.free ( ) ) ;
-    free.add ( pExpression.free ( ) ) ;
-    free.add ( pId ) ;
-    String newId = free.newIdentifier ( this.id ) ;
     Expression newE = this.e ;
-    if ( ! this.id.equals ( newId ) )
+    String newId = this.id ;
+    if ( this.e.free ( ).contains ( pId ) )
     {
-      newE = this.e.substitute ( this.id , new Identifier ( newId ) ,
-          pAttributeRename ) ;
+      BoundRenaming boundRenaming = new BoundRenaming ( ) ;
+      boundRenaming.add ( this.free ( ) ) ;
+      boundRenaming.add ( pExpression.free ( ) ) ;
+      boundRenaming.add ( pId ) ;
+      newId = boundRenaming.newIdentifier ( this.id ) ;
+      if ( ! this.id.equals ( newId ) )
+      {
+        newE = newE.substitute ( this.id , new Identifier ( newId ) ,
+            pAttributeRename ) ;
+      }
     }
-    return new Recursion ( newId , this.tau , newE.substitute ( pId ,
-        pExpression , pAttributeRename ) ) ;
+    newE = newE.substitute ( pId , pExpression , pAttributeRename ) ;
+    return new Recursion ( newId , this.tau , newE ) ;
   }
 
 

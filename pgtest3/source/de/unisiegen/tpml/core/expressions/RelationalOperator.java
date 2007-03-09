@@ -26,13 +26,13 @@ public final class RelationalOperator extends BinaryOperator
 
 
   /**
-   * Returns the lower-than operator.
+   * Returns the greater-equal operator.
    * 
-   * @return the lower-than operator.
+   * @return the greater-equal operator.
    */
-  public static final RelationalOperator newLowerThan ( )
+  public static final RelationalOperator newGreaterEqual ( )
   {
-    return new RelationalOperator ( "<" ) ; //$NON-NLS-1$
+    return new RelationalOperator ( ">=" ) ; //$NON-NLS-1$
   }
 
 
@@ -59,13 +59,13 @@ public final class RelationalOperator extends BinaryOperator
 
 
   /**
-   * Returns the greater-equal operator.
+   * Returns the lower-than operator.
    * 
-   * @return the greater-equal operator.
+   * @return the lower-than operator.
    */
-  public static final RelationalOperator newGreaterEqual ( )
+  public static final RelationalOperator newLowerThan ( )
   {
-    return new RelationalOperator ( ">=" ) ; //$NON-NLS-1$
+    return new RelationalOperator ( "<" ) ; //$NON-NLS-1$
   }
 
 
@@ -79,16 +79,6 @@ public final class RelationalOperator extends BinaryOperator
   private RelationalOperator ( String pText )
   {
     super ( pText , PRIO_RELATIONAL_OPERATOR ) ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   */
-  @ Override
-  public String getCaption ( )
-  {
-    return "Relational-Operator" ; //$NON-NLS-1$
   }
 
 
@@ -159,5 +149,15 @@ public final class RelationalOperator extends BinaryOperator
   public RelationalOperator clone ( )
   {
     return new RelationalOperator ( getText ( ) ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   */
+  @ Override
+  public String getCaption ( )
+  {
+    return "Relational-Operator" ; //$NON-NLS-1$
   }
 }

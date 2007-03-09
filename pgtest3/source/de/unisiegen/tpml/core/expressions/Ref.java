@@ -24,16 +24,6 @@ public final class Ref extends UnaryOperator
 
 
   /**
-   * {@inheritDoc}
-   */
-  @ Override
-  public String getCaption ( )
-  {
-    return "Ref" ; //$NON-NLS-1$
-  }
-
-
-  /**
    * {@inheritDoc} This method always throws
    * {@link UnsupportedOperationException} to indicate that it should not be
    * called. Instead the <code>ref</code> operator requires special handling
@@ -62,5 +52,15 @@ public final class Ref extends UnaryOperator
   public Ref clone ( )
   {
     return new Ref ( ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   */
+  @ Override
+  public String getCaption ( )
+  {
+    return "Ref" ; //$NON-NLS-1$
   }
 }

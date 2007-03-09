@@ -23,16 +23,6 @@ public final class UnaryCons extends Constant
 
   /**
    * {@inheritDoc}
-   */
-  @ Override
-  public String getCaption ( )
-  {
-    return "Unary-Cons" ; //$NON-NLS-1$
-  }
-
-
-  /**
-   * {@inheritDoc}
    * 
    * @see Expression#clone()
    */
@@ -40,5 +30,15 @@ public final class UnaryCons extends Constant
   public UnaryCons clone ( )
   {
     return new UnaryCons ( ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   */
+  @ Override
+  public String getCaption ( )
+  {
+    return "Unary-Cons" ; //$NON-NLS-1$
   }
 }

@@ -24,16 +24,6 @@ public final class Fst extends Projection
 
   /**
    * {@inheritDoc}
-   */
-  @ Override
-  public String getCaption ( )
-  {
-    return "First" ; //$NON-NLS-1$
-  }
-
-
-  /**
-   * {@inheritDoc}
    * 
    * @see Projection#clone()
    */
@@ -41,5 +31,15 @@ public final class Fst extends Projection
   public Fst clone ( )
   {
     return new Fst ( ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   */
+  @ Override
+  public String getCaption ( )
+  {
+    return "First" ; //$NON-NLS-1$
   }
 }

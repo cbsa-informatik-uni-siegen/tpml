@@ -39,6 +39,35 @@ public final class Location extends Value
 
   /**
    * {@inheritDoc}
+   * 
+   * @see Expression#clone()
+   */
+  @ Override
+  public Location clone ( )
+  {
+    return new Location ( this.name ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Expression#equals(Object)
+   */
+  @ Override
+  public boolean equals ( Object pObject )
+  {
+    if ( pObject instanceof Location )
+    {
+      Location other = ( Location ) pObject ;
+      return this.name.equals ( other.name ) ;
+    }
+    return false ;
+  }
+
+
+  /**
+   * {@inheritDoc}
    */
   @ Override
   public String getCaption ( )
@@ -61,12 +90,12 @@ public final class Location extends Value
   /**
    * {@inheritDoc}
    * 
-   * @see Expression#clone()
+   * @see Expression#hashCode()
    */
   @ Override
-  public Location clone ( )
+  public int hashCode ( )
   {
-    return new Location ( this.name ) ;
+    return this.name.hashCode ( ) ;
   }
 
 
@@ -111,34 +140,5 @@ public final class Location extends Value
         this , PRIO_LOCATION ) ;
     builder.addText ( this.name ) ;
     return builder ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Expression#equals(Object)
-   */
-  @ Override
-  public boolean equals ( Object pObject )
-  {
-    if ( pObject instanceof Location )
-    {
-      Location other = ( Location ) pObject ;
-      return this.name.equals ( other.name ) ;
-    }
-    return false ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Expression#hashCode()
-   */
-  @ Override
-  public int hashCode ( )
-  {
-    return this.name.hashCode ( ) ;
   }
 }

@@ -26,16 +26,6 @@ public final class Tl extends UnaryListOperator
 
   /**
    * {@inheritDoc}
-   */
-  @ Override
-  public String getCaption ( )
-  {
-    return "Tail" ; //$NON-NLS-1$
-  }
-
-
-  /**
-   * {@inheritDoc}
    * 
    * @see Expression#clone()
    */
@@ -43,5 +33,15 @@ public final class Tl extends UnaryListOperator
   public Tl clone ( )
   {
     return new Tl ( ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   */
+  @ Override
+  public String getCaption ( )
+  {
+    return "Tail" ; //$NON-NLS-1$
   }
 }

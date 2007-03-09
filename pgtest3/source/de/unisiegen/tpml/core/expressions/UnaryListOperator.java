@@ -26,16 +26,6 @@ public abstract class UnaryListOperator extends UnaryOperator
 
 
   /**
-   * {@inheritDoc}
-   */
-  @ Override
-  public String getCaption ( )
-  {
-    return "Unary-List-Operator" ; //$NON-NLS-1$
-  }
-
-
-  /**
    * {@inheritDoc} Throws {@link UnsupportedOperationException} on every
    * invocation, because the list operators must be handled by the interpreters
    * in a special way.
@@ -50,5 +40,15 @@ public abstract class UnaryListOperator extends UnaryOperator
   {
     throw new UnsupportedOperationException (
         "list operators must be handled by the interpreter" ) ; //$NON-NLS-1$
+  }
+
+
+  /**
+   * {@inheritDoc}
+   */
+  @ Override
+  public String getCaption ( )
+  {
+    return "Unary-List-Operator" ; //$NON-NLS-1$
   }
 }

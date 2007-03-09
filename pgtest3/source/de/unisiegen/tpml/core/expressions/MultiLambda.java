@@ -7,7 +7,7 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
 import de.unisiegen.tpml.core.types.MonoType ;
-import de.unisiegen.tpml.core.util.Free ;
+import de.unisiegen.tpml.core.util.BoundRenaming ;
 
 
 /**
@@ -83,11 +83,74 @@ public final class MultiLambda extends Value
 
   /**
    * {@inheritDoc}
+   * 
+   * @see Expression#clone()
+   */
+  @ Override
+  public MultiLambda clone ( )
+  {
+    return new MultiLambda ( this.identifiers , this.tau , this.e.clone ( ) ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Expression#equals(Object)
+   */
+  @ Override
+  public boolean equals ( Object pObject )
+  {
+    if ( pObject instanceof MultiLambda )
+    {
+      MultiLambda other = ( MultiLambda ) pObject ;
+      return ( ( Arrays.equals ( this.identifiers , other.identifiers ) )
+          && ( this.e.equals ( other.e ) ) && ( ( this.tau == null ) ? ( other.tau == null )
+          : ( this.tau.equals ( other.tau ) ) ) ) ;
+    }
+    return false ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Expression#free()
+   */
+  @ Override
+  public TreeSet < String > free ( )
+  {
+    if ( this.free == null )
+    {
+      this.free = new TreeSet < String > ( ) ;
+      this.free.addAll ( this.e.free ( ) ) ;
+      for ( int i = 0 ; i < this.identifiers.length ; i ++ )
+      {
+        this.free.remove ( this.identifiers [ i ] ) ;
+      }
+    }
+    return this.free ;
+  }
+
+
+  /**
+   * {@inheritDoc}
    */
   @ Override
   public String getCaption ( )
   {
     return "Multi-Lambda" ; //$NON-NLS-1$
+  }
+
+
+  /**
+   * Returns the function body expression.
+   * 
+   * @return the function body expression.
+   */
+  public Expression getE ( )
+  {
+    return this.e ;
   }
 
 
@@ -131,55 +194,16 @@ public final class MultiLambda extends Value
 
 
   /**
-   * Returns the function body expression.
-   * 
-   * @return the function body expression.
-   */
-  public Expression getE ( )
-  {
-    return this.e ;
-  }
-
-
-  /**
    * {@inheritDoc}
    * 
-   * @see Expression#clone()
+   * @see Expression#hashCode()
    */
   @ Override
-  public MultiLambda clone ( )
+  public int hashCode ( )
   {
-    return new MultiLambda ( this.identifiers , this.tau , this.e.clone ( ) ) ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Expression#free()
-   */
-  @ Override
-  public TreeSet < String > free ( )
-  {
-    TreeSet < String > free = new TreeSet < String > ( ) ;
-    free.addAll ( this.e.free ( ) ) ;
-    free.removeAll ( Arrays.asList ( this.identifiers ) ) ;
-    return free ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Expression#substitute(TypeSubstitution)
-   */
-  @ Override
-  public Expression substitute ( TypeSubstitution pTypeSubstitution )
-  {
-    MonoType newTau = ( this.tau != null ) ? this.tau
-        .substitute ( pTypeSubstitution ) : null ;
-    return new MultiLambda ( this.identifiers , newTau , this.e
-        .substitute ( pTypeSubstitution ) ) ;
+    return this.identifiers.hashCode ( )
+        + ( ( this.tau != null ) ? this.tau.hashCode ( ) : 0 )
+        + this.e.hashCode ( ) ;
   }
 
 
@@ -213,32 +237,57 @@ public final class MultiLambda extends Value
     }
     Expression newE = this.e ;
     String [ ] newIdentifiers = this.identifiers.clone ( ) ;
-    for ( int i = 0 ; i < newIdentifiers.length ; i ++ )
+    if ( this.e.free ( ).contains ( pId ) )
     {
-      Free free = new Free ( ) ;
-      free.add ( this.free ( ) ) ;
-      free.add ( pExpression.free ( ) ) ;
-      free.add ( pId ) ;
-      if ( free.contains ( newIdentifiers [ i ] ) )
+      for ( int i = 0 ; i < newIdentifiers.length ; i ++ )
       {
-        for ( int j = 0 ; j < newIdentifiers.length ; j ++ )
+        BoundRenaming boundRenaming = new BoundRenaming ( ) ;
+        boundRenaming.add ( this.free ( ) ) ;
+        boundRenaming.add ( pExpression.free ( ) ) ;
+        boundRenaming.add ( pId ) ;
+        if ( boundRenaming.contains ( newIdentifiers [ i ] ) )
         {
-          if ( i != j )
+          for ( int j = 0 ; j < newIdentifiers.length ; j ++ )
           {
-            free.add ( this.identifiers [ j ] ) ;
+            if ( i != j )
+            {
+              boundRenaming.add ( newIdentifiers [ j ] ) ;
+            }
           }
         }
+        String newId = boundRenaming.newIdentifier ( newIdentifiers [ i ] ) ;
+        for ( int j = 0 ; j < i ; j ++ )
+        {
+          if ( this.identifiers [ i ].equals ( this.identifiers [ j ] ) )
+          {
+            newId = newIdentifiers [ j ] ;
+          }
+        }
+        if ( ! newIdentifiers [ i ].equals ( newId ) )
+        {
+          newE = newE.substitute ( newIdentifiers [ i ] , new Identifier (
+              newId ) , pAttributeRename ) ;
+          newIdentifiers [ i ] = newId ;
+        }
       }
-      String newId = free.newIdentifier ( newIdentifiers [ i ] ) ;
-      if ( ! newIdentifiers [ i ].equals ( newId ) )
-      {
-        newE = newE.substitute ( newIdentifiers [ i ] ,
-            new Identifier ( newId ) , pAttributeRename ) ;
-        newIdentifiers [ i ] = newId ;
-      }
+      newE = newE.substitute ( pId , pExpression , pAttributeRename ) ;
     }
-    return new MultiLambda ( newIdentifiers , this.tau , newE.substitute ( pId ,
-        pExpression , pAttributeRename ) ) ;
+    return new MultiLambda ( newIdentifiers , this.tau , newE ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Expression#substitute(TypeSubstitution)
+   */
+  @ Override
+  public Expression substitute ( TypeSubstitution pTypeSubstitution )
+  {
+    MonoType newTau = ( this.tau != null ) ? this.tau
+        .substitute ( pTypeSubstitution ) : null ;
+    return new MultiLambda ( this.identifiers , newTau , this.e
+        .substitute ( pTypeSubstitution ) ) ;
   }
 
 
@@ -275,38 +324,5 @@ public final class MultiLambda extends Value
     builder.addBuilder ( this.e
         .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_LAMBDA_E ) ;
     return builder ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Expression#equals(Object)
-   */
-  @ Override
-  public boolean equals ( Object pObject )
-  {
-    if ( pObject instanceof MultiLambda )
-    {
-      MultiLambda other = ( MultiLambda ) pObject ;
-      return ( ( Arrays.equals ( this.identifiers , other.identifiers ) )
-          && ( this.e.equals ( other.e ) ) && ( ( this.tau == null ) ? ( other.tau == null )
-          : ( this.tau.equals ( other.tau ) ) ) ) ;
-    }
-    return false ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Expression#hashCode()
-   */
-  @ Override
-  public int hashCode ( )
-  {
-    return this.identifiers.hashCode ( )
-        + ( ( this.tau != null ) ? this.tau.hashCode ( ) : 0 )
-        + this.e.hashCode ( ) ;
   }
 }

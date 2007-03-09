@@ -1,13 +1,12 @@
 package de.unisiegen.tpml.core.expressions ;
 
 
-import java.util.Set ;
 import java.util.TreeSet ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
 import de.unisiegen.tpml.core.types.MonoType ;
-import de.unisiegen.tpml.core.util.Free ;
+import de.unisiegen.tpml.core.util.BoundRenaming ;
 
 
 /**
@@ -43,16 +42,6 @@ public final class LetRec extends Let
 
   /**
    * {@inheritDoc}
-   */
-  @ Override
-  public String getCaption ( )
-  {
-    return "Let-Rec" ; //$NON-NLS-1$
-  }
-
-
-  /**
-   * {@inheritDoc}
    * 
    * @see Let#clone()
    */
@@ -70,13 +59,26 @@ public final class LetRec extends Let
    * @see Let#free()
    */
   @ Override
-  public Set < String > free ( )
+  public TreeSet < String > free ( )
   {
-    TreeSet < String > set = new TreeSet < String > ( ) ;
-    set.addAll ( this.e1.free ( ) ) ;
-    set.addAll ( this.e2.free ( ) ) ;
-    set.remove ( this.id ) ;
-    return set ;
+    if ( this.free == null )
+    {
+      this.free = new TreeSet < String > ( ) ;
+      this.free.addAll ( this.e1.free ( ) ) ;
+      this.free.addAll ( this.e2.free ( ) ) ;
+      this.free.remove ( this.id ) ;
+    }
+    return this.free ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   */
+  @ Override
+  public String getCaption ( )
+  {
+    return "Let-Rec" ; //$NON-NLS-1$
   }
 
 
@@ -95,22 +97,6 @@ public final class LetRec extends Let
   /**
    * {@inheritDoc}
    * 
-   * @see Let#substitute(TypeSubstitution)
-   */
-  @ Override
-  public LetRec substitute ( TypeSubstitution pTypeSubstitution )
-  {
-    MonoType pTau = ( this.tau != null ) ? this.tau
-        .substitute ( pTypeSubstitution ) : null ;
-    return new LetRec ( this.id , pTau , this.e1
-        .substitute ( pTypeSubstitution ) , this.e2
-        .substitute ( pTypeSubstitution ) ) ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
    * @see Let#substitute(String, Expression, boolean)
    */
   @ Override
@@ -121,23 +107,44 @@ public final class LetRec extends Let
     {
       return this ;
     }
-    Free free = new Free ( ) ;
-    free.add ( this.free ( ) ) ;
-    free.add ( pExpression.free ( ) ) ;
-    free.add ( pId ) ;
-    String newId = free.newIdentifier ( this.id ) ;
     Expression newE1 = this.e1 ;
     Expression newE2 = this.e2 ;
-    if ( ! this.id.equals ( newId ) )
+    String newId = this.id ;
+    if ( ( newE1.free ( ).contains ( pId ) )
+        || ( newE2.free ( ).contains ( pId ) ) )
     {
-      newE1 = newE1.substitute ( this.id , new Identifier ( newId ) ,
-          pAttributeRename ) ;
-      newE2 = newE2.substitute ( this.id , new Identifier ( newId ) ,
-          pAttributeRename ) ;
+      BoundRenaming boundRenaming = new BoundRenaming ( ) ;
+      boundRenaming.add ( this.free ( ) ) ;
+      boundRenaming.add ( pExpression.free ( ) ) ;
+      boundRenaming.add ( pId ) ;
+      newId = boundRenaming.newIdentifier ( this.id ) ;
+      if ( ! this.id.equals ( newId ) )
+      {
+        newE1 = newE1.substitute ( this.id , new Identifier ( newId ) ,
+            pAttributeRename ) ;
+        newE2 = newE2.substitute ( this.id , new Identifier ( newId ) ,
+            pAttributeRename ) ;
+      }
     }
     return new LetRec ( newId , this.tau , newE1.substitute ( pId ,
         pExpression , pAttributeRename ) , newE2.substitute ( pId ,
         pExpression , pAttributeRename ) ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Let#substitute(TypeSubstitution)
+   */
+  @ Override
+  public LetRec substitute ( TypeSubstitution pTypeSubstitution )
+  {
+    MonoType pTau = ( this.tau != null ) ? this.tau
+        .substitute ( pTypeSubstitution ) : null ;
+    return new LetRec ( this.id , pTau , this.e1
+        .substitute ( pTypeSubstitution ) , this.e2
+        .substitute ( pTypeSubstitution ) ) ;
   }
 
 

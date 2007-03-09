@@ -23,16 +23,6 @@ public final class Not extends UnaryOperator
 
   /**
    * {@inheritDoc}
-   */
-  @ Override
-  public String getCaption ( )
-  {
-    return "Not" ; //$NON-NLS-1$
-  }
-
-
-  /**
-   * {@inheritDoc}
    * 
    * @see UnaryOperator#applyTo(Expression)
    */
@@ -61,5 +51,15 @@ public final class Not extends UnaryOperator
   public Expression clone ( )
   {
     return new Not ( ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   */
+  @ Override
+  public String getCaption ( )
+  {
+    return "Not" ; //$NON-NLS-1$
   }
 }

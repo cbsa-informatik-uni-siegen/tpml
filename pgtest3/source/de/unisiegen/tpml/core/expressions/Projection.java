@@ -78,38 +78,6 @@ public class Projection extends UnaryOperator
 
   /**
    * {@inheritDoc}
-   */
-  @ Override
-  public String getCaption ( )
-  {
-    return "Projection" ; //$NON-NLS-1$
-  }
-
-
-  /**
-   * Returns the arity.
-   * 
-   * @return the arity.
-   */
-  public int getArity ( )
-  {
-    return this.arity ;
-  }
-
-
-  /**
-   * Returns the index.
-   * 
-   * @return the index.
-   */
-  public int getIndex ( )
-  {
-    return this.index ;
-  }
-
-
-  /**
-   * {@inheritDoc}
    * 
    * @see UnaryOperator#applyTo(Expression)
    */
@@ -147,5 +115,37 @@ public class Projection extends UnaryOperator
   public Projection clone ( )
   {
     return new Projection ( this.arity , this.index , getText ( ) ) ;
+  }
+
+
+  /**
+   * Returns the arity.
+   * 
+   * @return the arity.
+   */
+  public int getArity ( )
+  {
+    return this.arity ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   */
+  @ Override
+  public String getCaption ( )
+  {
+    return "Projection" ; //$NON-NLS-1$
+  }
+
+
+  /**
+   * Returns the index.
+   * 
+   * @return the index.
+   */
+  public int getIndex ( )
+  {
+    return this.index ;
   }
 }

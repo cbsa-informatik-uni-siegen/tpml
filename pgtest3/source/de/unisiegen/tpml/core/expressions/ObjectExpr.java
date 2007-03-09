@@ -1,13 +1,12 @@
 package de.unisiegen.tpml.core.expressions ;
 
 
-import java.util.Set ;
 import java.util.TreeSet ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
 import de.unisiegen.tpml.core.types.MonoType ;
-import de.unisiegen.tpml.core.util.Free ;
+import de.unisiegen.tpml.core.util.BoundRenaming ;
 
 
 /**
@@ -97,18 +96,15 @@ public final class ObjectExpr extends Expression
    * {@inheritDoc}
    */
   @ Override
-  public Set < String > free ( )
+  public TreeSet < String > free ( )
   {
-    TreeSet < String > free = new TreeSet < String > ( ) ;
-    /*
-     * Add all free Identifiers of the Row.
-     */
-    free.addAll ( this.row.free ( ) ) ;
-    /*
-     * Remove the Identifier of this ObjectExpr.
-     */
-    free.remove ( this.identifier ) ;
-    return free ;
+    if ( this.free == null )
+    {
+      this.free = new TreeSet < String > ( ) ;
+      this.free.addAll ( this.row.free ( ) ) ;
+      this.free.remove ( this.identifier ) ;
+    }
+    return this.free ;
   }
 
 
@@ -203,20 +199,23 @@ public final class ObjectExpr extends Expression
     {
       return this ;
     }
-    Free free = new Free ( ) ;
-    free.add ( this.free ( ) ) ;
-    free.add ( pExpression.free ( ) ) ;
-    free.add ( pId ) ;
-    String newId = free.newIdentifier ( this.identifier ) ;
-    Expression newRow = this.row ;
-    if ( ! this.identifier.equals ( newId ) )
+    Row newRow = this.row ;
+    String newId = this.identifier ;
+    if ( this.row.free ( ).contains ( pId ) )
     {
-      newRow = this.row.substitute ( this.identifier ,
-          new Identifier ( newId ) , false ) ;
+      BoundRenaming boundRenaming = new BoundRenaming ( ) ;
+      boundRenaming.add ( this.free ( ) ) ;
+      boundRenaming.add ( pExpression.free ( ) ) ;
+      boundRenaming.add ( pId ) ;
+      newId = boundRenaming.newIdentifier ( this.identifier ) ;
+      if ( ! this.identifier.equals ( newId ) )
+      {
+        newRow = newRow.substitute ( this.identifier ,
+            new Identifier ( newId ) , false ) ;
+      }
     }
-    newRow = newRow.substitute ( pId , pExpression , pAttributeRename ) ;
-    return new ObjectExpr ( newId , this.tau , this.row.substitute ( pId ,
-        pExpression , false ) ) ;
+    newRow = newRow.substitute ( pId , pExpression , false ) ;
+    return new ObjectExpr ( newId , this.tau , newRow ) ;
   }
 
 
@@ -244,8 +243,8 @@ public final class ObjectExpr extends Expression
       PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
     /*
-     * System.out.println ( "Free ObjectExpr:" ) ; for ( String s : free ( ) ) {
-     * System.out.print ( s + " " ) ; } System.out.println ( ) ;
+     * System.out.println ( "BoundRenaming ObjectExpr:" ) ; for ( String s :
+     * free ( ) ) { System.out.print ( s + " " ) ; } System.out.println ( ) ;
      */
     PrettyStringBuilder builder = pPrettyStringBuilderFactory.newBuilder (
         this , PRIO_OBJECTEXPR ) ;

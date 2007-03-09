@@ -7,7 +7,7 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
 import de.unisiegen.tpml.core.types.MonoType ;
-import de.unisiegen.tpml.core.util.Free ;
+import de.unisiegen.tpml.core.util.BoundRenaming ;
 
 
 /**
@@ -112,11 +112,93 @@ public class CurriedLet extends Expression
 
   /**
    * {@inheritDoc}
+   * 
+   * @see Expression#clone()
+   */
+  @ Override
+  public CurriedLet clone ( )
+  {
+    return new CurriedLet ( this.identifiers , this.types , this.e1.clone ( ) ,
+        this.e2.clone ( ) ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Expression#equals(Object)
+   */
+  @ Override
+  public boolean equals ( Object pObject )
+  {
+    if ( ( pObject instanceof CurriedLet )
+        && ( this.getClass ( ).equals ( pObject.getClass ( ) ) ) )
+    {
+      CurriedLet other = ( CurriedLet ) pObject ;
+      return ( ( Arrays.equals ( this.identifiers , other.identifiers ) )
+          && ( Arrays.equals ( this.types , other.types ) )
+          && ( this.e1.equals ( other.e1 ) ) && ( this.e2.equals ( other.e2 ) ) ) ;
+    }
+    return false ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Expression#free()
+   */
+  @ Override
+  public TreeSet < String > free ( )
+  {
+    if ( this.free == null )
+    {
+      this.free = new TreeSet < String > ( ) ;
+      TreeSet < String > freeE1 = new TreeSet < String > ( ) ;
+      TreeSet < String > freeE2 = new TreeSet < String > ( ) ;
+      freeE1.addAll ( this.e1.free ( ) ) ;
+      for ( int i = 1 ; i < this.identifiers.length ; i ++ )
+      {
+        freeE1.remove ( this.identifiers [ i ] ) ;
+      }
+      freeE2.addAll ( this.e2.free ( ) ) ;
+      freeE2.remove ( this.identifiers [ 0 ] ) ;
+      this.free.addAll ( freeE1 ) ;
+      this.free.addAll ( freeE2 ) ;
+    }
+    return this.free ;
+  }
+
+
+  /**
+   * {@inheritDoc}
    */
   @ Override
   public String getCaption ( )
   {
     return "Curried-Let" ; //$NON-NLS-1$
+  }
+
+
+  /**
+   * Returns the first expression.
+   * 
+   * @return the first expression.
+   */
+  public Expression getE1 ( )
+  {
+    return this.e1 ;
+  }
+
+
+  /**
+   * Returns the second expression.
+   * 
+   * @return the second expression.
+   */
+  public Expression getE2 ( )
+  {
+    return this.e2 ;
   }
 
 
@@ -183,61 +265,16 @@ public class CurriedLet extends Expression
 
 
   /**
-   * Returns the first expression.
-   * 
-   * @return the first expression.
-   */
-  public Expression getE1 ( )
-  {
-    return this.e1 ;
-  }
-
-
-  /**
-   * Returns the second expression.
-   * 
-   * @return the second expression.
-   */
-  public Expression getE2 ( )
-  {
-    return this.e2 ;
-  }
-
-
-  /**
    * {@inheritDoc}
    * 
-   * @see Expression#clone()
+   * @see Expression#hashCode()
    */
   @ Override
-  public CurriedLet clone ( )
+  public int hashCode ( )
   {
-    return new CurriedLet ( this.identifiers , this.types , this.e1.clone ( ) ,
-        this.e2.clone ( ) ) ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Expression#free()
-   */
-  @ Override
-  public TreeSet < String > free ( )
-  {
-    TreeSet < String > freeE2 = new TreeSet < String > ( ) ;
-    freeE2.addAll ( this.e2.free ( ) ) ;
-    freeE2.remove ( this.identifiers [ 0 ] ) ;
-    TreeSet < String > freeE1 = new TreeSet < String > ( ) ;
-    freeE1.addAll ( this.e1.free ( ) ) ;
-    for ( int n = 1 ; n < this.identifiers.length ; ++ n )
-    {
-      freeE1.remove ( this.identifiers [ n ] ) ;
-    }
-    TreeSet < String > free = new TreeSet < String > ( ) ;
-    free.addAll ( freeE1 ) ;
-    free.addAll ( freeE2 ) ;
-    return free ;
+    return this.identifiers.hashCode ( ) + this.e1.hashCode ( )
+        + this.e2.hashCode ( )
+        + ( ( this.types != null ) ? this.types.hashCode ( ) : 0 ) ;
   }
 
 
@@ -250,6 +287,92 @@ public class CurriedLet extends Expression
   public Expression substitute ( String pId , Expression pExpression )
   {
     return substitute ( pId , pExpression , false ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Expression#substitute(String, Expression, boolean)
+   */
+  @ Override
+  public CurriedLet substitute ( String pId , Expression pExpression ,
+      boolean pAttributeRename )
+  {
+    String [ ] newIdentifiers = this.identifiers.clone ( ) ;
+    Expression newE1 = this.e1.clone ( ) ;
+    Expression newE2 = this.e2.clone ( ) ;
+    boolean substE1 = true ;
+    boolean substE2 = true ;
+    for ( int i = 1 ; i < this.identifiers.length ; i ++ )
+    {
+      if ( this.identifiers [ i ].equals ( pId ) )
+      {
+        substE1 = false ;
+        break ;
+      }
+    }
+    if ( this.identifiers [ 0 ].equals ( pId ) )
+    {
+      substE2 = false ;
+    }
+    if ( ( substE1 ) && ( this.e1.free ( ).contains ( pId ) ) )
+    {
+      for ( int i = 1 ; i < newIdentifiers.length ; i ++ )
+      {
+        BoundRenaming boundRenaming = new BoundRenaming ( ) ;
+        boundRenaming.add ( this.e1.free ( ) ) ;
+        boundRenaming.remove ( newIdentifiers [ i ] ) ;
+        boundRenaming.add ( pExpression.free ( ) ) ;
+        boundRenaming.add ( pId ) ;
+        if ( boundRenaming.contains ( newIdentifiers [ i ] ) )
+        {
+          for ( int j = 1 ; j < newIdentifiers.length ; j ++ )
+          {
+            if ( i != j )
+            {
+              boundRenaming.add ( newIdentifiers [ j ] ) ;
+            }
+          }
+        }
+        String newId = boundRenaming.newIdentifier ( newIdentifiers [ i ] ) ;
+        for ( int j = 1 ; j < i ; j ++ )
+        {
+          if ( this.identifiers [ i ].equals ( this.identifiers [ j ] ) )
+          {
+            newId = newIdentifiers [ j ] ;
+          }
+        }
+        if ( ! newIdentifiers [ i ].equals ( newId ) )
+        {
+          newE1 = newE1.substitute ( newIdentifiers [ i ] , new Identifier (
+              newId ) , pAttributeRename ) ;
+          newIdentifiers [ i ] = newId ;
+        }
+      }
+      newE1 = newE1.substitute ( pId , pExpression , pAttributeRename ) ;
+    }
+    if ( ( substE2 ) && ( this.e2.free ( ).contains ( pId ) ) )
+    {
+      BoundRenaming boundRenaming = new BoundRenaming ( ) ;
+      boundRenaming.add ( this.e2.free ( ) ) ;
+      boundRenaming.remove ( this.identifiers [ 0 ] ) ;
+      boundRenaming.add ( pExpression.free ( ) ) ;
+      boundRenaming.add ( pId ) ;
+      for ( int i = 1 ; i < newIdentifiers.length ; i ++ )
+      {
+        boundRenaming.add ( this.identifiers [ i ] ) ;
+      }
+      String newId = boundRenaming.newIdentifier ( this.identifiers [ 0 ] ) ;
+      if ( ! this.identifiers [ 0 ].equals ( newId ) )
+      {
+        newE2 = newE2.substitute ( this.identifiers [ 0 ] , new Identifier (
+            newId ) , pAttributeRename ) ;
+        newIdentifiers [ 0 ] = newId ;
+      }
+      newE2 = newE2.substitute ( pId , pExpression , pAttributeRename ) ;
+    }
+    return new CurriedLet ( newIdentifiers , this.types , newE1 , newE2 ) ;
   }
 
 
@@ -270,79 +393,6 @@ public class CurriedLet extends Expression
     return new CurriedLet ( this.identifiers , newTypes , this.e1
         .substitute ( pTypeSubstitution ) , this.e2
         .substitute ( pTypeSubstitution ) ) ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Expression#substitute(String, Expression, boolean)
-   */
-  @ Override
-  public CurriedLet substitute ( String pId , Expression pExpression ,
-      boolean pAttributeRename )
-  {
-    String [ ] newIdentifiers = this.identifiers.clone ( ) ;
-    Expression newE1 = this.e1.clone ( ) ;
-    Expression newE2 = this.e2.clone ( ) ;
-    for ( int i = 1 ; i < this.identifiers.length ; i ++ )
-    {
-      if ( this.identifiers [ i ].equals ( pId ) )
-      {
-        if ( ! ( this.identifiers [ 0 ].equals ( pId ) ) )
-        {
-          newE2 = newE2.substitute ( pId , pExpression , pAttributeRename ) ;
-        }
-        return new CurriedLet ( this.identifiers , this.types , newE1 , newE2 ) ;
-      }
-    }
-    for ( int i = 1 ; i < newIdentifiers.length ; i ++ )
-    {
-      Free free = new Free ( ) ;
-      free.add ( this.e1.free ( ) ) ;
-      free.remove ( newIdentifiers [ i ] ) ;
-      free.add ( pExpression.free ( ) ) ;
-      free.add ( pId ) ;
-      if ( free.contains ( newIdentifiers [ i ] ) )
-      {
-        for ( int j = 1 ; j < newIdentifiers.length ; j ++ )
-        {
-          if ( i != j )
-          {
-            free.add ( this.identifiers [ j ] ) ;
-          }
-        }
-      }
-      String newId = free.newIdentifier ( newIdentifiers [ i ] ) ;
-      if ( ! newIdentifiers [ i ].equals ( newId ) )
-      {
-        newE1 = newE1.substitute ( newIdentifiers [ i ] , new Identifier (
-            newId ) , pAttributeRename ) ;
-        newIdentifiers [ i ] = newId ;
-      }
-    }
-    if ( ! ( this.identifiers [ 0 ].equals ( pId ) ) )
-    {
-      Free free = new Free ( ) ;
-      free.add ( this.e2.free ( ) ) ;
-      free.remove ( this.identifiers [ 0 ] ) ;
-      free.add ( pExpression.free ( ) ) ;
-      free.add ( pId ) ;
-      for ( int i = 1 ; i < newIdentifiers.length ; i ++ )
-      {
-        free.add ( this.identifiers [ i ] ) ;
-      }
-      String newId = free.newIdentifier ( this.identifiers [ 0 ] ) ;
-      if ( ! this.identifiers [ 0 ].equals ( newId ) )
-      {
-        newE2 = newE2.substitute ( this.identifiers [ 0 ] , new Identifier (
-            newId ) , pAttributeRename ) ;
-        newIdentifiers [ 0 ] = newId ;
-      }
-      newE2 = newE2.substitute ( pId , pExpression , pAttributeRename ) ;
-    }
-    return new CurriedLet ( newIdentifiers , this.types , newE1.substitute (
-        pId , pExpression , pAttributeRename ) , newE2 ) ;
   }
 
 
@@ -396,39 +446,5 @@ public class CurriedLet extends Expression
     builder.addBuilder ( this.e2
         .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_LET_E2 ) ;
     return builder ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Expression#equals(Object)
-   */
-  @ Override
-  public boolean equals ( Object pObject )
-  {
-    if ( ( pObject instanceof CurriedLet )
-        && ( this.getClass ( ).equals ( pObject.getClass ( ) ) ) )
-    {
-      CurriedLet other = ( CurriedLet ) pObject ;
-      return ( ( Arrays.equals ( this.identifiers , other.identifiers ) )
-          && ( Arrays.equals ( this.types , other.types ) )
-          && ( this.e1.equals ( other.e1 ) ) && ( this.e2.equals ( other.e2 ) ) ) ;
-    }
-    return false ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Expression#hashCode()
-   */
-  @ Override
-  public int hashCode ( )
-  {
-    return this.identifiers.hashCode ( ) + this.e1.hashCode ( )
-        + this.e2.hashCode ( )
-        + ( ( this.types != null ) ? this.types.hashCode ( ) : 0 ) ;
   }
 }

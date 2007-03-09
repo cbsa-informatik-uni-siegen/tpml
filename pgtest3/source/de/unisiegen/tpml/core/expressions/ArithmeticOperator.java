@@ -14,13 +14,13 @@ package de.unisiegen.tpml.core.expressions ;
 public final class ArithmeticOperator extends BinaryOperator
 {
   /**
-   * Returns the arithmetic plus operator.
+   * Returns the arithmetic division operator.
    * 
-   * @return a new instance of the plus operator.
+   * @return a new instance of the div operator.
    */
-  public static final ArithmeticOperator newPlus ( )
+  public static final ArithmeticOperator newDiv ( )
   {
-    return new ArithmeticOperator ( "+" , PRIO_PLUS ) ; //$NON-NLS-1$
+    return new ArithmeticOperator ( "/" , PRIO_DIV ) ; //$NON-NLS-1$
   }
 
 
@@ -36,6 +36,17 @@ public final class ArithmeticOperator extends BinaryOperator
 
 
   /**
+   * Returns the arithmetic modulo operator.
+   * 
+   * @return a new instance of the mod operator.
+   */
+  public static final ArithmeticOperator newMod ( )
+  {
+    return new ArithmeticOperator ( "mod" , PRIO_MOD ) ; //$NON-NLS-1$
+  }
+
+
+  /**
    * Returns the arithmetic multiplication operator.
    * 
    * @return a new instance of the mult operator.
@@ -47,24 +58,13 @@ public final class ArithmeticOperator extends BinaryOperator
 
 
   /**
-   * Returns the arithmetic division operator.
+   * Returns the arithmetic plus operator.
    * 
-   * @return a new instance of the div operator.
+   * @return a new instance of the plus operator.
    */
-  public static final ArithmeticOperator newDiv ( )
+  public static final ArithmeticOperator newPlus ( )
   {
-    return new ArithmeticOperator ( "/" , PRIO_DIV ) ; //$NON-NLS-1$
-  }
-
-
-  /**
-   * Returns the arithmetic modulo operator.
-   * 
-   * @return a new instance of the mod operator.
-   */
-  public static final ArithmeticOperator newMod ( )
-  {
-    return new ArithmeticOperator ( "mod" , PRIO_MOD ) ; //$NON-NLS-1$
+    return new ArithmeticOperator ( "+" , PRIO_PLUS ) ; //$NON-NLS-1$
   }
 
 
@@ -81,16 +81,6 @@ public final class ArithmeticOperator extends BinaryOperator
   private ArithmeticOperator ( String pText , int pPrettyPriority )
   {
     super ( pText , pPrettyPriority ) ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   */
-  @ Override
-  public String getCaption ( )
-  {
-    return "Arithmetic-Operator" ; //$NON-NLS-1$
   }
 
 
@@ -166,5 +156,15 @@ public final class ArithmeticOperator extends BinaryOperator
   public ArithmeticOperator clone ( )
   {
     return new ArithmeticOperator ( getText ( ) , getPrettyPriority ( ) ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   */
+  @ Override
+  public String getCaption ( )
+  {
+    return "Arithmetic-Operator" ; //$NON-NLS-1$
   }
 }

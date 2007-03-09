@@ -26,16 +26,6 @@ public final class Hd extends UnaryListOperator
 
   /**
    * {@inheritDoc}
-   */
-  @ Override
-  public String getCaption ( )
-  {
-    return "Head" ; //$NON-NLS-1$
-  }
-
-
-  /**
-   * {@inheritDoc}
    * 
    * @see Expression#clone()
    */
@@ -43,5 +33,15 @@ public final class Hd extends UnaryListOperator
   public Hd clone ( )
   {
     return new Hd ( ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   */
+  @ Override
+  public String getCaption ( )
+  {
+    return "Head" ; //$NON-NLS-1$
   }
 }
