@@ -232,10 +232,10 @@ public final class MultiLambda extends Value
     {
       if ( this.identifiers [ i ].equals ( pId ) )
       {
-        return this ;
+        return this.clone ( ) ;
       }
     }
-    Expression newE = this.e ;
+    Expression newE = this.e.clone ( ) ;
     String [ ] newIdentifiers = this.identifiers.clone ( ) ;
     if ( this.e.free ( ).contains ( pId ) )
     {

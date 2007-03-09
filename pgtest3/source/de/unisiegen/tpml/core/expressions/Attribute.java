@@ -209,8 +209,9 @@ public class Attribute extends Expression
   public Attribute substitute ( String pId , Expression pExpression ,
       boolean pAttributeRename )
   {
-    return new Attribute ( this.identifier , this.tau , this.expression
-        .substitute ( pId , pExpression , pAttributeRename ) ) ;
+    Expression newE = this.expression.substitute ( pId , pExpression ,
+        pAttributeRename ) ;
+    return new Attribute ( this.identifier , this.tau , newE ) ;
   }
 
 
@@ -225,8 +226,8 @@ public class Attribute extends Expression
   {
     MonoType newTau = ( this.tau == null ) ? null : this.tau
         .substitute ( pTypeSubstitution ) ;
-    return new Attribute ( this.identifier , newTau , this.expression
-        .substitute ( pTypeSubstitution ) ) ;
+    Expression newE = this.expression.substitute ( pTypeSubstitution ) ;
+    return new Attribute ( this.identifier , newTau , newE ) ;
   }
 
 

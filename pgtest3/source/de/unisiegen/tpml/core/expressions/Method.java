@@ -175,8 +175,9 @@ public class Method extends Expression
   public Method substitute ( String pId , Expression pExpression ,
       boolean pAttributeRename )
   {
-    return new Method ( this.identifier , this.tau , this.expression
-        .substitute ( pId , pExpression , pAttributeRename ) ) ;
+    Expression newE = this.expression.substitute ( pId , pExpression ,
+        pAttributeRename ) ;
+    return new Method ( this.identifier , this.tau , newE ) ;
   }
 
 
@@ -188,8 +189,8 @@ public class Method extends Expression
   {
     MonoType newTau = ( this.tau == null ) ? null : this.tau
         .substitute ( pTypeSubstitution ) ;
-    return new Method ( this.identifier , newTau , this.expression
-        .substitute ( pTypeSubstitution ) ) ;
+    Expression newE = this.expression.substitute ( pTypeSubstitution ) ;
+    return new Method ( this.identifier , newTau , newE ) ;
   }
 
 

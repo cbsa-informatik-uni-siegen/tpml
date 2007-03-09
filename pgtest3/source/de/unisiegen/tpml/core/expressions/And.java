@@ -159,8 +159,7 @@ public final class And extends Expression
         pAttributeRename ) ;
     Expression newE2 = this.e2.substitute ( pId , pExpression ,
         pAttributeRename ) ;
-    return ( this.e1 == newE1 && this.e2 == newE2 ) ? this : new And ( newE1 ,
-        newE2 ) ;
+    return new And ( newE1 , newE2 ) ;
   }
 
 
@@ -174,8 +173,7 @@ public final class And extends Expression
   {
     Expression newE1 = this.e1.substitute ( pTypeSubstitution ) ;
     Expression newE2 = this.e2.substitute ( pTypeSubstitution ) ;
-    return ( this.e1 == newE1 && this.e2 == newE2 ) ? this : new And ( newE1 ,
-        newE2 ) ;
+    return new And ( newE1 , newE2 ) ;
   }
 
 

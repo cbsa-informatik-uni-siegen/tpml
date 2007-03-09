@@ -120,7 +120,7 @@ public final class CurriedLetRec extends CurriedLet
   {
     if ( this.identifiers [ 0 ].equals ( pId ) )
     {
-      return this ;
+      return this.clone ( ) ;
     }
     String [ ] newIdentifiers = this.identifiers.clone ( ) ;
     Expression newE1 = this.e1.clone ( ) ;

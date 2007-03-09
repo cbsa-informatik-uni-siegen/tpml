@@ -230,8 +230,8 @@ public final class ObjectExpr extends Expression
   {
     MonoType newTau = ( this.tau == null ) ? null : this.tau
         .substitute ( pTypeSubstitution ) ;
-    return new ObjectExpr ( this.identifier , newTau , this.row
-        .substitute ( pTypeSubstitution ) ) ;
+    Row newRow = this.row.substitute ( pTypeSubstitution ) ;
+    return new ObjectExpr ( this.identifier , newTau , newRow ) ;
   }
 
 
@@ -243,8 +243,8 @@ public final class ObjectExpr extends Expression
       PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
     /*
-     * System.out.println ( "BoundRenaming ObjectExpr:" ) ; for ( String s :
-     * free ( ) ) { System.out.print ( s + " " ) ; } System.out.println ( ) ;
+     * System.out.println ( "Free ObjectExpr:" ) ; for ( String s : free ( ) ) {
+     * System.out.print ( s + " " ) ; } System.out.println ( ) ;
      */
     PrettyStringBuilder builder = pPrettyStringBuilderFactory.newBuilder (
         this , PRIO_OBJECTEXPR ) ;

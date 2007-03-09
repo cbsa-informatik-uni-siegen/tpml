@@ -126,9 +126,9 @@ public final class LetRec extends Let
             pAttributeRename ) ;
       }
     }
-    return new LetRec ( newId , this.tau , newE1.substitute ( pId ,
-        pExpression , pAttributeRename ) , newE2.substitute ( pId ,
-        pExpression , pAttributeRename ) ) ;
+    newE1 = newE1.substitute ( pId , pExpression , pAttributeRename ) ;
+    newE2 = newE2.substitute ( pId , pExpression , pAttributeRename ) ;
+    return new LetRec ( newId , this.tau , newE1 , newE2 ) ;
   }
 
 
@@ -142,9 +142,9 @@ public final class LetRec extends Let
   {
     MonoType pTau = ( this.tau != null ) ? this.tau
         .substitute ( pTypeSubstitution ) : null ;
-    return new LetRec ( this.id , pTau , this.e1
-        .substitute ( pTypeSubstitution ) , this.e2
-        .substitute ( pTypeSubstitution ) ) ;
+    Expression newE1 = this.e1.substitute ( pTypeSubstitution ) ;
+    Expression newE2 = this.e2.substitute ( pTypeSubstitution ) ;
+    return new LetRec ( this.id , pTau , newE1 , newE2 ) ;
   }
 
 

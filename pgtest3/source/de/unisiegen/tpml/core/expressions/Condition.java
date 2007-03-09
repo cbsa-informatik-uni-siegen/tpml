@@ -189,8 +189,7 @@ public final class Condition extends Expression
         pAttributeRename ) ;
     Expression newE2 = this.e2.substitute ( pId , pExpression ,
         pAttributeRename ) ;
-    return ( this.e0 == newE0 && this.e1 == newE1 && this.e2 == newE2 ) ? this
-        : new Condition ( newE0 , newE1 , newE2 ) ;
+    return new Condition ( newE0 , newE1 , newE2 ) ;
   }
 
 
@@ -205,8 +204,7 @@ public final class Condition extends Expression
     Expression newE0 = this.e0.substitute ( pTypeSubstitution ) ;
     Expression newE1 = this.e1.substitute ( pTypeSubstitution ) ;
     Expression newE2 = this.e2.substitute ( pTypeSubstitution ) ;
-    return ( this.e0 == newE0 && this.e1 == newE1 && this.e2 == newE2 ) ? this
-        : new Condition ( newE0 , newE1 , newE2 ) ;
+    return new Condition ( newE0 , newE1 , newE2 ) ;
   }
 
 

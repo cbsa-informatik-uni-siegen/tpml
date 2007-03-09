@@ -261,8 +261,10 @@ public final class Duplication extends Expression
       newExpressions [ i ] = this.expressions [ i ].substitute ( pId ,
           pExpression ) ;
     }
-    return new Duplication ( this.firstExpression.substitute ( pId ,
-        pExpression ) , this.identifiers , newExpressions ) ;
+    Expression newFirstExpression = this.firstExpression.substitute ( pId ,
+        pExpression ) ;
+    return new Duplication ( newFirstExpression , this.identifiers ,
+        newExpressions ) ;
   }
 
 
@@ -280,9 +282,9 @@ public final class Duplication extends Expression
       throw new IllegalArgumentException (
           "Expression must be an instance of Identifier" ) ; //$NON-NLS-1$
     }
-    Expression [ ] newExpr = new Expression [ this.expressions.length ] ;
+    Expression [ ] newExpressions = new Expression [ this.expressions.length ] ;
     String [ ] newIdentifiers = this.identifiers.clone ( ) ;
-    for ( int i = 0 ; i < newExpr.length ; i ++ )
+    for ( int i = 0 ; i < newExpressions.length ; i ++ )
     {
       /*
        * If the Identifier, which should be substituted, is equal to the
@@ -292,11 +294,13 @@ public final class Duplication extends Expression
       {
         newIdentifiers [ i ] = ( ( Identifier ) pExpression ).getName ( ) ;
       }
-      newExpr [ i ] = this.expressions [ i ].substitute ( pId , pExpression ,
-          true ) ;
+      newExpressions [ i ] = this.expressions [ i ].substitute ( pId ,
+          pExpression , true ) ;
     }
-    return new Duplication ( this.firstExpression.substitute ( pId ,
-        pExpression , true ) , newIdentifiers , newExpr ) ;
+    Expression newFirstExpression = this.firstExpression.substitute ( pId ,
+        pExpression , true ) ;
+    return new Duplication ( newFirstExpression , newIdentifiers ,
+        newExpressions ) ;
   }
 
 
@@ -309,13 +313,16 @@ public final class Duplication extends Expression
   @ Override
   public Duplication substitute ( TypeSubstitution pTypeSubstitution )
   {
-    Expression [ ] newExpr = new Expression [ this.expressions.length ] ;
+    Expression [ ] newExpressions = new Expression [ this.expressions.length ] ;
     for ( int i = 0 ; i < this.expressions.length ; i ++ )
     {
-      newExpr [ i ] = this.expressions [ i ].substitute ( pTypeSubstitution ) ;
+      newExpressions [ i ] = this.expressions [ i ]
+          .substitute ( pTypeSubstitution ) ;
     }
-    return new Duplication ( this.firstExpression
-        .substitute ( pTypeSubstitution ) , this.identifiers , newExpr ) ;
+    Expression newFirstExpression = this.firstExpression
+        .substitute ( pTypeSubstitution ) ;
+    return new Duplication ( newFirstExpression , this.identifiers ,
+        newExpressions ) ;
   }
 
 

@@ -260,8 +260,10 @@ public final class MultiLet extends Expression
     {
       if ( this.identifiers [ i ].equals ( pId ) )
       {
-        return new MultiLet ( this.identifiers , this.tau , this.e1.substitute (
-            pId , pExpression , pAttributeRename ) , this.e2.clone ( ) ) ;
+        Expression newE1 = this.e1.substitute ( pId , pExpression ,
+            pAttributeRename ) ;
+        Expression newE2 = this.e2.clone ( ) ;
+        return new MultiLet ( this.identifiers , this.tau , newE1 , newE2 ) ;
       }
     }
     String [ ] newIdentifiers = this.identifiers.clone ( ) ;
@@ -302,8 +304,9 @@ public final class MultiLet extends Expression
       }
       newE2 = newE2.substitute ( pId , pExpression , pAttributeRename ) ;
     }
-    return new MultiLet ( newIdentifiers , this.tau , this.e1.substitute ( pId ,
-        pExpression , pAttributeRename ) , newE2 ) ;
+    Expression newE1 = this.e1.substitute ( pId , pExpression ,
+        pAttributeRename ) ;
+    return new MultiLet ( newIdentifiers , this.tau , newE1 , newE2 ) ;
   }
 
 
@@ -317,9 +320,9 @@ public final class MultiLet extends Expression
   {
     MonoType newTau = ( this.tau != null ) ? this.tau
         .substitute ( pTypeSubstitution ) : null ;
-    return new MultiLet ( this.identifiers , newTau , this.e1
-        .substitute ( pTypeSubstitution ) , this.e2
-        .substitute ( pTypeSubstitution ) ) ;
+    Expression newE1 = this.e1.substitute ( pTypeSubstitution ) ;
+    Expression newE2 = this.e2.substitute ( pTypeSubstitution ) ;
+    return new MultiLet ( this.identifiers , newTau , newE1 , newE2 ) ;
   }
 
 

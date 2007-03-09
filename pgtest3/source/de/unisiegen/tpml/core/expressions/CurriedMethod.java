@@ -249,7 +249,7 @@ public class CurriedMethod extends Expression
     {
       if ( this.identifiers [ i ].equals ( pId ) )
       {
-        return this ;
+        return this.clone ( ) ;
       }
     }
     Expression newE = this.expression ;
@@ -288,8 +288,8 @@ public class CurriedMethod extends Expression
         }
       }
     }
-    return new CurriedMethod ( newIdentifiers , this.types , newE.substitute (
-        pId , pExpression , pAttributeRename ) ) ;
+    newE = newE.substitute ( pId , pExpression , pAttributeRename ) ;
+    return new CurriedMethod ( newIdentifiers , this.types , newE ) ;
   }
 
 

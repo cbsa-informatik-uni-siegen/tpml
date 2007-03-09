@@ -153,10 +153,10 @@ public final class Recursion extends Expression
   @ Override
   public Recursion substitute ( TypeSubstitution pTypeSubstitution )
   {
-    MonoType newTau = ( this.tau != null ) ? this.tau
-        .substitute ( pTypeSubstitution ) : null ;
-    return new Recursion ( this.id , newTau , this.e
-        .substitute ( pTypeSubstitution ) ) ;
+    MonoType newTau = ( this.tau == null ) ? null : this.tau
+        .substitute ( pTypeSubstitution ) ;
+    Expression newE = this.e.substitute ( pTypeSubstitution ) ;
+    return new Recursion ( this.id , newTau , newE ) ;
   }
 
 
@@ -183,7 +183,7 @@ public final class Recursion extends Expression
   {
     if ( this.id.equals ( pId ) )
     {
-      return this ;
+      return this.clone ( ) ;
     }
     Expression newE = this.e ;
     String newId = this.id ;

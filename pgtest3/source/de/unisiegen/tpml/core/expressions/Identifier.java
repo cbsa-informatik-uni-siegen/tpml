@@ -295,9 +295,10 @@ public final class Identifier extends Value
   {
     if ( id.equals ( getName ( ) ) )
     {
-      // we need to clone the expression here to make sure we can distinguish an
-      // expression
-      // in the pretty printer that is substituted multiple times
+      /*
+       * We need to clone the expression here to make sure we can distinguish an
+       * expression in the pretty printer that is substituted multiple times
+       */
       return e.clone ( ) ;
     }
     return this ;

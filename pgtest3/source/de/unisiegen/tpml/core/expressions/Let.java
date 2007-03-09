@@ -252,8 +252,9 @@ public class Let extends Expression
       }
       newE2 = newE2.substitute ( pId , pExpression , pAttributeRename ) ;
     }
-    return new Let ( newId , this.tau , this.e1.substitute ( pId , pExpression ,
-        pAttributeRename ) , newE2 ) ;
+    Expression newE1 = this.e1.substitute ( pId , pExpression ,
+        pAttributeRename ) ;
+    return new Let ( newId , this.tau , newE1 , newE2 ) ;
   }
 
 
@@ -267,9 +268,9 @@ public class Let extends Expression
   {
     MonoType newTau = ( this.tau != null ) ? this.tau
         .substitute ( pTypeSubstitution ) : null ;
-    return new Let ( this.id , newTau ,
-        this.e1.substitute ( pTypeSubstitution ) , this.e2
-            .substitute ( pTypeSubstitution ) ) ;
+    Expression newE1 = this.e1.substitute ( pTypeSubstitution ) ;
+    Expression newE2 = this.e2.substitute ( pTypeSubstitution ) ;
+    return new Let ( this.id , newTau , newE1 , newE2 ) ;
   }
 
 

@@ -279,7 +279,7 @@ public final class Row extends Expression
       PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
     /*
-     * System.out.println ( "BoundRenaming Row:" ) ; for ( String s : free ( ) ) {
+     * System.out.println ( "Free Row:" ) ; for ( String s : free ( ) ) {
      * System.out.print ( s + " " ) ; } System.out.println ( ) ;
      */
     PrettyStringBuilder builder = pPrettyStringBuilderFactory.newBuilder (

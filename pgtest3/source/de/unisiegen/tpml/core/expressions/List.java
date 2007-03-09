@@ -245,9 +245,9 @@ public final class List extends Expression
       boolean pAttributeRename )
   {
     Expression [ ] newExpressions = new Expression [ this.expressions.length ] ;
-    for ( int n = 0 ; n < newExpressions.length ; ++ n )
+    for ( int i = 0 ; i < newExpressions.length ; i ++ )
     {
-      newExpressions [ n ] = this.expressions [ n ].substitute ( pId ,
+      newExpressions [ i ] = this.expressions [ i ].substitute ( pId ,
           pExpression , pAttributeRename ) ;
     }
     return new List ( newExpressions ) ;
@@ -263,9 +263,9 @@ public final class List extends Expression
   public Expression substitute ( TypeSubstitution pTypeSubstitution )
   {
     Expression [ ] newExpressions = new Expression [ this.expressions.length ] ;
-    for ( int n = 0 ; n < newExpressions.length ; ++ n )
+    for ( int i = 0 ; i < newExpressions.length ; i ++ )
     {
-      newExpressions [ n ] = this.expressions [ n ]
+      newExpressions [ i ] = this.expressions [ i ]
           .substitute ( pTypeSubstitution ) ;
     }
     return new List ( newExpressions ) ;

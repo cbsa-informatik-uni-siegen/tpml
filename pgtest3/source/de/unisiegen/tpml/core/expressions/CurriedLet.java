@@ -385,14 +385,14 @@ public class CurriedLet extends Expression
   public CurriedLet substitute ( TypeSubstitution pTypeSubstitution )
   {
     MonoType [ ] newTypes = new MonoType [ this.types.length ] ;
-    for ( int n = 0 ; n < newTypes.length ; ++ n )
+    for ( int i = 0 ; i < newTypes.length ; i ++ )
     {
-      newTypes [ n ] = ( this.types [ n ] != null ) ? this.types [ n ]
-          .substitute ( pTypeSubstitution ) : null ;
+      newTypes [ i ] = ( this.types [ i ] == null ) ? null : this.types [ i ]
+          .substitute ( pTypeSubstitution ) ;
     }
-    return new CurriedLet ( this.identifiers , newTypes , this.e1
-        .substitute ( pTypeSubstitution ) , this.e2
-        .substitute ( pTypeSubstitution ) ) ;
+    Expression newE1 = this.e1.substitute ( pTypeSubstitution ) ;
+    Expression newE2 = this.e2.substitute ( pTypeSubstitution ) ;
+    return new CurriedLet ( this.identifiers , newTypes , newE1 , newE2 ) ;
   }
 
 
@@ -405,6 +405,10 @@ public class CurriedLet extends Expression
   public PrettyStringBuilder toPrettyStringBuilder (
       PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
+    /*
+     * System.out.println ( "Free CurriedLet:" ) ; for ( String s : free ( ) ) {
+     * System.out.print ( s + " " ) ; } System.out.println ( ) ;
+     */
     PrettyStringBuilder builder = pPrettyStringBuilderFactory.newBuilder (
         this , PRIO_LET ) ;
     builder.addKeyword ( "let" ) ; //$NON-NLS-1$

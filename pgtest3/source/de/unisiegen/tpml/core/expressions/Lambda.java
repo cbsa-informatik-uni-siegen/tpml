@@ -79,7 +79,7 @@ public final class Lambda extends Value
    * @see Expression#clone()
    */
   @ Override
-  public Expression clone ( )
+  public Lambda clone ( )
   {
     return new Lambda ( this.id , this.tau , this.e.clone ( ) ) ;
   }
@@ -214,7 +214,7 @@ public final class Lambda extends Value
   {
     if ( this.id.equals ( pId ) )
     {
-      return this ;
+      return this.clone ( ) ;
     }
     Expression newE = this.e ;
     String newId = this.id ;
@@ -246,8 +246,8 @@ public final class Lambda extends Value
   {
     MonoType newTau = ( this.tau != null ) ? this.tau
         .substitute ( pTypeSubstitution ) : null ;
-    return new Lambda ( this.id , newTau , this.e
-        .substitute ( pTypeSubstitution ) ) ;
+    Expression newE = this.e.substitute ( pTypeSubstitution ) ;
+    return new Lambda ( this.id , newTau , newE ) ;
   }
 
 

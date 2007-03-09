@@ -146,8 +146,9 @@ public final class Message extends Expression
   public Message substitute ( String pId , Expression pExpression ,
       boolean pAttributeRename )
   {
-    return new Message ( this.expression.substitute ( pId , pExpression ,
-        pAttributeRename ) , this.identifier ) ;
+    Expression newE = this.expression.substitute ( pId , pExpression ,
+        pAttributeRename ) ;
+    return new Message ( newE , this.identifier ) ;
   }
 
 
@@ -160,9 +161,8 @@ public final class Message extends Expression
   @ Override
   public Message substitute ( TypeSubstitution pTypeSubstitution )
   {
-    Expression tmp = this.expression.substitute ( pTypeSubstitution ) ;
-    return ( this.expression.equals ( tmp ) ) ? this : new Message ( tmp ,
-        this.identifier ) ;
+    Expression newE = this.expression.substitute ( pTypeSubstitution ) ;
+    return new Message ( newE , this.identifier ) ;
   }
 
 

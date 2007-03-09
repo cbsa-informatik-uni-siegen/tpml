@@ -172,9 +172,9 @@ public final class Tuple extends Expression
       boolean pAttributeRename )
   {
     Expression [ ] newExpressions = new Expression [ this.expressions.length ] ;
-    for ( int n = 0 ; n < newExpressions.length ; ++ n )
+    for ( int i = 0 ; i < newExpressions.length ; i ++ )
     {
-      newExpressions [ n ] = this.expressions [ n ].substitute ( pId ,
+      newExpressions [ i ] = this.expressions [ i ].substitute ( pId ,
           pExpression , pAttributeRename ) ;
     }
     return new Tuple ( newExpressions ) ;
