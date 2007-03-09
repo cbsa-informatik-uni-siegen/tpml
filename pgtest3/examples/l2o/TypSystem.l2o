@@ -1,0 +1,1 @@
+(object (id) val a = 1 ; val b = (object (id) method m = self ; end) ; method m = id {< a = a+1 ; b = id {< a = a+1>}>} ; end) # m

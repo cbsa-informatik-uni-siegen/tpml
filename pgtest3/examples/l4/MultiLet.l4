@@ -1,1 +1,1 @@
-let (x,y,z)=(1,2,3) in x+y+z
+let a = lambda x.b b' in let(b, b') = (1, 2) in b b' a

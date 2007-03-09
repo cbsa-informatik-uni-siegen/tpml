@@ -1,1 +1,1 @@
-let function x y = x + y in function 3 4
+let  f f = f in f

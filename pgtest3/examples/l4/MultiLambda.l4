@@ -1,1 +1,1 @@
-(lambda (x,y).x+y) (1,2)
+let a = lambda x.b b' in lambda (b,b).b b'

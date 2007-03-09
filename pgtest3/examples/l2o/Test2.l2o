@@ -1,1 +1,1 @@
-let a = b in let rec b = b in b + a
+let rec a = a in 1

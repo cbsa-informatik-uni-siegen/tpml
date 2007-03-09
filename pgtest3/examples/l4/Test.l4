@@ -1,1 +1,1 @@
-5 (5+5)
+let y = 0 in let f x = f in f x
