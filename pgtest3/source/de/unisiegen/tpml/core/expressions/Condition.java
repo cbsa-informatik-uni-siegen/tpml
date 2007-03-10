@@ -217,27 +217,30 @@ public final class Condition extends Expression
   public PrettyStringBuilder toPrettyStringBuilder (
       PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
-    PrettyStringBuilder builder = pPrettyStringBuilderFactory.newBuilder (
-        this , PRIO_CONDITION ) ;
-    builder.addKeyword ( "if" ) ; //$NON-NLS-1$
-    builder.addText ( " " ) ; //$NON-NLS-1$
-    builder.addBuilder ( this.e0
-        .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-        PRIO_CONDITION_E0 ) ;
-    builder.addText ( " " ) ; //$NON-NLS-1$
-    builder.addBreak ( ) ;
-    builder.addKeyword ( "then" ) ; //$NON-NLS-1$
-    builder.addText ( " " ) ; //$NON-NLS-1$
-    builder.addBuilder ( this.e1
-        .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-        PRIO_CONDITION_E1 ) ;
-    builder.addText ( " " ) ; //$NON-NLS-1$
-    builder.addBreak ( ) ;
-    builder.addKeyword ( "else" ) ; //$NON-NLS-1$
-    builder.addText ( " " ) ; //$NON-NLS-1$
-    builder.addBuilder ( this.e2
-        .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-        PRIO_CONDITION_E2 ) ;
-    return builder ;
+    if ( this.prettyStringBuilder == null )
+    {
+      this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
+          PRIO_CONDITION ) ;
+      this.prettyStringBuilder.addKeyword ( "if" ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addBuilder ( this.e0
+          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
+          PRIO_CONDITION_E0 ) ;
+      this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addBreak ( ) ;
+      this.prettyStringBuilder.addKeyword ( "then" ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addBuilder ( this.e1
+          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
+          PRIO_CONDITION_E1 ) ;
+      this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addBreak ( ) ;
+      this.prettyStringBuilder.addKeyword ( "else" ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addBuilder ( this.e2
+          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
+          PRIO_CONDITION_E2 ) ;
+    }
+    return this.prettyStringBuilder ;
   }
 }

@@ -238,24 +238,27 @@ public class Attribute extends Expression
   public PrettyStringBuilder toPrettyStringBuilder (
       PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
-    PrettyStringBuilder builder = pPrettyStringBuilderFactory.newBuilder (
-        this , PRIO_ATTRIBUTE ) ;
-    builder.addKeyword ( "val" ) ; //$NON-NLS-1$
-    builder.addText ( " " ) ; //$NON-NLS-1$
-    builder.addIdentifier ( this.identifier ) ;
-    if ( this.tau != null )
+    if ( this.prettyStringBuilder == null )
     {
-      builder.addText ( ": " ) ; //$NON-NLS-1$
-      builder.addBuilder ( this.tau
+      this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
+          PRIO_ATTRIBUTE ) ;
+      this.prettyStringBuilder.addKeyword ( "val" ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addIdentifier ( this.identifier ) ;
+      if ( this.tau != null )
+      {
+        this.prettyStringBuilder.addText ( ": " ) ; //$NON-NLS-1$
+        this.prettyStringBuilder.addBuilder ( this.tau
+            .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
+            PRIO_ATTRIBUTE_TAU ) ;
+      }
+      this.prettyStringBuilder.addText ( " = " ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addBuilder ( this.expression
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-          PRIO_ATTRIBUTE_TAU ) ;
+          PRIO_ATTRIBUTE_E ) ;
+      this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addKeyword ( ";" ) ; //$NON-NLS-1$
     }
-    builder.addText ( " = " ) ; //$NON-NLS-1$
-    builder.addBuilder ( this.expression
-        .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-        PRIO_ATTRIBUTE_E ) ;
-    builder.addText ( " " ) ; //$NON-NLS-1$
-    builder.addKeyword ( ";" ) ; //$NON-NLS-1$
-    return builder ;
+    return this.prettyStringBuilder ;
   }
 }

@@ -186,16 +186,19 @@ public final class Or extends Expression
   public PrettyStringBuilder toPrettyStringBuilder (
       PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
-    PrettyStringBuilder builder = pPrettyStringBuilderFactory.newBuilder (
-        this , PRIO_OR ) ;
-    builder.addBuilder ( this.e1
-        .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_OR_E1 ) ;
-    builder.addText ( " " ) ; //$NON-NLS-1$
-    builder.addBreak ( ) ;
-    builder.addKeyword ( "||" ) ; //$NON-NLS-1$
-    builder.addText ( " " ) ; //$NON-NLS-1$
-    builder.addBuilder ( this.e2
-        .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_OR_E2 ) ;
-    return builder ;
+    if ( this.prettyStringBuilder == null )
+    {
+      this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
+          PRIO_OR ) ;
+      this.prettyStringBuilder.addBuilder ( this.e1
+          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_OR_E1 ) ;
+      this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addBreak ( ) ;
+      this.prettyStringBuilder.addKeyword ( "||" ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addBuilder ( this.e2
+          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_OR_E2 ) ;
+    }
+    return this.prettyStringBuilder ;
   }
 }

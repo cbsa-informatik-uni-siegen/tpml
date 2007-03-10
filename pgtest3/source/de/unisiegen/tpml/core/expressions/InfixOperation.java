@@ -221,17 +221,20 @@ public final class InfixOperation extends Expression
   PrettyStringBuilder toPrettyStringBuilder (
       PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
-    PrettyStringBuilder builder = pPrettyStringBuilderFactory.newBuilder (
-        this , this.op.getPrettyPriority ( ) ) ;
-    builder.addBuilder ( this.e1
-        .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , this.op
-        .getPrettyPriority ( ) ) ;
-    builder.addText ( " " ) ; //$NON-NLS-1$
-    builder.addConstant ( this.op.toString ( ) ) ;
-    builder.addText ( " " ) ; //$NON-NLS-1$
-    builder.addBuilder ( this.e2
-        .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , this.op
-        .getPrettyPriority ( ) + 1 ) ;
-    return builder ;
+    if ( this.prettyStringBuilder == null )
+    {
+      this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
+          this.op.getPrettyPriority ( ) ) ;
+      this.prettyStringBuilder.addBuilder ( this.e1
+          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , this.op
+          .getPrettyPriority ( ) ) ;
+      this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addConstant ( this.op.toString ( ) ) ;
+      this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addBuilder ( this.e2
+          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , this.op
+          .getPrettyPriority ( ) + 1 ) ;
+    }
+    return this.prettyStringBuilder ;
   }
 }

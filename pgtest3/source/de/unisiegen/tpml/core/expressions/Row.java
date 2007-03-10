@@ -278,26 +278,27 @@ public final class Row extends Expression
   public PrettyStringBuilder toPrettyStringBuilder (
       PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
-    /*
-     * System.out.println ( "Free Row:" ) ; for ( String s : free ( ) ) {
-     * System.out.print ( s + " " ) ; } System.out.println ( ) ;
-     */
-    PrettyStringBuilder builder = pPrettyStringBuilderFactory.newBuilder (
-        this , PRIO_ROW ) ;
-    for ( int i = 0 ; i < this.expressions.length ; i ++ )
+    if ( this.prettyStringBuilder == null )
     {
-      builder.addBuilder ( this.expressions [ i ]
-          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_ROW_E ) ;
-      if ( i != this.expressions.length - 1 )
+      this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
+          PRIO_ROW ) ;
+      for ( int i = 0 ; i < this.expressions.length ; i ++ )
       {
-        builder.addText ( " " ) ; //$NON-NLS-1$
-        builder.addBreak ( ) ;
+        this.prettyStringBuilder
+            .addBuilder ( this.expressions [ i ]
+                .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
+                PRIO_ROW_E ) ;
+        if ( i != this.expressions.length - 1 )
+        {
+          this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
+          this.prettyStringBuilder.addBreak ( ) ;
+        }
+      }
+      if ( this.expressions.length == 0 )
+      {
+        this.prettyStringBuilder.addKeyword ( "\u03B5" ) ; //$NON-NLS-1$
       }
     }
-    if ( this.expressions.length == 0 )
-    {
-      builder.addKeyword ( "\u03B5" ) ; //$NON-NLS-1$
-    }
-    return builder ;
+    return this.prettyStringBuilder ;
   }
 }

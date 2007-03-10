@@ -100,11 +100,14 @@ public abstract class BinaryOperator extends Constant
   public PrettyStringBuilder toPrettyStringBuilder (
       PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
-    PrettyStringBuilder builder = pPrettyStringBuilderFactory.newBuilder (
-        this , PRIO_CONSTANT ) ;
-    builder.addText ( "(" ) ; //$NON-NLS-1$
-    builder.addConstant ( this.text ) ;
-    builder.addText ( ")" ) ; //$NON-NLS-1$
-    return builder ;
+    if ( this.prettyStringBuilder == null )
+    {
+      this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
+          PRIO_CONSTANT ) ;
+      this.prettyStringBuilder.addText ( "(" ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addConstant ( this.text ) ;
+      this.prettyStringBuilder.addText ( ")" ) ; //$NON-NLS-1$
+    }
+    return this.prettyStringBuilder ;
   }
 }

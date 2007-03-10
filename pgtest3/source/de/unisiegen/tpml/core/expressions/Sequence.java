@@ -183,16 +183,19 @@ public final class Sequence extends Expression
   public PrettyStringBuilder toPrettyStringBuilder (
       PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
-    PrettyStringBuilder builder = pPrettyStringBuilderFactory.newBuilder (
-        this , PRIO_SEQUENCE ) ;
-    builder.addBuilder ( this.e1
-        .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-        PRIO_SEQUENCE_E1 ) ;
-    builder.addText ( "; " ) ; //$NON-NLS-1$
-    builder.addBreak ( ) ;
-    builder.addBuilder ( this.e2
-        .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-        PRIO_SEQUENCE_E2 ) ;
-    return builder ;
+    if ( this.prettyStringBuilder == null )
+    {
+      this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
+          PRIO_SEQUENCE ) ;
+      this.prettyStringBuilder.addBuilder ( this.e1
+          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
+          PRIO_SEQUENCE_E1 ) ;
+      this.prettyStringBuilder.addText ( "; " ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addBreak ( ) ;
+      this.prettyStringBuilder.addBuilder ( this.e2
+          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
+          PRIO_SEQUENCE_E2 ) ;
+    }
+    return this.prettyStringBuilder ;
   }
 }

@@ -317,8 +317,11 @@ public final class Identifier extends Value
   public PrettyStringBuilder toPrettyStringBuilder (
       PrettyStringBuilderFactory factory )
   {
-    PrettyStringBuilder builder = factory.newBuilder ( this , PRIO_IDENTIFIER ) ;
-    builder.addText ( this.name ) ;
-    return builder ;
+    if ( this.prettyStringBuilder == null )
+    {
+      this.prettyStringBuilder = factory.newBuilder ( this , PRIO_IDENTIFIER ) ;
+      this.prettyStringBuilder.addText ( this.name ) ;
+    }
+    return this.prettyStringBuilder ;
   }
 }

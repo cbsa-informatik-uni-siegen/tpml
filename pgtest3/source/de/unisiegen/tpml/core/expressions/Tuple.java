@@ -190,22 +190,24 @@ public final class Tuple extends Expression
   public PrettyStringBuilder toPrettyStringBuilder (
       PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
-    PrettyStringBuilder builder = pPrettyStringBuilderFactory.newBuilder (
-        this , PRIO_TUPLE ) ;
-    builder.addText ( "(" ) ; //$NON-NLS-1$
-    for ( int n = 0 ; n < this.expressions.length ; ++ n )
+    if ( this.prettyStringBuilder == null )
     {
-      if ( n > 0 )
+      this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
+          PRIO_TUPLE ) ;
+      this.prettyStringBuilder.addText ( "(" ) ; //$NON-NLS-1$
+      for ( int n = 0 ; n < this.expressions.length ; ++ n )
       {
-        builder.addText ( ", " ) ; //$NON-NLS-1$
-        builder.addBreak ( ) ;
+        if ( n > 0 )
+        {
+          this.prettyStringBuilder.addText ( ", " ) ; //$NON-NLS-1$
+          this.prettyStringBuilder.addBreak ( ) ;
+        }
+        this.prettyStringBuilder.addBuilder ( this.expressions [ n ]
+            .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
+            PRIO_TUPLE_E ) ;
       }
-      builder
-          .addBuilder ( this.expressions [ n ]
-              .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-              PRIO_TUPLE_E ) ;
+      this.prettyStringBuilder.addText ( ")" ) ; //$NON-NLS-1$
     }
-    builder.addText ( ")" ) ; //$NON-NLS-1$
-    return builder ;
+    return this.prettyStringBuilder ;
   }
 }

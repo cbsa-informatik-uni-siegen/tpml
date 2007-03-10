@@ -335,35 +335,38 @@ public final class MultiLet extends Expression
   public PrettyStringBuilder toPrettyStringBuilder (
       PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
-    PrettyStringBuilder builder = pPrettyStringBuilderFactory.newBuilder (
-        this , PRIO_LET ) ;
-    builder.addKeyword ( "let" ) ; //$NON-NLS-1$
-    builder.addText ( "(" ) ;//$NON-NLS-1$
-    for ( int i = 0 ; i < this.identifiers.length ; ++ i )
+    if ( this.prettyStringBuilder == null )
     {
-      if ( i > 0 )
+      this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
+          PRIO_LET ) ;
+      this.prettyStringBuilder.addKeyword ( "let" ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addText ( "(" ) ;//$NON-NLS-1$
+      for ( int i = 0 ; i < this.identifiers.length ; ++ i )
       {
-        builder.addText ( ", " ) ;//$NON-NLS-1$
+        if ( i > 0 )
+        {
+          this.prettyStringBuilder.addText ( ", " ) ;//$NON-NLS-1$
+        }
+        this.prettyStringBuilder.addIdentifier ( this.identifiers [ i ] ) ;
       }
-      builder.addIdentifier ( this.identifiers [ i ] ) ;
+      this.prettyStringBuilder.addText ( ")" ) ;//$NON-NLS-1$
+      if ( this.tau != null )
+      {
+        this.prettyStringBuilder.addText ( ": " ) ;//$NON-NLS-1$
+        this.prettyStringBuilder.addBuilder ( this.tau
+            .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
+            PRIO_CONSTANT ) ;
+      }
+      this.prettyStringBuilder.addText ( " = " ) ;//$NON-NLS-1$
+      this.prettyStringBuilder.addBuilder ( this.e1
+          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_LET_E1 ) ;
+      this.prettyStringBuilder.addText ( " " ) ;//$NON-NLS-1$
+      this.prettyStringBuilder.addBreak ( ) ;
+      this.prettyStringBuilder.addKeyword ( "in" ) ;//$NON-NLS-1$
+      this.prettyStringBuilder.addText ( " " ) ;//$NON-NLS-1$
+      this.prettyStringBuilder.addBuilder ( this.e2
+          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_LET_E2 ) ;
     }
-    builder.addText ( ")" ) ;//$NON-NLS-1$
-    if ( this.tau != null )
-    {
-      builder.addText ( ": " ) ;//$NON-NLS-1$
-      builder.addBuilder ( this.tau
-          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-          PRIO_CONSTANT ) ;
-    }
-    builder.addText ( " = " ) ;//$NON-NLS-1$
-    builder.addBuilder ( this.e1
-        .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_LET_E1 ) ;
-    builder.addText ( " " ) ;//$NON-NLS-1$
-    builder.addBreak ( ) ;
-    builder.addKeyword ( "in" ) ;//$NON-NLS-1$
-    builder.addText ( " " ) ;//$NON-NLS-1$
-    builder.addBuilder ( this.e2
-        .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_LET_E2 ) ;
-    return builder ;
+    return this.prettyStringBuilder ;
   }
 }

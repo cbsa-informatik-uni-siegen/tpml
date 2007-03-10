@@ -317,42 +317,44 @@ public class CurriedMethod extends Expression
   public PrettyStringBuilder toPrettyStringBuilder (
       PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
-    PrettyStringBuilder builder = pPrettyStringBuilderFactory.newBuilder (
-        this , PRIO_CURRIED_METHOD ) ;
-    builder.addKeyword ( "method" ) ; //$NON-NLS-1$
-    builder.addText ( " " ) ; //$NON-NLS-1$
-    builder.addIdentifier ( this.identifiers [ 0 ] ) ;
-    for ( int i = 1 ; i < this.identifiers.length ; i ++ )
+    if ( this.prettyStringBuilder == null )
     {
-      builder.addText ( " " ) ; //$NON-NLS-1$
-      if ( this.types [ i ] != null )
+      this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
+          PRIO_CURRIED_METHOD ) ;
+      this.prettyStringBuilder.addKeyword ( "method" ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addIdentifier ( this.identifiers [ 0 ] ) ;
+      for ( int i = 1 ; i < this.identifiers.length ; i ++ )
       {
-        builder.addText ( "(" ) ; //$NON-NLS-1$
-      }
-      builder.addIdentifier ( this.identifiers [ i ] ) ;
-      if ( this.types [ i ] != null )
-      {
-        builder.addText ( ": " ) ; //$NON-NLS-1$
-        builder.addBuilder ( this.types [ i ]
-            .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-            PRIO_CURRIED_METHOD_TAU ) ;
-        builder.addText ( ")" ) ; //$NON-NLS-1$
-      }
-    }
-    if ( this.types [ 0 ] != null )
-    {
-      builder.addText ( ": " ) ; //$NON-NLS-1$
-      builder
-          .addBuilder ( this.types [ 0 ]
+        this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
+        if ( this.types [ i ] != null )
+        {
+          this.prettyStringBuilder.addText ( "(" ) ; //$NON-NLS-1$
+        }
+        this.prettyStringBuilder.addIdentifier ( this.identifiers [ i ] ) ;
+        if ( this.types [ i ] != null )
+        {
+          this.prettyStringBuilder.addText ( ": " ) ; //$NON-NLS-1$
+          this.prettyStringBuilder.addBuilder ( this.types [ i ]
               .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-              PRIO_LET_TAU ) ;
+              PRIO_CURRIED_METHOD_TAU ) ;
+          this.prettyStringBuilder.addText ( ")" ) ; //$NON-NLS-1$
+        }
+      }
+      if ( this.types [ 0 ] != null )
+      {
+        this.prettyStringBuilder.addText ( ": " ) ; //$NON-NLS-1$
+        this.prettyStringBuilder.addBuilder ( this.types [ 0 ]
+            .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
+            PRIO_LET_TAU ) ;
+      }
+      this.prettyStringBuilder.addText ( " = " ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addBuilder ( this.expression
+          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
+          PRIO_CURRIED_METHOD_E ) ;
+      this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addKeyword ( ";" ) ; //$NON-NLS-1$
     }
-    builder.addText ( " = " ) ; //$NON-NLS-1$
-    builder.addBuilder ( this.expression
-        .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-        PRIO_CURRIED_METHOD_E ) ;
-    builder.addText ( " " ) ; //$NON-NLS-1$
-    builder.addKeyword ( ";" ) ; //$NON-NLS-1$
-    return builder ;
+    return this.prettyStringBuilder ;
   }
 }

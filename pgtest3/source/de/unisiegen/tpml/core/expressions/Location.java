@@ -136,9 +136,12 @@ public final class Location extends Value
   PrettyStringBuilder toPrettyStringBuilder (
       PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
-    PrettyStringBuilder builder = pPrettyStringBuilderFactory.newBuilder (
-        this , PRIO_LOCATION ) ;
-    builder.addText ( this.name ) ;
-    return builder ;
+    if ( this.prettyStringBuilder == null )
+    {
+      this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
+          PRIO_LOCATION ) ;
+      this.prettyStringBuilder.addText ( this.name ) ;
+    }
+    return this.prettyStringBuilder ;
   }
 }

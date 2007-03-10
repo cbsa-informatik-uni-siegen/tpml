@@ -173,16 +173,18 @@ public final class Message extends Expression
   public PrettyStringBuilder toPrettyStringBuilder (
       PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
-    PrettyStringBuilder builder = pPrettyStringBuilderFactory.newBuilder (
-        this , PRIO_MESSAGE ) ;
-    builder
-        .addBuilder ( this.expression
-            .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-            PRIO_MESSAGE_E ) ;
-    builder.addText ( " " ) ; //$NON-NLS-1$
-    builder.addKeyword ( "#" ) ; //$NON-NLS-1$
-    builder.addText ( " " ) ; //$NON-NLS-1$
-    builder.addIdentifier ( this.identifier ) ;
-    return builder ;
+    if ( this.prettyStringBuilder == null )
+    {
+      this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
+          PRIO_MESSAGE ) ;
+      this.prettyStringBuilder.addBuilder ( this.expression
+          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
+          PRIO_MESSAGE_E ) ;
+      this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addKeyword ( "#" ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addIdentifier ( this.identifier ) ;
+    }
+    return this.prettyStringBuilder ;
   }
 }

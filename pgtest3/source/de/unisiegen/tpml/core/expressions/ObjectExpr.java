@@ -242,30 +242,29 @@ public final class ObjectExpr extends Expression
   public PrettyStringBuilder toPrettyStringBuilder (
       PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
-    /*
-     * System.out.println ( "Free ObjectExpr:" ) ; for ( String s : free ( ) ) {
-     * System.out.print ( s + " " ) ; } System.out.println ( ) ;
-     */
-    PrettyStringBuilder builder = pPrettyStringBuilderFactory.newBuilder (
-        this , PRIO_OBJECTEXPR ) ;
-    builder.addKeyword ( "object" ) ; //$NON-NLS-1$
-    builder.addText ( " (" ) ; //$NON-NLS-1$
-    builder.addIdentifier ( this.identifier ) ;
-    if ( this.tau != null )
+    if ( this.prettyStringBuilder == null )
     {
-      builder.addText ( ": " ) ; //$NON-NLS-1$
-      builder.addBuilder ( this.tau
+      this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
+          PRIO_OBJECTEXPR ) ;
+      this.prettyStringBuilder.addKeyword ( "object" ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addText ( " (" ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addIdentifier ( this.identifier ) ;
+      if ( this.tau != null )
+      {
+        this.prettyStringBuilder.addText ( ": " ) ; //$NON-NLS-1$
+        this.prettyStringBuilder.addBuilder ( this.tau
+            .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
+            PRIO_OBJECTEXPR_TAU ) ;
+      }
+      this.prettyStringBuilder.addText ( ") " ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addBreak ( ) ;
+      this.prettyStringBuilder.addBuilder ( this.row
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-          PRIO_OBJECTEXPR_TAU ) ;
+          PRIO_OBJECTEXPR_E ) ;
+      this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addBreak ( ) ;
+      this.prettyStringBuilder.addKeyword ( "end" ) ; //$NON-NLS-1$
     }
-    builder.addText ( ") " ) ; //$NON-NLS-1$
-    builder.addBreak ( ) ;
-    builder.addBuilder ( this.row
-        .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-        PRIO_OBJECTEXPR_E ) ;
-    builder.addText ( " " ) ; //$NON-NLS-1$
-    builder.addBreak ( ) ;
-    builder.addKeyword ( "end" ) ; //$NON-NLS-1$
-    return builder ;
+    return this.prettyStringBuilder ;
   }
 }

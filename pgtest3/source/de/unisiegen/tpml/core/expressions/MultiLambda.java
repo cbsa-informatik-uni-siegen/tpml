@@ -300,29 +300,33 @@ public final class MultiLambda extends Value
   public PrettyStringBuilder toPrettyStringBuilder (
       PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
-    PrettyStringBuilder builder = pPrettyStringBuilderFactory.newBuilder (
-        this , PRIO_LAMBDA ) ;
-    builder.addKeyword ( "\u03bb" ) ; //$NON-NLS-1$
-    builder.addText ( "(" ) ; //$NON-NLS-1$
-    for ( int i = 0 ; i < this.identifiers.length ; ++ i )
+    if ( this.prettyStringBuilder == null )
     {
-      if ( i > 0 )
+      this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
+          PRIO_LAMBDA ) ;
+      this.prettyStringBuilder.addKeyword ( "\u03bb" ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addText ( "(" ) ; //$NON-NLS-1$
+      for ( int i = 0 ; i < this.identifiers.length ; ++ i )
       {
-        builder.addText ( ", " ) ; //$NON-NLS-1$
+        if ( i > 0 )
+        {
+          this.prettyStringBuilder.addText ( ", " ) ; //$NON-NLS-1$
+        }
+        this.prettyStringBuilder.addIdentifier ( this.identifiers [ i ] ) ;
       }
-      builder.addIdentifier ( this.identifiers [ i ] ) ;
-    }
-    builder.addText ( ")" ) ; //$NON-NLS-1$
-    if ( this.tau != null )
-    {
-      builder.addText ( ": " ) ; //$NON-NLS-1$
-      builder.addBuilder ( this.tau
+      this.prettyStringBuilder.addText ( ")" ) ; //$NON-NLS-1$
+      if ( this.tau != null )
+      {
+        this.prettyStringBuilder.addText ( ": " ) ; //$NON-NLS-1$
+        this.prettyStringBuilder.addBuilder ( this.tau
+            .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
+            PRIO_LAMBDA_TAU ) ;
+      }
+      this.prettyStringBuilder.addText ( "." ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addBuilder ( this.e
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-          PRIO_LAMBDA_TAU ) ;
+          PRIO_LAMBDA_E ) ;
     }
-    builder.addText ( "." ) ; //$NON-NLS-1$
-    builder.addBuilder ( this.e
-        .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_LAMBDA_E ) ;
-    return builder ;
+    return this.prettyStringBuilder ;
   }
 }

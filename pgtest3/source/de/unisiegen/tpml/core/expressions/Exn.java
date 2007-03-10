@@ -167,9 +167,12 @@ public final class Exn extends Expression
   public PrettyStringBuilder toPrettyStringBuilder (
       PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
-    PrettyStringBuilder builder = pPrettyStringBuilderFactory.newBuilder (
-        this , PRIO_EXN ) ;
-    builder.addText ( "\u2191 " + this.name ) ; //$NON-NLS-1$
-    return builder ;
+    if ( this.prettyStringBuilder == null )
+    {
+      this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
+          PRIO_EXN ) ;
+      this.prettyStringBuilder.addText ( "\u2191 " + this.name ) ; //$NON-NLS-1$
+    }
+    return this.prettyStringBuilder ;
   }
 }

@@ -157,30 +157,32 @@ public final class LetRec extends Let
   public PrettyStringBuilder toPrettyStringBuilder (
       PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
-    PrettyStringBuilder builder = pPrettyStringBuilderFactory.newBuilder (
-        this , PRIO_LET ) ;
-    builder.addKeyword ( "let" ) ; //$NON-NLS-1$
-    builder.addText ( " " ) ; //$NON-NLS-1$
-    builder.addKeyword ( "rec" ) ; //$NON-NLS-1$
-    builder.addText ( " " ) ; //$NON-NLS-1$
-    builder.addIdentifier ( this.id ) ;
-    if ( this.tau != null )
+    if ( this.prettyStringBuilder == null )
     {
-      builder.addText ( ": " ) ; //$NON-NLS-1$
-      builder
-          .addBuilder ( this.tau
-              .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-              PRIO_LET_TAU ) ;
+      this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
+          PRIO_LET ) ;
+      this.prettyStringBuilder.addKeyword ( "let" ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addKeyword ( "rec" ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addIdentifier ( this.id ) ;
+      if ( this.tau != null )
+      {
+        this.prettyStringBuilder.addText ( ": " ) ; //$NON-NLS-1$
+        this.prettyStringBuilder.addBuilder ( this.tau
+            .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
+            PRIO_LET_TAU ) ;
+      }
+      this.prettyStringBuilder.addText ( " = " ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addBuilder ( this.e1
+          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_LET_E1 ) ;
+      this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addBreak ( ) ;
+      this.prettyStringBuilder.addKeyword ( "in" ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addBuilder ( this.e2
+          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_LET_E2 ) ;
     }
-    builder.addText ( " = " ) ; //$NON-NLS-1$
-    builder.addBuilder ( this.e1
-        .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_LET_E1 ) ;
-    builder.addText ( " " ) ; //$NON-NLS-1$
-    builder.addBreak ( ) ;
-    builder.addKeyword ( "in" ) ; //$NON-NLS-1$
-    builder.addText ( " " ) ; //$NON-NLS-1$
-    builder.addBuilder ( this.e2
-        .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_LET_E2 ) ;
-    return builder ;
+    return this.prettyStringBuilder ;
   }
 }

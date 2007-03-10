@@ -333,35 +333,39 @@ public final class Duplication extends Expression
   public PrettyStringBuilder toPrettyStringBuilder (
       PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
-    PrettyStringBuilder builder = pPrettyStringBuilderFactory.newBuilder (
-        this , PRIO_DUPLICATION ) ;
-    builder.addBuilder ( this.firstExpression
-        .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-        PRIO_DUPLICATION_FIRST_E ) ;
-    builder.addText ( " " ) ; //$NON-NLS-1$
-    builder.addKeyword ( "{" ) ; //$NON-NLS-1$
-    builder.addKeyword ( "<" ) ; //$NON-NLS-1$
-    builder.addText ( " " ) ; //$NON-NLS-1$
-    for ( int i = 0 ; i < this.expressions.length ; i ++ )
+    if ( this.prettyStringBuilder == null )
     {
-      builder.addIdentifier ( this.identifiers [ i ] ) ;
-      builder.addText ( " = " ) ; //$NON-NLS-1$
-      builder.addBuilder ( this.expressions [ i ]
+      this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
+          PRIO_DUPLICATION ) ;
+      this.prettyStringBuilder.addBuilder ( this.firstExpression
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-          PRIO_DUPLICATION_E ) ;
-      if ( i != this.expressions.length - 1 )
+          PRIO_DUPLICATION_FIRST_E ) ;
+      this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addBreak ( ) ;
+      this.prettyStringBuilder.addKeyword ( "{" ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addKeyword ( "<" ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
+      for ( int i = 0 ; i < this.expressions.length ; i ++ )
       {
-        builder.addText ( "; " ) ; //$NON-NLS-1$
-        builder.addBreak ( ) ;
+        this.prettyStringBuilder.addIdentifier ( this.identifiers [ i ] ) ;
+        this.prettyStringBuilder.addText ( " = " ) ; //$NON-NLS-1$
+        this.prettyStringBuilder.addBuilder ( this.expressions [ i ]
+            .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
+            PRIO_DUPLICATION_E ) ;
+        if ( i != this.expressions.length - 1 )
+        {
+          this.prettyStringBuilder.addText ( "; " ) ; //$NON-NLS-1$
+          this.prettyStringBuilder.addBreak ( ) ;
+        }
       }
+      // Only one space for '{< >}'
+      if ( this.expressions.length > 0 )
+      {
+        this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
+      }
+      this.prettyStringBuilder.addKeyword ( ">" ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addKeyword ( "}" ) ; //$NON-NLS-1$
     }
-    // Only one space for '{< >}'
-    if ( this.expressions.length > 0 )
-    {
-      builder.addText ( " " ) ; //$NON-NLS-1$
-    }
-    builder.addKeyword ( ">" ) ; //$NON-NLS-1$
-    builder.addKeyword ( "}" ) ; //$NON-NLS-1$
-    return builder ;
+    return this.prettyStringBuilder ;
   }
 }

@@ -133,10 +133,13 @@ public abstract class Constant extends Value
   PrettyStringBuilder toPrettyStringBuilder (
       PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
-    PrettyStringBuilder builder = pPrettyStringBuilderFactory.newBuilder (
-        this , PRIO_CONSTANT ) ;
-    builder.addConstant ( this.text ) ;
-    return builder ;
+    if ( this.prettyStringBuilder == null )
+    {
+      this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
+          PRIO_CONSTANT ) ;
+      this.prettyStringBuilder.addConstant ( this.text ) ;
+    }
+    return this.prettyStringBuilder ;
   }
 
 
