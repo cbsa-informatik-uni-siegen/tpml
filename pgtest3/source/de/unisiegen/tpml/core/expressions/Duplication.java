@@ -31,7 +31,7 @@ public final class Duplication extends Expression
    * 
    * @see #getE()
    */
-  private Expression firstExpression ;
+  private Expression e ;
 
 
   /**
@@ -85,7 +85,7 @@ public final class Duplication extends Expression
         exprList.add ( 0 , pExpressions [ i ] ) ;
       }
     }
-    this.firstExpression = pFirstExpression ;
+    this.e = pFirstExpression ;
     this.identifiers = new String [ idList.size ( ) ] ;
     this.expressions = new Expression [ exprList.size ( ) ] ;
     for ( int i = 0 ; i < idList.size ( ) ; i ++ )
@@ -107,7 +107,7 @@ public final class Duplication extends Expression
     {
       newExpressions [ i ] = this.expressions [ i ].clone ( ) ;
     }
-    return new Duplication ( this.firstExpression.clone ( ) , this.identifiers ,
+    return new Duplication ( this.e.clone ( ) , this.identifiers ,
         newExpressions ) ;
   }
 
@@ -121,7 +121,7 @@ public final class Duplication extends Expression
     if ( pObject instanceof Duplication )
     {
       Duplication other = ( Duplication ) pObject ;
-      return ( ( this.firstExpression.equals ( other.firstExpression ) )
+      return ( ( this.e.equals ( other.e ) )
           && ( Arrays.equals ( this.expressions , other.expressions ) ) && ( Arrays
           .equals ( this.identifiers , other.identifiers ) ) ) ;
     }
@@ -143,11 +143,11 @@ public final class Duplication extends Expression
    * TODO
    * 
    * @return TODO
-   * @see #firstExpression
+   * @see #e
    */
   public Expression getE ( )
   {
-    return this.firstExpression ;
+    return this.e ;
   }
 
 
@@ -211,7 +211,7 @@ public final class Duplication extends Expression
   @ Override
   public int hashCode ( )
   {
-    return this.firstExpression.hashCode ( ) + this.identifiers.hashCode ( )
+    return this.e.hashCode ( ) + this.identifiers.hashCode ( )
         + this.expressions.hashCode ( ) ;
   }
 
@@ -261,8 +261,28 @@ public final class Duplication extends Expression
       newExpressions [ i ] = this.expressions [ i ].substitute ( pId ,
           pExpression ) ;
     }
-    Expression newFirstExpression = this.firstExpression.substitute ( pId ,
-        pExpression ) ;
+    Expression newFirstExpression = this.e.substitute ( pId , pExpression ) ;
+    return new Duplication ( newFirstExpression , this.identifiers ,
+        newExpressions ) ;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @param pTypeSubstitution TODO
+   * @return TODO
+   */
+  @ Override
+  public Duplication substitute ( TypeSubstitution pTypeSubstitution )
+  {
+    Expression [ ] newExpressions = new Expression [ this.expressions.length ] ;
+    for ( int i = 0 ; i < this.expressions.length ; i ++ )
+    {
+      newExpressions [ i ] = this.expressions [ i ]
+          .substitute ( pTypeSubstitution ) ;
+    }
+    Expression newFirstExpression = this.e.substitute ( pTypeSubstitution ) ;
     return new Duplication ( newFirstExpression , this.identifiers ,
         newExpressions ) ;
   }
@@ -297,31 +317,9 @@ public final class Duplication extends Expression
       newExpressions [ i ] = this.expressions [ i ].substitute ( pId ,
           pExpression , true ) ;
     }
-    Expression newFirstExpression = this.firstExpression.substitute ( pId ,
-        pExpression , true ) ;
+    Expression newFirstExpression = this.e.substitute ( pId , pExpression ,
+        true ) ;
     return new Duplication ( newFirstExpression , newIdentifiers ,
-        newExpressions ) ;
-  }
-
-
-  /**
-   * TODO
-   * 
-   * @param pTypeSubstitution TODO
-   * @return TODO
-   */
-  @ Override
-  public Duplication substitute ( TypeSubstitution pTypeSubstitution )
-  {
-    Expression [ ] newExpressions = new Expression [ this.expressions.length ] ;
-    for ( int i = 0 ; i < this.expressions.length ; i ++ )
-    {
-      newExpressions [ i ] = this.expressions [ i ]
-          .substitute ( pTypeSubstitution ) ;
-    }
-    Expression newFirstExpression = this.firstExpression
-        .substitute ( pTypeSubstitution ) ;
-    return new Duplication ( newFirstExpression , this.identifiers ,
         newExpressions ) ;
   }
 
@@ -337,7 +335,7 @@ public final class Duplication extends Expression
     {
       this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
           PRIO_DUPLICATION ) ;
-      this.prettyStringBuilder.addBuilder ( this.firstExpression
+      this.prettyStringBuilder.addBuilder ( this.e
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
           PRIO_DUPLICATION_FIRST_E ) ;
       this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$

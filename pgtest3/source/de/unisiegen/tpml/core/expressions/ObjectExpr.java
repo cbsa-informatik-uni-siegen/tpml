@@ -30,7 +30,7 @@ public final class ObjectExpr extends Expression
    * 
    * @see #getId()
    */
-  private String identifier ;
+  private String id ;
 
 
   /**
@@ -56,9 +56,9 @@ public final class ObjectExpr extends Expression
     }
     if ( pRow == null )
     {
-      throw new NullPointerException ( "Expression is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "Row is null" ) ; //$NON-NLS-1$
     }
-    this.identifier = pIdentifier ;
+    this.id = pIdentifier ;
     this.tau = pTau ;
     this.row = pRow ;
   }
@@ -70,7 +70,7 @@ public final class ObjectExpr extends Expression
   @ Override
   public ObjectExpr clone ( )
   {
-    return new ObjectExpr ( this.identifier , this.tau , this.row.clone ( ) ) ;
+    return new ObjectExpr ( this.id , this.tau , this.row.clone ( ) ) ;
   }
 
 
@@ -86,7 +86,7 @@ public final class ObjectExpr extends Expression
       return ( this.row.equals ( other.row ) )
           && ( ( this.tau == null ) ? ( other.tau == null ) : ( this.tau
               .equals ( other.tau ) )
-              && ( this.identifier.equals ( other.identifier ) ) ) ;
+              && ( this.id.equals ( other.id ) ) ) ;
     }
     return false ;
   }
@@ -102,7 +102,7 @@ public final class ObjectExpr extends Expression
     {
       this.free = new TreeSet < String > ( ) ;
       this.free.addAll ( this.row.free ( ) ) ;
-      this.free.remove ( this.identifier ) ;
+      this.free.remove ( this.id ) ;
     }
     return this.free ;
   }
@@ -134,11 +134,11 @@ public final class ObjectExpr extends Expression
    * TODO
    * 
    * @return TODO
-   * @see #identifier
+   * @see #id
    */
   public String getId ( )
   {
-    return this.identifier ;
+    return this.id ;
   }
 
 
@@ -160,7 +160,7 @@ public final class ObjectExpr extends Expression
   @ Override
   public int hashCode ( )
   {
-    return this.identifier.hashCode ( ) + this.row.hashCode ( )
+    return this.id.hashCode ( ) + this.row.hashCode ( )
         + ( this.tau == null ? 0 : this.tau.hashCode ( ) ) ;
   }
 
@@ -195,23 +195,23 @@ public final class ObjectExpr extends Expression
       @ SuppressWarnings ( "unused" )
       boolean pAttributeRename )
   {
-    if ( this.identifier.equals ( pId ) )
+    if ( this.id.equals ( pId ) )
     {
       return this ;
     }
     Row newRow = this.row ;
-    String newId = this.identifier ;
+    String newId = this.id ;
     if ( this.row.free ( ).contains ( pId ) )
     {
       BoundRenaming boundRenaming = new BoundRenaming ( ) ;
       boundRenaming.add ( this.free ( ) ) ;
       boundRenaming.add ( pExpression.free ( ) ) ;
       boundRenaming.add ( pId ) ;
-      newId = boundRenaming.newIdentifier ( this.identifier ) ;
-      if ( ! this.identifier.equals ( newId ) )
+      newId = boundRenaming.newIdentifier ( this.id ) ;
+      if ( ! this.id.equals ( newId ) )
       {
-        newRow = newRow.substitute ( this.identifier ,
-            new Identifier ( newId ) , false ) ;
+        newRow = newRow
+            .substitute ( this.id , new Identifier ( newId ) , false ) ;
       }
     }
     newRow = newRow.substitute ( pId , pExpression , false ) ;
@@ -231,7 +231,7 @@ public final class ObjectExpr extends Expression
     MonoType newTau = ( this.tau == null ) ? null : this.tau
         .substitute ( pTypeSubstitution ) ;
     Row newRow = this.row.substitute ( pTypeSubstitution ) ;
-    return new ObjectExpr ( this.identifier , newTau , newRow ) ;
+    return new ObjectExpr ( this.id , newTau , newRow ) ;
   }
 
 
@@ -248,7 +248,7 @@ public final class ObjectExpr extends Expression
           PRIO_OBJECTEXPR ) ;
       this.prettyStringBuilder.addKeyword ( "object" ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addText ( " (" ) ; //$NON-NLS-1$
-      this.prettyStringBuilder.addIdentifier ( this.identifier ) ;
+      this.prettyStringBuilder.addIdentifier ( this.id ) ;
       if ( this.tau != null )
       {
         this.prettyStringBuilder.addText ( ": " ) ; //$NON-NLS-1$

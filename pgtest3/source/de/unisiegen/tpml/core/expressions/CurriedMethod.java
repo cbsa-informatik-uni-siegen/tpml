@@ -41,7 +41,7 @@ public class CurriedMethod extends Expression
    * 
    * @see #getE()
    */
-  private Expression expression ;
+  private Expression e ;
 
 
   /**
@@ -78,7 +78,7 @@ public class CurriedMethod extends Expression
     }
     this.identifiers = pIdentifiers ;
     this.types = pTypes ;
-    this.expression = pExpression ;
+    this.e = pExpression ;
   }
 
 
@@ -88,8 +88,7 @@ public class CurriedMethod extends Expression
   @ Override
   public CurriedMethod clone ( )
   {
-    return new CurriedMethod ( this.identifiers , this.types , this.expression
-        .clone ( ) ) ;
+    return new CurriedMethod ( this.identifiers , this.types , this.e.clone ( ) ) ;
   }
 
 
@@ -103,8 +102,8 @@ public class CurriedMethod extends Expression
     {
       CurriedMethod other = ( CurriedMethod ) pObject ;
       return ( ( Arrays.equals ( this.identifiers , other.identifiers ) )
-          && ( Arrays.equals ( this.types , other.types ) ) && ( this.expression
-          .equals ( other.expression ) ) ) ;
+          && ( Arrays.equals ( this.types , other.types ) ) && ( this.e
+          .equals ( other.e ) ) ) ;
     }
     return false ;
   }
@@ -119,7 +118,7 @@ public class CurriedMethod extends Expression
     if ( this.free == null )
     {
       this.free = new TreeSet < String > ( ) ;
-      this.free.addAll ( this.expression.free ( ) ) ;
+      this.free.addAll ( this.e.free ( ) ) ;
       for ( int i = 1 ; i < this.identifiers.length ; i ++ )
       {
         this.free.remove ( this.identifiers [ i ] ) ;
@@ -143,11 +142,11 @@ public class CurriedMethod extends Expression
    * TODO
    * 
    * @return TODO
-   * @see #expression
+   * @see #e
    */
   public Expression getE ( )
   {
-    return this.expression ;
+    return this.e ;
   }
 
 
@@ -211,7 +210,7 @@ public class CurriedMethod extends Expression
   @ Override
   public int hashCode ( )
   {
-    return this.identifiers.hashCode ( ) + this.expression.hashCode ( )
+    return this.identifiers.hashCode ( ) + this.e.hashCode ( )
         + this.types.hashCode ( ) ;
   }
 
@@ -222,7 +221,7 @@ public class CurriedMethod extends Expression
   @ Override
   public boolean isValue ( )
   {
-    return this.expression.isValue ( ) ;
+    return this.e.isValue ( ) ;
   }
 
 
@@ -252,9 +251,9 @@ public class CurriedMethod extends Expression
         return this.clone ( ) ;
       }
     }
-    Expression newE = this.expression ;
+    Expression newE = this.e ;
     String [ ] newIdentifiers = this.identifiers.clone ( ) ;
-    if ( this.expression.free ( ).contains ( pId ) )
+    if ( this.e.free ( ).contains ( pId ) )
     {
       for ( int i = 1 ; i < newIdentifiers.length ; i ++ )
       {
@@ -305,7 +304,7 @@ public class CurriedMethod extends Expression
       newTypes [ i ] = ( this.types [ i ] == null ) ? null : this.types [ i ]
           .substitute ( pTypeSubstitution ) ;
     }
-    return new CurriedMethod ( this.identifiers , newTypes , this.expression
+    return new CurriedMethod ( this.identifiers , newTypes , this.e
         .substitute ( pTypeSubstitution ) ) ;
   }
 
@@ -349,7 +348,7 @@ public class CurriedMethod extends Expression
             PRIO_LET_TAU ) ;
       }
       this.prettyStringBuilder.addText ( " = " ) ; //$NON-NLS-1$
-      this.prettyStringBuilder.addBuilder ( this.expression
+      this.prettyStringBuilder.addBuilder ( this.e
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
           PRIO_CURRIED_METHOD_E ) ;
       this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$

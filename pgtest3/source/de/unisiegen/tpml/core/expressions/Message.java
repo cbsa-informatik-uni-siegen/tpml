@@ -19,7 +19,7 @@ public final class Message extends Expression
    * 
    * @see #getId()
    */
-  private String identifier ;
+  private String id ;
 
 
   /**
@@ -27,7 +27,7 @@ public final class Message extends Expression
    * 
    * @see #getE()
    */
-  private Expression expression ;
+  private Expression e ;
 
 
   /**
@@ -42,8 +42,8 @@ public final class Message extends Expression
     {
       throw new NullPointerException ( "Expression is null" ) ; //$NON-NLS-1$
     }
-    this.expression = pExpression ;
-    this.identifier = pIdentifier ;
+    this.e = pExpression ;
+    this.id = pIdentifier ;
   }
 
 
@@ -53,7 +53,7 @@ public final class Message extends Expression
   @ Override
   public Message clone ( )
   {
-    return new Message ( this.expression.clone ( ) , this.identifier ) ;
+    return new Message ( this.e.clone ( ) , this.id ) ;
   }
 
 
@@ -66,8 +66,7 @@ public final class Message extends Expression
     if ( pObject instanceof Message )
     {
       Message other = ( Message ) pObject ;
-      return ( ( this.expression.equals ( other.expression ) ) && ( this.identifier
-          .equals ( other.identifier ) ) ) ;
+      return ( ( this.e.equals ( other.e ) ) && ( this.id.equals ( other.id ) ) ) ;
     }
     return false ;
   }
@@ -87,11 +86,11 @@ public final class Message extends Expression
    * TODO
    * 
    * @return TODO
-   * @see #expression
+   * @see #e
    */
   public Expression getE ( )
   {
-    return this.expression ;
+    return this.e ;
   }
 
 
@@ -99,11 +98,11 @@ public final class Message extends Expression
    * TODO
    * 
    * @return TODO
-   * @see #identifier
+   * @see #id
    */
   public String getId ( )
   {
-    return this.identifier ;
+    return this.id ;
   }
 
 
@@ -113,7 +112,7 @@ public final class Message extends Expression
   @ Override
   public int hashCode ( )
   {
-    return this.expression.hashCode ( ) + this.identifier.hashCode ( ) ;
+    return this.e.hashCode ( ) + this.id.hashCode ( ) ;
   }
 
 
@@ -146,9 +145,8 @@ public final class Message extends Expression
   public Message substitute ( String pId , Expression pExpression ,
       boolean pAttributeRename )
   {
-    Expression newE = this.expression.substitute ( pId , pExpression ,
-        pAttributeRename ) ;
-    return new Message ( newE , this.identifier ) ;
+    Expression newE = this.e.substitute ( pId , pExpression , pAttributeRename ) ;
+    return new Message ( newE , this.id ) ;
   }
 
 
@@ -161,8 +159,8 @@ public final class Message extends Expression
   @ Override
   public Message substitute ( TypeSubstitution pTypeSubstitution )
   {
-    Expression newE = this.expression.substitute ( pTypeSubstitution ) ;
-    return new Message ( newE , this.identifier ) ;
+    Expression newE = this.e.substitute ( pTypeSubstitution ) ;
+    return new Message ( newE , this.id ) ;
   }
 
 
@@ -177,13 +175,13 @@ public final class Message extends Expression
     {
       this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
           PRIO_MESSAGE ) ;
-      this.prettyStringBuilder.addBuilder ( this.expression
+      this.prettyStringBuilder.addBuilder ( this.e
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
           PRIO_MESSAGE_E ) ;
       this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addKeyword ( "#" ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
-      this.prettyStringBuilder.addIdentifier ( this.identifier ) ;
+      this.prettyStringBuilder.addIdentifier ( this.id ) ;
     }
     return this.prettyStringBuilder ;
   }

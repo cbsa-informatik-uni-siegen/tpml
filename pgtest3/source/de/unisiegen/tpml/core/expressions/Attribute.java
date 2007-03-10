@@ -20,7 +20,7 @@ public class Attribute extends Expression
    * 
    * @see #getId()
    */
-  private String identifier ;
+  private String id ;
 
 
   /**
@@ -28,7 +28,7 @@ public class Attribute extends Expression
    * 
    * @see #getNewId()
    */
-  private String newIdentifier ;
+  private String newId ;
 
 
   /**
@@ -64,8 +64,8 @@ public class Attribute extends Expression
     {
       throw new NullPointerException ( "Expression is null" ) ; //$NON-NLS-1$
     }
-    this.identifier = pIdentifier ;
-    this.newIdentifier = null ;
+    this.id = pIdentifier ;
+    this.newId = null ;
     this.tau = pTau ;
     this.expression = pExpression ;
   }
@@ -77,8 +77,7 @@ public class Attribute extends Expression
   @ Override
   public Attribute clone ( )
   {
-    return new Attribute ( this.identifier , this.tau , this.expression
-        .clone ( ) ) ;
+    return new Attribute ( this.id , this.tau , this.expression.clone ( ) ) ;
   }
 
 
@@ -91,7 +90,7 @@ public class Attribute extends Expression
     if ( pObject instanceof Attribute )
     {
       Attribute other = ( Attribute ) pObject ;
-      return ( ( this.identifier.equals ( other.identifier ) )
+      return ( ( this.id.equals ( other.id ) )
           && ( this.expression.equals ( other.expression ) ) && ( ( this.tau == null ) ? ( other.tau == null )
           : ( this.tau.equals ( other.tau ) ) ) ) ;
     }
@@ -125,11 +124,11 @@ public class Attribute extends Expression
    * TODO
    * 
    * @return TODO
-   * @see #identifier
+   * @see #id
    */
   public String getId ( )
   {
-    return this.identifier ;
+    return this.id ;
   }
 
 
@@ -137,11 +136,11 @@ public class Attribute extends Expression
    * TODO
    * 
    * @return TODO
-   * @see #identifier
+   * @see #id
    */
   public String getNewId ( )
   {
-    return this.newIdentifier ;
+    return this.newId ;
   }
 
 
@@ -163,7 +162,7 @@ public class Attribute extends Expression
   @ Override
   public int hashCode ( )
   {
-    return this.identifier.hashCode ( ) + this.expression.hashCode ( )
+    return this.id.hashCode ( ) + this.expression.hashCode ( )
         + ( this.tau == null ? 0 : this.tau.hashCode ( ) ) ;
   }
 
@@ -182,11 +181,11 @@ public class Attribute extends Expression
    * TODO
    * 
    * @param pNewId TODO
-   * @see #identifier
+   * @see #id
    */
   public void setNewId ( String pNewId )
   {
-    this.newIdentifier = pNewId ;
+    this.newId = pNewId ;
   }
 
 
@@ -211,7 +210,7 @@ public class Attribute extends Expression
   {
     Expression newE = this.expression.substitute ( pId , pExpression ,
         pAttributeRename ) ;
-    return new Attribute ( this.identifier , this.tau , newE ) ;
+    return new Attribute ( this.id , this.tau , newE ) ;
   }
 
 
@@ -227,7 +226,7 @@ public class Attribute extends Expression
     MonoType newTau = ( this.tau == null ) ? null : this.tau
         .substitute ( pTypeSubstitution ) ;
     Expression newE = this.expression.substitute ( pTypeSubstitution ) ;
-    return new Attribute ( this.identifier , newTau , newE ) ;
+    return new Attribute ( this.id , newTau , newE ) ;
   }
 
 
@@ -244,7 +243,7 @@ public class Attribute extends Expression
           PRIO_ATTRIBUTE ) ;
       this.prettyStringBuilder.addKeyword ( "val" ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
-      this.prettyStringBuilder.addIdentifier ( this.identifier ) ;
+      this.prettyStringBuilder.addIdentifier ( this.id ) ;
       if ( this.tau != null )
       {
         this.prettyStringBuilder.addText ( ": " ) ; //$NON-NLS-1$

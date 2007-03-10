@@ -20,7 +20,7 @@ public class Method extends Expression
    * 
    * @see #getId()
    */
-  private String identifier ;
+  private String id ;
 
 
   /**
@@ -36,7 +36,7 @@ public class Method extends Expression
    * 
    * @see #getE()
    */
-  private Expression expression ;
+  private Expression e ;
 
 
   /**
@@ -56,9 +56,9 @@ public class Method extends Expression
     {
       throw new NullPointerException ( "Expression is null" ) ; //$NON-NLS-1$
     }
-    this.identifier = pIdentifier ;
+    this.id = pIdentifier ;
     this.tau = pTau ;
-    this.expression = pExpression ;
+    this.e = pExpression ;
   }
 
 
@@ -68,7 +68,7 @@ public class Method extends Expression
   @ Override
   public Method clone ( )
   {
-    return new Method ( this.identifier , this.tau , this.expression.clone ( ) ) ;
+    return new Method ( this.id , this.tau , this.e.clone ( ) ) ;
   }
 
 
@@ -81,8 +81,7 @@ public class Method extends Expression
     if ( pObject instanceof Method )
     {
       Method other = ( Method ) pObject ;
-      return ( ( this.identifier.equals ( other.identifier ) )
-          && ( this.expression.equals ( other.expression ) ) && ( ( this.tau == null ) ? ( other.tau == null )
+      return ( ( this.id.equals ( other.id ) ) && ( this.e.equals ( other.e ) ) && ( ( this.tau == null ) ? ( other.tau == null )
           : ( this.tau.equals ( other.tau ) ) ) ) ;
     }
     return false ;
@@ -103,11 +102,11 @@ public class Method extends Expression
    * TODO
    * 
    * @return TODO
-   * @see #expression
+   * @see #e
    */
   public Expression getE ( )
   {
-    return this.expression ;
+    return this.e ;
   }
 
 
@@ -115,11 +114,11 @@ public class Method extends Expression
    * TODO
    * 
    * @return TODO
-   * @see #identifier
+   * @see #id
    */
   public String getId ( )
   {
-    return this.identifier ;
+    return this.id ;
   }
 
 
@@ -141,7 +140,7 @@ public class Method extends Expression
   @ Override
   public int hashCode ( )
   {
-    return this.identifier.hashCode ( ) + this.expression.hashCode ( )
+    return this.id.hashCode ( ) + this.e.hashCode ( )
         + ( this.tau == null ? 0 : this.tau.hashCode ( ) ) ;
   }
 
@@ -152,7 +151,7 @@ public class Method extends Expression
   @ Override
   public boolean isValue ( )
   {
-    return this.expression.isValue ( ) ;
+    return this.e.isValue ( ) ;
   }
 
 
@@ -175,9 +174,8 @@ public class Method extends Expression
   public Method substitute ( String pId , Expression pExpression ,
       boolean pAttributeRename )
   {
-    Expression newE = this.expression.substitute ( pId , pExpression ,
-        pAttributeRename ) ;
-    return new Method ( this.identifier , this.tau , newE ) ;
+    Expression newE = this.e.substitute ( pId , pExpression , pAttributeRename ) ;
+    return new Method ( this.id , this.tau , newE ) ;
   }
 
 
@@ -189,8 +187,8 @@ public class Method extends Expression
   {
     MonoType newTau = ( this.tau == null ) ? null : this.tau
         .substitute ( pTypeSubstitution ) ;
-    Expression newE = this.expression.substitute ( pTypeSubstitution ) ;
-    return new Method ( this.identifier , newTau , newE ) ;
+    Expression newE = this.e.substitute ( pTypeSubstitution ) ;
+    return new Method ( this.id , newTau , newE ) ;
   }
 
 
@@ -207,7 +205,7 @@ public class Method extends Expression
           PRIO_METHOD ) ;
       this.prettyStringBuilder.addKeyword ( "method" ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
-      this.prettyStringBuilder.addIdentifier ( this.identifier ) ;
+      this.prettyStringBuilder.addIdentifier ( this.id ) ;
       if ( this.tau != null )
       {
         this.prettyStringBuilder.addText ( ": " ) ; //$NON-NLS-1$
@@ -216,7 +214,7 @@ public class Method extends Expression
             PRIO_METHOD_TAU ) ;
       }
       this.prettyStringBuilder.addText ( " = " ) ; //$NON-NLS-1$
-      this.prettyStringBuilder.addBuilder ( this.expression
+      this.prettyStringBuilder.addBuilder ( this.e
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
           PRIO_METHOD_E ) ;
       this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
