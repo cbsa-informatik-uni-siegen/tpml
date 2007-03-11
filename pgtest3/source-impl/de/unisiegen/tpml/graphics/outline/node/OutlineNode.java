@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.graphics.outline ;
+package de.unisiegen.tpml.graphics.outline.node ;
 
 
 import java.awt.Color ;
@@ -17,6 +17,8 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyCharIterator ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStyle ;
 import de.unisiegen.tpml.core.types.Type ;
 import de.unisiegen.tpml.graphics.Theme ;
+import de.unisiegen.tpml.graphics.outline.Outline ;
+import de.unisiegen.tpml.graphics.outline.OutlineBreak ;
 import de.unisiegen.tpml.graphics.outline.binding.OutlineBinding ;
 import de.unisiegen.tpml.graphics.outline.binding.OutlinePair ;
 import de.unisiegen.tpml.graphics.outline.binding.OutlineUnbound ;
@@ -524,6 +526,12 @@ public final class OutlineNode extends DefaultMutableTreeNode
 
 
   /**
+   * The {@link OutlineNodeCacheList}, which caches the caption.
+   */
+  private OutlineNodeCacheList outlineNodeCacheList ;
+
+
+  /**
    * This constructor initializes the values and loads the description. It is
    * used for {@link Expression}s.
    * 
@@ -553,6 +561,7 @@ public final class OutlineNode extends DefaultMutableTreeNode
     this.isExpression = true ;
     this.lastSelectionStart = NO_SELECTION ;
     this.lastSelectionEnd = NO_SELECTION ;
+    this.outlineNodeCacheList = new OutlineNodeCacheList ( ) ;
   }
 
 
@@ -590,6 +599,7 @@ public final class OutlineNode extends DefaultMutableTreeNode
     this.isExpression = false ;
     this.lastSelectionStart = NO_SELECTION ;
     this.lastSelectionEnd = NO_SELECTION ;
+    this.outlineNodeCacheList = new OutlineNodeCacheList ( ) ;
   }
 
 
@@ -627,6 +637,7 @@ public final class OutlineNode extends DefaultMutableTreeNode
     this.isExpression = false ;
     this.lastSelectionStart = NO_SELECTION ;
     this.lastSelectionEnd = NO_SELECTION ;
+    this.outlineNodeCacheList = new OutlineNodeCacheList ( ) ;
   }
 
 
@@ -665,6 +676,7 @@ public final class OutlineNode extends DefaultMutableTreeNode
     this.isExpression = false ;
     this.lastSelectionStart = NO_SELECTION ;
     this.lastSelectionEnd = NO_SELECTION ;
+    this.outlineNodeCacheList = new OutlineNodeCacheList ( ) ;
   }
 
 
@@ -1449,6 +1461,14 @@ public final class OutlineNode extends DefaultMutableTreeNode
     }
     this.lastSelectionStart = selectionStart ;
     this.lastSelectionEnd = selectionEnd ;
+    String cache = this.outlineNodeCacheList.getCaption ( selectionStart ,
+        selectionEnd , selection , binding , unbound ,
+        ( replace && this.replaceInThisNode ) , this.breakCount ) ;
+    if ( cache != null )
+    {
+      this.caption = cache ;
+      return ;
+    }
     // Load the PrettyCharIterator
     PrettyCharIterator prettyCharIterator = this.expression.toPrettyString ( )
         .toCharacterIterator ( ) ;
@@ -1602,6 +1622,11 @@ public final class OutlineNode extends DefaultMutableTreeNode
       }
     }
     result.append ( EXPRESSION_END ) ;
+    OutlineNodeCache outlineNodeCache = new OutlineNodeCache ( selectionStart ,
+        selectionEnd , selection , binding , unbound ,
+        ( replace && this.replaceInThisNode ) , this.breakCount , result
+            .toString ( ) ) ;
+    this.outlineNodeCacheList.add ( outlineNodeCache ) ;
     this.caption = result.toString ( ) ;
   }
 

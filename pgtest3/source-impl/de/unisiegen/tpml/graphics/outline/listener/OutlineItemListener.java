@@ -3,7 +3,7 @@ package de.unisiegen.tpml.graphics.outline.listener ;
 
 import java.awt.event.ItemEvent ;
 import java.awt.event.ItemListener ;
-import de.unisiegen.tpml.graphics.outline.OutlineNode ;
+import de.unisiegen.tpml.graphics.outline.node.OutlineNode ;
 import de.unisiegen.tpml.graphics.outline.ui.OutlineUI ;
 
 

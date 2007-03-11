@@ -9,7 +9,7 @@ import javax.swing.JTree ;
 import javax.swing.border.LineBorder ;
 import javax.swing.tree.DefaultTreeCellRenderer ;
 import de.unisiegen.tpml.graphics.outline.Outline ;
-import de.unisiegen.tpml.graphics.outline.OutlineNode ;
+import de.unisiegen.tpml.graphics.outline.node.OutlineNode ;
 
 
 /**
