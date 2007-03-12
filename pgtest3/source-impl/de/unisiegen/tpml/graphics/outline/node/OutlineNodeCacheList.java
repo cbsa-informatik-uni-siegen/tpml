@@ -11,7 +11,7 @@ import de.unisiegen.tpml.core.expressions.Identifier ;
  * 
  * @author Christian Fehler
  */
-public class OutlineNodeCacheList
+public final class OutlineNodeCacheList
 {
   /**
    * The list of {@link OutlineNodeCache}.
@@ -33,9 +33,19 @@ public class OutlineNodeCacheList
    * 
    * @param pOutlineNodeCache The new {@link OutlineNodeCache}.
    */
-  public void add ( OutlineNodeCache pOutlineNodeCache )
+  public final void add ( OutlineNodeCache pOutlineNodeCache )
   {
     this.list.add ( pOutlineNodeCache ) ;
+  }
+
+
+  /**
+   * Removes all of the elements from this list. The list will be empty after
+   * this call returns.
+   */
+  public final void clear ( )
+  {
+    this.list.clear ( ) ;
   }
 
 
@@ -55,7 +65,7 @@ public class OutlineNodeCacheList
    * @param pBreakCount The break count.
    * @return The cached caption, or <code>null</code> if it was not cached.
    */
-  public String getCaption ( int pSelectionStart , int pSelectionEnd ,
+  public final String getCaption ( int pSelectionStart , int pSelectionEnd ,
       boolean pSelection , boolean pBinding , boolean pUnbound ,
       boolean pReplace , int pBreakCount )
   {

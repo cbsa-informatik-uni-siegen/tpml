@@ -16,32 +16,6 @@ import de.unisiegen.tpml.graphics.outline.util.OutlinePreferences ;
 public interface Outline
 {
   /**
-   * Indicates from where the {@link Outline} is started.
-   * 
-   * @author Christian Fehler
-   */
-  public enum Start
-  {
-    /**
-     * Started from the <code>Editor</code>.
-     */
-    EDITOR ,
-    /**
-     * Started from the <code>SmallStepper</code>.
-     */
-    SMALLSTEP ,
-    /**
-     * Started from the <code>BigStepper</code>.
-     */
-    BIGSTEP ,
-    /**
-     * Started from the <code>TypeChecker</code>.
-     */
-    TYPECHECKER
-  }
-
-
-  /**
    * Indicates who loads the new Expression.
    * 
    * @author Christian Fehler
@@ -100,6 +74,32 @@ public interface Outline
 
 
   /**
+   * Indicates from where the {@link Outline} is started.
+   * 
+   * @author Christian Fehler
+   */
+  public enum Start
+  {
+    /**
+     * Started from the <code>Editor</code>.
+     */
+    EDITOR ,
+    /**
+     * Started from the <code>SmallStepper</code>.
+     */
+    SMALLSTEP ,
+    /**
+     * Started from the <code>BigStepper</code>.
+     */
+    BIGSTEP ,
+    /**
+     * Started from the <code>TypeChecker</code>.
+     */
+    TYPECHECKER
+  }
+
+
+  /**
    * Returns the <code>JPanel</code> of the {@link OutlineUI}.
    * 
    * @return The <code>JPanel</code> of the {@link OutlineUI}.
@@ -133,5 +133,5 @@ public interface Outline
   /**
    * Repaints the root node and all of its children.
    */
-  public void repaint ( ) ;
+  public void propertyChanged ( ) ;
 }

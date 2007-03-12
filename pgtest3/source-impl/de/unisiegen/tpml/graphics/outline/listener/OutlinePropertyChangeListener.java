@@ -91,7 +91,7 @@ public final class OutlinePropertyChangeListener implements
     {
       if ( pPropertyChangeEvent.getPropertyName ( ).endsWith ( "Color" ) )//$NON-NLS-1$
       {
-        this.outline.repaint ( ) ;
+        this.outline.propertyChanged ( ) ;
       }
     }
   }

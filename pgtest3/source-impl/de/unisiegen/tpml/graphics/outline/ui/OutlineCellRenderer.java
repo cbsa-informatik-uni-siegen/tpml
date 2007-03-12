@@ -41,7 +41,7 @@ public final class OutlineCellRenderer extends DefaultTreeCellRenderer
   /**
    * The <code>Color</code> of the border as a hex string.
    */
-  private static final String colorString = OutlineNode.getHTMLFormat ( BORDER ) ;
+  private static final String colorString = OutlineNode.getHTMLColor ( BORDER ) ;
 
 
   /**

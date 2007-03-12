@@ -323,7 +323,7 @@ public final class OutlineNode extends DefaultMutableTreeNode
    * @param pColor The color which should be returned.
    * @return The color in HTML formatting.
    */
-  public static final String getHTMLFormat ( Color pColor )
+  public static final String getHTMLColor ( Color pColor )
   {
     return ( getHex ( pColor.getRed ( ) ) + getHex ( pColor.getGreen ( ) ) + getHex ( pColor
         .getBlue ( ) ) ) ;
@@ -532,6 +532,48 @@ public final class OutlineNode extends DefaultMutableTreeNode
 
 
   /**
+   * The expression color.
+   */
+  private String expressionColor ;
+
+
+  /**
+   * The keyword color.
+   */
+  private String keywordColor ;
+
+
+  /**
+   * The constant color.
+   */
+  private String constantColor ;
+
+
+  /**
+   * The type color.
+   */
+  private String typeColor ;
+
+
+  /**
+   * The selection color.
+   */
+  private String selectionColor ;
+
+
+  /**
+   * The binding color.
+   */
+  private String bindingColor ;
+
+
+  /**
+   * The unbound color.
+   */
+  private String unboundColor ;
+
+
+  /**
    * This constructor initializes the values and loads the description. It is
    * used for {@link Expression}s.
    * 
@@ -562,6 +604,7 @@ public final class OutlineNode extends DefaultMutableTreeNode
     this.lastSelectionStart = NO_SELECTION ;
     this.lastSelectionEnd = NO_SELECTION ;
     this.outlineNodeCacheList = new OutlineNodeCacheList ( ) ;
+    propertyChanged ( ) ;
   }
 
 
@@ -600,6 +643,7 @@ public final class OutlineNode extends DefaultMutableTreeNode
     this.lastSelectionStart = NO_SELECTION ;
     this.lastSelectionEnd = NO_SELECTION ;
     this.outlineNodeCacheList = new OutlineNodeCacheList ( ) ;
+    propertyChanged ( ) ;
   }
 
 
@@ -638,6 +682,7 @@ public final class OutlineNode extends DefaultMutableTreeNode
     this.lastSelectionStart = NO_SELECTION ;
     this.lastSelectionEnd = NO_SELECTION ;
     this.outlineNodeCacheList = new OutlineNodeCacheList ( ) ;
+    propertyChanged ( ) ;
   }
 
 
@@ -677,6 +722,7 @@ public final class OutlineNode extends DefaultMutableTreeNode
     this.lastSelectionStart = NO_SELECTION ;
     this.lastSelectionEnd = NO_SELECTION ;
     this.outlineNodeCacheList = new OutlineNodeCacheList ( ) ;
+    propertyChanged ( ) ;
   }
 
 
@@ -776,14 +822,12 @@ public final class OutlineNode extends DefaultMutableTreeNode
     result.append ( DESCRIPTION_END ) ;
     result.append ( BETWEEN2 ) ;
     result.append ( FONT_BEGIN ) ;
-    result.append ( getHTMLFormat ( Theme.currentTheme ( )
-        .getExpressionColor ( ) ) ) ;
+    result.append ( this.expressionColor ) ;
     result.append ( FONT_AFTER_COLOR ) ;
     if ( binding )
     {
       result.append ( FONT_BOLD_BEGIN ) ;
-      result
-          .append ( getHTMLFormat ( Theme.currentTheme ( ).getBindingColor ( ) ) ) ;
+      result.append ( this.bindingColor ) ;
       result.append ( FONT_AFTER_COLOR ) ;
       result.append ( getHTMLCode ( this.expressionString ) ) ;
       result.append ( FONT_BOLD_END ) ;
@@ -811,28 +855,24 @@ public final class OutlineNode extends DefaultMutableTreeNode
       result.append ( DESCRIPTION_END ) ;
       result.append ( BETWEEN2 ) ;
       result.append ( FONT_BEGIN ) ;
-      result.append ( getHTMLFormat ( Theme.currentTheme ( )
-          .getExpressionColor ( ) ) ) ;
+      result.append ( this.expressionColor ) ;
       result.append ( FONT_AFTER_COLOR ) ;
       if ( selection )
       {
         result.append ( FONT_BOLD_BEGIN ) ;
-        result.append ( getHTMLFormat ( Theme.currentTheme ( )
-            .getSelectionColor ( ) ) ) ;
+        result.append ( this.selectionColor ) ;
         result.append ( FONT_AFTER_COLOR ) ;
       }
       else if ( this.isInfixOperation )
       {
         result.append ( FONT_BOLD_BEGIN ) ;
-        result.append ( getHTMLFormat ( Theme.currentTheme ( )
-            .getConstantColor ( ) ) ) ;
+        result.append ( this.constantColor ) ;
         result.append ( FONT_AFTER_COLOR ) ;
       }
       else if ( this.isType )
       {
         result.append ( FONT_BOLD_BEGIN ) ;
-        result
-            .append ( getHTMLFormat ( Theme.currentTheme ( ).getTypeColor ( ) ) ) ;
+        result.append ( this.typeColor ) ;
         result.append ( FONT_AFTER_COLOR ) ;
       }
       result.append ( getHTMLCode ( this.expressionString ) ) ;
@@ -1123,6 +1163,28 @@ public final class OutlineNode extends DefaultMutableTreeNode
 
 
   /**
+   * Loads the current color settings.
+   */
+  public final void propertyChanged ( )
+  {
+    this.expressionColor = getHTMLColor ( Theme.currentTheme ( )
+        .getExpressionColor ( ) ) ;
+    this.keywordColor = getHTMLColor ( Theme.currentTheme ( )
+        .getKeywordColor ( ) ) ;
+    this.constantColor = getHTMLColor ( Theme.currentTheme ( )
+        .getConstantColor ( ) ) ;
+    this.typeColor = getHTMLColor ( Theme.currentTheme ( ).getTypeColor ( ) ) ;
+    this.selectionColor = getHTMLColor ( Theme.currentTheme ( )
+        .getSelectionColor ( ) ) ;
+    this.bindingColor = getHTMLColor ( Theme.currentTheme ( )
+        .getBindingColor ( ) ) ;
+    this.unboundColor = getHTMLColor ( Theme.currentTheme ( )
+        .getUnboundColor ( ) ) ;
+    this.outlineNodeCacheList.clear ( ) ;
+  }
+
+
+  /**
    * Resets the caption of the node.
    */
   public final void resetCaption ( )
@@ -1136,14 +1198,12 @@ public final class OutlineNode extends DefaultMutableTreeNode
       result.append ( DESCRIPTION_END ) ;
       result.append ( BETWEEN2 ) ;
       result.append ( FONT_BEGIN ) ;
-      result.append ( getHTMLFormat ( Theme.currentTheme ( )
-          .getExpressionColor ( ) ) ) ;
+      result.append ( this.expressionColor ) ;
       result.append ( FONT_AFTER_COLOR ) ;
       if ( this.isInfixOperation )
       {
         result.append ( FONT_BOLD_BEGIN ) ;
-        result.append ( getHTMLFormat ( Theme.currentTheme ( )
-            .getConstantColor ( ) ) ) ;
+        result.append ( this.constantColor ) ;
         result.append ( FONT_AFTER_COLOR ) ;
         result.append ( getHTMLCode ( this.expressionString ) ) ;
         result.append ( FONT_BOLD_END ) ;
@@ -1151,8 +1211,7 @@ public final class OutlineNode extends DefaultMutableTreeNode
       else if ( this.isType )
       {
         result.append ( FONT_BOLD_BEGIN ) ;
-        result
-            .append ( getHTMLFormat ( Theme.currentTheme ( ).getTypeColor ( ) ) ) ;
+        result.append ( this.typeColor ) ;
         result.append ( FONT_AFTER_COLOR ) ;
         result.append ( getHTMLCode ( this.expressionString ) ) ;
         result.append ( FONT_BOLD_END ) ;
@@ -1472,20 +1531,6 @@ public final class OutlineNode extends DefaultMutableTreeNode
     // Load the PrettyCharIterator
     PrettyCharIterator prettyCharIterator = this.expression.toPrettyString ( )
         .toCharacterIterator ( ) ;
-    // Load the current color settings
-    String expressionColor = getHTMLFormat ( Theme.currentTheme ( )
-        .getExpressionColor ( ) ) ;
-    String keywordColor = getHTMLFormat ( Theme.currentTheme ( )
-        .getKeywordColor ( ) ) ;
-    String constantColor = getHTMLFormat ( Theme.currentTheme ( )
-        .getConstantColor ( ) ) ;
-    String typeColor = getHTMLFormat ( Theme.currentTheme ( ).getTypeColor ( ) ) ;
-    String selectionColor = getHTMLFormat ( Theme.currentTheme ( )
-        .getSelectionColor ( ) ) ;
-    String bindingColor = getHTMLFormat ( Theme.currentTheme ( )
-        .getBindingColor ( ) ) ;
-    String unboundColor = getHTMLFormat ( Theme.currentTheme ( )
-        .getUnboundColor ( ) ) ;
     // Initialize the result as a StringBuffer
     StringBuffer result = new StringBuffer ( ) ;
     // Build the first part of the node caption
@@ -1496,7 +1541,7 @@ public final class OutlineNode extends DefaultMutableTreeNode
     result.append ( DESCRIPTION_END ) ;
     result.append ( BETWEEN2 ) ;
     result.append ( FONT_BEGIN ) ;
-    result.append ( expressionColor ) ;
+    result.append ( this.expressionColor ) ;
     result.append ( FONT_AFTER_COLOR ) ;
     int count = - 1 ;
     int charIndex = 0 ;
@@ -1515,7 +1560,7 @@ public final class OutlineNode extends DefaultMutableTreeNode
       if ( ( charIndex == selectionStart ) && ( selection ) )
       {
         charIndex = updateCaptionSelection ( charIndex , selectionEnd ,
-            prettyCharIterator , result , prefix , selectionColor ) ;
+            prettyCharIterator , result , prefix , this.selectionColor ) ;
       }
       /*
        * No selection and binding.
@@ -1525,7 +1570,7 @@ public final class OutlineNode extends DefaultMutableTreeNode
           && ( this.outlineBinding.size ( ) > 0 ) )
       {
         charIndex = updateCaptionSelection ( charIndex , selectionEnd ,
-            prettyCharIterator , result , prefix , selectionColor ) ;
+            prettyCharIterator , result , prefix , this.selectionColor ) ;
       }
       /*
        * No selection and replace.
@@ -1548,7 +1593,7 @@ public final class OutlineNode extends DefaultMutableTreeNode
           && ( ( count = isBinding ( charIndex ) ) >= 0 ) )
       {
         charIndex = updateCaptionBinding ( charIndex , count ,
-            prettyCharIterator , result , prefix , bindingColor ) ;
+            prettyCharIterator , result , prefix , this.bindingColor ) ;
       }
       /*
        * The selected Identifier-Expression is bounded in this Expression.
@@ -1557,7 +1602,7 @@ public final class OutlineNode extends DefaultMutableTreeNode
           && ( ( count = isSelectedBounded ( charIndex ) ) >= 0 ) )
       {
         charIndex = updateCaptionBinding ( charIndex , count ,
-            prettyCharIterator , result , prefix , bindingColor ) ;
+            prettyCharIterator , result , prefix , this.bindingColor ) ;
       }
       /*
        * The selected Identifier-Expression is bounded in this Expression, but
@@ -1569,7 +1614,7 @@ public final class OutlineNode extends DefaultMutableTreeNode
           && ( charIndex == selectionStart ) )
       {
         charIndex = updateCaptionSelection ( charIndex , selectionEnd ,
-            prettyCharIterator , result , prefix , selectionColor ) ;
+            prettyCharIterator , result , prefix , this.selectionColor ) ;
       }
       /*
        * Unbound Identifier
@@ -1578,7 +1623,7 @@ public final class OutlineNode extends DefaultMutableTreeNode
           && ( ( count = isUnbound ( charIndex ) ) >= 0 ) )
       {
         charIndex = updateCaptionBinding ( charIndex , count ,
-            prettyCharIterator , result , prefix , unboundColor ) ;
+            prettyCharIterator , result , prefix , this.unboundColor ) ;
       }
       /*
        * Keyword
@@ -1586,7 +1631,7 @@ public final class OutlineNode extends DefaultMutableTreeNode
       else if ( PrettyStyle.KEYWORD.equals ( prettyCharIterator.getStyle ( ) ) )
       {
         charIndex = updateCaptionStyle ( charIndex , PrettyStyle.KEYWORD ,
-            prettyCharIterator , result , prefix , keywordColor ) ;
+            prettyCharIterator , result , prefix , this.keywordColor ) ;
       }
       /*
        * Constant
@@ -1594,7 +1639,7 @@ public final class OutlineNode extends DefaultMutableTreeNode
       else if ( PrettyStyle.CONSTANT.equals ( prettyCharIterator.getStyle ( ) ) )
       {
         charIndex = updateCaptionStyle ( charIndex , PrettyStyle.CONSTANT ,
-            prettyCharIterator , result , prefix , constantColor ) ;
+            prettyCharIterator , result , prefix , this.constantColor ) ;
       }
       /*
        * Type
@@ -1602,7 +1647,7 @@ public final class OutlineNode extends DefaultMutableTreeNode
       else if ( PrettyStyle.TYPE.equals ( prettyCharIterator.getStyle ( ) ) )
       {
         charIndex = updateCaptionStyle ( charIndex , PrettyStyle.TYPE ,
-            prettyCharIterator , result , prefix , typeColor ) ;
+            prettyCharIterator , result , prefix , this.typeColor ) ;
       }
       /*
        * Normal character

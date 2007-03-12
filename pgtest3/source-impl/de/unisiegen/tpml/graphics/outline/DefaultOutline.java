@@ -1,7 +1,6 @@
 package de.unisiegen.tpml.graphics.outline ;
 
 
-import java.awt.Color ;
 import java.awt.Rectangle ;
 import java.lang.reflect.InvocationTargetException ;
 import java.util.ArrayList ;
@@ -1304,7 +1303,6 @@ public final class DefaultOutline implements Outline
     this.rootOutlineNode = checkExpression ( this.loadedExpression ) ;
     this.rootOutlineNode.setChildIndexExpression ( ) ;
     repaint ( this.rootOutlineNode ) ;
-    // setEnabledUI ( true ) ;
     this.outlineUI.setError ( false ) ;
     SwingUtilities.invokeLater ( new OutlineDisplayTree ( this ) ) ;
   }
@@ -1504,11 +1502,30 @@ public final class DefaultOutline implements Outline
 
 
   /**
-   * Repaints the root node and all of its children.
+   * Repaints the root node and all of its children with the new color settings.
    */
-  public final void repaint ( )
+  public final void propertyChanged ( )
   {
-    repaint ( ( OutlineNode ) this.outlineUI.getTreeModel ( ).getRoot ( ) ) ;
+    propertyChanged ( ( OutlineNode ) this.outlineUI.getTreeModel ( )
+        .getRoot ( ) ) ;
+  }
+
+
+  /**
+   * Repaints the root node and all of its children with the new color settings
+   * and resets the caption.
+   * 
+   * @param pOutlineNode The node, which should be repainted.
+   */
+  private final void propertyChanged ( OutlineNode pOutlineNode )
+  {
+    pOutlineNode.propertyChanged ( ) ;
+    pOutlineNode.resetCaption ( ) ;
+    this.outlineUI.getTreeModel ( ).nodeChanged ( pOutlineNode ) ;
+    for ( int i = 0 ; i < pOutlineNode.getChildCount ( ) ; i ++ )
+    {
+      propertyChanged ( ( OutlineNode ) pOutlineNode.getChildAt ( i ) ) ;
+    }
   }
 
 
@@ -1524,36 +1541,6 @@ public final class DefaultOutline implements Outline
     for ( int i = 0 ; i < pOutlineNode.getChildCount ( ) ; i ++ )
     {
       repaint ( ( OutlineNode ) pOutlineNode.getChildAt ( i ) ) ;
-    }
-  }
-
-
-  /**
-   * Enables or disables the {@link OutlineUI}.
-   * 
-   * @param pStatus True to enable the {@link OutlineUI}, otherwise false.
-   */
-  @ SuppressWarnings ( "unused" )
-  private final void setEnabledUI ( boolean pStatus )
-  {
-    this.outlineUI.getJTreeOutline ( ).setEnabled ( pStatus ) ;
-    this.outlineUI.getJCheckBoxSelection ( ).setEnabled ( pStatus ) ;
-    this.outlineUI.getJCheckBoxBinding ( ).setEnabled ( pStatus ) ;
-    this.outlineUI.getJCheckBoxUnbound ( ).setEnabled ( pStatus ) ;
-    this.outlineUI.getJCheckBoxReplace ( ).setEnabled ( pStatus ) ;
-    if ( pStatus )
-    {
-      this.outlineUI.getJTreeOutline ( ).setBackground ( Color.WHITE ) ;
-      if ( ! ( ( this.outlineStart.equals ( Outline.Start.BIGSTEP ) ) || ( this.outlineStart
-          .equals ( Outline.Start.TYPECHECKER ) ) ) )
-      {
-        this.outlineUI.getJCheckBoxAutoUpdate ( ).setEnabled ( true ) ;
-      }
-    }
-    else
-    {
-      this.outlineUI.getJTreeOutline ( ).setBackground ( Color.LIGHT_GRAY ) ;
-      this.outlineUI.getJCheckBoxAutoUpdate ( ).setEnabled ( false ) ;
     }
   }
 
