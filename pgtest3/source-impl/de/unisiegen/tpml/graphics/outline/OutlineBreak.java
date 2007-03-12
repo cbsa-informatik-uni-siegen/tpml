@@ -133,7 +133,22 @@ public final class OutlineBreak
       }
       OutlineBreak outlineBreakChild = new OutlineBreak ( expr ) ;
       outlineBreakChild.addOffset ( prettyAnnotationChild.getStartOffset ( ) ) ;
-      this.outlineBreakList.add ( outlineBreakChild ) ;
+      if ( breaks.length > 0 )
+      {
+        this.outlineBreakList.add ( outlineBreakChild ) ;
+      }
+      else
+      {
+        for ( int i = 0 ; i < outlineBreakChild.breakList.size ( ) ; i ++ )
+        {
+          this.breakList.add ( outlineBreakChild.breakList.get ( i ) ) ;
+        }
+        for ( int i = 0 ; i < outlineBreakChild.outlineBreakList.size ( ) ; i ++ )
+        {
+          this.outlineBreakList.add ( outlineBreakChild.outlineBreakList
+              .get ( i ) ) ;
+        }
+      }
     }
   }
 
