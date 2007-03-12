@@ -63,7 +63,7 @@ public abstract class BinaryOperator extends Constant
   /**
    * {@inheritDoc}
    * 
-   * @see de.unisiegen.tpml.core.expressions.Expression#clone()
+   * @see Expression#clone()
    */
   @ Override
   public abstract BinaryOperator clone ( ) ;
@@ -73,10 +73,7 @@ public abstract class BinaryOperator extends Constant
    * {@inheritDoc}
    */
   @ Override
-  public String getCaption ( )
-  {
-    return "Binary-Operator" ; //$NON-NLS-1$
-  }
+  public abstract String getCaption ( ) ;
 
 
   /**

@@ -161,7 +161,7 @@ public class Method extends Expression
    * @see Expression#substitute(String, Expression, boolean)
    */
   @ Override
-  public Expression substitute ( String pId , Expression pExpression )
+  public Method substitute ( String pId , Expression pExpression )
   {
     return substitute ( pId , pExpression , false ) ;
   }

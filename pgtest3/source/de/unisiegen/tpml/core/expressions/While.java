@@ -137,7 +137,7 @@ public final class While extends Expression
    * @see Expression#substitute(String, Expression, boolean)
    */
   @ Override
-  public Expression substitute ( String pId , Expression pExpression )
+  public While substitute ( String pId , Expression pExpression )
   {
     return substitute ( pId , pExpression , false ) ;
   }
@@ -149,7 +149,7 @@ public final class While extends Expression
    * @see Expression#substitute(String, Expression, boolean)
    */
   @ Override
-  public Expression substitute ( String pId , Expression pExpression ,
+  public While substitute ( String pId , Expression pExpression ,
       boolean pAttributeRename )
   {
     Expression newE1 = this.e1.substitute ( pId , pExpression ,
@@ -166,7 +166,7 @@ public final class While extends Expression
    * @see Expression#substitute(TypeSubstitution)
    */
   @ Override
-  public Expression substitute ( TypeSubstitution pTypeSubstitution )
+  public While substitute ( TypeSubstitution pTypeSubstitution )
   {
     Expression newE1 = this.e1.substitute ( pTypeSubstitution ) ;
     Expression newE2 = this.e2.substitute ( pTypeSubstitution ) ;

@@ -2,6 +2,7 @@ package de.unisiegen.tpml.core.types ;
 
 
 import java.util.Set ;
+import java.util.TreeSet ;
 import de.unisiegen.tpml.core.expressions.Location ;
 import de.unisiegen.tpml.core.expressions.Ref ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
@@ -76,7 +77,12 @@ public final class RefType extends MonoType
   @ Override
   public Set < TypeVariable > free ( )
   {
-    return this.tau.free ( ) ;
+    if ( this.free == null )
+    {
+      this.free = new TreeSet < TypeVariable > ( ) ;
+      this.free.addAll ( this.tau.free ( ) ) ;
+    }
+    return this.free ;
   }
 
 
@@ -134,12 +140,17 @@ public final class RefType extends MonoType
   public PrettyStringBuilder toPrettyStringBuilder (
       PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
-    PrettyStringBuilder builder = pPrettyStringBuilderFactory.newBuilder (
-        this , PRIO_REF ) ;
-    builder.addBuilder ( this.tau
-        .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_REF_TAU ) ;
-    builder.addText ( " " ) ; //$NON-NLS-1$
-    builder.addType ( "ref" ) ; //$NON-NLS-1$
-    return builder ;
+    if ( this.prettyStringBuilder == null )
+    {
+      this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
+          PRIO_REF ) ;
+      this.prettyStringBuilder
+          .addBuilder ( this.tau
+              .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
+              PRIO_REF_TAU ) ;
+      this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addType ( "ref" ) ; //$NON-NLS-1$
+    }
+    return this.prettyStringBuilder ;
   }
 }

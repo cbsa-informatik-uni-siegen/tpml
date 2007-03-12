@@ -168,7 +168,7 @@ public final class Condition extends Expression
    * @see Expression#substitute(String, Expression, boolean)
    */
   @ Override
-  public Expression substitute ( String pId , Expression pExpression )
+  public Condition substitute ( String pId , Expression pExpression )
   {
     return substitute ( pId , pExpression , false ) ;
   }

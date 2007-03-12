@@ -137,7 +137,7 @@ public final class Condition1 extends Expression
    * @see Expression#substitute(String, Expression, boolean)
    */
   @ Override
-  public Expression substitute ( String pId , Expression pExpression )
+  public Condition1 substitute ( String pId , Expression pExpression )
   {
     return substitute ( pId , pExpression , false ) ;
   }
@@ -149,7 +149,7 @@ public final class Condition1 extends Expression
    * @see Expression#substitute(String, Expression, boolean)
    */
   @ Override
-  public Expression substitute ( String pId , Expression pExpression ,
+  public Condition1 substitute ( String pId , Expression pExpression ,
       boolean pAttributeRename )
   {
     Expression newE0 = this.e0.substitute ( pId , pExpression ,
@@ -166,7 +166,7 @@ public final class Condition1 extends Expression
    * @see Expression#substitute(TypeSubstitution)
    */
   @ Override
-  public Expression substitute ( TypeSubstitution substitution )
+  public Condition1 substitute ( TypeSubstitution substitution )
   {
     Expression newE0 = this.e0.substitute ( substitution ) ;
     Expression newE1 = this.e1.substitute ( substitution ) ;

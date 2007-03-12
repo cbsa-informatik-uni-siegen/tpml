@@ -181,7 +181,7 @@ public final class ObjectExpr extends Expression
    * @see Expression#substitute(String, Expression, boolean)
    */
   @ Override
-  public Expression substitute ( String pId , Expression pExpression )
+  public ObjectExpr substitute ( String pId , Expression pExpression )
   {
     return substitute ( pId , pExpression , false ) ;
   }
@@ -197,7 +197,7 @@ public final class ObjectExpr extends Expression
   {
     if ( this.id.equals ( pId ) )
     {
-      return this ;
+      return this.clone ( ) ;
     }
     Row newRow = this.row ;
     String newId = this.id ;

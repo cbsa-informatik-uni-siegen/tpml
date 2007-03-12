@@ -190,7 +190,7 @@ public final class Lambda extends Value
    * @see Expression#substitute(String, Expression, boolean)
    */
   @ Override
-  public Expression substitute ( String pId , Expression pExpression )
+  public Lambda substitute ( String pId , Expression pExpression )
   {
     return substitute ( pId , pExpression , false ) ;
   }
@@ -242,7 +242,7 @@ public final class Lambda extends Value
    * @see Expression#substitute(TypeSubstitution)
    */
   @ Override
-  public Expression substitute ( TypeSubstitution pTypeSubstitution )
+  public Lambda substitute ( TypeSubstitution pTypeSubstitution )
   {
     MonoType newTau = ( this.tau != null ) ? this.tau
         .substitute ( pTypeSubstitution ) : null ;

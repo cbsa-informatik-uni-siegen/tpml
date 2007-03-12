@@ -27,10 +27,7 @@ public abstract class MonoType extends Type
    * {@inheritDoc}
    */
   @ Override
-  public String getCaption ( )
-  {
-    return "Mono-Type" ; //$NON-NLS-1$
-  }
+  public abstract String getCaption ( ) ;
 
 
   /**

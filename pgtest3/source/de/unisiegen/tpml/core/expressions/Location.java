@@ -105,7 +105,7 @@ public final class Location extends Value
    * @see Expression#substitute(String, Expression, boolean)
    */
   @ Override
-  public Expression substitute ( String pId , Expression pExpression )
+  public Location substitute ( String pId , Expression pExpression )
   {
     return substitute ( pId , pExpression , false ) ;
   }
@@ -118,7 +118,7 @@ public final class Location extends Value
    * @see Expression#substitute(String, Expression, boolean)
    */
   @ Override
-  public Expression substitute ( @ SuppressWarnings ( "unused" )
+  public Location substitute ( @ SuppressWarnings ( "unused" )
   String pId , @ SuppressWarnings ( "unused" )
   Expression pExpression , @ SuppressWarnings ( "unused" )
   boolean pAttributeRename )

@@ -28,7 +28,7 @@ public final class EmptyList extends Constant
    * @see Expression#clone()
    */
   @ Override
-  public Expression clone ( )
+  public EmptyList clone ( )
   {
     return new EmptyList ( ) ;
   }

@@ -63,10 +63,7 @@ public abstract class PrimitiveType extends MonoType
    * {@inheritDoc}
    */
   @ Override
-  public String getCaption ( )
-  {
-    return "Primitive-Type" ; //$NON-NLS-1$
-  }
+  public abstract String getCaption ( ) ;
 
 
   /**
@@ -89,7 +86,7 @@ public abstract class PrimitiveType extends MonoType
    * @see Type#substitute(TypeSubstitution)
    */
   @ Override
-  public MonoType substitute ( @ SuppressWarnings ( "unused" )
+  public PrimitiveType substitute ( @ SuppressWarnings ( "unused" )
   TypeSubstitution pTypeSubstitution )
   {
     return this ;
@@ -105,9 +102,12 @@ public abstract class PrimitiveType extends MonoType
   PrettyStringBuilder toPrettyStringBuilder (
       PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
-    PrettyStringBuilder builder = pPrettyStringBuilderFactory.newBuilder (
-        this , PRIO_PRIMITIVE ) ;
-    builder.addType ( this.name ) ;
-    return builder ;
+    if ( this.prettyStringBuilder == null )
+    {
+      this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
+          PRIO_PRIMITIVE ) ;
+      this.prettyStringBuilder.addType ( this.name ) ;
+    }
+    return this.prettyStringBuilder ;
   }
 }

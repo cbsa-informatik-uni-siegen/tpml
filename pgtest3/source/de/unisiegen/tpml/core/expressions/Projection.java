@@ -82,8 +82,8 @@ public class Projection extends UnaryOperator
    * @see UnaryOperator#applyTo(Expression)
    */
   @ Override
-  public de.unisiegen.tpml.core.expressions.Expression applyTo (
-      Expression pExpression ) throws UnaryOperatorException
+  public Expression applyTo ( Expression pExpression )
+      throws UnaryOperatorException
   {
     try
     {

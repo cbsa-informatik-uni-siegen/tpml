@@ -90,10 +90,13 @@ public final class PolyType extends Type
   @ Override
   public TreeSet < TypeVariable > free ( )
   {
-    TreeSet < TypeVariable > free = new TreeSet < TypeVariable > ( ) ;
-    free.addAll ( this.tau.free ( ) ) ;
-    free.removeAll ( this.quantifiedVariables ) ;
-    return free ;
+    if ( this.free == null )
+    {
+      this.free = new TreeSet < TypeVariable > ( ) ;
+      this.free.addAll ( this.tau.free ( ) ) ;
+      this.free.removeAll ( this.quantifiedVariables ) ;
+    }
+    return this.free ;
   }
 
 
@@ -147,7 +150,7 @@ public final class PolyType extends Type
    * @see Type#substitute(TypeSubstitution)
    */
   @ Override
-  public Type substitute ( TypeSubstitution pTypeSubstitution )
+  public PolyType substitute ( TypeSubstitution pTypeSubstitution )
   {
     // determine the monomorphic type
     MonoType newTau = this.tau ;
@@ -187,24 +190,28 @@ public final class PolyType extends Type
   public PrettyStringBuilder toPrettyStringBuilder (
       PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
-    PrettyStringBuilder builder = pPrettyStringBuilderFactory.newBuilder (
-        this , PRIO_POLY ) ;
-    if ( ! this.quantifiedVariables.isEmpty ( ) )
+    if ( this.prettyStringBuilder == null )
     {
-      builder.addText ( "\u2200" ) ; //$NON-NLS-1$
-      for ( Iterator < TypeVariable > it = this.quantifiedVariables.iterator ( ) ; it
-          .hasNext ( ) ; )
+      this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
+          PRIO_POLY ) ;
+      if ( ! this.quantifiedVariables.isEmpty ( ) )
       {
-        builder.addText ( it.next ( ).toString ( ) ) ;
-        if ( it.hasNext ( ) )
+        this.prettyStringBuilder.addText ( "\u2200" ) ; //$NON-NLS-1$
+        for ( Iterator < TypeVariable > it = this.quantifiedVariables
+            .iterator ( ) ; it.hasNext ( ) ; )
         {
-          builder.addText ( ", " ) ; //$NON-NLS-1$
+          this.prettyStringBuilder.addText ( it.next ( ).toString ( ) ) ;
+          if ( it.hasNext ( ) )
+          {
+            this.prettyStringBuilder.addText ( ", " ) ; //$NON-NLS-1$
+          }
         }
+        this.prettyStringBuilder.addText ( "." ) ; //$NON-NLS-1$
       }
-      builder.addText ( "." ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addBuilder ( this.tau
+          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
+          PRIO_POLY_TAU ) ;
     }
-    builder.addBuilder ( this.tau
-        .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_POLY_TAU ) ;
-    return builder ;
+    return this.prettyStringBuilder ;
   }
 }

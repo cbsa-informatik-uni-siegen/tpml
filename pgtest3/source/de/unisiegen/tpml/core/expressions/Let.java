@@ -214,7 +214,7 @@ public class Let extends Expression
    * @see Expression#substitute(String, Expression, boolean)
    */
   @ Override
-  public Expression substitute ( String pId , Expression pExpression )
+  public Let substitute ( String pId , Expression pExpression )
   {
     return substitute ( pId , pExpression , false ) ;
   }
@@ -226,7 +226,7 @@ public class Let extends Expression
    * @see Expression#substitute(String, Expression, boolean)
    */
   @ Override
-  public Expression substitute ( String pId , Expression pExpression ,
+  public Let substitute ( String pId , Expression pExpression ,
       boolean pAttributeRename )
   {
     if ( this.id.equals ( pId ) )

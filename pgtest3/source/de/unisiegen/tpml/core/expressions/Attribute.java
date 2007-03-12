@@ -13,7 +13,7 @@ import de.unisiegen.tpml.core.types.MonoType ;
  * @author Christian Fehler
  * @version $Rev: 1066 $
  */
-public class Attribute extends Expression
+public final class Attribute extends Expression
 {
   /**
    * TODO
@@ -195,7 +195,7 @@ public class Attribute extends Expression
    * @see Expression#substitute(String, Expression, boolean)
    */
   @ Override
-  public Expression substitute ( String pId , Expression pExpression )
+  public Attribute substitute ( String pId , Expression pExpression )
   {
     return substitute ( pId , pExpression , false ) ;
   }

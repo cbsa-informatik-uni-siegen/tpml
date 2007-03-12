@@ -232,7 +232,7 @@ public final class Duplication extends Expression
    * @see Expression#substitute(String, Expression, boolean)
    */
   @ Override
-  public Expression substitute ( String pId , Expression pExpression )
+  public Duplication substitute ( String pId , Expression pExpression )
   {
     return substitute ( pId , pExpression , false ) ;
   }
@@ -261,9 +261,8 @@ public final class Duplication extends Expression
       newExpressions [ i ] = this.expressions [ i ].substitute ( pId ,
           pExpression ) ;
     }
-    Expression newFirstExpression = this.e.substitute ( pId , pExpression ) ;
-    return new Duplication ( newFirstExpression , this.identifiers ,
-        newExpressions ) ;
+    Expression newE = this.e.substitute ( pId , pExpression ) ;
+    return new Duplication ( newE , this.identifiers , newExpressions ) ;
   }
 
 

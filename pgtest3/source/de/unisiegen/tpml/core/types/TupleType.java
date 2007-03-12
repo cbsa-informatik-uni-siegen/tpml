@@ -84,12 +84,15 @@ public final class TupleType extends MonoType
   @ Override
   public TreeSet < TypeVariable > free ( )
   {
-    TreeSet < TypeVariable > free = new TreeSet < TypeVariable > ( ) ;
-    for ( MonoType type : this.types )
+    if ( this.free == null )
     {
-      free.addAll ( type.free ( ) ) ;
+      this.free = new TreeSet < TypeVariable > ( ) ;
+      for ( MonoType type : this.types )
+      {
+        this.free.addAll ( type.free ( ) ) ;
+      }
     }
-    return free ;
+    return this.free ;
   }
 
 
@@ -133,19 +136,22 @@ public final class TupleType extends MonoType
   PrettyStringBuilder toPrettyStringBuilder (
       PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
-    PrettyStringBuilder builder = pPrettyStringBuilderFactory.newBuilder (
-        this , PRIO_TUPLE ) ;
-    for ( int i = 0 ; i < this.types.length ; i ++ )
+    if ( this.prettyStringBuilder == null )
     {
-      if ( i > 0 )
+      this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
+          PRIO_TUPLE ) ;
+      for ( int i = 0 ; i < this.types.length ; i ++ )
       {
-        builder.addText ( " * " ) ; //$NON-NLS-1$
+        if ( i > 0 )
+        {
+          this.prettyStringBuilder.addText ( " * " ) ; //$NON-NLS-1$
+        }
+        this.prettyStringBuilder.addBuilder ( this.types [ i ]
+            .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
+            PRIO_TUPLE_TAU ) ;
       }
-      builder.addBuilder ( this.types [ i ]
-          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-          PRIO_TUPLE_TAU ) ;
     }
-    return builder ;
+    return this.prettyStringBuilder ;
   }
 
 

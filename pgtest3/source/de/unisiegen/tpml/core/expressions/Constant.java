@@ -45,6 +45,15 @@ public abstract class Constant extends Value
   /**
    * {@inheritDoc}
    * 
+   * @see Expression#clone()
+   */
+  @ Override
+  public abstract Constant clone ( ) ;
+
+
+  /**
+   * {@inheritDoc}
+   * 
    * @see Expression#equals(Object)
    */
   @ Override
@@ -64,10 +73,7 @@ public abstract class Constant extends Value
    * {@inheritDoc}
    */
   @ Override
-  public String getCaption ( )
-  {
-    return "Constant" ; //$NON-NLS-1$
-  }
+  public abstract String getCaption ( ) ;
 
 
   /**
@@ -101,7 +107,7 @@ public abstract class Constant extends Value
    * @see Expression#substitute(String, Expression, boolean)
    */
   @ Override
-  public Expression substitute ( String pId , Expression pExpression )
+  public Constant substitute ( String pId , Expression pExpression )
   {
     return substitute ( pId , pExpression , false ) ;
   }
@@ -115,7 +121,7 @@ public abstract class Constant extends Value
    * @see Expression#substitute(String, Expression, boolean)
    */
   @ Override
-  public final Expression substitute ( @ SuppressWarnings ( "unused" )
+  public final Constant substitute ( @ SuppressWarnings ( "unused" )
   String pId , @ SuppressWarnings ( "unused" )
   Expression pExpression , @ SuppressWarnings ( "unused" )
   boolean pAttributeRename )

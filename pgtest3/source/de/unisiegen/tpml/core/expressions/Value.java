@@ -14,12 +14,18 @@ public abstract class Value extends Expression
 {
   /**
    * {@inheritDoc}
+   * 
+   * @see Expression#clone()
    */
   @ Override
-  public String getCaption ( )
-  {
-    return "Value" ; //$NON-NLS-1$
-  }
+  public abstract Value clone ( ) ;
+
+
+  /**
+   * {@inheritDoc}
+   */
+  @ Override
+  public abstract String getCaption ( ) ;
 
 
   /**

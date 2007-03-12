@@ -114,10 +114,13 @@ public final class ArrowType extends MonoType
   @ Override
   public TreeSet < TypeVariable > free ( )
   {
-    TreeSet < TypeVariable > free = new TreeSet < TypeVariable > ( ) ;
-    free.addAll ( this.tau1.free ( ) ) ;
-    free.addAll ( this.tau2.free ( ) ) ;
-    return free ;
+    if ( this.free == null )
+    {
+      this.free = new TreeSet < TypeVariable > ( ) ;
+      this.free.addAll ( this.tau1.free ( ) ) ;
+      this.free.addAll ( this.tau2.free ( ) ) ;
+    }
+    return this.free ;
   }
 
 
@@ -195,15 +198,18 @@ public final class ArrowType extends MonoType
   public PrettyStringBuilder toPrettyStringBuilder (
       PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
-    PrettyStringBuilder builder = pPrettyStringBuilderFactory.newBuilder (
-        this , PRIO_ARROW ) ;
-    builder.addBuilder ( this.tau1
-        .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-        PRIO_ARROW_TAU1 ) ;
-    builder.addText ( " \u2192 " ) ; //$NON-NLS-1$
-    builder.addBuilder ( this.tau2
-        .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-        PRIO_ARROW_TAU2 ) ;
-    return builder ;
+    if ( this.prettyStringBuilder == null )
+    {
+      this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
+          PRIO_ARROW ) ;
+      this.prettyStringBuilder.addBuilder ( this.tau1
+          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
+          PRIO_ARROW_TAU1 ) ;
+      this.prettyStringBuilder.addText ( " \u2192 " ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addBuilder ( this.tau2
+          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
+          PRIO_ARROW_TAU2 ) ;
+    }
+    return this.prettyStringBuilder ;
   }
 }

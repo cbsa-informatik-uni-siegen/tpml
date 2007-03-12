@@ -16,7 +16,7 @@ import de.unisiegen.tpml.core.util.BoundRenaming ;
  * @author Christian Fehler
  * @version $Rev: 1067 $
  */
-public class CurriedMethod extends Expression
+public final class CurriedMethod extends Expression
 {
   /**
    * TODO
@@ -231,7 +231,7 @@ public class CurriedMethod extends Expression
    * @see Expression#substitute(String, Expression, boolean)
    */
   @ Override
-  public Expression substitute ( String pId , Expression pExpression )
+  public CurriedMethod substitute ( String pId , Expression pExpression )
   {
     return substitute ( pId , pExpression , false ) ;
   }

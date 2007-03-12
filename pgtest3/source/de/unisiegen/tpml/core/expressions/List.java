@@ -229,7 +229,7 @@ public final class List extends Expression
    * @see Expression#substitute(String, Expression, boolean)
    */
   @ Override
-  public Expression substitute ( String pId , Expression pExpression )
+  public List substitute ( String pId , Expression pExpression )
   {
     return substitute ( pId , pExpression , false ) ;
   }
@@ -241,7 +241,7 @@ public final class List extends Expression
    * @see Expression#substitute(String, Expression, boolean)
    */
   @ Override
-  public Expression substitute ( String pId , Expression pExpression ,
+  public List substitute ( String pId , Expression pExpression ,
       boolean pAttributeRename )
   {
     Expression [ ] newExpressions = new Expression [ this.expressions.length ] ;
@@ -260,7 +260,7 @@ public final class List extends Expression
    * @see Expression#substitute(TypeSubstitution)
    */
   @ Override
-  public Expression substitute ( TypeSubstitution pTypeSubstitution )
+  public List substitute ( TypeSubstitution pTypeSubstitution )
   {
     Expression [ ] newExpressions = new Expression [ this.expressions.length ] ;
     for ( int i = 0 ; i < newExpressions.length ; i ++ )
@@ -283,9 +283,9 @@ public final class List extends Expression
     if ( this.expressions.length > 1 )
     {
       Expression [ ] newExpressions = new Expression [ this.expressions.length - 1 ] ;
-      for ( int n = 0 ; n < newExpressions.length ; ++ n )
+      for ( int i = 0 ; i < newExpressions.length ; i ++ )
       {
-        newExpressions [ n ] = this.expressions [ n + 1 ] ;
+        newExpressions [ i ] = this.expressions [ i + 1 ] ;
       }
       return new List ( newExpressions ) ;
     }

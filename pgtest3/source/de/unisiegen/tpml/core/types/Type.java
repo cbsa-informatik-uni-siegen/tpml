@@ -3,6 +3,7 @@ package de.unisiegen.tpml.core.types ;
 
 import java.util.Collections ;
 import java.util.Set ;
+import java.util.TreeSet ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyString ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
@@ -51,6 +52,26 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities
   {
     return EMPTY_SET ;
   }
+
+
+  /**
+   * Cached <code>TreeSet</code> of the free {@link TypeVariable}s, so the
+   * free {@link TypeVariable} do not need to be determined on every invocation
+   * of {@link #free()}.
+   * 
+   * @see #free()
+   */
+  protected TreeSet < TypeVariable > free = null ;
+
+
+  /**
+   * Cached {@link PrettyStringBuilder}, so the {@link PrettyStringBuilder} do
+   * not need to be determined on every invocation of
+   * {@link #toPrettyStringBuilder(PrettyStringBuilderFactory)}.
+   * 
+   * @see #toPrettyStringBuilder(PrettyStringBuilderFactory)
+   */
+  protected PrettyStringBuilder prettyStringBuilder = null ;
 
 
   /**

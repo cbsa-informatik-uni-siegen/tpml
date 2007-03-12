@@ -45,10 +45,16 @@ public abstract class UnaryListOperator extends UnaryOperator
 
   /**
    * {@inheritDoc}
+   * 
+   * @see Expression#clone()
    */
   @ Override
-  public String getCaption ( )
-  {
-    return "Unary-List-Operator" ; //$NON-NLS-1$
-  }
+  public abstract UnaryListOperator clone ( ) ;
+
+
+  /**
+   * {@inheritDoc}
+   */
+  @ Override
+  public abstract String getCaption ( ) ;
 }

@@ -88,7 +88,7 @@ public final class LetRec extends Let
    * @see Expression#substitute(String, Expression, boolean)
    */
   @ Override
-  public Expression substitute ( String pId , Expression pExpression )
+  public LetRec substitute ( String pId , Expression pExpression )
   {
     return substitute ( pId , pExpression , false ) ;
   }
@@ -100,7 +100,7 @@ public final class LetRec extends Let
    * @see Let#substitute(String, Expression, boolean)
    */
   @ Override
-  public Expression substitute ( String pId , Expression pExpression ,
+  public LetRec substitute ( String pId , Expression pExpression ,
       boolean pAttributeRename )
   {
     if ( this.id.equals ( pId ) )

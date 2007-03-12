@@ -48,7 +48,7 @@ public final class Not extends UnaryOperator
    * @see Expression#clone()
    */
   @ Override
-  public Expression clone ( )
+  public Not clone ( )
   {
     return new Not ( ) ;
   }

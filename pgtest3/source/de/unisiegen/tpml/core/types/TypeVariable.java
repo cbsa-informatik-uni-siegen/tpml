@@ -1,8 +1,8 @@
 package de.unisiegen.tpml.core.types ;
 
 
-import java.util.Collections ;
 import java.util.Set ;
+import java.util.TreeSet ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
@@ -223,7 +223,12 @@ public final class TypeVariable extends MonoType implements
   @ Override
   public Set < TypeVariable > free ( )
   {
-    return Collections.singleton ( this ) ;
+    if ( this.free == null )
+    {
+      this.free = new TreeSet < TypeVariable > ( ) ;
+      this.free.add ( this ) ;
+    }
+    return this.free ;
   }
 
 
@@ -313,15 +318,18 @@ public final class TypeVariable extends MonoType implements
   public PrettyStringBuilder toPrettyStringBuilder (
       PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
-    PrettyStringBuilder builder = pPrettyStringBuilderFactory.newBuilder (
-        this , PRIO_TYPE_VARIABLE ) ;
-    String type = "" + offsetToGreekLetter ( this.offset % 24 ) //$NON-NLS-1$
-        + ( ( this.index > 0 ) ? this.index + "" : "" ) ; //$NON-NLS-1$//$NON-NLS-2$
-    for ( int n = ( this.offset / 24 ) ; n > 0 ; -- n )
+    if ( this.prettyStringBuilder == null )
     {
-      type = type + "'" ; //$NON-NLS-1$
+      this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
+          PRIO_TYPE_VARIABLE ) ;
+      String type = "" + offsetToGreekLetter ( this.offset % 24 ) //$NON-NLS-1$
+          + ( ( this.index > 0 ) ? this.index + "" : "" ) ; //$NON-NLS-1$//$NON-NLS-2$
+      for ( int n = ( this.offset / 24 ) ; n > 0 ; -- n )
+      {
+        type = type + "'" ; //$NON-NLS-1$
+      }
+      this.prettyStringBuilder.addType ( type ) ;
     }
-    builder.addType ( type ) ;
-    return builder ;
+    return this.prettyStringBuilder ;
   }
 }

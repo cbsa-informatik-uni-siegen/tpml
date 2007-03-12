@@ -42,10 +42,16 @@ public abstract class UnaryOperator extends Constant
 
   /**
    * {@inheritDoc}
+   * 
+   * @see Expression#clone()
    */
   @ Override
-  public String getCaption ( )
-  {
-    return "Unary-Operator" ; //$NON-NLS-1$
-  }
+  public abstract UnaryOperator clone ( ) ;
+
+
+  /**
+   * {@inheritDoc}
+   */
+  @ Override
+  public abstract String getCaption ( ) ;
 }

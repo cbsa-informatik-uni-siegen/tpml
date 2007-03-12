@@ -2,6 +2,7 @@ package de.unisiegen.tpml.core.types ;
 
 
 import java.util.Set ;
+import java.util.TreeSet ;
 import de.unisiegen.tpml.core.expressions.EmptyList ;
 import de.unisiegen.tpml.core.expressions.List ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
@@ -68,7 +69,12 @@ public final class ListType extends MonoType
   @ Override
   public Set < TypeVariable > free ( )
   {
-    return this.tau.free ( ) ;
+    if ( this.free == null )
+    {
+      this.free = new TreeSet < TypeVariable > ( ) ;
+      this.free.addAll ( this.tau.free ( ) ) ;
+    }
+    return this.free ;
   }
 
 
@@ -88,7 +94,7 @@ public final class ListType extends MonoType
    * @see MonoType#substitute(TypeSubstitution)
    */
   @ Override
-  public MonoType substitute ( TypeSubstitution pTypeSubstitution )
+  public ListType substitute ( TypeSubstitution pTypeSubstitution )
   {
     return new ListType ( this.tau.substitute ( pTypeSubstitution ) ) ;
   }
@@ -103,13 +109,17 @@ public final class ListType extends MonoType
   public PrettyStringBuilder toPrettyStringBuilder (
       PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
-    PrettyStringBuilder builder = pPrettyStringBuilderFactory.newBuilder (
-        this , PRIO_LIST ) ;
-    builder.addBuilder ( this.tau
-        .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_LIST_TAU ) ;
-    builder.addText ( " " ) ; //$NON-NLS-1$
-    builder.addType ( "list" ) ; //$NON-NLS-1$
-    return builder ;
+    if ( this.prettyStringBuilder == null )
+    {
+      this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
+          PRIO_LIST ) ;
+      this.prettyStringBuilder.addBuilder ( this.tau
+          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
+          PRIO_LIST_TAU ) ;
+      this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
+      this.prettyStringBuilder.addType ( "list" ) ; //$NON-NLS-1$
+    }
+    return this.prettyStringBuilder ;
   }
 
 

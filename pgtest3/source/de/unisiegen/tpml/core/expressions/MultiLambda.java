@@ -213,7 +213,7 @@ public final class MultiLambda extends Value
    * @see Expression#substitute(String, Expression, boolean)
    */
   @ Override
-  public Expression substitute ( String pId , Expression pExpression )
+  public MultiLambda substitute ( String pId , Expression pExpression )
   {
     return substitute ( pId , pExpression , false ) ;
   }
@@ -225,7 +225,7 @@ public final class MultiLambda extends Value
    * @see Expression#substitute(String, Expression, boolean)
    */
   @ Override
-  public Expression substitute ( String pId , Expression pExpression ,
+  public MultiLambda substitute ( String pId , Expression pExpression ,
       boolean pAttributeRename )
   {
     for ( int i = 0 ; i < this.identifiers.length ; i ++ )
@@ -282,7 +282,7 @@ public final class MultiLambda extends Value
    * @see Expression#substitute(TypeSubstitution)
    */
   @ Override
-  public Expression substitute ( TypeSubstitution pTypeSubstitution )
+  public MultiLambda substitute ( TypeSubstitution pTypeSubstitution )
   {
     MonoType newTau = ( this.tau != null ) ? this.tau
         .substitute ( pTypeSubstitution ) : null ;
