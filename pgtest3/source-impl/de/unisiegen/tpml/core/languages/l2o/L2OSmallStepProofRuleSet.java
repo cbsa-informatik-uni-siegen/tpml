@@ -155,8 +155,7 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
    * @param pSend TODO
    * @return TODO
    */
-  public Expression evaluateSend ( SmallStepProofContext pContext ,
-      Send pSend )
+  public Expression evaluateSend ( SmallStepProofContext pContext , Send pSend )
   {
     if ( ! pSend.getE ( ).isValue ( ) )
     {
@@ -181,8 +180,7 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
       pContext.addProofStep ( getRuleByName ( OBJ_UNFOLD ) , pSend ) ;
       ObjectExpr objectExpr = ( ObjectExpr ) pSend.getE ( ) ;
       Row row = objectExpr.getE ( ) ;
-      Expression newRow = row.substitute ( objectExpr.getId ( ) , objectExpr
-          .clone ( ) ) ;
+      Expression newRow = row.substitute ( objectExpr.getId ( ) , objectExpr ) ;
       return new Send ( newRow , pSend.getId ( ) ) ;
     }
     else if ( pSend.getE ( ) instanceof Row )
@@ -197,7 +195,9 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
         return pSend ;
       }
       Expression firstRowChild = row.getExpressions ( 0 ) ;
-      // Attribute
+      /*
+       * Attribute
+       */
       if ( firstRowChild instanceof Attribute )
       {
         /*
@@ -230,7 +230,9 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
         }
         return new Send ( new Row ( newRowE ) , pSend.getId ( ) ) ;
       }
-      // Method or CurriedMethod
+      /*
+       * Method or CurriedMethod
+       */
       else if ( ( firstRowChild instanceof Method )
           || ( firstRowChild instanceof CurriedMethod ) )
       {
@@ -356,6 +358,10 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
         if ( ! newDuplicationE [ i ].isValue ( ) )
         {
           newDuplicationE [ i ] = evaluate ( pContext , newDuplicationE [ i ] ) ;
+          if ( newDuplicationE [ i ].isException ( ) )
+          {
+            return newDuplicationE [ i ] ;
+          }
           return new Duplication ( pDuplication.getE ( ).clone ( ) ,
               pDuplication.getIdentifiers ( ) , newDuplicationE ) ;
         }
