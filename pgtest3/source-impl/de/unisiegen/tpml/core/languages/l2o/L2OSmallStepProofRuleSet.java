@@ -290,8 +290,9 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
                 methE = new Lambda ( curriedMethod.getIdentifiers ( i ) ,
                     curriedMethod.getTypes ( i ) , methE ) ;
               }
+              return methE ;
             }
-            return methE ;
+            return methE.clone ( ) ;
           }
         }
         /*
@@ -452,7 +453,10 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
               .getExpressions ( ).length ] ;
           for ( int j = 0 ; j < newRowExpressions.length ; j ++ )
           {
-            newRowExpressions [ j ] = pRow.getExpressions ( j ).clone ( ) ;
+            if ( i != j )
+            {
+              newRowExpressions [ j ] = pRow.getExpressions ( j ).clone ( ) ;
+            }
           }
           newRowExpressions [ i ] = new Attribute ( attribute.getId ( ) ,
               attribute.getTau ( ) , attrE ) ;
