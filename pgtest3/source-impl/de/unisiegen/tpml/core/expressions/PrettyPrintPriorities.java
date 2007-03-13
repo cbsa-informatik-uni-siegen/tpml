@@ -336,15 +336,15 @@ interface PrettyPrintPriorities
 
 
   /**
-   * The pretty print priority for {@link Message}s.
+   * The pretty print priority for {@link Send}s.
    */
-  public static final int PRIO_MESSAGE = 6 ;
+  public static final int PRIO_SEND = 6 ;
 
 
   /**
-   * The pretty print priority for sub expressions of {@link Message}s.
+   * The pretty print priority for sub expressions of {@link Send}s.
    */
-  public static final int PRIO_MESSAGE_E = 6 ;
+  public static final int PRIO_SEND_E = 6 ;
 
 
   /**

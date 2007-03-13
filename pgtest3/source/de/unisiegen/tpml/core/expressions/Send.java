@@ -12,7 +12,7 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
  * @author Christian Fehler
  * @version $Rev: 1066 $
  */
-public final class Message extends Expression
+public final class Send extends Expression
 {
   /**
    * TODO
@@ -36,7 +36,7 @@ public final class Message extends Expression
    * @param pExpression TODO
    * @param pIdentifier TODO
    */
-  public Message ( Expression pExpression , String pIdentifier )
+  public Send ( Expression pExpression , String pIdentifier )
   {
     if ( pExpression == null )
     {
@@ -51,9 +51,9 @@ public final class Message extends Expression
    * {@inheritDoc}
    */
   @ Override
-  public Message clone ( )
+  public Send clone ( )
   {
-    return new Message ( this.e.clone ( ) , this.id ) ;
+    return new Send ( this.e.clone ( ) , this.id ) ;
   }
 
 
@@ -63,9 +63,9 @@ public final class Message extends Expression
   @ Override
   public boolean equals ( Object pObject )
   {
-    if ( pObject instanceof Message )
+    if ( pObject instanceof Send )
     {
-      Message other = ( Message ) pObject ;
+      Send other = ( Send ) pObject ;
       return ( ( this.e.equals ( other.e ) ) && ( this.id.equals ( other.id ) ) ) ;
     }
     return false ;
@@ -78,7 +78,7 @@ public final class Message extends Expression
   @ Override
   public String getCaption ( )
   {
-    return "Message" ; //$NON-NLS-1$
+    return "Send" ; //$NON-NLS-1$
   }
 
 
@@ -132,7 +132,7 @@ public final class Message extends Expression
    * @see Expression#substitute(String, Expression, boolean)
    */
   @ Override
-  public Message substitute ( String pId , Expression pExpression )
+  public Send substitute ( String pId , Expression pExpression )
   {
     return substitute ( pId , pExpression , false ) ;
   }
@@ -142,11 +142,11 @@ public final class Message extends Expression
    * {@inheritDoc}
    */
   @ Override
-  public Message substitute ( String pId , Expression pExpression ,
+  public Send substitute ( String pId , Expression pExpression ,
       boolean pAttributeRename )
   {
     Expression newE = this.e.substitute ( pId , pExpression , pAttributeRename ) ;
-    return new Message ( newE , this.id ) ;
+    return new Send ( newE , this.id ) ;
   }
 
 
@@ -157,10 +157,10 @@ public final class Message extends Expression
    * @return TODO
    */
   @ Override
-  public Message substitute ( TypeSubstitution pTypeSubstitution )
+  public Send substitute ( TypeSubstitution pTypeSubstitution )
   {
     Expression newE = this.e.substitute ( pTypeSubstitution ) ;
-    return new Message ( newE , this.id ) ;
+    return new Send ( newE , this.id ) ;
   }
 
 
@@ -174,10 +174,9 @@ public final class Message extends Expression
     if ( this.prettyStringBuilder == null )
     {
       this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
-          PRIO_MESSAGE ) ;
+          PRIO_SEND ) ;
       this.prettyStringBuilder.addBuilder ( this.e
-          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-          PRIO_MESSAGE_E ) ;
+          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_SEND_E ) ;
       this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addKeyword ( "#" ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$

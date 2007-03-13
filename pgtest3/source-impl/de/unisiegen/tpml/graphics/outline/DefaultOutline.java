@@ -23,7 +23,7 @@ import de.unisiegen.tpml.core.expressions.InfixOperation ;
 import de.unisiegen.tpml.core.expressions.Lambda ;
 import de.unisiegen.tpml.core.expressions.Let ;
 import de.unisiegen.tpml.core.expressions.LetRec ;
-import de.unisiegen.tpml.core.expressions.Message ;
+import de.unisiegen.tpml.core.expressions.Send ;
 import de.unisiegen.tpml.core.expressions.Method ;
 import de.unisiegen.tpml.core.expressions.MultiLambda ;
 import de.unisiegen.tpml.core.expressions.MultiLet ;
@@ -825,30 +825,30 @@ public final class DefaultOutline implements Outline
 
 
   /**
-   * Returns the node, which represents the given {@link Message}.
+   * Returns the node, which represents the given {@link Send}.
    * 
-   * @param pMessage The input {@link Expression}.
-   * @return The node, which represents the given {@link Message}.
+   * @param pSend The input {@link Expression}.
+   * @return The node, which represents the given {@link Send}.
    */
   @ SuppressWarnings ( "unused" )
-  private final OutlineNode checkMessage ( Message pMessage )
+  private final OutlineNode checkSend ( Send pSend )
   {
-    OutlineNode outlineNode = new OutlineNode ( pMessage , this.outlineUnbound ) ;
+    OutlineNode outlineNode = new OutlineNode ( pSend , this.outlineUnbound ) ;
     OutlineNode outlineNodeM ;
     /*
      * Create the children of this node.
      */
-    createChildren ( pMessage , outlineNode ) ;
+    createChildren ( pSend , outlineNode ) ;
     /*
      * Create the Identifier.
      */
-    int start = pMessage.toPrettyString ( ).getAnnotationForPrintable (
-        pMessage.getE ( ) ).getEndOffset ( ) + 1 ;
-    int end = pMessage.toPrettyString ( ).toString ( ).length ( ) ;
-    ArrayList < OutlinePair > outlinePairs = OutlineStyle.getIndex ( pMessage ,
+    int start = pSend.toPrettyString ( ).getAnnotationForPrintable (
+        pSend.getE ( ) ).getEndOffset ( ) + 1 ;
+    int end = pSend.toPrettyString ( ).toString ( ).length ( ) ;
+    ArrayList < OutlinePair > outlinePairs = OutlineStyle.getIndex ( pSend ,
         PrettyStyle.IDENTIFIER , start , end ) ;
     OutlinePair outlinePairId = outlinePairs.get ( 0 ) ;
-    outlineNodeM = new OutlineNode ( METHODNAME , pMessage.getId ( ) ,
+    outlineNodeM = new OutlineNode ( METHODNAME , pSend.getId ( ) ,
         outlinePairId , null , this.outlineUnbound ) ;
     outlineNodeM.setChildIndexMeth ( ) ;
     outlineNode.add ( outlineNodeM ) ;

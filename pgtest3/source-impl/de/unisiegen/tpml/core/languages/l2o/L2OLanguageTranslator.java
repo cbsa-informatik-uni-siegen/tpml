@@ -6,7 +6,7 @@ import de.unisiegen.tpml.core.expressions.CurriedMethod ;
 import de.unisiegen.tpml.core.expressions.Duplication ;
 import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.expressions.Lambda ;
-import de.unisiegen.tpml.core.expressions.Message ;
+import de.unisiegen.tpml.core.expressions.Send ;
 import de.unisiegen.tpml.core.expressions.Method ;
 import de.unisiegen.tpml.core.expressions.ObjectExpr ;
 import de.unisiegen.tpml.core.expressions.Row ;
@@ -60,10 +60,9 @@ public class L2OLanguageTranslator extends L2LanguageTranslator
     {
       return translateToCoreSyntaxMethod ( ( Method ) pExpression , pRecursive ) ;
     }
-    else if ( pExpression instanceof Message )
+    else if ( pExpression instanceof Send )
     {
-      return translateToCoreSyntaxMessage ( ( Message ) pExpression ,
-          pRecursive ) ;
+      return translateToCoreSyntaxSend ( ( Send ) pExpression , pRecursive ) ;
     }
     else if ( pExpression instanceof Duplication )
     {
@@ -147,19 +146,18 @@ public class L2OLanguageTranslator extends L2LanguageTranslator
   /**
    * TODO
    * 
-   * @param pMessage TODO
+   * @param pSend TODO
    * @param pRecursive TODO
    * @return TODO
    */
-  private Expression translateToCoreSyntaxMessage ( Message pMessage ,
-      boolean pRecursive )
+  private Expression translateToCoreSyntaxSend ( Send pSend , boolean pRecursive )
   {
     if ( pRecursive )
     {
-      return new Message ( translateToCoreSyntax ( pMessage.getE ( ) ,
-          pRecursive ) , pMessage.getId ( ) ) ;
+      return new Send ( translateToCoreSyntax ( pSend.getE ( ) , pRecursive ) ,
+          pSend.getId ( ) ) ;
     }
-    return pMessage ;
+    return pSend ;
   }
 
 

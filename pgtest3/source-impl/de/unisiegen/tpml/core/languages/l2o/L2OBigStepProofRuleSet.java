@@ -9,7 +9,7 @@ import de.unisiegen.tpml.core.expressions.Duplication ;
 import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.expressions.Identifier ;
 import de.unisiegen.tpml.core.expressions.Lambda ;
-import de.unisiegen.tpml.core.expressions.Message ;
+import de.unisiegen.tpml.core.expressions.Send ;
 import de.unisiegen.tpml.core.expressions.Method ;
 import de.unisiegen.tpml.core.expressions.ObjectExpr ;
 import de.unisiegen.tpml.core.expressions.Row ;
@@ -264,8 +264,8 @@ public class L2OBigStepProofRuleSet extends L2BigStepProofRuleSet
    */
   public void applySend ( BigStepProofContext context , BigStepProofNode node )
   {
-    Message message = ( Message ) node.getExpression ( ) ;
-    context.addProofNode ( node , message.getE ( ) ) ;
+    Send send = ( Send ) node.getExpression ( ) ;
+    context.addProofNode ( node , send.getE ( ) ) ;
   }
 
 
@@ -278,8 +278,8 @@ public class L2OBigStepProofRuleSet extends L2BigStepProofRuleSet
   public void applySendAttr ( BigStepProofContext context ,
       BigStepProofNode node )
   {
-    Message message = ( Message ) node.getExpression ( ) ;
-    Row row = ( Row ) message.getE ( ) ;
+    Send send = ( Send ) node.getExpression ( ) ;
+    Row row = ( Row ) send.getE ( ) ;
     Attribute attribute = ( Attribute ) row.getExpressions ( 0 ) ;
     if ( ! row.isValue ( ) )
     {
@@ -291,8 +291,8 @@ public class L2OBigStepProofRuleSet extends L2BigStepProofRuleSet
       newRowExpressions [ i ] = row.getExpressions ( i + 1 ).substitute (
           attribute.getId ( ) , attribute.getE ( ) ) ;
     }
-    context.addProofNode ( node , new Message ( new Row ( newRowExpressions ) ,
-        message.getId ( ) ) ) ;
+    context.addProofNode ( node , new Send ( new Row ( newRowExpressions ) ,
+        send.getId ( ) ) ) ;
   }
 
 
@@ -305,8 +305,8 @@ public class L2OBigStepProofRuleSet extends L2BigStepProofRuleSet
   public void applySendExec ( BigStepProofContext context ,
       BigStepProofNode node )
   {
-    Message message = ( Message ) node.getExpression ( ) ;
-    Row row = ( Row ) message.getE ( ) ;
+    Send send = ( Send ) node.getExpression ( ) ;
+    Row row = ( Row ) send.getE ( ) ;
     if ( ! row.isValue ( ) )
     {
       throw new IllegalArgumentException ( "Can not apply SEND-EXEC" ) ; //$NON-NLS-1$
@@ -334,7 +334,7 @@ public class L2OBigStepProofRuleSet extends L2BigStepProofRuleSet
     {
       throw new IllegalArgumentException ( "Can not apply SEND-EXEC" ) ; //$NON-NLS-1$
     }
-    if ( ! ( message.getId ( ).equals ( methodName ) ) )
+    if ( ! ( send.getId ( ).equals ( methodName ) ) )
     {
       throw new IllegalArgumentException ( "Can not apply SEND-EXEC" ) ; //$NON-NLS-1$
     }
@@ -343,14 +343,14 @@ public class L2OBigStepProofRuleSet extends L2BigStepProofRuleSet
     {
       Expression rowChild = row.getExpressions ( i ) ;
       if ( ( rowChild instanceof Method )
-          && ( ( ( Method ) rowChild ).getId ( ).equals ( message.getId ( ) ) ) )
+          && ( ( ( Method ) rowChild ).getId ( ).equals ( send.getId ( ) ) ) )
       {
         definedLater = true ;
         break ;
       }
       else if ( ( rowChild instanceof CurriedMethod )
           && ( ( ( CurriedMethod ) rowChild ).getIdentifiers ( 0 )
-              .equals ( message.getId ( ) ) ) )
+              .equals ( send.getId ( ) ) ) )
       {
         definedLater = true ;
         break ;
@@ -376,8 +376,8 @@ public class L2OBigStepProofRuleSet extends L2BigStepProofRuleSet
   public void applySendSkip ( BigStepProofContext context ,
       BigStepProofNode node )
   {
-    Message message = ( Message ) node.getExpression ( ) ;
-    Row row = ( Row ) message.getE ( ) ;
+    Send send = ( Send ) node.getExpression ( ) ;
+    Row row = ( Row ) send.getE ( ) ;
     if ( ! row.isValue ( ) )
     {
       throw new IllegalArgumentException ( "Can not apply SEND-SKIP" ) ; //$NON-NLS-1$
@@ -402,28 +402,28 @@ public class L2OBigStepProofRuleSet extends L2BigStepProofRuleSet
     {
       Expression rowChild = row.getExpressions ( i ) ;
       if ( ( rowChild instanceof Method )
-          && ( ( ( Method ) rowChild ).getId ( ).equals ( message.getId ( ) ) ) )
+          && ( ( ( Method ) rowChild ).getId ( ).equals ( send.getId ( ) ) ) )
       {
         definedLater = true ;
         break ;
       }
       else if ( ( rowChild instanceof CurriedMethod )
           && ( ( ( CurriedMethod ) rowChild ).getIdentifiers ( 0 )
-              .equals ( message.getId ( ) ) ) )
+              .equals ( send.getId ( ) ) ) )
       {
         definedLater = true ;
         break ;
       }
     }
-    if ( ( definedLater ) || ( ! ( message.getId ( ).equals ( methodName ) ) ) )
+    if ( ( definedLater ) || ( ! ( send.getId ( ).equals ( methodName ) ) ) )
     {
       Expression [ ] newRowExpressions = new Expression [ row.getExpressions ( ).length - 1 ] ;
       for ( int i = 0 ; i < newRowExpressions.length ; i ++ )
       {
         newRowExpressions [ i ] = row.getExpressions ( i + 1 ) ;
       }
-      context.addProofNode ( node , new Message (
-          new Row ( newRowExpressions ) , message.getId ( ) ) ) ;
+      context.addProofNode ( node , new Send (
+          new Row ( newRowExpressions ) , send.getId ( ) ) ) ;
     }
     else
     {
@@ -618,13 +618,13 @@ public class L2OBigStepProofRuleSet extends L2BigStepProofRuleSet
     if ( ( node.getChildCount ( ) == 1 )
         && ( node.getChildAt ( 0 ).isProven ( ) ) )
     {
-      Message message = ( Message ) node.getExpression ( ) ;
+      Send send = ( Send ) node.getExpression ( ) ;
       ObjectExpr objectExpr = ( ObjectExpr ) node.getChildAt ( 0 ).getResult ( )
           .getValue ( ) ;
       Row row = objectExpr.getE ( ) ;
       Expression newRow = row.substitute ( objectExpr.getId ( ) , objectExpr
           .clone ( ) ) ;
-      context.addProofNode ( node , new Message ( newRow , message.getId ( ) ) ) ;
+      context.addProofNode ( node , new Send ( newRow , send.getId ( ) ) ) ;
     }
     else if ( ( node.getChildCount ( ) == 2 )
         && ( node.getChildAt ( 1 ).isProven ( ) ) )

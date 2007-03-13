@@ -71,7 +71,7 @@ non terminal MonoType		simple_type;
 
 non terminal ObjectExpr		object_expr;
 non terminal Duplication	duplication;
-non terminal Message		message;
+non terminal Send			send;
 non terminal Row			row;
 non terminal Attribute		attribute;
 non terminal Method			method;
@@ -211,9 +211,9 @@ simple_expr			::=	constant:c
 					|	IDENTIFIER:id
 						{: RESULT = new Identifier(id); :}
 
-					/* Message */
-					|	message:m
-						{: RESULT = m; :}
+					/* Send */
+					|	send:s
+						{: RESULT = s; :}
 						
 					/* Parenthized operators/expressions */
 					|	LPAREN operator:o RPAREN
@@ -249,8 +249,8 @@ duplication			::= IDENTIFIER:id LCURLYBRACE LESS id_expr_list:iel GREATER RCURLY
 						   RESULT = new Duplication ( new Identifier (id) , tmpI , tmpE ); :}
 					;
 
-message				::= simple_expr:e NUMBERSIGN IDENTIFIER:id
-						{: RESULT = new Message ( e , id ) ; :}
+send				::= simple_expr:e NUMBERSIGN IDENTIFIER:id
+						{: RESULT = new Send ( e , id ) ; :}
 					;
 					
 row					::= attribute:a

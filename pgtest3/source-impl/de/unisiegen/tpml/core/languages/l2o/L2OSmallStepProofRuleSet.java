@@ -7,7 +7,7 @@ import de.unisiegen.tpml.core.expressions.Duplication ;
 import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.expressions.Identifier ;
 import de.unisiegen.tpml.core.expressions.Lambda ;
-import de.unisiegen.tpml.core.expressions.Message ;
+import de.unisiegen.tpml.core.expressions.Send ;
 import de.unisiegen.tpml.core.expressions.Method ;
 import de.unisiegen.tpml.core.expressions.ObjectExpr ;
 import de.unisiegen.tpml.core.expressions.Row ;
@@ -152,56 +152,56 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
    * TODO
    * 
    * @param pContext TODO
-   * @param pMessage TODO
+   * @param pSend TODO
    * @return TODO
    */
-  public Expression evaluateMessage ( SmallStepProofContext pContext ,
-      Message pMessage )
+  public Expression evaluateSend ( SmallStepProofContext pContext ,
+      Send pSend )
   {
-    if ( ! pMessage.getE ( ).isValue ( ) )
+    if ( ! pSend.getE ( ).isValue ( ) )
     {
       /*
-       * If the child Expression of the Message is not yet a value, we have to
+       * If the child Expression of the Send is not yet a value, we have to
        * perform SEND-EVAL.
        */
-      pContext.addProofStep ( getRuleByName ( SEND_EVAL ) , pMessage ) ;
-      Expression expr = evaluate ( pContext , pMessage.getE ( ) ) ;
+      pContext.addProofStep ( getRuleByName ( SEND_EVAL ) , pSend ) ;
+      Expression expr = evaluate ( pContext , pSend.getE ( ) ) ;
       if ( expr.isException ( ) )
       {
         return expr ;
       }
-      return new Message ( expr , pMessage.getId ( ) ) ;
+      return new Send ( expr , pSend.getId ( ) ) ;
     }
-    else if ( pMessage.getE ( ) instanceof ObjectExpr )
+    else if ( pSend.getE ( ) instanceof ObjectExpr )
     {
       /*
-       * If the child Expression of the Message is an ObjectExpr and the
-       * ObjectExpr is a value, we have to perform OBJ-UNFOLD.
+       * If the child Expression of the Send is an ObjectExpr and the ObjectExpr
+       * is a value, we have to perform OBJ-UNFOLD.
        */
-      pContext.addProofStep ( getRuleByName ( OBJ_UNFOLD ) , pMessage ) ;
-      ObjectExpr objectExpr = ( ObjectExpr ) pMessage.getE ( ) ;
+      pContext.addProofStep ( getRuleByName ( OBJ_UNFOLD ) , pSend ) ;
+      ObjectExpr objectExpr = ( ObjectExpr ) pSend.getE ( ) ;
       Row row = objectExpr.getE ( ) ;
       Expression newRow = row.substitute ( objectExpr.getId ( ) , objectExpr
           .clone ( ) ) ;
-      return new Message ( newRow , pMessage.getId ( ) ) ;
+      return new Send ( newRow , pSend.getId ( ) ) ;
     }
-    else if ( pMessage.getE ( ) instanceof Row )
+    else if ( pSend.getE ( ) instanceof Row )
     {
       /*
-       * If the child Expression of the Message is a Row and the Row has zero
+       * If the child Expression of the Send is a Row and the Row has zero
        * children the Expression gets stuck.
        */
-      Row row = ( Row ) pMessage.getE ( ) ;
+      Row row = ( Row ) pSend.getE ( ) ;
       if ( row.getExpressions ( ).length == 0 )
       {
-        return pMessage ;
+        return pSend ;
       }
       Expression firstRowChild = row.getExpressions ( 0 ) ;
       // Attribute
       if ( firstRowChild instanceof Attribute )
       {
         /*
-         * If the child Expression of the Message is a Row and the first child
+         * If the child Expression of the Send is a Row and the first child
          * Expression of the Row is an Attribute, we have to perform SEND-ATTR.
          * We can only substitute in Methods and CurriedMethods, not in
          * Attributes.
@@ -228,7 +228,7 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
                 "Inconsistent L20SmallStepProofRuleSet class." ) ; //$NON-NLS-1$
           }
         }
-        return new Message ( new Row ( newRowE ) , pMessage.getId ( ) ) ;
+        return new Send ( new Row ( newRowE ) , pSend.getId ( ) ) ;
       }
       // Method or CurriedMethod
       else if ( ( firstRowChild instanceof Method )
@@ -248,12 +248,12 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
           id = curriedMethod.getIdentifiers ( 0 ) ;
           methE = curriedMethod.getE ( ) ;
         }
-        if ( pMessage.getId ( ).equals ( id ) )
+        if ( pSend.getId ( ).equals ( id ) )
         {
           /*
-           * If the child Expression of the Message is a Row, the first child
+           * If the child Expression of the Send is a Row, the first child
            * Expression of the Row is a Method or CurriedMethod, the Identifier
-           * of the Message is equal to the Identifier of the Method or
+           * of the Send is equal to the Identifier of the Method or
            * CurriedMethod and there is no Method or CurriedMethod with the same
            * Identifier in the rest of the Row, we have to perform SEND-EXEC.
            */
@@ -262,15 +262,15 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
           {
             Expression rowChild = row.getExpressions ( i ) ;
             if ( ( rowChild instanceof Method )
-                && ( ( ( Method ) rowChild ).getId ( ).equals ( pMessage
-                    .getId ( ) ) ) )
+                && ( ( ( Method ) rowChild ).getId ( )
+                    .equals ( pSend.getId ( ) ) ) )
             {
               definedLater = true ;
               break ;
             }
             else if ( ( rowChild instanceof CurriedMethod )
                 && ( ( ( CurriedMethod ) rowChild ).getIdentifiers ( 0 )
-                    .equals ( pMessage.getId ( ) ) ) )
+                    .equals ( pSend.getId ( ) ) ) )
             {
               definedLater = true ;
               break ;
@@ -293,9 +293,9 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
           }
         }
         /*
-         * If the child Expression of the Message is a Row, the first child
+         * If the child Expression of the Send is a Row, the first child
          * Expression of the Row is a Method or CurriedMethod, the Identifier of
-         * the Message is not equal to the Identifier of the Method or
+         * the Send is not equal to the Identifier of the Method or
          * CurriedMethod or there is a Method or CurriedMethod with the same
          * Identifier in the rest of the Row, we have to perform SEND-SKIP.
          */
@@ -305,7 +305,7 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
         {
           newRowE [ i ] = row.getExpressions ( i + 1 ).clone ( ) ;
         }
-        return new Message ( new Row ( newRowE ) , pMessage.getId ( ) ) ;
+        return new Send ( new Row ( newRowE ) , pSend.getId ( ) ) ;
       }
       else
       {
@@ -317,7 +317,7 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
             "Inconsistent L20SmallStepProofRuleSet class." ) ; //$NON-NLS-1$
       }
     }
-    return pMessage ;
+    return pSend ;
   }
 
 
