@@ -1,0 +1,7 @@
+(object (id)
+     val x = 1;
+     val y = object (id)
+              method dup = id{<>};
+             end;
+     method dup = id{<x=x+1; y=id{<x=x+1>}>};
+    end)#dup

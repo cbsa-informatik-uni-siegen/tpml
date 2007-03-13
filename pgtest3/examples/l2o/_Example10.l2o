@@ -1,0 +1,10 @@
+let o = object (x)
+            val a = 1;
+            method f = x{<a = a + 1 >};
+            method g = object (y)
+                        val a = a + 1;
+                        method g = y{<a = a + 1>};
+                        method h = a + 1;
+                       end;
+           end
+   in o#f#g#g#h

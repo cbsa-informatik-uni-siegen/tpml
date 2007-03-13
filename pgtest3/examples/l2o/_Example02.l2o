@@ -3,5 +3,5 @@
    val b = 3 ; 
    method dec x = x - 1 ; 
    method add = (self # dec) (a*a + b*b) ; 
- end) 
+ end)
 # add
