@@ -329,21 +329,7 @@ public class ShowBonds
 		ArrayList<Expression> child2 = new ArrayList<Expression>();
 		child2.add(pLet.getE2());
 
-		/**
-		 * check if there are duplicate Identifiers
-		 */
-		boolean duplicate = false;
-		for (int i = 1; i < list.size(); i++)
-		{
-
-			if (list.get(i).equals(list.get(1)))
-			{
-				System.out.println("duplicate true");
-				duplicate = true;
-				break;
-			}
-
-		}
+	
 
 		/**
 		 * different recursive calls for E1 and E2 with a different list of bounds
