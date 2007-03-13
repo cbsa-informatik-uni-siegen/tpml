@@ -301,22 +301,35 @@ public class ShowBonds
 		/**
 		 * this array contains all free Variables of the first Expression
 		 */
-		//Object[] b = pLet.getE2().free().toArray();
+		Object[] b = pLet.getE2().free().toArray();
 
 		ArrayList<String> c = castArray(pLet.getIdentifiers());
-		c.remove(0);
+		
+		
+		ArrayList<String> d = new ArrayList<String>();
+		d.add(c.get(0));
 
-	
+		c.remove(0);	
 
 		/**
 		 * in this method two different lists are needed for the two different
 		 * Expressions E1 and E2
 		 */
-		ArrayList<String> list = listWithBounds(a, c);
-		ArrayList<String> list2 = new ArrayList<String>();
-		list2.add(pLet.getIdentifiers(0));
+		ArrayList<String> list2 = listWithBounds(b, c);
+		ArrayList<String> list = new ArrayList<String>();
+		list.add(pLet.getIdentifiers(0));
 
+		System.out.println("list");
+		for (int i=0; i< list.size(); i++)
+		{
+			System.out.println(list.get(i));
+		}
 		
+		System.out.println("list2");
+		for (int i=0; i< list2.size(); i++)
+		{
+			System.out.println(list2.get(i));
+		}
 		
 		ArrayList<Expression> child = new ArrayList<Expression>();
 
@@ -333,8 +346,9 @@ public class ShowBonds
 		for (int i = 1; i < list.size(); i++)
 		{
 
-			if (list.get(i).equals(list.get(0)))
+			if (list.get(i).equals(list.get(1)))
 			{
+				System.out.println("duplicate true");
 				duplicate = true;
 				break;
 			}
@@ -344,7 +358,7 @@ public class ShowBonds
 		/**
 		 * different recursive calls for E1 and E2 with a different list of bounds
 		 */
-		checkRec(child2, pLet, list2, duplicate);
+		checkRec(child2, pLet, list2, true);
 
 		checkRec(child, pLet, list, false);
 
@@ -645,19 +659,10 @@ public class ShowBonds
 
 		e1 = castArray(a);
 		
-		// don't know if I need this anyway
-		/**
-		if (false)
-		{
-			for (int i = 0; i < e1.size(); i++)
-			{
-			}
-		}
-		*/
-		
+			
 		for (int i = 0; i < e2.size(); i++)
 		{
-			if (false)
+			
 			if (!e1.contains(e2.get(i)))
 			{
 				e2.remove(i);
