@@ -843,7 +843,7 @@ public final class DefaultOutline implements Outline
      * Create the Identifier.
      */
     int start = pMessage.toPrettyString ( ).getAnnotationForPrintable (
-        pMessage.getE ( ) ).getEndOffset ( ) ;
+        pMessage.getE ( ) ).getEndOffset ( ) + 1 ;
     int end = pMessage.toPrettyString ( ).toString ( ).length ( ) ;
     ArrayList < OutlinePair > outlinePairs = OutlineStyle.getIndex ( pMessage ,
         PrettyStyle.IDENTIFIER , start , end ) ;
