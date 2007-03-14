@@ -126,19 +126,24 @@ public final class CurriedLetRec extends CurriedLet
     Expression newE1 = this.e1.clone ( ) ;
     Expression newE2 = this.e2 ;
     boolean sameIdAs0 = false ;
-    boolean sameIdAs1ToN = false ;
+    boolean substInE1 = true ;
     for ( int i = 1 ; i < this.identifiers.length ; i ++ )
     {
       if ( this.identifiers [ i ].equals ( pId ) )
       {
-        sameIdAs1ToN = true ;
+        substInE1 = false ;
+        break ;
       }
+    }
+    for ( int i = 1 ; i < this.identifiers.length ; i ++ )
+    {
       if ( this.identifiers [ i ].equals ( this.identifiers [ 0 ] ) )
       {
         sameIdAs0 = true ;
+        break ;
       }
     }
-    if ( ! sameIdAs1ToN )
+    if ( substInE1 )
     {
       for ( int i = 1 ; i < newIdentifiers.length ; i ++ )
       {
@@ -208,7 +213,7 @@ public final class CurriedLetRec extends CurriedLet
           newId ) , pAttributeRename ) ;
       newIdentifiers [ 0 ] = newId ;
     }
-    if ( ( ! sameIdAs0 ) || ( ! sameIdAs1ToN ) )
+    if ( ( ! sameIdAs0 ) || ( substInE1 ) )
     {
       newE1 = newE1.substitute ( pId , pExpression , pAttributeRename ) ;
     }
