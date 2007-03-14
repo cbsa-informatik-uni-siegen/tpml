@@ -302,21 +302,19 @@ public class CurriedLet extends Expression
     String [ ] newIdentifiers = this.identifiers.clone ( ) ;
     Expression newE1 = this.e1.clone ( ) ;
     Expression newE2 = this.e2.clone ( ) ;
-    boolean substE1 = true ;
-    boolean substE2 = true ;
+    boolean found = false ;
+    /*
+     * Do not substitute in e1, if the Identifiers are equal.
+     */
     for ( int i = 1 ; i < this.identifiers.length ; i ++ )
     {
       if ( this.identifiers [ i ].equals ( pId ) )
       {
-        substE1 = false ;
+        found = true ;
         break ;
       }
     }
-    if ( this.identifiers [ 0 ].equals ( pId ) )
-    {
-      substE2 = false ;
-    }
-    if ( ( substE1 ) && ( this.e1.free ( ).contains ( pId ) ) )
+    if ( ! found )
     {
       for ( int i = 1 ; i < newIdentifiers.length ; i ++ )
       {
@@ -325,6 +323,9 @@ public class CurriedLet extends Expression
         boundRenaming.remove ( newIdentifiers [ i ] ) ;
         boundRenaming.add ( pExpression.free ( ) ) ;
         boundRenaming.add ( pId ) ;
+        /*
+         * The new Identifier should not be equal to an other Identifier.
+         */
         if ( boundRenaming.contains ( newIdentifiers [ i ] ) )
         {
           for ( int j = 1 ; j < newIdentifiers.length ; j ++ )
@@ -336,6 +337,10 @@ public class CurriedLet extends Expression
           }
         }
         String newId = boundRenaming.newIdentifier ( newIdentifiers [ i ] ) ;
+        /*
+         * Search for an Identifier before the current Identifier with the same
+         * name. For example: "let a = b in let f b b = b a in f".
+         */
         for ( int j = 1 ; j < i ; j ++ )
         {
           if ( this.identifiers [ i ].equals ( this.identifiers [ j ] ) )
@@ -343,6 +348,10 @@ public class CurriedLet extends Expression
             newId = newIdentifiers [ j ] ;
           }
         }
+        /*
+         * Substitute the old Identifier only with the new Identifier, if they
+         * are different.
+         */
         if ( ! newIdentifiers [ i ].equals ( newId ) )
         {
           newE1 = newE1.substitute ( newIdentifiers [ i ] , new Identifier (
@@ -350,26 +359,32 @@ public class CurriedLet extends Expression
           newIdentifiers [ i ] = newId ;
         }
       }
+      /*
+       * Perform the substitution in e1.
+       */
       newE1 = newE1.substitute ( pId , pExpression , pAttributeRename ) ;
     }
-    if ( ( substE2 ) && ( this.e2.free ( ).contains ( pId ) ) )
+    if ( ! ( this.identifiers [ 0 ].equals ( pId ) ) )
     {
       BoundRenaming boundRenaming = new BoundRenaming ( ) ;
       boundRenaming.add ( this.e2.free ( ) ) ;
       boundRenaming.remove ( this.identifiers [ 0 ] ) ;
       boundRenaming.add ( pExpression.free ( ) ) ;
       boundRenaming.add ( pId ) ;
-      for ( int i = 1 ; i < newIdentifiers.length ; i ++ )
-      {
-        boundRenaming.add ( this.identifiers [ i ] ) ;
-      }
       String newId = boundRenaming.newIdentifier ( this.identifiers [ 0 ] ) ;
+      /*
+       * Substitute the old Identifier only with the new Identifier, if they are
+       * different.
+       */
       if ( ! this.identifiers [ 0 ].equals ( newId ) )
       {
         newE2 = newE2.substitute ( this.identifiers [ 0 ] , new Identifier (
             newId ) , pAttributeRename ) ;
         newIdentifiers [ 0 ] = newId ;
       }
+      /*
+       * Perform the substitution in e2.
+       */
       newE2 = newE2.substitute ( pId , pExpression , pAttributeRename ) ;
     }
     return new CurriedLet ( newIdentifiers , this.types , newE1 , newE2 ) ;

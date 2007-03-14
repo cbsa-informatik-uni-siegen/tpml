@@ -229,31 +229,43 @@ public class Let extends Expression
   public Let substitute ( String pId , Expression pExpression ,
       boolean pAttributeRename )
   {
-    if ( this.id.equals ( pId ) )
-    {
-      return new Let ( this.id , this.tau , this.e1.substitute ( pId ,
-          pExpression , pAttributeRename ) , this.e2 ) ;
-    }
-    Expression newE2 = this.e2.clone ( ) ;
-    String newId = this.id ;
-    Set < String > freeE2 = newE2.free ( ) ;
-    if ( freeE2.contains ( pId ) )
-    {
-      BoundRenaming boundRenaming = new BoundRenaming ( ) ;
-      boundRenaming.add ( freeE2 ) ;
-      boundRenaming.remove ( this.id ) ;
-      boundRenaming.add ( pExpression.free ( ) ) ;
-      boundRenaming.add ( pId ) ;
-      newId = boundRenaming.newIdentifier ( this.id ) ;
-      if ( ! this.id.equals ( newId ) )
-      {
-        newE2 = newE2.substitute ( this.id , new Identifier ( newId ) ,
-            pAttributeRename ) ;
-      }
-      newE2 = newE2.substitute ( pId , pExpression , pAttributeRename ) ;
-    }
+    /*
+     * Perform the substitution in e1.
+     */
     Expression newE1 = this.e1.substitute ( pId , pExpression ,
         pAttributeRename ) ;
+    Expression newE2 = this.e2 ;
+    /*
+     * Do not substitute in e2 , if the Identifiers are equal.
+     */
+    if ( this.id.equals ( pId ) )
+    {
+      return new Let ( this.id , this.tau , newE1 , newE2.clone ( ) ) ;
+    }
+    /*
+     * Perform the bound renaming if required.
+     */
+    String newId = this.id ;
+    Set < String > freeE2 = newE2.free ( ) ;
+    BoundRenaming boundRenaming = new BoundRenaming ( ) ;
+    boundRenaming.add ( freeE2 ) ;
+    boundRenaming.remove ( this.id ) ;
+    boundRenaming.add ( pExpression.free ( ) ) ;
+    boundRenaming.add ( pId ) ;
+    newId = boundRenaming.newIdentifier ( this.id ) ;
+    /*
+     * Substitute the old Identifier only with the new Identifier, if they are
+     * different.
+     */
+    if ( ! this.id.equals ( newId ) )
+    {
+      newE2 = newE2.substitute ( this.id , new Identifier ( newId ) ,
+          pAttributeRename ) ;
+    }
+    /*
+     * Perform the substitution in e2.
+     */
+    newE2 = newE2.substitute ( pId , pExpression , pAttributeRename ) ;
     return new Let ( newId , this.tau , newE1 , newE2 ) ;
   }
 

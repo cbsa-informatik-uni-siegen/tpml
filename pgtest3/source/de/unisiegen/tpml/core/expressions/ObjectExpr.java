@@ -195,25 +195,34 @@ public final class ObjectExpr extends Expression
       @ SuppressWarnings ( "unused" )
       boolean pAttributeRename )
   {
+    /*
+     * Do not substitute, if the Identifiers are equal.
+     */
     if ( this.id.equals ( pId ) )
     {
       return this.clone ( ) ;
     }
-    Row newRow = this.row ;
+    /*
+     * Perform the bound renaming if required.
+     */
     String newId = this.id ;
-    if ( this.row.free ( ).contains ( pId ) )
+    BoundRenaming boundRenaming = new BoundRenaming ( ) ;
+    boundRenaming.add ( this.free ( ) ) ;
+    boundRenaming.add ( pExpression.free ( ) ) ;
+    boundRenaming.add ( pId ) ;
+    newId = boundRenaming.newIdentifier ( this.id ) ;
+    /*
+     * Substitute the old Identifier only with the new Identifier, if they are
+     * different.
+     */
+    Row newRow = this.row ;
+    if ( ! this.id.equals ( newId ) )
     {
-      BoundRenaming boundRenaming = new BoundRenaming ( ) ;
-      boundRenaming.add ( this.free ( ) ) ;
-      boundRenaming.add ( pExpression.free ( ) ) ;
-      boundRenaming.add ( pId ) ;
-      newId = boundRenaming.newIdentifier ( this.id ) ;
-      if ( ! this.id.equals ( newId ) )
-      {
-        newRow = newRow
-            .substitute ( this.id , new Identifier ( newId ) , false ) ;
-      }
+      newRow = newRow.substitute ( this.id , new Identifier ( newId ) , false ) ;
     }
+    /*
+     * Perform the substitution.
+     */
     newRow = newRow.substitute ( pId , pExpression , false ) ;
     return new ObjectExpr ( newId , this.tau , newRow ) ;
   }

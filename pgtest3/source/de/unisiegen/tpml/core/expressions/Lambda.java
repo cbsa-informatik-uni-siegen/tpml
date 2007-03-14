@@ -212,25 +212,35 @@ public final class Lambda extends Value
   public Lambda substitute ( String pId , Expression pExpression ,
       boolean pAttributeRename )
   {
+    /*
+     * Do not substitute, if the Identifiers are equal.
+     */
     if ( this.id.equals ( pId ) )
     {
       return this.clone ( ) ;
     }
-    Expression newE = this.e ;
+    /*
+     * Perform the bound renaming if required.
+     */
     String newId = this.id ;
-    if ( this.e.free ( ).contains ( pId ) )
+    BoundRenaming boundRenaming = new BoundRenaming ( ) ;
+    boundRenaming.add ( this.free ( ) ) ;
+    boundRenaming.add ( pExpression.free ( ) ) ;
+    boundRenaming.add ( pId ) ;
+    newId = boundRenaming.newIdentifier ( this.id ) ;
+    /*
+     * Substitute the old Identifier only with the new Identifier, if they are
+     * different.
+     */
+    Expression newE = this.e ;
+    if ( ! this.id.equals ( newId ) )
     {
-      BoundRenaming boundRenaming = new BoundRenaming ( ) ;
-      boundRenaming.add ( this.free ( ) ) ;
-      boundRenaming.add ( pExpression.free ( ) ) ;
-      boundRenaming.add ( pId ) ;
-      newId = boundRenaming.newIdentifier ( this.id ) ;
-      if ( ! this.id.equals ( newId ) )
-      {
-        newE = newE.substitute ( this.id , new Identifier ( newId ) ,
-            pAttributeRename ) ;
-      }
+      newE = newE.substitute ( this.id , new Identifier ( newId ) ,
+          pAttributeRename ) ;
     }
+    /*
+     * Perform the substitution.
+     */
     newE = newE.substitute ( pId , pExpression , pAttributeRename ) ;
     return new Lambda ( newId , this.tau , newE ) ;
   }

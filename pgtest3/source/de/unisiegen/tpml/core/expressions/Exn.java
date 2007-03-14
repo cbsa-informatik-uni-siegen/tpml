@@ -56,7 +56,7 @@ public final class Exn extends Expression
 
   /**
    * {@inheritDoc} Cloning is not necessary for exceptions and as such, we just
-   * a return a reference to <code>this</code> here.
+   * return a reference to <code>this</code> here.
    * 
    * @see Expression#clone()
    */

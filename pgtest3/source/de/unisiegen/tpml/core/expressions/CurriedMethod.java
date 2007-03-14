@@ -244,6 +244,9 @@ public final class CurriedMethod extends Expression
   public CurriedMethod substitute ( String pId , Expression pExpression ,
       boolean pAttributeRename )
   {
+    /*
+     * Do not substitute, if the Identifiers are equal.
+     */
     for ( int i = 1 ; i < this.identifiers.length ; i ++ )
     {
       if ( this.identifiers [ i ].equals ( pId ) )
@@ -253,40 +256,52 @@ public final class CurriedMethod extends Expression
     }
     Expression newE = this.e ;
     String [ ] newIdentifiers = this.identifiers.clone ( ) ;
-    if ( this.e.free ( ).contains ( pId ) )
+    for ( int i = 1 ; i < newIdentifiers.length ; i ++ )
     {
-      for ( int i = 1 ; i < newIdentifiers.length ; i ++ )
+      BoundRenaming boundRenaming = new BoundRenaming ( ) ;
+      boundRenaming.add ( this.free ( ) ) ;
+      boundRenaming.add ( pExpression.free ( ) ) ;
+      boundRenaming.add ( pId ) ;
+      /*
+       * The new Identifier should not be equal to an other Identifier.
+       */
+      if ( boundRenaming.contains ( newIdentifiers [ i ] ) )
       {
-        BoundRenaming boundRenaming = new BoundRenaming ( ) ;
-        boundRenaming.add ( this.free ( ) ) ;
-        boundRenaming.add ( pExpression.free ( ) ) ;
-        boundRenaming.add ( pId ) ;
-        if ( boundRenaming.contains ( newIdentifiers [ i ] ) )
+        for ( int j = 1 ; j < newIdentifiers.length ; j ++ )
         {
-          for ( int j = 1 ; j < newIdentifiers.length ; j ++ )
+          if ( i != j )
           {
-            if ( i != j )
-            {
-              boundRenaming.add ( newIdentifiers [ j ] ) ;
-            }
+            boundRenaming.add ( newIdentifiers [ j ] ) ;
           }
-        }
-        String newId = boundRenaming.newIdentifier ( newIdentifiers [ i ] ) ;
-        for ( int j = 1 ; j < i ; j ++ )
-        {
-          if ( this.identifiers [ i ].equals ( this.identifiers [ j ] ) )
-          {
-            newId = newIdentifiers [ j ] ;
-          }
-        }
-        if ( ! newIdentifiers [ i ].equals ( newId ) )
-        {
-          newE = newE.substitute ( newIdentifiers [ i ] , new Identifier (
-              newId ) , pAttributeRename ) ;
-          newIdentifiers [ i ] = newId ;
         }
       }
+      String newId = boundRenaming.newIdentifier ( newIdentifiers [ i ] ) ;
+      /*
+       * Search for an Identifier before the current Identifier with the same
+       * name. For example: "let a = b in object (self) method add b b = b a ;
+       * end".
+       */
+      for ( int j = 1 ; j < i ; j ++ )
+      {
+        if ( this.identifiers [ i ].equals ( this.identifiers [ j ] ) )
+        {
+          newId = newIdentifiers [ j ] ;
+        }
+      }
+      /*
+       * Substitute the old Identifier only with the new Identifier, if they are
+       * different.
+       */
+      if ( ! newIdentifiers [ i ].equals ( newId ) )
+      {
+        newE = newE.substitute ( newIdentifiers [ i ] ,
+            new Identifier ( newId ) , pAttributeRename ) ;
+        newIdentifiers [ i ] = newId ;
+      }
     }
+    /*
+     * Perform the substitution.
+     */
     newE = newE.substitute ( pId , pExpression , pAttributeRename ) ;
     return new CurriedMethod ( newIdentifiers , this.types , newE ) ;
   }

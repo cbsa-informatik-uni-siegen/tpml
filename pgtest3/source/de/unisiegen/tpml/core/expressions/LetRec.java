@@ -103,29 +103,38 @@ public final class LetRec extends Let
   public LetRec substitute ( String pId , Expression pExpression ,
       boolean pAttributeRename )
   {
+    /*
+     * Do not substitute , if the Identifiers are equal.
+     */
     if ( this.id.equals ( pId ) )
     {
-      return this ;
+      return this.clone ( ) ;
     }
+    /*
+     * Perform the bound renaming if required.
+     */
+    String newId = this.id ;
+    BoundRenaming boundRenaming = new BoundRenaming ( ) ;
+    boundRenaming.add ( this.free ( ) ) ;
+    boundRenaming.add ( pExpression.free ( ) ) ;
+    boundRenaming.add ( pId ) ;
+    newId = boundRenaming.newIdentifier ( this.id ) ;
+    /*
+     * Substitute the old Identifier only with the new Identifier, if they are
+     * different.
+     */
     Expression newE1 = this.e1 ;
     Expression newE2 = this.e2 ;
-    String newId = this.id ;
-    if ( ( newE1.free ( ).contains ( pId ) )
-        || ( newE2.free ( ).contains ( pId ) ) )
+    if ( ! this.id.equals ( newId ) )
     {
-      BoundRenaming boundRenaming = new BoundRenaming ( ) ;
-      boundRenaming.add ( this.free ( ) ) ;
-      boundRenaming.add ( pExpression.free ( ) ) ;
-      boundRenaming.add ( pId ) ;
-      newId = boundRenaming.newIdentifier ( this.id ) ;
-      if ( ! this.id.equals ( newId ) )
-      {
-        newE1 = newE1.substitute ( this.id , new Identifier ( newId ) ,
-            pAttributeRename ) ;
-        newE2 = newE2.substitute ( this.id , new Identifier ( newId ) ,
-            pAttributeRename ) ;
-      }
+      newE1 = newE1.substitute ( this.id , new Identifier ( newId ) ,
+          pAttributeRename ) ;
+      newE2 = newE2.substitute ( this.id , new Identifier ( newId ) ,
+          pAttributeRename ) ;
     }
+    /*
+     * Perform the substitution.
+     */
     newE1 = newE1.substitute ( pId , pExpression , pAttributeRename ) ;
     newE2 = newE2.substitute ( pId , pExpression , pAttributeRename ) ;
     return new LetRec ( newId , this.tau , newE1 , newE2 ) ;

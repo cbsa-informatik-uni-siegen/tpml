@@ -44,7 +44,7 @@ public final class Attribute extends Expression
    * 
    * @see #getE()
    */
-  private Expression expression ;
+  private Expression e ;
 
 
   /**
@@ -67,7 +67,7 @@ public final class Attribute extends Expression
     this.id = pIdentifier ;
     this.newId = null ;
     this.tau = pTau ;
-    this.expression = pExpression ;
+    this.e = pExpression ;
   }
 
 
@@ -77,7 +77,7 @@ public final class Attribute extends Expression
   @ Override
   public Attribute clone ( )
   {
-    return new Attribute ( this.id , this.tau , this.expression.clone ( ) ) ;
+    return new Attribute ( this.id , this.tau , this.e.clone ( ) ) ;
   }
 
 
@@ -90,8 +90,7 @@ public final class Attribute extends Expression
     if ( pObject instanceof Attribute )
     {
       Attribute other = ( Attribute ) pObject ;
-      return ( ( this.id.equals ( other.id ) )
-          && ( this.expression.equals ( other.expression ) ) && ( ( this.tau == null ) ? ( other.tau == null )
+      return ( ( this.id.equals ( other.id ) ) && ( this.e.equals ( other.e ) ) && ( ( this.tau == null ) ? ( other.tau == null )
           : ( this.tau.equals ( other.tau ) ) ) ) ;
     }
     return false ;
@@ -112,11 +111,11 @@ public final class Attribute extends Expression
    * TODO
    * 
    * @return TODO
-   * @see #expression
+   * @see #e
    */
   public Expression getE ( )
   {
-    return this.expression ;
+    return this.e ;
   }
 
 
@@ -162,7 +161,7 @@ public final class Attribute extends Expression
   @ Override
   public int hashCode ( )
   {
-    return this.id.hashCode ( ) + this.expression.hashCode ( )
+    return this.id.hashCode ( ) + this.e.hashCode ( )
         + ( this.tau == null ? 0 : this.tau.hashCode ( ) ) ;
   }
 
@@ -173,7 +172,7 @@ public final class Attribute extends Expression
   @ Override
   public boolean isValue ( )
   {
-    return this.expression.isValue ( ) ;
+    return this.e.isValue ( ) ;
   }
 
 
@@ -208,8 +207,7 @@ public final class Attribute extends Expression
   public Attribute substitute ( String pId , Expression pExpression ,
       boolean pAttributeRename )
   {
-    Expression newE = this.expression.substitute ( pId , pExpression ,
-        pAttributeRename ) ;
+    Expression newE = this.e.substitute ( pId , pExpression , pAttributeRename ) ;
     return new Attribute ( this.id , this.tau , newE ) ;
   }
 
@@ -225,7 +223,7 @@ public final class Attribute extends Expression
   {
     MonoType newTau = ( this.tau == null ) ? null : this.tau
         .substitute ( pTypeSubstitution ) ;
-    Expression newE = this.expression.substitute ( pTypeSubstitution ) ;
+    Expression newE = this.e.substitute ( pTypeSubstitution ) ;
     return new Attribute ( this.id , newTau , newE ) ;
   }
 
@@ -252,7 +250,7 @@ public final class Attribute extends Expression
             PRIO_ATTRIBUTE_TAU ) ;
       }
       this.prettyStringBuilder.addText ( " = " ) ; //$NON-NLS-1$
-      this.prettyStringBuilder.addBuilder ( this.expression
+      this.prettyStringBuilder.addBuilder ( this.e
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
           PRIO_ATTRIBUTE_E ) ;
       this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
