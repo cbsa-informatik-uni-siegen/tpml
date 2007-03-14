@@ -315,19 +315,19 @@ public class ShowBonds
 		 * in this method two different lists are needed for the two different
 		 * Expressions E1 and E2
 		 */
-		ArrayList<String> list2 = listWithBounds(b, c);
-		ArrayList<String> list = new ArrayList<String>();
+		ArrayList<String> list2 = listWithBounds(a, c);
+		ArrayList<String> list = listWithBounds(b, d);
 		list.add(pLet.getIdentifiers(0));
 
 	
 		
-		ArrayList<Expression> child = new ArrayList<Expression>();
+		ArrayList<Expression> child2 = new ArrayList<Expression>();
 
-		child.add(pLet.getE1());
+		child2.add(pLet.getE1());
 
 		
-		ArrayList<Expression> child2 = new ArrayList<Expression>();
-		child2.add(pLet.getE2());
+		ArrayList<Expression> child = new ArrayList<Expression>();
+		child.add(pLet.getE2());
 
 	
 
@@ -687,7 +687,7 @@ public class ShowBonds
 		ArrayList<IdentifierListItem> ids = IdentifierUtilities
 				.getIdentifierPositions(pExpression);
 
-		if (different)
+		if (!different)
 		{
 			for (int i = 0; i < ids.size(); i++)
 			{
