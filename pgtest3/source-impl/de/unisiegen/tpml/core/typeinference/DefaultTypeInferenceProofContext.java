@@ -3,12 +3,9 @@ package de.unisiegen.tpml.core.typeinference;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.TreeSet;
-import java.util.Vector;
 
 import de.unisiegen.tpml.core.AbstractProofNode;
-import de.unisiegen.tpml.core.ProofRule;
 import de.unisiegen.tpml.core.ProofRuleException;
-import de.unisiegen.tpml.core.ProofStep;
 import de.unisiegen.tpml.core.expressions.ArithmeticOperator;
 import de.unisiegen.tpml.core.expressions.Assign;
 import de.unisiegen.tpml.core.expressions.BinaryCons;
@@ -26,13 +23,13 @@ import de.unisiegen.tpml.core.expressions.RelationalOperator;
 import de.unisiegen.tpml.core.expressions.Tl;
 import de.unisiegen.tpml.core.expressions.UnaryCons;
 import de.unisiegen.tpml.core.expressions.UnitConstant;
+import de.unisiegen.tpml.core.typechecker.DefaultTypeCheckerProofContext;
 import de.unisiegen.tpml.core.typechecker.DefaultTypeCheckerProofNode;
+import de.unisiegen.tpml.core.typechecker.DefaultTypeEnvironment;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofContext;
-import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofRule;
 import de.unisiegen.tpml.core.typechecker.TypeEnvironment;
-import de.unisiegen.tpml.core.typechecker.TypeEquationList;
 import de.unisiegen.tpml.core.typechecker.TypeUtilities;
 import de.unisiegen.tpml.core.typechecker.UnificationException;
 import de.unisiegen.tpml.core.types.ArrowType;
@@ -50,107 +47,81 @@ import de.unisiegen.tpml.core.types.UnitType;
 
 
 /**
- * TODO
+ * 
  *
  * @author Benjamin Mies
  *
  */
-public class DefaultTypeInferenceProofContext  implements TypeInferenceProofContext,TypeCheckerProofContext{
+public class DefaultTypeInferenceProofContext  implements TypeInferenceProofContext, TypeCheckerProofContext{
 
 	
-	  //
-	  // Attributes
-	  //
 	  
-	  /**
-	   * The current offset for the <code>TypeVariable</code> allocation. The
-	   * offset combined with the index from the {@link #model} will be used
-	   * to generate a new type variable on every invocation of the method
-	   * {@link #newTypeVariable()}. The offset will be incremented afterwards.
-	   * 
-	   * @see #newTypeVariable()
-	   * @see TypeVariable
-	   */
+	//
+	// Attributes
+	//
+	  
+
 	
-	private int count =0;
-	  private int offset = 0;
-
-	  /**
-	   * The list of type equations that has been collected for this context
-	   * and will be used as input for the unification algorithm.
-	   * 
-	   * @see typechecker.TypeEquations
-	   */
-	  private TypeEquationList equations = TypeEquationList.EMPTY_LIST;
-	  
-	  /**
-	   * The type checker proof model with which this proof context is associated.
-	   * 
-	   * @see #DefaultTypeInferenceProofContext(TypeCheckerProofModel)
-	   */
-	  private TypeInferenceProofModel model;
-	  
-	  /**
-	   * The list of redoable actions on the proof model.
-	   * 
-	   * @see #addRedoAction(Runnable)
-	   * @see #getRedoActions()
-	   */
-	  private LinkedList<Runnable> redoActions = new LinkedList<Runnable>();
-	  
-	  /**
-	   * The list of undoable actions on the proof model.
-	   * 
-	   * @see #addUndoAction(Runnable)
-	   * @see #getUndoActions()
-	   */
-	  private LinkedList<Runnable> undoActions = new LinkedList<Runnable>();
-	  
-	  private DefaultTypeCheckerProofNode tmpTree;
-	  
-	  private MonoType type;
-	  
-	  protected Vector<AbstractProofNode> children;
-	  
-	 private DefaultTypeInferenceProofNode node;
-
+	private int offset = 0;
+	
+	private TypeEquationList equations=TypeEquationList.EMPTY_LIST;
+	
+	private TypeInferenceProofModel model;
+	
+	private DefaultTypeInferenceProofNode node;
+	
 	
 	/**
-	 * TODO
+	 * 
 	 *
 	 * @param model
+	 * @param node
 	 */
-	  public DefaultTypeInferenceProofContext(final TypeInferenceProofModel model, DefaultTypeInferenceProofNode pNode) {
-		    if (model == null) {
-		      throw new NullPointerException("model is null");
-		    }
-		    this.model = model;
-		    children=new Vector<AbstractProofNode>();
-		    
-		    node=pNode;
-		    
-		    // increment the model index
-		    final int index = model.getIndex();
-		    addRedoAction(new Runnable() { public void run() { model.setIndex(index + 1); } });
-		    addUndoAction(new Runnable() { public void run() { model.setIndex(index); } });
-	
-	  }
-	  
-	  public void addProofNode(TypeCheckerProofNode pNode, TypeEnvironment environment, Expression expression, MonoType type, TypeEquationList eqns) {
-		  DefaultTypeInferenceProofNode node = (DefaultTypeInferenceProofNode) pNode;
-		    this.model.contextAddProofNode(this,node, environment, expression, type, eqns, node.getSubstitutions());
-	  	}
-	
-	  public void addProofNode(TypeCheckerProofNode pNode, TypeEnvironment environment, Expression expression, MonoType type) {
-		  DefaultTypeInferenceProofNode node = (DefaultTypeInferenceProofNode) pNode;
-		    this.model.contextAddProofNode(this, node, environment, expression, type, null, node.getSubstitutions());
-	  	}
+	public DefaultTypeInferenceProofContext(TypeInferenceProofModel model, DefaultTypeInferenceProofNode pNode) {
+		this.model=model;
+		this.node=pNode;
+		this.equations=pNode.getEquations();
+	}
+
+
 	
 	/**
-	 * TODO
+	 * 
+	 *
+	 * @param node
+	 * @param environment
+	 * @param expression
+	 * @param type
+	 * @see de.unisiegen.tpml.core.typechecker.TypeCheckerProofContext#addProofNode(de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode, de.unisiegen.tpml.core.typechecker.TypeEnvironment, de.unisiegen.tpml.core.expressions.Expression, de.unisiegen.tpml.core.types.MonoType)
+	 */
+	public void addProofNode(TypeCheckerProofNode pNode, TypeEnvironment environment, Expression expression, MonoType type) {
+		// TODO Think about what to do here
+		
+		  
+			    if (node == null) {
+			      throw new NullPointerException("node is null");
+			    }
+			    if (environment == null) {
+			      throw new NullPointerException("environment is null");
+			    }
+			    if (expression == null) {
+			      throw new NullPointerException("expression is null");
+			    }
+			    if (type == null) {
+			      throw new NullPointerException("type is null");
+			    }
+			    
+			    final DefaultTypeCheckerProofNode child = new DefaultTypeCheckerProofNode(environment, expression, type);
+		        ((DefaultTypeCheckerProofNode)pNode).add(child);
+		//this.model.contextAddProofNode(this, node, environment, expression, type, equations);
+	} 
+	
+	/**
+	 * 
 	 *
 	 * @param expression
 	 * @return
+	 * @see de.unisiegen.tpml.core.typechecker.TypeCheckerProofContext#getTypeForExpression(de.unisiegen.tpml.core.expressions.Expression)
 	 */
 	public Type getTypeForExpression(Expression expression) {
 		  
@@ -222,153 +193,15 @@ public class DefaultTypeInferenceProofContext  implements TypeInferenceProofCont
 	    }
 	  }
 	
-	  /**
-	 * TODO
-	 *
-	 * @param left
-	 * @param right
-	 */
-	public void addEquation(MonoType left, MonoType right) {
-			node.addEquation(left, right);
-		    this.equations = this.equations.extend(left, right);
-		    
-		 
-		  }
-		  
-	  
-	
-	 //
-	  // Rule application
-	  //
-	  
-	void apply(TypeCheckerProofRule rule, TypeInferenceProofNode pNode, MonoType type) throws ProofRuleException, UnificationException {
-	    
-	    DefaultTypeInferenceProofNode node = (DefaultTypeInferenceProofNode) pNode;
-	    
-	    // try to apply the rule to the node
-	    rule.apply(this, node);
-	    
-	    //  record the proof step for the node
-	    this.model.contextSetProofNodeRule(this, (DefaultTypeInferenceProofNode)pNode, rule);
-	    
-	    // check if the user specified a type
-	    if (type != null) {
-	      // add an equation for { node.getType() = type }
-	      addEquation(node.getType(), type);
-	    }
-	
-	    // unify the type equations and apply the substitution to the model
-	    //this.model.contextApplySubstitution(this, this.equations.unify());
-	    // update all super nodes
-	    for (;;) {
-	      // determine the parent node
-	      DefaultTypeInferenceProofNode parentNode = (DefaultTypeInferenceProofNode) node.getParent();
-	     if (parentNode == null) {
-	        break;
-	      }
-	        
-	      // update the parent node (using the previously applied rule)
-	      parentNode.getRule().update(this, parentNode);
-	      
-	      
-	      // continue with the next one
-	      node = parentNode;
-	    }
-	  }
-	  
-	
-	
-	 //
-	  // Context action handling
-	  //
-	  
-	  /**
-	   * Adds the specified <code>redoAction</code> to the internal list of redoable actions, and runs the
-	   * <code>redoAction</code>.
-	   * 
-	   * This method should be called before adding the matching undo action via {@link #addUndoAction(Runnable)}.
-	   * 
-	   * @param redoAction the redoable action.
-	   * 
-	   * @see #addUndoAction(Runnable)
-	   * @see #getRedoActions()
-	   * 
-	   * @throws NullPointerException if <code>redoAction</code> is <code>null</code>.
-	   */
-	  void addRedoAction(Runnable redoAction) {
-	    if (redoAction == null) {
-	      throw new NullPointerException("undoAction is null");
-	    }
-	    
-	    // perform the action
-	    redoAction.run();
-	    
-	    // record the action
-	    this.redoActions.add(redoAction);
-	  }
-	  
-	  /**
-	   * Adds the specified <code>undoAction</code> to the internal list of undoable actions, and runs the
-	   * <code>undoActions</code>.
-	   * 
-	   * This method should be called after adding the matching redo action via {@link #addRedoAction(Runnable)}.
-	   * 
-	   * @param undoAction the undoable action.
-	   * 
-	   * @see #addRedoAction(Runnable)
-	   * @see #getUndoActions()
-	   * 
-	   * @throws NullPointerException if <code>undoAction</code> is <code>null</code>.
-	   */
-	  void addUndoAction(Runnable undoAction) {
-	    if (undoAction == null) {
-	      throw new NullPointerException("undoAction is null");
-	    }
-	    
-	    // record the action
-	    this.undoActions.add(0, undoAction);
-	  }
-	  
-	  /**
-	   * Returns a <code>Runnable</code>, which performs all the previously
-	   * recorded redoable actions, added via {@link #addRedoAction(Runnable)}.
-	   * 
-	   * @return a <code>Runnable</code> for all recorded redoable actions.
-	   * 
-	   * @see #addRedoAction(Runnable)
-	   * @see #getUndoActions()
-	   */
-	  Runnable getRedoActions() {
-	    return new Runnable() {
-	      public void run() {
-	        for (Runnable redoAction : DefaultTypeInferenceProofContext.this.redoActions) {
-	          redoAction.run();
-	        }
-	      }
-	    };
-	  }
-	  
-	  /**
-	   * Returns a <code>Runnable</code>, which performs all the previously
-	   * recorded undoable actions, added via {@link #addUndoAction(Runnable)}.
-	   * 
-	   * @return a <code>Runnable</code> for all recorded undoable actions.
-	   * 
-	   * @see #addUndoAction(Runnable)
-	   * @see #getRedoActions()
-	   */
-	  Runnable getUndoActions() {
-	    return new Runnable() {
-	      public void run() {
-	        for (Runnable undoAction : DefaultTypeInferenceProofContext.this.undoActions) {
-	          undoAction.run();
-	        }
-	      }
-	    };
-	  }
-
-	  public MonoType instantiate(Type type) {
-		    if (type == null) {
+		/**
+		 * 
+		 *
+		 * @param type
+		 * @return
+		 * @see de.unisiegen.tpml.core.typechecker.TypeCheckerProofContext#instantiate(de.unisiegen.tpml.core.types.Type)
+		 */
+		public MonoType instantiate(Type type) {
+			if (type == null) {
 		      throw new NullPointerException("type is null");
 		    }
 		    if (type instanceof PolyType) {
@@ -383,31 +216,80 @@ public class DefaultTypeInferenceProofContext  implements TypeInferenceProofCont
 		      return (MonoType)type;
 		    }
 		  }
+	
+	
+	/**
+	 * 
+	 *
+	 * @return
+	 * @see de.unisiegen.tpml.core.typechecker.TypeCheckerProofContext#newTypeVariable()
+	 */
+	public TypeVariable newTypeVariable() {
+	    return new TypeVariable(this.model.getIndex(), this.offset++);
 
-	  public TypeVariable newTypeVariable() {
-		    return new TypeVariable(this.model.getIndex(), this.offset++);
-		    
-		  }
-	  
-	  /**
-	   * Invokes all previously registered undo actions and clears the list of undo actions.
-	   * 
-	   * @see #addUndoAction(Runnable)
-	   * @see #getUndoActions()
-	   */
-	  void revert() {
-	    // undo all already performed changes
-	    for (Runnable undoAction : this.undoActions) {
-	      undoAction.run();
-	    }
-	    this.undoActions.clear();
-	  }
-
-	public TypeInferenceProofModel getModel() {
-		return this.model;
 	}
+	
+	/**
+	 * 
+	 *
+	 * @param left
+	 * @param right
+	 * @see de.unisiegen.tpml.core.typechecker.TypeCheckerProofContext#addEquation(de.unisiegen.tpml.core.types.MonoType, de.unisiegen.tpml.core.types.MonoType)
+	 */
+	public void addEquation(MonoType left, MonoType right) {
+	    equations=equations.extend(left, right);
+	 
+	  }
 	  
-
-
+	 //
+	  // Rule application
+	  //
+	  
+	void apply(TypeCheckerProofRule rule, TypeFormula formula, MonoType type) throws ProofRuleException, UnificationException {
+	    
+	
+		
+		DefaultTypeCheckerProofNode typeNode = new DefaultTypeCheckerProofNode(formula.getEnvironment(), formula.getExpression(), formula.getType());
+		
+	    // try to apply the rule to the node
+		rule.apply(this, typeNode);
+	    //  record the proof step for the node
+	    this.model.contextSetProofNodeRule(this, node, rule, formula);
+	    
+	    // check if the user specified a type
+	    if (type != null) {
+	      // add an equation for { node.getType() = type }
+	     // addEquation(node.getType(), type);
+	    }
+	
+	    // unify the type equations and apply the substitution to the model
+	    //this.model.contextApplySubstitution(this, this.equations.unify());
+	    
+	    /** think about if we have any update function
+	    // update all super nodes
+	    for (;;) {
+	      // determine the parent node
+	      DefaultTypeCheckerProofNode parentNode = (DefaultTypeCheckerProofNode) node.getParent();
+	     if (parentNode == null) {
+	        break;
+	      }
+	        
+	      // update the parent node (using the previously applied rule)
+	      parentNode.getRule().update(this, parentNode);
+	      
+	      
+	      // continue with the next one
+	      node = parentNode;
+	    }*/
+	    
+	    
+	    LinkedList<TypeFormula> formulas=new LinkedList<TypeFormula>();
+	    for (int i=0; i< typeNode.getChildCount(); i++)
+        {
+	    	TypeJudgement judgement= new TypeJudgement((DefaultTypeEnvironment)typeNode.getChildAt(i).getEnvironment(), typeNode.getChildAt(i).getExpression(), typeNode.getChildAt(i).getType());
+	    	formulas.add(judgement);
+        }
+	    this.model.contextAddProofNode(node, formulas, equations);
+	  }
 
 }

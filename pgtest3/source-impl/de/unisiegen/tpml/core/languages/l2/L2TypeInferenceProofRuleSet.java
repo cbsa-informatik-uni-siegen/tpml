@@ -29,63 +29,19 @@ public class L2TypeInferenceProofRuleSet extends L1TypeInferenceProofRuleSet {
 	    unregister("REC");
 		
 //		 register the additional typeinference rule
-	    registerByMethodName(L1Language.L1, "UNIFY", "applyunify");
+	//    registerByMethodName(L1Language.L1, "UNIFY", "applyunify");
 		
 //		 register the type rules
-	    registerByMethodName(L1Language.L1, "ABSTR", "applyAbstr", "updateDefault");
+	    registerByMethodName(L1Language.L1, "ABSTR", "applyAbstr");
 	    registerByMethodName(L2Language.L2, "AND", "applyAnd");
-	    registerByMethodName(L1Language.L1, "APP", "applyApp", "updateApp");
+	    registerByMethodName(L1Language.L1, "APP", "applyApp");
 	    registerByMethodName(L1Language.L1, "COND", "applyCond");
 	    registerByMethodName(L1Language.L1, "CONST", "applyConst");
-	    registerByMethodName(L1Language.L1, "ID", "applyId", "updateDefault");
-	    registerByMethodName(L1Language.L1, "LET", "applyLet", "updateDefault");
+	    registerByMethodName(L1Language.L1, "ID", "applyId");
+	    registerByMethodName(L1Language.L1, "LET", "applyLet");
 	    registerByMethodName(L2Language.L2, "OR", "applyOr");
 	    registerByMethodName(L2Language.L2, "REC", "applyRec");
 	
 	}
-	 //
-	  // The (APP) rule
-	  //
-	  
-	  /**
-	   * Applies the <b>(APP)</b> rule to the <code>node</code> using the <code>context</code>.
-	   * 
-	   * @param context the type checker proof context.
-	   * @param node the type checker proof node.
-	   */
-	@Override
-	  public void applyApp(TypeCheckerProofContext context, TypeCheckerProofNode pNode) {
-		
-		DefaultTypeInferenceProofNode node = (DefaultTypeInferenceProofNode) pNode;
-		TypeVariable tau2 = context.newTypeVariable();
-		 Expression e = node.getExpression ( ) ;
-	    
-	    // can be either an application or an infix operation
-		if ( e instanceof Application )
-		{
-			// otherwise it must be an infix operation
-			Application application = (Application)e;
-			context.addProofNode(pNode, pNode.getEnvironment(), application.getE1(), tau2);
-	    }
-		else 
-		{
-	     // generate new child node and a TmpChild which will be generated later
-	      InfixOperation infixOperation = (InfixOperation)e;
-	      Application application = new Application(infixOperation.getOp(), infixOperation.getE1());
-	      context.addProofNode(pNode, pNode.getEnvironment(), application, tau2);
-	    }
-	  }
-	  
-  
-	public void applyLet(TypeCheckerProofContext context, TypeCheckerProofNode pNode) {
-		DefaultTypeInferenceProofNode node = (DefaultTypeInferenceProofNode) pNode;
-		TypeVariable tau = context.newTypeVariable();
-		
-	
-//			 generate new child node, second Child will be generated in update
-		      Let let = (Let)pNode.getExpression();
-		      context.addProofNode(pNode, pNode.getEnvironment(), let.getE1(), tau);
-	} 
-
 
 }

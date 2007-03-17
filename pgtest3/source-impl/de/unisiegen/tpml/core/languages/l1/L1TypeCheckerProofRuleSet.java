@@ -105,6 +105,7 @@ public class L1TypeCheckerProofRuleSet extends AbstractTypeCheckerProofRuleSet {
    * @param node the type checker proof node.
    */
   public void applyAbstr(TypeCheckerProofContext context, TypeCheckerProofNode node) {
+	  
     // determine the type environment
     TypeEnvironment environment = node.getEnvironment();
     
@@ -371,18 +372,12 @@ public class L1TypeCheckerProofRuleSet extends AbstractTypeCheckerProofRuleSet {
     context.addEquation(node.getType(), BooleanType.BOOL);
   }
   
+  /**
   //
   // The unify rule
   //
 
-/**
- * TODO
- *
- * @param context
- * @param pNode
- * @return
- * @throws UnificationException
- */
+
 public void applyUnify(TypeCheckerProofContext context, TypeCheckerProofNode pNode) throws UnificationException {
 	
 	
@@ -534,12 +529,7 @@ public void applyUnify(TypeCheckerProofContext context, TypeCheckerProofNode pNo
   }
 
 
-/**
- * TODO
- *
- * @param pContext
- * @param pNode
- */
+
 public void updateDefault(TypeCheckerProofContext pContext, TypeCheckerProofNode pNode) {
 	  DefaultTypeInferenceProofContext context =(DefaultTypeInferenceProofContext)pContext;
 	  DefaultTypeInferenceProofNode root = (DefaultTypeInferenceProofNode)context.getModel().getRoot();
@@ -563,12 +553,7 @@ public void updateDefault(TypeCheckerProofContext pContext, TypeCheckerProofNode
 	  }
 }
 
-	/**
-	 * TODO
-	 *
-	 * @param context
-	 * @param node
-	 */
+
 	public void updateApp(TypeCheckerProofContext context, TypeCheckerProofNode node) {
 		Expression e = node.getExpression();
 		if ( node.getChildCount ( ) == 1 && node.getChildAt ( 0 ).isFinished() )
@@ -597,12 +582,7 @@ public void updateDefault(TypeCheckerProofContext pContext, TypeCheckerProofNode
 	
 	}
 	
-	/**
-	 * TODO
-	 *
-	 * @param context
-	 * @param node
-	 */
+
 	public void updateLet(TypeCheckerProofContext context, TypeCheckerProofNode node) {
 		Expression e = node.getExpression();
 		if ( node.getChildCount ( ) == 1 && node.getChildAt ( 0 ).isProven ( ) )
@@ -618,6 +598,6 @@ public void updateDefault(TypeCheckerProofContext pContext, TypeCheckerProofNode
 		  
 	    }
 	
-	}
+	}*/
 
 }

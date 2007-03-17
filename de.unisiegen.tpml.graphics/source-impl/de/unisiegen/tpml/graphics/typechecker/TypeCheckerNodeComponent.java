@@ -367,7 +367,9 @@ public class TypeCheckerNodeComponent extends JComponent  implements TreeNodeCom
     this.dimension.height = Math.max(expSize.height, this.dimension.height);
     
     // get the neede size for the type
-    if (this.proofNode.getType () != null && this.proofNode.isFinished()) {
+    // changes benjamin to see the type in typechecker
+    //TODO insert second condition
+    if (this.proofNode.getType () != null /*&& this.proofNode.isFinished()*/) {
       this.typeLabel.setText(" :: " + this.proofNode.getType()); //$NON-NLS-1$
     }
     else {

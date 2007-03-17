@@ -48,8 +48,6 @@ public interface TypeCheckerProofContext {
    */
   public void addProofNode(TypeCheckerProofNode node, TypeEnvironment environment, Expression expression, MonoType type);
   
-  public void addProofNode(TypeCheckerProofNode node, TypeEnvironment environment, Expression expression, MonoType type, TypeEquationList eqns);
-  
   /**
    * Returns the {@link Type} for the given <code>expression</code> if possible, i.e. <b>(BOOL)</b> if
    * <code>expression</code> is an instance of {@link de.unisiegen.tpml.core.expressions.BooleanConstant}.
