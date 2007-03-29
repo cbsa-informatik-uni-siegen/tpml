@@ -203,8 +203,6 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
         /*
          * If the child Expression of the Send is a Row and the first child
          * Expression of the Row is an Attribute, we have to perform SEND-ATTR.
-         * We can only substitute in Methods and CurriedMethods, not in
-         * Attributes.
          */
         Attribute attribute = ( Attribute ) row.getExpressions ( 0 ) ;
         pContext.addProofStep ( getRuleByName ( SEND_ATTR ) , attribute ) ;
