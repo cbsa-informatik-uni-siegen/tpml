@@ -469,13 +469,13 @@ public class L2OBigStepProofRuleSet extends L2BigStepProofRuleSet
         && ( node.getChildAt ( 1 ).isProven ( ) ) )
     {
       Row row = ( Row ) node.getExpression ( ) ;
-      Expression expression = node.getChildAt ( 0 ).getResult ( ).getValue ( ) ;
+      Expression childExpression = node.getChildAt ( 0 ).getResult ( )
+          .getValue ( ) ;
       Row childRow = ( Row ) node.getChildAt ( 1 ).getResult ( ).getValue ( ) ;
       Attribute attribute = ( Attribute ) row.getExpressions ( 0 ) ;
-      Expression [ ] newRowExpressions = new Expression [ childRow
-          .getExpressions ( ).length + 1 ] ;
+      Expression [ ] newRowExpressions = new Expression [ row.getExpressions ( ).length ] ;
       Attribute newAttribute = new Attribute ( attribute.getId ( ) , attribute
-          .getTau ( ) , expression ) ;
+          .getTau ( ) , childExpression ) ;
       newRowExpressions [ 0 ] = newAttribute ;
       for ( int i = 1 ; i < newRowExpressions.length ; i ++ )
       {
@@ -545,10 +545,8 @@ public class L2OBigStepProofRuleSet extends L2BigStepProofRuleSet
     {
       Row row = ( Row ) node.getExpression ( ) ;
       Row childRow = ( Row ) node.getChildAt ( 0 ).getResult ( ).getValue ( ) ;
-      Method method = ( Method ) row.getExpressions ( 0 ) ;
-      Expression [ ] newRowExpressions = new Expression [ childRow
-          .getExpressions ( ).length + 1 ] ;
-      newRowExpressions [ 0 ] = method ;
+      Expression [ ] newRowExpressions = new Expression [ row.getExpressions ( ).length ] ;
+      newRowExpressions [ 0 ] = row.getExpressions ( 0 ).clone ( ) ;
       for ( int i = 1 ; i < newRowExpressions.length ; i ++ )
       {
         newRowExpressions [ i ] = childRow.getExpressions ( i - 1 ) ;
