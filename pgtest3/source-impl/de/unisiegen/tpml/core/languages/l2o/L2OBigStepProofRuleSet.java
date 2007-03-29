@@ -569,13 +569,8 @@ public class L2OBigStepProofRuleSet extends L2BigStepProofRuleSet
     {
       ObjectExpr oldObjectExpr = ( ObjectExpr ) node.getExpression ( ) ;
       Row row = ( Row ) node.getChildAt ( 0 ).getResult ( ).getValue ( ) ;
-      context.addProofNode ( node , new ObjectExpr ( oldObjectExpr.getId ( ) ,
-          oldObjectExpr.getTau ( ) , row ) ) ;
-    }
-    else if ( ( node.getChildCount ( ) == 2 )
-        && ( node.getChildAt ( 1 ).isProven ( ) ) )
-    {
-      context.setProofNodeResult ( node , node.getChildAt ( 1 ).getResult ( ) ) ;
+      context.setProofNodeResult ( node , new ObjectExpr ( oldObjectExpr
+          .getId ( ) , oldObjectExpr.getTau ( ) , row ) ) ;
     }
   }
 
