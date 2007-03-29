@@ -71,16 +71,40 @@ public class DefaultTypeInferenceProofContext  implements TypeInferenceProofCont
 	private DefaultTypeInferenceProofNode node;
 	
 	
+	  /**
+	   * The list of redoable actions on the proof model.
+	   * 
+	   * @see #addRedoAction(Runnable)
+	   * @see #getRedoActions()
+	   */
+	  private LinkedList<Runnable> redoActions = new LinkedList<Runnable>();
+	  
+	  /**
+	   * The list of undoable actions on the proof model.
+	   * 
+	   * @see #addUndoAction(Runnable)
+	   * @see #getUndoActions()
+	   */
+	  private LinkedList<Runnable> undoActions = new LinkedList<Runnable>();
+	  
+	  
+	
 	/**
 	 * 
 	 *
 	 * @param model
 	 * @param node
 	 */
-	public DefaultTypeInferenceProofContext(TypeInferenceProofModel model, DefaultTypeInferenceProofNode pNode) {
-		this.model=model;
+	public DefaultTypeInferenceProofContext(TypeInferenceProofModel pModel, DefaultTypeInferenceProofNode pNode) {
+		this.model=pModel;
 		this.node=pNode;
 		this.equations=pNode.getEquations();
+		
+//		 increment the model index
+	    final int index = model.getIndex();
+	    
+	    addRedoAction(new Runnable() { public void run() { model.setIndex(index + 1); } });
+	    addUndoAction(new Runnable() { public void run() { model.setIndex(index); } });
 	}
 
 
@@ -246,11 +270,23 @@ public class DefaultTypeInferenceProofContext  implements TypeInferenceProofCont
 	  //
 	  
 	void apply(TypeCheckerProofRule rule, TypeFormula formula, MonoType type) throws ProofRuleException, UnificationException {
-	    
-	
-		
-		DefaultTypeCheckerProofNode typeNode = new DefaultTypeCheckerProofNode(formula.getEnvironment(), formula.getExpression(), formula.getType());
-		
+		DefaultTypeCheckerProofNode typeNode=null;
+		//dirty workaround, just think about
+		if (formula.getExpression()!=null)
+		{
+			typeNode = new DefaultTypeCheckerProofNode(formula.getEnvironment(), formula.getExpression(), formula.getType());
+		}
+		else if (rule.toString().equals("UNIFY"))
+		{
+			System.out.println("unify");
+			typeNode = new DefaultTypeEquationProofNode(formula.getEnvironment(),new IsEmpty() , formula.getType(),(TypeEquationList) formula);
+			System.out.println("after unify");
+		}
+		else
+		{
+			typeNode = new DefaultTypeCheckerProofNode(formula.getEnvironment(),new IsEmpty() , formula.getType());
+			throw new ProofRuleException(typeNode, rule);
+		}
 	    // try to apply the rule to the node
 		rule.apply(this, typeNode);
 	    //  record the proof step for the node
@@ -282,14 +318,131 @@ public class DefaultTypeInferenceProofContext  implements TypeInferenceProofCont
 	      node = parentNode;
 	    }*/
 	    
-	    
+	    // Create a new List of formulas
 	    LinkedList<TypeFormula> formulas=new LinkedList<TypeFormula>();
+	    
+	    // add the nodes of the temporary existing typenode
 	    for (int i=0; i< typeNode.getChildCount(); i++)
         {
 	    	TypeJudgement judgement= new TypeJudgement((DefaultTypeEnvironment)typeNode.getChildAt(i).getEnvironment(), typeNode.getChildAt(i).getExpression(), typeNode.getChildAt(i).getType());
 	    	formulas.add(judgement);
         }
+	    
+	    // add evtl. existing formulas from the parent node
+	    for (int i=1; i< node.getFormula().size()-1; i++)
+	    {
+	    	formulas.add(node.getFormula().get(i));
+	    }
+	    
+	    // create the new node
 	    this.model.contextAddProofNode(node, formulas, equations);
 	  }
 
+	  /**
+	   * Invokes all previously registered undo actions and clears the list of undo actions.
+	   * 
+	   * @see #addUndoAction(Runnable)
+	   * @see #getUndoActions()
+	   */
+	  void revert() {
+	    // undo all already performed changes
+	    for (Runnable undoAction : this.undoActions) {
+	      undoAction.run();
+	    }
+	    this.undoActions.clear();
+	  }
+		//
+		// Context action handling
+		//
+	  
+	  /**
+	   * Adds the specified <code>redoAction</code> to the internal list of redoable actions, and runs the
+	   * <code>redoAction</code>.
+	   * 
+	   * This method should be called before adding the matching undo action via {@link #addUndoAction(Runnable)}.
+	   * 
+	   * @param redoAction the redoable action.
+	   * 
+	   * @see #addUndoAction(Runnable)
+	   * @see #getRedoActions()
+	   * 
+	   * @throws NullPointerException if <code>redoAction</code> is <code>null</code>.
+	   */
+	  void addRedoAction(Runnable redoAction) {
+	    if (redoAction == null) {
+	      throw new NullPointerException("undoAction is null");
+	    }
+	    
+	    // perform the action
+	    redoAction.run();
+	    
+	    // record the action
+	    this.redoActions.add(redoAction);
+	  }
+	  
+	  /**
+	   * Adds the specified <code>undoAction</code> to the internal list of undoable actions, and runs the
+	   * <code>undoActions</code>.
+	   * 
+	   * This method should be called after adding the matching redo action via {@link #addRedoAction(Runnable)}.
+	   * 
+	   * @param undoAction the undoable action.
+	   * 
+	   * @see #addRedoAction(Runnable)
+	   * @see #getUndoActions()
+	   * 
+	   * @throws NullPointerException if <code>undoAction</code> is <code>null</code>.
+	   */
+	  void addUndoAction(Runnable undoAction) {
+	    if (undoAction == null) {
+	      throw new NullPointerException("undoAction is null");
+	    }
+	    
+	    // record the action
+	    this.undoActions.add(0, undoAction);
+	  }
+	  
+	  /**
+	   * Returns a <code>Runnable</code>, which performs all the previously
+	   * recorded redoable actions, added via {@link #addRedoAction(Runnable)}.
+	   * 
+	   * @return a <code>Runnable</code> for all recorded redoable actions.
+	   * 
+	   * @see #addRedoAction(Runnable)
+	   * @see #getUndoActions()
+	   */
+	  Runnable getRedoActions() {
+	    return new Runnable() {
+	      public void run() {
+	        for (Runnable redoAction : DefaultTypeInferenceProofContext.this.redoActions) {
+	          redoAction.run();
+	        }
+	      }
+	    };
+	  }
+	  
+	  /**
+	   * Returns a <code>Runnable</code>, which performs all the previously
+	   * recorded undoable actions, added via {@link #addUndoAction(Runnable)}.
+	   * 
+	   * @return a <code>Runnable</code> for all recorded undoable actions.
+	   * 
+	   * @see #addUndoAction(Runnable)
+	   * @see #getRedoActions()
+	   */
+	  Runnable getUndoActions() {
+	    return new Runnable() {
+	      public void run() {
+	        for (Runnable undoAction : DefaultTypeInferenceProofContext.this.undoActions) {
+	          undoAction.run();
+	        }
+	      }
+	    };
+	  }
+
+
+
+	public void setEquations(TypeEquationList equations) {
+		this.equations = equations;
+	}
 }

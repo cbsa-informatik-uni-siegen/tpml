@@ -22,8 +22,9 @@ import de.unisiegen.tpml.core.typechecker.DefaultTypeSubstitution;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofContext;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode;
 import de.unisiegen.tpml.core.typechecker.TypeEnvironment;
-import de.unisiegen.tpml.core.typechecker.TypeEquationList;
+import de.unisiegen.tpml.core.typeinference.TypeEquationList;
 import de.unisiegen.tpml.core.typechecker.UnificationException;
+import de.unisiegen.tpml.core.typeinference.DefaultTypeEquationProofNode;
 import de.unisiegen.tpml.core.typeinference.DefaultTypeInferenceProofContext;
 import de.unisiegen.tpml.core.typeinference.DefaultTypeInferenceProofNode;
 import de.unisiegen.tpml.core.types.ArrowType;
@@ -372,12 +373,53 @@ public class L1TypeCheckerProofRuleSet extends AbstractTypeCheckerProofRuleSet {
     context.addEquation(node.getType(), BooleanType.BOOL);
   }
   
-  /**
+  
   //
   // The unify rule
   //
 
-
+  public void applyUnify(TypeCheckerProofContext pContext, TypeCheckerProofNode pNode){
+	  
+	  DefaultTypeInferenceProofContext context = (DefaultTypeInferenceProofContext) pContext;
+	  DefaultTypeEquationProofNode node = (DefaultTypeEquationProofNode) pNode ;
+	  TypeEquationList eqns = node.getEquations();
+	  
+	  // if the TypeEquationList is an empty list, we are ready wiht unification
+	  if (eqns == TypeEquationList.EMPTY_LIST)
+	  {
+		  return;
+	  }
+	  
+	  // otherwise, we examine the first equation in the list
+	  
+	  MonoType left = eqns.getFirst().getLeft();
+	  MonoType right = eqns.getFirst().getRight();
+	  
+	  if (left instanceof TypeVariable && right instanceof TypeVariable)
+	  {
+		  TypeVariable tau1 = (TypeVariable) left;
+		  TypeVariable tau2 = (TypeVariable) right;
+		  
+		  if (tau1==tau2)
+		  {
+			  context.setEquations(eqns.getRemaining());
+			  return;
+		  }
+		  
+		  else 
+		  {
+			  DefaultTypeSubstitution s1 = new DefaultTypeSubstitution(tau1, tau2);
+			  node.addSubstitution(s1);
+			  
+			  // now have to substitude remaining eqns
+			  eqns= eqns.getRemaining();
+			  eqns.substitute(s1);
+			  context.setEquations(eqns);
+		  }
+	  }
+  }
+  
+  /**
 public void applyUnify(TypeCheckerProofContext context, TypeCheckerProofNode pNode) throws UnificationException {
 	
 	
@@ -530,74 +572,6 @@ public void applyUnify(TypeCheckerProofContext context, TypeCheckerProofNode pNo
 
 
 
-public void updateDefault(TypeCheckerProofContext pContext, TypeCheckerProofNode pNode) {
-	  DefaultTypeInferenceProofContext context =(DefaultTypeInferenceProofContext)pContext;
-	  DefaultTypeInferenceProofNode root = (DefaultTypeInferenceProofNode)context.getModel().getRoot();
-
-	  if (!root.isUnified())
-	  {
-		  if ( root.isFinished())
-		  {
-			  DefaultTypeInferenceProofNode child= root;
-			  
-			  while (child.getChildCount()>0)
-			  {
-				  child=child.getLastChild();
-			  }
-			  
-			  context.addProofNode(root, child.getEnvironment(), root.getExpression(), root.getType(), child.getEquations());
-			  root.setChecked(true);
-			  root.setUnified(true);
-			  return;	
-		  }	
-	  }
-}
-
-
-	public void updateApp(TypeCheckerProofContext context, TypeCheckerProofNode node) {
-		Expression e = node.getExpression();
-		if ( node.getChildCount ( ) == 1 && node.getChildAt ( 0 ).isFinished() )
-	    {
-			
-			// determine the first child node
-			DefaultTypeInferenceProofNode node0=(DefaultTypeInferenceProofNode) node.getChildAt(0);
-			TypeVariable tau =(TypeVariable)((ArrowType)node0.getType()).getTau1();
-		  if ( e instanceof Application )
-		  {
-			  // the Application case
-		        Application application = ( Application ) e ;
-		        
-		        //node0.setType(new ArrowType(tau, node.getType()));
-				context.addProofNode(node, node0.getEnvironment(),application.getE2() , tau, node0.getEquations() );
-				
-		  }
-		  else
-	      {
-	        // the InfixOperation case
-	        InfixOperation infixOperation = ( InfixOperation ) e ;
-	        context.addProofNode ( node0 ,node0.getEnvironment(), infixOperation.getE2 ( ) ,tau, node0.getEquations()  ) ;
-	      }
-	    }
-
-	
-	}
-	
-
-	public void updateLet(TypeCheckerProofContext context, TypeCheckerProofNode node) {
-		Expression e = node.getExpression();
-		if ( node.getChildCount ( ) == 1 && node.getChildAt ( 0 ).isProven ( ) )
-	    {
-		  if ( e instanceof Let )
-		  {
-		        Let let = ( Let ) e ;
-		        DefaultTypeInferenceProofNode node0=(DefaultTypeInferenceProofNode) node.getChildAt(0);
-		        TypeVariable tau = context.newTypeVariable();
-				context.addProofNode(node0, node0.getEnvironment(),let.getE2() , tau);
-				node0.setType(new ArrowType(tau, node.getType()));
-		  }
-		  
-	    }
-	
-	}*/
+*/
 
 }

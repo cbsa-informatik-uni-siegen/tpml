@@ -144,6 +144,7 @@ public final class TypeEquation {
   public int hashCode() {
     return this.left.hashCode() + this.right.hashCode();
   }
+  
 }
 
 

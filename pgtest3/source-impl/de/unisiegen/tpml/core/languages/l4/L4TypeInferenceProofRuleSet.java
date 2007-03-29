@@ -34,7 +34,7 @@ public class L4TypeInferenceProofRuleSet extends L4TypeCheckerProofRuleSet {
 	    unregister("WHILE");
 		
 //		 register the additional typeinference rule
-	 //   registerByMethodName(L1Language.L1, "UNIFY", "applyUnify");
+	    registerByMethodName(L1Language.L1, "UNIFY", "applyUnify");
 		
 //		 register the type rules
 	    registerByMethodName(L1Language.L1, "ABSTR", "applyAbstr");

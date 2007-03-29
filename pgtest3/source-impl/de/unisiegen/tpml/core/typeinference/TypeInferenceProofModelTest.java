@@ -85,7 +85,7 @@ public final class TypeInferenceProofModelTest extends JFrame {
     final JTree tree = new JTree(model);
     treePanel.add(tree, BorderLayout.CENTER);
     
-    tree.setRowHeight(53);
+    tree.setRowHeight(60);
     this.jScrollPane = new JScrollPane ( treePanel ) ;
     this.add(jScrollPane);
     // setup the button panel

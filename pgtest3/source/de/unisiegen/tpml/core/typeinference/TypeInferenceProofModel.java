@@ -48,7 +48,6 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 	  
 	  public TypeInferenceProofModel(Expression expression, AbstractProofRuleSet ruleSet) {
 		  super (new DefaultTypeInferenceProofNode(new TypeJudgement(new DefaultTypeEnvironment(), expression, new TypeVariable(1, 0)), TypeEquationList.EMPTY_LIST), ruleSet);
-			
 	  }
 	  
 	  
@@ -121,7 +120,7 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 				context.apply(rule,node.getFormula().getFirst(),type);
 			}  catch (ProofRuleException e) {
 			      // revert the actions performed so far
-			     // context.revert();
+			      context.revert();
 			      
 			      // re-throw the exception
 			      throw e;
@@ -236,6 +235,14 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 	
 	  public int getIndex() {
 		    return this.index;
+		  }
+
+
+	  void setIndex(int index) {
+		    if (index < 1) {
+		      throw new IllegalArgumentException("index is invalid");
+		    }
+		    this.index = index;
 		  }
 	
 }

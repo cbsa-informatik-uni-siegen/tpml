@@ -6,7 +6,11 @@ import de.unisiegen.tpml.core.types.MonoType;
 
 public interface TypeFormula {
 	
+	//
+	// Attributes
+	//
 	
+		
 	public Expression getExpression();
 	
 	public DefaultTypeEnvironment getEnvironment();
@@ -14,4 +18,5 @@ public interface TypeFormula {
 	public MonoType getType();
 	
 	public String toString();
+	
 }

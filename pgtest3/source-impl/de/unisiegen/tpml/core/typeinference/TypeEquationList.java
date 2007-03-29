@@ -6,6 +6,7 @@ import de.unisiegen.tpml.core.typechecker.DefaultTypeEnvironment;
 import de.unisiegen.tpml.core.typechecker.TypeEquation;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
 import de.unisiegen.tpml.core.types.MonoType;
+import de.unisiegen.tpml.core.types.UnitType;
 
 public final class TypeEquationList implements TypeFormula{
 	  //
@@ -19,8 +20,8 @@ public final class TypeEquationList implements TypeFormula{
 	   */
 	  public static final TypeEquationList EMPTY_LIST = new TypeEquationList();
 
-	  
-	  
+
+
 	  //
 	  // Attributes
 	  //
@@ -35,7 +36,7 @@ public final class TypeEquationList implements TypeFormula{
 	   */
 	  private TypeEquationList remaining;
 	  
-	  
+//	private MonoType type = UnitType.UNIT;	  
 	  
 	  //
 	  // Constructors (private)
@@ -101,7 +102,7 @@ public final class TypeEquationList implements TypeFormula{
 	   * 
 	   * @see Equation#substitute(Substitution)
 	   */
-	  TypeEquationList substitute(TypeSubstitution s) {
+	  public TypeEquationList substitute(TypeSubstitution s) {
 	    // nothing to substitute on the empty list
 	    if (this == EMPTY_LIST) {
 	      return this;
@@ -144,11 +145,19 @@ public final class TypeEquationList implements TypeFormula{
 	}
 
 	public Expression getExpression() {
-		return new IsEmpty();
+		return null;
 	}
 
 	public MonoType getType() {
-		return null;
+		return UnitType.UNIT;
+	}
+
+	public TypeEquation getFirst() {
+		return this.first;
+	}
+
+	public TypeEquationList getRemaining() {
+		return this.remaining;
 	}
 
 

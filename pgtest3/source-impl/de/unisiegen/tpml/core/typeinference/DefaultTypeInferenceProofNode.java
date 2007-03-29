@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import de.unisiegen.tpml.core.AbstractProofNode;
 import de.unisiegen.tpml.core.ProofStep;
 import de.unisiegen.tpml.core.expressions.Expression;
+import de.unisiegen.tpml.core.typechecker.DefaultTypeSubstitution;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofRule;
 import de.unisiegen.tpml.core.typechecker.TypeEnvironment;
 import de.unisiegen.tpml.core.types.MonoType;
@@ -25,6 +26,8 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements 
 	private TypeEquationList equations;
 	
 	private ProofStep[] steps= new ProofStep[0];
+	
+	private TypeSubstitutionList substitutions = TypeSubstitutionList.EMPTY_LIST;
 	
 	
 	
@@ -99,13 +102,17 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements 
 	  public String toString() {
 	    StringBuilder builder = new StringBuilder();
 	    builder.append("<html>");
+	    builder.append(substitutions);
+	    builder.append("<br>");
 	    if (this.parent!=null)
 	    	builder.append("=    ");
 	    builder.append("solve");
 	    for (int i=0; i< formula.size(); i++)
 	    {
+	    	if (i!=0)
+	    		builder.append("<br>");
 	    	builder.append(formula.get(i));
-	    	builder.append("<br>");
+	    	
 	    }
 	    if (getRule() != null) {
 	        builder.append(" (" + getRule() + ")");
@@ -120,5 +127,9 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements 
 		return this.formula;
 	}
 	
+	public void addSubstitution(DefaultTypeSubstitution s1)
+	{
+		substitutions.extend(s1);
+	}
 	
 }
