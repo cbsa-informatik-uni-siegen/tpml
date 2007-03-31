@@ -39,6 +39,7 @@ import de.unisiegen.tpml.graphics.components.MenuGuessItem;
 import de.unisiegen.tpml.graphics.components.MenuGuessTreeItem;
 import de.unisiegen.tpml.graphics.components.MenuRuleItem;
 import de.unisiegen.tpml.graphics.components.MenuTranslateItem;
+import de.unisiegen.tpml.graphics.components.RulesMenu;
 import de.unisiegen.tpml.graphics.outline.listener.OutlineMouseListener;
 import de.unisiegen.tpml.graphics.renderer.AbstractRenderer;
 import de.unisiegen.tpml.graphics.smallstep.SmallStepNodeComponent;
@@ -259,12 +260,18 @@ public class BigStepNodeComponent extends JComponent implements TreeNodeComponen
 //  Fill the menu with menuitems
 
     ProofRule[] rules = this.proofModel.getRules();
+    Language lang = proofModel.getLanguage();
 
     menu = new JPopupMenu();
+    
+    //TODO test der neuen klasse
+    RulesMenu rm = new RulesMenu();
+    menu = rm.getMenu(rules, rules, lang, this, "bigstep" );
 
     //if to many rules we will devide in menu and submenus, otherwise there will be only seperators 
     //between the rules coming from the different languages
-    if (rules.length > TOMANY)
+    //if (rules.length > TOMANY)
+    if (false)
     {
       if (rules.length > 0)
       {
@@ -336,7 +343,7 @@ public class BigStepNodeComponent extends JComponent implements TreeNodeComponen
         // JMenu Smenu=new JMenu(Messages.getString("Language.0")+ " "
         // +rules[0].getGroup());
         JMenu subMenu;
-        Language lang = proofModel.getLanguage();
+        //Language lang = proofModel.getLanguage();
         
         //the hasmap contains teh names of the languages connected to the group-number
         HashMap <Number,String>names = getLanguageNames(lang);
@@ -476,7 +483,7 @@ public class BigStepNodeComponent extends JComponent implements TreeNodeComponen
     }
     //if ther are less than TOMANY rules ther will be no submenus, only seperators
     //with this variable you would also be able to disable the submenufunction
-    else
+    else if (false)
     {
       if (rules.length > 0)
       {
@@ -619,7 +626,7 @@ public class BigStepNodeComponent extends JComponent implements TreeNodeComponen
    * 
    * @param item
    */
-  private void handleMenuActivated (JMenuItem item) {
+  public void handleMenuActivated (JMenuItem item) {
     if (item instanceof MenuRuleItem) {
       MenuRuleItem ruleItem = (MenuRuleItem)item;
       ProofRule rule = ruleItem.getRule();
