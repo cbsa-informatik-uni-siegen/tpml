@@ -42,6 +42,7 @@ import de.unisiegen.tpml.graphics.components.MenuGuessItem;
 import de.unisiegen.tpml.graphics.components.MenuGuessTreeItem;
 import de.unisiegen.tpml.graphics.components.MenuRuleItem;
 import de.unisiegen.tpml.graphics.components.MenuTranslateItem;
+import de.unisiegen.tpml.graphics.components.RulesMenu;
 
 /**
  * The graphical representation of a
@@ -204,7 +205,7 @@ public class SmallStepNodeComponent extends JComponent
   /**
    * saves the last used elements MAX elements will be saved
    */
-  private ArrayList<MenuRuleItem> lastUsedElements;
+  private ArrayList<MenuRuleItem> lastUsedElements = new ArrayList<MenuRuleItem>();
   
   /**
    * defines how many rules will be displayed as last used elements
@@ -264,8 +265,6 @@ public class SmallStepNodeComponent extends JComponent
   {
     super();
 
-    lastUsedElements = new ArrayList();
-
     this.proofNode = proofNode;
 
     this.proofModel = proofModel;
@@ -310,7 +309,7 @@ public class SmallStepNodeComponent extends JComponent
           public void run()
           {
             // handle the menu action
-            SmallStepNodeComponent.this.menuItemActivated(item);
+            SmallStepNodeComponent.this.handleMenuActivated(item);
 
             // wait for the repaint before resetting the cursor
             SwingUtilities.invokeLater(new Runnable() {
@@ -412,7 +411,6 @@ public class SmallStepNodeComponent extends JComponent
   @Override
   protected void paintComponent(Graphics gc)
   {
-    // TODO Automatisch erstellter Methoden-Stub
 
     // gc.setColor(Color.BLACK);
     // gc.drawRect(0, 0, getWidth()-1, getHeight()-1);
@@ -525,12 +523,17 @@ public class SmallStepNodeComponent extends JComponent
     // Fill the menu with menuitems
 
     ProofRule[] rules = this.proofModel.getRules();
+    Language lang = proofModel.getLanguage();
 
     menu = new JPopupMenu();
+    
+    RulesMenu rm = new RulesMenu();
+    menu = rm.getMenu(rules, rules, lang, this, "smallstep" );
 
     //if to many rules we will devide in menu and submenus, otherwise there will be only seperators 
     //between the rules coming from the different languages
-    if (rules.length > TOMANY)
+    //if (rules.length > TOMANY)
+    if (false)
     {
       if (rules.length > 0)
       {
@@ -553,7 +556,8 @@ public class SmallStepNodeComponent extends JComponent
             ProofRule[] allRules = proofModel.getRules();
             for (ProofRule a : allRules)
             {
-              if (new MenuRuleItem(a).getLabel().equalsIgnoreCase(name))
+              //if (new MenuRuleItem(a).getText().equalsIgnoreCase(name))
+            	if (new MenuRuleItem(a).getText().equalsIgnoreCase(name))
               {
                 //add at the beginning of the list to save the order
                 lastUsedElements.add(0, new MenuRuleItem(a));
@@ -566,7 +570,7 @@ public class SmallStepNodeComponent extends JComponent
                     //to be able to revert the changes in the menu if the rule throws an exception
                   	saveToRevert();
                   	//if the rule is selected it will be moved to the top of the menu
-                  	moveToTop(((MenuRuleItem) e.getSource()).getLabel(), MAX);
+                  	moveToTop(((MenuRuleItem) e.getSource()).getText(), MAX);
                   	//save this state of the menu to the preferences
                   	save();
                   }
@@ -590,7 +594,7 @@ public class SmallStepNodeComponent extends JComponent
         // JMenu Smenu=new JMenu(Messages.getString("Language.0")+ " "
         // +rules[0].getGroup());
         JMenu subMenu;
-        Language lang = proofModel.getLanguage();
+        //Language lang = proofModel.getLanguage();
         
         //the hasmap contains teh names of the languages connected to the group-number
         HashMap <Number,String>names = getLanguageNames(lang);
@@ -624,7 +628,7 @@ public class SmallStepNodeComponent extends JComponent
                     int schleife = Math.min(MAX, lastUsedElements.size());
                     for (int j = 0; j < schleife; j++)
                     {
-                      if (lastUsedElements.get(j).getLabel().equals(lastUsed.getLabel()))
+                      if (lastUsedElements.get(j).getText().equals(lastUsed.getText()))
                       {
                         isIn = true;
                       }
@@ -634,10 +638,10 @@ public class SmallStepNodeComponent extends JComponent
                     public void actionPerformed(ActionEvent e)
                     {
                       //move to to
-                    	moveToTop(((MenuRuleItem) e.getSource()).getLabel(), MAX);
+                    	moveToTop(((MenuRuleItem) e.getSource()).getText(), MAX);
                  
                       //the action must be called manualy if the element is in a submenu
-                      menuItemActivated((JMenuItem) e.getSource());
+                      handleMenuActivated((JMenuItem) e.getSource());
                     }
                   };
                   lastUsed.addActionListener(al);
@@ -666,8 +670,8 @@ public class SmallStepNodeComponent extends JComponent
                   ActionListener al = new ActionListener() {
                     public void actionPerformed(ActionEvent e)
                     {
-                      moveToTop(((MenuRuleItem) e.getSource()).getLabel(), MAX);
-                      menuItemActivated((JMenuItem) e.getSource());
+                      moveToTop(((MenuRuleItem) e.getSource()).getText(), MAX);
+                      handleMenuActivated((JMenuItem) e.getSource());
                     }
                   };
                   lastUsed.addActionListener(al);
@@ -678,7 +682,7 @@ public class SmallStepNodeComponent extends JComponent
                     int schleife = Math.min(MAX, lastUsedElements.size());
                     for (int j = 0; j < schleife; j++)
                     {
-                      if (lastUsedElements.get(j).getLabel().equals(lastUsed.getLabel()))
+                      if (lastUsedElements.get(j).getText().equals(lastUsed.getText()))
                       {
                         isIn = true;
                       }
@@ -706,7 +710,7 @@ public class SmallStepNodeComponent extends JComponent
                 }
                 
                 //the action must be called manualy if the element is in a submenu
-                menuItemActivated((JMenuItem) e.getSource());
+                handleMenuActivated((JMenuItem) e.getSource());
 
               }
             };
@@ -719,7 +723,7 @@ public class SmallStepNodeComponent extends JComponent
       }
     }
     //if ther are less than TOMANY rules ther will be no submenus, only seperators
-    else
+    else if (false)
     {
       if (rules.length > 0)
       {
@@ -813,7 +817,7 @@ public class SmallStepNodeComponent extends JComponent
         MenuRuleItem kacke = (MenuRuleItem) menu.getComponent(i);
         MenuRuleItem tmp2 = lastUsedElements.get(i);
         // vergleiche die Namen, wenn sie übereinstimmen
-        if (kacke.getLabel().equals(label))
+        if (kacke.getText().equals(label))
         {
           //System.out.println("wieder nach oben!");
           // nach oeben schieben
@@ -823,7 +827,7 @@ public class SmallStepNodeComponent extends JComponent
           //break;
         }
         
-        if (tmp2.getLabel().equals(label))
+        if (tmp2.getText().equals(label))
         {
         	lastUsedElements.remove(i);
         	lastUsedElements.add(0, tmp2);        	
@@ -846,11 +850,15 @@ public class SmallStepNodeComponent extends JComponent
 	{
 		for (int i = 0; i < lastUsedElements.size(); i++)
     {
-      // System.out.println(last10Elements.get(i).getLabel());
-      preferences.put("rule" + i, lastUsedElements.get(i).getLabel());
+      // System.out.println(last10Elements.get(i).getText());
+      preferences.put("rule" + i, lastUsedElements.get(i).getText());
     }
 	}
 	
+	/**
+	 * saves the state of the menu to be able to revert changes
+	 *
+	 */
 	private void saveToRevert()
 	{
 		//als erstes das Menü durchlaufen und in die Liste packen
@@ -887,6 +895,10 @@ public class SmallStepNodeComponent extends JComponent
 		revertLastUsedElements.addAll(lastUsedElements);
 	}
 	
+	/**
+	 * reverts the changes in the menu
+	 *
+	 */
 	private void revertMenu()
 	{
 		//als erstes das Menü von den Einträgen befreien
@@ -994,7 +1006,7 @@ public class SmallStepNodeComponent extends JComponent
    * 
    * @param item
    */
-  private void menuItemActivated(JMenuItem item)
+  public void handleMenuActivated(JMenuItem item)
   {
     freeUnderlining();
     if (item instanceof MenuRuleItem)
