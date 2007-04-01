@@ -1,6 +1,1 @@
-(object (self) 
- val a = 0 ;
- val b = 1 ;
- method fib = self {< a = b ; b = a + b >} ;
- method get = a ;
-end) # fib # fib # fib # fib # fib # fib # fib # fib # get
+object (self: < add : int ; equal : bool ; >) method add (x:int) = 1 ; method equal = true ; end
