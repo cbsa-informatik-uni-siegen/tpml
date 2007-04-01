@@ -1,1 +1,1 @@
-let rec a = a in 1
+lambda x:int.(lambda x:int.x)
