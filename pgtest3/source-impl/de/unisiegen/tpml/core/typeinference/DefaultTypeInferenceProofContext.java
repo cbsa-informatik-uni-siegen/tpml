@@ -26,6 +26,7 @@ import de.unisiegen.tpml.core.expressions.UnitConstant;
 import de.unisiegen.tpml.core.typechecker.DefaultTypeCheckerProofContext;
 import de.unisiegen.tpml.core.typechecker.DefaultTypeCheckerProofNode;
 import de.unisiegen.tpml.core.typechecker.DefaultTypeEnvironment;
+import de.unisiegen.tpml.core.typechecker.DefaultTypeSubstitution;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofContext;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofRule;
@@ -64,11 +65,15 @@ public class DefaultTypeInferenceProofContext  implements TypeInferenceProofCont
 	
 	private int offset = 0;
 	
-	private TypeEquationList equations=TypeEquationList.EMPTY_LIST;
+	private TypeEquationList equations = TypeEquationList.EMPTY_LIST;
+	
+	private TypeSubstitutionList substitutions = TypeSubstitutionList.EMPTY_LIST;
 	
 	private TypeInferenceProofModel model;
 	
 	private DefaultTypeInferenceProofNode node;
+	
+	private boolean unifyReady = false;
 	
 	
 	  /**
@@ -264,6 +269,10 @@ public class DefaultTypeInferenceProofContext  implements TypeInferenceProofCont
 	    equations=equations.extend(left, right);
 	 
 	  }
+	
+	public void addSubstitution (DefaultTypeSubstitution s){
+		substitutions = substitutions.extend(s);
+	}
 	  
 	 //
 	  // Rule application
@@ -278,20 +287,18 @@ public class DefaultTypeInferenceProofContext  implements TypeInferenceProofCont
 		}
 		else if (rule.toString().equals("UNIFY"))
 		{
-			System.out.println("unify");
 			typeNode = new DefaultTypeEquationProofNode(formula.getEnvironment(),new IsEmpty() , formula.getType(),(TypeEquationList) formula);
-			System.out.println("after unify");
 		}
 		else
 		{
-			typeNode = new DefaultTypeCheckerProofNode(formula.getEnvironment(),new IsEmpty() , formula.getType());
+			typeNode = new DefaultTypeCheckerProofNode(formula.getEnvironment(),new IsEmpty() , UnitType.UNIT);
 			throw new ProofRuleException(typeNode, rule);
 		}
 	    // try to apply the rule to the node
 		rule.apply(this, typeNode);
+		
 	    //  record the proof step for the node
 	    this.model.contextSetProofNodeRule(this, node, rule, formula);
-	    
 	    // check if the user specified a type
 	    if (type != null) {
 	      // add an equation for { node.getType() = type }
@@ -301,23 +308,8 @@ public class DefaultTypeInferenceProofContext  implements TypeInferenceProofCont
 	    // unify the type equations and apply the substitution to the model
 	    //this.model.contextApplySubstitution(this, this.equations.unify());
 	    
-	    /** think about if we have any update function
-	    // update all super nodes
-	    for (;;) {
-	      // determine the parent node
-	      DefaultTypeCheckerProofNode parentNode = (DefaultTypeCheckerProofNode) node.getParent();
-	     if (parentNode == null) {
-	        break;
-	      }
-	        
-	      // update the parent node (using the previously applied rule)
-	      parentNode.getRule().update(this, parentNode);
-	      
-	      
-	      // continue with the next one
-	      node = parentNode;
-	    }*/
-	    
+		if (!unifyReady)
+	    {
 	    // Create a new List of formulas
 	    LinkedList<TypeFormula> formulas=new LinkedList<TypeFormula>();
 	    
@@ -335,7 +327,8 @@ public class DefaultTypeInferenceProofContext  implements TypeInferenceProofCont
 	    }
 	    
 	    // create the new node
-	    this.model.contextAddProofNode(node, formulas, equations);
+	    this.model.contextAddProofNode(this, node, formulas, equations, substitutions);
+	    }
 	  }
 
 	  /**
@@ -444,5 +437,17 @@ public class DefaultTypeInferenceProofContext  implements TypeInferenceProofCont
 
 	public void setEquations(TypeEquationList equations) {
 		this.equations = equations;
+	}
+
+
+
+	public void setSubstitutions(TypeSubstitutionList substitutions) {
+		this.substitutions = substitutions;
+	}
+
+
+
+	public void setUnifyReady(boolean unifyReady) {
+		this.unifyReady = unifyReady;
 	}
 }

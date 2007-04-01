@@ -12,9 +12,7 @@ import de.unisiegen.tpml.core.types.MonoType;
 
 public interface TypeInferenceProofNode extends ProofNode
 {
-	 //
-	  // Accessors
-	  //
+	
 	  
 	
 	

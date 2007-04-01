@@ -27,31 +27,43 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements 
 	
 	private ProofStep[] steps= new ProofStep[0];
 	
-	private TypeSubstitutionList substitutions = TypeSubstitutionList.EMPTY_LIST;
+	private TypeSubstitutionList substitutions; // = TypeSubstitutionList.EMPTY_LIST;
 	
 	
 	
 	//
 	// Constructors
 	//
-	public DefaultTypeInferenceProofNode(TypeJudgement judgement, TypeEquationList list){
+	public DefaultTypeInferenceProofNode(TypeJudgement judgement, TypeEquationList list, TypeSubstitutionList subs){
 		equations=list;
 		formula.add(judgement);
 		formula.add(list);
+		substitutions = subs;
 		
 	}
 	
-	public DefaultTypeInferenceProofNode(LinkedList<TypeFormula> judgement, TypeEquationList list){
+	public DefaultTypeInferenceProofNode(LinkedList<TypeFormula> judgement, TypeEquationList list, TypeSubstitutionList subs){
 		equations=list;
 		formula=judgement;
 		formula.add(list);
-		
+		substitutions = subs;
 	}
 
 	public boolean isProven() {
 		return (getSteps().length > 0);
 	}
 
+	  public boolean isFinished() {
+		    if (!isProven()) {
+		      return false;
+		    }
+		    for (int n = 0; n < getChildCount(); ++n) {
+		      if (!((DefaultTypeInferenceProofNode)getChildAt(n)).isFinished()) {
+		        return false;
+		      }
+		    }
+		    return true;
+		  }
 
 	
 	//
@@ -130,6 +142,10 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements 
 	public void addSubstitution(DefaultTypeSubstitution s1)
 	{
 		substitutions.extend(s1);
+	}
+
+	public TypeSubstitutionList getSubstitutions() {
+		return this.substitutions;
 	}
 	
 }

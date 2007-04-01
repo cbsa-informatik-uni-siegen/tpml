@@ -378,45 +378,128 @@ public class L1TypeCheckerProofRuleSet extends AbstractTypeCheckerProofRuleSet {
   // The unify rule
   //
 
-  public void applyUnify(TypeCheckerProofContext pContext, TypeCheckerProofNode pNode){
+  public void applyUnify(TypeCheckerProofContext pContext, TypeCheckerProofNode pNode) throws UnificationException{
 	  
 	  DefaultTypeInferenceProofContext context = (DefaultTypeInferenceProofContext) pContext;
 	  DefaultTypeEquationProofNode node = (DefaultTypeEquationProofNode) pNode ;
 	  TypeEquationList eqns = node.getEquations();
-	  
 	  // if the TypeEquationList is an empty list, we are ready wiht unification
 	  if (eqns == TypeEquationList.EMPTY_LIST)
 	  {
+		  context.setUnifyReady(true);
 		  return;
 	  }
 	  
 	  // otherwise, we examine the first equation in the list
-	  
 	  MonoType left = eqns.getFirst().getLeft();
 	  MonoType right = eqns.getFirst().getRight();
 	  
-	  if (left instanceof TypeVariable && right instanceof TypeVariable)
+	  if (left instanceof TypeVariable || right instanceof TypeVariable)
 	  {
-		  TypeVariable tau1 = (TypeVariable) left;
-		  TypeVariable tau2 = (TypeVariable) right;
+		    // the left or right side of the equation is a type variable
+	      TypeVariable tvar = (TypeVariable)(left instanceof TypeVariable ? left : right);
+	      MonoType tau = (left instanceof TypeVariable ? right : left);
+	      
+	      // either tvar equals tau or tvar is not present in tau
+	      if (tvar.equals(tau) || !tau.free().contains(tvar)) {
+	    	  
+	    	  
+	        DefaultTypeSubstitution s = new DefaultTypeSubstitution(tvar, tau);
 		  
-		  if (tau1==tau2)
-		  {
-			  context.setEquations(eqns.getRemaining());
-			  return;
-		  }
 		  
-		  else 
-		  {
-			  DefaultTypeSubstitution s1 = new DefaultTypeSubstitution(tau1, tau2);
-			  node.addSubstitution(s1);
+		 
 			  
 			  // now have to substitude remaining eqns
 			  eqns= eqns.getRemaining();
-			  eqns.substitute(s1);
+			  eqns=eqns.substitute(s);
 			  context.setEquations(eqns);
+			  context.addSubstitution(s);
 		  }
 	  }
+	  else if (left instanceof ArrowType && right instanceof ArrowType){
+		  ArrowType taul = (ArrowType)left;
+	      ArrowType taur = (ArrowType)right;
+	      
+	      // we need to check {tau1 = tau1', tau2 = tau2'} as well
+	      eqns = eqns.getRemaining();
+	      context.setEquations(eqns);
+	      context.addEquation(taul.getTau2(), taur.getTau2());
+	      context.addEquation(taul.getTau1(), taur.getTau1());
+	  }
+      else if (left instanceof TupleType && right instanceof TupleType) {
+          // cast to TupleType instances (tau and tau')
+          TupleType taul = (TupleType)left;
+          TupleType taur = (TupleType)right;
+          
+          // determine the sub types
+          MonoType[] typesl = taul.getTypes();
+          MonoType[] typesr = taur.getTypes();
+          
+          // check if the arities match
+          if (typesl.length == typesr.length) {
+            // check all sub types
+            context.setEquations(eqns.getRemaining());
+            for (int n = 0; n < typesl.length; ++n) {
+              context.addEquation(typesl[n], typesr[n]);
+            }
+            return;
+          }
+//        generate new child nodes
+//        context.addProofNode(node, node.getEnvironment(), node.getExpression(), node.getType(), eqns);
+          context.setEquations(eqns.getRemaining());
+          return ;
+        }
+        else if (left instanceof TupleType && right instanceof TupleType) {
+          // cast to TupleType instances (tau and tau')
+          TupleType taul = (TupleType)left;
+          TupleType taur = (TupleType)right;
+          
+          // determine the sub types
+          MonoType[] typesl = taul.getTypes();
+          MonoType[] typesr = taur.getTypes();
+          
+          // check if the arities match
+          if (typesl.length == typesr.length) {
+            // check all sub types
+            context.setEquations(eqns.getRemaining());
+            for (int n = 0; n < typesl.length; ++n) {
+              context.addEquation(typesl[n], typesr[n]);
+            }
+            
+            return;
+          }
+          
+          // FALL-THROUGH: Otherwise it's a type error
+        }
+        else if (left instanceof RefType && right instanceof RefType) {
+          // cast to RefType instances (tau and tau')
+          RefType taul = (RefType)left;
+          RefType taur = (RefType)right;
+
+          // we need to check {tau = tau'} as well
+          context.setEquations(eqns.getRemaining());
+          context.addEquation(taul.getTau(), taur.getTau());
+          
+          
+          return;
+        }
+        else if (left instanceof ListType && right instanceof ListType) {
+          // cast to ListType instances (tau and tau')
+          ListType taul = (ListType)left;
+          ListType taur = (ListType)right;
+          
+          // we need to check {tau = tau'} as well
+          context.setEquations(eqns.getRemaining());
+          context.addEquation(taul.getTau(), taur.getTau());
+          
+          return;
+        }
+	  else if (left.equals(right))
+	  {
+		  context.setEquations(eqns.getRemaining());
+		  return;
+	  }   
+	//  throw new UnificationException(eqns.getFirst());  
   }
   
   /**
@@ -483,7 +566,33 @@ public void applyUnify(TypeCheckerProofContext context, TypeCheckerProofNode pNo
       
 //      TODO
 //      i have to implement this (just think about what to do here)
+          else if (left instanceof TupleType && right instanceof TupleType) {
+      // cast to TupleType instances (tau and tau')
+      TupleType taul = (TupleType)left;
+      TupleType taur = (TupleType)right;
       
+      // determine the sub types
+      MonoType[] typesl = taul.getTypes();
+      MonoType[] typesr = taur.getTypes();
+      
+      // check if the arities match
+      if (typesl.length == typesr.length) {
+        // check all sub types
+        TypeEquationList eqns = node.getEquations().remaining;
+        for (int n = 0; n < typesl.length; ++n) {
+          eqns = eqns.extend(typesl[n], typesr[n]);
+        }
+        
+        // try to unify the new list
+//	      TODO
+//	      i have to implement this (just think about what to do here)
+//      generate new child nodes
+        context.addProofNode(node, node.getEnvironment(), node.getExpression(), node.getType(), eqns);
+        
+        
+        
+        return;
+      }
 //    generate new child nodes
       context.addProofNode(node, node.getEnvironment(), node.getExpression(), node.getType(), eqns);
       
