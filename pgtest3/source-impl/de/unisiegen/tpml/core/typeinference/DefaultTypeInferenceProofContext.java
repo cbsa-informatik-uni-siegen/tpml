@@ -350,18 +350,25 @@ public class DefaultTypeInferenceProofContext  implements TypeInferenceProofCont
 	    // Create a new List of formulas
 	    LinkedList<TypeFormula> formulas=new LinkedList<TypeFormula>();
 	    
+	  
+	    
+	    // add evtl. existing formulas from the parent node
+	    //for (int i=0; i< node.getFormula().size()-1; i++)
+	    for (TypeFormula form : node.getFormula())
+	    {
+	    	if ((!formula.equals(form)) && (!(form instanceof TypeEquationList)) )
+	    	{
+	    		formulas.add(form);
+	    	}
+	    }
+	    
 	    // add the nodes of the temporary existing typenode
 	    for (int i=0; i< typeNode.getChildCount(); i++)
         {
 	    	TypeJudgement judgement= new TypeJudgement((DefaultTypeEnvironment)typeNode.getChildAt(i).getEnvironment(), typeNode.getChildAt(i).getExpression(), typeNode.getChildAt(i).getType());
 	    	formulas.add(judgement);
         }
-	    
-	    // add evtl. existing formulas from the parent node
-	    for (int i=1; i< node.getFormula().size()-1; i++)
-	    {
-	    	formulas.add(node.getFormula().get(i));
-	    }
+	    formulas.add(equations);
 	    
 	    // create the new node
 	    this.model.contextAddProofNode(this, node, formulas, equations, substitutions);

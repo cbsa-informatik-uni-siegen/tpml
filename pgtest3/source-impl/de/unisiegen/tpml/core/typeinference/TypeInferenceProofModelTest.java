@@ -2,6 +2,7 @@ package de.unisiegen.tpml.core.typeinference;
 
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -22,6 +23,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
+import javax.swing.border.LineBorder;
+import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreePath;
 
 import de.unisiegen.tpml.core.ExpressionProofNode;
@@ -49,6 +52,7 @@ public final class TypeInferenceProofModelTest extends JFrame {
    */
   //private static final String SIMPLE = "(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30)";
 	private static final String SIMPLE = "lambda f:'a->'b. lambda x.f (f x)";
+	//private static final String SIMPLE = "lambda f:int->int. lambda x.f (f x)";
 
 	  private JScrollPane jScrollPane ;
 	    ProofRule choosen=null;
@@ -85,7 +89,9 @@ public final class TypeInferenceProofModelTest extends JFrame {
     final JTree tree = new JTree(model);
     treePanel.add(tree, BorderLayout.CENTER);
     
-    tree.setRowHeight(60);
+    tree.setRowHeight(0);
+    DefaultTreeCellRenderer dtcr = (DefaultTreeCellRenderer) tree.getCellRenderer();
+    dtcr.setBorder(new LineBorder(Color.black));
     this.jScrollPane = new JScrollPane ( treePanel ) ;
     this.add(jScrollPane);
     // setup the button panel

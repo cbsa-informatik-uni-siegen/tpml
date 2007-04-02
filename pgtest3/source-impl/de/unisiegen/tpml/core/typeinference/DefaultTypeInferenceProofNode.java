@@ -34,18 +34,18 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements 
 	//
 	// Constructors
 	//
-	public DefaultTypeInferenceProofNode(TypeJudgement judgement, TypeEquationList list, TypeSubstitutionList subs){
-		equations=list;
+	public DefaultTypeInferenceProofNode(TypeJudgement judgement, TypeEquationList eqns, TypeSubstitutionList subs){
+		equations=eqns;
 		formula.add(judgement);
-		formula.add(list);
+		//formula.add(list);
 		substitutions = subs;
 		
 	}
 	
-	public DefaultTypeInferenceProofNode(LinkedList<TypeFormula> judgement, TypeEquationList list, TypeSubstitutionList subs){
-		equations=list;
+	public DefaultTypeInferenceProofNode(LinkedList<TypeFormula> judgement, TypeEquationList eqns, TypeSubstitutionList subs){
+		equations=eqns;
 		formula=judgement;
-		formula.add(list);
+		//formula.add(list);
 		substitutions = subs;
 	}
 
