@@ -5,6 +5,7 @@ import java.util.ArrayList ;
 import java.util.Enumeration ;
 import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation ;
+import de.unisiegen.tpml.core.types.Type ;
 
 
 /**
@@ -50,6 +51,19 @@ public final class OutlineBreak
 
 
   /**
+   * Initilizes the {@link OutlineBreak} with the given {@link Type}.
+   * 
+   * @param pType The input {@link Type}.
+   */
+  public OutlineBreak ( Type pType )
+  {
+    this.breakList = new ArrayList < Integer > ( ) ;
+    this.outlineBreakList = new ArrayList < OutlineBreak > ( ) ;
+    calculate ( pType ) ;
+  }
+
+
+  /**
    * Adds the given offset to the own breaks and the breaks of all children
    * {@link OutlineBreak}s.
    * 
@@ -67,38 +81,6 @@ public final class OutlineBreak
     {
       this.outlineBreakList.get ( i ).addOffset ( pOffset ) ;
     }
-  }
-
-
-  /**
-   * Returns the number of breaks of this {@link OutlineBreak}, without the
-   * breaks of children {@link OutlineBreak}s.
-   * 
-   * @return The number of breaks of this {@link OutlineBreak}, without the
-   *         breaks of children {@link OutlineBreak}s.
-   */
-  public final int getBreakCountOwn ( )
-  {
-    return this.breakList.size ( ) ;
-  }
-
-
-  /**
-   * Returns the number of breaks of this {@link OutlineBreak}, including the
-   * breaks of children {@link OutlineBreak}s.
-   * 
-   * @return The number of breaks of this {@link OutlineBreak}, including the
-   *         breaks of children {@link OutlineBreak}s.
-   */
-  public final int getBreakCountAll ( )
-  {
-    int result = 0 ;
-    result += this.breakList.size ( ) ;
-    for ( int i = 0 ; i < this.outlineBreakList.size ( ) ; i ++ )
-    {
-      result += this.outlineBreakList.get ( i ).getBreakCountAll ( ) ;
-    }
-    return result ;
   }
 
 
@@ -149,6 +131,88 @@ public final class OutlineBreak
         }
       }
     }
+  }
+
+
+  /**
+   * Calculates the breaks.
+   * 
+   * @param pType The input {@link Type}.
+   */
+  private final void calculate ( Type pType )
+  {
+    PrettyAnnotation prettyAnnotation = pType.toPrettyString ( )
+        .getAnnotationForPrintable ( pType ) ;
+    int [ ] breaks = prettyAnnotation.getBreakOffsets ( ) ;
+    for ( int i = 0 ; i < breaks.length ; i ++ )
+    {
+      this.breakList.add ( new Integer ( breaks [ i ] ) ) ;
+    }
+    Enumeration < Type > children = pType.children ( ) ;
+    while ( children.hasMoreElements ( ) )
+    {
+      Type type = children.nextElement ( ) ;
+      PrettyAnnotation prettyAnnotationChild ;
+      try
+      {
+        prettyAnnotationChild = pType.toPrettyString ( )
+            .getAnnotationForPrintable ( type ) ;
+      }
+      catch ( IllegalArgumentException e )
+      {
+        continue ;
+      }
+      OutlineBreak outlineBreakChild = new OutlineBreak ( type ) ;
+      outlineBreakChild.addOffset ( prettyAnnotationChild.getStartOffset ( ) ) ;
+      if ( breaks.length > 0 )
+      {
+        this.outlineBreakList.add ( outlineBreakChild ) ;
+      }
+      else
+      {
+        for ( int i = 0 ; i < outlineBreakChild.breakList.size ( ) ; i ++ )
+        {
+          this.breakList.add ( outlineBreakChild.breakList.get ( i ) ) ;
+        }
+        for ( int i = 0 ; i < outlineBreakChild.outlineBreakList.size ( ) ; i ++ )
+        {
+          this.outlineBreakList.add ( outlineBreakChild.outlineBreakList
+              .get ( i ) ) ;
+        }
+      }
+    }
+  }
+
+
+  /**
+   * Returns the number of breaks of this {@link OutlineBreak}, including the
+   * breaks of children {@link OutlineBreak}s.
+   * 
+   * @return The number of breaks of this {@link OutlineBreak}, including the
+   *         breaks of children {@link OutlineBreak}s.
+   */
+  public final int getBreakCountAll ( )
+  {
+    int result = 0 ;
+    result += this.breakList.size ( ) ;
+    for ( int i = 0 ; i < this.outlineBreakList.size ( ) ; i ++ )
+    {
+      result += this.outlineBreakList.get ( i ).getBreakCountAll ( ) ;
+    }
+    return result ;
+  }
+
+
+  /**
+   * Returns the number of breaks of this {@link OutlineBreak}, without the
+   * breaks of children {@link OutlineBreak}s.
+   * 
+   * @return The number of breaks of this {@link OutlineBreak}, without the
+   *         breaks of children {@link OutlineBreak}s.
+   */
+  public final int getBreakCountOwn ( )
+  {
+    return this.breakList.size ( ) ;
   }
 
 

@@ -23,27 +23,6 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
 public final class ArrowType extends MonoType
 {
   /**
-   * The type for <code>bool -&gt; bool</code>.
-   */
-  public static final ArrowType BOOL_BOOL = new ArrowType ( BooleanType.BOOL ,
-      BooleanType.BOOL ) ;
-
-
-  /**
-   * The type for <code>int -&gt; int -&gt; bool</code>.
-   */
-  public static final ArrowType INT_INT_BOOL = new ArrowType ( IntegerType.INT ,
-      new ArrowType ( IntegerType.INT , BooleanType.BOOL ) ) ;
-
-
-  /**
-   * The type for <code>int -&gt; int -&gt; int</code>.
-   */
-  public static final ArrowType INT_INT_INT = new ArrowType ( IntegerType.INT ,
-      new ArrowType ( IntegerType.INT , IntegerType.INT ) ) ;
-
-
-  /**
    * The parameter type <code>tau1</code>.
    * 
    * @see #getTau1()
@@ -99,8 +78,9 @@ public final class ArrowType extends MonoType
   {
     if ( pObject instanceof ArrowType )
     {
-      ArrowType type = ( ArrowType ) pObject ;
-      return ( this.tau1.equals ( type.tau1 ) && this.tau2.equals ( type.tau2 ) ) ;
+      ArrowType other = ( ArrowType ) pObject ;
+      return ( this.tau1.equals ( other.tau1 ) && this.tau2
+          .equals ( other.tau2 ) ) ;
     }
     return false ;
   }

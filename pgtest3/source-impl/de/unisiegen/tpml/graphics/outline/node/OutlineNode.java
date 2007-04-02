@@ -425,6 +425,14 @@ public final class OutlineNode extends DefaultMutableTreeNode
 
 
   /**
+   * The {@link Type} repressented by this node.
+   * 
+   * @see #getType()
+   */
+  private Type type ;
+
+
+  /**
    * The {@link OutlineBinding} in this node.
    * 
    * @see #getOutlineBinding()
@@ -489,12 +497,6 @@ public final class OutlineNode extends DefaultMutableTreeNode
 
 
   /**
-   * Indicates, if this node is a {@link Type}.
-   */
-  private boolean isType ;
-
-
-  /**
    * Indicates, if this node is a {@link Identifier}.
    */
   private boolean isIdentifier ;
@@ -510,6 +512,12 @@ public final class OutlineNode extends DefaultMutableTreeNode
    * Indicates, if this node is a {@link Expression}.
    */
   private boolean isExpression ;
+
+
+  /**
+   * Indicates, if this node is a {@link Type}.
+   */
+  private boolean isType ;
 
 
   /**
@@ -583,6 +591,7 @@ public final class OutlineNode extends DefaultMutableTreeNode
   public OutlineNode ( Expression pExpression , OutlineUnbound pOutlineUnbound )
   {
     this.expression = pExpression ;
+    this.type = null ;
     this.description = pExpression.getCaption ( ) ;
     this.childIndex = "" ; //$NON-NLS-1$
     this.expressionString = pExpression.toPrettyString ( ).toString ( ) ;
@@ -596,10 +605,10 @@ public final class OutlineNode extends DefaultMutableTreeNode
     this.outlineBreak = new OutlineBreak ( this.expression ) ;
     this.currentOutlineBreak = new OutlineBreak ( ) ;
     this.breakCount = 0 ;
-    this.isType = false ;
     this.isIdentifier = false ;
     this.isInfixOperation = false ;
     this.isExpression = true ;
+    this.isType = false ;
     this.lastSelectionStart = NO_SELECTION ;
     this.lastSelectionEnd = NO_SELECTION ;
     this.outlineNodeCacheList = new OutlineNodeCacheList ( ) ;
@@ -622,6 +631,7 @@ public final class OutlineNode extends DefaultMutableTreeNode
       int pStartIndex , int pEndIndex , OutlineUnbound pOutlineUnbound )
   {
     this.expression = null ;
+    this.type = null ;
     this.description = pExpression.getCaption ( ) ;
     this.childIndex = "" ; //$NON-NLS-1$
     this.expressionString = pExpressionString ;
@@ -635,49 +645,10 @@ public final class OutlineNode extends DefaultMutableTreeNode
     this.outlineBreak = null ;
     this.currentOutlineBreak = null ;
     this.breakCount = 0 ;
-    this.isType = false ;
     this.isIdentifier = false ;
     this.isInfixOperation = true ;
     this.isExpression = false ;
-    this.lastSelectionStart = NO_SELECTION ;
-    this.lastSelectionEnd = NO_SELECTION ;
-    this.outlineNodeCacheList = new OutlineNodeCacheList ( ) ;
-    propertyChanged ( ) ;
-  }
-
-
-  /**
-   * This constructor initializes the values and loads the description. It is
-   * used for {@link Type}s.
-   * 
-   * @param pDescription The description of this node.
-   * @param pExpressionString The {@link Expression} as a <code>String</code>.
-   * @param pStartIndex The start index of the {@link Identifier}.
-   * @param pEndIndex The end index of the {@link Identifier}.
-   * @param pOutlineUnbound The {@link OutlineUnbound} which repressents the
-   *          unbound {@link Identifier}s in all nodes
-   */
-  public OutlineNode ( String pDescription , String pExpressionString ,
-      int pStartIndex , int pEndIndex , OutlineUnbound pOutlineUnbound )
-  {
-    this.expression = null ;
-    this.description = pDescription ;
-    this.childIndex = "" ; //$NON-NLS-1$
-    this.expressionString = pExpressionString ;
-    this.startIndex = pStartIndex ;
-    this.endIndex = pEndIndex ;
-    this.outlineBinding = null ;
-    this.outlineUnbound = pOutlineUnbound ;
-    this.replaceInThisNode = false ;
-    this.boundedStart = NO_BINDING ;
-    this.boundedEnd = NO_BINDING ;
-    this.outlineBreak = null ;
-    this.currentOutlineBreak = null ;
-    this.breakCount = 0 ;
-    this.isType = true ;
-    this.isIdentifier = false ;
-    this.isInfixOperation = false ;
-    this.isExpression = false ;
+    this.isType = false ;
     this.lastSelectionStart = NO_SELECTION ;
     this.lastSelectionEnd = NO_SELECTION ;
     this.outlineNodeCacheList = new OutlineNodeCacheList ( ) ;
@@ -693,31 +664,63 @@ public final class OutlineNode extends DefaultMutableTreeNode
    * @param pExpressionString The {@link Expression} as a <code>String</code>.
    * @param pOutlinePair The start and the end index of the {@link Identifier}.
    * @param pOutlineBinding The bindings in this node.
-   * @param pOutlineUnbound The {@link OutlineUnbound} which repressents the
-   *          unbound {@link Identifier}s in all nodes
    */
   public OutlineNode ( String pDescription , String pExpressionString ,
-      OutlinePair pOutlinePair , OutlineBinding pOutlineBinding ,
-      OutlineUnbound pOutlineUnbound )
+      OutlinePair pOutlinePair , OutlineBinding pOutlineBinding )
   {
     this.expression = null ;
+    this.type = null ;
     this.description = pDescription ;
     this.childIndex = "" ; //$NON-NLS-1$
     this.expressionString = pExpressionString ;
     this.startIndex = pOutlinePair.getStart ( ) ;
     this.endIndex = pOutlinePair.getEnd ( ) ;
     this.outlineBinding = pOutlineBinding ;
-    this.outlineUnbound = pOutlineUnbound ;
+    this.outlineUnbound = null ;
     this.replaceInThisNode = false ;
     this.boundedStart = NO_BINDING ;
     this.boundedEnd = NO_BINDING ;
     this.outlineBreak = null ;
     this.currentOutlineBreak = null ;
     this.breakCount = 0 ;
-    this.isType = false ;
     this.isIdentifier = true ;
     this.isInfixOperation = false ;
     this.isExpression = false ;
+    this.isType = false ;
+    this.lastSelectionStart = NO_SELECTION ;
+    this.lastSelectionEnd = NO_SELECTION ;
+    this.outlineNodeCacheList = new OutlineNodeCacheList ( ) ;
+    propertyChanged ( ) ;
+  }
+
+
+  /**
+   * This constructor initializes the values and loads the description. It is
+   * used for {@link Type}s.
+   * 
+   * @param pType The {@link Type} repressented by this node.
+   */
+  public OutlineNode ( Type pType )
+  {
+    this.expression = null ;
+    this.type = pType ;
+    this.description = pType.getCaption ( ) ;
+    this.childIndex = "" ; //$NON-NLS-1$
+    this.expressionString = pType.toPrettyString ( ).toString ( ) ;
+    this.startIndex = NO_IDENTIFIER ;
+    this.endIndex = NO_IDENTIFIER ;
+    this.outlineBinding = null ;
+    this.outlineUnbound = null ;
+    this.replaceInThisNode = false ;
+    this.boundedStart = NO_BINDING ;
+    this.boundedEnd = NO_BINDING ;
+    this.outlineBreak = new OutlineBreak ( this.type ) ;
+    this.currentOutlineBreak = new OutlineBreak ( ) ;
+    this.breakCount = 0 ;
+    this.isIdentifier = false ;
+    this.isInfixOperation = false ;
+    this.isExpression = false ;
+    this.isType = true ;
     this.lastSelectionStart = NO_SELECTION ;
     this.lastSelectionEnd = NO_SELECTION ;
     this.outlineNodeCacheList = new OutlineNodeCacheList ( ) ;
@@ -730,7 +733,7 @@ public final class OutlineNode extends DefaultMutableTreeNode
    */
   public final void breakCountAdd ( )
   {
-    if ( ! this.isExpression )
+    if ( ( ! this.isExpression ) && ( ! this.isType ) )
     {
       return ;
     }
@@ -756,7 +759,7 @@ public final class OutlineNode extends DefaultMutableTreeNode
    */
   public final void breakCountRemove ( )
   {
-    if ( ! this.isExpression )
+    if ( ( ! this.isExpression ) && ( ! this.isType ) )
     {
       return ;
     }
@@ -845,7 +848,7 @@ public final class OutlineNode extends DefaultMutableTreeNode
    */
   public final void enableSelectionColor ( )
   {
-    if ( ! this.isExpression )
+    if ( ( ! this.isExpression ) && ( ! this.isType ) )
     {
       StringBuffer result = new StringBuffer ( HTML ) ;
       result.append ( this.childIndex ) ;
@@ -868,14 +871,8 @@ public final class OutlineNode extends DefaultMutableTreeNode
         result.append ( this.constantColor ) ;
         result.append ( FONT_AFTER_COLOR ) ;
       }
-      else if ( this.isType )
-      {
-        result.append ( FONT_BOLD_BEGIN ) ;
-        result.append ( this.typeColor ) ;
-        result.append ( FONT_AFTER_COLOR ) ;
-      }
       result.append ( getHTMLCode ( this.expressionString ) ) ;
-      if ( ( selection ) || ( this.isInfixOperation ) || ( this.isType ) )
+      if ( ( selection ) || ( this.isInfixOperation ) )
       {
         result.append ( FONT_BOLD_END ) ;
       }
@@ -1006,6 +1003,18 @@ public final class OutlineNode extends DefaultMutableTreeNode
   public final int getStartIndex ( )
   {
     return this.startIndex ;
+  }
+
+
+  /**
+   * Returns the {@link Type} repressented by this node.
+   * 
+   * @return The {@link Type} in this node.
+   * @see #type
+   */
+  public final Type getType ( )
+  {
+    return this.type ;
   }
 
 
@@ -1203,14 +1212,6 @@ public final class OutlineNode extends DefaultMutableTreeNode
       {
         result.append ( FONT_BOLD_BEGIN ) ;
         result.append ( this.constantColor ) ;
-        result.append ( FONT_AFTER_COLOR ) ;
-        result.append ( getHTMLCode ( this.expressionString ) ) ;
-        result.append ( FONT_BOLD_END ) ;
-      }
-      else if ( this.isType )
-      {
-        result.append ( FONT_BOLD_BEGIN ) ;
-        result.append ( this.typeColor ) ;
         result.append ( FONT_AFTER_COLOR ) ;
         result.append ( getHTMLCode ( this.expressionString ) ) ;
         result.append ( FONT_BOLD_END ) ;
@@ -1528,8 +1529,20 @@ public final class OutlineNode extends DefaultMutableTreeNode
       return ;
     }
     // Load the PrettyCharIterator
-    PrettyCharIterator prettyCharIterator = this.expression.toPrettyString ( )
-        .toCharacterIterator ( ) ;
+    PrettyCharIterator prettyCharIterator ;
+    if ( this.expression != null )
+    {
+      prettyCharIterator = this.expression.toPrettyString ( )
+          .toCharacterIterator ( ) ;
+    }
+    else if ( this.type != null )
+    {
+      prettyCharIterator = this.type.toPrettyString ( ).toCharacterIterator ( ) ;
+    }
+    else
+    {
+      throw new IllegalArgumentException ( "Not an Expression and not a Type" ) ; //$NON-NLS-1$
+    }
     // Initialize the result as a StringBuffer
     StringBuffer result = new StringBuffer ( ) ;
     // Build the first part of the node caption

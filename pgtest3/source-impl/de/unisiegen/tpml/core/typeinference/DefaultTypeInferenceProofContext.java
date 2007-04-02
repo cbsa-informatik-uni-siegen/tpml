@@ -144,83 +144,120 @@ public class DefaultTypeInferenceProofContext  implements TypeInferenceProofCont
 		        ((DefaultTypeCheckerProofNode)pNode).add(child);
 		//this.model.contextAddProofNode(this, node, environment, expression, type, equations);
 	} 
-	
-	/**
-	 * 
-	 *
-	 * @param expression
-	 * @return
-	 * @see de.unisiegen.tpml.core.typechecker.TypeCheckerProofContext#getTypeForExpression(de.unisiegen.tpml.core.expressions.Expression)
-	 */
-	public Type getTypeForExpression(Expression expression) {
-		  
-	    if (expression == null) {
-	      throw new NullPointerException("expression is null");
-	    }
-	    
-	    if (expression instanceof BooleanConstant) {
-	      return BooleanType.BOOL;
-	    }
-	    else if (expression instanceof IntegerConstant) {
-	      return IntegerType.INT;
-	    }
-	    else if (expression instanceof UnitConstant) {
-	      return UnitType.UNIT;
-	    }
-	    else if (expression instanceof ArithmeticOperator) {
-	      return ArrowType.INT_INT_INT;
-	    }
-	    else if (expression instanceof RelationalOperator) {
-	      return ArrowType.INT_INT_BOOL;
-	    }
-	    else if (expression instanceof Not) {
-	      return ArrowType.BOOL_BOOL;
-	    }
-	    else if (expression instanceof Assign) {
-	    	
-	      return new PolyType(Collections.singleton(TypeVariable.ALPHA), new ArrowType(new RefType(TypeVariable.ALPHA), new ArrowType(TypeVariable.ALPHA, UnitType.UNIT)));
-	    }
-	    else if (expression instanceof Deref) {
-	    	
-	      return new PolyType(Collections.singleton(TypeVariable.ALPHA), new ArrowType(new RefType(TypeVariable.ALPHA), TypeVariable.ALPHA));
-	    }
-	    else if (expression instanceof Ref) {
-	    	
-	      return new PolyType(Collections.singleton(TypeVariable.ALPHA), new ArrowType(TypeVariable.ALPHA, new RefType(TypeVariable.ALPHA)));
-	    }
-	    else if (expression instanceof Projection) {
-	      Projection projection = (Projection)expression;
-	      TypeVariable[] typeVariables = new TypeVariable[projection.getArity()];
-	      TreeSet<TypeVariable> quantifiedVariables = new TreeSet<TypeVariable>();
-	      for (int n = 0; n < typeVariables.length; ++n) {
-	        typeVariables[n] = new TypeVariable(n, 0);
-	        quantifiedVariables.add(typeVariables[n]);
-	      }
-	      return new PolyType(quantifiedVariables, new ArrowType(new TupleType(typeVariables), typeVariables[projection.getIndex() - 1]));
-	    }
-	    else if (expression instanceof EmptyList) {
-	      return new PolyType(Collections.singleton(TypeVariable.ALPHA), new ListType(TypeVariable.ALPHA));
-	    }
-	    else if (expression instanceof BinaryCons) {
-	      return new PolyType(Collections.singleton(TypeVariable.ALPHA), new ArrowType(TypeVariable.ALPHA, new ArrowType(new ListType(TypeVariable.ALPHA), new ListType(TypeVariable.ALPHA))));
-	    }
-	    else if (expression instanceof UnaryCons) {
-	      return new PolyType(Collections.singleton(TypeVariable.ALPHA), new ArrowType(new TupleType(new MonoType[] { TypeVariable.ALPHA, new ListType(TypeVariable.ALPHA) }), new ListType(TypeVariable.ALPHA)));
-	    }
-	    else if (expression instanceof Hd) {
-	      return new PolyType(Collections.singleton(TypeVariable.ALPHA), new ArrowType(new ListType(TypeVariable.ALPHA), TypeVariable.ALPHA));
-	    }
-	    else if (expression instanceof Tl) {
-	      return new PolyType(Collections.singleton(TypeVariable.ALPHA), new ArrowType(new ListType(TypeVariable.ALPHA), new ListType(TypeVariable.ALPHA)));
-	    }
-	    else if (expression instanceof IsEmpty) {
-	      return new PolyType(Collections.singleton(TypeVariable.ALPHA), new ArrowType(new ListType(TypeVariable.ALPHA), BooleanType.BOOL));
-	    }
-	    else {
-	      // not a simple expression
-	      throw new IllegalArgumentException("Cannot determine the type for " + expression);
-	    }
-	  }
+  
+  
+  /**
+   * {@inheritDoc}
+   * 
+   */
+  public Type getTypeForExpression ( Expression expression )
+  {
+    if ( expression == null )
+    {
+      throw new NullPointerException ( "expression is null" ) ;
+    }
+    if ( expression instanceof BooleanConstant )
+    {
+      return new BooleanType ( ) ;
+    }
+    else if ( expression instanceof IntegerConstant )
+    {
+      return new IntegerType ( ) ;
+    }
+    else if ( expression instanceof UnitConstant )
+    {
+      return new UnitType ( ) ;
+    }
+    else if ( expression instanceof ArithmeticOperator )
+    {
+      return new ArrowType ( new IntegerType ( ) , new ArrowType (
+          new IntegerType ( ) , new IntegerType ( ) ) ) ;
+    }
+    else if ( expression instanceof RelationalOperator )
+    {
+      return new ArrowType ( new IntegerType ( ) , new ArrowType (
+          new IntegerType ( ) , new BooleanType ( ) ) ) ;
+    }
+    else if ( expression instanceof Not )
+    {
+      return new ArrowType ( new BooleanType ( ) , new BooleanType ( ) ) ;
+    }
+    else if ( expression instanceof Assign )
+    {
+      return new PolyType ( Collections.singleton ( TypeVariable.ALPHA ) ,
+          new ArrowType ( new RefType ( TypeVariable.ALPHA ) , new ArrowType (
+              TypeVariable.ALPHA , new UnitType ( ) ) ) ) ;
+    }
+    else if ( expression instanceof Deref )
+    {
+      return new PolyType ( Collections.singleton ( TypeVariable.ALPHA ) ,
+          new ArrowType ( new RefType ( TypeVariable.ALPHA ) ,
+              TypeVariable.ALPHA ) ) ;
+    }
+    else if ( expression instanceof Ref )
+    {
+      return new PolyType ( Collections.singleton ( TypeVariable.ALPHA ) ,
+          new ArrowType ( TypeVariable.ALPHA ,
+              new RefType ( TypeVariable.ALPHA ) ) ) ;
+    }
+    else if ( expression instanceof Projection )
+    {
+      Projection projection = ( Projection ) expression ;
+      TypeVariable [ ] typeVariables = new TypeVariable [ projection
+          .getArity ( ) ] ;
+      TreeSet < TypeVariable > quantifiedVariables = new TreeSet < TypeVariable > ( ) ;
+      for ( int n = 0 ; n < typeVariables.length ; ++ n )
+      {
+        typeVariables [ n ] = new TypeVariable ( n , 0 ) ;
+        quantifiedVariables.add ( typeVariables [ n ] ) ;
+      }
+      return new PolyType ( quantifiedVariables , new ArrowType (
+          new TupleType ( typeVariables ) , typeVariables [ projection
+              .getIndex ( ) - 1 ] ) ) ;
+    }
+    else if ( expression instanceof EmptyList )
+    {
+      return new PolyType ( Collections.singleton ( TypeVariable.ALPHA ) ,
+          new ListType ( TypeVariable.ALPHA ) ) ;
+    }
+    else if ( expression instanceof BinaryCons )
+    {
+      return new PolyType ( Collections.singleton ( TypeVariable.ALPHA ) ,
+          new ArrowType ( TypeVariable.ALPHA , new ArrowType ( new ListType (
+              TypeVariable.ALPHA ) , new ListType ( TypeVariable.ALPHA ) ) ) ) ;
+    }
+    else if ( expression instanceof UnaryCons )
+    {
+      return new PolyType ( Collections.singleton ( TypeVariable.ALPHA ) ,
+          new ArrowType ( new TupleType ( new MonoType [ ]
+          { TypeVariable.ALPHA , new ListType ( TypeVariable.ALPHA ) } ) ,
+              new ListType ( TypeVariable.ALPHA ) ) ) ;
+    }
+    else if ( expression instanceof Hd )
+    {
+      return new PolyType ( Collections.singleton ( TypeVariable.ALPHA ) ,
+          new ArrowType ( new ListType ( TypeVariable.ALPHA ) ,
+              TypeVariable.ALPHA ) ) ;
+    }
+    else if ( expression instanceof Tl )
+    {
+      return new PolyType ( Collections.singleton ( TypeVariable.ALPHA ) ,
+          new ArrowType ( new ListType ( TypeVariable.ALPHA ) , new ListType (
+              TypeVariable.ALPHA ) ) ) ;
+    }
+    else if ( expression instanceof IsEmpty )
+    {
+      return new PolyType ( Collections.singleton ( TypeVariable.ALPHA ) ,
+          new ArrowType ( new ListType ( TypeVariable.ALPHA ) ,
+              new BooleanType ( ) ) ) ;
+    }
+    else
+    {
+      // not a simple expression
+      throw new IllegalArgumentException ( "Cannot determine the type for "
+          + expression ) ;
+    }
+  }
 	
 		/**
 		 * 
@@ -291,7 +328,7 @@ public class DefaultTypeInferenceProofContext  implements TypeInferenceProofCont
 		}
 		else
 		{
-			typeNode = new DefaultTypeCheckerProofNode(formula.getEnvironment(),new IsEmpty() , UnitType.UNIT);
+			typeNode = new DefaultTypeCheckerProofNode(formula.getEnvironment(),new IsEmpty() , new UnitType());
 			throw new ProofRuleException(typeNode, rule);
 		}
 	    // try to apply the rule to the node

@@ -149,7 +149,7 @@ public final class TypeEquationList implements TypeFormula{
 	}
 
 	public MonoType getType() {
-		return UnitType.UNIT;
+		return new UnitType();
 	}
 
 	public TypeEquation getFirst() {

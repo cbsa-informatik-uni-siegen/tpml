@@ -1,9 +1,14 @@
 package de.unisiegen.tpml.core.types ;
 
 
+import java.beans.Introspector ;
+import java.beans.PropertyDescriptor ;
+import java.util.Arrays ;
 import java.util.Collections ;
+import java.util.Enumeration ;
 import java.util.Set ;
 import java.util.TreeSet ;
+import java.util.Vector ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyString ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
@@ -31,27 +36,12 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities
 
 
   /**
-   * Constructor for all types.
-   */
-  protected Type ( )
-  {
-    super ( ) ;
-  }
-
-
-  /**
-   * Returns the set of free type variables present within this type. The
-   * default implementation simply returns the empty set, and derived classes
-   * will need to override this method to return the set of free type variables.
-   * The returned set should be considered read-only by the caller and must not
-   * be modified.
+   * Cached vector of sub types, so the children do not need to be determined on
+   * every invocation of {@link #children()}.
    * 
-   * @return the set of free type variables within this type.
+   * @see #children()
    */
-  public Set < TypeVariable > free ( )
-  {
-    return EMPTY_SET ;
-  }
+  private transient Vector < Type > children = null ;
 
 
   /**
@@ -72,6 +62,76 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities
    * @see #toPrettyStringBuilder(PrettyStringBuilderFactory)
    */
   protected PrettyStringBuilder prettyStringBuilder = null ;
+
+
+  /**
+   * Constructor for all types.
+   */
+  protected Type ( )
+  {
+    super ( ) ;
+  }
+
+
+  /**
+   * Returns an enumeration for the direct ancestor types, the direct children,
+   * of this type. The enumeration is generated using the bean properties for
+   * every {@link Type} derived class. For example, {@link ArrowType} provides
+   * <code>getTau1()</code> and <code>getTau2()</code>. It also supports
+   * arrays of types, as used in the {@link TupleType} class.
+   * 
+   * @return an {@link Enumeration} for the direct ancestor types of this type.
+   */
+  public final Enumeration < Type > children ( )
+  {
+    // check if we already determined the children
+    if ( this.children == null )
+    {
+      try
+      {
+        this.children = new Vector < Type > ( ) ;
+        PropertyDescriptor [ ] properties = Introspector.getBeanInfo (
+            getClass ( ) , Type.class ).getPropertyDescriptors ( ) ;
+        for ( PropertyDescriptor property : properties )
+        {
+          Object value = property.getReadMethod ( ).invoke ( this ) ;
+          if ( value instanceof Type [ ] )
+          {
+            this.children.addAll ( Arrays.asList ( ( Type [ ] ) value ) ) ;
+          }
+          else if ( value instanceof Type )
+          {
+            this.children.add ( ( Type ) value ) ;
+          }
+        }
+      }
+      catch ( RuntimeException exception )
+      {
+        throw exception ;
+      }
+      catch ( Exception exception )
+      {
+        throw new RuntimeException ( exception ) ;
+      }
+    }
+    // return an enumeration for the children
+    return this.children.elements ( ) ;
+  }
+
+
+  /**
+   * Returns the set of free type variables present within this type. The
+   * default implementation simply returns the empty set, and derived classes
+   * will need to override this method to return the set of free type variables.
+   * The returned set should be considered read-only by the caller and must not
+   * be modified.
+   * 
+   * @return the set of free type variables within this type.
+   */
+  public Set < TypeVariable > free ( )
+  {
+    return EMPTY_SET ;
+  }
 
 
   /**

@@ -188,8 +188,7 @@ public final class OutlineTreeSelectionListener implements
     }
     OutlineNode selectedNode = list.get ( list.size ( ) - 1 ) ;
     // Type
-    if ( ( selectedNode.getExpression ( ) == null )
-        && ( list.get ( list.size ( ) - 2 ).getExpression ( ) == null ) )
+    if ( selectedNode.getType ( ) != null )
     {
       updateType ( list , pTreePath ) ;
     }
@@ -213,7 +212,7 @@ public final class OutlineTreeSelectionListener implements
    * @param pList The parent nodes of the selected node.
    * @param pTreePath The selected <code>TreePath</code>.
    */
-  public final void updateExpression ( ArrayList < OutlineNode > pList ,
+  private final void updateExpression ( ArrayList < OutlineNode > pList ,
       TreePath pTreePath )
   {
     OutlineNode selectedNode = pList.get ( pList.size ( ) - 1 ) ;
@@ -336,7 +335,7 @@ public final class OutlineTreeSelectionListener implements
    * @param pList The parent nodes of the selected node.
    * @param pTreePath The selected <code>TreePath</code>.
    */
-  public final void updateIdentifier ( ArrayList < OutlineNode > pList ,
+  private final void updateIdentifier ( ArrayList < OutlineNode > pList ,
       TreePath pTreePath )
   {
     OutlineNode selectedNode = pList.get ( pList.size ( ) - 1 ) ;
@@ -403,34 +402,47 @@ public final class OutlineTreeSelectionListener implements
    * @param pList The parent nodes of the selected node.
    * @param pTreePath The selected <code>TreePath</code>.
    */
-  public final void updateType ( ArrayList < OutlineNode > pList ,
+  private final void updateType ( ArrayList < OutlineNode > pList ,
       TreePath pTreePath )
   {
     OutlineNode selectedNode = pList.get ( pList.size ( ) - 1 ) ;
-    OutlineNode lastButTwo = pList.get ( pList.size ( ) - 3 ) ;
-    /*
-     * Highlight the selected Type
-     */
-    selectedNode.enableSelectionColor ( ) ;
-    for ( int i = 0 ; i < pList.size ( ) - 2 ; i ++ )
+    for ( int i = 0 ; i < pList.size ( ) ; i ++ )
     {
       /*
-       * Sets the new binding in higher nodes
+       * It should be replaced in higher nodes, but not the selected node
        */
-      pList.get ( i ).setOutlineBinding ( selectedNode.getOutlineBinding ( ) ) ;
+      if ( i < pList.size ( ) - 1 )
+      {
+        pList.get ( i ).setReplaceInThisNode ( true ) ;
+      }
       /*
-       * It should be replaced in higher nodes
+       * If only the root is selected, there should not be replaced
        */
-      pList.get ( i ).setReplaceInThisNode ( true ) ;
+      if ( pList.size ( ) == 1 )
+      {
+        pList.get ( i ).setReplaceInThisNode ( false ) ;
+      }
       /*
        * Update the caption of the node
        */
-      PrettyAnnotation prettyAnnotation = pList.get ( i ).getExpression ( )
-          .toPrettyString ( ).getAnnotationForPrintable (
-              lastButTwo.getExpression ( ) ) ;
-      pList.get ( i ).updateCaption (
-          prettyAnnotation.getStartOffset ( ) + selectedNode.getStartIndex ( ) ,
-          prettyAnnotation.getStartOffset ( ) + selectedNode.getEndIndex ( ) ) ;
+      PrettyAnnotation prettyAnnotation ;
+      if ( pList.get ( i ).getExpression ( ) != null )
+      {
+        prettyAnnotation = pList.get ( i ).getExpression ( ).toPrettyString ( )
+            .getAnnotationForPrintable ( selectedNode.getType ( ) ) ;
+      }
+      else if ( pList.get ( i ).getType ( ) != null )
+      {
+        prettyAnnotation = pList.get ( i ).getType ( ).toPrettyString ( )
+            .getAnnotationForPrintable ( selectedNode.getType ( ) ) ;
+      }
+      else
+      {
+        // Identifier - Type
+        continue ;
+      }
+      pList.get ( i ).updateCaption ( prettyAnnotation.getStartOffset ( ) ,
+          prettyAnnotation.getEndOffset ( ) ) ;
       /*
        * Node has changed and can be repainted
        */

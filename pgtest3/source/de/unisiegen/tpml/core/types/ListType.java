@@ -50,14 +50,23 @@ public final class ListType extends MonoType
   }
 
 
+  //
+  // Base methods
+  //
   /**
-   * Returns the base element type.
+   * {@inheritDoc}
    * 
-   * @return the base element type
+   * @see Object#equals(Object)
    */
-  public MonoType getTau ( )
+  @ Override
+  public boolean equals ( Object pObject )
   {
-    return this.tau ;
+    if ( pObject instanceof ListType )
+    {
+      ListType other = ( ListType ) pObject ;
+      return this.tau.equals ( other.tau ) ;
+    }
+    return false ;
   }
 
 
@@ -85,6 +94,29 @@ public final class ListType extends MonoType
   public String getCaption ( )
   {
     return "List-Type" ; //$NON-NLS-1$
+  }
+
+
+  /**
+   * Returns the base element type.
+   * 
+   * @return the base element type
+   */
+  public MonoType getTau ( )
+  {
+    return this.tau ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Object#hashCode()
+   */
+  @ Override
+  public int hashCode ( )
+  {
+    return ( ( this.tau.hashCode ( ) + 17 ) * 13 ) / 5 ;
   }
 
 
@@ -120,37 +152,5 @@ public final class ListType extends MonoType
       this.prettyStringBuilder.addType ( "list" ) ; //$NON-NLS-1$
     }
     return this.prettyStringBuilder ;
-  }
-
-
-  //
-  // Base methods
-  //
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Object#equals(Object)
-   */
-  @ Override
-  public boolean equals ( Object pObject )
-  {
-    if ( pObject instanceof ListType )
-    {
-      ListType other = ( ListType ) pObject ;
-      return ( this.tau.equals ( other.tau ) ) ;
-    }
-    return false ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Object#hashCode()
-   */
-  @ Override
-  public int hashCode ( )
-  {
-    return ( ( this.tau.hashCode ( ) + 17 ) * 13 ) / 5 ;
   }
 }

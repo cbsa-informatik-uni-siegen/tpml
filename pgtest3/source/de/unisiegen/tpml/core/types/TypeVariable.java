@@ -208,8 +208,8 @@ public final class TypeVariable extends MonoType implements
   {
     if ( pObject instanceof TypeVariable )
     {
-      TypeVariable type = ( TypeVariable ) pObject ;
-      return ( this.index == type.index && this.offset == type.offset ) ;
+      TypeVariable other = ( TypeVariable ) pObject ;
+      return ( this.index == other.index && this.offset == other.offset ) ;
     }
     return false ;
   }

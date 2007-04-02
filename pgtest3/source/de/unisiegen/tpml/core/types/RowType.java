@@ -9,42 +9,46 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
 
 
 /**
- * This class represents tuple types in our type system. Tuple types are
- * composed of two or more types, all of which are monomorphic types.
+ * TODO
  * 
- * @author Benedikt Meurer
  * @author Christian Fehler
- * @version $Rev:340 $
- * @see MonoType
  */
-public final class TupleType extends MonoType
+public class RowType extends MonoType
 {
   /**
-   * The types for the tuple elements.
+   * TODO
+   */
+  private String [ ] identifiers ;
+
+
+  /**
+   * TODO
    */
   private MonoType [ ] types ;
 
 
   /**
-   * Allocates a new <code>TupleType</code> with the specified
-   * <code>types</code>.
+   * TODO
    * 
-   * @param pTypes the monomorphic types for the tuple elements.
-   * @throws IllegalArgumentException if <code>types</code> contains less than
-   *           two elements.
-   * @throws NullPointerException if <code>pTypes</code> is <code>null</code>.
+   * @param pIdentifiers TODO
+   * @param pTypes TODO
    */
-  public TupleType ( MonoType [ ] pTypes )
+  public RowType ( String [ ] pIdentifiers , MonoType [ ] pTypes )
   {
+    if ( pIdentifiers == null )
+    {
+      throw new NullPointerException ( "Identifiers is null" ) ; //$NON-NLS-1$
+    }
     if ( pTypes == null )
     {
       throw new NullPointerException ( "Types is null" ) ; //$NON-NLS-1$
     }
-    if ( pTypes.length < 2 )
+    if ( pIdentifiers.length != pTypes.length )
     {
       throw new IllegalArgumentException (
-          "Types must contain atleast two elements" ) ; //$NON-NLS-1$
+          "The arity of method names and types must match" ) ; //$NON-NLS-1$
     }
+    this.identifiers = pIdentifiers ;
     this.types = pTypes ;
   }
 
@@ -57,10 +61,11 @@ public final class TupleType extends MonoType
   @ Override
   public boolean equals ( Object pObject )
   {
-    if ( pObject instanceof TupleType )
+    if ( pObject instanceof RowType )
     {
-      TupleType other = ( TupleType ) pObject ;
-      return Arrays.equals ( this.types , other.types ) ;
+      RowType other = ( RowType ) pObject ;
+      return ( Arrays.equals ( this.identifiers , other.identifiers ) && Arrays
+          .equals ( this.types , other.types ) ) ;
     }
     return false ;
   }
@@ -87,20 +92,49 @@ public final class TupleType extends MonoType
 
 
   /**
-   * {@inheritDoc}
+   * TODO
+   * 
+   * @return TODO
+   * @see MonoType#getCaption()
    */
   @ Override
   public String getCaption ( )
   {
-    return "Tuple-Type" ; //$NON-NLS-1$
+    return "Row-Type" ; //$NON-NLS-1$
   }
 
 
   /**
-   * Returns the element types of the tuple.
+   * TODO
    * 
-   * @return the element types.
-   * @see #getTypes(int)
+   * @return TODO
+   * @see #identifiers
+   * @see #getIdentifiers(int)
+   */
+  public String [ ] getIdentifiers ( )
+  {
+    return this.identifiers ;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @param pIndex TODO
+   * @return TODO
+   * @see #identifiers
+   * @see #getIdentifiers()
+   */
+  public String getIdentifiers ( int pIndex )
+  {
+    return this.identifiers [ pIndex ] ;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @return TODO
    */
   public MonoType [ ] getTypes ( )
   {
@@ -109,13 +143,10 @@ public final class TupleType extends MonoType
 
 
   /**
-   * Returns the <code>n</code>th type in the tuple type.
+   * TODO
    * 
-   * @param pIndex the index of the type.
-   * @return the <code>n</code>th type.
-   * @throws ArrayIndexOutOfBoundsException if <code>n</code> is out of
-   *           bounds.
-   * @see #getTypes()
+   * @param pIndex TODO
+   * @return TODO
    */
   public MonoType getTypes ( int pIndex )
   {
@@ -131,17 +162,19 @@ public final class TupleType extends MonoType
   @ Override
   public int hashCode ( )
   {
-    return Arrays.hashCode ( this.types ) ;
+    return Arrays.hashCode ( this.identifiers ) + Arrays.hashCode ( this.types ) ;
   }
 
 
   /**
-   * {@inheritDoc}
+   * TODO
    * 
+   * @param pTypeSubstitution TODO
+   * @return TODO
    * @see MonoType#substitute(TypeSubstitution)
    */
   @ Override
-  public TupleType substitute ( TypeSubstitution pTypeSubstitution )
+  public RowType substitute ( TypeSubstitution pTypeSubstitution )
   {
     if ( pTypeSubstitution == null )
     {
@@ -152,32 +185,42 @@ public final class TupleType extends MonoType
     {
       newTypes [ i ] = this.types [ i ].substitute ( pTypeSubstitution ) ;
     }
-    return new TupleType ( newTypes ) ;
+    return new RowType ( this.identifiers , newTypes ) ;
   }
 
 
   /**
-   * {@inheritDoc}
+   * TODO
    * 
+   * @param pPrettyStringBuilderFactory TODO
+   * @return TODO
    * @see Type#toPrettyStringBuilder(PrettyStringBuilderFactory)
    */
-  public @ Override
-  PrettyStringBuilder toPrettyStringBuilder (
+  @ Override
+  public PrettyStringBuilder toPrettyStringBuilder (
       PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
     if ( this.prettyStringBuilder == null )
     {
       this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
-          PRIO_TUPLE ) ;
+          PRIO_ROW ) ;
       for ( int i = 0 ; i < this.types.length ; i ++ )
       {
-        if ( i > 0 )
+        if ( i != 0 )
         {
-          this.prettyStringBuilder.addText ( " * " ) ; //$NON-NLS-1$
+          this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
         }
+        this.prettyStringBuilder.addIdentifier ( this.identifiers [ i ] ) ;
+        this.prettyStringBuilder.addText ( ": " ) ; //$NON-NLS-1$
         this.prettyStringBuilder.addBuilder ( this.types [ i ]
             .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-            PRIO_TUPLE_TAU ) ;
+            PRIO_ROW_TAU ) ;
+        this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
+        this.prettyStringBuilder.addKeyword ( ";" ) ; //$NON-NLS-1$
+        if ( i != this.types.length - 1 )
+        {
+          this.prettyStringBuilder.addBreak ( ) ;
+        }
       }
     }
     return this.prettyStringBuilder ;

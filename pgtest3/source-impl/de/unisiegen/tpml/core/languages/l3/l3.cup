@@ -3,20 +3,11 @@ import de.unisiegen.tpml.core.types.*;
 
 
 /* Helper class */
-action code 
-{:
-  private static class IdTypePair 
-  {
+action code {:
+  private static class IdTypePair {
     public IdTypePair(String id, MonoType tau) { this.id = id; this.tau = tau; }
     String id;
     MonoType tau;
-  }
-  
-  private static class IdExprPair 
-  {
-    public IdExprPair(String id, Expression e) { this.id = id; this.e = e; }
-    String id;
-    Expression e;
   }
 :}
 
@@ -25,36 +16,36 @@ action code
 terminal			PLUS, MINUS, STAR, SLASH, MOD;
 terminal			EQUAL, LESS, GREATER, LESSEQUAL, GREATEREQUAL;
 
+/* Tuple operators */
+terminal			FST, SND;
+
+/* List operators */
+terminal			CONS, IS_EMPTY, HD, TL;
+terminal			COLONCOLON;
+
 /* Logical operators */
 terminal			AMPERAMPER, BARBAR;
 terminal			NOT;
 
 /* Syntactic tokens */
-terminal			ARROW, COLON, DOT;
+terminal			ARROW, COLON, COMMA, DOT, SEMI;
 terminal			LPAREN, RPAREN;
+terminal			LBRACKET, RBRACKET;
 terminal			PARENPAREN;
+terminal			BRACKETBRACKET;
 
 /* Keywords */
 terminal			LAMBDA, LET, REC, IN, IF, THEN, ELSE;
 terminal			TRUE, FALSE;
 
-/* Object */
-terminal			OBJECT ;
-terminal			END ;
-terminal			NUMBERSIGN ;
-terminal			ATTRIBUTE ;
-terminal			METHOD ;
-terminal			SEMI ;
-terminal			LCURLYBRACE ;
-terminal			RCURLYBRACE ;
-
 /* Types */
-terminal			BOOL, INT, UNIT;
+terminal			BOOL, INT, UNIT, LIST;
 
 /* Special tokens */
 terminal Integer	NUMBER;
 terminal Integer	TYPEVARIABLE;
 terminal String		IDENTIFIER;
+terminal Integer[]	PROJECTION;
 terminal			COMMENT;
 
 
@@ -64,31 +55,32 @@ non terminal Expression		simple_expr;
 non terminal Expression[]	simple_expr_list;
 non terminal Expression		constant;
 non terminal Expression		operator;
+non terminal Expression[]	expr_semi_list;		/* list of expressions separated by semicolon */
+non terminal Expression[]	expr_comma_list;	/* list of expressions separated by comma */
 non terminal IdTypePair[]	id_type_list;		/* list of identifiers and optionally types */
 non terminal IdTypePair		id_type_pair;		/* (id:type) or id */
+non terminal String[]		id_comma_list;		/* list of identifiers separated by comma */
 non terminal MonoType		type;
 non terminal MonoType		simple_type;
-non terminal ObjectType		object_type;
-non terminal RowType		row_type;
-non terminal ObjectExpr		object_expr;
-non terminal Duplication	duplication;
-non terminal Send			send;
-non terminal Row			row;
-non terminal Attribute		attribute;
-non terminal Method			method;
-non terminal CurriedMethod	curried_method;
-non terminal IdExprPair[]	id_expr_list;
+non terminal MonoType[]		type_star_list;		/* list of types separated by star */
 
 
 /* Precedences, based on http://caml.inria.fr/pub/docs/manual-ocaml/manual015.html */
+precedence nonassoc	IN;
+precedence nonassoc	LET, REC;				/* above SEMI (...; let ... in ...) */
+precedence nonassoc	THEN;					/* below ELSE (if ... then ...) */
+precedence nonassoc	ELSE;					/* (if ... then ... else ...) */
+
 precedence right	ARROW;
 
 precedence right	BARBAR;					/* expr (e || e || e) */
 precedence right	AMPERAMPER;				/* expr (e && e && e) */
 
 precedence left		EQUAL, LESS, GREATER, LESSEQUAL, GREATEREQUAL;
+precedence right	COLONCOLON;				/* expr (e :: e :: e) */
 precedence left		PLUS, MINUS;
 precedence left		STAR, SLASH, MOD;
+
 
 
 /***************
@@ -96,16 +88,9 @@ precedence left		STAR, SLASH, MOD;
  ***************/
 
 
-
 expr				::=	simple_expr:e
 						{: RESULT = e; :}
-					
-					/* Object */
-					|	object_expr:o
-						{: RESULT = o; :}
-					|   duplication:d
-						{: RESULT = d; :}
-							
+				
 					/* Applications */
 					|	simple_expr:e simple_expr_list:l
 						{: for (int n = 0; n < l.length; ++n) {
@@ -136,6 +121,9 @@ expr				::=	simple_expr:e
 					|	expr:e1 GREATEREQUAL expr:e2
 						{: RESULT = new InfixOperation(RelationalOperator.newGreaterEqual(), e1, e2); :}
 
+					|	expr:e1 COLONCOLON expr:e2
+						{: RESULT = new InfixOperation(new BinaryCons(), e1, e2); :}
+
 					/* Logical operators */
 					|	expr:e1 AMPERAMPER expr:e2
 						{: RESULT = new And(e1, e2); :}
@@ -151,6 +139,10 @@ expr				::=	simple_expr:e
 						{: RESULT = new Lambda(id, null, e); :}
 					|	LAMBDA IDENTIFIER:id COLON type:tau DOT expr:e
 						{: RESULT = new Lambda(id, tau, e); :}
+					|	LAMBDA LPAREN id_comma_list:il RPAREN DOT expr:e
+						{: RESULT = new MultiLambda(il, null, e); :}
+					|	LAMBDA LPAREN id_comma_list:il RPAREN COLON type:tau DOT expr:e
+						{: RESULT = new MultiLambda(il, tau, e); :}
 
 					/* Let */
 					|	LET IDENTIFIER:id EQUAL expr:e1 IN expr:e2
@@ -176,6 +168,10 @@ expr				::=	simple_expr:e
 						   identifiers[0] = id;
 						   types[0] = tau;
 						   RESULT = new CurriedLet(identifiers, types, e1, e2); :}
+					|	LET LPAREN id_comma_list:il RPAREN EQUAL expr:e1 IN expr:e2
+						{: RESULT = new MultiLet(il, null, e1, e2); :}
+					|	LET LPAREN id_comma_list:il RPAREN COLON type:tau EQUAL expr:e1 IN expr:e2
+						{: RESULT = new MultiLet(il, tau, e1, e2); :}
 
 					/* Recursion */				
 					|	REC IDENTIFIER:id DOT expr:e
@@ -207,128 +203,27 @@ expr				::=	simple_expr:e
 						   RESULT = new CurriedLetRec(identifiers, types, e1, e2); :}
 					;
 
+
 simple_expr			::=	constant:c
 						{: RESULT = c; :}
 					|	IDENTIFIER:id
 						{: RESULT = new Identifier(id); :}
 
-					/* Send */
-					|	send:s
-						{: RESULT = s; :}
-						
 					/* Parenthized operators/expressions */
 					|	LPAREN operator:o RPAREN
 						{: RESULT = o; :}
 					|	LPAREN expr:e RPAREN
 						{: RESULT = e; :}
+
+					/* Tuples */
+					|	LPAREN expr_comma_list:el RPAREN
+						{: RESULT = new Tuple(el); :}
+						
+					/* Lists */
+					|	LBRACKET expr_semi_list:el RBRACKET
+						{: RESULT = new List(el); :}
 					;
 
-object_expr			::= OBJECT LPAREN IDENTIFIER:id RPAREN END
-						{: Expression [] e = new Expression [0];
-						   RESULT = new ObjectExpr (id, null, new Row (e)); :}
-					|   OBJECT LPAREN IDENTIFIER:id COLON type:tau RPAREN END
-						{: Expression [] e = new Expression [0];
-						   RESULT = new ObjectExpr (id, tau, new Row (e)); :}
-					|	OBJECT LPAREN IDENTIFIER:id RPAREN row:r END
-						{: RESULT = new ObjectExpr (id, null, r); :}
-					|	OBJECT LPAREN IDENTIFIER:id COLON type:tau RPAREN row:r END
-						{: RESULT = new ObjectExpr (id, tau, r); :}
-					;
-					
-duplication			::= IDENTIFIER:id LCURLYBRACE LESS id_expr_list:iel GREATER RCURLYBRACE
-						{: Expression [] tmpE = new Expression [iel.length];
-						   String [] tmpI = new String [iel.length];
-						   for ( int i = 0 ; i < iel.length ; i++ )
-						   {
-						     tmpE [i] = iel [i].e;
-						     tmpI [i] = iel [i].id;
-						   }
-						   RESULT = new Duplication ( new Identifier (id) , tmpI , tmpE ); :}
-					|	IDENTIFIER:id LCURLYBRACE LESS GREATER RCURLYBRACE
-						{: Expression [] tmpE = new Expression [0];
-						   String [] tmpI = new String [0];
-						   RESULT = new Duplication ( new Identifier (id) , tmpI , tmpE ); :}
-					;
-
-send				::= simple_expr:e NUMBERSIGN IDENTIFIER:id
-						{: RESULT = new Send ( e , id ) ; :}
-					;
-					
-row					::= attribute:a
-						{: Expression [] e = new Expression [1];
-						   e [0] = a;
-						   RESULT = new Row (e); :}
-					|	attribute:a row:r
-						{: Expression [ ] e = new Expression [ r.getExpressions().length + 1 ] ;
-    					   System.arraycopy ( r.getExpressions() , 0 , e , 1 , r.getExpressions().length ) ;
-    					   e [0] = a ;
-						   RESULT = new Row (e); :}
-					|	method:m
-						{: Expression [] e = new Expression [1];
-						   e [0] = m;
-						   RESULT = new Row (e); :}
-					|	method:m row:r
-						{: Expression [ ] e = new Expression [ r.getExpressions().length + 1 ] ;
-    					   System.arraycopy ( r.getExpressions() , 0 , e , 1 , r.getExpressions().length ) ;
-    					   e [0] = m ;
-						   RESULT = new Row (e); :}
-					|	curried_method:cm
-						{: Expression [] e = new Expression [1];
-						   e [0] = cm;
-						   RESULT = new Row (e); :}
-					|	curried_method:cm row:r
-						{: Expression [ ] e = new Expression [ r.getExpressions().length + 1 ] ;
-    					   System.arraycopy ( r.getExpressions() , 0 , e , 1 , r.getExpressions().length ) ;
-    					   e [0] = cm ;
-						   RESULT = new Row (e); :}
-					;
-
-attribute			::=	ATTRIBUTE IDENTIFIER:id EQUAL expr:e SEMI
-						{: RESULT = new Attribute ( id , null , e ); :}
-					|	ATTRIBUTE IDENTIFIER:id COLON type:tau EQUAL expr:e SEMI
-						{: RESULT = new Attribute ( id , tau , e ); :}
-					;
-
-method				::=	METHOD IDENTIFIER:id EQUAL expr:e SEMI
-						{: RESULT = new Method ( id , null, e ); :}
-					|	METHOD IDENTIFIER:id COLON type:tau EQUAL expr:e SEMI
-						{: RESULT = new Method ( id ,tau, e ); :}
-					;
-
-curried_method		::=	METHOD IDENTIFIER:id id_type_list:itl EQUAL expr:e SEMI
-						{: String[] identifiers = new String[itl.length + 1];
-						   MonoType[] types = new MonoType[itl.length + 1 ];
-						   for (int n = 0; n < itl.length; n++) 
-						   {
-						     identifiers[n + 1] = itl[n].id;
-						     types[n + 1] = itl[n].tau;
-						   }
-						   identifiers [0] = id ;
-						   types [0] = null ;
-						   RESULT = new CurriedMethod ( identifiers , types , e ); :}
-					|	METHOD IDENTIFIER:id id_type_list:itl COLON type:tau EQUAL expr:e SEMI
-						{: String[] identifiers = new String[itl.length + 1];
-						   MonoType[] types = new MonoType[itl.length + 1 ];
-						   for (int n = 0; n < itl.length; n++) 
-						   {
-						     identifiers[n + 1] = itl[n].id;
-						     types[n + 1] = itl[n].tau;
-						   }
-						   identifiers [0] = id ;
-						   types [0] = tau ;
-						   RESULT = new CurriedMethod ( identifiers , types , e ); :}
-					;	   
-
-id_expr_list		::= IDENTIFIER:id EQUAL expr:e
-						{: IdExprPair [] list = new IdExprPair [1];
-						   list [0] = new IdExprPair (id, e);
-						   RESULT = list; :}
-					|	IDENTIFIER:id EQUAL expr:e SEMI id_expr_list:iel
-						{: IdExprPair [] list = new IdExprPair [iel.length+1];
-						   System.arraycopy(iel, 0, list, 1, iel.length);
-						   list [0] = new IdExprPair (id, e);
-						   RESULT = list; :}
-					;
 
 /* for applications */
 simple_expr_list	::=	simple_expr:e
@@ -341,12 +236,24 @@ simple_expr_list	::=	simple_expr:e
 
 
 constant			::=	PARENPAREN		{: RESULT = new UnitConstant(); :}
+					|	BRACKETBRACKET	{: RESULT = new EmptyList(); :}
 					|	TRUE			{: RESULT = new BooleanConstant(true); :}
 					|	FALSE			{: RESULT = new BooleanConstant(false); :}
 					|	NUMBER:n		{: RESULT = new IntegerConstant(n.intValue()); :}
 					
 					/* Logical operators */
 					|	NOT				{: RESULT = new Not(); :}
+
+					/* Tuple operators */
+					|	PROJECTION:proj	{: RESULT = new Projection(proj[0], proj[1]); :}
+					|	FST				{: RESULT = new Fst(); :}
+					|	SND				{: RESULT = new Snd(); :}
+					
+					/* List operators */
+					|	CONS			{: RESULT = new UnaryCons(); :}
+					|	IS_EMPTY		{: RESULT = new IsEmpty(); :}
+					|	HD				{: RESULT = new Hd(); :}
+					|	TL				{: RESULT = new Tl(); :}
 					;
 
 
@@ -360,9 +267,30 @@ operator			::=	PLUS			{: RESULT = ArithmeticOperator.newPlus(); :}
 					|	GREATER			{: RESULT = RelationalOperator.newGreaterThan(); :}
 					|	LESSEQUAL		{: RESULT = RelationalOperator.newLowerEqual(); :}
 					|	GREATEREQUAL	{: RESULT = RelationalOperator.newGreaterEqual(); :}
+					
+					/* List operators */
+					|	COLONCOLON		{: RESULT = new BinaryCons(); :}
 					;
 
 
+expr_semi_list		::=	expr:e
+						{: RESULT = new Expression[] { e }; :}
+					|	expr_semi_list:el SEMI expr:e
+						{: RESULT = new Expression[el.length + 1];
+						   System.arraycopy(el, 0, RESULT, 0, el.length);
+						   RESULT[el.length] = e; :}
+					;
+
+
+expr_comma_list		::=	expr_comma_list:el COMMA expr:e
+						{: RESULT = new Expression[el.length + 1];
+						   System.arraycopy(el, 0, RESULT, 0, el.length);
+						   RESULT[el.length] = e; :}
+					|	expr:e1 COMMA expr:e2
+						{: RESULT = new Expression[] { e1, e2 }; :}
+					;
+				
+				
 id_type_list		::= id_type_list:l id_type_pair:itp
 						{: RESULT = new IdTypePair[l.length + 1];
 						   System.arraycopy(l, 0, RESULT, 0, l.length);
@@ -379,6 +307,15 @@ id_type_pair		::= LPAREN IDENTIFIER:id COLON type:tau RPAREN
 					;
 					
 					
+id_comma_list		::=	id_comma_list:l COMMA IDENTIFIER:id
+						{: RESULT = new String[l.length + 1];
+						   System.arraycopy(l, 0, RESULT, 0, l.length);
+						   RESULT[l.length] = id; :}
+					|	IDENTIFIER:id
+						{: RESULT = new String[] { id }; :}
+					;
+
+					
 					
 /*********
  * Types *
@@ -387,6 +324,9 @@ id_type_pair		::= LPAREN IDENTIFIER:id COLON type:tau RPAREN
 
 type				::=	simple_type:t			{: RESULT = t; :}
 					|	type:t1 ARROW type:t2	{: RESULT = new ArrowType(t1, t2); :}
+					|	type_star_list:tl
+						{: RESULT = new TupleType(tl); :}
+					|	type:t LIST				{: RESULT = new ListType(t); :}
 					;
 
 
@@ -395,25 +335,13 @@ simple_type			::=	LPAREN type:t RPAREN	{: RESULT = t; :}
 					|	INT						{: RESULT = new IntegerType(); :}
 					|	UNIT					{: RESULT = new UnitType(); :}
 					|	TYPEVARIABLE:tvar		{: RESULT = new TypeVariable(0, tvar); :}
-					|	object_type:t			{: RESULT = t; :}
 					;
 
-object_type			::= LESS row_type:r GREATER
-						{: RESULT = new ObjectType ( r ); :}
-					;
 
-row_type			::= IDENTIFIER:id COLON type:tau SEMI
-						{: String [] m = new String [1];
-						   m [0] = id;
-						   MonoType [] types = new MonoType [1];
-						   types [0] = tau;
-						   RESULT = new RowType (m,types) ; :}
-					|	IDENTIFIER:id COLON type:tau SEMI row_type:r
-						{: String [] m = new String [r.getIdentifiers().length + 1];
-						   m [0] = id;
-						   System.arraycopy ( r.getIdentifiers() , 0 , m , 1 , r.getIdentifiers().length );
-						   MonoType [] types = new MonoType [r.getTypes().length + 1];
-						   types [0] = tau;
-						   System.arraycopy ( r.getTypes() , 0 , types , 1 , r.getTypes().length );
-						   RESULT = new RowType (m,types) ; :}
-					;		
+type_star_list		::= type_star_list:tl STAR type:t
+						{: RESULT = new MonoType[tl.length + 1];
+						   System.arraycopy(tl, 0, RESULT, 0, tl.length);
+						   RESULT[tl.length] = t; :}
+					|	type:t1 STAR type:t2
+						{: RESULT = new MonoType[] { t1, t2 }; :}
+					;

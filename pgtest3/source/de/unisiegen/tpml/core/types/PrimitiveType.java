@@ -52,8 +52,8 @@ public abstract class PrimitiveType extends MonoType
   {
     if ( pObject instanceof PrimitiveType )
     {
-      PrimitiveType type = ( PrimitiveType ) pObject ;
-      return this.name == type.name ;
+      PrimitiveType other = ( PrimitiveType ) pObject ;
+      return this.name == other.name ;
     }
     return false ;
   }

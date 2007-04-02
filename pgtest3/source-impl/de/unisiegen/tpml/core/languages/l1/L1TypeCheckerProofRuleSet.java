@@ -86,11 +86,11 @@ public class L1TypeCheckerProofRuleSet extends AbstractTypeCheckerProofRuleSet {
     And and = (And)node.getExpression();
     
     // generate new child nodes
-    context.addProofNode(node, node.getEnvironment(), and.getE1(), BooleanType.BOOL);
-    context.addProofNode(node, node.getEnvironment(), and.getE2(), BooleanType.BOOL);
+    context.addProofNode(node, node.getEnvironment(), and.getE1(), new BooleanType());
+    context.addProofNode(node, node.getEnvironment(), and.getE2(), new BooleanType());
     
     // add the {tau = bool} equation
-    context.addEquation(node.getType(), BooleanType.BOOL);
+    context.addEquation(node.getType(), new BooleanType());
   }
   
   
@@ -211,7 +211,7 @@ public class L1TypeCheckerProofRuleSet extends AbstractTypeCheckerProofRuleSet {
    */
   public void applyCond(TypeCheckerProofContext context, TypeCheckerProofNode node) {
     Condition condition = (Condition)node.getExpression();
-    context.addProofNode(node, node.getEnvironment(), condition.getE0(), BooleanType.BOOL);
+    context.addProofNode(node, node.getEnvironment(), condition.getE0(), new BooleanType());
     context.addProofNode(node, node.getEnvironment(), condition.getE1(), node.getType());
     context.addProofNode(node, node.getEnvironment(), condition.getE2(), node.getType());
   }
@@ -366,11 +366,11 @@ public class L1TypeCheckerProofRuleSet extends AbstractTypeCheckerProofRuleSet {
     Or or = (Or)node.getExpression();
     
     // generate new child nodes
-    context.addProofNode(node, node.getEnvironment(), or.getE1(), BooleanType.BOOL);
-    context.addProofNode(node, node.getEnvironment(), or.getE2(), BooleanType.BOOL);
+    context.addProofNode(node, node.getEnvironment(), or.getE1(), new BooleanType());
+    context.addProofNode(node, node.getEnvironment(), or.getE2(), new BooleanType());
     
     // add the {tau = bool} equation
-    context.addEquation(node.getType(), BooleanType.BOOL);
+    context.addEquation(node.getType(), new BooleanType());
   }
   
   
