@@ -20,25 +20,25 @@ interface PrettyPrintPriorities
   /**
    * The pretty print priority for object types.
    */
-  public static final int PRIO_OBJECT = 2 ;
+  public static final int PRIO_OBJECT = 0 ;
 
 
   /**
    * The pretty print priority for the row type in object types.
    */
-  public static final int PRIO_OBJECT_ROW = 2 ;
+  public static final int PRIO_OBJECT_ROW = 0 ;
 
 
   /**
    * The pretty print priority for row types.
    */
-  public static final int PRIO_ROW = 2 ;
+  public static final int PRIO_ROW = 0 ;
 
 
   /**
    * The pretty print priority for the type in row types.
    */
-  public static final int PRIO_ROW_TAU = 2 ;
+  public static final int PRIO_ROW_TAU = 0 ;
 
 
   /**
