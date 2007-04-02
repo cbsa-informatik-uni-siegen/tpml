@@ -384,7 +384,7 @@ public class L1TypeCheckerProofRuleSet extends AbstractTypeCheckerProofRuleSet {
 	  DefaultTypeEquationProofNode node = (DefaultTypeEquationProofNode) pNode ;
 	  TypeEquationList eqns = node.getEquations();
 	  // if the TypeEquationList is an empty list, we are ready wiht unification
-	  if (eqns == TypeEquationList.EMPTY_LIST)
+	  if (eqns.equals( TypeEquationList.EMPTY_LIST))
 	  {
 		  context.setUnifyReady(true);
 		  return;
@@ -414,6 +414,7 @@ public class L1TypeCheckerProofRuleSet extends AbstractTypeCheckerProofRuleSet {
 			  eqns=eqns.substitute(s);
 			  context.setEquations(eqns);
 			  context.addSubstitution(s);
+			  return;
 		  }
 	  }
 	  else if (left instanceof ArrowType && right instanceof ArrowType){
@@ -425,6 +426,7 @@ public class L1TypeCheckerProofRuleSet extends AbstractTypeCheckerProofRuleSet {
 	      context.setEquations(eqns);
 	      context.addEquation(taul.getTau2(), taur.getTau2());
 	      context.addEquation(taul.getTau1(), taur.getTau1());
+	      return;
 	  }
       else if (left instanceof TupleType && right instanceof TupleType) {
           // cast to TupleType instances (tau and tau')
@@ -499,7 +501,7 @@ public class L1TypeCheckerProofRuleSet extends AbstractTypeCheckerProofRuleSet {
 		  context.setEquations(eqns.getRemaining());
 		  return;
 	  }   
-	//  throw new UnificationException(eqns.getFirst());  
+	  throw new UnificationException(eqns.getFirst());  
   }
   
   /**
