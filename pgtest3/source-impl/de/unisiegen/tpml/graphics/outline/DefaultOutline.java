@@ -31,6 +31,8 @@ import de.unisiegen.tpml.core.expressions.ObjectExpr ;
 import de.unisiegen.tpml.core.expressions.Recursion ;
 import de.unisiegen.tpml.core.expressions.Row ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStyle ;
+import de.unisiegen.tpml.core.types.ArrowType ;
+import de.unisiegen.tpml.core.types.Type ;
 import de.unisiegen.tpml.graphics.outline.binding.OutlineBinding ;
 import de.unisiegen.tpml.graphics.outline.binding.OutlinePair ;
 import de.unisiegen.tpml.graphics.outline.binding.OutlineStyle ;
@@ -642,6 +644,58 @@ public final class DefaultOutline implements Outline
 
 
   /**
+   * Creates the children with the given {@link Type} and adds them to the given
+   * node.
+   * 
+   * @param pType The {@link Type}, with which the children should be created.
+   * @return The created {@link OutlineNode}.
+   */
+  private final OutlineNode createChildren ( Type pType )
+  {
+    Enumeration < Type > children = pType.children ( ) ;
+    int childIndex = getChildIndex ( pType ) ;
+    Type child ;
+    OutlineNode outlineNode = new OutlineNode ( pType ) ;
+    OutlineNode outlineNodeChild ;
+    while ( children.hasMoreElements ( ) )
+    {
+      child = children.nextElement ( ) ;
+      outlineNodeChild = createChildren ( child ) ;
+      outlineNodeChild.setChildIndexType ( childIndex ) ;
+      childIndex ++ ;
+      outlineNode.add ( outlineNodeChild ) ;
+    }
+    return outlineNode ;
+  }
+
+
+  /**
+   * Returns the minimum child index. For example 1 if the {@link Type} is an
+   * instance of {@link ArrowType}.
+   * 
+   * @param pType The {@link Type} to check for.
+   * @return The minimum child index.
+   */
+  private final int getChildIndex ( Type pType )
+  {
+    int result = Integer.MAX_VALUE ;
+    for ( java.lang.reflect.Method method : pType.getClass ( ).getMethods ( ) )
+    {
+      if ( GETE.equals ( method.getName ( ) ) )
+      {
+        return OutlineNode.NO_CHILD_INDEX ;
+      }
+      if ( method.getName ( ).matches ( GETEX ) )
+      {
+        result = Math.min ( result , Integer.parseInt ( method.getName ( )
+            .substring ( 4 ) ) ) ;
+      }
+    }
+    return result == Integer.MAX_VALUE ? 1 : result ;
+  }
+
+
+  /**
    * Returns the node, which represents the given {@link Let}.
    * 
    * @param pLet The input {@link Expression}.
@@ -971,7 +1025,8 @@ public final class DefaultOutline implements Outline
      */
     if ( pObjectExpr.getTau ( ) != null )
     {
-      outlineNodeType = new OutlineNode ( pObjectExpr.getTau ( ) ) ;
+      // outlineNodeType = new OutlineNode ( pObjectExpr.getTau ( ) ) ;
+      outlineNodeType = createChildren ( pObjectExpr.getTau ( ) ) ;
       outlineNodeType.setChildIndexType ( ) ;
       outlineNode.add ( outlineNodeType ) ;
     }
