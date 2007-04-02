@@ -188,17 +188,17 @@ public final class OutlineTreeSelectionListener implements
     }
     OutlineNode selectedNode = list.get ( list.size ( ) - 1 ) ;
     // Type
-    if ( selectedNode.getType ( ) != null )
+    if ( selectedNode.isType ( ) )
     {
       updateType ( list , pTreePath ) ;
     }
     // Identifier
-    else if ( selectedNode.getExpression ( ) == null )
+    else if ( selectedNode.isIdentifier ( ) || selectedNode.isInfixOperation ( ) )
     {
       updateIdentifier ( list , pTreePath ) ;
     }
     // Expression
-    else
+    else if ( selectedNode.isExpression ( ) )
     {
       updateExpression ( list , pTreePath ) ;
     }
@@ -218,21 +218,22 @@ public final class OutlineTreeSelectionListener implements
     OutlineNode selectedNode = pList.get ( pList.size ( ) - 1 ) ;
     for ( int i = 0 ; i < pList.size ( ) ; i ++ )
     {
-      if ( ( selectedNode.getExpression ( ) instanceof Identifier )
+      if ( ( selectedNode.getPrettyPrintable ( ) instanceof Identifier )
           && ( i < pList.size ( ) - 1 )
-          && ( ( ( Identifier ) selectedNode.getExpression ( ) )
+          && ( ( ( Identifier ) selectedNode.getPrettyPrintable ( ) )
               .boundedExpression ( ) != null ) )
       {
         try
         {
-          Identifier identifier = ( Identifier ) selectedNode.getExpression ( ) ;
+          Identifier identifier = ( Identifier ) selectedNode
+              .getPrettyPrintable ( ) ;
           /*
            * Highlight the bounded Identifiers in the other childs of a parent
            * row.
            */
-          if ( ( pList.get ( i ).getExpression ( ) instanceof Attribute )
-              || ( pList.get ( i ).getExpression ( ) instanceof Method )
-              || ( pList.get ( i ).getExpression ( ) instanceof CurriedMethod ) )
+          if ( ( pList.get ( i ).getPrettyPrintable ( ) instanceof Attribute )
+              || ( pList.get ( i ).getPrettyPrintable ( ) instanceof Method )
+              || ( pList.get ( i ).getPrettyPrintable ( ) instanceof CurriedMethod ) )
           {
             OutlineNode nodeRowChild = ( OutlineNode ) pTreePath.getPath ( ) [ i ] ;
             OutlineNode nodeRow = ( OutlineNode ) pTreePath.getPath ( ) [ i - 1 ] ;
@@ -240,7 +241,7 @@ public final class OutlineTreeSelectionListener implements
             {
               OutlineNode currentOutlineNode = ( OutlineNode ) nodeRow
                   .getChildAt ( j ) ;
-              if ( currentOutlineNode.getExpression ( ) == identifier
+              if ( currentOutlineNode.getPrettyPrintable ( ) == identifier
                   .boundedExpression ( ) )
               {
                 /*
@@ -266,7 +267,7 @@ public final class OutlineTreeSelectionListener implements
              * Highlight the Identifier in the child node with the bounded
              * Identifier index.
              */
-            if ( pList.get ( i ).getExpression ( ) == identifier
+            if ( pList.get ( i ).getPrettyPrintable ( ) == identifier
                 .boundedExpression ( ) )
             {
               OutlineNode nodeIdentifier = ( OutlineNode ) ( ( OutlineNode ) pTreePath
@@ -282,7 +283,7 @@ public final class OutlineTreeSelectionListener implements
              * Highlight the Identifier in the node.
              */
             PrettyAnnotation prettyAnnotation = pList.get ( i )
-                .getExpression ( ).toPrettyString ( )
+                .getPrettyPrintable ( ).toPrettyString ( )
                 .getAnnotationForPrintable ( identifier.boundedExpression ( ) ) ;
             pList.get ( i ).setBoundedStart (
                 prettyAnnotation.getStartOffset ( )
@@ -315,9 +316,9 @@ public final class OutlineTreeSelectionListener implements
       /*
        * Update the caption of the node
        */
-      PrettyAnnotation prettyAnnotation = pList.get ( i ).getExpression ( )
+      PrettyAnnotation prettyAnnotation = pList.get ( i ).getPrettyPrintable ( )
           .toPrettyString ( ).getAnnotationForPrintable (
-              selectedNode.getExpression ( ) ) ;
+              selectedNode.getPrettyPrintable ( ) ) ;
       pList.get ( i ).updateCaption ( prettyAnnotation.getStartOffset ( ) ,
           prettyAnnotation.getEndOffset ( ) ) ;
       /*
@@ -348,7 +349,7 @@ public final class OutlineTreeSelectionListener implements
      * Highlight the bounded Identifiers of an Attribute in the other childs of
      * the parent row.
      */
-    if ( secondLast.getExpression ( ) instanceof Attribute )
+    if ( secondLast.getPrettyPrintable ( ) instanceof Attribute )
     {
       OutlineNode nodeRow = ( OutlineNode ) pTreePath.getPath ( ) [ pTreePath
           .getPathCount ( ) - 3 ] ;
@@ -377,9 +378,13 @@ public final class OutlineTreeSelectionListener implements
       /*
        * Update the caption of the node
        */
-      PrettyAnnotation prettyAnnotation = pList.get ( i ).getExpression ( )
+      if ( pList.get ( i ).getPrettyPrintable ( ) == null )
+      {
+        continue ;
+      }
+      PrettyAnnotation prettyAnnotation = pList.get ( i ).getPrettyPrintable ( )
           .toPrettyString ( ).getAnnotationForPrintable (
-              secondLast.getExpression ( ) ) ;
+              secondLast.getPrettyPrintable ( ) ) ;
       pList.get ( i ).updateCaption (
           prettyAnnotation.getStartOffset ( ) + selectedNode.getStartIndex ( ) ,
           prettyAnnotation.getStartOffset ( ) + selectedNode.getEndIndex ( ) ) ;
@@ -425,22 +430,13 @@ public final class OutlineTreeSelectionListener implements
       /*
        * Update the caption of the node
        */
-      PrettyAnnotation prettyAnnotation ;
-      if ( pList.get ( i ).getExpression ( ) != null )
+      if ( pList.get ( i ).getPrettyPrintable ( ) == null )
       {
-        prettyAnnotation = pList.get ( i ).getExpression ( ).toPrettyString ( )
-            .getAnnotationForPrintable ( selectedNode.getType ( ) ) ;
-      }
-      else if ( pList.get ( i ).getType ( ) != null )
-      {
-        prettyAnnotation = pList.get ( i ).getType ( ).toPrettyString ( )
-            .getAnnotationForPrintable ( selectedNode.getType ( ) ) ;
-      }
-      else
-      {
-        // Identifier - Type
         continue ;
       }
+      PrettyAnnotation prettyAnnotation = pList.get ( i ).getPrettyPrintable ( )
+          .toPrettyString ( ).getAnnotationForPrintable (
+              selectedNode.getPrettyPrintable ( ) ) ;
       pList.get ( i ).updateCaption ( prettyAnnotation.getStartOffset ( ) ,
           prettyAnnotation.getEndOffset ( ) ) ;
       /*

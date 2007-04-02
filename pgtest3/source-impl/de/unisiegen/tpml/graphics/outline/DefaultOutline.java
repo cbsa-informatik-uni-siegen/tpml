@@ -32,6 +32,7 @@ import de.unisiegen.tpml.core.expressions.Recursion ;
 import de.unisiegen.tpml.core.expressions.Row ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStyle ;
 import de.unisiegen.tpml.core.types.ArrowType ;
+import de.unisiegen.tpml.core.types.RowType ;
 import de.unisiegen.tpml.core.types.Type ;
 import de.unisiegen.tpml.graphics.outline.binding.OutlineBinding ;
 import de.unisiegen.tpml.graphics.outline.binding.OutlinePair ;
@@ -52,6 +53,8 @@ import de.unisiegen.tpml.graphics.outline.util.OutlinePreferences ;
  * @author Christian Fehler
  * @version $Rev: 1061 $
  */
+@ SuppressWarnings (
+{ "nls" , "nls" } )
 public final class DefaultOutline implements Outline
 {
   /**
@@ -63,19 +66,55 @@ public final class DefaultOutline implements Outline
   /**
    * The <code>String</code> for the name of a {@link Method}.
    */
-  private static final String METHODNAME = "Method-Name" ; //$NON-NLS-1$
+  private static final String METHOD_NAME = "Method-Name" ; //$NON-NLS-1$
+
+
+  /**
+   * The <code>String</code> for an array of children.
+   */
+  private static final String GET_E_N = "getExpressions" ; //$NON-NLS-1$
+
+
+  /**
+   * The <code>String</code> for an array of children.
+   */
+  private static final String GET_TAU_N = "getTypes" ; //$NON-NLS-1$
 
 
   /**
    * The <code>String</code> for more than one child.
    */
-  private static final String GETEX = "getE[0-9]+" ; //$NON-NLS-1$
+  private static final String GET_E_X = "getE[0-9]+" ; //$NON-NLS-1$
+
+
+  /**
+   * The <code>String</code> for more than one child.
+   */
+  private static final String GET_TAU_X = "getTau[0-9]+" ; //$NON-NLS-1$
+
+
+  /**
+   * The <code>String</code> for more than one child.
+   */
+  private static final String GET_PHI_X = "getPhi[0-9]+" ; //$NON-NLS-1$
 
 
   /**
    * The <code>String</code> for only one child.
    */
-  private static final String GETE = "getE" ; //$NON-NLS-1$
+  private static final String GET_E = "getE" ; //$NON-NLS-1$
+
+
+  /**
+   * The <code>String</code> for only one child.
+   */
+  private static final String GET_TAU = "getTau" ; //$NON-NLS-1$
+
+
+  /**
+   * The <code>String</code> for only one child.
+   */
+  private static final String GET_PHI = "getPhi" ; //$NON-NLS-1$
 
 
   /**
@@ -144,7 +183,6 @@ public final class DefaultOutline implements Outline
     this.rootOutlineNode = null ;
     this.outlinePreferences = new OutlinePreferences ( ) ;
     this.outlineUI = new OutlineUI ( this ) ;
-    // setEnabledUI ( false ) ;
     if ( ( this.outlineStart.equals ( Outline.Start.BIGSTEP ) )
         || ( this.outlineStart.equals ( Outline.Start.TYPECHECKER ) ) )
     {
@@ -166,12 +204,13 @@ public final class DefaultOutline implements Outline
         this.outlineUnbound ) ;
     OutlineNode outlineNodeId ;
     OutlineNode outlineNodeType ;
-    ArrayList < OutlinePair > outlinePairIdList = OutlineStyle.getIndex (
-        pCurriedLet , PrettyStyle.IDENTIFIER ) ;
     /*
      * Create the first Identifier.
      */
-    OutlinePair outlinePairId = outlinePairIdList.get ( 0 ) ;
+    final int end = pCurriedLet.toPrettyString ( ).getAnnotationForPrintable (
+        pCurriedLet.getE1 ( ) ).getStartOffset ( ) ;
+    OutlinePair outlinePairId = OutlineStyle.getIndex ( pCurriedLet ,
+        PrettyStyle.IDENTIFIER , 0 , end ).get ( 0 ) ;
     OutlinePair outlinePairType = null ;
     OutlineBinding outlineBinding = new OutlineBinding ( pCurriedLet ,
         outlinePairId.getStart ( ) , outlinePairId.getEnd ( ) , 0 ) ;
@@ -185,12 +224,20 @@ public final class DefaultOutline implements Outline
      * Create all other Identifiers and Types.
      */
     final int length = pCurriedLet.getIdentifiers ( ).length ;
+    int start = 0 ;
     for ( int i = 1 ; i < length ; i ++ )
     {
       /*
        * Create the current Identifier.
        */
-      outlinePairId = outlinePairIdList.get ( i ) ;
+      start = outlinePairId.getEnd ( ) + 1 ;
+      if ( ( pCurriedLet.getTypes ( i - 1 ) != null ) && ( i != 1 ) )
+      {
+        start = pCurriedLet.toPrettyString ( ).getAnnotationForPrintable (
+            pCurriedLet.getTypes ( i - 1 ) ).getEndOffset ( ) + 1 ;
+      }
+      outlinePairId = OutlineStyle.getIndex ( pCurriedLet ,
+          PrettyStyle.IDENTIFIER , start , end ).get ( 0 ) ;
       outlineBinding = new OutlineBinding ( pCurriedLet , outlinePairId
           .getStart ( ) , outlinePairId.getEnd ( ) , i ) ;
       /*
@@ -225,7 +272,8 @@ public final class DefaultOutline implements Outline
       if ( pCurriedLet.getTypes ( i ) != null )
       {
         outlineNodeType = new OutlineNode ( pCurriedLet.getTypes ( i ) ) ;
-        outlineNodeType.setChildIndexType ( i ) ;
+        createChildren ( pCurriedLet.getTypes ( i ) , outlineNodeType ) ;
+        outlineNodeType.setChildIndexTypeTau ( i ) ;
         outlineNodeId.add ( outlineNodeType ) ;
       }
       outlineNode.add ( outlineNodeId ) ;
@@ -236,7 +284,8 @@ public final class DefaultOutline implements Outline
     if ( pCurriedLet.getTypes ( 0 ) != null )
     {
       outlineNodeType = new OutlineNode ( pCurriedLet.getTypes ( 0 ) ) ;
-      outlineNodeType.setChildIndexType ( ) ;
+      createChildren ( pCurriedLet.getTypes ( 0 ) , outlineNodeType ) ;
+      outlineNodeType.setChildIndexTypeTau ( ) ;
       outlineNode.add ( outlineNodeType ) ;
     }
     /*
@@ -263,9 +312,11 @@ public final class DefaultOutline implements Outline
     /*
      * Create the first Identifier.
      */
-    ArrayList < OutlinePair > outlinePairIdList = OutlineStyle.getIndex (
-        pCurriedLetRec , PrettyStyle.IDENTIFIER ) ;
-    OutlinePair outlinePairId = outlinePairIdList.get ( 0 ) ;
+    final int end = pCurriedLetRec.toPrettyString ( )
+        .getAnnotationForPrintable ( pCurriedLetRec.getE1 ( ) )
+        .getStartOffset ( ) ;
+    OutlinePair outlinePairId = OutlineStyle.getIndex ( pCurriedLetRec ,
+        PrettyStyle.IDENTIFIER , 0 , end ).get ( 0 ) ;
     OutlinePair outlinePairType = null ;
     OutlineBinding outlineBinding = new OutlineBinding ( pCurriedLetRec ,
         outlinePairId.getStart ( ) , outlinePairId.getEnd ( ) , 0 ) ;
@@ -298,12 +349,20 @@ public final class DefaultOutline implements Outline
      * Create all other Identifiers and Types.
      */
     final int length = pCurriedLetRec.getIdentifiers ( ).length ;
+    int start = 0 ;
     for ( int i = 1 ; i < length ; i ++ )
     {
       /*
        * Create the current Identifier.
        */
-      outlinePairId = outlinePairIdList.get ( i ) ;
+      start = outlinePairId.getEnd ( ) + 1 ;
+      if ( ( pCurriedLetRec.getTypes ( i - 1 ) != null ) && ( i != 1 ) )
+      {
+        start = pCurriedLetRec.toPrettyString ( ).getAnnotationForPrintable (
+            pCurriedLetRec.getTypes ( i - 1 ) ).getEndOffset ( ) + 1 ;
+      }
+      outlinePairId = OutlineStyle.getIndex ( pCurriedLetRec ,
+          PrettyStyle.IDENTIFIER , start , end ).get ( 0 ) ;
       outlineBinding = new OutlineBinding ( pCurriedLetRec , outlinePairId
           .getStart ( ) , outlinePairId.getEnd ( ) , i ) ;
       boolean hasBinding = true ;
@@ -334,7 +393,8 @@ public final class DefaultOutline implements Outline
       if ( pCurriedLetRec.getTypes ( i ) != null )
       {
         outlineNodeType = new OutlineNode ( pCurriedLetRec.getTypes ( i ) ) ;
-        outlineNodeType.setChildIndexType ( i ) ;
+        createChildren ( pCurriedLetRec.getTypes ( i ) , outlineNodeType ) ;
+        outlineNodeType.setChildIndexTypeTau ( i ) ;
         outlineNodeId.add ( outlineNodeType ) ;
       }
       outlineNode.add ( outlineNodeId ) ;
@@ -345,7 +405,8 @@ public final class DefaultOutline implements Outline
     if ( pCurriedLetRec.getTypes ( 0 ) != null )
     {
       outlineNodeType = new OutlineNode ( pCurriedLetRec.getTypes ( 0 ) ) ;
-      outlineNodeType.setChildIndexType ( ) ;
+      createChildren ( pCurriedLetRec.getTypes ( 0 ) , outlineNodeType ) ;
+      outlineNodeType.setChildIndexTypeTau ( ) ;
       outlineNode.add ( outlineNodeType ) ;
     }
     /*
@@ -370,14 +431,16 @@ public final class DefaultOutline implements Outline
     OutlineNode outlineNodeM ;
     OutlineNode outlineNodeId ;
     OutlineNode outlineNodeType ;
-    ArrayList < OutlinePair > outlinePairIdList = OutlineStyle.getIndex (
-        pCurriedMethod , PrettyStyle.IDENTIFIER ) ;
     /*
      * Create the first Identifier.
      */
-    OutlinePair outlinePairId = outlinePairIdList.get ( 0 ) ;
+    final int end = pCurriedMethod.toPrettyString ( )
+        .getAnnotationForPrintable ( pCurriedMethod.getE ( ) )
+        .getStartOffset ( ) ;
+    OutlinePair outlinePairId = OutlineStyle.getIndex ( pCurriedMethod ,
+        PrettyStyle.IDENTIFIER , 0 , end ).get ( 0 ) ;
     OutlinePair outlinePairType = null ;
-    outlineNodeM = new OutlineNode ( METHODNAME , pCurriedMethod
+    outlineNodeM = new OutlineNode ( METHOD_NAME , pCurriedMethod
         .getIdentifiers ( 0 ) , outlinePairId , null ) ;
     outlineNodeM.setChildIndexMeth ( OutlineNode.NO_BINDING ) ;
     outlineNode.add ( outlineNodeM ) ;
@@ -386,12 +449,20 @@ public final class DefaultOutline implements Outline
      */
     OutlineBinding outlineBinding ;
     final int length = pCurriedMethod.getIdentifiers ( ).length ;
+    int start = 0 ;
     for ( int i = 1 ; i < length ; i ++ )
     {
       /*
        * Create the current Identifier.
        */
-      outlinePairId = outlinePairIdList.get ( i ) ;
+      start = outlinePairId.getEnd ( ) + 1 ;
+      if ( ( pCurriedMethod.getTypes ( i - 1 ) != null ) && ( i != 1 ) )
+      {
+        start = pCurriedMethod.toPrettyString ( ).getAnnotationForPrintable (
+            pCurriedMethod.getTypes ( i - 1 ) ).getEndOffset ( ) + 1 ;
+      }
+      outlinePairId = OutlineStyle.getIndex ( pCurriedMethod ,
+          PrettyStyle.IDENTIFIER , start , end ).get ( 0 ) ;
       outlineBinding = new OutlineBinding ( pCurriedMethod , outlinePairId
           .getStart ( ) , outlinePairId.getEnd ( ) , i ) ;
       /*
@@ -426,7 +497,8 @@ public final class DefaultOutline implements Outline
       if ( pCurriedMethod.getTypes ( i ) != null )
       {
         outlineNodeType = new OutlineNode ( pCurriedMethod.getTypes ( i ) ) ;
-        outlineNodeType.setChildIndexType ( i ) ;
+        createChildren ( pCurriedMethod.getTypes ( i ) , outlineNodeType ) ;
+        outlineNodeType.setChildIndexTypeTau ( i ) ;
         outlineNodeId.add ( outlineNodeType ) ;
       }
       outlineNode.add ( outlineNodeId ) ;
@@ -437,7 +509,8 @@ public final class DefaultOutline implements Outline
     if ( pCurriedMethod.getTypes ( 0 ) != null )
     {
       outlineNodeType = new OutlineNode ( pCurriedMethod.getTypes ( 0 ) ) ;
-      outlineNodeType.setChildIndexType ( ) ;
+      createChildren ( pCurriedMethod.getTypes ( 0 ) , outlineNodeType ) ;
+      outlineNodeType.setChildIndexTypeTau ( ) ;
       outlineNode.add ( outlineNodeType ) ;
     }
     /*
@@ -617,8 +690,13 @@ public final class DefaultOutline implements Outline
     /*
      * Create the Identifier.
      */
-    OutlinePair outlinePairId = OutlineStyle.getIndex ( pLambda ,
-        PrettyStyle.IDENTIFIER ).get ( 0 ) ;
+    OutlinePair outlinePairId = OutlineStyle.getIndex (
+        pLambda ,
+        PrettyStyle.IDENTIFIER ,
+        0 ,
+        pLambda.toPrettyString ( )
+            .getAnnotationForPrintable ( pLambda.getE ( ) ).getStartOffset ( ) )
+        .get ( 0 ) ;
     OutlineBinding outlineBinding = new OutlineBinding ( pLambda ,
         outlinePairId.getStart ( ) , outlinePairId.getEnd ( ) , 0 ) ;
     outlineBinding.find ( pLambda.getE ( ) , pLambda.getId ( ) ) ;
@@ -632,7 +710,8 @@ public final class DefaultOutline implements Outline
     if ( pLambda.getTau ( ) != null )
     {
       outlineNodeType = new OutlineNode ( pLambda.getTau ( ) ) ;
-      outlineNodeType.setChildIndexType ( ) ;
+      createChildren ( pLambda.getTau ( ) , outlineNodeType ) ;
+      outlineNodeType.setChildIndexTypeTau ( ) ;
       outlineNode.add ( outlineNodeType ) ;
     }
     /*
@@ -640,58 +719,6 @@ public final class DefaultOutline implements Outline
      */
     createChildren ( pLambda , outlineNode ) ;
     return outlineNode ;
-  }
-
-
-  /**
-   * Creates the children with the given {@link Type} and adds them to the given
-   * node.
-   * 
-   * @param pType The {@link Type}, with which the children should be created.
-   * @return The created {@link OutlineNode}.
-   */
-  private final OutlineNode createChildren ( Type pType )
-  {
-    Enumeration < Type > children = pType.children ( ) ;
-    int childIndex = getChildIndex ( pType ) ;
-    Type child ;
-    OutlineNode outlineNode = new OutlineNode ( pType ) ;
-    OutlineNode outlineNodeChild ;
-    while ( children.hasMoreElements ( ) )
-    {
-      child = children.nextElement ( ) ;
-      outlineNodeChild = createChildren ( child ) ;
-      outlineNodeChild.setChildIndexType ( childIndex ) ;
-      childIndex ++ ;
-      outlineNode.add ( outlineNodeChild ) ;
-    }
-    return outlineNode ;
-  }
-
-
-  /**
-   * Returns the minimum child index. For example 1 if the {@link Type} is an
-   * instance of {@link ArrowType}.
-   * 
-   * @param pType The {@link Type} to check for.
-   * @return The minimum child index.
-   */
-  private final int getChildIndex ( Type pType )
-  {
-    int result = Integer.MAX_VALUE ;
-    for ( java.lang.reflect.Method method : pType.getClass ( ).getMethods ( ) )
-    {
-      if ( GETE.equals ( method.getName ( ) ) )
-      {
-        return OutlineNode.NO_CHILD_INDEX ;
-      }
-      if ( method.getName ( ).matches ( GETEX ) )
-      {
-        result = Math.min ( result , Integer.parseInt ( method.getName ( )
-            .substring ( 4 ) ) ) ;
-      }
-    }
-    return result == Integer.MAX_VALUE ? 1 : result ;
   }
 
 
@@ -710,8 +737,12 @@ public final class DefaultOutline implements Outline
     /*
      * Create the Identifier.
      */
-    OutlinePair outlinePairId = OutlineStyle.getIndex ( pLet ,
-        PrettyStyle.IDENTIFIER ).get ( 0 ) ;
+    OutlinePair outlinePairId = OutlineStyle.getIndex (
+        pLet ,
+        PrettyStyle.IDENTIFIER ,
+        0 ,
+        pLet.toPrettyString ( ).getAnnotationForPrintable ( pLet.getE1 ( ) )
+            .getStartOffset ( ) ).get ( 0 ) ;
     OutlineBinding outlineBinding = new OutlineBinding ( pLet , outlinePairId
         .getStart ( ) , outlinePairId.getEnd ( ) , 0 ) ;
     outlineBinding.find ( pLet.getE2 ( ) , pLet.getId ( ) ) ;
@@ -725,7 +756,8 @@ public final class DefaultOutline implements Outline
     if ( pLet.getTau ( ) != null )
     {
       outlineNodeType = new OutlineNode ( pLet.getTau ( ) ) ;
-      outlineNodeType.setChildIndexType ( ) ;
+      createChildren ( pLet.getTau ( ) , outlineNodeType ) ;
+      outlineNodeType.setChildIndexTypeTau ( ) ;
       outlineNode.add ( outlineNodeType ) ;
     }
     /*
@@ -751,8 +783,13 @@ public final class DefaultOutline implements Outline
     /*
      * Create the Identifier.
      */
-    OutlinePair outlinePairId = OutlineStyle.getIndex ( pLetRec ,
-        PrettyStyle.IDENTIFIER ).get ( 0 ) ;
+    OutlinePair outlinePairId = OutlineStyle
+        .getIndex (
+            pLetRec ,
+            PrettyStyle.IDENTIFIER ,
+            0 ,
+            pLetRec.toPrettyString ( ).getAnnotationForPrintable (
+                pLetRec.getE1 ( ) ).getStartOffset ( ) ).get ( 0 ) ;
     OutlineBinding outlineBinding = new OutlineBinding ( pLetRec ,
         outlinePairId.getStart ( ) , outlinePairId.getEnd ( ) , 0 ) ;
     outlineBinding.find ( pLetRec.getE1 ( ) , pLetRec.getId ( ) ) ;
@@ -767,45 +804,14 @@ public final class DefaultOutline implements Outline
     if ( pLetRec.getTau ( ) != null )
     {
       outlineNodeType = new OutlineNode ( pLetRec.getTau ( ) ) ;
-      outlineNodeType.setChildIndexType ( ) ;
+      createChildren ( pLetRec.getTau ( ) , outlineNodeType ) ;
+      outlineNodeType.setChildIndexTypeTau ( ) ;
       outlineNode.add ( outlineNodeType ) ;
     }
     /*
      * Create the children of this node.
      */
     createChildren ( pLetRec , outlineNode ) ;
-    return outlineNode ;
-  }
-
-
-  /**
-   * Returns the node, which represents the given {@link Send}.
-   * 
-   * @param pSend The input {@link Expression}.
-   * @return The node, which represents the given {@link Send}.
-   */
-  @ SuppressWarnings ( "unused" )
-  private final OutlineNode checkSend ( Send pSend )
-  {
-    OutlineNode outlineNode = new OutlineNode ( pSend , this.outlineUnbound ) ;
-    OutlineNode outlineNodeM ;
-    /*
-     * Create the children of this node.
-     */
-    createChildren ( pSend , outlineNode ) ;
-    /*
-     * Create the Identifier.
-     */
-    int start = pSend.toPrettyString ( ).getAnnotationForPrintable (
-        pSend.getE ( ) ).getEndOffset ( ) + 1 ;
-    int end = pSend.toPrettyString ( ).toString ( ).length ( ) ;
-    ArrayList < OutlinePair > outlinePairs = OutlineStyle.getIndex ( pSend ,
-        PrettyStyle.IDENTIFIER , start , end ) ;
-    OutlinePair outlinePairId = outlinePairs.get ( 0 ) ;
-    outlineNodeM = new OutlineNode ( METHODNAME , pSend.getId ( ) ,
-        outlinePairId , null ) ;
-    outlineNodeM.setChildIndexMeth ( ) ;
-    outlineNode.add ( outlineNodeM ) ;
     return outlineNode ;
   }
 
@@ -825,9 +831,14 @@ public final class DefaultOutline implements Outline
     /*
      * Create the Identifier.
      */
-    OutlinePair outlinePairId = OutlineStyle.getIndex ( pMethod ,
-        PrettyStyle.IDENTIFIER ).get ( 0 ) ;
-    outlineNodeM = new OutlineNode ( METHODNAME , pMethod.getId ( ) ,
+    OutlinePair outlinePairId = OutlineStyle.getIndex (
+        pMethod ,
+        PrettyStyle.IDENTIFIER ,
+        0 ,
+        pMethod.toPrettyString ( )
+            .getAnnotationForPrintable ( pMethod.getE ( ) ).getStartOffset ( ) )
+        .get ( 0 ) ;
+    outlineNodeM = new OutlineNode ( METHOD_NAME , pMethod.getId ( ) ,
         outlinePairId , null ) ;
     outlineNodeM.setChildIndexMeth ( ) ;
     outlineNode.add ( outlineNodeM ) ;
@@ -837,7 +848,8 @@ public final class DefaultOutline implements Outline
     if ( pMethod.getTau ( ) != null )
     {
       outlineNodeType = new OutlineNode ( pMethod.getTau ( ) ) ;
-      outlineNodeType.setChildIndexType ( ) ;
+      createChildren ( pMethod.getTau ( ) , outlineNodeType ) ;
+      outlineNodeType.setChildIndexTypeTau ( ) ;
       outlineNode.add ( outlineNodeType ) ;
     }
     /*
@@ -865,7 +877,9 @@ public final class DefaultOutline implements Outline
      * Create all Identifiers.
      */
     ArrayList < OutlinePair > outlinePairIdList = OutlineStyle.getIndex (
-        pMultiLambda , PrettyStyle.IDENTIFIER ) ;
+        pMultiLambda , PrettyStyle.IDENTIFIER , 0 , pMultiLambda
+            .toPrettyString ( ).getAnnotationForPrintable (
+                pMultiLambda.getE ( ) ).getStartOffset ( ) ) ;
     OutlinePair outlinePairId ;
     OutlineBinding outlineBinding ;
     final int length = pMultiLambda.getIdentifiers ( ).length ;
@@ -911,7 +925,8 @@ public final class DefaultOutline implements Outline
     if ( pMultiLambda.getTau ( ) != null )
     {
       outlineNodeType = new OutlineNode ( pMultiLambda.getTau ( ) ) ;
-      outlineNodeType.setChildIndexType ( ) ;
+      createChildren ( pMultiLambda.getTau ( ) , outlineNodeType ) ;
+      outlineNodeType.setChildIndexTypeTau ( ) ;
       outlineNode.add ( outlineNodeType ) ;
     }
     /*
@@ -938,7 +953,9 @@ public final class DefaultOutline implements Outline
      * Create all Identifiers.
      */
     ArrayList < OutlinePair > outlinePairIdList = OutlineStyle.getIndex (
-        pMultiLet , PrettyStyle.IDENTIFIER ) ;
+        pMultiLet , PrettyStyle.IDENTIFIER , 0 , pMultiLet.toPrettyString ( )
+            .getAnnotationForPrintable ( pMultiLet.getE1 ( ) )
+            .getStartOffset ( ) ) ;
     OutlinePair outlinePairId ;
     OutlineBinding outlineBinding ;
     final int length = pMultiLet.getIdentifiers ( ).length ;
@@ -984,7 +1001,8 @@ public final class DefaultOutline implements Outline
     if ( pMultiLet.getTau ( ) != null )
     {
       outlineNodeType = new OutlineNode ( pMultiLet.getTau ( ) ) ;
-      outlineNodeType.setChildIndexType ( ) ;
+      createChildren ( pMultiLet.getTau ( ) , outlineNodeType ) ;
+      outlineNodeType.setChildIndexTypeTau ( ) ;
       outlineNode.add ( outlineNodeType ) ;
     }
     /*
@@ -1011,8 +1029,12 @@ public final class DefaultOutline implements Outline
     /*
      * Create the Identifier.
      */
-    OutlinePair outlinePairId = OutlineStyle.getIndex ( pObjectExpr ,
-        PrettyStyle.IDENTIFIER ).get ( 0 ) ;
+    OutlinePair outlinePairId = OutlineStyle.getIndex (
+        pObjectExpr ,
+        PrettyStyle.IDENTIFIER ,
+        0 ,
+        pObjectExpr.toPrettyString ( ).getAnnotationForPrintable (
+            pObjectExpr.getE ( ) ).getStartOffset ( ) ).get ( 0 ) ;
     OutlineBinding outlineBinding = new OutlineBinding ( pObjectExpr ,
         outlinePairId.getStart ( ) , outlinePairId.getEnd ( ) , 0 ) ;
     outlineBinding.find ( pObjectExpr.getE ( ) , pObjectExpr.getId ( ) ) ;
@@ -1025,9 +1047,9 @@ public final class DefaultOutline implements Outline
      */
     if ( pObjectExpr.getTau ( ) != null )
     {
-      // outlineNodeType = new OutlineNode ( pObjectExpr.getTau ( ) ) ;
-      outlineNodeType = createChildren ( pObjectExpr.getTau ( ) ) ;
-      outlineNodeType.setChildIndexType ( ) ;
+      outlineNodeType = new OutlineNode ( pObjectExpr.getTau ( ) ) ;
+      createChildren ( pObjectExpr.getTau ( ) , outlineNodeType ) ;
+      outlineNodeType.setChildIndexTypeTau ( ) ;
       outlineNode.add ( outlineNodeType ) ;
     }
     /*
@@ -1054,8 +1076,12 @@ public final class DefaultOutline implements Outline
     /*
      * Create the Identifier.
      */
-    OutlinePair outlinePairId = OutlineStyle.getIndex ( pRecursion ,
-        PrettyStyle.IDENTIFIER ).get ( 0 ) ;
+    OutlinePair outlinePairId = OutlineStyle.getIndex (
+        pRecursion ,
+        PrettyStyle.IDENTIFIER ,
+        0 ,
+        pRecursion.toPrettyString ( ).getAnnotationForPrintable (
+            pRecursion.getE ( ) ).getStartOffset ( ) ).get ( 0 ) ;
     OutlineBinding outlineBinding = new OutlineBinding ( pRecursion ,
         outlinePairId.getStart ( ) , outlinePairId.getEnd ( ) , 0 ) ;
     outlineBinding.find ( pRecursion.getE ( ) , pRecursion.getId ( ) ) ;
@@ -1069,7 +1095,8 @@ public final class DefaultOutline implements Outline
     if ( pRecursion.getTau ( ) != null )
     {
       outlineNodeType = new OutlineNode ( pRecursion.getTau ( ) ) ;
-      outlineNodeType.setChildIndexType ( ) ;
+      createChildren ( pRecursion.getTau ( ) , outlineNodeType ) ;
+      outlineNodeType.setChildIndexTypeTau ( ) ;
       outlineNode.add ( outlineNodeType ) ;
     }
     /*
@@ -1102,8 +1129,12 @@ public final class DefaultOutline implements Outline
         Attribute attribute = ( Attribute ) currentChild ;
         outlineNodeAttr = new OutlineNode ( attribute , this.outlineUnbound ) ;
         outlineNodeAttr.setChildIndexExpression ( i + 1 ) ;
-        OutlinePair outlinePairId = OutlineStyle.getIndex ( attribute ,
-            PrettyStyle.IDENTIFIER ).get ( 0 ) ;
+        OutlinePair outlinePairId = OutlineStyle.getIndex (
+            attribute ,
+            PrettyStyle.IDENTIFIER ,
+            0 ,
+            attribute.toPrettyString ( ).getAnnotationForPrintable (
+                attribute.getE ( ) ).getStartOffset ( ) ).get ( 0 ) ;
         OutlineBinding outlineBinding = new OutlineBinding ( attribute ,
             outlinePairId.getStart ( ) , outlinePairId.getEnd ( ) , 0 ) ;
         for ( int j = i + 1 ; j < pRow.getExpressions ( ).length ; j ++ )
@@ -1124,7 +1155,7 @@ public final class DefaultOutline implements Outline
         if ( attribute.getTau ( ) != null )
         {
           outlineNodeType = new OutlineNode ( attribute.getTau ( ) ) ;
-          outlineNodeType.setChildIndexType ( ) ;
+          outlineNodeType.setChildIndexTypeTau ( ) ;
           outlineNodeAttr.add ( outlineNodeType ) ;
         }
         createChildren ( attribute , outlineNodeAttr ) ;
@@ -1156,6 +1187,133 @@ public final class DefaultOutline implements Outline
 
 
   /**
+   * Returns the node, which represents the given {@link Send}.
+   * 
+   * @param pSend The input {@link Expression}.
+   * @return The node, which represents the given {@link Send}.
+   */
+  @ SuppressWarnings ( "unused" )
+  private final OutlineNode checkSend ( Send pSend )
+  {
+    OutlineNode outlineNode = new OutlineNode ( pSend , this.outlineUnbound ) ;
+    OutlineNode outlineNodeM ;
+    /*
+     * Create the children of this node.
+     */
+    createChildren ( pSend , outlineNode ) ;
+    /*
+     * Create the Identifier.
+     */
+    int start = pSend.toPrettyString ( ).getAnnotationForPrintable (
+        pSend.getE ( ) ).getEndOffset ( ) + 1 ;
+    int end = pSend.toPrettyString ( ).toString ( ).length ( ) ;
+    ArrayList < OutlinePair > outlinePairs = OutlineStyle.getIndex ( pSend ,
+        PrettyStyle.IDENTIFIER , start , end ) ;
+    OutlinePair outlinePairId = outlinePairs.get ( 0 ) ;
+    outlineNodeM = new OutlineNode ( METHOD_NAME , pSend.getId ( ) ,
+        outlinePairId , null ) ;
+    outlineNodeM.setChildIndexMeth ( ) ;
+    outlineNode.add ( outlineNodeM ) ;
+    return outlineNode ;
+  }
+
+
+  /**
+   * Returns the node, which represents the given {@link RowType}.
+   * 
+   * @param pRowType The input {@link RowType}.
+   * @return The node, which represents the given {@link RowType}.
+   */
+  @ SuppressWarnings ( "unused" )
+  private final OutlineNode checkRowType ( RowType pRowType )
+  {
+    OutlineNode outlineNode = new OutlineNode ( pRowType ) ;
+    OutlineNode outlineNodeId ;
+    OutlineNode outlineNodeTau ;
+    OutlinePair outlinePairId = null ;
+    for ( int i = 0 ; i < pRowType.getTypes ( ).length ; i ++ )
+    {
+      if ( i == 0 )
+      {
+        outlinePairId = OutlineStyle.getIndex (
+            pRowType ,
+            PrettyStyle.IDENTIFIER ,
+            0 ,
+            pRowType.toPrettyString ( ).getAnnotationForPrintable (
+                pRowType.getTypes ( 0 ) ).getStartOffset ( ) ).get ( 0 ) ;
+      }
+      else
+      {
+        outlinePairId = OutlineStyle.getIndex (
+            pRowType ,
+            PrettyStyle.IDENTIFIER ,
+            pRowType.toPrettyString ( ).getAnnotationForPrintable (
+                pRowType.getTypes ( i - 1 ) ).getStartOffset ( ) ,
+            pRowType.toPrettyString ( ).getAnnotationForPrintable (
+                pRowType.getTypes ( i ) ).getStartOffset ( ) ).get ( 0 ) ;
+      }
+      outlineNodeId = new OutlineNode ( IDENTIFIER , pRowType
+          .getIdentifiers ( i ) , outlinePairId , null ) ;
+      outlineNodeId.setChildIndexIdentifier ( i + 1 ) ;
+      outlineNode.add ( outlineNodeId ) ;
+      outlineNodeTau = checkType ( pRowType.getTypes ( i ) ) ;
+      outlineNodeTau.setChildIndexTypeTau ( i + 1 ) ;
+      outlineNode.add ( outlineNodeTau ) ;
+    }
+    return outlineNode ;
+  }
+
+
+  /**
+   * Returns the node, which represents the given {@link Type}.
+   * 
+   * @param pType The input {@link Type}.
+   * @return The node, which represents the given {@link Type}.
+   */
+  private final OutlineNode checkType ( Type pType )
+  {
+    for ( java.lang.reflect.Method method : this.getClass ( )
+        .getDeclaredMethods ( ) )
+    {
+      if ( method.getName ( ).equals (
+          CHECK + pType.getClass ( ).getSimpleName ( ) ) )
+      {
+        try
+        {
+          Object [ ] argument = new Object [ 1 ] ;
+          argument [ 0 ] = pType ;
+          return ( OutlineNode ) method.invoke ( this , argument ) ;
+        }
+        catch ( IllegalArgumentException e )
+        {
+          System.err.println ( "IllegalArgumentException: " //$NON-NLS-1$
+              + this.getClass ( ).getCanonicalName ( ) + "." + CHECK //$NON-NLS-1$
+              + pType.getClass ( ).getSimpleName ( ) ) ;
+        }
+        catch ( IllegalAccessException e )
+        {
+          System.err.println ( "IllegalAccessException: " //$NON-NLS-1$
+              + this.getClass ( ).getCanonicalName ( ) + "." + CHECK //$NON-NLS-1$
+              + pType.getClass ( ).getSimpleName ( ) ) ;
+        }
+        catch ( InvocationTargetException e )
+        {
+          System.err.println ( "InvocationTargetException: " //$NON-NLS-1$
+              + this.getClass ( ).getCanonicalName ( ) + "." + CHECK //$NON-NLS-1$
+              + pType.getClass ( ).getSimpleName ( ) ) ;
+        }
+      }
+    }
+    OutlineNode node = new OutlineNode ( pType ) ;
+    /*
+     * Create the children of this node.
+     */
+    createChildren ( pType , node ) ;
+    return node ;
+  }
+
+
+  /**
    * Creates the children with the given {@link Expression} and adds them to the
    * given node.
    * 
@@ -1174,13 +1332,43 @@ public final class DefaultOutline implements Outline
     {
       child = children.nextElement ( ) ;
       outlineNode = checkExpression ( child ) ;
-      if ( childIndex == OutlineNode.NO_CHILD_INDEX )
+      outlineNode.setChildIndexExpression ( childIndex ) ;
+      pOutlineNode.add ( outlineNode ) ;
+      childIndex ++ ;
+    }
+  }
+
+
+  /**
+   * Creates the children with the given {@link Type} and adds them to the given
+   * node.
+   * 
+   * @param pType The {@link Type}, with which the children should be created.
+   * @param pOutlineNode The node where the children should be added.
+   */
+  private final void createChildren ( Type pType , OutlineNode pOutlineNode )
+  {
+    Enumeration < Type > children = pType.children ( ) ;
+    int childIndex = getChildIndexTau ( pType ) ;
+    boolean phi = false ;
+    if ( childIndex == OutlineNode.NOTHING_FOUND )
+    {
+      childIndex = getChildIndexPhi ( pType ) ;
+      phi = true ;
+    }
+    Type child ;
+    OutlineNode outlineNode ;
+    while ( children.hasMoreElements ( ) )
+    {
+      child = children.nextElement ( ) ;
+      outlineNode = checkType ( child ) ;
+      if ( phi )
       {
-        outlineNode.setChildIndexExpression ( OutlineNode.NO_CHILD_INDEX ) ;
+        outlineNode.setChildIndexTypePhi ( childIndex ) ;
       }
       else
       {
-        outlineNode.setChildIndexExpression ( childIndex ) ;
+        outlineNode.setChildIndexTypeTau ( childIndex ) ;
       }
       pOutlineNode.add ( outlineNode ) ;
       childIndex ++ ;
@@ -1270,17 +1458,77 @@ public final class DefaultOutline implements Outline
     for ( java.lang.reflect.Method method : pExpression.getClass ( )
         .getMethods ( ) )
     {
-      if ( GETE.equals ( method.getName ( ) ) )
+      if ( GET_E.equals ( method.getName ( ) ) )
       {
         return OutlineNode.NO_CHILD_INDEX ;
       }
-      if ( method.getName ( ).matches ( GETEX ) )
+      if ( GET_E_N.equals ( method.getName ( ) ) )
+      {
+        return 1 ;
+      }
+      if ( method.getName ( ).matches ( GET_E_X ) )
       {
         result = Math.min ( result , Integer.parseInt ( method.getName ( )
             .substring ( 4 ) ) ) ;
       }
     }
-    return result == Integer.MAX_VALUE ? 1 : result ;
+    return result == Integer.MAX_VALUE ? OutlineNode.NOTHING_FOUND : result ;
+  }
+
+
+  /**
+   * Returns the minimum child index. For example 1 if the {@link Type} is an
+   * instance of {@link ArrowType}.
+   * 
+   * @param pType The {@link Type} to check for.
+   * @return The minimum child index.
+   */
+  private final int getChildIndexPhi ( Type pType )
+  {
+    int result = Integer.MAX_VALUE ;
+    for ( java.lang.reflect.Method method : pType.getClass ( ).getMethods ( ) )
+    {
+      if ( GET_PHI.equals ( method.getName ( ) ) )
+      {
+        return OutlineNode.NO_CHILD_INDEX ;
+      }
+      if ( method.getName ( ).matches ( GET_PHI_X ) )
+      {
+        result = Math.min ( result , Integer.parseInt ( method.getName ( )
+            .substring ( 6 ) ) ) ;
+      }
+    }
+    return result == Integer.MAX_VALUE ? OutlineNode.NOTHING_FOUND : result ;
+  }
+
+
+  /**
+   * Returns the minimum child index. For example 1 if the {@link Type} is an
+   * instance of {@link ArrowType}.
+   * 
+   * @param pType The {@link Type} to check for.
+   * @return The minimum child index.
+   */
+  private final int getChildIndexTau ( Type pType )
+  {
+    int result = Integer.MAX_VALUE ;
+    for ( java.lang.reflect.Method method : pType.getClass ( ).getMethods ( ) )
+    {
+      if ( GET_TAU.equals ( method.getName ( ) ) )
+      {
+        return OutlineNode.NO_CHILD_INDEX ;
+      }
+      if ( GET_TAU_N.equals ( method.getName ( ) ) )
+      {
+        return 1 ;
+      }
+      if ( method.getName ( ).matches ( GET_TAU_X ) )
+      {
+        result = Math.min ( result , Integer.parseInt ( method.getName ( )
+            .substring ( 6 ) ) ) ;
+      }
+    }
+    return result == Integer.MAX_VALUE ? OutlineNode.NOTHING_FOUND : result ;
   }
 
 

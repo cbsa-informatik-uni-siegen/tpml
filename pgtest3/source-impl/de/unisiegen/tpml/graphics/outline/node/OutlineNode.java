@@ -14,6 +14,7 @@ import de.unisiegen.tpml.core.expressions.Row ;
 import de.unisiegen.tpml.core.expressions.Value ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyCharIterator ;
+import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStyle ;
 import de.unisiegen.tpml.core.types.Type ;
 import de.unisiegen.tpml.graphics.Theme ;
@@ -59,6 +60,12 @@ public final class OutlineNode extends DefaultMutableTreeNode
    * The {@link Expression} has no child index.
    */
   public static final int NO_CHILD_INDEX = - 1 ;
+
+
+  /**
+   * The {@link Type} has no child types.
+   */
+  public static final int NOTHING_FOUND = - 2 ;
 
 
   /**
@@ -201,7 +208,13 @@ public final class OutlineNode extends DefaultMutableTreeNode
   /**
    * Caption of the {@link Type}.
    */
-  private static final String TYPE = "\u03C4" ; //$NON-NLS-1$
+  private static final String TYPE_TAU = "\u03C4" ; //$NON-NLS-1$
+
+
+  /**
+   * Caption of the {@link Type}.
+   */
+  private static final String TYPE_PHI = "\u03A6" ; //$NON-NLS-1$
 
 
   /**
@@ -404,7 +417,7 @@ public final class OutlineNode extends DefaultMutableTreeNode
   /**
    * The {@link Expression} as a <code>String</code>.
    */
-  private String expressionString ;
+  private String nodeString ;
 
 
   /**
@@ -418,16 +431,12 @@ public final class OutlineNode extends DefaultMutableTreeNode
 
   /**
    * The {@link Expression} repressented by this node.
-   * 
-   * @see #getExpression()
    */
   private Expression expression ;
 
 
   /**
    * The {@link Type} repressented by this node.
-   * 
-   * @see #getType()
    */
   private Type type ;
 
@@ -594,7 +603,7 @@ public final class OutlineNode extends DefaultMutableTreeNode
     this.type = null ;
     this.description = pExpression.getCaption ( ) ;
     this.childIndex = "" ; //$NON-NLS-1$
-    this.expressionString = pExpression.toPrettyString ( ).toString ( ) ;
+    this.nodeString = pExpression.toPrettyString ( ).toString ( ) ;
     this.startIndex = NO_IDENTIFIER ;
     this.endIndex = NO_IDENTIFIER ;
     this.outlineBinding = null ;
@@ -634,7 +643,7 @@ public final class OutlineNode extends DefaultMutableTreeNode
     this.type = null ;
     this.description = pExpression.getCaption ( ) ;
     this.childIndex = "" ; //$NON-NLS-1$
-    this.expressionString = pExpressionString ;
+    this.nodeString = pExpressionString ;
     this.startIndex = pStartIndex ;
     this.endIndex = pEndIndex ;
     this.outlineBinding = null ;
@@ -672,7 +681,7 @@ public final class OutlineNode extends DefaultMutableTreeNode
     this.type = null ;
     this.description = pDescription ;
     this.childIndex = "" ; //$NON-NLS-1$
-    this.expressionString = pExpressionString ;
+    this.nodeString = pExpressionString ;
     this.startIndex = pOutlinePair.getStart ( ) ;
     this.endIndex = pOutlinePair.getEnd ( ) ;
     this.outlineBinding = pOutlineBinding ;
@@ -706,7 +715,7 @@ public final class OutlineNode extends DefaultMutableTreeNode
     this.type = pType ;
     this.description = pType.getCaption ( ) ;
     this.childIndex = "" ; //$NON-NLS-1$
-    this.expressionString = pType.toPrettyString ( ).toString ( ) ;
+    this.nodeString = pType.toPrettyString ( ).toString ( ) ;
     this.startIndex = NO_IDENTIFIER ;
     this.endIndex = NO_IDENTIFIER ;
     this.outlineBinding = null ;
@@ -831,12 +840,12 @@ public final class OutlineNode extends DefaultMutableTreeNode
       result.append ( FONT_BOLD_BEGIN ) ;
       result.append ( this.bindingColor ) ;
       result.append ( FONT_AFTER_COLOR ) ;
-      result.append ( getHTMLCode ( this.expressionString ) ) ;
+      result.append ( getHTMLCode ( this.nodeString ) ) ;
       result.append ( FONT_BOLD_END ) ;
     }
     else
     {
-      result.append ( getHTMLCode ( this.expressionString ) ) ;
+      result.append ( getHTMLCode ( this.nodeString ) ) ;
     }
     result.append ( EXPRESSION_END ) ;
     this.caption = result.toString ( ) ;
@@ -871,7 +880,7 @@ public final class OutlineNode extends DefaultMutableTreeNode
         result.append ( this.constantColor ) ;
         result.append ( FONT_AFTER_COLOR ) ;
       }
-      result.append ( getHTMLCode ( this.expressionString ) ) ;
+      result.append ( getHTMLCode ( this.nodeString ) ) ;
       if ( ( selection ) || ( this.isInfixOperation ) )
       {
         result.append ( FONT_BOLD_END ) ;
@@ -903,30 +912,6 @@ public final class OutlineNode extends DefaultMutableTreeNode
   public final int getEndIndex ( )
   {
     return this.endIndex ;
-  }
-
-
-  /**
-   * Returns the {@link Expression} repressented by this node.
-   * 
-   * @return The {@link Expression} in this node.
-   * @see #expression
-   */
-  public final Expression getExpression ( )
-  {
-    return this.expression ;
-  }
-
-
-  /**
-   * Returns the expressionString.
-   * 
-   * @return The expressionString.
-   * @see #expressionString
-   */
-  public final String getExpressionString ( )
-  {
-    return this.expressionString ;
   }
 
 
@@ -970,6 +955,18 @@ public final class OutlineNode extends DefaultMutableTreeNode
 
 
   /**
+   * Returns the expressionString.
+   * 
+   * @return The expressionString.
+   * @see #nodeString
+   */
+  public final String getNodeString ( )
+  {
+    return this.nodeString ;
+  }
+
+
+  /**
    * Returns the binding in this node.
    * 
    * @return The binding in this node.
@@ -995,6 +992,27 @@ public final class OutlineNode extends DefaultMutableTreeNode
 
 
   /**
+   * Returns the {@link PrettyPrintable} repressented by this node.
+   * 
+   * @return The {@link PrettyPrintable} in this node.
+   * @see #expression
+   * @see #type
+   */
+  public final PrettyPrintable getPrettyPrintable ( )
+  {
+    if ( this.isExpression )
+    {
+      return this.expression ;
+    }
+    if ( this.isType )
+    {
+      return this.type ;
+    }
+    return null ;
+  }
+
+
+  /**
    * Returns the start index of the {@link Identifier}.
    * 
    * @return The start index of the {@link Identifier}.
@@ -1003,18 +1021,6 @@ public final class OutlineNode extends DefaultMutableTreeNode
   public final int getStartIndex ( )
   {
     return this.startIndex ;
-  }
-
-
-  /**
-   * Returns the {@link Type} repressented by this node.
-   * 
-   * @return The {@link Type} in this node.
-   * @see #type
-   */
-  public final Type getType ( )
-  {
-    return this.type ;
   }
 
 
@@ -1213,12 +1219,12 @@ public final class OutlineNode extends DefaultMutableTreeNode
         result.append ( FONT_BOLD_BEGIN ) ;
         result.append ( this.constantColor ) ;
         result.append ( FONT_AFTER_COLOR ) ;
-        result.append ( getHTMLCode ( this.expressionString ) ) ;
+        result.append ( getHTMLCode ( this.nodeString ) ) ;
         result.append ( FONT_BOLD_END ) ;
       }
       else
       {
-        result.append ( getHTMLCode ( this.expressionString ) ) ;
+        result.append ( getHTMLCode ( this.nodeString ) ) ;
       }
       result.append ( EXPRESSION_END ) ;
       this.caption = result.toString ( ) ;
@@ -1313,7 +1319,7 @@ public final class OutlineNode extends DefaultMutableTreeNode
         this.childIndex = EXPRESSION ;
       }
     }
-    if ( pChildIndexExpression == NO_CHILD_INDEX )
+    if ( pChildIndexExpression <= NO_CHILD_INDEX )
     {
       this.childIndex += BETWEEN1 ;
     }
@@ -1344,7 +1350,7 @@ public final class OutlineNode extends DefaultMutableTreeNode
    */
   public final void setChildIndexIdentifier ( int pChildIndexIdentifier )
   {
-    if ( pChildIndexIdentifier == OutlineNode.NO_CHILD_INDEX )
+    if ( pChildIndexIdentifier <= OutlineNode.NO_CHILD_INDEX )
     {
       this.childIndex = IDENTIFIER + BETWEEN1 ;
     }
@@ -1376,7 +1382,7 @@ public final class OutlineNode extends DefaultMutableTreeNode
    */
   public final void setChildIndexMeth ( int pChildIndexMeth )
   {
-    if ( pChildIndexMeth == OutlineNode.NO_CHILD_INDEX )
+    if ( pChildIndexMeth <= OutlineNode.NO_CHILD_INDEX )
     {
       this.childIndex = METH + BETWEEN1 ;
     }
@@ -1407,7 +1413,7 @@ public final class OutlineNode extends DefaultMutableTreeNode
    */
   public final void setChildIndexOp ( int pChildIndexOp )
   {
-    if ( pChildIndexOp == OutlineNode.NO_CHILD_INDEX )
+    if ( pChildIndexOp <= OutlineNode.NO_CHILD_INDEX )
     {
       this.childIndex = OP + BETWEEN1 ;
     }
@@ -1424,9 +1430,9 @@ public final class OutlineNode extends DefaultMutableTreeNode
    * 
    * @see #childIndex
    */
-  public final void setChildIndexType ( )
+  public final void setChildIndexTypePhi ( )
   {
-    setChildIndexType ( NO_CHILD_INDEX ) ;
+    setChildIndexTypePhi ( NO_CHILD_INDEX ) ;
   }
 
 
@@ -1436,15 +1442,46 @@ public final class OutlineNode extends DefaultMutableTreeNode
    * @param pChildIndexType The child index of the {@link Type}.
    * @see #childIndex
    */
-  public final void setChildIndexType ( int pChildIndexType )
+  public final void setChildIndexTypePhi ( int pChildIndexType )
   {
-    if ( pChildIndexType == OutlineNode.NO_CHILD_INDEX )
+    if ( pChildIndexType <= OutlineNode.NO_CHILD_INDEX )
     {
-      this.childIndex = TYPE + BETWEEN1 ;
+      this.childIndex = TYPE_PHI + BETWEEN1 ;
     }
     else
     {
-      this.childIndex = TYPE + SMALL_SUB_BEGIN + pChildIndexType
+      this.childIndex = TYPE_PHI + SMALL_SUB_BEGIN + pChildIndexType
+          + SMALL_SUB_END + BETWEEN1 ;
+    }
+  }
+
+
+  /**
+   * Sets the child index of the {@link Type}.
+   * 
+   * @see #childIndex
+   */
+  public final void setChildIndexTypeTau ( )
+  {
+    setChildIndexTypeTau ( NO_CHILD_INDEX ) ;
+  }
+
+
+  /**
+   * Sets the child index of the {@link Type}.
+   * 
+   * @param pChildIndexType The child index of the {@link Type}.
+   * @see #childIndex
+   */
+  public final void setChildIndexTypeTau ( int pChildIndexType )
+  {
+    if ( pChildIndexType <= OutlineNode.NO_CHILD_INDEX )
+    {
+      this.childIndex = TYPE_TAU + BETWEEN1 ;
+    }
+    else
+    {
+      this.childIndex = TYPE_TAU + SMALL_SUB_BEGIN + pChildIndexType
           + SMALL_SUB_END + BETWEEN1 ;
     }
   }
@@ -1563,7 +1600,7 @@ public final class OutlineNode extends DefaultMutableTreeNode
     prefix.append ( this.description ) ;
     prefix.append ( BETWEEN2 ) ;
     prefix.append ( FONT_END ) ;
-    final int length = this.expressionString.length ( ) ;
+    final int length = this.nodeString.length ( ) ;
     while ( charIndex < length )
     {
       /*
@@ -1671,8 +1708,7 @@ public final class OutlineNode extends DefaultMutableTreeNode
           result.append ( BREAK ) ;
           result.append ( prefix ) ;
         }
-        result
-            .append ( getHTMLCode ( this.expressionString.charAt ( charIndex ) ) ) ;
+        result.append ( getHTMLCode ( this.nodeString.charAt ( charIndex ) ) ) ;
         // Next character
         charIndex ++ ;
         prettyCharIterator.next ( ) ;
@@ -1719,8 +1755,7 @@ public final class OutlineNode extends DefaultMutableTreeNode
         pResult.append ( pColor ) ;
         pResult.append ( FONT_AFTER_COLOR ) ;
       }
-      pResult
-          .append ( getHTMLCode ( this.expressionString.charAt ( charIndex ) ) ) ;
+      pResult.append ( getHTMLCode ( this.nodeString.charAt ( charIndex ) ) ) ;
       // Next character
       charIndex ++ ;
     }
@@ -1768,8 +1803,7 @@ public final class OutlineNode extends DefaultMutableTreeNode
       }
       if ( ! ( replace && this.replaceInThisNode ) )
       {
-        pResult.append ( getHTMLCode ( this.expressionString
-            .charAt ( charIndex ) ) ) ;
+        pResult.append ( getHTMLCode ( this.nodeString.charAt ( charIndex ) ) ) ;
       }
       // Next character
       charIndex ++ ;
@@ -1809,8 +1843,7 @@ public final class OutlineNode extends DefaultMutableTreeNode
         pResult.append ( pColor ) ;
         pResult.append ( FONT_AFTER_COLOR ) ;
       }
-      pResult
-          .append ( getHTMLCode ( this.expressionString.charAt ( charIndex ) ) ) ;
+      pResult.append ( getHTMLCode ( this.nodeString.charAt ( charIndex ) ) ) ;
       // Next character
       charIndex ++ ;
       pPrettyCharIterator.next ( ) ;
