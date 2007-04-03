@@ -81,7 +81,7 @@ public final class Lambda extends Value
   @ Override
   public Lambda clone ( )
   {
-    return new Lambda ( this.id , this.tau , this.e.clone ( ) ) ;
+    return new Lambda ( this.id , this.tau.clone ( ) , this.e.clone ( ) ) ;
   }
 
 
@@ -242,7 +242,7 @@ public final class Lambda extends Value
      * Perform the substitution.
      */
     newE = newE.substitute ( pId , pExpression , pAttributeRename ) ;
-    return new Lambda ( newId , this.tau , newE ) ;
+    return new Lambda ( newId , this.tau.clone ( ) , newE ) ;
   }
 
 
@@ -254,8 +254,8 @@ public final class Lambda extends Value
   @ Override
   public Lambda substitute ( TypeSubstitution pTypeSubstitution )
   {
-    MonoType newTau = ( this.tau != null ) ? this.tau
-        .substitute ( pTypeSubstitution ) : null ;
+    MonoType newTau = ( this.tau == null ) ? null : this.tau
+        .substitute ( pTypeSubstitution ) ;
     Expression newE = this.e.substitute ( pTypeSubstitution ) ;
     return new Lambda ( this.id , newTau , newE ) ;
   }

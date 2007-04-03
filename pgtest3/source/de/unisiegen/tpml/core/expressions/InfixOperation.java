@@ -71,6 +71,7 @@ public final class InfixOperation extends Expression
       throw new NullPointerException ( "e2 is null" ) ; //$NON-NLS-1$
     }
     this.op = pBinaryOperator ;
+    this.op.useInfixOperator ( true ) ;
     this.e1 = pExpression1 ;
     this.e2 = pExpression2 ;
   }
@@ -229,7 +230,9 @@ public final class InfixOperation extends Expression
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , this.op
           .getPrettyPriority ( ) ) ;
       this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
-      this.prettyStringBuilder.addConstant ( this.op.toString ( ) ) ;
+      this.prettyStringBuilder.addBuilder ( this.op
+          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , this.op
+          .getPrettyPriority ( ) ) ;
       this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addBuilder ( this.e2
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , this.op

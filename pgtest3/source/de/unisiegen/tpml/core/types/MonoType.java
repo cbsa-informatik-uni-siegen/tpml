@@ -25,6 +25,15 @@ public abstract class MonoType extends Type
 
   /**
    * {@inheritDoc}
+   * 
+   * @see Type#clone()
+   */
+  @ Override
+  public abstract MonoType clone ( ) ;
+
+
+  /**
+   * {@inheritDoc}
    */
   @ Override
   public abstract String getCaption ( ) ;

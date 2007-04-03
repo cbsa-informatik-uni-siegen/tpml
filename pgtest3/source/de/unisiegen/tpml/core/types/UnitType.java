@@ -22,6 +22,18 @@ public final class UnitType extends PrimitiveType
 
   /**
    * {@inheritDoc}
+   * 
+   * @see Type#clone()
+   */
+  @ Override
+  public UnitType clone ( )
+  {
+    return new UnitType ( ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
    */
   @ Override
   public String getCaption ( )

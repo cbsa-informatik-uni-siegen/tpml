@@ -13,7 +13,7 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
  * 
  * @author Christian Fehler
  */
-public class RowType extends MonoType
+public final class RowType extends MonoType
 {
   /**
    * TODO
@@ -50,6 +50,23 @@ public class RowType extends MonoType
     }
     this.identifiers = pIdentifiers ;
     this.types = pTypes ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Type#clone()
+   */
+  @ Override
+  public RowType clone ( )
+  {
+    MonoType [ ] newTypes = new MonoType [ this.types.length ] ;
+    for ( int i = 0 ; i < newTypes.length ; i ++ )
+    {
+      newTypes [ i ] = this.types [ i ].clone ( ) ;
+    }
+    return new RowType ( this.identifiers , newTypes ) ;
   }
 
 

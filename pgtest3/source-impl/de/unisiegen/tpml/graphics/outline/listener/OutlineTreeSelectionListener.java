@@ -193,7 +193,7 @@ public final class OutlineTreeSelectionListener implements
       updateType ( list , pTreePath ) ;
     }
     // Identifier
-    else if ( selectedNode.isIdentifier ( ) || selectedNode.isInfixOperation ( ) )
+    else if ( selectedNode.isIdentifier ( ) )
     {
       updateIdentifier ( list , pTreePath ) ;
     }

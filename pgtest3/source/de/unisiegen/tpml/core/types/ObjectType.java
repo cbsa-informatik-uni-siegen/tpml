@@ -12,7 +12,7 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
  * 
  * @author Christian Fehler
  */
-public class ObjectType extends MonoType
+public final class ObjectType extends MonoType
 {
   /**
    * TODO
@@ -32,6 +32,18 @@ public class ObjectType extends MonoType
       throw new NullPointerException ( "Phi is null" ) ; //$NON-NLS-1$
     }
     this.phi = pPhi ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Type#clone()
+   */
+  @ Override
+  public ObjectType clone ( )
+  {
+    return new ObjectType ( this.phi.clone ( ) ) ;
   }
 
 

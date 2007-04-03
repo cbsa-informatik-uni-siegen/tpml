@@ -50,9 +50,18 @@ public final class ListType extends MonoType
   }
 
 
-  //
-  // Base methods
-  //
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Type#clone()
+   */
+  @ Override
+  public ListType clone ( )
+  {
+    return new ListType ( this.tau.clone ( ) ) ;
+  }
+
+
   /**
    * {@inheritDoc}
    * 

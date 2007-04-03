@@ -67,6 +67,24 @@ public final class PolyType extends Type
   /**
    * {@inheritDoc}
    * 
+   * @see Type#clone()
+   */
+  @ Override
+  public PolyType clone ( )
+  {
+    Set < TypeVariable > newQuantifiedVariables = new TreeSet < TypeVariable > ( ) ;
+    Iterator < TypeVariable > it = this.quantifiedVariables.iterator ( ) ;
+    while ( it.hasNext ( ) )
+    {
+      newQuantifiedVariables.add ( it.next ( ) ) ;
+    }
+    return new PolyType ( newQuantifiedVariables , this.tau.clone ( ) ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
    * @see Object#equals(Object)
    */
   @ Override

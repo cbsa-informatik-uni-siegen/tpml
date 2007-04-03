@@ -64,6 +64,18 @@ public final class ArrowType extends MonoType
 
 
   /**
+   * {@inheritDoc}
+   * 
+   * @see Type#clone()
+   */
+  @ Override
+  public ArrowType clone ( )
+  {
+    return new ArrowType ( this.tau1.clone ( ) , this.tau2.clone ( ) ) ;
+  }
+
+
+  /**
    * Compares this arrow type to the <code>obj</code>. Returns
    * <code>true</code> if the <code>obj</code> is an <code>ArrowType</code>
    * with the same parameter and result types as this instance.

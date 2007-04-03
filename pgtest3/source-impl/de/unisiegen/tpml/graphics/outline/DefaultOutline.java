@@ -11,7 +11,6 @@ import javax.swing.JScrollPane ;
 import javax.swing.SwingUtilities ;
 import javax.swing.tree.TreePath ;
 import de.unisiegen.tpml.core.expressions.Attribute ;
-import de.unisiegen.tpml.core.expressions.BinaryOperator ;
 import de.unisiegen.tpml.core.expressions.Condition ;
 import de.unisiegen.tpml.core.expressions.CurriedLet ;
 import de.unisiegen.tpml.core.expressions.CurriedLetRec ;
@@ -23,13 +22,13 @@ import de.unisiegen.tpml.core.expressions.InfixOperation ;
 import de.unisiegen.tpml.core.expressions.Lambda ;
 import de.unisiegen.tpml.core.expressions.Let ;
 import de.unisiegen.tpml.core.expressions.LetRec ;
-import de.unisiegen.tpml.core.expressions.Send ;
 import de.unisiegen.tpml.core.expressions.Method ;
 import de.unisiegen.tpml.core.expressions.MultiLambda ;
 import de.unisiegen.tpml.core.expressions.MultiLet ;
 import de.unisiegen.tpml.core.expressions.ObjectExpr ;
 import de.unisiegen.tpml.core.expressions.Recursion ;
 import de.unisiegen.tpml.core.expressions.Row ;
+import de.unisiegen.tpml.core.expressions.Send ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStyle ;
 import de.unisiegen.tpml.core.types.ArrowType ;
 import de.unisiegen.tpml.core.types.RowType ;
@@ -644,31 +643,22 @@ public final class DefaultOutline implements Outline
   {
     OutlineNode outlineNode = new OutlineNode ( pInfixOperation ,
         this.outlineUnbound ) ;
-    OutlineNode outlineNodeE1 ;
-    OutlineNode outlineNodeE2 ;
-    OutlineNode outlineNodeOp ;
     /*
      * Create the first Expression.
      */
-    outlineNodeE1 = checkExpression ( pInfixOperation.getE1 ( ) ) ;
+    OutlineNode outlineNodeE1 = checkExpression ( pInfixOperation.getE1 ( ) ) ;
     outlineNodeE1.setChildIndexExpression ( 1 ) ;
     outlineNode.add ( outlineNodeE1 ) ;
     /*
      * Create the Infix-Operator.
      */
-    BinaryOperator binary = pInfixOperation.getOp ( ) ;
-    int start = pInfixOperation.toPrettyString ( ).toString ( ).indexOf (
-        binary.toString ( ) ,
-        pInfixOperation.getE1 ( ).toPrettyString ( ).toString ( ).length ( ) ) ;
-    int end = start + binary.toString ( ).length ( ) - 1 ;
-    outlineNodeOp = new OutlineNode ( binary , binary.toString ( ) , start ,
-        end , this.outlineUnbound ) ;
+    OutlineNode outlineNodeOp = checkExpression ( pInfixOperation.getOp ( ) ) ;
     outlineNodeOp.setChildIndexOp ( ) ;
     outlineNode.add ( outlineNodeOp ) ;
     /*
      * Create the first Expression.
      */
-    outlineNodeE2 = checkExpression ( pInfixOperation.getE2 ( ) ) ;
+    OutlineNode outlineNodeE2 = checkExpression ( pInfixOperation.getE2 ( ) ) ;
     outlineNodeE2.setChildIndexExpression ( 2 ) ;
     outlineNode.add ( outlineNodeE2 ) ;
     return outlineNode ;

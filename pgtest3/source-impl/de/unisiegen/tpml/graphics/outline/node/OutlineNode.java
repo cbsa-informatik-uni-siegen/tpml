@@ -8,7 +8,6 @@ import de.unisiegen.tpml.core.expressions.CurriedMethod ;
 import de.unisiegen.tpml.core.expressions.Exn ;
 import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.expressions.Identifier ;
-import de.unisiegen.tpml.core.expressions.InfixOperation ;
 import de.unisiegen.tpml.core.expressions.Method ;
 import de.unisiegen.tpml.core.expressions.Row ;
 import de.unisiegen.tpml.core.expressions.Value ;
@@ -512,12 +511,6 @@ public final class OutlineNode extends DefaultMutableTreeNode
 
 
   /**
-   * Indicates, if this node is a {@link InfixOperation}.
-   */
-  private boolean isInfixOperation ;
-
-
-  /**
    * Indicates, if this node is a {@link Expression}.
    */
   private boolean isExpression ;
@@ -614,49 +607,8 @@ public final class OutlineNode extends DefaultMutableTreeNode
     this.outlineBreak = new OutlineBreak ( this.expression ) ;
     this.currentOutlineBreak = new OutlineBreak ( ) ;
     this.breakCount = 0 ;
-    this.isIdentifier = false ;
-    this.isInfixOperation = false ;
     this.isExpression = true ;
-    this.isType = false ;
-    this.lastSelectionStart = NO_SELECTION ;
-    this.lastSelectionEnd = NO_SELECTION ;
-    this.outlineNodeCacheList = new OutlineNodeCacheList ( ) ;
-    propertyChanged ( ) ;
-  }
-
-
-  /**
-   * This constructor initializes the values and loads the description. It is
-   * used for {@link InfixOperation}.
-   * 
-   * @param pExpression The {@link Expression} repressented by this node.
-   * @param pExpressionString The {@link Expression} as a <code>String</code>.
-   * @param pStartIndex The start index of the {@link Identifier}.
-   * @param pEndIndex The end index of the {@link Identifier}.
-   * @param pOutlineUnbound The {@link OutlineUnbound} which repressents the
-   *          unbound {@link Identifier}s in all nodes
-   */
-  public OutlineNode ( Expression pExpression , String pExpressionString ,
-      int pStartIndex , int pEndIndex , OutlineUnbound pOutlineUnbound )
-  {
-    this.expression = null ;
-    this.type = null ;
-    this.description = pExpression.getCaption ( ) ;
-    this.childIndex = "" ; //$NON-NLS-1$
-    this.nodeString = pExpressionString ;
-    this.startIndex = pStartIndex ;
-    this.endIndex = pEndIndex ;
-    this.outlineBinding = null ;
-    this.outlineUnbound = pOutlineUnbound ;
-    this.replaceInThisNode = false ;
-    this.boundedStart = NO_BINDING ;
-    this.boundedEnd = NO_BINDING ;
-    this.outlineBreak = null ;
-    this.currentOutlineBreak = null ;
-    this.breakCount = 0 ;
     this.isIdentifier = false ;
-    this.isInfixOperation = true ;
-    this.isExpression = false ;
     this.isType = false ;
     this.lastSelectionStart = NO_SELECTION ;
     this.lastSelectionEnd = NO_SELECTION ;
@@ -692,9 +644,8 @@ public final class OutlineNode extends DefaultMutableTreeNode
     this.outlineBreak = null ;
     this.currentOutlineBreak = null ;
     this.breakCount = 0 ;
-    this.isIdentifier = true ;
-    this.isInfixOperation = false ;
     this.isExpression = false ;
+    this.isIdentifier = true ;
     this.isType = false ;
     this.lastSelectionStart = NO_SELECTION ;
     this.lastSelectionEnd = NO_SELECTION ;
@@ -726,9 +677,8 @@ public final class OutlineNode extends DefaultMutableTreeNode
     this.outlineBreak = new OutlineBreak ( this.type ) ;
     this.currentOutlineBreak = new OutlineBreak ( ) ;
     this.breakCount = 0 ;
-    this.isIdentifier = false ;
-    this.isInfixOperation = false ;
     this.isExpression = false ;
+    this.isIdentifier = false ;
     this.isType = true ;
     this.lastSelectionStart = NO_SELECTION ;
     this.lastSelectionEnd = NO_SELECTION ;
@@ -857,7 +807,7 @@ public final class OutlineNode extends DefaultMutableTreeNode
    */
   public final void enableSelectionColor ( )
   {
-    if ( ( ! this.isExpression ) && ( ! this.isType ) )
+    if ( this.isIdentifier )
     {
       StringBuffer result = new StringBuffer ( HTML ) ;
       result.append ( this.childIndex ) ;
@@ -874,14 +824,8 @@ public final class OutlineNode extends DefaultMutableTreeNode
         result.append ( this.selectionColor ) ;
         result.append ( FONT_AFTER_COLOR ) ;
       }
-      else if ( this.isInfixOperation )
-      {
-        result.append ( FONT_BOLD_BEGIN ) ;
-        result.append ( this.constantColor ) ;
-        result.append ( FONT_AFTER_COLOR ) ;
-      }
       result.append ( getHTMLCode ( this.nodeString ) ) ;
-      if ( ( selection ) || ( this.isInfixOperation ) )
+      if ( selection )
       {
         result.append ( FONT_BOLD_END ) ;
       }
@@ -1099,18 +1043,6 @@ public final class OutlineNode extends DefaultMutableTreeNode
 
 
   /**
-   * Returns the isInfixOperation.
-   * 
-   * @return The isInfixOperation.
-   * @see #isInfixOperation
-   */
-  public final boolean isInfixOperation ( )
-  {
-    return this.isInfixOperation ;
-  }
-
-
-  /**
    * This method returns the length of the bounded {@link Identifier}, if the
    * {@link Identifier} begins at the given pCharIndex.
    * 
@@ -1203,7 +1135,7 @@ public final class OutlineNode extends DefaultMutableTreeNode
    */
   public final void resetCaption ( )
   {
-    if ( this.startIndex != NO_IDENTIFIER )
+    if ( this.isIdentifier )
     {
       StringBuffer result = new StringBuffer ( HTML ) ;
       result.append ( this.childIndex ) ;
@@ -1214,24 +1146,13 @@ public final class OutlineNode extends DefaultMutableTreeNode
       result.append ( FONT_BEGIN ) ;
       result.append ( this.expressionColor ) ;
       result.append ( FONT_AFTER_COLOR ) ;
-      if ( this.isInfixOperation )
-      {
-        result.append ( FONT_BOLD_BEGIN ) ;
-        result.append ( this.constantColor ) ;
-        result.append ( FONT_AFTER_COLOR ) ;
-        result.append ( getHTMLCode ( this.nodeString ) ) ;
-        result.append ( FONT_BOLD_END ) ;
-      }
-      else
-      {
-        result.append ( getHTMLCode ( this.nodeString ) ) ;
-      }
+      result.append ( getHTMLCode ( this.nodeString ) ) ;
       result.append ( EXPRESSION_END ) ;
       this.caption = result.toString ( ) ;
     }
     else
     {
-      updateCaption ( NO_SELECTION , NO_SELECTION ) ;
+      updateCaption ( ) ;
     }
   }
 

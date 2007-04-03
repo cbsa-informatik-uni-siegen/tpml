@@ -23,6 +23,18 @@ public final class IntegerType extends PrimitiveType
 
   /**
    * {@inheritDoc}
+   * 
+   * @see Type#clone()
+   */
+  @ Override
+  public IntegerType clone ( )
+  {
+    return new IntegerType ( ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
    */
   @ Override
   public String getCaption ( )

@@ -165,6 +165,18 @@ public final class TypeVariable extends MonoType implements
   /**
    * {@inheritDoc}
    * 
+   * @see Type#clone()
+   */
+  @ Override
+  public TypeVariable clone ( )
+  {
+    return new TypeVariable ( this.index , this.offset ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
    * @see Comparable#compareTo(Object)
    */
   public int compareTo ( TypeVariable pTypeVariable )

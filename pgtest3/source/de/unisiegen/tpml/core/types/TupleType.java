@@ -52,6 +52,23 @@ public final class TupleType extends MonoType
   /**
    * {@inheritDoc}
    * 
+   * @see Type#clone()
+   */
+  @ Override
+  public TupleType clone ( )
+  {
+    MonoType [ ] newTypes = new MonoType [ this.types.length ] ;
+    for ( int i = 0 ; i < newTypes.length ; i ++ )
+    {
+      newTypes [ i ] = this.types [ i ].clone ( ) ;
+    }
+    return new TupleType ( newTypes ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
    * @see Object#equals(Object)
    */
   @ Override

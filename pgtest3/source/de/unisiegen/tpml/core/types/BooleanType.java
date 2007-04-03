@@ -23,6 +23,18 @@ public final class BooleanType extends PrimitiveType
 
   /**
    * {@inheritDoc}
+   * 
+   * @see Type#clone()
+   */
+  @ Override
+  public BooleanType clone ( )
+  {
+    return new BooleanType ( ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
    */
   @ Override
   public String getCaption ( )

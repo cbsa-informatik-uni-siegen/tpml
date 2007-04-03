@@ -27,6 +27,12 @@ public abstract class BinaryOperator extends Constant
 
 
   /**
+   * TODO
+   */
+  private boolean infixOperator ;
+
+
+  /**
    * Allocates a new <code>BinaryOperator</code> with the specified
    * <code>prettyPriority</code> used for pretty printing of
    * {@link InfixOperation}s.
@@ -39,6 +45,7 @@ public abstract class BinaryOperator extends Constant
   {
     super ( pText ) ;
     this.prettyPriority = pPrettyPriority ;
+    this.infixOperator = false ;
   }
 
 
@@ -89,6 +96,17 @@ public abstract class BinaryOperator extends Constant
 
 
   /**
+   * TODO
+   * 
+   * @param pInfixOperator The infixOperator to set.
+   */
+  public void useInfixOperator ( boolean pInfixOperator )
+  {
+    this.infixOperator = pInfixOperator ;
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see Constant#toPrettyStringBuilder(PrettyStringBuilderFactory)
@@ -101,9 +119,15 @@ public abstract class BinaryOperator extends Constant
     {
       this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
           PRIO_CONSTANT ) ;
-      this.prettyStringBuilder.addText ( "(" ) ; //$NON-NLS-1$
+      if ( ! this.infixOperator )
+      {
+        this.prettyStringBuilder.addText ( "(" ) ; //$NON-NLS-1$
+      }
       this.prettyStringBuilder.addConstant ( this.text ) ;
-      this.prettyStringBuilder.addText ( ")" ) ; //$NON-NLS-1$
+      if ( ! this.infixOperator )
+      {
+        this.prettyStringBuilder.addText ( ")" ) ; //$NON-NLS-1$
+      }
     }
     return this.prettyStringBuilder ;
   }

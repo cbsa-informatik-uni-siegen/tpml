@@ -120,6 +120,19 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities
 
 
   /**
+   * Clones this type, so that the result is an type equal to this type, but
+   * with a different object identity. This is used in the substitution of type
+   * to be able to distinguish different appearances of the same type in the
+   * pretty printer, as required by the highlighting of bound variables.
+   * 
+   * @return a deep clone of this object.
+   * @see Object#clone()
+   */
+  @ Override
+  public abstract Type clone ( ) ;
+
+
+  /**
    * Returns the set of free type variables present within this type. The
    * default implementation simply returns the empty set, and derived classes
    * will need to override this method to return the set of free type variables.

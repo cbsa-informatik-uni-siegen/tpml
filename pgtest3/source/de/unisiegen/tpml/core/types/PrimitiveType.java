@@ -38,6 +38,15 @@ public abstract class PrimitiveType extends MonoType
 
 
   /**
+   * {@inheritDoc}
+   * 
+   * @see Type#clone()
+   */
+  @ Override
+  public abstract PrimitiveType clone ( ) ;
+
+
+  /**
    * Compares this primitive type to the <code>obj</code>. Returns
    * <code>true</code> if the <code>obj</code> is a
    * <code>PrimitiveType</code> with the same name as this instance.

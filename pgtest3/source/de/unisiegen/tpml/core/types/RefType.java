@@ -55,6 +55,18 @@ public final class RefType extends MonoType
   /**
    * {@inheritDoc}
    * 
+   * @see Type#clone()
+   */
+  @ Override
+  public RefType clone ( )
+  {
+    return new RefType ( this.tau.clone ( ) ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
    * @see Object#equals(Object)
    */
   @ Override
