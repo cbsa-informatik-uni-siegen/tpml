@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.graphics.renderer;
+  package de.unisiegen.tpml.graphics.renderer;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -908,20 +908,29 @@ public class PrettyStringRenderer extends AbstractRenderer {
       //manipulating font witch is not marked as bounded
       else
       {
-        
         //select the proppert font and color for the character
         switch (it.getStyle()) {
+        	case KEYWORD:
+            gc.setFont(AbstractRenderer.keywordFont);
+            gc.setColor(AbstractRenderer.keywordColor);
+            //fm = AbstractRenderer.keywordFontMetrics;
+            
+            //Wenn dieser Break durchgeführt wird, dann wird bei "let hallo = lambda tach.tach in hallo"
+            //fälschlicher Weise tach. als Keyword gehilightet, wenn der MouseOver aktiv ist. Eventuell sollte man
+            //sich hier noch mal GEdanken machen, was daran so komisch ist.
+            //break;
+            
         case IDENTIFIER:
+        	gc.setFont(AbstractRenderer.expFont);
+          gc.setColor(AbstractRenderer.expColor);
+          //fm = AbstractRenderer.expFontMetrics;
+          break;
         case NONE:
           gc.setFont(AbstractRenderer.expFont);
           gc.setColor(AbstractRenderer.expColor);
           //fm = AbstractRenderer.expFontMetrics;
           break;
-        case KEYWORD:
-          gc.setFont(AbstractRenderer.keywordFont);
-          gc.setColor(AbstractRenderer.keywordColor);
-          //fm = AbstractRenderer.keywordFontMetrics;
-          break;
+        
         case CONSTANT:
           gc.setFont(AbstractRenderer.constantFont);
           gc.setColor(AbstractRenderer.constantColor);
@@ -934,6 +943,7 @@ public class PrettyStringRenderer extends AbstractRenderer {
           gc.setColor(AbstractRenderer.typeColor);
           //fm = AbstractRenderer.typeFontMetrics;
           break;
+        
         }
         
       }
