@@ -90,7 +90,7 @@ public final class OutlineTreeModelListener implements TreeModelListener
   public final void treeNodesChanged ( @ SuppressWarnings ( UNUSED )
   TreeModelEvent pTreeModelEvent )
   {
-    // Do Nothing
+    handleEvent ( pTreeModelEvent ) ;
   }
 
 
@@ -100,9 +100,10 @@ public final class OutlineTreeModelListener implements TreeModelListener
    * @param pTreeModelEvent The <code>TreeModelEvent</code>.
    * @see TreeModelListener#treeNodesInserted(TreeModelEvent)
    */
-  public final void treeNodesInserted ( TreeModelEvent pTreeModelEvent )
+  public final void treeNodesInserted ( @ SuppressWarnings ( UNUSED )
+  TreeModelEvent pTreeModelEvent )
   {
-    handleEvent ( pTreeModelEvent ) ;
+    // Do Nothing
   }
 
 
@@ -112,9 +113,10 @@ public final class OutlineTreeModelListener implements TreeModelListener
    * @param pTreeModelEvent The <code>TreeModelEvent</code>.
    * @see TreeModelListener#treeNodesRemoved(TreeModelEvent)
    */
-  public final void treeNodesRemoved ( TreeModelEvent pTreeModelEvent )
+  public final void treeNodesRemoved ( @ SuppressWarnings ( UNUSED )
+  TreeModelEvent pTreeModelEvent )
   {
-    handleEvent ( pTreeModelEvent ) ;
+    // Do Nothing
   }
 
 
