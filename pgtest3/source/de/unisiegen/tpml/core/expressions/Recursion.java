@@ -73,11 +73,71 @@ public final class Recursion extends Expression
 
   /**
    * {@inheritDoc}
+   * 
+   * @see Expression#clone()
+   */
+  @ Override
+  public Recursion clone ( )
+  {
+    return new Recursion ( this.id , this.tau == null ? null : this.tau
+        .clone ( ) , this.e.clone ( ) ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Expression#equals(Object)
+   */
+  @ Override
+  public boolean equals ( Object pObject )
+  {
+    if ( pObject instanceof Recursion )
+    {
+      Recursion other = ( Recursion ) pObject ;
+      return ( ( this.id.equals ( other.id ) ) && ( this.e.equals ( other.e ) ) && ( ( this.tau == null ) ? ( other.tau == null )
+          : ( this.tau.equals ( other.tau ) ) ) ) ;
+    }
+    return false ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Expression#free()
+   */
+  @ Override
+  public TreeSet < String > free ( )
+  {
+    if ( this.free == null )
+    {
+      this.free = new TreeSet < String > ( ) ;
+      this.free.addAll ( this.e.free ( ) ) ;
+      this.free.remove ( this.id ) ;
+    }
+    return this.free ;
+  }
+
+
+  /**
+   * {@inheritDoc}
    */
   @ Override
   public String getCaption ( )
   {
     return "Recursion" ; //$NON-NLS-1$
+  }
+
+
+  /**
+   * Returns the recursion body.
+   * 
+   * @return the recursion body.
+   */
+  public Expression getE ( )
+  {
+    return this.e ;
   }
 
 
@@ -105,58 +165,16 @@ public final class Recursion extends Expression
 
 
   /**
-   * Returns the recursion body.
-   * 
-   * @return the recursion body.
-   */
-  public Expression getE ( )
-  {
-    return this.e ;
-  }
-
-
-  /**
    * {@inheritDoc}
    * 
-   * @see Expression#clone()
+   * @see Expression#hashCode()
    */
   @ Override
-  public Recursion clone ( )
+  public int hashCode ( )
   {
-    return new Recursion ( this.id , this.tau , this.e.clone ( ) ) ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Expression#free()
-   */
-  @ Override
-  public TreeSet < String > free ( )
-  {
-    if ( this.free == null )
-    {
-      this.free = new TreeSet < String > ( ) ;
-      this.free.addAll ( this.e.free ( ) ) ;
-      this.free.remove ( this.id ) ;
-    }
-    return this.free ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Expression#substitute(TypeSubstitution)
-   */
-  @ Override
-  public Recursion substitute ( TypeSubstitution pTypeSubstitution )
-  {
-    MonoType newTau = ( this.tau == null ) ? null : this.tau
-        .substitute ( pTypeSubstitution ) ;
-    Expression newE = this.e.substitute ( pTypeSubstitution ) ;
-    return new Recursion ( this.id , newTau , newE ) ;
+    return this.id.hashCode ( )
+        + ( ( this.tau == null ) ? 0 : this.tau.hashCode ( ) )
+        + this.e.hashCode ( ) ;
   }
 
 
@@ -211,7 +229,23 @@ public final class Recursion extends Expression
      * Perform the substitution.
      */
     newE = newE.substitute ( pId , pExpression , pAttributeRename ) ;
-    return new Recursion ( newId , this.tau , newE ) ;
+    return new Recursion ( newId ,
+        this.tau == null ? null : this.tau.clone ( ) , newE ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Expression#substitute(TypeSubstitution)
+   */
+  @ Override
+  public Recursion substitute ( TypeSubstitution pTypeSubstitution )
+  {
+    MonoType newTau = ( this.tau == null ) ? null : this.tau
+        .substitute ( pTypeSubstitution ) ;
+    Expression newE = this.e.substitute ( pTypeSubstitution ) ;
+    return new Recursion ( this.id , newTau , newE ) ;
   }
 
 
@@ -243,37 +277,5 @@ public final class Recursion extends Expression
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_REC_E ) ;
     }
     return this.prettyStringBuilder ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Expression#equals(Object)
-   */
-  @ Override
-  public boolean equals ( Object pObject )
-  {
-    if ( pObject instanceof Recursion )
-    {
-      Recursion other = ( Recursion ) pObject ;
-      return ( ( this.id.equals ( other.id ) ) && ( this.e.equals ( other.e ) ) && ( ( this.tau == null ) ? ( other.tau == null )
-          : ( this.tau.equals ( other.tau ) ) ) ) ;
-    }
-    return false ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Expression#hashCode()
-   */
-  @ Override
-  public int hashCode ( )
-  {
-    return this.id.hashCode ( )
-        + ( ( this.tau != null ) ? this.tau.hashCode ( ) : 0 )
-        + this.e.hashCode ( ) ;
   }
 }

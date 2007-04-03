@@ -68,7 +68,7 @@ public class Method extends Expression
   @ Override
   public Method clone ( )
   {
-    return new Method ( this.id , this.tau , this.e.clone ( ) ) ;
+    return new Method ( this.id , this.tau == null ? null : this.tau.clone ( ) , this.e.clone ( ) ) ;
   }
 
 
@@ -175,7 +175,7 @@ public class Method extends Expression
       boolean pAttributeRename )
   {
     Expression newE = this.e.substitute ( pId , pExpression , pAttributeRename ) ;
-    return new Method ( this.id , this.tau , newE ) ;
+    return new Method ( this.id , this.tau == null ? null : this.tau.clone ( ) , newE ) ;
   }
 
 

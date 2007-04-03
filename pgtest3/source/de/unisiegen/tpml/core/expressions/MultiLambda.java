@@ -89,7 +89,8 @@ public final class MultiLambda extends Value
   @ Override
   public MultiLambda clone ( )
   {
-    return new MultiLambda ( this.identifiers , this.tau , this.e.clone ( ) ) ;
+    return new MultiLambda ( this.identifiers , this.tau == null ? null
+        : this.tau.clone ( ) , this.e.clone ( ) ) ;
   }
 
 
@@ -202,7 +203,7 @@ public final class MultiLambda extends Value
   public int hashCode ( )
   {
     return this.identifiers.hashCode ( )
-        + ( ( this.tau != null ) ? this.tau.hashCode ( ) : 0 )
+        + ( ( this.tau == null ) ? 0 : this.tau.hashCode ( ) )
         + this.e.hashCode ( ) ;
   }
 
@@ -286,7 +287,8 @@ public final class MultiLambda extends Value
      * Perform the substitution.
      */
     newE = newE.substitute ( pId , pExpression , pAttributeRename ) ;
-    return new MultiLambda ( newIdentifiers , this.tau , newE ) ;
+    return new MultiLambda ( newIdentifiers , this.tau == null ? null
+        : this.tau.clone ( ) , newE ) ;
   }
 
 
@@ -298,8 +300,8 @@ public final class MultiLambda extends Value
   @ Override
   public MultiLambda substitute ( TypeSubstitution pTypeSubstitution )
   {
-    MonoType newTau = ( this.tau != null ) ? this.tau
-        .substitute ( pTypeSubstitution ) : null ;
+    MonoType newTau = ( this.tau == null ) ? null : this.tau
+        .substitute ( pTypeSubstitution ) ;
     return new MultiLambda ( this.identifiers , newTau , this.e
         .substitute ( pTypeSubstitution ) ) ;
   }

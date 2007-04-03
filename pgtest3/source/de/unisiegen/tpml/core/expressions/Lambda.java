@@ -180,7 +180,7 @@ public final class Lambda extends Value
   public int hashCode ( )
   {
     return this.id.hashCode ( )
-        + ( ( this.tau != null ) ? this.tau.hashCode ( ) : 0 )
+        + ( ( this.tau == null ) ? 0 : this.tau.hashCode ( ) )
         + this.e.hashCode ( ) ;
   }
 

@@ -88,7 +88,13 @@ public final class CurriedMethod extends Expression
   @ Override
   public CurriedMethod clone ( )
   {
-    return new CurriedMethod ( this.identifiers , this.types , this.e.clone ( ) ) ;
+    MonoType [ ] newTypes = new MonoType [ this.types.length ] ;
+    for ( int i = 0 ; i < newTypes.length ; i ++ )
+    {
+      newTypes [ i ] = ( this.types [ i ] == null ) ? null : this.types [ i ]
+          .clone ( ) ;
+    }
+    return new CurriedMethod ( this.identifiers , newTypes , this.e.clone ( ) ) ;
   }
 
 
@@ -303,7 +309,13 @@ public final class CurriedMethod extends Expression
      * Perform the substitution.
      */
     newE = newE.substitute ( pId , pExpression , pAttributeRename ) ;
-    return new CurriedMethod ( newIdentifiers , this.types , newE ) ;
+    MonoType [ ] newTypes = new MonoType [ this.types.length ] ;
+    for ( int i = 0 ; i < newTypes.length ; i ++ )
+    {
+      newTypes [ i ] = ( this.types [ i ] == null ) ? null : this.types [ i ]
+          .clone ( ) ;
+    }
+    return new CurriedMethod ( newIdentifiers , newTypes , newE ) ;
   }
 
 

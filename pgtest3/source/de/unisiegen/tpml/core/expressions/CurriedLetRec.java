@@ -55,8 +55,14 @@ public final class CurriedLetRec extends CurriedLet
   @ Override
   public CurriedLetRec clone ( )
   {
-    return new CurriedLetRec ( this.identifiers , this.types ,
-        this.e1.clone ( ) , this.e2.clone ( ) ) ;
+    MonoType [ ] newTypes = new MonoType [ this.types.length ] ;
+    for ( int i = 0 ; i < newTypes.length ; i ++ )
+    {
+      newTypes [ i ] = ( this.types [ i ] == null ) ? null : this.types [ i ]
+          .clone ( ) ;
+    }
+    return new CurriedLetRec ( this.identifiers , newTypes , this.e1.clone ( ) ,
+        this.e2.clone ( ) ) ;
   }
 
 
@@ -221,7 +227,13 @@ public final class CurriedLetRec extends CurriedLet
      * Perform the substitution in e2.
      */
     newE2 = newE2.substitute ( pId , pExpression , pAttributeRename ) ;
-    return new CurriedLetRec ( newIdentifiers , this.types , newE1 , newE2 ) ;
+    MonoType [ ] newTypes = new MonoType [ this.types.length ] ;
+    for ( int i = 0 ; i < newTypes.length ; i ++ )
+    {
+      newTypes [ i ] = ( this.types [ i ] == null ) ? null : this.types [ i ]
+          .clone ( ) ;
+    }
+    return new CurriedLetRec ( newIdentifiers , newTypes , newE1 , newE2 ) ;
   }
 
 
@@ -234,10 +246,10 @@ public final class CurriedLetRec extends CurriedLet
   public CurriedLetRec substitute ( TypeSubstitution pTypeSubstitution )
   {
     MonoType [ ] newTypes = new MonoType [ this.types.length ] ;
-    for ( int n = 0 ; n < newTypes.length ; ++ n )
+    for ( int i = 0 ; i < newTypes.length ; i ++ )
     {
-      newTypes [ n ] = ( this.types [ n ] != null ) ? this.types [ n ]
-          .substitute ( pTypeSubstitution ) : null ;
+      newTypes [ i ] = ( this.types [ i ] == null ) ? null : this.types [ i ]
+          .substitute ( pTypeSubstitution ) ;
     }
     return new CurriedLetRec ( this.identifiers , newTypes , this.e1
         .substitute ( pTypeSubstitution ) , this.e2
@@ -263,18 +275,18 @@ public final class CurriedLetRec extends CurriedLet
       this.prettyStringBuilder.addKeyword ( "rec" ) ;//$NON-NLS-1$
       this.prettyStringBuilder.addText ( " " ) ;//$NON-NLS-1$
       this.prettyStringBuilder.addIdentifier ( this.identifiers [ 0 ] ) ;
-      for ( int n = 1 ; n < this.identifiers.length ; ++ n )
+      for ( int i = 1 ; i < this.identifiers.length ; i ++ )
       {
         this.prettyStringBuilder.addText ( " " ) ;//$NON-NLS-1$
-        if ( this.types [ n ] != null )
+        if ( this.types [ i ] != null )
         {
           this.prettyStringBuilder.addText ( "(" ) ;//$NON-NLS-1$
         }
-        this.prettyStringBuilder.addIdentifier ( this.identifiers [ n ] ) ;
-        if ( this.types [ n ] != null )
+        this.prettyStringBuilder.addIdentifier ( this.identifiers [ i ] ) ;
+        if ( this.types [ i ] != null )
         {
           this.prettyStringBuilder.addText ( ": " ) ;//$NON-NLS-1$
-          this.prettyStringBuilder.addBuilder ( this.types [ n ]
+          this.prettyStringBuilder.addBuilder ( this.types [ i ]
               .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
               PRIO_LET_TAU ) ;
           this.prettyStringBuilder.addText ( ")" ) ;//$NON-NLS-1$

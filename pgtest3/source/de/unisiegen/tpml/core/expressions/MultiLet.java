@@ -105,8 +105,8 @@ public final class MultiLet extends Expression
   @ Override
   public MultiLet clone ( )
   {
-    return new MultiLet ( this.identifiers , this.tau , this.e1.clone ( ) ,
-        this.e2.clone ( ) ) ;
+    return new MultiLet ( this.identifiers , this.tau == null ? null : this.tau
+        .clone ( ) , this.e1.clone ( ) , this.e2.clone ( ) ) ;
   }
 
 
@@ -231,7 +231,7 @@ public final class MultiLet extends Expression
   {
     return this.identifiers.hashCode ( ) + this.e1.hashCode ( )
         + this.e2.hashCode ( )
-        + ( ( this.tau != null ) ? this.tau.hashCode ( ) : 0 ) ;
+        + ( ( this.tau == null ) ? 0 : this.tau.hashCode ( ) ) ;
   }
 
 
@@ -266,7 +266,8 @@ public final class MultiLet extends Expression
         Expression newE1 = this.e1.substitute ( pId , pExpression ,
             pAttributeRename ) ;
         Expression newE2 = this.e2.clone ( ) ;
-        return new MultiLet ( this.identifiers , this.tau , newE1 , newE2 ) ;
+        return new MultiLet ( this.identifiers , this.tau == null ? null
+            : this.tau.clone ( ) , newE1 , newE2 ) ;
       }
     }
     String [ ] newIdentifiers = this.identifiers.clone ( ) ;
@@ -320,7 +321,8 @@ public final class MultiLet extends Expression
     Expression newE1 = this.e1.substitute ( pId , pExpression ,
         pAttributeRename ) ;
     newE2 = newE2.substitute ( pId , pExpression , pAttributeRename ) ;
-    return new MultiLet ( newIdentifiers , this.tau , newE1 , newE2 ) ;
+    return new MultiLet ( newIdentifiers , this.tau == null ? null : this.tau
+        .clone ( ) , newE1 , newE2 ) ;
   }
 
 
@@ -332,8 +334,8 @@ public final class MultiLet extends Expression
   @ Override
   public MultiLet substitute ( TypeSubstitution pTypeSubstitution )
   {
-    MonoType newTau = ( this.tau != null ) ? this.tau
-        .substitute ( pTypeSubstitution ) : null ;
+    MonoType newTau = ( this.tau == null ) ? null : this.tau
+        .substitute ( pTypeSubstitution ) ;
     Expression newE1 = this.e1.substitute ( pTypeSubstitution ) ;
     Expression newE2 = this.e2.substitute ( pTypeSubstitution ) ;
     return new MultiLet ( this.identifiers , newTau , newE1 , newE2 ) ;

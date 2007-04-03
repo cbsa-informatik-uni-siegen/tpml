@@ -97,7 +97,8 @@ public class Let extends Expression
   @ Override
   public Let clone ( )
   {
-    return new Let ( this.id , this.tau , this.e1.clone ( ) , this.e2.clone ( ) ) ;
+    return new Let ( this.id , this.tau == null ? null : this.tau.clone ( ) ,
+        this.e1.clone ( ) , this.e2.clone ( ) ) ;
   }
 
 
@@ -204,7 +205,9 @@ public class Let extends Expression
   @ Override
   public int hashCode ( )
   {
-    return this.id.hashCode ( ) + this.e1.hashCode ( ) + this.e2.hashCode ( ) ;
+    return this.id.hashCode ( )
+        + ( ( this.tau == null ) ? 0 : this.tau.hashCode ( ) )
+        + this.e1.hashCode ( ) + this.e2.hashCode ( ) ;
   }
 
 
@@ -240,7 +243,8 @@ public class Let extends Expression
      */
     if ( this.id.equals ( pId ) )
     {
-      return new Let ( this.id , this.tau , newE1 , newE2.clone ( ) ) ;
+      return new Let ( this.id , this.tau == null ? null : this.tau.clone ( ) ,
+          newE1 , newE2.clone ( ) ) ;
     }
     /*
      * Perform the bound renaming if required.
@@ -266,7 +270,8 @@ public class Let extends Expression
      * Perform the substitution in e2.
      */
     newE2 = newE2.substitute ( pId , pExpression , pAttributeRename ) ;
-    return new Let ( newId , this.tau , newE1 , newE2 ) ;
+    return new Let ( newId , this.tau == null ? null : this.tau.clone ( ) ,
+        newE1 , newE2 ) ;
   }
 
 
@@ -278,8 +283,8 @@ public class Let extends Expression
   @ Override
   public Let substitute ( TypeSubstitution pTypeSubstitution )
   {
-    MonoType newTau = ( this.tau != null ) ? this.tau
-        .substitute ( pTypeSubstitution ) : null ;
+    MonoType newTau = ( this.tau == null ) ? null : this.tau
+        .substitute ( pTypeSubstitution ) ;
     Expression newE1 = this.e1.substitute ( pTypeSubstitution ) ;
     Expression newE2 = this.e2.substitute ( pTypeSubstitution ) ;
     return new Let ( this.id , newTau , newE1 , newE2 ) ;

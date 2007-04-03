@@ -77,7 +77,8 @@ public final class Attribute extends Expression
   @ Override
   public Attribute clone ( )
   {
-    return new Attribute ( this.id , this.tau , this.e.clone ( ) ) ;
+    return new Attribute ( this.id , this.tau == null ? null : this.tau
+        .clone ( ) , this.e.clone ( ) ) ;
   }
 
 
@@ -208,7 +209,8 @@ public final class Attribute extends Expression
       boolean pAttributeRename )
   {
     Expression newE = this.e.substitute ( pId , pExpression , pAttributeRename ) ;
-    return new Attribute ( this.id , this.tau , newE ) ;
+    return new Attribute ( this.id , this.tau == null ? null : this.tau
+        .clone ( ) , newE ) ;
   }
 
 

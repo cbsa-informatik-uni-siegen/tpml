@@ -70,7 +70,8 @@ public final class ObjectExpr extends Expression
   @ Override
   public ObjectExpr clone ( )
   {
-    return new ObjectExpr ( this.id , this.tau , this.row.clone ( ) ) ;
+    return new ObjectExpr ( this.id , this.tau == null ? null : this.tau
+        .clone ( ) , this.row.clone ( ) ) ;
   }
 
 
@@ -224,7 +225,8 @@ public final class ObjectExpr extends Expression
      * Perform the substitution.
      */
     newRow = newRow.substitute ( pId , pExpression , false ) ;
-    return new ObjectExpr ( newId , this.tau , newRow ) ;
+    return new ObjectExpr ( newId ,
+        this.tau == null ? null : this.tau.clone ( ) , newRow ) ;
   }
 
 

@@ -48,8 +48,8 @@ public final class LetRec extends Let
   @ Override
   public LetRec clone ( )
   {
-    return new LetRec ( this.id , this.tau , this.e1.clone ( ) , this.e2
-        .clone ( ) ) ;
+    return new LetRec ( this.id , this.tau == null ? null : this.tau.clone ( ) ,
+        this.e1.clone ( ) , this.e2.clone ( ) ) ;
   }
 
 
@@ -137,7 +137,8 @@ public final class LetRec extends Let
      */
     newE1 = newE1.substitute ( pId , pExpression , pAttributeRename ) ;
     newE2 = newE2.substitute ( pId , pExpression , pAttributeRename ) ;
-    return new LetRec ( newId , this.tau , newE1 , newE2 ) ;
+    return new LetRec ( newId , this.tau == null ? null : this.tau.clone ( ) ,
+        newE1 , newE2 ) ;
   }
 
 
@@ -149,8 +150,8 @@ public final class LetRec extends Let
   @ Override
   public LetRec substitute ( TypeSubstitution pTypeSubstitution )
   {
-    MonoType pTau = ( this.tau != null ) ? this.tau
-        .substitute ( pTypeSubstitution ) : null ;
+    MonoType pTau = ( this.tau == null ) ? null : this.tau
+        .substitute ( pTypeSubstitution ) ;
     Expression newE1 = this.e1.substitute ( pTypeSubstitution ) ;
     Expression newE2 = this.e2.substitute ( pTypeSubstitution ) ;
     return new LetRec ( this.id , pTau , newE1 , newE2 ) ;
