@@ -30,7 +30,6 @@ import de.unisiegen.tpml.core.expressions.UnaryOperatorException ;
 import de.unisiegen.tpml.core.expressions.UnitConstant ;
 import de.unisiegen.tpml.core.languages.l0.L0BigStepProofRuleSet ;
 import de.unisiegen.tpml.core.languages.l0.L0Language ;
-import de.unisiegen.tpml.core.languages.l2.L2Language ;
 
 
 /**
@@ -42,9 +41,6 @@ import de.unisiegen.tpml.core.languages.l2.L2Language ;
  */
 public class L1BigStepProofRuleSet extends L0BigStepProofRuleSet
 {
-  //
-  // Constructor
-  //
   /**
    * Allocates a new <code>L1BigStepProofRuleSet</code> with the specified
    * <code>language</code>, which is the <b>L1</b> or a derived language.
@@ -76,9 +72,6 @@ public class L1BigStepProofRuleSet extends L0BigStepProofRuleSet
   }
 
 
-  //
-  // The (AND-FALSE) and (AND-TRUE) rules
-  //
   /**
    * Applies the <b>(AND-FALSE)</b> or <b>(AND-TRUE)</b> rule to the
    * <code>node</code> using the <code>context</code>.
@@ -117,7 +110,7 @@ public class L1BigStepProofRuleSet extends L0BigStepProofRuleSet
         {
           // let (AND-TRUE) handle the node
           context.setProofNodeRule ( node ,
-              ( BigStepProofRule ) getRuleByName ( "AND-TRUE" ) ) ;
+              ( BigStepProofRule ) getRuleByName ( "AND-TRUE" ) ) ; //$NON-NLS-1$
           updateAndTrue ( context , node ) ;
         }
         else
@@ -169,7 +162,7 @@ public class L1BigStepProofRuleSet extends L0BigStepProofRuleSet
         {
           // let (AND-FALSE) handle the node
           context.setProofNodeRule ( node ,
-              ( BigStepProofRule ) getRuleByName ( "AND-FALSE" ) ) ;
+              ( BigStepProofRule ) getRuleByName ( "AND-FALSE" ) ) ; //$NON-NLS-1$
           updateAndFalse ( context , node ) ;
         }
       }
@@ -327,9 +320,6 @@ public class L1BigStepProofRuleSet extends L0BigStepProofRuleSet
   }
 
 
-  //
-  // The (LET) rule
-  //
   /**
    * Applies the <b>(LET)</b> rule to the <code>node</code> using the
    * <code>context</code>.
@@ -548,7 +538,7 @@ public class L1BigStepProofRuleSet extends L0BigStepProofRuleSet
         {
           // let (OR-TRUE) handle the node
           context.setProofNodeRule ( node ,
-              ( BigStepProofRule ) getRuleByName ( "OR-TRUE" ) ) ;
+              ( BigStepProofRule ) getRuleByName ( "OR-TRUE" ) ) ; //$NON-NLS-1$
           updateOrTrue ( context , node ) ;
         }
         else
@@ -599,7 +589,7 @@ public class L1BigStepProofRuleSet extends L0BigStepProofRuleSet
         {
           // let (OR-FALSE) handle the node
           context.setProofNodeRule ( node ,
-              ( BigStepProofRule ) getRuleByName ( "OR-FALSE" ) ) ;
+              ( BigStepProofRule ) getRuleByName ( "OR-FALSE" ) ) ; //$NON-NLS-1$
           updateOrFalse ( context , node ) ;
         }
       }
