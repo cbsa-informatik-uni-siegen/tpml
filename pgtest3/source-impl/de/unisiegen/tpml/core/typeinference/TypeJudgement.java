@@ -3,6 +3,7 @@ package de.unisiegen.tpml.core.typeinference;
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.typechecker.DefaultTypeEnvironment;
 import de.unisiegen.tpml.core.typechecker.TypeEnvironment;
+import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
 import de.unisiegen.tpml.core.types.MonoType;
 import de.unisiegen.tpml.core.util.Environment;
 
@@ -72,4 +73,9 @@ public class TypeJudgement implements TypeFormula {
 	    builder.append(type);
 	    return builder.toString();
 	  }
+
+		public TypeEquation substitute(TypeSubstitution s) {
+			this.type.substitute(s);
+			return null;
+		}
 }

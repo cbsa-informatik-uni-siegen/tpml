@@ -282,7 +282,7 @@ public final class TypeInferenceProofModelTest extends JFrame {
 	        return node;
 	      }
 	      for (int n = 0; n < node.getChildCount(); ++n) {
-	        nodes.add((DefaultTypeInferenceProofNode)node.getChildAt(n));
+	        nodes.add(node.getChildAt(n));
 	      }
 	    }
 	    

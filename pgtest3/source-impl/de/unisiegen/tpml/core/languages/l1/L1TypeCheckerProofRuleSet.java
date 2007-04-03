@@ -22,11 +22,12 @@ import de.unisiegen.tpml.core.typechecker.DefaultTypeSubstitution;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofContext;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode;
 import de.unisiegen.tpml.core.typechecker.TypeEnvironment;
-import de.unisiegen.tpml.core.typeinference.TypeEquationList;
 import de.unisiegen.tpml.core.typechecker.UnificationException;
 import de.unisiegen.tpml.core.typeinference.DefaultTypeEquationProofNode;
 import de.unisiegen.tpml.core.typeinference.DefaultTypeInferenceProofContext;
-import de.unisiegen.tpml.core.typeinference.DefaultTypeInferenceProofNode;
+import de.unisiegen.tpml.core.typeinference.TypeEquation;
+import de.unisiegen.tpml.core.typeinference.TypeEquationList;
+import de.unisiegen.tpml.core.typeinference.UnifyException;
 import de.unisiegen.tpml.core.types.ArrowType;
 import de.unisiegen.tpml.core.types.BooleanType;
 import de.unisiegen.tpml.core.types.ListType;
@@ -35,7 +36,6 @@ import de.unisiegen.tpml.core.types.RefType;
 import de.unisiegen.tpml.core.types.TupleType;
 import de.unisiegen.tpml.core.types.Type;
 import de.unisiegen.tpml.core.types.TypeVariable;
-
 /**
  * The type proof rules for the <code>L1</code> language.
  *
@@ -377,43 +377,49 @@ public class L1TypeCheckerProofRuleSet extends AbstractTypeCheckerProofRuleSet {
   //
   // The unify rule
   //
-
-  public void applyUnify(TypeCheckerProofContext pContext, TypeCheckerProofNode pNode) throws UnificationException{
-	  
+  
+  /**
+   * Applies the <b>(UNIFY)</b> rule to the <code>node</code> using the <code>context</code>.
+   * 
+   * @param pContext the type inference proof context.
+   * @param pNode the type inference proof node.
+   * @throws UnificationException 
+   */
+  public void applyUnify(TypeCheckerProofContext pContext, TypeCheckerProofNode pNode) throws UnifyException{
 	  DefaultTypeInferenceProofContext context = (DefaultTypeInferenceProofContext) pContext;
 	  DefaultTypeEquationProofNode node = (DefaultTypeEquationProofNode) pNode ;
-	  TypeEquationList eqns = node.getEquations();
+	  TypeEquation eqn = node.getEquation();
+	  /**
 	  // if the TypeEquationList is an empty list, we are ready wiht unification
 	  if (eqns.equals( TypeEquationList.EMPTY_LIST))
 	  {
-		  context.setUnifyReady(true);
+		  context.setUnifyReady();
 		  return;
-	  }
+	  }*/
 	  
 	  // otherwise, we examine the first equation in the list
-	  MonoType left = eqns.getFirst().getLeft();
-	  MonoType right = eqns.getFirst().getRight();
+	  MonoType left = eqn.getLeft();
+	  MonoType right = eqn.getRight();
 	  
 	  if (left instanceof TypeVariable || right instanceof TypeVariable)
 	  {
 		    // the left or right side of the equation is a type variable
 	      TypeVariable tvar = (TypeVariable)(left instanceof TypeVariable ? left : right);
 	      MonoType tau = (left instanceof TypeVariable ? right : left);
-	      
 	      // either tvar equals tau or tvar is not present in tau
 	      if (tvar.equals(tau) || !tau.free().contains(tvar)) {
 	    	  
-	    	  
 	        DefaultTypeSubstitution s = new DefaultTypeSubstitution(tvar, tau);
-		  
 		  
 		 
 			  
 			  // now have to substitude remaining eqns
-			  eqns= eqns.getRemaining();
-			  eqns=eqns.substitute(s);
-			  context.setEquations(eqns);
+			  //eqns= eqns.getRemaining();
+			  //context.setEquations(eqns);
+	        
+	        context.substitute(s, eqn);
 			  context.addSubstitution(s);
+			  context.popEquation();
 			  return;
 		  }
 	  }
@@ -422,8 +428,9 @@ public class L1TypeCheckerProofRuleSet extends AbstractTypeCheckerProofRuleSet {
 	      ArrowType taur = (ArrowType)right;
 	      
 	      // we need to check {tau1 = tau1', tau2 = tau2'} as well
-	      eqns = eqns.getRemaining();
-	      context.setEquations(eqns);
+	      //eqns = eqns.getRemaining();
+	      //context.setEquations(eqns);
+	      context.popEquation();
 	      context.addEquation(taul.getTau2(), taur.getTau2());
 	      context.addEquation(taul.getTau1(), taur.getTau1());
 	      return;
@@ -440,7 +447,7 @@ public class L1TypeCheckerProofRuleSet extends AbstractTypeCheckerProofRuleSet {
           // check if the arities match
           if (typesl.length == typesr.length) {
             // check all sub types
-            context.setEquations(eqns.getRemaining());
+           // context.setEquations(eqns.getRemaining());
             for (int n = 0; n < typesl.length; ++n) {
               context.addEquation(typesl[n], typesr[n]);
             }
@@ -448,7 +455,7 @@ public class L1TypeCheckerProofRuleSet extends AbstractTypeCheckerProofRuleSet {
           }
 //        generate new child nodes
 //        context.addProofNode(node, node.getEnvironment(), node.getExpression(), node.getType(), eqns);
-          context.setEquations(eqns.getRemaining());
+          //context.setEquations(eqns.getRemaining());
           return ;
         }
         else if (left instanceof TupleType && right instanceof TupleType) {
@@ -463,7 +470,7 @@ public class L1TypeCheckerProofRuleSet extends AbstractTypeCheckerProofRuleSet {
           // check if the arities match
           if (typesl.length == typesr.length) {
             // check all sub types
-            context.setEquations(eqns.getRemaining());
+            //context.setEquations(eqns.getRemaining());
             for (int n = 0; n < typesl.length; ++n) {
               context.addEquation(typesl[n], typesr[n]);
             }
@@ -479,7 +486,7 @@ public class L1TypeCheckerProofRuleSet extends AbstractTypeCheckerProofRuleSet {
           RefType taur = (RefType)right;
 
           // we need to check {tau = tau'} as well
-          context.setEquations(eqns.getRemaining());
+         // context.setEquations(eqns.getRemaining());
           context.addEquation(taul.getTau(), taur.getTau());
           
           
@@ -491,17 +498,17 @@ public class L1TypeCheckerProofRuleSet extends AbstractTypeCheckerProofRuleSet {
           ListType taur = (ListType)right;
           
           // we need to check {tau = tau'} as well
-          context.setEquations(eqns.getRemaining());
+         // context.setEquations(eqns.getRemaining());
           context.addEquation(taul.getTau(), taur.getTau());
           
           return;
         }
 	  else if (left.equals(right))
 	  {
-		  context.setEquations(eqns.getRemaining());
+		  //context.setEquations(eqns.getRemaining());
 		  return;
 	  }   
-	  throw new UnificationException(eqns.getFirst());  
+	  throw new UnifyException(eqn);  
   }
   
   /**

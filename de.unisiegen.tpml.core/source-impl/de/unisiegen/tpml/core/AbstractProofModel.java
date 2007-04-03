@@ -238,7 +238,7 @@ public abstract class AbstractProofModel extends AbstractBean implements ProofMo
    * implement this interface whenever any action on
    * the tree is to be performed.
    */
-  protected static interface UndoableTreeEdit {
+  public static interface UndoableTreeEdit {
     /**
      * Performs the action of this tree edit. This method
      * is invoked initially, when the edit is added via

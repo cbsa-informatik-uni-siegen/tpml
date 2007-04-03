@@ -1,14 +1,12 @@
 package de.unisiegen.tpml.core.typeinference;
 
 import de.unisiegen.tpml.core.expressions.Expression;
-import de.unisiegen.tpml.core.expressions.IsEmpty;
 import de.unisiegen.tpml.core.typechecker.DefaultTypeEnvironment;
-import de.unisiegen.tpml.core.typechecker.TypeEquation;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
 import de.unisiegen.tpml.core.types.MonoType;
 import de.unisiegen.tpml.core.types.UnitType;
 
-public final class TypeEquationList implements TypeFormula{
+public final class TypeEquationList {
 	  //
 	  // Constants
 	  //
@@ -110,6 +108,8 @@ public final class TypeEquationList implements TypeFormula{
 	    
 	    // apply the substitution to the first and the remaining equations
 	    return new TypeEquationList(this.first.substitute(s), this.remaining.substitute(s));
+	    //this.first.substitute(s);
+	    //this.remaining.substitute(s);
 	  }
 	  
  

@@ -2,8 +2,11 @@ package de.unisiegen.tpml.core.typeinference;
 
 
 
+import de.unisiegen.tpml.core.expressions.Expression;
+import de.unisiegen.tpml.core.typechecker.DefaultTypeEnvironment;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
 import de.unisiegen.tpml.core.types.MonoType;
+import de.unisiegen.tpml.core.types.UnitType;
 
 /**
  * Represents a type equation. Used primarily for the unification algorithm.
@@ -13,7 +16,7 @@ import de.unisiegen.tpml.core.types.MonoType;
  *
  * @see de.unisiegen.tpml.core.typechecker.TypeEquationList
  */
-public final class TypeEquation {
+public final class TypeEquation implements TypeFormula  {
   //
   // Attributes
   //
@@ -101,6 +104,8 @@ public final class TypeEquation {
   public TypeEquation substitute(TypeSubstitution s) {
     // apply the substitution to the left and the right side
     return new TypeEquation(this.left.substitute(s), this.right.substitute(s));
+  	//this.left.substitute(s);
+  	//this.right.substitute(s);
   }
   
 
@@ -144,6 +149,25 @@ public final class TypeEquation {
   public int hashCode() {
     return this.left.hashCode() + this.right.hashCode();
   }
+
+
+
+  public DefaultTypeEnvironment getEnvironment() {
+		return new DefaultTypeEnvironment();
+	}
+
+
+
+	public Expression getExpression() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+
+	public MonoType getType() {
+		return new UnitType();
+	}
   
 }
 

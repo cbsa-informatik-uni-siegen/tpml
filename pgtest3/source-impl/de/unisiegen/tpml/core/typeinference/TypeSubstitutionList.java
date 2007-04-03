@@ -78,4 +78,9 @@ public class TypeSubstitutionList {
 			return new TypeSubstitutionList( s, this);
 			
 		}
+
+
+		public DefaultTypeSubstitution getFirst() {
+			return this.first;
+		}
 }

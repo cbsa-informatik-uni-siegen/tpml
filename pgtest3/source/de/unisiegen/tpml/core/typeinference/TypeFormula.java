@@ -2,6 +2,7 @@ package de.unisiegen.tpml.core.typeinference;
 
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.typechecker.DefaultTypeEnvironment;
+import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
 import de.unisiegen.tpml.core.types.MonoType;
 
 public interface TypeFormula {
@@ -18,5 +19,7 @@ public interface TypeFormula {
 	public MonoType getType();
 	
 	public String toString();
+	
+	public TypeEquation substitute( TypeSubstitution s);
 	
 }
