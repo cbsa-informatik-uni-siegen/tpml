@@ -1,1 +1,1 @@
-ref 0
+let x: int ref = ref 0 in !x
