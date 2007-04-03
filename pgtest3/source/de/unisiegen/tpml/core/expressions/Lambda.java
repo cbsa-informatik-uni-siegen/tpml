@@ -81,7 +81,8 @@ public final class Lambda extends Value
   @ Override
   public Lambda clone ( )
   {
-    return new Lambda ( this.id , this.tau.clone ( ) , this.e.clone ( ) ) ;
+    return new Lambda ( this.id , this.tau == null ? null : this.tau.clone ( ) ,
+        this.e.clone ( ) ) ;
   }
 
 
@@ -242,7 +243,8 @@ public final class Lambda extends Value
      * Perform the substitution.
      */
     newE = newE.substitute ( pId , pExpression , pAttributeRename ) ;
-    return new Lambda ( newId , this.tau.clone ( ) , newE ) ;
+    return new Lambda ( newId , this.tau == null ? null : this.tau.clone ( ) ,
+        newE ) ;
   }
 
 
