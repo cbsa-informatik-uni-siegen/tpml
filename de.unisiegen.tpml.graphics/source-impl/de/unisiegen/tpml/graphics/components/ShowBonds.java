@@ -426,23 +426,6 @@ public class ShowBonds
 		ArrayList<String> list = new ArrayList<String>();
 		list.add(pRec.getIdentifiers(0));
 
-		/**
-		 * check if there are duplicate Identifiers
-		 */
-		boolean duplicate = false;
-		for (int i = 1; i < list.size(); i++)
-		{
-
-			if (list.get(i).equals(list.get(0)))
-			{
-				duplicate = true;
-				break;
-			}
-
-		}
-		
-		System.err.println(child.toString());
-		System.err.println(child2.toString());
 
 		/**
 		 * different calls for E1 and E2 with a different list of bounds
