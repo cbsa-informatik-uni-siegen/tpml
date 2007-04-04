@@ -866,6 +866,10 @@ public class PrettyStringRenderer extends AbstractRenderer {
       //Damit die Liste mit jeder neuen Expression neu gesetzt wird, wird in CopoundExpression neu gesetz
       if (toListenForMouse.getMark() && isInList(i, annotationsList) != -1)
         {
+      	//if the char will be highlited first teh font and color will be set to normal
+      	//and later it will be overwritten
+      	gc.setFont(AbstractRenderer.expFont);
+        gc.setColor(AbstractRenderer.expColor);
     
         //get X-Pos of MousePointer
         int xPos = toListenForMouse.getHereIam()[0];
@@ -914,11 +918,7 @@ public class PrettyStringRenderer extends AbstractRenderer {
             gc.setFont(AbstractRenderer.keywordFont);
             gc.setColor(AbstractRenderer.keywordColor);
             //fm = AbstractRenderer.keywordFontMetrics;
-            
-            //Wenn dieser Break durchgeführt wird, dann wird bei "let hallo = lambda tach.tach in hallo"
-            //fälschlicher Weise tach. als Keyword gehilightet, wenn der MouseOver aktiv ist. Eventuell sollte man
-            //sich hier noch mal GEdanken machen, was daran so komisch ist.
-            //break;
+            break;
             
         case IDENTIFIER:
         	gc.setFont(AbstractRenderer.expFont);
