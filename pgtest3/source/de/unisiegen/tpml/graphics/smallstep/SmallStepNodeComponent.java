@@ -228,6 +228,11 @@ public class SmallStepNodeComponent extends JComponent
    * saves the state of the menu in the preferences to restor at the next start
    */
   private Preferences preferences;
+  
+  /**
+   * The Manager for teh RulesMenus
+   */
+  private RulesMenu rm = new RulesMenu();
 
   /**
    * Used internaly. When the underlining is cleared it will be done recursively
@@ -527,222 +532,13 @@ public class SmallStepNodeComponent extends JComponent
 
     menu = new JPopupMenu();
     
-    RulesMenu rm = new RulesMenu();
+    
     menu = rm.getMenu(rules, rules, lang, this, "smallstep" );
 
     //if to many rules we will devide in menu and submenus, otherwise there will be only seperators 
     //between the rules coming from the different languages
     //if (rules.length > TOMANY)
-    if (false)
-    {
-      if (rules.length > 0)
-      {
-
-        //first get the lastUsedRules of the preferences (last state of the programm)
-
-        //get the names from the preferences, compare each with the list of all usable rules, add them
-        preferences = Preferences.userNodeForPackage(SmallStepNodeComponent.class);
-        //backwards to save the ordering
-        for (int i = MAX - 1; i >= 0; i--)
-        {
-          String name = preferences.get("rule" + i, "");
-
-          if (name.equalsIgnoreCase(""))
-          {
-            // do nothing if the rule has no name, the rule dose not exist
-          }
-          else
-          {
-            ProofRule[] allRules = proofModel.getRules();
-            for (ProofRule a : allRules)
-            {
-              //if (new MenuRuleItem(a).getText().equalsIgnoreCase(name))
-            	if (new MenuRuleItem(a).getText().equalsIgnoreCase(name))
-              {
-                //add at the beginning of the list to save the order
-                lastUsedElements.add(0, new MenuRuleItem(a));
-                MenuRuleItem tmp = new MenuRuleItem(a);
-                //the actionlistener ist needed to be able to set the position of a selected 
-                //rule
-                ActionListener al = new ActionListener() {
-                  public void actionPerformed(ActionEvent e)
-                  {
-                    //to be able to revert the changes in the menu if the rule throws an exception
-                  	saveToRevert();
-                  	//if the rule is selected it will be moved to the top of the menu
-                  	moveToTop(((MenuRuleItem) e.getSource()).getText(), MAX);
-                  	//save this state of the menu to the preferences
-                  	save();
-                  }
-                };
-                tmp.addActionListener(al);
-                //inset at the top of the meun (the preferences are walked throu 
-                menu.insert(tmp, 0);
-              }
-            }
-          }
-        }
-
-        //build the submenu
-        int group = rules[0].getGroup();
-        //a seperator ist needed if there are last used elements
-        if (lastUsedElements.size() > 0)
-        {
-          menu.addSeparator();
-        }
-
-        // JMenu Smenu=new JMenu(Messages.getString("Language.0")+ " "
-        // +rules[0].getGroup());
-        JMenu subMenu;
-        //Language lang = proofModel.getLanguage();
-        
-        //the hasmap contains teh names of the languages connected to the group-number
-        HashMap <Number,String>names = getLanguageNames(lang);
-        subMenu = new JMenu(names.get(rules[0].getGroup()));
-        
-        // Jede Regel
-        for (final ProofRule r : rules)
-        {
-          if (((SmallStepProofRule) r).isAxiom() || !advanced)
-          {
-            if (r.getGroup() != group)
-            {
-              if (subMenu != null)
-              {
-                menu.add(subMenu);
-              }              
-              subMenu = new JMenu(names.get(r.getGroup()));
-            }
-            MenuRuleItem tmp = new MenuRuleItem(r);
-            ActionListener al = new ActionListener() {
-              public void actionPerformed(ActionEvent e)
-              {
-              	//look if the list is full
-                if (lastUsedElements.size() < MAX)
-                {
-                  MenuRuleItem lastUsed = new MenuRuleItem(r);
-                  //check if the element is in the list
-                  boolean isIn = false;
-                  for (int i = 0; i < MAX; i++)
-                  {
-                    int schleife = Math.min(MAX, lastUsedElements.size());
-                    for (int j = 0; j < schleife; j++)
-                    {
-                      if (lastUsedElements.get(j).getText().equals(lastUsed.getText()))
-                      {
-                        isIn = true;
-                      }
-                    }
-                  }
-                  ActionListener al = new ActionListener() {
-                    public void actionPerformed(ActionEvent e)
-                    {
-                      //move to to
-                    	moveToTop(((MenuRuleItem) e.getSource()).getText(), MAX);
-                 
-                      //the action must be called manualy if the element is in a submenu
-                      handleMenuActivated((JMenuItem) e.getSource());
-                    }
-                  };
-                  lastUsed.addActionListener(al);
-                  if (!isIn)
-                  {
-                  	saveToRevert();
-                    menu.insert(lastUsed, 0);
-                    lastUsedElements.add(0, lastUsed);
-                  }
-                  //may be we want to move it to top
-                  // else
-                  // {
-                  // menu.remove(lastUsed);
-                  // last10Elements.remove(lastUsed);
-                  // menu.insert(lastUsed,0);
-                  // last10Elements.add(0, lastUsed);
-                  // }
-
-                  //save the preferences to be able to reorganize
-                  save();
-                }
-                //if the list is allrady full the last element must be removed
-                else
-                {
-                  MenuRuleItem lastUsed = new MenuRuleItem(r);
-                  ActionListener al = new ActionListener() {
-                    public void actionPerformed(ActionEvent e)
-                    {
-                      moveToTop(((MenuRuleItem) e.getSource()).getText(), MAX);
-                      handleMenuActivated((JMenuItem) e.getSource());
-                    }
-                  };
-                  lastUsed.addActionListener(al);
-                  boolean isIn = false;
-                  for (int i = 0; i < MAX; i++)
-                  {
-                    //check if it is already in the list
-                    int schleife = Math.min(MAX, lastUsedElements.size());
-                    for (int j = 0; j < schleife; j++)
-                    {
-                      if (lastUsedElements.get(j).getText().equals(lastUsed.getText()))
-                      {
-                        isIn = true;
-                      }
-                    }
-                  }
-                  //if it is not int the list it will be added at the top and the last element will be deleted
-                  if (!isIn)
-                  {
-                  	saveToRevert();
-                    lastUsedElements.add(0, lastUsed);
-                    menu.insert(lastUsed, 0);
-                    lastUsedElements.remove(MAX);
-                    menu.remove(MAX);
-                  }
-                  //maybe we want to set it to the top position if it is allrady in the list
-                  // else
-                  // {
-                  // last10Elements.remove(lastUsed);
-                  // menu.remove(lastUsed);
-                  // last10Elements.add(0, lastUsed );
-                  // menu.insert(lastUsed,0);
-                  // }
-                  //just save it in the preferences to be able to reorganize
-                 save();
-                }
-                
-                //the action must be called manualy if the element is in a submenu
-                handleMenuActivated((JMenuItem) e.getSource());
-
-              }
-            };
-            tmp.addActionListener(al);
-            subMenu.add(tmp);
-            group = r.getGroup();
-          }
-          menu.add(subMenu);
-        }
-      }
-    }
-    //if ther are less than TOMANY rules ther will be no submenus, only seperators
-    else if (false)
-    {
-      if (rules.length > 0)
-      {
-        int group = rules[0].getGroup();
-        for (ProofRule r : rules)
-        {
-          if (((SmallStepProofRule) r).isAxiom() || !advanced)
-          {
-            if (r.getGroup() != group)
-            {
-              menu.addSeparator();
-            }
-            menu.add(new MenuRuleItem(r));
-            group = r.getGroup();
-          }
-        }
-      }
-    }
-
+    
     menu.addSeparator();
     menu.add(new MenuGuessItem());
     menu.add(new MenuGuessTreeItem());
@@ -899,7 +695,7 @@ public class SmallStepNodeComponent extends JComponent
 	 * reverts the changes in the menu
 	 *
 	 */
-	private void revertMenu()
+	private void revertMenuDoof()
 	{
 		//als erstes das Menü von den Einträgen befreien
 		boolean isRuleItem = false;
@@ -1022,7 +818,7 @@ public class SmallStepNodeComponent extends JComponent
       catch (Exception exc)
       {
       	//Die Änderung an dem Menü rückgängig machen
-      	revertMenu();
+      	rm.revertMenu();
       	save();
         this.rules.setWrongRule(rule);
 

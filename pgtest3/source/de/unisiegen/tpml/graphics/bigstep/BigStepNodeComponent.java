@@ -204,6 +204,11 @@ public class BigStepNodeComponent extends JComponent implements TreeNodeComponen
    * saves the state of the menu in the preferences to restor at the next start
    */
   private Preferences preferences;
+  
+  /**
+   * Manages the RulesMenu
+   */
+  private RulesMenu rm = new RulesMenu();
 
   /**
    * 
@@ -265,7 +270,7 @@ public class BigStepNodeComponent extends JComponent implements TreeNodeComponen
     menu = new JPopupMenu();
     
     //TODO test der neuen klasse
-    RulesMenu rm = new RulesMenu();
+    
     menu = rm.getMenu(rules, rules, lang, this, "bigstep" );
 
     //if to many rules we will devide in menu and submenus, otherwise there will be only seperators 
@@ -636,7 +641,7 @@ public class BigStepNodeComponent extends JComponent implements TreeNodeComponen
         this.ruleButton.setToolTipText(null);
       } catch (Throwable e) {
       	//revert the menu
-      	revertMenu();
+      	rm.revertMenu();
         
         // when the node could not be prooven with the selected
         // rule the menu button gets labeled with the given rule 
@@ -1095,7 +1100,7 @@ public class BigStepNodeComponent extends JComponent implements TreeNodeComponen
 	 * reverts the changes in the menu
 	 *
 	 */
-	private void revertMenu()
+	private void revertMenud()
 	{
 		//TODO Testausgabe
 		//System.out.println();

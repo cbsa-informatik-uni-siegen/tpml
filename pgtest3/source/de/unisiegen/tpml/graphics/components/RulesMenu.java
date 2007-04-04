@@ -17,6 +17,12 @@ import de.unisiegen.tpml.graphics.bigstep.BigStepNodeComponent;
 import de.unisiegen.tpml.graphics.smallstep.SmallStepNodeComponent;
 import de.unisiegen.tpml.graphics.tree.TreeNodeComponent;
 
+/**
+ * this Class manages the Rules-Popup-Menu of the different ProofModels
+ *
+ * @author Michael 
+ *
+ */
 public class RulesMenu
 {
 	private JPopupMenu menu = new JPopupMenu();
@@ -60,7 +66,17 @@ public class RulesMenu
         //first get the lastUsedRules of the preferences (last state of the programm)
 
         //get the names from the preferences, compare each with the list of all usable rules, add them
-        preferences = Preferences.userNodeForPackage(BigStepNodeComponent.class);
+        if (callBy.equalsIgnoreCase("bigstep"))
+        {
+        	preferences = Preferences.userNodeForPackage(BigStepNodeComponent.class);        	
+        }
+        else if (callBy.equalsIgnoreCase("smallstep"))
+        {
+        	preferences = Preferences.userNodeForPackage(SmallStepNodeComponent.class);
+        }
+      	
+        
+        
         //backwards to save the ordering
         for (int i = MAX - 1; i >= 0; i--)
         {
@@ -111,6 +127,7 @@ public class RulesMenu
           }
         }
         save();
+        //saveToRevert();
         
 
         //build the submenu
@@ -277,6 +294,9 @@ public class RulesMenu
           menu.add(subMenu);
         }
       }
+      saveToRevert();
+      //TODO Testasgabe....
+      //System.out.println("ist gespeichert");
     }
     //if ther are less than TOMANY rules ther will be no submenus, only seperators
     //with this variable you would also be able to disable the submenufunction
@@ -433,6 +453,8 @@ public class RulesMenu
 	private void saveToRevert()
 	{
 		//als erstes das Menü durchlaufen und in die Liste packen
+		
+		//Clear revertMenu
 		if (revertMenu.size()>0)
 			{
 				revertMenu.clear();
@@ -450,6 +472,8 @@ public class RulesMenu
 		while (isRuleItem)
 		{
 			revertMenu.add(i, (MenuRuleItem)menu.getComponent(i));
+			//		TODO Testasgabe....
+      //System.out.println("Es wird dem ReverMenü hinzugefügt: "+ ((JMenuItem)menu.getComponent(i)).getText() );
 			i++;
 			if (menu.getComponent(i) instanceof MenuRuleItem)
 			{
@@ -470,7 +494,7 @@ public class RulesMenu
 	 * reverts the changes in the menu
 	 *
 	 */
-	private void revertMenu()
+	public void revertMenu()
 	{
 		//TODO Testausgabe
 		//System.out.println();
@@ -502,6 +526,8 @@ public class RulesMenu
 		//Die Einträge wieder hinzufügen
 		for (i=0; i<revertMenu.size(); i++)
 		{
+//		TODO Testasgabe....
+      //System.out.println("Menuitem wird wiederhergestellt: "+revertMenu.get(i).getText());
 			menu.insert(revertMenu.get(i),i);
 		}
 		
