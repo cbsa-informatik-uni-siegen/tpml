@@ -529,19 +529,26 @@ public class SmallStepNodeComponent extends JComponent
 
     ProofRule[] rules = this.proofModel.getRules();
     Language lang = proofModel.getLanguage();
+    
+    if (menu == null)
+    {
+    	menu = new JPopupMenu();
+    	menu = rm.getMenu(rules, rules, lang, this, "smallstep", advanced );
+    	System.out.println("hallo!");
 
-    menu = new JPopupMenu();
+    }
+
+    //menu = new JPopupMenu();
     
     
-    menu = rm.getMenu(rules, rules, lang, this, "smallstep" );
-
+    
     //if to many rules we will devide in menu and submenus, otherwise there will be only seperators 
     //between the rules coming from the different languages
     //if (rules.length > TOMANY)
     
-    menu.addSeparator();
-    menu.add(new MenuGuessItem());
-    menu.add(new MenuGuessTreeItem());
+    //menu.addSeparator();
+    //menu.add(new MenuGuessItem());
+    //menu.add(new MenuGuessTreeItem());
     menu.add(this.translateItem);
 
     this.rules.getMenuButton().setMenu(menu);

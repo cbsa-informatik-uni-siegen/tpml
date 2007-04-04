@@ -13,9 +13,9 @@ import javax.swing.JPopupMenu;
 
 import de.unisiegen.tpml.core.ProofRule;
 import de.unisiegen.tpml.core.languages.Language;
+import de.unisiegen.tpml.core.smallstep.SmallStepProofRule;
 import de.unisiegen.tpml.graphics.bigstep.BigStepNodeComponent;
 import de.unisiegen.tpml.graphics.smallstep.SmallStepNodeComponent;
-import de.unisiegen.tpml.graphics.tree.TreeNodeComponent;
 
 /**
  * this Class manages the Rules-Popup-Menu of the different ProofModels
@@ -25,6 +25,9 @@ import de.unisiegen.tpml.graphics.tree.TreeNodeComponent;
  */
 public class RulesMenu
 {
+	/**
+	 * the menu wich will be returned by the getMEnu-methode
+	 */
 	private JPopupMenu menu = new JPopupMenu();
 	
 	/**
@@ -54,8 +57,21 @@ public class RulesMenu
 	private static final int MAX = 10;
 	
 	//public JPopupMenu getMenu (ProofRule[] rules, ProofRule[] allRules, Language lang, final TreeNodeComponent tnc, final String callBy)
-	public JPopupMenu getMenu (ProofRule[] rules, ProofRule[] allRules, Language lang, final JComponent tnc, final String callBy)
+	/**
+	 * this methode crates the popupmenus containing the rules. If there are more than TOMANY elemnts, submenus for
+	 * every language will be crated.  
+	 *
+	 * @param rules			an array containing the rules
+	 * @param allRules	an array containing all rules 
+	 * @param lang			the language: with this information, the menucrator will find out wich submenus are needed
+	 * @param tnc				the jcomponent from wich the method is called
+	 * @param callBy		a string "samllstep" or "bigstep"
+	 * @return					the menu
+	 */
+	public JPopupMenu getMenu (ProofRule[] rules, ProofRule[] allRules, Language lang, final JComponent tnc, final String callBy, boolean advanced )
 	{
+		double doof = Math.random();
+		System.out.println("Menü wird erstellt "+doof);
 //	if to many rules we will devide in menu and submenus, otherwise there will be only seperators 
     //between the rules coming from the different languages
     if (rules.length > TOMANY)
@@ -119,8 +135,11 @@ public class RulesMenu
 		                  }
 		                };
 		                tmp.addActionListener(al);
-		                //inset at the top of the meun (the preferences are walked throu 
-		                menu.insert(tmp, 0);
+		                //inset at the top of the meun (the preferences are walked throu
+		                if ( (callBy.equalsIgnoreCase("bigstep")) || (callBy.equalsIgnoreCase("smallstep") && (((SmallStepProofRule)a).isAxiom() || !advanced)))
+		                {
+		                	menu.insert(tmp, 0);	
+		                }    
                 	}
               }
             }
@@ -151,6 +170,7 @@ public class RulesMenu
         for (final ProofRule r : rules)
         {
           //if (((SmallStepProofRule) r).isAxiom() || !advanced)
+        	if ( (callBy.equalsIgnoreCase("bigstep")) || (callBy.equalsIgnoreCase("smallstep") && (((SmallStepProofRule)r).isAxiom() || !advanced)))
           {
             if (r.getGroup() != group)
             {
@@ -308,6 +328,7 @@ public class RulesMenu
         for (ProofRule r : rules)
         {
           //if (((SmallStepProofRule) r).isAxiom() || !advanced)
+        	if ( (callBy.equalsIgnoreCase("bigstep")) || (callBy.equalsIgnoreCase("smallstep") && (((SmallStepProofRule)r).isAxiom() || !advanced)))
           {
             if (r.getGroup() != group)
             {
@@ -349,7 +370,7 @@ public class RulesMenu
    * 						the language of wich the group should start
    * @return		the HashMap containing the LanguageName and the group
    */
-  private HashMap getLanguageNames(Language language)
+  private HashMap<Number, String> getLanguageNames(Language language)
 	{
 		HashMap <Number,String> result = new HashMap<Number,String>();
 		while ( language.getId ( ) > 0 )
@@ -536,6 +557,14 @@ public class RulesMenu
 		lastUsedElements.addAll(revertLastUsedElements);
 	}
 	
+	/**
+	 * checks if the elment given by its name is in the given arraylist
+	 * the elements will be compared by its names
+	 *
+	 * @param label	the name of the item
+	 * @param list	the list contaning the item or not
+	 * @return			a boolean
+	 */
 	private boolean isIn ( String label, ArrayList list )
 	{
 		boolean isIn = false;

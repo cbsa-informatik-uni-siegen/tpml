@@ -271,7 +271,7 @@ public class BigStepNodeComponent extends JComponent implements TreeNodeComponen
     
     //TODO test der neuen klasse
     
-    menu = rm.getMenu(rules, rules, lang, this, "bigstep" );
+    menu = rm.getMenu(rules, rules, lang, this, "bigstep", false );
 
     //if to many rules we will devide in menu and submenus, otherwise there will be only seperators 
     //between the rules coming from the different languages
@@ -522,8 +522,8 @@ public class BigStepNodeComponent extends JComponent implements TreeNodeComponen
     //  }
     //}
     menu.addSeparator();
-    menu.add (new MenuGuessItem ());
-    menu.add (new MenuGuessTreeItem ());
+    //menu.add (new MenuGuessItem ());
+    //menu.add (new MenuGuessTreeItem ());
     menu.add (this.menuTranslateItem = new MenuTranslateItem ());
     
     this.ruleButton.setMenu(menu);
