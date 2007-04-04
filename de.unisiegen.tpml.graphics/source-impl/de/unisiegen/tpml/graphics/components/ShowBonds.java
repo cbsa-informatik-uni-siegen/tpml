@@ -2,6 +2,7 @@ package de.unisiegen.tpml.graphics.components;
 
 import java.util.ArrayList;
 import java.util.Enumeration;
+
 import de.unisiegen.tpml.core.expressions.CurriedLet;
 import de.unisiegen.tpml.core.expressions.CurriedLetRec;
 import de.unisiegen.tpml.core.expressions.Expression;
@@ -408,22 +409,22 @@ public class ShowBonds
 		 * in this method two different lists are needed for the two different
 		 * Expressions E1 and E2
 		 */
-		ArrayList<String> list = listWithBounds(a, c);
+		ArrayList<String> list2 = listWithBounds(a, c);
 
 		/**
 		 * list with all childs of the Expression
 		 */
 		ArrayList<Expression> child = new ArrayList<Expression>();
-		child.add(pRec.getE1());
+		child.add(pRec.getE2());
 
 		/**
 		 * list with just the last child of the Expression
 		 */
 		ArrayList<Expression> child2 = new ArrayList<Expression>();
-		child2.add(pRec.getE2());
+		child2.add(pRec.getE1());
 
-		ArrayList<String> list2 = new ArrayList<String>();
-		list2.add(pRec.getIdentifiers(0));
+		ArrayList<String> list = new ArrayList<String>();
+		list.add(pRec.getIdentifiers(0));
 
 		/**
 		 * check if there are duplicate Identifiers
@@ -439,11 +440,14 @@ public class ShowBonds
 			}
 
 		}
+		
+		System.err.println(child.toString());
+		System.err.println(child2.toString());
 
 		/**
 		 * different calls for E1 and E2 with a different list of bounds
 		 */
-		checkRec(child2, pRec, list2, duplicate);
+		checkRec(child2, pRec, list2, true);
 
 		checkRec(child, pRec, list, false);
 
