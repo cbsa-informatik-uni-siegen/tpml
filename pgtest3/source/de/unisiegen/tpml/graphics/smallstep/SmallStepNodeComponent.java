@@ -534,8 +534,6 @@ public class SmallStepNodeComponent extends JComponent
     {
     	menu = new JPopupMenu();
     	menu = rm.getMenu(rules, rules, lang, this, "smallstep", advanced );
-    	System.out.println("hallo!");
-
     }
 
     //menu = new JPopupMenu();
