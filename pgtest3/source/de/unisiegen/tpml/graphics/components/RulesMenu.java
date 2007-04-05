@@ -20,6 +20,7 @@ import de.unisiegen.tpml.graphics.smallstep.SmallStepNodeComponent;
 /**
  * this Class manages the Rules-Popup-Menu of the different ProofModels
  *
+ *
  * @author Michael 
  *
  */
@@ -70,8 +71,6 @@ public class RulesMenu
 	 */
 	public JPopupMenu getMenu (ProofRule[] rules, ProofRule[] allRules, Language lang, final JComponent tnc, final String callBy, boolean advanced )
 	{
-		double doof = Math.random();
-		System.out.println("Menü wird erstellt "+doof);
 //	if to many rules we will devide in menu and submenus, otherwise there will be only seperators 
     //between the rules coming from the different languages
     if (rules.length > TOMANY)
