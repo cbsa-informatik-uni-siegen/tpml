@@ -530,8 +530,9 @@ public class SmallStepNodeComponent extends JComponent
     ProofRule[] rules = this.proofModel.getRules();
     Language lang = proofModel.getLanguage();
     
-    if (menu == null)
+    if (true)
     {
+    	System.out.println("Advanced: "+advanced);
     	menu = new JPopupMenu();
     	menu = rm.getMenu(rules, rules, lang, this, "smallstep", advanced );
     }

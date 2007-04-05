@@ -10,6 +10,7 @@ import javax.swing.JComponent;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
+import javax.swing.JRadioButtonMenuItem;
 
 import de.unisiegen.tpml.core.ProofRule;
 import de.unisiegen.tpml.core.languages.Language;
@@ -53,8 +54,18 @@ public class RulesMenu
    */
   private ArrayList<MenuRuleItem> revertLastUsedElements = new ArrayList <MenuRuleItem>();
   
+  public RulesMenu ()
+  {
+  	revertLastUsedElements = new ArrayList <MenuRuleItem>();
+  	revertMenu = new  ArrayList <MenuRuleItem> ();
+  	lastUsedElements = new ArrayList<MenuRuleItem>();
+  	menu = new JPopupMenu();
+  	
+  	
+  	
+  }
 	
-	private static final int TOMANY = 15;
+	private static int TOMANY = 15;
 	private static final int MAX = 10;
 	
 	//public JPopupMenu getMenu (ProofRule[] rules, ProofRule[] allRules, Language lang, final TreeNodeComponent tnc, final String callBy)
@@ -71,7 +82,57 @@ public class RulesMenu
 	 */
 	public JPopupMenu getMenu (ProofRule[] rules, ProofRule[] allRules, Language lang, final JComponent tnc, final String callBy, boolean advanced )
 	{
-//	if to many rules we will devide in menu and submenus, otherwise there will be only seperators 
+    //first of all load the correct preferences
+		if (callBy.equalsIgnoreCase("bigstep"))
+    {
+    	preferences = Preferences.userNodeForPackage(BigStepNodeComponent.class);        	
+    }
+    else if (callBy.equalsIgnoreCase("smallstep"))
+    {
+    	preferences = Preferences.userNodeForPackage(SmallStepNodeComponent.class);
+    }
+		
+		//clear everything...
+		revertLastUsedElements = new ArrayList <MenuRuleItem>();
+  	revertMenu = new  ArrayList <MenuRuleItem> ();
+  	lastUsedElements = new ArrayList<MenuRuleItem>();
+  	menu = new JPopupMenu();
+  	
+  	//now we want to have the ability to enable or dissable the subgrouping
+  	final JRadioButtonMenuItem test = new JRadioButtonMenuItem ("hallo");
+  	String submenus = preferences.get("submenu", "false");
+  	if (submenus.equals("false"))
+  	{
+  		test.setSelected(false);
+  		TOMANY = Integer.MAX_VALUE;
+  	}
+  	else
+  	{
+  		test.setSelected(true);
+  		TOMANY = 15;
+  	}
+  	ActionListener al1 = new ActionListener() {
+      public void actionPerformed(ActionEvent e)
+      {
+        //if the Radiobutton is pressed, we will find out, if the Option was set or not
+      	if (test.isSelected())
+      	{
+      		TOMANY = Integer.MAX_VALUE;
+      		preferences.put("submenu", "true");
+      	}
+      	else
+      	{
+      		TOMANY = 15;
+      		preferences.put("submenu", "false");
+      	}
+      }
+    };
+    test.addActionListener(al1);
+  	
+    //TODO test teh button
+  	//menu.add(test);
+		
+		//	if to many rules we will devide in menu and submenus, otherwise there will be only seperators 
     //between the rules coming from the different languages
     if (rules.length > TOMANY)
     {
@@ -81,14 +142,7 @@ public class RulesMenu
         //first get the lastUsedRules of the preferences (last state of the programm)
 
         //get the names from the preferences, compare each with the list of all usable rules, add them
-        if (callBy.equalsIgnoreCase("bigstep"))
-        {
-        	preferences = Preferences.userNodeForPackage(BigStepNodeComponent.class);        	
-        }
-        else if (callBy.equalsIgnoreCase("smallstep"))
-        {
-        	preferences = Preferences.userNodeForPackage(SmallStepNodeComponent.class);
-        }
+
       	
         
         
