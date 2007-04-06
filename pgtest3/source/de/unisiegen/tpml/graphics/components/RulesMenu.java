@@ -54,6 +54,10 @@ public class RulesMenu
    */
   private ArrayList<MenuRuleItem> revertLastUsedElements = new ArrayList <MenuRuleItem>();
   
+  /**
+   * the constructor inizailisizes the main elements
+   *
+   */
   public RulesMenu ()
   {
   	revertLastUsedElements = new ArrayList <MenuRuleItem>();
@@ -65,7 +69,17 @@ public class RulesMenu
   	
   }
 	
+	/**
+	 * TOMANY organisizes the number of elements wicht must be in teh rulesmenu
+	 * to let the getMenu methode divide the rules into submenus by setting the 
+	 * value to Integer.MAXVALUE
+	 * until TOMANY rules are in the menu, no submenus will be crated
+	 */
 	private static int TOMANY = 15;
+	
+	/**
+	 * MAX is the count of elemnts the menu will show as the last used
+	 */
 	private static final int MAX = 10;
 	
 	//public JPopupMenu getMenu (ProofRule[] rules, ProofRule[] allRules, Language lang, final TreeNodeComponent tnc, final String callBy)
@@ -78,6 +92,7 @@ public class RulesMenu
 	 * @param lang			the language: with this information, the menucrator will find out wich submenus are needed
 	 * @param tnc				the jcomponent from wich the method is called
 	 * @param callBy		a string "samllstep" or "bigstep"
+	 * @param advanced	needed to decide wich rules must be included in the menu
 	 * @return					the menu
 	 */
 	public JPopupMenu getMenu (ProofRule[] rules, ProofRule[] allRules, Language lang, final JComponent tnc, final String callBy, boolean advanced )
@@ -166,7 +181,6 @@ public class RulesMenu
             	if (new MenuRuleItem(a).getText().equalsIgnoreCase(name))
               {
                 //add at the beginning of the list to save the order
-            		//TODO Baustelle, Menüs gehen nicht
             		boolean isIn=isIn(name, lastUsedElements);
             		
                 if(!isIn) 
@@ -510,7 +524,7 @@ public class RulesMenu
 	 * saves the state of the menu (last 10 elements) to the windows regestry
 	 *
 	 */
-	private void save()
+	public void save()
 	{
 		for (int i = 0; i < lastUsedElements.size(); i++)
     {

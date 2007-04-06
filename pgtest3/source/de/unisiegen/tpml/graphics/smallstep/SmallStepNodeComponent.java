@@ -7,17 +7,11 @@ import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Point;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.prefs.Preferences;
 
 import javax.swing.JComponent;
-import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
@@ -33,7 +27,6 @@ import de.unisiegen.tpml.core.languages.Language;
 import de.unisiegen.tpml.core.languages.LanguageTranslator;
 import de.unisiegen.tpml.core.smallstep.SmallStepProofModel;
 import de.unisiegen.tpml.core.smallstep.SmallStepProofNode;
-import de.unisiegen.tpml.core.smallstep.SmallStepProofRule;
 import de.unisiegen.tpml.graphics.Messages;
 import de.unisiegen.tpml.graphics.components.CompoundExpression;
 import de.unisiegen.tpml.graphics.components.MenuButton;
@@ -196,38 +189,6 @@ public class SmallStepNodeComponent extends JComponent
    * it may contain submenus if to many (set in TOMANY) rules are in the popupmenu
    */
   private JPopupMenu menu;
-  
-  /**
-   * until TOMANY rules are in the menu, no submenus will be crated
-   */
-  private static final int TOMANY = 15;
-  
-  /**
-   * saves the last used elements MAX elements will be saved
-   */
-  private ArrayList<MenuRuleItem> lastUsedElements = new ArrayList<MenuRuleItem>();
-  
-  /**
-   * defines how many rules will be displayed as last used elements
-   */
-  private static final int MAX = 10;
-  
-  /**
-   * saves the state of the menu to be able to revert it. It will be used if the selected
-   * rule throws an exception. By this rules will not be set at the top of the menu if
-   * they are wrong
-   */
-  private ArrayList <MenuRuleItem> revertMenu = new  ArrayList <MenuRuleItem> ();
- 
-  /**
-   * look at revertMenu
-   */
-  private ArrayList<MenuRuleItem> revertLastUsedElements = new ArrayList <MenuRuleItem>();;
-
-  /**
-   * saves the state of the menu in the preferences to restor at the next start
-   */
-  private Preferences preferences;
   
   /**
    * The Manager for teh RulesMenus
@@ -552,190 +513,6 @@ public class SmallStepNodeComponent extends JComponent
     this.rules.getMenuButton().setMenu(menu);
   }
 
-  /**
-   * gets the names of the languages connected to the group of all languages including the given
-   * language and every extended one 
-   *
-   * @param language
-   * 						the language of wich the group should start
-   * @return		the HashMap containing the LanguageName and the group
-   */
-  private HashMap getLanguageNames(Language language)
-	{
-		HashMap <Number,String> result = new HashMap<Number,String>();
-		while ( language.getId ( ) > 0 )
-    {
-      //System.out.println ( language.getId ( ) + " " + language.getName ( ) ) ;
-      result.put(language.getId ( ), language.getName ( ));
-      try
-      {
-        language = ( Language ) language.getClass ( ).getSuperclass ( )
-            .newInstance ( ) ;
-      }
-      catch ( InstantiationException e )
-      {
-        // Do nothing
-      }
-      catch ( IllegalAccessException e )
-      {
-        // Do nothing
-      }
-    }
-    try
-    {
-      language = ( Language ) language.getClass ( ).getSuperclass ( )
-          .newInstance ( ) ;
-    }
-    catch ( InstantiationException e )
-    {
-      // Do nothing
-    }
-    catch ( IllegalAccessException e )
-    {
-      // Do nothing
-    }
-    //System.out.println ( language.getId ( ) + " " + language.getName ( ) ) ;
-    result.put(language.getId ( ), language.getName ( ));
-		
-		return result;
-	}
-
-	/**
-   * Moves the first element of the menu to top, corresponding to the label.
-   * only elements from 0 to max will be recognized.
-   *
-   * @param label
-   * 					the label of the element should be moved
-   * @param max
-   * 					the index of the last element should be moved.
-   */
-  private void moveToTop(String label, int max)
-	{
-		for (int i = 0; i < max; i++)
-    {
-      try
-      {
-        MenuRuleItem kacke = (MenuRuleItem) menu.getComponent(i);
-        MenuRuleItem tmp2 = lastUsedElements.get(i);
-        // vergleiche die Namen, wenn sie übereinstimmen
-        if (kacke.getText().equals(label))
-        {
-          //System.out.println("wieder nach oben!");
-          // nach oeben schieben
-          menu.add(menu.getComponent(i), 0);
-          // die anderen sind uninteressant, wenn wir einen
-          // Treffer hatten
-          //break;
-        }
-        
-        if (tmp2.getText().equals(label))
-        {
-        	lastUsedElements.remove(i);
-        	lastUsedElements.add(0, tmp2);        	
-        } 
-      }
-      catch (ClassCastException ex)
-      {
-        // Sollte eigentlich nie ausgeführt werden...
-      	//System.out.println("NEIN!");
-      }
-      save();
-    }
-	}
-
-	/**
-	 * saves the state of the menu (last 10 elements) to the windows regestry
-	 *
-	 */
-	private void save()
-	{
-		for (int i = 0; i < lastUsedElements.size(); i++)
-    {
-      // System.out.println(last10Elements.get(i).getText());
-      preferences.put("rule" + i, lastUsedElements.get(i).getText());
-    }
-	}
-	
-	/**
-	 * saves the state of the menu to be able to revert changes
-	 *
-	 */
-	private void saveToRevert()
-	{
-		//als erstes das Menü durchlaufen und in die Liste packen
-		if (revertMenu.size()>0)
-			{
-				revertMenu.clear();
-			}
-		
-		boolean isRuleItem = false;
-		
-		int i = 0;
-		
-		if (menu.getComponent(i) instanceof MenuRuleItem)
-		{
-			isRuleItem = true;
-		}
-		
-		while (isRuleItem)
-		{
-			revertMenu.add(i, (MenuRuleItem)menu.getComponent(i));
-			i++;
-			if (menu.getComponent(i) instanceof MenuRuleItem)
-			{
-				isRuleItem = true;
-			}
-			else
-			{
-				isRuleItem = false;
-			}
-		}
-		
-		//jetzt die Last10Elements sichern
-		revertLastUsedElements.clear();
-		revertLastUsedElements.addAll(lastUsedElements);
-	}
-	
-	/**
-	 * reverts the changes in the menu
-	 *
-	 */
-	private void revertMenuDoof()
-	{
-		//als erstes das Menü von den Einträgen befreien
-		boolean isRuleItem = false;
-		
-		int i = 0;
-		
-		if (menu.getComponent(i) instanceof MenuRuleItem)
-		{
-			isRuleItem = true;
-		}
-		
-		while (isRuleItem)
-		{
-			menu.remove(i);
-			if (menu.getComponent(i) instanceof MenuRuleItem)
-			{
-				isRuleItem = true;
-			}
-			else
-			{
-				isRuleItem = false;
-			}
-		}
-		
-		//Die Einträge wieder hinzufügen
-		for (i=0; i<revertMenu.size(); i++)
-		{
-			menu.insert(revertMenu.get(i),i);
-		}
-		
-		//last10Elements zurücksetzen
-		lastUsedElements.clear();
-		lastUsedElements.addAll(revertLastUsedElements);
-	}
-
 	/**
    * Resets the expression of the {@link #currentUnderlineExpression}, if it
    * has changed, and informs the {@link #expression}-Renderer that is has
@@ -824,7 +601,7 @@ public class SmallStepNodeComponent extends JComponent
       {
       	//Die Änderung an dem Menü rückgängig machen
       	rm.revertMenu();
-      	save();
+      	rm.save();
         this.rules.setWrongRule(rule);
 
       }
