@@ -7,13 +7,8 @@ import javax.swing.tree.TreeNode;
 
 import de.unisiegen.tpml.core.AbstractProofNode;
 import de.unisiegen.tpml.core.ProofStep;
-import de.unisiegen.tpml.core.expressions.Expression;
-import de.unisiegen.tpml.core.typechecker.DefaultTypeCheckerProofNode;
 import de.unisiegen.tpml.core.typechecker.DefaultTypeSubstitution;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofRule;
-import de.unisiegen.tpml.core.typechecker.TypeEnvironment;
-import de.unisiegen.tpml.core.types.MonoType;
-import de.unisiegen.tpml.core.util.Environment;
 
 /**
  * @author benjamin
@@ -79,10 +74,24 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements 
 		substitutions = subs;
 	}
 
+  //
+  // Primitives
+  //
+  
+  /**
+   * {@inheritDoc}
+   *
+   * @see de.unisiegen.tpml.core.ProofNode#isProven()
+   */
 	public boolean isProven() {
 		return (getSteps().length > 0);
 	}
 
+  /**
+   * {@inheritDoc}
+   *
+   * @see de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode#isFinished()
+   */
 	  public boolean isFinished() {
 		    if (!isProven()) {
 		      return false;
@@ -96,37 +105,7 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements 
 		  }
 
 	
-	//
-	// Accessors
-	//
-	
-	public ProofStep[] getSteps() {
-		return this.steps;
-	}
 
-
-
-	public void setSteps(ProofStep[] steps) {
-		this.steps = steps;
-	}
-
-	public TypeEquationList getEquations() {
-		return this.equations;
-	}
-
-	public void setEquations(TypeEquationList equations) {
-		this.equations = equations;
-	}
-
-	  public TypeCheckerProofRule getRule() {
-		    ProofStep[] steps = getSteps();
-		    if (steps.length > 0) {
-		      return (TypeCheckerProofRule)steps[0].getRule();
-		    }
-		    else {
-		      return null;
-		    }
-		  }
 
 	  
 	  
@@ -274,17 +253,93 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements 
 	    return builder.toString();
 	  }
 
+		//
+		// Accessors
+		//
+		
+		  /**
+		   * get the proof steps of this node
+		   * @return ProofStep[] steps
+		   */
+		public ProofStep[] getSteps() {
+			return this.steps;
+		}
 
 
+		/**
+		 * 
+		 * set the proof steps of this node
+		 *
+		 * @param steps new proof steps for this node
+		 */
+		public void setSteps(ProofStep[] steps) {
+			this.steps = steps;
+		}
+
+		/**
+		 * 
+		 * get the type equations of this node
+		 *
+		 * @return TypeEquationList equations
+		 */
+		public TypeEquationList getEquations() {
+			return this.equations;
+		}
+
+		/**
+		 * 
+		 * set the type equations of this node
+		 *
+		 * @param equations new type equation list for this node 
+		 */
+		public void setEquations(TypeEquationList equations) {
+			this.equations = equations;
+		}
+
+		/**
+		 * 
+		 * get the rules applied to this node
+		 *
+		 * @return ProofStep[] steps or null
+		 * @see de.unisiegen.tpml.core.typeinference.TypeInferenceProofNode#getRule()
+		 */
+		  public TypeCheckerProofRule getRule() {
+			    ProofStep[] steps = getSteps();
+			    if (steps.length > 0) {
+			      return (TypeCheckerProofRule)steps[0].getRule();
+			    }
+			    else {
+			      return null;
+			    }
+			  }
+
+		  /**
+		   * 
+		   * get the list of type formulas of this node
+		   *
+		   * @return LinkedList<TypeFormula> formula
+		   */
 	public LinkedList<TypeFormula> getFormula() {
 		return this.formula;
 	}
 	
+	/**
+	 * 
+	 * add a new type substitution to the list of substitutions of this node
+	 *
+	 * @param s1 DefaultTypeSubstitution to add to list
+	 */
 	public void addSubstitution(DefaultTypeSubstitution s1)
 	{
 		substitutions.extend(s1);
 	}
 
+	/**
+	 * 
+	 * get the type substitution list of this node
+	 *
+	 * @return TypeSubstitutionList substitutions 
+	 */
 	public TypeSubstitutionList getSubstitutions() {
 		return this.substitutions;
 	}

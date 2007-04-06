@@ -9,10 +9,9 @@ import de.unisiegen.tpml.core.types.MonoType;
 import de.unisiegen.tpml.core.types.UnitType;
 
 /**
- * Represents a type equation. Used primarily for the unification algorithm.
+ * Represents a type equation. Used for the unification algorithm.
  *
- * @author Benedikt Meurer
- * @version $Rev: 838 $
+ * @author Benjamin Mies
  *
  * @see de.unisiegen.tpml.core.typechecker.TypeEquationList
  */
@@ -151,20 +150,31 @@ public final class TypeEquation implements TypeFormula  {
   }
 
 
-
+  /**
+   * 
+   * {@inheritDoc}
+   * @see de.unisiegen.tpml.core.typeinference.TypeFormula#getEnvironment()
+   */
   public DefaultTypeEnvironment getEnvironment() {
 		return new DefaultTypeEnvironment();
 	}
 
 
-
+  /**
+   * 
+   * {@inheritDoc}
+   * @see de.unisiegen.tpml.core.typeinference.TypeFormula#getExpression()
+   */
 	public Expression getExpression() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 
-
+	/**
+	 * 
+	 * {@inheritDoc}
+	 * @see de.unisiegen.tpml.core.typeinference.TypeFormula#getType()
+	 */
 	public MonoType getType() {
 		return new UnitType();
 	}

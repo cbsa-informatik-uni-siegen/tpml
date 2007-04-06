@@ -1,11 +1,15 @@
 package de.unisiegen.tpml.core.typeinference;
 
-import de.unisiegen.tpml.core.expressions.Expression;
-import de.unisiegen.tpml.core.typechecker.DefaultTypeEnvironment;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
 import de.unisiegen.tpml.core.types.MonoType;
-import de.unisiegen.tpml.core.types.UnitType;
 
+/**
+ * A list of <code>TypeEquation</code>s, in the same fashion as a list in OCaml.
+ *
+ * @author Benjamin Mies
+ *
+ * @see de.unisiegen.tpml.core.typeinference.TypeEquation
+ */
 public final class TypeEquationList {
 	  //
 	  // Constants
@@ -140,22 +144,25 @@ public final class TypeEquationList {
 	    return builder.toString();
 	  }
 
-	public DefaultTypeEnvironment getEnvironment() {
-		return new DefaultTypeEnvironment();
-	}
-
-	public Expression getExpression() {
-		return null;
-	}
-
-	public MonoType getType() {
-		return new UnitType();
-	}
-
+	  //
+	  // Accessors
+	  //
+	  
+	  /**
+	   * get the head of the type equation list
+	   * 
+	   * @return TypeEquation first
+	   */
 	public TypeEquation getFirst() {
 		return this.first;
 	}
 
+	/**
+	 * 
+	 * return the tail of the type equation list
+	 *
+	 * @return TypeEquationList remaining
+	 */
 	public TypeEquationList getRemaining() {
 		return this.remaining;
 	}

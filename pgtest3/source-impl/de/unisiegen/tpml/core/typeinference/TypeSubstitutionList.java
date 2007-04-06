@@ -4,8 +4,6 @@
 package de.unisiegen.tpml.core.typeinference;
 
 import de.unisiegen.tpml.core.typechecker.DefaultTypeSubstitution;
-import de.unisiegen.tpml.core.typechecker.TypeEquation;
-import de.unisiegen.tpml.core.typechecker.TypeEquationList;
 
 /**
  * TODO
@@ -19,6 +17,9 @@ public class TypeSubstitutionList {
 	//Constants
 	//
 	
+	/**
+	 * empty type substitution list
+	 */
 		public static final TypeSubstitutionList EMPTY_LIST = new TypeSubstitutionList();
 	
 
@@ -56,10 +57,17 @@ public class TypeSubstitutionList {
 			    this.remaining = pRemaining;
 			  }
 		  
+	
 		  //
 		  // Base Methods
 		  //
 		  
+		  /**
+		   * needed for output and debug
+		   *
+		   * @return string with all type substitutions
+		   * @see java.lang.Object#toString()
+		   */
 		  @Override
 		  public String toString() {
 		    StringBuilder builder = new StringBuilder(128);
@@ -74,12 +82,24 @@ public class TypeSubstitutionList {
 		  }
 
 
+		  /**
+		   * 
+		   * add a new type substitution to this list
+		   *
+		   * @param s DefaultTypeSubstitution to add
+		   * @return extended list of type substitutions
+		   */
 		public TypeSubstitutionList extend(DefaultTypeSubstitution s) {
 			return new TypeSubstitutionList( s, this);
 			
 		}
 
-
+		/**
+		 * 
+		 * get the head of this type substitution list
+		 *
+		 * @return first element of this list
+		 */
 		public DefaultTypeSubstitution getFirst() {
 			return this.first;
 		}

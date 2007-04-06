@@ -12,7 +12,6 @@ import de.unisiegen.tpml.core.ProofNode;
 import de.unisiegen.tpml.core.ProofRule;
 import de.unisiegen.tpml.core.ProofRuleException;
 import de.unisiegen.tpml.core.ProofStep;
-import de.unisiegen.tpml.core.AbstractProofModel.UndoableTreeEdit;
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.expressions.IsEmpty;
 import de.unisiegen.tpml.core.typechecker.DefaultTypeCheckerProofContext;
@@ -20,7 +19,6 @@ import de.unisiegen.tpml.core.typechecker.DefaultTypeEnvironment;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofContext;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofRule;
-import de.unisiegen.tpml.core.typechecker.UnificationException;
 import de.unisiegen.tpml.core.types.MonoType;
 import de.unisiegen.tpml.core.types.TypeVariable;
 

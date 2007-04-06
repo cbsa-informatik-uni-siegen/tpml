@@ -26,7 +26,6 @@ import de.unisiegen.tpml.core.typechecker.UnificationException;
 import de.unisiegen.tpml.core.typeinference.DefaultTypeEquationProofNode;
 import de.unisiegen.tpml.core.typeinference.DefaultTypeInferenceProofContext;
 import de.unisiegen.tpml.core.typeinference.TypeEquation;
-import de.unisiegen.tpml.core.typeinference.TypeEquationList;
 import de.unisiegen.tpml.core.typeinference.UnifyException;
 import de.unisiegen.tpml.core.types.ArrowType;
 import de.unisiegen.tpml.core.types.BooleanType;
@@ -383,21 +382,15 @@ public class L1TypeCheckerProofRuleSet extends AbstractTypeCheckerProofRuleSet {
    * 
    * @param pContext the type inference proof context.
    * @param pNode the type inference proof node.
-   * @throws UnificationException 
+   * @throws UnifyException 
    */
   public void applyUnify(TypeCheckerProofContext pContext, TypeCheckerProofNode pNode) throws UnifyException{
 	  DefaultTypeInferenceProofContext context = (DefaultTypeInferenceProofContext) pContext;
 	  DefaultTypeEquationProofNode node = (DefaultTypeEquationProofNode) pNode ;
 	  TypeEquation eqn = node.getEquation();
-	  /**
-	  // if the TypeEquationList is an empty list, we are ready wiht unification
-	  if (eqns.equals( TypeEquationList.EMPTY_LIST))
-	  {
-		  context.setUnifyReady();
-		  return;
-	  }*/
+
+	  // empty equation is not longer possible so this rule is not implemented
 	  
-	  // otherwise, we examine the first equation in the list
 	  MonoType left = eqn.getLeft();
 	  MonoType right = eqn.getRight();
 	  
@@ -417,7 +410,7 @@ public class L1TypeCheckerProofRuleSet extends AbstractTypeCheckerProofRuleSet {
 			  //eqns= eqns.getRemaining();
 			  //context.setEquations(eqns);
 	        
-	        context.substitute(s, eqn);
+	        context.substitute(s);
 			  context.addSubstitution(s);
 			  context.popEquation();
 			  return;
@@ -511,185 +504,4 @@ public class L1TypeCheckerProofRuleSet extends AbstractTypeCheckerProofRuleSet {
 	  throw new UnifyException(eqn);  
   }
   
-  /**
-public void applyUnify(TypeCheckerProofContext context, TypeCheckerProofNode pNode) throws UnificationException {
-	
-	
-    if (!(pNode instanceof DefaultTypeInferenceProofNode)) {
-    	return ;
-    }
-    DefaultTypeInferenceProofNode node = (DefaultTypeInferenceProofNode) pNode;
-    // an empty type equation list is easy to unify
-    if (node.getEquations() == TypeEquationList.EMPTY_LIST ) {
-    	
-    	//TODO
-    	// i have to implement this (just think about what to do here)
-    	
-    	
-    return ;
-    }
-    
-    // otherwise, we examine the first equation in the list
-    
-    MonoType left = node.getEquations().first.getLeft();
-    MonoType right = node.getEquations().first.getRight();
-    
-    // different actions, depending on the exact types
-    if (left instanceof TypeVariable || right instanceof TypeVariable) {
-      // the left or right side of the equation is a type variable
-      TypeVariable tvar = (TypeVariable)(left instanceof TypeVariable ? left : right);
-      MonoType tau = (left instanceof TypeVariable ? right : left);
-      
-      // either tvar equals tau or tvar is not present in tau
-      if (tvar.equals(tau) || !tau.free().contains(tvar)) {
-    	  
-    	  
-        DefaultTypeSubstitution s1 = new DefaultTypeSubstitution(tvar, tau);
-        node.addSubstitution(s1);
-       
-//	      TODO
-//	      i have to implement this (just think about what to do here)
-        TypeEquationList eqns=node.getEquations().remaining.substitute(s1);
-        node.setType(tau);
-//      TODO
-//      i have to implement this (just think about what to do here)
-        //return s1.compose(s2);
-//      generate new child nodes
-        context.addProofNode(node, node.getEnvironment(), node.getExpression(), node.getType(), eqns);
-        return;
-      }
-      
-      // FALL-THROUGH: Otherwise it's a type error
-    }
-    else if (left instanceof ArrowType && right instanceof ArrowType) {
-      // cast to ArrowType instances (tau and tau')
-      ArrowType taul = (ArrowType)left;
-      ArrowType taur = (ArrowType)right;
-      
-      // we need to check {tau1 = tau1', tau2 = tau2'} as well
-      TypeEquationList eqns = node.getEquations().remaining;
-      eqns = eqns.extend(taul.getTau2(), taur.getTau2());
-      eqns = eqns.extend(taul.getTau1(), taur.getTau1());
-      
-      
-      
-//      TODO
-//      i have to implement this (just think about what to do here)
-          else if (left instanceof TupleType && right instanceof TupleType) {
-      // cast to TupleType instances (tau and tau')
-      TupleType taul = (TupleType)left;
-      TupleType taur = (TupleType)right;
-      
-      // determine the sub types
-      MonoType[] typesl = taul.getTypes();
-      MonoType[] typesr = taur.getTypes();
-      
-      // check if the arities match
-      if (typesl.length == typesr.length) {
-        // check all sub types
-        TypeEquationList eqns = node.getEquations().remaining;
-        for (int n = 0; n < typesl.length; ++n) {
-          eqns = eqns.extend(typesl[n], typesr[n]);
-        }
-        
-        // try to unify the new list
-//	      TODO
-//	      i have to implement this (just think about what to do here)
-//      generate new child nodes
-        context.addProofNode(node, node.getEnvironment(), node.getExpression(), node.getType(), eqns);
-        
-        
-        
-        return;
-      }
-//    generate new child nodes
-      context.addProofNode(node, node.getEnvironment(), node.getExpression(), node.getType(), eqns);
-      
-      return ;
-    }
-    else if (left instanceof TupleType && right instanceof TupleType) {
-      // cast to TupleType instances (tau and tau')
-      TupleType taul = (TupleType)left;
-      TupleType taur = (TupleType)right;
-      
-      // determine the sub types
-      MonoType[] typesl = taul.getTypes();
-      MonoType[] typesr = taur.getTypes();
-      
-      // check if the arities match
-      if (typesl.length == typesr.length) {
-        // check all sub types
-        TypeEquationList eqns = node.getEquations().remaining;
-        for (int n = 0; n < typesl.length; ++n) {
-          eqns = eqns.extend(typesl[n], typesr[n]);
-        }
-        
-        // try to unify the new list
-//	      TODO
-//	      i have to implement this (just think about what to do here)
-//      generate new child nodes
-        context.addProofNode(node, node.getEnvironment(), node.getExpression(), node.getType(), eqns);
-        
-        
-        
-        return;
-      }
-      
-      // FALL-THROUGH: Otherwise it's a type error
-    }
-    else if (left instanceof RefType && right instanceof RefType) {
-      // cast to RefType instances (tau and tau')
-      RefType taul = (RefType)left;
-      RefType taur = (RefType)right;
-
-      // we need to check {tau = tau'} as well
-      TypeEquationList eqns = node.getEquations().remaining;
-      eqns = eqns.extend(taul.getTau(), taur.getTau());
-      
-      // try to unify the new list
-//      TODO
-//      i have to implement this (just think about what to do here)
-      
-//    generate new child nodes
-      context.addProofNode(node, node.getEnvironment(), node.getExpression(), node.getType(), eqns);
-      
-      return;
-    }
-    else if (left instanceof ListType && right instanceof ListType) {
-      // cast to ListType instances (tau and tau')
-      ListType taul = (ListType)left;
-      ListType taur = (ListType)right;
-      
-      // we need to check {tau = tau'} as well
-      TypeEquationList eqns = node.getEquations().remaining;
-      eqns = eqns.extend(taul.getTau(), taur.getTau());
-      
-      // try to unify the new list
-//      TODO
-//      i have to implement this (just think about what to do here)
-      
-//    generate new child nodes
-      context.addProofNode(node, node.getEnvironment(), node.getExpression(), node.getType(), eqns);
-      
-      return;
-    }
-    else if (left.equals(right)) {
-      // the types equal, just unify the remaining equations then
-//	      TODO
-//	      i have to implement this (just think about what to do here)
-    	
-//    	 generate new child nodes
-        context.addProofNode(node, node.getEnvironment(), node.getExpression(), node.getType(), node.getEquations().remaining );
-        
-      return ;
-    }
-  
-    // (left = right) cannot be unified
-    throw new UnificationException(node.getEquations().first);
-  }
-
-
-
-*/
-
 }

@@ -31,7 +31,6 @@ import de.unisiegen.tpml.core.typechecker.TypeCheckerProofRule;
 import de.unisiegen.tpml.core.typechecker.TypeEnvironment;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
 import de.unisiegen.tpml.core.typechecker.TypeUtilities;
-import de.unisiegen.tpml.core.typechecker.UnificationException;
 import de.unisiegen.tpml.core.types.ArrowType;
 import de.unisiegen.tpml.core.types.BooleanType;
 import de.unisiegen.tpml.core.types.IntegerType;
@@ -160,7 +159,13 @@ public class DefaultTypeInferenceProofContext implements TypeCheckerProofContext
     equations=equations.extend(left, right);
 	}
 	
-	public void substitute(TypeSubstitution s, TypeEquation eqn){
+	/**
+	 * 
+	 * substitute the type equation list
+	 *
+	 * @param s type substitution for this type equation list
+	 */
+	public void substitute(TypeSubstitution s){
 		equations=equations.substitute(s);
 		}
 		
@@ -579,6 +584,11 @@ public class DefaultTypeInferenceProofContext implements TypeCheckerProofContext
 	public void setEquations(TypeEquationList equations) {
 		this.equations = equations;
 	}
+	/**
+	 * 
+	 * remove first type equation from list
+	 *
+	 */
 	public void popEquation(){
 		this.equations= this.equations.getRemaining();
 	}
