@@ -8,13 +8,20 @@ import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.StringReader;
 import java.util.ArrayList;
 
 import javax.swing.JComponent;
 
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.interpreters.Store;
+import de.unisiegen.tpml.core.languages.Language;
+import de.unisiegen.tpml.core.languages.LanguageFactory;
 import de.unisiegen.tpml.core.typechecker.TypeEnvironment;
+import de.unisiegen.tpml.core.typeinference.TypeInferenceProofModel;
+import de.unisiegen.tpml.core.typeinference.TypeInferenceProofModelTest;
 //import de.unisiegen.tpml.core.util.Debug;
 import de.unisiegen.tpml.core.util.Environment;
 import de.unisiegen.tpml.graphics.outline.listener.OutlineMouseListener;
@@ -332,6 +339,40 @@ public class CompoundExpression < S , E > extends JComponent
       this.expression = expression ;
       
       // CHANGE BENJAMIN
+      
+      
+      /**
+      
+      // TypeInferenceTest
+       * 
+      try {
+        // parse the program (using L4)
+        LanguageFactory factory = LanguageFactory.newInstance();
+        Language language = factory.getLanguageById("l4");
+        TypeInferenceProofModel model = language.newTypeInferenceProofModel(expression);
+        
+        
+        // evaluate the resulting small step expression
+        TypeInferenceProofModelTest window = new TypeInferenceProofModelTest(model);
+        //window.typechecker= language.newTypeCheckerProofModel(expression);
+        window.addWindowListener(new WindowAdapter() {
+          @Override
+          public void windowClosing(WindowEvent e) {
+           // System.exit(0);
+          }
+        });
+        window.setVisible(true);
+      }
+      catch (Exception e) {
+        e.printStackTrace();
+      }
+    
+      
+      
+      */
+      
+      
+      
      
       bonds.setHoleExpression ( this.expression ) ;
       bonds.check ( this.expression ) ;

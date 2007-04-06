@@ -72,7 +72,7 @@ public final class TypeInferenceProofModelTest extends JFrame {
     setSize(630, 580);
     setTitle("TypeInferenceProofModel Test");
     
- 
+    
 
     // setup the tree panel
     JPanel treePanel = new JPanel(new BorderLayout());
@@ -308,7 +308,7 @@ public final class TypeInferenceProofModelTest extends JFrame {
       
       // evaluate the resulting small step expression
       TypeInferenceProofModelTest window = new TypeInferenceProofModelTest(model);
-      window.typechecker= language.newTypeCheckerProofModel(expression);
+      //window.typechecker= language.newTypeCheckerProofModel(expression);
       window.addWindowListener(new WindowAdapter() {
         @Override
         public void windowClosing(WindowEvent e) {

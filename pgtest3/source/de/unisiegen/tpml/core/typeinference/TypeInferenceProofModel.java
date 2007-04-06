@@ -427,5 +427,10 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 		// add to the undo history
 		super.addUndoableTreeEdit(edit);
 	}
+	
+	// Just for testing
+	public void setRoot(AbstractProofNode node){
+		this.root=node;
+	}
 
 }
