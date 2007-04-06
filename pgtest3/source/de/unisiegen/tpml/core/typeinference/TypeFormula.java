@@ -14,17 +14,17 @@ import de.unisiegen.tpml.core.types.MonoType;
  *
  */
 public interface TypeFormula {
-	
+
 	//
 	// Attributes
 	//
-	
+
 	/**
 	 * get the Expression of this type formula
 	 * @return Expression
 	 */
 	public Expression getExpression();
-	
+
 	/**
 	 * 
 	 * get the environment of this type formula
@@ -32,7 +32,7 @@ public interface TypeFormula {
 	 * @return DefaultTypeEnvironment
 	 */
 	public DefaultTypeEnvironment getEnvironment();
-	
+
 	/**
 	 * 
 	 * get the type of this type formula
@@ -40,7 +40,7 @@ public interface TypeFormula {
 	 * @return MonoType
 	 */
 	public MonoType getType();
-	
+
 	/**
 	 * 
 	 * return a string with all attributes of this formula
@@ -48,7 +48,7 @@ public interface TypeFormula {
 	 * @return String
 	 */
 	public String toString();
-	
+
 	/**
 	 * 
 	 * substitute equation or type of this type formula
@@ -56,6 +56,6 @@ public interface TypeFormula {
 	 * @param s TypeSubstitution
 	 * @return
 	 */
-	public TypeEquation substitute( TypeSubstitution s);
-	
+	public TypeEquation substitute(TypeSubstitution s);
+
 }

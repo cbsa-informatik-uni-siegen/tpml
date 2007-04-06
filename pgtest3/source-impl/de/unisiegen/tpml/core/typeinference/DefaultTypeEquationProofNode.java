@@ -16,26 +16,27 @@ import de.unisiegen.tpml.core.types.MonoType;
  * @author Benjamin Mies
  *
  */
-public class DefaultTypeEquationProofNode extends DefaultTypeCheckerProofNode implements TypeCheckerProofNode {
+public class DefaultTypeEquationProofNode extends DefaultTypeCheckerProofNode
+		implements TypeCheckerProofNode {
 
 	//
 	// Attributes
 	//
-	
+
 	/**
 	 * list of collected type substitutions initialised with empty list
 	 */
 	private TypeSubstitutionList substitutions = TypeSubstitutionList.EMPTY_LIST;
-	
+
 	/**
 	 * list of collected type equations
 	 */
 	private TypeEquation equation;
-	
+
 	//
 	// Constructors
 	//
-	
+
 	/**
 	 * Allocates a new <code>DefaultTypeEquationProofNode</code> 
 	 * 
@@ -45,46 +46,35 @@ public class DefaultTypeEquationProofNode extends DefaultTypeCheckerProofNode im
 	 * @param eqns equations of this node
 	 * 
 	 */
-	public DefaultTypeEquationProofNode(TypeEnvironment environment, Expression expression, MonoType type, TypeEquation eqns) {
+	public DefaultTypeEquationProofNode(TypeEnvironment environment,
+			Expression expression, MonoType type, TypeEquation eqns) {
+
 		super(environment, expression, type);
 		equation = eqns;
 	}
-	
+
 	/**
 	 * 
 	 * extend a new substitution to the list of substitutions for this node
 	 *
 	 * @param s1 type substitution to add to list
 	 */
-	public void addSubstitution(DefaultTypeSubstitution s1)
-	{
+	public void addSubstitution(DefaultTypeSubstitution s1) {
+
 		substitutions.extend(s1);
 	}
-	
-	
+
 	//
 	// Accessors
 	//
-/**
- * get the type equation list of this node
- * @return equations TypeEquationList equations
- */
-	public TypeEquation getEquation() {
-		return this.equation;
-	}
 
 	/**
-	 * 
-	 * set a new type equation list
-	 *
-	 * @param equations type equation list to set as equations for this node
-	
-	public void setEquations(TypeEquationList equations) {
-		this.equations = equations;
-	}
+	 * get the type equation list of this node
+	 * @return equations TypeEquationList equations
 	 */
+	public TypeEquation getEquation() {
 
-
-	
+		return this.equation;
+	}
 
 }

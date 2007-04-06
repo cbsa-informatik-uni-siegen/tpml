@@ -15,43 +15,58 @@ import de.unisiegen.tpml.core.types.MonoType;
  *
  */
 public class TypeJudgement implements TypeFormula {
-	
+
 	//
 	// Attributes
 	//
-	
+
 	/**
 	 * the type environment of this type judgement
 	 */
 	private DefaultTypeEnvironment environment;
-	
+
 	/**
 	 * the expression of this type judgement
 	 */
 	private Expression expression;
-	
+
 	/**
 	 * the type of this type judgement
 	 */
 	private MonoType type;
-	
+
 	//
 	// Constructor
 	//
-	
+
 	/**
 	 * Allocates a new <code>Typejudgemnent</code> with the specified <code>environment</code>.
-   * <code>expression</code> and <code>type</code>
+	 * <code>expression</code> and <code>type</code>
 	 * @param env DefaultTypeEnvironment
 	 * @param expr Expression
 	 * @param t MonoType
 	 */
-	public TypeJudgement (DefaultTypeEnvironment env, Expression expr, MonoType t) {
+	public TypeJudgement(DefaultTypeEnvironment env, Expression expr, MonoType t) {
+
 		environment = env;
 		expression = expr;
 		type = t;
 	}
-	
+
+	/**
+	 * 
+	 * substitude the type equation of this type judgement
+	 *
+	 * @param s TypeSubstitution to substitute
+	 * @return null (just needed for TypeEquation)
+	 * @see de.unisiegen.tpml.core.typeinference.TypeFormula#substitute(de.unisiegen.tpml.core.typechecker.TypeSubstitution)
+	 */
+	public TypeEquation substitute(TypeSubstitution s) {
+
+		this.type.substitute(s);
+		return null;
+	}
+
 	//
 	// Accessors
 	//
@@ -62,6 +77,7 @@ public class TypeJudgement implements TypeFormula {
 	 * @return DefaultTypeEnvironment environment
 	 */
 	public DefaultTypeEnvironment getEnvironment() {
+
 		return this.environment;
 	}
 
@@ -72,6 +88,7 @@ public class TypeJudgement implements TypeFormula {
 	 * @param environment new type environment for this type judement
 	 */
 	public void setEnvironment(DefaultTypeEnvironment environment) {
+
 		this.environment = environment;
 	}
 
@@ -82,6 +99,7 @@ public class TypeJudgement implements TypeFormula {
 	 * @return type MonoType of this judgement
 	 */
 	public MonoType getType() {
+
 		return this.type;
 	}
 
@@ -92,6 +110,7 @@ public class TypeJudgement implements TypeFormula {
 	 * @param type new MonoType for this judgement
 	 */
 	public void setType(MonoType type) {
+
 		this.type = type;
 	}
 
@@ -103,44 +122,32 @@ public class TypeJudgement implements TypeFormula {
 	 * @see de.unisiegen.tpml.core.typeinference.TypeFormula#getExpression()
 	 */
 	public Expression getExpression() {
+
 		return this.expression;
 	}
 
-	
-	  //
-	  // Base methods
-	  //
-	  
-	  /**
-	   * Returns the string representation of the equations contained in this list. This method is mainly useful
-	   * for debugging purposes.
-	   * 
-	   * @return the string representation.
-	   * 
-	   * @see TypeEquation#toString()
-	   * @see java.lang.Object#toString()
-	   */
-	  @Override
-	  public String toString() {
-	    StringBuilder builder = new StringBuilder(128);
-	    builder.append(environment);
-	    builder.append(" \u22b3 ");
-	    builder.append(expression);
-	    builder.append(" :: ");
-	    builder.append(type);
-	    return builder.toString();
-	  }
+	//
+	// Base methods
+	//
 
-	  /**
-	   * 
-	   * substitude the type equation of this type judgement
-	   *
-	   * @param s TypeSubstitution to substitute
-	   * @return null (just needed for TypeEquation)
-	   * @see de.unisiegen.tpml.core.typeinference.TypeFormula#substitute(de.unisiegen.tpml.core.typechecker.TypeSubstitution)
-	   */
-		public TypeEquation substitute(TypeSubstitution s) {
-			this.type.substitute(s);
-			return null;
-		}
+	/**
+	 * Returns the string representation of the equations contained in this list. This method is mainly useful
+	 * for debugging purposes.
+	 * 
+	 * @return the string representation.
+	 * 
+	 * @see TypeEquation#toString()
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+
+		StringBuilder builder = new StringBuilder(128);
+		builder.append(environment);
+		builder.append(" \u22b3 ");
+		builder.append(expression);
+		builder.append(" :: ");
+		builder.append(type);
+		return builder.toString();
+	}
 }
