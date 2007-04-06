@@ -116,7 +116,8 @@ public class RulesMenu
   	//now we want to have the ability to enable or dissable the subgrouping
   	final JRadioButtonMenuItem test = new JRadioButtonMenuItem ("hallo");
   	String submenus = preferences.get("submenu", "false");
-  	if (submenus.equals("false"))
+  	//TODO hier nur, damit die Menüs immer an sind, false_ durch false ersetzen...
+  	if (submenus.equals("false_"))
   	{
   		test.setSelected(false);
   		TOMANY = Integer.MAX_VALUE;
