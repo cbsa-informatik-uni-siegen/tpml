@@ -71,13 +71,18 @@ public class DefaultTypeInferenceProofContext implements
 	 * 
 	 * @see typeinference.TypeEquation
 	 */
-	private TypeEquationList equations;
+	private LinkedList<TypeEquation> equations = new LinkedList<TypeEquation>();
 
 	/**
 	 * The list of type substitutions that has been collected for this context
 	 * 
 	 */
 	private TypeSubstitutionList substitutions = TypeSubstitutionList.EMPTY_LIST;
+
+	/**
+	 * The newest added Substitution
+	 */
+	private DefaultTypeSubstitution substitution;
 
 	/**
 	 * The type inference proof model with which this proof context is associated.
@@ -127,7 +132,7 @@ public class DefaultTypeInferenceProofContext implements
 		}
 		this.model = pModel;
 		this.node = pNode;
-		this.equations = pNode.getEquations();
+		//this.equations = pNode.getEquations();
 
 		// increment the model index
 		final int index = model.getIndex();
@@ -159,18 +164,9 @@ public class DefaultTypeInferenceProofContext implements
 	 */
 	public void addEquation(MonoType left, MonoType right) {
 
-		equations = equations.extend(left, right);
-	}
-
-	/**
-	 * 
-	 * substitute the type equation list
-	 *
-	 * @param s type substitution for this type equation list
-	 */
-	public void substitute(TypeSubstitution s) {
-
-		equations = equations.substitute(s);
+		TypeEquation eqn = new TypeEquation(left, right);
+		//equations = equations.extend(left, right);
+		equations.add(eqn);
 	}
 
 	/**
@@ -344,7 +340,6 @@ public class DefaultTypeInferenceProofContext implements
 
 		//dirty workaround, just think about
 		if (formula.getExpression() != null) {
-
 			typeNode = new DefaultTypeCheckerProofNode(formula.getEnvironment(),
 					formula.getExpression(), formula.getType());
 
@@ -374,11 +369,14 @@ public class DefaultTypeInferenceProofContext implements
 		// Create a new List of formulas
 		LinkedList<TypeFormula> formulas = new LinkedList<TypeFormula>();
 
+		LinkedList<TypeFormula> oldFormulas = node.getFormula();
+
 		// add evtl. existing formulas from the parent node
-		for (TypeFormula form : node.getFormula()) {
-			if (form instanceof TypeJudgement) if ((!formula.equals(form))) {
-				formulas.add(form);
-			}
+		for (TypeFormula form : oldFormulas) {
+			if (form instanceof TypeJudgement)
+				if ((!formula.equals(form))) {
+					formulas.add(form);
+				}
 		}
 
 		// add the nodes of the temporary existing typenode
@@ -390,17 +388,27 @@ public class DefaultTypeInferenceProofContext implements
 			formulas.add(judgement);
 		}
 
-		TypeEquationList eqns = equations;
-		while (equations != TypeEquationList.EMPTY_LIST) {
+		// add the new collected equations to the formula list
+		for (int i = equations.size() - 1; i > -1; i--) {
+			if (substitution != null)
+				formulas.add(equations.get(i).substitute(substitution));
+			formulas.add(equations.get(i));
+		}
 
-			formulas.add(equations.getFirst());
-			equations = equations.getRemaining();
-
+		// add the equations of the old node to the formula list
+		for (int i = 0; i < oldFormulas.size(); i++) {
+			TypeFormula form = oldFormulas.get(i);
+			if (form instanceof TypeEquation)
+				if ((!formula.equals(form))) {
+					if (substitution != null)
+						formulas.add(form.substitute(substitution));
+					else formulas.add(form);
+				}
 		}
 
 		// create the new node
-		this.model.contextAddProofNode(this, node, formulas, eqns, substitutions,
-				rule, formula);
+		this.model.contextAddProofNode(this, node, formulas, substitutions, rule,
+				formula);
 	}
 
 	/**
@@ -520,26 +528,6 @@ public class DefaultTypeInferenceProofContext implements
 	//
 
 	/**
-	 * Set the TypeEquationList for this context
-	 *
-	 * @param equations the new list of type equations
-	 */
-	public void setEquations(TypeEquationList equations) {
-
-		this.equations = equations;
-	}
-
-	/**
-	 * 
-	 * remove first type equation from list
-	 *
-	 */
-	public void popEquation() {
-
-		this.equations = this.equations.getRemaining();
-	}
-
-	/**
 	 * 
 	 * Set the TypeSubstitutions for this context
 	 *
@@ -548,5 +536,14 @@ public class DefaultTypeInferenceProofContext implements
 	public void setSubstitutions(TypeSubstitutionList substitutions) {
 
 		this.substitutions = substitutions;
+	}
+
+	/**
+	 * Set the newes type substitution
+	 * @param substitution DefaultTypeSubstitution
+	 */
+	public void setSubstitution(DefaultTypeSubstitution substitution) {
+
+		this.substitution = substitution;
 	}
 }

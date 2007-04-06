@@ -81,7 +81,7 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 
 		super(new DefaultTypeInferenceProofNode(new TypeJudgement(
 				new DefaultTypeEnvironment(), expression, new TypeVariable(1, 0)),
-				TypeEquationList.EMPTY_LIST, TypeSubstitutionList.EMPTY_LIST), ruleSet);
+				TypeSubstitutionList.EMPTY_LIST), ruleSet);
 	}
 
 	//
@@ -158,7 +158,31 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 		}
 		// try to apply the rule to the specified node
 		applyInternal((TypeCheckerProofRule) rule,
-				(DefaultTypeInferenceProofNode) node, null);
+				(DefaultTypeInferenceProofNode) node, null, null);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * added an the formula to apply the rule
+	 *
+	 * @see de.unisiegen.tpml.core.AbstractProofModel#prove(de.unisiegen.tpml.core.ProofRule, de.unisiegen.tpml.core.ProofNode)
+	 */
+	public void prove(ProofRule rule, ProofNode node, TypeFormula formula)
+			throws ProofRuleException {
+
+		if (!this.ruleSet.contains(rule)) {
+			throw new IllegalArgumentException("The rule is invalid for the model");
+		}
+		if (!this.root.isNodeRelated(node)) {
+			throw new IllegalArgumentException("The node is invalid for the model");
+		}
+		if (node.getRules().length > 0) {
+			throw new IllegalArgumentException("The node is already completed");
+		}
+		// try to apply the rule to the specified node
+		applyInternal((TypeCheckerProofRule) rule,
+				(DefaultTypeInferenceProofNode) node, null, null);
 	}
 
 	//
@@ -181,7 +205,7 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 	 * @see #prove(ProofRule, ProofNode)
 	 */
 	private void applyInternal(TypeCheckerProofRule rule,
-			DefaultTypeInferenceProofNode node, MonoType type)
+			DefaultTypeInferenceProofNode node, MonoType type, TypeFormula form)
 			throws ProofRuleException {
 
 		// allocate a new TypeCheckerContext
@@ -190,63 +214,70 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 
 		DefaultTypeInferenceProofNode typeNode = (DefaultTypeInferenceProofNode) node;
 		Exception e = null;
-		// Try actual Rule with all formulas of the actual node
-		for (TypeFormula formula : typeNode.getFormula()) {
+
+		if (form != null) {
 			try {
-				// // try to apply the rule to the specified node
+				// try to apply the rule to the specified node
 				context.setSubstitutions(node.getSubstitutions());
-				context.apply(rule, formula, type);
-
-				/**
-				 // check if we are finished
-				 final DefaultTypeInferenceProofNode root = (DefaultTypeInferenceProofNode) getRoot();
-				 context.addRedoAction(new Runnable() {public void run() {setFinished(root.isFinished());}});
-				 context.addUndoAction(new Runnable() {public void run() {setFinished(false);}});
-
-				 // determine the redo and undo actions from the context
-				 final Runnable redoActions = context.getRedoActions();
-				 final Runnable undoActions = context.getUndoActions();
-
-				 // record the undo edit action for this proof step
-				 addUndoableTreeEdit(new UndoableTreeEdit() 
-				 {	public void redo() {redoActions.run();}
-				 public void undo() {undoActions.run();}
-				 });*/
+				context.apply(rule, form, type);
 				return;
-			}
-			catch (ProofRuleException e1) {
-				// revert the actions performed so far
-				context.revert();
-				// rembember first exception to rethrow
-				if (e == null) e = e1;
-				continue;
 			}
 			catch (UnifyException e1) {
 				// revert the actions performed so far
 				context.revert();
-				// rembember first exception to rethrow
-				if (e == null) e = e1;
-				continue;
+				// re-throw the exception as proof rule exception 
+				throw new ProofRuleException(node, rule, e);
 			}
-			catch (RuntimeException e1) {
-				// revert the actions performed so far
-				context.revert();
-				// rembember first exception to rethrow
-				if (e == null) e = e1;
-				continue;
-			}
-		}
-		if (e instanceof ProofRuleException) {
-			// rethrow exception
-			throw (ProofRuleException) e;
-		}
-		else if (e instanceof RuntimeException) {
-			// rethrow exception
-			throw (RuntimeException) e;
+
 		}
 		else {
-			// re-throw the exception as proof rule exception 
-			throw new ProofRuleException(node, rule, e);
+
+			// Try actual Rule with all formulas of the actual node
+			for (TypeFormula formula : typeNode.getFormula()) {
+				try {
+					// try to apply the rule to the specified node
+					context.setSubstitutions(node.getSubstitutions());
+					context.apply(rule, formula, type);
+
+					return;
+				}
+				catch (ProofRuleException e1) {
+					// revert the actions performed so far
+					context.revert();
+					// rembember first exception to rethrow
+					if (e == null)
+						e = e1;
+					continue;
+				}
+				catch (UnifyException e1) {
+					// revert the actions performed so far
+					context.revert();
+					// rembember first exception to rethrow
+					if (e == null)
+						e = e1;
+					continue;
+				}
+				catch (RuntimeException e1) {
+					// revert the actions performed so far
+					context.revert();
+					// rembember first exception to rethrow
+					if (e == null)
+						e = e1;
+					continue;
+				}
+			}
+			if (e instanceof ProofRuleException) {
+				// rethrow exception
+				throw (ProofRuleException) e;
+			}
+			else if (e instanceof RuntimeException) {
+				// rethrow exception
+				throw (RuntimeException) e;
+			}
+			else {
+				// re-throw the exception as proof rule exception 
+				throw new ProofRuleException(node, rule, e);
+			}
 		}
 	}
 
@@ -284,7 +315,7 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 		for (ProofRule rule : this.ruleSet.getRules()) {
 			try {
 				// try to apply the rule to the specified node
-				applyInternal((TypeCheckerProofRule) rule, node, type);
+				applyInternal((TypeCheckerProofRule) rule, node, type, null);
 				// remember that the user cheated
 				setCheating(true);
 
@@ -323,32 +354,11 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 	 */
 	void contextAddProofNode(final DefaultTypeInferenceProofContext context,
 			final DefaultTypeInferenceProofNode pNode,
-			final LinkedList<TypeFormula> formulas, final TypeEquationList equations,
-			final TypeSubstitutionList subs, final TypeCheckerProofRule rule,
-			final TypeFormula formula) {
-
-		/**	context.addRedoAction(new Runnable() {
-		 public void run() {
-		 pNode.add(new DefaultTypeInferenceProofNode(formulas,
-		 equations, subs));
-		 nodesWereInserted(pNode, new int[] { pNode.getIndex(pNode
-		 .getFirstChild()) });
-		 }
-		 });
-
-		 context.addUndoAction(new Runnable() {
-		 public void run() {
-		 DefaultTypeInferenceProofNode child = (DefaultTypeInferenceProofNode) pNode
-		 .getFirstChild();
-		 int index = pNode.getIndex(child);
-		 pNode.remove(index);
-		 nodesWereRemoved(pNode, new int[] { index },
-		 new Object[] { child });
-		 }
-		 });*/
+			final LinkedList<TypeFormula> formulas, final TypeSubstitutionList subs,
+			final TypeCheckerProofRule rule, final TypeFormula formula) {
 
 		final DefaultTypeInferenceProofNode child = new DefaultTypeInferenceProofNode(
-				formulas, equations, subs);
+				formulas, subs);
 		final ProofStep[] oldSteps = pNode.getSteps();
 
 		// add redo and undo options
@@ -395,22 +405,8 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 			final DefaultTypeInferenceProofNode node,
 			final TypeCheckerProofRule rule, TypeFormula formula) {
 
-		/**
-		 final ProofStep[] oldSteps = node.getSteps();
-		 context.addRedoAction(new Runnable() {
-		 public void run() {*/
 		node.setSteps(new ProofStep[] { new ProofStep(new IsEmpty(), rule) });
 		nodeChanged(node);
-		/**	}
-		 });
-
-		 context.addUndoAction(new Runnable() {
-		 public void run() {
-		 node.setSteps(oldSteps);
-		 nodeChanged(node);
-		 }
-		 });*/
-
 	}
 
 	//

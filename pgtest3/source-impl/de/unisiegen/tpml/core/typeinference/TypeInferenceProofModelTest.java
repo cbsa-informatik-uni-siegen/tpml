@@ -271,10 +271,10 @@ public final class TypeInferenceProofModelTest extends JFrame {
   
   private static ProofNode nextNode(TypeInferenceProofModel model) {
 	  
-	    LinkedList<DefaultTypeInferenceProofNode> nodes = new LinkedList<DefaultTypeInferenceProofNode>();
-	    nodes.add((DefaultTypeInferenceProofNode)model.getRoot());
+	    LinkedList<TypeInferenceProofNode> nodes = new LinkedList<TypeInferenceProofNode>();
+	    nodes.add((TypeInferenceProofNode)model.getRoot());
 	    while (!nodes.isEmpty()) {
-	      DefaultTypeInferenceProofNode node = nodes.poll();
+	      TypeInferenceProofNode node = nodes.poll();
 	      if (node.getSteps().length == 0) {
 	        return node;
 	      }

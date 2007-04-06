@@ -2,6 +2,7 @@ package de.unisiegen.tpml.core.typeinference;
 
 import javax.swing.tree.TreeNode;
 import de.unisiegen.tpml.core.ProofNode;
+import de.unisiegen.tpml.core.ProofStep;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofRule;
 
 /**
@@ -56,6 +57,12 @@ public interface TypeInferenceProofNode extends ProofNode {
 	 * @see de.unisiegen.tpml.core.ProofNode#getParent()
 	 */
 	public TypeInferenceProofNode getParent();
+	
+	/**
+	 * get the proof steps of this node
+	 * @return ProofStep[] steps
+	 */
+	public ProofStep[] getSteps();
 
 	//
 	// Tree Queries

@@ -24,11 +24,6 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
 	private LinkedList<TypeFormula> formula = new LinkedList<TypeFormula>();
 
 	/**
-	 * list of the collected type equations of this node
-	 */
-	private TypeEquationList equations;
-
-	/**
 	 * list of the collected type substitutions of this node
 	 */
 	private TypeSubstitutionList substitutions; // = TypeSubstitutionList.EMPTY_LIST;
@@ -50,9 +45,9 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
 	 * 
 	 */
 	public DefaultTypeInferenceProofNode(TypeJudgement judgement,
-			TypeEquationList eqns, TypeSubstitutionList subs) {
+			TypeSubstitutionList subs) {
 
-		equations = eqns;
+		//equations = eqns;
 		formula.add(judgement);
 		substitutions = subs;
 
@@ -67,9 +62,9 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
 	 * 
 	 */
 	public DefaultTypeInferenceProofNode(LinkedList<TypeFormula> judgement,
-			TypeEquationList eqns, TypeSubstitutionList subs) {
+			TypeSubstitutionList subs) {
 
-		equations = eqns;
+		//equations = eqns;
 		formula = judgement;
 		substitutions = subs;
 	}
@@ -235,10 +230,12 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
 		builder.append("<html>");
 		builder.append(substitutions);
 		builder.append("<br>");
-		if (this.parent != null) builder.append("=    ");
+		if (this.parent != null)
+			builder.append("=    ");
 		builder.append("solve");
 		for (int i = 0; i < formula.size(); i++) {
-			if (i != 0) builder.append("<br>");
+			if (i != 0)
+				builder.append("<br>");
 			builder.append(formula.get(i));
 
 		}
@@ -271,28 +268,6 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
 	public void setSteps(ProofStep[] steps) {
 
 		this.steps = steps;
-	}
-
-	/**
-	 * 
-	 * get the type equations of this node
-	 *
-	 * @return TypeEquationList equations
-	 */
-	public TypeEquationList getEquations() {
-
-		return this.equations;
-	}
-
-	/**
-	 * 
-	 * set the type equations of this node
-	 *
-	 * @param equations new type equation list for this node 
-	 */
-	public void setEquations(TypeEquationList equations) {
-
-		this.equations = equations;
 	}
 
 	/**
