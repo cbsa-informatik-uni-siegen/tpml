@@ -8,6 +8,7 @@ import de.unisiegen.tpml.core.expressions.Application ;
 import de.unisiegen.tpml.core.expressions.CurriedLet ;
 import de.unisiegen.tpml.core.expressions.CurriedLetRec ;
 import de.unisiegen.tpml.core.expressions.Expression ;
+import de.unisiegen.tpml.core.expressions.Identifier ;
 import de.unisiegen.tpml.core.expressions.InfixOperation ;
 import de.unisiegen.tpml.core.expressions.Lambda ;
 import de.unisiegen.tpml.core.expressions.Let ;
@@ -317,10 +318,10 @@ public class L2CBNBigStepProofRuleSet extends L2BigStepProofRuleSet
       CurriedLet curriedLet = ( CurriedLet ) e ;
       Expression e1 = curriedLet.getE1 ( ) ;
       // generate the appropriate lambda abstractions
-      String [ ] identifiers = curriedLet.getIdentifiers ( ) ;
+      Identifier [ ] identifiers = curriedLet.getIdentifiers ( ) ;
       for ( int n = identifiers.length - 1 ; n > 0 ; -- n )
       {
-        e1 = new Lambda ( identifiers [ n ] , null , e1 ) ;
+        e1 = new Lambda ( identifiers [ n ].clone ( ) , null , e1 ) ;
       }
       // add the recursion for letrec
       if ( e instanceof CurriedLetRec )
@@ -329,7 +330,7 @@ public class L2CBNBigStepProofRuleSet extends L2BigStepProofRuleSet
       }
       // add the proof node
       context.addProofNode ( node , curriedLet.getE2 ( ).substitute (
-          curriedLet.getIdentifiers ( ) [ 0 ] , e1 ) ) ;
+          curriedLet.getIdentifiers ( 0 ) , e1 ) ) ;
     }
     else
     {

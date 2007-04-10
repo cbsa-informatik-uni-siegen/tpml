@@ -1,8 +1,8 @@
 package de.unisiegen.tpml.core.util ;
 
 
-import java.util.Set ;
-import java.util.TreeSet ;
+import java.util.ArrayList ;
+import de.unisiegen.tpml.core.expressions.Identifier ;
 
 
 /**
@@ -15,7 +15,7 @@ public class BoundRenaming
   /**
    * TODO
    */
-  private TreeSet < String > free ;
+  private ArrayList < Identifier > negativeList ;
 
 
   /**
@@ -23,7 +23,7 @@ public class BoundRenaming
    */
   public BoundRenaming ( )
   {
-    this.free = new TreeSet < String > ( ) ;
+    this.negativeList = new ArrayList < Identifier > ( ) ;
   }
 
 
@@ -32,9 +32,9 @@ public class BoundRenaming
    * 
    * @param pIdentifiers TODO
    */
-  public void add ( Set < String > pIdentifiers )
+  public void add ( ArrayList < Identifier > pIdentifiers )
   {
-    this.free.addAll ( pIdentifiers ) ;
+    this.negativeList.addAll ( pIdentifiers ) ;
   }
 
 
@@ -43,9 +43,9 @@ public class BoundRenaming
    * 
    * @param pId TODO
    */
-  public void add ( String pId )
+  public void add ( Identifier pId )
   {
-    this.free.add ( pId ) ;
+    this.negativeList.add ( pId ) ;
   }
 
 
@@ -54,7 +54,7 @@ public class BoundRenaming
    */
   public void clear ( )
   {
-    this.free.clear ( ) ;
+    this.negativeList.clear ( ) ;
   }
 
 
@@ -64,9 +64,9 @@ public class BoundRenaming
    * @param pIdentifiers TODO
    * @return TODO
    */
-  public boolean contains ( Set < String > pIdentifiers )
+  public boolean contains ( ArrayList < Identifier > pIdentifiers )
   {
-    return this.free.containsAll ( pIdentifiers ) ;
+    return this.negativeList.containsAll ( pIdentifiers ) ;
   }
 
 
@@ -76,9 +76,9 @@ public class BoundRenaming
    * @param pId TODO
    * @return TODO
    */
-  public boolean contains ( String pId )
+  public boolean contains ( Identifier pId )
   {
-    return this.free.contains ( pId ) ;
+    return this.negativeList.contains ( pId ) ;
   }
 
 
@@ -88,12 +88,12 @@ public class BoundRenaming
    * @param pOldIdentifier TODO
    * @return TODO
    */
-  public String newIdentifier ( String pOldIdentifier )
+  public Identifier newId ( Identifier pOldIdentifier )
   {
-    String newIdentifier = pOldIdentifier ;
-    while ( this.free.contains ( newIdentifier ) )
+    Identifier newIdentifier = new Identifier ( pOldIdentifier.getName ( ) ) ;
+    while ( this.negativeList.contains ( newIdentifier ) )
     {
-      newIdentifier = newIdentifier + "'" ; //$NON-NLS-1$
+      newIdentifier = new Identifier ( newIdentifier.getName ( ) + "'" ) ; //$NON-NLS-1$
     }
     return newIdentifier ;
   }
@@ -104,9 +104,12 @@ public class BoundRenaming
    * 
    * @param pIdentifiers TODO
    */
-  public void remove ( Set < String > pIdentifiers )
+  public void remove ( ArrayList < Identifier > pIdentifiers )
   {
-    this.free.removeAll ( pIdentifiers ) ;
+    while ( this.negativeList.removeAll ( pIdentifiers ) )
+    {
+      // Remove all Identifiers with the same name
+    }
   }
 
 
@@ -115,8 +118,11 @@ public class BoundRenaming
    * 
    * @param pId TODO
    */
-  public void remove ( String pId )
+  public void remove ( Identifier pId )
   {
-    this.free.remove ( pId ) ;
+    while ( this.negativeList.remove ( pId ) )
+    {
+      // Remove all Identifiers with the same name
+    }
   }
 }

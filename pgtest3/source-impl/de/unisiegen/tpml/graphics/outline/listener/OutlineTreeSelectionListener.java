@@ -11,7 +11,6 @@ import de.unisiegen.tpml.core.expressions.Identifier ;
 import de.unisiegen.tpml.core.expressions.Method ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation ;
 import de.unisiegen.tpml.graphics.outline.DefaultOutline ;
-import de.unisiegen.tpml.graphics.outline.binding.OutlineBinding ;
 import de.unisiegen.tpml.graphics.outline.node.OutlineNode ;
 
 
@@ -44,33 +43,6 @@ public final class OutlineTreeSelectionListener implements
 
 
   /**
-   * Repaints the given node and all its children.
-   */
-  private final void repaint ( )
-  {
-    OutlineNode rootNode = ( OutlineNode ) this.defaultOutline.getOutlineUI ( )
-        .getTreeModel ( ).getRoot ( ) ;
-    repaint ( rootNode ) ;
-  }
-
-
-  /**
-   * Repaints the given node and all its children.
-   * 
-   * @param pOutlineNode The node, which should be repainted.
-   */
-  private final void repaint ( OutlineNode pOutlineNode )
-  {
-    this.defaultOutline.getOutlineUI ( ).getTreeModel ( ).nodeChanged (
-        pOutlineNode ) ;
-    for ( int i = 0 ; i < pOutlineNode.getChildCount ( ) ; i ++ )
-    {
-      repaint ( ( OutlineNode ) pOutlineNode.getChildAt ( i ) ) ;
-    }
-  }
-
-
-  /**
    * Resets the root node and all its children.
    */
   public final void reset ( )
@@ -94,69 +66,11 @@ public final class OutlineTreeSelectionListener implements
   {
     pOutlineNode.setReplaceInThisNode ( false ) ;
     pOutlineNode.setOutlineBinding ( null ) ;
-    pOutlineNode.setBoundedStart ( OutlineNode.NO_BINDING ) ;
-    pOutlineNode.setBoundedEnd ( OutlineNode.NO_BINDING ) ;
-    pOutlineNode.resetCaption ( ) ;
+    pOutlineNode.setBoundedIdentifier ( null ) ;
+    pOutlineNode.updateCaption ( ) ;
     for ( int i = 0 ; i < pOutlineNode.getChildCount ( ) ; i ++ )
     {
       reset ( ( OutlineNode ) pOutlineNode.getChildAt ( i ) ) ;
-    }
-  }
-
-
-  /**
-   * Sets the {@link OutlineBinding} to all children of the node.
-   * 
-   * @param pOutlineNode The parent node.
-   * @param pOutlineBinding The {@link OutlineBinding}.
-   */
-  private final void setBindingToChildren ( OutlineNode pOutlineNode ,
-      OutlineBinding pOutlineBinding )
-  {
-    for ( int i = 0 ; i < pOutlineNode.getChildCount ( ) ; i ++ )
-    {
-      OutlineNode child = ( OutlineNode ) pOutlineNode.getChildAt ( i ) ;
-      if ( child.isExpression ( ) )
-      {
-        child.setOutlineBinding ( pOutlineBinding ) ;
-        child.updateCaption ( ) ;
-        this.defaultOutline.getOutlineUI ( ).getTreeModel ( ).nodeChanged (
-            child ) ;
-      }
-      setBindingToChildren ( child , pOutlineBinding ) ;
-    }
-  }
-
-
-  /**
-   * Sets the given {@link OutlineBinding} to all nodes.
-   * 
-   * @param pOutlineBinding The {@link OutlineBinding}.
-   */
-  @ SuppressWarnings ( "unused" )
-  private final void setOutlineBinding ( OutlineBinding pOutlineBinding )
-  {
-    OutlineNode rootNode = ( OutlineNode ) this.defaultOutline.getOutlineUI ( )
-        .getTreeModel ( ).getRoot ( ) ;
-    setOutlineBinding ( pOutlineBinding , rootNode ) ;
-  }
-
-
-  /**
-   * Sets the given {@link OutlineBinding} to the given node.
-   * 
-   * @param pOutlineBinding The {@link OutlineBinding}.
-   * @param pOutlineNode The node.
-   */
-  private final void setOutlineBinding ( OutlineBinding pOutlineBinding ,
-      OutlineNode pOutlineNode )
-  {
-    pOutlineNode.setOutlineBinding ( pOutlineBinding ) ;
-    pOutlineNode.resetCaption ( ) ;
-    for ( int i = 0 ; i < pOutlineNode.getChildCount ( ) ; i ++ )
-    {
-      setOutlineBinding ( pOutlineBinding , ( OutlineNode ) pOutlineNode
-          .getChildAt ( i ) ) ;
     }
   }
 
@@ -175,11 +89,6 @@ public final class OutlineTreeSelectionListener implements
       return ;
     }
     reset ( rootNode ) ;
-    if ( pTreePath == null )
-    {
-      repaint ( ) ;
-      return ;
-    }
     ArrayList < OutlineNode > list = new ArrayList < OutlineNode > ( ) ;
     Object [ ] path = pTreePath.getPath ( ) ;
     for ( int i = 0 ; i < pTreePath.getPathCount ( ) ; i ++ )
@@ -187,20 +96,20 @@ public final class OutlineTreeSelectionListener implements
       list.add ( ( OutlineNode ) path [ i ] ) ;
     }
     OutlineNode selectedNode = list.get ( list.size ( ) - 1 ) ;
-    // Type
-    if ( selectedNode.isType ( ) )
+    // Expression
+    if ( selectedNode.isExpression ( ) )
     {
-      updateType ( list , pTreePath ) ;
+      updateExpression ( list , pTreePath ) ;
     }
-    // Identifier
+    // Expression
     else if ( selectedNode.isIdentifier ( ) )
     {
       updateIdentifier ( list , pTreePath ) ;
     }
-    // Expression
-    else if ( selectedNode.isExpression ( ) )
+    // Type
+    else if ( selectedNode.isType ( ) )
     {
-      updateExpression ( list , pTreePath ) ;
+      updateType ( list , pTreePath ) ;
     }
     this.defaultOutline.updateBreaks ( ) ;
   }
@@ -221,7 +130,7 @@ public final class OutlineTreeSelectionListener implements
       if ( ( selectedNode.getPrettyPrintable ( ) instanceof Identifier )
           && ( i < pList.size ( ) - 1 )
           && ( ( ( Identifier ) selectedNode.getPrettyPrintable ( ) )
-              .boundedExpression ( ) != null ) )
+              .getBoundedToExpression ( ) != null ) )
       {
         try
         {
@@ -242,21 +151,22 @@ public final class OutlineTreeSelectionListener implements
               OutlineNode currentOutlineNode = ( OutlineNode ) nodeRow
                   .getChildAt ( j ) ;
               if ( currentOutlineNode.getPrettyPrintable ( ) == identifier
-                  .boundedExpression ( ) )
+                  .getBoundedToExpression ( ) )
               {
                 /*
                  * Highlight the first identifier
                  */
-                currentOutlineNode
-                    .setBoundedStart ( identifier.boundedStart ( ) ) ;
-                currentOutlineNode.setBoundedEnd ( identifier.boundedEnd ( ) ) ;
+                currentOutlineNode.setBoundedIdentifier ( identifier
+                    .getBoundedToIdentifier ( ) ) ;
                 currentOutlineNode.updateCaption ( ) ;
                 /*
                  * Highlight the Identifier in the first child
                  */
                 OutlineNode nodeId = ( OutlineNode ) currentOutlineNode
-                    .getChildAt ( identifier.boundedIdentifierIndex ( ) ) ;
-                nodeId.enableBindingColor ( ) ;
+                    .getChildAt ( 0 ) ;
+                nodeId.setBoundedIdentifier ( identifier
+                    .getBoundedToIdentifier ( ) ) ;
+                nodeId.updateCaption ( ) ;
                 break ;
               }
             }
@@ -268,30 +178,27 @@ public final class OutlineTreeSelectionListener implements
              * Identifier index.
              */
             if ( pList.get ( i ).getPrettyPrintable ( ) == identifier
-                .boundedExpression ( ) )
+                .getBoundedToExpression ( ) )
             {
-              OutlineNode nodeIdentifier = ( OutlineNode ) ( ( OutlineNode ) pTreePath
-                  .getPath ( ) [ i ] ).getChildAt ( identifier
-                  .boundedIdentifierIndex ( ) ) ;
-              nodeIdentifier.enableBindingColor ( ) ;
-              // Highlight the other bounded Identifiers. Disabled because of
-              // performance.
-              // pList.get ( i ).setOutlineBinding (
-              // nodeIdentifier.getOutlineBinding ( ) ) ;
+              for ( int j = 0 ; j < pList.get ( i ).getChildCount ( ) ; j ++ )
+              {
+                OutlineNode child = ( OutlineNode ) pList.get ( i ).getChildAt (
+                    j ) ;
+                if ( child.getPrettyPrintable ( ) == identifier
+                    .getBoundedToIdentifier ( ) )
+                {
+                  child.setBoundedIdentifier ( identifier
+                      .getBoundedToIdentifier ( ) ) ;
+                  child.updateCaption ( ) ;
+                  break ;
+                }
+              }
             }
             /*
              * Highlight the Identifier in the node.
              */
-            PrettyAnnotation prettyAnnotation = pList.get ( i )
-                .getPrettyPrintable ( ).toPrettyString ( )
-                .getAnnotationForPrintable ( identifier.boundedExpression ( ) ) ;
-            pList.get ( i ).setBoundedStart (
-                prettyAnnotation.getStartOffset ( )
-                    + identifier.boundedStart ( ) ) ;
-            pList.get ( i )
-                .setBoundedEnd (
-                    prettyAnnotation.getStartOffset ( )
-                        + identifier.boundedEnd ( ) ) ;
+            pList.get ( i ).setBoundedIdentifier (
+                identifier.getBoundedToIdentifier ( ) ) ;
           }
         }
         catch ( IllegalArgumentException e )
@@ -340,32 +247,23 @@ public final class OutlineTreeSelectionListener implements
       TreePath pTreePath )
   {
     OutlineNode selectedNode = pList.get ( pList.size ( ) - 1 ) ;
-    OutlineNode secondLast = pList.get ( pList.size ( ) - 2 ) ;
-    /*
-     * Highlight the selected Identifier
-     */
-    selectedNode.enableSelectionColor ( ) ;
+    OutlineNode nodeAttribute = pList.get ( pList.size ( ) - 2 ) ;
     /*
      * Highlight the bounded Identifiers of an Attribute in the other childs of
      * the parent row.
      */
-    if ( secondLast.getPrettyPrintable ( ) instanceof Attribute )
+    if ( nodeAttribute.getPrettyPrintable ( ) instanceof Attribute )
     {
-      OutlineNode nodeRow = ( OutlineNode ) pTreePath.getPath ( ) [ pTreePath
-          .getPathCount ( ) - 3 ] ;
-      OutlineNode nodeAttribute = ( OutlineNode ) pTreePath.getPath ( ) [ pTreePath
-          .getPathCount ( ) - 2 ] ;
+      OutlineNode nodeRow = pList.get ( pList.size ( ) - 3 ) ;
       for ( int i = nodeRow.getIndex ( nodeAttribute ) + 1 ; i < nodeRow
           .getChildCount ( ) ; i ++ )
       {
         OutlineNode currentRowChild = ( OutlineNode ) nodeRow.getChildAt ( i ) ;
-        setBindingToChildren ( currentRowChild , selectedNode
-            .getOutlineBinding ( ) ) ;
         currentRowChild.setOutlineBinding ( selectedNode.getOutlineBinding ( ) ) ;
         currentRowChild.updateCaption ( ) ;
       }
     }
-    for ( int i = 0 ; i < pList.size ( ) - 1 ; i ++ )
+    for ( int i = 0 ; i < pList.size ( ) ; i ++ )
     {
       /*
        * Sets the new binding in higher nodes
@@ -378,26 +276,17 @@ public final class OutlineTreeSelectionListener implements
       /*
        * Update the caption of the node
        */
-      if ( pList.get ( i ).getPrettyPrintable ( ) == null )
-      {
-        continue ;
-      }
       PrettyAnnotation prettyAnnotation = pList.get ( i ).getPrettyPrintable ( )
           .toPrettyString ( ).getAnnotationForPrintable (
-              secondLast.getPrettyPrintable ( ) ) ;
-      pList.get ( i ).updateCaption (
-          prettyAnnotation.getStartOffset ( ) + selectedNode.getStartIndex ( ) ,
-          prettyAnnotation.getStartOffset ( ) + selectedNode.getEndIndex ( ) ) ;
+              selectedNode.getPrettyPrintable ( ) ) ;
+      pList.get ( i ).updateCaption ( prettyAnnotation.getStartOffset ( ) ,
+          prettyAnnotation.getEndOffset ( ) ) ;
       /*
        * Node has changed and can be repainted
        */
       this.defaultOutline.getOutlineUI ( ).getTreeModel ( ).nodeChanged (
           ( ( OutlineNode ) pTreePath.getPath ( ) [ i ] ) ) ;
     }
-    // Highlight the bounded Identifiers in the hole tree. Disabled because of
-    // performance.
-    // setOutlineBinding ( selectedNode.getOutlineBinding ( ) ) ;
-    // repaint();
   }
 
 
@@ -430,7 +319,7 @@ public final class OutlineTreeSelectionListener implements
       /*
        * Update the caption of the node
        */
-      if ( pList.get ( i ).getPrettyPrintable ( ) == null )
+      if ( pList.get ( i ).isIdentifier ( ) )
       {
         continue ;
       }

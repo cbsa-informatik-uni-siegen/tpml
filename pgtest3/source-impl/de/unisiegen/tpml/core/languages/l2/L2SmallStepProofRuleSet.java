@@ -3,6 +3,7 @@ package de.unisiegen.tpml.core.languages.l2 ;
 
 import de.unisiegen.tpml.core.expressions.CurriedLetRec ;
 import de.unisiegen.tpml.core.expressions.Expression ;
+import de.unisiegen.tpml.core.expressions.Identifier ;
 import de.unisiegen.tpml.core.expressions.Lambda ;
 import de.unisiegen.tpml.core.expressions.Let ;
 import de.unisiegen.tpml.core.expressions.LetRec ;
@@ -17,14 +18,12 @@ import de.unisiegen.tpml.core.types.MonoType ;
  * Small step proof rules for the <code>L2</code> language.
  * 
  * @author Benedikt Meurer
+ * @author Christian Fehler
  * @version $Rev:1132 $
  * @see de.unisiegen.tpml.core.languages.l1.L1SmallStepProofRuleSet
  */
 public class L2SmallStepProofRuleSet extends L1SmallStepProofRuleSet
 {
-  //
-  // Constructor
-  //
   /**
    * Allocates a new <code>L2SmallStepProofRuleSet</code> for the specified
    * <code>language</code>, which must be either <tt>L2</tt> or a derived
@@ -39,13 +38,10 @@ public class L2SmallStepProofRuleSet extends L1SmallStepProofRuleSet
   {
     super ( language ) ;
     // register small step rules
-    register ( L2Language.L2 , "UNFOLD" , true ) ;
+    register ( L2Language.L2 , "UNFOLD" , true ) ; //$NON-NLS-1$
   }
 
 
-  //
-  // The (UNFOLD) rule
-  //
   /**
    * Evaluates the recursive curried let expression <code>curriedLetRec</code>
    * using <code>context</code>.
@@ -58,23 +54,25 @@ public class L2SmallStepProofRuleSet extends L1SmallStepProofRuleSet
       CurriedLetRec curriedLetRec )
   {
     // determine the sub expressions and the identifiers
-    String [ ] identifiers = curriedLetRec.getIdentifiers ( ) ;
+    Identifier [ ] identifiers = curriedLetRec.getIdentifiers ( ) ;
     MonoType [ ] types = curriedLetRec.getTypes ( ) ;
     Expression e1 = curriedLetRec.getE1 ( ) ;
     Expression e2 = curriedLetRec.getE2 ( ) ;
     // prepend the lambda abstractions to e1
     for ( int n = identifiers.length - 1 ; n >= 1 ; -- n )
     {
-      e1 = new Lambda ( identifiers [ n ] , types [ n ] , e1 ) ;
+      e1 = new Lambda ( identifiers [ n ].clone ( ) ,
+          types [ n ] == null ? null : types [ n ].clone ( ) , e1 ) ;
     }
     // we can perform (UNFOLD), which includes a (LET-EVAL)
-    context.addProofStep ( getRuleByName ( "LET-EVAL" ) , curriedLetRec ) ;
-    context.addProofStep ( getRuleByName ( "UNFOLD" ) , curriedLetRec ) ;
+    context.addProofStep ( getRuleByName ( "LET-EVAL" ) , curriedLetRec ) ; //$NON-NLS-1$
+    context.addProofStep ( getRuleByName ( "UNFOLD" ) , curriedLetRec ) ; //$NON-NLS-1$
     // perform the substitution on e1
     e1 = e1.substitute ( identifiers [ 0 ] , new Recursion ( identifiers [ 0 ] ,
-        types [ 0 ] , e1 ) ) ;
+        types [ 0 ] == null ? null : types [ 0 ].clone ( ) , e1 ) ) ;
     // generate the new (LET) expression
-    return new Let ( identifiers [ 0 ] , types [ 0 ] , e1 , e2 ) ;
+    return new Let ( identifiers [ 0 ].clone ( ) , types [ 0 ] == null ? null
+        : types [ 0 ].clone ( ) , e1 , e2.clone ( ) ) ;
   }
 
 
@@ -92,14 +90,17 @@ public class L2SmallStepProofRuleSet extends L1SmallStepProofRuleSet
     // determine the expressions and the identifier
     Expression e1 = letRec.getE1 ( ) ;
     Expression e2 = letRec.getE2 ( ) ;
-    String id = letRec.getId ( ) ;
     // we perform (UNFOLD), which includes a (LET-EVAL)
-    context.addProofStep ( getRuleByName ( "LET-EVAL" ) , letRec ) ;
-    context.addProofStep ( getRuleByName ( "UNFOLD" ) , letRec ) ;
+    context.addProofStep ( getRuleByName ( "LET-EVAL" ) , letRec ) ; //$NON-NLS-1$
+    context.addProofStep ( getRuleByName ( "UNFOLD" ) , letRec ) ; //$NON-NLS-1$
     // perform the substitution on e1
-    e1 = e1.substitute ( id , new Recursion ( id , letRec.getTau ( ) , e1 ) ) ;
+    e1 = e1.substitute ( letRec.getId ( ) , new Recursion ( letRec.getId ( )
+        .clone ( ) , letRec.getTau ( ) == null ? null : letRec.getTau ( )
+        .clone ( ) , e1.clone ( ) ) ) ;
     // generate the new (LET) expression
-    return new Let ( id , letRec.getTau ( ) , e1 , e2 ) ;
+    return new Let ( letRec.getId ( ).clone ( ) ,
+        letRec.getTau ( ) == null ? null : letRec.getTau ( ).clone ( ) , e1 ,
+        e2.clone ( ) ) ;
   }
 
 
@@ -116,10 +117,9 @@ public class L2SmallStepProofRuleSet extends L1SmallStepProofRuleSet
   {
     // determine the expression and the identifier
     Expression e = recursion.getE ( ) ;
-    String id = recursion.getId ( ) ;
     // we can perform (UNFOLD)
-    context.addProofStep ( getRuleByName ( "UNFOLD" ) , recursion ) ;
+    context.addProofStep ( getRuleByName ( "UNFOLD" ) , recursion ) ; //$NON-NLS-1$
     // perform the substitution
-    return e.substitute ( id , recursion ) ;
+    return e.substitute ( recursion.getId ( ) , recursion ) ;
   }
 }

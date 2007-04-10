@@ -1,8 +1,7 @@
 package de.unisiegen.tpml.core.expressions ;
 
 
-import java.util.Set ;
-import java.util.TreeSet ;
+import java.util.ArrayList ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
@@ -27,7 +26,7 @@ public class Let extends Expression
    * 
    * @see #getId()
    */
-  protected String id ;
+  protected Identifier id ;
 
 
   /**
@@ -67,7 +66,7 @@ public class Let extends Expression
    * @throws NullPointerException if <code>id</code>, <code>e1</code> or
    *           <code>e2</code> is <code>null</code>.
    */
-  public Let ( String pId , MonoType pTau , Expression pExpression1 ,
+  public Let ( Identifier pId , MonoType pTau , Expression pExpression1 ,
       Expression pExpression2 )
   {
     if ( pId == null )
@@ -97,8 +96,8 @@ public class Let extends Expression
   @ Override
   public Let clone ( )
   {
-    return new Let ( this.id , this.tau == null ? null : this.tau.clone ( ) ,
-        this.e1.clone ( ) , this.e2.clone ( ) ) ;
+    return new Let ( this.id.clone ( ) , this.tau == null ? null : this.tau
+        .clone ( ) , this.e1.clone ( ) , this.e2.clone ( ) ) ;
   }
 
 
@@ -128,16 +127,47 @@ public class Let extends Expression
    * @see Expression#free()
    */
   @ Override
-  public TreeSet < String > free ( )
+  public ArrayList < Identifier > free ( )
   {
     if ( this.free == null )
     {
-      this.free = new TreeSet < String > ( ) ;
+      this.free = new ArrayList < Identifier > ( ) ;
       this.free.addAll ( this.e2.free ( ) ) ;
-      this.free.remove ( this.id ) ;
+      while ( this.free.remove ( this.id ) )
+      {
+        // Remove all Identifiers with the same name
+      }
       this.free.addAll ( this.e1.free ( ) ) ;
     }
     return this.free ;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @return TODO
+   */
+  @ Override
+  public ArrayList < Identifier > getBoundedIdentifiers ( )
+  {
+    if ( this.boundedIdentifiers == null )
+    {
+      this.boundedIdentifiers = new ArrayList < ArrayList < Identifier >> ( ) ;
+      ArrayList < Identifier > boundedIdList = new ArrayList < Identifier > ( ) ;
+      ArrayList < Identifier > boundedE2 = this.e2.free ( ) ;
+      for ( Identifier freeId : boundedE2 )
+      {
+        if ( this.id.equals ( freeId ) )
+        {
+          freeId.setBoundedToExpression ( this ) ;
+          freeId.setBoundedToIdentifier ( this.id ) ;
+          boundedIdList.add ( freeId ) ;
+        }
+      }
+      this.boundedIdentifiers.add ( boundedIdList ) ;
+    }
+    return this.boundedIdentifiers.get ( 0 ) ;
   }
 
 
@@ -178,7 +208,7 @@ public class Let extends Expression
    * 
    * @return the identifier of the <code>Let</code> expression.
    */
-  public String getId ( )
+  public Identifier getId ( )
   {
     return this.id ;
   }
@@ -214,10 +244,10 @@ public class Let extends Expression
   /**
    * {@inheritDoc}
    * 
-   * @see Expression#substitute(String, Expression, boolean)
+   * @see Expression#substitute(Identifier, Expression, boolean)
    */
   @ Override
-  public Let substitute ( String pId , Expression pExpression )
+  public Let substitute ( Identifier pId , Expression pExpression )
   {
     return substitute ( pId , pExpression , false ) ;
   }
@@ -226,10 +256,10 @@ public class Let extends Expression
   /**
    * {@inheritDoc}
    * 
-   * @see Expression#substitute(String, Expression, boolean)
+   * @see Expression#substitute(Identifier, Expression, boolean)
    */
   @ Override
-  public Let substitute ( String pId , Expression pExpression ,
+  public Let substitute ( Identifier pId , Expression pExpression ,
       boolean pAttributeRename )
   {
     /*
@@ -243,28 +273,26 @@ public class Let extends Expression
      */
     if ( this.id.equals ( pId ) )
     {
-      return new Let ( this.id , this.tau == null ? null : this.tau.clone ( ) ,
-          newE1 , newE2.clone ( ) ) ;
+      return new Let ( this.id.clone ( ) , this.tau == null ? null : this.tau
+          .clone ( ) , newE1 , newE2.clone ( ) ) ;
     }
     /*
      * Perform the bound renaming if required.
      */
-    String newId = this.id ;
-    Set < String > freeE2 = newE2.free ( ) ;
+    ArrayList < Identifier > freeE2 = newE2.free ( ) ;
     BoundRenaming boundRenaming = new BoundRenaming ( ) ;
     boundRenaming.add ( freeE2 ) ;
     boundRenaming.remove ( this.id ) ;
     boundRenaming.add ( pExpression.free ( ) ) ;
     boundRenaming.add ( pId ) ;
-    newId = boundRenaming.newIdentifier ( this.id ) ;
+    Identifier newId = boundRenaming.newId ( this.id ) ;
     /*
      * Substitute the old Identifier only with the new Identifier, if they are
      * different.
      */
     if ( ! this.id.equals ( newId ) )
     {
-      newE2 = newE2.substitute ( this.id , new Identifier ( newId ) ,
-          pAttributeRename ) ;
+      newE2 = newE2.substitute ( this.id , newId , pAttributeRename ) ;
     }
     /*
      * Perform the substitution in e2.
@@ -287,7 +315,7 @@ public class Let extends Expression
         .substitute ( pTypeSubstitution ) ;
     Expression newE1 = this.e1.substitute ( pTypeSubstitution ) ;
     Expression newE2 = this.e2.substitute ( pTypeSubstitution ) ;
-    return new Let ( this.id , newTau , newE1 , newE2 ) ;
+    return new Let ( this.id.clone ( ) , newTau , newE1 , newE2 ) ;
   }
 
 
@@ -300,13 +328,21 @@ public class Let extends Expression
   PrettyStringBuilder toPrettyStringBuilder (
       PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
+    /*
+     * System.out.println ( "Let:" ) ; System.out.print ( "free: " ) ; for (
+     * Identifier tmp : free ( ) ) { System.out.print ( tmp ) ; }
+     * System.out.println ( ) ; System.out.print ( "bounded: " ) ; for (
+     * Identifier tmp : bounded ( ) ) { System.out.print ( tmp ) ; }
+     * System.out.println ( ) ; System.out.println ( ) ;
+     */
     if ( this.prettyStringBuilder == null )
     {
       this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
           PRIO_LET ) ;
       this.prettyStringBuilder.addKeyword ( "let" ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
-      this.prettyStringBuilder.addIdentifier ( this.id ) ;
+      this.prettyStringBuilder.addBuilder ( this.id
+          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , 0 ) ;
       if ( this.tau != null )
       {
         this.prettyStringBuilder.addText ( ": " ) ; //$NON-NLS-1$

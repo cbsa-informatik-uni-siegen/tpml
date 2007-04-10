@@ -131,7 +131,7 @@ public final class ArithmeticOperator extends BinaryOperator
       {
         // programming error
         throw new IllegalStateException (
-            "inconsistent arithmetic operator class" ) ; //$NON-NLS-1$
+            "Inconsistent arithmetic operator class" ) ; //$NON-NLS-1$
       }
     }
     catch ( ClassCastException e )
@@ -142,7 +142,7 @@ public final class ArithmeticOperator extends BinaryOperator
     catch ( ArithmeticException e )
     {
       // internal Java operators throw this on divide-by-zero
-      return Exn.DIVIDE_BY_ZERO ;
+      return Exn.newDivideByZero ( ) ;
     }
   }
 

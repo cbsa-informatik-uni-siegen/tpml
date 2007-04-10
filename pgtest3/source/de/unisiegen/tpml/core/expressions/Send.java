@@ -19,7 +19,7 @@ public final class Send extends Expression
    * 
    * @see #getId()
    */
-  private String id ;
+  private Identifier id ;
 
 
   /**
@@ -36,7 +36,7 @@ public final class Send extends Expression
    * @param pExpression TODO
    * @param pIdentifier TODO
    */
-  public Send ( Expression pExpression , String pIdentifier )
+  public Send ( Expression pExpression , Identifier pIdentifier )
   {
     if ( pExpression == null )
     {
@@ -53,7 +53,7 @@ public final class Send extends Expression
   @ Override
   public Send clone ( )
   {
-    return new Send ( this.e.clone ( ) , this.id ) ;
+    return new Send ( this.e.clone ( ) , this.id.clone ( ) ) ;
   }
 
 
@@ -100,7 +100,7 @@ public final class Send extends Expression
    * @return TODO
    * @see #id
    */
-  public String getId ( )
+  public Identifier getId ( )
   {
     return this.id ;
   }
@@ -129,10 +129,10 @@ public final class Send extends Expression
   /**
    * {@inheritDoc}
    * 
-   * @see Expression#substitute(String, Expression, boolean)
+   * @see Expression#substitute(Identifier, Expression, boolean)
    */
   @ Override
-  public Send substitute ( String pId , Expression pExpression )
+  public Send substitute ( Identifier pId , Expression pExpression )
   {
     return substitute ( pId , pExpression , false ) ;
   }
@@ -142,11 +142,11 @@ public final class Send extends Expression
    * {@inheritDoc}
    */
   @ Override
-  public Send substitute ( String pId , Expression pExpression ,
+  public Send substitute ( Identifier pId , Expression pExpression ,
       boolean pAttributeRename )
   {
     Expression newE = this.e.substitute ( pId , pExpression , pAttributeRename ) ;
-    return new Send ( newE , this.id ) ;
+    return new Send ( newE , this.id.clone ( ) ) ;
   }
 
 
@@ -160,7 +160,7 @@ public final class Send extends Expression
   public Send substitute ( TypeSubstitution pTypeSubstitution )
   {
     Expression newE = this.e.substitute ( pTypeSubstitution ) ;
-    return new Send ( newE , this.id ) ;
+    return new Send ( newE , this.id.clone ( ) ) ;
   }
 
 
@@ -180,7 +180,8 @@ public final class Send extends Expression
       this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addKeyword ( "#" ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
-      this.prettyStringBuilder.addIdentifier ( this.id ) ;
+      this.prettyStringBuilder.addBuilder ( this.id
+          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , 0 ) ;
     }
     return this.prettyStringBuilder ;
   }

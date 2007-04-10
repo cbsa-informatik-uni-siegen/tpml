@@ -1,8 +1,8 @@
 package de.unisiegen.tpml.core.expressions ;
 
 
+import java.util.ArrayList ;
 import java.util.Arrays ;
-import java.util.TreeSet ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
@@ -29,7 +29,7 @@ public final class MultiLet extends Expression
    * @see #getIdentifiers()
    * @see #getIdentifiers(int)
    */
-  private String [ ] identifiers ;
+  private Identifier [ ] identifiers ;
 
 
   /**
@@ -71,7 +71,7 @@ public final class MultiLet extends Expression
    * @throws NullPointerException if <code>identifiers</code>,
    *           <code>e1</code> or <code>e2</code> is <code>null</code>.
    */
-  public MultiLet ( String [ ] pIdentifiers , MonoType pTau ,
+  public MultiLet ( Identifier [ ] pIdentifiers , MonoType pTau ,
       Expression pExpression1 , Expression pExpression2 )
   {
     if ( pIdentifiers == null )
@@ -105,7 +105,12 @@ public final class MultiLet extends Expression
   @ Override
   public MultiLet clone ( )
   {
-    return new MultiLet ( this.identifiers , this.tau == null ? null : this.tau
+    Identifier [ ] newIdentifiers = new Identifier [ this.identifiers.length ] ;
+    for ( int i = 0 ; i < newIdentifiers.length ; i ++ )
+    {
+      newIdentifiers [ i ] = this.identifiers [ i ].clone ( ) ;
+    }
+    return new MultiLet ( newIdentifiers , this.tau == null ? null : this.tau
         .clone ( ) , this.e1.clone ( ) , this.e2.clone ( ) ) ;
   }
 
@@ -135,19 +140,70 @@ public final class MultiLet extends Expression
    * @see Expression#free()
    */
   @ Override
-  public TreeSet < String > free ( )
+  public ArrayList < Identifier > free ( )
   {
     if ( this.free == null )
     {
-      this.free = new TreeSet < String > ( ) ;
+      this.free = new ArrayList < Identifier > ( ) ;
       this.free.addAll ( this.e2.free ( ) ) ;
       for ( int i = 0 ; i < this.identifiers.length ; i ++ )
       {
-        this.free.remove ( this.identifiers [ i ] ) ;
+        while ( this.free.remove ( this.identifiers [ i ] ) )
+        {
+          // Remove all Identifiers with the same name
+        }
       }
       this.free.addAll ( this.e1.free ( ) ) ;
     }
     return this.free ;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @param pIndex TODO
+   * @return TODO
+   */
+  @ Override
+  public ArrayList < Identifier > getBoundedIdentifiers ( int pIndex )
+  {
+    if ( this.boundedIdentifiers == null )
+    {
+      this.boundedIdentifiers = new ArrayList < ArrayList < Identifier >> ( ) ;
+      ArrayList < Identifier > boundedE2 = this.e2.free ( ) ;
+      for ( int i = 0 ; i < this.identifiers.length ; i ++ )
+      {
+        /*
+         * An Identifier has no binding, if an Identifier after him has the same
+         * name. Example: let(x, x) = (1, 2) in x.
+         */
+        boolean hasBinding = true ;
+        for ( int j = i + 1 ; j < this.identifiers.length ; j ++ )
+        {
+          if ( this.identifiers [ i ].equals ( this.identifiers [ j ] ) )
+          {
+            hasBinding = false ;
+            break ;
+          }
+        }
+        ArrayList < Identifier > boundedIdList = new ArrayList < Identifier > ( ) ;
+        if ( hasBinding )
+        {
+          for ( Identifier freeId : boundedE2 )
+          {
+            if ( this.identifiers [ i ].equals ( freeId ) )
+            {
+              freeId.setBoundedToExpression ( this ) ;
+              freeId.setBoundedToIdentifier ( this.identifiers [ i ] ) ;
+              boundedIdList.add ( freeId ) ;
+            }
+          }
+        }
+        this.boundedIdentifiers.add ( boundedIdList ) ;
+      }
+    }
+    return this.boundedIdentifiers.get ( pIndex ) ;
   }
 
 
@@ -189,7 +245,7 @@ public final class MultiLet extends Expression
    * @return the identifiers for the tuple items.
    * @see #getIdentifiers(int)
    */
-  public String [ ] getIdentifiers ( )
+  public Identifier [ ] getIdentifiers ( )
   {
     return this.identifiers ;
   }
@@ -204,7 +260,7 @@ public final class MultiLet extends Expression
    *           bounds.
    * @see #getIdentifiers()
    */
-  public String getIdentifiers ( int pIndex )
+  public Identifier getIdentifiers ( int pIndex )
   {
     return this.identifiers [ pIndex ] ;
   }
@@ -238,10 +294,10 @@ public final class MultiLet extends Expression
   /**
    * {@inheritDoc}
    * 
-   * @see Expression#substitute(String, Expression, boolean)
+   * @see Expression#substitute(Identifier, Expression, boolean)
    */
   @ Override
-  public MultiLet substitute ( String pId , Expression pExpression )
+  public MultiLet substitute ( Identifier pId , Expression pExpression )
   {
     return substitute ( pId , pExpression , false ) ;
   }
@@ -250,10 +306,10 @@ public final class MultiLet extends Expression
   /**
    * {@inheritDoc}
    * 
-   * @see Expression#substitute(String, Expression, boolean)
+   * @see Expression#substitute(Identifier, Expression, boolean)
    */
   @ Override
-  public MultiLet substitute ( String pId , Expression pExpression ,
+  public MultiLet substitute ( Identifier pId , Expression pExpression ,
       boolean pAttributeRename )
   {
     /*
@@ -266,11 +322,20 @@ public final class MultiLet extends Expression
         Expression newE1 = this.e1.substitute ( pId , pExpression ,
             pAttributeRename ) ;
         Expression newE2 = this.e2.clone ( ) ;
-        return new MultiLet ( this.identifiers , this.tau == null ? null
+        Identifier [ ] newIdentifiers = new Identifier [ this.identifiers.length ] ;
+        for ( int j = 0 ; j < newIdentifiers.length ; j ++ )
+        {
+          newIdentifiers [ j ] = this.identifiers [ j ].clone ( ) ;
+        }
+        return new MultiLet ( newIdentifiers , this.tau == null ? null
             : this.tau.clone ( ) , newE1 , newE2 ) ;
       }
     }
-    String [ ] newIdentifiers = this.identifiers.clone ( ) ;
+    Identifier [ ] newIdentifiers = new Identifier [ this.identifiers.length ] ;
+    for ( int i = 0 ; i < newIdentifiers.length ; i ++ )
+    {
+      newIdentifiers [ i ] = this.identifiers [ i ].clone ( ) ;
+    }
     Expression newE2 = this.e2 ;
     for ( int i = 0 ; i < newIdentifiers.length ; i ++ )
     {
@@ -292,7 +357,7 @@ public final class MultiLet extends Expression
           }
         }
       }
-      String newId = boundRenaming.newIdentifier ( newIdentifiers [ i ] ) ;
+      Identifier newId = boundRenaming.newId ( newIdentifiers [ i ] ) ;
       /*
        * Search for an Identifier before the current Identifier with the same
        * name. For example: "let a = b in let(b, b) = (1, 2) in b a".
@@ -310,8 +375,8 @@ public final class MultiLet extends Expression
        */
       if ( ! newIdentifiers [ i ].equals ( newId ) )
       {
-        newE2 = newE2.substitute ( newIdentifiers [ i ] , new Identifier (
-            newId ) , pAttributeRename ) ;
+        newE2 = newE2.substitute ( newIdentifiers [ i ] , newId ,
+            pAttributeRename ) ;
         newIdentifiers [ i ] = newId ;
       }
     }
@@ -338,7 +403,7 @@ public final class MultiLet extends Expression
         .substitute ( pTypeSubstitution ) ;
     Expression newE1 = this.e1.substitute ( pTypeSubstitution ) ;
     Expression newE2 = this.e2.substitute ( pTypeSubstitution ) ;
-    return new MultiLet ( this.identifiers , newTau , newE1 , newE2 ) ;
+    return new MultiLet ( this.identifiers.clone ( ) , newTau , newE1 , newE2 ) ;
   }
 
 
@@ -363,7 +428,8 @@ public final class MultiLet extends Expression
         {
           this.prettyStringBuilder.addText ( ", " ) ;//$NON-NLS-1$
         }
-        this.prettyStringBuilder.addIdentifier ( this.identifiers [ i ] ) ;
+        this.prettyStringBuilder.addBuilder ( this.identifiers [ i ]
+            .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , 0 ) ;
       }
       this.prettyStringBuilder.addText ( ")" ) ;//$NON-NLS-1$
       if ( this.tau != null )

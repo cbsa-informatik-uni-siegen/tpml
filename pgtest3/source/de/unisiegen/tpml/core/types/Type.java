@@ -3,12 +3,12 @@ package de.unisiegen.tpml.core.types ;
 
 import java.beans.Introspector ;
 import java.beans.PropertyDescriptor ;
+import java.util.ArrayList ;
 import java.util.Arrays ;
 import java.util.Collections ;
 import java.util.Enumeration ;
 import java.util.Set ;
 import java.util.TreeSet ;
-import java.util.Vector ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyString ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
@@ -36,12 +36,30 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities
 
 
   /**
+   * The <code>String</code> for an array of children.
+   */
+  private static final String GET_TAU_N = "getTypes" ; //$NON-NLS-1$
+
+
+  /**
+   * The <code>String</code> for more than one child.
+   */
+  private static final String GET_TAU_X = "getTau[0-9]*" ; //$NON-NLS-1$
+
+
+  /**
+   * The <code>String</code> for more than one child.
+   */
+  private static final String GET_PHI_X = "getPhi[0-9]*" ; //$NON-NLS-1$
+
+
+  /**
    * Cached vector of sub types, so the children do not need to be determined on
    * every invocation of {@link #children()}.
    * 
    * @see #children()
    */
-  private transient Vector < Type > children = null ;
+  private ArrayList < Type > children = null ;
 
 
   /**
@@ -82,26 +100,32 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities
    * 
    * @return an {@link Enumeration} for the direct ancestor types of this type.
    */
-  public final Enumeration < Type > children ( )
+  public final ArrayList < Type > children ( )
   {
     // check if we already determined the children
     if ( this.children == null )
     {
       try
       {
-        this.children = new Vector < Type > ( ) ;
+        this.children = new ArrayList < Type > ( ) ;
         PropertyDescriptor [ ] properties = Introspector.getBeanInfo (
             getClass ( ) , Type.class ).getPropertyDescriptors ( ) ;
         for ( PropertyDescriptor property : properties )
         {
-          Object value = property.getReadMethod ( ).invoke ( this ) ;
-          if ( value instanceof Type [ ] )
+          java.lang.reflect.Method method = property.getReadMethod ( ) ;
+          if ( ( method.getName ( ).matches ( GET_TAU_X ) )
+              || ( method.getName ( ).equals ( GET_TAU_N ) )
+              || ( method.getName ( ).matches ( GET_PHI_X ) ) )
           {
-            this.children.addAll ( Arrays.asList ( ( Type [ ] ) value ) ) ;
-          }
-          else if ( value instanceof Type )
-          {
-            this.children.add ( ( Type ) value ) ;
+            Object value = property.getReadMethod ( ).invoke ( this ) ;
+            if ( value instanceof Type [ ] )
+            {
+              this.children.addAll ( Arrays.asList ( ( Type [ ] ) value ) ) ;
+            }
+            else if ( value instanceof Type )
+            {
+              this.children.add ( ( Type ) value ) ;
+            }
           }
         }
       }
@@ -115,7 +139,7 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities
       }
     }
     // return an enumeration for the children
-    return this.children.elements ( ) ;
+    return this.children ;
   }
 
 

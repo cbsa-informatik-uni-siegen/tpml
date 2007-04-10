@@ -102,10 +102,10 @@ public final class Location extends Value
   /**
    * {@inheritDoc}
    * 
-   * @see Expression#substitute(String, Expression, boolean)
+   * @see Expression#substitute(Identifier, Expression, boolean)
    */
   @ Override
-  public Location substitute ( String pId , Expression pExpression )
+  public Location substitute ( Identifier pId , Expression pExpression )
   {
     return substitute ( pId , pExpression , false ) ;
   }
@@ -115,11 +115,11 @@ public final class Location extends Value
    * {@inheritDoc} For <code>Location</code>s, this method always returns the
    * location itself, because substituting below a location is not possible.
    * 
-   * @see Expression#substitute(String, Expression, boolean)
+   * @see Expression#substitute(Identifier, Expression, boolean)
    */
   @ Override
   public Location substitute ( @ SuppressWarnings ( "unused" )
-  String pId , @ SuppressWarnings ( "unused" )
+  Identifier pId , @ SuppressWarnings ( "unused" )
   Expression pExpression , @ SuppressWarnings ( "unused" )
   boolean pAttributeRename )
   {

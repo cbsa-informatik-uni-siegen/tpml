@@ -20,7 +20,7 @@ public final class Attribute extends Expression
    * 
    * @see #getId()
    */
-  private String id ;
+  private Identifier id ;
 
 
   /**
@@ -28,7 +28,7 @@ public final class Attribute extends Expression
    * 
    * @see #getNewId()
    */
-  private String newId ;
+  private Identifier newId ;
 
 
   /**
@@ -54,7 +54,8 @@ public final class Attribute extends Expression
    * @param pTau TODO
    * @param pExpression TODO
    */
-  public Attribute ( String pIdentifier , MonoType pTau , Expression pExpression )
+  public Attribute ( Identifier pIdentifier , MonoType pTau ,
+      Expression pExpression )
   {
     if ( pIdentifier == null )
     {
@@ -77,8 +78,8 @@ public final class Attribute extends Expression
   @ Override
   public Attribute clone ( )
   {
-    return new Attribute ( this.id , this.tau == null ? null : this.tau
-        .clone ( ) , this.e.clone ( ) ) ;
+    return new Attribute ( this.id.clone ( ) , this.tau == null ? null
+        : this.tau.clone ( ) , this.e.clone ( ) ) ;
   }
 
 
@@ -126,7 +127,7 @@ public final class Attribute extends Expression
    * @return TODO
    * @see #id
    */
-  public String getId ( )
+  public Identifier getId ( )
   {
     return this.id ;
   }
@@ -138,7 +139,7 @@ public final class Attribute extends Expression
    * @return TODO
    * @see #id
    */
-  public String getNewId ( )
+  public Identifier getNewId ( )
   {
     return this.newId ;
   }
@@ -183,7 +184,7 @@ public final class Attribute extends Expression
    * @param pNewId TODO
    * @see #id
    */
-  public void setNewId ( String pNewId )
+  public void setNewId ( Identifier pNewId )
   {
     this.newId = pNewId ;
   }
@@ -192,10 +193,10 @@ public final class Attribute extends Expression
   /**
    * {@inheritDoc}
    * 
-   * @see Expression#substitute(String, Expression, boolean)
+   * @see Expression#substitute(Identifier, Expression, boolean)
    */
   @ Override
-  public Attribute substitute ( String pId , Expression pExpression )
+  public Attribute substitute ( Identifier pId , Expression pExpression )
   {
     return substitute ( pId , pExpression , false ) ;
   }
@@ -205,12 +206,12 @@ public final class Attribute extends Expression
    * {@inheritDoc}
    */
   @ Override
-  public Attribute substitute ( String pId , Expression pExpression ,
+  public Attribute substitute ( Identifier pId , Expression pExpression ,
       boolean pAttributeRename )
   {
     Expression newE = this.e.substitute ( pId , pExpression , pAttributeRename ) ;
-    return new Attribute ( this.id , this.tau == null ? null : this.tau
-        .clone ( ) , newE ) ;
+    return new Attribute ( this.id.clone ( ) , this.tau == null ? null
+        : this.tau.clone ( ) , newE ) ;
   }
 
 
@@ -226,7 +227,7 @@ public final class Attribute extends Expression
     MonoType newTau = ( this.tau == null ) ? null : this.tau
         .substitute ( pTypeSubstitution ) ;
     Expression newE = this.e.substitute ( pTypeSubstitution ) ;
-    return new Attribute ( this.id , newTau , newE ) ;
+    return new Attribute ( this.id.clone ( ) , newTau , newE ) ;
   }
 
 
@@ -243,7 +244,8 @@ public final class Attribute extends Expression
           PRIO_ATTRIBUTE ) ;
       this.prettyStringBuilder.addKeyword ( "val" ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
-      this.prettyStringBuilder.addIdentifier ( this.id ) ;
+      this.prettyStringBuilder.addBuilder ( this.id
+          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , 0 ) ;
       if ( this.tau != null )
       {
         this.prettyStringBuilder.addText ( ": " ) ; //$NON-NLS-1$

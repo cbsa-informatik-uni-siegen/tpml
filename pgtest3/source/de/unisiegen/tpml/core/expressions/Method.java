@@ -20,7 +20,7 @@ public class Method extends Expression
    * 
    * @see #getId()
    */
-  private String id ;
+  private Identifier id ;
 
 
   /**
@@ -46,7 +46,8 @@ public class Method extends Expression
    * @param pTau TODO
    * @param pExpression TODO
    */
-  public Method ( String pIdentifier , MonoType pTau , Expression pExpression )
+  public Method ( Identifier pIdentifier , MonoType pTau ,
+      Expression pExpression )
   {
     if ( pIdentifier == null )
     {
@@ -68,7 +69,8 @@ public class Method extends Expression
   @ Override
   public Method clone ( )
   {
-    return new Method ( this.id , this.tau == null ? null : this.tau.clone ( ) , this.e.clone ( ) ) ;
+    return new Method ( this.id.clone ( ) , this.tau == null ? null : this.tau
+        .clone ( ) , this.e.clone ( ) ) ;
   }
 
 
@@ -116,7 +118,7 @@ public class Method extends Expression
    * @return TODO
    * @see #id
    */
-  public String getId ( )
+  public Identifier getId ( )
   {
     return this.id ;
   }
@@ -158,10 +160,10 @@ public class Method extends Expression
   /**
    * {@inheritDoc}
    * 
-   * @see Expression#substitute(String, Expression, boolean)
+   * @see Expression#substitute(Identifier, Expression, boolean)
    */
   @ Override
-  public Method substitute ( String pId , Expression pExpression )
+  public Method substitute ( Identifier pId , Expression pExpression )
   {
     return substitute ( pId , pExpression , false ) ;
   }
@@ -171,11 +173,12 @@ public class Method extends Expression
    * {@inheritDoc}
    */
   @ Override
-  public Method substitute ( String pId , Expression pExpression ,
+  public Method substitute ( Identifier pId , Expression pExpression ,
       boolean pAttributeRename )
   {
     Expression newE = this.e.substitute ( pId , pExpression , pAttributeRename ) ;
-    return new Method ( this.id , this.tau == null ? null : this.tau.clone ( ) , newE ) ;
+    return new Method ( this.id.clone ( ) , this.tau == null ? null : this.tau
+        .clone ( ) , newE ) ;
   }
 
 
@@ -188,7 +191,7 @@ public class Method extends Expression
     MonoType newTau = ( this.tau == null ) ? null : this.tau
         .substitute ( pTypeSubstitution ) ;
     Expression newE = this.e.substitute ( pTypeSubstitution ) ;
-    return new Method ( this.id , newTau , newE ) ;
+    return new Method ( this.id.clone ( ) , newTau , newE ) ;
   }
 
 
@@ -205,7 +208,8 @@ public class Method extends Expression
           PRIO_METHOD ) ;
       this.prettyStringBuilder.addKeyword ( "method" ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
-      this.prettyStringBuilder.addIdentifier ( this.id ) ;
+      this.prettyStringBuilder.addBuilder ( this.id
+          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , 0 ) ;
       if ( this.tau != null )
       {
         this.prettyStringBuilder.addText ( ": " ) ; //$NON-NLS-1$

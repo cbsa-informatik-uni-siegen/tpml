@@ -1,7 +1,7 @@
 package de.unisiegen.tpml.core.expressions ;
 
 
-import java.util.TreeSet ;
+import java.util.ArrayList ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
@@ -28,7 +28,7 @@ public final class Lambda extends Value
    * 
    * @see #getId()
    */
-  private String id ;
+  private Identifier id ;
 
 
   /**
@@ -57,7 +57,7 @@ public final class Lambda extends Value
    * @throws NullPointerException if either <code>id</code> or <code>e</code>
    *           is <code>null</code>.
    */
-  public Lambda ( String pId , MonoType pTau , Expression pExpression )
+  public Lambda ( Identifier pId , MonoType pTau , Expression pExpression )
   {
     if ( pId == null )
     {
@@ -81,8 +81,8 @@ public final class Lambda extends Value
   @ Override
   public Lambda clone ( )
   {
-    return new Lambda ( this.id , this.tau == null ? null : this.tau.clone ( ) ,
-        this.e.clone ( ) ) ;
+    return new Lambda ( this.id.clone ( ) , this.tau == null ? null : this.tau
+        .clone ( ) , this.e.clone ( ) ) ;
   }
 
 
@@ -116,15 +116,46 @@ public final class Lambda extends Value
    * @see Expression#free()
    */
   @ Override
-  public TreeSet < String > free ( )
+  public ArrayList < Identifier > free ( )
   {
     if ( this.free == null )
     {
-      this.free = new TreeSet < String > ( ) ;
+      this.free = new ArrayList < Identifier > ( ) ;
       this.free.addAll ( this.e.free ( ) ) ;
-      this.free.remove ( this.id ) ;
+      while ( this.free.remove ( this.id ) )
+      {
+        // Remove all Identifiers with the same name
+      }
     }
     return this.free ;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @return TODO
+   */
+  @ Override
+  public ArrayList < Identifier > getBoundedIdentifiers ( )
+  {
+    if ( this.boundedIdentifiers == null )
+    {
+      this.boundedIdentifiers = new ArrayList < ArrayList < Identifier >> ( ) ;
+      ArrayList < Identifier > boundedIdList = new ArrayList < Identifier > ( ) ;
+      ArrayList < Identifier > boundedE = this.e.free ( ) ;
+      for ( Identifier freeId : boundedE )
+      {
+        if ( this.id.equals ( freeId ) )
+        {
+          freeId.setBoundedToExpression ( this ) ;
+          freeId.setBoundedToIdentifier ( this.id ) ;
+          boundedIdList.add ( freeId ) ;
+        }
+      }
+      this.boundedIdentifiers.add ( boundedIdList ) ;
+    }
+    return this.boundedIdentifiers.get ( 0 ) ;
   }
 
 
@@ -154,7 +185,7 @@ public final class Lambda extends Value
    * 
    * @return the identifier of the parameter for the lambda expression.
    */
-  public String getId ( )
+  public Identifier getId ( )
   {
     return this.id ;
   }
@@ -188,10 +219,10 @@ public final class Lambda extends Value
   /**
    * {@inheritDoc}
    * 
-   * @see Expression#substitute(String, Expression, boolean)
+   * @see Expression#substitute(Identifier, Expression, boolean)
    */
   @ Override
-  public Lambda substitute ( String pId , Expression pExpression )
+  public Lambda substitute ( Identifier pId , Expression pExpression )
   {
     return substitute ( pId , pExpression , false ) ;
   }
@@ -207,10 +238,10 @@ public final class Lambda extends Value
    * @return the resulting expression.
    * @see #getId()
    * @see #getE()
-   * @see Expression#substitute(String, Expression, boolean)
+   * @see Expression#substitute(Identifier, Expression, boolean)
    */
   @ Override
-  public Lambda substitute ( String pId , Expression pExpression ,
+  public Lambda substitute ( Identifier pId , Expression pExpression ,
       boolean pAttributeRename )
   {
     /*
@@ -223,12 +254,11 @@ public final class Lambda extends Value
     /*
      * Perform the bound renaming if required.
      */
-    String newId = this.id ;
     BoundRenaming boundRenaming = new BoundRenaming ( ) ;
     boundRenaming.add ( this.free ( ) ) ;
     boundRenaming.add ( pExpression.free ( ) ) ;
     boundRenaming.add ( pId ) ;
-    newId = boundRenaming.newIdentifier ( this.id ) ;
+    Identifier newId = boundRenaming.newId ( this.id ) ;
     /*
      * Substitute the old Identifier only with the new Identifier, if they are
      * different.
@@ -236,8 +266,7 @@ public final class Lambda extends Value
     Expression newE = this.e ;
     if ( ! this.id.equals ( newId ) )
     {
-      newE = newE.substitute ( this.id , new Identifier ( newId ) ,
-          pAttributeRename ) ;
+      newE = newE.substitute ( this.id , newId , pAttributeRename ) ;
     }
     /*
      * Perform the substitution.
@@ -259,7 +288,7 @@ public final class Lambda extends Value
     MonoType newTau = ( this.tau == null ) ? null : this.tau
         .substitute ( pTypeSubstitution ) ;
     Expression newE = this.e.substitute ( pTypeSubstitution ) ;
-    return new Lambda ( this.id , newTau , newE ) ;
+    return new Lambda ( this.id.clone ( ) , newTau , newE ) ;
   }
 
 
@@ -277,7 +306,8 @@ public final class Lambda extends Value
       this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
           PRIO_LAMBDA ) ;
       this.prettyStringBuilder.addKeyword ( "\u03bb" ) ; //$NON-NLS-1$
-      this.prettyStringBuilder.addIdentifier ( this.id ) ;
+      this.prettyStringBuilder.addBuilder ( this.id
+          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , 0 ) ;
       if ( this.tau != null )
       {
         this.prettyStringBuilder.addText ( ": " ) ; //$NON-NLS-1$

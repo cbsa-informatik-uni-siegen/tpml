@@ -104,10 +104,10 @@ public abstract class Constant extends Value
   /**
    * {@inheritDoc}
    * 
-   * @see Expression#substitute(String, Expression, boolean)
+   * @see Expression#substitute(Identifier, Expression, boolean)
    */
   @ Override
-  public Constant substitute ( String pId , Expression pExpression )
+  public Constant substitute ( Identifier pId , Expression pExpression )
   {
     return substitute ( pId , pExpression , false ) ;
   }
@@ -118,11 +118,11 @@ public abstract class Constant extends Value
    * <code>Constant</code>s this method will always return the constant
    * itself.
    * 
-   * @see Expression#substitute(String, Expression, boolean)
+   * @see Expression#substitute(Identifier, Expression, boolean)
    */
   @ Override
   public final Constant substitute ( @ SuppressWarnings ( "unused" )
-  String pId , @ SuppressWarnings ( "unused" )
+  Identifier pId , @ SuppressWarnings ( "unused" )
   Expression pExpression , @ SuppressWarnings ( "unused" )
   boolean pAttributeRename )
   {

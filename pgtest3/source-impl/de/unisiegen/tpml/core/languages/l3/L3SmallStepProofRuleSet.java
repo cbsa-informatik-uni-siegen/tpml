@@ -11,6 +11,7 @@ import de.unisiegen.tpml.core.expressions.Exn ;
 import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.expressions.Fst ;
 import de.unisiegen.tpml.core.expressions.Hd ;
+import de.unisiegen.tpml.core.expressions.Identifier ;
 import de.unisiegen.tpml.core.expressions.IsEmpty ;
 import de.unisiegen.tpml.core.expressions.List ;
 import de.unisiegen.tpml.core.expressions.MultiLambda ;
@@ -21,6 +22,7 @@ import de.unisiegen.tpml.core.expressions.Tl ;
 import de.unisiegen.tpml.core.expressions.Tuple ;
 import de.unisiegen.tpml.core.expressions.UnaryCons ;
 import de.unisiegen.tpml.core.expressions.UnaryOperatorException ;
+import de.unisiegen.tpml.core.languages.l1.L1SmallStepProofRuleSet ;
 import de.unisiegen.tpml.core.languages.l2.L2Language ;
 import de.unisiegen.tpml.core.languages.l2.L2SmallStepProofRuleSet ;
 import de.unisiegen.tpml.core.smallstep.SmallStepProofContext ;
@@ -30,6 +32,7 @@ import de.unisiegen.tpml.core.smallstep.SmallStepProofContext ;
  * Small step proof rules for the <code>L3</code> language.
  * 
  * @author Benedikt Meurer
+ * @author Christian Fehler
  * @version $Rev:1132 $
  * @see de.unisiegen.tpml.core.languages.l2.L2SmallStepProofRuleSet
  */
@@ -52,24 +55,21 @@ public class L3SmallStepProofRuleSet extends L2SmallStepProofRuleSet
   {
     super ( language ) ;
     // register the additional rules
-    register ( L3Language.L3 , "CONS" , true ) ;
-    register ( L3Language.L3 , "FST" , true ) ;
-    register ( L3Language.L3 , "HD" , true ) ;
-    register ( L3Language.L3 , "HD-EMPTY" , true ) ;
-    register ( L3Language.L3 , "IS-EMPTY-FALSE" , true ) ;
-    register ( L3Language.L3 , "IS-EMPTY-TRUE" , true ) ;
-    register ( L3Language.L3 , "LIST" , false ) ;
-    register ( L3Language.L3 , "PROJ" , true ) ;
-    register ( L3Language.L3 , "SND" , true ) ;
-    register ( L3Language.L3 , "TL" , true ) ;
-    register ( L3Language.L3 , "TL-EMPTY" , true ) ;
-    register ( L3Language.L3 , "TUPLE" , false ) ;
+    register ( L3Language.L3 , "CONS" , true ) ; //$NON-NLS-1$
+    register ( L3Language.L3 , "FST" , true ) ; //$NON-NLS-1$
+    register ( L3Language.L3 , "HD" , true ) ; //$NON-NLS-1$
+    register ( L3Language.L3 , "HD-EMPTY" , true ) ; //$NON-NLS-1$
+    register ( L3Language.L3 , "IS-EMPTY-FALSE" , true ) ; //$NON-NLS-1$
+    register ( L3Language.L3 , "IS-EMPTY-TRUE" , true ) ; //$NON-NLS-1$
+    register ( L3Language.L3 , "LIST" , false ) ; //$NON-NLS-1$
+    register ( L3Language.L3 , "PROJ" , true ) ; //$NON-NLS-1$
+    register ( L3Language.L3 , "SND" , true ) ; //$NON-NLS-1$
+    register ( L3Language.L3 , "TL" , true ) ; //$NON-NLS-1$
+    register ( L3Language.L3 , "TL-EMPTY" , true ) ; //$NON-NLS-1$
+    register ( L3Language.L3 , "TUPLE" , false ) ; //$NON-NLS-1$
   }
 
 
-  //
-  // The (BETA-V) rule for MultiLambdas
-  //
   /**
    * Applies the <code>multiLambda</code> to the <code>tuple</code> using
    * the <code>context</code>.
@@ -84,7 +84,7 @@ public class L3SmallStepProofRuleSet extends L2SmallStepProofRuleSet
       Application application , MultiLambda multiLambda , Tuple tuple )
   {
     // determine the expressions and identifiers
-    String [ ] identifiers = multiLambda.getIdentifiers ( ) ;
+    Identifier [ ] identifiers = multiLambda.getIdentifiers ( ) ;
     Expression [ ] expressions = tuple.getExpressions ( ) ;
     // the tuple's arity must match the arity of the multiLambda
     if ( expressions.length != identifiers.length )
@@ -98,23 +98,17 @@ public class L3SmallStepProofRuleSet extends L2SmallStepProofRuleSet
       e = e.substitute ( identifiers [ n ] , expressions [ n ] ) ;
     }
     // yep, that was (BETA-V) then
-    context.addProofStep ( getRuleByName ( "BETA-V" ) , application ) ;
+    context.addProofStep ( getRuleByName ( "BETA-V" ) , application ) ; //$NON-NLS-1$
     // and return the new expression
     return e ;
   }
 
 
-  //
-  // The (CONS) rule
-  //
   /**
    * {@inheritDoc}
    * 
-   * @see de.unisiegen.tpml.core.languages.l1.L1SmallStepProofRuleSet#applyBinaryOperator(de.unisiegen.tpml.core.smallstep.SmallStepProofContext,
-   *      de.unisiegen.tpml.core.expressions.Expression,
-   *      de.unisiegen.tpml.core.expressions.BinaryOperator,
-   *      de.unisiegen.tpml.core.expressions.Expression,
-   *      de.unisiegen.tpml.core.expressions.Expression)
+   * @see L1SmallStepProofRuleSet#applyBinaryOperator(SmallStepProofContext,
+   *      Expression, BinaryOperator, Expression, Expression)
    */
   @ Override
   protected Expression applyBinaryOperator ( SmallStepProofContext context ,
@@ -126,25 +120,19 @@ public class L3SmallStepProofRuleSet extends L2SmallStepProofRuleSet
       try
       {
         Expression e = op.applyTo ( e1 , e2 ) ;
-        context.addProofStep ( getRuleByName ( "CONS" ) , applicationOrInfix ) ;
-        return e ;
+        context.addProofStep ( getRuleByName ( "CONS" ) , applicationOrInfix ) ; //$NON-NLS-1$
+        return e.clone ( ) ;
       }
       catch ( BinaryOperatorException e )
       {
         return applicationOrInfix ;
       }
     }
-    else
-    {
-      return super.applyBinaryOperator ( context , applicationOrInfix , op ,
-          e1 , e2 ) ;
-    }
+    return super.applyBinaryOperator ( context , applicationOrInfix , op , e1 ,
+        e2 ) ;
   }
 
 
-  //
-  // The (FST) rule
-  //
   /**
    * Applies the {@link Fst} operator <code>e1</code> to the {@link Tuple}
    * <code>e2</code> using the <code>context</code>.
@@ -161,8 +149,8 @@ public class L3SmallStepProofRuleSet extends L2SmallStepProofRuleSet
     try
     {
       Expression e = e1.applyTo ( e2 ) ;
-      context.addProofStep ( getRuleByName ( "FST" ) , application ) ;
-      return e ;
+      context.addProofStep ( getRuleByName ( "FST" ) , application ) ; //$NON-NLS-1$
+      return e.clone ( ) ;
     }
     catch ( UnaryOperatorException e )
     {
@@ -171,9 +159,6 @@ public class L3SmallStepProofRuleSet extends L2SmallStepProofRuleSet
   }
 
 
-  //
-  // The (HD) and (HD-EMPTY) rules
-  //
   /**
    * Applies the {@link Hd} operator <code>e1</code> to the {@link Expression}
    * <code>e2</code> using the <code>context</code>.
@@ -185,19 +170,20 @@ public class L3SmallStepProofRuleSet extends L2SmallStepProofRuleSet
    * @return the resulting expression.
    */
   public Expression applyHd ( SmallStepProofContext context ,
-      Application application , Hd e1 , Expression e2 )
+      Application application , @ SuppressWarnings ( "unused" )
+      Hd e1 , Expression e2 )
   {
     // check if e2 is the empty list
     if ( e2 instanceof EmptyList )
     {
-      context.addProofStep ( getRuleByName ( "HD-EMPTY" ) , application ) ;
-      return Exn.EMPTY_LIST ;
+      context.addProofStep ( getRuleByName ( "HD-EMPTY" ) , application ) ; //$NON-NLS-1$
+      return Exn.newEmptyList ( ) ;
     }
     // check if e2 is a list
     if ( e2 instanceof List )
     {
-      context.addProofStep ( getRuleByName ( "HD" ) , application ) ;
-      return ( ( List ) e2 ).head ( ) ;
+      context.addProofStep ( getRuleByName ( "HD" ) , application ) ; //$NON-NLS-1$
+      return ( ( List ) e2 ).head ( ).clone ( ) ;
     }
     // otherwise e2 must be an application of cons to a pair
     Application app1 = ( Application ) e2 ;
@@ -209,15 +195,12 @@ public class L3SmallStepProofRuleSet extends L2SmallStepProofRuleSet
       return application ;
     }
     // jep, we can perform (HD) then
-    context.addProofStep ( getRuleByName ( "HD" ) , application ) ;
+    context.addProofStep ( getRuleByName ( "HD" ) , application ) ; //$NON-NLS-1$
     // return the first item
-    return tuple.getExpressions ( 0 ) ;
+    return tuple.getExpressions ( 0 ).clone ( ) ;
   }
 
 
-  //
-  // The (IS-EMPTY-FALSE) and (IS-EMPTY-TRUE) rules
-  //
   /**
    * Applies the {@link IsEmpty} operator <code>e1</code> to the
    * {@link Expression} <code>e2</code> using the <code>context</code>.
@@ -229,13 +212,14 @@ public class L3SmallStepProofRuleSet extends L2SmallStepProofRuleSet
    * @return the resulting expression.
    */
   public Expression applyIsEmpty ( SmallStepProofContext context ,
-      Application application , IsEmpty e1 , Expression e2 )
+      Application application , @ SuppressWarnings ( "unused" )
+      IsEmpty e1 , Expression e2 )
   {
     // check if e2 is the empty list, or an application of cons to a value, or a
     // list
     if ( e2 instanceof EmptyList )
     {
-      context.addProofStep ( getRuleByName ( "IS-EMPTY-TRUE" ) , application ) ;
+      context.addProofStep ( getRuleByName ( "IS-EMPTY-TRUE" ) , application ) ; //$NON-NLS-1$
       return new BooleanConstant ( true ) ;
     }
     else if ( ( e2 instanceof List )
@@ -243,7 +227,7 @@ public class L3SmallStepProofRuleSet extends L2SmallStepProofRuleSet
             && ( ( Application ) e2 ).getE1 ( ) instanceof UnaryCons && ( ( Application ) e2 )
             .getE2 ( ).isValue ( ) ) )
     {
-      context.addProofStep ( getRuleByName ( "IS-EMPTY-FALSE" ) , application ) ;
+      context.addProofStep ( getRuleByName ( "IS-EMPTY-FALSE" ) , application ) ; //$NON-NLS-1$
       return new BooleanConstant ( false ) ;
     }
     else
@@ -254,9 +238,6 @@ public class L3SmallStepProofRuleSet extends L2SmallStepProofRuleSet
   }
 
 
-  //
-  // The (LET-EVAL) and (LET-EXEC) rules for MultiLets
-  //
   /**
    * Evaluates the <code>multiLet</code> expression using the
    * <code>context</code> and returns the resulting expression.
@@ -269,19 +250,24 @@ public class L3SmallStepProofRuleSet extends L2SmallStepProofRuleSet
       MultiLet multiLet )
   {
     // determine the identifiers and the sub expressions
-    String [ ] identifiers = multiLet.getIdentifiers ( ) ;
+    Identifier [ ] identifiers = multiLet.getIdentifiers ( ) ;
     Expression e1 = multiLet.getE1 ( ) ;
     Expression e2 = multiLet.getE2 ( ) ;
     // check if e1 is not already a value
     if ( ! e1.isValue ( ) )
     {
       // we're about to perform (LET-EVAL)
-      context.addProofStep ( getRuleByName ( "LET-EVAL" ) , multiLet ) ;
+      context.addProofStep ( getRuleByName ( "LET-EVAL" ) , multiLet ) ; //$NON-NLS-1$
       // try to evaluate e1
       e1 = evaluate ( context , e1 ) ;
       // exceptions need special treatment
-      return e1.isException ( ) ? e1 : new MultiLet ( identifiers , multiLet
-          .getTau ( ) , e1 , e2 ) ;
+      Identifier [ ] newIdentifier = new Identifier [ identifiers.length ] ;
+      for ( int i = 0 ; i < identifiers.length ; i ++ )
+      {
+        newIdentifier [ i ] = identifiers [ i ].clone ( ) ;
+      }
+      return e1.isException ( ) ? e1 : new MultiLet ( newIdentifier , multiLet
+          .getTau ( ) == null ? null : multiLet.getTau ( ) , e1 , e2.clone ( ) ) ;
     }
     // arity of the tuple must match
     Expression [ ] expressions = ( ( Tuple ) e1 ).getExpressions ( ) ;
@@ -295,15 +281,12 @@ public class L3SmallStepProofRuleSet extends L2SmallStepProofRuleSet
       e2 = e2.substitute ( identifiers [ n ] , expressions [ n ] ) ;
     }
     // jep, that was (LET-EXEC) then
-    context.addProofStep ( getRuleByName ( "LET-EXEC" ) , multiLet ) ;
+    context.addProofStep ( getRuleByName ( "LET-EXEC" ) , multiLet ) ; //$NON-NLS-1$
     // return the new expression
     return e2 ;
   }
 
 
-  //
-  // The (LIST) rule
-  //
   /**
    * Evaluates the <code>list</code> using the <code>context</code>.
    * 
@@ -322,7 +305,7 @@ public class L3SmallStepProofRuleSet extends L2SmallStepProofRuleSet
       if ( ! expressions [ n ].isValue ( ) )
       {
         // we're about to perform (LIST)
-        context.addProofStep ( getRuleByName ( "LIST" ) , list ) ;
+        context.addProofStep ( getRuleByName ( "LIST" ) , list ) ; //$NON-NLS-1$
         // try to evaluate the expression
         Expression newExpression = evaluate ( context , expressions [ n ] ) ;
         // check if we need to forward an exception
@@ -331,7 +314,14 @@ public class L3SmallStepProofRuleSet extends L2SmallStepProofRuleSet
           return newExpression ;
         }
         // otherwise generate a new list with the new expression
-        Expression [ ] newExpressions = expressions.clone ( ) ;
+        Expression [ ] newExpressions = new Expression [ expressions.length ] ;
+        for ( int j = 0 ; j < expressions.length ; j ++ )
+        {
+          if ( j != n )
+          {
+            newExpressions [ j ] = expressions [ j ].clone ( ) ;
+          }
+        }
         newExpressions [ n ] = newExpression ;
         return new List ( newExpressions ) ;
       }
@@ -341,9 +331,6 @@ public class L3SmallStepProofRuleSet extends L2SmallStepProofRuleSet
   }
 
 
-  //
-  // The (PROJ) rule
-  //
   /**
    * Applies the {@link Projection} <code>e1</code> to the {@link Tuple}
    * <code>e2</code> using the <code>context</code>.
@@ -360,8 +347,8 @@ public class L3SmallStepProofRuleSet extends L2SmallStepProofRuleSet
     try
     {
       Expression e = e1.applyTo ( e2 ) ;
-      context.addProofStep ( getRuleByName ( "PROJ" ) , application ) ;
-      return e ;
+      context.addProofStep ( getRuleByName ( "PROJ" ) , application ) ; //$NON-NLS-1$
+      return e.clone ( ) ;
     }
     catch ( UnaryOperatorException e )
     {
@@ -370,9 +357,6 @@ public class L3SmallStepProofRuleSet extends L2SmallStepProofRuleSet
   }
 
 
-  //
-  // The (SND) rule
-  //
   /**
    * Applies the {@link Snd} operator <code>e1</code> to the {@link Tuple}
    * <code>e2</code> using the <code>context</code>.
@@ -389,8 +373,8 @@ public class L3SmallStepProofRuleSet extends L2SmallStepProofRuleSet
     try
     {
       Expression e = e1.applyTo ( e2 ) ;
-      context.addProofStep ( getRuleByName ( "SND" ) , application ) ;
-      return e ;
+      context.addProofStep ( getRuleByName ( "SND" ) , application ) ; //$NON-NLS-1$
+      return e.clone ( ) ;
     }
     catch ( UnaryOperatorException e )
     {
@@ -399,9 +383,6 @@ public class L3SmallStepProofRuleSet extends L2SmallStepProofRuleSet
   }
 
 
-  //
-  // The (TL) and (TL-EMPTY) rules
-  //
   /**
    * Applies the {@link Tl} operator <code>e1</code> to the {@link Expression}
    * <code>e2</code> using the <code>context</code>.
@@ -413,19 +394,20 @@ public class L3SmallStepProofRuleSet extends L2SmallStepProofRuleSet
    * @return the resulting expression.
    */
   public Expression applyTl ( SmallStepProofContext context ,
-      Application application , Tl e1 , Expression e2 )
+      Application application , @ SuppressWarnings ( "unused" )
+      Tl e1 , Expression e2 )
   {
     // check if e is the empty list
     if ( e2 instanceof EmptyList )
     {
-      context.addProofStep ( getRuleByName ( "TL-EMPTY" ) , application ) ;
-      return Exn.EMPTY_LIST ;
+      context.addProofStep ( getRuleByName ( "TL-EMPTY" ) , application ) ; //$NON-NLS-1$
+      return Exn.newEmptyList ( ) ;
     }
     // check if e is a list
     if ( e2 instanceof List )
     {
-      context.addProofStep ( getRuleByName ( "TL" ) , application ) ;
-      return ( ( List ) e2 ).tail ( ) ;
+      context.addProofStep ( getRuleByName ( "TL" ) , application ) ; //$NON-NLS-1$
+      return ( ( List ) e2 ).tail ( ).clone ( ) ;
     }
     // otherwise, e2 must be an application of cons to a pair
     Application app1 = ( Application ) e2 ;
@@ -437,15 +419,12 @@ public class L3SmallStepProofRuleSet extends L2SmallStepProofRuleSet
       return application ;
     }
     // jep, we can perform (TL) then
-    context.addProofStep ( getRuleByName ( "TL" ) , application ) ;
+    context.addProofStep ( getRuleByName ( "TL" ) , application ) ; //$NON-NLS-1$
     // return the remaining list
-    return tuple.getExpressions ( 1 ) ;
+    return tuple.getExpressions ( 1 ).clone ( ) ;
   }
 
 
-  //
-  // The (TUPLE) rule
-  //
   /**
    * Evaluates the <code>tuple</code> using the <code>context</code> and
    * returns the resulting expression.
@@ -465,7 +444,7 @@ public class L3SmallStepProofRuleSet extends L2SmallStepProofRuleSet
       if ( ! expressions [ n ].isValue ( ) )
       {
         // we're about to perform (TUPLE)
-        context.addProofStep ( getRuleByName ( "TUPLE" ) , tuple ) ;
+        context.addProofStep ( getRuleByName ( "TUPLE" ) , tuple ) ; //$NON-NLS-1$
         // try to evaluate the expression
         Expression newExpression = evaluate ( context , expressions [ n ] ) ;
         // check if we need to forward an exception
@@ -474,7 +453,14 @@ public class L3SmallStepProofRuleSet extends L2SmallStepProofRuleSet
           return newExpression ;
         }
         // otherwise generate a new tuple with the new expression
-        Expression [ ] newExpressions = expressions.clone ( ) ;
+        Expression [ ] newExpressions = new Expression [ expressions.length ] ;
+        for ( int j = 0 ; j < expressions.length ; j ++ )
+        {
+          if ( j != n )
+          {
+            newExpressions [ j ] = expressions [ j ].clone ( ) ;
+          }
+        }
         newExpressions [ n ] = newExpression ;
         return new Tuple ( newExpressions ) ;
       }

@@ -12,14 +12,12 @@ import de.unisiegen.tpml.core.languages.l1.L1Language ;
  * Big step proof rules for the <b>L2</b> and derived languages.
  * 
  * @author Benedikt Meurer
+ * @author Christian Fehler
  * @version $Rev:1132 $
  * @see de.unisiegen.tpml.core.languages.l1.L1BigStepProofRuleSet
  */
 public class L2BigStepProofRuleSet extends L1BigStepProofRuleSet
 {
-  //
-  // Constructor
-  //
   /**
    * Allocates a new <code>L2BigStepProofRuleSet</code> with the specified
    * <code>language</code>, which is the <b>L1</b> or a derived language.
@@ -33,14 +31,11 @@ public class L2BigStepProofRuleSet extends L1BigStepProofRuleSet
   {
     super ( language ) ;
     // register the big step rules (order is important for guessing!)
-    registerByMethodName ( L2Language.L2 , "UNFOLD" , "applyUnfold" ,
-        "updateUnfold" ) ;
+    registerByMethodName ( L2Language.L2 , "UNFOLD" , "applyUnfold" , //$NON-NLS-1$//$NON-NLS-2$
+        "updateUnfold" ) ; //$NON-NLS-1$
   }
 
 
-  //
-  // The (UNFOLD) rule
-  //
   /**
    * Applies the <b>(UNFOLD)</b> rule to the <code>node</code> using the
    * <code>context</code>.

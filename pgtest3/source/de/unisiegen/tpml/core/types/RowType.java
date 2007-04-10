@@ -3,6 +3,7 @@ package de.unisiegen.tpml.core.types ;
 
 import java.util.Arrays ;
 import java.util.TreeSet ;
+import de.unisiegen.tpml.core.expressions.Identifier ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
@@ -18,7 +19,7 @@ public final class RowType extends MonoType
   /**
    * TODO
    */
-  private String [ ] identifiers ;
+  private Identifier [ ] identifiers ;
 
 
   /**
@@ -33,7 +34,7 @@ public final class RowType extends MonoType
    * @param pIdentifiers TODO
    * @param pTypes TODO
    */
-  public RowType ( String [ ] pIdentifiers , MonoType [ ] pTypes )
+  public RowType ( Identifier [ ] pIdentifiers , MonoType [ ] pTypes )
   {
     if ( pIdentifiers == null )
     {
@@ -61,12 +62,17 @@ public final class RowType extends MonoType
   @ Override
   public RowType clone ( )
   {
+    Identifier [ ] newIdentifiers = new Identifier [ this.identifiers.length ] ;
+    for ( int i = 0 ; i < newIdentifiers.length ; i ++ )
+    {
+      newIdentifiers [ i ] = this.identifiers [ i ].clone ( ) ;
+    }
     MonoType [ ] newTypes = new MonoType [ this.types.length ] ;
     for ( int i = 0 ; i < newTypes.length ; i ++ )
     {
       newTypes [ i ] = this.types [ i ].clone ( ) ;
     }
-    return new RowType ( this.identifiers , newTypes ) ;
+    return new RowType ( newIdentifiers , newTypes ) ;
   }
 
 
@@ -128,7 +134,7 @@ public final class RowType extends MonoType
    * @see #identifiers
    * @see #getIdentifiers(int)
    */
-  public String [ ] getIdentifiers ( )
+  public Identifier [ ] getIdentifiers ( )
   {
     return this.identifiers ;
   }
@@ -142,7 +148,7 @@ public final class RowType extends MonoType
    * @see #identifiers
    * @see #getIdentifiers()
    */
-  public String getIdentifiers ( int pIndex )
+  public Identifier getIdentifiers ( int pIndex )
   {
     return this.identifiers [ pIndex ] ;
   }
@@ -197,12 +203,17 @@ public final class RowType extends MonoType
     {
       throw new NullPointerException ( "Substitution is null" ) ; //$NON-NLS-1$
     }
+    Identifier [ ] newIdentifiers = new Identifier [ this.identifiers.length ] ;
+    for ( int i = 0 ; i < newIdentifiers.length ; i ++ )
+    {
+      newIdentifiers [ i ] = this.identifiers [ i ].clone ( ) ;
+    }
     MonoType [ ] newTypes = new MonoType [ this.types.length ] ;
     for ( int i = 0 ; i < newTypes.length ; i ++ )
     {
       newTypes [ i ] = this.types [ i ].substitute ( pTypeSubstitution ) ;
     }
-    return new RowType ( this.identifiers , newTypes ) ;
+    return new RowType ( newIdentifiers , newTypes ) ;
   }
 
 
@@ -227,7 +238,8 @@ public final class RowType extends MonoType
         {
           this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
         }
-        this.prettyStringBuilder.addIdentifier ( this.identifiers [ i ] ) ;
+        this.prettyStringBuilder.addBuilder ( this.identifiers [ i ]
+            .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , 0 ) ;
         this.prettyStringBuilder.addText ( ": " ) ; //$NON-NLS-1$
         this.prettyStringBuilder.addBuilder ( this.types [ i ]
             .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,

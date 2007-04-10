@@ -18,14 +18,24 @@ public final class Exn extends Expression
 {
   /**
    * The <b>(DIVIDE-BY-ZERO)</b> exception.
+   * 
+   * @return A new <b>(DIVIDE-BY-ZERO)</b> exception.
    */
-  public static final Exn DIVIDE_BY_ZERO = new Exn ( "divide_by_zero" ) ; //$NON-NLS-1$
+  public static final Exn newDivideByZero ( )
+  {
+    return new Exn ( "divide_by_zero" ) ; //$NON-NLS-1$
+  }
 
 
   /**
    * The <b>(EMPTY-LIST)</b> exception.
+   * 
+   * @return A new <b>(EMPTY-LIST)</b> exception.
    */
-  public static final Exn EMPTY_LIST = new Exn ( "empty_list" ) ; //$NON-NLS-1$
+  public static final Exn newEmptyList ( )
+  {
+    return new Exn ( "empty_list" ) ; //$NON-NLS-1$
+  }
 
 
   /**
@@ -42,7 +52,6 @@ public final class Exn extends Expression
    * 
    * @param pName the name of the exception.
    * @throws NullPointerException if <code>name</code> is <code>null</code>.
-   * @see #DIVIDE_BY_ZERO
    */
   private Exn ( String pName )
   {
@@ -132,10 +141,10 @@ public final class Exn extends Expression
   /**
    * {@inheritDoc}
    * 
-   * @see Expression#substitute(String, Expression, boolean)
+   * @see Expression#substitute(Identifier, Expression, boolean)
    */
   @ Override
-  public Exn substitute ( String pId , Expression pExpression )
+  public Exn substitute ( Identifier pId , Expression pExpression )
   {
     return substitute ( pId , pExpression , false ) ;
   }
@@ -146,11 +155,11 @@ public final class Exn extends Expression
    * <code>Exn</code> class, this method always returns a reference to the
    * exception itself.
    * 
-   * @see Expression#substitute(String, Expression, boolean)
+   * @see Expression#substitute(Identifier, Expression, boolean)
    */
   @ Override
   public Exn substitute ( @ SuppressWarnings ( "unused" )
-  String pId , @ SuppressWarnings ( "unused" )
+  Identifier pId , @ SuppressWarnings ( "unused" )
   Expression pExpression , @ SuppressWarnings ( "unused" )
   boolean pAttributeRename )
   {

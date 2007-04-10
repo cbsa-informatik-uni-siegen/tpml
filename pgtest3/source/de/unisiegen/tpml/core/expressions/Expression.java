@@ -3,13 +3,10 @@ package de.unisiegen.tpml.core.expressions ;
 
 import java.beans.Introspector ;
 import java.beans.PropertyDescriptor ;
+import java.util.ArrayList ;
 import java.util.Arrays ;
-import java.util.Collections ;
 import java.util.Enumeration ;
 import java.util.LinkedList ;
-import java.util.Set ;
-import java.util.TreeSet ;
-import java.util.Vector ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyString ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
@@ -37,26 +34,26 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
   private class LevelOrderEnumeration implements Enumeration < Expression >
   {
     /**
-     * Initializes the list.
+     * TODO
      */
     private LinkedList < Expression > queue = new LinkedList < Expression > ( ) ;
 
 
     /**
-     * Adds the Expression.
+     * TODO
      * 
-     * @param pExpression The new Expression.
+     * @param expression TODO
      */
-    LevelOrderEnumeration ( Expression pExpression )
+    LevelOrderEnumeration ( Expression expression )
     {
-      this.queue.add ( pExpression ) ;
+      this.queue.add ( expression ) ;
     }
 
 
     /**
-     * Returns true, if the enumeration has more elements.
+     * TODO
      * 
-     * @return True, if the enumeration has more elements.
+     * @return TODO
      * @see Enumeration#hasMoreElements()
      */
     public boolean hasMoreElements ( )
@@ -66,18 +63,30 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
 
 
     /**
-     * Returns the next element.
+     * TODO
      * 
-     * @return The next element.
+     * @return TODO
      * @see Enumeration#nextElement()
      */
     public Expression nextElement ( )
     {
       Expression e = this.queue.poll ( ) ;
-      this.queue.addAll ( Collections.list ( e.children ( ) ) ) ;
+      this.queue.addAll ( e.children ( ) ) ;
       return e ;
     }
   }
+
+
+  /**
+   * The <code>String</code> for an array of children.
+   */
+  private static final String GET_E_N = "getExpressions" ; //$NON-NLS-1$
+
+
+  /**
+   * The <code>String</code> for more than one child.
+   */
+  private static final String GET_E_X = "getE[0-9]*" ; //$NON-NLS-1$
 
 
   /**
@@ -87,7 +96,7 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
    * 
    * @see #free()
    */
-  protected TreeSet < String > free = null ;
+  protected ArrayList < Identifier > free = null ;
 
 
   /**
@@ -101,12 +110,18 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
 
 
   /**
+   * TODO
+   */
+  protected ArrayList < ArrayList < Identifier >> boundedIdentifiers = null ;
+
+
+  /**
    * Cached vector of sub expressions, so the children do not need to be
    * determined on every invocation of {@link #children()}.
    * 
    * @see #children()
    */
-  private transient Vector < Expression > children = null ;
+  private ArrayList < Expression > children = null ;
 
 
   /**
@@ -121,26 +136,33 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
    * @return an {@link Enumeration} for the direct ancestor expressions of this
    *         expression.
    */
-  public final Enumeration < Expression > children ( )
+  public final ArrayList < Expression > children ( )
   {
     // check if we already determined the children
     if ( this.children == null )
     {
       try
       {
-        this.children = new Vector < Expression > ( ) ;
+        this.children = new ArrayList < Expression > ( ) ;
         PropertyDescriptor [ ] properties = Introspector.getBeanInfo (
             getClass ( ) , Expression.class ).getPropertyDescriptors ( ) ;
         for ( PropertyDescriptor property : properties )
         {
-          Object value = property.getReadMethod ( ).invoke ( this ) ;
-          if ( value instanceof Expression [ ] )
+          java.lang.reflect.Method method = property.getReadMethod ( ) ;
+          if ( ( method != null )
+              && ( ( method.getName ( ).matches ( GET_E_X ) ) || ( method
+                  .getName ( ).equals ( GET_E_N ) ) ) )
           {
-            this.children.addAll ( Arrays.asList ( ( Expression [ ] ) value ) ) ;
-          }
-          else if ( value instanceof Expression )
-          {
-            this.children.add ( ( Expression ) value ) ;
+            Object value = method.invoke ( this ) ;
+            if ( value instanceof Expression [ ] )
+            {
+              this.children
+                  .addAll ( Arrays.asList ( ( Expression [ ] ) value ) ) ;
+            }
+            else if ( value instanceof Expression )
+            {
+              this.children.add ( ( Expression ) value ) ;
+            }
           }
         }
       }
@@ -154,7 +176,7 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
       }
     }
     // return an enumeration for the children
-    return this.children.elements ( ) ;
+    return this.children ;
   }
 
 
@@ -228,18 +250,45 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
    * 
    * @return the set of free (unbound) identifiers within the expression.
    */
-  public Set < String > free ( )
+  public ArrayList < Identifier > free ( )
   {
     if ( this.free == null )
     {
-      this.free = new TreeSet < String > ( ) ;
-      Enumeration < Expression > chidlren = children ( ) ;
-      while ( chidlren.hasMoreElements ( ) )
+      this.free = new ArrayList < Identifier > ( ) ;
+      ArrayList < Expression > tmp = children ( ) ;
+      for ( int i = 0 ; i < tmp.size ( ) ; i ++ )
       {
-        this.free.addAll ( chidlren.nextElement ( ).free ( ) ) ;
+        this.free.addAll ( tmp.get ( i ).free ( ) ) ;
       }
     }
     return this.free ;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @return TODO
+   */
+  public ArrayList < Identifier > getBoundedIdentifiers ( )
+  {
+    throw new IllegalArgumentException (
+        "You have to overwrite this method if you want to use it" ) ; //$NON-NLS-1$
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @param pIndex TODO
+   * @return TODO
+   */
+  public ArrayList < Identifier > getBoundedIdentifiers (
+      @ SuppressWarnings ( "unused" )
+      int pIndex )
+  {
+    throw new IllegalArgumentException (
+        "You have to overwrite this method if you want to use it" ) ; //$NON-NLS-1$
   }
 
 
@@ -322,7 +371,8 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
    * @throws NullPointerException if <code>id</code> or </code>e</code> is
    *           <code>null</code>.
    */
-  public abstract Expression substitute ( String pId , Expression pExpression ) ;
+  public abstract Expression substitute ( Identifier pId ,
+      Expression pExpression ) ;
 
 
   /**
@@ -340,8 +390,8 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
    * @throws NullPointerException if <code>id</code> or </code>e</code> is
    *           <code>null</code>.
    */
-  public abstract Expression substitute ( String pId , Expression pExpression ,
-      boolean pAttributeRename ) ;
+  public abstract Expression substitute ( Identifier pId ,
+      Expression pExpression , boolean pAttributeRename ) ;
 
 
   /**

@@ -32,14 +32,12 @@ import de.unisiegen.tpml.core.languages.l2.L2Language ;
  * Big step proof rules for the <b>L3</b> and derived languages.
  * 
  * @author Benedikt Meurer
+ * @author Christian Fehler
  * @version $Rev:1132 $
  * @see de.unisiegen.tpml.core.languages.l2.L2BigStepProofRuleSet
  */
 public class L3BigStepProofRuleSet extends L2BigStepProofRuleSet
 {
-  //
-  // Constructor
-  //
   /**
    * Allocates a new <code>L3BigStepProofRuleSet</code> with the specified
    * <code>language</code>, which is the <b>L3</b> or a derived language.
@@ -72,15 +70,13 @@ public class L3BigStepProofRuleSet extends L2BigStepProofRuleSet
   }
 
 
-  //
-  // The (CONS) rule
-  //
   /**
    * Applies the <b>(CONS)</b> rule to the <code>node</code> using the
    * <code>context</code>.
    * 
    * @param context the big step proof context.
    * @param node the big step proof node.
+   * @throws BinaryOperatorException the BinaryOperatorException.
    */
   public void applyCons ( BigStepProofContext context , BigStepProofNode node )
       throws BinaryOperatorException
@@ -113,15 +109,13 @@ public class L3BigStepProofRuleSet extends L2BigStepProofRuleSet
   }
 
 
-  //
-  // The (FST) rule
-  //
   /**
    * Applies the <b>(FST)</b> rule to the <code>node</code> using the
    * <code>context</code>.
    * 
    * @param context the big step proof context.
    * @param node the big step proof node.
+   * @throws UnaryOperatorException The UnaryOperatorException.
    */
   public void applyFst ( BigStepProofContext context , BigStepProofNode node )
       throws UnaryOperatorException
@@ -134,9 +128,6 @@ public class L3BigStepProofRuleSet extends L2BigStepProofRuleSet
   }
 
 
-  //
-  // The (HD) rule
-  //
   /**
    * Applies the <b>(HD)</b> rule to the <code>node</code> using the
    * <code>context</code>.
@@ -148,7 +139,8 @@ public class L3BigStepProofRuleSet extends L2BigStepProofRuleSet
   {
     // can only be applied to Applications of Hd to a list value
     Application application = ( Application ) node.getExpression ( ) ;
-    @ SuppressWarnings ( "unused" ) Hd hd = ( Hd ) application.getE1 ( ) ; //$NON-NLS-1$
+    @ SuppressWarnings ( "unused" )
+    Hd hd = ( Hd ) application.getE1 ( ) ;
     Expression e2 = application.getE2 ( ) ;
     if ( ! e2.isValue ( ) )
     {
@@ -158,7 +150,7 @@ public class L3BigStepProofRuleSet extends L2BigStepProofRuleSet
     // check if e2 is the empty list
     if ( e2 instanceof EmptyList )
     {
-      context.setProofNodeResult ( node , Exn.EMPTY_LIST ) ;
+      context.setProofNodeResult ( node , Exn.newEmptyList ( ) ) ;
       context.setProofNodeRule ( node , context.newNoopRule ( "HD-EMPTY" ) ) ; //$NON-NLS-1$
       return ;
     }
@@ -189,9 +181,6 @@ public class L3BigStepProofRuleSet extends L2BigStepProofRuleSet
   }
 
 
-  //
-  // The (IS-EMPTY-FALSE) rule
-  //
   /**
    * Applies the <b>(IS-EMPTY-FALSE)</b> rule to the <code>node</code> using
    * the <code>context</code>.
@@ -204,7 +193,8 @@ public class L3BigStepProofRuleSet extends L2BigStepProofRuleSet
   {
     // node's expression must be an Application of IsEmpty to a value
     Application application = ( Application ) node.getExpression ( ) ;
-    @ SuppressWarnings ( "unused" ) IsEmpty isEmpty = ( IsEmpty ) application.getE1 ( ) ; //$NON-NLS-1$
+    @ SuppressWarnings ( "unused" )
+    IsEmpty isEmpty = ( IsEmpty ) application.getE1 ( ) ;
     Expression e2 = application.getE2 ( ) ;
     if ( ! e2.isValue ( ) )
     {
@@ -250,9 +240,6 @@ public class L3BigStepProofRuleSet extends L2BigStepProofRuleSet
   }
 
 
-  //
-  // The (IS-EMPTY-TRUE) rule
-  //
   /**
    * Applies the <b>(IS-EMPTY-TRUE)</b> rule to the <code>node</code> using
    * the <code>context</code>.
@@ -265,7 +252,8 @@ public class L3BigStepProofRuleSet extends L2BigStepProofRuleSet
   {
     // node's expression must be an Application of IsEmpty to a value
     Application application = ( Application ) node.getExpression ( ) ;
-    @ SuppressWarnings ( "unused" ) IsEmpty isEmpty = ( IsEmpty ) application.getE1 ( ) ; //$NON-NLS-1$
+    @ SuppressWarnings ( "unused" )
+    IsEmpty isEmpty = ( IsEmpty ) application.getE1 ( ) ;
     Expression e2 = application.getE2 ( ) ;
     if ( ! e2.isValue ( ) )
     {
@@ -288,9 +276,6 @@ public class L3BigStepProofRuleSet extends L2BigStepProofRuleSet
   }
 
 
-  //
-  // The (LIST) rule
-  //
   /**
    * Applies the <b>(LIST)</b> rule to the <code>node</code> using the
    * <code>context</code>.
@@ -306,14 +291,14 @@ public class L3BigStepProofRuleSet extends L2BigStepProofRuleSet
     if ( context.isMemoryEnabled ( ) )
     {
       // add a child node for the first expression
-      context.addProofNode ( node , list.getExpressions ( 0 ) ) ;
+      context.addProofNode ( node , list.getExpressions ( 0 ).clone ( ) ) ;
     }
     else
     {
       // add all child nodes at once
       for ( Expression e : list.getExpressions ( ) )
       {
-        context.addProofNode ( node , e ) ;
+        context.addProofNode ( node , e.clone ( ) ) ;
       }
     }
   }
@@ -337,8 +322,8 @@ public class L3BigStepProofRuleSet extends L2BigStepProofRuleSet
       if ( node.getLastChild ( ).isProven ( ) )
       {
         // add the next child node
-        context.addProofNode ( node , list.getExpressions ( node
-            .getChildCount ( ) ) ) ;
+        context.addProofNode ( node , list.getExpressions (
+            node.getChildCount ( ) ).clone ( ) ) ;
       }
     }
     else
@@ -361,15 +346,13 @@ public class L3BigStepProofRuleSet extends L2BigStepProofRuleSet
   }
 
 
-  //
-  // The (PROJ) rule
-  //
   /**
    * Applies the <b>(PROJ)</b> rule to the <code>node</code> using the
    * <code>context</code>.
    * 
    * @param context the big step proof context.
    * @param node the big step proof node.
+   * @throws UnaryOperatorException The UnaryOperatorException.
    */
   public void applyProj ( BigStepProofContext context , BigStepProofNode node )
       throws UnaryOperatorException
@@ -382,15 +365,13 @@ public class L3BigStepProofRuleSet extends L2BigStepProofRuleSet
   }
 
 
-  //
-  // The (SND) rule
-  //
   /**
    * Applies the <b>(SND)</b> rule to the <code>node</code> using the
    * <code>context</code>.
    * 
    * @param context the big step proof context.
    * @param node the big step proof node.
+   * @throws UnaryOperatorException The UnaryOperatorException.
    */
   public void applySnd ( BigStepProofContext context , BigStepProofNode node )
       throws UnaryOperatorException
@@ -403,9 +384,6 @@ public class L3BigStepProofRuleSet extends L2BigStepProofRuleSet
   }
 
 
-  //
-  // The (TL) rule
-  //
   /**
    * Applies the <b>(TL)</b> rule to the <code>node</code> using the
    * <code>context</code>.
@@ -417,7 +395,8 @@ public class L3BigStepProofRuleSet extends L2BigStepProofRuleSet
   {
     // can only be applied to Applications of Tl to a list value
     Application application = ( Application ) node.getExpression ( ) ;
-    @ SuppressWarnings ( "unused" ) Tl tl = ( Tl ) application.getE1 ( ) ; //$NON-NLS-1$
+    @ SuppressWarnings ( "unused" )
+    Tl tl = ( Tl ) application.getE1 ( ) ;
     Expression e2 = application.getE2 ( ) ;
     if ( ! e2.isValue ( ) )
     {
@@ -427,7 +406,7 @@ public class L3BigStepProofRuleSet extends L2BigStepProofRuleSet
     // check if e2 is the empty list
     if ( e2 instanceof EmptyList )
     {
-      context.setProofNodeResult ( node , Exn.EMPTY_LIST ) ;
+      context.setProofNodeResult ( node , Exn.newEmptyList ( ) ) ;
       context.setProofNodeRule ( node , context.newNoopRule ( "TL-EMPTY" ) ) ; //$NON-NLS-1$
       return ;
     }
@@ -458,9 +437,6 @@ public class L3BigStepProofRuleSet extends L2BigStepProofRuleSet
   }
 
 
-  //
-  // The (TUPLE) rule
-  //
   /**
    * Applies the <b>(TUPLE)</b> to the <code>node</code> using the
    * <code>context</code>.
@@ -476,14 +452,14 @@ public class L3BigStepProofRuleSet extends L2BigStepProofRuleSet
     if ( context.isMemoryEnabled ( ) )
     {
       // add a child node for the first sub expression
-      context.addProofNode ( node , tuple.getExpressions ( 0 ) ) ;
+      context.addProofNode ( node , tuple.getExpressions ( 0 ).clone ( ) ) ;
     }
     else
     {
       // add all child nodes at once
       for ( Expression e : tuple.getExpressions ( ) )
       {
-        context.addProofNode ( node , e ) ;
+        context.addProofNode ( node , e.clone ( ) ) ;
       }
     }
   }

@@ -1,8 +1,8 @@
 package de.unisiegen.tpml.core.expressions ;
 
 
+import java.util.ArrayList ;
 import java.util.Arrays ;
-import java.util.TreeSet ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
@@ -24,7 +24,7 @@ public final class CurriedMethod extends Expression
    * @see #getIdentifiers()
    * @see #getIdentifiers(int)
    */
-  private String [ ] identifiers ;
+  private Identifier [ ] identifiers ;
 
 
   /**
@@ -51,7 +51,7 @@ public final class CurriedMethod extends Expression
    * @param pTypes TODO
    * @param pExpression TODO
    */
-  public CurriedMethod ( String [ ] pIdentifiers , MonoType [ ] pTypes ,
+  public CurriedMethod ( Identifier [ ] pIdentifiers , MonoType [ ] pTypes ,
       Expression pExpression )
   {
     if ( pIdentifiers == null )
@@ -88,13 +88,18 @@ public final class CurriedMethod extends Expression
   @ Override
   public CurriedMethod clone ( )
   {
+    Identifier [ ] newIdentifiers = new Identifier [ this.identifiers.length ] ;
+    for ( int i = 0 ; i < newIdentifiers.length ; i ++ )
+    {
+      newIdentifiers [ i ] = this.identifiers [ i ].clone ( ) ;
+    }
     MonoType [ ] newTypes = new MonoType [ this.types.length ] ;
     for ( int i = 0 ; i < newTypes.length ; i ++ )
     {
       newTypes [ i ] = ( this.types [ i ] == null ) ? null : this.types [ i ]
           .clone ( ) ;
     }
-    return new CurriedMethod ( this.identifiers , newTypes , this.e.clone ( ) ) ;
+    return new CurriedMethod ( newIdentifiers , newTypes , this.e.clone ( ) ) ;
   }
 
 
@@ -119,18 +124,76 @@ public final class CurriedMethod extends Expression
    * {@inheritDoc}
    */
   @ Override
-  public TreeSet < String > free ( )
+  public ArrayList < Identifier > free ( )
   {
     if ( this.free == null )
     {
-      this.free = new TreeSet < String > ( ) ;
+      this.free = new ArrayList < Identifier > ( ) ;
       this.free.addAll ( this.e.free ( ) ) ;
       for ( int i = 1 ; i < this.identifiers.length ; i ++ )
       {
-        this.free.remove ( this.identifiers [ i ] ) ;
+        while ( this.free.remove ( this.identifiers [ i ] ) )
+        {
+          // Remove all Identifiers with the same name
+        }
       }
     }
     return this.free ;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @param pIndex TODO
+   * @return TODO
+   */
+  @ Override
+  public ArrayList < Identifier > getBoundedIdentifiers ( int pIndex )
+  {
+    if ( this.boundedIdentifiers == null )
+    {
+      this.boundedIdentifiers = new ArrayList < ArrayList < Identifier >> ( ) ;
+      ArrayList < Identifier > boundedE = this.e.free ( ) ;
+      for ( int i = 0 ; i < this.identifiers.length ; i ++ )
+      {
+        if ( i == 0 )
+        {
+          this.boundedIdentifiers.add ( new ArrayList < Identifier > ( ) ) ;
+        }
+        else
+        {
+          /*
+           * An Identifier has no binding, if an Identifier after him has the
+           * same name. Example: object method add x x = x ; end.
+           */
+          boolean hasBinding = true ;
+          for ( int j = i + 1 ; j < this.identifiers.length ; j ++ )
+          {
+            if ( this.identifiers [ i ].equals ( this.identifiers [ j ] ) )
+            {
+              hasBinding = false ;
+              break ;
+            }
+          }
+          ArrayList < Identifier > boundedIdList = new ArrayList < Identifier > ( ) ;
+          if ( hasBinding )
+          {
+            for ( Identifier freeId : boundedE )
+            {
+              if ( this.identifiers [ i ].equals ( freeId ) )
+              {
+                freeId.setBoundedToExpression ( this ) ;
+                freeId.setBoundedToIdentifier ( this.identifiers [ i ] ) ;
+                boundedIdList.add ( freeId ) ;
+              }
+            }
+          }
+          this.boundedIdentifiers.add ( boundedIdList ) ;
+        }
+      }
+    }
+    return this.boundedIdentifiers.get ( pIndex ) ;
   }
 
 
@@ -163,7 +226,7 @@ public final class CurriedMethod extends Expression
    * @see #identifiers
    * @see #getIdentifiers(int)
    */
-  public String [ ] getIdentifiers ( )
+  public Identifier [ ] getIdentifiers ( )
   {
     return this.identifiers ;
   }
@@ -177,7 +240,7 @@ public final class CurriedMethod extends Expression
    * @see #identifiers
    * @see #getIdentifiers()
    */
-  public String getIdentifiers ( int pIndex )
+  public Identifier getIdentifiers ( int pIndex )
   {
     return this.identifiers [ pIndex ] ;
   }
@@ -234,10 +297,10 @@ public final class CurriedMethod extends Expression
   /**
    * {@inheritDoc}
    * 
-   * @see Expression#substitute(String, Expression, boolean)
+   * @see Expression#substitute(Identifier, Expression, boolean)
    */
   @ Override
-  public CurriedMethod substitute ( String pId , Expression pExpression )
+  public CurriedMethod substitute ( Identifier pId , Expression pExpression )
   {
     return substitute ( pId , pExpression , false ) ;
   }
@@ -247,7 +310,7 @@ public final class CurriedMethod extends Expression
    * {@inheritDoc}
    */
   @ Override
-  public CurriedMethod substitute ( String pId , Expression pExpression ,
+  public CurriedMethod substitute ( Identifier pId , Expression pExpression ,
       boolean pAttributeRename )
   {
     /*
@@ -261,7 +324,11 @@ public final class CurriedMethod extends Expression
       }
     }
     Expression newE = this.e ;
-    String [ ] newIdentifiers = this.identifiers.clone ( ) ;
+    Identifier [ ] newIdentifiers = new Identifier [ this.identifiers.length ] ;
+    for ( int i = 0 ; i < newIdentifiers.length ; i ++ )
+    {
+      newIdentifiers [ i ] = this.identifiers [ i ].clone ( ) ;
+    }
     for ( int i = 1 ; i < newIdentifiers.length ; i ++ )
     {
       BoundRenaming boundRenaming = new BoundRenaming ( ) ;
@@ -281,7 +348,7 @@ public final class CurriedMethod extends Expression
           }
         }
       }
-      String newId = boundRenaming.newIdentifier ( newIdentifiers [ i ] ) ;
+      Identifier newId = boundRenaming.newId ( newIdentifiers [ i ] ) ;
       /*
        * Search for an Identifier before the current Identifier with the same
        * name. For example: "let a = b in object (self) method add b b = b a ;
@@ -300,8 +367,8 @@ public final class CurriedMethod extends Expression
        */
       if ( ! newIdentifiers [ i ].equals ( newId ) )
       {
-        newE = newE.substitute ( newIdentifiers [ i ] ,
-            new Identifier ( newId ) , pAttributeRename ) ;
+        newE = newE.substitute ( newIdentifiers [ i ] , newId ,
+            pAttributeRename ) ;
         newIdentifiers [ i ] = newId ;
       }
     }
@@ -325,13 +392,18 @@ public final class CurriedMethod extends Expression
   @ Override
   public CurriedMethod substitute ( TypeSubstitution pTypeSubstitution )
   {
+    Identifier [ ] newIdentifiers = new Identifier [ this.identifiers.length ] ;
+    for ( int i = 0 ; i < newIdentifiers.length ; i ++ )
+    {
+      newIdentifiers [ i ] = this.identifiers [ i ].clone ( ) ;
+    }
     MonoType [ ] newTypes = new MonoType [ this.types.length ] ;
     for ( int i = 0 ; i < newTypes.length ; i ++ )
     {
       newTypes [ i ] = ( this.types [ i ] == null ) ? null : this.types [ i ]
           .substitute ( pTypeSubstitution ) ;
     }
-    return new CurriedMethod ( this.identifiers , newTypes , this.e
+    return new CurriedMethod ( newIdentifiers , newTypes , this.e
         .substitute ( pTypeSubstitution ) ) ;
   }
 
@@ -349,7 +421,8 @@ public final class CurriedMethod extends Expression
           PRIO_CURRIED_METHOD ) ;
       this.prettyStringBuilder.addKeyword ( "method" ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
-      this.prettyStringBuilder.addIdentifier ( this.identifiers [ 0 ] ) ;
+      this.prettyStringBuilder.addBuilder ( this.identifiers [ 0 ]
+          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , 0 ) ;
       for ( int i = 1 ; i < this.identifiers.length ; i ++ )
       {
         this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
@@ -357,7 +430,8 @@ public final class CurriedMethod extends Expression
         {
           this.prettyStringBuilder.addText ( "(" ) ; //$NON-NLS-1$
         }
-        this.prettyStringBuilder.addIdentifier ( this.identifiers [ i ] ) ;
+        this.prettyStringBuilder.addBuilder ( this.identifiers [ i ]
+            .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , 0 ) ;
         if ( this.types [ i ] != null )
         {
           this.prettyStringBuilder.addText ( ": " ) ; //$NON-NLS-1$

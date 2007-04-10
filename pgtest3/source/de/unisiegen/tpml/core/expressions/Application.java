@@ -59,7 +59,7 @@ public final class Application extends Expression
   /**
    * {@inheritDoc}
    * 
-   * @see de.unisiegen.tpml.core.expressions.Expression#clone()
+   * @see Expression#clone()
    */
   @ Override
   public Application clone ( )
@@ -149,10 +149,10 @@ public final class Application extends Expression
   /**
    * {@inheritDoc}
    * 
-   * @see Expression#substitute(String, Expression, boolean)
+   * @see Expression#substitute(Identifier, Expression, boolean)
    */
   @ Override
-  public Application substitute ( String pId , Expression pExpression )
+  public Application substitute ( Identifier pId , Expression pExpression )
   {
     return substitute ( pId , pExpression , false ) ;
   }
@@ -167,10 +167,10 @@ public final class Application extends Expression
    * @return the resulting expression.
    * @see #getE1()
    * @see #getE2()
-   * @see Expression#substitute(String, Expression , boolean )
+   * @see Expression#substitute(Identifier, Expression , boolean )
    */
   @ Override
-  public Application substitute ( String pId , Expression pExpression ,
+  public Application substitute ( Identifier pId , Expression pExpression ,
       boolean pAttributeRename )
   {
     Expression newE1 = this.e1.substitute ( pId , pExpression ,

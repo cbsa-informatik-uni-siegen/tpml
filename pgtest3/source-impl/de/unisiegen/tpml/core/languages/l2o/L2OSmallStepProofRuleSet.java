@@ -143,8 +143,8 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
     {
       return row ;
     }
-    return new ObjectExpr ( pObjectExpr.getId ( ) , pObjectExpr.getTau ( ) ,
-        ( Row ) row ) ;
+    return new ObjectExpr ( pObjectExpr.getId ( ).clone ( ) , pObjectExpr
+        .getTau ( ) == null ? null : pObjectExpr.getTau ( ).clone ( ) , row ) ;
   }
 
 
@@ -169,7 +169,7 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
       {
         return expr ;
       }
-      return new Send ( expr , pSend.getId ( ) ) ;
+      return new Send ( expr , pSend.getId ( ).clone ( ) ) ;
     }
     else if ( pSend.getE ( ) instanceof ObjectExpr )
     {
@@ -179,9 +179,9 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
        */
       pContext.addProofStep ( getRuleByName ( OBJ_UNFOLD ) , pSend ) ;
       ObjectExpr objectExpr = ( ObjectExpr ) pSend.getE ( ) ;
-      Row row = objectExpr.getE ( ) ;
-      Expression newRow = row.substitute ( objectExpr.getId ( ) , objectExpr ) ;
-      return new Send ( newRow , pSend.getId ( ) ) ;
+      Expression newRow = objectExpr.getE ( ).substitute (
+          objectExpr.getId ( ) , objectExpr ) ;
+      return new Send ( newRow , pSend.getId ( ).clone ( ) ) ;
     }
     else if ( pSend.getE ( ) instanceof Row )
     {
@@ -226,7 +226,7 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
                 "Inconsistent L20SmallStepProofRuleSet class." ) ; //$NON-NLS-1$
           }
         }
-        return new Send ( new Row ( newRowE ) , pSend.getId ( ) ) ;
+        return new Send ( new Row ( newRowE ) , pSend.getId ( ).clone ( ) ) ;
       }
       /*
        * Method or CurriedMethod
@@ -234,7 +234,7 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
       else if ( ( firstRowChild instanceof Method )
           || ( firstRowChild instanceof CurriedMethod ) )
       {
-        String id ;
+        Identifier id ;
         Expression methE ;
         if ( firstRowChild instanceof Method )
         {
@@ -285,8 +285,9 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
               CurriedMethod curriedMethod = ( CurriedMethod ) firstRowChild ;
               for ( int i = curriedMethod.getIdentifiers ( ).length - 1 ; i > 0 ; i -- )
               {
-                methE = new Lambda ( curriedMethod.getIdentifiers ( i ) ,
-                    curriedMethod.getTypes ( i ) , methE ) ;
+                methE = new Lambda ( curriedMethod.getIdentifiers ( i )
+                    .clone ( ) , curriedMethod.getTypes ( i ) == null ? null
+                    : curriedMethod.getTypes ( i ).clone ( ) , methE ) ;
               }
               return methE ;
             }
@@ -306,7 +307,7 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
         {
           newRowE [ i ] = row.getExpressions ( i + 1 ).clone ( ) ;
         }
-        return new Send ( new Row ( newRowE ) , pSend.getId ( ) ) ;
+        return new Send ( new Row ( newRowE ) , pSend.getId ( ).clone ( ) ) ;
       }
       else
       {
@@ -351,7 +352,15 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
     if ( ( ! allChildrenAreValues ) && ( pDuplication.getE ( ).isValue ( ) ) )
     {
       pContext.addProofStep ( getRuleByName ( DUPL_EVAL ) , pDuplication ) ;
-      Expression [ ] newDuplicationE = pDuplication.getExpressions ( ).clone ( ) ;
+      Identifier [ ] newDuplicationId = new Identifier [ pDuplication
+          .getIdentifiers ( ).length ] ;
+      Expression [ ] newDuplicationE = new Expression [ pDuplication
+          .getExpressions ( ).length ] ;
+      for ( int i = 0 ; i < newDuplicationE.length ; i ++ )
+      {
+        newDuplicationId [ i ] = pDuplication.getIdentifiers ( i ).clone ( ) ;
+        newDuplicationE [ i ] = pDuplication.getExpressions ( i ).clone ( ) ;
+      }
       for ( int i = 0 ; i < newDuplicationE.length ; i ++ )
       {
         if ( ! newDuplicationE [ i ].isValue ( ) )
@@ -362,7 +371,7 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
             return newDuplicationE [ i ] ;
           }
           return new Duplication ( pDuplication.getE ( ).clone ( ) ,
-              pDuplication.getIdentifiers ( ) , newDuplicationE ) ;
+              newDuplicationId , newDuplicationE ) ;
         }
       }
     }
@@ -376,8 +385,12 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
         && ( pDuplication.getE ( ).isValue ( ) ) )
     {
       ObjectExpr objectExpr = ( ObjectExpr ) pDuplication.getE ( ) ;
-      Row row = objectExpr.getE ( ) ;
-      Expression [ ] newRowE = row.getExpressions ( ).clone ( ) ;
+      Row row = ( Row ) objectExpr.getE ( ) ;
+      Expression [ ] newRowE = new Expression [ row.getExpressions ( ).length ] ;
+      for ( int i = 0 ; i < newRowE.length ; i ++ )
+      {
+        newRowE [ i ] = row.getExpressions ( i ).clone ( ) ;
+      }
       /*
        * Search all Identifiers of the Duplication in the Row of the ObjectExpr
        * and replace the Attribute, if the Identifiers are equal.
@@ -394,8 +407,9 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
             if ( attribute.getId ( )
                 .equals ( pDuplication.getIdentifiers ( i ) ) )
             {
-              newRowE [ j ] = new Attribute ( attribute.getId ( ) , attribute
-                  .getTau ( ) , pDuplication.getExpressions ( i ) ) ;
+              newRowE [ j ] = new Attribute ( attribute.getId ( ).clone ( ) ,
+                  attribute.getTau ( ) == null ? null : attribute.getTau ( )
+                      .clone ( ) , pDuplication.getExpressions ( i ).clone ( ) ) ;
               found = true ;
             }
           }
@@ -410,7 +424,8 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
         }
       }
       pContext.addProofStep ( getRuleByName ( DUPL_EXEC ) , pDuplication ) ;
-      return new ObjectExpr ( objectExpr.getId ( ) , objectExpr.getTau ( ) ,
+      return new ObjectExpr ( objectExpr.getId ( ).clone ( ) , objectExpr
+          .getTau ( ) == null ? null : objectExpr.getTau ( ).clone ( ) ,
           new Row ( newRowE ) ) ;
     }
     return pDuplication ;
@@ -456,8 +471,9 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
               newRowExpressions [ j ] = pRow.getExpressions ( j ).clone ( ) ;
             }
           }
-          newRowExpressions [ i ] = new Attribute ( attribute.getId ( ) ,
-              attribute.getTau ( ) , attrE ) ;
+          newRowExpressions [ i ] = new Attribute ( attribute.getId ( )
+              .clone ( ) , attribute.getTau ( ) == null ? null : attribute
+              .getTau ( ).clone ( ) , attrE ) ;
           return new Row ( newRowExpressions ) ;
         }
         /*
@@ -501,9 +517,10 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
               boundRenaming.add ( currentAttribute.getId ( ) ) ;
             }
           }
-          String newId = boundRenaming.newIdentifier ( attribute.getId ( ) ) ;
+          Identifier newId = boundRenaming.newId ( attribute.getId ( ) ) ;
           newRowExpressions [ i ] = new Attribute ( newId ,
-              attribute.getTau ( ) , attribute.getE ( ).clone ( ) ) ;
+              attribute.getTau ( ) == null ? null : attribute.getTau ( )
+                  .clone ( ) , attribute.getE ( ).clone ( ) ) ;
           for ( int j = i + 1 ; j < newRowExpressions.length ; j ++ )
           {
             if ( newRowExpressions [ j ] instanceof Attribute )
@@ -518,7 +535,7 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
                 || ( newRowExpressions [ j ] instanceof CurriedMethod ) )
             {
               newRowExpressions [ j ] = newRowExpressions [ j ].substitute (
-                  attribute.getId ( ) , new Identifier ( newId ) , true ) ;
+                  attribute.getId ( ) , newId , true ) ;
             }
             else
             {

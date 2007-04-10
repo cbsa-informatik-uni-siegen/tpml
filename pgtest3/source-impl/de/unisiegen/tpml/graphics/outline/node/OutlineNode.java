@@ -4,11 +4,9 @@ package de.unisiegen.tpml.graphics.outline.node ;
 import java.awt.Color ;
 import javax.swing.tree.DefaultMutableTreeNode ;
 import de.unisiegen.tpml.core.expressions.BinaryOperator ;
-import de.unisiegen.tpml.core.expressions.CurriedMethod ;
 import de.unisiegen.tpml.core.expressions.Exn ;
 import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.expressions.Identifier ;
-import de.unisiegen.tpml.core.expressions.Method ;
 import de.unisiegen.tpml.core.expressions.Row ;
 import de.unisiegen.tpml.core.expressions.Value ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation ;
@@ -19,7 +17,6 @@ import de.unisiegen.tpml.core.types.Type ;
 import de.unisiegen.tpml.graphics.Theme ;
 import de.unisiegen.tpml.graphics.outline.Outline ;
 import de.unisiegen.tpml.graphics.outline.binding.OutlineBinding ;
-import de.unisiegen.tpml.graphics.outline.binding.OutlinePair ;
 import de.unisiegen.tpml.graphics.outline.binding.OutlineUnbound ;
 
 
@@ -41,12 +38,6 @@ public final class OutlineNode extends DefaultMutableTreeNode
    * The {@link Expression} should not be shown in this nodes.
    */
   private static final int NO_SELECTION = - 1 ;
-
-
-  /**
-   * There is no {@link Identifier} in this {@link Expression}.
-   */
-  private static final int NO_IDENTIFIER = - 1 ;
 
 
   /**
@@ -109,33 +100,15 @@ public final class OutlineNode extends DefaultMutableTreeNode
 
 
   /**
-   * Lower than.
-   */
-  private static final String LOWER_THAN = "<" ; //$NON-NLS-1$
-
-
-  /**
    * Lower than replace.
    */
   private static final String LOWER_THAN_REPLACE = "&lt" ; //$NON-NLS-1$
 
 
   /**
-   * Greater than.
-   */
-  private static final String GREATER_THAN = "<" ; //$NON-NLS-1$
-
-
-  /**
    * Greater than replace.
    */
   private static final String GREATER_THAN_REPLACE = "&gt" ; //$NON-NLS-1$
-
-
-  /**
-   * Ampersand.
-   */
-  private static final String AMPERSAND_THAN = "&" ; //$NON-NLS-1$
 
 
   /**
@@ -214,12 +187,6 @@ public final class OutlineNode extends DefaultMutableTreeNode
    * Caption of the {@link Type}.
    */
   private static final String TYPE_PHI = "\u03A6" ; //$NON-NLS-1$
-
-
-  /**
-   * Caption of the {@link Method} or {@link CurriedMethod}.
-   */
-  private static final String METH = "m" ; //$NON-NLS-1$
 
 
   /**
@@ -414,7 +381,7 @@ public final class OutlineNode extends DefaultMutableTreeNode
 
 
   /**
-   * The {@link Expression} as a <code>String</code>.
+   * The {@link Expression} or (@link Type} as a <code>String</code>.
    */
   private String nodeString ;
 
@@ -422,10 +389,10 @@ public final class OutlineNode extends DefaultMutableTreeNode
   /**
    * The hole caption in HTML format.
    * 
-   * @see #getCaption()
-   * @see #setCaption(String)
+   * @see #getCaptionHTML()
+   * @see #setCaptionHTML(String)
    */
-  private String caption ;
+  private String captionHTML ;
 
 
   /**
@@ -447,22 +414,6 @@ public final class OutlineNode extends DefaultMutableTreeNode
    * @see #setOutlineBinding(OutlineBinding)
    */
   private OutlineBinding outlineBinding ;
-
-
-  /**
-   * The start index of the {@link Identifier}.
-   * 
-   * @see #getEndIndex()
-   */
-  private int startIndex ;
-
-
-  /**
-   * The end index of the {@link Identifier}.
-   * 
-   * @see #getStartIndex()
-   */
-  private int endIndex ;
 
 
   /**
@@ -505,12 +456,6 @@ public final class OutlineNode extends DefaultMutableTreeNode
 
 
   /**
-   * Indicates, if this node is a {@link Identifier}.
-   */
-  private boolean isIdentifier ;
-
-
-  /**
    * Indicates, if this node is a {@link Expression}.
    */
   private boolean isExpression ;
@@ -520,6 +465,12 @@ public final class OutlineNode extends DefaultMutableTreeNode
    * Indicates, if this node is a {@link Type}.
    */
   private boolean isType ;
+
+
+  /**
+   * Indicates, if this node is a {@link Identifier}.
+   */
+  private boolean isIdentifier ;
 
 
   /**
@@ -583,33 +534,26 @@ public final class OutlineNode extends DefaultMutableTreeNode
 
 
   /**
-   * This constructor initializes the values and loads the description. It is
-   * used for {@link Expression}s.
-   * 
-   * @param pExpression The {@link Expression} repressented by this node.
-   * @param pOutlineUnbound The {@link OutlineUnbound} which repressents the
-   *          unbound {@link Identifier}s in all nodes.
+   * This constructor initializes the values.
    */
-  public OutlineNode ( Expression pExpression , OutlineUnbound pOutlineUnbound )
+  private OutlineNode ( )
   {
-    this.expression = pExpression ;
+    this.expression = null ;
     this.type = null ;
-    this.description = pExpression.getCaption ( ) ;
+    this.description = null ;
     this.childIndex = "" ; //$NON-NLS-1$
-    this.nodeString = pExpression.toPrettyString ( ).toString ( ) ;
-    this.startIndex = NO_IDENTIFIER ;
-    this.endIndex = NO_IDENTIFIER ;
+    this.nodeString = null ;
     this.outlineBinding = null ;
-    this.outlineUnbound = pOutlineUnbound ;
+    this.outlineUnbound = null ;
     this.replaceInThisNode = false ;
-    this.boundedStart = NO_BINDING ;
-    this.boundedEnd = NO_BINDING ;
-    this.outlineBreak = new OutlineBreak ( this.expression ) ;
-    this.currentOutlineBreak = new OutlineBreak ( ) ;
+    this.outlineBreak = null ;
+    this.currentOutlineBreak = null ;
     this.breakCount = 0 ;
-    this.isExpression = true ;
+    this.isExpression = false ;
     this.isIdentifier = false ;
     this.isType = false ;
+    this.boundedStart = NO_BINDING ;
+    this.boundedEnd = NO_BINDING ;
     this.lastSelectionStart = NO_SELECTION ;
     this.lastSelectionEnd = NO_SELECTION ;
     this.outlineNodeCacheList = new OutlineNodeCacheList ( ) ;
@@ -619,38 +563,114 @@ public final class OutlineNode extends DefaultMutableTreeNode
 
   /**
    * This constructor initializes the values and loads the description. It is
+   * used for {@link Expression}s.
+   * 
+   * @param pExpression The {@link Expression} repressented by this node.
+   * @param pOutlineUnbound The {@link OutlineUnbound} which repressents the
+   *          unbound {@link Identifier}s in all nodes.
+   * @param pChildIndex TODO
+   */
+  public OutlineNode ( Expression pExpression , OutlineUnbound pOutlineUnbound ,
+      int pChildIndex )
+  {
+    this ( ) ;
+    this.expression = pExpression ;
+    this.description = pExpression.getCaption ( ) ;
+    this.nodeString = pExpression.toPrettyString ( ).toString ( ) ;
+    this.outlineUnbound = pOutlineUnbound.reduce ( this.expression ) ;
+    this.outlineBreak = new OutlineBreak ( this.expression ) ;
+    this.currentOutlineBreak = new OutlineBreak ( ) ;
+    this.isExpression = true ;
+    // BinaryOperator
+    if ( this.expression instanceof BinaryOperator )
+    {
+      if ( pChildIndex <= OutlineNode.NO_CHILD_INDEX )
+      {
+        this.childIndex = OP + BETWEEN1 ;
+      }
+      else
+      {
+        this.childIndex = OP + SMALL_SUB_BEGIN + pChildIndex + SMALL_SUB_END
+            + BETWEEN1 ;
+      }
+    }
+    // Expression
+    else
+    {
+      // Value
+      if ( this.expression.isValue ( ) )
+      {
+        if ( this.expression instanceof Row )
+        {
+          this.childIndex = VALUE_ROW ;
+        }
+        else if ( this.expression instanceof Exn )
+        {
+          this.childIndex = EXN ;
+        }
+        else
+        {
+          this.childIndex = VALUE_EXPRESSION ;
+        }
+      }
+      // No Value
+      else
+      {
+        if ( this.expression instanceof Row )
+        {
+          this.childIndex = ROW ;
+        }
+        else if ( this.expression instanceof Exn )
+        {
+          this.childIndex = EXN ;
+        }
+        else
+        {
+          this.childIndex = EXPRESSION ;
+        }
+      }
+      // Index
+      if ( pChildIndex <= OutlineNode.NO_CHILD_INDEX )
+      {
+        this.childIndex += BETWEEN1 ;
+      }
+      else
+      {
+        this.childIndex += SMALL_SUB_BEGIN + pChildIndex + SMALL_SUB_END
+            + BETWEEN1 ;
+      }
+    }
+  }
+
+
+  /**
+   * This constructor initializes the values and loads the description. It is
    * used for {@link Identifier}s.
    * 
-   * @param pDescription The description of this node.
-   * @param pExpressionString The {@link Expression} as a <code>String</code>.
-   * @param pOutlinePair The start and the end index of the {@link Identifier}.
+   * @param pIdentifier The {@link Identifier} repressented by this node.
    * @param pOutlineBinding The bindings in this node.
+   * @param pChildIndex The child index.
    */
-  public OutlineNode ( String pDescription , String pExpressionString ,
-      OutlinePair pOutlinePair , OutlineBinding pOutlineBinding )
+  public OutlineNode ( Identifier pIdentifier , int pChildIndex ,
+      OutlineBinding pOutlineBinding )
   {
-    this.expression = null ;
-    this.type = null ;
-    this.description = pDescription ;
-    this.childIndex = "" ; //$NON-NLS-1$
-    this.nodeString = pExpressionString ;
-    this.startIndex = pOutlinePair.getStart ( ) ;
-    this.endIndex = pOutlinePair.getEnd ( ) ;
+    this ( ) ;
+    this.expression = pIdentifier ;
+    this.description = pIdentifier.getCaption ( ) ;
+    this.nodeString = pIdentifier.toPrettyString ( ).toString ( ) ;
     this.outlineBinding = pOutlineBinding ;
-    this.outlineUnbound = null ;
-    this.replaceInThisNode = false ;
-    this.boundedStart = NO_BINDING ;
-    this.boundedEnd = NO_BINDING ;
-    this.outlineBreak = null ;
-    this.currentOutlineBreak = null ;
-    this.breakCount = 0 ;
-    this.isExpression = false ;
+    this.outlineBreak = new OutlineBreak ( this.expression ) ;
+    this.currentOutlineBreak = new OutlineBreak ( ) ;
     this.isIdentifier = true ;
-    this.isType = false ;
-    this.lastSelectionStart = NO_SELECTION ;
-    this.lastSelectionEnd = NO_SELECTION ;
-    this.outlineNodeCacheList = new OutlineNodeCacheList ( ) ;
-    propertyChanged ( ) ;
+    if ( pChildIndex <= OutlineNode.NO_CHILD_INDEX )
+    {
+      this.childIndex = IDENTIFIER + BETWEEN1 ;
+    }
+    else
+    {
+      this.childIndex = IDENTIFIER + SMALL_SUB_BEGIN + pChildIndex
+          + SMALL_SUB_END + BETWEEN1 ;
+    }
   }
 
 
@@ -659,31 +679,42 @@ public final class OutlineNode extends DefaultMutableTreeNode
    * used for {@link Type}s.
    * 
    * @param pType The {@link Type} repressented by this node.
+   * @param pChildIndex The child index.
+   * @param isPhi True if the {@link Type} is a phi, false if it is a tau.
    */
-  public OutlineNode ( Type pType )
+  public OutlineNode ( Type pType , int pChildIndex , boolean isPhi )
   {
-    this.expression = null ;
+    this ( ) ;
     this.type = pType ;
     this.description = pType.getCaption ( ) ;
-    this.childIndex = "" ; //$NON-NLS-1$
     this.nodeString = pType.toPrettyString ( ).toString ( ) ;
-    this.startIndex = NO_IDENTIFIER ;
-    this.endIndex = NO_IDENTIFIER ;
-    this.outlineBinding = null ;
-    this.outlineUnbound = null ;
-    this.replaceInThisNode = false ;
-    this.boundedStart = NO_BINDING ;
-    this.boundedEnd = NO_BINDING ;
     this.outlineBreak = new OutlineBreak ( this.type ) ;
     this.currentOutlineBreak = new OutlineBreak ( ) ;
-    this.breakCount = 0 ;
-    this.isExpression = false ;
-    this.isIdentifier = false ;
     this.isType = true ;
-    this.lastSelectionStart = NO_SELECTION ;
-    this.lastSelectionEnd = NO_SELECTION ;
-    this.outlineNodeCacheList = new OutlineNodeCacheList ( ) ;
-    propertyChanged ( ) ;
+    if ( isPhi )
+    {
+      if ( pChildIndex <= OutlineNode.NO_CHILD_INDEX )
+      {
+        this.childIndex = TYPE_PHI + BETWEEN1 ;
+      }
+      else
+      {
+        this.childIndex = TYPE_PHI + SMALL_SUB_BEGIN + pChildIndex
+            + SMALL_SUB_END + BETWEEN1 ;
+      }
+    }
+    else
+    {
+      if ( pChildIndex <= OutlineNode.NO_CHILD_INDEX )
+      {
+        this.childIndex = TYPE_TAU + BETWEEN1 ;
+      }
+      else
+      {
+        this.childIndex = TYPE_TAU + SMALL_SUB_BEGIN + pChildIndex
+            + SMALL_SUB_END + BETWEEN1 ;
+      }
+    }
   }
 
 
@@ -772,66 +803,86 @@ public final class OutlineNode extends DefaultMutableTreeNode
 
 
   /**
-   * Highlight the selected {@link Identifier}.
+   * This method returns the length of the bounded {@link Identifier}, if the
+   * {@link Identifier} begins at the given pCharIndex.
+   * 
+   * @param pCharIndex The index of the char in the {@link Expression}.
+   * @return The length of the {@link Identifier}, if the {@link Identifier}
+   *         begins at the given pCharIndex.
    */
-  public final void enableBindingColor ( )
+  private final int charIsBinding ( int pCharIndex )
   {
-    StringBuffer result = new StringBuffer ( HTML ) ;
-    result.append ( this.childIndex ) ;
-    result.append ( DESCRIPTION_BEGIN ) ;
-    result.append ( this.description ) ;
-    result.append ( DESCRIPTION_END ) ;
-    result.append ( BETWEEN2 ) ;
-    result.append ( FONT_BEGIN ) ;
-    result.append ( this.expressionColor ) ;
-    result.append ( FONT_AFTER_COLOR ) ;
-    if ( binding )
+    if ( this.outlineBinding == null )
     {
-      result.append ( FONT_BOLD_BEGIN ) ;
-      result.append ( this.bindingColor ) ;
-      result.append ( FONT_AFTER_COLOR ) ;
-      result.append ( getHTMLCode ( this.nodeString ) ) ;
-      result.append ( FONT_BOLD_END ) ;
+      return - 1 ;
     }
-    else
+    PrettyAnnotation prettyAnnotation ;
+    for ( int i = 0 ; i < this.outlineBinding.size ( ) ; i ++ )
     {
-      result.append ( getHTMLCode ( this.nodeString ) ) ;
+      try
+      {
+        prettyAnnotation = this.expression.toPrettyString ( )
+            .getAnnotationForPrintable ( this.outlineBinding.get ( i ) ) ;
+        if ( ( pCharIndex >= prettyAnnotation.getStartOffset ( ) )
+            && ( pCharIndex <= prettyAnnotation.getEndOffset ( ) ) )
+        {
+          return prettyAnnotation.getEndOffset ( )
+              - prettyAnnotation.getStartOffset ( ) + 1 ;
+        }
+      }
+      catch ( IllegalArgumentException e )
+      {
+        /*
+         * Happens if the bounded Identifiers are not in this node.
+         */
+      }
     }
-    result.append ( EXPRESSION_END ) ;
-    this.caption = result.toString ( ) ;
+    return - 1 ;
   }
 
 
   /**
-   * Highlight the selected {@link Identifier}.
+   * This method returns the length of the bounded {@link Identifier}, if the
+   * {@link Identifier} begins at the given pCharIndex.
+   * 
+   * @param pCharIndex The index of the char in the {@link Expression}.
+   * @return The length of the {@link Identifier}, if the {@link Identifier}
+   *         begins at the given pCharIndex.
    */
-  public final void enableSelectionColor ( )
+  private final int charIsSelectedBounded ( int pCharIndex )
   {
-    if ( this.isIdentifier )
+    if ( ( pCharIndex >= this.boundedStart )
+        && ( pCharIndex <= this.boundedEnd ) )
     {
-      StringBuffer result = new StringBuffer ( HTML ) ;
-      result.append ( this.childIndex ) ;
-      result.append ( DESCRIPTION_BEGIN ) ;
-      result.append ( this.description ) ;
-      result.append ( DESCRIPTION_END ) ;
-      result.append ( BETWEEN2 ) ;
-      result.append ( FONT_BEGIN ) ;
-      result.append ( this.expressionColor ) ;
-      result.append ( FONT_AFTER_COLOR ) ;
-      if ( selection )
-      {
-        result.append ( FONT_BOLD_BEGIN ) ;
-        result.append ( this.selectionColor ) ;
-        result.append ( FONT_AFTER_COLOR ) ;
-      }
-      result.append ( getHTMLCode ( this.nodeString ) ) ;
-      if ( selection )
-      {
-        result.append ( FONT_BOLD_END ) ;
-      }
-      result.append ( EXPRESSION_END ) ;
-      this.caption = result.toString ( ) ;
+      return this.boundedEnd - this.boundedStart + 1 ;
     }
+    return - 1 ;
+  }
+
+
+  /**
+   * This method returns the length of the unbound {@link Identifier}, if the
+   * {@link Identifier} begins at the given pCharIndex.
+   * 
+   * @param pCharIndex pCharIndex The index of the char in the
+   *          {@link Expression}.
+   * @return The length of the {@link Identifier}, if the {@link Identifier}
+   *         begins at the given pCharIndex.
+   */
+  private final int charIsUnbound ( int pCharIndex )
+  {
+    for ( int i = 0 ; i < this.outlineUnbound.size ( ) ; i ++ )
+    {
+      PrettyAnnotation prettyAnnotation = this.expression.toPrettyString ( )
+          .getAnnotationForPrintable ( this.outlineUnbound.get ( i ) ) ;
+      if ( ( pCharIndex >= prettyAnnotation.getStartOffset ( ) )
+          && ( pCharIndex <= prettyAnnotation.getEndOffset ( ) ) )
+      {
+        return prettyAnnotation.getEndOffset ( )
+            - prettyAnnotation.getStartOffset ( ) + 1 ;
+      }
+    }
+    return - 1 ;
   }
 
 
@@ -839,23 +890,11 @@ public final class OutlineNode extends DefaultMutableTreeNode
    * Returns the caption.
    * 
    * @return The caption.
-   * @see #caption
+   * @see #captionHTML
    */
-  public final String getCaption ( )
+  public final String getCaptionHTML ( )
   {
-    return this.caption ;
-  }
-
-
-  /**
-   * Returns the end index of the {@link Identifier}.
-   * 
-   * @return The end index of the {@link Identifier}.
-   * @see #endIndex
-   */
-  public final int getEndIndex ( )
-  {
-    return this.endIndex ;
+    return this.captionHTML ;
   }
 
 
@@ -884,24 +923,9 @@ public final class OutlineNode extends DefaultMutableTreeNode
 
 
   /**
-   * Returns the replaced <code>String</code>.
+   * Returns the nodeString.
    * 
-   * @param pText Input <code>String</code>.
-   * @return The replaced <code>String</code>.
-   */
-  private final String getHTMLCode ( String pText )
-  {
-    String s = pText.replaceAll ( AMPERSAND_THAN , AMPERSAND_THAN_REPLACE ) ;
-    s = s.replaceAll ( LOWER_THAN , LOWER_THAN_REPLACE ) ;
-    s = s.replaceAll ( GREATER_THAN , GREATER_THAN_REPLACE ) ;
-    return s ;
-  }
-
-
-  /**
-   * Returns the expressionString.
-   * 
-   * @return The expressionString.
+   * @return The nodeString.
    * @see #nodeString
    */
   public final String getNodeString ( )
@@ -952,19 +976,11 @@ public final class OutlineNode extends DefaultMutableTreeNode
     {
       return this.type ;
     }
+    if ( this.isIdentifier )
+    {
+      return this.expression ;
+    }
     return null ;
-  }
-
-
-  /**
-   * Returns the start index of the {@link Identifier}.
-   * 
-   * @return The start index of the {@link Identifier}.
-   * @see #startIndex
-   */
-  public final int getStartIndex ( )
-  {
-    return this.startIndex ;
   }
 
 
@@ -976,45 +992,6 @@ public final class OutlineNode extends DefaultMutableTreeNode
   public final boolean hasBreaks ( )
   {
     return this.breakCount > 0 ;
-  }
-
-
-  /**
-   * This method returns the length of the bounded {@link Identifier}, if the
-   * {@link Identifier} begins at the given pCharIndex.
-   * 
-   * @param pCharIndex The index of the char in the {@link Expression}.
-   * @return The length of the {@link Identifier}, if the {@link Identifier}
-   *         begins at the given pCharIndex.
-   */
-  private final int isBinding ( int pCharIndex )
-  {
-    if ( this.outlineBinding == null )
-    {
-      return - 1 ;
-    }
-    PrettyAnnotation prettyAnnotation ;
-    for ( int i = 0 ; i < this.outlineBinding.size ( ) ; i ++ )
-    {
-      try
-      {
-        prettyAnnotation = this.expression.toPrettyString ( )
-            .getAnnotationForPrintable ( this.outlineBinding.get ( i ) ) ;
-        if ( ( pCharIndex >= prettyAnnotation.getStartOffset ( ) )
-            && ( pCharIndex <= prettyAnnotation.getEndOffset ( ) ) )
-        {
-          return prettyAnnotation.getEndOffset ( )
-              - prettyAnnotation.getStartOffset ( ) + 1 ;
-        }
-      }
-      catch ( IllegalArgumentException e )
-      {
-        /*
-         * Happens if the bounded Identifiers are not in this node.
-         */
-      }
-    }
-    return - 1 ;
   }
 
 
@@ -1043,25 +1020,6 @@ public final class OutlineNode extends DefaultMutableTreeNode
 
 
   /**
-   * This method returns the length of the bounded {@link Identifier}, if the
-   * {@link Identifier} begins at the given pCharIndex.
-   * 
-   * @param pCharIndex The index of the char in the {@link Expression}.
-   * @return The length of the {@link Identifier}, if the {@link Identifier}
-   *         begins at the given pCharIndex.
-   */
-  private final int isSelectedBounded ( int pCharIndex )
-  {
-    if ( ( pCharIndex >= this.boundedStart )
-        && ( pCharIndex <= this.boundedEnd ) )
-    {
-      return this.boundedEnd - this.boundedStart + 1 ;
-    }
-    return - 1 ;
-  }
-
-
-  /**
    * Returns the isType.
    * 
    * @return The isType.
@@ -1070,41 +1028,6 @@ public final class OutlineNode extends DefaultMutableTreeNode
   public final boolean isType ( )
   {
     return this.isType ;
-  }
-
-
-  /**
-   * This method returns the length of the unbound {@link Identifier}, if the
-   * {@link Identifier} begins at the given pCharIndex.
-   * 
-   * @param pCharIndex pCharIndex The index of the char in the
-   *          {@link Expression}.
-   * @return The length of the {@link Identifier}, if the {@link Identifier}
-   *         begins at the given pCharIndex.
-   */
-  private final int isUnbound ( int pCharIndex )
-  {
-    for ( int i = 0 ; i < this.outlineUnbound.size ( ) ; i ++ )
-    {
-      try
-      {
-        PrettyAnnotation prettyAnnotation = this.expression.toPrettyString ( )
-            .getAnnotationForPrintable ( this.outlineUnbound.get ( i ) ) ;
-        if ( ( pCharIndex >= prettyAnnotation.getStartOffset ( ) )
-            && ( pCharIndex <= prettyAnnotation.getEndOffset ( ) ) )
-        {
-          return prettyAnnotation.getEndOffset ( )
-              - prettyAnnotation.getStartOffset ( ) + 1 ;
-        }
-      }
-      catch ( IllegalArgumentException e )
-      {
-        /*
-         * Happens if the unbound Identifiers are not in this node.
-         */
-      }
-    }
-    return - 1 ;
   }
 
 
@@ -1131,51 +1054,23 @@ public final class OutlineNode extends DefaultMutableTreeNode
 
 
   /**
-   * Resets the caption of the node.
-   */
-  public final void resetCaption ( )
-  {
-    if ( this.isIdentifier )
-    {
-      StringBuffer result = new StringBuffer ( HTML ) ;
-      result.append ( this.childIndex ) ;
-      result.append ( DESCRIPTION_BEGIN ) ;
-      result.append ( this.description ) ;
-      result.append ( DESCRIPTION_END ) ;
-      result.append ( BETWEEN2 ) ;
-      result.append ( FONT_BEGIN ) ;
-      result.append ( this.expressionColor ) ;
-      result.append ( FONT_AFTER_COLOR ) ;
-      result.append ( getHTMLCode ( this.nodeString ) ) ;
-      result.append ( EXPRESSION_END ) ;
-      this.caption = result.toString ( ) ;
-    }
-    else
-    {
-      updateCaption ( ) ;
-    }
-  }
-
-
-  /**
-   * Sets the end index of the {@link Identifier}.
+   * Sets the {@link Identifier} which should be highlighted.
    * 
-   * @param pBoundEnd The end index of the {@link Identifier}.
+   * @param pBoundedIdentifier The {@link Identifier} which should be
+   *          highlighted.
    */
-  public final void setBoundedEnd ( int pBoundEnd )
+  public void setBoundedIdentifier ( Identifier pBoundedIdentifier )
   {
-    this.boundedEnd = pBoundEnd ;
-  }
-
-
-  /**
-   * Sets the start index of the {@link Identifier}.
-   * 
-   * @param pBoundStart The start index of the {@link Identifier}.
-   */
-  public final void setBoundedStart ( int pBoundStart )
-  {
-    this.boundedStart = pBoundStart ;
+    if ( ( this.expression == null ) || ( pBoundedIdentifier == null ) )
+    {
+      this.boundedStart = NO_BINDING ;
+      this.boundedEnd = NO_BINDING ;
+      return ;
+    }
+    PrettyAnnotation prettyAnnotation = this.expression.toPrettyString ( )
+        .getAnnotationForPrintable ( pBoundedIdentifier ) ;
+    this.boundedStart = prettyAnnotation.getStartOffset ( ) ;
+    this.boundedEnd = prettyAnnotation.getEndOffset ( ) ;
   }
 
 
@@ -1183,228 +1078,11 @@ public final class OutlineNode extends DefaultMutableTreeNode
    * Sets the caption of this node.
    * 
    * @param pCaption The caption of this node.
-   * @see #caption
+   * @see #captionHTML
    */
-  public void setCaption ( String pCaption )
+  public void setCaptionHTML ( String pCaption )
   {
-    this.caption = pCaption ;
-  }
-
-
-  /**
-   * Sets the child index of the {@link Expression}.
-   * 
-   * @see #childIndex
-   */
-  public final void setChildIndexExpression ( )
-  {
-    setChildIndexExpression ( NO_CHILD_INDEX ) ;
-  }
-
-
-  /**
-   * Sets the child index of the {@link Expression}.
-   * 
-   * @param pChildIndexExpression The child index of the {@link Expression}.
-   * @see #childIndex
-   */
-  public final void setChildIndexExpression ( int pChildIndexExpression )
-  {
-    if ( this.expression.isValue ( ) )
-    {
-      if ( this.expression instanceof Row )
-      {
-        this.childIndex = VALUE_ROW ;
-      }
-      else if ( this.expression instanceof Exn )
-      {
-        this.childIndex = EXN ;
-      }
-      else
-      {
-        this.childIndex = VALUE_EXPRESSION ;
-      }
-    }
-    else
-    {
-      if ( this.expression instanceof Row )
-      {
-        this.childIndex = ROW ;
-      }
-      else if ( this.expression instanceof Exn )
-      {
-        this.childIndex = EXN ;
-      }
-      else
-      {
-        this.childIndex = EXPRESSION ;
-      }
-    }
-    if ( pChildIndexExpression <= NO_CHILD_INDEX )
-    {
-      this.childIndex += BETWEEN1 ;
-    }
-    else
-    {
-      this.childIndex += SMALL_SUB_BEGIN + pChildIndexExpression
-          + SMALL_SUB_END + BETWEEN1 ;
-    }
-  }
-
-
-  /**
-   * Sets the child index of the {@link Identifier}.
-   * 
-   * @see #childIndex
-   */
-  public final void setChildIndexIdentifier ( )
-  {
-    setChildIndexIdentifier ( NO_CHILD_INDEX ) ;
-  }
-
-
-  /**
-   * Sets the child index of the {@link Identifier}.
-   * 
-   * @param pChildIndexIdentifier The child index of the {@link Identifier}.
-   * @see #childIndex
-   */
-  public final void setChildIndexIdentifier ( int pChildIndexIdentifier )
-  {
-    if ( pChildIndexIdentifier <= OutlineNode.NO_CHILD_INDEX )
-    {
-      this.childIndex = IDENTIFIER + BETWEEN1 ;
-    }
-    else
-    {
-      this.childIndex = IDENTIFIER + SMALL_SUB_BEGIN + pChildIndexIdentifier
-          + SMALL_SUB_END + BETWEEN1 ;
-    }
-  }
-
-
-  /**
-   * Sets the child index of the {@link Method} or {@link CurriedMethod}.
-   * 
-   * @see #childIndex
-   */
-  public final void setChildIndexMeth ( )
-  {
-    setChildIndexMeth ( NO_CHILD_INDEX ) ;
-  }
-
-
-  /**
-   * Sets the child index of the {@link Method} or {@link CurriedMethod}.
-   * 
-   * @param pChildIndexMeth The child index of the {@link Method} or
-   *          {@link CurriedMethod}.
-   * @see #childIndex
-   */
-  public final void setChildIndexMeth ( int pChildIndexMeth )
-  {
-    if ( pChildIndexMeth <= OutlineNode.NO_CHILD_INDEX )
-    {
-      this.childIndex = METH + BETWEEN1 ;
-    }
-    else
-    {
-      this.childIndex = METH + SMALL_SUB_BEGIN + pChildIndexMeth
-          + SMALL_SUB_END + BETWEEN1 ;
-    }
-  }
-
-
-  /**
-   * Sets the child index of the {@link BinaryOperator}.
-   * 
-   * @see #childIndex
-   */
-  public final void setChildIndexOp ( )
-  {
-    setChildIndexOp ( NO_CHILD_INDEX ) ;
-  }
-
-
-  /**
-   * Sets the child index of the {@link BinaryOperator}.
-   * 
-   * @param pChildIndexOp The child index of the {@link BinaryOperator}.
-   * @see #childIndex
-   */
-  public final void setChildIndexOp ( int pChildIndexOp )
-  {
-    if ( pChildIndexOp <= OutlineNode.NO_CHILD_INDEX )
-    {
-      this.childIndex = OP + BETWEEN1 ;
-    }
-    else
-    {
-      this.childIndex = OP + SMALL_SUB_BEGIN + pChildIndexOp + SMALL_SUB_END
-          + BETWEEN1 ;
-    }
-  }
-
-
-  /**
-   * Sets the child index of the {@link Type}.
-   * 
-   * @see #childIndex
-   */
-  public final void setChildIndexTypePhi ( )
-  {
-    setChildIndexTypePhi ( NO_CHILD_INDEX ) ;
-  }
-
-
-  /**
-   * Sets the child index of the {@link Type}.
-   * 
-   * @param pChildIndexType The child index of the {@link Type}.
-   * @see #childIndex
-   */
-  public final void setChildIndexTypePhi ( int pChildIndexType )
-  {
-    if ( pChildIndexType <= OutlineNode.NO_CHILD_INDEX )
-    {
-      this.childIndex = TYPE_PHI + BETWEEN1 ;
-    }
-    else
-    {
-      this.childIndex = TYPE_PHI + SMALL_SUB_BEGIN + pChildIndexType
-          + SMALL_SUB_END + BETWEEN1 ;
-    }
-  }
-
-
-  /**
-   * Sets the child index of the {@link Type}.
-   * 
-   * @see #childIndex
-   */
-  public final void setChildIndexTypeTau ( )
-  {
-    setChildIndexTypeTau ( NO_CHILD_INDEX ) ;
-  }
-
-
-  /**
-   * Sets the child index of the {@link Type}.
-   * 
-   * @param pChildIndexType The child index of the {@link Type}.
-   * @see #childIndex
-   */
-  public final void setChildIndexTypeTau ( int pChildIndexType )
-  {
-    if ( pChildIndexType <= OutlineNode.NO_CHILD_INDEX )
-    {
-      this.childIndex = TYPE_TAU + BETWEEN1 ;
-    }
-    else
-    {
-      this.childIndex = TYPE_TAU + SMALL_SUB_BEGIN + pChildIndexType
-          + SMALL_SUB_END + BETWEEN1 ;
-    }
+    this.captionHTML = pCaption ;
   }
 
 
@@ -1417,7 +1095,7 @@ public final class OutlineNode extends DefaultMutableTreeNode
    */
   public final void setOutlineBinding ( OutlineBinding pOutlineBinding )
   {
-    if ( this.isExpression )
+    if ( ! this.isIdentifier )
     {
       this.outlineBinding = pOutlineBinding ;
     }
@@ -1445,7 +1123,7 @@ public final class OutlineNode extends DefaultMutableTreeNode
   @ Override
   public final String toString ( )
   {
-    return this.caption ;
+    return this.captionHTML ;
   }
 
 
@@ -1467,6 +1145,7 @@ public final class OutlineNode extends DefaultMutableTreeNode
    * @param pSelectionStart The start offset of the selection in this node.
    * @param pSelectionEnd The end offset of the selection in this node.
    */
+  @ SuppressWarnings ( "unqualified-field-access" )
   public final void updateCaption ( int pSelectionStart , int pSelectionEnd )
   {
     int selectionStart = pSelectionStart ;
@@ -1480,11 +1159,13 @@ public final class OutlineNode extends DefaultMutableTreeNode
     this.lastSelectionEnd = selectionEnd ;
     String cache = this.outlineNodeCacheList.getCaption ( selectionStart ,
         selectionEnd , selection , binding , unbound ,
-        ( replace && this.replaceInThisNode ) , this.breakCount ) ;
+        ( replace && this.replaceInThisNode ) , this.boundedStart ,
+        this.boundedEnd , this.breakCount , this.outlineBinding ) ;
     if ( cache != null )
     {
-      this.caption = cache ;
-      return ;
+      this.captionHTML = cache ;
+      // TODO Only for testing
+      // return ;
     }
     // Load the PrettyCharIterator
     PrettyCharIterator prettyCharIterator ;
@@ -1559,17 +1240,18 @@ public final class OutlineNode extends DefaultMutableTreeNode
       /*
        * Binding
        */
-      else if ( ( binding ) && ( this.outlineBinding != null )
-          && ( ( count = isBinding ( charIndex ) ) >= 0 ) )
+      else if ( ( binding ) && ( this.isExpression )
+          && ( this.outlineBinding != null )
+          && ( ( count = charIsBinding ( charIndex ) ) >= 0 ) )
       {
         charIndex = updateCaptionBinding ( charIndex , count ,
             prettyCharIterator , result , prefix , this.bindingColor ) ;
       }
       /*
-       * The selected Identifier-Expression is bounded in this Expression.
+       * The selected Identifier is bounded in this Expression.
        */
       else if ( ( binding )
-          && ( ( count = isSelectedBounded ( charIndex ) ) >= 0 ) )
+          && ( ( count = charIsSelectedBounded ( charIndex ) ) >= 0 ) )
       {
         charIndex = updateCaptionBinding ( charIndex , count ,
             prettyCharIterator , result , prefix , this.bindingColor ) ;
@@ -1590,7 +1272,7 @@ public final class OutlineNode extends DefaultMutableTreeNode
        * Unbound Identifier
        */
       else if ( ( unbound ) && ( this.outlineUnbound != null )
-          && ( ( count = isUnbound ( charIndex ) ) >= 0 ) )
+          && ( ( count = charIsUnbound ( charIndex ) ) >= 0 ) )
       {
         charIndex = updateCaptionBinding ( charIndex , count ,
             prettyCharIterator , result , prefix , this.unboundColor ) ;
@@ -1638,10 +1320,17 @@ public final class OutlineNode extends DefaultMutableTreeNode
     result.append ( EXPRESSION_END ) ;
     OutlineNodeCache outlineNodeCache = new OutlineNodeCache ( selectionStart ,
         selectionEnd , selection , binding , unbound ,
-        ( replace && this.replaceInThisNode ) , this.breakCount , result
+        ( replace && this.replaceInThisNode ) , this.boundedStart ,
+        this.boundedEnd , this.breakCount , this.outlineBinding , result
             .toString ( ) ) ;
     this.outlineNodeCacheList.add ( outlineNodeCache ) ;
-    this.caption = result.toString ( ) ;
+    this.captionHTML = result.toString ( ) ;
+    // TODO Only for testing
+    if ( ( cache != null ) && ( ! this.captionHTML.equals ( cache ) ) )
+    {
+      System.err.println ( "OutlineNode - Cache:   " + cache ) ; //$NON-NLS-1$
+      System.err.println ( "OutlineNode - Caption: " + captionHTML ) ; //$NON-NLS-1$
+    }
   }
 
 

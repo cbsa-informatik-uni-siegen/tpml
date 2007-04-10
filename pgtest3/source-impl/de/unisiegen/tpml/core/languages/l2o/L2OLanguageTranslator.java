@@ -6,10 +6,10 @@ import de.unisiegen.tpml.core.expressions.CurriedMethod ;
 import de.unisiegen.tpml.core.expressions.Duplication ;
 import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.expressions.Lambda ;
-import de.unisiegen.tpml.core.expressions.Send ;
 import de.unisiegen.tpml.core.expressions.Method ;
 import de.unisiegen.tpml.core.expressions.ObjectExpr ;
 import de.unisiegen.tpml.core.expressions.Row ;
+import de.unisiegen.tpml.core.expressions.Send ;
 import de.unisiegen.tpml.core.languages.l2.L2LanguageTranslator ;
 
 
@@ -109,8 +109,9 @@ public class L2OLanguageTranslator extends L2LanguageTranslator
     }
     for ( int i = pCurriedMethod.getIdentifiers ( ).length - 1 ; i > 0 ; i -- )
     {
-      curriedMethE = new Lambda ( pCurriedMethod.getIdentifiers ( i ) ,
-          pCurriedMethod.getTypes ( i ) , curriedMethE ) ;
+      curriedMethE = new Lambda (
+          pCurriedMethod.getIdentifiers ( i ).clone ( ) , pCurriedMethod
+              .getTypes ( i ) , curriedMethE ) ;
     }
     return new Method ( pCurriedMethod.getIdentifiers ( 0 ) , pCurriedMethod
         .getTypes ( 0 ) , curriedMethE ) ;
@@ -193,7 +194,7 @@ public class L2OLanguageTranslator extends L2LanguageTranslator
     if ( pRecursive )
     {
       return new ObjectExpr ( pObjectExpr.getId ( ) , pObjectExpr.getTau ( ) ,
-          ( Row ) translateToCoreSyntax ( pObjectExpr.getE ( ) , pRecursive ) ) ;
+          translateToCoreSyntax ( pObjectExpr.getE ( ) , pRecursive ) ) ;
     }
     return pObjectExpr ;
   }

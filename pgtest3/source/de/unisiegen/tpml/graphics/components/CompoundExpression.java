@@ -375,7 +375,7 @@ public class CompoundExpression < S , E > extends JComponent
       
      
       bonds.setHoleExpression ( this.expression ) ;
-      bonds.check ( this.expression ) ;
+     // bonds.check ( this.expression ) ;
       // Debug
       ArrayList < Bonds > bondsList = bonds.getAnnotations ( ) ;
       for ( int i = 0 ; i < bondsList.size ( ) ; i ++ )

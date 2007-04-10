@@ -3,6 +3,7 @@ package de.unisiegen.tpml.graphics.outline.node ;
 
 import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.expressions.Identifier ;
+import de.unisiegen.tpml.graphics.outline.binding.OutlineBinding ;
 
 
 /**
@@ -50,9 +51,29 @@ public class OutlineNodeCache
 
 
   /**
+   * The start index of the {@link Identifier}.
+   */
+  private int boundedStart ;
+
+
+  /**
+   * The end index of the {@link Identifier}.
+   */
+  private int boundedEnd ;
+
+
+  /**
    * The break count.
    */
   private int breakCount ;
+
+
+  /**
+   * The {@link OutlineBinding}.
+   * 
+   * @see #getOutlineBinding()
+   */
+  private OutlineBinding outlineBinding ;
 
 
   /**
@@ -74,12 +95,16 @@ public class OutlineNodeCache
    *          nodes.
    * @param pReplace The selected {@link Expression} should be replaced in
    *          higher nodes.
+   * @param pBoundedStart The start index of the {@link Identifier}.
+   * @param pBoundedEnd The end index of the {@link Identifier}.
    * @param pBreakCount The break count.
+   * @param pOutlineBinding The {@link OutlineBinding}.
    * @param pCaption The caption of the node.
    */
   public OutlineNodeCache ( int pSelectionStart , int pSelectionEnd ,
       boolean pSelection , boolean pBinding , boolean pUnbound ,
-      boolean pReplace , int pBreakCount , String pCaption )
+      boolean pReplace , int pBoundedStart , int pBoundedEnd , int pBreakCount ,
+      OutlineBinding pOutlineBinding , String pCaption )
   {
     this.selectionStart = pSelectionStart ;
     this.selectionEnd = pSelectionEnd ;
@@ -87,8 +112,35 @@ public class OutlineNodeCache
     this.binding = pBinding ;
     this.unbound = pUnbound ;
     this.replace = pReplace ;
+    this.boundedStart = pBoundedStart ;
+    this.boundedEnd = pBoundedEnd ;
     this.breakCount = pBreakCount ;
+    this.outlineBinding = pOutlineBinding ;
     this.caption = pCaption ;
+  }
+
+
+  /**
+   * Returns the end index of the {@link Identifier}.
+   * 
+   * @return The end index of the {@link Identifier}..
+   * @see #boundedEnd
+   */
+  public int getBoundedEnd ( )
+  {
+    return this.boundedEnd ;
+  }
+
+
+  /**
+   * Returns the start index of the {@link Identifier}.
+   * 
+   * @return The start index of the {@link Identifier}..
+   * @see #boundedStart
+   */
+  public int getBoundedStart ( )
+  {
+    return this.boundedStart ;
   }
 
 
@@ -113,6 +165,18 @@ public class OutlineNodeCache
   public String getCaption ( )
   {
     return this.caption ;
+  }
+
+
+  /**
+   * Returns the {@link OutlineBinding}.
+   * 
+   * @return The {@link OutlineBinding}.
+   * @see #outlineBinding
+   */
+  public final OutlineBinding getOutlineBinding ( )
+  {
+    return this.outlineBinding ;
   }
 
 

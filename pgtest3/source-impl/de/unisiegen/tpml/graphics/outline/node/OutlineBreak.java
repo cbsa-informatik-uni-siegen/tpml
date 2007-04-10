@@ -2,7 +2,6 @@ package de.unisiegen.tpml.graphics.outline.node ;
 
 
 import java.util.ArrayList ;
-import java.util.Enumeration ;
 import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation ;
 import de.unisiegen.tpml.core.types.Type ;
@@ -98,10 +97,9 @@ public final class OutlineBreak
     {
       this.breakList.add ( new Integer ( breaks [ i ] ) ) ;
     }
-    Enumeration < Expression > children = pExpression.children ( ) ;
-    while ( children.hasMoreElements ( ) )
+    ArrayList < Expression > children = pExpression.children ( ) ;
+    for ( Expression expr : children )
     {
-      Expression expr = children.nextElement ( ) ;
       PrettyAnnotation prettyAnnotationChild ;
       try
       {
@@ -148,21 +146,20 @@ public final class OutlineBreak
     {
       this.breakList.add ( new Integer ( breaks [ i ] ) ) ;
     }
-    Enumeration < Type > children = pType.children ( ) ;
-    while ( children.hasMoreElements ( ) )
+    ArrayList < Type > children = pType.children ( ) ;
+    for ( Type child : children )
     {
-      Type type = children.nextElement ( ) ;
       PrettyAnnotation prettyAnnotationChild ;
       try
       {
         prettyAnnotationChild = pType.toPrettyString ( )
-            .getAnnotationForPrintable ( type ) ;
+            .getAnnotationForPrintable ( child ) ;
       }
       catch ( IllegalArgumentException e )
       {
         continue ;
       }
-      OutlineBreak outlineBreakChild = new OutlineBreak ( type ) ;
+      OutlineBreak outlineBreakChild = new OutlineBreak ( child ) ;
       outlineBreakChild.addOffset ( prettyAnnotationChild.getStartOffset ( ) ) ;
       if ( breaks.length > 0 )
       {

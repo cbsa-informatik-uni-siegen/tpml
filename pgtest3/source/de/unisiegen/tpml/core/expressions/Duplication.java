@@ -40,7 +40,7 @@ public final class Duplication extends Expression
    * @see #getIdentifiers()
    * @see #getIdentifiers(int)
    */
-  protected String [ ] identifiers ;
+  private Identifier [ ] identifiers ;
 
 
   /**
@@ -50,8 +50,8 @@ public final class Duplication extends Expression
    * @param pIdentifiers TODO
    * @param pExpressions TODO
    */
-  public Duplication ( Expression pFirstExpression , String [ ] pIdentifiers ,
-      Expression [ ] pExpressions )
+  public Duplication ( Expression pFirstExpression ,
+      Identifier [ ] pIdentifiers , Expression [ ] pExpressions )
   {
     if ( pFirstExpression == null )
     {
@@ -75,7 +75,7 @@ public final class Duplication extends Expression
      * Example: "self {< a = 1 ; a = 2 ; a = 3 ; b = 4 >}" -> "self {< a = 3 ;
      * b = 4 >}"
      */
-    ArrayList < String > idList = new ArrayList < String > ( ) ;
+    ArrayList < Identifier > idList = new ArrayList < Identifier > ( ) ;
     ArrayList < Expression > exprList = new ArrayList < Expression > ( ) ;
     for ( int i = pIdentifiers.length - 1 ; i >= 0 ; i -- )
     {
@@ -86,7 +86,7 @@ public final class Duplication extends Expression
       }
     }
     this.e = pFirstExpression ;
-    this.identifiers = new String [ idList.size ( ) ] ;
+    this.identifiers = new Identifier [ idList.size ( ) ] ;
     this.expressions = new Expression [ exprList.size ( ) ] ;
     for ( int i = 0 ; i < idList.size ( ) ; i ++ )
     {
@@ -107,8 +107,12 @@ public final class Duplication extends Expression
     {
       newExpressions [ i ] = this.expressions [ i ].clone ( ) ;
     }
-    return new Duplication ( this.e.clone ( ) , this.identifiers ,
-        newExpressions ) ;
+    Identifier [ ] newIdentifiers = new Identifier [ this.identifiers.length ] ;
+    for ( int i = 0 ; i < newIdentifiers.length ; i ++ )
+    {
+      newIdentifiers [ i ] = this.identifiers [ i ].clone ( ) ;
+    }
+    return new Duplication ( this.e.clone ( ) , newIdentifiers , newExpressions ) ;
   }
 
 
@@ -185,7 +189,7 @@ public final class Duplication extends Expression
    * @see #identifiers
    * @see #getIdentifiers(int)
    */
-  public String [ ] getIdentifiers ( )
+  public Identifier [ ] getIdentifiers ( )
   {
     return this.identifiers ;
   }
@@ -199,7 +203,7 @@ public final class Duplication extends Expression
    * @see #identifiers
    * @see #getIdentifiers()
    */
-  public String getIdentifiers ( int pIndex )
+  public Identifier getIdentifiers ( int pIndex )
   {
     return this.identifiers [ pIndex ] ;
   }
@@ -229,10 +233,10 @@ public final class Duplication extends Expression
   /**
    * {@inheritDoc}
    * 
-   * @see Expression#substitute(String, Expression, boolean)
+   * @see Expression#substitute(Identifier, Expression, boolean)
    */
   @ Override
-  public Duplication substitute ( String pId , Expression pExpression )
+  public Duplication substitute ( Identifier pId , Expression pExpression )
   {
     return substitute ( pId , pExpression , false ) ;
   }
@@ -242,7 +246,7 @@ public final class Duplication extends Expression
    * {@inheritDoc}
    */
   @ Override
-  public Duplication substitute ( String pId , Expression pExpression ,
+  public Duplication substitute ( Identifier pId , Expression pExpression ,
       boolean pAttributeRename )
   {
     /*
@@ -255,6 +259,11 @@ public final class Duplication extends Expression
     /*
      * Perform the normal substitution.
      */
+    Identifier [ ] newIdentifiers = new Identifier [ this.identifiers.length ] ;
+    for ( int i = 0 ; i < newIdentifiers.length ; i ++ )
+    {
+      newIdentifiers [ i ] = this.identifiers [ i ].clone ( ) ;
+    }
     Expression [ ] newExpressions = new Expression [ this.expressions.length ] ;
     for ( int i = 0 ; i < newExpressions.length ; i ++ )
     {
@@ -262,7 +271,7 @@ public final class Duplication extends Expression
           pExpression ) ;
     }
     Expression newE = this.e.substitute ( pId , pExpression ) ;
-    return new Duplication ( newE , this.identifiers , newExpressions ) ;
+    return new Duplication ( newE , newIdentifiers , newExpressions ) ;
   }
 
 
@@ -282,7 +291,12 @@ public final class Duplication extends Expression
           .substitute ( pTypeSubstitution ) ;
     }
     Expression newFirstExpression = this.e.substitute ( pTypeSubstitution ) ;
-    return new Duplication ( newFirstExpression , this.identifiers ,
+    Identifier [ ] newIdentifiers = new Identifier [ this.identifiers.length ] ;
+    for ( int i = 0 ; i < newIdentifiers.length ; i ++ )
+    {
+      newIdentifiers [ i ] = this.identifiers [ i ].clone ( ) ;
+    }
+    return new Duplication ( newFirstExpression , newIdentifiers ,
         newExpressions ) ;
   }
 
@@ -294,7 +308,8 @@ public final class Duplication extends Expression
    * @param pExpression TODO
    * @return TODO
    */
-  private Duplication substituteAttribute ( String pId , Expression pExpression )
+  private Duplication substituteAttribute ( Identifier pId ,
+      Expression pExpression )
   {
     if ( ! ( pExpression instanceof Identifier ) )
     {
@@ -302,7 +317,11 @@ public final class Duplication extends Expression
           "Expression must be an instance of Identifier" ) ; //$NON-NLS-1$
     }
     Expression [ ] newExpressions = new Expression [ this.expressions.length ] ;
-    String [ ] newIdentifiers = this.identifiers.clone ( ) ;
+    Identifier [ ] newIdentifiers = new Identifier [ this.identifiers.length ] ;
+    for ( int i = 0 ; i < newIdentifiers.length ; i ++ )
+    {
+      newIdentifiers [ i ] = this.identifiers [ i ].clone ( ) ;
+    }
     for ( int i = 0 ; i < newExpressions.length ; i ++ )
     {
       /*
@@ -311,7 +330,7 @@ public final class Duplication extends Expression
        */
       if ( newIdentifiers [ i ].equals ( pId ) )
       {
-        newIdentifiers [ i ] = ( ( Identifier ) pExpression ).getName ( ) ;
+        newIdentifiers [ i ] = ( ( Identifier ) pExpression ).clone ( ) ;
       }
       newExpressions [ i ] = this.expressions [ i ].substitute ( pId ,
           pExpression , true ) ;
@@ -344,7 +363,8 @@ public final class Duplication extends Expression
       this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
       for ( int i = 0 ; i < this.expressions.length ; i ++ )
       {
-        this.prettyStringBuilder.addIdentifier ( this.identifiers [ i ] ) ;
+        this.prettyStringBuilder.addBuilder ( this.identifiers [ i ]
+            .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , 0 ) ;
         this.prettyStringBuilder.addText ( " = " ) ; //$NON-NLS-1$
         this.prettyStringBuilder.addBuilder ( this.expressions [ i ]
             .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,

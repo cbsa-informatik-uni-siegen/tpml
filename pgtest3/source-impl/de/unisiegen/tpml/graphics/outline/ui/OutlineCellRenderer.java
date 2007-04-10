@@ -96,7 +96,7 @@ public final class OutlineCellRenderer extends DefaultTreeCellRenderer
     OutlineNode outlineNode = ( OutlineNode ) pValue ;
     if ( ( outlineNode.hasBreaks ( ) ) && ( pSel ) )
     {
-      outlineNode.setCaption ( outlineNode.getCaption ( ).replaceAll (
+      outlineNode.setCaptionHTML ( outlineNode.getCaptionHTML ( ).replaceAll (
           WHITE_FONT , FONT_BEGIN + colorString + FONT_END ) ) ;
       this.setBorder ( new LineBorder ( Color.BLUE ) ) ;
     }

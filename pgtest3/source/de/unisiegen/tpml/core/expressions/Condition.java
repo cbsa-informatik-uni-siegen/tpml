@@ -165,10 +165,10 @@ public final class Condition extends Expression
   /**
    * {@inheritDoc}
    * 
-   * @see Expression#substitute(String, Expression, boolean)
+   * @see Expression#substitute(Identifier, Expression, boolean)
    */
   @ Override
-  public Condition substitute ( String pId , Expression pExpression )
+  public Condition substitute ( Identifier pId , Expression pExpression )
   {
     return substitute ( pId , pExpression , false ) ;
   }
@@ -177,10 +177,10 @@ public final class Condition extends Expression
   /**
    * {@inheritDoc}
    * 
-   * @see Expression#substitute(String, Expression, boolean)
+   * @see Expression#substitute(Identifier, Expression, boolean)
    */
   @ Override
-  public Condition substitute ( String pId , Expression pExpression ,
+  public Condition substitute ( Identifier pId , Expression pExpression ,
       boolean pAttributeRename )
   {
     Expression newE0 = this.e0.substitute ( pId , pExpression ,

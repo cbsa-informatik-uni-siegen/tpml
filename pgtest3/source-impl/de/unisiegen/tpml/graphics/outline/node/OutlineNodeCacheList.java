@@ -4,6 +4,7 @@ package de.unisiegen.tpml.graphics.outline.node ;
 import java.util.ArrayList ;
 import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.expressions.Identifier ;
+import de.unisiegen.tpml.graphics.outline.binding.OutlineBinding ;
 
 
 /**
@@ -62,12 +63,16 @@ public final class OutlineNodeCacheList
    *          nodes.
    * @param pReplace The selected {@link Expression} should be replaced in
    *          higher nodes.
+   * @param pBoundedStart The start index of the {@link Identifier}.
+   * @param pBoundedEnd The end index of the {@link Identifier}.
    * @param pBreakCount The break count.
+   * @param pOutlineBinding The {@link OutlineBinding}.
    * @return The cached caption, or <code>null</code> if it was not cached.
    */
   public final String getCaption ( int pSelectionStart , int pSelectionEnd ,
       boolean pSelection , boolean pBinding , boolean pUnbound ,
-      boolean pReplace , int pBreakCount )
+      boolean pReplace , int pBoundedStart , int pBoundedEnd , int pBreakCount ,
+      OutlineBinding pOutlineBinding )
   {
     for ( OutlineNodeCache current : this.list )
     {
@@ -77,7 +82,11 @@ public final class OutlineNodeCacheList
           && ( current.isBinding ( ) == pBinding )
           && ( current.isUnbound ( ) == pUnbound )
           && ( current.isReplace ( ) == pReplace )
-          && ( current.getBreakCount ( ) == pBreakCount ) )
+          && ( current.getBoundedStart ( ) == pBoundedStart )
+          && ( current.getBoundedEnd ( ) == pBoundedEnd )
+          && ( current.getBreakCount ( ) == pBreakCount )
+          && ( ( current.getOutlineBinding ( ) == null ) ? ( pOutlineBinding == null )
+              : current.getOutlineBinding ( ).equals ( pOutlineBinding ) ) )
       {
         return current.getCaption ( ) ;
       }

@@ -173,10 +173,10 @@ public final class InfixOperation extends Expression
   /**
    * {@inheritDoc}
    * 
-   * @see Expression#substitute(String, Expression, boolean)
+   * @see Expression#substitute(Identifier, Expression, boolean)
    */
   @ Override
-  public InfixOperation substitute ( String pId , Expression pExpression )
+  public InfixOperation substitute ( Identifier pId , Expression pExpression )
   {
     return substitute ( pId , pExpression , false ) ;
   }
@@ -185,10 +185,10 @@ public final class InfixOperation extends Expression
   /**
    * {@inheritDoc}
    * 
-   * @see Expression#substitute(String, Expression, boolean)
+   * @see Expression#substitute(Identifier, Expression, boolean)
    */
   @ Override
-  public InfixOperation substitute ( String pId , Expression pExpression ,
+  public InfixOperation substitute ( Identifier pId , Expression pExpression ,
       boolean pAttributeRename )
   {
     Expression newE1 = this.e1.substitute ( pId , pExpression ,

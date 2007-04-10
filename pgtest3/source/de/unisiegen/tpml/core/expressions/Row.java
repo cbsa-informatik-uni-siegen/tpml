@@ -3,7 +3,6 @@ package de.unisiegen.tpml.core.expressions ;
 
 import java.util.ArrayList ;
 import java.util.Arrays ;
-import java.util.TreeSet ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
@@ -84,26 +83,73 @@ public final class Row extends Expression
    * {@inheritDoc}
    */
   @ Override
-  public TreeSet < String > free ( )
+  public ArrayList < Identifier > free ( )
   {
     if ( this.free == null )
     {
-      this.free = new TreeSet < String > ( ) ;
-      TreeSet < String > bounded = new TreeSet < String > ( ) ;
+      this.free = new ArrayList < Identifier > ( ) ;
+      ArrayList < Identifier > newBounded = new ArrayList < Identifier > ( ) ;
       for ( Expression expr : this.expressions )
       {
-        TreeSet < String > freeCurrent = new TreeSet < String > ( ) ;
+        ArrayList < Identifier > freeCurrent = new ArrayList < Identifier > ( ) ;
         freeCurrent.addAll ( expr.free ( ) ) ;
-        freeCurrent.removeAll ( bounded ) ;
+        while ( freeCurrent.removeAll ( newBounded ) )
+        {
+          // Remove all Identifiers with the same name
+        }
         this.free.addAll ( freeCurrent ) ;
         if ( expr instanceof Attribute )
         {
           Attribute attribute = ( Attribute ) expr ;
-          bounded.add ( attribute.getId ( ) ) ;
+          newBounded.add ( attribute.getId ( ) ) ;
         }
       }
     }
     return this.free ;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @param pIndex TODO
+   * @return TODO
+   */
+  @ Override
+  public ArrayList < Identifier > getBoundedIdentifiers ( int pIndex )
+  {
+    if ( this.boundedIdentifiers == null )
+    {
+      this.boundedIdentifiers = new ArrayList < ArrayList < Identifier >> ( ) ;
+      for ( int i = 0 ; i < this.expressions.length ; i ++ )
+      {
+        ArrayList < Identifier > boundedId = new ArrayList < Identifier > ( ) ;
+        if ( this.expressions [ i ] instanceof Attribute )
+        {
+          Attribute attribute = ( Attribute ) this.expressions [ i ] ;
+          for ( int j = i + 1 ; j < this.expressions.length ; j ++ )
+          {
+            Expression child = this.expressions [ j ] ;
+            ArrayList < Identifier > boundedE = child.free ( ) ;
+            for ( Identifier freeId : boundedE )
+            {
+              if ( attribute.getId ( ).equals ( freeId ) )
+              {
+                boundedId.add ( freeId ) ;
+              }
+            }
+            if ( ( child instanceof Attribute )
+                && ( ( ( Attribute ) child ).getId ( ).equals ( attribute
+                    .getId ( ) ) ) )
+            {
+              break ;
+            }
+          }
+        }
+        this.boundedIdentifiers.add ( boundedId ) ;
+      }
+    }
+    return this.boundedIdentifiers.get ( pIndex ) ;
   }
 
 
@@ -160,7 +206,7 @@ public final class Row extends Expression
   @ Override
   public boolean isValue ( )
   {
-    ArrayList < String > attributeIdList = new ArrayList < String > ( ) ;
+    ArrayList < Identifier > attributeIdList = new ArrayList < Identifier > ( ) ;
     for ( Expression expr : this.expressions )
     {
       if ( expr instanceof Attribute )
@@ -190,10 +236,10 @@ public final class Row extends Expression
   /**
    * {@inheritDoc}
    * 
-   * @see Expression#substitute(String, Expression, boolean)
+   * @see Expression#substitute(Identifier, Expression, boolean)
    */
   @ Override
-  public Row substitute ( String pId , Expression pExpression )
+  public Row substitute ( Identifier pId , Expression pExpression )
   {
     return substitute ( pId , pExpression , false ) ;
   }
@@ -203,10 +249,14 @@ public final class Row extends Expression
    * {@inheritDoc}
    */
   @ Override
-  public Row substitute ( String pId , Expression pExpression ,
+  public Row substitute ( Identifier pId , Expression pExpression ,
       boolean pAttributeRename )
   {
-    Expression [ ] newExpressions = this.expressions.clone ( ) ;
+    Expression [ ] newExpressions = new Expression [ this.expressions.length ] ;
+    for ( int i = 0 ; i < this.expressions.length ; i ++ )
+    {
+      newExpressions [ i ] = this.expressions [ i ].clone ( ) ;
+    }
     if ( this.free ( ).contains ( pId ) )
     {
       for ( int i = 0 ; i < newExpressions.length ; i ++ )
@@ -228,19 +278,19 @@ public final class Row extends Expression
           boundRenaming.remove ( attribute.getId ( ) ) ;
           boundRenaming.add ( pExpression.free ( ) ) ;
           boundRenaming.add ( pId ) ;
-          String newId = boundRenaming.newIdentifier ( attribute.getId ( ) ) ;
+          Identifier newId = boundRenaming.newId ( attribute.getId ( ) ) ;
           if ( ! attribute.getId ( ).equals ( newId ) )
           {
             for ( int j = i + 1 ; j < newExpressions.length ; j ++ )
             {
               newExpressions [ j ] = newExpressions [ j ].substitute (
-                  attribute.getId ( ) , new Identifier ( newId ) ,
-                  pAttributeRename ) ;
+                  attribute.getId ( ) , newId , pAttributeRename ) ;
             }
           }
-          newExpressions [ i ] = new Attribute ( newId , attribute.getTau ( ) ,
-              attribute.getE ( ).substitute ( pId , pExpression ,
-                  pAttributeRename ) ) ;
+          newExpressions [ i ] = new Attribute ( newId ,
+              attribute.getTau ( ) == null ? null : attribute.getTau ( )
+                  .clone ( ) , attribute.getE ( ).substitute ( pId ,
+                  pExpression , pAttributeRename ) ) ;
         }
         else
         {

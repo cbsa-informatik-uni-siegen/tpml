@@ -1,7 +1,7 @@
 package de.unisiegen.tpml.core.expressions ;
 
 
-import java.util.TreeSet ;
+import java.util.ArrayList ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 
@@ -20,37 +20,19 @@ public final class Identifier extends Value
   /**
    * The {@link Expression} in which this {@link Identifier} is bounded.
    * 
-   * @see #boundedExpression()
-   * @see #boundedExpression(Expression)
+   * @see #getBoundedToExpression()
+   * @see #setBoundedToExpression(Expression)
    */
-  private Expression boundedExpression ;
+  private Expression boundedToExpression ;
 
 
   /**
-   * The start index of this {@link Identifier} in the boundedExpression.
+   * The {@link Identifier} to which this {@link Identifier} is bounded.
    * 
-   * @see #boundedStart()
-   * @see #boundedStart(int)
+   * @see #getBoundedToIdentifier()
+   * @see #setBoundedToIdentifier(Identifier)
    */
-  private int boundedStart ;
-
-
-  /**
-   * The end index of this {@link Identifier} in the boundedExpression.
-   * 
-   * @see #boundedEnd()
-   * @see #boundedEnd(int)
-   */
-  private int boundedEnd ;
-
-
-  /**
-   * The index of this {@link Identifier} in the boundedExpression.
-   * 
-   * @see #boundedIdentifierIndex()
-   * @see #boundedIdentifierIndex(int)
-   */
-  private int boundedIdentifierIndex ;
+  private Identifier boundedToIdentifier ;
 
 
   /**
@@ -69,127 +51,15 @@ public final class Identifier extends Value
   public Identifier ( String pName )
   {
     this.name = pName ;
-    this.boundedExpression = null ;
-    this.boundedStart = - 1 ;
-    this.boundedEnd = - 1 ;
-    this.boundedIdentifierIndex = - 1 ;
-  }
-
-
-  /**
-   * Returns the end index of this {@link Identifier} in the boundedExpression.
-   * 
-   * @return The end index of this {@link Identifier} in the boundedExpression.
-   * @see #boundedEnd
-   * @see #boundedEnd(int)
-   */
-  public int boundedEnd ( )
-  {
-    return this.boundedEnd ;
-  }
-
-
-  /**
-   * Sets the end index of this {@link Identifier} in the boundedExpression.
-   * 
-   * @param pBoundedEnd The end index of this {@link Identifier} in the
-   *          boundedExpression.
-   * @see #boundedEnd
-   * @see #boundedEnd()
-   */
-  public void boundedEnd ( int pBoundedEnd )
-  {
-    this.boundedEnd = pBoundedEnd ;
-  }
-
-
-  /**
-   * Returns the {@link Expression} in which this {@link Identifier} is bounded.
-   * 
-   * @return The {@link Expression} in which this {@link Identifier} is bounded.
-   * @see #boundedExpression
-   * @see #boundedExpression(Expression)
-   */
-  public Expression boundedExpression ( )
-  {
-    return this.boundedExpression ;
-  }
-
-
-  /**
-   * Sets the Expression in which this {@link Identifier} is bounded.
-   * 
-   * @param pBoundedExpression The {@link Expression} in which this
-   *          {@link Identifier} is bounded.
-   * @see #boundedExpression
-   * @see #boundedExpression()
-   */
-  public void boundedExpression ( Expression pBoundedExpression )
-  {
-    this.boundedExpression = pBoundedExpression ;
-  }
-
-
-  /**
-   * Returns the index of this {@link Identifier} in the boundedExpression.
-   * 
-   * @return The index of this {@link Identifier} in the boundedExpression.
-   * @see #boundedIdentifierIndex
-   * @see #boundedIdentifierIndex(int)
-   */
-  public int boundedIdentifierIndex ( )
-  {
-    return this.boundedIdentifierIndex ;
-  }
-
-
-  /**
-   * Sets the index of this {@link Identifier} in the boundedExpression.
-   * 
-   * @param pBoundedIdentifierIndex The index of this {@link Identifier} in the
-   *          boundedExpression.
-   * @see #boundedIdentifierIndex
-   * @see #boundedIdentifierIndex()
-   */
-  public void boundedIdentifierIndex ( int pBoundedIdentifierIndex )
-  {
-    this.boundedIdentifierIndex = pBoundedIdentifierIndex ;
-  }
-
-
-  /**
-   * Returns the start index of this {@link Identifier} in the
-   * boundedExpression.
-   * 
-   * @return The start index of this {@link Identifier} in the
-   *         boundedExpression.
-   * @see #boundedStart
-   * @see #boundedStart(int)
-   */
-  public int boundedStart ( )
-  {
-    return this.boundedStart ;
-  }
-
-
-  /**
-   * Sets the start index of this {@link Identifier} in the boundedExpression.
-   * 
-   * @param pBoundedStart The start index of this {@link Identifier} in the
-   *          boundedExpression.
-   * @see #boundedStart
-   * @see #boundedStart()
-   */
-  public void boundedStart ( int pBoundedStart )
-  {
-    this.boundedStart = pBoundedStart ;
+    this.boundedToExpression = null ;
+    this.boundedToIdentifier = null ;
   }
 
 
   /**
    * {@inheritDoc}
    * 
-   * @see de.unisiegen.tpml.core.expressions.Expression#clone()
+   * @see Expression#clone()
    */
   @ Override
   public Identifier clone ( )
@@ -201,7 +71,7 @@ public final class Identifier extends Value
   /**
    * {@inheritDoc}
    * 
-   * @see de.unisiegen.tpml.core.expressions.Expression#equals(java.lang.Object)
+   * @see Expression#equals(Object)
    */
   @ Override
   public boolean equals ( Object obj )
@@ -221,17 +91,43 @@ public final class Identifier extends Value
    * 
    * @return a set which contains the name of the identifier.
    * @see #getName()
-   * @see de.unisiegen.tpml.core.expressions.Expression#free()
+   * @see Expression#free()
    */
   @ Override
-  public TreeSet < String > free ( )
+  public ArrayList < Identifier > free ( )
   {
     if ( this.free == null )
     {
-      this.free = new TreeSet < String > ( ) ;
-      this.free.add ( this.name ) ;
+      this.free = new ArrayList < Identifier > ( ) ;
+      this.free.add ( this ) ;
     }
     return this.free ;
+  }
+
+
+  /**
+   * Returns the {@link Expression} in which this {@link Identifier} is bounded.
+   * 
+   * @return The {@link Expression} in which this {@link Identifier} is bounded.
+   * @see #boundedToExpression
+   * @see #setBoundedToExpression(Expression)
+   */
+  public Expression getBoundedToExpression ( )
+  {
+    return this.boundedToExpression ;
+  }
+
+
+  /**
+   * Returns the {@link Identifier} to which this {@link Identifier} is bounded.
+   * 
+   * @return The {@link Identifier} to which this {@link Identifier} is bounded.
+   * @see #boundedToIdentifier
+   * @see #setBoundedToIdentifier(Identifier)
+   */
+  public Identifier getBoundedToIdentifier ( )
+  {
+    return this.boundedToIdentifier ;
   }
 
 
@@ -259,7 +155,7 @@ public final class Identifier extends Value
   /**
    * {@inheritDoc}
    * 
-   * @see de.unisiegen.tpml.core.expressions.Expression#hashCode()
+   * @see Expression#hashCode()
    */
   @ Override
   public int hashCode ( )
@@ -269,12 +165,51 @@ public final class Identifier extends Value
 
 
   /**
+   * Sets the {@link Expression} in which this {@link Identifier} is bounded.
+   * 
+   * @param pBoundedToExpression The {@link Expression} in which this
+   *          {@link Identifier} is bounded.
+   * @see #boundedToExpression
+   * @see #getBoundedToExpression()
+   */
+  public void setBoundedToExpression ( Expression pBoundedToExpression )
+  {
+    if ( this.boundedToExpression != null )
+    {
+      System.err
+          .println ( "Identifier: Programming error! Please contact Christian Fehler!" ) ;//$NON-NLS-1$
+      System.err
+          .println ( "An Identifier can not be bounded to more than one Expression!" ) ; //$NON-NLS-1$
+      System.err.println ( "Identifier: " + this.name ) ; //$NON-NLS-1$
+      System.err.println ( "Old boundedToExpression: " //$NON-NLS-1$
+          + this.boundedToExpression ) ;
+      System.err.println ( "New boundedToExpression: " + pBoundedToExpression ) ; //$NON-NLS-1$
+    }
+    this.boundedToExpression = pBoundedToExpression ;
+  }
+
+
+  /**
+   * Sets the {@link Identifier} to which this {@link Identifier} is bounded.
+   * 
+   * @param pBoundedToIdentifier The {@link Identifier} to which this
+   *          {@link Identifier} is bounded.
+   * @see #boundedToIdentifier
+   * @see #getBoundedToIdentifier()
+   */
+  public void setBoundedToIdentifier ( Identifier pBoundedToIdentifier )
+  {
+    this.boundedToIdentifier = pBoundedToIdentifier ;
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
-   * @see Expression#substitute(String, Expression, boolean)
+   * @see Expression#substitute(Identifier, Expression, boolean)
    */
   @ Override
-  public Expression substitute ( String pId , Expression pExpression )
+  public Expression substitute ( Identifier pId , Expression pExpression )
   {
     return substitute ( pId , pExpression , false ) ;
   }
@@ -289,29 +224,26 @@ public final class Identifier extends Value
    * @see #getName()
    */
   @ Override
-  public Expression substitute ( String id , Expression e ,
+  public Expression substitute ( Identifier pId , Expression pExpression ,
       @ SuppressWarnings ( "unused" )
       boolean pAttributeRename )
   {
-    if ( id.equals ( getName ( ) ) )
+    if ( pId.equals ( this ) )
     {
       /*
        * We need to clone the expression here to make sure we can distinguish an
        * expression in the pretty printer that is substituted multiple times
        */
-      return e.clone ( ) ;
+      return pExpression.clone ( ) ;
     }
-    return this ;
+    return this.clone ( ) ;
   }
 
 
-  //
-  // Pretty printing
-  //
   /**
    * {@inheritDoc}
    * 
-   * @see de.unisiegen.tpml.core.expressions.Expression#toPrettyStringBuilder(de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory)
+   * @see Expression#toPrettyStringBuilder(PrettyStringBuilderFactory)
    */
   @ Override
   public PrettyStringBuilder toPrettyStringBuilder (

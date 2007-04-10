@@ -153,10 +153,10 @@ public final class Tuple extends Expression
   /**
    * {@inheritDoc}
    * 
-   * @see Expression#substitute(String, Expression, boolean)
+   * @see Expression#substitute(Identifier, Expression, boolean)
    */
   @ Override
-  public Tuple substitute ( String pId , Expression pExpression )
+  public Tuple substitute ( Identifier pId , Expression pExpression )
   {
     return substitute ( pId , pExpression , false ) ;
   }
@@ -165,10 +165,10 @@ public final class Tuple extends Expression
   /**
    * {@inheritDoc}
    * 
-   * @see Expression#substitute(String, Expression, boolean)
+   * @see Expression#substitute(Identifier, Expression, boolean)
    */
   @ Override
-  public Tuple substitute ( String pId , Expression pExpression ,
+  public Tuple substitute ( Identifier pId , Expression pExpression ,
       boolean pAttributeRename )
   {
     Expression [ ] newExpressions = new Expression [ this.expressions.length ] ;

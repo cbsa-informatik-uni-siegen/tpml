@@ -9,6 +9,7 @@ import de.unisiegen.tpml.core.expressions.BooleanConstant ;
 import de.unisiegen.tpml.core.expressions.Condition ;
 import de.unisiegen.tpml.core.expressions.CurriedLet ;
 import de.unisiegen.tpml.core.expressions.Expression ;
+import de.unisiegen.tpml.core.expressions.Identifier ;
 import de.unisiegen.tpml.core.expressions.InfixOperation ;
 import de.unisiegen.tpml.core.expressions.Lambda ;
 import de.unisiegen.tpml.core.expressions.Let ;
@@ -24,6 +25,7 @@ import de.unisiegen.tpml.core.smallstep.SmallStepProofContext ;
  * Small step proof rules for the <b>L1</b> and derived languages.
  * 
  * @author Benedikt Meurer
+ * @author Christian Fehler
  * @version $Rev:1166 $
  * @see de.unisiegen.tpml.core.languages.l0.L0SmallStepProofRuleSet
  * @see de.unisiegen.tpml.core.languages.l1.L1Language
@@ -47,25 +49,22 @@ public class L1SmallStepProofRuleSet extends L0SmallStepProofRuleSet
   {
     super ( language ) ;
     // register small step rules
-    register ( L1Language.L1 , "AND-EVAL" , false ) ;
-    register ( L1Language.L1 , "AND-FALSE" , true ) ;
-    register ( L1Language.L1 , "AND-TRUE" , true ) ;
-    register ( L1Language.L1 , "COND-EVAL" , false ) ;
-    register ( L1Language.L1 , "COND-TRUE" , true ) ;
-    register ( L1Language.L1 , "COND-FALSE" , true ) ;
-    register ( L1Language.L1 , "LET-EVAL" , false ) ;
-    register ( L1Language.L1 , "LET-EXEC" , true ) ;
-    register ( L1Language.L1 , "NOT" , true ) ;
-    register ( L1Language.L1 , "OP" , true ) ;
-    register ( L1Language.L1 , "OR-EVAL" , false ) ;
-    register ( L1Language.L1 , "OR-FALSE" , true ) ;
-    register ( L1Language.L1 , "OR-TRUE" , true ) ;
+    register ( L1Language.L1 , "AND-EVAL" , false ) ; //$NON-NLS-1$
+    register ( L1Language.L1 , "AND-FALSE" , true ) ; //$NON-NLS-1$
+    register ( L1Language.L1 , "AND-TRUE" , true ) ; //$NON-NLS-1$
+    register ( L1Language.L1 , "COND-EVAL" , false ) ; //$NON-NLS-1$
+    register ( L1Language.L1 , "COND-TRUE" , true ) ; //$NON-NLS-1$
+    register ( L1Language.L1 , "COND-FALSE" , true ) ; //$NON-NLS-1$
+    register ( L1Language.L1 , "LET-EVAL" , false ) ; //$NON-NLS-1$
+    register ( L1Language.L1 , "LET-EXEC" , true ) ; //$NON-NLS-1$
+    register ( L1Language.L1 , "NOT" , true ) ; //$NON-NLS-1$
+    register ( L1Language.L1 , "OP" , true ) ; //$NON-NLS-1$
+    register ( L1Language.L1 , "OR-EVAL" , false ) ; //$NON-NLS-1$
+    register ( L1Language.L1 , "OR-FALSE" , true ) ; //$NON-NLS-1$
+    register ( L1Language.L1 , "OR-TRUE" , true ) ; //$NON-NLS-1$
   }
 
 
-  //
-  // Binary operators
-  //
   /**
    * The <code>apply()</code> method for applications, used to handle binary
    * operators.
@@ -108,7 +107,7 @@ public class L1SmallStepProofRuleSet extends L0SmallStepProofRuleSet
     try
     {
       Expression e = op.applyTo ( e1 , e2 ) ;
-      context.addProofStep ( getRuleByName ( "OP" ) , applicationOrInfix ) ;
+      context.addProofStep ( getRuleByName ( "OP" ) , applicationOrInfix ) ; //$NON-NLS-1$
       return e ;
     }
     catch ( BinaryOperatorException e )
@@ -118,9 +117,6 @@ public class L1SmallStepProofRuleSet extends L0SmallStepProofRuleSet
   }
 
 
-  //
-  // The (NOT) rule
-  //
   /**
    * Applies the {@link de.unisiegen.tpml.core.expressions.Not} operator
    * <code>e1</code> to the {@link BooleanConstant} <code>e2</code> using
@@ -138,7 +134,7 @@ public class L1SmallStepProofRuleSet extends L0SmallStepProofRuleSet
     try
     {
       Expression e = e1.applyTo ( e2 ) ;
-      context.addProofStep ( getRuleByName ( "NOT" ) , application ) ;
+      context.addProofStep ( getRuleByName ( "NOT" ) , application ) ; //$NON-NLS-1$
       return e ;
     }
     catch ( UnaryOperatorException e )
@@ -148,9 +144,6 @@ public class L1SmallStepProofRuleSet extends L0SmallStepProofRuleSet
   }
 
 
-  //
-  // The (AND-EVAL), (AND-FALSE) and (AND-TRUE) rules
-  //
   /**
    * Evaluates the <code>and</code> expression using the <code>context</code>.
    * 
@@ -167,31 +160,25 @@ public class L1SmallStepProofRuleSet extends L0SmallStepProofRuleSet
     if ( ! ( e1 instanceof BooleanConstant ) )
     {
       // we're about to perform (AND-EVAL)
-      context.addProofStep ( getRuleByName ( "AND-EVAL" ) , and ) ;
+      context.addProofStep ( getRuleByName ( "AND-EVAL" ) , and ) ; //$NON-NLS-1$
       // try to evaluate e1
       e1 = evaluate ( context , e1 ) ;
       // exceptions need special handling
-      return e1.isException ( ) ? e1 : new And ( e1 , e2 ) ;
+      return e1.isException ( ) ? e1 : new And ( e1 , e2.clone ( ) ) ;
     }
     // determine the boolean constant value
     if ( ( ( BooleanConstant ) e1 ).booleanValue ( ) )
     {
       // jep, that's (AND-TRUE) then
-      context.addProofStep ( getRuleByName ( "AND-TRUE" ) , and ) ;
-      return e2 ;
+      context.addProofStep ( getRuleByName ( "AND-TRUE" ) , and ) ; //$NON-NLS-1$
+      return e2.clone ( ) ;
     }
-    else
-    {
-      // jep, that's (AND-FALSE) then
-      context.addProofStep ( getRuleByName ( "AND-FALSE" ) , and ) ;
-      return new BooleanConstant ( false ) ;
-    }
+    // jep, that's (AND-FALSE) then
+    context.addProofStep ( getRuleByName ( "AND-FALSE" ) , and ) ; //$NON-NLS-1$
+    return new BooleanConstant ( false ) ;
   }
 
 
-  //
-  // The (APP-LEFT) and (APP-RIGHT) rules for infix operations
-  //
   /**
    * Evaluates the <code>infixOperation</code> using the <code>context</code>.
    * 
@@ -202,6 +189,7 @@ public class L1SmallStepProofRuleSet extends L0SmallStepProofRuleSet
   public Expression evaluateInfixOperation ( SmallStepProofContext context ,
       InfixOperation infixOperation )
   {
+    System.out.println ( ) ;
     // determine the sub expressions and the operator
     Expression e1 = infixOperation.getE1 ( ) ;
     Expression e2 = infixOperation.getE2 ( ) ;
@@ -210,31 +198,30 @@ public class L1SmallStepProofRuleSet extends L0SmallStepProofRuleSet
     if ( ! e1.isValue ( ) )
     {
       // we're about to perform (APP-LEFT) and (APP-RIGHT)
-      context.addProofStep ( getRuleByName ( "APP-LEFT" ) , infixOperation ) ;
-      context.addProofStep ( getRuleByName ( "APP-RIGHT" ) , infixOperation ) ;
+      context.addProofStep ( getRuleByName ( "APP-LEFT" ) , infixOperation ) ; //$NON-NLS-1$
+      context.addProofStep ( getRuleByName ( "APP-RIGHT" ) , infixOperation ) ; //$NON-NLS-1$
       // try to evaluate e1
       e1 = evaluate ( context , e1 ) ;
       // exceptions need special handling
-      return e1.isException ( ) ? e1 : new InfixOperation ( op , e1 , e2 ) ;
+      return e1.isException ( ) ? e1 : new InfixOperation ( op.clone ( ) , e1 ,
+          e2.clone ( ) ) ;
     }
     // check if e2 is not already a value
     if ( ! e2.isValue ( ) )
     {
       // we're about to perform (APP-RIGHT)
-      context.addProofStep ( getRuleByName ( "APP-RIGHT" ) , infixOperation ) ;
+      context.addProofStep ( getRuleByName ( "APP-RIGHT" ) , infixOperation ) ; //$NON-NLS-1$
       // try to evaluate e2
       e2 = evaluate ( context , e2 ) ;
       // exceptions need special handling
-      return e2.isException ( ) ? e2 : new InfixOperation ( op , e1 , e2 ) ;
+      return e2.isException ( ) ? e2 : new InfixOperation ( op.clone ( ) , e1
+          .clone ( ) , e2 ) ;
     }
     // try to perform the application
     return applyBinaryOperator ( context , infixOperation , op , e1 , e2 ) ;
   }
 
 
-  //
-  // The (COND-EVAL), (COND-FALSE) and (COND-TRUE) rules
-  //
   /**
    * Evaluates the <code>condition</code> using the <code>context</code>.
    * 
@@ -253,31 +240,26 @@ public class L1SmallStepProofRuleSet extends L0SmallStepProofRuleSet
     if ( ! ( e0 instanceof BooleanConstant ) )
     {
       // we're about to perform (COND-EVAL)
-      context.addProofStep ( getRuleByName ( "COND-EVAL" ) , condition ) ;
+      context.addProofStep ( getRuleByName ( "COND-EVAL" ) , condition ) ; //$NON-NLS-1$
       // try to evaluate e0
       e0 = evaluate ( context , e0 ) ;
       // exceptions need special handling
-      return e0.isException ( ) ? e0 : new Condition ( e0 , e1 , e2 ) ;
+      return e0.isException ( ) ? e0 : new Condition ( e0 , e1.clone ( ) , e2
+          .clone ( ) ) ;
     }
     // determine the boolean constant value
     if ( ( ( BooleanConstant ) e0 ).booleanValue ( ) )
     {
       // jep, that's (COND-TRUE) then
-      context.addProofStep ( getRuleByName ( "COND-TRUE" ) , condition ) ;
-      return e1 ;
+      context.addProofStep ( getRuleByName ( "COND-TRUE" ) , condition ) ; //$NON-NLS-1$
+      return e1.clone ( ) ;
     }
-    else
-    {
-      // jep, that's (COND-FALSE) then
-      context.addProofStep ( getRuleByName ( "COND-FALSE" ) , condition ) ;
-      return e2 ;
-    }
+    // jep, that's (COND-FALSE) then
+    context.addProofStep ( getRuleByName ( "COND-FALSE" ) , condition ) ; //$NON-NLS-1$
+    return e2.clone ( ) ;
   }
 
 
-  //
-  // The (LET-EXEC) and (LET-EXEC) rules
-  //
   /**
    * Evaluates the curried let expression <code>curriedLet</code> using
    * <code>context</code>.
@@ -290,14 +272,16 @@ public class L1SmallStepProofRuleSet extends L0SmallStepProofRuleSet
       CurriedLet curriedLet )
   {
     // determine the sub expressions and the identifiers
-    String [ ] identifiers = curriedLet.getIdentifiers ( ) ;
-    Expression e1 = curriedLet.getE1 ( ) ;
+    Identifier [ ] identifiers = curriedLet.getIdentifiers ( ) ;
+    Expression e1 = curriedLet.getE1 ( ).clone ( ) ;
     Expression e2 = curriedLet.getE2 ( ) ;
     // prepend the lambda abstractions to e1
     for ( int n = identifiers.length - 1 ; n >= 1 ; -- n )
-      e1 = new Lambda ( identifiers [ n ] , null , e1 ) ;
+    {
+      e1 = new Lambda ( identifiers [ n ].clone ( ) , null , e1 ) ;
+    }
     // we can simply perform (LET-EXEC)
-    context.addProofStep ( getRuleByName ( "LET-EXEC" ) , curriedLet ) ;
+    context.addProofStep ( getRuleByName ( "LET-EXEC" ) , curriedLet ) ; //$NON-NLS-1$
     // and perform the substitution
     return e2.substitute ( identifiers [ 0 ] , e1 ) ;
   }
@@ -315,27 +299,25 @@ public class L1SmallStepProofRuleSet extends L0SmallStepProofRuleSet
     // determine the sub expressions and the identifier
     Expression e1 = let.getE1 ( ) ;
     Expression e2 = let.getE2 ( ) ;
-    String id = let.getId ( ) ;
     // check if e1 is not already a value
     if ( ! e1.isValue ( ) )
     {
       // we're about to perform (LET-EVAL)
-      context.addProofStep ( getRuleByName ( "LET-EVAL" ) , let ) ;
+      context.addProofStep ( getRuleByName ( "LET-EVAL" ) , let ) ; //$NON-NLS-1$
       // try to evaluate e1
       e1 = evaluate ( context , e1 ) ;
       // exceptions need special treatment
-      return e1.isException ( ) ? e1 : new Let ( id , let.getTau ( ) , e1 , e2 ) ;
+      return e1.isException ( ) ? e1 : new Let ( let.getId ( ).clone ( ) , let
+          .getTau ( ) == null ? null : let.getTau ( ).clone ( ) , e1 , e2
+          .clone ( ) ) ;
     }
     // we can perform (LET-EXEC)
-    context.addProofStep ( getRuleByName ( "LET-EXEC" ) , let ) ;
+    context.addProofStep ( getRuleByName ( "LET-EXEC" ) , let ) ; //$NON-NLS-1$
     // and perform the substitution
-    return e2.substitute ( id , e1 ) ;
+    return e2.substitute ( let.getId ( ) , e1.clone ( ) ) ;
   }
 
 
-  //
-  // The (OR-EVAL), (OR-FALSE) and (OR-TRUE) rules
-  //
   /**
    * Evaluates the <code>or</code> expression using the <code>context</code>.
    * 
@@ -352,24 +334,21 @@ public class L1SmallStepProofRuleSet extends L0SmallStepProofRuleSet
     if ( ! ( e1 instanceof BooleanConstant ) )
     {
       // we're about to perform (OR-EVAL)
-      context.addProofStep ( getRuleByName ( "OR-EVAL" ) , or ) ;
+      context.addProofStep ( getRuleByName ( "OR-EVAL" ) , or ) ; //$NON-NLS-1$
       // try to evaluate e1
       e1 = evaluate ( context , e1 ) ;
       // exceptions need special treatment
-      return e1.isException ( ) ? e1 : new Or ( e1 , e2 ) ;
+      return e1.isException ( ) ? e1 : new Or ( e1 , e2.clone ( ) ) ;
     }
     // determine the boolean constant value
     if ( ( ( BooleanConstant ) e1 ).booleanValue ( ) )
     {
       // jep, that's (OR-TRUE) then
-      context.addProofStep ( getRuleByName ( "OR-TRUE" ) , or ) ;
+      context.addProofStep ( getRuleByName ( "OR-TRUE" ) , or ) ; //$NON-NLS-1$
       return new BooleanConstant ( true ) ;
     }
-    else
-    {
-      // jep, that's (OR-FALSE) then
-      context.addProofStep ( getRuleByName ( "OR-FALSE" ) , or ) ;
-      return e2 ;
-    }
+    // jep, that's (OR-FALSE) then
+    context.addProofStep ( getRuleByName ( "OR-FALSE" ) , or ) ; //$NON-NLS-1$
+    return e2.clone ( ) ;
   }
 }

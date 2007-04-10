@@ -109,7 +109,7 @@ public class L4LanguageTranslator extends L3LanguageTranslator
         id = id + "'" ;
       }
       // generate the let expression
-      return new Let ( id , null , e1 , e2 ) ;
+      return new Let ( new Identifier ( id ) , null , e1 , e2 ) ;
     }
     else if ( expression instanceof While )
     {
@@ -138,7 +138,7 @@ public class L4LanguageTranslator extends L3LanguageTranslator
         body = translateToCoreSyntax ( body , true ) ;
       }
       // generate the recursion
-      return new Recursion ( id , new UnitType ( ) , body ) ;
+      return new Recursion ( new Identifier ( id ) , new UnitType ( ) , body ) ;
     }
     else
     {

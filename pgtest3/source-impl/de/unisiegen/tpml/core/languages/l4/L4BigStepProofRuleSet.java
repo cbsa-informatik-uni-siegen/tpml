@@ -23,14 +23,12 @@ import de.unisiegen.tpml.core.languages.l3.L3Language ;
  * Big step proof rules for the <b>L4</b> and derived languages.
  * 
  * @author Benedikt Meurer
+ * @author Christian Fehler
  * @version $Rev: 287 $
  * @see de.unisiegen.tpml.core.languages.l3.L3BigStepProofRuleSet
  */
 public class L4BigStepProofRuleSet extends L3BigStepProofRuleSet
 {
-  //
-  // Constructor
-  //
   /**
    * Allocates a new <code>L4BigStepProofRuleSet</code> with the specified
    * <code>language</code>, which is the <b>L4</b> or a derived language.
@@ -44,18 +42,15 @@ public class L4BigStepProofRuleSet extends L3BigStepProofRuleSet
   {
     super ( language ) ;
     // register the big step rules (order is important for guessing!)
-    registerByMethodName ( L4Language.L4 , "ASSIGN" , "applyAssign" ) ;
-    registerByMethodName ( L4Language.L4 , "DEREF" , "applyDeref" ) ;
-    registerByMethodName ( L4Language.L4 , "REF" , "applyRef" ) ;
-    registerByMethodName ( L4Language.L4 , "SEQ" , "applySeq" , "updateSeq" ) ;
-    registerByMethodName ( L4Language.L4 , "WHILE" , "applyWhile" ,
-        "updateWhile" ) ;
+    registerByMethodName ( L4Language.L4 , "ASSIGN" , "applyAssign" ) ; //$NON-NLS-1$ //$NON-NLS-2$
+    registerByMethodName ( L4Language.L4 , "DEREF" , "applyDeref" ) ; //$NON-NLS-1$ //$NON-NLS-2$
+    registerByMethodName ( L4Language.L4 , "REF" , "applyRef" ) ; //$NON-NLS-1$ //$NON-NLS-2$
+    registerByMethodName ( L4Language.L4 , "SEQ" , "applySeq" , "updateSeq" ) ; //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
+    registerByMethodName ( L4Language.L4 , "WHILE" , "applyWhile" , //$NON-NLS-1$ //$NON-NLS-2$
+        "updateWhile" ) ; //$NON-NLS-1$
   }
 
 
-  //
-  // The (ASSIGN) rule
-  //
   /**
    * Applies the <b>(ASSIGN)</b> rule to the <code>node</code> using the
    * <code>context</code>.
@@ -96,9 +91,6 @@ public class L4BigStepProofRuleSet extends L3BigStepProofRuleSet
   }
 
 
-  //
-  // The (DEREF) rule
-  //
   /**
    * Applies the <b>(DEREF)</b> rule to the <code>node</code> using the
    * <code>context</code>.
@@ -118,9 +110,6 @@ public class L4BigStepProofRuleSet extends L3BigStepProofRuleSet
   }
 
 
-  //
-  // The (REF) rule
-  //
   /**
    * Applies the <b>(REF)</b> rule to the <code>node</code> using the
    * <code>context</code>.
@@ -142,9 +131,6 @@ public class L4BigStepProofRuleSet extends L3BigStepProofRuleSet
   }
 
 
-  //
-  // The (SEQ) rule
-  //
   /**
    * Applies the <b>(SEQ)</b> rule to the <code>node</code> using the
    * <code>context</code>.
@@ -160,7 +146,7 @@ public class L4BigStepProofRuleSet extends L3BigStepProofRuleSet
     // add the proof node for e2 if memory is disabled
     if ( ! context.isMemoryEnabled ( ) )
     {
-      context.addProofNode ( node , sequence.getE2 ( ) ) ;
+      context.addProofNode ( node , sequence.getE2 ( ).clone ( ) ) ;
     }
   }
 
@@ -179,7 +165,7 @@ public class L4BigStepProofRuleSet extends L3BigStepProofRuleSet
     {
       // add the proof node for e2
       context.addProofNode ( node , ( ( Sequence ) node.getExpression ( ) )
-          .getE2 ( ) ) ;
+          .getE2 ( ).clone ( ) ) ;
     }
     else if ( node.getChildCount ( ) == 2 )
     {
@@ -189,9 +175,6 @@ public class L4BigStepProofRuleSet extends L3BigStepProofRuleSet
   }
 
 
-  //
-  // The (WHILE) rule
-  //
   /**
    * Applies the <b>(WHILE)</b> rule to the <code>node</code> using the
    * <code>context</code>.
@@ -202,8 +185,8 @@ public class L4BigStepProofRuleSet extends L3BigStepProofRuleSet
   public void applyWhile ( BigStepProofContext context , BigStepProofNode node )
   {
     While loop = ( While ) node.getExpression ( ) ;
-    context.addProofNode ( node , new Condition1 ( loop.getE1 ( ) ,
-        new Sequence ( loop.getE2 ( ) , loop ) ) ) ;
+    context.addProofNode ( node , new Condition1 ( loop.getE1 ( ).clone ( ) ,
+        new Sequence ( loop.getE2 ( ).clone ( ) , loop.clone ( ) ) ) ) ;
   }
 
 

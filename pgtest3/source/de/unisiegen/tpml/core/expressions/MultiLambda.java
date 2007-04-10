@@ -1,8 +1,8 @@
 package de.unisiegen.tpml.core.expressions ;
 
 
+import java.util.ArrayList ;
 import java.util.Arrays ;
-import java.util.TreeSet ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
@@ -29,7 +29,7 @@ public final class MultiLambda extends Value
    * @see #getIdentifiers()
    * @see #getIdentifiers(int)
    */
-  private String [ ] identifiers ;
+  private Identifier [ ] identifiers ;
 
 
   /**
@@ -60,7 +60,7 @@ public final class MultiLambda extends Value
    * @throws NullPointerException if <code>identifiers</code> or
    *           <code>e</code> is <code>null</code>.
    */
-  public MultiLambda ( String [ ] pIdentifiers , MonoType pTau ,
+  public MultiLambda ( Identifier [ ] pIdentifiers , MonoType pTau ,
       Expression pExpression )
   {
     if ( pIdentifiers == null )
@@ -89,7 +89,12 @@ public final class MultiLambda extends Value
   @ Override
   public MultiLambda clone ( )
   {
-    return new MultiLambda ( this.identifiers , this.tau == null ? null
+    Identifier [ ] newIdentifiers = new Identifier [ this.identifiers.length ] ;
+    for ( int i = 0 ; i < newIdentifiers.length ; i ++ )
+    {
+      newIdentifiers [ i ] = this.identifiers [ i ].clone ( ) ;
+    }
+    return new MultiLambda ( newIdentifiers , this.tau == null ? null
         : this.tau.clone ( ) , this.e.clone ( ) ) ;
   }
 
@@ -119,18 +124,69 @@ public final class MultiLambda extends Value
    * @see Expression#free()
    */
   @ Override
-  public TreeSet < String > free ( )
+  public ArrayList < Identifier > free ( )
   {
     if ( this.free == null )
     {
-      this.free = new TreeSet < String > ( ) ;
+      this.free = new ArrayList < Identifier > ( ) ;
       this.free.addAll ( this.e.free ( ) ) ;
       for ( int i = 0 ; i < this.identifiers.length ; i ++ )
       {
-        this.free.remove ( this.identifiers [ i ] ) ;
+        while ( this.free.remove ( this.identifiers [ i ] ) )
+        {
+          // Remove all Identifiers with the same name
+        }
       }
     }
     return this.free ;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @param pIndex TODO
+   * @return TODO
+   */
+  @ Override
+  public ArrayList < Identifier > getBoundedIdentifiers ( int pIndex )
+  {
+    if ( this.boundedIdentifiers == null )
+    {
+      this.boundedIdentifiers = new ArrayList < ArrayList < Identifier >> ( ) ;
+      ArrayList < Identifier > boundedE = this.e.free ( ) ;
+      for ( int i = 0 ; i < this.identifiers.length ; i ++ )
+      {
+        /*
+         * An Identifier has no binding, if an Identifier after him has the same
+         * name. Example: (λ(x, x).x) (1, 2).
+         */
+        boolean hasBinding = true ;
+        for ( int j = i + 1 ; j < this.identifiers.length ; j ++ )
+        {
+          if ( this.identifiers [ i ].equals ( this.identifiers [ j ] ) )
+          {
+            hasBinding = false ;
+            break ;
+          }
+        }
+        ArrayList < Identifier > boundedIdList = new ArrayList < Identifier > ( ) ;
+        if ( hasBinding )
+        {
+          for ( Identifier freeId : boundedE )
+          {
+            if ( this.identifiers [ i ].equals ( freeId ) )
+            {
+              freeId.setBoundedToExpression ( this ) ;
+              freeId.setBoundedToIdentifier ( this.identifiers [ i ] ) ;
+              boundedIdList.add ( freeId ) ;
+            }
+          }
+        }
+        this.boundedIdentifiers.add ( boundedIdList ) ;
+      }
+    }
+    return this.boundedIdentifiers.get ( pIndex ) ;
   }
 
 
@@ -161,7 +217,7 @@ public final class MultiLambda extends Value
    * @return the identifiers for the tuple parameter.
    * @see #getIdentifiers()
    */
-  public String [ ] getIdentifiers ( )
+  public Identifier [ ] getIdentifiers ( )
   {
     return this.identifiers ;
   }
@@ -176,7 +232,7 @@ public final class MultiLambda extends Value
    *           bounds.
    * @see #getIdentifiers()
    */
-  public String getIdentifiers ( int pIndex )
+  public Identifier getIdentifiers ( int pIndex )
   {
     return this.identifiers [ pIndex ] ;
   }
@@ -211,10 +267,10 @@ public final class MultiLambda extends Value
   /**
    * {@inheritDoc}
    * 
-   * @see Expression#substitute(String, Expression, boolean)
+   * @see Expression#substitute(Identifier, Expression, boolean)
    */
   @ Override
-  public MultiLambda substitute ( String pId , Expression pExpression )
+  public MultiLambda substitute ( Identifier pId , Expression pExpression )
   {
     return substitute ( pId , pExpression , false ) ;
   }
@@ -223,10 +279,10 @@ public final class MultiLambda extends Value
   /**
    * {@inheritDoc}
    * 
-   * @see Expression#substitute(String, Expression, boolean)
+   * @see Expression#substitute(Identifier, Expression, boolean)
    */
   @ Override
-  public MultiLambda substitute ( String pId , Expression pExpression ,
+  public MultiLambda substitute ( Identifier pId , Expression pExpression ,
       boolean pAttributeRename )
   {
     /*
@@ -240,7 +296,11 @@ public final class MultiLambda extends Value
       }
     }
     Expression newE = this.e ;
-    String [ ] newIdentifiers = this.identifiers.clone ( ) ;
+    Identifier [ ] newIdentifiers = new Identifier [ this.identifiers.length ] ;
+    for ( int i = 0 ; i < newIdentifiers.length ; i ++ )
+    {
+      newIdentifiers [ i ] = this.identifiers [ i ].clone ( ) ;
+    }
     for ( int i = 0 ; i < newIdentifiers.length ; i ++ )
     {
       BoundRenaming boundRenaming = new BoundRenaming ( ) ;
@@ -260,7 +320,7 @@ public final class MultiLambda extends Value
           }
         }
       }
-      String newId = boundRenaming.newIdentifier ( newIdentifiers [ i ] ) ;
+      Identifier newId = boundRenaming.newId ( newIdentifiers [ i ] ) ;
       /*
        * Search for an Identifier before the current Identifier with the same
        * name. For example: "let a = b in lambda (b,b).a".
@@ -278,8 +338,8 @@ public final class MultiLambda extends Value
        */
       if ( ! newIdentifiers [ i ].equals ( newId ) )
       {
-        newE = newE.substitute ( newIdentifiers [ i ] ,
-            new Identifier ( newId ) , pAttributeRename ) ;
+        newE = newE.substitute ( newIdentifiers [ i ] , newId ,
+            pAttributeRename ) ;
         newIdentifiers [ i ] = newId ;
       }
     }
@@ -302,7 +362,12 @@ public final class MultiLambda extends Value
   {
     MonoType newTau = ( this.tau == null ) ? null : this.tau
         .substitute ( pTypeSubstitution ) ;
-    return new MultiLambda ( this.identifiers , newTau , this.e
+    Identifier [ ] newIdentifiers = new Identifier [ this.identifiers.length ] ;
+    for ( int i = 0 ; i < newIdentifiers.length ; i ++ )
+    {
+      newIdentifiers [ i ] = this.identifiers [ i ].clone ( ) ;
+    }
+    return new MultiLambda ( newIdentifiers , newTau , this.e
         .substitute ( pTypeSubstitution ) ) ;
   }
 
@@ -328,7 +393,8 @@ public final class MultiLambda extends Value
         {
           this.prettyStringBuilder.addText ( ", " ) ; //$NON-NLS-1$
         }
-        this.prettyStringBuilder.addIdentifier ( this.identifiers [ i ] ) ;
+        this.prettyStringBuilder.addBuilder ( this.identifiers [ i ]
+            .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , 0 ) ;
       }
       this.prettyStringBuilder.addText ( ")" ) ; //$NON-NLS-1$
       if ( this.tau != null )
