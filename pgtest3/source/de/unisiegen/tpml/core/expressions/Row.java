@@ -134,6 +134,8 @@ public final class Row extends Expression
             {
               if ( attribute.getId ( ).equals ( freeId ) )
               {
+                freeId.setBoundedToExpression ( attribute ) ;
+                freeId.setBoundedToIdentifier ( attribute.getId ( ) ) ;
                 boundedId.add ( freeId ) ;
               }
             }
