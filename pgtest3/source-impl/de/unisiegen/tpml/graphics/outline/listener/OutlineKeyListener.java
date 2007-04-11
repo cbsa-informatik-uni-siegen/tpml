@@ -51,7 +51,7 @@ public final class OutlineKeyListener implements KeyListener
         .getSelectionPath ( ).getLastPathComponent ( ) ;
     if ( outlineNode != null )
     {
-      OutlineClipboard.getInstance ( ).copy ( outlineNode.getNodeString ( ) ) ;
+      OutlineClipboard.getInstance ( ).copy ( outlineNode.getPrettyString ( ) ) ;
     }
   }
 

@@ -166,7 +166,7 @@ public final class OutlineActionListener implements ActionListener
         .getSelectionPath ( ).getLastPathComponent ( ) ;
     if ( outlineNode != null )
     {
-      OutlineClipboard.getInstance ( ).copy ( outlineNode.getNodeString ( ) ) ;
+      OutlineClipboard.getInstance ( ).copy ( outlineNode.getPrettyString ( ) ) ;
     }
   }
 
