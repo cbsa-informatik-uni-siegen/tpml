@@ -137,7 +137,7 @@ public final class Lambda extends Value
    * @return TODO
    */
   @ Override
-  public ArrayList < Identifier > getBoundedIdentifiers ( )
+  public ArrayList < Identifier > getBoundedId ( )
   {
     if ( this.boundedIdentifiers == null )
     {

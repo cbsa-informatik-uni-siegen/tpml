@@ -525,7 +525,7 @@ public final class DefaultOutline implements Outline
      * Create the Identifier.
      */
     OutlineBinding outlineBinding = new OutlineBinding ( pLambda
-        .getBoundedIdentifiers ( ) ) ;
+        .getBoundedId ( ) ) ;
     outlineNodeId = new OutlineNode ( pLambda.getId ( ) ,
         OutlineNode.NO_CHILD_INDEX , outlineBinding ) ;
     outlineNode.add ( outlineNodeId ) ;
@@ -565,7 +565,7 @@ public final class DefaultOutline implements Outline
      * Create the Identifier.
      */
     OutlineBinding outlineBinding = new OutlineBinding ( pLet
-        .getBoundedIdentifiers ( ) ) ;
+        .getBoundedId ( ) ) ;
     outlineNodeId = new OutlineNode ( pLet.getId ( ) ,
         OutlineNode.NO_CHILD_INDEX , outlineBinding ) ;
     outlineNode.add ( outlineNodeId ) ;
@@ -605,7 +605,7 @@ public final class DefaultOutline implements Outline
      * Create the Identifier.
      */
     OutlineBinding outlineBinding = new OutlineBinding ( pLetRec
-        .getBoundedIdentifiers ( ) ) ;
+        .getBoundedId ( ) ) ;
     outlineNodeId = new OutlineNode ( pLetRec.getId ( ) ,
         OutlineNode.NO_CHILD_INDEX , outlineBinding ) ;
     outlineNode.add ( outlineNodeId ) ;
@@ -782,7 +782,7 @@ public final class DefaultOutline implements Outline
      * Create the Identifier.
      */
     OutlineBinding outlineBinding = new OutlineBinding ( pObjectExpr
-        .getBoundedIdentifiers ( ) ) ;
+        .getBoundedId ( ) ) ;
     outlineNodeId = new OutlineNode ( pObjectExpr.getId ( ) ,
         OutlineNode.NO_CHILD_INDEX , outlineBinding ) ;
     outlineNode.add ( outlineNodeId ) ;
@@ -823,7 +823,7 @@ public final class DefaultOutline implements Outline
      * Create the Identifier.
      */
     OutlineBinding outlineBinding = new OutlineBinding ( pRecursion
-        .getBoundedIdentifiers ( ) ) ;
+        .getBoundedId ( ) ) ;
     outlineNodeId = new OutlineNode ( pRecursion.getId ( ) ,
         OutlineNode.NO_CHILD_INDEX , outlineBinding ) ;
     outlineNode.add ( outlineNodeId ) ;

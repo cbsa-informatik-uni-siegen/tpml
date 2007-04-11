@@ -270,7 +270,19 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
    * 
    * @return TODO
    */
-  public ArrayList < Identifier > getBoundedIdentifiers ( )
+  public ArrayList < Identifier > getBoundedId ( )
+  {
+    throw new IllegalArgumentException (
+        "You have to overwrite this method if you want to use it" ) ; //$NON-NLS-1$
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @return TODO
+   */
+  public ArrayList < ArrayList < Identifier >> getBoundedIdentifiers ( )
   {
     throw new IllegalArgumentException (
         "You have to overwrite this method if you want to use it" ) ; //$NON-NLS-1$

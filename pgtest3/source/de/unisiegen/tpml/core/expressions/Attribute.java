@@ -1,6 +1,7 @@
 package de.unisiegen.tpml.core.expressions ;
 
 
+import java.util.ArrayList ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
@@ -100,6 +101,22 @@ public final class Attribute extends Expression
 
 
   /**
+   * TODO
+   * 
+   * @return TODO
+   */
+  @ Override
+  public ArrayList < Identifier > getBoundedId ( )
+  {
+    if ( this.boundedIdentifiers == null )
+    {
+      return null ;
+    }
+    return this.boundedIdentifiers.get ( 0 ) ;
+  }
+
+
+  /**
    * {@inheritDoc}
    */
   @ Override
@@ -175,6 +192,18 @@ public final class Attribute extends Expression
   public boolean isValue ( )
   {
     return this.e.isValue ( ) ;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @param pBoundedIdentifiers TODO
+   */
+  public void setBoundedIdentifiers (
+      ArrayList < ArrayList < Identifier >> pBoundedIdentifiers )
+  {
+    this.boundedIdentifiers = pBoundedIdentifiers ;
   }
 
 

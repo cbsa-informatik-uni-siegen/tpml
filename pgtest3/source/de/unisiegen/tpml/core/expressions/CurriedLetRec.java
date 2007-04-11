@@ -111,7 +111,7 @@ public final class CurriedLetRec extends CurriedLet
    * @return TODO
    */
   @ Override
-  public ArrayList < Identifier > getBoundedIdentifiers ( int pIndex )
+  public ArrayList < ArrayList < Identifier >> getBoundedIdentifiers ( )
   {
     if ( this.boundedIdentifiers == null )
     {
@@ -190,6 +190,23 @@ public final class CurriedLetRec extends CurriedLet
           this.boundedIdentifiers.add ( boundedIdList ) ;
         }
       }
+    }
+    return this.boundedIdentifiers ;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @param pIndex TODO
+   * @return TODO
+   */
+  @ Override
+  public ArrayList < Identifier > getBoundedIdentifiers ( int pIndex )
+  {
+    if ( this.boundedIdentifiers == null )
+    {
+      return getBoundedIdentifiers ( ).get ( pIndex ) ;
     }
     return this.boundedIdentifiers.get ( pIndex ) ;
   }

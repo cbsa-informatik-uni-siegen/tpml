@@ -374,8 +374,7 @@ public class CompoundExpression < S , E > extends JComponent
       
       
      
-      bonds.setHoleExpression ( this.expression ) ;
-     // bonds.check ( this.expression ) ;
+      bonds.setExpression ( this.expression ) ;
       // Debug
       ArrayList < Bonds > bondsList = bonds.getAnnotations ( ) ;
       for ( int i = 0 ; i < bondsList.size ( ) ; i ++ )
@@ -384,7 +383,7 @@ public class CompoundExpression < S , E > extends JComponent
         /*Debug.err.print ( "BM- Id: " + tmp.getIdentifier ( ) + " "
             + tmp.getStartOffset ( ) + "->" + tmp.getEndOffset ( )
             + " Bindung: " , "Benjamin" ) ;*/
-        for ( int j = 0 ; j < tmp.getMarks ( ).size ( ) ; j ++ )
+        for ( int j = 0 ; j < tmp.getPrettyAnnotation ( ).size ( ) ; j ++ )
         {
           /*Debug.err.print ( tmp.getMarks ( ).get ( j ).getStartOffset ( )
               + "->" + tmp.getMarks ( ).get ( j ).getEndOffset ( ) + "  " ,

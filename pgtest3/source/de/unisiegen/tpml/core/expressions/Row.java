@@ -112,11 +112,10 @@ public final class Row extends Expression
   /**
    * TODO
    * 
-   * @param pIndex TODO
    * @return TODO
    */
   @ Override
-  public ArrayList < Identifier > getBoundedIdentifiers ( int pIndex )
+  public ArrayList < ArrayList < Identifier >> getBoundedIdentifiers ( )
   {
     if ( this.boundedIdentifiers == null )
     {
@@ -145,9 +144,29 @@ public final class Row extends Expression
               break ;
             }
           }
+          ArrayList < ArrayList < Identifier >> attributeBounded = new ArrayList < ArrayList < Identifier >> ( ) ;
+          attributeBounded.add ( boundedId ) ;
+          attribute.setBoundedIdentifiers ( attributeBounded ) ;
         }
         this.boundedIdentifiers.add ( boundedId ) ;
       }
+    }
+    return this.boundedIdentifiers ;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @param pIndex TODO
+   * @return TODO
+   */
+  @ Override
+  public ArrayList < Identifier > getBoundedIdentifiers ( int pIndex )
+  {
+    if ( this.boundedIdentifiers == null )
+    {
+      return getBoundedIdentifiers ( ).get ( pIndex ) ;
     }
     return this.boundedIdentifiers.get ( pIndex ) ;
   }

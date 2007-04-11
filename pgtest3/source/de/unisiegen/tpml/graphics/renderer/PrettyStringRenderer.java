@@ -648,7 +648,7 @@ public class PrettyStringRenderer extends AbstractRenderer {
         }
       else
       {
-        ArrayList <PrettyAnnotation> rest = list.get(i).getMarks();
+        ArrayList <PrettyAnnotation> rest = list.get(i).getPrettyAnnotation();
         for (int j = 0 ; j<rest.size(); j++)
         {
           PrettyAnnotation tmp = rest.get(j);
