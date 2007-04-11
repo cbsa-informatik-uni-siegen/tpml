@@ -2,6 +2,7 @@ package de.unisiegen.tpml.core.expressions ;
 
 
 import java.util.ArrayList ;
+import de.unisiegen.tpml.core.identifiers.BoundedId ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
@@ -19,7 +20,7 @@ import de.unisiegen.tpml.core.util.BoundRenaming ;
  * @version $Rev:1092 $
  * @see Expression
  */
-public final class Recursion extends Expression
+public final class Recursion extends Expression implements BoundedId
 {
   /**
    * The identifier for the recursion.
@@ -124,11 +125,10 @@ public final class Recursion extends Expression
 
 
   /**
-   * TODO
+   * Returns a list of in this {@link Expression} bounded {@link Identifier}s.
    * 
-   * @return TODO
+   * @return A list of in this {@link Expression} bounded {@link Identifier}s.
    */
-  @ Override
   public ArrayList < Identifier > getBoundedId ( )
   {
     if ( this.boundedIdentifiers == null )

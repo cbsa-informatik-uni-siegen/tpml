@@ -3,6 +3,7 @@ package de.unisiegen.tpml.core.expressions ;
 
 import java.util.ArrayList ;
 import java.util.Arrays ;
+import de.unisiegen.tpml.core.identifiers.BoundedIdentifiers ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
@@ -15,7 +16,7 @@ import de.unisiegen.tpml.core.util.BoundRenaming ;
  * @author Christian Fehler
  * @version $Rev: 1066 $
  */
-public final class Row extends Expression
+public final class Row extends Expression implements BoundedIdentifiers
 {
   /**
    * TODO
@@ -24,6 +25,15 @@ public final class Row extends Expression
    * @see #getExpressions(int)
    */
   private Expression [ ] expressions ;
+
+
+  /**
+   * The bound identifiers.
+   * 
+   * @see #getIdentifiers()
+   * @see #getIdentifiers(int)
+   */
+  private Identifier [ ] identifiers ;
 
 
   /**
@@ -38,9 +48,25 @@ public final class Row extends Expression
       throw new NullPointerException ( "Expressions is null" ) ; //$NON-NLS-1$
     }
     this.expressions = pExpressions ;
-    for ( Expression expr : this.expressions )
+    this.identifiers = new Identifier [ this.expressions.length ] ;
+    for ( int i = 0 ; i < this.expressions.length ; i ++ )
     {
-      if ( ! ( ( expr instanceof Attribute ) || ( expr instanceof Method ) || ( expr instanceof CurriedMethod ) ) )
+      if ( this.expressions [ i ] instanceof Attribute )
+      {
+        Attribute attribute = ( Attribute ) this.expressions [ i ] ;
+        this.identifiers [ i ] = attribute.getId ( ) ;
+      }
+      else if ( this.expressions [ i ] instanceof Method )
+      {
+        Method method = ( Method ) this.expressions [ i ] ;
+        this.identifiers [ i ] = method.getId ( ) ;
+      }
+      else if ( this.expressions [ i ] instanceof CurriedMethod )
+      {
+        CurriedMethod curriedMethod = ( CurriedMethod ) this.expressions [ i ] ;
+        this.identifiers [ i ] = curriedMethod.getIdentifiers ( 0 ) ;
+      }
+      else
       {
         throw new IllegalArgumentException (
             "A child Expression is not an instance of Attribute, Method or CurriedMethod" ) ; //$NON-NLS-1$
@@ -110,11 +136,12 @@ public final class Row extends Expression
 
 
   /**
-   * TODO
+   * Returns a list of lists of in this {@link Expression} bounded
+   * {@link Identifier}s.
    * 
-   * @return TODO
+   * @return A list of lists of in this {@link Expression} bounded
+   *         {@link Identifier}s.
    */
-  @ Override
   public ArrayList < ArrayList < Identifier >> getBoundedIdentifiers ( )
   {
     if ( this.boundedIdentifiers == null )
@@ -146,9 +173,6 @@ public final class Row extends Expression
               break ;
             }
           }
-          ArrayList < ArrayList < Identifier >> attributeBounded = new ArrayList < ArrayList < Identifier >> ( ) ;
-          attributeBounded.add ( boundedId ) ;
-          attribute.setBoundedIdentifiers ( attributeBounded ) ;
         }
         this.boundedIdentifiers.add ( boundedId ) ;
       }
@@ -158,12 +182,12 @@ public final class Row extends Expression
 
 
   /**
-   * TODO
+   * Returns the <code>pIndex</code>th list of in this {@link Expression}
+   * bounded {@link Identifier}s.
    * 
-   * @param pIndex TODO
-   * @return TODO
+   * @param pIndex The index of the list of {@link Identifier}s to return.
+   * @return A list of in this {@link Expression} bounded {@link Identifier}s.
    */
-  @ Override
   public ArrayList < Identifier > getBoundedIdentifiers ( int pIndex )
   {
     if ( this.boundedIdentifiers == null )
@@ -208,6 +232,33 @@ public final class Row extends Expression
   public Expression getExpressions ( int pIndex )
   {
     return this.expressions [ pIndex ] ;
+  }
+
+
+  /**
+   * Returns the identifiers for the tuple items.
+   * 
+   * @return the identifiers for the tuple items.
+   * @see #getIdentifiers(int)
+   */
+  public Identifier [ ] getIdentifiers ( )
+  {
+    return this.identifiers ;
+  }
+
+
+  /**
+   * Returns the <code>n</code>th identifier.
+   * 
+   * @param pIndex the index of the identifier to return.
+   * @return the <code>n</code>th identifier.
+   * @throws ArrayIndexOutOfBoundsException if <code>n</code> is out of
+   *           bounds.
+   * @see #getIdentifiers()
+   */
+  public Identifier getIdentifiers ( int pIndex )
+  {
+    return this.identifiers [ pIndex ] ;
   }
 
 

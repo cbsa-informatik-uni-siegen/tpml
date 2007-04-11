@@ -3,6 +3,7 @@ package de.unisiegen.tpml.core.expressions ;
 
 import java.util.ArrayList ;
 import java.util.Arrays ;
+import de.unisiegen.tpml.core.identifiers.BoundedIdentifiers ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
@@ -16,7 +17,8 @@ import de.unisiegen.tpml.core.util.BoundRenaming ;
  * @author Christian Fehler
  * @version $Rev: 1067 $
  */
-public final class CurriedMethod extends Expression
+public final class CurriedMethod extends Expression implements
+    BoundedIdentifiers
 {
   /**
    * TODO
@@ -143,11 +145,12 @@ public final class CurriedMethod extends Expression
 
 
   /**
-   * TODO
+   * Returns a list of lists of in this {@link Expression} bounded
+   * {@link Identifier}s.
    * 
-   * @return TODO
+   * @return A list of lists of in this {@link Expression} bounded
+   *         {@link Identifier}s.
    */
-  @ Override
   public ArrayList < ArrayList < Identifier >> getBoundedIdentifiers ( )
   {
     if ( this.boundedIdentifiers == null )
@@ -197,12 +200,12 @@ public final class CurriedMethod extends Expression
 
 
   /**
-   * TODO
+   * Returns the <code>pIndex</code>th list of in this {@link Expression}
+   * bounded {@link Identifier}s.
    * 
-   * @param pIndex TODO
-   * @return TODO
+   * @param pIndex The index of the list of {@link Identifier}s to return.
+   * @return A list of in this {@link Expression} bounded {@link Identifier}s.
    */
-  @ Override
   public ArrayList < Identifier > getBoundedIdentifiers ( int pIndex )
   {
     if ( this.boundedIdentifiers == null )

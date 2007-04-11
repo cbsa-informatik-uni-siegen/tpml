@@ -564,8 +564,7 @@ public final class DefaultOutline implements Outline
     /*
      * Create the Identifier.
      */
-    OutlineBinding outlineBinding = new OutlineBinding ( pLet
-        .getBoundedId ( ) ) ;
+    OutlineBinding outlineBinding = new OutlineBinding ( pLet.getBoundedId ( ) ) ;
     outlineNodeId = new OutlineNode ( pLet.getId ( ) ,
         OutlineNode.NO_CHILD_INDEX , outlineBinding ) ;
     outlineNode.add ( outlineNodeId ) ;
@@ -1339,8 +1338,7 @@ public final class DefaultOutline implements Outline
     if ( ( this.loadedExpression != null )
         && ( pExpression.equals ( this.loadedExpression ) ) )
     {
-      // TODO only for testing.
-      // return ;
+      return ;
     }
     this.loadedExpression = pExpression ;
     executeTimerCancel ( ) ;

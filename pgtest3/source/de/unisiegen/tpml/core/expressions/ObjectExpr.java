@@ -2,6 +2,7 @@ package de.unisiegen.tpml.core.expressions ;
 
 
 import java.util.ArrayList ;
+import de.unisiegen.tpml.core.identifiers.BoundedId ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
@@ -15,7 +16,7 @@ import de.unisiegen.tpml.core.util.BoundRenaming ;
  * @author Christian Fehler
  * @version $Rev: 1066 $
  */
-public final class ObjectExpr extends Expression
+public final class ObjectExpr extends Expression implements BoundedId
 {
   /**
    * TODO
@@ -118,11 +119,10 @@ public final class ObjectExpr extends Expression
 
 
   /**
-   * TODO
+   * Returns a list of in this {@link Expression} bounded {@link Identifier}s.
    * 
-   * @return TODO
+   * @return A list of in this {@link Expression} bounded {@link Identifier}s.
    */
-  @ Override
   public ArrayList < Identifier > getBoundedId ( )
   {
     if ( this.boundedIdentifiers == null )

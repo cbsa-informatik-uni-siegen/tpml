@@ -2,6 +2,7 @@ package de.unisiegen.tpml.core.expressions ;
 
 
 import java.util.ArrayList ;
+import de.unisiegen.tpml.core.identifiers.BoundedId ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
@@ -21,7 +22,7 @@ import de.unisiegen.tpml.core.util.BoundRenaming ;
  * @see Expression
  * @see Value
  */
-public final class Lambda extends Value
+public final class Lambda extends Value implements BoundedId
 {
   /**
    * The identifier of the abstraction parameter.
@@ -107,7 +108,7 @@ public final class Lambda extends Value
   /**
    * Returns the free (unbound) identifiers of the lambda abstraction. The free
    * (unbound) identifiers of the lambda abstraction are determined by querying
-   * the free identifiers of the <code>e1</code> subexpression, and removing
+   * the free identifiers of the <code>e</code> subexpression, and removing
    * the identifier <code>id</code> from the returned set.
    * 
    * @return the free identifiers for the lambda abstraction.
@@ -132,11 +133,10 @@ public final class Lambda extends Value
 
 
   /**
-   * TODO
+   * Returns a list of in this {@link Expression} bounded {@link Identifier}s.
    * 
-   * @return TODO
+   * @return A list of in this {@link Expression} bounded {@link Identifier}s.
    */
-  @ Override
   public ArrayList < Identifier > getBoundedId ( )
   {
     if ( this.boundedIdentifiers == null )

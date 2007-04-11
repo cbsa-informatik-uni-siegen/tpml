@@ -3,6 +3,7 @@ package de.unisiegen.tpml.core.expressions ;
 
 import java.util.ArrayList ;
 import java.util.Arrays ;
+import de.unisiegen.tpml.core.identifiers.BoundedIdentifiers ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
@@ -21,7 +22,7 @@ import de.unisiegen.tpml.core.util.BoundRenaming ;
  * @see MultiLet
  * @see Value
  */
-public final class MultiLambda extends Value
+public final class MultiLambda extends Value implements BoundedIdentifiers
 {
   /**
    * The tuple parameter identifiers.
@@ -143,11 +144,12 @@ public final class MultiLambda extends Value
 
 
   /**
-   * TODO
+   * Returns a list of lists of in this {@link Expression} bounded
+   * {@link Identifier}s.
    * 
-   * @return TODO
+   * @return A list of lists of in this {@link Expression} bounded
+   *         {@link Identifier}s.
    */
-  @ Override
   public ArrayList < ArrayList < Identifier >> getBoundedIdentifiers ( )
   {
     if ( this.boundedIdentifiers == null )
@@ -190,12 +192,12 @@ public final class MultiLambda extends Value
 
 
   /**
-   * TODO
+   * Returns the <code>pIndex</code>th list of in this {@link Expression}
+   * bounded {@link Identifier}s.
    * 
-   * @param pIndex TODO
-   * @return TODO
+   * @param pIndex The index of the list of {@link Identifier}s to return.
+   * @return A list of in this {@link Expression} bounded {@link Identifier}s.
    */
-  @ Override
   public ArrayList < Identifier > getBoundedIdentifiers ( int pIndex )
   {
     if ( this.boundedIdentifiers == null )

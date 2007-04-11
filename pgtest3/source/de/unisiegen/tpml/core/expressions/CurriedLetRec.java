@@ -2,6 +2,7 @@ package de.unisiegen.tpml.core.expressions ;
 
 
 import java.util.ArrayList ;
+import de.unisiegen.tpml.core.identifiers.BoundedIdentifiers ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
@@ -19,7 +20,8 @@ import de.unisiegen.tpml.core.util.BoundRenaming ;
  * @see LetRec
  * @see CurriedLet
  */
-public final class CurriedLetRec extends CurriedLet
+public final class CurriedLetRec extends CurriedLet implements
+    BoundedIdentifiers
 {
   /**
    * Allocates a new <code>CurriedLetRec</code> instance.
@@ -106,9 +108,11 @@ public final class CurriedLetRec extends CurriedLet
 
 
   /**
-   * TODO
+   * Returns a list of lists of in this {@link Expression} bounded
+   * {@link Identifier}s.
    * 
-   * @return TODO
+   * @return A list of lists of in this {@link Expression} bounded
+   *         {@link Identifier}s.
    */
   @ Override
   public ArrayList < ArrayList < Identifier >> getBoundedIdentifiers ( )
@@ -196,10 +200,11 @@ public final class CurriedLetRec extends CurriedLet
 
 
   /**
-   * TODO
+   * Returns the <code>pIndex</code>th list of in this {@link Expression}
+   * bounded {@link Identifier}s.
    * 
-   * @param pIndex TODO
-   * @return TODO
+   * @param pIndex The index of the list of {@link Identifier}s to return.
+   * @return A list of in this {@link Expression} bounded {@link Identifier}s.
    */
   @ Override
   public ArrayList < Identifier > getBoundedIdentifiers ( int pIndex )

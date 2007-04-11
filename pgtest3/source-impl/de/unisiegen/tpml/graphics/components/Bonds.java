@@ -12,7 +12,7 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation ;
  * @author Benjamin Mies
  * @author Christian Fehler
  */
-public class Bonds
+public final class Bonds
 {
   /**
    * Start offset of the {@link Identifier}.
@@ -52,7 +52,7 @@ public class Bonds
    * 
    * @param pPrettyAnnotation The new {@link PrettyAnnotation}.
    */
-  public void addPrettyAnnotation ( PrettyAnnotation pPrettyAnnotation )
+  public final void addPrettyAnnotation ( PrettyAnnotation pPrettyAnnotation )
   {
     this.prettyAnnotation.add ( pPrettyAnnotation ) ;
   }
@@ -63,7 +63,7 @@ public class Bonds
    * 
    * @return The end offset of the {@link Identifier}.
    */
-  public int getEndOffset ( )
+  public final int getEndOffset ( )
   {
     return this.endOffset ;
   }
@@ -74,7 +74,7 @@ public class Bonds
    * 
    * @return A list of {@link PrettyAnnotation}s of {@link Identifier}.
    */
-  public ArrayList < PrettyAnnotation > getPrettyAnnotation ( )
+  public final ArrayList < PrettyAnnotation > getPrettyAnnotation ( )
   {
     return this.prettyAnnotation ;
   }
@@ -85,7 +85,7 @@ public class Bonds
    * 
    * @return The end offset of the {@link Identifier}.
    */
-  public int getStartOffset ( )
+  public final int getStartOffset ( )
   {
     return this.startOffset ;
   }

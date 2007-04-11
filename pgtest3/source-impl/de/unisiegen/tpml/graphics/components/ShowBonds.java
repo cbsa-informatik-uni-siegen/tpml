@@ -14,7 +14,7 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation ;
  * @author Benjamin Mies
  * @author Christian Fehler
  */
-public class ShowBonds
+public final class ShowBonds
 {
   /**
    * The current loaded {@link Expression}.
@@ -33,19 +33,21 @@ public class ShowBonds
    * 
    * @param pExpression The input {@link Expression}.
    */
-  private void check ( Expression pExpression )
+  private final void check ( Expression pExpression )
   {
-    for ( java.lang.reflect.Method method : pExpression.getClass ( )
-        .getMethods ( ) )
+    for ( Class < Object > currentInterface : pExpression.getClass ( )
+        .getInterfaces ( ) )
     {
-      if ( method.getName ( ).equals ( "getId" ) ) //$NON-NLS-1$
+      if ( currentInterface
+          .equals ( de.unisiegen.tpml.core.identifiers.BoundedId.class ) )
       {
-        checkId ( pExpression , method ) ;
+        checkId ( pExpression ) ;
         break ;
       }
-      if ( method.getName ( ).equals ( "getIdentifiers" ) ) //$NON-NLS-1$
+      if ( currentInterface
+          .equals ( de.unisiegen.tpml.core.identifiers.BoundedIdentifiers.class ) )
       {
-        checkIdentifiers ( pExpression , method ) ;
+        checkIdentifiers ( pExpression ) ;
         break ;
       }
     }
@@ -60,70 +62,50 @@ public class ShowBonds
    * Checks the given {@link Expression} for bounded single {@link Identifier}s.
    * 
    * @param pExpression The input {@link Expression}.
-   * @param pMethod The {@link java.lang.reflect.Method} of the single
-   *          {@link Identifier}.
    */
   @ SuppressWarnings ( "unchecked" )
-  private void checkId ( Expression pExpression ,
-      java.lang.reflect.Method pMethod )
+  private final void checkId ( Expression pExpression )
   {
-    Identifier id = null ;
-    ArrayList < Identifier > bounded = null ;
     try
     {
-      Object [ ] argument = new Object [ 0 ] ;
-      id = ( Identifier ) pMethod.invoke ( pExpression , argument ) ;
+      // Invoke getId
+      Identifier id = ( Identifier ) pExpression.getClass ( ).getMethod (
+          "getId" , new Class [ 0 ] ).invoke ( pExpression , new Object [ 0 ] ) ; //$NON-NLS-1$
+      // Invoke getBoundedId
+      ArrayList < Identifier > bounded = ( ArrayList < Identifier > ) pExpression
+          .getClass ( ).getMethod ( "getBoundedId" , new Class [ 0 ] ).invoke ( //$NON-NLS-1$
+              pExpression , new Object [ 0 ] ) ;
+      // Create Bonds
+      PrettyAnnotation current = this.expression.toPrettyString ( )
+          .getAnnotationForPrintable ( id ) ;
+      Bonds bonds = new Bonds ( current.getStartOffset ( ) , current
+          .getEndOffset ( ) ) ;
+      for ( Identifier boundedId : bounded )
+      {
+        bonds.addPrettyAnnotation ( this.expression.toPrettyString ( )
+            .getAnnotationForPrintable ( boundedId ) ) ;
+      }
+      this.result.add ( bonds ) ;
     }
     catch ( IllegalArgumentException e )
     {
-      // Do nothing
+      System.err.println ( "ShowBonds: IllegalArgumentException" ) ; //$NON-NLS-1$
     }
     catch ( IllegalAccessException e )
     {
-      // Do nothing
+      System.err.println ( "ShowBonds: IllegalAccessException" ) ; //$NON-NLS-1$
     }
     catch ( InvocationTargetException e )
     {
-      // Do nothing
+      System.err.println ( "ShowBonds: InvocationTargetException" ) ; //$NON-NLS-1$
     }
-    for ( java.lang.reflect.Method method : pExpression.getClass ( )
-        .getMethods ( ) )
+    catch ( SecurityException e )
     {
-      if ( method.getName ( ).equals ( "getBoundedId" ) ) //$NON-NLS-1$
-      {
-        try
-        {
-          Object [ ] argument = new Object [ 0 ] ;
-          bounded = ( ArrayList < Identifier > ) method.invoke ( pExpression ,
-              argument ) ;
-          break ;
-        }
-        catch ( IllegalArgumentException e )
-        {
-          // Do nothing
-        }
-        catch ( IllegalAccessException e )
-        {
-          // Do nothing
-        }
-        catch ( InvocationTargetException e )
-        {
-          // Do nothing
-        }
-      }
+      System.err.println ( "ShowBonds: SecurityException" ) ; //$NON-NLS-1$
     }
-    if ( ( id != null ) && ( bounded != null ) )
+    catch ( NoSuchMethodException e )
     {
-      PrettyAnnotation pa = this.expression.toPrettyString ( )
-          .getAnnotationForPrintable ( id ) ;
-      Bonds bonds = new Bonds ( pa.getStartOffset ( ) , pa.getEndOffset ( ) ) ;
-      for ( int i = 0 ; i < bounded.size ( ) ; i ++ )
-      {
-        PrettyAnnotation current = this.expression.toPrettyString ( )
-            .getAnnotationForPrintable ( bounded.get ( i ) ) ;
-        bonds.addPrettyAnnotation ( current ) ;
-      }
-      this.result.add ( bonds ) ;
+      System.err.println ( "ShowBonds: NoSuchMethodException" ) ; //$NON-NLS-1$
     }
   }
 
@@ -132,73 +114,55 @@ public class ShowBonds
    * Checks the given {@link Expression} for bounded multiple {@link Identifier}s.
    * 
    * @param pExpression The input {@link Expression}.
-   * @param pMethod The {@link java.lang.reflect.Method} of the multiple
-   *          {@link Identifier}s.
    */
   @ SuppressWarnings ( "unchecked" )
-  private void checkIdentifiers ( Expression pExpression ,
-      java.lang.reflect.Method pMethod )
+  private final void checkIdentifiers ( Expression pExpression )
   {
-    Identifier [ ] id = null ;
-    ArrayList < ArrayList < Identifier >> bounded = null ;
     try
     {
-      Object [ ] argument = new Object [ 0 ] ;
-      id = ( Identifier [ ] ) pMethod.invoke ( pExpression , argument ) ;
-    }
-    catch ( IllegalArgumentException e )
-    {
-      // Do nothing
-    }
-    catch ( IllegalAccessException e )
-    {
-      // Do nothing
-    }
-    catch ( InvocationTargetException e )
-    {
-      // Do nothing
-    }
-    for ( java.lang.reflect.Method method : pExpression.getClass ( )
-        .getMethods ( ) )
-    {
-      if ( method.getName ( ).equals ( "getBoundedIdentifiers" ) ) //$NON-NLS-1$
-      {
-        try
-        {
-          Object [ ] argument = new Object [ 0 ] ;
-          bounded = ( ArrayList < ArrayList < Identifier >> ) method.invoke (
-              pExpression , argument ) ;
-          break ;
-        }
-        catch ( IllegalArgumentException e )
-        {
-          // Do nothing
-        }
-        catch ( IllegalAccessException e )
-        {
-          // Do nothing
-        }
-        catch ( InvocationTargetException e )
-        {
-          // Do nothing
-        }
-      }
-    }
-    if ( ( id != null ) && ( bounded != null ) )
-    {
+      // Invoke getIdentifiers
+      Identifier [ ] id = ( Identifier [ ] ) pExpression.getClass ( )
+          .getMethod ( "getIdentifiers" , new Class [ 0 ] ).invoke ( //$NON-NLS-1$
+              pExpression , new Object [ 0 ] ) ;
+      // Invoke getBoundedIdentifiers
+      ArrayList < ArrayList < Identifier >> bounded = ( ArrayList < ArrayList < Identifier >> ) pExpression
+          .getClass ( ).getMethod ( "getBoundedIdentifiers" , new Class [ 0 ] ) //$NON-NLS-1$
+          .invoke ( pExpression , new Object [ 0 ] ) ;
+      // Create Bonds
+      PrettyAnnotation current ;
       for ( int i = 0 ; i < bounded.size ( ) ; i ++ )
       {
-        PrettyAnnotation pa = this.expression.toPrettyString ( )
-            .getAnnotationForPrintable ( id [ i ] ) ;
-        Bonds bonds = new Bonds ( pa.getStartOffset ( ) , pa.getEndOffset ( ) ) ;
-        for ( int j = 0 ; j < bounded.get ( i ).size ( ) ; j ++ )
+        current = this.expression.toPrettyString ( ).getAnnotationForPrintable (
+            id [ i ] ) ;
+        Bonds bonds = new Bonds ( current.getStartOffset ( ) , current
+            .getEndOffset ( ) ) ;
+        for ( Identifier boundedId : bounded.get ( i ) )
         {
-          PrettyAnnotation current = this.expression.toPrettyString ( )
-              .getAnnotationForPrintable ( bounded.get ( i ).get ( j ) ) ;
-          bonds.addPrettyAnnotation ( current ) ;
+          bonds.addPrettyAnnotation ( this.expression.toPrettyString ( )
+              .getAnnotationForPrintable ( boundedId ) ) ;
         }
         this.result.add ( bonds ) ;
       }
+    }
+    catch ( IllegalArgumentException e )
+    {
+      System.err.println ( "ShowBonds: IllegalArgumentException" ) ; //$NON-NLS-1$
+    }
+    catch ( IllegalAccessException e )
+    {
+      System.err.println ( "ShowBonds: IllegalAccessException" ) ; //$NON-NLS-1$
+    }
+    catch ( InvocationTargetException e )
+    {
+      System.err.println ( "ShowBonds: InvocationTargetException" ) ; //$NON-NLS-1$
+    }
+    catch ( SecurityException e )
+    {
+      System.err.println ( "ShowBonds: SecurityException" ) ; //$NON-NLS-1$
+    }
+    catch ( NoSuchMethodException e )
+    {
+      System.err.println ( "ShowBonds: NoSuchMethodException" ) ; //$NON-NLS-1$
     }
   }
 
@@ -208,7 +172,7 @@ public class ShowBonds
    * 
    * @return A list with all bonds in the loaded {@link Expression}.
    */
-  public ArrayList < Bonds > getAnnotations ( )
+  public final ArrayList < Bonds > getAnnotations ( )
   {
     return this.result ;
   }
@@ -219,7 +183,7 @@ public class ShowBonds
    * 
    * @param pExpression The input {@link Expression}.
    */
-  public void setExpression ( Expression pExpression )
+  public final void setExpression ( Expression pExpression )
   {
     this.expression = pExpression ;
     this.result = new ArrayList < Bonds > ( ) ;
