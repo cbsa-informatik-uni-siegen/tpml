@@ -328,13 +328,6 @@ public class Let extends Expression implements BoundedId
   PrettyStringBuilder toPrettyStringBuilder (
       PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
-    /*
-     * System.out.println ( "Let:" ) ; System.out.print ( "free: " ) ; for (
-     * Identifier tmp : free ( ) ) { System.out.print ( tmp ) ; }
-     * System.out.println ( ) ; System.out.print ( "bounded: " ) ; for (
-     * Identifier tmp : bounded ( ) ) { System.out.print ( tmp ) ; }
-     * System.out.println ( ) ; System.out.println ( ) ;
-     */
     if ( this.prettyStringBuilder == null )
     {
       this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
@@ -342,7 +335,7 @@ public class Let extends Expression implements BoundedId
       this.prettyStringBuilder.addKeyword ( "let" ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addBuilder ( this.id
-          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , 0 ) ;
+          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_ID ) ;
       if ( this.tau != null )
       {
         this.prettyStringBuilder.addText ( ": " ) ; //$NON-NLS-1$

@@ -17,6 +17,12 @@ package de.unisiegen.tpml.core.expressions ;
 interface PrettyPrintPriorities
 {
   /**
+   * The pretty print priority for identifiers like "let x = 1 in 1".
+   */
+  public static final int PRIO_ID = 0 ;
+
+
+  /**
    * The pretty print priority for constants.
    */
   public static final int PRIO_CONSTANT = 6 ;

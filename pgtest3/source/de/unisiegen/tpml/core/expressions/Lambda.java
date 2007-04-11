@@ -307,7 +307,7 @@ public final class Lambda extends Value implements BoundedId
           PRIO_LAMBDA ) ;
       this.prettyStringBuilder.addKeyword ( "\u03bb" ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addBuilder ( this.id
-          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , 0 ) ;
+          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_ID ) ;
       if ( this.tau != null )
       {
         this.prettyStringBuilder.addText ( ": " ) ; //$NON-NLS-1$

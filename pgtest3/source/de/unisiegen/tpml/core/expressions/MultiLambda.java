@@ -412,7 +412,7 @@ public final class MultiLambda extends Value implements BoundedIdentifiers
           this.prettyStringBuilder.addText ( ", " ) ; //$NON-NLS-1$
         }
         this.prettyStringBuilder.addBuilder ( this.identifiers [ i ]
-            .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , 0 ) ;
+            .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_ID ) ;
       }
       this.prettyStringBuilder.addText ( ")" ) ; //$NON-NLS-1$
       if ( this.tau != null )

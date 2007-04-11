@@ -215,7 +215,7 @@ public final class LetRec extends Let implements BoundedId
       this.prettyStringBuilder.addKeyword ( "rec" ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addBuilder ( this.id
-          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , 0 ) ;
+          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_ID ) ;
       if ( this.tau != null )
       {
         this.prettyStringBuilder.addText ( ": " ) ; //$NON-NLS-1$

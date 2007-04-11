@@ -239,7 +239,7 @@ public final class RowType extends MonoType
           this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
         }
         this.prettyStringBuilder.addBuilder ( this.identifiers [ i ]
-            .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , 0 ) ;
+            .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_ID ) ;
         this.prettyStringBuilder.addText ( ": " ) ; //$NON-NLS-1$
         this.prettyStringBuilder.addBuilder ( this.types [ i ]
             .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,

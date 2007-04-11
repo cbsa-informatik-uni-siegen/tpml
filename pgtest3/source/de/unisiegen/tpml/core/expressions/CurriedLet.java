@@ -546,7 +546,7 @@ public class CurriedLet extends Expression implements BoundedIdentifiers
       this.prettyStringBuilder.addKeyword ( "let" ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addBuilder ( this.identifiers [ 0 ]
-          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , 0 ) ;
+          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_ID ) ;
       for ( int i = 1 ; i < this.identifiers.length ; i ++ )
       {
         this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
@@ -555,7 +555,7 @@ public class CurriedLet extends Expression implements BoundedIdentifiers
           this.prettyStringBuilder.addText ( "(" ) ; //$NON-NLS-1$
         }
         this.prettyStringBuilder.addBuilder ( this.identifiers [ i ]
-            .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , 0 ) ;
+            .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_ID ) ;
         if ( this.types [ i ] != null )
         {
           this.prettyStringBuilder.addText ( ": " ) ; //$NON-NLS-1$

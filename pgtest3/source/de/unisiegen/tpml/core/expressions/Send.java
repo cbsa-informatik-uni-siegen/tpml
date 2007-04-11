@@ -181,7 +181,7 @@ public final class Send extends Expression
       this.prettyStringBuilder.addKeyword ( "#" ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addBuilder ( this.id
-          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , 0 ) ;
+          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_ID ) ;
     }
     return this.prettyStringBuilder ;
   }

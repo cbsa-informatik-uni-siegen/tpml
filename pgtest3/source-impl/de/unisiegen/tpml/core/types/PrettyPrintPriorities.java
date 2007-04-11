@@ -18,6 +18,12 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 interface PrettyPrintPriorities
 {
   /**
+   * The pretty print priority for identifiers like "< add: int ; >".
+   */
+  public static final int PRIO_ID = 0 ;
+
+
+  /**
    * The pretty print priority for object types.
    */
   public static final int PRIO_OBJECT = 0 ;
