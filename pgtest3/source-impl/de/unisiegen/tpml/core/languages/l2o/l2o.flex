@@ -129,6 +129,7 @@ LetterGreek		= [\u03b1-\u03c1\u03c3-\u03c9]
 	"else"				{ return symbol("ELSE", ELSE); }
 	
 	"object"			{ return symbol("OBJECT", OBJECT); }
+	"self"				{ return symbol("SELF", SELF); }
 	"end"				{ return symbol("END", END); }
 	"#"					{ return symbol("NUMBERSIGN", NUMBERSIGN); }
 	"val"				{ return symbol("ATTRIBUTE", ATTRIBUTE); }

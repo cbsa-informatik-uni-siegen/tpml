@@ -8,14 +8,14 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 
 /**
  * Represents an identifier in the expression hierarchy. Identifiers are values
- * wrt the semantics of the various languages.
+ * in the semantics of the various languages.
  * 
  * @author Benedikt Meurer
  * @author Christian Fehler
  * @version $Rev:1056 $
  * @see de.unisiegen.tpml.core.expressions.Value
  */
-public final class Identifier extends Value
+public class Identifier extends Value
 {
   /**
    * The {@link Expression} in which this {@link Identifier} is bounded.

@@ -418,7 +418,7 @@ public final class Row extends Expression implements BoundedIdentifiers
       }
       if ( this.expressions.length == 0 )
       {
-        this.prettyStringBuilder.addKeyword ( "\u03B5" ) ; //$NON-NLS-1$
+        this.prettyStringBuilder.addText ( "\u03B5" ) ; //$NON-NLS-1$
       }
     }
     return this.prettyStringBuilder ;
