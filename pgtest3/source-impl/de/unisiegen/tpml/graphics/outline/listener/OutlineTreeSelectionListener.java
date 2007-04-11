@@ -162,12 +162,19 @@ public final class OutlineTreeSelectionListener implements
                 /*
                  * Highlight the Identifier in the first child
                  */
-                OutlineNode nodeId = ( OutlineNode ) currentOutlineNode
-                    .getChildAt ( 0 ) ;
-                nodeId.setBoundedIdentifier ( identifier
-                    .getBoundedToIdentifier ( ) ) ;
-                nodeId.updateCaption ( ) ;
-                break ;
+                for ( int k = 0 ; k < currentOutlineNode.getChildCount ( ) ; k ++ )
+                {
+                  OutlineNode nodeId = ( OutlineNode ) currentOutlineNode
+                      .getChildAt ( k ) ;
+                  if ( nodeId.getPrettyPrintable ( ) == identifier
+                      .getBoundedToIdentifier ( ) )
+                  {
+                    nodeId.setBoundedIdentifier ( identifier
+                        .getBoundedToIdentifier ( ) ) ;
+                    nodeId.updateCaption ( ) ;
+                    break ;
+                  }
+                }
               }
             }
           }
@@ -182,14 +189,14 @@ public final class OutlineTreeSelectionListener implements
             {
               for ( int j = 0 ; j < pList.get ( i ).getChildCount ( ) ; j ++ )
               {
-                OutlineNode child = ( OutlineNode ) pList.get ( i ).getChildAt (
-                    j ) ;
-                if ( child.getPrettyPrintable ( ) == identifier
+                OutlineNode nodeId = ( OutlineNode ) pList.get ( i )
+                    .getChildAt ( j ) ;
+                if ( nodeId.getPrettyPrintable ( ) == identifier
                     .getBoundedToIdentifier ( ) )
                 {
-                  child.setBoundedIdentifier ( identifier
+                  nodeId.setBoundedIdentifier ( identifier
                       .getBoundedToIdentifier ( ) ) ;
-                  child.updateCaption ( ) ;
+                  nodeId.updateCaption ( ) ;
                   break ;
                 }
               }
