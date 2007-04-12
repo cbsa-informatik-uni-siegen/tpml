@@ -221,8 +221,6 @@ public class PrettyStringRenderer extends AbstractRenderer {
   	//catch this 
   	if (maxWidth <0)
   	{
-  		//TODO Testausgabe
-  		//System.out.println("Dämlicher Sonderfall");
   		return new Dimension (0,0);
   	}
   	
@@ -246,28 +244,15 @@ public class PrettyStringRenderer extends AbstractRenderer {
   			}
   	}
   	
-  	//TODO Testausgabe
-  	//for (Integer i : allBreakPoints)
-  	//{
-  	//	System.out.println(i);
-  	//}
   	//sort all Breakpoints them
   	Collections.sort(allBreakPoints);
   	
-  	//TODO Testausgabe
-  	//for (Integer i : allBreakPoints)
-  	//{
-  	//	System.out.println(i);
-  	//}
-  	
-  	//die benutzen merken
+  	//remember the used ones
   	ArrayList <Integer> useBreakPoints = new ArrayList <Integer>();
 
     //these results will be used for printing
     resultsForPrinting.clear();
-    //resultsForPrinting.addAll(results);
-    //TODO Testausgabe
-    //System.out.println("Maximale Breite: "+maxWidth);
+    
     int actualMaxNeededWidth = 0;
     int actualWidth=0;
     //int actualPosiotion=0;
