@@ -168,6 +168,6 @@ public final class DefaultTypeSubstitution implements TypeSubstitution {
   
   public String toString()
   {
-	  return tvar.toString()+"/"+type.toString();
+	  return type.toString()+"/"+tvar.toString();
   }
 }
