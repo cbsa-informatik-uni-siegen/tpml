@@ -2,6 +2,7 @@
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.text.CharacterIterator;
@@ -420,7 +421,6 @@ public class PrettyStringRenderer extends AbstractRenderer {
     {
     		//System.out.println(r.breakOffsets.size());
     		//System.out.println(this.result.breakOffsets.size());
-    	//TODO Testausgabe
     	//System.out.print(i+", " );
     	this.result.breakOffsets.add(i);
     		//this.result.size.height=result.size.height+r.size.height;
@@ -431,8 +431,6 @@ public class PrettyStringRenderer extends AbstractRenderer {
     this.result.size.height = fontHeight*(result.breakOffsets.size() +2);
     this.result.rows = result.breakOffsets.size() +1;
 
-    //TODO Testausgabe
-    //System.out.println("Rows: "+result.rows+" Umbrüche: "+result.breakOffsets.size());
     return (this.result.size);
   }
 
@@ -485,50 +483,7 @@ public class PrettyStringRenderer extends AbstractRenderer {
       	result.breakOffsets.add(annotation.getBreakOffsets()[i]);
       }
     }
-    
-
-    
-    //TODO Hier steht die tolle Höhe vom Ausdruck, gefunden!
-    //Testen, ob es reicht, die anzahl der Umbrüche zu zählen und mit der Schrifgröße zu multiplizieren...
-    //result.size.height = AbstractRenderer.fontHeight;
-    //das muss auch einfacher gehen
-    //ArrayList <Integer> tmp = new ArrayList<Integer>();
-    //for (int i = 0; i<results.size(); i++)
-  	//{
-  	//	if (results.get(i).annotation != null)
-  	//	{
-  	//		int [] bO = results.get(i).annotation.getBreakOffsets();
-    //		for (int j = 0; j<bO.length; j++)
-    //		{
-    //			Integer t = new Integer(bO[j]);
-    //			tmp.add(t);
-    //		}
-  	//	}		
-  	//}
-  	//wir brauchen alle Rows
-  	//int rowsAll = 0;
-  	//for (int i = 0; i<results.size(); i++)
-  	//{
-  	//	if (results.get(i).annotation != null)
-  	//	{
-  	//		rowsAll = rowsAll+results.get(i).rows;
-  	//	}		
-  	//}
-  	//System.out.println("RowsAll: "+rowsAll);
-  	
-  	//pakcen wir das alles wieder in das Array rein...
-  	//  packen wir diese Scheiße in ein Array
-//  	breakOffsets = new int [tmp.size()];
-//  	for (int i = 0; i<tmp.size(); i++)
-//  	{
-//  		
-//  		breakOffsets[i] =  tmp.get(i).intValue();
-//  		System.out.println("Umbruchstellenindex: "+breakOffsets[i]);
-//  	}
-  	
-  	
-  	//
-    //result.size.height = AbstractRenderer.fontHeight * rowsAll ;
+ 
   	result.size.height = AbstractRenderer.fontHeight;
     
     PrettyCharIterator it = this.prettyString.toCharacterIterator();
@@ -648,7 +603,7 @@ public class PrettyStringRenderer extends AbstractRenderer {
         }
       else
       {
-        ArrayList <PrettyAnnotation> rest = list.get(i).getPrettyAnnotation();
+        ArrayList <PrettyAnnotation> rest = list.get(i).getMarks();
         for (int j = 0 ; j<rest.size(); j++)
         {
           PrettyAnnotation tmp = rest.get(j);
@@ -714,69 +669,84 @@ public class PrettyStringRenderer extends AbstractRenderer {
     
     toListenForMouse = toListenForM;
     
-    //TODO Das muss noch sch�ner weerden, diese Forschleife ersetzt vern�nftige Logik leider nicht...
-    for (int schei = 0; schei<=1 ; schei++)
-    {
+    //get The MousePosition
+    int [] mousePosition = toListenForMouse.getHereIam();
+    
+    //get the Char-Position to the MousePosition
+    //count the chars by using the charwidth adding till the mouseposition is found
+    //for functioning in more than 1 line the lines are count
+    
+    //the breakoffsets to find the line
+    int arraySize=0;
+  	
+  	if (result != null)
+  	{
+  		arraySize = result.breakOffsets.size();
+  	}
+  	int[] breakOffsets = new int [arraySize];
+  	
+  	//TODO Testausgabe
+  	//System.out.println("----------------------------------------------"+result.breakOffsets.size());
+  	//System.out.print("Umbruchstellen: ");
+  	for (int i = 0; i<result.breakOffsets.size(); i++)
+  	{	
+  		breakOffsets[i] =  result.breakOffsets.get(i).intValue();
+//  	TODO Testausgabe
+  		//System.out.print(+breakOffsets[i]+", ");
+  	}
+  	//System.out.println();
+  	
+  	//an Iterator through all chars
+  	PrettyCharIterator it = this.prettyString.toCharacterIterator();
+  	
+  	//find out wher the mousepointer is, at wich char
+    int charPosition = 0 ;
+    int charIndex=0;
      
-    //mal gucken, dass wir hier alle aus den ergbenissen verwerten können...	
-    //int[] breakOffsets = null;
-    //if (this.result.annotation != null) {
-    //  breakOffsets = this.result.annotation.getBreakOffsets();
-    //}
-    //else {
-    //  breakOffsets = new int[0];
-    //}
+    FontMetrics fm = null;
+    fm = AbstractRenderer.expFontMetrics;
     
-    	//liste, die die breakOffsets zwischenspeichert...
-   // 	ArrayList <Integer> tmp = new ArrayList <Integer>();
-    	//TODO Testausgabe
-    	//System.out.println("Umbruchstellen: "+result.breakOffsets.size());
-    	
-    	//breakoffsetst zusammenbauen
-//    	for (int i = 0; i<results.size(); i++)
-//    	{
-//    		if (results.get(i).annotation != null)
-//    		{
-//    			int [] bO = results.get(i).annotation.getBreakOffsets();
-//      		for (int j = 0; j<bO.length; j++)
-//      		{
-//      			Integer t = new Integer(bO[j]);
-//      			tmp.add(t);
-//      		}
-//    		}		
-//    	}
-    	//wir brauchen alle Rows
-//    	int rowsAll = result.breakOffsets.size();
-//    	for (int i = 0; i<results.size(); i++)
-//    	{
-//    		if (results.get(i).annotation != null)
-//    		{
-//    			rowsAll = rowsAll+results.get(i).rows;
-//    		}		
-//    	}
-//    	System.out.println("RowsAll: "+rowsAll);
-    	
-    	
-    	//packen wir diese Scheiße in ein Array
-    	int arraySize=0;
-    	
-    	if (result != null)
+//  if the cahr is not in the first line the startvalue must be different
+    int lineCount = 0;
+    
+    //mousePosition[1] is the x-coordinate, start to count at 1
+    lineCount = (mousePosition[1] / fm.getHeight()) + 1;
+    
+    //System.out.println("Zeile: "+lineCount);
+    if (lineCount > 1)
+    {
+    	charIndex = breakOffsets[lineCount-2];
+    }
+    
+    //add the width of the chars till the mousepointer is reached an dcount the chars
+    for (char c = it.setIndex(Math.max(charIndex, 0)); c != CharacterIterator.DONE; c = it.next(), charIndex++) 
+    {
+    	int charWidth = fm.stringWidth("" + c);
+    	System.out.print(c);
+    	charPosition = charPosition+charWidth;
+    	if (charPosition > mousePosition[0])
     	{
-    		arraySize = result.breakOffsets.size();
-    	}
-    	int[] breakOffsets = new int [arraySize];
-    	
-    	//TODO Testausgabe
-    	//System.out.println("----------------------------------------------"+result.breakOffsets.size());
-    	//System.out.print("Umbruchstellen: ");
-    	for (int i = 0; i<result.breakOffsets.size(); i++)
-    	{	
-    		breakOffsets[i] =  result.breakOffsets.get(i).intValue();
-    		//System.out.print(+breakOffsets[i]+", ");
-    	}
-    	//System.out.println();
-    	
+    		break;
+    	}	
+    }
+
+    System.out.println("die Maus: "+mousePosition[0]);
+    System.out.println("Position: "+charIndex);
     
+    //get the annotations
+    ArrayList <Bonds> annotationsList = bound.getAnnotations();
+    
+    //TODO Testausgabe
+    //for ( int i = 0; i < annotationsList.size(); i++)
+    //{
+    //	System.out.println(annotationsList.get(i).getStartOffset());
+    //	System.out.println(annotationsList.get(i).getEndOffset());
+    //}
+
+    //this will be the annotation to underline, if -1 there is no underlining
+    int rightAnnotationList = isInList(charIndex, annotationsList );
+    //System.out.println(rightAnnotationList);
+
     // get the starting offsets x is just the left border
     // y will be the center of the space available minus the
     // propper amount of rows 
@@ -785,22 +755,11 @@ public class PrettyStringRenderer extends AbstractRenderer {
     
     int posY = y + height / 2;
     posY += AbstractRenderer.fontAscent / 2;
-    
-    //System.out.println("Rows: "+this.result.rows);
-    //TODO Testausgabe
-    //System.out.println("übegebene Höhe: "+height);
-    //System.out.println("errechnete Höhe: "+(AbstractRenderer.fontHeight * result.rows));
-    //float addY = (this.result.rows) / 2.0f;
     float addY = (this.result.rows-1) / 2.0f;
-    //float addY = (rowsAll - 1) / 2.0f;
     addY *= AbstractRenderer.fontHeight;
     posY -= addY;
-    //TODO Testausgabe
-    //System.out.println("Position y: "+posY);
-    //System.out.println("was ist denn y: "+y);
     
-    
-    // start and end position for the underlining
+    // start and end position for the underlining (if the pointer is over the button)
     int underlineStart  = -1;
     int underlineEnd    = -1;
     if (this.underlineAnnotation != null) {
@@ -809,7 +768,7 @@ public class PrettyStringRenderer extends AbstractRenderer {
     }
     
     // now we can start to render the expression
-    PrettyCharIterator it = this.prettyString.toCharacterIterator();
+    //everey char
     for (char c = it.first(); c != CharacterIterator.DONE; c = it.next(), i++) 
     {
       for (int j=0; j<breakOffsets.length; j++) 
@@ -821,19 +780,14 @@ public class PrettyStringRenderer extends AbstractRenderer {
         }
       }
       
-      FontMetrics fm = null;
-      
       fm = AbstractRenderer.expFontMetrics;
       int charWidth = fm.stringWidth("" + c);
-      //TODO Testausgaben
-      //Debug.out.println("lasss mal die H�he der Schrift sehen: "+(fm.getHeight()-fm.getDescent()), "feivel");
+      
       //just corrects the posY to start at baseline instead of the middel
       int posYC = posY - (fm.getHeight()-fm.getDescent());
       //int charHighth = fm.getHeight();
       
-      //Here we get the information where bindings exists in positions
-      ShowBonds instanceOfShowBound = bound; 
-      ArrayList <Bonds> annotationsList = instanceOfShowBound.getAnnotations();
+      //ArrayList <Bonds> annotationsList = instanceOfShowBound.getAnnotations();
 
       //look for aktual char is in this list (-1 stands for false)
       if (!(toListenForMouse.getMark()) && (isInList(i, annotationsList)) > -1)
@@ -846,20 +800,6 @@ public class PrettyStringRenderer extends AbstractRenderer {
         //he will just react from baseline to upper corner of char, not to lower corner of char
         toListenForMouse.add(posYC);
         toListenForMouse.add(posYC+fm.getAscent());
-        //TODO Testausgaben
-        //Debug.out.println("Es geht um Char: " + c, "feivel");
-        //Debug.out.println("Differenz: " + (posY-(posY+fm.getAscent())) , "feivel");
-        //Debug.out.println("H�he: " + (fm.getHeight()) , "feivel");
-        //Debug.out.println("Position: " + posX + "," +posY , "feivel");
-        //Debug.out.println("Position: " + x + "," +y , "feivel");
-        //Debug.out.println("Maus ist: " + toListenForMouse.getHereIam()[0] + "," +toListenForMouse.getHereIam()[1] , "feivel");
-        //fm.get
-        
-        
-        //fm.get
-        //toListenForMouse.add(posY);
-        
-        //toListenForMouse.add(posY);
       }
               
       //Wenn gemalt werden soll, also die Maus �ber einem Buchstaben steht
@@ -870,30 +810,19 @@ public class PrettyStringRenderer extends AbstractRenderer {
       	//and later it will be overwritten
       	gc.setFont(AbstractRenderer.expFont);
         gc.setColor(AbstractRenderer.expColor);
-    
-        //get X-Pos of MousePointer
-        int xPos = toListenForMouse.getHereIam()[0];
-        int yPos = toListenForMouse.getHereIam()[1];
-          
-        //checks if MousePointer stands on the actual char
-        //if ( ( (xPos >= posX) && (xPos <= posX+charWidth) ) && ( (yPos >= posY-fm.getDescent()) && (yPos <=posY+fm.getAscent()) ) ) 
-          if ( ( (xPos >= posX-1) && (xPos <= posX+charWidth+1) ) && ( (yPos >= posYC) && (yPos <=posYC+fm.getAscent()) ) )
-        {
-          //TODO in diesem Fall muss er neu anfangen, er darf nicht mit den n�chsten Buchstaben weiter machen...
-          
-          
-          
-          // - Vielleicht pr�fen, ob die setRightList schon gesertzt, dann �berspringen, sonst vorner anfangen. also die gleiche Funktion einfach nochmal aufrufen...
-          toListenForMouse.setRightList(isInList(i, annotationsList));
-    
-         }
         
         //if actual char is in the same List as the list in wich the char where MousePointer is
-        if (isInList(i, annotationsList) == toListenForMouse.getRightList())
+        //the char should be highlightet
+          if (isInList(i, annotationsList) == rightAnnotationList)
         {
-          //Prüfen, ob es der erste in der Liste ist, und dann anders anmalen...
+          	
+          	//type highlighted in bold
+          	fm.getFont().getName();
+          	Font test = new Font(fm.getFont().getName(), Font.BOLD, fm.getFont().getSize());
+          	gc.setFont(test);
           
           //let font be in right color
+          	//the first in the list is the Id an should be highlighted in an other color than the Bounded ones
           if (isFirstInListe (i, annotationsList))
           {
             gc.setColor(Theme.currentTheme().getIdColor());
@@ -974,7 +903,132 @@ public class PrettyStringRenderer extends AbstractRenderer {
       
       // go on to the next character
     }   
-  }
+  
+    //Rendering without the MousePositioListene dose not work: 
+    /*
+    
+    // get the starting offsets x is just the left border
+    // y will be the center of the space available minus the
+    // propper amount of rows 
+    int i = 0;
+    int posX = x;
+    
+    int posY = y + height / 2;
+    posY += AbstractRenderer.fontAscent / 2;
+    
+    //  start and end position for the underlining
+    int underlineStart  = -1;
+    int underlineEnd    = -1;
+    if (this.underlineAnnotation != null) {
+      underlineStart  = this.underlineAnnotation.getStartOffset();
+      underlineEnd    = this.underlineAnnotation.getEndOffset();
+    }
+    
+    // now we can start to render the expression
+    PrettyCharIterator it = this.prettyString.toCharacterIterator();
+    for (char c = it.first(); c != CharacterIterator.DONE; c = it.next(), i++) 
+    {
+      for (int j=0; j<breakOffsets_.length; j++) 
+      {
+        if (breakOffsets_ [j] == i) {
+          posY += AbstractRenderer.fontHeight;
+          
+          posX = x;
+        }
+      }
+      
+      FontMetrics fm = null;
+      
+      fm = AbstractRenderer.expFontMetrics;
+      int charWidth = fm.stringWidth("" + c);
+      
+      //Debug.out.println("lasss mal die H�he der Schrift sehen: "+(fm.getHeight()-fm.getDescent()), "feivel");
+      //just corrects the posY to start at baseline instead of the middel
+      int posYC = posY - (fm.getHeight()-fm.getDescent());
+    if (toListenForMouse.getMark() && isInList(it.getIndex(), annotationsList)==richtigeListe&&richtigeListe>=0)
+    {
+    	System.out.println("Bitte untersctreichen");
+    	if (isFirstInListe (i, annotationsList))
+      {
+        gc.setColor(Theme.currentTheme().getIdColor());
+      }
+      else
+      {
+        gc.setColor(Theme.currentTheme().getBindingColor());
+      }
+      
+      //underline the actual char
+      gc.drawLine(posX, posY + 1, posX + charWidth, posY + 1);
+    	
+    }
+    
+    	
+    else
+    {
+      //select the proppert font and color for the character
+      switch (it.getStyle()) {
+      	case KEYWORD:
+          gc.setFont(AbstractRenderer.keywordFont);
+          gc.setColor(AbstractRenderer.keywordColor);
+          //fm = AbstractRenderer.keywordFontMetrics;
+          break;
+          
+      case IDENTIFIER:
+      	gc.setFont(AbstractRenderer.expFont);
+        gc.setColor(AbstractRenderer.expColor);
+        //fm = AbstractRenderer.expFontMetrics;
+        break;
+      case NONE:
+        gc.setFont(AbstractRenderer.expFont);
+        gc.setColor(AbstractRenderer.expColor);
+        //fm = AbstractRenderer.expFontMetrics;
+        break;
+      
+      case CONSTANT:
+        gc.setFont(AbstractRenderer.constantFont);
+        gc.setColor(AbstractRenderer.constantColor);
+        //fm = AbstractRenderer.constantFontMetrics;
+        break;
+      case COMMENT:
+        continue;
+      case TYPE:
+        gc.setFont(AbstractRenderer.typeFont);
+        gc.setColor(AbstractRenderer.typeColor);
+        //fm = AbstractRenderer.typeFontMetrics;
+        break;
+      
+      }
+      
+    }
+    if (i >= underlineStart && i <= underlineEnd) {
+      // the current character is in the range, where underlining
+      // should happen
+      
+      // save the current color, it will become resetted later
+      Color color = gc.getColor();
+      gc.setColor(AbstractRenderer.underlineColor);
+      
+      
+      // draw the line below the character 
+      //int charWidth = fm.stringWidth("" + c);
+      gc.drawLine(posX, posY + 1, posX + charWidth, posY + 1);
+      
+      // reset the color for the characters
+      gc.setColor(color);
+      
+    }
+    if (this.alternativeColor != null) {
+      gc.setColor(this.alternativeColor);
+    }
+    
+    // draw the character and move the position
+    gc.drawString("" + c, posX, posY);      
+    posX += fm.stringWidth("" + c);
+    
+    // go on to the next character
+  }*/
+    
+    
   }
   
 }
