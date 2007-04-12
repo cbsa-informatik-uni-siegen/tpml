@@ -196,7 +196,7 @@ public final class TypeCheckerProofModelTest extends JFrame {
     try {
       // parse the program (using L4)
       LanguageFactory factory = LanguageFactory.newInstance();
-      Language language = factory.getLanguageById("l4");
+      Language language = factory.getLanguageById("l2");
       Expression expression = language.newParser(new StringReader(SIMPLE)).parse();
       TypeCheckerProofModel model = language.newTypeCheckerProofModel(expression);
       

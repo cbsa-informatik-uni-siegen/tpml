@@ -29,7 +29,7 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
 	/**
 	 * list of the collected type substitutions of this node
 	 */
-	private TypeSubstitutionList substitutions; // = TypeSubstitutionList.EMPTY_LIST;
+	private ArrayList<TypeSubstitutionList> substitutions = new ArrayList<TypeSubstitutionList>();
 
 	/**
 	 * list of proof steps of this node
@@ -48,7 +48,7 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
 	 * 
 	 */
 	public DefaultTypeInferenceProofNode(TypeJudgement judgement,
-			TypeSubstitutionList subs) {
+			ArrayList<TypeSubstitutionList> subs) {
 
 		//equations = eqns;
 		formula.add(judgement);
@@ -65,7 +65,7 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
 	 * 
 	 */
 	public DefaultTypeInferenceProofNode(ArrayList<TypeFormula> judgement,
-			TypeSubstitutionList subs) {
+			ArrayList<TypeSubstitutionList> subs) {
 
 		//equations = eqns;
 		formula = judgement;
@@ -305,11 +305,11 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
 	 * add a new type substitution to the list of substitutions of this node
 	 *
 	 * @param s1 DefaultTypeSubstitution to add to list
-	 */
+	
 	public void addSubstitution(DefaultTypeSubstitution s1) {
-
-		substitutions.extend(s1);
-	}
+		
+		substitutions.add(s1);
+	} */
 
 	/**
 	 * 
@@ -317,7 +317,7 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
 	 *
 	 * @return TypeSubstitutionList substitutions 
 	 */
-	public TypeSubstitutionList getSubstitutions() {
+	public ArrayList<TypeSubstitutionList> getSubstitutions() {
 
 		return this.substitutions;
 	}
@@ -333,7 +333,7 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
 		return this.formula;
 	}
 
-	public TypeSubstitutionList getSubstitution() {
+	public ArrayList<TypeSubstitutionList> getSubstitution() {
 		return this.substitutions;
 	}
 	

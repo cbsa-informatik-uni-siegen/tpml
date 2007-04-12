@@ -53,7 +53,7 @@ public final class TypeInferenceProofModelTest extends JFrame {
 
 	  private JScrollPane jScrollPane ;
 	    ProofRule choosen=null;
-	private TypeCheckerProofModel typechecker;
+//	private TypeCheckerProofModel typechecker;
   
   //
   // Constructor
@@ -159,7 +159,7 @@ public final class TypeInferenceProofModelTest extends JFrame {
     JComboBox combo1 = new JComboBox();
     
 
-    for (ProofRule rule : model.ruleSet.getRules())
+    for (ProofRule rule : model.getRules())
     {
     	 combo1.addItem( rule.getName() );
     }
@@ -169,7 +169,7 @@ public final class TypeInferenceProofModelTest extends JFrame {
         JComboBox selectedChoice = (JComboBox)e.getSource();
         if (e.getStateChange()==1)
         {
-        	 for (ProofRule rules : model.ruleSet.getRules()){
+        	 for (ProofRule rules : model.getRules()){
         		if( rules.getName().equals( selectedChoice.getSelectedItem()))
         		 {
         			choosen=rules;
@@ -263,7 +263,7 @@ public final class TypeInferenceProofModelTest extends JFrame {
     JButton closeButton = new JButton("Close");
     closeButton.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent event) {
-        System.exit(0);
+        //System.exit(0);
       }
     });
     buttons.add(closeButton);
@@ -301,7 +301,7 @@ public final class TypeInferenceProofModelTest extends JFrame {
     try {
       // parse the program (using L4)
       LanguageFactory factory = LanguageFactory.newInstance();
-      Language language = factory.getLanguageById("l4");
+      Language language = factory.getLanguageById("l1");
       Expression expression = language.newParser(new StringReader(SIMPLE)).parse();
       TypeInferenceProofModel model = language.newTypeInferenceProofModel(expression);
       

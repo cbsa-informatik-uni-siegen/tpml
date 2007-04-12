@@ -104,4 +104,8 @@ public class TypeSubstitutionList {
 
 		return this.first;
 	}
+
+	public TypeSubstitutionList getRemaining() {
+		return this.remaining;
+	}
 }

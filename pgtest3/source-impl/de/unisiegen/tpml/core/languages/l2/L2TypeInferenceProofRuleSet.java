@@ -1,20 +1,10 @@
 package de.unisiegen.tpml.core.languages.l2;
 
-import de.unisiegen.tpml.core.expressions.Application;
-import de.unisiegen.tpml.core.expressions.Expression;
-import de.unisiegen.tpml.core.expressions.InfixOperation;
-import de.unisiegen.tpml.core.expressions.Let;
 import de.unisiegen.tpml.core.languages.l1.L1Language;
-import de.unisiegen.tpml.core.languages.l1.L1TypeInferenceProofRuleSet;
-import de.unisiegen.tpml.core.typechecker.TypeCheckerProofContext;
-import de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode;
-import de.unisiegen.tpml.core.typeinference.DefaultTypeInferenceProofNode;
-import de.unisiegen.tpml.core.types.ArrowType;
-import de.unisiegen.tpml.core.types.TypeVariable;
 
-public class L2TypeInferenceProofRuleSet extends L1TypeInferenceProofRuleSet {
+public class L2TypeInferenceProofRuleSet extends L2TypeCheckerProofRuleSet {
 
-	public L2TypeInferenceProofRuleSet(L1Language language) {
+	public L2TypeInferenceProofRuleSet(L2Language language) {
 		super(language);
 		
 //		unregister the type rules
@@ -29,7 +19,7 @@ public class L2TypeInferenceProofRuleSet extends L1TypeInferenceProofRuleSet {
 	    unregister("REC");
 		
 //		 register the additional typeinference rule
-	//    registerByMethodName(L1Language.L1, "UNIFY", "applyunify");
+	    registerByMethodName(L1Language.L1, "UNIFY", "applyUnify");
 		
 //		 register the type rules
 	    registerByMethodName(L1Language.L1, "ABSTR", "applyAbstr");

@@ -1,8 +1,10 @@
 package de.unisiegen.tpml.core.typeinference;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.TreeSet;
+
 import de.unisiegen.tpml.core.ProofRuleException;
 import de.unisiegen.tpml.core.expressions.ArithmeticOperator;
 import de.unisiegen.tpml.core.expressions.Assign;
@@ -20,6 +22,7 @@ import de.unisiegen.tpml.core.expressions.Ref;
 import de.unisiegen.tpml.core.expressions.RelationalOperator;
 import de.unisiegen.tpml.core.expressions.Tl;
 import de.unisiegen.tpml.core.expressions.UnaryCons;
+import de.unisiegen.tpml.core.expressions.Unify;
 import de.unisiegen.tpml.core.expressions.UnitConstant;
 import de.unisiegen.tpml.core.typechecker.DefaultTypeCheckerProofNode;
 import de.unisiegen.tpml.core.typechecker.DefaultTypeEnvironment;
@@ -28,7 +31,6 @@ import de.unisiegen.tpml.core.typechecker.TypeCheckerProofContext;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofRule;
 import de.unisiegen.tpml.core.typechecker.TypeEnvironment;
-import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
 import de.unisiegen.tpml.core.typechecker.TypeUtilities;
 import de.unisiegen.tpml.core.types.ArrowType;
 import de.unisiegen.tpml.core.types.BooleanType;
@@ -40,6 +42,7 @@ import de.unisiegen.tpml.core.types.RefType;
 import de.unisiegen.tpml.core.types.TupleType;
 import de.unisiegen.tpml.core.types.Type;
 import de.unisiegen.tpml.core.types.TypeVariable;
+import de.unisiegen.tpml.core.types.UnifyType;
 import de.unisiegen.tpml.core.types.UnitType;
 
 /**
@@ -71,18 +74,18 @@ public class DefaultTypeInferenceProofContext implements
 	 * 
 	 * @see typeinference.TypeEquation
 	 */
-	private LinkedList<TypeEquation> equations = new LinkedList<TypeEquation>();
+	private ArrayList<TypeEquation> equations = new ArrayList<TypeEquation>();
 
 	/**
-	 * The list of type substitutions that has been collected for this context
+	 * The list of all type substitutions that has been collected for this context
 	 * 
 	 */
-	private TypeSubstitutionList substitutions = TypeSubstitutionList.EMPTY_LIST;
+	private ArrayList<TypeSubstitutionList> substitutions = new ArrayList<TypeSubstitutionList>();
 
 	/**
-	 * The newest added Substitution
+	 * The newest added type substitutions
 	 */
-	private DefaultTypeSubstitution substitution;
+	private TypeSubstitutionList substitution = TypeSubstitutionList.EMPTY_LIST;
 
 	/**
 	 * The type inference proof model with which this proof context is associated.
@@ -193,38 +196,29 @@ public class DefaultTypeInferenceProofContext implements
 		}
 		if (expression instanceof BooleanConstant) {
 			return new BooleanType();
-		}
-		else if (expression instanceof IntegerConstant) {
+		} else if (expression instanceof IntegerConstant) {
 			return new IntegerType();
-		}
-		else if (expression instanceof UnitConstant) {
+		} else if (expression instanceof UnitConstant) {
 			return new UnitType();
-		}
-		else if (expression instanceof ArithmeticOperator) {
+		} else if (expression instanceof ArithmeticOperator) {
 			return new ArrowType(new IntegerType(), new ArrowType(new IntegerType(),
 					new IntegerType()));
-		}
-		else if (expression instanceof RelationalOperator) {
+		} else if (expression instanceof RelationalOperator) {
 			return new ArrowType(new IntegerType(), new ArrowType(new IntegerType(),
 					new BooleanType()));
-		}
-		else if (expression instanceof Not) {
+		} else if (expression instanceof Not) {
 			return new ArrowType(new BooleanType(), new BooleanType());
-		}
-		else if (expression instanceof Assign) {
+		} else if (expression instanceof Assign) {
 			return new PolyType(Collections.singleton(TypeVariable.ALPHA),
 					new ArrowType(new RefType(TypeVariable.ALPHA), new ArrowType(
 							TypeVariable.ALPHA, new UnitType())));
-		}
-		else if (expression instanceof Deref) {
+		} else if (expression instanceof Deref) {
 			return new PolyType(Collections.singleton(TypeVariable.ALPHA),
 					new ArrowType(new RefType(TypeVariable.ALPHA), TypeVariable.ALPHA));
-		}
-		else if (expression instanceof Ref) {
+		} else if (expression instanceof Ref) {
 			return new PolyType(Collections.singleton(TypeVariable.ALPHA),
 					new ArrowType(TypeVariable.ALPHA, new RefType(TypeVariable.ALPHA)));
-		}
-		else if (expression instanceof Projection) {
+		} else if (expression instanceof Projection) {
 			Projection projection = (Projection) expression;
 			TypeVariable[] typeVariables = new TypeVariable[projection.getArity()];
 			TreeSet<TypeVariable> quantifiedVariables = new TreeSet<TypeVariable>();
@@ -234,36 +228,29 @@ public class DefaultTypeInferenceProofContext implements
 			}
 			return new PolyType(quantifiedVariables, new ArrowType(new TupleType(
 					typeVariables), typeVariables[projection.getIndex() - 1]));
-		}
-		else if (expression instanceof EmptyList) {
+		} else if (expression instanceof EmptyList) {
 			return new PolyType(Collections.singleton(TypeVariable.ALPHA),
 					new ListType(TypeVariable.ALPHA));
-		}
-		else if (expression instanceof BinaryCons) {
+		} else if (expression instanceof BinaryCons) {
 			return new PolyType(Collections.singleton(TypeVariable.ALPHA),
 					new ArrowType(TypeVariable.ALPHA, new ArrowType(new ListType(
 							TypeVariable.ALPHA), new ListType(TypeVariable.ALPHA))));
-		}
-		else if (expression instanceof UnaryCons) {
+		} else if (expression instanceof UnaryCons) {
 			return new PolyType(Collections.singleton(TypeVariable.ALPHA),
 					new ArrowType(new TupleType(new MonoType[] { TypeVariable.ALPHA,
 							new ListType(TypeVariable.ALPHA) }), new ListType(
 							TypeVariable.ALPHA)));
-		}
-		else if (expression instanceof Hd) {
+		} else if (expression instanceof Hd) {
 			return new PolyType(Collections.singleton(TypeVariable.ALPHA),
 					new ArrowType(new ListType(TypeVariable.ALPHA), TypeVariable.ALPHA));
-		}
-		else if (expression instanceof Tl) {
+		} else if (expression instanceof Tl) {
 			return new PolyType(Collections.singleton(TypeVariable.ALPHA),
 					new ArrowType(new ListType(TypeVariable.ALPHA), new ListType(
 							TypeVariable.ALPHA)));
-		}
-		else if (expression instanceof IsEmpty) {
+		} else if (expression instanceof IsEmpty) {
 			return new PolyType(Collections.singleton(TypeVariable.ALPHA),
 					new ArrowType(new ListType(TypeVariable.ALPHA), new BooleanType()));
-		}
-		else {
+		} else {
 			// not a simple expression
 			throw new IllegalArgumentException("Cannot determine the type for "
 					+ expression);
@@ -288,8 +275,7 @@ public class DefaultTypeInferenceProofContext implements
 						newTypeVariable()));
 			}
 			return tau;
-		}
-		else {
+		} else {
 			return (MonoType) type;
 		}
 	}
@@ -314,7 +300,7 @@ public class DefaultTypeInferenceProofContext implements
 
 	public void addSubstitution(DefaultTypeSubstitution s) {
 
-		substitutions = substitutions.extend(s);
+		substitution = substitution.extend(s);
 	}
 
 	//
@@ -343,17 +329,15 @@ public class DefaultTypeInferenceProofContext implements
 			typeNode = new DefaultTypeCheckerProofNode(formula.getEnvironment(),
 					formula.getExpression(), formula.getType());
 
-		}
-		else if (rule.toString().equals("UNIFY")) {
+		} else if (rule.toString().equals("UNIFY")) {
 
 			typeNode = new DefaultTypeEquationProofNode(formula.getEnvironment(),
-					new IsEmpty(), formula.getType(), (TypeEquation) formula);
+					new Unify(), formula.getType(), (TypeEquation) formula);
 
-		}
-		else {
+		} else {
 
 			typeNode = new DefaultTypeCheckerProofNode(formula.getEnvironment(),
-					new IsEmpty(), new UnitType());
+					new Unify(), new UnifyType());
 			throw new ProofRuleException(typeNode, rule);
 
 		}
@@ -367,9 +351,10 @@ public class DefaultTypeInferenceProofContext implements
 		 }*/
 
 		// Create a new List of formulas
-		LinkedList<TypeFormula> formulas = new LinkedList<TypeFormula>();
+		ArrayList<TypeFormula> formulas = new ArrayList<TypeFormula>();
+		ArrayList<TypeSubstitutionList> newSubstitutions = new ArrayList<TypeSubstitutionList>();
 
-		LinkedList<TypeFormula> oldFormulas = node.getFormula();
+		ArrayList<TypeFormula> oldFormulas = node.getFormula();
 
 		// add evtl. existing formulas from the parent node
 		for (TypeFormula form : oldFormulas) {
@@ -388,26 +373,50 @@ public class DefaultTypeInferenceProofContext implements
 			formulas.add(judgement);
 		}
 
+		TypeSubstitutionList sub = substitution;
+		
+
 		// add the new collected equations to the formula list
 		for (int i = equations.size() - 1; i > -1; i--) {
-			if (substitution != null)
-				formulas.add(equations.get(i).substitute(substitution));
-			formulas.add(equations.get(i));
+			TypeFormula eqn = (TypeFormula) equations.get(i);
+			if (!(oldFormulas.contains(eqn))) {
+				if (substitution != TypeSubstitutionList.EMPTY_LIST) {
+					while (sub != TypeSubstitutionList.EMPTY_LIST) {
+						eqn = eqn.substitute(sub.getFirst());
+						sub = sub.getRemaining();
+					}
+				}
+				if (!(formulas.contains(eqn))) {
+						formulas.add(eqn);
+				}
+			}
 		}
+
+		sub = substitution;
 
 		// add the equations of the old node to the formula list
 		for (int i = 0; i < oldFormulas.size(); i++) {
 			TypeFormula form = oldFormulas.get(i);
 			if (form instanceof TypeEquation)
 				if ((!formula.equals(form))) {
-					if (substitution != null)
-						formulas.add(form.substitute(substitution));
-					else formulas.add(form);
+					if (substitution != TypeSubstitutionList.EMPTY_LIST) {
+						while (sub != TypeSubstitutionList.EMPTY_LIST) {
+							form = form.substitute(sub.getFirst());
+							sub = sub.getRemaining();
+
+						}
+					}
+					formulas.add(form);
 				}
 		}
+		
+		//	add the new substitutions
+		if (substitution != TypeSubstitutionList.EMPTY_LIST)
+			newSubstitutions.add(substitution);
+		newSubstitutions.addAll(substitutions);
 
 		// create the new node
-		this.model.contextAddProofNode(this, node, formulas, substitutions, rule,
+		this.model.contextAddProofNode(this, node, formulas, newSubstitutions, rule,
 				formula);
 	}
 
@@ -533,17 +542,17 @@ public class DefaultTypeInferenceProofContext implements
 	 *
 	 * @param substitutions the new list of type substitutions
 	 */
-	public void setSubstitutions(TypeSubstitutionList substitutions) {
+	public void setSubstitutions(ArrayList<TypeSubstitutionList> subs) {
 
-		this.substitutions = substitutions;
+		this.substitutions = subs;
 	}
 
-	/**
+	/*
 	 * Set the newes type substitution
 	 * @param substitution DefaultTypeSubstitution
-	 */
-	public void setSubstitution(DefaultTypeSubstitution substitution) {
+	 *
+	 public void setSubstitution(TypeSubstitutionList s) {
 
-		this.substitution = substitution;
-	}
+	 this.substitution = s;
+	 }*/
 }

@@ -35,7 +35,7 @@ public class L1TypeInferenceProofRuleSet extends L1TypeCheckerProofRuleSet{
 	    unregister("OR");
 		
 //		 register the additional type typeinferencerule
-	 //   registerByMethodName(L1Language.L1, "UNIFY", "applyunify");
+	    registerByMethodName(L1Language.L1, "UNIFY", "applyUnify");
 		
 //		 register the type rules
 	    registerByMethodName(L1Language.L1, "ABSTR", "applyAbstr");

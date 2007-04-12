@@ -397,129 +397,133 @@ public class L1TypeCheckerProofRuleSet extends AbstractTypeCheckerProofRuleSet
   }
 
 
-  //
-  // The unify rule
-  //
-  /**
-   * Applies the <b>(UNIFY)</b> rule to the <code>node</code> using the
-   * <code>context</code>.
-   * 
-   * @param pContext the type inference proof context.
-   * @param pNode the type inference proof node.
-   * @throws UnifyException
-   */
-  public void applyUnify ( TypeCheckerProofContext pContext ,
-      TypeCheckerProofNode pNode ) throws UnifyException
-  {
-    DefaultTypeInferenceProofContext context = ( DefaultTypeInferenceProofContext ) pContext ;
-    DefaultTypeEquationProofNode node = ( DefaultTypeEquationProofNode ) pNode ;
-    TypeEquation eqn = node.getEquation ( ) ;
-    // empty equation is not longer possible so this rule is not implemented
-    MonoType left = eqn.getLeft ( ) ;
-    MonoType right = eqn.getRight ( ) ;
-    if ( left instanceof TypeVariable || right instanceof TypeVariable )
-    {
-      // the left or right side of the equation is a type variable
-      TypeVariable tvar = ( TypeVariable ) ( left instanceof TypeVariable ? left
-          : right ) ;
-      MonoType tau = ( left instanceof TypeVariable ? right : left ) ;
-      // either tvar equals tau or tvar is not present in tau
-      if ( tvar.equals ( tau ) || ! tau.free ( ).contains ( tvar ) )
-      {
-        DefaultTypeSubstitution s = new DefaultTypeSubstitution ( tvar , tau ) ;
-        // now have to substitude remaining eqns
-        // eqns= eqns.getRemaining();
-        // context.setEquations(eqns);
-        // context.substitute(s);
-        context.setSubstitution ( s ) ;
-        context.addSubstitution ( s ) ;
-        // context.popEquation();
-        return ;
-      }
-    }
-    else if ( left instanceof ArrowType && right instanceof ArrowType )
-    {
-      ArrowType taul = ( ArrowType ) left ;
-      ArrowType taur = ( ArrowType ) right ;
-      // we need to check {tau1 = tau1', tau2 = tau2'} as well
-      // eqns = eqns.getRemaining();
-      // context.setEquations(eqns);
-      // context.popEquation();
-      context.addEquation ( taul.getTau2 ( ) , taur.getTau2 ( ) ) ;
-      context.addEquation ( taul.getTau1 ( ) , taur.getTau1 ( ) ) ;
-      return ;
-    }
-    else if ( left instanceof TupleType && right instanceof TupleType )
-    {
-      // cast to TupleType instances (tau and tau')
-      TupleType taul = ( TupleType ) left ;
-      TupleType taur = ( TupleType ) right ;
-      // determine the sub types
-      MonoType [ ] typesl = taul.getTypes ( ) ;
-      MonoType [ ] typesr = taur.getTypes ( ) ;
-      // check if the arities match
-      if ( typesl.length == typesr.length )
-      {
-        // check all sub types
-        // context.setEquations(eqns.getRemaining());
-        for ( int n = 0 ; n < typesl.length ; ++ n )
-        {
-          context.addEquation ( typesl [ n ] , typesr [ n ] ) ;
-        }
-        return ;
-      }
-      // generate new child nodes
-      // context.addProofNode(node, node.getEnvironment(), node.getExpression(),
-      // node.getType(), eqns);
-      // context.setEquations(eqns.getRemaining());
-      return ;
-    }
-    else if ( left instanceof TupleType && right instanceof TupleType )
-    {
-      // cast to TupleType instances (tau and tau')
-      TupleType taul = ( TupleType ) left ;
-      TupleType taur = ( TupleType ) right ;
-      // determine the sub types
-      MonoType [ ] typesl = taul.getTypes ( ) ;
-      MonoType [ ] typesr = taur.getTypes ( ) ;
-      // check if the arities match
-      if ( typesl.length == typesr.length )
-      {
-        // check all sub types
-        // context.setEquations(eqns.getRemaining());
-        for ( int n = 0 ; n < typesl.length ; ++ n )
-        {
-          context.addEquation ( typesl [ n ] , typesr [ n ] ) ;
-        }
-        return ;
-      }
-      // FALL-THROUGH: Otherwise it's a type error
-    }
-    else if ( left instanceof RefType && right instanceof RefType )
-    {
-      // cast to RefType instances (tau and tau')
-      RefType taul = ( RefType ) left ;
-      RefType taur = ( RefType ) right ;
-      // we need to check {tau = tau'} as well
-      // context.setEquations(eqns.getRemaining());
-      context.addEquation ( taul.getTau ( ) , taur.getTau ( ) ) ;
-      return ;
-    }
-    else if ( left instanceof ListType && right instanceof ListType )
-    {
-      // cast to ListType instances (tau and tau')
-      ListType taul = ( ListType ) left ;
-      ListType taur = ( ListType ) right ;
-      // we need to check {tau = tau'} as well
-      // context.setEquations(eqns.getRemaining());
-      context.addEquation ( taul.getTau ( ) , taur.getTau ( ) ) ;
-      return ;
-    }
-    else if ( left.equals ( right ) )
-    {
-      // context.setEquations(eqns.getRemaining());
-      return ;
-    }
-    throw new UnifyException ( eqn ) ;
-  }
+	//
+	// The unify rule
+	//
+
+	/**
+	 * Applies the <b>(UNIFY)</b> rule to the <code>node</code> using the <code>context</code>.
+	 * 
+	 * @param pContext the type inference proof context.
+	 * @param pNode the type inference proof node.
+	 * @throws UnifyException 
+	 */
+	public void applyUnify(TypeCheckerProofContext pContext,
+			TypeCheckerProofNode pNode) throws UnifyException {
+
+		// convert in needed types
+		DefaultTypeInferenceProofContext context = (DefaultTypeInferenceProofContext) pContext;
+		DefaultTypeEquationProofNode node = (DefaultTypeEquationProofNode) pNode;
+		TypeEquation eqn = node.getEquation();
+
+		// empty equation is not longer possible so this rule is not implemented
+
+		MonoType left = eqn.getLeft();
+		MonoType right = eqn.getRight();
+		
+		if (left.equals(right)) {
+			//context.setEquations(eqns.getRemaining());
+			return;
+		}
+
+		else if (left instanceof TypeVariable || right instanceof TypeVariable) {
+			// the left or right side of the equation is a type variable
+			TypeVariable tvar = (TypeVariable) (left instanceof TypeVariable ? left
+					: right);
+			MonoType tau = (left instanceof TypeVariable ? right : left);
+			// either tvar equals tau or tvar is not present in tau
+      //???
+			if (tvar.equals(tau) || !tau.free().contains(tvar)) {
+
+				DefaultTypeSubstitution s = new DefaultTypeSubstitution(tvar, tau);
+
+				// now have to substitude remaining eqns
+				//eqns= eqns.getRemaining();
+				//context.setEquations(eqns);
+
+				//   context.substitute(s);
+				//context.setSubstitution(s);
+				context.addSubstitution(s);
+				return;
+			}
+		}
+		else if (left instanceof ArrowType && right instanceof ArrowType) {
+			ArrowType taul = (ArrowType) left;
+			ArrowType taur = (ArrowType) right;
+
+			// we need to check {tau1 = tau1', tau2 = tau2'} as well
+			context.addEquation(taul.getTau2(), taur.getTau2());
+			context.addEquation(taul.getTau1(), taur.getTau1());
+			return;
+		}
+		else if (left instanceof TupleType && right instanceof TupleType) {
+			// cast to TupleType instances (tau and tau')
+			TupleType taul = (TupleType) left;
+			TupleType taur = (TupleType) right;
+
+			// determine the sub types
+			MonoType[] typesl = taul.getTypes();
+			MonoType[] typesr = taur.getTypes();
+
+			// check if the arities match
+			if (typesl.length == typesr.length) {
+				// check all sub types
+				// context.setEquations(eqns.getRemaining());
+				for (int n = 0; n < typesl.length; ++n) {
+					context.addEquation(typesl[n], typesr[n]);
+				}
+				return;
+			}
+			//        generate new child nodes
+			//        context.addProofNode(node, node.getEnvironment(), node.getExpression(), node.getType(), eqns);
+			//context.setEquations(eqns.getRemaining());
+			return;
+		}
+		else if (left instanceof TupleType && right instanceof TupleType) {
+			// cast to TupleType instances (tau and tau')
+			TupleType taul = (TupleType) left;
+			TupleType taur = (TupleType) right;
+
+			// determine the sub types
+			MonoType[] typesl = taul.getTypes();
+			MonoType[] typesr = taur.getTypes();
+
+			// check if the arities match
+			if (typesl.length == typesr.length) {
+				// check all sub types
+				//context.setEquations(eqns.getRemaining());
+				for (int n = 0; n < typesl.length; ++n) {
+					context.addEquation(typesl[n], typesr[n]);
+				}
+
+				return;
+			}
+
+			// FALL-THROUGH: Otherwise it's a type error
+		}
+		else if (left instanceof RefType && right instanceof RefType) {
+			// cast to RefType instances (tau and tau')
+			RefType taul = (RefType) left;
+			RefType taur = (RefType) right;
+
+			// we need to check {tau = tau'} as well
+			// context.setEquations(eqns.getRemaining());
+			context.addEquation(taul.getTau(), taur.getTau());
+
+			return;
+		}
+		else if (left instanceof ListType && right instanceof ListType) {
+			// cast to ListType instances (tau and tau')
+			ListType taul = (ListType) left;
+			ListType taur = (ListType) right;
+
+			// we need to check {tau = tau'} as well
+			// context.setEquations(eqns.getRemaining());
+			context.addEquation(taul.getTau(), taur.getTau());
+
+			return;
+		}
+
+		throw new UnifyException(eqn);
+	}
 }

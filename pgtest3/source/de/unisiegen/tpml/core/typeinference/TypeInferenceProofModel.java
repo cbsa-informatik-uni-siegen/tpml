@@ -1,7 +1,9 @@
 package de.unisiegen.tpml.core.typeinference;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
+
 import org.apache.log4j.Logger;
+
 import de.unisiegen.tpml.core.AbstractProofModel;
 import de.unisiegen.tpml.core.AbstractProofNode;
 import de.unisiegen.tpml.core.AbstractProofRuleSet;
@@ -81,7 +83,7 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 
 		super(new DefaultTypeInferenceProofNode(new TypeJudgement(
 				new DefaultTypeEnvironment(), expression, new TypeVariable(1, 0)),
-				TypeSubstitutionList.EMPTY_LIST), ruleSet);
+				new ArrayList<TypeSubstitutionList>()), ruleSet);
 	}
 
 	//
@@ -165,6 +167,11 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 	 * {@inheritDoc}
 	 * 
 	 * added an the formula to apply the rule
+	 * 
+	 * @param rule proof rule to apply to the node 
+	 * @param node the actual type inference proof node
+	 * @param formula choosen type formula for next step
+	 * @throws ProofRuleException 
 	 *
 	 * @see de.unisiegen.tpml.core.AbstractProofModel#prove(de.unisiegen.tpml.core.ProofRule, de.unisiegen.tpml.core.ProofNode)
 	 */
@@ -183,6 +190,37 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 		// try to apply the rule to the specified node
 		applyInternal((TypeCheckerProofRule) rule,
 				(DefaultTypeInferenceProofNode) node, null, null);
+	}
+	
+	/**
+	 * 
+	 * mehtod used for DnD in the gui. 
+	 *
+	 * @param node type inference proof node which ownes the formula list to resort
+	 * @param move the type formula which should be moved
+	 * @param pos the new position of the moved type formula
+	 */
+	public void resort(final DefaultTypeInferenceProofNode node, final TypeFormula move, final int pos) {
+		
+		final int oldPos = node.getFormula().indexOf(move);
+		
+		addUndoableTreeEdit(new UndoableTreeEdit() {
+
+			public void redo() {
+
+				node.getFormula().remove(move);
+				if (pos < oldPos)
+					node.getFormula().add(pos, move);
+				else
+					node.getFormula().add(pos-1, move);
+			}
+
+			public void undo() {
+
+				node.getFormula().remove(move);
+				node.getFormula().add(oldPos, move);
+			}
+		});
 	}
 
 	//
@@ -354,7 +392,7 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 	 */
 	void contextAddProofNode(final DefaultTypeInferenceProofContext context,
 			final DefaultTypeInferenceProofNode pNode,
-			final LinkedList<TypeFormula> formulas, final TypeSubstitutionList subs,
+			final ArrayList<TypeFormula> formulas, final ArrayList<TypeSubstitutionList> subs,
 			final TypeCheckerProofRule rule, final TypeFormula formula) {
 
 		final DefaultTypeInferenceProofNode child = new DefaultTypeInferenceProofNode(
@@ -431,6 +469,11 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 	// Just for testing
 	public void setRoot(AbstractProofNode node){
 		this.root=node;
+	}
+	
+	@Override
+	public ProofRule[] getRules(){
+		return this.ruleSet.getRules();
 	}
 
 }
