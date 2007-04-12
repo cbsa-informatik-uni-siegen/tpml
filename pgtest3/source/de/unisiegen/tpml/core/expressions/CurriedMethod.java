@@ -157,38 +157,32 @@ public final class CurriedMethod extends Expression implements
     {
       this.boundedIdentifiers = new ArrayList < ArrayList < Identifier >> ( ) ;
       ArrayList < Identifier > boundedE = this.e.free ( ) ;
-      for ( int i = 0 ; i < this.identifiers.length ; i ++ )
+      this.boundedIdentifiers.add ( null ) ;
+      for ( int i = 1 ; i < this.identifiers.length ; i ++ )
       {
-        if ( i == 0 )
+        /*
+         * An Identifier has no binding, if an Identifier after him has the same
+         * name. Example: object method add x x = x ; end.
+         */
+        boolean hasBinding = true ;
+        for ( int j = i + 1 ; j < this.identifiers.length ; j ++ )
         {
-          this.boundedIdentifiers.add ( new ArrayList < Identifier > ( ) ) ;
-        }
-        else
-        {
-          /*
-           * An Identifier has no binding, if an Identifier after him has the
-           * same name. Example: object method add x x = x ; end.
-           */
-          boolean hasBinding = true ;
-          for ( int j = i + 1 ; j < this.identifiers.length ; j ++ )
+          if ( this.identifiers [ i ].equals ( this.identifiers [ j ] ) )
           {
-            if ( this.identifiers [ i ].equals ( this.identifiers [ j ] ) )
-            {
-              hasBinding = false ;
-              break ;
-            }
+            hasBinding = false ;
+            break ;
           }
-          ArrayList < Identifier > boundedIdList = new ArrayList < Identifier > ( ) ;
-          if ( hasBinding )
+        }
+        ArrayList < Identifier > boundedIdList = new ArrayList < Identifier > ( ) ;
+        if ( hasBinding )
+        {
+          for ( Identifier freeId : boundedE )
           {
-            for ( Identifier freeId : boundedE )
+            if ( this.identifiers [ i ].equals ( freeId ) )
             {
-              if ( this.identifiers [ i ].equals ( freeId ) )
-              {
-                freeId.setBoundedToExpression ( this ) ;
-                freeId.setBoundedToIdentifier ( this.identifiers [ i ] ) ;
-                boundedIdList.add ( freeId ) ;
-              }
+              freeId.setBoundedToExpression ( this ) ;
+              freeId.setBoundedToIdentifier ( this.identifiers [ i ] ) ;
+              boundedIdList.add ( freeId ) ;
             }
           }
           this.boundedIdentifiers.add ( boundedIdList ) ;

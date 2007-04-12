@@ -76,6 +76,10 @@ public final class ShowBonds
           .getClass ( ).getMethod ( "getBoundedId" , new Class [ 0 ] ).invoke ( //$NON-NLS-1$
               pExpression , new Object [ 0 ] ) ;
       // Create Bonds
+      if ( bounded == null )
+      {
+        return ;
+      }
       PrettyAnnotation current = this.expression.toPrettyString ( )
           .getAnnotationForPrintable ( id ) ;
       Bonds bonds = new Bonds ( current.getStartOffset ( ) , current
@@ -129,9 +133,17 @@ public final class ShowBonds
           .getClass ( ).getMethod ( "getBoundedIdentifiers" , new Class [ 0 ] ) //$NON-NLS-1$
           .invoke ( pExpression , new Object [ 0 ] ) ;
       // Create Bonds
+      if ( bounded == null )
+      {
+        return ;
+      }
       PrettyAnnotation current ;
       for ( int i = 0 ; i < bounded.size ( ) ; i ++ )
       {
+        if ( bounded.get ( i ) == null )
+        {
+          continue ;
+        }
         current = this.expression.toPrettyString ( ).getAnnotationForPrintable (
             id [ i ] ) ;
         Bonds bonds = new Bonds ( current.getStartOffset ( ) , current

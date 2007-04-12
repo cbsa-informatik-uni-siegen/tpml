@@ -149,9 +149,9 @@ public final class Row extends Expression implements BoundedIdentifiers
       this.boundedIdentifiers = new ArrayList < ArrayList < Identifier >> ( ) ;
       for ( int i = 0 ; i < this.expressions.length ; i ++ )
       {
-        ArrayList < Identifier > boundedId = new ArrayList < Identifier > ( ) ;
         if ( this.expressions [ i ] instanceof Attribute )
         {
+          ArrayList < Identifier > boundedId = new ArrayList < Identifier > ( ) ;
           Attribute attribute = ( Attribute ) this.expressions [ i ] ;
           for ( int j = i + 1 ; j < this.expressions.length ; j ++ )
           {
@@ -173,8 +173,12 @@ public final class Row extends Expression implements BoundedIdentifiers
               break ;
             }
           }
+          this.boundedIdentifiers.add ( boundedId ) ;
         }
-        this.boundedIdentifiers.add ( boundedId ) ;
+        else
+        {
+          this.boundedIdentifiers.add ( null ) ;
+        }
       }
     }
     return this.boundedIdentifiers ;
