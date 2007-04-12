@@ -603,7 +603,7 @@ public class PrettyStringRenderer extends AbstractRenderer {
         }
       else
       {
-        ArrayList <PrettyAnnotation> rest = list.get(i).getMarks();
+        ArrayList <PrettyAnnotation> rest = list.get(i).getPrettyAnnotation();
         for (int j = 0 ; j<rest.size(); j++)
         {
           PrettyAnnotation tmp = rest.get(j);
@@ -722,7 +722,7 @@ public class PrettyStringRenderer extends AbstractRenderer {
     for (char c = it.setIndex(Math.max(charIndex, 0)); c != CharacterIterator.DONE; c = it.next(), charIndex++) 
     {
     	int charWidth = fm.stringWidth("" + c);
-    	System.out.print(c);
+    	//System.out.print(c);
     	charPosition = charPosition+charWidth;
     	if (charPosition > mousePosition[0])
     	{
@@ -730,8 +730,8 @@ public class PrettyStringRenderer extends AbstractRenderer {
     	}	
     }
 
-    System.out.println("die Maus: "+mousePosition[0]);
-    System.out.println("Position: "+charIndex);
+    //System.out.println("die Maus: "+mousePosition[0]);
+    //System.out.println("Position: "+charIndex);
     
     //get the annotations
     ArrayList <Bonds> annotationsList = bound.getAnnotations();
