@@ -4,6 +4,7 @@ package de.unisiegen.tpml.core.expressions ;
 import java.util.ArrayList ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
+import de.unisiegen.tpml.core.util.Debug ;
 
 
 /**
@@ -176,14 +177,17 @@ public class Identifier extends Value
   {
     if ( this.boundedToExpression != null )
     {
-      System.err
-          .println ( "Identifier: Programming error! Please contact Christian Fehler!" ) ;//$NON-NLS-1$
-      System.err
-          .println ( "An Identifier can not be bounded to more than one Expression!" ) ; //$NON-NLS-1$
-      System.err.println ( "Identifier: " + this.name ) ; //$NON-NLS-1$
-      System.err.println ( "Old boundedToExpression: " //$NON-NLS-1$
-          + this.boundedToExpression ) ;
-      System.err.println ( "New boundedToExpression: " + pBoundedToExpression ) ; //$NON-NLS-1$
+      Debug.err
+          .println (
+              "Identifier: Programming error! Please contact Christian Fehler!" , Debug.CHRISTIAN ) ;//$NON-NLS-1$
+      Debug.err
+          .println (
+              "An Identifier can not be bounded to more than one Expression!" , Debug.CHRISTIAN ) ; //$NON-NLS-1$
+      Debug.err.println ( "Identifier: " + this.name , Debug.CHRISTIAN ) ; //$NON-NLS-1$
+      Debug.err.println ( "Old boundedToExpression: " //$NON-NLS-1$
+          + this.boundedToExpression , Debug.CHRISTIAN ) ;
+      Debug.err.println (
+          "New boundedToExpression: " + pBoundedToExpression , Debug.CHRISTIAN ) ; //$NON-NLS-1$
     }
     this.boundedToExpression = pBoundedToExpression ;
   }
