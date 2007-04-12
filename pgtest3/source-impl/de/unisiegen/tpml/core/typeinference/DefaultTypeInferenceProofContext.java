@@ -352,13 +352,18 @@ public class DefaultTypeInferenceProofContext implements
 
 		// Create a new List of formulas
 		ArrayList<TypeFormula> formulas = new ArrayList<TypeFormula>();
+		
+		// a list of all substitutions of the new node
 		ArrayList<TypeSubstitutionList> newSubstitutions = new ArrayList<TypeSubstitutionList>();
 
+		// list of the formulas of the actual type inference proof node
 		ArrayList<TypeFormula> oldFormulas = node.getFormula();
 
 		// add evtl. existing formulas from the parent node
 		for (TypeFormula form : oldFormulas) {
+			// just for sorting all type judgements are added before the type equations
 			if (form instanceof TypeJudgement)
+				// don't add the type judgement if it is the actual type formula
 				if ((!formula.equals(form))) {
 					formulas.add(form);
 				}
@@ -373,39 +378,53 @@ public class DefaultTypeInferenceProofContext implements
 			formulas.add(judgement);
 		}
 
+		// this is used to apply all of the substitutions to the type equations
 		TypeSubstitutionList sub = substitution;
 		
-
 		// add the new collected equations to the formula list
 		for (int i = equations.size() - 1; i > -1; i--) {
+			// reset sub from empty list to all type substitutions
+			sub = substitution;
 			TypeFormula eqn = (TypeFormula) equations.get(i);
+			// check if type equation is allready in the old list
 			if (!(oldFormulas.contains(eqn))) {
+				// check if there are any new type substitutions
 				if (substitution != TypeSubstitutionList.EMPTY_LIST) {
+					// apply all new type substitutions to the type equation
 					while (sub != TypeSubstitutionList.EMPTY_LIST) {
 						eqn = eqn.substitute(sub.getFirst());
 						sub = sub.getRemaining();
 					}
 				}
+				// check if the type equation is allready in list, else add it
 				if (!(formulas.contains(eqn))) {
 						formulas.add(eqn);
 				}
 			}
 		}
 
-		sub = substitution;
+		
 
 		// add the equations of the old node to the formula list
 		for (int i = 0; i < oldFormulas.size(); i++) {
+			// reset sub from empty list to all type equations
+			sub = substitution;
 			TypeFormula form = oldFormulas.get(i);
+			
+			// just add type equations, because judgements are allready added
 			if (form instanceof TypeEquation)
+				// don't add the type equation if it is the actual type formula
 				if ((!formula.equals(form))) {
+					// if substitution is not empty we have to substitute the type equatio
 					if (substitution != TypeSubstitutionList.EMPTY_LIST) {
+						// just do this for all type substitutions in list
 						while (sub != TypeSubstitutionList.EMPTY_LIST) {
 							form = form.substitute(sub.getFirst());
 							sub = sub.getRemaining();
 
 						}
 					}
+					// add the type equation to the new list of type formulas
 					formulas.add(form);
 				}
 		}
