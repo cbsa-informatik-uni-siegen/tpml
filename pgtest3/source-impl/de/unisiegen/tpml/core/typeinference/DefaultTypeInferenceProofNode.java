@@ -1,7 +1,10 @@
 package de.unisiegen.tpml.core.typeinference;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
+
 import javax.swing.tree.TreeNode;
+
 import de.unisiegen.tpml.core.AbstractProofNode;
 import de.unisiegen.tpml.core.ProofStep;
 import de.unisiegen.tpml.core.typechecker.DefaultTypeSubstitution;
@@ -21,7 +24,7 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
 	/**
 	 * list of all formulas of this node
 	 */
-	private LinkedList<TypeFormula> formula = new LinkedList<TypeFormula>();
+	private ArrayList<TypeFormula> formula = new ArrayList<TypeFormula>();
 
 	/**
 	 * list of the collected type substitutions of this node
@@ -61,13 +64,15 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
 	 * @param subs subs substitutions of the node
 	 * 
 	 */
-	public DefaultTypeInferenceProofNode(LinkedList<TypeFormula> judgement,
+	public DefaultTypeInferenceProofNode(ArrayList<TypeFormula> judgement,
 			TypeSubstitutionList subs) {
 
 		//equations = eqns;
 		formula = judgement;
 		substitutions = subs;
 	}
+
+
 
 	//
 	// Primitives
@@ -86,7 +91,7 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
 	/**
 	 * {@inheritDoc}
 	 *
-	 * @see de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode#isFinished()
+	 * @see de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode#isFinished(TypeFormula, int)
 	 */
 	public boolean isFinished() {
 
@@ -230,9 +235,6 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
 		builder.append("<html>");
 		builder.append(substitutions);
 		builder.append("<br>");
-		if (this.parent != null)
-			builder.append("=    ");
-		builder.append("solve");
 		for (int i = 0; i < formula.size(); i++) {
 			if (i != 0)
 				builder.append("<br>");
@@ -282,8 +284,7 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
 		ProofStep[] steps = getSteps();
 		if (steps.length > 0) {
 			return (TypeCheckerProofRule) steps[0].getRule();
-		}
-		else {
+		} else {
 			return null;
 		}
 	}
@@ -294,7 +295,7 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
 	 *
 	 * @return LinkedList<TypeFormula> formula
 	 */
-	public LinkedList<TypeFormula> getFormula() {
+	public ArrayList<TypeFormula> getFormula() {
 
 		return this.formula;
 	}
@@ -320,5 +321,22 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
 
 		return this.substitutions;
 	}
+	
+	public TypeFormula getFirstFormula(){
+		if (!formula.isEmpty())
+		return this.formula.get(0);
+		else
+			return null;
+	}
+	
+	public ArrayList<TypeFormula> getAllFormulas(){
+		return this.formula;
+	}
+
+	public TypeSubstitutionList getSubstitution() {
+		return this.substitutions;
+	}
+	
+	
 
 }

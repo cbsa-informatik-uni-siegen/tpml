@@ -1,5 +1,7 @@
 package de.unisiegen.tpml.core.typeinference;
 
+import java.util.ArrayList;
+
 import javax.swing.tree.TreeNode;
 import de.unisiegen.tpml.core.ProofNode;
 import de.unisiegen.tpml.core.ProofStep;
@@ -124,4 +126,18 @@ public interface TypeInferenceProofNode extends ProofNode {
 	 * @see de.unisiegen.tpml.core.ProofNode#getLastLeaf()
 	 */
 	public TypeInferenceProofNode getLastLeaf();
+	
+	
+	/**
+	 * 
+	 * get the type substitution list of this node
+	 *
+	 * @return TypeSubstitutionList substitutions 
+	 */
+	public TypeSubstitutionList getSubstitution();
+	
+	public TypeFormula getFirstFormula();
+	
+	public ArrayList<TypeFormula> getAllFormulas();
+	
 }
