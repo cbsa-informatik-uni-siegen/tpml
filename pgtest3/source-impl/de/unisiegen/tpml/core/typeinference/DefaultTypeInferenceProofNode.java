@@ -1,13 +1,11 @@
 package de.unisiegen.tpml.core.typeinference;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 
 import javax.swing.tree.TreeNode;
 
 import de.unisiegen.tpml.core.AbstractProofNode;
 import de.unisiegen.tpml.core.ProofStep;
-import de.unisiegen.tpml.core.typechecker.DefaultTypeSubstitution;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofRule;
 
 /**
@@ -47,8 +45,8 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
 	 * @param subs substitutions of the node
 	 * 
 	 */
-	public DefaultTypeInferenceProofNode(TypeJudgement judgement,
-			ArrayList<TypeSubstitutionList> subs) {
+	public DefaultTypeInferenceProofNode(final TypeJudgement judgement,
+			final ArrayList<TypeSubstitutionList> subs) {
 
 		//equations = eqns;
 		formula.add(judgement);
@@ -64,8 +62,8 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
 	 * @param subs subs substitutions of the node
 	 * 
 	 */
-	public DefaultTypeInferenceProofNode(ArrayList<TypeFormula> judgement,
-			ArrayList<TypeSubstitutionList> subs) {
+	public DefaultTypeInferenceProofNode(final ArrayList<TypeFormula> judgement,
+			final ArrayList<TypeSubstitutionList> subs) {
 
 		//equations = eqns;
 		formula = judgement;
@@ -112,7 +110,7 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
 	 * @see de.unisiegen.tpml.core.smallstep.SmallStepProofNode#getChildAt(int)
 	 */
 	@Override
-	public DefaultTypeInferenceProofNode getChildAt(int childIndex) {
+	public DefaultTypeInferenceProofNode getChildAt(final int childIndex) {
 
 		return (DefaultTypeInferenceProofNode) super.getChildAt(childIndex);
 	}
@@ -175,7 +173,7 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
 	 * @see de.unisiegen.tpml.core.smallstep.SmallStepProofNode#getChildAfter(javax.swing.tree.TreeNode)
 	 */
 	@Override
-	public DefaultTypeInferenceProofNode getChildAfter(TreeNode aChild) {
+	public DefaultTypeInferenceProofNode getChildAfter(final TreeNode aChild) {
 
 		return (DefaultTypeInferenceProofNode) super.getChildAfter(aChild);
 	}
@@ -186,7 +184,7 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
 	 * @see de.unisiegen.tpml.core.smallstep.SmallStepProofNode#getChildBefore(javax.swing.tree.TreeNode)
 	 */
 	@Override
-	public DefaultTypeInferenceProofNode getChildBefore(TreeNode aChild) {
+	public DefaultTypeInferenceProofNode getChildBefore(final TreeNode aChild) {
 
 		return (DefaultTypeInferenceProofNode) super.getChildBefore(aChild);
 	}
@@ -231,20 +229,21 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
 	@Override
 	public String toString() {
 
-		StringBuilder builder = new StringBuilder();
-		builder.append("<html>");
+		final StringBuilder builder = new StringBuilder();
+		builder.append("<html>"); //$NON-NLS-1$
 		builder.append(substitutions);
-		builder.append("<br>");
+		builder.append("<br>"); //$NON-NLS-1$
 		for (int i = 0; i < formula.size(); i++) {
-			if (i != 0)
-				builder.append("<br>");
+			if (i != 0) {
+				builder.append("<br>"); //$NON-NLS-1$
+			}
 			builder.append(formula.get(i));
 
 		}
 		if (getRule() != null) {
-			builder.append(" (" + getRule() + ")");
+			builder.append(" (" + getRule() + ")");  //$NON-NLS-1$ //$NON-NLS-2$
 		}
-		builder.append("</html>");
+		builder.append("</html>"); //$NON-NLS-1$
 		return builder.toString();
 	}
 
@@ -267,7 +266,7 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
 	 *
 	 * @param steps new proof steps for this node
 	 */
-	public void setSteps(ProofStep[] steps) {
+	public void setSteps(final ProofStep[] steps) {
 
 		this.steps = steps;
 	}
@@ -281,7 +280,7 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
 	 */
 	public TypeCheckerProofRule getRule() {
 
-		ProofStep[] steps = getSteps();
+		final ProofStep[] steps = getSteps();
 		if (steps.length > 0) {
 			return (TypeCheckerProofRule) steps[0].getRule();
 		} else {
@@ -322,17 +321,37 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
 		return this.substitutions;
 	}
 	
+	/**
+	 * get the first type formula of the type formula list of this node
+	 *
+	 * @return the first type formula of the list or null if list is empty
+	 * @see de.unisiegen.tpml.core.typeinference.TypeInferenceProofNode#getFirstFormula()
+	 */
 	public TypeFormula getFirstFormula(){
-		if (!formula.isEmpty())
-		return this.formula.get(0);
-		else
+		if (!formula.isEmpty()) {
+			return this.formula.get(0);
+		} else {
 			return null;
+		}
 	}
 	
+	
+	/**
+	 * get a list of all type formulas of this node
+	 *
+	 * @return ArraList containing all type formulas
+	 * @see de.unisiegen.tpml.core.typeinference.TypeInferenceProofNode#getAllFormulas()
+	 */
 	public ArrayList<TypeFormula> getAllFormulas(){
 		return this.formula;
 	}
 
+	/**
+	 * get a list of all type substitutions of this node
+	 *
+	 * @return ArrayList with all type substitutions of this node
+	 * @see de.unisiegen.tpml.core.typeinference.TypeInferenceProofNode#getSubstitution()
+	 */
 	public ArrayList<TypeSubstitutionList> getSubstitution() {
 		return this.substitutions;
 	}

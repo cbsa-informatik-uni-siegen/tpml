@@ -26,7 +26,7 @@ public class DefaultTypeEquationProofNode extends DefaultTypeCheckerProofNode
 	/**
 	 * list of collected type substitutions initialised with empty list
 	 */
-	private TypeSubstitutionList substitutions = TypeSubstitutionList.EMPTY_LIST;
+	private final TypeSubstitutionList substitutions = TypeSubstitutionList.EMPTY_LIST;
 
 	/**
 	 * list of collected type equations
@@ -46,8 +46,8 @@ public class DefaultTypeEquationProofNode extends DefaultTypeCheckerProofNode
 	 * @param eqns equations of this node
 	 * 
 	 */
-	public DefaultTypeEquationProofNode(TypeEnvironment environment,
-			Expression expression, MonoType type, TypeEquation eqns) {
+	public DefaultTypeEquationProofNode(final TypeEnvironment environment,
+			final Expression expression, final MonoType type, final TypeEquation eqns) {
 
 		super(environment, expression, type);
 		equation = eqns;
@@ -59,7 +59,7 @@ public class DefaultTypeEquationProofNode extends DefaultTypeCheckerProofNode
 	 *
 	 * @param s1 type substitution to add to list
 	 */
-	public void addSubstitution(DefaultTypeSubstitution s1) {
+	public void addSubstitution(final DefaultTypeSubstitution s1) {
 
 		substitutions.extend(s1);
 	}

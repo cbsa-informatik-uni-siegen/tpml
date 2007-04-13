@@ -46,7 +46,7 @@ public class TypeJudgement implements TypeFormula {
 	 * @param expr Expression
 	 * @param t MonoType
 	 */
-	public TypeJudgement(DefaultTypeEnvironment env, Expression expr, MonoType t) {
+	public TypeJudgement(final DefaultTypeEnvironment env, final Expression expr, final MonoType t) {
 
 		environment = env;
 		expression = expr;
@@ -61,7 +61,7 @@ public class TypeJudgement implements TypeFormula {
 	 * @return null (just needed for TypeEquation)
 	 * @see de.unisiegen.tpml.core.typeinference.TypeFormula#substitute(de.unisiegen.tpml.core.typechecker.TypeSubstitution)
 	 */
-	public TypeEquation substitute(TypeSubstitution s) {
+	public TypeEquation substitute(final TypeSubstitution s) {
 
 		this.type.substitute(s);
 		return null;
@@ -87,7 +87,7 @@ public class TypeJudgement implements TypeFormula {
 	 *
 	 * @param environment new type environment for this type judement
 	 */
-	public void setEnvironment(DefaultTypeEnvironment environment) {
+	public void setEnvironment(final DefaultTypeEnvironment environment) {
 
 		this.environment = environment;
 	}
@@ -109,7 +109,7 @@ public class TypeJudgement implements TypeFormula {
 	 *
 	 * @param type new MonoType for this judgement
 	 */
-	public void setType(MonoType type) {
+	public void setType(final MonoType type) {
 
 		this.type = type;
 	}
@@ -142,12 +142,21 @@ public class TypeJudgement implements TypeFormula {
 	@Override
 	public String toString() {
 
-		StringBuilder builder = new StringBuilder(128);
-		builder.append(environment);
-		builder.append(" \u22b3 ");
-		builder.append(expression);
-		builder.append(" :: ");
-		builder.append(type);
+		final StringBuilder builder = new StringBuilder(128);
+		builder.append(environment); 
+		builder.append(" \u22b3 "); //$NON-NLS-1$
+		builder.append(expression); 
+		builder.append(" :: "); //$NON-NLS-1$
+		builder.append(type); 
 		return builder.toString();
+	}
+
+	/**
+	 * set a new expression for this type judgement
+	 *
+	 * @param expression the expression to be set
+	 */
+	public void setExpression(final Expression expression) {
+		this.expression = expression;
 	}
 }

@@ -46,13 +46,13 @@ public final class TypeEquation implements TypeFormula {
 	 * 
 	 * @throws NullPointerException if <code>left</code> or <code>right</code> is <code>null</code>.
 	 */
-	public TypeEquation(MonoType left, MonoType right) {
+	public TypeEquation(final MonoType left, final MonoType right) {
 
 		if (left == null) {
-			throw new NullPointerException("left is null");
+			throw new NullPointerException("left is null"); //$NON-NLS-1$
 		}
 		if (right == null) {
-			throw new NullPointerException("right is null");
+			throw new NullPointerException("right is null"); //$NON-NLS-1$
 		}
 		this.left = left;
 		this.right = right;
@@ -96,7 +96,7 @@ public final class TypeEquation implements TypeFormula {
 	 * 
 	 * @see de.unisiegen.tpml.core.types.Type#substitute(TypeSubstitution)
 	 */
-	public TypeEquation substitute(TypeSubstitution s) {
+	public TypeEquation substitute(final TypeSubstitution s) {
 
 		// apply the substitution to the left and the right side
 		return new TypeEquation(this.left.substitute(s), this.right.substitute(s));
@@ -116,7 +116,7 @@ public final class TypeEquation implements TypeFormula {
 	@Override
 	public String toString() {
 
-		return (this.left + " = " + this.right);
+		return (this.left + " = " + this.right); //$NON-NLS-1$
 	}
 
 	/**
@@ -125,10 +125,10 @@ public final class TypeEquation implements TypeFormula {
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 
 		if (obj instanceof TypeEquation) {
-			TypeEquation other = (TypeEquation) obj;
+			final TypeEquation other = (TypeEquation) obj;
 			return (this.left.equals(other.left) && this.right.equals(other.right));
 		}
 		return false;

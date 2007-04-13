@@ -61,13 +61,13 @@ public final class TypeEquationList {
 	 * 
 	 * @throws NullPointerException if <code>first</code> or <code>remaining</code> is <code>null</code>.
 	 */
-	private TypeEquationList(TypeEquation first, TypeEquationList remaining) {
+	private TypeEquationList(final TypeEquation first, final TypeEquationList remaining) {
 
 		if (first == null) {
-			throw new NullPointerException("first is null");
+			throw new NullPointerException("first is null"); //$NON-NLS-1$
 		}
 		if (remaining == null) {
-			throw new NullPointerException("remaining is null");
+			throw new NullPointerException("remaining is null"); //$NON-NLS-1$
 		}
 		this.first = first;
 		this.remaining = remaining;
@@ -88,7 +88,7 @@ public final class TypeEquationList {
 	 * 
 	 * @throws NullPointerException if <code>left</code> or <code>right</code> is <code>null</code>.
 	 */
-	public TypeEquationList extend(MonoType left, MonoType right) {
+	public TypeEquationList extend(final MonoType left, final MonoType right) {
 
 		return new TypeEquationList(new TypeEquation(left, right), this);
 	}
@@ -103,7 +103,7 @@ public final class TypeEquationList {
 	 * 
 	 * @see Equation#substitute(Substitution)
 	 */
-	public TypeEquationList substitute(TypeSubstitution s) {
+	public TypeEquationList substitute(final TypeSubstitution s) {
 
 		// nothing to substitute on the empty list
 		if (this == EMPTY_LIST) {
@@ -131,10 +131,12 @@ public final class TypeEquationList {
 	@Override
 	public String toString() {
 
-		StringBuilder builder = new StringBuilder(128);
+		final StringBuilder builder = new StringBuilder(128);
 		builder.append('{');
 		for (TypeEquationList list = this; list != EMPTY_LIST; list = list.remaining) {
-			if (list != this) builder.append(", ");
+			if (list != this) {
+				builder.append(", "); //$NON-NLS-1$
+			}
 			builder.append(list.first);
 		}
 		builder.append('}');

@@ -136,8 +136,20 @@ public interface TypeInferenceProofNode extends ProofNode {
 	 */
 	public ArrayList<TypeSubstitutionList> getSubstitution();
 	
+	
+	/**
+	 * get the first type formula of this type formula list
+	 *
+	 * @return TypeFormula first in list
+	 */
 	public TypeFormula getFirstFormula();
 	
+	
+	/**
+	 * get the type formula list of this node
+	 * 
+	 * @return ArrayList with all type formulas
+	 */
 	public ArrayList<TypeFormula> getAllFormulas();
 	
 }

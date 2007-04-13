@@ -7,6 +7,7 @@ import org.apache.log4j.Logger;
 import de.unisiegen.tpml.core.AbstractProofModel;
 import de.unisiegen.tpml.core.AbstractProofNode;
 import de.unisiegen.tpml.core.AbstractProofRuleSet;
+import de.unisiegen.tpml.core.ExpressionProofNode;
 import de.unisiegen.tpml.core.ProofGuessException;
 import de.unisiegen.tpml.core.ProofNode;
 import de.unisiegen.tpml.core.ProofRule;
@@ -61,6 +62,7 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 	 * @see types.TypeVariable
 	 */
 	private int index = 1;
+
 
 	//
 	// Constructor
@@ -120,7 +122,7 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 	void setIndex(int index) {
 
 		if (index < 1) {
-			throw new IllegalArgumentException("index is invalid");
+			throw new IllegalArgumentException("index is invalid"); //$NON-NLS-1$
 		}
 		this.index = index;
 	}
@@ -150,13 +152,13 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 	public void prove(ProofRule rule, ProofNode node) throws ProofRuleException {
 
 		if (!this.ruleSet.contains(rule)) {
-			throw new IllegalArgumentException("The rule is invalid for the model");
+			throw new IllegalArgumentException("The rule is invalid for the model"); //$NON-NLS-1$
 		}
 		if (!this.root.isNodeRelated(node)) {
-			throw new IllegalArgumentException("The node is invalid for the model");
+			throw new IllegalArgumentException("The node is invalid for the model"); //$NON-NLS-1$
 		}
 		if (node.getRules().length > 0) {
-			throw new IllegalArgumentException("The node is already completed");
+			throw new IllegalArgumentException("The node is already completed"); //$NON-NLS-1$
 		}
 		// try to apply the rule to the specified node
 		applyInternal((TypeCheckerProofRule) rule,
@@ -179,19 +181,19 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 			throws ProofRuleException {
 
 		if (!this.ruleSet.contains(rule)) {
-			throw new IllegalArgumentException("The rule is invalid for the model");
+			throw new IllegalArgumentException("The rule is invalid for the model"); //$NON-NLS-1$
 		}
 		if (!this.root.isNodeRelated(node)) {
-			throw new IllegalArgumentException("The node is invalid for the model");
+			throw new IllegalArgumentException("The node is invalid for the model"); //$NON-NLS-1$
 		}
 		if (node.getRules().length > 0) {
-			throw new IllegalArgumentException("The node is already completed");
+			throw new IllegalArgumentException("The node is already completed"); //$NON-NLS-1$
 		}
 		// try to apply the rule to the specified node
 		applyInternal((TypeCheckerProofRule) rule,
 				(DefaultTypeInferenceProofNode) node, null, null);
 	}
-	
+
 	/**
 	 * 
 	 * mehtod used for DnD in the gui. 
@@ -200,10 +202,11 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 	 * @param move the type formula which should be moved
 	 * @param pos the new position of the moved type formula
 	 */
-	public void resort(final DefaultTypeInferenceProofNode node, final TypeFormula move, final int pos) {
-		
+	public void resort(final DefaultTypeInferenceProofNode node,
+			final TypeFormula move, final int pos) {
+
 		final int oldPos = node.getFormula().indexOf(move);
-		
+
 		addUndoableTreeEdit(new UndoableTreeEdit() {
 
 			public void redo() {
@@ -212,7 +215,7 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 				if (pos < oldPos)
 					node.getFormula().add(pos, move);
 				else
-					node.getFormula().add(pos-1, move);
+					node.getFormula().add(pos - 1, move);
 			}
 
 			public void undo() {
@@ -221,6 +224,115 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 				node.getFormula().add(oldPos, move);
 			}
 		});
+	}
+
+  /**
+   * Returns <code>true</code> if the expression for the <code>node</code> contains syntactic sugar.
+   * If <code>recursive</code> is <code>true</code> and the expression for the <code>node</code> is
+   * not syntactic sugar, its sub expressions will also be checked.
+   * 
+   * @param node the proof node whose expression should be checked for syntactic sugar.
+   * @param expression of the actual type formula which should be checke for syntactic sugar.
+   * @param recursive signals if the expression should be checked recursive
+   * 
+   * @return <code>true</code> if the expression of the <code>node</code> contains
+   *         syntactic sugar according to the language for this model.
+   *
+   * @throws IllegalArgumentException if the <code>node</code> is invalid for this proof model.
+   * @throws NullPointerException if the <code>node</code> is <code>null</code>.
+   * 
+   * @see #translateToCoreSyntax(ExpressionProofNode, boolean)
+   * @see de.unisiegen.tpml.core.languages.LanguageTranslator#containsSyntacticSugar(Expression, boolean)
+   */
+	public boolean containsSyntacticSugar(TypeInferenceProofNode node,
+			Expression expression, boolean recursive) {
+		if (node == null) {
+			throw new NullPointerException("node is null"); //$NON-NLS-1$
+		}
+		if (!this.root.isNodeRelated(node)) {
+			throw new IllegalArgumentException("node is invalid"); //$NON-NLS-1$
+		}
+		if (this.translator == null) {
+			this.translator = this.ruleSet.getLanguage().newTranslator();
+		}
+		return this.translator.containsSyntacticSugar(expression, recursive);
+	}
+
+  /**
+   * Translates the expression for the <code>node</code> to core syntax according to
+   * the language for this model. If <code>recursive</code> is <code>true</code>,
+   * all sub expressions will also be translated to core syntax, otherwise only the
+   * outermost expression will be translated.
+   * 
+   * @param node the proof node whose expression should be translated to core syntax.
+   * @param recursive whether to translate the expression recursively.
+   * 
+   * @throws IllegalArgumentException if the <code>node</code> is invalid for this proof model,
+   *                                  or the <code>node</code>'s expression does not contain
+   *                                  syntactic sugar.
+   * @throws IllegalStateException if any steps were performed on the <code>node</code> already.
+   * @throws NullPointerException if the <code>node</code> is <code>null</code>.                               
+   * 
+   * @see #containsSyntacticSugar(ExpressionProofNode, boolean)
+   * @see de.unisiegen.tpml.core.languages.LanguageTranslator#translateToCoreSyntax(Expression, boolean)
+   */
+	public void translateToCoreSyntax(TypeInferenceProofNode node,
+			boolean recursive) {
+		for (TypeFormula formula : node.getAllFormulas()) {
+			if (formula instanceof TypeJudgement) {
+				translateToCoreSyntaxInternal(node, (TypeJudgement) formula, recursive);
+			}
+		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see translateToCoreSyntax
+	 */
+	void translateToCoreSyntaxInternal(TypeInferenceProofNode node,
+			TypeJudgement judgement, boolean recursive) {
+
+		// verify that the node actually contains syntactic sugar
+		if (!containsSyntacticSugar(node, judgement.getExpression(), recursive)) {
+			throw new IllegalArgumentException(
+					"node does not contain syntactic sugar"); //$NON-NLS-1$
+		}
+
+		// verify that no actions were performed on the node
+		if (node.getSteps().length > 0) {
+			throw new IllegalStateException("steps have been performed on node"); //$NON-NLS-1$
+		}
+
+		// cast the proof node to the appropriate type
+		final DefaultTypeInferenceProofNode abstractNode = (DefaultTypeInferenceProofNode) node;
+		final TypeJudgement actualjudgement = judgement;
+
+		// translate the expression to core syntax
+		final Expression expression = judgement.getExpression();
+		final Expression coreExpression = this.translator.translateToCoreSyntax(
+				expression, recursive);
+
+		// create the undoable edit
+		UndoableTreeEdit edit = new UndoableTreeEdit() {
+			public void redo() {
+				// translate the expression of the node to core syntax
+				actualjudgement.setExpression(coreExpression);
+				nodeChanged(abstractNode);
+			}
+
+			public void undo() {
+				// restore the previous expression
+				actualjudgement.setExpression(expression);
+				nodeChanged(abstractNode);
+			}
+		};
+
+		// perform the redo operation
+		edit.redo();
+
+		// and record the edit
+		addUndoableTreeEdit(edit);
 	}
 
 	//
@@ -259,16 +371,14 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 				context.setSubstitutions(node.getSubstitutions());
 				context.apply(rule, form, type);
 				return;
-			}
-			catch (UnifyException e1) {
+			} catch (UnifyException e1) {
 				// revert the actions performed so far
 				context.revert();
 				// re-throw the exception as proof rule exception 
 				throw new ProofRuleException(node, rule, e);
 			}
 
-		}
-		else {
+		} else {
 
 			// Try actual Rule with all formulas of the actual node
 			for (TypeFormula formula : typeNode.getFormula()) {
@@ -278,24 +388,21 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 					context.apply(rule, formula, type);
 
 					return;
-				}
-				catch (ProofRuleException e1) {
+				} catch (ProofRuleException e1) {
 					// revert the actions performed so far
 					context.revert();
 					// rembember first exception to rethrow
 					if (e == null)
 						e = e1;
 					continue;
-				}
-				catch (UnifyException e1) {
+				} catch (UnifyException e1) {
 					// revert the actions performed so far
 					context.revert();
 					// rembember first exception to rethrow
 					if (e == null)
 						e = e1;
 					continue;
-				}
-				catch (RuntimeException e1) {
+				} catch (RuntimeException e1) {
 					// revert the actions performed so far
 					context.revert();
 					// rembember first exception to rethrow
@@ -307,12 +414,10 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 			if (e instanceof ProofRuleException) {
 				// rethrow exception
 				throw (ProofRuleException) e;
-			}
-			else if (e instanceof RuntimeException) {
+			} else if (e instanceof RuntimeException) {
 				// rethrow exception
 				throw (RuntimeException) e;
-			}
-			else {
+			} else {
 				// re-throw the exception as proof rule exception 
 				throw new ProofRuleException(node, rule, e);
 			}
@@ -339,17 +444,17 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 			throws ProofGuessException {
 
 		if (node == null) {
-			throw new NullPointerException("node is null");
+			throw new NullPointerException("node is null"); //$NON-NLS-1$
 		}
 		if (node.getSteps().length > 0) {
-			throw new IllegalArgumentException("The node is already completed");
+			throw new IllegalArgumentException("The node is already completed"); //$NON-NLS-1$
 		}
 
 		if (!this.root.isNodeRelated(node)) {
-			throw new IllegalArgumentException("The node is invalid for the model");
+			throw new IllegalArgumentException("The node is invalid for the model"); //$NON-NLS-1$
 		}
 		// try to guess the next rule
-		logger.debug("Trying to guess a rule for " + node);
+		logger.debug("Trying to guess a rule for " + node); //$NON-NLS-1$
 		for (ProofRule rule : this.ruleSet.getRules()) {
 			try {
 				// try to apply the rule to the specified node
@@ -358,18 +463,17 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 				setCheating(true);
 
 				// yep, we did it
-				logger.debug("Successfully applied (" + rule + ") to " + node);
+				logger.debug("Successfully applied (" + rule + ") to " + node); //$NON-NLS-1$ //$NON-NLS-2$
 				return;
-			}
-			catch (ProofRuleException e) {
+			} catch (ProofRuleException e) {
 				// rule failed to apply... so, next one, please
-				logger.debug("Failed to apply (" + rule + ") to " + node, e);
+				logger.debug("Failed to apply (" + rule + ") to " + node, e); //$NON-NLS-1$ //$NON-NLS-2$
 				continue;
 			}
 		}
 
 		// unable to guess next step
-		logger.debug("Failed to find rule to apply to " + node);
+		logger.debug("Failed to find rule to apply to " + node); //$NON-NLS-1$
 		throw new ProofGuessException(node);
 	}
 
@@ -392,7 +496,8 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 	 */
 	void contextAddProofNode(final DefaultTypeInferenceProofContext context,
 			final DefaultTypeInferenceProofNode pNode,
-			final ArrayList<TypeFormula> formulas, final ArrayList<TypeSubstitutionList> subs,
+			final ArrayList<TypeFormula> formulas,
+			final ArrayList<TypeSubstitutionList> subs,
 			final TypeCheckerProofRule rule, final TypeFormula formula) {
 
 		final DefaultTypeInferenceProofNode child = new DefaultTypeInferenceProofNode(
@@ -465,14 +570,15 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 		// add to the undo history
 		super.addUndoableTreeEdit(edit);
 	}
-	
-	// Just for testing
-	public void setRoot(AbstractProofNode node){
-		this.root=node;
-	}
-	
+
+	/**
+	 * get the rules of the actual proof rule set
+	 *
+	 * @return ProofRuleSet[] with all rules
+	 * @see de.unisiegen.tpml.core.AbstractProofModel#getRules()
+	 */
 	@Override
-	public ProofRule[] getRules(){
+	public ProofRule[] getRules() {
 		return this.ruleSet.getRules();
 	}
 

@@ -74,7 +74,7 @@ public class DefaultTypeInferenceProofContext implements
 	 * 
 	 * @see typeinference.TypeEquation
 	 */
-	private ArrayList<TypeEquation> equations = new ArrayList<TypeEquation>();
+	private final ArrayList<TypeEquation> equations = new ArrayList<TypeEquation>();
 
 	/**
 	 * The list of all type substitutions that has been collected for this context
@@ -90,7 +90,7 @@ public class DefaultTypeInferenceProofContext implements
 	/**
 	 * The type inference proof model with which this proof context is associated.
 	 */
-	private TypeInferenceProofModel model;
+	TypeInferenceProofModel model;
 
 	/**
 	 * The actual used type inference proof node
@@ -103,7 +103,7 @@ public class DefaultTypeInferenceProofContext implements
 	 * @see #addRedoAction(Runnable)
 	 * @see #getRedoActions()
 	 */
-	private LinkedList<Runnable> redoActions = new LinkedList<Runnable>();
+	private final LinkedList<Runnable> redoActions = new LinkedList<Runnable>();
 
 	/**
 	 * The list of undoable actions on the proof model.
@@ -111,7 +111,7 @@ public class DefaultTypeInferenceProofContext implements
 	 * @see #addUndoAction(Runnable)
 	 * @see #getUndoActions()
 	 */
-	private LinkedList<Runnable> undoActions = new LinkedList<Runnable>();
+	private final LinkedList<Runnable> undoActions = new LinkedList<Runnable>();
 
 	//
 	// Constructor
@@ -127,11 +127,11 @@ public class DefaultTypeInferenceProofContext implements
 	 * 
 	 * @see TypeInferenceProofModel#setIndex(int)
 	 */
-	public DefaultTypeInferenceProofContext(TypeInferenceProofModel pModel,
-			DefaultTypeInferenceProofNode pNode) {
+	public DefaultTypeInferenceProofContext(final TypeInferenceProofModel pModel,
+			final DefaultTypeInferenceProofNode pNode) {
 
 		if (pModel == null) {
-			throw new NullPointerException("model is null");
+			throw new NullPointerException("model is null"); //$NON-NLS-1$
 		}
 		this.model = pModel;
 		this.node = pNode;
@@ -165,9 +165,9 @@ public class DefaultTypeInferenceProofContext implements
 	 *
 	 * @see de.unisiegen.tpml.core.typechecker.TypeCheckerProofContext#addEquation(de.unisiegen.tpml.core.types.MonoType, de.unisiegen.tpml.core.types.MonoType)
 	 */
-	public void addEquation(MonoType left, MonoType right) {
+	public void addEquation(final MonoType left, final MonoType right) {
 
-		TypeEquation eqn = new TypeEquation(left, right);
+		final TypeEquation eqn = new TypeEquation(left, right);
 		//equations = equations.extend(left, right);
 		equations.add(eqn);
 	}
@@ -177,8 +177,8 @@ public class DefaultTypeInferenceProofContext implements
 	 *
 	 * @see de.unisiegen.tpml.core.typechecker.TypeCheckerProofContext#addProofNode(de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode, de.unisiegen.tpml.core.typechecker.TypeEnvironment, de.unisiegen.tpml.core.expressions.Expression, de.unisiegen.tpml.core.types.MonoType)
 	 */
-	public void addProofNode(TypeCheckerProofNode pNode,
-			TypeEnvironment environment, Expression expression, MonoType type) {
+	public void addProofNode(final TypeCheckerProofNode pNode,
+			final TypeEnvironment environment, final Expression expression, final MonoType type) {
 
 		final DefaultTypeCheckerProofNode child = new DefaultTypeCheckerProofNode(
 				environment, expression, type);
@@ -189,10 +189,10 @@ public class DefaultTypeInferenceProofContext implements
 	 * {@inheritDoc}
 	 * @see de.unisiegen.tpml.core.typechecker.TypeCheckerProofContext#getTypeForExpression(de.unisiegen.tpml.core.expressions.Expression)
 	 */
-	public Type getTypeForExpression(Expression expression) {
+	public Type getTypeForExpression(final Expression expression) {
 
 		if (expression == null) {
-			throw new NullPointerException("expression is null");
+			throw new NullPointerException("expression is null"); //$NON-NLS-1$
 		}
 		if (expression instanceof BooleanConstant) {
 			return new BooleanType();
@@ -219,9 +219,9 @@ public class DefaultTypeInferenceProofContext implements
 			return new PolyType(Collections.singleton(TypeVariable.ALPHA),
 					new ArrowType(TypeVariable.ALPHA, new RefType(TypeVariable.ALPHA)));
 		} else if (expression instanceof Projection) {
-			Projection projection = (Projection) expression;
-			TypeVariable[] typeVariables = new TypeVariable[projection.getArity()];
-			TreeSet<TypeVariable> quantifiedVariables = new TreeSet<TypeVariable>();
+			final Projection projection = (Projection) expression;
+			final TypeVariable[] typeVariables = new TypeVariable[projection.getArity()];
+			final TreeSet<TypeVariable> quantifiedVariables = new TreeSet<TypeVariable>();
 			for (int n = 0; n < typeVariables.length; ++n) {
 				typeVariables[n] = new TypeVariable(n, 0);
 				quantifiedVariables.add(typeVariables[n]);
@@ -252,7 +252,7 @@ public class DefaultTypeInferenceProofContext implements
 					new ArrowType(new ListType(TypeVariable.ALPHA), new BooleanType()));
 		} else {
 			// not a simple expression
-			throw new IllegalArgumentException("Cannot determine the type for "
+			throw new IllegalArgumentException("Cannot determine the type for " //$NON-NLS-1$
 					+ expression);
 		}
 	}
@@ -262,15 +262,15 @@ public class DefaultTypeInferenceProofContext implements
 	 *
 	 * @see de.unisiegen.tpml.core.typechecker.TypeCheckerProofContext#instantiate(de.unisiegen.tpml.core.types.Type)
 	 */
-	public MonoType instantiate(Type type) {
+	public MonoType instantiate(final Type type) {
 
 		if (type == null) {
-			throw new NullPointerException("type is null");
+			throw new NullPointerException("type is null"); //$NON-NLS-1$
 		}
 		if (type instanceof PolyType) {
-			PolyType polyType = (PolyType) type;
+			final PolyType polyType = (PolyType) type;
 			MonoType tau = polyType.getTau();
-			for (TypeVariable tvar : polyType.getQuantifiedVariables()) {
+			for (final TypeVariable tvar : polyType.getQuantifiedVariables()) {
 				tau = tau.substitute(TypeUtilities.newSubstitution(tvar,
 						newTypeVariable()));
 			}
@@ -298,7 +298,7 @@ public class DefaultTypeInferenceProofContext implements
 	 * @param s the new found substitution
 	 */
 
-	public void addSubstitution(DefaultTypeSubstitution s) {
+	public void addSubstitution(final DefaultTypeSubstitution s) {
 
 		substitution = substitution.extend(s);
 	}
@@ -319,7 +319,7 @@ public class DefaultTypeInferenceProofContext implements
 	 * @throws UnifyException if an error occurs while unifying the type equations that resulted
 	 *                              from the application of <code>rule</code> to <code>node</code>.
 	 */
-	void apply(TypeCheckerProofRule rule, TypeFormula formula, MonoType type)
+	void apply(final TypeCheckerProofRule rule, final TypeFormula formula, final MonoType type)
 			throws ProofRuleException, UnifyException {
 
 		DefaultTypeCheckerProofNode typeNode = null;
@@ -329,7 +329,7 @@ public class DefaultTypeInferenceProofContext implements
 			typeNode = new DefaultTypeCheckerProofNode(formula.getEnvironment(),
 					formula.getExpression(), formula.getType());
 
-		} else if (rule.toString().equals("UNIFY")) {
+		} else if (rule.toString().equals("UNIFY")) { //$NON-NLS-1$
 
 			typeNode = new DefaultTypeEquationProofNode(formula.getEnvironment(),
 					new Unify(), formula.getType(), (TypeEquation) formula);
@@ -351,27 +351,28 @@ public class DefaultTypeInferenceProofContext implements
 		 }*/
 
 		// Create a new List of formulas
-		ArrayList<TypeFormula> formulas = new ArrayList<TypeFormula>();
+		final ArrayList<TypeFormula> formulas = new ArrayList<TypeFormula>();
 
 		// a list of all substitutions of the new node
-		ArrayList<TypeSubstitutionList> newSubstitutions = new ArrayList<TypeSubstitutionList>();
+		final ArrayList<TypeSubstitutionList> newSubstitutions = new ArrayList<TypeSubstitutionList>();
 
 		// list of the formulas of the actual type inference proof node
-		ArrayList<TypeFormula> oldFormulas = node.getFormula();
+		final ArrayList<TypeFormula> oldFormulas = node.getFormula();
 
 		// add evtl. existing formulas from the parent node
-		for (TypeFormula form : oldFormulas) {
+		for (final TypeFormula form : oldFormulas) {
 			// just for sorting all type judgements are added before the type equations
-			if (form instanceof TypeJudgement)
+			if (form instanceof TypeJudgement) {
 				// don't add the type judgement if it is the actual type formula
 				if ((!formula.equals(form))) {
 					formulas.add(form);
 				}
+			}
 		}
 
 		// add the nodes of the temporary existing typenode
 		for (int i = 0; i < typeNode.getChildCount(); i++) {
-			TypeJudgement judgement = new TypeJudgement(
+			final TypeJudgement judgement = new TypeJudgement(
 					(DefaultTypeEnvironment) typeNode.getChildAt(i).getEnvironment(),
 					typeNode.getChildAt(i).getExpression(), typeNode.getChildAt(i)
 							.getType());
@@ -385,7 +386,7 @@ public class DefaultTypeInferenceProofContext implements
 		for (int i = equations.size() - 1; i > -1; i--) {
 			// reset sub from empty list to all type substitutions
 			sub = substitution;
-			TypeFormula eqn = (TypeFormula) equations.get(i);
+			TypeFormula eqn = equations.get(i);
 			// check if type equation is allready in the old list
 			if (!(oldFormulas.contains(eqn))) {
 				// check if there are any new type substitutions
@@ -410,7 +411,7 @@ public class DefaultTypeInferenceProofContext implements
 			TypeFormula form = oldFormulas.get(i);
 
 			// just add type equations, because judgements are allready added
-			if (form instanceof TypeEquation)
+			if (form instanceof TypeEquation) {
 				// don't add the type equation if it is the actual type formula
 				if ((!formula.equals(form))) {
 					// if substitution is not empty we have to substitute the type equatio
@@ -427,11 +428,13 @@ public class DefaultTypeInferenceProofContext implements
 						formulas.add(form);
 					}
 				}
+			}
 		}
 
 		//	add the new substitutions
-		if (substitution != TypeSubstitutionList.EMPTY_LIST)
+		if (substitution != TypeSubstitutionList.EMPTY_LIST) {
 			newSubstitutions.add(substitution);
+		}
 		newSubstitutions.addAll(substitutions);
 
 		// create the new node
@@ -448,7 +451,7 @@ public class DefaultTypeInferenceProofContext implements
 	void revert() {
 
 		// undo all already performed changes
-		for (Runnable undoAction : this.undoActions) {
+		for (final Runnable undoAction : this.undoActions) {
 			undoAction.run();
 		}
 		this.undoActions.clear();
@@ -471,10 +474,10 @@ public class DefaultTypeInferenceProofContext implements
 	 * 
 	 * @throws NullPointerException if <code>redoAction</code> is <code>null</code>.
 	 */
-	void addRedoAction(Runnable redoAction) {
+	void addRedoAction(final Runnable redoAction) {
 
 		if (redoAction == null) {
-			throw new NullPointerException("undoAction is null");
+			throw new NullPointerException("undoAction is null"); //$NON-NLS-1$
 		}
 
 		// perform the action
@@ -497,10 +500,10 @@ public class DefaultTypeInferenceProofContext implements
 	 * 
 	 * @throws NullPointerException if <code>undoAction</code> is <code>null</code>.
 	 */
-	void addUndoAction(Runnable undoAction) {
+	void addUndoAction(final Runnable undoAction) {
 
 		if (undoAction == null) {
-			throw new NullPointerException("undoAction is null");
+			throw new NullPointerException("undoAction is null"); //$NON-NLS-1$
 		}
 
 		// record the action
@@ -522,7 +525,7 @@ public class DefaultTypeInferenceProofContext implements
 
 			public void run() {
 
-				for (Runnable redoAction : DefaultTypeInferenceProofContext.this.redoActions) {
+				for (final Runnable redoAction : DefaultTypeInferenceProofContext.this.redoActions) {
 					redoAction.run();
 				}
 			}
@@ -544,7 +547,7 @@ public class DefaultTypeInferenceProofContext implements
 
 			public void run() {
 
-				for (Runnable undoAction : DefaultTypeInferenceProofContext.this.undoActions) {
+				for (final Runnable undoAction : DefaultTypeInferenceProofContext.this.undoActions) {
 					undoAction.run();
 				}
 			}
@@ -559,9 +562,9 @@ public class DefaultTypeInferenceProofContext implements
 	 * 
 	 * Set the TypeSubstitutions for this context
 	 *
-	 * @param substitutions the new list of type substitutions
+	 * @param subs the new list of type substitutions
 	 */
-	public void setSubstitutions(ArrayList<TypeSubstitutionList> subs) {
+	public void setSubstitutions(final ArrayList<TypeSubstitutionList> subs) {
 
 		this.substitutions = subs;
 	}
