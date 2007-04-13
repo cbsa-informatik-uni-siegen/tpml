@@ -11,9 +11,11 @@ import de.unisiegen.tpml.core.languages.LanguageParser ;
 import de.unisiegen.tpml.core.languages.LanguageScanner ;
 import de.unisiegen.tpml.core.languages.LanguageTranslator ;
 import de.unisiegen.tpml.core.languages.l2.L2Language ;
+import de.unisiegen.tpml.core.languages.l2.L2TypeInferenceProofRuleSet;
 import de.unisiegen.tpml.core.languages.l2cbn.L2CBNLanguage ;
 import de.unisiegen.tpml.core.smallstep.SmallStepProofModel ;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel ;
+import de.unisiegen.tpml.core.typeinference.TypeInferenceProofModel;
 
 
 /**
@@ -156,5 +158,15 @@ public class L2OLanguage extends L2Language
   {
     return new TypeCheckerProofModel ( pExpression ,
         new L2OTypeCheckerProofRuleSet ( this ) ) ;
+  }
+  
+  /**
+   * {@inheritDoc}
+   */
+  @ Override
+  public TypeInferenceProofModel newTypeInferenceProofModel ( Expression expression )
+  {
+	 return new TypeInferenceProofModel ( expression ,
+        new L2TypeInferenceProofRuleSet ( this ) ) ;
   }
 }

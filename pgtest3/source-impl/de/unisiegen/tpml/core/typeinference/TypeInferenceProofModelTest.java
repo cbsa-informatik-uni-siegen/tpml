@@ -248,6 +248,7 @@ public final class TypeInferenceProofModelTest extends JFrame {
         try {
           // translate the last node
           TreePath path = tree.getSelectionPath();
+          System.out.println(path.toString());
           if (path != null) {
          //   model.translateToCoreSyntax((ExpressionProofNode)path.getLastPathComponent(), false);
           }

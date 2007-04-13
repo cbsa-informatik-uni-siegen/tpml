@@ -421,19 +421,16 @@ public class L1TypeCheckerProofRuleSet extends AbstractTypeCheckerProofRuleSet
 		MonoType left = eqn.getLeft();
 		MonoType right = eqn.getRight();
 		
-		if (left.equals(right)) {
-			//context.setEquations(eqns.getRemaining());
-			return;
-		}
+	
 
-		else if (left instanceof TypeVariable || right instanceof TypeVariable) {
+		/*else*/ if (left instanceof TypeVariable || right instanceof TypeVariable) {
 			// the left or right side of the equation is a type variable
 			TypeVariable tvar = (TypeVariable) (left instanceof TypeVariable ? left
 					: right);
 			MonoType tau = (left instanceof TypeVariable ? right : left);
 			// either tvar equals tau or tvar is not present in tau
       //???
-			if (tvar.equals(tau) || !tau.free().contains(tvar)) {
+			if (!tvar.equals(tau) || !tau.free().contains(tvar)) {
 
 				DefaultTypeSubstitution s = new DefaultTypeSubstitution(tvar, tau);
 
@@ -450,11 +447,51 @@ public class L1TypeCheckerProofRuleSet extends AbstractTypeCheckerProofRuleSet
 		else if (left instanceof ArrowType && right instanceof ArrowType) {
 			ArrowType taul = (ArrowType) left;
 			ArrowType taur = (ArrowType) right;
+			
+			left = taul.getTau1();
+			right = taur.getTau1();
+			
+			if (left instanceof TypeVariable || right instanceof TypeVariable) {
+				// the left or right side of the equation is a type variable
+				TypeVariable tvar = (TypeVariable) (left instanceof TypeVariable ? left
+						: right);
+				MonoType tau = (left instanceof TypeVariable ? right : left);
+				// either tvar equals tau or tvar is not present in tau
+	      //???
+				if (!tvar.equals(tau) || !tau.free().contains(tvar)) {
 
+					DefaultTypeSubstitution s = new DefaultTypeSubstitution(tvar, tau);
+					context.addSubstitution(s);
+				}
+			}
+				
+
+				left = taul.getTau2();
+				right = taur.getTau2();
+				
+				if (left instanceof TypeVariable || right instanceof TypeVariable) {
+					// the left or right side of the equation is a type variable
+					TypeVariable tvar = (TypeVariable) (left instanceof TypeVariable ? left
+							: right);
+					MonoType tau = (left instanceof TypeVariable ? right : left);
+					// either tvar equals tau or tvar is not present in tau
+		      //???
+					if (!tvar.equals(tau) || !tau.free().contains(tvar)) {
+
+						DefaultTypeSubstitution s = new DefaultTypeSubstitution(tvar, tau);
+						context.addSubstitution(s);
+					}
+				}
+				else {
+					context.addEquation(left, right);
+				}
+			
+				return;
+			/*
 			// we need to check {tau1 = tau1', tau2 = tau2'} as well
 			context.addEquation(taul.getTau2(), taur.getTau2());
 			context.addEquation(taul.getTau1(), taur.getTau1());
-			return;
+			return;*/
 		}
 		else if (left instanceof TupleType && right instanceof TupleType) {
 			// cast to TupleType instances (tau and tau')
@@ -521,6 +558,11 @@ public class L1TypeCheckerProofRuleSet extends AbstractTypeCheckerProofRuleSet
 			// context.setEquations(eqns.getRemaining());
 			context.addEquation(taul.getTau(), taur.getTau());
 
+			return;
+		}
+		
+		if (left.equals(right)) {
+			//context.setEquations(eqns.getRemaining());
 			return;
 		}
 

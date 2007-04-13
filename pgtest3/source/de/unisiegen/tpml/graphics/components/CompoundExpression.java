@@ -341,10 +341,10 @@ public class CompoundExpression < S , E > extends JComponent
       // CHANGE BENJAMIN
       
       
-      /**
+      
       
       // TypeInferenceTest
-       * 
+       
       try {
         // parse the program (using L4)
         LanguageFactory factory = LanguageFactory.newInstance();
@@ -369,7 +369,7 @@ public class CompoundExpression < S , E > extends JComponent
     
       
       
-      */
+      
       
       
       

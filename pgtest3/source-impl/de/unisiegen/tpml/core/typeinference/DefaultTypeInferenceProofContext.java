@@ -352,7 +352,7 @@ public class DefaultTypeInferenceProofContext implements
 
 		// Create a new List of formulas
 		ArrayList<TypeFormula> formulas = new ArrayList<TypeFormula>();
-		
+
 		// a list of all substitutions of the new node
 		ArrayList<TypeSubstitutionList> newSubstitutions = new ArrayList<TypeSubstitutionList>();
 
@@ -380,7 +380,7 @@ public class DefaultTypeInferenceProofContext implements
 
 		// this is used to apply all of the substitutions to the type equations
 		TypeSubstitutionList sub = substitution;
-		
+
 		// add the new collected equations to the formula list
 		for (int i = equations.size() - 1; i > -1; i--) {
 			// reset sub from empty list to all type substitutions
@@ -398,19 +398,17 @@ public class DefaultTypeInferenceProofContext implements
 				}
 				// check if the type equation is allready in list, else add it
 				if (!(formulas.contains(eqn))) {
-						formulas.add(eqn);
+					formulas.add(eqn);
 				}
 			}
 		}
-
-		
 
 		// add the equations of the old node to the formula list
 		for (int i = 0; i < oldFormulas.size(); i++) {
 			// reset sub from empty list to all type equations
 			sub = substitution;
 			TypeFormula form = oldFormulas.get(i);
-			
+
 			// just add type equations, because judgements are allready added
 			if (form instanceof TypeEquation)
 				// don't add the type equation if it is the actual type formula
@@ -425,18 +423,20 @@ public class DefaultTypeInferenceProofContext implements
 						}
 					}
 					// add the type equation to the new list of type formulas
-					formulas.add(form);
+					if (!(formulas.contains(form))) {
+						formulas.add(form);
+					}
 				}
 		}
-		
+
 		//	add the new substitutions
 		if (substitution != TypeSubstitutionList.EMPTY_LIST)
 			newSubstitutions.add(substitution);
 		newSubstitutions.addAll(substitutions);
 
 		// create the new node
-		this.model.contextAddProofNode(this, node, formulas, newSubstitutions, rule,
-				formula);
+		this.model.contextAddProofNode(this, node, formulas, newSubstitutions,
+				rule, formula);
 	}
 
 	/**
