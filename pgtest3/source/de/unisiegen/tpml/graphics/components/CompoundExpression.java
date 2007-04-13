@@ -339,7 +339,7 @@ public class CompoundExpression < S , E > extends JComponent
       this.expression = expression ;
       
       // CHANGE BENJAMIN
-      
+      /*
       
       
       
@@ -369,7 +369,7 @@ public class CompoundExpression < S , E > extends JComponent
     
       
       
-      
+      */
       
       
       
