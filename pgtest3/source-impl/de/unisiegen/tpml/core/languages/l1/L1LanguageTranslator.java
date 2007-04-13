@@ -79,10 +79,12 @@ public class L1LanguageTranslator extends L0LanguageTranslator
       // translate to: let id1 = lambda id2...lambda idn.e1 in e2
       CurriedLet curriedLet = ( CurriedLet ) expression ;
       Expression e1 = curriedLet.getE1 ( ) ;
+      Expression e2 = curriedLet.getE2 ( ) ;
       // check if we should recurse
       if ( recursive )
       {
         e1 = translateToCoreSyntax ( e1 , true ) ;
+        e2 = translateToCoreSyntax ( e2 , true ) ;
       }
       // add the lambdas
       for ( int n = curriedLet.getIdentifiers ( ).length - 1 ; n > 0 ; -- n )
@@ -92,7 +94,7 @@ public class L1LanguageTranslator extends L0LanguageTranslator
       }
       // generate the let expression
       return new Let ( curriedLet.getIdentifiers ( 0 ).clone ( ) , curriedLet
-          .getTypes ( 0 ) , e1 , curriedLet.getE2 ( ) ) ;
+          .getTypes ( 0 ) , e1 , e2 ) ;
     }
     else if ( expression instanceof InfixOperation )
     {
