@@ -68,7 +68,7 @@ public abstract class AbstractProofModel extends AbstractBean implements ProofMo
    * 
    * @see #getRules()
    */
-  public ProofRuleSet ruleSet;
+  protected ProofRuleSet ruleSet;
   
   /**
    * The language translator for this model, which is allocated on demand, and used
