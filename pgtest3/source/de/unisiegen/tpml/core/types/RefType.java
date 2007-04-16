@@ -5,6 +5,7 @@ import java.util.Set ;
 import java.util.TreeSet ;
 import de.unisiegen.tpml.core.expressions.Location ;
 import de.unisiegen.tpml.core.expressions.Ref ;
+import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
@@ -23,15 +24,19 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
  * @see Ref
  * @see MonoType
  */
-public final class RefType extends MonoType
+public final class RefType extends MonoType implements DefaultTypes
 {
   /**
-   * The type of the reference, i.e. <code>int</code> in case of an
-   * <code>int ref</code>.
-   * 
-   * @see #getTau()
+   * Indeces of the child {@link Type}s.
    */
-  private MonoType tau ;
+  private static final int [ ] INDICES_TYPE = new int [ ]
+  { - 1 } ;
+
+
+  /**
+   * TODO
+   */
+  private MonoType [ ] types ;
 
 
   /**
@@ -48,7 +53,13 @@ public final class RefType extends MonoType
     {
       throw new NullPointerException ( "Tau is null" ) ; //$NON-NLS-1$
     }
-    this.tau = pTau ;
+    this.types = new MonoType [ 1 ] ;
+    this.types [ 0 ] = pTau ;
+    if ( this.types [ 0 ].getParent ( ) != null )
+    {
+      this.types [ 0 ] = this.types [ 0 ].clone ( ) ;
+    }
+    this.types [ 0 ].setParent ( this ) ;
   }
 
 
@@ -60,7 +71,7 @@ public final class RefType extends MonoType
   @ Override
   public RefType clone ( )
   {
-    return new RefType ( this.tau.clone ( ) ) ;
+    return new RefType ( this.types [ 0 ].clone ( ) ) ;
   }
 
 
@@ -75,7 +86,7 @@ public final class RefType extends MonoType
     if ( pObject instanceof RefType )
     {
       RefType other = ( RefType ) pObject ;
-      return ( this.tau.equals ( other.tau ) ) ;
+      return ( this.types [ 0 ].equals ( other.types [ 0 ] ) ) ;
     }
     return false ;
   }
@@ -92,7 +103,7 @@ public final class RefType extends MonoType
     if ( this.free == null )
     {
       this.free = new TreeSet < TypeVariable > ( ) ;
-      this.free.addAll ( this.tau.free ( ) ) ;
+      this.free.addAll ( this.types [ 0 ].free ( ) ) ;
     }
     return this.free ;
   }
@@ -115,7 +126,54 @@ public final class RefType extends MonoType
    */
   public MonoType getTau ( )
   {
-    return this.tau ;
+    return this.types [ 0 ] ;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @return TODO
+   */
+  public MonoType [ ] getTypes ( )
+  {
+    return this.types ;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @param pIndex TODO
+   * @return TODO
+   */
+  public MonoType getTypes ( int pIndex )
+  {
+    return this.types [ pIndex ] ;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @return TODO
+   */
+  public int [ ] getTypesIndex ( )
+  {
+    return INDICES_TYPE ;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @return TODO
+   */
+  public String [ ] getTypesPrefix ( )
+  {
+    String [ ] result = new String [ 1 ] ;
+    result [ 0 ] = PREFIX_TAU ;
+    return result ;
   }
 
 
@@ -127,7 +185,7 @@ public final class RefType extends MonoType
   @ Override
   public int hashCode ( )
   {
-    return ( ( this.tau.hashCode ( ) + 13 ) * 17 ) / 7 ;
+    return ( ( this.types [ 0 ].hashCode ( ) + 13 ) * 17 ) / 7 ;
   }
 
 
@@ -139,7 +197,7 @@ public final class RefType extends MonoType
   @ Override
   public MonoType substitute ( TypeSubstitution pTypeSubstitution )
   {
-    return new RefType ( this.tau.substitute ( pTypeSubstitution ) ) ;
+    return new RefType ( this.types [ 0 ].substitute ( pTypeSubstitution ) ) ;
   }
 
 
@@ -157,7 +215,7 @@ public final class RefType extends MonoType
       this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
           PRIO_REF ) ;
       this.prettyStringBuilder
-          .addBuilder ( this.tau
+          .addBuilder ( this.types [ 0 ]
               .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
               PRIO_REF_TAU ) ;
       this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$

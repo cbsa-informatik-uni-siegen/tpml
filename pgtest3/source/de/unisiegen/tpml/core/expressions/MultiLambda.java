@@ -3,11 +3,14 @@ package de.unisiegen.tpml.core.expressions ;
 
 import java.util.ArrayList ;
 import java.util.Arrays ;
-import de.unisiegen.tpml.core.identifiers.BoundedIdentifiers ;
+import de.unisiegen.tpml.core.interfaces.BoundedIdentifiers ;
+import de.unisiegen.tpml.core.interfaces.ChildrenExpressions ;
+import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
 import de.unisiegen.tpml.core.types.MonoType ;
+import de.unisiegen.tpml.core.types.Type ;
 import de.unisiegen.tpml.core.util.BoundRenaming ;
 
 
@@ -22,8 +25,29 @@ import de.unisiegen.tpml.core.util.BoundRenaming ;
  * @see MultiLet
  * @see Value
  */
-public final class MultiLambda extends Value implements BoundedIdentifiers
+public final class MultiLambda extends Value implements BoundedIdentifiers ,
+    DefaultTypes , ChildrenExpressions
 {
+  /**
+   * Indeces of the child {@link Expression}s.
+   */
+  private static final int [ ] INDICES_E = new int [ ]
+  { - 1 } ;
+
+
+  /**
+   * Indeces of the child {@link Type}s.
+   */
+  private static final int [ ] INDICES_TYPE = new int [ ]
+  { - 1 } ;
+
+
+  /**
+   * Indeces of the child {@link Identifier}s.
+   */
+  private int [ ] indicesId ;
+
+
   /**
    * The tuple parameter identifiers.
    * 
@@ -34,19 +58,18 @@ public final class MultiLambda extends Value implements BoundedIdentifiers
 
 
   /**
-   * The type of the <code>identifiers</code> or <code>null</code>.
+   * The types for the identifiers, where the assignment is as follows:
    * 
-   * @see #getTau()
+   * @see #getTypes()
+   * @see #getTypes(int)
    */
-  private MonoType tau ;
+  private MonoType [ ] types ;
 
 
   /**
-   * The function body expression.
-   * 
-   * @see #getE()
+   * The expression.
    */
-  private Expression e ;
+  private Expression [ ] expressions ;
 
 
   /**
@@ -76,9 +99,37 @@ public final class MultiLambda extends Value implements BoundedIdentifiers
     {
       throw new NullPointerException ( "e is null" ) ; //$NON-NLS-1$
     }
+    // Identifier
     this.identifiers = pIdentifiers ;
-    this.tau = pTau ;
-    this.e = pExpression ;
+    this.indicesId = new int [ this.identifiers.length ] ;
+    for ( int i = 0 ; i < this.identifiers.length ; i ++ )
+    {
+      if ( this.identifiers [ i ].getParent ( ) != null )
+      {
+        this.identifiers [ i ] = this.identifiers [ i ].clone ( ) ;
+      }
+      this.identifiers [ i ].setParent ( this ) ;
+      this.indicesId [ i ] = i + 1 ;
+    }
+    // Type
+    this.types = new MonoType [ 1 ] ;
+    this.types [ 0 ] = pTau ;
+    if ( this.types [ 0 ] != null )
+    {
+      if ( this.types [ 0 ].getParent ( ) != null )
+      {
+        this.types [ 0 ] = this.types [ 0 ].clone ( ) ;
+      }
+      this.types [ 0 ].setParent ( this ) ;
+    }
+    // Expression
+    this.expressions = new Expression [ 1 ] ;
+    this.expressions [ 0 ] = pExpression ;
+    if ( this.expressions [ 0 ].getParent ( ) != null )
+    {
+      this.expressions [ 0 ] = this.expressions [ 0 ].clone ( ) ;
+    }
+    this.expressions [ 0 ].setParent ( this ) ;
   }
 
 
@@ -95,8 +146,8 @@ public final class MultiLambda extends Value implements BoundedIdentifiers
     {
       newIdentifiers [ i ] = this.identifiers [ i ].clone ( ) ;
     }
-    return new MultiLambda ( newIdentifiers , this.tau == null ? null
-        : this.tau.clone ( ) , this.e.clone ( ) ) ;
+    return new MultiLambda ( newIdentifiers , this.types [ 0 ] == null ? null
+        : this.types [ 0 ].clone ( ) , this.expressions [ 0 ].clone ( ) ) ;
   }
 
 
@@ -112,8 +163,8 @@ public final class MultiLambda extends Value implements BoundedIdentifiers
     {
       MultiLambda other = ( MultiLambda ) pObject ;
       return ( ( Arrays.equals ( this.identifiers , other.identifiers ) )
-          && ( this.e.equals ( other.e ) ) && ( ( this.tau == null ) ? ( other.tau == null )
-          : ( this.tau.equals ( other.tau ) ) ) ) ;
+          && ( this.expressions [ 0 ].equals ( other.expressions [ 0 ] ) ) && ( ( this.types [ 0 ] == null ) ? ( other.types [ 0 ] == null )
+          : ( this.types [ 0 ].equals ( other.types [ 0 ] ) ) ) ) ;
     }
     return false ;
   }
@@ -130,7 +181,7 @@ public final class MultiLambda extends Value implements BoundedIdentifiers
     if ( this.free == null )
     {
       this.free = new ArrayList < Identifier > ( ) ;
-      this.free.addAll ( this.e.free ( ) ) ;
+      this.free.addAll ( this.expressions [ 0 ].free ( ) ) ;
       for ( int i = 0 ; i < this.identifiers.length ; i ++ )
       {
         while ( this.free.remove ( this.identifiers [ i ] ) )
@@ -155,7 +206,7 @@ public final class MultiLambda extends Value implements BoundedIdentifiers
     if ( this.boundedIdentifiers == null )
     {
       this.boundedIdentifiers = new ArrayList < ArrayList < Identifier >> ( ) ;
-      ArrayList < Identifier > boundedE = this.e.free ( ) ;
+      ArrayList < Identifier > boundedE = this.expressions [ 0 ].free ( ) ;
       for ( int i = 0 ; i < this.identifiers.length ; i ++ )
       {
         /*
@@ -225,7 +276,45 @@ public final class MultiLambda extends Value implements BoundedIdentifiers
    */
   public Expression getE ( )
   {
-    return this.e ;
+    return this.expressions [ 0 ] ;
+  }
+
+
+  /**
+   * Returns the sub expressions.
+   * 
+   * @return the sub expressions.
+   * @see #getExpressions(int)
+   */
+  public Expression [ ] getExpressions ( )
+  {
+    return this.expressions ;
+  }
+
+
+  /**
+   * Returns the <code>n</code>th sub expression.
+   * 
+   * @param pIndex the index of the expression to return.
+   * @return the <code>n</code>th sub expression.
+   * @throws ArrayIndexOutOfBoundsException if <code>n</code> is out of
+   *           bounds.
+   * @see #getExpressions()
+   */
+  public Expression getExpressions ( int pIndex )
+  {
+    return this.expressions [ pIndex ] ;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @return TODO
+   */
+  public int [ ] getExpressionsIndex ( )
+  {
+    return INDICES_E ;
   }
 
 
@@ -257,6 +346,33 @@ public final class MultiLambda extends Value implements BoundedIdentifiers
 
 
   /**
+   * TODO
+   * 
+   * @return TODO
+   */
+  public int [ ] getIdentifiersIndex ( )
+  {
+    return this.indicesId ;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @return TODO
+   */
+  public String [ ] getIdentifiersPrefix ( )
+  {
+    String [ ] result = new String [ this.identifiers.length ] ;
+    for ( int i = 0 ; i < this.identifiers.length ; i ++ )
+    {
+      result [ i ] = PREFIX_ID ;
+    }
+    return result ;
+  }
+
+
+  /**
    * Returns the type of the <code>identifiers</code> or <code>null</code>
    * if no type was specified.
    * 
@@ -264,7 +380,58 @@ public final class MultiLambda extends Value implements BoundedIdentifiers
    */
   public MonoType getTau ( )
   {
-    return this.tau ;
+    return this.types [ 0 ] ;
+  }
+
+
+  /**
+   * Returns the types for the <code>identifiers</code>.
+   * 
+   * @return the types.
+   * @see #getTypes(int)
+   */
+  public MonoType [ ] getTypes ( )
+  {
+    return this.types ;
+  }
+
+
+  /**
+   * Returns the <code>n</code>th type.
+   * 
+   * @param pIndex the index of the type.
+   * @return the <code>n</code>th type.
+   * @throws ArrayIndexOutOfBoundsException if <code>n</code> is out of
+   *           bounds.
+   * @see #getTypes()
+   */
+  public MonoType getTypes ( int pIndex )
+  {
+    return this.types [ pIndex ] ;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @return TODO
+   */
+  public int [ ] getTypesIndex ( )
+  {
+    return INDICES_TYPE ;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @return TODO
+   */
+  public String [ ] getTypesPrefix ( )
+  {
+    String [ ] result = new String [ 1 ] ;
+    result [ 0 ] = PREFIX_TAU ;
+    return result ;
   }
 
 
@@ -277,8 +444,8 @@ public final class MultiLambda extends Value implements BoundedIdentifiers
   public int hashCode ( )
   {
     return this.identifiers.hashCode ( )
-        + ( ( this.tau == null ) ? 0 : this.tau.hashCode ( ) )
-        + this.e.hashCode ( ) ;
+        + ( ( this.types [ 0 ] == null ) ? 0 : this.types [ 0 ].hashCode ( ) )
+        + this.expressions [ 0 ].hashCode ( ) ;
   }
 
 
@@ -313,7 +480,7 @@ public final class MultiLambda extends Value implements BoundedIdentifiers
         return this.clone ( ) ;
       }
     }
-    Expression newE = this.e ;
+    Expression newE = this.expressions [ 0 ] ;
     Identifier [ ] newIdentifiers = new Identifier [ this.identifiers.length ] ;
     for ( int i = 0 ; i < newIdentifiers.length ; i ++ )
     {
@@ -365,8 +532,8 @@ public final class MultiLambda extends Value implements BoundedIdentifiers
      * Perform the substitution.
      */
     newE = newE.substitute ( pId , pExpression , pAttributeRename ) ;
-    return new MultiLambda ( newIdentifiers , this.tau == null ? null
-        : this.tau.clone ( ) , newE ) ;
+    return new MultiLambda ( newIdentifiers , this.types [ 0 ] == null ? null
+        : this.types [ 0 ].clone ( ) , newE ) ;
   }
 
 
@@ -378,14 +545,14 @@ public final class MultiLambda extends Value implements BoundedIdentifiers
   @ Override
   public MultiLambda substitute ( TypeSubstitution pTypeSubstitution )
   {
-    MonoType newTau = ( this.tau == null ) ? null : this.tau
+    MonoType newTau = ( this.types [ 0 ] == null ) ? null : this.types [ 0 ]
         .substitute ( pTypeSubstitution ) ;
     Identifier [ ] newIdentifiers = new Identifier [ this.identifiers.length ] ;
     for ( int i = 0 ; i < newIdentifiers.length ; i ++ )
     {
       newIdentifiers [ i ] = this.identifiers [ i ].clone ( ) ;
     }
-    return new MultiLambda ( newIdentifiers , newTau , this.e
+    return new MultiLambda ( newIdentifiers , newTau , this.expressions [ 0 ]
         .substitute ( pTypeSubstitution ) ) ;
   }
 
@@ -415,15 +582,15 @@ public final class MultiLambda extends Value implements BoundedIdentifiers
             .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_ID ) ;
       }
       this.prettyStringBuilder.addText ( ")" ) ; //$NON-NLS-1$
-      if ( this.tau != null )
+      if ( this.types [ 0 ] != null )
       {
         this.prettyStringBuilder.addText ( ": " ) ; //$NON-NLS-1$
-        this.prettyStringBuilder.addBuilder ( this.tau
+        this.prettyStringBuilder.addBuilder ( this.types [ 0 ]
             .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
             PRIO_LAMBDA_TAU ) ;
       }
       this.prettyStringBuilder.addText ( "." ) ; //$NON-NLS-1$
-      this.prettyStringBuilder.addBuilder ( this.e
+      this.prettyStringBuilder.addBuilder ( this.expressions [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
           PRIO_LAMBDA_E ) ;
     }

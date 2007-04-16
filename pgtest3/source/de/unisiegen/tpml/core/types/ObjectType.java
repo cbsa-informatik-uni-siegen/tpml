@@ -2,6 +2,7 @@ package de.unisiegen.tpml.core.types ;
 
 
 import java.util.TreeSet ;
+import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
@@ -12,12 +13,19 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
  * 
  * @author Christian Fehler
  */
-public final class ObjectType extends MonoType
+public final class ObjectType extends MonoType implements DefaultTypes
 {
+  /**
+   * Indeces of the child {@link Type}s.
+   */
+  private static final int [ ] INDICES_TYPE = new int [ ]
+  { - 1 } ;
+
+
   /**
    * TODO
    */
-  private RowType phi ;
+  private MonoType [ ] types ;
 
 
   /**
@@ -25,13 +33,23 @@ public final class ObjectType extends MonoType
    * 
    * @param pPhi TODO
    */
-  public ObjectType ( RowType pPhi )
+  public ObjectType ( MonoType pPhi )
   {
     if ( pPhi == null )
     {
       throw new NullPointerException ( "Phi is null" ) ; //$NON-NLS-1$
     }
-    this.phi = pPhi ;
+    if ( ! ( pPhi instanceof RowType ) )
+    {
+      throw new IllegalArgumentException ( "The Phi has to be a RowType" ) ; //$NON-NLS-1$
+    }
+    this.types = new MonoType [ 1 ] ;
+    this.types [ 0 ] = pPhi ;
+    if ( this.types [ 0 ].getParent ( ) != null )
+    {
+      this.types [ 0 ] = this.types [ 0 ].clone ( ) ;
+    }
+    this.types [ 0 ].setParent ( this ) ;
   }
 
 
@@ -43,7 +61,7 @@ public final class ObjectType extends MonoType
   @ Override
   public ObjectType clone ( )
   {
-    return new ObjectType ( this.phi.clone ( ) ) ;
+    return new ObjectType ( this.types [ 0 ].clone ( ) ) ;
   }
 
 
@@ -58,7 +76,7 @@ public final class ObjectType extends MonoType
     if ( pObject instanceof ObjectType )
     {
       ObjectType other = ( ObjectType ) pObject ;
-      return this.phi.equals ( other.phi ) ;
+      return this.types [ 0 ].equals ( other.types [ 0 ] ) ;
     }
     return false ;
   }
@@ -75,7 +93,7 @@ public final class ObjectType extends MonoType
     if ( this.free == null )
     {
       this.free = new TreeSet < TypeVariable > ( ) ;
-      this.free.addAll ( this.phi.free ( ) ) ;
+      this.free.addAll ( this.types [ 0 ].free ( ) ) ;
     }
     return this.free ;
   }
@@ -101,7 +119,54 @@ public final class ObjectType extends MonoType
    */
   public RowType getPhi ( )
   {
-    return this.phi ;
+    return ( RowType ) this.types [ 0 ] ;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @return TODO
+   */
+  public MonoType [ ] getTypes ( )
+  {
+    return this.types ;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @param pIndex TODO
+   * @return TODO
+   */
+  public MonoType getTypes ( int pIndex )
+  {
+    return this.types [ pIndex ] ;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @return TODO
+   */
+  public int [ ] getTypesIndex ( )
+  {
+    return INDICES_TYPE ;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @return TODO
+   */
+  public String [ ] getTypesPrefix ( )
+  {
+    String [ ] result = new String [ 1 ] ;
+    result [ 0 ] = PREFIX_PHI ;
+    return result ;
   }
 
 
@@ -119,7 +184,7 @@ public final class ObjectType extends MonoType
     {
       throw new NullPointerException ( "Substitution is null" ) ; //$NON-NLS-1$
     }
-    return new ObjectType ( this.phi.substitute ( pTypeSubstitution ) ) ;
+    return new ObjectType ( this.types [ 0 ].substitute ( pTypeSubstitution ) ) ;
   }
 
 
@@ -140,7 +205,7 @@ public final class ObjectType extends MonoType
           PRIO_OBJECT ) ;
       this.prettyStringBuilder.addKeyword ( "<" ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
-      this.prettyStringBuilder.addBuilder ( this.phi
+      this.prettyStringBuilder.addBuilder ( this.types [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
           PRIO_OBJECT_ROW ) ;
       this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$

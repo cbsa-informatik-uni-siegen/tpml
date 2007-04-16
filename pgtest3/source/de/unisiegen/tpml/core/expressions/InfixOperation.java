@@ -1,6 +1,7 @@
 package de.unisiegen.tpml.core.expressions ;
 
 
+import de.unisiegen.tpml.core.interfaces.ChildrenExpressions ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
@@ -19,30 +20,20 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
  * @see BinaryOperator
  * @see Expression
  */
-public final class InfixOperation extends Expression
+public final class InfixOperation extends Expression implements
+    ChildrenExpressions
 {
   /**
-   * The operator of the infix operation.
-   * 
-   * @see #getOp()
+   * Indeces of the child {@link Expression}s.
    */
-  private BinaryOperator op ;
+  private static final int [ ] INDICES_E = new int [ ]
+  { 1 , - 1 , 2 } ;
 
 
   /**
-   * The first operand.
-   * 
-   * @see #getE1()
+   * The expressions.
    */
-  private Expression e1 ;
-
-
-  /**
-   * The second operand.
-   * 
-   * @see #getE2()
-   */
-  private Expression e2 ;
+  private Expression [ ] expressions ;
 
 
   /**
@@ -70,10 +61,25 @@ public final class InfixOperation extends Expression
     {
       throw new NullPointerException ( "e2 is null" ) ; //$NON-NLS-1$
     }
-    this.op = pBinaryOperator ;
-    this.op.useInfixOperator ( true ) ;
-    this.e1 = pExpression1 ;
-    this.e2 = pExpression2 ;
+    this.expressions = new Expression [ 3 ] ;
+    this.expressions [ 0 ] = pExpression1 ;
+    if ( this.expressions [ 0 ].getParent ( ) != null )
+    {
+      this.expressions [ 0 ] = this.expressions [ 0 ].clone ( ) ;
+    }
+    this.expressions [ 0 ].setParent ( this ) ;
+    this.expressions [ 1 ] = pBinaryOperator ;
+    if ( this.expressions [ 1 ].getParent ( ) != null )
+    {
+      this.expressions [ 1 ] = this.expressions [ 1 ].clone ( ) ;
+    }
+    this.expressions [ 1 ].setParent ( this ) ;
+    this.expressions [ 2 ] = pExpression2 ;
+    if ( this.expressions [ 2 ].getParent ( ) != null )
+    {
+      this.expressions [ 2 ] = this.expressions [ 2 ].clone ( ) ;
+    }
+    this.expressions [ 2 ].setParent ( this ) ;
   }
 
 
@@ -85,7 +91,8 @@ public final class InfixOperation extends Expression
   @ Override
   public InfixOperation clone ( )
   {
-    return new InfixOperation ( this.op.clone ( ) , this.e1.clone ( ) , this.e2
+    return new InfixOperation ( ( BinaryOperator ) this.expressions [ 1 ]
+        .clone ( ) , this.expressions [ 0 ].clone ( ) , this.expressions [ 2 ]
         .clone ( ) ) ;
   }
 
@@ -101,8 +108,9 @@ public final class InfixOperation extends Expression
     if ( pObject instanceof InfixOperation )
     {
       InfixOperation other = ( InfixOperation ) pObject ;
-      return ( ( this.op.equals ( other.op ) )
-          && ( this.e1.equals ( other.e1 ) ) && ( this.e2.equals ( other.e2 ) ) ) ;
+      return ( ( this.expressions [ 1 ].equals ( other.expressions [ 1 ] ) )
+          && ( this.expressions [ 0 ].equals ( other.expressions [ 0 ] ) ) && ( this.expressions [ 2 ]
+          .equals ( other.expressions [ 2 ] ) ) ) ;
     }
     return false ;
   }
@@ -127,7 +135,7 @@ public final class InfixOperation extends Expression
    */
   public Expression getE1 ( )
   {
-    return this.e1 ;
+    return this.expressions [ 0 ] ;
   }
 
 
@@ -140,7 +148,45 @@ public final class InfixOperation extends Expression
    */
   public Expression getE2 ( )
   {
-    return this.e2 ;
+    return this.expressions [ 2 ] ;
+  }
+
+
+  /**
+   * Returns the sub expressions.
+   * 
+   * @return the sub expressions.
+   * @see #getExpressions(int)
+   */
+  public Expression [ ] getExpressions ( )
+  {
+    return this.expressions ;
+  }
+
+
+  /**
+   * Returns the <code>n</code>th sub expression.
+   * 
+   * @param pIndex the index of the expression to return.
+   * @return the <code>n</code>th sub expression.
+   * @throws ArrayIndexOutOfBoundsException if <code>n</code> is out of
+   *           bounds.
+   * @see #getExpressions()
+   */
+  public Expression getExpressions ( int pIndex )
+  {
+    return this.expressions [ pIndex ] ;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @return TODO
+   */
+  public int [ ] getExpressionsIndex ( )
+  {
+    return INDICES_E ;
   }
 
 
@@ -154,7 +200,7 @@ public final class InfixOperation extends Expression
    */
   public BinaryOperator getOp ( )
   {
-    return this.op ;
+    return ( BinaryOperator ) this.expressions [ 1 ] ;
   }
 
 
@@ -166,7 +212,9 @@ public final class InfixOperation extends Expression
   @ Override
   public int hashCode ( )
   {
-    return this.op.hashCode ( ) + this.e1.hashCode ( ) + this.e2.hashCode ( ) ;
+    return this.expressions [ 1 ].hashCode ( )
+        + this.expressions [ 0 ].hashCode ( )
+        + this.expressions [ 2 ].hashCode ( ) ;
   }
 
 
@@ -191,11 +239,12 @@ public final class InfixOperation extends Expression
   public InfixOperation substitute ( Identifier pId , Expression pExpression ,
       boolean pAttributeRename )
   {
-    Expression newE1 = this.e1.substitute ( pId , pExpression ,
+    Expression newE1 = this.expressions [ 0 ].substitute ( pId , pExpression ,
         pAttributeRename ) ;
-    Expression newE2 = this.e2.substitute ( pId , pExpression ,
+    Expression newE2 = this.expressions [ 2 ].substitute ( pId , pExpression ,
         pAttributeRename ) ;
-    return new InfixOperation ( this.op.clone ( ) , newE1 , newE2 ) ;
+    return new InfixOperation ( ( BinaryOperator ) this.expressions [ 1 ]
+        .clone ( ) , newE1 , newE2 ) ;
   }
 
 
@@ -207,9 +256,10 @@ public final class InfixOperation extends Expression
   @ Override
   public InfixOperation substitute ( TypeSubstitution pTypeSubstitution )
   {
-    Expression newE1 = this.e1.substitute ( pTypeSubstitution ) ;
-    Expression newE2 = this.e2.substitute ( pTypeSubstitution ) ;
-    return new InfixOperation ( this.op.clone ( ) , newE1 , newE2 ) ;
+    Expression newE1 = this.expressions [ 0 ].substitute ( pTypeSubstitution ) ;
+    Expression newE2 = this.expressions [ 2 ].substitute ( pTypeSubstitution ) ;
+    return new InfixOperation ( ( BinaryOperator ) this.expressions [ 1 ]
+        .clone ( ) , newE1 , newE2 ) ;
   }
 
 
@@ -225,18 +275,20 @@ public final class InfixOperation extends Expression
     if ( this.prettyStringBuilder == null )
     {
       this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
-          this.op.getPrettyPriority ( ) ) ;
-      this.prettyStringBuilder.addBuilder ( this.e1
-          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , this.op
-          .getPrettyPriority ( ) ) ;
+          ( ( BinaryOperator ) this.expressions [ 1 ] ).getPrettyPriority ( ) ) ;
+      this.prettyStringBuilder.addBuilder ( this.expressions [ 0 ]
+          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
+          ( ( BinaryOperator ) this.expressions [ 1 ] ).getPrettyPriority ( ) ) ;
       this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
-      this.prettyStringBuilder.addBuilder ( this.op
-          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , this.op
-          .getPrettyPriority ( ) ) ;
+      this.prettyStringBuilder.addBuilder ( this.expressions [ 1 ]
+          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
+          ( ( BinaryOperator ) this.expressions [ 1 ] ).getPrettyPriority ( ) ) ;
       this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
-      this.prettyStringBuilder.addBuilder ( this.e2
-          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , this.op
-          .getPrettyPriority ( ) + 1 ) ;
+      this.prettyStringBuilder
+          .addBuilder ( this.expressions [ 2 ]
+              .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
+              ( ( BinaryOperator ) this.expressions [ 1 ] )
+                  .getPrettyPriority ( ) + 1 ) ;
     }
     return this.prettyStringBuilder ;
   }

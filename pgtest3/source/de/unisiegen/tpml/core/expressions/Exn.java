@@ -115,6 +115,18 @@ public final class Exn extends Expression
 
 
   /**
+   * TODO
+   * 
+   * @return TODO
+   */
+  @ Override
+  public String getPrefix ( )
+  {
+    return PREFIX_EXN ;
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see Expression#hashCode()

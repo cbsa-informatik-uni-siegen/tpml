@@ -3,11 +3,14 @@ package de.unisiegen.tpml.core.expressions ;
 
 import java.util.ArrayList ;
 import java.util.Arrays ;
-import de.unisiegen.tpml.core.identifiers.BoundedIdentifiers ;
+import de.unisiegen.tpml.core.interfaces.BoundedIdentifiers ;
+import de.unisiegen.tpml.core.interfaces.ChildrenExpressions ;
+import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
 import de.unisiegen.tpml.core.types.MonoType ;
+import de.unisiegen.tpml.core.types.Type ;
 import de.unisiegen.tpml.core.util.BoundRenaming ;
 
 
@@ -21,8 +24,16 @@ import de.unisiegen.tpml.core.util.BoundRenaming ;
  * @see Let
  * @see Lambda
  */
-public class CurriedLet extends Expression implements BoundedIdentifiers
+public class CurriedLet extends Expression implements BoundedIdentifiers ,
+    DefaultTypes , ChildrenExpressions
 {
+  /**
+   * Indeces of the child {@link Expression}s.
+   */
+  private static final int [ ] INDICES_E = new int [ ]
+  { 1 , 2 } ;
+
+
   /**
    * The list of identifiers.
    * 
@@ -41,19 +52,21 @@ public class CurriedLet extends Expression implements BoundedIdentifiers
 
 
   /**
-   * The first expression.
-   * 
-   * @see #getE1()
+   * The expressions.
    */
-  protected Expression e1 ;
+  protected Expression [ ] expressions ;
 
 
   /**
-   * The second expression.
-   * 
-   * @see #getE2()
+   * Indeces of the child {@link Identifier}s.
    */
-  protected Expression e2 ;
+  protected int [ ] indicesId ;
+
+
+  /**
+   * Indeces of the child {@link Type}s.
+   */
+  protected int [ ] indicesType ;
 
 
   /**
@@ -104,10 +117,55 @@ public class CurriedLet extends Expression implements BoundedIdentifiers
       throw new IllegalArgumentException (
           "the arity of identifiers and types must match" ) ; //$NON-NLS-1$
     }
+    // Identifier
     this.identifiers = pIdentifiers ;
+    this.indicesId = new int [ this.identifiers.length ] ;
+    this.indicesId [ 0 ] = - 1 ;
+    for ( int i = 1 ; i < this.identifiers.length ; i ++ )
+    {
+      this.indicesId [ i ] = i ;
+    }
+    for ( int i = 0 ; i < this.identifiers.length ; i ++ )
+    {
+      if ( this.identifiers [ i ].getParent ( ) != null )
+      {
+        this.identifiers [ i ] = this.identifiers [ i ].clone ( ) ;
+      }
+      this.identifiers [ i ].setParent ( this ) ;
+    }
+    // Type
     this.types = pTypes ;
-    this.e1 = pExpression1 ;
-    this.e2 = pExpression2 ;
+    this.indicesType = new int [ this.types.length ] ;
+    this.indicesType [ 0 ] = - 1 ;
+    for ( int i = 1 ; i < this.types.length ; i ++ )
+    {
+      this.indicesType [ i ] = i ;
+    }
+    for ( int i = 0 ; i < this.types.length ; i ++ )
+    {
+      if ( this.types [ i ] != null )
+      {
+        if ( this.types [ i ].getParent ( ) != null )
+        {
+          this.types [ i ] = this.types [ i ].clone ( ) ;
+        }
+        this.types [ i ].setParent ( this ) ;
+      }
+    }
+    // Expression
+    this.expressions = new Expression [ 2 ] ;
+    this.expressions [ 0 ] = pExpression1 ;
+    if ( this.expressions [ 0 ].getParent ( ) != null )
+    {
+      this.expressions [ 0 ] = this.expressions [ 0 ].clone ( ) ;
+    }
+    this.expressions [ 0 ].setParent ( this ) ;
+    this.expressions [ 1 ] = pExpression2 ;
+    if ( this.expressions [ 1 ].getParent ( ) != null )
+    {
+      this.expressions [ 1 ] = this.expressions [ 1 ].clone ( ) ;
+    }
+    this.expressions [ 1 ].setParent ( this ) ;
   }
 
 
@@ -130,8 +188,8 @@ public class CurriedLet extends Expression implements BoundedIdentifiers
       newTypes [ i ] = ( this.types [ i ] == null ) ? null : this.types [ i ]
           .clone ( ) ;
     }
-    return new CurriedLet ( newIdentifiers , newTypes , this.e1.clone ( ) ,
-        this.e2.clone ( ) ) ;
+    return new CurriedLet ( newIdentifiers , newTypes , this.expressions [ 0 ]
+        .clone ( ) , this.expressions [ 1 ].clone ( ) ) ;
   }
 
 
@@ -149,7 +207,8 @@ public class CurriedLet extends Expression implements BoundedIdentifiers
       CurriedLet other = ( CurriedLet ) pObject ;
       return ( ( Arrays.equals ( this.identifiers , other.identifiers ) )
           && ( Arrays.equals ( this.types , other.types ) )
-          && ( this.e1.equals ( other.e1 ) ) && ( this.e2.equals ( other.e2 ) ) ) ;
+          && ( this.expressions [ 0 ].equals ( other.expressions [ 0 ] ) ) && ( this.expressions [ 1 ]
+          .equals ( other.expressions [ 1 ] ) ) ) ;
     }
     return false ;
   }
@@ -168,7 +227,7 @@ public class CurriedLet extends Expression implements BoundedIdentifiers
       this.free = new ArrayList < Identifier > ( ) ;
       ArrayList < Identifier > freeE1 = new ArrayList < Identifier > ( ) ;
       ArrayList < Identifier > freeE2 = new ArrayList < Identifier > ( ) ;
-      freeE1.addAll ( this.e1.free ( ) ) ;
+      freeE1.addAll ( this.expressions [ 0 ].free ( ) ) ;
       for ( int i = 1 ; i < this.identifiers.length ; i ++ )
       {
         while ( freeE1.remove ( this.identifiers [ i ] ) )
@@ -176,7 +235,7 @@ public class CurriedLet extends Expression implements BoundedIdentifiers
           // Remove all Identifiers with the same name
         }
       }
-      freeE2.addAll ( this.e2.free ( ) ) ;
+      freeE2.addAll ( this.expressions [ 1 ].free ( ) ) ;
       while ( freeE2.remove ( this.identifiers [ 0 ] ) )
       {
         // Remove all Identifiers with the same name
@@ -200,8 +259,8 @@ public class CurriedLet extends Expression implements BoundedIdentifiers
     if ( this.boundedIdentifiers == null )
     {
       this.boundedIdentifiers = new ArrayList < ArrayList < Identifier >> ( ) ;
-      ArrayList < Identifier > boundedE1 = this.e1.free ( ) ;
-      ArrayList < Identifier > boundedE2 = this.e2.free ( ) ;
+      ArrayList < Identifier > boundedE1 = this.expressions [ 0 ].free ( ) ;
+      ArrayList < Identifier > boundedE2 = this.expressions [ 1 ].free ( ) ;
       for ( int i = 0 ; i < this.identifiers.length ; i ++ )
       {
         if ( i == 0 )
@@ -291,7 +350,7 @@ public class CurriedLet extends Expression implements BoundedIdentifiers
    */
   public Expression getE1 ( )
   {
-    return this.e1 ;
+    return this.expressions [ 0 ] ;
   }
 
 
@@ -302,7 +361,45 @@ public class CurriedLet extends Expression implements BoundedIdentifiers
    */
   public Expression getE2 ( )
   {
-    return this.e2 ;
+    return this.expressions [ 1 ] ;
+  }
+
+
+  /**
+   * Returns the sub expressions.
+   * 
+   * @return the sub expressions.
+   * @see #getExpressions(int)
+   */
+  public Expression [ ] getExpressions ( )
+  {
+    return this.expressions ;
+  }
+
+
+  /**
+   * Returns the <code>n</code>th sub expression.
+   * 
+   * @param pIndex the index of the expression to return.
+   * @return the <code>n</code>th sub expression.
+   * @throws ArrayIndexOutOfBoundsException if <code>n</code> is out of
+   *           bounds.
+   * @see #getExpressions()
+   */
+  public Expression getExpressions ( int pIndex )
+  {
+    return this.expressions [ pIndex ] ;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @return TODO
+   */
+  public int [ ] getExpressionsIndex ( )
+  {
+    return INDICES_E ;
   }
 
 
@@ -329,6 +426,33 @@ public class CurriedLet extends Expression implements BoundedIdentifiers
   public Identifier getIdentifiers ( int pIndex )
   {
     return this.identifiers [ pIndex ] ;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @return TODO
+   */
+  public int [ ] getIdentifiersIndex ( )
+  {
+    return this.indicesId ;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @return TODO
+   */
+  public String [ ] getIdentifiersPrefix ( )
+  {
+    String [ ] result = new String [ this.identifiers.length ] ;
+    for ( int i = 0 ; i < this.identifiers.length ; i ++ )
+    {
+      result [ i ] = PREFIX_ID ;
+    }
+    return result ;
   }
 
 
@@ -369,6 +493,33 @@ public class CurriedLet extends Expression implements BoundedIdentifiers
 
 
   /**
+   * TODO
+   * 
+   * @return TODO
+   */
+  public int [ ] getTypesIndex ( )
+  {
+    return this.indicesType ;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @return TODO
+   */
+  public String [ ] getTypesPrefix ( )
+  {
+    String [ ] result = new String [ this.identifiers.length ] ;
+    for ( int i = 0 ; i < this.identifiers.length ; i ++ )
+    {
+      result [ i ] = PREFIX_TAU ;
+    }
+    return result ;
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see Expression#hashCode()
@@ -376,8 +527,8 @@ public class CurriedLet extends Expression implements BoundedIdentifiers
   @ Override
   public int hashCode ( )
   {
-    return this.identifiers.hashCode ( ) + this.e1.hashCode ( )
-        + this.e2.hashCode ( )
+    return this.identifiers.hashCode ( ) + this.expressions [ 0 ].hashCode ( )
+        + this.expressions [ 1 ].hashCode ( )
         + ( ( this.types == null ) ? 0 : this.types.hashCode ( ) ) ;
   }
 
@@ -408,8 +559,8 @@ public class CurriedLet extends Expression implements BoundedIdentifiers
     {
       newIdentifiers [ i ] = this.identifiers [ i ].clone ( ) ;
     }
-    Expression newE1 = this.e1.clone ( ) ;
-    Expression newE2 = this.e2.clone ( ) ;
+    Expression newE1 = this.expressions [ 0 ].clone ( ) ;
+    Expression newE2 = this.expressions [ 1 ].clone ( ) ;
     boolean found = false ;
     /*
      * Do not substitute in e1, if the Identifiers are equal.
@@ -427,7 +578,7 @@ public class CurriedLet extends Expression implements BoundedIdentifiers
       for ( int i = 1 ; i < newIdentifiers.length ; i ++ )
       {
         BoundRenaming boundRenaming = new BoundRenaming ( ) ;
-        boundRenaming.add ( this.e1.free ( ) ) ;
+        boundRenaming.add ( this.expressions [ 0 ].free ( ) ) ;
         boundRenaming.remove ( newIdentifiers [ i ] ) ;
         boundRenaming.add ( pExpression.free ( ) ) ;
         boundRenaming.add ( pId ) ;
@@ -475,7 +626,7 @@ public class CurriedLet extends Expression implements BoundedIdentifiers
     if ( ! ( this.identifiers [ 0 ].equals ( pId ) ) )
     {
       BoundRenaming boundRenaming = new BoundRenaming ( ) ;
-      boundRenaming.add ( this.e2.free ( ) ) ;
+      boundRenaming.add ( this.expressions [ 1 ].free ( ) ) ;
       boundRenaming.remove ( this.identifiers [ 0 ] ) ;
       boundRenaming.add ( pExpression.free ( ) ) ;
       boundRenaming.add ( pId ) ;
@@ -524,8 +675,8 @@ public class CurriedLet extends Expression implements BoundedIdentifiers
       newTypes [ i ] = ( this.types [ i ] == null ) ? null : this.types [ i ]
           .substitute ( pTypeSubstitution ) ;
     }
-    Expression newE1 = this.e1.substitute ( pTypeSubstitution ) ;
-    Expression newE2 = this.e2.substitute ( pTypeSubstitution ) ;
+    Expression newE1 = this.expressions [ 0 ].substitute ( pTypeSubstitution ) ;
+    Expression newE2 = this.expressions [ 1 ].substitute ( pTypeSubstitution ) ;
     return new CurriedLet ( newIdentifiers , newTypes , newE1 , newE2 ) ;
   }
 
@@ -574,13 +725,13 @@ public class CurriedLet extends Expression implements BoundedIdentifiers
       }
       this.prettyStringBuilder.addText ( " = " ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addBreak ( ) ;
-      this.prettyStringBuilder.addBuilder ( this.e1
+      this.prettyStringBuilder.addBuilder ( this.expressions [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_LET_E1 ) ;
       this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addBreak ( ) ;
       this.prettyStringBuilder.addKeyword ( "in" ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
-      this.prettyStringBuilder.addBuilder ( this.e2
+      this.prettyStringBuilder.addBuilder ( this.expressions [ 1 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_LET_E2 ) ;
     }
     return this.prettyStringBuilder ;

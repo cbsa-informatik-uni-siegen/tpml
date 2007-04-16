@@ -4,6 +4,7 @@ package de.unisiegen.tpml.core.types ;
 import java.util.Iterator ;
 import java.util.Set ;
 import java.util.TreeSet ;
+import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
@@ -19,8 +20,15 @@ import de.unisiegen.tpml.core.typechecker.TypeUtilities ;
  * @version $Rev:511 $
  * @see Type
  */
-public final class PolyType extends Type
+public final class PolyType extends Type implements DefaultTypes
 {
+  /**
+   * Indeces of the child {@link Type}s.
+   */
+  private static final int [ ] INDICES_TYPE = new int [ ]
+  { - 1 } ;
+
+
   /**
    * The quantified type variables.
    * 
@@ -30,11 +38,9 @@ public final class PolyType extends Type
 
 
   /**
-   * The monomorphic type.
-   * 
-   * @see #getTau()
+   * TODO
    */
-  private MonoType tau ;
+  private MonoType [ ] types ;
 
 
   /**
@@ -60,7 +66,13 @@ public final class PolyType extends Type
       throw new NullPointerException ( "Tau is null" ) ; //$NON-NLS-1$
     }
     this.quantifiedVariables = pQuantifiedVariables ;
-    this.tau = pTau ;
+    this.types = new MonoType [ 1 ] ;
+    this.types [ 0 ] = pTau ;
+    if ( this.types [ 0 ].getParent ( ) != null )
+    {
+      this.types [ 0 ] = this.types [ 0 ].clone ( ) ;
+    }
+    this.types [ 0 ].setParent ( this ) ;
   }
 
 
@@ -78,7 +90,7 @@ public final class PolyType extends Type
     {
       newQuantifiedVariables.add ( it.next ( ) ) ;
     }
-    return new PolyType ( newQuantifiedVariables , this.tau.clone ( ) ) ;
+    return new PolyType ( newQuantifiedVariables , this.types [ 0 ].clone ( ) ) ;
   }
 
 
@@ -93,8 +105,8 @@ public final class PolyType extends Type
     if ( pObject instanceof PolyType )
     {
       PolyType other = ( PolyType ) pObject ;
-      return ( this.quantifiedVariables.equals ( other.quantifiedVariables ) && this.tau
-          .equals ( other.tau ) ) ;
+      return ( this.quantifiedVariables.equals ( other.quantifiedVariables ) && this.types [ 0 ]
+          .equals ( other.types [ 0 ] ) ) ;
     }
     return false ;
   }
@@ -111,7 +123,7 @@ public final class PolyType extends Type
     if ( this.free == null )
     {
       this.free = new TreeSet < TypeVariable > ( ) ;
-      this.free.addAll ( this.tau.free ( ) ) ;
+      this.free.addAll ( this.types [ 0 ].free ( ) ) ;
       this.free.removeAll ( this.quantifiedVariables ) ;
     }
     return this.free ;
@@ -146,7 +158,54 @@ public final class PolyType extends Type
    */
   public MonoType getTau ( )
   {
-    return this.tau ;
+    return this.types [ 0 ] ;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @return TODO
+   */
+  public MonoType [ ] getTypes ( )
+  {
+    return this.types ;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @param pIndex TODO
+   * @return TODO
+   */
+  public MonoType getTypes ( int pIndex )
+  {
+    return this.types [ pIndex ] ;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @return TODO
+   */
+  public int [ ] getTypesIndex ( )
+  {
+    return INDICES_TYPE ;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @return TODO
+   */
+  public String [ ] getTypesPrefix ( )
+  {
+    String [ ] result = new String [ 1 ] ;
+    result [ 0 ] = PREFIX_TAU ;
+    return result ;
   }
 
 
@@ -158,7 +217,7 @@ public final class PolyType extends Type
   @ Override
   public int hashCode ( )
   {
-    return this.quantifiedVariables.hashCode ( ) + this.tau.hashCode ( ) ;
+    return this.quantifiedVariables.hashCode ( ) + this.types [ 0 ].hashCode ( ) ;
   }
 
 
@@ -171,7 +230,7 @@ public final class PolyType extends Type
   public PolyType substitute ( TypeSubstitution pTypeSubstitution )
   {
     // determine the monomorphic type
-    MonoType newTau = this.tau ;
+    MonoType newTau = this.types [ 0 ] ;
     // perform a bound rename on the type variables
     TreeSet < TypeVariable > newQuantifiedVariables = new TreeSet < TypeVariable > ( ) ;
     for ( TypeVariable tvar : this.quantifiedVariables )
@@ -226,7 +285,7 @@ public final class PolyType extends Type
         }
         this.prettyStringBuilder.addText ( "." ) ; //$NON-NLS-1$
       }
-      this.prettyStringBuilder.addBuilder ( this.tau
+      this.prettyStringBuilder.addBuilder ( this.types [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
           PRIO_POLY_TAU ) ;
     }

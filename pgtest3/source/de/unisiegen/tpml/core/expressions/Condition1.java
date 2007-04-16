@@ -1,6 +1,7 @@
 package de.unisiegen.tpml.core.expressions ;
 
 
+import de.unisiegen.tpml.core.interfaces.ChildrenExpressions ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
@@ -16,22 +17,19 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
  * @see Condition
  * @see Expression
  */
-public final class Condition1 extends Expression
+public final class Condition1 extends Expression implements ChildrenExpressions
 {
   /**
-   * The conditional block.
-   * 
-   * @see #getE0()
+   * Indeces of the child {@link Expression}s.
    */
-  private Expression e0 ;
+  private static final int [ ] INDICES_E = new int [ ]
+  { 0 , 1 } ;
 
 
   /**
-   * The <code>true</code> block.
-   * 
-   * @see #getE1()
+   * The expressions.
    */
-  private Expression e1 ;
+  private Expression [ ] expressions ;
 
 
   /**
@@ -53,8 +51,19 @@ public final class Condition1 extends Expression
     {
       throw new NullPointerException ( "e1 is null" ) ; //$NON-NLS-1$
     }
-    this.e0 = pExpression0 ;
-    this.e1 = pExpression1 ;
+    this.expressions = new Expression [ 2 ] ;
+    this.expressions [ 0 ] = pExpression0 ;
+    if ( this.expressions [ 0 ].getParent ( ) != null )
+    {
+      this.expressions [ 0 ] = this.expressions [ 0 ].clone ( ) ;
+    }
+    this.expressions [ 0 ].setParent ( this ) ;
+    this.expressions [ 1 ] = pExpression1 ;
+    if ( this.expressions [ 1 ].getParent ( ) != null )
+    {
+      this.expressions [ 1 ] = this.expressions [ 1 ].clone ( ) ;
+    }
+    this.expressions [ 1 ].setParent ( this ) ;
   }
 
 
@@ -66,7 +75,8 @@ public final class Condition1 extends Expression
   @ Override
   public Condition1 clone ( )
   {
-    return new Condition1 ( this.e0.clone ( ) , this.e1.clone ( ) ) ;
+    return new Condition1 ( this.expressions [ 0 ].clone ( ) ,
+        this.expressions [ 1 ].clone ( ) ) ;
   }
 
 
@@ -81,7 +91,8 @@ public final class Condition1 extends Expression
     if ( pObject instanceof Condition1 )
     {
       Condition1 other = ( Condition1 ) pObject ;
-      return ( ( this.e0.equals ( other.e0 ) ) && ( this.e1.equals ( other.e1 ) ) ) ;
+      return ( ( this.expressions [ 0 ].equals ( other.expressions [ 0 ] ) ) && ( this.expressions [ 1 ]
+          .equals ( other.expressions [ 1 ] ) ) ) ;
     }
     return false ;
   }
@@ -104,7 +115,7 @@ public final class Condition1 extends Expression
    */
   public Expression getE0 ( )
   {
-    return this.e0 ;
+    return this.expressions [ 0 ] ;
   }
 
 
@@ -115,7 +126,45 @@ public final class Condition1 extends Expression
    */
   public Expression getE1 ( )
   {
-    return this.e1 ;
+    return this.expressions [ 1 ] ;
+  }
+
+
+  /**
+   * Returns the sub expressions.
+   * 
+   * @return the sub expressions.
+   * @see #getExpressions(int)
+   */
+  public Expression [ ] getExpressions ( )
+  {
+    return this.expressions ;
+  }
+
+
+  /**
+   * Returns the <code>n</code>th sub expression.
+   * 
+   * @param pIndex the index of the expression to return.
+   * @return the <code>n</code>th sub expression.
+   * @throws ArrayIndexOutOfBoundsException if <code>n</code> is out of
+   *           bounds.
+   * @see #getExpressions()
+   */
+  public Expression getExpressions ( int pIndex )
+  {
+    return this.expressions [ pIndex ] ;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @return TODO
+   */
+  public int [ ] getExpressionsIndex ( )
+  {
+    return INDICES_E ;
   }
 
 
@@ -127,7 +176,8 @@ public final class Condition1 extends Expression
   @ Override
   public int hashCode ( )
   {
-    return this.e0.hashCode ( ) + this.e1.hashCode ( ) ;
+    return this.expressions [ 0 ].hashCode ( )
+        + this.expressions [ 1 ].hashCode ( ) ;
   }
 
 
@@ -152,9 +202,9 @@ public final class Condition1 extends Expression
   public Condition1 substitute ( Identifier pId , Expression pExpression ,
       boolean pAttributeRename )
   {
-    Expression newE0 = this.e0.substitute ( pId , pExpression ,
+    Expression newE0 = this.expressions [ 0 ].substitute ( pId , pExpression ,
         pAttributeRename ) ;
-    Expression newE1 = this.e1.substitute ( pId , pExpression ,
+    Expression newE1 = this.expressions [ 1 ].substitute ( pId , pExpression ,
         pAttributeRename ) ;
     return new Condition1 ( newE0 , newE1 ) ;
   }
@@ -168,8 +218,8 @@ public final class Condition1 extends Expression
   @ Override
   public Condition1 substitute ( TypeSubstitution substitution )
   {
-    Expression newE0 = this.e0.substitute ( substitution ) ;
-    Expression newE1 = this.e1.substitute ( substitution ) ;
+    Expression newE0 = this.expressions [ 0 ].substitute ( substitution ) ;
+    Expression newE1 = this.expressions [ 1 ].substitute ( substitution ) ;
     return new Condition1 ( newE0 , newE1 ) ;
   }
 
@@ -189,14 +239,14 @@ public final class Condition1 extends Expression
           PRIO_CONDITION ) ;
       this.prettyStringBuilder.addKeyword ( "if" ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
-      this.prettyStringBuilder.addBuilder ( this.e0
+      this.prettyStringBuilder.addBuilder ( this.expressions [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
           PRIO_CONDITION_E0 ) ;
       this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addBreak ( ) ;
       this.prettyStringBuilder.addKeyword ( "then" ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
-      this.prettyStringBuilder.addBuilder ( this.e1
+      this.prettyStringBuilder.addBuilder ( this.expressions [ 1 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
           PRIO_CONDITION_E1 ) ;
     }

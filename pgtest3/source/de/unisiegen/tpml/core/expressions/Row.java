@@ -3,7 +3,7 @@ package de.unisiegen.tpml.core.expressions ;
 
 import java.util.ArrayList ;
 import java.util.Arrays ;
-import de.unisiegen.tpml.core.identifiers.BoundedIdentifiers ;
+import de.unisiegen.tpml.core.interfaces.ChildrenExpressions ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
@@ -16,8 +16,14 @@ import de.unisiegen.tpml.core.util.BoundRenaming ;
  * @author Christian Fehler
  * @version $Rev: 1066 $
  */
-public final class Row extends Expression implements BoundedIdentifiers
+public final class Row extends Expression implements ChildrenExpressions
 {
+  /**
+   * Indeces of the child {@link Expression}s.
+   */
+  private int [ ] indicesE ;
+
+
   /**
    * TODO
    * 
@@ -25,15 +31,6 @@ public final class Row extends Expression implements BoundedIdentifiers
    * @see #getExpressions(int)
    */
   private Expression [ ] expressions ;
-
-
-  /**
-   * The bound identifiers.
-   * 
-   * @see #getIdentifiers()
-   * @see #getIdentifiers(int)
-   */
-  private Identifier [ ] identifiers ;
 
 
   /**
@@ -48,28 +45,19 @@ public final class Row extends Expression implements BoundedIdentifiers
       throw new NullPointerException ( "Expressions is null" ) ; //$NON-NLS-1$
     }
     this.expressions = pExpressions ;
-    this.identifiers = new Identifier [ this.expressions.length ] ;
+    this.indicesE = new int [ this.expressions.length ] ;
     for ( int i = 0 ; i < this.expressions.length ; i ++ )
     {
+      this.indicesE [ i ] = i + 1 ;
+      if ( this.expressions [ i ].getParent ( ) != null )
+      {
+        this.expressions [ i ] = this.expressions [ i ].clone ( ) ;
+      }
+      this.expressions [ i ].setParent ( this ) ;
       if ( this.expressions [ i ] instanceof Attribute )
       {
         Attribute attribute = ( Attribute ) this.expressions [ i ] ;
-        this.identifiers [ i ] = attribute.getId ( ) ;
-      }
-      else if ( this.expressions [ i ] instanceof Method )
-      {
-        Method method = ( Method ) this.expressions [ i ] ;
-        this.identifiers [ i ] = method.getId ( ) ;
-      }
-      else if ( this.expressions [ i ] instanceof CurriedMethod )
-      {
-        CurriedMethod curriedMethod = ( CurriedMethod ) this.expressions [ i ] ;
-        this.identifiers [ i ] = curriedMethod.getIdentifiers ( 0 ) ;
-      }
-      else
-      {
-        throw new IllegalArgumentException (
-            "A child Expression is not an instance of Attribute, Method or CurriedMethod" ) ; //$NON-NLS-1$
+        attribute.setParent ( this ) ;
       }
     }
   }
@@ -136,69 +124,43 @@ public final class Row extends Expression implements BoundedIdentifiers
 
 
   /**
-   * Returns a list of lists of in this {@link Expression} bounded
-   * {@link Identifier}s.
+   * TODO
    * 
-   * @return A list of lists of in this {@link Expression} bounded
-   *         {@link Identifier}s.
+   * @param pAttribute TODO
+   * @return TODO
    */
-  public ArrayList < ArrayList < Identifier >> getBoundedIdentifiers ( )
+  public ArrayList < Identifier > getBoundedIdentifiers ( Attribute pAttribute )
   {
-    if ( this.boundedIdentifiers == null )
+    ArrayList < Identifier > boundedId = new ArrayList < Identifier > ( ) ;
+    for ( int i = 0 ; i < this.expressions.length ; i ++ )
     {
-      this.boundedIdentifiers = new ArrayList < ArrayList < Identifier >> ( ) ;
-      for ( int i = 0 ; i < this.expressions.length ; i ++ )
+      if ( pAttribute == this.expressions [ i ] )
       {
-        if ( this.expressions [ i ] instanceof Attribute )
+        Attribute attribute = ( Attribute ) this.expressions [ i ] ;
+        for ( int j = i + 1 ; j < this.expressions.length ; j ++ )
         {
-          ArrayList < Identifier > boundedId = new ArrayList < Identifier > ( ) ;
-          Attribute attribute = ( Attribute ) this.expressions [ i ] ;
-          for ( int j = i + 1 ; j < this.expressions.length ; j ++ )
+          Expression child = this.expressions [ j ] ;
+          ArrayList < Identifier > boundedE = child.free ( ) ;
+          for ( Identifier freeId : boundedE )
           {
-            Expression child = this.expressions [ j ] ;
-            ArrayList < Identifier > boundedE = child.free ( ) ;
-            for ( Identifier freeId : boundedE )
+            if ( attribute.getId ( ).equals ( freeId ) )
             {
-              if ( attribute.getId ( ).equals ( freeId ) )
-              {
-                freeId.setBoundedToExpression ( attribute ) ;
-                freeId.setBoundedToIdentifier ( attribute.getId ( ) ) ;
-                boundedId.add ( freeId ) ;
-              }
-            }
-            if ( ( child instanceof Attribute )
-                && ( ( ( Attribute ) child ).getId ( ).equals ( attribute
-                    .getId ( ) ) ) )
-            {
-              break ;
+              freeId.setBoundedToExpression ( attribute ) ;
+              freeId.setBoundedToIdentifier ( attribute.getId ( ) ) ;
+              boundedId.add ( freeId ) ;
             }
           }
-          this.boundedIdentifiers.add ( boundedId ) ;
+          if ( ( child instanceof Attribute )
+              && ( ( ( Attribute ) child ).getId ( ).equals ( attribute
+                  .getId ( ) ) ) )
+          {
+            return boundedId ;
+          }
         }
-        else
-        {
-          this.boundedIdentifiers.add ( null ) ;
-        }
+        return boundedId ;
       }
     }
-    return this.boundedIdentifiers ;
-  }
-
-
-  /**
-   * Returns the <code>pIndex</code>th list of in this {@link Expression}
-   * bounded {@link Identifier}s.
-   * 
-   * @param pIndex The index of the list of {@link Identifier}s to return.
-   * @return A list of in this {@link Expression} bounded {@link Identifier}s.
-   */
-  public ArrayList < Identifier > getBoundedIdentifiers ( int pIndex )
-  {
-    if ( this.boundedIdentifiers == null )
-    {
-      return getBoundedIdentifiers ( ).get ( pIndex ) ;
-    }
-    return this.boundedIdentifiers.get ( pIndex ) ;
+    return boundedId ;
   }
 
 
@@ -240,29 +202,25 @@ public final class Row extends Expression implements BoundedIdentifiers
 
 
   /**
-   * Returns the identifiers for the tuple items.
+   * TODO
    * 
-   * @return the identifiers for the tuple items.
-   * @see #getIdentifiers(int)
+   * @return TODO
    */
-  public Identifier [ ] getIdentifiers ( )
+  public int [ ] getExpressionsIndex ( )
   {
-    return this.identifiers ;
+    return this.indicesE ;
   }
 
 
   /**
-   * Returns the <code>n</code>th identifier.
+   * TODO
    * 
-   * @param pIndex the index of the identifier to return.
-   * @return the <code>n</code>th identifier.
-   * @throws ArrayIndexOutOfBoundsException if <code>n</code> is out of
-   *           bounds.
-   * @see #getIdentifiers()
+   * @return TODO
    */
-  public Identifier getIdentifiers ( int pIndex )
+  @ Override
+  public String getPrefix ( )
   {
-    return this.identifiers [ pIndex ] ;
+    return this.isValue ( ) ? PREFIX_ROW_VALUE : PREFIX_ROW ;
   }
 
 

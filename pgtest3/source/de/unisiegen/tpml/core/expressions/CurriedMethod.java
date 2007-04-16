@@ -3,7 +3,9 @@ package de.unisiegen.tpml.core.expressions ;
 
 import java.util.ArrayList ;
 import java.util.Arrays ;
-import de.unisiegen.tpml.core.identifiers.BoundedIdentifiers ;
+import de.unisiegen.tpml.core.interfaces.BoundedIdentifiers ;
+import de.unisiegen.tpml.core.interfaces.ChildrenExpressions ;
+import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
@@ -18,8 +20,15 @@ import de.unisiegen.tpml.core.util.BoundRenaming ;
  * @version $Rev: 1067 $
  */
 public final class CurriedMethod extends Expression implements
-    BoundedIdentifiers
+    BoundedIdentifiers , DefaultTypes , ChildrenExpressions
 {
+  /**
+   * Indeces of the child {@link Expression}s.
+   */
+  private static final int [ ] INDICES_E = new int [ ]
+  { - 1 } ;
+
+
   /**
    * TODO
    * 
@@ -39,11 +48,21 @@ public final class CurriedMethod extends Expression implements
 
 
   /**
-   * TODO
-   * 
-   * @see #getE()
+   * The expression.
    */
-  private Expression e ;
+  private Expression [ ] expressions ;
+
+
+  /**
+   * Indeces of the child {@link Identifier}s.
+   */
+  private int [ ] indicesId ;
+
+
+  /**
+   * Indeces of the child {@link Identifier}s.
+   */
+  private int [ ] indicesType ;
 
 
   /**
@@ -78,9 +97,49 @@ public final class CurriedMethod extends Expression implements
       throw new IllegalArgumentException (
           "The arity of Identifiers and Types must match" ) ; //$NON-NLS-1$
     }
+    // Identifier
     this.identifiers = pIdentifiers ;
+    this.indicesId = new int [ this.identifiers.length ] ;
+    this.indicesId [ 0 ] = - 1 ;
+    for ( int i = 1 ; i < this.identifiers.length ; i ++ )
+    {
+      this.indicesId [ i ] = i ;
+    }
+    for ( int i = 0 ; i < this.identifiers.length ; i ++ )
+    {
+      if ( this.identifiers [ i ].getParent ( ) != null )
+      {
+        this.identifiers [ i ] = this.identifiers [ i ].clone ( ) ;
+      }
+      this.identifiers [ i ].setParent ( this ) ;
+    }
+    // Type
     this.types = pTypes ;
-    this.e = pExpression ;
+    this.indicesType = new int [ this.types.length ] ;
+    this.indicesType [ 0 ] = - 1 ;
+    for ( int i = 1 ; i < this.identifiers.length ; i ++ )
+    {
+      this.indicesType [ i ] = i ;
+    }
+    for ( int i = 0 ; i < this.types.length ; i ++ )
+    {
+      if ( this.types [ i ] != null )
+      {
+        if ( this.types [ i ].getParent ( ) != null )
+        {
+          this.types [ i ] = this.types [ i ].clone ( ) ;
+        }
+        this.types [ i ].setParent ( this ) ;
+      }
+    }
+    // Expression
+    this.expressions = new Expression [ 1 ] ;
+    this.expressions [ 0 ] = pExpression ;
+    if ( this.expressions [ 0 ].getParent ( ) != null )
+    {
+      this.expressions [ 0 ] = this.expressions [ 0 ].clone ( ) ;
+    }
+    this.expressions [ 0 ].setParent ( this ) ;
   }
 
 
@@ -101,7 +160,8 @@ public final class CurriedMethod extends Expression implements
       newTypes [ i ] = ( this.types [ i ] == null ) ? null : this.types [ i ]
           .clone ( ) ;
     }
-    return new CurriedMethod ( newIdentifiers , newTypes , this.e.clone ( ) ) ;
+    return new CurriedMethod ( newIdentifiers , newTypes ,
+        this.expressions [ 0 ].clone ( ) ) ;
   }
 
 
@@ -115,8 +175,8 @@ public final class CurriedMethod extends Expression implements
     {
       CurriedMethod other = ( CurriedMethod ) pObject ;
       return ( ( Arrays.equals ( this.identifiers , other.identifiers ) )
-          && ( Arrays.equals ( this.types , other.types ) ) && ( this.e
-          .equals ( other.e ) ) ) ;
+          && ( Arrays.equals ( this.types , other.types ) ) && ( this.expressions [ 0 ]
+          .equals ( other.expressions [ 0 ] ) ) ) ;
     }
     return false ;
   }
@@ -131,7 +191,7 @@ public final class CurriedMethod extends Expression implements
     if ( this.free == null )
     {
       this.free = new ArrayList < Identifier > ( ) ;
-      this.free.addAll ( this.e.free ( ) ) ;
+      this.free.addAll ( this.expressions [ 0 ].free ( ) ) ;
       for ( int i = 1 ; i < this.identifiers.length ; i ++ )
       {
         while ( this.free.remove ( this.identifiers [ i ] ) )
@@ -156,7 +216,7 @@ public final class CurriedMethod extends Expression implements
     if ( this.boundedIdentifiers == null )
     {
       this.boundedIdentifiers = new ArrayList < ArrayList < Identifier >> ( ) ;
-      ArrayList < Identifier > boundedE = this.e.free ( ) ;
+      ArrayList < Identifier > boundedE = this.expressions [ 0 ].free ( ) ;
       this.boundedIdentifiers.add ( null ) ;
       for ( int i = 1 ; i < this.identifiers.length ; i ++ )
       {
@@ -224,11 +284,48 @@ public final class CurriedMethod extends Expression implements
    * TODO
    * 
    * @return TODO
-   * @see #e
    */
   public Expression getE ( )
   {
-    return this.e ;
+    return this.expressions [ 0 ] ;
+  }
+
+
+  /**
+   * Returns the sub expressions.
+   * 
+   * @return the sub expressions.
+   * @see #getExpressions(int)
+   */
+  public Expression [ ] getExpressions ( )
+  {
+    return this.expressions ;
+  }
+
+
+  /**
+   * Returns the <code>n</code>th sub expression.
+   * 
+   * @param pIndex the index of the expression to return.
+   * @return the <code>n</code>th sub expression.
+   * @throws ArrayIndexOutOfBoundsException if <code>n</code> is out of
+   *           bounds.
+   * @see #getExpressions()
+   */
+  public Expression getExpressions ( int pIndex )
+  {
+    return this.expressions [ pIndex ] ;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @return TODO
+   */
+  public int [ ] getExpressionsIndex ( )
+  {
+    return INDICES_E ;
   }
 
 
@@ -263,6 +360,34 @@ public final class CurriedMethod extends Expression implements
    * TODO
    * 
    * @return TODO
+   */
+  public int [ ] getIdentifiersIndex ( )
+  {
+    return this.indicesId ;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @return TODO
+   */
+  public String [ ] getIdentifiersPrefix ( )
+  {
+    String [ ] result = new String [ this.identifiers.length ] ;
+    result [ 0 ] = PREFIX_M ;
+    for ( int i = 1 ; i < this.identifiers.length ; i ++ )
+    {
+      result [ i ] = PREFIX_ID ;
+    }
+    return result ;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @return TODO
    * @see #types
    * @see #getTypes(int)
    */
@@ -287,12 +412,39 @@ public final class CurriedMethod extends Expression implements
 
 
   /**
+   * TODO
+   * 
+   * @return TODO
+   */
+  public int [ ] getTypesIndex ( )
+  {
+    return this.indicesType ;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @return TODO
+   */
+  public String [ ] getTypesPrefix ( )
+  {
+    String [ ] result = new String [ this.identifiers.length ] ;
+    for ( int i = 0 ; i < this.identifiers.length ; i ++ )
+    {
+      result [ i ] = PREFIX_TAU ;
+    }
+    return result ;
+  }
+
+
+  /**
    * {@inheritDoc}
    */
   @ Override
   public int hashCode ( )
   {
-    return this.identifiers.hashCode ( ) + this.e.hashCode ( )
+    return this.identifiers.hashCode ( ) + this.expressions [ 0 ].hashCode ( )
         + this.types.hashCode ( ) ;
   }
 
@@ -303,7 +455,7 @@ public final class CurriedMethod extends Expression implements
   @ Override
   public boolean isValue ( )
   {
-    return this.e.isValue ( ) ;
+    return this.expressions [ 0 ].isValue ( ) ;
   }
 
 
@@ -336,7 +488,7 @@ public final class CurriedMethod extends Expression implements
         return this.clone ( ) ;
       }
     }
-    Expression newE = this.e ;
+    Expression newE = this.expressions [ 0 ] ;
     Identifier [ ] newIdentifiers = new Identifier [ this.identifiers.length ] ;
     for ( int i = 0 ; i < newIdentifiers.length ; i ++ )
     {
@@ -416,8 +568,8 @@ public final class CurriedMethod extends Expression implements
       newTypes [ i ] = ( this.types [ i ] == null ) ? null : this.types [ i ]
           .substitute ( pTypeSubstitution ) ;
     }
-    return new CurriedMethod ( newIdentifiers , newTypes , this.e
-        .substitute ( pTypeSubstitution ) ) ;
+    return new CurriedMethod ( newIdentifiers , newTypes ,
+        this.expressions [ 0 ].substitute ( pTypeSubstitution ) ) ;
   }
 
 
@@ -462,7 +614,7 @@ public final class CurriedMethod extends Expression implements
             PRIO_LET_TAU ) ;
       }
       this.prettyStringBuilder.addText ( " = " ) ; //$NON-NLS-1$
-      this.prettyStringBuilder.addBuilder ( this.e
+      this.prettyStringBuilder.addBuilder ( this.expressions [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
           PRIO_CURRIED_METHOD_E ) ;
       this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$

@@ -324,12 +324,6 @@ interface PrettyPrintPriorities
 
 
   /**
-   * The pretty print priority for the first expression of {@link Duplication}s.
-   */
-  public static final int PRIO_DUPLICATION_FIRST_E = 6 ;
-
-
-  /**
    * The pretty print priority for {@link Duplication}s.
    */
   public static final int PRIO_DUPLICATION = 5 ;

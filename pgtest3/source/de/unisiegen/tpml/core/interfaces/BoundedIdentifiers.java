@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.core.identifiers ;
+package de.unisiegen.tpml.core.interfaces ;
 
 
 import java.util.ArrayList ;
@@ -13,7 +13,7 @@ import de.unisiegen.tpml.core.expressions.Identifier ;
  * @author Christian Fehler
  * @version $Rev:1350 $
  */
-public interface BoundedIdentifiers
+public interface BoundedIdentifiers extends DefaultIdentifiers
 {
   /**
    * Returns a list of lists of in this {@link Expression} bounded
@@ -33,23 +33,4 @@ public interface BoundedIdentifiers
    * @return A list of in this {@link Expression} bounded {@link Identifier}s.
    */
   public ArrayList < Identifier > getBoundedIdentifiers ( int pIndex ) ;
-
-
-  /**
-   * Returns the {@link Identifier}s of this {@link Expression}.
-   * 
-   * @return The {@link Identifier}s of this {@link Expression}.
-   */
-  public Identifier [ ] getIdentifiers ( ) ;
-
-
-  /**
-   * Returns the <code>pIndex</code>th {@link Identifier} of this
-   * {@link Expression}.
-   * 
-   * @param pIndex The index of the {@link Identifier} to return.
-   * @return The <code>pIndex</code>th {@link Identifier} of this
-   *         {@link Expression}.
-   */
-  public Identifier getIdentifiers ( int pIndex ) ;
 }

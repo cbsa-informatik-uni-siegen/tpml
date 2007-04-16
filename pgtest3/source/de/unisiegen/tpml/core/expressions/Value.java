@@ -29,6 +29,18 @@ public abstract class Value extends Expression
 
 
   /**
+   * TODO
+   * 
+   * @return TODO
+   */
+  @ Override
+  public String getPrefix ( )
+  {
+    return PREFIX_VALUE ;
+  }
+
+
+  /**
    * {@inheritDoc} The implementation in the <code>Value</code> always returns
    * <code>true</code> and cannot be overwritten by derived classes.
    * 

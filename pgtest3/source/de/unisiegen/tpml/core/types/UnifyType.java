@@ -1,15 +1,14 @@
-package de.unisiegen.tpml.core.types;
+package de.unisiegen.tpml.core.types ;
+
 
 /**
- * 
  * type for the type equation in the unification algorithm
- *
+ * 
  * @author Benjamin Mies
- *
  */
-public class UnifyType extends PrimitiveType {
-
-	 /**
+public class UnifyType extends PrimitiveType
+{
+  /**
    * Allocates a new <code>UnitType</code> instance.
    */
   public UnifyType ( )
@@ -24,9 +23,9 @@ public class UnifyType extends PrimitiveType {
    * @see Type#clone()
    */
   @ Override
-  public UnitType clone ( )
+  public UnifyType clone ( )
   {
-    return new UnitType ( ) ;
+    return new UnifyType ( ) ;
   }
 
 
@@ -36,6 +35,6 @@ public class UnifyType extends PrimitiveType {
   @ Override
   public String getCaption ( )
   {
-    return " " ; //$NON-NLS-1$
+    return "Unify-Type" ; //$NON-NLS-1$
   }
 }

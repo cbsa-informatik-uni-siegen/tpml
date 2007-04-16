@@ -1,23 +1,33 @@
-package de.unisiegen.tpml.core.expressions;
+package de.unisiegen.tpml.core.expressions ;
+
 
 /**
- * Expression for type equations in the unification algorithm.
- * Every type formula has an expression, but type equation typical don't have one.
- *
+ * Expression for type equations in the unification algorithm. Every type
+ * formula has an expression, but type equation typical don't have one.
+ * 
  * @author Benjamin Mies
- *
  */
-public class Unify extends Constant {
+public class Unify extends Constant
+{
+  /**
+   * TODO
+   */
+  public Unify ( )
+  {
+    super ( "unify" ) ; //$NON-NLS-1$
+  }
 
-	/**
-	 * TODO
-	 *
-	 * @param pText
-	 */
-	public Unify() {
-		super("unify");
-	}
 
+  /**
+   * (@inheritDoc)
+   * 
+   * @see Constant#clone()
+   */
+  @ Override
+  public Unify clone ( )
+  {
+    return new Unify ( ) ;
+  }
 
 
   /**
@@ -26,21 +36,6 @@ public class Unify extends Constant {
   @ Override
   public String getCaption ( )
   {
-    return "unify" ; //$NON-NLS-1$
+    return "Unify" ; //$NON-NLS-1$
   }
-
-  //
-  // Primitives
-  //
-  
-	/**
-	 *(@inheritDoc)
-	 * @see de.unisiegen.tpml.core.expressions.Constant#clone()
-	 */
-	@Override
-	public Constant clone() {
-		
-		return new Unify();
-	}
-
 }

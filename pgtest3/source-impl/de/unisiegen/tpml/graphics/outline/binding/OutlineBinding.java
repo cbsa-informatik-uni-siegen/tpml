@@ -31,7 +31,14 @@ public final class OutlineBinding
    */
   public OutlineBinding ( ArrayList < Identifier > pList )
   {
-    this.list = pList ;
+    if ( pList == null )
+    {
+      this.list = new ArrayList < Identifier > ( ) ;
+    }
+    else
+    {
+      this.list = pList ;
+    }
   }
 
 

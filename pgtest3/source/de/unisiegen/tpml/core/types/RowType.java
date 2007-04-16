@@ -4,6 +4,10 @@ package de.unisiegen.tpml.core.types ;
 import java.util.Arrays ;
 import java.util.TreeSet ;
 import de.unisiegen.tpml.core.expressions.Identifier ;
+import de.unisiegen.tpml.core.interfaces.DefaultIdentifiers ;
+import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
+import de.unisiegen.tpml.core.interfaces.SortedChildren ;
+import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
@@ -14,7 +18,8 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
  * 
  * @author Christian Fehler
  */
-public final class RowType extends MonoType
+public final class RowType extends MonoType implements DefaultIdentifiers ,
+    DefaultTypes , SortedChildren
 {
   /**
    * TODO
@@ -26,6 +31,18 @@ public final class RowType extends MonoType
    * TODO
    */
   private MonoType [ ] types ;
+
+
+  /**
+   * Indeces of the child {@link Identifier}s.
+   */
+  private int [ ] indicesId ;
+
+
+  /**
+   * Indeces of the child {@link Type}s.
+   */
+  private int [ ] indicesType ;
 
 
   /**
@@ -49,8 +66,30 @@ public final class RowType extends MonoType
       throw new IllegalArgumentException (
           "The arity of method names and types must match" ) ; //$NON-NLS-1$
     }
+    // Identifier
     this.identifiers = pIdentifiers ;
+    this.indicesId = new int [ this.identifiers.length ] ;
+    for ( int i = 0 ; i < this.identifiers.length ; i ++ )
+    {
+      if ( this.identifiers [ i ].getParent ( ) != null )
+      {
+        this.identifiers [ i ] = this.identifiers [ i ].clone ( ) ;
+      }
+      this.identifiers [ i ].setParent ( this ) ;
+      this.indicesId [ i ] = i + 1 ;
+    }
+    // Type
     this.types = pTypes ;
+    this.indicesType = new int [ this.types.length ] ;
+    for ( int i = 0 ; i < this.types.length ; i ++ )
+    {
+      if ( this.types [ i ].getParent ( ) != null )
+      {
+        this.types [ i ] = this.types [ i ].clone ( ) ;
+      }
+      this.types [ i ].setParent ( this ) ;
+      this.indicesType [ i ] = i + 1 ;
+    }
   }
 
 
@@ -159,6 +198,58 @@ public final class RowType extends MonoType
    * 
    * @return TODO
    */
+  public int [ ] getIdentifiersIndex ( )
+  {
+    return this.indicesId ;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @return TODO
+   */
+  public String [ ] getIdentifiersPrefix ( )
+  {
+    String [ ] result = new String [ this.identifiers.length ] ;
+    for ( int i = 0 ; i < this.identifiers.length ; i ++ )
+    {
+      result [ i ] = PREFIX_ID ;
+    }
+    return result ;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @return TODO
+   * @see SortedChildren#getSortedChildren()
+   */
+  public PrettyPrintable [ ] getSortedChildren ( )
+  {
+    PrettyPrintable [ ] result = new PrettyPrintable [ this.identifiers.length
+        + this.types.length ] ;
+    for ( int i = 0 ; i < this.identifiers.length + this.types.length ; i ++ )
+    {
+      if ( i % 2 == 0 )
+      {
+        result [ i ] = this.identifiers [ i / 2 ] ;
+      }
+      else
+      {
+        result [ i ] = this.types [ i / 2 ] ;
+      }
+    }
+    return result ;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @return TODO
+   */
   public MonoType [ ] getTypes ( )
   {
     return this.types ;
@@ -174,6 +265,33 @@ public final class RowType extends MonoType
   public MonoType getTypes ( int pIndex )
   {
     return this.types [ pIndex ] ;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @return TODO
+   */
+  public int [ ] getTypesIndex ( )
+  {
+    return this.indicesType ;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @return TODO
+   */
+  public String [ ] getTypesPrefix ( )
+  {
+    String [ ] result = new String [ this.types.length ] ;
+    for ( int i = 0 ; i < this.types.length ; i ++ )
+    {
+      result [ i ] = PREFIX_TAU ;
+    }
+    return result ;
   }
 
 

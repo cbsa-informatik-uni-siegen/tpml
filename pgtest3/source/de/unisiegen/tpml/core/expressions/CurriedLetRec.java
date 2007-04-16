@@ -2,7 +2,9 @@ package de.unisiegen.tpml.core.expressions ;
 
 
 import java.util.ArrayList ;
-import de.unisiegen.tpml.core.identifiers.BoundedIdentifiers ;
+import de.unisiegen.tpml.core.interfaces.BoundedIdentifiers ;
+import de.unisiegen.tpml.core.interfaces.ChildrenExpressions ;
+import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
@@ -21,7 +23,7 @@ import de.unisiegen.tpml.core.util.BoundRenaming ;
  * @see CurriedLet
  */
 public final class CurriedLetRec extends CurriedLet implements
-    BoundedIdentifiers
+    BoundedIdentifiers , DefaultTypes , ChildrenExpressions
 {
   /**
    * Allocates a new <code>CurriedLetRec</code> instance.
@@ -69,8 +71,8 @@ public final class CurriedLetRec extends CurriedLet implements
       newTypes [ i ] = ( this.types [ i ] == null ) ? null : this.types [ i ]
           .clone ( ) ;
     }
-    return new CurriedLetRec ( newIdentifiers , newTypes , this.e1.clone ( ) ,
-        this.e2.clone ( ) ) ;
+    return new CurriedLetRec ( newIdentifiers , newTypes ,
+        this.expressions [ 0 ].clone ( ) , this.expressions [ 1 ].clone ( ) ) ;
   }
 
 
@@ -87,7 +89,7 @@ public final class CurriedLetRec extends CurriedLet implements
       this.free = new ArrayList < Identifier > ( ) ;
       ArrayList < Identifier > freeE1 = new ArrayList < Identifier > ( ) ;
       ArrayList < Identifier > freeE2 = new ArrayList < Identifier > ( ) ;
-      freeE1.addAll ( this.e1.free ( ) ) ;
+      freeE1.addAll ( this.expressions [ 0 ].free ( ) ) ;
       for ( int i = 0 ; i < this.identifiers.length ; i ++ )
       {
         while ( freeE1.remove ( this.identifiers [ i ] ) )
@@ -95,7 +97,7 @@ public final class CurriedLetRec extends CurriedLet implements
           // Remove all Identifiers with the same name
         }
       }
-      freeE2.addAll ( this.e2.free ( ) ) ;
+      freeE2.addAll ( this.expressions [ 1 ].free ( ) ) ;
       while ( freeE2.remove ( this.identifiers [ 0 ] ) )
       {
         // Remove all Identifiers with the same name
@@ -120,8 +122,8 @@ public final class CurriedLetRec extends CurriedLet implements
     if ( this.boundedIdentifiers == null )
     {
       this.boundedIdentifiers = new ArrayList < ArrayList < Identifier >> ( ) ;
-      ArrayList < Identifier > boundedE1 = this.e1.free ( ) ;
-      ArrayList < Identifier > boundedE2 = this.e2.free ( ) ;
+      ArrayList < Identifier > boundedE1 = this.expressions [ 0 ].free ( ) ;
+      ArrayList < Identifier > boundedE2 = this.expressions [ 1 ].free ( ) ;
       for ( int i = 0 ; i < this.identifiers.length ; i ++ )
       {
         if ( i == 0 )
@@ -257,8 +259,8 @@ public final class CurriedLetRec extends CurriedLet implements
     {
       newIdentifiers [ i ] = this.identifiers [ i ].clone ( ) ;
     }
-    Expression newE1 = this.e1.clone ( ) ;
-    Expression newE2 = this.e2 ;
+    Expression newE1 = this.expressions [ 0 ].clone ( ) ;
+    Expression newE2 = this.expressions [ 1 ] ;
     boolean sameIdAs0 = false ;
     boolean substInE1 = true ;
     for ( int i = 1 ; i < this.identifiers.length ; i ++ )
@@ -282,7 +284,7 @@ public final class CurriedLetRec extends CurriedLet implements
       for ( int i = 1 ; i < newIdentifiers.length ; i ++ )
       {
         BoundRenaming boundRenaming = new BoundRenaming ( ) ;
-        boundRenaming.add ( this.e1.free ( ) ) ;
+        boundRenaming.add ( this.expressions [ 0 ].free ( ) ) ;
         boundRenaming.remove ( newIdentifiers [ i ] ) ;
         boundRenaming.add ( pExpression.free ( ) ) ;
         boundRenaming.add ( pId ) ;
@@ -384,9 +386,9 @@ public final class CurriedLetRec extends CurriedLet implements
       newTypes [ i ] = ( this.types [ i ] == null ) ? null : this.types [ i ]
           .substitute ( pTypeSubstitution ) ;
     }
-    return new CurriedLetRec ( newIdentifiers , newTypes , this.e1
-        .substitute ( pTypeSubstitution ) , this.e2
-        .substitute ( pTypeSubstitution ) ) ;
+    return new CurriedLetRec ( newIdentifiers , newTypes ,
+        this.expressions [ 0 ].substitute ( pTypeSubstitution ) ,
+        this.expressions [ 1 ].substitute ( pTypeSubstitution ) ) ;
   }
 
 
@@ -436,13 +438,13 @@ public final class CurriedLetRec extends CurriedLet implements
       }
       this.prettyStringBuilder.addText ( " = " ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addBreak ( ) ;
-      this.prettyStringBuilder.addBuilder ( this.e1
+      this.prettyStringBuilder.addBuilder ( this.expressions [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_LET_E1 ) ;
       this.prettyStringBuilder.addText ( " " ) ;//$NON-NLS-1$
       this.prettyStringBuilder.addBreak ( ) ;
       this.prettyStringBuilder.addKeyword ( "in" ) ;//$NON-NLS-1$
       this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
-      this.prettyStringBuilder.addBuilder ( this.e2
+      this.prettyStringBuilder.addBuilder ( this.expressions [ 1 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_LET_E2 ) ;
     }
     return this.prettyStringBuilder ;

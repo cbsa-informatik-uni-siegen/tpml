@@ -38,19 +38,7 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities
   /**
    * The <code>String</code> for an array of children.
    */
-  private static final String GET_TAU_N = "getTypes" ; //$NON-NLS-1$
-
-
-  /**
-   * The <code>String</code> for more than one child.
-   */
-  private static final String GET_TAU_X = "getTau[0-9]*" ; //$NON-NLS-1$
-
-
-  /**
-   * The <code>String</code> for more than one child.
-   */
-  private static final String GET_PHI_X = "getPhi[0-9]*" ; //$NON-NLS-1$
+  private static final String GET_TYPES = "getTypes" ; //$NON-NLS-1$
 
 
   /**
@@ -80,6 +68,12 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities
    * @see #toPrettyStringBuilder(PrettyStringBuilderFactory)
    */
   protected PrettyStringBuilder prettyStringBuilder = null ;
+
+
+  /**
+   * TODO
+   */
+  protected PrettyPrintable parent = null ;
 
 
   /**
@@ -113,18 +107,12 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities
         for ( PropertyDescriptor property : properties )
         {
           java.lang.reflect.Method method = property.getReadMethod ( ) ;
-          if ( ( method.getName ( ).matches ( GET_TAU_X ) )
-              || ( method.getName ( ).equals ( GET_TAU_N ) )
-              || ( method.getName ( ).matches ( GET_PHI_X ) ) )
+          if ( method.getName ( ).equals ( GET_TYPES ) )
           {
             Object value = property.getReadMethod ( ).invoke ( this ) ;
             if ( value instanceof Type [ ] )
             {
               this.children.addAll ( Arrays.asList ( ( Type [ ] ) value ) ) ;
-            }
-            else if ( value instanceof Type )
-            {
-              this.children.add ( ( Type ) value ) ;
             }
           }
         }
@@ -177,6 +165,29 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities
    * @return The caption of this {@link Type}.
    */
   public abstract String getCaption ( ) ;
+
+
+  /**
+   * Returns the parent.
+   * 
+   * @return The parent.
+   * @see #parent
+   */
+  public PrettyPrintable getParent ( )
+  {
+    return this.parent ;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @param pParent The parent to set
+   */
+  public void setParent ( PrettyPrintable pParent )
+  {
+    this.parent = pParent ;
+  }
 
 
   /**

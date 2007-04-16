@@ -6,14 +6,16 @@ package de.unisiegen.tpml.core.expressions ;
  * 
  * @author Christian Fehler
  */
-public class Self extends Identifier
+public class AttributeName extends Identifier
 {
   /**
    * TODO
+   * 
+   * @param pName TODO
    */
-  public Self ( )
+  public AttributeName ( String pName )
   {
-    super ( "self" ) ; //$NON-NLS-1$
+    super ( pName ) ;
   }
 
 
@@ -23,6 +25,6 @@ public class Self extends Identifier
   @ Override
   public String getCaption ( )
   {
-    return "Self" ; //$NON-NLS-1$
+    return "Attribute-Name" ; //$NON-NLS-1$
   }
 }

@@ -2,6 +2,7 @@ package de.unisiegen.tpml.core.expressions ;
 
 
 import java.util.Arrays ;
+import de.unisiegen.tpml.core.interfaces.ChildrenExpressions ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 
@@ -14,7 +15,7 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
  * @version $Rev:1053 $
  * @see Expression
  */
-public final class Tuple extends Expression
+public final class Tuple extends Expression implements ChildrenExpressions
 {
   /**
    * The sub expressions.
@@ -23,6 +24,12 @@ public final class Tuple extends Expression
    * @see #getExpressions(int)
    */
   private Expression [ ] expressions ;
+
+
+  /**
+   * Indeces of the child {@link Expression}s.
+   */
+  private int [ ] indicesE ;
 
 
   /**
@@ -45,6 +52,16 @@ public final class Tuple extends Expression
       throw new IllegalArgumentException ( "expressions is empty" ) ; //$NON-NLS-1$
     }
     this.expressions = pExpressions ;
+    this.indicesE = new int [ this.expressions.length ] ;
+    for ( int i = 0 ; i < this.expressions.length ; i ++ )
+    {
+      this.indicesE [ i ] = i + 1 ;
+      if ( this.expressions [ i ].getParent ( ) != null )
+      {
+        this.expressions [ i ] = this.expressions [ i ].clone ( ) ;
+      }
+      this.expressions [ i ].setParent ( this ) ;
+    }
   }
 
 
@@ -116,6 +133,17 @@ public final class Tuple extends Expression
   public Expression getExpressions ( int pIndex )
   {
     return this.expressions [ pIndex ] ;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @return TODO
+   */
+  public int [ ] getExpressionsIndex ( )
+  {
+    return this.indicesE ;
   }
 
 

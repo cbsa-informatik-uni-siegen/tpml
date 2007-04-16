@@ -330,12 +330,12 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
    * @param pDuplication TODO
    * @return TODO
    */
-  public Expression evaluateDuplication ( SmallStepProofContext pContext ,
+/*  public Expression evaluateDuplication ( SmallStepProofContext pContext ,
       Duplication pDuplication )
   {
-    /*
-     * Check if all children of the Duplication are values or not.
-     */
+    
+     // Check if all children of the Duplication are values or not.
+     
     boolean allChildrenAreValues = true ;
     for ( Expression expr : pDuplication.getExpressions ( ) )
     {
@@ -345,10 +345,10 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
         break ;
       }
     }
-    /*
-     * If not all children of the Duplication are values and the first
-     * Expression of the Duplication is a value, we have to perform DUPL-EVAL.
-     */
+    
+    //  If not all children of the Duplication are values and the first
+     // Expression of the Duplication is a value, we have to perform DUPL-EVAL.
+     
     if ( ( ! allChildrenAreValues ) && ( pDuplication.getE ( ).isValue ( ) ) )
     {
       pContext.addProofStep ( getRuleByName ( DUPL_EVAL ) , pDuplication ) ;
@@ -375,11 +375,11 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
         }
       }
     }
-    /*
-     * If all children of the Duplication are values, the first Expression of
-     * the Duplication is an ObjectExpr and this ObjectExpr is a value, we have
-     * to perform DUPL-EXEC.
-     */
+    
+    //  If all children of the Duplication are values, the first Expression of
+     // the Duplication is an ObjectExpr and this ObjectExpr is a value, we have
+     // to perform DUPL-EXEC.
+     
     if ( ( allChildrenAreValues )
         && ( pDuplication.getE ( ) instanceof ObjectExpr )
         && ( pDuplication.getE ( ).isValue ( ) ) )
@@ -391,10 +391,10 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
       {
         newRowE [ i ] = row.getExpressions ( i ).clone ( ) ;
       }
-      /*
-       * Search all Identifiers of the Duplication in the Row of the ObjectExpr
-       * and replace the Attribute, if the Identifiers are equal.
-       */
+      
+      //  Search all Identifiers of the Duplication in the Row of the ObjectExpr
+       // and replace the Attribute, if the Identifiers are equal.
+       
       boolean found ;
       for ( int i = 0 ; i < pDuplication.getIdentifiers ( ).length ; i ++ )
       {
@@ -414,10 +414,10 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
             }
           }
         }
-        /*
-         * If the Duplication contains an Identifier which is not found in the
-         * Row, the Expression gets stuck.
-         */
+        
+        //  If the Duplication contains an Identifier which is not found in the
+         // Row, the Expression gets stuck.
+         
         if ( ! found )
         {
           return pDuplication ;
@@ -429,7 +429,7 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
           new Row ( newRowE ) ) ;
     }
     return pDuplication ;
-  }
+  }*/
 
 
   /**

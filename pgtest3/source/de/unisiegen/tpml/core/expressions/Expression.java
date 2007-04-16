@@ -80,13 +80,43 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
   /**
    * The <code>String</code> for an array of children.
    */
-  private static final String GET_E_N = "getExpressions" ; //$NON-NLS-1$
+  private static final String GET_EXPRESSIONS = "getExpressions" ; //$NON-NLS-1$
 
 
   /**
-   * The <code>String</code> for more than one child.
+   * Prefix of the {@link Expression}.
    */
-  private static final String GET_E_X = "getE[0-9]*" ; //$NON-NLS-1$
+  protected static final String PREFIX_EXPRESSION = "e" ; //$NON-NLS-1$
+
+
+  /**
+   * Prefix of the {@link Expression} which is a value.
+   */
+  protected static final String PREFIX_VALUE = "v" ; //$NON-NLS-1$
+
+
+  /**
+   * Prefix of the {@link Row}.
+   */
+  protected static final String PREFIX_ROW = "r" ; //$NON-NLS-1$
+
+
+  /**
+   * Prefix of the {@link Row} which is a value.
+   */
+  protected static final String PREFIX_ROW_VALUE = "\u03C9" ; //$NON-NLS-1$
+
+
+  /**
+   * Prefix of the {@link Exn}.
+   */
+  protected static final String PREFIX_EXN = "ep" ; //$NON-NLS-1$
+
+
+  /**
+   * Prefix of the {@link BinaryOperator}.
+   */
+  protected static final String PREFIX_BINARYOPERATOR = "op" ; //$NON-NLS-1$
 
 
   /**
@@ -125,6 +155,12 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
 
 
   /**
+   * TODO
+   */
+  protected PrettyPrintable parent = null ;
+
+
+  /**
    * Returns an enumeration for the direct ancestor expressions, the direct
    * children, of this expression. The enumeration is generated using the bean
    * properties for every {@link Expression} derived class. For example,
@@ -150,18 +186,13 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
         {
           java.lang.reflect.Method method = property.getReadMethod ( ) ;
           if ( ( method != null )
-              && ( ( method.getName ( ).matches ( GET_E_X ) ) || ( method
-                  .getName ( ).equals ( GET_E_N ) ) ) )
+              && ( method.getName ( ).equals ( GET_EXPRESSIONS ) ) )
           {
             Object value = method.invoke ( this ) ;
             if ( value instanceof Expression [ ] )
             {
               this.children
                   .addAll ( Arrays.asList ( ( Expression [ ] ) value ) ) ;
-            }
-            else if ( value instanceof Expression )
-            {
-              this.children.add ( ( Expression ) value ) ;
             }
           }
         }
@@ -274,6 +305,29 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
 
 
   /**
+   * Returns the parent.
+   * 
+   * @return The parent.
+   * @see #parent
+   */
+  public PrettyPrintable getParent ( )
+  {
+    return this.parent ;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @return TODO
+   */
+  public String getPrefix ( )
+  {
+    return this.isValue ( ) ? PREFIX_VALUE : PREFIX_EXPRESSION ;
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see Object#hashCode()
@@ -328,6 +382,17 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
   public Enumeration < Expression > levelOrderEnumeration ( )
   {
     return new LevelOrderEnumeration ( this ) ;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @param pParent The parent to set
+   */
+  public void setParent ( PrettyPrintable pParent )
+  {
+    this.parent = pParent ;
   }
 
 

@@ -2,6 +2,7 @@ package de.unisiegen.tpml.core.types ;
 
 
 import java.util.TreeSet ;
+import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
@@ -20,22 +21,19 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
  * @see IntegerType
  * @see MonoType
  */
-public final class ArrowType extends MonoType
+public final class ArrowType extends MonoType implements DefaultTypes
 {
   /**
-   * The parameter type <code>tau1</code>.
-   * 
-   * @see #getTau1()
+   * Indeces of the child {@link Type}s.
    */
-  private MonoType tau1 ;
+  private static final int [ ] INDICES_TYPE = new int [ ]
+  { 1 , 2 } ;
 
 
   /**
-   * The result type <code>tau2</code>.
-   * 
-   * @see #getTau2()
+   * TODO
    */
-  private MonoType tau2 ;
+  private MonoType [ ] types ;
 
 
   /**
@@ -58,8 +56,19 @@ public final class ArrowType extends MonoType
     {
       throw new NullPointerException ( "Tau2 is null" ) ; //$NON-NLS-1$
     }
-    this.tau1 = pTau1 ;
-    this.tau2 = pTau2 ;
+    this.types = new MonoType [ 2 ] ;
+    this.types [ 0 ] = pTau1 ;
+    if ( this.types [ 0 ].getParent ( ) != null )
+    {
+      this.types [ 0 ] = this.types [ 0 ].clone ( ) ;
+    }
+    this.types [ 0 ].setParent ( this ) ;
+    this.types [ 1 ] = pTau2 ;
+    if ( this.types [ 1 ].getParent ( ) != null )
+    {
+      this.types [ 1 ] = this.types [ 1 ].clone ( ) ;
+    }
+    this.types [ 1 ].setParent ( this ) ;
   }
 
 
@@ -71,7 +80,8 @@ public final class ArrowType extends MonoType
   @ Override
   public ArrowType clone ( )
   {
-    return new ArrowType ( this.tau1.clone ( ) , this.tau2.clone ( ) ) ;
+    return new ArrowType ( this.types [ 0 ].clone ( ) , this.types [ 1 ]
+        .clone ( ) ) ;
   }
 
 
@@ -91,8 +101,8 @@ public final class ArrowType extends MonoType
     if ( pObject instanceof ArrowType )
     {
       ArrowType other = ( ArrowType ) pObject ;
-      return ( this.tau1.equals ( other.tau1 ) && this.tau2
-          .equals ( other.tau2 ) ) ;
+      return ( this.types [ 0 ].equals ( other.types [ 0 ] ) && this.types [ 1 ]
+          .equals ( other.types [ 1 ] ) ) ;
     }
     return false ;
   }
@@ -109,8 +119,8 @@ public final class ArrowType extends MonoType
     if ( this.free == null )
     {
       this.free = new TreeSet < TypeVariable > ( ) ;
-      this.free.addAll ( this.tau1.free ( ) ) ;
-      this.free.addAll ( this.tau2.free ( ) ) ;
+      this.free.addAll ( this.types [ 0 ].free ( ) ) ;
+      this.free.addAll ( this.types [ 1 ].free ( ) ) ;
     }
     return this.free ;
   }
@@ -134,7 +144,7 @@ public final class ArrowType extends MonoType
    */
   public MonoType getTau1 ( )
   {
-    return this.tau1 ;
+    return this.types [ 0 ] ;
   }
 
 
@@ -146,7 +156,55 @@ public final class ArrowType extends MonoType
    */
   public MonoType getTau2 ( )
   {
-    return this.tau2 ;
+    return this.types [ 1 ] ;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @return TODO
+   */
+  public MonoType [ ] getTypes ( )
+  {
+    return this.types ;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @param pIndex TODO
+   * @return TODO
+   */
+  public MonoType getTypes ( int pIndex )
+  {
+    return this.types [ pIndex ] ;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @return TODO
+   */
+  public int [ ] getTypesIndex ( )
+  {
+    return INDICES_TYPE ;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @return TODO
+   */
+  public String [ ] getTypesPrefix ( )
+  {
+    String [ ] result = new String [ 2 ] ;
+    result [ 0 ] = PREFIX_TAU ;
+    result [ 1 ] = PREFIX_TAU ;
+    return result ;
   }
 
 
@@ -160,7 +218,7 @@ public final class ArrowType extends MonoType
   @ Override
   public int hashCode ( )
   {
-    return this.tau1.hashCode ( ) + this.tau2.hashCode ( ) ;
+    return this.types [ 0 ].hashCode ( ) + this.types [ 1 ].hashCode ( ) ;
   }
 
 
@@ -176,8 +234,8 @@ public final class ArrowType extends MonoType
     {
       throw new NullPointerException ( "Substitution is null" ) ; //$NON-NLS-1$
     }
-    return new ArrowType ( this.tau1.substitute ( pTypeSubstitution ) ,
-        this.tau2.substitute ( pTypeSubstitution ) ) ;
+    return new ArrowType ( this.types [ 0 ].substitute ( pTypeSubstitution ) ,
+        this.types [ 1 ].substitute ( pTypeSubstitution ) ) ;
   }
 
 
@@ -194,11 +252,11 @@ public final class ArrowType extends MonoType
     {
       this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
           PRIO_ARROW ) ;
-      this.prettyStringBuilder.addBuilder ( this.tau1
+      this.prettyStringBuilder.addBuilder ( this.types [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
           PRIO_ARROW_TAU1 ) ;
       this.prettyStringBuilder.addText ( " \u2192 " ) ; //$NON-NLS-1$
-      this.prettyStringBuilder.addBuilder ( this.tau2
+      this.prettyStringBuilder.addBuilder ( this.types [ 1 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
           PRIO_ARROW_TAU2 ) ;
     }

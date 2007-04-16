@@ -27,12 +27,6 @@ public abstract class BinaryOperator extends Constant
 
 
   /**
-   * TODO
-   */
-  private boolean infixOperator ;
-
-
-  /**
    * Allocates a new <code>BinaryOperator</code> with the specified
    * <code>prettyPriority</code> used for pretty printing of
    * {@link InfixOperation}s.
@@ -45,7 +39,6 @@ public abstract class BinaryOperator extends Constant
   {
     super ( pText ) ;
     this.prettyPriority = pPrettyPriority ;
-    this.infixOperator = false ;
   }
 
 
@@ -84,6 +77,18 @@ public abstract class BinaryOperator extends Constant
 
 
   /**
+   * TODO
+   * 
+   * @return TODO
+   */
+  @ Override
+  public String getPrefix ( )
+  {
+    return PREFIX_BINARYOPERATOR ;
+  }
+
+
+  /**
    * Returns the base pretty print priority for this binary operator, when used
    * within an {@link de.unisiegen.tpml.core.expressions.InfixOperation}.
    * 
@@ -92,17 +97,6 @@ public abstract class BinaryOperator extends Constant
   public int getPrettyPriority ( )
   {
     return this.prettyPriority ;
-  }
-
-
-  /**
-   * TODO
-   * 
-   * @param pInfixOperator The infixOperator to set.
-   */
-  public void useInfixOperator ( boolean pInfixOperator )
-  {
-    this.infixOperator = pInfixOperator ;
   }
 
 
@@ -119,12 +113,12 @@ public abstract class BinaryOperator extends Constant
     {
       this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
           PRIO_CONSTANT ) ;
-      if ( ! this.infixOperator )
+      if ( ! ( this.parent instanceof InfixOperation ) )
       {
         this.prettyStringBuilder.addText ( "(" ) ; //$NON-NLS-1$
       }
       this.prettyStringBuilder.addConstant ( this.text ) ;
-      if ( ! this.infixOperator )
+      if ( ! ( this.parent instanceof InfixOperation ) )
       {
         this.prettyStringBuilder.addText ( ")" ) ; //$NON-NLS-1$
       }

@@ -3,6 +3,7 @@ package de.unisiegen.tpml.core.expressions ;
 
 import java.util.Arrays ;
 import java.util.Vector ;
+import de.unisiegen.tpml.core.interfaces.ChildrenExpressions ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
@@ -18,7 +19,7 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
  * @see Expression
  * @see UnaryCons
  */
-public final class List extends Expression
+public final class List extends Expression implements ChildrenExpressions
 {
   /**
    * The expressions within this list.
@@ -27,6 +28,12 @@ public final class List extends Expression
    * @see #getExpressions(int)
    */
   private Expression [ ] expressions ;
+
+
+  /**
+   * Indeces of the child {@link Expression}s.
+   */
+  private int [ ] indicesE ;
 
 
   /**
@@ -71,8 +78,8 @@ public final class List extends Expression
     {
       // e2 must be an application of unary cons to a pair
       Application app2 = ( Application ) pExpression2 ;
-      Tuple tuple = ( Tuple ) app2.getE2 ( ) ;
-      if ( ! ( app2.getE1 ( ) instanceof UnaryCons )
+      Tuple tuple = ( Tuple ) app2.getExpressions ( 1 ) ;
+      if ( ! ( app2.getExpressions ( 0 ) instanceof UnaryCons )
           || tuple.getExpressions ( ).length != 2 )
       {
         throw new ClassCastException ( ) ;
@@ -85,6 +92,19 @@ public final class List extends Expression
     }
     // jep, we have our expression list
     this.expressions = newExpressions.toArray ( new Expression [ 0 ] ) ;
+    for ( int i = 0 ; i < this.expressions.length ; i ++ )
+    {
+      if ( this.expressions [ i ].getParent ( ) != null )
+      {
+        this.expressions [ i ] = this.expressions [ i ].clone ( ) ;
+      }
+      this.expressions [ i ].setParent ( this ) ;
+    }
+    this.indicesE = new int [ this.expressions.length ] ;
+    for ( int i = 0 ; i < this.expressions.length ; i ++ )
+    {
+      this.indicesE [ i ] = i + 1 ;
+    }
   }
 
 
@@ -108,6 +128,19 @@ public final class List extends Expression
       throw new IllegalArgumentException ( "expressions is empty" ) ; //$NON-NLS-1$
     }
     this.expressions = pExpressions ;
+    for ( int i = 0 ; i < this.expressions.length ; i ++ )
+    {
+      if ( this.expressions [ i ].getParent ( ) != null )
+      {
+        this.expressions [ i ] = this.expressions [ i ].clone ( ) ;
+      }
+      this.expressions [ i ].setParent ( this ) ;
+    }
+    this.indicesE = new int [ this.expressions.length ] ;
+    for ( int i = 0 ; i < this.expressions.length ; i ++ )
+    {
+      this.indicesE [ i ] = i + 1 ;
+    }
   }
 
 
@@ -177,6 +210,17 @@ public final class List extends Expression
   public Expression getExpressions ( int pIndex )
   {
     return this.expressions [ pIndex ] ;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @return TODO
+   */
+  public int [ ] getExpressionsIndex ( )
+  {
+    return this.indicesE ;
   }
 
 

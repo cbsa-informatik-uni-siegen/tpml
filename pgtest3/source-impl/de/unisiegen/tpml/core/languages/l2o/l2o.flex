@@ -56,12 +56,12 @@ import de.unisiegen.tpml.core.languages.LanguageSymbol;
 		/* Object */
 		case OBJECT: 
 		case END: 
-		case NUMBERSIGN: 
+		case HASHKEY: 
 		case ATTRIBUTE: 
 		case METHOD: 
 		case SEMI: 
-		case LCURLYBRACE: 
-		case RCURLYBRACE: 
+		case DUPLBEGIN: 
+		case DUPLEND: 
 			return PrettyStyle.KEYWORD;
 			
 		case BOOL: case INT: case UNIT: case TYPEVARIABLE:
@@ -131,12 +131,12 @@ LetterGreek		= [\u03b1-\u03c1\u03c3-\u03c9]
 	"object"			{ return symbol("OBJECT", OBJECT); }
 	"self"				{ return symbol("SELF", SELF); }
 	"end"				{ return symbol("END", END); }
-	"#"					{ return symbol("NUMBERSIGN", NUMBERSIGN); }
+	"#"					{ return symbol("HASHKEY", HASHKEY); }
 	"val"				{ return symbol("ATTRIBUTE", ATTRIBUTE); }
 	"method"			{ return symbol("METHOD", METHOD); }
 	";"					{ return symbol("SEMI", SEMI); }
-	"{"					{ return symbol("LCURLYBRACE", LCURLYBRACE); }
-	"}"					{ return symbol("RCURLYBRACE", RCURLYBRACE); }
+	"{<"				{ return symbol("DUPLBEGIN", DUPLBEGIN); }
+	">}"				{ return symbol("DUPLEND", DUPLEND); }
 	
 	// constants
 	"()"				{ return symbol("PARENPAREN", PARENPAREN); }

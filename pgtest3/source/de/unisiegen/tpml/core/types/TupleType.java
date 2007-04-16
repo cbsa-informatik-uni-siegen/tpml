@@ -3,6 +3,7 @@ package de.unisiegen.tpml.core.types ;
 
 import java.util.Arrays ;
 import java.util.TreeSet ;
+import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
@@ -17,7 +18,7 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
  * @version $Rev:340 $
  * @see MonoType
  */
-public final class TupleType extends MonoType
+public final class TupleType extends MonoType implements DefaultTypes
 {
   /**
    * The types for the tuple elements.
@@ -46,7 +47,23 @@ public final class TupleType extends MonoType
           "Types must contain atleast two elements" ) ; //$NON-NLS-1$
     }
     this.types = pTypes ;
+    this.indicesType = new int [ this.types.length ] ;
+    for ( int i = 0 ; i < this.indicesType.length ; i ++ )
+    {
+      if ( this.types [ i ].getParent ( ) != null )
+      {
+        this.types [ i ] = this.types [ i ].clone ( ) ;
+      }
+      this.types [ i ].setParent ( this ) ;
+      this.indicesType [ i ] = i + 1 ;
+    }
   }
+
+
+  /**
+   * Indeces of the child {@link Type}s.
+   */
+  private int [ ] indicesType ;
 
 
   /**
@@ -137,6 +154,33 @@ public final class TupleType extends MonoType
   public MonoType getTypes ( int pIndex )
   {
     return this.types [ pIndex ] ;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @return TODO
+   */
+  public int [ ] getTypesIndex ( )
+  {
+    return this.indicesType ;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @return TODO
+   */
+  public String [ ] getTypesPrefix ( )
+  {
+    String [ ] result = new String [ this.types.length ] ;
+    for ( int i = 0 ; i < this.types.length ; i ++ )
+    {
+      result [ i ] = PREFIX_TAU ;
+    }
+    return result ;
   }
 
 

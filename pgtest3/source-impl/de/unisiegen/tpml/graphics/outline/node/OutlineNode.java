@@ -3,12 +3,8 @@ package de.unisiegen.tpml.graphics.outline.node ;
 
 import java.awt.Color ;
 import javax.swing.tree.DefaultMutableTreeNode ;
-import de.unisiegen.tpml.core.expressions.BinaryOperator ;
-import de.unisiegen.tpml.core.expressions.Exn ;
 import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.expressions.Identifier ;
-import de.unisiegen.tpml.core.expressions.Row ;
-import de.unisiegen.tpml.core.expressions.Value ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyCharIterator ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable ;
@@ -133,60 +129,6 @@ public final class OutlineNode extends DefaultMutableTreeNode
    * String, if a {@link Expression} should be replaced.
    */
   private static final String REPLACE = "&nbsp;...&nbsp;" ; //$NON-NLS-1$
-
-
-  /**
-   * Caption of the {@link Value}.
-   */
-  private static final String VALUE_EXPRESSION = "v" ; //$NON-NLS-1$
-
-
-  /**
-   * Caption of the {@link Expression}.
-   */
-  private static final String EXPRESSION = "e" ; //$NON-NLS-1$
-
-
-  /**
-   * Caption of the {@link Row}, which is a value.
-   */
-  private static final String VALUE_ROW = "\u03C9" ; //$NON-NLS-1$
-
-
-  /**
-   * Caption of the {@link Row}.
-   */
-  private static final String ROW = "r" ; //$NON-NLS-1$
-
-
-  /**
-   * Caption of the {@link Exn}.
-   */
-  private static final String EXN = "ep" ; //$NON-NLS-1$
-
-
-  /**
-   * Caption of the {@link Identifier}.
-   */
-  private static final String IDENTIFIER = "id" ; //$NON-NLS-1$
-
-
-  /**
-   * Caption of the {@link BinaryOperator}.
-   */
-  private static final String OP = "op" ; //$NON-NLS-1$
-
-
-  /**
-   * Caption of the {@link Type}.
-   */
-  private static final String TYPE_TAU = "\u03C4" ; //$NON-NLS-1$
-
-
-  /**
-   * Caption of the {@link Type}.
-   */
-  private static final String TYPE_PHI = "\u03A6" ; //$NON-NLS-1$
 
 
   /**
@@ -568,10 +510,11 @@ public final class OutlineNode extends DefaultMutableTreeNode
    * @param pExpression The {@link Expression} repressented by this node.
    * @param pOutlineUnbound The {@link OutlineUnbound} which repressents the
    *          unbound {@link Identifier}s in all nodes.
-   * @param pChildIndex The child index.
+   * @param pPrefix The prefix of the {@link Expression}.
+   * @param pIndex The child index.
    */
   public OutlineNode ( Expression pExpression , OutlineUnbound pOutlineUnbound ,
-      int pChildIndex )
+      String pPrefix , int pIndex )
   {
     this ( ) ;
     this.expression = pExpression ;
@@ -581,56 +524,9 @@ public final class OutlineNode extends DefaultMutableTreeNode
     this.outlineBreak = new OutlineBreak ( this.expression ) ;
     this.currentOutlineBreak = new OutlineBreak ( ) ;
     this.isExpression = true ;
-    // BinaryOperator
-    if ( this.expression instanceof BinaryOperator )
-    {
-      this.childIndex = OP
-          + ( ( pChildIndex <= OutlineNode.NO_CHILD_INDEX ) ? BETWEEN1
-              : SMALL_SUB_BEGIN + pChildIndex + SMALL_SUB_END + BETWEEN1 ) ;
-      return ;
-    }
-    // Exception
-    if ( this.expression instanceof Exn )
-    {
-      this.childIndex = EXN
-          + ( ( pChildIndex <= OutlineNode.NO_CHILD_INDEX ) ? BETWEEN1
-              : SMALL_SUB_BEGIN + pChildIndex + SMALL_SUB_END + BETWEEN1 ) ;
-      return ;
-    }
-    // Value
-    if ( this.expression.isValue ( ) )
-    {
-      if ( this.expression instanceof Row )
-      {
-        this.childIndex = VALUE_ROW
-            + ( ( pChildIndex <= OutlineNode.NO_CHILD_INDEX ) ? BETWEEN1
-                : SMALL_SUB_BEGIN + pChildIndex + SMALL_SUB_END + BETWEEN1 ) ;
-      }
-      else
-      {
-        this.childIndex = VALUE_EXPRESSION
-            + ( ( pChildIndex <= OutlineNode.NO_CHILD_INDEX ) ? BETWEEN1
-                : SMALL_SUB_BEGIN + pChildIndex + SMALL_SUB_END + BETWEEN1 ) ;
-      }
-      return ;
-    }
-    // Expression
-    if ( ! this.expression.isValue ( ) )
-    {
-      if ( this.expression instanceof Row )
-      {
-        this.childIndex = ROW
-            + ( ( pChildIndex <= OutlineNode.NO_CHILD_INDEX ) ? BETWEEN1
-                : SMALL_SUB_BEGIN + pChildIndex + SMALL_SUB_END + BETWEEN1 ) ;
-      }
-      else
-      {
-        this.childIndex = EXPRESSION
-            + ( ( pChildIndex <= OutlineNode.NO_CHILD_INDEX ) ? BETWEEN1
-                : SMALL_SUB_BEGIN + pChildIndex + SMALL_SUB_END + BETWEEN1 ) ;
-      }
-      return ;
-    }
+    this.childIndex = pPrefix
+        + ( ( pIndex <= OutlineNode.NO_CHILD_INDEX ) ? BETWEEN1
+            : SMALL_SUB_BEGIN + pIndex + SMALL_SUB_END + BETWEEN1 ) ;
   }
 
 
@@ -640,9 +536,10 @@ public final class OutlineNode extends DefaultMutableTreeNode
    * 
    * @param pIdentifier The {@link Identifier} repressented by this node.
    * @param pOutlineBinding The bindings in this node.
-   * @param pChildIndex The child index.
+   * @param pPrefix The prefix of the {@link Identifier}.
+   * @param pIndex The child index.
    */
-  public OutlineNode ( Identifier pIdentifier , int pChildIndex ,
+  public OutlineNode ( Identifier pIdentifier , String pPrefix , int pIndex ,
       OutlineBinding pOutlineBinding )
   {
     this ( ) ;
@@ -653,9 +550,9 @@ public final class OutlineNode extends DefaultMutableTreeNode
     this.outlineBreak = new OutlineBreak ( this.expression ) ;
     this.currentOutlineBreak = new OutlineBreak ( ) ;
     this.isIdentifier = true ;
-    this.childIndex = IDENTIFIER
-        + ( ( pChildIndex <= OutlineNode.NO_CHILD_INDEX ) ? BETWEEN1
-            : SMALL_SUB_BEGIN + pChildIndex + SMALL_SUB_END + BETWEEN1 ) ;
+    this.childIndex = pPrefix
+        + ( ( pIndex <= OutlineNode.NO_CHILD_INDEX ) ? BETWEEN1
+            : SMALL_SUB_BEGIN + pIndex + SMALL_SUB_END + BETWEEN1 ) ;
   }
 
 
@@ -664,10 +561,10 @@ public final class OutlineNode extends DefaultMutableTreeNode
    * used for {@link Type}s.
    * 
    * @param pType The {@link Type} repressented by this node.
+   * @param pPrefix The prefix of the {@link Identifier}.
    * @param pChildIndex The child index.
-   * @param isPhi True if the {@link Type} is a phi, false if it is a tau.
    */
-  public OutlineNode ( Type pType , int pChildIndex , boolean isPhi )
+  public OutlineNode ( Type pType , String pPrefix , int pChildIndex )
   {
     this ( ) ;
     this.type = pType ;
@@ -676,19 +573,9 @@ public final class OutlineNode extends DefaultMutableTreeNode
     this.outlineBreak = new OutlineBreak ( this.type ) ;
     this.currentOutlineBreak = new OutlineBreak ( ) ;
     this.isType = true ;
-    if ( isPhi )
-    {
-      this.childIndex = TYPE_PHI
-          + ( ( pChildIndex <= OutlineNode.NO_CHILD_INDEX ) ? BETWEEN1
-              : SMALL_SUB_BEGIN + pChildIndex + SMALL_SUB_END + BETWEEN1 ) ;
-      return ;
-    }
-    if ( ! isPhi )
-    {
-      this.childIndex = TYPE_TAU
-          + ( ( pChildIndex <= OutlineNode.NO_CHILD_INDEX ) ? BETWEEN1
-              : SMALL_SUB_BEGIN + pChildIndex + SMALL_SUB_END + BETWEEN1 ) ;
-    }
+    this.childIndex = pPrefix
+        + ( ( pChildIndex <= OutlineNode.NO_CHILD_INDEX ) ? BETWEEN1
+            : SMALL_SUB_BEGIN + pChildIndex + SMALL_SUB_END + BETWEEN1 ) ;
   }
 
 

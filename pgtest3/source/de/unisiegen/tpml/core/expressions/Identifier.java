@@ -177,9 +177,7 @@ public class Identifier extends Value
   {
     if ( this.boundedToExpression != null )
     {
-      Debug.err
-          .println (
-              "Identifier: Programming error! Please contact Christian Fehler!" , Debug.CHRISTIAN ) ;//$NON-NLS-1$
+      Debug.err.println ( "Identifier: Programming error!" , Debug.CHRISTIAN ) ;//$NON-NLS-1$
       Debug.err
           .println (
               "An Identifier can not be bounded to more than one Expression!" , Debug.CHRISTIAN ) ; //$NON-NLS-1$
@@ -256,7 +254,7 @@ public class Identifier extends Value
     if ( this.prettyStringBuilder == null )
     {
       this.prettyStringBuilder = factory.newBuilder ( this , PRIO_IDENTIFIER ) ;
-      this.prettyStringBuilder.addText ( this.name ) ;
+      this.prettyStringBuilder.addIdentifier ( this.name ) ;
     }
     return this.prettyStringBuilder ;
   }
