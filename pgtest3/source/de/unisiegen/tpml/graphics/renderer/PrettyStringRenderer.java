@@ -710,6 +710,7 @@ public class PrettyStringRenderer extends AbstractRenderer {
     
     if (lineCount > 1 )
     {
+    	//may be the mousepointer is under the expression
     	try{
     		charIndex = breakOffsets[lineCount-2];
     	}
