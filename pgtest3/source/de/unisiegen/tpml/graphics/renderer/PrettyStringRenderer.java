@@ -693,14 +693,31 @@ public class PrettyStringRenderer extends AbstractRenderer {
     
 //  if the cahr is not in the first line the startvalue must be different
     int lineCount = 0;
+    //TODO das mit der Höhe der Ausrücke funktioniert noch nicht richtig...
+    //System.out.println("Zeile: "+lineCount);
+    //System.out.println("breakOffsets: "+breakOffsets.length);
+    int posY_ = y + height / 2;
+    posY_ += AbstractRenderer.fontAscent / 2;
+    float addY_ = (this.result.rows-1) / 2.0f;
+    addY_ *= AbstractRenderer.fontHeight;
+    posY_ -= addY_;
+    //System.out.println("Y-Position: "+posY_);
     
     //mousePosition[1] is the x-coordinate, start to count at 1
-    lineCount = (mousePosition[1] / fm.getHeight()) + 1;
+    lineCount = ((mousePosition[1]-(posY_-AbstractRenderer.fontHeight)) / fm.getHeight()) + 1;
     
-    //System.out.println("Zeile: "+lineCount);
-    if (lineCount > 1)
+    
+    
+    if (lineCount > 1 )
     {
-    	charIndex = breakOffsets[lineCount-2];
+    	try{
+    		charIndex = breakOffsets[lineCount-2];
+    	}
+    	catch (IndexOutOfBoundsException e)
+    	{
+    		
+    	}
+    	
     }
     
     //add the width of the chars till the mousepointer is reached an dcount the chars
