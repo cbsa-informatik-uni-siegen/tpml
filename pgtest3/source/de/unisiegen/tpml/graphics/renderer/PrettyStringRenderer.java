@@ -657,6 +657,16 @@ public class PrettyStringRenderer extends AbstractRenderer {
     //get The MousePosition
     int [] mousePosition = toListenForMouse.getHereIam();
     
+    boolean mouseOver = true;
+    //System.out.println("mousePostition: "+mousePosition[0]+", "+mousePosition[1]);
+    
+    if (mousePosition[0]==0 && mousePosition[1]==0)
+    {
+    	mouseOver = false;
+    }
+    
+    //System.out.println("also die Mausposition: "+mouseOver);
+    
     //get the Char-Position to the MousePosition
     //count the chars by using the charwidth adding till the mouseposition is found
     //for functioning in more than 1 line the lines are count
@@ -736,8 +746,7 @@ public class PrettyStringRenderer extends AbstractRenderer {
     //System.out.println("die Maus: "+mousePosition[0]);
     //System.out.println("Position: "+charIndex);
     
-    //get the annotations
-    ArrayList <Bonds> annotationsList = bound.getAnnotations();
+    
     
     //TODO Testausgabe
     //for ( int i = 0; i < annotationsList.size(); i++)
@@ -745,6 +754,15 @@ public class PrettyStringRenderer extends AbstractRenderer {
     //	System.out.println(annotationsList.get(i).getStartOffset());
     //	System.out.println(annotationsList.get(i).getEndOffset());
     //}
+    
+    
+    //get the annotations
+    ArrayList <Bonds> annotationsList = new ArrayList <Bonds> ();
+    if (mouseOver) 
+    	{
+    	//System.out.println("Ich rufe die getA auf! ");
+    		annotationsList = bound.getAnnotations();
+    	}
 
     //this will be the annotation to underline, if -1 there is no underlining
     int rightAnnotationList = isInList(charIndex, annotationsList );
