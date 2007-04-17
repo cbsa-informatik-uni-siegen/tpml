@@ -1,1 +1,1 @@
-lambda x:int.(lambda x:int.x)
+object (self:<add:int; sub:int;>) val a = 1 ; end
