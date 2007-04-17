@@ -11,7 +11,7 @@ import de.unisiegen.tpml.graphics.outline.ui.OutlineUI ;
 
 /**
  * This class saves and loads the several values, like the
- * <code>JCheckBox</code> values replace, binding, unbound, selection and
+ * <code>JCheckBox</code> values replace, binding, free, selection and
  * autoUpdate. Also the <code>DividerLocation</code> of the
  * <code>JSplitPane</code>.
  * 
@@ -47,13 +47,13 @@ public final class OutlinePreferences
 
 
   /**
-   * The unbound value. The unbounded {@link Identifier}s should be highlighted
-   * in all nodes.
+   * The free value. The free {@link Identifier}s should be highlighted in all
+   * nodes.
    * 
-   * @see #isUnbound()
-   * @see #setUnbound(boolean)
+   * @see #isFree()
+   * @see #setFree(boolean)
    */
-  private boolean unbound ;
+  private boolean free ;
 
 
   /**
@@ -93,7 +93,7 @@ public final class OutlinePreferences
 
   /**
    * Initialize the <code>Preferences</code>. Load the last saved values from
-   * it. Set the replace, binding, unbound and selection value of the
+   * it. Set the replace, binding, free and selection value of the
    * {@link OutlineNode}.
    */
   public OutlinePreferences ( )
@@ -101,14 +101,14 @@ public final class OutlinePreferences
     this.preferences = Preferences.userNodeForPackage ( Outline.class ) ;
     this.replace = this.preferences.getBoolean ( OutlineUI.REPLACE , false ) ;
     this.binding = this.preferences.getBoolean ( OutlineUI.BINDING , true ) ;
-    this.unbound = this.preferences.getBoolean ( OutlineUI.UNBOUND , true ) ;
+    this.free = this.preferences.getBoolean ( OutlineUI.FREE , true ) ;
     this.selection = this.preferences.getBoolean ( OutlineUI.SELECTION , true ) ;
     this.autoUpdate = this.preferences
         .getBoolean ( OutlineUI.AUTOUPDATE , true ) ;
     this.dividerLocation = this.preferences.getInt ( DIVIDERLOCATION , 300 ) ;
     OutlineNode.setReplace ( this.replace ) ;
     OutlineNode.setBinding ( this.binding ) ;
-    OutlineNode.setUnbound ( this.unbound ) ;
+    OutlineNode.setFree ( this.free ) ;
     OutlineNode.setSelection ( this.selection ) ;
   }
 
@@ -157,6 +157,21 @@ public final class OutlinePreferences
 
 
   /**
+   * Return true, if the free {@link Identifier}s should be highlighted in all
+   * nodes, otherwise false.
+   * 
+   * @return True, if the free {@link Identifier}s should be highlighted in all
+   *         nodes, otherwise false.
+   * @see #free
+   * @see #setFree(boolean)
+   */
+  public final boolean isFree ( )
+  {
+    return this.free ;
+  }
+
+
+  /**
    * Return true, if the selected {@link Expression} should be replaced in
    * higher nodes, otherwise false.
    * 
@@ -183,21 +198,6 @@ public final class OutlinePreferences
   public final boolean isSelection ( )
   {
     return this.selection ;
-  }
-
-
-  /**
-   * Return true, if the unbounded {@link Identifier}s should be highlighted in
-   * all nodes, otherwise false.
-   * 
-   * @return True, if the unbounded {@link Identifier}s should be highlighted
-   *         in all nodes, otherwise false.
-   * @see #unbound
-   * @see #setUnbound(boolean)
-   */
-  public final boolean isUnbound ( )
-  {
-    return this.unbound ;
   }
 
 
@@ -250,6 +250,21 @@ public final class OutlinePreferences
 
 
   /**
+   * Set the free value and writes the value to the <code>Preferences</code>.
+   * The free {@link Identifier}s should be highlighted in all nodes.
+   * 
+   * @param pFree The free value.
+   * @see #free
+   * @see #isFree()
+   */
+  public final void setFree ( boolean pFree )
+  {
+    this.free = pFree ;
+    this.preferences.putBoolean ( OutlineUI.FREE , pFree ) ;
+  }
+
+
+  /**
    * Set the replace value and writes the value to the <code>Preferences</code>.
    * The selected {@link Expression} should be replaced in higher nodes.
    * 
@@ -277,20 +292,5 @@ public final class OutlinePreferences
   {
     this.selection = pSelection ;
     this.preferences.putBoolean ( OutlineUI.SELECTION , pSelection ) ;
-  }
-
-
-  /**
-   * Set the unbound value and writes the value to the <code>Preferences</code>.
-   * The unbounded {@link Identifier}s should be highlighted in all nodes.
-   * 
-   * @param pUnbound The unbound value.
-   * @see #unbound
-   * @see #isUnbound()
-   */
-  public final void setUnbound ( boolean pUnbound )
-  {
-    this.unbound = pUnbound ;
-    this.preferences.putBoolean ( OutlineUI.UNBOUND , pUnbound ) ;
   }
 }

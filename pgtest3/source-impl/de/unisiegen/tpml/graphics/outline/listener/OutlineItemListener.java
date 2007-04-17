@@ -72,6 +72,27 @@ public final class OutlineItemListener implements ItemListener
 
 
   /**
+   * This method updates the <code>JCheckBox</code> selection and the
+   * <code>JCheckBoxMenuItem</code> selection. It sets the {@link OutlineNode}
+   * value unbound.
+   * 
+   * @param pSelected The selection of the <code>JCheckBox</code> selection or
+   *          the <code>JCheckBoxMenuItem</code> selection.
+   */
+  private final void free ( boolean pSelected )
+  {
+    OutlineNode.setFree ( pSelected ) ;
+    this.outlineUI.getOutlineTreeSelectionListener ( ).reset ( ) ;
+    this.outlineUI.getOutlineTreeSelectionListener ( ).update (
+        this.outlineUI.getJTreeOutline ( ).getSelectionPath ( ) ) ;
+    this.outlineUI.getAbstractOutline ( ).getOutlinePreferences ( ).setFree (
+        pSelected ) ;
+    this.outlineUI.getJCheckBoxFree ( ).setSelected ( pSelected ) ;
+    this.outlineUI.getJMenuItemUnbound ( ).setSelected ( pSelected ) ;
+  }
+
+
+  /**
    * This method is invoked if a item state has changed.
    * 
    * @param pItemEvent The <code>ItemEvent</code>.
@@ -129,27 +150,6 @@ public final class OutlineItemListener implements ItemListener
   /**
    * This method updates the <code>JCheckBox</code> selection and the
    * <code>JCheckBoxMenuItem</code> selection. It sets the {@link OutlineNode}
-   * value unbound.
-   * 
-   * @param pSelected The selection of the <code>JCheckBox</code> selection or
-   *          the <code>JCheckBoxMenuItem</code> selection.
-   */
-  private final void unbound ( boolean pSelected )
-  {
-    OutlineNode.setUnbound ( pSelected ) ;
-    this.outlineUI.getOutlineTreeSelectionListener ( ).reset ( ) ;
-    this.outlineUI.getOutlineTreeSelectionListener ( ).update (
-        this.outlineUI.getJTreeOutline ( ).getSelectionPath ( ) ) ;
-    this.outlineUI.getAbstractOutline ( ).getOutlinePreferences ( ).setUnbound (
-        pSelected ) ;
-    this.outlineUI.getJCheckBoxUnbound ( ).setSelected ( pSelected ) ;
-    this.outlineUI.getJMenuItemUnbound ( ).setSelected ( pSelected ) ;
-  }
-
-
-  /**
-   * This method updates the <code>JCheckBox</code> selection and the
-   * <code>JCheckBoxMenuItem</code> selection. It sets the {@link OutlineNode}
    * values replace, binding, unbound and selection.
    * 
    * @param pSelected The selection of the <code>JCheckBox</code> selection or
@@ -177,11 +177,11 @@ public final class OutlineItemListener implements ItemListener
       binding ( pSelected ) ;
     }
     // Unbound
-    else if ( ( OutlineUI.UNBOUND.equals ( pActionCommand ) )
+    else if ( ( OutlineUI.FREE.equals ( pActionCommand ) )
         || ( ( pSource != null ) && ( pSource.equals ( this.outlineUI
-            .getJCheckBoxUnbound ( ) ) ) ) )
+            .getJCheckBoxFree ( ) ) ) ) )
     {
-      unbound ( pSelected ) ;
+      free ( pSelected ) ;
     }
     // Selection
     else if ( ( OutlineUI.SELECTION.equals ( pActionCommand ) )

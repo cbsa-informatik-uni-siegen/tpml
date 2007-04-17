@@ -66,7 +66,7 @@ public final class OutlineTreeSelectionListener implements
   {
     pOutlineNode.setReplaceInThisNode ( false ) ;
     pOutlineNode.setOutlineBinding ( null ) ;
-    pOutlineNode.setBoundedIdentifier ( null ) ;
+    pOutlineNode.setBindingIdentifier ( null ) ;
     pOutlineNode.updateCaption ( ) ;
     for ( int i = 0 ; i < pOutlineNode.getChildCount ( ) ; i ++ )
     {
@@ -156,7 +156,7 @@ public final class OutlineTreeSelectionListener implements
                 /*
                  * Highlight the first identifier
                  */
-                currentOutlineNode.setBoundedIdentifier ( identifier
+                currentOutlineNode.setBindingIdentifier ( identifier
                     .getBoundedToIdentifier ( ) ) ;
                 currentOutlineNode.updateCaption ( ) ;
                 /*
@@ -169,7 +169,7 @@ public final class OutlineTreeSelectionListener implements
                   if ( nodeId.getPrettyPrintable ( ) == identifier
                       .getBoundedToIdentifier ( ) )
                   {
-                    nodeId.setBoundedIdentifier ( identifier
+                    nodeId.setBindingIdentifier ( identifier
                         .getBoundedToIdentifier ( ) ) ;
                     nodeId.updateCaption ( ) ;
                     break ;
@@ -194,7 +194,7 @@ public final class OutlineTreeSelectionListener implements
                 if ( nodeId.getPrettyPrintable ( ) == identifier
                     .getBoundedToIdentifier ( ) )
                 {
-                  nodeId.setBoundedIdentifier ( identifier
+                  nodeId.setBindingIdentifier ( identifier
                       .getBoundedToIdentifier ( ) ) ;
                   nodeId.updateCaption ( ) ;
                   break ;
@@ -204,7 +204,7 @@ public final class OutlineTreeSelectionListener implements
             /*
              * Highlight the Identifier in the node.
              */
-            pList.get ( i ).setBoundedIdentifier (
+            pList.get ( i ).setBindingIdentifier (
                 identifier.getBoundedToIdentifier ( ) ) ;
           }
         }

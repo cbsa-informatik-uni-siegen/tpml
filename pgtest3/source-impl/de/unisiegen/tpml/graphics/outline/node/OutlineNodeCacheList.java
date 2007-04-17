@@ -59,8 +59,7 @@ public final class OutlineNodeCacheList
    *          higher nodes.
    * @param pBinding Selected {@link Identifier} and bindings should be
    *          highlighted in higher nodes.
-   * @param pUnbound Unbound {@link Identifier}s should be highlighted in all
-   *          nodes.
+   * @param pFree Free {@link Identifier}s should be highlighted in all nodes.
    * @param pReplace The selected {@link Expression} should be replaced in
    *          higher nodes.
    * @param pBoundedStart The start index of the {@link Identifier}.
@@ -70,8 +69,8 @@ public final class OutlineNodeCacheList
    * @return The cached caption, or <code>null</code> if it was not cached.
    */
   public final String getCaption ( int pSelectionStart , int pSelectionEnd ,
-      boolean pSelection , boolean pBinding , boolean pUnbound ,
-      boolean pReplace , int pBoundedStart , int pBoundedEnd , int pBreakCount ,
+      boolean pSelection , boolean pBinding , boolean pFree , boolean pReplace ,
+      int pBoundedStart , int pBoundedEnd , int pBreakCount ,
       OutlineBinding pOutlineBinding )
   {
     for ( OutlineNodeCache current : this.list )
@@ -80,7 +79,7 @@ public final class OutlineNodeCacheList
           && ( current.getSelectionEnd ( ) == pSelectionEnd )
           && ( current.isSelection ( ) == pSelection )
           && ( current.isBinding ( ) == pBinding )
-          && ( current.isUnbound ( ) == pUnbound )
+          && ( current.isFree ( ) == pFree )
           && ( current.isReplace ( ) == pReplace )
           && ( current.getBoundedStart ( ) == pBoundedStart )
           && ( current.getBoundedEnd ( ) == pBoundedEnd )

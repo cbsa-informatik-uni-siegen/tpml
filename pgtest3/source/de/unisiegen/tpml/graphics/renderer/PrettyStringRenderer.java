@@ -846,11 +846,11 @@ public class PrettyStringRenderer extends AbstractRenderer {
           	//the first in the list is the Id an should be highlighted in an other color than the Bounded ones
           if (isFirstInListe (i, annotationsList))
           {
-            gc.setColor(Theme.currentTheme().getIdColor());
+            gc.setColor(Theme.currentTheme().getBindingIdColor());
           }
           else
           {
-            gc.setColor(Theme.currentTheme().getBindingColor());
+            gc.setColor(Theme.currentTheme().getBoundIdColor());
           }
           
           //underline the actual char

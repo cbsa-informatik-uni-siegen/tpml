@@ -131,10 +131,10 @@ public final class OutlineUI
 
 
   /**
-   * The <code>String</code> unbound, used for the <code>ActionCommand</code>
+   * The <code>String</code> free, used for the <code>ActionCommand</code>
    * and the <code>ResourceBundle</code>.
    */
-  public static final String UNBOUND = "unbound" ; //$NON-NLS-1$
+  public static final String FREE = "free" ; //$NON-NLS-1$
 
 
   /**
@@ -240,11 +240,11 @@ public final class OutlineUI
 
 
   /**
-   * The <code>JCheckBox</code> unbound.
+   * The <code>JCheckBox</code> free.
    * 
-   * @see #getJCheckBoxUnbound()
+   * @see #getJCheckBoxFree()
    */
-  private JCheckBox jCheckBoxUnbound ;
+  private JCheckBox jCheckBoxFree ;
 
 
   /**
@@ -258,7 +258,7 @@ public final class OutlineUI
   /**
    * The <code>JCheckBox</code> auto update.
    * 
-   * @see #getJCheckBoxUnbound()
+   * @see #getJCheckBoxFree()
    */
   private JCheckBox jCheckBoxAutoUpdate ;
 
@@ -384,7 +384,7 @@ public final class OutlineUI
   /**
    * The <code>JCheckBoxMenuItem</code> unbound.
    * 
-   * @see #getJCheckBoxUnbound()
+   * @see #getJCheckBoxFree()
    */
   private JCheckBoxMenuItem jMenuItemUnbound ;
 
@@ -491,17 +491,16 @@ public final class OutlineUI
     this.gridBagConstraints.weighty = 10 ;
     this.jPanelPreferences.add ( this.jCheckBoxBinding ,
         this.gridBagConstraints ) ;
-    // CheckBox Unbound
-    this.jCheckBoxUnbound = new JCheckBox ( this.resourceBundle
-        .getString ( UNBOUND ) ) ;
-    this.jCheckBoxUnbound.setMnemonic ( this.resourceBundle.getString (
-        UNBOUND + MNEMONIC ).charAt ( 0 ) ) ;
-    this.jCheckBoxUnbound.setToolTipText ( this.resourceBundle
-        .getString ( UNBOUND + TOOLTIP ) ) ;
-    this.jCheckBoxUnbound.setSelected ( this.defaultOutline
-        .getOutlinePreferences ( ).isUnbound ( ) ) ;
-    this.jCheckBoxUnbound.setFocusable ( false ) ;
-    this.jCheckBoxUnbound.addItemListener ( this.outlineItemListener ) ;
+    // CheckBox Free
+    this.jCheckBoxFree = new JCheckBox ( this.resourceBundle.getString ( FREE ) ) ;
+    this.jCheckBoxFree.setMnemonic ( this.resourceBundle.getString (
+        FREE + MNEMONIC ).charAt ( 0 ) ) ;
+    this.jCheckBoxFree.setToolTipText ( this.resourceBundle.getString ( FREE
+        + TOOLTIP ) ) ;
+    this.jCheckBoxFree.setSelected ( this.defaultOutline
+        .getOutlinePreferences ( ).isFree ( ) ) ;
+    this.jCheckBoxFree.setFocusable ( false ) ;
+    this.jCheckBoxFree.addItemListener ( this.outlineItemListener ) ;
     this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
     this.insets.set ( 0 , 4 , 0 , 4 ) ;
     this.gridBagConstraints.insets = this.insets ;
@@ -509,8 +508,7 @@ public final class OutlineUI
     this.gridBagConstraints.gridy = 0 ;
     this.gridBagConstraints.weightx = 0 ;
     this.gridBagConstraints.weighty = 10 ;
-    this.jPanelPreferences.add ( this.jCheckBoxUnbound ,
-        this.gridBagConstraints ) ;
+    this.jPanelPreferences.add ( this.jCheckBoxFree , this.gridBagConstraints ) ;
     // CheckBox Replace
     this.jCheckBoxReplace = new JCheckBox ( this.resourceBundle
         .getString ( REPLACE ) ) ;
@@ -730,15 +728,15 @@ public final class OutlineUI
     this.jMenuPreferences.add ( this.jMenuItemBinding ) ;
     // MenuItem Unbound
     this.jMenuItemUnbound = new JCheckBoxMenuItem ( this.resourceBundle
-        .getString ( UNBOUND ) ) ;
+        .getString ( FREE ) ) ;
     this.jMenuItemUnbound.setMnemonic ( this.resourceBundle.getString (
-        UNBOUND + MNEMONIC ).charAt ( 0 ) ) ;
-    this.jMenuItemUnbound.setToolTipText ( this.resourceBundle
-        .getString ( UNBOUND + TOOLTIP ) ) ;
-    this.jMenuItemUnbound.setActionCommand ( UNBOUND ) ;
+        FREE + MNEMONIC ).charAt ( 0 ) ) ;
+    this.jMenuItemUnbound.setToolTipText ( this.resourceBundle.getString ( FREE
+        + TOOLTIP ) ) ;
+    this.jMenuItemUnbound.setActionCommand ( FREE ) ;
     this.jMenuItemUnbound.addActionListener ( this.outlineActionListener ) ;
     this.jMenuItemUnbound.setSelected ( this.defaultOutline
-        .getOutlinePreferences ( ).isUnbound ( ) ) ;
+        .getOutlinePreferences ( ).isFree ( ) ) ;
     this.jMenuPreferences.add ( this.jMenuItemUnbound ) ;
     // MenuItem Replace
     this.jMenuItemReplace = new JCheckBoxMenuItem ( this.resourceBundle
@@ -804,6 +802,18 @@ public final class OutlineUI
 
 
   /**
+   * Returns the <code>jCheckBoxFree</code>.
+   * 
+   * @return The <code>jCheckBoxFree</code>.
+   * @see #jCheckBoxFree
+   */
+  public final JCheckBox getJCheckBoxFree ( )
+  {
+    return this.jCheckBoxFree ;
+  }
+
+
+  /**
    * Returns the <code>jCheckBoxReplace</code>.
    * 
    * @return The <code>jCheckBoxReplace</code>.
@@ -824,18 +834,6 @@ public final class OutlineUI
   public final JCheckBox getJCheckBoxSelection ( )
   {
     return this.jCheckBoxSelection ;
-  }
-
-
-  /**
-   * Returns the <code>jCheckBoxUnbound</code>.
-   * 
-   * @return The <code>jCheckBoxUnbound</code>.
-   * @see #jCheckBoxUnbound
-   */
-  public final JCheckBox getJCheckBoxUnbound ( )
-  {
-    return this.jCheckBoxUnbound ;
   }
 
 

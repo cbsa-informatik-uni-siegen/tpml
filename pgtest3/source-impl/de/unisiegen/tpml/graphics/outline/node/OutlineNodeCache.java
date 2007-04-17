@@ -33,9 +33,9 @@ public class OutlineNodeCache
 
 
   /**
-   * Unbound {@link Identifier}s should be highlighted in all nodes.
+   * Free {@link Identifier}s should be highlighted in all nodes.
    */
-  private boolean unbound ;
+  private boolean free ;
 
 
   /**
@@ -91,7 +91,7 @@ public class OutlineNodeCache
    *          higher nodes.
    * @param pBinding Selected {@link Identifier} and bindings should be
    *          highlighted in higher nodes.
-   * @param pUnbound Unbound {@link Identifier}s should be highlighted in all
+   * @param pFree Unbound {@link Identifier}s should be highlighted in all
    *          nodes.
    * @param pReplace The selected {@link Expression} should be replaced in
    *          higher nodes.
@@ -102,15 +102,15 @@ public class OutlineNodeCache
    * @param pCaption The caption of the node.
    */
   public OutlineNodeCache ( int pSelectionStart , int pSelectionEnd ,
-      boolean pSelection , boolean pBinding , boolean pUnbound ,
-      boolean pReplace , int pBoundedStart , int pBoundedEnd , int pBreakCount ,
+      boolean pSelection , boolean pBinding , boolean pFree , boolean pReplace ,
+      int pBoundedStart , int pBoundedEnd , int pBreakCount ,
       OutlineBinding pOutlineBinding , String pCaption )
   {
     this.selectionStart = pSelectionStart ;
     this.selectionEnd = pSelectionEnd ;
     this.selection = pSelection ;
     this.binding = pBinding ;
-    this.unbound = pUnbound ;
+    this.free = pFree ;
     this.replace = pReplace ;
     this.boundedStart = pBoundedStart ;
     this.boundedEnd = pBoundedEnd ;
@@ -217,6 +217,18 @@ public class OutlineNodeCache
 
 
   /**
+   * Returns the free.
+   * 
+   * @return The free.
+   * @see #free
+   */
+  public boolean isFree ( )
+  {
+    return this.free ;
+  }
+
+
+  /**
    * Returns the replace.
    * 
    * @return The replace.
@@ -237,17 +249,5 @@ public class OutlineNodeCache
   public boolean isSelection ( )
   {
     return this.selection ;
-  }
-
-
-  /**
-   * Returns the unbound.
-   * 
-   * @return The unbound.
-   * @see #unbound
-   */
-  public boolean isUnbound ( )
-  {
-    return this.unbound ;
   }
 }

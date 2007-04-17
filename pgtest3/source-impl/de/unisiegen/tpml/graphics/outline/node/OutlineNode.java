@@ -82,9 +82,9 @@ public final class OutlineNode extends DefaultMutableTreeNode
   /**
    * Unbound {@link Identifier}s should be highlighted in all nodes.
    * 
-   * @see #setUnbound(boolean)
+   * @see #setFree(boolean)
    */
-  private static boolean unbound = true ;
+  private static boolean free = true ;
 
 
   /**
@@ -264,6 +264,19 @@ public final class OutlineNode extends DefaultMutableTreeNode
 
 
   /**
+   * Sets the free value. Free {@link Identifier}s should be highlighted in all
+   * nodes.
+   * 
+   * @param pFree Should or should not be highlighted.
+   * @see #free
+   */
+  public final static void setFree ( boolean pFree )
+  {
+    free = pFree ;
+  }
+
+
+  /**
    * Sets the replace value. The selected {@link Expression} should be replaced
    * in higher nodes.
    * 
@@ -286,19 +299,6 @@ public final class OutlineNode extends DefaultMutableTreeNode
   public final static void setSelection ( boolean pSelection )
   {
     selection = pSelection ;
-  }
-
-
-  /**
-   * Sets the unbound value. Unbound {@link Identifier}s should be highlighted
-   * in all nodes.
-   * 
-   * @param pUnbound Should or should not be highlighted.
-   * @see #unbound
-   */
-  public final static void setUnbound ( boolean pUnbound )
-  {
-    unbound = pUnbound ;
   }
 
 
@@ -359,7 +359,7 @@ public final class OutlineNode extends DefaultMutableTreeNode
 
 
   /**
-   * The {@link OutlineUnbound} which repressents the unbound {@link Identifier}s
+   * The {@link OutlineUnbound} which repressents the free {@link Identifier}s
    * in all nodes.
    */
   private OutlineUnbound outlineUnbound ;
@@ -434,7 +434,7 @@ public final class OutlineNode extends DefaultMutableTreeNode
 
 
   /**
-   * The expression color.
+   * The {@link Expression} color.
    */
   private String expressionColor ;
 
@@ -464,15 +464,21 @@ public final class OutlineNode extends DefaultMutableTreeNode
 
 
   /**
-   * The binding color.
+   * The bound {@link Identifier} color.
    */
-  private String bindingColor ;
+  private String boundIdColor ;
 
 
   /**
-   * The unbound color.
+   * The binding {@link Identifier} color.
    */
-  private String unboundColor ;
+  private String bindingIdColor ;
+
+
+  /**
+   * The free {@link Identifier} color.
+   */
+  private String freeIdColor ;
 
 
   /**
@@ -509,7 +515,7 @@ public final class OutlineNode extends DefaultMutableTreeNode
    * 
    * @param pExpression The {@link Expression} repressented by this node.
    * @param pOutlineUnbound The {@link OutlineUnbound} which repressents the
-   *          unbound {@link Identifier}s in all nodes.
+   *          free {@link Identifier}s in all nodes.
    * @param pPrefix The prefix of the {@link Expression}.
    * @param pIndex The child index.
    */
@@ -664,14 +670,33 @@ public final class OutlineNode extends DefaultMutableTreeNode
 
 
   /**
-   * This method returns the length of the bounded {@link Identifier}, if the
+   * This method returns the length of the binding {@link Identifier}, if the
    * {@link Identifier} begins at the given pCharIndex.
    * 
    * @param pCharIndex The index of the char in the {@link Expression}.
    * @return The length of the {@link Identifier}, if the {@link Identifier}
    *         begins at the given pCharIndex.
    */
-  private final int charIsBinding ( int pCharIndex )
+  private final int charIsBindingIdentifier ( int pCharIndex )
+  {
+    if ( ( pCharIndex >= this.boundedStart )
+        && ( pCharIndex <= this.boundedEnd ) )
+    {
+      return this.boundedEnd - this.boundedStart + 1 ;
+    }
+    return - 1 ;
+  }
+
+
+  /**
+   * This method returns the length of the bound {@link Identifier}, if the
+   * {@link Identifier} begins at the given pCharIndex.
+   * 
+   * @param pCharIndex The index of the char in the {@link Expression}.
+   * @return The length of the {@link Identifier}, if the {@link Identifier}
+   *         begins at the given pCharIndex.
+   */
+  private final int charIsBoundIdentifier ( int pCharIndex )
   {
     if ( this.outlineBinding == null )
     {
@@ -703,26 +728,7 @@ public final class OutlineNode extends DefaultMutableTreeNode
 
 
   /**
-   * This method returns the length of the bounded {@link Identifier}, if the
-   * {@link Identifier} begins at the given pCharIndex.
-   * 
-   * @param pCharIndex The index of the char in the {@link Expression}.
-   * @return The length of the {@link Identifier}, if the {@link Identifier}
-   *         begins at the given pCharIndex.
-   */
-  private final int charIsSelectedBounded ( int pCharIndex )
-  {
-    if ( ( pCharIndex >= this.boundedStart )
-        && ( pCharIndex <= this.boundedEnd ) )
-    {
-      return this.boundedEnd - this.boundedStart + 1 ;
-    }
-    return - 1 ;
-  }
-
-
-  /**
-   * This method returns the length of the unbound {@link Identifier}, if the
+   * This method returns the length of the free {@link Identifier}, if the
    * {@link Identifier} begins at the given pCharIndex.
    * 
    * @param pCharIndex pCharIndex The index of the char in the
@@ -730,7 +736,7 @@ public final class OutlineNode extends DefaultMutableTreeNode
    * @return The length of the {@link Identifier}, if the {@link Identifier}
    *         begins at the given pCharIndex.
    */
-  private final int charIsUnbound ( int pCharIndex )
+  private final int charIsFreeIdentifier ( int pCharIndex )
   {
     for ( int i = 0 ; i < this.outlineUnbound.size ( ) ; i ++ )
     {
@@ -784,18 +790,6 @@ public final class OutlineNode extends DefaultMutableTreeNode
 
 
   /**
-   * Returns the nodeString.
-   * 
-   * @return The nodeString.
-   * @see #prettyString
-   */
-  public final String getPrettyString ( )
-  {
-    return this.prettyString ;
-  }
-
-
-  /**
    * Returns the binding in this node.
    * 
    * @return The binding in this node.
@@ -842,6 +836,18 @@ public final class OutlineNode extends DefaultMutableTreeNode
       return this.expression ;
     }
     return null ;
+  }
+
+
+  /**
+   * Returns the nodeString.
+   * 
+   * @return The nodeString.
+   * @see #prettyString
+   */
+  public final String getPrettyString ( )
+  {
+    return this.prettyString ;
   }
 
 
@@ -906,10 +912,11 @@ public final class OutlineNode extends DefaultMutableTreeNode
     this.typeColor = getHTMLColor ( Theme.currentTheme ( ).getTypeColor ( ) ) ;
     this.selectionColor = getHTMLColor ( Theme.currentTheme ( )
         .getSelectionColor ( ) ) ;
-    this.bindingColor = getHTMLColor ( Theme.currentTheme ( )
-        .getBindingColor ( ) ) ;
-    this.unboundColor = getHTMLColor ( Theme.currentTheme ( )
-        .getUnboundColor ( ) ) ;
+    this.boundIdColor = getHTMLColor ( Theme.currentTheme ( )
+        .getBoundIdColor ( ) ) ;
+    this.bindingIdColor = getHTMLColor ( Theme.currentTheme ( )
+        .getBindingIdColor ( ) ) ;
+    this.freeIdColor = getHTMLColor ( Theme.currentTheme ( ).getFreeIdColor ( ) ) ;
     this.outlineNodeCacheList.clear ( ) ;
   }
 
@@ -917,19 +924,19 @@ public final class OutlineNode extends DefaultMutableTreeNode
   /**
    * Sets the {@link Identifier} which should be highlighted.
    * 
-   * @param pBoundedIdentifier The {@link Identifier} which should be
+   * @param pBindingIdentifier The {@link Identifier} which should be
    *          highlighted.
    */
-  public void setBoundedIdentifier ( Identifier pBoundedIdentifier )
+  public void setBindingIdentifier ( Identifier pBindingIdentifier )
   {
-    if ( ( this.isType ) || ( pBoundedIdentifier == null ) )
+    if ( ( this.isType ) || ( pBindingIdentifier == null ) )
     {
       this.boundedStart = NO_BINDING ;
       this.boundedEnd = NO_BINDING ;
       return ;
     }
     PrettyAnnotation prettyAnnotation = this.expression.toPrettyString ( )
-        .getAnnotationForPrintable ( pBoundedIdentifier ) ;
+        .getAnnotationForPrintable ( pBindingIdentifier ) ;
     this.boundedStart = prettyAnnotation.getStartOffset ( ) ;
     this.boundedEnd = prettyAnnotation.getEndOffset ( ) ;
   }
@@ -1019,7 +1026,7 @@ public final class OutlineNode extends DefaultMutableTreeNode
     this.lastSelectionStart = selectionStart ;
     this.lastSelectionEnd = selectionEnd ;
     String cache = this.outlineNodeCacheList.getCaption ( selectionStart ,
-        selectionEnd , selection , binding , unbound ,
+        selectionEnd , selection , binding , free ,
         ( replace && this.replaceInThisNode ) , this.boundedStart ,
         this.boundedEnd , this.breakCount , this.outlineBinding ) ;
     if ( cache != null )
@@ -1099,23 +1106,23 @@ public final class OutlineNode extends DefaultMutableTreeNode
         }
       }
       /*
-       * Binding
+       * Bound Identifier
        */
       else if ( ( binding ) && ( this.isExpression )
           && ( this.outlineBinding != null )
-          && ( ( count = charIsBinding ( charIndex ) ) >= 0 ) )
+          && ( ( count = charIsBoundIdentifier ( charIndex ) ) >= 0 ) )
       {
         charIndex = updateCaptionBinding ( charIndex , count ,
-            prettyCharIterator , result , prefix , this.bindingColor ) ;
+            prettyCharIterator , result , prefix , this.boundIdColor ) ;
       }
       /*
-       * The selected Identifier is bounded in this Expression.
+       * Binding Identifier.
        */
       else if ( ( binding )
-          && ( ( count = charIsSelectedBounded ( charIndex ) ) >= 0 ) )
+          && ( ( count = charIsBindingIdentifier ( charIndex ) ) >= 0 ) )
       {
         charIndex = updateCaptionBinding ( charIndex , count ,
-            prettyCharIterator , result , prefix , this.bindingColor ) ;
+            prettyCharIterator , result , prefix , this.bindingIdColor ) ;
       }
       /*
        * The selected Identifier-Expression is bounded in this Expression, but
@@ -1132,11 +1139,11 @@ public final class OutlineNode extends DefaultMutableTreeNode
       /*
        * Unbound Identifier
        */
-      else if ( ( unbound ) && ( this.outlineUnbound != null )
-          && ( ( count = charIsUnbound ( charIndex ) ) >= 0 ) )
+      else if ( ( free ) && ( this.outlineUnbound != null )
+          && ( ( count = charIsFreeIdentifier ( charIndex ) ) >= 0 ) )
       {
         charIndex = updateCaptionBinding ( charIndex , count ,
-            prettyCharIterator , result , prefix , this.unboundColor ) ;
+            prettyCharIterator , result , prefix , this.freeIdColor ) ;
       }
       /*
        * Keyword
@@ -1180,7 +1187,7 @@ public final class OutlineNode extends DefaultMutableTreeNode
     }
     result.append ( EXPRESSION_END ) ;
     OutlineNodeCache outlineNodeCache = new OutlineNodeCache ( selectionStart ,
-        selectionEnd , selection , binding , unbound ,
+        selectionEnd , selection , binding , free ,
         ( replace && this.replaceInThisNode ) , this.boundedStart ,
         this.boundedEnd , this.breakCount , this.outlineBinding , result
             .toString ( ) ) ;

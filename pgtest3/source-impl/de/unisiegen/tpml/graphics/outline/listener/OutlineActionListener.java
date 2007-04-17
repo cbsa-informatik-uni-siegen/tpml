@@ -84,11 +84,11 @@ public final class OutlineActionListener implements ActionListener
           this.outlineUI.getJMenuItemBinding ( ).isSelected ( ) , null ,
           OutlineUI.BINDING ) ;
     }
-    else if ( OutlineUI.UNBOUND.equals ( actionCommand ) )
+    else if ( OutlineUI.FREE.equals ( actionCommand ) )
     {
       this.outlineUI.getOutlineItemListener ( ).update (
           this.outlineUI.getJMenuItemUnbound ( ).isSelected ( ) , null ,
-          OutlineUI.UNBOUND ) ;
+          OutlineUI.FREE ) ;
     }
     else if ( OutlineUI.REPLACE.equals ( actionCommand ) )
     {
