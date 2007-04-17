@@ -31,7 +31,7 @@ public final class Location extends Value
    * 
    * @param pName the name of the memory location.
    */
-  public Location ( final String pName )
+  public Location ( String pName )
   {
     this.name = pName ;
   }
@@ -55,11 +55,11 @@ public final class Location extends Value
    * @see Expression#equals(Object)
    */
   @ Override
-  public boolean equals ( final Object pObject )
+  public boolean equals ( Object pObject )
   {
     if ( pObject instanceof Location )
     {
-      final Location other = ( Location ) pObject ;
+      Location other = ( Location ) pObject ;
       return this.name.equals ( other.name ) ;
     }
     return false ;
@@ -105,10 +105,9 @@ public final class Location extends Value
    * @see Expression#substitute(Identifier, Expression, boolean)
    */
   @ Override
-  public Location substitute ( final Identifier pId ,
-      final Expression pExpression )
+  public Location substitute ( Identifier pId , Expression pExpression )
   {
-    return this.substitute ( pId , pExpression , false ) ;
+    return substitute ( pId , pExpression , false ) ;
   }
 
 
@@ -120,9 +119,9 @@ public final class Location extends Value
    */
   @ Override
   public Location substitute ( @ SuppressWarnings ( "unused" )
-  final Identifier pId , @ SuppressWarnings ( "unused" )
-  final Expression pExpression , @ SuppressWarnings ( "unused" )
-  final boolean pAttributeRename )
+  Identifier pId , @ SuppressWarnings ( "unused" )
+  Expression pExpression , @ SuppressWarnings ( "unused" )
+  boolean pAttributeRename )
   {
     return this ;
   }
@@ -135,12 +134,12 @@ public final class Location extends Value
    */
   public @ Override
   PrettyStringBuilder toPrettyStringBuilder (
-      final PrettyStringBuilderFactory pPrettyStringBuilderFactory )
+      PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
     if ( this.prettyStringBuilder == null )
     {
       this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
-          PrettyPrintPriorities.PRIO_LOCATION ) ;
+          PRIO_LOCATION ) ;
       this.prettyStringBuilder.addText ( this.name ) ;
     }
     return this.prettyStringBuilder ;

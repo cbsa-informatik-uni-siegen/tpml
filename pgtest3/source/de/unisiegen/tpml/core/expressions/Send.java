@@ -53,7 +53,7 @@ public final class Send extends Expression implements DefaultIdentifiers ,
    * @param pExpression TODO
    * @param pIdentifier TODO
    */
-  public Send ( final Expression pExpression , final Identifier pIdentifier )
+  public Send ( Expression pExpression , Identifier pIdentifier )
   {
     if ( pExpression == null )
     {
@@ -93,11 +93,11 @@ public final class Send extends Expression implements DefaultIdentifiers ,
    * {@inheritDoc}
    */
   @ Override
-  public boolean equals ( final Object pObject )
+  public boolean equals ( Object pObject )
   {
     if ( pObject instanceof Send )
     {
-      final Send other = ( Send ) pObject ;
+      Send other = ( Send ) pObject ;
       return ( ( this.expressions [ 0 ].equals ( other.expressions [ 0 ] ) ) && ( this.identifiers [ 0 ]
           .equals ( other.identifiers [ 0 ] ) ) ) ;
     }
@@ -147,7 +147,7 @@ public final class Send extends Expression implements DefaultIdentifiers ,
    *           bounds.
    * @see #getExpressions()
    */
-  public Expression getExpressions ( final int pIndex )
+  public Expression getExpressions ( int pIndex )
   {
     return this.expressions [ pIndex ] ;
   }
@@ -160,7 +160,7 @@ public final class Send extends Expression implements DefaultIdentifiers ,
    */
   public int [ ] getExpressionsIndex ( )
   {
-    return Send.INDICES_E ;
+    return INDICES_E ;
   }
 
 
@@ -194,7 +194,7 @@ public final class Send extends Expression implements DefaultIdentifiers ,
    * @return The <code>pIndex</code>th {@link Identifier} of this
    *         {@link Expression}.
    */
-  public Identifier getIdentifiers ( final int pIndex )
+  public Identifier getIdentifiers ( int pIndex )
   {
     return this.identifiers [ pIndex ] ;
   }
@@ -207,7 +207,7 @@ public final class Send extends Expression implements DefaultIdentifiers ,
    */
   public int [ ] getIdentifiersIndex ( )
   {
-    return Send.INDICES_ID ;
+    return INDICES_ID ;
   }
 
 
@@ -218,8 +218,8 @@ public final class Send extends Expression implements DefaultIdentifiers ,
    */
   public String [ ] getIdentifiersPrefix ( )
   {
-    final String [ ] result = new String [ 1 ] ;
-    result [ 0 ] = DefaultIdentifiers.PREFIX_M ;
+    String [ ] result = new String [ 1 ] ;
+    result [ 0 ] = PREFIX_M ;
     return result ;
   }
 
@@ -232,7 +232,7 @@ public final class Send extends Expression implements DefaultIdentifiers ,
    */
   public PrettyPrintable [ ] getSortedChildren ( )
   {
-    final PrettyPrintable [ ] result = new PrettyPrintable [ 2 ] ;
+    PrettyPrintable [ ] result = new PrettyPrintable [ 2 ] ;
     result [ 0 ] = this.expressions [ 0 ] ;
     result [ 1 ] = this.identifiers [ 0 ] ;
     return result ;
@@ -266,9 +266,9 @@ public final class Send extends Expression implements DefaultIdentifiers ,
    * @see Expression#substitute(Identifier, Expression, boolean)
    */
   @ Override
-  public Send substitute ( final Identifier pId , final Expression pExpression )
+  public Send substitute ( Identifier pId , Expression pExpression )
   {
-    return this.substitute ( pId , pExpression , false ) ;
+    return substitute ( pId , pExpression , false ) ;
   }
 
 
@@ -276,11 +276,11 @@ public final class Send extends Expression implements DefaultIdentifiers ,
    * {@inheritDoc}
    */
   @ Override
-  public Send substitute ( final Identifier pId , final Expression pExpression ,
-      final boolean pAttributeRename )
+  public Send substitute ( Identifier pId , Expression pExpression ,
+      boolean pAttributeRename )
   {
-    final Expression newE = this.expressions [ 0 ].substitute ( pId ,
-        pExpression , pAttributeRename ) ;
+    Expression newE = this.expressions [ 0 ].substitute ( pId , pExpression ,
+        pAttributeRename ) ;
     return new Send ( newE , this.identifiers [ 0 ].clone ( ) ) ;
   }
 
@@ -292,10 +292,9 @@ public final class Send extends Expression implements DefaultIdentifiers ,
    * @return TODO
    */
   @ Override
-  public Send substitute ( final TypeSubstitution pTypeSubstitution )
+  public Send substitute ( TypeSubstitution pTypeSubstitution )
   {
-    final Expression newE = this.expressions [ 0 ]
-        .substitute ( pTypeSubstitution ) ;
+    Expression newE = this.expressions [ 0 ].substitute ( pTypeSubstitution ) ;
     return new Send ( newE , this.identifiers [ 0 ].clone ( ) ) ;
   }
 
@@ -305,21 +304,19 @@ public final class Send extends Expression implements DefaultIdentifiers ,
    */
   @ Override
   public PrettyStringBuilder toPrettyStringBuilder (
-      final PrettyStringBuilderFactory pPrettyStringBuilderFactory )
+      PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
     if ( this.prettyStringBuilder == null )
     {
       this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
-          PrettyPrintPriorities.PRIO_SEND ) ;
+          PRIO_SEND ) ;
       this.prettyStringBuilder.addBuilder ( this.expressions [ 0 ]
-          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-          PrettyPrintPriorities.PRIO_SEND_E ) ;
+          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_SEND_E ) ;
       this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addKeyword ( "#" ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addBuilder ( this.identifiers [ 0 ]
-          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-          PrettyPrintPriorities.PRIO_ID ) ;
+          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_ID ) ;
     }
     return this.prettyStringBuilder ;
   }

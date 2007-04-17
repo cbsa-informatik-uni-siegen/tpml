@@ -105,8 +105,7 @@ public final class OutlinePreferences
     this.selection = this.preferences.getBoolean ( OutlineUI.SELECTION , true ) ;
     this.autoUpdate = this.preferences
         .getBoolean ( OutlineUI.AUTOUPDATE , true ) ;
-    this.dividerLocation = this.preferences.getInt (
-        OutlinePreferences.DIVIDERLOCATION , 300 ) ;
+    this.dividerLocation = this.preferences.getInt ( DIVIDERLOCATION , 300 ) ;
     OutlineNode.setReplace ( this.replace ) ;
     OutlineNode.setBinding ( this.binding ) ;
     OutlineNode.setUnbound ( this.unbound ) ;
@@ -211,7 +210,7 @@ public final class OutlinePreferences
    * @see #autoUpdate
    * @see #isAutoUpdate()
    */
-  public final void setAutoUpdate ( final boolean pAutoupdate )
+  public final void setAutoUpdate ( boolean pAutoupdate )
   {
     this.autoUpdate = pAutoupdate ;
     this.preferences.putBoolean ( OutlineUI.AUTOUPDATE , pAutoupdate ) ;
@@ -227,7 +226,7 @@ public final class OutlinePreferences
    * @see #binding
    * @see #isBinding()
    */
-  public final void setBinding ( final boolean pBinding )
+  public final void setBinding ( boolean pBinding )
   {
     this.binding = pBinding ;
     this.preferences.putBoolean ( OutlineUI.BINDING , pBinding ) ;
@@ -243,11 +242,10 @@ public final class OutlinePreferences
    * @see #dividerLocation
    * @see #getDividerLocation()
    */
-  public final void setDividerLocation ( final int pDividerLocation )
+  public final void setDividerLocation ( int pDividerLocation )
   {
     this.dividerLocation = pDividerLocation ;
-    this.preferences.putInt ( OutlinePreferences.DIVIDERLOCATION ,
-        pDividerLocation ) ;
+    this.preferences.putInt ( DIVIDERLOCATION , pDividerLocation ) ;
   }
 
 
@@ -259,7 +257,7 @@ public final class OutlinePreferences
    * @see #replace
    * @see #isReplace()
    */
-  public final void setReplace ( final boolean pReplace )
+  public final void setReplace ( boolean pReplace )
   {
     this.replace = pReplace ;
     this.preferences.putBoolean ( OutlineUI.REPLACE , pReplace ) ;
@@ -275,7 +273,7 @@ public final class OutlinePreferences
    * @see #selection
    * @see #isSelection()
    */
-  public final void setSelection ( final boolean pSelection )
+  public final void setSelection ( boolean pSelection )
   {
     this.selection = pSelection ;
     this.preferences.putBoolean ( OutlineUI.SELECTION , pSelection ) ;
@@ -290,7 +288,7 @@ public final class OutlinePreferences
    * @see #unbound
    * @see #isUnbound()
    */
-  public final void setUnbound ( final boolean pUnbound )
+  public final void setUnbound ( boolean pUnbound )
   {
     this.unbound = pUnbound ;
     this.preferences.putBoolean ( OutlineUI.UNBOUND , pUnbound ) ;

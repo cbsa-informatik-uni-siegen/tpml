@@ -28,7 +28,7 @@ public final class OutlineItemListener implements ItemListener
    * 
    * @param pOutlineUI The {@link OutlineUI}.
    */
-  public OutlineItemListener ( final OutlineUI pOutlineUI )
+  public OutlineItemListener ( OutlineUI pOutlineUI )
   {
     this.outlineUI = pOutlineUI ;
   }
@@ -41,7 +41,7 @@ public final class OutlineItemListener implements ItemListener
    * @param pSelected The selection of the <code>JCheckBox</code> selection or
    *          the <code>JCheckBoxMenuItem</code> selection.
    */
-  private final void autoUpdate ( final boolean pSelected )
+  private final void autoUpdate ( boolean pSelected )
   {
     this.outlineUI.getAbstractOutline ( ).getOutlinePreferences ( )
         .setAutoUpdate ( pSelected ) ;
@@ -58,7 +58,7 @@ public final class OutlineItemListener implements ItemListener
    * @param pSelected The selection of the <code>JCheckBox</code> selection or
    *          the <code>JCheckBoxMenuItem</code> selection.
    */
-  private final void binding ( final boolean pSelected )
+  private final void binding ( boolean pSelected )
   {
     OutlineNode.setBinding ( pSelected ) ;
     this.outlineUI.getOutlineTreeSelectionListener ( ).reset ( ) ;
@@ -77,10 +77,10 @@ public final class OutlineItemListener implements ItemListener
    * @param pItemEvent The <code>ItemEvent</code>.
    * @see ItemListener#itemStateChanged(ItemEvent)
    */
-  public final void itemStateChanged ( final ItemEvent pItemEvent )
+  public final void itemStateChanged ( ItemEvent pItemEvent )
   {
-    this.update ( pItemEvent.getStateChange ( ) == ItemEvent.SELECTED ,
-        pItemEvent.getSource ( ) , null ) ;
+    update ( pItemEvent.getStateChange ( ) == ItemEvent.SELECTED , pItemEvent
+        .getSource ( ) , null ) ;
   }
 
 
@@ -92,7 +92,7 @@ public final class OutlineItemListener implements ItemListener
    * @param pSelected The selection of the <code>JCheckBox</code> selection or
    *          the <code>JCheckBoxMenuItem</code> selection.
    */
-  private final void replace ( final boolean pSelected )
+  private final void replace ( boolean pSelected )
   {
     OutlineNode.setReplace ( pSelected ) ;
     this.outlineUI.getOutlineTreeSelectionListener ( ).reset ( ) ;
@@ -113,7 +113,7 @@ public final class OutlineItemListener implements ItemListener
    * @param pSelected The selection of the <code>JCheckBox</code> selection or
    *          the <code>JCheckBoxMenuItem</code> selection.
    */
-  private final void selection ( final boolean pSelected )
+  private final void selection ( boolean pSelected )
   {
     OutlineNode.setSelection ( pSelected ) ;
     this.outlineUI.getOutlineTreeSelectionListener ( ).reset ( ) ;
@@ -134,7 +134,7 @@ public final class OutlineItemListener implements ItemListener
    * @param pSelected The selection of the <code>JCheckBox</code> selection or
    *          the <code>JCheckBoxMenuItem</code> selection.
    */
-  private final void unbound ( final boolean pSelected )
+  private final void unbound ( boolean pSelected )
   {
     OutlineNode.setUnbound ( pSelected ) ;
     this.outlineUI.getOutlineTreeSelectionListener ( ).reset ( ) ;
@@ -159,43 +159,43 @@ public final class OutlineItemListener implements ItemListener
    * @param pActionCommand The <code>ActionCommand</code>, if the source is a
    *          instance of <code>JCheckBoxMenuItem</code>.
    */
-  public final void update ( final boolean pSelected , final Object pSource ,
-      final String pActionCommand )
+  public final void update ( boolean pSelected , Object pSource ,
+      String pActionCommand )
   {
     // Replace
     if ( ( OutlineUI.REPLACE.equals ( pActionCommand ) )
         || ( ( pSource != null ) && ( pSource.equals ( this.outlineUI
             .getJCheckBoxReplace ( ) ) ) ) )
     {
-      this.replace ( pSelected ) ;
+      replace ( pSelected ) ;
     }
     // Binding
     else if ( ( OutlineUI.BINDING.equals ( pActionCommand ) )
         || ( ( pSource != null ) && ( pSource.equals ( this.outlineUI
             .getJCheckBoxBinding ( ) ) ) ) )
     {
-      this.binding ( pSelected ) ;
+      binding ( pSelected ) ;
     }
     // Unbound
     else if ( ( OutlineUI.UNBOUND.equals ( pActionCommand ) )
         || ( ( pSource != null ) && ( pSource.equals ( this.outlineUI
             .getJCheckBoxUnbound ( ) ) ) ) )
     {
-      this.unbound ( pSelected ) ;
+      unbound ( pSelected ) ;
     }
     // Selection
     else if ( ( OutlineUI.SELECTION.equals ( pActionCommand ) )
         || ( ( pSource != null ) && ( pSource.equals ( this.outlineUI
             .getJCheckBoxSelection ( ) ) ) ) )
     {
-      this.selection ( pSelected ) ;
+      selection ( pSelected ) ;
     }
     // AutoUpdate
     else if ( ( OutlineUI.AUTOUPDATE.equals ( pActionCommand ) )
         || ( ( pSource != null ) && ( pSource.equals ( this.outlineUI
             .getJCheckBoxAutoUpdate ( ) ) ) ) )
     {
-      this.autoUpdate ( pSelected ) ;
+      autoUpdate ( pSelected ) ;
     }
   }
 }

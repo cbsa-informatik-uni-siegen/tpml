@@ -13,7 +13,7 @@ public class AttributeName extends Identifier
    * 
    * @param pName TODO
    */
-  public AttributeName ( final String pName )
+  public AttributeName ( String pName )
   {
     super ( pName ) ;
   }

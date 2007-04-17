@@ -41,8 +41,7 @@ public final class Sequence extends Expression implements ChildrenExpressions
    * @throws NullPointerException if <code>e1</code> or <code>e2</code> is
    *           <code>null</code>.
    */
-  public Sequence ( final Expression pExpression1 ,
-      final Expression pExpression2 )
+  public Sequence ( Expression pExpression1 , Expression pExpression2 )
   {
     if ( pExpression1 == null )
     {
@@ -87,11 +86,11 @@ public final class Sequence extends Expression implements ChildrenExpressions
    * @see Expression#equals(Object)
    */
   @ Override
-  public boolean equals ( final Object pObject )
+  public boolean equals ( Object pObject )
   {
     if ( pObject instanceof Sequence )
     {
-      final Sequence other = ( Sequence ) pObject ;
+      Sequence other = ( Sequence ) pObject ;
       return ( ( this.expressions [ 0 ].equals ( other.expressions [ 0 ] ) ) && ( this.expressions [ 1 ]
           .equals ( other.expressions [ 1 ] ) ) ) ;
     }
@@ -152,7 +151,7 @@ public final class Sequence extends Expression implements ChildrenExpressions
    *           bounds.
    * @see #getExpressions()
    */
-  public Expression getExpressions ( final int pIndex )
+  public Expression getExpressions ( int pIndex )
   {
     return this.expressions [ pIndex ] ;
   }
@@ -165,7 +164,7 @@ public final class Sequence extends Expression implements ChildrenExpressions
    */
   public int [ ] getExpressionsIndex ( )
   {
-    return Sequence.INDICES_E ;
+    return INDICES_E ;
   }
 
 
@@ -188,10 +187,9 @@ public final class Sequence extends Expression implements ChildrenExpressions
    * @see Expression#substitute(Identifier, Expression, boolean)
    */
   @ Override
-  public Sequence substitute ( final Identifier pId ,
-      final Expression pExpression )
+  public Sequence substitute ( Identifier pId , Expression pExpression )
   {
-    return this.substitute ( pId , pExpression , false ) ;
+    return substitute ( pId , pExpression , false ) ;
   }
 
 
@@ -201,13 +199,13 @@ public final class Sequence extends Expression implements ChildrenExpressions
    * @see Expression#substitute(Identifier, Expression, boolean)
    */
   @ Override
-  public Sequence substitute ( final Identifier pId ,
-      final Expression pExpression , final boolean pAttributeRename )
+  public Sequence substitute ( Identifier pId , Expression pExpression ,
+      boolean pAttributeRename )
   {
-    final Expression newE1 = this.expressions [ 0 ].substitute ( pId ,
-        pExpression , pAttributeRename ) ;
-    final Expression newE2 = this.expressions [ 1 ].substitute ( pId ,
-        pExpression , pAttributeRename ) ;
+    Expression newE1 = this.expressions [ 0 ].substitute ( pId , pExpression ,
+        pAttributeRename ) ;
+    Expression newE2 = this.expressions [ 1 ].substitute ( pId , pExpression ,
+        pAttributeRename ) ;
     return new Sequence ( newE1 , newE2 ) ;
   }
 
@@ -218,12 +216,10 @@ public final class Sequence extends Expression implements ChildrenExpressions
    * @see Expression#substitute(TypeSubstitution)
    */
   @ Override
-  public Sequence substitute ( final TypeSubstitution pTypeSubstitution )
+  public Sequence substitute ( TypeSubstitution pTypeSubstitution )
   {
-    final Expression newE1 = this.expressions [ 0 ]
-        .substitute ( pTypeSubstitution ) ;
-    final Expression newE2 = this.expressions [ 1 ]
-        .substitute ( pTypeSubstitution ) ;
+    Expression newE1 = this.expressions [ 0 ].substitute ( pTypeSubstitution ) ;
+    Expression newE2 = this.expressions [ 1 ].substitute ( pTypeSubstitution ) ;
     return new Sequence ( newE1 , newE2 ) ;
   }
 
@@ -235,20 +231,20 @@ public final class Sequence extends Expression implements ChildrenExpressions
    */
   @ Override
   public PrettyStringBuilder toPrettyStringBuilder (
-      final PrettyStringBuilderFactory pPrettyStringBuilderFactory )
+      PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
     if ( this.prettyStringBuilder == null )
     {
       this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
-          PrettyPrintPriorities.PRIO_SEQUENCE ) ;
+          PRIO_SEQUENCE ) ;
       this.prettyStringBuilder.addBuilder ( this.expressions [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-          PrettyPrintPriorities.PRIO_SEQUENCE_E1 ) ;
+          PRIO_SEQUENCE_E1 ) ;
       this.prettyStringBuilder.addText ( "; " ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addBreak ( ) ;
       this.prettyStringBuilder.addBuilder ( this.expressions [ 1 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-          PrettyPrintPriorities.PRIO_SEQUENCE_E2 ) ;
+          PRIO_SEQUENCE_E2 ) ;
     }
     return this.prettyStringBuilder ;
   }

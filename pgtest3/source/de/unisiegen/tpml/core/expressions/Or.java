@@ -44,7 +44,7 @@ public final class Or extends Expression implements ChildrenExpressions
    * @throws NullPointerException if <code>e1</code> or <code>e2</code> is
    *           <code>null</code>.
    */
-  public Or ( final Expression pExpression1 , final Expression pExpression2 )
+  public Or ( Expression pExpression1 , Expression pExpression2 )
   {
     if ( pExpression1 == null )
     {
@@ -89,11 +89,11 @@ public final class Or extends Expression implements ChildrenExpressions
    * @see Expression#equals(Object)
    */
   @ Override
-  public boolean equals ( final Object pObject )
+  public boolean equals ( Object pObject )
   {
     if ( pObject instanceof Or )
     {
-      final Or other = ( Or ) pObject ;
+      Or other = ( Or ) pObject ;
       return ( ( this.expressions [ 0 ].equals ( other.expressions [ 0 ] ) ) && ( this.expressions [ 1 ]
           .equals ( other.expressions [ 0 ] ) ) ) ;
     }
@@ -154,7 +154,7 @@ public final class Or extends Expression implements ChildrenExpressions
    *           bounds.
    * @see #getExpressions()
    */
-  public Expression getExpressions ( final int pIndex )
+  public Expression getExpressions ( int pIndex )
   {
     return this.expressions [ pIndex ] ;
   }
@@ -167,7 +167,7 @@ public final class Or extends Expression implements ChildrenExpressions
    */
   public int [ ] getExpressionsIndex ( )
   {
-    return Or.INDICES_E ;
+    return INDICES_E ;
   }
 
 
@@ -190,9 +190,9 @@ public final class Or extends Expression implements ChildrenExpressions
    * @see Expression#substitute(Identifier, Expression, boolean)
    */
   @ Override
-  public Or substitute ( final Identifier pId , final Expression pExpression )
+  public Or substitute ( Identifier pId , Expression pExpression )
   {
-    return this.substitute ( pId , pExpression , false ) ;
+    return substitute ( pId , pExpression , false ) ;
   }
 
 
@@ -202,13 +202,13 @@ public final class Or extends Expression implements ChildrenExpressions
    * @see Expression#substitute(Identifier, Expression, boolean)
    */
   @ Override
-  public Or substitute ( final Identifier pId , final Expression pExpression ,
-      final boolean pAttributeRename )
+  public Or substitute ( Identifier pId , Expression pExpression ,
+      boolean pAttributeRename )
   {
-    final Expression newE1 = this.expressions [ 0 ].substitute ( pId ,
-        pExpression , pAttributeRename ) ;
-    final Expression newE2 = this.expressions [ 0 ].substitute ( pId ,
-        pExpression , pAttributeRename ) ;
+    Expression newE1 = this.expressions [ 0 ].substitute ( pId , pExpression ,
+        pAttributeRename ) ;
+    Expression newE2 = this.expressions [ 0 ].substitute ( pId , pExpression ,
+        pAttributeRename ) ;
     return new Or ( newE1 , newE2 ) ;
   }
 
@@ -219,12 +219,10 @@ public final class Or extends Expression implements ChildrenExpressions
    * @see Expression#substitute(TypeSubstitution)
    */
   @ Override
-  public Or substitute ( final TypeSubstitution pTypeSubstitution )
+  public Or substitute ( TypeSubstitution pTypeSubstitution )
   {
-    final Expression newE1 = this.expressions [ 0 ]
-        .substitute ( pTypeSubstitution ) ;
-    final Expression newE2 = this.expressions [ 0 ]
-        .substitute ( pTypeSubstitution ) ;
+    Expression newE1 = this.expressions [ 0 ].substitute ( pTypeSubstitution ) ;
+    Expression newE2 = this.expressions [ 0 ].substitute ( pTypeSubstitution ) ;
     return new Or ( newE1 , newE2 ) ;
   }
 
@@ -236,22 +234,20 @@ public final class Or extends Expression implements ChildrenExpressions
    */
   @ Override
   public PrettyStringBuilder toPrettyStringBuilder (
-      final PrettyStringBuilderFactory pPrettyStringBuilderFactory )
+      PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
     if ( this.prettyStringBuilder == null )
     {
       this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
-          PrettyPrintPriorities.PRIO_OR ) ;
+          PRIO_OR ) ;
       this.prettyStringBuilder.addBuilder ( this.expressions [ 0 ]
-          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-          PrettyPrintPriorities.PRIO_OR_E1 ) ;
+          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_OR_E1 ) ;
       this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addBreak ( ) ;
       this.prettyStringBuilder.addKeyword ( "||" ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addBuilder ( this.expressions [ 1 ]
-          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-          PrettyPrintPriorities.PRIO_OR_E2 ) ;
+          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_OR_E2 ) ;
     }
     return this.prettyStringBuilder ;
   }

@@ -430,13 +430,13 @@ public final class OutlineUI
    * 
    * @param pDefaultOutline The {@link DefaultOutline}.
    */
-  public OutlineUI ( final DefaultOutline pDefaultOutline )
+  public OutlineUI ( DefaultOutline pDefaultOutline )
   {
     this.defaultOutline = pDefaultOutline ;
     // Insets
     this.insets = new Insets ( 0 , 0 , 0 , 0 ) ;
     // Preferences
-    this.resourceBundle = ResourceBundle.getBundle ( OutlineUI.RESOURCE ) ;
+    this.resourceBundle = ResourceBundle.getBundle ( RESOURCE ) ;
     // Listener
     this.outlineItemListener = new OutlineItemListener ( this ) ;
     this.outlineActionListener = new OutlineActionListener ( this ) ;
@@ -444,7 +444,7 @@ public final class OutlineUI
         this.defaultOutline ) ;
     this.outlineMouseListener = new OutlineMouseListener ( this ) ;
     // PopupMenu
-    this.createPopupMenu ( ) ;
+    createPopupMenu ( ) ;
     // Layout
     this.gridBagLayout = new GridBagLayout ( ) ;
     this.gridBagConstraints = new GridBagConstraints ( ) ;
@@ -453,11 +453,11 @@ public final class OutlineUI
     this.jPanelPreferences.setLayout ( this.gridBagLayout ) ;
     // CheckBox Selection
     this.jCheckBoxSelection = new JCheckBox ( this.resourceBundle
-        .getString ( OutlineUI.SELECTION ) ) ;
+        .getString ( SELECTION ) ) ;
     this.jCheckBoxSelection.setMnemonic ( this.resourceBundle.getString (
-        OutlineUI.SELECTION + OutlineUI.MNEMONIC ).charAt ( 0 ) ) ;
+        SELECTION + MNEMONIC ).charAt ( 0 ) ) ;
     this.jCheckBoxSelection.setToolTipText ( this.resourceBundle
-        .getString ( OutlineUI.SELECTION + OutlineUI.TOOLTIP ) ) ;
+        .getString ( SELECTION + TOOLTIP ) ) ;
     this.jCheckBoxSelection.setSelected ( this.defaultOutline
         .getOutlinePreferences ( ).isSelection ( ) ) ;
     this.jCheckBoxSelection.setFocusable ( false ) ;
@@ -473,11 +473,11 @@ public final class OutlineUI
         this.gridBagConstraints ) ;
     // CheckBox Binding
     this.jCheckBoxBinding = new JCheckBox ( this.resourceBundle
-        .getString ( OutlineUI.BINDING ) ) ;
+        .getString ( BINDING ) ) ;
     this.jCheckBoxBinding.setMnemonic ( this.resourceBundle.getString (
-        OutlineUI.BINDING + OutlineUI.MNEMONIC ).charAt ( 0 ) ) ;
+        BINDING + MNEMONIC ).charAt ( 0 ) ) ;
     this.jCheckBoxBinding.setToolTipText ( this.resourceBundle
-        .getString ( OutlineUI.BINDING + OutlineUI.TOOLTIP ) ) ;
+        .getString ( BINDING + TOOLTIP ) ) ;
     this.jCheckBoxBinding.setSelected ( this.defaultOutline
         .getOutlinePreferences ( ).isBinding ( ) ) ;
     this.jCheckBoxBinding.setFocusable ( false ) ;
@@ -493,11 +493,11 @@ public final class OutlineUI
         this.gridBagConstraints ) ;
     // CheckBox Unbound
     this.jCheckBoxUnbound = new JCheckBox ( this.resourceBundle
-        .getString ( OutlineUI.UNBOUND ) ) ;
+        .getString ( UNBOUND ) ) ;
     this.jCheckBoxUnbound.setMnemonic ( this.resourceBundle.getString (
-        OutlineUI.UNBOUND + OutlineUI.MNEMONIC ).charAt ( 0 ) ) ;
+        UNBOUND + MNEMONIC ).charAt ( 0 ) ) ;
     this.jCheckBoxUnbound.setToolTipText ( this.resourceBundle
-        .getString ( OutlineUI.UNBOUND + OutlineUI.TOOLTIP ) ) ;
+        .getString ( UNBOUND + TOOLTIP ) ) ;
     this.jCheckBoxUnbound.setSelected ( this.defaultOutline
         .getOutlinePreferences ( ).isUnbound ( ) ) ;
     this.jCheckBoxUnbound.setFocusable ( false ) ;
@@ -513,11 +513,11 @@ public final class OutlineUI
         this.gridBagConstraints ) ;
     // CheckBox Replace
     this.jCheckBoxReplace = new JCheckBox ( this.resourceBundle
-        .getString ( OutlineUI.REPLACE ) ) ;
+        .getString ( REPLACE ) ) ;
     this.jCheckBoxReplace.setMnemonic ( this.resourceBundle.getString (
-        OutlineUI.REPLACE + OutlineUI.MNEMONIC ).charAt ( 0 ) ) ;
+        REPLACE + MNEMONIC ).charAt ( 0 ) ) ;
     this.jCheckBoxReplace.setToolTipText ( this.resourceBundle
-        .getString ( OutlineUI.REPLACE + OutlineUI.TOOLTIP ) ) ;
+        .getString ( REPLACE + TOOLTIP ) ) ;
     this.jCheckBoxReplace.setSelected ( this.defaultOutline
         .getOutlinePreferences ( ).isReplace ( ) ) ;
     this.jCheckBoxReplace.setFocusable ( false ) ;
@@ -533,11 +533,11 @@ public final class OutlineUI
         this.gridBagConstraints ) ;
     // CheckBox AutoUpdate
     this.jCheckBoxAutoUpdate = new JCheckBox ( this.resourceBundle
-        .getString ( OutlineUI.AUTOUPDATE ) ) ;
+        .getString ( AUTOUPDATE ) ) ;
     this.jCheckBoxAutoUpdate.setMnemonic ( this.resourceBundle.getString (
-        OutlineUI.AUTOUPDATE + OutlineUI.MNEMONIC ).charAt ( 0 ) ) ;
+        AUTOUPDATE + MNEMONIC ).charAt ( 0 ) ) ;
     this.jCheckBoxAutoUpdate.setToolTipText ( this.resourceBundle
-        .getString ( OutlineUI.AUTOUPDATE + OutlineUI.TOOLTIP ) ) ;
+        .getString ( AUTOUPDATE + TOOLTIP ) ) ;
     this.jCheckBoxAutoUpdate.setSelected ( this.defaultOutline
         .getOutlinePreferences ( ).isAutoUpdate ( ) ) ;
     this.jCheckBoxAutoUpdate.setFocusable ( false ) ;
@@ -603,92 +603,91 @@ public final class OutlineUI
     this.jPopupMenu = new JPopupMenu ( ) ;
     // MenuItem Expand
     this.jMenuItemExpand = new JMenuItem ( this.resourceBundle
-        .getString ( OutlineUI.EXPAND ) ) ;
+        .getString ( EXPAND ) ) ;
     this.jMenuItemExpand.setMnemonic ( this.resourceBundle.getString (
-        OutlineUI.EXPAND + OutlineUI.MNEMONIC ).charAt ( 0 ) ) ;
+        EXPAND + MNEMONIC ).charAt ( 0 ) ) ;
     this.jMenuItemExpand.setToolTipText ( this.resourceBundle
-        .getString ( OutlineUI.EXPAND + OutlineUI.TOOLTIP ) ) ;
-    this.jMenuItemExpand.setIcon ( new ImageIcon ( this.getClass ( )
-        .getResource ( OutlineUI.EMPTYICON ) ) ) ;
-    this.jMenuItemExpand.setActionCommand ( OutlineUI.EXPAND ) ;
+        .getString ( EXPAND + TOOLTIP ) ) ;
+    this.jMenuItemExpand.setIcon ( new ImageIcon ( getClass ( ).getResource (
+        EMPTYICON ) ) ) ;
+    this.jMenuItemExpand.setActionCommand ( EXPAND ) ;
     this.jMenuItemExpand.addActionListener ( this.outlineActionListener ) ;
     this.jPopupMenu.add ( this.jMenuItemExpand ) ;
     // MenuItem ExpandAll
     this.jMenuItemExpandAll = new JMenuItem ( this.resourceBundle
-        .getString ( OutlineUI.EXPANDALL ) ) ;
+        .getString ( EXPANDALL ) ) ;
     this.jMenuItemExpandAll.setMnemonic ( this.resourceBundle.getString (
-        OutlineUI.EXPANDALL + OutlineUI.MNEMONIC ).charAt ( 0 ) ) ;
+        EXPANDALL + MNEMONIC ).charAt ( 0 ) ) ;
     this.jMenuItemExpandAll.setToolTipText ( this.resourceBundle
-        .getString ( OutlineUI.EXPANDALL + OutlineUI.TOOLTIP ) ) ;
-    this.jMenuItemExpandAll.setIcon ( new ImageIcon ( this.getClass ( )
-        .getResource ( OutlineUI.EMPTYICON ) ) ) ;
-    this.jMenuItemExpandAll.setActionCommand ( OutlineUI.EXPANDALL ) ;
+        .getString ( EXPANDALL + TOOLTIP ) ) ;
+    this.jMenuItemExpandAll.setIcon ( new ImageIcon ( getClass ( ).getResource (
+        EMPTYICON ) ) ) ;
+    this.jMenuItemExpandAll.setActionCommand ( EXPANDALL ) ;
     this.jMenuItemExpandAll.addActionListener ( this.outlineActionListener ) ;
     this.jPopupMenu.add ( this.jMenuItemExpandAll ) ;
     // Separator
     this.jPopupMenu.addSeparator ( ) ;
     // MenuItem Collapse
     this.jMenuItemCollapse = new JMenuItem ( this.resourceBundle
-        .getString ( OutlineUI.COLLAPSE ) ) ;
+        .getString ( COLLAPSE ) ) ;
     this.jMenuItemCollapse.setMnemonic ( this.resourceBundle.getString (
-        OutlineUI.COLLAPSE + OutlineUI.MNEMONIC ).charAt ( 0 ) ) ;
+        COLLAPSE + MNEMONIC ).charAt ( 0 ) ) ;
     this.jMenuItemCollapse.setToolTipText ( this.resourceBundle
-        .getString ( OutlineUI.COLLAPSE + OutlineUI.TOOLTIP ) ) ;
-    this.jMenuItemCollapse.setIcon ( new ImageIcon ( this.getClass ( )
-        .getResource ( OutlineUI.EMPTYICON ) ) ) ;
-    this.jMenuItemCollapse.setActionCommand ( OutlineUI.COLLAPSE ) ;
+        .getString ( COLLAPSE + TOOLTIP ) ) ;
+    this.jMenuItemCollapse.setIcon ( new ImageIcon ( getClass ( ).getResource (
+        EMPTYICON ) ) ) ;
+    this.jMenuItemCollapse.setActionCommand ( COLLAPSE ) ;
     this.jMenuItemCollapse.addActionListener ( this.outlineActionListener ) ;
     this.jPopupMenu.add ( this.jMenuItemCollapse ) ;
     // MenuItem CollapseAll
     this.jMenuItemCollapseAll = new JMenuItem ( this.resourceBundle
-        .getString ( OutlineUI.COLLAPSEALL ) ) ;
+        .getString ( COLLAPSEALL ) ) ;
     this.jMenuItemCollapseAll.setMnemonic ( this.resourceBundle.getString (
-        OutlineUI.COLLAPSEALL + OutlineUI.MNEMONIC ).charAt ( 0 ) ) ;
+        COLLAPSEALL + MNEMONIC ).charAt ( 0 ) ) ;
     this.jMenuItemCollapseAll.setToolTipText ( this.resourceBundle
-        .getString ( OutlineUI.COLLAPSEALL + OutlineUI.TOOLTIP ) ) ;
-    this.jMenuItemCollapseAll.setIcon ( new ImageIcon ( this.getClass ( )
-        .getResource ( OutlineUI.EMPTYICON ) ) ) ;
-    this.jMenuItemCollapseAll.setActionCommand ( OutlineUI.COLLAPSEALL ) ;
+        .getString ( COLLAPSEALL + TOOLTIP ) ) ;
+    this.jMenuItemCollapseAll.setIcon ( new ImageIcon ( getClass ( )
+        .getResource ( EMPTYICON ) ) ) ;
+    this.jMenuItemCollapseAll.setActionCommand ( COLLAPSEALL ) ;
     this.jMenuItemCollapseAll.addActionListener ( this.outlineActionListener ) ;
     this.jPopupMenu.add ( this.jMenuItemCollapseAll ) ;
     // Separator
     this.jPopupMenu.addSeparator ( ) ;
     // MenuItem Close
     this.jMenuItemClose = new JMenuItem ( this.resourceBundle
-        .getString ( OutlineUI.CLOSE ) ) ;
+        .getString ( CLOSE ) ) ;
     this.jMenuItemClose.setMnemonic ( this.resourceBundle.getString (
-        OutlineUI.CLOSE + OutlineUI.MNEMONIC ).charAt ( 0 ) ) ;
-    this.jMenuItemClose.setToolTipText ( this.resourceBundle
-        .getString ( OutlineUI.CLOSE + OutlineUI.TOOLTIP ) ) ;
-    this.jMenuItemClose.setIcon ( new ImageIcon ( this.getClass ( )
-        .getResource ( OutlineUI.EMPTYICON ) ) ) ;
-    this.jMenuItemClose.setActionCommand ( OutlineUI.CLOSE ) ;
+        CLOSE + MNEMONIC ).charAt ( 0 ) ) ;
+    this.jMenuItemClose.setToolTipText ( this.resourceBundle.getString ( CLOSE
+        + TOOLTIP ) ) ;
+    this.jMenuItemClose.setIcon ( new ImageIcon ( getClass ( ).getResource (
+        EMPTYICON ) ) ) ;
+    this.jMenuItemClose.setActionCommand ( CLOSE ) ;
     this.jMenuItemClose.addActionListener ( this.outlineActionListener ) ;
     this.jPopupMenu.add ( this.jMenuItemClose ) ;
     // MenuItem CloseAll
     this.jMenuItemCloseAll = new JMenuItem ( this.resourceBundle
-        .getString ( OutlineUI.CLOSEALL ) ) ;
+        .getString ( CLOSEALL ) ) ;
     this.jMenuItemCloseAll.setMnemonic ( this.resourceBundle.getString (
-        OutlineUI.CLOSEALL + OutlineUI.MNEMONIC ).charAt ( 0 ) ) ;
+        CLOSEALL + MNEMONIC ).charAt ( 0 ) ) ;
     this.jMenuItemCloseAll.setToolTipText ( this.resourceBundle
-        .getString ( OutlineUI.CLOSEALL + OutlineUI.TOOLTIP ) ) ;
-    this.jMenuItemCloseAll.setIcon ( new ImageIcon ( this.getClass ( )
-        .getResource ( OutlineUI.EMPTYICON ) ) ) ;
-    this.jMenuItemCloseAll.setActionCommand ( OutlineUI.CLOSEALL ) ;
+        .getString ( CLOSEALL + TOOLTIP ) ) ;
+    this.jMenuItemCloseAll.setIcon ( new ImageIcon ( getClass ( ).getResource (
+        EMPTYICON ) ) ) ;
+    this.jMenuItemCloseAll.setActionCommand ( CLOSEALL ) ;
     this.jMenuItemCloseAll.addActionListener ( this.outlineActionListener ) ;
     this.jPopupMenu.add ( this.jMenuItemCloseAll ) ;
     // Separator
     this.jPopupMenu.addSeparator ( ) ;
     // MenuItem Copy
-    this.jMenuItemCopy = new JMenuItem ( this.resourceBundle
-        .getString ( OutlineUI.COPY ) ) ;
+    this.jMenuItemCopy = new JMenuItem ( this.resourceBundle.getString ( COPY ) ) ;
     this.jMenuItemCopy.setMnemonic ( this.resourceBundle.getString (
-        OutlineUI.COPY + OutlineUI.MNEMONIC ).charAt ( 0 ) ) ;
-    this.jMenuItemCopy.setToolTipText ( this.resourceBundle
-        .getString ( OutlineUI.COPY + OutlineUI.TOOLTIP ) ) ;
-    this.jMenuItemCopy.setIcon ( new ImageIcon ( this.getClass ( ).getResource (
-        OutlineUI.COPYICON ) ) ) ;
-    this.jMenuItemCopy.setActionCommand ( OutlineUI.COPY ) ;
+        COPY + MNEMONIC ).charAt ( 0 ) ) ;
+    this.jMenuItemCopy.setToolTipText ( this.resourceBundle.getString ( COPY
+        + TOOLTIP ) ) ;
+    this.jMenuItemCopy.setIcon ( new ImageIcon ( getClass ( ).getResource (
+        COPYICON ) ) ) ;
+    this.jMenuItemCopy.setActionCommand ( COPY ) ;
     this.jMenuItemCopy.addActionListener ( this.outlineActionListener ) ;
     this.jMenuItemCopy.setAccelerator ( KeyStroke.getKeyStroke ( KeyEvent.VK_C ,
         InputEvent.CTRL_MASK ) ) ;
@@ -697,70 +696,70 @@ public final class OutlineUI
     this.jPopupMenu.addSeparator ( ) ;
     // MenuItem Preferences
     this.jMenuPreferences = new JMenu ( this.resourceBundle
-        .getString ( OutlineUI.PREFERENCES ) ) ;
+        .getString ( PREFERENCES ) ) ;
     this.jMenuPreferences.setMnemonic ( this.resourceBundle.getString (
-        OutlineUI.PREFERENCES + OutlineUI.MNEMONIC ).charAt ( 0 ) ) ;
-    this.jMenuPreferences.setIcon ( new ImageIcon ( this.getClass ( )
-        .getResource ( OutlineUI.EMPTYICON ) ) ) ;
-    this.jMenuPreferences.setActionCommand ( OutlineUI.PREFERENCES ) ;
+        PREFERENCES + MNEMONIC ).charAt ( 0 ) ) ;
+    this.jMenuPreferences.setIcon ( new ImageIcon ( getClass ( ).getResource (
+        EMPTYICON ) ) ) ;
+    this.jMenuPreferences.setActionCommand ( PREFERENCES ) ;
     this.jMenuPreferences.addActionListener ( this.outlineActionListener ) ;
     this.jPopupMenu.add ( this.jMenuPreferences ) ;
     // MenuItem Selection
     this.jMenuItemSelection = new JCheckBoxMenuItem ( this.resourceBundle
-        .getString ( OutlineUI.SELECTION ) ) ;
+        .getString ( SELECTION ) ) ;
     this.jMenuItemSelection.setMnemonic ( this.resourceBundle.getString (
-        OutlineUI.SELECTION + OutlineUI.MNEMONIC ).charAt ( 0 ) ) ;
+        SELECTION + MNEMONIC ).charAt ( 0 ) ) ;
     this.jMenuItemSelection.setToolTipText ( this.resourceBundle
-        .getString ( OutlineUI.SELECTION + OutlineUI.TOOLTIP ) ) ;
-    this.jMenuItemSelection.setActionCommand ( OutlineUI.SELECTION ) ;
+        .getString ( SELECTION + TOOLTIP ) ) ;
+    this.jMenuItemSelection.setActionCommand ( SELECTION ) ;
     this.jMenuItemSelection.addActionListener ( this.outlineActionListener ) ;
     this.jMenuItemSelection.setSelected ( this.defaultOutline
         .getOutlinePreferences ( ).isSelection ( ) ) ;
     this.jMenuPreferences.add ( this.jMenuItemSelection ) ;
     // MenuItem Binding
     this.jMenuItemBinding = new JCheckBoxMenuItem ( this.resourceBundle
-        .getString ( OutlineUI.BINDING ) ) ;
+        .getString ( BINDING ) ) ;
     this.jMenuItemBinding.setMnemonic ( this.resourceBundle.getString (
-        OutlineUI.BINDING + OutlineUI.MNEMONIC ).charAt ( 0 ) ) ;
+        BINDING + MNEMONIC ).charAt ( 0 ) ) ;
     this.jMenuItemBinding.setToolTipText ( this.resourceBundle
-        .getString ( OutlineUI.BINDING + OutlineUI.TOOLTIP ) ) ;
-    this.jMenuItemBinding.setActionCommand ( OutlineUI.BINDING ) ;
+        .getString ( BINDING + TOOLTIP ) ) ;
+    this.jMenuItemBinding.setActionCommand ( BINDING ) ;
     this.jMenuItemBinding.addActionListener ( this.outlineActionListener ) ;
     this.jMenuItemBinding.setSelected ( this.defaultOutline
         .getOutlinePreferences ( ).isBinding ( ) ) ;
     this.jMenuPreferences.add ( this.jMenuItemBinding ) ;
     // MenuItem Unbound
     this.jMenuItemUnbound = new JCheckBoxMenuItem ( this.resourceBundle
-        .getString ( OutlineUI.UNBOUND ) ) ;
+        .getString ( UNBOUND ) ) ;
     this.jMenuItemUnbound.setMnemonic ( this.resourceBundle.getString (
-        OutlineUI.UNBOUND + OutlineUI.MNEMONIC ).charAt ( 0 ) ) ;
+        UNBOUND + MNEMONIC ).charAt ( 0 ) ) ;
     this.jMenuItemUnbound.setToolTipText ( this.resourceBundle
-        .getString ( OutlineUI.UNBOUND + OutlineUI.TOOLTIP ) ) ;
-    this.jMenuItemUnbound.setActionCommand ( OutlineUI.UNBOUND ) ;
+        .getString ( UNBOUND + TOOLTIP ) ) ;
+    this.jMenuItemUnbound.setActionCommand ( UNBOUND ) ;
     this.jMenuItemUnbound.addActionListener ( this.outlineActionListener ) ;
     this.jMenuItemUnbound.setSelected ( this.defaultOutline
         .getOutlinePreferences ( ).isUnbound ( ) ) ;
     this.jMenuPreferences.add ( this.jMenuItemUnbound ) ;
     // MenuItem Replace
     this.jMenuItemReplace = new JCheckBoxMenuItem ( this.resourceBundle
-        .getString ( OutlineUI.REPLACE ) ) ;
+        .getString ( REPLACE ) ) ;
     this.jMenuItemReplace.setMnemonic ( this.resourceBundle.getString (
-        OutlineUI.REPLACE + OutlineUI.MNEMONIC ).charAt ( 0 ) ) ;
+        REPLACE + MNEMONIC ).charAt ( 0 ) ) ;
     this.jMenuItemReplace.setToolTipText ( this.resourceBundle
-        .getString ( OutlineUI.REPLACE + OutlineUI.TOOLTIP ) ) ;
-    this.jMenuItemReplace.setActionCommand ( OutlineUI.REPLACE ) ;
+        .getString ( REPLACE + TOOLTIP ) ) ;
+    this.jMenuItemReplace.setActionCommand ( REPLACE ) ;
     this.jMenuItemReplace.addActionListener ( this.outlineActionListener ) ;
     this.jMenuItemReplace.setSelected ( this.defaultOutline
         .getOutlinePreferences ( ).isReplace ( ) ) ;
     this.jMenuPreferences.add ( this.jMenuItemReplace ) ;
     // MenuItem AutoUpdate
     this.jMenuItemAutoUpdate = new JCheckBoxMenuItem ( this.resourceBundle
-        .getString ( OutlineUI.AUTOUPDATE ) ) ;
+        .getString ( AUTOUPDATE ) ) ;
     this.jMenuItemAutoUpdate.setMnemonic ( this.resourceBundle.getString (
-        OutlineUI.AUTOUPDATE + OutlineUI.MNEMONIC ).charAt ( 0 ) ) ;
+        AUTOUPDATE + MNEMONIC ).charAt ( 0 ) ) ;
     this.jMenuItemAutoUpdate.setToolTipText ( this.resourceBundle
-        .getString ( OutlineUI.AUTOUPDATE + OutlineUI.TOOLTIP ) ) ;
-    this.jMenuItemAutoUpdate.setActionCommand ( OutlineUI.AUTOUPDATE ) ;
+        .getString ( AUTOUPDATE + TOOLTIP ) ) ;
+    this.jMenuItemAutoUpdate.setActionCommand ( AUTOUPDATE ) ;
     this.jMenuItemAutoUpdate.addActionListener ( this.outlineActionListener ) ;
     this.jMenuItemAutoUpdate.setSelected ( this.defaultOutline
         .getOutlinePreferences ( ).isAutoUpdate ( ) ) ;
@@ -1109,7 +1108,7 @@ public final class OutlineUI
    * 
    * @param pStatus True, if the error should be set.
    */
-  public final void setError ( final boolean pStatus )
+  public final void setError ( boolean pStatus )
   {
     if ( pStatus )
     {
@@ -1128,7 +1127,7 @@ public final class OutlineUI
    * 
    * @param pRootNode The new root node.
    */
-  public final void setRootNode ( final DefaultMutableTreeNode pRootNode )
+  public final void setRootNode ( DefaultMutableTreeNode pRootNode )
   {
     this.rootNode = pRootNode ;
     this.treeModel.setRoot ( this.rootNode ) ;

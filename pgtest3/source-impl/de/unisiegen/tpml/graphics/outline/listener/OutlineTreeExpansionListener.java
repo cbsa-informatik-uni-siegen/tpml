@@ -27,7 +27,7 @@ public final class OutlineTreeExpansionListener implements
    * 
    * @param pDefaultOutline The {@link DefaultOutline}.
    */
-  public OutlineTreeExpansionListener ( final DefaultOutline pDefaultOutline )
+  public OutlineTreeExpansionListener ( DefaultOutline pDefaultOutline )
   {
     this.defaultOutline = pDefaultOutline ;
   }
@@ -39,7 +39,7 @@ public final class OutlineTreeExpansionListener implements
    * @param pTreeExpansionEvent The <code>TreeExpansionEvent</code>.
    * @see TreeExpansionListener#treeCollapsed(TreeExpansionEvent)
    */
-  public final void treeCollapsed ( final TreeExpansionEvent pTreeExpansionEvent )
+  public final void treeCollapsed ( TreeExpansionEvent pTreeExpansionEvent )
   {
     if ( pTreeExpansionEvent.getSource ( ).equals (
         this.defaultOutline.getOutlineUI ( ).getJTreeOutline ( ) ) )
@@ -55,7 +55,7 @@ public final class OutlineTreeExpansionListener implements
    * @param pTreeExpansionEvent The <code>TreeExpansionEvent</code>.
    * @see TreeExpansionListener#treeExpanded(TreeExpansionEvent)
    */
-  public final void treeExpanded ( final TreeExpansionEvent pTreeExpansionEvent )
+  public final void treeExpanded ( TreeExpansionEvent pTreeExpansionEvent )
   {
     if ( pTreeExpansionEvent.getSource ( ).equals (
         this.defaultOutline.getOutlineUI ( ).getJTreeOutline ( ) ) )

@@ -34,7 +34,7 @@ public final class OutlineNodeCacheList
    * 
    * @param pOutlineNodeCache The new {@link OutlineNodeCache}.
    */
-  public final void add ( final OutlineNodeCache pOutlineNodeCache )
+  public final void add ( OutlineNodeCache pOutlineNodeCache )
   {
     this.list.add ( pOutlineNodeCache ) ;
   }
@@ -69,13 +69,12 @@ public final class OutlineNodeCacheList
    * @param pOutlineBinding The {@link OutlineBinding}.
    * @return The cached caption, or <code>null</code> if it was not cached.
    */
-  public final String getCaption ( final int pSelectionStart ,
-      final int pSelectionEnd , final boolean pSelection ,
-      final boolean pBinding , final boolean pUnbound , final boolean pReplace ,
-      final int pBoundedStart , final int pBoundedEnd , final int pBreakCount ,
-      final OutlineBinding pOutlineBinding )
+  public final String getCaption ( int pSelectionStart , int pSelectionEnd ,
+      boolean pSelection , boolean pBinding , boolean pUnbound ,
+      boolean pReplace , int pBoundedStart , int pBoundedEnd , int pBreakCount ,
+      OutlineBinding pOutlineBinding )
   {
-    for ( final OutlineNodeCache current : this.list )
+    for ( OutlineNodeCache current : this.list )
     {
       if ( ( current.getSelectionStart ( ) == pSelectionStart )
           && ( current.getSelectionEnd ( ) == pSelectionEnd )

@@ -55,8 +55,7 @@ public final class PolyType extends Type implements DefaultTypes
    *           <code>pTau</code> is <code>null</code>.
    * @see MonoType
    */
-  public PolyType ( final Set < TypeVariable > pQuantifiedVariables ,
-      final MonoType pTau )
+  public PolyType ( Set < TypeVariable > pQuantifiedVariables , MonoType pTau )
   {
     if ( pQuantifiedVariables == null )
     {
@@ -85,8 +84,8 @@ public final class PolyType extends Type implements DefaultTypes
   @ Override
   public PolyType clone ( )
   {
-    final Set < TypeVariable > newQuantifiedVariables = new TreeSet < TypeVariable > ( ) ;
-    final Iterator < TypeVariable > it = this.quantifiedVariables.iterator ( ) ;
+    Set < TypeVariable > newQuantifiedVariables = new TreeSet < TypeVariable > ( ) ;
+    Iterator < TypeVariable > it = this.quantifiedVariables.iterator ( ) ;
     while ( it.hasNext ( ) )
     {
       newQuantifiedVariables.add ( it.next ( ) ) ;
@@ -101,11 +100,11 @@ public final class PolyType extends Type implements DefaultTypes
    * @see Object#equals(Object)
    */
   @ Override
-  public boolean equals ( final Object pObject )
+  public boolean equals ( Object pObject )
   {
     if ( pObject instanceof PolyType )
     {
-      final PolyType other = ( PolyType ) pObject ;
+      PolyType other = ( PolyType ) pObject ;
       return ( this.quantifiedVariables.equals ( other.quantifiedVariables ) && this.types [ 0 ]
           .equals ( other.types [ 0 ] ) ) ;
     }
@@ -180,7 +179,7 @@ public final class PolyType extends Type implements DefaultTypes
    * @param pIndex TODO
    * @return TODO
    */
-  public MonoType getTypes ( final int pIndex )
+  public MonoType getTypes ( int pIndex )
   {
     return this.types [ pIndex ] ;
   }
@@ -193,7 +192,7 @@ public final class PolyType extends Type implements DefaultTypes
    */
   public int [ ] getTypesIndex ( )
   {
-    return PolyType.INDICES_TYPE ;
+    return INDICES_TYPE ;
   }
 
 
@@ -204,8 +203,8 @@ public final class PolyType extends Type implements DefaultTypes
    */
   public String [ ] getTypesPrefix ( )
   {
-    final String [ ] result = new String [ 1 ] ;
-    result [ 0 ] = DefaultTypes.PREFIX_TAU ;
+    String [ ] result = new String [ 1 ] ;
+    result [ 0 ] = PREFIX_TAU ;
     return result ;
   }
 
@@ -228,13 +227,13 @@ public final class PolyType extends Type implements DefaultTypes
    * @see Type#substitute(TypeSubstitution)
    */
   @ Override
-  public PolyType substitute ( final TypeSubstitution pTypeSubstitution )
+  public PolyType substitute ( TypeSubstitution pTypeSubstitution )
   {
     // determine the monomorphic type
     MonoType newTau = this.types [ 0 ] ;
     // perform a bound rename on the type variables
-    final TreeSet < TypeVariable > newQuantifiedVariables = new TreeSet < TypeVariable > ( ) ;
-    for ( final TypeVariable tvar : this.quantifiedVariables )
+    TreeSet < TypeVariable > newQuantifiedVariables = new TreeSet < TypeVariable > ( ) ;
+    for ( TypeVariable tvar : this.quantifiedVariables )
     {
       // generate a type variable that is not present in the substitution
       TypeVariable tvarn = tvar ;
@@ -266,16 +265,16 @@ public final class PolyType extends Type implements DefaultTypes
    */
   @ Override
   public PrettyStringBuilder toPrettyStringBuilder (
-      final PrettyStringBuilderFactory pPrettyStringBuilderFactory )
+      PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
     if ( this.prettyStringBuilder == null )
     {
       this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
-          PrettyPrintPriorities.PRIO_POLY ) ;
+          PRIO_POLY ) ;
       if ( ! this.quantifiedVariables.isEmpty ( ) )
       {
         this.prettyStringBuilder.addText ( "\u2200" ) ; //$NON-NLS-1$
-        for ( final Iterator < TypeVariable > it = this.quantifiedVariables
+        for ( Iterator < TypeVariable > it = this.quantifiedVariables
             .iterator ( ) ; it.hasNext ( ) ; )
         {
           this.prettyStringBuilder.addText ( it.next ( ).toString ( ) ) ;
@@ -288,7 +287,7 @@ public final class PolyType extends Type implements DefaultTypes
       }
       this.prettyStringBuilder.addBuilder ( this.types [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-          PrettyPrintPriorities.PRIO_POLY_TAU ) ;
+          PRIO_POLY_TAU ) ;
     }
     return this.prettyStringBuilder ;
   }

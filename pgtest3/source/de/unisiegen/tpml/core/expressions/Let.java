@@ -4,7 +4,6 @@ package de.unisiegen.tpml.core.expressions ;
 import java.util.ArrayList ;
 import de.unisiegen.tpml.core.interfaces.BoundedIdentifiers ;
 import de.unisiegen.tpml.core.interfaces.ChildrenExpressions ;
-import de.unisiegen.tpml.core.interfaces.DefaultIdentifiers ;
 import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
@@ -83,8 +82,8 @@ public class Let extends Expression implements BoundedIdentifiers ,
    * @throws NullPointerException if <code>id</code>, <code>e1</code> or
    *           <code>e2</code> is <code>null</code>.
    */
-  public Let ( final Identifier pIdentifier , final MonoType pTau ,
-      final Expression pExpression1 , final Expression pExpression2 )
+  public Let ( Identifier pIdentifier , MonoType pTau ,
+      Expression pExpression1 , Expression pExpression2 )
   {
     if ( pIdentifier == null )
     {
@@ -154,12 +153,12 @@ public class Let extends Expression implements BoundedIdentifiers ,
    * @see Expression#equals(Object)
    */
   @ Override
-  public boolean equals ( final Object pObject )
+  public boolean equals ( Object pObject )
   {
     if ( ( pObject instanceof Let )
         && ( this.getClass ( ).equals ( pObject.getClass ( ) ) ) )
     {
-      final Let other = ( Let ) pObject ;
+      Let other = ( Let ) pObject ;
       return ( ( this.identifiers [ 0 ].equals ( other.identifiers [ 0 ] ) )
           && ( this.expressions [ 0 ].equals ( other.expressions [ 0 ] ) )
           && ( this.expressions [ 1 ].equals ( other.expressions [ 1 ] ) ) && ( ( this.types [ 0 ] == null ) ? ( other.types [ 0 ] == null )
@@ -201,9 +200,9 @@ public class Let extends Expression implements BoundedIdentifiers ,
     if ( this.boundedIdentifiers == null )
     {
       this.boundedIdentifiers = new ArrayList < ArrayList < Identifier >> ( ) ;
-      final ArrayList < Identifier > boundedIdList = new ArrayList < Identifier > ( ) ;
-      final ArrayList < Identifier > boundedE2 = this.expressions [ 1 ].free ( ) ;
-      for ( final Identifier freeId : boundedE2 )
+      ArrayList < Identifier > boundedIdList = new ArrayList < Identifier > ( ) ;
+      ArrayList < Identifier > boundedE2 = this.expressions [ 1 ].free ( ) ;
+      for ( Identifier freeId : boundedE2 )
       {
         if ( this.identifiers [ 0 ].equals ( freeId ) )
         {
@@ -225,11 +224,11 @@ public class Let extends Expression implements BoundedIdentifiers ,
    * @param pIndex The index of the list of {@link Identifier}s to return.
    * @return A list of in this {@link Expression} bounded {@link Identifier}s.
    */
-  public ArrayList < Identifier > getBoundedIdentifiers ( final int pIndex )
+  public ArrayList < Identifier > getBoundedIdentifiers ( int pIndex )
   {
     if ( this.boundedIdentifiers == null )
     {
-      return this.getBoundedIdentifiers ( ).get ( pIndex ) ;
+      return getBoundedIdentifiers ( ).get ( pIndex ) ;
     }
     return this.boundedIdentifiers.get ( pIndex ) ;
   }
@@ -288,7 +287,7 @@ public class Let extends Expression implements BoundedIdentifiers ,
    *           bounds.
    * @see #getExpressions()
    */
-  public Expression getExpressions ( final int pIndex )
+  public Expression getExpressions ( int pIndex )
   {
     return this.expressions [ pIndex ] ;
   }
@@ -301,7 +300,7 @@ public class Let extends Expression implements BoundedIdentifiers ,
    */
   public int [ ] getExpressionsIndex ( )
   {
-    return Let.INDICES_E ;
+    return INDICES_E ;
   }
 
 
@@ -335,7 +334,7 @@ public class Let extends Expression implements BoundedIdentifiers ,
    * @return The <code>pIndex</code>th {@link Identifier} of this
    *         {@link Expression}.
    */
-  public Identifier getIdentifiers ( final int pIndex )
+  public Identifier getIdentifiers ( int pIndex )
   {
     return this.identifiers [ pIndex ] ;
   }
@@ -348,7 +347,7 @@ public class Let extends Expression implements BoundedIdentifiers ,
    */
   public int [ ] getIdentifiersIndex ( )
   {
-    return Let.INDICES_ID ;
+    return INDICES_ID ;
   }
 
 
@@ -359,8 +358,8 @@ public class Let extends Expression implements BoundedIdentifiers ,
    */
   public String [ ] getIdentifiersPrefix ( )
   {
-    final String [ ] result = new String [ 1 ] ;
-    result [ 0 ] = DefaultIdentifiers.PREFIX_ID ;
+    String [ ] result = new String [ 1 ] ;
+    result [ 0 ] = PREFIX_ID ;
     return result ;
   }
 
@@ -399,7 +398,7 @@ public class Let extends Expression implements BoundedIdentifiers ,
    *           bounds.
    * @see #getTypes()
    */
-  public MonoType getTypes ( final int pIndex )
+  public MonoType getTypes ( int pIndex )
   {
     return this.types [ pIndex ] ;
   }
@@ -412,7 +411,7 @@ public class Let extends Expression implements BoundedIdentifiers ,
    */
   public int [ ] getTypesIndex ( )
   {
-    return Let.INDICES_TYPE ;
+    return INDICES_TYPE ;
   }
 
 
@@ -423,8 +422,8 @@ public class Let extends Expression implements BoundedIdentifiers ,
    */
   public String [ ] getTypesPrefix ( )
   {
-    final String [ ] result = new String [ 1 ] ;
-    result [ 0 ] = DefaultTypes.PREFIX_TAU ;
+    String [ ] result = new String [ 1 ] ;
+    result [ 0 ] = PREFIX_TAU ;
     return result ;
   }
 
@@ -450,9 +449,9 @@ public class Let extends Expression implements BoundedIdentifiers ,
    * @see Expression#substitute(Identifier, Expression, boolean)
    */
   @ Override
-  public Let substitute ( final Identifier pId , final Expression pExpression )
+  public Let substitute ( Identifier pId , Expression pExpression )
   {
-    return this.substitute ( pId , pExpression , false ) ;
+    return substitute ( pId , pExpression , false ) ;
   }
 
 
@@ -462,14 +461,14 @@ public class Let extends Expression implements BoundedIdentifiers ,
    * @see Expression#substitute(Identifier, Expression, boolean)
    */
   @ Override
-  public Let substitute ( final Identifier pId , final Expression pExpression ,
-      final boolean pAttributeRename )
+  public Let substitute ( Identifier pId , Expression pExpression ,
+      boolean pAttributeRename )
   {
     /*
      * Perform the substitution in e1.
      */
-    final Expression newE1 = this.expressions [ 0 ].substitute ( pId ,
-        pExpression , pAttributeRename ) ;
+    Expression newE1 = this.expressions [ 0 ].substitute ( pId , pExpression ,
+        pAttributeRename ) ;
     Expression newE2 = this.expressions [ 1 ] ;
     /*
      * Do not substitute in e2 , if the Identifiers are equal.
@@ -483,13 +482,13 @@ public class Let extends Expression implements BoundedIdentifiers ,
     /*
      * Perform the bound renaming if required.
      */
-    final ArrayList < Identifier > freeE2 = newE2.free ( ) ;
-    final BoundRenaming boundRenaming = new BoundRenaming ( ) ;
+    ArrayList < Identifier > freeE2 = newE2.free ( ) ;
+    BoundRenaming boundRenaming = new BoundRenaming ( ) ;
     boundRenaming.add ( freeE2 ) ;
     boundRenaming.remove ( this.identifiers [ 0 ] ) ;
     boundRenaming.add ( pExpression.free ( ) ) ;
     boundRenaming.add ( pId ) ;
-    final Identifier newId = boundRenaming.newId ( this.identifiers [ 0 ] ) ;
+    Identifier newId = boundRenaming.newId ( this.identifiers [ 0 ] ) ;
     /*
      * Substitute the old Identifier only with the new Identifier, if they are
      * different.
@@ -514,14 +513,12 @@ public class Let extends Expression implements BoundedIdentifiers ,
    * @see Expression#substitute(TypeSubstitution)
    */
   @ Override
-  public Let substitute ( final TypeSubstitution pTypeSubstitution )
+  public Let substitute ( TypeSubstitution pTypeSubstitution )
   {
-    final MonoType newTau = ( this.types [ 0 ] == null ) ? null
-        : this.types [ 0 ].substitute ( pTypeSubstitution ) ;
-    final Expression newE1 = this.expressions [ 0 ]
+    MonoType newTau = ( this.types [ 0 ] == null ) ? null : this.types [ 0 ]
         .substitute ( pTypeSubstitution ) ;
-    final Expression newE2 = this.expressions [ 1 ]
-        .substitute ( pTypeSubstitution ) ;
+    Expression newE1 = this.expressions [ 0 ].substitute ( pTypeSubstitution ) ;
+    Expression newE2 = this.expressions [ 1 ].substitute ( pTypeSubstitution ) ;
     return new Let ( this.identifiers [ 0 ].clone ( ) , newTau , newE1 , newE2 ) ;
   }
 
@@ -533,35 +530,32 @@ public class Let extends Expression implements BoundedIdentifiers ,
    */
   public @ Override
   PrettyStringBuilder toPrettyStringBuilder (
-      final PrettyStringBuilderFactory pPrettyStringBuilderFactory )
+      PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
     if ( this.prettyStringBuilder == null )
     {
       this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
-          PrettyPrintPriorities.PRIO_LET ) ;
+          PRIO_LET ) ;
       this.prettyStringBuilder.addKeyword ( "let" ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addBuilder ( this.identifiers [ 0 ]
-          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-          PrettyPrintPriorities.PRIO_ID ) ;
+          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_ID ) ;
       if ( this.types [ 0 ] != null )
       {
         this.prettyStringBuilder.addText ( ": " ) ; //$NON-NLS-1$
         this.prettyStringBuilder.addBuilder ( this.types [ 0 ]
             .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-            PrettyPrintPriorities.PRIO_LET_TAU ) ;
+            PRIO_LET_TAU ) ;
       }
       this.prettyStringBuilder.addText ( " = " ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addBuilder ( this.expressions [ 0 ]
-          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-          PrettyPrintPriorities.PRIO_LET_E1 ) ;
+          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_LET_E1 ) ;
       this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addBreak ( ) ;
       this.prettyStringBuilder.addKeyword ( "in" ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addBuilder ( this.expressions [ 1 ]
-          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-          PrettyPrintPriorities.PRIO_LET_E2 ) ;
+          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_LET_E2 ) ;
     }
     return this.prettyStringBuilder ;
   }

@@ -46,8 +46,8 @@ public final class InfixOperation extends Expression implements
    * @throws NullPointerException if <code>op</code>, <code>e1</code> or
    *           <code>e2</code> is <code>null</code>.
    */
-  public InfixOperation ( final BinaryOperator pBinaryOperator ,
-      final Expression pExpression1 , final Expression pExpression2 )
+  public InfixOperation ( BinaryOperator pBinaryOperator ,
+      Expression pExpression1 , Expression pExpression2 )
   {
     if ( pBinaryOperator == null )
     {
@@ -103,11 +103,11 @@ public final class InfixOperation extends Expression implements
    * @see Expression#equals(Object)
    */
   @ Override
-  public boolean equals ( final Object pObject )
+  public boolean equals ( Object pObject )
   {
     if ( pObject instanceof InfixOperation )
     {
-      final InfixOperation other = ( InfixOperation ) pObject ;
+      InfixOperation other = ( InfixOperation ) pObject ;
       return ( ( this.expressions [ 1 ].equals ( other.expressions [ 1 ] ) )
           && ( this.expressions [ 0 ].equals ( other.expressions [ 0 ] ) ) && ( this.expressions [ 2 ]
           .equals ( other.expressions [ 2 ] ) ) ) ;
@@ -173,7 +173,7 @@ public final class InfixOperation extends Expression implements
    *           bounds.
    * @see #getExpressions()
    */
-  public Expression getExpressions ( final int pIndex )
+  public Expression getExpressions ( int pIndex )
   {
     return this.expressions [ pIndex ] ;
   }
@@ -186,7 +186,7 @@ public final class InfixOperation extends Expression implements
    */
   public int [ ] getExpressionsIndex ( )
   {
-    return InfixOperation.INDICES_E ;
+    return INDICES_E ;
   }
 
 
@@ -224,10 +224,9 @@ public final class InfixOperation extends Expression implements
    * @see Expression#substitute(Identifier, Expression, boolean)
    */
   @ Override
-  public InfixOperation substitute ( final Identifier pId ,
-      final Expression pExpression )
+  public InfixOperation substitute ( Identifier pId , Expression pExpression )
   {
-    return this.substitute ( pId , pExpression , false ) ;
+    return substitute ( pId , pExpression , false ) ;
   }
 
 
@@ -237,13 +236,13 @@ public final class InfixOperation extends Expression implements
    * @see Expression#substitute(Identifier, Expression, boolean)
    */
   @ Override
-  public InfixOperation substitute ( final Identifier pId ,
-      final Expression pExpression , final boolean pAttributeRename )
+  public InfixOperation substitute ( Identifier pId , Expression pExpression ,
+      boolean pAttributeRename )
   {
-    final Expression newE1 = this.expressions [ 0 ].substitute ( pId ,
-        pExpression , pAttributeRename ) ;
-    final Expression newE2 = this.expressions [ 2 ].substitute ( pId ,
-        pExpression , pAttributeRename ) ;
+    Expression newE1 = this.expressions [ 0 ].substitute ( pId , pExpression ,
+        pAttributeRename ) ;
+    Expression newE2 = this.expressions [ 2 ].substitute ( pId , pExpression ,
+        pAttributeRename ) ;
     return new InfixOperation ( ( BinaryOperator ) this.expressions [ 1 ]
         .clone ( ) , newE1 , newE2 ) ;
   }
@@ -255,12 +254,10 @@ public final class InfixOperation extends Expression implements
    * @see Expression#substitute(TypeSubstitution)
    */
   @ Override
-  public InfixOperation substitute ( final TypeSubstitution pTypeSubstitution )
+  public InfixOperation substitute ( TypeSubstitution pTypeSubstitution )
   {
-    final Expression newE1 = this.expressions [ 0 ]
-        .substitute ( pTypeSubstitution ) ;
-    final Expression newE2 = this.expressions [ 2 ]
-        .substitute ( pTypeSubstitution ) ;
+    Expression newE1 = this.expressions [ 0 ].substitute ( pTypeSubstitution ) ;
+    Expression newE2 = this.expressions [ 2 ].substitute ( pTypeSubstitution ) ;
     return new InfixOperation ( ( BinaryOperator ) this.expressions [ 1 ]
         .clone ( ) , newE1 , newE2 ) ;
   }
@@ -273,7 +270,7 @@ public final class InfixOperation extends Expression implements
    */
   public @ Override
   PrettyStringBuilder toPrettyStringBuilder (
-      final PrettyStringBuilderFactory pPrettyStringBuilderFactory )
+      PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
     if ( this.prettyStringBuilder == null )
     {

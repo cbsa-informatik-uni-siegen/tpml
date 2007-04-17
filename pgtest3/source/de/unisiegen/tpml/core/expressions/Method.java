@@ -72,8 +72,8 @@ public class Method extends Expression implements DefaultIdentifiers ,
    * @param pTau TODO
    * @param pExpression TODO
    */
-  public Method ( final Identifier pIdentifier , final MonoType pTau ,
-      final Expression pExpression )
+  public Method ( Identifier pIdentifier , MonoType pTau ,
+      Expression pExpression )
   {
     if ( pIdentifier == null )
     {
@@ -129,11 +129,11 @@ public class Method extends Expression implements DefaultIdentifiers ,
    * {@inheritDoc}
    */
   @ Override
-  public boolean equals ( final Object pObject )
+  public boolean equals ( Object pObject )
   {
     if ( pObject instanceof Method )
     {
-      final Method other = ( Method ) pObject ;
+      Method other = ( Method ) pObject ;
       return ( ( this.identifiers [ 0 ].equals ( other.identifiers [ 0 ] ) )
           && ( this.expressions [ 0 ].equals ( other.expressions [ 0 ] ) ) && ( ( this.types [ 0 ] == null ) ? ( other.types [ 0 ] == null )
           : ( this.types [ 0 ].equals ( other.types [ 0 ] ) ) ) ) ;
@@ -184,7 +184,7 @@ public class Method extends Expression implements DefaultIdentifiers ,
    *           bounds.
    * @see #getExpressions()
    */
-  public Expression getExpressions ( final int pIndex )
+  public Expression getExpressions ( int pIndex )
   {
     return this.expressions [ pIndex ] ;
   }
@@ -197,7 +197,7 @@ public class Method extends Expression implements DefaultIdentifiers ,
    */
   public int [ ] getExpressionsIndex ( )
   {
-    return Method.INDICES_E ;
+    return INDICES_E ;
   }
 
 
@@ -231,7 +231,7 @@ public class Method extends Expression implements DefaultIdentifiers ,
    * @return The <code>pIndex</code>th {@link Identifier} of this
    *         {@link Expression}.
    */
-  public Identifier getIdentifiers ( final int pIndex )
+  public Identifier getIdentifiers ( int pIndex )
   {
     return this.identifiers [ pIndex ] ;
   }
@@ -244,7 +244,7 @@ public class Method extends Expression implements DefaultIdentifiers ,
    */
   public int [ ] getIdentifiersIndex ( )
   {
-    return Method.INDICES_ID ;
+    return INDICES_ID ;
   }
 
 
@@ -255,8 +255,8 @@ public class Method extends Expression implements DefaultIdentifiers ,
    */
   public String [ ] getIdentifiersPrefix ( )
   {
-    final String [ ] result = new String [ 1 ] ;
-    result [ 0 ] = DefaultIdentifiers.PREFIX_M ;
+    String [ ] result = new String [ 1 ] ;
+    result [ 0 ] = PREFIX_M ;
     return result ;
   }
 
@@ -293,7 +293,7 @@ public class Method extends Expression implements DefaultIdentifiers ,
    *           bounds.
    * @see #getTypes()
    */
-  public MonoType getTypes ( final int pIndex )
+  public MonoType getTypes ( int pIndex )
   {
     return this.types [ pIndex ] ;
   }
@@ -306,7 +306,7 @@ public class Method extends Expression implements DefaultIdentifiers ,
    */
   public int [ ] getTypesIndex ( )
   {
-    return Method.INDICES_TYPE ;
+    return INDICES_TYPE ;
   }
 
 
@@ -317,8 +317,8 @@ public class Method extends Expression implements DefaultIdentifiers ,
    */
   public String [ ] getTypesPrefix ( )
   {
-    final String [ ] result = new String [ 1 ] ;
-    result [ 0 ] = DefaultTypes.PREFIX_TAU ;
+    String [ ] result = new String [ 1 ] ;
+    result [ 0 ] = PREFIX_TAU ;
     return result ;
   }
 
@@ -351,9 +351,9 @@ public class Method extends Expression implements DefaultIdentifiers ,
    * @see Expression#substitute(Identifier, Expression, boolean)
    */
   @ Override
-  public Method substitute ( final Identifier pId , final Expression pExpression )
+  public Method substitute ( Identifier pId , Expression pExpression )
   {
-    return this.substitute ( pId , pExpression , false ) ;
+    return substitute ( pId , pExpression , false ) ;
   }
 
 
@@ -361,11 +361,11 @@ public class Method extends Expression implements DefaultIdentifiers ,
    * {@inheritDoc}
    */
   @ Override
-  public Method substitute ( final Identifier pId ,
-      final Expression pExpression , final boolean pAttributeRename )
+  public Method substitute ( Identifier pId , Expression pExpression ,
+      boolean pAttributeRename )
   {
-    final Expression newE = this.expressions [ 0 ].substitute ( pId ,
-        pExpression , pAttributeRename ) ;
+    Expression newE = this.expressions [ 0 ].substitute ( pId , pExpression ,
+        pAttributeRename ) ;
     return new Method ( this.identifiers [ 0 ].clone ( ) ,
         this.types [ 0 ] == null ? null : this.types [ 0 ].clone ( ) , newE ) ;
   }
@@ -375,12 +375,11 @@ public class Method extends Expression implements DefaultIdentifiers ,
    * {@inheritDoc}
    */
   @ Override
-  public Method substitute ( final TypeSubstitution pTypeSubstitution )
+  public Method substitute ( TypeSubstitution pTypeSubstitution )
   {
-    final MonoType newTau = ( this.types [ 0 ] == null ) ? null
-        : this.types [ 0 ].substitute ( pTypeSubstitution ) ;
-    final Expression newE = this.expressions [ 0 ]
+    MonoType newTau = ( this.types [ 0 ] == null ) ? null : this.types [ 0 ]
         .substitute ( pTypeSubstitution ) ;
+    Expression newE = this.expressions [ 0 ].substitute ( pTypeSubstitution ) ;
     return new Method ( this.identifiers [ 0 ].clone ( ) , newTau , newE ) ;
   }
 
@@ -390,28 +389,27 @@ public class Method extends Expression implements DefaultIdentifiers ,
    */
   @ Override
   public PrettyStringBuilder toPrettyStringBuilder (
-      final PrettyStringBuilderFactory pPrettyStringBuilderFactory )
+      PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
     if ( this.prettyStringBuilder == null )
     {
       this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
-          PrettyPrintPriorities.PRIO_METHOD ) ;
+          PRIO_METHOD ) ;
       this.prettyStringBuilder.addKeyword ( "method" ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addBuilder ( this.identifiers [ 0 ]
-          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-          PrettyPrintPriorities.PRIO_ID ) ;
+          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_ID ) ;
       if ( this.types [ 0 ] != null )
       {
         this.prettyStringBuilder.addText ( ": " ) ; //$NON-NLS-1$
         this.prettyStringBuilder.addBuilder ( this.types [ 0 ]
             .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-            PrettyPrintPriorities.PRIO_METHOD_TAU ) ;
+            PRIO_METHOD_TAU ) ;
       }
       this.prettyStringBuilder.addText ( " = " ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addBuilder ( this.expressions [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-          PrettyPrintPriorities.PRIO_METHOD_E ) ;
+          PRIO_METHOD_E ) ;
       this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addKeyword ( ";" ) ; //$NON-NLS-1$
     }

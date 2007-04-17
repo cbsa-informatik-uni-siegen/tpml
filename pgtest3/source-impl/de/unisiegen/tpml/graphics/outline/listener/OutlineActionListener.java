@@ -29,7 +29,7 @@ public final class OutlineActionListener implements ActionListener
    * 
    * @param pOutlineUI The <code>OutlineUI</code>.
    */
-  public OutlineActionListener ( final OutlineUI pOutlineUI )
+  public OutlineActionListener ( OutlineUI pOutlineUI )
   {
     this.outlineUI = pOutlineUI ;
   }
@@ -41,36 +41,36 @@ public final class OutlineActionListener implements ActionListener
    * @param pActionEvent The <code>ActionEvent</code>
    * @see ActionListener#actionPerformed(ActionEvent)
    */
-  public final void actionPerformed ( final ActionEvent pActionEvent )
+  public final void actionPerformed ( ActionEvent pActionEvent )
   {
-    final String actionCommand = pActionEvent.getActionCommand ( ) ;
+    String actionCommand = pActionEvent.getActionCommand ( ) ;
     if ( OutlineUI.CLOSE.equals ( actionCommand ) )
     {
-      this.close ( ) ;
+      close ( ) ;
     }
     else if ( OutlineUI.CLOSEALL.equals ( actionCommand ) )
     {
-      this.closeAll ( ) ;
+      closeAll ( ) ;
     }
     else if ( OutlineUI.EXPAND.equals ( actionCommand ) )
     {
-      this.expand ( ) ;
+      expand ( ) ;
     }
     else if ( OutlineUI.EXPANDALL.equals ( actionCommand ) )
     {
-      this.expandAll ( ) ;
+      expandAll ( ) ;
     }
     else if ( OutlineUI.COLLAPSE.equals ( actionCommand ) )
     {
-      this.collapse ( ) ;
+      collapse ( ) ;
     }
     else if ( OutlineUI.COLLAPSEALL.equals ( actionCommand ) )
     {
-      this.collapseAll ( ) ;
+      collapseAll ( ) ;
     }
     else if ( OutlineUI.COPY.equals ( actionCommand ) )
     {
-      this.copy ( ) ;
+      copy ( ) ;
     }
     else if ( OutlineUI.SELECTION.equals ( actionCommand ) )
     {
@@ -162,8 +162,8 @@ public final class OutlineActionListener implements ActionListener
    */
   public final void copy ( )
   {
-    final OutlineNode outlineNode = ( OutlineNode ) this.outlineUI
-        .getJTreeOutline ( ).getSelectionPath ( ).getLastPathComponent ( ) ;
+    OutlineNode outlineNode = ( OutlineNode ) this.outlineUI.getJTreeOutline ( )
+        .getSelectionPath ( ).getLastPathComponent ( ) ;
     if ( outlineNode != null )
     {
       OutlineClipboard.getInstance ( ).copy ( outlineNode.getPrettyString ( ) ) ;
@@ -176,8 +176,7 @@ public final class OutlineActionListener implements ActionListener
    */
   public final void expand ( )
   {
-    this.expandTreePath ( this.outlineUI.getJTreeOutline ( )
-        .getSelectionPath ( ) ) ;
+    expandTreePath ( this.outlineUI.getJTreeOutline ( ).getSelectionPath ( ) ) ;
   }
 
 
@@ -200,17 +199,16 @@ public final class OutlineActionListener implements ActionListener
    * 
    * @param pTreePath The <code>TreePath</code>, which should be expand.
    */
-  private final void expandTreePath ( final TreePath pTreePath )
+  private final void expandTreePath ( TreePath pTreePath )
   {
     if ( pTreePath == null )
     {
       return ;
     }
-    final OutlineNode outlineNode = ( OutlineNode ) pTreePath
-        .getLastPathComponent ( ) ;
+    OutlineNode outlineNode = ( OutlineNode ) pTreePath.getLastPathComponent ( ) ;
     for ( int i = 0 ; i < outlineNode.getChildCount ( ) ; i ++ )
     {
-      this.expandTreePath ( pTreePath.pathByAddingChild ( outlineNode
+      expandTreePath ( pTreePath.pathByAddingChild ( outlineNode
           .getChildAt ( i ) ) ) ;
     }
     this.outlineUI.getJTreeOutline ( ).expandPath ( pTreePath ) ;

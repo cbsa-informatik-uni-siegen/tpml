@@ -53,7 +53,7 @@ public final class Exn extends Expression
    * @param pName the name of the exception.
    * @throws NullPointerException if <code>name</code> is <code>null</code>.
    */
-  private Exn ( final String pName )
+  private Exn ( String pName )
   {
     if ( pName == null )
     {
@@ -82,11 +82,11 @@ public final class Exn extends Expression
    * @see Expression#equals(Object)
    */
   @ Override
-  public boolean equals ( final Object pObject )
+  public boolean equals ( Object pObject )
   {
     if ( pObject instanceof Exn )
     {
-      final Exn other = ( Exn ) pObject ;
+      Exn other = ( Exn ) pObject ;
       return this.name.equals ( other.name ) ;
     }
     return false ;
@@ -122,7 +122,7 @@ public final class Exn extends Expression
   @ Override
   public String getPrefix ( )
   {
-    return Expression.PREFIX_EXN ;
+    return PREFIX_EXN ;
   }
 
 
@@ -156,9 +156,9 @@ public final class Exn extends Expression
    * @see Expression#substitute(Identifier, Expression, boolean)
    */
   @ Override
-  public Exn substitute ( final Identifier pId , final Expression pExpression )
+  public Exn substitute ( Identifier pId , Expression pExpression )
   {
-    return this.substitute ( pId , pExpression , false ) ;
+    return substitute ( pId , pExpression , false ) ;
   }
 
 
@@ -171,9 +171,9 @@ public final class Exn extends Expression
    */
   @ Override
   public Exn substitute ( @ SuppressWarnings ( "unused" )
-  final Identifier pId , @ SuppressWarnings ( "unused" )
-  final Expression pExpression , @ SuppressWarnings ( "unused" )
-  final boolean pAttributeRename )
+  Identifier pId , @ SuppressWarnings ( "unused" )
+  Expression pExpression , @ SuppressWarnings ( "unused" )
+  boolean pAttributeRename )
   {
     return this ;
   }
@@ -186,12 +186,12 @@ public final class Exn extends Expression
    */
   @ Override
   public PrettyStringBuilder toPrettyStringBuilder (
-      final PrettyStringBuilderFactory pPrettyStringBuilderFactory )
+      PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
     if ( this.prettyStringBuilder == null )
     {
       this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
-          PrettyPrintPriorities.PRIO_EXN ) ;
+          PRIO_EXN ) ;
       this.prettyStringBuilder.addText ( "\u2191 " + this.name ) ; //$NON-NLS-1$
     }
     return this.prettyStringBuilder ;

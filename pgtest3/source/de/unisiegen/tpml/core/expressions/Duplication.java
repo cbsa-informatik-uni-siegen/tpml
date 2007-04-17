@@ -19,8 +19,8 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
  * @author Christian Fehler
  * @version $Rev: 1066 $
  */
-public final class Duplication extends Expression implements
-    DefaultIdentifiers , ChildrenExpressions , SortedChildren
+public final class Duplication extends Expression implements DefaultIdentifiers ,
+    ChildrenExpressions , SortedChildren
 {
   /**
    * Indeces of the child {@link Expression}s.
@@ -58,8 +58,7 @@ public final class Duplication extends Expression implements
    * @param pIdentifiers TODO
    * @param pExpressions TODO
    */
-  public Duplication ( final Identifier [ ] pIdentifiers ,
-      final Expression [ ] pExpressions )
+  public Duplication ( Identifier [ ] pIdentifiers , Expression [ ] pExpressions )
   {
     if ( pIdentifiers == null )
     {
@@ -79,8 +78,8 @@ public final class Duplication extends Expression implements
      * Example: "self {< a = 1 ; a = 2 ; a = 3 ; b = 4 >}" -> "self {< a = 3 ;
      * b = 4 >}"
      */
-    final ArrayList < Identifier > idList = new ArrayList < Identifier > ( ) ;
-    final ArrayList < Expression > exprList = new ArrayList < Expression > ( ) ;
+    ArrayList < Identifier > idList = new ArrayList < Identifier > ( ) ;
+    ArrayList < Expression > exprList = new ArrayList < Expression > ( ) ;
     for ( int i = pIdentifiers.length - 1 ; i >= 0 ; i -- )
     {
       if ( ! idList.contains ( pIdentifiers [ i ] ) )
@@ -122,12 +121,12 @@ public final class Duplication extends Expression implements
   @ Override
   public Duplication clone ( )
   {
-    final Expression [ ] newExpressions = new Expression [ this.expressions.length ] ;
+    Expression [ ] newExpressions = new Expression [ this.expressions.length ] ;
     for ( int i = 0 ; i < this.expressions.length ; i ++ )
     {
       newExpressions [ i ] = this.expressions [ i ].clone ( ) ;
     }
-    final Identifier [ ] newIdentifiers = new Identifier [ this.identifiers.length ] ;
+    Identifier [ ] newIdentifiers = new Identifier [ this.identifiers.length ] ;
     for ( int i = 0 ; i < newIdentifiers.length ; i ++ )
     {
       newIdentifiers [ i ] = this.identifiers [ i ].clone ( ) ;
@@ -140,11 +139,11 @@ public final class Duplication extends Expression implements
    * {@inheritDoc}
    */
   @ Override
-  public boolean equals ( final Object pObject )
+  public boolean equals ( Object pObject )
   {
     if ( pObject instanceof Duplication )
     {
-      final Duplication other = ( Duplication ) pObject ;
+      Duplication other = ( Duplication ) pObject ;
       return ( ( Arrays.equals ( this.expressions , other.expressions ) ) && ( Arrays
           .equals ( this.identifiers , other.identifiers ) ) ) ;
     }
@@ -183,7 +182,7 @@ public final class Duplication extends Expression implements
    * @see #expressions
    * @see #getExpressions()
    */
-  public Expression getExpressions ( final int pIndex )
+  public Expression getExpressions ( int pIndex )
   {
     return this.expressions [ pIndex ] ;
   }
@@ -221,7 +220,7 @@ public final class Duplication extends Expression implements
    * @see #identifiers
    * @see #getIdentifiers()
    */
-  public Identifier getIdentifiers ( final int pIndex )
+  public Identifier getIdentifiers ( int pIndex )
   {
     return this.identifiers [ pIndex ] ;
   }
@@ -245,10 +244,10 @@ public final class Duplication extends Expression implements
    */
   public String [ ] getIdentifiersPrefix ( )
   {
-    final String [ ] result = new String [ this.identifiers.length ] ;
+    String [ ] result = new String [ this.identifiers.length ] ;
     for ( int i = 0 ; i < this.identifiers.length ; i ++ )
     {
-      result [ i ] = DefaultIdentifiers.PREFIX_ID ;
+      result [ i ] = PREFIX_ID ;
     }
     return result ;
   }
@@ -262,7 +261,7 @@ public final class Duplication extends Expression implements
    */
   public PrettyPrintable [ ] getSortedChildren ( )
   {
-    final PrettyPrintable [ ] result = new PrettyPrintable [ this.identifiers.length
+    PrettyPrintable [ ] result = new PrettyPrintable [ this.identifiers.length
         + this.expressions.length ] ;
     for ( int i = 0 ; i < this.identifiers.length + this.expressions.length ; i ++ )
     {
@@ -295,10 +294,9 @@ public final class Duplication extends Expression implements
    * @see Expression#substitute(Identifier, Expression, boolean)
    */
   @ Override
-  public Duplication substitute ( final Identifier pId ,
-      final Expression pExpression )
+  public Duplication substitute ( Identifier pId , Expression pExpression )
   {
-    return this.substitute ( pId , pExpression , false ) ;
+    return substitute ( pId , pExpression , false ) ;
   }
 
 
@@ -306,25 +304,25 @@ public final class Duplication extends Expression implements
    * {@inheritDoc}
    */
   @ Override
-  public Duplication substitute ( final Identifier pId ,
-      final Expression pExpression , final boolean pAttributeRename )
+  public Duplication substitute ( Identifier pId , Expression pExpression ,
+      boolean pAttributeRename )
   {
     /*
      * Perform the Attribute renaming, if pAttributeRename is true.
      */
     if ( pAttributeRename )
     {
-      return this.substituteAttribute ( pId , pExpression ) ;
+      return substituteAttribute ( pId , pExpression ) ;
     }
     /*
      * Perform the normal substitution.
      */
-    final Identifier [ ] newIdentifiers = new Identifier [ this.identifiers.length ] ;
+    Identifier [ ] newIdentifiers = new Identifier [ this.identifiers.length ] ;
     for ( int i = 0 ; i < newIdentifiers.length ; i ++ )
     {
       newIdentifiers [ i ] = this.identifiers [ i ].clone ( ) ;
     }
-    final Expression [ ] newExpressions = new Expression [ this.expressions.length ] ;
+    Expression [ ] newExpressions = new Expression [ this.expressions.length ] ;
     for ( int i = 0 ; i < newExpressions.length ; i ++ )
     {
       newExpressions [ i ] = this.expressions [ i ].substitute ( pId ,
@@ -341,15 +339,15 @@ public final class Duplication extends Expression implements
    * @return TODO
    */
   @ Override
-  public Duplication substitute ( final TypeSubstitution pTypeSubstitution )
+  public Duplication substitute ( TypeSubstitution pTypeSubstitution )
   {
-    final Expression [ ] newExpressions = new Expression [ this.expressions.length ] ;
+    Expression [ ] newExpressions = new Expression [ this.expressions.length ] ;
     for ( int i = 0 ; i < this.expressions.length ; i ++ )
     {
       newExpressions [ i ] = this.expressions [ i ]
           .substitute ( pTypeSubstitution ) ;
     }
-    final Identifier [ ] newIdentifiers = new Identifier [ this.identifiers.length ] ;
+    Identifier [ ] newIdentifiers = new Identifier [ this.identifiers.length ] ;
     for ( int i = 0 ; i < newIdentifiers.length ; i ++ )
     {
       newIdentifiers [ i ] = this.identifiers [ i ].clone ( ) ;
@@ -365,16 +363,16 @@ public final class Duplication extends Expression implements
    * @param pExpression TODO
    * @return TODO
    */
-  private Duplication substituteAttribute ( final Identifier pId ,
-      final Expression pExpression )
+  private Duplication substituteAttribute ( Identifier pId ,
+      Expression pExpression )
   {
     if ( ! ( pExpression instanceof Identifier ) )
     {
       throw new IllegalArgumentException (
           "Expression must be an instance of Identifier" ) ; //$NON-NLS-1$
     }
-    final Expression [ ] newExpressions = new Expression [ this.expressions.length ] ;
-    final Identifier [ ] newIdentifiers = new Identifier [ this.identifiers.length ] ;
+    Expression [ ] newExpressions = new Expression [ this.expressions.length ] ;
+    Identifier [ ] newIdentifiers = new Identifier [ this.identifiers.length ] ;
     for ( int i = 0 ; i < newIdentifiers.length ; i ++ )
     {
       newIdentifiers [ i ] = this.identifiers [ i ].clone ( ) ;
@@ -401,12 +399,12 @@ public final class Duplication extends Expression implements
    */
   @ Override
   public PrettyStringBuilder toPrettyStringBuilder (
-      final PrettyStringBuilderFactory pPrettyStringBuilderFactory )
+      PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
     if ( this.prettyStringBuilder == null )
     {
       this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
-          PrettyPrintPriorities.PRIO_DUPLICATION ) ;
+          PRIO_DUPLICATION ) ;
       this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addBreak ( ) ;
       this.prettyStringBuilder.addKeyword ( "{<" ) ; //$NON-NLS-1$
@@ -414,12 +412,11 @@ public final class Duplication extends Expression implements
       for ( int i = 0 ; i < this.expressions.length ; i ++ )
       {
         this.prettyStringBuilder.addBuilder ( this.identifiers [ i ]
-            .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-            PrettyPrintPriorities.PRIO_ID ) ;
+            .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_ID ) ;
         this.prettyStringBuilder.addText ( " = " ) ; //$NON-NLS-1$
         this.prettyStringBuilder.addBuilder ( this.expressions [ i ]
             .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-            PrettyPrintPriorities.PRIO_DUPLICATION_E ) ;
+            PRIO_DUPLICATION_E ) ;
         if ( i != this.expressions.length - 1 )
         {
           this.prettyStringBuilder.addText ( "; " ) ; //$NON-NLS-1$

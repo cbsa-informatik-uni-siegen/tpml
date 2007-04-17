@@ -46,7 +46,7 @@ public final class ListType extends MonoType implements DefaultTypes
    * @param pTau the type for the list elements.
    * @throws NullPointerException if <code>pTau</code> is <code>null</code>.
    */
-  public ListType ( final MonoType pTau )
+  public ListType ( MonoType pTau )
   {
     if ( pTau == null )
     {
@@ -80,11 +80,11 @@ public final class ListType extends MonoType implements DefaultTypes
    * @see Object#equals(Object)
    */
   @ Override
-  public boolean equals ( final Object pObject )
+  public boolean equals ( Object pObject )
   {
     if ( pObject instanceof ListType )
     {
-      final ListType other = ( ListType ) pObject ;
+      ListType other = ( ListType ) pObject ;
       return this.types [ 0 ].equals ( other.types [ 0 ] ) ;
     }
     return false ;
@@ -146,7 +146,7 @@ public final class ListType extends MonoType implements DefaultTypes
    * @param pIndex TODO
    * @return TODO
    */
-  public MonoType getTypes ( final int pIndex )
+  public MonoType getTypes ( int pIndex )
   {
     return this.types [ pIndex ] ;
   }
@@ -159,7 +159,7 @@ public final class ListType extends MonoType implements DefaultTypes
    */
   public int [ ] getTypesIndex ( )
   {
-    return ListType.INDICES_TYPE ;
+    return INDICES_TYPE ;
   }
 
 
@@ -170,8 +170,8 @@ public final class ListType extends MonoType implements DefaultTypes
    */
   public String [ ] getTypesPrefix ( )
   {
-    final String [ ] result = new String [ 1 ] ;
-    result [ 0 ] = DefaultTypes.PREFIX_TAU ;
+    String [ ] result = new String [ 1 ] ;
+    result [ 0 ] = PREFIX_TAU ;
     return result ;
   }
 
@@ -194,7 +194,7 @@ public final class ListType extends MonoType implements DefaultTypes
    * @see MonoType#substitute(TypeSubstitution)
    */
   @ Override
-  public ListType substitute ( final TypeSubstitution pTypeSubstitution )
+  public ListType substitute ( TypeSubstitution pTypeSubstitution )
   {
     return new ListType ( this.types [ 0 ].substitute ( pTypeSubstitution ) ) ;
   }
@@ -207,15 +207,15 @@ public final class ListType extends MonoType implements DefaultTypes
    */
   @ Override
   public PrettyStringBuilder toPrettyStringBuilder (
-      final PrettyStringBuilderFactory pPrettyStringBuilderFactory )
+      PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
     if ( this.prettyStringBuilder == null )
     {
       this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
-          PrettyPrintPriorities.PRIO_LIST ) ;
+          PRIO_LIST ) ;
       this.prettyStringBuilder.addBuilder ( this.types [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-          PrettyPrintPriorities.PRIO_LIST_TAU ) ;
+          PRIO_LIST_TAU ) ;
       this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addType ( "list" ) ; //$NON-NLS-1$
     }

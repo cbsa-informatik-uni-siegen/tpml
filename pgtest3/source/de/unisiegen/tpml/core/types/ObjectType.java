@@ -33,7 +33,7 @@ public final class ObjectType extends MonoType implements DefaultTypes
    * 
    * @param pPhi TODO
    */
-  public ObjectType ( final MonoType pPhi )
+  public ObjectType ( MonoType pPhi )
   {
     if ( pPhi == null )
     {
@@ -71,11 +71,11 @@ public final class ObjectType extends MonoType implements DefaultTypes
    * @see Object#equals(Object)
    */
   @ Override
-  public boolean equals ( final Object pObject )
+  public boolean equals ( Object pObject )
   {
     if ( pObject instanceof ObjectType )
     {
-      final ObjectType other = ( ObjectType ) pObject ;
+      ObjectType other = ( ObjectType ) pObject ;
       return this.types [ 0 ].equals ( other.types [ 0 ] ) ;
     }
     return false ;
@@ -140,7 +140,7 @@ public final class ObjectType extends MonoType implements DefaultTypes
    * @param pIndex TODO
    * @return TODO
    */
-  public MonoType getTypes ( final int pIndex )
+  public MonoType getTypes ( int pIndex )
   {
     return this.types [ pIndex ] ;
   }
@@ -153,7 +153,7 @@ public final class ObjectType extends MonoType implements DefaultTypes
    */
   public int [ ] getTypesIndex ( )
   {
-    return ObjectType.INDICES_TYPE ;
+    return INDICES_TYPE ;
   }
 
 
@@ -164,8 +164,8 @@ public final class ObjectType extends MonoType implements DefaultTypes
    */
   public String [ ] getTypesPrefix ( )
   {
-    final String [ ] result = new String [ 1 ] ;
-    result [ 0 ] = DefaultTypes.PREFIX_PHI ;
+    String [ ] result = new String [ 1 ] ;
+    result [ 0 ] = PREFIX_PHI ;
     return result ;
   }
 
@@ -178,7 +178,7 @@ public final class ObjectType extends MonoType implements DefaultTypes
    * @see MonoType#substitute(TypeSubstitution)
    */
   @ Override
-  public ObjectType substitute ( final TypeSubstitution pTypeSubstitution )
+  public ObjectType substitute ( TypeSubstitution pTypeSubstitution )
   {
     if ( pTypeSubstitution == null )
     {
@@ -197,17 +197,17 @@ public final class ObjectType extends MonoType implements DefaultTypes
    */
   @ Override
   public PrettyStringBuilder toPrettyStringBuilder (
-      final PrettyStringBuilderFactory pPrettyStringBuilderFactory )
+      PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
     if ( this.prettyStringBuilder == null )
     {
       this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
-          PrettyPrintPriorities.PRIO_OBJECT ) ;
+          PRIO_OBJECT ) ;
       this.prettyStringBuilder.addKeyword ( "<" ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addBuilder ( this.types [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-          PrettyPrintPriorities.PRIO_OBJECT_ROW ) ;
+          PRIO_OBJECT_ROW ) ;
       this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addKeyword ( ">" ) ; //$NON-NLS-1$
     }

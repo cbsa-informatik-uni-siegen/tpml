@@ -49,7 +49,7 @@ public class Identifier extends Value
    * 
    * @param pName the name of the identifier.
    */
-  public Identifier ( final String pName )
+  public Identifier ( String pName )
   {
     this.name = pName ;
     this.boundedToExpression = null ;
@@ -75,11 +75,11 @@ public class Identifier extends Value
    * @see Expression#equals(Object)
    */
   @ Override
-  public boolean equals ( final Object obj )
+  public boolean equals ( Object obj )
   {
     if ( obj instanceof Identifier )
     {
-      final Identifier other = ( Identifier ) obj ;
+      Identifier other = ( Identifier ) obj ;
       return this.name.equals ( other.name ) ;
     }
     return false ;
@@ -173,7 +173,7 @@ public class Identifier extends Value
    * @see #boundedToExpression
    * @see #getBoundedToExpression()
    */
-  public void setBoundedToExpression ( final Expression pBoundedToExpression )
+  public void setBoundedToExpression ( Expression pBoundedToExpression )
   {
     if ( this.boundedToExpression != null )
     {
@@ -199,7 +199,7 @@ public class Identifier extends Value
    * @see #boundedToIdentifier
    * @see #getBoundedToIdentifier()
    */
-  public void setBoundedToIdentifier ( final Identifier pBoundedToIdentifier )
+  public void setBoundedToIdentifier ( Identifier pBoundedToIdentifier )
   {
     this.boundedToIdentifier = pBoundedToIdentifier ;
   }
@@ -211,10 +211,9 @@ public class Identifier extends Value
    * @see Expression#substitute(Identifier, Expression, boolean)
    */
   @ Override
-  public Expression substitute ( final Identifier pId ,
-      final Expression pExpression )
+  public Expression substitute ( Identifier pId , Expression pExpression )
   {
-    return this.substitute ( pId , pExpression , false ) ;
+    return substitute ( pId , pExpression , false ) ;
   }
 
 
@@ -227,9 +226,9 @@ public class Identifier extends Value
    * @see #getName()
    */
   @ Override
-  public Expression substitute ( final Identifier pId ,
-      final Expression pExpression , @ SuppressWarnings ( "unused" )
-      final boolean pAttributeRename )
+  public Expression substitute ( Identifier pId , Expression pExpression ,
+      @ SuppressWarnings ( "unused" )
+      boolean pAttributeRename )
   {
     if ( pId.equals ( this ) )
     {
@@ -250,12 +249,11 @@ public class Identifier extends Value
    */
   @ Override
   public PrettyStringBuilder toPrettyStringBuilder (
-      final PrettyStringBuilderFactory factory )
+      PrettyStringBuilderFactory factory )
   {
     if ( this.prettyStringBuilder == null )
     {
-      this.prettyStringBuilder = factory.newBuilder ( this ,
-          PrettyPrintPriorities.PRIO_IDENTIFIER ) ;
+      this.prettyStringBuilder = factory.newBuilder ( this , PRIO_IDENTIFIER ) ;
       this.prettyStringBuilder.addIdentifier ( this.name ) ;
     }
     return this.prettyStringBuilder ;

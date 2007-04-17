@@ -52,7 +52,7 @@ public final class TypeVariable extends MonoType implements
    * @throws IllegalArgumentException if <code>offset</code> is larger than
    *           <code>23</code> or negative.
    */
-  private static char offsetToGreekLetter ( final int pOffset )
+  private static char offsetToGreekLetter ( int pOffset )
   {
     switch ( pOffset )
     {
@@ -147,7 +147,7 @@ public final class TypeVariable extends MonoType implements
    * @see #index
    * @see #offset
    */
-  public TypeVariable ( final int pIndex , final int pOffset )
+  public TypeVariable ( int pIndex , int pOffset )
   {
     if ( pIndex < 0 )
     {
@@ -179,7 +179,7 @@ public final class TypeVariable extends MonoType implements
    * 
    * @see Comparable#compareTo(Object)
    */
-  public int compareTo ( final TypeVariable pTypeVariable )
+  public int compareTo ( TypeVariable pTypeVariable )
   {
     if ( this.index < pTypeVariable.index )
     {
@@ -216,12 +216,12 @@ public final class TypeVariable extends MonoType implements
    * @see Object#equals(Object)
    */
   @ Override
-  public boolean equals ( final Object pObject )
+  public boolean equals ( Object pObject )
   {
     if ( pObject instanceof TypeVariable )
     {
-      final TypeVariable other = ( TypeVariable ) pObject ;
-      return ( ( this.index == other.index ) && ( this.offset == other.offset ) ) ;
+      TypeVariable other = ( TypeVariable ) pObject ;
+      return ( this.index == other.index && this.offset == other.offset ) ;
     }
     return false ;
   }
@@ -304,7 +304,7 @@ public final class TypeVariable extends MonoType implements
    * @see Type#substitute(TypeSubstitution)
    */
   @ Override
-  public MonoType substitute ( final TypeSubstitution pTypeSubstitution )
+  public MonoType substitute ( TypeSubstitution pTypeSubstitution )
   {
     if ( pTypeSubstitution == null )
     {
@@ -328,13 +328,13 @@ public final class TypeVariable extends MonoType implements
    */
   @ Override
   public PrettyStringBuilder toPrettyStringBuilder (
-      final PrettyStringBuilderFactory pPrettyStringBuilderFactory )
+      PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
     if ( this.prettyStringBuilder == null )
     {
       this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
-          PrettyPrintPriorities.PRIO_TYPE_VARIABLE ) ;
-      String type = "" + TypeVariable.offsetToGreekLetter ( this.offset % 24 ) //$NON-NLS-1$
+          PRIO_TYPE_VARIABLE ) ;
+      String type = "" + offsetToGreekLetter ( this.offset % 24 ) //$NON-NLS-1$
           + ( ( this.index > 0 ) ? this.index + "" : "" ) ; //$NON-NLS-1$//$NON-NLS-2$
       for ( int n = ( this.offset / 24 ) ; n > 0 ; -- n )
       {

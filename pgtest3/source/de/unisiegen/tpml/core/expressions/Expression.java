@@ -36,7 +36,7 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
     /**
      * TODO
      */
-    private final LinkedList < Expression > queue = new LinkedList < Expression > ( ) ;
+    private LinkedList < Expression > queue = new LinkedList < Expression > ( ) ;
 
 
     /**
@@ -44,7 +44,7 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
      * 
      * @param expression TODO
      */
-    LevelOrderEnumeration ( final Expression expression )
+    LevelOrderEnumeration ( Expression expression )
     {
       this.queue.add ( expression ) ;
     }
@@ -70,7 +70,7 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
      */
     public Expression nextElement ( )
     {
-      final Expression e = this.queue.poll ( ) ;
+      Expression e = this.queue.poll ( ) ;
       this.queue.addAll ( e.children ( ) ) ;
       return e ;
     }
@@ -180,15 +180,15 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
       try
       {
         this.children = new ArrayList < Expression > ( ) ;
-        final PropertyDescriptor [ ] properties = Introspector.getBeanInfo (
-            this.getClass ( ) , Expression.class ).getPropertyDescriptors ( ) ;
-        for ( final PropertyDescriptor property : properties )
+        PropertyDescriptor [ ] properties = Introspector.getBeanInfo (
+            getClass ( ) , Expression.class ).getPropertyDescriptors ( ) ;
+        for ( PropertyDescriptor property : properties )
         {
-          final java.lang.reflect.Method method = property.getReadMethod ( ) ;
+          java.lang.reflect.Method method = property.getReadMethod ( ) ;
           if ( ( method != null )
-              && ( method.getName ( ).equals ( Expression.GET_EXPRESSIONS ) ) )
+              && ( method.getName ( ).equals ( GET_EXPRESSIONS ) ) )
           {
-            final Object value = method.invoke ( this ) ;
+            Object value = method.invoke ( this ) ;
             if ( value instanceof Expression [ ] )
             {
               this.children
@@ -197,11 +197,11 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
           }
         }
       }
-      catch ( final RuntimeException exception )
+      catch ( RuntimeException exception )
       {
         throw exception ;
       }
-      catch ( final Exception exception )
+      catch ( Exception exception )
       {
         throw new RuntimeException ( exception ) ;
       }
@@ -245,11 +245,10 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
    */
   public final boolean containsMemoryOperations ( )
   {
-    final Enumeration < Expression > enumeration = this
-        .levelOrderEnumeration ( ) ;
+    Enumeration < Expression > enumeration = levelOrderEnumeration ( ) ;
     while ( enumeration.hasMoreElements ( ) )
     {
-      final Expression e = enumeration.nextElement ( ) ;
+      Expression e = enumeration.nextElement ( ) ;
       if ( ( e instanceof Assign ) || ( e instanceof Deref )
           || ( e instanceof Ref ) )
       {
@@ -287,7 +286,7 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
     if ( this.free == null )
     {
       this.free = new ArrayList < Identifier > ( ) ;
-      final ArrayList < Expression > tmp = this.children ( ) ;
+      ArrayList < Expression > tmp = children ( ) ;
       for ( int i = 0 ; i < tmp.size ( ) ; i ++ )
       {
         this.free.addAll ( tmp.get ( i ).free ( ) ) ;
@@ -324,8 +323,7 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
    */
   public String getPrefix ( )
   {
-    return this.isValue ( ) ? Expression.PREFIX_VALUE
-        : Expression.PREFIX_EXPRESSION ;
+    return this.isValue ( ) ? PREFIX_VALUE : PREFIX_EXPRESSION ;
   }
 
 
@@ -392,7 +390,7 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
    * 
    * @param pParent The parent to set
    */
-  public void setParent ( final PrettyPrintable pParent )
+  public void setParent ( PrettyPrintable pParent )
   {
     this.parent = pParent ;
   }
@@ -446,7 +444,7 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
    *           <code>null</code>.
    */
   public Expression substitute ( @ SuppressWarnings ( "unused" )
-  final TypeSubstitution pTypeSubstitution )
+  TypeSubstitution pTypeSubstitution )
   {
     return this ;
   }
@@ -459,8 +457,8 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
    */
   public final PrettyString toPrettyString ( )
   {
-    return this.toPrettyStringBuilder (
-        PrettyStringBuilderFactory.newInstance ( ) ).toPrettyString ( ) ;
+    return toPrettyStringBuilder ( PrettyStringBuilderFactory.newInstance ( ) )
+        .toPrettyString ( ) ;
   }
 
 
@@ -493,6 +491,6 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
   @ Override
   public String toString ( )
   {
-    return this.toPrettyString ( ).toString ( ) ;
+    return toPrettyString ( ).toString ( ) ;
   }
 }

@@ -49,8 +49,7 @@ public final class OutlineComponentListener implements ComponentListener
    * @param pJSplitPane The <code>JSplitPane</code>.
    * @param pOutline The {@link Outline}.
    */
-  public OutlineComponentListener ( final JSplitPane pJSplitPane ,
-      final Outline pOutline )
+  public OutlineComponentListener ( JSplitPane pJSplitPane , Outline pOutline )
   {
     this.jSplitPane = pJSplitPane ;
     this.outline = pOutline ;
@@ -63,7 +62,7 @@ public final class OutlineComponentListener implements ComponentListener
    * 
    * @param pDefaultOutline The {@link DefaultOutline}.
    */
-  public OutlineComponentListener ( final DefaultOutline pDefaultOutline )
+  public OutlineComponentListener ( DefaultOutline pDefaultOutline )
   {
     this.jSplitPane = null ;
     this.outline = null ;
@@ -77,9 +76,8 @@ public final class OutlineComponentListener implements ComponentListener
    * @param pComponentEvent The <code>ComponentEvent</code>.
    * @see ComponentListener#componentHidden(ComponentEvent)
    */
-  public final void componentHidden (
-      @ SuppressWarnings ( OutlineComponentListener.UNUSED )
-      final ComponentEvent pComponentEvent )
+  public final void componentHidden ( @ SuppressWarnings ( UNUSED )
+  ComponentEvent pComponentEvent )
   {
     // Do nothing
   }
@@ -91,9 +89,8 @@ public final class OutlineComponentListener implements ComponentListener
    * @param pComponentEvent The <code>ComponentEvent</code>.
    * @see ComponentListener#componentMoved(ComponentEvent)
    */
-  public final void componentMoved (
-      @ SuppressWarnings ( OutlineComponentListener.UNUSED )
-      final ComponentEvent pComponentEvent )
+  public final void componentMoved ( @ SuppressWarnings ( UNUSED )
+  ComponentEvent pComponentEvent )
   {
     // Do nothing
   }
@@ -105,7 +102,7 @@ public final class OutlineComponentListener implements ComponentListener
    * @param pComponentEvent The <code>ComponentEvent</code>.
    * @see ComponentListener#componentResized(ComponentEvent)
    */
-  public final void componentResized ( final ComponentEvent pComponentEvent )
+  public final void componentResized ( ComponentEvent pComponentEvent )
   {
     if ( this.outline != null )
     {
@@ -133,9 +130,8 @@ public final class OutlineComponentListener implements ComponentListener
    * @param pComponentEvent The <code>ComponentEvent</code>.
    * @see ComponentListener#componentShown(ComponentEvent)
    */
-  public final void componentShown (
-      @ SuppressWarnings ( OutlineComponentListener.UNUSED )
-      final ComponentEvent pComponentEvent )
+  public final void componentShown ( @ SuppressWarnings ( UNUSED )
+  ComponentEvent pComponentEvent )
   {
     // Do nothing
   }

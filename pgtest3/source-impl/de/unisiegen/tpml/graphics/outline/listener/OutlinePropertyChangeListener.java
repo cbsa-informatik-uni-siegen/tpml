@@ -45,8 +45,8 @@ public final class OutlinePropertyChangeListener implements
    * @param pJSplitPane The <code>JSplitPane</code>.
    * @param pOutline The {@link Outline}.
    */
-  public OutlinePropertyChangeListener ( final JSplitPane pJSplitPane ,
-      final Outline pOutline )
+  public OutlinePropertyChangeListener ( JSplitPane pJSplitPane ,
+      Outline pOutline )
   {
     this.jSplitPane = pJSplitPane ;
     this.outline = pOutline ;
@@ -59,7 +59,7 @@ public final class OutlinePropertyChangeListener implements
    * 
    * @param pOutline The {@link Outline}.
    */
-  public OutlinePropertyChangeListener ( final Outline pOutline )
+  public OutlinePropertyChangeListener ( Outline pOutline )
   {
     this.jSplitPane = null ;
     this.outline = pOutline ;
@@ -75,8 +75,7 @@ public final class OutlinePropertyChangeListener implements
    * @param pPropertyChangeEvent The <code>PropertyChangeEvent</code>.
    * @see PropertyChangeListener#propertyChange(PropertyChangeEvent)
    */
-  public final void propertyChange (
-      final PropertyChangeEvent pPropertyChangeEvent )
+  public final void propertyChange ( PropertyChangeEvent pPropertyChangeEvent )
   {
     if ( ( pPropertyChangeEvent.getSource ( ) instanceof AbstractProofView )
         || ( pPropertyChangeEvent.getSource ( ) instanceof TextEditorPanel ) )

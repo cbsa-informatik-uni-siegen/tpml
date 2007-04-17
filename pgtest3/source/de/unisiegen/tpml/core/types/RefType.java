@@ -47,7 +47,7 @@ public final class RefType extends MonoType implements DefaultTypes
    * @param pTau the monomorphic base type.
    * @throws NullPointerException if <code>tau</code> is <code>null</code>.
    */
-  public RefType ( final MonoType pTau )
+  public RefType ( MonoType pTau )
   {
     if ( pTau == null )
     {
@@ -81,11 +81,11 @@ public final class RefType extends MonoType implements DefaultTypes
    * @see Object#equals(Object)
    */
   @ Override
-  public boolean equals ( final Object pObject )
+  public boolean equals ( Object pObject )
   {
     if ( pObject instanceof RefType )
     {
-      final RefType other = ( RefType ) pObject ;
+      RefType other = ( RefType ) pObject ;
       return ( this.types [ 0 ].equals ( other.types [ 0 ] ) ) ;
     }
     return false ;
@@ -147,7 +147,7 @@ public final class RefType extends MonoType implements DefaultTypes
    * @param pIndex TODO
    * @return TODO
    */
-  public MonoType getTypes ( final int pIndex )
+  public MonoType getTypes ( int pIndex )
   {
     return this.types [ pIndex ] ;
   }
@@ -160,7 +160,7 @@ public final class RefType extends MonoType implements DefaultTypes
    */
   public int [ ] getTypesIndex ( )
   {
-    return RefType.INDICES_TYPE ;
+    return INDICES_TYPE ;
   }
 
 
@@ -171,8 +171,8 @@ public final class RefType extends MonoType implements DefaultTypes
    */
   public String [ ] getTypesPrefix ( )
   {
-    final String [ ] result = new String [ 1 ] ;
-    result [ 0 ] = DefaultTypes.PREFIX_TAU ;
+    String [ ] result = new String [ 1 ] ;
+    result [ 0 ] = PREFIX_TAU ;
     return result ;
   }
 
@@ -195,7 +195,7 @@ public final class RefType extends MonoType implements DefaultTypes
    * @see MonoType#substitute(TypeSubstitution)
    */
   @ Override
-  public MonoType substitute ( final TypeSubstitution pTypeSubstitution )
+  public MonoType substitute ( TypeSubstitution pTypeSubstitution )
   {
     return new RefType ( this.types [ 0 ].substitute ( pTypeSubstitution ) ) ;
   }
@@ -208,15 +208,16 @@ public final class RefType extends MonoType implements DefaultTypes
    */
   @ Override
   public PrettyStringBuilder toPrettyStringBuilder (
-      final PrettyStringBuilderFactory pPrettyStringBuilderFactory )
+      PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
     if ( this.prettyStringBuilder == null )
     {
       this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
-          PrettyPrintPriorities.PRIO_REF ) ;
-      this.prettyStringBuilder.addBuilder ( this.types [ 0 ]
-          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-          PrettyPrintPriorities.PRIO_REF_TAU ) ;
+          PRIO_REF ) ;
+      this.prettyStringBuilder
+          .addBuilder ( this.types [ 0 ]
+              .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
+              PRIO_REF_TAU ) ;
       this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addType ( "ref" ) ; //$NON-NLS-1$
     }

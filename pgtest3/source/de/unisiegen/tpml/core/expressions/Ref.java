@@ -36,7 +36,7 @@ public final class Ref extends UnaryOperator
   @ SuppressWarnings ( "unused" )
   @ Override
   public Expression applyTo ( @ SuppressWarnings ( "unused" )
-  final Expression pExpression ) throws UnaryOperatorException
+  Expression pExpression ) throws UnaryOperatorException
   {
     throw new UnsupportedOperationException (
         "ref operator must be handled by the interpreter" ) ; //$NON-NLS-1$

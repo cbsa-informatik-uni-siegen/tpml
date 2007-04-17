@@ -23,7 +23,7 @@ public final class OutlineDisplayTree implements Runnable
    * 
    * @param pDefaultOutline The {@link DefaultOutline}.
    */
-  public OutlineDisplayTree ( final DefaultOutline pDefaultOutline )
+  public OutlineDisplayTree ( DefaultOutline pDefaultOutline )
   {
     this.defaultOutline = pDefaultOutline ;
   }

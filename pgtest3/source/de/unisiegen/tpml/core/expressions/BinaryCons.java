@@ -19,7 +19,7 @@ public final class BinaryCons extends BinaryOperator
    */
   public BinaryCons ( )
   {
-    super ( "::" , PrettyPrintPriorities.PRIO_BINARY_CONS ) ; //$NON-NLS-1$
+    super ( "::" , PRIO_BINARY_CONS ) ; //$NON-NLS-1$
   }
 
 
@@ -29,15 +29,15 @@ public final class BinaryCons extends BinaryOperator
    * @see BinaryOperator#applyTo(Expression, Expression)
    */
   @ Override
-  public Expression applyTo ( final Expression pExpression1 ,
-      final Expression pExpression2 ) throws BinaryOperatorException
+  public Expression applyTo ( Expression pExpression1 , Expression pExpression2 )
+      throws BinaryOperatorException
   {
     try
     {
       // try to create a new list from e1 and e2
       return new List ( pExpression1 , pExpression2 ) ;
     }
-    catch ( final ClassCastException e )
+    catch ( ClassCastException e )
     {
       // we're stuck
       throw new BinaryOperatorException ( this , pExpression1 , pExpression2 ) ;

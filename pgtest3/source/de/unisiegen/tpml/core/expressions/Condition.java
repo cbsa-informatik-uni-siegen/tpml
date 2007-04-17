@@ -41,8 +41,8 @@ public final class Condition extends Expression implements ChildrenExpressions
    * @throws NullPointerException if <code>e0</code>, <code>e1</code> or
    *           <code>e2</code> is <code>null</code>.
    */
-  public Condition ( final Expression pExpression0 ,
-      final Expression pExpression1 , final Expression pExpression2 )
+  public Condition ( Expression pExpression0 , Expression pExpression1 ,
+      Expression pExpression2 )
   {
     if ( pExpression0 == null )
     {
@@ -97,11 +97,11 @@ public final class Condition extends Expression implements ChildrenExpressions
    * @see Expression#equals(Object)
    */
   @ Override
-  public boolean equals ( final Object pObject )
+  public boolean equals ( Object pObject )
   {
     if ( pObject instanceof Condition )
     {
-      final Condition other = ( Condition ) pObject ;
+      Condition other = ( Condition ) pObject ;
       return ( ( this.expressions [ 0 ].equals ( other.expressions [ 0 ] ) )
           && ( this.expressions [ 1 ].equals ( other.expressions [ 1 ] ) ) && ( this.expressions [ 2 ]
           .equals ( other.expressions [ 2 ] ) ) ) ;
@@ -176,7 +176,7 @@ public final class Condition extends Expression implements ChildrenExpressions
    *           bounds.
    * @see #getExpressions()
    */
-  public Expression getExpressions ( final int pIndex )
+  public Expression getExpressions ( int pIndex )
   {
     return this.expressions [ pIndex ] ;
   }
@@ -189,7 +189,7 @@ public final class Condition extends Expression implements ChildrenExpressions
    */
   public int [ ] getExpressionsIndex ( )
   {
-    return Condition.INDICES_E ;
+    return INDICES_E ;
   }
 
 
@@ -213,10 +213,9 @@ public final class Condition extends Expression implements ChildrenExpressions
    * @see Expression#substitute(Identifier, Expression, boolean)
    */
   @ Override
-  public Condition substitute ( final Identifier pId ,
-      final Expression pExpression )
+  public Condition substitute ( Identifier pId , Expression pExpression )
   {
-    return this.substitute ( pId , pExpression , false ) ;
+    return substitute ( pId , pExpression , false ) ;
   }
 
 
@@ -226,15 +225,15 @@ public final class Condition extends Expression implements ChildrenExpressions
    * @see Expression#substitute(Identifier, Expression, boolean)
    */
   @ Override
-  public Condition substitute ( final Identifier pId ,
-      final Expression pExpression , final boolean pAttributeRename )
+  public Condition substitute ( Identifier pId , Expression pExpression ,
+      boolean pAttributeRename )
   {
-    final Expression newE0 = this.expressions [ 0 ].substitute ( pId ,
-        pExpression , pAttributeRename ) ;
-    final Expression newE1 = this.expressions [ 1 ].substitute ( pId ,
-        pExpression , pAttributeRename ) ;
-    final Expression newE2 = this.expressions [ 2 ].substitute ( pId ,
-        pExpression , pAttributeRename ) ;
+    Expression newE0 = this.expressions [ 0 ].substitute ( pId , pExpression ,
+        pAttributeRename ) ;
+    Expression newE1 = this.expressions [ 1 ].substitute ( pId , pExpression ,
+        pAttributeRename ) ;
+    Expression newE2 = this.expressions [ 2 ].substitute ( pId , pExpression ,
+        pAttributeRename ) ;
     return new Condition ( newE0 , newE1 , newE2 ) ;
   }
 
@@ -245,14 +244,11 @@ public final class Condition extends Expression implements ChildrenExpressions
    * @see Expression#substitute(TypeSubstitution)
    */
   @ Override
-  public Condition substitute ( final TypeSubstitution pTypeSubstitution )
+  public Condition substitute ( TypeSubstitution pTypeSubstitution )
   {
-    final Expression newE0 = this.expressions [ 0 ]
-        .substitute ( pTypeSubstitution ) ;
-    final Expression newE1 = this.expressions [ 1 ]
-        .substitute ( pTypeSubstitution ) ;
-    final Expression newE2 = this.expressions [ 2 ]
-        .substitute ( pTypeSubstitution ) ;
+    Expression newE0 = this.expressions [ 0 ].substitute ( pTypeSubstitution ) ;
+    Expression newE1 = this.expressions [ 1 ].substitute ( pTypeSubstitution ) ;
+    Expression newE2 = this.expressions [ 2 ].substitute ( pTypeSubstitution ) ;
     return new Condition ( newE0 , newE1 , newE2 ) ;
   }
 
@@ -264,31 +260,31 @@ public final class Condition extends Expression implements ChildrenExpressions
    */
   @ Override
   public PrettyStringBuilder toPrettyStringBuilder (
-      final PrettyStringBuilderFactory pPrettyStringBuilderFactory )
+      PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
     if ( this.prettyStringBuilder == null )
     {
       this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
-          PrettyPrintPriorities.PRIO_CONDITION ) ;
+          PRIO_CONDITION ) ;
       this.prettyStringBuilder.addKeyword ( "if" ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addBuilder ( this.expressions [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-          PrettyPrintPriorities.PRIO_CONDITION_E0 ) ;
+          PRIO_CONDITION_E0 ) ;
       this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addBreak ( ) ;
       this.prettyStringBuilder.addKeyword ( "then" ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addBuilder ( this.expressions [ 1 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-          PrettyPrintPriorities.PRIO_CONDITION_E1 ) ;
+          PRIO_CONDITION_E1 ) ;
       this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addBreak ( ) ;
       this.prettyStringBuilder.addKeyword ( "else" ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addBuilder ( this.expressions [ 2 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-          PrettyPrintPriorities.PRIO_CONDITION_E2 ) ;
+          PRIO_CONDITION_E2 ) ;
     }
     return this.prettyStringBuilder ;
   }

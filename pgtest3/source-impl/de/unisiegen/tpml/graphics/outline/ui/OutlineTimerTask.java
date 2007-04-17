@@ -24,7 +24,7 @@ public final class OutlineTimerTask extends TimerTask
    * 
    * @param pDefaultOutline The {@link DefaultOutline}.
    */
-  public OutlineTimerTask ( final DefaultOutline pDefaultOutline )
+  public OutlineTimerTask ( DefaultOutline pDefaultOutline )
   {
     this.defaultOutline = pDefaultOutline ;
   }
