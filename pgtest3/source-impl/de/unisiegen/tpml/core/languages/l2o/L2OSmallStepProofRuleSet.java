@@ -3,7 +3,6 @@ package de.unisiegen.tpml.core.languages.l2o ;
 
 import de.unisiegen.tpml.core.expressions.Attribute ;
 import de.unisiegen.tpml.core.expressions.CurriedMethod ;
-import de.unisiegen.tpml.core.expressions.Duplication ;
 import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.expressions.Identifier ;
 import de.unisiegen.tpml.core.expressions.Lambda ;
@@ -27,13 +26,13 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
   /**
    * TODO
    */
-  private static final String DUPL_EXEC = "DUPL-EXEC" ; //$NON-NLS-1$
+  //private static final String DUPL_EXEC = "DUPL-EXEC" ; //$NON-NLS-1$
 
 
   /**
    * TODO
    */
-  private static final String DUPL_EVAL = "DUPL-EVAL" ; //$NON-NLS-1$
+ // private static final String DUPL_EVAL = "DUPL-EVAL" ; //$NON-NLS-1$
 
 
   /**
@@ -119,8 +118,8 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
     register ( L2OLanguage.L2O , SEND_EXEC , true ) ;
     register ( L2OLanguage.L2O , SEND_EVAL , false ) ;
     // Dupl
-    register ( L2OLanguage.L2O , DUPL_EVAL , false ) ;
-    register ( L2OLanguage.L2O , DUPL_EXEC , true ) ;
+    //register ( L2OLanguage.L2O , DUPL_EVAL , false ) ;
+    //register ( L2OLanguage.L2O , DUPL_EXEC , true ) ;
   }
 
 
