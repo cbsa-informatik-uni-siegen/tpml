@@ -64,7 +64,6 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 	 */
 	private int index = 1;
 
-
 	//
 	// Constructor
 	//
@@ -227,24 +226,24 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 		});
 	}
 
-  /**
-   * Returns <code>true</code> if the expression for the <code>node</code> contains syntactic sugar.
-   * If <code>recursive</code> is <code>true</code> and the expression for the <code>node</code> is
-   * not syntactic sugar, its sub expressions will also be checked.
-   * 
-   * @param node the proof node whose expression should be checked for syntactic sugar.
-   * @param expression of the actual type formula which should be checke for syntactic sugar.
-   * @param recursive signals if the expression should be checked recursive
-   * 
-   * @return <code>true</code> if the expression of the <code>node</code> contains
-   *         syntactic sugar according to the language for this model.
-   *
-   * @throws IllegalArgumentException if the <code>node</code> is invalid for this proof model.
-   * @throws NullPointerException if the <code>node</code> is <code>null</code>.
-   * 
-   * @see #translateToCoreSyntax(ExpressionProofNode, boolean)
-   * @see de.unisiegen.tpml.core.languages.LanguageTranslator#containsSyntacticSugar(Expression, boolean)
-   */
+	/**
+	 * Returns <code>true</code> if the expression for the <code>node</code> contains syntactic sugar.
+	 * If <code>recursive</code> is <code>true</code> and the expression for the <code>node</code> is
+	 * not syntactic sugar, its sub expressions will also be checked.
+	 * 
+	 * @param node the proof node whose expression should be checked for syntactic sugar.
+	 * @param expression of the actual type formula which should be checke for syntactic sugar.
+	 * @param recursive signals if the expression should be checked recursive
+	 * 
+	 * @return <code>true</code> if the expression of the <code>node</code> contains
+	 *         syntactic sugar according to the language for this model.
+	 *
+	 * @throws IllegalArgumentException if the <code>node</code> is invalid for this proof model.
+	 * @throws NullPointerException if the <code>node</code> is <code>null</code>.
+	 * 
+	 * @see #translateToCoreSyntax(ExpressionProofNode, boolean)
+	 * @see de.unisiegen.tpml.core.languages.LanguageTranslator#containsSyntacticSugar(Expression, boolean)
+	 */
 	public boolean containsSyntacticSugar(TypeInferenceProofNode node,
 			Expression expression, boolean recursive) {
 		if (node == null) {
@@ -259,29 +258,82 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 		return this.translator.containsSyntacticSugar(expression, recursive);
 	}
 
-  /**
-   * Translates the expression for the <code>node</code> to core syntax according to
-   * the language for this model. If <code>recursive</code> is <code>true</code>,
-   * all sub expressions will also be translated to core syntax, otherwise only the
-   * outermost expression will be translated.
-   * 
-   * @param node the proof node whose expression should be translated to core syntax.
-   * @param recursive whether to translate the expression recursively.
-   * 
-   * @throws IllegalArgumentException if the <code>node</code> is invalid for this proof model,
-   *                                  or the <code>node</code>'s expression does not contain
-   *                                  syntactic sugar.
-   * @throws IllegalStateException if any steps were performed on the <code>node</code> already.
-   * @throws NullPointerException if the <code>node</code> is <code>null</code>.                               
-   * 
-   * @see #containsSyntacticSugar(ExpressionProofNode, boolean)
-   * @see de.unisiegen.tpml.core.languages.LanguageTranslator#translateToCoreSyntax(Expression, boolean)
-   */
-	public void translateToCoreSyntax(TypeInferenceProofNode node,
-			boolean recursive) {
-		for (TypeFormula formula : node.getAllFormulas()) {
-			if (formula instanceof TypeJudgement) {
-				translateToCoreSyntaxInternal(node, (TypeJudgement) formula, recursive);
+	/**
+	 * Translates the expression for the <code>node</code> to core syntax according to
+	 * the language for this model. If <code>recursive</code> is <code>true</code>,
+	 * all sub expressions will also be translated to core syntax, otherwise only the
+	 * outermost expression will be translated.
+	 * 
+	 * @param node the proof node whose expression should be translated to core syntax.
+	 * @param recursive whether to translate the expression recursively.
+	 * @param all signals if user wants to translate one expression or all
+	 * 
+	 * @throws IllegalArgumentException if the <code>node</code> is invalid for this proof model,
+	 *                                  or the <code>node</code>'s expression does not contain
+	 *                                  syntactic sugar.
+	 * @throws IllegalStateException if any steps were performed on the <code>node</code> already.
+	 * @throws NullPointerException if the <code>node</code> is <code>null</code>.                               
+	 * 
+	 * @see #containsSyntacticSugar(ExpressionProofNode, boolean)
+	 * @see de.unisiegen.tpml.core.languages.LanguageTranslator#translateToCoreSyntax(Expression, boolean)
+	 */
+	public void translateToCoreSyntax(TypeInferenceProofNode pNode,
+			final boolean recursive, final boolean all) {
+		final DefaultTypeInferenceProofNode node = (DefaultTypeInferenceProofNode) pNode;
+		final ArrayList<TypeFormula> oldFormulas = pNode.getAllFormulas();
+		if (all) {
+			
+			final ArrayList<TypeFormula> newFormulas = new ArrayList <TypeFormula>();
+			
+			for (TypeFormula formula : node.getAllFormulas()){
+				if (formula instanceof TypeJudgement){
+					Expression expression = translateToCoreSyntaxInternal(node, (TypeJudgement) formula, recursive);
+					newFormulas.add(new TypeJudgement(formula.getEnvironment(), expression, formula.getType()));
+				}
+			}
+			addUndoableTreeEdit(new UndoableTreeEdit() {
+				
+				
+
+				public void redo() {
+					
+					node.setFormula(newFormulas);
+					nodeChanged(node);
+					
+				}
+
+				public void undo() {
+					node.setFormula(oldFormulas);
+					nodeChanged(node);
+				}
+				
+			});
+			
+			
+			
+		} else {
+			if (node.getFirstFormula() instanceof TypeJudgement) {
+				final TypeJudgement judgement = (TypeJudgement) node.getFirstFormula();
+				final Expression oldExpression = judgement.getExpression();
+				final Expression newExpression =	translateToCoreSyntaxInternal(node, (TypeJudgement) node.getFirstFormula(), recursive);
+			
+	addUndoableTreeEdit(new UndoableTreeEdit() {
+				
+				
+
+				public void redo() {
+					
+					judgement.setExpression(newExpression);
+					nodeChanged(node);
+					
+				}
+
+				public void undo() {
+					judgement.setExpression(oldExpression);
+					nodeChanged(node);
+				}
+				
+			});
 			}
 		}
 	}
@@ -291,7 +343,7 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 	 *
 	 * @see translateToCoreSyntax
 	 */
-	void translateToCoreSyntaxInternal(TypeInferenceProofNode node,
+	Expression translateToCoreSyntaxInternal(TypeInferenceProofNode node,
 			TypeJudgement judgement, boolean recursive) {
 
 		// verify that the node actually contains syntactic sugar
@@ -305,35 +357,11 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 			throw new IllegalStateException("steps have been performed on node"); //$NON-NLS-1$
 		}
 
-		// cast the proof node to the appropriate type
-		final DefaultTypeInferenceProofNode abstractNode = (DefaultTypeInferenceProofNode) node;
-		final TypeJudgement actualjudgement = judgement;
-
 		// translate the expression to core syntax
-		final Expression expression = judgement.getExpression();
-		final Expression coreExpression = this.translator.translateToCoreSyntax(
-				expression, recursive);
+		return this.translator.translateToCoreSyntax(judgement.getExpression(),
+				recursive);
 
-		// create the undoable edit
-		UndoableTreeEdit edit = new UndoableTreeEdit() {
-			public void redo() {
-				// translate the expression of the node to core syntax
-				actualjudgement.setExpression(coreExpression);
-				nodeChanged(abstractNode);
-			}
 
-			public void undo() {
-				// restore the previous expression
-				actualjudgement.setExpression(expression);
-				nodeChanged(abstractNode);
-			}
-		};
-
-		// perform the redo operation
-		edit.redo();
-
-		// and record the edit
-		addUndoableTreeEdit(edit);
 	}
 
 	//

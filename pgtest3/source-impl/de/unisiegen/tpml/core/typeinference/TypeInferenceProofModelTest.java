@@ -249,7 +249,7 @@ public final class TypeInferenceProofModelTest extends JFrame {
           // translate the last node
           TreePath path = tree.getSelectionPath();
            {
-            model.translateToCoreSyntax((TypeInferenceProofNode)nextNode(model), true);
+            model.translateToCoreSyntax((TypeInferenceProofNode)nextNode(model), true, false);
           }
         }
         catch (Exception e) {

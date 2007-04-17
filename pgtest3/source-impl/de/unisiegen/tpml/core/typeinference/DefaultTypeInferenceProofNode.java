@@ -346,4 +346,9 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
 	public ArrayList<TypeFormula> getAllFormulas(){
 		return this.formula;
 	}
+
+	public void setFormula(ArrayList<TypeFormula> formula) {
+		System.out.println(formula.toString());
+		this.formula = formula;
+	}
 }
