@@ -36,7 +36,6 @@ public final class ShowBonds
   @ SuppressWarnings ( "unchecked" )
   private final void check ( Expression pExpression )
   {
-
     for ( Class < Object > currentInterface : pExpression.getClass ( )
         .getInterfaces ( ) )
     {
@@ -117,7 +116,6 @@ public final class ShowBonds
     if ( this.result == null )
     {
       this.result = new ArrayList < Bonds > ( ) ;
-      System.out.println ( "check" ) ;
       check ( this.expression ) ;
     }
     return this.result ;

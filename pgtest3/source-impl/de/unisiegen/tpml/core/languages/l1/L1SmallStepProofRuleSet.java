@@ -189,7 +189,6 @@ public class L1SmallStepProofRuleSet extends L0SmallStepProofRuleSet
   public Expression evaluateInfixOperation ( SmallStepProofContext context ,
       InfixOperation infixOperation )
   {
-    System.out.println ( ) ;
     // determine the sub expressions and the operator
     Expression e1 = infixOperation.getE1 ( ) ;
     Expression e2 = infixOperation.getE2 ( ) ;
