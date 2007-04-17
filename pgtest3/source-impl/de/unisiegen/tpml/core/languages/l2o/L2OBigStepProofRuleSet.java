@@ -55,8 +55,9 @@ public class L2OBigStepProofRuleSet extends L2BigStepProofRuleSet
         "updateRename" ) ; //$NON-NLS-1$ 
     registerByMethodName ( L2OLanguage.L2O , "METHOD" , "applyMethod" , //$NON-NLS-1$ //$NON-NLS-2$
         "updateMethod" ) ; //$NON-NLS-1$
-    registerByMethodName ( L2OLanguage.L2O , "DUPL" , "applyDupl" , //$NON-NLS-1$ //$NON-NLS-2$
-        "updateDupl" ) ; //$NON-NLS-1$ 
+    // registerByMethodName ( L2OLanguage.L2O , "DUPL" , "applyDupl" ,
+    // //$NON-NLS-1$ //$NON-NLS-2$
+    // "updateDupl" ) ; //$NON-NLS-1$
   }
 
 
