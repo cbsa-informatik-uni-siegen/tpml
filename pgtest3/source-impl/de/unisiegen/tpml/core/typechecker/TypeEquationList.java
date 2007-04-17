@@ -151,6 +151,7 @@ public final class TypeEquationList {
       MonoType tau = (left instanceof TypeVariable ? right : left);
       
       // either tvar equals tau or tvar is not present in tau
+      //???
       if (tvar.equals(tau) || !tau.free().contains(tvar)) {
         DefaultTypeSubstitution s1 = new DefaultTypeSubstitution(tvar, tau);
         DefaultTypeSubstitution s2 = this.remaining.substitute(s1).unify();
@@ -213,6 +214,7 @@ public final class TypeEquationList {
       ListType taur = (ListType)right;
       
       // we need to check {tau = tau'} as well
+      //???
       TypeEquationList eqns = this.remaining;
       eqns = eqns.extend(taul.getTau(), taur.getTau());
       

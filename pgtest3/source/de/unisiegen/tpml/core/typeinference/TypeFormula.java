@@ -1,6 +1,7 @@
 package de.unisiegen.tpml.core.typeinference;
 
 import de.unisiegen.tpml.core.expressions.Expression;
+import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable;
 import de.unisiegen.tpml.core.typechecker.DefaultTypeEnvironment;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
 import de.unisiegen.tpml.core.types.MonoType;
@@ -13,7 +14,7 @@ import de.unisiegen.tpml.core.types.MonoType;
  * @author Benjamin Mies
  *
  */
-public interface TypeFormula {
+public interface TypeFormula{
 
 	//
 	// Attributes

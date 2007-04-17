@@ -17,6 +17,7 @@ import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.expressions.IsEmpty;
 import de.unisiegen.tpml.core.typechecker.DefaultTypeCheckerProofContext;
 import de.unisiegen.tpml.core.typechecker.DefaultTypeEnvironment;
+import de.unisiegen.tpml.core.typechecker.DefaultTypeSubstitution;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofContext;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofRule;
@@ -85,7 +86,7 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 
 		super(new DefaultTypeInferenceProofNode(new TypeJudgement(
 				new DefaultTypeEnvironment(), expression, new TypeVariable(1, 0)),
-				new ArrayList<TypeSubstitutionList>()), ruleSet);
+				new ArrayList<DefaultTypeSubstitution>()), ruleSet);
 	}
 
 	//
@@ -368,7 +369,7 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 		if (form != null) {
 			try {
 				// try to apply the rule to the specified node
-				context.setSubstitutions(node.getSubstitutions());
+				context.setSubstitutions(node.getSubstitution());
 				context.apply(rule, form, type);
 				return;
 			} catch (UnifyException e1) {
@@ -384,7 +385,7 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 			for (TypeFormula formula : typeNode.getFormula()) {
 				try {
 					// try to apply the rule to the specified node
-					context.setSubstitutions(node.getSubstitutions());
+					context.setSubstitutions(node.getSubstitution());
 					context.apply(rule, formula, type);
 
 					return;
@@ -497,7 +498,7 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 	void contextAddProofNode(final DefaultTypeInferenceProofContext context,
 			final DefaultTypeInferenceProofNode pNode,
 			final ArrayList<TypeFormula> formulas,
-			final ArrayList<TypeSubstitutionList> subs,
+			final ArrayList<DefaultTypeSubstitution> subs,
 			final TypeCheckerProofRule rule, final TypeFormula formula) {
 
 		final DefaultTypeInferenceProofNode child = new DefaultTypeInferenceProofNode(

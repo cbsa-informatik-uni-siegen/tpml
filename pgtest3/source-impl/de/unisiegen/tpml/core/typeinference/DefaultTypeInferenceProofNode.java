@@ -6,6 +6,7 @@ import javax.swing.tree.TreeNode;
 
 import de.unisiegen.tpml.core.AbstractProofNode;
 import de.unisiegen.tpml.core.ProofStep;
+import de.unisiegen.tpml.core.typechecker.DefaultTypeSubstitution;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofRule;
 
 /**
@@ -27,7 +28,7 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
 	/**
 	 * list of the collected type substitutions of this node
 	 */
-	private ArrayList<TypeSubstitutionList> substitutions = new ArrayList<TypeSubstitutionList>();
+	private ArrayList<DefaultTypeSubstitution> substitutions = new ArrayList<DefaultTypeSubstitution>();
 
 	/**
 	 * list of proof steps of this node
@@ -46,7 +47,7 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
 	 * 
 	 */
 	public DefaultTypeInferenceProofNode(final TypeJudgement judgement,
-			final ArrayList<TypeSubstitutionList> subs) {
+			final ArrayList<DefaultTypeSubstitution> subs) {
 
 		//equations = eqns;
 		formula.add(judgement);
@@ -63,7 +64,7 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
 	 * 
 	 */
 	public DefaultTypeInferenceProofNode(final ArrayList<TypeFormula> judgement,
-			final ArrayList<TypeSubstitutionList> subs) {
+			final ArrayList<DefaultTypeSubstitution> subs) {
 
 		//equations = eqns;
 		formula = judgement;
@@ -316,7 +317,7 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
 	 *
 	 * @return TypeSubstitutionList substitutions 
 	 */
-	public ArrayList<TypeSubstitutionList> getSubstitutions() {
+	public ArrayList<DefaultTypeSubstitution> getSubstitution() {
 
 		return this.substitutions;
 	}
@@ -345,17 +346,4 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
 	public ArrayList<TypeFormula> getAllFormulas(){
 		return this.formula;
 	}
-
-	/**
-	 * get a list of all type substitutions of this node
-	 *
-	 * @return ArrayList with all type substitutions of this node
-	 * @see de.unisiegen.tpml.core.typeinference.TypeInferenceProofNode#getSubstitution()
-	 */
-	public ArrayList<TypeSubstitutionList> getSubstitution() {
-		return this.substitutions;
-	}
-	
-	
-
 }

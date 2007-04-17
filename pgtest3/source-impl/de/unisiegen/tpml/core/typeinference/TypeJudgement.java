@@ -1,6 +1,9 @@
 package de.unisiegen.tpml.core.typeinference;
 
 import de.unisiegen.tpml.core.expressions.Expression;
+import de.unisiegen.tpml.core.prettyprinter.PrettyString;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
 import de.unisiegen.tpml.core.typechecker.DefaultTypeEnvironment;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
 import de.unisiegen.tpml.core.types.MonoType;
@@ -159,4 +162,5 @@ public class TypeJudgement implements TypeFormula {
 	public void setExpression(final Expression expression) {
 		this.expression = expression;
 	}
+
 }

@@ -1,6 +1,10 @@
 package de.unisiegen.tpml.core.typeinference;
 
 import de.unisiegen.tpml.core.expressions.Expression;
+import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable;
+import de.unisiegen.tpml.core.prettyprinter.PrettyString;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder;
+import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
 import de.unisiegen.tpml.core.typechecker.DefaultTypeEnvironment;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
 import de.unisiegen.tpml.core.types.MonoType;
@@ -13,7 +17,7 @@ import de.unisiegen.tpml.core.types.UnitType;
  *
  * @see de.unisiegen.tpml.core.typechecker.TypeEquationList
  */
-public final class TypeEquation implements TypeFormula {
+public final class TypeEquation implements TypeFormula, PrettyPrintable, PrettyPrintPriorities {
 
 	//
 	// Attributes
@@ -174,5 +178,30 @@ public final class TypeEquation implements TypeFormula {
 
 		return new UnitType();
 	}
+
+  //
+  // Pretty printing
+  //
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.tpml.core.prettyprinter.PrettyPrintable#toPrettyString()
+   */
+  public final PrettyString toPrettyString ( )
+  {
+    return toPrettyStringBuilder ( PrettyStringBuilderFactory.newInstance ( ) )
+        .toPrettyString ( ) ;
+  }
+  
+
+  PrettyStringBuilder toPrettyStringBuilder ( PrettyStringBuilderFactory factory )
+  {
+    PrettyStringBuilder builder = factory.newBuilder ( this , PRIO_EQUATION ) ;
+    builder.addBuilder(left.toPrettyStringBuilder(factory), PRIO_EQUATION);
+    builder.addText(" = ");
+    builder.addBuilder(right.toPrettyStringBuilder(factory), PRIO_EQUATION);
+
+    return builder ;
+  }
 
 }

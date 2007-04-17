@@ -80,7 +80,7 @@ public class DefaultTypeInferenceProofContext implements
 	 * The list of all type substitutions that has been collected for this context
 	 * 
 	 */
-	private ArrayList<TypeSubstitutionList> substitutions = new ArrayList<TypeSubstitutionList>();
+	private ArrayList<DefaultTypeSubstitution> substitutions = new ArrayList<DefaultTypeSubstitution>();
 
 	/**
 	 * The newest added type substitutions
@@ -354,7 +354,7 @@ public class DefaultTypeInferenceProofContext implements
 		final ArrayList<TypeFormula> formulas = new ArrayList<TypeFormula>();
 
 		// a list of all substitutions of the new node
-		final ArrayList<TypeSubstitutionList> newSubstitutions = new ArrayList<TypeSubstitutionList>();
+		final ArrayList<DefaultTypeSubstitution> newSubstitutions = new ArrayList<DefaultTypeSubstitution>();
 
 		// list of the formulas of the actual type inference proof node
 		final ArrayList<TypeFormula> oldFormulas = node.getFormula();
@@ -430,10 +430,15 @@ public class DefaultTypeInferenceProofContext implements
 				}
 			}
 		}
+		
+		DefaultTypeSubstitution nextSubstitution;
 
 		//	add the new substitutions
-		if (substitution != TypeSubstitutionList.EMPTY_LIST) {
-			newSubstitutions.add(substitution);
+		while (substitution!=TypeSubstitutionList.EMPTY_LIST) {
+			nextSubstitution = substitution.getFirst(); 
+			newSubstitutions.add(nextSubstitution);
+			substitution = substitution.getRemaining();
+			
 		}
 		newSubstitutions.addAll(substitutions);
 
@@ -564,7 +569,7 @@ public class DefaultTypeInferenceProofContext implements
 	 *
 	 * @param subs the new list of type substitutions
 	 */
-	public void setSubstitutions(final ArrayList<TypeSubstitutionList> subs) {
+	public void setSubstitutions(final ArrayList<DefaultTypeSubstitution> subs) {
 
 		this.substitutions = subs;
 	}
