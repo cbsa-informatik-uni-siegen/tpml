@@ -34,7 +34,6 @@ import de.unisiegen.tpml.graphics.renderer.ToListenForMouseContainer;
 /**
  * this class renders the coumpoundexpression
  *
- * @author Michael
  *
  * @param <S>
  * @param <E>
@@ -131,7 +130,7 @@ public class CompoundExpression < S , E > extends JComponent
   // private ToListenForMouseContainer toListenForMouse = new
   // ToListenForMouseContainer();
   /**
-   * the list of points where the mouseovereffect will be function
+   * the list of points where the mouseovereffect will be react
    */
   private ToListenForMouseContainer toListenForMouse ;
 
@@ -375,24 +374,7 @@ public class CompoundExpression < S , E > extends JComponent
       
      
       bonds.setExpression ( this.expression ) ;
-      // Debug
-      ArrayList < Bonds > bondsList = bonds.getAnnotations ( ) ;
-      for ( int i = 0 ; i < bondsList.size ( ) ; i ++ )
-      {
-        Bonds tmp = bondsList.get ( i ) ;
-        /*Debug.err.print ( "BM- Id: " + tmp.getIdentifier ( ) + " "
-            + tmp.getStartOffset ( ) + "->" + tmp.getEndOffset ( )
-            + " Bindung: " , "Benjamin" ) ;*/
-        for ( int j = 0 ; j < tmp.getPrettyAnnotation ( ).size ( ) ; j ++ )
-        {
-          /*Debug.err.print ( tmp.getMarks ( ).get ( j ).getStartOffset ( )
-              + "->" + tmp.getMarks ( ).get ( j ).getEndOffset ( ) + "  " ,
-              "Benjamin" ) ;*/
-        }
-        //Debug.err.println ( " " , "Benjamin" ) ;
-      }
-      //Debug.out.println ( " " , "benjamin" ) ;
-      //Debug.out.println(o.getTimeTags(),"benjamin");
+      
       // CHANGE BENJAMIN END
       
       // check what to do with the renderer
@@ -531,7 +513,7 @@ public class CompoundExpression < S , E > extends JComponent
   protected void paintComponent ( Graphics gc )
   {
     //TODO Only for test to make yompoundexpression visible
-  	//it also displays whow often the exptresso is rednerd while srolling...
+  	//it also displays how often the exptresso is rednerd while srolling...
     //gc.setColor (Color.yellow);
   	//--------------------------------
     //Color [] test = new Color [10];
