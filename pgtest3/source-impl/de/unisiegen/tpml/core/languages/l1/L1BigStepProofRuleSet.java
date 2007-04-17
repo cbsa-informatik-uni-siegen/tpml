@@ -31,6 +31,7 @@ import de.unisiegen.tpml.core.expressions.UnaryOperatorException ;
 import de.unisiegen.tpml.core.expressions.UnitConstant ;
 import de.unisiegen.tpml.core.languages.l0.L0BigStepProofRuleSet ;
 import de.unisiegen.tpml.core.languages.l0.L0Language ;
+import de.unisiegen.tpml.core.types.MonoType ;
 
 
 /**
@@ -340,14 +341,15 @@ public class L1BigStepProofRuleSet extends L0BigStepProofRuleSet
       Expression e1 = curriedLet.getE1 ( ).clone ( ) ;
       // generate the appropriate lambda abstractions
       Identifier [ ] identifiers = curriedLet.getIdentifiers ( ) ;
+      MonoType [ ] types = curriedLet.getTypes ( ) ;
       for ( int n = identifiers.length - 1 ; n > 0 ; -- n )
       {
-        e1 = new Lambda ( identifiers [ n ].clone ( ) , null , e1 ) ;
+        e1 = new Lambda ( identifiers [ n ].clone ( ) , types [ n ] , e1 ) ;
       }
       // add the recursion for letrec
       if ( e instanceof CurriedLetRec )
       {
-        e1 = new Recursion ( identifiers [ 0 ] , null , e1 ) ;
+        e1 = new Recursion ( identifiers [ 0 ] , types [ 0 ] , e1 ) ;
       }
       // add the proof node
       context.addProofNode ( node , e1 ) ;

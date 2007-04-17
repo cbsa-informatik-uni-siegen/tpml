@@ -19,6 +19,7 @@ import de.unisiegen.tpml.core.expressions.UnaryOperatorException ;
 import de.unisiegen.tpml.core.languages.l0.L0Language ;
 import de.unisiegen.tpml.core.languages.l0.L0SmallStepProofRuleSet ;
 import de.unisiegen.tpml.core.smallstep.SmallStepProofContext ;
+import de.unisiegen.tpml.core.types.MonoType ;
 
 
 /**
@@ -272,12 +273,13 @@ public class L1SmallStepProofRuleSet extends L0SmallStepProofRuleSet
   {
     // determine the sub expressions and the identifiers
     Identifier [ ] identifiers = curriedLet.getIdentifiers ( ) ;
+    MonoType [ ] types = curriedLet.getTypes ( ) ;
     Expression e1 = curriedLet.getE1 ( ).clone ( ) ;
     Expression e2 = curriedLet.getE2 ( ) ;
     // prepend the lambda abstractions to e1
     for ( int n = identifiers.length - 1 ; n >= 1 ; -- n )
     {
-      e1 = new Lambda ( identifiers [ n ].clone ( ) , null , e1 ) ;
+      e1 = new Lambda ( identifiers [ n ].clone ( ) , types [ n ] , e1 ) ;
     }
     // we can simply perform (LET-EXEC)
     context.addProofStep ( getRuleByName ( "LET-EXEC" ) , curriedLet ) ; //$NON-NLS-1$

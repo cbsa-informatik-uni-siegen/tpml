@@ -20,6 +20,7 @@ import de.unisiegen.tpml.core.languages.l1.L1BigStepProofRuleSet ;
 import de.unisiegen.tpml.core.languages.l1.L1Language ;
 import de.unisiegen.tpml.core.languages.l2.L2BigStepProofRuleSet ;
 import de.unisiegen.tpml.core.languages.l2.L2Language ;
+import de.unisiegen.tpml.core.types.MonoType ;
 
 
 /**
@@ -319,14 +320,15 @@ public class L2CBNBigStepProofRuleSet extends L2BigStepProofRuleSet
       Expression e1 = curriedLet.getE1 ( ) ;
       // generate the appropriate lambda abstractions
       Identifier [ ] identifiers = curriedLet.getIdentifiers ( ) ;
+      MonoType [ ] types = curriedLet.getTypes ( ) ;
       for ( int n = identifiers.length - 1 ; n > 0 ; -- n )
       {
-        e1 = new Lambda ( identifiers [ n ].clone ( ) , null , e1 ) ;
+        e1 = new Lambda ( identifiers [ n ].clone ( ) , types [ n ] , e1 ) ;
       }
       // add the recursion for letrec
       if ( e instanceof CurriedLetRec )
       {
-        e1 = new Recursion ( identifiers [ 0 ] , null , e1 ) ;
+        e1 = new Recursion ( identifiers [ 0 ] , types [ 0 ] , e1 ) ;
       }
       // add the proof node
       context.addProofNode ( node , curriedLet.getE2 ( ).substitute (
