@@ -54,8 +54,8 @@ public final class BinaryOperatorException extends Exception
    * @throws NullPointerException if <code>operator</code>, <code>e1</code>
    *           or <code>e2</code> is <code>null</code>.
    */
-  public BinaryOperatorException ( BinaryOperator pOperator ,
-      Expression pExpression1 , Expression pExpression2 )
+  public BinaryOperatorException ( final BinaryOperator pOperator ,
+      final Expression pExpression1 , final Expression pExpression2 )
   {
     super (
         "Cannot apply " + pOperator + " to " + pExpression1 + " and " + pExpression2 ) ; //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$

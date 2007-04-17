@@ -19,7 +19,7 @@ public final class Assign extends BinaryOperator
    */
   public Assign ( )
   {
-    super ( ":=" , PRIO_ASSIGN ) ; //$NON-NLS-1$
+    super ( ":=" , PrettyPrintPriorities.PRIO_ASSIGN ) ; //$NON-NLS-1$
   }
 
 
@@ -36,8 +36,8 @@ public final class Assign extends BinaryOperator
   @ SuppressWarnings ( "unused" )
   @ Override
   public Expression applyTo ( @ SuppressWarnings ( "unused" )
-  Expression pExpression1 , @ SuppressWarnings ( "unused" )
-  Expression pExpression2 ) throws BinaryOperatorException
+  final Expression pExpression1 , @ SuppressWarnings ( "unused" )
+  final Expression pExpression2 ) throws BinaryOperatorException
   {
     throw new UnsupportedOperationException (
         "assign operator must be handled by the interpreter" ) ; //$NON-NLS-1$

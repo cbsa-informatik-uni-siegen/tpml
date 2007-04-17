@@ -20,7 +20,7 @@ public final class ArithmeticOperator extends BinaryOperator
    */
   public static final ArithmeticOperator newDiv ( )
   {
-    return new ArithmeticOperator ( "/" , PRIO_DIV ) ; //$NON-NLS-1$
+    return new ArithmeticOperator ( "/" , PrettyPrintPriorities.PRIO_DIV ) ; //$NON-NLS-1$
   }
 
 
@@ -31,7 +31,7 @@ public final class ArithmeticOperator extends BinaryOperator
    */
   public static final ArithmeticOperator newMinus ( )
   {
-    return new ArithmeticOperator ( "-" , PRIO_MINUS ) ; //$NON-NLS-1$
+    return new ArithmeticOperator ( "-" , PrettyPrintPriorities.PRIO_MINUS ) ; //$NON-NLS-1$
   }
 
 
@@ -42,7 +42,7 @@ public final class ArithmeticOperator extends BinaryOperator
    */
   public static final ArithmeticOperator newMod ( )
   {
-    return new ArithmeticOperator ( "mod" , PRIO_MOD ) ; //$NON-NLS-1$
+    return new ArithmeticOperator ( "mod" , PrettyPrintPriorities.PRIO_MOD ) ; //$NON-NLS-1$
   }
 
 
@@ -53,7 +53,7 @@ public final class ArithmeticOperator extends BinaryOperator
    */
   public static final ArithmeticOperator newMult ( )
   {
-    return new ArithmeticOperator ( "*" , PRIO_MULT ) ; //$NON-NLS-1$
+    return new ArithmeticOperator ( "*" , PrettyPrintPriorities.PRIO_MULT ) ; //$NON-NLS-1$
   }
 
 
@@ -64,7 +64,7 @@ public final class ArithmeticOperator extends BinaryOperator
    */
   public static final ArithmeticOperator newPlus ( )
   {
-    return new ArithmeticOperator ( "+" , PRIO_PLUS ) ; //$NON-NLS-1$
+    return new ArithmeticOperator ( "+" , PrettyPrintPriorities.PRIO_PLUS ) ; //$NON-NLS-1$
   }
 
 
@@ -78,7 +78,7 @@ public final class ArithmeticOperator extends BinaryOperator
    * @throws NullPointerException if <code>text</code> is <code>null</code>.
    * @see BinaryOperator#BinaryOperator(String, int)
    */
-  private ArithmeticOperator ( String pText , int pPrettyPriority )
+  private ArithmeticOperator ( final String pText , final int pPrettyPriority )
   {
     super ( pText , pPrettyPriority ) ;
   }
@@ -90,8 +90,8 @@ public final class ArithmeticOperator extends BinaryOperator
    * @see BinaryOperator#applyTo(Expression, Expression)
    */
   @ Override
-  public Expression applyTo ( Expression pExpression1 , Expression pExpression2 )
-      throws BinaryOperatorException
+  public Expression applyTo ( final Expression pExpression1 ,
+      final Expression pExpression2 ) throws BinaryOperatorException
   {
     if ( pExpression1 == null )
     {
@@ -104,26 +104,26 @@ public final class ArithmeticOperator extends BinaryOperator
     try
     {
       // determine the integer values of the operands
-      int n1 = ( ( IntegerConstant ) pExpression1 ).intValue ( ) ;
-      int n2 = ( ( IntegerConstant ) pExpression2 ).intValue ( ) ;
+      final int n1 = ( ( IntegerConstant ) pExpression1 ).intValue ( ) ;
+      final int n2 = ( ( IntegerConstant ) pExpression2 ).intValue ( ) ;
       // try to perform the application
-      if ( getText ( ) == "+" ) //$NON-NLS-1$
+      if ( this.getText ( ) == "+" ) //$NON-NLS-1$
       {
         return new IntegerConstant ( n1 + n2 ) ;
       }
-      else if ( getText ( ) == "-" ) //$NON-NLS-1$
+      else if ( this.getText ( ) == "-" ) //$NON-NLS-1$
       {
         return new IntegerConstant ( n1 - n2 ) ;
       }
-      else if ( getText ( ) == "*" ) //$NON-NLS-1$
+      else if ( this.getText ( ) == "*" ) //$NON-NLS-1$
       {
         return new IntegerConstant ( n1 * n2 ) ;
       }
-      else if ( getText ( ) == "/" ) //$NON-NLS-1$
+      else if ( this.getText ( ) == "/" ) //$NON-NLS-1$
       {
         return new IntegerConstant ( n1 / n2 ) ;
       }
-      else if ( getText ( ) == "mod" ) //$NON-NLS-1$
+      else if ( this.getText ( ) == "mod" ) //$NON-NLS-1$
       {
         return new IntegerConstant ( n1 % n2 ) ;
       }
@@ -134,12 +134,12 @@ public final class ArithmeticOperator extends BinaryOperator
             "Inconsistent arithmetic operator class" ) ; //$NON-NLS-1$
       }
     }
-    catch ( ClassCastException e )
+    catch ( final ClassCastException e )
     {
       // one of the Expression to IntegerConstant casts failed
       throw new BinaryOperatorException ( this , pExpression1 , pExpression2 ) ;
     }
-    catch ( ArithmeticException e )
+    catch ( final ArithmeticException e )
     {
       // internal Java operators throw this on divide-by-zero
       return Exn.newDivideByZero ( ) ;
@@ -155,7 +155,8 @@ public final class ArithmeticOperator extends BinaryOperator
   @ Override
   public ArithmeticOperator clone ( )
   {
-    return new ArithmeticOperator ( getText ( ) , getPrettyPriority ( ) ) ;
+    return new ArithmeticOperator ( this.getText ( ) , this
+        .getPrettyPriority ( ) ) ;
   }
 
 

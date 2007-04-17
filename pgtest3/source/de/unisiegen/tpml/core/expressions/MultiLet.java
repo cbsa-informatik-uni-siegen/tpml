@@ -5,6 +5,7 @@ import java.util.ArrayList ;
 import java.util.Arrays ;
 import de.unisiegen.tpml.core.interfaces.BoundedIdentifiers ;
 import de.unisiegen.tpml.core.interfaces.ChildrenExpressions ;
+import de.unisiegen.tpml.core.interfaces.DefaultIdentifiers ;
 import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
@@ -87,8 +88,8 @@ public final class MultiLet extends Expression implements BoundedIdentifiers ,
    * @throws NullPointerException if <code>identifiers</code>,
    *           <code>e1</code> or <code>e2</code> is <code>null</code>.
    */
-  public MultiLet ( Identifier [ ] pIdentifiers , MonoType pTau ,
-      Expression pExpression1 , Expression pExpression2 )
+  public MultiLet ( final Identifier [ ] pIdentifiers , final MonoType pTau ,
+      final Expression pExpression1 , final Expression pExpression2 )
   {
     if ( pIdentifiers == null )
     {
@@ -154,7 +155,7 @@ public final class MultiLet extends Expression implements BoundedIdentifiers ,
   @ Override
   public MultiLet clone ( )
   {
-    Identifier [ ] newIdentifiers = new Identifier [ this.identifiers.length ] ;
+    final Identifier [ ] newIdentifiers = new Identifier [ this.identifiers.length ] ;
     for ( int i = 0 ; i < newIdentifiers.length ; i ++ )
     {
       newIdentifiers [ i ] = this.identifiers [ i ].clone ( ) ;
@@ -171,11 +172,11 @@ public final class MultiLet extends Expression implements BoundedIdentifiers ,
    * @see Expression#equals(Object)
    */
   @ Override
-  public boolean equals ( Object pObject )
+  public boolean equals ( final Object pObject )
   {
     if ( pObject instanceof MultiLet )
     {
-      MultiLet other = ( MultiLet ) pObject ;
+      final MultiLet other = ( MultiLet ) pObject ;
       return ( ( Arrays.equals ( this.identifiers , other.identifiers ) )
           && ( this.expressions [ 0 ].equals ( other.expressions [ 0 ] ) )
           && ( this.expressions [ 1 ].equals ( other.expressions [ 1 ] ) ) && ( ( this.types [ 0 ] == null ) ? ( other.types [ 0 ] == null )
@@ -197,9 +198,9 @@ public final class MultiLet extends Expression implements BoundedIdentifiers ,
     {
       this.free = new ArrayList < Identifier > ( ) ;
       this.free.addAll ( this.expressions [ 1 ].free ( ) ) ;
-      for ( int i = 0 ; i < this.identifiers.length ; i ++ )
+      for ( final Identifier element : this.identifiers )
       {
-        while ( this.free.remove ( this.identifiers [ i ] ) )
+        while ( this.free.remove ( element ) )
         {
           // Remove all Identifiers with the same name
         }
@@ -222,7 +223,7 @@ public final class MultiLet extends Expression implements BoundedIdentifiers ,
     if ( this.boundedIdentifiers == null )
     {
       this.boundedIdentifiers = new ArrayList < ArrayList < Identifier >> ( ) ;
-      ArrayList < Identifier > boundedE2 = this.expressions [ 1 ].free ( ) ;
+      final ArrayList < Identifier > boundedE2 = this.expressions [ 1 ].free ( ) ;
       for ( int i = 0 ; i < this.identifiers.length ; i ++ )
       {
         /*
@@ -238,10 +239,10 @@ public final class MultiLet extends Expression implements BoundedIdentifiers ,
             break ;
           }
         }
-        ArrayList < Identifier > boundedIdList = new ArrayList < Identifier > ( ) ;
+        final ArrayList < Identifier > boundedIdList = new ArrayList < Identifier > ( ) ;
         if ( hasBinding )
         {
-          for ( Identifier freeId : boundedE2 )
+          for ( final Identifier freeId : boundedE2 )
           {
             if ( this.identifiers [ i ].equals ( freeId ) )
             {
@@ -265,11 +266,11 @@ public final class MultiLet extends Expression implements BoundedIdentifiers ,
    * @param pIndex The index of the list of {@link Identifier}s to return.
    * @return A list of in this {@link Expression} bounded {@link Identifier}s.
    */
-  public ArrayList < Identifier > getBoundedIdentifiers ( int pIndex )
+  public ArrayList < Identifier > getBoundedIdentifiers ( final int pIndex )
   {
     if ( this.boundedIdentifiers == null )
     {
-      return getBoundedIdentifiers ( ).get ( pIndex ) ;
+      return this.getBoundedIdentifiers ( ).get ( pIndex ) ;
     }
     return this.boundedIdentifiers.get ( pIndex ) ;
   }
@@ -328,7 +329,7 @@ public final class MultiLet extends Expression implements BoundedIdentifiers ,
    *           bounds.
    * @see #getExpressions()
    */
-  public Expression getExpressions ( int pIndex )
+  public Expression getExpressions ( final int pIndex )
   {
     return this.expressions [ pIndex ] ;
   }
@@ -341,7 +342,7 @@ public final class MultiLet extends Expression implements BoundedIdentifiers ,
    */
   public int [ ] getExpressionsIndex ( )
   {
-    return INDICES_E ;
+    return MultiLet.INDICES_E ;
   }
 
 
@@ -366,7 +367,7 @@ public final class MultiLet extends Expression implements BoundedIdentifiers ,
    *           bounds.
    * @see #getIdentifiers()
    */
-  public Identifier getIdentifiers ( int pIndex )
+  public Identifier getIdentifiers ( final int pIndex )
   {
     return this.identifiers [ pIndex ] ;
   }
@@ -390,10 +391,10 @@ public final class MultiLet extends Expression implements BoundedIdentifiers ,
    */
   public String [ ] getIdentifiersPrefix ( )
   {
-    String [ ] result = new String [ this.identifiers.length ] ;
+    final String [ ] result = new String [ this.identifiers.length ] ;
     for ( int i = 0 ; i < this.identifiers.length ; i ++ )
     {
-      result [ i ] = PREFIX_ID ;
+      result [ i ] = DefaultIdentifiers.PREFIX_ID ;
     }
     return result ;
   }
@@ -431,7 +432,7 @@ public final class MultiLet extends Expression implements BoundedIdentifiers ,
    *           bounds.
    * @see #getTypes()
    */
-  public MonoType getTypes ( int pIndex )
+  public MonoType getTypes ( final int pIndex )
   {
     return this.types [ pIndex ] ;
   }
@@ -444,7 +445,7 @@ public final class MultiLet extends Expression implements BoundedIdentifiers ,
    */
   public int [ ] getTypesIndex ( )
   {
-    return INDICES_TYPE ;
+    return MultiLet.INDICES_TYPE ;
   }
 
 
@@ -455,8 +456,8 @@ public final class MultiLet extends Expression implements BoundedIdentifiers ,
    */
   public String [ ] getTypesPrefix ( )
   {
-    String [ ] result = new String [ 1 ] ;
-    result [ 0 ] = PREFIX_TAU ;
+    final String [ ] result = new String [ 1 ] ;
+    result [ 0 ] = DefaultTypes.PREFIX_TAU ;
     return result ;
   }
 
@@ -481,9 +482,10 @@ public final class MultiLet extends Expression implements BoundedIdentifiers ,
    * @see Expression#substitute(Identifier, Expression, boolean)
    */
   @ Override
-  public MultiLet substitute ( Identifier pId , Expression pExpression )
+  public MultiLet substitute ( final Identifier pId ,
+      final Expression pExpression )
   {
-    return substitute ( pId , pExpression , false ) ;
+    return this.substitute ( pId , pExpression , false ) ;
   }
 
 
@@ -493,29 +495,26 @@ public final class MultiLet extends Expression implements BoundedIdentifiers ,
    * @see Expression#substitute(Identifier, Expression, boolean)
    */
   @ Override
-  public MultiLet substitute ( Identifier pId , Expression pExpression ,
-      boolean pAttributeRename )
+  public MultiLet substitute ( final Identifier pId ,
+      final Expression pExpression , final boolean pAttributeRename )
   {
-    /*
-     * Do not substitute, if the Identifiers are equal.
-     */
-    for ( int i = 0 ; i < this.identifiers.length ; i ++ )
+    for ( final Identifier element : this.identifiers )
     {
-      if ( this.identifiers [ i ].equals ( pId ) )
+      if ( element.equals ( pId ) )
       {
-        Expression newE1 = this.expressions [ 0 ].substitute ( pId ,
+        final Expression newE1 = this.expressions [ 0 ].substitute ( pId ,
             pExpression , pAttributeRename ) ;
-        Expression newE2 = this.expressions [ 1 ].clone ( ) ;
-        Identifier [ ] newIdentifiers = new Identifier [ this.identifiers.length ] ;
+        final Expression newE2 = this.expressions [ 1 ].clone ( ) ;
+        final Identifier [ ] newIdentifiers = new Identifier [ this.identifiers.length ] ;
         for ( int j = 0 ; j < newIdentifiers.length ; j ++ )
         {
-          newIdentifiers [ j ] = this.identifiers [ j ].clone ( ) ;
+          newIdentifiers [ j ] = element.clone ( ) ;
         }
         return new MultiLet ( newIdentifiers , this.types [ 0 ] == null ? null
             : this.types [ 0 ].clone ( ) , newE1 , newE2 ) ;
       }
     }
-    Identifier [ ] newIdentifiers = new Identifier [ this.identifiers.length ] ;
+    final Identifier [ ] newIdentifiers = new Identifier [ this.identifiers.length ] ;
     for ( int i = 0 ; i < newIdentifiers.length ; i ++ )
     {
       newIdentifiers [ i ] = this.identifiers [ i ].clone ( ) ;
@@ -523,7 +522,7 @@ public final class MultiLet extends Expression implements BoundedIdentifiers ,
     Expression newE2 = this.expressions [ 1 ] ;
     for ( int i = 0 ; i < newIdentifiers.length ; i ++ )
     {
-      BoundRenaming boundRenaming = new BoundRenaming ( ) ;
+      final BoundRenaming boundRenaming = new BoundRenaming ( ) ;
       boundRenaming.add ( this.expressions [ 1 ].free ( ) ) ;
       boundRenaming.remove ( newIdentifiers [ i ] ) ;
       boundRenaming.add ( pExpression.free ( ) ) ;
@@ -567,8 +566,8 @@ public final class MultiLet extends Expression implements BoundedIdentifiers ,
     /*
      * Perform the substitution.
      */
-    Expression newE1 = this.expressions [ 0 ].substitute ( pId , pExpression ,
-        pAttributeRename ) ;
+    final Expression newE1 = this.expressions [ 0 ].substitute ( pId ,
+        pExpression , pAttributeRename ) ;
     newE2 = newE2.substitute ( pId , pExpression , pAttributeRename ) ;
     return new MultiLet ( newIdentifiers , this.types [ 0 ] == null ? null
         : this.types [ 0 ].clone ( ) , newE1 , newE2 ) ;
@@ -581,12 +580,14 @@ public final class MultiLet extends Expression implements BoundedIdentifiers ,
    * @see Expression#substitute(TypeSubstitution)
    */
   @ Override
-  public MultiLet substitute ( TypeSubstitution pTypeSubstitution )
+  public MultiLet substitute ( final TypeSubstitution pTypeSubstitution )
   {
-    MonoType newTau = ( this.types [ 0 ] == null ) ? null : this.types [ 0 ]
+    final MonoType newTau = ( this.types [ 0 ] == null ) ? null
+        : this.types [ 0 ].substitute ( pTypeSubstitution ) ;
+    final Expression newE1 = this.expressions [ 0 ]
         .substitute ( pTypeSubstitution ) ;
-    Expression newE1 = this.expressions [ 0 ].substitute ( pTypeSubstitution ) ;
-    Expression newE2 = this.expressions [ 1 ].substitute ( pTypeSubstitution ) ;
+    final Expression newE2 = this.expressions [ 1 ]
+        .substitute ( pTypeSubstitution ) ;
     return new MultiLet ( this.identifiers.clone ( ) , newTau , newE1 , newE2 ) ;
   }
 
@@ -598,12 +599,12 @@ public final class MultiLet extends Expression implements BoundedIdentifiers ,
    */
   @ Override
   public PrettyStringBuilder toPrettyStringBuilder (
-      PrettyStringBuilderFactory pPrettyStringBuilderFactory )
+      final PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
     if ( this.prettyStringBuilder == null )
     {
       this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
-          PRIO_LET ) ;
+          PrettyPrintPriorities.PRIO_LET ) ;
       this.prettyStringBuilder.addKeyword ( "let" ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addText ( "(" ) ;//$NON-NLS-1$
       for ( int i = 0 ; i < this.identifiers.length ; ++ i )
@@ -613,7 +614,8 @@ public final class MultiLet extends Expression implements BoundedIdentifiers ,
           this.prettyStringBuilder.addText ( ", " ) ;//$NON-NLS-1$
         }
         this.prettyStringBuilder.addBuilder ( this.identifiers [ i ]
-            .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_ID ) ;
+            .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
+            PrettyPrintPriorities.PRIO_ID ) ;
       }
       this.prettyStringBuilder.addText ( ")" ) ;//$NON-NLS-1$
       if ( this.types [ 0 ] != null )
@@ -621,17 +623,19 @@ public final class MultiLet extends Expression implements BoundedIdentifiers ,
         this.prettyStringBuilder.addText ( ": " ) ;//$NON-NLS-1$
         this.prettyStringBuilder.addBuilder ( this.types [ 0 ]
             .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-            PRIO_CONSTANT ) ;
+            PrettyPrintPriorities.PRIO_CONSTANT ) ;
       }
       this.prettyStringBuilder.addText ( " = " ) ;//$NON-NLS-1$
       this.prettyStringBuilder.addBuilder ( this.expressions [ 0 ]
-          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_LET_E1 ) ;
+          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
+          PrettyPrintPriorities.PRIO_LET_E1 ) ;
       this.prettyStringBuilder.addText ( " " ) ;//$NON-NLS-1$
       this.prettyStringBuilder.addBreak ( ) ;
       this.prettyStringBuilder.addKeyword ( "in" ) ;//$NON-NLS-1$
       this.prettyStringBuilder.addText ( " " ) ;//$NON-NLS-1$
       this.prettyStringBuilder.addBuilder ( this.expressions [ 1 ]
-          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_LET_E2 ) ;
+          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
+          PrettyPrintPriorities.PRIO_LET_E2 ) ;
     }
     return this.prettyStringBuilder ;
   }

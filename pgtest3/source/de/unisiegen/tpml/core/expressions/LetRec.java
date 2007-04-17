@@ -37,8 +37,8 @@ public final class LetRec extends Let implements BoundedIdentifiers ,
    * @throws NullPointerException if <code>id</code>, <code>e1</code> or
    *           <code>e2</code> is <code>null</code>.
    */
-  public LetRec ( Identifier pId , MonoType pTau , Expression pExpression1 ,
-      Expression pExpression2 )
+  public LetRec ( final Identifier pId , final MonoType pTau ,
+      final Expression pExpression1 , final Expression pExpression2 )
   {
     super ( pId , pTau , pExpression1 , pExpression2 ) ;
   }
@@ -91,9 +91,9 @@ public final class LetRec extends Let implements BoundedIdentifiers ,
     if ( this.boundedIdentifiers == null )
     {
       this.boundedIdentifiers = new ArrayList < ArrayList < Identifier >> ( ) ;
-      ArrayList < Identifier > boundedIdList = new ArrayList < Identifier > ( ) ;
-      ArrayList < Identifier > boundedE1 = this.expressions [ 0 ].free ( ) ;
-      for ( Identifier freeId : boundedE1 )
+      final ArrayList < Identifier > boundedIdList = new ArrayList < Identifier > ( ) ;
+      final ArrayList < Identifier > boundedE1 = this.expressions [ 0 ].free ( ) ;
+      for ( final Identifier freeId : boundedE1 )
       {
         if ( this.identifiers [ 0 ].equals ( freeId ) )
         {
@@ -102,8 +102,8 @@ public final class LetRec extends Let implements BoundedIdentifiers ,
           boundedIdList.add ( freeId ) ;
         }
       }
-      ArrayList < Identifier > boundedE2 = this.expressions [ 1 ].free ( ) ;
-      for ( Identifier freeId : boundedE2 )
+      final ArrayList < Identifier > boundedE2 = this.expressions [ 1 ].free ( ) ;
+      for ( final Identifier freeId : boundedE2 )
       {
         if ( this.identifiers [ 0 ].equals ( freeId ) )
         {
@@ -126,11 +126,11 @@ public final class LetRec extends Let implements BoundedIdentifiers ,
    * @return A list of in this {@link Expression} bounded {@link Identifier}s.
    */
   @ Override
-  public ArrayList < Identifier > getBoundedIdentifiers ( int pIndex )
+  public ArrayList < Identifier > getBoundedIdentifiers ( final int pIndex )
   {
     if ( this.boundedIdentifiers == null )
     {
-      return getBoundedIdentifiers ( ).get ( pIndex ) ;
+      return this.getBoundedIdentifiers ( ).get ( pIndex ) ;
     }
     return this.boundedIdentifiers.get ( pIndex ) ;
   }
@@ -152,9 +152,9 @@ public final class LetRec extends Let implements BoundedIdentifiers ,
    * @see Expression#substitute(Identifier, Expression, boolean)
    */
   @ Override
-  public LetRec substitute ( Identifier pId , Expression pExpression )
+  public LetRec substitute ( final Identifier pId , final Expression pExpression )
   {
-    return substitute ( pId , pExpression , false ) ;
+    return this.substitute ( pId , pExpression , false ) ;
   }
 
 
@@ -164,8 +164,8 @@ public final class LetRec extends Let implements BoundedIdentifiers ,
    * @see Let#substitute(Identifier, Expression, boolean)
    */
   @ Override
-  public LetRec substitute ( Identifier pId , Expression pExpression ,
-      boolean pAttributeRename )
+  public LetRec substitute ( final Identifier pId ,
+      final Expression pExpression , final boolean pAttributeRename )
   {
     /*
      * Do not substitute , if the Identifiers are equal.
@@ -177,11 +177,11 @@ public final class LetRec extends Let implements BoundedIdentifiers ,
     /*
      * Perform the bound renaming if required.
      */
-    BoundRenaming boundRenaming = new BoundRenaming ( ) ;
+    final BoundRenaming boundRenaming = new BoundRenaming ( ) ;
     boundRenaming.add ( this.free ( ) ) ;
     boundRenaming.add ( pExpression.free ( ) ) ;
     boundRenaming.add ( pId ) ;
-    Identifier newId = boundRenaming.newId ( this.identifiers [ 0 ] ) ;
+    final Identifier newId = boundRenaming.newId ( this.identifiers [ 0 ] ) ;
     /*
      * Substitute the old Identifier only with the new Identifier, if they are
      * different.
@@ -211,12 +211,14 @@ public final class LetRec extends Let implements BoundedIdentifiers ,
    * @see Let#substitute(TypeSubstitution)
    */
   @ Override
-  public LetRec substitute ( TypeSubstitution pTypeSubstitution )
+  public LetRec substitute ( final TypeSubstitution pTypeSubstitution )
   {
-    MonoType pTau = ( this.types [ 0 ] == null ) ? null : this.types [ 0 ]
+    final MonoType pTau = ( this.types [ 0 ] == null ) ? null : this.types [ 0 ]
         .substitute ( pTypeSubstitution ) ;
-    Expression newE1 = this.expressions [ 0 ].substitute ( pTypeSubstitution ) ;
-    Expression newE2 = this.expressions [ 1 ].substitute ( pTypeSubstitution ) ;
+    final Expression newE1 = this.expressions [ 0 ]
+        .substitute ( pTypeSubstitution ) ;
+    final Expression newE2 = this.expressions [ 1 ]
+        .substitute ( pTypeSubstitution ) ;
     return new LetRec ( this.identifiers [ 0 ].clone ( ) , pTau , newE1 , newE2 ) ;
   }
 
@@ -228,34 +230,37 @@ public final class LetRec extends Let implements BoundedIdentifiers ,
    */
   @ Override
   public PrettyStringBuilder toPrettyStringBuilder (
-      PrettyStringBuilderFactory pPrettyStringBuilderFactory )
+      final PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
     if ( this.prettyStringBuilder == null )
     {
       this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
-          PRIO_LET ) ;
+          PrettyPrintPriorities.PRIO_LET ) ;
       this.prettyStringBuilder.addKeyword ( "let" ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addKeyword ( "rec" ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addBuilder ( this.identifiers [ 0 ]
-          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_ID ) ;
+          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
+          PrettyPrintPriorities.PRIO_ID ) ;
       if ( this.types [ 0 ] != null )
       {
         this.prettyStringBuilder.addText ( ": " ) ; //$NON-NLS-1$
         this.prettyStringBuilder.addBuilder ( this.types [ 0 ]
             .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-            PRIO_LET_TAU ) ;
+            PrettyPrintPriorities.PRIO_LET_TAU ) ;
       }
       this.prettyStringBuilder.addText ( " = " ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addBuilder ( this.expressions [ 0 ]
-          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_LET_E1 ) ;
+          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
+          PrettyPrintPriorities.PRIO_LET_E1 ) ;
       this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addBreak ( ) ;
       this.prettyStringBuilder.addKeyword ( "in" ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addBuilder ( this.expressions [ 1 ]
-          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_LET_E2 ) ;
+          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
+          PrettyPrintPriorities.PRIO_LET_E2 ) ;
     }
     return this.prettyStringBuilder ;
   }

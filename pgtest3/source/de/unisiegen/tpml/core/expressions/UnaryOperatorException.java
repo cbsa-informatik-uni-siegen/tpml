@@ -45,8 +45,8 @@ public final class UnaryOperatorException extends Exception
    * @throws NullPointerException if <code>operator</code> or <code>e</code>
    *           is <code>null</code>.
    */
-  public UnaryOperatorException ( UnaryOperator pUnaryOperator ,
-      Expression pExpression )
+  public UnaryOperatorException ( final UnaryOperator pUnaryOperator ,
+      final Expression pExpression )
   {
     this ( pUnaryOperator , pExpression , null ) ;
   }
@@ -63,8 +63,8 @@ public final class UnaryOperatorException extends Exception
    * @throws NullPointerException if <code>operator</code> or <code>e</code>
    *           is <code>null</code>.
    */
-  public UnaryOperatorException ( UnaryOperator pUnaryOperator ,
-      Expression pExpression , Throwable cause )
+  public UnaryOperatorException ( final UnaryOperator pUnaryOperator ,
+      final Expression pExpression , final Throwable cause )
   {
     super ( "Cannot apply " + pUnaryOperator + " to " + pExpression , cause ) ; //$NON-NLS-1$ //$NON-NLS-2$
     if ( pUnaryOperator == null )

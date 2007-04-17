@@ -36,7 +36,7 @@ public final class OutlineTreeSelectionListener implements
    * 
    * @param pDefaultOutline The {@link DefaultOutline}.
    */
-  public OutlineTreeSelectionListener ( DefaultOutline pDefaultOutline )
+  public OutlineTreeSelectionListener ( final DefaultOutline pDefaultOutline )
   {
     this.defaultOutline = pDefaultOutline ;
   }
@@ -47,13 +47,13 @@ public final class OutlineTreeSelectionListener implements
    */
   public final void reset ( )
   {
-    OutlineNode outlineNode = ( OutlineNode ) this.defaultOutline
+    final OutlineNode outlineNode = ( OutlineNode ) this.defaultOutline
         .getOutlineUI ( ).getTreeModel ( ).getRoot ( ) ;
     if ( outlineNode == null )
     {
       return ;
     }
-    reset ( outlineNode ) ;
+    this.reset ( outlineNode ) ;
   }
 
 
@@ -62,7 +62,7 @@ public final class OutlineTreeSelectionListener implements
    * 
    * @param pOutlineNode The node, which should be reseted.
    */
-  private final void reset ( OutlineNode pOutlineNode )
+  private final void reset ( final OutlineNode pOutlineNode )
   {
     pOutlineNode.setReplaceInThisNode ( false ) ;
     pOutlineNode.setOutlineBinding ( null ) ;
@@ -70,7 +70,7 @@ public final class OutlineTreeSelectionListener implements
     pOutlineNode.updateCaption ( ) ;
     for ( int i = 0 ; i < pOutlineNode.getChildCount ( ) ; i ++ )
     {
-      reset ( ( OutlineNode ) pOutlineNode.getChildAt ( i ) ) ;
+      this.reset ( ( OutlineNode ) pOutlineNode.getChildAt ( i ) ) ;
     }
   }
 
@@ -80,36 +80,36 @@ public final class OutlineTreeSelectionListener implements
    * 
    * @param pTreePath The selected <code>TreePath</code>.
    */
-  public final void update ( TreePath pTreePath )
+  public final void update ( final TreePath pTreePath )
   {
-    OutlineNode rootNode = ( OutlineNode ) this.defaultOutline.getOutlineUI ( )
-        .getTreeModel ( ).getRoot ( ) ;
+    final OutlineNode rootNode = ( OutlineNode ) this.defaultOutline
+        .getOutlineUI ( ).getTreeModel ( ).getRoot ( ) ;
     if ( rootNode == null )
     {
       return ;
     }
-    reset ( rootNode ) ;
-    ArrayList < OutlineNode > list = new ArrayList < OutlineNode > ( ) ;
-    Object [ ] path = pTreePath.getPath ( ) ;
+    this.reset ( rootNode ) ;
+    final ArrayList < OutlineNode > list = new ArrayList < OutlineNode > ( ) ;
+    final Object [ ] path = pTreePath.getPath ( ) ;
     for ( int i = 0 ; i < pTreePath.getPathCount ( ) ; i ++ )
     {
       list.add ( ( OutlineNode ) path [ i ] ) ;
     }
-    OutlineNode selectedNode = list.get ( list.size ( ) - 1 ) ;
+    final OutlineNode selectedNode = list.get ( list.size ( ) - 1 ) ;
     // Expression
     if ( selectedNode.isExpression ( ) )
     {
-      updateExpression ( list , pTreePath ) ;
+      this.updateExpression ( list , pTreePath ) ;
     }
     // Expression
     else if ( selectedNode.isIdentifier ( ) )
     {
-      updateIdentifier ( list , pTreePath ) ;
+      this.updateIdentifier ( list , pTreePath ) ;
     }
     // Type
     else if ( selectedNode.isType ( ) )
     {
-      updateType ( list , pTreePath ) ;
+      this.updateType ( list , pTreePath ) ;
     }
     this.defaultOutline.updateBreaks ( ) ;
   }
@@ -121,10 +121,10 @@ public final class OutlineTreeSelectionListener implements
    * @param pList The parent nodes of the selected node.
    * @param pTreePath The selected <code>TreePath</code>.
    */
-  private final void updateExpression ( ArrayList < OutlineNode > pList ,
-      TreePath pTreePath )
+  private final void updateExpression ( final ArrayList < OutlineNode > pList ,
+      final TreePath pTreePath )
   {
-    OutlineNode selectedNode = pList.get ( pList.size ( ) - 1 ) ;
+    final OutlineNode selectedNode = pList.get ( pList.size ( ) - 1 ) ;
     for ( int i = 0 ; i < pList.size ( ) ; i ++ )
     {
       if ( ( selectedNode.getPrettyPrintable ( ) instanceof Identifier )
@@ -134,7 +134,7 @@ public final class OutlineTreeSelectionListener implements
       {
         try
         {
-          Identifier identifier = ( Identifier ) selectedNode
+          final Identifier identifier = ( Identifier ) selectedNode
               .getPrettyPrintable ( ) ;
           /*
            * Highlight the bounded Identifiers in the other childs of a parent
@@ -144,27 +144,28 @@ public final class OutlineTreeSelectionListener implements
               || ( pList.get ( i ).getPrettyPrintable ( ) instanceof Method )
               || ( pList.get ( i ).getPrettyPrintable ( ) instanceof CurriedMethod ) )
           {
-            OutlineNode nodeRowChild = ( OutlineNode ) pTreePath.getPath ( ) [ i ] ;
-            OutlineNode nodeRow = ( OutlineNode ) pTreePath.getPath ( ) [ i - 1 ] ;
+            final OutlineNode nodeRowChild = ( OutlineNode ) pTreePath
+                .getPath ( ) [ i ] ;
+            final OutlineNode nodeRow = ( OutlineNode ) pTreePath.getPath ( ) [ i - 1 ] ;
             for ( int j = nodeRow.getIndex ( nodeRowChild ) ; j >= 0 ; j -- )
             {
-              OutlineNode currentOutlineNode = ( OutlineNode ) nodeRow
+              final OutlineNode currentOutlineNode = ( OutlineNode ) nodeRow
                   .getChildAt ( j ) ;
               if ( currentOutlineNode.getPrettyPrintable ( ) == identifier
                   .getBoundedToExpression ( ) )
               {
                 /*
-                 * Highlight the first identifier
+                 * Highlight the Identifier in the Expression
                  */
                 currentOutlineNode.setBoundedIdentifier ( identifier
                     .getBoundedToIdentifier ( ) ) ;
                 currentOutlineNode.updateCaption ( ) ;
                 /*
-                 * Highlight the Identifier in the first child
+                 * Highlight the Identifier
                  */
                 for ( int k = 0 ; k < currentOutlineNode.getChildCount ( ) ; k ++ )
                 {
-                  OutlineNode nodeId = ( OutlineNode ) currentOutlineNode
+                  final OutlineNode nodeId = ( OutlineNode ) currentOutlineNode
                       .getChildAt ( k ) ;
                   if ( nodeId.getPrettyPrintable ( ) == identifier
                       .getBoundedToIdentifier ( ) )
@@ -189,7 +190,7 @@ public final class OutlineTreeSelectionListener implements
             {
               for ( int j = 0 ; j < pList.get ( i ).getChildCount ( ) ; j ++ )
               {
-                OutlineNode nodeId = ( OutlineNode ) pList.get ( i )
+                final OutlineNode nodeId = ( OutlineNode ) pList.get ( i )
                     .getChildAt ( j ) ;
                 if ( nodeId.getPrettyPrintable ( ) == identifier
                     .getBoundedToIdentifier ( ) )
@@ -208,7 +209,7 @@ public final class OutlineTreeSelectionListener implements
                 identifier.getBoundedToIdentifier ( ) ) ;
           }
         }
-        catch ( IllegalArgumentException e )
+        catch ( final IllegalArgumentException e )
         {
           // Do nothing
         }
@@ -230,8 +231,8 @@ public final class OutlineTreeSelectionListener implements
       /*
        * Update the caption of the node
        */
-      PrettyAnnotation prettyAnnotation = pList.get ( i ).getPrettyPrintable ( )
-          .toPrettyString ( ).getAnnotationForPrintable (
+      final PrettyAnnotation prettyAnnotation = pList.get ( i )
+          .getPrettyPrintable ( ).toPrettyString ( ).getAnnotationForPrintable (
               selectedNode.getPrettyPrintable ( ) ) ;
       pList.get ( i ).updateCaption ( prettyAnnotation.getStartOffset ( ) ,
           prettyAnnotation.getEndOffset ( ) ) ;
@@ -250,22 +251,23 @@ public final class OutlineTreeSelectionListener implements
    * @param pList The parent nodes of the selected node.
    * @param pTreePath The selected <code>TreePath</code>.
    */
-  private final void updateIdentifier ( ArrayList < OutlineNode > pList ,
-      TreePath pTreePath )
+  private final void updateIdentifier ( final ArrayList < OutlineNode > pList ,
+      final TreePath pTreePath )
   {
-    OutlineNode selectedNode = pList.get ( pList.size ( ) - 1 ) ;
-    OutlineNode nodeAttribute = pList.get ( pList.size ( ) - 2 ) ;
+    final OutlineNode selectedNode = pList.get ( pList.size ( ) - 1 ) ;
+    final OutlineNode nodeAttribute = pList.get ( pList.size ( ) - 2 ) ;
     /*
      * Highlight the bounded Identifiers of an Attribute in the other childs of
      * the parent row.
      */
     if ( nodeAttribute.getPrettyPrintable ( ) instanceof Attribute )
     {
-      OutlineNode nodeRow = pList.get ( pList.size ( ) - 3 ) ;
+      final OutlineNode nodeRow = pList.get ( pList.size ( ) - 3 ) ;
       for ( int i = nodeRow.getIndex ( nodeAttribute ) + 1 ; i < nodeRow
           .getChildCount ( ) ; i ++ )
       {
-        OutlineNode currentRowChild = ( OutlineNode ) nodeRow.getChildAt ( i ) ;
+        final OutlineNode currentRowChild = ( OutlineNode ) nodeRow
+            .getChildAt ( i ) ;
         currentRowChild.setOutlineBinding ( selectedNode.getOutlineBinding ( ) ) ;
         currentRowChild.updateCaption ( ) ;
       }
@@ -283,8 +285,8 @@ public final class OutlineTreeSelectionListener implements
       /*
        * Update the caption of the node
        */
-      PrettyAnnotation prettyAnnotation = pList.get ( i ).getPrettyPrintable ( )
-          .toPrettyString ( ).getAnnotationForPrintable (
+      final PrettyAnnotation prettyAnnotation = pList.get ( i )
+          .getPrettyPrintable ( ).toPrettyString ( ).getAnnotationForPrintable (
               selectedNode.getPrettyPrintable ( ) ) ;
       pList.get ( i ).updateCaption ( prettyAnnotation.getStartOffset ( ) ,
           prettyAnnotation.getEndOffset ( ) ) ;
@@ -303,10 +305,10 @@ public final class OutlineTreeSelectionListener implements
    * @param pList The parent nodes of the selected node.
    * @param pTreePath The selected <code>TreePath</code>.
    */
-  private final void updateType ( ArrayList < OutlineNode > pList ,
-      TreePath pTreePath )
+  private final void updateType ( final ArrayList < OutlineNode > pList ,
+      final TreePath pTreePath )
   {
-    OutlineNode selectedNode = pList.get ( pList.size ( ) - 1 ) ;
+    final OutlineNode selectedNode = pList.get ( pList.size ( ) - 1 ) ;
     for ( int i = 0 ; i < pList.size ( ) ; i ++ )
     {
       /*
@@ -330,8 +332,8 @@ public final class OutlineTreeSelectionListener implements
       {
         continue ;
       }
-      PrettyAnnotation prettyAnnotation = pList.get ( i ).getPrettyPrintable ( )
-          .toPrettyString ( ).getAnnotationForPrintable (
+      final PrettyAnnotation prettyAnnotation = pList.get ( i )
+          .getPrettyPrintable ( ).toPrettyString ( ).getAnnotationForPrintable (
               selectedNode.getPrettyPrintable ( ) ) ;
       pList.get ( i ).updateCaption ( prettyAnnotation.getStartOffset ( ) ,
           prettyAnnotation.getEndOffset ( ) ) ;
@@ -350,26 +352,27 @@ public final class OutlineTreeSelectionListener implements
    * @param pTreeSelectionEvent The <code>TreeSelectionEvent</code>.
    * @see TreeSelectionListener#valueChanged(TreeSelectionEvent)
    */
-  public final void valueChanged ( TreeSelectionEvent pTreeSelectionEvent )
+  public final void valueChanged ( final TreeSelectionEvent pTreeSelectionEvent )
   {
     if ( pTreeSelectionEvent.getSource ( ).equals (
         this.defaultOutline.getOutlineUI ( ).getJTreeOutline ( )
             .getSelectionModel ( ) ) )
     {
-      TreePath newTreePath = pTreeSelectionEvent.getPath ( ) ;
+      final TreePath newTreePath = pTreeSelectionEvent.getPath ( ) ;
       if ( newTreePath == null )
       {
         return ;
       }
-      update ( newTreePath ) ;
-      TreePath oldTreePath = pTreeSelectionEvent.getOldLeadSelectionPath ( ) ;
+      this.update ( newTreePath ) ;
+      final TreePath oldTreePath = pTreeSelectionEvent
+          .getOldLeadSelectionPath ( ) ;
       if ( oldTreePath != null )
       {
-        Object [ ] objects = oldTreePath.getPath ( ) ;
-        for ( int i = 0 ; i < objects.length ; i ++ )
+        final Object [ ] objects = oldTreePath.getPath ( ) ;
+        for ( Object element : objects )
         {
           this.defaultOutline.getOutlineUI ( ).getTreeModel ( ).nodeChanged (
-              ( OutlineNode ) objects [ i ] ) ;
+              ( OutlineNode ) element ) ;
         }
       }
     }

@@ -35,7 +35,7 @@ public final class TupleType extends MonoType implements DefaultTypes
    *           two elements.
    * @throws NullPointerException if <code>pTypes</code> is <code>null</code>.
    */
-  public TupleType ( MonoType [ ] pTypes )
+  public TupleType ( final MonoType [ ] pTypes )
   {
     if ( pTypes == null )
     {
@@ -74,7 +74,7 @@ public final class TupleType extends MonoType implements DefaultTypes
   @ Override
   public TupleType clone ( )
   {
-    MonoType [ ] newTypes = new MonoType [ this.types.length ] ;
+    final MonoType [ ] newTypes = new MonoType [ this.types.length ] ;
     for ( int i = 0 ; i < newTypes.length ; i ++ )
     {
       newTypes [ i ] = this.types [ i ].clone ( ) ;
@@ -89,11 +89,11 @@ public final class TupleType extends MonoType implements DefaultTypes
    * @see Object#equals(Object)
    */
   @ Override
-  public boolean equals ( Object pObject )
+  public boolean equals ( final Object pObject )
   {
     if ( pObject instanceof TupleType )
     {
-      TupleType other = ( TupleType ) pObject ;
+      final TupleType other = ( TupleType ) pObject ;
       return Arrays.equals ( this.types , other.types ) ;
     }
     return false ;
@@ -111,7 +111,7 @@ public final class TupleType extends MonoType implements DefaultTypes
     if ( this.free == null )
     {
       this.free = new TreeSet < TypeVariable > ( ) ;
-      for ( MonoType type : this.types )
+      for ( final MonoType type : this.types )
       {
         this.free.addAll ( type.free ( ) ) ;
       }
@@ -151,7 +151,7 @@ public final class TupleType extends MonoType implements DefaultTypes
    *           bounds.
    * @see #getTypes()
    */
-  public MonoType getTypes ( int pIndex )
+  public MonoType getTypes ( final int pIndex )
   {
     return this.types [ pIndex ] ;
   }
@@ -175,10 +175,10 @@ public final class TupleType extends MonoType implements DefaultTypes
    */
   public String [ ] getTypesPrefix ( )
   {
-    String [ ] result = new String [ this.types.length ] ;
+    final String [ ] result = new String [ this.types.length ] ;
     for ( int i = 0 ; i < this.types.length ; i ++ )
     {
-      result [ i ] = PREFIX_TAU ;
+      result [ i ] = DefaultTypes.PREFIX_TAU ;
     }
     return result ;
   }
@@ -202,13 +202,13 @@ public final class TupleType extends MonoType implements DefaultTypes
    * @see MonoType#substitute(TypeSubstitution)
    */
   @ Override
-  public TupleType substitute ( TypeSubstitution pTypeSubstitution )
+  public TupleType substitute ( final TypeSubstitution pTypeSubstitution )
   {
     if ( pTypeSubstitution == null )
     {
       throw new NullPointerException ( "Substitution is null" ) ; //$NON-NLS-1$
     }
-    MonoType [ ] newTypes = new MonoType [ this.types.length ] ;
+    final MonoType [ ] newTypes = new MonoType [ this.types.length ] ;
     for ( int i = 0 ; i < newTypes.length ; i ++ )
     {
       newTypes [ i ] = this.types [ i ].substitute ( pTypeSubstitution ) ;
@@ -224,12 +224,12 @@ public final class TupleType extends MonoType implements DefaultTypes
    */
   public @ Override
   PrettyStringBuilder toPrettyStringBuilder (
-      PrettyStringBuilderFactory pPrettyStringBuilderFactory )
+      final PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
     if ( this.prettyStringBuilder == null )
     {
       this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
-          PRIO_TUPLE ) ;
+          PrettyPrintPriorities.PRIO_TUPLE ) ;
       for ( int i = 0 ; i < this.types.length ; i ++ )
       {
         if ( i > 0 )
@@ -238,7 +238,7 @@ public final class TupleType extends MonoType implements DefaultTypes
         }
         this.prettyStringBuilder.addBuilder ( this.types [ i ]
             .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-            PRIO_TUPLE_TAU ) ;
+            PrettyPrintPriorities.PRIO_TUPLE_TAU ) ;
       }
     }
     return this.prettyStringBuilder ;

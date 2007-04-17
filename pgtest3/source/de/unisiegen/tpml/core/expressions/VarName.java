@@ -13,7 +13,7 @@ public class VarName extends Identifier
    * 
    * @param pName TODO
    */
-  public VarName ( String pName )
+  public VarName ( final String pName )
   {
     super ( pName ) ;
   }

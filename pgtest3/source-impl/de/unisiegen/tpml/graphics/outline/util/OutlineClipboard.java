@@ -60,11 +60,11 @@ public final class OutlineClipboard implements ClipboardOwner
    */
   public final static OutlineClipboard getInstance ( )
   {
-    if ( outlineClipboard == null )
+    if ( OutlineClipboard.outlineClipboard == null )
     {
-      outlineClipboard = new OutlineClipboard ( ) ;
+      OutlineClipboard.outlineClipboard = new OutlineClipboard ( ) ;
     }
-    return outlineClipboard ;
+    return OutlineClipboard.outlineClipboard ;
   }
 
 
@@ -73,9 +73,9 @@ public final class OutlineClipboard implements ClipboardOwner
    * 
    * @param pText The text, which should be copied into the clipboard.
    */
-  public final void copy ( String pText )
+  public final void copy ( final String pText )
   {
-    StringSelection stringSelection = new StringSelection ( pText ) ;
+    final StringSelection stringSelection = new StringSelection ( pText ) ;
     this.clipboard.setContents ( stringSelection , this ) ;
   }
 
@@ -87,9 +87,11 @@ public final class OutlineClipboard implements ClipboardOwner
    * @param pContents The <code>Contests</code>.
    * @see ClipboardOwner#lostOwnership(Clipboard, Transferable)
    */
-  public final void lostOwnership ( @ SuppressWarnings ( UNUSED )
-  Clipboard pClipboard , @ SuppressWarnings ( UNUSED )
-  Transferable pContents )
+  public final void lostOwnership (
+      @ SuppressWarnings ( OutlineClipboard.UNUSED )
+      final Clipboard pClipboard ,
+      @ SuppressWarnings ( OutlineClipboard.UNUSED )
+      final Transferable pContents )
   {
     // Do Nothing
   }
@@ -104,19 +106,19 @@ public final class OutlineClipboard implements ClipboardOwner
    */
   public final String paste ( )
   {
-    Transferable transfer = this.clipboard.getContents ( null ) ;
+    final Transferable transfer = this.clipboard.getContents ( null ) ;
     try
     {
       return ( String ) transfer.getTransferData ( DataFlavor.stringFlavor ) ;
     }
-    catch ( UnsupportedFlavorException e )
+    catch ( final UnsupportedFlavorException e )
     {
       // Do Nothing
     }
-    catch ( IOException e )
+    catch ( final IOException e )
     {
       // Do Nothing
     }
-    return EMPTY ;
+    return OutlineClipboard.EMPTY ;
   }
 }

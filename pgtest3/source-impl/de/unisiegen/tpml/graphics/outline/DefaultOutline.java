@@ -141,7 +141,7 @@ public final class DefaultOutline implements Outline
    * 
    * @param pOutlineStart The {@link Outline.Start}.
    */
-  public DefaultOutline ( Outline.Start pOutlineStart )
+  public DefaultOutline ( final Outline.Start pOutlineStart )
   {
     this.outlineStart = pOutlineStart ;
     this.loadedExpression = null ;
@@ -151,7 +151,7 @@ public final class DefaultOutline implements Outline
     if ( ( this.outlineStart.equals ( Outline.Start.BIGSTEP ) )
         || ( this.outlineStart.equals ( Outline.Start.TYPECHECKER ) ) )
     {
-      disableAutoUpdate ( ) ;
+      this.disableAutoUpdate ( ) ;
     }
   }
 
@@ -165,8 +165,8 @@ public final class DefaultOutline implements Outline
    * @param pOutlineNode The node where the children should be added.
    */
   @ SuppressWarnings ( "unchecked" )
-  private final void createExpression ( Expression pExpression ,
-      OutlineNode pOutlineNode )
+  private final void createExpression ( final Expression pExpression ,
+      final OutlineNode pOutlineNode )
   {
     // Child Expression
     int [ ] expressionsIndex = null ;
@@ -182,7 +182,7 @@ public final class DefaultOutline implements Outline
     String [ ] typesPrefix = null ;
     // Sorted Children
     PrettyPrintable [ ] sortedChildren = null ;
-    for ( Class < Object > currentInterface : pExpression.getClass ( )
+    for ( final Class < Object > currentInterface : pExpression.getClass ( )
         .getInterfaces ( ) )
     {
       if ( currentInterface
@@ -191,26 +191,26 @@ public final class DefaultOutline implements Outline
         try
         {
           expressionsIndex = ( int [ ] ) pExpression.getClass ( ).getMethod (
-              GET_EXPRESSIONS_INDEX , new Class [ 0 ] ).invoke ( pExpression ,
-              new Object [ 0 ] ) ;
+              DefaultOutline.GET_EXPRESSIONS_INDEX , new Class [ 0 ] ).invoke (
+              pExpression , new Object [ 0 ] ) ;
         }
-        catch ( IllegalArgumentException e )
+        catch ( final IllegalArgumentException e )
         {
           // Do nothing
         }
-        catch ( SecurityException e )
+        catch ( final SecurityException e )
         {
           // Do nothing
         }
-        catch ( IllegalAccessException e )
+        catch ( final IllegalAccessException e )
         {
           // Do nothing
         }
-        catch ( InvocationTargetException e )
+        catch ( final InvocationTargetException e )
         {
           // Do nothing
         }
-        catch ( NoSuchMethodException e )
+        catch ( final NoSuchMethodException e )
         {
           // Do nothing
         }
@@ -221,32 +221,32 @@ public final class DefaultOutline implements Outline
         try
         {
           identifiers = ( Identifier [ ] ) pExpression.getClass ( ).getMethod (
-              GET_IDENTIFIERS , new Class [ 0 ] ).invoke ( pExpression ,
-              new Object [ 0 ] ) ;
+              DefaultOutline.GET_IDENTIFIERS , new Class [ 0 ] ).invoke (
+              pExpression , new Object [ 0 ] ) ;
           identifiersIndex = ( int [ ] ) pExpression.getClass ( ).getMethod (
-              GET_IDENTIFIERS_INDEX , new Class [ 0 ] ).invoke ( pExpression ,
-              new Object [ 0 ] ) ;
+              DefaultOutline.GET_IDENTIFIERS_INDEX , new Class [ 0 ] ).invoke (
+              pExpression , new Object [ 0 ] ) ;
           identifiersPrefix = ( String [ ] ) pExpression.getClass ( )
-              .getMethod ( GET_IDENTIFIERS_PREFIX , new Class [ 0 ] ).invoke (
-                  pExpression , new Object [ 0 ] ) ;
+              .getMethod ( DefaultOutline.GET_IDENTIFIERS_PREFIX ,
+                  new Class [ 0 ] ).invoke ( pExpression , new Object [ 0 ] ) ;
         }
-        catch ( IllegalArgumentException e )
+        catch ( final IllegalArgumentException e )
         {
           // Do nothing
         }
-        catch ( SecurityException e )
+        catch ( final SecurityException e )
         {
           // Do nothing
         }
-        catch ( IllegalAccessException e )
+        catch ( final IllegalAccessException e )
         {
           // Do nothing
         }
-        catch ( InvocationTargetException e )
+        catch ( final InvocationTargetException e )
         {
           // Do nothing
         }
-        catch ( NoSuchMethodException e )
+        catch ( final NoSuchMethodException e )
         {
           // Do nothing
         }
@@ -257,35 +257,35 @@ public final class DefaultOutline implements Outline
         try
         {
           identifiers = ( Identifier [ ] ) pExpression.getClass ( ).getMethod (
-              GET_IDENTIFIERS , new Class [ 0 ] ).invoke ( pExpression ,
-              new Object [ 0 ] ) ;
+              DefaultOutline.GET_IDENTIFIERS , new Class [ 0 ] ).invoke (
+              pExpression , new Object [ 0 ] ) ;
           identifiersIndex = ( int [ ] ) pExpression.getClass ( ).getMethod (
-              GET_IDENTIFIERS_INDEX , new Class [ 0 ] ).invoke ( pExpression ,
-              new Object [ 0 ] ) ;
+              DefaultOutline.GET_IDENTIFIERS_INDEX , new Class [ 0 ] ).invoke (
+              pExpression , new Object [ 0 ] ) ;
           identifiersPrefix = ( String [ ] ) pExpression.getClass ( )
-              .getMethod ( GET_IDENTIFIERS_PREFIX , new Class [ 0 ] ).invoke (
-                  pExpression , new Object [ 0 ] ) ;
+              .getMethod ( DefaultOutline.GET_IDENTIFIERS_PREFIX ,
+                  new Class [ 0 ] ).invoke ( pExpression , new Object [ 0 ] ) ;
           boundedIdentifiers = ( ArrayList < ArrayList < Identifier >> ) pExpression
-              .getClass ( ).getMethod ( GET_IDENTIFIERS_BOUNDED ,
+              .getClass ( ).getMethod ( DefaultOutline.GET_IDENTIFIERS_BOUNDED ,
                   new Class [ 0 ] ).invoke ( pExpression , new Object [ 0 ] ) ;
         }
-        catch ( IllegalArgumentException e )
+        catch ( final IllegalArgumentException e )
         {
           // Do nothing
         }
-        catch ( SecurityException e )
+        catch ( final SecurityException e )
         {
           // Do nothing
         }
-        catch ( IllegalAccessException e )
+        catch ( final IllegalAccessException e )
         {
           // Do nothing
         }
-        catch ( InvocationTargetException e )
+        catch ( final InvocationTargetException e )
         {
           // Do nothing
         }
-        catch ( NoSuchMethodException e )
+        catch ( final NoSuchMethodException e )
         {
           // Do nothing
         }
@@ -296,32 +296,32 @@ public final class DefaultOutline implements Outline
         try
         {
           types = ( MonoType [ ] ) pExpression.getClass ( ).getMethod (
-              GET_TYPES , new Class [ 0 ] ).invoke ( pExpression ,
-              new Object [ 0 ] ) ;
+              DefaultOutline.GET_TYPES , new Class [ 0 ] ).invoke (
+              pExpression , new Object [ 0 ] ) ;
           typesIndex = ( int [ ] ) pExpression.getClass ( ).getMethod (
-              GET_TYPES_INDEX , new Class [ 0 ] ).invoke ( pExpression ,
-              new Object [ 0 ] ) ;
+              DefaultOutline.GET_TYPES_INDEX , new Class [ 0 ] ).invoke (
+              pExpression , new Object [ 0 ] ) ;
           typesPrefix = ( String [ ] ) pExpression.getClass ( ).getMethod (
-              GET_TYPES_PREFIX , new Class [ 0 ] ).invoke ( pExpression ,
-              new Object [ 0 ] ) ;
+              DefaultOutline.GET_TYPES_PREFIX , new Class [ 0 ] ).invoke (
+              pExpression , new Object [ 0 ] ) ;
         }
-        catch ( IllegalArgumentException e )
+        catch ( final IllegalArgumentException e )
         {
           // Do nothing
         }
-        catch ( SecurityException e )
+        catch ( final SecurityException e )
         {
           // Do nothing
         }
-        catch ( IllegalAccessException e )
+        catch ( final IllegalAccessException e )
         {
           // Do nothing
         }
-        catch ( InvocationTargetException e )
+        catch ( final InvocationTargetException e )
         {
           // Do nothing
         }
-        catch ( NoSuchMethodException e )
+        catch ( final NoSuchMethodException e )
         {
           // Do nothing
         }
@@ -331,27 +331,28 @@ public final class DefaultOutline implements Outline
       {
         try
         {
-          sortedChildren = ( PrettyPrintable [ ] ) pExpression.getClass ( )
-              .getMethod ( GET_SORTED_CHILDREN , new Class [ 0 ] ).invoke (
-                  pExpression , new Object [ 0 ] ) ;
+          sortedChildren = ( PrettyPrintable [ ] ) pExpression
+              .getClass ( )
+              .getMethod ( DefaultOutline.GET_SORTED_CHILDREN , new Class [ 0 ] )
+              .invoke ( pExpression , new Object [ 0 ] ) ;
         }
-        catch ( IllegalArgumentException e )
+        catch ( final IllegalArgumentException e )
         {
           // Do nothing
         }
-        catch ( SecurityException e )
+        catch ( final SecurityException e )
         {
           // Do nothing
         }
-        catch ( IllegalAccessException e )
+        catch ( final IllegalAccessException e )
         {
           // Do nothing
         }
-        catch ( InvocationTargetException e )
+        catch ( final InvocationTargetException e )
         {
           // Do nothing
         }
-        catch ( NoSuchMethodException e )
+        catch ( final NoSuchMethodException e )
         {
           // Do nothing
         }
@@ -389,7 +390,7 @@ public final class DefaultOutline implements Outline
               {
                 outlineNodeType = new OutlineNode ( types [ j ] ,
                     typesPrefix [ j ] , typesIndex [ j ] ) ;
-                createType ( types [ j ] , outlineNodeType ) ;
+                this.createType ( types [ j ] , outlineNodeType ) ;
                 outlineNodeId.add ( outlineNodeType ) ;
               }
             }
@@ -406,20 +407,20 @@ public final class DefaultOutline implements Outline
           {
             outlineNodeType = new OutlineNode ( types [ i ] ,
                 typesPrefix [ i ] , typesIndex [ i ] ) ;
-            createType ( types [ i ] , outlineNodeType ) ;
+            this.createType ( types [ i ] , outlineNodeType ) ;
             pOutlineNode.add ( outlineNodeType ) ;
           }
         }
       }
       if ( expressionsIndex != null )
       {
-        ArrayList < Expression > children = pExpression.children ( ) ;
+        final ArrayList < Expression > children = pExpression.children ( ) ;
         for ( int i = 0 ; i < children.size ( ) ; i ++ )
         {
-          Expression child = children.get ( i ) ;
+          final Expression child = children.get ( i ) ;
           outlineNodeE = new OutlineNode ( child , this.outlineUnbound , child
               .getPrefix ( ) , expressionsIndex [ i ] ) ;
-          createExpression ( child , outlineNodeE ) ;
+          this.createExpression ( child , outlineNodeE ) ;
           pOutlineNode.add ( outlineNodeE ) ;
         }
       }
@@ -429,7 +430,7 @@ public final class DefaultOutline implements Outline
     {
       for ( int i = 0 ; i < sortedChildren.length ; i ++ )
       {
-        PrettyPrintable current = sortedChildren [ i ] ;
+        final PrettyPrintable current = sortedChildren [ i ] ;
         boolean found = false ;
         if ( ( identifiers != null ) && ( identifiersIndex != null )
             && ( identifiersPrefix != null ) )
@@ -465,7 +466,7 @@ public final class DefaultOutline implements Outline
             {
               outlineNodeType = new OutlineNode ( types [ j ] ,
                   typesPrefix [ j ] , typesIndex [ j ] ) ;
-              createType ( types [ j ] , outlineNodeType ) ;
+              this.createType ( types [ j ] , outlineNodeType ) ;
               pOutlineNode.add ( outlineNodeType ) ;
               found = true ;
               break ;
@@ -474,15 +475,15 @@ public final class DefaultOutline implements Outline
         }
         if ( ( ! found ) && ( expressionsIndex != null ) )
         {
-          ArrayList < Expression > children = pExpression.children ( ) ;
+          final ArrayList < Expression > children = pExpression.children ( ) ;
           for ( int j = 0 ; j < children.size ( ) ; j ++ )
           {
             if ( current == children.get ( j ) )
             {
-              Expression child = children.get ( j ) ;
+              final Expression child = children.get ( j ) ;
               outlineNodeE = new OutlineNode ( child , this.outlineUnbound ,
                   child.getPrefix ( ) , expressionsIndex [ j ] ) ;
-              createExpression ( child , outlineNodeE ) ;
+              this.createExpression ( child , outlineNodeE ) ;
               pOutlineNode.add ( outlineNodeE ) ;
               found = true ;
               break ;
@@ -501,7 +502,8 @@ public final class DefaultOutline implements Outline
    * @param pType The {@link Type}, with which the children should be created.
    * @param pOutlineNode The node where the children should be added.
    */
-  private final void createType ( Type pType , OutlineNode pOutlineNode )
+  private final void createType ( final Type pType ,
+      final OutlineNode pOutlineNode )
   {
     // Type
     MonoType [ ] types = null ;
@@ -513,7 +515,7 @@ public final class DefaultOutline implements Outline
     String [ ] identifiersPrefix = null ;
     // Sorted Children
     PrettyPrintable [ ] sortedChildren = null ;
-    for ( Class < Object > currentInterface : pType.getClass ( )
+    for ( final Class < Object > currentInterface : pType.getClass ( )
         .getInterfaces ( ) )
     {
       if ( currentInterface
@@ -521,32 +523,33 @@ public final class DefaultOutline implements Outline
       {
         try
         {
-          types = ( MonoType [ ] ) pType.getClass ( ).getMethod ( GET_TYPES ,
-              new Class [ 0 ] ).invoke ( pType , new Object [ 0 ] ) ;
+          types = ( MonoType [ ] ) pType.getClass ( ).getMethod (
+              DefaultOutline.GET_TYPES , new Class [ 0 ] ).invoke ( pType ,
+              new Object [ 0 ] ) ;
           typesIndex = ( int [ ] ) pType.getClass ( ).getMethod (
-              GET_TYPES_INDEX , new Class [ 0 ] ).invoke ( pType ,
-              new Object [ 0 ] ) ;
+              DefaultOutline.GET_TYPES_INDEX , new Class [ 0 ] ).invoke (
+              pType , new Object [ 0 ] ) ;
           typesPrefix = ( String [ ] ) pType.getClass ( ).getMethod (
-              GET_TYPES_PREFIX , new Class [ 0 ] ).invoke ( pType ,
-              new Object [ 0 ] ) ;
+              DefaultOutline.GET_TYPES_PREFIX , new Class [ 0 ] ).invoke (
+              pType , new Object [ 0 ] ) ;
         }
-        catch ( IllegalArgumentException e )
+        catch ( final IllegalArgumentException e )
         {
           // Do nothing
         }
-        catch ( SecurityException e )
+        catch ( final SecurityException e )
         {
           // Do nothing
         }
-        catch ( IllegalAccessException e )
+        catch ( final IllegalAccessException e )
         {
           // Do nothing
         }
-        catch ( InvocationTargetException e )
+        catch ( final InvocationTargetException e )
         {
           // Do nothing
         }
-        catch ( NoSuchMethodException e )
+        catch ( final NoSuchMethodException e )
         {
           // Do nothing
         }
@@ -557,32 +560,32 @@ public final class DefaultOutline implements Outline
         try
         {
           identifiers = ( Identifier [ ] ) pType.getClass ( ).getMethod (
-              GET_IDENTIFIERS , new Class [ 0 ] ).invoke ( pType ,
-              new Object [ 0 ] ) ;
+              DefaultOutline.GET_IDENTIFIERS , new Class [ 0 ] ).invoke (
+              pType , new Object [ 0 ] ) ;
           identifiersIndex = ( int [ ] ) pType.getClass ( ).getMethod (
-              GET_IDENTIFIERS_INDEX , new Class [ 0 ] ).invoke ( pType ,
-              new Object [ 0 ] ) ;
+              DefaultOutline.GET_IDENTIFIERS_INDEX , new Class [ 0 ] ).invoke (
+              pType , new Object [ 0 ] ) ;
           identifiersPrefix = ( String [ ] ) pType.getClass ( ).getMethod (
-              GET_IDENTIFIERS_PREFIX , new Class [ 0 ] ).invoke ( pType ,
-              new Object [ 0 ] ) ;
+              DefaultOutline.GET_IDENTIFIERS_PREFIX , new Class [ 0 ] ).invoke (
+              pType , new Object [ 0 ] ) ;
         }
-        catch ( IllegalArgumentException e )
+        catch ( final IllegalArgumentException e )
         {
           // Do nothing
         }
-        catch ( SecurityException e )
+        catch ( final SecurityException e )
         {
           // Do nothing
         }
-        catch ( IllegalAccessException e )
+        catch ( final IllegalAccessException e )
         {
           // Do nothing
         }
-        catch ( InvocationTargetException e )
+        catch ( final InvocationTargetException e )
         {
           // Do nothing
         }
-        catch ( NoSuchMethodException e )
+        catch ( final NoSuchMethodException e )
         {
           // Do nothing
         }
@@ -592,27 +595,28 @@ public final class DefaultOutline implements Outline
       {
         try
         {
-          sortedChildren = ( PrettyPrintable [ ] ) pType.getClass ( )
-              .getMethod ( GET_SORTED_CHILDREN , new Class [ 0 ] ).invoke (
-                  pType , new Object [ 0 ] ) ;
+          sortedChildren = ( PrettyPrintable [ ] ) pType
+              .getClass ( )
+              .getMethod ( DefaultOutline.GET_SORTED_CHILDREN , new Class [ 0 ] )
+              .invoke ( pType , new Object [ 0 ] ) ;
         }
-        catch ( IllegalArgumentException e )
+        catch ( final IllegalArgumentException e )
         {
           // Do nothing
         }
-        catch ( SecurityException e )
+        catch ( final SecurityException e )
         {
           // Do nothing
         }
-        catch ( IllegalAccessException e )
+        catch ( final IllegalAccessException e )
         {
           // Do nothing
         }
-        catch ( InvocationTargetException e )
+        catch ( final InvocationTargetException e )
         {
           // Do nothing
         }
-        catch ( NoSuchMethodException e )
+        catch ( final NoSuchMethodException e )
         {
           // Do nothing
         }
@@ -638,16 +642,15 @@ public final class DefaultOutline implements Outline
         {
           outlineNodeType = new OutlineNode ( types [ i ] , typesPrefix [ i ] ,
               typesIndex [ i ] ) ;
-          createType ( types [ i ] , outlineNodeType ) ;
+          this.createType ( types [ i ] , outlineNodeType ) ;
           pOutlineNode.add ( outlineNodeType ) ;
         }
       }
       // Sorted Children
       else
       {
-        for ( int i = 0 ; i < sortedChildren.length ; i ++ )
+        for ( final PrettyPrintable current : sortedChildren )
         {
-          PrettyPrintable current = sortedChildren [ i ] ;
           boolean found = false ;
           if ( ( identifiers != null ) && ( identifiersIndex != null )
               && ( identifiersPrefix != null ) )
@@ -672,7 +675,7 @@ public final class DefaultOutline implements Outline
               {
                 outlineNodeType = new OutlineNode ( types [ j ] ,
                     typesPrefix [ j ] , typesIndex [ j ] ) ;
-                createType ( types [ j ] , outlineNodeType ) ;
+                this.createType ( types [ j ] , outlineNodeType ) ;
                 pOutlineNode.add ( outlineNodeType ) ;
                 found = true ;
                 break ;
@@ -717,8 +720,8 @@ public final class DefaultOutline implements Outline
     this.rootOutlineNode = new OutlineNode ( this.loadedExpression ,
         this.outlineUnbound , this.loadedExpression.getPrefix ( ) ,
         OutlineNode.NO_CHILD_INDEX ) ;
-    createExpression ( this.loadedExpression , this.rootOutlineNode ) ;
-    repaint ( this.rootOutlineNode ) ;
+    this.createExpression ( this.loadedExpression , this.rootOutlineNode ) ;
+    this.repaint ( this.rootOutlineNode ) ;
     this.outlineUI.setError ( false ) ;
     SwingUtilities.invokeLater ( new OutlineDisplayTree ( this ) ) ;
   }
@@ -744,7 +747,7 @@ public final class DefaultOutline implements Outline
    * 
    * @param pDelay Delay in milliseconds before task is to be executed.
    */
-  private final void executeTimerStart ( int pDelay )
+  private final void executeTimerStart ( final int pDelay )
   {
     if ( pDelay < 0 )
     {
@@ -803,12 +806,12 @@ public final class DefaultOutline implements Outline
    * @param pExpression The new {@link Expression}.
    * @param pExecute The {@link Outline.Execute}.
    */
-  public final void loadExpression ( Expression pExpression ,
-      Outline.Execute pExecute )
+  public final void loadExpression ( final Expression pExpression ,
+      final Outline.Execute pExecute )
   {
     if ( pExpression == null )
     {
-      executeTimerCancel ( ) ;
+      this.executeTimerCancel ( ) ;
       if ( ( this.outlinePreferences.isAutoUpdate ( ) )
           || ( pExecute.equals ( Outline.Execute.MOUSE_CLICK_EDITOR ) ) )
       {
@@ -859,7 +862,7 @@ public final class DefaultOutline implements Outline
       return ;
     }
     this.loadedExpression = pExpression ;
-    executeTimerCancel ( ) ;
+    this.executeTimerCancel ( ) ;
     /*
      * Execute the new Expression immediately, if the change is an init change
      * or a change because of a mouse click.
@@ -873,15 +876,15 @@ public final class DefaultOutline implements Outline
         || ( pExecute.equals ( Outline.Execute.MOUSE_CLICK_BIGSTEP ) )
         || ( pExecute.equals ( Outline.Execute.MOUSE_CLICK_TYPECHECKER ) ) )
     {
-      execute ( ) ;
+      this.execute ( ) ;
     }
     else if ( pExecute.equals ( Outline.Execute.AUTO_CHANGE_EDITOR ) )
     {
-      executeTimerStart ( 250 ) ;
+      this.executeTimerStart ( 250 ) ;
     }
     else if ( pExecute.equals ( Outline.Execute.AUTO_CHANGE_SMALLSTEP ) )
     {
-      executeTimerStart ( 250 ) ;
+      this.executeTimerStart ( 250 ) ;
     }
   }
 
@@ -891,7 +894,7 @@ public final class DefaultOutline implements Outline
    */
   public final void propertyChanged ( )
   {
-    propertyChanged ( ( OutlineNode ) this.outlineUI.getTreeModel ( )
+    this.propertyChanged ( ( OutlineNode ) this.outlineUI.getTreeModel ( )
         .getRoot ( ) ) ;
   }
 
@@ -902,14 +905,14 @@ public final class DefaultOutline implements Outline
    * 
    * @param pOutlineNode The node, which should be repainted.
    */
-  private final void propertyChanged ( OutlineNode pOutlineNode )
+  private final void propertyChanged ( final OutlineNode pOutlineNode )
   {
     pOutlineNode.propertyChanged ( ) ;
     pOutlineNode.updateCaption ( ) ;
     this.outlineUI.getTreeModel ( ).nodeChanged ( pOutlineNode ) ;
     for ( int i = 0 ; i < pOutlineNode.getChildCount ( ) ; i ++ )
     {
-      propertyChanged ( ( OutlineNode ) pOutlineNode.getChildAt ( i ) ) ;
+      this.propertyChanged ( ( OutlineNode ) pOutlineNode.getChildAt ( i ) ) ;
     }
   }
 
@@ -919,13 +922,13 @@ public final class DefaultOutline implements Outline
    * 
    * @param pOutlineNode The node, which should be repainted.
    */
-  private final void repaint ( OutlineNode pOutlineNode )
+  private final void repaint ( final OutlineNode pOutlineNode )
   {
     pOutlineNode.updateCaption ( ) ;
     this.outlineUI.getTreeModel ( ).nodeChanged ( pOutlineNode ) ;
     for ( int i = 0 ; i < pOutlineNode.getChildCount ( ) ; i ++ )
     {
-      repaint ( ( OutlineNode ) pOutlineNode.getChildAt ( i ) ) ;
+      this.repaint ( ( OutlineNode ) pOutlineNode.getChildAt ( i ) ) ;
     }
   }
 
@@ -936,7 +939,7 @@ public final class DefaultOutline implements Outline
   public final void setRootNode ( )
   {
     this.outlineUI.setRootNode ( this.rootOutlineNode ) ;
-    updateBreaks ( ) ;
+    this.updateBreaks ( ) ;
   }
 
 
@@ -950,11 +953,12 @@ public final class DefaultOutline implements Outline
       return ;
     }
     final int distance = 20 ;
-    JScrollPane jScrollPaneOutline = this.outlineUI.getJScrollPaneOutline ( ) ;
+    final JScrollPane jScrollPaneOutline = this.outlineUI
+        .getJScrollPaneOutline ( ) ;
     OutlineNode currentNode ;
     TreePath currentTreePath ;
     Rectangle rectangle ;
-    Enumeration < ? > enumeration = this.rootOutlineNode
+    final Enumeration < ? > enumeration = this.rootOutlineNode
         .breadthFirstEnumeration ( ) ;
     while ( enumeration.hasMoreElements ( ) )
     {

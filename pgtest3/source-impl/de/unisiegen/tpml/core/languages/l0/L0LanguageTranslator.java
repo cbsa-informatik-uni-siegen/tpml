@@ -33,20 +33,21 @@ public class L0LanguageTranslator extends AbstractLanguageTranslator
    * @see AbstractLanguageTranslator#translateToCoreSyntax(Expression, boolean)
    */
   @ Override
-  public Expression translateToCoreSyntax ( Expression pExpression ,
-      boolean pRecursive )
+  public Expression translateToCoreSyntax ( final Expression pExpression ,
+      final boolean pRecursive )
   {
-    if ( pExpression instanceof Application && pRecursive )
+    if ( ( pExpression instanceof Application ) && pRecursive )
     {
-      Application application = ( Application ) pExpression ;
-      return new Application ( translateToCoreSyntax ( application.getE1 ( ) ,
-          true ) , translateToCoreSyntax ( application.getE2 ( ) , true ) ) ;
+      final Application application = ( Application ) pExpression ;
+      return new Application ( this.translateToCoreSyntax ( application
+          .getE1 ( ) , true ) , this.translateToCoreSyntax ( application
+          .getE2 ( ) , true ) ) ;
     }
-    else if ( pExpression instanceof Lambda && pRecursive )
+    else if ( ( pExpression instanceof Lambda ) && pRecursive )
     {
-      Lambda lambda = ( Lambda ) pExpression ;
-      return new Lambda ( lambda.getId ( ) , lambda.getTau ( ) ,
-          translateToCoreSyntax ( lambda.getE ( ) , true ) ) ;
+      final Lambda lambda = ( Lambda ) pExpression ;
+      return new Lambda ( lambda.getId ( ) , lambda.getTau ( ) , this
+          .translateToCoreSyntax ( lambda.getE ( ) , true ) ) ;
     }
     else
     {

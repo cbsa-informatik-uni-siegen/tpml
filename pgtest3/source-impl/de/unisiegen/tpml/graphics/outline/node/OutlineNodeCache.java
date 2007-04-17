@@ -101,10 +101,11 @@ public class OutlineNodeCache
    * @param pOutlineBinding The {@link OutlineBinding}.
    * @param pCaption The caption of the node.
    */
-  public OutlineNodeCache ( int pSelectionStart , int pSelectionEnd ,
-      boolean pSelection , boolean pBinding , boolean pUnbound ,
-      boolean pReplace , int pBoundedStart , int pBoundedEnd , int pBreakCount ,
-      OutlineBinding pOutlineBinding , String pCaption )
+  public OutlineNodeCache ( final int pSelectionStart ,
+      final int pSelectionEnd , final boolean pSelection ,
+      final boolean pBinding , final boolean pUnbound , final boolean pReplace ,
+      final int pBoundedStart , final int pBoundedEnd , final int pBreakCount ,
+      final OutlineBinding pOutlineBinding , final String pCaption )
   {
     this.selectionStart = pSelectionStart ;
     this.selectionEnd = pSelectionEnd ;

@@ -32,7 +32,7 @@ public abstract class Constant extends Value
    * @param pText the string representation of the constant.
    * @throws NullPointerException if <code>text</code> is <code>null</code>.
    */
-  protected Constant ( String pText )
+  protected Constant ( final String pText )
   {
     if ( pText == null )
     {
@@ -57,12 +57,12 @@ public abstract class Constant extends Value
    * @see Expression#equals(Object)
    */
   @ Override
-  public boolean equals ( Object pObject )
+  public boolean equals ( final Object pObject )
   {
     if ( ( pObject instanceof Constant )
         && ( this.getClass ( ).equals ( pObject.getClass ( ) ) ) )
     {
-      Constant other = ( Constant ) pObject ;
+      final Constant other = ( Constant ) pObject ;
       return this.text.equals ( other.text ) ;
     }
     return false ;
@@ -97,7 +97,7 @@ public abstract class Constant extends Value
   @ Override
   public int hashCode ( )
   {
-    return this.text.hashCode ( ) + getClass ( ).hashCode ( ) ;
+    return this.text.hashCode ( ) + this.getClass ( ).hashCode ( ) ;
   }
 
 
@@ -107,9 +107,10 @@ public abstract class Constant extends Value
    * @see Expression#substitute(Identifier, Expression, boolean)
    */
   @ Override
-  public Constant substitute ( Identifier pId , Expression pExpression )
+  public Constant substitute ( final Identifier pId ,
+      final Expression pExpression )
   {
-    return substitute ( pId , pExpression , false ) ;
+    return this.substitute ( pId , pExpression , false ) ;
   }
 
 
@@ -122,9 +123,9 @@ public abstract class Constant extends Value
    */
   @ Override
   public final Constant substitute ( @ SuppressWarnings ( "unused" )
-  Identifier pId , @ SuppressWarnings ( "unused" )
-  Expression pExpression , @ SuppressWarnings ( "unused" )
-  boolean pAttributeRename )
+  final Identifier pId , @ SuppressWarnings ( "unused" )
+  final Expression pExpression , @ SuppressWarnings ( "unused" )
+  final boolean pAttributeRename )
   {
     return this ;
   }
@@ -137,12 +138,12 @@ public abstract class Constant extends Value
    */
   public @ Override
   PrettyStringBuilder toPrettyStringBuilder (
-      PrettyStringBuilderFactory pPrettyStringBuilderFactory )
+      final PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
     if ( this.prettyStringBuilder == null )
     {
       this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
-          PRIO_CONSTANT ) ;
+          PrettyPrintPriorities.PRIO_CONSTANT ) ;
       this.prettyStringBuilder.addConstant ( this.text ) ;
     }
     return this.prettyStringBuilder ;

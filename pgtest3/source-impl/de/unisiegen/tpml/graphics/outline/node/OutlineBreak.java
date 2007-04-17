@@ -41,11 +41,11 @@ public final class OutlineBreak
    * 
    * @param pExpression The input {@link Expression}.
    */
-  public OutlineBreak ( Expression pExpression )
+  public OutlineBreak ( final Expression pExpression )
   {
     this.breakList = new ArrayList < Integer > ( ) ;
     this.outlineBreakList = new ArrayList < OutlineBreak > ( ) ;
-    calculate ( pExpression ) ;
+    this.calculate ( pExpression ) ;
   }
 
 
@@ -54,11 +54,11 @@ public final class OutlineBreak
    * 
    * @param pType The input {@link Type}.
    */
-  public OutlineBreak ( Type pType )
+  public OutlineBreak ( final Type pType )
   {
     this.breakList = new ArrayList < Integer > ( ) ;
     this.outlineBreakList = new ArrayList < OutlineBreak > ( ) ;
-    calculate ( pType ) ;
+    this.calculate ( pType ) ;
   }
 
 
@@ -68,7 +68,7 @@ public final class OutlineBreak
    * 
    * @param pOffset The offset, which should be added.
    */
-  private final void addOffset ( int pOffset )
+  private final void addOffset ( final int pOffset )
   {
     for ( int i = 0 ; i < this.breakList.size ( ) ; i ++ )
     {
@@ -88,17 +88,17 @@ public final class OutlineBreak
    * 
    * @param pExpression The input {@link Expression}.
    */
-  private final void calculate ( Expression pExpression )
+  private final void calculate ( final Expression pExpression )
   {
-    PrettyAnnotation prettyAnnotation = pExpression.toPrettyString ( )
+    final PrettyAnnotation prettyAnnotation = pExpression.toPrettyString ( )
         .getAnnotationForPrintable ( pExpression ) ;
-    int [ ] breaks = prettyAnnotation.getBreakOffsets ( ) ;
-    for ( int i = 0 ; i < breaks.length ; i ++ )
+    final int [ ] breaks = prettyAnnotation.getBreakOffsets ( ) ;
+    for ( int element : breaks )
     {
-      this.breakList.add ( new Integer ( breaks [ i ] ) ) ;
+      this.breakList.add ( new Integer ( element ) ) ;
     }
-    ArrayList < Expression > children = pExpression.children ( ) ;
-    for ( Expression expr : children )
+    final ArrayList < Expression > children = pExpression.children ( ) ;
+    for ( final Expression expr : children )
     {
       PrettyAnnotation prettyAnnotationChild ;
       try
@@ -106,11 +106,11 @@ public final class OutlineBreak
         prettyAnnotationChild = pExpression.toPrettyString ( )
             .getAnnotationForPrintable ( expr ) ;
       }
-      catch ( IllegalArgumentException e )
+      catch ( final IllegalArgumentException e )
       {
         continue ;
       }
-      OutlineBreak outlineBreakChild = new OutlineBreak ( expr ) ;
+      final OutlineBreak outlineBreakChild = new OutlineBreak ( expr ) ;
       outlineBreakChild.addOffset ( prettyAnnotationChild.getStartOffset ( ) ) ;
       if ( breaks.length > 0 )
       {
@@ -137,17 +137,17 @@ public final class OutlineBreak
    * 
    * @param pType The input {@link Type}.
    */
-  private final void calculate ( Type pType )
+  private final void calculate ( final Type pType )
   {
-    PrettyAnnotation prettyAnnotation = pType.toPrettyString ( )
+    final PrettyAnnotation prettyAnnotation = pType.toPrettyString ( )
         .getAnnotationForPrintable ( pType ) ;
-    int [ ] breaks = prettyAnnotation.getBreakOffsets ( ) ;
-    for ( int i = 0 ; i < breaks.length ; i ++ )
+    final int [ ] breaks = prettyAnnotation.getBreakOffsets ( ) ;
+    for ( int element : breaks )
     {
-      this.breakList.add ( new Integer ( breaks [ i ] ) ) ;
+      this.breakList.add ( new Integer ( element ) ) ;
     }
-    ArrayList < Type > children = pType.children ( ) ;
-    for ( Type child : children )
+    final ArrayList < Type > children = pType.children ( ) ;
+    for ( final Type child : children )
     {
       PrettyAnnotation prettyAnnotationChild ;
       try
@@ -155,11 +155,11 @@ public final class OutlineBreak
         prettyAnnotationChild = pType.toPrettyString ( )
             .getAnnotationForPrintable ( child ) ;
       }
-      catch ( IllegalArgumentException e )
+      catch ( final IllegalArgumentException e )
       {
         continue ;
       }
-      OutlineBreak outlineBreakChild = new OutlineBreak ( child ) ;
+      final OutlineBreak outlineBreakChild = new OutlineBreak ( child ) ;
       outlineBreakChild.addOffset ( prettyAnnotationChild.getStartOffset ( ) ) ;
       if ( breaks.length > 0 )
       {
@@ -221,9 +221,9 @@ public final class OutlineBreak
    * @return A new {@link OutlineBreak}, which has the breaks of the children
    *         of this {@link OutlineBreak}, but only children within the depth.
    */
-  public final OutlineBreak getBreaks ( int pDepth )
+  public final OutlineBreak getBreaks ( final int pDepth )
   {
-    OutlineBreak result = new OutlineBreak ( ) ;
+    final OutlineBreak result = new OutlineBreak ( ) ;
     if ( pDepth == 0 )
     {
       return result ;
@@ -237,7 +237,7 @@ public final class OutlineBreak
     result.breakList.addAll ( this.breakList ) ;
     for ( int i = 0 ; i < this.outlineBreakList.size ( ) ; i ++ )
     {
-      OutlineBreak child = this.outlineBreakList.get ( i ).getBreaks (
+      final OutlineBreak child = this.outlineBreakList.get ( i ).getBreaks (
           pDepth - 1 ) ;
       result.breakList.addAll ( child.breakList ) ;
       result.outlineBreakList.addAll ( child.outlineBreakList ) ;
@@ -278,7 +278,7 @@ public final class OutlineBreak
    * @param pCharIndex The char index.
    * @return True, if there is a break at the given char index. Otherwise false.
    */
-  public final boolean isBreak ( int pCharIndex )
+  public final boolean isBreak ( final int pCharIndex )
   {
     return this.breakList.contains ( new Integer ( pCharIndex ) ) ;
   }

@@ -29,7 +29,7 @@ public final class OutlineBinding
    * 
    * @param pList The list of bounded {@link Identifier}s.
    */
-  public OutlineBinding ( ArrayList < Identifier > pList )
+  public OutlineBinding ( final ArrayList < Identifier > pList )
   {
     if ( pList == null )
     {
@@ -48,11 +48,11 @@ public final class OutlineBinding
    * @see Object#equals(Object)
    */
   @ Override
-  public boolean equals ( Object pObject )
+  public boolean equals ( final Object pObject )
   {
     if ( pObject instanceof OutlineBinding )
     {
-      OutlineBinding other = ( OutlineBinding ) pObject ;
+      final OutlineBinding other = ( OutlineBinding ) pObject ;
       if ( this.list.size ( ) != other.list.size ( ) )
       {
         return false ;
@@ -77,7 +77,7 @@ public final class OutlineBinding
    * @return The bounded {@link Identifier} in the {@link Expression}.
    * @see #list
    */
-  public final Identifier get ( int pIndex )
+  public final Identifier get ( final int pIndex )
   {
     return this.list.get ( pIndex ) ;
   }
@@ -89,7 +89,7 @@ public final class OutlineBinding
    * @param pIndex The index of the bounded {@link Identifier}.
    * @return The removed {@link Identifier}.
    */
-  public final Identifier remove ( int pIndex )
+  public final Identifier remove ( final int pIndex )
   {
     return this.list.remove ( pIndex ) ;
   }

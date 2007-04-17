@@ -42,49 +42,49 @@ public class L1LanguageTranslator extends L0LanguageTranslator
    * @see AbstractLanguageTranslator#translateToCoreSyntax(Expression, boolean)
    */
   @ Override
-  public Expression translateToCoreSyntax ( Expression expression ,
-      boolean recursive )
+  public Expression translateToCoreSyntax ( final Expression expression ,
+      final boolean recursive )
   {
     if ( expression instanceof And )
     {
       // determine the sub expressions
-      And and = ( And ) expression ;
+      final And and = ( And ) expression ;
       Expression e1 = and.getE1 ( ) ;
       Expression e2 = and.getE2 ( ) ;
       // check if we should recurse
       if ( recursive )
       {
-        e1 = translateToCoreSyntax ( e1 , true ) ;
-        e2 = translateToCoreSyntax ( e2 , true ) ;
+        e1 = this.translateToCoreSyntax ( e1 , true ) ;
+        e2 = this.translateToCoreSyntax ( e2 , true ) ;
       }
       // generate the condition
       return new Condition ( e1 , e2 , new BooleanConstant ( false ) ) ;
     }
-    else if ( expression instanceof Condition && recursive )
+    else if ( ( expression instanceof Condition ) && recursive )
     {
       // determine the sub expressions
-      Condition condition = ( Condition ) expression ;
+      final Condition condition = ( Condition ) expression ;
       Expression e0 = condition.getE0 ( ) ;
       Expression e1 = condition.getE1 ( ) ;
       Expression e2 = condition.getE2 ( ) ;
       // translate the sub expressions
-      e0 = translateToCoreSyntax ( e0 , true ) ;
-      e1 = translateToCoreSyntax ( e1 , true ) ;
-      e2 = translateToCoreSyntax ( e2 , true ) ;
+      e0 = this.translateToCoreSyntax ( e0 , true ) ;
+      e1 = this.translateToCoreSyntax ( e1 , true ) ;
+      e2 = this.translateToCoreSyntax ( e2 , true ) ;
       // generate the condition
       return new Condition ( e0 , e1 , e2 ) ;
     }
     else if ( expression instanceof CurriedLet )
     {
       // translate to: let id1 = lambda id2...lambda idn.e1 in e2
-      CurriedLet curriedLet = ( CurriedLet ) expression ;
+      final CurriedLet curriedLet = ( CurriedLet ) expression ;
       Expression e1 = curriedLet.getE1 ( ) ;
       Expression e2 = curriedLet.getE2 ( ) ;
       // check if we should recurse
       if ( recursive )
       {
-        e1 = translateToCoreSyntax ( e1 , true ) ;
-        e2 = translateToCoreSyntax ( e2 , true ) ;
+        e1 = this.translateToCoreSyntax ( e1 , true ) ;
+        e2 = this.translateToCoreSyntax ( e2 , true ) ;
       }
       // add the lambdas
       for ( int n = curriedLet.getIdentifiers ( ).length - 1 ; n > 0 ; -- n )
@@ -99,52 +99,46 @@ public class L1LanguageTranslator extends L0LanguageTranslator
     else if ( expression instanceof InfixOperation )
     {
       // determine the sub expressions
-      InfixOperation infixOperation = ( InfixOperation ) expression ;
+      final InfixOperation infixOperation = ( InfixOperation ) expression ;
       Expression op = infixOperation.getOp ( ) ;
       Expression e1 = infixOperation.getE1 ( ) ;
       Expression e2 = infixOperation.getE2 ( ) ;
       // check if we should recurse
       if ( recursive )
       {
-        op = translateToCoreSyntax ( op , true ) ;
-        e1 = translateToCoreSyntax ( e1 , true ) ;
-        e2 = translateToCoreSyntax ( e2 , true ) ;
-      }
-      else
-      {
-        op = op.clone ( ) ;
-        e1 = e1.clone ( ) ;
-        e2 = e2.clone ( ) ;
+        op = this.translateToCoreSyntax ( op , true ) ;
+        e1 = this.translateToCoreSyntax ( e1 , true ) ;
+        e2 = this.translateToCoreSyntax ( e2 , true ) ;
       }
       // generate the applications
-      Application application = new Application ( new Application ( op , e1 ) ,
-          e2 ) ;
+      final Application application = new Application ( new Application ( op ,
+          e1 ) , e2 ) ;
       // special case: BinaryCons requires another run
-      return translateToCoreSyntax ( application , recursive ) ;
+      return this.translateToCoreSyntax ( application , recursive ) ;
     }
-    else if ( expression instanceof Let && recursive )
+    else if ( ( expression instanceof Let ) && recursive )
     {
       // determine the sub expressions
-      Let let = ( Let ) expression ;
+      final Let let = ( Let ) expression ;
       Expression e1 = let.getE1 ( ) ;
       Expression e2 = let.getE2 ( ) ;
       // translate the sub expressions
-      e1 = translateToCoreSyntax ( e1 , true ) ;
-      e2 = translateToCoreSyntax ( e2 , true ) ;
+      e1 = this.translateToCoreSyntax ( e1 , true ) ;
+      e2 = this.translateToCoreSyntax ( e2 , true ) ;
       // generate the let expression
       return new Let ( let.getId ( ) , let.getTau ( ) , e1 , e2 ) ;
     }
     else if ( expression instanceof Or )
     {
       // determine the sub expressions
-      Or or = ( Or ) expression ;
+      final Or or = ( Or ) expression ;
       Expression e1 = or.getE1 ( ) ;
       Expression e2 = or.getE2 ( ) ;
       // check if we should recurse
       if ( recursive )
       {
-        e1 = translateToCoreSyntax ( e1 , true ) ;
-        e2 = translateToCoreSyntax ( e2 , true ) ;
+        e1 = this.translateToCoreSyntax ( e1 , true ) ;
+        e2 = this.translateToCoreSyntax ( e2 , true ) ;
       }
       // generate the condition
       return new Condition ( e1 , new BooleanConstant ( true ) , e2 ) ;

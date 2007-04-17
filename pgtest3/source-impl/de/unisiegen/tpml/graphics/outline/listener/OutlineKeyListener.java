@@ -35,7 +35,7 @@ public final class OutlineKeyListener implements KeyListener
    * 
    * @param pOutlineUI The {@link OutlineUI}.
    */
-  public OutlineKeyListener ( OutlineUI pOutlineUI )
+  public OutlineKeyListener ( final OutlineUI pOutlineUI )
   {
     this.outlineUI = pOutlineUI ;
   }
@@ -47,8 +47,8 @@ public final class OutlineKeyListener implements KeyListener
    */
   public final void copy ( )
   {
-    OutlineNode outlineNode = ( OutlineNode ) this.outlineUI.getJTreeOutline ( )
-        .getSelectionPath ( ).getLastPathComponent ( ) ;
+    final OutlineNode outlineNode = ( OutlineNode ) this.outlineUI
+        .getJTreeOutline ( ).getSelectionPath ( ).getLastPathComponent ( ) ;
     if ( outlineNode != null )
     {
       OutlineClipboard.getInstance ( ).copy ( outlineNode.getPrettyString ( ) ) ;
@@ -61,7 +61,7 @@ public final class OutlineKeyListener implements KeyListener
    * 
    * @param pKeyEvent The <code>KeyEvent</code>.
    */
-  private final void handleKeyEvent ( KeyEvent pKeyEvent )
+  private final void handleKeyEvent ( final KeyEvent pKeyEvent )
   {
     /*
      * jTreeAbstractSyntaxTree
@@ -74,7 +74,7 @@ public final class OutlineKeyListener implements KeyListener
       if ( ( pKeyEvent.isControlDown ( ) )
           && ( pKeyEvent.getKeyCode ( ) == KeyEvent.VK_C ) )
       {
-        copy ( ) ;
+        this.copy ( ) ;
       }
     }
     pKeyEvent.consume ( ) ;
@@ -87,9 +87,9 @@ public final class OutlineKeyListener implements KeyListener
    * @param pKeyEvent The <code>KeyEvent</code>.
    * @see KeyListener#keyPressed(KeyEvent)
    */
-  public final void keyPressed ( KeyEvent pKeyEvent )
+  public final void keyPressed ( final KeyEvent pKeyEvent )
   {
-    handleKeyEvent ( pKeyEvent ) ;
+    this.handleKeyEvent ( pKeyEvent ) ;
   }
 
 
@@ -99,9 +99,9 @@ public final class OutlineKeyListener implements KeyListener
    * @param pKeyEvent The <code>KeyEvent</code>.
    * @see KeyListener#keyReleased(KeyEvent)
    */
-  public final void keyReleased ( KeyEvent pKeyEvent )
+  public final void keyReleased ( final KeyEvent pKeyEvent )
   {
-    handleKeyEvent ( pKeyEvent ) ;
+    this.handleKeyEvent ( pKeyEvent ) ;
   }
 
 
@@ -111,8 +111,8 @@ public final class OutlineKeyListener implements KeyListener
    * @param pKeyEvent The <code>KeyEvent</code>.
    * @see KeyListener#keyTyped(KeyEvent)
    */
-  public final void keyTyped ( @ SuppressWarnings ( UNUSED )
-  KeyEvent pKeyEvent )
+  public final void keyTyped ( @ SuppressWarnings ( OutlineKeyListener.UNUSED )
+  final KeyEvent pKeyEvent )
   {
     // Do nothing.
   }

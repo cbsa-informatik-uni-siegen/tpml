@@ -29,7 +29,7 @@ public final class BooleanConstant extends Constant
    * @param pBooleanValue the boolean value.
    * @see #booleanValue()
    */
-  public BooleanConstant ( boolean pBooleanValue )
+  public BooleanConstant ( final boolean pBooleanValue )
   {
     super ( pBooleanValue ? "true" : "false" ) ; //$NON-NLS-1$ //$NON-NLS-2$
     this.booleanValue = pBooleanValue ;

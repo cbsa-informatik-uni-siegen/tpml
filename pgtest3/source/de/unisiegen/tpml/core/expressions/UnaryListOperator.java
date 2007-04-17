@@ -19,7 +19,7 @@ public abstract class UnaryListOperator extends UnaryOperator
    * @param pText the string representation of the list operator.
    * @see UnaryOperator#UnaryOperator(String)
    */
-  protected UnaryListOperator ( String pText )
+  protected UnaryListOperator ( final String pText )
   {
     super ( pText ) ;
   }
@@ -36,7 +36,7 @@ public abstract class UnaryListOperator extends UnaryOperator
   @ SuppressWarnings ( "unused" )
   @ Override
   public Expression applyTo ( @ SuppressWarnings ( "unused" )
-  Expression pExpression ) throws UnaryOperatorException
+  final Expression pExpression ) throws UnaryOperatorException
   {
     throw new UnsupportedOperationException (
         "list operators must be handled by the interpreter" ) ; //$NON-NLS-1$

@@ -35,7 +35,7 @@ public abstract class BinaryOperator extends Constant
    * @param pPrettyPriority the pretty print priority for infix operations.
    * @throws NullPointerException if <code>text</code> is <code>null</code>.
    */
-  protected BinaryOperator ( String pText , int pPrettyPriority )
+  protected BinaryOperator ( final String pText , final int pPrettyPriority )
   {
     super ( pText ) ;
     this.prettyPriority = pPrettyPriority ;
@@ -84,7 +84,7 @@ public abstract class BinaryOperator extends Constant
   @ Override
   public String getPrefix ( )
   {
-    return PREFIX_BINARYOPERATOR ;
+    return Expression.PREFIX_BINARYOPERATOR ;
   }
 
 
@@ -107,12 +107,12 @@ public abstract class BinaryOperator extends Constant
    */
   @ Override
   public PrettyStringBuilder toPrettyStringBuilder (
-      PrettyStringBuilderFactory pPrettyStringBuilderFactory )
+      final PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
     if ( this.prettyStringBuilder == null )
     {
       this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
-          PRIO_CONSTANT ) ;
+          PrettyPrintPriorities.PRIO_CONSTANT ) ;
       if ( ! ( this.parent instanceof InfixOperation ) )
       {
         this.prettyStringBuilder.addText ( "(" ) ; //$NON-NLS-1$

@@ -27,7 +27,7 @@ public final class Not extends UnaryOperator
    * @see UnaryOperator#applyTo(Expression)
    */
   @ Override
-  public Expression applyTo ( Expression pExpression )
+  public Expression applyTo ( final Expression pExpression )
       throws UnaryOperatorException
   {
     try
@@ -35,7 +35,7 @@ public final class Not extends UnaryOperator
       return new BooleanConstant ( ! ( ( BooleanConstant ) pExpression )
           .booleanValue ( ) ) ;
     }
-    catch ( ClassCastException cause )
+    catch ( final ClassCastException cause )
     {
       throw new UnaryOperatorException ( this , pExpression , cause ) ;
     }

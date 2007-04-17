@@ -38,7 +38,7 @@ public class Projection extends UnaryOperator
    * @throws IllegalArgumentException if the <code>arity</code> or the
    *           <code>index</code> is invalid.
    */
-  public Projection ( int pArity , int pIndex )
+  public Projection ( final int pArity , final int pIndex )
   {
     this ( pArity , pIndex , "#" + pArity + "_" + pIndex ) ; //$NON-NLS-1$//$NON-NLS-2$
   }
@@ -57,7 +57,7 @@ public class Projection extends UnaryOperator
    * @throws IllegalArgumentException if the <code>arity</code> or the
    *           <code>index</code> is invalid.
    */
-  protected Projection ( int pArity , int pIndex , String pOp )
+  protected Projection ( final int pArity , final int pIndex , final String pOp )
   {
     super ( pOp ) ;
     // validate the settings
@@ -66,7 +66,7 @@ public class Projection extends UnaryOperator
       throw new IllegalArgumentException (
           "The arity of a projection must be greater than 0" ) ; //$NON-NLS-1$
     }
-    else if ( pIndex <= 0 || pIndex > pArity )
+    else if ( ( pIndex <= 0 ) || ( pIndex > pArity ) )
     {
       throw new IllegalArgumentException (
           "The index of a projection must be greater than 0 and less than the arity" ) ; //$NON-NLS-1$
@@ -82,12 +82,13 @@ public class Projection extends UnaryOperator
    * @see UnaryOperator#applyTo(Expression)
    */
   @ Override
-  public Expression applyTo ( Expression pExpression )
+  public Expression applyTo ( final Expression pExpression )
       throws UnaryOperatorException
   {
     try
     {
-      Expression [ ] expressions = ( ( Tuple ) pExpression ).getExpressions ( ) ;
+      final Expression [ ] expressions = ( ( Tuple ) pExpression )
+          .getExpressions ( ) ;
       if ( ! pExpression.isValue ( ) )
       {
         throw new UnaryOperatorException ( this , pExpression ) ;
@@ -98,7 +99,7 @@ public class Projection extends UnaryOperator
       }
       return expressions [ this.index - 1 ] ;
     }
-    catch ( ClassCastException cause )
+    catch ( final ClassCastException cause )
     {
       // cast of expression to tuple failed
       throw new UnaryOperatorException ( this , pExpression , cause ) ;
@@ -114,7 +115,7 @@ public class Projection extends UnaryOperator
   @ Override
   public Projection clone ( )
   {
-    return new Projection ( this.arity , this.index , getText ( ) ) ;
+    return new Projection ( this.arity , this.index , this.getText ( ) ) ;
   }
 
 

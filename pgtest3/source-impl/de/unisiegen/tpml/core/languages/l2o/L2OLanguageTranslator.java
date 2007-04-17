@@ -86,7 +86,7 @@ public class L2OLanguageTranslator extends L2LanguageTranslator
     if ( pRecursive )
     {
       return new Attribute ( pAttribute.getId ( ) , pAttribute.getTau ( ) ,
-          translateToCoreSyntax ( pAttribute.getE ( ) , pRecursive ) ) ;
+          translateToCoreSyntax ( pAttribute.getE ( ) , true ) ) ;
     }
     return pAttribute ;
   }
@@ -105,13 +105,12 @@ public class L2OLanguageTranslator extends L2LanguageTranslator
     Expression curriedMethE = pCurriedMethod.getE ( ) ;
     if ( pRecursive )
     {
-      curriedMethE = translateToCoreSyntax ( curriedMethE , pRecursive ) ;
+      curriedMethE = translateToCoreSyntax ( curriedMethE , true ) ;
     }
     for ( int i = pCurriedMethod.getIdentifiers ( ).length - 1 ; i > 0 ; i -- )
     {
-      curriedMethE = new Lambda (
-          pCurriedMethod.getIdentifiers ( i ).clone ( ) , pCurriedMethod
-              .getTypes ( i ) , curriedMethE ) ;
+      curriedMethE = new Lambda ( pCurriedMethod.getIdentifiers ( i ) ,
+          pCurriedMethod.getTypes ( i ) , curriedMethE ) ;
     }
     return new Method ( pCurriedMethod.getIdentifiers ( 0 ) , pCurriedMethod
         .getTypes ( 0 ) , curriedMethE ) ;
@@ -135,7 +134,7 @@ public class L2OLanguageTranslator extends L2LanguageTranslator
       for ( int i = 0 ; i < pDuplication.getExpressions ( ).length ; i ++ )
       {
         newDuplicationE [ i ] = translateToCoreSyntax ( pDuplication
-            .getExpressions ( i ) , pRecursive ) ;
+            .getExpressions ( i ) , true ) ;
       }
       return new Duplication ( pDuplication.getIdentifiers ( ) ,
           newDuplicationE ) ;
@@ -155,8 +154,8 @@ public class L2OLanguageTranslator extends L2LanguageTranslator
   {
     if ( pRecursive )
     {
-      return new Send ( translateToCoreSyntax ( pSend.getE ( ) , pRecursive ) ,
-          pSend.getId ( ) ) ;
+      return new Send ( translateToCoreSyntax ( pSend.getE ( ) , true ) , pSend
+          .getId ( ) ) ;
     }
     return pSend ;
   }
@@ -175,7 +174,7 @@ public class L2OLanguageTranslator extends L2LanguageTranslator
     if ( pRecursive )
     {
       return new Method ( pMethod.getId ( ) , pMethod.getTau ( ) ,
-          translateToCoreSyntax ( pMethod.getE ( ) , pRecursive ) ) ;
+          translateToCoreSyntax ( pMethod.getE ( ) , true ) ) ;
     }
     return pMethod ;
   }

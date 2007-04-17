@@ -1,1 +1,1 @@
-object (self: < add : int ; equal : bool ; >) method add (x:int) = 1 ; method equal = true ; end
+(object (self) val a = 1+1 ; method b = a ; end) # b

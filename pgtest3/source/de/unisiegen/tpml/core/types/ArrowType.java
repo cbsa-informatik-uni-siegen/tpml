@@ -46,7 +46,7 @@ public final class ArrowType extends MonoType implements DefaultTypes
    * @throws NullPointerException if either <code>pTau1</code> or
    *           <code>pTau2</code> are <code>null</code>.
    */
-  public ArrowType ( MonoType pTau1 , MonoType pTau2 )
+  public ArrowType ( final MonoType pTau1 , final MonoType pTau2 )
   {
     if ( pTau1 == null )
     {
@@ -96,11 +96,11 @@ public final class ArrowType extends MonoType implements DefaultTypes
    * @see Object#equals(Object)
    */
   @ Override
-  public boolean equals ( Object pObject )
+  public boolean equals ( final Object pObject )
   {
     if ( pObject instanceof ArrowType )
     {
-      ArrowType other = ( ArrowType ) pObject ;
+      final ArrowType other = ( ArrowType ) pObject ;
       return ( this.types [ 0 ].equals ( other.types [ 0 ] ) && this.types [ 1 ]
           .equals ( other.types [ 1 ] ) ) ;
     }
@@ -177,7 +177,7 @@ public final class ArrowType extends MonoType implements DefaultTypes
    * @param pIndex TODO
    * @return TODO
    */
-  public MonoType getTypes ( int pIndex )
+  public MonoType getTypes ( final int pIndex )
   {
     return this.types [ pIndex ] ;
   }
@@ -190,7 +190,7 @@ public final class ArrowType extends MonoType implements DefaultTypes
    */
   public int [ ] getTypesIndex ( )
   {
-    return INDICES_TYPE ;
+    return ArrowType.INDICES_TYPE ;
   }
 
 
@@ -201,9 +201,9 @@ public final class ArrowType extends MonoType implements DefaultTypes
    */
   public String [ ] getTypesPrefix ( )
   {
-    String [ ] result = new String [ 2 ] ;
-    result [ 0 ] = PREFIX_TAU ;
-    result [ 1 ] = PREFIX_TAU ;
+    final String [ ] result = new String [ 2 ] ;
+    result [ 0 ] = DefaultTypes.PREFIX_TAU ;
+    result [ 1 ] = DefaultTypes.PREFIX_TAU ;
     return result ;
   }
 
@@ -228,7 +228,7 @@ public final class ArrowType extends MonoType implements DefaultTypes
    * @see Type#substitute(TypeSubstitution)
    */
   @ Override
-  public ArrowType substitute ( TypeSubstitution pTypeSubstitution )
+  public ArrowType substitute ( final TypeSubstitution pTypeSubstitution )
   {
     if ( pTypeSubstitution == null )
     {
@@ -246,19 +246,19 @@ public final class ArrowType extends MonoType implements DefaultTypes
    */
   @ Override
   public PrettyStringBuilder toPrettyStringBuilder (
-      PrettyStringBuilderFactory pPrettyStringBuilderFactory )
+      final PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
     if ( this.prettyStringBuilder == null )
     {
       this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
-          PRIO_ARROW ) ;
+          PrettyPrintPriorities.PRIO_ARROW ) ;
       this.prettyStringBuilder.addBuilder ( this.types [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-          PRIO_ARROW_TAU1 ) ;
+          PrettyPrintPriorities.PRIO_ARROW_TAU1 ) ;
       this.prettyStringBuilder.addText ( " \u2192 " ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addBuilder ( this.types [ 1 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-          PRIO_ARROW_TAU2 ) ;
+          PrettyPrintPriorities.PRIO_ARROW_TAU2 ) ;
     }
     return this.prettyStringBuilder ;
   }

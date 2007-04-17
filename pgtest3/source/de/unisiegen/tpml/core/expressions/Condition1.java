@@ -41,7 +41,8 @@ public final class Condition1 extends Expression implements ChildrenExpressions
    * @throws NullPointerException if <code>e0</code> or <code>e1</code> is
    *           <code>null</code>.
    */
-  public Condition1 ( Expression pExpression0 , Expression pExpression1 )
+  public Condition1 ( final Expression pExpression0 ,
+      final Expression pExpression1 )
   {
     if ( pExpression0 == null )
     {
@@ -86,11 +87,11 @@ public final class Condition1 extends Expression implements ChildrenExpressions
    * @see Expression#equals(Object)
    */
   @ Override
-  public boolean equals ( Object pObject )
+  public boolean equals ( final Object pObject )
   {
     if ( pObject instanceof Condition1 )
     {
-      Condition1 other = ( Condition1 ) pObject ;
+      final Condition1 other = ( Condition1 ) pObject ;
       return ( ( this.expressions [ 0 ].equals ( other.expressions [ 0 ] ) ) && ( this.expressions [ 1 ]
           .equals ( other.expressions [ 1 ] ) ) ) ;
     }
@@ -151,7 +152,7 @@ public final class Condition1 extends Expression implements ChildrenExpressions
    *           bounds.
    * @see #getExpressions()
    */
-  public Expression getExpressions ( int pIndex )
+  public Expression getExpressions ( final int pIndex )
   {
     return this.expressions [ pIndex ] ;
   }
@@ -164,7 +165,7 @@ public final class Condition1 extends Expression implements ChildrenExpressions
    */
   public int [ ] getExpressionsIndex ( )
   {
-    return INDICES_E ;
+    return Condition1.INDICES_E ;
   }
 
 
@@ -187,9 +188,10 @@ public final class Condition1 extends Expression implements ChildrenExpressions
    * @see Expression#substitute(Identifier, Expression, boolean)
    */
   @ Override
-  public Condition1 substitute ( Identifier pId , Expression pExpression )
+  public Condition1 substitute ( final Identifier pId ,
+      final Expression pExpression )
   {
-    return substitute ( pId , pExpression , false ) ;
+    return this.substitute ( pId , pExpression , false ) ;
   }
 
 
@@ -199,13 +201,13 @@ public final class Condition1 extends Expression implements ChildrenExpressions
    * @see Expression#substitute(Identifier, Expression, boolean)
    */
   @ Override
-  public Condition1 substitute ( Identifier pId , Expression pExpression ,
-      boolean pAttributeRename )
+  public Condition1 substitute ( final Identifier pId ,
+      final Expression pExpression , final boolean pAttributeRename )
   {
-    Expression newE0 = this.expressions [ 0 ].substitute ( pId , pExpression ,
-        pAttributeRename ) ;
-    Expression newE1 = this.expressions [ 1 ].substitute ( pId , pExpression ,
-        pAttributeRename ) ;
+    final Expression newE0 = this.expressions [ 0 ].substitute ( pId ,
+        pExpression , pAttributeRename ) ;
+    final Expression newE1 = this.expressions [ 1 ].substitute ( pId ,
+        pExpression , pAttributeRename ) ;
     return new Condition1 ( newE0 , newE1 ) ;
   }
 
@@ -216,10 +218,10 @@ public final class Condition1 extends Expression implements ChildrenExpressions
    * @see Expression#substitute(TypeSubstitution)
    */
   @ Override
-  public Condition1 substitute ( TypeSubstitution substitution )
+  public Condition1 substitute ( final TypeSubstitution substitution )
   {
-    Expression newE0 = this.expressions [ 0 ].substitute ( substitution ) ;
-    Expression newE1 = this.expressions [ 1 ].substitute ( substitution ) ;
+    final Expression newE0 = this.expressions [ 0 ].substitute ( substitution ) ;
+    final Expression newE1 = this.expressions [ 1 ].substitute ( substitution ) ;
     return new Condition1 ( newE0 , newE1 ) ;
   }
 
@@ -231,24 +233,24 @@ public final class Condition1 extends Expression implements ChildrenExpressions
    */
   @ Override
   public PrettyStringBuilder toPrettyStringBuilder (
-      PrettyStringBuilderFactory pPrettyStringBuilderFactory )
+      final PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
     if ( this.prettyStringBuilder == null )
     {
       this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
-          PRIO_CONDITION ) ;
+          PrettyPrintPriorities.PRIO_CONDITION ) ;
       this.prettyStringBuilder.addKeyword ( "if" ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addBuilder ( this.expressions [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-          PRIO_CONDITION_E0 ) ;
+          PrettyPrintPriorities.PRIO_CONDITION_E0 ) ;
       this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addBreak ( ) ;
       this.prettyStringBuilder.addKeyword ( "then" ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addBuilder ( this.expressions [ 1 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-          PRIO_CONDITION_E1 ) ;
+          PrettyPrintPriorities.PRIO_CONDITION_E1 ) ;
     }
     return this.prettyStringBuilder ;
   }

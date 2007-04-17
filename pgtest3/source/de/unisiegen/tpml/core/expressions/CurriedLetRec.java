@@ -45,8 +45,9 @@ public final class CurriedLetRec extends CurriedLet implements
    * @see CurriedLet#CurriedLet(Identifier[], MonoType[], Expression,
    *      Expression)
    */
-  public CurriedLetRec ( Identifier [ ] pIdentifiers , MonoType [ ] pTypes ,
-      Expression pExpression1 , Expression pExpression2 )
+  public CurriedLetRec ( final Identifier [ ] pIdentifiers ,
+      final MonoType [ ] pTypes , final Expression pExpression1 ,
+      final Expression pExpression2 )
   {
     super ( pIdentifiers , pTypes , pExpression1 , pExpression2 ) ;
   }
@@ -60,12 +61,12 @@ public final class CurriedLetRec extends CurriedLet implements
   @ Override
   public CurriedLetRec clone ( )
   {
-    Identifier [ ] newIdentifiers = new Identifier [ this.identifiers.length ] ;
+    final Identifier [ ] newIdentifiers = new Identifier [ this.identifiers.length ] ;
     for ( int i = 0 ; i < newIdentifiers.length ; i ++ )
     {
       newIdentifiers [ i ] = this.identifiers [ i ].clone ( ) ;
     }
-    MonoType [ ] newTypes = new MonoType [ this.types.length ] ;
+    final MonoType [ ] newTypes = new MonoType [ this.types.length ] ;
     for ( int i = 0 ; i < newTypes.length ; i ++ )
     {
       newTypes [ i ] = ( this.types [ i ] == null ) ? null : this.types [ i ]
@@ -87,12 +88,12 @@ public final class CurriedLetRec extends CurriedLet implements
     if ( this.free == null )
     {
       this.free = new ArrayList < Identifier > ( ) ;
-      ArrayList < Identifier > freeE1 = new ArrayList < Identifier > ( ) ;
-      ArrayList < Identifier > freeE2 = new ArrayList < Identifier > ( ) ;
+      final ArrayList < Identifier > freeE1 = new ArrayList < Identifier > ( ) ;
+      final ArrayList < Identifier > freeE2 = new ArrayList < Identifier > ( ) ;
       freeE1.addAll ( this.expressions [ 0 ].free ( ) ) ;
-      for ( int i = 0 ; i < this.identifiers.length ; i ++ )
+      for ( Identifier element : this.identifiers )
       {
-        while ( freeE1.remove ( this.identifiers [ i ] ) )
+        while ( freeE1.remove ( element ) )
         {
           // Remove all Identifiers with the same name
         }
@@ -122,8 +123,8 @@ public final class CurriedLetRec extends CurriedLet implements
     if ( this.boundedIdentifiers == null )
     {
       this.boundedIdentifiers = new ArrayList < ArrayList < Identifier >> ( ) ;
-      ArrayList < Identifier > boundedE1 = this.expressions [ 0 ].free ( ) ;
-      ArrayList < Identifier > boundedE2 = this.expressions [ 1 ].free ( ) ;
+      final ArrayList < Identifier > boundedE1 = this.expressions [ 0 ].free ( ) ;
+      final ArrayList < Identifier > boundedE2 = this.expressions [ 1 ].free ( ) ;
       for ( int i = 0 ; i < this.identifiers.length ; i ++ )
       {
         if ( i == 0 )
@@ -141,10 +142,10 @@ public final class CurriedLetRec extends CurriedLet implements
               break ;
             }
           }
-          ArrayList < Identifier > boundedIdList = new ArrayList < Identifier > ( ) ;
+          final ArrayList < Identifier > boundedIdList = new ArrayList < Identifier > ( ) ;
           if ( searchInE1 )
           {
-            for ( Identifier freeId : boundedE1 )
+            for ( final Identifier freeId : boundedE1 )
             {
               if ( this.identifiers [ i ].equals ( freeId ) )
               {
@@ -154,7 +155,7 @@ public final class CurriedLetRec extends CurriedLet implements
               }
             }
           }
-          for ( Identifier freeId : boundedE2 )
+          for ( final Identifier freeId : boundedE2 )
           {
             if ( this.identifiers [ i ].equals ( freeId ) )
             {
@@ -180,10 +181,10 @@ public final class CurriedLetRec extends CurriedLet implements
               break ;
             }
           }
-          ArrayList < Identifier > boundedIdList = new ArrayList < Identifier > ( ) ;
+          final ArrayList < Identifier > boundedIdList = new ArrayList < Identifier > ( ) ;
           if ( hasBinding )
           {
-            for ( Identifier freeId : boundedE1 )
+            for ( final Identifier freeId : boundedE1 )
             {
               if ( this.identifiers [ i ].equals ( freeId ) )
               {
@@ -209,11 +210,11 @@ public final class CurriedLetRec extends CurriedLet implements
    * @return A list of in this {@link Expression} bounded {@link Identifier}s.
    */
   @ Override
-  public ArrayList < Identifier > getBoundedIdentifiers ( int pIndex )
+  public ArrayList < Identifier > getBoundedIdentifiers ( final int pIndex )
   {
     if ( this.boundedIdentifiers == null )
     {
-      return getBoundedIdentifiers ( ).get ( pIndex ) ;
+      return this.getBoundedIdentifiers ( ).get ( pIndex ) ;
     }
     return this.boundedIdentifiers.get ( pIndex ) ;
   }
@@ -235,9 +236,10 @@ public final class CurriedLetRec extends CurriedLet implements
    * @see Expression#substitute(Identifier, Expression, boolean)
    */
   @ Override
-  public CurriedLetRec substitute ( Identifier pId , Expression pExpression )
+  public CurriedLetRec substitute ( final Identifier pId ,
+      final Expression pExpression )
   {
-    return substitute ( pId , pExpression , false ) ;
+    return this.substitute ( pId , pExpression , false ) ;
   }
 
 
@@ -247,14 +249,14 @@ public final class CurriedLetRec extends CurriedLet implements
    * @see CurriedLet#substitute(Identifier, Expression, boolean)
    */
   @ Override
-  public CurriedLetRec substitute ( Identifier pId , Expression pExpression ,
-      boolean pAttributeRename )
+  public CurriedLetRec substitute ( final Identifier pId ,
+      final Expression pExpression , final boolean pAttributeRename )
   {
     if ( this.identifiers [ 0 ].equals ( pId ) )
     {
       return this.clone ( ) ;
     }
-    Identifier [ ] newIdentifiers = new Identifier [ this.identifiers.length ] ;
+    final Identifier [ ] newIdentifiers = new Identifier [ this.identifiers.length ] ;
     for ( int i = 0 ; i < newIdentifiers.length ; i ++ )
     {
       newIdentifiers [ i ] = this.identifiers [ i ].clone ( ) ;
@@ -283,7 +285,7 @@ public final class CurriedLetRec extends CurriedLet implements
     {
       for ( int i = 1 ; i < newIdentifiers.length ; i ++ )
       {
-        BoundRenaming boundRenaming = new BoundRenaming ( ) ;
+        final BoundRenaming boundRenaming = new BoundRenaming ( ) ;
         boundRenaming.add ( this.expressions [ 0 ].free ( ) ) ;
         boundRenaming.remove ( newIdentifiers [ i ] ) ;
         boundRenaming.add ( pExpression.free ( ) ) ;
@@ -325,7 +327,7 @@ public final class CurriedLetRec extends CurriedLet implements
         }
       }
     }
-    BoundRenaming boundRenaming = new BoundRenaming ( ) ;
+    final BoundRenaming boundRenaming = new BoundRenaming ( ) ;
     boundRenaming.add ( this.free ( ) ) ;
     boundRenaming.add ( pExpression.free ( ) ) ;
     boundRenaming.add ( pId ) ;
@@ -336,7 +338,7 @@ public final class CurriedLetRec extends CurriedLet implements
         boundRenaming.add ( this.identifiers [ i ] ) ;
       }
     }
-    Identifier newId = boundRenaming.newId ( this.identifiers [ 0 ] ) ;
+    final Identifier newId = boundRenaming.newId ( this.identifiers [ 0 ] ) ;
     if ( ! this.identifiers [ 0 ].equals ( newId ) )
     {
       if ( ! sameIdAs0 )
@@ -357,7 +359,7 @@ public final class CurriedLetRec extends CurriedLet implements
      * Perform the substitution in e2.
      */
     newE2 = newE2.substitute ( pId , pExpression , pAttributeRename ) ;
-    MonoType [ ] newTypes = new MonoType [ this.types.length ] ;
+    final MonoType [ ] newTypes = new MonoType [ this.types.length ] ;
     for ( int i = 0 ; i < newTypes.length ; i ++ )
     {
       newTypes [ i ] = ( this.types [ i ] == null ) ? null : this.types [ i ]
@@ -373,14 +375,14 @@ public final class CurriedLetRec extends CurriedLet implements
    * @see CurriedLet#substitute(TypeSubstitution)
    */
   @ Override
-  public CurriedLetRec substitute ( TypeSubstitution pTypeSubstitution )
+  public CurriedLetRec substitute ( final TypeSubstitution pTypeSubstitution )
   {
-    Identifier [ ] newIdentifiers = new Identifier [ this.identifiers.length ] ;
+    final Identifier [ ] newIdentifiers = new Identifier [ this.identifiers.length ] ;
     for ( int i = 0 ; i < newIdentifiers.length ; i ++ )
     {
       newIdentifiers [ i ] = this.identifiers [ i ].clone ( ) ;
     }
-    MonoType [ ] newTypes = new MonoType [ this.types.length ] ;
+    final MonoType [ ] newTypes = new MonoType [ this.types.length ] ;
     for ( int i = 0 ; i < newTypes.length ; i ++ )
     {
       newTypes [ i ] = ( this.types [ i ] == null ) ? null : this.types [ i ]
@@ -399,18 +401,19 @@ public final class CurriedLetRec extends CurriedLet implements
    */
   @ Override
   public PrettyStringBuilder toPrettyStringBuilder (
-      PrettyStringBuilderFactory pPrettyStringBuilderFactory )
+      final PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
     if ( this.prettyStringBuilder == null )
     {
       this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
-          PRIO_LET ) ;
+          PrettyPrintPriorities.PRIO_LET ) ;
       this.prettyStringBuilder.addKeyword ( "let" ) ;//$NON-NLS-1$
       this.prettyStringBuilder.addText ( " " ) ;//$NON-NLS-1$
       this.prettyStringBuilder.addKeyword ( "rec" ) ;//$NON-NLS-1$
       this.prettyStringBuilder.addText ( " " ) ;//$NON-NLS-1$
       this.prettyStringBuilder.addBuilder ( this.identifiers [ 0 ]
-          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_ID ) ;
+          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
+          PrettyPrintPriorities.PRIO_ID ) ;
       for ( int i = 1 ; i < this.identifiers.length ; i ++ )
       {
         this.prettyStringBuilder.addText ( " " ) ;//$NON-NLS-1$
@@ -419,13 +422,14 @@ public final class CurriedLetRec extends CurriedLet implements
           this.prettyStringBuilder.addText ( "(" ) ;//$NON-NLS-1$
         }
         this.prettyStringBuilder.addBuilder ( this.identifiers [ i ]
-            .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_ID ) ;
+            .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
+            PrettyPrintPriorities.PRIO_ID ) ;
         if ( this.types [ i ] != null )
         {
           this.prettyStringBuilder.addText ( ": " ) ;//$NON-NLS-1$
           this.prettyStringBuilder.addBuilder ( this.types [ i ]
               .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-              PRIO_LET_TAU ) ;
+              PrettyPrintPriorities.PRIO_LET_TAU ) ;
           this.prettyStringBuilder.addText ( ")" ) ;//$NON-NLS-1$
         }
       }
@@ -434,18 +438,20 @@ public final class CurriedLetRec extends CurriedLet implements
         this.prettyStringBuilder.addText ( ": " ) ;//$NON-NLS-1$
         this.prettyStringBuilder.addBuilder ( this.types [ 0 ]
             .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-            PRIO_LET_TAU ) ;
+            PrettyPrintPriorities.PRIO_LET_TAU ) ;
       }
       this.prettyStringBuilder.addText ( " = " ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addBreak ( ) ;
       this.prettyStringBuilder.addBuilder ( this.expressions [ 0 ]
-          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_LET_E1 ) ;
+          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
+          PrettyPrintPriorities.PRIO_LET_E1 ) ;
       this.prettyStringBuilder.addText ( " " ) ;//$NON-NLS-1$
       this.prettyStringBuilder.addBreak ( ) ;
       this.prettyStringBuilder.addKeyword ( "in" ) ;//$NON-NLS-1$
       this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addBuilder ( this.expressions [ 1 ]
-          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_LET_E2 ) ;
+          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
+          PrettyPrintPriorities.PRIO_LET_E2 ) ;
     }
     return this.prettyStringBuilder ;
   }

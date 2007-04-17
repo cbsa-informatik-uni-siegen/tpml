@@ -49,7 +49,7 @@ public final class List extends Expression implements ChildrenExpressions
    * @throws NullPointerException if <code>e1</code> or <code>e2</code> is
    *           <code>null</code>.
    */
-  List ( Expression pExpression1 , Expression pExpression2 )
+  List ( final Expression pExpression1 , final Expression pExpression2 )
   {
     if ( pExpression1 == null )
     {
@@ -61,7 +61,7 @@ public final class List extends Expression implements ChildrenExpressions
     }
     // allocate a vector for the expressions of the list and prepend e1 as new
     // first item
-    Vector < Expression > newExpressions = new Vector < Expression > ( ) ;
+    final Vector < Expression > newExpressions = new Vector < Expression > ( ) ;
     newExpressions.add ( pExpression1 ) ;
     // now check e2
     if ( pExpression2 instanceof EmptyList )
@@ -77,15 +77,15 @@ public final class List extends Expression implements ChildrenExpressions
     else
     {
       // e2 must be an application of unary cons to a pair
-      Application app2 = ( Application ) pExpression2 ;
-      Tuple tuple = ( Tuple ) app2.getExpressions ( 1 ) ;
+      final Application app2 = ( Application ) pExpression2 ;
+      final Tuple tuple = ( Tuple ) app2.getExpressions ( 1 ) ;
       if ( ! ( app2.getExpressions ( 0 ) instanceof UnaryCons )
-          || tuple.getExpressions ( ).length != 2 )
+          || ( tuple.getExpressions ( ).length != 2 ) )
       {
         throw new ClassCastException ( ) ;
       }
       // turn the tuple into a list
-      List list = new List ( tuple.getExpressions ( 0 ) , tuple
+      final List list = new List ( tuple.getExpressions ( 0 ) , tuple
           .getExpressions ( 1 ) ) ;
       // and add the list items to our expressions
       newExpressions.addAll ( Arrays.asList ( list.getExpressions ( ) ) ) ;
@@ -117,7 +117,7 @@ public final class List extends Expression implements ChildrenExpressions
    * @throws NullPointerException if <code>expressions</code> is
    *           <code>null</code>.
    */
-  public List ( Expression [ ] pExpressions )
+  public List ( final Expression [ ] pExpressions )
   {
     if ( pExpressions == null )
     {
@@ -152,7 +152,7 @@ public final class List extends Expression implements ChildrenExpressions
   @ Override
   public List clone ( )
   {
-    Expression [ ] newExpressions = new Expression [ this.expressions.length ] ;
+    final Expression [ ] newExpressions = new Expression [ this.expressions.length ] ;
     for ( int i = 0 ; i < newExpressions.length ; i ++ )
     {
       newExpressions [ i ] = this.expressions [ i ].clone ( ) ;
@@ -167,11 +167,11 @@ public final class List extends Expression implements ChildrenExpressions
    * @see Expression#equals(Object)
    */
   @ Override
-  public boolean equals ( Object pObject )
+  public boolean equals ( final Object pObject )
   {
     if ( pObject instanceof List )
     {
-      List other = ( List ) pObject ;
+      final List other = ( List ) pObject ;
       return Arrays.equals ( this.expressions , other.expressions ) ;
     }
     return false ;
@@ -207,7 +207,7 @@ public final class List extends Expression implements ChildrenExpressions
    * @throws ArrayIndexOutOfBoundsException if <code>n</code> is out of
    *           bounds.
    */
-  public Expression getExpressions ( int pIndex )
+  public Expression getExpressions ( final int pIndex )
   {
     return this.expressions [ pIndex ] ;
   }
@@ -256,7 +256,7 @@ public final class List extends Expression implements ChildrenExpressions
   @ Override
   public boolean isValue ( )
   {
-    for ( Expression e : this.expressions )
+    for ( final Expression e : this.expressions )
     {
       if ( ! e.isValue ( ) )
       {
@@ -273,9 +273,9 @@ public final class List extends Expression implements ChildrenExpressions
    * @see Expression#substitute(Identifier, Expression, boolean)
    */
   @ Override
-  public List substitute ( Identifier pId , Expression pExpression )
+  public List substitute ( final Identifier pId , final Expression pExpression )
   {
-    return substitute ( pId , pExpression , false ) ;
+    return this.substitute ( pId , pExpression , false ) ;
   }
 
 
@@ -285,10 +285,10 @@ public final class List extends Expression implements ChildrenExpressions
    * @see Expression#substitute(Identifier, Expression, boolean)
    */
   @ Override
-  public List substitute ( Identifier pId , Expression pExpression ,
-      boolean pAttributeRename )
+  public List substitute ( final Identifier pId , final Expression pExpression ,
+      final boolean pAttributeRename )
   {
-    Expression [ ] newExpressions = new Expression [ this.expressions.length ] ;
+    final Expression [ ] newExpressions = new Expression [ this.expressions.length ] ;
     for ( int i = 0 ; i < newExpressions.length ; i ++ )
     {
       newExpressions [ i ] = this.expressions [ i ].substitute ( pId ,
@@ -304,9 +304,9 @@ public final class List extends Expression implements ChildrenExpressions
    * @see Expression#substitute(TypeSubstitution)
    */
   @ Override
-  public List substitute ( TypeSubstitution pTypeSubstitution )
+  public List substitute ( final TypeSubstitution pTypeSubstitution )
   {
-    Expression [ ] newExpressions = new Expression [ this.expressions.length ] ;
+    final Expression [ ] newExpressions = new Expression [ this.expressions.length ] ;
     for ( int i = 0 ; i < newExpressions.length ; i ++ )
     {
       newExpressions [ i ] = this.expressions [ i ]
@@ -326,7 +326,7 @@ public final class List extends Expression implements ChildrenExpressions
   {
     if ( this.expressions.length > 1 )
     {
-      Expression [ ] newExpressions = new Expression [ this.expressions.length - 1 ] ;
+      final Expression [ ] newExpressions = new Expression [ this.expressions.length - 1 ] ;
       for ( int i = 0 ; i < newExpressions.length ; i ++ )
       {
         newExpressions [ i ] = this.expressions [ i + 1 ] ;
@@ -344,12 +344,12 @@ public final class List extends Expression implements ChildrenExpressions
    */
   @ Override
   public PrettyStringBuilder toPrettyStringBuilder (
-      PrettyStringBuilderFactory pPrettyStringBuilderFactory )
+      final PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
     if ( this.prettyStringBuilder == null )
     {
       this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
-          PRIO_LIST ) ;
+          PrettyPrintPriorities.PRIO_LIST ) ;
       this.prettyStringBuilder.addText ( "[" ) ; //$NON-NLS-1$
       for ( int n = 0 ; n < this.expressions.length ; ++ n )
       {
@@ -360,7 +360,7 @@ public final class List extends Expression implements ChildrenExpressions
         }
         this.prettyStringBuilder.addBuilder ( this.expressions [ n ]
             .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-            PRIO_LIST_E ) ;
+            PrettyPrintPriorities.PRIO_LIST_E ) ;
       }
       this.prettyStringBuilder.addText ( "]" ) ; //$NON-NLS-1$
     }

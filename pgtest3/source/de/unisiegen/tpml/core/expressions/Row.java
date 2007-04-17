@@ -38,7 +38,7 @@ public final class Row extends Expression implements ChildrenExpressions
    * 
    * @param pExpressions TODO
    */
-  public Row ( Expression [ ] pExpressions )
+  public Row ( final Expression [ ] pExpressions )
   {
     if ( pExpressions == null )
     {
@@ -56,7 +56,7 @@ public final class Row extends Expression implements ChildrenExpressions
       this.expressions [ i ].setParent ( this ) ;
       if ( this.expressions [ i ] instanceof Attribute )
       {
-        Attribute attribute = ( Attribute ) this.expressions [ i ] ;
+        final Attribute attribute = ( Attribute ) this.expressions [ i ] ;
         attribute.setParent ( this ) ;
       }
     }
@@ -69,7 +69,7 @@ public final class Row extends Expression implements ChildrenExpressions
   @ Override
   public Row clone ( )
   {
-    Expression [ ] newExpressions = new Expression [ this.expressions.length ] ;
+    final Expression [ ] newExpressions = new Expression [ this.expressions.length ] ;
     for ( int i = 0 ; i < this.expressions.length ; i ++ )
     {
       newExpressions [ i ] = this.expressions [ i ].clone ( ) ;
@@ -82,11 +82,11 @@ public final class Row extends Expression implements ChildrenExpressions
    * {@inheritDoc}
    */
   @ Override
-  public boolean equals ( Object pObject )
+  public boolean equals ( final Object pObject )
   {
     if ( pObject instanceof Row )
     {
-      Row other = ( Row ) pObject ;
+      final Row other = ( Row ) pObject ;
       return Arrays.equals ( this.expressions , other.expressions ) ;
     }
     return false ;
@@ -102,10 +102,10 @@ public final class Row extends Expression implements ChildrenExpressions
     if ( this.free == null )
     {
       this.free = new ArrayList < Identifier > ( ) ;
-      ArrayList < Identifier > newBounded = new ArrayList < Identifier > ( ) ;
-      for ( Expression expr : this.expressions )
+      final ArrayList < Identifier > newBounded = new ArrayList < Identifier > ( ) ;
+      for ( final Expression expr : this.expressions )
       {
-        ArrayList < Identifier > freeCurrent = new ArrayList < Identifier > ( ) ;
+        final ArrayList < Identifier > freeCurrent = new ArrayList < Identifier > ( ) ;
         freeCurrent.addAll ( expr.free ( ) ) ;
         while ( freeCurrent.removeAll ( newBounded ) )
         {
@@ -114,7 +114,7 @@ public final class Row extends Expression implements ChildrenExpressions
         this.free.addAll ( freeCurrent ) ;
         if ( expr instanceof Attribute )
         {
-          Attribute attribute = ( Attribute ) expr ;
+          final Attribute attribute = ( Attribute ) expr ;
           newBounded.add ( attribute.getId ( ) ) ;
         }
       }
@@ -129,19 +129,20 @@ public final class Row extends Expression implements ChildrenExpressions
    * @param pAttribute TODO
    * @return TODO
    */
-  public ArrayList < Identifier > getBoundedIdentifiers ( Attribute pAttribute )
+  public ArrayList < Identifier > getBoundedIdentifiers (
+      final Attribute pAttribute )
   {
-    ArrayList < Identifier > boundedId = new ArrayList < Identifier > ( ) ;
+    final ArrayList < Identifier > boundedId = new ArrayList < Identifier > ( ) ;
     for ( int i = 0 ; i < this.expressions.length ; i ++ )
     {
       if ( pAttribute == this.expressions [ i ] )
       {
-        Attribute attribute = ( Attribute ) this.expressions [ i ] ;
+        final Attribute attribute = ( Attribute ) this.expressions [ i ] ;
         for ( int j = i + 1 ; j < this.expressions.length ; j ++ )
         {
-          Expression child = this.expressions [ j ] ;
-          ArrayList < Identifier > boundedE = child.free ( ) ;
-          for ( Identifier freeId : boundedE )
+          final Expression child = this.expressions [ j ] ;
+          final ArrayList < Identifier > boundedE = child.free ( ) ;
+          for ( final Identifier freeId : boundedE )
           {
             if ( attribute.getId ( ).equals ( freeId ) )
             {
@@ -195,7 +196,7 @@ public final class Row extends Expression implements ChildrenExpressions
    * @see #expressions
    * @see #getExpressions()
    */
-  public Expression getExpressions ( int pIndex )
+  public Expression getExpressions ( final int pIndex )
   {
     return this.expressions [ pIndex ] ;
   }
@@ -220,7 +221,8 @@ public final class Row extends Expression implements ChildrenExpressions
   @ Override
   public String getPrefix ( )
   {
-    return this.isValue ( ) ? PREFIX_ROW_VALUE : PREFIX_ROW ;
+    return this.isValue ( ) ? Expression.PREFIX_ROW_VALUE
+        : Expression.PREFIX_ROW ;
   }
 
 
@@ -240,12 +242,12 @@ public final class Row extends Expression implements ChildrenExpressions
   @ Override
   public boolean isValue ( )
   {
-    ArrayList < Identifier > attributeIdList = new ArrayList < Identifier > ( ) ;
-    for ( Expression expr : this.expressions )
+    final ArrayList < Identifier > attributeIdList = new ArrayList < Identifier > ( ) ;
+    for ( final Expression expr : this.expressions )
     {
       if ( expr instanceof Attribute )
       {
-        Attribute attribute = ( Attribute ) expr ;
+        final Attribute attribute = ( Attribute ) expr ;
         /*
          * If an Attribute is not a value, this Row is not a value.
          */
@@ -273,9 +275,9 @@ public final class Row extends Expression implements ChildrenExpressions
    * @see Expression#substitute(Identifier, Expression, boolean)
    */
   @ Override
-  public Row substitute ( Identifier pId , Expression pExpression )
+  public Row substitute ( final Identifier pId , final Expression pExpression )
   {
-    return substitute ( pId , pExpression , false ) ;
+    return this.substitute ( pId , pExpression , false ) ;
   }
 
 
@@ -283,10 +285,10 @@ public final class Row extends Expression implements ChildrenExpressions
    * {@inheritDoc}
    */
   @ Override
-  public Row substitute ( Identifier pId , Expression pExpression ,
-      boolean pAttributeRename )
+  public Row substitute ( final Identifier pId , final Expression pExpression ,
+      final boolean pAttributeRename )
   {
-    Expression [ ] newExpressions = new Expression [ this.expressions.length ] ;
+    final Expression [ ] newExpressions = new Expression [ this.expressions.length ] ;
     for ( int i = 0 ; i < this.expressions.length ; i ++ )
     {
       newExpressions [ i ] = this.expressions [ i ].clone ( ) ;
@@ -297,14 +299,14 @@ public final class Row extends Expression implements ChildrenExpressions
       {
         if ( newExpressions [ i ] instanceof Attribute )
         {
-          Attribute attribute = ( Attribute ) newExpressions [ i ] ;
+          final Attribute attribute = ( Attribute ) newExpressions [ i ] ;
           if ( pId.equals ( attribute.getId ( ) ) )
           {
             newExpressions [ i ] = newExpressions [ i ].substitute ( pId ,
                 pExpression , pAttributeRename ) ;
             break ;
           }
-          BoundRenaming boundRenaming = new BoundRenaming ( ) ;
+          final BoundRenaming boundRenaming = new BoundRenaming ( ) ;
           for ( int j = i + 1 ; j < newExpressions.length ; j ++ )
           {
             boundRenaming.add ( newExpressions [ j ].free ( ) ) ;
@@ -312,7 +314,7 @@ public final class Row extends Expression implements ChildrenExpressions
           boundRenaming.remove ( attribute.getId ( ) ) ;
           boundRenaming.add ( pExpression.free ( ) ) ;
           boundRenaming.add ( pId ) ;
-          Identifier newId = boundRenaming.newId ( attribute.getId ( ) ) ;
+          final Identifier newId = boundRenaming.newId ( attribute.getId ( ) ) ;
           if ( ! attribute.getId ( ).equals ( newId ) )
           {
             for ( int j = i + 1 ; j < newExpressions.length ; j ++ )
@@ -344,9 +346,9 @@ public final class Row extends Expression implements ChildrenExpressions
    * @return TODO
    */
   @ Override
-  public Row substitute ( TypeSubstitution pTypeSubstitution )
+  public Row substitute ( final TypeSubstitution pTypeSubstitution )
   {
-    Expression [ ] newExpr = new Expression [ this.expressions.length ] ;
+    final Expression [ ] newExpr = new Expression [ this.expressions.length ] ;
     for ( int i = 0 ; i < this.expressions.length ; i ++ )
     {
       newExpr [ i ] = this.expressions [ i ].substitute ( pTypeSubstitution ) ;
@@ -360,18 +362,17 @@ public final class Row extends Expression implements ChildrenExpressions
    */
   @ Override
   public PrettyStringBuilder toPrettyStringBuilder (
-      PrettyStringBuilderFactory pPrettyStringBuilderFactory )
+      final PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
     if ( this.prettyStringBuilder == null )
     {
       this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
-          PRIO_ROW ) ;
+          PrettyPrintPriorities.PRIO_ROW ) ;
       for ( int i = 0 ; i < this.expressions.length ; i ++ )
       {
-        this.prettyStringBuilder
-            .addBuilder ( this.expressions [ i ]
-                .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-                PRIO_ROW_E ) ;
+        this.prettyStringBuilder.addBuilder ( this.expressions [ i ]
+            .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
+            PrettyPrintPriorities.PRIO_ROW_E ) ;
         if ( i != this.expressions.length - 1 )
         {
           this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$

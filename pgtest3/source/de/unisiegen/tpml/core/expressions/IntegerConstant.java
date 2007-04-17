@@ -28,7 +28,7 @@ public final class IntegerConstant extends Constant
    * @param pIntValue the numeric value for the integer constant.
    * @see #intValue()
    */
-  public IntegerConstant ( int pIntValue )
+  public IntegerConstant ( final int pIntValue )
   {
     super ( String.valueOf ( pIntValue ) ) ;
     this.intValue = pIntValue ;

@@ -41,7 +41,7 @@ public final class While extends Expression implements ChildrenExpressions
    * @throws NullPointerException if <code>e1</code> or <code>e2</code> is
    *           <code>null</code>.
    */
-  public While ( Expression pExpression1 , Expression pExpression2 )
+  public While ( final Expression pExpression1 , final Expression pExpression2 )
   {
     if ( pExpression1 == null )
     {
@@ -86,11 +86,11 @@ public final class While extends Expression implements ChildrenExpressions
    * @see Expression#equals(Object)
    */
   @ Override
-  public boolean equals ( Object obj )
+  public boolean equals ( final Object obj )
   {
     if ( obj instanceof While )
     {
-      While other = ( While ) obj ;
+      final While other = ( While ) obj ;
       return ( ( this.expressions [ 0 ].equals ( other.expressions [ 0 ] ) ) && ( this.expressions [ 1 ]
           .equals ( other.expressions [ 1 ] ) ) ) ;
     }
@@ -151,7 +151,7 @@ public final class While extends Expression implements ChildrenExpressions
    *           bounds.
    * @see #getExpressions()
    */
-  public Expression getExpressions ( int pIndex )
+  public Expression getExpressions ( final int pIndex )
   {
     return this.expressions [ pIndex ] ;
   }
@@ -164,7 +164,7 @@ public final class While extends Expression implements ChildrenExpressions
    */
   public int [ ] getExpressionsIndex ( )
   {
-    return INDICES_E ;
+    return While.INDICES_E ;
   }
 
 
@@ -187,9 +187,9 @@ public final class While extends Expression implements ChildrenExpressions
    * @see Expression#substitute(Identifier, Expression, boolean)
    */
   @ Override
-  public While substitute ( Identifier pId , Expression pExpression )
+  public While substitute ( final Identifier pId , final Expression pExpression )
   {
-    return substitute ( pId , pExpression , false ) ;
+    return this.substitute ( pId , pExpression , false ) ;
   }
 
 
@@ -199,13 +199,13 @@ public final class While extends Expression implements ChildrenExpressions
    * @see Expression#substitute(Identifier, Expression, boolean)
    */
   @ Override
-  public While substitute ( Identifier pId , Expression pExpression ,
-      boolean pAttributeRename )
+  public While substitute ( final Identifier pId ,
+      final Expression pExpression , final boolean pAttributeRename )
   {
-    Expression newE1 = this.expressions [ 0 ].substitute ( pId , pExpression ,
-        pAttributeRename ) ;
-    Expression newE2 = this.expressions [ 1 ].substitute ( pId , pExpression ,
-        pAttributeRename ) ;
+    final Expression newE1 = this.expressions [ 0 ].substitute ( pId ,
+        pExpression , pAttributeRename ) ;
+    final Expression newE2 = this.expressions [ 1 ].substitute ( pId ,
+        pExpression , pAttributeRename ) ;
     return new While ( newE1 , newE2 ) ;
   }
 
@@ -216,10 +216,12 @@ public final class While extends Expression implements ChildrenExpressions
    * @see Expression#substitute(TypeSubstitution)
    */
   @ Override
-  public While substitute ( TypeSubstitution pTypeSubstitution )
+  public While substitute ( final TypeSubstitution pTypeSubstitution )
   {
-    Expression newE1 = this.expressions [ 0 ].substitute ( pTypeSubstitution ) ;
-    Expression newE2 = this.expressions [ 1 ].substitute ( pTypeSubstitution ) ;
+    final Expression newE1 = this.expressions [ 0 ]
+        .substitute ( pTypeSubstitution ) ;
+    final Expression newE2 = this.expressions [ 1 ]
+        .substitute ( pTypeSubstitution ) ;
     return new While ( newE1 , newE2 ) ;
   }
 
@@ -231,17 +233,17 @@ public final class While extends Expression implements ChildrenExpressions
    */
   @ Override
   public PrettyStringBuilder toPrettyStringBuilder (
-      PrettyStringBuilderFactory pPrettyStringBuilderFactory )
+      final PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
     if ( this.prettyStringBuilder == null )
     {
       this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
-          PRIO_WHILE ) ;
+          PrettyPrintPriorities.PRIO_WHILE ) ;
       this.prettyStringBuilder.addKeyword ( "while" ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addBuilder ( this.expressions [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-          PRIO_WHILE_E1 ) ;
+          PrettyPrintPriorities.PRIO_WHILE_E1 ) ;
       this.prettyStringBuilder.addBreak ( ) ;
       this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addBreak ( ) ;
@@ -249,7 +251,7 @@ public final class While extends Expression implements ChildrenExpressions
       this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addBuilder ( this.expressions [ 1 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-          PRIO_WHILE_E2 ) ;
+          PrettyPrintPriorities.PRIO_WHILE_E2 ) ;
     }
     return this.prettyStringBuilder ;
   }

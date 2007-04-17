@@ -76,9 +76,9 @@ public final class RelationalOperator extends BinaryOperator
    * @param pText the string representation.
    * @throws NullPointerException if <code>text</code> is <code>null</code>.
    */
-  private RelationalOperator ( String pText )
+  private RelationalOperator ( final String pText )
   {
-    super ( pText , PRIO_RELATIONAL_OPERATOR ) ;
+    super ( pText , PrettyPrintPriorities.PRIO_RELATIONAL_OPERATOR ) ;
   }
 
 
@@ -88,8 +88,8 @@ public final class RelationalOperator extends BinaryOperator
    * @see BinaryOperator#applyTo(Expression, Expression)
    */
   @ Override
-  public Expression applyTo ( Expression pExpression1 , Expression pExpression2 )
-      throws BinaryOperatorException
+  public Expression applyTo ( final Expression pExpression1 ,
+      final Expression pExpression2 ) throws BinaryOperatorException
   {
     if ( pExpression1 == null )
     {
@@ -102,26 +102,26 @@ public final class RelationalOperator extends BinaryOperator
     try
     {
       // determine the numeric values of the operands
-      int n1 = ( ( IntegerConstant ) pExpression1 ).intValue ( ) ;
-      int n2 = ( ( IntegerConstant ) pExpression2 ).intValue ( ) ;
+      final int n1 = ( ( IntegerConstant ) pExpression1 ).intValue ( ) ;
+      final int n2 = ( ( IntegerConstant ) pExpression2 ).intValue ( ) ;
       // perform the requested comparison
-      if ( getText ( ) == "=" ) //$NON-NLS-1$
+      if ( this.getText ( ) == "=" ) //$NON-NLS-1$
       {
         return new BooleanConstant ( n1 == n2 ) ;
       }
-      else if ( getText ( ) == "<" ) //$NON-NLS-1$
+      else if ( this.getText ( ) == "<" ) //$NON-NLS-1$
       {
         return new BooleanConstant ( n1 < n2 ) ;
       }
-      else if ( getText ( ) == ">" ) //$NON-NLS-1$
+      else if ( this.getText ( ) == ">" ) //$NON-NLS-1$
       {
         return new BooleanConstant ( n1 > n2 ) ;
       }
-      else if ( getText ( ) == "<=" ) //$NON-NLS-1$
+      else if ( this.getText ( ) == "<=" ) //$NON-NLS-1$
       {
         return new BooleanConstant ( n1 <= n2 ) ;
       }
-      else if ( getText ( ) == ">=" ) //$NON-NLS-1$
+      else if ( this.getText ( ) == ">=" ) //$NON-NLS-1$
       {
         return new BooleanConstant ( n1 >= n2 ) ;
       }
@@ -132,7 +132,7 @@ public final class RelationalOperator extends BinaryOperator
             "inconsistent arithmetic operator class" ) ; //$NON-NLS-1$
       }
     }
-    catch ( ClassCastException e )
+    catch ( final ClassCastException e )
     {
       // one of the Expression to IntegerConstant casts failed
       throw new BinaryOperatorException ( this , pExpression1 , pExpression2 ) ;
@@ -148,7 +148,7 @@ public final class RelationalOperator extends BinaryOperator
   @ Override
   public RelationalOperator clone ( )
   {
-    return new RelationalOperator ( getText ( ) ) ;
+    return new RelationalOperator ( this.getText ( ) ) ;
   }
 
 

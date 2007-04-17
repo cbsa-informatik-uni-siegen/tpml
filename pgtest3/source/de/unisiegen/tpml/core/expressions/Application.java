@@ -16,7 +16,8 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
  * @version $Rev:1053 $
  * @see Expression
  */
-public final class Application extends Expression implements ChildrenExpressions
+public final class Application extends Expression implements
+    ChildrenExpressions
 {
   /**
    * Indeces of the child {@link Expression}s.
@@ -39,7 +40,8 @@ public final class Application extends Expression implements ChildrenExpressions
    * @throws NullPointerException if <code>e1</code> or <code>e2</code> is
    *           <code>null</code>.
    */
-  public Application ( Expression pExpression1 , Expression pExpression2 )
+  public Application ( final Expression pExpression1 ,
+      final Expression pExpression2 )
   {
     if ( pExpression1 == null )
     {
@@ -84,11 +86,11 @@ public final class Application extends Expression implements ChildrenExpressions
    * @see Expression#equals(Object)
    */
   @ Override
-  public boolean equals ( Object pObject )
+  public boolean equals ( final Object pObject )
   {
     if ( pObject instanceof Application )
     {
-      Application other = ( Application ) pObject ;
+      final Application other = ( Application ) pObject ;
       return ( ( this.expressions [ 0 ].equals ( other.expressions [ 0 ] ) ) && ( this.expressions [ 1 ]
           .equals ( other.expressions [ 1 ] ) ) ) ;
     }
@@ -149,7 +151,7 @@ public final class Application extends Expression implements ChildrenExpressions
    *           bounds.
    * @see #getExpressions()
    */
-  public Expression getExpressions ( int pIndex )
+  public Expression getExpressions ( final int pIndex )
   {
     return this.expressions [ pIndex ] ;
   }
@@ -162,7 +164,7 @@ public final class Application extends Expression implements ChildrenExpressions
    */
   public int [ ] getExpressionsIndex ( )
   {
-    return INDICES_E ;
+    return Application.INDICES_E ;
   }
 
 
@@ -191,7 +193,7 @@ public final class Application extends Expression implements ChildrenExpressions
   @ Override
   public boolean isValue ( )
   {
-    return ( ( this.expressions [ 0 ] instanceof BinaryOperator || this.expressions [ 0 ] instanceof UnaryCons ) && this.expressions [ 1 ]
+    return ( ( ( this.expressions [ 0 ] instanceof BinaryOperator ) || ( this.expressions [ 0 ] instanceof UnaryCons ) ) && this.expressions [ 1 ]
         .isValue ( ) ) ;
   }
 
@@ -202,9 +204,10 @@ public final class Application extends Expression implements ChildrenExpressions
    * @see Expression#substitute(Identifier, Expression, boolean)
    */
   @ Override
-  public Application substitute ( Identifier pId , Expression pExpression )
+  public Application substitute ( final Identifier pId ,
+      final Expression pExpression )
   {
-    return substitute ( pId , pExpression , false ) ;
+    return this.substitute ( pId , pExpression , false ) ;
   }
 
 
@@ -218,13 +221,13 @@ public final class Application extends Expression implements ChildrenExpressions
    * @see Expression#substitute(Identifier, Expression , boolean )
    */
   @ Override
-  public Application substitute ( Identifier pId , Expression pExpression ,
-      boolean pAttributeRename )
+  public Application substitute ( final Identifier pId ,
+      final Expression pExpression , final boolean pAttributeRename )
   {
-    Expression newE1 = this.expressions [ 0 ].substitute ( pId , pExpression ,
-        pAttributeRename ) ;
-    Expression newE2 = this.expressions [ 1 ].substitute ( pId , pExpression ,
-        pAttributeRename ) ;
+    final Expression newE1 = this.expressions [ 0 ].substitute ( pId ,
+        pExpression , pAttributeRename ) ;
+    final Expression newE2 = this.expressions [ 1 ].substitute ( pId ,
+        pExpression , pAttributeRename ) ;
     return new Application ( newE1 , newE2 ) ;
   }
 
@@ -235,10 +238,12 @@ public final class Application extends Expression implements ChildrenExpressions
    * @see de.unisiegen.tpml.core.expressions.Expression#substitute(de.unisiegen.tpml.core.typechecker.TypeSubstitution)
    */
   @ Override
-  public Application substitute ( TypeSubstitution pTypeSubstitution )
+  public Application substitute ( final TypeSubstitution pTypeSubstitution )
   {
-    Expression newE1 = this.expressions [ 0 ].substitute ( pTypeSubstitution ) ;
-    Expression newE2 = this.expressions [ 1 ].substitute ( pTypeSubstitution ) ;
+    final Expression newE1 = this.expressions [ 0 ]
+        .substitute ( pTypeSubstitution ) ;
+    final Expression newE2 = this.expressions [ 1 ]
+        .substitute ( pTypeSubstitution ) ;
     return new Application ( newE1 , newE2 ) ;
   }
 
@@ -250,19 +255,19 @@ public final class Application extends Expression implements ChildrenExpressions
    */
   @ Override
   public PrettyStringBuilder toPrettyStringBuilder (
-      PrettyStringBuilderFactory pPrettyStringBuilderFactory )
+      final PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
     if ( this.prettyStringBuilder == null )
     {
       this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
-          PRIO_APPLICATION ) ;
+          PrettyPrintPriorities.PRIO_APPLICATION ) ;
       this.prettyStringBuilder.addBuilder ( this.expressions [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-          PRIO_APPLICATION_E1 ) ;
+          PrettyPrintPriorities.PRIO_APPLICATION_E1 ) ;
       this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addBuilder ( this.expressions [ 1 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-          PRIO_APPLICATION_E2 ) ;
+          PrettyPrintPriorities.PRIO_APPLICATION_E2 ) ;
     }
     return this.prettyStringBuilder ;
   }

@@ -41,7 +41,8 @@ public final class OutlineCellRenderer extends DefaultTreeCellRenderer
   /**
    * The <code>Color</code> of the border as a hex string.
    */
-  private static final String colorString = OutlineNode.getHTMLColor ( BORDER ) ;
+  private static final String colorString = OutlineNode
+      .getHTMLColor ( OutlineCellRenderer.BORDER ) ;
 
 
   /**
@@ -74,8 +75,8 @@ public final class OutlineCellRenderer extends DefaultTreeCellRenderer
     this.setDisabledIcon ( null ) ;
     this.setBackground ( Color.WHITE ) ;
     this.setBackgroundNonSelectionColor ( Color.WHITE ) ;
-    this.setBackgroundSelectionColor ( BORDER ) ;
-    this.setFont ( new Font ( FONT , Font.PLAIN , 14 ) ) ;
+    this.setBackgroundSelectionColor ( OutlineCellRenderer.BORDER ) ;
+    this.setFont ( new Font ( OutlineCellRenderer.FONT , Font.PLAIN , 14 ) ) ;
     this.setBorderSelectionColor ( Color.BLUE ) ;
     this.setTextSelectionColor ( Color.BLACK ) ;
     this.setTextNonSelectionColor ( Color.BLACK ) ;
@@ -87,22 +88,24 @@ public final class OutlineCellRenderer extends DefaultTreeCellRenderer
    * {@inheritDoc}
    */
   @ Override
-  public final Component getTreeCellRendererComponent ( JTree pTree ,
-      Object pValue , boolean pSel , boolean pExpanded , boolean pLeaf ,
-      int pRow , boolean pHasFocus )
+  public final Component getTreeCellRendererComponent ( final JTree pTree ,
+      final Object pValue , boolean pSel , final boolean pExpanded ,
+      final boolean pLeaf , final int pRow , final boolean pHasFocus )
   {
     super.getTreeCellRendererComponent ( pTree , pValue , pSel , pExpanded ,
         pLeaf , pRow , pHasFocus ) ;
-    OutlineNode outlineNode = ( OutlineNode ) pValue ;
+    final OutlineNode outlineNode = ( OutlineNode ) pValue ;
     if ( ( outlineNode.hasBreaks ( ) ) && ( pSel ) )
     {
       outlineNode.setCaptionHTML ( outlineNode.getCaptionHTML ( ).replaceAll (
-          WHITE_FONT , FONT_BEGIN + colorString + FONT_END ) ) ;
+          OutlineCellRenderer.WHITE_FONT ,
+          OutlineCellRenderer.FONT_BEGIN + OutlineCellRenderer.colorString
+              + OutlineCellRenderer.FONT_END ) ) ;
       this.setBorder ( new LineBorder ( Color.BLUE ) ) ;
     }
     else if ( ( outlineNode.hasBreaks ( ) ) && ( ! pSel ) )
     {
-      this.setBorder ( new LineBorder ( BORDER ) ) ;
+      this.setBorder ( new LineBorder ( OutlineCellRenderer.BORDER ) ) ;
     }
     else if ( ( ! outlineNode.hasBreaks ( ) ) && ( pSel ) )
     {
@@ -120,7 +123,7 @@ public final class OutlineCellRenderer extends DefaultTreeCellRenderer
    * {@inheritDoc}
    */
   @ Override
-  protected final void paintComponent ( Graphics pGraphics )
+  protected final void paintComponent ( final Graphics pGraphics )
   {
     super.paintComponent ( pGraphics ) ;
   }

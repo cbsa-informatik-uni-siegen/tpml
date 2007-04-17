@@ -4,6 +4,7 @@ package de.unisiegen.tpml.core.expressions ;
 import java.util.ArrayList ;
 import de.unisiegen.tpml.core.interfaces.BoundedIdentifiers ;
 import de.unisiegen.tpml.core.interfaces.ChildrenExpressions ;
+import de.unisiegen.tpml.core.interfaces.DefaultIdentifiers ;
 import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
@@ -72,8 +73,8 @@ public final class Attribute extends Expression implements BoundedIdentifiers ,
    * @param pTau TODO
    * @param pExpression TODO
    */
-  public Attribute ( Identifier pIdentifier , MonoType pTau ,
-      Expression pExpression )
+  public Attribute ( final Identifier pIdentifier , final MonoType pTau ,
+      final Expression pExpression )
   {
     if ( pIdentifier == null )
     {
@@ -129,11 +130,11 @@ public final class Attribute extends Expression implements BoundedIdentifiers ,
    * {@inheritDoc}
    */
   @ Override
-  public boolean equals ( Object pObject )
+  public boolean equals ( final Object pObject )
   {
     if ( pObject instanceof Attribute )
     {
-      Attribute other = ( Attribute ) pObject ;
+      final Attribute other = ( Attribute ) pObject ;
       return ( ( this.identifiers [ 0 ].equals ( other.identifiers [ 0 ] ) )
           && ( this.expressions [ 0 ].equals ( other.expressions [ 0 ] ) ) && ( ( this.types [ 0 ] == null ) ? ( other.types [ 0 ] == null )
           : ( this.types [ 0 ].equals ( other.types [ 0 ] ) ) ) ) ;
@@ -154,7 +155,7 @@ public final class Attribute extends Expression implements BoundedIdentifiers ,
     if ( this.boundedIdentifiers == null )
     {
       this.boundedIdentifiers = new ArrayList < ArrayList < Identifier >> ( ) ;
-      ArrayList < Identifier > boundedIdList = ( ( Row ) this.parent )
+      final ArrayList < Identifier > boundedIdList = ( ( Row ) this.parent )
           .getBoundedIdentifiers ( this ) ;
       this.boundedIdentifiers.add ( boundedIdList ) ;
     }
@@ -169,11 +170,11 @@ public final class Attribute extends Expression implements BoundedIdentifiers ,
    * @param pIndex The index of the list of {@link Identifier}s to return.
    * @return A list of in this {@link Expression} bounded {@link Identifier}s.
    */
-  public ArrayList < Identifier > getBoundedIdentifiers ( int pIndex )
+  public ArrayList < Identifier > getBoundedIdentifiers ( final int pIndex )
   {
     if ( this.boundedIdentifiers == null )
     {
-      return getBoundedIdentifiers ( ).get ( pIndex ) ;
+      return this.getBoundedIdentifiers ( ).get ( pIndex ) ;
     }
     return this.boundedIdentifiers.get ( pIndex ) ;
   }
@@ -221,7 +222,7 @@ public final class Attribute extends Expression implements BoundedIdentifiers ,
    *           bounds.
    * @see #getExpressions()
    */
-  public Expression getExpressions ( int pIndex )
+  public Expression getExpressions ( final int pIndex )
   {
     return this.expressions [ pIndex ] ;
   }
@@ -234,7 +235,7 @@ public final class Attribute extends Expression implements BoundedIdentifiers ,
    */
   public int [ ] getExpressionsIndex ( )
   {
-    return INDICES_E ;
+    return Attribute.INDICES_E ;
   }
 
 
@@ -268,7 +269,7 @@ public final class Attribute extends Expression implements BoundedIdentifiers ,
    * @return The <code>pIndex</code>th {@link Identifier} of this
    *         {@link Expression}.
    */
-  public Identifier getIdentifiers ( int pIndex )
+  public Identifier getIdentifiers ( final int pIndex )
   {
     return this.identifiers [ pIndex ] ;
   }
@@ -281,7 +282,7 @@ public final class Attribute extends Expression implements BoundedIdentifiers ,
    */
   public int [ ] getIdentifiersIndex ( )
   {
-    return INDICES_ID ;
+    return Attribute.INDICES_ID ;
   }
 
 
@@ -292,8 +293,8 @@ public final class Attribute extends Expression implements BoundedIdentifiers ,
    */
   public String [ ] getIdentifiersPrefix ( )
   {
-    String [ ] result = new String [ 1 ] ;
-    result [ 0 ] = PREFIX_ID ;
+    final String [ ] result = new String [ 1 ] ;
+    result [ 0 ] = DefaultIdentifiers.PREFIX_ID ;
     return result ;
   }
 
@@ -330,7 +331,7 @@ public final class Attribute extends Expression implements BoundedIdentifiers ,
    *           bounds.
    * @see #getTypes()
    */
-  public MonoType getTypes ( int pIndex )
+  public MonoType getTypes ( final int pIndex )
   {
     return this.types [ pIndex ] ;
   }
@@ -343,7 +344,7 @@ public final class Attribute extends Expression implements BoundedIdentifiers ,
    */
   public int [ ] getTypesIndex ( )
   {
-    return INDICES_TYPE ;
+    return Attribute.INDICES_TYPE ;
   }
 
 
@@ -354,8 +355,8 @@ public final class Attribute extends Expression implements BoundedIdentifiers ,
    */
   public String [ ] getTypesPrefix ( )
   {
-    String [ ] result = new String [ 1 ] ;
-    result [ 0 ] = PREFIX_TAU ;
+    final String [ ] result = new String [ 1 ] ;
+    result [ 0 ] = DefaultTypes.PREFIX_TAU ;
     return result ;
   }
 
@@ -388,9 +389,10 @@ public final class Attribute extends Expression implements BoundedIdentifiers ,
    * @see Expression#substitute(Identifier, Expression, boolean)
    */
   @ Override
-  public Attribute substitute ( Identifier pId , Expression pExpression )
+  public Attribute substitute ( final Identifier pId ,
+      final Expression pExpression )
   {
-    return substitute ( pId , pExpression , false ) ;
+    return this.substitute ( pId , pExpression , false ) ;
   }
 
 
@@ -398,11 +400,11 @@ public final class Attribute extends Expression implements BoundedIdentifiers ,
    * {@inheritDoc}
    */
   @ Override
-  public Attribute substitute ( Identifier pId , Expression pExpression ,
-      boolean pAttributeRename )
+  public Attribute substitute ( final Identifier pId ,
+      final Expression pExpression , final boolean pAttributeRename )
   {
-    Expression newE = this.expressions [ 0 ].substitute ( pId , pExpression ,
-        pAttributeRename ) ;
+    final Expression newE = this.expressions [ 0 ].substitute ( pId ,
+        pExpression , pAttributeRename ) ;
     return new Attribute ( this.identifiers [ 0 ].clone ( ) ,
         this.types [ 0 ] == null ? null : this.types [ 0 ].clone ( ) , newE ) ;
   }
@@ -415,11 +417,12 @@ public final class Attribute extends Expression implements BoundedIdentifiers ,
    * @return TODO
    */
   @ Override
-  public Attribute substitute ( TypeSubstitution pTypeSubstitution )
+  public Attribute substitute ( final TypeSubstitution pTypeSubstitution )
   {
-    MonoType newTau = ( this.types [ 0 ] == null ) ? null : this.types [ 0 ]
+    final MonoType newTau = ( this.types [ 0 ] == null ) ? null
+        : this.types [ 0 ].substitute ( pTypeSubstitution ) ;
+    final Expression newE = this.expressions [ 0 ]
         .substitute ( pTypeSubstitution ) ;
-    Expression newE = this.expressions [ 0 ].substitute ( pTypeSubstitution ) ;
     return new Attribute ( this.identifiers [ 0 ].clone ( ) , newTau , newE ) ;
   }
 
@@ -429,27 +432,28 @@ public final class Attribute extends Expression implements BoundedIdentifiers ,
    */
   @ Override
   public PrettyStringBuilder toPrettyStringBuilder (
-      PrettyStringBuilderFactory pPrettyStringBuilderFactory )
+      final PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
     if ( this.prettyStringBuilder == null )
     {
       this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
-          PRIO_ATTRIBUTE ) ;
+          PrettyPrintPriorities.PRIO_ATTRIBUTE ) ;
       this.prettyStringBuilder.addKeyword ( "val" ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addBuilder ( this.identifiers [ 0 ]
-          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_ID ) ;
+          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
+          PrettyPrintPriorities.PRIO_ID ) ;
       if ( this.types [ 0 ] != null )
       {
         this.prettyStringBuilder.addText ( ": " ) ; //$NON-NLS-1$
         this.prettyStringBuilder.addBuilder ( this.types [ 0 ]
             .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-            PRIO_ATTRIBUTE_TAU ) ;
+            PrettyPrintPriorities.PRIO_ATTRIBUTE_TAU ) ;
       }
       this.prettyStringBuilder.addText ( " = " ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addBuilder ( this.expressions [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-          PRIO_ATTRIBUTE_E ) ;
+          PrettyPrintPriorities.PRIO_ATTRIBUTE_E ) ;
       this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addKeyword ( ";" ) ; //$NON-NLS-1$
     }

@@ -41,7 +41,7 @@ public final class Tuple extends Expression implements ChildrenExpressions
    *           <code>null</code>.
    * @throws IllegalArgumentException if <code>expressions</code> is empty.
    */
-  public Tuple ( Expression [ ] pExpressions )
+  public Tuple ( final Expression [ ] pExpressions )
   {
     if ( pExpressions == null )
     {
@@ -73,7 +73,7 @@ public final class Tuple extends Expression implements ChildrenExpressions
   @ Override
   public Tuple clone ( )
   {
-    Expression [ ] newExpressions = new Expression [ this.expressions.length ] ;
+    final Expression [ ] newExpressions = new Expression [ this.expressions.length ] ;
     for ( int i = 0 ; i < newExpressions.length ; i ++ )
     {
       newExpressions [ i ] = this.expressions [ i ].clone ( ) ;
@@ -88,11 +88,11 @@ public final class Tuple extends Expression implements ChildrenExpressions
    * @see Expression#equals(Object)
    */
   @ Override
-  public boolean equals ( Object pObject )
+  public boolean equals ( final Object pObject )
   {
     if ( pObject instanceof Tuple )
     {
-      Tuple other = ( Tuple ) pObject ;
+      final Tuple other = ( Tuple ) pObject ;
       return Arrays.equals ( this.expressions , other.expressions ) ;
     }
     return false ;
@@ -130,7 +130,7 @@ public final class Tuple extends Expression implements ChildrenExpressions
    *           bounds.
    * @see #getExpressions()
    */
-  public Expression getExpressions ( int pIndex )
+  public Expression getExpressions ( final int pIndex )
   {
     return this.expressions [ pIndex ] ;
   }
@@ -167,7 +167,7 @@ public final class Tuple extends Expression implements ChildrenExpressions
   @ Override
   public boolean isValue ( )
   {
-    for ( Expression e : this.expressions )
+    for ( final Expression e : this.expressions )
     {
       if ( ! e.isValue ( ) )
       {
@@ -184,9 +184,9 @@ public final class Tuple extends Expression implements ChildrenExpressions
    * @see Expression#substitute(Identifier, Expression, boolean)
    */
   @ Override
-  public Tuple substitute ( Identifier pId , Expression pExpression )
+  public Tuple substitute ( final Identifier pId , final Expression pExpression )
   {
-    return substitute ( pId , pExpression , false ) ;
+    return this.substitute ( pId , pExpression , false ) ;
   }
 
 
@@ -196,10 +196,10 @@ public final class Tuple extends Expression implements ChildrenExpressions
    * @see Expression#substitute(Identifier, Expression, boolean)
    */
   @ Override
-  public Tuple substitute ( Identifier pId , Expression pExpression ,
-      boolean pAttributeRename )
+  public Tuple substitute ( final Identifier pId ,
+      final Expression pExpression , final boolean pAttributeRename )
   {
-    Expression [ ] newExpressions = new Expression [ this.expressions.length ] ;
+    final Expression [ ] newExpressions = new Expression [ this.expressions.length ] ;
     for ( int i = 0 ; i < newExpressions.length ; i ++ )
     {
       newExpressions [ i ] = this.expressions [ i ].substitute ( pId ,
@@ -216,12 +216,12 @@ public final class Tuple extends Expression implements ChildrenExpressions
    */
   @ Override
   public PrettyStringBuilder toPrettyStringBuilder (
-      PrettyStringBuilderFactory pPrettyStringBuilderFactory )
+      final PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
     if ( this.prettyStringBuilder == null )
     {
       this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
-          PRIO_TUPLE ) ;
+          PrettyPrintPriorities.PRIO_TUPLE ) ;
       this.prettyStringBuilder.addText ( "(" ) ; //$NON-NLS-1$
       for ( int n = 0 ; n < this.expressions.length ; ++ n )
       {
@@ -232,7 +232,7 @@ public final class Tuple extends Expression implements ChildrenExpressions
         }
         this.prettyStringBuilder.addBuilder ( this.expressions [ n ]
             .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-            PRIO_TUPLE_E ) ;
+            PrettyPrintPriorities.PRIO_TUPLE_E ) ;
       }
       this.prettyStringBuilder.addText ( ")" ) ; //$NON-NLS-1$
     }

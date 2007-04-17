@@ -36,7 +36,7 @@ public final class Deref extends UnaryOperator
   @ SuppressWarnings ( "unused" )
   @ Override
   public Expression applyTo ( @ SuppressWarnings ( "unused" )
-  Expression pExpression ) throws UnaryOperatorException
+  final Expression pExpression ) throws UnaryOperatorException
   {
     throw new UnsupportedOperationException (
         "deref operator must be handled by the interpreter" ) ; //$NON-NLS-1$

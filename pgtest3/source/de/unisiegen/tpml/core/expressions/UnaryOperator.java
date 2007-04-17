@@ -19,7 +19,7 @@ public abstract class UnaryOperator extends Constant
    * @throws NullPointerException if <code>text</code> is <code>null</code>.
    * @see Constant#Constant(String)
    */
-  protected UnaryOperator ( String pText )
+  protected UnaryOperator ( final String pText )
   {
     super ( pText ) ;
   }

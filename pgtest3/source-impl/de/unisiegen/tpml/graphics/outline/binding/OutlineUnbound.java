@@ -25,7 +25,7 @@ public final class OutlineUnbound
    * 
    * @param pList TODO
    */
-  private OutlineUnbound ( ArrayList < Identifier > pList )
+  private OutlineUnbound ( final ArrayList < Identifier > pList )
   {
     this.list = pList ;
   }
@@ -36,7 +36,7 @@ public final class OutlineUnbound
    * 
    * @param pExpression The input {@link Expression}.
    */
-  public OutlineUnbound ( Expression pExpression )
+  public OutlineUnbound ( final Expression pExpression )
   {
     this.list = pExpression.free ( ) ;
   }
@@ -48,7 +48,7 @@ public final class OutlineUnbound
    * @param pIndex The index of the unbound {@link Identifier}.
    * @return The unbound {@link Identifier} in the {@link Expression}.
    */
-  public final Identifier get ( int pIndex )
+  public final Identifier get ( final int pIndex )
   {
     return this.list.get ( pIndex ) ;
   }
@@ -60,10 +60,10 @@ public final class OutlineUnbound
    * @param pExpression TODO
    * @return TODO
    */
-  public OutlineUnbound reduce ( Expression pExpression )
+  public OutlineUnbound reduce ( final Expression pExpression )
   {
-    OutlineUnbound result = new OutlineUnbound ( new ArrayList < Identifier > (
-        this.list ) ) ;
+    final OutlineUnbound result = new OutlineUnbound (
+        new ArrayList < Identifier > ( this.list ) ) ;
     for ( int i = result.size ( ) - 1 ; i >= 0 ; i -- )
     {
       try
@@ -71,7 +71,7 @@ public final class OutlineUnbound
         pExpression.toPrettyString ( ).getAnnotationForPrintable (
             result.get ( i ) ) ;
       }
-      catch ( IllegalArgumentException e )
+      catch ( final IllegalArgumentException e )
       {
         result.remove ( i ) ;
         /*
@@ -89,7 +89,7 @@ public final class OutlineUnbound
    * @param pIndex The index of the unbound {@link Identifier}.
    * @return The removed {@link Identifier}.
    */
-  public final Identifier remove ( int pIndex )
+  public final Identifier remove ( final int pIndex )
   {
     return this.list.remove ( pIndex ) ;
   }

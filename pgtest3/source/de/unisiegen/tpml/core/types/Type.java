@@ -102,14 +102,14 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities
       try
       {
         this.children = new ArrayList < Type > ( ) ;
-        PropertyDescriptor [ ] properties = Introspector.getBeanInfo (
-            getClass ( ) , Type.class ).getPropertyDescriptors ( ) ;
-        for ( PropertyDescriptor property : properties )
+        final PropertyDescriptor [ ] properties = Introspector.getBeanInfo (
+            this.getClass ( ) , Type.class ).getPropertyDescriptors ( ) ;
+        for ( final PropertyDescriptor property : properties )
         {
-          java.lang.reflect.Method method = property.getReadMethod ( ) ;
-          if ( method.getName ( ).equals ( GET_TYPES ) )
+          final java.lang.reflect.Method method = property.getReadMethod ( ) ;
+          if ( method.getName ( ).equals ( Type.GET_TYPES ) )
           {
-            Object value = property.getReadMethod ( ).invoke ( this ) ;
+            final Object value = property.getReadMethod ( ).invoke ( this ) ;
             if ( value instanceof Type [ ] )
             {
               this.children.addAll ( Arrays.asList ( ( Type [ ] ) value ) ) ;
@@ -117,11 +117,11 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities
           }
         }
       }
-      catch ( RuntimeException exception )
+      catch ( final RuntimeException exception )
       {
         throw exception ;
       }
-      catch ( Exception exception )
+      catch ( final Exception exception )
       {
         throw new RuntimeException ( exception ) ;
       }
@@ -155,7 +155,7 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities
    */
   public Set < TypeVariable > free ( )
   {
-    return EMPTY_SET ;
+    return Type.EMPTY_SET ;
   }
 
 
@@ -184,7 +184,7 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities
    * 
    * @param pParent The parent to set
    */
-  public void setParent ( PrettyPrintable pParent )
+  public void setParent ( final PrettyPrintable pParent )
   {
     this.parent = pParent ;
   }
@@ -212,8 +212,8 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities
    */
   public final PrettyString toPrettyString ( )
   {
-    return toPrettyStringBuilder ( PrettyStringBuilderFactory.newInstance ( ) )
-        .toPrettyString ( ) ;
+    return this.toPrettyStringBuilder (
+        PrettyStringBuilderFactory.newInstance ( ) ).toPrettyString ( ) ;
   }
 
 
@@ -246,6 +246,6 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities
   @ Override
   public final String toString ( )
   {
-    return toPrettyString ( ).toString ( ) ;
+    return this.toPrettyString ( ).toString ( ) ;
   }
 }

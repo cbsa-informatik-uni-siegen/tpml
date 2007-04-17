@@ -11,6 +11,7 @@ import de.unisiegen.tpml.core.expressions.Expression ;
  * overwritten by derived classes with concrete implementations.
  * 
  * @author Benedikt Meurer
+ * @author Christian Fehler
  * @version $Rev:277 $
  * @see de.unisiegen.tpml.core.languages.Language
  * @see de.unisiegen.tpml.core.languages.LanguageTranslator
@@ -33,10 +34,10 @@ public abstract class AbstractLanguageTranslator implements LanguageTranslator
    * @see de.unisiegen.tpml.core.languages.LanguageTranslator#containsSyntacticSugar(de.unisiegen.tpml.core.expressions.Expression,
    *      boolean)
    */
-  public boolean containsSyntacticSugar ( Expression expression ,
-      boolean recursive )
+  public boolean containsSyntacticSugar ( final Expression expression ,
+      final boolean recursive )
   {
-    return ! translateToCoreSyntax ( expression , recursive ).equals (
+    return ! this.translateToCoreSyntax ( expression , recursive ).equals (
         expression ) ;
   }
 
@@ -52,9 +53,9 @@ public abstract class AbstractLanguageTranslator implements LanguageTranslator
    * @see de.unisiegen.tpml.core.languages.LanguageTranslator#translateToCoreSyntax(de.unisiegen.tpml.core.expressions.Expression,
    *      boolean)
    */
-  public Expression translateToCoreSyntax ( Expression expression ,
+  public Expression translateToCoreSyntax ( final Expression expression ,
       @ SuppressWarnings ( "unused" )
-      boolean recursive )
+      final boolean recursive )
   {
     if ( expression == null )
     {

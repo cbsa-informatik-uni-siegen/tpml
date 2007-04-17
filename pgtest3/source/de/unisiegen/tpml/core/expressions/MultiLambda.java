@@ -5,6 +5,7 @@ import java.util.ArrayList ;
 import java.util.Arrays ;
 import de.unisiegen.tpml.core.interfaces.BoundedIdentifiers ;
 import de.unisiegen.tpml.core.interfaces.ChildrenExpressions ;
+import de.unisiegen.tpml.core.interfaces.DefaultIdentifiers ;
 import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
@@ -84,8 +85,8 @@ public final class MultiLambda extends Value implements BoundedIdentifiers ,
    * @throws NullPointerException if <code>identifiers</code> or
    *           <code>e</code> is <code>null</code>.
    */
-  public MultiLambda ( Identifier [ ] pIdentifiers , MonoType pTau ,
-      Expression pExpression )
+  public MultiLambda ( final Identifier [ ] pIdentifiers , final MonoType pTau ,
+      final Expression pExpression )
   {
     if ( pIdentifiers == null )
     {
@@ -141,7 +142,7 @@ public final class MultiLambda extends Value implements BoundedIdentifiers ,
   @ Override
   public MultiLambda clone ( )
   {
-    Identifier [ ] newIdentifiers = new Identifier [ this.identifiers.length ] ;
+    final Identifier [ ] newIdentifiers = new Identifier [ this.identifiers.length ] ;
     for ( int i = 0 ; i < newIdentifiers.length ; i ++ )
     {
       newIdentifiers [ i ] = this.identifiers [ i ].clone ( ) ;
@@ -157,11 +158,11 @@ public final class MultiLambda extends Value implements BoundedIdentifiers ,
    * @see Expression#equals(Object)
    */
   @ Override
-  public boolean equals ( Object pObject )
+  public boolean equals ( final Object pObject )
   {
     if ( pObject instanceof MultiLambda )
     {
-      MultiLambda other = ( MultiLambda ) pObject ;
+      final MultiLambda other = ( MultiLambda ) pObject ;
       return ( ( Arrays.equals ( this.identifiers , other.identifiers ) )
           && ( this.expressions [ 0 ].equals ( other.expressions [ 0 ] ) ) && ( ( this.types [ 0 ] == null ) ? ( other.types [ 0 ] == null )
           : ( this.types [ 0 ].equals ( other.types [ 0 ] ) ) ) ) ;
@@ -182,9 +183,9 @@ public final class MultiLambda extends Value implements BoundedIdentifiers ,
     {
       this.free = new ArrayList < Identifier > ( ) ;
       this.free.addAll ( this.expressions [ 0 ].free ( ) ) ;
-      for ( int i = 0 ; i < this.identifiers.length ; i ++ )
+      for ( Identifier element : this.identifiers )
       {
-        while ( this.free.remove ( this.identifiers [ i ] ) )
+        while ( this.free.remove ( element ) )
         {
           // Remove all Identifiers with the same name
         }
@@ -206,7 +207,7 @@ public final class MultiLambda extends Value implements BoundedIdentifiers ,
     if ( this.boundedIdentifiers == null )
     {
       this.boundedIdentifiers = new ArrayList < ArrayList < Identifier >> ( ) ;
-      ArrayList < Identifier > boundedE = this.expressions [ 0 ].free ( ) ;
+      final ArrayList < Identifier > boundedE = this.expressions [ 0 ].free ( ) ;
       for ( int i = 0 ; i < this.identifiers.length ; i ++ )
       {
         /*
@@ -222,10 +223,10 @@ public final class MultiLambda extends Value implements BoundedIdentifiers ,
             break ;
           }
         }
-        ArrayList < Identifier > boundedIdList = new ArrayList < Identifier > ( ) ;
+        final ArrayList < Identifier > boundedIdList = new ArrayList < Identifier > ( ) ;
         if ( hasBinding )
         {
-          for ( Identifier freeId : boundedE )
+          for ( final Identifier freeId : boundedE )
           {
             if ( this.identifiers [ i ].equals ( freeId ) )
             {
@@ -249,11 +250,11 @@ public final class MultiLambda extends Value implements BoundedIdentifiers ,
    * @param pIndex The index of the list of {@link Identifier}s to return.
    * @return A list of in this {@link Expression} bounded {@link Identifier}s.
    */
-  public ArrayList < Identifier > getBoundedIdentifiers ( int pIndex )
+  public ArrayList < Identifier > getBoundedIdentifiers ( final int pIndex )
   {
     if ( this.boundedIdentifiers == null )
     {
-      return getBoundedIdentifiers ( ).get ( pIndex ) ;
+      return this.getBoundedIdentifiers ( ).get ( pIndex ) ;
     }
     return this.boundedIdentifiers.get ( pIndex ) ;
   }
@@ -301,7 +302,7 @@ public final class MultiLambda extends Value implements BoundedIdentifiers ,
    *           bounds.
    * @see #getExpressions()
    */
-  public Expression getExpressions ( int pIndex )
+  public Expression getExpressions ( final int pIndex )
   {
     return this.expressions [ pIndex ] ;
   }
@@ -314,7 +315,7 @@ public final class MultiLambda extends Value implements BoundedIdentifiers ,
    */
   public int [ ] getExpressionsIndex ( )
   {
-    return INDICES_E ;
+    return MultiLambda.INDICES_E ;
   }
 
 
@@ -339,7 +340,7 @@ public final class MultiLambda extends Value implements BoundedIdentifiers ,
    *           bounds.
    * @see #getIdentifiers()
    */
-  public Identifier getIdentifiers ( int pIndex )
+  public Identifier getIdentifiers ( final int pIndex )
   {
     return this.identifiers [ pIndex ] ;
   }
@@ -363,10 +364,10 @@ public final class MultiLambda extends Value implements BoundedIdentifiers ,
    */
   public String [ ] getIdentifiersPrefix ( )
   {
-    String [ ] result = new String [ this.identifiers.length ] ;
+    final String [ ] result = new String [ this.identifiers.length ] ;
     for ( int i = 0 ; i < this.identifiers.length ; i ++ )
     {
-      result [ i ] = PREFIX_ID ;
+      result [ i ] = DefaultIdentifiers.PREFIX_ID ;
     }
     return result ;
   }
@@ -405,7 +406,7 @@ public final class MultiLambda extends Value implements BoundedIdentifiers ,
    *           bounds.
    * @see #getTypes()
    */
-  public MonoType getTypes ( int pIndex )
+  public MonoType getTypes ( final int pIndex )
   {
     return this.types [ pIndex ] ;
   }
@@ -418,7 +419,7 @@ public final class MultiLambda extends Value implements BoundedIdentifiers ,
    */
   public int [ ] getTypesIndex ( )
   {
-    return INDICES_TYPE ;
+    return MultiLambda.INDICES_TYPE ;
   }
 
 
@@ -429,8 +430,8 @@ public final class MultiLambda extends Value implements BoundedIdentifiers ,
    */
   public String [ ] getTypesPrefix ( )
   {
-    String [ ] result = new String [ 1 ] ;
-    result [ 0 ] = PREFIX_TAU ;
+    final String [ ] result = new String [ 1 ] ;
+    result [ 0 ] = DefaultTypes.PREFIX_TAU ;
     return result ;
   }
 
@@ -455,9 +456,10 @@ public final class MultiLambda extends Value implements BoundedIdentifiers ,
    * @see Expression#substitute(Identifier, Expression, boolean)
    */
   @ Override
-  public MultiLambda substitute ( Identifier pId , Expression pExpression )
+  public MultiLambda substitute ( final Identifier pId ,
+      final Expression pExpression )
   {
-    return substitute ( pId , pExpression , false ) ;
+    return this.substitute ( pId , pExpression , false ) ;
   }
 
 
@@ -467,28 +469,25 @@ public final class MultiLambda extends Value implements BoundedIdentifiers ,
    * @see Expression#substitute(Identifier, Expression, boolean)
    */
   @ Override
-  public MultiLambda substitute ( Identifier pId , Expression pExpression ,
-      boolean pAttributeRename )
+  public MultiLambda substitute ( final Identifier pId ,
+      final Expression pExpression , final boolean pAttributeRename )
   {
-    /*
-     * Do not substitute, if the Identifiers are equal.
-     */
-    for ( int i = 0 ; i < this.identifiers.length ; i ++ )
+    for ( Identifier element : this.identifiers )
     {
-      if ( this.identifiers [ i ].equals ( pId ) )
+      if ( element.equals ( pId ) )
       {
         return this.clone ( ) ;
       }
     }
     Expression newE = this.expressions [ 0 ] ;
-    Identifier [ ] newIdentifiers = new Identifier [ this.identifiers.length ] ;
+    final Identifier [ ] newIdentifiers = new Identifier [ this.identifiers.length ] ;
     for ( int i = 0 ; i < newIdentifiers.length ; i ++ )
     {
       newIdentifiers [ i ] = this.identifiers [ i ].clone ( ) ;
     }
     for ( int i = 0 ; i < newIdentifiers.length ; i ++ )
     {
-      BoundRenaming boundRenaming = new BoundRenaming ( ) ;
+      final BoundRenaming boundRenaming = new BoundRenaming ( ) ;
       boundRenaming.add ( this.free ( ) ) ;
       boundRenaming.add ( pExpression.free ( ) ) ;
       boundRenaming.add ( pId ) ;
@@ -543,11 +542,11 @@ public final class MultiLambda extends Value implements BoundedIdentifiers ,
    * @see Expression#substitute(TypeSubstitution)
    */
   @ Override
-  public MultiLambda substitute ( TypeSubstitution pTypeSubstitution )
+  public MultiLambda substitute ( final TypeSubstitution pTypeSubstitution )
   {
-    MonoType newTau = ( this.types [ 0 ] == null ) ? null : this.types [ 0 ]
-        .substitute ( pTypeSubstitution ) ;
-    Identifier [ ] newIdentifiers = new Identifier [ this.identifiers.length ] ;
+    final MonoType newTau = ( this.types [ 0 ] == null ) ? null
+        : this.types [ 0 ].substitute ( pTypeSubstitution ) ;
+    final Identifier [ ] newIdentifiers = new Identifier [ this.identifiers.length ] ;
     for ( int i = 0 ; i < newIdentifiers.length ; i ++ )
     {
       newIdentifiers [ i ] = this.identifiers [ i ].clone ( ) ;
@@ -564,12 +563,12 @@ public final class MultiLambda extends Value implements BoundedIdentifiers ,
    */
   @ Override
   public PrettyStringBuilder toPrettyStringBuilder (
-      PrettyStringBuilderFactory pPrettyStringBuilderFactory )
+      final PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
     if ( this.prettyStringBuilder == null )
     {
       this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
-          PRIO_LAMBDA ) ;
+          PrettyPrintPriorities.PRIO_LAMBDA ) ;
       this.prettyStringBuilder.addKeyword ( "\u03bb" ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addText ( "(" ) ; //$NON-NLS-1$
       for ( int i = 0 ; i < this.identifiers.length ; ++ i )
@@ -579,7 +578,8 @@ public final class MultiLambda extends Value implements BoundedIdentifiers ,
           this.prettyStringBuilder.addText ( ", " ) ; //$NON-NLS-1$
         }
         this.prettyStringBuilder.addBuilder ( this.identifiers [ i ]
-            .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_ID ) ;
+            .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
+            PrettyPrintPriorities.PRIO_ID ) ;
       }
       this.prettyStringBuilder.addText ( ")" ) ; //$NON-NLS-1$
       if ( this.types [ 0 ] != null )
@@ -587,12 +587,12 @@ public final class MultiLambda extends Value implements BoundedIdentifiers ,
         this.prettyStringBuilder.addText ( ": " ) ; //$NON-NLS-1$
         this.prettyStringBuilder.addBuilder ( this.types [ 0 ]
             .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-            PRIO_LAMBDA_TAU ) ;
+            PrettyPrintPriorities.PRIO_LAMBDA_TAU ) ;
       }
       this.prettyStringBuilder.addText ( "." ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addBuilder ( this.expressions [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-          PRIO_LAMBDA_E ) ;
+          PrettyPrintPriorities.PRIO_LAMBDA_E ) ;
     }
     return this.prettyStringBuilder ;
   }

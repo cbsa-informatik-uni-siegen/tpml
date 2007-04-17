@@ -31,7 +31,7 @@ public abstract class PrimitiveType extends MonoType
    * @param pName the name of the primitive type, for example <tt>"bool"</tt>
    *          or <tt>"int"</tt>.
    */
-  protected PrimitiveType ( String pName )
+  protected PrimitiveType ( final String pName )
   {
     this.name = pName.intern ( ) ;
   }
@@ -57,11 +57,11 @@ public abstract class PrimitiveType extends MonoType
    * @see Object#equals(Object)
    */
   @ Override
-  public boolean equals ( Object pObject )
+  public boolean equals ( final Object pObject )
   {
     if ( pObject instanceof PrimitiveType )
     {
-      PrimitiveType other = ( PrimitiveType ) pObject ;
+      final PrimitiveType other = ( PrimitiveType ) pObject ;
       return this.name == other.name ;
     }
     return false ;
@@ -96,7 +96,7 @@ public abstract class PrimitiveType extends MonoType
    */
   @ Override
   public PrimitiveType substitute ( @ SuppressWarnings ( "unused" )
-  TypeSubstitution pTypeSubstitution )
+  final TypeSubstitution pTypeSubstitution )
   {
     return this ;
   }
@@ -109,12 +109,12 @@ public abstract class PrimitiveType extends MonoType
    */
   public @ Override
   PrettyStringBuilder toPrettyStringBuilder (
-      PrettyStringBuilderFactory pPrettyStringBuilderFactory )
+      final PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
     if ( this.prettyStringBuilder == null )
     {
       this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
-          PRIO_PRIMITIVE ) ;
+          PrettyPrintPriorities.PRIO_PRIMITIVE ) ;
       this.prettyStringBuilder.addType ( this.name ) ;
     }
     return this.prettyStringBuilder ;

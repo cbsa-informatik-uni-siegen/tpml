@@ -10,7 +10,7 @@ import de.unisiegen.tpml.core.expressions.Identifier ;
  * 
  * @author Christian Fehler
  */
-public class BoundRenaming
+public final class BoundRenaming
 {
   /**
    * TODO
@@ -32,7 +32,7 @@ public class BoundRenaming
    * 
    * @param pIdentifiers TODO
    */
-  public void add ( ArrayList < Identifier > pIdentifiers )
+  public final void add ( final ArrayList < Identifier > pIdentifiers )
   {
     this.negativeList.addAll ( pIdentifiers ) ;
   }
@@ -43,7 +43,7 @@ public class BoundRenaming
    * 
    * @param pId TODO
    */
-  public void add ( Identifier pId )
+  public final void add ( final Identifier pId )
   {
     this.negativeList.add ( pId ) ;
   }
@@ -51,8 +51,22 @@ public class BoundRenaming
 
   /**
    * TODO
+   * 
+   * @param pIdentifiers TODO
    */
-  public void clear ( )
+  public final void add ( final Identifier [ ] pIdentifiers )
+  {
+    for ( Identifier element : pIdentifiers )
+    {
+      this.negativeList.add ( element ) ;
+    }
+  }
+
+
+  /**
+   * TODO
+   */
+  public final void clear ( )
   {
     this.negativeList.clear ( ) ;
   }
@@ -64,7 +78,7 @@ public class BoundRenaming
    * @param pIdentifiers TODO
    * @return TODO
    */
-  public boolean contains ( ArrayList < Identifier > pIdentifiers )
+  public final boolean contains ( final ArrayList < Identifier > pIdentifiers )
   {
     return this.negativeList.containsAll ( pIdentifiers ) ;
   }
@@ -76,7 +90,7 @@ public class BoundRenaming
    * @param pId TODO
    * @return TODO
    */
-  public boolean contains ( Identifier pId )
+  public final boolean contains ( final Identifier pId )
   {
     return this.negativeList.contains ( pId ) ;
   }
@@ -88,7 +102,7 @@ public class BoundRenaming
    * @param pOldIdentifier TODO
    * @return TODO
    */
-  public Identifier newId ( Identifier pOldIdentifier )
+  public final Identifier newId ( final Identifier pOldIdentifier )
   {
     Identifier newIdentifier = new Identifier ( pOldIdentifier.getName ( ) ) ;
     while ( this.negativeList.contains ( newIdentifier ) )
@@ -104,7 +118,7 @@ public class BoundRenaming
    * 
    * @param pIdentifiers TODO
    */
-  public void remove ( ArrayList < Identifier > pIdentifiers )
+  public final void remove ( final ArrayList < Identifier > pIdentifiers )
   {
     while ( this.negativeList.removeAll ( pIdentifiers ) )
     {
@@ -118,7 +132,7 @@ public class BoundRenaming
    * 
    * @param pId TODO
    */
-  public void remove ( Identifier pId )
+  public final void remove ( final Identifier pId )
   {
     while ( this.negativeList.remove ( pId ) )
     {

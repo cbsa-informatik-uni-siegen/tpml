@@ -51,7 +51,7 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
    * @param pIdentifiers TODO
    * @param pTypes TODO
    */
-  public RowType ( Identifier [ ] pIdentifiers , MonoType [ ] pTypes )
+  public RowType ( final Identifier [ ] pIdentifiers , final MonoType [ ] pTypes )
   {
     if ( pIdentifiers == null )
     {
@@ -101,12 +101,12 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
   @ Override
   public RowType clone ( )
   {
-    Identifier [ ] newIdentifiers = new Identifier [ this.identifiers.length ] ;
+    final Identifier [ ] newIdentifiers = new Identifier [ this.identifiers.length ] ;
     for ( int i = 0 ; i < newIdentifiers.length ; i ++ )
     {
       newIdentifiers [ i ] = this.identifiers [ i ].clone ( ) ;
     }
-    MonoType [ ] newTypes = new MonoType [ this.types.length ] ;
+    final MonoType [ ] newTypes = new MonoType [ this.types.length ] ;
     for ( int i = 0 ; i < newTypes.length ; i ++ )
     {
       newTypes [ i ] = this.types [ i ].clone ( ) ;
@@ -121,11 +121,11 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
    * @see Object#equals(Object)
    */
   @ Override
-  public boolean equals ( Object pObject )
+  public boolean equals ( final Object pObject )
   {
     if ( pObject instanceof RowType )
     {
-      RowType other = ( RowType ) pObject ;
+      final RowType other = ( RowType ) pObject ;
       return ( Arrays.equals ( this.identifiers , other.identifiers ) && Arrays
           .equals ( this.types , other.types ) ) ;
     }
@@ -144,7 +144,7 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
     if ( this.free == null )
     {
       this.free = new TreeSet < TypeVariable > ( ) ;
-      for ( MonoType type : this.types )
+      for ( final MonoType type : this.types )
       {
         this.free.addAll ( type.free ( ) ) ;
       }
@@ -187,7 +187,7 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
    * @see #identifiers
    * @see #getIdentifiers()
    */
-  public Identifier getIdentifiers ( int pIndex )
+  public Identifier getIdentifiers ( final int pIndex )
   {
     return this.identifiers [ pIndex ] ;
   }
@@ -211,10 +211,10 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
    */
   public String [ ] getIdentifiersPrefix ( )
   {
-    String [ ] result = new String [ this.identifiers.length ] ;
+    final String [ ] result = new String [ this.identifiers.length ] ;
     for ( int i = 0 ; i < this.identifiers.length ; i ++ )
     {
-      result [ i ] = PREFIX_ID ;
+      result [ i ] = DefaultIdentifiers.PREFIX_ID ;
     }
     return result ;
   }
@@ -228,7 +228,7 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
    */
   public PrettyPrintable [ ] getSortedChildren ( )
   {
-    PrettyPrintable [ ] result = new PrettyPrintable [ this.identifiers.length
+    final PrettyPrintable [ ] result = new PrettyPrintable [ this.identifiers.length
         + this.types.length ] ;
     for ( int i = 0 ; i < this.identifiers.length + this.types.length ; i ++ )
     {
@@ -262,7 +262,7 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
    * @param pIndex TODO
    * @return TODO
    */
-  public MonoType getTypes ( int pIndex )
+  public MonoType getTypes ( final int pIndex )
   {
     return this.types [ pIndex ] ;
   }
@@ -286,10 +286,10 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
    */
   public String [ ] getTypesPrefix ( )
   {
-    String [ ] result = new String [ this.types.length ] ;
+    final String [ ] result = new String [ this.types.length ] ;
     for ( int i = 0 ; i < this.types.length ; i ++ )
     {
-      result [ i ] = PREFIX_TAU ;
+      result [ i ] = DefaultTypes.PREFIX_TAU ;
     }
     return result ;
   }
@@ -315,18 +315,18 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
    * @see MonoType#substitute(TypeSubstitution)
    */
   @ Override
-  public RowType substitute ( TypeSubstitution pTypeSubstitution )
+  public RowType substitute ( final TypeSubstitution pTypeSubstitution )
   {
     if ( pTypeSubstitution == null )
     {
       throw new NullPointerException ( "Substitution is null" ) ; //$NON-NLS-1$
     }
-    Identifier [ ] newIdentifiers = new Identifier [ this.identifiers.length ] ;
+    final Identifier [ ] newIdentifiers = new Identifier [ this.identifiers.length ] ;
     for ( int i = 0 ; i < newIdentifiers.length ; i ++ )
     {
       newIdentifiers [ i ] = this.identifiers [ i ].clone ( ) ;
     }
-    MonoType [ ] newTypes = new MonoType [ this.types.length ] ;
+    final MonoType [ ] newTypes = new MonoType [ this.types.length ] ;
     for ( int i = 0 ; i < newTypes.length ; i ++ )
     {
       newTypes [ i ] = this.types [ i ].substitute ( pTypeSubstitution ) ;
@@ -344,12 +344,12 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
    */
   @ Override
   public PrettyStringBuilder toPrettyStringBuilder (
-      PrettyStringBuilderFactory pPrettyStringBuilderFactory )
+      final PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
     if ( this.prettyStringBuilder == null )
     {
       this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
-          PRIO_ROW ) ;
+          PrettyPrintPriorities.PRIO_ROW ) ;
       for ( int i = 0 ; i < this.types.length ; i ++ )
       {
         if ( i != 0 )
@@ -357,11 +357,12 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
           this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
         }
         this.prettyStringBuilder.addBuilder ( this.identifiers [ i ]
-            .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_ID ) ;
+            .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
+            PrettyPrintPriorities.PRIO_ID ) ;
         this.prettyStringBuilder.addText ( ": " ) ; //$NON-NLS-1$
         this.prettyStringBuilder.addBuilder ( this.types [ i ]
             .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-            PRIO_ROW_TAU ) ;
+            PrettyPrintPriorities.PRIO_ROW_TAU ) ;
         this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
         this.prettyStringBuilder.addKeyword ( ";" ) ; //$NON-NLS-1$
         if ( i != this.types.length - 1 )
