@@ -2,7 +2,7 @@ package de.unisiegen.tpml.core.expressions ;
 
 
 import java.util.ArrayList ;
-import de.unisiegen.tpml.core.interfaces.BoundedIdentifiers ;
+import de.unisiegen.tpml.core.interfaces.BoundIdentifiers ;
 import de.unisiegen.tpml.core.interfaces.ChildrenExpressions ;
 import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
@@ -18,7 +18,7 @@ import de.unisiegen.tpml.core.types.Type ;
  * @author Christian Fehler
  * @version $Rev: 1066 $
  */
-public final class Attribute extends Expression implements BoundedIdentifiers ,
+public final class Attribute extends Expression implements BoundIdentifiers ,
     DefaultTypes , ChildrenExpressions
 {
   /**
@@ -143,43 +143,6 @@ public final class Attribute extends Expression implements BoundedIdentifiers ,
 
 
   /**
-   * Returns a list of lists of in this {@link Expression} bounded
-   * {@link Identifier}s.
-   * 
-   * @return A list of lists of in this {@link Expression} bounded
-   *         {@link Identifier}s.
-   */
-  public ArrayList < ArrayList < Identifier >> getBoundedIdentifiers ( )
-  {
-    if ( this.boundedIdentifiers == null )
-    {
-      this.boundedIdentifiers = new ArrayList < ArrayList < Identifier >> ( ) ;
-      ArrayList < Identifier > boundedIdList = ( ( Row ) this.parent )
-          .getBoundedIdentifiers ( this ) ;
-      this.boundedIdentifiers.add ( boundedIdList ) ;
-    }
-    return this.boundedIdentifiers ;
-  }
-
-
-  /**
-   * Returns the <code>pIndex</code>th list of in this {@link Expression}
-   * bounded {@link Identifier}s.
-   * 
-   * @param pIndex The index of the list of {@link Identifier}s to return.
-   * @return A list of in this {@link Expression} bounded {@link Identifier}s.
-   */
-  public ArrayList < Identifier > getBoundedIdentifiers ( int pIndex )
-  {
-    if ( this.boundedIdentifiers == null )
-    {
-      return getBoundedIdentifiers ( ).get ( pIndex ) ;
-    }
-    return this.boundedIdentifiers.get ( pIndex ) ;
-  }
-
-
-  /**
    * {@inheritDoc}
    */
   @ Override
@@ -271,6 +234,26 @@ public final class Attribute extends Expression implements BoundedIdentifiers ,
   public Identifier getIdentifiers ( int pIndex )
   {
     return this.identifiers [ pIndex ] ;
+  }
+
+
+  /**
+   * Returns a list of lists of in this {@link Expression} bound
+   * {@link Identifier}s.
+   * 
+   * @return A list of lists of in this {@link Expression} bound
+   *         {@link Identifier}s.
+   */
+  public ArrayList < ArrayList < Identifier >> getIdentifiersBound ( )
+  {
+    if ( this.boundedIdentifiers == null )
+    {
+      this.boundedIdentifiers = new ArrayList < ArrayList < Identifier >> ( ) ;
+      ArrayList < Identifier > boundedIdList = ( ( Row ) this.parent )
+          .getBoundedIdentifiers ( this ) ;
+      this.boundedIdentifiers.add ( boundedIdList ) ;
+    }
+    return this.boundedIdentifiers ;
   }
 
 

@@ -2,7 +2,7 @@ package de.unisiegen.tpml.core.expressions ;
 
 
 import java.util.ArrayList ;
-import de.unisiegen.tpml.core.interfaces.BoundedIdentifiers ;
+import de.unisiegen.tpml.core.interfaces.BoundIdentifiers ;
 import de.unisiegen.tpml.core.interfaces.ChildrenExpressions ;
 import de.unisiegen.tpml.core.interfaces.DefaultIdentifiers ;
 import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
@@ -26,7 +26,7 @@ import de.unisiegen.tpml.core.util.BoundRenaming ;
  * @see Expression
  * @see Value
  */
-public final class Lambda extends Value implements BoundedIdentifiers ,
+public final class Lambda extends Value implements BoundIdentifiers ,
     DefaultTypes , ChildrenExpressions
 {
   /**
@@ -185,50 +185,6 @@ public final class Lambda extends Value implements BoundedIdentifiers ,
 
 
   /**
-   * Returns a list of in this {@link Expression} bounded {@link Identifier}s.
-   * 
-   * @return A list of in this {@link Expression} bounded {@link Identifier}s.
-   */
-  public ArrayList < ArrayList < Identifier >> getBoundedIdentifiers ( )
-  {
-    if ( this.boundedIdentifiers == null )
-    {
-      this.boundedIdentifiers = new ArrayList < ArrayList < Identifier >> ( ) ;
-      final ArrayList < Identifier > boundedIdList = new ArrayList < Identifier > ( ) ;
-      final ArrayList < Identifier > boundedE = this.expressions [ 0 ].free ( ) ;
-      for ( final Identifier freeId : boundedE )
-      {
-        if ( this.identifiers [ 0 ].equals ( freeId ) )
-        {
-          freeId.setBoundedToExpression ( this ) ;
-          freeId.setBoundedToIdentifier ( this.identifiers [ 0 ] ) ;
-          boundedIdList.add ( freeId ) ;
-        }
-      }
-      this.boundedIdentifiers.add ( boundedIdList ) ;
-    }
-    return this.boundedIdentifiers ;
-  }
-
-
-  /**
-   * Returns the <code>pIndex</code>th list of in this {@link Expression}
-   * bounded {@link Identifier}s.
-   * 
-   * @param pIndex The index of the list of {@link Identifier}s to return.
-   * @return A list of in this {@link Expression} bounded {@link Identifier}s.
-   */
-  public ArrayList < Identifier > getBoundedIdentifiers ( final int pIndex )
-  {
-    if ( this.boundedIdentifiers == null )
-    {
-      return this.getBoundedIdentifiers ( ).get ( pIndex ) ;
-    }
-    return this.boundedIdentifiers.get ( pIndex ) ;
-  }
-
-
-  /**
    * {@inheritDoc}
    */
   @ Override
@@ -320,6 +276,33 @@ public final class Lambda extends Value implements BoundedIdentifiers ,
   public Identifier getIdentifiers ( final int pIndex )
   {
     return this.identifiers [ pIndex ] ;
+  }
+
+
+  /**
+   * Returns a list of in this {@link Expression} bound {@link Identifier}s.
+   * 
+   * @return A list of in this {@link Expression} bound {@link Identifier}s.
+   */
+  public ArrayList < ArrayList < Identifier >> getIdentifiersBound ( )
+  {
+    if ( this.boundedIdentifiers == null )
+    {
+      this.boundedIdentifiers = new ArrayList < ArrayList < Identifier >> ( ) ;
+      final ArrayList < Identifier > boundedIdList = new ArrayList < Identifier > ( ) ;
+      final ArrayList < Identifier > boundedE = this.expressions [ 0 ].free ( ) ;
+      for ( final Identifier freeId : boundedE )
+      {
+        if ( this.identifiers [ 0 ].equals ( freeId ) )
+        {
+          freeId.setBoundedToExpression ( this ) ;
+          freeId.setBoundedToIdentifier ( this.identifiers [ 0 ] ) ;
+          boundedIdList.add ( freeId ) ;
+        }
+      }
+      this.boundedIdentifiers.add ( boundedIdList ) ;
+    }
+    return this.boundedIdentifiers ;
   }
 
 

@@ -2,7 +2,7 @@ package de.unisiegen.tpml.core.expressions ;
 
 
 import java.util.ArrayList ;
-import de.unisiegen.tpml.core.interfaces.BoundedIdentifiers ;
+import de.unisiegen.tpml.core.interfaces.BoundIdentifiers ;
 import de.unisiegen.tpml.core.interfaces.ChildrenExpressions ;
 import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
@@ -23,7 +23,7 @@ import de.unisiegen.tpml.core.util.BoundRenaming ;
  * @version $Rev:1092 $
  * @see de.unisiegen.tpml.core.expressions.Let
  */
-public final class LetRec extends Let implements BoundedIdentifiers ,
+public final class LetRec extends Let implements BoundIdentifiers ,
     DefaultTypes , ChildrenExpressions
 {
   /**
@@ -81,12 +81,22 @@ public final class LetRec extends Let implements BoundedIdentifiers ,
 
 
   /**
-   * Returns a list of in this {@link Expression} bounded {@link Identifier}s.
-   * 
-   * @return A list of in this {@link Expression} bounded {@link Identifier}s.
+   * {@inheritDoc}
    */
   @ Override
-  public ArrayList < ArrayList < Identifier >> getBoundedIdentifiers ( )
+  public String getCaption ( )
+  {
+    return "Let-Rec" ; //$NON-NLS-1$
+  }
+
+
+  /**
+   * Returns a list of in this {@link Expression} bound {@link Identifier}s.
+   * 
+   * @return A list of in this {@link Expression} bound {@link Identifier}s.
+   */
+  @ Override
+  public ArrayList < ArrayList < Identifier >> getIdentifiersBound ( )
   {
     if ( this.boundedIdentifiers == null )
     {
@@ -115,34 +125,6 @@ public final class LetRec extends Let implements BoundedIdentifiers ,
       this.boundedIdentifiers.add ( boundedIdList ) ;
     }
     return this.boundedIdentifiers ;
-  }
-
-
-  /**
-   * Returns the <code>pIndex</code>th list of in this {@link Expression}
-   * bounded {@link Identifier}s.
-   * 
-   * @param pIndex The index of the list of {@link Identifier}s to return.
-   * @return A list of in this {@link Expression} bounded {@link Identifier}s.
-   */
-  @ Override
-  public ArrayList < Identifier > getBoundedIdentifiers ( int pIndex )
-  {
-    if ( this.boundedIdentifiers == null )
-    {
-      return getBoundedIdentifiers ( ).get ( pIndex ) ;
-    }
-    return this.boundedIdentifiers.get ( pIndex ) ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   */
-  @ Override
-  public String getCaption ( )
-  {
-    return "Let-Rec" ; //$NON-NLS-1$
   }
 
 

@@ -2,7 +2,7 @@ package de.unisiegen.tpml.core.expressions ;
 
 
 import java.util.ArrayList ;
-import de.unisiegen.tpml.core.interfaces.BoundedIdentifiers ;
+import de.unisiegen.tpml.core.interfaces.BoundIdentifiers ;
 import de.unisiegen.tpml.core.interfaces.ChildrenExpressions ;
 import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
@@ -23,7 +23,7 @@ import de.unisiegen.tpml.core.util.BoundRenaming ;
  * @see CurriedLet
  */
 public final class CurriedLetRec extends CurriedLet implements
-    BoundedIdentifiers , DefaultTypes , ChildrenExpressions
+    BoundIdentifiers , DefaultTypes , ChildrenExpressions
 {
   /**
    * Allocates a new <code>CurriedLetRec</code> instance.
@@ -110,14 +110,24 @@ public final class CurriedLetRec extends CurriedLet implements
 
 
   /**
-   * Returns a list of lists of in this {@link Expression} bounded
+   * {@inheritDoc}
+   */
+  @ Override
+  public String getCaption ( )
+  {
+    return "Curried-Let-Rec" ; //$NON-NLS-1$
+  }
+
+
+  /**
+   * Returns a list of lists of in this {@link Expression} bound
    * {@link Identifier}s.
    * 
-   * @return A list of lists of in this {@link Expression} bounded
+   * @return A list of lists of in this {@link Expression} bound
    *         {@link Identifier}s.
    */
   @ Override
-  public ArrayList < ArrayList < Identifier >> getBoundedIdentifiers ( )
+  public ArrayList < ArrayList < Identifier >> getIdentifiersBound ( )
   {
     if ( this.boundedIdentifiers == null )
     {
@@ -198,34 +208,6 @@ public final class CurriedLetRec extends CurriedLet implements
       }
     }
     return this.boundedIdentifiers ;
-  }
-
-
-  /**
-   * Returns the <code>pIndex</code>th list of in this {@link Expression}
-   * bounded {@link Identifier}s.
-   * 
-   * @param pIndex The index of the list of {@link Identifier}s to return.
-   * @return A list of in this {@link Expression} bounded {@link Identifier}s.
-   */
-  @ Override
-  public ArrayList < Identifier > getBoundedIdentifiers ( int pIndex )
-  {
-    if ( this.boundedIdentifiers == null )
-    {
-      return getBoundedIdentifiers ( ).get ( pIndex ) ;
-    }
-    return this.boundedIdentifiers.get ( pIndex ) ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   */
-  @ Override
-  public String getCaption ( )
-  {
-    return "Curried-Let-Rec" ; //$NON-NLS-1$
   }
 
 

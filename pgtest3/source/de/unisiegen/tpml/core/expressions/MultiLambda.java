@@ -3,7 +3,7 @@ package de.unisiegen.tpml.core.expressions ;
 
 import java.util.ArrayList ;
 import java.util.Arrays ;
-import de.unisiegen.tpml.core.interfaces.BoundedIdentifiers ;
+import de.unisiegen.tpml.core.interfaces.BoundIdentifiers ;
 import de.unisiegen.tpml.core.interfaces.ChildrenExpressions ;
 import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
@@ -25,7 +25,7 @@ import de.unisiegen.tpml.core.util.BoundRenaming ;
  * @see MultiLet
  * @see Value
  */
-public final class MultiLambda extends Value implements BoundedIdentifiers ,
+public final class MultiLambda extends Value implements BoundIdentifiers ,
     DefaultTypes , ChildrenExpressions
 {
   /**
@@ -195,71 +195,6 @@ public final class MultiLambda extends Value implements BoundedIdentifiers ,
 
 
   /**
-   * Returns a list of lists of in this {@link Expression} bounded
-   * {@link Identifier}s.
-   * 
-   * @return A list of lists of in this {@link Expression} bounded
-   *         {@link Identifier}s.
-   */
-  public ArrayList < ArrayList < Identifier >> getBoundedIdentifiers ( )
-  {
-    if ( this.boundedIdentifiers == null )
-    {
-      this.boundedIdentifiers = new ArrayList < ArrayList < Identifier >> ( ) ;
-      ArrayList < Identifier > boundedE = this.expressions [ 0 ].free ( ) ;
-      for ( int i = 0 ; i < this.identifiers.length ; i ++ )
-      {
-        /*
-         * An Identifier has no binding, if an Identifier after him has the same
-         * name. Example: (λ(x, x).x) (1, 2).
-         */
-        boolean hasBinding = true ;
-        for ( int j = i + 1 ; j < this.identifiers.length ; j ++ )
-        {
-          if ( this.identifiers [ i ].equals ( this.identifiers [ j ] ) )
-          {
-            hasBinding = false ;
-            break ;
-          }
-        }
-        ArrayList < Identifier > boundedIdList = new ArrayList < Identifier > ( ) ;
-        if ( hasBinding )
-        {
-          for ( Identifier freeId : boundedE )
-          {
-            if ( this.identifiers [ i ].equals ( freeId ) )
-            {
-              freeId.setBoundedToExpression ( this ) ;
-              freeId.setBoundedToIdentifier ( this.identifiers [ i ] ) ;
-              boundedIdList.add ( freeId ) ;
-            }
-          }
-        }
-        this.boundedIdentifiers.add ( boundedIdList ) ;
-      }
-    }
-    return this.boundedIdentifiers ;
-  }
-
-
-  /**
-   * Returns the <code>pIndex</code>th list of in this {@link Expression}
-   * bounded {@link Identifier}s.
-   * 
-   * @param pIndex The index of the list of {@link Identifier}s to return.
-   * @return A list of in this {@link Expression} bounded {@link Identifier}s.
-   */
-  public ArrayList < Identifier > getBoundedIdentifiers ( int pIndex )
-  {
-    if ( this.boundedIdentifiers == null )
-    {
-      return getBoundedIdentifiers ( ).get ( pIndex ) ;
-    }
-    return this.boundedIdentifiers.get ( pIndex ) ;
-  }
-
-
-  /**
    * {@inheritDoc}
    */
   @ Override
@@ -342,6 +277,54 @@ public final class MultiLambda extends Value implements BoundedIdentifiers ,
   public Identifier getIdentifiers ( int pIndex )
   {
     return this.identifiers [ pIndex ] ;
+  }
+
+
+  /**
+   * Returns a list of lists of in this {@link Expression} bound
+   * {@link Identifier}s.
+   * 
+   * @return A list of lists of in this {@link Expression} bound
+   *         {@link Identifier}s.
+   */
+  public ArrayList < ArrayList < Identifier >> getIdentifiersBound ( )
+  {
+    if ( this.boundedIdentifiers == null )
+    {
+      this.boundedIdentifiers = new ArrayList < ArrayList < Identifier >> ( ) ;
+      ArrayList < Identifier > boundedE = this.expressions [ 0 ].free ( ) ;
+      for ( int i = 0 ; i < this.identifiers.length ; i ++ )
+      {
+        /*
+         * An Identifier has no binding, if an Identifier after him has the same
+         * name. Example: (λ(x, x).x) (1, 2).
+         */
+        boolean hasBinding = true ;
+        for ( int j = i + 1 ; j < this.identifiers.length ; j ++ )
+        {
+          if ( this.identifiers [ i ].equals ( this.identifiers [ j ] ) )
+          {
+            hasBinding = false ;
+            break ;
+          }
+        }
+        ArrayList < Identifier > boundedIdList = new ArrayList < Identifier > ( ) ;
+        if ( hasBinding )
+        {
+          for ( Identifier freeId : boundedE )
+          {
+            if ( this.identifiers [ i ].equals ( freeId ) )
+            {
+              freeId.setBoundedToExpression ( this ) ;
+              freeId.setBoundedToIdentifier ( this.identifiers [ i ] ) ;
+              boundedIdList.add ( freeId ) ;
+            }
+          }
+        }
+        this.boundedIdentifiers.add ( boundedIdList ) ;
+      }
+    }
+    return this.boundedIdentifiers ;
   }
 
 

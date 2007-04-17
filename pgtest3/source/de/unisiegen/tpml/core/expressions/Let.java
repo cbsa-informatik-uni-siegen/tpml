@@ -2,7 +2,7 @@ package de.unisiegen.tpml.core.expressions ;
 
 
 import java.util.ArrayList ;
-import de.unisiegen.tpml.core.interfaces.BoundedIdentifiers ;
+import de.unisiegen.tpml.core.interfaces.BoundIdentifiers ;
 import de.unisiegen.tpml.core.interfaces.ChildrenExpressions ;
 import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
@@ -23,8 +23,8 @@ import de.unisiegen.tpml.core.util.BoundRenaming ;
  * @see Expression
  * @see Lambda
  */
-public class Let extends Expression implements BoundedIdentifiers ,
-    DefaultTypes , ChildrenExpressions
+public class Let extends Expression implements BoundIdentifiers , DefaultTypes ,
+    ChildrenExpressions
 {
   /**
    * Indeces of the child {@link Expression}s.
@@ -191,50 +191,6 @@ public class Let extends Expression implements BoundedIdentifiers ,
 
 
   /**
-   * Returns a list of in this {@link Expression} bounded {@link Identifier}s.
-   * 
-   * @return A list of in this {@link Expression} bounded {@link Identifier}s.
-   */
-  public ArrayList < ArrayList < Identifier >> getBoundedIdentifiers ( )
-  {
-    if ( this.boundedIdentifiers == null )
-    {
-      this.boundedIdentifiers = new ArrayList < ArrayList < Identifier >> ( ) ;
-      ArrayList < Identifier > boundedIdList = new ArrayList < Identifier > ( ) ;
-      ArrayList < Identifier > boundedE2 = this.expressions [ 1 ].free ( ) ;
-      for ( Identifier freeId : boundedE2 )
-      {
-        if ( this.identifiers [ 0 ].equals ( freeId ) )
-        {
-          freeId.setBoundedToExpression ( this ) ;
-          freeId.setBoundedToIdentifier ( this.identifiers [ 0 ] ) ;
-          boundedIdList.add ( freeId ) ;
-        }
-      }
-      this.boundedIdentifiers.add ( boundedIdList ) ;
-    }
-    return this.boundedIdentifiers ;
-  }
-
-
-  /**
-   * Returns the <code>pIndex</code>th list of in this {@link Expression}
-   * bounded {@link Identifier}s.
-   * 
-   * @param pIndex The index of the list of {@link Identifier}s to return.
-   * @return A list of in this {@link Expression} bounded {@link Identifier}s.
-   */
-  public ArrayList < Identifier > getBoundedIdentifiers ( int pIndex )
-  {
-    if ( this.boundedIdentifiers == null )
-    {
-      return getBoundedIdentifiers ( ).get ( pIndex ) ;
-    }
-    return this.boundedIdentifiers.get ( pIndex ) ;
-  }
-
-
-  /**
    * {@inheritDoc}
    */
   @ Override
@@ -337,6 +293,33 @@ public class Let extends Expression implements BoundedIdentifiers ,
   public Identifier getIdentifiers ( int pIndex )
   {
     return this.identifiers [ pIndex ] ;
+  }
+
+
+  /**
+   * Returns a list of in this {@link Expression} bound {@link Identifier}s.
+   * 
+   * @return A list of in this {@link Expression} bound {@link Identifier}s.
+   */
+  public ArrayList < ArrayList < Identifier >> getIdentifiersBound ( )
+  {
+    if ( this.boundedIdentifiers == null )
+    {
+      this.boundedIdentifiers = new ArrayList < ArrayList < Identifier >> ( ) ;
+      ArrayList < Identifier > boundedIdList = new ArrayList < Identifier > ( ) ;
+      ArrayList < Identifier > boundedE2 = this.expressions [ 1 ].free ( ) ;
+      for ( Identifier freeId : boundedE2 )
+      {
+        if ( this.identifiers [ 0 ].equals ( freeId ) )
+        {
+          freeId.setBoundedToExpression ( this ) ;
+          freeId.setBoundedToIdentifier ( this.identifiers [ 0 ] ) ;
+          boundedIdList.add ( freeId ) ;
+        }
+      }
+      this.boundedIdentifiers.add ( boundedIdList ) ;
+    }
+    return this.boundedIdentifiers ;
   }
 
 

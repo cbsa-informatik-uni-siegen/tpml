@@ -59,6 +59,12 @@ public final class DefaultOutline implements Outline
 
 
   /**
+   * Method name for getIdentifiersBound
+   */
+  private static final String GET_IDENTIFIERS_BOUND = "getIdentifiersBound" ; //$NON-NLS-1$
+
+
+  /**
    * Method name for getTypes
    */
   private static final String GET_TYPES = "getTypes" ; //$NON-NLS-1$
@@ -74,12 +80,6 @@ public final class DefaultOutline implements Outline
    * Method name for getTypesPrefix
    */
   private static final String GET_TYPES_PREFIX = "getTypesPrefix" ; //$NON-NLS-1$
-
-
-  /**
-   * Method name for getBoundedIdentifiers
-   */
-  private static final String GET_IDENTIFIERS_BOUNDED = "getBoundedIdentifiers" ; //$NON-NLS-1$
 
 
   /**
@@ -252,7 +252,7 @@ public final class DefaultOutline implements Outline
         }
       }
       else if ( currentInterface
-          .equals ( de.unisiegen.tpml.core.interfaces.BoundedIdentifiers.class ) )
+          .equals ( de.unisiegen.tpml.core.interfaces.BoundIdentifiers.class ) )
       {
         try
         {
@@ -266,8 +266,9 @@ public final class DefaultOutline implements Outline
               .getMethod ( GET_IDENTIFIERS_PREFIX , new Class [ 0 ] ).invoke (
                   pExpression , new Object [ 0 ] ) ;
           boundedIdentifiers = ( ArrayList < ArrayList < Identifier >> ) pExpression
-              .getClass ( ).getMethod ( GET_IDENTIFIERS_BOUNDED ,
-                  new Class [ 0 ] ).invoke ( pExpression , new Object [ 0 ] ) ;
+              .getClass ( )
+              .getMethod ( GET_IDENTIFIERS_BOUND , new Class [ 0 ] ).invoke (
+                  pExpression , new Object [ 0 ] ) ;
         }
         catch ( IllegalArgumentException e )
         {

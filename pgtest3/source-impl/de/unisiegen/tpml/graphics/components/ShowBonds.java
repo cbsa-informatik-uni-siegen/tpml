@@ -29,6 +29,18 @@ public final class ShowBonds
 
 
   /**
+   * Method name for getIdentifiers
+   */
+  private static final String GET_IDENTIFIERS = "getIdentifiers" ; //$NON-NLS-1$
+
+
+  /**
+   * Method name for getIdentifiersBound
+   */
+  private static final String GET_IDENTIFIERS_BOUND = "getIdentifiersBound" ; //$NON-NLS-1$
+
+
+  /**
    * Checks the given {@link Expression} for bounded {@link Identifier}s.
    * 
    * @param pExpression The input {@link Expression}.
@@ -40,19 +52,19 @@ public final class ShowBonds
         .getInterfaces ( ) )
     {
       if ( currentInterface
-          .equals ( de.unisiegen.tpml.core.interfaces.BoundedIdentifiers.class ) )
+          .equals ( de.unisiegen.tpml.core.interfaces.BoundIdentifiers.class ) )
       {
         try
         {
           // Invoke getIdentifiers
           Identifier [ ] id = ( Identifier [ ] ) pExpression.getClass ( )
-              .getMethod ( "getIdentifiers" , new Class [ 0 ] ).invoke ( //$NON-NLS-1$
+              .getMethod ( GET_IDENTIFIERS , new Class [ 0 ] ).invoke (
                   pExpression , new Object [ 0 ] ) ;
           // Invoke getBoundedIdentifiers
           ArrayList < ArrayList < Identifier >> bounded = ( ArrayList < ArrayList < Identifier >> ) pExpression
-              .getClass ( ).getMethod (
-                  "getBoundedIdentifiers" , new Class [ 0 ] ) //$NON-NLS-1$
-              .invoke ( pExpression , new Object [ 0 ] ) ;
+              .getClass ( )
+              .getMethod ( GET_IDENTIFIERS_BOUND , new Class [ 0 ] ).invoke (
+                  pExpression , new Object [ 0 ] ) ;
           // Create Bonds
           if ( bounded == null )
           {
