@@ -10,12 +10,15 @@ import de.unisiegen.tpml.core.languages.Language ;
 import de.unisiegen.tpml.core.languages.LanguageParser ;
 import de.unisiegen.tpml.core.languages.LanguageScanner ;
 import de.unisiegen.tpml.core.languages.LanguageTranslator ;
+import de.unisiegen.tpml.core.languages.LanguageTypeParser ;
+import de.unisiegen.tpml.core.languages.LanguageTypeScanner ;
 import de.unisiegen.tpml.core.languages.l2.L2Language ;
-import de.unisiegen.tpml.core.languages.l2.L2TypeInferenceProofRuleSet;
+import de.unisiegen.tpml.core.languages.l2.L2TypeInferenceProofRuleSet ;
 import de.unisiegen.tpml.core.languages.l2cbn.L2CBNLanguage ;
 import de.unisiegen.tpml.core.smallstep.SmallStepProofModel ;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel ;
-import de.unisiegen.tpml.core.typeinference.TypeInferenceProofModel;
+import de.unisiegen.tpml.core.typeinference.TypeInferenceProofModel ;
+import de.unisiegen.tpml.core.types.MonoType ;
 
 
 /**
@@ -159,14 +162,55 @@ public class L2OLanguage extends L2Language
     return new TypeCheckerProofModel ( pExpression ,
         new L2OTypeCheckerProofRuleSet ( this ) ) ;
   }
-  
+
+
   /**
    * {@inheritDoc}
    */
   @ Override
-  public TypeInferenceProofModel newTypeInferenceProofModel ( Expression expression )
+  public TypeInferenceProofModel newTypeInferenceProofModel (
+      Expression expression )
   {
-	 return new TypeInferenceProofModel ( expression ,
+    return new TypeInferenceProofModel ( expression ,
         new L2TypeInferenceProofRuleSet ( this ) ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.tpml.core.languages.AbstractLanguage#newTypeParser(de.unisiegen.tpml.core.languages.LanguageTypeScanner)
+   */
+  @ Override
+  public LanguageTypeParser newTypeParser ( LanguageTypeScanner scanner )
+  {
+    if ( scanner == null )
+    {
+      throw new NullPointerException ( "scanner is null" ) ; //$NON-NLS-1$
+    }
+    final lr_parser parser = new L2OTypeParser ( scanner ) ;
+    return new LanguageTypeParser ( )
+    {
+      public MonoType parse ( ) throws Exception
+      {
+        return ( MonoType ) parser.parse ( ).value ;
+      }
+    } ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.tpml.core.languages.l1.L1Language#newTypeScanner(java.io.Reader)
+   */
+  @ Override
+  public LanguageTypeScanner newTypeScanner ( Reader reader )
+  {
+    if ( reader == null )
+    {
+      throw new NullPointerException ( "reader is null" ) ; //$NON-NLS-1$
+    }
+    return new L2OTypeScanner ( reader ) ;
   }
 }

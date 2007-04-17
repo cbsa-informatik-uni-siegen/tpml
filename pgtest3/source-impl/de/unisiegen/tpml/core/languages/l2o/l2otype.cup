@@ -1,0 +1,60 @@
+import de.unisiegen.tpml.core.types.*;
+import de.unisiegen.tpml.core.expressions.*;
+
+/* Syntactic tokens */
+terminal			ARROW;
+terminal			LPAREN, RPAREN;
+
+/* Types */
+terminal			BOOL, INT, UNIT, LESS, GREATER, COLON, SEMI;
+
+/* Special tokens */
+terminal Integer	TYPEVARIABLE;
+terminal String		IDENTIFIER;
+
+/* Non-Terminals */
+non terminal MonoType		type;
+non terminal MonoType		simple_type;
+non terminal ObjectType		object_type;
+non terminal RowType		row_type;
+
+/* Precedences, based on http://caml.inria.fr/pub/docs/manual-ocaml/manual015.html */
+precedence right	ARROW;
+
+
+/*********
+ * Types *
+ *********/
+
+
+type				::=	simple_type:t			{: RESULT = t; :}
+					|	type:t1 ARROW type:t2	{: RESULT = new ArrowType(t1, t2); :}
+					;
+
+simple_type			::=	LPAREN type:t RPAREN	{: RESULT = t; :}
+					|	BOOL					{: RESULT = new BooleanType(); :}
+					|	INT						{: RESULT = new IntegerType(); :}
+					|	UNIT					{: RESULT = new UnitType(); :}
+					|	TYPEVARIABLE:tvar		{: RESULT = new TypeVariable(0, tvar); :}
+					|	object_type:t			{: RESULT = t; :}
+					;
+
+object_type			::= LESS row_type:r GREATER
+						{: RESULT = new ObjectType ( r ); :}
+					;
+
+row_type			::= IDENTIFIER:id COLON type:tau SEMI
+						{: Identifier [] m = new Identifier [1];
+						   m [0] = new Identifier(id);
+						   MonoType [] types = new MonoType [1];
+						   types [0] = tau;
+						   RESULT = new RowType (m,types) ; :}
+					|	IDENTIFIER:id COLON type:tau SEMI row_type:r
+						{: Identifier [] m = new Identifier [r.getIdentifiers().length + 1];
+						   m [0] = new Identifier(id);
+						   System.arraycopy ( r.getIdentifiers() , 0 , m , 1 , r.getIdentifiers().length );
+						   MonoType [] types = new MonoType [r.getTypes().length + 1];
+						   types [0] = tau;
+						   System.arraycopy ( r.getTypes() , 0 , types , 1 , r.getTypes().length );
+						   RESULT = new RowType (m,types) ; :}
+					;

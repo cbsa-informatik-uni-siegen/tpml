@@ -563,4 +563,4 @@ row_type			::= IDENTIFIER:id COLON type:tau SEMI
 						   types [0] = tau;
 						   System.arraycopy ( r.getTypes() , 0 , types , 1 , r.getTypes().length );
 						   RESULT = new RowType (m,types) ; :}
-					;		
+					;

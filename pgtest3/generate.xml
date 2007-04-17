@@ -120,6 +120,7 @@
 	</target>
 	
 	<target name="l2o" description="Generates lexer and parser for L2O">
+		<!-- Expressions -->
 		<jflex 
 	    	file="${impldir}/de/unisiegen/tpml/core/languages/l2o/l2o.flex"
 	    	destdir="${generateddir}"
@@ -130,6 +131,24 @@
 			package="de.unisiegen.tpml.core.languages.l2o"
 			parser="L2OAbstractParser"
 			symbols="L2OTerminals"
+			interface="yes"
+			debug="no"
+			expect="0"
+			nonterms="no"
+			nopositions="yes"
+			dump_grammar="no" />
+		
+		<!-- Types -->
+		<jflex 
+    		file="${impldir}/de/unisiegen/tpml/core/languages/l2o/l2otype.flex"
+    		destdir="${generateddir}"
+			nobak="yes" />
+		<cup
+			srcfile="${impldir}/de/unisiegen/tpml/core/languages/l2o/l2otype.cup"
+			destdir="${generateddir}/de/unisiegen/tpml/core/languages/l2o"
+			package="de.unisiegen.tpml.core.languages.l2o"
+			parser="L2OAbstractTypeParser"
+			symbols="L2OTypeTerminals"
 			interface="yes"
 			debug="no"
 			expect="0"
