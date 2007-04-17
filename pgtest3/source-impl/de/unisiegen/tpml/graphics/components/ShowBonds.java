@@ -19,13 +19,13 @@ public final class ShowBonds
   /**
    * The current loaded {@link Expression}.
    */
-  private Expression expression ;
+  private Expression expression = null ;
 
 
   /**
    * List of all Bonds in loaded {link Expression}.
    */
-  private ArrayList < Bonds > result ;
+  private ArrayList < Bonds > result = null ;
 
 
   /**
@@ -36,6 +36,7 @@ public final class ShowBonds
   @ SuppressWarnings ( "unchecked" )
   private final void check ( Expression pExpression )
   {
+
     for ( Class < Object > currentInterface : pExpression.getClass ( )
         .getInterfaces ( ) )
     {
@@ -113,6 +114,12 @@ public final class ShowBonds
    */
   public final ArrayList < Bonds > getAnnotations ( )
   {
+    if ( this.result == null )
+    {
+      this.result = new ArrayList < Bonds > ( ) ;
+      System.out.println ( "check" ) ;
+      check ( this.expression ) ;
+    }
     return this.result ;
   }
 
@@ -125,7 +132,5 @@ public final class ShowBonds
   public final void setExpression ( Expression pExpression )
   {
     this.expression = pExpression ;
-    this.result = new ArrayList < Bonds > ( ) ;
-    check ( pExpression ) ;
   }
 }
