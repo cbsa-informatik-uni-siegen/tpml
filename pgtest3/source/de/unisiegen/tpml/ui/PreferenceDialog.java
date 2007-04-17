@@ -202,14 +202,15 @@ public class PreferenceDialog extends javax.swing.JDialog
      */
     // setup the colors list
     DefaultListModel colorsModel = new DefaultListModel ( ) ;
-    colorsModel.addElement ( new ColorItem ( "commentColor" ) ) ;
-    colorsModel.addElement ( new ColorItem ( "constantColor" ) ) ;
-    colorsModel.addElement ( new ColorItem ( "environmentColor" ) ) ;
     colorsModel.addElement ( new ColorItem ( "expressionColor" ) ) ;
     colorsModel.addElement ( new ColorItem ( "keywordColor" ) ) ;
-    colorsModel.addElement ( new ColorItem ( "ruleColor" ) ) ;
-    colorsModel.addElement ( new ColorItem ( "underlineColor" ) ) ;
+    colorsModel.addElement ( new ColorItem ( "constantColor" ) ) ;
+    colorsModel.addElement ( new ColorItem ( "identifierColor" ) ) ;
     colorsModel.addElement ( new ColorItem ( "typeColor" ) ) ;
+    colorsModel.addElement ( new ColorItem ( "commentColor" ) ) ;
+    colorsModel.addElement ( new ColorItem ( "environmentColor" ) ) ;
+    colorsModel.addElement ( new ColorItem ( "underlineColor" ) ) ;
+    colorsModel.addElement ( new ColorItem ( "ruleColor" ) ) ;
     colorsModel.addElement ( new ColorItem ( "selectionColor" ) ) ;
     colorsModel.addElement ( new ColorItem ( "boundIdColor" ) ) ;
     colorsModel.addElement ( new ColorItem ( "bindingIdColor" ) ) ;

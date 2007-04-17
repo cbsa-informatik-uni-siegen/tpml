@@ -440,6 +440,12 @@ public final class OutlineNode extends DefaultMutableTreeNode
 
 
   /**
+   * The {@link Identifier} color.
+   */
+  private String identifierColor ;
+
+
+  /**
    * The keyword color.
    */
   private String keywordColor ;
@@ -905,6 +911,8 @@ public final class OutlineNode extends DefaultMutableTreeNode
   {
     this.expressionColor = getHTMLColor ( Theme.currentTheme ( )
         .getExpressionColor ( ) ) ;
+    this.identifierColor = getHTMLColor ( Theme.currentTheme ( )
+        .getIdentifierColor ( ) ) ;
     this.keywordColor = getHTMLColor ( Theme.currentTheme ( )
         .getKeywordColor ( ) ) ;
     this.constantColor = getHTMLColor ( Theme.currentTheme ( )
@@ -1032,8 +1040,7 @@ public final class OutlineNode extends DefaultMutableTreeNode
     if ( cache != null )
     {
       this.captionHTML = cache ;
-      // TODO Only for testing
-      // return ;
+      return ;
     }
     // Load the PrettyCharIterator
     PrettyCharIterator prettyCharIterator ;
@@ -1150,23 +1157,35 @@ public final class OutlineNode extends DefaultMutableTreeNode
        */
       else if ( PrettyStyle.KEYWORD.equals ( prettyCharIterator.getStyle ( ) ) )
       {
-        charIndex = updateCaptionStyle ( charIndex , PrettyStyle.KEYWORD ,
-            prettyCharIterator , result , prefix , this.keywordColor ) ;
+        charIndex = updateCaptionStyle ( charIndex , true ,
+            PrettyStyle.KEYWORD , prettyCharIterator , result , prefix ,
+            this.keywordColor ) ;
+      }
+      /*
+       * Identifier
+       */
+      else if ( PrettyStyle.IDENTIFIER
+          .equals ( prettyCharIterator.getStyle ( ) ) )
+      {
+        charIndex = updateCaptionStyle ( charIndex , false ,
+            PrettyStyle.IDENTIFIER , prettyCharIterator , result , prefix ,
+            this.identifierColor ) ;
       }
       /*
        * Constant
        */
       else if ( PrettyStyle.CONSTANT.equals ( prettyCharIterator.getStyle ( ) ) )
       {
-        charIndex = updateCaptionStyle ( charIndex , PrettyStyle.CONSTANT ,
-            prettyCharIterator , result , prefix , this.constantColor ) ;
+        charIndex = updateCaptionStyle ( charIndex , true ,
+            PrettyStyle.CONSTANT , prettyCharIterator , result , prefix ,
+            this.constantColor ) ;
       }
       /*
        * Type
        */
       else if ( PrettyStyle.TYPE.equals ( prettyCharIterator.getStyle ( ) ) )
       {
-        charIndex = updateCaptionStyle ( charIndex , PrettyStyle.TYPE ,
+        charIndex = updateCaptionStyle ( charIndex , true , PrettyStyle.TYPE ,
             prettyCharIterator , result , prefix , this.typeColor ) ;
       }
       /*
@@ -1193,12 +1212,6 @@ public final class OutlineNode extends DefaultMutableTreeNode
             .toString ( ) ) ;
     this.outlineNodeCacheList.add ( outlineNodeCache ) ;
     this.captionHTML = result.toString ( ) ;
-    // TODO Only for testing
-    if ( ( cache != null ) && ( ! this.captionHTML.equals ( cache ) ) )
-    {
-      System.err.println ( "OutlineNode - Cache:   " + cache ) ; //$NON-NLS-1$
-      System.err.println ( "OutlineNode - Caption: " + captionHTML ) ; //$NON-NLS-1$
-    }
   }
 
 
@@ -1296,6 +1309,7 @@ public final class OutlineNode extends DefaultMutableTreeNode
    * Updates the caption of the node.
    * 
    * @param pCharIndex The char index.
+   * @param pBold True if bold is active.
    * @param pPrettyStyle The {@link PrettyStyle}.
    * @param pPrettyCharIterator The {@link PrettyCharIterator}.
    * @param pResult The result {@link StringBuffer}.
@@ -1303,12 +1317,19 @@ public final class OutlineNode extends DefaultMutableTreeNode
    * @param pColor The {@link Color} of the characters.
    * @return The charIndex at the end of this method.
    */
-  private final int updateCaptionStyle ( int pCharIndex ,
+  private final int updateCaptionStyle ( int pCharIndex , boolean pBold ,
       PrettyStyle pPrettyStyle , PrettyCharIterator pPrettyCharIterator ,
       StringBuffer pResult , StringBuffer pPrefix , String pColor )
   {
     int charIndex = pCharIndex ;
-    pResult.append ( FONT_BOLD_BEGIN ) ;
+    if ( pBold )
+    {
+      pResult.append ( FONT_BOLD_BEGIN ) ;
+    }
+    else
+    {
+      pResult.append ( FONT_BEGIN ) ;
+    }
     pResult.append ( pColor ) ;
     pResult.append ( FONT_AFTER_COLOR ) ;
     while ( pPrettyStyle.equals ( pPrettyCharIterator.getStyle ( ) ) )
@@ -1327,7 +1348,14 @@ public final class OutlineNode extends DefaultMutableTreeNode
       charIndex ++ ;
       pPrettyCharIterator.next ( ) ;
     }
-    pResult.append ( FONT_BOLD_END ) ;
+    if ( pBold )
+    {
+      pResult.append ( FONT_BOLD_END ) ;
+    }
+    else
+    {
+      pResult.append ( FONT_END ) ;
+    }
     return charIndex ;
   }
 }

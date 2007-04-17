@@ -154,6 +154,15 @@ public final class Theme extends AbstractBean
 
 
   /**
+   * The {@link Color} used to render identifier.
+   * 
+   * @see #getIdentifierColor()
+   * @see #setIdentifierColor(Color)
+   */
+  private Color identifierColor ;
+
+
+  /**
    * The {@link Color} used to render selected expressions.
    * 
    * @see #getSelectionColor()
@@ -240,13 +249,13 @@ public final class Theme extends AbstractBean
     this.preferences = Preferences.userNodeForPackage ( Theme.class ) ;
     // load the commentColor setting
     this.commentColor = Color.decode ( this.preferences.get ( "commentColor" , //$NON-NLS-1$
-        "#1a991a" ) ) ; //$NON-NLS-1$
+        "#009900" ) ) ; //$NON-NLS-1$
     // load the constantColor setting
     this.constantColor = Color.decode ( this.preferences.get ( "constantColor" , //$NON-NLS-1$
-        "#00007f" ) ) ; //$NON-NLS-1$
+        "#00007F" ) ) ; //$NON-NLS-1$
     // load the environmentColor setting
     this.environmentColor = Color.decode ( this.preferences.get (
-        "environmentColor" , "#7f7f7f" ) ) ; //$NON-NLS-1$//$NON-NLS-2$
+        "environmentColor" , "#7F7F7F" ) ) ; //$NON-NLS-1$//$NON-NLS-2$
     // load the expressionColor setting
     this.expressionColor = Color.decode ( this.preferences.get (
         "expressionColor" , "#000000" ) ) ; //$NON-NLS-1$ //$NON-NLS-2$
@@ -273,13 +282,16 @@ public final class Theme extends AbstractBean
     this.font = new JComboBox ( ).getFont ( ) ;
     // load the keywordColor setting
     this.keywordColor = Color.decode ( this.preferences.get ( "keywordColor" , //$NON-NLS-1$
-        "#7f0000" ) ) ; //$NON-NLS-1$
+        "#7F0000" ) ) ; //$NON-NLS-1$
+    this.identifierColor = Color.decode ( this.preferences.get (
+        "identifierColor" , //$NON-NLS-1$
+        "#000066" ) ) ; //$NON-NLS-1$
     // load the ruleColor setting
     this.ruleColor = Color.decode ( this.preferences.get ( "ruleColor" , //$NON-NLS-1$
         "#000000" ) ) ; //$NON-NLS-1$
     // load the underlineColor setting
     this.underlineColor = Color.decode ( this.preferences.get (
-        "underlineColor" , "#ff0000" ) ) ; //$NON-NLS-1$//$NON-NLS-2$
+        "underlineColor" , "#FF0000" ) ) ; //$NON-NLS-1$//$NON-NLS-2$
     // load the typeColor setting
     this.typeColor = Color.decode ( this.preferences.get ( "typeColor" , //$NON-NLS-1$
         "#009900" ) ) ; //$NON-NLS-1$
@@ -392,6 +404,20 @@ public final class Theme extends AbstractBean
   public Color getFreeIdColor ( )
   {
     return this.freeIdColor ;
+  }
+
+
+  /**
+   * Returns the {@link Color} used to render Identifiers in the interpreters,
+   * type checker and the editor.
+   * 
+   * @return the color for Identifiers.
+   * @see #setIdentifierColor(Color)
+   * @see Color
+   */
+  public Color getIdentifierColor ( )
+  {
+    return this.identifierColor ;
   }
 
 
@@ -683,6 +709,36 @@ public final class Theme extends AbstractBean
       firePropertyChange ( "freeIdColor" , oldUnboundColor , pFreeIdColor ) ; //$NON-NLS-1$
       // save the new setting
       this.preferences.put ( "freeIdColor" , encodeColor ( pFreeIdColor ) ) ; //$NON-NLS-1$
+    }
+  }
+
+
+  /**
+   * Sets the color that should be used to render Identifiers to the specified
+   * <code>identifierColor</code>.
+   * 
+   * @param pIdentifierColor the color for Identifiers.
+   * @see #getIdentifierColor()
+   * @see Color
+   * @throws NullPointerException if <code>identifierColor</code> is
+   *           <code>null</code>.
+   */
+  public void setIdentifierColor ( Color pIdentifierColor )
+  {
+    if ( pIdentifierColor == null )
+    {
+      throw new NullPointerException ( "identifierColor is null" ) ; //$NON-NLS-1$
+    }
+    if ( ! this.identifierColor.equals ( pIdentifierColor ) )
+    {
+      // update the identifierColor
+      Color oldIdentifierColor = this.identifierColor ;
+      this.identifierColor = pIdentifierColor ;
+      firePropertyChange (
+          "identifierColor" , oldIdentifierColor , pIdentifierColor ) ; //$NON-NLS-1$
+      // save the new setting
+      this.preferences.put (
+          "identifierColor" , encodeColor ( pIdentifierColor ) ) ; //$NON-NLS-1$
     }
   }
 
