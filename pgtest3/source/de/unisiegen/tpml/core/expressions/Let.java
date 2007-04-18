@@ -102,7 +102,7 @@ public class Let extends Expression implements BoundIdentifiers , DefaultTypes ,
     this.identifiers [ 0 ] = pIdentifier ;
     if ( this.identifiers [ 0 ].getParent ( ) != null )
     {
-      this.identifiers [ 0 ] = this.identifiers [ 0 ].clone ( ) ;
+      // this.identifiers [ 0 ] = this.identifiers [ 0 ].clone ( ) ;
     }
     this.identifiers [ 0 ].setParent ( this ) ;
     // Type
@@ -112,7 +112,7 @@ public class Let extends Expression implements BoundIdentifiers , DefaultTypes ,
     {
       if ( this.types [ 0 ].getParent ( ) != null )
       {
-        this.types [ 0 ] = this.types [ 0 ].clone ( ) ;
+        // this.types [ 0 ] = this.types [ 0 ].clone ( ) ;
       }
       this.types [ 0 ].setParent ( this ) ;
     }
@@ -121,13 +121,13 @@ public class Let extends Expression implements BoundIdentifiers , DefaultTypes ,
     this.expressions [ 0 ] = pExpression1 ;
     if ( this.expressions [ 0 ].getParent ( ) != null )
     {
-      this.expressions [ 0 ] = this.expressions [ 0 ].clone ( ) ;
+      // this.expressions [ 0 ] = this.expressions [ 0 ].clone ( ) ;
     }
     this.expressions [ 0 ].setParent ( this ) ;
     this.expressions [ 1 ] = pExpression2 ;
     if ( this.expressions [ 1 ].getParent ( ) != null )
     {
-      this.expressions [ 1 ] = this.expressions [ 1 ].clone ( ) ;
+      // this.expressions [ 1 ] = this.expressions [ 1 ].clone ( ) ;
     }
     this.expressions [ 1 ].setParent ( this ) ;
   }
@@ -312,8 +312,7 @@ public class Let extends Expression implements BoundIdentifiers , DefaultTypes ,
       {
         if ( this.identifiers [ 0 ].equals ( freeId ) )
         {
-          freeId.setBoundedToExpression ( this ) ;
-          freeId.setBoundedToIdentifier ( this.identifiers [ 0 ] ) ;
+          freeId.setBoundTo ( this , this.identifiers [ 0 ] ) ;
           boundedIdList.add ( freeId ) ;
         }
       }
@@ -444,9 +443,8 @@ public class Let extends Expression implements BoundIdentifiers , DefaultTypes ,
      */
     if ( this.identifiers [ 0 ].equals ( pId ) )
     {
-      return new Let ( this.identifiers [ 0 ].clone ( ) ,
-          this.types [ 0 ] == null ? null : this.types [ 0 ].clone ( ) , newE1 ,
-          newE2.clone ( ) ) ;
+      return new Let ( this.identifiers [ 0 ] , this.types [ 0 ] , newE1 ,
+          newE2 ) ;
     }
     /*
      * Perform the bound renaming if required.
@@ -470,8 +468,7 @@ public class Let extends Expression implements BoundIdentifiers , DefaultTypes ,
      * Perform the substitution in e2.
      */
     newE2 = newE2.substitute ( pId , pExpression ) ;
-    return new Let ( newId , this.types [ 0 ] == null ? null : this.types [ 0 ]
-        .clone ( ) , newE1 , newE2 ) ;
+    return new Let ( newId , this.types [ 0 ] , newE1 , newE2 ) ;
   }
 
 
@@ -487,7 +484,7 @@ public class Let extends Expression implements BoundIdentifiers , DefaultTypes ,
         .substitute ( pTypeSubstitution ) ;
     Expression newE1 = this.expressions [ 0 ].substitute ( pTypeSubstitution ) ;
     Expression newE2 = this.expressions [ 1 ].substitute ( pTypeSubstitution ) ;
-    return new Let ( this.identifiers [ 0 ].clone ( ) , newTau , newE1 , newE2 ) ;
+    return new Let ( this.identifiers [ 0 ] , newTau , newE1 , newE2 ) ;
   }
 
 

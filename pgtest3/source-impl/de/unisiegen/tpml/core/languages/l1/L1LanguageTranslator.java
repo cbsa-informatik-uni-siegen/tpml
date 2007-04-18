@@ -89,11 +89,11 @@ public class L1LanguageTranslator extends L0LanguageTranslator
       // add the lambdas
       for ( int n = curriedLet.getIdentifiers ( ).length - 1 ; n > 0 ; -- n )
       {
-        e1 = new Lambda ( curriedLet.getIdentifiers ( n ).clone ( ) ,
-            curriedLet.getTypes ( n ) , e1 ) ;
+        e1 = new Lambda ( curriedLet.getIdentifiers ( n ) , curriedLet
+            .getTypes ( n ) , e1 ) ;
       }
       // generate the let expression
-      return new Let ( curriedLet.getIdentifiers ( 0 ).clone ( ) , curriedLet
+      return new Let ( curriedLet.getIdentifiers ( 0 ) , curriedLet
           .getTypes ( 0 ) , e1 , e2 ) ;
     }
     else if ( expression instanceof InfixOperation )

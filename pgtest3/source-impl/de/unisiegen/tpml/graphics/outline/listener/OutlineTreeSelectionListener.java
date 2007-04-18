@@ -162,7 +162,7 @@ public final class OutlineTreeSelectionListener implements
       if ( ( selectedNode.getPrettyPrintable ( ) instanceof Identifier )
           && ( i < pList.size ( ) - 1 )
           && ( ( ( Identifier ) selectedNode.getPrettyPrintable ( ) )
-              .getBoundedToExpression ( ) != null ) )
+              .getBoundToExpression ( ) != null ) )
       {
         try
         {
@@ -183,13 +183,13 @@ public final class OutlineTreeSelectionListener implements
               OutlineNode currentOutlineNode = ( OutlineNode ) nodeRow
                   .getChildAt ( j ) ;
               if ( currentOutlineNode.getPrettyPrintable ( ) == identifier
-                  .getBoundedToExpression ( ) )
+                  .getBoundToExpression ( ) )
               {
                 /*
                  * Highlight the first identifier
                  */
                 currentOutlineNode.setBindingIdentifier ( identifier
-                    .getBoundedToIdentifier ( ) ) ;
+                    .getBoundToIdentifier ( ) ) ;
                 currentOutlineNode.updateCaption ( ) ;
                 /*
                  * Highlight the Identifier in the first child
@@ -199,10 +199,10 @@ public final class OutlineTreeSelectionListener implements
                   OutlineNode nodeId = ( OutlineNode ) currentOutlineNode
                       .getChildAt ( k ) ;
                   if ( nodeId.getPrettyPrintable ( ) == identifier
-                      .getBoundedToIdentifier ( ) )
+                      .getBoundToIdentifier ( ) )
                   {
                     nodeId.setBindingIdentifier ( identifier
-                        .getBoundedToIdentifier ( ) ) ;
+                        .getBoundToIdentifier ( ) ) ;
                     nodeId.updateCaption ( ) ;
                     break ;
                   }
@@ -217,17 +217,17 @@ public final class OutlineTreeSelectionListener implements
              * Identifier index.
              */
             if ( pList.get ( i ).getPrettyPrintable ( ) == identifier
-                .getBoundedToExpression ( ) )
+                .getBoundToExpression ( ) )
             {
               for ( int j = 0 ; j < pList.get ( i ).getChildCount ( ) ; j ++ )
               {
                 OutlineNode nodeId = ( OutlineNode ) pList.get ( i )
                     .getChildAt ( j ) ;
                 if ( nodeId.getPrettyPrintable ( ) == identifier
-                    .getBoundedToIdentifier ( ) )
+                    .getBoundToIdentifier ( ) )
                 {
                   nodeId.setBindingIdentifier ( identifier
-                      .getBoundedToIdentifier ( ) ) ;
+                      .getBoundToIdentifier ( ) ) ;
                   nodeId.updateCaption ( ) ;
                   break ;
                 }
@@ -237,7 +237,7 @@ public final class OutlineTreeSelectionListener implements
              * Highlight the Identifier in the node.
              */
             pList.get ( i ).setBindingIdentifier (
-                identifier.getBoundedToIdentifier ( ) ) ;
+                identifier.getBoundToIdentifier ( ) ) ;
           }
         }
         catch ( IllegalArgumentException e )

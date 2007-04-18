@@ -317,7 +317,7 @@ public class L1CBNBigStepProofRuleSet extends L1BigStepProofRuleSet
       MonoType [ ] types = curriedLet.getTypes ( ) ;
       for ( int n = identifiers.length - 1 ; n > 0 ; -- n )
       {
-        e1 = new Lambda ( identifiers [ n ].clone ( ) , types [ n ] , e1 ) ;
+        e1 = new Lambda ( identifiers [ n ] , types [ n ] , e1 ) ;
       }
       // add the recursion for letrec
       if ( e instanceof CurriedLetRec )
@@ -337,8 +337,7 @@ public class L1CBNBigStepProofRuleSet extends L1BigStepProofRuleSet
       if ( e instanceof LetRec )
       {
         LetRec letRec = ( LetRec ) e ;
-        e1 = new Recursion ( letRec.getId ( ).clone ( ) , letRec.getTau ( ) ,
-            e1 ) ;
+        e1 = new Recursion ( letRec.getId ( ) , letRec.getTau ( ) , e1 ) ;
       }
       // add the proof node
       context.addProofNode ( node , let.getE2 ( ).substitute ( let.getId ( ) ,

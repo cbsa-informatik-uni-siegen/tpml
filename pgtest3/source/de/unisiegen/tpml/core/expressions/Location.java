@@ -110,7 +110,7 @@ public final class Location extends Value
   Identifier pId , @ SuppressWarnings ( "unused" )
   Expression pExpression )
   {
-    return this.clone ( ) ;
+    return this ;
   }
 
 

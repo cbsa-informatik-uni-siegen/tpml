@@ -59,22 +59,11 @@ public class L2OBigStepProofRuleSet extends L2BigStepProofRuleSet
   {
     Row row = ( Row ) node.getExpression ( ) ;
     Attribute attribute = ( Attribute ) row.getExpressions ( 0 ) ;
-    for ( int i = 1 ; i < row.getExpressions ( ).length ; i ++ )
-    {
-      if ( row.getExpressions ( i ) instanceof Attribute )
-      {
-        Attribute currentAttribute = ( Attribute ) row.getExpressions ( i ) ;
-        if ( currentAttribute.getId ( ).equals ( attribute.getId ( ) ) )
-        {
-          throw new IllegalArgumentException ( "Can not apply ATTR" ) ; //$NON-NLS-1$
-        }
-      }
-    }
-    context.addProofNode ( node , attribute.getE ( ).clone ( ) ) ;
+    context.addProofNode ( node , attribute.getE ( ) ) ;
     Expression [ ] newRowExpressions = new Expression [ row.getExpressions ( ).length - 1 ] ;
     for ( int i = 0 ; i < newRowExpressions.length ; i ++ )
     {
-      newRowExpressions [ i ] = row.getExpressions ( i + 1 ).clone ( ) ;
+      newRowExpressions [ i ] = row.getExpressions ( i + 1 ) ;
     }
     context.addProofNode ( node , new Row ( newRowExpressions ) ) ;
   }
@@ -97,7 +86,7 @@ public class L2OBigStepProofRuleSet extends L2BigStepProofRuleSet
     Expression [ ] newRowExpressions = new Expression [ row.getExpressions ( ).length - 1 ] ;
     for ( int i = 0 ; i < newRowExpressions.length ; i ++ )
     {
-      newRowExpressions [ i ] = row.getExpressions ( i + 1 ).clone ( ) ;
+      newRowExpressions [ i ] = row.getExpressions ( i + 1 ) ;
     }
     context.addProofNode ( node , new Row ( newRowExpressions ) ) ;
   }
@@ -117,7 +106,7 @@ public class L2OBigStepProofRuleSet extends L2BigStepProofRuleSet
     {
       throw new IllegalArgumentException ( "Can not apply OBJECT" ) ; //$NON-NLS-1$
     }
-    context.addProofNode ( node , row.clone ( ) ) ;
+    context.addProofNode ( node , row ) ;
   }
 
 
@@ -151,7 +140,7 @@ public class L2OBigStepProofRuleSet extends L2BigStepProofRuleSet
     {
       throw new IllegalArgumentException ( "Can not apply SEND" ) ; //$NON-NLS-1$
     }
-    context.addProofNode ( node , send.getE ( ).clone ( ) ) ;
+    context.addProofNode ( node , send.getE ( ) ) ;
   }
 
 
@@ -178,7 +167,7 @@ public class L2OBigStepProofRuleSet extends L2BigStepProofRuleSet
           attribute.getId ( ) , attribute.getE ( ) ) ;
     }
     context.addProofNode ( node , new Send ( new Row ( newRowExpressions ) ,
-        send.getId ( ).clone ( ) ) ) ;
+        send.getId ( ) ) ) ;
   }
 
 
@@ -202,18 +191,17 @@ public class L2OBigStepProofRuleSet extends L2BigStepProofRuleSet
     if ( row.getExpressions ( 0 ) instanceof Method )
     {
       Method method = ( Method ) row.getExpressions ( 0 ) ;
-      methodExpression = method.getE ( ).clone ( ) ;
+      methodExpression = method.getE ( ) ;
       methodName = method.getId ( ) ;
     }
     else if ( row.getExpressions ( 0 ) instanceof CurriedMethod )
     {
       CurriedMethod curriedMethod = ( CurriedMethod ) row.getExpressions ( 0 ) ;
-      methodExpression = curriedMethod.getE ( ).clone ( ) ;
+      methodExpression = curriedMethod.getE ( ) ;
       for ( int i = curriedMethod.getIdentifiers ( ).length - 1 ; i > 0 ; i -- )
       {
-        methodExpression = new Lambda ( curriedMethod.getIdentifiers ( i )
-            .clone ( ) , curriedMethod.getTypes ( i ) == null ? null
-            : curriedMethod.getTypes ( i ).clone ( ) , methodExpression ) ;
+        methodExpression = new Lambda ( curriedMethod.getIdentifiers ( i ) ,
+            curriedMethod.getTypes ( i ) , methodExpression ) ;
       }
       methodName = curriedMethod.getIdentifiers ( 0 ) ;
     }
@@ -307,10 +295,10 @@ public class L2OBigStepProofRuleSet extends L2BigStepProofRuleSet
       Expression [ ] newRowExpressions = new Expression [ row.getExpressions ( ).length - 1 ] ;
       for ( int i = 0 ; i < newRowExpressions.length ; i ++ )
       {
-        newRowExpressions [ i ] = row.getExpressions ( i + 1 ).clone ( ) ;
+        newRowExpressions [ i ] = row.getExpressions ( i + 1 ) ;
       }
       context.addProofNode ( node , new Send ( new Row ( newRowExpressions ) ,
-          send.getId ( ).clone ( ) ) ) ;
+          send.getId ( ) ) ) ;
     }
     else
     {
@@ -382,7 +370,7 @@ public class L2OBigStepProofRuleSet extends L2BigStepProofRuleSet
       Row row = ( Row ) node.getExpression ( ) ;
       Row childRow = ( Row ) node.getChildAt ( 0 ).getResult ( ).getValue ( ) ;
       Expression [ ] newRowExpressions = new Expression [ row.getExpressions ( ).length ] ;
-      newRowExpressions [ 0 ] = row.getExpressions ( 0 ).clone ( ) ;
+      newRowExpressions [ 0 ] = row.getExpressions ( 0 ) ;
       for ( int i = 1 ; i < newRowExpressions.length ; i ++ )
       {
         newRowExpressions [ i ] = childRow.getExpressions ( i - 1 ) ;
@@ -406,7 +394,7 @@ public class L2OBigStepProofRuleSet extends L2BigStepProofRuleSet
       ObjectExpr oldObjectExpr = ( ObjectExpr ) node.getExpression ( ) ;
       Row row = ( Row ) node.getChildAt ( 0 ).getResult ( ).getValue ( ) ;
       context.setProofNodeResult ( node , new ObjectExpr ( oldObjectExpr
-          .getTau ( ) , row ) ) ;
+          .getId ( ) , oldObjectExpr.getTau ( ) , row ) ) ;
     }
   }
 
@@ -427,10 +415,10 @@ public class L2OBigStepProofRuleSet extends L2BigStepProofRuleSet
           .getValue ( ) ;
       Row row = ( Row ) objectExpr.getE ( ) ;
       Expression newRow = row.substitute ( objectExpr.getId ( ) , objectExpr ) ;
-      context.addProofNode ( node ,
-          new Send ( newRow , send.getId ( ).clone ( ) ) ) ;
+      context.addProofNode ( node , new Send ( newRow , send.getId ( ) ) ) ;
     }
     else if ( ( node.getChildCount ( ) == 2 )
+        && ( node.getChildAt ( 0 ).isProven ( ) )
         && ( node.getChildAt ( 1 ).isProven ( ) ) )
     {
       context.setProofNodeResult ( node , node.getChildAt ( 1 ).getResult ( ) ) ;

@@ -165,14 +165,14 @@ public class L1SmallStepProofRuleSet extends L0SmallStepProofRuleSet
       // try to evaluate e1
       e1 = evaluate ( context , e1 ) ;
       // exceptions need special handling
-      return e1.isException ( ) ? e1 : new And ( e1 , e2.clone ( ) ) ;
+      return e1.isException ( ) ? e1 : new And ( e1 , e2 ) ;
     }
     // determine the boolean constant value
     if ( ( ( BooleanConstant ) e1 ).booleanValue ( ) )
     {
       // jep, that's (AND-TRUE) then
       context.addProofStep ( getRuleByName ( "AND-TRUE" ) , and ) ; //$NON-NLS-1$
-      return e2.clone ( ) ;
+      return e2 ;
     }
     // jep, that's (AND-FALSE) then
     context.addProofStep ( getRuleByName ( "AND-FALSE" ) , and ) ; //$NON-NLS-1$
@@ -203,8 +203,7 @@ public class L1SmallStepProofRuleSet extends L0SmallStepProofRuleSet
       // try to evaluate e1
       e1 = evaluate ( context , e1 ) ;
       // exceptions need special handling
-      return e1.isException ( ) ? e1 : new InfixOperation ( op.clone ( ) , e1 ,
-          e2.clone ( ) ) ;
+      return e1.isException ( ) ? e1 : new InfixOperation ( op , e1 , e2 ) ;
     }
     // check if e2 is not already a value
     if ( ! e2.isValue ( ) )
@@ -214,8 +213,7 @@ public class L1SmallStepProofRuleSet extends L0SmallStepProofRuleSet
       // try to evaluate e2
       e2 = evaluate ( context , e2 ) ;
       // exceptions need special handling
-      return e2.isException ( ) ? e2 : new InfixOperation ( op.clone ( ) , e1
-          .clone ( ) , e2 ) ;
+      return e2.isException ( ) ? e2 : new InfixOperation ( op , e1 , e2 ) ;
     }
     // try to perform the application
     return applyBinaryOperator ( context , infixOperation , op , e1 , e2 ) ;
@@ -244,19 +242,18 @@ public class L1SmallStepProofRuleSet extends L0SmallStepProofRuleSet
       // try to evaluate e0
       e0 = evaluate ( context , e0 ) ;
       // exceptions need special handling
-      return e0.isException ( ) ? e0 : new Condition ( e0 , e1.clone ( ) , e2
-          .clone ( ) ) ;
+      return e0.isException ( ) ? e0 : new Condition ( e0 , e1 , e2 ) ;
     }
     // determine the boolean constant value
     if ( ( ( BooleanConstant ) e0 ).booleanValue ( ) )
     {
       // jep, that's (COND-TRUE) then
       context.addProofStep ( getRuleByName ( "COND-TRUE" ) , condition ) ; //$NON-NLS-1$
-      return e1.clone ( ) ;
+      return e1 ;
     }
     // jep, that's (COND-FALSE) then
     context.addProofStep ( getRuleByName ( "COND-FALSE" ) , condition ) ; //$NON-NLS-1$
-    return e2.clone ( ) ;
+    return e2 ;
   }
 
 
@@ -274,12 +271,12 @@ public class L1SmallStepProofRuleSet extends L0SmallStepProofRuleSet
     // determine the sub expressions and the identifiers
     Identifier [ ] identifiers = curriedLet.getIdentifiers ( ) ;
     MonoType [ ] types = curriedLet.getTypes ( ) ;
-    Expression e1 = curriedLet.getE1 ( ).clone ( ) ;
+    Expression e1 = curriedLet.getE1 ( ) ;
     Expression e2 = curriedLet.getE2 ( ) ;
     // prepend the lambda abstractions to e1
     for ( int n = identifiers.length - 1 ; n >= 1 ; -- n )
     {
-      e1 = new Lambda ( identifiers [ n ].clone ( ) , types [ n ] , e1 ) ;
+      e1 = new Lambda ( identifiers [ n ] , types [ n ] , e1 ) ;
     }
     // we can simply perform (LET-EXEC)
     context.addProofStep ( getRuleByName ( "LET-EXEC" ) , curriedLet ) ; //$NON-NLS-1$
@@ -308,14 +305,13 @@ public class L1SmallStepProofRuleSet extends L0SmallStepProofRuleSet
       // try to evaluate e1
       e1 = evaluate ( context , e1 ) ;
       // exceptions need special treatment
-      return e1.isException ( ) ? e1 : new Let ( let.getId ( ).clone ( ) , let
-          .getTau ( ) == null ? null : let.getTau ( ).clone ( ) , e1 , e2
-          .clone ( ) ) ;
+      return e1.isException ( ) ? e1 : new Let ( let.getId ( ) ,
+          let.getTau ( ) , e1 , e2 ) ;
     }
     // we can perform (LET-EXEC)
     context.addProofStep ( getRuleByName ( "LET-EXEC" ) , let ) ; //$NON-NLS-1$
     // and perform the substitution
-    return e2.substitute ( let.getId ( ) , e1.clone ( ) ) ;
+    return e2.substitute ( let.getId ( ) , e1 ) ;
   }
 
 
@@ -339,7 +335,7 @@ public class L1SmallStepProofRuleSet extends L0SmallStepProofRuleSet
       // try to evaluate e1
       e1 = evaluate ( context , e1 ) ;
       // exceptions need special treatment
-      return e1.isException ( ) ? e1 : new Or ( e1 , e2.clone ( ) ) ;
+      return e1.isException ( ) ? e1 : new Or ( e1 , e2 ) ;
     }
     // determine the boolean constant value
     if ( ( ( BooleanConstant ) e1 ).booleanValue ( ) )
@@ -350,6 +346,6 @@ public class L1SmallStepProofRuleSet extends L0SmallStepProofRuleSet
     }
     // jep, that's (OR-FALSE) then
     context.addProofStep ( getRuleByName ( "OR-FALSE" ) , or ) ; //$NON-NLS-1$
-    return e2.clone ( ) ;
+    return e2 ;
   }
 }

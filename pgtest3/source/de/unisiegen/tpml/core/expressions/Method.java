@@ -88,7 +88,7 @@ public class Method extends Expression implements DefaultIdentifiers ,
     this.identifiers [ 0 ] = pIdentifier ;
     if ( this.identifiers [ 0 ].getParent ( ) != null )
     {
-      this.identifiers [ 0 ] = this.identifiers [ 0 ].clone ( ) ;
+      // this.identifiers [ 0 ] = this.identifiers [ 0 ].clone ( ) ;
     }
     this.identifiers [ 0 ].setParent ( this ) ;
     // Type
@@ -98,7 +98,7 @@ public class Method extends Expression implements DefaultIdentifiers ,
     {
       if ( this.types [ 0 ].getParent ( ) != null )
       {
-        this.types [ 0 ] = this.types [ 0 ].clone ( ) ;
+        // this.types [ 0 ] = this.types [ 0 ].clone ( ) ;
       }
       this.types [ 0 ].setParent ( this ) ;
     }
@@ -107,7 +107,7 @@ public class Method extends Expression implements DefaultIdentifiers ,
     this.expressions [ 0 ] = pExpression ;
     if ( this.expressions [ 0 ].getParent ( ) != null )
     {
-      this.expressions [ 0 ] = this.expressions [ 0 ].clone ( ) ;
+      // this.expressions [ 0 ] = this.expressions [ 0 ].clone ( ) ;
     }
     this.expressions [ 0 ].setParent ( this ) ;
   }
@@ -352,8 +352,7 @@ public class Method extends Expression implements DefaultIdentifiers ,
   public Method substitute ( Identifier pId , Expression pExpression )
   {
     Expression newE = this.expressions [ 0 ].substitute ( pId , pExpression ) ;
-    return new Method ( this.identifiers [ 0 ].clone ( ) ,
-        this.types [ 0 ] == null ? null : this.types [ 0 ].clone ( ) , newE ) ;
+    return new Method ( this.identifiers [ 0 ] , this.types [ 0 ] , newE ) ;
   }
 
 
@@ -366,7 +365,7 @@ public class Method extends Expression implements DefaultIdentifiers ,
     MonoType newTau = ( this.types [ 0 ] == null ) ? null : this.types [ 0 ]
         .substitute ( pTypeSubstitution ) ;
     Expression newE = this.expressions [ 0 ].substitute ( pTypeSubstitution ) ;
-    return new Method ( this.identifiers [ 0 ].clone ( ) , newTau , newE ) ;
+    return new Method ( this.identifiers [ 0 ] , newTau , newE ) ;
   }
 
 

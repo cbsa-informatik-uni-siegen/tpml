@@ -113,7 +113,7 @@ public abstract class Constant extends Value
   Identifier pId , @ SuppressWarnings ( "unused" )
   Expression pExpression )
   {
-    return this.clone ( ) ;
+    return this ;
   }
 
 

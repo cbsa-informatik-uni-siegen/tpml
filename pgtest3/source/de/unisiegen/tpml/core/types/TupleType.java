@@ -52,7 +52,7 @@ public final class TupleType extends MonoType implements DefaultTypes
     {
       if ( this.types [ i ].getParent ( ) != null )
       {
-        this.types [ i ] = this.types [ i ].clone ( ) ;
+        // this.types [ i ] = this.types [ i ].clone ( ) ;
       }
       this.types [ i ].setParent ( this ) ;
       this.indicesType [ i ] = i + 1 ;

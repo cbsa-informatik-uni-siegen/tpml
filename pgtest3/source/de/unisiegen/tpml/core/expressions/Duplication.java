@@ -100,7 +100,7 @@ public final class Duplication extends Expression implements
       this.identifiers [ i ] = idList.get ( i ) ;
       if ( this.identifiers [ i ].getParent ( ) != null )
       {
-        this.identifiers [ i ] = this.identifiers [ i ].clone ( ) ;
+        // this.identifiers [ i ] = this.identifiers [ i ].clone ( ) ;
       }
       this.identifiers [ i ].setParent ( this ) ;
       this.indicesId [ i ] = i + 1 ;
@@ -108,7 +108,7 @@ public final class Duplication extends Expression implements
       this.expressions [ i ] = exprList.get ( i ) ;
       if ( this.expressions [ i ].getParent ( ) != null )
       {
-        this.expressions [ i ] = this.expressions [ i ].clone ( ) ;
+        // this.expressions [ i ] = this.expressions [ i ].clone ( ) ;
       }
       this.expressions [ i ].setParent ( this ) ;
       this.indicesE [ i ] = i + 1 ;
@@ -334,7 +334,8 @@ public final class Duplication extends Expression implements
         row = row
             .substituteRow ( this.identifiers [ i ] , newIdentifiers [ i ] ) ;
       }
-      Expression result = new ObjectExpr ( objectExpr.getTau ( ) , row ) ;
+      Expression result = new ObjectExpr ( objectExpr.getId ( ) , objectExpr
+          .getTau ( ) , row ) ;
       for ( int i = this.expressions.length - 1 ; i >= 0 ; i -- )
       {
         result = new Let ( newIdentifiers [ i ] , null , this.expressions [ i ]
@@ -367,12 +368,7 @@ public final class Duplication extends Expression implements
       newExpressions [ i ] = this.expressions [ i ]
           .substitute ( pTypeSubstitution ) ;
     }
-    Identifier [ ] newIdentifiers = new Identifier [ this.identifiers.length ] ;
-    for ( int i = 0 ; i < newIdentifiers.length ; i ++ )
-    {
-      newIdentifiers [ i ] = this.identifiers [ i ].clone ( ) ;
-    }
-    return new Duplication ( newIdentifiers , newExpressions ) ;
+    return new Duplication ( this.identifiers , newExpressions ) ;
   }
 
 

@@ -51,7 +51,7 @@ public final class Row extends Expression implements ChildrenExpressions
       this.indicesE [ i ] = i + 1 ;
       if ( this.expressions [ i ].getParent ( ) != null )
       {
-        this.expressions [ i ] = this.expressions [ i ].clone ( ) ;
+        // this.expressions [ i ] = this.expressions [ i ].clone ( ) ;
       }
       this.expressions [ i ].setParent ( this ) ;
       if ( this.expressions [ i ] instanceof Attribute )
@@ -145,8 +145,7 @@ public final class Row extends Expression implements ChildrenExpressions
           {
             if ( attribute.getId ( ).equals ( freeId ) )
             {
-              freeId.setBoundedToExpression ( attribute ) ;
-              freeId.setBoundedToIdentifier ( attribute.getId ( ) ) ;
+              freeId.setBoundTo ( attribute , attribute.getId ( ) ) ;
               boundedId.add ( freeId ) ;
             }
           }
@@ -267,7 +266,7 @@ public final class Row extends Expression implements ChildrenExpressions
     Expression [ ] newExpressions = new Expression [ this.expressions.length ] ;
     for ( int i = 0 ; i < this.expressions.length ; i ++ )
     {
-      newExpressions [ i ] = this.expressions [ i ].clone ( ) ;
+      newExpressions [ i ] = this.expressions [ i ] ;
     }
     if ( this.free ( ).contains ( pId ) )
     {
@@ -343,7 +342,7 @@ public final class Row extends Expression implements ChildrenExpressions
     Expression [ ] newExpressions = new Expression [ this.expressions.length ] ;
     for ( int i = 0 ; i < this.expressions.length ; i ++ )
     {
-      newExpressions [ i ] = this.expressions [ i ].clone ( ) ;
+      newExpressions [ i ] = this.expressions [ i ] ;
     }
     for ( int i = 0 ; i < newExpressions.length ; i ++ )
     {

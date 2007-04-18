@@ -121,7 +121,7 @@ public class L3SmallStepProofRuleSet extends L2SmallStepProofRuleSet
       {
         Expression e = op.applyTo ( e1 , e2 ) ;
         context.addProofStep ( getRuleByName ( "CONS" ) , applicationOrInfix ) ; //$NON-NLS-1$
-        return e.clone ( ) ;
+        return e ;
       }
       catch ( BinaryOperatorException e )
       {
@@ -150,7 +150,7 @@ public class L3SmallStepProofRuleSet extends L2SmallStepProofRuleSet
     {
       Expression e = e1.applyTo ( e2 ) ;
       context.addProofStep ( getRuleByName ( "FST" ) , application ) ; //$NON-NLS-1$
-      return e.clone ( ) ;
+      return e ;
     }
     catch ( UnaryOperatorException e )
     {
@@ -183,7 +183,7 @@ public class L3SmallStepProofRuleSet extends L2SmallStepProofRuleSet
     if ( e2 instanceof List )
     {
       context.addProofStep ( getRuleByName ( "HD" ) , application ) ; //$NON-NLS-1$
-      return ( ( List ) e2 ).head ( ).clone ( ) ;
+      return ( ( List ) e2 ).head ( ) ;
     }
     // otherwise e2 must be an application of cons to a pair
     Application app1 = ( Application ) e2 ;
@@ -197,7 +197,7 @@ public class L3SmallStepProofRuleSet extends L2SmallStepProofRuleSet
     // jep, we can perform (HD) then
     context.addProofStep ( getRuleByName ( "HD" ) , application ) ; //$NON-NLS-1$
     // return the first item
-    return tuple.getExpressions ( 0 ).clone ( ) ;
+    return tuple.getExpressions ( 0 ) ;
   }
 
 
@@ -264,10 +264,10 @@ public class L3SmallStepProofRuleSet extends L2SmallStepProofRuleSet
       Identifier [ ] newIdentifier = new Identifier [ identifiers.length ] ;
       for ( int i = 0 ; i < identifiers.length ; i ++ )
       {
-        newIdentifier [ i ] = identifiers [ i ].clone ( ) ;
+        newIdentifier [ i ] = identifiers [ i ] ;
       }
       return e1.isException ( ) ? e1 : new MultiLet ( newIdentifier , multiLet
-          .getTau ( ) == null ? null : multiLet.getTau ( ) , e1 , e2.clone ( ) ) ;
+          .getTau ( ) == null ? null : multiLet.getTau ( ) , e1 , e2 ) ;
     }
     // arity of the tuple must match
     Expression [ ] expressions = ( ( Tuple ) e1 ).getExpressions ( ) ;
@@ -319,7 +319,7 @@ public class L3SmallStepProofRuleSet extends L2SmallStepProofRuleSet
         {
           if ( j != n )
           {
-            newExpressions [ j ] = expressions [ j ].clone ( ) ;
+            newExpressions [ j ] = expressions [ j ] ;
           }
         }
         newExpressions [ n ] = newExpression ;
@@ -348,7 +348,7 @@ public class L3SmallStepProofRuleSet extends L2SmallStepProofRuleSet
     {
       Expression e = e1.applyTo ( e2 ) ;
       context.addProofStep ( getRuleByName ( "PROJ" ) , application ) ; //$NON-NLS-1$
-      return e.clone ( ) ;
+      return e ;
     }
     catch ( UnaryOperatorException e )
     {
@@ -374,7 +374,7 @@ public class L3SmallStepProofRuleSet extends L2SmallStepProofRuleSet
     {
       Expression e = e1.applyTo ( e2 ) ;
       context.addProofStep ( getRuleByName ( "SND" ) , application ) ; //$NON-NLS-1$
-      return e.clone ( ) ;
+      return e ;
     }
     catch ( UnaryOperatorException e )
     {
@@ -407,7 +407,7 @@ public class L3SmallStepProofRuleSet extends L2SmallStepProofRuleSet
     if ( e2 instanceof List )
     {
       context.addProofStep ( getRuleByName ( "TL" ) , application ) ; //$NON-NLS-1$
-      return ( ( List ) e2 ).tail ( ).clone ( ) ;
+      return ( ( List ) e2 ).tail ( ) ;
     }
     // otherwise, e2 must be an application of cons to a pair
     Application app1 = ( Application ) e2 ;
@@ -421,7 +421,7 @@ public class L3SmallStepProofRuleSet extends L2SmallStepProofRuleSet
     // jep, we can perform (TL) then
     context.addProofStep ( getRuleByName ( "TL" ) , application ) ; //$NON-NLS-1$
     // return the remaining list
-    return tuple.getExpressions ( 1 ).clone ( ) ;
+    return tuple.getExpressions ( 1 ) ;
   }
 
 
@@ -458,7 +458,7 @@ public class L3SmallStepProofRuleSet extends L2SmallStepProofRuleSet
         {
           if ( j != n )
           {
-            newExpressions [ j ] = expressions [ j ].clone ( ) ;
+            newExpressions [ j ] = expressions [ j ] ;
           }
         }
         newExpressions [ n ] = newExpression ;

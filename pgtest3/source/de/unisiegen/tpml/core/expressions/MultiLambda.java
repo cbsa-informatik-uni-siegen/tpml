@@ -106,7 +106,7 @@ public final class MultiLambda extends Value implements BoundIdentifiers ,
     {
       if ( this.identifiers [ i ].getParent ( ) != null )
       {
-        this.identifiers [ i ] = this.identifiers [ i ].clone ( ) ;
+        // this.identifiers [ i ] = this.identifiers [ i ].clone ( ) ;
       }
       this.identifiers [ i ].setParent ( this ) ;
       this.indicesId [ i ] = i + 1 ;
@@ -118,7 +118,7 @@ public final class MultiLambda extends Value implements BoundIdentifiers ,
     {
       if ( this.types [ 0 ].getParent ( ) != null )
       {
-        this.types [ 0 ] = this.types [ 0 ].clone ( ) ;
+        // this.types [ 0 ] = this.types [ 0 ].clone ( ) ;
       }
       this.types [ 0 ].setParent ( this ) ;
     }
@@ -127,7 +127,7 @@ public final class MultiLambda extends Value implements BoundIdentifiers ,
     this.expressions [ 0 ] = pExpression ;
     if ( this.expressions [ 0 ].getParent ( ) != null )
     {
-      this.expressions [ 0 ] = this.expressions [ 0 ].clone ( ) ;
+      // this.expressions [ 0 ] = this.expressions [ 0 ].clone ( ) ;
     }
     this.expressions [ 0 ].setParent ( this ) ;
   }
@@ -315,8 +315,7 @@ public final class MultiLambda extends Value implements BoundIdentifiers ,
           {
             if ( this.identifiers [ i ].equals ( freeId ) )
             {
-              freeId.setBoundedToExpression ( this ) ;
-              freeId.setBoundedToIdentifier ( this.identifiers [ i ] ) ;
+              freeId.setBoundTo ( this , this.identifiers [ i ] ) ;
               boundedIdList.add ( freeId ) ;
             }
           }
@@ -447,14 +446,14 @@ public final class MultiLambda extends Value implements BoundIdentifiers ,
     {
       if ( this.identifiers [ i ].equals ( pId ) )
       {
-        return this.clone ( ) ;
+        return this ;
       }
     }
     Expression newE = this.expressions [ 0 ] ;
     Identifier [ ] newIdentifiers = new Identifier [ this.identifiers.length ] ;
     for ( int i = 0 ; i < newIdentifiers.length ; i ++ )
     {
-      newIdentifiers [ i ] = this.identifiers [ i ].clone ( ) ;
+      newIdentifiers [ i ] = this.identifiers [ i ] ;
     }
     for ( int i = 0 ; i < newIdentifiers.length ; i ++ )
     {
@@ -501,8 +500,7 @@ public final class MultiLambda extends Value implements BoundIdentifiers ,
      * Perform the substitution.
      */
     newE = newE.substitute ( pId , pExpression ) ;
-    return new MultiLambda ( newIdentifiers , this.types [ 0 ] == null ? null
-        : this.types [ 0 ].clone ( ) , newE ) ;
+    return new MultiLambda ( newIdentifiers , this.types [ 0 ] , newE ) ;
   }
 
 
@@ -516,12 +514,7 @@ public final class MultiLambda extends Value implements BoundIdentifiers ,
   {
     MonoType newTau = ( this.types [ 0 ] == null ) ? null : this.types [ 0 ]
         .substitute ( pTypeSubstitution ) ;
-    Identifier [ ] newIdentifiers = new Identifier [ this.identifiers.length ] ;
-    for ( int i = 0 ; i < newIdentifiers.length ; i ++ )
-    {
-      newIdentifiers [ i ] = this.identifiers [ i ].clone ( ) ;
-    }
-    return new MultiLambda ( newIdentifiers , newTau , this.expressions [ 0 ]
+    return new MultiLambda ( this.identifiers , newTau , this.expressions [ 0 ]
         .substitute ( pTypeSubstitution ) ) ;
   }
 

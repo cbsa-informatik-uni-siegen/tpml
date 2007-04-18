@@ -30,6 +30,7 @@ import de.unisiegen.tpml.core.types.TypeVariable ;
  * The type proof rules for the <code>L3</code> language.
  * 
  * @author Benedikt Meurer
+ * @author Christian Fehler
  * @version $Rev:458 $
  * @see de.unisiegen.tpml.core.languages.l2.L2TypeCheckerProofRuleSet
  */
@@ -51,14 +52,14 @@ public class L3TypeCheckerProofRuleSet extends L2TypeCheckerProofRuleSet
   {
     super ( language ) ;
     // drop the (CONST) and (ID) type rules
-    unregister ( "CONST" ) ;
-    unregister ( "ID" ) ;
+    unregister ( "CONST" ) ; //$NON-NLS-1$
+    unregister ( "ID" ) ; //$NON-NLS-1$
     // register the additional type rules
-    registerByMethodName ( L3Language.L3 , "LIST" , "applyList" ) ;
-    registerByMethodName ( L3Language.L3 , "P-CONST" , "applyPConst" ) ;
-    registerByMethodName ( L3Language.L3 , "P-ID" , "applyPId" ) ;
-    registerByMethodName ( L3Language.L3 , "P-LET" , "applyPLet" , "updatePLet" ) ;
-    registerByMethodName ( L3Language.L3 , "TUPLE" , "applyTuple" ) ;
+    registerByMethodName ( L3Language.L3 , "LIST" , "applyList" ) ; //$NON-NLS-1$//$NON-NLS-2$
+    registerByMethodName ( L3Language.L3 , "P-CONST" , "applyPConst" ) ; //$NON-NLS-1$ //$NON-NLS-2$
+    registerByMethodName ( L3Language.L3 , "P-ID" , "applyPId" ) ; //$NON-NLS-1$//$NON-NLS-2$
+    registerByMethodName ( L3Language.L3 , "P-LET" , "applyPLet" , "updatePLet" ) ; //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
+    registerByMethodName ( L3Language.L3 , "TUPLE" , "applyTuple" ) ; //$NON-NLS-1$//$NON-NLS-2$
   }
 
 
@@ -195,7 +196,7 @@ public class L3TypeCheckerProofRuleSet extends L2TypeCheckerProofRuleSet
       Identifier [ ] identifiers = curriedLet.getIdentifiers ( ) ;
       for ( int n = identifiers.length - 1 ; n > 0 ; -- n )
       {
-        e1 = new Lambda ( identifiers [ n ].clone ( ) , types [ n ] , e1 ) ;
+        e1 = new Lambda ( identifiers [ n ] , types [ n ] , e1 ) ;
       }
       // generate the type of the function
       MonoType tau1 = types [ 0 ] ;

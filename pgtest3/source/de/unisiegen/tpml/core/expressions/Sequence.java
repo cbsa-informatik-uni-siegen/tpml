@@ -55,13 +55,13 @@ public final class Sequence extends Expression implements ChildrenExpressions
     this.expressions [ 0 ] = pExpression1 ;
     if ( this.expressions [ 0 ].getParent ( ) != null )
     {
-      this.expressions [ 0 ] = this.expressions [ 0 ].clone ( ) ;
+      // this.expressions [ 0 ] = this.expressions [ 0 ].clone ( ) ;
     }
     this.expressions [ 0 ].setParent ( this ) ;
     this.expressions [ 1 ] = pExpression2 ;
     if ( this.expressions [ 1 ].getParent ( ) != null )
     {
-      this.expressions [ 1 ] = this.expressions [ 1 ].clone ( ) ;
+      // this.expressions [ 1 ] = this.expressions [ 1 ].clone ( ) ;
     }
     this.expressions [ 1 ].setParent ( this ) ;
   }

@@ -109,7 +109,7 @@ public final class CurriedMethod extends Expression implements
     {
       if ( this.identifiers [ i ].getParent ( ) != null )
       {
-        this.identifiers [ i ] = this.identifiers [ i ].clone ( ) ;
+        // this.identifiers [ i ] = this.identifiers [ i ].clone ( ) ;
       }
       this.identifiers [ i ].setParent ( this ) ;
     }
@@ -127,7 +127,7 @@ public final class CurriedMethod extends Expression implements
       {
         if ( this.types [ i ].getParent ( ) != null )
         {
-          this.types [ i ] = this.types [ i ].clone ( ) ;
+          // this.types [ i ] = this.types [ i ].clone ( ) ;
         }
         this.types [ i ].setParent ( this ) ;
       }
@@ -137,7 +137,7 @@ public final class CurriedMethod extends Expression implements
     this.expressions [ 0 ] = pExpression ;
     if ( this.expressions [ 0 ].getParent ( ) != null )
     {
-      this.expressions [ 0 ] = this.expressions [ 0 ].clone ( ) ;
+      // this.expressions [ 0 ] = this.expressions [ 0 ].clone ( ) ;
     }
     this.expressions [ 0 ].setParent ( this ) ;
   }
@@ -326,8 +326,7 @@ public final class CurriedMethod extends Expression implements
           {
             if ( this.identifiers [ i ].equals ( freeId ) )
             {
-              freeId.setBoundedToExpression ( this ) ;
-              freeId.setBoundedToIdentifier ( this.identifiers [ i ] ) ;
+              freeId.setBoundTo ( this , this.identifiers [ i ] ) ;
               boundedIdList.add ( freeId ) ;
             }
           }
@@ -455,14 +454,14 @@ public final class CurriedMethod extends Expression implements
     {
       if ( this.identifiers [ i ].equals ( pId ) )
       {
-        return this.clone ( ) ;
+        return this ;
       }
     }
     Expression newE = this.expressions [ 0 ] ;
     Identifier [ ] newIdentifiers = new Identifier [ this.identifiers.length ] ;
     for ( int i = 0 ; i < newIdentifiers.length ; i ++ )
     {
-      newIdentifiers [ i ] = this.identifiers [ i ].clone ( ) ;
+      newIdentifiers [ i ] = this.identifiers [ i ] ;
     }
     for ( int i = 1 ; i < newIdentifiers.length ; i ++ )
     {
@@ -510,13 +509,7 @@ public final class CurriedMethod extends Expression implements
      * Perform the substitution.
      */
     newE = newE.substitute ( pId , pExpression ) ;
-    MonoType [ ] newTypes = new MonoType [ this.types.length ] ;
-    for ( int i = 0 ; i < newTypes.length ; i ++ )
-    {
-      newTypes [ i ] = ( this.types [ i ] == null ) ? null : this.types [ i ]
-          .clone ( ) ;
-    }
-    return new CurriedMethod ( newIdentifiers , newTypes , newE ) ;
+    return new CurriedMethod ( newIdentifiers , this.types , newE ) ;
   }
 
 
@@ -526,18 +519,13 @@ public final class CurriedMethod extends Expression implements
   @ Override
   public CurriedMethod substitute ( TypeSubstitution pTypeSubstitution )
   {
-    Identifier [ ] newIdentifiers = new Identifier [ this.identifiers.length ] ;
-    for ( int i = 0 ; i < newIdentifiers.length ; i ++ )
-    {
-      newIdentifiers [ i ] = this.identifiers [ i ].clone ( ) ;
-    }
     MonoType [ ] newTypes = new MonoType [ this.types.length ] ;
     for ( int i = 0 ; i < newTypes.length ; i ++ )
     {
       newTypes [ i ] = ( this.types [ i ] == null ) ? null : this.types [ i ]
           .substitute ( pTypeSubstitution ) ;
     }
-    return new CurriedMethod ( newIdentifiers , newTypes ,
+    return new CurriedMethod ( this.identifiers , newTypes ,
         this.expressions [ 0 ].substitute ( pTypeSubstitution ) ) ;
   }
 

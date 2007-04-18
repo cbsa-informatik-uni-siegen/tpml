@@ -1,6 +1,7 @@
 package de.unisiegen.tpml.core.expressions ;
 
 
+import java.text.DecimalFormat ;
 import java.util.ArrayList ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
@@ -21,19 +22,19 @@ public class Identifier extends Value
   /**
    * The {@link Expression} in which this {@link Identifier} is bounded.
    * 
-   * @see #getBoundedToExpression()
-   * @see #setBoundedToExpression(Expression)
+   * @see #getBoundToExpression()
+   * @see #setBoundTo(Expression,Identifier)
    */
-  private Expression boundedToExpression ;
+  private Expression boundToExpression ;
 
 
   /**
    * The {@link Identifier} to which this {@link Identifier} is bounded.
    * 
-   * @see #getBoundedToIdentifier()
-   * @see #setBoundedToIdentifier(Identifier)
+   * @see #getBoundToIdentifier()
+   * @see #setBoundTo(Expression,Identifier)
    */
-  private Identifier boundedToIdentifier ;
+  private Identifier boundToIdentifier ;
 
 
   /**
@@ -45,6 +46,13 @@ public class Identifier extends Value
 
 
   /**
+   * TODO
+   */
+  private String ran = new DecimalFormat ( "000" ).format ( ( int ) ( Math //$NON-NLS-1$
+      .random ( ) * 1000 ) ) ;
+
+
+  /**
    * Allocates a new {@link Identifier} with the given <code>name</code>.
    * 
    * @param pName the name of the identifier.
@@ -52,8 +60,8 @@ public class Identifier extends Value
   public Identifier ( String pName )
   {
     this.name = pName ;
-    this.boundedToExpression = null ;
-    this.boundedToIdentifier = null ;
+    this.boundToExpression = null ;
+    this.boundToIdentifier = null ;
   }
 
 
@@ -107,28 +115,28 @@ public class Identifier extends Value
 
 
   /**
-   * Returns the {@link Expression} in which this {@link Identifier} is bounded.
+   * Returns the {@link Expression} in which this {@link Identifier} is bound.
    * 
-   * @return The {@link Expression} in which this {@link Identifier} is bounded.
-   * @see #boundedToExpression
-   * @see #setBoundedToExpression(Expression)
+   * @return The {@link Expression} in which this {@link Identifier} is bound.
+   * @see #boundToExpression
+   * @see #setBoundTo(Expression,Identifier)
    */
-  public Expression getBoundedToExpression ( )
+  public Expression getBoundToExpression ( )
   {
-    return this.boundedToExpression ;
+    return this.boundToExpression ;
   }
 
 
   /**
-   * Returns the {@link Identifier} to which this {@link Identifier} is bounded.
+   * Returns the {@link Identifier} to which this {@link Identifier} is bound.
    * 
-   * @return The {@link Identifier} to which this {@link Identifier} is bounded.
-   * @see #boundedToIdentifier
-   * @see #setBoundedToIdentifier(Identifier)
+   * @return The {@link Identifier} to which this {@link Identifier} is bound.
+   * @see #boundToIdentifier
+   * @see #setBoundTo(Expression,Identifier)
    */
-  public Identifier getBoundedToIdentifier ( )
+  public Identifier getBoundToIdentifier ( )
   {
-    return this.boundedToIdentifier ;
+    return this.boundToIdentifier ;
   }
 
 
@@ -166,42 +174,37 @@ public class Identifier extends Value
 
 
   /**
-   * Sets the {@link Expression} in which this {@link Identifier} is bounded.
+   * Sets the {@link Identifier} to which this {@link Identifier} is bound and
+   * the {@link Expression} in which this {@link Identifier} is bound.
    * 
    * @param pBoundedToExpression The {@link Expression} in which this
-   *          {@link Identifier} is bounded.
-   * @see #boundedToExpression
-   * @see #getBoundedToExpression()
+   *          {@link Identifier} is bound.
+   * @param pBoundedToIdentifier The {@link Identifier} to which this
+   *          {@link Identifier} is bound.
+   * @see #boundToIdentifier
+   * @see #getBoundToIdentifier()
    */
-  public void setBoundedToExpression ( Expression pBoundedToExpression )
+  public void setBoundTo ( Expression pBoundedToExpression ,
+      Identifier pBoundedToIdentifier )
   {
-    if ( this.boundedToExpression != null )
+    if ( ( this.boundToIdentifier != null )
+        && ( this.boundToIdentifier != pBoundedToIdentifier ) )
     {
-      Debug.err.println ( "Identifier: Programming error!" , Debug.CHRISTIAN ) ;//$NON-NLS-1$
       Debug.err
           .println (
-              "An Identifier can not be bounded to more than one Expression!" , Debug.CHRISTIAN ) ; //$NON-NLS-1$
-      Debug.err.println ( "Identifier: " + this.name , Debug.CHRISTIAN ) ; //$NON-NLS-1$
-      Debug.err.println ( "Old boundedToExpression: " //$NON-NLS-1$
-          + this.boundedToExpression , Debug.CHRISTIAN ) ;
+              "An Identifier can not be bound to more than one Expression!" , Debug.CHRISTIAN ) ; //$NON-NLS-1$
+      Debug.err.println ( "Identifier: " + this , Debug.CHRISTIAN ) ; //$NON-NLS-1$
+      Debug.err.println ( "Old boundToExpression: " //$NON-NLS-1$
+          + this.boundToExpression , Debug.CHRISTIAN ) ;
       Debug.err.println (
-          "New boundedToExpression: " + pBoundedToExpression , Debug.CHRISTIAN ) ; //$NON-NLS-1$
+          "New boundToExpression: " + pBoundedToExpression , Debug.CHRISTIAN ) ; //$NON-NLS-1$
+      Debug.err.println ( "Old boundToIdentifier: " //$NON-NLS-1$
+          + this.boundToIdentifier , Debug.CHRISTIAN ) ;
+      Debug.err.println (
+          "New boundToIdentifier: " + pBoundedToIdentifier , Debug.CHRISTIAN ) ; //$NON-NLS-1$
     }
-    this.boundedToExpression = pBoundedToExpression ;
-  }
-
-
-  /**
-   * Sets the {@link Identifier} to which this {@link Identifier} is bounded.
-   * 
-   * @param pBoundedToIdentifier The {@link Identifier} to which this
-   *          {@link Identifier} is bounded.
-   * @see #boundedToIdentifier
-   * @see #getBoundedToIdentifier()
-   */
-  public void setBoundedToIdentifier ( Identifier pBoundedToIdentifier )
-  {
-    this.boundedToIdentifier = pBoundedToIdentifier ;
+    this.boundToExpression = pBoundedToExpression ;
+    this.boundToIdentifier = pBoundedToIdentifier ;
   }
 
 
@@ -224,7 +227,7 @@ public class Identifier extends Value
        */
       return pExpression.clone ( ) ;
     }
-    return this.clone ( ) ;
+    return this ;
   }
 
 
@@ -240,7 +243,15 @@ public class Identifier extends Value
     if ( this.prettyStringBuilder == null )
     {
       this.prettyStringBuilder = factory.newBuilder ( this , PRIO_IDENTIFIER ) ;
+      if ( Debug.isUserName ( Debug.CHRISTIAN ) )
+      {
+        this.prettyStringBuilder.addText ( "{" ) ; //$NON-NLS-1$ 
+      }
       this.prettyStringBuilder.addIdentifier ( this.name ) ;
+      if ( Debug.isUserName ( Debug.CHRISTIAN ) )
+      {
+        this.prettyStringBuilder.addText ( ", " + this.ran + "}" ) ; //$NON-NLS-1$ //$NON-NLS-2$
+      }
     }
     return this.prettyStringBuilder ;
   }

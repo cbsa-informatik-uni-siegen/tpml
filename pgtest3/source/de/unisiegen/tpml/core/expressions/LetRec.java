@@ -107,8 +107,7 @@ public final class LetRec extends Let implements BoundIdentifiers ,
       {
         if ( this.identifiers [ 0 ].equals ( freeId ) )
         {
-          freeId.setBoundedToExpression ( this ) ;
-          freeId.setBoundedToIdentifier ( this.identifiers [ 0 ] ) ;
+          freeId.setBoundTo ( this , this.identifiers [ 0 ] ) ;
           boundedIdList.add ( freeId ) ;
         }
       }
@@ -117,8 +116,7 @@ public final class LetRec extends Let implements BoundIdentifiers ,
       {
         if ( this.identifiers [ 0 ].equals ( freeId ) )
         {
-          freeId.setBoundedToExpression ( this ) ;
-          freeId.setBoundedToIdentifier ( this.identifiers [ 0 ] ) ;
+          freeId.setBoundTo ( this , this.identifiers [ 0 ] ) ;
           boundedIdList.add ( freeId ) ;
         }
       }
@@ -141,7 +139,7 @@ public final class LetRec extends Let implements BoundIdentifiers ,
      */
     if ( this.identifiers [ 0 ].equals ( pId ) )
     {
-      return this.clone ( ) ;
+      return this ;
     }
     /*
      * Perform the bound renaming if required.
@@ -167,8 +165,7 @@ public final class LetRec extends Let implements BoundIdentifiers ,
      */
     newE1 = newE1.substitute ( pId , pExpression ) ;
     newE2 = newE2.substitute ( pId , pExpression ) ;
-    return new LetRec ( newId , this.types [ 0 ] == null ? null
-        : this.types [ 0 ].clone ( ) , newE1 , newE2 ) ;
+    return new LetRec ( newId , this.types [ 0 ] , newE1 , newE2 ) ;
   }
 
 
@@ -184,7 +181,7 @@ public final class LetRec extends Let implements BoundIdentifiers ,
         .substitute ( pTypeSubstitution ) ;
     Expression newE1 = this.expressions [ 0 ].substitute ( pTypeSubstitution ) ;
     Expression newE2 = this.expressions [ 1 ].substitute ( pTypeSubstitution ) ;
-    return new LetRec ( this.identifiers [ 0 ].clone ( ) , pTau , newE1 , newE2 ) ;
+    return new LetRec ( this.identifiers [ 0 ] , pTau , newE1 , newE2 ) ;
   }
 
 

@@ -120,7 +120,7 @@ public class L0SmallStepProofRuleSet extends AbstractSmallStepProofRuleSet
       // try to evaluate e1
       e1 = evaluate ( context , e1 ) ;
       // exceptions need special handling
-      return e1.isException ( ) ? e1 : new Application ( e1 , e2.clone ( ) ) ;
+      return e1.isException ( ) ? e1 : new Application ( e1 , e2 ) ;
     }
     // check if e2 is not already a value
     if ( ! e2.isValue ( ) )
@@ -130,10 +130,10 @@ public class L0SmallStepProofRuleSet extends AbstractSmallStepProofRuleSet
       // try to evaluate e2
       e2 = evaluate ( context , e2 ) ;
       // exceptions need special handling
-      return e2.isException ( ) ? e2 : new Application ( e1.clone ( ) , e2 ) ;
+      return e2.isException ( ) ? e2 : new Application ( e1 , e2 ) ;
     }
     // perform the application
-    return apply ( context , application , e1.clone ( ) , e2.clone ( ) ) ;
+    return apply ( context , application , e1 , e2 ) ;
   }
 
 

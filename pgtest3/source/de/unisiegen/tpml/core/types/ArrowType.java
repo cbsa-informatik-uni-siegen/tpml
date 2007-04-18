@@ -60,13 +60,13 @@ public final class ArrowType extends MonoType implements DefaultTypes
     this.types [ 0 ] = pTau1 ;
     if ( this.types [ 0 ].getParent ( ) != null )
     {
-      this.types [ 0 ] = this.types [ 0 ].clone ( ) ;
+      // this.types [ 0 ] = this.types [ 0 ].clone ( ) ;
     }
     this.types [ 0 ].setParent ( this ) ;
     this.types [ 1 ] = pTau2 ;
     if ( this.types [ 1 ].getParent ( ) != null )
     {
-      this.types [ 1 ] = this.types [ 1 ].clone ( ) ;
+      // this.types [ 1 ] = this.types [ 1 ].clone ( ) ;
     }
     this.types [ 1 ].setParent ( this ) ;
   }

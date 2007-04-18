@@ -113,7 +113,7 @@ public final class MultiLet extends Expression implements BoundIdentifiers ,
     {
       if ( this.identifiers [ i ].getParent ( ) != null )
       {
-        this.identifiers [ i ] = this.identifiers [ i ].clone ( ) ;
+        // this.identifiers [ i ] = this.identifiers [ i ].clone ( ) ;
       }
       this.identifiers [ i ].setParent ( this ) ;
       this.indicesId [ i ] = i + 1 ;
@@ -125,7 +125,7 @@ public final class MultiLet extends Expression implements BoundIdentifiers ,
     {
       if ( this.types [ 0 ].getParent ( ) != null )
       {
-        this.types [ 0 ] = this.types [ 0 ].clone ( ) ;
+        // this.types [ 0 ] = this.types [ 0 ].clone ( ) ;
       }
       this.types [ 0 ].setParent ( this ) ;
     }
@@ -134,13 +134,13 @@ public final class MultiLet extends Expression implements BoundIdentifiers ,
     this.expressions [ 0 ] = pExpression1 ;
     if ( this.expressions [ 0 ].getParent ( ) != null )
     {
-      this.expressions [ 0 ] = this.expressions [ 0 ].clone ( ) ;
+      // this.expressions [ 0 ] = this.expressions [ 0 ].clone ( ) ;
     }
     this.expressions [ 0 ].setParent ( this ) ;
     this.expressions [ 1 ] = pExpression2 ;
     if ( this.expressions [ 1 ].getParent ( ) != null )
     {
-      this.expressions [ 1 ] = this.expressions [ 1 ].clone ( ) ;
+      // this.expressions [ 1 ] = this.expressions [ 1 ].clone ( ) ;
     }
     this.expressions [ 1 ].setParent ( this ) ;
   }
@@ -342,8 +342,7 @@ public final class MultiLet extends Expression implements BoundIdentifiers ,
           {
             if ( this.identifiers [ i ].equals ( freeId ) )
             {
-              freeId.setBoundedToExpression ( this ) ;
-              freeId.setBoundedToIdentifier ( this.identifiers [ i ] ) ;
+              freeId.setBoundTo ( this , this.identifiers [ i ] ) ;
               boundedIdList.add ( freeId ) ;
             }
           }
@@ -475,20 +474,15 @@ public final class MultiLet extends Expression implements BoundIdentifiers ,
       {
         Expression newE1 = this.expressions [ 0 ].substitute ( pId ,
             pExpression ) ;
-        Expression newE2 = this.expressions [ 1 ].clone ( ) ;
-        Identifier [ ] newIdentifiers = new Identifier [ this.identifiers.length ] ;
-        for ( int j = 0 ; j < newIdentifiers.length ; j ++ )
-        {
-          newIdentifiers [ j ] = this.identifiers [ j ].clone ( ) ;
-        }
-        return new MultiLet ( newIdentifiers , this.types [ 0 ] == null ? null
-            : this.types [ 0 ].clone ( ) , newE1 , newE2 ) ;
+        Expression newE2 = this.expressions [ 1 ] ;
+        return new MultiLet ( this.identifiers , this.types [ 0 ] , newE1 ,
+            newE2 ) ;
       }
     }
     Identifier [ ] newIdentifiers = new Identifier [ this.identifiers.length ] ;
     for ( int i = 0 ; i < newIdentifiers.length ; i ++ )
     {
-      newIdentifiers [ i ] = this.identifiers [ i ].clone ( ) ;
+      newIdentifiers [ i ] = this.identifiers [ i ] ;
     }
     Expression newE2 = this.expressions [ 1 ] ;
     for ( int i = 0 ; i < newIdentifiers.length ; i ++ )
@@ -538,8 +532,7 @@ public final class MultiLet extends Expression implements BoundIdentifiers ,
      */
     Expression newE1 = this.expressions [ 0 ].substitute ( pId , pExpression ) ;
     newE2 = newE2.substitute ( pId , pExpression ) ;
-    return new MultiLet ( newIdentifiers , this.types [ 0 ] == null ? null
-        : this.types [ 0 ].clone ( ) , newE1 , newE2 ) ;
+    return new MultiLet ( newIdentifiers , this.types [ 0 ] , newE1 , newE2 ) ;
   }
 
 
@@ -555,7 +548,7 @@ public final class MultiLet extends Expression implements BoundIdentifiers ,
         .substitute ( pTypeSubstitution ) ;
     Expression newE1 = this.expressions [ 0 ].substitute ( pTypeSubstitution ) ;
     Expression newE2 = this.expressions [ 1 ].substitute ( pTypeSubstitution ) ;
-    return new MultiLet ( this.identifiers.clone ( ) , newTau , newE1 , newE2 ) ;
+    return new MultiLet ( this.identifiers , newTau , newE1 , newE2 ) ;
   }
 
 

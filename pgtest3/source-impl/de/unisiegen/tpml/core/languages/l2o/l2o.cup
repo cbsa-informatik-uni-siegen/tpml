@@ -310,14 +310,14 @@ curried_let_rec		::= LET REC IDENTIFIER:id id_type_list:itl EQUAL expr:e1 IN exp
 
 object_expr			::= OBJECT LPAREN SELF:l RPAREN END
 						{: Expression [] e = new Expression [0];
-						   RESULT = new ObjectExpr (null, new Row (e)); :}
+						   RESULT = new ObjectExpr (new SelfIdentifier(),null, new Row (e)); :}
 					|   OBJECT LPAREN SELF:l COLON type:tau RPAREN END
 						{: Expression [] e = new Expression [0];
-						   RESULT = new ObjectExpr (tau, new Row (e)); :}
+						   RESULT = new ObjectExpr (new SelfIdentifier(),tau, new Row (e)); :}
 					|	OBJECT LPAREN SELF:l RPAREN row:r END
-						{: RESULT = new ObjectExpr (null, r); :}
+						{: RESULT = new ObjectExpr (new SelfIdentifier(),null, r); :}
 					|	OBJECT LPAREN SELF:l COLON type:tau RPAREN row:r END
-						{: RESULT = new ObjectExpr (tau, r); :}
+						{: RESULT = new ObjectExpr (new SelfIdentifier(),tau, r); :}
 					;
 					
 duplication			::= DUPLBEGIN id_expr_list:iel DUPLEND

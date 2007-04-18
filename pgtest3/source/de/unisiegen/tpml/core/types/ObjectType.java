@@ -47,7 +47,7 @@ public final class ObjectType extends MonoType implements DefaultTypes
     this.types [ 0 ] = pPhi ;
     if ( this.types [ 0 ].getParent ( ) != null )
     {
-      this.types [ 0 ] = this.types [ 0 ].clone ( ) ;
+      // this.types [ 0 ] = this.types [ 0 ].clone ( ) ;
     }
     this.types [ 0 ].setParent ( this ) ;
   }

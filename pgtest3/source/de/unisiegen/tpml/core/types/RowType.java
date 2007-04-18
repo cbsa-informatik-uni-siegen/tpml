@@ -73,7 +73,7 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
     {
       if ( this.identifiers [ i ].getParent ( ) != null )
       {
-        this.identifiers [ i ] = this.identifiers [ i ].clone ( ) ;
+        // this.identifiers [ i ] = this.identifiers [ i ].clone ( ) ;
       }
       this.identifiers [ i ].setParent ( this ) ;
       this.indicesId [ i ] = i + 1 ;
@@ -85,7 +85,7 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
     {
       if ( this.types [ i ].getParent ( ) != null )
       {
-        this.types [ i ] = this.types [ i ].clone ( ) ;
+        // this.types [ i ] = this.types [ i ].clone ( ) ;
       }
       this.types [ i ].setParent ( this ) ;
       this.indicesType [ i ] = i + 1 ;
@@ -321,17 +321,12 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
     {
       throw new NullPointerException ( "Substitution is null" ) ; //$NON-NLS-1$
     }
-    Identifier [ ] newIdentifiers = new Identifier [ this.identifiers.length ] ;
-    for ( int i = 0 ; i < newIdentifiers.length ; i ++ )
-    {
-      newIdentifiers [ i ] = this.identifiers [ i ].clone ( ) ;
-    }
     MonoType [ ] newTypes = new MonoType [ this.types.length ] ;
     for ( int i = 0 ; i < newTypes.length ; i ++ )
     {
       newTypes [ i ] = this.types [ i ].substitute ( pTypeSubstitution ) ;
     }
-    return new RowType ( newIdentifiers , newTypes ) ;
+    return new RowType ( this.identifiers , newTypes ) ;
   }
 
 

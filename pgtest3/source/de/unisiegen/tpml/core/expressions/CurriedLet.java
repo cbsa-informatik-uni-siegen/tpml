@@ -129,7 +129,7 @@ public class CurriedLet extends Expression implements BoundIdentifiers ,
     {
       if ( this.identifiers [ i ].getParent ( ) != null )
       {
-        this.identifiers [ i ] = this.identifiers [ i ].clone ( ) ;
+        // this.identifiers [ i ] = this.identifiers [ i ].clone ( ) ;
       }
       this.identifiers [ i ].setParent ( this ) ;
     }
@@ -147,7 +147,7 @@ public class CurriedLet extends Expression implements BoundIdentifiers ,
       {
         if ( this.types [ i ].getParent ( ) != null )
         {
-          this.types [ i ] = this.types [ i ].clone ( ) ;
+          // this.types [ i ] = this.types [ i ].clone ( ) ;
         }
         this.types [ i ].setParent ( this ) ;
       }
@@ -157,13 +157,13 @@ public class CurriedLet extends Expression implements BoundIdentifiers ,
     this.expressions [ 0 ] = pExpression1 ;
     if ( this.expressions [ 0 ].getParent ( ) != null )
     {
-      this.expressions [ 0 ] = this.expressions [ 0 ].clone ( ) ;
+      // this.expressions [ 0 ] = this.expressions [ 0 ].clone ( ) ;
     }
     this.expressions [ 0 ].setParent ( this ) ;
     this.expressions [ 1 ] = pExpression2 ;
     if ( this.expressions [ 1 ].getParent ( ) != null )
     {
-      this.expressions [ 1 ] = this.expressions [ 1 ].clone ( ) ;
+      // this.expressions [ 1 ] = this.expressions [ 1 ].clone ( ) ;
     }
     this.expressions [ 1 ].setParent ( this ) ;
   }
@@ -364,10 +364,9 @@ public class CurriedLet extends Expression implements BoundIdentifiers ,
           ArrayList < Identifier > boundedIdList = new ArrayList < Identifier > ( ) ;
           for ( Identifier freeId : boundedE2 )
           {
-            if ( this.identifiers [ i ].equals ( freeId ) )
+            if ( this.identifiers [ 0 ].equals ( freeId ) )
             {
-              freeId.setBoundedToExpression ( this ) ;
-              freeId.setBoundedToIdentifier ( this.identifiers [ i ] ) ;
+              freeId.setBoundTo ( this , this.identifiers [ 0 ] ) ;
               boundedIdList.add ( freeId ) ;
             }
           }
@@ -400,8 +399,7 @@ public class CurriedLet extends Expression implements BoundIdentifiers ,
             }
             for ( Identifier boundedId : boundedIdList )
             {
-              boundedId.setBoundedToExpression ( this ) ;
-              boundedId.setBoundedToIdentifier ( this.identifiers [ i ] ) ;
+              boundedId.setBoundTo ( this , this.identifiers [ i ] ) ;
             }
           }
           this.boundedIdentifiers.add ( boundedIdList ) ;
@@ -527,10 +525,10 @@ public class CurriedLet extends Expression implements BoundIdentifiers ,
     Identifier [ ] newIdentifiers = new Identifier [ this.identifiers.length ] ;
     for ( int i = 0 ; i < newIdentifiers.length ; i ++ )
     {
-      newIdentifiers [ i ] = this.identifiers [ i ].clone ( ) ;
+      newIdentifiers [ i ] = this.identifiers [ i ] ;
     }
-    Expression newE1 = this.expressions [ 0 ].clone ( ) ;
-    Expression newE2 = this.expressions [ 1 ].clone ( ) ;
+    Expression newE1 = this.expressions [ 0 ] ;
+    Expression newE2 = this.expressions [ 1 ] ;
     boolean found = false ;
     /*
      * Do not substitute in e1, if the Identifiers are equal.
@@ -614,13 +612,7 @@ public class CurriedLet extends Expression implements BoundIdentifiers ,
        */
       newE2 = newE2.substitute ( pId , pExpression ) ;
     }
-    MonoType [ ] newTypes = new MonoType [ this.types.length ] ;
-    for ( int i = 0 ; i < newTypes.length ; i ++ )
-    {
-      newTypes [ i ] = ( this.types [ i ] == null ) ? null : this.types [ i ]
-          .clone ( ) ;
-    }
-    return new CurriedLet ( newIdentifiers , newTypes , newE1 , newE2 ) ;
+    return new CurriedLet ( newIdentifiers , this.types , newE1 , newE2 ) ;
   }
 
 
@@ -632,11 +624,6 @@ public class CurriedLet extends Expression implements BoundIdentifiers ,
   @ Override
   public CurriedLet substitute ( TypeSubstitution pTypeSubstitution )
   {
-    Identifier [ ] newIdentifiers = new Identifier [ this.identifiers.length ] ;
-    for ( int i = 0 ; i < newIdentifiers.length ; i ++ )
-    {
-      newIdentifiers [ i ] = this.identifiers [ i ].clone ( ) ;
-    }
     MonoType [ ] newTypes = new MonoType [ this.types.length ] ;
     for ( int i = 0 ; i < newTypes.length ; i ++ )
     {
@@ -645,7 +632,7 @@ public class CurriedLet extends Expression implements BoundIdentifiers ,
     }
     Expression newE1 = this.expressions [ 0 ].substitute ( pTypeSubstitution ) ;
     Expression newE2 = this.expressions [ 1 ].substitute ( pTypeSubstitution ) ;
-    return new CurriedLet ( newIdentifiers , newTypes , newE1 , newE2 ) ;
+    return new CurriedLet ( this.identifiers , newTypes , newE1 , newE2 ) ;
   }
 
 

@@ -57,8 +57,7 @@ public class L2LanguageTranslator extends L1LanguageTranslator
       // add the lambdas
       for ( int n = curriedLetRec.getIdentifiers ( ).length - 1 ; n > 0 ; -- n )
       {
-        e1 = new Lambda ( curriedLetRec.getIdentifiers ( n ).clone ( ) ,
-            types [ n ] , e1 ) ;
+        e1 = new Lambda ( curriedLetRec.getIdentifiers ( n ) , types [ n ] , e1 ) ;
       }
       // try to generate a recursive type
       MonoType tau = types [ 0 ] ;
@@ -75,9 +74,9 @@ public class L2LanguageTranslator extends L1LanguageTranslator
         tau = null ;
       }
       // generate the let expression
-      return new Let ( curriedLetRec.getIdentifiers ( 0 ).clone ( ) ,
-          curriedLetRec.getTypes ( 0 ) , new Recursion ( curriedLetRec
-              .getIdentifiers ( 0 ) , tau , e1 ) , e2 ) ;
+      return new Let ( curriedLetRec.getIdentifiers ( 0 ) , curriedLetRec
+          .getTypes ( 0 ) , new Recursion ( curriedLetRec.getIdentifiers ( 0 ) ,
+          tau , e1 ) , e2 ) ;
     }
     else if ( expression instanceof LetRec )
     {
@@ -93,7 +92,7 @@ public class L2LanguageTranslator extends L1LanguageTranslator
       }
       // generate the let expression
       return new Let ( letRec.getId ( ) , letRec.getTau ( ) , new Recursion (
-          letRec.getId ( ).clone ( ) , letRec.getTau ( ) , e1 ) , e2 ) ;
+          letRec.getId ( ) , letRec.getTau ( ) , e1 ) , e2 ) ;
     }
     else if ( ( expression instanceof Recursion ) && recursive )
     {

@@ -99,7 +99,7 @@ public final class Lambda extends Value implements BoundIdentifiers ,
     this.identifiers [ 0 ] = pIdentifier ;
     if ( this.identifiers [ 0 ].getParent ( ) != null )
     {
-      this.identifiers [ 0 ] = this.identifiers [ 0 ].clone ( ) ;
+      // this.identifiers [ 0 ] = this.identifiers [ 0 ].clone ( ) ;
     }
     this.identifiers [ 0 ].setParent ( this ) ;
     // Type
@@ -109,7 +109,7 @@ public final class Lambda extends Value implements BoundIdentifiers ,
     {
       if ( this.types [ 0 ].getParent ( ) != null )
       {
-        this.types [ 0 ] = this.types [ 0 ].clone ( ) ;
+        // this.types [ 0 ] = this.types [ 0 ].clone ( ) ;
       }
       this.types [ 0 ].setParent ( this ) ;
     }
@@ -118,7 +118,7 @@ public final class Lambda extends Value implements BoundIdentifiers ,
     this.expressions [ 0 ] = pExpression ;
     if ( this.expressions [ 0 ].getParent ( ) != null )
     {
-      this.expressions [ 0 ] = this.expressions [ 0 ].clone ( ) ;
+      // this.expressions [ 0 ] = this.expressions [ 0 ].clone ( ) ;
     }
     this.expressions [ 0 ].setParent ( this ) ;
   }
@@ -295,8 +295,7 @@ public final class Lambda extends Value implements BoundIdentifiers ,
       {
         if ( this.identifiers [ 0 ].equals ( freeId ) )
         {
-          freeId.setBoundedToExpression ( this ) ;
-          freeId.setBoundedToIdentifier ( this.identifiers [ 0 ] ) ;
+          freeId.setBoundTo ( this , this.identifiers [ 0 ] ) ;
           boundedIdList.add ( freeId ) ;
         }
       }
@@ -426,7 +425,7 @@ public final class Lambda extends Value implements BoundIdentifiers ,
      */
     if ( this.identifiers [ 0 ].equals ( pId ) )
     {
-      return this.clone ( ) ;
+      return this ;
     }
     /*
      * Perform the bound renaming if required.
@@ -449,8 +448,7 @@ public final class Lambda extends Value implements BoundIdentifiers ,
      * Perform the substitution.
      */
     newE = newE.substitute ( pId , pExpression ) ;
-    return new Lambda ( newId , this.types [ 0 ] == null ? null
-        : this.types [ 0 ].clone ( ) , newE ) ;
+    return new Lambda ( newId , this.types [ 0 ] , newE ) ;
   }
 
 
@@ -465,7 +463,7 @@ public final class Lambda extends Value implements BoundIdentifiers ,
     MonoType newTau = ( this.types [ 0 ] == null ) ? null : this.types [ 0 ]
         .substitute ( pTypeSubstitution ) ;
     Expression newE = this.expressions [ 0 ].substitute ( pTypeSubstitution ) ;
-    return new Lambda ( this.identifiers [ 0 ].clone ( ) , newTau , newE ) ;
+    return new Lambda ( this.identifiers [ 0 ] , newTau , newE ) ;
   }
 
 

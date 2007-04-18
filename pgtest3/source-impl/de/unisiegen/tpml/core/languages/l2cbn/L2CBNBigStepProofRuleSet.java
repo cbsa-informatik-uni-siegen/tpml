@@ -323,7 +323,7 @@ public class L2CBNBigStepProofRuleSet extends L2BigStepProofRuleSet
       MonoType [ ] types = curriedLet.getTypes ( ) ;
       for ( int n = identifiers.length - 1 ; n > 0 ; -- n )
       {
-        e1 = new Lambda ( identifiers [ n ].clone ( ) , types [ n ] , e1 ) ;
+        e1 = new Lambda ( identifiers [ n ] , types [ n ] , e1 ) ;
       }
       // add the recursion for letrec
       if ( e instanceof CurriedLetRec )

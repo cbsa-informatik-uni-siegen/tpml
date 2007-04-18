@@ -68,10 +68,12 @@ public final class ObjectExpr extends Expression implements BoundIdentifiers ,
   /**
    * TODO
    * 
+   * @param pSelfIdentifier TODO
    * @param pTau TODO
    * @param pExpression TODO
    */
-  public ObjectExpr ( MonoType pTau , Expression pExpression )
+  public ObjectExpr ( SelfIdentifier pSelfIdentifier , MonoType pTau ,
+      Expression pExpression )
   {
     if ( pExpression == null )
     {
@@ -83,7 +85,11 @@ public final class ObjectExpr extends Expression implements BoundIdentifiers ,
     }
     // Identifier
     this.identifiers = new SelfIdentifier [ 1 ] ;
-    this.identifiers [ 0 ] = new SelfIdentifier ( ) ;
+    this.identifiers [ 0 ] = pSelfIdentifier ;
+    if ( this.identifiers [ 0 ].getParent ( ) != null )
+    {
+      // this.identifiers [ 0 ] = this.identifiers [ 0 ].clone ( ) ;
+    }
     this.identifiers [ 0 ].setParent ( this ) ;
     // Type
     this.types = new MonoType [ 1 ] ;
@@ -92,7 +98,7 @@ public final class ObjectExpr extends Expression implements BoundIdentifiers ,
     {
       if ( this.types [ 0 ].getParent ( ) != null )
       {
-        this.types [ 0 ] = this.types [ 0 ].clone ( ) ;
+        // this.types [ 0 ] = this.types [ 0 ].clone ( ) ;
       }
       this.types [ 0 ].setParent ( this ) ;
     }
@@ -101,7 +107,7 @@ public final class ObjectExpr extends Expression implements BoundIdentifiers ,
     this.expressions [ 0 ] = pExpression ;
     if ( this.expressions [ 0 ].getParent ( ) != null )
     {
-      this.expressions [ 0 ] = this.expressions [ 0 ].clone ( ) ;
+      // this.expressions [ 0 ] = this.expressions [ 0 ].clone ( ) ;
     }
     this.expressions [ 0 ].setParent ( this ) ;
   }
@@ -113,8 +119,9 @@ public final class ObjectExpr extends Expression implements BoundIdentifiers ,
   @ Override
   public ObjectExpr clone ( )
   {
-    return new ObjectExpr ( this.types [ 0 ] == null ? null : this.types [ 0 ]
-        .clone ( ) , this.expressions [ 0 ].clone ( ) ) ;
+    return new ObjectExpr ( this.identifiers [ 0 ].clone ( ) ,
+        this.types [ 0 ] == null ? null : this.types [ 0 ].clone ( ) ,
+        this.expressions [ 0 ].clone ( ) ) ;
   }
 
 
@@ -266,8 +273,7 @@ public final class ObjectExpr extends Expression implements BoundIdentifiers ,
       {
         if ( this.identifiers [ 0 ].equals ( freeId ) )
         {
-          freeId.setBoundedToExpression ( this ) ;
-          freeId.setBoundedToIdentifier ( this.identifiers [ 0 ] ) ;
+          freeId.setBoundTo ( this , this.identifiers [ 0 ] ) ;
           boundedIdList.add ( freeId ) ;
         }
       }
@@ -396,13 +402,13 @@ public final class ObjectExpr extends Expression implements BoundIdentifiers ,
      */
     if ( pId.getName ( ).equals ( "self" ) ) //$NON-NLS-1$
     {
-      return this.clone ( ) ;
+      return this ;
     }
     /*
      * Perform the substitution.
      */
     Expression newE = this.expressions [ 0 ].substitute ( pId , pExpression ) ;
-    return new ObjectExpr ( this.types [ 0 ] , newE ) ;
+    return new ObjectExpr ( this.identifiers [ 0 ] , this.types [ 0 ] , newE ) ;
   }
 
 
@@ -418,7 +424,7 @@ public final class ObjectExpr extends Expression implements BoundIdentifiers ,
     MonoType newTau = ( this.types [ 0 ] == null ) ? null : this.types [ 0 ]
         .substitute ( pTypeSubstitution ) ;
     Expression newE = this.expressions [ 0 ].substitute ( pTypeSubstitution ) ;
-    return new ObjectExpr ( newTau , newE ) ;
+    return new ObjectExpr ( this.identifiers [ 0 ] , newTau , newE ) ;
   }
 
 

@@ -291,14 +291,14 @@ public class L3BigStepProofRuleSet extends L2BigStepProofRuleSet
     if ( context.isMemoryEnabled ( ) )
     {
       // add a child node for the first expression
-      context.addProofNode ( node , list.getExpressions ( 0 ).clone ( ) ) ;
+      context.addProofNode ( node , list.getExpressions ( 0 ) ) ;
     }
     else
     {
       // add all child nodes at once
       for ( Expression e : list.getExpressions ( ) )
       {
-        context.addProofNode ( node , e.clone ( ) ) ;
+        context.addProofNode ( node , e ) ;
       }
     }
   }
@@ -322,8 +322,8 @@ public class L3BigStepProofRuleSet extends L2BigStepProofRuleSet
       if ( node.getLastChild ( ).isProven ( ) )
       {
         // add the next child node
-        context.addProofNode ( node , list.getExpressions (
-            node.getChildCount ( ) ).clone ( ) ) ;
+        context.addProofNode ( node , list.getExpressions ( node
+            .getChildCount ( ) ) ) ;
       }
     }
     else
@@ -452,14 +452,14 @@ public class L3BigStepProofRuleSet extends L2BigStepProofRuleSet
     if ( context.isMemoryEnabled ( ) )
     {
       // add a child node for the first sub expression
-      context.addProofNode ( node , tuple.getExpressions ( 0 ).clone ( ) ) ;
+      context.addProofNode ( node , tuple.getExpressions ( 0 ) ) ;
     }
     else
     {
       // add all child nodes at once
       for ( Expression e : tuple.getExpressions ( ) )
       {
-        context.addProofNode ( node , e.clone ( ) ) ;
+        context.addProofNode ( node , e ) ;
       }
     }
   }

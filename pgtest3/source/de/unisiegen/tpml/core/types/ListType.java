@@ -56,7 +56,7 @@ public final class ListType extends MonoType implements DefaultTypes
     this.types [ 0 ] = pTau ;
     if ( this.types [ 0 ].getParent ( ) != null )
     {
-      this.types [ 0 ] = this.types [ 0 ].clone ( ) ;
+      // this.types [ 0 ] = this.types [ 0 ].clone ( ) ;
     }
     this.types [ 0 ].setParent ( this ) ;
   }

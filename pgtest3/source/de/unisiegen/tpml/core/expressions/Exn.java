@@ -162,7 +162,7 @@ public final class Exn extends Expression
   Identifier pId , @ SuppressWarnings ( "unused" )
   Expression pExpression )
   {
-    return this.clone ( ) ;
+    return this ;
   }
 
 

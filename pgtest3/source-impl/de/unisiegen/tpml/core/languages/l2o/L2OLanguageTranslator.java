@@ -129,15 +129,15 @@ public class L2OLanguageTranslator extends L2LanguageTranslator
   {
     if ( pRecursive )
     {
-      Expression [ ] newDuplicationE = new Expression [ pDuplication
+      Expression [ ] newDuplicationExpressions = new Expression [ pDuplication
           .getExpressions ( ).length ] ;
       for ( int i = 0 ; i < pDuplication.getExpressions ( ).length ; i ++ )
       {
-        newDuplicationE [ i ] = translateToCoreSyntax ( pDuplication
+        newDuplicationExpressions [ i ] = translateToCoreSyntax ( pDuplication
             .getExpressions ( i ) , true ) ;
       }
       return new Duplication ( pDuplication.getIdentifiers ( ) ,
-          newDuplicationE ) ;
+          newDuplicationExpressions ) ;
     }
     return pDuplication ;
   }
@@ -192,8 +192,8 @@ public class L2OLanguageTranslator extends L2LanguageTranslator
   {
     if ( pRecursive )
     {
-      return new ObjectExpr ( pObjectExpr.getTau ( ) , translateToCoreSyntax (
-          pObjectExpr.getE ( ) , pRecursive ) ) ;
+      return new ObjectExpr ( pObjectExpr.getId ( ) , pObjectExpr.getTau ( ) ,
+          translateToCoreSyntax ( pObjectExpr.getE ( ) , true ) ) ;
     }
     return pObjectExpr ;
   }
@@ -210,13 +210,14 @@ public class L2OLanguageTranslator extends L2LanguageTranslator
   {
     if ( pRecursive )
     {
-      Expression [ ] newRowE = new Expression [ pRow.getExpressions ( ).length ] ;
-      for ( int i = 0 ; i < newRowE.length ; i ++ )
+      Expression [ ] newRowExpressions = new Expression [ pRow
+          .getExpressions ( ).length ] ;
+      for ( int i = 0 ; i < newRowExpressions.length ; i ++ )
       {
-        newRowE [ i ] = translateToCoreSyntax ( pRow.getExpressions ( i ) ,
-            pRecursive ) ;
+        newRowExpressions [ i ] = translateToCoreSyntax ( pRow
+            .getExpressions ( i ) , true ) ;
       }
-      return new Row ( newRowE ) ;
+      return new Row ( newRowExpressions ) ;
     }
     return pRow ;
   }

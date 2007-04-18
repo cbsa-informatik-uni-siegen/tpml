@@ -65,19 +65,19 @@ public final class InfixOperation extends Expression implements
     this.expressions [ 0 ] = pExpression1 ;
     if ( this.expressions [ 0 ].getParent ( ) != null )
     {
-      this.expressions [ 0 ] = this.expressions [ 0 ].clone ( ) ;
+      // this.expressions [ 0 ] = this.expressions [ 0 ].clone ( ) ;
     }
     this.expressions [ 0 ].setParent ( this ) ;
     this.expressions [ 1 ] = pBinaryOperator ;
     if ( this.expressions [ 1 ].getParent ( ) != null )
     {
-      this.expressions [ 1 ] = this.expressions [ 1 ].clone ( ) ;
+      // this.expressions [ 1 ] = this.expressions [ 1 ].clone ( ) ;
     }
     this.expressions [ 1 ].setParent ( this ) ;
     this.expressions [ 2 ] = pExpression2 ;
     if ( this.expressions [ 2 ].getParent ( ) != null )
     {
-      this.expressions [ 2 ] = this.expressions [ 2 ].clone ( ) ;
+      // this.expressions [ 2 ] = this.expressions [ 2 ].clone ( ) ;
     }
     this.expressions [ 2 ].setParent ( this ) ;
   }
@@ -228,8 +228,8 @@ public final class InfixOperation extends Expression implements
   {
     Expression newE1 = this.expressions [ 0 ].substitute ( pId , pExpression ) ;
     Expression newE2 = this.expressions [ 2 ].substitute ( pId , pExpression ) ;
-    return new InfixOperation ( ( BinaryOperator ) this.expressions [ 1 ]
-        .clone ( ) , newE1 , newE2 ) ;
+    return new InfixOperation ( ( BinaryOperator ) this.expressions [ 1 ] ,
+        newE1 , newE2 ) ;
   }
 
 
@@ -243,8 +243,8 @@ public final class InfixOperation extends Expression implements
   {
     Expression newE1 = this.expressions [ 0 ].substitute ( pTypeSubstitution ) ;
     Expression newE2 = this.expressions [ 2 ].substitute ( pTypeSubstitution ) ;
-    return new InfixOperation ( ( BinaryOperator ) this.expressions [ 1 ]
-        .clone ( ) , newE1 , newE2 ) ;
+    return new InfixOperation ( ( BinaryOperator ) this.expressions [ 1 ] ,
+        newE1 , newE2 ) ;
   }
 
 

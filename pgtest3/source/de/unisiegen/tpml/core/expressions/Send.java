@@ -64,7 +64,7 @@ public final class Send extends Expression implements DefaultIdentifiers ,
     this.expressions [ 0 ] = pExpression ;
     if ( this.expressions [ 0 ].getParent ( ) != null )
     {
-      this.expressions [ 0 ] = this.expressions [ 0 ].clone ( ) ;
+      // this.expressions [ 0 ] = this.expressions [ 0 ].clone ( ) ;
     }
     this.expressions [ 0 ].setParent ( this ) ;
     // Identifier
@@ -72,7 +72,7 @@ public final class Send extends Expression implements DefaultIdentifiers ,
     this.identifiers [ 0 ] = pIdentifier ;
     if ( this.identifiers [ 0 ].getParent ( ) != null )
     {
-      this.identifiers [ 0 ] = this.identifiers [ 0 ].clone ( ) ;
+      // this.identifiers [ 0 ] = this.identifiers [ 0 ].clone ( ) ;
     }
     this.identifiers [ 0 ].setParent ( this ) ;
   }
@@ -267,7 +267,7 @@ public final class Send extends Expression implements DefaultIdentifiers ,
   public Send substitute ( Identifier pId , Expression pExpression )
   {
     Expression newE = this.expressions [ 0 ].substitute ( pId , pExpression ) ;
-    return new Send ( newE , this.identifiers [ 0 ].clone ( ) ) ;
+    return new Send ( newE , this.identifiers [ 0 ] ) ;
   }
 
 
@@ -281,7 +281,7 @@ public final class Send extends Expression implements DefaultIdentifiers ,
   public Send substitute ( TypeSubstitution pTypeSubstitution )
   {
     Expression newE = this.expressions [ 0 ].substitute ( pTypeSubstitution ) ;
-    return new Send ( newE , this.identifiers [ 0 ].clone ( ) ) ;
+    return new Send ( newE , this.identifiers [ 0 ] ) ;
   }
 
 

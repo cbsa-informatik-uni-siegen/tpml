@@ -58,7 +58,7 @@ public final class Tuple extends Expression implements ChildrenExpressions
       this.indicesE [ i ] = i + 1 ;
       if ( this.expressions [ i ].getParent ( ) != null )
       {
-        this.expressions [ i ] = this.expressions [ i ].clone ( ) ;
+        // this.expressions [ i ] = this.expressions [ i ].clone ( ) ;
       }
       this.expressions [ i ].setParent ( this ) ;
     }

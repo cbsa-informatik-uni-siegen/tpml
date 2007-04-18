@@ -146,7 +146,7 @@ public class L4BigStepProofRuleSet extends L3BigStepProofRuleSet
     // add the proof node for e2 if memory is disabled
     if ( ! context.isMemoryEnabled ( ) )
     {
-      context.addProofNode ( node , sequence.getE2 ( ).clone ( ) ) ;
+      context.addProofNode ( node , sequence.getE2 ( ) ) ;
     }
   }
 
@@ -165,7 +165,7 @@ public class L4BigStepProofRuleSet extends L3BigStepProofRuleSet
     {
       // add the proof node for e2
       context.addProofNode ( node , ( ( Sequence ) node.getExpression ( ) )
-          .getE2 ( ).clone ( ) ) ;
+          .getE2 ( ) ) ;
     }
     else if ( node.getChildCount ( ) == 2 )
     {
@@ -185,8 +185,8 @@ public class L4BigStepProofRuleSet extends L3BigStepProofRuleSet
   public void applyWhile ( BigStepProofContext context , BigStepProofNode node )
   {
     While loop = ( While ) node.getExpression ( ) ;
-    context.addProofNode ( node , new Condition1 ( loop.getE1 ( ).clone ( ) ,
-        new Sequence ( loop.getE2 ( ).clone ( ) , loop.clone ( ) ) ) ) ;
+    context.addProofNode ( node , new Condition1 ( loop.getE1 ( ) ,
+        new Sequence ( loop.getE2 ( ) , loop ) ) ) ;
   }
 
 

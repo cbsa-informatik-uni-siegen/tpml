@@ -61,18 +61,16 @@ public class L2SmallStepProofRuleSet extends L1SmallStepProofRuleSet
     // prepend the lambda abstractions to e1
     for ( int n = identifiers.length - 1 ; n >= 1 ; -- n )
     {
-      e1 = new Lambda ( identifiers [ n ].clone ( ) ,
-          types [ n ] == null ? null : types [ n ].clone ( ) , e1 ) ;
+      e1 = new Lambda ( identifiers [ n ] , types [ n ] , e1 ) ;
     }
     // we can perform (UNFOLD), which includes a (LET-EVAL)
     context.addProofStep ( getRuleByName ( "LET-EVAL" ) , curriedLetRec ) ; //$NON-NLS-1$
     context.addProofStep ( getRuleByName ( "UNFOLD" ) , curriedLetRec ) ; //$NON-NLS-1$
     // perform the substitution on e1
     e1 = e1.substitute ( identifiers [ 0 ] , new Recursion ( identifiers [ 0 ] ,
-        types [ 0 ] == null ? null : types [ 0 ].clone ( ) , e1 ) ) ;
+        types [ 0 ] , e1 ) ) ;
     // generate the new (LET) expression
-    return new Let ( identifiers [ 0 ].clone ( ) , types [ 0 ] == null ? null
-        : types [ 0 ].clone ( ) , e1 , e2.clone ( ) ) ;
+    return new Let ( identifiers [ 0 ] , types [ 0 ] , e1 , e2 ) ;
   }
 
 
@@ -94,13 +92,10 @@ public class L2SmallStepProofRuleSet extends L1SmallStepProofRuleSet
     context.addProofStep ( getRuleByName ( "LET-EVAL" ) , letRec ) ; //$NON-NLS-1$
     context.addProofStep ( getRuleByName ( "UNFOLD" ) , letRec ) ; //$NON-NLS-1$
     // perform the substitution on e1
-    e1 = e1.substitute ( letRec.getId ( ) , new Recursion ( letRec.getId ( )
-        .clone ( ) , letRec.getTau ( ) == null ? null : letRec.getTau ( )
-        .clone ( ) , e1.clone ( ) ) ) ;
+    e1 = e1.substitute ( letRec.getId ( ) , new Recursion ( letRec.getId ( ) ,
+        letRec.getTau ( ) , e1 ) ) ;
     // generate the new (LET) expression
-    return new Let ( letRec.getId ( ).clone ( ) ,
-        letRec.getTau ( ) == null ? null : letRec.getTau ( ).clone ( ) , e1 ,
-        e2.clone ( ) ) ;
+    return new Let ( letRec.getId ( ) , letRec.getTau ( ) , e1 , e2 ) ;
   }
 
 

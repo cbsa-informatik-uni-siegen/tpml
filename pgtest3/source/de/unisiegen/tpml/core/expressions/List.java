@@ -96,7 +96,7 @@ public final class List extends Expression implements ChildrenExpressions
     {
       if ( this.expressions [ i ].getParent ( ) != null )
       {
-        this.expressions [ i ] = this.expressions [ i ].clone ( ) ;
+        // this.expressions [ i ] = this.expressions [ i ].clone ( ) ;
       }
       this.expressions [ i ].setParent ( this ) ;
     }
@@ -132,7 +132,7 @@ public final class List extends Expression implements ChildrenExpressions
     {
       if ( this.expressions [ i ].getParent ( ) != null )
       {
-        this.expressions [ i ] = this.expressions [ i ].clone ( ) ;
+        // this.expressions [ i ] = this.expressions [ i ].clone ( ) ;
       }
       this.expressions [ i ].setParent ( this ) ;
     }

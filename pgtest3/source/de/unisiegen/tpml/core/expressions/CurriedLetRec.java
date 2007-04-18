@@ -156,20 +156,18 @@ public final class CurriedLetRec extends CurriedLet implements
           {
             for ( Identifier freeId : boundedE1 )
             {
-              if ( this.identifiers [ i ].equals ( freeId ) )
+              if ( this.identifiers [ 0 ].equals ( freeId ) )
               {
-                freeId.setBoundedToExpression ( this ) ;
-                freeId.setBoundedToIdentifier ( this.identifiers [ i ] ) ;
+                freeId.setBoundTo ( this , this.identifiers [ 0 ] ) ;
                 boundedIdList.add ( freeId ) ;
               }
             }
           }
           for ( Identifier freeId : boundedE2 )
           {
-            if ( this.identifiers [ i ].equals ( freeId ) )
+            if ( this.identifiers [ 0 ].equals ( freeId ) )
             {
-              freeId.setBoundedToExpression ( this ) ;
-              freeId.setBoundedToIdentifier ( this.identifiers [ i ] ) ;
+              freeId.setBoundTo ( this , this.identifiers [ 0 ] ) ;
               boundedIdList.add ( freeId ) ;
             }
           }
@@ -197,8 +195,7 @@ public final class CurriedLetRec extends CurriedLet implements
             {
               if ( this.identifiers [ i ].equals ( freeId ) )
               {
-                freeId.setBoundedToExpression ( this ) ;
-                freeId.setBoundedToIdentifier ( this.identifiers [ i ] ) ;
+                freeId.setBoundTo ( this , this.identifiers [ i ] ) ;
                 boundedIdList.add ( freeId ) ;
               }
             }
@@ -221,14 +218,14 @@ public final class CurriedLetRec extends CurriedLet implements
   {
     if ( this.identifiers [ 0 ].equals ( pId ) )
     {
-      return this.clone ( ) ;
+      return this ;
     }
     Identifier [ ] newIdentifiers = new Identifier [ this.identifiers.length ] ;
     for ( int i = 0 ; i < newIdentifiers.length ; i ++ )
     {
-      newIdentifiers [ i ] = this.identifiers [ i ].clone ( ) ;
+      newIdentifiers [ i ] = this.identifiers [ i ] ;
     }
-    Expression newE1 = this.expressions [ 0 ].clone ( ) ;
+    Expression newE1 = this.expressions [ 0 ] ;
     Expression newE2 = this.expressions [ 1 ] ;
     boolean sameIdAs0 = false ;
     boolean substInE1 = true ;
@@ -323,13 +320,7 @@ public final class CurriedLetRec extends CurriedLet implements
      * Perform the substitution in e2.
      */
     newE2 = newE2.substitute ( pId , pExpression ) ;
-    MonoType [ ] newTypes = new MonoType [ this.types.length ] ;
-    for ( int i = 0 ; i < newTypes.length ; i ++ )
-    {
-      newTypes [ i ] = ( this.types [ i ] == null ) ? null : this.types [ i ]
-          .clone ( ) ;
-    }
-    return new CurriedLetRec ( newIdentifiers , newTypes , newE1 , newE2 ) ;
+    return new CurriedLetRec ( newIdentifiers , this.types , newE1 , newE2 ) ;
   }
 
 
@@ -341,18 +332,13 @@ public final class CurriedLetRec extends CurriedLet implements
   @ Override
   public CurriedLetRec substitute ( TypeSubstitution pTypeSubstitution )
   {
-    Identifier [ ] newIdentifiers = new Identifier [ this.identifiers.length ] ;
-    for ( int i = 0 ; i < newIdentifiers.length ; i ++ )
-    {
-      newIdentifiers [ i ] = this.identifiers [ i ].clone ( ) ;
-    }
     MonoType [ ] newTypes = new MonoType [ this.types.length ] ;
     for ( int i = 0 ; i < newTypes.length ; i ++ )
     {
       newTypes [ i ] = ( this.types [ i ] == null ) ? null : this.types [ i ]
           .substitute ( pTypeSubstitution ) ;
     }
-    return new CurriedLetRec ( newIdentifiers , newTypes ,
+    return new CurriedLetRec ( this.identifiers , newTypes ,
         this.expressions [ 0 ].substitute ( pTypeSubstitution ) ,
         this.expressions [ 1 ].substitute ( pTypeSubstitution ) ) ;
   }

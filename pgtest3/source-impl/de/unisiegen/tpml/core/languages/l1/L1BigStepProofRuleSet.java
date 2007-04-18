@@ -86,8 +86,7 @@ public class L1BigStepProofRuleSet extends L0BigStepProofRuleSet
   public void applyAnd ( BigStepProofContext context , BigStepProofNode node )
   {
     // add the first proof node
-    context.addProofNode ( node , ( ( And ) node.getExpression ( ) ).getE1 ( )
-        .clone ( ) ) ;
+    context.addProofNode ( node , ( ( And ) node.getExpression ( ) ).getE1 ( ) ) ;
   }
 
 
@@ -160,7 +159,7 @@ public class L1BigStepProofRuleSet extends L0BigStepProofRuleSet
         {
           // add a child node for the second expression
           context.addProofNode ( node , ( ( And ) node.getExpression ( ) )
-              .getE2 ( ).clone ( ) ) ;
+              .getE2 ( ) ) ;
         }
         else
         {
@@ -199,12 +198,12 @@ public class L1BigStepProofRuleSet extends L0BigStepProofRuleSet
     if ( e instanceof Condition )
     {
       // add the first child node
-      context.addProofNode ( node , ( ( Condition ) e ).getE0 ( ).clone ( ) ) ;
+      context.addProofNode ( node , ( ( Condition ) e ).getE0 ( ) ) ;
     }
     else
     {
       // add the first child node
-      context.addProofNode ( node , ( ( Condition1 ) e ).getE0 ( ).clone ( ) ) ;
+      context.addProofNode ( node , ( ( Condition1 ) e ).getE0 ( ) ) ;
     }
   }
 
@@ -242,8 +241,7 @@ public class L1BigStepProofRuleSet extends L0BigStepProofRuleSet
           if ( e instanceof Condition )
           {
             // add next proof node for e2
-            context.addProofNode ( node , ( ( Condition ) e ).getE2 ( )
-                .clone ( ) ) ;
+            context.addProofNode ( node , ( ( Condition ) e ).getE2 ( ) ) ;
           }
           else
           {
@@ -299,14 +297,12 @@ public class L1BigStepProofRuleSet extends L0BigStepProofRuleSet
           if ( e instanceof Condition )
           {
             // add next proof node for e1
-            context.addProofNode ( node , ( ( Condition ) e ).getE1 ( )
-                .clone ( ) ) ;
+            context.addProofNode ( node , ( ( Condition ) e ).getE1 ( ) ) ;
           }
           else
           {
             // add next proof node for e1
-            context.addProofNode ( node , ( ( Condition1 ) e ).getE1 ( )
-                .clone ( ) ) ;
+            context.addProofNode ( node , ( ( Condition1 ) e ).getE1 ( ) ) ;
           }
         }
       }
@@ -338,13 +334,13 @@ public class L1BigStepProofRuleSet extends L0BigStepProofRuleSet
     {
       // determine the first sub expression
       CurriedLet curriedLet = ( CurriedLet ) e ;
-      Expression e1 = curriedLet.getE1 ( ).clone ( ) ;
+      Expression e1 = curriedLet.getE1 ( ) ;
       // generate the appropriate lambda abstractions
       Identifier [ ] identifiers = curriedLet.getIdentifiers ( ) ;
       MonoType [ ] types = curriedLet.getTypes ( ) ;
       for ( int n = identifiers.length - 1 ; n > 0 ; -- n )
       {
-        e1 = new Lambda ( identifiers [ n ].clone ( ) , types [ n ] , e1 ) ;
+        e1 = new Lambda ( identifiers [ n ] , types [ n ] , e1 ) ;
       }
       // add the recursion for letrec
       if ( e instanceof CurriedLetRec )
@@ -357,7 +353,7 @@ public class L1BigStepProofRuleSet extends L0BigStepProofRuleSet
     else if ( e instanceof MultiLet )
     {
       // prove the first sub expression
-      context.addProofNode ( node , ( ( MultiLet ) e ).getE1 ( ).clone ( ) ) ;
+      context.addProofNode ( node , ( ( MultiLet ) e ).getE1 ( ) ) ;
     }
     else
     {
@@ -368,8 +364,7 @@ public class L1BigStepProofRuleSet extends L0BigStepProofRuleSet
       if ( e instanceof LetRec )
       {
         LetRec letRec = ( LetRec ) e ;
-        e1 = new Recursion ( letRec.getId ( ).clone ( ) ,
-            letRec.getTau ( ) == null ? null : letRec.getTau ( ).clone ( ) , e1 ) ;
+        e1 = new Recursion ( letRec.getId ( ) , letRec.getTau ( ) , e1 ) ;
       }
       // add the proof node
       context.addProofNode ( node , e1 ) ;
@@ -508,8 +503,7 @@ public class L1BigStepProofRuleSet extends L0BigStepProofRuleSet
   public void applyOr ( BigStepProofContext context , BigStepProofNode node )
   {
     // add the first proof node
-    context.addProofNode ( node , ( ( Or ) node.getExpression ( ) ).getE1 ( )
-        .clone ( ) ) ;
+    context.addProofNode ( node , ( ( Or ) node.getExpression ( ) ).getE1 ( ) ) ;
   }
 
 
@@ -543,7 +537,7 @@ public class L1BigStepProofRuleSet extends L0BigStepProofRuleSet
         {
           // add a child node for the second expression
           context.addProofNode ( node , ( ( Or ) node.getExpression ( ) )
-              .getE2 ( ).clone ( ) ) ;
+              .getE2 ( ) ) ;
         }
       }
       catch ( ClassCastException cause )

@@ -100,14 +100,14 @@ public class L4SmallStepProofRuleSet extends L3SmallStepProofRuleSet
       // try to evaluate e0
       e0 = evaluate ( context , e0 ) ;
       // exceptions need special handling
-      return e0.isException ( ) ? e0 : new Condition1 ( e0 , e1.clone ( ) ) ;
+      return e0.isException ( ) ? e0 : new Condition1 ( e0 , e1 ) ;
     }
     // determine the boolean constant value
     if ( ( ( BooleanConstant ) e0 ).booleanValue ( ) )
     {
       // jep, that's (COND-1-TRUE) then
       context.addProofStep ( getRuleByName ( "COND-1-TRUE" ) , condition1 ) ; //$NON-NLS-1$
-      return e1.clone ( ) ;
+      return e1 ;
     }
     // jep, that's (COND-1-FALSE) then
     context.addProofStep ( getRuleByName ( "COND-1-FALSE" ) , condition1 ) ; //$NON-NLS-1$
@@ -130,7 +130,7 @@ public class L4SmallStepProofRuleSet extends L3SmallStepProofRuleSet
   {
     Expression value = context.getStore ( ).get ( e2 ) ;
     context.addProofStep ( getRuleByName ( "DEREF" ) , application ) ; //$NON-NLS-1$
-    return value.clone ( ) ;
+    return value ;
   }
 
 
@@ -150,7 +150,7 @@ public class L4SmallStepProofRuleSet extends L3SmallStepProofRuleSet
     Location location = context.getStore ( ).alloc ( ) ;
     context.getStore ( ).put ( location , e2 ) ;
     context.addProofStep ( getRuleByName ( "REF" ) , application ) ; //$NON-NLS-1$
-    return location.clone ( ) ;
+    return location ;
   }
 
 
@@ -175,12 +175,12 @@ public class L4SmallStepProofRuleSet extends L3SmallStepProofRuleSet
       // try to evaluate e1
       e1 = evaluate ( context , e1 ) ;
       // exceptions need special treatment
-      return e1.isException ( ) ? e1 : new Sequence ( e1 , e2.clone ( ) ) ;
+      return e1.isException ( ) ? e1 : new Sequence ( e1 , e2 ) ;
     }
     // we're about to perform (SEQ-EXEC)
     context.addProofStep ( getRuleByName ( "SEQ-EXEC" ) , sequence ) ; //$NON-NLS-1$
     // drop e1 from the sequence
-    return e2.clone ( ) ;
+    return e2 ;
   }
 
 
@@ -200,7 +200,6 @@ public class L4SmallStepProofRuleSet extends L3SmallStepProofRuleSet
     // we're about to perform (WHILE)
     context.addProofStep ( getRuleByName ( "WHILE" ) , loop ) ; //$NON-NLS-1$
     // translate to: if e1 then (e2; while e1 do e2)
-    return new Condition1 ( e1.clone ( ) , new Sequence ( e2.clone ( ) , loop
-        .clone ( ) ) ) ;
+    return new Condition1 ( e1 , new Sequence ( e2 , loop ) ) ;
   }
 }

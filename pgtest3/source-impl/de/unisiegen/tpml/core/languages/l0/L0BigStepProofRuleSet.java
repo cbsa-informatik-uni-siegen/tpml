@@ -60,19 +60,19 @@ public class L0BigStepProofRuleSet extends AbstractBigStepProofRuleSet
     {
       // add the first node for the application
       Application application = ( Application ) e ;
-      context.addProofNode ( node , application.getE1 ( ).clone ( ) ) ;
+      context.addProofNode ( node , application.getE1 ( ) ) ;
       // we can add the second node as well if memory is disabled
       if ( ! context.isMemoryEnabled ( ) )
       {
-        context.addProofNode ( node , application.getE2 ( ).clone ( ) ) ;
+        context.addProofNode ( node , application.getE2 ( ) ) ;
       }
     }
     else
     {
       // otherwise it must be an infix operation
       InfixOperation infixOperation = ( InfixOperation ) e ;
-      context.addProofNode ( node , new Application ( infixOperation.getOp ( )
-          .clone ( ) , infixOperation.getE1 ( ).clone ( ) ) ) ;
+      context.addProofNode ( node , new Application ( infixOperation.getOp ( ) ,
+          infixOperation.getE1 ( ) ) ) ;
       // we can add the second as well if memory is disabled
       if ( ! context.isMemoryEnabled ( ) )
       {
@@ -104,15 +104,15 @@ public class L0BigStepProofRuleSet extends AbstractBigStepProofRuleSet
       {
         // the Application case
         Application application = ( Application ) e ;
-        context.addProofNode ( node , application.getE2 ( ).clone ( ) , node0
+        context.addProofNode ( node , application.getE2 ( ) , node0
             .getResult ( ).getStore ( ) ) ;
       }
       else
       {
         // the InfixOperation case
         InfixOperation infixOperation = ( InfixOperation ) e ;
-        context.addProofNode ( node , infixOperation.getE2 ( ).clone ( ) ,
-            node0.getResult ( ).getStore ( ) ) ;
+        context.addProofNode ( node , infixOperation.getE2 ( ) , node0
+            .getResult ( ).getStore ( ) ) ;
       }
     }
     else if ( node.getChildCount ( ) == 2 )
@@ -125,8 +125,8 @@ public class L0BigStepProofRuleSet extends AbstractBigStepProofRuleSet
         // add the third child node
         BigStepProofResult result0 = node0.getResult ( ) ;
         BigStepProofResult result1 = node1.getResult ( ) ;
-        Application application = new Application ( result0.getValue ( )
-            .clone ( ) , result1.getValue ( ).clone ( ) ) ;
+        Application application = new Application ( result0.getValue ( ) ,
+            result1.getValue ( ) ) ;
         context.addProofNode ( node , application , result1.getStore ( ) ) ;
       }
     }
@@ -169,7 +169,7 @@ public class L0BigStepProofRuleSet extends AbstractBigStepProofRuleSet
         // substitute: (#l_n e2) for id
         e = e.substitute ( multiLambda.getIdentifiers ( n ) , new Application (
             new Projection ( multiLambda.getIdentifiers ( ).length , n + 1 ) ,
-            e2.clone ( ) ) ) ;
+            e2 ) ) ;
       }
       // add the proof node for e
       context.addProofNode ( node , e ) ;
