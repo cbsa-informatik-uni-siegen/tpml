@@ -43,6 +43,33 @@ public final class OutlineTreeSelectionListener implements
 
 
   /**
+   * Repaints the given node and all its children.
+   */
+  private final void repaint ( )
+  {
+    OutlineNode rootNode = ( OutlineNode ) this.defaultOutline.getOutlineUI ( )
+        .getTreeModel ( ).getRoot ( ) ;
+    repaint ( rootNode ) ;
+  }
+
+
+  /**
+   * Repaints the given node and all its children.
+   * 
+   * @param pOutlineNode The node, which should be repainted.
+   */
+  private final void repaint ( OutlineNode pOutlineNode )
+  {
+    this.defaultOutline.getOutlineUI ( ).getTreeModel ( ).nodeChanged (
+        pOutlineNode ) ;
+    for ( int i = 0 ; i < pOutlineNode.getChildCount ( ) ; i ++ )
+    {
+      repaint ( ( OutlineNode ) pOutlineNode.getChildAt ( i ) ) ;
+    }
+  }
+
+
+  /**
    * Resets the root node and all its children.
    */
   public final void reset ( )
@@ -89,6 +116,11 @@ public final class OutlineTreeSelectionListener implements
       return ;
     }
     reset ( rootNode ) ;
+    if ( pTreePath == null )
+    {
+      repaint ( ) ;
+      return ;
+    }
     ArrayList < OutlineNode > list = new ArrayList < OutlineNode > ( ) ;
     Object [ ] path = pTreePath.getPath ( ) ;
     for ( int i = 0 ; i < pTreePath.getPathCount ( ) ; i ++ )
