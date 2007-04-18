@@ -67,8 +67,8 @@ public class DefaultTypeInferenceProofContext implements
 	 * @see #newTypeVariable()
 	 * @see TypeVariable
 	 *
-	private int offset = 0;
-*/
+	 private int offset = 0;
+	 */
 	/**
 	 * The list of type equations that has been collected for this context
 	 * 
@@ -85,8 +85,7 @@ public class DefaultTypeInferenceProofContext implements
 	/**
 	 * The newest added type substitutions
 	 */
-	private TypeSubstitutionList substitution = TypeSubstitutionList.EMPTY_LIST;
-	
+	private ArrayList<DefaultTypeSubstitution> substitution = new ArrayList<DefaultTypeSubstitution>();
 
 	/**
 	 * The type inference proof model with which this proof context is associated.
@@ -139,23 +138,23 @@ public class DefaultTypeInferenceProofContext implements
 		//this.equations = pNode.getEquations();
 
 		/*
-		// increment the model index
-		final int index = model.getIndex();
+		 // increment the model index
+		 final int index = model.getIndex();
 
-		addRedoAction(new Runnable() {
+		 addRedoAction(new Runnable() {
 
-			public void run() {
+		 public void run() {
 
-				model.setIndex(index + 1);
-			}
-		});
-		addUndoAction(new Runnable() {
+		 model.setIndex(index + 1);
+		 }
+		 });
+		 addUndoAction(new Runnable() {
 
-			public void run() {
+		 public void run() {
 
-				model.setIndex(index);
-			}
-		});*/
+		 model.setIndex(index);
+		 }
+		 });*/
 	}
 
 	//
@@ -171,7 +170,7 @@ public class DefaultTypeInferenceProofContext implements
 
 		final TypeEquation eqn = new TypeEquation(left, right);
 		//equations = equations.extend(left, right);
-		equations.add(eqn);
+		equations.add(0, eqn);
 	}
 
 	/**
@@ -180,7 +179,8 @@ public class DefaultTypeInferenceProofContext implements
 	 * @see de.unisiegen.tpml.core.typechecker.TypeCheckerProofContext#addProofNode(de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode, de.unisiegen.tpml.core.typechecker.TypeEnvironment, de.unisiegen.tpml.core.expressions.Expression, de.unisiegen.tpml.core.types.MonoType)
 	 */
 	public void addProofNode(final TypeCheckerProofNode pNode,
-			final TypeEnvironment environment, final Expression expression, final MonoType type) {
+			final TypeEnvironment environment, final Expression expression,
+			final MonoType type) {
 
 		final DefaultTypeCheckerProofNode child = new DefaultTypeCheckerProofNode(
 				environment, expression, type);
@@ -222,7 +222,8 @@ public class DefaultTypeInferenceProofContext implements
 					new ArrowType(TypeVariable.ALPHA, new RefType(TypeVariable.ALPHA)));
 		} else if (expression instanceof Projection) {
 			final Projection projection = (Projection) expression;
-			final TypeVariable[] typeVariables = new TypeVariable[projection.getArity()];
+			final TypeVariable[] typeVariables = new TypeVariable[projection
+					.getArity()];
 			final TreeSet<TypeVariable> quantifiedVariables = new TreeSet<TypeVariable>();
 			for (int n = 0; n < typeVariables.length; ++n) {
 				typeVariables[n] = new TypeVariable(n, 0);
@@ -288,7 +289,7 @@ public class DefaultTypeInferenceProofContext implements
 	 * @see de.unisiegen.tpml.core.typechecker.TypeCheckerProofContext#newTypeVariable()
 	 */
 	public TypeVariable newTypeVariable() {
-		model.setIndex(model.getIndex()+1);
+		model.setIndex(model.getIndex() + 1);
 
 		return new TypeVariable(this.model.getIndex(), model.getOffset());
 
@@ -302,7 +303,7 @@ public class DefaultTypeInferenceProofContext implements
 	 */
 
 	public void addSubstitution(final DefaultTypeSubstitution s) {
-		substitution = substitution.extend(s);
+		substitution.add(s);
 	}
 
 	//
@@ -321,8 +322,9 @@ public class DefaultTypeInferenceProofContext implements
 	 * @throws UnifyException if an error occurs while unifying the type equations that resulted
 	 *                              from the application of <code>rule</code> to <code>node</code>.
 	 */
-	void apply(final TypeCheckerProofRule rule, final TypeFormula formula, final MonoType type, boolean mode)
-			throws ProofRuleException, UnifyException {
+	void apply(final TypeCheckerProofRule rule, final TypeFormula formula,
+			final MonoType type, boolean mode) throws ProofRuleException,
+			UnifyException {
 
 		DefaultTypeCheckerProofNode typeNode = null;
 
@@ -351,100 +353,50 @@ public class DefaultTypeInferenceProofContext implements
 		 addEquation(node.getType(), type);
 		 }*/
 
-		// Create a new List of formulas
-		final ArrayList<TypeFormula> formulas = new ArrayList<TypeFormula>();
+		// Create a new List of type substitutions
+		ArrayList<DefaultTypeSubstitution> newSubstitutions = new ArrayList<DefaultTypeSubstitution>();
 
-		// a list of all substitutions of the new node
-		final ArrayList<DefaultTypeSubstitution> newSubstitutions = new ArrayList<DefaultTypeSubstitution>();
+		newSubstitutions.addAll(substitution);
 
-		// list of the formulas of the actual type inference proof node
-		final ArrayList<TypeFormula> oldFormulas = node.getFormula();
-		
-		TypeSubstitutionList sub;
-
-		// add evtl. existing formulas from the parent node
-		for (TypeFormula form : oldFormulas) {
-			sub = substitution;
-			// just for sorting all type judgements are added before the type equations
-			if (form instanceof TypeJudgement) {
-				// don't add the type judgement if it is the actual type formula
-				if ((!formula.equals(form))) {
-					formulas.add(form);
-				}
-			}
-		}
-
-		// add the nodes of the temporary existing typenode
-		for (int i = 0; i < typeNode.getChildCount(); i++) {
-			final TypeJudgement judgement = new TypeJudgement(
-					(DefaultTypeEnvironment) typeNode.getChildAt(i).getEnvironment(),
-					typeNode.getChildAt(i).getExpression(), typeNode.getChildAt(i)
-							.getType());
-			formulas.add(judgement);
-		}
-
-		// this is used to apply all of the substitutions to the type equations
-		sub = substitution;
-
-		// add the new collected equations to the formula list
-		for (int i = equations.size() - 1; i > -1; i--) {
-			// reset sub from empty list to all type substitutions
-			sub = substitution;
-			TypeFormula eqn = equations.get(i);
-			// check if type equation is allready in the old list
-			if (!(oldFormulas.contains(eqn))) {
-				// check if there are any new type substitutions
-				if (substitution != TypeSubstitutionList.EMPTY_LIST) {
-					// apply all new type substitutions to the type equation
-					while (sub != TypeSubstitutionList.EMPTY_LIST) {
-						eqn = eqn.substitute(sub.getFirst());
-						sub = sub.getRemaining();
-					}
-				}
-				// check if the type equation is allready in list, else add it
-				if (!(formulas.contains(eqn))) {
-					formulas.add(eqn);
-				}
-			}
-		}
-
-		// add the equations of the old node to the formula list
-		for (int i = 0; i < oldFormulas.size(); i++) {
-			// reset sub from empty list to all type equations
-			sub = substitution;
-			TypeFormula form = oldFormulas.get(i);
-
-			// just add type equations, because judgements are allready added
-			if (form instanceof TypeEquation) {
-				// don't add the type equation if it is the actual type formula
-				if ((!formula.equals(form))) {
-					// if substitution is not empty we have to substitute the type equatio
-					if (substitution != TypeSubstitutionList.EMPTY_LIST) {
-						// just do this for all type substitutions in list
-						while (sub != TypeSubstitutionList.EMPTY_LIST) {
-							form = form.substitute(sub.getFirst());
-							sub = sub.getRemaining();
-
-						}
-					}
-					// add the type equation to the new list of type formulas
-					if (!(formulas.contains(form))) {
-						formulas.add(form);
-					}
-				}
-			}
-		}
-		
-		DefaultTypeSubstitution nextSubstitution;
-
-		//	add the new substitutions
-		while (substitution!=TypeSubstitutionList.EMPTY_LIST) {
-			nextSubstitution = substitution.getFirst(); 
-			newSubstitutions.add(nextSubstitution);
-			substitution = substitution.getRemaining();
-			
-		}
 		newSubstitutions.addAll(substitutions);
+
+		// Create a new List of formulas and sort it
+		ArrayList<TypeFormula> sortedFormulas = new ArrayList<TypeFormula>();
+		sortedFormulas.addAll(node.getAllFormulas());
+
+		DefaultTypeCheckerProofNode child;
+		for (int i = 0; i < typeNode.getChildCount(); i++) {
+			child = typeNode.getChildAt(i);
+			TypeJudgement insert = new TypeJudgement((DefaultTypeEnvironment) child
+					.getEnvironment(), child.getExpression(), child.getType());
+			for (int j = 0; j < sortedFormulas.size(); j++) {
+				if (sortedFormulas.get(j) instanceof TypeEquation
+						|| j == sortedFormulas.size() - 1) {
+					sortedFormulas.add(j, insert);
+					break;
+				}
+			}
+		}
+		for (int j = 0; j < sortedFormulas.size(); j++) {
+			if (sortedFormulas.get(j) instanceof TypeEquation
+					|| j == sortedFormulas.size() - 1) {
+				sortedFormulas.addAll(j, equations);
+				break;
+			}
+		}
+
+		sortedFormulas.remove(formula);
+
+		ArrayList<MonoType> types = model
+				.getSubstitudedTypesForSubstitutions(newSubstitutions);
+
+		//	 Create a new List of formulas needed for new node
+		ArrayList<TypeFormula> formulas = new ArrayList<TypeFormula>();
+		for (TypeFormula form : sortedFormulas) {
+			TypeFormula actual = form;
+			actual = actual.substitute(newSubstitutions);
+			formulas.add(actual);
+		}
 
 		// create the new node
 		this.model.contextAddProofNode(this, node, formulas, newSubstitutions,
@@ -575,8 +527,14 @@ public class DefaultTypeInferenceProofContext implements
 	 */
 	public void setSubstitutions(final ArrayList<DefaultTypeSubstitution> subs) {
 		this.substitutions = subs;
-		
+
 	}
+
+	public ArrayList<DefaultTypeSubstitution> getSubstitution() {
+		return this.substitution;
+	}
+
+	
 
 	/*
 	 * Set the newes type substitution

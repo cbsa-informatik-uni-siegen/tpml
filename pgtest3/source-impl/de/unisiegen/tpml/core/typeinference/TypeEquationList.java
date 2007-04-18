@@ -1,5 +1,6 @@
 package de.unisiegen.tpml.core.typeinference;
 
+import de.unisiegen.tpml.core.typechecker.DefaultTypeSubstitution;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
 import de.unisiegen.tpml.core.types.MonoType;
 
@@ -102,7 +103,7 @@ public final class TypeEquationList {
 	 * @return the resulting list of equations.
 	 * 
 	 * @see Equation#substitute(Substitution)
-	 */
+	 *
 	public TypeEquationList substitute(final TypeSubstitution s) {
 
 		// nothing to substitute on the empty list
@@ -111,9 +112,9 @@ public final class TypeEquationList {
 		}
 
 		// apply the substitution to the first and the remaining equations
-		return new TypeEquationList(this.first.substitute(s), this.remaining
+		return new TypeEquationList(this.first.substitute((DefaultTypeSubstitution)s), this.remaining
 				.substitute(s));
-	}
+	}*/
 
 	//
 	// Base methods

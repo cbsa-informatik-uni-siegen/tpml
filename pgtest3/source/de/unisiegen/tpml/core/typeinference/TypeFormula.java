@@ -1,9 +1,11 @@
 package de.unisiegen.tpml.core.typeinference;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import de.unisiegen.tpml.core.expressions.Expression;
-import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable;
 import de.unisiegen.tpml.core.typechecker.DefaultTypeEnvironment;
-import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
+import de.unisiegen.tpml.core.typechecker.DefaultTypeSubstitution;
 import de.unisiegen.tpml.core.types.MonoType;
 
 /**
@@ -57,6 +59,7 @@ public interface TypeFormula{
 	 * @param s TypeSubstitution
 	 * @return
 	 */
-	public TypeEquation substitute(TypeSubstitution s);
+	public TypeFormula substitute(ArrayList<DefaultTypeSubstitution> s);
+
 
 }

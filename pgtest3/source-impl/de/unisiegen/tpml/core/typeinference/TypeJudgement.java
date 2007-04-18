@@ -1,12 +1,13 @@
 package de.unisiegen.tpml.core.typeinference;
 
+import java.util.ArrayList;
+
 import de.unisiegen.tpml.core.expressions.Expression;
-import de.unisiegen.tpml.core.prettyprinter.PrettyString;
-import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder;
-import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory;
 import de.unisiegen.tpml.core.typechecker.DefaultTypeEnvironment;
+import de.unisiegen.tpml.core.typechecker.DefaultTypeSubstitution;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
 import de.unisiegen.tpml.core.types.MonoType;
+import de.unisiegen.tpml.core.types.Type;
 
 /**
  * 
@@ -64,10 +65,17 @@ public class TypeJudgement implements TypeFormula {
 	 * @return null (just needed for TypeEquation)
 	 * @see de.unisiegen.tpml.core.typeinference.TypeFormula#substitute(de.unisiegen.tpml.core.typechecker.TypeSubstitution)
 	 */
-	public TypeEquation substitute(final TypeSubstitution s) {
+	public TypeFormula substitute(ArrayList< DefaultTypeSubstitution> substitutions) {
+		
+		MonoType newType = this.type.clone();
+		
+		for (TypeSubstitution s : substitutions ){
+			newType.substitute(s);
+		}
+		
+		
 
-		this.type.substitute(s);
-		return null;
+		return new TypeJudgement ( this.environment, this.expression, newType);
 	}
 
 	//
@@ -162,5 +170,6 @@ public class TypeJudgement implements TypeFormula {
 	public void setExpression(final Expression expression) {
 		this.expression = expression;
 	}
+
 
 }

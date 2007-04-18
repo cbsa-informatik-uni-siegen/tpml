@@ -22,6 +22,7 @@ import de.unisiegen.tpml.core.typechecker.TypeCheckerProofContext;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofRule;
 import de.unisiegen.tpml.core.types.MonoType;
+import de.unisiegen.tpml.core.types.Type;
 import de.unisiegen.tpml.core.types.TypeVariable;
 
 /**
@@ -63,7 +64,7 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 	 * @see types.TypeVariable
 	 */
 	private int index = 1;
-	
+
 	/**
 	 * The current offset for the <code>TypeVariable</code> allocation. The
 	 * offset combined with the index from the {@link #model} will be used
@@ -153,7 +154,7 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 
 		guessInternal((DefaultTypeInferenceProofNode) node, null, false);
 	}
-	
+
 	public void guess(ProofNode node, boolean mode) throws ProofGuessException {
 
 		guessInternal((DefaultTypeInferenceProofNode) node, null, mode);
@@ -180,8 +181,9 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 		applyInternal((TypeCheckerProofRule) rule,
 				(DefaultTypeInferenceProofNode) node, null, null, false);
 	}
-	
-	public void prove(ProofRule rule, ProofNode node, boolean mode) throws ProofRuleException {
+
+	public void prove(ProofRule rule, ProofNode node, boolean mode)
+			throws ProofRuleException {
 
 		if (!this.ruleSet.contains(rule)) {
 			throw new IllegalArgumentException("The rule is invalid for the model"); //$NON-NLS-1$
@@ -314,58 +316,55 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 		final DefaultTypeInferenceProofNode node = (DefaultTypeInferenceProofNode) pNode;
 		final ArrayList<TypeFormula> oldFormulas = pNode.getAllFormulas();
 		if (all) {
-			
-			final ArrayList<TypeFormula> newFormulas = new ArrayList <TypeFormula>();
-			
-			for (TypeFormula formula : node.getAllFormulas()){
-				if (formula instanceof TypeJudgement){
-					Expression expression = translateToCoreSyntaxInternal(node, (TypeJudgement) formula, recursive);
-					newFormulas.add(new TypeJudgement(formula.getEnvironment(), expression, formula.getType()));
+
+			final ArrayList<TypeFormula> newFormulas = new ArrayList<TypeFormula>();
+
+			for (TypeFormula formula : node.getAllFormulas()) {
+				if (formula instanceof TypeJudgement) {
+					Expression expression = translateToCoreSyntaxInternal(node,
+							(TypeJudgement) formula, recursive);
+					newFormulas.add(new TypeJudgement(formula.getEnvironment(),
+							expression, formula.getType()));
 				}
 			}
 			addUndoableTreeEdit(new UndoableTreeEdit() {
-				
-				
 
 				public void redo() {
-					
+
 					node.setFormula(newFormulas);
 					nodeChanged(node);
-					
+
 				}
 
 				public void undo() {
 					node.setFormula(oldFormulas);
 					nodeChanged(node);
 				}
-				
+
 			});
-			
-			
-			
+
 		} else {
 			if (node.getFirstFormula() instanceof TypeJudgement) {
 				final TypeJudgement judgement = (TypeJudgement) node.getFirstFormula();
 				final Expression oldExpression = judgement.getExpression();
-				final Expression newExpression =	translateToCoreSyntaxInternal(node, (TypeJudgement) node.getFirstFormula(), recursive);
-			
-	addUndoableTreeEdit(new UndoableTreeEdit() {
-				
-				
+				final Expression newExpression = translateToCoreSyntaxInternal(node,
+						(TypeJudgement) node.getFirstFormula(), recursive);
 
-				public void redo() {
-					
-					judgement.setExpression(newExpression);
-					nodeChanged(node);
-					
-				}
+				addUndoableTreeEdit(new UndoableTreeEdit() {
 
-				public void undo() {
-					judgement.setExpression(oldExpression);
-					nodeChanged(node);
-				}
-				
-			});
+					public void redo() {
+
+						judgement.setExpression(newExpression);
+						nodeChanged(node);
+
+					}
+
+					public void undo() {
+						judgement.setExpression(oldExpression);
+						nodeChanged(node);
+					}
+
+				});
 			}
 		}
 	}
@@ -393,7 +392,6 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 		return this.translator.translateToCoreSyntax(judgement.getExpression(),
 				recursive);
 
-
 	}
 
 	//
@@ -416,8 +414,8 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 	 * @see #prove(ProofRule, ProofNode)
 	 */
 	private void applyInternal(TypeCheckerProofRule rule,
-			DefaultTypeInferenceProofNode node, MonoType type, TypeFormula form, boolean mode)
-			throws ProofRuleException {
+			DefaultTypeInferenceProofNode node, MonoType type, TypeFormula form,
+			boolean mode) throws ProofRuleException {
 
 		// allocate a new TypeCheckerContext
 		DefaultTypeInferenceProofContext context = new DefaultTypeInferenceProofContext(
@@ -501,8 +499,8 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 	 * @see #guess(ProofNode)
 	 * @see #guessWithType(ProofNode, MonoType)
 	 */
-	private void guessInternal(DefaultTypeInferenceProofNode node, MonoType type, boolean mode)
-			throws ProofGuessException {
+	private void guessInternal(DefaultTypeInferenceProofNode node, MonoType type,
+			boolean mode) throws ProofGuessException {
 
 		if (node == null) {
 			throw new NullPointerException("node is null"); //$NON-NLS-1$
@@ -651,4 +649,13 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 		this.offset = offset;
 	}
 
+	public ArrayList<MonoType> getSubstitudedTypesForSubstitutions(
+			ArrayList<DefaultTypeSubstitution> substitutions) {
+		ArrayList<MonoType> result = new ArrayList<MonoType>();
+
+		for (DefaultTypeSubstitution s : substitutions) {
+			result.add(s.getType());
+		}
+		return result;
+	}
 }

@@ -26,6 +26,7 @@ import de.unisiegen.tpml.core.typechecker.UnificationException;
 import de.unisiegen.tpml.core.typeinference.DefaultTypeEquationProofNode;
 import de.unisiegen.tpml.core.typeinference.DefaultTypeInferenceProofContext;
 import de.unisiegen.tpml.core.typeinference.TypeEquation;
+import de.unisiegen.tpml.core.typeinference.TypeSubstitutionList;
 import de.unisiegen.tpml.core.typeinference.UnifyException;
 import de.unisiegen.tpml.core.types.ArrowType;
 import de.unisiegen.tpml.core.types.BooleanType;
@@ -407,8 +408,6 @@ public class L1TypeCheckerProofRuleSet extends AbstractTypeCheckerProofRuleSet {
 				context.addSubstitution(s);
 				return;
 			}
-			// ???
-			//return;
 		} else if (left instanceof ArrowType && right instanceof ArrowType) {
 			ArrowType taul = (ArrowType) left;
 			ArrowType taur = (ArrowType) right;
@@ -419,7 +418,9 @@ public class L1TypeCheckerProofRuleSet extends AbstractTypeCheckerProofRuleSet {
 				// advanced mode is choosen
 				// unify tau1 = tau1', tau2 = tau2'
 				unify(context, node, new TypeEquation(taul.getTau2(), taur.getTau2()));
-				unify(context, node, new TypeEquation(taul.getTau1(), taur.getTau1()));
+				TypeEquation eqn2 = new TypeEquation(taul.getTau1(), taur.getTau1());
+				eqn2 = (TypeEquation)	eqn2.substitute(context.getSubstitution());
+				unify(context, node, eqn2);
 			} else {
 				// beginner mode is choosen
 				// equations are added to list and will be unified later
