@@ -10,7 +10,6 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
 import de.unisiegen.tpml.core.types.MonoType ;
 import de.unisiegen.tpml.core.types.Type ;
-import de.unisiegen.tpml.core.util.BoundRenaming ;
 
 
 /**
@@ -54,7 +53,7 @@ public final class ObjectExpr extends Expression implements BoundIdentifiers ,
    * 
    * @see #getIdentifiers()
    */
-  private Identifier [ ] identifiers ;
+  private SelfIdentifier [ ] identifiers ;
 
 
   /**
@@ -69,22 +68,11 @@ public final class ObjectExpr extends Expression implements BoundIdentifiers ,
   /**
    * TODO
    * 
-   * @param pIdentifier TODO
    * @param pTau TODO
    * @param pExpression TODO
    */
-  public ObjectExpr ( Identifier pIdentifier , MonoType pTau ,
-      Expression pExpression )
+  public ObjectExpr ( MonoType pTau , Expression pExpression )
   {
-    if ( pIdentifier == null )
-    {
-      throw new NullPointerException ( "Identifier is null" ) ; //$NON-NLS-1$
-    }
-    if ( ! ( pIdentifier instanceof SelfName ) )
-    {
-      throw new IllegalArgumentException (
-          "The Identifier has to be a SelfName" ) ; //$NON-NLS-1$
-    }
     if ( pExpression == null )
     {
       throw new NullPointerException ( "Row is null" ) ; //$NON-NLS-1$
@@ -94,12 +82,8 @@ public final class ObjectExpr extends Expression implements BoundIdentifiers ,
       throw new IllegalArgumentException ( "The Expression has to be a Row" ) ; //$NON-NLS-1$
     }
     // Identifier
-    this.identifiers = new Identifier [ 1 ] ;
-    this.identifiers [ 0 ] = pIdentifier ;
-    if ( this.identifiers [ 0 ].getParent ( ) != null )
-    {
-      this.identifiers [ 0 ] = this.identifiers [ 0 ].clone ( ) ;
-    }
+    this.identifiers = new SelfIdentifier [ 1 ] ;
+    this.identifiers [ 0 ] = new SelfIdentifier ( ) ;
     this.identifiers [ 0 ].setParent ( this ) ;
     // Type
     this.types = new MonoType [ 1 ] ;
@@ -129,9 +113,8 @@ public final class ObjectExpr extends Expression implements BoundIdentifiers ,
   @ Override
   public ObjectExpr clone ( )
   {
-    return new ObjectExpr ( this.identifiers [ 0 ].clone ( ) ,
-        this.types [ 0 ] == null ? null : this.types [ 0 ].clone ( ) ,
-        this.expressions [ 0 ].clone ( ) ) ;
+    return new ObjectExpr ( this.types [ 0 ] == null ? null : this.types [ 0 ]
+        .clone ( ) , this.expressions [ 0 ].clone ( ) ) ;
   }
 
 
@@ -236,7 +219,7 @@ public final class ObjectExpr extends Expression implements BoundIdentifiers ,
    * 
    * @return TODO
    */
-  public Identifier getId ( )
+  public SelfIdentifier getId ( )
   {
     return this.identifiers [ 0 ] ;
   }
@@ -247,7 +230,7 @@ public final class ObjectExpr extends Expression implements BoundIdentifiers ,
    * 
    * @return TODO
    */
-  public Identifier [ ] getIdentifiers ( )
+  public SelfIdentifier [ ] getIdentifiers ( )
   {
     return this.identifiers ;
   }
@@ -261,7 +244,7 @@ public final class ObjectExpr extends Expression implements BoundIdentifiers ,
    * @return The <code>pIndex</code>th {@link Identifier} of this
    *         {@link Expression}.
    */
-  public Identifier getIdentifiers ( int pIndex )
+  public SelfIdentifier getIdentifiers ( int pIndex )
   {
     return this.identifiers [ pIndex ] ;
   }
@@ -411,33 +394,15 @@ public final class ObjectExpr extends Expression implements BoundIdentifiers ,
     /*
      * Do not substitute, if the Identifiers are equal.
      */
-    if ( this.identifiers [ 0 ].equals ( pId ) )
+    if ( pId.getName ( ).equals ( "self" ) ) //$NON-NLS-1$
     {
       return this.clone ( ) ;
     }
     /*
-     * Perform the bound renaming if required.
-     */
-    BoundRenaming boundRenaming = new BoundRenaming ( ) ;
-    boundRenaming.add ( this.free ( ) ) ;
-    boundRenaming.add ( pExpression.free ( ) ) ;
-    boundRenaming.add ( pId ) ;
-    Identifier newId = boundRenaming.newId ( this.identifiers [ 0 ] ) ;
-    /*
-     * Substitute the old Identifier only with the new Identifier, if they are
-     * different.
-     */
-    Expression newE = this.expressions [ 0 ] ;
-    if ( ! this.identifiers [ 0 ].equals ( newId ) )
-    {
-      newE = newE.substitute ( this.identifiers [ 0 ] , newId ) ;
-    }
-    /*
      * Perform the substitution.
      */
-    newE = newE.substitute ( pId , pExpression ) ;
-    return new ObjectExpr ( newId , this.types [ 0 ] == null ? null
-        : this.types [ 0 ].clone ( ) , newE ) ;
+    Expression newE = this.expressions [ 0 ].substitute ( pId , pExpression ) ;
+    return new ObjectExpr ( this.types [ 0 ] , newE ) ;
   }
 
 
@@ -453,7 +418,7 @@ public final class ObjectExpr extends Expression implements BoundIdentifiers ,
     MonoType newTau = ( this.types [ 0 ] == null ) ? null : this.types [ 0 ]
         .substitute ( pTypeSubstitution ) ;
     Expression newE = this.expressions [ 0 ].substitute ( pTypeSubstitution ) ;
-    return new ObjectExpr ( this.identifiers [ 0 ].clone ( ) , newTau , newE ) ;
+    return new ObjectExpr ( newTau , newE ) ;
   }
 
 

@@ -6,13 +6,12 @@ import de.unisiegen.tpml.core.expressions.CurriedMethod ;
 import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.expressions.Identifier ;
 import de.unisiegen.tpml.core.expressions.Lambda ;
-import de.unisiegen.tpml.core.expressions.Send ;
 import de.unisiegen.tpml.core.expressions.Method ;
 import de.unisiegen.tpml.core.expressions.ObjectExpr ;
 import de.unisiegen.tpml.core.expressions.Row ;
+import de.unisiegen.tpml.core.expressions.Send ;
 import de.unisiegen.tpml.core.languages.l2.L2SmallStepProofRuleSet ;
 import de.unisiegen.tpml.core.smallstep.SmallStepProofContext ;
-import de.unisiegen.tpml.core.util.BoundRenaming ;
 
 
 /**
@@ -23,14 +22,6 @@ import de.unisiegen.tpml.core.util.BoundRenaming ;
  */
 public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
 {
-  /**
-   * TODO
-   */
-  // private static final String DUPL_EXEC = "DUPL-EXEC" ; //$NON-NLS-1$
-  /**
-   * TODO
-   */
-  // private static final String DUPL_EVAL = "DUPL-EVAL" ; //$NON-NLS-1$
   /**
    * TODO
    */
@@ -58,31 +49,25 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
   /**
    * TODO
    */
-  private static final String OBJ_UNFOLD = "OBJ-UNFOLD" ; //$NON-NLS-1$
+  private static final String SEND_UNFOLD = "SEND-UNFOLD" ; //$NON-NLS-1$
 
 
   /**
    * TODO
    */
-  private static final String OBJ_EVAL = "OBJ-EVAL" ; //$NON-NLS-1$
+  private static final String OBJECT_EVAL = "OBJECT-EVAL" ; //$NON-NLS-1$
 
 
   /**
    * TODO
    */
-  private static final String METH_RIGHT = "METH-RIGHT" ; //$NON-NLS-1$
+  private static final String METHOD_RIGHT = "METHOD-RIGHT" ; //$NON-NLS-1$
 
 
   /**
    * TODO
    */
   private static final String ATTR_RIGHT = "ATTR-RIGHT" ; //$NON-NLS-1$
-
-
-  /**
-   * TODO
-   */
-  private static final String ATTR_RENAME = "ATTR-RENAME" ; //$NON-NLS-1$
 
 
   /**
@@ -101,21 +86,17 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
     super ( pL2OLanguage ) ;
     // Attr
     register ( L2OLanguage.L2O , ATTR_EVAL , false ) ;
-    register ( L2OLanguage.L2O , ATTR_RENAME , true ) ;
     register ( L2OLanguage.L2O , ATTR_RIGHT , false ) ;
-    // Meth
-    register ( L2OLanguage.L2O , METH_RIGHT , false ) ;
-    // Obj
-    register ( L2OLanguage.L2O , OBJ_EVAL , false ) ;
-    register ( L2OLanguage.L2O , OBJ_UNFOLD , true ) ;
+    // Method
+    register ( L2OLanguage.L2O , METHOD_RIGHT , false ) ;
+    // Object
+    register ( L2OLanguage.L2O , OBJECT_EVAL , false ) ;
     // Send
+    register ( L2OLanguage.L2O , SEND_UNFOLD , true ) ;
     register ( L2OLanguage.L2O , SEND_ATTR , true ) ;
     register ( L2OLanguage.L2O , SEND_SKIP , true ) ;
     register ( L2OLanguage.L2O , SEND_EXEC , true ) ;
     register ( L2OLanguage.L2O , SEND_EVAL , false ) ;
-    // Dupl
-    // register ( L2OLanguage.L2O , DUPL_EVAL , false ) ;
-    // register ( L2OLanguage.L2O , DUPL_EXEC , true ) ;
   }
 
 
@@ -130,16 +111,88 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
       ObjectExpr pObjectExpr )
   {
     /*
-     * If the Expression is an ObjectExpr, we can only perform OBJ-EVAL.
+     * If the Expression is an ObjectExpr, we can only perform OBJECT-EVAL.
      */
-    pContext.addProofStep ( getRuleByName ( OBJ_EVAL ) , pObjectExpr ) ;
+    pContext.addProofStep ( getRuleByName ( OBJECT_EVAL ) , pObjectExpr ) ;
     Expression row = evaluate ( pContext , pObjectExpr.getE ( ) ) ;
     if ( row.isException ( ) )
     {
       return row ;
     }
-    return new ObjectExpr ( pObjectExpr.getId ( ).clone ( ) , pObjectExpr
-        .getTau ( ) == null ? null : pObjectExpr.getTau ( ).clone ( ) , row ) ;
+    return new ObjectExpr ( pObjectExpr.getTau ( ) , row ) ;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @param pContext TODO
+   * @param pRow TODO
+   * @return TODO
+   */
+  public Expression evaluateRow ( SmallStepProofContext pContext , Row pRow )
+  {
+    for ( int i = 0 ; i < pRow.getExpressions ( ).length ; i ++ )
+    {
+      /*
+       * If the current child of the Row is an Attribute, we have to perform
+       * ATTR-EVAL, ATTR-RENAME or ATTR-RIGHT.
+       */
+      Expression currentRowChild = pRow.getExpressions ( i ) ;
+      if ( currentRowChild instanceof Attribute )
+      {
+        /*
+         * If the Attribute is not yet a value, we have to perform ATTR-EVAL.
+         */
+        Attribute attribute = ( Attribute ) currentRowChild ;
+        if ( ! attribute.isValue ( ) )
+        {
+          pContext.addProofStep ( getRuleByName ( ATTR_EVAL ) , attribute ) ;
+          Expression attrE = evaluate ( pContext , attribute.getE ( ) ) ;
+          if ( attrE.isException ( ) )
+          {
+            return attrE ;
+          }
+          Expression [ ] newRowExpressions = new Expression [ pRow
+              .getExpressions ( ).length ] ;
+          for ( int j = 0 ; j < newRowExpressions.length ; j ++ )
+          {
+            if ( i != j )
+            {
+              newRowExpressions [ j ] = pRow.getExpressions ( j ).clone ( ) ;
+            }
+          }
+          newRowExpressions [ i ] = new Attribute ( attribute.getId ( )
+              .clone ( ) , attribute.getTau ( ) == null ? null : attribute
+              .getTau ( ).clone ( ) , attrE ) ;
+          return new Row ( newRowExpressions ) ;
+        }
+        /*
+         * If the Attribute is a value, we have to perform ATTR-RIGHT.
+         */
+        pContext.addProofStep ( getRuleByName ( ATTR_RIGHT ) , attribute ) ;
+      }
+      else if ( ( currentRowChild instanceof Method )
+          || ( currentRowChild instanceof CurriedMethod ) )
+      {
+        /*
+         * If the current child is a Method or CurriedMethod, we have to perform
+         * METH-RIGHT.
+         */
+        pContext.addProofStep ( getRuleByName ( METHOD_RIGHT ) ,
+            currentRowChild ) ;
+      }
+      else
+      {
+        /*
+         * Programming error: The child of the Row is not an Attribute, Method
+         * or CurriedMethod. This should not happen.
+         */
+        throw new IllegalStateException (
+            "Inconsistent L20SmallStepProofRuleSet class." ) ; //$NON-NLS-1$
+      }
+    }
+    return pRow ;
   }
 
 
@@ -170,9 +223,9 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
     {
       /*
        * If the child Expression of the Send is an ObjectExpr and the ObjectExpr
-       * is a value, we have to perform OBJ-UNFOLD.
+       * is a value, we have to perform SEND-UNFOLD.
        */
-      pContext.addProofStep ( getRuleByName ( OBJ_UNFOLD ) , pSend ) ;
+      pContext.addProofStep ( getRuleByName ( SEND_UNFOLD ) , pSend ) ;
       ObjectExpr objectExpr = ( ObjectExpr ) pSend.getE ( ) ;
       Expression newRow = objectExpr.getE ( ).substitute (
           objectExpr.getId ( ) , objectExpr ) ;
@@ -315,203 +368,5 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
       }
     }
     return pSend ;
-  }
-
-
-  /**
-   * TODO
-   * 
-   * @param pContext TODO
-   * @param pDuplication TODO
-   * @return TODO
-   */
-  /*
-   * public Expression evaluateDuplication ( SmallStepProofContext pContext ,
-   * Duplication pDuplication ) { // Check if all children of the Duplication
-   * are values or not. boolean allChildrenAreValues = true ; for ( Expression
-   * expr : pDuplication.getExpressions ( ) ) { if ( ! expr.isValue ( ) ) {
-   * allChildrenAreValues = false ; break ; } } // If not all children of the
-   * Duplication are values and the first // Expression of the Duplication is a
-   * value, we have to perform DUPL-EVAL. if ( ( ! allChildrenAreValues ) && (
-   * pDuplication.getE ( ).isValue ( ) ) ) { pContext.addProofStep (
-   * getRuleByName ( DUPL_EVAL ) , pDuplication ) ; Identifier [ ]
-   * newDuplicationId = new Identifier [ pDuplication .getIdentifiers ( ).length ] ;
-   * Expression [ ] newDuplicationE = new Expression [ pDuplication
-   * .getExpressions ( ).length ] ; for ( int i = 0 ; i < newDuplicationE.length ;
-   * i ++ ) { newDuplicationId [ i ] = pDuplication.getIdentifiers ( i ).clone ( ) ;
-   * newDuplicationE [ i ] = pDuplication.getExpressions ( i ).clone ( ) ; } for (
-   * int i = 0 ; i < newDuplicationE.length ; i ++ ) { if ( ! newDuplicationE [
-   * i ].isValue ( ) ) { newDuplicationE [ i ] = evaluate ( pContext ,
-   * newDuplicationE [ i ] ) ; if ( newDuplicationE [ i ].isException ( ) ) {
-   * return newDuplicationE [ i ] ; } return new Duplication ( pDuplication.getE (
-   * ).clone ( ) , newDuplicationId , newDuplicationE ) ; } } } // If all
-   * children of the Duplication are values, the first Expression of // the
-   * Duplication is an ObjectExpr and this ObjectExpr is a value, we have // to
-   * perform DUPL-EXEC. if ( ( allChildrenAreValues ) && ( pDuplication.getE ( )
-   * instanceof ObjectExpr ) && ( pDuplication.getE ( ).isValue ( ) ) ) {
-   * ObjectExpr objectExpr = ( ObjectExpr ) pDuplication.getE ( ) ; Row row = (
-   * Row ) objectExpr.getE ( ) ; Expression [ ] newRowE = new Expression [
-   * row.getExpressions ( ).length ] ; for ( int i = 0 ; i < newRowE.length ; i ++ ) {
-   * newRowE [ i ] = row.getExpressions ( i ).clone ( ) ; } // Search all
-   * Identifiers of the Duplication in the Row of the ObjectExpr // and replace
-   * the Attribute, if the Identifiers are equal. boolean found ; for ( int i =
-   * 0 ; i < pDuplication.getIdentifiers ( ).length ; i ++ ) { found = false ;
-   * for ( int j = 0 ; j < newRowE.length ; j ++ ) { if ( newRowE [ j ]
-   * instanceof Attribute ) { Attribute attribute = ( Attribute ) newRowE [ j ] ;
-   * if ( attribute.getId ( ) .equals ( pDuplication.getIdentifiers ( i ) ) ) {
-   * newRowE [ j ] = new Attribute ( attribute.getId ( ).clone ( ) ,
-   * attribute.getTau ( ) == null ? null : attribute.getTau ( ) .clone ( ) ,
-   * pDuplication.getExpressions ( i ).clone ( ) ) ; found = true ; } } } // If
-   * the Duplication contains an Identifier which is not found in the // Row,
-   * the Expression gets stuck. if ( ! found ) { return pDuplication ; } }
-   * pContext.addProofStep ( getRuleByName ( DUPL_EXEC ) , pDuplication ) ;
-   * return new ObjectExpr ( objectExpr.getId ( ).clone ( ) , objectExpr .getTau ( ) ==
-   * null ? null : objectExpr.getTau ( ).clone ( ) , new Row ( newRowE ) ) ; }
-   * return pDuplication ; }
-   */
-  /**
-   * TODO
-   * 
-   * @param pContext TODO
-   * @param pRow TODO
-   * @return TODO
-   */
-  public Expression evaluateRow ( SmallStepProofContext pContext , Row pRow )
-  {
-    for ( int i = 0 ; i < pRow.getExpressions ( ).length ; i ++ )
-    {
-      /*
-       * If the current child of the Row is an Attribute, we have to perform
-       * ATTR-EVAL, ATTR-RENAME or ATTR-RIGHT.
-       */
-      Expression currentRowChild = pRow.getExpressions ( i ) ;
-      if ( currentRowChild instanceof Attribute )
-      {
-        /*
-         * If the Attribute is not yet a value, we have to perform ATTR-EVAL.
-         */
-        Attribute attribute = ( Attribute ) currentRowChild ;
-        if ( ! attribute.isValue ( ) )
-        {
-          pContext.addProofStep ( getRuleByName ( ATTR_EVAL ) , attribute ) ;
-          Expression attrE = evaluate ( pContext , attribute.getE ( ) ) ;
-          if ( attrE.isException ( ) )
-          {
-            return attrE ;
-          }
-          Expression [ ] newRowExpressions = new Expression [ pRow
-              .getExpressions ( ).length ] ;
-          for ( int j = 0 ; j < newRowExpressions.length ; j ++ )
-          {
-            if ( i != j )
-            {
-              newRowExpressions [ j ] = pRow.getExpressions ( j ).clone ( ) ;
-            }
-          }
-          newRowExpressions [ i ] = new Attribute ( attribute.getId ( )
-              .clone ( ) , attribute.getTau ( ) == null ? null : attribute
-              .getTau ( ).clone ( ) , attrE ) ;
-          return new Row ( newRowExpressions ) ;
-        }
-        /*
-         * Check, if the current Attribute has to be renamed with the rule
-         * ATTR-RENAME. It has to be renamed, if in the rest of the Row an
-         * Attribute with the same Identifier exists.
-         */
-        boolean attrRename = false ;
-        for ( int j = i + 1 ; j < pRow.getExpressions ( ).length ; j ++ )
-        {
-          if ( ( pRow.getExpressions ( j ) instanceof Attribute )
-              && ( ( Attribute ) pRow.getExpressions ( j ) ).getId ( ).equals (
-                  attribute.getId ( ) ) )
-          {
-            attrRename = true ;
-            break ;
-          }
-        }
-        /*
-         * Rename the current Attribute and all Identifiers, which are bound to
-         * the Identifier of the Attrbute.
-         */
-        if ( attrRename )
-        {
-          pContext.addProofStep ( getRuleByName ( ATTR_RENAME ) , attribute ) ;
-          Expression [ ] newRowExpressions = new Expression [ pRow
-              .getExpressions ( ).length ] ;
-          for ( int j = 0 ; j < newRowExpressions.length ; j ++ )
-          {
-            newRowExpressions [ j ] = pRow.getExpressions ( j ).clone ( ) ;
-          }
-          BoundRenaming boundRenaming = new BoundRenaming ( ) ;
-          boundRenaming.add ( pRow.free ( ) ) ;
-          boundRenaming.add ( attribute.getId ( ) ) ;
-          for ( int j = 1 ; j < pRow.getExpressions ( ).length ; j ++ )
-          {
-            if ( pRow.getExpressions ( j ) instanceof Attribute )
-            {
-              Attribute currentAttribute = ( Attribute ) pRow
-                  .getExpressions ( j ) ;
-              boundRenaming.add ( currentAttribute.getId ( ) ) ;
-            }
-          }
-          Identifier newId = boundRenaming.newId ( attribute.getId ( ) ) ;
-          newRowExpressions [ i ] = new Attribute ( newId ,
-              attribute.getTau ( ) == null ? null : attribute.getTau ( )
-                  .clone ( ) , attribute.getE ( ).clone ( ) ) ;
-          for ( int j = i + 1 ; j < newRowExpressions.length ; j ++ )
-          {
-            if ( newRowExpressions [ j ] instanceof Attribute )
-            {
-              Attribute currentAttribute = ( Attribute ) newRowExpressions [ j ] ;
-              if ( currentAttribute.getId ( ).equals ( attribute.getId ( ) ) )
-              {
-                break ;
-              }
-            }
-            else if ( ( newRowExpressions [ j ] instanceof Method )
-                || ( newRowExpressions [ j ] instanceof CurriedMethod ) )
-            {
-              // TODO Attribute rename
-              newRowExpressions [ j ] = newRowExpressions [ j ].substitute (
-                  attribute.getId ( ) , newId ) ;
-            }
-            else
-            {
-              /*
-               * Programming error: The child of the Row is not an Attribute,
-               * Method or CurriedMethod. This should not happen.
-               */
-              throw new IllegalStateException (
-                  "Inconsistent L20SmallStepProofRuleSet class." ) ; //$NON-NLS-1$
-            }
-          }
-          return new Row ( newRowExpressions ) ;
-        }
-        /*
-         * If the Attribute is a value and it has not to be renamed, we have to
-         * perform ATTR-RIGHT.
-         */
-        pContext.addProofStep ( getRuleByName ( ATTR_RIGHT ) , attribute ) ;
-      }
-      else if ( ( currentRowChild instanceof Method )
-          || ( currentRowChild instanceof CurriedMethod ) )
-      {
-        /*
-         * If the current child is a Method or CurriedMethod, we have to perform
-         * METH-RIGHT.
-         */
-        pContext.addProofStep ( getRuleByName ( METH_RIGHT ) , currentRowChild ) ;
-      }
-      else
-      {
-        /*
-         * Programming error: The child of the Row is not an Attribute, Method
-         * or CurriedMethod. This should not happen.
-         */
-        throw new IllegalStateException (
-            "Inconsistent L20SmallStepProofRuleSet class." ) ; //$NON-NLS-1$
-      }
-    }
-    return pRow ;
   }
 }

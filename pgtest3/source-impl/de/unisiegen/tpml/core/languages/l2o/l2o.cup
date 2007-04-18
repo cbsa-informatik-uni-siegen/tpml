@@ -193,7 +193,7 @@ simple_expr			::=	constant:c
 identifier			::= IDENTIFIER:id
 						{: RESULT = new Identifier(id); :}
 					|	SELF:s
-						{: RESULT = new SelfName(); :}
+						{: RESULT = new SelfIdentifier(); :}
 					;
 
 application			::= simple_expr:e simple_expr_list:l
@@ -310,14 +310,14 @@ curried_let_rec		::= LET REC IDENTIFIER:id id_type_list:itl EQUAL expr:e1 IN exp
 
 object_expr			::= OBJECT LPAREN SELF:l RPAREN END
 						{: Expression [] e = new Expression [0];
-						   RESULT = new ObjectExpr (new SelfName(), null, new Row (e)); :}
+						   RESULT = new ObjectExpr (null, new Row (e)); :}
 					|   OBJECT LPAREN SELF:l COLON type:tau RPAREN END
 						{: Expression [] e = new Expression [0];
-						   RESULT = new ObjectExpr (new SelfName(), tau, new Row (e)); :}
+						   RESULT = new ObjectExpr (tau, new Row (e)); :}
 					|	OBJECT LPAREN SELF:l RPAREN row:r END
-						{: RESULT = new ObjectExpr (new SelfName(), null, r); :}
+						{: RESULT = new ObjectExpr (null, r); :}
 					|	OBJECT LPAREN SELF:l COLON type:tau RPAREN row:r END
-						{: RESULT = new ObjectExpr (new SelfName(), tau, r); :}
+						{: RESULT = new ObjectExpr (tau, r); :}
 					;
 					
 duplication			::= DUPLBEGIN id_expr_list:iel DUPLEND

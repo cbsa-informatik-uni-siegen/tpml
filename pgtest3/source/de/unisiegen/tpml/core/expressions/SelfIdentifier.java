@@ -6,14 +6,26 @@ package de.unisiegen.tpml.core.expressions ;
  * 
  * @author Christian Fehler
  */
-public class SelfName extends Identifier
+public class SelfIdentifier extends Identifier
 {
   /**
    * TODO
    */
-  public SelfName ( )
+  public SelfIdentifier ( )
   {
     super ( "self" ) ; //$NON-NLS-1$
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Expression#clone()
+   */
+  @ Override
+  public SelfIdentifier clone ( )
+  {
+    return new SelfIdentifier ( ) ;
   }
 
 

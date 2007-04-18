@@ -13,7 +13,6 @@ import de.unisiegen.tpml.core.expressions.Method ;
 import de.unisiegen.tpml.core.expressions.ObjectExpr ;
 import de.unisiegen.tpml.core.expressions.Row ;
 import de.unisiegen.tpml.core.languages.l2.L2BigStepProofRuleSet ;
-import de.unisiegen.tpml.core.util.BoundRenaming ;
 
 
 /**
@@ -24,12 +23,6 @@ import de.unisiegen.tpml.core.util.BoundRenaming ;
  */
 public class L2OBigStepProofRuleSet extends L2BigStepProofRuleSet
 {
-  /**
-   * TODO
-   */
-  private Identifier newAttributeId = null ;
-
-
   /**
    * TODO
    * 
@@ -51,13 +44,8 @@ public class L2OBigStepProofRuleSet extends L2BigStepProofRuleSet
     registerByMethodName ( L2OLanguage.L2O , "OMEGA" , "applyOmega" ) ; //$NON-NLS-1$ //$NON-NLS-2$
     registerByMethodName ( L2OLanguage.L2O , "ATTR" , "applyAttr" , //$NON-NLS-1$ //$NON-NLS-2$
         "updateAttr" ) ; //$NON-NLS-1$
-    registerByMethodName ( L2OLanguage.L2O , "RENAME" , "applyRename" , //$NON-NLS-1$ //$NON-NLS-2$
-        "updateRename" ) ; //$NON-NLS-1$ 
     registerByMethodName ( L2OLanguage.L2O , "METHOD" , "applyMethod" , //$NON-NLS-1$ //$NON-NLS-2$
         "updateMethod" ) ; //$NON-NLS-1$
-    // registerByMethodName ( L2OLanguage.L2O , "DUPL" , "applyDupl" ,
-    // //$NON-NLS-1$ //$NON-NLS-2$
-    // "updateDupl" ) ; //$NON-NLS-1$
   }
 
 
@@ -92,28 +80,6 @@ public class L2OBigStepProofRuleSet extends L2BigStepProofRuleSet
   }
 
 
-  /**
-   * TODO
-   * 
-   * @param context TODO
-   * @param node TODO
-   */
-  /*
-   * public void applyDupl ( BigStepProofContext context , BigStepProofNode node ) {
-   * Duplication duplication = ( Duplication ) node.getExpression ( ) ;
-   * ObjectExpr objectExpr = ( ObjectExpr ) duplication.getE ( ) ; Row row = (
-   * Row ) objectExpr.getE ( ) ; boolean found ; for ( int i = 0 ; i <
-   * duplication.getIdentifiers ( ).length ; i ++ ) { found = false ; for ( int
-   * j = 0 ; j < row.getExpressions ( ).length ; j ++ ) { if (
-   * row.getExpressions ( j ) instanceof Attribute ) { Attribute attribute = (
-   * Attribute ) row.getExpressions ( j ) ; if ( attribute.getId ( ).equals (
-   * duplication.getIdentifiers ( i ) ) ) { found = true ; break ; } } } if ( !
-   * found ) { throw new IllegalArgumentException ( "Can not apply DUPL" ) ;
-   * //$NON-NLS-1$ } } if ( duplication.getExpressions ( ).length == 0 ) {
-   * context.setProofNodeResult ( node , objectExpr.clone ( ) ) ; } else { for (
-   * int i = 0 ; i < duplication.getExpressions ( ).length ; i ++ ) { context
-   * .addProofNode ( node , duplication.getExpressions ( i ).clone ( ) ) ; } } }
-   */
   /**
    * TODO
    * 
@@ -169,78 +135,6 @@ public class L2OBigStepProofRuleSet extends L2BigStepProofRuleSet
       throw new IllegalArgumentException ( "Can not apply OMEGA" ) ; //$NON-NLS-1$
     }
     context.setProofNodeResult ( node , row ) ;
-  }
-
-
-  /**
-   * TODO
-   * 
-   * @param context TODO
-   * @param node TODO
-   */
-  public void applyRename ( BigStepProofContext context , BigStepProofNode node )
-  {
-    Row row = ( Row ) node.getExpression ( ) ;
-    Attribute attribute = ( Attribute ) row.getExpressions ( 0 ) ;
-    boolean found = false ;
-    for ( int i = 1 ; i < row.getExpressions ( ).length ; i ++ )
-    {
-      if ( row.getExpressions ( i ) instanceof Attribute )
-      {
-        Attribute currentAttribute = ( Attribute ) row.getExpressions ( i ) ;
-        if ( currentAttribute.getId ( ).equals ( attribute.getId ( ) ) )
-        {
-          found = true ;
-          break ;
-        }
-      }
-    }
-    if ( ! found )
-    {
-      throw new IllegalArgumentException ( "Can not apply RENAME" ) ; //$NON-NLS-1$
-    }
-    context.addProofNode ( node , attribute.getE ( ).clone ( ) ) ;
-    BoundRenaming boundRenaming = new BoundRenaming ( ) ;
-    boundRenaming.add ( row.free ( ) ) ;
-    boundRenaming.add ( attribute.getId ( ) ) ;
-    for ( int i = 1 ; i < row.getExpressions ( ).length ; i ++ )
-    {
-      if ( row.getExpressions ( i ) instanceof Attribute )
-      {
-        Attribute currentAttribute = ( Attribute ) row.getExpressions ( i ) ;
-        boundRenaming.add ( currentAttribute.getId ( ) ) ;
-      }
-    }
-    Identifier newId = boundRenaming.newId ( attribute.getId ( ) ) ;
-    Expression [ ] newRowExpressions = new Expression [ row.getExpressions ( ).length - 1 ] ;
-    found = false ;
-    for ( int i = 0 ; i < newRowExpressions.length ; i ++ )
-    {
-      if ( found )
-      {
-        newRowExpressions [ i ] = row.getExpressions ( i + 1 ) ;
-      }
-      else
-      {
-        // TODO Attribute rename
-        newRowExpressions [ i ] = row.getExpressions ( i + 1 ).substitute (
-            attribute.getId ( ) , newId ) ;
-      }
-      if ( row.getExpressions ( i + 1 ) instanceof Attribute )
-      {
-        Attribute currentAttribute = ( Attribute ) row.getExpressions ( i + 1 ) ;
-        if ( attribute.getId ( ).equals ( currentAttribute.getId ( ) ) )
-        {
-          found = true ;
-        }
-      }
-    }
-    if ( this.newAttributeId != null )
-    {
-      System.err.println ( "L2O: newAttributeId was not null" ) ; //$NON-NLS-1$
-    }
-    this.newAttributeId = newId ;
-    context.addProofNode ( node , new Row ( newRowExpressions ) ) ;
   }
 
 
@@ -480,32 +374,6 @@ public class L2OBigStepProofRuleSet extends L2BigStepProofRuleSet
    * @param context TODO
    * @param node TODO
    */
-  /*
-   * public void updateDupl ( BigStepProofContext context , BigStepProofNode
-   * node ) { Duplication duplication = ( Duplication ) node.getExpression ( ) ;
-   * ObjectExpr objectExpr = ( ObjectExpr ) duplication.getE ( ) ; Row row = (
-   * Row ) objectExpr.getE ( ) ; boolean allProven = true ; for ( int i = 0 ; i <
-   * node.getChildCount ( ) ; i ++ ) { if ( ! node.getChildAt ( i ).isProven ( ) ) {
-   * allProven = false ; break ; } } if ( allProven ) { Expression [ ]
-   * newRowExpressions = new Expression [ row.getExpressions ( ).length ] ; for (
-   * int i = 0 ; i < row.getExpressions ( ).length ; i ++ ) { newRowExpressions [
-   * i ] = row.getExpressions ( i ).clone ( ) ; } for ( int i = 0 ; i <
-   * duplication.getIdentifiers ( ).length ; i ++ ) { for ( int j = 0 ; j <
-   * newRowExpressions.length ; j ++ ) { if ( newRowExpressions [ j ] instanceof
-   * Attribute ) { Attribute attribute = ( Attribute ) newRowExpressions [ j ] ;
-   * if ( attribute.getId ( ).equals ( duplication.getIdentifiers ( i ) ) ) {
-   * newRowExpressions [ j ] = new Attribute ( attribute.getId ( ) ,
-   * attribute.getTau ( ) , node.getChildAt ( i ).getResult ( ) .getValue ( ) ) ; } } } }
-   * context.setProofNodeResult ( node , new ObjectExpr ( objectExpr.getId ( )
-   * .clone ( ) , objectExpr.getTau ( ) == null ? null : objectExpr .getTau (
-   * ).clone ( ) , new Row ( newRowExpressions ) ) ) ; } }
-   */
-  /**
-   * TODO
-   * 
-   * @param context TODO
-   * @param node TODO
-   */
   public void updateMethod ( BigStepProofContext context , BigStepProofNode node )
   {
     if ( ( node.getChildCount ( ) == 1 )
@@ -538,37 +406,7 @@ public class L2OBigStepProofRuleSet extends L2BigStepProofRuleSet
       ObjectExpr oldObjectExpr = ( ObjectExpr ) node.getExpression ( ) ;
       Row row = ( Row ) node.getChildAt ( 0 ).getResult ( ).getValue ( ) ;
       context.setProofNodeResult ( node , new ObjectExpr ( oldObjectExpr
-          .getId ( ) , oldObjectExpr.getTau ( ) , row ) ) ;
-    }
-  }
-
-
-  /**
-   * TODO
-   * 
-   * @param context TODO
-   * @param node TODO
-   */
-  public void updateRename ( BigStepProofContext context , BigStepProofNode node )
-  {
-    if ( ( node.getChildCount ( ) == 2 )
-        && ( node.getChildAt ( 0 ).isProven ( ) )
-        && ( node.getChildAt ( 1 ).isProven ( ) ) )
-    {
-      Row row = ( Row ) node.getExpression ( ) ;
-      Expression expression = node.getChildAt ( 0 ).getResult ( ).getValue ( ) ;
-      Row childRow = ( Row ) node.getChildAt ( 1 ).getResult ( ).getValue ( ) ;
-      Attribute attribute = ( Attribute ) row.getExpressions ( 0 ) ;
-      Expression [ ] newRowExpressions = new Expression [ childRow
-          .getExpressions ( ).length + 1 ] ;
-      Attribute newAttribute = new Attribute ( this.newAttributeId , attribute
-          .getTau ( ) , expression ) ;
-      newRowExpressions [ 0 ] = newAttribute ;
-      for ( int i = 1 ; i < newRowExpressions.length ; i ++ )
-      {
-        newRowExpressions [ i ] = childRow.getExpressions ( i - 1 ) ;
-      }
-      context.setProofNodeResult ( node , new Row ( newRowExpressions ) ) ;
+          .getTau ( ) , row ) ) ;
     }
   }
 

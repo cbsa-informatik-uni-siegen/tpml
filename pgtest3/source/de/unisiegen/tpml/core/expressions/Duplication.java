@@ -10,6 +10,7 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
+import de.unisiegen.tpml.core.util.BoundRenaming ;
 
 
 /**
@@ -160,7 +161,7 @@ public final class Duplication extends Expression implements
     if ( this.free == null )
     {
       this.free = new ArrayList < Identifier > ( ) ;
-      this.free.add ( new SelfName ( ) ) ;
+      this.free.add ( new SelfIdentifier ( ) ) ;
       for ( int i = 0 ; i < this.expressions.length ; i ++ )
       {
         this.free.addAll ( this.expressions [ i ].free ( ) ) ;
@@ -312,30 +313,42 @@ public final class Duplication extends Expression implements
    * {@inheritDoc}
    */
   @ Override
-  public Duplication substitute ( Identifier pId , Expression pExpression )
+  public Expression substitute ( Identifier pId , Expression pExpression )
   {
-    /*
-     * Perform the Attribute renaming, if pAttributeRename is true.
-     */
-    if ( false )
+    if ( ( pId.equals ( new SelfIdentifier ( ) ) )
+        && ( pExpression instanceof ObjectExpr ) )
     {
-      return substituteAttribute ( pId , pExpression ) ;
-    }
-    /*
-     * Perform the normal substitution.
-     */
-    Identifier [ ] newIdentifiers = new Identifier [ this.identifiers.length ] ;
-    for ( int i = 0 ; i < newIdentifiers.length ; i ++ )
-    {
-      newIdentifiers [ i ] = this.identifiers [ i ].clone ( ) ;
+      ObjectExpr objectExpr = ( ObjectExpr ) pExpression ;
+      Row row = ( Row ) objectExpr.getE ( ) ;
+      Identifier [ ] newIdentifiers = new Identifier [ this.identifiers.length ] ;
+      for ( int i = 0 ; i < this.expressions.length ; i ++ )
+      {
+        BoundRenaming boundRenaming = new BoundRenaming ( ) ;
+        boundRenaming.add ( row.free ( ) ) ;
+        boundRenaming.add ( this.expressions [ i ].free ( ) ) ;
+        newIdentifiers [ i ] = boundRenaming.newId ( new Identifier ( "x" //$NON-NLS-1$
+            + ( i + 1 ) ) ) ;
+      }
+      for ( int i = 0 ; i < this.expressions.length ; i ++ )
+      {
+        row = row
+            .substituteRow ( this.identifiers [ i ] , newIdentifiers [ i ] ) ;
+      }
+      Expression result = new ObjectExpr ( objectExpr.getTau ( ) , row ) ;
+      for ( int i = this.expressions.length - 1 ; i >= 0 ; i -- )
+      {
+        result = new Let ( newIdentifiers [ i ] , null , this.expressions [ i ]
+            .substitute ( pId , pExpression ) , result ) ;
+      }
+      return result ;
     }
     Expression [ ] newExpressions = new Expression [ this.expressions.length ] ;
-    for ( int i = 0 ; i < newExpressions.length ; i ++ )
+    for ( int i = 0 ; i < this.expressions.length ; i ++ )
     {
       newExpressions [ i ] = this.expressions [ i ].substitute ( pId ,
           pExpression ) ;
     }
-    return new Duplication ( newIdentifiers , newExpressions ) ;
+    return new Duplication ( this.identifiers , newExpressions ) ;
   }
 
 
@@ -358,44 +371,6 @@ public final class Duplication extends Expression implements
     for ( int i = 0 ; i < newIdentifiers.length ; i ++ )
     {
       newIdentifiers [ i ] = this.identifiers [ i ].clone ( ) ;
-    }
-    return new Duplication ( newIdentifiers , newExpressions ) ;
-  }
-
-
-  /**
-   * TODO
-   * 
-   * @param pId TODO
-   * @param pExpression TODO
-   * @return TODO
-   */
-  private Duplication substituteAttribute ( Identifier pId ,
-      Expression pExpression )
-  {
-    if ( ! ( pExpression instanceof Identifier ) )
-    {
-      throw new IllegalArgumentException (
-          "Expression must be an instance of Identifier" ) ; //$NON-NLS-1$
-    }
-    Expression [ ] newExpressions = new Expression [ this.expressions.length ] ;
-    Identifier [ ] newIdentifiers = new Identifier [ this.identifiers.length ] ;
-    for ( int i = 0 ; i < newIdentifiers.length ; i ++ )
-    {
-      newIdentifiers [ i ] = this.identifiers [ i ].clone ( ) ;
-    }
-    for ( int i = 0 ; i < newExpressions.length ; i ++ )
-    {
-      /*
-       * If the Identifier, which should be substituted, is equal to the
-       * Identifier of a child of this Duplication, it should be renamed.
-       */
-      if ( newIdentifiers [ i ].equals ( pId ) )
-      {
-        newIdentifiers [ i ] = ( ( Identifier ) pExpression ).clone ( ) ;
-      }
-      newExpressions [ i ] = this.expressions [ i ].substitute ( pId ,
-          pExpression ) ;
     }
     return new Duplication ( newIdentifiers , newExpressions ) ;
   }

@@ -41,7 +41,7 @@ public class Identifier extends Value
    * 
    * @see #getName()
    */
-  private String name ;
+  protected String name ;
 
 
   /**

@@ -6,16 +6,28 @@ package de.unisiegen.tpml.core.expressions ;
  * 
  * @author Christian Fehler
  */
-public class VarName extends Identifier
+public class VarIdentifier extends Identifier
 {
   /**
    * TODO
    * 
    * @param pName TODO
    */
-  public VarName ( String pName )
+  public VarIdentifier ( String pName )
   {
     super ( pName ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Expression#clone()
+   */
+  @ Override
+  public VarIdentifier clone ( )
+  {
+    return new VarIdentifier ( this.name ) ;
   }
 
 

@@ -240,7 +240,6 @@ public final class Row extends Expression implements ChildrenExpressions
   @ Override
   public boolean isValue ( )
   {
-    ArrayList < Identifier > attributeIdList = new ArrayList < Identifier > ( ) ;
     for ( Expression expr : this.expressions )
     {
       if ( expr instanceof Attribute )
@@ -253,14 +252,6 @@ public final class Row extends Expression implements ChildrenExpressions
         {
           return false ;
         }
-        /*
-         * If there are Attributes with the same id, this Row is not a value.
-         */
-        if ( attributeIdList.contains ( attribute.getId ( ) ) )
-        {
-          return false ;
-        }
-        attributeIdList.add ( attribute.getId ( ) ) ;
       }
     }
     return true ;
@@ -308,10 +299,8 @@ public final class Row extends Expression implements ChildrenExpressions
                   attribute.getId ( ) , newId ) ;
             }
           }
-          newExpressions [ i ] = new Attribute ( newId ,
-              attribute.getTau ( ) == null ? null : attribute.getTau ( )
-                  .clone ( ) , attribute.getE ( ).substitute ( pId ,
-                  pExpression ) ) ;
+          newExpressions [ i ] = new Attribute ( newId , attribute.getTau ( ) ,
+              attribute.getE ( ).substitute ( pId , pExpression ) ) ;
         }
         else
         {
@@ -339,6 +328,37 @@ public final class Row extends Expression implements ChildrenExpressions
       newExpr [ i ] = this.expressions [ i ].substitute ( pTypeSubstitution ) ;
     }
     return new Row ( newExpr ) ;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @param pId TODO
+   * @param pExpression TODO
+   * @return TODO
+   */
+  public Row substituteRow ( Identifier pId , Expression pExpression )
+  {
+    Expression [ ] newExpressions = new Expression [ this.expressions.length ] ;
+    for ( int i = 0 ; i < this.expressions.length ; i ++ )
+    {
+      newExpressions [ i ] = this.expressions [ i ].clone ( ) ;
+    }
+    for ( int i = 0 ; i < newExpressions.length ; i ++ )
+    {
+      if ( newExpressions [ i ] instanceof Attribute )
+      {
+        Attribute attribute = ( Attribute ) newExpressions [ i ] ;
+        if ( pId.equals ( attribute.getId ( ) ) )
+        {
+          newExpressions [ i ] = new Attribute ( attribute.getId ( ) ,
+              attribute.getTau ( ) , pExpression ) ;
+          break ;
+        }
+      }
+    }
+    return new Row ( newExpressions ) ;
   }
 
 

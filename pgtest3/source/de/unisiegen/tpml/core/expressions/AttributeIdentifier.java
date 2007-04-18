@@ -6,16 +6,28 @@ package de.unisiegen.tpml.core.expressions ;
  * 
  * @author Christian Fehler
  */
-public class AttributeName extends Identifier
+public class AttributeIdentifier extends Identifier
 {
   /**
    * TODO
    * 
    * @param pName TODO
    */
-  public AttributeName ( String pName )
+  public AttributeIdentifier ( String pName )
   {
     super ( pName ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Expression#clone()
+   */
+  @ Override
+  public AttributeIdentifier clone ( )
+  {
+    return new AttributeIdentifier ( this.name ) ;
   }
 
 

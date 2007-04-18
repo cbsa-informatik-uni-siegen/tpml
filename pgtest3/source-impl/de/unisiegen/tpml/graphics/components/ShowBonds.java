@@ -83,8 +83,21 @@ public final class ShowBonds
                 .getEndOffset ( ) ) ;
             for ( Identifier boundedId : bounded.get ( i ) )
             {
-              bonds.addPrettyAnnotation ( this.expression.toPrettyString ( )
-                  .getAnnotationForPrintable ( boundedId ) ) ;
+              try
+              {
+                bonds.addPrettyAnnotation ( this.expression.toPrettyString ( )
+                    .getAnnotationForPrintable ( boundedId ) ) ;
+              }
+              catch ( IllegalArgumentException e )
+              {
+                /*
+                 * Happens if a bound Identifier is not in the PrettyString. For
+                 * example "object (self) val a = 0 ; method move = {< a = 2 >} ;
+                 * end". The "self" binds the free Identifier "self" in the
+                 * Duplication (method free in Duplication), but the free "self"
+                 * in the Duplication is not present in the PrettyString.
+                 */
+              }
             }
             this.result.add ( bonds ) ;
           }
