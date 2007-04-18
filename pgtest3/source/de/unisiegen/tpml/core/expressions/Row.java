@@ -269,22 +269,9 @@ public final class Row extends Expression implements ChildrenExpressions
 
   /**
    * {@inheritDoc}
-   * 
-   * @see Expression#substitute(Identifier, Expression, boolean)
    */
   @ Override
   public Row substitute ( Identifier pId , Expression pExpression )
-  {
-    return substitute ( pId , pExpression , false ) ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   */
-  @ Override
-  public Row substitute ( Identifier pId , Expression pExpression ,
-      boolean pAttributeRename )
   {
     Expression [ ] newExpressions = new Expression [ this.expressions.length ] ;
     for ( int i = 0 ; i < this.expressions.length ; i ++ )
@@ -301,7 +288,7 @@ public final class Row extends Expression implements ChildrenExpressions
           if ( pId.equals ( attribute.getId ( ) ) )
           {
             newExpressions [ i ] = newExpressions [ i ].substitute ( pId ,
-                pExpression , pAttributeRename ) ;
+                pExpression ) ;
             break ;
           }
           BoundRenaming boundRenaming = new BoundRenaming ( ) ;
@@ -318,18 +305,18 @@ public final class Row extends Expression implements ChildrenExpressions
             for ( int j = i + 1 ; j < newExpressions.length ; j ++ )
             {
               newExpressions [ j ] = newExpressions [ j ].substitute (
-                  attribute.getId ( ) , newId , pAttributeRename ) ;
+                  attribute.getId ( ) , newId ) ;
             }
           }
           newExpressions [ i ] = new Attribute ( newId ,
               attribute.getTau ( ) == null ? null : attribute.getTau ( )
                   .clone ( ) , attribute.getE ( ).substitute ( pId ,
-                  pExpression , pAttributeRename ) ) ;
+                  pExpression ) ) ;
         }
         else
         {
           newExpressions [ i ] = newExpressions [ i ].substitute ( pId ,
-              pExpression , pAttributeRename ) ;
+              pExpression ) ;
         }
       }
     }

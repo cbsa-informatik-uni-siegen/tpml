@@ -83,8 +83,8 @@ public final class Lambda extends Value implements BoundIdentifiers ,
    * @throws NullPointerException if either <code>id</code> or <code>e</code>
    *           is <code>null</code>.
    */
-  public Lambda ( final Identifier pIdentifier , final MonoType pTau ,
-      final Expression pExpression )
+  public Lambda ( Identifier pIdentifier , MonoType pTau ,
+      Expression pExpression )
   {
     if ( pIdentifier == null )
     {
@@ -144,11 +144,11 @@ public final class Lambda extends Value implements BoundIdentifiers ,
    * @see Expression#equals(Object)
    */
   @ Override
-  public boolean equals ( final Object pObject )
+  public boolean equals ( Object pObject )
   {
     if ( pObject instanceof Lambda )
     {
-      final Lambda other = ( Lambda ) pObject ;
+      Lambda other = ( Lambda ) pObject ;
       return ( ( this.identifiers [ 0 ].equals ( other.identifiers [ 0 ] ) )
           && ( this.expressions [ 0 ].equals ( other.expressions [ 0 ] ) ) && ( ( this.types [ 0 ] == null ) ? ( other.types [ 0 ] == null )
           : ( this.types [ 0 ].equals ( other.types [ 0 ] ) ) ) ) ;
@@ -226,7 +226,7 @@ public final class Lambda extends Value implements BoundIdentifiers ,
    *           bounds.
    * @see #getExpressions()
    */
-  public Expression getExpressions ( final int pIndex )
+  public Expression getExpressions ( int pIndex )
   {
     return this.expressions [ pIndex ] ;
   }
@@ -273,7 +273,7 @@ public final class Lambda extends Value implements BoundIdentifiers ,
    * @return The <code>pIndex</code>th {@link Identifier} of this
    *         {@link Expression}.
    */
-  public Identifier getIdentifiers ( final int pIndex )
+  public Identifier getIdentifiers ( int pIndex )
   {
     return this.identifiers [ pIndex ] ;
   }
@@ -289,9 +289,9 @@ public final class Lambda extends Value implements BoundIdentifiers ,
     if ( this.boundedIdentifiers == null )
     {
       this.boundedIdentifiers = new ArrayList < ArrayList < Identifier >> ( ) ;
-      final ArrayList < Identifier > boundedIdList = new ArrayList < Identifier > ( ) ;
-      final ArrayList < Identifier > boundedE = this.expressions [ 0 ].free ( ) ;
-      for ( final Identifier freeId : boundedE )
+      ArrayList < Identifier > boundedIdList = new ArrayList < Identifier > ( ) ;
+      ArrayList < Identifier > boundedE = this.expressions [ 0 ].free ( ) ;
+      for ( Identifier freeId : boundedE )
       {
         if ( this.identifiers [ 0 ].equals ( freeId ) )
         {
@@ -324,7 +324,7 @@ public final class Lambda extends Value implements BoundIdentifiers ,
    */
   public String [ ] getIdentifiersPrefix ( )
   {
-    final String [ ] result = new String [ 1 ] ;
+    String [ ] result = new String [ 1 ] ;
     result [ 0 ] = DefaultIdentifiers.PREFIX_ID ;
     return result ;
   }
@@ -362,7 +362,7 @@ public final class Lambda extends Value implements BoundIdentifiers ,
    *           bounds.
    * @see #getTypes()
    */
-  public MonoType getTypes ( final int pIndex )
+  public MonoType getTypes ( int pIndex )
   {
     return this.types [ pIndex ] ;
   }
@@ -386,7 +386,7 @@ public final class Lambda extends Value implements BoundIdentifiers ,
    */
   public String [ ] getTypesPrefix ( )
   {
-    final String [ ] result = new String [ 1 ] ;
+    String [ ] result = new String [ 1 ] ;
     result [ 0 ] = DefaultTypes.PREFIX_TAU ;
     return result ;
   }
@@ -407,18 +407,6 @@ public final class Lambda extends Value implements BoundIdentifiers ,
 
 
   /**
-   * {@inheritDoc}
-   * 
-   * @see Expression#substitute(Identifier, Expression, boolean)
-   */
-  @ Override
-  public Lambda substitute ( final Identifier pId , final Expression pExpression )
-  {
-    return this.substitute ( pId , pExpression , false ) ;
-  }
-
-
-  /**
    * Substitutes <code>e</code> for <code>id</code> within the lambda
    * expression, performing a bound rename if necessary to avoid altering the
    * binding of existing identifiers within the sub expression.
@@ -428,11 +416,10 @@ public final class Lambda extends Value implements BoundIdentifiers ,
    * @return the resulting expression.
    * @see #getId()
    * @see #getE()
-   * @see Expression#substitute(Identifier, Expression, boolean)
+   * @see Expression#substitute(Identifier, Expression)
    */
   @ Override
-  public Lambda substitute ( final Identifier pId ,
-      final Expression pExpression , final boolean pAttributeRename )
+  public Lambda substitute ( Identifier pId , Expression pExpression )
   {
     /*
      * Do not substitute, if the Identifiers are equal.
@@ -444,11 +431,11 @@ public final class Lambda extends Value implements BoundIdentifiers ,
     /*
      * Perform the bound renaming if required.
      */
-    final BoundRenaming boundRenaming = new BoundRenaming ( ) ;
+    BoundRenaming boundRenaming = new BoundRenaming ( ) ;
     boundRenaming.add ( this.free ( ) ) ;
     boundRenaming.add ( pExpression.free ( ) ) ;
     boundRenaming.add ( pId ) ;
-    final Identifier newId = boundRenaming.newId ( this.identifiers [ 0 ] ) ;
+    Identifier newId = boundRenaming.newId ( this.identifiers [ 0 ] ) ;
     /*
      * Substitute the old Identifier only with the new Identifier, if they are
      * different.
@@ -456,13 +443,12 @@ public final class Lambda extends Value implements BoundIdentifiers ,
     Expression newE = this.expressions [ 0 ] ;
     if ( ! this.identifiers [ 0 ].equals ( newId ) )
     {
-      newE = newE.substitute ( this.identifiers [ 0 ] , newId ,
-          pAttributeRename ) ;
+      newE = newE.substitute ( this.identifiers [ 0 ] , newId ) ;
     }
     /*
      * Perform the substitution.
      */
-    newE = newE.substitute ( pId , pExpression , pAttributeRename ) ;
+    newE = newE.substitute ( pId , pExpression ) ;
     return new Lambda ( newId , this.types [ 0 ] == null ? null
         : this.types [ 0 ].clone ( ) , newE ) ;
   }
@@ -474,12 +460,11 @@ public final class Lambda extends Value implements BoundIdentifiers ,
    * @see Expression#substitute(TypeSubstitution)
    */
   @ Override
-  public Lambda substitute ( final TypeSubstitution pTypeSubstitution )
+  public Lambda substitute ( TypeSubstitution pTypeSubstitution )
   {
-    final MonoType newTau = ( this.types [ 0 ] == null ) ? null
-        : this.types [ 0 ].substitute ( pTypeSubstitution ) ;
-    final Expression newE = this.expressions [ 0 ]
+    MonoType newTau = ( this.types [ 0 ] == null ) ? null : this.types [ 0 ]
         .substitute ( pTypeSubstitution ) ;
+    Expression newE = this.expressions [ 0 ].substitute ( pTypeSubstitution ) ;
     return new Lambda ( this.identifiers [ 0 ].clone ( ) , newTau , newE ) ;
   }
 
@@ -491,7 +476,7 @@ public final class Lambda extends Value implements BoundIdentifiers ,
    */
   public @ Override
   PrettyStringBuilder toPrettyStringBuilder (
-      final PrettyStringBuilderFactory pPrettyStringBuilderFactory )
+      PrettyStringBuilderFactory pPrettyStringBuilderFactory )
   {
     if ( this.prettyStringBuilder == null )
     {

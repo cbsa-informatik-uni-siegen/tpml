@@ -270,29 +270,16 @@ public final class List extends Expression implements ChildrenExpressions
   /**
    * {@inheritDoc}
    * 
-   * @see Expression#substitute(Identifier, Expression, boolean)
+   * @see Expression#substitute(Identifier, Expression)
    */
   @ Override
   public List substitute ( Identifier pId , Expression pExpression )
-  {
-    return substitute ( pId , pExpression , false ) ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Expression#substitute(Identifier, Expression, boolean)
-   */
-  @ Override
-  public List substitute ( Identifier pId , Expression pExpression ,
-      boolean pAttributeRename )
   {
     Expression [ ] newExpressions = new Expression [ this.expressions.length ] ;
     for ( int i = 0 ; i < newExpressions.length ; i ++ )
     {
       newExpressions [ i ] = this.expressions [ i ].substitute ( pId ,
-          pExpression , pAttributeRename ) ;
+          pExpression ) ;
     }
     return new List ( newExpressions ) ;
   }

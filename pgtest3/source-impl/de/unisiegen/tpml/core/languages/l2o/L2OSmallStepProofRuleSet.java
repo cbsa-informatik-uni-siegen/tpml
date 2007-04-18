@@ -26,15 +26,11 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
   /**
    * TODO
    */
-  //private static final String DUPL_EXEC = "DUPL-EXEC" ; //$NON-NLS-1$
-
-
+  // private static final String DUPL_EXEC = "DUPL-EXEC" ; //$NON-NLS-1$
   /**
    * TODO
    */
- // private static final String DUPL_EVAL = "DUPL-EVAL" ; //$NON-NLS-1$
-
-
+  // private static final String DUPL_EVAL = "DUPL-EVAL" ; //$NON-NLS-1$
   /**
    * TODO
    */
@@ -118,8 +114,8 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
     register ( L2OLanguage.L2O , SEND_EXEC , true ) ;
     register ( L2OLanguage.L2O , SEND_EVAL , false ) ;
     // Dupl
-    //register ( L2OLanguage.L2O , DUPL_EVAL , false ) ;
-    //register ( L2OLanguage.L2O , DUPL_EXEC , true ) ;
+    // register ( L2OLanguage.L2O , DUPL_EVAL , false ) ;
+    // register ( L2OLanguage.L2O , DUPL_EXEC , true ) ;
   }
 
 
@@ -329,108 +325,50 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
    * @param pDuplication TODO
    * @return TODO
    */
-/*  public Expression evaluateDuplication ( SmallStepProofContext pContext ,
-      Duplication pDuplication )
-  {
-    
-     // Check if all children of the Duplication are values or not.
-     
-    boolean allChildrenAreValues = true ;
-    for ( Expression expr : pDuplication.getExpressions ( ) )
-    {
-      if ( ! expr.isValue ( ) )
-      {
-        allChildrenAreValues = false ;
-        break ;
-      }
-    }
-    
-    //  If not all children of the Duplication are values and the first
-     // Expression of the Duplication is a value, we have to perform DUPL-EVAL.
-     
-    if ( ( ! allChildrenAreValues ) && ( pDuplication.getE ( ).isValue ( ) ) )
-    {
-      pContext.addProofStep ( getRuleByName ( DUPL_EVAL ) , pDuplication ) ;
-      Identifier [ ] newDuplicationId = new Identifier [ pDuplication
-          .getIdentifiers ( ).length ] ;
-      Expression [ ] newDuplicationE = new Expression [ pDuplication
-          .getExpressions ( ).length ] ;
-      for ( int i = 0 ; i < newDuplicationE.length ; i ++ )
-      {
-        newDuplicationId [ i ] = pDuplication.getIdentifiers ( i ).clone ( ) ;
-        newDuplicationE [ i ] = pDuplication.getExpressions ( i ).clone ( ) ;
-      }
-      for ( int i = 0 ; i < newDuplicationE.length ; i ++ )
-      {
-        if ( ! newDuplicationE [ i ].isValue ( ) )
-        {
-          newDuplicationE [ i ] = evaluate ( pContext , newDuplicationE [ i ] ) ;
-          if ( newDuplicationE [ i ].isException ( ) )
-          {
-            return newDuplicationE [ i ] ;
-          }
-          return new Duplication ( pDuplication.getE ( ).clone ( ) ,
-              newDuplicationId , newDuplicationE ) ;
-        }
-      }
-    }
-    
-    //  If all children of the Duplication are values, the first Expression of
-     // the Duplication is an ObjectExpr and this ObjectExpr is a value, we have
-     // to perform DUPL-EXEC.
-     
-    if ( ( allChildrenAreValues )
-        && ( pDuplication.getE ( ) instanceof ObjectExpr )
-        && ( pDuplication.getE ( ).isValue ( ) ) )
-    {
-      ObjectExpr objectExpr = ( ObjectExpr ) pDuplication.getE ( ) ;
-      Row row = ( Row ) objectExpr.getE ( ) ;
-      Expression [ ] newRowE = new Expression [ row.getExpressions ( ).length ] ;
-      for ( int i = 0 ; i < newRowE.length ; i ++ )
-      {
-        newRowE [ i ] = row.getExpressions ( i ).clone ( ) ;
-      }
-      
-      //  Search all Identifiers of the Duplication in the Row of the ObjectExpr
-       // and replace the Attribute, if the Identifiers are equal.
-       
-      boolean found ;
-      for ( int i = 0 ; i < pDuplication.getIdentifiers ( ).length ; i ++ )
-      {
-        found = false ;
-        for ( int j = 0 ; j < newRowE.length ; j ++ )
-        {
-          if ( newRowE [ j ] instanceof Attribute )
-          {
-            Attribute attribute = ( Attribute ) newRowE [ j ] ;
-            if ( attribute.getId ( )
-                .equals ( pDuplication.getIdentifiers ( i ) ) )
-            {
-              newRowE [ j ] = new Attribute ( attribute.getId ( ).clone ( ) ,
-                  attribute.getTau ( ) == null ? null : attribute.getTau ( )
-                      .clone ( ) , pDuplication.getExpressions ( i ).clone ( ) ) ;
-              found = true ;
-            }
-          }
-        }
-        
-        //  If the Duplication contains an Identifier which is not found in the
-         // Row, the Expression gets stuck.
-         
-        if ( ! found )
-        {
-          return pDuplication ;
-        }
-      }
-      pContext.addProofStep ( getRuleByName ( DUPL_EXEC ) , pDuplication ) ;
-      return new ObjectExpr ( objectExpr.getId ( ).clone ( ) , objectExpr
-          .getTau ( ) == null ? null : objectExpr.getTau ( ).clone ( ) ,
-          new Row ( newRowE ) ) ;
-    }
-    return pDuplication ;
-  }*/
-
-
+  /*
+   * public Expression evaluateDuplication ( SmallStepProofContext pContext ,
+   * Duplication pDuplication ) { // Check if all children of the Duplication
+   * are values or not. boolean allChildrenAreValues = true ; for ( Expression
+   * expr : pDuplication.getExpressions ( ) ) { if ( ! expr.isValue ( ) ) {
+   * allChildrenAreValues = false ; break ; } } // If not all children of the
+   * Duplication are values and the first // Expression of the Duplication is a
+   * value, we have to perform DUPL-EVAL. if ( ( ! allChildrenAreValues ) && (
+   * pDuplication.getE ( ).isValue ( ) ) ) { pContext.addProofStep (
+   * getRuleByName ( DUPL_EVAL ) , pDuplication ) ; Identifier [ ]
+   * newDuplicationId = new Identifier [ pDuplication .getIdentifiers ( ).length ] ;
+   * Expression [ ] newDuplicationE = new Expression [ pDuplication
+   * .getExpressions ( ).length ] ; for ( int i = 0 ; i < newDuplicationE.length ;
+   * i ++ ) { newDuplicationId [ i ] = pDuplication.getIdentifiers ( i ).clone ( ) ;
+   * newDuplicationE [ i ] = pDuplication.getExpressions ( i ).clone ( ) ; } for (
+   * int i = 0 ; i < newDuplicationE.length ; i ++ ) { if ( ! newDuplicationE [
+   * i ].isValue ( ) ) { newDuplicationE [ i ] = evaluate ( pContext ,
+   * newDuplicationE [ i ] ) ; if ( newDuplicationE [ i ].isException ( ) ) {
+   * return newDuplicationE [ i ] ; } return new Duplication ( pDuplication.getE (
+   * ).clone ( ) , newDuplicationId , newDuplicationE ) ; } } } // If all
+   * children of the Duplication are values, the first Expression of // the
+   * Duplication is an ObjectExpr and this ObjectExpr is a value, we have // to
+   * perform DUPL-EXEC. if ( ( allChildrenAreValues ) && ( pDuplication.getE ( )
+   * instanceof ObjectExpr ) && ( pDuplication.getE ( ).isValue ( ) ) ) {
+   * ObjectExpr objectExpr = ( ObjectExpr ) pDuplication.getE ( ) ; Row row = (
+   * Row ) objectExpr.getE ( ) ; Expression [ ] newRowE = new Expression [
+   * row.getExpressions ( ).length ] ; for ( int i = 0 ; i < newRowE.length ; i ++ ) {
+   * newRowE [ i ] = row.getExpressions ( i ).clone ( ) ; } // Search all
+   * Identifiers of the Duplication in the Row of the ObjectExpr // and replace
+   * the Attribute, if the Identifiers are equal. boolean found ; for ( int i =
+   * 0 ; i < pDuplication.getIdentifiers ( ).length ; i ++ ) { found = false ;
+   * for ( int j = 0 ; j < newRowE.length ; j ++ ) { if ( newRowE [ j ]
+   * instanceof Attribute ) { Attribute attribute = ( Attribute ) newRowE [ j ] ;
+   * if ( attribute.getId ( ) .equals ( pDuplication.getIdentifiers ( i ) ) ) {
+   * newRowE [ j ] = new Attribute ( attribute.getId ( ).clone ( ) ,
+   * attribute.getTau ( ) == null ? null : attribute.getTau ( ) .clone ( ) ,
+   * pDuplication.getExpressions ( i ).clone ( ) ) ; found = true ; } } } // If
+   * the Duplication contains an Identifier which is not found in the // Row,
+   * the Expression gets stuck. if ( ! found ) { return pDuplication ; } }
+   * pContext.addProofStep ( getRuleByName ( DUPL_EXEC ) , pDuplication ) ;
+   * return new ObjectExpr ( objectExpr.getId ( ).clone ( ) , objectExpr .getTau ( ) ==
+   * null ? null : objectExpr.getTau ( ).clone ( ) , new Row ( newRowE ) ) ; }
+   * return pDuplication ; }
+   */
   /**
    * TODO
    * 
@@ -533,8 +471,9 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
             else if ( ( newRowExpressions [ j ] instanceof Method )
                 || ( newRowExpressions [ j ] instanceof CurriedMethod ) )
             {
+              // TODO Attribute rename
               newRowExpressions [ j ] = newRowExpressions [ j ].substitute (
-                  attribute.getId ( ) , newId , true ) ;
+                  attribute.getId ( ) , newId ) ;
             }
             else
             {

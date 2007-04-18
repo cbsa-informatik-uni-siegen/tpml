@@ -16,7 +16,8 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
  * @version $Rev:1053 $
  * @see Expression
  */
-public final class Application extends Expression implements ChildrenExpressions
+public final class Application extends Expression implements
+    ChildrenExpressions
 {
   /**
    * Indeces of the child {@link Expression}s.
@@ -197,34 +198,19 @@ public final class Application extends Expression implements ChildrenExpressions
 
 
   /**
-   * {@inheritDoc}
-   * 
-   * @see Expression#substitute(Identifier, Expression, boolean)
-   */
-  @ Override
-  public Application substitute ( Identifier pId , Expression pExpression )
-  {
-    return substitute ( pId , pExpression , false ) ;
-  }
-
-
-  /**
    * Substitutes <code>e</code> for <code>id</code> in the two sub
    * expressions of the application.
    * 
    * @param pId the identifier for which to substitute.
    * @param pExpression the expression to substitute for <code>id</code>.
    * @return the resulting expression.
-   * @see Expression#substitute(Identifier, Expression , boolean )
+   * @see Expression#substitute(Identifier, Expression )
    */
   @ Override
-  public Application substitute ( Identifier pId , Expression pExpression ,
-      boolean pAttributeRename )
+  public Application substitute ( Identifier pId , Expression pExpression )
   {
-    Expression newE1 = this.expressions [ 0 ].substitute ( pId , pExpression ,
-        pAttributeRename ) ;
-    Expression newE2 = this.expressions [ 1 ].substitute ( pId , pExpression ,
-        pAttributeRename ) ;
+    Expression newE1 = this.expressions [ 0 ].substitute ( pId , pExpression ) ;
+    Expression newE2 = this.expressions [ 1 ].substitute ( pId , pExpression ) ;
     return new Application ( newE1 , newE2 ) ;
   }
 

@@ -461,23 +461,10 @@ public final class MultiLet extends Expression implements BoundIdentifiers ,
   /**
    * {@inheritDoc}
    * 
-   * @see Expression#substitute(Identifier, Expression, boolean)
+   * @see Expression#substitute(Identifier, Expression)
    */
   @ Override
   public MultiLet substitute ( Identifier pId , Expression pExpression )
-  {
-    return substitute ( pId , pExpression , false ) ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Expression#substitute(Identifier, Expression, boolean)
-   */
-  @ Override
-  public MultiLet substitute ( Identifier pId , Expression pExpression ,
-      boolean pAttributeRename )
   {
     /*
      * Do not substitute, if the Identifiers are equal.
@@ -487,7 +474,7 @@ public final class MultiLet extends Expression implements BoundIdentifiers ,
       if ( this.identifiers [ i ].equals ( pId ) )
       {
         Expression newE1 = this.expressions [ 0 ].substitute ( pId ,
-            pExpression , pAttributeRename ) ;
+            pExpression ) ;
         Expression newE2 = this.expressions [ 1 ].clone ( ) ;
         Identifier [ ] newIdentifiers = new Identifier [ this.identifiers.length ] ;
         for ( int j = 0 ; j < newIdentifiers.length ; j ++ )
@@ -542,17 +529,15 @@ public final class MultiLet extends Expression implements BoundIdentifiers ,
        */
       if ( ! newIdentifiers [ i ].equals ( newId ) )
       {
-        newE2 = newE2.substitute ( newIdentifiers [ i ] , newId ,
-            pAttributeRename ) ;
+        newE2 = newE2.substitute ( newIdentifiers [ i ] , newId ) ;
         newIdentifiers [ i ] = newId ;
       }
     }
     /*
      * Perform the substitution.
      */
-    Expression newE1 = this.expressions [ 0 ].substitute ( pId , pExpression ,
-        pAttributeRename ) ;
-    newE2 = newE2.substitute ( pId , pExpression , pAttributeRename ) ;
+    Expression newE1 = this.expressions [ 0 ].substitute ( pId , pExpression ) ;
+    newE2 = newE2.substitute ( pId , pExpression ) ;
     return new MultiLet ( newIdentifiers , this.types [ 0 ] == null ? null
         : this.types [ 0 ].clone ( ) , newE1 , newE2 ) ;
   }

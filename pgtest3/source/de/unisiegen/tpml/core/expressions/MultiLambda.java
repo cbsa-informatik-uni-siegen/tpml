@@ -435,23 +435,10 @@ public final class MultiLambda extends Value implements BoundIdentifiers ,
   /**
    * {@inheritDoc}
    * 
-   * @see Expression#substitute(Identifier, Expression, boolean)
+   * @see Expression#substitute(Identifier, Expression)
    */
   @ Override
   public MultiLambda substitute ( Identifier pId , Expression pExpression )
-  {
-    return substitute ( pId , pExpression , false ) ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Expression#substitute(Identifier, Expression, boolean)
-   */
-  @ Override
-  public MultiLambda substitute ( Identifier pId , Expression pExpression ,
-      boolean pAttributeRename )
   {
     /*
      * Do not substitute, if the Identifiers are equal.
@@ -506,15 +493,14 @@ public final class MultiLambda extends Value implements BoundIdentifiers ,
        */
       if ( ! newIdentifiers [ i ].equals ( newId ) )
       {
-        newE = newE.substitute ( newIdentifiers [ i ] , newId ,
-            pAttributeRename ) ;
+        newE = newE.substitute ( newIdentifiers [ i ] , newId ) ;
         newIdentifiers [ i ] = newId ;
       }
     }
     /*
      * Perform the substitution.
      */
-    newE = newE.substitute ( pId , pExpression , pAttributeRename ) ;
+    newE = newE.substitute ( pId , pExpression ) ;
     return new MultiLambda ( newIdentifiers , this.types [ 0 ] == null ? null
         : this.types [ 0 ].clone ( ) , newE ) ;
   }

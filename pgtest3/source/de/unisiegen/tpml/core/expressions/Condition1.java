@@ -184,28 +184,13 @@ public final class Condition1 extends Expression implements ChildrenExpressions
   /**
    * {@inheritDoc}
    * 
-   * @see Expression#substitute(Identifier, Expression, boolean)
+   * @see Expression#substitute(Identifier, Expression)
    */
   @ Override
   public Condition1 substitute ( Identifier pId , Expression pExpression )
   {
-    return substitute ( pId , pExpression , false ) ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Expression#substitute(Identifier, Expression, boolean)
-   */
-  @ Override
-  public Condition1 substitute ( Identifier pId , Expression pExpression ,
-      boolean pAttributeRename )
-  {
-    Expression newE0 = this.expressions [ 0 ].substitute ( pId , pExpression ,
-        pAttributeRename ) ;
-    Expression newE1 = this.expressions [ 1 ].substitute ( pId , pExpression ,
-        pAttributeRename ) ;
+    Expression newE0 = this.expressions [ 0 ].substitute ( pId , pExpression ) ;
+    Expression newE1 = this.expressions [ 1 ].substitute ( pId , pExpression ) ;
     return new Condition1 ( newE0 , newE1 ) ;
   }
 

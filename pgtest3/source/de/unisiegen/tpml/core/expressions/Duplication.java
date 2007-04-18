@@ -19,8 +19,8 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
  * @author Christian Fehler
  * @version $Rev: 1066 $
  */
-public final class Duplication extends Expression implements DefaultIdentifiers ,
-    ChildrenExpressions , SortedChildren
+public final class Duplication extends Expression implements
+    DefaultIdentifiers , ChildrenExpressions , SortedChildren
 {
   /**
    * Indeces of the child {@link Expression}s.
@@ -148,6 +148,26 @@ public final class Duplication extends Expression implements DefaultIdentifiers 
           .equals ( this.identifiers , other.identifiers ) ) ) ;
     }
     return false ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   */
+  @ Override
+  public ArrayList < Identifier > free ( )
+  {
+    if ( this.free == null )
+    {
+      this.free = new ArrayList < Identifier > ( ) ;
+      this.free.add ( new SelfName ( ) ) ;
+      for ( int i = 0 ; i < this.expressions.length ; i ++ )
+      {
+        this.free.addAll ( this.expressions [ i ].free ( ) ) ;
+        this.free.addAll ( this.identifiers [ i ].free ( ) ) ;
+      }
+    }
+    return this.free ;
   }
 
 
@@ -290,27 +310,14 @@ public final class Duplication extends Expression implements DefaultIdentifiers 
 
   /**
    * {@inheritDoc}
-   * 
-   * @see Expression#substitute(Identifier, Expression, boolean)
    */
   @ Override
   public Duplication substitute ( Identifier pId , Expression pExpression )
   {
-    return substitute ( pId , pExpression , false ) ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   */
-  @ Override
-  public Duplication substitute ( Identifier pId , Expression pExpression ,
-      boolean pAttributeRename )
-  {
     /*
      * Perform the Attribute renaming, if pAttributeRename is true.
      */
-    if ( pAttributeRename )
+    if ( false )
     {
       return substituteAttribute ( pId , pExpression ) ;
     }
@@ -388,7 +395,7 @@ public final class Duplication extends Expression implements DefaultIdentifiers 
         newIdentifiers [ i ] = ( ( Identifier ) pExpression ).clone ( ) ;
       }
       newExpressions [ i ] = this.expressions [ i ].substitute ( pId ,
-          pExpression , true ) ;
+          pExpression ) ;
     }
     return new Duplication ( newIdentifiers , newExpressions ) ;
   }

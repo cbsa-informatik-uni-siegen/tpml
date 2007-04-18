@@ -80,6 +80,11 @@ public final class ObjectExpr extends Expression implements BoundIdentifiers ,
     {
       throw new NullPointerException ( "Identifier is null" ) ; //$NON-NLS-1$
     }
+    if ( ! ( pIdentifier instanceof SelfName ) )
+    {
+      throw new IllegalArgumentException (
+          "The Identifier has to be a SelfName" ) ; //$NON-NLS-1$
+    }
     if ( pExpression == null )
     {
       throw new NullPointerException ( "Row is null" ) ; //$NON-NLS-1$
@@ -399,23 +404,9 @@ public final class ObjectExpr extends Expression implements BoundIdentifiers ,
 
   /**
    * {@inheritDoc}
-   * 
-   * @see Expression#substitute(Identifier, Expression, boolean)
    */
   @ Override
   public ObjectExpr substitute ( Identifier pId , Expression pExpression )
-  {
-    return substitute ( pId , pExpression , false ) ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   */
-  @ Override
-  public ObjectExpr substitute ( Identifier pId , Expression pExpression ,
-      @ SuppressWarnings ( "unused" )
-      boolean pAttributeRename )
   {
     /*
      * Do not substitute, if the Identifiers are equal.
@@ -439,12 +430,12 @@ public final class ObjectExpr extends Expression implements BoundIdentifiers ,
     Expression newE = this.expressions [ 0 ] ;
     if ( ! this.identifiers [ 0 ].equals ( newId ) )
     {
-      newE = newE.substitute ( this.identifiers [ 0 ] , newId , false ) ;
+      newE = newE.substitute ( this.identifiers [ 0 ] , newId ) ;
     }
     /*
      * Perform the substitution.
      */
-    newE = newE.substitute ( pId , pExpression , false ) ;
+    newE = newE.substitute ( pId , pExpression ) ;
     return new ObjectExpr ( newId , this.types [ 0 ] == null ? null
         : this.types [ 0 ].clone ( ) , newE ) ;
   }

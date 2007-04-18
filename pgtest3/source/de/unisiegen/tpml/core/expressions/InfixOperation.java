@@ -221,28 +221,13 @@ public final class InfixOperation extends Expression implements
   /**
    * {@inheritDoc}
    * 
-   * @see Expression#substitute(Identifier, Expression, boolean)
+   * @see Expression#substitute(Identifier, Expression)
    */
   @ Override
   public InfixOperation substitute ( Identifier pId , Expression pExpression )
   {
-    return substitute ( pId , pExpression , false ) ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Expression#substitute(Identifier, Expression, boolean)
-   */
-  @ Override
-  public InfixOperation substitute ( Identifier pId , Expression pExpression ,
-      boolean pAttributeRename )
-  {
-    Expression newE1 = this.expressions [ 0 ].substitute ( pId , pExpression ,
-        pAttributeRename ) ;
-    Expression newE2 = this.expressions [ 2 ].substitute ( pId , pExpression ,
-        pAttributeRename ) ;
+    Expression newE1 = this.expressions [ 0 ].substitute ( pId , pExpression ) ;
+    Expression newE2 = this.expressions [ 2 ].substitute ( pId , pExpression ) ;
     return new InfixOperation ( ( BinaryOperator ) this.expressions [ 1 ]
         .clone ( ) , newE1 , newE2 ) ;
   }

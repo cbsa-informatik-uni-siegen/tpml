@@ -187,28 +187,13 @@ public final class And extends Expression implements ChildrenExpressions
   /**
    * {@inheritDoc}
    * 
-   * @see Expression#substitute(Identifier, Expression, boolean)
+   * @see Expression#substitute(Identifier, Expression)
    */
   @ Override
   public And substitute ( Identifier pId , Expression pExpression )
   {
-    return substitute ( pId , pExpression , false ) ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Expression#substitute(Identifier, Expression, boolean)
-   */
-  @ Override
-  public And substitute ( Identifier pId , Expression pExpression ,
-      boolean pAttributeRename )
-  {
-    Expression newE1 = this.expressions [ 0 ].substitute ( pId , pExpression ,
-        pAttributeRename ) ;
-    Expression newE2 = this.expressions [ 1 ].substitute ( pId , pExpression ,
-        pAttributeRename ) ;
+    Expression newE1 = this.expressions [ 0 ].substitute ( pId , pExpression ) ;
+    Expression newE2 = this.expressions [ 1 ].substitute ( pId , pExpression ) ;
     return new And ( newE1 , newE2 ) ;
   }
 

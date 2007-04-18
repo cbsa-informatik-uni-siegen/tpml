@@ -414,25 +414,6 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
 
 
   /**
-   * Substitutes the expression <code>e</code> for the identifier
-   * <code>id</code> in this expression, and returns the resulting expression.
-   * The resulting expression may be a new <code>Expression</code> object or
-   * if no substitution took place, the same object. The method operates
-   * recursively.
-   * 
-   * @param pId the name of the identifier.
-   * @param pExpression the <code>Expression</code> to substitute.
-   * @param pAttributeRename False, if a normal substitution should be
-   *          performed. True if a attribute rename should be performed.
-   * @return the resulting expression.
-   * @throws NullPointerException if <code>id</code> or </code>e</code> is
-   *           <code>null</code>.
-   */
-  public abstract Expression substitute ( Identifier pId ,
-      Expression pExpression , boolean pAttributeRename ) ;
-
-
-  /**
    * Applies the type <code>substitution</code> to this expression, to be
    * exact, to the types within this expression, and returns the new expression
    * with the new types. If the expression does not contain any types, this

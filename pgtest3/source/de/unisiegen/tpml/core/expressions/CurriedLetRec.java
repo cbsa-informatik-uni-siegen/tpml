@@ -214,23 +214,10 @@ public final class CurriedLetRec extends CurriedLet implements
   /**
    * {@inheritDoc}
    * 
-   * @see Expression#substitute(Identifier, Expression, boolean)
+   * @see CurriedLet#substitute(Identifier, Expression)
    */
   @ Override
   public CurriedLetRec substitute ( Identifier pId , Expression pExpression )
-  {
-    return substitute ( pId , pExpression , false ) ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see CurriedLet#substitute(Identifier, Expression, boolean)
-   */
-  @ Override
-  public CurriedLetRec substitute ( Identifier pId , Expression pExpression ,
-      boolean pAttributeRename )
   {
     if ( this.identifiers [ 0 ].equals ( pId ) )
     {
@@ -301,8 +288,7 @@ public final class CurriedLetRec extends CurriedLet implements
          */
         if ( ! newIdentifiers [ i ].equals ( newId ) )
         {
-          newE1 = newE1.substitute ( newIdentifiers [ i ] , newId ,
-              pAttributeRename ) ;
+          newE1 = newE1.substitute ( newIdentifiers [ i ] , newId ) ;
           newIdentifiers [ i ] = newId ;
         }
       }
@@ -323,22 +309,20 @@ public final class CurriedLetRec extends CurriedLet implements
     {
       if ( ! sameIdAs0 )
       {
-        newE1 = newE1.substitute ( this.identifiers [ 0 ] , newId ,
-            pAttributeRename ) ;
+        newE1 = newE1.substitute ( this.identifiers [ 0 ] , newId ) ;
         newIdentifiers [ 0 ] = newId ;
       }
-      newE2 = newE2.substitute ( this.identifiers [ 0 ] , newId ,
-          pAttributeRename ) ;
+      newE2 = newE2.substitute ( this.identifiers [ 0 ] , newId ) ;
       newIdentifiers [ 0 ] = newId ;
     }
     if ( ( ! sameIdAs0 ) || ( substInE1 ) )
     {
-      newE1 = newE1.substitute ( pId , pExpression , pAttributeRename ) ;
+      newE1 = newE1.substitute ( pId , pExpression ) ;
     }
     /*
      * Perform the substitution in e2.
      */
-    newE2 = newE2.substitute ( pId , pExpression , pAttributeRename ) ;
+    newE2 = newE2.substitute ( pId , pExpression ) ;
     MonoType [ ] newTypes = new MonoType [ this.types.length ] ;
     for ( int i = 0 ; i < newTypes.length ; i ++ )
     {

@@ -401,23 +401,10 @@ public final class Recursion extends Expression implements BoundIdentifiers ,
   /**
    * {@inheritDoc}
    * 
-   * @see Expression#substitute(Identifier, Expression, boolean)
+   * @see Expression#substitute(Identifier, Expression)
    */
   @ Override
   public Recursion substitute ( Identifier pId , Expression pExpression )
-  {
-    return substitute ( pId , pExpression , false ) ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Expression#substitute(Identifier, Expression, boolean)
-   */
-  @ Override
-  public Recursion substitute ( Identifier pId , Expression pExpression ,
-      boolean pAttributeRename )
   {
     /*
      * Do not substitute, if the Identifiers are equal.
@@ -441,13 +428,12 @@ public final class Recursion extends Expression implements BoundIdentifiers ,
     Expression newE = this.expressions [ 0 ] ;
     if ( ! this.identifiers [ 0 ].equals ( newId ) )
     {
-      newE = newE.substitute ( this.identifiers [ 0 ] , newId ,
-          pAttributeRename ) ;
+      newE = newE.substitute ( this.identifiers [ 0 ] , newId ) ;
     }
     /*
      * Perform the substitution.
      */
-    newE = newE.substitute ( pId , pExpression , pAttributeRename ) ;
+    newE = newE.substitute ( pId , pExpression ) ;
     return new Recursion ( newId , this.types [ 0 ] == null ? null
         : this.types [ 0 ].clone ( ) , newE ) ;
   }

@@ -102,31 +102,18 @@ public abstract class Constant extends Value
 
 
   /**
-   * {@inheritDoc}
-   * 
-   * @see Expression#substitute(Identifier, Expression, boolean)
-   */
-  @ Override
-  public Constant substitute ( Identifier pId , Expression pExpression )
-  {
-    return substitute ( pId , pExpression , false ) ;
-  }
-
-
-  /**
    * {@inheritDoc} Substitution below constants is not possible, so for
    * <code>Constant</code>s this method will always return the constant
    * itself.
    * 
-   * @see Expression#substitute(Identifier, Expression, boolean)
+   * @see Expression#substitute(Identifier, Expression)
    */
   @ Override
   public final Constant substitute ( @ SuppressWarnings ( "unused" )
   Identifier pId , @ SuppressWarnings ( "unused" )
-  Expression pExpression , @ SuppressWarnings ( "unused" )
-  boolean pAttributeRename )
+  Expression pExpression )
   {
-    return this ;
+    return this.clone ( ) ;
   }
 
 

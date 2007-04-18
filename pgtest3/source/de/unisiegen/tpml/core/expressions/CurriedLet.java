@@ -519,23 +519,10 @@ public class CurriedLet extends Expression implements BoundIdentifiers ,
   /**
    * {@inheritDoc}
    * 
-   * @see Expression#substitute(Identifier, Expression, boolean)
+   * @see Expression#substitute(Identifier, Expression)
    */
   @ Override
   public CurriedLet substitute ( Identifier pId , Expression pExpression )
-  {
-    return substitute ( pId , pExpression , false ) ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Expression#substitute(Identifier, Expression, boolean)
-   */
-  @ Override
-  public CurriedLet substitute ( Identifier pId , Expression pExpression ,
-      boolean pAttributeRename )
   {
     Identifier [ ] newIdentifiers = new Identifier [ this.identifiers.length ] ;
     for ( int i = 0 ; i < newIdentifiers.length ; i ++ )
@@ -596,15 +583,14 @@ public class CurriedLet extends Expression implements BoundIdentifiers ,
          */
         if ( ! newIdentifiers [ i ].equals ( newId ) )
         {
-          newE1 = newE1.substitute ( newIdentifiers [ i ] , newId ,
-              pAttributeRename ) ;
+          newE1 = newE1.substitute ( newIdentifiers [ i ] , newId ) ;
           newIdentifiers [ i ] = newId ;
         }
       }
       /*
        * Perform the substitution in e1.
        */
-      newE1 = newE1.substitute ( pId , pExpression , pAttributeRename ) ;
+      newE1 = newE1.substitute ( pId , pExpression ) ;
     }
     if ( ! ( this.identifiers [ 0 ].equals ( pId ) ) )
     {
@@ -620,14 +606,13 @@ public class CurriedLet extends Expression implements BoundIdentifiers ,
        */
       if ( ! this.identifiers [ 0 ].equals ( newId ) )
       {
-        newE2 = newE2.substitute ( this.identifiers [ 0 ] , newId ,
-            pAttributeRename ) ;
+        newE2 = newE2.substitute ( this.identifiers [ 0 ] , newId ) ;
         newIdentifiers [ 0 ] = newId ;
       }
       /*
        * Perform the substitution in e2.
        */
-      newE2 = newE2.substitute ( pId , pExpression , pAttributeRename ) ;
+      newE2 = newE2.substitute ( pId , pExpression ) ;
     }
     MonoType [ ] newTypes = new MonoType [ this.types.length ] ;
     for ( int i = 0 ; i < newTypes.length ; i ++ )

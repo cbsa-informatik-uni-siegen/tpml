@@ -222,8 +222,9 @@ public class L2OBigStepProofRuleSet extends L2BigStepProofRuleSet
       }
       else
       {
+        // TODO Attribute rename
         newRowExpressions [ i ] = row.getExpressions ( i + 1 ).substitute (
-            attribute.getId ( ) , newId , true ) ;
+            attribute.getId ( ) , newId ) ;
       }
       if ( row.getExpressions ( i + 1 ) instanceof Attribute )
       {

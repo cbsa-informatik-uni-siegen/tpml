@@ -347,25 +347,11 @@ public class Method extends Expression implements DefaultIdentifiers ,
 
   /**
    * {@inheritDoc}
-   * 
-   * @see Expression#substitute(Identifier, Expression, boolean)
    */
   @ Override
   public Method substitute ( Identifier pId , Expression pExpression )
   {
-    return substitute ( pId , pExpression , false ) ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   */
-  @ Override
-  public Method substitute ( Identifier pId , Expression pExpression ,
-      boolean pAttributeRename )
-  {
-    Expression newE = this.expressions [ 0 ].substitute ( pId , pExpression ,
-        pAttributeRename ) ;
+    Expression newE = this.expressions [ 0 ].substitute ( pId , pExpression ) ;
     return new Method ( this.identifiers [ 0 ].clone ( ) ,
         this.types [ 0 ] == null ? null : this.types [ 0 ].clone ( ) , newE ) ;
   }

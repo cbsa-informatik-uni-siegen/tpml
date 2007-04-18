@@ -444,22 +444,9 @@ public final class CurriedMethod extends Expression implements
 
   /**
    * {@inheritDoc}
-   * 
-   * @see Expression#substitute(Identifier, Expression, boolean)
    */
   @ Override
   public CurriedMethod substitute ( Identifier pId , Expression pExpression )
-  {
-    return substitute ( pId , pExpression , false ) ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   */
-  @ Override
-  public CurriedMethod substitute ( Identifier pId , Expression pExpression ,
-      boolean pAttributeRename )
   {
     /*
      * Do not substitute, if the Identifiers are equal.
@@ -515,15 +502,14 @@ public final class CurriedMethod extends Expression implements
        */
       if ( ! newIdentifiers [ i ].equals ( newId ) )
       {
-        newE = newE.substitute ( newIdentifiers [ i ] , newId ,
-            pAttributeRename ) ;
+        newE = newE.substitute ( newIdentifiers [ i ] , newId ) ;
         newIdentifiers [ i ] = newId ;
       }
     }
     /*
      * Perform the substitution.
      */
-    newE = newE.substitute ( pId , pExpression , pAttributeRename ) ;
+    newE = newE.substitute ( pId , pExpression ) ;
     MonoType [ ] newTypes = new MonoType [ this.types.length ] ;
     for ( int i = 0 ; i < newTypes.length ; i ++ )
     {

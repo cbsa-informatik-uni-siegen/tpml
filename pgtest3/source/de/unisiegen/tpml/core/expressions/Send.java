@@ -262,25 +262,11 @@ public final class Send extends Expression implements DefaultIdentifiers ,
 
   /**
    * {@inheritDoc}
-   * 
-   * @see Expression#substitute(Identifier, Expression, boolean)
    */
   @ Override
   public Send substitute ( Identifier pId , Expression pExpression )
   {
-    return substitute ( pId , pExpression , false ) ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   */
-  @ Override
-  public Send substitute ( Identifier pId , Expression pExpression ,
-      boolean pAttributeRename )
-  {
-    Expression newE = this.expressions [ 0 ].substitute ( pId , pExpression ,
-        pAttributeRename ) ;
+    Expression newE = this.expressions [ 0 ].substitute ( pId , pExpression ) ;
     return new Send ( newE , this.identifiers [ 0 ].clone ( ) ) ;
   }
 

@@ -210,30 +210,14 @@ public final class Condition extends Expression implements ChildrenExpressions
   /**
    * {@inheritDoc}
    * 
-   * @see Expression#substitute(Identifier, Expression, boolean)
+   * @see Expression#substitute(Identifier, Expression)
    */
   @ Override
   public Condition substitute ( Identifier pId , Expression pExpression )
   {
-    return substitute ( pId , pExpression , false ) ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Expression#substitute(Identifier, Expression, boolean)
-   */
-  @ Override
-  public Condition substitute ( Identifier pId , Expression pExpression ,
-      boolean pAttributeRename )
-  {
-    Expression newE0 = this.expressions [ 0 ].substitute ( pId , pExpression ,
-        pAttributeRename ) ;
-    Expression newE1 = this.expressions [ 1 ].substitute ( pId , pExpression ,
-        pAttributeRename ) ;
-    Expression newE2 = this.expressions [ 2 ].substitute ( pId , pExpression ,
-        pAttributeRename ) ;
+    Expression newE0 = this.expressions [ 0 ].substitute ( pId , pExpression ) ;
+    Expression newE1 = this.expressions [ 1 ].substitute ( pId , pExpression ) ;
+    Expression newE2 = this.expressions [ 2 ].substitute ( pId , pExpression ) ;
     return new Condition ( newE0 , newE1 , newE2 ) ;
   }
 

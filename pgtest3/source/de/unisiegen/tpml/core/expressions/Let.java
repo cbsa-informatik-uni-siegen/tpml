@@ -429,29 +429,15 @@ public class Let extends Expression implements BoundIdentifiers , DefaultTypes ,
   /**
    * {@inheritDoc}
    * 
-   * @see Expression#substitute(Identifier, Expression, boolean)
+   * @see Expression#substitute(Identifier, Expression)
    */
   @ Override
   public Let substitute ( Identifier pId , Expression pExpression )
   {
-    return substitute ( pId , pExpression , false ) ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Expression#substitute(Identifier, Expression, boolean)
-   */
-  @ Override
-  public Let substitute ( Identifier pId , Expression pExpression ,
-      boolean pAttributeRename )
-  {
     /*
      * Perform the substitution in e1.
      */
-    Expression newE1 = this.expressions [ 0 ].substitute ( pId , pExpression ,
-        pAttributeRename ) ;
+    Expression newE1 = this.expressions [ 0 ].substitute ( pId , pExpression ) ;
     Expression newE2 = this.expressions [ 1 ] ;
     /*
      * Do not substitute in e2 , if the Identifiers are equal.
@@ -478,13 +464,12 @@ public class Let extends Expression implements BoundIdentifiers , DefaultTypes ,
      */
     if ( ! this.identifiers [ 0 ].equals ( newId ) )
     {
-      newE2 = newE2.substitute ( this.identifiers [ 0 ] , newId ,
-          pAttributeRename ) ;
+      newE2 = newE2.substitute ( this.identifiers [ 0 ] , newId ) ;
     }
     /*
      * Perform the substitution in e2.
      */
-    newE2 = newE2.substitute ( pId , pExpression , pAttributeRename ) ;
+    newE2 = newE2.substitute ( pId , pExpression ) ;
     return new Let ( newId , this.types [ 0 ] == null ? null : this.types [ 0 ]
         .clone ( ) , newE1 , newE2 ) ;
   }

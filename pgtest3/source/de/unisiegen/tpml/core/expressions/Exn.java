@@ -151,31 +151,18 @@ public final class Exn extends Expression
 
 
   /**
-   * {@inheritDoc}
-   * 
-   * @see Expression#substitute(Identifier, Expression, boolean)
-   */
-  @ Override
-  public Exn substitute ( Identifier pId , Expression pExpression )
-  {
-    return substitute ( pId , pExpression , false ) ;
-  }
-
-
-  /**
    * {@inheritDoc} Substitution below exceptions is not possible, so for the
    * <code>Exn</code> class, this method always returns a reference to the
    * exception itself.
    * 
-   * @see Expression#substitute(Identifier, Expression, boolean)
+   * @see Expression#substitute(Identifier, Expression)
    */
   @ Override
   public Exn substitute ( @ SuppressWarnings ( "unused" )
   Identifier pId , @ SuppressWarnings ( "unused" )
-  Expression pExpression , @ SuppressWarnings ( "unused" )
-  boolean pAttributeRename )
+  Expression pExpression )
   {
-    return this ;
+    return this.clone ( ) ;
   }
 
 

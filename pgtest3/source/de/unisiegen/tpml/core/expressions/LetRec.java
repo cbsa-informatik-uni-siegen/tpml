@@ -131,23 +131,10 @@ public final class LetRec extends Let implements BoundIdentifiers ,
   /**
    * {@inheritDoc}
    * 
-   * @see Expression#substitute(Identifier, Expression, boolean)
+   * @see Let#substitute(Identifier, Expression)
    */
   @ Override
   public LetRec substitute ( Identifier pId , Expression pExpression )
-  {
-    return substitute ( pId , pExpression , false ) ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Let#substitute(Identifier, Expression, boolean)
-   */
-  @ Override
-  public LetRec substitute ( Identifier pId , Expression pExpression ,
-      boolean pAttributeRename )
   {
     /*
      * Do not substitute , if the Identifiers are equal.
@@ -172,16 +159,14 @@ public final class LetRec extends Let implements BoundIdentifiers ,
     Expression newE2 = this.expressions [ 1 ] ;
     if ( ! this.identifiers [ 0 ].equals ( newId ) )
     {
-      newE1 = newE1.substitute ( this.identifiers [ 0 ] , newId ,
-          pAttributeRename ) ;
-      newE2 = newE2.substitute ( this.identifiers [ 0 ] , newId ,
-          pAttributeRename ) ;
+      newE1 = newE1.substitute ( this.identifiers [ 0 ] , newId ) ;
+      newE2 = newE2.substitute ( this.identifiers [ 0 ] , newId ) ;
     }
     /*
      * Perform the substitution.
      */
-    newE1 = newE1.substitute ( pId , pExpression , pAttributeRename ) ;
-    newE2 = newE2.substitute ( pId , pExpression , pAttributeRename ) ;
+    newE1 = newE1.substitute ( pId , pExpression ) ;
+    newE2 = newE2.substitute ( pId , pExpression ) ;
     return new LetRec ( newId , this.types [ 0 ] == null ? null
         : this.types [ 0 ].clone ( ) , newE1 , newE2 ) ;
   }

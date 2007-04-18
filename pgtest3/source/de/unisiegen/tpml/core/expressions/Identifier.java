@@ -206,18 +206,6 @@ public class Identifier extends Value
 
 
   /**
-   * {@inheritDoc}
-   * 
-   * @see Expression#substitute(Identifier, Expression, boolean)
-   */
-  @ Override
-  public Expression substitute ( Identifier pId , Expression pExpression )
-  {
-    return substitute ( pId , pExpression , false ) ;
-  }
-
-
-  /**
    * Returns <code>e</code> if <code>id</code> equals the name of the
    * identifier. Else the identifier itself is returned.
    * 
@@ -226,9 +214,7 @@ public class Identifier extends Value
    * @see #getName()
    */
   @ Override
-  public Expression substitute ( Identifier pId , Expression pExpression ,
-      @ SuppressWarnings ( "unused" )
-      boolean pAttributeRename )
+  public Expression substitute ( Identifier pId , Expression pExpression )
   {
     if ( pId.equals ( this ) )
     {
