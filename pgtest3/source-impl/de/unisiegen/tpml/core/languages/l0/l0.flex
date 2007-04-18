@@ -49,6 +49,9 @@ import de.unisiegen.tpml.core.languages.LanguageSymbol;
 
 		case LAMBDA:
 			return PrettyStyle.KEYWORD;
+		
+		case IDENTIFIER:
+			return PrettyStyle.IDENTIFIER;
 			
 		default:
 			return PrettyStyle.NONE;

@@ -54,7 +54,7 @@ import de.unisiegen.tpml.core.languages.LanguageSymbol;
 		case AMPERAMPER: case BARBAR:
 		
 		/* Object */
-		case OBJECT: 
+		case OBJECT:
 		case END: 
 		case HASHKEY: 
 		case ATTRIBUTE: 
@@ -66,6 +66,10 @@ import de.unisiegen.tpml.core.languages.LanguageSymbol;
 			
 		case BOOL: case INT: case UNIT: case TYPEVARIABLE:
 			return PrettyStyle.TYPE;
+		
+		case IDENTIFIER:
+		case SELF:
+			return PrettyStyle.IDENTIFIER;
 			
 		default:
 			return PrettyStyle.NONE;

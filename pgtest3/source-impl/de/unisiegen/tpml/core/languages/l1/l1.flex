@@ -56,6 +56,9 @@ import de.unisiegen.tpml.core.languages.LanguageSymbol;
 			
 		case BOOL: case INT: case UNIT: case TYPEVARIABLE:
 			return PrettyStyle.TYPE;
+	
+		case IDENTIFIER:
+			return PrettyStyle.IDENTIFIER;
 			
 		default:
 			return PrettyStyle.NONE;
