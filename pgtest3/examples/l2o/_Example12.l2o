@@ -1,5 +1,5 @@
-(object (id)
+(object (self)
      val x = 1 ;
      val y = 2 ;
-     method toggle = id {< x = y ; y = x >} ;
+     method toggle = {< x = y ; y = x >} ;
     end) # toggle # toggle

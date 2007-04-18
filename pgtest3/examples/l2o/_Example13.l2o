@@ -1,5 +1,5 @@
 (object (self)
      val x = 1 ;
-     method inc = self {<x = x + 1 >} ;
+     method inc = {<x = x + 1 >} ;
      method get = x ;
  end) # inc # inc # inc # get

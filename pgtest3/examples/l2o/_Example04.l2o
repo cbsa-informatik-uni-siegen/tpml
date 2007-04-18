@@ -1,4 +1,4 @@
 (object (self) 
-   method clone = self {< >} ; 
+   method clone = {< >} ; 
  end) 
 # clone

@@ -1,1 +1,1 @@
-(lambda x.x+1)1
+(object (self) val a = 0 ; val b = 1 ; method move = {< a = 10 ; b = 11 >} ; end) # move

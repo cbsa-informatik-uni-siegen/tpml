@@ -1,9 +1,9 @@
-let o = object (x)
+let o = object (self)
             val a = 1;
-            method f = x{<a = a + 1 >};
-            method g = object (y)
+            method f = {<a = a + 1 >};
+            method g = object (self)
                         val a = a + 1;
-                        method g = y{<a = a + 1>};
+                        method g = {<a = a + 1>};
                         method h = a + 1;
                        end;
            end

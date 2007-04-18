@@ -1,6 +1,6 @@
 (object (self) 
     val x = 1 ; 
     val y = 2 ; 
-    method move dx dy = self {< x = x+dx ; y = y+dy >} ; 
+    method move dx dy = {< x = x+dx ; y = y+dy >} ; 
   end) 
 # move 10 20
