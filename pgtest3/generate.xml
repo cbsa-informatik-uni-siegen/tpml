@@ -34,6 +34,7 @@
 	 * Automatically generated interface for the project versions.
 	 *
 	 * @author Benedikt Meurer
+	 * @author Christian Fehler
 	 * @version $$Ref$$
 	 */
 	public interface Versions {
@@ -45,6 +46,9 @@
 
 		/** The version of the de.unisiegen.tpml.ui subproject. */
 		public static final String UI = "${de.unisiegen.tpml.ui.version}";
+		
+		/** The string for a testing project. */
+		public static final String TEST = " (PGTest3)";
 	};
 		</echo>
 	</target>
