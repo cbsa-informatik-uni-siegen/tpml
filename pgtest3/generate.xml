@@ -11,7 +11,7 @@
 	
 	<property name="libdir" value="${basedir}/lib" />
 
-    <target name="generate" depends="clean-l0,clean-l1,clean-l2,clean-l2o,clean-l3,clean-l4,l0,l1,l2,l2o,l3,l4" description="Generate parsers and lexers" />
+    <target name="generate" depends="version,clean-l0,clean-l1,clean-l2,clean-l2o,clean-l3,clean-l4,l0,l1,l2,l2o,l3,l4" description="Generate parsers and lexers" />
 	
 	<property name="impldir" value="${basedir}/source-impl" />
 	<property name="generateddir" value="${basedir}/source-generated" />
@@ -19,6 +19,36 @@
 	<taskdef name="cup" classname="java_cup.anttask.CUPTask" classpath="${libdir}/java-cup-11a.jar" />
 	<taskdef name="jflex" classname="JFlex.anttask.JFlexTask" classpath="${libdir}/JFlex-1.4.1.jar" />
 
+	<!--
+			Autogenerating files (Versions.java)
+		-->
+
+	<property name="generateddir" value="${basedir}/source-generated" />
+	<property file="${basedir}/build.properties" />
+	
+	<target name="version" description="Generate the Versions interface">
+		<mkdir dir="${generateddir}/de/unisiegen/tpml/ui" />
+		<echo file="${generateddir}/de/unisiegen/tpml/ui/Versions.java" append="false">package de.unisiegen.tpml.ui;
+
+	/**
+	 * Automatically generated interface for the project versions.
+	 *
+	 * @author Benedikt Meurer
+	 * @version $$Ref$$
+	 */
+	public interface Versions {
+		/** The version of the de.unisiegen.tpml.core subproject. */
+		public static final String CORE = "${de.unisiegen.tpml.core.version}";
+
+		/** The version of the de.unisiegen.tpml.graphics subproject. */
+		public static final String GRAPHICS = "${de.unisiegen.tpml.graphics.version}";
+
+		/** The version of the de.unisiegen.tpml.ui subproject. */
+		public static final String UI = "${de.unisiegen.tpml.ui.version}";
+	};
+		</echo>
+	</target>
+	
 	<target name="clean-l0">
 		<delete dir="${generateddir}/de/unisiegen/tpml/core/languages/l0" />
 	</target>
