@@ -40,6 +40,7 @@ import de.unisiegen.tpml.core.types.TypeVariable;
  * The type proof rules for the <code>L1</code> language.
  * 
  * @author Benedikt Meurer
+ * @author Benjamin Mies
  * @version $Id: Lt1TypeCheckerProofRuleSet.java 272 2006-09-19 15:55:48Z benny $
  * @see de.unisiegen.tpml.core.typechecker.AbstractTypeCheckerProofRuleSet
  */
@@ -315,6 +316,7 @@ public class L1TypeCheckerProofRuleSet extends AbstractTypeCheckerProofRuleSet {
 			for (int n = types.length - 1; n > 0; --n) {
 				tau1 = new ArrowType((types[n] != null) ? types[n] : context
 						.newTypeVariable(), tau1);
+
 			}
 			// add the recursion for let rec
 			if (expression instanceof CurriedLetRec) {
@@ -363,79 +365,70 @@ public class L1TypeCheckerProofRuleSet extends AbstractTypeCheckerProofRuleSet {
 	public void applyUnify(TypeCheckerProofContext pContext,
 			TypeCheckerProofNode pNode) throws UnifyException {
 
-		// convert in needed types
+		//	 convert in needed types
 		DefaultTypeInferenceProofContext context = (DefaultTypeInferenceProofContext) pContext;
 		DefaultTypeEquationProofNode node = (DefaultTypeEquationProofNode) pNode;
 		TypeEquation eqn = node.getEquation();
+
+		unify(context, node, eqn);
+	}
+
+	/**
+	 * 
+	 * internal implementation of the unify rule
+	 * now we are able to call unify recursive if needed
+	 * so we get different handling for beginner or advanced user
+	 *
+	 * @param context the casted default type inference proof context.
+	 * @param node the casted type equation proof node.
+	 * @param eqn the actual type equation
+	 * @throws UnifyException
+	 */
+	public void unify(DefaultTypeInferenceProofContext context,
+			DefaultTypeEquationProofNode node, TypeEquation eqn)
+			throws UnifyException {
 
 		// empty equation is not longer possible so this rule is not implemented
 
 		MonoType left = eqn.getLeft();
 		MonoType right = eqn.getRight();
-		
+
 		if (left.equals(right)) {
 			return;
-		}
-
-		else if (left instanceof TypeVariable || right instanceof TypeVariable) {
+		} else if (left instanceof TypeVariable || right instanceof TypeVariable) {
 			// the left or right side of the equation is a type variable
 			TypeVariable tvar = (TypeVariable) (left instanceof TypeVariable ? left
 					: right);
 			MonoType tau = (left instanceof TypeVariable ? right : left);
 			// either tvar equals tau or tvar is not present in tau
-			if (!tvar.equals(tau) || !tau.free().contains(tvar)) {
+			if (!tvar.equals(tau) && !tau.free().contains(tvar)) {
 
 				DefaultTypeSubstitution s = new DefaultTypeSubstitution(tvar, tau);
 				context.addSubstitution(s);
 				return;
 			}
+			// ???
+			//return;
 		} else if (left instanceof ArrowType && right instanceof ArrowType) {
 			ArrowType taul = (ArrowType) left;
 			ArrowType taur = (ArrowType) right;
 
-			left = taul.getTau1();
-			right = taur.getTau1();
-
-			if (left instanceof TypeVariable || right instanceof TypeVariable) {
-				// the left or right side of the equation is a type variable
-				TypeVariable tvar = (TypeVariable) (left instanceof TypeVariable ? left
-						: right);
-				MonoType tau = (left instanceof TypeVariable ? right : left);
-				// either tvar equals tau or tvar is not present in tau
-				//???
-				if (!tvar.equals(tau) || !tau.free().contains(tvar)) {
-
-					DefaultTypeSubstitution s = new DefaultTypeSubstitution(tvar, tau);
-					context.addSubstitution(s);
-				}
-			}
-
-			left = taul.getTau2();
-			right = taur.getTau2();
-
-			if (left instanceof TypeVariable || right instanceof TypeVariable) {
-				// the left or right side of the equation is a type variable
-				TypeVariable tvar = (TypeVariable) (left instanceof TypeVariable ? left
-						: right);
-				MonoType tau = (left instanceof TypeVariable ? right : left);
-				// either tvar equals tau or tvar is not present in tau
-				if (!tvar.equals(tau) || !tau.free().contains(tvar)) {
-
-					DefaultTypeSubstitution s = new DefaultTypeSubstitution(tvar, tau);
-					context.addSubstitution(s);
-				}
+			//check which mode is choosen
+			// TODO change to node.getMode()
+			if (true) {
+				// advanced mode is choosen
+				// unify tau1 = tau1', tau2 = tau2'
+				unify(context, node, new TypeEquation(taul.getTau2(), taur.getTau2()));
+				unify(context, node, new TypeEquation(taul.getTau1(), taur.getTau1()));
 			} else {
-				context.addEquation(left, right);
+				// beginner mode is choosen
+				// equations are added to list and will be unified later
+				context.addEquation(taul.getTau2(), taur.getTau2());
+				context.addEquation(taul.getTau1(), taur.getTau1());
 			}
 
 			return;
-			/*
-			 * in this case the new equations are added to the list and will be unified later
-			 // we need to check {tau1 = tau1', tau2 = tau2'} as well
-			 context.addEquation(taul.getTau2(), taur.getTau2());
-			 context.addEquation(taul.getTau1(), taur.getTau1());
-			 return;*/
-			
+
 		} else if (left instanceof TupleType && right instanceof TupleType) {
 			// cast to TupleType instances (tau and tau')
 			TupleType taul = (TupleType) left;
@@ -454,9 +447,9 @@ public class L1TypeCheckerProofRuleSet extends AbstractTypeCheckerProofRuleSet {
 				}
 				return;
 			}
-			
+
 			// FALL-THROUGH: Otherwise it's a type error
-			
+
 		} else if (left instanceof TupleType && right instanceof TupleType) {
 			// cast to TupleType instances (tau and tau')
 			TupleType taul = (TupleType) left;
@@ -490,16 +483,15 @@ public class L1TypeCheckerProofRuleSet extends AbstractTypeCheckerProofRuleSet {
 			// cast to ListType instances (tau and tau')
 			ListType taul = (ListType) left;
 			ListType taur = (ListType) right;
-			
 
 			// we need to check {tau = tau'} as well
-			// context.setEquations(eqns.getRemaining());
-			//???
 			context.addEquation(taul.getTau(), taur.getTau());
 
 			return;
 		}
 
 		throw new UnifyException(eqn);
+
 	}
+
 }

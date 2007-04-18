@@ -58,7 +58,7 @@ public class DefaultTypeInferenceProofContext implements
 	// Attributes
 	//
 
-	/**
+	/*
 	 * The current offset for the <code>TypeVariable</code> allocation. The
 	 * offset combined with the index from the {@link #model} will be used
 	 * to generate a new type variable on every invocation of the method
@@ -66,9 +66,9 @@ public class DefaultTypeInferenceProofContext implements
 	 * 
 	 * @see #newTypeVariable()
 	 * @see TypeVariable
-	 */
+	 *
 	private int offset = 0;
-
+*/
 	/**
 	 * The list of type equations that has been collected for this context
 	 * 
@@ -86,6 +86,7 @@ public class DefaultTypeInferenceProofContext implements
 	 * The newest added type substitutions
 	 */
 	private TypeSubstitutionList substitution = TypeSubstitutionList.EMPTY_LIST;
+	
 
 	/**
 	 * The type inference proof model with which this proof context is associated.
@@ -137,6 +138,7 @@ public class DefaultTypeInferenceProofContext implements
 		this.node = pNode;
 		//this.equations = pNode.getEquations();
 
+		/*
 		// increment the model index
 		final int index = model.getIndex();
 
@@ -153,7 +155,7 @@ public class DefaultTypeInferenceProofContext implements
 
 				model.setIndex(index);
 			}
-		});
+		});*/
 	}
 
 	//
@@ -286,8 +288,9 @@ public class DefaultTypeInferenceProofContext implements
 	 * @see de.unisiegen.tpml.core.typechecker.TypeCheckerProofContext#newTypeVariable()
 	 */
 	public TypeVariable newTypeVariable() {
+		model.setIndex(model.getIndex()+1);
 
-		return new TypeVariable(this.model.getIndex(), this.offset++);
+		return new TypeVariable(this.model.getIndex(), model.getOffset());
 
 	}
 
@@ -299,7 +302,6 @@ public class DefaultTypeInferenceProofContext implements
 	 */
 
 	public void addSubstitution(final DefaultTypeSubstitution s) {
-
 		substitution = substitution.extend(s);
 	}
 
@@ -319,12 +321,11 @@ public class DefaultTypeInferenceProofContext implements
 	 * @throws UnifyException if an error occurs while unifying the type equations that resulted
 	 *                              from the application of <code>rule</code> to <code>node</code>.
 	 */
-	void apply(final TypeCheckerProofRule rule, final TypeFormula formula, final MonoType type)
+	void apply(final TypeCheckerProofRule rule, final TypeFormula formula, final MonoType type, boolean mode)
 			throws ProofRuleException, UnifyException {
 
 		DefaultTypeCheckerProofNode typeNode = null;
 
-		//dirty workaround, just think about
 		if (formula.getExpression() != null) {
 			typeNode = new DefaultTypeCheckerProofNode(formula.getEnvironment(),
 					formula.getExpression(), formula.getType());
@@ -332,7 +333,7 @@ public class DefaultTypeInferenceProofContext implements
 		} else if (rule.toString().equals("UNIFY")) { //$NON-NLS-1$
 
 			typeNode = new DefaultTypeEquationProofNode(formula.getEnvironment(),
-					new Unify(), formula.getType(), (TypeEquation) formula);
+					new Unify(), formula.getType(), (TypeEquation) formula, mode);
 
 		} else {
 
@@ -358,9 +359,12 @@ public class DefaultTypeInferenceProofContext implements
 
 		// list of the formulas of the actual type inference proof node
 		final ArrayList<TypeFormula> oldFormulas = node.getFormula();
+		
+		TypeSubstitutionList sub;
 
 		// add evtl. existing formulas from the parent node
-		for (final TypeFormula form : oldFormulas) {
+		for (TypeFormula form : oldFormulas) {
+			sub = substitution;
 			// just for sorting all type judgements are added before the type equations
 			if (form instanceof TypeJudgement) {
 				// don't add the type judgement if it is the actual type formula
@@ -380,7 +384,7 @@ public class DefaultTypeInferenceProofContext implements
 		}
 
 		// this is used to apply all of the substitutions to the type equations
-		TypeSubstitutionList sub = substitution;
+		sub = substitution;
 
 		// add the new collected equations to the formula list
 		for (int i = equations.size() - 1; i > -1; i--) {
@@ -570,8 +574,8 @@ public class DefaultTypeInferenceProofContext implements
 	 * @param subs the new list of type substitutions
 	 */
 	public void setSubstitutions(final ArrayList<DefaultTypeSubstitution> subs) {
-
 		this.substitutions = subs;
+		
 	}
 
 	/*

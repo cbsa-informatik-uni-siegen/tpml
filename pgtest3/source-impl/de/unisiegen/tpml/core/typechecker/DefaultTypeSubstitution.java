@@ -168,6 +168,14 @@ public final class DefaultTypeSubstitution implements TypeSubstitution {
   
   public String toString()
   {
-	  return type.toString()+"/"+tvar.toString();
+  	String result = " "+ type.toString()+"/"+tvar.toString();
+  	DefaultTypeSubstitution next = parent;
+  	while (next!= EMPTY_SUBSTITUTION && next != null){
+  		result +=" , "+ next.toString();
+  		next= next.parent;
+  		
+  	}
+	  //return type.toString()+"/"+tvar.toString();
+  	return result;
   }
 }

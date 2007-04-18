@@ -32,6 +32,8 @@ public class DefaultTypeEquationProofNode extends DefaultTypeCheckerProofNode
 	 * list of collected type equations
 	 */
 	private TypeEquation equation;
+	
+	private boolean mode ;
 
 	//
 	// Constructors
@@ -47,10 +49,11 @@ public class DefaultTypeEquationProofNode extends DefaultTypeCheckerProofNode
 	 * 
 	 */
 	public DefaultTypeEquationProofNode(final TypeEnvironment environment,
-			final Expression expression, final MonoType type, final TypeEquation eqns) {
+			final Expression expression, final MonoType type, final TypeEquation eqns, boolean pMode) {
 
 		super(environment, expression, type);
 		equation = eqns;
+		mode = pMode;
 	}
 
 	/**
@@ -75,6 +78,10 @@ public class DefaultTypeEquationProofNode extends DefaultTypeCheckerProofNode
 	public TypeEquation getEquation() {
 
 		return this.equation;
+	}
+
+	public boolean getMode() {
+		return this.mode;
 	}
 
 }

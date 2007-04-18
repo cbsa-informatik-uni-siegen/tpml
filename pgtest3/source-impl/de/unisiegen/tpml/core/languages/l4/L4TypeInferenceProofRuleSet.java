@@ -9,7 +9,8 @@ public class L4TypeInferenceProofRuleSet extends L4TypeCheckerProofRuleSet {
 	public L4TypeInferenceProofRuleSet(L4Language language) {
 		super(language);
 		
-		
+	//	unregister("P-LET");
+	
 	    unregister("ABSTR");
 	    unregister("AND");
 	    unregister("APP");
@@ -25,7 +26,6 @@ public class L4TypeInferenceProofRuleSet extends L4TypeCheckerProofRuleSet {
 	    unregister("COND-1");
 	    unregister("SEQ");
 	    unregister("WHILE");
-	    
 	    
 //		 register the additional typeinference rule
 	    registerByMethodName(L1Language.L1, "UNIFY", "applyUnify");
@@ -43,10 +43,9 @@ public class L4TypeInferenceProofRuleSet extends L4TypeCheckerProofRuleSet {
 	    registerByMethodName(L3Language.L3, "P-ID", "applyPId");
 	   // registerByMethodName(L3Language.L3, "P-LET", "applyPLet");
 	    registerByMethodName(L3Language.L3, "TUPLE", "applyTuple");		
-		registerByMethodName(L4Language.L4, "COND-1", "applyCond1");
+	    registerByMethodName(L4Language.L4, "COND-1", "applyCond1");
 	    registerByMethodName(L4Language.L4, "SEQ", "applySeq");
 	    registerByMethodName(L4Language.L4, "WHILE", "applyWhile");
-		
 		
 	}
 }

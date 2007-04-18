@@ -63,6 +63,17 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 	 * @see types.TypeVariable
 	 */
 	private int index = 1;
+	
+	/**
+	 * The current offset for the <code>TypeVariable</code> allocation. The
+	 * offset combined with the index from the {@link #model} will be used
+	 * to generate a new type variable on every invocation of the method
+	 * {@link #newTypeVariable()}. The offset will be incremented afterwards.
+	 * 
+	 * @see #newTypeVariable()
+	 * @see TypeVariable
+	 */
+	private int offset = 0;
 
 	//
 	// Constructor
@@ -140,7 +151,12 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 	@Override
 	public void guess(ProofNode node) throws ProofGuessException {
 
-		guessInternal((DefaultTypeInferenceProofNode) node, null);
+		guessInternal((DefaultTypeInferenceProofNode) node, null, false);
+	}
+	
+	public void guess(ProofNode node, boolean mode) throws ProofGuessException {
+
+		guessInternal((DefaultTypeInferenceProofNode) node, null, mode);
 	}
 
 	/**
@@ -162,7 +178,23 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 		}
 		// try to apply the rule to the specified node
 		applyInternal((TypeCheckerProofRule) rule,
-				(DefaultTypeInferenceProofNode) node, null, null);
+				(DefaultTypeInferenceProofNode) node, null, null, false);
+	}
+	
+	public void prove(ProofRule rule, ProofNode node, boolean mode) throws ProofRuleException {
+
+		if (!this.ruleSet.contains(rule)) {
+			throw new IllegalArgumentException("The rule is invalid for the model"); //$NON-NLS-1$
+		}
+		if (!this.root.isNodeRelated(node)) {
+			throw new IllegalArgumentException("The node is invalid for the model"); //$NON-NLS-1$
+		}
+		if (node.getRules().length > 0) {
+			throw new IllegalArgumentException("The node is already completed"); //$NON-NLS-1$
+		}
+		// try to apply the rule to the specified node
+		applyInternal((TypeCheckerProofRule) rule,
+				(DefaultTypeInferenceProofNode) node, null, null, mode);
 	}
 
 	/**
@@ -191,7 +223,7 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 		}
 		// try to apply the rule to the specified node
 		applyInternal((TypeCheckerProofRule) rule,
-				(DefaultTypeInferenceProofNode) node, null, null);
+				(DefaultTypeInferenceProofNode) node, null, null, false);
 	}
 
 	/**
@@ -384,7 +416,7 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 	 * @see #prove(ProofRule, ProofNode)
 	 */
 	private void applyInternal(TypeCheckerProofRule rule,
-			DefaultTypeInferenceProofNode node, MonoType type, TypeFormula form)
+			DefaultTypeInferenceProofNode node, MonoType type, TypeFormula form, boolean mode)
 			throws ProofRuleException {
 
 		// allocate a new TypeCheckerContext
@@ -398,7 +430,7 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 			try {
 				// try to apply the rule to the specified node
 				context.setSubstitutions(node.getSubstitution());
-				context.apply(rule, form, type);
+				context.apply(rule, form, type, mode);
 				return;
 			} catch (UnifyException e1) {
 				// revert the actions performed so far
@@ -414,7 +446,7 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 				try {
 					// try to apply the rule to the specified node
 					context.setSubstitutions(node.getSubstitution());
-					context.apply(rule, formula, type);
+					context.apply(rule, formula, type, mode);
 
 					return;
 				} catch (ProofRuleException e1) {
@@ -469,7 +501,7 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 	 * @see #guess(ProofNode)
 	 * @see #guessWithType(ProofNode, MonoType)
 	 */
-	private void guessInternal(DefaultTypeInferenceProofNode node, MonoType type)
+	private void guessInternal(DefaultTypeInferenceProofNode node, MonoType type, boolean mode)
 			throws ProofGuessException {
 
 		if (node == null) {
@@ -487,7 +519,7 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 		for (ProofRule rule : this.ruleSet.getRules()) {
 			try {
 				// try to apply the rule to the specified node
-				applyInternal((TypeCheckerProofRule) rule, node, type, null);
+				applyInternal((TypeCheckerProofRule) rule, node, type, null, mode);
 				// remember that the user cheated
 				setCheating(true);
 
@@ -609,6 +641,14 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 	@Override
 	public ProofRule[] getRules() {
 		return this.ruleSet.getRules();
+	}
+
+	public int getOffset() {
+		return this.offset;
+	}
+
+	public void setOffset(int offset) {
+		this.offset = offset;
 	}
 
 }
