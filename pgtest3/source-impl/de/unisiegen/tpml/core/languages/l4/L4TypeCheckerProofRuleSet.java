@@ -23,9 +23,6 @@ import de.unisiegen.tpml.core.types.UnitType ;
  */
 public class L4TypeCheckerProofRuleSet extends L3TypeCheckerProofRuleSet
 {
-  //
-  // Constructor
-  //
   /**
    * Allocates a new <code>L4TypecheckerProofRuleSet</code> for the specified
    * <code>language</code>.
@@ -38,15 +35,12 @@ public class L4TypeCheckerProofRuleSet extends L3TypeCheckerProofRuleSet
   {
     super ( language ) ;
     // register the additional type rules
-    registerByMethodName ( L4Language.L4 , "COND-1" , "applyCond1" ) ;
-    registerByMethodName ( L4Language.L4 , "SEQ" , "applySeq" ) ;
-    registerByMethodName ( L4Language.L4 , "WHILE" , "applyWhile" ) ;
+    registerByMethodName ( L4Language.L4 , "COND-1" , "applyCond1" ) ; //$NON-NLS-1$ //$NON-NLS-2$
+    registerByMethodName ( L4Language.L4 , "SEQ" , "applySeq" ) ; //$NON-NLS-1$//$NON-NLS-2$
+    registerByMethodName ( L4Language.L4 , "WHILE" , "applyWhile" ) ; //$NON-NLS-1$ //$NON-NLS-2$
   }
 
 
-  //
-  // The (COND-1) rule
-  //
   /**
    * Applies the <b>(COND-1)</b> rule to the <code>node</code> using the
    * <code>context</code>.
@@ -66,9 +60,6 @@ public class L4TypeCheckerProofRuleSet extends L3TypeCheckerProofRuleSet
   }
 
 
-  //
-  // The (P-LET) rule
-  //
   /**
    * {@inheritDoc} The language <code>L4</code> introduces references and as
    * such, the <b>(P-LET)</b> rule must be adjusted to allow type
@@ -91,7 +82,7 @@ public class L4TypeCheckerProofRuleSet extends L3TypeCheckerProofRuleSet
       if ( ! let.getE1 ( ).isValue ( ) )
       {
         throw new IllegalArgumentException (
-            "(P-LET) can only be applied if e1 is a value" ) ;
+            "(P-LET) can only be applied if e1 is a value" ) ; //$NON-NLS-1$
       }
     }
     else if ( expression instanceof MultiLet )
@@ -100,16 +91,13 @@ public class L4TypeCheckerProofRuleSet extends L3TypeCheckerProofRuleSet
       if ( ! multiLet.getE1 ( ).isValue ( ) )
       {
         throw new IllegalArgumentException (
-            "(P-LET) can only be applied if e1 is a value" ) ;
+            "(P-LET) can only be applied if e1 is a value" ) ; //$NON-NLS-1$
       }
     }
     super.applyPLet ( context , node ) ;
   }
 
 
-  //
-  // The (SEQ) rule
-  //
   /**
    * Applies the <b>(SEQ)</b> rule to the <code>node</code> using the
    * <code>context</code>.
@@ -128,9 +116,6 @@ public class L4TypeCheckerProofRuleSet extends L3TypeCheckerProofRuleSet
   }
 
 
-  //
-  // The (WHILE) rule
-  //
   /**
    * Applies the <b>(WHILE)</b> rule to the <code>node</code> using the
    * <code>context</code>.

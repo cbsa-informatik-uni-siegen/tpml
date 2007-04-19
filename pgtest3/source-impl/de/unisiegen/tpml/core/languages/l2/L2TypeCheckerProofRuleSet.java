@@ -18,9 +18,6 @@ import de.unisiegen.tpml.core.types.MonoType ;
  */
 public class L2TypeCheckerProofRuleSet extends L1TypeCheckerProofRuleSet
 {
-  //
-  // Constructor
-  //
   /**
    * Allocates a new <code>L2TypeCheckerProofRuleSet</code> for the specified
    * <code>language</code>.
@@ -33,13 +30,10 @@ public class L2TypeCheckerProofRuleSet extends L1TypeCheckerProofRuleSet
   {
     super ( language ) ;
     // register the additional type rules
-    registerByMethodName ( L2Language.L2 , "REC" , "applyRec" ) ;
+    registerByMethodName ( L2Language.L2 , "REC" , "applyRec" ) ; //$NON-NLS-1$ //$NON-NLS-2$
   }
 
 
-  //
-  // The (REC) rule
-  //
   /**
    * Applies the <b>(REC)</b> rule to the <code>node</code> using the
    * <code>context</code>.
