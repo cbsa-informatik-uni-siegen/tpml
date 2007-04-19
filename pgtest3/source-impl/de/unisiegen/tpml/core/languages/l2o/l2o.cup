@@ -1,7 +1,9 @@
 import de.unisiegen.tpml.core.expressions.*;
 import de.unisiegen.tpml.core.types.*;
-import java.util.ArrayList;
 import de.unisiegen.tpml.core.languages.LanguageParserException;
+import de.unisiegen.tpml.core.Messages ;
+import java.text.MessageFormat;
+
 
 /* Helper classes */
 action code 
@@ -352,8 +354,9 @@ row					::= attribute:a
     					       Attribute attribute = (Attribute) r.getExpressions(i) ;
     					       if ( attribute.getId().equals(a.getId()))
     					       {
-    					         throw new LanguageParserException ( "Es existiert bereits ein Attribut mit Identifier \"" 
-                                   + attribute.getId ( ) + "\"" , 0 , 0 ) ; 
+    					         throw new LanguageParserException ( 
+    					         MessageFormat.format (
+                          Messages.getString ( "Parser.2" ) , attribute.getId ( ) ) , 0 , 0 ) ; 
     					       }
     					     }
     					   }
