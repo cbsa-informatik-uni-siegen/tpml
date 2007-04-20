@@ -1,7 +1,10 @@
 package de.unisiegen.tpml.core.expressions ;
 
 
+import java.text.MessageFormat ;
 import java.util.ArrayList ;
+import de.unisiegen.tpml.core.Messages ;
+import de.unisiegen.tpml.core.exceptions.CheckDisjunctionException ;
 import de.unisiegen.tpml.core.interfaces.BoundIdentifiers ;
 import de.unisiegen.tpml.core.interfaces.ChildrenExpressions ;
 import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
@@ -49,6 +52,49 @@ public final class CurriedLetRec extends CurriedLet implements
       Expression pExpression1 , Expression pExpression2 )
   {
     super ( pIdentifiers , pTypes , pExpression1 , pExpression2 ) ;
+  }
+
+
+  /**
+   * TODO
+   */
+  @ Override
+  public void checkDisjunction ( )
+  {
+    // Identifier 0
+    ArrayList < Identifier > allIdentifiers = this.expressions [ 0 ]
+        .allIdentifiers ( ) ;
+    allIdentifiers.addAll ( this.expressions [ 1 ].allIdentifiers ( ) ) ;
+    ArrayList < Identifier > negativeIdentifiers = new ArrayList < Identifier > ( ) ;
+    for ( Identifier allId : allIdentifiers )
+    {
+      if ( ( this.identifiers [ 0 ].equals ( allId ) )
+          && ( allId.getIdentifierSet ( ).equals ( Identifier.IdentifierSet.A ) ) )
+      {
+        negativeIdentifiers.add ( allId ) ;
+      }
+    }
+    CheckDisjunctionException.throwException ( this.identifiers [ 0 ] ,
+        negativeIdentifiers , MessageFormat.format ( Messages
+            .getString ( "Parser.3" ) , this.identifiers [ 0 ] ) ) ; //$NON-NLS-1$
+    // Identifier 1-n
+    allIdentifiers = this.expressions [ 0 ].allIdentifiers ( ) ;
+    negativeIdentifiers = new ArrayList < Identifier > ( ) ;
+    for ( int i = 1 ; i < this.identifiers.length ; i ++ )
+    {
+      for ( Identifier allId : allIdentifiers )
+      {
+        if ( ( this.identifiers [ i ].equals ( allId ) )
+            && ( allId.getIdentifierSet ( )
+                .equals ( Identifier.IdentifierSet.A ) ) )
+        {
+          negativeIdentifiers.add ( allId ) ;
+        }
+      }
+      CheckDisjunctionException.throwException ( this.identifiers [ i ] ,
+          negativeIdentifiers , MessageFormat.format ( Messages
+              .getString ( "Parser.3" ) , this.identifiers [ i ] ) ) ; //$NON-NLS-1$
+    }
   }
 
 

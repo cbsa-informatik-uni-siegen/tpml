@@ -1,8 +1,12 @@
 package de.unisiegen.tpml.core.expressions ;
 
 
+import java.text.MessageFormat ;
 import java.util.ArrayList ;
 import java.util.Arrays ;
+import de.unisiegen.tpml.core.Messages ;
+import de.unisiegen.tpml.core.exceptions.CheckDisjunctionException ;
+import de.unisiegen.tpml.core.exceptions.RowSubstitutionException ;
 import de.unisiegen.tpml.core.interfaces.ChildrenExpressions ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
@@ -58,6 +62,46 @@ public final class Row extends Expression implements ChildrenExpressions
       {
         Attribute attribute = ( Attribute ) this.expressions [ i ] ;
         attribute.setParent ( this ) ;
+      }
+      else if ( ( ! ( this.expressions [ i ] instanceof Method ) )
+          && ( ! ( this.expressions [ i ] instanceof CurriedMethod ) ) )
+      {
+        throw new IllegalArgumentException (
+            "One child Expression of the Row is not an Attribute, Method or CurriedMethod." ) ; //$NON-NLS-1$
+      }
+    }
+  }
+
+
+  /**
+   * TODO
+   */
+  public void checkDisjunction ( )
+  {
+    ArrayList < Identifier > negativeIdentifiers = new ArrayList < Identifier > ( ) ;
+    ArrayList < Identifier > allIdentifiers = new ArrayList < Identifier > ( ) ;
+    for ( int i = 0 ; i < this.expressions.length ; i ++ )
+    {
+      if ( this.expressions [ i ] instanceof Attribute )
+      {
+        Attribute attribute = ( Attribute ) this.expressions [ i ] ;
+        allIdentifiers.clear ( ) ;
+        for ( int j = i + 1 ; j < this.expressions.length ; j ++ )
+        {
+          allIdentifiers.addAll ( this.expressions [ j ].allIdentifiers ( ) ) ;
+        }
+        for ( Identifier allId : allIdentifiers )
+        {
+          if ( ( attribute.getId ( ).equals ( allId ) )
+              && ( ! ( allId.getIdentifierSet ( )
+                  .equals ( Identifier.IdentifierSet.A ) ) ) )
+          {
+            negativeIdentifiers.add ( allId ) ;
+          }
+        }
+        CheckDisjunctionException.throwException ( attribute.getId ( ) ,
+            negativeIdentifiers , MessageFormat.format ( Messages
+                .getString ( "Parser.3" ) , attribute.getId ( ) ) ) ; //$NON-NLS-1$
       }
     }
   }
@@ -140,20 +184,14 @@ public final class Row extends Expression implements ChildrenExpressions
         for ( int j = i + 1 ; j < this.expressions.length ; j ++ )
         {
           Expression child = this.expressions [ j ] ;
-          ArrayList < Identifier > boundedE = child.free ( ) ;
-          for ( Identifier freeId : boundedE )
+          ArrayList < Identifier > freeIdentifiers = child.free ( ) ;
+          for ( Identifier freeId : freeIdentifiers )
           {
             if ( attribute.getId ( ).equals ( freeId ) )
             {
               freeId.setBoundTo ( attribute , attribute.getId ( ) ) ;
               boundedId.add ( freeId ) ;
             }
-          }
-          if ( ( child instanceof Attribute )
-              && ( ( ( Attribute ) child ).getId ( ).equals ( attribute
-                  .getId ( ) ) ) )
-          {
-            return boundedId ;
           }
         }
         return boundedId ;
@@ -342,8 +380,9 @@ public final class Row extends Expression implements ChildrenExpressions
     Expression [ ] newExpressions = new Expression [ this.expressions.length ] ;
     for ( int i = 0 ; i < this.expressions.length ; i ++ )
     {
-      newExpressions [ i ] = this.expressions [ i ] ;
+      newExpressions [ i ] = this.expressions [ i ].clone ( ) ;
     }
+    boolean found = false ;
     for ( int i = 0 ; i < newExpressions.length ; i ++ )
     {
       if ( newExpressions [ i ] instanceof Attribute )
@@ -353,9 +392,15 @@ public final class Row extends Expression implements ChildrenExpressions
         {
           newExpressions [ i ] = new Attribute ( attribute.getId ( ) ,
               attribute.getTau ( ) , pExpression ) ;
+          found = true ;
           break ;
         }
       }
+    }
+    if ( ! found )
+    {
+      throw new RowSubstitutionException (
+          "The Identifier is in the domain of the Row" ) ; //$NON-NLS-1$
     }
     return new Row ( newExpressions ) ;
   }

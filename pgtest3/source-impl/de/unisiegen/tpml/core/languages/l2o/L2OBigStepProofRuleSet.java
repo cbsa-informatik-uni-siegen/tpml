@@ -3,6 +3,7 @@ package de.unisiegen.tpml.core.languages.l2o ;
 
 import de.unisiegen.tpml.core.bigstep.BigStepProofContext ;
 import de.unisiegen.tpml.core.bigstep.BigStepProofNode ;
+import de.unisiegen.tpml.core.exceptions.RowSubstitutionException ;
 import de.unisiegen.tpml.core.expressions.Attribute ;
 import de.unisiegen.tpml.core.expressions.CurriedMethod ;
 import de.unisiegen.tpml.core.expressions.Expression ;
@@ -414,7 +415,15 @@ public class L2OBigStepProofRuleSet extends L2BigStepProofRuleSet
       ObjectExpr objectExpr = ( ObjectExpr ) node.getChildAt ( 0 ).getResult ( )
           .getValue ( ) ;
       Row row = ( Row ) objectExpr.getE ( ) ;
-      Expression newRow = row.substitute ( objectExpr.getId ( ) , objectExpr ) ;
+      Expression newRow ;
+      try
+      {
+        newRow = row.substitute ( objectExpr.getId ( ) , objectExpr ) ;
+      }
+      catch ( RowSubstitutionException e )
+      {
+        return ;
+      }
       context.addProofNode ( node , new Send ( newRow , send.getId ( ) ) ) ;
     }
     else if ( ( node.getChildCount ( ) == 2 )

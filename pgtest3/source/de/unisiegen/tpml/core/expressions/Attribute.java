@@ -251,6 +251,11 @@ public final class Attribute extends Expression implements BoundIdentifiers ,
       this.boundedIdentifiers = new ArrayList < ArrayList < Identifier >> ( ) ;
       ArrayList < Identifier > boundedIdList = ( ( Row ) this.parent )
           .getBoundedIdentifiers ( this ) ;
+      // Set the bound Identifier to an Attribute-Identifier
+      for ( Identifier boundId : boundedIdList )
+      {
+        boundId.setIdentifierSet ( Identifier.IdentifierSet.A ) ;
+      }
       this.boundedIdentifiers.add ( boundedIdList ) ;
     }
     return this.boundedIdentifiers ;

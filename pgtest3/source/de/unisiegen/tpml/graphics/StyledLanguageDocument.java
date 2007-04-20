@@ -16,6 +16,7 @@ import javax.swing.text.DefaultStyledDocument ;
 import javax.swing.text.SimpleAttributeSet ;
 import javax.swing.text.StyleConstants ;
 import org.apache.log4j.Logger ;
+import de.unisiegen.tpml.core.exceptions.CheckDisjunctionException ;
 import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.languages.AbstractLanguageScanner ;
 import de.unisiegen.tpml.core.languages.Language ;
@@ -423,9 +424,27 @@ public class StyledLanguageDocument extends DefaultStyledDocument implements
               }
             } ) ;
         // ...and try to parse the token stream
+        // TODO
         try
         {
-          parser.parse ( ) ;
+          Expression expression = parser.parse ( ) ;
+          // expression.checkDisjunction ( expression ) ;
+        }
+        catch ( CheckDisjunctionException e )
+        {
+          int [ ] startOffset = e.startOffset ;
+          int [ ] endOffset = e.endOffset ;
+          for ( int i = 0 ; i < startOffset.length ; i ++ )
+          {
+            SimpleAttributeSet errorSet = new SimpleAttributeSet ( ) ;
+            StyleConstants.setForeground ( errorSet , Color.RED ) ;
+            StyleConstants.setUnderline ( errorSet , true ) ;
+            errorSet.addAttribute ( "exception" , e ) ; //$NON-NLS-1$
+            setCharacterAttributes ( startOffset [ i ] , endOffset [ i ]
+                - startOffset [ i ] , errorSet , false ) ;
+          }
+          exceptions = new LanguageScannerException [ ]
+          { e } ;
         }
         catch ( LanguageParserException e )
         {
@@ -433,7 +452,7 @@ public class StyledLanguageDocument extends DefaultStyledDocument implements
           SimpleAttributeSet errorSet = new SimpleAttributeSet ( ) ;
           StyleConstants.setForeground ( errorSet , Color.RED ) ;
           StyleConstants.setUnderline ( errorSet , true ) ;
-          errorSet.addAttribute ( "exception" , e ) ;
+          errorSet.addAttribute ( "exception" , e ) ; //$NON-NLS-1$
           // check if this is unexpected end of file
           if ( e.getLeft ( ) < 0 && e.getRight ( ) < 0 )
           {
@@ -456,14 +475,14 @@ public class StyledLanguageDocument extends DefaultStyledDocument implements
     catch ( Exception e )
     {
       logger.warn (
-          "Failed to process changes in the styled language document" , e ) ;
+          "Failed to process changes in the styled language document" , e ) ; //$NON-NLS-1$
     }
     // update the exceptions property if necessary
     if ( this.exceptions != exceptions )
     {
       LanguageScannerException [ ] oldExceptions = this.exceptions ;
       this.exceptions = exceptions ;
-      firePropertyChange ( "exceptions" , oldExceptions , this.exceptions ) ;
+      firePropertyChange ( "exceptions" , oldExceptions , this.exceptions ) ; //$NON-NLS-1$
     }
   }
 
@@ -590,7 +609,7 @@ public class StyledLanguageDocument extends DefaultStyledDocument implements
    * named property.
    * 
    * @param propertyName a valid property name.
-   * @return all of the {@link PropertyChangeListeners} associated with the
+   * @return all of the {@link PropertyChangeListener}s associated with the
    *         named property or an empty array if no listeners have been added
    */
   public synchronized PropertyChangeListener [ ] getPropertyChangeListeners (
@@ -620,12 +639,12 @@ public class StyledLanguageDocument extends DefaultStyledDocument implements
   protected void firePropertyChange ( String propertyName , Object oldValue ,
       Object newValue )
   {
-    PropertyChangeSupport changeSupport = this.changeSupport ;
-    if ( changeSupport == null )
+    PropertyChangeSupport tmpChangeSupport = this.changeSupport ;
+    if ( tmpChangeSupport == null )
     {
       return ;
     }
-    changeSupport.firePropertyChange ( propertyName , oldValue , newValue ) ;
+    tmpChangeSupport.firePropertyChange ( propertyName , oldValue , newValue ) ;
   }
 
 
@@ -642,12 +661,12 @@ public class StyledLanguageDocument extends DefaultStyledDocument implements
   protected void firePropertyChange ( String propertyName , boolean oldValue ,
       boolean newValue )
   {
-    PropertyChangeSupport changeSupport = this.changeSupport ;
-    if ( changeSupport == null )
+    PropertyChangeSupport tmpChangeSupport = this.changeSupport ;
+    if ( tmpChangeSupport == null )
     {
       return ;
     }
-    changeSupport.firePropertyChange ( propertyName , oldValue , newValue ) ;
+    tmpChangeSupport.firePropertyChange ( propertyName , oldValue , newValue ) ;
   }
 
 
@@ -664,11 +683,11 @@ public class StyledLanguageDocument extends DefaultStyledDocument implements
   protected void firePropertyChange ( String propertyName , int oldValue ,
       int newValue )
   {
-    PropertyChangeSupport changeSupport = this.changeSupport ;
-    if ( changeSupport == null )
+    PropertyChangeSupport tmpChangeSupport = this.changeSupport ;
+    if ( tmpChangeSupport == null )
     {
       return ;
     }
-    changeSupport.firePropertyChange ( propertyName , oldValue , newValue ) ;
+    tmpChangeSupport.firePropertyChange ( propertyName , oldValue , newValue ) ;
   }
 }

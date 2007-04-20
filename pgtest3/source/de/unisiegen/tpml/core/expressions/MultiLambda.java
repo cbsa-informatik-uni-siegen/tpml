@@ -1,8 +1,11 @@
 package de.unisiegen.tpml.core.expressions ;
 
 
+import java.text.MessageFormat ;
 import java.util.ArrayList ;
 import java.util.Arrays ;
+import de.unisiegen.tpml.core.Messages ;
+import de.unisiegen.tpml.core.exceptions.CheckDisjunctionException ;
 import de.unisiegen.tpml.core.interfaces.BoundIdentifiers ;
 import de.unisiegen.tpml.core.interfaces.ChildrenExpressions ;
 import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
@@ -130,6 +133,32 @@ public final class MultiLambda extends Value implements BoundIdentifiers ,
       // this.expressions [ 0 ] = this.expressions [ 0 ].clone ( ) ;
     }
     this.expressions [ 0 ].setParent ( this ) ;
+    checkDisjunction ( ) ;
+  }
+
+
+  /**
+   * TODO
+   */
+  public void checkDisjunction ( )
+  {
+    ArrayList < Identifier > allIdentifiers = this.expressions [ 0 ]
+        .allIdentifiers ( ) ;
+    ArrayList < Identifier > negativeIdentifiers = new ArrayList < Identifier > ( ) ;
+    for ( Identifier current : this.identifiers )
+    {
+      for ( Identifier allId : allIdentifiers )
+      {
+        if ( ( current.equals ( allId ) )
+            && ( allId.getIdentifierSet ( )
+                .equals ( Identifier.IdentifierSet.A ) ) )
+        {
+          negativeIdentifiers.add ( allId ) ;
+        }
+      }
+      CheckDisjunctionException.throwException ( current , negativeIdentifiers ,
+          MessageFormat.format ( Messages.getString ( "Parser.3" ) , current ) ) ; //$NON-NLS-1$
+    }
   }
 
 

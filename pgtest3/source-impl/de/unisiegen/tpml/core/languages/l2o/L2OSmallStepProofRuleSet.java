@@ -1,6 +1,7 @@
 package de.unisiegen.tpml.core.languages.l2o ;
 
 
+import de.unisiegen.tpml.core.exceptions.RowSubstitutionException ;
 import de.unisiegen.tpml.core.expressions.Attribute ;
 import de.unisiegen.tpml.core.expressions.CurriedMethod ;
 import de.unisiegen.tpml.core.expressions.Expression ;
@@ -215,10 +216,18 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
        * If the child Expression of the Send is an ObjectExpr and the ObjectExpr
        * is a value, we have to perform SEND-UNFOLD.
        */
-      pContext.addProofStep ( getRuleByName ( SEND_UNFOLD ) , pSend ) ;
       ObjectExpr objectExpr = ( ObjectExpr ) pSend.getE ( ) ;
-      Expression newRow = objectExpr.getE ( ).substitute (
-          objectExpr.getId ( ) , objectExpr ) ;
+      Expression newRow ;
+      try
+      {
+        newRow = objectExpr.getE ( ).substitute ( objectExpr.getId ( ) ,
+            objectExpr ) ;
+      }
+      catch ( RowSubstitutionException e )
+      {
+        return pSend ;
+      }
+      pContext.addProofStep ( getRuleByName ( SEND_UNFOLD ) , pSend ) ;
       return new Send ( newRow , pSend.getId ( ) ) ;
     }
     else if ( pSend.getE ( ) instanceof Row )

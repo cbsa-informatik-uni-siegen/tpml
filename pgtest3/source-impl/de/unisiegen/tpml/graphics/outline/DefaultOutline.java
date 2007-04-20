@@ -878,7 +878,7 @@ public final class DefaultOutline implements Outline
     }
     else if ( pExecute.equals ( Outline.Execute.AUTO_CHANGE_EDITOR ) )
     {
-      executeTimerStart ( 250 ) ;
+      executeTimerStart ( 500 ) ;
     }
     else if ( pExecute.equals ( Outline.Execute.AUTO_CHANGE_SMALLSTEP ) )
     {

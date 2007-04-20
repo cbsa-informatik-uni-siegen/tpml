@@ -53,7 +53,7 @@ public final class ObjectExpr extends Expression implements BoundIdentifiers ,
    * 
    * @see #getIdentifiers()
    */
-  private SelfIdentifier [ ] identifiers ;
+  private Identifier [ ] identifiers ;
 
 
   /**
@@ -68,11 +68,11 @@ public final class ObjectExpr extends Expression implements BoundIdentifiers ,
   /**
    * TODO
    * 
-   * @param pSelfIdentifier TODO
+   * @param pIdentifier TODO
    * @param pTau TODO
    * @param pExpression TODO
    */
-  public ObjectExpr ( SelfIdentifier pSelfIdentifier , MonoType pTau ,
+  public ObjectExpr ( Identifier pIdentifier , MonoType pTau ,
       Expression pExpression )
   {
     if ( pExpression == null )
@@ -84,8 +84,8 @@ public final class ObjectExpr extends Expression implements BoundIdentifiers ,
       throw new IllegalArgumentException ( "The Expression has to be a Row" ) ; //$NON-NLS-1$
     }
     // Identifier
-    this.identifiers = new SelfIdentifier [ 1 ] ;
-    this.identifiers [ 0 ] = pSelfIdentifier ;
+    this.identifiers = new Identifier [ 1 ] ;
+    this.identifiers [ 0 ] = pIdentifier ;
     if ( this.identifiers [ 0 ].getParent ( ) != null )
     {
       // this.identifiers [ 0 ] = this.identifiers [ 0 ].clone ( ) ;
@@ -110,6 +110,16 @@ public final class ObjectExpr extends Expression implements BoundIdentifiers ,
       // this.expressions [ 0 ] = this.expressions [ 0 ].clone ( ) ;
     }
     this.expressions [ 0 ].setParent ( this ) ;
+    Row row = ( Row ) this.expressions [ 0 ] ;
+    // Calculate the bound Identifiers
+    for ( Expression child : row.getExpressions ( ) )
+    {
+      if ( child instanceof Attribute )
+      {
+        ( ( Attribute ) child ).getIdentifiersBound ( ) ;
+      }
+    }
+    row.checkDisjunction ( ) ;
   }
 
 
@@ -226,7 +236,7 @@ public final class ObjectExpr extends Expression implements BoundIdentifiers ,
    * 
    * @return TODO
    */
-  public SelfIdentifier getId ( )
+  public Identifier getId ( )
   {
     return this.identifiers [ 0 ] ;
   }
@@ -237,7 +247,7 @@ public final class ObjectExpr extends Expression implements BoundIdentifiers ,
    * 
    * @return TODO
    */
-  public SelfIdentifier [ ] getIdentifiers ( )
+  public Identifier [ ] getIdentifiers ( )
   {
     return this.identifiers ;
   }
@@ -251,7 +261,7 @@ public final class ObjectExpr extends Expression implements BoundIdentifiers ,
    * @return The <code>pIndex</code>th {@link Identifier} of this
    *         {@link Expression}.
    */
-  public SelfIdentifier getIdentifiers ( int pIndex )
+  public Identifier getIdentifiers ( int pIndex )
   {
     return this.identifiers [ pIndex ] ;
   }

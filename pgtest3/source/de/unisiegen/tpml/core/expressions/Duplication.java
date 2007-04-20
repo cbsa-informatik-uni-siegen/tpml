@@ -74,30 +74,14 @@ public final class Duplication extends Expression implements
       throw new IllegalArgumentException (
           "Identifiers and Expressions length must be equal" ) ; //$NON-NLS-1$
     }
-    /*
-     * Delete all Expressions with the same Identifier apart from the last.
-     * Example: "self {< a = 1 ; a = 2 ; a = 3 ; b = 4 >}" -> "self {< a = 3 ;
-     * b = 4 >}"
-     */
-    ArrayList < Identifier > idList = new ArrayList < Identifier > ( ) ;
-    ArrayList < Expression > exprList = new ArrayList < Expression > ( ) ;
-    for ( int i = pIdentifiers.length - 1 ; i >= 0 ; i -- )
-    {
-      if ( ! idList.contains ( pIdentifiers [ i ] ) )
-      {
-        idList.add ( 0 , pIdentifiers [ i ] ) ;
-        exprList.add ( 0 , pExpressions [ i ] ) ;
-      }
-    }
     // Identifier
-    this.identifiers = new Identifier [ idList.size ( ) ] ;
-    this.indicesId = new int [ idList.size ( ) ] ;
-    this.expressions = new Expression [ exprList.size ( ) ] ;
-    this.indicesE = new int [ exprList.size ( ) ] ;
-    for ( int i = 0 ; i < idList.size ( ) ; i ++ )
+    this.identifiers = pIdentifiers ;
+    this.indicesId = new int [ this.identifiers.length ] ;
+    this.expressions = pExpressions ;
+    this.indicesE = new int [ this.expressions.length ] ;
+    for ( int i = 0 ; i < this.expressions.length ; i ++ )
     {
       // Identifier
-      this.identifiers [ i ] = idList.get ( i ) ;
       if ( this.identifiers [ i ].getParent ( ) != null )
       {
         // this.identifiers [ i ] = this.identifiers [ i ].clone ( ) ;
@@ -105,7 +89,6 @@ public final class Duplication extends Expression implements
       this.identifiers [ i ].setParent ( this ) ;
       this.indicesId [ i ] = i + 1 ;
       // Expression
-      this.expressions [ i ] = exprList.get ( i ) ;
       if ( this.expressions [ i ].getParent ( ) != null )
       {
         // this.expressions [ i ] = this.expressions [ i ].clone ( ) ;
@@ -161,7 +144,7 @@ public final class Duplication extends Expression implements
     if ( this.free == null )
     {
       this.free = new ArrayList < Identifier > ( ) ;
-      this.free.add ( new SelfIdentifier ( ) ) ;
+      this.free.add ( new Identifier ( "self" ) ) ; //$NON-NLS-1$
       for ( int i = 0 ; i < this.expressions.length ; i ++ )
       {
         this.free.addAll ( this.expressions [ i ].free ( ) ) ;
@@ -315,7 +298,7 @@ public final class Duplication extends Expression implements
   @ Override
   public Expression substitute ( Identifier pId , Expression pExpression )
   {
-    if ( ( pId.equals ( new SelfIdentifier ( ) ) )
+    if ( ( pId.getName ( ).equals ( "self" ) ) //$NON-NLS-1$
         && ( pExpression instanceof ObjectExpr ) )
     {
       ObjectExpr objectExpr = ( ObjectExpr ) pExpression ;
@@ -338,8 +321,8 @@ public final class Duplication extends Expression implements
           .getTau ( ) , row ) ;
       for ( int i = this.expressions.length - 1 ; i >= 0 ; i -- )
       {
-        result = new Let ( newIdentifiers [ i ] , null , this.expressions [ i ]
-            .substitute ( pId , pExpression ) , result ) ;
+        result = new Let ( newIdentifiers [ i ].clone ( ) , null ,
+            this.expressions [ i ].substitute ( pId , pExpression ) , result ) ;
       }
       return result ;
     }

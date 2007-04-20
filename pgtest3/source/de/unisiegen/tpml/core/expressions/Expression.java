@@ -3,6 +3,7 @@ package de.unisiegen.tpml.core.expressions ;
 
 import java.beans.Introspector ;
 import java.beans.PropertyDescriptor ;
+import java.lang.reflect.InvocationTargetException ;
 import java.util.ArrayList ;
 import java.util.Arrays ;
 import java.util.Enumeration ;
@@ -120,6 +121,12 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
 
 
   /**
+   * Method name for getIdentifiers
+   */
+  private static final String GET_IDENTIFIERS = "getIdentifiers" ; //$NON-NLS-1$
+
+
+  /**
    * Cached <code>TreeSet</code> of the free Identifiers, so the free
    * Identifier do not need to be determined on every invocation of
    * {@link #free()}.
@@ -158,6 +165,59 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
    * TODO
    */
   protected PrettyPrintable parent = null ;
+
+
+  /**
+   * TODO
+   * 
+   * @return TODO
+   */
+  public ArrayList < Identifier > allIdentifiers ( )
+  {
+    ArrayList < Identifier > allIdentifier = new ArrayList < Identifier > ( ) ;
+    for ( Expression child : children ( ) )
+    {
+      allIdentifier.addAll ( child.allIdentifiers ( ) ) ;
+    }
+    for ( Class < Object > currentInterface : this.getClass ( )
+        .getInterfaces ( ) )
+    {
+      if ( ( currentInterface
+          .equals ( de.unisiegen.tpml.core.interfaces.DefaultIdentifiers.class ) )
+          || ( currentInterface
+              .equals ( de.unisiegen.tpml.core.interfaces.BoundIdentifiers.class ) ) )
+      {
+        try
+        {
+          Identifier [ ] identifiers = ( Identifier [ ] ) this.getClass ( )
+              .getMethod ( GET_IDENTIFIERS , new Class [ 0 ] ).invoke ( this ,
+                  new Object [ 0 ] ) ;
+          allIdentifier.addAll ( Arrays.asList ( identifiers ) ) ;
+        }
+        catch ( IllegalArgumentException e )
+        {
+          // Do nothing
+        }
+        catch ( SecurityException e )
+        {
+          // Do nothing
+        }
+        catch ( IllegalAccessException e )
+        {
+          // Do nothing
+        }
+        catch ( InvocationTargetException e )
+        {
+          // Do nothing
+        }
+        catch ( NoSuchMethodException e )
+        {
+          // Do nothing
+        }
+      }
+    }
+    return allIdentifier ;
+  }
 
 
   /**
@@ -286,10 +346,9 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
     if ( this.free == null )
     {
       this.free = new ArrayList < Identifier > ( ) ;
-      ArrayList < Expression > tmp = children ( ) ;
-      for ( int i = 0 ; i < tmp.size ( ) ; i ++ )
+      for ( Expression child : children ( ) )
       {
-        this.free.addAll ( tmp.get ( i ).free ( ) ) ;
+        this.free.addAll ( child.free ( ) ) ;
       }
     }
     return this.free ;

@@ -1,7 +1,10 @@
 package de.unisiegen.tpml.core.expressions ;
 
 
+import java.text.MessageFormat;
 import java.util.ArrayList ;
+import de.unisiegen.tpml.core.Messages;
+import de.unisiegen.tpml.core.exceptions.CheckDisjunctionException ;
 import de.unisiegen.tpml.core.interfaces.BoundIdentifiers ;
 import de.unisiegen.tpml.core.interfaces.ChildrenExpressions ;
 import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
@@ -130,6 +133,29 @@ public class Let extends Expression implements BoundIdentifiers , DefaultTypes ,
       // this.expressions [ 1 ] = this.expressions [ 1 ].clone ( ) ;
     }
     this.expressions [ 1 ].setParent ( this ) ;
+    checkDisjunction ( ) ;
+  }
+
+
+  /**
+   * TODO
+   */
+  public void checkDisjunction ( )
+  {
+    ArrayList < Identifier > allIdentifiers = this.expressions [ 1 ]
+        .allIdentifiers ( ) ;
+    ArrayList < Identifier > negativeIdentifiers = new ArrayList < Identifier > ( ) ;
+    for ( Identifier allId : allIdentifiers )
+    {
+      if ( ( this.identifiers [ 0 ].equals ( allId ) )
+          && ( allId.getIdentifierSet ( ).equals ( Identifier.IdentifierSet.A ) ) )
+      {
+        negativeIdentifiers.add ( allId ) ;
+      }
+    }
+    CheckDisjunctionException.throwException ( this.identifiers [ 0 ] ,
+        negativeIdentifiers ,MessageFormat.format ( Messages
+            .getString ( "Parser.3" ) , this.identifiers [ 0 ] )) ; //$NON-NLS-1$
   }
 
 

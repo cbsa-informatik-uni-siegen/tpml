@@ -1,8 +1,9 @@
 import de.unisiegen.tpml.core.expressions.*;
 import de.unisiegen.tpml.core.types.*;
-import de.unisiegen.tpml.core.languages.LanguageParserException;
+import de.unisiegen.tpml.core.exceptions.CheckDisjunctionException;
 import de.unisiegen.tpml.core.Messages ;
 import java.text.MessageFormat;
+import java.util.ArrayList;
 
 
 /* Helper classes */
@@ -13,22 +14,71 @@ action code
     Identifier id;
     MonoType tau;
     
-    public IdTypePair(Identifier id, MonoType tau) 
+    public IdTypePair(Identifier pId, MonoType pTau) 
     { 
-      this.id = id;
-      this.tau = tau; 
+      this.id = pId;
+      this.tau = pTau; 
     }
   }
   
   private static class IdExprPair 
   {
     Identifier id;
-    Expression e;
+    Expression expression;
     
-    public IdExprPair(Identifier id, Expression e)
+    public IdExprPair(Identifier pId, Expression pExpression)
     { 
-      this.id = id; 
-      this.e = e;
+      this.id = pId; 
+      this.expression = pExpression;
+    }
+  }
+  
+  private static class Duplicated
+  {
+    public static void check(Row pRow)
+    {
+	  ArrayList <Identifier> duplicated = new ArrayList <Identifier> ();
+      for ( int i = 0 ; i < pRow.getExpressions().length ; i ++ )
+      {
+        if ( pRow.getExpressions(i) instanceof Attribute )
+        {
+          Attribute attribute1 = (Attribute) pRow.getExpressions(i) ;
+          for ( int j = i+1 ; j < pRow.getExpressions().length ; j++ )
+          {
+            if ( pRow.getExpressions(j) instanceof Attribute )
+    	    {
+    	      Attribute attribute2 = (Attribute) pRow.getExpressions(j) ;
+    	      if ( attribute1.getId().equals(attribute2.getId()))
+    	      {
+    	        duplicated.add(attribute2.getId());
+    	      }
+    	    }
+    	  }
+    	  CheckDisjunctionException.throwException ( attribute1.getId ( ) ,
+            duplicated, MessageFormat.format ( Messages
+              .getString ( "Parser.3" ) , attribute1.getId() ) ) ;
+        }
+      }
+    }
+    
+    
+    public static void check(Duplication pDuplication)
+    {
+	  ArrayList <Identifier> duplicated = new ArrayList <Identifier> ();
+	  Identifier [] identifier = pDuplication.getIdentifiers() ;
+      for ( int i = 0 ; i < identifier.length ; i ++ )
+      {
+        for ( int j = i+1 ; j < identifier.length ; j++ )
+        {
+          if ( identifier [i].equals(identifier[j]) )
+    	  {
+  	        duplicated.add(identifier[j]);
+    	  }
+    	}
+    	CheckDisjunctionException.throwException ( identifier [i] ,
+          duplicated, MessageFormat.format ( Messages
+            .getString ( "Parser.4" ) , identifier [i] ) ) ;
+      }
     }
   }
 :}
@@ -72,7 +122,7 @@ terminal			FALSE;
 
 /* Object */
 terminal			OBJECT ;
-terminal			SELF ;
+
 terminal			END ;
 terminal			HASHKEY ;
 terminal			ATTRIBUTE ;
@@ -87,10 +137,11 @@ terminal			INT;
 terminal			UNIT;
 
 /* Special tokens */
-terminal Integer	NUMBER;
-terminal Integer	TYPEVARIABLE;
-terminal String		IDENTIFIER;
-terminal			COMMENT;
+terminal Integer		NUMBER;
+terminal Integer		TYPEVARIABLE;
+terminal Identifier		IDENTIFIER;
+terminal Identifier		SELF ;
+terminal				COMMENT;
 
 
 /* Non-Terminals */
@@ -193,9 +244,9 @@ simple_expr			::=	constant:c
 					;
 
 identifier			::= IDENTIFIER:id
-						{: RESULT = new Identifier(id); :}
+						{: RESULT = id; :}
 					|	SELF:s
-						{: RESULT = new SelfIdentifier(); :}
+						{: RESULT = s; :}
 					;
 
 application			::= simple_expr:e simple_expr_list:l
@@ -241,15 +292,15 @@ condition			::= IF expr:e0 THEN expr:e1 ELSE expr:e2
 					;
 
 lambda				::= LAMBDA IDENTIFIER:id DOT expr:e
-						{: RESULT = new Lambda(new Identifier(id), null, e); :}
+						{: RESULT = new Lambda(id, null, e); :}
 					|	LAMBDA IDENTIFIER:id COLON type:tau DOT expr:e
-						{: RESULT = new Lambda(new Identifier(id), tau, e); :}
+						{: RESULT = new Lambda(id, tau, e); :}
 					;
 
 let					::= LET IDENTIFIER:id EQUAL expr:e1 IN expr:e2
-						{: RESULT = new Let(new Identifier(id), null, e1, e2); :}
+						{: RESULT = new Let(id, null, e1, e2); :}
 					|	LET IDENTIFIER:id COLON type:tau EQUAL expr:e1 IN expr:e2
-						{: RESULT = new Let(new Identifier(id), tau, e1, e2); :}
+						{: RESULT = new Let(id, tau, e1, e2); :}
 					;
 
 curried_let			::= LET IDENTIFIER:id id_type_list:itl EQUAL expr:e1 IN expr:e2
@@ -260,7 +311,7 @@ curried_let			::= LET IDENTIFIER:id id_type_list:itl EQUAL expr:e1 IN expr:e2
 						     identifiers[n + 1] = itl[n].id;
 						     types[n + 1] = itl[n].tau;
 						   }
-						   identifiers[0] = new Identifier(id);
+						   identifiers[0] = id;
 						   RESULT = new CurriedLet(identifiers, types, e1, e2); :}
 					|	LET IDENTIFIER:id id_type_list:itl COLON type:tau EQUAL expr:e1 IN expr:e2
 						{: Identifier[] identifiers = new Identifier[itl.length + 1];
@@ -270,21 +321,21 @@ curried_let			::= LET IDENTIFIER:id id_type_list:itl EQUAL expr:e1 IN expr:e2
 						     identifiers[n + 1] = itl[n].id;
 						     types[n + 1] = itl[n].tau;
 						   }
-						   identifiers[0] = new Identifier(id);
+						   identifiers[0] = id;
 						   types[0] = tau;
 						   RESULT = new CurriedLet(identifiers, types, e1, e2); :}
 					;
 
 recursion			::= REC IDENTIFIER:id DOT expr:e
-						{: RESULT = new Recursion(new Identifier(id), null, e); :}
+						{: RESULT = new Recursion(id, null, e); :}
 					|	REC IDENTIFIER:id COLON type:tau DOT expr:e
-						{: RESULT = new Recursion(new Identifier(id), tau, e); :}
+						{: RESULT = new Recursion(id, tau, e); :}
 					;
 
 let_rec				::= LET REC IDENTIFIER:id EQUAL expr:e1 IN expr:e2
-						{: RESULT = new LetRec(new Identifier(id), null, e1, e2); :}
+						{: RESULT = new LetRec(id, null, e1, e2); :}
 					|	LET REC IDENTIFIER:id COLON type:tau EQUAL expr:e1 IN expr:e2
-						{: RESULT = new LetRec(new Identifier(id), tau, e1, e2); :}
+						{: RESULT = new LetRec(id, tau, e1, e2); :}
 					;
 
 curried_let_rec		::= LET REC IDENTIFIER:id id_type_list:itl EQUAL expr:e1 IN expr:e2
@@ -295,7 +346,7 @@ curried_let_rec		::= LET REC IDENTIFIER:id id_type_list:itl EQUAL expr:e1 IN exp
 						     identifiers[n + 1] = itl[n].id;
 						     types[n + 1] = itl[n].tau;
 						   }
-						   identifiers[0] = new Identifier(id);
+						   identifiers[0] = id;
 						   RESULT = new CurriedLetRec(identifiers, types, e1, e2); :}
 					|	LET REC IDENTIFIER:id id_type_list:itl COLON type:tau EQUAL expr:e1 IN expr:e2
 						{: Identifier[] identifiers = new Identifier[itl.length + 1];
@@ -305,21 +356,23 @@ curried_let_rec		::= LET REC IDENTIFIER:id id_type_list:itl EQUAL expr:e1 IN exp
 						     identifiers[n + 1] = itl[n].id;
 						     types[n + 1] = itl[n].tau;
 						   }
-						   identifiers[0] = new Identifier(id);
+						   identifiers[0] = id;
 						   types[0] = tau;
 						   RESULT = new CurriedLetRec(identifiers, types, e1, e2); :}
 					;
 
 object_expr			::= OBJECT LPAREN SELF:l RPAREN END
 						{: Expression [] e = new Expression [0];
-						   RESULT = new ObjectExpr (new SelfIdentifier(),null, new Row (e)); :}
+						   RESULT = new ObjectExpr (l, null, new Row (e)); :}
 					|   OBJECT LPAREN SELF:l COLON type:tau RPAREN END
 						{: Expression [] e = new Expression [0];
-						   RESULT = new ObjectExpr (new SelfIdentifier(),tau, new Row (e)); :}
+						   RESULT = new ObjectExpr (l, tau, new Row (e)); :}
 					|	OBJECT LPAREN SELF:l RPAREN row:r END
-						{: RESULT = new ObjectExpr (new SelfIdentifier(),null, r); :}
+						{: Duplicated.check(r);
+						   RESULT = new ObjectExpr (l, null, r); :}
 					|	OBJECT LPAREN SELF:l COLON type:tau RPAREN row:r END
-						{: RESULT = new ObjectExpr (new SelfIdentifier(),tau, r); :}
+						{: Duplicated.check(r);
+						   RESULT = new ObjectExpr (l, tau, r); :}
 					;
 					
 duplication			::= DUPLBEGIN id_expr_list:iel DUPLEND
@@ -327,10 +380,13 @@ duplication			::= DUPLBEGIN id_expr_list:iel DUPLEND
 						   Identifier [] tmpI = new Identifier [iel.length];
 						   for ( int i = 0 ; i < iel.length ; i++ )
 						   {
-						     tmpE [i] = iel [i].e;
+						     tmpE [i] = iel [i].expression;
 						     tmpI [i] = iel [i].id;
+						     tmpI [i].setIdentifierSet (Identifier.IdentifierSet.A );
 						   }
-						   RESULT = new Duplication ( tmpI , tmpE ); :}
+						   Duplication d = new Duplication ( tmpI , tmpE );
+						   Duplicated.check(d);
+						   RESULT = d; :}
 					|	DUPLBEGIN DUPLEND
 						{: Expression [] tmpE = new Expression [0];
 						   Identifier [] tmpI = new Identifier [0];
@@ -338,7 +394,8 @@ duplication			::= DUPLBEGIN id_expr_list:iel DUPLEND
 					;
 
 send				::= simple_expr:e HASHKEY IDENTIFIER:id
-						{: RESULT = new Send ( e , new Identifier(id) ) ; :}
+						{: id.setIdentifierSet (Identifier.IdentifierSet.M );
+						   RESULT = new Send ( e, id ) ; :}
 					;
 					
 row					::= attribute:a
@@ -347,21 +404,7 @@ row					::= attribute:a
 						   RESULT = new Row (e); :}
 					|	attribute:a row:r
 						{: Expression [ ] e = new Expression [ r.getExpressions().length + 1 ] ;
-    					   for ( int i = 0 ; i < r.getExpressions().length ; i ++ )
-    					   {
-    					     if ( r.getExpressions(i) instanceof Attribute )
-    					     {
-    					       Attribute attribute = (Attribute) r.getExpressions(i) ;
-    					       if ( attribute.getId().equals(a.getId()))
-    					       {
-    					         throw new LanguageParserException ( 
-    					         MessageFormat.format (
-                          Messages.getString ( "Parser.2" ) , attribute.getId ( ) ) , 0 , 0 ) ; 
-    					       }
-    					     }
-    					   }
-    					   
-    					   System.arraycopy ( r.getExpressions() , 0 , e , 1 , r.getExpressions().length ) ;
+						   System.arraycopy ( r.getExpressions() , 0 , e , 1 , r.getExpressions().length ) ;
     					   e [0] = a ;
 						   RESULT = new Row (e); :}
 					|	method:m
@@ -385,15 +428,19 @@ row					::= attribute:a
 					;
 
 attribute			::=	ATTRIBUTE IDENTIFIER:id EQUAL expr:e SEMI
-						{: RESULT = new Attribute (new Identifier(id) , null , e ); :}
+						{: id.setIdentifierSet (Identifier.IdentifierSet.A );
+						   RESULT = new Attribute (id, null , e ); :}
 					|	ATTRIBUTE IDENTIFIER:id COLON type:tau EQUAL expr:e SEMI
-						{: RESULT = new Attribute (new Identifier(id) , tau , e ); :}
+						{: id.setIdentifierSet (Identifier.IdentifierSet.A );
+						   RESULT = new Attribute (id, tau , e ); :}
 					;
 
 method				::=	METHOD IDENTIFIER:id EQUAL expr:e SEMI
-						{: RESULT = new Method (new Identifier(id) , null, e ); :}
+						{: id.setIdentifierSet (Identifier.IdentifierSet.M );
+						   RESULT = new Method (id, null, e ); :}
 					|	METHOD IDENTIFIER:id COLON type:tau EQUAL expr:e SEMI
-						{: RESULT = new Method (new Identifier(id) ,tau, e ); :}
+						{: id.setIdentifierSet (Identifier.IdentifierSet.M );
+						   RESULT = new Method (id,tau, e ); :}
 					;
 
 curried_method		::=	METHOD IDENTIFIER:id id_type_list:itl EQUAL expr:e SEMI
@@ -404,7 +451,8 @@ curried_method		::=	METHOD IDENTIFIER:id id_type_list:itl EQUAL expr:e SEMI
 						     identifiers[n + 1] = itl[n].id;
 						     types[n + 1] = itl[n].tau;
 						   }
-						   identifiers [0] = new Identifier(id) ;
+						   id.setIdentifierSet (Identifier.IdentifierSet.M );
+						   identifiers [0] = id ;
 						   types [0] = null ;
 						   RESULT = new CurriedMethod ( identifiers , types , e ); :}
 					|	METHOD IDENTIFIER:id id_type_list:itl COLON type:tau EQUAL expr:e SEMI
@@ -415,19 +463,20 @@ curried_method		::=	METHOD IDENTIFIER:id id_type_list:itl EQUAL expr:e SEMI
 						     identifiers[n + 1] = itl[n].id;
 						     types[n + 1] = itl[n].tau;
 						   }
-						   identifiers [0] = new Identifier(id) ;
+						   id.setIdentifierSet (Identifier.IdentifierSet.M );
+						   identifiers [0] = id ;
 						   types [0] = tau ;
 						   RESULT = new CurriedMethod ( identifiers , types , e ); :}
 					;	   
 
 id_expr_list		::= IDENTIFIER:id EQUAL expr:e
 						{: IdExprPair [] list = new IdExprPair [1];
-						   list [0] = new IdExprPair (new Identifier(id), e);
+						   list [0] = new IdExprPair (id, e);
 						   RESULT = list; :}
 					|	IDENTIFIER:id EQUAL expr:e SEMI id_expr_list:iel
 						{: IdExprPair [] list = new IdExprPair [iel.length+1];
 						   System.arraycopy(iel, 0, list, 1, iel.length);
-						   list [0] = new IdExprPair (new Identifier(id), e);
+						   list [0] = new IdExprPair (id, e);
 						   RESULT = list; :}
 					;
 
@@ -467,9 +516,9 @@ id_type_list		::= id_type_list:l id_type_pair:itp
 					;
 
 id_type_pair		::= LPAREN IDENTIFIER:id COLON type:tau RPAREN
-						{: RESULT = new IdTypePair(new Identifier(id), tau); :}
+						{: RESULT = new IdTypePair(id, tau); :}
 					|	IDENTIFIER:id
-						{: RESULT = new IdTypePair(new Identifier(id), null); :}
+						{: RESULT = new IdTypePair(id, null); :}
 					;
 				
 
@@ -496,13 +545,13 @@ object_type			::= LESS row_type:r GREATER
 
 row_type			::= IDENTIFIER:id COLON type:tau SEMI
 						{: Identifier [] m = new Identifier [1];
-						   m [0] = new Identifier(id);
+						   m [0] = id;
 						   MonoType [] types = new MonoType [1];
 						   types [0] = tau;
 						   RESULT = new RowType (m,types) ; :}
 					|	IDENTIFIER:id COLON type:tau SEMI row_type:r
 						{: Identifier [] m = new Identifier [r.getIdentifiers().length + 1];
-						   m [0] = new Identifier(id);
+						   m [0] = id;
 						   System.arraycopy ( r.getIdentifiers() , 0 , m , 1 , r.getIdentifiers().length );
 						   MonoType [] types = new MonoType [r.getTypes().length + 1];
 						   types [0] = tau;

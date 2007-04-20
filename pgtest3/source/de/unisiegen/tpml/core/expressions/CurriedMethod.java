@@ -1,8 +1,11 @@
 package de.unisiegen.tpml.core.expressions ;
 
 
+import java.text.MessageFormat;
 import java.util.ArrayList ;
 import java.util.Arrays ;
+import de.unisiegen.tpml.core.Messages;
+import de.unisiegen.tpml.core.exceptions.CheckDisjunctionException ;
 import de.unisiegen.tpml.core.interfaces.BoundIdentifiers ;
 import de.unisiegen.tpml.core.interfaces.ChildrenExpressions ;
 import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
@@ -140,6 +143,34 @@ public final class CurriedMethod extends Expression implements
       // this.expressions [ 0 ] = this.expressions [ 0 ].clone ( ) ;
     }
     this.expressions [ 0 ].setParent ( this ) ;
+    checkDisjunction ( ) ;
+  }
+
+
+  /**
+   * TODO
+   */
+  public void checkDisjunction ( )
+  {
+    // Identifier 0
+    ArrayList < Identifier > allIdentifiers = this.expressions [ 0 ]
+        .allIdentifiers ( ) ;
+    ArrayList < Identifier > negativeIdentifiers = new ArrayList < Identifier > ( ) ;
+    for ( int i = 1 ; i < this.identifiers.length ; i ++ )
+    {
+      for ( Identifier allId : allIdentifiers )
+      {
+        if ( ( this.identifiers [ i ].equals ( allId ) )
+            && ( allId.getIdentifierSet ( )
+                .equals ( Identifier.IdentifierSet.A ) ) )
+        {
+          negativeIdentifiers.add ( allId ) ;
+        }
+      }
+      CheckDisjunctionException.throwException ( this.identifiers [ i ] ,
+          negativeIdentifiers,MessageFormat.format ( Messages
+              .getString ( "Parser.3" ) , this.identifiers [ i ] ) ) ; //$NON-NLS-1$
+    }
   }
 
 

@@ -15,10 +15,36 @@ import de.unisiegen.tpml.core.util.Debug ;
  * @author Benedikt Meurer
  * @author Christian Fehler
  * @version $Rev:1056 $
- * @see de.unisiegen.tpml.core.expressions.Value
+ * @see Value
  */
-public class Identifier extends Value
+public final class Identifier extends Value
 {
+  /**
+   * TODO
+   * 
+   * @author Christian Fehler
+   */
+  public enum IdentifierSet
+  {
+    /**
+     * TODO
+     */
+    V ,
+    /**
+     * TODO
+     */
+    A ,
+    /**
+     * TODO
+     */
+    M ,
+    /**
+     * TODO
+     */
+    S
+  }
+
+
   /**
    * The {@link Expression} in which this {@link Identifier} is bounded.
    * 
@@ -42,14 +68,33 @@ public class Identifier extends Value
    * 
    * @see #getName()
    */
-  protected String name ;
+  private String name ;
 
 
   /**
    * TODO
    */
-  private String ran = new DecimalFormat ( "000" ).format ( ( int ) ( Math //$NON-NLS-1$
+  private int startOffset ;
+
+
+  /**
+   * TODO
+   */
+  private int endOffset ;
+
+
+  /**
+   * TODO
+   */
+  @ SuppressWarnings ( "unused" )
+  private String identity = new DecimalFormat ( "000" ).format ( ( int ) ( Math //$NON-NLS-1$
       .random ( ) * 1000 ) ) ;
+
+
+  /**
+   * TODO
+   */
+  private IdentifierSet identifierSet ;
 
 
   /**
@@ -62,6 +107,45 @@ public class Identifier extends Value
     this.name = pName ;
     this.boundToExpression = null ;
     this.boundToIdentifier = null ;
+    this.startOffset = - 1 ;
+    this.endOffset = - 1 ;
+    if ( pName.equals ( "self" ) ) //$NON-NLS-1$
+    {
+      this.identifierSet = IdentifierSet.S ;
+    }
+    else
+    {
+      this.identifierSet = IdentifierSet.V ;
+    }
+  }
+
+
+  /**
+   * Allocates a new {@link Identifier} with the given <code>name</code>.
+   * 
+   * @param pName the name of the identifier.
+   * @param pStartOffset TODO
+   * @param pEndOffset TODO
+   */
+  public Identifier ( String pName , int pStartOffset , int pEndOffset )
+  {
+    this ( pName ) ;
+    this.startOffset = pStartOffset ;
+    this.endOffset = pEndOffset ;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @return TODO
+   */
+  @ Override
+  public ArrayList < Identifier > allIdentifiers ( )
+  {
+    ArrayList < Identifier > allIdentifier = new ArrayList < Identifier > ( ) ;
+    allIdentifier.add ( this ) ;
+    return allIdentifier ;
   }
 
 
@@ -151,6 +235,30 @@ public class Identifier extends Value
 
 
   /**
+   * Returns the endOffset.
+   * 
+   * @return The endOffset.
+   * @see #endOffset
+   */
+  public int getEndOffset ( )
+  {
+    return this.endOffset ;
+  }
+
+
+  /**
+   * Returns the identifierSet.
+   * 
+   * @return The identifierSet.
+   * @see #identifierSet
+   */
+  public IdentifierSet getIdentifierSet ( )
+  {
+    return this.identifierSet ;
+  }
+
+
+  /**
    * Returns the name of the identifier.
    * 
    * @return the name of the identifier.
@@ -158,6 +266,18 @@ public class Identifier extends Value
   public String getName ( )
   {
     return this.name ;
+  }
+
+
+  /**
+   * Returns the startOffset.
+   * 
+   * @return The startOffset.
+   * @see #startOffset
+   */
+  public int getStartOffset ( )
+  {
+    return this.startOffset ;
   }
 
 
@@ -209,6 +329,17 @@ public class Identifier extends Value
 
 
   /**
+   * TODO
+   * 
+   * @param pIdentifierSet The identifierSet to set
+   */
+  public void setIdentifierSet ( IdentifierSet pIdentifierSet )
+  {
+    this.identifierSet = pIdentifierSet ;
+  }
+
+
+  /**
    * Returns <code>e</code> if <code>id</code> equals the name of the
    * identifier. Else the identifier itself is returned.
    * 
@@ -245,12 +376,13 @@ public class Identifier extends Value
       this.prettyStringBuilder = factory.newBuilder ( this , PRIO_IDENTIFIER ) ;
       if ( Debug.isUserName ( Debug.CHRISTIAN ) )
       {
-        this.prettyStringBuilder.addText ( "{" ) ; //$NON-NLS-1$ 
+        this.prettyStringBuilder.addText ( "{" ) ;
       }
       this.prettyStringBuilder.addIdentifier ( this.name ) ;
       if ( Debug.isUserName ( Debug.CHRISTIAN ) )
       {
-        this.prettyStringBuilder.addText ( ", " + this.ran + "}" ) ; //$NON-NLS-1$ //$NON-NLS-2$
+        this.prettyStringBuilder.addText ( "|" + this.identity + "|"
+            + this.identifierSet + "}" ) ;
       }
     }
     return this.prettyStringBuilder ;

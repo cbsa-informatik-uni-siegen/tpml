@@ -6,6 +6,8 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStyle;
 import de.unisiegen.tpml.core.languages.AbstractLanguageScanner;
 import de.unisiegen.tpml.core.languages.LanguageScannerException;
 import de.unisiegen.tpml.core.languages.LanguageSymbol;
+import de.unisiegen.tpml.core.expressions.*;
+
 
 /**
  * This is the lexer class for L2O.
@@ -133,7 +135,6 @@ LetterGreek		= [\u03b1-\u03c1\u03c3-\u03c9]
 	"else"				{ return symbol("ELSE", ELSE); }
 	
 	"object"			{ return symbol("OBJECT", OBJECT); }
-	"self"				{ return symbol("SELF", SELF); }
 	"end"				{ return symbol("END", END); }
 	"#"					{ return symbol("HASHKEY", HASHKEY); }
 	"val"				{ return symbol("ATTRIBUTE", ATTRIBUTE); }
@@ -170,8 +171,15 @@ LetterGreek		= [\u03b1-\u03c1\u03c3-\u03c9]
 								throw new LanguageScannerException(yychar, yychar + yylength(), "Integer constant \"" + yytext() + "\" too large", e);
 							}
 						}
-	{Identifier}		{ return symbol("IDENTIFIER", IDENTIFIER, yytext()); }
-	
+
+	"self"				{ return symbol("SELF", SELF, 
+							new Identifier
+							(yytext(), yychar ,yychar + yylength() ) ); }
+							
+	{Identifier}		{ return symbol("IDENTIFIER", IDENTIFIER, 
+							new Identifier
+							(yytext(), yychar ,yychar + yylength() ) ); }
+
 	// comments
 	"(*"				{ yycommentChar = yychar; yybegin(YYCOMMENT); }
 	
