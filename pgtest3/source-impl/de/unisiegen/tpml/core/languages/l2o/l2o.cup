@@ -57,7 +57,7 @@ action code
     	  }
     	  CheckDisjunctionException.throwException ( attribute1.getId ( ) ,
             duplicated, MessageFormat.format ( Messages
-              .getString ( "Parser.3" ) , attribute1.getId() ) ) ;
+              .getString ( "Parser.2" ) , attribute1.getId() ) ) ;
         }
       }
     }
