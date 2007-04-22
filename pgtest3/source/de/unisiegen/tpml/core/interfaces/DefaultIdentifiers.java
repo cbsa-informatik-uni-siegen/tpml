@@ -3,7 +3,6 @@ package de.unisiegen.tpml.core.interfaces ;
 
 import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.expressions.Identifier ;
-import de.unisiegen.tpml.core.expressions.Method ;
 
 
 /**
@@ -14,18 +13,6 @@ import de.unisiegen.tpml.core.expressions.Method ;
  */
 public interface DefaultIdentifiers
 {
-  /**
-   * Prefix of {@link Identifier}s after the first.
-   */
-  public static final String PREFIX_ID = "id" ; //$NON-NLS-1$
-
-
-  /**
-   * Prefix of the first {@link Identifier} of {@link Method}s.
-   */
-  public static final String PREFIX_M = "m" ; //$NON-NLS-1$
-
-
   /**
    * Returns the {@link Identifier}s of this {@link Expression}.
    * 
@@ -51,12 +38,4 @@ public interface DefaultIdentifiers
    * @return TODO
    */
   public int [ ] getIdentifiersIndex ( ) ;
-
-
-  /**
-   * TODO
-   * 
-   * @return TODO
-   */
-  public String [ ] getIdentifiersPrefix ( ) ;
 }

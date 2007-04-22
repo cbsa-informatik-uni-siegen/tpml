@@ -334,19 +334,6 @@ public final class Recursion extends Expression implements BoundIdentifiers ,
 
 
   /**
-   * TODO
-   * 
-   * @return TODO
-   */
-  public String [ ] getIdentifiersPrefix ( )
-  {
-    String [ ] result = new String [ 1 ] ;
-    result [ 0 ] = PREFIX_ID ;
-    return result ;
-  }
-
-
-  /**
    * Returns the type for the identifier or <code>null</code> if type
    * inference should be used.
    * 
@@ -393,19 +380,6 @@ public final class Recursion extends Expression implements BoundIdentifiers ,
   public int [ ] getTypesIndex ( )
   {
     return INDICES_TYPE ;
-  }
-
-
-  /**
-   * TODO
-   * 
-   * @return TODO
-   */
-  public String [ ] getTypesPrefix ( )
-  {
-    String [ ] result = new String [ 1 ] ;
-    result [ 0 ] = PREFIX_TAU ;
-    return result ;
   }
 
 

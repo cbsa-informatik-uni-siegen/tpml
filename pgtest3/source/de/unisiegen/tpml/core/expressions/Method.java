@@ -253,19 +253,6 @@ public class Method extends Expression implements DefaultIdentifiers ,
    * 
    * @return TODO
    */
-  public String [ ] getIdentifiersPrefix ( )
-  {
-    String [ ] result = new String [ 1 ] ;
-    result [ 0 ] = PREFIX_M ;
-    return result ;
-  }
-
-
-  /**
-   * TODO
-   * 
-   * @return TODO
-   */
   public MonoType getTau ( )
   {
     return this.types [ 0 ] ;
@@ -307,19 +294,6 @@ public class Method extends Expression implements DefaultIdentifiers ,
   public int [ ] getTypesIndex ( )
   {
     return INDICES_TYPE ;
-  }
-
-
-  /**
-   * TODO
-   * 
-   * @return TODO
-   */
-  public String [ ] getTypesPrefix ( )
-  {
-    String [ ] result = new String [ 1 ] ;
-    result [ 0 ] = PREFIX_TAU ;
-    return result ;
   }
 
 

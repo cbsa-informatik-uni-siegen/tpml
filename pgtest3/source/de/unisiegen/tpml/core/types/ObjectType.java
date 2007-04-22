@@ -160,19 +160,6 @@ public final class ObjectType extends MonoType implements DefaultTypes
   /**
    * TODO
    * 
-   * @return TODO
-   */
-  public String [ ] getTypesPrefix ( )
-  {
-    String [ ] result = new String [ 1 ] ;
-    result [ 0 ] = PREFIX_PHI ;
-    return result ;
-  }
-
-
-  /**
-   * TODO
-   * 
    * @param pTypeSubstitution TODO
    * @return TODO
    * @see MonoType#substitute(TypeSubstitution)

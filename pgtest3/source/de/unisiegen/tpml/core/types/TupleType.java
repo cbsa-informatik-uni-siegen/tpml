@@ -169,22 +169,6 @@ public final class TupleType extends MonoType implements DefaultTypes
 
 
   /**
-   * TODO
-   * 
-   * @return TODO
-   */
-  public String [ ] getTypesPrefix ( )
-  {
-    String [ ] result = new String [ this.types.length ] ;
-    for ( int i = 0 ; i < this.types.length ; i ++ )
-    {
-      result [ i ] = PREFIX_TAU ;
-    }
-    return result ;
-  }
-
-
-  /**
    * {@inheritDoc}
    * 
    * @see Object#hashCode()

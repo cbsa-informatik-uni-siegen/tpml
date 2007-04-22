@@ -245,22 +245,6 @@ public final class Duplication extends Expression implements
    * TODO
    * 
    * @return TODO
-   */
-  public String [ ] getIdentifiersPrefix ( )
-  {
-    String [ ] result = new String [ this.identifiers.length ] ;
-    for ( int i = 0 ; i < this.identifiers.length ; i ++ )
-    {
-      result [ i ] = PREFIX_ID ;
-    }
-    return result ;
-  }
-
-
-  /**
-   * TODO
-   * 
-   * @return TODO
    * @see SortedChildren#getSortedChildren()
    */
   public PrettyPrintable [ ] getSortedChildren ( )

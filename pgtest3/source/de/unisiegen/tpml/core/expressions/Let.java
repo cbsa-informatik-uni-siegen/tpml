@@ -360,19 +360,6 @@ public class Let extends Expression implements BoundIdentifiers , DefaultTypes ,
 
 
   /**
-   * TODO
-   * 
-   * @return TODO
-   */
-  public String [ ] getIdentifiersPrefix ( )
-  {
-    String [ ] result = new String [ 1 ] ;
-    result [ 0 ] = PREFIX_ID ;
-    return result ;
-  }
-
-
-  /**
    * Returns the type for the identifier (and thereby the type for
    * <code>e1</code>) or <code>null</code> if no type was specified by the
    * user or the translation to core syntax.
@@ -420,19 +407,6 @@ public class Let extends Expression implements BoundIdentifiers , DefaultTypes ,
   public int [ ] getTypesIndex ( )
   {
     return INDICES_TYPE ;
-  }
-
-
-  /**
-   * TODO
-   * 
-   * @return TODO
-   */
-  public String [ ] getTypesPrefix ( )
-  {
-    String [ ] result = new String [ 1 ] ;
-    result [ 0 ] = PREFIX_TAU ;
-    return result ;
   }
 
 

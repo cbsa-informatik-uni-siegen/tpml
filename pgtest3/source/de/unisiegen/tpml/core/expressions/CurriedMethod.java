@@ -384,23 +384,6 @@ public final class CurriedMethod extends Expression implements
    * TODO
    * 
    * @return TODO
-   */
-  public String [ ] getIdentifiersPrefix ( )
-  {
-    String [ ] result = new String [ this.identifiers.length ] ;
-    result [ 0 ] = PREFIX_M ;
-    for ( int i = 1 ; i < this.identifiers.length ; i ++ )
-    {
-      result [ i ] = PREFIX_ID ;
-    }
-    return result ;
-  }
-
-
-  /**
-   * TODO
-   * 
-   * @return TODO
    * @see #types
    * @see #getTypes(int)
    */
@@ -432,22 +415,6 @@ public final class CurriedMethod extends Expression implements
   public int [ ] getTypesIndex ( )
   {
     return this.indicesType ;
-  }
-
-
-  /**
-   * TODO
-   * 
-   * @return TODO
-   */
-  public String [ ] getTypesPrefix ( )
-  {
-    String [ ] result = new String [ this.identifiers.length ] ;
-    for ( int i = 0 ; i < this.identifiers.length ; i ++ )
-    {
-      result [ i ] = PREFIX_TAU ;
-    }
-    return result ;
   }
 
 

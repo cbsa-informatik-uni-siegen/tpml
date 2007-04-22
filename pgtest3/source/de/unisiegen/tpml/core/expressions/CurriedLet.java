@@ -467,22 +467,6 @@ public class CurriedLet extends Expression implements BoundIdentifiers ,
 
 
   /**
-   * TODO
-   * 
-   * @return TODO
-   */
-  public String [ ] getIdentifiersPrefix ( )
-  {
-    String [ ] result = new String [ this.identifiers.length ] ;
-    for ( int i = 0 ; i < this.identifiers.length ; i ++ )
-    {
-      result [ i ] = PREFIX_ID ;
-    }
-    return result ;
-  }
-
-
-  /**
    * Returns the types for the <code>identifiers</code>.
    * <code>let id (id1:tau1)...(idn:taun): tau = e1 in e2</code> is translated
    * to <code>let id = lambda id1:tau1...lambda idn:taun.e1 in e2</code> which
@@ -526,22 +510,6 @@ public class CurriedLet extends Expression implements BoundIdentifiers ,
   public int [ ] getTypesIndex ( )
   {
     return this.indicesType ;
-  }
-
-
-  /**
-   * TODO
-   * 
-   * @return TODO
-   */
-  public String [ ] getTypesPrefix ( )
-  {
-    String [ ] result = new String [ this.identifiers.length ] ;
-    for ( int i = 0 ; i < this.identifiers.length ; i ++ )
-    {
-      result [ i ] = PREFIX_TAU ;
-    }
-    return result ;
   }
 
 

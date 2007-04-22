@@ -522,11 +522,10 @@ public final class OutlineNode extends DefaultMutableTreeNode
    * @param pExpression The {@link Expression} repressented by this node.
    * @param pOutlineUnbound The {@link OutlineUnbound} which repressents the
    *          free {@link Identifier}s in all nodes.
-   * @param pPrefix The prefix of the {@link Expression}.
    * @param pIndex The child index.
    */
   public OutlineNode ( Expression pExpression , OutlineUnbound pOutlineUnbound ,
-      String pPrefix , int pIndex )
+      int pIndex )
   {
     this ( ) ;
     this.expression = pExpression ;
@@ -536,7 +535,7 @@ public final class OutlineNode extends DefaultMutableTreeNode
     this.outlineBreak = new OutlineBreak ( this.expression ) ;
     this.currentOutlineBreak = new OutlineBreak ( ) ;
     this.isExpression = true ;
-    this.childIndex = pPrefix
+    this.childIndex = pExpression.getPrefix ( )
         + ( ( pIndex <= OutlineNode.NO_CHILD_INDEX ) ? BETWEEN1
             : SMALL_SUB_BEGIN + pIndex + SMALL_SUB_END + BETWEEN1 ) ;
   }
@@ -548,10 +547,9 @@ public final class OutlineNode extends DefaultMutableTreeNode
    * 
    * @param pIdentifier The {@link Identifier} repressented by this node.
    * @param pOutlineBinding The bindings in this node.
-   * @param pPrefix The prefix of the {@link Identifier}.
    * @param pIndex The child index.
    */
-  public OutlineNode ( Identifier pIdentifier , String pPrefix , int pIndex ,
+  public OutlineNode ( Identifier pIdentifier , int pIndex ,
       OutlineBinding pOutlineBinding )
   {
     this ( ) ;
@@ -562,7 +560,7 @@ public final class OutlineNode extends DefaultMutableTreeNode
     this.outlineBreak = new OutlineBreak ( this.expression ) ;
     this.currentOutlineBreak = new OutlineBreak ( ) ;
     this.isIdentifier = true ;
-    this.childIndex = pPrefix
+    this.childIndex = pIdentifier.getPrefix ( )
         + ( ( pIndex <= OutlineNode.NO_CHILD_INDEX ) ? BETWEEN1
             : SMALL_SUB_BEGIN + pIndex + SMALL_SUB_END + BETWEEN1 ) ;
   }
@@ -573,10 +571,9 @@ public final class OutlineNode extends DefaultMutableTreeNode
    * used for {@link Type}s.
    * 
    * @param pType The {@link Type} repressented by this node.
-   * @param pPrefix The prefix of the {@link Identifier}.
    * @param pChildIndex The child index.
    */
-  public OutlineNode ( Type pType , String pPrefix , int pChildIndex )
+  public OutlineNode ( Type pType , int pChildIndex )
   {
     this ( ) ;
     this.type = pType ;
@@ -585,7 +582,7 @@ public final class OutlineNode extends DefaultMutableTreeNode
     this.outlineBreak = new OutlineBreak ( this.type ) ;
     this.currentOutlineBreak = new OutlineBreak ( ) ;
     this.isType = true ;
-    this.childIndex = pPrefix
+    this.childIndex = pType.getPrefix ( )
         + ( ( pChildIndex <= OutlineNode.NO_CHILD_INDEX ) ? BETWEEN1
             : SMALL_SUB_BEGIN + pChildIndex + SMALL_SUB_END + BETWEEN1 ) ;
   }
@@ -685,8 +682,7 @@ public final class OutlineNode extends DefaultMutableTreeNode
    */
   private final int charIsBindingIdentifier ( int pCharIndex )
   {
-    if ( ( pCharIndex >= this.boundStart )
-        && ( pCharIndex <= this.boundEnd ) )
+    if ( ( pCharIndex >= this.boundStart ) && ( pCharIndex <= this.boundEnd ) )
     {
       return this.boundEnd - this.boundStart + 1 ;
     }
@@ -1148,8 +1144,7 @@ public final class OutlineNode extends DefaultMutableTreeNode
        */
       else if ( ( ! selection ) && ( binding )
           && ( this.boundStart != NO_BINDING )
-          && ( this.boundEnd != NO_BINDING )
-          && ( charIndex == selectionStart ) )
+          && ( this.boundEnd != NO_BINDING ) && ( charIndex == selectionStart ) )
       {
         charIndex = updateCaptionSelection ( charIndex , selectionEnd ,
             prettyCharIterator , result , prefix , this.selectionColor ) ;

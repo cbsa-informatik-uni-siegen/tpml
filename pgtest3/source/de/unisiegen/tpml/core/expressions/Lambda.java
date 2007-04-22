@@ -7,7 +7,6 @@ import de.unisiegen.tpml.core.Messages ;
 import de.unisiegen.tpml.core.exceptions.CheckDisjunctionException ;
 import de.unisiegen.tpml.core.interfaces.BoundIdentifiers ;
 import de.unisiegen.tpml.core.interfaces.ChildrenExpressions ;
-import de.unisiegen.tpml.core.interfaces.DefaultIdentifiers ;
 import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
@@ -343,19 +342,6 @@ public final class Lambda extends Value implements BoundIdentifiers ,
 
 
   /**
-   * TODO
-   * 
-   * @return TODO
-   */
-  public String [ ] getIdentifiersPrefix ( )
-  {
-    String [ ] result = new String [ 1 ] ;
-    result [ 0 ] = DefaultIdentifiers.PREFIX_ID ;
-    return result ;
-  }
-
-
-  /**
    * Returns the type for the parameter or <code>null</code>.
    * 
    * @return the type for the parameter or <code>null</code>.
@@ -401,19 +387,6 @@ public final class Lambda extends Value implements BoundIdentifiers ,
   public int [ ] getTypesIndex ( )
   {
     return Lambda.INDICES_TYPE ;
-  }
-
-
-  /**
-   * TODO
-   * 
-   * @return TODO
-   */
-  public String [ ] getTypesPrefix ( )
-  {
-    String [ ] result = new String [ 1 ] ;
-    result [ 0 ] = DefaultTypes.PREFIX_TAU ;
-    return result ;
   }
 
 

@@ -368,22 +368,6 @@ public final class MultiLambda extends Value implements BoundIdentifiers ,
 
 
   /**
-   * TODO
-   * 
-   * @return TODO
-   */
-  public String [ ] getIdentifiersPrefix ( )
-  {
-    String [ ] result = new String [ this.identifiers.length ] ;
-    for ( int i = 0 ; i < this.identifiers.length ; i ++ )
-    {
-      result [ i ] = PREFIX_ID ;
-    }
-    return result ;
-  }
-
-
-  /**
    * Returns the type of the <code>identifiers</code> or <code>null</code>
    * if no type was specified.
    * 
@@ -430,19 +414,6 @@ public final class MultiLambda extends Value implements BoundIdentifiers ,
   public int [ ] getTypesIndex ( )
   {
     return INDICES_TYPE ;
-  }
-
-
-  /**
-   * TODO
-   * 
-   * @return TODO
-   */
-  public String [ ] getTypesPrefix ( )
-  {
-    String [ ] result = new String [ 1 ] ;
-    result [ 0 ] = PREFIX_TAU ;
-    return result ;
   }
 
 

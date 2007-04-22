@@ -209,14 +209,10 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
    * 
    * @return TODO
    */
-  public String [ ] getIdentifiersPrefix ( )
+  @ Override
+  public String getPrefix ( )
   {
-    String [ ] result = new String [ this.identifiers.length ] ;
-    for ( int i = 0 ; i < this.identifiers.length ; i ++ )
-    {
-      result [ i ] = PREFIX_ID ;
-    }
-    return result ;
+    return PREFIX_PHI ;
   }
 
 
@@ -276,22 +272,6 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
   public int [ ] getTypesIndex ( )
   {
     return this.indicesType ;
-  }
-
-
-  /**
-   * TODO
-   * 
-   * @return TODO
-   */
-  public String [ ] getTypesPrefix ( )
-  {
-    String [ ] result = new String [ this.types.length ] ;
-    for ( int i = 0 ; i < this.types.length ; i ++ )
-    {
-      result [ i ] = PREFIX_TAU ;
-    }
-    return result ;
   }
 
 

@@ -42,6 +42,18 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities
 
 
   /**
+   * Prefix of tau {@link Type}s.
+   */
+  public static final String PREFIX_TAU = "\u03C4" ; //$NON-NLS-1$
+
+
+  /**
+   * Prefix of phi {@link Type}s.
+   */
+  public static final String PREFIX_PHI = "\u03A6" ; //$NON-NLS-1$
+
+
+  /**
    * Cached vector of sub types, so the children do not need to be determined on
    * every invocation of {@link #children()}.
    * 
@@ -176,6 +188,17 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities
   public PrettyPrintable getParent ( )
   {
     return this.parent ;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @return TODO
+   */
+  public String getPrefix ( )
+  {
+    return PREFIX_TAU ;
   }
 
 

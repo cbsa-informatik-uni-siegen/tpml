@@ -270,6 +270,40 @@ public final class Identifier extends Value
 
 
   /**
+   * TODO
+   * 
+   * @return TODO
+   */
+  @ Override
+  public String getPrefix ( )
+  {
+    switch ( this.identifierSet )
+    {
+      case V :
+      {
+        return PREFIX_ID ;
+      }
+      case A :
+      {
+        return PREFIX_ID_A ;
+      }
+      case M :
+      {
+        return PREFIX_ID_M ;
+      }
+      case S :
+      {
+        return PREFIX_ID_S ;
+      }
+      default :
+      {
+        return PREFIX_ID ;
+      }
+    }
+  }
+
+
+  /**
    * Returns the startOffset.
    * 
    * @return The startOffset.

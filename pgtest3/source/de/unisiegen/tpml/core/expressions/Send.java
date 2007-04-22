@@ -215,19 +215,6 @@ public final class Send extends Expression implements DefaultIdentifiers ,
    * TODO
    * 
    * @return TODO
-   */
-  public String [ ] getIdentifiersPrefix ( )
-  {
-    String [ ] result = new String [ 1 ] ;
-    result [ 0 ] = PREFIX_M ;
-    return result ;
-  }
-
-
-  /**
-   * TODO
-   * 
-   * @return TODO
    * @see SortedChildren#getSortedChildren()
    */
   public PrettyPrintable [ ] getSortedChildren ( )

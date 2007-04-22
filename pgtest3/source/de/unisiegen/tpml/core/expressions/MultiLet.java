@@ -395,22 +395,6 @@ public final class MultiLet extends Expression implements BoundIdentifiers ,
 
 
   /**
-   * TODO
-   * 
-   * @return TODO
-   */
-  public String [ ] getIdentifiersPrefix ( )
-  {
-    String [ ] result = new String [ this.identifiers.length ] ;
-    for ( int i = 0 ; i < this.identifiers.length ; i ++ )
-    {
-      result [ i ] = PREFIX_ID ;
-    }
-    return result ;
-  }
-
-
-  /**
    * Returns the tuple type for <code>e1</code> or <code>null</code>.
    * 
    * @return the type for <code>e1</code> or <code>null</code>.
@@ -456,19 +440,6 @@ public final class MultiLet extends Expression implements BoundIdentifiers ,
   public int [ ] getTypesIndex ( )
   {
     return INDICES_TYPE ;
-  }
-
-
-  /**
-   * TODO
-   * 
-   * @return TODO
-   */
-  public String [ ] getTypesPrefix ( )
-  {
-    String [ ] result = new String [ 1 ] ;
-    result [ 0 ] = PREFIX_TAU ;
-    return result ;
   }
 
 

@@ -53,12 +53,6 @@ public final class DefaultOutline implements Outline
 
 
   /**
-   * Method name for getIdentifiersPrefix
-   */
-  private static final String GET_IDENTIFIERS_PREFIX = "getIdentifiersPrefix" ; //$NON-NLS-1$
-
-
-  /**
    * Method name for getIdentifiersBound
    */
   private static final String GET_IDENTIFIERS_BOUND = "getIdentifiersBound" ; //$NON-NLS-1$
@@ -74,12 +68,6 @@ public final class DefaultOutline implements Outline
    * Method name for getTypesIndex
    */
   private static final String GET_TYPES_INDEX = "getTypesIndex" ; //$NON-NLS-1$
-
-
-  /**
-   * Method name for getTypesPrefix
-   */
-  private static final String GET_TYPES_PREFIX = "getTypesPrefix" ; //$NON-NLS-1$
 
 
   /**
@@ -173,13 +161,11 @@ public final class DefaultOutline implements Outline
     // Identifier
     Identifier [ ] identifiers = null ;
     int [ ] identifiersIndex = null ;
-    String [ ] identifiersPrefix = null ;
     // Bound Identifier
     ArrayList < ArrayList < Identifier >> identifiersBound = null ;
     // Type
     MonoType [ ] types = null ;
     int [ ] typesIndex = null ;
-    String [ ] typesPrefix = null ;
     // Sorted Children
     PrettyPrintable [ ] sortedChildren = null ;
     for ( Class < Object > currentInterface : pExpression.getClass ( )
@@ -226,9 +212,6 @@ public final class DefaultOutline implements Outline
           identifiersIndex = ( int [ ] ) pExpression.getClass ( ).getMethod (
               GET_IDENTIFIERS_INDEX , new Class [ 0 ] ).invoke ( pExpression ,
               new Object [ 0 ] ) ;
-          identifiersPrefix = ( String [ ] ) pExpression.getClass ( )
-              .getMethod ( GET_IDENTIFIERS_PREFIX , new Class [ 0 ] ).invoke (
-                  pExpression , new Object [ 0 ] ) ;
         }
         catch ( IllegalArgumentException e )
         {
@@ -262,9 +245,6 @@ public final class DefaultOutline implements Outline
           identifiersIndex = ( int [ ] ) pExpression.getClass ( ).getMethod (
               GET_IDENTIFIERS_INDEX , new Class [ 0 ] ).invoke ( pExpression ,
               new Object [ 0 ] ) ;
-          identifiersPrefix = ( String [ ] ) pExpression.getClass ( )
-              .getMethod ( GET_IDENTIFIERS_PREFIX , new Class [ 0 ] ).invoke (
-                  pExpression , new Object [ 0 ] ) ;
           identifiersBound = ( ArrayList < ArrayList < Identifier >> ) pExpression
               .getClass ( )
               .getMethod ( GET_IDENTIFIERS_BOUND , new Class [ 0 ] ).invoke (
@@ -301,9 +281,6 @@ public final class DefaultOutline implements Outline
               new Object [ 0 ] ) ;
           typesIndex = ( int [ ] ) pExpression.getClass ( ).getMethod (
               GET_TYPES_INDEX , new Class [ 0 ] ).invoke ( pExpression ,
-              new Object [ 0 ] ) ;
-          typesPrefix = ( String [ ] ) pExpression.getClass ( ).getMethod (
-              GET_TYPES_PREFIX , new Class [ 0 ] ).invoke ( pExpression ,
               new Object [ 0 ] ) ;
         }
         catch ( IllegalArgumentException e )
@@ -364,8 +341,7 @@ public final class DefaultOutline implements Outline
     OutlineBinding outlineBinding ;
     if ( sortedChildren == null )
     {
-      if ( ( identifiers != null ) && ( identifiersIndex != null )
-          && ( identifiersPrefix != null ) )
+      if ( ( identifiers != null ) && ( identifiersIndex != null ) )
       {
         for ( int i = 0 ; i < identifiers.length ; i ++ )
         {
@@ -378,10 +354,9 @@ public final class DefaultOutline implements Outline
             outlineBinding = new OutlineBinding ( identifiersBound.get ( i ) ) ;
           }
           outlineNodeId = new OutlineNode ( identifiers [ i ] ,
-              identifiersPrefix [ i ] , identifiersIndex [ i ] , outlineBinding ) ;
+              identifiersIndex [ i ] , outlineBinding ) ;
           // Identifier - Type
-          if ( ( types != null ) && ( typesIndex != null )
-              && ( typesPrefix != null ) )
+          if ( ( types != null ) && ( typesIndex != null ) )
           {
             for ( int j = 0 ; j < types.length ; j ++ )
             {
@@ -389,7 +364,7 @@ public final class DefaultOutline implements Outline
                   && ( typesIndex [ j ] == identifiersIndex [ i ] ) )
               {
                 outlineNodeType = new OutlineNode ( types [ j ] ,
-                    typesPrefix [ j ] , typesIndex [ j ] ) ;
+                    typesIndex [ j ] ) ;
                 createType ( types [ j ] , outlineNodeType ) ;
                 outlineNodeId.add ( outlineNodeType ) ;
               }
@@ -398,15 +373,13 @@ public final class DefaultOutline implements Outline
           pOutlineNode.add ( outlineNodeId ) ;
         }
       }
-      if ( ( types != null ) && ( typesIndex != null )
-          && ( typesPrefix != null ) )
+      if ( ( types != null ) && ( typesIndex != null ) )
       {
         for ( int i = 0 ; i < types.length ; i ++ )
         {
           if ( ( types [ i ] != null ) && ( typesIndex [ i ] == - 1 ) )
           {
-            outlineNodeType = new OutlineNode ( types [ i ] ,
-                typesPrefix [ i ] , typesIndex [ i ] ) ;
+            outlineNodeType = new OutlineNode ( types [ i ] , typesIndex [ i ] ) ;
             createType ( types [ i ] , outlineNodeType ) ;
             pOutlineNode.add ( outlineNodeType ) ;
           }
@@ -418,8 +391,8 @@ public final class DefaultOutline implements Outline
         for ( int i = 0 ; i < children.size ( ) ; i ++ )
         {
           Expression child = children.get ( i ) ;
-          outlineNodeE = new OutlineNode ( child , this.outlineUnbound , child
-              .getPrefix ( ) , expressionsIndex [ i ] ) ;
+          outlineNodeE = new OutlineNode ( child , this.outlineUnbound ,
+              expressionsIndex [ i ] ) ;
           createExpression ( child , outlineNodeE ) ;
           pOutlineNode.add ( outlineNodeE ) ;
         }
@@ -432,8 +405,7 @@ public final class DefaultOutline implements Outline
       {
         PrettyPrintable current = sortedChildren [ i ] ;
         boolean found = false ;
-        if ( ( identifiers != null ) && ( identifiersIndex != null )
-            && ( identifiersPrefix != null ) )
+        if ( ( identifiers != null ) && ( identifiersIndex != null ) )
         {
           for ( int j = 0 ; j < identifiers.length ; j ++ )
           {
@@ -448,23 +420,20 @@ public final class DefaultOutline implements Outline
                 outlineBinding = new OutlineBinding ( identifiersBound.get ( i ) ) ;
               }
               outlineNodeId = new OutlineNode ( identifiers [ j ] ,
-                  identifiersPrefix [ j ] , identifiersIndex [ j ] ,
-                  outlineBinding ) ;
+                  identifiersIndex [ j ] , outlineBinding ) ;
               pOutlineNode.add ( outlineNodeId ) ;
               found = true ;
               break ;
             }
           }
         }
-        if ( ( ! found ) && ( types != null ) && ( typesIndex != null )
-            && ( typesPrefix != null ) )
+        if ( ( ! found ) && ( types != null ) && ( typesIndex != null ) )
         {
           for ( int j = 0 ; j < types.length ; j ++ )
           {
             if ( current == types [ j ] )
             {
-              outlineNodeType = new OutlineNode ( types [ j ] ,
-                  typesPrefix [ j ] , typesIndex [ j ] ) ;
+              outlineNodeType = new OutlineNode ( types [ j ] , typesIndex [ j ] ) ;
               createType ( types [ j ] , outlineNodeType ) ;
               pOutlineNode.add ( outlineNodeType ) ;
               found = true ;
@@ -481,7 +450,7 @@ public final class DefaultOutline implements Outline
             {
               Expression child = children.get ( j ) ;
               outlineNodeE = new OutlineNode ( child , this.outlineUnbound ,
-                  child.getPrefix ( ) , expressionsIndex [ j ] ) ;
+                  expressionsIndex [ j ] ) ;
               createExpression ( child , outlineNodeE ) ;
               pOutlineNode.add ( outlineNodeE ) ;
               found = true ;
@@ -506,11 +475,9 @@ public final class DefaultOutline implements Outline
     // Type
     MonoType [ ] types = null ;
     int [ ] typesIndex = null ;
-    String [ ] typesPrefix = null ;
     // Identifier
     Identifier [ ] identifiers = null ;
     int [ ] identifiersIndex = null ;
-    String [ ] identifiersPrefix = null ;
     // Sorted Children
     PrettyPrintable [ ] sortedChildren = null ;
     for ( Class < Object > currentInterface : pType.getClass ( )
@@ -525,9 +492,6 @@ public final class DefaultOutline implements Outline
               new Class [ 0 ] ).invoke ( pType , new Object [ 0 ] ) ;
           typesIndex = ( int [ ] ) pType.getClass ( ).getMethod (
               GET_TYPES_INDEX , new Class [ 0 ] ).invoke ( pType ,
-              new Object [ 0 ] ) ;
-          typesPrefix = ( String [ ] ) pType.getClass ( ).getMethod (
-              GET_TYPES_PREFIX , new Class [ 0 ] ).invoke ( pType ,
               new Object [ 0 ] ) ;
         }
         catch ( IllegalArgumentException e )
@@ -561,9 +525,6 @@ public final class DefaultOutline implements Outline
               new Object [ 0 ] ) ;
           identifiersIndex = ( int [ ] ) pType.getClass ( ).getMethod (
               GET_IDENTIFIERS_INDEX , new Class [ 0 ] ).invoke ( pType ,
-              new Object [ 0 ] ) ;
-          identifiersPrefix = ( String [ ] ) pType.getClass ( ).getMethod (
-              GET_IDENTIFIERS_PREFIX , new Class [ 0 ] ).invoke ( pType ,
               new Object [ 0 ] ) ;
         }
         catch ( IllegalArgumentException e )
@@ -618,26 +579,24 @@ public final class DefaultOutline implements Outline
         }
       }
     }
-    if ( ( types != null ) && ( typesIndex != null ) && ( typesPrefix != null ) )
+    if ( ( types != null ) && ( typesIndex != null ) )
     {
       OutlineNode outlineNodeId ;
       OutlineNode outlineNodeType ;
       if ( sortedChildren == null )
       {
-        if ( ( identifiers != null ) && ( identifiersIndex != null )
-            && ( identifiersPrefix != null ) )
+        if ( ( identifiers != null ) && ( identifiersIndex != null ) )
         {
           for ( int i = 0 ; i < identifiers.length ; i ++ )
           {
             outlineNodeId = new OutlineNode ( identifiers [ i ] ,
-                identifiersPrefix [ i ] , identifiersIndex [ i ] , null ) ;
+                identifiersIndex [ i ] , null ) ;
             pOutlineNode.add ( outlineNodeId ) ;
           }
         }
         for ( int i = 0 ; i < types.length ; i ++ )
         {
-          outlineNodeType = new OutlineNode ( types [ i ] , typesPrefix [ i ] ,
-              typesIndex [ i ] ) ;
+          outlineNodeType = new OutlineNode ( types [ i ] , typesIndex [ i ] ) ;
           createType ( types [ i ] , outlineNodeType ) ;
           pOutlineNode.add ( outlineNodeType ) ;
         }
@@ -649,15 +608,14 @@ public final class DefaultOutline implements Outline
         {
           PrettyPrintable current = sortedChildren [ i ] ;
           boolean found = false ;
-          if ( ( identifiers != null ) && ( identifiersIndex != null )
-              && ( identifiersPrefix != null ) )
+          if ( ( identifiers != null ) && ( identifiersIndex != null ) )
           {
             for ( int j = 0 ; j < identifiers.length ; j ++ )
             {
               if ( current == identifiers [ j ] )
               {
                 outlineNodeId = new OutlineNode ( identifiers [ j ] ,
-                    identifiersPrefix [ j ] , identifiersIndex [ j ] , null ) ;
+                    identifiersIndex [ j ] , null ) ;
                 pOutlineNode.add ( outlineNodeId ) ;
                 found = true ;
                 break ;
@@ -671,7 +629,7 @@ public final class DefaultOutline implements Outline
               if ( current == types [ j ] )
               {
                 outlineNodeType = new OutlineNode ( types [ j ] ,
-                    typesPrefix [ j ] , typesIndex [ j ] ) ;
+                    typesIndex [ j ] ) ;
                 createType ( types [ j ] , outlineNodeType ) ;
                 pOutlineNode.add ( outlineNodeType ) ;
                 found = true ;
@@ -715,8 +673,7 @@ public final class DefaultOutline implements Outline
     }
     this.outlineUnbound = new OutlineUnbound ( this.loadedExpression ) ;
     this.rootOutlineNode = new OutlineNode ( this.loadedExpression ,
-        this.outlineUnbound , this.loadedExpression.getPrefix ( ) ,
-        OutlineNode.NO_CHILD_INDEX ) ;
+        this.outlineUnbound , OutlineNode.NO_CHILD_INDEX ) ;
     createExpression ( this.loadedExpression , this.rootOutlineNode ) ;
     repaint ( this.rootOutlineNode ) ;
     this.outlineUI.setError ( false ) ;

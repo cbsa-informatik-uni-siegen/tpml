@@ -195,20 +195,6 @@ public final class ArrowType extends MonoType implements DefaultTypes
 
 
   /**
-   * TODO
-   * 
-   * @return TODO
-   */
-  public String [ ] getTypesPrefix ( )
-  {
-    String [ ] result = new String [ 2 ] ;
-    result [ 0 ] = PREFIX_TAU ;
-    result [ 1 ] = PREFIX_TAU ;
-    return result ;
-  }
-
-
-  /**
    * Returns a hash value for this arrow type, which is based on the hash values
    * for the parameter and result types.
    * 

@@ -109,6 +109,30 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
 
 
   /**
+   * Prefix of {@link Identifier}s after the first.
+   */
+  public static final String PREFIX_ID = "id" ; //$NON-NLS-1$
+
+
+  /**
+   * Prefix of the first {@link Identifier} of {@link Method}s.
+   */
+  public static final String PREFIX_ID_M = "m" ; //$NON-NLS-1$
+
+
+  /**
+   * Prefix of the first {@link Identifier} of {@link Attribute}s.
+   */
+  public static final String PREFIX_ID_A = "a" ; //$NON-NLS-1$
+
+
+  /**
+   * Prefix of the first {@link Identifier} of {@link ObjectExpr}s.
+   */
+  public static final String PREFIX_ID_S = "self" ; //$NON-NLS-1$
+
+
+  /**
    * Prefix of the {@link Exn}.
    */
   protected static final String PREFIX_EXN = "ep" ; //$NON-NLS-1$

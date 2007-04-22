@@ -165,19 +165,6 @@ public final class RefType extends MonoType implements DefaultTypes
 
 
   /**
-   * TODO
-   * 
-   * @return TODO
-   */
-  public String [ ] getTypesPrefix ( )
-  {
-    String [ ] result = new String [ 1 ] ;
-    result [ 0 ] = PREFIX_TAU ;
-    return result ;
-  }
-
-
-  /**
    * {@inheritDoc}
    * 
    * @see Object#hashCode()

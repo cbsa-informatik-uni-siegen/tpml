@@ -278,19 +278,6 @@ public final class Attribute extends Expression implements BoundIdentifiers ,
    * 
    * @return TODO
    */
-  public String [ ] getIdentifiersPrefix ( )
-  {
-    String [ ] result = new String [ 1 ] ;
-    result [ 0 ] = PREFIX_ID ;
-    return result ;
-  }
-
-
-  /**
-   * TODO
-   * 
-   * @return TODO
-   */
   public MonoType getTau ( )
   {
     return this.types [ 0 ] ;
@@ -332,19 +319,6 @@ public final class Attribute extends Expression implements BoundIdentifiers ,
   public int [ ] getTypesIndex ( )
   {
     return INDICES_TYPE ;
-  }
-
-
-  /**
-   * TODO
-   * 
-   * @return TODO
-   */
-  public String [ ] getTypesPrefix ( )
-  {
-    String [ ] result = new String [ 1 ] ;
-    result [ 0 ] = PREFIX_TAU ;
-    return result ;
   }
 
 
