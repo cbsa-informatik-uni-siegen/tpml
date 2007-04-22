@@ -25,7 +25,6 @@ public final class List extends Expression implements ChildrenExpressions
    * The expressions within this list.
    * 
    * @see #getExpressions()
-   * @see #getExpressions(int)
    */
   private Expression [ ] expressions ;
 
@@ -78,15 +77,15 @@ public final class List extends Expression implements ChildrenExpressions
     {
       // e2 must be an application of unary cons to a pair
       Application app2 = ( Application ) pExpression2 ;
-      Tuple tuple = ( Tuple ) app2.getExpressions ( 1 ) ;
-      if ( ! ( app2.getExpressions ( 0 ) instanceof UnaryCons )
+      Tuple tuple = ( Tuple ) app2.getExpressions ( ) [ 1 ] ;
+      if ( ! ( app2.getExpressions ( ) [ 0 ] instanceof UnaryCons )
           || tuple.getExpressions ( ).length != 2 )
       {
         throw new ClassCastException ( ) ;
       }
       // turn the tuple into a list
-      List list = new List ( tuple.getExpressions ( 0 ) , tuple
-          .getExpressions ( 1 ) ) ;
+      List list = new List ( tuple.getExpressions ( ) [ 0 ] , tuple
+          .getExpressions ( ) [ 1 ] ) ;
       // and add the list items to our expressions
       newExpressions.addAll ( Arrays.asList ( list.getExpressions ( ) ) ) ;
     }
@@ -196,20 +195,6 @@ public final class List extends Expression implements ChildrenExpressions
   public Expression [ ] getExpressions ( )
   {
     return this.expressions ;
-  }
-
-
-  /**
-   * Returns the <code>n</code>th expression.
-   * 
-   * @param pIndex the index of the expression to return.
-   * @return the <code>n</code>th expression.
-   * @throws ArrayIndexOutOfBoundsException if <code>n</code> is out of
-   *           bounds.
-   */
-  public Expression getExpressions ( int pIndex )
-  {
-    return this.expressions [ pIndex ] ;
   }
 
 

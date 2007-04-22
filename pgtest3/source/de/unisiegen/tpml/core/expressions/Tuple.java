@@ -21,7 +21,6 @@ public final class Tuple extends Expression implements ChildrenExpressions
    * The sub expressions.
    * 
    * @see #getExpressions()
-   * @see #getExpressions(int)
    */
   private Expression [ ] expressions ;
 
@@ -113,26 +112,10 @@ public final class Tuple extends Expression implements ChildrenExpressions
    * Returns the sub expressions.
    * 
    * @return the sub expressions.
-   * @see #getExpressions(int)
    */
   public Expression [ ] getExpressions ( )
   {
     return this.expressions ;
-  }
-
-
-  /**
-   * Returns the <code>n</code>th sub expression.
-   * 
-   * @param pIndex the index of the expression to return.
-   * @return the <code>n</code>th sub expression.
-   * @throws ArrayIndexOutOfBoundsException if <code>n</code> is out of
-   *           bounds.
-   * @see #getExpressions()
-   */
-  public Expression getExpressions ( int pIndex )
-  {
-    return this.expressions [ pIndex ] ;
   }
 
 

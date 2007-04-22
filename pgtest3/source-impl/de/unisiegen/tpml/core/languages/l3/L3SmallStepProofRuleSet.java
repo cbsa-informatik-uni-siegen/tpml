@@ -197,7 +197,7 @@ public class L3SmallStepProofRuleSet extends L2SmallStepProofRuleSet
     // jep, we can perform (HD) then
     context.addProofStep ( getRuleByName ( "HD" ) , application ) ; //$NON-NLS-1$
     // return the first item
-    return tuple.getExpressions ( 0 ) ;
+    return tuple.getExpressions ( ) [ 0 ] ;
   }
 
 
@@ -421,7 +421,7 @@ public class L3SmallStepProofRuleSet extends L2SmallStepProofRuleSet
     // jep, we can perform (TL) then
     context.addProofStep ( getRuleByName ( "TL" ) , application ) ; //$NON-NLS-1$
     // return the remaining list
-    return tuple.getExpressions ( 1 ) ;
+    return tuple.getExpressions ( ) [ 1 ] ;
   }
 
 

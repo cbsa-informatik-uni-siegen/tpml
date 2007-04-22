@@ -8,6 +8,7 @@ import de.unisiegen.tpml.core.bigstep.BigStepProofNode ;
 import de.unisiegen.tpml.core.bigstep.BigStepProofResult ;
 import de.unisiegen.tpml.core.expressions.Application ;
 import de.unisiegen.tpml.core.expressions.Expression ;
+import de.unisiegen.tpml.core.expressions.Identifier ;
 import de.unisiegen.tpml.core.expressions.InfixOperation ;
 import de.unisiegen.tpml.core.expressions.Lambda ;
 import de.unisiegen.tpml.core.expressions.MultiLambda ;
@@ -163,13 +164,13 @@ public class L0BigStepProofRuleSet extends AbstractBigStepProofRuleSet
       // multi lambda is special
       MultiLambda multiLambda = ( MultiLambda ) e1 ;
       Expression e = multiLambda.getE ( ) ;
+      Identifier [ ] identifiers = multiLambda.getIdentifiers ( ) ;
       // perform the required substitutions
       for ( int n = 0 ; n < multiLambda.getIdentifiers ( ).length ; ++ n )
       {
         // substitute: (#l_n e2) for id
-        e = e.substitute ( multiLambda.getIdentifiers ( n ) , new Application (
-            new Projection ( multiLambda.getIdentifiers ( ).length , n + 1 ) ,
-            e2 ) ) ;
+        e = e.substitute ( identifiers [ n ] , new Application (
+            new Projection ( identifiers.length , n + 1 ) , e2 ) ) ;
       }
       // add the proof node for e
       context.addProofNode ( node , e ) ;

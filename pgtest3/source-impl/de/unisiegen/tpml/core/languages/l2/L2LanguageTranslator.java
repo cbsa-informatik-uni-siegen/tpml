@@ -3,6 +3,7 @@ package de.unisiegen.tpml.core.languages.l2 ;
 
 import de.unisiegen.tpml.core.expressions.CurriedLetRec ;
 import de.unisiegen.tpml.core.expressions.Expression ;
+import de.unisiegen.tpml.core.expressions.Identifier ;
 import de.unisiegen.tpml.core.expressions.Lambda ;
 import de.unisiegen.tpml.core.expressions.Let ;
 import de.unisiegen.tpml.core.expressions.LetRec ;
@@ -38,14 +39,14 @@ public class L2LanguageTranslator extends L1LanguageTranslator
    * @see L1LanguageTranslator#translateToCoreSyntax(Expression, boolean)
    */
   @ Override
-  public Expression translateToCoreSyntax ( final Expression expression ,
-      final boolean recursive )
+  public Expression translateToCoreSyntax ( Expression expression ,
+      boolean recursive )
   {
     if ( expression instanceof CurriedLetRec )
     {
       // translate to: let id1 = rec id1.lambda id2...lambda idn.e1 in e2
-      final CurriedLetRec curriedLetRec = ( CurriedLetRec ) expression ;
-      final MonoType [ ] types = curriedLetRec.getTypes ( ) ;
+      CurriedLetRec curriedLetRec = ( CurriedLetRec ) expression ;
+      MonoType [ ] types = curriedLetRec.getTypes ( ) ;
       Expression e1 = curriedLetRec.getE1 ( ) ;
       Expression e2 = curriedLetRec.getE2 ( ) ;
       // check if we should recurse
@@ -55,9 +56,10 @@ public class L2LanguageTranslator extends L1LanguageTranslator
         e2 = this.translateToCoreSyntax ( e2 , true ) ;
       }
       // add the lambdas
-      for ( int n = curriedLetRec.getIdentifiers ( ).length - 1 ; n > 0 ; -- n )
+      Identifier [ ] identifiers = curriedLetRec.getIdentifiers ( ) ;
+      for ( int n = identifiers.length - 1 ; n > 0 ; -- n )
       {
-        e1 = new Lambda ( curriedLetRec.getIdentifiers ( n ) , types [ n ] , e1 ) ;
+        e1 = new Lambda ( identifiers [ n ] , types [ n ] , e1 ) ;
       }
       // try to generate a recursive type
       MonoType tau = types [ 0 ] ;
@@ -74,9 +76,8 @@ public class L2LanguageTranslator extends L1LanguageTranslator
         tau = null ;
       }
       // generate the let expression
-      return new Let ( curriedLetRec.getIdentifiers ( 0 ) , curriedLetRec
-          .getTypes ( 0 ) , new Recursion ( curriedLetRec.getIdentifiers ( 0 ) ,
-          tau , e1 ) , e2 ) ;
+      return new Let ( identifiers [ 0 ] , types [ 0 ] , new Recursion (
+          identifiers [ 0 ] , tau , e1 ) , e2 ) ;
     }
     else if ( expression instanceof LetRec )
     {

@@ -171,25 +171,10 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
    * 
    * @return TODO
    * @see #identifiers
-   * @see #getIdentifiers(int)
    */
   public Identifier [ ] getIdentifiers ( )
   {
     return this.identifiers ;
-  }
-
-
-  /**
-   * TODO
-   * 
-   * @param pIndex TODO
-   * @return TODO
-   * @see #identifiers
-   * @see #getIdentifiers()
-   */
-  public Identifier getIdentifiers ( int pIndex )
-  {
-    return this.identifiers [ pIndex ] ;
   }
 
 
@@ -249,18 +234,6 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
   public MonoType [ ] getTypes ( )
   {
     return this.types ;
-  }
-
-
-  /**
-   * TODO
-   * 
-   * @param pIndex TODO
-   * @return TODO
-   */
-  public MonoType getTypes ( int pIndex )
-  {
-    return this.types [ pIndex ] ;
   }
 
 

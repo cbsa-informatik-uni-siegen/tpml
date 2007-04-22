@@ -13,6 +13,7 @@ import de.unisiegen.tpml.core.expressions.Row ;
 import de.unisiegen.tpml.core.expressions.Send ;
 import de.unisiegen.tpml.core.languages.l2.L2SmallStepProofRuleSet ;
 import de.unisiegen.tpml.core.smallstep.SmallStepProofContext ;
+import de.unisiegen.tpml.core.types.MonoType ;
 
 
 /**
@@ -134,13 +135,14 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
    */
   public Expression evaluateRow ( SmallStepProofContext pContext , Row pRow )
   {
-    for ( int i = 0 ; i < pRow.getExpressions ( ).length ; i ++ )
+    Expression [ ] rowExpressions = pRow.getExpressions ( ) ;
+    for ( int i = 0 ; i < rowExpressions.length ; i ++ )
     {
       /*
        * If the current child of the Row is an Attribute, we have to perform
        * ATTR-EVAL or ATTR-RIGHT.
        */
-      Expression currentRowChild = pRow.getExpressions ( i ) ;
+      Expression currentRowChild = rowExpressions [ i ] ;
       if ( currentRowChild instanceof Attribute )
       {
         /*
@@ -155,13 +157,12 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
           {
             return attrE ;
           }
-          Expression [ ] newRowExpressions = new Expression [ pRow
-              .getExpressions ( ).length ] ;
+          Expression [ ] newRowExpressions = new Expression [ rowExpressions.length ] ;
           for ( int j = 0 ; j < newRowExpressions.length ; j ++ )
           {
             if ( i != j )
             {
-              newRowExpressions [ j ] = pRow.getExpressions ( j ) ;
+              newRowExpressions [ j ] = rowExpressions [ j ] ;
             }
           }
           newRowExpressions [ i ] = new Attribute ( attribute.getId ( ) ,
@@ -237,11 +238,12 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
        * children the Expression gets stuck.
        */
       Row row = ( Row ) pSend.getE ( ) ;
-      if ( row.getExpressions ( ).length == 0 )
+      Expression [ ] rowExpressions = row.getExpressions ( ) ;
+      if ( rowExpressions.length == 0 )
       {
         return pSend ;
       }
-      Expression firstRowChild = row.getExpressions ( 0 ) ;
+      Expression firstRowChild = rowExpressions [ 0 ] ;
       /*
        * Attribute
        */
@@ -251,13 +253,12 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
          * If the child Expression of the Send is a Row and the first child
          * Expression of the Row is an Attribute, we have to perform SEND-ATTR.
          */
-        Attribute attribute = ( Attribute ) row.getExpressions ( 0 ) ;
+        Attribute attribute = ( Attribute ) rowExpressions [ 0 ] ;
         pContext.addProofStep ( getRuleByName ( SEND_ATTR ) , attribute ) ;
-        Expression [ ] newRowExpressions = new Expression [ row
-            .getExpressions ( ).length - 1 ] ;
+        Expression [ ] newRowExpressions = new Expression [ rowExpressions.length - 1 ] ;
         for ( int i = 0 ; i < newRowExpressions.length ; i ++ )
         {
-          Expression child = row.getExpressions ( i + 1 ) ;
+          Expression child = rowExpressions [ i + 1 ] ;
           newRowExpressions [ i ] = child.substitute ( attribute.getId ( ) ,
               attribute.getE ( ) ) ;
         }
@@ -277,7 +278,7 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
       else
       {
         CurriedMethod curriedMethod = ( CurriedMethod ) firstRowChild ;
-        id = curriedMethod.getIdentifiers ( 0 ) ;
+        id = curriedMethod.getIdentifiers ( ) [ 0 ] ;
         methE = curriedMethod.getE ( ) ;
       }
       if ( pSend.getId ( ).equals ( id ) )
@@ -290,9 +291,9 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
          * the rest of the Row, we have to perform SEND-EXEC.
          */
         boolean definedLater = false ;
-        for ( int i = 1 ; i < row.getExpressions ( ).length ; i ++ )
+        for ( int i = 1 ; i < rowExpressions.length ; i ++ )
         {
-          Expression rowChild = row.getExpressions ( i ) ;
+          Expression rowChild = rowExpressions [ i ] ;
           if ( ( rowChild instanceof Method )
               && ( ( ( Method ) rowChild ).getId ( ).equals ( pSend.getId ( ) ) ) )
           {
@@ -300,7 +301,7 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
             break ;
           }
           else if ( ( rowChild instanceof CurriedMethod )
-              && ( ( ( CurriedMethod ) rowChild ).getIdentifiers ( 0 )
+              && ( ( ( CurriedMethod ) rowChild ).getIdentifiers ( ) [ 0 ]
                   .equals ( pSend.getId ( ) ) ) )
           {
             definedLater = true ;
@@ -313,10 +314,11 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
           if ( firstRowChild instanceof CurriedMethod )
           {
             CurriedMethod curriedMethod = ( CurriedMethod ) firstRowChild ;
-            for ( int i = curriedMethod.getIdentifiers ( ).length - 1 ; i > 0 ; i -- )
+            Identifier [ ] identifier = curriedMethod.getIdentifiers ( ) ;
+            MonoType [ ] types = curriedMethod.getTypes ( ) ;
+            for ( int i = identifier.length - 1 ; i > 0 ; i -- )
             {
-              methE = new Lambda ( curriedMethod.getIdentifiers ( i ) ,
-                  curriedMethod.getTypes ( i ) , methE ) ;
+              methE = new Lambda ( identifier [ i ] , types [ i ] , methE ) ;
             }
             return methE ;
           }
@@ -331,10 +333,10 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
        * rest of the Row, we have to perform SEND-SKIP.
        */
       pContext.addProofStep ( getRuleByName ( SEND_SKIP ) , firstRowChild ) ;
-      Expression [ ] newRowExpressions = new Expression [ row.getExpressions ( ).length - 1 ] ;
+      Expression [ ] newRowExpressions = new Expression [ rowExpressions.length - 1 ] ;
       for ( int i = 0 ; i < newRowExpressions.length ; i ++ )
       {
-        newRowExpressions [ i ] = row.getExpressions ( i + 1 ) ;
+        newRowExpressions [ i ] = rowExpressions [ i + 1 ] ;
       }
       return new Send ( new Row ( newRowExpressions ) , pSend.getId ( ) ) ;
     }

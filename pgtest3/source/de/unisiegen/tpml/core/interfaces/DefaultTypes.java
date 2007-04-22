@@ -24,15 +24,6 @@ public interface DefaultTypes
   /**
    * TODO
    * 
-   * @param pIndex TODO
-   * @return TODO
-   */
-  public MonoType getTypes ( int pIndex ) ;
-
-
-  /**
-   * TODO
-   * 
    * @return TODO
    */
   public int [ ] getTypesIndex ( ) ;

@@ -60,7 +60,6 @@ public final class ObjectExpr extends Expression implements BoundIdentifiers ,
    * The types for the identifiers, where the assignment is as follows:
    * 
    * @see #getTypes()
-   * @see #getTypes(int)
    */
   private MonoType [ ] types ;
 
@@ -197,26 +196,10 @@ public final class ObjectExpr extends Expression implements BoundIdentifiers ,
    * Returns the sub expressions.
    * 
    * @return the sub expressions.
-   * @see #getExpressions(int)
    */
   public Expression [ ] getExpressions ( )
   {
     return this.expressions ;
-  }
-
-
-  /**
-   * Returns the <code>n</code>th sub expression.
-   * 
-   * @param pIndex the index of the expression to return.
-   * @return the <code>n</code>th sub expression.
-   * @throws ArrayIndexOutOfBoundsException if <code>n</code> is out of
-   *           bounds.
-   * @see #getExpressions()
-   */
-  public Expression getExpressions ( int pIndex )
-  {
-    return this.expressions [ pIndex ] ;
   }
 
 
@@ -250,20 +233,6 @@ public final class ObjectExpr extends Expression implements BoundIdentifiers ,
   public Identifier [ ] getIdentifiers ( )
   {
     return this.identifiers ;
-  }
-
-
-  /**
-   * Returns the <code>pIndex</code>th {@link Identifier} of this
-   * {@link Expression}.
-   * 
-   * @param pIndex The index of the {@link Identifier} to return.
-   * @return The <code>pIndex</code>th {@link Identifier} of this
-   *         {@link Expression}.
-   */
-  public Identifier getIdentifiers ( int pIndex )
-  {
-    return this.identifiers [ pIndex ] ;
   }
 
 
@@ -319,26 +288,10 @@ public final class ObjectExpr extends Expression implements BoundIdentifiers ,
    * Returns the types for the <code>identifiers</code>.
    * 
    * @return the types.
-   * @see #getTypes(int)
    */
   public MonoType [ ] getTypes ( )
   {
     return this.types ;
-  }
-
-
-  /**
-   * Returns the <code>n</code>th type.
-   * 
-   * @param pIndex the index of the type.
-   * @return the <code>n</code>th type.
-   * @throws ArrayIndexOutOfBoundsException if <code>n</code> is out of
-   *           bounds.
-   * @see #getTypes()
-   */
-  public MonoType getTypes ( int pIndex )
-  {
-    return this.types [ pIndex ] ;
   }
 
 

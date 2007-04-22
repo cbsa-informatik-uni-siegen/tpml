@@ -326,7 +326,7 @@ public class L1CBNBigStepProofRuleSet extends L1BigStepProofRuleSet
       }
       // add the proof node
       context.addProofNode ( node , curriedLet.getE2 ( ).substitute (
-          curriedLet.getIdentifiers ( 0 ) , e1 ) ) ;
+          identifiers [ 0 ] , e1 ) ) ;
     }
     else
     {

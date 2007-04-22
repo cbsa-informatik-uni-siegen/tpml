@@ -134,26 +134,10 @@ public final class TupleType extends MonoType implements DefaultTypes
    * Returns the element types of the tuple.
    * 
    * @return the element types.
-   * @see #getTypes(int)
    */
   public MonoType [ ] getTypes ( )
   {
     return this.types ;
-  }
-
-
-  /**
-   * Returns the <code>n</code>th type in the tuple type.
-   * 
-   * @param pIndex the index of the type.
-   * @return the <code>n</code>th type.
-   * @throws ArrayIndexOutOfBoundsException if <code>n</code> is out of
-   *           bounds.
-   * @see #getTypes()
-   */
-  public MonoType getTypes ( int pIndex )
-  {
-    return this.types [ pIndex ] ;
   }
 
 

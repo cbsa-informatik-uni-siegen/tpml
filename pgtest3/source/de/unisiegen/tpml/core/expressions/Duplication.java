@@ -39,7 +39,6 @@ public final class Duplication extends Expression implements
    * TODO
    * 
    * @see #getExpressions()
-   * @see #getExpressions(int)
    */
   private Expression [ ] expressions ;
 
@@ -48,7 +47,6 @@ public final class Duplication extends Expression implements
    * TODO
    * 
    * @see #getIdentifiers()
-   * @see #getIdentifiers(int)
    */
   private Identifier [ ] identifiers ;
 
@@ -170,25 +168,10 @@ public final class Duplication extends Expression implements
    * 
    * @return TODO
    * @see #expressions
-   * @see #getExpressions(int)
    */
   public Expression [ ] getExpressions ( )
   {
     return this.expressions ;
-  }
-
-
-  /**
-   * TODO
-   * 
-   * @param pIndex TODO
-   * @return TODO
-   * @see #expressions
-   * @see #getExpressions()
-   */
-  public Expression getExpressions ( int pIndex )
-  {
-    return this.expressions [ pIndex ] ;
   }
 
 
@@ -208,25 +191,10 @@ public final class Duplication extends Expression implements
    * 
    * @return TODO
    * @see #identifiers
-   * @see #getIdentifiers(int)
    */
   public Identifier [ ] getIdentifiers ( )
   {
     return this.identifiers ;
-  }
-
-
-  /**
-   * TODO
-   * 
-   * @param pIndex
-   * @return TODO
-   * @see #identifiers
-   * @see #getIdentifiers()
-   */
-  public Identifier getIdentifiers ( int pIndex )
-  {
-    return this.identifiers [ pIndex ] ;
   }
 
 

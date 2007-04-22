@@ -130,26 +130,10 @@ public final class Send extends Expression implements DefaultIdentifiers ,
    * Returns the sub expressions.
    * 
    * @return the sub expressions.
-   * @see #getExpressions(int)
    */
   public Expression [ ] getExpressions ( )
   {
     return this.expressions ;
-  }
-
-
-  /**
-   * Returns the <code>n</code>th sub expression.
-   * 
-   * @param pIndex the index of the expression to return.
-   * @return the <code>n</code>th sub expression.
-   * @throws ArrayIndexOutOfBoundsException if <code>n</code> is out of
-   *           bounds.
-   * @see #getExpressions()
-   */
-  public Expression getExpressions ( int pIndex )
-  {
-    return this.expressions [ pIndex ] ;
   }
 
 
@@ -183,20 +167,6 @@ public final class Send extends Expression implements DefaultIdentifiers ,
   public Identifier [ ] getIdentifiers ( )
   {
     return this.identifiers ;
-  }
-
-
-  /**
-   * Returns the <code>pIndex</code>th {@link Identifier} of this
-   * {@link Expression}.
-   * 
-   * @param pIndex The index of the {@link Identifier} to return.
-   * @return The <code>pIndex</code>th {@link Identifier} of this
-   *         {@link Expression}.
-   */
-  public Identifier getIdentifiers ( int pIndex )
-  {
-    return this.identifiers [ pIndex ] ;
   }
 
 

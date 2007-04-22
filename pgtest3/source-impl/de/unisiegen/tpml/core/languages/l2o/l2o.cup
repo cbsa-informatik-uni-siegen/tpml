@@ -38,16 +38,17 @@ action code
     public static void check(Row pRow)
     {
 	  ArrayList <Identifier> duplicated = new ArrayList <Identifier> ();
-      for ( int i = 0 ; i < pRow.getExpressions().length ; i ++ )
+	  Expression [ ] rowExpressions = pRow.getExpressions ( ) ;
+      for ( int i = 0 ; i < rowExpressions.length ; i ++ )
       {
-        if ( pRow.getExpressions(i) instanceof Attribute )
+        if ( rowExpressions[i] instanceof Attribute )
         {
-          Attribute attribute1 = (Attribute) pRow.getExpressions(i) ;
-          for ( int j = i+1 ; j < pRow.getExpressions().length ; j++ )
+          Attribute attribute1 = (Attribute) rowExpressions[i] ;
+          for ( int j = i+1 ; j < rowExpressions.length ; j++ )
           {
-            if ( pRow.getExpressions(j) instanceof Attribute )
+            if ( rowExpressions[j] instanceof Attribute )
     	    {
-    	      Attribute attribute2 = (Attribute) pRow.getExpressions(j) ;
+    	      Attribute attribute2 = (Attribute) rowExpressions[j] ;
     	      if ( attribute1.getId().equals(attribute2.getId()))
     	      {
     	        duplicated.add(attribute2.getId());

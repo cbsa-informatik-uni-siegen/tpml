@@ -32,7 +32,6 @@ public final class Row extends Expression implements ChildrenExpressions
    * TODO
    * 
    * @see #getExpressions()
-   * @see #getExpressions(int)
    */
   private Expression [ ] expressions ;
 
@@ -216,25 +215,10 @@ public final class Row extends Expression implements ChildrenExpressions
    * 
    * @return TODO
    * @see #expressions
-   * @see #getExpressions(int)
    */
   public Expression [ ] getExpressions ( )
   {
     return this.expressions ;
-  }
-
-
-  /**
-   * TODO
-   * 
-   * @param pIndex TODO
-   * @return TODO
-   * @see #expressions
-   * @see #getExpressions()
-   */
-  public Expression getExpressions ( int pIndex )
-  {
-    return this.expressions [ pIndex ] ;
   }
 
 

@@ -36,7 +36,6 @@ public final class CurriedMethod extends Expression implements
    * TODO
    * 
    * @see #getIdentifiers()
-   * @see #getIdentifiers(int)
    */
   private Identifier [ ] identifiers ;
 
@@ -45,7 +44,6 @@ public final class CurriedMethod extends Expression implements
    * TODO
    * 
    * @see #getTypes()
-   * @see #getTypes(int)
    */
   private MonoType [ ] types ;
 
@@ -260,26 +258,10 @@ public final class CurriedMethod extends Expression implements
    * Returns the sub expressions.
    * 
    * @return the sub expressions.
-   * @see #getExpressions(int)
    */
   public Expression [ ] getExpressions ( )
   {
     return this.expressions ;
-  }
-
-
-  /**
-   * Returns the <code>n</code>th sub expression.
-   * 
-   * @param pIndex the index of the expression to return.
-   * @return the <code>n</code>th sub expression.
-   * @throws ArrayIndexOutOfBoundsException if <code>n</code> is out of
-   *           bounds.
-   * @see #getExpressions()
-   */
-  public Expression getExpressions ( int pIndex )
-  {
-    return this.expressions [ pIndex ] ;
   }
 
 
@@ -299,25 +281,10 @@ public final class CurriedMethod extends Expression implements
    * 
    * @return TODO
    * @see #identifiers
-   * @see #getIdentifiers(int)
    */
   public Identifier [ ] getIdentifiers ( )
   {
     return this.identifiers ;
-  }
-
-
-  /**
-   * TODO
-   * 
-   * @param pIndex TODO
-   * @return TODO
-   * @see #identifiers
-   * @see #getIdentifiers()
-   */
-  public Identifier getIdentifiers ( int pIndex )
-  {
-    return this.identifiers [ pIndex ] ;
   }
 
 
@@ -385,25 +352,10 @@ public final class CurriedMethod extends Expression implements
    * 
    * @return TODO
    * @see #types
-   * @see #getTypes(int)
    */
   public MonoType [ ] getTypes ( )
   {
     return this.types ;
-  }
-
-
-  /**
-   * TODO
-   * 
-   * @param pIndex TODO
-   * @return TODO
-   * @see #types
-   * @see #getTypes()
-   */
-  public MonoType getTypes ( int pIndex )
-  {
-    return this.types [ pIndex ] ;
   }
 
 

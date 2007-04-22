@@ -7,12 +7,14 @@ import de.unisiegen.tpml.core.expressions.BooleanConstant ;
 import de.unisiegen.tpml.core.expressions.Condition ;
 import de.unisiegen.tpml.core.expressions.CurriedLet ;
 import de.unisiegen.tpml.core.expressions.Expression ;
+import de.unisiegen.tpml.core.expressions.Identifier ;
 import de.unisiegen.tpml.core.expressions.InfixOperation ;
 import de.unisiegen.tpml.core.expressions.Lambda ;
 import de.unisiegen.tpml.core.expressions.Let ;
 import de.unisiegen.tpml.core.expressions.Or ;
 import de.unisiegen.tpml.core.languages.AbstractLanguageTranslator ;
 import de.unisiegen.tpml.core.languages.l0.L0LanguageTranslator ;
+import de.unisiegen.tpml.core.types.MonoType ;
 
 
 /**
@@ -87,14 +89,14 @@ public class L1LanguageTranslator extends L0LanguageTranslator
         e2 = this.translateToCoreSyntax ( e2 , true ) ;
       }
       // add the lambdas
-      for ( int n = curriedLet.getIdentifiers ( ).length - 1 ; n > 0 ; -- n )
+      Identifier [ ] identifiers = curriedLet.getIdentifiers ( ) ;
+      MonoType [ ] types = curriedLet.getTypes ( ) ;
+      for ( int n = identifiers.length - 1 ; n > 0 ; -- n )
       {
-        e1 = new Lambda ( curriedLet.getIdentifiers ( n ) , curriedLet
-            .getTypes ( n ) , e1 ) ;
+        e1 = new Lambda ( identifiers [ n ] , types [ n ] , e1 ) ;
       }
       // generate the let expression
-      return new Let ( curriedLet.getIdentifiers ( 0 ) , curriedLet
-          .getTypes ( 0 ) , e1 , e2 ) ;
+      return new Let ( identifiers [ 0 ] , types [ 0 ] , e1 , e2 ) ;
     }
     else if ( expression instanceof InfixOperation )
     {

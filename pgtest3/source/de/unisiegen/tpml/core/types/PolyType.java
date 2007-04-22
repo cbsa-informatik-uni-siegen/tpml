@@ -176,18 +176,6 @@ public final class PolyType extends Type implements DefaultTypes
   /**
    * TODO
    * 
-   * @param pIndex TODO
-   * @return TODO
-   */
-  public MonoType getTypes ( int pIndex )
-  {
-    return this.types [ pIndex ] ;
-  }
-
-
-  /**
-   * TODO
-   * 
    * @return TODO
    */
   public int [ ] getTypesIndex ( )

@@ -394,7 +394,7 @@ public class L1BigStepProofRuleSet extends L0BigStepProofRuleSet
         // add a proof node for e2 (CurriedLet/CurriedLetRec)
         CurriedLet curriedLet = ( CurriedLet ) e ;
         context.addProofNode ( node , curriedLet.getE2 ( ).substitute (
-            curriedLet.getIdentifiers ( 0 ) , value0 ) ) ;
+            curriedLet.getIdentifiers ( ) [ 0 ] , value0 ) ) ;
       }
       else if ( e instanceof MultiLet )
       {

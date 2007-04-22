@@ -5,12 +5,14 @@ import de.unisiegen.tpml.core.expressions.Attribute ;
 import de.unisiegen.tpml.core.expressions.CurriedMethod ;
 import de.unisiegen.tpml.core.expressions.Duplication ;
 import de.unisiegen.tpml.core.expressions.Expression ;
+import de.unisiegen.tpml.core.expressions.Identifier ;
 import de.unisiegen.tpml.core.expressions.Lambda ;
 import de.unisiegen.tpml.core.expressions.Method ;
 import de.unisiegen.tpml.core.expressions.ObjectExpr ;
 import de.unisiegen.tpml.core.expressions.Row ;
 import de.unisiegen.tpml.core.expressions.Send ;
 import de.unisiegen.tpml.core.languages.l2.L2LanguageTranslator ;
+import de.unisiegen.tpml.core.types.MonoType ;
 
 
 /**
@@ -107,13 +109,13 @@ public class L2OLanguageTranslator extends L2LanguageTranslator
     {
       curriedMethE = translateToCoreSyntax ( curriedMethE , true ) ;
     }
-    for ( int i = pCurriedMethod.getIdentifiers ( ).length - 1 ; i > 0 ; i -- )
+    Identifier [ ] identifier = pCurriedMethod.getIdentifiers ( ) ;
+    MonoType [ ] types = pCurriedMethod.getTypes ( ) ;
+    for ( int i = identifier.length - 1 ; i > 0 ; i -- )
     {
-      curriedMethE = new Lambda ( pCurriedMethod.getIdentifiers ( i ) ,
-          pCurriedMethod.getTypes ( i ) , curriedMethE ) ;
+      curriedMethE = new Lambda ( identifier [ i ] , types [ i ] , curriedMethE ) ;
     }
-    return new Method ( pCurriedMethod.getIdentifiers ( 0 ) , pCurriedMethod
-        .getTypes ( 0 ) , curriedMethE ) ;
+    return new Method ( identifier [ 0 ] , types [ 0 ] , curriedMethE ) ;
   }
 
 
@@ -129,12 +131,12 @@ public class L2OLanguageTranslator extends L2LanguageTranslator
   {
     if ( pRecursive )
     {
-      Expression [ ] newDuplicationExpressions = new Expression [ pDuplication
-          .getExpressions ( ).length ] ;
-      for ( int i = 0 ; i < pDuplication.getExpressions ( ).length ; i ++ )
+      Expression [ ] duplicationExpressions = pDuplication.getExpressions ( ) ;
+      Expression [ ] newDuplicationExpressions = new Expression [ duplicationExpressions.length ] ;
+      for ( int i = 0 ; i < duplicationExpressions.length ; i ++ )
       {
-        newDuplicationExpressions [ i ] = translateToCoreSyntax ( pDuplication
-            .getExpressions ( i ) , true ) ;
+        newDuplicationExpressions [ i ] = translateToCoreSyntax (
+            duplicationExpressions [ i ] , true ) ;
       }
       return new Duplication ( pDuplication.getIdentifiers ( ) ,
           newDuplicationExpressions ) ;
@@ -210,12 +212,12 @@ public class L2OLanguageTranslator extends L2LanguageTranslator
   {
     if ( pRecursive )
     {
-      Expression [ ] newRowExpressions = new Expression [ pRow
-          .getExpressions ( ).length ] ;
+      Expression [ ] rowExpressions = pRow.getExpressions ( ) ;
+      Expression [ ] newRowExpressions = new Expression [ rowExpressions.length ] ;
       for ( int i = 0 ; i < newRowExpressions.length ; i ++ )
       {
-        newRowExpressions [ i ] = translateToCoreSyntax ( pRow
-            .getExpressions ( i ) , true ) ;
+        newRowExpressions [ i ] = translateToCoreSyntax ( rowExpressions [ i ] ,
+            true ) ;
       }
       return new Row ( newRowExpressions ) ;
     }

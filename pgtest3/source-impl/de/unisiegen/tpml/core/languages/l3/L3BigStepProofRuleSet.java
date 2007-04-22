@@ -171,7 +171,7 @@ public class L3BigStepProofRuleSet extends L2BigStepProofRuleSet
         throw new ClassCastException ( ) ;
       }
       // jep, we can perform (HD) then
-      context.setProofNodeResult ( node , tuple.getExpressions ( 0 ) ) ;
+      context.setProofNodeResult ( node , tuple.getExpressions ( ) [ 0 ] ) ;
     }
     catch ( ClassCastException e )
     {
@@ -291,7 +291,7 @@ public class L3BigStepProofRuleSet extends L2BigStepProofRuleSet
     if ( context.isMemoryEnabled ( ) )
     {
       // add a child node for the first expression
-      context.addProofNode ( node , list.getExpressions ( 0 ) ) ;
+      context.addProofNode ( node , list.getExpressions ( ) [ 0 ] ) ;
     }
     else
     {
@@ -322,8 +322,8 @@ public class L3BigStepProofRuleSet extends L2BigStepProofRuleSet
       if ( node.getLastChild ( ).isProven ( ) )
       {
         // add the next child node
-        context.addProofNode ( node , list.getExpressions ( node
-            .getChildCount ( ) ) ) ;
+        context.addProofNode ( node , list.getExpressions ( ) [ node
+            .getChildCount ( ) ] ) ;
       }
     }
     else
@@ -427,7 +427,7 @@ public class L3BigStepProofRuleSet extends L2BigStepProofRuleSet
         throw new ClassCastException ( ) ;
       }
       // jep, we can perform (TL) then
-      context.setProofNodeResult ( node , tuple.getExpressions ( 1 ) ) ;
+      context.setProofNodeResult ( node , tuple.getExpressions ( ) [ 1 ] ) ;
     }
     catch ( ClassCastException e )
     {
@@ -452,7 +452,7 @@ public class L3BigStepProofRuleSet extends L2BigStepProofRuleSet
     if ( context.isMemoryEnabled ( ) )
     {
       // add a child node for the first sub expression
-      context.addProofNode ( node , tuple.getExpressions ( 0 ) ) ;
+      context.addProofNode ( node , tuple.getExpressions ( ) [ 0 ] ) ;
     }
     else
     {
@@ -483,8 +483,8 @@ public class L3BigStepProofRuleSet extends L2BigStepProofRuleSet
       if ( node.getLastChild ( ).isProven ( ) )
       {
         // add the next child node
-        context.addProofNode ( node , tuple.getExpressions ( node
-            .getChildCount ( ) ) ) ;
+        context.addProofNode ( node , tuple.getExpressions ( ) [ node
+            .getChildCount ( ) ] ) ;
       }
     }
     else
