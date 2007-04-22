@@ -53,13 +53,13 @@ public class OutlineNodeCache
   /**
    * The start index of the {@link Identifier}.
    */
-  private int boundedStart ;
+  private int boundStart ;
 
 
   /**
    * The end index of the {@link Identifier}.
    */
-  private int boundedEnd ;
+  private int boundEnd ;
 
 
   /**
@@ -95,15 +95,15 @@ public class OutlineNodeCache
    *          nodes.
    * @param pReplace The selected {@link Expression} should be replaced in
    *          higher nodes.
-   * @param pBoundedStart The start index of the {@link Identifier}.
-   * @param pBoundedEnd The end index of the {@link Identifier}.
+   * @param pBoundStart The start index of the {@link Identifier}.
+   * @param pBoundEnd The end index of the {@link Identifier}.
    * @param pBreakCount The break count.
    * @param pOutlineBinding The {@link OutlineBinding}.
    * @param pCaption The caption of the node.
    */
   public OutlineNodeCache ( int pSelectionStart , int pSelectionEnd ,
       boolean pSelection , boolean pBinding , boolean pFree , boolean pReplace ,
-      int pBoundedStart , int pBoundedEnd , int pBreakCount ,
+      int pBoundStart , int pBoundEnd , int pBreakCount ,
       OutlineBinding pOutlineBinding , String pCaption )
   {
     this.selectionStart = pSelectionStart ;
@@ -112,8 +112,8 @@ public class OutlineNodeCache
     this.binding = pBinding ;
     this.free = pFree ;
     this.replace = pReplace ;
-    this.boundedStart = pBoundedStart ;
-    this.boundedEnd = pBoundedEnd ;
+    this.boundStart = pBoundStart ;
+    this.boundEnd = pBoundEnd ;
     this.breakCount = pBreakCount ;
     this.outlineBinding = pOutlineBinding ;
     this.caption = pCaption ;
@@ -124,11 +124,11 @@ public class OutlineNodeCache
    * Returns the end index of the {@link Identifier}.
    * 
    * @return The end index of the {@link Identifier}..
-   * @see #boundedEnd
+   * @see #boundEnd
    */
-  public int getBoundedEnd ( )
+  public int getBoundEnd ( )
   {
-    return this.boundedEnd ;
+    return this.boundEnd ;
   }
 
 
@@ -136,11 +136,11 @@ public class OutlineNodeCache
    * Returns the start index of the {@link Identifier}.
    * 
    * @return The start index of the {@link Identifier}..
-   * @see #boundedStart
+   * @see #boundStart
    */
-  public int getBoundedStart ( )
+  public int getBoundStart ( )
   {
-    return this.boundedStart ;
+    return this.boundStart ;
   }
 
 

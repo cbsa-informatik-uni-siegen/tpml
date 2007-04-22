@@ -169,7 +169,7 @@ public final class OutlineTreeSelectionListener implements
           Identifier identifier = ( Identifier ) selectedNode
               .getPrettyPrintable ( ) ;
           /*
-           * Highlight the bounded Identifiers in the other childs of a parent
+           * Highlight the bound Identifiers in the other childs of a parent
            * row.
            */
           if ( ( pList.get ( i ).getPrettyPrintable ( ) instanceof Attribute )
@@ -213,7 +213,7 @@ public final class OutlineTreeSelectionListener implements
           else
           {
             /*
-             * Highlight the Identifier in the child node with the bounded
+             * Highlight the Identifier in the child node with the bound
              * Identifier index.
              */
             if ( pList.get ( i ).getPrettyPrintable ( ) == identifier
@@ -288,7 +288,7 @@ public final class OutlineTreeSelectionListener implements
     OutlineNode selectedNode = pList.get ( pList.size ( ) - 1 ) ;
     OutlineNode nodeAttribute = pList.get ( pList.size ( ) - 2 ) ;
     /*
-     * Highlight the bounded Identifiers of an Attribute in the other childs of
+     * Highlight the bound Identifiers of an Attribute in the other childs of
      * the parent row.
      */
     if ( nodeAttribute.getPrettyPrintable ( ) instanceof Attribute )
@@ -308,6 +308,12 @@ public final class OutlineTreeSelectionListener implements
        * Sets the new binding in higher nodes
        */
       pList.get ( i ).setOutlineBinding ( selectedNode.getOutlineBinding ( ) ) ;
+      /*
+       * Sets the BoundToIdentifier value.
+       */
+      pList.get ( i ).setBindingIdentifier (
+          ( ( Identifier ) selectedNode.getPrettyPrintable ( ) )
+              .getBoundToIdentifier ( ) ) ;
       /*
        * It should be replaced in higher nodes
        */

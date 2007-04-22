@@ -1,10 +1,10 @@
 package de.unisiegen.tpml.core.expressions ;
 
 
-import java.text.MessageFormat;
+import java.text.MessageFormat ;
 import java.util.ArrayList ;
 import java.util.Arrays ;
-import de.unisiegen.tpml.core.Messages;
+import de.unisiegen.tpml.core.Messages ;
 import de.unisiegen.tpml.core.exceptions.CheckDisjunctionException ;
 import de.unisiegen.tpml.core.interfaces.BoundIdentifiers ;
 import de.unisiegen.tpml.core.interfaces.ChildrenExpressions ;
@@ -168,7 +168,7 @@ public final class CurriedMethod extends Expression implements
         }
       }
       CheckDisjunctionException.throwException ( this.identifiers [ i ] ,
-          negativeIdentifiers,MessageFormat.format ( Messages
+          negativeIdentifiers , MessageFormat.format ( Messages
               .getString ( "Parser.3" ) , this.identifiers [ i ] ) ) ; //$NON-NLS-1$
     }
   }
@@ -330,11 +330,11 @@ public final class CurriedMethod extends Expression implements
    */
   public ArrayList < ArrayList < Identifier >> getIdentifiersBound ( )
   {
-    if ( this.boundedIdentifiers == null )
+    if ( this.boundIdentifiers == null )
     {
-      this.boundedIdentifiers = new ArrayList < ArrayList < Identifier >> ( ) ;
-      ArrayList < Identifier > boundedE = this.expressions [ 0 ].free ( ) ;
-      this.boundedIdentifiers.add ( null ) ;
+      this.boundIdentifiers = new ArrayList < ArrayList < Identifier >> ( ) ;
+      ArrayList < Identifier > boundE = this.expressions [ 0 ].free ( ) ;
+      this.boundIdentifiers.add ( null ) ;
       for ( int i = 1 ; i < this.identifiers.length ; i ++ )
       {
         /*
@@ -350,22 +350,22 @@ public final class CurriedMethod extends Expression implements
             break ;
           }
         }
-        ArrayList < Identifier > boundedIdList = new ArrayList < Identifier > ( ) ;
+        ArrayList < Identifier > boundIdList = new ArrayList < Identifier > ( ) ;
         if ( hasBinding )
         {
-          for ( Identifier freeId : boundedE )
+          for ( Identifier freeId : boundE )
           {
             if ( this.identifiers [ i ].equals ( freeId ) )
             {
               freeId.setBoundTo ( this , this.identifiers [ i ] ) ;
-              boundedIdList.add ( freeId ) ;
+              boundIdList.add ( freeId ) ;
             }
           }
-          this.boundedIdentifiers.add ( boundedIdList ) ;
+          this.boundIdentifiers.add ( boundIdList ) ;
         }
       }
     }
-    return this.boundedIdentifiers ;
+    return this.boundIdentifiers ;
   }
 
 

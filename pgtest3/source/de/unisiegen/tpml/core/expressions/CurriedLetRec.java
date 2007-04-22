@@ -175,11 +175,11 @@ public final class CurriedLetRec extends CurriedLet implements
   @ Override
   public ArrayList < ArrayList < Identifier >> getIdentifiersBound ( )
   {
-    if ( this.boundedIdentifiers == null )
+    if ( this.boundIdentifiers == null )
     {
-      this.boundedIdentifiers = new ArrayList < ArrayList < Identifier >> ( ) ;
-      ArrayList < Identifier > boundedE1 = this.expressions [ 0 ].free ( ) ;
-      ArrayList < Identifier > boundedE2 = this.expressions [ 1 ].free ( ) ;
+      this.boundIdentifiers = new ArrayList < ArrayList < Identifier >> ( ) ;
+      ArrayList < Identifier > boundE1 = this.expressions [ 0 ].free ( ) ;
+      ArrayList < Identifier > boundE2 = this.expressions [ 1 ].free ( ) ;
       for ( int i = 0 ; i < this.identifiers.length ; i ++ )
       {
         if ( i == 0 )
@@ -197,27 +197,27 @@ public final class CurriedLetRec extends CurriedLet implements
               break ;
             }
           }
-          ArrayList < Identifier > boundedIdList = new ArrayList < Identifier > ( ) ;
+          ArrayList < Identifier > boundIdList = new ArrayList < Identifier > ( ) ;
           if ( searchInE1 )
           {
-            for ( Identifier freeId : boundedE1 )
+            for ( Identifier freeId : boundE1 )
             {
               if ( this.identifiers [ 0 ].equals ( freeId ) )
               {
                 freeId.setBoundTo ( this , this.identifiers [ 0 ] ) ;
-                boundedIdList.add ( freeId ) ;
+                boundIdList.add ( freeId ) ;
               }
             }
           }
-          for ( Identifier freeId : boundedE2 )
+          for ( Identifier freeId : boundE2 )
           {
             if ( this.identifiers [ 0 ].equals ( freeId ) )
             {
               freeId.setBoundTo ( this , this.identifiers [ 0 ] ) ;
-              boundedIdList.add ( freeId ) ;
+              boundIdList.add ( freeId ) ;
             }
           }
-          this.boundedIdentifiers.add ( boundedIdList ) ;
+          this.boundIdentifiers.add ( boundIdList ) ;
         }
         else
         {
@@ -234,23 +234,23 @@ public final class CurriedLetRec extends CurriedLet implements
               break ;
             }
           }
-          ArrayList < Identifier > boundedIdList = new ArrayList < Identifier > ( ) ;
+          ArrayList < Identifier > boundIdList = new ArrayList < Identifier > ( ) ;
           if ( hasBinding )
           {
-            for ( Identifier freeId : boundedE1 )
+            for ( Identifier freeId : boundE1 )
             {
               if ( this.identifiers [ i ].equals ( freeId ) )
               {
                 freeId.setBoundTo ( this , this.identifiers [ i ] ) ;
-                boundedIdList.add ( freeId ) ;
+                boundIdList.add ( freeId ) ;
               }
             }
           }
-          this.boundedIdentifiers.add ( boundedIdList ) ;
+          this.boundIdentifiers.add ( boundIdList ) ;
         }
       }
     }
-    return this.boundedIdentifiers ;
+    return this.boundIdentifiers ;
   }
 
 

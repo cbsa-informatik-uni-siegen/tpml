@@ -368,13 +368,13 @@ public final class OutlineNode extends DefaultMutableTreeNode
   /**
    * The start index of the {@link Identifier}.
    */
-  private int boundedStart ;
+  private int boundStart ;
 
 
   /**
    * The end index of the {@link Identifier}.
    */
-  private int boundedEnd ;
+  private int boundEnd ;
 
 
   /**
@@ -506,8 +506,8 @@ public final class OutlineNode extends DefaultMutableTreeNode
     this.isExpression = false ;
     this.isIdentifier = false ;
     this.isType = false ;
-    this.boundedStart = NO_BINDING ;
-    this.boundedEnd = NO_BINDING ;
+    this.boundStart = NO_BINDING ;
+    this.boundEnd = NO_BINDING ;
     this.lastSelectionStart = NO_SELECTION ;
     this.lastSelectionEnd = NO_SELECTION ;
     this.outlineNodeCacheList = new OutlineNodeCacheList ( ) ;
@@ -685,10 +685,10 @@ public final class OutlineNode extends DefaultMutableTreeNode
    */
   private final int charIsBindingIdentifier ( int pCharIndex )
   {
-    if ( ( pCharIndex >= this.boundedStart )
-        && ( pCharIndex <= this.boundedEnd ) )
+    if ( ( pCharIndex >= this.boundStart )
+        && ( pCharIndex <= this.boundEnd ) )
     {
-      return this.boundedEnd - this.boundedStart + 1 ;
+      return this.boundEnd - this.boundStart + 1 ;
     }
     return - 1 ;
   }
@@ -725,7 +725,7 @@ public final class OutlineNode extends DefaultMutableTreeNode
       catch ( IllegalArgumentException e )
       {
         /*
-         * Happens if the bounded Identifiers are not in this node.
+         * Happens if the bound Identifiers are not in this node.
          */
       }
     }
@@ -939,14 +939,25 @@ public final class OutlineNode extends DefaultMutableTreeNode
   {
     if ( ( this.isType ) || ( pBindingIdentifier == null ) )
     {
-      this.boundedStart = NO_BINDING ;
-      this.boundedEnd = NO_BINDING ;
+      this.boundStart = NO_BINDING ;
+      this.boundEnd = NO_BINDING ;
       return ;
     }
-    PrettyAnnotation prettyAnnotation = this.expression.toPrettyString ( )
-        .getAnnotationForPrintable ( pBindingIdentifier ) ;
-    this.boundedStart = prettyAnnotation.getStartOffset ( ) ;
-    this.boundedEnd = prettyAnnotation.getEndOffset ( ) ;
+    try
+    {
+      PrettyAnnotation prettyAnnotation = this.expression.toPrettyString ( )
+          .getAnnotationForPrintable ( pBindingIdentifier ) ;
+      this.boundStart = prettyAnnotation.getStartOffset ( ) ;
+      this.boundEnd = prettyAnnotation.getEndOffset ( ) ;
+    }
+    catch ( IllegalArgumentException e )
+    {
+      /*
+       * Happens if the bound Identifiers are not in this node.
+       */
+      this.boundStart = NO_BINDING ;
+      this.boundEnd = NO_BINDING ;
+    }
   }
 
 
@@ -1035,8 +1046,8 @@ public final class OutlineNode extends DefaultMutableTreeNode
     this.lastSelectionEnd = selectionEnd ;
     String cache = this.outlineNodeCacheList.getCaption ( selectionStart ,
         selectionEnd , selection , binding , free ,
-        ( replace && this.replaceInThisNode ) , this.boundedStart ,
-        this.boundedEnd , this.breakCount , this.outlineBinding ) ;
+        ( replace && this.replaceInThisNode ) , this.boundStart ,
+        this.boundEnd , this.breakCount , this.outlineBinding ) ;
     if ( cache != null )
     {
       this.captionHTML = cache ;
@@ -1132,12 +1143,12 @@ public final class OutlineNode extends DefaultMutableTreeNode
             prettyCharIterator , result , prefix , this.bindingIdColor ) ;
       }
       /*
-       * The selected Identifier-Expression is bounded in this Expression, but
+       * The selected Identifier-Expression is bound in this Expression, but
        * should not be selected
        */
       else if ( ( ! selection ) && ( binding )
-          && ( this.boundedStart != NO_BINDING )
-          && ( this.boundedEnd != NO_BINDING )
+          && ( this.boundStart != NO_BINDING )
+          && ( this.boundEnd != NO_BINDING )
           && ( charIndex == selectionStart ) )
       {
         charIndex = updateCaptionSelection ( charIndex , selectionEnd ,
@@ -1207,8 +1218,8 @@ public final class OutlineNode extends DefaultMutableTreeNode
     result.append ( EXPRESSION_END ) ;
     OutlineNodeCache outlineNodeCache = new OutlineNodeCache ( selectionStart ,
         selectionEnd , selection , binding , free ,
-        ( replace && this.replaceInThisNode ) , this.boundedStart ,
-        this.boundedEnd , this.breakCount , this.outlineBinding , result
+        ( replace && this.replaceInThisNode ) , this.boundStart ,
+        this.boundEnd , this.breakCount , this.outlineBinding , result
             .toString ( ) ) ;
     this.outlineNodeCacheList.add ( outlineNodeCache ) ;
     this.captionHTML = result.toString ( ) ;

@@ -149,7 +149,7 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
   /**
    * TODO
    */
-  protected ArrayList < ArrayList < Identifier >> boundedIdentifiers = null ;
+  protected ArrayList < ArrayList < Identifier >> boundIdentifiers = null ;
 
 
   /**

@@ -7,7 +7,7 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation ;
 
 
 /**
- * Stores the start and end offsets of the bounded {@link Identifier}s.
+ * Stores the start and end offsets of the bounde{@link Identifier}s.
  * 
  * @author Benjamin Mies
  * @author Christian Fehler

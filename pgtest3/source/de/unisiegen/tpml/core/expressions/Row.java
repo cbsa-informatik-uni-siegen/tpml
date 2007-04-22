@@ -146,12 +146,12 @@ public final class Row extends Expression implements ChildrenExpressions
     if ( this.free == null )
     {
       this.free = new ArrayList < Identifier > ( ) ;
-      ArrayList < Identifier > newBounded = new ArrayList < Identifier > ( ) ;
+      ArrayList < Identifier > newBound = new ArrayList < Identifier > ( ) ;
       for ( Expression expr : this.expressions )
       {
         ArrayList < Identifier > freeCurrent = new ArrayList < Identifier > ( ) ;
         freeCurrent.addAll ( expr.free ( ) ) ;
-        while ( freeCurrent.removeAll ( newBounded ) )
+        while ( freeCurrent.removeAll ( newBound ) )
         {
           // Remove all Identifiers with the same name
         }
@@ -159,7 +159,7 @@ public final class Row extends Expression implements ChildrenExpressions
         if ( expr instanceof Attribute )
         {
           Attribute attribute = ( Attribute ) expr ;
-          newBounded.add ( attribute.getId ( ) ) ;
+          newBound.add ( attribute.getId ( ) ) ;
         }
       }
     }
@@ -173,9 +173,9 @@ public final class Row extends Expression implements ChildrenExpressions
    * @param pAttribute TODO
    * @return TODO
    */
-  public ArrayList < Identifier > getBoundedIdentifiers ( Attribute pAttribute )
+  public ArrayList < Identifier > getIdentifiersBound ( Attribute pAttribute )
   {
-    ArrayList < Identifier > boundedId = new ArrayList < Identifier > ( ) ;
+    ArrayList < Identifier > boundId = new ArrayList < Identifier > ( ) ;
     for ( int i = 0 ; i < this.expressions.length ; i ++ )
     {
       if ( pAttribute == this.expressions [ i ] )
@@ -190,14 +190,14 @@ public final class Row extends Expression implements ChildrenExpressions
             if ( attribute.getId ( ).equals ( freeId ) )
             {
               freeId.setBoundTo ( attribute , attribute.getId ( ) ) ;
-              boundedId.add ( freeId ) ;
+              boundId.add ( freeId ) ;
             }
           }
         }
-        return boundedId ;
+        return boundId ;
       }
     }
-    return boundedId ;
+    return boundId ;
   }
 
 

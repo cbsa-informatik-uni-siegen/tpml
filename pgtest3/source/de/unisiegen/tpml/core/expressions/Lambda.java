@@ -312,22 +312,22 @@ public final class Lambda extends Value implements BoundIdentifiers ,
    */
   public ArrayList < ArrayList < Identifier >> getIdentifiersBound ( )
   {
-    if ( this.boundedIdentifiers == null )
+    if ( this.boundIdentifiers == null )
     {
-      this.boundedIdentifiers = new ArrayList < ArrayList < Identifier >> ( ) ;
-      ArrayList < Identifier > boundedIdList = new ArrayList < Identifier > ( ) ;
-      ArrayList < Identifier > boundedE = this.expressions [ 0 ].free ( ) ;
-      for ( Identifier freeId : boundedE )
+      this.boundIdentifiers = new ArrayList < ArrayList < Identifier >> ( ) ;
+      ArrayList < Identifier > boundIdList = new ArrayList < Identifier > ( ) ;
+      ArrayList < Identifier > boundE = this.expressions [ 0 ].free ( ) ;
+      for ( Identifier freeId : boundE )
       {
         if ( this.identifiers [ 0 ].equals ( freeId ) )
         {
           freeId.setBoundTo ( this , this.identifiers [ 0 ] ) ;
-          boundedIdList.add ( freeId ) ;
+          boundIdList.add ( freeId ) ;
         }
       }
-      this.boundedIdentifiers.add ( boundedIdList ) ;
+      this.boundIdentifiers.add ( boundIdList ) ;
     }
-    return this.boundedIdentifiers ;
+    return this.boundIdentifiers ;
   }
 
 

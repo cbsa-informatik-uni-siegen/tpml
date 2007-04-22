@@ -345,10 +345,10 @@ public final class MultiLet extends Expression implements BoundIdentifiers ,
    */
   public ArrayList < ArrayList < Identifier >> getIdentifiersBound ( )
   {
-    if ( this.boundedIdentifiers == null )
+    if ( this.boundIdentifiers == null )
     {
-      this.boundedIdentifiers = new ArrayList < ArrayList < Identifier >> ( ) ;
-      ArrayList < Identifier > boundedE2 = this.expressions [ 1 ].free ( ) ;
+      this.boundIdentifiers = new ArrayList < ArrayList < Identifier >> ( ) ;
+      ArrayList < Identifier > boundE2 = this.expressions [ 1 ].free ( ) ;
       for ( int i = 0 ; i < this.identifiers.length ; i ++ )
       {
         /*
@@ -364,22 +364,22 @@ public final class MultiLet extends Expression implements BoundIdentifiers ,
             break ;
           }
         }
-        ArrayList < Identifier > boundedIdList = new ArrayList < Identifier > ( ) ;
+        ArrayList < Identifier > boundIdList = new ArrayList < Identifier > ( ) ;
         if ( hasBinding )
         {
-          for ( Identifier freeId : boundedE2 )
+          for ( Identifier freeId : boundE2 )
           {
             if ( this.identifiers [ i ].equals ( freeId ) )
             {
               freeId.setBoundTo ( this , this.identifiers [ i ] ) ;
-              boundedIdList.add ( freeId ) ;
+              boundIdList.add ( freeId ) ;
             }
           }
         }
-        this.boundedIdentifiers.add ( boundedIdList ) ;
+        this.boundIdentifiers.add ( boundIdList ) ;
       }
     }
-    return this.boundedIdentifiers ;
+    return this.boundIdentifiers ;
   }
 
 

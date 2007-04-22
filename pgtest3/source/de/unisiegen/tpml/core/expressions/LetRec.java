@@ -125,31 +125,31 @@ public final class LetRec extends Let implements BoundIdentifiers ,
   @ Override
   public ArrayList < ArrayList < Identifier >> getIdentifiersBound ( )
   {
-    if ( this.boundedIdentifiers == null )
+    if ( this.boundIdentifiers == null )
     {
-      this.boundedIdentifiers = new ArrayList < ArrayList < Identifier >> ( ) ;
-      ArrayList < Identifier > boundedIdList = new ArrayList < Identifier > ( ) ;
-      ArrayList < Identifier > boundedE1 = this.expressions [ 0 ].free ( ) ;
-      for ( Identifier freeId : boundedE1 )
+      this.boundIdentifiers = new ArrayList < ArrayList < Identifier >> ( ) ;
+      ArrayList < Identifier > boundIdList = new ArrayList < Identifier > ( ) ;
+      ArrayList < Identifier > boundE1 = this.expressions [ 0 ].free ( ) ;
+      for ( Identifier freeId : boundE1 )
       {
         if ( this.identifiers [ 0 ].equals ( freeId ) )
         {
           freeId.setBoundTo ( this , this.identifiers [ 0 ] ) ;
-          boundedIdList.add ( freeId ) ;
+          boundIdList.add ( freeId ) ;
         }
       }
-      ArrayList < Identifier > boundedE2 = this.expressions [ 1 ].free ( ) ;
-      for ( Identifier freeId : boundedE2 )
+      ArrayList < Identifier > boundE2 = this.expressions [ 1 ].free ( ) ;
+      for ( Identifier freeId : boundE2 )
       {
         if ( this.identifiers [ 0 ].equals ( freeId ) )
         {
           freeId.setBoundTo ( this , this.identifiers [ 0 ] ) ;
-          boundedIdList.add ( freeId ) ;
+          boundIdList.add ( freeId ) ;
         }
       }
-      this.boundedIdentifiers.add ( boundedIdList ) ;
+      this.boundIdentifiers.add ( boundIdList ) ;
     }
-    return this.boundedIdentifiers ;
+    return this.boundIdentifiers ;
   }
 
 

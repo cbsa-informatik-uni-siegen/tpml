@@ -174,8 +174,8 @@ public final class DefaultOutline implements Outline
     Identifier [ ] identifiers = null ;
     int [ ] identifiersIndex = null ;
     String [ ] identifiersPrefix = null ;
-    // Bounded Identifier
-    ArrayList < ArrayList < Identifier >> boundedIdentifiers = null ;
+    // Bound Identifier
+    ArrayList < ArrayList < Identifier >> identifiersBound = null ;
     // Type
     MonoType [ ] types = null ;
     int [ ] typesIndex = null ;
@@ -265,7 +265,7 @@ public final class DefaultOutline implements Outline
           identifiersPrefix = ( String [ ] ) pExpression.getClass ( )
               .getMethod ( GET_IDENTIFIERS_PREFIX , new Class [ 0 ] ).invoke (
                   pExpression , new Object [ 0 ] ) ;
-          boundedIdentifiers = ( ArrayList < ArrayList < Identifier >> ) pExpression
+          identifiersBound = ( ArrayList < ArrayList < Identifier >> ) pExpression
               .getClass ( )
               .getMethod ( GET_IDENTIFIERS_BOUND , new Class [ 0 ] ).invoke (
                   pExpression , new Object [ 0 ] ) ;
@@ -369,13 +369,13 @@ public final class DefaultOutline implements Outline
       {
         for ( int i = 0 ; i < identifiers.length ; i ++ )
         {
-          if ( boundedIdentifiers == null )
+          if ( identifiersBound == null )
           {
             outlineBinding = null ;
           }
           else
           {
-            outlineBinding = new OutlineBinding ( boundedIdentifiers.get ( i ) ) ;
+            outlineBinding = new OutlineBinding ( identifiersBound.get ( i ) ) ;
           }
           outlineNodeId = new OutlineNode ( identifiers [ i ] ,
               identifiersPrefix [ i ] , identifiersIndex [ i ] , outlineBinding ) ;
@@ -439,14 +439,13 @@ public final class DefaultOutline implements Outline
           {
             if ( current == identifiers [ j ] )
             {
-              if ( boundedIdentifiers == null )
+              if ( identifiersBound == null )
               {
                 outlineBinding = null ;
               }
               else
               {
-                outlineBinding = new OutlineBinding ( boundedIdentifiers
-                    .get ( i ) ) ;
+                outlineBinding = new OutlineBinding ( identifiersBound.get ( i ) ) ;
               }
               outlineNodeId = new OutlineNode ( identifiers [ j ] ,
                   identifiersPrefix [ j ] , identifiersIndex [ j ] ,

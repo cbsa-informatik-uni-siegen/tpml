@@ -9,7 +9,7 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation ;
 
 
 /**
- * Calculates the bounded {@link Identifier}s.
+ * Calculates the bound {@link Identifier}s.
  * 
  * @author Benjamin Mies
  * @author Christian Fehler
@@ -41,7 +41,7 @@ public final class ShowBonds
 
 
   /**
-   * Checks the given {@link Expression} for bounded {@link Identifier}s.
+   * Checks the given {@link Expression} for bound {@link Identifier}s.
    * 
    * @param pExpression The input {@link Expression}.
    */
@@ -60,20 +60,20 @@ public final class ShowBonds
           Identifier [ ] id = ( Identifier [ ] ) pExpression.getClass ( )
               .getMethod ( GET_IDENTIFIERS , new Class [ 0 ] ).invoke (
                   pExpression , new Object [ 0 ] ) ;
-          // Invoke getBoundedIdentifiers
-          ArrayList < ArrayList < Identifier >> bounded = ( ArrayList < ArrayList < Identifier >> ) pExpression
+          // Invoke getIdentifiersBound
+          ArrayList < ArrayList < Identifier >> bound = ( ArrayList < ArrayList < Identifier >> ) pExpression
               .getClass ( )
               .getMethod ( GET_IDENTIFIERS_BOUND , new Class [ 0 ] ).invoke (
                   pExpression , new Object [ 0 ] ) ;
           // Create Bonds
-          if ( bounded == null )
+          if ( bound == null )
           {
             return ;
           }
           PrettyAnnotation current ;
-          for ( int i = 0 ; i < bounded.size ( ) ; i ++ )
+          for ( int i = 0 ; i < bound.size ( ) ; i ++ )
           {
-            if ( bounded.get ( i ) == null )
+            if ( bound.get ( i ) == null )
             {
               continue ;
             }
@@ -81,12 +81,12 @@ public final class ShowBonds
                 .getAnnotationForPrintable ( id [ i ] ) ;
             Bonds bonds = new Bonds ( current.getStartOffset ( ) , current
                 .getEndOffset ( ) ) ;
-            for ( Identifier boundedId : bounded.get ( i ) )
+            for ( Identifier boundId : bound.get ( i ) )
             {
               try
               {
                 bonds.addPrettyAnnotation ( this.expression.toPrettyString ( )
-                    .getAnnotationForPrintable ( boundedId ) ) ;
+                    .getAnnotationForPrintable ( boundId ) ) ;
               }
               catch ( IllegalArgumentException e )
               {

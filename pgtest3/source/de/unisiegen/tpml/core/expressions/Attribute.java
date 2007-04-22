@@ -246,19 +246,19 @@ public final class Attribute extends Expression implements BoundIdentifiers ,
    */
   public ArrayList < ArrayList < Identifier >> getIdentifiersBound ( )
   {
-    if ( this.boundedIdentifiers == null )
+    if ( this.boundIdentifiers == null )
     {
-      this.boundedIdentifiers = new ArrayList < ArrayList < Identifier >> ( ) ;
-      ArrayList < Identifier > boundedIdList = ( ( Row ) this.parent )
-          .getBoundedIdentifiers ( this ) ;
+      this.boundIdentifiers = new ArrayList < ArrayList < Identifier >> ( ) ;
+      ArrayList < Identifier > boundIdList = ( ( Row ) this.parent )
+          .getIdentifiersBound ( this ) ;
       // Set the bound Identifier to an Attribute-Identifier
-      for ( Identifier boundId : boundedIdList )
+      for ( Identifier boundId : boundIdList )
       {
         boundId.setIdentifierSet ( Identifier.IdentifierSet.A ) ;
       }
-      this.boundedIdentifiers.add ( boundedIdList ) ;
+      this.boundIdentifiers.add ( boundIdList ) ;
     }
-    return this.boundedIdentifiers ;
+    return this.boundIdentifiers ;
   }
 
 

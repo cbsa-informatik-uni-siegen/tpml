@@ -1,9 +1,9 @@
 package de.unisiegen.tpml.core.expressions ;
 
 
-import java.text.MessageFormat;
+import java.text.MessageFormat ;
 import java.util.ArrayList ;
-import de.unisiegen.tpml.core.Messages;
+import de.unisiegen.tpml.core.Messages ;
 import de.unisiegen.tpml.core.exceptions.CheckDisjunctionException ;
 import de.unisiegen.tpml.core.interfaces.BoundIdentifiers ;
 import de.unisiegen.tpml.core.interfaces.ChildrenExpressions ;
@@ -154,8 +154,8 @@ public class Let extends Expression implements BoundIdentifiers , DefaultTypes ,
       }
     }
     CheckDisjunctionException.throwException ( this.identifiers [ 0 ] ,
-        negativeIdentifiers ,MessageFormat.format ( Messages
-            .getString ( "Parser.3" ) , this.identifiers [ 0 ] )) ; //$NON-NLS-1$
+        negativeIdentifiers , MessageFormat.format ( Messages
+            .getString ( "Parser.3" ) , this.identifiers [ 0 ] ) ) ; //$NON-NLS-1$
   }
 
 
@@ -329,22 +329,22 @@ public class Let extends Expression implements BoundIdentifiers , DefaultTypes ,
    */
   public ArrayList < ArrayList < Identifier >> getIdentifiersBound ( )
   {
-    if ( this.boundedIdentifiers == null )
+    if ( this.boundIdentifiers == null )
     {
-      this.boundedIdentifiers = new ArrayList < ArrayList < Identifier >> ( ) ;
-      ArrayList < Identifier > boundedIdList = new ArrayList < Identifier > ( ) ;
-      ArrayList < Identifier > boundedE2 = this.expressions [ 1 ].free ( ) ;
-      for ( Identifier freeId : boundedE2 )
+      this.boundIdentifiers = new ArrayList < ArrayList < Identifier >> ( ) ;
+      ArrayList < Identifier > boundIdList = new ArrayList < Identifier > ( ) ;
+      ArrayList < Identifier > boundE2 = this.expressions [ 1 ].free ( ) ;
+      for ( Identifier freeId : boundE2 )
       {
         if ( this.identifiers [ 0 ].equals ( freeId ) )
         {
           freeId.setBoundTo ( this , this.identifiers [ 0 ] ) ;
-          boundedIdList.add ( freeId ) ;
+          boundIdList.add ( freeId ) ;
         }
       }
-      this.boundedIdentifiers.add ( boundedIdList ) ;
+      this.boundIdentifiers.add ( boundIdList ) ;
     }
-    return this.boundedIdentifiers ;
+    return this.boundIdentifiers ;
   }
 
 

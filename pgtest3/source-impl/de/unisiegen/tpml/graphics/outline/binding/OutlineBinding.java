@@ -7,7 +7,7 @@ import de.unisiegen.tpml.core.expressions.Identifier ;
 
 
 /**
- * Finds the bounded {@link Identifier}s in a given {@link Expression}.
+ * Finds the bound {@link Identifier}s in a given {@link Expression}.
  * 
  * @author Christian Fehler
  * @version $Rev: 995 $
@@ -15,7 +15,7 @@ import de.unisiegen.tpml.core.expressions.Identifier ;
 public final class OutlineBinding
 {
   /**
-   * The list of {@link Identifier}s, which are bounded by the given
+   * The list of {@link Identifier}s, which are bound by the given
    * {@link Identifier} in the given {@link Expression}.
    * 
    * @see #get(int)
@@ -25,9 +25,9 @@ public final class OutlineBinding
 
 
   /**
-   * Initilizes the list and sets the bounded values.
+   * Initilizes the list and sets the bound values.
    * 
-   * @param pList The list of bounded {@link Identifier}s.
+   * @param pList The list of bound {@link Identifier}s.
    */
   public OutlineBinding ( ArrayList < Identifier > pList )
   {
@@ -71,10 +71,10 @@ public final class OutlineBinding
 
 
   /**
-   * Returns the bounded {@link Identifier} in the {@link Expression}.
+   * Returns the bound {@link Identifier} in the {@link Expression}.
    * 
    * @param pIndex The index of the {@link Identifier}.
-   * @return The bounded {@link Identifier} in the {@link Expression}.
+   * @return The bound {@link Identifier} in the {@link Expression}.
    * @see #list
    */
   public final Identifier get ( int pIndex )
@@ -86,7 +86,7 @@ public final class OutlineBinding
   /**
    * Removes the {@link Identifier} with the given index.
    * 
-   * @param pIndex The index of the bounded {@link Identifier}.
+   * @param pIndex The index of the bound {@link Identifier}.
    * @return The removed {@link Identifier}.
    */
   public final Identifier remove ( int pIndex )
@@ -96,7 +96,7 @@ public final class OutlineBinding
 
 
   /**
-   * Returns the size of the list. The size is equal to the number of bounded
+   * Returns the size of the list. The size is equal to the number of bound
    * {@link Identifier}s.
    * 
    * @return The number of {@link Identifier}s.

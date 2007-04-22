@@ -46,7 +46,7 @@ public final class Identifier extends Value
 
 
   /**
-   * The {@link Expression} in which this {@link Identifier} is bounded.
+   * The {@link Expression} in which this {@link Identifier} is bound.
    * 
    * @see #getBoundToExpression()
    * @see #setBoundTo(Expression,Identifier)
@@ -55,7 +55,7 @@ public final class Identifier extends Value
 
 
   /**
-   * The {@link Identifier} to which this {@link Identifier} is bounded.
+   * The {@link Identifier} to which this {@link Identifier} is bound.
    * 
    * @see #getBoundToIdentifier()
    * @see #setBoundTo(Expression,Identifier)
@@ -297,18 +297,18 @@ public final class Identifier extends Value
    * Sets the {@link Identifier} to which this {@link Identifier} is bound and
    * the {@link Expression} in which this {@link Identifier} is bound.
    * 
-   * @param pBoundedToExpression The {@link Expression} in which this
+   * @param pBoundToExpression The {@link Expression} in which this
    *          {@link Identifier} is bound.
-   * @param pBoundedToIdentifier The {@link Identifier} to which this
+   * @param pBoundToIdentifier The {@link Identifier} to which this
    *          {@link Identifier} is bound.
    * @see #boundToIdentifier
    * @see #getBoundToIdentifier()
    */
-  public void setBoundTo ( Expression pBoundedToExpression ,
-      Identifier pBoundedToIdentifier )
+  public void setBoundTo ( Expression pBoundToExpression ,
+      Identifier pBoundToIdentifier )
   {
     if ( ( this.boundToIdentifier != null )
-        && ( this.boundToIdentifier != pBoundedToIdentifier ) )
+        && ( this.boundToIdentifier != pBoundToIdentifier ) )
     {
       Debug.err
           .println (
@@ -317,14 +317,14 @@ public final class Identifier extends Value
       Debug.err.println ( "Old boundToExpression: " //$NON-NLS-1$
           + this.boundToExpression , Debug.CHRISTIAN ) ;
       Debug.err.println (
-          "New boundToExpression: " + pBoundedToExpression , Debug.CHRISTIAN ) ; //$NON-NLS-1$
+          "New boundToExpression: " + pBoundToExpression , Debug.CHRISTIAN ) ; //$NON-NLS-1$
       Debug.err.println ( "Old boundToIdentifier: " //$NON-NLS-1$
           + this.boundToIdentifier , Debug.CHRISTIAN ) ;
       Debug.err.println (
-          "New boundToIdentifier: " + pBoundedToIdentifier , Debug.CHRISTIAN ) ; //$NON-NLS-1$
+          "New boundToIdentifier: " + pBoundToIdentifier , Debug.CHRISTIAN ) ; //$NON-NLS-1$
     }
-    this.boundToExpression = pBoundedToExpression ;
-    this.boundToIdentifier = pBoundedToIdentifier ;
+    this.boundToExpression = pBoundToExpression ;
+    this.boundToIdentifier = pBoundToIdentifier ;
   }
 
 
@@ -376,13 +376,13 @@ public final class Identifier extends Value
       this.prettyStringBuilder = factory.newBuilder ( this , PRIO_IDENTIFIER ) ;
       if ( Debug.isUserName ( Debug.CHRISTIAN ) )
       {
-        this.prettyStringBuilder.addText ( "{" ) ;
+        // this.prettyStringBuilder.addText ( "{" ) ;
       }
       this.prettyStringBuilder.addIdentifier ( this.name ) ;
       if ( Debug.isUserName ( Debug.CHRISTIAN ) )
       {
-        this.prettyStringBuilder.addText ( "|" + this.identity + "|"
-            + this.identifierSet + "}" ) ;
+        // this.prettyStringBuilder.addText ( "|" + this.identity + "|"
+        // + this.identifierSet + "}" ) ;
       }
     }
     return this.prettyStringBuilder ;
