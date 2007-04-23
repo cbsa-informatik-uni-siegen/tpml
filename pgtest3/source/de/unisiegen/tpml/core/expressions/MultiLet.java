@@ -286,7 +286,7 @@ public final class MultiLet extends Expression implements BoundIdentifiers ,
   {
     if ( this.boundIdentifiers == null )
     {
-      this.boundIdentifiers = new ArrayList < ArrayList < Identifier >> ( ) ;
+      this.boundIdentifiers = new ArrayList < ArrayList < Identifier >> ( 1 ) ;
       ArrayList < Identifier > boundE2 = this.expressions [ 1 ]
           .getIdentifiersFree ( ) ;
       for ( int i = 0 ; i < this.identifiers.length ; i ++ )
@@ -334,7 +334,8 @@ public final class MultiLet extends Expression implements BoundIdentifiers ,
     if ( this.identifiersFree == null )
     {
       this.identifiersFree = new ArrayList < Identifier > ( ) ;
-      this.identifiersFree.addAll ( this.expressions [ 1 ].getIdentifiersFree ( ) ) ;
+      this.identifiersFree.addAll ( this.expressions [ 1 ]
+          .getIdentifiersFree ( ) ) ;
       for ( int i = 0 ; i < this.identifiers.length ; i ++ )
       {
         while ( this.identifiersFree.remove ( this.identifiers [ i ] ) )
@@ -342,7 +343,8 @@ public final class MultiLet extends Expression implements BoundIdentifiers ,
           // Remove all Identifiers with the same name
         }
       }
-      this.identifiersFree.addAll ( this.expressions [ 0 ].getIdentifiersFree ( ) ) ;
+      this.identifiersFree.addAll ( this.expressions [ 0 ]
+          .getIdentifiersFree ( ) ) ;
     }
     return this.identifiersFree ;
   }

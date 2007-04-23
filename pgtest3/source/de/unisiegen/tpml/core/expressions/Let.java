@@ -275,7 +275,7 @@ public class Let extends Expression implements BoundIdentifiers , DefaultTypes ,
   {
     if ( this.boundIdentifiers == null )
     {
-      this.boundIdentifiers = new ArrayList < ArrayList < Identifier >> ( ) ;
+      this.boundIdentifiers = new ArrayList < ArrayList < Identifier >> ( 1 ) ;
       ArrayList < Identifier > boundIdList = new ArrayList < Identifier > ( ) ;
       ArrayList < Identifier > boundE2 = this.expressions [ 1 ]
           .getIdentifiersFree ( ) ;
@@ -304,12 +304,14 @@ public class Let extends Expression implements BoundIdentifiers , DefaultTypes ,
     if ( this.identifiersFree == null )
     {
       this.identifiersFree = new ArrayList < Identifier > ( ) ;
-      this.identifiersFree.addAll ( this.expressions [ 1 ].getIdentifiersFree ( ) ) ;
+      this.identifiersFree.addAll ( this.expressions [ 1 ]
+          .getIdentifiersFree ( ) ) ;
       while ( this.identifiersFree.remove ( this.identifiers [ 0 ] ) )
       {
         // Remove all Identifiers with the same name
       }
-      this.identifiersFree.addAll ( this.expressions [ 0 ].getIdentifiersFree ( ) ) ;
+      this.identifiersFree.addAll ( this.expressions [ 0 ]
+          .getIdentifiersFree ( ) ) ;
     }
     return this.identifiersFree ;
   }

@@ -261,7 +261,7 @@ public final class MultiLambda extends Value implements BoundIdentifiers ,
   {
     if ( this.boundIdentifiers == null )
     {
-      this.boundIdentifiers = new ArrayList < ArrayList < Identifier >> ( ) ;
+      this.boundIdentifiers = new ArrayList < ArrayList < Identifier >> ( 1 ) ;
       ArrayList < Identifier > boundE = this.expressions [ 0 ]
           .getIdentifiersFree ( ) ;
       for ( int i = 0 ; i < this.identifiers.length ; i ++ )
@@ -309,7 +309,8 @@ public final class MultiLambda extends Value implements BoundIdentifiers ,
     if ( this.identifiersFree == null )
     {
       this.identifiersFree = new ArrayList < Identifier > ( ) ;
-      this.identifiersFree.addAll ( this.expressions [ 0 ].getIdentifiersFree ( ) ) ;
+      this.identifiersFree.addAll ( this.expressions [ 0 ]
+          .getIdentifiersFree ( ) ) ;
       for ( int i = 0 ; i < this.identifiers.length ; i ++ )
       {
         while ( this.identifiersFree.remove ( this.identifiers [ i ] ) )

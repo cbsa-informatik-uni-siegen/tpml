@@ -226,7 +226,7 @@ public final class ObjectExpr extends Expression implements BoundIdentifiers ,
   {
     if ( this.boundIdentifiers == null )
     {
-      this.boundIdentifiers = new ArrayList < ArrayList < Identifier >> ( ) ;
+      this.boundIdentifiers = new ArrayList < ArrayList < Identifier >> ( 1 ) ;
       ArrayList < Identifier > boundIdList = new ArrayList < Identifier > ( ) ;
       ArrayList < Identifier > boundE = this.expressions [ 0 ]
           .getIdentifiersFree ( ) ;
@@ -253,7 +253,8 @@ public final class ObjectExpr extends Expression implements BoundIdentifiers ,
     if ( this.identifiersFree == null )
     {
       this.identifiersFree = new ArrayList < Identifier > ( ) ;
-      this.identifiersFree.addAll ( this.expressions [ 0 ].getIdentifiersFree ( ) ) ;
+      this.identifiersFree.addAll ( this.expressions [ 0 ]
+          .getIdentifiersFree ( ) ) ;
       while ( this.identifiersFree.remove ( this.identifiers [ 0 ] ) )
       {
         // Remove all Identifiers with the same name

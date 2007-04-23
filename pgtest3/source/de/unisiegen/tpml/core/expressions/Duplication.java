@@ -190,8 +190,10 @@ public final class Duplication extends Expression implements
       this.identifiersFree.add ( new Identifier ( "self" ) ) ; //$NON-NLS-1$
       for ( int i = 0 ; i < this.expressions.length ; i ++ )
       {
-        this.identifiersFree.addAll ( this.expressions [ i ].getIdentifiersFree ( ) ) ;
-        this.identifiersFree.addAll ( this.identifiers [ i ].getIdentifiersFree ( ) ) ;
+        this.identifiersFree.addAll ( this.expressions [ i ]
+            .getIdentifiersFree ( ) ) ;
+        this.identifiersFree.addAll ( this.identifiers [ i ]
+            .getIdentifiersFree ( ) ) ;
       }
     }
     return this.identifiersFree ;

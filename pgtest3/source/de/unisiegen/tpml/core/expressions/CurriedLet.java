@@ -191,7 +191,7 @@ public class CurriedLet extends Expression implements BoundIdentifiers ,
     CheckDisjunctionException.throwExceptionDisjunction ( negativeIdentifiers ) ;
     // Identifier 1-n
     allIdentifiers = this.expressions [ 0 ].getIdentifiersAll ( ) ;
-    negativeIdentifiers = new ArrayList < Identifier > ( ) ;
+    negativeIdentifiers.clear ( ) ;
     for ( int i = 1 ; i < this.identifiers.length ; i ++ )
     {
       for ( Identifier allId : allIdentifiers )
@@ -332,7 +332,8 @@ public class CurriedLet extends Expression implements BoundIdentifiers ,
   {
     if ( this.boundIdentifiers == null )
     {
-      this.boundIdentifiers = new ArrayList < ArrayList < Identifier >> ( ) ;
+      this.boundIdentifiers = new ArrayList < ArrayList < Identifier >> (
+          this.identifiers.length ) ;
       ArrayList < Identifier > boundE1 = this.expressions [ 0 ]
           .getIdentifiersFree ( ) ;
       ArrayList < Identifier > boundE2 = this.expressions [ 1 ]

@@ -217,7 +217,7 @@ public final class Attribute extends Expression implements BoundIdentifiers ,
   {
     if ( this.boundIdentifiers == null )
     {
-      this.boundIdentifiers = new ArrayList < ArrayList < Identifier >> ( ) ;
+      this.boundIdentifiers = new ArrayList < ArrayList < Identifier >> ( 1 ) ;
       ArrayList < Identifier > boundIdList = ( ( Row ) this.parent )
           .getIdentifiersBound ( this ) ;
       // Set the bound Identifier to an Attribute-Identifier
