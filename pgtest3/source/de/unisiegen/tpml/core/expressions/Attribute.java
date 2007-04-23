@@ -223,7 +223,7 @@ public final class Attribute extends Expression implements BoundIdentifiers ,
       // Set the bound Identifier to an Attribute-Identifier
       for ( Identifier boundId : boundIdList )
       {
-        boundId.setIdentifierSet ( Identifier.IdentifierSet.A ) ;
+        boundId.setSet ( Identifier.Set.ATTRIBUTE ) ;
       }
       this.boundIdentifiers.add ( boundIdList ) ;
     }

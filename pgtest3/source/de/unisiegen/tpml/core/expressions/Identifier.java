@@ -24,24 +24,24 @@ public final class Identifier extends Value
    * 
    * @author Christian Fehler
    */
-  public enum IdentifierSet
+  public enum Set
   {
     /**
      * TODO
      */
-    V ,
+    VARIABLE ,
     /**
      * TODO
      */
-    A ,
+    ATTRIBUTE ,
     /**
      * TODO
      */
-    M ,
+    MESSAGE ,
     /**
      * TODO
      */
-    S
+    SELF
   }
 
 
@@ -94,7 +94,7 @@ public final class Identifier extends Value
   /**
    * TODO
    */
-  private IdentifierSet identifierSet ;
+  private Set set ;
 
 
   /**
@@ -111,11 +111,11 @@ public final class Identifier extends Value
     this.endOffset = - 1 ;
     if ( pName.equals ( "self" ) ) //$NON-NLS-1$
     {
-      this.identifierSet = IdentifierSet.S ;
+      this.set = Set.SELF ;
     }
     else
     {
-      this.identifierSet = IdentifierSet.V ;
+      this.set = Set.VARIABLE ;
     }
   }
 
@@ -247,14 +247,14 @@ public final class Identifier extends Value
 
 
   /**
-   * Returns the identifierSet.
+   * Returns the set.
    * 
-   * @return The identifierSet.
-   * @see #identifierSet
+   * @return The set.
+   * @see #set
    */
-  public IdentifierSet getIdentifierSet ( )
+  public Set getSet ( )
   {
-    return this.identifierSet ;
+    return this.set ;
   }
 
 
@@ -277,21 +277,21 @@ public final class Identifier extends Value
   @ Override
   public String getPrefix ( )
   {
-    switch ( this.identifierSet )
+    switch ( this.set )
     {
-      case V :
+      case VARIABLE :
       {
         return PREFIX_ID ;
       }
-      case A :
+      case ATTRIBUTE :
       {
         return PREFIX_ID_A ;
       }
-      case M :
+      case MESSAGE :
       {
         return PREFIX_ID_M ;
       }
-      case S :
+      case SELF :
       {
         return PREFIX_ID_S ;
       }
@@ -365,11 +365,11 @@ public final class Identifier extends Value
   /**
    * TODO
    * 
-   * @param pIdentifierSet The identifierSet to set
+   * @param pSet The set to set
    */
-  public void setIdentifierSet ( IdentifierSet pIdentifierSet )
+  public void setSet ( Set pSet )
   {
-    this.identifierSet = pIdentifierSet ;
+    this.set = pSet ;
   }
 
 

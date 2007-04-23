@@ -383,7 +383,7 @@ duplication			::= DUPLBEGIN id_expr_list:iel DUPLEND
 						   {
 						     tmpE [i] = iel [i].expression;
 						     tmpI [i] = iel [i].id;
-						     tmpI [i].setIdentifierSet (Identifier.IdentifierSet.A );
+						     tmpI [i].setSet (Identifier.Set.ATTRIBUTE );
 						   }
 						   Duplication d = new Duplication ( tmpI , tmpE );
 						   Duplicated.check(d);
@@ -395,7 +395,7 @@ duplication			::= DUPLBEGIN id_expr_list:iel DUPLEND
 					;
 
 send				::= simple_expr:e HASHKEY IDENTIFIER:id
-						{: id.setIdentifierSet (Identifier.IdentifierSet.M );
+						{: id.setSet (Identifier.Set.MESSAGE );
 						   RESULT = new Send ( e, id ) ; :}
 					;
 					
@@ -429,18 +429,18 @@ row					::= attribute:a
 					;
 
 attribute			::=	ATTRIBUTE IDENTIFIER:id EQUAL expr:e SEMI
-						{: id.setIdentifierSet (Identifier.IdentifierSet.A );
+						{: id.setSet (Identifier.Set.ATTRIBUTE );
 						   RESULT = new Attribute (id, null , e ); :}
 					|	ATTRIBUTE IDENTIFIER:id COLON type:tau EQUAL expr:e SEMI
-						{: id.setIdentifierSet (Identifier.IdentifierSet.A );
+						{: id.setSet (Identifier.Set.ATTRIBUTE );
 						   RESULT = new Attribute (id, tau , e ); :}
 					;
 
 method				::=	METHOD IDENTIFIER:id EQUAL expr:e SEMI
-						{: id.setIdentifierSet (Identifier.IdentifierSet.M );
+						{: id.setSet (Identifier.Set.MESSAGE );
 						   RESULT = new Method (id, null, e ); :}
 					|	METHOD IDENTIFIER:id COLON type:tau EQUAL expr:e SEMI
-						{: id.setIdentifierSet (Identifier.IdentifierSet.M );
+						{: id.setSet (Identifier.Set.MESSAGE );
 						   RESULT = new Method (id,tau, e ); :}
 					;
 
@@ -452,7 +452,7 @@ curried_method		::=	METHOD IDENTIFIER:id id_type_list:itl EQUAL expr:e SEMI
 						     identifiers[n + 1] = itl[n].id;
 						     types[n + 1] = itl[n].tau;
 						   }
-						   id.setIdentifierSet (Identifier.IdentifierSet.M );
+						   id.setSet (Identifier.Set.MESSAGE );
 						   identifiers [0] = id ;
 						   types [0] = null ;
 						   RESULT = new CurriedMethod ( identifiers , types , e ); :}
@@ -464,7 +464,7 @@ curried_method		::=	METHOD IDENTIFIER:id id_type_list:itl EQUAL expr:e SEMI
 						     identifiers[n + 1] = itl[n].id;
 						     types[n + 1] = itl[n].tau;
 						   }
-						   id.setIdentifierSet (Identifier.IdentifierSet.M );
+						   id.setSet (Identifier.Set.MESSAGE );
 						   identifiers [0] = id ;
 						   types [0] = tau ;
 						   RESULT = new CurriedMethod ( identifiers , types , e ); :}

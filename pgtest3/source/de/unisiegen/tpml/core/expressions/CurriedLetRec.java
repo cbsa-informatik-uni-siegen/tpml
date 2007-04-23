@@ -69,7 +69,7 @@ public final class CurriedLetRec extends CurriedLet implements
     for ( Identifier allId : allIdentifiers )
     {
       if ( ( this.identifiers [ 0 ].equals ( allId ) )
-          && ( allId.getIdentifierSet ( ).equals ( Identifier.IdentifierSet.A ) ) )
+          && ( allId.getSet ( ).equals ( Identifier.Set.ATTRIBUTE ) ) )
       {
         negativeIdentifiers.add ( allId ) ;
       }
@@ -85,8 +85,7 @@ public final class CurriedLetRec extends CurriedLet implements
       for ( Identifier allId : allIdentifiers )
       {
         if ( ( this.identifiers [ i ].equals ( allId ) )
-            && ( allId.getIdentifierSet ( )
-                .equals ( Identifier.IdentifierSet.A ) ) )
+            && ( allId.getSet ( ).equals ( Identifier.Set.ATTRIBUTE ) ) )
         {
           negativeIdentifiers.add ( allId ) ;
         }

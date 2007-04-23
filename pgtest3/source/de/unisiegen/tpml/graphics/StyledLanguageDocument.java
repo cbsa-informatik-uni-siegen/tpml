@@ -424,11 +424,9 @@ public class StyledLanguageDocument extends DefaultStyledDocument implements
               }
             } ) ;
         // ...and try to parse the token stream
-        // TODO
         try
         {
-          Expression expression = parser.parse ( ) ;
-          // expression.checkDisjunction ( expression ) ;
+          parser.parse ( ) ;
         }
         catch ( CheckDisjunctionException e )
         {

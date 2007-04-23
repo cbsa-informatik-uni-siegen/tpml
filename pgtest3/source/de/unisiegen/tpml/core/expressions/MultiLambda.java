@@ -148,8 +148,7 @@ public final class MultiLambda extends Value implements BoundIdentifiers ,
       for ( Identifier allId : allIdentifiers )
       {
         if ( ( current.equals ( allId ) )
-            && ( allId.getIdentifierSet ( )
-                .equals ( Identifier.IdentifierSet.A ) ) )
+            && ( allId.getSet ( ).equals ( Identifier.Set.ATTRIBUTE ) ) )
         {
           negativeIdentifiers.add ( allId ) ;
         }

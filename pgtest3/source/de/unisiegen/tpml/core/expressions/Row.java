@@ -92,8 +92,7 @@ public final class Row extends Expression implements ChildrenExpressions
         for ( Identifier allId : allIdentifiers )
         {
           if ( ( attribute.getId ( ).equals ( allId ) )
-              && ( ! ( allId.getIdentifierSet ( )
-                  .equals ( Identifier.IdentifierSet.A ) ) ) )
+              && ( ! ( allId.getSet ( ).equals ( Identifier.Set.ATTRIBUTE ) ) ) )
           {
             negativeIdentifiers.add ( allId ) ;
           }

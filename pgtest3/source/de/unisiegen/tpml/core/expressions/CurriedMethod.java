@@ -159,8 +159,7 @@ public final class CurriedMethod extends Expression implements
       for ( Identifier allId : allIdentifiers )
       {
         if ( ( this.identifiers [ i ].equals ( allId ) )
-            && ( allId.getIdentifierSet ( )
-                .equals ( Identifier.IdentifierSet.A ) ) )
+            && ( allId.getSet ( ).equals ( Identifier.Set.ATTRIBUTE ) ) )
         {
           negativeIdentifiers.add ( allId ) ;
         }
