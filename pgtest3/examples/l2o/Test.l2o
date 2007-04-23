@@ -1,1 +1,5 @@
-(object (self) val a = 0 ; val b = 1 ; method move = {< a = 10 ; b = 11 >} ; end) # move
+object (self)
+  val hallo = 5 ;
+  method add = lambda hallo.hallo ;
+  method sub = let hallo = 0 in hallo ;
+end

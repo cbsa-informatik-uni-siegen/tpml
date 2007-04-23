@@ -1,1 +1,5 @@
-object (self:<add:int; sub:int;>) val a = 1 ; end
+object (self) 
+  val a = 1 ;
+  val b = 2 ;
+  method add = {< a = 3 ; b = 4 >} ;
+end
