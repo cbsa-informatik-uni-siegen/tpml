@@ -168,177 +168,45 @@ public final class DefaultOutline implements Outline
     int [ ] typesIndex = null ;
     // Sorted Children
     PrettyPrintable [ ] sortedChildren = null ;
+    // Invoke methods
     for ( Class < Object > currentInterface : pExpression.getClass ( )
         .getInterfaces ( ) )
     {
       if ( currentInterface
           .equals ( de.unisiegen.tpml.core.interfaces.ChildrenExpressions.class ) )
       {
-        try
-        {
-          expressionsIndex = ( int [ ] ) pExpression.getClass ( ).getMethod (
-              GET_EXPRESSIONS_INDEX , new Class [ 0 ] ).invoke ( pExpression ,
-              new Object [ 0 ] ) ;
-        }
-        catch ( IllegalArgumentException e )
-        {
-          // Do nothing
-        }
-        catch ( SecurityException e )
-        {
-          // Do nothing
-        }
-        catch ( IllegalAccessException e )
-        {
-          // Do nothing
-        }
-        catch ( InvocationTargetException e )
-        {
-          // Do nothing
-        }
-        catch ( NoSuchMethodException e )
-        {
-          // Do nothing
-        }
+        expressionsIndex = getIndex ( pExpression , GET_EXPRESSIONS_INDEX ) ;
       }
       else if ( currentInterface
           .equals ( de.unisiegen.tpml.core.interfaces.DefaultIdentifiers.class ) )
       {
-        try
-        {
-          identifiers = ( Identifier [ ] ) pExpression.getClass ( ).getMethod (
-              GET_IDENTIFIERS , new Class [ 0 ] ).invoke ( pExpression ,
-              new Object [ 0 ] ) ;
-          identifiersIndex = ( int [ ] ) pExpression.getClass ( ).getMethod (
-              GET_IDENTIFIERS_INDEX , new Class [ 0 ] ).invoke ( pExpression ,
-              new Object [ 0 ] ) ;
-        }
-        catch ( IllegalArgumentException e )
-        {
-          // Do nothing
-        }
-        catch ( SecurityException e )
-        {
-          // Do nothing
-        }
-        catch ( IllegalAccessException e )
-        {
-          // Do nothing
-        }
-        catch ( InvocationTargetException e )
-        {
-          // Do nothing
-        }
-        catch ( NoSuchMethodException e )
-        {
-          // Do nothing
-        }
+        identifiersIndex = getIndex ( pExpression , GET_IDENTIFIERS_INDEX ) ;
+        identifiers = getIdentifiers ( pExpression ) ;
       }
       else if ( currentInterface
           .equals ( de.unisiegen.tpml.core.interfaces.BoundIdentifiers.class ) )
       {
-        try
-        {
-          identifiers = ( Identifier [ ] ) pExpression.getClass ( ).getMethod (
-              GET_IDENTIFIERS , new Class [ 0 ] ).invoke ( pExpression ,
-              new Object [ 0 ] ) ;
-          identifiersIndex = ( int [ ] ) pExpression.getClass ( ).getMethod (
-              GET_IDENTIFIERS_INDEX , new Class [ 0 ] ).invoke ( pExpression ,
-              new Object [ 0 ] ) ;
-          identifiersBound = ( ArrayList < ArrayList < Identifier >> ) pExpression
-              .getClass ( )
-              .getMethod ( GET_IDENTIFIERS_BOUND , new Class [ 0 ] ).invoke (
-                  pExpression , new Object [ 0 ] ) ;
-        }
-        catch ( IllegalArgumentException e )
-        {
-          // Do nothing
-        }
-        catch ( SecurityException e )
-        {
-          // Do nothing
-        }
-        catch ( IllegalAccessException e )
-        {
-          // Do nothing
-        }
-        catch ( InvocationTargetException e )
-        {
-          // Do nothing
-        }
-        catch ( NoSuchMethodException e )
-        {
-          // Do nothing
-        }
+        identifiersIndex = getIndex ( pExpression , GET_IDENTIFIERS_INDEX ) ;
+        identifiers = getIdentifiers ( pExpression ) ;
+        identifiersBound = getIdentifiersBound ( pExpression ) ;
       }
       else if ( currentInterface
           .equals ( de.unisiegen.tpml.core.interfaces.DefaultTypes.class ) )
       {
-        try
-        {
-          types = ( MonoType [ ] ) pExpression.getClass ( ).getMethod (
-              GET_TYPES , new Class [ 0 ] ).invoke ( pExpression ,
-              new Object [ 0 ] ) ;
-          typesIndex = ( int [ ] ) pExpression.getClass ( ).getMethod (
-              GET_TYPES_INDEX , new Class [ 0 ] ).invoke ( pExpression ,
-              new Object [ 0 ] ) ;
-        }
-        catch ( IllegalArgumentException e )
-        {
-          // Do nothing
-        }
-        catch ( SecurityException e )
-        {
-          // Do nothing
-        }
-        catch ( IllegalAccessException e )
-        {
-          // Do nothing
-        }
-        catch ( InvocationTargetException e )
-        {
-          // Do nothing
-        }
-        catch ( NoSuchMethodException e )
-        {
-          // Do nothing
-        }
+        typesIndex = getIndex ( pExpression , GET_TYPES_INDEX ) ;
+        types = getTypes ( pExpression ) ;
       }
       else if ( currentInterface
           .equals ( de.unisiegen.tpml.core.interfaces.SortedChildren.class ) )
       {
-        try
-        {
-          sortedChildren = ( PrettyPrintable [ ] ) pExpression.getClass ( )
-              .getMethod ( GET_SORTED_CHILDREN , new Class [ 0 ] ).invoke (
-                  pExpression , new Object [ 0 ] ) ;
-        }
-        catch ( IllegalArgumentException e )
-        {
-          // Do nothing
-        }
-        catch ( SecurityException e )
-        {
-          // Do nothing
-        }
-        catch ( IllegalAccessException e )
-        {
-          // Do nothing
-        }
-        catch ( InvocationTargetException e )
-        {
-          // Do nothing
-        }
-        catch ( NoSuchMethodException e )
-        {
-          // Do nothing
-        }
+        sortedChildren = getSortedChildren ( pExpression ) ;
       }
     }
     OutlineNode outlineNodeId ;
     OutlineNode outlineNodeType ;
     OutlineNode outlineNodeE ;
     OutlineBinding outlineBinding ;
+    // No sorted children
     if ( sortedChildren == null )
     {
       if ( ( identifiers != null ) && ( identifiersIndex != null ) )
@@ -398,7 +266,7 @@ public final class DefaultOutline implements Outline
         }
       }
     }
-    // Sorted Children
+    // Sorted children
     else
     {
       for ( int i = 0 ; i < sortedChildren.length ; i ++ )
@@ -478,7 +346,7 @@ public final class DefaultOutline implements Outline
     // Identifier
     Identifier [ ] identifiers = null ;
     int [ ] identifiersIndex = null ;
-    // Sorted Children
+    // Sorted children
     PrettyPrintable [ ] sortedChildren = null ;
     for ( Class < Object > currentInterface : pType.getClass ( )
         .getInterfaces ( ) )
@@ -486,103 +354,26 @@ public final class DefaultOutline implements Outline
       if ( currentInterface
           .equals ( de.unisiegen.tpml.core.interfaces.DefaultTypes.class ) )
       {
-        try
-        {
-          types = ( MonoType [ ] ) pType.getClass ( ).getMethod ( GET_TYPES ,
-              new Class [ 0 ] ).invoke ( pType , new Object [ 0 ] ) ;
-          typesIndex = ( int [ ] ) pType.getClass ( ).getMethod (
-              GET_TYPES_INDEX , new Class [ 0 ] ).invoke ( pType ,
-              new Object [ 0 ] ) ;
-        }
-        catch ( IllegalArgumentException e )
-        {
-          // Do nothing
-        }
-        catch ( SecurityException e )
-        {
-          // Do nothing
-        }
-        catch ( IllegalAccessException e )
-        {
-          // Do nothing
-        }
-        catch ( InvocationTargetException e )
-        {
-          // Do nothing
-        }
-        catch ( NoSuchMethodException e )
-        {
-          // Do nothing
-        }
+        typesIndex = getIndex ( pType , GET_TYPES_INDEX ) ;
+        types = getTypes ( pType ) ;
       }
       else if ( currentInterface
           .equals ( de.unisiegen.tpml.core.interfaces.DefaultIdentifiers.class ) )
       {
-        try
-        {
-          identifiers = ( Identifier [ ] ) pType.getClass ( ).getMethod (
-              GET_IDENTIFIERS , new Class [ 0 ] ).invoke ( pType ,
-              new Object [ 0 ] ) ;
-          identifiersIndex = ( int [ ] ) pType.getClass ( ).getMethod (
-              GET_IDENTIFIERS_INDEX , new Class [ 0 ] ).invoke ( pType ,
-              new Object [ 0 ] ) ;
-        }
-        catch ( IllegalArgumentException e )
-        {
-          // Do nothing
-        }
-        catch ( SecurityException e )
-        {
-          // Do nothing
-        }
-        catch ( IllegalAccessException e )
-        {
-          // Do nothing
-        }
-        catch ( InvocationTargetException e )
-        {
-          // Do nothing
-        }
-        catch ( NoSuchMethodException e )
-        {
-          // Do nothing
-        }
+        identifiersIndex = getIndex ( pType , GET_IDENTIFIERS_INDEX ) ;
+        identifiers = getIdentifiers ( pType ) ;
       }
       else if ( currentInterface
           .equals ( de.unisiegen.tpml.core.interfaces.SortedChildren.class ) )
       {
-        try
-        {
-          sortedChildren = ( PrettyPrintable [ ] ) pType.getClass ( )
-              .getMethod ( GET_SORTED_CHILDREN , new Class [ 0 ] ).invoke (
-                  pType , new Object [ 0 ] ) ;
-        }
-        catch ( IllegalArgumentException e )
-        {
-          // Do nothing
-        }
-        catch ( SecurityException e )
-        {
-          // Do nothing
-        }
-        catch ( IllegalAccessException e )
-        {
-          // Do nothing
-        }
-        catch ( InvocationTargetException e )
-        {
-          // Do nothing
-        }
-        catch ( NoSuchMethodException e )
-        {
-          // Do nothing
-        }
+        sortedChildren = getSortedChildren ( pType ) ;
       }
     }
     if ( ( types != null ) && ( typesIndex != null ) )
     {
       OutlineNode outlineNodeId ;
       OutlineNode outlineNodeType ;
+      // No sorted children
       if ( sortedChildren == null )
       {
         if ( ( identifiers != null ) && ( identifiersIndex != null ) )
@@ -601,7 +392,7 @@ public final class DefaultOutline implements Outline
           pOutlineNode.add ( outlineNodeType ) ;
         }
       }
-      // Sorted Children
+      // Sorted children
       else
       {
         for ( int i = 0 ; i < sortedChildren.length ; i ++ )
@@ -713,6 +504,122 @@ public final class DefaultOutline implements Outline
 
 
   /**
+   * TODO
+   * 
+   * @param pInvokedFrom TODO
+   * @return TODO
+   */
+  private final Identifier [ ] getIdentifiers ( Object pInvokedFrom )
+  {
+    try
+    {
+      return ( Identifier [ ] ) pInvokedFrom.getClass ( ).getMethod (
+          GET_IDENTIFIERS , new Class [ 0 ] ).invoke ( pInvokedFrom ,
+          new Object [ 0 ] ) ;
+    }
+    catch ( IllegalArgumentException e )
+    {
+      System.err.println ( "DefaultOutline: IllegalArgumentException" ) ; //$NON-NLS-1$
+    }
+    catch ( SecurityException e )
+    {
+      System.err.println ( "DefaultOutline: SecurityException" ) ; //$NON-NLS-1$
+    }
+    catch ( IllegalAccessException e )
+    {
+      System.err.println ( "DefaultOutline: IllegalAccessException" ) ; //$NON-NLS-1$
+    }
+    catch ( InvocationTargetException e )
+    {
+      System.err.println ( "DefaultOutline: InvocationTargetException" ) ; //$NON-NLS-1$
+    }
+    catch ( NoSuchMethodException e )
+    {
+      System.err.println ( "DefaultOutline: NoSuchMethodException" ) ; //$NON-NLS-1$
+    }
+    return null ;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @param pInvokedFrom TODO
+   * @return TODO
+   */
+  @ SuppressWarnings ( "unchecked" )
+  private final ArrayList < ArrayList < Identifier >> getIdentifiersBound (
+      Object pInvokedFrom )
+  {
+    try
+    {
+      return ( ArrayList < ArrayList < Identifier >> ) pInvokedFrom.getClass ( )
+          .getMethod ( GET_IDENTIFIERS_BOUND , new Class [ 0 ] ).invoke (
+              pInvokedFrom , new Object [ 0 ] ) ;
+    }
+    catch ( IllegalArgumentException e )
+    {
+      System.err.println ( "DefaultOutline: IllegalArgumentException" ) ; //$NON-NLS-1$
+    }
+    catch ( SecurityException e )
+    {
+      System.err.println ( "DefaultOutline: SecurityException" ) ; //$NON-NLS-1$
+    }
+    catch ( IllegalAccessException e )
+    {
+      System.err.println ( "DefaultOutline: IllegalAccessException" ) ; //$NON-NLS-1$
+    }
+    catch ( InvocationTargetException e )
+    {
+      System.err.println ( "DefaultOutline: InvocationTargetException" ) ; //$NON-NLS-1$
+    }
+    catch ( NoSuchMethodException e )
+    {
+      System.err.println ( "DefaultOutline: NoSuchMethodException" ) ; //$NON-NLS-1$
+    }
+    return null ;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @param pInvokedFrom TODO
+   * @param pMethod TODO
+   * @return TODO
+   */
+  private final int [ ] getIndex ( Object pInvokedFrom , String pMethod )
+  {
+    try
+    {
+      return ( int [ ] ) pInvokedFrom.getClass ( ).getMethod ( pMethod ,
+          new Class [ 0 ] ).invoke ( pInvokedFrom , new Object [ 0 ] ) ;
+    }
+    catch ( IllegalArgumentException e )
+    {
+      System.err.println ( "DefaultOutline: IllegalArgumentException" ) ; //$NON-NLS-1$
+    }
+    catch ( SecurityException e )
+    {
+      System.err.println ( "DefaultOutline: SecurityException" ) ; //$NON-NLS-1$
+    }
+    catch ( IllegalAccessException e )
+    {
+      System.err.println ( "DefaultOutline: IllegalAccessException" ) ; //$NON-NLS-1$
+    }
+    catch ( InvocationTargetException e )
+    {
+      System.err.println ( "DefaultOutline: InvocationTargetException" ) ; //$NON-NLS-1$
+    }
+    catch ( NoSuchMethodException e )
+    {
+      System.err.println ( "DefaultOutline: NoSuchMethodException" ) ; //$NON-NLS-1$
+    }
+    return null ;
+  }
+
+
+  /**
    * Returns the <code>JPanel</code> of the {@link OutlineUI}.
    * 
    * @return The <code>JPanel</code> of the {@link OutlineUI}.
@@ -745,6 +652,81 @@ public final class DefaultOutline implements Outline
   public final OutlineUI getOutlineUI ( )
   {
     return this.outlineUI ;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @param pInvokedFrom TODO
+   * @return TODO
+   */
+  private final PrettyPrintable [ ] getSortedChildren ( Object pInvokedFrom )
+  {
+    try
+    {
+      return ( PrettyPrintable [ ] ) pInvokedFrom.getClass ( ).getMethod (
+          GET_SORTED_CHILDREN , new Class [ 0 ] ).invoke ( pInvokedFrom ,
+          new Object [ 0 ] ) ;
+    }
+    catch ( IllegalArgumentException e )
+    {
+      System.err.println ( "DefaultOutline: IllegalArgumentException" ) ; //$NON-NLS-1$
+    }
+    catch ( SecurityException e )
+    {
+      System.err.println ( "DefaultOutline: SecurityException" ) ; //$NON-NLS-1$
+    }
+    catch ( IllegalAccessException e )
+    {
+      System.err.println ( "DefaultOutline: IllegalAccessException" ) ; //$NON-NLS-1$
+    }
+    catch ( InvocationTargetException e )
+    {
+      System.err.println ( "DefaultOutline: InvocationTargetException" ) ; //$NON-NLS-1$
+    }
+    catch ( NoSuchMethodException e )
+    {
+      System.err.println ( "DefaultOutline: NoSuchMethodException" ) ; //$NON-NLS-1$
+    }
+    return null ;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @param pInvokedFrom TODO
+   * @return TODO
+   */
+  private final MonoType [ ] getTypes ( Object pInvokedFrom )
+  {
+    try
+    {
+      return ( MonoType [ ] ) pInvokedFrom.getClass ( ).getMethod ( GET_TYPES ,
+          new Class [ 0 ] ).invoke ( pInvokedFrom , new Object [ 0 ] ) ;
+    }
+    catch ( IllegalArgumentException e )
+    {
+      System.err.println ( "DefaultOutline: IllegalArgumentException" ) ; //$NON-NLS-1$
+    }
+    catch ( SecurityException e )
+    {
+      System.err.println ( "DefaultOutline: SecurityException" ) ; //$NON-NLS-1$
+    }
+    catch ( IllegalAccessException e )
+    {
+      System.err.println ( "DefaultOutline: IllegalAccessException" ) ; //$NON-NLS-1$
+    }
+    catch ( InvocationTargetException e )
+    {
+      System.err.println ( "DefaultOutline: InvocationTargetException" ) ; //$NON-NLS-1$
+    }
+    catch ( NoSuchMethodException e )
+    {
+      System.err.println ( "DefaultOutline: NoSuchMethodException" ) ; //$NON-NLS-1$
+    }
+    return null ;
   }
 
 

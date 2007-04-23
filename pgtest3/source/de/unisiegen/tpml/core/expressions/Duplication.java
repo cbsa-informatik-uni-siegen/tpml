@@ -137,26 +137,6 @@ public final class Duplication extends Expression implements
    * {@inheritDoc}
    */
   @ Override
-  public ArrayList < Identifier > free ( )
-  {
-    if ( this.free == null )
-    {
-      this.free = new ArrayList < Identifier > ( ) ;
-      this.free.add ( new Identifier ( "self" ) ) ; //$NON-NLS-1$
-      for ( int i = 0 ; i < this.expressions.length ; i ++ )
-      {
-        this.free.addAll ( this.expressions [ i ].free ( ) ) ;
-        this.free.addAll ( this.identifiers [ i ].free ( ) ) ;
-      }
-    }
-    return this.free ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   */
-  @ Override
   public String getCaption ( )
   {
     return "Duplication" ; //$NON-NLS-1$
@@ -195,6 +175,26 @@ public final class Duplication extends Expression implements
   public Identifier [ ] getIdentifiers ( )
   {
     return this.identifiers ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   */
+  @ Override
+  public ArrayList < Identifier > getIdentifiersFree ( )
+  {
+    if ( this.free == null )
+    {
+      this.free = new ArrayList < Identifier > ( ) ;
+      this.free.add ( new Identifier ( "self" ) ) ; //$NON-NLS-1$
+      for ( int i = 0 ; i < this.expressions.length ; i ++ )
+      {
+        this.free.addAll ( this.expressions [ i ].getIdentifiersFree ( ) ) ;
+        this.free.addAll ( this.identifiers [ i ].getIdentifiersFree ( ) ) ;
+      }
+    }
+    return this.free ;
   }
 
 
@@ -259,8 +259,8 @@ public final class Duplication extends Expression implements
       for ( int i = 0 ; i < this.expressions.length ; i ++ )
       {
         BoundRenaming boundRenaming = new BoundRenaming ( ) ;
-        boundRenaming.add ( row.free ( ) ) ;
-        boundRenaming.add ( this.expressions [ i ].free ( ) ) ;
+        boundRenaming.add ( row.getIdentifiersFree ( ) ) ;
+        boundRenaming.add ( this.expressions [ i ].getIdentifiersFree ( ) ) ;
         newIdentifiers [ i ] = boundRenaming.newId ( new Identifier ( "x" //$NON-NLS-1$
             + ( i + 1 ) ) ) ;
       }

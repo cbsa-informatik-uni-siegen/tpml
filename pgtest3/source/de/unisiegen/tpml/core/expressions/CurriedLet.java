@@ -177,7 +177,7 @@ public class CurriedLet extends Expression implements BoundIdentifiers ,
   {
     // Identifier 0
     ArrayList < Identifier > allIdentifiers = this.expressions [ 1 ]
-        .allIdentifiers ( ) ;
+        .getIdentifiersAll ( ) ;
     ArrayList < Identifier > negativeIdentifiers = new ArrayList < Identifier > ( ) ;
     for ( Identifier allId : allIdentifiers )
     {
@@ -190,7 +190,7 @@ public class CurriedLet extends Expression implements BoundIdentifiers ,
     negativeIdentifiers.add ( this.identifiers [ 0 ] ) ;
     CheckDisjunctionException.throwExceptionDisjunction ( negativeIdentifiers ) ;
     // Identifier 1-n
-    allIdentifiers = this.expressions [ 0 ].allIdentifiers ( ) ;
+    allIdentifiers = this.expressions [ 0 ].getIdentifiersAll ( ) ;
     negativeIdentifiers = new ArrayList < Identifier > ( ) ;
     for ( int i = 1 ; i < this.identifiers.length ; i ++ )
     {
@@ -203,7 +203,8 @@ public class CurriedLet extends Expression implements BoundIdentifiers ,
         }
       }
       negativeIdentifiers.add ( this.identifiers [ i ] ) ;
-      CheckDisjunctionException.throwExceptionDisjunction ( negativeIdentifiers ) ;
+      CheckDisjunctionException
+          .throwExceptionDisjunction ( negativeIdentifiers ) ;
     }
   }
 
@@ -250,39 +251,6 @@ public class CurriedLet extends Expression implements BoundIdentifiers ,
           .equals ( other.expressions [ 1 ] ) ) ) ;
     }
     return false ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Expression#free()
-   */
-  @ Override
-  public ArrayList < Identifier > free ( )
-  {
-    if ( this.free == null )
-    {
-      this.free = new ArrayList < Identifier > ( ) ;
-      ArrayList < Identifier > freeE1 = new ArrayList < Identifier > ( ) ;
-      ArrayList < Identifier > freeE2 = new ArrayList < Identifier > ( ) ;
-      freeE1.addAll ( this.expressions [ 0 ].free ( ) ) ;
-      for ( int i = 1 ; i < this.identifiers.length ; i ++ )
-      {
-        while ( freeE1.remove ( this.identifiers [ i ] ) )
-        {
-          // Remove all Identifiers with the same name
-        }
-      }
-      freeE2.addAll ( this.expressions [ 1 ].free ( ) ) ;
-      while ( freeE2.remove ( this.identifiers [ 0 ] ) )
-      {
-        // Remove all Identifiers with the same name
-      }
-      this.free.addAll ( freeE1 ) ;
-      this.free.addAll ( freeE2 ) ;
-    }
-    return this.free ;
   }
 
 
@@ -365,8 +333,10 @@ public class CurriedLet extends Expression implements BoundIdentifiers ,
     if ( this.boundIdentifiers == null )
     {
       this.boundIdentifiers = new ArrayList < ArrayList < Identifier >> ( ) ;
-      ArrayList < Identifier > boundE1 = this.expressions [ 0 ].free ( ) ;
-      ArrayList < Identifier > boundE2 = this.expressions [ 1 ].free ( ) ;
+      ArrayList < Identifier > boundE1 = this.expressions [ 0 ]
+          .getIdentifiersFree ( ) ;
+      ArrayList < Identifier > boundE2 = this.expressions [ 1 ]
+          .getIdentifiersFree ( ) ;
       for ( int i = 0 ; i < this.identifiers.length ; i ++ )
       {
         if ( i == 0 )
@@ -417,6 +387,39 @@ public class CurriedLet extends Expression implements BoundIdentifiers ,
       }
     }
     return this.boundIdentifiers ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Expression#getIdentifiersFree()
+   */
+  @ Override
+  public ArrayList < Identifier > getIdentifiersFree ( )
+  {
+    if ( this.free == null )
+    {
+      this.free = new ArrayList < Identifier > ( ) ;
+      ArrayList < Identifier > freeE1 = new ArrayList < Identifier > ( ) ;
+      ArrayList < Identifier > freeE2 = new ArrayList < Identifier > ( ) ;
+      freeE1.addAll ( this.expressions [ 0 ].getIdentifiersFree ( ) ) ;
+      for ( int i = 1 ; i < this.identifiers.length ; i ++ )
+      {
+        while ( freeE1.remove ( this.identifiers [ i ] ) )
+        {
+          // Remove all Identifiers with the same name
+        }
+      }
+      freeE2.addAll ( this.expressions [ 1 ].getIdentifiersFree ( ) ) ;
+      while ( freeE2.remove ( this.identifiers [ 0 ] ) )
+      {
+        // Remove all Identifiers with the same name
+      }
+      this.free.addAll ( freeE1 ) ;
+      this.free.addAll ( freeE2 ) ;
+    }
+    return this.free ;
   }
 
 
@@ -508,9 +511,9 @@ public class CurriedLet extends Expression implements BoundIdentifiers ,
       for ( int i = 1 ; i < newIdentifiers.length ; i ++ )
       {
         BoundRenaming boundRenaming = new BoundRenaming ( ) ;
-        boundRenaming.add ( this.expressions [ 0 ].free ( ) ) ;
+        boundRenaming.add ( this.expressions [ 0 ].getIdentifiersFree ( ) ) ;
         boundRenaming.remove ( newIdentifiers [ i ] ) ;
-        boundRenaming.add ( pExpression.free ( ) ) ;
+        boundRenaming.add ( pExpression.getIdentifiersFree ( ) ) ;
         boundRenaming.add ( pId ) ;
         /*
          * The new Identifier should not be equal to an other Identifier.
@@ -555,9 +558,9 @@ public class CurriedLet extends Expression implements BoundIdentifiers ,
     if ( ! ( this.identifiers [ 0 ].equals ( pId ) ) )
     {
       BoundRenaming boundRenaming = new BoundRenaming ( ) ;
-      boundRenaming.add ( this.expressions [ 1 ].free ( ) ) ;
+      boundRenaming.add ( this.expressions [ 1 ].getIdentifiersFree ( ) ) ;
       boundRenaming.remove ( this.identifiers [ 0 ] ) ;
-      boundRenaming.add ( pExpression.free ( ) ) ;
+      boundRenaming.add ( pExpression.getIdentifiersFree ( ) ) ;
       boundRenaming.add ( pId ) ;
       Identifier newId = boundRenaming.newId ( this.identifiers [ 0 ] ) ;
       /*

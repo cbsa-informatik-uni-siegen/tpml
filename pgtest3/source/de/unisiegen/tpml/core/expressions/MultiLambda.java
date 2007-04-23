@@ -139,7 +139,7 @@ public final class MultiLambda extends Value implements BoundIdentifiers ,
   public void checkDisjunction ( )
   {
     ArrayList < Identifier > allIdentifiers = this.expressions [ 0 ]
-        .allIdentifiers ( ) ;
+        .getIdentifiersAll ( ) ;
     ArrayList < Identifier > negativeIdentifiers = new ArrayList < Identifier > ( ) ;
     for ( Identifier current : this.identifiers )
     {
@@ -152,7 +152,8 @@ public final class MultiLambda extends Value implements BoundIdentifiers ,
         }
       }
       negativeIdentifiers.add ( current ) ;
-      CheckDisjunctionException.throwExceptionDisjunction ( negativeIdentifiers ) ;
+      CheckDisjunctionException
+          .throwExceptionDisjunction ( negativeIdentifiers ) ;
     }
   }
 
@@ -191,30 +192,6 @@ public final class MultiLambda extends Value implements BoundIdentifiers ,
           : ( this.types [ 0 ].equals ( other.types [ 0 ] ) ) ) ) ;
     }
     return false ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Expression#free()
-   */
-  @ Override
-  public ArrayList < Identifier > free ( )
-  {
-    if ( this.free == null )
-    {
-      this.free = new ArrayList < Identifier > ( ) ;
-      this.free.addAll ( this.expressions [ 0 ].free ( ) ) ;
-      for ( int i = 0 ; i < this.identifiers.length ; i ++ )
-      {
-        while ( this.free.remove ( this.identifiers [ i ] ) )
-        {
-          // Remove all Identifiers with the same name
-        }
-      }
-    }
-    return this.free ;
   }
 
 
@@ -285,7 +262,8 @@ public final class MultiLambda extends Value implements BoundIdentifiers ,
     if ( this.boundIdentifiers == null )
     {
       this.boundIdentifiers = new ArrayList < ArrayList < Identifier >> ( ) ;
-      ArrayList < Identifier > boundE = this.expressions [ 0 ].free ( ) ;
+      ArrayList < Identifier > boundE = this.expressions [ 0 ]
+          .getIdentifiersFree ( ) ;
       for ( int i = 0 ; i < this.identifiers.length ; i ++ )
       {
         /*
@@ -317,6 +295,30 @@ public final class MultiLambda extends Value implements BoundIdentifiers ,
       }
     }
     return this.boundIdentifiers ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Expression#getIdentifiersFree()
+   */
+  @ Override
+  public ArrayList < Identifier > getIdentifiersFree ( )
+  {
+    if ( this.free == null )
+    {
+      this.free = new ArrayList < Identifier > ( ) ;
+      this.free.addAll ( this.expressions [ 0 ].getIdentifiersFree ( ) ) ;
+      for ( int i = 0 ; i < this.identifiers.length ; i ++ )
+      {
+        while ( this.free.remove ( this.identifiers [ i ] ) )
+        {
+          // Remove all Identifiers with the same name
+        }
+      }
+    }
+    return this.free ;
   }
 
 
@@ -406,8 +408,8 @@ public final class MultiLambda extends Value implements BoundIdentifiers ,
     for ( int i = 0 ; i < newIdentifiers.length ; i ++ )
     {
       BoundRenaming boundRenaming = new BoundRenaming ( ) ;
-      boundRenaming.add ( this.free ( ) ) ;
-      boundRenaming.add ( pExpression.free ( ) ) ;
+      boundRenaming.add ( this.getIdentifiersFree ( ) ) ;
+      boundRenaming.add ( pExpression.getIdentifiersFree ( ) ) ;
       boundRenaming.add ( pId ) ;
       /*
        * The new Identifier should not be equal to an other Identifier.

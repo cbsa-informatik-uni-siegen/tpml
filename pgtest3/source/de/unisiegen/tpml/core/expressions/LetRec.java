@@ -52,8 +52,8 @@ public final class LetRec extends Let implements BoundIdentifiers ,
   public void checkDisjunction ( )
   {
     ArrayList < Identifier > allIdentifiers = this.expressions [ 0 ]
-        .allIdentifiers ( ) ;
-    allIdentifiers.addAll ( this.expressions [ 1 ].allIdentifiers ( ) ) ;
+        .getIdentifiersAll ( ) ;
+    allIdentifiers.addAll ( this.expressions [ 1 ].getIdentifiersAll ( ) ) ;
     ArrayList < Identifier > negativeIdentifiers = new ArrayList < Identifier > ( ) ;
     for ( Identifier allId : allIdentifiers )
     {
@@ -84,28 +84,6 @@ public final class LetRec extends Let implements BoundIdentifiers ,
 
   /**
    * {@inheritDoc}
-   * 
-   * @see Let#free()
-   */
-  @ Override
-  public ArrayList < Identifier > free ( )
-  {
-    if ( this.free == null )
-    {
-      this.free = new ArrayList < Identifier > ( ) ;
-      this.free.addAll ( this.expressions [ 0 ].free ( ) ) ;
-      this.free.addAll ( this.expressions [ 1 ].free ( ) ) ;
-      while ( this.free.remove ( this.identifiers [ 0 ] ) )
-      {
-        // Remove all Identifiers with the same name
-      }
-    }
-    return this.free ;
-  }
-
-
-  /**
-   * {@inheritDoc}
    */
   @ Override
   public String getCaption ( )
@@ -126,7 +104,8 @@ public final class LetRec extends Let implements BoundIdentifiers ,
     {
       this.boundIdentifiers = new ArrayList < ArrayList < Identifier >> ( ) ;
       ArrayList < Identifier > boundIdList = new ArrayList < Identifier > ( ) ;
-      ArrayList < Identifier > boundE1 = this.expressions [ 0 ].free ( ) ;
+      ArrayList < Identifier > boundE1 = this.expressions [ 0 ]
+          .getIdentifiersFree ( ) ;
       for ( Identifier freeId : boundE1 )
       {
         if ( this.identifiers [ 0 ].equals ( freeId ) )
@@ -135,7 +114,8 @@ public final class LetRec extends Let implements BoundIdentifiers ,
           boundIdList.add ( freeId ) ;
         }
       }
-      ArrayList < Identifier > boundE2 = this.expressions [ 1 ].free ( ) ;
+      ArrayList < Identifier > boundE2 = this.expressions [ 1 ]
+          .getIdentifiersFree ( ) ;
       for ( Identifier freeId : boundE2 )
       {
         if ( this.identifiers [ 0 ].equals ( freeId ) )
@@ -147,6 +127,28 @@ public final class LetRec extends Let implements BoundIdentifiers ,
       this.boundIdentifiers.add ( boundIdList ) ;
     }
     return this.boundIdentifiers ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Let#getIdentifiersFree()
+   */
+  @ Override
+  public ArrayList < Identifier > getIdentifiersFree ( )
+  {
+    if ( this.free == null )
+    {
+      this.free = new ArrayList < Identifier > ( ) ;
+      this.free.addAll ( this.expressions [ 0 ].getIdentifiersFree ( ) ) ;
+      this.free.addAll ( this.expressions [ 1 ].getIdentifiersFree ( ) ) ;
+      while ( this.free.remove ( this.identifiers [ 0 ] ) )
+      {
+        // Remove all Identifiers with the same name
+      }
+    }
+    return this.free ;
   }
 
 
@@ -169,8 +171,8 @@ public final class LetRec extends Let implements BoundIdentifiers ,
      * Perform the bound renaming if required.
      */
     BoundRenaming boundRenaming = new BoundRenaming ( ) ;
-    boundRenaming.add ( this.free ( ) ) ;
-    boundRenaming.add ( pExpression.free ( ) ) ;
+    boundRenaming.add ( this.getIdentifiersFree ( ) ) ;
+    boundRenaming.add ( pExpression.getIdentifiersFree ( ) ) ;
     boundRenaming.add ( pId ) ;
     Identifier newId = boundRenaming.newId ( this.identifiers [ 0 ] ) ;
     /*

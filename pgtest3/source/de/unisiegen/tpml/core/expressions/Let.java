@@ -140,7 +140,7 @@ public class Let extends Expression implements BoundIdentifiers , DefaultTypes ,
   public void checkDisjunction ( )
   {
     ArrayList < Identifier > allIdentifiers = this.expressions [ 1 ]
-        .allIdentifiers ( ) ;
+        .getIdentifiersAll ( ) ;
     ArrayList < Identifier > negativeIdentifiers = new ArrayList < Identifier > ( ) ;
     for ( Identifier allId : allIdentifiers )
     {
@@ -187,28 +187,6 @@ public class Let extends Expression implements BoundIdentifiers , DefaultTypes ,
           : this.types [ 0 ].equals ( other.types [ 0 ] ) ) ) ;
     }
     return false ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Expression#free()
-   */
-  @ Override
-  public ArrayList < Identifier > free ( )
-  {
-    if ( this.free == null )
-    {
-      this.free = new ArrayList < Identifier > ( ) ;
-      this.free.addAll ( this.expressions [ 1 ].free ( ) ) ;
-      while ( this.free.remove ( this.identifiers [ 0 ] ) )
-      {
-        // Remove all Identifiers with the same name
-      }
-      this.free.addAll ( this.expressions [ 0 ].free ( ) ) ;
-    }
-    return this.free ;
   }
 
 
@@ -299,7 +277,8 @@ public class Let extends Expression implements BoundIdentifiers , DefaultTypes ,
     {
       this.boundIdentifiers = new ArrayList < ArrayList < Identifier >> ( ) ;
       ArrayList < Identifier > boundIdList = new ArrayList < Identifier > ( ) ;
-      ArrayList < Identifier > boundE2 = this.expressions [ 1 ].free ( ) ;
+      ArrayList < Identifier > boundE2 = this.expressions [ 1 ]
+          .getIdentifiersFree ( ) ;
       for ( Identifier freeId : boundE2 )
       {
         if ( this.identifiers [ 0 ].equals ( freeId ) )
@@ -311,6 +290,28 @@ public class Let extends Expression implements BoundIdentifiers , DefaultTypes ,
       this.boundIdentifiers.add ( boundIdList ) ;
     }
     return this.boundIdentifiers ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Expression#getIdentifiersFree()
+   */
+  @ Override
+  public ArrayList < Identifier > getIdentifiersFree ( )
+  {
+    if ( this.free == null )
+    {
+      this.free = new ArrayList < Identifier > ( ) ;
+      this.free.addAll ( this.expressions [ 1 ].getIdentifiersFree ( ) ) ;
+      while ( this.free.remove ( this.identifiers [ 0 ] ) )
+      {
+        // Remove all Identifiers with the same name
+      }
+      this.free.addAll ( this.expressions [ 0 ].getIdentifiersFree ( ) ) ;
+    }
+    return this.free ;
   }
 
 
@@ -399,11 +400,11 @@ public class Let extends Expression implements BoundIdentifiers , DefaultTypes ,
     /*
      * Perform the bound renaming if required.
      */
-    ArrayList < Identifier > freeE2 = newE2.free ( ) ;
+    ArrayList < Identifier > freeE2 = newE2.getIdentifiersFree ( ) ;
     BoundRenaming boundRenaming = new BoundRenaming ( ) ;
     boundRenaming.add ( freeE2 ) ;
     boundRenaming.remove ( this.identifiers [ 0 ] ) ;
-    boundRenaming.add ( pExpression.free ( ) ) ;
+    boundRenaming.add ( pExpression.getIdentifiersFree ( ) ) ;
     boundRenaming.add ( pId ) ;
     Identifier newId = boundRenaming.newId ( this.identifiers [ 0 ] ) ;
     /*

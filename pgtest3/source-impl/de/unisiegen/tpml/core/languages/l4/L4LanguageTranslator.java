@@ -101,8 +101,8 @@ public class L4LanguageTranslator extends L3LanguageTranslator
       }
       // determine a new unique identifier
       final BoundRenaming boundRenaming = new BoundRenaming ( ) ;
-      boundRenaming.add ( e1.free ( ) ) ;
-      boundRenaming.add ( e2.free ( ) ) ;
+      boundRenaming.add ( e1.getIdentifiersFree ( ) ) ;
+      boundRenaming.add ( e2.getIdentifiersFree ( ) ) ;
       final Identifier newId = boundRenaming.newId ( new Identifier ( "u" ) ) ; //$NON-NLS-1$
       // generate the let expression
       return new Let ( newId , null , e1 , e2 ) ;
@@ -121,8 +121,8 @@ public class L4LanguageTranslator extends L3LanguageTranslator
       }
       // determine a new unique identifier
       final BoundRenaming boundRenaming = new BoundRenaming ( ) ;
-      boundRenaming.add ( e1.free ( ) ) ;
-      boundRenaming.add ( e2.free ( ) ) ;
+      boundRenaming.add ( e1.getIdentifiersFree ( ) ) ;
+      boundRenaming.add ( e2.getIdentifiersFree ( ) ) ;
       final Identifier newId = boundRenaming.newId ( new Identifier ( "w" ) ) ; //$NON-NLS-1$
       // generate the recursion body
       Expression body = new Condition1 ( e1 , new Sequence ( e2 , newId ) ) ;

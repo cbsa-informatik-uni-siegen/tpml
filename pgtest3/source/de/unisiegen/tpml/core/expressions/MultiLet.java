@@ -152,7 +152,7 @@ public final class MultiLet extends Expression implements BoundIdentifiers ,
   public void checkDisjunction ( )
   {
     ArrayList < Identifier > allIdentifiers = this.expressions [ 1 ]
-        .allIdentifiers ( ) ;
+        .getIdentifiersAll ( ) ;
     ArrayList < Identifier > negativeIdentifiers = new ArrayList < Identifier > ( ) ;
     for ( Identifier current : this.identifiers )
     {
@@ -165,7 +165,8 @@ public final class MultiLet extends Expression implements BoundIdentifiers ,
         }
       }
       negativeIdentifiers.add ( current ) ;
-      CheckDisjunctionException.throwExceptionDisjunction ( negativeIdentifiers ) ;
+      CheckDisjunctionException
+          .throwExceptionDisjunction ( negativeIdentifiers ) ;
     }
   }
 
@@ -206,31 +207,6 @@ public final class MultiLet extends Expression implements BoundIdentifiers ,
           : ( this.types [ 0 ].equals ( other.types [ 0 ] ) ) ) ) ;
     }
     return false ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Expression#free()
-   */
-  @ Override
-  public ArrayList < Identifier > free ( )
-  {
-    if ( this.free == null )
-    {
-      this.free = new ArrayList < Identifier > ( ) ;
-      this.free.addAll ( this.expressions [ 1 ].free ( ) ) ;
-      for ( int i = 0 ; i < this.identifiers.length ; i ++ )
-      {
-        while ( this.free.remove ( this.identifiers [ i ] ) )
-        {
-          // Remove all Identifiers with the same name
-        }
-      }
-      this.free.addAll ( this.expressions [ 0 ].free ( ) ) ;
-    }
-    return this.free ;
   }
 
 
@@ -311,7 +287,8 @@ public final class MultiLet extends Expression implements BoundIdentifiers ,
     if ( this.boundIdentifiers == null )
     {
       this.boundIdentifiers = new ArrayList < ArrayList < Identifier >> ( ) ;
-      ArrayList < Identifier > boundE2 = this.expressions [ 1 ].free ( ) ;
+      ArrayList < Identifier > boundE2 = this.expressions [ 1 ]
+          .getIdentifiersFree ( ) ;
       for ( int i = 0 ; i < this.identifiers.length ; i ++ )
       {
         /*
@@ -343,6 +320,31 @@ public final class MultiLet extends Expression implements BoundIdentifiers ,
       }
     }
     return this.boundIdentifiers ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Expression#getIdentifiersFree()
+   */
+  @ Override
+  public ArrayList < Identifier > getIdentifiersFree ( )
+  {
+    if ( this.free == null )
+    {
+      this.free = new ArrayList < Identifier > ( ) ;
+      this.free.addAll ( this.expressions [ 1 ].getIdentifiersFree ( ) ) ;
+      for ( int i = 0 ; i < this.identifiers.length ; i ++ )
+      {
+        while ( this.free.remove ( this.identifiers [ i ] ) )
+        {
+          // Remove all Identifiers with the same name
+        }
+      }
+      this.free.addAll ( this.expressions [ 0 ].getIdentifiersFree ( ) ) ;
+    }
+    return this.free ;
   }
 
 
@@ -435,9 +437,9 @@ public final class MultiLet extends Expression implements BoundIdentifiers ,
     for ( int i = 0 ; i < newIdentifiers.length ; i ++ )
     {
       BoundRenaming boundRenaming = new BoundRenaming ( ) ;
-      boundRenaming.add ( this.expressions [ 1 ].free ( ) ) ;
+      boundRenaming.add ( this.expressions [ 1 ].getIdentifiersFree ( ) ) ;
       boundRenaming.remove ( newIdentifiers [ i ] ) ;
-      boundRenaming.add ( pExpression.free ( ) ) ;
+      boundRenaming.add ( pExpression.getIdentifiersFree ( ) ) ;
       boundRenaming.add ( pId ) ;
       /*
        * The new Identifier should not be equal to an other Identifier.

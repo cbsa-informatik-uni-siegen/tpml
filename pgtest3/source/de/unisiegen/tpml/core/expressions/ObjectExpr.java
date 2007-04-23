@@ -156,25 +156,6 @@ public final class ObjectExpr extends Expression implements BoundIdentifiers ,
    * {@inheritDoc}
    */
   @ Override
-  public ArrayList < Identifier > free ( )
-  {
-    if ( this.free == null )
-    {
-      this.free = new ArrayList < Identifier > ( ) ;
-      this.free.addAll ( this.expressions [ 0 ].free ( ) ) ;
-      while ( this.free.remove ( this.identifiers [ 0 ] ) )
-      {
-        // Remove all Identifiers with the same name
-      }
-    }
-    return this.free ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   */
-  @ Override
   public String getCaption ( )
   {
     return "Object" ; //$NON-NLS-1$
@@ -247,7 +228,8 @@ public final class ObjectExpr extends Expression implements BoundIdentifiers ,
     {
       this.boundIdentifiers = new ArrayList < ArrayList < Identifier >> ( ) ;
       ArrayList < Identifier > boundIdList = new ArrayList < Identifier > ( ) ;
-      ArrayList < Identifier > boundE = this.expressions [ 0 ].free ( ) ;
+      ArrayList < Identifier > boundE = this.expressions [ 0 ]
+          .getIdentifiersFree ( ) ;
       for ( Identifier freeId : boundE )
       {
         if ( this.identifiers [ 0 ].equals ( freeId ) )
@@ -259,6 +241,25 @@ public final class ObjectExpr extends Expression implements BoundIdentifiers ,
       this.boundIdentifiers.add ( boundIdList ) ;
     }
     return this.boundIdentifiers ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   */
+  @ Override
+  public ArrayList < Identifier > getIdentifiersFree ( )
+  {
+    if ( this.free == null )
+    {
+      this.free = new ArrayList < Identifier > ( ) ;
+      this.free.addAll ( this.expressions [ 0 ].getIdentifiersFree ( ) ) ;
+      while ( this.free.remove ( this.identifiers [ 0 ] ) )
+      {
+        // Remove all Identifiers with the same name
+      }
+    }
+    return this.free ;
   }
 
 

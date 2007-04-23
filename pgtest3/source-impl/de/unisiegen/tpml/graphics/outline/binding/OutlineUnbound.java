@@ -38,7 +38,7 @@ public final class OutlineUnbound
    */
   public OutlineUnbound ( Expression pExpression )
   {
-    this.list = pExpression.free ( ) ;
+    this.list = pExpression.getIdentifiersFree ( ) ;
   }
 
 

@@ -128,7 +128,7 @@ public final class Recursion extends Expression implements BoundIdentifiers ,
   public void checkDisjunction ( )
   {
     ArrayList < Identifier > allIdentifiers = this.expressions [ 0 ]
-        .allIdentifiers ( ) ;
+        .getIdentifiersAll ( ) ;
     ArrayList < Identifier > negativeIdentifiers = new ArrayList < Identifier > ( ) ;
     for ( Identifier allId : allIdentifiers )
     {
@@ -173,27 +173,6 @@ public final class Recursion extends Expression implements BoundIdentifiers ,
           : ( this.types [ 0 ].equals ( other.types [ 0 ] ) ) ) ) ;
     }
     return false ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Expression#free()
-   */
-  @ Override
-  public ArrayList < Identifier > free ( )
-  {
-    if ( this.free == null )
-    {
-      this.free = new ArrayList < Identifier > ( ) ;
-      this.free.addAll ( this.expressions [ 0 ].free ( ) ) ;
-      while ( this.free.remove ( this.identifiers [ 0 ] ) )
-      {
-        // Remove all Identifiers with the same name
-      }
-    }
-    return this.free ;
   }
 
 
@@ -273,7 +252,8 @@ public final class Recursion extends Expression implements BoundIdentifiers ,
     {
       this.boundIdentifiers = new ArrayList < ArrayList < Identifier >> ( ) ;
       ArrayList < Identifier > boundIdList = new ArrayList < Identifier > ( ) ;
-      ArrayList < Identifier > boundE = this.expressions [ 0 ].free ( ) ;
+      ArrayList < Identifier > boundE = this.expressions [ 0 ]
+          .getIdentifiersFree ( ) ;
       for ( Identifier freeId : boundE )
       {
         if ( this.identifiers [ 0 ].equals ( freeId ) )
@@ -285,6 +265,27 @@ public final class Recursion extends Expression implements BoundIdentifiers ,
       this.boundIdentifiers.add ( boundIdList ) ;
     }
     return this.boundIdentifiers ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Expression#getIdentifiersFree()
+   */
+  @ Override
+  public ArrayList < Identifier > getIdentifiersFree ( )
+  {
+    if ( this.free == null )
+    {
+      this.free = new ArrayList < Identifier > ( ) ;
+      this.free.addAll ( this.expressions [ 0 ].getIdentifiersFree ( ) ) ;
+      while ( this.free.remove ( this.identifiers [ 0 ] ) )
+      {
+        // Remove all Identifiers with the same name
+      }
+    }
+    return this.free ;
   }
 
 
@@ -366,8 +367,8 @@ public final class Recursion extends Expression implements BoundIdentifiers ,
      * Perform the bound renaming if required.
      */
     BoundRenaming boundRenaming = new BoundRenaming ( ) ;
-    boundRenaming.add ( this.free ( ) ) ;
-    boundRenaming.add ( pExpression.free ( ) ) ;
+    boundRenaming.add ( this.getIdentifiersFree ( ) ) ;
+    boundRenaming.add ( pExpression.getIdentifiersFree ( ) ) ;
     boundRenaming.add ( pId ) ;
     Identifier newId = boundRenaming.newId ( this.identifiers [ 0 ] ) ;
     /*

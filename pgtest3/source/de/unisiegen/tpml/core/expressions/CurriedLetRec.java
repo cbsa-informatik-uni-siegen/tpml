@@ -61,8 +61,8 @@ public final class CurriedLetRec extends CurriedLet implements
   {
     // Identifier 0
     ArrayList < Identifier > allIdentifiers = this.expressions [ 0 ]
-        .allIdentifiers ( ) ;
-    allIdentifiers.addAll ( this.expressions [ 1 ].allIdentifiers ( ) ) ;
+        .getIdentifiersAll ( ) ;
+    allIdentifiers.addAll ( this.expressions [ 1 ].getIdentifiersAll ( ) ) ;
     ArrayList < Identifier > negativeIdentifiers = new ArrayList < Identifier > ( ) ;
     for ( Identifier allId : allIdentifiers )
     {
@@ -75,7 +75,7 @@ public final class CurriedLetRec extends CurriedLet implements
     negativeIdentifiers.add ( this.identifiers [ 0 ] ) ;
     CheckDisjunctionException.throwExceptionDisjunction ( negativeIdentifiers ) ;
     // Identifier 1-n
-    allIdentifiers = this.expressions [ 0 ].allIdentifiers ( ) ;
+    allIdentifiers = this.expressions [ 0 ].getIdentifiersAll ( ) ;
     negativeIdentifiers = new ArrayList < Identifier > ( ) ;
     for ( int i = 1 ; i < this.identifiers.length ; i ++ )
     {
@@ -88,7 +88,8 @@ public final class CurriedLetRec extends CurriedLet implements
         }
       }
       negativeIdentifiers.add ( this.identifiers [ i ] ) ;
-      CheckDisjunctionException.throwExceptionDisjunction ( negativeIdentifiers ) ;
+      CheckDisjunctionException
+          .throwExceptionDisjunction ( negativeIdentifiers ) ;
     }
   }
 
@@ -119,39 +120,6 @@ public final class CurriedLetRec extends CurriedLet implements
 
   /**
    * {@inheritDoc}
-   * 
-   * @see CurriedLet#free()
-   */
-  @ Override
-  public ArrayList < Identifier > free ( )
-  {
-    if ( this.free == null )
-    {
-      this.free = new ArrayList < Identifier > ( ) ;
-      ArrayList < Identifier > freeE1 = new ArrayList < Identifier > ( ) ;
-      ArrayList < Identifier > freeE2 = new ArrayList < Identifier > ( ) ;
-      freeE1.addAll ( this.expressions [ 0 ].free ( ) ) ;
-      for ( int i = 0 ; i < this.identifiers.length ; i ++ )
-      {
-        while ( freeE1.remove ( this.identifiers [ i ] ) )
-        {
-          // Remove all Identifiers with the same name
-        }
-      }
-      freeE2.addAll ( this.expressions [ 1 ].free ( ) ) ;
-      while ( freeE2.remove ( this.identifiers [ 0 ] ) )
-      {
-        // Remove all Identifiers with the same name
-      }
-      this.free.addAll ( freeE1 ) ;
-      this.free.addAll ( freeE2 ) ;
-    }
-    return this.free ;
-  }
-
-
-  /**
-   * {@inheritDoc}
    */
   @ Override
   public String getCaption ( )
@@ -173,8 +141,10 @@ public final class CurriedLetRec extends CurriedLet implements
     if ( this.boundIdentifiers == null )
     {
       this.boundIdentifiers = new ArrayList < ArrayList < Identifier >> ( ) ;
-      ArrayList < Identifier > boundE1 = this.expressions [ 0 ].free ( ) ;
-      ArrayList < Identifier > boundE2 = this.expressions [ 1 ].free ( ) ;
+      ArrayList < Identifier > boundE1 = this.expressions [ 0 ]
+          .getIdentifiersFree ( ) ;
+      ArrayList < Identifier > boundE2 = this.expressions [ 1 ]
+          .getIdentifiersFree ( ) ;
       for ( int i = 0 ; i < this.identifiers.length ; i ++ )
       {
         if ( i == 0 )
@@ -252,6 +222,39 @@ public final class CurriedLetRec extends CurriedLet implements
   /**
    * {@inheritDoc}
    * 
+   * @see CurriedLet#getIdentifiersFree()
+   */
+  @ Override
+  public ArrayList < Identifier > getIdentifiersFree ( )
+  {
+    if ( this.free == null )
+    {
+      this.free = new ArrayList < Identifier > ( ) ;
+      ArrayList < Identifier > freeE1 = new ArrayList < Identifier > ( ) ;
+      ArrayList < Identifier > freeE2 = new ArrayList < Identifier > ( ) ;
+      freeE1.addAll ( this.expressions [ 0 ].getIdentifiersFree ( ) ) ;
+      for ( int i = 0 ; i < this.identifiers.length ; i ++ )
+      {
+        while ( freeE1.remove ( this.identifiers [ i ] ) )
+        {
+          // Remove all Identifiers with the same name
+        }
+      }
+      freeE2.addAll ( this.expressions [ 1 ].getIdentifiersFree ( ) ) ;
+      while ( freeE2.remove ( this.identifiers [ 0 ] ) )
+      {
+        // Remove all Identifiers with the same name
+      }
+      this.free.addAll ( freeE1 ) ;
+      this.free.addAll ( freeE2 ) ;
+    }
+    return this.free ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
    * @see CurriedLet#substitute(Identifier, Expression)
    */
   @ Override
@@ -291,9 +294,9 @@ public final class CurriedLetRec extends CurriedLet implements
       for ( int i = 1 ; i < newIdentifiers.length ; i ++ )
       {
         BoundRenaming boundRenaming = new BoundRenaming ( ) ;
-        boundRenaming.add ( this.expressions [ 0 ].free ( ) ) ;
+        boundRenaming.add ( this.expressions [ 0 ].getIdentifiersFree ( ) ) ;
         boundRenaming.remove ( newIdentifiers [ i ] ) ;
-        boundRenaming.add ( pExpression.free ( ) ) ;
+        boundRenaming.add ( pExpression.getIdentifiersFree ( ) ) ;
         boundRenaming.add ( pId ) ;
         /*
          * The new Identifier should not be equal to an other Identifier.
@@ -332,8 +335,8 @@ public final class CurriedLetRec extends CurriedLet implements
       }
     }
     BoundRenaming boundRenaming = new BoundRenaming ( ) ;
-    boundRenaming.add ( this.free ( ) ) ;
-    boundRenaming.add ( pExpression.free ( ) ) ;
+    boundRenaming.add ( this.getIdentifiersFree ( ) ) ;
+    boundRenaming.add ( pExpression.getIdentifiersFree ( ) ) ;
     boundRenaming.add ( pId ) ;
     if ( ! sameIdAs0 )
     {

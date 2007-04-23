@@ -86,7 +86,7 @@ public final class Row extends Expression implements ChildrenExpressions
         negativeIdentifiers.clear ( ) ;
         for ( int j = i + 1 ; j < this.expressions.length ; j ++ )
         {
-          allIdentifiers.addAll ( this.expressions [ j ].allIdentifiers ( ) ) ;
+          allIdentifiers.addAll ( this.expressions [ j ].getIdentifiersAll ( ) ) ;
         }
         for ( Identifier allId : allIdentifiers )
         {
@@ -138,70 +138,6 @@ public final class Row extends Expression implements ChildrenExpressions
    * {@inheritDoc}
    */
   @ Override
-  public ArrayList < Identifier > free ( )
-  {
-    if ( this.free == null )
-    {
-      this.free = new ArrayList < Identifier > ( ) ;
-      ArrayList < Identifier > newBound = new ArrayList < Identifier > ( ) ;
-      for ( Expression expr : this.expressions )
-      {
-        ArrayList < Identifier > freeCurrent = new ArrayList < Identifier > ( ) ;
-        freeCurrent.addAll ( expr.free ( ) ) ;
-        while ( freeCurrent.removeAll ( newBound ) )
-        {
-          // Remove all Identifiers with the same name
-        }
-        this.free.addAll ( freeCurrent ) ;
-        if ( expr instanceof Attribute )
-        {
-          Attribute attribute = ( Attribute ) expr ;
-          newBound.add ( attribute.getId ( ) ) ;
-        }
-      }
-    }
-    return this.free ;
-  }
-
-
-  /**
-   * TODO
-   * 
-   * @param pAttribute TODO
-   * @return TODO
-   */
-  public ArrayList < Identifier > getIdentifiersBound ( Attribute pAttribute )
-  {
-    ArrayList < Identifier > boundId = new ArrayList < Identifier > ( ) ;
-    for ( int i = 0 ; i < this.expressions.length ; i ++ )
-    {
-      if ( pAttribute == this.expressions [ i ] )
-      {
-        Attribute attribute = ( Attribute ) this.expressions [ i ] ;
-        for ( int j = i + 1 ; j < this.expressions.length ; j ++ )
-        {
-          Expression child = this.expressions [ j ] ;
-          ArrayList < Identifier > freeIdentifiers = child.free ( ) ;
-          for ( Identifier freeId : freeIdentifiers )
-          {
-            if ( attribute.getId ( ).equals ( freeId ) )
-            {
-              freeId.setBoundTo ( attribute , attribute.getId ( ) ) ;
-              boundId.add ( freeId ) ;
-            }
-          }
-        }
-        return boundId ;
-      }
-    }
-    return boundId ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   */
-  @ Override
   public String getCaption ( )
   {
     return "Row" ; //$NON-NLS-1$
@@ -228,6 +164,71 @@ public final class Row extends Expression implements ChildrenExpressions
   public int [ ] getExpressionsIndex ( )
   {
     return this.indicesE ;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @param pAttribute TODO
+   * @return TODO
+   */
+  public ArrayList < Identifier > getIdentifiersBound ( Attribute pAttribute )
+  {
+    ArrayList < Identifier > boundId = new ArrayList < Identifier > ( ) ;
+    for ( int i = 0 ; i < this.expressions.length ; i ++ )
+    {
+      if ( pAttribute == this.expressions [ i ] )
+      {
+        Attribute attribute = ( Attribute ) this.expressions [ i ] ;
+        for ( int j = i + 1 ; j < this.expressions.length ; j ++ )
+        {
+          Expression child = this.expressions [ j ] ;
+          ArrayList < Identifier > freeIdentifiers = child
+              .getIdentifiersFree ( ) ;
+          for ( Identifier freeId : freeIdentifiers )
+          {
+            if ( attribute.getId ( ).equals ( freeId ) )
+            {
+              freeId.setBoundTo ( attribute , attribute.getId ( ) ) ;
+              boundId.add ( freeId ) ;
+            }
+          }
+        }
+        return boundId ;
+      }
+    }
+    return boundId ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   */
+  @ Override
+  public ArrayList < Identifier > getIdentifiersFree ( )
+  {
+    if ( this.free == null )
+    {
+      this.free = new ArrayList < Identifier > ( ) ;
+      ArrayList < Identifier > newBound = new ArrayList < Identifier > ( ) ;
+      for ( Expression expr : this.expressions )
+      {
+        ArrayList < Identifier > freeCurrent = new ArrayList < Identifier > ( ) ;
+        freeCurrent.addAll ( expr.getIdentifiersFree ( ) ) ;
+        while ( freeCurrent.removeAll ( newBound ) )
+        {
+          // Remove all Identifiers with the same name
+        }
+        this.free.addAll ( freeCurrent ) ;
+        if ( expr instanceof Attribute )
+        {
+          Attribute attribute = ( Attribute ) expr ;
+          newBound.add ( attribute.getId ( ) ) ;
+        }
+      }
+    }
+    return this.free ;
   }
 
 
@@ -288,7 +289,7 @@ public final class Row extends Expression implements ChildrenExpressions
     {
       newExpressions [ i ] = this.expressions [ i ] ;
     }
-    if ( this.free ( ).contains ( pId ) )
+    if ( this.getIdentifiersFree ( ).contains ( pId ) )
     {
       for ( int i = 0 ; i < newExpressions.length ; i ++ )
       {
@@ -304,10 +305,10 @@ public final class Row extends Expression implements ChildrenExpressions
           BoundRenaming boundRenaming = new BoundRenaming ( ) ;
           for ( int j = i + 1 ; j < newExpressions.length ; j ++ )
           {
-            boundRenaming.add ( newExpressions [ j ].free ( ) ) ;
+            boundRenaming.add ( newExpressions [ j ].getIdentifiersFree ( ) ) ;
           }
           boundRenaming.remove ( attribute.getId ( ) ) ;
-          boundRenaming.add ( pExpression.free ( ) ) ;
+          boundRenaming.add ( pExpression.getIdentifiersFree ( ) ) ;
           boundRenaming.add ( pId ) ;
           Identifier newId = boundRenaming.newId ( attribute.getId ( ) ) ;
           if ( ! attribute.getId ( ).equals ( newId ) )

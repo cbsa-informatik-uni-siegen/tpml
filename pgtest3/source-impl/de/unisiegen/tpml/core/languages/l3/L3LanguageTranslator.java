@@ -87,7 +87,7 @@ public class L3LanguageTranslator extends L2LanguageTranslator
       }
       // generate a new unique identifier to be used for the tuple parameter
       final BoundRenaming boundRenaming = new BoundRenaming ( ) ;
-      boundRenaming.add ( e.free ( ) ) ;
+      boundRenaming.add ( e.getIdentifiersFree ( ) ) ;
       boundRenaming.add ( identifiers ) ;
       final Identifier newId = boundRenaming.newId ( new Identifier ( "id" ) ) ; //$NON-NLS-1$
       // generate the required let's
@@ -114,8 +114,8 @@ public class L3LanguageTranslator extends L2LanguageTranslator
       }
       // generate a new unique identifier to be used for the tuple parameter
       final BoundRenaming boundRenaming = new BoundRenaming ( ) ;
-      boundRenaming.add ( e1.free ( ) ) ;
-      boundRenaming.add ( e2.free ( ) ) ;
+      boundRenaming.add ( e1.getIdentifiersFree ( ) ) ;
+      boundRenaming.add ( e2.getIdentifiersFree ( ) ) ;
       boundRenaming.add ( identifiers ) ;
       final Identifier newId = boundRenaming.newId ( new Identifier ( "id" ) ) ; //$NON-NLS-1$
       // generate the required let's

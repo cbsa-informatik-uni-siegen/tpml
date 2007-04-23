@@ -141,7 +141,7 @@ public final class Identifier extends Value
    * @return TODO
    */
   @ Override
-  public ArrayList < Identifier > allIdentifiers ( )
+  public ArrayList < Identifier > getIdentifiersAll ( )
   {
     ArrayList < Identifier > allIdentifier = new ArrayList < Identifier > ( ) ;
     allIdentifier.add ( this ) ;
@@ -175,26 +175,6 @@ public final class Identifier extends Value
       return this.name.equals ( other.name ) ;
     }
     return false ;
-  }
-
-
-  /**
-   * Returns a set that contains exacty one element, which is the name of the
-   * identifier.
-   * 
-   * @return a set which contains the name of the identifier.
-   * @see #getName()
-   * @see Expression#free()
-   */
-  @ Override
-  public ArrayList < Identifier > free ( )
-  {
-    if ( this.free == null )
-    {
-      this.free = new ArrayList < Identifier > ( ) ;
-      this.free.add ( this ) ;
-    }
-    return this.free ;
   }
 
 
@@ -247,14 +227,22 @@ public final class Identifier extends Value
 
 
   /**
-   * Returns the set.
+   * Returns a set that contains exacty one element, which is the name of the
+   * identifier.
    * 
-   * @return The set.
-   * @see #set
+   * @return a set which contains the name of the identifier.
+   * @see #getName()
+   * @see Expression#getIdentifiersFree()
    */
-  public Set getSet ( )
+  @ Override
+  public ArrayList < Identifier > getIdentifiersFree ( )
   {
-    return this.set ;
+    if ( this.free == null )
+    {
+      this.free = new ArrayList < Identifier > ( ) ;
+      this.free.add ( this ) ;
+    }
+    return this.free ;
   }
 
 
@@ -300,6 +288,18 @@ public final class Identifier extends Value
         return PREFIX_ID ;
       }
     }
+  }
+
+
+  /**
+   * Returns the set.
+   * 
+   * @return The set.
+   * @see #set
+   */
+  public Set getSet ( )
+  {
+    return this.set ;
   }
 
 
