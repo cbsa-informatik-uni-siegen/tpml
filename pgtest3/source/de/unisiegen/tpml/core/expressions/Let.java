@@ -301,17 +301,17 @@ public class Let extends Expression implements BoundIdentifiers , DefaultTypes ,
   @ Override
   public ArrayList < Identifier > getIdentifiersFree ( )
   {
-    if ( this.free == null )
+    if ( this.identifiersFree == null )
     {
-      this.free = new ArrayList < Identifier > ( ) ;
-      this.free.addAll ( this.expressions [ 1 ].getIdentifiersFree ( ) ) ;
-      while ( this.free.remove ( this.identifiers [ 0 ] ) )
+      this.identifiersFree = new ArrayList < Identifier > ( ) ;
+      this.identifiersFree.addAll ( this.expressions [ 1 ].getIdentifiersFree ( ) ) ;
+      while ( this.identifiersFree.remove ( this.identifiers [ 0 ] ) )
       {
         // Remove all Identifiers with the same name
       }
-      this.free.addAll ( this.expressions [ 0 ].getIdentifiersFree ( ) ) ;
+      this.identifiersFree.addAll ( this.expressions [ 0 ].getIdentifiersFree ( ) ) ;
     }
-    return this.free ;
+    return this.identifiersFree ;
   }
 
 

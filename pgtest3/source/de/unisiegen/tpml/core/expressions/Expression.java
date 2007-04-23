@@ -1,8 +1,6 @@
 package de.unisiegen.tpml.core.expressions ;
 
 
-import java.beans.Introspector ;
-import java.beans.PropertyDescriptor ;
 import java.lang.reflect.InvocationTargetException ;
 import java.util.ArrayList ;
 import java.util.Arrays ;
@@ -157,7 +155,13 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
    * 
    * @see #getIdentifiersFree()
    */
-  protected ArrayList < Identifier > free = null ;
+  protected ArrayList < Identifier > identifiersFree = null ;
+
+
+  /**
+   * TODO
+   */
+  private ArrayList < Identifier > identifiersAll = null ;
 
 
   /**
@@ -205,39 +209,45 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
    */
   public final ArrayList < Expression > children ( )
   {
-    // check if we already determined the children
     if ( this.children == null )
     {
-      try
+      this.children = new ArrayList < Expression > ( ) ;
+      for ( Class < Object > currentInterface : this.getClass ( )
+          .getInterfaces ( ) )
       {
-        this.children = new ArrayList < Expression > ( ) ;
-        PropertyDescriptor [ ] properties = Introspector.getBeanInfo (
-            getClass ( ) , Expression.class ).getPropertyDescriptors ( ) ;
-        for ( PropertyDescriptor property : properties )
+        if ( currentInterface
+            .equals ( de.unisiegen.tpml.core.interfaces.ChildrenExpressions.class ) )
         {
-          java.lang.reflect.Method method = property.getReadMethod ( ) ;
-          if ( ( method != null )
-              && ( method.getName ( ).equals ( GET_EXPRESSIONS ) ) )
+          try
           {
-            Object value = method.invoke ( this ) ;
-            if ( value instanceof Expression [ ] )
-            {
-              this.children
-                  .addAll ( Arrays.asList ( ( Expression [ ] ) value ) ) ;
-            }
+            Expression [ ] expressions = ( Expression [ ] ) this.getClass ( )
+                .getMethod ( GET_EXPRESSIONS , new Class [ 0 ] ).invoke ( this ,
+                    new Object [ 0 ] ) ;
+            this.children.addAll ( Arrays.asList ( expressions ) ) ;
+          }
+          catch ( IllegalArgumentException e )
+          {
+            System.err.println ( "Expression: IllegalArgumentException" ) ; //$NON-NLS-1$
+          }
+          catch ( SecurityException e )
+          {
+            System.err.println ( "Expression: SecurityException" ) ; //$NON-NLS-1$
+          }
+          catch ( IllegalAccessException e )
+          {
+            System.err.println ( "Expression: IllegalAccessException" ) ; //$NON-NLS-1$
+          }
+          catch ( InvocationTargetException e )
+          {
+            System.err.println ( "Expression: InvocationTargetException" ) ; //$NON-NLS-1$
+          }
+          catch ( NoSuchMethodException e )
+          {
+            System.err.println ( "Expression: NoSuchMethodException" ) ; //$NON-NLS-1$
           }
         }
       }
-      catch ( RuntimeException exception )
-      {
-        throw exception ;
-      }
-      catch ( Exception exception )
-      {
-        throw new RuntimeException ( exception ) ;
-      }
     }
-    // return an enumeration for the children
     return this.children ;
   }
 
@@ -312,56 +322,59 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
    * 
    * @return TODO
    */
-  public ArrayList < Identifier > getIdentifiersAll ( )
+  public final ArrayList < Identifier > getIdentifiersAll ( )
   {
-    ArrayList < Identifier > allIdentifier = new ArrayList < Identifier > ( ) ;
-    for ( Class < Object > currentInterface : this.getClass ( )
-        .getInterfaces ( ) )
+    if ( this.identifiersAll == null )
     {
-      if ( ( currentInterface
-          .equals ( de.unisiegen.tpml.core.interfaces.DefaultIdentifiers.class ) )
-          || ( currentInterface
-              .equals ( de.unisiegen.tpml.core.interfaces.BoundIdentifiers.class ) ) )
+      this.identifiersAll = new ArrayList < Identifier > ( ) ;
+      if ( this instanceof Identifier )
       {
-        try
+        this.identifiersAll.add ( ( Identifier ) this ) ;
+        return this.identifiersAll ;
+      }
+      for ( Class < Object > currentInterface : this.getClass ( )
+          .getInterfaces ( ) )
+      {
+        if ( ( currentInterface
+            .equals ( de.unisiegen.tpml.core.interfaces.DefaultIdentifiers.class ) )
+            || ( currentInterface
+                .equals ( de.unisiegen.tpml.core.interfaces.BoundIdentifiers.class ) ) )
         {
-          Identifier [ ] identifiers = ( Identifier [ ] ) this.getClass ( )
-              .getMethod ( GET_IDENTIFIERS , new Class [ 0 ] ).invoke ( this ,
-                  new Object [ 0 ] ) ;
-          allIdentifier.addAll ( Arrays.asList ( identifiers ) ) ;
-        }
-        catch ( IllegalArgumentException e )
-        {
-          System.err
-              .println ( "Expression.getIdentifiersAll(): IllegalArgumentException" ) ; //$NON-NLS-1$
-        }
-        catch ( SecurityException e )
-        {
-          System.err
-              .println ( "Expression.getIdentifiersAll(): SecurityException" ) ; //$NON-NLS-1$
-        }
-        catch ( IllegalAccessException e )
-        {
-          System.err
-              .println ( "Expression.getIdentifiersAll(): IllegalAccessException" ) ; //$NON-NLS-1$
-        }
-        catch ( InvocationTargetException e )
-        {
-          System.err
-              .println ( "Expression.getIdentifiersAll(): InvocationTargetException" ) ; //$NON-NLS-1$
-        }
-        catch ( NoSuchMethodException e )
-        {
-          System.err
-              .println ( "Expression.getIdentifiersAll(): NoSuchMethodException" ) ; //$NON-NLS-1$
+          try
+          {
+            Identifier [ ] identifiers = ( Identifier [ ] ) this.getClass ( )
+                .getMethod ( GET_IDENTIFIERS , new Class [ 0 ] ).invoke ( this ,
+                    new Object [ 0 ] ) ;
+            this.identifiersAll.addAll ( Arrays.asList ( identifiers ) ) ;
+          }
+          catch ( IllegalArgumentException e )
+          {
+            System.err.println ( "Expression: IllegalArgumentException" ) ; //$NON-NLS-1$
+          }
+          catch ( SecurityException e )
+          {
+            System.err.println ( "Expression: SecurityException" ) ; //$NON-NLS-1$
+          }
+          catch ( IllegalAccessException e )
+          {
+            System.err.println ( "Expression: IllegalAccessException" ) ; //$NON-NLS-1$
+          }
+          catch ( InvocationTargetException e )
+          {
+            System.err.println ( "Expression: InvocationTargetException" ) ; //$NON-NLS-1$
+          }
+          catch ( NoSuchMethodException e )
+          {
+            System.err.println ( "Expression: NoSuchMethodException" ) ; //$NON-NLS-1$
+          }
         }
       }
+      for ( Expression child : children ( ) )
+      {
+        this.identifiersAll.addAll ( child.getIdentifiersAll ( ) ) ;
+      }
     }
-    for ( Expression child : children ( ) )
-    {
-      allIdentifier.addAll ( child.getIdentifiersAll ( ) ) ;
-    }
-    return allIdentifier ;
+    return this.identifiersAll ;
   }
 
 
@@ -380,15 +393,15 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
    */
   public ArrayList < Identifier > getIdentifiersFree ( )
   {
-    if ( this.free == null )
+    if ( this.identifiersFree == null )
     {
-      this.free = new ArrayList < Identifier > ( ) ;
+      this.identifiersFree = new ArrayList < Identifier > ( ) ;
       for ( Expression child : children ( ) )
       {
-        this.free.addAll ( child.getIdentifiersFree ( ) ) ;
+        this.identifiersFree.addAll ( child.getIdentifiersFree ( ) ) ;
       }
     }
-    return this.free ;
+    return this.identifiersFree ;
   }
 
 
@@ -398,7 +411,7 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
    * @return The parent.
    * @see #parent
    */
-  public PrettyPrintable getParent ( )
+  public final PrettyPrintable getParent ( )
   {
     return this.parent ;
   }
@@ -478,7 +491,7 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
    * 
    * @param pParent The parent to set
    */
-  public void setParent ( PrettyPrintable pParent )
+  public final void setParent ( PrettyPrintable pParent )
   {
     this.parent = pParent ;
   }

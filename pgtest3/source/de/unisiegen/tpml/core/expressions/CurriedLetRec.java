@@ -227,9 +227,9 @@ public final class CurriedLetRec extends CurriedLet implements
   @ Override
   public ArrayList < Identifier > getIdentifiersFree ( )
   {
-    if ( this.free == null )
+    if ( this.identifiersFree == null )
     {
-      this.free = new ArrayList < Identifier > ( ) ;
+      this.identifiersFree = new ArrayList < Identifier > ( ) ;
       ArrayList < Identifier > freeE1 = new ArrayList < Identifier > ( ) ;
       ArrayList < Identifier > freeE2 = new ArrayList < Identifier > ( ) ;
       freeE1.addAll ( this.expressions [ 0 ].getIdentifiersFree ( ) ) ;
@@ -245,10 +245,10 @@ public final class CurriedLetRec extends CurriedLet implements
       {
         // Remove all Identifiers with the same name
       }
-      this.free.addAll ( freeE1 ) ;
-      this.free.addAll ( freeE2 ) ;
+      this.identifiersFree.addAll ( freeE1 ) ;
+      this.identifiersFree.addAll ( freeE2 ) ;
     }
-    return this.free ;
+    return this.identifiersFree ;
   }
 
 

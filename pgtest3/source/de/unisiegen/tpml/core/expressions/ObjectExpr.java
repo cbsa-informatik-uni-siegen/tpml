@@ -250,16 +250,16 @@ public final class ObjectExpr extends Expression implements BoundIdentifiers ,
   @ Override
   public ArrayList < Identifier > getIdentifiersFree ( )
   {
-    if ( this.free == null )
+    if ( this.identifiersFree == null )
     {
-      this.free = new ArrayList < Identifier > ( ) ;
-      this.free.addAll ( this.expressions [ 0 ].getIdentifiersFree ( ) ) ;
-      while ( this.free.remove ( this.identifiers [ 0 ] ) )
+      this.identifiersFree = new ArrayList < Identifier > ( ) ;
+      this.identifiersFree.addAll ( this.expressions [ 0 ].getIdentifiersFree ( ) ) ;
+      while ( this.identifiersFree.remove ( this.identifiers [ 0 ] ) )
       {
         // Remove all Identifiers with the same name
       }
     }
-    return this.free ;
+    return this.identifiersFree ;
   }
 
 

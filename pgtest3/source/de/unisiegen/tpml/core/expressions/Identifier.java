@@ -136,20 +136,6 @@ public final class Identifier extends Value
 
 
   /**
-   * TODO
-   * 
-   * @return TODO
-   */
-  @ Override
-  public ArrayList < Identifier > getIdentifiersAll ( )
-  {
-    ArrayList < Identifier > allIdentifier = new ArrayList < Identifier > ( ) ;
-    allIdentifier.add ( this ) ;
-    return allIdentifier ;
-  }
-
-
-  /**
    * {@inheritDoc}
    * 
    * @see Expression#clone()
@@ -237,12 +223,12 @@ public final class Identifier extends Value
   @ Override
   public ArrayList < Identifier > getIdentifiersFree ( )
   {
-    if ( this.free == null )
+    if ( this.identifiersFree == null )
     {
-      this.free = new ArrayList < Identifier > ( ) ;
-      this.free.add ( this ) ;
+      this.identifiersFree = new ArrayList < Identifier > ( ) ;
+      this.identifiersFree.add ( this ) ;
     }
-    return this.free ;
+    return this.identifiersFree ;
   }
 
 

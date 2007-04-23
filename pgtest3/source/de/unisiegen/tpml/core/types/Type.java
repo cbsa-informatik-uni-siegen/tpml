@@ -1,8 +1,7 @@
 package de.unisiegen.tpml.core.types ;
 
 
-import java.beans.Introspector ;
-import java.beans.PropertyDescriptor ;
+import java.lang.reflect.InvocationTargetException ;
 import java.util.ArrayList ;
 import java.util.Arrays ;
 import java.util.Collections ;
@@ -108,37 +107,44 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities
    */
   public final ArrayList < Type > children ( )
   {
-    // check if we already determined the children
     if ( this.children == null )
     {
-      try
+      this.children = new ArrayList < Type > ( ) ;
+      for ( Class < Object > currentInterface : this.getClass ( )
+          .getInterfaces ( ) )
       {
-        this.children = new ArrayList < Type > ( ) ;
-        PropertyDescriptor [ ] properties = Introspector.getBeanInfo (
-            getClass ( ) , Type.class ).getPropertyDescriptors ( ) ;
-        for ( PropertyDescriptor property : properties )
+        if ( currentInterface
+            .equals ( de.unisiegen.tpml.core.interfaces.ChildrenExpressions.class ) )
         {
-          java.lang.reflect.Method method = property.getReadMethod ( ) ;
-          if ( method.getName ( ).equals ( GET_TYPES ) )
+          try
           {
-            Object value = property.getReadMethod ( ).invoke ( this ) ;
-            if ( value instanceof Type [ ] )
-            {
-              this.children.addAll ( Arrays.asList ( ( Type [ ] ) value ) ) ;
-            }
+            Type [ ] types = ( Type [ ] ) this.getClass ( ).getMethod (
+                GET_TYPES , new Class [ 0 ] ).invoke ( this , new Object [ 0 ] ) ;
+            this.children.addAll ( Arrays.asList ( types ) ) ;
+          }
+          catch ( IllegalArgumentException e )
+          {
+            System.err.println ( "Type: IllegalArgumentException" ) ; //$NON-NLS-1$
+          }
+          catch ( SecurityException e )
+          {
+            System.err.println ( "Type: SecurityException" ) ; //$NON-NLS-1$
+          }
+          catch ( IllegalAccessException e )
+          {
+            System.err.println ( "Type: IllegalAccessException" ) ; //$NON-NLS-1$
+          }
+          catch ( InvocationTargetException e )
+          {
+            System.err.println ( "Type: InvocationTargetException" ) ; //$NON-NLS-1$
+          }
+          catch ( NoSuchMethodException e )
+          {
+            System.err.println ( "Type: NoSuchMethodException" ) ; //$NON-NLS-1$
           }
         }
       }
-      catch ( RuntimeException exception )
-      {
-        throw exception ;
-      }
-      catch ( Exception exception )
-      {
-        throw new RuntimeException ( exception ) ;
-      }
     }
-    // return an enumeration for the children
     return this.children ;
   }
 
@@ -185,7 +191,7 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities
    * @return The parent.
    * @see #parent
    */
-  public PrettyPrintable getParent ( )
+  public final PrettyPrintable getParent ( )
   {
     return this.parent ;
   }
@@ -207,7 +213,7 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities
    * 
    * @param pParent The parent to set
    */
-  public void setParent ( PrettyPrintable pParent )
+  public final void setParent ( PrettyPrintable pParent )
   {
     this.parent = pParent ;
   }

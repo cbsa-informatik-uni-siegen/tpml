@@ -208,9 +208,9 @@ public final class Row extends Expression implements ChildrenExpressions
   @ Override
   public ArrayList < Identifier > getIdentifiersFree ( )
   {
-    if ( this.free == null )
+    if ( this.identifiersFree == null )
     {
-      this.free = new ArrayList < Identifier > ( ) ;
+      this.identifiersFree = new ArrayList < Identifier > ( ) ;
       ArrayList < Identifier > newBound = new ArrayList < Identifier > ( ) ;
       for ( Expression expr : this.expressions )
       {
@@ -220,7 +220,7 @@ public final class Row extends Expression implements ChildrenExpressions
         {
           // Remove all Identifiers with the same name
         }
-        this.free.addAll ( freeCurrent ) ;
+        this.identifiersFree.addAll ( freeCurrent ) ;
         if ( expr instanceof Attribute )
         {
           Attribute attribute = ( Attribute ) expr ;
@@ -228,7 +228,7 @@ public final class Row extends Expression implements ChildrenExpressions
         }
       }
     }
-    return this.free ;
+    return this.identifiersFree ;
   }
 
 

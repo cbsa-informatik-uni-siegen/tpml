@@ -184,17 +184,17 @@ public final class Duplication extends Expression implements
   @ Override
   public ArrayList < Identifier > getIdentifiersFree ( )
   {
-    if ( this.free == null )
+    if ( this.identifiersFree == null )
     {
-      this.free = new ArrayList < Identifier > ( ) ;
-      this.free.add ( new Identifier ( "self" ) ) ; //$NON-NLS-1$
+      this.identifiersFree = new ArrayList < Identifier > ( ) ;
+      this.identifiersFree.add ( new Identifier ( "self" ) ) ; //$NON-NLS-1$
       for ( int i = 0 ; i < this.expressions.length ; i ++ )
       {
-        this.free.addAll ( this.expressions [ i ].getIdentifiersFree ( ) ) ;
-        this.free.addAll ( this.identifiers [ i ].getIdentifiersFree ( ) ) ;
+        this.identifiersFree.addAll ( this.expressions [ i ].getIdentifiersFree ( ) ) ;
+        this.identifiersFree.addAll ( this.identifiers [ i ].getIdentifiersFree ( ) ) ;
       }
     }
-    return this.free ;
+    return this.identifiersFree ;
   }
 
 

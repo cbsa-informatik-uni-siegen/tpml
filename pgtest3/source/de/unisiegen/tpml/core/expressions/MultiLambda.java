@@ -306,19 +306,19 @@ public final class MultiLambda extends Value implements BoundIdentifiers ,
   @ Override
   public ArrayList < Identifier > getIdentifiersFree ( )
   {
-    if ( this.free == null )
+    if ( this.identifiersFree == null )
     {
-      this.free = new ArrayList < Identifier > ( ) ;
-      this.free.addAll ( this.expressions [ 0 ].getIdentifiersFree ( ) ) ;
+      this.identifiersFree = new ArrayList < Identifier > ( ) ;
+      this.identifiersFree.addAll ( this.expressions [ 0 ].getIdentifiersFree ( ) ) ;
       for ( int i = 0 ; i < this.identifiers.length ; i ++ )
       {
-        while ( this.free.remove ( this.identifiers [ i ] ) )
+        while ( this.identifiersFree.remove ( this.identifiers [ i ] ) )
         {
           // Remove all Identifiers with the same name
         }
       }
     }
-    return this.free ;
+    return this.identifiersFree ;
   }
 
 
