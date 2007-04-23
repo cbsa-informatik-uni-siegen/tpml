@@ -1,9 +1,7 @@
 package de.unisiegen.tpml.core.expressions ;
 
 
-import java.text.MessageFormat ;
 import java.util.ArrayList ;
-import de.unisiegen.tpml.core.Messages ;
 import de.unisiegen.tpml.core.exceptions.CheckDisjunctionException ;
 import de.unisiegen.tpml.core.interfaces.BoundIdentifiers ;
 import de.unisiegen.tpml.core.interfaces.ChildrenExpressions ;
@@ -140,9 +138,8 @@ public final class Recursion extends Expression implements BoundIdentifiers ,
         negativeIdentifiers.add ( allId ) ;
       }
     }
-    CheckDisjunctionException.throwException ( this.identifiers [ 0 ] ,
-        negativeIdentifiers , MessageFormat.format ( Messages
-            .getString ( "Parser.3" ) , this.identifiers [ 0 ] ) ) ; //$NON-NLS-1$
+    negativeIdentifiers.add ( this.identifiers [ 0 ] ) ;
+    CheckDisjunctionException.throwExceptionDisjunction ( negativeIdentifiers ) ;
   }
 
 

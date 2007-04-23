@@ -37,12 +37,13 @@ action code
   {
     public static void check(Row pRow)
     {
-	  ArrayList <Identifier> duplicated = new ArrayList <Identifier> ();
+	  ArrayList <Identifier> negativeIdentifiers = new ArrayList <Identifier> ();
 	  Expression [ ] rowExpressions = pRow.getExpressions ( ) ;
       for ( int i = 0 ; i < rowExpressions.length ; i ++ )
       {
         if ( rowExpressions[i] instanceof Attribute )
         {
+          negativeIdentifiers.clear();
           Attribute attribute1 = (Attribute) rowExpressions[i] ;
           for ( int j = i+1 ; j < rowExpressions.length ; j++ )
           {
@@ -51,13 +52,12 @@ action code
     	      Attribute attribute2 = (Attribute) rowExpressions[j] ;
     	      if ( attribute1.getId().equals(attribute2.getId()))
     	      {
-    	        duplicated.add(attribute2.getId());
+    	        negativeIdentifiers.add(attribute2.getId());
     	      }
     	    }
     	  }
-    	  CheckDisjunctionException.throwException ( attribute1.getId ( ) ,
-            duplicated, MessageFormat.format ( Messages
-              .getString ( "Parser.2" ) , attribute1.getId() ) ) ;
+    	  negativeIdentifiers.add ( attribute1.getId() ) ;
+    	  CheckDisjunctionException.throwExceptionRow ( negativeIdentifiers ) ;
         }
       }
     }
@@ -65,20 +65,20 @@ action code
     
     public static void check(Duplication pDuplication)
     {
-	  ArrayList <Identifier> duplicated = new ArrayList <Identifier> ();
+	  ArrayList <Identifier> negativeIdentifiers = new ArrayList <Identifier> ();
 	  Identifier [] identifier = pDuplication.getIdentifiers() ;
       for ( int i = 0 ; i < identifier.length ; i ++ )
       {
+        negativeIdentifiers.clear();
         for ( int j = i+1 ; j < identifier.length ; j++ )
         {
           if ( identifier [i].equals(identifier[j]) )
     	  {
-  	        duplicated.add(identifier[j]);
+  	        negativeIdentifiers.add(identifier[j]);
     	  }
     	}
-    	CheckDisjunctionException.throwException ( identifier [i] ,
-          duplicated, MessageFormat.format ( Messages
-            .getString ( "Parser.4" ) , identifier [i] ) ) ;
+    	negativeIdentifiers.add ( identifier [i] ) ;
+    	CheckDisjunctionException.throwExceptionDuplication ( negativeIdentifiers ) ;
       }
     }
   }

@@ -1,10 +1,8 @@
 package de.unisiegen.tpml.core.expressions ;
 
 
-import java.text.MessageFormat ;
 import java.util.ArrayList ;
 import java.util.Arrays ;
-import de.unisiegen.tpml.core.Messages ;
 import de.unisiegen.tpml.core.exceptions.CheckDisjunctionException ;
 import de.unisiegen.tpml.core.exceptions.RowSubstitutionException ;
 import de.unisiegen.tpml.core.interfaces.ChildrenExpressions ;
@@ -85,6 +83,7 @@ public final class Row extends Expression implements ChildrenExpressions
       {
         Attribute attribute = ( Attribute ) this.expressions [ i ] ;
         allIdentifiers.clear ( ) ;
+        negativeIdentifiers.clear ( ) ;
         for ( int j = i + 1 ; j < this.expressions.length ; j ++ )
         {
           allIdentifiers.addAll ( this.expressions [ j ].allIdentifiers ( ) ) ;
@@ -97,9 +96,9 @@ public final class Row extends Expression implements ChildrenExpressions
             negativeIdentifiers.add ( allId ) ;
           }
         }
-        CheckDisjunctionException.throwException ( attribute.getId ( ) ,
-            negativeIdentifiers , MessageFormat.format ( Messages
-                .getString ( "Parser.3" ) , attribute.getId ( ) ) ) ; //$NON-NLS-1$
+        negativeIdentifiers.add ( attribute.getId ( ) ) ;
+        CheckDisjunctionException
+            .throwExceptionDisjunction ( negativeIdentifiers ) ;
       }
     }
   }

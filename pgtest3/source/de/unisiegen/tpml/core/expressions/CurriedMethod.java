@@ -1,10 +1,8 @@
 package de.unisiegen.tpml.core.expressions ;
 
 
-import java.text.MessageFormat ;
 import java.util.ArrayList ;
 import java.util.Arrays ;
-import de.unisiegen.tpml.core.Messages ;
 import de.unisiegen.tpml.core.exceptions.CheckDisjunctionException ;
 import de.unisiegen.tpml.core.interfaces.BoundIdentifiers ;
 import de.unisiegen.tpml.core.interfaces.ChildrenExpressions ;
@@ -164,9 +162,8 @@ public final class CurriedMethod extends Expression implements
           negativeIdentifiers.add ( allId ) ;
         }
       }
-      CheckDisjunctionException.throwException ( this.identifiers [ i ] ,
-          negativeIdentifiers , MessageFormat.format ( Messages
-              .getString ( "Parser.3" ) , this.identifiers [ i ] ) ) ; //$NON-NLS-1$
+      negativeIdentifiers.add ( this.identifiers [ i ] ) ;
+      CheckDisjunctionException.throwExceptionDisjunction ( negativeIdentifiers ) ;
     }
   }
 

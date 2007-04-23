@@ -430,19 +430,21 @@ public class StyledLanguageDocument extends DefaultStyledDocument implements
         }
         catch ( CheckDisjunctionException e )
         {
+          String [ ] message = e.message ;
           int [ ] startOffset = e.startOffset ;
           int [ ] endOffset = e.endOffset ;
+          exceptions = new LanguageParserException [ startOffset.length ] ;
           for ( int i = 0 ; i < startOffset.length ; i ++ )
           {
+            exceptions [ i ] = new LanguageParserException ( message [ i ] ,
+                startOffset [ i ] , endOffset [ i ] ) ;
             SimpleAttributeSet errorSet = new SimpleAttributeSet ( ) ;
             StyleConstants.setForeground ( errorSet , Color.RED ) ;
             StyleConstants.setUnderline ( errorSet , true ) ;
-            errorSet.addAttribute ( "exception" , e ) ; //$NON-NLS-1$
+            errorSet.addAttribute ( "exception" , exceptions [ i ] ) ; //$NON-NLS-1$
             setCharacterAttributes ( startOffset [ i ] , endOffset [ i ]
                 - startOffset [ i ] , errorSet , false ) ;
           }
-          exceptions = new LanguageScannerException [ ]
-          { e } ;
         }
         catch ( LanguageParserException e )
         {
