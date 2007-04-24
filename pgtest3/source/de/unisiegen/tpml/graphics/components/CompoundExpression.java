@@ -599,8 +599,6 @@ public class CompoundExpression < S , E > extends JComponent
     
     //gc.setColor (Color.YELLOW);
     //gc.fillRect(0, 0, getWidth () - 1, getHeight () - 1);
-    
-    
   }
 
 
