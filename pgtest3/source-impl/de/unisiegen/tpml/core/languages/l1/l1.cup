@@ -118,15 +118,15 @@ expr				::=	simple_expr:e
 
 					/* Lambda Abstraction */
 					|	LAMBDA IDENTIFIER:id DOT expr:e
-						{: RESULT = new Lambda(new Identifier(id), null, e); :}
+						{: RESULT = new Lambda(new Identifier (id,idleft,idright), null, e); :}
 					|	LAMBDA IDENTIFIER:id COLON type:tau DOT expr:e
-						{: RESULT = new Lambda(new Identifier(id), tau, e); :}
+						{: RESULT = new Lambda(new Identifier (id,idleft,idright), tau, e); :}
 
 					/* Let */
 					|	LET IDENTIFIER:id EQUAL expr:e1 IN expr:e2
-						{: RESULT = new Let(new Identifier(id), null, e1, e2); :}
+						{: RESULT = new Let(new Identifier (id,idleft,idright), null, e1, e2); :}
 					|	LET IDENTIFIER:id COLON type:tau EQUAL expr:e1 IN expr:e2
-						{: RESULT = new Let(new Identifier(id), tau, e1, e2); :}
+						{: RESULT = new Let(new Identifier (id,idleft,idright), tau, e1, e2); :}
 					|	LET IDENTIFIER:id id_type_list:itl EQUAL expr:e1 IN expr:e2
 						{: Identifier[] identifiers = new Identifier[itl.length + 1];
 						   MonoType[] types = new MonoType[itl.length + 1];
@@ -134,7 +134,7 @@ expr				::=	simple_expr:e
 						     identifiers[n + 1] = itl[n].id;
 						     types[n + 1] = itl[n].tau;
 						   }
-						   identifiers[0] = new Identifier(id);
+						   identifiers[0] = new Identifier (id,idleft,idright);
 						   RESULT = new CurriedLet(identifiers, types, e1, e2); :}
 					|	LET IDENTIFIER:id id_type_list:itl COLON type:tau EQUAL expr:e1 IN expr:e2
 						{: Identifier[] identifiers = new Identifier[itl.length + 1];
@@ -143,7 +143,7 @@ expr				::=	simple_expr:e
 						     identifiers[n + 1] = itl[n].id;
 						     types[n + 1] = itl[n].tau;
 						   }
-						   identifiers[0] = new Identifier(id);
+						   identifiers[0] = new Identifier (id,idleft,idright);
 						   types[0] = tau;
 						   RESULT = new CurriedLet(identifiers, types, e1, e2); :}
 					;
@@ -152,7 +152,7 @@ expr				::=	simple_expr:e
 simple_expr			::=	constant:c
 						{: RESULT = c; :}
 					|	IDENTIFIER:id
-						{: RESULT = new Identifier(id); :}
+						{: RESULT = new Identifier (id,idleft,idright); :}
 
 					/* Parenthized operators/expressions */
 					|	LPAREN operator:o RPAREN
@@ -205,9 +205,9 @@ id_type_list		::= id_type_list:l id_type_pair:itp
 					
 
 id_type_pair		::= LPAREN IDENTIFIER:id COLON type:tau RPAREN
-						{: RESULT = new IdTypePair(new Identifier(id), tau); :}
+						{: RESULT = new IdTypePair(new Identifier (id,idleft,idright), tau); :}
 					|	IDENTIFIER:id
-						{: RESULT = new IdTypePair(new Identifier(id), null); :}
+						{: RESULT = new IdTypePair(new Identifier (id,idleft,idright), null); :}
 					;
 					
 					

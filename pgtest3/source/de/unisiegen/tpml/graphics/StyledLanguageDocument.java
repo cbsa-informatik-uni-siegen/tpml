@@ -442,9 +442,9 @@ public class StyledLanguageDocument extends DefaultStyledDocument implements
         }
         catch ( LanguageParserMultiException e )
         {
-          String [ ] message = e.message ;
-          int [ ] startOffset = e.startOffset ;
-          int [ ] endOffset = e.endOffset ;
+          String [ ] message = e.getMessages ( ) ;
+          int [ ] startOffset = e.getParserStartOffset ( ) ;
+          int [ ] endOffset = e.getParserEndOffset ( ) ;
           exceptions = new LanguageParserException [ startOffset.length ] ;
           for ( int i = 0 ; i < startOffset.length ; i ++ )
           {

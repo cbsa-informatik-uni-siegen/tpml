@@ -196,6 +196,18 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
 
 
   /**
+   * TODO
+   */
+  protected int parserStartOffset ;
+
+
+  /**
+   * TODO
+   */
+  protected int parserEndOffset ;
+
+
+  /**
    * Returns an enumeration for the direct ancestor expressions, the direct
    * children, of this expression. The enumeration is generated using the bean
    * properties for every {@link Expression} derived class. For example,
@@ -414,6 +426,30 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
   public final PrettyPrintable getParent ( )
   {
     return this.parent ;
+  }
+
+
+  /**
+   * Returns the parserEndOffset.
+   * 
+   * @return The parserEndOffset.
+   * @see #parserEndOffset
+   */
+  public int getParserEndOffset ( )
+  {
+    return this.parserEndOffset ;
+  }
+
+
+  /**
+   * Returns the parserStartOffset.
+   * 
+   * @return The parserStartOffset.
+   * @see #parserStartOffset
+   */
+  public int getParserStartOffset ( )
+  {
+    return this.parserStartOffset ;
   }
 
 

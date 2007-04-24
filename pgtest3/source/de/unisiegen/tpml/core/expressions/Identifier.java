@@ -74,18 +74,6 @@ public final class Identifier extends Value
   /**
    * TODO
    */
-  private int startOffset ;
-
-
-  /**
-   * TODO
-   */
-  private int endOffset ;
-
-
-  /**
-   * TODO
-   */
   @ SuppressWarnings ( "unused" )
   private String identity = new DecimalFormat ( "000" ).format ( ( int ) ( Math //$NON-NLS-1$
       .random ( ) * 1000 ) ) ;
@@ -107,8 +95,8 @@ public final class Identifier extends Value
     this.name = pName ;
     this.boundToExpression = null ;
     this.boundToIdentifier = null ;
-    this.startOffset = - 1 ;
-    this.endOffset = - 1 ;
+    this.parserStartOffset = - 1 ;
+    this.parserEndOffset = - 1 ;
     if ( pName.equals ( "self" ) ) //$NON-NLS-1$
     {
       this.set = Set.SELF ;
@@ -124,14 +112,15 @@ public final class Identifier extends Value
    * Allocates a new {@link Identifier} with the given <code>name</code>.
    * 
    * @param pName the name of the identifier.
-   * @param pStartOffset TODO
-   * @param pEndOffset TODO
+   * @param pParserStartOffset TODO
+   * @param pParserEndOffset TODO
    */
-  public Identifier ( String pName , int pStartOffset , int pEndOffset )
+  public Identifier ( String pName , int pParserStartOffset ,
+      int pParserEndOffset )
   {
     this ( pName ) ;
-    this.startOffset = pStartOffset ;
-    this.endOffset = pEndOffset ;
+    this.parserStartOffset = pParserStartOffset ;
+    this.parserEndOffset = pParserEndOffset ;
   }
 
 
@@ -197,18 +186,6 @@ public final class Identifier extends Value
   public String getCaption ( )
   {
     return "Identifier" ; //$NON-NLS-1$
-  }
-
-
-  /**
-   * Returns the endOffset.
-   * 
-   * @return The endOffset.
-   * @see #endOffset
-   */
-  public int getEndOffset ( )
-  {
-    return this.endOffset ;
   }
 
 
@@ -286,18 +263,6 @@ public final class Identifier extends Value
   public Set getSet ( )
   {
     return this.set ;
-  }
-
-
-  /**
-   * Returns the startOffset.
-   * 
-   * @return The startOffset.
-   * @see #startOffset
-   */
-  public int getStartOffset ( )
-  {
-    return this.startOffset ;
   }
 
 

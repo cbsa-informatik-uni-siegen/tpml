@@ -71,11 +71,8 @@ public final class LanguageParserMultiException extends LanguageParserException
       {
         return SELF ;
       }
-      default :
-      {
-        return VARIABLE ;
-      }
     }
+    return null ;
   }
 
 
@@ -97,8 +94,9 @@ public final class LanguageParserMultiException extends LanguageParserException
         message [ j ] = MessageFormat.format (
             Messages.getString ( "Parser.3" ) , getIdSet ( pNegativeIdentifiers //$NON-NLS-1$
                 .get ( j ) ) , pNegativeIdentifiers.get ( j ) ) ;
-        startOffset [ j ] = pNegativeIdentifiers.get ( j ).getStartOffset ( ) ;
-        endOffset [ j ] = pNegativeIdentifiers.get ( j ).getEndOffset ( ) ;
+        startOffset [ j ] = pNegativeIdentifiers.get ( j )
+            .getParserStartOffset ( ) ;
+        endOffset [ j ] = pNegativeIdentifiers.get ( j ).getParserEndOffset ( ) ;
       }
       throw new LanguageParserMultiException ( message , startOffset ,
           endOffset ) ;
@@ -123,8 +121,9 @@ public final class LanguageParserMultiException extends LanguageParserException
       {
         message [ j ] = MessageFormat.format (
             Messages.getString ( "Parser.4" ) , pNegativeIdentifiers.get ( j ) ) ; //$NON-NLS-1$
-        startOffset [ j ] = pNegativeIdentifiers.get ( j ).getStartOffset ( ) ;
-        endOffset [ j ] = pNegativeIdentifiers.get ( j ).getEndOffset ( ) ;
+        startOffset [ j ] = pNegativeIdentifiers.get ( j )
+            .getParserStartOffset ( ) ;
+        endOffset [ j ] = pNegativeIdentifiers.get ( j ).getParserEndOffset ( ) ;
       }
       throw new LanguageParserMultiException ( message , startOffset ,
           endOffset ) ;
@@ -149,8 +148,9 @@ public final class LanguageParserMultiException extends LanguageParserException
       {
         message [ j ] = MessageFormat.format (
             Messages.getString ( "Parser.2" ) , pNegativeIdentifiers.get ( j ) ) ; //$NON-NLS-1$
-        startOffset [ j ] = pNegativeIdentifiers.get ( j ).getStartOffset ( ) ;
-        endOffset [ j ] = pNegativeIdentifiers.get ( j ).getEndOffset ( ) ;
+        startOffset [ j ] = pNegativeIdentifiers.get ( j )
+            .getParserStartOffset ( ) ;
+        endOffset [ j ] = pNegativeIdentifiers.get ( j ).getParserEndOffset ( ) ;
       }
       throw new LanguageParserMultiException ( message , startOffset ,
           endOffset ) ;
@@ -175,8 +175,9 @@ public final class LanguageParserMultiException extends LanguageParserException
       {
         message [ j ] = MessageFormat.format (
             Messages.getString ( "Parser.5" ) , pNegativeIdentifiers.get ( j ) ) ; //$NON-NLS-1$
-        startOffset [ j ] = pNegativeIdentifiers.get ( j ).getStartOffset ( ) ;
-        endOffset [ j ] = pNegativeIdentifiers.get ( j ).getEndOffset ( ) ;
+        startOffset [ j ] = pNegativeIdentifiers.get ( j )
+            .getParserStartOffset ( ) ;
+        endOffset [ j ] = pNegativeIdentifiers.get ( j ).getParserEndOffset ( ) ;
       }
       throw new LanguageParserMultiException ( message , startOffset ,
           endOffset ) ;
@@ -187,34 +188,70 @@ public final class LanguageParserMultiException extends LanguageParserException
   /**
    * TODO
    */
-  public String [ ] message ;
+  private String [ ] messages ;
 
 
   /**
    * TODO
    */
-  public int [ ] startOffset ;
+  private int [ ] parserStartOffset ;
 
 
   /**
    * TODO
    */
-  public int [ ] endOffset ;
+  private int [ ] parserEndOffset ;
 
 
   /**
    * TODO
    * 
-   * @param pMessage TODO
-   * @param pStartOffset TODO
-   * @param pEndOffset TODO
+   * @param pMessages TODO
+   * @param pParserStartOffset TODO
+   * @param pParserEndOffset TODO
    */
-  private LanguageParserMultiException ( String [ ] pMessage ,
-      int [ ] pStartOffset , int [ ] pEndOffset )
+  public LanguageParserMultiException ( String [ ] pMessages ,
+      int [ ] pParserStartOffset , int [ ] pParserEndOffset )
   {
-    super ( pMessage [ 0 ] , pStartOffset [ 0 ] , pEndOffset [ 0 ] ) ;
-    this.message = pMessage ;
-    this.startOffset = pStartOffset ;
-    this.endOffset = pEndOffset ;
+    super ( pMessages [ 0 ] , pParserStartOffset [ 0 ] , pParserEndOffset [ 0 ] ) ;
+    this.messages = pMessages ;
+    this.parserStartOffset = pParserStartOffset ;
+    this.parserEndOffset = pParserEndOffset ;
+  }
+
+
+  /**
+   * Returns the messages.
+   * 
+   * @return The messages.
+   * @see #messages
+   */
+  public String [ ] getMessages ( )
+  {
+    return this.messages ;
+  }
+
+
+  /**
+   * Returns the endOffset.
+   * 
+   * @return The endOffset.
+   * @see #parserEndOffset
+   */
+  public int [ ] getParserEndOffset ( )
+  {
+    return this.parserEndOffset ;
+  }
+
+
+  /**
+   * Returns the startOffset.
+   * 
+   * @return The startOffset.
+   * @see #parserStartOffset
+   */
+  public int [ ] getParserStartOffset ( )
+  {
+    return this.parserStartOffset ;
   }
 }
