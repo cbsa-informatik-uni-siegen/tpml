@@ -18,6 +18,7 @@ import javax.swing.text.StyleConstants ;
 import org.apache.log4j.Logger ;
 import de.unisiegen.tpml.core.exceptions.LanguageParserMultiException ;
 import de.unisiegen.tpml.core.expressions.Expression ;
+import de.unisiegen.tpml.core.expressions.Identifier ;
 import de.unisiegen.tpml.core.languages.AbstractLanguageScanner ;
 import de.unisiegen.tpml.core.languages.Language ;
 import de.unisiegen.tpml.core.languages.LanguageParser ;
@@ -426,7 +427,18 @@ public class StyledLanguageDocument extends DefaultStyledDocument implements
         // ...and try to parse the token stream
         try
         {
-          parser.parse ( ) ;
+          Expression expression = parser.parse ( ) ;
+          for ( Identifier id : expression.getIdentifiersFree ( ) )
+          {
+            SimpleAttributeSet freeSet = new SimpleAttributeSet ( ) ;
+            StyleConstants.setForeground ( freeSet , Theme.currentTheme ( )
+                .getFreeIdColor ( ) ) ;
+            StyleConstants.setBold ( freeSet , true ) ;
+            freeSet.addAttribute ( "Free Identifier" , "Free Identifier" ) ; //$NON-NLS-1$ //$NON-NLS-2$
+            setCharacterAttributes ( id.getParserStartOffset ( ) , id
+                .getParserEndOffset ( )
+                - id.getParserStartOffset ( ) , freeSet , false ) ;
+          }
         }
         catch ( LanguageParserMultiException e )
         {
