@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.TreeSet;
 
 import de.unisiegen.tpml.core.ProofRuleException;
+import de.unisiegen.tpml.core.AbstractProofModel.UndoableTreeEdit;
 import de.unisiegen.tpml.core.expressions.ArithmeticOperator;
 import de.unisiegen.tpml.core.expressions.Assign;
 import de.unisiegen.tpml.core.expressions.BinaryCons;
@@ -58,7 +59,7 @@ public class DefaultTypeInferenceProofContext implements
 	// Attributes
 	//
 
-	/*
+	/**
 	 * The current offset for the <code>TypeVariable</code> allocation. The
 	 * offset combined with the index from the {@link #model} will be used
 	 * to generate a new type variable on every invocation of the method
@@ -66,9 +67,11 @@ public class DefaultTypeInferenceProofContext implements
 	 * 
 	 * @see #newTypeVariable()
 	 * @see TypeVariable
-	 *
-	 private int offset = 0;
 	 */
+	 private int offset = 0;
+	 
+	 private int modelIndex;
+	 
 	/**
 	 * The list of type equations that has been collected for this context
 	 * 
@@ -127,34 +130,22 @@ public class DefaultTypeInferenceProofContext implements
 	 * 
 	 * @see TypeInferenceProofModel#setIndex(int)
 	 */
-	public DefaultTypeInferenceProofContext(final TypeInferenceProofModel pModel,
+	public DefaultTypeInferenceProofContext(final TypeInferenceProofModel model,
 			final DefaultTypeInferenceProofNode pNode) {
 
-		if (pModel == null) {
+		if (model == null) {
 			throw new NullPointerException("model is null"); //$NON-NLS-1$
 		}
-		this.model = pModel;
+		this.model = model;
 		this.node = pNode;
 		//this.equations = pNode.getEquations();
 
 		/*
 		 // increment the model index
-		 final int index = model.getIndex();
-
-		 addRedoAction(new Runnable() {
-
-		 public void run() {
-
-		 model.setIndex(index + 1);
-		 }
-		 });
-		 addUndoAction(new Runnable() {
-
-		 public void run() {
-
-		 model.setIndex(index);
-		 }
-		 });*/
+    final int index = model.getIndex();
+    addRedoAction(new Runnable() { public void run() { model.setIndex(index + 1); } });
+    addUndoAction(new Runnable() { public void run() { model.setIndex(index); } });
+    modelIndex = model.getIndex();*/
 	}
 
 	//
@@ -289,9 +280,8 @@ public class DefaultTypeInferenceProofContext implements
 	 * @see de.unisiegen.tpml.core.typechecker.TypeCheckerProofContext#newTypeVariable()
 	 */
 	public TypeVariable newTypeVariable() {
-		model.setIndex(model.getIndex() + 1);
-
-		return new TypeVariable(this.model.getIndex(), model.getOffset());
+		//offset++;
+		return new TypeVariable(model.getIndex(), offset++);
 
 	}
 
@@ -307,7 +297,7 @@ public class DefaultTypeInferenceProofContext implements
 	}
 
 	//
-	// Rule application
+	// Rule applicationxterm
 	//
 	/**
 	 * Applies the specified proof <code>rule</code> to the actual <code>node</code>.
@@ -387,8 +377,6 @@ public class DefaultTypeInferenceProofContext implements
 
 		sortedFormulas.remove(formula);
 
-		ArrayList<MonoType> types = model
-				.getSubstitudedTypesForSubstitutions(newSubstitutions);
 
 		//	 Create a new List of formulas needed for new node
 		ArrayList<TypeFormula> formulas = new ArrayList<TypeFormula>();

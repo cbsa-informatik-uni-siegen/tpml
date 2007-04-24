@@ -7,6 +7,8 @@ import org.apache.log4j.Logger;
 import de.unisiegen.tpml.core.AbstractProofModel;
 import de.unisiegen.tpml.core.AbstractProofNode;
 import de.unisiegen.tpml.core.AbstractProofRuleSet;
+import de.unisiegen.tpml.core.CannotRedoException;
+import de.unisiegen.tpml.core.CannotUndoException;
 import de.unisiegen.tpml.core.ExpressionProofNode;
 import de.unisiegen.tpml.core.ProofGuessException;
 import de.unisiegen.tpml.core.ProofNode;
@@ -64,17 +66,6 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 	 * @see types.TypeVariable
 	 */
 	private int index = 1;
-
-	/**
-	 * The current offset for the <code>TypeVariable</code> allocation. The
-	 * offset combined with the index from the {@link #model} will be used
-	 * to generate a new type variable on every invocation of the method
-	 * {@link #newTypeVariable()}. The offset will be incremented afterwards.
-	 * 
-	 * @see #newTypeVariable()
-	 * @see TypeVariable
-	 */
-	private int offset = 0;
 
 	//
 	// Constructor
@@ -420,6 +411,7 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 		// allocate a new TypeCheckerContext
 		DefaultTypeInferenceProofContext context = new DefaultTypeInferenceProofContext(
 				this, node);
+		index++;
 
 		DefaultTypeInferenceProofNode typeNode = (DefaultTypeInferenceProofNode) node;
 		Exception e = null;
@@ -470,6 +462,7 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 					continue;
 				}
 			}
+			index--;
 			if (e instanceof ProofRuleException) {
 				// rethrow exception
 				throw (ProofRuleException) e;
@@ -481,6 +474,7 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 				throw new ProofRuleException(node, rule, e);
 			}
 		}
+		
 	}
 
 	/**
@@ -641,14 +635,6 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 		return this.ruleSet.getRules();
 	}
 
-	public int getOffset() {
-		return this.offset;
-	}
-
-	public void setOffset(int offset) {
-		this.offset = offset;
-	}
-
 	public ArrayList<MonoType> getSubstitudedTypesForSubstitutions(
 			ArrayList<DefaultTypeSubstitution> substitutions) {
 		ArrayList<MonoType> result = new ArrayList<MonoType>();
@@ -657,5 +643,17 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 			result.add(s.getType());
 		}
 		return result;
+	}
+	
+	@Override
+	public void undo() throws CannotUndoException{
+		super.undo();
+		index--;
+	}
+	
+	@Override
+	public void redo() throws CannotRedoException{
+		super.redo();
+		index++;
 	}
 }
