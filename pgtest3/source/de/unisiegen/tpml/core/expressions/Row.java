@@ -3,7 +3,7 @@ package de.unisiegen.tpml.core.expressions ;
 
 import java.util.ArrayList ;
 import java.util.Arrays ;
-import de.unisiegen.tpml.core.exceptions.CheckDisjunctionException ;
+import de.unisiegen.tpml.core.exceptions.LanguageParserMultiException ;
 import de.unisiegen.tpml.core.exceptions.RowSubstitutionException ;
 import de.unisiegen.tpml.core.interfaces.ChildrenExpressions ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
@@ -97,7 +97,7 @@ public final class Row extends Expression implements ChildrenExpressions
           }
         }
         negativeIdentifiers.add ( attribute.getId ( ) ) ;
-        CheckDisjunctionException
+        LanguageParserMultiException
             .throwExceptionDisjunction ( negativeIdentifiers ) ;
       }
     }

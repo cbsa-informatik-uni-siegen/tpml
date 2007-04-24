@@ -92,7 +92,7 @@
 			debug="no"
 			expect="0"
 			nonterms="no"
-			nopositions="yes"
+			nopositions="no"
 			dump_grammar="no" />
 	</target>
 	
@@ -112,7 +112,7 @@
 			debug="no"
 			expect="0"
 			nonterms="no"
-			nopositions="yes"
+			nopositions="no"
 			dump_grammar="no" />
 		
 		<!-- Types -->
@@ -130,7 +130,7 @@
 			debug="no"
 			expect="0"
 			nonterms="no"
-			nopositions="yes"
+			nopositions="no"
 			dump_grammar="no" />
 	</target>
 	
@@ -149,7 +149,7 @@
 			debug="no"
 			expect="0"
 			nonterms="no"
-			nopositions="yes"
+			nopositions="no"
 			dump_grammar="no" />
 	</target>
 	
@@ -169,7 +169,7 @@
 			debug="no"
 			expect="0"
 			nonterms="no"
-			nopositions="yes"
+			nopositions="no"
 			dump_grammar="no" />
 		
 		<!-- Types -->
@@ -187,7 +187,7 @@
 			debug="no"
 			expect="0"
 			nonterms="no"
-			nopositions="yes"
+			nopositions="no"
 			dump_grammar="no" />
 	</target>
 	
@@ -207,7 +207,7 @@
 			debug="no"
 			expect="0"
 			nonterms="no"
-			nopositions="yes"
+			nopositions="no"
 			dump_grammar="no" />
 
 		<!-- Types -->
@@ -225,7 +225,7 @@
 			debug="no"
 			expect="0"
 			nonterms="no"
-			nopositions="yes"
+			nopositions="no"
 			dump_grammar="no" />
 	</target>
 	
@@ -245,7 +245,7 @@
 			debug="no"
 			expect="0"
 			nonterms="no"
-			nopositions="yes"
+			nopositions="no"
 			dump_grammar="no" />
 
 		<!-- Types -->
@@ -263,7 +263,7 @@
 			debug="no"
 			expect="0"
 			nonterms="no"
-			nopositions="yes"
+			nopositions="no"
 			dump_grammar="no" />
 	</target>
 </project>

@@ -44,29 +44,44 @@ import de.unisiegen.tpml.core.expressions.*;
 	}
 
 	@Override
-	public PrettyStyle getStyleBySymbolId(int id) {
-		switch (id) {
+	public PrettyStyle getStyleBySymbolId(int id) 
+	{
+		switch (id) 
+		{
 		case COMMENT:
 			return PrettyStyle.COMMENT;
 
-		case TRUE: case FALSE: case NUMBER: case PARENPAREN: case MOD: case NOT:
+		case TRUE:
+		case FALSE:
+		case NUMBER:
+		case PARENPAREN:
+		case MOD:
+		case NOT:
 			return PrettyStyle.CONSTANT;
 
-		case LAMBDA: case LET: case REC: case IN: case IF: case THEN: case ELSE:
-		case AMPERAMPER: case BARBAR:
-		
-		/* Object */
+		case LAMBDA:
+		case LET:
+		case REC:
+		case IN:
+		case IF:
+		case THEN:
+		case ELSE:
+		case AMPERAMPER:
+		case BARBAR:
 		case OBJECT:
-		case END: 
-		case HASHKEY: 
-		case ATTRIBUTE: 
-		case METHOD: 
-		case SEMI: 
-		case DUPLBEGIN: 
-		case DUPLEND: 
+		case END:
+		case HASHKEY:
+		case ATTRIBUTE:
+		case METHOD:
+		case SEMI:
+		case DUPLBEGIN:
+		case DUPLEND:
 			return PrettyStyle.KEYWORD;
 			
-		case BOOL: case INT: case UNIT: case TYPEVARIABLE:
+		case BOOL:
+		case INT:
+		case UNIT:
+		case TYPEVARIABLE:
 			return PrettyStyle.TYPE;
 		
 		case IDENTIFIER:
@@ -78,8 +93,10 @@ import de.unisiegen.tpml.core.expressions.*;
 		}
 	}
 	
-	public void restart(Reader reader) {
-		if (reader == null) {
+	public void restart(Reader reader) 
+	{
+		if (reader == null) 
+		{
 			throw new NullPointerException("reader is null");
 		}
 		yyreset(reader);
@@ -172,13 +189,9 @@ LetterGreek		= [\u03b1-\u03c1\u03c3-\u03c9]
 							}
 						}
 
-	"self"				{ return symbol("SELF", SELF, 
-							new Identifier
-							(yytext(), yychar ,yychar + yylength() ) ); }
+	"self"				{ return symbol("SELF", SELF, yytext()); }
 							
-	{Identifier}		{ return symbol("IDENTIFIER", IDENTIFIER, 
-							new Identifier
-							(yytext(), yychar ,yychar + yylength() ) ); }
+	{Identifier}		{ return symbol("IDENTIFIER", IDENTIFIER, yytext()); }
 
 	// comments
 	"(*"				{ yycommentChar = yychar; yybegin(YYCOMMENT); }

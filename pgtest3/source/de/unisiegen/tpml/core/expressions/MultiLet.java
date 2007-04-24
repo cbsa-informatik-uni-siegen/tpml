@@ -3,7 +3,7 @@ package de.unisiegen.tpml.core.expressions ;
 
 import java.util.ArrayList ;
 import java.util.Arrays ;
-import de.unisiegen.tpml.core.exceptions.CheckDisjunctionException ;
+import de.unisiegen.tpml.core.exceptions.LanguageParserMultiException ;
 import de.unisiegen.tpml.core.interfaces.BoundIdentifiers ;
 import de.unisiegen.tpml.core.interfaces.ChildrenExpressions ;
 import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
@@ -165,7 +165,7 @@ public final class MultiLet extends Expression implements BoundIdentifiers ,
         }
       }
       negativeIdentifiers.add ( current ) ;
-      CheckDisjunctionException
+      LanguageParserMultiException
           .throwExceptionDisjunction ( negativeIdentifiers ) ;
     }
   }

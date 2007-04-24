@@ -16,7 +16,7 @@ import javax.swing.text.DefaultStyledDocument ;
 import javax.swing.text.SimpleAttributeSet ;
 import javax.swing.text.StyleConstants ;
 import org.apache.log4j.Logger ;
-import de.unisiegen.tpml.core.exceptions.CheckDisjunctionException ;
+import de.unisiegen.tpml.core.exceptions.LanguageParserMultiException ;
 import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.languages.AbstractLanguageScanner ;
 import de.unisiegen.tpml.core.languages.Language ;
@@ -428,7 +428,7 @@ public class StyledLanguageDocument extends DefaultStyledDocument implements
         {
           parser.parse ( ) ;
         }
-        catch ( CheckDisjunctionException e )
+        catch ( LanguageParserMultiException e )
         {
           String [ ] message = e.message ;
           int [ ] startOffset = e.startOffset ;

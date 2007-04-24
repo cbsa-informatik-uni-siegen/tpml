@@ -1,5 +1,35 @@
 import de.unisiegen.tpml.core.types.*;
 import de.unisiegen.tpml.core.expressions.*;
+import java.util.ArrayList;
+import de.unisiegen.tpml.core.exceptions.LanguageParserMultiException;
+
+
+/* Helper classes */
+action code 
+{:
+  private static class Duplicated
+  {
+    public static void check(RowType pRowType)
+    {
+	  ArrayList <Identifier> negativeIdentifiers = new ArrayList <Identifier> ();
+	  Identifier [] identifier = pRowType.getIdentifiers() ;
+      for ( int i = 0 ; i < identifier.length ; i ++ )
+      {
+        negativeIdentifiers.clear();
+        for ( int j = i+1 ; j < identifier.length ; j++ )
+        {
+          if ( identifier [i].equals(identifier[j]) )
+    	  {
+  	        negativeIdentifiers.add(identifier[j]);
+    	  }
+    	}
+    	negativeIdentifiers.add ( identifier [i] ) ;
+    	LanguageParserMultiException.throwExceptionRowType ( negativeIdentifiers ) ;
+      }
+    }
+  }
+:}
+
 
 /* Syntactic tokens */
 terminal			ARROW;
@@ -40,18 +70,23 @@ simple_type			::=	LPAREN type:t RPAREN	{: RESULT = t; :}
 					;
 
 object_type			::= LESS row_type:r GREATER
-						{: RESULT = new ObjectType ( r ); :}
+						{: Duplicated.check(r);
+						   RESULT = new ObjectType ( r ); :}
+					|	LESS GREATER
+						{: Identifier [] m = new Identifier [0];
+						   MonoType [] types = new MonoType [0];
+						   RESULT = new ObjectType ( new RowType (m,types) ); :}
 					;
 
 row_type			::= IDENTIFIER:id COLON type:tau SEMI
 						{: Identifier [] m = new Identifier [1];
-						   m [0] = new Identifier(id);
+						   m [0] = new Identifier (id,idleft,idright);
 						   MonoType [] types = new MonoType [1];
 						   types [0] = tau;
 						   RESULT = new RowType (m,types) ; :}
 					|	IDENTIFIER:id COLON type:tau SEMI row_type:r
 						{: Identifier [] m = new Identifier [r.getIdentifiers().length + 1];
-						   m [0] = new Identifier(id);
+						   m [0] = new Identifier (id,idleft,idright);
 						   System.arraycopy ( r.getIdentifiers() , 0 , m , 1 , r.getIdentifiers().length );
 						   MonoType [] types = new MonoType [r.getTypes().length + 1];
 						   types [0] = tau;

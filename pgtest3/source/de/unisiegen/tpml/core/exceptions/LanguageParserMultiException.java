@@ -13,7 +13,7 @@ import de.unisiegen.tpml.core.languages.LanguageParserException ;
  * 
  * @author Christian Fehler
  */
-public final class CheckDisjunctionException extends LanguageParserException
+public final class LanguageParserMultiException extends LanguageParserException
 {
   /**
    * TODO
@@ -100,7 +100,8 @@ public final class CheckDisjunctionException extends LanguageParserException
         startOffset [ j ] = pNegativeIdentifiers.get ( j ).getStartOffset ( ) ;
         endOffset [ j ] = pNegativeIdentifiers.get ( j ).getEndOffset ( ) ;
       }
-      throw new CheckDisjunctionException ( message , startOffset , endOffset ) ;
+      throw new LanguageParserMultiException ( message , startOffset ,
+          endOffset ) ;
     }
   }
 
@@ -125,7 +126,8 @@ public final class CheckDisjunctionException extends LanguageParserException
         startOffset [ j ] = pNegativeIdentifiers.get ( j ).getStartOffset ( ) ;
         endOffset [ j ] = pNegativeIdentifiers.get ( j ).getEndOffset ( ) ;
       }
-      throw new CheckDisjunctionException ( message , startOffset , endOffset ) ;
+      throw new LanguageParserMultiException ( message , startOffset ,
+          endOffset ) ;
     }
   }
 
@@ -150,7 +152,34 @@ public final class CheckDisjunctionException extends LanguageParserException
         startOffset [ j ] = pNegativeIdentifiers.get ( j ).getStartOffset ( ) ;
         endOffset [ j ] = pNegativeIdentifiers.get ( j ).getEndOffset ( ) ;
       }
-      throw new CheckDisjunctionException ( message , startOffset , endOffset ) ;
+      throw new LanguageParserMultiException ( message , startOffset ,
+          endOffset ) ;
+    }
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @param pNegativeIdentifiers TODO
+   */
+  public static void throwExceptionRowType (
+      ArrayList < Identifier > pNegativeIdentifiers )
+  {
+    if ( pNegativeIdentifiers.size ( ) > 1 )
+    {
+      String [ ] message = new String [ pNegativeIdentifiers.size ( ) ] ;
+      int [ ] startOffset = new int [ pNegativeIdentifiers.size ( ) ] ;
+      int [ ] endOffset = new int [ pNegativeIdentifiers.size ( ) ] ;
+      for ( int j = 0 ; j < pNegativeIdentifiers.size ( ) ; j ++ )
+      {
+        message [ j ] = MessageFormat.format (
+            Messages.getString ( "Parser.5" ) , pNegativeIdentifiers.get ( j ) ) ; //$NON-NLS-1$
+        startOffset [ j ] = pNegativeIdentifiers.get ( j ).getStartOffset ( ) ;
+        endOffset [ j ] = pNegativeIdentifiers.get ( j ).getEndOffset ( ) ;
+      }
+      throw new LanguageParserMultiException ( message , startOffset ,
+          endOffset ) ;
     }
   }
 
@@ -180,7 +209,7 @@ public final class CheckDisjunctionException extends LanguageParserException
    * @param pStartOffset TODO
    * @param pEndOffset TODO
    */
-  private CheckDisjunctionException ( String [ ] pMessage ,
+  private LanguageParserMultiException ( String [ ] pMessage ,
       int [ ] pStartOffset , int [ ] pEndOffset )
   {
     super ( pMessage [ 0 ] , pStartOffset [ 0 ] , pEndOffset [ 0 ] ) ;

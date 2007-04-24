@@ -2,7 +2,7 @@ package de.unisiegen.tpml.core.expressions ;
 
 
 import java.util.ArrayList ;
-import de.unisiegen.tpml.core.exceptions.CheckDisjunctionException ;
+import de.unisiegen.tpml.core.exceptions.LanguageParserMultiException ;
 import de.unisiegen.tpml.core.interfaces.BoundIdentifiers ;
 import de.unisiegen.tpml.core.interfaces.ChildrenExpressions ;
 import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
@@ -151,7 +151,7 @@ public class Let extends Expression implements BoundIdentifiers , DefaultTypes ,
       }
     }
     negativeIdentifiers.add ( this.identifiers [ 0 ] ) ;
-    CheckDisjunctionException.throwExceptionDisjunction ( negativeIdentifiers ) ;
+    LanguageParserMultiException.throwExceptionDisjunction ( negativeIdentifiers ) ;
   }
 
 

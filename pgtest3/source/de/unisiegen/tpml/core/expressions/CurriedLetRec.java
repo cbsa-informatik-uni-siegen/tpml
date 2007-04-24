@@ -2,7 +2,7 @@ package de.unisiegen.tpml.core.expressions ;
 
 
 import java.util.ArrayList ;
-import de.unisiegen.tpml.core.exceptions.CheckDisjunctionException ;
+import de.unisiegen.tpml.core.exceptions.LanguageParserMultiException ;
 import de.unisiegen.tpml.core.interfaces.BoundIdentifiers ;
 import de.unisiegen.tpml.core.interfaces.ChildrenExpressions ;
 import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
@@ -73,7 +73,7 @@ public final class CurriedLetRec extends CurriedLet implements
       }
     }
     negativeIdentifiers.add ( this.identifiers [ 0 ] ) ;
-    CheckDisjunctionException.throwExceptionDisjunction ( negativeIdentifiers ) ;
+    LanguageParserMultiException.throwExceptionDisjunction ( negativeIdentifiers ) ;
     // Identifier 1-n
     allIdentifiers = this.expressions [ 0 ].getIdentifiersAll ( ) ;
     negativeIdentifiers.clear ( ) ;
@@ -88,7 +88,7 @@ public final class CurriedLetRec extends CurriedLet implements
         }
       }
       negativeIdentifiers.add ( this.identifiers [ i ] ) ;
-      CheckDisjunctionException
+      LanguageParserMultiException
           .throwExceptionDisjunction ( negativeIdentifiers ) ;
     }
   }

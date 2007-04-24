@@ -317,6 +317,10 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
           this.prettyStringBuilder.addBreak ( ) ;
         }
       }
+      if ( this.types.length == 0 )
+      {
+        this.prettyStringBuilder.addText ( "\u00D8" ) ; //$NON-NLS-1$
+      }
     }
     return this.prettyStringBuilder ;
   }
