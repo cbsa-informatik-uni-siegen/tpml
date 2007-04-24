@@ -236,6 +236,7 @@ public class MainWindow extends javax.swing.JFrame
     smallstepItem = new javax.swing.JMenuItem ( ) ;
     bigstepItem = new javax.swing.JMenuItem ( ) ;
     typecheckerItem = new javax.swing.JMenuItem ( ) ;
+    typeInference = new javax.swing.JMenuItem ( ) ;
     runMenuSeparator1 = new javax.swing.JSeparator ( ) ;
     beginnerRadioButton = new javax.swing.JRadioButtonMenuItem ( ) ;
     advancedRadioButton = new javax.swing.JRadioButtonMenuItem ( ) ;
@@ -672,6 +673,20 @@ public class MainWindow extends javax.swing.JFrame
       }
     } ) ;
     runMenu.add ( typecheckerItem ) ;
+    
+//  CAHNGE MICHAEL
+		//TODO Wieder in die Resources einbaeun
+		typeInference.setText("Type Inference");
+		
+		typeInference.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				typEquationActionPerformed(evt);
+			}
+		});
+		//TODO Erst hochladen, wenn es geht...
+		runMenu.add ( typeInference );
+		//CHANGME NMICHAEL EMND
+		
     runMenu.add ( runMenuSeparator1 ) ;
     modeSettingsGroup.add ( beginnerRadioButton ) ;
     beginnerRadioButton.setMnemonic ( java.util.ResourceBundle.getBundle (
@@ -880,6 +895,14 @@ public class MainWindow extends javax.swing.JFrame
     // 
     ( getActiveEditor ( ) ).handleTypeChecker ( ) ;
   }// GEN-LAST:event_typecheckerItemActionPerformed
+  
+  private void typEquationActionPerformed ( java.awt.event.ActionEvent evt )
+  {// GEN-FIRST:event_typecheckerItemActionPerformed
+    // 
+    ( getActiveEditor ( ) ).handleTypEquation() ;
+  }// GEN-LAST:event_typecheckerItemActionPerformed
+  
+  
 
 
   private void bigstepItemActionPerformed ( java.awt.event.ActionEvent evt )
@@ -1039,6 +1062,8 @@ public class MainWindow extends javax.swing.JFrame
 
 
   private javax.swing.JMenuItem typecheckerItem ;
+  
+  private javax.swing.JMenuItem typeInference;
 
 
   private javax.swing.JButton undoButton ;
