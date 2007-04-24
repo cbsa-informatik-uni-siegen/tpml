@@ -159,20 +159,20 @@ public abstract class AbstractRenderer
   private static void setTheme ( Theme theme , Component reference )
   {
     AbstractRenderer.expColor = theme.getExpressionColor ( ) ;
-    AbstractRenderer.expFont = theme.getFont ( ).deriveFont ( Font.PLAIN ) ;
+    AbstractRenderer.expFont = theme.getFont ( );//;.deriveFont ( Font.PLAIN ) ;
     AbstractRenderer.expFontMetrics = reference
         .getFontMetrics ( AbstractRenderer.expFont ) ;
     AbstractRenderer.identifierColor = theme.getIdentifierColor ( ) ;
-    AbstractRenderer.identifierFont = theme.getFont ( )
-        .deriveFont ( Font.PLAIN ) ;
+    AbstractRenderer.identifierFont = theme.getFont ( ).deriveFont ( Font.PLAIN ) ;
     AbstractRenderer.identifierFontMetrics = reference
         .getFontMetrics ( AbstractRenderer.identifierFont ) ;
     AbstractRenderer.keywordColor = theme.getKeywordColor ( ) ;
-    AbstractRenderer.keywordFont = theme.getFont ( ).deriveFont ( Font.BOLD ) ;
+    AbstractRenderer.keywordFont = theme.getFont ( );
+    //.deriveFont ( Font.BOLD ) ;
     AbstractRenderer.keywordFontMetrics = reference
         .getFontMetrics ( AbstractRenderer.keywordFont ) ;
     AbstractRenderer.constantColor = theme.getConstantColor ( ) ;
-    AbstractRenderer.constantFont = theme.getFont ( ).deriveFont ( Font.BOLD ) ;
+    AbstractRenderer.constantFont = theme.getFont ( );//.deriveFont ( Font.BOLD ) ;
     AbstractRenderer.constantFontMetrics = reference
         .getFontMetrics ( AbstractRenderer.constantFont ) ;
     AbstractRenderer.envColor = theme.getEnvironmentColor ( ) ;
@@ -180,7 +180,7 @@ public abstract class AbstractRenderer
     AbstractRenderer.envFontMetrics = reference
         .getFontMetrics ( AbstractRenderer.envFont ) ;
     AbstractRenderer.typeColor = theme.getTypeColor ( ) ;
-    AbstractRenderer.typeFont = theme.getFont ( ).deriveFont ( Font.BOLD ) ;
+    AbstractRenderer.typeFont = theme.getFont ( );//.deriveFont ( Font.BOLD ) ;
     AbstractRenderer.typeFontMetrics = reference
         .getFontMetrics ( AbstractRenderer.typeFont ) ;
     AbstractRenderer.underlineColor = theme.getUnderlineColor ( ) ;
