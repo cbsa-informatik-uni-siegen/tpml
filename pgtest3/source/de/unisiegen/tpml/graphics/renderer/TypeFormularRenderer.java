@@ -352,7 +352,10 @@ public class TypeFormularRenderer extends AbstractRenderer {
 					//gc.drawString(environment.toString(), posX, posY);
 					//posX += AbstractRenderer.keywordFontMetrics.stringWidth(environment.toString());
 					
-					environmentRenderer.renderer(posX, posY-13, width, 14, gc);
+					//System.out.println("Die Größe: "+environmentRenderer.getNeededSize().width); 
+					
+					environmentRenderer.renderer(posX, posY-(environmentRenderer.getNeededSize().height / 2) - fontAscent / 2, environmentRenderer.getNeededSize().width, environmentRenderer.getNeededSize().height, gc);
+				
 					posX += environmentRenderer.getNeededSize().width;
 					höhe = Math.max(höhe,  environmentRenderer.getNeededSize().height);
 					//TODO Umsetzen des Highlightextes...
@@ -379,7 +382,7 @@ public class TypeFormularRenderer extends AbstractRenderer {
 					Dimension expressionSize = prettyStringrenderer.getNeededSize(Integer.MAX_VALUE);
 					//prettyStringrenderer.render(x, y, height, gc, bound, toListenForM)
 					//TODO warum -8
-					prettyStringrenderer.render(posX, posY, -8, gc, bound, toListenForM);
+					prettyStringrenderer.render(posX, posY-(expressionSize.height / 2) - fontAscent / 2, expressionSize.height, gc, bound, toListenForM);
 					//posX += AbstractRenderer.keywordFontMetrics.stringWidth(expression.toString());
 					posX += expressionSize.width;
 					
