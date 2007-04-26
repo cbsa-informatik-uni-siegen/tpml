@@ -7,6 +7,8 @@ import java.awt.Font ;
 import java.awt.FontMetrics ;
 import java.beans.PropertyChangeEvent ;
 import java.beans.PropertyChangeListener ;
+
+import javax.swing.JComboBox;
 import javax.swing.JLabel ;
 import de.unisiegen.tpml.graphics.Theme ;
 
@@ -163,11 +165,12 @@ public abstract class AbstractRenderer
     AbstractRenderer.expFontMetrics = reference
         .getFontMetrics ( AbstractRenderer.expFont ) ;
     AbstractRenderer.identifierColor = theme.getIdentifierColor ( ) ;
-    AbstractRenderer.identifierFont = theme.getFont ( ).deriveFont ( Font.PLAIN ) ;
+    AbstractRenderer.identifierFont = theme.getFont();// ( ).deriveFont ( Font.PLAIN ) ;
+    //AbstractRenderer.identifierFont = f;
     AbstractRenderer.identifierFontMetrics = reference
         .getFontMetrics ( AbstractRenderer.identifierFont ) ;
     AbstractRenderer.keywordColor = theme.getKeywordColor ( ) ;
-    AbstractRenderer.keywordFont = theme.getFont ( );
+    AbstractRenderer.keywordFont = theme.getFont ( ).deriveFont ( Font.BOLD ) ;
     //.deriveFont ( Font.BOLD ) ;
     AbstractRenderer.keywordFontMetrics = reference
         .getFontMetrics ( AbstractRenderer.keywordFont ) ;
