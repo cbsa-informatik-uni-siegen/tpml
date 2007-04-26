@@ -8,6 +8,7 @@ import java.awt.Graphics ;
 import javax.swing.JTree ;
 import javax.swing.border.LineBorder ;
 import javax.swing.tree.DefaultTreeCellRenderer ;
+import de.unisiegen.tpml.graphics.Theme ;
 import de.unisiegen.tpml.graphics.outline.Outline ;
 import de.unisiegen.tpml.graphics.outline.node.OutlineNode ;
 
@@ -75,11 +76,12 @@ public final class OutlineCellRenderer extends DefaultTreeCellRenderer
     this.setBackground ( Color.WHITE ) ;
     this.setBackgroundNonSelectionColor ( Color.WHITE ) ;
     this.setBackgroundSelectionColor ( BORDER ) ;
-    this.setFont ( new Font ( FONT , Font.PLAIN , 14 ) ) ;
+    this.setFont ( Theme.currentTheme ( ).getFont ( ) ) ;
     this.setBorderSelectionColor ( Color.BLUE ) ;
     this.setTextSelectionColor ( Color.BLACK ) ;
     this.setTextNonSelectionColor ( Color.BLACK ) ;
     this.setBorder ( new LineBorder ( Color.WHITE ) ) ;
+    System.out.println ( this.getFont ( ) ) ;
   }
 
 
