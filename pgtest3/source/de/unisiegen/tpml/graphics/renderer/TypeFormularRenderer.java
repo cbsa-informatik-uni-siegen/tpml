@@ -8,42 +8,47 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 
 import de.unisiegen.tpml.core.expressions.Expression;
-import de.unisiegen.tpml.core.typechecker.DefaultTypeSubstitution;
 import de.unisiegen.tpml.core.typechecker.TypeEnvironment;
 import de.unisiegen.tpml.core.typeinference.TypeEquation;
 import de.unisiegen.tpml.core.typeinference.TypeFormula;
 import de.unisiegen.tpml.core.typeinference.TypeJudgement;
 import de.unisiegen.tpml.core.types.Type;
-import de.unisiegen.tpml.core.util.Environment;
 import de.unisiegen.tpml.graphics.components.ShowBonds;
 
 
 /**
  * Subclass of the {@link AbstractRenderer} providing the rendering
- * of an environment.
+ * the TypeFormulars
  * 
- * @author marcell
+ * @author michael
  *
- * @param <S>
- * @param <E>
  */
 public class TypeFormularRenderer extends AbstractRenderer {
 	
+	/**
+	 * the Renderer for the environments
+	 */
 	private EnvironmentRenderer environmentRenderer;
+	/**
+	 * the Renderer for the expressions and...
+	 */
 	private PrettyStringRenderer prettyStringrenderer;
 	
+	/**
+	 * the List of Strings for the tooltip
+	 */
 	private ArrayList <String> CollapStrings;
+	
+	/**
+	 * the List of areas for the tooltip
+	 */
 	private ArrayList <Rectangle> CollapAreas;
 
 	/**
-	 * The Substitutions that should be rendered.
+	 * The TypeFOrmulars that should be rendered.
 	 */
 	private ArrayList <TypeFormula> typeFormulaList;
 	
-	/**
-	 * The width of the brackets around the environment in pixels.
-	 */
-	//private int									bracketSize;
 	
 	/**
 	 * Holds informatioin whether the environment is collapsed.<br>
@@ -70,7 +75,7 @@ public class TypeFormularRenderer extends AbstractRenderer {
 	/**
 	 * 
 	 */
-	private static final String	collapsString = ", ...";
+	//private static final String	collapsString = ", ...";
 	
 	/**
 	 * 
@@ -91,11 +96,11 @@ public class TypeFormularRenderer extends AbstractRenderer {
 	}
 
 	/**
-	 * Sets the environment.
+	 * Sets the TypeFormulars.
+	 * @param typeFormulaListP 
 	 * 
-	 * @param environment
 	 */
-	public void setTypeFormulaList (ArrayList typeFormulaListP ) {
+	public void setTypeFormulaList (ArrayList <TypeFormula> typeFormulaListP ) {
 		this.typeFormulaList = typeFormulaListP ;
 		
 		// create the string that can be shown in an tooltip 
@@ -126,7 +131,8 @@ public class TypeFormularRenderer extends AbstractRenderer {
 	
 	/**
 	 * Calculates the size, that is needed to propperly render
-	 * the environment.
+	 * the TypeFormula.
+	 * @param y //TODO mal sehen, ob wir das brauchen...
 	 * 
 	 * @return The size needed to render the environment.
 	 */
@@ -150,66 +156,45 @@ public class TypeFormularRenderer extends AbstractRenderer {
 			
 			// get the first element
 			TypeFormula t = typeFormulaList.get(0);
-			/*if (t instanceof TypeEquation)
+
+			// if there is more then only one element in the environment
+			// the same will happen and the hight will be counted...
+			result.height = typeFormulaList.size() * AbstractRenderer.fontHeight;
+			for (int i = 0; i < typeFormulaList.size(); i++)
 			{
-				result.width = result.width + AbstractRenderer.keywordFontMetrics.stringWidth(t.toString());
-			}
-			else// if (t instanceof TypeJudgement)
-			{
-				TypeEnvironment environment = t.getEnvironment();
-				Expression expression = t.getExpression();
-				Type type = t.getType();
-				result.width = result.width + 2*AbstractRenderer.keywordFontMetrics.stringWidth("[");
-				//TODO TExt in Box...
-				result.width = result.width + AbstractRenderer.keywordFontMetrics.stringWidth(environment.toString());
-				result.width = result.width + AbstractRenderer.keywordFontMetrics.stringWidth(arrowString);
-				result.width = result.width + AbstractRenderer.keywordFontMetrics.stringWidth(expression.toString());
-				result.width = result.width + AbstractRenderer.keywordFontMetrics.stringWidth("::");
-				result.width = result.width + AbstractRenderer.keywordFontMetrics.stringWidth(type.toString());
-			}
-			
-			*/
-			
-			//if (typeFormulaList.size() > 1) 
-			{
-				// if there is more then only one element in the environment
-				// the same will happen and the hight will be counted...
-				result.height = typeFormulaList.size() * AbstractRenderer.fontHeight;
-				for (int i = 0; i<typeFormulaList.size(); i++)
+				int lineWidth = einrücken;
+
+				t = typeFormulaList.get(i);
+				if (t instanceof TypeEquation)
 				{
-					int lineWidth=einrücken;
-					
-					
-					t = typeFormulaList.get(i);
-					if (t instanceof TypeEquation)
-					{
-						lineWidth = lineWidth + AbstractRenderer.keywordFontMetrics.stringWidth(t.toString());
-					}
-					else// if (t instanceof TypeJudgement)
-					{
-						TypeEnvironment environment = t.getEnvironment();
-						Expression expression = t.getExpression();
-						Type type = t.getType();
-						//lineWidth = lineWidth + 2*AbstractRenderer.keywordFontMetrics.stringWidth("[");
-						//TODO TExt in Box...
-						lineWidth = lineWidth + AbstractRenderer.keywordFontMetrics.stringWidth(environment.toString());
-						lineWidth = lineWidth + AbstractRenderer.keywordFontMetrics.stringWidth(arrowString);
-						lineWidth = lineWidth + AbstractRenderer.keywordFontMetrics.stringWidth(expression.toString());
-						lineWidth = lineWidth + AbstractRenderer.keywordFontMetrics.stringWidth("::");
-						lineWidth = lineWidth + AbstractRenderer.keywordFontMetrics.stringWidth(type.toString());
-						
-					}
-					testAusgabe("Die Momentane Breite ist: "+result.width);
-					testAusgabe("Die aktuelle Zeile ist: "+lineWidth);
-					if (lineWidth > result.width)
-					{
-						result.width = lineWidth;
-					}
-					testAusgabe("Jetzt ist die Breite: "+result.width);
-					
+					lineWidth = lineWidth + AbstractRenderer.keywordFontMetrics.stringWidth(t.toString());
 				}
-				//result.width += AbstractRenderer.expFontMetrics.stringWidth(TypeFormularRenderer.collapsString);
+				else
+				// if (t instanceof TypeJudgement)
+				{
+					TypeEnvironment environment = t.getEnvironment();
+					Expression expression = t.getExpression();
+					Type type = t.getType();
+					// lineWidth = lineWidth + 2*AbstractRenderer.keywordFontMetrics.stringWidth("[");
+					// TODO TExt in Box...
+					lineWidth = lineWidth + AbstractRenderer.keywordFontMetrics.stringWidth(environment.toString());
+					lineWidth = lineWidth + AbstractRenderer.keywordFontMetrics.stringWidth(arrowString);
+					lineWidth = lineWidth + AbstractRenderer.keywordFontMetrics.stringWidth(expression.toString());
+					lineWidth = lineWidth + AbstractRenderer.keywordFontMetrics.stringWidth("::");
+					lineWidth = lineWidth + AbstractRenderer.keywordFontMetrics.stringWidth(type.toString());
+
+				}
+				testAusgabe("Die Momentane Breite ist: " + result.width);
+				testAusgabe("Die aktuelle Zeile ist: " + lineWidth);
+				if (lineWidth > result.width)
+				{
+					result.width = lineWidth;
+				}
+				testAusgabe("Jetzt ist die Breite: " + result.width);
+
 			}
+				// result.width += AbstractRenderer.expFontMetrics.stringWidth(TypeFormularRenderer.collapsString);
+
 		}
 		//TODO Test
 		//result.height = y / 2 + ((AbstractRenderer.fontHeight)*typeFormulaList.size());
@@ -233,6 +218,12 @@ public class TypeFormularRenderer extends AbstractRenderer {
 		return this.collapsedArea;
 	}
 	
+	/**
+	 * returns a list of areas where the tooltips should be come the 1.
+	 * element coresponds to the 1. element int the getCollapStrings
+	 *
+	 * @return the list of rectangles with areas
+	 */
 	public ArrayList <Rectangle> getCollapAreas ()
 	{
 		return this.CollapAreas;
@@ -248,6 +239,12 @@ public class TypeFormularRenderer extends AbstractRenderer {
 		return this.collapsedString;
 	}
 	
+	/**
+	 * get the Strings for tooltips. the 1. string corresponds to the first 
+	 * element of the list of rectangles
+	 *
+	 * @return
+	 */
 	public ArrayList <String> getCollapStrings ()
 	{
 		return CollapStrings;
@@ -255,10 +252,10 @@ public class TypeFormularRenderer extends AbstractRenderer {
 	
 	
 	/**
-	 * Renders the environment.<br>
+	 * Renders the Typeformulas.<br>
 	 * <br>
-	 * The environment is always rendered as a single line. It will appear
-	 * verticaly centered betwean <i>y</i> and <i>(y + height></i>.
+	 * The Typeformulas are rendered line by lien. They will appear
+	 * starting <i>y</i> and ending <i>(y + height></i>.
 	 * 
 	 * @param x The left position where the environment should be displayed
 	 * @param y The top position where the environment should be displayed.
@@ -271,6 +268,7 @@ public class TypeFormularRenderer extends AbstractRenderer {
 		//
 		// just render the brackets around the environment
 		
+		//TODO was soll denn das hier nochmal
 		gc.setColor(this.alternativeColor != null ? this.alternativeColor : Color.BLACK);
 		
 		// the left bracket
@@ -297,25 +295,29 @@ public class TypeFormularRenderer extends AbstractRenderer {
 			// get the first element
 			TypeFormula t = typeFormulaList.get(0);
 			
-			//TODO Render solve
+			//Render the solve {
+			//save the einrückung
+			int einrücken=posX;
+			int höhe = 0;
 			
-			//Render the {
 			gc.setFont(AbstractRenderer.keywordFont);
 			gc.setColor(this.alternativeColor != null ? this.alternativeColor : AbstractRenderer.keywordColor); //if then else
+			
 			gc.drawString("solve", posX, posY);
-			
 			posX += AbstractRenderer.keywordFontMetrics.stringWidth("solve ");
+			
 			gc.setFont(AbstractRenderer.expFont);
-			gc.setColor(AbstractRenderer.expColor);
+			//gc.setColor(AbstractRenderer.expColor);
+			gc.setColor(this.alternativeColor != null ? this.alternativeColor : AbstractRenderer.expColor); //if then else			
 			gc.drawString("{", posX, posY);
-			posX += AbstractRenderer.keywordFontMetrics.stringWidth("{");
-			
-			
-			int einrücken=0;
-			int höhe = 0;
+			posX += AbstractRenderer.expFontMetrics.stringWidth("{");
+
 			höhe = Math.max(( keywordFontMetrics.getHeight()), expFontMetrics.getHeight());
-			einrücken = AbstractRenderer.keywordFontMetrics.stringWidth("solve {");
-			//posX += AbstractRenderer.keywordFontMetrics.stringWidth("solve {");
+			
+			
+			//calculate the einrückung
+				//einrücken = AbstractRenderer.keywordFontMetrics.stringWidth("solve {");
+			einrücken = posX-einrücken;
 			
 			for (int i = 0; i < typeFormulaList.size(); i++)
 			{
@@ -323,7 +325,9 @@ public class TypeFormularRenderer extends AbstractRenderer {
 				if (t instanceof TypeEquation)
 				{
 					gc.drawString(t.toString(), posX, posY);
-					posX += AbstractRenderer.keywordFontMetrics.stringWidth(t.toString());
+					gc.setColor(expColor);
+					posX += AbstractRenderer.expFontMetrics.stringWidth(t.toString());
+					//every but the last line needs an linebreak
 					if (i<(typeFormulaList.size()-1))
 					{
 						posX = x+einrücken;
@@ -336,9 +340,6 @@ public class TypeFormularRenderer extends AbstractRenderer {
 					TypeEnvironment environment = t.getEnvironment();
 					Expression expression = t.getExpression();
 					Type type = t.getType();
-					
-					//gc.drawString("[", posX, posY);
-					//posX += AbstractRenderer.keywordFontMetrics.stringWidth("[");
 					
 					//TODO die entsprechendne Renderer einbinden
 					prettyStringrenderer = new PrettyStringRenderer();
@@ -370,8 +371,9 @@ public class TypeFormularRenderer extends AbstractRenderer {
 					//gc.drawString("]", posX, posY);
 					//posX += AbstractRenderer.keywordFontMetrics.stringWidth("]");
 					
+					gc.setColor(AbstractRenderer.expColor);
 					gc.drawString(arrowString, posX, posY);
-					posX += AbstractRenderer.keywordFontMetrics.stringWidth(arrowString);
+					posX += AbstractRenderer.expFontMetrics.stringWidth(arrowString);
 					
 					//gc.drawString(expression.toString(), posX, posY);
 					prettyStringrenderer = new PrettyStringRenderer ();
@@ -386,13 +388,14 @@ public class TypeFormularRenderer extends AbstractRenderer {
 					//posX += AbstractRenderer.keywordFontMetrics.stringWidth(expression.toString());
 					posX += expressionSize.width;
 					
+					gc.setColor(AbstractRenderer.expColor);
 					gc.drawString("::", posX, posY);
-					posX += AbstractRenderer.keywordFontMetrics.stringWidth("::");
+					posX += AbstractRenderer.expFontMetrics.stringWidth("::");
 					
 					gc.drawString(type.toString(), posX, posY);
-					posX += AbstractRenderer.keywordFontMetrics.stringWidth(type.toString());
+					posX += AbstractRenderer.expFontMetrics.stringWidth(type.toString());
 					
-					//TODO solve addieren...
+					//everey line but the last needs a line braek
 					if (i<(typeFormulaList.size()-1))
 					{
 						//System.out.println("Liste hat Elemente: "+typeFormulaList.size());
@@ -401,43 +404,14 @@ public class TypeFormularRenderer extends AbstractRenderer {
 						
 						//posY += Math.max(AbstractRenderer.fontHeight, expressionSize.height);
 						posY += Math.max(höhe, expressionSize.height);
-					}
-					
-					
-					
-					
-					
+					}	
 				}
 			}
-
-			// render the symbol
-			//gc.setColor(this.alternativeColor != null ? this.alternativeColor : AbstractRenderer.keywordColor); //if then else
-//			gc.setFont(AbstractRenderer.keywordFont);
-//			gc.drawString(s.toString(), posX, posY);
-//			posX += AbstractRenderer.keywordFontMetrics.stringWidth(s.toString() );
-//			System.out.println(s.toString());
 			
-			// render the entry
-			//gc.setColor(this.alternativeColor != null ? this.alternativeColor : AbstractRenderer.envColor);
-			//gc.setFont(AbstractRenderer.envFont);
-			//gc.drawString(e.toString(), posX, posY);
-			//posX += AbstractRenderer.envFontMetrics.stringWidth(e.toString());
-			
-//			if (defaultTypeSubstitutionList.size() > 1) {
-//				this.collapsed = true;
-//				gc.drawString(TypeFormularRenderer.collapsString, posX, posY);
-//				System.out.println(TypeFormularRenderer.collapsString);
-//				
-//				this.collapsedArea.x 			= x;
-//				this.collapsedArea.width 	= width; 
-//			}
-				
-			//Render the }
-			//gc.setColor(this.alternativeColor != null ? this.alternativeColor : AbstractRenderer.keywordColor); //if then else
 			gc.setColor(expColor);
 			gc.setFont(AbstractRenderer.expFont);
 			gc.drawString("}", posX, posY);
-			posX += AbstractRenderer.keywordFontMetrics.stringWidth("}");
+			posX += AbstractRenderer.expFontMetrics.stringWidth("}");
 			
 		}
 		
