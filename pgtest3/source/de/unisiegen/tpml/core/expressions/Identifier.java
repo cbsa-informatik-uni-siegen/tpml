@@ -280,30 +280,33 @@ public final class Identifier extends Value
     if ( this.prefix == null )
     {
       Identifier [ ] identifiers = null ;
-      for ( Class < Object > currentInterface : this.parent.getClass ( )
-          .getInterfaces ( ) )
+      if ( this.parent != null )
       {
-        if ( ( currentInterface
-            .equals ( de.unisiegen.tpml.core.interfaces.DefaultIdentifiers.class ) )
-            || ( currentInterface
-                .equals ( de.unisiegen.tpml.core.interfaces.BoundIdentifiers.class ) ) )
+        for ( Class < Object > currentInterface : this.parent.getClass ( )
+            .getInterfaces ( ) )
         {
-          identifiers = getParentIdentifiers ( this.parent ) ;
-          boolean found = false ;
-          for ( Identifier id : identifiers )
+          if ( ( currentInterface
+              .equals ( de.unisiegen.tpml.core.interfaces.DefaultIdentifiers.class ) )
+              || ( currentInterface
+                  .equals ( de.unisiegen.tpml.core.interfaces.BoundIdentifiers.class ) ) )
           {
-            if ( id == this )
+            identifiers = getParentIdentifiers ( this.parent ) ;
+            boolean found = false ;
+            for ( Identifier id : identifiers )
             {
-              found = true ;
+              if ( id == this )
+              {
+                found = true ;
+                break ;
+              }
+            }
+            if ( found )
+            {
               break ;
             }
+            this.prefix = super.getPrefix ( ) ;
+            return this.prefix ;
           }
-          if ( found )
-          {
-            break ;
-          }
-          this.prefix = super.getPrefix ( ) ;
-          return this.prefix ;
         }
       }
       switch ( this.set )
