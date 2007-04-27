@@ -84,7 +84,11 @@ public abstract class BinaryOperator extends Constant
   @ Override
   public String getPrefix ( )
   {
-    return PREFIX_BINARYOPERATOR ;
+    if ( this.prefix == null )
+    {
+      this.prefix = PREFIX_BINARYOPERATOR ;
+    }
+    return this.prefix ;
   }
 
 

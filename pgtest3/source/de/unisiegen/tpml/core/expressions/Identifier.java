@@ -1,6 +1,7 @@
 package de.unisiegen.tpml.core.expressions ;
 
 
+import java.lang.reflect.InvocationTargetException ;
 import java.text.DecimalFormat ;
 import java.util.ArrayList ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
@@ -46,6 +47,12 @@ public final class Identifier extends Value
 
 
   /**
+   * Method name for getIdentifiers
+   */
+  private static final String GET_IDENTIFIERS = "getIdentifiers" ; //$NON-NLS-1$
+
+
+  /**
    * The {@link Expression} in which this {@link Identifier} is bound.
    * 
    * @see #getBoundToExpression()
@@ -63,6 +70,10 @@ public final class Identifier extends Value
   private Identifier boundToIdentifier ;
 
 
+  /**
+   * TODO Only for debugging
+   */
+  // private static int id = 0 ;
   /**
    * The name of the {@link Identifier}.
    * 
@@ -223,34 +234,103 @@ public final class Identifier extends Value
   /**
    * TODO
    * 
+   * @param pInvokedFrom TODO
+   * @return TODO
+   */
+  private final Identifier [ ] getParentIdentifiers ( Object pInvokedFrom )
+  {
+    try
+    {
+      return ( Identifier [ ] ) pInvokedFrom.getClass ( ).getMethod (
+          GET_IDENTIFIERS , new Class [ 0 ] ).invoke ( pInvokedFrom ,
+          new Object [ 0 ] ) ;
+    }
+    catch ( IllegalArgumentException e )
+    {
+      System.err.println ( "Identifier: IllegalArgumentException" ) ; //$NON-NLS-1$
+    }
+    catch ( SecurityException e )
+    {
+      System.err.println ( "Identifier: SecurityException" ) ; //$NON-NLS-1$
+    }
+    catch ( IllegalAccessException e )
+    {
+      System.err.println ( "Identifier: IllegalAccessException" ) ; //$NON-NLS-1$
+    }
+    catch ( InvocationTargetException e )
+    {
+      System.err.println ( "Identifier: InvocationTargetException" ) ; //$NON-NLS-1$
+    }
+    catch ( NoSuchMethodException e )
+    {
+      System.err.println ( "Identifier: NoSuchMethodException" ) ; //$NON-NLS-1$
+    }
+    return null ;
+  }
+
+
+  /**
+   * TODO
+   * 
    * @return TODO
    */
   @ Override
   public String getPrefix ( )
   {
-    switch ( this.set )
+    if ( this.prefix == null )
     {
-      case VARIABLE :
+      Identifier [ ] identifiers = null ;
+      for ( Class < Object > currentInterface : this.parent.getClass ( )
+          .getInterfaces ( ) )
       {
-        return PREFIX_ID ;
+        if ( ( currentInterface
+            .equals ( de.unisiegen.tpml.core.interfaces.DefaultIdentifiers.class ) )
+            || ( currentInterface
+                .equals ( de.unisiegen.tpml.core.interfaces.BoundIdentifiers.class ) ) )
+        {
+          identifiers = getParentIdentifiers ( this.parent ) ;
+          boolean found = false ;
+          for ( Identifier id : identifiers )
+          {
+            if ( id == this )
+            {
+              found = true ;
+              break ;
+            }
+          }
+          if ( found )
+          {
+            break ;
+          }
+          this.prefix = super.getPrefix ( ) ;
+          return this.prefix ;
+        }
       }
-      case ATTRIBUTE :
+      switch ( this.set )
       {
-        return PREFIX_ID_A ;
-      }
-      case MESSAGE :
-      {
-        return PREFIX_ID_M ;
-      }
-      case SELF :
-      {
-        return PREFIX_ID_S ;
-      }
-      default :
-      {
-        return PREFIX_ID ;
+        case VARIABLE :
+        {
+          this.prefix = PREFIX_ID ;
+          break ;
+        }
+        case ATTRIBUTE :
+        {
+          this.prefix = PREFIX_ID_A ;
+          break ;
+        }
+        case MESSAGE :
+        {
+          this.prefix = PREFIX_ID_M ;
+          break ;
+        }
+        case SELF :
+        {
+          this.prefix = PREFIX_ID_S ;
+          break ;
+        }
       }
     }
+    return this.prefix ;
   }
 
 
@@ -361,13 +441,17 @@ public final class Identifier extends Value
       this.prettyStringBuilder = factory.newBuilder ( this , PRIO_IDENTIFIER ) ;
       if ( Debug.isUserName ( Debug.CHRISTIAN ) )
       {
-        // this.prettyStringBuilder.addText ( "{" ) ;
+        /* this.prettyStringBuilder.addText ( "{" ) ; */
       }
       this.prettyStringBuilder.addIdentifier ( this.name ) ;
       if ( Debug.isUserName ( Debug.CHRISTIAN ) )
       {
-        // this.prettyStringBuilder.addText ( "|" + this.identity + "|" +
-        // this.set + "}" ) ;
+        /*
+         * this.prettyStringBuilder.addText ( "|" + new DecimalFormat ( "00"
+         * ).format ( id ++ ) + "|" + ( this.set == Set.VARIABLE ? "V" :
+         * this.set == Set.ATTRIBUTE ? "A" : this.set == Set.MESSAGE ? "M" :
+         * this.set == Set.SELF ? "S" : "NOTHING" ) + "}" ) ;
+         */
       }
     }
     return this.prettyStringBuilder ;

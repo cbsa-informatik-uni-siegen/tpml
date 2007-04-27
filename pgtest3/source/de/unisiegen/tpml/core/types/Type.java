@@ -100,6 +100,12 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities
 
 
   /**
+   * TODO
+   */
+  protected String prefix = null ;
+
+
+  /**
    * Constructor for all types.
    */
   protected Type ( )
@@ -240,7 +246,11 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities
    */
   public String getPrefix ( )
   {
-    return PREFIX_TAU ;
+    if ( this.prefix == null )
+    {
+      this.prefix = PREFIX_TAU ;
+    }
+    return this.prefix ;
   }
 
 

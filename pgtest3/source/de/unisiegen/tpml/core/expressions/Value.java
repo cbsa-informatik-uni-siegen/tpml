@@ -36,7 +36,11 @@ public abstract class Value extends Expression
   @ Override
   public String getPrefix ( )
   {
-    return PREFIX_VALUE ;
+    if ( this.prefix == null )
+    {
+      this.prefix = PREFIX_VALUE ;
+    }
+    return this.prefix ;
   }
 
 

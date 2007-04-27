@@ -208,6 +208,12 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
 
 
   /**
+   * TODO
+   */
+  protected String prefix = null ;
+
+
+  /**
    * Returns an enumeration for the direct ancestor expressions, the direct
    * children, of this expression. The enumeration is generated using the bean
    * properties for every {@link Expression} derived class. For example,
@@ -460,7 +466,18 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
    */
   public String getPrefix ( )
   {
-    return this.isValue ( ) ? PREFIX_VALUE : PREFIX_EXPRESSION ;
+    if ( this.prefix == null )
+    {
+      if ( this.isValue ( ) )
+      {
+        this.prefix = PREFIX_VALUE ;
+      }
+      else
+      {
+        this.prefix = PREFIX_EXPRESSION ;
+      }
+    }
+    return this.prefix ;
   }
 
 

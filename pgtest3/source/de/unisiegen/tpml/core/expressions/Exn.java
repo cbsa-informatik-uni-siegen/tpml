@@ -122,7 +122,11 @@ public final class Exn extends Expression
   @ Override
   public String getPrefix ( )
   {
-    return PREFIX_EXN ;
+    if ( this.prefix == null )
+    {
+      this.prefix = PREFIX_EXN ;
+    }
+    return this.prefix ;
   }
 
 

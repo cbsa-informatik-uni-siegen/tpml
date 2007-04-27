@@ -214,7 +214,11 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
   @ Override
   public String getPrefix ( )
   {
-    return PREFIX_PHI ;
+    if ( this.prefix == null )
+    {
+      this.prefix = PREFIX_PHI ;
+    }
+    return this.prefix ;
   }
 
 

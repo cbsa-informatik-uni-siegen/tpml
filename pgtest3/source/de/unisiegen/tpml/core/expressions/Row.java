@@ -256,7 +256,18 @@ public final class Row extends Expression implements ChildrenExpressions
   @ Override
   public String getPrefix ( )
   {
-    return this.isValue ( ) ? PREFIX_ROW_VALUE : PREFIX_ROW ;
+    if ( this.prefix == null )
+    {
+      if ( this.isValue ( ) )
+      {
+        this.prefix = PREFIX_ROW_VALUE ;
+      }
+      else
+      {
+        this.prefix = PREFIX_ROW ;
+      }
+    }
+    return this.prefix ;
   }
 
 
