@@ -24,6 +24,20 @@ public final class Assign extends BinaryOperator
 
 
   /**
+   * Allocates a new <code>Assign</code> operator.
+   * 
+   * @param pParserStartOffset TODO
+   * @param pParserEndOffset TODO
+   */
+  public Assign ( int pParserStartOffset , int pParserEndOffset )
+  {
+    this ( ) ;
+    this.parserStartOffset = pParserStartOffset ;
+    this.parserEndOffset = pParserEndOffset ;
+  }
+
+
+  /**
    * {@inheritDoc} The assign operator does not a machine equivalent like the
    * arithmetic or relational operators, but instead operates on a store. So
    * applying an assign operator to its operands must be implemented in the

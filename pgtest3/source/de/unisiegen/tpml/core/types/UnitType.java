@@ -21,6 +21,20 @@ public final class UnitType extends PrimitiveType
 
 
   /**
+   * Allocates a new <code>UnitType</code> instance.
+   * 
+   * @param pParserStartOffset TODO
+   * @param pParserEndOffset TODO
+   */
+  public UnitType ( int pParserStartOffset , int pParserEndOffset )
+  {
+    this ( ) ;
+    this.parserStartOffset = pParserStartOffset ;
+    this.parserEndOffset = pParserEndOffset ;
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see Type#clone()

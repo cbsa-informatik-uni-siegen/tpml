@@ -198,13 +198,13 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
   /**
    * TODO
    */
-  protected int parserStartOffset ;
+  protected int parserStartOffset = - 1 ;
 
 
   /**
    * TODO
    */
-  protected int parserEndOffset ;
+  protected int parserEndOffset = - 1 ;
 
 
   /**

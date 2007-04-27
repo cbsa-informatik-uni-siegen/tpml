@@ -112,6 +112,24 @@ public class Method extends Expression implements DefaultIdentifiers ,
 
 
   /**
+   * TODO
+   * 
+   * @param pIdentifier TODO
+   * @param pTau TODO
+   * @param pExpression TODO
+   * @param pParserStartOffset TODO
+   * @param pParserEndOffset TODO
+   */
+  public Method ( Identifier pIdentifier , MonoType pTau ,
+      Expression pExpression , int pParserStartOffset , int pParserEndOffset )
+  {
+    this ( pIdentifier , pTau , pExpression ) ;
+    this.parserStartOffset = pParserStartOffset ;
+    this.parserEndOffset = pParserEndOffset ;
+  }
+
+
+  /**
    * {@inheritDoc}
    */
   @ Override

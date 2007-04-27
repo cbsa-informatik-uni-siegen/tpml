@@ -68,6 +68,26 @@ public final class Condition1 extends Expression implements ChildrenExpressions
 
 
   /**
+   * Allocates a new <code>Condition1</code> with the specified
+   * <code>e0</code> and <code>e1</code>.
+   * 
+   * @param pExpression0 the conditional block.
+   * @param pExpression1 the <code>true</code> case.
+   * @param pParserStartOffset TODO
+   * @param pParserEndOffset TODO
+   * @throws NullPointerException if <code>e0</code> or <code>e1</code> is
+   *           <code>null</code>.
+   */
+  public Condition1 ( Expression pExpression0 , Expression pExpression1 ,
+      int pParserStartOffset , int pParserEndOffset )
+  {
+    this ( pExpression0 , pExpression1 ) ;
+    this.parserStartOffset = pParserStartOffset ;
+    this.parserEndOffset = pParserEndOffset ;
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see Expression#clone()

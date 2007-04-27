@@ -68,6 +68,26 @@ public final class Sequence extends Expression implements ChildrenExpressions
 
 
   /**
+   * Allocates a new <code>Sequence</code> with the given expressions
+   * <code>e1</code> and <code>e2</code>.
+   * 
+   * @param pExpression1 the first statement.
+   * @param pExpression2 the second statement.
+   * @param pParserStartOffset TODO
+   * @param pParserEndOffset TODO
+   * @throws NullPointerException if <code>e1</code> or <code>e2</code> is
+   *           <code>null</code>.
+   */
+  public Sequence ( Expression pExpression1 , Expression pExpression2 ,
+      int pParserStartOffset , int pParserEndOffset )
+  {
+    this ( pExpression1 , pExpression2 ) ;
+    this.parserStartOffset = pParserStartOffset ;
+    this.parserEndOffset = pParserEndOffset ;
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see Expression#clone()

@@ -25,6 +25,20 @@ public final class IsEmpty extends UnaryListOperator
 
 
   /**
+   * Allocates a new <code>IsEmpty</code> instance.
+   * 
+   * @param pParserStartOffset TODO
+   * @param pParserEndOffset TODO
+   */
+  public IsEmpty ( int pParserStartOffset , int pParserEndOffset )
+  {
+    this ( ) ;
+    this.parserStartOffset = pParserStartOffset ;
+    this.parserEndOffset = pParserEndOffset ;
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see Expression#clone()

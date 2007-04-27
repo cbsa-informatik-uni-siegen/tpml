@@ -46,6 +46,28 @@ public final class LetRec extends Let implements BoundIdentifiers ,
 
 
   /**
+   * Allocates a new <code>LetRec</code> with the given <code>id</code>,
+   * <code>tau</code>, <code>e1</code> and <code>e2</code>.
+   * 
+   * @param pId the name of the identifier.
+   * @param pTau the type for <code>id</code> or <code>null</code>.
+   * @param pExpression1 the first expression.
+   * @param pExpression2 the second expression.
+   * @param pParserStartOffset TODO
+   * @param pParserEndOffset TODO
+   * @throws NullPointerException if <code>id</code>, <code>e1</code> or
+   *           <code>e2</code> is <code>null</code>.
+   */
+  public LetRec ( Identifier pId , MonoType pTau , Expression pExpression1 ,
+      Expression pExpression2 , int pParserStartOffset , int pParserEndOffset )
+  {
+    this ( pId , pTau , pExpression1 , pExpression2 ) ;
+    this.parserStartOffset = pParserStartOffset ;
+    this.parserEndOffset = pParserEndOffset ;
+  }
+
+
+  /**
    * TODO
    */
   @ Override
@@ -64,7 +86,8 @@ public final class LetRec extends Let implements BoundIdentifiers ,
       }
     }
     negativeIdentifiers.add ( this.identifiers [ 0 ] ) ;
-    LanguageParserMultiException.throwExceptionDisjunction ( negativeIdentifiers ) ;
+    LanguageParserMultiException
+        .throwExceptionDisjunction ( negativeIdentifiers ) ;
   }
 
 

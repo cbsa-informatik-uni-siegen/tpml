@@ -134,6 +134,29 @@ public final class MultiLambda extends Value implements BoundIdentifiers ,
 
 
   /**
+   * Allocates a new <code>MultiLambda</code> expression with the specified
+   * <code>identifiers</code> and the function body <code>e</code>.
+   * 
+   * @param pIdentifiers non-empty set of identifiers.
+   * @param pTau the type of the identifiers or <code>null</code>.
+   * @param pExpression the function body.
+   * @param pParserStartOffset TODO
+   * @param pParserEndOffset TODO
+   * @throws IllegalArgumentException if the <code>identifiers</code> list is
+   *           empty.
+   * @throws NullPointerException if <code>identifiers</code> or
+   *           <code>e</code> is <code>null</code>.
+   */
+  public MultiLambda ( Identifier [ ] pIdentifiers , MonoType pTau ,
+      Expression pExpression , int pParserStartOffset , int pParserEndOffset )
+  {
+    this ( pIdentifiers , pTau , pExpression ) ;
+    this.parserStartOffset = pParserStartOffset ;
+    this.parserEndOffset = pParserEndOffset ;
+  }
+
+
+  /**
    * TODO
    */
   public void checkDisjunction ( )
@@ -143,6 +166,7 @@ public final class MultiLambda extends Value implements BoundIdentifiers ,
     ArrayList < Identifier > negativeIdentifiers = new ArrayList < Identifier > ( ) ;
     for ( Identifier current : this.identifiers )
     {
+      negativeIdentifiers.clear ( ) ;
       for ( Identifier allId : allIdentifiers )
       {
         if ( ( current.equals ( allId ) )

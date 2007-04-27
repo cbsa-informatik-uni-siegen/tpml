@@ -37,6 +37,24 @@ public final class BooleanConstant extends Constant
 
 
   /**
+   * Allocates a new <code>BooleanConstant</code> with the value given in
+   * <code>booleanValue</code>.
+   * 
+   * @param pBooleanValue the boolean value.
+   * @param pParserStartOffset TODO
+   * @param pParserEndOffset TODO
+   * @see #booleanValue()
+   */
+  public BooleanConstant ( boolean pBooleanValue , int pParserStartOffset ,
+      int pParserEndOffset )
+  {
+    this ( pBooleanValue ) ;
+    this.parserStartOffset = pParserStartOffset ;
+    this.parserEndOffset = pParserEndOffset ;
+  }
+
+
+  /**
    * Returns the value of this <code>BooleanConstant</code> object as a
    * boolean primitive.
    * 

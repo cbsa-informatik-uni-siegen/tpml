@@ -123,6 +123,27 @@ public final class Recursion extends Expression implements BoundIdentifiers ,
 
 
   /**
+   * Allocates a new <code>Recursion</code> with the <code>id</code> and
+   * <code>e</code>.
+   * 
+   * @param pIdentifier the identifier.
+   * @param pTau the type for the <code>id</code> or <code>null</code>.
+   * @param pExpression the sub expression.
+   * @param pParserStartOffset TODO
+   * @param pParserEndOffset TODO
+   * @throws NullPointerException if <code>id</code> or <code>e</code> is
+   *           <code>null</code>.
+   */
+  public Recursion ( Identifier pIdentifier , MonoType pTau ,
+      Expression pExpression , int pParserStartOffset , int pParserEndOffset )
+  {
+    this ( pIdentifier , pTau , pExpression ) ;
+    this.parserStartOffset = pParserStartOffset ;
+    this.parserEndOffset = pParserEndOffset ;
+  }
+
+
+  /**
    * TODO
    */
   public void checkDisjunction ( )
@@ -139,7 +160,8 @@ public final class Recursion extends Expression implements BoundIdentifiers ,
       }
     }
     negativeIdentifiers.add ( this.identifiers [ 0 ] ) ;
-    LanguageParserMultiException.throwExceptionDisjunction ( negativeIdentifiers ) ;
+    LanguageParserMultiException
+        .throwExceptionDisjunction ( negativeIdentifiers ) ;
   }
 
 

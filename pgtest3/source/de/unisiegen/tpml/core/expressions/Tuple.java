@@ -65,6 +65,26 @@ public final class Tuple extends Expression implements ChildrenExpressions
 
 
   /**
+   * Allocates a new <code>Tuple</code> with the given
+   * <code>expressions</code>.
+   * 
+   * @param pExpressions a non-empty array of {@link Expression}s.
+   * @param pParserStartOffset TODO
+   * @param pParserEndOffset TODO
+   * @throws NullPointerException if <code>expressions</code> is
+   *           <code>null</code>.
+   * @throws IllegalArgumentException if <code>expressions</code> is empty.
+   */
+  public Tuple ( Expression [ ] pExpressions , int pParserStartOffset ,
+      int pParserEndOffset )
+  {
+    this ( pExpressions ) ;
+    this.parserStartOffset = pParserStartOffset ;
+    this.parserEndOffset = pParserEndOffset ;
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see Expression#clone()

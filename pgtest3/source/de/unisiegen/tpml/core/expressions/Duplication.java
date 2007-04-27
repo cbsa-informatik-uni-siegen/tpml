@@ -98,6 +98,24 @@ public final class Duplication extends Expression implements
 
 
   /**
+   * TODO
+   * 
+   * @param pIdentifiers TODO
+   * @param pExpressions TODO
+   * @param pParserStartOffset TODO
+   * @param pParserEndOffset TODO
+   */
+  public Duplication ( Identifier [ ] pIdentifiers ,
+      Expression [ ] pExpressions , int pParserStartOffset ,
+      int pParserEndOffset )
+  {
+    this ( pIdentifiers , pExpressions ) ;
+    this.parserStartOffset = pParserStartOffset ;
+    this.parserEndOffset = pParserEndOffset ;
+  }
+
+
+  /**
    * {@inheritDoc}
    */
   @ Override

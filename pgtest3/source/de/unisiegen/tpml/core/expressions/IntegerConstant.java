@@ -36,6 +36,24 @@ public final class IntegerConstant extends Constant
 
 
   /**
+   * Allocates a new <code>IntegerConstant</code> with the given
+   * <code>intValue</code>.
+   * 
+   * @param pIntValue the numeric value for the integer constant.
+   * @param pParserStartOffset TODO
+   * @param pParserEndOffset TODO
+   * @see #intValue()
+   */
+  public IntegerConstant ( int pIntValue , int pParserStartOffset ,
+      int pParserEndOffset )
+  {
+    this ( pIntValue ) ;
+    this.parserStartOffset = pParserStartOffset ;
+    this.parserEndOffset = pParserEndOffset ;
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see Expression#clone()

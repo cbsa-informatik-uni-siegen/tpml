@@ -84,6 +84,28 @@ public final class InfixOperation extends Expression implements
 
 
   /**
+   * Allocates a new <code>InfixOperation</code> with the specified
+   * parameters.
+   * 
+   * @param pBinaryOperator the binary operator.
+   * @param pExpression1 the first operand.
+   * @param pExpression2 the second operand.
+   * @param pParserStartOffset TODO
+   * @param pParserEndOffset TODO
+   * @throws NullPointerException if <code>op</code>, <code>e1</code> or
+   *           <code>e2</code> is <code>null</code>.
+   */
+  public InfixOperation ( BinaryOperator pBinaryOperator ,
+      Expression pExpression1 , Expression pExpression2 ,
+      int pParserStartOffset , int pParserEndOffset )
+  {
+    this ( pBinaryOperator , pExpression1 , pExpression2 ) ;
+    this.parserStartOffset = pParserStartOffset ;
+    this.parserEndOffset = pParserEndOffset ;
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see Expression#clone()

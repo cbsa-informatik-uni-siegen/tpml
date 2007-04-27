@@ -3,7 +3,6 @@ package de.unisiegen.tpml.graphics.outline.ui ;
 
 import java.awt.Color ;
 import java.awt.Component ;
-import java.awt.Font ;
 import java.awt.Graphics ;
 import javax.swing.JTree ;
 import javax.swing.border.LineBorder ;
@@ -24,9 +23,7 @@ public final class OutlineCellRenderer extends DefaultTreeCellRenderer
   /**
    * The <code>Font</code>.
    */
-  private static final String FONT = "SansSerif" ; //$NON-NLS-1$
-
-
+  // private static final String FONT = "SansSerif" ; //$NON-NLS-1$
   /**
    * The unique serialization identifier for this class.
    */
@@ -81,7 +78,6 @@ public final class OutlineCellRenderer extends DefaultTreeCellRenderer
     this.setTextSelectionColor ( Color.BLACK ) ;
     this.setTextNonSelectionColor ( Color.BLACK ) ;
     this.setBorder ( new LineBorder ( Color.WHITE ) ) ;
-    System.out.println ( this.getFont ( ) ) ;
   }
 
 

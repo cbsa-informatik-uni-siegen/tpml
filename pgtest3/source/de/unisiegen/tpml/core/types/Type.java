@@ -88,6 +88,18 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities
 
 
   /**
+   * TODO
+   */
+  protected int parserStartOffset = - 1 ;
+
+
+  /**
+   * TODO
+   */
+  protected int parserEndOffset = - 1 ;
+
+
+  /**
    * Constructor for all types.
    */
   protected Type ( )
@@ -194,6 +206,30 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities
   public final PrettyPrintable getParent ( )
   {
     return this.parent ;
+  }
+
+
+  /**
+   * Returns the parserEndOffset.
+   * 
+   * @return The parserEndOffset.
+   * @see #parserEndOffset
+   */
+  public int getParserEndOffset ( )
+  {
+    return this.parserEndOffset ;
+  }
+
+
+  /**
+   * Returns the parserStartOffset.
+   * 
+   * @return The parserStartOffset.
+   * @see #parserStartOffset
+   */
+  public int getParserStartOffset ( )
+  {
+    return this.parserStartOffset ;
   }
 
 

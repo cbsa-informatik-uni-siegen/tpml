@@ -79,6 +79,23 @@ public final class Send extends Expression implements DefaultIdentifiers ,
 
 
   /**
+   * TODO
+   * 
+   * @param pExpression TODO
+   * @param pIdentifier TODO
+   * @param pParserStartOffset TODO
+   * @param pParserEndOffset TODO
+   */
+  public Send ( Expression pExpression , Identifier pIdentifier ,
+      int pParserStartOffset , int pParserEndOffset )
+  {
+    this ( pExpression , pIdentifier ) ;
+    this.parserStartOffset = pParserStartOffset ;
+    this.parserEndOffset = pParserEndOffset ;
+  }
+
+
+  /**
    * {@inheritDoc}
    */
   @ Override

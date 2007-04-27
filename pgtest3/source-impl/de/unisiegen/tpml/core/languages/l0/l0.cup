@@ -21,12 +21,15 @@ non terminal Expression[]	simple_expr_list;
 expr				::=	simple_expr:e
 						{: RESULT = e; :}
 					|	simple_expr:e simple_expr_list:l
-						{: for (int n = 0; n < l.length; ++n) {
-						     e = new Application(e, l[n]);
+						{: for (int n = 0; n < l.length; ++n) 
+						   {
+						     e = new Application(e, l[n],
+						       e.getParserStartOffset ( ) , 
+						       l[n].getParserEndOffset ( ) );
 						   }
 						   RESULT = e; :}
-					|	LAMBDA IDENTIFIER:id DOT expr:e
-						{: RESULT = new Lambda(new Identifier (id,idleft,idright), null, e); :}
+					|	LAMBDA:l IDENTIFIER:id DOT expr:e
+						{: RESULT = new Lambda(new Identifier (id,idleft,idright), null, e, lleft, eright); :}
 					;
 		
 		

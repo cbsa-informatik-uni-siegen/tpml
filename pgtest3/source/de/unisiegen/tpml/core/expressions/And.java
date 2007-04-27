@@ -71,6 +71,26 @@ public final class And extends Expression implements ChildrenExpressions
 
 
   /**
+   * Allocates a new <code>And</code> instance with the specified
+   * <code>e1</code> and <code>e2</code>.
+   * 
+   * @param pExpression1 the left side expression.
+   * @param pExpression2 the right side expression.
+   * @param pParserStartOffset TODO
+   * @param pParserEndOffset TODO
+   * @throws NullPointerException if <code>e1</code> or <code>e2</code> is
+   *           <code>null</code>.
+   */
+  public And ( Expression pExpression1 , Expression pExpression2 ,
+      int pParserStartOffset , int pParserEndOffset )
+  {
+    this ( pExpression1 , pExpression2 ) ;
+    this.parserStartOffset = pParserStartOffset ;
+    this.parserEndOffset = pParserEndOffset ;
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see Expression#clone()

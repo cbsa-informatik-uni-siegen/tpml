@@ -145,6 +145,24 @@ public final class CurriedMethod extends Expression implements
 
   /**
    * TODO
+   * 
+   * @param pIdentifiers TODO
+   * @param pTypes TODO
+   * @param pExpression TODO
+   * @param pParserStartOffset TODO
+   * @param pParserEndOffset TODO
+   */
+  public CurriedMethod ( Identifier [ ] pIdentifiers , MonoType [ ] pTypes ,
+      Expression pExpression , int pParserStartOffset , int pParserEndOffset )
+  {
+    this ( pIdentifiers , pTypes , pExpression ) ;
+    this.parserStartOffset = pParserStartOffset ;
+    this.parserEndOffset = pParserEndOffset ;
+  }
+
+
+  /**
+   * TODO
    */
   public void checkDisjunction ( )
   {
@@ -154,6 +172,7 @@ public final class CurriedMethod extends Expression implements
     ArrayList < Identifier > negativeIdentifiers = new ArrayList < Identifier > ( ) ;
     for ( int i = 1 ; i < this.identifiers.length ; i ++ )
     {
+      negativeIdentifiers.clear ( ) ;
       for ( Identifier allId : allIdentifiers )
       {
         if ( ( this.identifiers [ i ].equals ( allId ) )

@@ -147,6 +147,33 @@ public final class MultiLet extends Expression implements BoundIdentifiers ,
 
 
   /**
+   * Allocates a new <code>MultiLet</code> expression with the specified
+   * <code>identifiers</code> and the given expressions <code>e1</code> and
+   * <code>e2</code>.
+   * 
+   * @param pIdentifiers non-empty set of identifiers.
+   * @param pTau the type of the <code>identifiers</code> tuple (that is the
+   *          type of <code>e1</code>) or <code>null</code>.
+   * @param pExpression1 the first expression.
+   * @param pExpression2 the second expression.
+   * @param pParserStartOffset TODO
+   * @param pParserEndOffset TODO
+   * @throws IllegalArgumentException if the <code>identifiers</code> list is
+   *           empty.
+   * @throws NullPointerException if <code>identifiers</code>,
+   *           <code>e1</code> or <code>e2</code> is <code>null</code>.
+   */
+  public MultiLet ( Identifier [ ] pIdentifiers , MonoType pTau ,
+      Expression pExpression1 , Expression pExpression2 ,
+      int pParserStartOffset , int pParserEndOffset )
+  {
+    this ( pIdentifiers , pTau , pExpression1 , pExpression2 ) ;
+    this.parserStartOffset = pParserStartOffset ;
+    this.parserEndOffset = pParserEndOffset ;
+  }
+
+
+  /**
    * TODO
    */
   public void checkDisjunction ( )
@@ -156,6 +183,7 @@ public final class MultiLet extends Expression implements BoundIdentifiers ,
     ArrayList < Identifier > negativeIdentifiers = new ArrayList < Identifier > ( ) ;
     for ( Identifier current : this.identifiers )
     {
+      negativeIdentifiers.clear ( ) ;
       for ( Identifier allId : allIdentifiers )
       {
         if ( ( current.equals ( allId ) )

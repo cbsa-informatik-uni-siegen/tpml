@@ -163,6 +163,32 @@ public final class TypeVariable extends MonoType implements
 
 
   /**
+   * Allocates a new <code>TypeVariable</code> with the given
+   * <code>index</code> and <code>offset</code>.
+   * 
+   * @param pIndex the index of the type variable, that is the step of the
+   *          proof, in which it was created. A value of <code>0</code> means
+   *          that the type variable was specified in the source code.
+   * @param pOffset the offset, that is the number of type variables already
+   *          allocated in the proof step identified by <code>index</code>.
+   * @param pParserStartOffset TODO
+   * @param pParserEndOffset TODO
+   * @throws IllegalArgumentException if <code>index</code> or
+   *           <code>offset</code> is negative.
+   * @see TypeVariable
+   * @see #index
+   * @see #offset
+   */
+  public TypeVariable ( int pIndex , int pOffset , int pParserStartOffset ,
+      int pParserEndOffset )
+  {
+    this ( pIndex , pOffset ) ;
+    this.parserStartOffset = pParserStartOffset ;
+    this.parserEndOffset = pParserEndOffset ;
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see Type#clone()

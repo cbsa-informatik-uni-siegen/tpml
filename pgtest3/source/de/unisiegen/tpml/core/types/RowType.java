@@ -94,6 +94,23 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
 
 
   /**
+   * TODO
+   * 
+   * @param pIdentifiers TODO
+   * @param pTypes TODO
+   * @param pParserStartOffset TODO
+   * @param pParserEndOffset TODO
+   */
+  public RowType ( Identifier [ ] pIdentifiers , MonoType [ ] pTypes ,
+      int pParserStartOffset , int pParserEndOffset )
+  {
+    this ( pIdentifiers , pTypes ) ;
+    this.parserStartOffset = pParserStartOffset ;
+    this.parserEndOffset = pParserEndOffset ;
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see Type#clone()

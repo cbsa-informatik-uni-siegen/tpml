@@ -135,6 +135,30 @@ public class Let extends Expression implements BoundIdentifiers , DefaultTypes ,
 
 
   /**
+   * Allocates a new <code>Let</code> with the specified <code>id</code>,
+   * <code>e1</code> and <code>e2</code>.
+   * 
+   * @param pIdentifier the name of the identifier.
+   * @param pTau the type for the <code>id</code> (and thereby for
+   *          <code>e1</code>) or <code>null</code>.
+   * @param pExpression1 the first expression.
+   * @param pExpression2 the second expression.
+   * @param pParserStartOffset TODO
+   * @param pParserEndOffset TODO
+   * @throws NullPointerException if <code>id</code>, <code>e1</code> or
+   *           <code>e2</code> is <code>null</code>.
+   */
+  public Let ( Identifier pIdentifier , MonoType pTau ,
+      Expression pExpression1 , Expression pExpression2 ,
+      int pParserStartOffset , int pParserEndOffset )
+  {
+    this ( pIdentifier , pTau , pExpression1 , pExpression2 ) ;
+    this.parserStartOffset = pParserStartOffset ;
+    this.parserEndOffset = pParserEndOffset ;
+  }
+
+
+  /**
    * TODO
    */
   public void checkDisjunction ( )
@@ -151,7 +175,8 @@ public class Let extends Expression implements BoundIdentifiers , DefaultTypes ,
       }
     }
     negativeIdentifiers.add ( this.identifiers [ 0 ] ) ;
-    LanguageParserMultiException.throwExceptionDisjunction ( negativeIdentifiers ) ;
+    LanguageParserMultiException
+        .throwExceptionDisjunction ( negativeIdentifiers ) ;
   }
 
 

@@ -38,6 +38,22 @@ public final class Location extends Value
 
 
   /**
+   * Allocates a new <code>Location</code> instance with the specified
+   * <code>name</code>.
+   * 
+   * @param pName the name of the memory location.
+   * @param pParserStartOffset TODO
+   * @param pParserEndOffset TODO
+   */
+  public Location ( String pName , int pParserStartOffset , int pParserEndOffset )
+  {
+    this ( pName ) ;
+    this.parserStartOffset = pParserStartOffset ;
+    this.parserEndOffset = pParserEndOffset ;
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see Expression#clone()

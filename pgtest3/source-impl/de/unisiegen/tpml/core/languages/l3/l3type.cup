@@ -29,19 +29,27 @@ precedence left		STAR;
  *********/
 
 
-type				::=	simple_type:t			{: RESULT = t; :}
-					|	type:t1 ARROW type:t2	{: RESULT = new ArrowType(t1, t2); :}
+type				::=	simple_type:t
+						{: RESULT = t; :}
+					|	type:t1 ARROW type:t2
+						{: RESULT = new ArrowType(t1, t2, t1left, t2right); :}
 					|	type_star_list:tl
-						{: RESULT = new TupleType(tl); :}
-					|	type:t LIST				{: RESULT = new ListType(t); :}
+						{: RESULT = new TupleType(tl, tlleft, tlright); :}
+					|	type:t LIST:l
+						{: RESULT = new ListType(t, tleft, lright); :}
 					;
 
 
-simple_type			::=	LPAREN type:t RPAREN	{: RESULT = t; :}
-					|	BOOL					{: RESULT = new BooleanType(); :}
-					|	INT						{: RESULT = new IntegerType(); :}
-					|	UNIT					{: RESULT = new UnitType(); :}
-					|	TYPEVARIABLE:tvar		{: RESULT = new TypeVariable(0, tvar); :}
+simple_type			::=	LPAREN:l type:t RPAREN:r
+						{: RESULT = t; :}
+					|	BOOL:b
+						{: RESULT = new BooleanType(bleft, bright); :}
+					|	INT:i
+						{: RESULT = new IntegerType(ileft, iright); :}
+					|	UNIT:u
+						{: RESULT = new UnitType(uleft, uright); :}
+					|	TYPEVARIABLE:tvar
+						{: RESULT = new TypeVariable(0, tvar, tvarleft, tvarright); :}
 					;
 
 
@@ -52,4 +60,3 @@ type_star_list		::= type_star_list:tl STAR type:t
 					|	type:t1 STAR type:t2
 						{: RESULT = new MonoType[] { t1, t2 }; :}
 					;
-					

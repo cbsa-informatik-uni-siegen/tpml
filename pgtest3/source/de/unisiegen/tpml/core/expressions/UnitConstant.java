@@ -23,6 +23,20 @@ public final class UnitConstant extends Constant
 
 
   /**
+   * Allocates a new <code>UnitConstant</code>.
+   * 
+   * @param pParserStartOffset TODO
+   * @param pParserEndOffset TODO
+   */
+  public UnitConstant ( int pParserStartOffset , int pParserEndOffset )
+  {
+    this ( ) ;
+    this.parserStartOffset = pParserStartOffset ;
+    this.parserEndOffset = pParserEndOffset ;
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see Expression#clone()

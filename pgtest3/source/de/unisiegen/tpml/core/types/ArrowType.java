@@ -73,6 +73,27 @@ public final class ArrowType extends MonoType implements DefaultTypes
 
 
   /**
+   * Allocates a new <code>ArrowType</code> with the types <code>tau1</code>
+   * and <code>tau2</code>, which represents the type
+   * <code>tau1 -&gt; tau2</code>.
+   * 
+   * @param pTau1 the parameter type.
+   * @param pTau2 the result type.
+   * @param pParserStartOffset TODO
+   * @param pParserEndOffset TODO
+   * @throws NullPointerException if either <code>pTau1</code> or
+   *           <code>pTau2</code> are <code>null</code>.
+   */
+  public ArrowType ( MonoType pTau1 , MonoType pTau2 , int pParserStartOffset ,
+      int pParserEndOffset )
+  {
+    this ( pTau1 , pTau2 ) ;
+    this.parserStartOffset = pParserStartOffset ;
+    this.parserEndOffset = pParserEndOffset ;
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see Type#clone()

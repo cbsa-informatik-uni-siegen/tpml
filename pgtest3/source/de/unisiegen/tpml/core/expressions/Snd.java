@@ -23,6 +23,21 @@ public final class Snd extends Projection
 
 
   /**
+   * Allocates a new instance of the <code>snd</code> operator which is a
+   * special case of the projection that returns the second item of a pair.
+   * 
+   * @param pParserStartOffset TODO
+   * @param pParserEndOffset TODO
+   */
+  public Snd ( int pParserStartOffset , int pParserEndOffset )
+  {
+    this ( ) ;
+    this.parserStartOffset = pParserStartOffset ;
+    this.parserEndOffset = pParserEndOffset ;
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see Projection#clone()

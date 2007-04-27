@@ -272,59 +272,61 @@ identifier			::= IDENTIFIER:id
 
 application			::= simple_expr:e simple_expr_list:l
 						{: for (int n = 0; n < l.length; ++n) 
-						{
-						  e = new Application(e, l[n]);
-					    }
-						RESULT = e; :}
+						   {
+						     e = new Application(e, l[n],
+						       e.getParserStartOffset ( ) , 
+						       l[n].getParserEndOffset ( ) );
+						   }
+						   RESULT = e; :}
 					;
 
-infix_operation		::= expr:e1 PLUS expr:e2
-						{: RESULT = new InfixOperation(ArithmeticOperator.newPlus(), e1, e2); :}
-					|	expr:e1 MINUS expr:e2
-						{: RESULT = new InfixOperation(ArithmeticOperator.newMinus(), e1, e2); :}
-					|	expr:e1 STAR expr:e2
-						{: RESULT = new InfixOperation(ArithmeticOperator.newMult(), e1, e2); :}
-					|	expr:e1 SLASH expr:e2
-						{: RESULT = new InfixOperation(ArithmeticOperator.newDiv(), e1, e2); :}
-					|	expr:e1 MOD expr:e2
-						{: RESULT = new InfixOperation(ArithmeticOperator.newMod(), e1, e2); :}
-					|	expr:e1 EQUAL expr:e2
-						{: RESULT = new InfixOperation(RelationalOperator.newEquals(), e1, e2); :}
-					|	expr:e1 LESS expr:e2
-						{: RESULT = new InfixOperation(RelationalOperator.newLowerThan(), e1, e2); :}
-					|	expr:e1 GREATER expr:e2
-						{: RESULT = new InfixOperation(RelationalOperator.newGreaterThan(), e1, e2); :}
-					|	expr:e1 LESSEQUAL expr:e2
-						{: RESULT = new InfixOperation(RelationalOperator.newLowerEqual(), e1, e2); :}
-					|	expr:e1 GREATEREQUAL expr:e2
-						{: RESULT = new InfixOperation(RelationalOperator.newGreaterEqual(), e1, e2); :}
+infix_operation		::= expr:e1 PLUS:op expr:e2
+						{: RESULT = new InfixOperation(ArithmeticOperator.newPlus(opleft, opright), e1, e2, e1left, e2right); :}
+					|	expr:e1 MINUS:op expr:e2
+						{: RESULT = new InfixOperation(ArithmeticOperator.newMinus(opleft, opright), e1, e2, e1left, e2right); :}
+					|	expr:e1 STAR:op expr:e2
+						{: RESULT = new InfixOperation(ArithmeticOperator.newMult(opleft, opright), e1, e2, e1left, e2right); :}
+					|	expr:e1 SLASH:op expr:e2
+						{: RESULT = new InfixOperation(ArithmeticOperator.newDiv(opleft, opright), e1, e2, e1left, e2right); :}
+					|	expr:e1 MOD:op expr:e2
+						{: RESULT = new InfixOperation(ArithmeticOperator.newMod(opleft, opright), e1, e2, e1left, e2right); :}
+					|	expr:e1 EQUAL:op expr:e2
+						{: RESULT = new InfixOperation(RelationalOperator.newEquals(opleft, opright), e1, e2, e1left, e2right); :}
+					|	expr:e1 LESS:op expr:e2
+						{: RESULT = new InfixOperation(RelationalOperator.newLowerThan(opleft, opright), e1, e2, e1left, e2right); :}
+					|	expr:e1 GREATER:op expr:e2
+						{: RESULT = new InfixOperation(RelationalOperator.newGreaterThan(opleft, opright), e1, e2, e1left, e2right); :}
+					|	expr:e1 LESSEQUAL:op expr:e2
+						{: RESULT = new InfixOperation(RelationalOperator.newLowerEqual(opleft, opright), e1, e2, e1left, e2right); :}
+					|	expr:e1 GREATEREQUAL:op expr:e2
+						{: RESULT = new InfixOperation(RelationalOperator.newGreaterEqual(opleft, opright), e1, e2, e1left, e2right); :}
 					;
 
 and					::= expr:e1 AMPERAMPER expr:e2
-						{: RESULT = new And(e1, e2); :}
+						{: RESULT = new And(e1, e2,e1left,e2right); :}
 					;
 
 or					::= expr:e1 BARBAR expr:e2
-						{: RESULT = new Or(e1, e2); :}
+						{: RESULT = new Or(e1, e2, e1left, e2right); :}
 					;
 
-condition			::= IF expr:e0 THEN expr:e1 ELSE expr:e2
-						{: RESULT = new Condition(e0, e1, e2); :}
+condition			::= IF:i expr:e0 THEN expr:e1 ELSE expr:e2
+						{: RESULT = new Condition(e0, e1, e2, ileft, e2right); :}
 					;
 
-lambda				::= LAMBDA IDENTIFIER:id DOT expr:e
-						{: RESULT = new Lambda(new Identifier (id,idleft,idright), null, e); :}
-					|	LAMBDA IDENTIFIER:id COLON type:tau DOT expr:e
-						{: RESULT = new Lambda(new Identifier (id,idleft,idright), tau, e); :}
+lambda				::= LAMBDA:l IDENTIFIER:id DOT expr:e
+						{: RESULT = new Lambda(new Identifier (id,idleft,idright), null, e, lleft, eright); :}
+					|	LAMBDA:l IDENTIFIER:id COLON type:tau DOT expr:e
+						{: RESULT = new Lambda(new Identifier (id,idleft,idright), tau, e, lleft, eright); :}
 					;
 
-let					::= LET IDENTIFIER:id EQUAL expr:e1 IN expr:e2
-						{: RESULT = new Let(new Identifier (id,idleft,idright), null, e1, e2); :}
-					|	LET IDENTIFIER:id COLON type:tau EQUAL expr:e1 IN expr:e2
-						{: RESULT = new Let(new Identifier (id,idleft,idright), tau, e1, e2); :}
+let					::= LET:l IDENTIFIER:id EQUAL expr:e1 IN expr:e2
+						{: RESULT = new Let(new Identifier (id,idleft,idright), null, e1, e2, lleft, e2right); :}
+					|	LET:l IDENTIFIER:id COLON type:tau EQUAL expr:e1 IN expr:e2
+						{: RESULT = new Let(new Identifier (id,idleft,idright), tau, e1, e2, lleft, e2right); :}
 					;
 
-curried_let			::= LET IDENTIFIER:id id_type_list:itl EQUAL expr:e1 IN expr:e2
+curried_let			::= LET:l IDENTIFIER:id id_type_list:itl EQUAL expr:e1 IN expr:e2
 						{: Identifier[] identifiers = new Identifier[itl.length + 1];
 						   MonoType[] types = new MonoType[itl.length + 1];
 						   for (int n = 0; n < itl.length; ++n) 
@@ -333,43 +335,8 @@ curried_let			::= LET IDENTIFIER:id id_type_list:itl EQUAL expr:e1 IN expr:e2
 						     types[n + 1] = itl[n].tau;
 						   }
 						   identifiers[0] = new Identifier (id,idleft,idright);
-						   RESULT = new CurriedLet(identifiers, types, e1, e2); :}
-					|	LET IDENTIFIER:id id_type_list:itl COLON type:tau EQUAL expr:e1 IN expr:e2
-						{: Identifier[] identifiers = new Identifier[itl.length + 1];
-						   MonoType[] types = new MonoType[itl.length + 1];
-						   for (int n = 0; n < itl.length; ++n) 
-						   {
-						     identifiers[n + 1] = itl[n].id;
-						     types[n + 1] = itl[n].tau;
-						   }
-						   identifiers[0] = new Identifier (id,idleft,idright);
-						   types[0] = tau;
-						   RESULT = new CurriedLet(identifiers, types, e1, e2); :}
-					;
-
-recursion			::= REC IDENTIFIER:id DOT expr:e
-						{: RESULT = new Recursion(new Identifier (id,idleft,idright), null, e); :}
-					|	REC IDENTIFIER:id COLON type:tau DOT expr:e
-						{: RESULT = new Recursion(new Identifier (id,idleft,idright), tau, e); :}
-					;
-
-let_rec				::= LET REC IDENTIFIER:id EQUAL expr:e1 IN expr:e2
-						{: RESULT = new LetRec(new Identifier (id,idleft,idright), null, e1, e2); :}
-					|	LET REC IDENTIFIER:id COLON type:tau EQUAL expr:e1 IN expr:e2
-						{: RESULT = new LetRec(new Identifier (id,idleft,idright), tau, e1, e2); :}
-					;
-
-curried_let_rec		::= LET REC IDENTIFIER:id id_type_list:itl EQUAL expr:e1 IN expr:e2
-						{: Identifier[] identifiers = new Identifier[itl.length + 1];
-						   MonoType[] types = new MonoType[itl.length + 1];
-						   for (int n = 0; n < itl.length; ++n) 
-						   {
-						     identifiers[n + 1] = itl[n].id;
-						     types[n + 1] = itl[n].tau;
-						   }
-						   identifiers[0] = new Identifier (id,idleft,idright);
-						   RESULT = new CurriedLetRec(identifiers, types, e1, e2); :}
-					|	LET REC IDENTIFIER:id id_type_list:itl COLON type:tau EQUAL expr:e1 IN expr:e2
+						   RESULT = new CurriedLet(identifiers, types, e1, e2, lleft, e2right); :}
+					|	LET:l IDENTIFIER:id id_type_list:itl COLON type:tau EQUAL expr:e1 IN expr:e2
 						{: Identifier[] identifiers = new Identifier[itl.length + 1];
 						   MonoType[] types = new MonoType[itl.length + 1];
 						   for (int n = 0; n < itl.length; ++n) 
@@ -379,24 +346,59 @@ curried_let_rec		::= LET REC IDENTIFIER:id id_type_list:itl EQUAL expr:e1 IN exp
 						   }
 						   identifiers[0] = new Identifier (id,idleft,idright);
 						   types[0] = tau;
-						   RESULT = new CurriedLetRec(identifiers, types, e1, e2); :}
+						   RESULT = new CurriedLet(identifiers, types, e1, e2, lleft, e2right); :}
 					;
 
-object_expr			::= OBJECT LPAREN SELF:id RPAREN END
+recursion			::= REC:r IDENTIFIER:id DOT expr:e
+						{: RESULT = new Recursion(new Identifier (id,idleft,idright), null, e, rleft, eright); :}
+					|	REC:r IDENTIFIER:id COLON type:tau DOT expr:e
+						{: RESULT = new Recursion(new Identifier (id,idleft,idright), tau, e, rleft, eright); :}
+					;
+
+let_rec				::= LET:l REC IDENTIFIER:id EQUAL expr:e1 IN expr:e2
+						{: RESULT = new LetRec(new Identifier (id,idleft,idright), null, e1, e2, lleft, e2right); :}
+					|	LET:l REC IDENTIFIER:id COLON type:tau EQUAL expr:e1 IN expr:e2
+						{: RESULT = new LetRec(new Identifier (id,idleft,idright), tau, e1, e2, lleft, e2right); :}
+					;
+
+curried_let_rec		::= LET:l REC IDENTIFIER:id id_type_list:itl EQUAL expr:e1 IN expr:e2
+						{: Identifier[] identifiers = new Identifier[itl.length + 1];
+						   MonoType[] types = new MonoType[itl.length + 1];
+						   for (int n = 0; n < itl.length; ++n) 
+						   {
+						     identifiers[n + 1] = itl[n].id;
+						     types[n + 1] = itl[n].tau;
+						   }
+						   identifiers[0] = new Identifier (id,idleft,idright);
+						   RESULT = new CurriedLetRec(identifiers, types, e1, e2, lleft, e2right); :}
+					|	LET:l REC IDENTIFIER:id id_type_list:itl COLON type:tau EQUAL expr:e1 IN expr:e2
+						{: Identifier[] identifiers = new Identifier[itl.length + 1];
+						   MonoType[] types = new MonoType[itl.length + 1];
+						   for (int n = 0; n < itl.length; ++n) 
+						   {
+						     identifiers[n + 1] = itl[n].id;
+						     types[n + 1] = itl[n].tau;
+						   }
+						   identifiers[0] = new Identifier (id,idleft,idright);
+						   types[0] = tau;
+						   RESULT = new CurriedLetRec(identifiers, types, e1, e2, lleft, e2right); :}
+					;
+
+object_expr			::= OBJECT:o LPAREN SELF:id RPAREN END:end
 						{: Expression [] e = new Expression [0];
-						   RESULT = new ObjectExpr (new Identifier (id,idleft,idright), null, new Row (e)); :}
-					|   OBJECT LPAREN SELF:id COLON type:tau RPAREN END
+						   RESULT = new ObjectExpr (new Identifier (id,idleft,idright), null, new Row (e), oleft, endright); :}
+					|   OBJECT:o LPAREN SELF:id COLON type:tau RPAREN END:end
 						{: Expression [] e = new Expression [0];
-						   RESULT = new ObjectExpr (new Identifier (id,idleft,idright), tau, new Row (e)); :}
-					|	OBJECT LPAREN SELF:id RPAREN row:r END
+						   RESULT = new ObjectExpr (new Identifier (id,idleft,idright), tau, new Row (e), oleft, endright); :}
+					|	OBJECT:o LPAREN SELF:id RPAREN row:r END:end
 						{: Duplicated.check(r);
-						   RESULT = new ObjectExpr (new Identifier (id,idleft,idright), null, r); :}
-					|	OBJECT LPAREN SELF:id COLON type:tau RPAREN row:r END
+						   RESULT = new ObjectExpr (new Identifier (id,idleft,idright), null, r, oleft, endright); :}
+					|	OBJECT:o LPAREN SELF:id COLON type:tau RPAREN row:r END:end
 						{: Duplicated.check(r);
-						   RESULT = new ObjectExpr (new Identifier (id,idleft,idright), tau, r); :}
+						   RESULT = new ObjectExpr (new Identifier (id,idleft,idright), tau, r, oleft, endright); :}
 					;
 					
-duplication			::= DUPLBEGIN id_expr_list:iel DUPLEND
+duplication			::= DUPLBEGIN:b id_expr_list:iel DUPLEND:e
 						{: Expression [] tmpE = new Expression [iel.length];
 						   Identifier [] tmpI = new Identifier [iel.length];
 						   for ( int i = 0 ; i < iel.length ; i++ )
@@ -405,71 +407,71 @@ duplication			::= DUPLBEGIN id_expr_list:iel DUPLEND
 						     tmpI [i] = iel [i].id;
 						     tmpI [i].setSet (Identifier.Set.ATTRIBUTE );
 						   }
-						   Duplication d = new Duplication ( tmpI , tmpE );
+						   Duplication d = new Duplication (tmpI, tmpE, bleft, eright);
 						   Duplicated.check(d);
 						   RESULT = d; :}
-					|	DUPLBEGIN DUPLEND
+					|	DUPLBEGIN:b DUPLEND:e
 						{: Expression [] tmpE = new Expression [0];
 						   Identifier [] tmpI = new Identifier [0];
-						   RESULT = new Duplication ( tmpI , tmpE ); :}
+						   RESULT = new Duplication (tmpI, tmpE, bleft, eright); :}
 					;
 
 send				::= simple_expr:e HASHKEY IDENTIFIER:id
 						{: Identifier idM = new Identifier (id,idleft,idright) ;
 						   idM.setSet (Identifier.Set.MESSAGE );
-						   RESULT = new Send ( e, idM ) ; :}
+						   RESULT = new Send ( e, idM, eleft, idright) ; :}
 					;
 					
 row					::= attribute:a
 						{: Expression [] e = new Expression [1];
 						   e [0] = a;
-						   RESULT = new Row (e); :}
+						   RESULT = new Row (e, aleft, aright); :}
 					|	attribute:a row:r
 						{: Expression [ ] e = new Expression [ r.getExpressions().length + 1 ] ;
 						   System.arraycopy ( r.getExpressions() , 0 , e , 1 , r.getExpressions().length ) ;
     					   e [0] = a ;
-						   RESULT = new Row (e); :}
+						   RESULT = new Row (e, aleft, rright); :}
 					|	method:m
 						{: Expression [] e = new Expression [1];
 						   e [0] = m;
-						   RESULT = new Row (e); :}
+						   RESULT = new Row (e, mleft, mright); :}
 					|	method:m row:r
 						{: Expression [ ] e = new Expression [ r.getExpressions().length + 1 ] ;
     					   System.arraycopy ( r.getExpressions() , 0 , e , 1 , r.getExpressions().length ) ;
     					   e [0] = m ;
-						   RESULT = new Row (e); :}
+						   RESULT = new Row (e, mleft, rright); :}
 					|	curried_method:cm
 						{: Expression [] e = new Expression [1];
 						   e [0] = cm;
-						   RESULT = new Row (e); :}
+						   RESULT = new Row (e, cmleft, cmright); :}
 					|	curried_method:cm row:r
 						{: Expression [ ] e = new Expression [ r.getExpressions().length + 1 ] ;
     					   System.arraycopy ( r.getExpressions() , 0 , e , 1 , r.getExpressions().length ) ;
     					   e [0] = cm ;
-						   RESULT = new Row (e); :}
+						   RESULT = new Row (e, cmleft, rright); :}
 					;
 
-attribute			::=	ATTRIBUTE IDENTIFIER:id EQUAL expr:e SEMI
+attribute			::=	ATTRIBUTE:a IDENTIFIER:id EQUAL expr:e SEMI:s
 						{: Identifier idA = new Identifier (id,idleft,idright) ;
 						   idA.setSet (Identifier.Set.ATTRIBUTE );
-						   RESULT = new Attribute (idA, null , e ); :}
-					|	ATTRIBUTE IDENTIFIER:id COLON type:tau EQUAL expr:e SEMI
+						   RESULT = new Attribute (idA, null, e, aleft, sright); :}
+					|	ATTRIBUTE:a IDENTIFIER:id COLON type:tau EQUAL expr:e SEMI:s
 						{: Identifier idA = new Identifier (id,idleft,idright) ;
 						   idA.setSet (Identifier.Set.ATTRIBUTE );
-						   RESULT = new Attribute (idA, tau , e ); :}
+						   RESULT = new Attribute (idA, tau, e, aleft, sright); :}
 					;
 
-method				::=	METHOD IDENTIFIER:id EQUAL expr:e SEMI
+method				::=	METHOD:m IDENTIFIER:id EQUAL expr:e SEMI:s
 						{: Identifier idM = new Identifier (id,idleft,idright) ;
 						   idM.setSet (Identifier.Set.MESSAGE );
-						   RESULT = new Method (idM, null, e ); :}
-					|	METHOD IDENTIFIER:id COLON type:tau EQUAL expr:e SEMI
+						   RESULT = new Method (idM, null, e, mleft, sright); :}
+					|	METHOD:m IDENTIFIER:id COLON type:tau EQUAL expr:e SEMI:s
 						{: Identifier idM = new Identifier (id,idleft,idright) ;
 						   idM.setSet (Identifier.Set.MESSAGE );
-						   RESULT = new Method (idM,tau, e ); :}
+						   RESULT = new Method (idM, tau, e, mleft, sright); :}
 					;
 
-curried_method		::=	METHOD IDENTIFIER:id id_type_list:itl EQUAL expr:e SEMI
+curried_method		::=	METHOD:m IDENTIFIER:id id_type_list:itl EQUAL expr:e SEMI:s
 						{: Identifier[] identifiers = new Identifier[itl.length + 1];
 						   MonoType[] types = new MonoType[itl.length + 1 ];
 						   for (int n = 0; n < itl.length; n++) 
@@ -481,8 +483,8 @@ curried_method		::=	METHOD IDENTIFIER:id id_type_list:itl EQUAL expr:e SEMI
 						   idM.setSet (Identifier.Set.MESSAGE );
 						   identifiers [0] = idM ;
 						   types [0] = null ;
-						   RESULT = new CurriedMethod ( identifiers , types , e ); :}
-					|	METHOD IDENTIFIER:id id_type_list:itl COLON type:tau EQUAL expr:e SEMI
+						   RESULT = new CurriedMethod(identifiers, types, e, mleft, sright); :}
+					|	METHOD:m IDENTIFIER:id id_type_list:itl COLON type:tau EQUAL expr:e SEMI:s
 						{: Identifier[] identifiers = new Identifier[itl.length + 1];
 						   MonoType[] types = new MonoType[itl.length + 1 ];
 						   for (int n = 0; n < itl.length; n++) 
@@ -494,7 +496,7 @@ curried_method		::=	METHOD IDENTIFIER:id id_type_list:itl EQUAL expr:e SEMI
 						   idM.setSet (Identifier.Set.MESSAGE );
 						   identifiers [0] = idM ;
 						   types [0] = tau ;
-						   RESULT = new CurriedMethod ( identifiers , types , e ); :}
+						   RESULT = new CurriedMethod (identifiers, types, e, mleft, sright); :}
 					;	   
 
 id_expr_list		::= IDENTIFIER:id EQUAL expr:e
@@ -516,24 +518,40 @@ simple_expr_list	::=	simple_expr:e
 						   RESULT[l.length] = e; :}
 					;
 
-constant			::=	PARENPAREN		{: RESULT = new UnitConstant(); :}
-					|	TRUE			{: RESULT = new BooleanConstant(true); :}
-					|	FALSE			{: RESULT = new BooleanConstant(false); :}
-					|	NUMBER:n		{: RESULT = new IntegerConstant(n.intValue()); :}
-					|	NOT				{: RESULT = new Not(); :}
+constant			::=	PARENPAREN:c
+						{: RESULT = new UnitConstant(cleft, cright); :}
+					|	TRUE:c
+						{: RESULT = new BooleanConstant(true, cleft, cright); :}
+					|	FALSE:c
+						{: RESULT = new BooleanConstant(false, cleft, cright); :}
+					|	NUMBER:n
+						{: RESULT = new IntegerConstant(n.intValue(), nleft, nright); :}
+					|	NOT:c
+						{: RESULT = new Not(cleft, cright); :}
 					;
 
-operator			::=	PLUS			{: RESULT = ArithmeticOperator.newPlus(); :}
-					|	MINUS			{: RESULT = ArithmeticOperator.newMinus(); :}
-					|	STAR			{: RESULT = ArithmeticOperator.newMult(); :}
-					|	SLASH			{: RESULT = ArithmeticOperator.newDiv(); :}
-					|	MOD				{: RESULT = ArithmeticOperator.newMod(); :}
-					|	EQUAL			{: RESULT = RelationalOperator.newEquals(); :}
-					|	LESS			{: RESULT = RelationalOperator.newLowerThan(); :}
-					|	GREATER			{: RESULT = RelationalOperator.newGreaterThan(); :}
-					|	LESSEQUAL		{: RESULT = RelationalOperator.newLowerEqual(); :}
-					|	GREATEREQUAL	{: RESULT = RelationalOperator.newGreaterEqual(); :}
+operator			::=	PLUS:op		
+						{: RESULT = ArithmeticOperator.newPlus(opleft, opright); :}
+					|	MINUS:op		
+						{: RESULT = ArithmeticOperator.newMinus(opleft, opright); :}
+					|	STAR:op			
+						{: RESULT = ArithmeticOperator.newMult(opleft, opright); :}
+					|	SLASH:op			
+						{: RESULT = ArithmeticOperator.newDiv(opleft, opright); :}
+					|	MOD:op			
+						{: RESULT = ArithmeticOperator.newMod(opleft, opright); :}
+					|	EQUAL:op			
+						{: RESULT = RelationalOperator.newEquals(opleft, opright); :}
+					|	LESS:op			
+						{: RESULT = RelationalOperator.newLowerThan(opleft, opright); :}
+					|	GREATER:op		
+						{: RESULT = RelationalOperator.newGreaterThan(opleft, opright); :}
+					|	LESSEQUAL:op		
+						{: RESULT = RelationalOperator.newLowerEqual(opleft, opright); :}
+					|	GREATEREQUAL:op
+						{: RESULT = RelationalOperator.newGreaterEqual(opleft, opright); :}
 					;
+
 
 id_type_list		::= id_type_list:l id_type_pair:itp
 						{: RESULT = new IdTypePair[l.length + 1];
@@ -555,33 +573,41 @@ id_type_pair		::= LPAREN IDENTIFIER:id COLON type:tau RPAREN
  *********/
 
 
-type				::=	simple_type:t			{: RESULT = t; :}
-					|	type:t1 ARROW type:t2	{: RESULT = new ArrowType(t1, t2); :}
+type				::=	simple_type:t
+						{: RESULT = t; :}
+					|	type:t1 ARROW type:t2
+						{: RESULT = new ArrowType(t1, t2, t1left, t2right); :}
 					;
 
-simple_type			::=	LPAREN type:t RPAREN	{: RESULT = t; :}
-					|	BOOL					{: RESULT = new BooleanType(); :}
-					|	INT						{: RESULT = new IntegerType(); :}
-					|	UNIT					{: RESULT = new UnitType(); :}
-					|	TYPEVARIABLE:tvar		{: RESULT = new TypeVariable(0, tvar); :}
-					|	object_type:t			{: RESULT = t; :}
+simple_type			::=	LPAREN:l type:t RPAREN:r
+						{: RESULT = t; :}
+					|	BOOL:b
+						{: RESULT = new BooleanType(bleft, bright); :}
+					|	INT:i
+						{: RESULT = new IntegerType(ileft, iright); :}
+					|	UNIT:u
+						{: RESULT = new UnitType(uleft, uright); :}
+					|	TYPEVARIABLE:tvar
+						{: RESULT = new TypeVariable(0, tvar, tvarleft, tvarright); :}
+					|	object_type:t
+						{: RESULT = t; :}
 					;
 
-object_type			::= LESS row_type:r GREATER
+object_type			::= LESS:l row_type:r GREATER:g
 						{: Duplicated.check(r);
-						   RESULT = new ObjectType ( r ); :}
-					|	LESS GREATER
+						   RESULT = new ObjectType ( r, lleft, gright); :}
+					|	LESS:l GREATER:g
 						{: Identifier [] m = new Identifier [0];
 						   MonoType [] types = new MonoType [0];
-						   RESULT = new ObjectType ( new RowType (m,types) ); :}
+						   RESULT = new ObjectType ( new RowType (m, types), lleft, gright); :}
 					;
 
-row_type			::= IDENTIFIER:id COLON type:tau SEMI
+row_type			::= IDENTIFIER:id COLON type:tau SEMI:s
 						{: Identifier [] m = new Identifier [1];
 						   m [0] = new Identifier (id,idleft,idright);
 						   MonoType [] types = new MonoType [1];
 						   types [0] = tau;
-						   RESULT = new RowType (m,types) ; :}
+						   RESULT = new RowType (m, types, idleft, sright) ; :}
 					|	IDENTIFIER:id COLON type:tau SEMI row_type:r
 						{: Identifier [] m = new Identifier [r.getIdentifiers().length + 1];
 						   m [0] = new Identifier (id,idleft,idright);
@@ -589,5 +615,5 @@ row_type			::= IDENTIFIER:id COLON type:tau SEMI
 						   MonoType [] types = new MonoType [r.getTypes().length + 1];
 						   types [0] = tau;
 						   System.arraycopy ( r.getTypes() , 0 , types , 1 , r.getTypes().length );
-						   RESULT = new RowType (m,types) ; :}
+						   RESULT = new RowType (m, types, idleft, rright) ; :}
 					;

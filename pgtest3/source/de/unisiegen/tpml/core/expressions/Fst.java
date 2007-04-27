@@ -23,6 +23,21 @@ public final class Fst extends Projection
 
 
   /**
+   * Allocates a new instance of the <code>fst</code> operator which is a
+   * special case of the projection that returns the first item of a pair.
+   * 
+   * @param pParserStartOffset TODO
+   * @param pParserEndOffset TODO
+   */
+  public Fst ( int pParserStartOffset , int pParserEndOffset )
+  {
+    this ( ) ;
+    this.parserStartOffset = pParserStartOffset ;
+    this.parserEndOffset = pParserEndOffset ;
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see Projection#clone()

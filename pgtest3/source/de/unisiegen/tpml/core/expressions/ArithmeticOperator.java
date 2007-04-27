@@ -16,55 +16,75 @@ public final class ArithmeticOperator extends BinaryOperator
   /**
    * Returns the arithmetic division operator.
    * 
+   * @param pParserStartOffset TODO
+   * @param pParserEndOffset TODO
    * @return a new instance of the div operator.
    */
-  public static final ArithmeticOperator newDiv ( )
+  public static final ArithmeticOperator newDiv ( int pParserStartOffset ,
+      int pParserEndOffset )
   {
-    return new ArithmeticOperator ( "/" , PRIO_DIV ) ; //$NON-NLS-1$
+    return new ArithmeticOperator (
+        "/" , PRIO_DIV , pParserStartOffset , pParserEndOffset ) ; //$NON-NLS-1$
   }
 
 
   /**
    * Returns the arithmetic minus operator.
    * 
+   * @param pParserStartOffset TODO
+   * @param pParserEndOffset TODO
    * @return a new instance of the minus operator.
    */
-  public static final ArithmeticOperator newMinus ( )
+  public static final ArithmeticOperator newMinus ( int pParserStartOffset ,
+      int pParserEndOffset )
   {
-    return new ArithmeticOperator ( "-" , PRIO_MINUS ) ; //$NON-NLS-1$
+    return new ArithmeticOperator (
+        "-" , PRIO_MINUS , pParserStartOffset , pParserEndOffset ) ; //$NON-NLS-1$
   }
 
 
   /**
    * Returns the arithmetic modulo operator.
    * 
+   * @param pParserStartOffset TODO
+   * @param pParserEndOffset TODO
    * @return a new instance of the mod operator.
    */
-  public static final ArithmeticOperator newMod ( )
+  public static final ArithmeticOperator newMod ( int pParserStartOffset ,
+      int pParserEndOffset )
   {
-    return new ArithmeticOperator ( "mod" , PRIO_MOD ) ; //$NON-NLS-1$
+    return new ArithmeticOperator (
+        "mod" , PRIO_MOD , pParserStartOffset , pParserEndOffset ) ; //$NON-NLS-1$
   }
 
 
   /**
    * Returns the arithmetic multiplication operator.
    * 
+   * @param pParserStartOffset TODO
+   * @param pParserEndOffset TODO
    * @return a new instance of the mult operator.
    */
-  public static final ArithmeticOperator newMult ( )
+  public static final ArithmeticOperator newMult ( int pParserStartOffset ,
+      int pParserEndOffset )
   {
-    return new ArithmeticOperator ( "*" , PRIO_MULT ) ; //$NON-NLS-1$
+    return new ArithmeticOperator (
+        "*" , PRIO_MULT , pParserStartOffset , pParserEndOffset ) ; //$NON-NLS-1$
   }
 
 
   /**
    * Returns the arithmetic plus operator.
    * 
+   * @param pParserStartOffset TODO
+   * @param pParserEndOffset TODO
    * @return a new instance of the plus operator.
    */
-  public static final ArithmeticOperator newPlus ( )
+  public static final ArithmeticOperator newPlus ( int pParserStartOffset ,
+      int pParserEndOffset )
   {
-    return new ArithmeticOperator ( "+" , PRIO_PLUS ) ; //$NON-NLS-1$
+    return new ArithmeticOperator (
+        "+" , PRIO_PLUS , pParserStartOffset , pParserEndOffset ) ; //$NON-NLS-1$
   }
 
 
@@ -81,6 +101,27 @@ public final class ArithmeticOperator extends BinaryOperator
   private ArithmeticOperator ( String pText , int pPrettyPriority )
   {
     super ( pText , pPrettyPriority ) ;
+  }
+
+
+  /**
+   * Allocates a new <code>ArithmeticOperator</code> with the given
+   * <code>text</code> and <code>prettyPriority</code> (for pretty printing
+   * in infix operation).
+   * 
+   * @param pText the string representation of the operator.
+   * @param pPrettyPriority the pretty print priority for infix pretty printing.
+   * @param pParserStartOffset TODO
+   * @param pParserEndOffset TODO
+   * @throws NullPointerException if <code>text</code> is <code>null</code>.
+   * @see BinaryOperator#BinaryOperator(String, int)
+   */
+  private ArithmeticOperator ( String pText , int pPrettyPriority ,
+      int pParserStartOffset , int pParserEndOffset )
+  {
+    this ( pText , pPrettyPriority ) ;
+    this.parserStartOffset = pParserStartOffset ;
+    this.parserEndOffset = pParserEndOffset ;
   }
 
 

@@ -366,8 +366,8 @@ public final class Identifier extends Value
       this.prettyStringBuilder.addIdentifier ( this.name ) ;
       if ( Debug.isUserName ( Debug.CHRISTIAN ) )
       {
-        // this.prettyStringBuilder.addText ( "|" + this.identity + "|"
-        // + this.identifierSet + "}" ) ;
+        // this.prettyStringBuilder.addText ( "|" + this.identity + "|" +
+        // this.set + "}" ) ;
       }
     }
     return this.prettyStringBuilder ;

@@ -105,7 +105,7 @@ seq_expr			::= expr:e
 						{: RESULT = e; :}
 						%prec BELOW_SEMI
 					|	expr:e1 SEMI seq_expr:e2
-						{: RESULT = new Sequence(e1, e2); :}
+						{: RESULT = new Sequence(e1, e2, e1left, e2right); :}
 					;
 					
 					
@@ -114,68 +114,71 @@ expr				::=	simple_expr:e
 				
 					/* Applications */
 					|	simple_expr:e simple_expr_list:l
-						{: for (int n = 0; n < l.length; ++n) {
-						     e = new Application(e, l[n]);
+						{: for (int n = 0; n < l.length; ++n) 
+						   {
+						     e = new Application(e, l[n],
+						       e.getParserStartOffset ( ) , 
+						       l[n].getParserEndOffset ( ) );
 						   }
 						   RESULT = e; :}
 
 					/* Infix Operations */
-					|	expr:e1 COLONEQUAL expr:e2
-						{: RESULT = new InfixOperation(new Assign(), e1, e2); :}
+					|	expr:e1 COLONEQUAL:op expr:e2
+						{: RESULT = new InfixOperation(new Assign(opleft,opright), e1, e2, e1left, e2right); :}
 
-					|	expr:e1 PLUS expr:e2
-						{: RESULT = new InfixOperation(ArithmeticOperator.newPlus(), e1, e2); :}
-					|	expr:e1 MINUS expr:e2
-						{: RESULT = new InfixOperation(ArithmeticOperator.newMinus(), e1, e2); :}
-					|	expr:e1 STAR expr:e2
-						{: RESULT = new InfixOperation(ArithmeticOperator.newMult(), e1, e2); :}
-					|	expr:e1 SLASH expr:e2
-						{: RESULT = new InfixOperation(ArithmeticOperator.newDiv(), e1, e2); :}
-					|	expr:e1 MOD expr:e2
-						{: RESULT = new InfixOperation(ArithmeticOperator.newMod(), e1, e2); :}
+					|	expr:e1 PLUS:op expr:e2
+						{: RESULT = new InfixOperation(ArithmeticOperator.newPlus(opleft, opright), e1, e2, e1left, e2right); :}
+					|	expr:e1 MINUS:op expr:e2
+						{: RESULT = new InfixOperation(ArithmeticOperator.newMinus(opleft, opright), e1, e2, e1left, e2right); :}
+					|	expr:e1 STAR:op expr:e2
+						{: RESULT = new InfixOperation(ArithmeticOperator.newMult(opleft, opright), e1, e2, e1left, e2right); :}
+					|	expr:e1 SLASH:op expr:e2
+						{: RESULT = new InfixOperation(ArithmeticOperator.newDiv(opleft, opright), e1, e2, e1left, e2right); :}
+					|	expr:e1 MOD:op expr:e2
+						{: RESULT = new InfixOperation(ArithmeticOperator.newMod(opleft, opright), e1, e2, e1left, e2right); :}
 
-					|	expr:e1 EQUAL expr:e2
-						{: RESULT = new InfixOperation(RelationalOperator.newEquals(), e1, e2); :}
-					|	expr:e1 LESS expr:e2
-						{: RESULT = new InfixOperation(RelationalOperator.newLowerThan(), e1, e2); :}
-					|	expr:e1 GREATER expr:e2
-						{: RESULT = new InfixOperation(RelationalOperator.newGreaterThan(), e1, e2); :}
-					|	expr:e1 LESSEQUAL expr:e2
-						{: RESULT = new InfixOperation(RelationalOperator.newLowerEqual(), e1, e2); :}
-					|	expr:e1 GREATEREQUAL expr:e2
-						{: RESULT = new InfixOperation(RelationalOperator.newGreaterEqual(), e1, e2); :}
+					|	expr:e1 EQUAL:op expr:e2
+						{: RESULT = new InfixOperation(RelationalOperator.newEquals(opleft, opright), e1, e2, e1left, e2right); :}
+					|	expr:e1 LESS:op expr:e2
+						{: RESULT = new InfixOperation(RelationalOperator.newLowerThan(opleft, opright), e1, e2, e1left, e2right); :}
+					|	expr:e1 GREATER:op expr:e2
+						{: RESULT = new InfixOperation(RelationalOperator.newGreaterThan(opleft, opright), e1, e2, e1left, e2right); :}
+					|	expr:e1 LESSEQUAL:op expr:e2
+						{: RESULT = new InfixOperation(RelationalOperator.newLowerEqual(opleft, opright), e1, e2, e1left, e2right); :}
+					|	expr:e1 GREATEREQUAL:op expr:e2
+						{: RESULT = new InfixOperation(RelationalOperator.newGreaterEqual(opleft, opright), e1, e2, e1left, e2right); :}
 
-					|	expr:e1 COLONCOLON expr:e2
-						{: RESULT = new InfixOperation(new BinaryCons(), e1, e2); :}
+					|	expr:e1 COLONCOLON:op expr:e2
+						{: RESULT = new InfixOperation(new BinaryCons(opleft,opright), e1, e2, e1left, e2right); :}
 
 					/* Logical operators */
 					|	expr:e1 AMPERAMPER expr:e2
-						{: RESULT = new And(e1, e2); :}
+						{: RESULT = new And(e1, e2,e1left,e2right); :}
 					|	expr:e1 BARBAR expr:e2
-						{: RESULT = new Or(e1, e2); :}
+						{: RESULT = new Or(e1, e2, e1left, e2right); :}
 
 					/* Conditions */
-					|	IF seq_expr:e0 THEN seq_expr:e1 ELSE seq_expr:e2
-						{: RESULT = new Condition(e0, e1, e2); :}
-					|	IF seq_expr:e0 THEN seq_expr:e1
-						{: RESULT = new Condition1(e0, e1); :}
+					|	IF:i expr:e0 THEN expr:e1 ELSE expr:e2
+						{: RESULT = new Condition(e0, e1, e2, ileft, e2right); :}
+					|	IF:i seq_expr:e0 THEN seq_expr:e1
+						{: RESULT = new Condition1(e0, e1, ileft, e1right); :}
 
 					/* Lambda Abstraction */
-					|	LAMBDA IDENTIFIER:id DOT seq_expr:e
-						{: RESULT = new Lambda(new Identifier(id,idleft,idright), null, e); :}
-					|	LAMBDA IDENTIFIER:id COLON type:tau DOT seq_expr:e
-						{: RESULT = new Lambda(new Identifier(id,idleft,idright), tau, e); :}
-					|	LAMBDA LPAREN id_comma_list:il RPAREN DOT seq_expr:e
-						{: RESULT = new MultiLambda(il, null, e); :}
-					|	LAMBDA LPAREN id_comma_list:il RPAREN COLON type:tau DOT seq_expr:e
-						{: RESULT = new MultiLambda(il, tau, e); :}
+					|	LAMBDA:l IDENTIFIER:id DOT seq_expr:e
+						{: RESULT = new Lambda(new Identifier(id,idleft,idright), null, e, lleft, eright); :}
+					|	LAMBDA:l IDENTIFIER:id COLON type:tau DOT seq_expr:e
+						{: RESULT = new Lambda(new Identifier(id,idleft,idright), tau, e, lleft, eright); :}
+					|	LAMBDA:l LPAREN id_comma_list:il RPAREN DOT seq_expr:e
+						{: RESULT = new MultiLambda(il, null, e, lleft, eright); :}
+					|	LAMBDA:l LPAREN id_comma_list:il RPAREN COLON type:tau DOT seq_expr:e
+						{: RESULT = new MultiLambda(il, tau, e, lleft, eright); :}
 
 					/* Let */
-					|	LET IDENTIFIER:id EQUAL expr:e1 IN expr:e2
-						{: RESULT = new Let(new Identifier(id,idleft,idright), null, e1, e2); :}
-					|	LET IDENTIFIER:id COLON type:tau EQUAL expr:e1 IN expr:e2
-						{: RESULT = new Let(new Identifier(id,idleft,idright), tau, e1, e2); :}
-					|	LET IDENTIFIER:id id_type_list:itl EQUAL expr:e1 IN expr:e2
+					|	LET:l IDENTIFIER:id EQUAL expr:e1 IN expr:e2
+						{: RESULT = new Let(new Identifier(id,idleft,idright), null, e1, e2, lleft, e2right); :}
+					|	LET:l IDENTIFIER:id COLON type:tau EQUAL expr:e1 IN expr:e2
+						{: RESULT = new Let(new Identifier(id,idleft,idright), tau, e1, e2, lleft, e2right); :}
+					|	LET:l IDENTIFIER:id id_type_list:itl EQUAL expr:e1 IN expr:e2
 						{: Identifier[] identifiers = new Identifier[itl.length + 1];
 						   MonoType[] types = new MonoType[itl.length + 1];
 						   for (int n = 0; n < itl.length; ++n) {
@@ -183,8 +186,8 @@ expr				::=	simple_expr:e
 						     types[n + 1] = itl[n].tau;
 						   }
 						   identifiers[0] = new Identifier(id,idleft,idright);
-						   RESULT = new CurriedLet(identifiers, types, e1, e2); :}
-					|	LET IDENTIFIER:id id_type_list:itl COLON type:tau EQUAL expr:e1 IN expr:e2
+						   RESULT = new CurriedLet(identifiers, types, e1, e2, lleft, e2right); :}
+					|	LET:l IDENTIFIER:id id_type_list:itl COLON type:tau EQUAL expr:e1 IN expr:e2
 						{: Identifier[] identifiers = new Identifier[itl.length + 1];
 						   MonoType[] types = new MonoType[itl.length + 1];
 						   for (int n = 0; n < itl.length; ++n) {
@@ -193,22 +196,22 @@ expr				::=	simple_expr:e
 						   }
 						   identifiers[0] = new Identifier(id,idleft,idright);
 						   types[0] = tau;
-						   RESULT = new CurriedLet(identifiers, types, e1, e2); :}
-					|	LET LPAREN id_comma_list:il RPAREN EQUAL seq_expr:e1 IN seq_expr:e2
-						{: RESULT = new MultiLet(il, null, e1, e2); :}
-					|	LET LPAREN id_comma_list:il RPAREN COLON type:tau EQUAL seq_expr:e1 IN seq_expr:e2
-						{: RESULT = new MultiLet(il, tau, e1, e2); :}
+						   RESULT = new CurriedLet(identifiers, types, e1, e2, lleft, e2right); :}
+					|	LET:l LPAREN id_comma_list:il RPAREN EQUAL seq_expr:e1 IN seq_expr:e2
+						{: RESULT = new MultiLet(il, null, e1, e2, lleft, e2right); :}
+					|	LET:l LPAREN id_comma_list:il RPAREN COLON type:tau EQUAL seq_expr:e1 IN seq_expr:e2
+						{: RESULT = new MultiLet(il, tau, e1, e2, lleft, e2right); :}
 
 					/* Recursion */				
-					|	REC IDENTIFIER:id DOT seq_expr:e
-						{: RESULT = new Recursion(new Identifier(id,idleft,idright), null, e); :}
-					|	REC IDENTIFIER:id COLON type:tau DOT seq_expr:e
-						{: RESULT = new Recursion(new Identifier(id,idleft,idright), tau, e); :}
-					|	LET REC IDENTIFIER:id EQUAL expr:e1 IN expr:e2
-						{: RESULT = new LetRec(new Identifier(id,idleft,idright), null, e1, e2); :}
-					|	LET REC IDENTIFIER:id COLON type:tau EQUAL seq_expr:e1 IN seq_expr:e2
-						{: RESULT = new LetRec(new Identifier(id,idleft,idright), tau, e1, e2); :}
-					|	LET REC IDENTIFIER:id id_type_list:itl EQUAL expr:e1 IN expr:e2
+					|	REC:r IDENTIFIER:id DOT seq_expr:e
+						{: RESULT = new Recursion(new Identifier(id,idleft,idright), null, e, rleft, eright); :}
+					|	REC:r IDENTIFIER:id COLON type:tau DOT seq_expr:e
+						{: RESULT = new Recursion(new Identifier(id,idleft,idright), tau, e, rleft, eright); :}
+					|	LET:l REC IDENTIFIER:id EQUAL expr:e1 IN expr:e2
+						{: RESULT = new LetRec(new Identifier(id,idleft,idright), null, e1, e2, lleft, e2right); :}
+					|	LET:l REC IDENTIFIER:id COLON type:tau EQUAL seq_expr:e1 IN seq_expr:e2
+						{: RESULT = new LetRec(new Identifier(id,idleft,idright), tau, e1, e2, lleft, e2right); :}
+					|	LET:l REC IDENTIFIER:id id_type_list:itl EQUAL expr:e1 IN expr:e2
 						{: Identifier[] identifiers = new Identifier[itl.length + 1];
 						   MonoType[] types = new MonoType[itl.length + 1];
 						   for (int n = 0; n < itl.length; ++n) {
@@ -216,8 +219,8 @@ expr				::=	simple_expr:e
 						     types[n + 1] = itl[n].tau;
 						   }
 						   identifiers[0] = new Identifier(id,idleft,idright);
-						   RESULT = new CurriedLetRec(identifiers, types, e1, e2); :}
-					|	LET REC IDENTIFIER:id id_type_list:itl COLON type:tau EQUAL expr:e1 IN expr:e2
+						   RESULT = new CurriedLetRec(identifiers, types, e1, e2, lleft, e2right); :}
+					|	LET:l REC IDENTIFIER:id id_type_list:itl COLON type:tau EQUAL expr:e1 IN expr:e2
 						{: Identifier[] identifiers = new Identifier[itl.length + 1];
 						   MonoType[] types = new MonoType[itl.length + 1];
 						   for (int n = 0; n < itl.length; ++n) {
@@ -226,11 +229,11 @@ expr				::=	simple_expr:e
 						   }
 						   identifiers[0] = new Identifier(id,idleft,idright);
 						   types[0] = tau;
-						   RESULT = new CurriedLetRec(identifiers, types, e1, e2); :}
+						   RESULT = new CurriedLetRec(identifiers, types, e1, e2, lleft, e2right); :}
 						   
 					/* Loops */
-					|	WHILE seq_expr:e1 DO seq_expr:e2
-						{: RESULT = new While(e1, e2); :}
+					|	WHILE:w seq_expr:e1 DO seq_expr:e2
+						{: RESULT = new While(e1, e2, wleft, e2right); :}
 					;
 
 
@@ -238,20 +241,14 @@ simple_expr			::=	constant:c
 						{: RESULT = c; :}
 					|	IDENTIFIER:id
 						{: RESULT = new Identifier(id,idleft,idright); :}
-
-					/* Parenthized operators/expressions */
 					|	LPAREN operator:o RPAREN
 						{: RESULT = o; :}
 					|	LPAREN seq_expr:e RPAREN
 						{: RESULT = e; :}
-
-					/* Tuples */
-					|	LPAREN expr_comma_list:el RPAREN
-						{: RESULT = new Tuple(el); :}
-						
-					/* Lists */
-					|	LBRACKET expr_semi_list:el RBRACKET
-						{: RESULT = new List(el); :}
+					|	LPAREN:l expr_comma_list:el RPAREN:r
+						{: RESULT = new Tuple(el, lleft, rright); :}
+					|	LBRACKET:l expr_semi_list:el RBRACKET:r
+						{: RESULT = new List(el, lleft, rright); :}
 					;
 
 
@@ -265,48 +262,63 @@ simple_expr_list	::=	simple_expr:e
 					;
 
 
-constant			::=	PARENPAREN		{: RESULT = new UnitConstant(); :}
-					|	BRACKETBRACKET	{: RESULT = new EmptyList(); :}
-					|	TRUE			{: RESULT = new BooleanConstant(true); :}
-					|	FALSE			{: RESULT = new BooleanConstant(false); :}
-					|	NUMBER:n		{: RESULT = new IntegerConstant(n.intValue()); :}
-					
-					/* Logical operators */
-					|	NOT				{: RESULT = new Not(); :}
-
-					/* Tuple operators */
-					|	PROJECTION:proj	{: RESULT = new Projection(proj[0], proj[1]); :}
-					|	FST				{: RESULT = new Fst(); :}
-					|	SND				{: RESULT = new Snd(); :}
-					
-					/* List operators */
-					|	CONS			{: RESULT = new UnaryCons(); :}
-					|	IS_EMPTY		{: RESULT = new IsEmpty(); :}
-					|	HD				{: RESULT = new Hd(); :}
-					|	TL				{: RESULT = new Tl(); :}
-					
-					/* Reference operators */
-					|	EXCLAMATION		{: RESULT = new Deref(); :}
-					|	REF				{: RESULT = new Ref(); :}
+constant			::=	PARENPAREN:c
+						{: RESULT = new UnitConstant(cleft, cright); :}
+					|	TRUE:c
+						{: RESULT = new BooleanConstant(true, cleft, cright); :}
+					|	FALSE:c
+						{: RESULT = new BooleanConstant(false, cleft, cright); :}
+					|	NUMBER:n
+						{: RESULT = new IntegerConstant(n.intValue(), nleft, nright); :}
+					|	NOT:c
+						{: RESULT = new Not(cleft, cright); :}
+					|	BRACKETBRACKET:c
+						{: RESULT = new EmptyList(cleft, cright); :}
+					|	PROJECTION:proj
+						{: RESULT = new Projection(proj[0], proj[1], projleft, projright); :}
+					|	FST:c
+						{: RESULT = new Fst(cleft, cright); :}
+					|	SND:c
+						{: RESULT = new Snd(cleft, cright); :}
+					|	CONS:c
+						{: RESULT = new UnaryCons(cleft, cright); :}
+					|	IS_EMPTY:c
+						{: RESULT = new IsEmpty(cleft, cright); :}
+					|	HD:c
+						{: RESULT = new Hd(cleft, cright); :}
+					|	TL:c
+						{: RESULT = new Tl(cleft, cright); :}
+					|	EXCLAMATION:e
+						{: RESULT = new Deref(eleft, eright); :}
+					|	REF:c
+						{: RESULT = new Ref(cleft, cright); :}
 					;
 
 
-operator			::=	PLUS			{: RESULT = ArithmeticOperator.newPlus(); :}
-					|	MINUS			{: RESULT = ArithmeticOperator.newMinus(); :}
-					|	STAR			{: RESULT = ArithmeticOperator.newMult(); :}
-					|	SLASH			{: RESULT = ArithmeticOperator.newDiv(); :}
-					|	MOD				{: RESULT = ArithmeticOperator.newMod(); :}
-					|	EQUAL			{: RESULT = RelationalOperator.newEquals(); :}
-					|	LESS			{: RESULT = RelationalOperator.newLowerThan(); :}
-					|	GREATER			{: RESULT = RelationalOperator.newGreaterThan(); :}
-					|	LESSEQUAL		{: RESULT = RelationalOperator.newLowerEqual(); :}
-					|	GREATEREQUAL	{: RESULT = RelationalOperator.newGreaterEqual(); :}
-					
-					/* List operators */
-					|	COLONCOLON		{: RESULT = new BinaryCons(); :}
-					
-					/* Reference operators */
-					|	COLONEQUAL		{: RESULT = new Assign(); :}
+operator			::=	PLUS:op
+						{: RESULT = ArithmeticOperator.newPlus(opleft, opright); :}
+					|	MINUS:op
+						{: RESULT = ArithmeticOperator.newMinus(opleft, opright); :}
+					|	STAR:op
+						{: RESULT = ArithmeticOperator.newMult(opleft, opright); :}
+					|	SLASH:op
+						{: RESULT = ArithmeticOperator.newDiv(opleft, opright); :}
+					|	MOD:op
+						{: RESULT = ArithmeticOperator.newMod(opleft, opright); :}
+					|	EQUAL:op
+						{: RESULT = RelationalOperator.newEquals(opleft, opright); :}
+					|	LESS:op
+						{: RESULT = RelationalOperator.newLowerThan(opleft, opright); :}
+					|	GREATER:op
+						{: RESULT = RelationalOperator.newGreaterThan(opleft, opright); :}
+					|	LESSEQUAL:op
+						{: RESULT = RelationalOperator.newLowerEqual(opleft, opright); :}
+					|	GREATEREQUAL:op
+						{: RESULT = RelationalOperator.newGreaterEqual(opleft, opright); :}	
+					|	COLONCOLON:op
+						{: RESULT = new BinaryCons(opleft, opright); :}
+					|	COLONEQUAL:op
+						{: RESULT = new Assign(opleft, opright); :}
 					;
 
 
@@ -359,20 +371,29 @@ id_comma_list		::=	id_comma_list:l COMMA IDENTIFIER:id
  *********/
 
 
-type				::=	simple_type:t			{: RESULT = t; :}
-					|	type:tau REF			{: RESULT = new RefType(tau); :}
-					|	type:t1 ARROW type:t2	{: RESULT = new ArrowType(t1, t2); :}
+type				::=	simple_type:t
+						{: RESULT = t; :}
+					|	type:tau REF:r
+						{: RESULT = new RefType(tau, tauleft, rright); :}
+					|	type:t1 ARROW type:t2
+						{: RESULT = new ArrowType(t1, t2, t1left, t2right); :}
 					|	type_star_list:tl
-						{: RESULT = new TupleType(tl); :}
-					|	type:t LIST				{: RESULT = new ListType(t); :}
+						{: RESULT = new TupleType(tl, tlleft, tlright); :}
+					|	type:t LIST:l
+						{: RESULT = new ListType(t, tleft, lright); :}
 					;
 
 
-simple_type			::=	LPAREN type:t RPAREN	{: RESULT = t; :}
-					|	BOOL					{: RESULT = new BooleanType(); :}
-					|	INT						{: RESULT = new IntegerType(); :}
-					|	UNIT					{: RESULT = new UnitType(); :}
-					|	TYPEVARIABLE:tvar		{: RESULT = new TypeVariable(0, tvar); :}
+simple_type			::=	LPAREN type:t RPAREN
+						{: RESULT = t; :}
+					|	BOOL:b
+						{: RESULT = new BooleanType(bleft, bright); :}
+					|	INT:i
+						{: RESULT = new IntegerType(ileft, iright); :}
+					|	UNIT:u
+						{: RESULT = new UnitType(uleft, uright); :}
+					|	TYPEVARIABLE:tvar
+						{: RESULT = new TypeVariable(0, tvar, tvarleft, tvarright); :}
 					;
 
 
@@ -383,4 +404,3 @@ type_star_list		::= type_star_list:tl STAR type:t
 					|	type:t1 STAR type:t2
 						{: RESULT = new MonoType[] { t1, t2 }; :}
 					;
-					

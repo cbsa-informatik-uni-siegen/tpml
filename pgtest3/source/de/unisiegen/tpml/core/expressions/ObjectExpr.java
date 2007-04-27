@@ -123,6 +123,24 @@ public final class ObjectExpr extends Expression implements BoundIdentifiers ,
 
 
   /**
+   * TODO
+   * 
+   * @param pIdentifier TODO
+   * @param pTau TODO
+   * @param pExpression TODO
+   * @param pParserStartOffset TODO
+   * @param pParserEndOffset TODO
+   */
+  public ObjectExpr ( Identifier pIdentifier , MonoType pTau ,
+      Expression pExpression , int pParserStartOffset , int pParserEndOffset )
+  {
+    this ( pIdentifier , pTau , pExpression ) ;
+    this.parserStartOffset = pParserStartOffset ;
+    this.parserEndOffset = pParserEndOffset ;
+  }
+
+
+  /**
    * {@inheritDoc}
    */
   @ Override

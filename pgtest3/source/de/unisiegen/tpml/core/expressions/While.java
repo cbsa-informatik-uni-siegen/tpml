@@ -68,6 +68,26 @@ public final class While extends Expression implements ChildrenExpressions
 
 
   /**
+   * Allocates a new <code>While</code> instance with the specified
+   * <code>e1</code> and <code>e2</code>.
+   * 
+   * @param pExpression1 the conditional part.
+   * @param pExpression2 the repeated statement.
+   * @param pParserStartOffset TODO
+   * @param pParserEndOffset TODO
+   * @throws NullPointerException if <code>e1</code> or <code>e2</code> is
+   *           <code>null</code>.
+   */
+  public While ( Expression pExpression1 , Expression pExpression2 ,
+      int pParserStartOffset , int pParserEndOffset )
+  {
+    this ( pExpression1 , pExpression2 ) ;
+    this.parserStartOffset = pParserStartOffset ;
+    this.parserEndOffset = pParserEndOffset ;
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see Expression#clone()

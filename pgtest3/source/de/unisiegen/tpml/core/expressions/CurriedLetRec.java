@@ -54,6 +54,38 @@ public final class CurriedLetRec extends CurriedLet implements
 
 
   /**
+   * Allocates a new <code>CurriedLetRec</code> instance.
+   * 
+   * @param pIdentifiers an array with atleast two identifiers, where the first
+   *          identifier is the name to use for the function and the remaining
+   *          identifiers specify the parameters for the function.
+   * @param pTypes the types for the <code>identifiers</code>, see
+   *          {@link CurriedLet#getTypes()} for an extensive description.
+   * @param pExpression1 the function body.
+   * @param pExpression2 the second expression.
+   * @param pParserStartOffset TODO
+   * @param pParserEndOffset TODO
+   * @throws IllegalArgumentException if the <code>identifiers</code> array
+   *           contains less than two identifiers, or the arity of
+   *           <code>identifiers</code> and <code>types</code> does not
+   *           match.
+   * @throws NullPointerException if <code>identifiers</code>,
+   *           <code>types</code>, <code>e1</code> or <code>e2</code> is
+   *           <code>null</code>.
+   * @see CurriedLet#CurriedLet(Identifier[], MonoType[], Expression,
+   *      Expression)
+   */
+  public CurriedLetRec ( Identifier [ ] pIdentifiers , MonoType [ ] pTypes ,
+      Expression pExpression1 , Expression pExpression2 ,
+      int pParserStartOffset , int pParserEndOffset )
+  {
+    this ( pIdentifiers , pTypes , pExpression1 , pExpression2 ) ;
+    this.parserStartOffset = pParserStartOffset ;
+    this.parserEndOffset = pParserEndOffset ;
+  }
+
+
+  /**
    * TODO
    */
   @ Override
@@ -73,12 +105,13 @@ public final class CurriedLetRec extends CurriedLet implements
       }
     }
     negativeIdentifiers.add ( this.identifiers [ 0 ] ) ;
-    LanguageParserMultiException.throwExceptionDisjunction ( negativeIdentifiers ) ;
+    LanguageParserMultiException
+        .throwExceptionDisjunction ( negativeIdentifiers ) ;
     // Identifier 1-n
     allIdentifiers = this.expressions [ 0 ].getIdentifiersAll ( ) ;
-    negativeIdentifiers.clear ( ) ;
     for ( int i = 1 ; i < this.identifiers.length ; i ++ )
     {
+      negativeIdentifiers.clear ( ) ;
       for ( Identifier allId : allIdentifiers )
       {
         if ( ( this.identifiers [ i ].equals ( allId ) )

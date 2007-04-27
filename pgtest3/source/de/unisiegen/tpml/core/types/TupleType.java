@@ -61,6 +61,26 @@ public final class TupleType extends MonoType implements DefaultTypes
 
 
   /**
+   * Allocates a new <code>TupleType</code> with the specified
+   * <code>types</code>.
+   * 
+   * @param pTypes the monomorphic types for the tuple elements.
+   * @param pParserStartOffset TODO
+   * @param pParserEndOffset TODO
+   * @throws IllegalArgumentException if <code>types</code> contains less than
+   *           two elements.
+   * @throws NullPointerException if <code>pTypes</code> is <code>null</code>.
+   */
+  public TupleType ( MonoType [ ] pTypes , int pParserStartOffset ,
+      int pParserEndOffset )
+  {
+    this ( pTypes ) ;
+    this.parserStartOffset = pParserStartOffset ;
+    this.parserEndOffset = pParserEndOffset ;
+  }
+
+
+  /**
    * Indeces of the child {@link Type}s.
    */
   private int [ ] indicesType ;

@@ -63,6 +63,26 @@ public final class ListType extends MonoType implements DefaultTypes
 
 
   /**
+   * Allocates a new <code>ListType</code> for the monomorphic type
+   * <code>tau</code>, which represents the base type of the elements in the
+   * list. I.e. if <code>tau</code> is <code>int</code>, the list type is
+   * <code>int list</code>.
+   * 
+   * @param pTau the type for the list elements.
+   * @param pParserStartOffset TODO
+   * @param pParserEndOffset TODO
+   * @throws NullPointerException if <code>pTau</code> is <code>null</code>.
+   */
+  public ListType ( MonoType pTau , int pParserStartOffset ,
+      int pParserEndOffset )
+  {
+    this ( pTau ) ;
+    this.parserStartOffset = pParserStartOffset ;
+    this.parserEndOffset = pParserEndOffset ;
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see Type#clone()

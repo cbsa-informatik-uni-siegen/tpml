@@ -54,6 +54,22 @@ public final class ObjectType extends MonoType implements DefaultTypes
 
 
   /**
+   * TODO
+   * 
+   * @param pPhi TODO
+   * @param pParserStartOffset TODO
+   * @param pParserEndOffset TODO
+   */
+  public ObjectType ( MonoType pPhi , int pParserStartOffset ,
+      int pParserEndOffset )
+  {
+    this ( pPhi ) ;
+    this.parserStartOffset = pParserStartOffset ;
+    this.parserEndOffset = pParserEndOffset ;
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see Type#clone()

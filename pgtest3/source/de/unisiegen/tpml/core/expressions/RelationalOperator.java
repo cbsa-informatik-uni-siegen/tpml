@@ -17,55 +17,72 @@ public final class RelationalOperator extends BinaryOperator
   /**
    * Returns the equals operator.
    * 
+   * @param pParserStartOffset TODO
+   * @param pParserEndOffset TODO
    * @return the equals operator.
    */
-  public static final RelationalOperator newEquals ( )
+  public static final RelationalOperator newEquals ( int pParserStartOffset ,
+      int pParserEndOffset )
   {
-    return new RelationalOperator ( "=" ) ; //$NON-NLS-1$
+    return new RelationalOperator ( "=" , pParserStartOffset , pParserEndOffset ) ; //$NON-NLS-1$
   }
 
 
   /**
    * Returns the greater-equal operator.
    * 
+   * @param pParserStartOffset TODO
+   * @param pParserEndOffset TODO
    * @return the greater-equal operator.
    */
-  public static final RelationalOperator newGreaterEqual ( )
+  public static final RelationalOperator newGreaterEqual (
+      int pParserStartOffset , int pParserEndOffset )
   {
-    return new RelationalOperator ( ">=" ) ; //$NON-NLS-1$
+    return new RelationalOperator (
+        ">=" , pParserStartOffset , pParserEndOffset ) ; //$NON-NLS-1$
   }
 
 
   /**
    * Returns the greater-than operator.
    * 
+   * @param pParserStartOffset TODO
+   * @param pParserEndOffset TODO
    * @return the greater-than operator.
    */
-  public static final RelationalOperator newGreaterThan ( )
+  public static final RelationalOperator newGreaterThan (
+      int pParserStartOffset , int pParserEndOffset )
   {
-    return new RelationalOperator ( ">" ) ; //$NON-NLS-1$
+    return new RelationalOperator ( ">" , pParserStartOffset , pParserEndOffset ) ; //$NON-NLS-1$
   }
 
 
   /**
    * Returns the lower-equal operator.
    * 
+   * @param pParserStartOffset TODO
+   * @param pParserEndOffset TODO
    * @return the lower-equal operator.
    */
-  public static final RelationalOperator newLowerEqual ( )
+  public static final RelationalOperator newLowerEqual (
+      int pParserStartOffset , int pParserEndOffset )
   {
-    return new RelationalOperator ( "<=" ) ; //$NON-NLS-1$
+    return new RelationalOperator (
+        "<=" , pParserStartOffset , pParserEndOffset ) ; //$NON-NLS-1$
   }
 
 
   /**
    * Returns the lower-than operator.
    * 
+   * @param pParserStartOffset TODO
+   * @param pParserEndOffset TODO
    * @return the lower-than operator.
    */
-  public static final RelationalOperator newLowerThan ( )
+  public static final RelationalOperator newLowerThan ( int pParserStartOffset ,
+      int pParserEndOffset )
   {
-    return new RelationalOperator ( "<" ) ; //$NON-NLS-1$
+    return new RelationalOperator ( "<" , pParserStartOffset , pParserEndOffset ) ; //$NON-NLS-1$
   }
 
 
@@ -79,6 +96,24 @@ public final class RelationalOperator extends BinaryOperator
   private RelationalOperator ( String pText )
   {
     super ( pText , PRIO_RELATIONAL_OPERATOR ) ;
+  }
+
+
+  /**
+   * Allocates a new <code>RelationalOperator</code> with the specified string
+   * representation <code>text</code>.
+   * 
+   * @param pText the string representation.
+   * @param pParserStartOffset TODO
+   * @param pParserEndOffset TODO
+   * @throws NullPointerException if <code>text</code> is <code>null</code>.
+   */
+  private RelationalOperator ( String pText , int pParserStartOffset ,
+      int pParserEndOffset )
+  {
+    super ( pText , PRIO_RELATIONAL_OPERATOR ) ;
+    this.parserStartOffset = pParserStartOffset ;
+    this.parserEndOffset = pParserEndOffset ;
   }
 
 

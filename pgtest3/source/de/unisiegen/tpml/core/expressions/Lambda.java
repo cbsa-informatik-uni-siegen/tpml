@@ -125,6 +125,27 @@ public final class Lambda extends Value implements BoundIdentifiers ,
 
 
   /**
+   * Allocates a new lambda abstraction with the specified identifier
+   * <code>id</code> and the given body <code>e</code>.
+   * 
+   * @param pIdentifier the identifier of the lambda parameter.
+   * @param pTau the type for the parameter or <code>null</code>.
+   * @param pExpression the body.
+   * @param pParserStartOffset TODO
+   * @param pParserEndOffset TODO
+   * @throws NullPointerException if either <code>id</code> or <code>e</code>
+   *           is <code>null</code>.
+   */
+  public Lambda ( Identifier pIdentifier , MonoType pTau ,
+      Expression pExpression , int pParserStartOffset , int pParserEndOffset )
+  {
+    this ( pIdentifier , pTau , pExpression ) ;
+    this.parserStartOffset = pParserStartOffset ;
+    this.parserEndOffset = pParserEndOffset ;
+  }
+
+
+  /**
    * TODO
    */
   public void checkDisjunction ( )
@@ -141,7 +162,8 @@ public final class Lambda extends Value implements BoundIdentifiers ,
       }
     }
     negativeIdentifiers.add ( this.identifiers [ 0 ] ) ;
-    LanguageParserMultiException.throwExceptionDisjunction ( negativeIdentifiers ) ;
+    LanguageParserMultiException
+        .throwExceptionDisjunction ( negativeIdentifiers ) ;
   }
 
 

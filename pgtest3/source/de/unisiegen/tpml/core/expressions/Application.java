@@ -67,6 +67,25 @@ public final class Application extends Expression implements
 
 
   /**
+   * Allocates a new application of <code>e1</code> to <code>e2</code>.
+   * 
+   * @param pExpression1 the first expression (the operation).
+   * @param pExpression2 the second expression (the operand).
+   * @param pParserStartOffset TODO
+   * @param pParserEndOffset TODO
+   * @throws NullPointerException if <code>e1</code> or <code>e2</code> is
+   *           <code>null</code>.
+   */
+  public Application ( Expression pExpression1 , Expression pExpression2 ,
+      int pParserStartOffset , int pParserEndOffset )
+  {
+    this ( pExpression1 , pExpression2 ) ;
+    this.parserStartOffset = pParserStartOffset ;
+    this.parserEndOffset = pParserEndOffset ;
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see Expression#clone()

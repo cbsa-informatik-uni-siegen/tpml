@@ -57,33 +57,41 @@ precedence right	ARROW;
  *********/
 
 
-type				::=	simple_type:t			{: RESULT = t; :}
-					|	type:t1 ARROW type:t2	{: RESULT = new ArrowType(t1, t2); :}
+type				::=	simple_type:t
+						{: RESULT = t; :}
+					|	type:t1 ARROW type:t2
+						{: RESULT = new ArrowType(t1, t2, t1left, t2right); :}
 					;
 
-simple_type			::=	LPAREN type:t RPAREN	{: RESULT = t; :}
-					|	BOOL					{: RESULT = new BooleanType(); :}
-					|	INT						{: RESULT = new IntegerType(); :}
-					|	UNIT					{: RESULT = new UnitType(); :}
-					|	TYPEVARIABLE:tvar		{: RESULT = new TypeVariable(0, tvar); :}
-					|	object_type:t			{: RESULT = t; :}
+simple_type			::=	LPAREN:l type:t RPAREN:r
+						{: RESULT = t; :}
+					|	BOOL:b
+						{: RESULT = new BooleanType(bleft, bright); :}
+					|	INT:i
+						{: RESULT = new IntegerType(ileft, iright); :}
+					|	UNIT:u
+						{: RESULT = new UnitType(uleft, uright); :}
+					|	TYPEVARIABLE:tvar
+						{: RESULT = new TypeVariable(0, tvar, tvarleft, tvarright); :}
+					|	object_type:t
+						{: RESULT = t; :}
 					;
 
-object_type			::= LESS row_type:r GREATER
+object_type			::= LESS:l row_type:r GREATER:g
 						{: Duplicated.check(r);
-						   RESULT = new ObjectType ( r ); :}
-					|	LESS GREATER
+						   RESULT = new ObjectType ( r, lleft, gright); :}
+					|	LESS:l GREATER:g
 						{: Identifier [] m = new Identifier [0];
 						   MonoType [] types = new MonoType [0];
-						   RESULT = new ObjectType ( new RowType (m,types) ); :}
+						   RESULT = new ObjectType ( new RowType (m, types), lleft, gright); :}
 					;
 
-row_type			::= IDENTIFIER:id COLON type:tau SEMI
+row_type			::= IDENTIFIER:id COLON type:tau SEMI:s
 						{: Identifier [] m = new Identifier [1];
 						   m [0] = new Identifier (id,idleft,idright);
 						   MonoType [] types = new MonoType [1];
 						   types [0] = tau;
-						   RESULT = new RowType (m,types) ; :}
+						   RESULT = new RowType (m, types, idleft, sright) ; :}
 					|	IDENTIFIER:id COLON type:tau SEMI row_type:r
 						{: Identifier [] m = new Identifier [r.getIdentifiers().length + 1];
 						   m [0] = new Identifier (id,idleft,idright);
@@ -91,5 +99,5 @@ row_type			::= IDENTIFIER:id COLON type:tau SEMI
 						   MonoType [] types = new MonoType [r.getTypes().length + 1];
 						   types [0] = tau;
 						   System.arraycopy ( r.getTypes() , 0 , types , 1 , r.getTypes().length );
-						   RESULT = new RowType (m,types) ; :}
+						   RESULT = new RowType (m, types, idleft, rright) ; :}
 					;

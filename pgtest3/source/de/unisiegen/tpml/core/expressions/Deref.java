@@ -24,6 +24,20 @@ public final class Deref extends UnaryOperator
 
 
   /**
+   * Allocates a new <code>Deref</code> instance.
+   * 
+   * @param pParserStartOffset TODO
+   * @param pParserEndOffset TODO
+   */
+  public Deref ( int pParserStartOffset , int pParserEndOffset )
+  {
+    this ( ) ;
+    this.parserStartOffset = pParserStartOffset ;
+    this.parserEndOffset = pParserEndOffset ;
+  }
+
+
+  /**
    * {@inheritDoc} This method always throws
    * {@link UnsupportedOperationException} to indicate that it should not be
    * called. Instead the <code>!</code> operator requires special handling in

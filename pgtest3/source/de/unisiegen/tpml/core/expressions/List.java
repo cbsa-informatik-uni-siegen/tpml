@@ -144,6 +144,26 @@ public final class List extends Expression implements ChildrenExpressions
 
 
   /**
+   * Allocates a new <code>List</code> instance with the specified
+   * <code>expressions</code>.
+   * 
+   * @param pExpressions a non empty array of {@link Expression}s.
+   * @param pParserStartOffset TODO
+   * @param pParserEndOffset TODO
+   * @throws IllegalArgumentException if <code>expressions</code> is empty.
+   * @throws NullPointerException if <code>expressions</code> is
+   *           <code>null</code>.
+   */
+  public List ( Expression [ ] pExpressions , int pParserStartOffset ,
+      int pParserEndOffset )
+  {
+    this ( pExpressions ) ;
+    this.parserStartOffset = pParserStartOffset ;
+    this.parserEndOffset = pParserEndOffset ;
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see Expression#clone()

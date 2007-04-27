@@ -64,6 +64,24 @@ public final class RefType extends MonoType implements DefaultTypes
 
 
   /**
+   * Allocates a new <code>RefType</code> for the monomorphic type
+   * <code>tau</code>. I.e. if <code>tau</code> is <code>bool</code>,
+   * the reference type will be <code>bool ref</code>.
+   * 
+   * @param pTau the monomorphic base type.
+   * @param pParserStartOffset TODO
+   * @param pParserEndOffset TODO
+   * @throws NullPointerException if <code>tau</code> is <code>null</code>.
+   */
+  public RefType ( MonoType pTau , int pParserStartOffset , int pParserEndOffset )
+  {
+    this ( pTau ) ;
+    this.parserStartOffset = pParserStartOffset ;
+    this.parserEndOffset = pParserEndOffset ;
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see Type#clone()

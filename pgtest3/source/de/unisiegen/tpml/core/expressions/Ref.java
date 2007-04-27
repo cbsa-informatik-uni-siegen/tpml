@@ -24,6 +24,20 @@ public final class Ref extends UnaryOperator
 
 
   /**
+   * Allocates a new <code>Ref</code> instance.
+   * 
+   * @param pParserStartOffset TODO
+   * @param pParserEndOffset TODO
+   */
+  public Ref ( int pParserStartOffset , int pParserEndOffset )
+  {
+    this ( ) ;
+    this.parserStartOffset = pParserStartOffset ;
+    this.parserEndOffset = pParserEndOffset ;
+  }
+
+
+  /**
    * {@inheritDoc} This method always throws
    * {@link UnsupportedOperationException} to indicate that it should not be
    * called. Instead the <code>ref</code> operator requires special handling

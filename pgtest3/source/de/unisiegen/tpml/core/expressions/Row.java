@@ -72,6 +72,22 @@ public final class Row extends Expression implements ChildrenExpressions
 
   /**
    * TODO
+   * 
+   * @param pExpressions TODO
+   * @param pParserStartOffset TODO
+   * @param pParserEndOffset TODO
+   */
+  public Row ( Expression [ ] pExpressions , int pParserStartOffset ,
+      int pParserEndOffset )
+  {
+    this ( pExpressions ) ;
+    this.parserStartOffset = pParserStartOffset ;
+    this.parserEndOffset = pParserEndOffset ;
+  }
+
+
+  /**
+   * TODO
    */
   public void checkDisjunction ( )
   {

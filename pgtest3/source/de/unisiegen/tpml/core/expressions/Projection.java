@@ -46,6 +46,28 @@ public class Projection extends UnaryOperator
 
   /**
    * Allocates a new {@link Projection} with the given <code>arity</code> and
+   * the <code>index</code> of the item that should be selected.
+   * 
+   * @param pArity the arity of the tuple to which this projection can be
+   *          applied.
+   * @param pIndex the index of the item to select from the tuple, starting with
+   *          <code>1</code>.
+   * @param pParserStartOffset TODO
+   * @param pParserEndOffset TODO
+   * @throws IllegalArgumentException if the <code>arity</code> or the
+   *           <code>index</code> is invalid.
+   */
+  public Projection ( int pArity , int pIndex , int pParserStartOffset ,
+      int pParserEndOffset )
+  {
+    this ( pArity , pIndex ) ;
+    this.parserStartOffset = pParserStartOffset ;
+    this.parserEndOffset = pParserEndOffset ;
+  }
+
+
+  /**
+   * Allocates a new {@link Projection} with the given <code>arity</code> and
    * the <code>index</code> of the item that should be selected, and the
    * string representation <code>op</code>.
    * 
