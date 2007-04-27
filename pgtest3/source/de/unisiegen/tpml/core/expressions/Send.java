@@ -228,16 +228,6 @@ public final class Send extends Expression implements DefaultIdentifiers ,
    * {@inheritDoc}
    */
   @ Override
-  public boolean isValue ( )
-  {
-    return false ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   */
-  @ Override
   public Send substitute ( Identifier pId , Expression pExpression )
   {
     Expression newE = this.expressions [ 0 ].substitute ( pId , pExpression ) ;
