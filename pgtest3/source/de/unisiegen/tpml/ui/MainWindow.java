@@ -675,8 +675,10 @@ public class MainWindow extends javax.swing.JFrame
     runMenu.add ( typecheckerItem ) ;
     
 //  CAHNGE MICHAEL
-		//TODO Wieder in die Resources einbaeun
-		typeInference.setText("Type Inference");
+		typeInference.setAccelerator ( javax.swing.KeyStroke.getKeyStroke (java.awt.event.KeyEvent.VK_F12, 2));
+    //TODO Wieder in die Resources einbaeun
+		
+    typeInference.setText("Type Inference");
 		
 		typeInference.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1167,6 +1169,7 @@ public class MainWindow extends javax.swing.JFrame
     smallstepItem.setEnabled ( state ) ;
     bigstepItem.setEnabled ( state ) ;
     typecheckerItem.setEnabled ( state ) ;
+    typeInference.setEnabled( state );
     saveAsItem.setEnabled ( state ) ;
     saveAsButton.setEnabled ( state ) ;
     saveAllItem.setEnabled ( state ) ;
