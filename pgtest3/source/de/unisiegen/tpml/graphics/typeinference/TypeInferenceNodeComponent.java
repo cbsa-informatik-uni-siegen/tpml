@@ -10,6 +10,7 @@ import java.awt.event.MouseMotionAdapter;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 
+import javax.management.modelmbean.ModelMBean;
 import javax.swing.JComponent;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
@@ -511,6 +512,14 @@ public class TypeInferenceNodeComponent extends JComponent {
 		//TODO
 		allFormulasList = proofNode.getAllFormulas();
 		substitutionList = proofNode.getSubstitution();
+		//TODO geht hier nicht...
+		if (allFormulasList.size()<1)
+		{
+			proofModel.setFinished(true);	
+		}
+		
+		
+		
 		
 		
 		testAusgabe("update...");

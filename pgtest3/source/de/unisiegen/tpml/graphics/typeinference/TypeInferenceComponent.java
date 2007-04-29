@@ -37,8 +37,8 @@ import de.unisiegen.tpml.graphics.renderer.PrettyStringRenderer;
  * When this all is done the actual placing of the nodes is done. 
  * {@see #placeNode(TypeInferenceProofNode, int, int)} for this.
  *   
- * @author Marcell Fischbach
- * @author Benedikt Meurer
+ *  @author michael
+ * 
  * @version $Rev$
  *
  * @see de.unisiegen.tpml.graphics.AbstractProofComponent
