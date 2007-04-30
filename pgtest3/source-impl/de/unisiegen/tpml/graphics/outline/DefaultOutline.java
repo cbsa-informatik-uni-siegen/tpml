@@ -13,15 +13,26 @@ import javax.swing.tree.TreePath ;
 import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.expressions.Identifier ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable ;
+import de.unisiegen.tpml.core.subtyping.SubTypingEnterTypes ;
 import de.unisiegen.tpml.core.types.MonoType ;
 import de.unisiegen.tpml.core.types.Type ;
+import de.unisiegen.tpml.graphics.bigstep.BigStepView ;
 import de.unisiegen.tpml.graphics.outline.binding.OutlineBinding ;
 import de.unisiegen.tpml.graphics.outline.binding.OutlineUnbound ;
+import de.unisiegen.tpml.graphics.outline.listener.OutlineActionListener ;
+import de.unisiegen.tpml.graphics.outline.listener.OutlineComponentListener ;
+import de.unisiegen.tpml.graphics.outline.listener.OutlineItemListener ;
+import de.unisiegen.tpml.graphics.outline.listener.OutlineMouseListener ;
+import de.unisiegen.tpml.graphics.outline.listener.OutlinePropertyChangeListener ;
+import de.unisiegen.tpml.graphics.outline.listener.OutlineTreeModelListener ;
 import de.unisiegen.tpml.graphics.outline.node.OutlineNode ;
 import de.unisiegen.tpml.graphics.outline.ui.OutlineDisplayTree ;
 import de.unisiegen.tpml.graphics.outline.ui.OutlineTimerTask ;
 import de.unisiegen.tpml.graphics.outline.ui.OutlineUI ;
 import de.unisiegen.tpml.graphics.outline.util.OutlinePreferences ;
+import de.unisiegen.tpml.graphics.smallstep.SmallStepView ;
+import de.unisiegen.tpml.graphics.typechecker.TypeCheckerView ;
+import de.unisiegen.tpml.ui.editor.TextEditorPanel ;
 
 
 /**
@@ -96,7 +107,7 @@ public final class DefaultOutline implements Outline
    * The loaded {@link Expression} to check if the {@link Expression} has
    * changed.
    */
-  private Expression loadedExpression ;
+  private PrettyPrintable loadedPrettyPrintable ;
 
 
   /**
@@ -119,28 +130,159 @@ public final class DefaultOutline implements Outline
 
 
   /**
-   * The {@link Outline.Start}.
+   * TODO
    */
-  private Outline.Start outlineStart ;
+  private TextEditorPanel textEditorPanel ;
+
+
+  /**
+   * Initilizes the {@link OutlinePreferences} and the {@link OutlineUI}.
+   */
+  private DefaultOutline ( )
+  {
+    this.loadedPrettyPrintable = null ;
+    this.rootOutlineNode = null ;
+    this.outlinePreferences = new OutlinePreferences ( ) ;
+    this.outlineUI = new OutlineUI ( this ) ;
+  }
 
 
   /**
    * Initilizes the {@link OutlinePreferences} and the {@link OutlineUI}.
    * 
-   * @param pOutlineStart The {@link Outline.Start}.
+   * @param pBigStepView TODO
    */
-  public DefaultOutline ( Outline.Start pOutlineStart )
+  public DefaultOutline ( BigStepView pBigStepView )
   {
-    this.outlineStart = pOutlineStart ;
-    this.loadedExpression = null ;
-    this.rootOutlineNode = null ;
-    this.outlinePreferences = new OutlinePreferences ( ) ;
-    this.outlineUI = new OutlineUI ( this ) ;
-    if ( ( this.outlineStart.equals ( Outline.Start.BIGSTEP ) )
-        || ( this.outlineStart.equals ( Outline.Start.TYPECHECKER ) ) )
-    {
-      disableAutoUpdate ( ) ;
-    }
+    this ( ) ;
+    disableAutoUpdate ( ) ;
+    this.outlineUI.getJPanelMain ( ).addComponentListener (
+        new OutlineComponentListener ( pBigStepView.getJSplitPane ( ) , this ) ) ;
+    pBigStepView.addPropertyChangeListener ( new OutlinePropertyChangeListener (
+        pBigStepView.getJSplitPane ( ) , this ) ) ;
+    pBigStepView.getBigStepProofModel ( ).addTreeModelListener (
+        new OutlineTreeModelListener ( this , pBigStepView
+            .getBigStepProofModel ( ) ) ) ;
+  }
+
+
+  /**
+   * Initilizes the {@link OutlinePreferences} and the {@link OutlineUI}.
+   * 
+   * @param pSmallStepView TODO
+   */
+  public DefaultOutline ( SmallStepView pSmallStepView )
+  {
+    this ( ) ;
+    this.outlineUI.getJPanelMain ( )
+        .addComponentListener (
+            new OutlineComponentListener ( pSmallStepView.getJSplitPane ( ) ,
+                this ) ) ;
+    pSmallStepView
+        .addPropertyChangeListener ( new OutlinePropertyChangeListener (
+            pSmallStepView.getJSplitPane ( ) , this ) ) ;
+    pSmallStepView.getSmallStepProofModel ( ).addTreeModelListener (
+        new OutlineTreeModelListener ( this , pSmallStepView
+            .getSmallStepProofModel ( ) ) ) ;
+  }
+
+
+  /**
+   * Initilizes the {@link OutlinePreferences} and the {@link OutlineUI}.
+   * 
+   * @param pTextEditorPanel TODO
+   */
+  public DefaultOutline ( TextEditorPanel pTextEditorPanel )
+  {
+    this ( ) ;
+    this.textEditorPanel = pTextEditorPanel ;
+    // ComponentListener
+    this.outlineUI.getJPanelMain ( ).addComponentListener (
+        new OutlineComponentListener ( pTextEditorPanel.getJSplitPane ( ) ,
+            this ) ) ;
+    // MouseListener
+    this.textEditorPanel.getEditor ( ).addMouseListener (
+        new OutlineMouseListener ( pTextEditorPanel ) ) ;
+    // PropertyChangeListener
+    this.textEditorPanel
+        .addPropertyChangeListener ( new OutlinePropertyChangeListener (
+            this.textEditorPanel.getJSplitPane ( ) , this ) ) ;
+    // ActionListener
+    OutlineActionListener outlineActionListener = new OutlineActionListener (
+        this.outlineUI ) ;
+    this.outlineUI.getJMenuItemExpand ( ).addActionListener (
+        outlineActionListener ) ;
+    this.outlineUI.getJMenuItemExpandAll ( ).addActionListener (
+        outlineActionListener ) ;
+    this.outlineUI.getJMenuItemCollapse ( ).addActionListener (
+        outlineActionListener ) ;
+    this.outlineUI.getJMenuItemCollapseAll ( ).addActionListener (
+        outlineActionListener ) ;
+    this.outlineUI.getJMenuItemClose ( ).addActionListener (
+        outlineActionListener ) ;
+    this.outlineUI.getJMenuItemCloseAll ( ).addActionListener (
+        outlineActionListener ) ;
+    this.outlineUI.getJMenuItemCopy ( ).addActionListener (
+        outlineActionListener ) ;
+    this.outlineUI.getJMenuPreferences ( ).addActionListener (
+        outlineActionListener ) ;
+    this.outlineUI.getJMenuItemSelection ( ).addActionListener (
+        outlineActionListener ) ;
+    this.outlineUI.getJMenuItemBinding ( ).addActionListener (
+        outlineActionListener ) ;
+    this.outlineUI.getJMenuItemUnbound ( ).addActionListener (
+        outlineActionListener ) ;
+    this.outlineUI.getJMenuItemReplace ( ).addActionListener (
+        outlineActionListener ) ;
+    this.outlineUI.getJMenuItemAutoUpdate ( ).addActionListener (
+        outlineActionListener ) ;
+    // ComponentListener
+    this.outlineUI.getJPanelMain ( ).addComponentListener (
+        new OutlineComponentListener ( this ) ) ;
+    // OutlineItemListener
+    OutlineItemListener outlineItemListener = new OutlineItemListener (
+        this.outlineUI ) ;
+    this.outlineUI.getJCheckBoxSelection ( ).addItemListener (
+        outlineItemListener ) ;
+    
+    this.outlineUI.getJCheckBoxBinding().addItemListener ( outlineItemListener ) ;
+    
+    this.outlineUI.getJCheckBoxFree().addItemListener ( outlineItemListener ) ;
+    this.outlineUI.getJCheckBoxReplace().addItemListener ( outlineItemListener ) ;
+    this.outlineUI.getJCheckBoxAutoUpdate().addItemListener (outlineItemListener ) ;
+  }
+
+
+  /**
+   * Initilizes the {@link OutlinePreferences} and the {@link OutlineUI}.
+   * 
+   * @param pTypeCheckerView TODO
+   */
+  public DefaultOutline ( TypeCheckerView pTypeCheckerView )
+  {
+    this ( ) ;
+    disableAutoUpdate ( ) ;
+    this.outlineUI.getJPanelMain ( ).addComponentListener (
+        new OutlineComponentListener ( pTypeCheckerView.getJSplitPane ( ) ,
+            this ) ) ;
+    pTypeCheckerView
+        .addPropertyChangeListener ( new OutlinePropertyChangeListener (
+            pTypeCheckerView.getJSplitPane ( ) , this ) ) ;
+    pTypeCheckerView.getTypeCheckerProofModel ( ).addTreeModelListener (
+        new OutlineTreeModelListener ( this , pTypeCheckerView
+            .getTypeCheckerProofModel ( ) ) ) ;
+  }
+
+
+  /**
+   * Initilizes the {@link OutlinePreferences} and the {@link OutlineUI}.
+   * 
+   * @param pSubTypingEnterTypes TODO
+   */
+  public DefaultOutline ( SubTypingEnterTypes pSubTypingEnterTypes )
+  {
+    this ( ) ;
+    // TODO Some listeners
   }
 
 
@@ -443,12 +585,13 @@ public final class DefaultOutline implements Outline
   {
     // Disable AutoUpdate, remove Listener and deselect
     this.outlineUI.getJCheckBoxAutoUpdate ( ).setEnabled ( false ) ;
-    this.outlineUI.getJCheckBoxAutoUpdate ( ).removeItemListener (
-        this.outlineUI.getOutlineItemListener ( ) ) ;
+    //this.outlineUI.getJCheckBoxAutoUpdate ( ).removeItemListener (
+      //  this.outlineUI.getOutlineItemListener ( ) ) ;
     this.outlineUI.getJCheckBoxAutoUpdate ( ).setSelected ( false ) ;
     this.outlineUI.getJMenuItemAutoUpdate ( ).setEnabled ( false ) ;
-    this.outlineUI.getJMenuItemAutoUpdate ( ).removeActionListener (
-        this.outlineUI.getOutlineActionListener ( ) ) ;
+    // TODO
+    // this.outlineUI.getJMenuItemAutoUpdate ( ).removeActionListener (
+    // this.outlineUI.getOutlineActionListener ( ) ) ;
     this.outlineUI.getJMenuItemAutoUpdate ( ).setSelected ( false ) ;
   }
 
@@ -458,14 +601,25 @@ public final class DefaultOutline implements Outline
    */
   public final void execute ( )
   {
-    if ( this.loadedExpression == null )
+    if ( this.loadedPrettyPrintable == null )
     {
       return ;
     }
-    this.outlineUnbound = new OutlineUnbound ( this.loadedExpression ) ;
-    this.rootOutlineNode = new OutlineNode ( this.loadedExpression ,
-        this.outlineUnbound , OutlineNode.NO_CHILD_INDEX ) ;
-    createExpression ( this.loadedExpression , this.rootOutlineNode ) ;
+    if ( this.loadedPrettyPrintable instanceof Expression )
+    {
+      Expression expression = ( Expression ) this.loadedPrettyPrintable ;
+      this.outlineUnbound = new OutlineUnbound ( expression ) ;
+      this.rootOutlineNode = new OutlineNode ( expression ,
+          this.outlineUnbound , OutlineNode.NO_CHILD_INDEX ) ;
+      createExpression ( expression , this.rootOutlineNode ) ;
+    }
+    else if ( this.loadedPrettyPrintable instanceof Type )
+    {
+      Type type = ( Type ) this.loadedPrettyPrintable ;
+      this.rootOutlineNode = new OutlineNode ( type ,
+          OutlineNode.NO_CHILD_INDEX ) ;
+      createType ( type , this.rootOutlineNode ) ;
+    }
     repaint ( this.rootOutlineNode ) ;
     this.outlineUI.setError ( false ) ;
     SwingUtilities.invokeLater ( new OutlineDisplayTree ( this ) ) ;
@@ -694,6 +848,18 @@ public final class DefaultOutline implements Outline
 
 
   /**
+   * Returns the textEditorPanel.
+   * 
+   * @return The textEditorPanel.
+   * @see #textEditorPanel
+   */
+  public TextEditorPanel getTextEditorPanel ( )
+  {
+    return this.textEditorPanel ;
+  }
+
+
+  /**
    * TODO
    * 
    * @param pInvokedFrom TODO
@@ -739,13 +905,13 @@ public final class DefaultOutline implements Outline
    * <code>TypeChecker</code> view it does also nothing if the change does not
    * come from a <code>MouseEvent</code>.
    * 
-   * @param pExpression The new {@link Expression}.
+   * @param pPrettyPrintable The new {@link PrettyPrintable}.
    * @param pExecute The {@link Outline.Execute}.
    */
-  public final void loadExpression ( Expression pExpression ,
+  public final void loadPrettyPrintable ( PrettyPrintable pPrettyPrintable ,
       Outline.Execute pExecute )
   {
-    if ( pExpression == null )
+    if ( pPrettyPrintable == null )
     {
       executeTimerCancel ( ) ;
       if ( ( this.outlinePreferences.isAutoUpdate ( ) )
@@ -792,12 +958,12 @@ public final class DefaultOutline implements Outline
      * Do not update, if the the loaded Expression is equal to the new
      * Expression.
      */
-    if ( ( this.loadedExpression != null )
-        && ( pExpression.equals ( this.loadedExpression ) ) )
+    if ( ( this.loadedPrettyPrintable != null )
+        && ( pPrettyPrintable.equals ( this.loadedPrettyPrintable ) ) )
     {
       return ;
     }
-    this.loadedExpression = pExpression ;
+    this.loadedPrettyPrintable = pPrettyPrintable ;
     executeTimerCancel ( ) ;
     /*
      * Execute the new Expression immediately, if the change is an init change
@@ -807,10 +973,12 @@ public final class DefaultOutline implements Outline
         || ( pExecute.equals ( Outline.Execute.INIT_SMALLSTEP ) )
         || ( pExecute.equals ( Outline.Execute.INIT_BIGSTEP ) )
         || ( pExecute.equals ( Outline.Execute.INIT_TYPECHECKER ) )
+        || ( pExecute.equals ( Outline.Execute.INIT_TYPEINFERENCE ) )
         || ( pExecute.equals ( Outline.Execute.MOUSE_CLICK_EDITOR ) )
         || ( pExecute.equals ( Outline.Execute.MOUSE_CLICK_SMALLSTEP ) )
         || ( pExecute.equals ( Outline.Execute.MOUSE_CLICK_BIGSTEP ) )
-        || ( pExecute.equals ( Outline.Execute.MOUSE_CLICK_TYPECHECKER ) ) )
+        || ( pExecute.equals ( Outline.Execute.MOUSE_CLICK_TYPECHECKER ) )
+        || ( pExecute.equals ( Outline.Execute.MOUSE_CLICK_TYPEINFERENCE ) ) )
     {
       execute ( ) ;
     }
@@ -819,6 +987,10 @@ public final class DefaultOutline implements Outline
       executeTimerStart ( 500 ) ;
     }
     else if ( pExecute.equals ( Outline.Execute.AUTO_CHANGE_SMALLSTEP ) )
+    {
+      executeTimerStart ( 250 ) ;
+    }
+    else if ( pExecute.equals ( Outline.Execute.AUTO_CHANGE_TYPEINFERENCE ) )
     {
       executeTimerStart ( 250 ) ;
     }

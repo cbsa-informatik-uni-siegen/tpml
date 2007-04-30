@@ -15,9 +15,6 @@ import de.unisiegen.tpml.core.smallstep.SmallStepProofModel ;
 import de.unisiegen.tpml.graphics.AbstractProofView ;
 import de.unisiegen.tpml.graphics.outline.DefaultOutline ;
 import de.unisiegen.tpml.graphics.outline.Outline ;
-import de.unisiegen.tpml.graphics.outline.listener.OutlineComponentListener ;
-import de.unisiegen.tpml.graphics.outline.listener.OutlinePropertyChangeListener ;
-import de.unisiegen.tpml.graphics.outline.listener.OutlineTreeModelListener ;
 
 
 /**
@@ -66,6 +63,12 @@ public class SmallStepView extends AbstractProofView
 
 
   /**
+   * TODO
+   */
+  private SmallStepProofModel smallStepProofModel ;
+
+
+  /**
    * Allocates a new {@link SmallStepView} for the specified
    * {@link SmallStepProofModel}.
    * 
@@ -80,16 +83,12 @@ public class SmallStepView extends AbstractProofView
     {
       throw new NullPointerException ( "model is null" ) ; //$NON-NLS-1$
     }
-    this.outline = new DefaultOutline ( Outline.Start.SMALLSTEP ) ;
-    this.outline.loadExpression ( pSmallStepProofModel.getRoot ( )
-        .getLastLeaf ( ).getExpression ( ) , Outline.Execute.INIT_SMALLSTEP ) ;
-    pSmallStepProofModel.addTreeModelListener ( new OutlineTreeModelListener (
-        this.outline , pSmallStepProofModel ) ) ;
+    this.smallStepProofModel = pSmallStepProofModel ;
     GridBagConstraints gridBagConstraints = new GridBagConstraints ( ) ;
     this.jSplitPane = new JSplitPane ( JSplitPane.VERTICAL_SPLIT ) ;
     this.setLayout ( new GridBagLayout ( ) ) ;
     this.scrollPane = new JScrollPane ( ) ;
-    this.component = new SmallStepComponent ( pSmallStepProofModel ,
+    this.component = new SmallStepComponent ( this.smallStepProofModel ,
         isAdvanced ( ) ) ;
     this.scrollPane.setViewportView ( this.component ) ;
     this.scrollPane.getViewport ( ).setBackground ( Color.WHITE ) ;
@@ -104,6 +103,9 @@ public class SmallStepView extends AbstractProofView
                 .getWidth ( ) ) ;
       }
     } ) ;
+    this.outline = new DefaultOutline ( this ) ;
+    this.outline.loadPrettyPrintable ( this.smallStepProofModel.getRoot ( )
+        .getLastLeaf ( ).getExpression ( ) , Outline.Execute.INIT_SMALLSTEP ) ;
     JPanel jPanelOutline = this.outline.getJPanelOutline ( ) ;
     jPanelOutline.getPreferredSize ( ).getHeight ( ) ;
     this.jSplitPane.setLeftComponent ( this.scrollPane ) ;
@@ -117,10 +119,18 @@ public class SmallStepView extends AbstractProofView
     gridBagConstraints.weightx = 10 ;
     gridBagConstraints.weighty = 10 ;
     this.add ( this.jSplitPane , gridBagConstraints ) ;
-    this.addPropertyChangeListener ( new OutlinePropertyChangeListener (
-        this.jSplitPane , this.outline ) ) ;
-    jPanelOutline.addComponentListener ( new OutlineComponentListener (
-        this.jSplitPane , this.outline ) ) ;
+  }
+
+
+  /**
+   * Returns the jSplitPane.
+   * 
+   * @return The jSplitPane.
+   * @see #jSplitPane
+   */
+  public JSplitPane getJSplitPane ( )
+  {
+    return this.jSplitPane ;
   }
 
 
@@ -132,6 +142,18 @@ public class SmallStepView extends AbstractProofView
   public Outline getOutline ( )
   {
     return this.outline ;
+  }
+
+
+  /**
+   * Returns the smallStepProofModel.
+   * 
+   * @return The smallStepProofModel.
+   * @see #smallStepProofModel
+   */
+  public SmallStepProofModel getSmallStepProofModel ( )
+  {
+    return this.smallStepProofModel ;
   }
 
 

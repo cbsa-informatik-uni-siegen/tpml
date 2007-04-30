@@ -24,9 +24,6 @@ import javax.swing.tree.DefaultTreeModel ;
 import de.unisiegen.tpml.graphics.Theme ;
 import de.unisiegen.tpml.graphics.outline.DefaultOutline ;
 import de.unisiegen.tpml.graphics.outline.Outline ;
-import de.unisiegen.tpml.graphics.outline.listener.OutlineActionListener ;
-import de.unisiegen.tpml.graphics.outline.listener.OutlineComponentListener ;
-import de.unisiegen.tpml.graphics.outline.listener.OutlineItemListener ;
 import de.unisiegen.tpml.graphics.outline.listener.OutlineKeyListener ;
 import de.unisiegen.tpml.graphics.outline.listener.OutlineMouseListener ;
 import de.unisiegen.tpml.graphics.outline.listener.OutlinePropertyChangeListener ;
@@ -272,22 +269,6 @@ public final class OutlineUI
 
 
   /**
-   * The {@link OutlineActionListener}.
-   * 
-   * @see #getOutlineActionListener()
-   */
-  private OutlineActionListener outlineActionListener ;
-
-
-  /**
-   * The {@link OutlineItemListener}.
-   * 
-   * @see #getOutlineItemListener()
-   */
-  private OutlineItemListener outlineItemListener ;
-
-
-  /**
    * The {@link DefaultOutline}.
    * 
    * @see #getAbstractOutline()
@@ -438,8 +419,6 @@ public final class OutlineUI
     // Preferences
     this.resourceBundle = ResourceBundle.getBundle ( RESOURCE ) ;
     // Listener
-    this.outlineItemListener = new OutlineItemListener ( this ) ;
-    this.outlineActionListener = new OutlineActionListener ( this ) ;
     this.outlineTreeSelectionListener = new OutlineTreeSelectionListener (
         this.defaultOutline ) ;
     this.outlineMouseListener = new OutlineMouseListener ( this ) ;
@@ -461,7 +440,6 @@ public final class OutlineUI
     this.jCheckBoxSelection.setSelected ( this.defaultOutline
         .getOutlinePreferences ( ).isSelection ( ) ) ;
     this.jCheckBoxSelection.setFocusable ( false ) ;
-    this.jCheckBoxSelection.addItemListener ( this.outlineItemListener ) ;
     this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
     this.insets.set ( 0 , 4 , 0 , 4 ) ;
     this.gridBagConstraints.insets = this.insets ;
@@ -481,7 +459,6 @@ public final class OutlineUI
     this.jCheckBoxBinding.setSelected ( this.defaultOutline
         .getOutlinePreferences ( ).isBinding ( ) ) ;
     this.jCheckBoxBinding.setFocusable ( false ) ;
-    this.jCheckBoxBinding.addItemListener ( this.outlineItemListener ) ;
     this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
     this.insets.set ( 0 , 4 , 0 , 4 ) ;
     this.gridBagConstraints.insets = this.insets ;
@@ -500,7 +477,6 @@ public final class OutlineUI
     this.jCheckBoxFree.setSelected ( this.defaultOutline
         .getOutlinePreferences ( ).isFree ( ) ) ;
     this.jCheckBoxFree.setFocusable ( false ) ;
-    this.jCheckBoxFree.addItemListener ( this.outlineItemListener ) ;
     this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
     this.insets.set ( 0 , 4 , 0 , 4 ) ;
     this.gridBagConstraints.insets = this.insets ;
@@ -519,7 +495,6 @@ public final class OutlineUI
     this.jCheckBoxReplace.setSelected ( this.defaultOutline
         .getOutlinePreferences ( ).isReplace ( ) ) ;
     this.jCheckBoxReplace.setFocusable ( false ) ;
-    this.jCheckBoxReplace.addItemListener ( this.outlineItemListener ) ;
     this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
     this.insets.set ( 0 , 4 , 0 , 4 ) ;
     this.gridBagConstraints.insets = this.insets ;
@@ -539,7 +514,6 @@ public final class OutlineUI
     this.jCheckBoxAutoUpdate.setSelected ( this.defaultOutline
         .getOutlinePreferences ( ).isAutoUpdate ( ) ) ;
     this.jCheckBoxAutoUpdate.setFocusable ( false ) ;
-    this.jCheckBoxAutoUpdate.addItemListener ( this.outlineItemListener ) ;
     this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
     this.insets.set ( 0 , 4 , 0 , 4 ) ;
     this.gridBagConstraints.insets = this.insets ;
@@ -552,8 +526,6 @@ public final class OutlineUI
     // Panel Main
     this.jPanelMain = new JPanel ( ) ;
     this.jPanelMain.setLayout ( this.gridBagLayout ) ;
-    this.jPanelMain.addComponentListener ( new OutlineComponentListener (
-        this.defaultOutline ) ) ;
     // TreeModel
     this.treeModel = new DefaultTreeModel ( this.rootNode ) ;
     // Tree
@@ -609,7 +581,6 @@ public final class OutlineUI
     this.jMenuItemExpand.setIcon ( new ImageIcon ( getClass ( ).getResource (
         EMPTYICON ) ) ) ;
     this.jMenuItemExpand.setActionCommand ( EXPAND ) ;
-    this.jMenuItemExpand.addActionListener ( this.outlineActionListener ) ;
     this.jPopupMenu.add ( this.jMenuItemExpand ) ;
     // MenuItem ExpandAll
     this.jMenuItemExpandAll = new JMenuItem ( this.resourceBundle
@@ -621,7 +592,6 @@ public final class OutlineUI
     this.jMenuItemExpandAll.setIcon ( new ImageIcon ( getClass ( ).getResource (
         EMPTYICON ) ) ) ;
     this.jMenuItemExpandAll.setActionCommand ( EXPANDALL ) ;
-    this.jMenuItemExpandAll.addActionListener ( this.outlineActionListener ) ;
     this.jPopupMenu.add ( this.jMenuItemExpandAll ) ;
     // Separator
     this.jPopupMenu.addSeparator ( ) ;
@@ -635,7 +605,6 @@ public final class OutlineUI
     this.jMenuItemCollapse.setIcon ( new ImageIcon ( getClass ( ).getResource (
         EMPTYICON ) ) ) ;
     this.jMenuItemCollapse.setActionCommand ( COLLAPSE ) ;
-    this.jMenuItemCollapse.addActionListener ( this.outlineActionListener ) ;
     this.jPopupMenu.add ( this.jMenuItemCollapse ) ;
     // MenuItem CollapseAll
     this.jMenuItemCollapseAll = new JMenuItem ( this.resourceBundle
@@ -647,7 +616,6 @@ public final class OutlineUI
     this.jMenuItemCollapseAll.setIcon ( new ImageIcon ( getClass ( )
         .getResource ( EMPTYICON ) ) ) ;
     this.jMenuItemCollapseAll.setActionCommand ( COLLAPSEALL ) ;
-    this.jMenuItemCollapseAll.addActionListener ( this.outlineActionListener ) ;
     this.jPopupMenu.add ( this.jMenuItemCollapseAll ) ;
     // Separator
     this.jPopupMenu.addSeparator ( ) ;
@@ -661,7 +629,6 @@ public final class OutlineUI
     this.jMenuItemClose.setIcon ( new ImageIcon ( getClass ( ).getResource (
         EMPTYICON ) ) ) ;
     this.jMenuItemClose.setActionCommand ( CLOSE ) ;
-    this.jMenuItemClose.addActionListener ( this.outlineActionListener ) ;
     this.jPopupMenu.add ( this.jMenuItemClose ) ;
     // MenuItem CloseAll
     this.jMenuItemCloseAll = new JMenuItem ( this.resourceBundle
@@ -673,7 +640,6 @@ public final class OutlineUI
     this.jMenuItemCloseAll.setIcon ( new ImageIcon ( getClass ( ).getResource (
         EMPTYICON ) ) ) ;
     this.jMenuItemCloseAll.setActionCommand ( CLOSEALL ) ;
-    this.jMenuItemCloseAll.addActionListener ( this.outlineActionListener ) ;
     this.jPopupMenu.add ( this.jMenuItemCloseAll ) ;
     // Separator
     this.jPopupMenu.addSeparator ( ) ;
@@ -686,7 +652,6 @@ public final class OutlineUI
     this.jMenuItemCopy.setIcon ( new ImageIcon ( getClass ( ).getResource (
         COPYICON ) ) ) ;
     this.jMenuItemCopy.setActionCommand ( COPY ) ;
-    this.jMenuItemCopy.addActionListener ( this.outlineActionListener ) ;
     this.jMenuItemCopy.setAccelerator ( KeyStroke.getKeyStroke ( KeyEvent.VK_C ,
         InputEvent.CTRL_MASK ) ) ;
     this.jPopupMenu.add ( this.jMenuItemCopy ) ;
@@ -700,7 +665,6 @@ public final class OutlineUI
     this.jMenuPreferences.setIcon ( new ImageIcon ( getClass ( ).getResource (
         EMPTYICON ) ) ) ;
     this.jMenuPreferences.setActionCommand ( PREFERENCES ) ;
-    this.jMenuPreferences.addActionListener ( this.outlineActionListener ) ;
     this.jPopupMenu.add ( this.jMenuPreferences ) ;
     // MenuItem Selection
     this.jMenuItemSelection = new JCheckBoxMenuItem ( this.resourceBundle
@@ -710,7 +674,6 @@ public final class OutlineUI
     this.jMenuItemSelection.setToolTipText ( this.resourceBundle
         .getString ( SELECTION + TOOLTIP ) ) ;
     this.jMenuItemSelection.setActionCommand ( SELECTION ) ;
-    this.jMenuItemSelection.addActionListener ( this.outlineActionListener ) ;
     this.jMenuItemSelection.setSelected ( this.defaultOutline
         .getOutlinePreferences ( ).isSelection ( ) ) ;
     this.jMenuPreferences.add ( this.jMenuItemSelection ) ;
@@ -722,7 +685,6 @@ public final class OutlineUI
     this.jMenuItemBinding.setToolTipText ( this.resourceBundle
         .getString ( BINDING + TOOLTIP ) ) ;
     this.jMenuItemBinding.setActionCommand ( BINDING ) ;
-    this.jMenuItemBinding.addActionListener ( this.outlineActionListener ) ;
     this.jMenuItemBinding.setSelected ( this.defaultOutline
         .getOutlinePreferences ( ).isBinding ( ) ) ;
     this.jMenuPreferences.add ( this.jMenuItemBinding ) ;
@@ -734,7 +696,6 @@ public final class OutlineUI
     this.jMenuItemUnbound.setToolTipText ( this.resourceBundle.getString ( FREE
         + TOOLTIP ) ) ;
     this.jMenuItemUnbound.setActionCommand ( FREE ) ;
-    this.jMenuItemUnbound.addActionListener ( this.outlineActionListener ) ;
     this.jMenuItemUnbound.setSelected ( this.defaultOutline
         .getOutlinePreferences ( ).isFree ( ) ) ;
     this.jMenuPreferences.add ( this.jMenuItemUnbound ) ;
@@ -746,7 +707,6 @@ public final class OutlineUI
     this.jMenuItemReplace.setToolTipText ( this.resourceBundle
         .getString ( REPLACE + TOOLTIP ) ) ;
     this.jMenuItemReplace.setActionCommand ( REPLACE ) ;
-    this.jMenuItemReplace.addActionListener ( this.outlineActionListener ) ;
     this.jMenuItemReplace.setSelected ( this.defaultOutline
         .getOutlinePreferences ( ).isReplace ( ) ) ;
     this.jMenuPreferences.add ( this.jMenuItemReplace ) ;
@@ -758,7 +718,6 @@ public final class OutlineUI
     this.jMenuItemAutoUpdate.setToolTipText ( this.resourceBundle
         .getString ( AUTOUPDATE + TOOLTIP ) ) ;
     this.jMenuItemAutoUpdate.setActionCommand ( AUTOUPDATE ) ;
-    this.jMenuItemAutoUpdate.addActionListener ( this.outlineActionListener ) ;
     this.jMenuItemAutoUpdate.setSelected ( this.defaultOutline
         .getOutlinePreferences ( ).isAutoUpdate ( ) ) ;
     this.jMenuPreferences.add ( this.jMenuItemAutoUpdate ) ;
@@ -772,6 +731,18 @@ public final class OutlineUI
    * @see #defaultOutline
    */
   public final DefaultOutline getAbstractOutline ( )
+  {
+    return this.defaultOutline ;
+  }
+
+
+  /**
+   * Returns the defaultOutline.
+   * 
+   * @return The defaultOutline.
+   * @see #defaultOutline
+   */
+  public DefaultOutline getDefaultOutline ( )
   {
     return this.defaultOutline ;
   }
@@ -982,6 +953,18 @@ public final class OutlineUI
 
 
   /**
+   * Returns the <code>jMenuPreferences</code>.
+   * 
+   * @return The <code>jMenuPreferences</code>.
+   * @see #jMenuPreferences
+   */
+  public JMenu getJMenuPreferences ( )
+  {
+    return this.jMenuPreferences ;
+  }
+
+
+  /**
    * Returns the <code>jPanelMain</code>.
    * 
    * @return The <code>jPanelMain</code>.
@@ -1038,30 +1021,6 @@ public final class OutlineUI
   public final JTree getJTreeOutline ( )
   {
     return this.jTreeOutline ;
-  }
-
-
-  /**
-   * Returns the {@link OutlineActionListener}.
-   * 
-   * @return The {@link OutlineActionListener}.
-   * @see #outlineActionListener
-   */
-  public final OutlineActionListener getOutlineActionListener ( )
-  {
-    return this.outlineActionListener ;
-  }
-
-
-  /**
-   * Returns the {@link OutlineItemListener}.
-   * 
-   * @return The {@link OutlineItemListener}.
-   * @see #outlineItemListener
-   */
-  public final OutlineItemListener getOutlineItemListener ( )
-  {
-    return this.outlineItemListener ;
   }
 
 

@@ -6,6 +6,7 @@ import java.beans.PropertyChangeListener ;
 import javax.swing.JSplitPane ;
 import de.unisiegen.tpml.graphics.AbstractProofView ;
 import de.unisiegen.tpml.graphics.Theme ;
+import de.unisiegen.tpml.graphics.outline.DefaultOutline ;
 import de.unisiegen.tpml.graphics.outline.Outline ;
 import de.unisiegen.tpml.ui.editor.TextEditorPanel ;
 
@@ -34,22 +35,22 @@ public final class OutlinePropertyChangeListener implements
 
 
   /**
-   * The {@link Outline}.
+   * The {@link DefaultOutline}.
    */
-  private Outline outline ;
+  private DefaultOutline defaultOutline ;
 
 
   /**
    * Initializes the {@link OutlinePropertyChangeListener}.
    * 
    * @param pJSplitPane The <code>JSplitPane</code>.
-   * @param pOutline The {@link Outline}.
+   * @param pDefaultOutline The {@link Outline}.
    */
   public OutlinePropertyChangeListener ( JSplitPane pJSplitPane ,
-      Outline pOutline )
+      DefaultOutline pDefaultOutline )
   {
     this.jSplitPane = pJSplitPane ;
-    this.outline = pOutline ;
+    this.defaultOutline = pDefaultOutline ;
     this.setDivider = false ;
   }
 
@@ -57,12 +58,12 @@ public final class OutlinePropertyChangeListener implements
   /**
    * Initializes the {@link OutlinePropertyChangeListener}.
    * 
-   * @param pOutline The {@link Outline}.
+   * @param pDefaultOutline The {@link DefaultOutline}.
    */
-  public OutlinePropertyChangeListener ( Outline pOutline )
+  public OutlinePropertyChangeListener ( DefaultOutline pDefaultOutline )
   {
     this.jSplitPane = null ;
-    this.outline = pOutline ;
+    this.defaultOutline = pDefaultOutline ;
     this.setDivider = false ;
   }
 
@@ -83,7 +84,7 @@ public final class OutlinePropertyChangeListener implements
       if ( ! this.setDivider )
       {
         this.setDivider = true ;
-        this.jSplitPane.setDividerLocation ( this.outline
+        this.jSplitPane.setDividerLocation ( this.defaultOutline
             .getOutlinePreferences ( ).getDividerLocation ( ) ) ;
       }
     }
@@ -91,7 +92,7 @@ public final class OutlinePropertyChangeListener implements
     {
       if ( pPropertyChangeEvent.getPropertyName ( ).endsWith ( "Color" ) )//$NON-NLS-1$
       {
-        this.outline.propertyChanged ( ) ;
+        this.defaultOutline.propertyChanged ( ) ;
       }
     }
   }

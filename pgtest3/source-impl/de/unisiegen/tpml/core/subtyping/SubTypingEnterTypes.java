@@ -18,6 +18,8 @@ import de.unisiegen.tpml.core.languages.LanguageTypeParser;
 import de.unisiegen.tpml.core.types.MonoType;
 import de.unisiegen.tpml.graphics.StyledLanguageDocument;
 import de.unisiegen.tpml.graphics.StyledLanguageEditor;
+import de.unisiegen.tpml.graphics.outline.DefaultOutline;
+import de.unisiegen.tpml.graphics.outline.Outline;
 import de.unisiegen.tpml.graphics.typechecker.TypeCheckerNodeComponent;
 
 public class SubTypingEnterTypes extends JComponent {
@@ -57,6 +59,7 @@ public class SubTypingEnterTypes extends JComponent {
 	
 	private JButton						clearButton;
 	
+  private DefaultOutline outline ;
 	/**
 	 * The {@link TypeCheckerNodeComponent} can determine whether
 	 * the TypeCheckerEnterType-GUI is active. It will need the
@@ -199,7 +202,14 @@ public class SubTypingEnterTypes extends JComponent {
 		output.setEditable(false);
 		output.setVisible(false);
 		this.add(output, BorderLayout.SOUTH);
+    
+    
+    this.outline = new DefaultOutline ( this ) ;
+    
+
+    JPanel jPanelOutline = this.outline.getJPanelOutline ( ) ;
 		
+    this.add(jPanelOutline, BorderLayout.CENTER);
 	}
 	
 	private void check( MonoType type1, MonoType type2 ){
@@ -217,12 +227,16 @@ public class SubTypingEnterTypes extends JComponent {
 		MonoType type = null ;
 	 
       type = parser.parse();
+      
+      this.outline.loadPrettyPrintable ( type, Outline.Execute.AUTO_CHANGE_TYPEINFERENCE ) ;
+      
       output.setVisible(true);
       output.append( document.getText( document1.getStartPosition ( ).getOffset( ), document1.getEndPosition ( ).getOffset( ) - document1.getStartPosition ( ).getOffset( ) )   + " wurde erfolgreich geparsed \n" );
       
      
-    } catch ( Exception e ) {
-      
+    } catch ( Exception e ) 
+    {
+      this.outline.loadPrettyPrintable ( null, Outline.Execute.AUTO_CHANGE_TYPEINFERENCE ) ;
       output.setVisible(false);
       return;
     }

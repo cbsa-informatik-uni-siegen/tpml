@@ -15,9 +15,6 @@ import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel ;
 import de.unisiegen.tpml.graphics.AbstractProofView ;
 import de.unisiegen.tpml.graphics.outline.DefaultOutline ;
 import de.unisiegen.tpml.graphics.outline.Outline ;
-import de.unisiegen.tpml.graphics.outline.listener.OutlineComponentListener ;
-import de.unisiegen.tpml.graphics.outline.listener.OutlinePropertyChangeListener ;
-import de.unisiegen.tpml.graphics.outline.listener.OutlineTreeModelListener ;
 
 
 /**
@@ -64,6 +61,12 @@ public class TypeCheckerView extends AbstractProofView
 
 
   /**
+   * TODO
+   */
+  private TypeCheckerProofModel typeCheckerProofModel ;
+
+
+  /**
    * Allocates a new {@link TypeCheckerView} for the specified
    * {@link TypeCheckerProofModel}.
    * 
@@ -73,16 +76,12 @@ public class TypeCheckerView extends AbstractProofView
   public TypeCheckerView ( TypeCheckerProofModel pTypeCheckerProofModel )
   {
     super ( ) ;
-    this.outline = new DefaultOutline ( Outline.Start.TYPECHECKER ) ;
-    this.outline.loadExpression ( pTypeCheckerProofModel.getRoot ( )
-        .getLastLeaf ( ).getExpression ( ) , Outline.Execute.INIT_TYPECHECKER ) ;
-    pTypeCheckerProofModel.addTreeModelListener ( new OutlineTreeModelListener (
-        this.outline , pTypeCheckerProofModel ) ) ;
+    this.typeCheckerProofModel = pTypeCheckerProofModel ;
     GridBagConstraints gridBagConstraints = new GridBagConstraints ( ) ;
     this.jSplitPane = new JSplitPane ( JSplitPane.VERTICAL_SPLIT ) ;
     this.setLayout ( new GridBagLayout ( ) ) ;
     this.scrollPane = new JScrollPane ( ) ;
-    this.component = new TypeCheckerComponent ( pTypeCheckerProofModel ) ;
+    this.component = new TypeCheckerComponent ( this.typeCheckerProofModel ) ;
     this.scrollPane.setViewportView ( this.component ) ;
     this.scrollPane.getViewport ( ).setBackground ( Color.WHITE ) ;
     this.scrollPane.addComponentListener ( new ComponentAdapter ( )
@@ -96,6 +95,9 @@ public class TypeCheckerView extends AbstractProofView
                 .getWidth ( ) ) ;
       }
     } ) ;
+    this.outline = new DefaultOutline ( this ) ;
+    this.outline.loadPrettyPrintable ( this.typeCheckerProofModel.getRoot ( )
+        .getLastLeaf ( ).getExpression ( ) , Outline.Execute.INIT_TYPECHECKER ) ;
     JPanel jPanelOutline = this.outline.getJPanelOutline ( ) ;
     jPanelOutline.getPreferredSize ( ).getHeight ( ) ;
     this.jSplitPane.setLeftComponent ( this.scrollPane ) ;
@@ -109,10 +111,18 @@ public class TypeCheckerView extends AbstractProofView
     gridBagConstraints.weightx = 10 ;
     gridBagConstraints.weighty = 10 ;
     this.add ( this.jSplitPane , gridBagConstraints ) ;
-    this.addPropertyChangeListener ( new OutlinePropertyChangeListener (
-        this.jSplitPane , this.outline ) ) ;
-    jPanelOutline.addComponentListener ( new OutlineComponentListener (
-        this.jSplitPane , this.outline ) ) ;
+  }
+
+
+  /**
+   * Returns the jSplitPane.
+   * 
+   * @return The jSplitPane.
+   * @see #jSplitPane
+   */
+  public JSplitPane getJSplitPane ( )
+  {
+    return this.jSplitPane ;
   }
 
 
@@ -124,6 +134,18 @@ public class TypeCheckerView extends AbstractProofView
   public Outline getOutline ( )
   {
     return this.outline ;
+  }
+
+
+  /**
+   * Returns the typeCheckerProofModel.
+   * 
+   * @return The typeCheckerProofModel.
+   * @see #typeCheckerProofModel
+   */
+  public TypeCheckerProofModel getTypeCheckerProofModel ( )
+  {
+    return this.typeCheckerProofModel ;
   }
 
 

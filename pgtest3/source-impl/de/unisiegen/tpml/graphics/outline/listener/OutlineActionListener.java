@@ -74,33 +74,34 @@ public final class OutlineActionListener implements ActionListener
     }
     else if ( OutlineUI.SELECTION.equals ( actionCommand ) )
     {
-      this.outlineUI.getOutlineItemListener ( ).update (
+      // TODO
+     /* this.outlineUI.getOutlineItemListener ( ).update (
           this.outlineUI.getJMenuItemSelection ( ).isSelected ( ) , null ,
-          OutlineUI.SELECTION ) ;
+          OutlineUI.SELECTION ) ;*/
     }
     else if ( OutlineUI.BINDING.equals ( actionCommand ) )
     {
-      this.outlineUI.getOutlineItemListener ( ).update (
+     /* this.outlineUI.getOutlineItemListener ( ).update (
           this.outlineUI.getJMenuItemBinding ( ).isSelected ( ) , null ,
-          OutlineUI.BINDING ) ;
+          OutlineUI.BINDING ) ;*/
     }
     else if ( OutlineUI.FREE.equals ( actionCommand ) )
     {
-      this.outlineUI.getOutlineItemListener ( ).update (
+     /* this.outlineUI.getOutlineItemListener ( ).update (
           this.outlineUI.getJMenuItemUnbound ( ).isSelected ( ) , null ,
-          OutlineUI.FREE ) ;
+          OutlineUI.FREE ) ;*/
     }
     else if ( OutlineUI.REPLACE.equals ( actionCommand ) )
     {
-      this.outlineUI.getOutlineItemListener ( ).update (
+     /* this.outlineUI.getOutlineItemListener ( ).update (
           this.outlineUI.getJMenuItemReplace ( ).isSelected ( ) , null ,
-          OutlineUI.REPLACE ) ;
+          OutlineUI.REPLACE ) ;*/
     }
     else if ( OutlineUI.AUTOUPDATE.equals ( actionCommand ) )
     {
-      this.outlineUI.getOutlineItemListener ( ).update (
+      /*this.outlineUI.getOutlineItemListener ( ).update (
           this.outlineUI.getJMenuItemAutoUpdate ( ).isSelected ( ) , null ,
-          OutlineUI.AUTOUPDATE ) ;
+          OutlineUI.AUTOUPDATE ) ;*/
     }
   }
 

@@ -5,7 +5,6 @@ import java.awt.event.ComponentEvent ;
 import java.awt.event.ComponentListener ;
 import javax.swing.JSplitPane ;
 import de.unisiegen.tpml.graphics.outline.DefaultOutline ;
-import de.unisiegen.tpml.graphics.outline.Outline ;
 import de.unisiegen.tpml.graphics.outline.util.OutlinePreferences ;
 
 
@@ -32,29 +31,9 @@ public final class OutlineComponentListener implements ComponentListener
 
 
   /**
-   * The {@link Outline}.
-   */
-  private Outline outline ;
-
-
-  /**
    * The {@link DefaultOutline}.
    */
   private DefaultOutline defaultOutline ;
-
-
-  /**
-   * Initializes the {@link OutlineComponentListener}.
-   * 
-   * @param pJSplitPane The <code>JSplitPane</code>.
-   * @param pOutline The {@link Outline}.
-   */
-  public OutlineComponentListener ( JSplitPane pJSplitPane , Outline pOutline )
-  {
-    this.jSplitPane = pJSplitPane ;
-    this.outline = pOutline ;
-    this.defaultOutline = null ;
-  }
 
 
   /**
@@ -65,7 +44,20 @@ public final class OutlineComponentListener implements ComponentListener
   public OutlineComponentListener ( DefaultOutline pDefaultOutline )
   {
     this.jSplitPane = null ;
-    this.outline = null ;
+    this.defaultOutline = pDefaultOutline ;
+  }
+
+
+  /**
+   * Initializes the {@link OutlineComponentListener}.
+   * 
+   * @param pJSplitPane The <code>JSplitPane</code>.
+   * @param pDefaultOutline The {@link DefaultOutline}.
+   */
+  public OutlineComponentListener ( JSplitPane pJSplitPane ,
+      DefaultOutline pDefaultOutline )
+  {
+    this.jSplitPane = pJSplitPane ;
     this.defaultOutline = pDefaultOutline ;
   }
 
@@ -104,22 +96,17 @@ public final class OutlineComponentListener implements ComponentListener
    */
   public final void componentResized ( ComponentEvent pComponentEvent )
   {
-    if ( this.outline != null )
+    if ( ( pComponentEvent.getSource ( ).equals ( this.defaultOutline
+        .getJPanelOutline ( ) ) )
+        && ( this.jSplitPane != null ) )
     {
-      if ( pComponentEvent.getSource ( ).equals (
-          this.outline.getJPanelOutline ( ) ) )
-      {
-        this.outline.getOutlinePreferences ( ).setDividerLocation (
-            this.jSplitPane.getDividerLocation ( ) ) ;
-      }
+      this.defaultOutline.getOutlinePreferences ( ).setDividerLocation (
+          this.jSplitPane.getDividerLocation ( ) ) ;
     }
-    if ( this.defaultOutline != null )
+    else if ( pComponentEvent.getSource ( ).equals (
+        this.defaultOutline.getJPanelOutline ( ) ) )
     {
-      if ( pComponentEvent.getSource ( ).equals (
-          this.defaultOutline.getJPanelOutline ( ) ) )
-      {
-        this.defaultOutline.updateBreaks ( ) ;
-      }
+      this.defaultOutline.updateBreaks ( ) ;
     }
   }
 

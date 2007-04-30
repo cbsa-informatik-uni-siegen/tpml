@@ -3,6 +3,7 @@ package de.unisiegen.tpml.graphics.outline ;
 
 import javax.swing.JPanel ;
 import de.unisiegen.tpml.core.expressions.Expression ;
+import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable ;
 import de.unisiegen.tpml.graphics.outline.ui.OutlineUI ;
 import de.unisiegen.tpml.graphics.outline.util.OutlinePreferences ;
 
@@ -39,6 +40,10 @@ public interface Outline
      */
     INIT_TYPECHECKER ,
     /**
+     * Initialized from the <code>TypeInference</code>.
+     */
+    INIT_TYPEINFERENCE ,
+    /**
      * Change by mouse cick from the <code>Editor</code>.
      */
     MOUSE_CLICK_EDITOR ,
@@ -55,6 +60,10 @@ public interface Outline
      */
     MOUSE_CLICK_TYPECHECKER ,
     /**
+     * Change by mouse cick from the <code>TypeInference</code>.
+     */
+    MOUSE_CLICK_TYPEINFERENCE ,
+    /**
      * Auto change from the <code>Editor</code>.
      */
     AUTO_CHANGE_EDITOR ,
@@ -69,33 +78,11 @@ public interface Outline
     /**
      * Auto change from the <code>TypeChecker</code>.
      */
-    AUTO_CHANGE_TYPECHECKER
-  }
-
-
-  /**
-   * Indicates from where the {@link Outline} is started.
-   * 
-   * @author Christian Fehler
-   */
-  public enum Start
-  {
+    AUTO_CHANGE_TYPECHECKER ,
     /**
-     * Started from the <code>Editor</code>.
+     * Auto change from the <code>TypeInference</code>.
      */
-    EDITOR ,
-    /**
-     * Started from the <code>SmallStepper</code>.
-     */
-    SMALLSTEP ,
-    /**
-     * Started from the <code>BigStepper</code>.
-     */
-    BIGSTEP ,
-    /**
-     * Started from the <code>TypeChecker</code>.
-     */
-    TYPECHECKER
+    AUTO_CHANGE_TYPEINFERENCE
   }
 
 
@@ -124,10 +111,11 @@ public interface Outline
    * <code>TypeChecker</code> view it does also nothing if the change does not
    * come from a <code>MouseEvent</code>.
    * 
-   * @param pExpression The new {@link Expression}.
+   * @param pPrettyPrintable The new {@link PrettyPrintable}.
    * @param pExecute The {@link Outline.Execute}.
    */
-  public void loadExpression ( Expression pExpression , Outline.Execute pExecute ) ;
+  public void loadPrettyPrintable ( PrettyPrintable pPrettyPrintable ,
+      Outline.Execute pExecute ) ;
 
 
   /**

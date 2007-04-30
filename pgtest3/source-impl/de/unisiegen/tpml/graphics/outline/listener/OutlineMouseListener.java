@@ -5,9 +5,13 @@ import java.awt.Container ;
 import java.awt.event.MouseEvent ;
 import java.awt.event.MouseListener ;
 import javax.swing.JLabel ;
+import javax.swing.text.BadLocationException ;
+import javax.swing.text.SimpleAttributeSet ;
+import javax.swing.text.StyleConstants ;
 import javax.swing.tree.TreePath ;
 import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.graphics.StyledLanguageDocument ;
+import de.unisiegen.tpml.graphics.Theme ;
 import de.unisiegen.tpml.graphics.bigstep.BigStepView ;
 import de.unisiegen.tpml.graphics.components.CompoundExpression ;
 import de.unisiegen.tpml.graphics.outline.Outline ;
@@ -155,9 +159,45 @@ public final class OutlineMouseListener implements MouseListener
     // Outline
     if ( ( this.outlineUI != null )
         && ( pMouseEvent.getSource ( ).equals ( this.outlineUI
-            .getJTreeOutline ( ) ) ) )
+            .getJTreeOutline ( ) ) ) && ( pMouseEvent.getClickCount ( ) >= 2 ) )
     {
-      if ( pMouseEvent.getButton ( ) == MouseEvent.BUTTON3 )
+      if ( ( pMouseEvent.getButton ( ) == MouseEvent.BUTTON1 )
+          && ( this.outlineUI.getDefaultOutline ( ).getTextEditorPanel ( )
+              .getDocument ( ) != null ) )
+      {
+        TreePath treePath = this.outlineUI.getJTreeOutline ( )
+            .getSelectionPath ( ) ;
+        if ( treePath == null )
+        {
+          return ;
+        }
+        OutlineNode outlineNode = ( OutlineNode ) treePath
+            .getLastPathComponent ( ) ;
+        StyledLanguageDocument document = this.outlineUI.getDefaultOutline ( )
+            .getTextEditorPanel ( ).getDocument ( ) ;
+        if ( outlineNode.getPrettyPrintable ( ) instanceof Expression )
+        {
+          try
+          {
+            document.processChanged ( ) ;
+          }
+          catch ( BadLocationException e )
+          {
+            // Do nothing
+          }
+          Expression expression = ( Expression ) outlineNode
+              .getPrettyPrintable ( ) ;
+          SimpleAttributeSet freeSet = new SimpleAttributeSet ( ) ;
+          StyleConstants.setForeground ( freeSet , Theme.currentTheme ( )
+              .getSelectionColor ( ) ) ;
+          freeSet.addAttribute ( "selected" , "selected" ) ; //$NON-NLS-1$ //$NON-NLS-2$
+          document.setCharacterAttributes (
+              expression.getParserStartOffset ( ) , expression
+                  .getParserEndOffset ( )
+                  - expression.getParserStartOffset ( ) , freeSet , false ) ;
+        }
+      }
+      else if ( pMouseEvent.getButton ( ) == MouseEvent.BUTTON3 )
       {
         int x = pMouseEvent.getX ( ) ;
         int y = pMouseEvent.getY ( ) ;
@@ -191,7 +231,7 @@ public final class OutlineMouseListener implements MouseListener
         {
           // Do nothing
         }
-        this.textEditorPanel.getOutline ( ).loadExpression ( expression ,
+        this.textEditorPanel.getOutline ( ).loadPrettyPrintable ( expression ,
             Outline.Execute.MOUSE_CLICK_EDITOR ) ;
       }
     }
@@ -211,21 +251,21 @@ public final class OutlineMouseListener implements MouseListener
       {
         if ( this.view instanceof SmallStepView )
         {
-          ( ( SmallStepView ) this.view ).getOutline ( ).loadExpression (
+          ( ( SmallStepView ) this.view ).getOutline ( ).loadPrettyPrintable (
               this.compoundExpression.getExpression ( ) ,
               Outline.Execute.MOUSE_CLICK_SMALLSTEP ) ;
         }
         // BigStepView
         else if ( this.view instanceof BigStepView )
         {
-          ( ( BigStepView ) this.view ).getOutline ( ).loadExpression (
+          ( ( BigStepView ) this.view ).getOutline ( ).loadPrettyPrintable (
               this.compoundExpression.getExpression ( ) ,
               Outline.Execute.MOUSE_CLICK_BIGSTEP ) ;
         }
         // TypeCheckerView
         else if ( this.view instanceof TypeCheckerView )
         {
-          ( ( TypeCheckerView ) this.view ).getOutline ( ).loadExpression (
+          ( ( TypeCheckerView ) this.view ).getOutline ( ).loadPrettyPrintable (
               this.compoundExpression.getExpression ( ) ,
               Outline.Execute.MOUSE_CLICK_TYPECHECKER ) ;
         }

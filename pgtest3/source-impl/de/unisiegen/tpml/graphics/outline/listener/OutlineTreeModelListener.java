@@ -8,6 +8,7 @@ import de.unisiegen.tpml.core.bigstep.BigStepProofModel ;
 import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.smallstep.SmallStepProofModel ;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel ;
+import de.unisiegen.tpml.graphics.outline.DefaultOutline ;
 import de.unisiegen.tpml.graphics.outline.Outline ;
 
 
@@ -26,9 +27,9 @@ public final class OutlineTreeModelListener implements TreeModelListener
 
 
   /**
-   * The {@link Outline}.
+   * The {@link DefaultOutline}.
    */
-  public Outline outline ;
+  public DefaultOutline defaultOutline ;
 
 
   /**
@@ -41,13 +42,13 @@ public final class OutlineTreeModelListener implements TreeModelListener
    * Initializes the {@link OutlineTreeModelListener} with the given
    * {@link Outline} and the {@link ExpressionProofModel}.
    * 
-   * @param pOutline The {@link Outline}.
+   * @param pDefaultOutline The {@link DefaultOutline}.
    * @param pExpressionProofModel The {@link ExpressionProofModel}.
    */
-  public OutlineTreeModelListener ( Outline pOutline ,
+  public OutlineTreeModelListener ( DefaultOutline pDefaultOutline ,
       ExpressionProofModel pExpressionProofModel )
   {
-    this.outline = pOutline ;
+    this.defaultOutline = pDefaultOutline ;
     this.expressionProofModel = pExpressionProofModel ;
   }
 
@@ -62,19 +63,19 @@ public final class OutlineTreeModelListener implements TreeModelListener
     Object source = pTreeModelEvent.getSource ( ) ;
     if ( source instanceof SmallStepProofModel )
     {
-      this.outline.loadExpression ( this.expressionProofModel.getRoot ( )
+      this.defaultOutline.loadPrettyPrintable ( this.expressionProofModel.getRoot ( )
           .getLastLeaf ( ).getExpression ( ) ,
           Outline.Execute.AUTO_CHANGE_SMALLSTEP ) ;
     }
     else if ( source instanceof BigStepProofModel )
     {
-      this.outline.loadExpression ( this.expressionProofModel.getRoot ( )
+      this.defaultOutline.loadPrettyPrintable ( this.expressionProofModel.getRoot ( )
           .getLastLeaf ( ).getExpression ( ) ,
           Outline.Execute.AUTO_CHANGE_BIGSTEP ) ;
     }
     else if ( source instanceof TypeCheckerProofModel )
     {
-      this.outline.loadExpression ( this.expressionProofModel.getRoot ( )
+      this.defaultOutline.loadPrettyPrintable ( this.expressionProofModel.getRoot ( )
           .getLastLeaf ( ).getExpression ( ) ,
           Outline.Execute.AUTO_CHANGE_TYPECHECKER ) ;
     }
