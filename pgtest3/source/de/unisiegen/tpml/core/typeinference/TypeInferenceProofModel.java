@@ -656,4 +656,8 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 		super.redo();
 		index++;
 	}
+	
+	public void setFinished(){
+		this.setFinished(true);
+	}
 }

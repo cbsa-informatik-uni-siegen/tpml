@@ -6,7 +6,6 @@ import java.util.LinkedList;
 import java.util.TreeSet;
 
 import de.unisiegen.tpml.core.ProofRuleException;
-import de.unisiegen.tpml.core.AbstractProofModel.UndoableTreeEdit;
 import de.unisiegen.tpml.core.expressions.ArithmeticOperator;
 import de.unisiegen.tpml.core.expressions.Assign;
 import de.unisiegen.tpml.core.expressions.BinaryCons;
@@ -385,10 +384,15 @@ public class DefaultTypeInferenceProofContext implements
 			actual = actual.substitute(newSubstitutions);
 			formulas.add(actual);
 		}
+		
 
 		// create the new node
 		this.model.contextAddProofNode(this, node, formulas, newSubstitutions,
 				rule, formula);
+		if ( formulas.size ( ) < 1 ){
+			model.setFinished();
+		}
+			
 	}
 
 	/**
