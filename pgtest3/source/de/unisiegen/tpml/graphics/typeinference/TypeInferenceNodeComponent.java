@@ -518,10 +518,6 @@ public class TypeInferenceNodeComponent extends JComponent {
 			//proofModel.setFinished(true);	
 		}
 		
-		
-		
-		
-		
 		testAusgabe("update...");
 		//placeExpression();
 		//placeRules();
