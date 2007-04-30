@@ -392,8 +392,12 @@ public class TypeFormularRenderer extends AbstractRenderer {
 					gc.drawString("::", posX, posY);
 					posX += AbstractRenderer.expFontMetrics.stringWidth("::");
 					
-					gc.drawString(type.toString(), posX, posY);
-					posX += AbstractRenderer.expFontMetrics.stringWidth(type.toString());
+					//gc.drawString(type.toString(), posX, posY);
+					//posX += AbstractRenderer.expFontMetrics.stringWidth(type.toString());
+					prettyStringrenderer.setPrettyString(type.toPrettyString());
+					Dimension typeSize = prettyStringrenderer.getNeededSize(Integer.MAX_VALUE);
+					prettyStringrenderer.render(posX, posY-(expressionSize.height / 2) - fontAscent / 2, expressionSize.height, gc, bound, toListenForM);
+					posX += typeSize.width;
 					
 					//everey line but the last needs a line braek
 					if (i<(typeFormulaList.size()-1))
