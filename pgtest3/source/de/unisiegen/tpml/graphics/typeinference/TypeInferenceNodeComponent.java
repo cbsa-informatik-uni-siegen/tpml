@@ -515,7 +515,7 @@ public class TypeInferenceNodeComponent extends JComponent {
 		//TODO geht hier nicht...
 		if (allFormulasList.size()<1)
 		{
-			proofModel.setFinished(true);	
+			//proofModel.setFinished(true);	
 		}
 		
 		
