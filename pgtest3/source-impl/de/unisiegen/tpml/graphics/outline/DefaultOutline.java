@@ -244,12 +244,13 @@ public final class DefaultOutline implements Outline
         this.outlineUI ) ;
     this.outlineUI.getJCheckBoxSelection ( ).addItemListener (
         outlineItemListener ) ;
-    
-    this.outlineUI.getJCheckBoxBinding().addItemListener ( outlineItemListener ) ;
-    
-    this.outlineUI.getJCheckBoxFree().addItemListener ( outlineItemListener ) ;
-    this.outlineUI.getJCheckBoxReplace().addItemListener ( outlineItemListener ) ;
-    this.outlineUI.getJCheckBoxAutoUpdate().addItemListener (outlineItemListener ) ;
+    this.outlineUI.getJCheckBoxBinding ( ).addItemListener (
+        outlineItemListener ) ;
+    this.outlineUI.getJCheckBoxFree ( ).addItemListener ( outlineItemListener ) ;
+    this.outlineUI.getJCheckBoxReplace ( ).addItemListener (
+        outlineItemListener ) ;
+    this.outlineUI.getJCheckBoxAutoUpdate ( ).addItemListener (
+        outlineItemListener ) ;
   }
 
 
@@ -585,8 +586,8 @@ public final class DefaultOutline implements Outline
   {
     // Disable AutoUpdate, remove Listener and deselect
     this.outlineUI.getJCheckBoxAutoUpdate ( ).setEnabled ( false ) ;
-    //this.outlineUI.getJCheckBoxAutoUpdate ( ).removeItemListener (
-      //  this.outlineUI.getOutlineItemListener ( ) ) ;
+    // this.outlineUI.getJCheckBoxAutoUpdate ( ).removeItemListener (
+    // this.outlineUI.getOutlineItemListener ( ) ) ;
     this.outlineUI.getJCheckBoxAutoUpdate ( ).setSelected ( false ) ;
     this.outlineUI.getJMenuItemAutoUpdate ( ).setEnabled ( false ) ;
     // TODO
@@ -973,12 +974,12 @@ public final class DefaultOutline implements Outline
         || ( pExecute.equals ( Outline.Execute.INIT_SMALLSTEP ) )
         || ( pExecute.equals ( Outline.Execute.INIT_BIGSTEP ) )
         || ( pExecute.equals ( Outline.Execute.INIT_TYPECHECKER ) )
-        || ( pExecute.equals ( Outline.Execute.INIT_TYPEINFERENCE ) )
+        || ( pExecute.equals ( Outline.Execute.INIT_SUBTYPING ) )
         || ( pExecute.equals ( Outline.Execute.MOUSE_CLICK_EDITOR ) )
         || ( pExecute.equals ( Outline.Execute.MOUSE_CLICK_SMALLSTEP ) )
         || ( pExecute.equals ( Outline.Execute.MOUSE_CLICK_BIGSTEP ) )
         || ( pExecute.equals ( Outline.Execute.MOUSE_CLICK_TYPECHECKER ) )
-        || ( pExecute.equals ( Outline.Execute.MOUSE_CLICK_TYPEINFERENCE ) ) )
+        || ( pExecute.equals ( Outline.Execute.MOUSE_CLICK_SUBTYPING ) ) )
     {
       execute ( ) ;
     }
@@ -990,7 +991,7 @@ public final class DefaultOutline implements Outline
     {
       executeTimerStart ( 250 ) ;
     }
-    else if ( pExecute.equals ( Outline.Execute.AUTO_CHANGE_TYPEINFERENCE ) )
+    else if ( pExecute.equals ( Outline.Execute.AUTO_CHANGE_SUBTYPING ) )
     {
       executeTimerStart ( 250 ) ;
     }

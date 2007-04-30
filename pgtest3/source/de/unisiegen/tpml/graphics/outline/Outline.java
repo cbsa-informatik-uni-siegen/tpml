@@ -40,9 +40,9 @@ public interface Outline
      */
     INIT_TYPECHECKER ,
     /**
-     * Initialized from the <code>TypeInference</code>.
+     * Initialized from the <code>Subtyping</code>.
      */
-    INIT_TYPEINFERENCE ,
+    INIT_SUBTYPING ,
     /**
      * Change by mouse cick from the <code>Editor</code>.
      */
@@ -60,9 +60,9 @@ public interface Outline
      */
     MOUSE_CLICK_TYPECHECKER ,
     /**
-     * Change by mouse cick from the <code>TypeInference</code>.
+     * Change by mouse cick from the <code>Subtyping</code>.
      */
-    MOUSE_CLICK_TYPEINFERENCE ,
+    MOUSE_CLICK_SUBTYPING ,
     /**
      * Auto change from the <code>Editor</code>.
      */
@@ -80,9 +80,9 @@ public interface Outline
      */
     AUTO_CHANGE_TYPECHECKER ,
     /**
-     * Auto change from the <code>TypeInference</code>.
+     * Auto change from the <code>Subtyping</code>.
      */
-    AUTO_CHANGE_TYPEINFERENCE
+    AUTO_CHANGE_SUBTYPING
   }
 
 

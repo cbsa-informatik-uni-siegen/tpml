@@ -228,7 +228,7 @@ public class SubTypingEnterTypes extends JComponent {
 	 
       type = parser.parse();
       
-      this.outline.loadPrettyPrintable ( type, Outline.Execute.AUTO_CHANGE_TYPEINFERENCE ) ;
+      this.outline.loadPrettyPrintable ( type, Outline.Execute.AUTO_CHANGE_SUBTYPING ) ;
       
       output.setVisible(true);
       output.append( document.getText( document1.getStartPosition ( ).getOffset( ), document1.getEndPosition ( ).getOffset( ) - document1.getStartPosition ( ).getOffset( ) )   + " wurde erfolgreich geparsed \n" );
@@ -236,7 +236,7 @@ public class SubTypingEnterTypes extends JComponent {
      
     } catch ( Exception e ) 
     {
-      this.outline.loadPrettyPrintable ( null, Outline.Execute.AUTO_CHANGE_TYPEINFERENCE ) ;
+      this.outline.loadPrettyPrintable ( null, Outline.Execute.AUTO_CHANGE_SUBTYPING ) ;
       output.setVisible(false);
       return;
     }
