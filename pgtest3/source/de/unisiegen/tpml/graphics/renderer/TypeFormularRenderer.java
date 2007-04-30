@@ -14,7 +14,8 @@ import de.unisiegen.tpml.core.typeinference.TypeFormula;
 import de.unisiegen.tpml.core.typeinference.TypeJudgement;
 import de.unisiegen.tpml.core.types.Type;
 import de.unisiegen.tpml.graphics.components.ShowBonds;
-
+//TODO Renderer als Klassenvariable einführen und die Höhe und breite in der
+//getNeededSize auch mit deren Größen berechnen
 
 /**
  * Subclass of the {@link AbstractRenderer} providing the rendering
