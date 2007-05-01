@@ -18,7 +18,7 @@ public class SubTypingTest extends JFrame {
 		
     // setup the frame
     setLayout(new BorderLayout());
-    setSize(400, 400);
+    setSize(800, 600);
     setTitle("SubTyping Test");
     
     

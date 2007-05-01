@@ -3,6 +3,7 @@ package de.unisiegen.tpml.graphics.outline.listener ;
 
 import java.awt.event.ItemEvent ;
 import java.awt.event.ItemListener ;
+import de.unisiegen.tpml.graphics.outline.DefaultOutline ;
 import de.unisiegen.tpml.graphics.outline.node.OutlineNode ;
 import de.unisiegen.tpml.graphics.outline.ui.OutlineUI ;
 
@@ -18,19 +19,19 @@ import de.unisiegen.tpml.graphics.outline.ui.OutlineUI ;
 public final class OutlineItemListener implements ItemListener
 {
   /**
-   * The {@link OutlineUI}.
+   * The {@link DefaultOutline}.
    */
-  private OutlineUI outlineUI ;
+  private DefaultOutline defaultOutline ;
 
 
   /**
    * Initializes the {@link OutlineItemListener}.
    * 
-   * @param pOutlineUI The {@link OutlineUI}.
+   * @param pDefaultOutline The {@link DefaultOutline}.
    */
-  public OutlineItemListener ( OutlineUI pOutlineUI )
+  public OutlineItemListener ( DefaultOutline pDefaultOutline )
   {
-    this.outlineUI = pOutlineUI ;
+    this.defaultOutline = pDefaultOutline ;
   }
 
 
@@ -43,10 +44,11 @@ public final class OutlineItemListener implements ItemListener
    */
   private final void autoUpdate ( boolean pSelected )
   {
-    this.outlineUI.getAbstractOutline ( ).getOutlinePreferences ( )
-        .setAutoUpdate ( pSelected ) ;
-    this.outlineUI.getJCheckBoxAutoUpdate ( ).setSelected ( pSelected ) ;
-    this.outlineUI.getJMenuItemAutoUpdate ( ).setSelected ( pSelected ) ;
+    this.defaultOutline.getOutlinePreferences ( ).setAutoUpdate ( pSelected ) ;
+    this.defaultOutline.getOutlineUI ( ).getJCheckBoxAutoUpdate ( )
+        .setSelected ( pSelected ) ;
+    this.defaultOutline.getOutlineUI ( ).getJMenuItemAutoUpdate ( )
+        .setSelected ( pSelected ) ;
   }
 
 
@@ -61,13 +63,14 @@ public final class OutlineItemListener implements ItemListener
   private final void binding ( boolean pSelected )
   {
     OutlineNode.setBinding ( pSelected ) ;
-    this.outlineUI.getOutlineTreeSelectionListener ( ).reset ( ) ;
-    this.outlineUI.getOutlineTreeSelectionListener ( ).update (
-        this.outlineUI.getJTreeOutline ( ).getSelectionPath ( ) ) ;
-    this.outlineUI.getAbstractOutline ( ).getOutlinePreferences ( ).setBinding (
+    this.defaultOutline.resetNode ( ) ;
+    this.defaultOutline.update ( this.defaultOutline.getOutlineUI ( )
+        .getJTreeOutline ( ).getSelectionPath ( ) ) ;
+    this.defaultOutline.getOutlinePreferences ( ).setBinding ( pSelected ) ;
+    this.defaultOutline.getOutlineUI ( ).getJCheckBoxBinding ( ).setSelected (
         pSelected ) ;
-    this.outlineUI.getJCheckBoxBinding ( ).setSelected ( pSelected ) ;
-    this.outlineUI.getJMenuItemBinding ( ).setSelected ( pSelected ) ;
+    this.defaultOutline.getOutlineUI ( ).getJMenuItemBinding ( ).setSelected (
+        pSelected ) ;
   }
 
 
@@ -82,13 +85,14 @@ public final class OutlineItemListener implements ItemListener
   private final void free ( boolean pSelected )
   {
     OutlineNode.setFree ( pSelected ) ;
-    this.outlineUI.getOutlineTreeSelectionListener ( ).reset ( ) ;
-    this.outlineUI.getOutlineTreeSelectionListener ( ).update (
-        this.outlineUI.getJTreeOutline ( ).getSelectionPath ( ) ) ;
-    this.outlineUI.getAbstractOutline ( ).getOutlinePreferences ( ).setFree (
+    this.defaultOutline.resetNode ( ) ;
+    this.defaultOutline.update ( this.defaultOutline.getOutlineUI ( )
+        .getJTreeOutline ( ).getSelectionPath ( ) ) ;
+    this.defaultOutline.getOutlinePreferences ( ).setFree ( pSelected ) ;
+    this.defaultOutline.getOutlineUI ( ).getJCheckBoxFree ( ).setSelected (
         pSelected ) ;
-    this.outlineUI.getJCheckBoxFree ( ).setSelected ( pSelected ) ;
-    this.outlineUI.getJMenuItemUnbound ( ).setSelected ( pSelected ) ;
+    this.defaultOutline.getOutlineUI ( ).getJMenuItemFree ( ).setSelected (
+        pSelected ) ;
   }
 
 
@@ -116,13 +120,14 @@ public final class OutlineItemListener implements ItemListener
   private final void replace ( boolean pSelected )
   {
     OutlineNode.setReplace ( pSelected ) ;
-    this.outlineUI.getOutlineTreeSelectionListener ( ).reset ( ) ;
-    this.outlineUI.getOutlineTreeSelectionListener ( ).update (
-        this.outlineUI.getJTreeOutline ( ).getSelectionPath ( ) ) ;
-    this.outlineUI.getAbstractOutline ( ).getOutlinePreferences ( ).setReplace (
+    this.defaultOutline.resetNode ( ) ;
+    this.defaultOutline.update ( this.defaultOutline.getOutlineUI ( )
+        .getJTreeOutline ( ).getSelectionPath ( ) ) ;
+    this.defaultOutline.getOutlinePreferences ( ).setReplace ( pSelected ) ;
+    this.defaultOutline.getOutlineUI ( ).getJCheckBoxReplace ( ).setSelected (
         pSelected ) ;
-    this.outlineUI.getJCheckBoxReplace ( ).setSelected ( pSelected ) ;
-    this.outlineUI.getJMenuItemReplace ( ).setSelected ( pSelected ) ;
+    this.defaultOutline.getOutlineUI ( ).getJMenuItemReplace ( ).setSelected (
+        pSelected ) ;
   }
 
 
@@ -137,13 +142,14 @@ public final class OutlineItemListener implements ItemListener
   private final void selection ( boolean pSelected )
   {
     OutlineNode.setSelection ( pSelected ) ;
-    this.outlineUI.getOutlineTreeSelectionListener ( ).reset ( ) ;
-    this.outlineUI.getOutlineTreeSelectionListener ( ).update (
-        this.outlineUI.getJTreeOutline ( ).getSelectionPath ( ) ) ;
-    this.outlineUI.getAbstractOutline ( ).getOutlinePreferences ( )
-        .setSelection ( pSelected ) ;
-    this.outlineUI.getJCheckBoxSelection ( ).setSelected ( pSelected ) ;
-    this.outlineUI.getJMenuItemSelection ( ).setSelected ( pSelected ) ;
+    this.defaultOutline.resetNode ( ) ;
+    this.defaultOutline.update ( this.defaultOutline.getOutlineUI ( )
+        .getJTreeOutline ( ).getSelectionPath ( ) ) ;
+    this.defaultOutline.getOutlinePreferences ( ).setSelection ( pSelected ) ;
+    this.defaultOutline.getOutlineUI ( ).getJCheckBoxSelection ( ).setSelected (
+        pSelected ) ;
+    this.defaultOutline.getOutlineUI ( ).getJMenuItemSelection ( ).setSelected (
+        pSelected ) ;
   }
 
 
@@ -164,36 +170,36 @@ public final class OutlineItemListener implements ItemListener
   {
     // Replace
     if ( ( OutlineUI.REPLACE.equals ( pActionCommand ) )
-        || ( ( pSource != null ) && ( pSource.equals ( this.outlineUI
-            .getJCheckBoxReplace ( ) ) ) ) )
+        || ( ( pSource != null ) && ( pSource.equals ( this.defaultOutline
+            .getOutlineUI ( ).getJCheckBoxReplace ( ) ) ) ) )
     {
       replace ( pSelected ) ;
     }
     // Binding
     else if ( ( OutlineUI.BINDING.equals ( pActionCommand ) )
-        || ( ( pSource != null ) && ( pSource.equals ( this.outlineUI
-            .getJCheckBoxBinding ( ) ) ) ) )
+        || ( ( pSource != null ) && ( pSource.equals ( this.defaultOutline
+            .getOutlineUI ( ).getJCheckBoxBinding ( ) ) ) ) )
     {
       binding ( pSelected ) ;
     }
-    // Unbound
+    // Free
     else if ( ( OutlineUI.FREE.equals ( pActionCommand ) )
-        || ( ( pSource != null ) && ( pSource.equals ( this.outlineUI
-            .getJCheckBoxFree ( ) ) ) ) )
+        || ( ( pSource != null ) && ( pSource.equals ( this.defaultOutline
+            .getOutlineUI ( ).getJCheckBoxFree ( ) ) ) ) )
     {
       free ( pSelected ) ;
     }
     // Selection
     else if ( ( OutlineUI.SELECTION.equals ( pActionCommand ) )
-        || ( ( pSource != null ) && ( pSource.equals ( this.outlineUI
-            .getJCheckBoxSelection ( ) ) ) ) )
+        || ( ( pSource != null ) && ( pSource.equals ( this.defaultOutline
+            .getOutlineUI ( ).getJCheckBoxSelection ( ) ) ) ) )
     {
       selection ( pSelected ) ;
     }
     // AutoUpdate
     else if ( ( OutlineUI.AUTOUPDATE.equals ( pActionCommand ) )
-        || ( ( pSource != null ) && ( pSource.equals ( this.outlineUI
-            .getJCheckBoxAutoUpdate ( ) ) ) ) )
+        || ( ( pSource != null ) && ( pSource.equals ( this.defaultOutline
+            .getOutlineUI ( ).getJCheckBoxAutoUpdate ( ) ) ) ) )
     {
       autoUpdate ( pSelected ) ;
     }

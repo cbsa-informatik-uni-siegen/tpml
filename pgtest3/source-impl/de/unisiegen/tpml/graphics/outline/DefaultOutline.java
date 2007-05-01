@@ -10,21 +10,29 @@ import javax.swing.JPanel ;
 import javax.swing.JScrollPane ;
 import javax.swing.SwingUtilities ;
 import javax.swing.tree.TreePath ;
+import de.unisiegen.tpml.core.expressions.Attribute ;
+import de.unisiegen.tpml.core.expressions.CurriedMethod ;
 import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.expressions.Identifier ;
+import de.unisiegen.tpml.core.expressions.Method ;
+import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable ;
 import de.unisiegen.tpml.core.subtyping.SubTypingEnterTypes ;
 import de.unisiegen.tpml.core.types.MonoType ;
 import de.unisiegen.tpml.core.types.Type ;
+import de.unisiegen.tpml.graphics.Theme ;
 import de.unisiegen.tpml.graphics.bigstep.BigStepView ;
 import de.unisiegen.tpml.graphics.outline.binding.OutlineBinding ;
 import de.unisiegen.tpml.graphics.outline.binding.OutlineUnbound ;
 import de.unisiegen.tpml.graphics.outline.listener.OutlineActionListener ;
 import de.unisiegen.tpml.graphics.outline.listener.OutlineComponentListener ;
 import de.unisiegen.tpml.graphics.outline.listener.OutlineItemListener ;
+import de.unisiegen.tpml.graphics.outline.listener.OutlineKeyListener ;
 import de.unisiegen.tpml.graphics.outline.listener.OutlineMouseListener ;
 import de.unisiegen.tpml.graphics.outline.listener.OutlinePropertyChangeListener ;
+import de.unisiegen.tpml.graphics.outline.listener.OutlineTreeExpansionListener ;
 import de.unisiegen.tpml.graphics.outline.listener.OutlineTreeModelListener ;
+import de.unisiegen.tpml.graphics.outline.listener.OutlineTreeSelectionListener ;
 import de.unisiegen.tpml.graphics.outline.node.OutlineNode ;
 import de.unisiegen.tpml.graphics.outline.ui.OutlineDisplayTree ;
 import de.unisiegen.tpml.graphics.outline.ui.OutlineTimerTask ;
@@ -136,15 +144,9 @@ public final class DefaultOutline implements Outline
 
 
   /**
-   * Initilizes the {@link OutlinePreferences} and the {@link OutlineUI}.
+   * TODO
    */
-  private DefaultOutline ( )
-  {
-    this.loadedPrettyPrintable = null ;
-    this.rootOutlineNode = null ;
-    this.outlinePreferences = new OutlinePreferences ( ) ;
-    this.outlineUI = new OutlineUI ( this ) ;
-  }
+  private OutlineItemListener outlineItemListener ;
 
 
   /**
@@ -154,62 +156,33 @@ public final class DefaultOutline implements Outline
    */
   public DefaultOutline ( BigStepView pBigStepView )
   {
-    this ( ) ;
-    disableAutoUpdate ( ) ;
+    this.loadedPrettyPrintable = null ;
+    this.rootOutlineNode = null ;
+    this.outlinePreferences = new OutlinePreferences ( ) ;
+    this.outlineUI = new OutlineUI ( this ) ;
+    this.textEditorPanel = null ;
+    this.outlineUI.getJCheckBoxAutoUpdate ( ).setEnabled ( false ) ;
+    this.outlineUI.getJCheckBoxAutoUpdate ( ).setSelected ( false ) ;
+    this.outlineUI.getJMenuItemAutoUpdate ( ).setEnabled ( false ) ;
+    this.outlineUI.getJMenuItemAutoUpdate ( ).setSelected ( false ) ;
+    // ComponentListener
     this.outlineUI.getJPanelMain ( ).addComponentListener (
         new OutlineComponentListener ( pBigStepView.getJSplitPane ( ) , this ) ) ;
+    // PropertyChangeListener
     pBigStepView.addPropertyChangeListener ( new OutlinePropertyChangeListener (
         pBigStepView.getJSplitPane ( ) , this ) ) ;
+    Theme.currentTheme ( ).addPropertyChangeListener (
+        new OutlinePropertyChangeListener ( this ) ) ;
+    // TreeModelListener
     pBigStepView.getBigStepProofModel ( ).addTreeModelListener (
         new OutlineTreeModelListener ( this , pBigStepView
             .getBigStepProofModel ( ) ) ) ;
-  }
-
-
-  /**
-   * Initilizes the {@link OutlinePreferences} and the {@link OutlineUI}.
-   * 
-   * @param pSmallStepView TODO
-   */
-  public DefaultOutline ( SmallStepView pSmallStepView )
-  {
-    this ( ) ;
-    this.outlineUI.getJPanelMain ( )
-        .addComponentListener (
-            new OutlineComponentListener ( pSmallStepView.getJSplitPane ( ) ,
-                this ) ) ;
-    pSmallStepView
-        .addPropertyChangeListener ( new OutlinePropertyChangeListener (
-            pSmallStepView.getJSplitPane ( ) , this ) ) ;
-    pSmallStepView.getSmallStepProofModel ( ).addTreeModelListener (
-        new OutlineTreeModelListener ( this , pSmallStepView
-            .getSmallStepProofModel ( ) ) ) ;
-  }
-
-
-  /**
-   * Initilizes the {@link OutlinePreferences} and the {@link OutlineUI}.
-   * 
-   * @param pTextEditorPanel TODO
-   */
-  public DefaultOutline ( TextEditorPanel pTextEditorPanel )
-  {
-    this ( ) ;
-    this.textEditorPanel = pTextEditorPanel ;
-    // ComponentListener
-    this.outlineUI.getJPanelMain ( ).addComponentListener (
-        new OutlineComponentListener ( pTextEditorPanel.getJSplitPane ( ) ,
-            this ) ) ;
     // MouseListener
-    this.textEditorPanel.getEditor ( ).addMouseListener (
-        new OutlineMouseListener ( pTextEditorPanel ) ) ;
-    // PropertyChangeListener
-    this.textEditorPanel
-        .addPropertyChangeListener ( new OutlinePropertyChangeListener (
-            this.textEditorPanel.getJSplitPane ( ) , this ) ) ;
+    this.outlineUI.getJTreeOutline ( ).addMouseListener (
+        new OutlineMouseListener ( this ) ) ;
     // ActionListener
     OutlineActionListener outlineActionListener = new OutlineActionListener (
-        this.outlineUI ) ;
+        this ) ;
     this.outlineUI.getJMenuItemExpand ( ).addActionListener (
         outlineActionListener ) ;
     this.outlineUI.getJMenuItemExpandAll ( ).addActionListener (
@@ -230,7 +203,89 @@ public final class DefaultOutline implements Outline
         outlineActionListener ) ;
     this.outlineUI.getJMenuItemBinding ( ).addActionListener (
         outlineActionListener ) ;
-    this.outlineUI.getJMenuItemUnbound ( ).addActionListener (
+    this.outlineUI.getJMenuItemFree ( ).addActionListener (
+        outlineActionListener ) ;
+    this.outlineUI.getJMenuItemReplace ( ).addActionListener (
+        outlineActionListener ) ;
+    // ComponentListener
+    this.outlineUI.getJPanelMain ( ).addComponentListener (
+        new OutlineComponentListener ( this ) ) ;
+    // ItemListener
+    this.outlineItemListener = new OutlineItemListener ( this ) ;
+    this.outlineUI.getJCheckBoxSelection ( ).addItemListener (
+        this.outlineItemListener ) ;
+    this.outlineUI.getJCheckBoxBinding ( ).addItemListener (
+        this.outlineItemListener ) ;
+    this.outlineUI.getJCheckBoxFree ( ).addItemListener (
+        this.outlineItemListener ) ;
+    this.outlineUI.getJCheckBoxReplace ( ).addItemListener (
+        this.outlineItemListener ) ;
+    // KeyListener
+    this.outlineUI.getJTreeOutline ( ).addKeyListener (
+        new OutlineKeyListener ( this ) ) ;
+    // TreeExpansionListener
+    this.outlineUI.getJTreeOutline ( ).addTreeExpansionListener (
+        new OutlineTreeExpansionListener ( this ) ) ;
+    // TreeSelectionListener
+    this.outlineUI.getJTreeOutline ( ).getSelectionModel ( )
+        .addTreeSelectionListener ( new OutlineTreeSelectionListener ( this ) ) ;
+  }
+
+
+  /**
+   * Initilizes the {@link OutlinePreferences} and the {@link OutlineUI}.
+   * 
+   * @param pSmallStepView TODO
+   */
+  public DefaultOutline ( SmallStepView pSmallStepView )
+  {
+    this.loadedPrettyPrintable = null ;
+    this.rootOutlineNode = null ;
+    this.outlinePreferences = new OutlinePreferences ( ) ;
+    this.outlineUI = new OutlineUI ( this ) ;
+    this.textEditorPanel = null ;
+    // ComponentListener
+    this.outlineUI.getJPanelMain ( )
+        .addComponentListener (
+            new OutlineComponentListener ( pSmallStepView.getJSplitPane ( ) ,
+                this ) ) ;
+    // PropertyChangeListener
+    pSmallStepView
+        .addPropertyChangeListener ( new OutlinePropertyChangeListener (
+            pSmallStepView.getJSplitPane ( ) , this ) ) ;
+    Theme.currentTheme ( ).addPropertyChangeListener (
+        new OutlinePropertyChangeListener ( this ) ) ;
+    // TreeModelListener
+    pSmallStepView.getSmallStepProofModel ( ).addTreeModelListener (
+        new OutlineTreeModelListener ( this , pSmallStepView
+            .getSmallStepProofModel ( ) ) ) ;
+    // MouseListener
+    this.outlineUI.getJTreeOutline ( ).addMouseListener (
+        new OutlineMouseListener ( this ) ) ;
+    // ActionListener
+    OutlineActionListener outlineActionListener = new OutlineActionListener (
+        this ) ;
+    this.outlineUI.getJMenuItemExpand ( ).addActionListener (
+        outlineActionListener ) ;
+    this.outlineUI.getJMenuItemExpandAll ( ).addActionListener (
+        outlineActionListener ) ;
+    this.outlineUI.getJMenuItemCollapse ( ).addActionListener (
+        outlineActionListener ) ;
+    this.outlineUI.getJMenuItemCollapseAll ( ).addActionListener (
+        outlineActionListener ) ;
+    this.outlineUI.getJMenuItemClose ( ).addActionListener (
+        outlineActionListener ) ;
+    this.outlineUI.getJMenuItemCloseAll ( ).addActionListener (
+        outlineActionListener ) ;
+    this.outlineUI.getJMenuItemCopy ( ).addActionListener (
+        outlineActionListener ) ;
+    this.outlineUI.getJMenuPreferences ( ).addActionListener (
+        outlineActionListener ) ;
+    this.outlineUI.getJMenuItemSelection ( ).addActionListener (
+        outlineActionListener ) ;
+    this.outlineUI.getJMenuItemBinding ( ).addActionListener (
+        outlineActionListener ) ;
+    this.outlineUI.getJMenuItemFree ( ).addActionListener (
         outlineActionListener ) ;
     this.outlineUI.getJMenuItemReplace ( ).addActionListener (
         outlineActionListener ) ;
@@ -239,18 +294,181 @@ public final class DefaultOutline implements Outline
     // ComponentListener
     this.outlineUI.getJPanelMain ( ).addComponentListener (
         new OutlineComponentListener ( this ) ) ;
-    // OutlineItemListener
-    OutlineItemListener outlineItemListener = new OutlineItemListener (
-        this.outlineUI ) ;
+    // ItemListener
+    this.outlineItemListener = new OutlineItemListener ( this ) ;
     this.outlineUI.getJCheckBoxSelection ( ).addItemListener (
-        outlineItemListener ) ;
+        this.outlineItemListener ) ;
     this.outlineUI.getJCheckBoxBinding ( ).addItemListener (
-        outlineItemListener ) ;
-    this.outlineUI.getJCheckBoxFree ( ).addItemListener ( outlineItemListener ) ;
+        this.outlineItemListener ) ;
+    this.outlineUI.getJCheckBoxFree ( ).addItemListener (
+        this.outlineItemListener ) ;
     this.outlineUI.getJCheckBoxReplace ( ).addItemListener (
-        outlineItemListener ) ;
+        this.outlineItemListener ) ;
     this.outlineUI.getJCheckBoxAutoUpdate ( ).addItemListener (
-        outlineItemListener ) ;
+        this.outlineItemListener ) ;
+    // KeyListener
+    this.outlineUI.getJTreeOutline ( ).addKeyListener (
+        new OutlineKeyListener ( this ) ) ;
+    // TreeExpansionListener
+    this.outlineUI.getJTreeOutline ( ).addTreeExpansionListener (
+        new OutlineTreeExpansionListener ( this ) ) ;
+    // TreeSelectionListener
+    this.outlineUI.getJTreeOutline ( ).getSelectionModel ( )
+        .addTreeSelectionListener ( new OutlineTreeSelectionListener ( this ) ) ;
+  }
+
+
+  /**
+   * Initilizes the {@link OutlinePreferences} and the {@link OutlineUI}.
+   * 
+   * @param pSubTypingEnterTypes TODO
+   */
+  public DefaultOutline ( @ SuppressWarnings ( "unused" )
+  SubTypingEnterTypes pSubTypingEnterTypes )
+  {
+    this.loadedPrettyPrintable = null ;
+    this.rootOutlineNode = null ;
+    this.outlinePreferences = new OutlinePreferences ( ) ;
+    this.outlineUI = new OutlineUI ( this ) ;
+    this.textEditorPanel = null ;
+    this.outlineUI.getJCheckBoxBinding ( ).setVisible ( false ) ;
+    this.outlineUI.getJCheckBoxFree ( ).setVisible ( false ) ;
+    this.outlineUI.getJMenuItemBinding ( ).setVisible ( false ) ;
+    this.outlineUI.getJMenuItemFree ( ).setVisible ( false ) ;
+    // PropertyChangeListener
+    Theme.currentTheme ( ).addPropertyChangeListener (
+        new OutlinePropertyChangeListener ( this ) ) ;
+    // MouseListener
+    this.outlineUI.getJTreeOutline ( ).addMouseListener (
+        new OutlineMouseListener ( this ) ) ;
+    // ActionListener
+    OutlineActionListener outlineActionListener = new OutlineActionListener (
+        this ) ;
+    this.outlineUI.getJMenuItemExpand ( ).addActionListener (
+        outlineActionListener ) ;
+    this.outlineUI.getJMenuItemExpandAll ( ).addActionListener (
+        outlineActionListener ) ;
+    this.outlineUI.getJMenuItemCollapse ( ).addActionListener (
+        outlineActionListener ) ;
+    this.outlineUI.getJMenuItemCollapseAll ( ).addActionListener (
+        outlineActionListener ) ;
+    this.outlineUI.getJMenuItemClose ( ).addActionListener (
+        outlineActionListener ) ;
+    this.outlineUI.getJMenuItemCloseAll ( ).addActionListener (
+        outlineActionListener ) ;
+    this.outlineUI.getJMenuItemCopy ( ).addActionListener (
+        outlineActionListener ) ;
+    this.outlineUI.getJMenuPreferences ( ).addActionListener (
+        outlineActionListener ) ;
+    this.outlineUI.getJMenuItemSelection ( ).addActionListener (
+        outlineActionListener ) ;
+    this.outlineUI.getJMenuItemReplace ( ).addActionListener (
+        outlineActionListener ) ;
+    this.outlineUI.getJMenuItemAutoUpdate ( ).addActionListener (
+        outlineActionListener ) ;
+    // ComponentListener
+    this.outlineUI.getJPanelMain ( ).addComponentListener (
+        new OutlineComponentListener ( this ) ) ;
+    // ItemListener
+    this.outlineItemListener = new OutlineItemListener ( this ) ;
+    this.outlineUI.getJCheckBoxSelection ( ).addItemListener (
+        this.outlineItemListener ) ;
+    this.outlineUI.getJCheckBoxReplace ( ).addItemListener (
+        this.outlineItemListener ) ;
+    this.outlineUI.getJCheckBoxAutoUpdate ( ).addItemListener (
+        this.outlineItemListener ) ;
+    // KeyListener
+    this.outlineUI.getJTreeOutline ( ).addKeyListener (
+        new OutlineKeyListener ( this ) ) ;
+    // TreeExpansionListener
+    this.outlineUI.getJTreeOutline ( ).addTreeExpansionListener (
+        new OutlineTreeExpansionListener ( this ) ) ;
+    // TreeSelectionListener
+    this.outlineUI.getJTreeOutline ( ).getSelectionModel ( )
+        .addTreeSelectionListener ( new OutlineTreeSelectionListener ( this ) ) ;
+  }
+
+
+  /**
+   * Initilizes the {@link OutlinePreferences} and the {@link OutlineUI}.
+   * 
+   * @param pTextEditorPanel TODO
+   */
+  public DefaultOutline ( TextEditorPanel pTextEditorPanel )
+  {
+    this.loadedPrettyPrintable = null ;
+    this.rootOutlineNode = null ;
+    this.outlinePreferences = new OutlinePreferences ( ) ;
+    this.outlineUI = new OutlineUI ( this ) ;
+    this.textEditorPanel = pTextEditorPanel ;
+    // ComponentListener
+    this.outlineUI.getJPanelMain ( ).addComponentListener (
+        new OutlineComponentListener ( pTextEditorPanel.getJSplitPane ( ) ,
+            this ) ) ;
+    // MouseListener
+    this.textEditorPanel.getEditor ( ).addMouseListener (
+        new OutlineMouseListener ( pTextEditorPanel ) ) ;
+    this.outlineUI.getJTreeOutline ( ).addMouseListener (
+        new OutlineMouseListener ( this ) ) ;
+    // PropertyChangeListener
+    this.textEditorPanel
+        .addPropertyChangeListener ( new OutlinePropertyChangeListener (
+            this.textEditorPanel.getJSplitPane ( ) , this ) ) ;
+    Theme.currentTheme ( ).addPropertyChangeListener (
+        new OutlinePropertyChangeListener ( this ) ) ;
+    // ActionListener
+    OutlineActionListener outlineActionListener = new OutlineActionListener (
+        this ) ;
+    this.outlineUI.getJMenuItemExpand ( ).addActionListener (
+        outlineActionListener ) ;
+    this.outlineUI.getJMenuItemExpandAll ( ).addActionListener (
+        outlineActionListener ) ;
+    this.outlineUI.getJMenuItemCollapse ( ).addActionListener (
+        outlineActionListener ) ;
+    this.outlineUI.getJMenuItemCollapseAll ( ).addActionListener (
+        outlineActionListener ) ;
+    this.outlineUI.getJMenuItemClose ( ).addActionListener (
+        outlineActionListener ) ;
+    this.outlineUI.getJMenuItemCloseAll ( ).addActionListener (
+        outlineActionListener ) ;
+    this.outlineUI.getJMenuItemCopy ( ).addActionListener (
+        outlineActionListener ) ;
+    this.outlineUI.getJMenuPreferences ( ).addActionListener (
+        outlineActionListener ) ;
+    this.outlineUI.getJMenuItemSelection ( ).addActionListener (
+        outlineActionListener ) ;
+    this.outlineUI.getJMenuItemBinding ( ).addActionListener (
+        outlineActionListener ) ;
+    this.outlineUI.getJMenuItemFree ( ).addActionListener (
+        outlineActionListener ) ;
+    this.outlineUI.getJMenuItemReplace ( ).addActionListener (
+        outlineActionListener ) ;
+    this.outlineUI.getJMenuItemAutoUpdate ( ).addActionListener (
+        outlineActionListener ) ;
+    // ComponentListener
+    this.outlineUI.getJPanelMain ( ).addComponentListener (
+        new OutlineComponentListener ( this ) ) ;
+    // ItemListener
+    this.outlineItemListener = new OutlineItemListener ( this ) ;
+    this.outlineUI.getJCheckBoxSelection ( ).addItemListener (
+        this.outlineItemListener ) ;
+    this.outlineUI.getJCheckBoxBinding ( ).addItemListener (
+        this.outlineItemListener ) ;
+    this.outlineUI.getJCheckBoxFree ( ).addItemListener (
+        this.outlineItemListener ) ;
+    this.outlineUI.getJCheckBoxReplace ( ).addItemListener (
+        this.outlineItemListener ) ;
+    this.outlineUI.getJCheckBoxAutoUpdate ( ).addItemListener (
+        this.outlineItemListener ) ;
+    // KeyListener
+    this.outlineUI.getJTreeOutline ( ).addKeyListener (
+        new OutlineKeyListener ( this ) ) ;
+    // TreeExpansionListener
+    this.outlineUI.getJTreeOutline ( ).addTreeExpansionListener (
+        new OutlineTreeExpansionListener ( this ) ) ;
+    // TreeSelectionListener
+    this.outlineUI.getJTreeOutline ( ).getSelectionModel ( )
+        .addTreeSelectionListener ( new OutlineTreeSelectionListener ( this ) ) ;
   }
 
 
@@ -261,29 +479,81 @@ public final class DefaultOutline implements Outline
    */
   public DefaultOutline ( TypeCheckerView pTypeCheckerView )
   {
-    this ( ) ;
-    disableAutoUpdate ( ) ;
+    this.loadedPrettyPrintable = null ;
+    this.rootOutlineNode = null ;
+    this.outlinePreferences = new OutlinePreferences ( ) ;
+    this.outlineUI = new OutlineUI ( this ) ;
+    this.textEditorPanel = null ;
+    this.outlineUI.getJCheckBoxAutoUpdate ( ).setEnabled ( false ) ;
+    this.outlineUI.getJCheckBoxAutoUpdate ( ).setSelected ( false ) ;
+    this.outlineUI.getJMenuItemAutoUpdate ( ).setEnabled ( false ) ;
+    this.outlineUI.getJMenuItemAutoUpdate ( ).setSelected ( false ) ;
+    // ComponentListener
     this.outlineUI.getJPanelMain ( ).addComponentListener (
         new OutlineComponentListener ( pTypeCheckerView.getJSplitPane ( ) ,
             this ) ) ;
+    // PropertyChangeListener
     pTypeCheckerView
         .addPropertyChangeListener ( new OutlinePropertyChangeListener (
             pTypeCheckerView.getJSplitPane ( ) , this ) ) ;
+    Theme.currentTheme ( ).addPropertyChangeListener (
+        new OutlinePropertyChangeListener ( this ) ) ;
+    // TreeModelListener
     pTypeCheckerView.getTypeCheckerProofModel ( ).addTreeModelListener (
         new OutlineTreeModelListener ( this , pTypeCheckerView
             .getTypeCheckerProofModel ( ) ) ) ;
-  }
-
-
-  /**
-   * Initilizes the {@link OutlinePreferences} and the {@link OutlineUI}.
-   * 
-   * @param pSubTypingEnterTypes TODO
-   */
-  public DefaultOutline ( SubTypingEnterTypes pSubTypingEnterTypes )
-  {
-    this ( ) ;
-    // TODO Some listeners
+    // MouseListener
+    this.outlineUI.getJTreeOutline ( ).addMouseListener (
+        new OutlineMouseListener ( this ) ) ;
+    // ActionListener
+    OutlineActionListener outlineActionListener = new OutlineActionListener (
+        this ) ;
+    this.outlineUI.getJMenuItemExpand ( ).addActionListener (
+        outlineActionListener ) ;
+    this.outlineUI.getJMenuItemExpandAll ( ).addActionListener (
+        outlineActionListener ) ;
+    this.outlineUI.getJMenuItemCollapse ( ).addActionListener (
+        outlineActionListener ) ;
+    this.outlineUI.getJMenuItemCollapseAll ( ).addActionListener (
+        outlineActionListener ) ;
+    this.outlineUI.getJMenuItemClose ( ).addActionListener (
+        outlineActionListener ) ;
+    this.outlineUI.getJMenuItemCloseAll ( ).addActionListener (
+        outlineActionListener ) ;
+    this.outlineUI.getJMenuItemCopy ( ).addActionListener (
+        outlineActionListener ) ;
+    this.outlineUI.getJMenuPreferences ( ).addActionListener (
+        outlineActionListener ) ;
+    this.outlineUI.getJMenuItemSelection ( ).addActionListener (
+        outlineActionListener ) ;
+    this.outlineUI.getJMenuItemBinding ( ).addActionListener (
+        outlineActionListener ) ;
+    this.outlineUI.getJMenuItemFree ( ).addActionListener (
+        outlineActionListener ) ;
+    this.outlineUI.getJMenuItemReplace ( ).addActionListener (
+        outlineActionListener ) ;
+    // ComponentListener
+    this.outlineUI.getJPanelMain ( ).addComponentListener (
+        new OutlineComponentListener ( this ) ) ;
+    // ItemListener
+    this.outlineItemListener = new OutlineItemListener ( this ) ;
+    this.outlineUI.getJCheckBoxSelection ( ).addItemListener (
+        this.outlineItemListener ) ;
+    this.outlineUI.getJCheckBoxBinding ( ).addItemListener (
+        this.outlineItemListener ) ;
+    this.outlineUI.getJCheckBoxFree ( ).addItemListener (
+        this.outlineItemListener ) ;
+    this.outlineUI.getJCheckBoxReplace ( ).addItemListener (
+        this.outlineItemListener ) ;
+    // KeyListener
+    this.outlineUI.getJTreeOutline ( ).addKeyListener (
+        new OutlineKeyListener ( this ) ) ;
+    // TreeExpansionListener
+    this.outlineUI.getJTreeOutline ( ).addTreeExpansionListener (
+        new OutlineTreeExpansionListener ( this ) ) ;
+    // TreeSelectionListener
+    this.outlineUI.getJTreeOutline ( ).getSelectionModel ( )
+        .addTreeSelectionListener ( new OutlineTreeSelectionListener ( this ) ) ;
   }
 
 
@@ -578,26 +848,6 @@ public final class DefaultOutline implements Outline
 
 
   /**
-   * Disables the auto update <code>JCheckBox</code> and the
-   * <code>JMenuItem</code>. Removes the <code>ItemListener</code> and the
-   * <code>ActionListener</code>.
-   */
-  private final void disableAutoUpdate ( )
-  {
-    // Disable AutoUpdate, remove Listener and deselect
-    this.outlineUI.getJCheckBoxAutoUpdate ( ).setEnabled ( false ) ;
-    // this.outlineUI.getJCheckBoxAutoUpdate ( ).removeItemListener (
-    // this.outlineUI.getOutlineItemListener ( ) ) ;
-    this.outlineUI.getJCheckBoxAutoUpdate ( ).setSelected ( false ) ;
-    this.outlineUI.getJMenuItemAutoUpdate ( ).setEnabled ( false ) ;
-    // TODO
-    // this.outlineUI.getJMenuItemAutoUpdate ( ).removeActionListener (
-    // this.outlineUI.getOutlineActionListener ( ) ) ;
-    this.outlineUI.getJMenuItemAutoUpdate ( ).setSelected ( false ) ;
-  }
-
-
-  /**
    * Execute the rebuild of a new tree in the {@link Outline}.
    */
   public final void execute ( )
@@ -787,6 +1037,18 @@ public final class DefaultOutline implements Outline
 
 
   /**
+   * Returns the outlineItemListener.
+   * 
+   * @return The outlineItemListener.
+   * @see #outlineItemListener
+   */
+  public OutlineItemListener getOutlineItemListener ( )
+  {
+    return this.outlineItemListener ;
+  }
+
+
+  /**
    * Returns the {@link OutlinePreferences}.
    * 
    * @return The {@link OutlinePreferences}.
@@ -941,6 +1203,15 @@ public final class DefaultOutline implements Outline
       return ;
     }
     /*
+     * Do not update, if the the auto change comes from the Subtyping and the
+     * auto update is disabled.
+     */
+    if ( ( pExecute.equals ( Outline.Execute.AUTO_CHANGE_SUBTYPING ) )
+        && ( ! this.outlinePreferences.isAutoUpdate ( ) ) )
+    {
+      return ;
+    }
+    /*
      * Do not update, if the the auto change comes from the BigStepper.
      */
     if ( pExecute.equals ( Outline.Execute.AUTO_CHANGE_BIGSTEP ) )
@@ -970,30 +1241,47 @@ public final class DefaultOutline implements Outline
      * Execute the new Expression immediately, if the change is an init change
      * or a change because of a mouse click.
      */
-    if ( ( pExecute.equals ( Outline.Execute.INIT_EDITOR ) )
-        || ( pExecute.equals ( Outline.Execute.INIT_SMALLSTEP ) )
-        || ( pExecute.equals ( Outline.Execute.INIT_BIGSTEP ) )
-        || ( pExecute.equals ( Outline.Execute.INIT_TYPECHECKER ) )
-        || ( pExecute.equals ( Outline.Execute.INIT_SUBTYPING ) )
-        || ( pExecute.equals ( Outline.Execute.MOUSE_CLICK_EDITOR ) )
-        || ( pExecute.equals ( Outline.Execute.MOUSE_CLICK_SMALLSTEP ) )
-        || ( pExecute.equals ( Outline.Execute.MOUSE_CLICK_BIGSTEP ) )
-        || ( pExecute.equals ( Outline.Execute.MOUSE_CLICK_TYPECHECKER ) )
-        || ( pExecute.equals ( Outline.Execute.MOUSE_CLICK_SUBTYPING ) ) )
+    switch ( pExecute )
     {
-      execute ( ) ;
-    }
-    else if ( pExecute.equals ( Outline.Execute.AUTO_CHANGE_EDITOR ) )
-    {
-      executeTimerStart ( 500 ) ;
-    }
-    else if ( pExecute.equals ( Outline.Execute.AUTO_CHANGE_SMALLSTEP ) )
-    {
-      executeTimerStart ( 250 ) ;
-    }
-    else if ( pExecute.equals ( Outline.Execute.AUTO_CHANGE_SUBTYPING ) )
-    {
-      executeTimerStart ( 250 ) ;
+      case INIT_EDITOR :
+      case INIT_SMALLSTEP :
+      case INIT_BIGSTEP :
+      case INIT_TYPECHECKER :
+      case INIT_SUBTYPING :
+      case MOUSE_CLICK_EDITOR :
+      case MOUSE_CLICK_SMALLSTEP :
+      case MOUSE_CLICK_BIGSTEP :
+      case MOUSE_CLICK_TYPECHECKER :
+      case MOUSE_CLICK_SUBTYPING :
+      {
+        execute ( ) ;
+        break ;
+      }
+      case AUTO_CHANGE_EDITOR :
+      {
+        executeTimerStart ( 500 ) ;
+        break ;
+      }
+      case AUTO_CHANGE_SMALLSTEP :
+      {
+        executeTimerStart ( 250 ) ;
+        break ;
+      }
+      case AUTO_CHANGE_BIGSTEP :
+      {
+        executeTimerStart ( 250 ) ;
+        break ;
+      }
+      case AUTO_CHANGE_TYPECHECKER :
+      {
+        executeTimerStart ( 250 ) ;
+        break ;
+      }
+      case AUTO_CHANGE_SUBTYPING :
+      {
+        executeTimerStart ( 250 ) ;
+        break ;
+      }
     }
   }
 
@@ -1043,11 +1331,115 @@ public final class DefaultOutline implements Outline
 
 
   /**
+   * Repaints the given node and all its children.
+   */
+  private final void repaintNode ( )
+  {
+    OutlineNode rootNode = ( OutlineNode ) this.outlineUI.getTreeModel ( )
+        .getRoot ( ) ;
+    repaintNode ( rootNode ) ;
+  }
+
+
+  /**
+   * Repaints the given node and all its children.
+   * 
+   * @param pOutlineNode The node, which should be repainted.
+   */
+  private final void repaintNode ( OutlineNode pOutlineNode )
+  {
+    this.outlineUI.getTreeModel ( ).nodeChanged ( pOutlineNode ) ;
+    for ( int i = 0 ; i < pOutlineNode.getChildCount ( ) ; i ++ )
+    {
+      repaintNode ( ( OutlineNode ) pOutlineNode.getChildAt ( i ) ) ;
+    }
+  }
+
+
+  /**
+   * Resets the root node and all its children.
+   */
+  public final void resetNode ( )
+  {
+    OutlineNode outlineNode = ( OutlineNode ) this.outlineUI.getTreeModel ( )
+        .getRoot ( ) ;
+    if ( outlineNode == null )
+    {
+      return ;
+    }
+    resetNode ( outlineNode ) ;
+  }
+
+
+  /**
+   * Resets the given node and all its children.
+   * 
+   * @param pOutlineNode The node, which should be reseted.
+   */
+  private final void resetNode ( OutlineNode pOutlineNode )
+  {
+    pOutlineNode.setReplaceInThisNode ( false ) ;
+    pOutlineNode.setOutlineBinding ( null ) ;
+    pOutlineNode.setBindingIdentifier ( null ) ;
+    pOutlineNode.updateCaption ( ) ;
+    for ( int i = 0 ; i < pOutlineNode.getChildCount ( ) ; i ++ )
+    {
+      resetNode ( ( OutlineNode ) pOutlineNode.getChildAt ( i ) ) ;
+    }
+  }
+
+
+  /**
    * Sets the root node in the {@link OutlineUI}.
    */
   public final void setRootNode ( )
   {
     this.outlineUI.setRootNode ( this.rootOutlineNode ) ;
+    updateBreaks ( ) ;
+  }
+
+
+  /**
+   * Updates the caption of the selected node and its higher nodes.
+   * 
+   * @param pTreePath The selected <code>TreePath</code>.
+   */
+  public final void update ( TreePath pTreePath )
+  {
+    OutlineNode rootNode = ( OutlineNode ) this.outlineUI.getTreeModel ( )
+        .getRoot ( ) ;
+    if ( rootNode == null )
+    {
+      return ;
+    }
+    resetNode ( ) ;
+    if ( pTreePath == null )
+    {
+      repaintNode ( ) ;
+      return ;
+    }
+    ArrayList < OutlineNode > list = new ArrayList < OutlineNode > ( ) ;
+    Object [ ] path = pTreePath.getPath ( ) ;
+    for ( int i = 0 ; i < pTreePath.getPathCount ( ) ; i ++ )
+    {
+      list.add ( ( OutlineNode ) path [ i ] ) ;
+    }
+    OutlineNode selectedNode = list.get ( list.size ( ) - 1 ) ;
+    // Expression
+    if ( selectedNode.isExpression ( ) )
+    {
+      updateExpression ( list , pTreePath ) ;
+    }
+    // Expression
+    else if ( selectedNode.isIdentifier ( ) )
+    {
+      updateIdentifier ( list , pTreePath ) ;
+    }
+    // Type
+    else if ( selectedNode.isType ( ) )
+    {
+      updateType ( list , pTreePath ) ;
+    }
     updateBreaks ( ) ;
   }
 
@@ -1118,6 +1510,241 @@ public final class DefaultOutline implements Outline
               currentTreePath ) ;
         }
       }
+    }
+  }
+
+
+  /**
+   * Updates the caption of the selected node and its higher nodes.
+   * 
+   * @param pList The parent nodes of the selected node.
+   * @param pTreePath The selected <code>TreePath</code>.
+   */
+  private final void updateExpression ( ArrayList < OutlineNode > pList ,
+      TreePath pTreePath )
+  {
+    OutlineNode selectedNode = pList.get ( pList.size ( ) - 1 ) ;
+    for ( int i = 0 ; i < pList.size ( ) ; i ++ )
+    {
+      if ( ( selectedNode.getPrettyPrintable ( ) instanceof Identifier )
+          && ( i < pList.size ( ) - 1 )
+          && ( ( ( Identifier ) selectedNode.getPrettyPrintable ( ) )
+              .getBoundToExpression ( ) != null ) )
+      {
+        try
+        {
+          Identifier identifier = ( Identifier ) selectedNode
+              .getPrettyPrintable ( ) ;
+          /*
+           * Highlight the bound Identifiers in the other childs of a parent
+           * row.
+           */
+          if ( ( pList.get ( i ).getPrettyPrintable ( ) instanceof Attribute )
+              || ( pList.get ( i ).getPrettyPrintable ( ) instanceof Method )
+              || ( pList.get ( i ).getPrettyPrintable ( ) instanceof CurriedMethod ) )
+          {
+            OutlineNode nodeRowChild = ( OutlineNode ) pTreePath.getPath ( ) [ i ] ;
+            OutlineNode nodeRow = ( OutlineNode ) pTreePath.getPath ( ) [ i - 1 ] ;
+            for ( int j = nodeRow.getIndex ( nodeRowChild ) ; j >= 0 ; j -- )
+            {
+              OutlineNode currentOutlineNode = ( OutlineNode ) nodeRow
+                  .getChildAt ( j ) ;
+              if ( currentOutlineNode.getPrettyPrintable ( ) == identifier
+                  .getBoundToExpression ( ) )
+              {
+                /*
+                 * Highlight the first identifier
+                 */
+                currentOutlineNode.setBindingIdentifier ( identifier
+                    .getBoundToIdentifier ( ) ) ;
+                currentOutlineNode.updateCaption ( ) ;
+                /*
+                 * Highlight the Identifier in the first child
+                 */
+                for ( int k = 0 ; k < currentOutlineNode.getChildCount ( ) ; k ++ )
+                {
+                  OutlineNode nodeId = ( OutlineNode ) currentOutlineNode
+                      .getChildAt ( k ) ;
+                  if ( nodeId.getPrettyPrintable ( ) == identifier
+                      .getBoundToIdentifier ( ) )
+                  {
+                    nodeId.setBindingIdentifier ( identifier
+                        .getBoundToIdentifier ( ) ) ;
+                    nodeId.updateCaption ( ) ;
+                    break ;
+                  }
+                }
+              }
+            }
+          }
+          else
+          {
+            /*
+             * Highlight the Identifier in the child node with the bound
+             * Identifier index.
+             */
+            if ( pList.get ( i ).getPrettyPrintable ( ) == identifier
+                .getBoundToExpression ( ) )
+            {
+              for ( int j = 0 ; j < pList.get ( i ).getChildCount ( ) ; j ++ )
+              {
+                OutlineNode nodeId = ( OutlineNode ) pList.get ( i )
+                    .getChildAt ( j ) ;
+                if ( nodeId.getPrettyPrintable ( ) == identifier
+                    .getBoundToIdentifier ( ) )
+                {
+                  nodeId.setBindingIdentifier ( identifier
+                      .getBoundToIdentifier ( ) ) ;
+                  nodeId.updateCaption ( ) ;
+                  break ;
+                }
+              }
+            }
+            /*
+             * Highlight the Identifier in the node.
+             */
+            pList.get ( i ).setBindingIdentifier (
+                identifier.getBoundToIdentifier ( ) ) ;
+          }
+        }
+        catch ( IllegalArgumentException e )
+        {
+          // Do nothing
+        }
+      }
+      /*
+       * It should be replaced in higher nodes, but not the selected node
+       */
+      if ( i < pList.size ( ) - 1 )
+      {
+        pList.get ( i ).setReplaceInThisNode ( true ) ;
+      }
+      /*
+       * If only the root is selected, there should not be replaced
+       */
+      if ( pList.size ( ) == 1 )
+      {
+        pList.get ( i ).setReplaceInThisNode ( false ) ;
+      }
+      /*
+       * Update the caption of the node
+       */
+      PrettyAnnotation prettyAnnotation = pList.get ( i ).getPrettyPrintable ( )
+          .toPrettyString ( ).getAnnotationForPrintable (
+              selectedNode.getPrettyPrintable ( ) ) ;
+      pList.get ( i ).updateCaption ( prettyAnnotation.getStartOffset ( ) ,
+          prettyAnnotation.getEndOffset ( ) ) ;
+      /*
+       * Node has changed and can be repainted
+       */
+      this.outlineUI.getTreeModel ( ).nodeChanged (
+          ( ( OutlineNode ) pTreePath.getPath ( ) [ i ] ) ) ;
+    }
+  }
+
+
+  /**
+   * Updates the caption of the selected node and its higher nodes.
+   * 
+   * @param pList The parent nodes of the selected node.
+   * @param pTreePath The selected <code>TreePath</code>.
+   */
+  private final void updateIdentifier ( ArrayList < OutlineNode > pList ,
+      TreePath pTreePath )
+  {
+    OutlineNode selectedNode = pList.get ( pList.size ( ) - 1 ) ;
+    OutlineNode nodeAttribute = pList.get ( pList.size ( ) - 2 ) ;
+    /*
+     * Highlight the bound Identifiers of an Attribute in the other childs of
+     * the parent row.
+     */
+    if ( nodeAttribute.getPrettyPrintable ( ) instanceof Attribute )
+    {
+      OutlineNode nodeRow = pList.get ( pList.size ( ) - 3 ) ;
+      for ( int i = nodeRow.getIndex ( nodeAttribute ) + 1 ; i < nodeRow
+          .getChildCount ( ) ; i ++ )
+      {
+        OutlineNode currentRowChild = ( OutlineNode ) nodeRow.getChildAt ( i ) ;
+        currentRowChild.setOutlineBinding ( selectedNode.getOutlineBinding ( ) ) ;
+        currentRowChild.updateCaption ( ) ;
+      }
+    }
+    for ( int i = 0 ; i < pList.size ( ) ; i ++ )
+    {
+      /*
+       * Sets the new binding in higher nodes
+       */
+      pList.get ( i ).setOutlineBinding ( selectedNode.getOutlineBinding ( ) ) ;
+      /*
+       * Sets the BoundToIdentifier value.
+       */
+      pList.get ( i ).setBindingIdentifier (
+          ( ( Identifier ) selectedNode.getPrettyPrintable ( ) )
+              .getBoundToIdentifier ( ) ) ;
+      /*
+       * It should be replaced in higher nodes
+       */
+      pList.get ( i ).setReplaceInThisNode ( true ) ;
+      /*
+       * Update the caption of the node
+       */
+      PrettyAnnotation prettyAnnotation = pList.get ( i ).getPrettyPrintable ( )
+          .toPrettyString ( ).getAnnotationForPrintable (
+              selectedNode.getPrettyPrintable ( ) ) ;
+      pList.get ( i ).updateCaption ( prettyAnnotation.getStartOffset ( ) ,
+          prettyAnnotation.getEndOffset ( ) ) ;
+      /*
+       * Node has changed and can be repainted
+       */
+      this.outlineUI.getTreeModel ( ).nodeChanged (
+          ( ( OutlineNode ) pTreePath.getPath ( ) [ i ] ) ) ;
+    }
+  }
+
+
+  /**
+   * Updates the caption of the selected node and its higher nodes.
+   * 
+   * @param pList The parent nodes of the selected node.
+   * @param pTreePath The selected <code>TreePath</code>.
+   */
+  private final void updateType ( ArrayList < OutlineNode > pList ,
+      TreePath pTreePath )
+  {
+    OutlineNode selectedNode = pList.get ( pList.size ( ) - 1 ) ;
+    for ( int i = 0 ; i < pList.size ( ) ; i ++ )
+    {
+      /*
+       * It should be replaced in higher nodes, but not the selected node
+       */
+      if ( i < pList.size ( ) - 1 )
+      {
+        pList.get ( i ).setReplaceInThisNode ( true ) ;
+      }
+      /*
+       * If only the root is selected, there should not be replaced
+       */
+      if ( pList.size ( ) == 1 )
+      {
+        pList.get ( i ).setReplaceInThisNode ( false ) ;
+      }
+      /*
+       * Update the caption of the node
+       */
+      if ( pList.get ( i ).isIdentifier ( ) )
+      {
+        continue ;
+      }
+      PrettyAnnotation prettyAnnotation = pList.get ( i ).getPrettyPrintable ( )
+          .toPrettyString ( ).getAnnotationForPrintable (
+              selectedNode.getPrettyPrintable ( ) ) ;
+      pList.get ( i ).updateCaption ( prettyAnnotation.getStartOffset ( ) ,
+          prettyAnnotation.getEndOffset ( ) ) ;
+      /*
+       * Node has changed and can be repainted
+       */
+      this.outlineUI.getTreeModel ( ).nodeChanged (
+          ( ( OutlineNode ) pTreePath.getPath ( ) [ i ] ) ) ;
     }
   }
 }

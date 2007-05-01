@@ -4,6 +4,7 @@ package de.unisiegen.tpml.graphics.outline.listener ;
 import java.awt.event.ActionEvent ;
 import java.awt.event.ActionListener ;
 import javax.swing.tree.TreePath ;
+import de.unisiegen.tpml.graphics.outline.DefaultOutline ;
 import de.unisiegen.tpml.graphics.outline.node.OutlineNode ;
 import de.unisiegen.tpml.graphics.outline.ui.OutlineUI ;
 import de.unisiegen.tpml.graphics.outline.util.OutlineClipboard ;
@@ -19,19 +20,19 @@ import de.unisiegen.tpml.graphics.outline.util.OutlineClipboard ;
 public final class OutlineActionListener implements ActionListener
 {
   /**
-   * The {@link OutlineUI}.
+   * The {@link DefaultOutline}.
    */
-  private OutlineUI outlineUI ;
+  private DefaultOutline defaultOutline ;
 
 
   /**
    * Initializes the <code>OutlineActionListener</code>.
    * 
-   * @param pOutlineUI The <code>OutlineUI</code>.
+   * @param pDefaultOutline The <code>DefaultOutline</code>.
    */
-  public OutlineActionListener ( OutlineUI pOutlineUI )
+  public OutlineActionListener ( DefaultOutline pDefaultOutline )
   {
-    this.outlineUI = pOutlineUI ;
+    this.defaultOutline = pDefaultOutline ;
   }
 
 
@@ -74,34 +75,33 @@ public final class OutlineActionListener implements ActionListener
     }
     else if ( OutlineUI.SELECTION.equals ( actionCommand ) )
     {
-      // TODO
-     /* this.outlineUI.getOutlineItemListener ( ).update (
-          this.outlineUI.getJMenuItemSelection ( ).isSelected ( ) , null ,
-          OutlineUI.SELECTION ) ;*/
+      this.defaultOutline.getOutlineItemListener ( ).update (
+          this.defaultOutline.getOutlineUI ( ).getJMenuItemSelection ( )
+              .isSelected ( ) , null , OutlineUI.SELECTION ) ;
     }
     else if ( OutlineUI.BINDING.equals ( actionCommand ) )
     {
-     /* this.outlineUI.getOutlineItemListener ( ).update (
-          this.outlineUI.getJMenuItemBinding ( ).isSelected ( ) , null ,
-          OutlineUI.BINDING ) ;*/
+      this.defaultOutline.getOutlineItemListener ( ).update (
+          this.defaultOutline.getOutlineUI ( ).getJMenuItemBinding ( )
+              .isSelected ( ) , null , OutlineUI.BINDING ) ;
     }
     else if ( OutlineUI.FREE.equals ( actionCommand ) )
     {
-     /* this.outlineUI.getOutlineItemListener ( ).update (
-          this.outlineUI.getJMenuItemUnbound ( ).isSelected ( ) , null ,
-          OutlineUI.FREE ) ;*/
+      this.defaultOutline.getOutlineItemListener ( ).update (
+          this.defaultOutline.getOutlineUI ( ).getJMenuItemFree ( )
+              .isSelected ( ) , null , OutlineUI.FREE ) ;
     }
     else if ( OutlineUI.REPLACE.equals ( actionCommand ) )
     {
-     /* this.outlineUI.getOutlineItemListener ( ).update (
-          this.outlineUI.getJMenuItemReplace ( ).isSelected ( ) , null ,
-          OutlineUI.REPLACE ) ;*/
+      this.defaultOutline.getOutlineItemListener ( ).update (
+          this.defaultOutline.getOutlineUI ( ).getJMenuItemReplace ( )
+              .isSelected ( ) , null , OutlineUI.REPLACE ) ;
     }
     else if ( OutlineUI.AUTOUPDATE.equals ( actionCommand ) )
     {
-      /*this.outlineUI.getOutlineItemListener ( ).update (
-          this.outlineUI.getJMenuItemAutoUpdate ( ).isSelected ( ) , null ,
-          OutlineUI.AUTOUPDATE ) ;*/
+      this.defaultOutline.getOutlineItemListener ( ).update (
+          this.defaultOutline.getOutlineUI ( ).getJMenuItemAutoUpdate ( )
+              .isSelected ( ) , null , OutlineUI.AUTOUPDATE ) ;
     }
   }
 
@@ -111,14 +111,16 @@ public final class OutlineActionListener implements ActionListener
    */
   public final void close ( )
   {
-    if ( this.outlineUI.getJTreeOutline ( ).getSelectionRows ( ) == null )
+    if ( this.defaultOutline.getOutlineUI ( ).getJTreeOutline ( )
+        .getSelectionRows ( ) == null )
     {
       return ;
     }
-    for ( int i = this.outlineUI.getJTreeOutline ( ).getRowCount ( ) - 1 ; i >= this.outlineUI
+    for ( int i = this.defaultOutline.getOutlineUI ( ).getJTreeOutline ( )
+        .getRowCount ( ) - 1 ; i >= this.defaultOutline.getOutlineUI ( )
         .getJTreeOutline ( ).getSelectionRows ( ) [ 0 ] ; i -- )
     {
-      this.outlineUI.getJTreeOutline ( ).collapseRow ( i ) ;
+      this.defaultOutline.getOutlineUI ( ).getJTreeOutline ( ).collapseRow ( i ) ;
     }
   }
 
@@ -128,9 +130,10 @@ public final class OutlineActionListener implements ActionListener
    */
   public final void closeAll ( )
   {
-    for ( int i = this.outlineUI.getJTreeOutline ( ).getRowCount ( ) - 1 ; i >= 0 ; i -- )
+    for ( int i = this.defaultOutline.getOutlineUI ( ).getJTreeOutline ( )
+        .getRowCount ( ) - 1 ; i >= 0 ; i -- )
     {
-      this.outlineUI.getJTreeOutline ( ).collapseRow ( i ) ;
+      this.defaultOutline.getOutlineUI ( ).getJTreeOutline ( ).collapseRow ( i ) ;
     }
   }
 
@@ -140,12 +143,14 @@ public final class OutlineActionListener implements ActionListener
    */
   public final void collapse ( )
   {
-    if ( this.outlineUI.getJTreeOutline ( ).getSelectionRows ( ) == null )
+    if ( this.defaultOutline.getOutlineUI ( ).getJTreeOutline ( )
+        .getSelectionRows ( ) == null )
     {
       return ;
     }
-    this.outlineUI.getJTreeOutline ( ).collapseRow (
-        this.outlineUI.getJTreeOutline ( ).getSelectionRows ( ) [ 0 ] ) ;
+    this.defaultOutline.getOutlineUI ( ).getJTreeOutline ( ).collapseRow (
+        this.defaultOutline.getOutlineUI ( ).getJTreeOutline ( )
+            .getSelectionRows ( ) [ 0 ] ) ;
   }
 
 
@@ -154,7 +159,7 @@ public final class OutlineActionListener implements ActionListener
    */
   public final void collapseAll ( )
   {
-    this.outlineUI.getJTreeOutline ( ).collapseRow ( 0 ) ;
+    this.defaultOutline.getOutlineUI ( ).getJTreeOutline ( ).collapseRow ( 0 ) ;
   }
 
 
@@ -163,8 +168,9 @@ public final class OutlineActionListener implements ActionListener
    */
   public final void copy ( )
   {
-    OutlineNode outlineNode = ( OutlineNode ) this.outlineUI.getJTreeOutline ( )
-        .getSelectionPath ( ).getLastPathComponent ( ) ;
+    OutlineNode outlineNode = ( OutlineNode ) this.defaultOutline
+        .getOutlineUI ( ).getJTreeOutline ( ).getSelectionPath ( )
+        .getLastPathComponent ( ) ;
     if ( outlineNode != null )
     {
       OutlineClipboard.getInstance ( ).copy ( outlineNode.getPrettyString ( ) ) ;
@@ -177,7 +183,8 @@ public final class OutlineActionListener implements ActionListener
    */
   public final void expand ( )
   {
-    expandTreePath ( this.outlineUI.getJTreeOutline ( ).getSelectionPath ( ) ) ;
+    expandTreePath ( this.defaultOutline.getOutlineUI ( ).getJTreeOutline ( )
+        .getSelectionPath ( ) ) ;
   }
 
 
@@ -187,9 +194,10 @@ public final class OutlineActionListener implements ActionListener
   public final void expandAll ( )
   {
     int i = 0 ;
-    while ( i < this.outlineUI.getJTreeOutline ( ).getRowCount ( ) )
+    while ( i < this.defaultOutline.getOutlineUI ( ).getJTreeOutline ( )
+        .getRowCount ( ) )
     {
-      this.outlineUI.getJTreeOutline ( ).expandRow ( i ) ;
+      this.defaultOutline.getOutlineUI ( ).getJTreeOutline ( ).expandRow ( i ) ;
       i ++ ;
     }
   }
@@ -212,6 +220,7 @@ public final class OutlineActionListener implements ActionListener
       expandTreePath ( pTreePath.pathByAddingChild ( outlineNode
           .getChildAt ( i ) ) ) ;
     }
-    this.outlineUI.getJTreeOutline ( ).expandPath ( pTreePath ) ;
+    this.defaultOutline.getOutlineUI ( ).getJTreeOutline ( ).expandPath (
+        pTreePath ) ;
   }
 }

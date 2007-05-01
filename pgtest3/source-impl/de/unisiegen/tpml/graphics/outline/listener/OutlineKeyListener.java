@@ -4,8 +4,8 @@ package de.unisiegen.tpml.graphics.outline.listener ;
 import java.awt.event.KeyEvent ;
 import java.awt.event.KeyListener ;
 import de.unisiegen.tpml.core.expressions.Expression ;
+import de.unisiegen.tpml.graphics.outline.DefaultOutline ;
 import de.unisiegen.tpml.graphics.outline.node.OutlineNode ;
-import de.unisiegen.tpml.graphics.outline.ui.OutlineUI ;
 import de.unisiegen.tpml.graphics.outline.util.OutlineClipboard ;
 
 
@@ -25,19 +25,19 @@ public final class OutlineKeyListener implements KeyListener
 
 
   /**
-   * The {@link OutlineUI}.
+   * The {@link DefaultOutline}.
    */
-  private OutlineUI outlineUI ;
+  private DefaultOutline defaultOutline ;
 
 
   /**
    * Initializes the {@link OutlineKeyListener}.
    * 
-   * @param pOutlineUI The {@link OutlineUI}.
+   * @param pDefaultOutline The {@link DefaultOutline}.
    */
-  public OutlineKeyListener ( OutlineUI pOutlineUI )
+  public OutlineKeyListener ( DefaultOutline pDefaultOutline )
   {
-    this.outlineUI = pOutlineUI ;
+    this.defaultOutline = pDefaultOutline ;
   }
 
 
@@ -47,8 +47,9 @@ public final class OutlineKeyListener implements KeyListener
    */
   public final void copy ( )
   {
-    OutlineNode outlineNode = ( OutlineNode ) this.outlineUI.getJTreeOutline ( )
-        .getSelectionPath ( ).getLastPathComponent ( ) ;
+    OutlineNode outlineNode = ( OutlineNode ) this.defaultOutline
+        .getOutlineUI ( ).getJTreeOutline ( ).getSelectionPath ( )
+        .getLastPathComponent ( ) ;
     if ( outlineNode != null )
     {
       OutlineClipboard.getInstance ( ).copy ( outlineNode.getPrettyString ( ) ) ;
@@ -63,10 +64,8 @@ public final class OutlineKeyListener implements KeyListener
    */
   private final void handleKeyEvent ( KeyEvent pKeyEvent )
   {
-    /*
-     * jTreeAbstractSyntaxTree
-     */
-    if ( pKeyEvent.getSource ( ).equals ( this.outlineUI.getJTreeOutline ( ) ) )
+    if ( pKeyEvent.getSource ( ).equals (
+        this.defaultOutline.getOutlineUI ( ).getJTreeOutline ( ) ) )
     {
       /*
        * Copy the selected node as a string into the clipboard.

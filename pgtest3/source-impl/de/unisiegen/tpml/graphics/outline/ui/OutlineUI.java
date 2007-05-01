@@ -21,14 +21,8 @@ import javax.swing.KeyStroke ;
 import javax.swing.border.LineBorder ;
 import javax.swing.tree.DefaultMutableTreeNode ;
 import javax.swing.tree.DefaultTreeModel ;
-import de.unisiegen.tpml.graphics.Theme ;
 import de.unisiegen.tpml.graphics.outline.DefaultOutline ;
 import de.unisiegen.tpml.graphics.outline.Outline ;
-import de.unisiegen.tpml.graphics.outline.listener.OutlineKeyListener ;
-import de.unisiegen.tpml.graphics.outline.listener.OutlineMouseListener ;
-import de.unisiegen.tpml.graphics.outline.listener.OutlinePropertyChangeListener ;
-import de.unisiegen.tpml.graphics.outline.listener.OutlineTreeExpansionListener ;
-import de.unisiegen.tpml.graphics.outline.listener.OutlineTreeSelectionListener ;
 
 
 /**
@@ -261,27 +255,9 @@ public final class OutlineUI
 
 
   /**
-   * The {@link OutlineTreeSelectionListener}.
-   * 
-   * @see #getOutlineTreeSelectionListener()
-   */
-  private OutlineTreeSelectionListener outlineTreeSelectionListener ;
-
-
-  /**
    * The {@link DefaultOutline}.
-   * 
-   * @see #getAbstractOutline()
    */
   private DefaultOutline defaultOutline ;
-
-
-  /**
-   * The {@link OutlineMouseListener}.
-   * 
-   * @see #getOutlineMouseListener()
-   */
-  private OutlineMouseListener outlineMouseListener ;
 
 
   /**
@@ -363,11 +339,11 @@ public final class OutlineUI
 
 
   /**
-   * The <code>JCheckBoxMenuItem</code> unbound.
+   * The <code>JCheckBoxMenuItem</code> free.
    * 
    * @see #getJCheckBoxFree()
    */
-  private JCheckBoxMenuItem jMenuItemUnbound ;
+  private JCheckBoxMenuItem jMenuItemFree ;
 
 
   /**
@@ -418,10 +394,6 @@ public final class OutlineUI
     this.insets = new Insets ( 0 , 0 , 0 , 0 ) ;
     // Preferences
     this.resourceBundle = ResourceBundle.getBundle ( RESOURCE ) ;
-    // Listener
-    this.outlineTreeSelectionListener = new OutlineTreeSelectionListener (
-        this.defaultOutline ) ;
-    this.outlineMouseListener = new OutlineMouseListener ( this ) ;
     // PopupMenu
     createPopupMenu ( ) ;
     // Layout
@@ -533,13 +505,6 @@ public final class OutlineUI
     this.jTreeOutline.setDoubleBuffered ( true ) ;
     this.jTreeOutline.setCellRenderer ( new OutlineCellRenderer ( ) ) ;
     this.jTreeOutline.setRowHeight ( 0 ) ;
-    this.jTreeOutline.getSelectionModel ( ).addTreeSelectionListener (
-        this.outlineTreeSelectionListener ) ;
-    this.jTreeOutline
-        .addTreeExpansionListener ( new OutlineTreeExpansionListener (
-            this.defaultOutline ) ) ;
-    this.jTreeOutline.addMouseListener ( this.outlineMouseListener ) ;
-    this.jTreeOutline.addKeyListener ( new OutlineKeyListener ( this ) ) ;
     // ScrollPane
     this.jScrollPaneOutline = new JScrollPane ( this.jTreeOutline ) ;
     this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
@@ -559,8 +524,6 @@ public final class OutlineUI
     this.gridBagConstraints.weightx = 0 ;
     this.gridBagConstraints.weighty = 0 ;
     this.jPanelMain.add ( this.jPanelPreferences , this.gridBagConstraints ) ;
-    Theme.currentTheme ( ).addPropertyChangeListener (
-        new OutlinePropertyChangeListener ( this.defaultOutline ) ) ;
   }
 
 
@@ -689,16 +652,16 @@ public final class OutlineUI
         .getOutlinePreferences ( ).isBinding ( ) ) ;
     this.jMenuPreferences.add ( this.jMenuItemBinding ) ;
     // MenuItem Unbound
-    this.jMenuItemUnbound = new JCheckBoxMenuItem ( this.resourceBundle
+    this.jMenuItemFree = new JCheckBoxMenuItem ( this.resourceBundle
         .getString ( FREE ) ) ;
-    this.jMenuItemUnbound.setMnemonic ( this.resourceBundle.getString (
+    this.jMenuItemFree.setMnemonic ( this.resourceBundle.getString (
         FREE + MNEMONIC ).charAt ( 0 ) ) ;
-    this.jMenuItemUnbound.setToolTipText ( this.resourceBundle.getString ( FREE
+    this.jMenuItemFree.setToolTipText ( this.resourceBundle.getString ( FREE
         + TOOLTIP ) ) ;
-    this.jMenuItemUnbound.setActionCommand ( FREE ) ;
-    this.jMenuItemUnbound.setSelected ( this.defaultOutline
+    this.jMenuItemFree.setActionCommand ( FREE ) ;
+    this.jMenuItemFree.setSelected ( this.defaultOutline
         .getOutlinePreferences ( ).isFree ( ) ) ;
-    this.jMenuPreferences.add ( this.jMenuItemUnbound ) ;
+    this.jMenuPreferences.add ( this.jMenuItemFree ) ;
     // MenuItem Replace
     this.jMenuItemReplace = new JCheckBoxMenuItem ( this.resourceBundle
         .getString ( REPLACE ) ) ;
@@ -721,30 +684,6 @@ public final class OutlineUI
     this.jMenuItemAutoUpdate.setSelected ( this.defaultOutline
         .getOutlinePreferences ( ).isAutoUpdate ( ) ) ;
     this.jMenuPreferences.add ( this.jMenuItemAutoUpdate ) ;
-  }
-
-
-  /**
-   * Returns the {@link DefaultOutline}.
-   * 
-   * @return The {@link DefaultOutline}.
-   * @see #defaultOutline
-   */
-  public final DefaultOutline getAbstractOutline ( )
-  {
-    return this.defaultOutline ;
-  }
-
-
-  /**
-   * Returns the defaultOutline.
-   * 
-   * @return The defaultOutline.
-   * @see #defaultOutline
-   */
-  public DefaultOutline getDefaultOutline ( )
-  {
-    return this.defaultOutline ;
   }
 
 
@@ -917,6 +856,18 @@ public final class OutlineUI
 
 
   /**
+   * Returns the <code>jMenuItemUnbound</code>.
+   * 
+   * @return The <code>jMenuItemUnbound</code>.
+   * @see #jMenuItemFree
+   */
+  public final JCheckBoxMenuItem getJMenuItemFree ( )
+  {
+    return this.jMenuItemFree ;
+  }
+
+
+  /**
    * Returns the <code>jMenuItemReplace</code>.
    * 
    * @return The <code>jMenuItemReplace</code>.
@@ -937,18 +888,6 @@ public final class OutlineUI
   public final JCheckBoxMenuItem getJMenuItemSelection ( )
   {
     return this.jMenuItemSelection ;
-  }
-
-
-  /**
-   * Returns the <code>jMenuItemUnbound</code>.
-   * 
-   * @return The <code>jMenuItemUnbound</code>.
-   * @see #jMenuItemUnbound
-   */
-  public final JCheckBoxMenuItem getJMenuItemUnbound ( )
-  {
-    return this.jMenuItemUnbound ;
   }
 
 
@@ -1021,30 +960,6 @@ public final class OutlineUI
   public final JTree getJTreeOutline ( )
   {
     return this.jTreeOutline ;
-  }
-
-
-  /**
-   * Returns the {@link OutlineMouseListener}.
-   * 
-   * @return The {@link OutlineMouseListener}.
-   * @see #outlineMouseListener
-   */
-  public final OutlineMouseListener getOutlineMouseListener ( )
-  {
-    return this.outlineMouseListener ;
-  }
-
-
-  /**
-   * Returns the {@link OutlineTreeSelectionListener}.
-   * 
-   * @return The {@link OutlineTreeSelectionListener}.
-   * @see #outlineTreeSelectionListener
-   */
-  public final OutlineTreeSelectionListener getOutlineTreeSelectionListener ( )
-  {
-    return this.outlineTreeSelectionListener ;
   }
 
 
