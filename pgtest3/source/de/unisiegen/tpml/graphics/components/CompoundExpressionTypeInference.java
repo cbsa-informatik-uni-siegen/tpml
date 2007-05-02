@@ -321,7 +321,9 @@ public class CompoundExpressionTypeInference extends JComponent
     if ( this.substitutionRenderer != null && this.substitutionRenderer.isCollapsed ( ) )
     {
       Rectangle r = this.substitutionRenderer.getCollapsedArea ( ) ;
-      if ( event.getX ( ) >= r.x && event.getX ( ) <= r.x + r.width )
+      testAusgabe("Die Grenzen r: "+ r.x+" - "+(r.x+r.width)+", "+r.y+"-"+(r.y+r.height));
+      testAusgabe("Die Maus:"+event.getX ( )+", "+event.getY ( ));
+      if ( event.getX ( ) >= r.x && event.getX ( ) <= r.x + r.width && event.getY() >= r.y && event.getY() <= r.y+r.height )
       {
         setToolTipText ( this.substitutionRenderer.getCollapsedString ( ) ) ;
         testAusgabe(this.substitutionRenderer.getCollapsedString ( ));
@@ -334,18 +336,21 @@ public class CompoundExpressionTypeInference extends JComponent
     //TODO der ToolTipText soll auch bei den kleinen Dingern funktionieren...
     if (this.typeFormularRenderer != null && this.typeFormularRenderer.isCollapsed ( ) )
     {
+    	setToolTipText ( null ) ;
+        	
     	ArrayList <Rectangle> rs = this.typeFormularRenderer.getCollapAreas();
+    	
     	for (int i = 0; i<rs.size(); i++)
     	{
     		Rectangle r = rs.get(i);
-        if ( event.getX ( ) >= r.x && event.getX ( ) <= r.x + r.width )
+    		testAusgabe("Die Grenzen r: "+ r.x+" - "+(r.x+r.width)+", "+r.y+"-"+(r.y+r.height));
+    		testAusgabe("Die Maus:"+event.getX ( )+", "+event.getY ( ));
+        //if ( event.getX ( ) >= r.x && event.getX ( ) <= r.x + r.width )
+        if ( event.getX ( ) >= r.x && event.getX ( ) <= r.x + r.width && event.getY() >= r.y && event.getY() <= r.y+r.height )
         {
+        	testAusgabe("ja, diesen hier!"+i);
           setToolTipText ( this.typeFormularRenderer.getCollapStrings().get(i) ) ;
-          testAusgabe(this.substitutionRenderer.getCollapsedString ( ));
-        }
-        else
-        {
-          setToolTipText ( null ) ;
+          testAusgabe(getToolTipText());
         }
     		
     	}
