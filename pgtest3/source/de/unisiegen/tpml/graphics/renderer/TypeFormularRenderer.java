@@ -320,19 +320,32 @@ public class TypeFormularRenderer extends AbstractRenderer {
 				//einrücken = AbstractRenderer.keywordFontMetrics.stringWidth("solve {");
 			einrücken = posX-einrücken;
 			
+			prettyStringrenderer = new PrettyStringRenderer();
+			
 			for (int i = 0; i < typeFormulaList.size(); i++)
 			{
 				t = typeFormulaList.get(i);
 				if (t instanceof TypeEquation)
 				{
-					gc.drawString(t.toString(), posX, posY);
+					TypeEquation s = (TypeEquation)t;
+					
+					//gc.drawString(t.toString(), posX, posY);
+					//posX += AbstractRenderer.expFontMetrics.stringWidth(t.toString());
+					prettyStringrenderer.setPrettyString(s.toPrettyString());
+					Dimension typeEquationSize = prettyStringrenderer.getNeededSize(Integer.MAX_VALUE);
+					ShowBonds bound = new ShowBonds();
+					ToListenForMouseContainer toListenForM = new ToListenForMouseContainer();
+					prettyStringrenderer.render(posX, posY-(typeEquationSize.height / 2) - fontAscent / 2, typeEquationSize.height, gc, bound, toListenForM);
+					posX += typeEquationSize.width;
+					
 					gc.setColor(expColor);
-					posX += AbstractRenderer.expFontMetrics.stringWidth(t.toString());
+					//posX += AbstractRenderer.expFontMetrics.stringWidth(t.toString());
 					//every but the last line needs an linebreak
 					if (i<(typeFormulaList.size()-1))
 					{
 						posX = x+einrücken;
-						posY += AbstractRenderer.fontHeight;
+						//posY += AbstractRenderer.fontHeight;
+						posY += typeEquationSize.height;
 					}
 					
 				}
@@ -343,7 +356,7 @@ public class TypeFormularRenderer extends AbstractRenderer {
 					Type type = t.getType();
 					
 					//TODO die entsprechendne Renderer einbinden
-					prettyStringrenderer = new PrettyStringRenderer();
+					
 					environment.symbols();
 					environment.identifiers();
 					environmentRenderer = new EnvironmentRenderer<Enumeration, Enumeration>();

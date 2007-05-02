@@ -175,7 +175,7 @@ public abstract class AbstractRenderer
     AbstractRenderer.keywordFontMetrics = reference
         .getFontMetrics ( AbstractRenderer.keywordFont ) ;
     AbstractRenderer.constantColor = theme.getConstantColor ( ) ;
-    AbstractRenderer.constantFont = theme.getFont ( );//.deriveFont ( Font.BOLD ) ;
+    AbstractRenderer.constantFont = theme.getFont ( ).deriveFont ( Font.BOLD ) ;
     AbstractRenderer.constantFontMetrics = reference
         .getFontMetrics ( AbstractRenderer.constantFont ) ;
     AbstractRenderer.envColor = theme.getEnvironmentColor ( ) ;

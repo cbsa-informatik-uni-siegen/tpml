@@ -232,10 +232,13 @@ public class EnvironmentRenderer<S, E> extends AbstractRenderer {
 			
 			if (env.hasMoreElements()) {
 				this.collapsed = true;
+				this.collapsedArea.x = posX;
 				gc.drawString(EnvironmentRenderer.collapsString, posX, posY);
+				posX += AbstractRenderer.envFontMetrics.stringWidth(collapsString);
+				this.collapsedArea.width 	= (posX -  collapsedArea.x);
 				
-				this.collapsedArea.x 			= x;
-				this.collapsedArea.width 	= width; 
+				this.collapsedArea.y = posY-fontHeight;
+				this.collapsedArea.height = fontHeight;
 			}
 			
 		}

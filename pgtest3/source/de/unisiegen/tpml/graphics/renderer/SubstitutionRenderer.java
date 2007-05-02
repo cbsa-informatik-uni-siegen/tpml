@@ -226,10 +226,15 @@ public class SubstitutionRenderer extends AbstractRenderer {
 			{
 				this.collapsed = true;
 				gc.drawString(SubstitutionRenderer.collapsString, posX, posY);
+				this.collapsedArea.x 			= posX;
+				
 				posX += AbstractRenderer.expFontMetrics.stringWidth(SubstitutionRenderer.collapsString);
 				
-				this.collapsedArea.x 			= x;
-				this.collapsedArea.width 	= width; 
+				
+				this.collapsedArea.width 	= (posX-collapsedArea.x);
+				
+				this.collapsedArea.y = posY - fontHeight;
+				this.collapsedArea.height = fontHeight;
 			}
 			
 			//Render the "]"
