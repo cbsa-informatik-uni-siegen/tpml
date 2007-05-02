@@ -1225,6 +1225,7 @@ public final class DefaultOutline implements Outline
     {
       return ;
     }
+    executeTimerCancel ( ) ;
     this.outlineUI.setError ( false ) ;
     /*
      * Do not update, if the the loaded Expression is equal to the new
@@ -1236,7 +1237,6 @@ public final class DefaultOutline implements Outline
       return ;
     }
     this.loadedPrettyPrintable = pPrettyPrintable ;
-    executeTimerCancel ( ) ;
     /*
      * Execute the new Expression immediately, if the change is an init change
      * or a change because of a mouse click.
