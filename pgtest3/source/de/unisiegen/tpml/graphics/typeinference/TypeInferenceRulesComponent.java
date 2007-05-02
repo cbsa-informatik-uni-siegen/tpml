@@ -300,7 +300,7 @@ public class TypeInferenceRulesComponent extends JComponent {
 				// this rulepack doesn't end with an axiom rule so we need to display the menuButton 
 				Dimension buttonSize = this.menuButton.getNeededSize();
 				this.menuButton.setBounds(this.size.width, centerV - this.spacing - buttonSize.height, buttonSize.width, buttonSize.height);
-				this.menuButton.setVisible (true);
+				this.menuButton.setVisible (false);
 				this.size.width += buttonSize.width;
 			
 		}
