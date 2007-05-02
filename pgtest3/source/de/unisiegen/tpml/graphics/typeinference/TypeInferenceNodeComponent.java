@@ -786,7 +786,7 @@ public class TypeInferenceNodeComponent extends JComponent {
 		}
 	}
 	
-/*//WORKAROUND: START
+//WORKAROUND: START
   @Override
   protected void processMouseEvent(MouseEvent e)
   {
@@ -869,7 +869,7 @@ public class TypeInferenceNodeComponent extends JComponent {
   }
 
   // WORKAROUND: END
-*/  
+  
   private static void testAusgabe (String s)
   {
   	//System.out.println(s);
