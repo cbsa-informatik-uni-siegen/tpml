@@ -48,7 +48,7 @@ public class StyledLanguageDocument extends DefaultStyledDocument implements
   /**
    * Empty array of language exceptions.
    */
-  private static final LanguageScannerException [ ] EMPTY_ARRAY = new LanguageScannerException [ 0 ] ;
+  protected static final LanguageScannerException [ ] EMPTY_ARRAY = new LanguageScannerException [ 0 ] ;
 
 
   /**
@@ -56,14 +56,14 @@ public class StyledLanguageDocument extends DefaultStyledDocument implements
    * 
    * @see Logger
    */
-  private static final Logger logger = Logger
+  protected static final Logger logger = Logger
       .getLogger ( StyledLanguageDocument.class ) ;
 
 
   /**
    * The unique serialization identifier of this class.
    */
-  private static final long serialVersionUID = 5866657214159718809L ;
+  protected static final long serialVersionUID = 5866657214159718809L ;
 
 
   //
@@ -88,7 +88,7 @@ public class StyledLanguageDocument extends DefaultStyledDocument implements
   /**
    * The {@link Language} for which this document was allocated.
    */
-  private Language language ;
+  protected Language language ;
 
 
   /**
@@ -97,19 +97,19 @@ public class StyledLanguageDocument extends DefaultStyledDocument implements
    * @see #getExceptions()
    * @see #getExceptions(int)
    */
-  private LanguageScannerException exceptions[] ;
+  protected LanguageScannerException exceptions[] ;
 
 
   /**
    * The attributes default style.
    */
-  private SimpleAttributeSet normalSet = new SimpleAttributeSet ( ) ;
+  protected SimpleAttributeSet normalSet = new SimpleAttributeSet ( ) ;
 
 
   /**
    * The attributes for the various {@link PrettyStyle}s.
    */
-  private HashMap < PrettyStyle , SimpleAttributeSet > attributes = new HashMap < PrettyStyle , SimpleAttributeSet > ( ) ;
+  protected HashMap < PrettyStyle , SimpleAttributeSet > attributes = new HashMap < PrettyStyle , SimpleAttributeSet > ( ) ;
 
 
   /**
@@ -117,7 +117,7 @@ public class StyledLanguageDocument extends DefaultStyledDocument implements
    * 
    * @see Theme
    */
-  private Theme theme = Theme.currentTheme ( ) ;
+  protected Theme theme = Theme.currentTheme ( ) ;
 
 
   //
@@ -191,7 +191,7 @@ public class StyledLanguageDocument extends DefaultStyledDocument implements
   /**
    * Initializes the attributes to use the fonts from the current theme.
    */
-  private void initAttributes ( )
+  protected void initAttributes ( )
   {
     // determine the current font family and size
     String fontFamily = this.theme.getFont ( ).getFamily ( ) ;

@@ -32,7 +32,6 @@ import de.unisiegen.tpml.core.ProofRule;
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.languages.Language;
 import de.unisiegen.tpml.core.languages.LanguageFactory;
-import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel;
 
 /**
  * Test class for the {@link de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel} class.
@@ -49,7 +48,7 @@ public final class TypeInferenceProofModelTest extends JFrame {
    */
   //private static final String SIMPLE = "(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30)";
 	private static final String SIMPLE = "lambda f:'a->'b. lambda x.f (f x)";
-	//private static final String SIMPLE = "lambda f:int->int. lambda x.f (f x)";
+	//private static final String SIMPLE = "[1;2;3]";
 
 	  private JScrollPane jScrollPane ;
 	    ProofRule choosen=null;

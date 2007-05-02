@@ -1,7 +1,5 @@
 package de.unisiegen.tpml.core.typeinference;
 
-import de.unisiegen.tpml.core.typechecker.DefaultTypeSubstitution;
-import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
 import de.unisiegen.tpml.core.types.MonoType;
 
 /**

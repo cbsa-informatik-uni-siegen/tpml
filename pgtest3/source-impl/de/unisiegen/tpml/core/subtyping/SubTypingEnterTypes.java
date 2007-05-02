@@ -1,11 +1,11 @@
 package de.unisiegen.tpml.core.subtyping;
 
-import java.awt.BorderLayout;
-import java.awt.GridLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ComponentAdapter;
 import java.io.StringReader;
 
-import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -25,26 +25,16 @@ import de.unisiegen.tpml.graphics.typechecker.TypeCheckerNodeComponent;
 public class SubTypingEnterTypes extends JComponent {
 	
 	/**
-	 * The Panel where everything is layed out
-	 */
-	private JPanel						panel;
-	
-	private JPanel						buttons;
-	
-	/**
 	 * The Textfields where the user is able to enter the types
 	 */
-	//private JTextField				firstField;
-	
-	//private JTextField				secondField;
 	
 	private StyledLanguageEditor editor1;
 	
 	private StyledLanguageEditor editor2;
 	
-	private StyledLanguageDocument document1;
+	private StyledTypeEnterField document1;
 	
-	private StyledLanguageDocument document2;
+	private StyledTypeEnterField document2;
 	
 	private JTextArea					output;
 	
@@ -55,11 +45,17 @@ public class SubTypingEnterTypes extends JComponent {
 	
 	private JLabel						label2;
 	
-	private JButton 					okButton;
+	private MonoType 					type1;
 	
-	private JButton						clearButton;
+	private MonoType					type2;
 	
-  private DefaultOutline outline ;
+	private MonoType					oldType1;
+	
+	private MonoType					oldType2;
+	
+  private DefaultOutline outline1 ;
+  
+  private DefaultOutline outline2 ;
 	/**
 	 * The {@link TypeCheckerNodeComponent} can determine whether
 	 * the TypeCheckerEnterType-GUI is active. It will need the
@@ -83,24 +79,40 @@ public class SubTypingEnterTypes extends JComponent {
 		super ();
 		
 		language = l;
+		
+		type1 = null;
+		
+		type2 = null;
 	
-		setLayout (new BorderLayout());
+		setLayout (new GridBagLayout());
+		GridBagConstraints constraints = new GridBagConstraints();
+		constraints.fill = GridBagConstraints.BOTH;
+		//this.panel = new JPanel( new GridBagLayout ( ) );
+		//GridBagConstraints enterConstraints = new GridBagConstraints();
 		
-		
-		
-		this.panel = new JPanel(new GridLayout(2,2));
-		
-
 		this.label = new JLabel ("Enter first Type: "); //$NON-NLS-1$
-		this.panel.add(this.label);
+		constraints.gridx = 0 ;
+		constraints.gridy = 0 ;
+		constraints.weightx = 0.5 ;
+		constraints.weighty = 0 ;
+		constraints.insets = new Insets( 15, 15, 15, 15);
+		
+		
+		this.add( this.label, constraints );
+
+		this.label2 = new JLabel ("Enter second Type: "); //$NON-NLS-1$
+		constraints.gridx = 1 ;
+		constraints.gridy = 0 ;
+		constraints.weighty = 0 ;
+		this.add(label2, constraints);
 		
 		this.editor1 = new StyledLanguageEditor();
 		
-		this.document1 = new StyledLanguageDocument( language );
-		
+		this.document1 = new StyledTypeEnterField( language );
 		
 		this.editor1.setDocument(this.document1);
-		//this.editor1.setSize(200,15);
+		
+		this.outline1 = new DefaultOutline ( this ) ;
 		this.document1.addDocumentListener(new DocumentListener(){
 
 			public void changedUpdate(DocumentEvent e) {
@@ -110,135 +122,120 @@ public class SubTypingEnterTypes extends JComponent {
 
 			public void insertUpdate(DocumentEvent e) {
 				
-				eventHandling( document1 );
+				type1 = eventHandling( document1, type1, oldType1, outline1 );
+				if ( type1 != oldType1 )
+					check();
 				
 			}
 
 			public void removeUpdate(DocumentEvent e) {
-				eventHandling( document1 );
+				type1 = eventHandling( document1, type1, oldType1, outline1 );
+				if ( type1 != oldType1 )
+					check();
 				
 			}
 			
 		});
 		
-		this.panel.add(this.editor1);
-		
-		this.label2 = new JLabel ("Enter second Type: "); //$NON-NLS-1$
-		
-		this.panel.add(this.label2);
-		
+		constraints.gridx = 0 ;
+		constraints.gridy = 1 ;
+		constraints.weighty = 0 ;
+		this.add( this.editor1, constraints );
 		
 		this.editor2 = new StyledLanguageEditor();
 		
-		this.document2 = new StyledLanguageDocument( language );
+		this.document2 = new StyledTypeEnterField( language );
 		
+		this.outline2 = new DefaultOutline ( this ) ;
+		
+		this.document2.addDocumentListener(new DocumentListener(){
+
+			public void changedUpdate(DocumentEvent e) {
+				//Nothing to do so far
+				
+			}
+
+			public void insertUpdate(DocumentEvent e) {
+				
+				type2 = eventHandling( document2, type2, oldType2, outline2 );
+				if ( type2 != oldType2)
+					check();
+			}
+
+			public void removeUpdate(DocumentEvent e) {
+				type2 = eventHandling( document2, type2, oldType2, outline2 );
+				if ( type2 != oldType2)
+					check();
+			}
+			
+		});
 
 		this.editor2.setDocument(this.document2);
-		//this.editor2.setSize(200,15);
 		
-		this.panel.add(this.editor2);
+		constraints.gridx = 1 ;
+		constraints.gridy = 1 ;
+		constraints.weighty = 0 ;
+		this.add( this.editor2, constraints );
 		
-		add (this.panel, BorderLayout.NORTH);
+		
+		 JPanel jPanelOutline1 = this.outline1.getJPanelOutline ( ) ;
+			constraints.gridx = 0 ;
+			constraints.gridy = 2 ;
+			constraints.weighty = 10 ;
+	   this.add( jPanelOutline1, constraints );
+	   
+		 JPanel jPanelOutline2 = this.outline2.getJPanelOutline ( ) ;
+			constraints.gridx = 1 ;
+			constraints.gridy = 2 ;
+			constraints.weighty = 10 ;
+	   this.add( jPanelOutline2, constraints );
 	
-	
-
-
-
-		
-
-		
-		this.buttons = new JPanel();
-		this.buttons.setSize(200, 25);
-		this.buttons.setLayout(new GridLayout(1,2));
 		
 		
-		// setup the "OK" Button
-		okButton = new JButton("OK");
-		/*okButton.addActionListener(new ActionListener() {
-	      public void actionPerformed(ActionEvent event) {
-	       
-	      LanguageTypeParser parser = language.newTypeParser(new StringReader (firstField.getText()));
-	      LanguageTypeParser parser2 = language.newTypeParser(new StringReader (secondField.getText()));
-	      	
-	      	MonoType type1 = null;
-	      	MonoType type2 = null;
-	      	String actual = firstField.getText();
-	      	if (okButton.isEnabled())
-	        try {
-	          type1 = parser.parse();
-	          output.append( firstField.getText( ) + " wurde erfolgreich geparsed \n" );
-	          actual= secondField.getText( );
-	          type2 = parser2.parse( );
-	          output.append( secondField.getText( ) + " wurde erfolgreich geparsed \n" );
-	          
-	          check(type1, type2);
-	         
-	        } catch (Exception e) {
-	          
-	          //output.append( actual + " konnte leider nicht geparsed werden" );
-	          return;
-	        }
-	      }
-	    });*/
-		this.buttons.add (okButton);
-		
-		// setup the "Clear" Button
-		clearButton = new JButton("Clear");
-		/*clearButton.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent event) {
-       
-      	firstField.setText("");
-      	secondField.setText("");
-      	output.setText("");
-      	
-      	buttons.repaint();
-        
-      }
-    });*/
-	this.buttons.add (clearButton);
-		this.add(buttons, BorderLayout.CENTER);
-		
-		output = new JTextArea("", 50, 15);
+		output = new JTextArea("", 2, 500);
 		output.setEditable(false);
-		output.setVisible(false);
-		this.add(output, BorderLayout.SOUTH);
+		constraints.gridx = 0 ;
+		constraints.gridy = 3 ;
+		constraints.gridwidth = 2 ;
+		constraints.weighty = 0 ;
+		constraints.weightx = 1 ;
+		this.add( output, constraints );
     
     
-    this.outline = new DefaultOutline ( this ) ;
+    
     
 
-    JPanel jPanelOutline = this.outline.getJPanelOutline ( ) ;
-		
-    this.add(jPanelOutline, BorderLayout.CENTER);
+   
 	}
 	
-	private void check( MonoType type1, MonoType type2 ){
-		if (checkSubtype.check(type1, type2))
-			output.append("You got it");
+	void check(){
+		if (checkSubtype.check(type1, type2)){
+			output.setText("You got it");
+			System.out.println("You got it");
+		}
+			
 		else
-			output.append("Sorry no subtype");
+			output.setText("Sorry no subtype");
 	}
 	
-	private void eventHandling ( StyledLanguageDocument document ) {
+	MonoType eventHandling ( StyledLanguageDocument document, MonoType type, MonoType oldType, DefaultOutline outline ) {
 		try {
 		LanguageTypeParser parser = language.newTypeParser( new StringReader ( 
-			 document1.getText( document1.getStartPosition ( ).getOffset( ), document1.getEndPosition ( ).getOffset( ) - document1.getStartPosition ( ).getOffset( ) ) ) ) ;
+			 document.getText( document.getStartPosition ( ).getOffset( ), document.getEndPosition ( ).getOffset( ) - document.getStartPosition ( ).getOffset( ) ) ) ) ;
 		 
-		MonoType type = null ;
 	 
       type = parser.parse();
       
-      this.outline.loadPrettyPrintable ( type, Outline.Execute.AUTO_CHANGE_SUBTYPING ) ;
-      
-      output.setVisible(true);
-      output.append( document.getText( document1.getStartPosition ( ).getOffset( ), document1.getEndPosition ( ).getOffset( ) - document1.getStartPosition ( ).getOffset( ) )   + " wurde erfolgreich geparsed \n" );
+      	outline.loadPrettyPrintable ( type, Outline.Execute.AUTO_CHANGE_SUBTYPING ) ;
+      	return type;
+      	
+      	
       
      
     } catch ( Exception e ) 
     {
-      this.outline.loadPrettyPrintable ( null, Outline.Execute.AUTO_CHANGE_SUBTYPING ) ;
-      output.setVisible(false);
-      return;
+      outline.loadPrettyPrintable ( null, Outline.Execute.AUTO_CHANGE_SUBTYPING ) ;
+      return null;
     }
   
 	

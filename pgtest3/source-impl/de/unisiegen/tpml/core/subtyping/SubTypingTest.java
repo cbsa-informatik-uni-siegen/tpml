@@ -18,7 +18,9 @@ public class SubTypingTest extends JFrame {
 		
     // setup the frame
     setLayout(new BorderLayout());
+
     setSize(800, 600);
+
     setTitle("SubTyping Test");
     
     
@@ -30,7 +32,7 @@ public class SubTypingTest extends JFrame {
 			language = factory.getLanguageById("l2O");
 			SubTypingEnterTypes type = new SubTypingEnterTypes(language);
 			
-	    this.add(type, BorderLayout.NORTH);
+	    this.add(type, BorderLayout.CENTER);
 	    
 		} catch (NoSuchLanguageException e) {
 			// TODO Auto-generated catch block
