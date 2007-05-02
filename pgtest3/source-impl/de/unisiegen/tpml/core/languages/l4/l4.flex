@@ -6,6 +6,8 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStyle;
 import de.unisiegen.tpml.core.languages.AbstractLanguageScanner;
 import de.unisiegen.tpml.core.languages.LanguageScannerException;
 import de.unisiegen.tpml.core.languages.LanguageSymbol;
+import java.text.MessageFormat;
+import de.unisiegen.tpml.core.Messages;
 
 /**
  * This is the lexer class for L4.
@@ -177,8 +179,11 @@ LetterGreek		= [\u03b1-\u03c1\u03c3-\u03c9]
 							try {
 								return symbol("NUMBER", NUMBER, Integer.valueOf(yytext()));
 							}
-							catch (NumberFormatException e) {
-								throw new LanguageScannerException(yychar, yychar + yylength(), "Integer constant \"" + yytext() + "\" too large", e);
+							catch (NumberFormatException e) 
+							{
+							  throw new LanguageScannerException(yychar, yychar + yylength(), 
+								MessageFormat.format ( Messages.getString ( "Parser.6" ) , 
+								  yytext() ) , e);
 							}
 						}
 	{Identifier}		{ return symbol("IDENTIFIER", IDENTIFIER, yytext()); }
@@ -193,35 +198,46 @@ LetterGreek		= [\u03b1-\u03c1\u03c3-\u03c9]
 	{WhiteSpace}		{ /* ignore */ }
 }
 
-<YYCOMMENT> {
+<YYCOMMENT> 
+{
 	<<EOF>>				{ yybegin(YYCOMMENTEOF); return symbol("COMMENT", COMMENT, yycommentChar, yychar, null); }
 	"*)"				{ yybegin(YYINITIAL); return symbol("COMMENT", COMMENT, yycommentChar, yychar + yylength(), null); }
 	.|\n				{ /* ignore */ }
 }
 
-<YYCOMMENTEOF> {
-	<<EOF>>				{ throw new LanguageScannerException(yycommentChar, yychar, "Unexpected end of comment"); }
+<YYCOMMENTEOF> 
+{
+	<<EOF>>				{ 
+						  throw new LanguageScannerException(yycommentChar, yychar, 
+							Messages.getString ( "Parser.7" ));
+						}
 }
 
-<YYPROJARITY> {
+<YYPROJARITY> 
+{
 	{Number}			{ yyprojArity = Integer.valueOf(yytext()); yybegin(YYPROJUNDERLINE); }
-	<<EOF>>				{ throw new LanguageScannerException(yyprojChar, yychar, "Unexpected end of projection"); }
-	\r|\n				{ throw new LanguageScannerException(yyprojChar, yychar, "Unexpected end of projection"); }
-	.					{ throw new LanguageScannerException(yyprojChar, yychar + yylength(), "Unexpected character \"" + yytext() + "\" in projection"); }
+	<<EOF>>				{ throw new LanguageScannerException(yyprojChar, yychar, Messages.getString ( "Parser.8" )); }
+	\r|\n				{ throw new LanguageScannerException(yyprojChar, yychar, Messages.getString ( "Parser.8" )); }
+	.					{ throw new LanguageScannerException(yyprojChar, yychar + yylength(), 
+						    MessageFormat.format ( Messages.getString ( "Parser.11" ), yytext() )); }
 }
 
-<YYPROJUNDERLINE> {
+<YYPROJUNDERLINE> 
+{
 	"_"					{ yybegin(YYPROJINDEX); }
-	<<EOF>>				{ throw new LanguageScannerException(yyprojChar, yychar, "Unexpected end of projection"); }
-	\r|\n				{ throw new LanguageScannerException(yyprojChar, yychar, "Unexpected end of projection"); }
-	.					{ throw new LanguageScannerException(yyprojChar, yychar + yylength(), "Unexpected character \"" + yytext() + "\" in projection"); }
+	<<EOF>>				{ throw new LanguageScannerException(yyprojChar, yychar, Messages.getString ( "Parser.9" )); }
+	\r|\n				{ throw new LanguageScannerException(yyprojChar, yychar, Messages.getString ( "Parser.9" )); }
+	.					{ throw new LanguageScannerException(yyprojChar, yychar + yylength(), 
+						    MessageFormat.format ( Messages.getString ( "Parser.12" ), yytext() )); }
 }
 
-<YYPROJINDEX> {
+<YYPROJINDEX> 
+{
 	{Number}			{ yybegin(YYINITIAL); return symbol("PROJECTION", PROJECTION, yyprojChar, yychar + yylength(), new Integer[] { yyprojArity, Integer.valueOf(yytext()) }); }
-	<<EOF>>				{ throw new LanguageScannerException(yyprojChar, yychar, "Unexpected end of projection"); }
-	\r|\n				{ throw new LanguageScannerException(yyprojChar, yychar, "Unexpected end of projection"); }
-	.					{ throw new LanguageScannerException(yyprojChar, yychar + yylength(), "Unexpected character \"" + yytext() + "\" in projection"); }
+	<<EOF>>				{ throw new LanguageScannerException(yyprojChar, yychar, Messages.getString ( "Parser.10" )); }
+	\r|\n				{ throw new LanguageScannerException(yyprojChar, yychar, Messages.getString ( "Parser.10" )); }
+	.					{ throw new LanguageScannerException(yyprojChar, yychar + yylength(), 
+						    MessageFormat.format ( Messages.getString ( "Parser.13" ), yytext() )); }
 }
 
 .|\n					{ throw new LanguageScannerException(yychar, yychar + yylength(), "Syntax error on token \"" + yytext() + "\""); }

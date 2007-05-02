@@ -7,7 +7,8 @@ import de.unisiegen.tpml.core.languages.AbstractLanguageScanner;
 import de.unisiegen.tpml.core.languages.LanguageScannerException;
 import de.unisiegen.tpml.core.languages.LanguageSymbol;
 import de.unisiegen.tpml.core.expressions.*;
-
+import java.text.MessageFormat;
+import de.unisiegen.tpml.core.Messages;
 
 /**
  * This is the lexer class for L2O.
@@ -184,8 +185,11 @@ LetterGreek		= [\u03b1-\u03c1\u03c3-\u03c9]
 							try {
 								return symbol("NUMBER", NUMBER, Integer.valueOf(yytext()));
 							}
-							catch (NumberFormatException e) {
-								throw new LanguageScannerException(yychar, yychar + yylength(), "Integer constant \"" + yytext() + "\" too large", e);
+							catch (NumberFormatException e) 
+							{
+							  throw new LanguageScannerException(yychar, yychar + yylength(), 
+								MessageFormat.format ( Messages.getString ( "Parser.6" ) , 
+								  yytext() ) , e);
 							}
 						}
 
@@ -207,7 +211,10 @@ LetterGreek		= [\u03b1-\u03c1\u03c3-\u03c9]
 }
 
 <YYCOMMENTEOF> {
-	<<EOF>>				{ throw new LanguageScannerException(yycommentChar, yychar, "Unexpected end of comment"); }
+	<<EOF>>				{ 
+						  throw new LanguageScannerException(yycommentChar, yychar, 
+							Messages.getString ( "Parser.7" ));
+						}
 }
 
 .|\n					{ throw new LanguageScannerException(yychar, yychar + yylength(), "Syntax error on token \"" + yytext() + "\""); }
