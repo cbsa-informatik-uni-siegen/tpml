@@ -513,6 +513,7 @@ public class CompoundExpressionTypeInference extends JComponent
         if ( this.typeFormularRenderer == null )
         {
           this.typeFormularRenderer = new TypeFormularRenderer ( ) ;
+          this.typeFormularRenderer.setToListenForMoudeContainer(toListenForMouse);
           this.typeFormularRenderer.setAlternativeColor ( this.alternativeColor ) ;
         }
         this.typeFormularRenderer.setTypeFormulaList ( this.typeFormulaList ) ;
