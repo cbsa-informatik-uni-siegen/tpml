@@ -1,5 +1,5 @@
-object (self)
-  val hallo = 5 ;
-  method add = lambda hallo.hallo ;
-  method sub = let hallo = 0 in hallo ;
-end
+(object (self)
+  val a = 0 ;
+  val a' = 1 ;
+  method add = {< a = 1 ; a' = 2 >} ;
+end) # add
