@@ -50,6 +50,11 @@ public class TypeFormularRenderer extends AbstractRenderer {
 	 */
 	private ArrayList <TypeFormula> typeFormulaList;
 	
+	/**
+	 * the ListenForMouseContainer
+	 */
+	private ToListenForMouseContainer toListenForM;
+	
 	
 	/**
 	 * Holds informatioin whether the environment is collapsed.<br>
@@ -101,8 +106,10 @@ public class TypeFormularRenderer extends AbstractRenderer {
 	 * @param typeFormulaListP 
 	 * 
 	 */
-	public void setTypeFormulaList (ArrayList <TypeFormula> typeFormulaListP ) {
+	public void setTypeFormulaList (ArrayList <TypeFormula> typeFormulaListP ) 
+	{
 		this.typeFormulaList = typeFormulaListP ;
+		
 		
 		// create the string that can be shown in an tooltip 
 		// on level above in the CompoundExpression
@@ -127,6 +134,16 @@ public class TypeFormularRenderer extends AbstractRenderer {
 //				this.collapsedString += ", " + typeFormulaList.get(i).toString();
 //			}
 //		}
+	}
+	
+	/**
+	 * Sets the toListenForMouseContrainer.
+	 * @param tlfmcP 
+	 * 
+	 */
+	public void setToListenForMoudeContainer (ToListenForMouseContainer tlfmcP)
+	{
+		this.toListenForM = tlfmcP;
 	}
 	
 	
@@ -334,7 +351,11 @@ public class TypeFormularRenderer extends AbstractRenderer {
 					prettyStringrenderer.setPrettyString(s.toPrettyString());
 					Dimension typeEquationSize = prettyStringrenderer.getNeededSize(Integer.MAX_VALUE);
 					ShowBonds bound = new ShowBonds();
-					ToListenForMouseContainer toListenForM = new ToListenForMouseContainer();
+					//TODO Wenn es keine Expression ist, dann muss auch was gehen
+					
+					//bound.setExpression(s);
+					//TODO wir wollen hier den haben, den auch die Compoundexpression hat
+					//ToListenForMouseContainer toListenForM = new ToListenForMouseContainer();
 					prettyStringrenderer.render(posX, posY-(typeEquationSize.height / 2) - fontAscent / 2, typeEquationSize.height, gc, bound, toListenForM);
 					posX += typeEquationSize.width;
 					
