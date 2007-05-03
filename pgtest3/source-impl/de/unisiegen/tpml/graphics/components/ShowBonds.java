@@ -48,6 +48,13 @@ public final class ShowBonds
   @ SuppressWarnings ( "unchecked" )
   private final void check ( Expression pExpression )
   {
+  	//TODO CHANGE MICHAEL
+  	//WORAROUND
+  	if (pExpression == null)
+  	{
+  		return;
+  	}
+//  WORAROUND END
     for ( Class < Object > currentInterface : pExpression.getClass ( )
         .getInterfaces ( ) )
     {
