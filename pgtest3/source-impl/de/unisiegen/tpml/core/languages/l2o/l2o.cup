@@ -1,6 +1,7 @@
 import de.unisiegen.tpml.core.expressions.*;
 import de.unisiegen.tpml.core.types.*;
 import de.unisiegen.tpml.core.exceptions.LanguageParserMultiException;
+import de.unisiegen.tpml.core.languages.LanguageParserException;
 import de.unisiegen.tpml.core.Messages ;
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -30,6 +31,19 @@ action code
     { 
       this.id = pId; 
       this.expression = pExpression;
+    }
+  }
+ 
+  private static class Error
+  {
+    public static void report(String pMessage)
+    {
+      throw new LanguageParserException (pMessage, 0, 0);
+    }
+    
+    public static void report(String pMessage, int pLeft, int pRight)
+    {
+      throw new LanguageParserException (pMessage, pLeft, pRight);
     }
   }
   
