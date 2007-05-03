@@ -353,7 +353,7 @@ public class TypeFormularRenderer extends AbstractRenderer {
 					ShowBonds bound = new ShowBonds();
 					//TODO Wenn es keine Expression ist, dann muss auch was gehen
 					
-					//bound.setExpression(s);
+					bound.setExpression(null);
 					//TODO wir wollen hier den haben, den auch die Compoundexpression hat
 					//ToListenForMouseContainer toListenForM = new ToListenForMouseContainer();
 					prettyStringrenderer.render(posX, posY-(typeEquationSize.height / 2) - fontAscent / 2, typeEquationSize.height, gc, bound, toListenForM);
@@ -414,7 +414,7 @@ public class TypeFormularRenderer extends AbstractRenderer {
 					prettyStringrenderer = new PrettyStringRenderer ();
 					ShowBonds bound = new ShowBonds();
 					bound.setExpression(expression);
-					ToListenForMouseContainer toListenForM = new ToListenForMouseContainer();
+					//ToListenForMouseContainer toListenForM = new ToListenForMouseContainer();
 					prettyStringrenderer.setPrettyString(expression.toPrettyString());
 					Dimension expressionSize = prettyStringrenderer.getNeededSize(Integer.MAX_VALUE);
 					//prettyStringrenderer.render(x, y, height, gc, bound, toListenForM)

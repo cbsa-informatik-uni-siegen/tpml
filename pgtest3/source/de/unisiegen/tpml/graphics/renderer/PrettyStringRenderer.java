@@ -630,6 +630,7 @@ public class PrettyStringRenderer extends AbstractRenderer
     toListenForMouse = toListenForM ;
     // get The MousePosition
     int [ ] mousePosition = toListenForMouse.getHereIam ( ) ;
+    //System.out.println("Mouseposition: "+mousePosition[0] + ", "+mousePosition[1]);
     boolean mouseOver = true ;
     // System.out.println("mousePostition: "+mousePosition[0]+",
     // "+mousePosition[1]);
@@ -643,6 +644,8 @@ public class PrettyStringRenderer extends AbstractRenderer
     // found
     // for functioning in more than 1 line the lines are count
     // the breakoffsets to find the line
+    
+    //check teh linewraping
     int arraySize = 0 ;
     if ( result != null )
     {
@@ -662,7 +665,7 @@ public class PrettyStringRenderer extends AbstractRenderer
     // an Iterator through all chars
     PrettyCharIterator it = this.prettyString.toCharacterIterator ( ) ;
     // find out wher the mousepointer is, at wich char
-    int charPosition = 0 ;
+    int charPosition = x ;
     int charIndex = 0 ;
     FontMetrics fm = null ;
     fm = AbstractRenderer.expFontMetrics ;
@@ -680,6 +683,7 @@ public class PrettyStringRenderer extends AbstractRenderer
     // mousePosition[1] is the x-coordinate, start to count at 1
     lineCount = ( ( mousePosition [ 1 ] - ( posY_ - AbstractRenderer.fontHeight ) ) / fm
         .getHeight ( ) ) + 1 ;
+    //System.out.println("Linecount: "+lineCount);
     if ( lineCount > 1 )
     {
       // may be the mousepointer is under the expression
