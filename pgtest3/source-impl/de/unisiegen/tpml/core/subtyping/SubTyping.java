@@ -29,7 +29,6 @@ public class SubTyping {
 	}
 	
 	public boolean check(MonoType type1, MonoType type2){
-		System.out.println(type1.getClass().toString());
 		
 		if (type1 instanceof ObjectType && type2 instanceof ObjectType)
 			return checkObjectType(type1, type2);
@@ -59,8 +58,6 @@ public class SubTyping {
 	private boolean checkObjectType(MonoType type1, MonoType type2) {
 		RowType r1 = ((ObjectType) type1).getPhi();
 		RowType r2 = ((ObjectType) type2).getPhi();
-		System.out.println(type1.toString());
-		System.out.println(type2.toString());
 		return checkRowType(r1, r2);
 	}
 	

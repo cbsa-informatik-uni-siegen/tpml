@@ -14,23 +14,23 @@ public class SubTypingTest extends JFrame {
 	
 	public SubTypingTest(){
 		
-		 
+	
 		
-    // setup the frame
+
     setLayout(new BorderLayout());
 
     setSize(800, 600);
 
     setTitle("SubTyping Test");
     
-    
+   
 		
 //	 parse the program (using L4)
     LanguageFactory factory = LanguageFactory.newInstance();
-    Language language;
+   Language language1;
 		try {
-			language = factory.getLanguageById("l2O");
-			SubTypingEnterTypes type = new SubTypingEnterTypes(language);
+			language1 = factory.getLanguageById("l2O");
+			SubTypingEnterTypes type = new SubTypingEnterTypes();
 			
 	    this.add(type, BorderLayout.CENTER);
 	    
@@ -39,7 +39,7 @@ public class SubTypingTest extends JFrame {
 			e.printStackTrace();
 		}
     
-		
+		 this.setVisible(true);
 		
 		
 
@@ -63,7 +63,7 @@ public class SubTypingTest extends JFrame {
          System.exit(0);
        }
      });
-     test.setVisible(true);
+     
 	}
 
 }

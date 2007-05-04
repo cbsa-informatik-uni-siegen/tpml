@@ -236,5 +236,9 @@ public class StyledTypeEnterField extends StyledLanguageDocument {
       firePropertyChange ( "exceptions" , oldExceptions , this.exceptions ) ; //$NON-NLS-1$
     }
   }
+  
+  public void setLanguage (Language language){
+  	this.language = language;
+  }
 
 }
