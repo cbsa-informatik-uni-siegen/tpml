@@ -1,9 +1,13 @@
 package de.unisiegen.tpml.graphics.typeinference;
 
+import java.awt.AWTEvent;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Cursor;
 import java.awt.Dimension;
+import java.awt.Event;
+import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
@@ -42,7 +46,7 @@ import de.unisiegen.tpml.graphics.components.MenuGuessItem;
 import de.unisiegen.tpml.graphics.components.MenuGuessTreeItem;
 import de.unisiegen.tpml.graphics.components.MenuRuleItem;
 import de.unisiegen.tpml.graphics.components.MenuTranslateItem;
-import de.unisiegen.tpml.graphics.smallstep.SmallStepNodeComponent;
+
 
 /**
  * The graphical representation of a 
@@ -247,9 +251,16 @@ public class TypeInferenceNodeComponent extends JComponent {
 		
 		this.translateItem = new MenuTranslateItem();
 		
+		//WORAROUND belongs to Workaround coming later...
+		//needed 
+		enableEvents(AWTEvent.MOUSE_EVENT_MASK);
+		//WORAROUND belongs to Workaround coming later...
 		
 		this.rules.getMenuButton().addMenuButtonListener(new MenuButtonListener () {
-			public void menuClosed (MenuButton source) { }
+			public void menuClosed (MenuButton source) 
+			{
+			}
+			
 			public void menuItemActivated (MenuButton source, final JMenuItem item) {
 				// setup a wait cursor for the toplevel ancestor
 				final Container toplevel = getTopLevelAncestor();
@@ -258,7 +269,8 @@ public class TypeInferenceNodeComponent extends JComponent {
 
 				// avoid blocking the popup menu
 				SwingUtilities.invokeLater(new Runnable() {
-					public void run() {
+					public void run() 
+					{
 						// handle the menu action
 						TypeInferenceNodeComponent.this.menuItemActivated (item);
 						
@@ -279,35 +291,144 @@ public class TypeInferenceNodeComponent extends JComponent {
 		// whether an expression needs to get underlined
 		MouseMotionAdapter underlineThisAdapter = new MouseMotionAdapter () {
 			@Override
-			public void mouseMoved (MouseEvent event) {
+			public void mouseMoved (MouseEvent event) 
+			{
+				
 				TypeInferenceNodeComponent.this.updateUnderlineExpression((Expression)null);
 			}
 		};
-		
-		//TODO
-//		
-//		this.underlineRuleAdapter = new MouseMotionAdapter () {
-//			@Override
-//			public void mouseMoved (MouseEvent event) {
-//				if (event.getSource () instanceof TypeInferenceRuleLabel) {
-//					TypeInferenceRuleLabel label = (TypeInferenceRuleLabel)event.getSource();
-//					TypeInferenceNodeComponent.this.updateUnderlineExpression(label);
-//				}
-//				else if (event.getSource () instanceof MenuButton) {
-//					MenuButton button = (MenuButton)event.getSource ();
-//					TypeInferenceNodeComponent.this.updateUnderlineExpression(button);
-//				}
-//			}
-//		};
+	
+		this.underlineRuleAdapter = new MouseMotionAdapter () 
+		{
+			@Override
+			public void mouseMoved (MouseEvent event) 
+			{
+			  System.out.println(" Event: "+event);
+        System.out.println("Typ: "+event.getSource());
+        System.out.println("Position "+event.getX() +", "+ event.getY());
+				
+				
+				if (event.getSource () instanceof TypeInferenceRuleLabel) {
+					TypeInferenceRuleLabel label = (TypeInferenceRuleLabel)event.getSource();
+					TypeInferenceNodeComponent.this.updateUnderlineExpression(label);
+				}
+				else if (event.getSource () instanceof MenuButton) {
+					MenuButton button = (MenuButton)event.getSource ();
+					TypeInferenceNodeComponent.this.updateUnderlineExpression(button);
+				}
+			}
+		};
 		
 		this.addMouseMotionListener(underlineThisAdapter);
 		this.compoundExpression.addMouseMotionListener(underlineThisAdapter);
+		this.compoundExpression.addMouseMotionListener(this.underlineRuleAdapter);
 		this.rules.getMenuButton().addMouseMotionListener(this.underlineRuleAdapter);
+		this.addMouseMotionListener(underlineThisAdapter);
 		
 		// apply the advanced setting
 		//TODO
 		setAdvanced(false);
 	}
+	
+	/**
+   * Just paints a Rect arround the silly BopoundExpression to see failure
+   */
+  @Override
+  protected void paintComponent(Graphics gc)
+  {
+
+     gc.setColor(Color.BLACK);
+     gc.drawRect(0, 0, getWidth()-1, getHeight()-1);
+    super.paintComponent(gc);
+  }
+	
+	
+//WORKAROUND: START
+ @Override
+  protected void processMouseEvent(MouseEvent e)
+  {
+    // let this component handle the event first
+	 super.processMouseEvent(e);
+    
+    System.out.println("HALLO");
+    
+
+    try
+    {
+      // check if we have a next SmallStepProofNode
+      ProofNode node = this.proofNode.getChildAt(0);
+
+      // determine the TypeInferenceNodeComponent for the next proof node
+      TypeInferenceNodeComponent nextComponent = (TypeInferenceNodeComponent) node.getUserObject();
+      if (nextComponent != null)
+      {
+        // translate x/y to world coordinates
+        int x = e.getX() + getX();
+        int y = e.getY() + getY();
+
+        // translate x/y to nextComponent coordinates
+        x -= nextComponent.getX();
+        y -= nextComponent.getY();
+
+        // check if we have a CompoundExpression at x/y
+        Component c = nextComponent.getComponentAt(x, y);
+        if (c != null)
+        {
+          // translate and dispatch the event for the CompoundExpression
+          MouseEvent ne = new MouseEvent(c, e.getID(), e.getWhen(), e.getModifiers(), x - c.getX(), y - c.getY(), e.getClickCount(), e.isPopupTrigger(), e
+              .getButton());
+          c.dispatchEvent(ne);
+        }
+      }
+    }
+    catch (ArrayIndexOutOfBoundsException exn)
+    {
+      // ignore, no child then
+    }
+
+  }
+
+  @Override
+  protected void processMouseMotionEvent(MouseEvent e)
+  {
+    // let this component handle the event first
+    super.processMouseMotionEvent(e);
+
+    try
+    {
+      // check if we have a next SmallStepProofNode
+      ProofNode node = this.proofNode.getChildAt(0);
+
+      // determine the TypeInferenceNodeComponent for the next proof node
+      TypeInferenceNodeComponent nextComponent = (TypeInferenceNodeComponent) node.getUserObject();
+      if (nextComponent != null)
+      {
+        // translate x/y to world coordinates
+        int x = e.getX() + getX();
+        int y = e.getY() + getY();
+
+        // translate x/y to nextComponent coordinates
+        x -= nextComponent.getX();
+        y -= nextComponent.getY();
+
+        // check if we have a CompoundExpression at x/y
+        Component c = nextComponent.getComponentAt(x, y);
+        if (c != null)
+        {
+          // translate and dispatch the event for the CompoundExpression
+          MouseEvent ne = new MouseEvent(c, e.getID(), e.getWhen(), e.getModifiers(), x - c.getX(), y - c.getY(), e.getClickCount(), e.isPopupTrigger(), e
+              .getButton());
+          c.dispatchEvent(ne);
+        }
+      }
+    }
+    catch (ArrayIndexOutOfBoundsException exn)
+    {
+      // ignore, no child then
+    }
+  }
+
+  // WORKAROUND: END
 	
 	/**
 	 * Causes the expression and the resultexpression
@@ -383,22 +504,22 @@ public class TypeInferenceNodeComponent extends JComponent {
 		updateUnderlineExpression (label.getStepExpression());
 	}
 	
-//	/**
-//	 * Delegates the updating of the underline to
-//	 * {@link #updateUnderlineExpression(Expression)} with the
-//	 * expression of the first unproved {@link ProofStep}.
-//	 * 
-//	 * @param button The button from the {@link TypeInferenceRulesComponent}.
-//	 */	
-//	private void updateUnderlineExpression (MenuButton button) {
-//		ProofStep[] steps = this.proofModel.remaining(this.proofNode);
-//		
-//		if (steps.length == 0) {
-//			return;
-//		}
-//		
-//		updateUnderlineExpression (steps [0].getExpression());
-//	}
+	/**
+	 * Delegates the updating of the underline to
+	 * {@link #updateUnderlineExpression(Expression)} with the
+	 * expression of the first unproved {@link ProofStep}.
+	 * 
+	 * @param button The button from the {@link TypeInferenceRulesComponent}.
+	 */	
+	private void updateUnderlineExpression (MenuButton button) {
+		//ProofStep[] steps = this.proofModel.remaining(this.proofNode);
+	
+		//if (steps.length == 0) {
+		return;
+		//}
+		
+		//updateUnderlineExpression (steps [0].getExpression());
+	}
 	
 	/**
 	 * Called when an {@link JMenuItem} from the Menu was selected.<br>
@@ -786,89 +907,6 @@ public class TypeInferenceNodeComponent extends JComponent {
 		}
 	}
 	
-//WORKAROUND: START
-  @Override
-  protected void processMouseEvent(MouseEvent e)
-  {
-    // let this component handle the event first
-    super.processMouseEvent(e);
-
-    try
-    {
-      // check if we have a next SmallStepProofNode
-      ProofNode node = this.proofNode.getChildAt(0);
-
-      // determine the SmallStepNodeComponent for the next proof node
-      SmallStepNodeComponent nextComponent = (SmallStepNodeComponent) node.getUserObject();
-      if (nextComponent != null)
-      {
-        // translate x/y to world coordinates
-        int x = e.getX() + getX();
-        int y = e.getY() + getY();
-
-        // translate x/y to nextComponent coordinates
-        x -= nextComponent.getX();
-        y -= nextComponent.getY();
-
-        // check if we have a CompoundExpression at x/y
-        Component c = nextComponent.getComponentAt(x, y);
-        if (c != null)
-        {
-          // translate and dispatch the event for the CompoundExpression
-          MouseEvent ne = new MouseEvent(c, e.getID(), e.getWhen(), e.getModifiers(), x - c.getX(), y - c.getY(), e.getClickCount(), e.isPopupTrigger(), e
-              .getButton());
-          c.dispatchEvent(ne);
-        }
-      }
-    }
-    catch (ArrayIndexOutOfBoundsException exn)
-    {
-      // ignore, no child then
-    }
-
-  }
-
-  @Override
-  protected void processMouseMotionEvent(MouseEvent e)
-  {
-    // let this component handle the event first
-    super.processMouseMotionEvent(e);
-
-    try
-    {
-      // check if we have a next SmallStepProofNode
-      ProofNode node = this.proofNode.getChildAt(0);
-
-      // determine the SmallStepNodeComponent for the next proof node
-      TypeInferenceNodeComponent nextComponent = (TypeInferenceNodeComponent) node.getUserObject();
-      if (nextComponent != null)
-      {
-        // translate x/y to world coordinates
-        int x = e.getX() + getX();
-        int y = e.getY() + getY();
-
-        // translate x/y to nextComponent coordinates
-        x -= nextComponent.getX();
-        y -= nextComponent.getY();
-
-        // check if we have a CompoundExpression at x/y
-        Component c = nextComponent.getComponentAt(x, y);
-        if (c != null)
-        {
-          // translate and dispatch the event for the CompoundExpression
-          MouseEvent ne = new MouseEvent(c, e.getID(), e.getWhen(), e.getModifiers(), x - c.getX(), y - c.getY(), e.getClickCount(), e.isPopupTrigger(), e
-              .getButton());
-          c.dispatchEvent(ne);
-        }
-      }
-    }
-    catch (ArrayIndexOutOfBoundsException exn)
-    {
-      // ignore, no child then
-    }
-  }
-
-  // WORKAROUND: END
   
   private static void testAusgabe (String s)
   {

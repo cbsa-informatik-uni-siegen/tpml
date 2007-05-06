@@ -38,12 +38,23 @@ public class TypeFormularRenderer extends AbstractRenderer {
 	/**
 	 * the List of Strings for the tooltip
 	 */
-	private ArrayList <String> CollapStrings;
+	private ArrayList <String> collapsedStrings;
+	
+	/**
+	 * the List of alle Elements of the TypeFormularRenderer with its areas
+	 */
+	private ArrayList <Rectangle> typeFprmularPostitions;
+	
+	private ArrayList <Integer> typeEquations;
+	
+	private int remebmbertoChange=-1; 
+	
+	private Rectangle markedArea;
 	
 	/**
 	 * the List of areas for the tooltip
 	 */
-	private ArrayList <Rectangle> CollapAreas;
+	private ArrayList <Rectangle> collapsedAreas;
 
 	/**
 	 * The TypeFOrmulars that should be rendered.
@@ -83,6 +94,7 @@ public class TypeFormularRenderer extends AbstractRenderer {
 	 */
 	//private static final String	collapsString = ", ...";
 	
+	
 	/**
 	 * 
 	 */
@@ -97,8 +109,10 @@ public class TypeFormularRenderer extends AbstractRenderer {
 		this.collapsed 			= false;
 		this.collapsedArea	= new Rectangle ();
 		
-		this.CollapAreas = new ArrayList<Rectangle>();
-		this.CollapStrings = new ArrayList<String>();
+		this.collapsedAreas = new ArrayList<Rectangle>();
+		this.typeFprmularPostitions = new ArrayList <Rectangle>(); 
+		this.typeEquations = new ArrayList <Integer> ();
+		this.collapsedStrings = new ArrayList<String>();
 	}
 
 	/**
@@ -242,9 +256,9 @@ public class TypeFormularRenderer extends AbstractRenderer {
 	 *
 	 * @return the list of rectangles with areas
 	 */
-	public ArrayList <Rectangle> getCollapAreas ()
+	public ArrayList <Rectangle> getCollapsedAreas ()
 	{
-		return this.CollapAreas;
+		return this.collapsedAreas;
 	}
 	
 	/**
@@ -263,10 +277,56 @@ public class TypeFormularRenderer extends AbstractRenderer {
 	 *
 	 * @return
 	 */
-	public ArrayList <String> getCollapStrings ()
+	public ArrayList <String> getCollapsedStrings ()
 	{
-		return CollapStrings;
+		return collapsedStrings;
 	}
+	
+	/**
+	 * returns a list of areas where typeFormulars are
+	 *
+	 * @return the list of rectangles with areas
+	 */
+	public ArrayList <Rectangle> getTypeFprmularPostitions ()
+	{
+		return this.typeFprmularPostitions;
+	}
+	
+	public void markArea (int x, int y, int width, int height, Graphics gc, int i)
+	{
+		gc.setColor(Color.BLUE);
+		gc.drawRect(x, y-height, width, height);
+		int toChange =  this.typeEquations.get(i).intValue();
+		if (remebmbertoChange == toChange)
+		{
+			System.out.println("Die sind gleich");
+			remebmbertoChange = -1;
+			markedArea = null;
+		}
+		else if (remebmbertoChange == -1)
+		{
+			remebmbertoChange = toChange;
+			System.out.println("neuer Wert gemerkt...");
+			markedArea = new Rectangle (x, y-height, width, height);
+		}
+		else
+		{
+			System.out.println("Tauschen: "+remebmbertoChange + " mit "+toChange);
+			TypeFormula firstElement = typeFormulaList.get(remebmbertoChange);
+			TypeFormula secondElement = typeFormulaList.get(toChange);
+			typeFormulaList.remove(remebmbertoChange);
+			typeFormulaList.add(remebmbertoChange, secondElement);
+			typeFormulaList.remove(toChange);
+			typeFormulaList.add(toChange, firstElement);
+			remebmbertoChange = -1;
+			markedArea = null;
+			
+		}
+		
+		
+	}
+	
+	
 	
 	
 	/**
@@ -338,7 +398,8 @@ public class TypeFormularRenderer extends AbstractRenderer {
 			einrücken = posX-einrücken;
 			
 			prettyStringrenderer = new PrettyStringRenderer();
-			
+			typeFprmularPostitions = new ArrayList <Rectangle> ();
+			typeEquations = new ArrayList <Integer> ();
 			for (int i = 0; i < typeFormulaList.size(); i++)
 			{
 				t = typeFormulaList.get(i);
@@ -357,6 +418,9 @@ public class TypeFormularRenderer extends AbstractRenderer {
 					//TODO wir wollen hier den haben, den auch die Compoundexpression hat
 					//ToListenForMouseContainer toListenForM = new ToListenForMouseContainer();
 					prettyStringrenderer.render(posX, posY-(typeEquationSize.height / 2) - fontAscent / 2, typeEquationSize.height, gc, bound, toListenForM);
+					//TODO Merken wir uns mal den Bereich:
+					this.typeFprmularPostitions.add(new Rectangle(posX, posY, typeEquationSize.width, typeEquationSize.height));
+					this.typeEquations.add(i);
 					posX += typeEquationSize.width;
 					
 					gc.setColor(expColor);
@@ -399,8 +463,8 @@ public class TypeFormularRenderer extends AbstractRenderer {
 					if (envCollapsedString != null)
 					{
 						this.collapsed = true;
-						this.CollapAreas.add(environmentRenderer.getCollapsedArea());
-						this.CollapStrings.add(environmentRenderer.getCollapsedString());
+						this.collapsedAreas.add(environmentRenderer.getCollapsedArea());
+						this.collapsedStrings.add(environmentRenderer.getCollapsedString());
 					}
 				
 					//gc.drawString("]", posX, posY);
@@ -424,6 +488,7 @@ public class TypeFormularRenderer extends AbstractRenderer {
 					posX += expressionSize.width;
 					
 					gc.setColor(AbstractRenderer.expColor);
+					gc.setFont(expFont);
 					gc.drawString("::", posX, posY);
 					posX += AbstractRenderer.expFontMetrics.stringWidth("::");
 					
@@ -451,6 +516,11 @@ public class TypeFormularRenderer extends AbstractRenderer {
 			gc.setFont(AbstractRenderer.expFont);
 			gc.drawString("}", posX, posY);
 			posX += AbstractRenderer.expFontMetrics.stringWidth("}");
+			
+			if (markedArea != null)
+			{
+				gc.drawRect(markedArea.x, markedArea.y, markedArea.width, markedArea.height);
+			}
 			
 		}
 		

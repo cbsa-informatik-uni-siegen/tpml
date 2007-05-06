@@ -301,13 +301,14 @@ public class SmallStepNodeComponent extends JComponent
       }
     };
 
-    this.underlineRuleAdapter = new MouseMotionAdapter() {
+    this.underlineRuleAdapter = new MouseMotionAdapter() 
+    {
       @Override
       public void mouseMoved(MouseEvent event)
       {
-        // System.out.println(" Event: "+event);
-        // System.out.println("Typ: "+event.getSource());
-        // System.out.println("Position "+event.getX() +", "+ event.getY());
+        //System.out.println(" Event: "+event);
+        //System.out.println("Typ: "+event.getSource());
+        //System.out.println("Position "+event.getX() +", "+ event.getY());
 
         if (event.getSource() instanceof SmallStepRuleLabel)
         {
@@ -389,6 +390,7 @@ public class SmallStepNodeComponent extends JComponent
   {
     // let this component handle the event first
     super.processMouseEvent(e);
+    
 
     try
     {

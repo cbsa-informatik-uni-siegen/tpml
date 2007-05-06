@@ -88,6 +88,11 @@ public class CompoundExpressionTypeInference extends JComponent
    * The size of the Typformulars.
    */
   //private Dimension defaultTypeSubstitutionSize ;
+  
+  private int mousePositionX;
+  private int mousePositionY;
+  
+ 
 
 
   /**
@@ -166,15 +171,54 @@ public class CompoundExpressionTypeInference extends JComponent
     this.braceSize = 10 ;
     this.underlineExpression = null ;
     testAusgabe("Der MouseListner wird hinzugefügt...");
+    
     this.addMouseMotionListener ( new MouseMotionAdapter ( )
     {
       @ Override
       public void mouseMoved ( MouseEvent event )
       {
       	testAusgabe("Der MouseListner wird hinzugefügt...1");
+      	//TODO ein Versuch des Dragg and Dropp
+      	//System.out.println("Maus hat sich bewegt, alte Mausposition gespeichert...");
+      	//mousePositionX = event.getX();
+      	//mousePositionY = event.getY();
         handleMouseMoved ( event ) ;
       }
-    } ) ;
+      
+      @ Override
+      public void mouseDragged ( MouseEvent event )
+      {
+      	
+      	System.out.println("Die Maus wurde gedragged...");
+    		int posX = event.getX();
+    		int posY = event.getY();
+    		System.out.println("Maus: "+posX + ", "+posY);
+    		ArrayList <Rectangle> rects = typeFormularRenderer.getTypeFprmularPostitions();
+    		//Versuch mit Dragg and Dropp
+    		//for (int i = 0 ; i<rects.size(); i++)
+    		//{
+    		//	if (mousePositionX >= rects.get(i).x && mousePositionX <= rects.get(i).x+rects.get(i).width && mousePositionY >= rects.get(i).y-rects.get(i).height && mousePositionY <= rects.get(i).y)
+    		//	{
+    		//		System.out.println(""+i+". Bereicht: "+rects.get(i).toString());
+    		//		Graphics gc = getGraphics();
+    		//		typeFormularRenderer.markArea(rects.get(i).x, rects.get(i).y, rects.get(i).width, rects.get(i).height, gc, i);
+    		//	}
+    			
+    		//}
+    		for (int i = 0; i<rects.size(); i++)
+    		{
+    			if (posX >= rects.get(i).x && posX <= rects.get(i).x+rects.get(i).width && posY >= rects.get(i).y-rects.get(i).height && posY <= rects.get(i).y)
+    			{
+    				System.out.println(""+i+". Bereicht: "+rects.get(i).toString());
+    				Graphics gc = getGraphics();
+    				typeFormularRenderer.markArea(rects.get(i).x, rects.get(i).y, rects.get(i).width, rects.get(i).height, gc, i);
+    			}
+    			
+    		}
+      }
+      
+    } 
+    ) ;
     this.addMouseListener ( new MouseAdapter ( )
     {
       @ Override
@@ -196,7 +240,21 @@ public class CompoundExpressionTypeInference extends JComponent
         toListenForMouse.setMark ( false ) ;
         CompoundExpressionTypeInference.this.repaint ( ) ;
       }
+      @ Override
+    	public void mouseClicked ( MouseEvent event )
+    	{
+    		System.out.println("Die Maus wurde gedrückt...");
+    		int posX = event.getX();
+    		int posY = event.getY();
+    		ArrayList <Rectangle> rects = typeFormularRenderer.getTypeFprmularPostitions();
+    		for (int i = 0; i<rects.size(); i++)
+    		{
+    			System.out.println(""+i+". Bereicht: "+rects.get(i).toString());
+    		}
+    	}
     } ) ;
+    
+    
   }
 
 
@@ -338,7 +396,7 @@ public class CompoundExpressionTypeInference extends JComponent
     {
     	setToolTipText ( null ) ;
         	
-    	ArrayList <Rectangle> rs = this.typeFormularRenderer.getCollapAreas();
+    	ArrayList <Rectangle> rs = this.typeFormularRenderer.getCollapsedAreas();
     	
     	for (int i = 0; i<rs.size(); i++)
     	{
@@ -349,7 +407,7 @@ public class CompoundExpressionTypeInference extends JComponent
         if ( event.getX ( ) >= r.x && event.getX ( ) <= r.x + r.width && event.getY() >= r.y && event.getY() <= r.y+r.height )
         {
         	testAusgabe("ja, diesen hier!"+i);
-          setToolTipText ( this.typeFormularRenderer.getCollapStrings().get(i) ) ;
+          setToolTipText ( this.typeFormularRenderer.getCollapsedStrings().get(i) ) ;
           testAusgabe(getToolTipText());
         }
     		
