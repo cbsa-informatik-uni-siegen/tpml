@@ -1,6 +1,7 @@
 package de.unisiegen.tpml.graphics.smallstep;
 
 import java.awt.AWTEvent;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Cursor;
@@ -379,8 +380,8 @@ public class SmallStepNodeComponent extends JComponent
   protected void paintComponent(Graphics gc)
   {
 
-    // gc.setColor(Color.BLACK);
-    // gc.drawRect(0, 0, getWidth()-1, getHeight()-1);
+     gc.setColor(Color.BLACK);
+     gc.drawRect(0, 0, getWidth()-1, getHeight()-1);
     super.paintComponent(gc);
   }
 

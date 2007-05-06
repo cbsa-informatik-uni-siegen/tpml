@@ -2,6 +2,7 @@ package de.unisiegen.tpml.graphics.components ;
 
 
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Rectangle;
@@ -190,10 +191,16 @@ public class CompoundExpressionTypeInference extends JComponent
       {
       	
       	System.out.println("Die Maus wurde gedragged...");
-    		int posX = event.getX();
-    		int posY = event.getY();
-    		System.out.println("Maus: "+posX + ", "+posY);
-    		ArrayList <Rectangle> rects = typeFormularRenderer.getTypeFprmularPostitions();
+      	Graphics gc = getGraphics();
+      	Cursor c = new Cursor(Cursor.MOVE_CURSOR); 
+      	setCursor(c);
+      	
+      	//gc.setColor(Color.BLUE);
+      	//gc.drawRect(event.getX(), event.getY(), 2, 2);
+    		//int posX = event.getX();
+    		//int posY = event.getY();
+    		//System.out.println("Maus: "+posX + ", "+posY);
+    		//ArrayList <Rectangle> rects = typeFormularRenderer.getTypeFprmularPostitions();
     		//Versuch mit Dragg and Dropp
     		//for (int i = 0 ; i<rects.size(); i++)
     		//{
@@ -205,7 +212,8 @@ public class CompoundExpressionTypeInference extends JComponent
     		//	}
     			
     		//}
-    		for (int i = 0; i<rects.size(); i++)
+    		/* 
+    		 for (int i = 0; i<rects.size(); i++)
     		{
     			if (posX >= rects.get(i).x && posX <= rects.get(i).x+rects.get(i).width && posY >= rects.get(i).y-rects.get(i).height && posY <= rects.get(i).y)
     			{
@@ -215,6 +223,7 @@ public class CompoundExpressionTypeInference extends JComponent
     			}
     			
     		}
+    		*/
       }
       
     } 
@@ -243,16 +252,111 @@ public class CompoundExpressionTypeInference extends JComponent
       @ Override
     	public void mouseClicked ( MouseEvent event )
     	{
-    		System.out.println("Die Maus wurde gedrückt...");
-    		int posX = event.getX();
+    		System.out.println("Die Maus wurde geklicked...");
+    		/*int posX = event.getX();
     		int posY = event.getY();
     		ArrayList <Rectangle> rects = typeFormularRenderer.getTypeFprmularPostitions();
     		for (int i = 0; i<rects.size(); i++)
     		{
     			System.out.println(""+i+". Bereicht: "+rects.get(i).toString());
     		}
+    		
+    		for (int i = 0; i<rects.size(); i++)
+    		{
+    			if (posX >= rects.get(i).x && posX <= rects.get(i).x+rects.get(i).width && posY >= rects.get(i).y-rects.get(i).height && posY <= rects.get(i).y)
+    			{
+    				System.out.println(""+i+". Bereicht: "+rects.get(i).toString());
+    				Graphics gc = getGraphics();
+    				typeFormularRenderer.markArea(rects.get(i).x, rects.get(i).y, rects.get(i).width, rects.get(i).height, gc, i);
+    			}
+    			
+    		}*/
     	}
-    } ) ;
+      
+      public void mousePressed ( MouseEvent event )
+    	{
+      	
+    		System.out.println("Die Maus wurde gedrückt...");
+    		mousePositionX = event.getX();
+    		mousePositionY = event.getY();
+    		//int posX = event.getX();
+    		//int posY = event.getY();
+    		//ArrayList <Rectangle> rects = typeFormularRenderer.getTypeFprmularPostitions();
+    		//for (int i = 0; i<rects.size(); i++)
+    		//{
+    		//	System.out.println(""+i+". Bereicht: "+rects.get(i).toString());
+    		//}
+    		
+//    		for (int i = 0; i<rects.size(); i++)
+//    		{
+//    			if (posX >= rects.get(i).x && posX <= rects.get(i).x+rects.get(i).width && posY >= rects.get(i).y-rects.get(i).height && posY <= rects.get(i).y)
+//    			{
+//    				System.out.println(""+i+". Bereicht: "+rects.get(i).toString());
+//    				Graphics gc = getGraphics();
+//    				typeFormularRenderer.markArea(rects.get(i).x, rects.get(i).y, rects.get(i).width, rects.get(i).height, gc, i);
+//    			}
+//    			
+//    		}
+    	}
+      
+      public void mouseReleased ( MouseEvent event )
+    	{
+    		System.out.println("Die Maus wurde losgelassen...");
+    		int posX = event.getX();
+    		int posY = event.getY();
+    		if (posX == mousePositionX && posY == mousePositionY)
+    		{
+    			ArrayList <Rectangle> rects = typeFormularRenderer.getTypeFprmularPostitions();
+      		for (int i = 0; i<rects.size(); i++)
+      		{
+      			System.out.println(""+i+". Bereicht: "+rects.get(i).toString());
+      		}
+      		
+      		for (int i = 0; i<rects.size(); i++)
+      		{
+      			if (posX >= rects.get(i).x && posX <= rects.get(i).x+rects.get(i).width && posY >= rects.get(i).y-rects.get(i).height && posY <= rects.get(i).y)
+      			{
+      				System.out.println(""+i+". Bereicht: "+rects.get(i).toString());
+      				Graphics gc = getGraphics();
+      				typeFormularRenderer.markArea(rects.get(i).x, rects.get(i).y, rects.get(i).width, rects.get(i).height, gc, i);
+      			}
+      		}
+    		}
+    		else
+    		{
+    			//resetten
+    			System.out.println("Dragg and Drop implementieren");
+    			
+    			ArrayList <Rectangle> rects = typeFormularRenderer.getTypeFprmularPostitions();
+    			
+    			for (int i = 0; i<rects.size(); i++)
+      		{
+      			if (posX >= rects.get(i).x && posX <= rects.get(i).x+rects.get(i).width && posY >= rects.get(i).y-rects.get(i).height && posY <= rects.get(i).y)
+      			{
+      				System.out.println(""+i+". Bereicht: "+rects.get(i).toString());
+      				Graphics gc = getGraphics();
+      				typeFormularRenderer.markArea(rects.get(i).x, rects.get(i).y, rects.get(i).width, rects.get(i).height, gc, i);
+      			}
+      			else if (mousePositionX >= rects.get(i).x && mousePositionX <= rects.get(i).x+rects.get(i).width && mousePositionY >= rects.get(i).y-rects.get(i).height && mousePositionY <= rects.get(i).y)
+      			{
+      				System.out.println(""+i+". Bereicht: "+rects.get(i).toString());
+      				Graphics gc = getGraphics();
+      				typeFormularRenderer.markArea(rects.get(i).x, rects.get(i).y, rects.get(i).width, rects.get(i).height, gc, i);
+      			}
+      			
+      		}
+    			
+    		}
+    		
+    	}
+      
+      
+      
+      
+    }
+    
+    
+    ) ;
     
     
   }
@@ -273,7 +377,6 @@ public class CompoundExpressionTypeInference extends JComponent
     {
       this.expressionRenderer.setAlternativeColor ( color ) ;
     }
-    //TODO
     if ( this.substitutionRenderer != null )
     {
       this.substitutionRenderer.setAlternativeColor ( color ) ;
@@ -374,8 +477,6 @@ public class CompoundExpressionTypeInference extends JComponent
       setToolTipText ( null ) ;
     }
     
-    
-    //TODO
     if ( this.substitutionRenderer != null && this.substitutionRenderer.isCollapsed ( ) )
     {
       Rectangle r = this.substitutionRenderer.getCollapsedArea ( ) ;
@@ -391,7 +492,8 @@ public class CompoundExpressionTypeInference extends JComponent
         setToolTipText ( null ) ;
       }
     }
-    //TODO der ToolTipText soll auch bei den kleinen Dingern funktionieren...
+    
+    //TOOLTIPText für die einzelnen Dinger...
     if (this.typeFormularRenderer != null && this.typeFormularRenderer.isCollapsed ( ) )
     {
     	setToolTipText ( null ) ;
@@ -530,7 +632,6 @@ public class CompoundExpressionTypeInference extends JComponent
       // check what to do with the renderer
       if ( this.defaultTypeSubstitutionList == null )
       {
-        //TODO
       	this.substitutionRenderer = null ;
       }
       else
@@ -563,7 +664,6 @@ public class CompoundExpressionTypeInference extends JComponent
       // check what to do with the renderer
       if ( this.typeFormulaList == null )
       {
-        //TODO
       	this.typeFormularRenderer = null ;
       }
       else
@@ -607,11 +707,11 @@ public class CompoundExpressionTypeInference extends JComponent
       result.height = this.substitutionSize.height ;
 
       //The 
-      for (int i = 0; i<defaultTypeSubstitutionList.size(); i++)
-      {
-      	int add = AbstractRenderer.getTextFontMetrics ( ).stringWidth (defaultTypeSubstitutionList.get(i).toString());
+      //for (int i = 0; i<defaultTypeSubstitutionList.size(); i++)
+      //{
+      //	int add = AbstractRenderer.getTextFontMetrics ( ).stringWidth (defaultTypeSubstitutionList.get(i).toString());
       	//result.width = result.width + add;
-      }
+      //}
       //TODO wozu eigentlich das?
       result.width += 2 * this.braceSize ;
       
@@ -635,11 +735,11 @@ public class CompoundExpressionTypeInference extends JComponent
     //testAusgabe("Größe der Typeformulas: "+typeFormulaSize.height+ ", "+typeFormulaSize.width);
     //System.out.println("Wir adsdieren einfach mal 33");
     //TODO dreckiger Workaround...
-    if (result.height / 14 >= 3)
-    {
+    //if (result.height / 14 >= 3)
+    //{
     	result.height *= 2;
-    }
-    
+    //}
+    //result.height += result.height /2 ;
     return result ;
   }
 
@@ -699,8 +799,6 @@ public class CompoundExpressionTypeInference extends JComponent
       //this.expressionRenderer.render ( posX , posY , getHeight ( ) , gc ,
       //    bonds , toListenForMouse ) ;
     	
-    	//TODO Testausgabe
-    	//System.out.println(getHeight());
     	//this.expressionRenderer.render ( posX , posY , getHeight () , gc , bonds , toListenForMouse ) ;
       //posX += this.expressionSize.width ;
       // if there is an environment render it now
@@ -708,8 +806,7 @@ public class CompoundExpressionTypeInference extends JComponent
       {
       	//testAusgabe ("hier sollte er ankommen und das sollte er auch rendern...!");
         posX += this.braceSize ;
-        //TODO
-        
+    
         this.substitutionRenderer.renderer ( posX , posY , this.substitutionSize.width , getHeight ( ) , gc ) ;
         posY += substitutionSize.height;
       }
@@ -728,8 +825,6 @@ public class CompoundExpressionTypeInference extends JComponent
       gc.drawString ( CompoundExpressionTypeInference.arrowStr , posX , centerV ) ;
       posX += AbstractRenderer.getTextFontMetrics ( ).stringWidth ( CompoundExpressionTypeInference.arrowStr ) ;
       // draw the expression at the last position.
-      //TODO Testausgabe
-      //System.out.println(getHeight());
       this.expressionRenderer.render ( posX , posY , getHeight ( ) , gc ,
           bonds , toListenForMouse ) ;
     }
