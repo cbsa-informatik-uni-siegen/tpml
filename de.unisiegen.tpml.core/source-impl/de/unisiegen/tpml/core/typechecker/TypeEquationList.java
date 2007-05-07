@@ -150,7 +150,7 @@ public final class TypeEquationList {
       MonoType tau = (left instanceof TypeVariable ? right : left);
       
       // either tvar not equals tau or tvar is not present in tau
-      if (!tvar.equals(tau) || !tau.free().contains(tvar)) {
+      if (!tvar.equals(tau) && !tau.free().contains(tvar)) {
         DefaultTypeSubstitution s1 = new DefaultTypeSubstitution(tvar, tau);
         DefaultTypeSubstitution s2 = this.remaining.substitute(s1).unify();
         return s1.compose(s2);
