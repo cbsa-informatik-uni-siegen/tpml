@@ -40,6 +40,8 @@ import de.unisiegen.tpml.core.Messages;
 	
 	/** The parsed arity of the projection. */
 	private Integer yyprojArity;
+	private Integer yyprojArityStartOffset;
+	private Integer yyprojArityEndOffset;
 
 	private LanguageSymbol symbol(String name, int id) {
 		return symbol(name, id, yychar, yychar + yylength(), yytext());
@@ -215,7 +217,10 @@ LetterGreek		= [\u03b1-\u03c1\u03c3-\u03c9]
 
 <YYPROJARITY> 
 {
-	{Number}			{ yyprojArity = Integer.valueOf(yytext()); yybegin(YYPROJUNDERLINE); }
+	{Number}			{ yyprojArity = Integer.valueOf(yytext());
+						  yyprojArityStartOffset = yychar ;
+						  yyprojArityEndOffset = yychar + yylength() ;
+						  yybegin(YYPROJUNDERLINE); }
 	<<EOF>>				{ throw new LanguageScannerException(yyprojChar, yychar, Messages.getString ( "Parser.8" )); }
 	\r|\n				{ throw new LanguageScannerException(yyprojChar, yychar, Messages.getString ( "Parser.8" )); }
 	.					{ throw new LanguageScannerException(yyprojChar, yychar + yylength(), 
@@ -233,7 +238,9 @@ LetterGreek		= [\u03b1-\u03c1\u03c3-\u03c9]
 
 <YYPROJINDEX> 
 {
-	{Number}			{ yybegin(YYINITIAL); return symbol("PROJECTION", PROJECTION, yyprojChar, yychar + yylength(), new Integer[] { yyprojArity, Integer.valueOf(yytext()) }); }
+	{Number}			{ yybegin(YYINITIAL); return symbol("PROJECTION", PROJECTION, yyprojChar, yychar + yylength(), 
+							new Integer[] { yyprojArity, Integer.valueOf(yytext()), yyprojArityStartOffset, 
+							  yyprojArityEndOffset, yychar , yychar + yylength() }); }
 	<<EOF>>				{ throw new LanguageScannerException(yyprojChar, yychar, Messages.getString ( "Parser.10" )); }
 	\r|\n				{ throw new LanguageScannerException(yyprojChar, yychar, Messages.getString ( "Parser.10" )); }
 	.					{ throw new LanguageScannerException(yyprojChar, yychar + yylength(), 

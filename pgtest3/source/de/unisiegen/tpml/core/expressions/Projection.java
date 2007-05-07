@@ -1,6 +1,11 @@
 package de.unisiegen.tpml.core.expressions ;
 
 
+import java.text.MessageFormat ;
+import de.unisiegen.tpml.core.Messages ;
+import de.unisiegen.tpml.core.languages.LanguageParserException ;
+
+
 /**
  * Instances of this class represent projections in the expression hierarchy.
  * 
@@ -52,17 +57,72 @@ public class Projection extends UnaryOperator
    *          applied.
    * @param pIndex the index of the item to select from the tuple, starting with
    *          <code>1</code>.
+   * @param pParserArityStartOffset TODO
+   * @param pParserArityEndOffset TODO
+   * @param pParserIndexStartOffset TODO
+   * @param pParserIndexEndOffset TODO
    * @param pParserStartOffset TODO
    * @param pParserEndOffset TODO
    * @throws IllegalArgumentException if the <code>arity</code> or the
    *           <code>index</code> is invalid.
    */
-  public Projection ( int pArity , int pIndex , int pParserStartOffset ,
-      int pParserEndOffset )
+  public Projection ( int pArity , int pIndex , int pParserArityStartOffset ,
+      int pParserArityEndOffset , int pParserIndexStartOffset ,
+      int pParserIndexEndOffset , int pParserStartOffset , int pParserEndOffset )
   {
-    this ( pArity , pIndex ) ;
+    this ( pArity , pIndex ,
+        "#" + pArity + "_" + pIndex , //$NON-NLS-1$ //$NON-NLS-2$
+        pParserArityStartOffset , pParserArityEndOffset ,
+        pParserIndexStartOffset , pParserIndexEndOffset ) ;
     this.parserStartOffset = pParserStartOffset ;
     this.parserEndOffset = pParserEndOffset ;
+  }
+
+
+  /**
+   * Allocates a new {@link Projection} with the given <code>arity</code> and
+   * the <code>index</code> of the item that should be selected, and the
+   * string representation <code>op</code>.
+   * 
+   * @param pArity the arity of the tuple to which this projection can be
+   *          applied.
+   * @param pIndex the index of the item to select from the tuple, starting with
+   *          <code>1</code>.
+   * @param pOp the string representation of the projectin.
+   * @param pParserArityStartOffset TODO
+   * @param pParserArityEndOffset TODO
+   * @param pParserIndexStartOffset TODO
+   * @param pParserIndexEndOffset TODO
+   * @throws IllegalArgumentException if the <code>arity</code> or the
+   *           <code>index</code> is invalid.
+   */
+  protected Projection ( int pArity , int pIndex , String pOp ,
+      int pParserArityStartOffset , int pParserArityEndOffset ,
+      int pParserIndexStartOffset , int pParserIndexEndOffset )
+  {
+    super ( pOp ) ;
+    // validate the settings
+    if ( pArity <= 0 )
+    {
+      throw new LanguageParserException ( MessageFormat.format ( Messages
+          .getString ( "Exception.2" ) , String.valueOf ( pArity ) ) , //$NON-NLS-1$
+          pParserArityStartOffset , pParserArityEndOffset ) ;
+    }
+    else if ( pIndex <= 0 )
+    {
+      throw new LanguageParserException ( MessageFormat.format ( Messages
+          .getString ( "Exception.3" ) , String.valueOf ( pIndex ) ) , //$NON-NLS-1$
+          pParserIndexStartOffset , pParserIndexEndOffset ) ;
+    }
+    else if ( pIndex > pArity )
+    {
+      throw new LanguageParserException ( MessageFormat.format ( Messages
+          .getString ( "Exception.4" ) , String.valueOf ( pIndex ) , String //$NON-NLS-1$
+          .valueOf ( pArity ) ) , pParserArityStartOffset ,
+          pParserIndexEndOffset ) ;
+    }
+    this.arity = pArity ;
+    this.index = pIndex ;
   }
 
 
@@ -85,13 +145,19 @@ public class Projection extends UnaryOperator
     // validate the settings
     if ( pArity <= 0 )
     {
-      throw new IllegalArgumentException (
-          "The arity of a projection must be greater than 0" ) ; //$NON-NLS-1$
+      throw new IllegalArgumentException ( MessageFormat.format ( Messages
+          .getString ( "Exception.2" ) , String.valueOf ( pArity ) ) ) ; //$NON-NLS-1$
     }
-    else if ( pIndex <= 0 || pIndex > pArity )
+    else if ( pIndex <= 0 )
     {
-      throw new IllegalArgumentException (
-          "The index of a projection must be greater than 0 and less than the arity" ) ; //$NON-NLS-1$
+      throw new IllegalArgumentException ( MessageFormat.format ( Messages
+          .getString ( "Exception.3" ) , String.valueOf ( pIndex ) ) ) ; //$NON-NLS-1$
+    }
+    else if ( pIndex > pArity )
+    {
+      throw new IllegalArgumentException ( MessageFormat.format ( Messages
+          .getString ( "Exception.4" ) , String.valueOf ( pIndex ) , String //$NON-NLS-1$
+          .valueOf ( pArity ) ) ) ;
     }
     this.arity = pArity ;
     this.index = pIndex ;

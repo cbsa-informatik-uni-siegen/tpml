@@ -249,8 +249,10 @@ constant			::=	PARENPAREN:c
 						{: RESULT = new Not(cleft, cright); :}
 					|	BRACKETBRACKET:c
 						{: RESULT = new EmptyList(cleft, cright); :}
+						{: RESULT = new EmptyList(cleft, cright); :}
 					|	PROJECTION:proj
-						{: RESULT = new Projection(proj[0], proj[1], projleft, projright); :}
+						{: RESULT = new Projection(proj[0], proj[1], proj[2], proj[3], 
+												     proj[4], proj[5], projleft, projright); :}
 					|	FST:c
 						{: RESULT = new Fst(cleft, cright); :}
 					|	SND:c
