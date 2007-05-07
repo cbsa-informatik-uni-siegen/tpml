@@ -382,6 +382,8 @@ public class DefaultTypeInferenceProofContext implements
 		for (TypeFormula form : sortedFormulas) {
 			TypeFormula actual = form;
 			actual = actual.substitute(newSubstitutions);
+			// don't add formula if it is already in list
+			if (!formulas.contains ( actual ))
 			formulas.add(actual);
 		}
 		
