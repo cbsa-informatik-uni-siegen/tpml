@@ -6,16 +6,15 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.io.StringReader;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -23,7 +22,6 @@ import javax.swing.text.BadLocationException;
 
 import de.unisiegen.tpml.core.languages.Language;
 import de.unisiegen.tpml.core.languages.LanguageTypeParser;
-import de.unisiegen.tpml.core.typeinference.TypeInferenceProofModelTest;
 import de.unisiegen.tpml.core.types.MonoType;
 import de.unisiegen.tpml.graphics.StyledLanguageDocument;
 import de.unisiegen.tpml.graphics.StyledLanguageEditor;
@@ -52,7 +50,7 @@ public class SubTypingEnterTypes extends JComponent {
 
 	private StyledTypeEnterField document2;
 
-	private JTextField output;
+	private JLabel lOutput;
 
 	/**
 	 * Labels that informs the user what to do
@@ -85,7 +83,7 @@ public class SubTypingEnterTypes extends JComponent {
 
 	private JCheckBox setOutline;
 
-	private JTextField tfLanguage;
+	private JLabel labelLanguage;
 
 	private ChangeLanguage clLanguage;
 
@@ -133,16 +131,32 @@ public class SubTypingEnterTypes extends JComponent {
 		constraints.insets = new Insets ( 5, 10, 5, 10 );
 		this.menu.add ( changeLanguage, constraints );
 
-		tfLanguage = new JTextField ( "Aktuelle ausgewählte Sprache: "
+		labelLanguage = new JLabel ( "Aktuelle ausgewählte Sprache: "
 				+ language.getName ( ) );
-		tfLanguage.setEditable ( false );
+		labelLanguage.setText ( "Aktuelle ausgewählte Sprache: "
+				+ language.getName ( )  ) ;
 		constraints.gridx = 1;
 		constraints.gridy = 0;
 		constraints.weightx = 3;
 		constraints.weighty = 0;
-		this.menu.add ( tfLanguage, constraints );
+		this.menu.add ( labelLanguage, constraints );
 
 		setOutline = new JCheckBox ( "Outline einblenden" );
+		setOutline.setSelected ( true );
+		setOutline.setToolTipText ( "Outline für Typen ein-/ausblenden" );
+		setOutline.addItemListener ( new ItemListener(){
+
+			public void itemStateChanged(ItemEvent e) {
+				if ( e.getStateChange ( ) == ItemEvent.SELECTED ){
+					SubTypingEnterTypes.this.outline.setVisible ( true );
+				}
+				if ( e.getStateChange ( ) == ItemEvent.DESELECTED ){
+					SubTypingEnterTypes.this.outline.setVisible ( false );
+				}
+				
+			}
+			
+		});
 		constraints.gridx = 2;
 		constraints.gridy = 0;
 		constraints.weightx = 2;
@@ -256,15 +270,14 @@ public class SubTypingEnterTypes extends JComponent {
 		constraints.insets = new Insets ( 5, 5, 5, 5 );
 		this.outputField.add ( labelOutput, constraints );
 
-		output = new JTextField ( );
+		lOutput = new JLabel ( );
 		//TODO center text
-		output.setEditable ( false );
 		constraints.gridx = 0;
 		constraints.gridy = 1;
 		constraints.gridwidth = 1;
 		constraints.weighty = 0;
 		constraints.weightx = 0;
-		this.outputField.add ( output, constraints );
+		this.outputField.add ( lOutput, constraints );
 
 		constraints.gridx = 0;
 		constraints.gridy = 2;
@@ -305,11 +318,11 @@ public class SubTypingEnterTypes extends JComponent {
 	void check() {
 		if (type1 != null && type2 != null) {
 			if (checkSubtype.check ( type1, type2 )) {
-				output.setText ( "You got it" );
+				lOutput.setText ( "You got it" );
 			}
 
 			else
-				output.setText ( "Sorry no subtype" );
+				lOutput.setText ( "Sorry no subtype" );
 		}
 	}
 
@@ -356,7 +369,7 @@ public class SubTypingEnterTypes extends JComponent {
 					// Nothing to do
 				}
 
-				this.tfLanguage.setText ( "Aktuelle ausgewählte Sprache: "
+				this.labelLanguage.setText ( "Aktuelle ausgewählte Sprache: "
 						+ this.language.getName ( ) );
 			}
 

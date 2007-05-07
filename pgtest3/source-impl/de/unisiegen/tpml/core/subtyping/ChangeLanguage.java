@@ -13,7 +13,7 @@ import de.unisiegen.tpml.core.languages.Language;
 import de.unisiegen.tpml.core.languages.LanguageFactory;
 
 /**
- * TODO
+ * Dialog to change the language for Subtyping
  *
  * @author Benjamin Mies
  *
