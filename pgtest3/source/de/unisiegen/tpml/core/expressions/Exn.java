@@ -1,6 +1,7 @@
 package de.unisiegen.tpml.core.expressions ;
 
 
+import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 
@@ -163,9 +164,12 @@ public final class Exn extends Expression
    */
   @ Override
   public Exn substitute ( @ SuppressWarnings ( "unused" )
-  Identifier pId , @ SuppressWarnings ( "unused" )
-  Expression pExpression )
+  Identifier pId , Expression pExpression )
   {
+    if ( pExpression.getIdentifierFreeNotOnlyVariable ( ) )
+    {
+      throw new NotOnlyFreeVariableException ( ) ;
+    }
     return this ;
   }
 

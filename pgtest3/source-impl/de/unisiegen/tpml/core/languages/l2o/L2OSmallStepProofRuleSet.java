@@ -1,7 +1,6 @@
 package de.unisiegen.tpml.core.languages.l2o ;
 
 
-import de.unisiegen.tpml.core.exceptions.RowSubstitutionException ;
 import de.unisiegen.tpml.core.expressions.Attribute ;
 import de.unisiegen.tpml.core.expressions.CurriedMethod ;
 import de.unisiegen.tpml.core.expressions.Expression ;
@@ -219,15 +218,8 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
        */
       ObjectExpr objectExpr = ( ObjectExpr ) pSend.getE ( ) ;
       Expression newRow ;
-      try
-      {
-        newRow = objectExpr.getE ( ).substitute ( objectExpr.getId ( ) ,
-            objectExpr ) ;
-      }
-      catch ( RowSubstitutionException e )
-      {
-        return pSend ;
-      }
+      newRow = objectExpr.getE ( ).substitute ( objectExpr.getId ( ) ,
+          objectExpr ) ;
       pContext.addProofStep ( getRuleByName ( SEND_UNFOLD ) , pSend ) ;
       return new Send ( newRow , pSend.getId ( ) ) ;
     }
@@ -254,7 +246,6 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
          * Expression of the Row is an Attribute, we have to perform SEND-ATTR.
          */
         Attribute attribute = ( Attribute ) rowExpressions [ 0 ] ;
-        pContext.addProofStep ( getRuleByName ( SEND_ATTR ) , attribute ) ;
         Expression [ ] newRowExpressions = new Expression [ rowExpressions.length - 1 ] ;
         for ( int i = 0 ; i < newRowExpressions.length ; i ++ )
         {
@@ -262,6 +253,7 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
           newRowExpressions [ i ] = child.substitute ( attribute.getId ( ) ,
               attribute.getE ( ) ) ;
         }
+        pContext.addProofStep ( getRuleByName ( SEND_ATTR ) , attribute ) ;
         return new Send ( new Row ( newRowExpressions ) , pSend.getId ( ) ) ;
       }
       /*

@@ -1,6 +1,9 @@
 package de.unisiegen.tpml.core.exceptions ;
 
 
+import de.unisiegen.tpml.core.Messages ;
+
+
 /**
  * TODO
  * 
@@ -16,11 +19,9 @@ public final class RowSubstitutionException extends RuntimeException
 
   /**
    * TODO
-   * 
-   * @param pMessage
    */
-  public RowSubstitutionException ( String pMessage )
+  public RowSubstitutionException ( )
   {
-    super ( pMessage ) ;
+    super ( Messages.getString ( "Exception.1" ) ) ; //$NON-NLS-1$
   }
 }

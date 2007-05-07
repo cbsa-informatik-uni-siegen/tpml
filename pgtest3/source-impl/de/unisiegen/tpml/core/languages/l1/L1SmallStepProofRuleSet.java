@@ -278,10 +278,11 @@ public class L1SmallStepProofRuleSet extends L0SmallStepProofRuleSet
     {
       e1 = new Lambda ( identifiers [ n ] , types [ n ] , e1 ) ;
     }
+    Expression result = e2.substitute ( identifiers [ 0 ] , e1 ) ;
     // we can simply perform (LET-EXEC)
     context.addProofStep ( getRuleByName ( "LET-EXEC" ) , curriedLet ) ; //$NON-NLS-1$
     // and perform the substitution
-    return e2.substitute ( identifiers [ 0 ] , e1 ) ;
+    return result ;
   }
 
 
@@ -308,10 +309,11 @@ public class L1SmallStepProofRuleSet extends L0SmallStepProofRuleSet
       return e1.isException ( ) ? e1 : new Let ( let.getId ( ) ,
           let.getTau ( ) , e1 , e2 ) ;
     }
+    // perform the substitution
+    Expression result = e2.substitute ( let.getId ( ) , e1 ) ;
     // we can perform (LET-EXEC)
     context.addProofStep ( getRuleByName ( "LET-EXEC" ) , let ) ; //$NON-NLS-1$
-    // and perform the substitution
-    return e2.substitute ( let.getId ( ) , e1 ) ;
+    return result ;
   }
 
 

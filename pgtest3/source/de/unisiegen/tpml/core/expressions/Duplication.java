@@ -3,6 +3,7 @@ package de.unisiegen.tpml.core.expressions ;
 
 import java.util.ArrayList ;
 import java.util.Arrays ;
+import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException ;
 import de.unisiegen.tpml.core.interfaces.ChildrenExpressions ;
 import de.unisiegen.tpml.core.interfaces.DefaultIdentifiers ;
 import de.unisiegen.tpml.core.interfaces.SortedChildren ;
@@ -270,6 +271,10 @@ public final class Duplication extends Expression implements
   @ Override
   public Expression substitute ( Identifier pId , Expression pExpression )
   {
+    if ( pExpression.getIdentifierFreeNotOnlyVariable ( ) )
+    {
+      throw new NotOnlyFreeVariableException ( ) ;
+    }
     if ( ( pId.getName ( ).equals ( "self" ) ) //$NON-NLS-1$
         && ( pExpression instanceof ObjectExpr ) )
     {

@@ -4,6 +4,7 @@ package de.unisiegen.tpml.core.expressions ;
 import java.lang.reflect.InvocationTargetException ;
 import java.text.DecimalFormat ;
 import java.util.ArrayList ;
+import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.util.Debug ;
@@ -73,7 +74,7 @@ public final class Identifier extends Value
   /**
    * TODO Only for debugging
    */
-  // private static int id = 0 ;
+  // private static int debugId = 0 ;
   /**
    * The name of the {@link Identifier}.
    * 
@@ -418,6 +419,10 @@ public final class Identifier extends Value
   @ Override
   public Expression substitute ( Identifier pId , Expression pExpression )
   {
+    if ( pExpression.getIdentifierFreeNotOnlyVariable ( ) )
+    {
+      throw new NotOnlyFreeVariableException ( ) ;
+    }
     if ( pId.equals ( this ) )
     {
       /*
@@ -442,20 +447,18 @@ public final class Identifier extends Value
     if ( this.prettyStringBuilder == null )
     {
       this.prettyStringBuilder = factory.newBuilder ( this , PRIO_IDENTIFIER ) ;
-      if ( Debug.isUserName ( Debug.CHRISTIAN ) )
-      {
-        /* this.prettyStringBuilder.addText ( "{" ) ; */
-      }
+      /*
+       * if ( Debug.isUserName ( Debug.CHRISTIAN ) ) {
+       * this.prettyStringBuilder.addText ( "{" ) ; }
+       */
       this.prettyStringBuilder.addIdentifier ( this.name ) ;
-      if ( Debug.isUserName ( Debug.CHRISTIAN ) )
-      {
-        /*
-         * this.prettyStringBuilder.addText ( "|" + new DecimalFormat ( "00"
-         * ).format ( id ++ ) + "|" + ( this.set == Set.VARIABLE ? "V" :
-         * this.set == Set.ATTRIBUTE ? "A" : this.set == Set.MESSAGE ? "M" :
-         * this.set == Set.SELF ? "S" : "NOTHING" ) + "}" ) ;
-         */
-      }
+      /*
+       * if ( Debug.isUserName ( Debug.CHRISTIAN ) ) {
+       * this.prettyStringBuilder.addText ( "|" + new DecimalFormat ( "00"
+       * ).format ( debugId ++ ) + "|" + ( this.set == Set.VARIABLE ? "V" :
+       * this.set == Set.ATTRIBUTE ? "A" : this.set == Set.MESSAGE ? "M" :
+       * this.set == Set.SELF ? "S" : "NOTHING" ) + "}" ) ; }
+       */
     }
     return this.prettyStringBuilder ;
   }

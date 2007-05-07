@@ -36,14 +36,33 @@ action code
  
   private static class Error
   {
-    public static void report(String pMessage)
+    public static void expectedTokenSequence(String ... pTokenSequence)
     {
-      throw new LanguageParserException (pMessage, 0, 0);
+      expectedTokenSequence (0, 0, pTokenSequence);
     }
     
-    public static void report(String pMessage, int pLeft, int pRight)
+    public static void expectedTokenSequence(int pLeft, int pRight , String ... pTokenSequence)
     {
-      throw new LanguageParserException (pMessage, pLeft, pRight);
+      String or = Messages.getString ( "Parser.15" ) ;
+      String result = "" ;
+      for ( int i = 0; i < pTokenSequence.length ; i++)
+      {
+        if ( i == 0 )
+        {
+          result += "\"" + pTokenSequence [i] + "\"" ;
+        }
+        else if ( i == pTokenSequence.length - 1 )
+        {
+          result += " " + or + " \"" + pTokenSequence [i]+ "\"";
+        }
+        else
+        {
+          result += ", \"" + pTokenSequence [i]+ "\"";
+        }
+      }
+      throw new LanguageParserException (  
+        MessageFormat.format ( Messages.getString ( "Parser.14" ) , 
+          result ) , pLeft, pRight);
     }
   }
   
@@ -410,6 +429,27 @@ object_expr			::= OBJECT:o LPAREN SELF:id RPAREN END:end
 					|	OBJECT:o LPAREN SELF:id COLON type:tau RPAREN row:r END:end
 						{: Duplicated.check(r);
 						   RESULT = new ObjectExpr (new Identifier (id,idleft,idright), tau, r, oleft, endright); :}
+					/* Error without type*/
+					|	OBJECT LPAREN SELF RPAREN row
+						{: Error.expectedTokenSequence("end"); :}					
+					|	OBJECT LPAREN SELF RPAREN
+						{: Error.expectedTokenSequence("r end"); :}
+					/* Error with and without type*/
+					|	OBJECT LPAREN SELF
+						{: Error.expectedTokenSequence(") r end", ": \u03C4) r end"); :}
+					|	OBJECT LPAREN
+						{: Error.expectedTokenSequence("self) r end", "self: \u03C4) r end"); :}
+					|	OBJECT
+						{: Error.expectedTokenSequence("(self) r end", "(self: \u03C4) r end"); :}
+					/* Error with type*/
+					|	OBJECT LPAREN SELF COLON type RPAREN row
+						{: Error.expectedTokenSequence("end"); :}		
+					|	OBJECT LPAREN SELF COLON type RPAREN
+						{: Error.expectedTokenSequence("r end"); :}				
+					|	OBJECT LPAREN SELF COLON type
+						{: Error.expectedTokenSequence(") r end"); :}						
+					|	OBJECT LPAREN SELF COLON
+						{: Error.expectedTokenSequence("\u03C4) r end"); :}
 					;
 					
 duplication			::= DUPLBEGIN:b id_expr_list:iel DUPLEND:e
@@ -434,6 +474,9 @@ send				::= simple_expr:e HASHKEY IDENTIFIER:id
 						{: Identifier idM = new Identifier (id,idleft,idright) ;
 						   idM.setSet (Identifier.Set.MESSAGE );
 						   RESULT = new Send ( e, idM, eleft, idright) ; :}
+					/* Error */
+					|	simple_expr:e HASHKEY
+						{: Error.expectedTokenSequence("id"); :}	
 					;
 					
 row					::= attribute:a

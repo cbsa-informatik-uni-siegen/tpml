@@ -83,8 +83,9 @@ public class L1CBNSmallStepProofRuleSet extends L1SmallStepProofRuleSet
   public Expression applyLambda ( SmallStepProofContext context ,
       Application application , Lambda lambda , Expression e )
   {
+    Expression result = lambda.getE ( ).substitute ( lambda.getId ( ) , e ) ;
     context.addProofStep ( getRuleByName ( "BETA" ) , application ) ; //$NON-NLS-1$
-    return lambda.getE ( ).substitute ( lambda.getId ( ) , e ) ;
+    return result ;
   }
 
 
@@ -136,9 +137,11 @@ public class L1CBNSmallStepProofRuleSet extends L1SmallStepProofRuleSet
   @ Override
   public Expression evaluateLet ( SmallStepProofContext context , Let let )
   {
+    Expression result = let.getE2 ( )
+        .substitute ( let.getId ( ) , let.getE1 ( ) ) ;
     // we can perform (LET-EXEC)
     context.addProofStep ( getRuleByName ( "LET-EXEC" ) , let ) ; //$NON-NLS-1$
     // and perform the substitution
-    return let.getE2 ( ).substitute ( let.getId ( ) , let.getE1 ( ) ) ;
+    return result ;
   }
 }

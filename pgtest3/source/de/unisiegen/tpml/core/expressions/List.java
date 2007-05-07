@@ -3,6 +3,7 @@ package de.unisiegen.tpml.core.expressions ;
 
 import java.util.Arrays ;
 import java.util.Vector ;
+import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException ;
 import de.unisiegen.tpml.core.interfaces.ChildrenExpressions ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
@@ -280,6 +281,10 @@ public final class List extends Expression implements ChildrenExpressions
   @ Override
   public List substitute ( Identifier pId , Expression pExpression )
   {
+    if ( pExpression.getIdentifierFreeNotOnlyVariable ( ) )
+    {
+      throw new NotOnlyFreeVariableException ( ) ;
+    }
     Expression [ ] newExpressions = new Expression [ this.expressions.length ] ;
     for ( int i = 0 ; i < newExpressions.length ; i ++ )
     {

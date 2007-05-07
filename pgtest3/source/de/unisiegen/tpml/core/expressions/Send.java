@@ -1,6 +1,7 @@
 package de.unisiegen.tpml.core.expressions ;
 
 
+import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException;
 import de.unisiegen.tpml.core.interfaces.ChildrenExpressions ;
 import de.unisiegen.tpml.core.interfaces.DefaultIdentifiers ;
 import de.unisiegen.tpml.core.interfaces.SortedChildren ;
@@ -230,6 +231,10 @@ public final class Send extends Expression implements DefaultIdentifiers ,
   @ Override
   public Send substitute ( Identifier pId , Expression pExpression )
   {
+    if ( pExpression.getIdentifierFreeNotOnlyVariable ( ) )
+    {
+      throw new NotOnlyFreeVariableException ( ) ;
+    }
     Expression newE = this.expressions [ 0 ].substitute ( pId , pExpression ) ;
     return new Send ( newE , this.identifiers [ 0 ] ) ;
   }

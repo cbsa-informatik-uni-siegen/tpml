@@ -53,8 +53,9 @@ public class L0CBNSmallStepProofRuleSet extends L0SmallStepProofRuleSet
   public Expression applyLambda ( SmallStepProofContext context ,
       Application application , Lambda lambda , Expression e )
   {
+    Expression result = lambda.getE ( ).substitute ( lambda.getId ( ) , e ) ;
     context.addProofStep ( getRuleByName ( "BETA" ) , application ) ; //$NON-NLS-1$
-    return lambda.getE ( ).substitute ( lambda.getId ( ) , e ) ;
+    return result ;
   }
 
 

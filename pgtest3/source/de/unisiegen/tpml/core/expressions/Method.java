@@ -1,6 +1,7 @@
 package de.unisiegen.tpml.core.expressions ;
 
 
+import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException ;
 import de.unisiegen.tpml.core.interfaces.ChildrenExpressions ;
 import de.unisiegen.tpml.core.interfaces.DefaultIdentifiers ;
 import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
@@ -295,6 +296,10 @@ public class Method extends Expression implements DefaultIdentifiers ,
   @ Override
   public Method substitute ( Identifier pId , Expression pExpression )
   {
+    if ( pExpression.getIdentifierFreeNotOnlyVariable ( ) )
+    {
+      throw new NotOnlyFreeVariableException ( ) ;
+    }
     Expression newE = this.expressions [ 0 ].substitute ( pId , pExpression ) ;
     return new Method ( this.identifiers [ 0 ] , this.types [ 0 ] , newE ) ;
   }

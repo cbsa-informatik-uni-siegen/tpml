@@ -94,8 +94,9 @@ public class L2CBNSmallStepProofRuleSet extends L2SmallStepProofRuleSet
   public Expression applyLambda ( SmallStepProofContext context ,
       Application application , Lambda lambda , Expression e )
   {
+    Expression result = lambda.getE ( ).substitute ( lambda.getId ( ) , e ) ;
     context.addProofStep ( getRuleByName ( "BETA" ) , application ) ; //$NON-NLS-1$
-    return lambda.getE ( ).substitute ( lambda.getId ( ) , e ) ;
+    return result ;
   }
 
 
@@ -147,10 +148,12 @@ public class L2CBNSmallStepProofRuleSet extends L2SmallStepProofRuleSet
   @ Override
   public Expression evaluateLet ( SmallStepProofContext context , Let let )
   {
+    Expression result = let.getE2 ( )
+        .substitute ( let.getId ( ) , let.getE1 ( ) ) ;
     // we can perform (LET-EXEC)
     context.addProofStep ( getRuleByName ( "LET-EXEC" ) , let ) ; //$NON-NLS-1$
     // and perform the substitution
-    return let.getE2 ( ).substitute ( let.getId ( ) , let.getE1 ( ) ) ;
+    return result ;
   }
 
 
@@ -169,11 +172,11 @@ public class L2CBNSmallStepProofRuleSet extends L2SmallStepProofRuleSet
     // determine the expressions and the identifier
     Expression e1 = letRec.getE1 ( ) ;
     Expression e2 = letRec.getE2 ( ) ;
-    // we perform (UNFOLD)
-    context.addProofStep ( getRuleByName ( "UNFOLD" ) , letRec ) ; //$NON-NLS-1$
     // perform the substitution on e1
     e1 = e1.substitute ( letRec.getId ( ) , new Recursion ( letRec.getId ( ) ,
         letRec.getTau ( ) , e1 ) ) ;
+    // we perform (UNFOLD)
+    context.addProofStep ( getRuleByName ( "UNFOLD" ) , letRec ) ; //$NON-NLS-1$
     // generate the new (LET) expression
     return new Let ( letRec.getId ( ) , letRec.getTau ( ) , e1 , e2 ) ;
   }
@@ -201,11 +204,11 @@ public class L2CBNSmallStepProofRuleSet extends L2SmallStepProofRuleSet
     {
       e1 = new Lambda ( identifiers [ n ] , types [ n ] , e1 ) ;
     }
-    // we can perform (UNFOLD)
-    context.addProofStep ( getRuleByName ( "UNFOLD" ) , curriedLetRec ) ; //$NON-NLS-1$
     // perform the substitution on e1
     e1 = e1.substitute ( identifiers [ 0 ] , new Recursion ( identifiers [ 0 ] ,
         types [ 0 ] , e1 ) ) ;
+    // we can perform (UNFOLD)
+    context.addProofStep ( getRuleByName ( "UNFOLD" ) , curriedLetRec ) ; //$NON-NLS-1$
     // generate the new (LET) expression
     return new Let ( identifiers [ 0 ] , types [ 0 ] , e1 , e2 ) ;
   }

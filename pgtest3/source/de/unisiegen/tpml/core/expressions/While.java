@@ -1,6 +1,7 @@
 package de.unisiegen.tpml.core.expressions ;
 
 
+import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException ;
 import de.unisiegen.tpml.core.interfaces.ChildrenExpressions ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
@@ -193,6 +194,10 @@ public final class While extends Expression implements ChildrenExpressions
   @ Override
   public While substitute ( Identifier pId , Expression pExpression )
   {
+    if ( pExpression.getIdentifierFreeNotOnlyVariable ( ) )
+    {
+      throw new NotOnlyFreeVariableException ( ) ;
+    }
     Expression newE1 = this.expressions [ 0 ].substitute ( pId , pExpression ) ;
     Expression newE2 = this.expressions [ 1 ].substitute ( pId , pExpression ) ;
     return new While ( newE1 , newE2 ) ;

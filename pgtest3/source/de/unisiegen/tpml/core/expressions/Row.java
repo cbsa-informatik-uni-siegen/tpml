@@ -4,6 +4,7 @@ package de.unisiegen.tpml.core.expressions ;
 import java.util.ArrayList ;
 import java.util.Arrays ;
 import de.unisiegen.tpml.core.exceptions.LanguageParserMultiException ;
+import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException ;
 import de.unisiegen.tpml.core.exceptions.RowSubstitutionException ;
 import de.unisiegen.tpml.core.interfaces.ChildrenExpressions ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
@@ -311,6 +312,10 @@ public final class Row extends Expression implements ChildrenExpressions
   @ Override
   public Row substitute ( Identifier pId , Expression pExpression )
   {
+    if ( pExpression.getIdentifierFreeNotOnlyVariable ( ) )
+    {
+      throw new NotOnlyFreeVariableException ( ) ;
+    }
     Expression [ ] newExpressions = new Expression [ this.expressions.length ] ;
     for ( int i = 0 ; i < this.expressions.length ; i ++ )
     {
@@ -387,6 +392,10 @@ public final class Row extends Expression implements ChildrenExpressions
    */
   public Row substituteRow ( Identifier pId , Expression pExpression )
   {
+    if ( pExpression.getIdentifierFreeNotOnlyVariable ( ) )
+    {
+      throw new NotOnlyFreeVariableException ( ) ;
+    }
     Expression [ ] newExpressions = new Expression [ this.expressions.length ] ;
     for ( int i = 0 ; i < this.expressions.length ; i ++ )
     {
@@ -409,8 +418,7 @@ public final class Row extends Expression implements ChildrenExpressions
     }
     if ( ! found )
     {
-      throw new RowSubstitutionException (
-          "The Identifier is in the domain of the Row" ) ; //$NON-NLS-1$
+      throw new RowSubstitutionException ( ) ;
     }
     return new Row ( newExpressions ) ;
   }

@@ -340,6 +340,25 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
    * 
    * @return TODO
    */
+  public boolean getIdentifierFreeNotOnlyVariable ( )
+  {
+    for ( Identifier id : getIdentifiersFree ( ) )
+    {
+      if ( ( id.getSet ( ).equals ( Identifier.Set.ATTRIBUTE ) )
+          || ( id.getSet ( ).equals ( Identifier.Set.SELF ) ) )
+      {
+        return true ;
+      }
+    }
+    return false ;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @return TODO
+   */
   public final ArrayList < Identifier > getIdentifiersAll ( )
   {
     if ( this.identifiersAll == null )

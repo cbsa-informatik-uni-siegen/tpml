@@ -2,6 +2,7 @@ package de.unisiegen.tpml.core.expressions ;
 
 
 import java.util.ArrayList ;
+import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException ;
 import de.unisiegen.tpml.core.interfaces.BoundIdentifiers ;
 import de.unisiegen.tpml.core.interfaces.ChildrenExpressions ;
 import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
@@ -321,6 +322,10 @@ public final class Attribute extends Expression implements BoundIdentifiers ,
   @ Override
   public Attribute substitute ( Identifier pId , Expression pExpression )
   {
+    if ( pExpression.getIdentifierFreeNotOnlyVariable ( ) )
+    {
+      throw new NotOnlyFreeVariableException ( ) ;
+    }
     Expression newE = this.expressions [ 0 ].substitute ( pId , pExpression ) ;
     return new Attribute ( this.identifiers [ 0 ] , this.types [ 0 ] , newE ) ;
   }

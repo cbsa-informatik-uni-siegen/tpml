@@ -1,6 +1,7 @@
 package de.unisiegen.tpml.core.languages.l0 ;
 
 
+import java.lang.reflect.InvocationTargetException ;
 import java.lang.reflect.Method ;
 import de.unisiegen.tpml.core.expressions.Application ;
 import de.unisiegen.tpml.core.expressions.Expression ;
@@ -91,6 +92,10 @@ public class L0SmallStepProofRuleSet extends AbstractSmallStepProofRuleSet
       // rethrow as something is really completely broken
       throw e ;
     }
+    catch ( InvocationTargetException e )
+    {
+      throw new RuntimeException ( e.getTargetException ( ).getMessage ( ) ) ;
+    }
     catch ( Exception e )
     {
       // rethrow as runtime exception, sombody b0rked it
@@ -149,7 +154,8 @@ public class L0SmallStepProofRuleSet extends AbstractSmallStepProofRuleSet
   public Expression applyLambda ( SmallStepProofContext context ,
       Application application , Lambda lambda , Expression v )
   {
+    Expression result = lambda.getE ( ).substitute ( lambda.getId ( ) , v ) ;
     context.addProofStep ( getRuleByName ( "BETA-V" ) , application ) ; //$NON-NLS-1$
-    return lambda.getE ( ).substitute ( lambda.getId ( ) , v ) ;
+    return result ;
   }
 }
