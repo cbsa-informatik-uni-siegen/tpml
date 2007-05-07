@@ -24,7 +24,6 @@ import de.unisiegen.tpml.core.typechecker.TypeCheckerProofContext;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofRule;
 import de.unisiegen.tpml.core.types.MonoType;
-import de.unisiegen.tpml.core.types.Type;
 import de.unisiegen.tpml.core.types.TypeVariable;
 
 /**
@@ -157,37 +156,41 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 	 * @see de.unisiegen.tpml.core.AbstractProofModel#prove(de.unisiegen.tpml.core.ProofRule, de.unisiegen.tpml.core.ProofNode)
 	 */
 	@Override
-	public void prove(ProofRule rule, ProofNode node) throws ProofRuleException {
+	public void prove(ProofRule rule, ProofNode pNode) throws ProofRuleException {
 
 		if (!this.ruleSet.contains(rule)) {
 			throw new IllegalArgumentException("The rule is invalid for the model"); //$NON-NLS-1$
 		}
-		if (!this.root.isNodeRelated(node)) {
+		if (!this.root.isNodeRelated(pNode)) {
 			throw new IllegalArgumentException("The node is invalid for the model"); //$NON-NLS-1$
 		}
-		if (node.getRules().length > 0) {
+		if (pNode.getRules().length > 0) {
 			throw new IllegalArgumentException("The node is already completed"); //$NON-NLS-1$
 		}
+DefaultTypeInferenceProofNode node = (DefaultTypeInferenceProofNode) pNode;
+		
 		// try to apply the rule to the specified node
-		applyInternal((TypeCheckerProofRule) rule,
-				(DefaultTypeInferenceProofNode) node, null, null, false);
+		applyInternal((TypeCheckerProofRule) rule, node, null, node.getFirstFormula ( ), false);
 	}
 
-	public void prove(ProofRule rule, ProofNode node, boolean mode)
+	public void prove(ProofRule rule, ProofNode pNode, boolean mode)
 			throws ProofRuleException {
+		System.err.println("prove2");
 
 		if (!this.ruleSet.contains(rule)) {
 			throw new IllegalArgumentException("The rule is invalid for the model"); //$NON-NLS-1$
 		}
-		if (!this.root.isNodeRelated(node)) {
+		if (!this.root.isNodeRelated(pNode)) {
 			throw new IllegalArgumentException("The node is invalid for the model"); //$NON-NLS-1$
 		}
-		if (node.getRules().length > 0) {
+		if (pNode.getRules().length > 0) {
 			throw new IllegalArgumentException("The node is already completed"); //$NON-NLS-1$
 		}
+		
+		DefaultTypeInferenceProofNode node = (DefaultTypeInferenceProofNode) pNode;
+		
 		// try to apply the rule to the specified node
-		applyInternal((TypeCheckerProofRule) rule,
-				(DefaultTypeInferenceProofNode) node, null, null, mode);
+		applyInternal((TypeCheckerProofRule) rule, node, null, node.getFirstFormula ( ), mode);
 	}
 
 	/**
@@ -204,6 +207,7 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 	 */
 	public void prove(ProofRule rule, ProofNode node, TypeFormula formula)
 			throws ProofRuleException {
+		System.err.println("prove1");
 
 		if (!this.ruleSet.contains(rule)) {
 			throw new IllegalArgumentException("The rule is invalid for the model"); //$NON-NLS-1$
