@@ -449,7 +449,6 @@ public class EditorPanel extends javax.swing.JPanel {
 			
 
 		} catch (Exception e) {
-			logger.error("Could not create new SmallStepView", e);
 			JOptionPane.showMessageDialog(this,
 					java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("CouldNotSmallStep")+
 					"\n"+e.getMessage()+".",
