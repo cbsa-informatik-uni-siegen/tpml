@@ -17,7 +17,7 @@ import de.unisiegen.tpml.core.expressions.Identifier ;
 import de.unisiegen.tpml.core.expressions.Method ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable ;
-import de.unisiegen.tpml.core.subtyping.SubTypingEnterTypes ;
+import de.unisiegen.tpml.graphics.subtyping.SubTypingEnterTypes ;
 import de.unisiegen.tpml.core.types.MonoType ;
 import de.unisiegen.tpml.core.types.Type ;
 import de.unisiegen.tpml.graphics.Theme ;
