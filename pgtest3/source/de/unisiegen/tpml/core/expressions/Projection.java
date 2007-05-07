@@ -3,6 +3,7 @@ package de.unisiegen.tpml.core.expressions ;
 
 import java.text.MessageFormat ;
 import de.unisiegen.tpml.core.Messages ;
+import de.unisiegen.tpml.core.exceptions.LanguageParserMultiException ;
 import de.unisiegen.tpml.core.languages.LanguageParserException ;
 
 
@@ -116,10 +117,13 @@ public class Projection extends UnaryOperator
     }
     else if ( pIndex > pArity )
     {
-      throw new LanguageParserException ( MessageFormat.format ( Messages
-          .getString ( "Exception.4" ) , String.valueOf ( pIndex ) , String //$NON-NLS-1$
-          .valueOf ( pArity ) ) , pParserArityStartOffset ,
-          pParserIndexEndOffset ) ;
+      throw new LanguageParserMultiException ( new String [ ]
+      { MessageFormat.format ( Messages.getString ( "Exception.4" ) , String //$NON-NLS-1$
+          .valueOf ( pIndex ) , String.valueOf ( pArity ) ) ,
+          MessageFormat.format ( Messages.getString ( "Exception.5" ) , String //$NON-NLS-1$
+              .valueOf ( pIndex ) , String.valueOf ( pArity ) ) } , new int [ ]
+      { pParserArityStartOffset , pParserIndexStartOffset } , new int [ ]
+      { pParserArityEndOffset , pParserIndexEndOffset } ) ;
     }
     this.arity = pArity ;
     this.index = pIndex ;
