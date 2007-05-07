@@ -9,6 +9,7 @@ import javax.swing.JFrame;
 import de.unisiegen.tpml.core.languages.Language;
 import de.unisiegen.tpml.core.languages.LanguageFactory;
 import de.unisiegen.tpml.core.languages.NoSuchLanguageException;
+import de.unisiegen.tpml.graphics.subtyping.SubTypingEnterTypes;
 
 public class SubTypingTest extends JFrame {
 	
