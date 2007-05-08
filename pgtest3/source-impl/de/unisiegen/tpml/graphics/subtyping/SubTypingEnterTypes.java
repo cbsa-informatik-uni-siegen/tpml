@@ -221,7 +221,7 @@ public class SubTypingEnterTypes extends JComponent {
 		inputFields.setLayout ( new GridBagLayout ( ) );
 		inputFields.setBorder ( border );
 
-		this.label = new JLabel ( "Enter first Type: " ); //$NON-NLS-1$
+		this.label = new JLabel ( Messages.getString ( "firstType" ) ); //$NON-NLS-1$
 		constraints.gridx = 0;
 		constraints.gridy = 0;
 		constraints.weightx = 1;
@@ -229,7 +229,7 @@ public class SubTypingEnterTypes extends JComponent {
 		constraints.insets = new Insets ( 5, 10, 5, 10 );
 		this.inputFields.add ( this.label, constraints );
 
-		this.label2 = new JLabel ( "Enter second Type: " ); //$NON-NLS-1$
+		this.label2 = new JLabel ( Messages.getString ( "secondType" ) ); //$NON-NLS-1$
 		constraints.gridx = 0;
 		constraints.gridy = 2;
 		constraints.weightx = 1;
