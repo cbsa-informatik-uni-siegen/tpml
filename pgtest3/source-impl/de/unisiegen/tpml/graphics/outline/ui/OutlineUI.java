@@ -1,7 +1,6 @@
 package de.unisiegen.tpml.graphics.outline.ui ;
 
 
-import java.awt.Color ;
 import java.awt.GridBagConstraints ;
 import java.awt.GridBagLayout ;
 import java.awt.Insets ;
@@ -18,7 +17,6 @@ import javax.swing.JPopupMenu ;
 import javax.swing.JScrollPane ;
 import javax.swing.JTree ;
 import javax.swing.KeyStroke ;
-import javax.swing.border.LineBorder ;
 import javax.swing.tree.DefaultMutableTreeNode ;
 import javax.swing.tree.DefaultTreeModel ;
 import de.unisiegen.tpml.graphics.outline.DefaultOutline ;
@@ -972,25 +970,6 @@ public final class OutlineUI
   public final DefaultTreeModel getTreeModel ( )
   {
     return this.treeModel ;
-  }
-
-
-  /**
-   * Updates the UI mit or without an error.
-   * 
-   * @param pStatus True, if the error should be set.
-   */
-  public final void setError ( boolean pStatus )
-  {
-    if ( pStatus )
-    {
-      this.jScrollPaneOutline.setBorder ( new LineBorder ( Color.RED , 3 ) ) ;
-    }
-    else
-    {
-      this.jScrollPaneOutline.setBorder ( new LineBorder ( Color.WHITE , 3 ) ) ;
-      // this.jScrollPaneOutline.setBorder ( null ) ;
-    }
   }
 
 

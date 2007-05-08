@@ -1,6 +1,7 @@
 package de.unisiegen.tpml.graphics.outline ;
 
 
+import java.awt.Color ;
 import java.awt.Rectangle ;
 import java.lang.reflect.InvocationTargetException ;
 import java.util.ArrayList ;
@@ -9,6 +10,7 @@ import java.util.Timer ;
 import javax.swing.JPanel ;
 import javax.swing.JScrollPane ;
 import javax.swing.SwingUtilities ;
+import javax.swing.border.LineBorder ;
 import javax.swing.tree.TreePath ;
 import de.unisiegen.tpml.core.expressions.Attribute ;
 import de.unisiegen.tpml.core.expressions.CurriedMethod ;
@@ -872,7 +874,7 @@ public final class DefaultOutline implements Outline
       createType ( type , this.rootOutlineNode ) ;
     }
     repaint ( this.rootOutlineNode ) ;
-    this.outlineUI.setError ( false ) ;
+    setError ( false ) ;
     SwingUtilities.invokeLater ( new OutlineDisplayTree ( this ) ) ;
   }
 
@@ -1180,7 +1182,7 @@ public final class DefaultOutline implements Outline
       if ( ( this.outlinePreferences.isAutoUpdate ( ) )
           || ( pExecute.equals ( Outline.Execute.MOUSE_CLICK_EDITOR ) ) )
       {
-        this.outlineUI.setError ( true ) ;
+        setError ( true ) ;
       }
       return ;
     }
@@ -1226,7 +1228,7 @@ public final class DefaultOutline implements Outline
       return ;
     }
     executeTimerCancel ( ) ;
-    this.outlineUI.setError ( false ) ;
+    setError ( false ) ;
     /*
      * Do not update, if the the loaded Expression is equal to the new
      * Expression.
@@ -1385,6 +1387,26 @@ public final class DefaultOutline implements Outline
     for ( int i = 0 ; i < pOutlineNode.getChildCount ( ) ; i ++ )
     {
       resetNode ( ( OutlineNode ) pOutlineNode.getChildAt ( i ) ) ;
+    }
+  }
+
+
+  /**
+   * Updates the UI mit or without an error.
+   * 
+   * @param pStatus True, if the error should be set.
+   */
+  public final void setError ( boolean pStatus )
+  {
+    if ( pStatus )
+    {
+      this.outlineUI.getJScrollPaneOutline ( ).setBorder (
+          new LineBorder ( Color.RED , 3 ) ) ;
+    }
+    else
+    {
+      this.outlineUI.getJScrollPaneOutline ( ).setBorder (
+          new LineBorder ( Color.WHITE , 3 ) ) ;
     }
   }
 
