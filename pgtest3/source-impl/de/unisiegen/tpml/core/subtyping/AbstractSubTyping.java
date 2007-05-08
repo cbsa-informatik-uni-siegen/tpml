@@ -2,12 +2,14 @@ package de.unisiegen.tpml.core.subtyping;
 
 import de.unisiegen.tpml.core.expressions.Identifier;
 import de.unisiegen.tpml.core.types.ArrowType;
+import de.unisiegen.tpml.core.types.ListType;
 import de.unisiegen.tpml.core.types.MonoType;
 import de.unisiegen.tpml.core.types.ObjectType;
+import de.unisiegen.tpml.core.types.RefType;
 import de.unisiegen.tpml.core.types.RowType;
+import de.unisiegen.tpml.core.types.TupleType;
 
 public abstract class AbstractSubTyping {
-
 
 	AbstractSubTyping() {
 
@@ -21,7 +23,39 @@ public abstract class AbstractSubTyping {
 			return checkRowType ( ( RowType ) type1, ( RowType ) type2 );
 		if (type1 instanceof ArrowType && type2 instanceof ArrowType)
 			return checkArrowType ( ( ArrowType ) type1, ( ArrowType ) type2 );
+		if (type1 instanceof RefType && type2 instanceof RefType)
+			return checkRefType ( ( RefType ) type1, ( RefType ) type2 );
+		if (type1 instanceof TupleType && type2 instanceof TupleType)
+			return checkTupleType ( ( TupleType ) type1, ( TupleType ) type2 );
+		if (type1 instanceof ListType && type2 instanceof ListType)
+			return checkListType ( ( ListType ) type1, ( ListType ) type2 );
 		return checkType ( type1, type2 );
+	}
+
+	private static boolean checkListType(ListType type, ListType type2) {
+		MonoType tau = type.getTau ( );
+		MonoType tau2 = type2.getTau ( );
+		return check ( tau, tau2 );
+
+	}
+
+	private static boolean checkTupleType(TupleType type, TupleType type2) {
+		MonoType[] types = type.getTypes ( );
+		MonoType[] types2 = type2.getTypes ( );
+		boolean result = true;
+		if (types.length != types2.length)
+			return false;
+		for (int i = 0; i < types.length; i++ ) {
+			if (! ( result = result && check ( types[i], types2[i] ) ))
+				return false;
+		}
+		return result;
+	}
+
+	private static boolean checkRefType(RefType type, RefType type2) {
+		MonoType tau = type.getTau ( );
+		MonoType tau2 = type2.getTau ( );
+		return check ( tau, tau2 );
 	}
 
 	private static boolean checkArrowType(ArrowType type, ArrowType type2) {
