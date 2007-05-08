@@ -2,6 +2,9 @@ import de.unisiegen.tpml.core.types.*;
 import de.unisiegen.tpml.core.expressions.*;
 import java.util.ArrayList;
 import de.unisiegen.tpml.core.exceptions.LanguageParserMultiException;
+import de.unisiegen.tpml.core.languages.LanguageParserException;
+import de.unisiegen.tpml.core.Messages ;
+import java.text.MessageFormat;
 
 
 /* Helper classes */
@@ -26,6 +29,38 @@ action code
     	negativeIdentifiers.add ( identifier [i] ) ;
     	LanguageParserMultiException.throwExceptionRowType ( negativeIdentifiers ) ;
       }
+    }
+  }
+  
+  private static class Error
+  {
+    public static void expectedTokenSequence(String ... pTokenSequence)
+    {
+      expectedTokenSequence (0, 0, pTokenSequence);
+    }
+    
+    public static void expectedTokenSequence(int pLeft, int pRight , String ... pTokenSequence)
+    {
+      String or = Messages.getString ( "Parser.15" ) ;
+      String result = "" ;
+      for ( int i = 0; i < pTokenSequence.length ; i++)
+      {
+        if ( i == 0 )
+        {
+          result += "\"" + pTokenSequence [i] + "\"" ;
+        }
+        else if ( i == pTokenSequence.length - 1 )
+        {
+          result += " " + or + " \"" + pTokenSequence [i]+ "\"";
+        }
+        else
+        {
+          result += ", \"" + pTokenSequence [i]+ "\"";
+        }
+      }
+      throw new LanguageParserException (  
+        MessageFormat.format ( "<html>" + Messages.getString ( "Parser.14" ) + "</html>", 
+          result ) , pLeft, pRight);
     }
   }
 :}
