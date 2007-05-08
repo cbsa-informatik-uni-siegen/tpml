@@ -56,17 +56,6 @@ public final class Row extends Expression implements ChildrenExpressions
         // this.expressions [ i ] = this.expressions [ i ].clone ( ) ;
       }
       this.expressions [ i ].setParent ( this ) ;
-      if ( this.expressions [ i ] instanceof Attribute )
-      {
-        Attribute attribute = ( Attribute ) this.expressions [ i ] ;
-        attribute.setParent ( this ) ;
-      }
-      else if ( ( ! ( this.expressions [ i ] instanceof Method ) )
-          && ( ! ( this.expressions [ i ] instanceof CurriedMethod ) ) )
-      {
-        throw new IllegalArgumentException (
-            "One child Expression of the Row is not an Attribute, Method or CurriedMethod." ) ; //$NON-NLS-1$
-      }
     }
   }
 
