@@ -119,7 +119,7 @@ public class Projection extends UnaryOperator
     {
       throw new LanguageParserMultiException ( new String [ ]
       { MessageFormat.format ( Messages.getString ( "Exception.4" ) , String //$NON-NLS-1$
-          .valueOf ( pIndex ) , String.valueOf ( pArity ) ) ,
+          .valueOf ( pArity ) , String.valueOf ( pIndex ) ) ,
           MessageFormat.format ( Messages.getString ( "Exception.5" ) , String //$NON-NLS-1$
               .valueOf ( pIndex ) , String.valueOf ( pArity ) ) } , new int [ ]
       { pParserArityStartOffset , pParserIndexStartOffset } , new int [ ]
