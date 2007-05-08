@@ -9,12 +9,24 @@ import de.unisiegen.tpml.core.types.RefType;
 import de.unisiegen.tpml.core.types.RowType;
 import de.unisiegen.tpml.core.types.TupleType;
 
+/**
+ * 
+ * This abstract class checks if one type is a subtype of another type.
+ *
+ * @author Benjamin Mies
+ *
+ */
 public abstract class AbstractSubTyping {
 
-	AbstractSubTyping() {
-
-	}
-
+/**
+ * 
+ * This method awaits two MonoTypes, and returns true if one type is a subtype
+ * of the other one.
+ *
+ * @param type1 MonoType first type
+ * @param type2 MonoType second type
+ * @return boolean is Subtype
+ */
 	public static boolean check(MonoType type1, MonoType type2) {
 
 		if (type1 instanceof ObjectType && type2 instanceof ObjectType)
@@ -42,14 +54,13 @@ public abstract class AbstractSubTyping {
 	private static boolean checkTupleType(TupleType type, TupleType type2) {
 		MonoType[] types = type.getTypes ( );
 		MonoType[] types2 = type2.getTypes ( );
-		boolean result = true;
 		if (types.length != types2.length)
 			return false;
 		for (int i = 0; i < types.length; i++ ) {
-			if (! ( result = result && check ( types[i], types2[i] ) ))
+			if ( !types[i].equals (  types2[i] ) );
 				return false;
 		}
-		return result;
+		return true;
 	}
 
 	private static boolean checkRefType(RefType type, RefType type2) {

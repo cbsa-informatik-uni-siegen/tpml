@@ -323,7 +323,7 @@ public class SubTypingEnterTypes extends JComponent {
 		constraints.insets = new Insets ( 5, 5, 5, 5 );
 		this.outputField.add ( labelOutput, constraints );
 
-		lOutput = new JLabel ( );
+		lOutput = new JLabel (" ");
 
 		constraints.gridx = 0;
 		constraints.gridy = 1;
@@ -385,6 +385,7 @@ public class SubTypingEnterTypes extends JComponent {
 
 	MonoType eventHandling(StyledLanguageDocument document, MonoType type,
 			MonoType oldType, DefaultOutline outline) {
+		lOutput.setText ( " " );
 		try {
 			LanguageTypeParser parser = this.language
 					.newTypeParser ( new StringReader ( document.getText ( document
