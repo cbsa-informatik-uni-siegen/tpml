@@ -16,6 +16,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.border.LineBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -31,6 +32,9 @@ import de.unisiegen.tpml.graphics.outline.DefaultOutline;
 import de.unisiegen.tpml.graphics.outline.Outline;
 
 import de.unisiegen.tpml.graphics.Messages;
+import de.unisiegen.tpml.ui.SideBar;
+import de.unisiegen.tpml.ui.SideBarListener;
+import de.unisiegen.tpml.ui.editor.TextEditorPanel;
 
 /**
  * 
@@ -61,6 +65,14 @@ public class SubTypingEnterTypes extends JComponent {
 	/**
 	 * The Textfields where the user is able to enter the types
 	 */
+	
+	private SideBar			sideBar;
+	
+	private SideBar			sideBar2;
+	
+	private JScrollPane scrollpane;
+	
+	private JScrollPane scrollpane2;
 
 	private StyledLanguageEditor editor1;
 
@@ -226,6 +238,7 @@ public class SubTypingEnterTypes extends JComponent {
 		constraints.gridy = 0;
 		constraints.weightx = 1;
 		constraints.weighty = 0;
+		constraints.gridwidth = 2;
 		constraints.insets = new Insets ( 5, 10, 5, 10 );
 		this.inputFields.add ( this.label, constraints );
 
@@ -234,11 +247,24 @@ public class SubTypingEnterTypes extends JComponent {
 		constraints.gridy = 2;
 		constraints.weightx = 1;
 		constraints.weighty = 0;
+		constraints.gridwidth = 2;
 		this.inputFields.add ( label2, constraints );
 
 		this.editor1 = new StyledLanguageEditor ( );
-
+		
 		this.document1 = new StyledTypeEnterField ( language );
+		
+		this.scrollpane = new JScrollPane();
+		this.sideBar = new SideBar (this.scrollpane,
+				this.document1,
+				this.editor1);
+		this.sideBar.addSibeBarListener(new SideBarListener() {
+			public void markText (int left, int right) {
+				SubTypingEnterTypes.this.selectErrorText(left, right);
+				}
+		});
+
+		
 
 		this.editor1.setDocument ( this.document1 );
 
@@ -251,7 +277,7 @@ public class SubTypingEnterTypes extends JComponent {
 
 			@SuppressWarnings("synthetic-access")
 			public void insertUpdate(DocumentEvent e) {
-				type1 = eventHandling ( document1, type1, oldType1, outline1 );
+				type1 = eventHandling ( editor1, type1, oldType1, outline1 );
 				if (type1 != oldType1) {
 					check ( );
 				}
@@ -259,20 +285,41 @@ public class SubTypingEnterTypes extends JComponent {
 
 			@SuppressWarnings("synthetic-access")
 			public void removeUpdate(DocumentEvent e) {
-				type1 = eventHandling ( document1, type1, oldType1, outline1 );
+				type1 = eventHandling ( editor1, type1, oldType1, outline1 );
 				if (type1 != oldType1)
 					check ( );
 			}
 		} );
+		
+		this.scrollpane.setViewportView(this.editor1);
+		this.scrollpane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
 
 		constraints.gridx = 0;
 		constraints.gridy = 1;
-		constraints.weighty = 0;
-		this.inputFields.add ( this.editor1, constraints );
+		constraints.weightx = 0;
+		constraints.gridwidth = 1;
+		constraints.insets = new Insets ( 5, 0, 5, 0 );
+		this.inputFields.add ( this.sideBar, constraints );
+		
+		constraints.gridx = 1;
+		constraints.gridy = 1;
+		constraints.weightx = 10;
+		this.inputFields.add ( this.scrollpane, constraints );
 
 		this.editor2 = new StyledLanguageEditor ( );
-
+		
 		this.document2 = new StyledTypeEnterField ( language );
+		
+		this.scrollpane2 = new JScrollPane();
+		this.sideBar2 = new SideBar (this.scrollpane2,
+				this.document2,
+				this.editor2);
+		this.sideBar2.addSibeBarListener(new SideBarListener() {
+			public void markText (int left, int right) {
+				SubTypingEnterTypes.this.selectErrorText(left, right);
+				}
+		});
+
 
 		this.outline2 = new DefaultOutline ( this );
 
@@ -284,25 +331,33 @@ public class SubTypingEnterTypes extends JComponent {
 
 			@SuppressWarnings("synthetic-access")
 			public void insertUpdate(DocumentEvent e) {
-				type2 = eventHandling ( document2, type2, oldType2, outline2 );
+				type2 = eventHandling ( editor2, type2, oldType2, outline2 );
 				if (type2 != oldType2)
 					check ( );
 			}
 
 			@SuppressWarnings("synthetic-access")
 			public void removeUpdate(DocumentEvent e) {
-				type2 = eventHandling ( document2, type2, oldType2, outline2 );
+				type2 = eventHandling ( editor2, type2, oldType2, outline2 );
 				if (type2 != oldType2)
 					check ( );
 			}
 		} );
 
 		this.editor2.setDocument ( this.document2 );
+		
+		this.scrollpane2.setViewportView(this.editor2);
+		this.scrollpane2.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
 
 		constraints.gridx = 0;
 		constraints.gridy = 3;
-		constraints.weighty = 0;
-		this.inputFields.add ( this.editor2, constraints );
+		constraints.weightx = 0;
+		this.inputFields.add ( this.sideBar2, constraints );
+		
+		constraints.gridx = 1;
+		constraints.gridy = 3;
+		constraints.weightx = 10;
+		this.inputFields.add ( this.scrollpane2, constraints );
 
 		constraints.gridx = 0;
 		constraints.gridy = 1;
@@ -368,6 +423,10 @@ public class SubTypingEnterTypes extends JComponent {
 
 	}
 
+	private void selectErrorText (int left, int right) {
+		this.editor1.select(left, right);
+	}
+
 	void check() {
 		if (type1 != null && type2 != null) {
 			if (AbstractSubTyping.check ( type1, type2 )) {
@@ -383,12 +442,12 @@ public class SubTypingEnterTypes extends JComponent {
 		}
 	}
 
-	MonoType eventHandling(StyledLanguageDocument document, MonoType type,
+	MonoType eventHandling(StyledLanguageEditor editor, MonoType type,
 			MonoType oldType, DefaultOutline outline) {
 		lOutput.setText ( " " );
 		try {
 			LanguageTypeParser parser = this.language
-					.newTypeParser ( new StringReader ( document.getAllText ( ) ) );
+					.newTypeParser ( new StringReader ( editor.getText ( ) ) );
 
 			type = parser.parse ( );
 
@@ -400,7 +459,7 @@ public class SubTypingEnterTypes extends JComponent {
 			
 			outline
 					.loadPrettyPrintable ( null, Outline.Execute.AUTO_CHANGE_SUBTYPING );
-			if (document.getAllText ( ).length ( ) == 0)
+			if (editor.getText ( ).length ( ) == 0)
 				outline.setError ( false );
 			return null;
 		}
@@ -416,10 +475,10 @@ public class SubTypingEnterTypes extends JComponent {
 				initialized = true;
 			} else {
 				this.document1.setLanguage ( language );
-				type1 = eventHandling ( document1, type1, oldType1, outline1 );
+				type1 = eventHandling ( editor1, type1, oldType1, outline1 );
 
 				this.document2.setLanguage ( language );
-				type2 = eventHandling ( document2, type2, oldType2, outline2 );
+				type2 = eventHandling ( editor2, type2, oldType2, outline2 );
 				check ( );
 				try {
 					this.document1.processChanged ( );

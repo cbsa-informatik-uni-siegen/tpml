@@ -93,12 +93,28 @@ public abstract class AbstractSubTyping {
 
 	private static boolean checkRowType(RowType type1, RowType type2) {
 		boolean goOn = false;
+		Identifier[] ids1 = null;
+		Identifier[] ids2 = null;
+		MonoType[] types1 = null;
+		MonoType[] types2 = null;
+		
+		if (type1.getIdentifiers ( ).length < type2.getIdentifiers ( ).length)
+		{
 
-		Identifier[] ids1 = type1.getIdentifiers ( );
-		Identifier[] ids2 = type2.getIdentifiers ( );
+		ids1 = type1.getIdentifiers ( );
+		ids2 = type2.getIdentifiers ( );
 
-		MonoType[] types1 = type1.getTypes ( );
-		MonoType[] types2 = type2.getTypes ( );
+		types1 = type1.getTypes ( );
+		types2 = type2.getTypes ( );
+		}
+		else
+		{
+			ids1 = type2.getIdentifiers ( );
+			ids2 = type1.getIdentifiers ( );
+
+			types1 = type2.getTypes ( );
+			types2 = type1.getTypes ( );
+		}
 
 		for (int i = 0; i < ids1.length; i++ ) {
 			goOn = false;
