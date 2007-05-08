@@ -347,6 +347,7 @@ public class CompoundExpressionTypeInference extends JComponent
       		}
     			
     		}
+    		repaint();
     		
     	}
       

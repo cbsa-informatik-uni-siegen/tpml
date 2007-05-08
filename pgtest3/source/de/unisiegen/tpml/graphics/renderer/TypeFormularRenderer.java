@@ -321,9 +321,8 @@ public class TypeFormularRenderer extends AbstractRenderer {
 			remebmbertoChange = -1;
 			markedArea = null;
 			
-		}
-		
-		
+			
+		}	
 	}
 	
 	
@@ -436,6 +435,7 @@ public class TypeFormularRenderer extends AbstractRenderer {
 				}
 				else if (t instanceof TypeJudgement)
 				{
+					int oldPosX = posX;
 					TypeEnvironment environment = t.getEnvironment();
 					Expression expression = t.getExpression();
 					Type type = t.getType();
@@ -453,7 +453,7 @@ public class TypeFormularRenderer extends AbstractRenderer {
 					//posX += AbstractRenderer.keywordFontMetrics.stringWidth(environment.toString());
 					
 					//System.out.println("Die Größe: "+environmentRenderer.getNeededSize().width); 
-					
+					Dimension environmentSize = environmentRenderer.getNeededSize() ;
 					environmentRenderer.renderer(posX, posY-(environmentRenderer.getNeededSize().height / 2) - fontAscent / 2, environmentRenderer.getNeededSize().width, environmentRenderer.getNeededSize().height, gc);
 				
 					posX += environmentRenderer.getNeededSize().width;
@@ -498,6 +498,9 @@ public class TypeFormularRenderer extends AbstractRenderer {
 					Dimension typeSize = prettyStringrenderer.getNeededSize(Integer.MAX_VALUE);
 					prettyStringrenderer.render(posX, posY-(expressionSize.height / 2) - fontAscent / 2, expressionSize.height, gc, bound, toListenForM);
 					posX += typeSize.width;
+					
+					this.typeFprmularPostitions.add(new Rectangle(oldPosX, posY, posX-oldPosX, höhe));
+					this.typeEquations.add(i);
 					
 					//everey line but the last needs a line braek
 					if (i<(typeFormulaList.size()-1))
