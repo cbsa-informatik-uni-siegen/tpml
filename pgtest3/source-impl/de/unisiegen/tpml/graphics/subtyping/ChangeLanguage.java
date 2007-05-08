@@ -109,7 +109,6 @@ public class ChangeLanguage extends javax.swing.JDialog {
 		javax.swing.JLabel descriptionLabel;
 		javax.swing.JScrollPane descriptionScrollPane;
 		java.awt.GridBagConstraints gridBagConstraints;
-		//javax.swing.JLabel headerImageLabel;
 		javax.swing.JPanel headerPanel;
 		javax.swing.JSeparator headerSeparator;
 		javax.swing.JLabel headerSubTitleLabel;
@@ -121,7 +120,6 @@ public class ChangeLanguage extends javax.swing.JDialog {
 		headerTitleLabel = new javax.swing.JLabel ( );
 		headerSubTitleLabel = new javax.swing.JLabel ( );
 		headerSeparator = new javax.swing.JSeparator ( );
-		//headerImageLabel = new javax.swing.JLabel ( );
 		bodyPanel = new javax.swing.JPanel ( );
 		languagesScrollPane = new javax.swing.JScrollPane ( );
 		languagesList = new javax.swing.JList ( );
@@ -134,9 +132,8 @@ public class ChangeLanguage extends javax.swing.JDialog {
 		okButton = new javax.swing.JButton ( );
 
 		setDefaultCloseOperation ( javax.swing.WindowConstants.DISPOSE_ON_CLOSE );
-		//setTitle(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("New_File") + " ...");
 		setTitle ( Messages.getString ( "changeLanguage" ) ); //$NON-NLS-1$
-		setName  ( Messages.getString ( "changeLanguage" ) ); //$NON-NLS-1$
+		setName ( Messages.getString ( "changeLanguage" ) ); //$NON-NLS-1$
 		addWindowListener ( new java.awt.event.WindowAdapter ( ) {
 			@SuppressWarnings("synthetic-access")
 			public void windowClosing(java.awt.event.WindowEvent evt) {
@@ -149,7 +146,6 @@ public class ChangeLanguage extends javax.swing.JDialog {
 		headerPanel.setBackground ( javax.swing.UIManager.getDefaults ( ).getColor (
 				"window" ) ); //$NON-NLS-1$
 		headerTitleLabel.setFont ( new java.awt.Font ( "Dialog", 1, 24 ) ); //$NON-NLS-1$
-		//headerTitleLabel.setText(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("FileWizardTitle"));
 		headerTitleLabel.setText ( Messages.getString ( "chooseLanguage.0" ) ); //$NON-NLS-1$
 		gridBagConstraints = new java.awt.GridBagConstraints ( );
 		gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
@@ -158,7 +154,6 @@ public class ChangeLanguage extends javax.swing.JDialog {
 		gridBagConstraints.insets = new java.awt.Insets ( 10, 10, 5, 10 );
 		headerPanel.add ( headerTitleLabel, gridBagConstraints );
 
-		//headerSubTitleLabel.setText(java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("FileWizardSubtitle"));
 		headerSubTitleLabel.setText ( Messages.getString ( "chooseLanguage.1" ) ); //$NON-NLS-1$
 		gridBagConstraints = new java.awt.GridBagConstraints ( );
 		gridBagConstraints.gridx = 0;
@@ -178,13 +173,6 @@ public class ChangeLanguage extends javax.swing.JDialog {
 		gridBagConstraints.weightx = 1.0;
 		headerPanel.add ( headerSeparator, gridBagConstraints );
 
-		/*
-		 headerImageLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/tpml/ui/icons/new24.png")));
-		 gridBagConstraints = new java.awt.GridBagConstraints();
-		 gridBagConstraints.gridheight = 2;
-		 gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
-		 headerPanel.add(headerImageLabel, gridBagConstraints);
-		 */
 		getContentPane ( ).add ( headerPanel, java.awt.BorderLayout.NORTH );
 
 		bodyPanel.setLayout ( new java.awt.GridBagLayout ( ) );
@@ -194,6 +182,7 @@ public class ChangeLanguage extends javax.swing.JDialog {
 			 * TODO
 			 */
 			private static final long serialVersionUID = 1366225417646208434L;
+
 			String[] strings = { "L0 (Pure untyped \u03bb calculus)", //$NON-NLS-1$
 					"L1 (Simply typed \u03bb calculus)" }; //$NON-NLS-1$
 
@@ -281,12 +270,11 @@ public class ChangeLanguage extends javax.swing.JDialog {
 
 		buttonsPanel.setLayout ( new java.awt.GridBagLayout ( ) );
 
-		cancelButton
-				.setMnemonic ( java.util.ResourceBundle.getBundle (
-						"de/unisiegen/tpml/ui/ui" ).getString ( "CancelMnemonic" ).charAt (  //$NON-NLS-1$//$NON-NLS-2$
-						0 ) );
+		cancelButton.setMnemonic ( java.util.ResourceBundle.getBundle (
+				"de/unisiegen/tpml/ui/ui" ).getString ( "CancelMnemonic" ).charAt ( //$NON-NLS-1$//$NON-NLS-2$
+				0 ) );
 		cancelButton.setText ( java.util.ResourceBundle.getBundle (
-				"de/unisiegen/tpml/ui/ui" ).getString ( "Cancel" ) );  //$NON-NLS-1$//$NON-NLS-2$
+				"de/unisiegen/tpml/ui/ui" ).getString ( "Cancel" ) ); //$NON-NLS-1$//$NON-NLS-2$
 		cancelButton.addActionListener ( new java.awt.event.ActionListener ( ) {
 			@SuppressWarnings("synthetic-access")
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -301,7 +289,7 @@ public class ChangeLanguage extends javax.swing.JDialog {
 		buttonsPanel.add ( cancelButton, gridBagConstraints );
 
 		okButton.setMnemonic ( 'O' );
-		okButton.setText ( "Ok" ); //$NON-NLS-1$
+		okButton.setText ( Messages.getString ( "ok" ) ); //$NON-NLS-1$
 		okButton.setEnabled ( false );
 		okButton.addActionListener ( new java.awt.event.ActionListener ( ) {
 			@SuppressWarnings("synthetic-access")
@@ -328,14 +316,15 @@ public class ChangeLanguage extends javax.swing.JDialog {
 	}//GEN-LAST:event_formWindowClosing
 
 	private void languagesListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_languagesListMouseClicked
-	// 
+		// 
 		if (evt.getClickCount ( ) == 2) {
+			subtypes.setLanguage ( getLanguage ( ) );
 			dispose ( );
 		}
 	}//GEN-LAST:event_languagesListMouseClicked
 
 	private void languagesListKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_languagesListKeyPressed
-	// 
+		// 
 		if (evt.getKeyCode ( ) == KeyEvent.VK_ENTER) {
 			if (language != null) {
 				subtypes.setLanguage ( getLanguage ( ) );
@@ -349,7 +338,7 @@ public class ChangeLanguage extends javax.swing.JDialog {
 	}//GEN-LAST:event_languagesListKeyPressed
 
 	private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
-	// 
+		// 
 
 		subtypes.setLanguage ( getLanguage ( ) );
 		dispose ( );

@@ -388,10 +388,7 @@ public class SubTypingEnterTypes extends JComponent {
 		lOutput.setText ( " " );
 		try {
 			LanguageTypeParser parser = this.language
-					.newTypeParser ( new StringReader ( document.getText ( document
-							.getStartPosition ( ).getOffset ( ), document.getEndPosition ( )
-							.getOffset ( )
-							- document.getStartPosition ( ).getOffset ( ) ) ) );
+					.newTypeParser ( new StringReader ( document.getAllText ( ) ) );
 
 			type = parser.parse ( );
 
@@ -400,8 +397,11 @@ public class SubTypingEnterTypes extends JComponent {
 			return type;
 
 		} catch (Exception e) {
+			
 			outline
 					.loadPrettyPrintable ( null, Outline.Execute.AUTO_CHANGE_SUBTYPING );
+			if (document.getAllText ( ).length ( ) == 0)
+				outline.setError ( false );
 			return null;
 		}
 
