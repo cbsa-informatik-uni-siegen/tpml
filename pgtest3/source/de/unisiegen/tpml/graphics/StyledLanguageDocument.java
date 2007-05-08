@@ -702,4 +702,5 @@ public class StyledLanguageDocument extends DefaultStyledDocument implements
     }
     tmpChangeSupport.firePropertyChange ( propertyName , oldValue , newValue ) ;
   }
+  
 }
