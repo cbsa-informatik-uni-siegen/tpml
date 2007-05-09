@@ -18,6 +18,7 @@ import de.unisiegen.tpml.core.smallstep.SmallStepProofNode;
 import de.unisiegen.tpml.core.typeinference.TypeInferenceProofModel;
 import de.unisiegen.tpml.core.typeinference.TypeInferenceProofNode;
 import de.unisiegen.tpml.graphics.AbstractProofComponent;
+import de.unisiegen.tpml.graphics.NodeComponentTools;
 import de.unisiegen.tpml.graphics.renderer.EnvironmentRenderer;
 import de.unisiegen.tpml.graphics.renderer.PrettyStringRenderer;
 
@@ -82,6 +83,8 @@ public class TypeInferenceComponent extends AbstractProofComponent implements Sc
 	 */
 	private ProofNode								jumpNode;
 	
+	private boolean									advanced;
+	
 	/**
 	 * Sets the default values.<br>
 	 * <br>
@@ -93,7 +96,7 @@ public class TypeInferenceComponent extends AbstractProofComponent implements Sc
 	 * @param proofModel
 	 * @param advanced
 	 */
-	public TypeInferenceComponent (TypeInferenceProofModel proofModel) {
+	public TypeInferenceComponent (TypeInferenceProofModel proofModel, boolean advancedP) {
 		super (proofModel);
 		
 		
@@ -104,12 +107,25 @@ public class TypeInferenceComponent extends AbstractProofComponent implements Sc
 		this.model 		= proofModel;
 		this.border		= 20;
 		this.spacing	= 10;
+		this.advanced = advancedP;
 		
 		
 		// trigger the first layouting
 		relayout ();
 	}
 	
+	/**
+	 * Returns <code>true</code> if the small step component is in advanced mode, <code>false</code>
+	 * if its in beginner mode.
+	 * 
+	 * @return <code>true</code> if advanced mode is active.
+	 * 
+	 * @see #setAdvanced(boolean)
+	 */
+	boolean isAdvanced() 
+	{
+		return this.advanced;
+	}
 	
 	/**
 	 * If <code>advanced</code> is <code>true</code>, the small step component will display
@@ -122,9 +138,14 @@ public class TypeInferenceComponent extends AbstractProofComponent implements Sc
 	 */
 	void setAdvanced(boolean advanced) {
 		// check if we have a new setting
-		if (true) {
+		if (this.advanced != advanced) 
+		{
+			System.out.println("TypeinferencComponent bekommt nun den Wahrheitswert: "+advanced);
 			// remember the new setting
-			//this.advanced = advanced;
+			this.advanced = advanced;
+			
+			//inform the nodevomponent
+			
 		
 			// make sure all nodes have valid user objects
 			checkForUserObject((TypeInferenceProofNode)this.proofModel.getRoot());
@@ -185,7 +206,7 @@ public class TypeInferenceComponent extends AbstractProofComponent implements Sc
 			
 			// create the noded that has not been there yet
 			//TODO 
-			nodeComponent = new TypeInferenceNodeComponent (node, this.model, this.translator, this.spacing);
+			nodeComponent = new TypeInferenceNodeComponent (node, this.model, this.translator, this.spacing, advanced);
 			
 			// add the needed listener
 			nodeComponent.addTypeInferenceNodeListener(new TypeInferenceNodeListener() {

@@ -193,6 +193,8 @@ public class TypeInferenceNodeComponent extends JComponent {
 	 */
 	private MouseMotionAdapter												underlineRuleAdapter;
 	
+	private boolean																		advanced;
+	
 	/**
 	 * Used internaly. When the underlining is cleared it will be done recursively over the entire tree.
 	 * It needs to be done in two times one time directed to the parent and one time directed to the
@@ -221,8 +223,11 @@ public class TypeInferenceNodeComponent extends JComponent {
 	public TypeInferenceNodeComponent (TypeInferenceProofNode 	proofNode, 
 																 TypeInferenceProofModel 	proofModel,
 																 LanguageTranslator		translator,
-																 int 									spacing) {
+																 int 									spacing, boolean advacedP) {
 		super ();
+		
+		this.advanced 									= advacedP;
+		
 		this.proofNode 									= proofNode;
 		
 		this.proofModel									= proofModel;
@@ -542,7 +547,9 @@ public class TypeInferenceNodeComponent extends JComponent {
 			ProofRule rule = ruleItem.getRule();
 			
 			try {
-				this.proofModel.prove(rule, this.proofNode);
+				//this.proofModel.prove(rule, this.proofNode);
+				//TODO mal sehen, ob das so geht...
+				this.proofModel.prove(rule, this.proofNode, ((TypeInferenceComponent)getParent()).isAdvanced());
 				this.rules.setRightRule();
 			}
 			catch (Exception exc) {

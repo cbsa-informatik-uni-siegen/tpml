@@ -71,7 +71,8 @@ public class TypeInferenceView extends AbstractProofView {
 		setLayout (new BorderLayout ());
 		
 		this.scrollPane = new JScrollPane ();
-		this.component = new TypeInferenceComponent (model);
+		//TODO advanced wieder einbauen
+		this.component = new TypeInferenceComponent (model, isAdvanced() );
 		
 		add (this.scrollPane, BorderLayout.CENTER);
 		
@@ -98,4 +99,17 @@ public class TypeInferenceView extends AbstractProofView {
 	public void guess() throws IllegalStateException, ProofGuessException {
 		this.component.guess ();
 	}
+	
+	/**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.tpml.graphics.AbstractProofView#setAdvanced(boolean)
+   */
+  @ Override
+  public void setAdvanced ( boolean advanced )
+  {
+  	System.out.println("jetzt bekommt der TypeInference-View den advaced-Wert: "+advanced);
+    super.setAdvanced ( advanced ) ;
+    this.component.setAdvanced ( isAdvanced ( ) ) ;
+  }
 }

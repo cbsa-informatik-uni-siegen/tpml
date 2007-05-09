@@ -175,7 +175,7 @@ DefaultTypeInferenceProofNode node = (DefaultTypeInferenceProofNode) pNode;
 
 	public void prove(ProofRule rule, ProofNode pNode, boolean mode)
 			throws ProofRuleException {
-
+System.err.println("priove 2 "+mode);
 		if (!this.ruleSet.contains(rule)) {
 			throw new IllegalArgumentException("The rule is invalid for the model"); //$NON-NLS-1$
 		}

@@ -69,6 +69,7 @@ public class EditorPanel extends javax.swing.JPanel {
                 smallstepButton.setPreferredSize(new Dimension(smallstepButton.getPreferredSize().width, pongButton.getPreferredSize().height));
                 bigstepButton.setPreferredSize(new Dimension(bigstepButton.getPreferredSize().width, pongButton.getPreferredSize().height));
                 typecheckerButton.setPreferredSize(new Dimension(typecheckerButton.getPreferredSize().width, pongButton.getPreferredSize().height));
+                typeinferenceButton.setPreferredSize(new Dimension(typeinferenceButton.getPreferredSize().width, pongButton.getPreferredSize().height));
                 //TODO vielleicht auch machen müssen
 		
 		this.language = language;
@@ -182,7 +183,7 @@ public class EditorPanel extends javax.swing.JPanel {
             }
         });
 
-        editorToolBar.add(typecheckerButton);
+        editorToolBar.add(typeinferenceButton);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -523,7 +524,7 @@ public class EditorPanel extends javax.swing.JPanel {
 			editorPanel.removeAll();
 			//activateFunction(typecheckerButton, typechecker);
 			activateFunction(typeinferenceButton, typeinference);
-			//typechecker.setAdvanced(this.advanced);
+			typeinference.setAdvanced(this.advanced);
 			paintAll(getGraphics());
 			
 
@@ -725,6 +726,7 @@ public class EditorPanel extends javax.swing.JPanel {
 		if (bigstep != null) bigstep.setAdvanced(state);
 		if (smallstep != null) smallstep.setAdvanced(state);
 		if (typechecker != null) typechecker.setAdvanced(state);
+		if (typeinference != null) typeinference.setAdvanced(state);
 		this.advanced = state;
 	}
 	
