@@ -18,7 +18,6 @@ import de.unisiegen.tpml.core.smallstep.SmallStepProofNode;
 import de.unisiegen.tpml.core.typeinference.TypeInferenceProofModel;
 import de.unisiegen.tpml.core.typeinference.TypeInferenceProofNode;
 import de.unisiegen.tpml.graphics.AbstractProofComponent;
-import de.unisiegen.tpml.graphics.NodeComponentTools;
 import de.unisiegen.tpml.graphics.renderer.EnvironmentRenderer;
 import de.unisiegen.tpml.graphics.renderer.PrettyStringRenderer;
 
