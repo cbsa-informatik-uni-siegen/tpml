@@ -43,17 +43,21 @@ import de.unisiegen.tpml.core.Messages;
 	private Integer yyprojArityStartOffset;
 	private Integer yyprojArityEndOffset;
 
-	private LanguageSymbol symbol(String name, int id) {
+	private LanguageSymbol symbol(String name, int id)
+	{
 		return symbol(name, id, yychar, yychar + yylength(), yytext());
 	}
 	
-	private LanguageSymbol symbol(String name, int id, Object value) {
+	private LanguageSymbol symbol(String name, int id, Object value)
+	{
 		return symbol(name, id, yychar, yychar + yylength(), value);
 	}
 
 	@Override
-	public PrettyStyle getStyleBySymbolId(int id) {
-		switch (id) {
+	public PrettyStyle getStyleBySymbolId(int id)
+	{
+		switch (id)
+		{
 		case COMMENT:
 			return PrettyStyle.COMMENT;
 
@@ -78,8 +82,10 @@ import de.unisiegen.tpml.core.Messages;
 		}
 	}
 	
-	public void restart(Reader reader) {
-		if (reader == null) {
+	public void restart(Reader reader)
+	{
+		if (reader == null)
+		{
 			throw new NullPointerException("reader is null");
 		}
 		yyreset(reader);
@@ -99,7 +105,8 @@ LetterGreek		= [\u03b1-\u03c1\u03c3-\u03c9]
 
 %%
 
-<YYINITIAL> {
+<YYINITIAL>
+{
 	// arithmetic binary operators
 	"+"					{ return symbol("PLUS", PLUS); }
 	"-"					{ return symbol("MINUS", MINUS); }
@@ -169,7 +176,8 @@ LetterGreek		= [\u03b1-\u03c1\u03c3-\u03c9]
 	"'"{LetterAX}		{ return symbol("TYPEVARIABLE", TYPEVARIABLE, (int)(yycharat(1) - 'a')); }
 	{LetterGreek}		{
 							int c = yycharat(0);
-							if (c > '\u03c1') {
+							if (c > '\u03c1')
+							{
 								/* special case for letters after rho (see Unicode Table) */
 								c -= 1;
 							}
@@ -178,7 +186,8 @@ LetterGreek		= [\u03b1-\u03c1\u03c3-\u03c9]
 	
 	// numbers and identifiers
 	{Number}			{
-							try {
+							try
+							{
 								return symbol("NUMBER", NUMBER, Integer.valueOf(yytext()));
 							}
 							catch (NumberFormatException e) 
@@ -247,4 +256,6 @@ LetterGreek		= [\u03b1-\u03c1\u03c3-\u03c9]
 						    MessageFormat.format ( Messages.getString ( "Parser.13" ), yytext() )); }
 }
 
-.|\n					{ throw new LanguageScannerException(yychar, yychar + yylength(), "Syntax error on token \"" + yytext() + "\""); }
+.|\n					{ 
+						  throw new LanguageScannerException(yychar, yychar + yylength(), MessageFormat.format ( Messages.getString ( "Parser.1" ), yytext() ) );
+						}

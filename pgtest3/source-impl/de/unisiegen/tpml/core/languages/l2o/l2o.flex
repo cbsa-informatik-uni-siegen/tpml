@@ -36,19 +36,21 @@ import de.unisiegen.tpml.core.Messages;
 	/** The starting character position of the comment. */
 	private int yycommentChar = 0;
 	
-	private LanguageSymbol symbol(String name, int id) {
+	private LanguageSymbol symbol(String name, int id)
+	{
 		return symbol(name, id, yychar, yychar + yylength(), yytext());
 	}
 	
-	private LanguageSymbol symbol(String name, int id, Object value) {
+	private LanguageSymbol symbol(String name, int id, Object value)
+	{
 		return symbol(name, id, yychar, yychar + yylength(), value);
 	}
 
 	@Override
 	public PrettyStyle getStyleBySymbolId(int id) 
 	{
-		switch (id) 
-		{
+	  switch (id) 
+	  {
 		case COMMENT:
 			return PrettyStyle.COMMENT;
 
@@ -91,16 +93,16 @@ import de.unisiegen.tpml.core.Messages;
 			
 		default:
 			return PrettyStyle.NONE;
-		}
+	  }
 	}
 	
 	public void restart(Reader reader) 
 	{
-		if (reader == null) 
-		{
-			throw new NullPointerException("reader is null");
-		}
-		yyreset(reader);
+	  if (reader == null) 
+	  {
+	    throw new NullPointerException("reader is null");
+	  }
+	  yyreset(reader);
 	}
 %}
 
@@ -116,7 +118,8 @@ LetterGreek		= [\u03b1-\u03c1\u03c3-\u03c9]
 
 %%
 
-<YYINITIAL> {
+<YYINITIAL>
+{
 	// arithmetic binary operators
 	"+"					{ return symbol("PLUS", PLUS); }
 	"-"					{ return symbol("MINUS", MINUS); }
@@ -151,7 +154,6 @@ LetterGreek		= [\u03b1-\u03c1\u03c3-\u03c9]
 	"if"				{ return symbol("IF", IF); }
 	"then"				{ return symbol("THEN", THEN); }
 	"else"				{ return symbol("ELSE", ELSE); }
-	
 	"object"			{ return symbol("OBJECT", OBJECT); }
 	"end"				{ return symbol("END", END); }
 	"#"					{ return symbol("HASHKEY", HASHKEY); }
@@ -172,49 +174,51 @@ LetterGreek		= [\u03b1-\u03c1\u03c3-\u03c9]
 	"unit"				{ return symbol("UNIT", UNIT); }
 	"'"{LetterAX}		{ return symbol("TYPEVARIABLE", TYPEVARIABLE, (int)(yycharat(1) - 'a')); }
 	{LetterGreek}		{
-							int c = yycharat(0);
-							if (c > '\u03c1') {
-								/* special case for letters after rho (see Unicode Table) */
-								c -= 1;
-							}
-							return symbol("TYPEVARIABLE", TYPEVARIABLE, (int)(c - '\u03b1'));
+						  int c = yycharat(0);
+						  if (c > '\u03c1')
+						  {
+						    /* special case for letters after rho (see Unicode Table) */
+							c -= 1;
+						  }
+						  return symbol("TYPEVARIABLE", TYPEVARIABLE, (int)(c - '\u03b1'));
 						}
 	
-	// numbers and identifiers
 	{Number}			{
-							try {
-								return symbol("NUMBER", NUMBER, Integer.valueOf(yytext()));
-							}
-							catch (NumberFormatException e) 
-							{
-							  throw new LanguageScannerException(yychar, yychar + yylength(), 
-								MessageFormat.format ( Messages.getString ( "Parser.6" ) , 
-								  yytext() ) , e);
-							}
+						  try
+						  {
+						    return symbol("NUMBER", NUMBER, Integer.valueOf(yytext()));
+						  }
+						  catch (NumberFormatException e) 
+						  {
+						    throw new LanguageScannerException(yychar, yychar + yylength(), 
+						      MessageFormat.format ( Messages.getString ( "Parser.6" ), yytext() ) , e);
+						  }
 						}
 
 	"self"				{ return symbol("SELF", SELF, yytext()); }
 							
 	{Identifier}		{ return symbol("IDENTIFIER", IDENTIFIER, yytext()); }
 
-	// comments
 	"(*"				{ yycommentChar = yychar; yybegin(YYCOMMENT); }
 	
-	// whitespace
 	{WhiteSpace}		{ /* ignore */ }
 }
 
-<YYCOMMENT> {
+<YYCOMMENT> 
+{
 	<<EOF>>				{ yybegin(YYCOMMENTEOF); return symbol("COMMENT", COMMENT, yycommentChar, yychar, null); }
 	"*)"				{ yybegin(YYINITIAL); return symbol("COMMENT", COMMENT, yycommentChar, yychar + yylength(), null); }
 	.|\n				{ /* ignore */ }
 }
 
-<YYCOMMENTEOF> {
+<YYCOMMENTEOF> 
+{
 	<<EOF>>				{ 
 						  throw new LanguageScannerException(yycommentChar, yychar, 
 							Messages.getString ( "Parser.7" ));
 						}
 }
 
-.|\n					{ throw new LanguageScannerException(yychar, yychar + yylength(), "Syntax error on token \"" + yytext() + "\""); }
+.|\n					{ 
+						  throw new LanguageScannerException(yychar, yychar + yylength(), MessageFormat.format ( Messages.getString ( "Parser.1" ), yytext() ) );
+						}

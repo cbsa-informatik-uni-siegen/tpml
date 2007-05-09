@@ -35,17 +35,21 @@ import de.unisiegen.tpml.core.Messages;
 	/** The starting character position of the comment. */
 	private int yycommentChar = 0;
 	
-	private LanguageSymbol symbol(String name, int id) {
+	private LanguageSymbol symbol(String name, int id)
+	{
 		return symbol(name, id, yychar, yychar + yylength(), yytext());
 	}
 	
-	private LanguageSymbol symbol(String name, int id, Object value) {
+	private LanguageSymbol symbol(String name, int id, Object value)
+	{
 		return symbol(name, id, yychar, yychar + yylength(), value);
 	}
 
 	@Override
-	public PrettyStyle getStyleBySymbolId(int id) {
-		switch (id) {
+	public PrettyStyle getStyleBySymbolId(int id)
+	{
+		switch (id)
+		{
 		case COMMENT:
 			return PrettyStyle.COMMENT;
 
@@ -60,8 +64,10 @@ import de.unisiegen.tpml.core.Messages;
 		}
 	}
 	
-	public void restart(Reader reader) {
-		if (reader == null) {
+	public void restart(Reader reader)
+	{
+		if (reader == null)
+		{
 			throw new NullPointerException("reader is null");
 		}
 		yyreset(reader);
@@ -77,7 +83,8 @@ Identifier		= [a-zA-Z] [a-zA-Z0-9_]* '*
 
 %%
 
-<YYINITIAL> {
+<YYINITIAL>
+{
 	// syntactic tokens
 	"."					{ return symbol("DOT", DOT); }
 	"("					{ return symbol("LPAREN", LPAREN); }
@@ -92,17 +99,21 @@ Identifier		= [a-zA-Z] [a-zA-Z0-9_]* '*
 	{WhiteSpace}		{ /* ignore */ }
 }
 
-<YYCOMMENT> {
+<YYCOMMENT>
+{
 	<<EOF>>				{ yybegin(YYCOMMENTEOF); return symbol("COMMENT", COMMENT, yycommentChar, yychar, null); }
 	"*)"				{ yybegin(YYINITIAL); return symbol("COMMENT", COMMENT, yycommentChar, yychar + yylength(), null); }
 	.|\n				{ /* ignore */ }
 }
 
-<YYCOMMENTEOF> {
+<YYCOMMENTEOF>
+{
 	<<EOF>>				{ 
 						  throw new LanguageScannerException(yycommentChar, yychar, 
 							Messages.getString ( "Parser.7" ));
 						}
 }
 
-.|\n					{ throw new LanguageScannerException(yychar, yychar + yylength(), "Syntax error on token \"" + yytext() + "\""); }
+.|\n					{ 
+						  throw new LanguageScannerException(yychar, yychar + yylength(), MessageFormat.format ( Messages.getString ( "Parser.1" ), yytext() ) );
+						}
