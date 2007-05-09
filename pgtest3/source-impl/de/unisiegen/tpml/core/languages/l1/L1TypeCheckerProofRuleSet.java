@@ -430,7 +430,7 @@ public class L1TypeCheckerProofRuleSet extends AbstractTypeCheckerProofRuleSet
       ArrowType taur = ( ArrowType ) right ;
       // check which mode is choosen
       // TODO change to node.getMode()
-      if ( true )
+      if ( node.getMode ( ) )
       {
         // advanced mode is choosen
         // unify tau1 = tau1', tau2 = tau2'

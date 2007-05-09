@@ -175,7 +175,6 @@ DefaultTypeInferenceProofNode node = (DefaultTypeInferenceProofNode) pNode;
 
 	public void prove(ProofRule rule, ProofNode pNode, boolean mode)
 			throws ProofRuleException {
-		System.err.println("prove2");
 
 		if (!this.ruleSet.contains(rule)) {
 			throw new IllegalArgumentException("The rule is invalid for the model"); //$NON-NLS-1$
@@ -207,7 +206,6 @@ DefaultTypeInferenceProofNode node = (DefaultTypeInferenceProofNode) pNode;
 	 */
 	public void prove(ProofRule rule, ProofNode node, TypeFormula formula)
 			throws ProofRuleException {
-		System.err.println("prove1");
 
 		if (!this.ruleSet.contains(rule)) {
 			throw new IllegalArgumentException("The rule is invalid for the model"); //$NON-NLS-1$
@@ -293,7 +291,7 @@ DefaultTypeInferenceProofNode node = (DefaultTypeInferenceProofNode) pNode;
 	 * all sub expressions will also be translated to core syntax, otherwise only the
 	 * outermost expression will be translated.
 	 * 
-	 * @param node the proof node whose expression should be translated to core syntax.
+	 * @param pNode the proof node whose expression should be translated to core syntax.
 	 * @param recursive whether to translate the expression recursively.
 	 * @param all signals if user wants to translate one expression or all
 	 * 
