@@ -48,7 +48,7 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 	 * @see Logger
 	 */
 	private static final Logger logger = Logger
-			.getLogger(TypeInferenceProofModel.class);
+			.getLogger ( TypeInferenceProofModel.class );
 
 	//
 	// Attributes
@@ -82,12 +82,13 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 	 *
 	 * @see AbstractProofModel#AbstractProofModel(AbstractProofNode, AbstractProofRuleSet)
 	 */
-	public TypeInferenceProofModel(Expression expression,
-			AbstractProofRuleSet ruleSet) {
+	public TypeInferenceProofModel ( Expression expression,
+			AbstractProofRuleSet ruleSet ) {
 
-		super(new DefaultTypeInferenceProofNode(new TypeJudgement(
-				new DefaultTypeEnvironment(), expression, new TypeVariable(1, 0)),
-				new ArrayList<DefaultTypeSubstitution>()), ruleSet);
+		super ( new DefaultTypeInferenceProofNode (
+				new TypeJudgement ( new DefaultTypeEnvironment ( ), expression,
+						new TypeVariable ( 1, 0 ) ),
+				new ArrayList < DefaultTypeSubstitution > ( ) ), ruleSet );
 	}
 
 	//
@@ -105,7 +106,7 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 	 * @see TypeCheckerProofContext#newTypeVariable()
 	 * @see types.TypeVariable
 	 */
-	public int getIndex() {
+	public int getIndex ( ) {
 
 		return this.index;
 	}
@@ -121,10 +122,10 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 	 * @see DefaultTypeInferenceProofContext
 	 * @see DefaultTypeInferenceProofContext#DefaultTypeInferenceProofContext(TypeInferenceProofModel)
 	 */
-	void setIndex(int index) {
+	void setIndex ( int index ) {
 
-		if (index < 1) {
-			throw new IllegalArgumentException("index is invalid"); //$NON-NLS-1$
+		if ( index < 1 ) {
+			throw new IllegalArgumentException ( "index is invalid" ); //$NON-NLS-1$
 		}
 		this.index = index;
 	}
@@ -140,14 +141,14 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 	 * @see de.unisiegen.tpml.core.AbstractProofModel#guess(de.unisiegen.tpml.core.ProofNode)
 	 */
 	@Override
-	public void guess(ProofNode node) throws ProofGuessException {
+	public void guess ( ProofNode node ) throws ProofGuessException {
 
-		guessInternal((DefaultTypeInferenceProofNode) node, null, false);
+		guessInternal ( ( DefaultTypeInferenceProofNode ) node, null, false );
 	}
 
-	public void guess(ProofNode node, boolean mode) throws ProofGuessException {
+	public void guess ( ProofNode node, boolean mode ) throws ProofGuessException {
 
-		guessInternal((DefaultTypeInferenceProofNode) node, null, mode);
+		guessInternal ( ( DefaultTypeInferenceProofNode ) node, null, mode );
 	}
 
 	/**
@@ -156,40 +157,43 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 	 * @see de.unisiegen.tpml.core.AbstractProofModel#prove(de.unisiegen.tpml.core.ProofRule, de.unisiegen.tpml.core.ProofNode)
 	 */
 	@Override
-	public void prove(ProofRule rule, ProofNode pNode) throws ProofRuleException {
+	public void prove ( ProofRule rule, ProofNode pNode )
+			throws ProofRuleException {
 
-		if (!this.ruleSet.contains(rule)) {
-			throw new IllegalArgumentException("The rule is invalid for the model"); //$NON-NLS-1$
+		if ( !this.ruleSet.contains ( rule ) ) {
+			throw new IllegalArgumentException ( "The rule is invalid for the model" ); //$NON-NLS-1$
 		}
-		if (!this.root.isNodeRelated(pNode)) {
-			throw new IllegalArgumentException("The node is invalid for the model"); //$NON-NLS-1$
+		if ( !this.root.isNodeRelated ( pNode ) ) {
+			throw new IllegalArgumentException ( "The node is invalid for the model" ); //$NON-NLS-1$
 		}
-		if (pNode.getRules().length > 0) {
-			throw new IllegalArgumentException("The node is already completed"); //$NON-NLS-1$
+		if ( pNode.getRules ( ).length > 0 ) {
+			throw new IllegalArgumentException ( "The node is already completed" ); //$NON-NLS-1$
 		}
-DefaultTypeInferenceProofNode node = (DefaultTypeInferenceProofNode) pNode;
-		
+		DefaultTypeInferenceProofNode node = ( DefaultTypeInferenceProofNode ) pNode;
+
 		// try to apply the rule to the specified node
-		applyInternal((TypeCheckerProofRule) rule, node, null, node.getFirstFormula ( ), false);
+		applyInternal ( ( TypeCheckerProofRule ) rule, node, null, node
+				.getFirstFormula ( ), false );
 	}
 
-	public void prove(ProofRule rule, ProofNode pNode, boolean mode)
+	public void prove ( ProofRule rule, ProofNode pNode, boolean mode )
 			throws ProofRuleException {
 System.err.println("priove 2 "+mode);
-		if (!this.ruleSet.contains(rule)) {
-			throw new IllegalArgumentException("The rule is invalid for the model"); //$NON-NLS-1$
+		if ( !this.ruleSet.contains ( rule ) ) {
+			throw new IllegalArgumentException ( "The rule is invalid for the model" ); //$NON-NLS-1$
 		}
-		if (!this.root.isNodeRelated(pNode)) {
-			throw new IllegalArgumentException("The node is invalid for the model"); //$NON-NLS-1$
+		if ( !this.root.isNodeRelated ( pNode ) ) {
+			throw new IllegalArgumentException ( "The node is invalid for the model" ); //$NON-NLS-1$
 		}
-		if (pNode.getRules().length > 0) {
-			throw new IllegalArgumentException("The node is already completed"); //$NON-NLS-1$
+		if ( pNode.getRules ( ).length > 0 ) {
+			throw new IllegalArgumentException ( "The node is already completed" ); //$NON-NLS-1$
 		}
-		
-		DefaultTypeInferenceProofNode node = (DefaultTypeInferenceProofNode) pNode;
-		
+
+		DefaultTypeInferenceProofNode node = ( DefaultTypeInferenceProofNode ) pNode;
+
 		// try to apply the rule to the specified node
-		applyInternal((TypeCheckerProofRule) rule, node, null, node.getFirstFormula ( ), mode);
+		applyInternal ( ( TypeCheckerProofRule ) rule, node, null, node
+				.getFirstFormula ( ), mode );
 	}
 
 	/**
@@ -204,21 +208,21 @@ System.err.println("priove 2 "+mode);
 	 *
 	 * @see de.unisiegen.tpml.core.AbstractProofModel#prove(de.unisiegen.tpml.core.ProofRule, de.unisiegen.tpml.core.ProofNode)
 	 */
-	public void prove(ProofRule rule, ProofNode node, TypeFormula formula)
+	public void prove ( ProofRule rule, ProofNode node, TypeFormula formula )
 			throws ProofRuleException {
 
-		if (!this.ruleSet.contains(rule)) {
-			throw new IllegalArgumentException("The rule is invalid for the model"); //$NON-NLS-1$
+		if ( !this.ruleSet.contains ( rule ) ) {
+			throw new IllegalArgumentException ( "The rule is invalid for the model" ); //$NON-NLS-1$
 		}
-		if (!this.root.isNodeRelated(node)) {
-			throw new IllegalArgumentException("The node is invalid for the model"); //$NON-NLS-1$
+		if ( !this.root.isNodeRelated ( node ) ) {
+			throw new IllegalArgumentException ( "The node is invalid for the model" ); //$NON-NLS-1$
 		}
-		if (node.getRules().length > 0) {
-			throw new IllegalArgumentException("The node is already completed"); //$NON-NLS-1$
+		if ( node.getRules ( ).length > 0 ) {
+			throw new IllegalArgumentException ( "The node is already completed" ); //$NON-NLS-1$
 		}
 		// try to apply the rule to the specified node
-		applyInternal((TypeCheckerProofRule) rule,
-				(DefaultTypeInferenceProofNode) node, null, null, false);
+		applyInternal ( ( TypeCheckerProofRule ) rule,
+				( DefaultTypeInferenceProofNode ) node, null, null, false );
 	}
 
 	/**
@@ -229,28 +233,28 @@ System.err.println("priove 2 "+mode);
 	 * @param move the type formula which should be moved
 	 * @param pos the new position of the moved type formula
 	 */
-	public void resort(final DefaultTypeInferenceProofNode node,
-			final TypeFormula move, final int pos) {
+	public void resort ( final DefaultTypeInferenceProofNode node,
+			final TypeFormula move, final int pos ) {
 
-		final int oldPos = node.getFormula().indexOf(move);
+		final int oldPos = node.getFormula ( ).indexOf ( move );
 
-		addUndoableTreeEdit(new UndoableTreeEdit() {
+		addUndoableTreeEdit ( new UndoableTreeEdit ( ) {
 
-			public void redo() {
+			public void redo ( ) {
 
-				node.getFormula().remove(move);
-				if (pos < oldPos)
-					node.getFormula().add(pos, move);
+				node.getFormula ( ).remove ( move );
+				if ( pos < oldPos )
+					node.getFormula ( ).add ( pos, move );
 				else
-					node.getFormula().add(pos - 1, move);
+					node.getFormula ( ).add ( pos - 1, move );
 			}
 
-			public void undo() {
+			public void undo ( ) {
 
-				node.getFormula().remove(move);
-				node.getFormula().add(oldPos, move);
+				node.getFormula ( ).remove ( move );
+				node.getFormula ( ).add ( oldPos, move );
 			}
-		});
+		} );
 	}
 
 	/**
@@ -271,18 +275,18 @@ System.err.println("priove 2 "+mode);
 	 * @see #translateToCoreSyntax(ExpressionProofNode, boolean)
 	 * @see de.unisiegen.tpml.core.languages.LanguageTranslator#containsSyntacticSugar(Expression, boolean)
 	 */
-	public boolean containsSyntacticSugar(TypeInferenceProofNode node,
-			Expression expression, boolean recursive) {
-		if (node == null) {
-			throw new NullPointerException("node is null"); //$NON-NLS-1$
+	public boolean containsSyntacticSugar ( TypeInferenceProofNode node,
+			Expression expression, boolean recursive ) {
+		if ( node == null ) {
+			throw new NullPointerException ( "node is null" ); //$NON-NLS-1$
 		}
-		if (!this.root.isNodeRelated(node)) {
-			throw new IllegalArgumentException("node is invalid"); //$NON-NLS-1$
+		if ( !this.root.isNodeRelated ( node ) ) {
+			throw new IllegalArgumentException ( "node is invalid" ); //$NON-NLS-1$
 		}
-		if (this.translator == null) {
-			this.translator = this.ruleSet.getLanguage().newTranslator();
+		if ( this.translator == null ) {
+			this.translator = this.ruleSet.getLanguage ( ).newTranslator ( );
 		}
-		return this.translator.containsSyntacticSugar(expression, recursive);
+		return this.translator.containsSyntacticSugar ( expression, recursive );
 	}
 
 	/**
@@ -304,60 +308,61 @@ System.err.println("priove 2 "+mode);
 	 * @see #containsSyntacticSugar(ExpressionProofNode, boolean)
 	 * @see de.unisiegen.tpml.core.languages.LanguageTranslator#translateToCoreSyntax(Expression, boolean)
 	 */
-	public void translateToCoreSyntax(TypeInferenceProofNode pNode,
-			final boolean recursive, final boolean all) {
-		final DefaultTypeInferenceProofNode node = (DefaultTypeInferenceProofNode) pNode;
-		final ArrayList<TypeFormula> oldFormulas = pNode.getAllFormulas();
-		if (all) {
+	public void translateToCoreSyntax ( TypeInferenceProofNode pNode,
+			final boolean recursive, final boolean all ) {
+		final DefaultTypeInferenceProofNode node = ( DefaultTypeInferenceProofNode ) pNode;
+		final ArrayList < TypeFormula > oldFormulas = pNode.getAllFormulas ( );
+		if ( all ) {
 
-			final ArrayList<TypeFormula> newFormulas = new ArrayList<TypeFormula>();
+			final ArrayList < TypeFormula > newFormulas = new ArrayList < TypeFormula > ( );
 
-			for (TypeFormula formula : node.getAllFormulas()) {
-				if (formula instanceof TypeJudgement) {
-					Expression expression = translateToCoreSyntaxInternal(node,
-							(TypeJudgement) formula, recursive);
-					newFormulas.add(new TypeJudgement(formula.getEnvironment(),
-							expression, formula.getType()));
+			for ( TypeFormula formula : node.getAllFormulas ( ) ) {
+				if ( formula instanceof TypeJudgement ) {
+					Expression expression = translateToCoreSyntaxInternal ( node,
+							( TypeJudgement ) formula, recursive );
+					newFormulas.add ( new TypeJudgement ( formula.getEnvironment ( ),
+							expression, formula.getType ( ) ) );
 				}
 			}
-			addUndoableTreeEdit(new UndoableTreeEdit() {
+			addUndoableTreeEdit ( new UndoableTreeEdit ( ) {
 
-				public void redo() {
+				public void redo ( ) {
 
-					node.setFormula(newFormulas);
-					nodeChanged(node);
+					node.setFormula ( newFormulas );
+					nodeChanged ( node );
 
 				}
 
-				public void undo() {
-					node.setFormula(oldFormulas);
-					nodeChanged(node);
+				public void undo ( ) {
+					node.setFormula ( oldFormulas );
+					nodeChanged ( node );
 				}
 
-			});
+			} );
 
 		} else {
-			if (node.getFirstFormula() instanceof TypeJudgement) {
-				final TypeJudgement judgement = (TypeJudgement) node.getFirstFormula();
-				final Expression oldExpression = judgement.getExpression();
-				final Expression newExpression = translateToCoreSyntaxInternal(node,
-						(TypeJudgement) node.getFirstFormula(), recursive);
+			if ( node.getFirstFormula ( ) instanceof TypeJudgement ) {
+				final TypeJudgement judgement = ( TypeJudgement ) node
+						.getFirstFormula ( );
+				final Expression oldExpression = judgement.getExpression ( );
+				final Expression newExpression = translateToCoreSyntaxInternal ( node,
+						( TypeJudgement ) node.getFirstFormula ( ), recursive );
 
-				addUndoableTreeEdit(new UndoableTreeEdit() {
+				addUndoableTreeEdit ( new UndoableTreeEdit ( ) {
 
-					public void redo() {
+					public void redo ( ) {
 
-						judgement.setExpression(newExpression);
-						nodeChanged(node);
+						judgement.setExpression ( newExpression );
+						nodeChanged ( node );
 
 					}
 
-					public void undo() {
-						judgement.setExpression(oldExpression);
-						nodeChanged(node);
+					public void undo ( ) {
+						judgement.setExpression ( oldExpression );
+						nodeChanged ( node );
 					}
 
-				});
+				} );
 			}
 		}
 	}
@@ -367,23 +372,23 @@ System.err.println("priove 2 "+mode);
 	 *
 	 * @see translateToCoreSyntax
 	 */
-	Expression translateToCoreSyntaxInternal(TypeInferenceProofNode node,
-			TypeJudgement judgement, boolean recursive) {
+	Expression translateToCoreSyntaxInternal ( TypeInferenceProofNode node,
+			TypeJudgement judgement, boolean recursive ) {
 
 		// verify that the node actually contains syntactic sugar
-		if (!containsSyntacticSugar(node, judgement.getExpression(), recursive)) {
-			throw new IllegalArgumentException(
-					"node does not contain syntactic sugar"); //$NON-NLS-1$
+		if ( !containsSyntacticSugar ( node, judgement.getExpression ( ), recursive ) ) {
+			throw new IllegalArgumentException (
+					"node does not contain syntactic sugar" ); //$NON-NLS-1$
 		}
 
 		// verify that no actions were performed on the node
-		if (node.getSteps().length > 0) {
-			throw new IllegalStateException("steps have been performed on node"); //$NON-NLS-1$
+		if ( node.getSteps ( ).length > 0 ) {
+			throw new IllegalStateException ( "steps have been performed on node" ); //$NON-NLS-1$
 		}
 
 		// translate the expression to core syntax
-		return this.translator.translateToCoreSyntax(judgement.getExpression(),
-				recursive);
+		return this.translator.translateToCoreSyntax ( judgement.getExpression ( ),
+				recursive );
 
 	}
 
@@ -406,77 +411,77 @@ System.err.println("priove 2 "+mode);
 	 * @see #guess(ProofNode)
 	 * @see #prove(ProofRule, ProofNode)
 	 */
-	private void applyInternal(TypeCheckerProofRule rule,
+	private void applyInternal ( TypeCheckerProofRule rule,
 			DefaultTypeInferenceProofNode node, MonoType type, TypeFormula form,
-			boolean mode) throws ProofRuleException {
+			boolean mode ) throws ProofRuleException {
 
 		// allocate a new TypeCheckerContext
-		DefaultTypeInferenceProofContext context = new DefaultTypeInferenceProofContext(
-				this, node);
-		index++;
+		DefaultTypeInferenceProofContext context = new DefaultTypeInferenceProofContext (
+				this, node );
+		index++ ;
 
-		DefaultTypeInferenceProofNode typeNode = (DefaultTypeInferenceProofNode) node;
+		DefaultTypeInferenceProofNode typeNode = ( DefaultTypeInferenceProofNode ) node;
 		Exception e = null;
 
-		if (form != null) {
+		if ( form != null ) {
 			try {
 				// try to apply the rule to the specified node
-				context.setSubstitutions(node.getSubstitution());
-				context.apply(rule, form, type, mode);
+				context.setSubstitutions ( node.getSubstitution ( ) );
+				context.apply ( rule, form, type, mode );
 				return;
-			} catch (UnifyException e1) {
+			} catch ( UnifyException e1 ) {
 				// revert the actions performed so far
-				context.revert();
+				context.revert ( );
 				// re-throw the exception as proof rule exception 
-				throw new ProofRuleException(node, rule, e);
+				throw new ProofRuleException ( node, rule, e );
 			}
 
 		} else {
 
 			// Try actual Rule with all formulas of the actual node
-			for (TypeFormula formula : typeNode.getFormula()) {
+			for ( TypeFormula formula : typeNode.getFormula ( ) ) {
 				try {
 					// try to apply the rule to the specified node
-					context.setSubstitutions(node.getSubstitution());
-					context.apply(rule, formula, type, mode);
+					context.setSubstitutions ( node.getSubstitution ( ) );
+					context.apply ( rule, formula, type, mode );
 
 					return;
-				} catch (ProofRuleException e1) {
+				} catch ( ProofRuleException e1 ) {
 					// revert the actions performed so far
-					context.revert();
+					context.revert ( );
 					// rembember first exception to rethrow
-					if (e == null)
+					if ( e == null )
 						e = e1;
 					continue;
-				} catch (UnifyException e1) {
+				} catch ( UnifyException e1 ) {
 					// revert the actions performed so far
-					context.revert();
+					context.revert ( );
 					// rembember first exception to rethrow
-					if (e == null)
+					if ( e == null )
 						e = e1;
 					continue;
-				} catch (RuntimeException e1) {
+				} catch ( RuntimeException e1 ) {
 					// revert the actions performed so far
-					context.revert();
+					context.revert ( );
 					// rembember first exception to rethrow
-					if (e == null)
+					if ( e == null )
 						e = e1;
 					continue;
 				}
 			}
-			index--;
-			if (e instanceof ProofRuleException) {
+			index-- ;
+			if ( e instanceof ProofRuleException ) {
 				// rethrow exception
-				throw (ProofRuleException) e;
-			} else if (e instanceof RuntimeException) {
+				throw ( ProofRuleException ) e;
+			} else if ( e instanceof RuntimeException ) {
 				// rethrow exception
-				throw (RuntimeException) e;
+				throw ( RuntimeException ) e;
 			} else {
 				// re-throw the exception as proof rule exception 
-				throw new ProofRuleException(node, rule, e);
+				throw new ProofRuleException ( node, rule, e );
 			}
 		}
-		
+
 	}
 
 	/**
@@ -495,41 +500,41 @@ System.err.println("priove 2 "+mode);
 	 * @see #guess(ProofNode)
 	 * @see #guessWithType(ProofNode, MonoType)
 	 */
-	private void guessInternal(DefaultTypeInferenceProofNode node, MonoType type,
-			boolean mode) throws ProofGuessException {
+	private void guessInternal ( DefaultTypeInferenceProofNode node,
+			MonoType type, boolean mode ) throws ProofGuessException {
 
-		if (node == null) {
-			throw new NullPointerException("node is null"); //$NON-NLS-1$
+		if ( node == null ) {
+			throw new NullPointerException ( "node is null" ); //$NON-NLS-1$
 		}
-		if (node.getSteps().length > 0) {
-			throw new IllegalArgumentException("The node is already completed"); //$NON-NLS-1$
+		if ( node.getSteps ( ).length > 0 ) {
+			throw new IllegalArgumentException ( "The node is already completed" ); //$NON-NLS-1$
 		}
 
-		if (!this.root.isNodeRelated(node)) {
-			throw new IllegalArgumentException("The node is invalid for the model"); //$NON-NLS-1$
+		if ( !this.root.isNodeRelated ( node ) ) {
+			throw new IllegalArgumentException ( "The node is invalid for the model" ); //$NON-NLS-1$
 		}
 		// try to guess the next rule
-		logger.debug("Trying to guess a rule for " + node); //$NON-NLS-1$
-		for (ProofRule rule : this.ruleSet.getRules()) {
+		logger.debug ( "Trying to guess a rule for " + node ); //$NON-NLS-1$
+		for ( ProofRule rule : this.ruleSet.getRules ( ) ) {
 			try {
 				// try to apply the rule to the specified node
-				applyInternal((TypeCheckerProofRule) rule, node, type, null, mode);
+				applyInternal ( ( TypeCheckerProofRule ) rule, node, type, null, mode );
 				// remember that the user cheated
-				setCheating(true);
+				setCheating ( true );
 
 				// yep, we did it
-				logger.debug("Successfully applied (" + rule + ") to " + node); //$NON-NLS-1$ //$NON-NLS-2$
+				logger.debug ( "Successfully applied (" + rule + ") to " + node ); //$NON-NLS-1$ //$NON-NLS-2$
 				return;
-			} catch (ProofRuleException e) {
+			} catch ( ProofRuleException e ) {
 				// rule failed to apply... so, next one, please
-				logger.debug("Failed to apply (" + rule + ") to " + node, e); //$NON-NLS-1$ //$NON-NLS-2$
+				logger.debug ( "Failed to apply (" + rule + ") to " + node, e ); //$NON-NLS-1$ //$NON-NLS-2$
 				continue;
 			}
 		}
 
 		// unable to guess next step
-		logger.debug("Failed to find rule to apply to " + node); //$NON-NLS-1$
-		throw new ProofGuessException(node);
+		logger.debug ( "Failed to find rule to apply to " + node ); //$NON-NLS-1$
+		throw new ProofGuessException ( node );
 	}
 
 	//
@@ -549,43 +554,43 @@ System.err.println("priove 2 "+mode);
 	 * @throws IllegalArgumentException if <code>node</code> is invalid for this tree.
 	 * @throws NullPointerException if any of the parameters is <code>null</code>.
 	 */
-	void contextAddProofNode(final DefaultTypeInferenceProofContext context,
+	void contextAddProofNode ( final DefaultTypeInferenceProofContext context,
 			final DefaultTypeInferenceProofNode pNode,
-			final ArrayList<TypeFormula> formulas,
-			final ArrayList<DefaultTypeSubstitution> subs,
-			final TypeCheckerProofRule rule, final TypeFormula formula) {
+			final ArrayList < TypeFormula > formulas,
+			final ArrayList < DefaultTypeSubstitution > subs,
+			final TypeCheckerProofRule rule, final TypeFormula formula ) {
 
-		final DefaultTypeInferenceProofNode child = new DefaultTypeInferenceProofNode(
-				formulas, subs);
-		final ProofStep[] oldSteps = pNode.getSteps();
+		final DefaultTypeInferenceProofNode child = new DefaultTypeInferenceProofNode (
+				formulas, subs );
+		final ProofStep[] oldSteps = pNode.getSteps ( );
 
 		// add redo and undo options
-		addUndoableTreeEdit(new UndoableTreeEdit() {
+		addUndoableTreeEdit ( new UndoableTreeEdit ( ) {
 
-			public void redo() {
+			public void redo ( ) {
 
-				setFinished(((DefaultTypeInferenceProofNode) root).isFinished());
+				setFinished ( ( ( DefaultTypeInferenceProofNode ) root ).isFinished ( ) );
 
-				pNode.add(child);
-				contextSetProofNodeRule(context, pNode, rule, formula);
-				nodesWereInserted(pNode, new int[] { pNode.getIndex(child) });
-				nodeChanged(pNode);
+				pNode.add ( child );
+				contextSetProofNodeRule ( context, pNode, rule, formula );
+				nodesWereInserted ( pNode, new int[] { pNode.getIndex ( child ) } );
+				nodeChanged ( pNode );
 			}
 
-			public void undo() {
+			public void undo ( ) {
 
 				// update the "finished" state
-				setFinished(false);
+				setFinished ( false );
 
 				// remove the child and revert the steps
-				int[] indices = { pNode.getIndex(child) };
-				pNode.removeAllChildren();
-				nodesWereRemoved(pNode, indices, new Object[] { child });
-				pNode.setSteps(oldSteps);
-				nodeChanged(pNode);
+				int[] indices = { pNode.getIndex ( child ) };
+				pNode.removeAllChildren ( );
+				nodesWereRemoved ( pNode, indices, new Object[] { child } );
+				pNode.setSteps ( oldSteps );
+				nodeChanged ( pNode );
 
 			}
-		});
+		} );
 
 	}
 
@@ -599,12 +604,13 @@ System.err.println("priove 2 "+mode);
 	 * 
 	 * @see DefaultTypeCheckerProofContext#apply(TypeCheckerProofRule, TypeCheckerProofNode)
 	 */
-	void contextSetProofNodeRule(DefaultTypeInferenceProofContext context,
+	void contextSetProofNodeRule ( DefaultTypeInferenceProofContext context,
 			final DefaultTypeInferenceProofNode node,
-			final TypeCheckerProofRule rule, TypeFormula formula) {
+			final TypeCheckerProofRule rule, TypeFormula formula ) {
 
-		node.setSteps(new ProofStep[] { new ProofStep(new IsEmpty(), rule) });
-		nodeChanged(node);
+		node
+				.setSteps ( new ProofStep[] { new ProofStep ( new IsEmpty ( ), rule ) } );
+		nodeChanged ( node );
 	}
 
 	//
@@ -617,13 +623,13 @@ System.err.println("priove 2 "+mode);
 	 * @see de.unisiegen.tpml.core.AbstractProofModel#addUndoableTreeEdit(de.unisiegen.tpml.core.AbstractProofModel.UndoableTreeEdit)
 	 */
 	@Override
-	public void addUndoableTreeEdit(UndoableTreeEdit edit) {
+	public void addUndoableTreeEdit ( UndoableTreeEdit edit ) {
 
 		// perform the redo of the edit
-		edit.redo();
+		edit.redo ( );
 
 		// add to the undo history
-		super.addUndoableTreeEdit(edit);
+		super.addUndoableTreeEdit ( edit );
 	}
 
 	/**
@@ -633,33 +639,33 @@ System.err.println("priove 2 "+mode);
 	 * @see de.unisiegen.tpml.core.AbstractProofModel#getRules()
 	 */
 	@Override
-	public ProofRule[] getRules() {
-		return this.ruleSet.getRules();
+	public ProofRule[] getRules ( ) {
+		return this.ruleSet.getRules ( );
 	}
 
-	public ArrayList<MonoType> getSubstitudedTypesForSubstitutions(
-			ArrayList<DefaultTypeSubstitution> substitutions) {
-		ArrayList<MonoType> result = new ArrayList<MonoType>();
+	public ArrayList < MonoType > getSubstitudedTypesForSubstitutions (
+			ArrayList < DefaultTypeSubstitution > substitutions ) {
+		ArrayList < MonoType > result = new ArrayList < MonoType > ( );
 
-		for (DefaultTypeSubstitution s : substitutions) {
-			result.add(s.getType());
+		for ( DefaultTypeSubstitution s : substitutions ) {
+			result.add ( s.getType ( ) );
 		}
 		return result;
 	}
-	
+
 	@Override
-	public void undo() throws CannotUndoException{
-		super.undo();
-		index--;
+	public void undo ( ) throws CannotUndoException {
+		super.undo ( );
+		index-- ;
 	}
-	
+
 	@Override
-	public void redo() throws CannotRedoException{
-		super.redo();
-		index++;
+	public void redo ( ) throws CannotRedoException {
+		super.redo ( );
+		index++ ;
 	}
-	
-	public void setFinished(){
-		this.setFinished(true);
+
+	public void setFinished ( ) {
+		this.setFinished ( true );
 	}
 }

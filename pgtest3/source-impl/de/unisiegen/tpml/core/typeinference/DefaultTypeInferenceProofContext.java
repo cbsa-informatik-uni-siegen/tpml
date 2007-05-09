@@ -354,7 +354,17 @@ public class DefaultTypeInferenceProofContext implements
 
 		// Create a new List of formulas and sort it
 		ArrayList<TypeFormula> sortedFormulas = new ArrayList<TypeFormula> ( );
-		sortedFormulas.addAll ( node.getAllFormulas ( ) );
+		//sortedFormulas.addAll ( node.getAllFormulas ( ) );
+		
+		for (TypeFormula form : node.getAllFormulas ( )){
+			if (form instanceof TypeJudgement)
+				sortedFormulas.add ( form );
+		}
+		
+		for (TypeFormula form : node.getAllFormulas ( )){
+			if (form instanceof TypeEquation)
+				sortedFormulas.add ( form );
+		}
 
 		DefaultTypeCheckerProofNode child;
 		for (int i = 0; i < typeNode.getChildCount ( ); i++ ) {
