@@ -20,7 +20,8 @@ import de.unisiegen.tpml.core.types.UnitType;
  *
  * @see de.unisiegen.tpml.core.typechecker.TypeEquationList
  */
-public final class TypeEquation implements TypeFormula, PrettyPrintable, PrettyPrintPriorities {
+public final class TypeEquation implements TypeFormula, PrettyPrintable,
+		PrettyPrintPriorities {
 
 	//
 	// Attributes
@@ -53,13 +54,13 @@ public final class TypeEquation implements TypeFormula, PrettyPrintable, PrettyP
 	 * 
 	 * @throws NullPointerException if <code>left</code> or <code>right</code> is <code>null</code>.
 	 */
-	public TypeEquation(final MonoType left, final MonoType right) {
+	public TypeEquation ( final MonoType left, final MonoType right ) {
 
-		if (left == null) {
-			throw new NullPointerException("left is null"); //$NON-NLS-1$
+		if ( left == null ) {
+			throw new NullPointerException ( "left is null" ); //$NON-NLS-1$
 		}
-		if (right == null) {
-			throw new NullPointerException("right is null"); //$NON-NLS-1$
+		if ( right == null ) {
+			throw new NullPointerException ( "right is null" ); //$NON-NLS-1$
 		}
 		this.left = left;
 		this.right = right;
@@ -74,7 +75,7 @@ public final class TypeEquation implements TypeFormula, PrettyPrintable, PrettyP
 	 * 
 	 * @return the left side type.
 	 */
-	public MonoType getLeft() {
+	public MonoType getLeft ( ) {
 
 		return this.left;
 	}
@@ -84,7 +85,7 @@ public final class TypeEquation implements TypeFormula, PrettyPrintable, PrettyP
 	 * 
 	 * @return the right side type.
 	 */
-	public MonoType getRight() {
+	public MonoType getRight ( ) {
 
 		return this.right;
 	}
@@ -103,15 +104,15 @@ public final class TypeEquation implements TypeFormula, PrettyPrintable, PrettyP
 	 * 
 	 * @see de.unisiegen.tpml.core.types.Type#substitute(TypeSubstitution)
 	 */
-	public TypeFormula substitute(ArrayList< DefaultTypeSubstitution> substitutions) {
-		
-		TypeEquation newEqn = this.clone();
-		
-		for (TypeSubstitution s : substitutions ){
-			newEqn.setLeft(newEqn.getLeft().substitute(s));
-			newEqn.setRight(newEqn.getRight().substitute(s));
+	public TypeFormula substitute (
+			ArrayList < DefaultTypeSubstitution > substitutions ) {
+
+		TypeEquation newEqn = this.clone ( );
+
+		for ( TypeSubstitution s : substitutions ) {
+			newEqn.setLeft ( newEqn.getLeft ( ).substitute ( s ) );
+			newEqn.setRight ( newEqn.getRight ( ).substitute ( s ) );
 		}
-		
 
 		// apply the substitution to the left and the right side
 		return newEqn;
@@ -120,9 +121,9 @@ public final class TypeEquation implements TypeFormula, PrettyPrintable, PrettyP
 	//
 	// Base methods
 	//
-	
-	public TypeEquation clone(){
-		return new TypeEquation(this.left, this.right);
+
+	public TypeEquation clone ( ) {
+		return new TypeEquation ( this.left, this.right );
 	}
 
 	/**
@@ -133,9 +134,9 @@ public final class TypeEquation implements TypeFormula, PrettyPrintable, PrettyP
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
-	public String toString() {
+	public String toString ( ) {
 
-		return (this.left + " = " + this.right); //$NON-NLS-1$
+		return ( this.left + " = " + this.right ); //$NON-NLS-1$
 	}
 
 	/**
@@ -144,11 +145,12 @@ public final class TypeEquation implements TypeFormula, PrettyPrintable, PrettyP
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
-	public boolean equals(final Object obj) {
+	public boolean equals ( final Object obj ) {
 
-		if (obj instanceof TypeEquation) {
-			final TypeEquation other = (TypeEquation) obj;
-			return (this.left.equals(other.left) && this.right.equals(other.right));
+		if ( obj instanceof TypeEquation ) {
+			final TypeEquation other = ( TypeEquation ) obj;
+			return ( this.left.equals ( other.left ) && this.right
+					.equals ( other.right ) );
 		}
 		return false;
 	}
@@ -159,9 +161,9 @@ public final class TypeEquation implements TypeFormula, PrettyPrintable, PrettyP
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
-	public int hashCode() {
+	public int hashCode ( ) {
 
-		return this.left.hashCode() + this.right.hashCode();
+		return this.left.hashCode ( ) + this.right.hashCode ( );
 	}
 
 	/**
@@ -169,9 +171,9 @@ public final class TypeEquation implements TypeFormula, PrettyPrintable, PrettyP
 	 * {@inheritDoc}
 	 * @see de.unisiegen.tpml.core.typeinference.TypeFormula#getEnvironment()
 	 */
-	public DefaultTypeEnvironment getEnvironment() {
+	public DefaultTypeEnvironment getEnvironment ( ) {
 
-		return new DefaultTypeEnvironment();
+		return new DefaultTypeEnvironment ( );
 	}
 
 	/**
@@ -179,7 +181,7 @@ public final class TypeEquation implements TypeFormula, PrettyPrintable, PrettyP
 	 * {@inheritDoc}
 	 * @see de.unisiegen.tpml.core.typeinference.TypeFormula#getExpression()
 	 */
-	public Expression getExpression() {
+	public Expression getExpression ( ) {
 
 		return null;
 	}
@@ -189,43 +191,40 @@ public final class TypeEquation implements TypeFormula, PrettyPrintable, PrettyP
 	 * {@inheritDoc}
 	 * @see de.unisiegen.tpml.core.typeinference.TypeFormula#getType()
 	 */
-	public MonoType getType() {
+	public MonoType getType ( ) {
 
-		return new UnitType();
+		return new UnitType ( );
 	}
 
-  //
-  // Pretty printing
-  //
-  /**
-   * {@inheritDoc}
-   * 
-   * @see de.unisiegen.tpml.core.prettyprinter.PrettyPrintable#toPrettyString()
-   */
-  public final PrettyString toPrettyString ( )
-  {
-    return toPrettyStringBuilder ( PrettyStringBuilderFactory.newInstance ( ) )
-        .toPrettyString ( ) ;
-  }
-  
+	//
+	// Pretty printing
+	//
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see de.unisiegen.tpml.core.prettyprinter.PrettyPrintable#toPrettyString()
+	 */
+	public final PrettyString toPrettyString ( ) {
+		return toPrettyStringBuilder ( PrettyStringBuilderFactory.newInstance ( ) )
+				.toPrettyString ( );
+	}
 
-  PrettyStringBuilder toPrettyStringBuilder ( PrettyStringBuilderFactory factory )
-  {
-    PrettyStringBuilder builder = factory.newBuilder ( this , PRIO_EQUATION ) ;
-    builder.addBuilder(left.toPrettyStringBuilder(factory), PRIO_EQUATION);
-    builder.addText(" = ");
-    builder.addBuilder(right.toPrettyStringBuilder(factory), PRIO_EQUATION);
+	PrettyStringBuilder toPrettyStringBuilder ( PrettyStringBuilderFactory factory ) {
+		PrettyStringBuilder builder = factory.newBuilder ( this, PRIO_EQUATION );
+		builder.addBuilder ( left.toPrettyStringBuilder ( factory ), PRIO_EQUATION );
+		builder.addText ( " = " );
+		builder
+				.addBuilder ( right.toPrettyStringBuilder ( factory ), PRIO_EQUATION );
 
-    return builder ;
-  }
+		return builder;
+	}
 
-	public void setLeft(MonoType left) {
+	public void setLeft ( MonoType left ) {
 		this.left = left;
 	}
 
-	public void setRight(MonoType right) {
+	public void setRight ( MonoType right ) {
 		this.right = right;
 	}
-
 
 }

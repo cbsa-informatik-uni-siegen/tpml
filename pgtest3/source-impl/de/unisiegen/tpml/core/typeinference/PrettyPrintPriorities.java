@@ -1,6 +1,3 @@
-/**
- * TODO
- */
 package de.unisiegen.tpml.core.typeinference;
 
 /**
@@ -17,8 +14,8 @@ package de.unisiegen.tpml.core.typeinference;
  */
 interface PrettyPrintPriorities {
 
-  /**
-   * The pretty print priority for type equations.
-   */
-  public static final int PRIO_EQUATION = 0 ;
+	/**
+	 * The pretty print priority for type equations.
+	 */
+	public static final int PRIO_EQUATION = 0;
 }

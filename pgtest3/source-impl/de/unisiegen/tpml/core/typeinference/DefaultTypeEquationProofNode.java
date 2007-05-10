@@ -32,8 +32,8 @@ public class DefaultTypeEquationProofNode extends DefaultTypeCheckerProofNode
 	 * list of collected type equations
 	 */
 	private TypeEquation equation;
-	
-	private boolean mode ;
+
+	private boolean mode;
 
 	//
 	// Constructors
@@ -46,12 +46,14 @@ public class DefaultTypeEquationProofNode extends DefaultTypeCheckerProofNode
 	 * @param expression expression of this node
 	 * @param type type of this node
 	 * @param eqns equations of this node
+	 * @param pMode signal if we are in advanced or beginner mode
 	 * 
 	 */
-	public DefaultTypeEquationProofNode(final TypeEnvironment environment,
-			final Expression expression, final MonoType type, final TypeEquation eqns, boolean pMode) {
+	public DefaultTypeEquationProofNode ( final TypeEnvironment environment,
+			final Expression expression, final MonoType type,
+			final TypeEquation eqns, boolean pMode ) {
 
-		super(environment, expression, type);
+		super ( environment, expression, type );
 		equation = eqns;
 		mode = pMode;
 	}
@@ -62,9 +64,9 @@ public class DefaultTypeEquationProofNode extends DefaultTypeCheckerProofNode
 	 *
 	 * @param s1 type substitution to add to list
 	 */
-	public void addSubstitution(final DefaultTypeSubstitution s1) {
+	public void addSubstitution ( final DefaultTypeSubstitution s1 ) {
 
-		substitutions.extend(s1);
+		substitutions.extend ( s1 );
 	}
 
 	//
@@ -75,12 +77,18 @@ public class DefaultTypeEquationProofNode extends DefaultTypeCheckerProofNode
 	 * get the type equation list of this node
 	 * @return equations TypeEquationList equations
 	 */
-	public TypeEquation getEquation() {
+	public TypeEquation getEquation ( ) {
 
 		return this.equation;
 	}
 
-	public boolean getMode() {
+	/**
+	 * 
+	 * get the actual choosen mode, true means advanced, false beginner mode
+	 *
+	 * @return boolean mode
+	 */
+	public boolean getMode ( ) {
 		return this.mode;
 	}
 

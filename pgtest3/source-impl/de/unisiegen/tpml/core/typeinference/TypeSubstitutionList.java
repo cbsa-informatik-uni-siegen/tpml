@@ -1,6 +1,3 @@
-/**
- * TODO
- */
 package de.unisiegen.tpml.core.typeinference;
 
 import de.unisiegen.tpml.core.typechecker.DefaultTypeSubstitution;
@@ -20,7 +17,7 @@ public class TypeSubstitutionList {
 	/**
 	 * empty type substitution list
 	 */
-	public static final TypeSubstitutionList EMPTY_LIST = new TypeSubstitutionList();
+	public static final TypeSubstitutionList EMPTY_LIST = new TypeSubstitutionList ( );
 
 	//
 	// Attributes
@@ -40,19 +37,19 @@ public class TypeSubstitutionList {
 	// Constructors (private)
 	//
 
-	private TypeSubstitutionList() {
+	private TypeSubstitutionList ( ) {
 
-		super();
+		super ( );
 	}
 
-	private TypeSubstitutionList(final DefaultTypeSubstitution pFirst,
-			final TypeSubstitutionList pRemaining) {
+	private TypeSubstitutionList ( final DefaultTypeSubstitution pFirst,
+			final TypeSubstitutionList pRemaining ) {
 
-		if (pFirst == null) {
-			throw new NullPointerException("first is null"); //$NON-NLS-1$
+		if ( pFirst == null ) {
+			throw new NullPointerException ( "first is null" ); //$NON-NLS-1$
 		}
-		if (pRemaining == null) {
-			throw new NullPointerException("remaining is null"); //$NON-NLS-1$
+		if ( pRemaining == null ) {
+			throw new NullPointerException ( "remaining is null" ); //$NON-NLS-1$
 		}
 		this.first = pFirst;
 		this.remaining = pRemaining;
@@ -69,18 +66,18 @@ public class TypeSubstitutionList {
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
-	public String toString() {
+	public String toString ( ) {
 
-		final StringBuilder builder = new StringBuilder(128);
-		builder.append('{');
-		for (TypeSubstitutionList list = this; list != EMPTY_LIST; list = list.remaining) {
-			if (list != this) {
-				builder.append(", "); //$NON-NLS-1$
+		final StringBuilder builder = new StringBuilder ( 128 );
+		builder.append ( '{' );
+		for ( TypeSubstitutionList list = this; list != EMPTY_LIST; list = list.remaining ) {
+			if ( list != this ) {
+				builder.append ( ", " ); //$NON-NLS-1$
 			}
-			builder.append(list.first.toString());
+			builder.append ( list.first.toString ( ) );
 		}
-		builder.append('}');
-		return builder.toString();
+		builder.append ( '}' );
+		return builder.toString ( );
 	}
 
 	/**
@@ -90,9 +87,9 @@ public class TypeSubstitutionList {
 	 * @param s DefaultTypeSubstitution to add
 	 * @return extended list of type substitutions
 	 */
-	public TypeSubstitutionList extend(final DefaultTypeSubstitution s) {
+	public TypeSubstitutionList extend ( final DefaultTypeSubstitution s ) {
 
-		return new TypeSubstitutionList(s, this);
+		return new TypeSubstitutionList ( s, this );
 
 	}
 
@@ -102,7 +99,7 @@ public class TypeSubstitutionList {
 	 *
 	 * @return first element of this list
 	 */
-	public DefaultTypeSubstitution getFirst() {
+	public DefaultTypeSubstitution getFirst ( ) {
 
 		return this.first;
 	}
@@ -112,7 +109,7 @@ public class TypeSubstitutionList {
 	 *
 	 * @return the remaing list of substitutions
 	 */
-	public TypeSubstitutionList getRemaining() {
+	public TypeSubstitutionList getRemaining ( ) {
 		return this.remaining;
 	}
 }

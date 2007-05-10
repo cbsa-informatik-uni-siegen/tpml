@@ -49,7 +49,8 @@ public class TypeJudgement implements TypeFormula {
 	 * @param expr Expression
 	 * @param t MonoType
 	 */
-	public TypeJudgement(final DefaultTypeEnvironment env, final Expression expr, final MonoType t) {
+	public TypeJudgement ( final DefaultTypeEnvironment env,
+			final Expression expr, final MonoType t ) {
 
 		environment = env;
 		expression = expr;
@@ -64,17 +65,16 @@ public class TypeJudgement implements TypeFormula {
 	 * @return null (just needed for TypeEquation)
 	 * @see de.unisiegen.tpml.core.typeinference.TypeFormula#substitute(de.unisiegen.tpml.core.typechecker.TypeSubstitution)
 	 */
-	public TypeFormula substitute(ArrayList< DefaultTypeSubstitution> substitutions) {
-		
-		MonoType newType = this.type.clone();
-		
-		for (TypeSubstitution s : substitutions ){
-			newType.substitute(s);
-		}
-		
-		
+	public TypeFormula substitute (
+			ArrayList < DefaultTypeSubstitution > substitutions ) {
 
-		return new TypeJudgement ( this.environment, this.expression, newType);
+		MonoType newType = this.type.clone ( );
+
+		for ( TypeSubstitution s : substitutions ) {
+			newType.substitute ( s );
+		}
+
+		return new TypeJudgement ( this.environment, this.expression, newType );
 	}
 
 	//
@@ -86,7 +86,7 @@ public class TypeJudgement implements TypeFormula {
 	 * 
 	 * @return DefaultTypeEnvironment environment
 	 */
-	public DefaultTypeEnvironment getEnvironment() {
+	public DefaultTypeEnvironment getEnvironment ( ) {
 
 		return this.environment;
 	}
@@ -97,7 +97,7 @@ public class TypeJudgement implements TypeFormula {
 	 *
 	 * @param environment new type environment for this type judement
 	 */
-	public void setEnvironment(final DefaultTypeEnvironment environment) {
+	public void setEnvironment ( final DefaultTypeEnvironment environment ) {
 
 		this.environment = environment;
 	}
@@ -108,7 +108,7 @@ public class TypeJudgement implements TypeFormula {
 	 *
 	 * @return type MonoType of this judgement
 	 */
-	public MonoType getType() {
+	public MonoType getType ( ) {
 
 		return this.type;
 	}
@@ -119,7 +119,7 @@ public class TypeJudgement implements TypeFormula {
 	 *
 	 * @param type new MonoType for this judgement
 	 */
-	public void setType(final MonoType type) {
+	public void setType ( final MonoType type ) {
 
 		this.type = type;
 	}
@@ -131,7 +131,7 @@ public class TypeJudgement implements TypeFormula {
 	 * @return expression Expression of this type judgement
 	 * @see de.unisiegen.tpml.core.typeinference.TypeFormula#getExpression()
 	 */
-	public Expression getExpression() {
+	public Expression getExpression ( ) {
 
 		return this.expression;
 	}
@@ -150,15 +150,15 @@ public class TypeJudgement implements TypeFormula {
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
-	public String toString() {
+	public String toString ( ) {
 
-		final StringBuilder builder = new StringBuilder(128);
-		builder.append(environment); 
-		builder.append(" \u22b3 "); //$NON-NLS-1$
-		builder.append(expression); 
-		builder.append(" :: "); //$NON-NLS-1$
-		builder.append(type); 
-		return builder.toString();
+		final StringBuilder builder = new StringBuilder ( 128 );
+		builder.append ( environment );
+		builder.append ( " \u22b3 " ); //$NON-NLS-1$
+		builder.append ( expression );
+		builder.append ( " :: " ); //$NON-NLS-1$
+		builder.append ( type );
+		return builder.toString ( );
 	}
 
 	/**
@@ -166,9 +166,8 @@ public class TypeJudgement implements TypeFormula {
 	 *
 	 * @param expression the expression to be set
 	 */
-	public void setExpression(final Expression expression) {
+	public void setExpression ( final Expression expression ) {
 		this.expression = expression;
 	}
-
 
 }

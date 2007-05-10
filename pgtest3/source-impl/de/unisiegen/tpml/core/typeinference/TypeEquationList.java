@@ -20,7 +20,7 @@ public final class TypeEquationList {
 	 * 
 	 * @see #TypeEquationList()
 	 */
-	public static final TypeEquationList EMPTY_LIST = new TypeEquationList();
+	public static final TypeEquationList EMPTY_LIST = new TypeEquationList ( );
 
 	//
 	// Attributes
@@ -36,7 +36,6 @@ public final class TypeEquationList {
 	 */
 	private TypeEquationList remaining;
 
-
 	//
 	// Constructors (private)
 	//
@@ -46,9 +45,9 @@ public final class TypeEquationList {
 	 * 
 	 * @see #EMPTY_LIST
 	 */
-	private TypeEquationList() {
+	private TypeEquationList ( ) {
 
-		super();
+		super ( );
 	}
 
 	/**
@@ -60,13 +59,14 @@ public final class TypeEquationList {
 	 * 
 	 * @throws NullPointerException if <code>first</code> or <code>remaining</code> is <code>null</code>.
 	 */
-	private TypeEquationList(final TypeEquation first, final TypeEquationList remaining) {
+	private TypeEquationList ( final TypeEquation first,
+			final TypeEquationList remaining ) {
 
-		if (first == null) {
-			throw new NullPointerException("first is null"); //$NON-NLS-1$
+		if ( first == null ) {
+			throw new NullPointerException ( "first is null" ); //$NON-NLS-1$
 		}
-		if (remaining == null) {
-			throw new NullPointerException("remaining is null"); //$NON-NLS-1$
+		if ( remaining == null ) {
+			throw new NullPointerException ( "remaining is null" ); //$NON-NLS-1$
 		}
 		this.first = first;
 		this.remaining = remaining;
@@ -87,9 +87,9 @@ public final class TypeEquationList {
 	 * 
 	 * @throws NullPointerException if <code>left</code> or <code>right</code> is <code>null</code>.
 	 */
-	public TypeEquationList extend(final MonoType left, final MonoType right) {
+	public TypeEquationList extend ( final MonoType left, final MonoType right ) {
 
-		return new TypeEquationList(new TypeEquation(left, right), this);
+		return new TypeEquationList ( new TypeEquation ( left, right ), this );
 	}
 
 	/**
@@ -102,22 +102,21 @@ public final class TypeEquationList {
 	 * 
 	 * @see Equation#substitute(Substitution)
 	 *
-	public TypeEquationList substitute(final TypeSubstitution s) {
+	 public TypeEquationList substitute(final TypeSubstitution s) {
 
-		// nothing to substitute on the empty list
-		if (this == EMPTY_LIST) {
-			return this;
-		}
+	 // nothing to substitute on the empty list
+	 if (this == EMPTY_LIST) {
+	 return this;
+	 }
 
-		// apply the substitution to the first and the remaining equations
-		return new TypeEquationList(this.first.substitute((DefaultTypeSubstitution)s), this.remaining
-				.substitute(s));
-	}*/
+	 // apply the substitution to the first and the remaining equations
+	 return new TypeEquationList(this.first.substitute((DefaultTypeSubstitution)s), this.remaining
+	 .substitute(s));
+	 }*/
 
 	//
 	// Base methods
 	//
-
 	/**
 	 * Returns the string representation of the equations contained in this list. This method is mainly useful
 	 * for debugging purposes.
@@ -128,18 +127,18 @@ public final class TypeEquationList {
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
-	public String toString() {
+	public String toString ( ) {
 
-		final StringBuilder builder = new StringBuilder(128);
-		builder.append('{');
-		for (TypeEquationList list = this; list != EMPTY_LIST; list = list.remaining) {
-			if (list != this) {
-				builder.append(", "); //$NON-NLS-1$
+		final StringBuilder builder = new StringBuilder ( 128 );
+		builder.append ( '{' );
+		for ( TypeEquationList list = this; list != EMPTY_LIST; list = list.remaining ) {
+			if ( list != this ) {
+				builder.append ( ", " ); //$NON-NLS-1$
 			}
-			builder.append(list.first);
+			builder.append ( list.first );
 		}
-		builder.append('}');
-		return builder.toString();
+		builder.append ( '}' );
+		return builder.toString ( );
 	}
 
 	//
@@ -151,7 +150,7 @@ public final class TypeEquationList {
 	 * 
 	 * @return TypeEquation first
 	 */
-	public TypeEquation getFirst() {
+	public TypeEquation getFirst ( ) {
 
 		return this.first;
 	}
@@ -162,7 +161,7 @@ public final class TypeEquationList {
 	 *
 	 * @return TypeEquationList remaining
 	 */
-	public TypeEquationList getRemaining() {
+	public TypeEquationList getRemaining ( ) {
 
 		return this.remaining;
 	}

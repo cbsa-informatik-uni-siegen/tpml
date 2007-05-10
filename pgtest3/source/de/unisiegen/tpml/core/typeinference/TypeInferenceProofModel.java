@@ -178,7 +178,6 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 
 	public void prove ( ProofRule rule, ProofNode pNode, boolean mode )
 			throws ProofRuleException {
-System.err.println("priove 2 "+mode);
 		if ( !this.ruleSet.contains ( rule ) ) {
 			throw new IllegalArgumentException ( "The rule is invalid for the model" ); //$NON-NLS-1$
 		}
@@ -192,8 +191,11 @@ System.err.println("priove 2 "+mode);
 		DefaultTypeInferenceProofNode node = ( DefaultTypeInferenceProofNode ) pNode;
 
 		// try to apply the rule to the specified node
-		applyInternal ( ( TypeCheckerProofRule ) rule, node, null, node
-				.getFirstFormula ( ), mode );
+		if ( mode )
+			applyInternal ( ( TypeCheckerProofRule ) rule, node, null, node
+					.getFirstFormula ( ), mode );
+		else
+			applyInternal ( ( TypeCheckerProofRule ) rule, node, null, null, mode );
 	}
 
 	/**

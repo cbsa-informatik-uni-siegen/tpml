@@ -47,10 +47,10 @@ public final class UnifyException extends Exception {
 	 * 
 	 * @param equation the {@link TypeEquation} that could not be unified.
 	 */
-	public UnifyException(final TypeEquation equation) {
+	public UnifyException ( final TypeEquation equation ) {
 
-		super(MessageFormat.format(
-				Messages.getString("UnificationException.0"), equation)); //$NON-NLS-1$
+		super ( MessageFormat.format ( Messages
+				.getString ( "UnificationException.0" ), equation ) ); //$NON-NLS-1$
 		this.equation = equation;
 	}
 
@@ -64,9 +64,9 @@ public final class UnifyException extends Exception {
 	 * 
 	 * @return the type on the left side of the type equation.
 	 */
-	public Type getTau1() {
+	public Type getTau1 ( ) {
 
-		return this.equation.getLeft();
+		return this.equation.getLeft ( );
 	}
 
 	/**
@@ -75,8 +75,8 @@ public final class UnifyException extends Exception {
 	 *  
 	 * @return the type on the rightside of the type equation.
 	 */
-	public Type getTau2() {
+	public Type getTau2 ( ) {
 
-		return this.equation.getRight();
+		return this.equation.getRight ( );
 	}
 }
