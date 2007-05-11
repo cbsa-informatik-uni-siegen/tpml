@@ -10,7 +10,6 @@ import javax.swing.JList;
 
 import de.unisiegen.tpml.core.languages.Language;
 import de.unisiegen.tpml.core.languages.LanguageFactory;
-
 import de.unisiegen.tpml.graphics.Messages;
 
 /**
@@ -22,7 +21,7 @@ import de.unisiegen.tpml.graphics.Messages;
 public class ChangeLanguage extends javax.swing.JDialog {
 
 	/**
-	 * TODO
+	 * The unique serialization identifier of this class.
 	 */
 	private static final long serialVersionUID = -546679731911537084L;
 
@@ -36,8 +35,9 @@ public class ChangeLanguage extends javax.swing.JDialog {
 	 * List cell renderer for the JList with the {@link Language}s.
 	 */
 	private static class LanguagesListCellRender extends DefaultListCellRenderer {
+		
 		/**
-		 * TODO
+		 * The unique serialization identifier of this class.
 		 */
 		private static final long serialVersionUID = 8848621507160097757L;
 
@@ -178,8 +178,9 @@ public class ChangeLanguage extends javax.swing.JDialog {
 		bodyPanel.setLayout ( new java.awt.GridBagLayout ( ) );
 
 		languagesList.setModel ( new javax.swing.AbstractListModel ( ) {
+
 			/**
-			 * TODO
+			 * The unique serialization identifier of this class.
 			 */
 			private static final long serialVersionUID = 1366225417646208434L;
 

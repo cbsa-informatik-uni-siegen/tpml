@@ -12,8 +12,10 @@ import de.unisiegen.tpml.core.languages.LanguageScanner ;
 import de.unisiegen.tpml.core.languages.LanguageTranslator ;
 import de.unisiegen.tpml.core.languages.LanguageTypeParser ;
 import de.unisiegen.tpml.core.languages.LanguageTypeScanner ;
+import de.unisiegen.tpml.core.languages.l1.L1SubTypingProofRuleSet;
 import de.unisiegen.tpml.core.languages.l2.L2Language ;
 import de.unisiegen.tpml.core.smallstep.SmallStepProofModel ;
+import de.unisiegen.tpml.core.subtyping.SubTypingProofModel;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel ;
 import de.unisiegen.tpml.core.typeinference.TypeInferenceProofModel ;
 import de.unisiegen.tpml.core.types.MonoType ;
@@ -152,6 +154,18 @@ public class L3Language extends L2Language
   {
     return new TypeInferenceProofModel ( expression ,
         new L3TypeInferenceProofRuleSet ( this ) ) ;
+  }
+  
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.tpml.core.languages.AbstractLanguage#newTypeInferenceProofModel(de.unisiegen.tpml.core.expressions.Expression)
+   */
+  @ Override
+  public SubTypingProofModel newSubTypingProofModel ( MonoType type, MonoType type2  )
+  {
+    return new SubTypingProofModel (type, type2, 
+        new L3SubTypingProofRuleSet ( this ) ) ;
   }
 
 

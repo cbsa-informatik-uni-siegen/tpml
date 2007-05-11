@@ -26,15 +26,12 @@ import de.unisiegen.tpml.core.languages.Language;
 import de.unisiegen.tpml.core.languages.LanguageTypeParser;
 import de.unisiegen.tpml.core.subtyping.AbstractSubTyping;
 import de.unisiegen.tpml.core.types.MonoType;
-import de.unisiegen.tpml.graphics.StyledLanguageDocument;
+import de.unisiegen.tpml.graphics.Messages;
 import de.unisiegen.tpml.graphics.StyledLanguageEditor;
 import de.unisiegen.tpml.graphics.outline.DefaultOutline;
 import de.unisiegen.tpml.graphics.outline.Outline;
-
-import de.unisiegen.tpml.graphics.Messages;
 import de.unisiegen.tpml.ui.SideBar;
 import de.unisiegen.tpml.ui.SideBarListener;
-import de.unisiegen.tpml.ui.editor.TextEditorPanel;
 
 /**
  * 
@@ -47,7 +44,7 @@ import de.unisiegen.tpml.ui.editor.TextEditorPanel;
 public class SubTypingEnterTypes extends JComponent {
 
 	/**
-	 * TODO
+	 * The unique serialization identifier of this class.
 	 */
 	private static final long serialVersionUID = 5068227950528407089L;
 
@@ -144,11 +141,14 @@ public class SubTypingEnterTypes extends JComponent {
 	 */
 	private boolean initialized = false;
 	
+
 	//
 	// Constructor
 	//
-
-	public SubTypingEnterTypes() {
+	/**
+	 * Allocates a new <code>SubTypingEnterTypes</code> 
+	 */
+	public SubTypingEnterTypes() {	
 		super ( );
 
 		// open a dialog to choose language
@@ -259,6 +259,7 @@ public class SubTypingEnterTypes extends JComponent {
 				this.document1,
 				this.editor1);
 		this.sideBar.addSibeBarListener(new SideBarListener() {
+			@SuppressWarnings("synthetic-access")
 			public void markText (int left, int right) {
 				SubTypingEnterTypes.this.selectErrorText(left, right);
 				}
@@ -315,6 +316,7 @@ public class SubTypingEnterTypes extends JComponent {
 				this.document2,
 				this.editor2);
 		this.sideBar2.addSibeBarListener(new SideBarListener() {
+			@SuppressWarnings("synthetic-access")
 			public void markText (int left, int right) {
 				SubTypingEnterTypes.this.selectErrorText(left, right);
 				}
@@ -378,7 +380,7 @@ public class SubTypingEnterTypes extends JComponent {
 		constraints.insets = new Insets ( 5, 5, 5, 5 );
 		this.outputField.add ( labelOutput, constraints );
 
-		lOutput = new JLabel (" ");
+		lOutput = new JLabel (" "); //$NON-NLS-1$
 
 		constraints.gridx = 0;
 		constraints.gridy = 1;
@@ -442,13 +444,13 @@ public class SubTypingEnterTypes extends JComponent {
 		}
 	}
 
-	MonoType eventHandling(StyledLanguageEditor editor, MonoType type,
+	MonoType eventHandling(StyledLanguageEditor editor, MonoType pType,
 			MonoType oldType, DefaultOutline outline) {
-		lOutput.setText ( " " );
+		MonoType type;
+		lOutput.setText ( " " ); //$NON-NLS-1$
 		try {
 			LanguageTypeParser parser = this.language
 					.newTypeParser ( new StringReader ( editor.getText ( ) ) );
-
 			type = parser.parse ( );
 
 			outline
@@ -466,6 +468,11 @@ public class SubTypingEnterTypes extends JComponent {
 
 	}
 
+	/**
+	 * set the actual language, and update the language where needed
+	 *
+	 * @param pLanguage
+	 */
 	public void setLanguage(Language pLanguage) {
 
 		if (pLanguage != null) {
@@ -493,7 +500,6 @@ public class SubTypingEnterTypes extends JComponent {
 		} else if (this.language == null) {
 			this.setEnabled ( false );
 		}
-
 	}
 
 }

@@ -1,12 +1,15 @@
 package de.unisiegen.tpml.core.languages ;
 
 
-import java.io.Reader ;
-import java.text.MessageFormat ;
-import de.unisiegen.tpml.core.Messages ;
-import de.unisiegen.tpml.core.expressions.Expression ;
-import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel ;
-import de.unisiegen.tpml.core.typeinference.TypeInferenceProofModel ;
+import java.io.Reader;
+import java.text.MessageFormat;
+
+import de.unisiegen.tpml.core.Messages;
+import de.unisiegen.tpml.core.expressions.Expression;
+import de.unisiegen.tpml.core.subtyping.SubTypingProofModel;
+import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel;
+import de.unisiegen.tpml.core.typeinference.TypeInferenceProofModel;
+import de.unisiegen.tpml.core.types.MonoType;
 
 
 /**
@@ -50,6 +53,17 @@ public abstract class AbstractLanguage implements Language
   public TypeInferenceProofModel newTypeInferenceProofModel (
       @ SuppressWarnings ( "unused" )
       Expression expression )
+  {
+    throw new UnsupportedOperationException ( MessageFormat.format ( Messages
+        .getString ( "AbstractLanguage.0" ) , getName ( ) ) ) ; //$NON-NLS-1$
+  }
+  
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.tpml.core.languages.Language#newTypeInferenceProofModel(de.unisiegen.tpml.core.expressions.Expression)
+   */
+  public SubTypingProofModel newSubTypingProofModel ( MonoType type, MonoType type2 )
   {
     throw new UnsupportedOperationException ( MessageFormat.format ( Messages
         .getString ( "AbstractLanguage.0" ) , getName ( ) ) ) ; //$NON-NLS-1$

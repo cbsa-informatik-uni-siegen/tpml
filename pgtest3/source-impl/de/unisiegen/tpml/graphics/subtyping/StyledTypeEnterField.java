@@ -1,6 +1,3 @@
-/**
- * TODO
- */
 package de.unisiegen.tpml.graphics.subtyping;
 
 import java.awt.Color;
@@ -27,17 +24,29 @@ import de.unisiegen.tpml.core.types.MonoType;
 import de.unisiegen.tpml.graphics.StyledLanguageDocument;
 
 /**
- * TODO
- *
+ * An implementation of the {@link javax.swing.text.StyledDocument} interface to
+ * enable syntax highlighting using the lexer of the current
+ * {@link de.unisiegen.tpml.core.languages.Language}.
+ * 
  * @author Benjamin Mies
- *
+ * @see javax.swing.text.DefaultStyledDocument
  */
 public class StyledTypeEnterField extends StyledLanguageDocument {
 
 	/**
-	 * TODO
-	 *
-	 * @param language
+	 * The unique serialization identifier of this class.
+	 */
+	private static final long serialVersionUID = 4465272372914939214L;
+
+	/**
+	 * Allocates a new <code>StyledTypeEnterDocument</code> for the given
+	 * <code>language</code>, where the <code>language</code> is used to
+	 * determine the scanner (aka lexer) for the documents content and thereby
+	 * dictates the syntax highlighting.
+	 * 
+	 * @param language the {@link Language} for which to allocate a document.
+	 * @throws NullPointerException if the <code>language</code> is
+	 *           <code>null</code>.
 	 */
 	public StyledTypeEnterField(Language language) {
 		super ( language );
@@ -206,6 +215,11 @@ public class StyledTypeEnterField extends StyledLanguageDocument {
 		}
 	}
 
+	/**
+	 * set the actual language for this styled document
+	 *
+	 * @param language Language
+	 */
 	public void setLanguage(Language language) {
 		this.language = language;
 	}

@@ -5,8 +5,10 @@ import java.io.Reader;
 import de.unisiegen.tpml.core.bigstep.BigStepProofModel;
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.smallstep.SmallStepProofModel;
+import de.unisiegen.tpml.core.subtyping.SubTypingProofModel;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel;
 import de.unisiegen.tpml.core.typeinference.TypeInferenceProofModel;
+import de.unisiegen.tpml.core.types.MonoType;
 
 /**
  * Base interface for all languages, which is used to create scanners and parsers for a specific language.
@@ -97,6 +99,8 @@ public interface Language {
   public TypeCheckerProofModel newTypeCheckerProofModel(Expression expression);
   
   public TypeInferenceProofModel newTypeInferenceProofModel(Expression expression);
+  
+  public SubTypingProofModel newSubTypingProofModel(MonoType type, MonoType type2);
   
   /**
    * Allocates a new {@link LanguageParser} for this language, using the specified <code>scanner</code> as

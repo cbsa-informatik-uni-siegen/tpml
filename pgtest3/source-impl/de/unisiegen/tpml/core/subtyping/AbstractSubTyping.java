@@ -18,15 +18,15 @@ import de.unisiegen.tpml.core.types.TupleType;
  */
 public abstract class AbstractSubTyping {
 
-/**
- * 
- * This method awaits two MonoTypes, and returns true if one type is a subtype
- * of the other one.
- *
- * @param type1 MonoType first type
- * @param type2 MonoType second type
- * @return boolean is Subtype
- */
+	/**
+	 * 
+	 * This method awaits two MonoTypes, and returns true if one type is a subtype
+	 * of the other one.
+	 *
+	 * @param type1 MonoType first type
+	 * @param type2 MonoType second type
+	 * @return boolean is Subtype
+	 */
 	public static boolean check(MonoType type1, MonoType type2) {
 
 		if (type1 instanceof ObjectType && type2 instanceof ObjectType)
@@ -57,8 +57,9 @@ public abstract class AbstractSubTyping {
 		if (types.length != types2.length)
 			return false;
 		for (int i = 0; i < types.length; i++ ) {
-			if ( !types[i].equals (  types2[i] ) );
-				return false;
+			if (!types[i].equals ( types2[i] ))
+				;
+			return false;
 		}
 		return true;
 	}
@@ -97,18 +98,15 @@ public abstract class AbstractSubTyping {
 		Identifier[] ids2 = null;
 		MonoType[] types1 = null;
 		MonoType[] types2 = null;
-		
-		if (type1.getIdentifiers ( ).length < type2.getIdentifiers ( ).length)
-		{
 
-		ids1 = type1.getIdentifiers ( );
-		ids2 = type2.getIdentifiers ( );
+		if (type1.getIdentifiers ( ).length < type2.getIdentifiers ( ).length) {
 
-		types1 = type1.getTypes ( );
-		types2 = type2.getTypes ( );
-		}
-		else
-		{
+			ids1 = type1.getIdentifiers ( );
+			ids2 = type2.getIdentifiers ( );
+
+			types1 = type1.getTypes ( );
+			types2 = type2.getTypes ( );
+		} else {
 			ids1 = type2.getIdentifiers ( );
 			ids2 = type1.getIdentifiers ( );
 
