@@ -10,7 +10,6 @@ import de.unisiegen.tpml.core.ProofGuessException;
 import de.unisiegen.tpml.core.ProofNode;
 import de.unisiegen.tpml.core.ProofRule;
 import de.unisiegen.tpml.core.ProofRuleException;
-import de.unisiegen.tpml.core.expressions.IsEmpty;
 import de.unisiegen.tpml.core.typechecker.DefaultTypeCheckerProofContext;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofContext;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode;
@@ -26,7 +25,7 @@ import de.unisiegen.tpml.core.types.MonoType;
  *
  */
 public class SubTypingProofModel extends AbstractProofModel {
-	
+
 	//
 	// Constants
 	//
@@ -37,7 +36,7 @@ public class SubTypingProofModel extends AbstractProofModel {
 	 */
 	private static final Logger logger = Logger
 			.getLogger ( SubTypingProofModel.class );
-	
+
 	//
 	// Attributes
 	//
@@ -52,7 +51,6 @@ public class SubTypingProofModel extends AbstractProofModel {
 	 * @see TypeCheckerProofContext#newTypeVariable()
 	 * @see types.TypeVariable
 	 */
-	private int index = 1;
 
 	/**
 	 * TODO
@@ -62,7 +60,7 @@ public class SubTypingProofModel extends AbstractProofModel {
 	 */
 	public SubTypingProofModel ( MonoType type, MonoType type2,
 			AbstractProofRuleSet ruleSet ) {
-		super ( new DefaultSubTypingProofNode(type, type2), ruleSet );
+		super ( new DefaultSubTypingProofNode ( type, type2 ), ruleSet );
 	}
 
 	/**
@@ -74,8 +72,8 @@ public class SubTypingProofModel extends AbstractProofModel {
 	 */
 	@Override
 	public void guess ( ProofNode pNode ) throws ProofGuessException {
-		DefaultSubTypingProofNode node = (DefaultSubTypingProofNode) pNode;
-	guessInternal (node);
+		DefaultSubTypingProofNode node = ( DefaultSubTypingProofNode ) pNode;
+		guessInternal ( node );
 	}
 
 	/**
@@ -87,23 +85,25 @@ public class SubTypingProofModel extends AbstractProofModel {
 	 * @see de.unisiegen.tpml.core.AbstractProofModel#prove(de.unisiegen.tpml.core.ProofRule, de.unisiegen.tpml.core.ProofNode)
 	 */
 	@Override
-	public void prove ( ProofRule rule, ProofNode node )
+	public void prove ( ProofRule rule, ProofNode pNode )
 			throws ProofRuleException {
-	// TODO Auto-generated method stub
+
+		if ( !this.ruleSet.contains ( rule ) ) {
+			throw new IllegalArgumentException ( "The rule is invalid for the model" ); //$NON-NLS-1$
+		}
+		if ( !this.root.isNodeRelated ( pNode ) ) {
+			throw new IllegalArgumentException ( "The node is invalid for the model" ); //$NON-NLS-1$
+		}
+		if ( pNode.getRules ( ).length > 0 ) {
+			throw new IllegalArgumentException ( "The node is already completed" ); //$NON-NLS-1$
+		}
+		DefaultSubTypingProofNode node = ( DefaultSubTypingProofNode ) pNode;
+
+		// try to apply the rule to the specified node
+		applyInternal ( ( SubTypingProofRule ) rule, node );
 
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 	//
 	// Rule application
 	//
@@ -129,15 +129,57 @@ public class SubTypingProofModel extends AbstractProofModel {
 		// allocate a new TypeCheckerContext
 		DefaultSubTypingProofContext context = new DefaultSubTypingProofContext (
 				this, node );
-		context.apply(rule,node);
-		
 
-		// think about what to do here
-		//TODO add try catch and revert in catch block
-		
-		
-		
-		
+		try {
+			context.apply ( rule, node );
+
+			//	 check if we are finished
+			final DefaultSubTypingProofNode root = ( DefaultSubTypingProofNode ) getRoot ( );
+			context.addRedoAction ( new Runnable ( ) {
+				public void run ( ) {
+					setFinished ( root.isFinished ( ) );
+				}
+			} );
+			context.addUndoAction ( new Runnable ( ) {
+				public void run ( ) {
+					setFinished ( false );
+				}
+			} );
+			// determine the redo and undo actions from the context
+			final Runnable redoActions = context.getRedoActions ( );
+			final Runnable undoActions = context.getUndoActions ( );
+
+			// record the undo edit action for this proof step
+			addUndoableTreeEdit ( new UndoableTreeEdit ( ) {
+				public void redo ( ) {
+					redoActions.run ( );
+				}
+
+				public void undo ( ) {
+					undoActions.run ( );
+				}
+			} );
+		}
+
+		catch ( ProofRuleException e ) {
+			// revert the actions performed so far
+			context.revert ( );
+
+			// re-throw the exception
+			throw e;
+		} catch ( SubTypingException e ) {
+			// revert the actions performed so far
+			context.revert ( );
+
+			// re-throw the exception as proof rule exception
+			throw new ProofRuleException ( node, rule, e );
+		} catch ( RuntimeException e ) {
+			// revert the actions performed so far
+			context.revert ( );
+
+			// re-throw the exception
+			throw e;
+		}
 	}
 
 	/**
@@ -156,7 +198,8 @@ public class SubTypingProofModel extends AbstractProofModel {
 	 * @see #guess(ProofNode)
 	 * @see #guessWithType(ProofNode, MonoType)
 	 */
-	private void guessInternal ( DefaultSubTypingProofNode node) throws ProofGuessException {
+	private void guessInternal ( DefaultSubTypingProofNode node )
+			throws ProofGuessException {
 
 		if ( node == null ) {
 			throw new NullPointerException ( "node is null" ); //$NON-NLS-1$
@@ -173,7 +216,7 @@ public class SubTypingProofModel extends AbstractProofModel {
 		for ( ProofRule rule : this.ruleSet.getRules ( ) ) {
 			try {
 				// try to apply the rule to the specified node
-				applyInternal ( ( SubTypingProofRule ) rule, node  );
+				applyInternal ( ( SubTypingProofRule ) rule, node );
 				// remember that the user cheated
 				setCheating ( true );
 
@@ -210,40 +253,27 @@ public class SubTypingProofModel extends AbstractProofModel {
 	 * @throws NullPointerException if any of the parameters is <code>null</code>.
 	 */
 	void contextAddProofNode ( final DefaultSubTypingProofContext context,
-			final SubTypingProofNode pNode,
-			final MonoType type,
-			final MonoType type2 ) {
-		
-		final DefaultSubTypingProofNode node = (DefaultSubTypingProofNode) pNode;
+			final SubTypingProofNode pNode, final MonoType type, final MonoType type2 ) {
+
+		final DefaultSubTypingProofNode node = ( DefaultSubTypingProofNode ) pNode;
 
 		final DefaultSubTypingProofNode child = new DefaultSubTypingProofNode (
 				type, type2 );
 		final ProofStep[] oldSteps = node.getSteps ( );
 
 		// add redo and undo options
-		addUndoableTreeEdit ( new UndoableTreeEdit ( ) {
-
-			public void redo ( ) {
-
-				setFinished ( ( ( DefaultSubTypingProofNode ) root ).isFinished ( ) );
-
+		context.addRedoAction ( new Runnable ( ) {
+			public void run ( ) {
 				node.add ( child );
 				nodesWereInserted ( node, new int[] { node.getIndex ( child ) } );
-				nodeChanged ( node );
 			}
+		} );
 
-			public void undo ( ) {
-
-				// update the "finished" state
-				setFinished ( false );
-
-				// remove the child and revert the steps
-				int[] indices = { pNode.getIndex ( child ) };
-				node.removeAllChildren ( );
-				nodesWereRemoved ( pNode, indices, new Object[] { child } );
-				node.setSteps ( oldSteps );
-				nodeChanged ( pNode );
-
+		context.addUndoAction ( new Runnable ( ) {
+			public void run ( ) {
+				int index = node.getIndex ( child );
+				node.remove ( index );
+				nodesWereRemoved ( node, new int[] { index }, new Object[] { child } );
 			}
 		} );
 	}
@@ -259,13 +289,23 @@ public class SubTypingProofModel extends AbstractProofModel {
 	 * @see DefaultTypeCheckerProofContext#apply(TypeCheckerProofRule, TypeCheckerProofNode)
 	 */
 	void contextSetProofNodeRule ( DefaultSubTypingProofContext context,
-			 DefaultSubTypingProofNode node,
-			final SubTypingProofRule rule ) {
+			final DefaultSubTypingProofNode node, final SubTypingProofRule rule ) {
+		final ProofStep[] oldSteps = node.getSteps ( );
 
-		node
-				.setSteps ( new ProofStep[] { new ProofStep (node.getType ( ), node.getType2 ( ), rule ) } );
-		node.setRules ( new ProofRule[] { rule } );
-		nodeChanged ( node );
+		context.addRedoAction ( new Runnable ( ) {
+			public void run ( ) {
+				node.setSteps ( new ProofStep[] { new ProofStep ( node.getType ( ),
+						node.getType2 ( ), rule ) } );
+				nodeChanged ( node );
+			}
+		} );
+
+		context.addUndoAction ( new Runnable ( ) {
+			public void run ( ) {
+				node.setSteps ( oldSteps );
+				nodeChanged ( node );
+			}
+		} );
 	}
 
 	//
@@ -301,13 +341,11 @@ public class SubTypingProofModel extends AbstractProofModel {
 	@Override
 	public void undo ( ) throws CannotUndoException {
 		super.undo ( );
-		index-- ;
 	}
 
 	@Override
 	public void redo ( ) throws CannotRedoException {
 		super.redo ( );
-		index++ ;
 	}
 
 	public void setFinished ( ) {
