@@ -31,27 +31,26 @@ public class L2OSubTypingProofRuleSet extends L2SubTypingProofRuleSet {
 
 		RowType r1 = ( ( ObjectType ) type ).getPhi ( );
 		RowType r2 = ( ( ObjectType ) type2 ).getPhi ( );
-
+		
 		Identifier[] ids1 = r1.getIdentifiers ( );
 		Identifier[] ids2 = r2.getIdentifiers ( );
 
 		MonoType[] types = r1.getTypes ( );
 		MonoType[] types2 = r2.getTypes ( );
-
-
+		
 			for (int i = 0; i < ids1.length; i++ ) {
 				goOn = false;
 				for (int j = 0; j < ids2.length; j++ ) {
 					if (ids1[i].equals ( ids2[j] )){
-						context.addProofNode ( node, types[i], types2[i] );
+						context.addProofNode ( node, types[i], types2[j] );
 						goOn = true;
 					}
 				}
 				if (goOn)
 					continue;
-				break;
+				throw new SubTypingException ( node );
 			}
-			throw new SubTypingException ( node );
+			
 	}
 
 	public void applyObjectDepth ( SubTypingProofContext context,
@@ -75,7 +74,7 @@ public class L2OSubTypingProofRuleSet extends L2SubTypingProofRuleSet {
 				goOn = false;
 				for (int j = 0; j < ids2.length; j++ ) {
 					if (ids1[i].equals ( ids2[j] )){
-						context.addProofNode ( node, types[i], types2[i] );
+						context.addProofNode ( node, types[i], types2[j] );
 						goOn = true;
 					}
 				}

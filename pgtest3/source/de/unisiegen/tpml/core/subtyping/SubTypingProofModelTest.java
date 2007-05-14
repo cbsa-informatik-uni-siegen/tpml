@@ -30,9 +30,9 @@ import de.unisiegen.tpml.core.languages.LanguageTypeParser;
 import de.unisiegen.tpml.core.types.MonoType;
 
 public class SubTypingProofModelTest extends JFrame {
-	private static final String TYPE = "int * int * bool * 'a";
+	private static final String TYPE = "<add: int; sub:<test:bool; test2:int;>; attr:bool;>";
 
-	private static final String TYPE2 = "int * int * bool * 'a";
+	private static final String TYPE2 = "<sub:<test:bool; test2:int;>; add:int;>";
 
 	ProofRule choosen = null;
 
@@ -232,7 +232,7 @@ public class SubTypingProofModelTest extends JFrame {
 		try {
 			// parse the program (using L4)
 			LanguageFactory factory = LanguageFactory.newInstance ( );
-			Language language = factory.getLanguageById ( "l4" );
+			Language language = factory.getLanguageById ( "L2O" );
 			LanguageTypeParser parser = language.newTypeParser ( new StringReader (
 					TYPE ) );
 			MonoType type = parser.parse ( );
