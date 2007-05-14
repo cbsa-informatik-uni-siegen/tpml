@@ -21,6 +21,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTree;
 
+import de.unisiegen.tpml.core.AbstractProofNode;
 import de.unisiegen.tpml.core.ProofNode;
 import de.unisiegen.tpml.core.ProofRule;
 import de.unisiegen.tpml.core.languages.Language;
@@ -29,229 +30,217 @@ import de.unisiegen.tpml.core.languages.LanguageTypeParser;
 import de.unisiegen.tpml.core.types.MonoType;
 
 public class SubTypingProofModelTest extends JFrame {
-	private static final String TYPE = "int -> int";
-	private static final String TYPE2 = "int -> bool";
-	
-  ProofRule choosen=null;
-	
-	
-	 
-		public SubTypingProofModelTest ( final SubTypingProofModel model ) {
-			// setup the frame
-			setLayout ( new BorderLayout ( ) );
-			setSize ( 630, 580 );
-			setTitle ( "TypeCheckerProofModel Test" );
+	private static final String TYPE = "int * int * bool * 'a";
 
-			// setup the tree panel
-			JPanel treePanel = new JPanel ( new BorderLayout ( ) );
-			treePanel.setBorder ( BorderFactory.createEtchedBorder ( ) );
-			add ( treePanel, BorderLayout.CENTER );
+	private static final String TYPE2 = "int * int * bool * 'a";
 
-			// setup the tree
-			final JTree tree = new JTree ( model );
-			treePanel.add ( tree, BorderLayout.CENTER );
+	ProofRule choosen = null;
 
-			// setup the button panel
-			JPanel buttons = new JPanel ( new FlowLayout ( ) );
-			add ( buttons, BorderLayout.SOUTH );
+	public SubTypingProofModelTest ( final SubTypingProofModel model ) {
+		// setup the frame
+		setLayout ( new BorderLayout ( ) );
+		setSize ( 630, 580 );
+		setTitle ( "TypeCheckerProofModel Test" );
 
-	    // setup the guess button
-	    JButton guessButton = new JButton("Guess");
-	    guessButton.addActionListener(new ActionListener() {
-	      public void actionPerformed(ActionEvent event) {
-	       
-	    	  
-	    	  
-	    	  
-	    	  try {
-	    		  
-	              {
-	        	model.guess(nextNode(model));
-	          
-	          // expand to the all nodes
-	          for (int n = 0; n < tree.getRowCount(); ++n) {
-	            tree.expandRow(n);
-	            
-	          }
-	        }   
-	        }
-	        
-	        catch (Exception e) {
-	          JOptionPane.showMessageDialog(SubTypingProofModelTest.this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-	        }
-	      }
-	    });
-	    buttons.add(guessButton);
-	    
-	    // setup the guess all button
-	    JButton guessAllButton = new JButton("Guess all");
-	    guessAllButton.addActionListener(new ActionListener() {
-	      public void actionPerformed(ActionEvent event) {
-	       
-	    	  
-	        
-	    	  
-	    	  try {
-	    		  while (nextNode(model)!=null)
-	              {
-	        	model.guess(nextNode(model));
-	          
-	          // expand to the all nodes
-	          for (int n = 0; n < tree.getRowCount(); ++n) {
-	            tree.expandRow(n);
-	            
-	          }
-	        }   
-	        }
-	        
-	        catch (Exception e) {
-	          JOptionPane.showMessageDialog(SubTypingProofModelTest.this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-	        }
-	        
-	      }
-	    });
-	    buttons.add(guessAllButton);
-	    
-	    
+		// setup the tree panel
+		JPanel treePanel = new JPanel ( new BorderLayout ( ) );
+		treePanel.setBorder ( BorderFactory.createEtchedBorder ( ) );
+		add ( treePanel, BorderLayout.CENTER );
 
-	    
-//	  Setup combo box for prove
-	    JComboBox combo1 = new JComboBox();
-	    
+		// setup the tree
+		final JTree tree = new JTree ( model );
+		treePanel.add ( tree, BorderLayout.CENTER );
 
-	    for (ProofRule rule : model.getRules())
-	    {
-	    	 combo1.addItem( rule.getName() );
-	    }
-	    buttons.add( combo1);
-	    combo1.addItemListener( new ItemListener() {
-	      public void itemStateChanged( ItemEvent e ) {
-	        JComboBox selectedChoice = (JComboBox)e.getSource();
-	        if (e.getStateChange()==1)
-	        {
-	        	 for (ProofRule rules : model.getRules()){
-	        		if( rules.getName().equals( selectedChoice.getSelectedItem()))
-	        		 {
-	        			choosen=rules;
-	        			break;
-	        		 }
-	        	 }
-	        	
-	        	 try {
-	      	          // prove  the last node
-	      	          model.prove(choosen, nextNode(model));
-	      	          
-	      	          // expand to the all nodes
-	      	          for (int n = 0; n < tree.getRowCount(); ++n) {
-	      	            tree.expandRow(n);
-	      	          }
-	      	        }
-	      	        catch (Exception e1) {
-	      	          JOptionPane.showMessageDialog(SubTypingProofModelTest.this, e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-	      	        }
-	        	 
-	   	      }
-	      }
-	    } );
-	    
-	    // setup the undo button
-	    final JButton undoButton = new JButton("Undo");
-	    undoButton.setEnabled(false);
-	    undoButton.addActionListener(new ActionListener() {
-	      public void actionPerformed(ActionEvent event) {
-	        try {
-	          // undo the last change
-	          model.undo();
-	        }
-	        catch (Exception e) {
-	          JOptionPane.showMessageDialog(SubTypingProofModelTest.this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-	        }
-	      }
-	    });
-	    model.addPropertyChangeListener("undoable", new PropertyChangeListener() {
-	      public void propertyChange(PropertyChangeEvent event) {
-	        undoButton.setEnabled(model.isUndoable());
-	      }
-	    });
-	    buttons.add(undoButton);
-	    
-	    // setup the redo button
-	    final JButton redoButton = new JButton("Redo");
-	    redoButton.setEnabled(false);
-	    redoButton.addActionListener(new ActionListener() {
-	      public void actionPerformed(ActionEvent event) {
-	        try {
-	          // redo the last undone change
-	          model.redo();
-	          
-	          // expand to the last node
-	          for (int n = 0; n < tree.getRowCount(); ++n) {
-	            tree.expandRow(n);
-	          }
-	        }
-	        catch (Exception e) {
-	          JOptionPane.showMessageDialog(SubTypingProofModelTest.this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-	        }
-	      }
-	    });
-	    model.addPropertyChangeListener("redoable", new PropertyChangeListener() {
-	      public void propertyChange(PropertyChangeEvent event) {
-	        redoButton.setEnabled(model.isRedoable());
-	      }
-	    });
-	    buttons.add(redoButton);
-	    
-	   
-	    // setup the close button
-	    JButton closeButton = new JButton("Close");
-	    closeButton.addActionListener(new ActionListener() {
-	      public void actionPerformed(ActionEvent event) {
-	        System.exit(0);
-	      }
-	    });
-	    buttons.add(closeButton);
-	  }
+		// setup the button panel
+		JPanel buttons = new JPanel ( new FlowLayout ( ) );
+		add ( buttons, BorderLayout.SOUTH );
 
-	  private static ProofNode nextNode(SubTypingProofModel model) {
-		  
-	    LinkedList<DefaultSubTypingProofNode> nodes = new LinkedList<DefaultSubTypingProofNode>();
-	    nodes.add((DefaultSubTypingProofNode)model.getRoot());
-	    while (!nodes.isEmpty()) {
-	    	DefaultSubTypingProofNode node = nodes.poll();
-	      if (node.getSteps().length == 0) {
-	        return node;
-	      }
-	      for (int n = 0; n < node.getChildCount(); ++n) {
-	        nodes.add(node.getChildAt(n));
-	      }
-	    }
-	    
-	    throw new IllegalStateException("Unable to find next node");
-	  }
+		// setup the guess button
+		JButton guessButton = new JButton ( "Guess" );
+		guessButton.addActionListener ( new ActionListener ( ) {
+			public void actionPerformed ( ActionEvent event ) {
 
-		//
-		// Program entry point
-		//
+				try {
 
-		/**
-		 * Runs the small step interpreter test.
-		 * 
-		 * @param args the command line arguments.
-		 */
-public static void main ( String[] args ) {
+					{
+						model.guess ( nextNode ( model ) );
+
+						// expand to the all nodes
+						for ( int n = 0; n < tree.getRowCount ( ); ++n ) {
+							tree.expandRow ( n );
+
+						}
+					}
+				}
+
+				catch ( Exception e ) {
+					JOptionPane.showMessageDialog ( SubTypingProofModelTest.this, e
+							.getMessage ( ), "Error", JOptionPane.ERROR_MESSAGE );
+				}
+			}
+		} );
+		buttons.add ( guessButton );
+
+		// setup the guess all button
+		JButton guessAllButton = new JButton ( "Guess all" );
+		guessAllButton.addActionListener ( new ActionListener ( ) {
+			public void actionPerformed ( ActionEvent event ) {
+
+				try {
+					while ( nextNode ( model ) != null ) {
+						model.guess ( nextNode ( model ) );
+
+						// expand to the all nodes
+						for ( int n = 0; n < tree.getRowCount ( ); ++n ) {
+							tree.expandRow ( n );
+
+						}
+					}
+				}
+
+				catch ( Exception e ) {
+					JOptionPane.showMessageDialog ( SubTypingProofModelTest.this, e
+							.getMessage ( ), "Error", JOptionPane.ERROR_MESSAGE );
+				}
+
+			}
+		} );
+		buttons.add ( guessAllButton );
+
+		//	  Setup combo box for prove
+		JComboBox combo1 = new JComboBox ( );
+
+		for ( ProofRule rule : model.getRules ( ) ) {
+			combo1.addItem ( rule.getName ( ) );
+		}
+		buttons.add ( combo1 );
+		combo1.addItemListener ( new ItemListener ( ) {
+			public void itemStateChanged ( ItemEvent e ) {
+				JComboBox selectedChoice = ( JComboBox ) e.getSource ( );
+				if ( e.getStateChange ( ) == 1 ) {
+					for ( ProofRule rules : model.getRules ( ) ) {
+						if ( rules.getName ( ).equals ( selectedChoice.getSelectedItem ( ) ) ) {
+							choosen = rules;
+							break;
+						}
+					}
+
+					try {
+						// prove  the last node
+						model.prove ( choosen, nextNode ( model ) );
+
+						// expand to the all nodes
+						for ( int n = 0; n < tree.getRowCount ( ); ++n ) {
+							tree.expandRow ( n );
+						}
+					} catch ( Exception e1 ) {
+						JOptionPane.showMessageDialog ( SubTypingProofModelTest.this, e1
+								.getMessage ( ), "Error", JOptionPane.ERROR_MESSAGE );
+					}
+
+				}
+			}
+		} );
+
+		// setup the undo button
+		final JButton undoButton = new JButton ( "Undo" );
+		undoButton.setEnabled ( false );
+		undoButton.addActionListener ( new ActionListener ( ) {
+			public void actionPerformed ( ActionEvent event ) {
+				try {
+					// undo the last change
+					model.undo ( );
+
+				} catch ( Exception e ) {
+					JOptionPane.showMessageDialog ( SubTypingProofModelTest.this, e
+							.getMessage ( ), "Error", JOptionPane.ERROR_MESSAGE );
+				}
+			}
+		} );
+		model.addPropertyChangeListener ( "undoable",
+				new PropertyChangeListener ( ) {
+					public void propertyChange ( PropertyChangeEvent event ) {
+						undoButton.setEnabled ( model.isUndoable ( ) );
+					}
+				} );
+		buttons.add ( undoButton );
+
+		// setup the redo button
+		final JButton redoButton = new JButton ( "Redo" );
+		redoButton.setEnabled ( false );
+		redoButton.addActionListener ( new ActionListener ( ) {
+			public void actionPerformed ( ActionEvent event ) {
+				try {
+					// redo the last undone change
+					model.redo ( );
+
+					// expand to the last node
+					for ( int n = 0; n < tree.getRowCount ( ); ++n ) {
+						tree.expandRow ( n );
+					}
+				} catch ( Exception e ) {
+					JOptionPane.showMessageDialog ( SubTypingProofModelTest.this, e
+							.getMessage ( ), "Error", JOptionPane.ERROR_MESSAGE );
+				}
+			}
+		} );
+		model.addPropertyChangeListener ( "redoable",
+				new PropertyChangeListener ( ) {
+					public void propertyChange ( PropertyChangeEvent event ) {
+						redoButton.setEnabled ( model.isRedoable ( ) );
+					}
+				} );
+		buttons.add ( redoButton );
+
+		// setup the close button
+		JButton closeButton = new JButton ( "Close" );
+		closeButton.addActionListener ( new ActionListener ( ) {
+			public void actionPerformed ( ActionEvent event ) {
+				System.exit ( 0 );
+			}
+		} );
+		buttons.add ( closeButton );
+	}
+
+	private static ProofNode nextNode ( SubTypingProofModel model ) {
+
+		LinkedList < DefaultSubTypingProofNode > nodes = new LinkedList < DefaultSubTypingProofNode > ( );
+		nodes.add ( ( DefaultSubTypingProofNode ) model.getRoot ( ) );
+		while ( !nodes.isEmpty ( ) ) {
+			DefaultSubTypingProofNode node = nodes.poll ( );
+			if ( node.getSteps ( ).length == 0 ) {
+				return node;
+			}
+			for ( int n = 0; n < node.getChildCount ( ); ++n ) {
+				nodes.add ( node.getChildAt ( n ) );
+			}
+		}
+
+		throw new IllegalStateException ( "Unable to find next node" );
+	}
+
+	//
+	// Program entry point
+	//
+
+	/**
+	 * Runs the small step interpreter test.
+	 * 
+	 * @param args the command line arguments.
+	 */
+	public static void main ( String[] args ) {
 		try {
 			// parse the program (using L4)
 			LanguageFactory factory = LanguageFactory.newInstance ( );
 			Language language = factory.getLanguageById ( "l4" );
-			LanguageTypeParser parser = language
-			.newTypeParser ( new StringReader ( TYPE ) );
+			LanguageTypeParser parser = language.newTypeParser ( new StringReader (
+					TYPE ) );
 			MonoType type = parser.parse ( );
-			
-			LanguageTypeParser parser2 = language
-			.newTypeParser ( new StringReader ( TYPE2 ) );
+
+			LanguageTypeParser parser2 = language.newTypeParser ( new StringReader (
+					TYPE2 ) );
 			MonoType type2 = parser2.parse ( );
-			
-	
+
 			SubTypingProofModel model = language
 					.newSubTypingProofModel ( type, type2 );
 

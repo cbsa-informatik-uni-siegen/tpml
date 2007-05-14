@@ -4,14 +4,11 @@ import org.apache.log4j.Logger;
 
 import de.unisiegen.tpml.core.AbstractProofModel;
 import de.unisiegen.tpml.core.AbstractProofRuleSet;
-import de.unisiegen.tpml.core.CannotRedoException;
-import de.unisiegen.tpml.core.CannotUndoException;
 import de.unisiegen.tpml.core.ProofGuessException;
 import de.unisiegen.tpml.core.ProofNode;
 import de.unisiegen.tpml.core.ProofRule;
 import de.unisiegen.tpml.core.ProofRuleException;
 import de.unisiegen.tpml.core.typechecker.DefaultTypeCheckerProofContext;
-import de.unisiegen.tpml.core.typechecker.TypeCheckerProofContext;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofRule;
 import de.unisiegen.tpml.core.typeinference.DefaultTypeInferenceProofContext;
@@ -308,25 +305,6 @@ public class SubTypingProofModel extends AbstractProofModel {
 		} );
 	}
 
-	//
-	// Undo/Redo
-	//
-
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see de.unisiegen.tpml.core.AbstractProofModel#addUndoableTreeEdit(de.unisiegen.tpml.core.AbstractProofModel.UndoableTreeEdit)
-	 */
-	@Override
-	public void addUndoableTreeEdit ( UndoableTreeEdit edit ) {
-
-		// perform the redo of the edit
-		edit.redo ( );
-
-		// add to the undo history
-		super.addUndoableTreeEdit ( edit );
-	}
-
 	/**
 	 * get the rules of the actual proof rule set
 	 *
@@ -337,19 +315,4 @@ public class SubTypingProofModel extends AbstractProofModel {
 	public ProofRule[] getRules ( ) {
 		return this.ruleSet.getRules ( );
 	}
-
-	@Override
-	public void undo ( ) throws CannotUndoException {
-		super.undo ( );
-	}
-
-	@Override
-	public void redo ( ) throws CannotRedoException {
-		super.redo ( );
-	}
-
-	public void setFinished ( ) {
-		this.setFinished ( true );
-	}
-
 }

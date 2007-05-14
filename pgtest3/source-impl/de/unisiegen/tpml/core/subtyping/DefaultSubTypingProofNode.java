@@ -81,14 +81,14 @@ public class DefaultSubTypingProofNode extends AbstractProofNode implements
 	public String toString ( ) {
 
 		final StringBuilder builder = new StringBuilder ( );
-		builder.append ( "<html>" ); //$NON-NLS-1$
+		//builder.append ( "<html>" ); //$NON-NLS-1$
 		builder.append ( type );
-		builder.append ( " <: " ); //$NON-NLS-1$
+		builder.append ( " < " ); //$NON-NLS-1$
 		builder.append ( type2 );
 		builder.append (" ");
 		if (this.getSteps ( ).length > 0)
 		builder.append ( this.getSteps()[0].getRule ( ).toString ( ) );
-		builder.append ( "</html>" ); //$NON-NLS-1$
+		//builder.append ( "</html>" ); //$NON-NLS-1$
 		return builder.toString ( );
 	}
 
