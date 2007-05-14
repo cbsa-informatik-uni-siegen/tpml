@@ -1,1 +1,1 @@
-let b = id in object (id) val id' = id ; method m = b +id ; end
+let b = id in object (self) val id' = id ; method m = b +id ; end

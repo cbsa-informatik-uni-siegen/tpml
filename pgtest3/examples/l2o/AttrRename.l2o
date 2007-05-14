@@ -1,1 +1,1 @@
-(object (self) val a = 1 ; method get = self {< a = a +1 >} ; val a = a ; method add = a ; end) # add
+(object (self) val a = 1 ; method get = {< a = a +1 >} ; val b = a ; method add = a ; end) # add

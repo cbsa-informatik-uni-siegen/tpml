@@ -1,1 +1,1 @@
-let o = object (self) val a = 1 ; val b = 1 + 2 ; val add = a + b + 2 ; method dec x = x - a ; end # dec in o 5
+let o = (object (self) val a = 1 ; val b = 1 + 2 ; val add = a + b + 2 ; method dec x = x - a ; end) # dec in o 5
