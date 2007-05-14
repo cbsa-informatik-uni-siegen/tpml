@@ -81,15 +81,29 @@ public class DefaultSubTypingProofNode extends AbstractProofNode implements
 	public String toString ( ) {
 
 		final StringBuilder builder = new StringBuilder ( );
-		//builder.append ( "<html>" ); //$NON-NLS-1$
-		builder.append ( type );
-		builder.append ( " < " ); //$NON-NLS-1$
-		builder.append ( type2 );
-		builder.append (" ");
+		String result = "";
+		builder.append ( "<html>" ); //$NON-NLS-1$
+		//builder.append ( type );
+		//builder.append ( " <: " ); //$NON-NLS-1$
+		//builder.append ( type2 );
+		//builder.append (" ");
+		//if (this.getSteps ( ).length > 0)
+		//builder.append ( this.getSteps()[0].getRule ( ).toString ( ) );
+		result += type;
+		result = result.replaceAll ( "<", "&#60" );
+		builder.append(result);
+		result = "";
+		builder.append( "<b><font color=\"#FF0000\">");
+		builder.append( " &#60: ");
+		builder.append( "</font></b>" );
+		result += type2;
 		if (this.getSteps ( ).length > 0)
-		builder.append ( this.getSteps()[0].getRule ( ).toString ( ) );
-		//builder.append ( "</html>" ); //$NON-NLS-1$
+			result += this.getSteps()[0].getRule ( ).toString ( ) ;
+		result = result.replaceAll ( "<", "&#60" );
+		builder.append ( result );
+		builder.append ( "</html>" ); //$NON-NLS-1$
 		return builder.toString ( );
+		
 	}
 
 }

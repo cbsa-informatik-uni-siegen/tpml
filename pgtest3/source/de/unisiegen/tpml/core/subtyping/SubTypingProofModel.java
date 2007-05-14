@@ -293,6 +293,9 @@ public class SubTypingProofModel extends AbstractProofModel {
 			public void run ( ) {
 				node.setSteps ( new ProofStep[] { new ProofStep ( node.getType ( ),
 						node.getType2 ( ), rule ) } );
+				ProofRule[] rules = new ProofRule[1];
+				rules[0] = rule;
+				node.setRules ( rules );
 				nodeChanged ( node );
 			}
 		} );
@@ -300,6 +303,8 @@ public class SubTypingProofModel extends AbstractProofModel {
 		context.addUndoAction ( new Runnable ( ) {
 			public void run ( ) {
 				node.setSteps ( oldSteps );
+				ProofRule[] rules = null;
+				node.setRules ( rules );
 				nodeChanged ( node );
 			}
 		} );
