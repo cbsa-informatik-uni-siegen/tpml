@@ -280,7 +280,6 @@ public final class Identifier extends Value
   {
     if ( this.prefix == null )
     {
-      Identifier [ ] identifiers = null ;
       if ( this.parent != null )
       {
         for ( Class < Object > currentInterface : this.parent.getClass ( )
@@ -291,48 +290,39 @@ public final class Identifier extends Value
               || ( currentInterface
                   .equals ( de.unisiegen.tpml.core.interfaces.BoundIdentifiers.class ) ) )
           {
-            identifiers = getParentIdentifiers ( this.parent ) ;
-            boolean found = false ;
-            for ( Identifier id : identifiers )
+            for ( Identifier id : getParentIdentifiers ( this.parent ) )
             {
               if ( id == this )
               {
-                found = true ;
-                break ;
+                switch ( this.set )
+                {
+                  case VARIABLE :
+                  {
+                    this.prefix = PREFIX_ID ;
+                    return this.prefix ;
+                  }
+                  case ATTRIBUTE :
+                  {
+                    this.prefix = PREFIX_ID_A ;
+                    return this.prefix ;
+                  }
+                  case MESSAGE :
+                  {
+                    this.prefix = PREFIX_ID_M ;
+                    return this.prefix ;
+                  }
+                  case SELF :
+                  {
+                    this.prefix = PREFIX_ID_S ;
+                    return this.prefix ;
+                  }
+                }
               }
             }
-            if ( found )
-            {
-              break ;
-            }
-            this.prefix = super.getPrefix ( ) ;
-            return this.prefix ;
           }
         }
       }
-      switch ( this.set )
-      {
-        case VARIABLE :
-        {
-          this.prefix = PREFIX_ID ;
-          break ;
-        }
-        case ATTRIBUTE :
-        {
-          this.prefix = PREFIX_ID_A ;
-          break ;
-        }
-        case MESSAGE :
-        {
-          this.prefix = PREFIX_ID_M ;
-          break ;
-        }
-        case SELF :
-        {
-          this.prefix = PREFIX_ID_S ;
-          break ;
-        }
-      }
+      this.prefix = PREFIX_VALUE ;
     }
     return this.prefix ;
   }
