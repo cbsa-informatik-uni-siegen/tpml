@@ -1,27 +1,105 @@
 import de.unisiegen.tpml.core.types.*;
+import de.unisiegen.tpml.core.expressions.*;
+import java.util.ArrayList;
+import de.unisiegen.tpml.core.exceptions.LanguageParserMultiException;
+import de.unisiegen.tpml.core.languages.LanguageParserException;
+import de.unisiegen.tpml.core.Messages ;
+import java.text.MessageFormat;
+
+
+/* Helper classes */
+action code 
+{:
+  private static class Duplicated
+  {
+    public static void check(RowType pRowType)
+    {
+	  ArrayList <Identifier> negativeIdentifiers = new ArrayList <Identifier> ();
+	  Identifier [] identifier = pRowType.getIdentifiers() ;
+      for ( int i = 0 ; i < identifier.length ; i ++ )
+      {
+        negativeIdentifiers.clear();
+        for ( int j = i+1 ; j < identifier.length ; j++ )
+        {
+          if ( identifier [i].equals(identifier[j]) )
+    	  {
+  	        negativeIdentifiers.add(identifier[j]);
+    	  }
+    	}
+    	negativeIdentifiers.add ( identifier [i] ) ;
+    	LanguageParserMultiException.throwExceptionRowType ( negativeIdentifiers ) ;
+      }
+    }
+  }
+  
+  private static class Error
+  {
+    public static void expect(String ... pTokenSequence)
+    {
+      expect (0, 0, pTokenSequence);
+    }
+    
+    public static void expect(int pLeft, int pRight , String ... pTokenSequence)
+    {
+      String or = Messages.getString ( "Parser.15" ) ;
+      String result = "" ;
+      for ( int i = 0; i < pTokenSequence.length ; i++)
+      {
+        if ( i == 0 )
+        {
+          result += "\"" + pTokenSequence [i] + "\"" ;
+        }
+        else if ( i == pTokenSequence.length - 1 )
+        {
+          result += " " + or + " \"" + pTokenSequence [i]+ "\"";
+        }
+        else
+        {
+          result += ", \"" + pTokenSequence [i]+ "\"";
+        }
+      }
+      throw new LanguageParserException (  
+        MessageFormat.format ( "<html>" + Messages.getString ( "Parser.14" ) + "</html>", 
+          result ) , pLeft, pRight);
+    }
+  }
+:}
+
 
 /* Syntactic tokens */
-terminal			ARROW, STAR;
+terminal			ARROW;
 terminal			LPAREN, RPAREN;
+terminal			STAR;
 
 /* Types */
-terminal			BOOL, INT, UNIT, LIST, REF;
+terminal			BOOL, INT, UNIT;
+terminal			LIST;
+terminal			REF;
 
 /* Special tokens */
 terminal Integer	TYPEVARIABLE;
 
+/* Non terminals */
+non terminal MonoType				type;
+non terminal MonoType				simple_type;
+non terminal BooleanType			boolean_type;
+non terminal IntegerType			integer_type;
+non terminal UnitType				unit_type;
+non terminal TypeVariable			type_variable;
+non terminal ArrowType				arrow_type;
+non terminal TupleType				tuple_type;
+non terminal ListType				list_type;
+non terminal MonoType[]				tuple_type_list;
+non terminal RefType				ref_type;
 
-/* Non-Terminals */
-non terminal MonoType		type;
-non terminal MonoType		simple_type;
-non terminal MonoType[]		type_star_list;		/* list of types separated by star */
-
+/* Error non terminals */
+non terminal 		simple_type_error;
+non terminal 		arrow_type_error;
+non terminal		tuple_type_list_error;
 
 /* Precedences, based on http://caml.inria.fr/pub/docs/manual-ocaml/manual015.html */
 precedence right	ARROW;
-
 precedence left		STAR;
-
 
 
 /*********
@@ -29,36 +107,88 @@ precedence left		STAR;
  *********/
 
 
-type				::=	simple_type:t
-						{: RESULT = t; :}
-					|	type:tau REF:r
-						{: RESULT = new RefType(tau, tauleft, rright); :}
-					|	type:t1 ARROW type:t2
-						{: RESULT = new ArrowType(t1, t2, t1left, t2right); :}
-					|	type_star_list:tl
-						{: RESULT = new TupleType(tl, tlleft, tlright); :}
-					|	type:t LIST:l
-						{: RESULT = new ListType(t, tleft, lright); :}
-					;
+type							::=	simple_type:t
+									{: RESULT = t; :}
+								|	arrow_type:a
+									{: RESULT = a; :}
+								|	tuple_type:t
+									{: RESULT = t; :}
+								|	list_type:l
+									{: RESULT = l; :}
+								|	ref_type:r
+									{: RESULT = r; :}
+								;
 
+simple_type						::=	LPAREN:l type:t RPAREN:r
+									{: RESULT = t; :}
+								|	LPAREN type simple_type_error
+									{: :}
+								|	boolean_type:b
+									{: RESULT = b; :}
+								|	integer_type:i
+									{: RESULT = i; :}
+								|	unit_type:u
+									{: RESULT = u; :}
+								|	type_variable:t
+									{: RESULT = t; :}
+								;
 
-simple_type			::=	LPAREN type:t RPAREN
-						{: RESULT = t; :}
-					|	BOOL:b
-						{: RESULT = new BooleanType(bleft, bright); :}
-					|	INT:i
-						{: RESULT = new IntegerType(ileft, iright); :}
-					|	UNIT:u
-						{: RESULT = new UnitType(uleft, uright); :}
-					|	TYPEVARIABLE:tvar
-						{: RESULT = new TypeVariable(0, tvar, tvarleft, tvarright); :}
-					;
+simple_type_error				::= /* epsilon */
+									{: Error.expect(")"); :}
+								;
 
+arrow_type						::= type:t1 ARROW type:t2
+									{: RESULT = new ArrowType(t1, t2, t1left, t2right); :}
+								|	type ARROW arrow_type_error
+									{: :}
+								;
 
-type_star_list		::= type_star_list:tl STAR type:t
-						{: RESULT = new MonoType[tl.length + 1];
-						   System.arraycopy(tl, 0, RESULT, 0, tl.length);
-						   RESULT[tl.length] = t; :}
-					|	type:t1 STAR type:t2
-						{: RESULT = new MonoType[] { t1, t2 }; :}
-					;
+arrow_type_error				::= /* epsilon */
+									{: Error.expect("\u03C4<sub>2</sub>"); :}
+								;
+
+boolean_type					::= BOOL:b
+									{: RESULT = new BooleanType(bleft, bright); :}
+								;
+
+integer_type					::= INT:i
+									{: RESULT = new IntegerType(ileft, iright); :}
+								;
+
+unit_type						::= UNIT:u
+									{: RESULT = new UnitType(uleft, uright); :}
+								;
+
+type_variable					::= TYPEVARIABLE:t
+									{: RESULT = new TypeVariable(0, t, tleft, tright); :}
+								;
+
+tuple_type						::= tuple_type_list:t
+									{: RESULT = new TupleType(t, tleft, tright); :}
+								;
+
+list_type						::=	type:t LIST:l
+									{: RESULT = new ListType(t, tleft, lright); :}
+								;
+
+ref_type						::=	type:t REF
+									{: RESULT = new RefType(t); :}
+								;
+
+tuple_type_list					::= tuple_type_list:tl STAR type:t
+									{:
+									   RESULT = new MonoType[tl.length + 1];
+									   System.arraycopy(tl, 0, RESULT, 0, tl.length);
+									   RESULT[tl.length] = t;
+									:}
+								|	type:t1 STAR type:t2
+									{: RESULT = new MonoType[] { t1, t2 }; :}
+								|	tuple_type_list STAR tuple_type_list_error
+									{: :}
+								|	type STAR tuple_type_list_error
+									{: :}
+								;
+
+tuple_type_list_error			::= /* epsilon */
+									{: Error.expect("\u03C4"); :}
+								;

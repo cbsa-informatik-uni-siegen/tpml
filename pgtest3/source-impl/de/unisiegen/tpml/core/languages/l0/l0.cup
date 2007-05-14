@@ -1,50 +1,236 @@
 import de.unisiegen.tpml.core.expressions.*;
+import de.unisiegen.tpml.core.types.*;
+import de.unisiegen.tpml.core.exceptions.LanguageParserMultiException;
+import de.unisiegen.tpml.core.languages.LanguageParserException;
+import de.unisiegen.tpml.core.Messages ;
+import java.text.MessageFormat;
+import java.util.ArrayList;
+
+
+/* Helper classes */
+action code 
+{:
+  private static class IdTypePair 
+  {
+    Identifier id;
+    MonoType type;
+    
+    public IdTypePair(Identifier pId, MonoType pType) 
+    { 
+      this.id = pId;
+      this.type = pType; 
+    }
+  }
+  
+  private static class IdExprPair 
+  {
+    Identifier id;
+    Expression expression;
+    
+    public IdExprPair(Identifier pId, Expression pExpression)
+    { 
+      this.id = pId; 
+      this.expression = pExpression;
+    }
+  }
+ 
+  private static class Error
+  {
+    public static void expect(String pSymbol, String ... pTokenSequence)
+    {
+      expect (0, 0, pSymbol, pTokenSequence);
+    }
+    
+    public static void expect(int pLeft, int pRight, String pSymbol, String ... pTokenSequence)
+    {
+      String or = Messages.getString ( "Parser.15" ) ;
+      String result = "" ;
+      for ( int i = 0; i < pTokenSequence.length ; i++)
+      {
+        if ( i == 0 )
+        {
+          result += "\"" + pTokenSequence [i] + "\"" ;
+        }
+        else if ( i == pTokenSequence.length - 1 )
+        {
+          result += " " + or + " \"" + pTokenSequence [i]+ "\"";
+        }
+        else
+        {
+          result += ", \"" + pTokenSequence [i]+ "\"";
+        }
+      }
+      throw new LanguageParserException (  
+        MessageFormat.format ( "<html>" + Messages.getString ( "Parser.14" ) + "</html>", 
+          result, pSymbol), pLeft, pRight);
+    }
+  }
+  
+  private static class Duplicated
+  {
+    public static void check(Row pRow)
+    {
+	  ArrayList <Identifier> negativeIdentifiers = new ArrayList <Identifier> ();
+	  Expression [ ] rowExpressions = pRow.getExpressions ( ) ;
+      for ( int i = 0 ; i < rowExpressions.length ; i ++ )
+      {
+        if ( rowExpressions[i] instanceof Attribute )
+        {
+          negativeIdentifiers.clear();
+          Attribute attribute1 = (Attribute) rowExpressions[i] ;
+          for ( int j = i+1 ; j < rowExpressions.length ; j++ )
+          {
+            if ( rowExpressions[j] instanceof Attribute )
+    	    {
+    	      Attribute attribute2 = (Attribute) rowExpressions[j] ;
+    	      if ( attribute1.getId().equals(attribute2.getId()))
+    	      {
+    	        negativeIdentifiers.add(attribute2.getId());
+    	      }
+    	    }
+    	  }
+    	  negativeIdentifiers.add ( attribute1.getId() ) ;
+    	  LanguageParserMultiException.throwExceptionRow ( negativeIdentifiers ) ;
+        }
+      }
+    }
+    
+    
+    public static void check(Duplication pDuplication)
+    {
+	  ArrayList <Identifier> negativeIdentifiers = new ArrayList <Identifier> ();
+	  Identifier [] identifier = pDuplication.getIdentifiers() ;
+      for ( int i = 0 ; i < identifier.length ; i ++ )
+      {
+        negativeIdentifiers.clear();
+        for ( int j = i+1 ; j < identifier.length ; j++ )
+        {
+          if ( identifier [i].equals(identifier[j]) )
+    	  {
+  	        negativeIdentifiers.add(identifier[j]);
+    	  }
+    	}
+    	negativeIdentifiers.add ( identifier [i] ) ;
+    	LanguageParserMultiException.throwExceptionDuplication ( negativeIdentifiers ) ;
+      }
+    }
+    
+    
+    public static void check(RowType pRowType)
+    {
+	  ArrayList <Identifier> negativeIdentifiers = new ArrayList <Identifier> ();
+	  Identifier [] identifier = pRowType.getIdentifiers() ;
+      for ( int i = 0 ; i < identifier.length ; i ++ )
+      {
+        negativeIdentifiers.clear();
+        for ( int j = i+1 ; j < identifier.length ; j++ )
+        {
+          if ( identifier [i].equals(identifier[j]) )
+    	  {
+  	        negativeIdentifiers.add(identifier[j]);
+    	  }
+    	}
+    	negativeIdentifiers.add ( identifier [i] ) ;
+    	LanguageParserMultiException.throwExceptionRowType ( negativeIdentifiers ) ;
+      }
+    }
+  }
+:}
 
 
 /* Syntactic tokens */
-terminal		DOT;
-terminal		LPAREN;
-terminal		RPAREN;
-terminal		LAMBDA;
-terminal String	IDENTIFIER;
+terminal			DOT;
+terminal			LPAREN;
+terminal			RPAREN;
+
+/* Keywords */
+terminal			LAMBDA;
 
 /* Special tokens */
-terminal		COMMENT;
+terminal String		IDENTIFIER;
+terminal			COMMENT;
+
+/* Expression non terminals */
+non terminal Expression				expr;
+non terminal Expression				simple_expr;
+non terminal Expression[]			simple_expr_list;
+non terminal Identifier				identifier;
+non terminal Expression				application;
+non terminal Lambda					lambda;
+
+/* Error non terminals */
+non terminal 		lambda_error;
+non terminal 		simple_expr_error_1;
+non terminal 		simple_expr_error_2;
+
+				
+/***************
+ * Expressions *
+ ***************/
 
 
-/* Non-Terminals */
-non terminal Expression		expr;
-non terminal Expression		simple_expr;
-non terminal Expression[]	simple_expr_list;
+expr							::=	simple_expr:e
+									{: RESULT = e; :}
+								|   application:a
+									{: RESULT = a; :}
+								|	lambda:l
+									{: RESULT = l; :}
+								;
 
+identifier						::= IDENTIFIER:id
+									{: RESULT = new Identifier (id,idleft,idright); :}
+								;
 
-expr				::=	simple_expr:e
-						{: RESULT = e; :}
-					|	simple_expr:e simple_expr_list:l
-						{: for (int n = 0; n < l.length; ++n) 
-						   {
-						     e = new Application(e, l[n],
-						       e.getParserStartOffset ( ) , 
-						       l[n].getParserEndOffset ( ) );
-						   }
-						   RESULT = e; :}
-					|	LAMBDA:l IDENTIFIER:id DOT expr:e
-						{: RESULT = new Lambda(new Identifier (id,idleft,idright), null, e, lleft, eright); :}
-					;
-		
-		
-simple_expr			::=	IDENTIFIER:id
-						{: RESULT = new Identifier (id,idleft,idright); :}
-					|	LPAREN expr:e RPAREN
-						{: RESULT = e; :}
-					;
-			
-			
-/* for applications */
-simple_expr_list	::=	simple_expr:e
-						{: RESULT = new Expression[] { e }; :}
-					|	simple_expr_list:l simple_expr:e
-						{: RESULT = new Expression[l.length + 1];
-						   System.arraycopy(l, 0, RESULT, 0, l.length);
-						   RESULT[l.length] = e; :}
-					;
+application						::= simple_expr:e simple_expr_list:l
+									{:
+									   for (int n = 0; n < l.length; ++n) 
+						  			   {
+						    			 e = new Application(e, l[n],
+						      			   e.getParserStartOffset ( ) , 
+						       				 l[n].getParserEndOffset ( ) );
+						   			   }
+						   			   RESULT = e; 
+						   			:}
+								;
+
+lambda							::= LAMBDA:l IDENTIFIER:id DOT expr:e
+									{: RESULT = new Lambda(new Identifier (id,idleft,idright), null, e, lleft, eright); :}
+								|	LAMBDA lambda_error
+									{: :}
+								;
+
+lambda_error					::= /* epsilon */
+									{: Error.expect("Lambda", "id.e" ); :}
+								|	IDENTIFIER
+									{: Error.expect("Lambda", ".e" ); :}
+								|	IDENTIFIER DOT
+									{: Error.expect("Lambda", "e" ); :}
+								;
+
+simple_expr						::=	identifier:id
+									{: RESULT = id; :}
+								|	LPAREN expr:e RPAREN
+									{: RESULT = e; :}
+								|	LPAREN expr simple_expr_error_1
+									{: :}
+								|	LPAREN simple_expr_error_2
+									{: :}
+								;
+
+simple_expr_error_1				::= /* epsilon */
+									{: Error.expect("Expression", ")"); :}
+								;
+
+simple_expr_error_2				::= /* epsilon */
+									{: Error.expect("Expression", "... )"); :}
+								;
+
+simple_expr_list				::=	simple_expr:e
+									{: RESULT = new Expression[] { e }; :}
+								|	simple_expr_list:l simple_expr:e
+									{:
+									   RESULT = new Expression[l.length + 1];
+									   System.arraycopy(l, 0, RESULT, 0, l.length);
+									   RESULT[l.length] = e;
+									:}
+								;

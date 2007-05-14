@@ -261,7 +261,7 @@
 			symbols="L4TypeTerminals"
 			interface="yes"
 			debug="no"
-			expect="0"
+			expect="1000000"
 			nonterms="no"
 			nopositions="no"
 			dump_grammar="no" />

@@ -80,13 +80,13 @@ terminal String		IDENTIFIER;
 /* Non terminals */
 non terminal MonoType				type;
 non terminal MonoType				simple_type;
-non terminal ObjectType				object_type;
-non terminal RowType				row_type;
 non terminal BooleanType			boolean_type;
 non terminal IntegerType			integer_type;
 non terminal UnitType				unit_type;
 non terminal TypeVariable			type_variable;
 non terminal ArrowType				arrow_type;
+non terminal ObjectType				object_type;
+non terminal RowType				row_type;
 
 /* Error non terminals */
 non terminal 		simple_type_error;
