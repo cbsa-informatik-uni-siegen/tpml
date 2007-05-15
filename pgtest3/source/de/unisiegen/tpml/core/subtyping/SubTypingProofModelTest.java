@@ -29,9 +29,9 @@ import de.unisiegen.tpml.core.languages.LanguageTypeParser;
 import de.unisiegen.tpml.core.types.MonoType;
 
 public class SubTypingProofModelTest extends JFrame {
-	private static final String TYPE = "<add: int; sub:<test:bool; test2:int;>; attr:bool;>";
+	private static final String TYPE = "<a: <b:int;>; c:bool;>";
 
-	private static final String TYPE2 = "<sub:<test:bool; test2:int;>; add:int;>";
+	private static final String TYPE2 = "<a:<>;>";
 
 	ProofRule choosen = null;
 

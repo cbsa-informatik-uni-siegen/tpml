@@ -23,7 +23,7 @@ public class L4SubTypingProofRuleSet extends L3SubTypingProofRuleSet {
 		super ( language );
 
     // register the type rules
-		registerByMethodName ( L1Language.L1, "REF", "applyRef" ); //$NON-NLS-1$ //$NON-NLS-2$
+		registerByMethodName ( L4Language.L4, "REF", "applyRef" ); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 	
   /**

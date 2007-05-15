@@ -30,8 +30,8 @@ public class L3SubTypingProofRuleSet extends L2SubTypingProofRuleSet {
 		super ( language );
     
 		// register the type rules
-		registerByMethodName ( L1Language.L1, "PODUCT", "applyProduct" ); //$NON-NLS-1$ //$NON-NLS-2$
-		registerByMethodName ( L1Language.L1, "LIST", "applyList" ); //$NON-NLS-1$ //$NON-NLS-2$
+		registerByMethodName ( L3Language.L3, "PODUCT", "applyProduct" ); //$NON-NLS-1$ //$NON-NLS-2$
+		registerByMethodName ( L3Language.L3, "LIST", "applyList" ); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
   /**

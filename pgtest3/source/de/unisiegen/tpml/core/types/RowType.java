@@ -55,7 +55,7 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
   {
     if ( pIdentifiers == null )
     {
-      throw new NullPointerException ( "Identifiers is null" ) ; //$NON-NLS-1$
+    	throw new NullPointerException ( "Identifiers is null" ) ; //$NON-NLS-1$
     }
     if ( pTypes == null )
     {
