@@ -21,9 +21,9 @@ public final class OutlineUnbound
 
 
   /**
-   * TODO
+   * Initilizes the list with the given list.
    * 
-   * @param pList TODO
+   * @param pList The given list.
    */
   private OutlineUnbound ( ArrayList < Identifier > pList )
   {
@@ -32,7 +32,7 @@ public final class OutlineUnbound
 
 
   /**
-   * Initilizes the list and finds the unbound {@link Identifier}s.
+   * Initilizes the list.
    * 
    * @param pExpression The input {@link Expression}.
    */
@@ -55,10 +55,13 @@ public final class OutlineUnbound
 
 
   /**
-   * TODO
+   * Returns a reduces {@link OutlineUnbound}, which contains only the
+   * {@link Identifier}s which are present in the given {@link Expression}.
    * 
-   * @param pExpression TODO
-   * @return TODO
+   * @param pExpression The input {@link Expression}.
+   * @return A reduces {@link OutlineUnbound}, which contains only the
+   *         {@link Identifier}s which are present in the given
+   *         {@link Expression}.
    */
   public OutlineUnbound reduce ( Expression pExpression )
   {
@@ -75,7 +78,7 @@ public final class OutlineUnbound
       {
         result.remove ( i ) ;
         /*
-         * Happens if the unbound Identifiers are not in this node.
+         * Happens if the unbound Identifier is not in this node.
          */
       }
     }

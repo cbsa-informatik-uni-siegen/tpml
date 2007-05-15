@@ -144,13 +144,13 @@ public final class DefaultOutline implements Outline
 
 
   /**
-   * TODO
+   * The source code editor.
    */
   private TextEditorPanel textEditorPanel ;
 
 
   /**
-   * TODO
+   * the {@link OutlineItemListener}.
    */
   private OutlineItemListener outlineItemListener ;
 
@@ -158,7 +158,7 @@ public final class DefaultOutline implements Outline
   /**
    * Initilizes the {@link OutlinePreferences} and the {@link OutlineUI}.
    * 
-   * @param pBigStepView TODO
+   * @param pBigStepView The {@link BigStepView}.
    */
   public DefaultOutline ( BigStepView pBigStepView )
   {
@@ -245,7 +245,7 @@ public final class DefaultOutline implements Outline
   /**
    * Initilizes the {@link OutlinePreferences} and the {@link OutlineUI}.
    * 
-   * @param pSmallStepView TODO
+   * @param pSmallStepView {@link SmallStepView}.
    */
   public DefaultOutline ( SmallStepView pSmallStepView )
   {
@@ -335,7 +335,7 @@ public final class DefaultOutline implements Outline
   /**
    * Initilizes the {@link OutlinePreferences} and the {@link OutlineUI}.
    * 
-   * @param pSubTypingEnterTypes TODO
+   * @param pSubTypingEnterTypes The {@link SubTypingEnterTypes}.
    */
   public DefaultOutline ( @ SuppressWarnings ( "unused" )
   SubTypingEnterTypes pSubTypingEnterTypes )
@@ -410,7 +410,7 @@ public final class DefaultOutline implements Outline
   /**
    * Initilizes the {@link OutlinePreferences} and the {@link OutlineUI}.
    * 
-   * @param pTextEditorPanel TODO
+   * @param pTextEditorPanel The {@link TextEditorPanel}.
    */
   public DefaultOutline ( TextEditorPanel pTextEditorPanel )
   {
@@ -497,7 +497,7 @@ public final class DefaultOutline implements Outline
   /**
    * Initilizes the {@link OutlinePreferences} and the {@link OutlineUI}.
    * 
-   * @param pTypeCheckerView TODO
+   * @param pTypeCheckerView The {@link TypeCheckerView}.
    */
   public DefaultOutline ( TypeCheckerView pTypeCheckerView )
   {
@@ -935,10 +935,11 @@ public final class DefaultOutline implements Outline
 
 
   /**
-   * TODO
+   * Returns the array of {@link Identifier}s from the given {@link Expression}
+   * or {@link Type}.
    * 
-   * @param pInvokedFrom TODO
-   * @return TODO
+   * @param pInvokedFrom The {@link Expression} or {@link Type}.
+   * @return The array of {@link Identifier}s.
    */
   private final Identifier [ ] getIdentifiers ( Object pInvokedFrom )
   {
@@ -973,10 +974,11 @@ public final class DefaultOutline implements Outline
 
 
   /**
-   * TODO
+   * Returns the array of bound {@link Identifier}s from the given
+   * {@link Expression} or {@link Type}.
    * 
-   * @param pInvokedFrom TODO
-   * @return TODO
+   * @param pInvokedFrom The {@link Expression} or {@link Type}.
+   * @return The array of bound {@link Identifier}s.
    */
   @ SuppressWarnings ( "unchecked" )
   private final ArrayList < ArrayList < Identifier >> getIdentifiersBound (
@@ -1013,11 +1015,12 @@ public final class DefaultOutline implements Outline
 
 
   /**
-   * TODO
+   * Returns the array of indices from the given {@link Expression} or
+   * {@link Type}.
    * 
-   * @param pInvokedFrom TODO
-   * @param pMethod TODO
-   * @return TODO
+   * @param pInvokedFrom The {@link Expression} or {@link Type}.
+   * @param pMethod The name of the method which should be invoked.
+   * @return The array of indices.
    */
   private final int [ ] getIndex ( Object pInvokedFrom , String pMethod )
   {
@@ -1099,10 +1102,11 @@ public final class DefaultOutline implements Outline
 
 
   /**
-   * TODO
+   * Returns the array of the sorted children from the given {@link Expression}
+   * or {@link Type}.
    * 
-   * @param pInvokedFrom TODO
-   * @return TODO
+   * @param pInvokedFrom The {@link Expression} or {@link Type}.
+   * @return The array of the sorted children.
    */
   private final PrettyPrintable [ ] getSortedChildren ( Object pInvokedFrom )
   {
@@ -1149,10 +1153,11 @@ public final class DefaultOutline implements Outline
 
 
   /**
-   * TODO
+   * Returns the array of the types from the given {@link Expression} or
+   * {@link Type}.
    * 
-   * @param pInvokedFrom TODO
-   * @return TODO
+   * @param pInvokedFrom The {@link Expression} or {@link Type}.
+   * @return The array of the types.
    */
   private final MonoType [ ] getTypes ( Object pInvokedFrom )
   {
