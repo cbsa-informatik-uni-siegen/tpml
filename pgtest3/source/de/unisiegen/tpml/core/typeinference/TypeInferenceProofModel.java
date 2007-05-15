@@ -320,10 +320,15 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 
 			for ( TypeFormula formula : node.getAllFormulas ( ) ) {
 				if ( formula instanceof TypeJudgement ) {
+					try {
 					Expression expression = translateToCoreSyntaxInternal ( node,
-							( TypeJudgement ) formula, recursive );
+							( TypeJudgement ) formula, recursive, all );
 					newFormulas.add ( new TypeJudgement ( formula.getEnvironment ( ),
 							expression, formula.getType ( ) ) );
+					}
+					catch (IllegalStateException e){
+						//Nothing to do here
+					}
 				}
 			}
 			addUndoableTreeEdit ( new UndoableTreeEdit ( ) {
@@ -348,7 +353,7 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 						.getFirstFormula ( );
 				final Expression oldExpression = judgement.getExpression ( );
 				final Expression newExpression = translateToCoreSyntaxInternal ( node,
-						( TypeJudgement ) node.getFirstFormula ( ), recursive );
+						( TypeJudgement ) node.getFirstFormula ( ), recursive, all );
 
 				addUndoableTreeEdit ( new UndoableTreeEdit ( ) {
 
@@ -375,16 +380,16 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 	 * @see translateToCoreSyntax
 	 */
 	Expression translateToCoreSyntaxInternal ( TypeInferenceProofNode node,
-			TypeJudgement judgement, boolean recursive ) {
+			TypeJudgement judgement, boolean recursive, boolean all ) {
 
 		// verify that the node actually contains syntactic sugar
-		if ( !recursive ) {
+	
 			if ( !containsSyntacticSugar ( node, judgement.getExpression ( ),
 					recursive ) ) {
 				throw new IllegalArgumentException (
 						"node does not contain syntactic sugar" ); //$NON-NLS-1$
 			}
-		}
+	
 
 		// verify that no actions were performed on the node
 		if ( node.getSteps ( ).length > 0 ) {
