@@ -63,7 +63,7 @@ public class SmallStepView extends AbstractProofView
 
 
   /**
-   * TODO
+   * The {@link SmallStepProofModel}.
    */
   private SmallStepProofModel smallStepProofModel ;
 
@@ -176,7 +176,6 @@ public class SmallStepView extends AbstractProofView
   @ Override
   public void setAdvanced ( boolean advanced )
   {
-  	//TODO testAusgabe System.out.println("jetzt bekommt der Smallstepp-View den advaced-Wert: "+advanced);
     super.setAdvanced ( advanced ) ;
     this.component.setAdvanced ( isAdvanced ( ) ) ;
   }

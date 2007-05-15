@@ -61,7 +61,7 @@ public class TypeCheckerView extends AbstractProofView
 
 
   /**
-   * TODO
+   * The {@link TypeCheckerProofModel}.
    */
   private TypeCheckerProofModel typeCheckerProofModel ;
 

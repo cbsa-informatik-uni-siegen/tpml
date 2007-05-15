@@ -61,7 +61,7 @@ public class BigStepView extends AbstractProofView
 
 
   /**
-   * TODO
+   * The {@link BigStepProofModel}.
    */
   private BigStepProofModel bigStepProofModel ;
 
