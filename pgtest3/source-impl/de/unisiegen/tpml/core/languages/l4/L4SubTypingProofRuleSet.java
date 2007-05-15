@@ -8,10 +8,17 @@ import de.unisiegen.tpml.core.subtyping.SubTypingProofContext;
 import de.unisiegen.tpml.core.subtyping.SubTypingProofNode;
 import de.unisiegen.tpml.core.types.MonoType;
 import de.unisiegen.tpml.core.types.RefType;
-import de.unisiegen.tpml.core.types.TupleType;
 
 public class L4SubTypingProofRuleSet extends L3SubTypingProofRuleSet {
 
+  /**
+   * Allocates a new <code>L4SubTypingProofRuleSet</code> for the specified
+   * <code>language</code>.
+   * 
+   * @param language the <code>L4</code> or a derived language.
+   * @throws NullPointerException if <code>language</code> is
+   *           <code>null</code>.
+   */
 	public L4SubTypingProofRuleSet ( Language language ) {
 		super ( language );
 
@@ -19,6 +26,14 @@ public class L4SubTypingProofRuleSet extends L3SubTypingProofRuleSet {
 		registerByMethodName ( L1Language.L1, "REF", "applyRef" ); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 	
+  /**
+   * Applies the <b>(REF)</b> rule to the <code>node</code> using the
+   * <code>context</code>.
+   * 
+   * @param context the subtyping proof context.
+   * @param node the subtyping proof node.
+   * @throws SubTypingException throw Exception if rule can't be applied
+   */
 	public void applyRef ( SubTypingProofContext context,
 			SubTypingProofNode node ) throws SubTypingException {
 		RefType type;

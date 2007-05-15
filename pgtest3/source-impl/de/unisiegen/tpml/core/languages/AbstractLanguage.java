@@ -61,7 +61,7 @@ public abstract class AbstractLanguage implements Language
   /**
    * {@inheritDoc}
    * 
-   * @see de.unisiegen.tpml.core.languages.Language#newTypeInferenceProofModel(de.unisiegen.tpml.core.expressions.Expression)
+   * @see de.unisiegen.tpml.core.languages.Language#newSubTypingProofModel(de.unisiegen.tpml.core.expressions.Expression)
    */
   public SubTypingProofModel newSubTypingProofModel ( MonoType type, MonoType type2 )
   {

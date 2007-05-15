@@ -12,8 +12,22 @@ import de.unisiegen.tpml.core.types.MonoType;
 import de.unisiegen.tpml.core.types.ObjectType;
 import de.unisiegen.tpml.core.types.RowType;
 
+/**
+ * The type proof rules for the <code>L2O</code> language.
+ * 
+ * @author Benjamin Mies
+ * @see de.unisiegen.tpml.core.subtyping.AbstractSubTypingProofRuleSet
+ */
 public class L2OSubTypingProofRuleSet extends L2SubTypingProofRuleSet {
 
+  /**
+   * Allocates a new <code>L2OSubTypingProofRuleSet</code> for the specified
+   * <code>language</code>.
+   * 
+   * @param language the <code>L2O</code> or a derived language.
+   * @throws NullPointerException if <code>language</code> is
+   *           <code>null</code>.
+   */
 	public L2OSubTypingProofRuleSet ( Language language ) {
 		super ( language );
 		
@@ -23,6 +37,14 @@ public class L2OSubTypingProofRuleSet extends L2SubTypingProofRuleSet {
 		registerByMethodName ( L1Language.L1, "OBJECT-DEPTH", "applyObjectDepth" ); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
+  /**
+   * Applies the <b>(TRANS)</b> rule to the <code>node</code> using the
+   * <code>context</code>.
+   * 
+   * @param context the subtyping proof context.
+   * @param node the subtyping proof node.
+   * @throws SubTypingException throw Exception if rule can't be applied
+   */
 	public void applyTrans ( SubTypingProofContext context,
 			SubTypingProofNode node ) throws SubTypingException {
 		boolean goOn;
@@ -59,6 +81,14 @@ public class L2OSubTypingProofRuleSet extends L2SubTypingProofRuleSet {
 
 	}
 
+  /**
+   * Applies the <b>(OBJECT-WIDTH)</b> rule to the <code>node</code> using the
+   * <code>context</code>.
+   * 
+   * @param context the subtyping proof context.
+   * @param node the subtyping proof node.
+   * @throws SubTypingException throw Exception if rule can't be applied
+   */
 	public void applyObjectWidth ( SubTypingProofContext context,
 			SubTypingProofNode node ) throws SubTypingException {
 		boolean goOn;
@@ -98,13 +128,21 @@ public class L2OSubTypingProofRuleSet extends L2SubTypingProofRuleSet {
 
 	}
 
+  /**
+   * Applies the <b>(OBJECT-DEPTH)</b> rule to the <code>node</code> using the
+   * <code>context</code>.
+   * 
+   * @param context the subtyping proof context.
+   * @param node the subtyping proof node.
+   * @throws SubTypingException throw Exception if rule can't be applied
+   */
 	public void applyObjectDepth ( SubTypingProofContext context,
 			SubTypingProofNode node ) throws SubTypingException {
 		SubTypingProofNode parent = ( SubTypingProofNode ) node.getParent ( );
 		ProofRule[] rules = parent.getRules ( );
 
 		if ( rules != null )
-			if ( rules[0].toString ( ).equals ( "TRANS" ) )
+			if ( rules[0].toString ( ).equals ( "TRANS" ) ) //$NON-NLS-1$
 				throw new SubTypingException ( node );
 
 		boolean goOn;

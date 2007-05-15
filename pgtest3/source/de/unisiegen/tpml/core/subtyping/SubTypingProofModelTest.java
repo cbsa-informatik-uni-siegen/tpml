@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.core.subtyping;
+	package de.unisiegen.tpml.core.subtyping;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;

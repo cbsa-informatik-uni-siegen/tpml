@@ -10,8 +10,22 @@ import de.unisiegen.tpml.core.types.ListType;
 import de.unisiegen.tpml.core.types.MonoType;
 import de.unisiegen.tpml.core.types.TupleType;
 
+/**
+ * The type proof rules for the <code>L3</code> language.
+ * 
+ * @author Benjamin Mies
+ * @see de.unisiegen.tpml.core.subtyping.AbstractSubTypingProofRuleSet
+ */
 public class L3SubTypingProofRuleSet extends L2SubTypingProofRuleSet {
 
+  /**
+   * Allocates a new <code>L3SubTypingProofRuleSet</code> for the specified
+   * <code>language</code>.
+   * 
+   * @param language the <code>L3</code> or a derived language.
+   * @throws NullPointerException if <code>language</code> is
+   *           <code>null</code>.
+   */
 	public L3SubTypingProofRuleSet ( Language language ) {
 		super ( language );
     
@@ -20,6 +34,14 @@ public class L3SubTypingProofRuleSet extends L2SubTypingProofRuleSet {
 		registerByMethodName ( L1Language.L1, "LIST", "applyList" ); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
+  /**
+   * Applies the <b>(PRODUCT)</b> rule to the <code>node</code> using the
+   * <code>context</code>.
+   * 
+   * @param context the subtyping proof context.
+   * @param node the subtyping proof node.
+   * @throws SubTypingException throw Exception if rule can't be applied
+   */
 	public void applyProduct ( SubTypingProofContext context,
 			SubTypingProofNode node ) throws SubTypingException {
 		TupleType type;
@@ -39,6 +61,14 @@ public class L3SubTypingProofRuleSet extends L2SubTypingProofRuleSet {
 			throw new SubTypingException ( node );
 	}
 
+  /**
+   * Applies the <b>(LIST)</b> rule to the <code>node</code> using the
+   * <code>context</code>.
+   * 
+   * @param context the subtyping proof context.
+   * @param node the subtyping proof node.
+   * @throws SubTypingException throw Exception if rule can't be applied
+   */
 	public void applyList ( SubTypingProofContext context,
 			SubTypingProofNode node ) throws SubTypingException {
 		ListType type;

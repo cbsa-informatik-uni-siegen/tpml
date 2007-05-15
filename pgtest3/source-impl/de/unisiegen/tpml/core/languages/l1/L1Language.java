@@ -153,9 +153,9 @@ public class L1Language extends L0Language
   /**
    * {@inheritDoc}
    * 
-   * @see de.unisiegen.tpml.core.languages.AbstractLanguage#newTypeInferenceProofModel(de.unisiegen.tpml.core.expressions.Expression)
+   * @see de.unisiegen.tpml.core.languages.Language#newSubTypingProofModel(de.unisiegen.tpml.core.expressions.Expression)
    */
-  @ Override
+  @Override
   public SubTypingProofModel newSubTypingProofModel ( MonoType type, MonoType type2  )
   {
     return new SubTypingProofModel (type, type2, 

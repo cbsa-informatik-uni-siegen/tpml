@@ -8,8 +8,22 @@ import de.unisiegen.tpml.core.subtyping.SubTypingProofNode;
 import de.unisiegen.tpml.core.types.ArrowType;
 import de.unisiegen.tpml.core.types.MonoType;
 
+/**
+ * The type proof rules for the <code>L1</code> language.
+ * 
+ * @author Benjamin Mies
+ * @see de.unisiegen.tpml.core.subtyping.AbstractSubTypingProofRuleSet
+ */
 public class L1SubTypingProofRuleSet extends AbstractSubTypingProofRuleSet {
 
+  /**
+   * Allocates a new <code>L1SubTypingProofRuleSet</code> for the specified
+   * <code>language</code>.
+   * 
+   * @param language the <code>L1</code> or a derived language.
+   * @throws NullPointerException if <code>language</code> is
+   *           <code>null</code>.
+   */
 	public L1SubTypingProofRuleSet ( Language language ) {
 		super ( language );
 		
@@ -18,6 +32,14 @@ public class L1SubTypingProofRuleSet extends AbstractSubTypingProofRuleSet {
     registerByMethodName ( L1Language.L1 , "ARROW" , "applyArrow" ) ; //$NON-NLS-1$ //$NON-NLS-2$
 	}
 	
+  /**
+   * Applies the <b>(REFL)</b> rule to the <code>node</code> using the
+   * <code>context</code>.
+   * 
+   * @param context the subtyping proof context.
+   * @param node the subtyping proof node.
+   * @throws SubTypingException throw Exception if rule can't be applied
+   */
 	public void applyRefl ( SubTypingProofContext context ,
       SubTypingProofNode node ) throws SubTypingException{
 		MonoType type;
@@ -33,6 +55,14 @@ public class L1SubTypingProofRuleSet extends AbstractSubTypingProofRuleSet {
 		
 	}
 	
+  /**
+   * Applies the <b>(ARROW)</b> rule to the <code>node</code> using the
+   * <code>context</code>.
+   * 
+   * @param context the subtyping proof context.
+   * @param node the subtyping proof node.
+   * @throws SubTypingException throw Exception if rule can't be applied
+   */
 	public void applyArrow ( SubTypingProofContext context ,
       SubTypingProofNode node ) throws SubTypingException{
 		ArrowType type;

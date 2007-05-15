@@ -98,8 +98,34 @@ public interface Language {
    */
   public TypeCheckerProofModel newTypeCheckerProofModel(Expression expression);
   
+  /**
+   * Allocates a new {@link TypeInferenceProofModel} for the <code>expression</code> in this language, which
+   * is used to prove that <code>expression</code> is well-typed using the rules from this language.
+   * 
+   * @param expression the {@link Expression} for the type inference proof model.
+   * 
+   * @return the newly allocated type inference proof model.
+   * 
+   * @throws NullPointerException if <code>expression</code> is <code>null</code>.
+   * @throws UnsupportedOperationException if the language does not include a type system.
+   * 
+   * @see TypeInferenceProofModel
+   */
   public TypeInferenceProofModel newTypeInferenceProofModel(Expression expression);
   
+  /**
+   * Allocates a new {@link SubTypingProofModel} for the <code>expression</code> in this language, which
+   * is used to prove that <code>expression</code> is well-typed using the rules from this language.
+   * 
+   * @param expression the {@link Expression} for the subtyping proof model.
+   * 
+   * @return the newly allocated subtyping proof model.
+   * 
+   * @throws NullPointerException if <code>expression</code> is <code>null</code>.
+   * @throws UnsupportedOperationException if the language does not include a type system.
+   * 
+   * @see SubTypingProofModel
+   */
   public SubTypingProofModel newSubTypingProofModel(MonoType type, MonoType type2);
   
   /**
