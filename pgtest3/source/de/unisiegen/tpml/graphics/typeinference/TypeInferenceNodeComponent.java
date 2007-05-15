@@ -35,6 +35,7 @@ import de.unisiegen.tpml.core.typechecker.DefaultTypeSubstitution;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution;
 import de.unisiegen.tpml.core.typeinference.TypeFormula;
 import de.unisiegen.tpml.core.typeinference.TypeInferenceProofModel;
+import de.unisiegen.tpml.core.typeinference.TypeInferenceProofModelTest;
 import de.unisiegen.tpml.core.typeinference.TypeInferenceProofNode;
 import de.unisiegen.tpml.core.typeinference.TypeSubstitutionList;
 import de.unisiegen.tpml.graphics.Messages;
@@ -308,9 +309,9 @@ public class TypeInferenceNodeComponent extends JComponent {
 			@Override
 			public void mouseMoved (MouseEvent event) 
 			{
-			  System.out.println(" Event: "+event);
-        System.out.println("Typ: "+event.getSource());
-        System.out.println("Position "+event.getX() +", "+ event.getY());
+			  testAusgabe(" Event: "+event);
+        testAusgabe("Typ: "+event.getSource());
+        testAusgabe("Position "+event.getX() +", "+ event.getY());
 				
 				
 				if (event.getSource () instanceof TypeInferenceRuleLabel) {
@@ -354,10 +355,7 @@ public class TypeInferenceNodeComponent extends JComponent {
   {
     // let this component handle the event first
 	 super.processMouseEvent(e);
-    
-    System.out.println("HALLO");
-    
-
+	 
     try
     {
       // check if we have a next SmallStepProofNode
@@ -583,30 +581,118 @@ public class TypeInferenceNodeComponent extends JComponent {
 				});
 			}
 		}
-//		else if (item instanceof MenuTranslateItem) {
-//			int answer = 1;
-//			if (this.proofModel.containsSyntacticSugar(this.proofNode, false)) {
-//				String[] answers = { Messages.getString("NodeComponent.0"), Messages.getString("NodeComponent.1"), Messages.getString("NodeComponent.2") }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-//				answer = JOptionPane.showOptionDialog(getTopLevelAncestor(), Messages.getString("NodeComponent.3"), //$NON-NLS-1$
-//				    Messages.getString("NodeComponent.4"), //$NON-NLS-1$
-//				    JOptionPane.YES_NO_CANCEL_OPTION,
-//				    JOptionPane.QUESTION_MESSAGE,
-//				    null,
-//				    answers,
-//				    answers[0]);
-//			}
-//			switch (answer) {
-//			case 0:
-//				this.proofModel.translateToCoreSyntax(this.proofNode, false);
-//				break;
-//			case 1:
-//				this.proofModel.translateToCoreSyntax(this.proofNode, true);
-//				break;
-//			case 2:
-//				break;
-//			}
-//			fireNodeChanged();
-//		}
+		else if (item instanceof MenuTranslateItem) {
+			//TODO geht noch garnicht...
+			System.out.println("Kernsyntax übersetzen...");
+			int answer = 1;
+			//test if ther are more than one Expression
+			int count = 0;
+			for (int i = 0; i<proofNode.getAllFormulas().size(); i++)
+			{
+				if (proofNode.getAllFormulas().get(i).getExpression() != null)
+				{
+					count++;
+				}
+			}
+			int an = 1;
+			boolean all = false;
+			System.out.println("Anzahl der Ausdrücke: "+count);
+			if (count > 1)
+			{
+				System.out.println("mehrere Ausdrücke");
+				String[] a = { "Alle Ausdrücke", "Ersten Ausdruck", "Abbrechen" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				an = JOptionPane.showOptionDialog(getTopLevelAncestor(), "Möchten Sie alle vorhanden Ausdrücke oder nur den ersten Ausdruck übersetzen?", //$NON-NLS-1$
+				    Messages.getString("NodeComponent.4"), //$NON-NLS-1$
+				    JOptionPane.YES_NO_CANCEL_OPTION,
+				    JOptionPane.QUESTION_MESSAGE,
+				    null,
+				    a,
+				    a[0]);
+			}
+			if (an == 0)
+			{
+				all = true;
+			}
+			else if (an == 2)
+			{
+				return;
+			}
+			if (all)
+			{
+				try
+				{
+					if (this.proofNode == null)
+					{
+						System.out.println("Null!!!!");
+						return;
+					}
+					
+					this.proofModel.translateToCoreSyntax(this.proofNode
+							, true
+							, true
+							);
+					System.out.println("fertig!");
+				}
+				catch (IllegalArgumentException e)
+				{
+					System.out.println(e);
+				}
+			}
+			else
+			{
+//			runn through all Formulas
+				for (int i = 0; i<proofNode.getAllFormulas().size(); i++)
+				{
+					if (proofNode.getAllFormulas().get(i).getExpression() != null)
+					{
+						if (this.proofModel.containsSyntacticSugar(this.proofNode, proofNode.getAllFormulas().get(i).getExpression(), false)) 
+						{
+							String[] answers = { Messages.getString("NodeComponent.0"), Messages.getString("NodeComponent.1"), Messages.getString("NodeComponent.2") }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+							answer = JOptionPane.showOptionDialog(getTopLevelAncestor(), Messages.getString("NodeComponent.3"), //$NON-NLS-1$
+							    Messages.getString("NodeComponent.4"), //$NON-NLS-1$
+							    JOptionPane.YES_NO_CANCEL_OPTION,
+							    JOptionPane.QUESTION_MESSAGE,
+							    null,
+							    answers,
+							    answers[0]);
+							switch (answer) {
+								case 0:
+									try
+									{
+										this.proofModel.translateToCoreSyntax(this.proofNode, false, false);
+									}
+									catch ( IllegalArgumentException exp )
+									{
+										JOptionPane.showMessageDialog(getTopLevelAncestor(), exp.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+									}
+									break;
+								case 1:
+									try
+									{
+										this.proofModel.translateToCoreSyntax(this.proofNode, true, false);
+									}
+									catch ( IllegalArgumentException exp)
+									{
+										JOptionPane.showMessageDialog(getTopLevelAncestor(), exp.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+									}
+									
+									break;
+								case 2:
+									break;
+						}
+						
+						}
+					}
+				}
+				
+			}
+			
+			
+			
+			//this.proofModel.co
+			//this.proofModel.translateToCoreSyntax(this.proofNode, true, true);
+			fireNodeChanged();
+		}
 	}
 	
 	/**

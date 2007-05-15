@@ -137,7 +137,7 @@ public class TypeInferenceComponent extends AbstractProofComponent implements Sc
 		// check if we have a new setting
 		if (this.advanced != advanced) 
 		{
-			System.out.println("TypeinferencComponent bekommt nun den Wahrheitswert: "+advanced);
+       //TODO TestAusgabe System.out.println("TypeinferencComponent bekommt nun den Wahrheitswert: "+advanced);
 			// remember the new setting
 			this.advanced = advanced;
 			

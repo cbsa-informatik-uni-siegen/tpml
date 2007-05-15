@@ -108,7 +108,7 @@ public class TypeInferenceView extends AbstractProofView {
   @ Override
   public void setAdvanced ( boolean advanced )
   {
-  	System.out.println("jetzt bekommt der TypeInference-View den advaced-Wert: "+advanced);
+//  TODO testaugabe  System.out.println("jetzt bekommt der TypeInference-View den advaced-Wert: "+advanced);
     super.setAdvanced ( advanced ) ;
     this.component.setAdvanced ( isAdvanced ( ) ) ;
   }
