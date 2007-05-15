@@ -378,9 +378,12 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 			TypeJudgement judgement, boolean recursive ) {
 
 		// verify that the node actually contains syntactic sugar
-		if ( !containsSyntacticSugar ( node, judgement.getExpression ( ), recursive ) ) {
-			throw new IllegalArgumentException (
-					"node does not contain syntactic sugar" ); //$NON-NLS-1$
+		if ( !recursive ) {
+			if ( !containsSyntacticSugar ( node, judgement.getExpression ( ),
+					recursive ) ) {
+				throw new IllegalArgumentException (
+						"node does not contain syntactic sugar" ); //$NON-NLS-1$
+			}
 		}
 
 		// verify that no actions were performed on the node
