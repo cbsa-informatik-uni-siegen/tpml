@@ -1288,9 +1288,9 @@ row_type						::= IDENTIFIER:id COLON type:tau SEMI:s
 								;
 
 row_type_error					::= /* epsilon */
-									{: Error.expect("Row-Type", ": \u03C4 ; ... m<sub>n</sub>: \u03C4; >"); :}
+									{: Error.expect("Object-Type", ": \u03C4 ; ... m<sub>n</sub>: \u03C4; >"); :}
 								|	COLON
-									{: Error.expect("Row-Type", "\u03C4 ; ... m<sub>n</sub>: \u03C4; >"); :}
+									{: Error.expect("Object-Type", "\u03C4 ; ... m<sub>n</sub>: \u03C4; >"); :}
 								|	COLON type
-									{: Error.expect("Row-Type", "; ... m<sub>n</sub>: \u03C4; >"); :}
+									{: Error.expect("Object-Type", "; ... m<sub>n</sub>: \u03C4; >"); :}
 								;
