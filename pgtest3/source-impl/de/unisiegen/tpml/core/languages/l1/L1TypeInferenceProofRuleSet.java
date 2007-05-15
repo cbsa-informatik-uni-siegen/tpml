@@ -3,49 +3,49 @@
  */
 package de.unisiegen.tpml.core.languages.l1;
 
-import de.unisiegen.tpml.core.expressions.Application;
-import de.unisiegen.tpml.core.expressions.Expression;
-import de.unisiegen.tpml.core.expressions.InfixOperation;
-import de.unisiegen.tpml.core.expressions.Let;
 import de.unisiegen.tpml.core.languages.l2.L2Language;
-import de.unisiegen.tpml.core.typechecker.TypeCheckerProofContext;
-import de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode;
-import de.unisiegen.tpml.core.typeinference.DefaultTypeInferenceProofNode;
-import de.unisiegen.tpml.core.types.TypeVariable;
 
 /**
- * TODO
- *
+ * The type proof rules for the <code>L1</code> language.
+ * 
  * @author Benjamin Mies
- *
+ * @see de.unisiegen.tpml.core.typechecker.AbstractTypeCheckerProofRuleSet
  */
 public class L1TypeInferenceProofRuleSet extends L1TypeCheckerProofRuleSet{
 
+  /**
+	 * Allocates a new <code>L1TypeInferenceProofRuleSet</code> for the specified
+	 * <code>language</code>.
+	 * 
+	 * @param language the <code>L1</code> or a derived language.
+	 * @throws NullPointerException if <code>language</code> is
+	 *           <code>null</code>.
+	 */
 	public L1TypeInferenceProofRuleSet(L1Language language) {
 		super(language);
 		
 //		unregister the type rules
-	    unregister("ABSTR");
-	    unregister("AND");
-	    unregister("APP");
-	    unregister("COND");
-	    unregister("CONST");
-	    unregister("ID");
-	    unregister("LET");
-	    unregister("OR");
+	    unregister("ABSTR"); //$NON-NLS-1$
+	    unregister("AND"); //$NON-NLS-1$
+	    unregister("APP"); //$NON-NLS-1$
+	    unregister("COND"); //$NON-NLS-1$
+	    unregister("CONST"); //$NON-NLS-1$
+	    unregister("ID"); //$NON-NLS-1$
+	    unregister("LET"); //$NON-NLS-1$
+	    unregister("OR"); //$NON-NLS-1$
 		
 //		 register the additional type typeinferencerule
-	    registerByMethodName(L1Language.L1, "UNIFY", "applyUnify");
+	    registerByMethodName(L1Language.L1, "UNIFY", "applyUnify");  //$NON-NLS-1$//$NON-NLS-2$
 		
 //		 register the type rules
-	    registerByMethodName(L1Language.L1, "ABSTR", "applyAbstr");
-	    registerByMethodName(L2Language.L2, "AND", "applyAnd");
-	    registerByMethodName(L1Language.L1, "APP", "applyApp");
-	    registerByMethodName(L1Language.L1, "COND", "applyCond");
-	    registerByMethodName(L1Language.L1, "CONST", "applyConst");
-	    registerByMethodName(L1Language.L1, "ID", "applyId");
-	    registerByMethodName(L1Language.L1, "LET", "applyLet");
-	    registerByMethodName(L2Language.L2, "OR", "applyOr");
+	    registerByMethodName(L1Language.L1, "ABSTR", "applyAbstr");  //$NON-NLS-1$//$NON-NLS-2$ 
+	    registerByMethodName(L2Language.L2, "AND", "applyAnd"); //$NON-NLS-1$//$NON-NLS-2$
+	    registerByMethodName(L1Language.L1, "APP", "applyApp"); //$NON-NLS-1$//$NON-NLS-2$
+	    registerByMethodName(L1Language.L1, "COND", "applyCond"); //$NON-NLS-1$//$NON-NLS-2$
+	    registerByMethodName(L1Language.L1, "CONST", "applyConst"); //$NON-NLS-1$//$NON-NLS-2$
+	    registerByMethodName(L1Language.L1, "ID", "applyId"); //$NON-NLS-1$//$NON-NLS-2$
+	    registerByMethodName(L1Language.L1, "LET", "applyLet"); //$NON-NLS-1$//$NON-NLS-2$
+	    registerByMethodName(L2Language.L2, "OR", "applyOr"); //$NON-NLS-1$//$NON-NLS-2$
 	   
 		
 	}

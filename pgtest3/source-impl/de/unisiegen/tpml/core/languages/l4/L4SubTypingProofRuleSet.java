@@ -1,7 +1,6 @@
 package de.unisiegen.tpml.core.languages.l4;
 
 import de.unisiegen.tpml.core.languages.Language;
-import de.unisiegen.tpml.core.languages.l1.L1Language;
 import de.unisiegen.tpml.core.languages.l3.L3SubTypingProofRuleSet;
 import de.unisiegen.tpml.core.subtyping.SubTypingException;
 import de.unisiegen.tpml.core.subtyping.SubTypingProofContext;
@@ -9,6 +8,12 @@ import de.unisiegen.tpml.core.subtyping.SubTypingProofNode;
 import de.unisiegen.tpml.core.types.MonoType;
 import de.unisiegen.tpml.core.types.RefType;
 
+/**
+ * The subtype proof rules for the <code>L4</code> language.
+ * 
+ * @author Benjamin Mies
+ * @see de.unisiegen.tpml.core.subtyping.AbstractSubTypingProofRuleSet
+ */
 public class L4SubTypingProofRuleSet extends L3SubTypingProofRuleSet {
 
   /**
