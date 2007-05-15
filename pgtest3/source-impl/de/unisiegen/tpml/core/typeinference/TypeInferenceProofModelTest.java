@@ -47,14 +47,14 @@ public final class TypeInferenceProofModelTest extends JFrame {
    * Simple test expression.
    */
   //private static final String SIMPLE = "(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30)";
-	private static final String SIMPLE = "lambda f:'a->'b. lambda x.f (f x)";
+	private static final String SIMPLE = "let  f f = let  f f = f in f in let  f f = f in f";
 	//private static final String SIMPLE = "[1;2;3]";
 
 	  private JScrollPane jScrollPane ;
 	    ProofRule choosen=null;
 //	private TypeCheckerProofModel typechecker;
   
-  //
+  //lambda f:'a->'b. lambda x.f (f x
   // Constructor
   //
   
@@ -248,7 +248,7 @@ public final class TypeInferenceProofModelTest extends JFrame {
           // translate the last node
           TreePath path = tree.getSelectionPath();
            {
-            model.translateToCoreSyntax((TypeInferenceProofNode)nextNode(model), true, false);
+            model.translateToCoreSyntax((TypeInferenceProofNode)nextNode(model), true, true);
           }
         }
         catch (Exception e) {
@@ -300,7 +300,7 @@ public final class TypeInferenceProofModelTest extends JFrame {
     try {
       // parse the program (using L4)
       LanguageFactory factory = LanguageFactory.newInstance();
-      Language language = factory.getLanguageById("l1");
+      Language language = factory.getLanguageById("l4");
       Expression expression = language.newParser(new StringReader(SIMPLE)).parse();
       TypeInferenceProofModel model = language.newTypeInferenceProofModel(expression);
       

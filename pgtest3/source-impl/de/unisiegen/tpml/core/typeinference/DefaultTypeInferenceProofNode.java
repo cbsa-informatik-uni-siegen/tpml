@@ -346,7 +346,6 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
 	}
 
 	public void setFormula ( ArrayList < TypeFormula > formula ) {
-		System.out.println ( formula.toString ( ) );
 		this.formula = formula;
 	}
 }
