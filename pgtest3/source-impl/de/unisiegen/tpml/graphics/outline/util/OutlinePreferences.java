@@ -77,6 +77,16 @@ public final class OutlinePreferences
 
 
   /**
+   * The highlight source code value. The source code should be highlighted if
+   * the user selects a node in the {@link Outline}.
+   * 
+   * @see #isHighlightSourceCode()
+   * @see #setHighlightSourceCode(boolean)
+   */
+  private boolean highlightSourceCode ;
+
+
+  /**
    * The <code>Preferences</code>.
    */
   private Preferences preferences ;
@@ -103,6 +113,8 @@ public final class OutlinePreferences
     this.binding = this.preferences.getBoolean ( OutlineUI.BINDING , true ) ;
     this.free = this.preferences.getBoolean ( OutlineUI.FREE , true ) ;
     this.selection = this.preferences.getBoolean ( OutlineUI.SELECTION , true ) ;
+    this.highlightSourceCode = this.preferences.getBoolean (
+        OutlineUI.HIGHLIGHTSOURCECODE , true ) ;
     this.autoUpdate = this.preferences
         .getBoolean ( OutlineUI.AUTOUPDATE , true ) ;
     this.dividerLocation = this.preferences.getInt ( DIVIDERLOCATION , 300 ) ;
@@ -168,6 +180,21 @@ public final class OutlinePreferences
   public final boolean isFree ( )
   {
     return this.free ;
+  }
+
+
+  /**
+   * Return true, if the highlight source code of the {@link Outline} is
+   * enabled, otherwise false.
+   * 
+   * @return True, if the highlight source code of the {@link Outline} is
+   *         enabled, otherwise false.
+   * @see #highlightSourceCode
+   * @see #setHighlightSourceCode (boolean)
+   */
+  public final boolean isHighlightSourceCode ( )
+  {
+    return this.highlightSourceCode ;
   }
 
 
@@ -261,6 +288,22 @@ public final class OutlinePreferences
   {
     this.free = pFree ;
     this.preferences.putBoolean ( OutlineUI.FREE , pFree ) ;
+  }
+
+
+  /**
+   * Set the highlight source code value and writes the value to the
+   * <code>Preferences</code>.
+   * 
+   * @param pHighlightSourceCode The highlight source code value.
+   * @see #highlightSourceCode
+   * @see #isHighlightSourceCode()
+   */
+  public final void setHighlightSourceCode ( boolean pHighlightSourceCode )
+  {
+    this.highlightSourceCode = pHighlightSourceCode ;
+    this.preferences.putBoolean ( OutlineUI.HIGHLIGHTSOURCECODE ,
+        pHighlightSourceCode ) ;
   }
 
 

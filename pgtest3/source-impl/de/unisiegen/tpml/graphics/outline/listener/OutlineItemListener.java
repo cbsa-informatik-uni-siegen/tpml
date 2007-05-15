@@ -97,6 +97,25 @@ public final class OutlineItemListener implements ItemListener
 
 
   /**
+   * This method updates the <code>JCheckBox</code> selection and the
+   * <code>JCheckBoxMenuItem</code> selection.
+   * 
+   * @param pSelected The selection of the <code>JCheckBox</code> selection or
+   *          the <code>JCheckBoxMenuItem</code> selection.
+   */
+  private final void highlightSourceCode ( boolean pSelected )
+  {
+    this.defaultOutline.updateHighlighSourceCode ( ) ;
+    this.defaultOutline.getOutlinePreferences ( ).setHighlightSourceCode (
+        pSelected ) ;
+    this.defaultOutline.getOutlineUI ( ).getJCheckBoxHighlightSourceCode ( )
+        .setSelected ( pSelected ) ;
+    this.defaultOutline.getOutlineUI ( ).getJMenuItemHighlightSourceCode ( )
+        .setSelected ( pSelected ) ;
+  }
+
+
+  /**
    * This method is invoked if a item state has changed.
    * 
    * @param pItemEvent The <code>ItemEvent</code>.
@@ -195,6 +214,13 @@ public final class OutlineItemListener implements ItemListener
             .getOutlineUI ( ).getJCheckBoxSelection ( ) ) ) ) )
     {
       selection ( pSelected ) ;
+    }
+    // HighlightSourceCode
+    else if ( ( OutlineUI.HIGHLIGHTSOURCECODE.equals ( pActionCommand ) )
+        || ( ( pSource != null ) && ( pSource.equals ( this.defaultOutline
+            .getOutlineUI ( ).getJCheckBoxHighlightSourceCode ( ) ) ) ) )
+    {
+      highlightSourceCode ( pSelected ) ;
     }
     // AutoUpdate
     else if ( ( OutlineUI.AUTOUPDATE.equals ( pActionCommand ) )

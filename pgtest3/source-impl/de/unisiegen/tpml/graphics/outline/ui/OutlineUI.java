@@ -141,6 +141,13 @@ public final class OutlineUI
 
 
   /**
+   * The <code>String</code> highlightSourceCode, used for the
+   * <code>ActionCommand</code> and the <code>ResourceBundle</code>.
+   */
+  public static final String HIGHLIGHTSOURCECODE = "highlightSourceCode" ; //$NON-NLS-1$
+
+
+  /**
    * The mnemonic <code>String</code>.
    */
   private static final String MNEMONIC = "Mnemonic" ; //$NON-NLS-1$
@@ -245,6 +252,14 @@ public final class OutlineUI
 
 
   /**
+   * The <code>JCheckBox</code> highlight source code.
+   * 
+   * @see #getJCheckBoxHighlightSourceCode()
+   */
+  private JCheckBox jCheckBoxHighlightSourceCode ;
+
+
+  /**
    * The <code>JCheckBox</code> auto update.
    * 
    * @see #getJCheckBoxFree()
@@ -345,6 +360,14 @@ public final class OutlineUI
 
 
   /**
+   * The <code>JCheckBoxMenuItem</code> highlight source code.
+   * 
+   * @see #getJCheckBoxHighlightSourceCode()
+   */
+  private JCheckBoxMenuItem jMenuItemHighlightSourceCode ;
+
+
+  /**
    * The <code>JCheckBoxMenuItem</code> auto update.
    * 
    * @see #getJCheckBoxAutoUpdate()
@@ -392,144 +415,6 @@ public final class OutlineUI
     this.insets = new Insets ( 0 , 0 , 0 , 0 ) ;
     // Preferences
     this.resourceBundle = ResourceBundle.getBundle ( RESOURCE ) ;
-    // PopupMenu
-    createPopupMenu ( ) ;
-    // Layout
-    this.gridBagLayout = new GridBagLayout ( ) ;
-    this.gridBagConstraints = new GridBagConstraints ( ) ;
-    // Panel Preferences
-    this.jPanelPreferences = new JPanel ( ) ;
-    this.jPanelPreferences.setLayout ( this.gridBagLayout ) ;
-    // CheckBox Selection
-    this.jCheckBoxSelection = new JCheckBox ( this.resourceBundle
-        .getString ( SELECTION ) ) ;
-    this.jCheckBoxSelection.setMnemonic ( this.resourceBundle.getString (
-        SELECTION + MNEMONIC ).charAt ( 0 ) ) ;
-    this.jCheckBoxSelection.setToolTipText ( this.resourceBundle
-        .getString ( SELECTION + TOOLTIP ) ) ;
-    this.jCheckBoxSelection.setSelected ( this.defaultOutline
-        .getOutlinePreferences ( ).isSelection ( ) ) ;
-    this.jCheckBoxSelection.setFocusable ( false ) ;
-    this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
-    this.insets.set ( 0 , 4 , 0 , 4 ) ;
-    this.gridBagConstraints.insets = this.insets ;
-    this.gridBagConstraints.gridx = 0 ;
-    this.gridBagConstraints.gridy = 0 ;
-    this.gridBagConstraints.weightx = 0 ;
-    this.gridBagConstraints.weighty = 10 ;
-    this.jPanelPreferences.add ( this.jCheckBoxSelection ,
-        this.gridBagConstraints ) ;
-    // CheckBox Binding
-    this.jCheckBoxBinding = new JCheckBox ( this.resourceBundle
-        .getString ( BINDING ) ) ;
-    this.jCheckBoxBinding.setMnemonic ( this.resourceBundle.getString (
-        BINDING + MNEMONIC ).charAt ( 0 ) ) ;
-    this.jCheckBoxBinding.setToolTipText ( this.resourceBundle
-        .getString ( BINDING + TOOLTIP ) ) ;
-    this.jCheckBoxBinding.setSelected ( this.defaultOutline
-        .getOutlinePreferences ( ).isBinding ( ) ) ;
-    this.jCheckBoxBinding.setFocusable ( false ) ;
-    this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
-    this.insets.set ( 0 , 4 , 0 , 4 ) ;
-    this.gridBagConstraints.insets = this.insets ;
-    this.gridBagConstraints.gridx = 1 ;
-    this.gridBagConstraints.gridy = 0 ;
-    this.gridBagConstraints.weightx = 0 ;
-    this.gridBagConstraints.weighty = 10 ;
-    this.jPanelPreferences.add ( this.jCheckBoxBinding ,
-        this.gridBagConstraints ) ;
-    // CheckBox Free
-    this.jCheckBoxFree = new JCheckBox ( this.resourceBundle.getString ( FREE ) ) ;
-    this.jCheckBoxFree.setMnemonic ( this.resourceBundle.getString (
-        FREE + MNEMONIC ).charAt ( 0 ) ) ;
-    this.jCheckBoxFree.setToolTipText ( this.resourceBundle.getString ( FREE
-        + TOOLTIP ) ) ;
-    this.jCheckBoxFree.setSelected ( this.defaultOutline
-        .getOutlinePreferences ( ).isFree ( ) ) ;
-    this.jCheckBoxFree.setFocusable ( false ) ;
-    this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
-    this.insets.set ( 0 , 4 , 0 , 4 ) ;
-    this.gridBagConstraints.insets = this.insets ;
-    this.gridBagConstraints.gridx = 2 ;
-    this.gridBagConstraints.gridy = 0 ;
-    this.gridBagConstraints.weightx = 0 ;
-    this.gridBagConstraints.weighty = 10 ;
-    this.jPanelPreferences.add ( this.jCheckBoxFree , this.gridBagConstraints ) ;
-    // CheckBox Replace
-    this.jCheckBoxReplace = new JCheckBox ( this.resourceBundle
-        .getString ( REPLACE ) ) ;
-    this.jCheckBoxReplace.setMnemonic ( this.resourceBundle.getString (
-        REPLACE + MNEMONIC ).charAt ( 0 ) ) ;
-    this.jCheckBoxReplace.setToolTipText ( this.resourceBundle
-        .getString ( REPLACE + TOOLTIP ) ) ;
-    this.jCheckBoxReplace.setSelected ( this.defaultOutline
-        .getOutlinePreferences ( ).isReplace ( ) ) ;
-    this.jCheckBoxReplace.setFocusable ( false ) ;
-    this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
-    this.insets.set ( 0 , 4 , 0 , 4 ) ;
-    this.gridBagConstraints.insets = this.insets ;
-    this.gridBagConstraints.gridx = 3 ;
-    this.gridBagConstraints.gridy = 0 ;
-    this.gridBagConstraints.weightx = 0 ;
-    this.gridBagConstraints.weighty = 10 ;
-    this.jPanelPreferences.add ( this.jCheckBoxReplace ,
-        this.gridBagConstraints ) ;
-    // CheckBox AutoUpdate
-    this.jCheckBoxAutoUpdate = new JCheckBox ( this.resourceBundle
-        .getString ( AUTOUPDATE ) ) ;
-    this.jCheckBoxAutoUpdate.setMnemonic ( this.resourceBundle.getString (
-        AUTOUPDATE + MNEMONIC ).charAt ( 0 ) ) ;
-    this.jCheckBoxAutoUpdate.setToolTipText ( this.resourceBundle
-        .getString ( AUTOUPDATE + TOOLTIP ) ) ;
-    this.jCheckBoxAutoUpdate.setSelected ( this.defaultOutline
-        .getOutlinePreferences ( ).isAutoUpdate ( ) ) ;
-    this.jCheckBoxAutoUpdate.setFocusable ( false ) ;
-    this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
-    this.insets.set ( 0 , 4 , 0 , 4 ) ;
-    this.gridBagConstraints.insets = this.insets ;
-    this.gridBagConstraints.gridx = 4 ;
-    this.gridBagConstraints.gridy = 0 ;
-    this.gridBagConstraints.weightx = 10 ;
-    this.gridBagConstraints.weighty = 10 ;
-    this.jPanelPreferences.add ( this.jCheckBoxAutoUpdate ,
-        this.gridBagConstraints ) ;
-    // Panel Main
-    this.jPanelMain = new JPanel ( ) ;
-    this.jPanelMain.setLayout ( this.gridBagLayout ) ;
-    // TreeModel
-    this.treeModel = new DefaultTreeModel ( this.rootNode ) ;
-    // Tree
-    this.jTreeOutline = new JTree ( this.treeModel ) ;
-    this.jTreeOutline.setDoubleBuffered ( true ) ;
-    this.jTreeOutline.setCellRenderer ( new OutlineCellRenderer ( ) ) ;
-    this.jTreeOutline.setRowHeight ( 0 ) ;
-    // ScrollPane
-    this.jScrollPaneOutline = new JScrollPane ( this.jTreeOutline ) ;
-    this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
-    this.insets.set ( 0 , 0 , 1 , 0 ) ;
-    this.gridBagConstraints.insets = this.insets ;
-    this.gridBagConstraints.gridx = 0 ;
-    this.gridBagConstraints.gridy = 0 ;
-    this.gridBagConstraints.weightx = 10 ;
-    this.gridBagConstraints.weighty = 10 ;
-    this.jPanelMain.add ( this.jScrollPaneOutline , this.gridBagConstraints ) ;
-    // Panel Preferences
-    this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
-    this.insets.set ( 1 , 0 , 0 , 1 ) ;
-    this.gridBagConstraints.insets = this.insets ;
-    this.gridBagConstraints.gridx = 0 ;
-    this.gridBagConstraints.gridy = 1 ;
-    this.gridBagConstraints.weightx = 0 ;
-    this.gridBagConstraints.weighty = 0 ;
-    this.jPanelMain.add ( this.jPanelPreferences , this.gridBagConstraints ) ;
-  }
-
-
-  /**
-   * Creates the <code>JPopupMenu</code> of the {@link Outline}.
-   */
-  private final void createPopupMenu ( )
-  {
     // PopupMenu
     this.jPopupMenu = new JPopupMenu ( ) ;
     // MenuItem Expand
@@ -671,6 +556,17 @@ public final class OutlineUI
     this.jMenuItemReplace.setSelected ( this.defaultOutline
         .getOutlinePreferences ( ).isReplace ( ) ) ;
     this.jMenuPreferences.add ( this.jMenuItemReplace ) ;
+    // MenuItem HighlightSourceCode
+    this.jMenuItemHighlightSourceCode = new JCheckBoxMenuItem (
+        this.resourceBundle.getString ( HIGHLIGHTSOURCECODE ) ) ;
+    this.jMenuItemHighlightSourceCode.setMnemonic ( this.resourceBundle
+        .getString ( HIGHLIGHTSOURCECODE + MNEMONIC ).charAt ( 0 ) ) ;
+    this.jMenuItemHighlightSourceCode.setToolTipText ( this.resourceBundle
+        .getString ( HIGHLIGHTSOURCECODE + TOOLTIP ) ) ;
+    this.jMenuItemHighlightSourceCode.setActionCommand ( HIGHLIGHTSOURCECODE ) ;
+    this.jMenuItemHighlightSourceCode.setSelected ( this.defaultOutline
+        .getOutlinePreferences ( ).isHighlightSourceCode ( ) ) ;
+    this.jMenuPreferences.add ( this.jMenuItemHighlightSourceCode ) ;
     // MenuItem AutoUpdate
     this.jMenuItemAutoUpdate = new JCheckBoxMenuItem ( this.resourceBundle
         .getString ( AUTOUPDATE ) ) ;
@@ -682,6 +578,153 @@ public final class OutlineUI
     this.jMenuItemAutoUpdate.setSelected ( this.defaultOutline
         .getOutlinePreferences ( ).isAutoUpdate ( ) ) ;
     this.jMenuPreferences.add ( this.jMenuItemAutoUpdate ) ;
+    // Layout
+    this.gridBagLayout = new GridBagLayout ( ) ;
+    this.gridBagConstraints = new GridBagConstraints ( ) ;
+    // Panel Preferences
+    this.jPanelPreferences = new JPanel ( ) ;
+    this.jPanelPreferences.setLayout ( this.gridBagLayout ) ;
+    // CheckBox Selection
+    this.jCheckBoxSelection = new JCheckBox ( this.resourceBundle
+        .getString ( SELECTION ) ) ;
+    this.jCheckBoxSelection.setMnemonic ( this.resourceBundle.getString (
+        SELECTION + MNEMONIC ).charAt ( 0 ) ) ;
+    this.jCheckBoxSelection.setToolTipText ( this.resourceBundle
+        .getString ( SELECTION + TOOLTIP ) ) ;
+    this.jCheckBoxSelection.setSelected ( this.defaultOutline
+        .getOutlinePreferences ( ).isSelection ( ) ) ;
+    this.jCheckBoxSelection.setFocusable ( false ) ;
+    this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
+    this.insets.set ( 0 , 4 , 0 , 4 ) ;
+    this.gridBagConstraints.insets = this.insets ;
+    this.gridBagConstraints.gridx = 0 ;
+    this.gridBagConstraints.gridy = 0 ;
+    this.gridBagConstraints.weightx = 0 ;
+    this.gridBagConstraints.weighty = 10 ;
+    this.jPanelPreferences.add ( this.jCheckBoxSelection ,
+        this.gridBagConstraints ) ;
+    // CheckBox Binding
+    this.jCheckBoxBinding = new JCheckBox ( this.resourceBundle
+        .getString ( BINDING ) ) ;
+    this.jCheckBoxBinding.setMnemonic ( this.resourceBundle.getString (
+        BINDING + MNEMONIC ).charAt ( 0 ) ) ;
+    this.jCheckBoxBinding.setToolTipText ( this.resourceBundle
+        .getString ( BINDING + TOOLTIP ) ) ;
+    this.jCheckBoxBinding.setSelected ( this.defaultOutline
+        .getOutlinePreferences ( ).isBinding ( ) ) ;
+    this.jCheckBoxBinding.setFocusable ( false ) ;
+    this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
+    this.insets.set ( 0 , 4 , 0 , 4 ) ;
+    this.gridBagConstraints.insets = this.insets ;
+    this.gridBagConstraints.gridx = 1 ;
+    this.gridBagConstraints.gridy = 0 ;
+    this.gridBagConstraints.weightx = 0 ;
+    this.gridBagConstraints.weighty = 10 ;
+    this.jPanelPreferences.add ( this.jCheckBoxBinding ,
+        this.gridBagConstraints ) ;
+    // CheckBox Free
+    this.jCheckBoxFree = new JCheckBox ( this.resourceBundle.getString ( FREE ) ) ;
+    this.jCheckBoxFree.setMnemonic ( this.resourceBundle.getString (
+        FREE + MNEMONIC ).charAt ( 0 ) ) ;
+    this.jCheckBoxFree.setToolTipText ( this.resourceBundle.getString ( FREE
+        + TOOLTIP ) ) ;
+    this.jCheckBoxFree.setSelected ( this.defaultOutline
+        .getOutlinePreferences ( ).isFree ( ) ) ;
+    this.jCheckBoxFree.setFocusable ( false ) ;
+    this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
+    this.insets.set ( 0 , 4 , 0 , 4 ) ;
+    this.gridBagConstraints.insets = this.insets ;
+    this.gridBagConstraints.gridx = 2 ;
+    this.gridBagConstraints.gridy = 0 ;
+    this.gridBagConstraints.weightx = 0 ;
+    this.gridBagConstraints.weighty = 10 ;
+    this.jPanelPreferences.add ( this.jCheckBoxFree , this.gridBagConstraints ) ;
+    // CheckBox Replace
+    this.jCheckBoxReplace = new JCheckBox ( this.resourceBundle
+        .getString ( REPLACE ) ) ;
+    this.jCheckBoxReplace.setMnemonic ( this.resourceBundle.getString (
+        REPLACE + MNEMONIC ).charAt ( 0 ) ) ;
+    this.jCheckBoxReplace.setToolTipText ( this.resourceBundle
+        .getString ( REPLACE + TOOLTIP ) ) ;
+    this.jCheckBoxReplace.setSelected ( this.defaultOutline
+        .getOutlinePreferences ( ).isReplace ( ) ) ;
+    this.jCheckBoxReplace.setFocusable ( false ) ;
+    this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
+    this.insets.set ( 0 , 4 , 0 , 4 ) ;
+    this.gridBagConstraints.insets = this.insets ;
+    this.gridBagConstraints.gridx = 3 ;
+    this.gridBagConstraints.gridy = 0 ;
+    this.gridBagConstraints.weightx = 0 ;
+    this.gridBagConstraints.weighty = 10 ;
+    this.jPanelPreferences.add ( this.jCheckBoxReplace ,
+        this.gridBagConstraints ) ;
+    // CheckBox HighlightSourceCode
+    this.jCheckBoxHighlightSourceCode = new JCheckBox ( this.resourceBundle
+        .getString ( HIGHLIGHTSOURCECODE ) ) ;
+    this.jCheckBoxHighlightSourceCode.setMnemonic ( this.resourceBundle
+        .getString ( HIGHLIGHTSOURCECODE + MNEMONIC ).charAt ( 0 ) ) ;
+    this.jCheckBoxHighlightSourceCode.setToolTipText ( this.resourceBundle
+        .getString ( HIGHLIGHTSOURCECODE + TOOLTIP ) ) ;
+    this.jCheckBoxHighlightSourceCode.setSelected ( this.defaultOutline
+        .getOutlinePreferences ( ).isHighlightSourceCode ( ) ) ;
+    this.jCheckBoxHighlightSourceCode.setFocusable ( false ) ;
+    this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
+    this.insets.set ( 0 , 4 , 0 , 4 ) ;
+    this.gridBagConstraints.insets = this.insets ;
+    this.gridBagConstraints.gridx = 4 ;
+    this.gridBagConstraints.gridy = 0 ;
+    this.gridBagConstraints.weightx = 0 ;
+    this.gridBagConstraints.weighty = 10 ;
+    this.jPanelPreferences.add ( this.jCheckBoxHighlightSourceCode ,
+        this.gridBagConstraints ) ;
+    // CheckBox AutoUpdate
+    this.jCheckBoxAutoUpdate = new JCheckBox ( this.resourceBundle
+        .getString ( AUTOUPDATE ) ) ;
+    this.jCheckBoxAutoUpdate.setMnemonic ( this.resourceBundle.getString (
+        AUTOUPDATE + MNEMONIC ).charAt ( 0 ) ) ;
+    this.jCheckBoxAutoUpdate.setToolTipText ( this.resourceBundle
+        .getString ( AUTOUPDATE + TOOLTIP ) ) ;
+    this.jCheckBoxAutoUpdate.setSelected ( this.defaultOutline
+        .getOutlinePreferences ( ).isAutoUpdate ( ) ) ;
+    this.jCheckBoxAutoUpdate.setFocusable ( false ) ;
+    this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
+    this.insets.set ( 0 , 4 , 0 , 4 ) ;
+    this.gridBagConstraints.insets = this.insets ;
+    this.gridBagConstraints.gridx = 5 ;
+    this.gridBagConstraints.gridy = 0 ;
+    this.gridBagConstraints.weightx = 10 ;
+    this.gridBagConstraints.weighty = 10 ;
+    this.jPanelPreferences.add ( this.jCheckBoxAutoUpdate ,
+        this.gridBagConstraints ) ;
+    // Panel Main
+    this.jPanelMain = new JPanel ( ) ;
+    this.jPanelMain.setLayout ( this.gridBagLayout ) ;
+    // TreeModel
+    this.treeModel = new DefaultTreeModel ( this.rootNode ) ;
+    // Tree
+    this.jTreeOutline = new JTree ( this.treeModel ) ;
+    this.jTreeOutline.setDoubleBuffered ( true ) ;
+    this.jTreeOutline.setCellRenderer ( new OutlineCellRenderer ( ) ) ;
+    this.jTreeOutline.setRowHeight ( 0 ) ;
+    // ScrollPane
+    this.jScrollPaneOutline = new JScrollPane ( this.jTreeOutline ) ;
+    this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
+    this.insets.set ( 0 , 0 , 1 , 0 ) ;
+    this.gridBagConstraints.insets = this.insets ;
+    this.gridBagConstraints.gridx = 0 ;
+    this.gridBagConstraints.gridy = 0 ;
+    this.gridBagConstraints.weightx = 10 ;
+    this.gridBagConstraints.weighty = 10 ;
+    this.jPanelMain.add ( this.jScrollPaneOutline , this.gridBagConstraints ) ;
+    // Panel Preferences
+    this.gridBagConstraints.fill = GridBagConstraints.BOTH ;
+    this.insets.set ( 1 , 0 , 0 , 1 ) ;
+    this.gridBagConstraints.insets = this.insets ;
+    this.gridBagConstraints.gridx = 0 ;
+    this.gridBagConstraints.gridy = 1 ;
+    this.gridBagConstraints.weightx = 0 ;
+    this.gridBagConstraints.weighty = 0 ;
+    this.jPanelMain.add ( this.jPanelPreferences , this.gridBagConstraints ) ;
   }
 
 
@@ -742,6 +785,18 @@ public final class OutlineUI
   public final JCheckBox getJCheckBoxSelection ( )
   {
     return this.jCheckBoxSelection ;
+  }
+
+
+  /**
+   * Returns the <code>jCheckBoxHighlightSourceCode</code>.
+   * 
+   * @return The <code>jCheckBoxHighlightSourceCode</code>.
+   * @see #jCheckBoxHighlightSourceCode
+   */
+  public final JCheckBox getJCheckBoxHighlightSourceCode ( )
+  {
+    return this.jCheckBoxHighlightSourceCode ;
   }
 
 
@@ -862,6 +917,18 @@ public final class OutlineUI
   public final JCheckBoxMenuItem getJMenuItemFree ( )
   {
     return this.jMenuItemFree ;
+  }
+
+
+  /**
+   * Returns the <code>jMenuItemHighlightSourceCode</code>.
+   * 
+   * @return The <code>jMenuItemHighlightSourceCode</code>.
+   * @see #jMenuItemHighlightSourceCode
+   */
+  public final JCheckBoxMenuItem getJMenuItemHighlightSourceCode ( )
+  {
+    return this.jMenuItemHighlightSourceCode ;
   }
 
 

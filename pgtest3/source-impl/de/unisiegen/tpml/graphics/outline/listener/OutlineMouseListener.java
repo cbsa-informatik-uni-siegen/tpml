@@ -1,17 +1,12 @@
 package de.unisiegen.tpml.graphics.outline.listener ;
 
 
-import java.awt.Color ;
 import java.awt.Container ;
 import java.awt.event.MouseEvent ;
 import java.awt.event.MouseListener ;
 import javax.swing.JLabel ;
-import javax.swing.text.BadLocationException ;
-import javax.swing.text.SimpleAttributeSet ;
-import javax.swing.text.StyleConstants ;
 import javax.swing.tree.TreePath ;
 import de.unisiegen.tpml.core.expressions.Expression ;
-import de.unisiegen.tpml.core.types.Type ;
 import de.unisiegen.tpml.graphics.StyledLanguageDocument ;
 import de.unisiegen.tpml.graphics.bigstep.BigStepView ;
 import de.unisiegen.tpml.graphics.components.CompoundExpression ;
@@ -169,56 +164,10 @@ public final class OutlineMouseListener implements MouseListener
     {
       if ( ( pMouseEvent.getButton ( ) == MouseEvent.BUTTON1 )
           && ( this.defaultOutline.getTextEditorPanel ( ) != null )
-          && ( pMouseEvent.getClickCount ( ) >= 2 ) )
+          && ( ( pMouseEvent.getClickCount ( ) >= 2 ) || ( this.defaultOutline
+              .getOutlinePreferences ( ).isHighlightSourceCode ( ) ) ) )
       {
-        TreePath treePath = this.defaultOutline.getOutlineUI ( )
-            .getJTreeOutline ( ).getSelectionPath ( ) ;
-        if ( treePath == null )
-        {
-          return ;
-        }
-        OutlineNode outlineNode = ( OutlineNode ) treePath
-            .getLastPathComponent ( ) ;
-        StyledLanguageDocument document = this.defaultOutline
-            .getTextEditorPanel ( ).getDocument ( ) ;
-        if ( outlineNode.getPrettyPrintable ( ) instanceof Expression )
-        {
-          try
-          {
-            document.processChanged ( ) ;
-          }
-          catch ( BadLocationException e )
-          {
-            // Do nothing
-          }
-          Expression expression = ( Expression ) outlineNode
-              .getPrettyPrintable ( ) ;
-          SimpleAttributeSet freeSet = new SimpleAttributeSet ( ) ;
-          StyleConstants.setBackground ( freeSet , Color.YELLOW ) ;
-          freeSet.addAttribute ( "selected" , "selected" ) ; //$NON-NLS-1$ //$NON-NLS-2$
-          document.setCharacterAttributes (
-              expression.getParserStartOffset ( ) , expression
-                  .getParserEndOffset ( )
-                  - expression.getParserStartOffset ( ) , freeSet , false ) ;
-        }
-        else if ( outlineNode.getPrettyPrintable ( ) instanceof Type )
-        {
-          try
-          {
-            document.processChanged ( ) ;
-          }
-          catch ( BadLocationException e )
-          {
-            // Do nothing
-          }
-          Type type = ( Type ) outlineNode.getPrettyPrintable ( ) ;
-          SimpleAttributeSet freeSet = new SimpleAttributeSet ( ) ;
-          StyleConstants.setBackground ( freeSet , Color.YELLOW ) ;
-          freeSet.addAttribute ( "selected" , "selected" ) ; //$NON-NLS-1$ //$NON-NLS-2$
-          document.setCharacterAttributes ( type.getParserStartOffset ( ) ,
-              type.getParserEndOffset ( ) - type.getParserStartOffset ( ) ,
-              freeSet , false ) ;
-        }
+        this.defaultOutline.updateHighlighSourceCode ( ) ;
       }
       else if ( pMouseEvent.getButton ( ) == MouseEvent.BUTTON3 )
       {

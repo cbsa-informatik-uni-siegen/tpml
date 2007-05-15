@@ -11,6 +11,9 @@ import javax.swing.JPanel ;
 import javax.swing.JScrollPane ;
 import javax.swing.SwingUtilities ;
 import javax.swing.border.LineBorder ;
+import javax.swing.text.BadLocationException ;
+import javax.swing.text.SimpleAttributeSet ;
+import javax.swing.text.StyleConstants ;
 import javax.swing.tree.TreePath ;
 import de.unisiegen.tpml.core.expressions.Attribute ;
 import de.unisiegen.tpml.core.expressions.CurriedMethod ;
@@ -22,6 +25,7 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable ;
 import de.unisiegen.tpml.graphics.subtyping.SubTypingEnterTypes ;
 import de.unisiegen.tpml.core.types.MonoType ;
 import de.unisiegen.tpml.core.types.Type ;
+import de.unisiegen.tpml.graphics.StyledLanguageDocument ;
 import de.unisiegen.tpml.graphics.Theme ;
 import de.unisiegen.tpml.graphics.bigstep.BigStepView ;
 import de.unisiegen.tpml.graphics.outline.binding.OutlineBinding ;
@@ -163,6 +167,10 @@ public final class DefaultOutline implements Outline
     this.outlinePreferences = new OutlinePreferences ( ) ;
     this.outlineUI = new OutlineUI ( this ) ;
     this.textEditorPanel = null ;
+    this.outlineUI.getJCheckBoxHighlightSourceCode ( ).setEnabled ( false ) ;
+    this.outlineUI.getJCheckBoxHighlightSourceCode ( ).setSelected ( false ) ;
+    this.outlineUI.getJMenuItemHighlightSourceCode ( ).setEnabled ( false ) ;
+    this.outlineUI.getJMenuItemHighlightSourceCode ( ).setSelected ( false ) ;
     this.outlineUI.getJCheckBoxAutoUpdate ( ).setEnabled ( false ) ;
     this.outlineUI.getJCheckBoxAutoUpdate ( ).setSelected ( false ) ;
     this.outlineUI.getJMenuItemAutoUpdate ( ).setEnabled ( false ) ;
@@ -246,6 +254,10 @@ public final class DefaultOutline implements Outline
     this.outlinePreferences = new OutlinePreferences ( ) ;
     this.outlineUI = new OutlineUI ( this ) ;
     this.textEditorPanel = null ;
+    this.outlineUI.getJCheckBoxHighlightSourceCode ( ).setEnabled ( false ) ;
+    this.outlineUI.getJCheckBoxHighlightSourceCode ( ).setSelected ( false ) ;
+    this.outlineUI.getJMenuItemHighlightSourceCode ( ).setEnabled ( false ) ;
+    this.outlineUI.getJMenuItemHighlightSourceCode ( ).setSelected ( false ) ;
     // ComponentListener
     this.outlineUI.getJPanelMain ( )
         .addComponentListener (
@@ -366,6 +378,8 @@ public final class DefaultOutline implements Outline
         outlineActionListener ) ;
     this.outlineUI.getJMenuItemReplace ( ).addActionListener (
         outlineActionListener ) ;
+    this.outlineUI.getJMenuItemHighlightSourceCode ( ).addActionListener (
+        outlineActionListener ) ;
     this.outlineUI.getJMenuItemAutoUpdate ( ).addActionListener (
         outlineActionListener ) ;
     // ComponentListener
@@ -376,6 +390,8 @@ public final class DefaultOutline implements Outline
     this.outlineUI.getJCheckBoxSelection ( ).addItemListener (
         this.outlineItemListener ) ;
     this.outlineUI.getJCheckBoxReplace ( ).addItemListener (
+        this.outlineItemListener ) ;
+    this.outlineUI.getJCheckBoxHighlightSourceCode ( ).addItemListener (
         this.outlineItemListener ) ;
     this.outlineUI.getJCheckBoxAutoUpdate ( ).addItemListener (
         this.outlineItemListener ) ;
@@ -445,6 +461,8 @@ public final class DefaultOutline implements Outline
         outlineActionListener ) ;
     this.outlineUI.getJMenuItemReplace ( ).addActionListener (
         outlineActionListener ) ;
+    this.outlineUI.getJMenuItemHighlightSourceCode ( ).addActionListener (
+        outlineActionListener ) ;
     this.outlineUI.getJMenuItemAutoUpdate ( ).addActionListener (
         outlineActionListener ) ;
     // ComponentListener
@@ -459,6 +477,8 @@ public final class DefaultOutline implements Outline
     this.outlineUI.getJCheckBoxFree ( ).addItemListener (
         this.outlineItemListener ) ;
     this.outlineUI.getJCheckBoxReplace ( ).addItemListener (
+        this.outlineItemListener ) ;
+    this.outlineUI.getJCheckBoxHighlightSourceCode ( ).addItemListener (
         this.outlineItemListener ) ;
     this.outlineUI.getJCheckBoxAutoUpdate ( ).addItemListener (
         this.outlineItemListener ) ;
@@ -486,6 +506,10 @@ public final class DefaultOutline implements Outline
     this.outlinePreferences = new OutlinePreferences ( ) ;
     this.outlineUI = new OutlineUI ( this ) ;
     this.textEditorPanel = null ;
+    this.outlineUI.getJCheckBoxHighlightSourceCode ( ).setEnabled ( false ) ;
+    this.outlineUI.getJCheckBoxHighlightSourceCode ( ).setSelected ( false ) ;
+    this.outlineUI.getJMenuItemHighlightSourceCode ( ).setEnabled ( false ) ;
+    this.outlineUI.getJMenuItemHighlightSourceCode ( ).setSelected ( false ) ;
     this.outlineUI.getJCheckBoxAutoUpdate ( ).setEnabled ( false ) ;
     this.outlineUI.getJCheckBoxAutoUpdate ( ).setSelected ( false ) ;
     this.outlineUI.getJMenuItemAutoUpdate ( ).setEnabled ( false ) ;
@@ -1661,6 +1685,57 @@ public final class DefaultOutline implements Outline
        */
       this.outlineUI.getTreeModel ( ).nodeChanged (
           ( ( OutlineNode ) pTreePath.getPath ( ) [ i ] ) ) ;
+    }
+  }
+
+
+  /**
+   * Updates the highlighting of the source code.
+   */
+  public final void updateHighlighSourceCode ( )
+  {
+    TreePath treePath = this.outlineUI.getJTreeOutline ( ).getSelectionPath ( ) ;
+    if ( treePath == null )
+    {
+      return ;
+    }
+    OutlineNode outlineNode = ( OutlineNode ) treePath.getLastPathComponent ( ) ;
+    StyledLanguageDocument document = this.textEditorPanel.getDocument ( ) ;
+    if ( outlineNode.getPrettyPrintable ( ) instanceof Expression )
+    {
+      try
+      {
+        document.processChanged ( ) ;
+      }
+      catch ( BadLocationException e )
+      {
+        // Do nothing
+      }
+      Expression expression = ( Expression ) outlineNode.getPrettyPrintable ( ) ;
+      SimpleAttributeSet freeSet = new SimpleAttributeSet ( ) ;
+      StyleConstants.setBackground ( freeSet , Color.YELLOW ) ;
+      freeSet.addAttribute ( "selected" , "selected" ) ; //$NON-NLS-1$ //$NON-NLS-2$
+      document.setCharacterAttributes ( expression.getParserStartOffset ( ) ,
+          expression.getParserEndOffset ( )
+              - expression.getParserStartOffset ( ) , freeSet , false ) ;
+    }
+    else if ( outlineNode.getPrettyPrintable ( ) instanceof Type )
+    {
+      try
+      {
+        document.processChanged ( ) ;
+      }
+      catch ( BadLocationException e )
+      {
+        // Do nothing
+      }
+      Type type = ( Type ) outlineNode.getPrettyPrintable ( ) ;
+      SimpleAttributeSet freeSet = new SimpleAttributeSet ( ) ;
+      StyleConstants.setBackground ( freeSet , Color.YELLOW ) ;
+      freeSet.addAttribute ( "selected" , "selected" ) ; //$NON-NLS-1$ //$NON-NLS-2$
+      document.setCharacterAttributes ( type.getParserStartOffset ( ) , type
+          .getParserEndOffset ( )
+          - type.getParserStartOffset ( ) , freeSet , false ) ;
     }
   }
 

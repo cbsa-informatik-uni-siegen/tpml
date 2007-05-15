@@ -97,6 +97,13 @@ public final class OutlineActionListener implements ActionListener
           this.defaultOutline.getOutlineUI ( ).getJMenuItemReplace ( )
               .isSelected ( ) , null , OutlineUI.REPLACE ) ;
     }
+    else if ( OutlineUI.HIGHLIGHTSOURCECODE.equals ( actionCommand ) )
+    {
+      this.defaultOutline.getOutlineItemListener ( ).update (
+          this.defaultOutline.getOutlineUI ( )
+              .getJMenuItemHighlightSourceCode ( ).isSelected ( ) , null ,
+          OutlineUI.HIGHLIGHTSOURCECODE ) ;
+    }
     else if ( OutlineUI.AUTOUPDATE.equals ( actionCommand ) )
     {
       this.defaultOutline.getOutlineItemListener ( ).update (
