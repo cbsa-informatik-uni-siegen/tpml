@@ -1260,9 +1260,9 @@ object_type						::= LESS:l row_type:r GREATER:g
 								;
 
 object_type_error				::= /* epsilon */
-									{: Error.expect("Object-Type", ">", "\u03A6 >"); :}
+									{: Error.expect("Object-Type", "m<sub>1</sub>: \u03C4; ... m<sub>n</sub>: \u03C4; >"); :}
 								|	row_type
-									{: Error.expect("Object-Type", ">", "\u03A6 >"); :}
+									{: Error.expect("Object-Type", "... m<sub>n</sub>: \u03C4; >"); :}
 								;
 
 row_type						::= IDENTIFIER:id COLON type:tau SEMI:s
@@ -1288,9 +1288,9 @@ row_type						::= IDENTIFIER:id COLON type:tau SEMI:s
 								;
 
 row_type_error					::= /* epsilon */
-									{: Error.expect("Row-Type", ": \u03C4 ;"); :}
+									{: Error.expect("Row-Type", ": \u03C4 ; ... m<sub>n</sub>: \u03C4; >"); :}
 								|	COLON
-									{: Error.expect("Row-Type", "\u03C4 ;"); :}
+									{: Error.expect("Row-Type", "\u03C4 ; ... m<sub>n</sub>: \u03C4; >"); :}
 								|	COLON type
-									{: Error.expect("Row-Type", ";"); :}
+									{: Error.expect("Row-Type", "; ... m<sub>n</sub>: \u03C4; >"); :}
 								;

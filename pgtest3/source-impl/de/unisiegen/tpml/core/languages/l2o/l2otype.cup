@@ -10,36 +10,38 @@ import java.text.MessageFormat;
 /* Helper classes */
 action code 
 {:
-  private static class Duplicated
+  private static class IdTypePair 
   {
-    public static void check(RowType pRowType)
-    {
-	  ArrayList <Identifier> negativeIdentifiers = new ArrayList <Identifier> ();
-	  Identifier [] identifier = pRowType.getIdentifiers() ;
-      for ( int i = 0 ; i < identifier.length ; i ++ )
-      {
-        negativeIdentifiers.clear();
-        for ( int j = i+1 ; j < identifier.length ; j++ )
-        {
-          if ( identifier [i].equals(identifier[j]) )
-    	  {
-  	        negativeIdentifiers.add(identifier[j]);
-    	  }
-    	}
-    	negativeIdentifiers.add ( identifier [i] ) ;
-    	LanguageParserMultiException.throwExceptionRowType ( negativeIdentifiers ) ;
-      }
+    Identifier id;
+    MonoType type;
+    
+    public IdTypePair(Identifier pId, MonoType pType) 
+    { 
+      this.id = pId;
+      this.type = pType; 
     }
   }
   
+  private static class IdExprPair 
+  {
+    Identifier id;
+    Expression expression;
+    
+    public IdExprPair(Identifier pId, Expression pExpression)
+    { 
+      this.id = pId; 
+      this.expression = pExpression;
+    }
+  }
+ 
   private static class Error
   {
-    public static void expect(String ... pTokenSequence)
+    public static void expect(String pSymbol, String ... pTokenSequence)
     {
-      expect (0, 0, pTokenSequence);
+      expect (0, 0, pSymbol, pTokenSequence);
     }
     
-    public static void expect(int pLeft, int pRight , String ... pTokenSequence)
+    public static void expect(int pLeft, int pRight, String pSymbol, String ... pTokenSequence)
     {
       String or = Messages.getString ( "Parser.15" ) ;
       String result = "" ;
@@ -60,7 +62,77 @@ action code
       }
       throw new LanguageParserException (  
         MessageFormat.format ( "<html>" + Messages.getString ( "Parser.14" ) + "</html>", 
-          result ) , pLeft, pRight);
+          result, pSymbol), pLeft, pRight);
+    }
+  }
+  
+  private static class Duplicated
+  {
+    public static void check(Row pRow)
+    {
+	  ArrayList <Identifier> negativeIdentifiers = new ArrayList <Identifier> ();
+	  Expression [ ] rowExpressions = pRow.getExpressions ( ) ;
+      for ( int i = 0 ; i < rowExpressions.length ; i ++ )
+      {
+        if ( rowExpressions[i] instanceof Attribute )
+        {
+          negativeIdentifiers.clear();
+          Attribute attribute1 = (Attribute) rowExpressions[i] ;
+          for ( int j = i+1 ; j < rowExpressions.length ; j++ )
+          {
+            if ( rowExpressions[j] instanceof Attribute )
+    	    {
+    	      Attribute attribute2 = (Attribute) rowExpressions[j] ;
+    	      if ( attribute1.getId().equals(attribute2.getId()))
+    	      {
+    	        negativeIdentifiers.add(attribute2.getId());
+    	      }
+    	    }
+    	  }
+    	  negativeIdentifiers.add ( attribute1.getId() ) ;
+    	  LanguageParserMultiException.throwExceptionRow ( negativeIdentifiers ) ;
+        }
+      }
+    }
+    
+    
+    public static void check(Duplication pDuplication)
+    {
+	  ArrayList <Identifier> negativeIdentifiers = new ArrayList <Identifier> ();
+	  Identifier [] identifier = pDuplication.getIdentifiers() ;
+      for ( int i = 0 ; i < identifier.length ; i ++ )
+      {
+        negativeIdentifiers.clear();
+        for ( int j = i+1 ; j < identifier.length ; j++ )
+        {
+          if ( identifier [i].equals(identifier[j]) )
+    	  {
+  	        negativeIdentifiers.add(identifier[j]);
+    	  }
+    	}
+    	negativeIdentifiers.add ( identifier [i] ) ;
+    	LanguageParserMultiException.throwExceptionDuplication ( negativeIdentifiers ) ;
+      }
+    }
+    
+    
+    public static void check(RowType pRowType)
+    {
+	  ArrayList <Identifier> negativeIdentifiers = new ArrayList <Identifier> ();
+	  Identifier [] identifier = pRowType.getIdentifiers() ;
+      for ( int i = 0 ; i < identifier.length ; i ++ )
+      {
+        negativeIdentifiers.clear();
+        for ( int j = i+1 ; j < identifier.length ; j++ )
+        {
+          if ( identifier [i].equals(identifier[j]) )
+    	  {
+  	        negativeIdentifiers.add(identifier[j]);
+    	  }
+    	}
+    	negativeIdentifiers.add ( identifier [i] ) ;
+    	LanguageParserMultiException.throwExceptionRowType ( negativeIdentifiers ) ;
+      }
     }
   }
 :}
@@ -126,7 +198,7 @@ simple_type						::=	LPAREN:l type:t RPAREN:r
 								;
 
 simple_type_error				::= /* epsilon */
-									{: Error.expect(")"); :}
+									{: Error.expect("Type", ")"); :}
 								;
 
 arrow_type						::= type:t1 ARROW type:t2
@@ -136,7 +208,7 @@ arrow_type						::= type:t1 ARROW type:t2
 								;
 
 arrow_type_error				::= /* epsilon */
-									{: Error.expect("\u03C4<sub>2</sub>"); :}
+									{: Error.expect("Arrow-Type", "\u03C4<sub>2</sub>"); :}
 								;
 
 boolean_type					::= BOOL:b
@@ -171,9 +243,9 @@ object_type						::= LESS:l row_type:r GREATER:g
 								;
 
 object_type_error				::= /* epsilon */
-									{: Error.expect(">", "\u03A6 >"); :}
+									{: Error.expect("Object-Type", "m<sub>1</sub>: \u03C4; ... m<sub>n</sub>: \u03C4; >"); :}
 								|	row_type
-									{: Error.expect(">", "\u03A6 >"); :}
+									{: Error.expect("Object-Type", "... m<sub>n</sub>: \u03C4; >"); :}
 								;
 
 row_type						::= IDENTIFIER:id COLON type:tau SEMI:s
@@ -199,9 +271,9 @@ row_type						::= IDENTIFIER:id COLON type:tau SEMI:s
 								;
 
 row_type_error					::= /* epsilon */
-									{: Error.expect(": \u03C4 ;"); :}
+									{: Error.expect("Row-Type", ": \u03C4 ; ... m<sub>n</sub>: \u03C4; >"); :}
 								|	COLON
-									{: Error.expect("\u03C4 ;"); :}
+									{: Error.expect("Row-Type", "\u03C4 ; ... m<sub>n</sub>: \u03C4; >"); :}
 								|	COLON type
-									{: Error.expect(";"); :}
+									{: Error.expect("Row-Type", "; ... m<sub>n</sub>: \u03C4; >"); :}
 								;
