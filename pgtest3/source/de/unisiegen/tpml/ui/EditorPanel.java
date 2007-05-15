@@ -29,6 +29,7 @@ import de.unisiegen.tpml.core.languages.Language;
 import de.unisiegen.tpml.core.languages.LanguageFactory;
 import de.unisiegen.tpml.core.languages.NoSuchLanguageException;
 import de.unisiegen.tpml.core.smallstep.SmallStepProofModel;
+import de.unisiegen.tpml.core.subtyping.SubTypingProofModel;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel;
 import de.unisiegen.tpml.core.typeinference.TypeInferenceProofModel;
 import de.unisiegen.tpml.graphics.ProofViewFactory;
@@ -62,6 +63,7 @@ public class EditorPanel extends javax.swing.JPanel {
 		bigstepButton.setVisible(false);
 		typecheckerButton.setVisible(false);
 		typeinferenceButton.setVisible(false);
+		//There will be no Subtypingbutton because it has no sourcecode
 		//finished setting the default states
 
                 // hack to get consistent heights
@@ -70,6 +72,7 @@ public class EditorPanel extends javax.swing.JPanel {
                 bigstepButton.setPreferredSize(new Dimension(bigstepButton.getPreferredSize().width, pongButton.getPreferredSize().height));
                 typecheckerButton.setPreferredSize(new Dimension(typecheckerButton.getPreferredSize().width, pongButton.getPreferredSize().height));
                 typeinferenceButton.setPreferredSize(new Dimension(typeinferenceButton.getPreferredSize().width, pongButton.getPreferredSize().height));
+                //There will be no SubTypingButton
                 //TODO vielleicht auch machen müssen
 		
 		this.language = language;
@@ -265,6 +268,8 @@ public class EditorPanel extends javax.swing.JPanel {
 		deselectButtons();
 		bigstepButton.setSelected(true);
 	}// GEN-LAST:event_bigstepButtonActionPerformed
+	
+	//TODO Brauchen wir den auch für den Subtyping
 
 	private void smallstepButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_smallstepButtonActionPerformed
 		// 
@@ -311,6 +316,8 @@ public class EditorPanel extends javax.swing.JPanel {
 	private EditorComponent typechecker;
 	
 	private EditorComponent typeinference;
+	
+	private EditorComponent subtyping;
 
 	private EditorComponent activeEditorComponent;
 
@@ -509,9 +516,9 @@ public class EditorPanel extends javax.swing.JPanel {
 	}
 	
 	/**
-	 * Starts the Type Equation.
+	 * Starts the TypeInference.
 	 */
-	public void handleTypEquation() {
+	public void handleTypInference() {
 		setTexteditor(false);
 		
 		try {
@@ -525,6 +532,33 @@ public class EditorPanel extends javax.swing.JPanel {
 			//activateFunction(typecheckerButton, typechecker);
 			activateFunction(typeinferenceButton, typeinference);
 			typeinference.setAdvanced(this.advanced);
+			paintAll(getGraphics());
+			
+
+		} catch (Exception e) {
+			logger.error("Could not create new TypeCheckerView", e);
+			JOptionPane.showMessageDialog(this,
+					java.util.ResourceBundle.getBundle("de/unisiegen/tpml/ui/ui").getString("CouldNotTypeChecker")+
+					"\n"+e.getMessage()+".",
+					"TypeChecker", JOptionPane.ERROR_MESSAGE);
+		}
+	}
+	
+	/**
+	 * Starts the TypeInference.
+	 */
+	public void handleSubtyping() {
+		setTexteditor(false);
+		
+		try {
+			SubTypingProofModel model = language.newSubTypingProofModel(null, null);
+			//typechecker = new ProofViewComponent(ProofViewFactory
+			//		.newTypeCheckerView(model), model);
+			subtyping = new ProofViewComponent(ProofViewFactory.newSubtypingView(model), model);
+			editorPanel.removeAll();
+			//activateFunction(typecheckerButton, typechecker);
+			//activateFunction(typeinferenceButton, typeinference);
+			//typeinference.setAdvanced(this.advanced);
 			paintAll(getGraphics());
 			
 

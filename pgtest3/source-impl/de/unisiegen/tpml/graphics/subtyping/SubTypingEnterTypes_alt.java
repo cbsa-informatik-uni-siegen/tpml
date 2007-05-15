@@ -41,7 +41,7 @@ import de.unisiegen.tpml.ui.SideBarListener;
  * @author Benjamin Mies
  *
  */
-public class SubTypingEnterTypes extends JComponent {
+public class SubTypingEnterTypes_alt extends JComponent {
 
 	/**
 	 * The unique serialization identifier of this class.

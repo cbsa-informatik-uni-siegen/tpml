@@ -237,6 +237,7 @@ public class MainWindow extends javax.swing.JFrame
     bigstepItem = new javax.swing.JMenuItem ( ) ;
     typecheckerItem = new javax.swing.JMenuItem ( ) ;
     typeInference = new javax.swing.JMenuItem ( ) ;
+    subtyping = new javax.swing.JMenuItem ( ) ;
     runMenuSeparator1 = new javax.swing.JSeparator ( ) ;
     beginnerRadioButton = new javax.swing.JRadioButtonMenuItem ( ) ;
     advancedRadioButton = new javax.swing.JRadioButtonMenuItem ( ) ;
@@ -674,6 +675,10 @@ public class MainWindow extends javax.swing.JFrame
     } ) ;
     runMenu.add ( typecheckerItem ) ;
     
+    
+    
+    
+    
 //  CAHNGE MICHAEL
 		typeInference.setAccelerator ( javax.swing.KeyStroke.getKeyStroke (java.awt.event.KeyEvent.VK_F12, 2));
     //TODO Wieder in die Resources einbaeun
@@ -682,11 +687,27 @@ public class MainWindow extends javax.swing.JFrame
 		
 		typeInference.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				typEquationActionPerformed(evt);
+				typeInferenceActionPerformed(evt);
 			}
 		});
 		//TODO Erst hochladen, wenn es geht...
 		runMenu.add ( typeInference );
+		
+		subtyping.setAccelerator ( javax.swing.KeyStroke.getKeyStroke (java.awt.event.KeyEvent.VK_F12, 3));
+    //TODO Wieder in die Resources einbaeun
+		
+    subtyping.setText("Subtyping");
+		
+		subtyping.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				subtypingActionPerformed(evt);
+			}
+		});
+		//TODO Erst hochladen, wenn es geht...
+		runMenu.add ( subtyping );
+		
+		
+		
 		//CHANGME NMICHAEL EMND
 		
     runMenu.add ( runMenuSeparator1 ) ;
@@ -898,10 +919,17 @@ public class MainWindow extends javax.swing.JFrame
     ( getActiveEditor ( ) ).handleTypeChecker ( ) ;
   }// GEN-LAST:event_typecheckerItemActionPerformed
   
-  private void typEquationActionPerformed ( java.awt.event.ActionEvent evt )
+  private void typeInferenceActionPerformed ( java.awt.event.ActionEvent evt )
   {// GEN-FIRST:event_typecheckerItemActionPerformed
     // 
-    ( getActiveEditor ( ) ).handleTypEquation() ;
+    ( getActiveEditor ( ) ).handleTypInference() ;
+  }// GEN-LAST:event_typecheckerItemActionPerformed
+  
+  
+  private void subtypingActionPerformed ( java.awt.event.ActionEvent evt )
+  {// GEN-FIRST:event_typecheckerItemActionPerformed
+    // 
+    ( getActiveEditor ( ) ).handleSubtyping() ;
   }// GEN-LAST:event_typecheckerItemActionPerformed
   
   
@@ -1066,6 +1094,8 @@ public class MainWindow extends javax.swing.JFrame
   private javax.swing.JMenuItem typecheckerItem ;
   
   private javax.swing.JMenuItem typeInference;
+  
+  private javax.swing.JMenuItem subtyping;
 
 
   private javax.swing.JButton undoButton ;
@@ -1170,6 +1200,7 @@ public class MainWindow extends javax.swing.JFrame
     bigstepItem.setEnabled ( state ) ;
     typecheckerItem.setEnabled ( state ) ;
     typeInference.setEnabled( state );
+    subtyping.setEnabled( state );
     saveAsItem.setEnabled ( state ) ;
     saveAsButton.setEnabled ( state ) ;
     saveAllItem.setEnabled ( state ) ;
