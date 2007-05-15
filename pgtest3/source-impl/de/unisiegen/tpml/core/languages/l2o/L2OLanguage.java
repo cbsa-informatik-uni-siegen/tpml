@@ -3,42 +3,55 @@ package de.unisiegen.tpml.core.languages.l2o ;
 
 import java.io.Reader ;
 import java_cup.runtime.lr_parser ;
+import de.unisiegen.tpml.core.AbstractProofRule ;
 import de.unisiegen.tpml.core.Messages ;
 import de.unisiegen.tpml.core.bigstep.BigStepProofModel ;
 import de.unisiegen.tpml.core.expressions.Expression ;
+import de.unisiegen.tpml.core.languages.AbstractLanguage ;
 import de.unisiegen.tpml.core.languages.Language ;
 import de.unisiegen.tpml.core.languages.LanguageParser ;
 import de.unisiegen.tpml.core.languages.LanguageScanner ;
 import de.unisiegen.tpml.core.languages.LanguageTranslator ;
 import de.unisiegen.tpml.core.languages.LanguageTypeParser ;
 import de.unisiegen.tpml.core.languages.LanguageTypeScanner ;
-import de.unisiegen.tpml.core.languages.l1.L1SubTypingProofRuleSet;
+import de.unisiegen.tpml.core.languages.l0.L0Language ;
+import de.unisiegen.tpml.core.languages.l1.L1Language ;
 import de.unisiegen.tpml.core.languages.l2.L2Language ;
 import de.unisiegen.tpml.core.languages.l2.L2TypeInferenceProofRuleSet ;
 import de.unisiegen.tpml.core.languages.l2cbn.L2CBNLanguage ;
 import de.unisiegen.tpml.core.smallstep.SmallStepProofModel ;
-import de.unisiegen.tpml.core.subtyping.SubTypingProofModel;
+import de.unisiegen.tpml.core.subtyping.SubTypingProofModel ;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel ;
 import de.unisiegen.tpml.core.typeinference.TypeInferenceProofModel ;
 import de.unisiegen.tpml.core.types.MonoType ;
 
 
 /**
- * TODO
+ * This class represents the language L2O, which serves as a factory class for
+ * L2O related functionality, and extends the L2 language.
  * 
  * @author Christian Fehler
- * @version $Rev: 1066 $
+ * @version $Rev:1159 $
+ * @see Language
+ * @see LanguageParser
+ * @see LanguageScanner
+ * @see LanguageTranslator
+ * @see L0Language
+ * @see L1Language
+ * @see L2Language
  */
 public class L2OLanguage extends L2Language
 {
   /**
-   * TODO
+   * The group id for proof rules of this language.
+   * 
+   * @see AbstractProofRule#getGroup()
    */
   public static final int L2O = L2CBNLanguage.L2CBN + 1 ;
 
 
   /**
-   * TODO
+   * Allocates a new <code>L2OLanguage</code> instance.
    */
   public L2OLanguage ( )
   {
@@ -147,6 +160,20 @@ public class L2OLanguage extends L2Language
 
   /**
    * {@inheritDoc}
+   * 
+   * @see Language#newSubTypingProofModel(MonoType,MonoType)
+   */
+  @ Override
+  public SubTypingProofModel newSubTypingProofModel ( MonoType type ,
+      MonoType type2 )
+  {
+    return new SubTypingProofModel ( type , type2 ,
+        new L2OSubTypingProofRuleSet ( this ) ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
    */
   @ Override
   public LanguageTranslator newTranslator ( )
@@ -176,24 +203,12 @@ public class L2OLanguage extends L2Language
     return new TypeInferenceProofModel ( expression ,
         new L2TypeInferenceProofRuleSet ( this ) ) ;
   }
-  
-  /**
-   * {@inheritDoc}
-   * 
-   * @see de.unisiegen.tpml.core.languages.Language#newSubTypingProofModel(de.unisiegen.tpml.core.expressions.Expression)
-   */
-  @Override
-  public SubTypingProofModel newSubTypingProofModel ( MonoType type, MonoType type2  )
-  {
-    return new SubTypingProofModel (type, type2, 
-        new L2OSubTypingProofRuleSet ( this ) ) ;
-  }
 
 
   /**
    * {@inheritDoc}
    * 
-   * @see de.unisiegen.tpml.core.languages.AbstractLanguage#newTypeParser(de.unisiegen.tpml.core.languages.LanguageTypeScanner)
+   * @see AbstractLanguage#newTypeParser(LanguageTypeScanner)
    */
   @ Override
   public LanguageTypeParser newTypeParser ( LanguageTypeScanner scanner )

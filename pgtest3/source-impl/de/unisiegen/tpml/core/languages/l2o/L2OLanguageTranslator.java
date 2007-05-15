@@ -11,20 +11,22 @@ import de.unisiegen.tpml.core.expressions.Method ;
 import de.unisiegen.tpml.core.expressions.ObjectExpr ;
 import de.unisiegen.tpml.core.expressions.Row ;
 import de.unisiegen.tpml.core.expressions.Send ;
+import de.unisiegen.tpml.core.languages.l2.L2Language ;
 import de.unisiegen.tpml.core.languages.l2.L2LanguageTranslator ;
 import de.unisiegen.tpml.core.types.MonoType ;
 
 
 /**
- * TODO
+ * Language translator for the <code>L2O</code> language.
  * 
  * @author Christian Fehler
  * @version $Rev: 1066 $
+ * @see L2Language
  */
 public class L2OLanguageTranslator extends L2LanguageTranslator
 {
   /**
-   * TODO
+   * Allocates a new <code>L2OLanguageTranslator</code>.
    */
   public L2OLanguageTranslator ( )
   {
@@ -34,6 +36,8 @@ public class L2OLanguageTranslator extends L2LanguageTranslator
 
   /**
    * {@inheritDoc}
+   * 
+   * @see L2LanguageTranslator#translateToCoreSyntax(Expression, boolean)
    */
   @ Override
   public Expression translateToCoreSyntax ( Expression pExpression ,
@@ -76,11 +80,11 @@ public class L2OLanguageTranslator extends L2LanguageTranslator
 
 
   /**
-   * TODO
+   * Translates the {@link Attribute} to core syntax.
    * 
-   * @param pAttribute TODO
-   * @param pRecursive TODO
-   * @return TODO
+   * @param pAttribute The given {@link Attribute}.
+   * @param pRecursive Translate recursive all children of the {@link Attribute}.
+   * @return The translated {@link Expression}.
    */
   private Expression translateToCoreSyntaxAttribute ( Attribute pAttribute ,
       boolean pRecursive )
@@ -95,11 +99,12 @@ public class L2OLanguageTranslator extends L2LanguageTranslator
 
 
   /**
-   * TODO
+   * Translates the {@link CurriedMethod} to core syntax.
    * 
-   * @param pCurriedMethod TODO
-   * @param pRecursive TODO
-   * @return TODO
+   * @param pCurriedMethod The given {@link CurriedMethod}.
+   * @param pRecursive Translate recursive all children of the
+   *          {@link CurriedMethod}.
+   * @return The translated {@link Expression}.
    */
   private Expression translateToCoreSyntaxCurriedMethod (
       CurriedMethod pCurriedMethod , boolean pRecursive )
@@ -120,11 +125,12 @@ public class L2OLanguageTranslator extends L2LanguageTranslator
 
 
   /**
-   * TODO
+   * Translates the {@link Duplication} to core syntax.
    * 
-   * @param pDuplication TODO
-   * @param pRecursive TODO
-   * @return TODO
+   * @param pDuplication The given {@link Duplication}.
+   * @param pRecursive Translate recursive all children of the
+   *          {@link Duplication}.
+   * @return The translated {@link Expression}.
    */
   private Expression translateToCoreSyntaxDuplication (
       Duplication pDuplication , boolean pRecursive )
@@ -146,11 +152,11 @@ public class L2OLanguageTranslator extends L2LanguageTranslator
 
 
   /**
-   * TODO
+   * Translates the {@link Send} to core syntax.
    * 
-   * @param pSend TODO
-   * @param pRecursive TODO
-   * @return TODO
+   * @param pSend The given {@link Send}.
+   * @param pRecursive Translate recursive all children of the {@link Send}.
+   * @return The translated {@link Expression}.
    */
   private Expression translateToCoreSyntaxSend ( Send pSend , boolean pRecursive )
   {
@@ -164,11 +170,11 @@ public class L2OLanguageTranslator extends L2LanguageTranslator
 
 
   /**
-   * TODO
+   * Translates the {@link Method} to core syntax.
    * 
-   * @param pMethod TODO
-   * @param pRecursive TODO
-   * @return TODO
+   * @param pMethod The given {@link Method}.
+   * @param pRecursive Translate recursive all children of the {@link Method}.
+   * @return The translated {@link Expression}.
    */
   private Expression translateToCoreSyntaxMethod ( Method pMethod ,
       boolean pRecursive )
@@ -183,11 +189,12 @@ public class L2OLanguageTranslator extends L2LanguageTranslator
 
 
   /**
-   * TODO
+   * Translates the {@link ObjectExpr} to core syntax.
    * 
-   * @param pObjectExpr TODO
-   * @param pRecursive TODO
-   * @return TODO
+   * @param pObjectExpr The given {@link ObjectExpr}.
+   * @param pRecursive Translate recursive all children of the
+   *          {@link ObjectExpr}.
+   * @return The translated {@link Expression}.
    */
   private Expression translateToCoreSyntaxObjectExpr ( ObjectExpr pObjectExpr ,
       boolean pRecursive )
@@ -202,11 +209,11 @@ public class L2OLanguageTranslator extends L2LanguageTranslator
 
 
   /**
-   * TODO
+   * Translates the {@link Row} to core syntax.
    * 
-   * @param pRow TODO
-   * @param pRecursive TODO
-   * @return TODO
+   * @param pRow The given {@link Row}.
+   * @param pRecursive Translate recursive all children of the {@link Row}.
+   * @return The translated {@link Expression}.
    */
   private Expression translateToCoreSyntaxRow ( Row pRow , boolean pRecursive )
   {

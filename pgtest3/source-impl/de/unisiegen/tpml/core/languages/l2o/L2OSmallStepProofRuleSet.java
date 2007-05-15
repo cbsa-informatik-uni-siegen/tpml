@@ -10,77 +10,84 @@ import de.unisiegen.tpml.core.expressions.Method ;
 import de.unisiegen.tpml.core.expressions.ObjectExpr ;
 import de.unisiegen.tpml.core.expressions.Row ;
 import de.unisiegen.tpml.core.expressions.Send ;
+import de.unisiegen.tpml.core.languages.Language ;
 import de.unisiegen.tpml.core.languages.l2.L2SmallStepProofRuleSet ;
 import de.unisiegen.tpml.core.smallstep.SmallStepProofContext ;
 import de.unisiegen.tpml.core.types.MonoType ;
 
 
 /**
- * TODO
+ * Small step proof rules for the <code>L2O</code> language.
  * 
  * @author Christian Fehler
- * @version $Rev: 1066 $
+ * @version $Rev:1132 $
+ * @see L2SmallStepProofRuleSet
  */
 public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
 {
   /**
-   * TODO
+   * The string of the <code>SEND-EVAL</code> rule.
    */
   private static final String SEND_EVAL = "SEND-EVAL" ; //$NON-NLS-1$
 
 
   /**
-   * TODO
+   * The string of the <code>SEND-EXEC</code> rule.
    */
   private static final String SEND_EXEC = "SEND-EXEC" ; //$NON-NLS-1$
 
 
   /**
-   * TODO
+   * The string of the <code>SEND-SKIP</code> rule.
    */
   private static final String SEND_SKIP = "SEND-SKIP" ; //$NON-NLS-1$
 
 
   /**
-   * TODO
+   * The string of the <code>SEND-ATTR</code> rule.
    */
   private static final String SEND_ATTR = "SEND-ATTR" ; //$NON-NLS-1$
 
 
   /**
-   * TODO
+   * The string of the <code>SEND-UNFOLD</code> rule.
    */
   private static final String SEND_UNFOLD = "SEND-UNFOLD" ; //$NON-NLS-1$
 
 
   /**
-   * TODO
+   * The string of the <code>OBJECT-EVAL</code> rule.
    */
   private static final String OBJECT_EVAL = "OBJECT-EVAL" ; //$NON-NLS-1$
 
 
   /**
-   * TODO
+   * The string of the <code>METHOD-RIGHT</code> rule.
    */
   private static final String METHOD_RIGHT = "METHOD-RIGHT" ; //$NON-NLS-1$
 
 
   /**
-   * TODO
+   * The string of the <code>"ATTR-RIGHT</code> rule.
    */
   private static final String ATTR_RIGHT = "ATTR-RIGHT" ; //$NON-NLS-1$
 
 
   /**
-   * TODO
+   * The string of the <code>ATTR-EVAL</code> rule.
    */
   private static final String ATTR_EVAL = "ATTR-EVAL" ; //$NON-NLS-1$
 
 
   /**
-   * TODO
+   * Allocates a new <code>L2OSmallStepProofRuleSet</code> for the specified
+   * <code>language</code>, which must be either <tt>L2O</tt> or a derived
+   * language.
    * 
-   * @param pL2OLanguage TODO
+   * @param pL2OLanguage The {@link Language}.
+   * @throws NullPointerException if <code>language</code> is
+   *           <code>null</code>.
+   * @see L2SmallStepProofRuleSet#L2SmallStepProofRuleSet(L2OLanguage)
    */
   public L2OSmallStepProofRuleSet ( L2OLanguage pL2OLanguage )
   {
@@ -102,11 +109,11 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
 
 
   /**
-   * TODO
+   * Evaluates the {@link ObjectExpr} using <code>context</code>.
    * 
-   * @param pContext TODO
-   * @param pObjectExpr TODO
-   * @return TODO
+   * @param pContext The small step proof context.
+   * @param pObjectExpr The {@link ObjectExpr}.
+   * @return The resulting {@link Expression}.
    */
   public Expression evaluateObjectExpr ( SmallStepProofContext pContext ,
       ObjectExpr pObjectExpr )
@@ -126,11 +133,11 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
 
 
   /**
-   * TODO
+   * Evaluates the {@link Row} using <code>context</code>.
    * 
-   * @param pContext TODO
-   * @param pRow TODO
-   * @return TODO
+   * @param pContext The small step proof context.
+   * @param pRow The {@link Row}.
+   * @return The resulting {@link Expression}.
    */
   public Expression evaluateRow ( SmallStepProofContext pContext , Row pRow )
   {
@@ -188,11 +195,11 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
 
 
   /**
-   * TODO
+   * Evaluates the {@link Send} using <code>context</code>.
    * 
-   * @param pContext TODO
-   * @param pSend TODO
-   * @return TODO
+   * @param pContext The small step proof context.
+   * @param pSend The {@link Send}.
+   * @return The resulting {@link Expression}.
    */
   public Expression evaluateSend ( SmallStepProofContext pContext , Send pSend )
   {
