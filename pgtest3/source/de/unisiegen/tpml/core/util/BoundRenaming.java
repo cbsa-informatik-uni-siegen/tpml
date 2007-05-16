@@ -6,20 +6,21 @@ import de.unisiegen.tpml.core.expressions.Identifier ;
 
 
 /**
- * TODO
+ * This class implements the bound renaming.
  * 
  * @author Christian Fehler
  */
 public final class BoundRenaming
 {
   /**
-   * TODO
+   * The negative list, containing the {@link Identifier}s which should not be
+   * returned as a new {@link Identifier}.
    */
   private ArrayList < Identifier > negativeList ;
 
 
   /**
-   * TODO
+   * Initilizes the negative list.
    */
   public BoundRenaming ( )
   {
@@ -28,9 +29,10 @@ public final class BoundRenaming
 
 
   /**
-   * TODO
+   * Adds a list of {@link Identifier}s to the negative list.
    * 
-   * @param pIdentifiers TODO
+   * @param pIdentifiers The list of {@link Identifier}s which should be added
+   *          to the negative list.
    */
   public final void add ( ArrayList < Identifier > pIdentifiers )
   {
@@ -39,9 +41,10 @@ public final class BoundRenaming
 
 
   /**
-   * TODO
+   * Adds a {@link Identifier} to the negative list.
    * 
-   * @param pId TODO
+   * @param pId The {@link Identifier} which should be added to the negative
+   *          list.
    */
   public final void add ( Identifier pId )
   {
@@ -50,9 +53,10 @@ public final class BoundRenaming
 
 
   /**
-   * TODO
+   * Adds a array of {@link Identifier}s to the negative list.
    * 
-   * @param pIdentifiers TODO
+   * @param pIdentifiers The arry of {@link Identifier}s which should be added
+   *          to the negative list.
    */
   public final void add ( Identifier [ ] pIdentifiers )
   {
@@ -64,7 +68,7 @@ public final class BoundRenaming
 
 
   /**
-   * TODO
+   * Clears the negative list.
    */
   public final void clear ( )
   {
@@ -73,22 +77,12 @@ public final class BoundRenaming
 
 
   /**
-   * TODO
+   * Returns true if the negative list contains the given {@link Identifier},
+   * otherwise false.
    * 
-   * @param pIdentifiers TODO
-   * @return TODO
-   */
-  public final boolean contains ( ArrayList < Identifier > pIdentifiers )
-  {
-    return this.negativeList.containsAll ( pIdentifiers ) ;
-  }
-
-
-  /**
-   * TODO
-   * 
-   * @param pId TODO
-   * @return TODO
+   * @param pId The {@link Identifier}, which should be tested.
+   * @return True if the negative list contains the given {@link Identifier},
+   *         otherwise false.
    */
   public final boolean contains ( Identifier pId )
   {
@@ -97,10 +91,13 @@ public final class BoundRenaming
 
 
   /**
-   * TODO
+   * Returns a new {@link Identifier}, which has the same name like the given
+   * old {@link Identifier}, if the negative list does not contain a
+   * {@link Identifier} with the same name. Otherwise a {@link Identifier} is
+   * returned with the name appending a "'".
    * 
-   * @param pOldIdentifier TODO
-   * @return TODO
+   * @param pOldIdentifier The old {@link Identifier}.
+   * @return A new {@link Identifier}.
    */
   public final Identifier newId ( Identifier pOldIdentifier )
   {
@@ -114,23 +111,10 @@ public final class BoundRenaming
 
 
   /**
-   * TODO
+   * Removes a {@link Identifier} from the negative list.
    * 
-   * @param pIdentifiers TODO
-   */
-  public final void remove ( ArrayList < Identifier > pIdentifiers )
-  {
-    while ( this.negativeList.removeAll ( pIdentifiers ) )
-    {
-      // Remove all Identifiers with the same name
-    }
-  }
-
-
-  /**
-   * TODO
-   * 
-   * @param pId TODO
+   * @param pId The {@link Identifier} which should be removed from the negative
+   *          list.
    */
   public final void remove ( Identifier pId )
   {

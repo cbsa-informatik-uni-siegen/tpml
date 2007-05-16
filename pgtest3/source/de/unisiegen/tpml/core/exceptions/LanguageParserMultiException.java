@@ -4,52 +4,59 @@ package de.unisiegen.tpml.core.exceptions ;
 import java.text.MessageFormat ;
 import java.util.ArrayList ;
 import de.unisiegen.tpml.core.Messages ;
+import de.unisiegen.tpml.core.expressions.Attribute ;
+import de.unisiegen.tpml.core.expressions.Duplication ;
 import de.unisiegen.tpml.core.expressions.Identifier ;
+import de.unisiegen.tpml.core.expressions.Method ;
+import de.unisiegen.tpml.core.expressions.Row ;
 import de.unisiegen.tpml.core.languages.LanguageParserException ;
+import de.unisiegen.tpml.core.types.RowType ;
 
 
 /**
- * TODO
+ * This {@link LanguageParserException} is used, if more than one error should
+ * be highlighted in the source code view.
  * 
  * @author Christian Fehler
+ * @see LanguageParserException
  */
 public final class LanguageParserMultiException extends LanguageParserException
 {
   /**
-   * TODO
+   * The serial version UID.
    */
   private static final long serialVersionUID = 4717084402322482294L ;
 
 
   /**
-   * TODO
+   * The string for variable identifiers.
    */
   private static final String VARIABLE = "Variable" ; //$NON-NLS-1$
 
 
   /**
-   * TODO
+   * The string for attribute identifiers.
    */
   private static final String ATTRIBUTE = "Attribute" ; //$NON-NLS-1$
 
 
   /**
-   * TODO
+   * The string for message identifiers.
    */
   private static final String MESSAGE = "Message" ; //$NON-NLS-1$
 
 
   /**
-   * TODO
+   * The string for self identifiers.
    */
   private static final String SELF = "Self" ; //$NON-NLS-1$
 
 
   /**
-   * TODO
+   * Returns the set of the {@link Identifier} as a string.
    * 
-   * @param pIdentifier TODO
-   * @return TODO
+   * @param pIdentifier The input {@link Identifier}.
+   * @return The set of the {@link Identifier} as a string.
    */
   private static String getIdSet ( Identifier pIdentifier )
   {
@@ -77,9 +84,10 @@ public final class LanguageParserMultiException extends LanguageParserException
 
 
   /**
-   * TODO
+   * Throws a <code>LanguageParserMultiException</code> if the sets of the
+   * {@link Identifier}s are not disjunct.
    * 
-   * @param pNegativeIdentifiers TODO
+   * @param pNegativeIdentifiers The input list of {@link Identifier}s.
    */
   public static void throwExceptionDisjunction (
       ArrayList < Identifier > pNegativeIdentifiers )
@@ -105,9 +113,10 @@ public final class LanguageParserMultiException extends LanguageParserException
 
 
   /**
-   * TODO
+   * Throws a <code>LanguageParserMultiException</code> if the
+   * {@link Duplication} consist of {@link Identifier}s with the same name.
    * 
-   * @param pNegativeIdentifiers TODO
+   * @param pNegativeIdentifiers The input list of {@link Identifier}s.
    */
   public static void throwExceptionDuplication (
       ArrayList < Identifier > pNegativeIdentifiers )
@@ -132,9 +141,10 @@ public final class LanguageParserMultiException extends LanguageParserException
 
 
   /**
-   * TODO
+   * Throws a <code>LanguageParserMultiException</code> if the {@link Row}
+   * consist of {@link Attribute}s with the same {@link Identifier}.
    * 
-   * @param pNegativeIdentifiers TODO
+   * @param pNegativeIdentifiers The input list of {@link Identifier}s.
    */
   public static void throwExceptionRow (
       ArrayList < Identifier > pNegativeIdentifiers )
@@ -159,9 +169,10 @@ public final class LanguageParserMultiException extends LanguageParserException
 
 
   /**
-   * TODO
+   * Throws a <code>LanguageParserMultiException</code> if the {@link RowType}
+   * consist of {@link Method} names with the same {@link Identifier}.
    * 
-   * @param pNegativeIdentifiers TODO
+   * @param pNegativeIdentifiers The input list of {@link Identifier}s.
    */
   public static void throwExceptionRowType (
       ArrayList < Identifier > pNegativeIdentifiers )
@@ -186,29 +197,29 @@ public final class LanguageParserMultiException extends LanguageParserException
 
 
   /**
-   * TODO
+   * The array of shown messages.
    */
   private String [ ] messages ;
 
 
   /**
-   * TODO
+   * The array of parser start offsets.
    */
   private int [ ] parserStartOffset ;
 
 
   /**
-   * TODO
+   * The array of parser end offsets.
    */
   private int [ ] parserEndOffset ;
 
 
   /**
-   * TODO
+   * Initializes the exception.
    * 
-   * @param pMessages TODO
-   * @param pParserStartOffset TODO
-   * @param pParserEndOffset TODO
+   * @param pMessages The array of shown messages.
+   * @param pParserStartOffset The array of parser start offsets.
+   * @param pParserEndOffset The array of parser end offsets.
    */
   public LanguageParserMultiException ( String [ ] pMessages ,
       int [ ] pParserStartOffset , int [ ] pParserEndOffset )

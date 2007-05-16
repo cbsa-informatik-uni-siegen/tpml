@@ -3,6 +3,7 @@ package de.unisiegen.tpml.core.interfaces ;
 
 import de.unisiegen.tpml.core.expressions.Identifier ;
 import de.unisiegen.tpml.core.types.MonoType ;
+import de.unisiegen.tpml.core.types.Type ;
 
 
 /**
@@ -14,17 +15,17 @@ import de.unisiegen.tpml.core.types.MonoType ;
 public interface DefaultTypes
 {
   /**
-   * TODO
+   * Returns the sub {@link Type}s.
    * 
-   * @return TODO
+   * @return the sub {@link Type}s.
    */
   public MonoType [ ] getTypes ( ) ;
 
 
   /**
-   * TODO
+   * Returns the indices of the child {@link Type}s.
    * 
-   * @return TODO
+   * @return The indices of the child {@link Type}s.
    */
   public int [ ] getTypesIndex ( ) ;
 }

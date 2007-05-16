@@ -5,7 +5,7 @@ import de.unisiegen.tpml.core.expressions.Expression ;
 
 
 /**
- * TODO
+ * Interface for classes whose instances have children {@link Expression}s.
  * 
  * @author Christian Fehler
  * @version $Rev:1350 $
@@ -13,17 +13,17 @@ import de.unisiegen.tpml.core.expressions.Expression ;
 public interface ChildrenExpressions
 {
   /**
-   * Returns the sub expressions.
+   * Returns the sub {@link Expression}s.
    * 
-   * @return the sub expressions.
+   * @return the sub {@link Expression}s.
    */
   public Expression [ ] getExpressions ( ) ;
 
 
   /**
-   * TODO
+   * Returns the indices of the child {@link Expression}s.
    * 
-   * @return TODO
+   * @return The indices of the child {@link Expression}s.
    */
   public int [ ] getExpressionsIndex ( ) ;
 }
