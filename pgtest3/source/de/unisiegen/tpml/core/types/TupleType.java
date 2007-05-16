@@ -46,6 +46,13 @@ public final class TupleType extends MonoType implements DefaultTypes
       throw new IllegalArgumentException (
           "Types must contain atleast two elements" ) ; //$NON-NLS-1$
     }
+    for ( MonoType type : pTypes )
+    {
+      if ( type == null )
+      {
+        throw new NullPointerException ( "One type is null" ) ; //$NON-NLS-1$
+      }
+    }
     this.types = pTypes ;
     this.indicesType = new int [ this.types.length ] ;
     for ( int i = 0 ; i < this.indicesType.length ; i ++ )

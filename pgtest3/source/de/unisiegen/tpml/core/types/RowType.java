@@ -55,7 +55,7 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
   {
     if ( pIdentifiers == null )
     {
-    	throw new NullPointerException ( "Identifiers is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "Identifiers is null" ) ; //$NON-NLS-1$
     }
     if ( pTypes == null )
     {
@@ -65,6 +65,13 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
     {
       throw new IllegalArgumentException (
           "The arity of method names and types must match" ) ; //$NON-NLS-1$
+    }
+    for ( MonoType type : pTypes )
+    {
+      if ( type == null )
+      {
+        throw new NullPointerException ( "One type is null" ) ; //$NON-NLS-1$
+      }
     }
     // Identifier
     this.identifiers = pIdentifiers ;
