@@ -280,10 +280,12 @@ public final class Theme extends AbstractBean
      * defaultFont.getSize()));
      */
     this.font = new JComboBox ( ).getFont ( ) ;
-    //another Test: Under windows, the methode new JComboBox ( ).getFont ( ) ; returns "Tahoma", nobody knows why,
-    //but Tahoma dose not habe our UNI-Code-Chars. With this line, we get the Font "Dialog" JAVA normaly uses. This
-    //seems not to be a systemfont but works fine.
-    this.font = new Font("Dialog", Font.PLAIN, font.getSize()+2);
+    // another Test: Under windows, the methode new JComboBox ( ).getFont ( ) ;
+    // returns "Tahoma", nobody knows why,
+    // but Tahoma dose not habe our UNI-Code-Chars. With this line, we get the
+    // Font "Dialog" JAVA normaly uses. This
+    // seems not to be a systemfont but works fine.
+    this.font = new Font ( "Dialog" , Font.PLAIN , this.font.getSize ( ) + 2 ) ; //$NON-NLS-1$
     // load the keywordColor setting
     this.keywordColor = Color.decode ( this.preferences.get ( "keywordColor" , //$NON-NLS-1$
         "#7F0000" ) ) ; //$NON-NLS-1$
