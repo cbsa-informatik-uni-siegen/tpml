@@ -506,7 +506,7 @@ public class SubTypingEnterTypes extends AbstractProofView {
 
 	public void guess() throws IllegalStateException, ProofGuessException
 	{
-		// TODO Auto-generated method stub
+		System.out.println("Guess");
 		
 	}
 

@@ -557,7 +557,8 @@ public class EditorPanel extends javax.swing.JPanel {
 			subtyping = new ProofViewComponent(ProofViewFactory.newSubtypingView(model), model);
 			editorPanel.removeAll();
 			//activateFunction(typecheckerButton, typechecker);
-			//activateFunction(typeinferenceButton, typeinference);
+			//
+			activateFunction(null, subtyping);
 			//typeinference.setAdvanced(this.advanced);
 			paintAll(getGraphics());
 			
@@ -597,9 +598,14 @@ public class EditorPanel extends javax.swing.JPanel {
 		((JComponent) comp).addPropertyChangeListener(editorComponentListener);
 		setComponent(comp);
 		deselectButtons();
-		button.setSelected(true);
-		button.setVisible(true);
-    		nextButton.setVisible(true);
+		if (button != null)
+		{
+			button.setSelected(true);
+			button.setVisible(true);
+	    		nextButton.setVisible(true);
+			
+		}
+		
 	}
 
 	/**
