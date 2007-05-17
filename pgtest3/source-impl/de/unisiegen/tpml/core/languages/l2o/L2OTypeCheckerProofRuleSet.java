@@ -8,8 +8,7 @@ import de.unisiegen.tpml.core.languages.l2.L2TypeCheckerProofRuleSet ;
  * The type proof rules for the <code>L2O</code> language.
  * 
  * @author Christian Fehler
- * @version $Id:L2OTypeCheckerProofRuleSet.java 419 2006-10-12 09:09:37Z
- *          christian $
+ * @version $Rev:1132 $
  * @see L2TypeCheckerProofRuleSet
  */
 public class L2OTypeCheckerProofRuleSet extends L2TypeCheckerProofRuleSet
