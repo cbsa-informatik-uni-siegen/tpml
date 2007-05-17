@@ -1,7 +1,7 @@
 package de.unisiegen.tpml.core.expressions ;
 
 
-import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException;
+import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException ;
 import de.unisiegen.tpml.core.interfaces.ChildrenExpressions ;
 import de.unisiegen.tpml.core.interfaces.DefaultIdentifiers ;
 import de.unisiegen.tpml.core.interfaces.SortedChildren ;
@@ -12,7 +12,7 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
 
 
 /**
- * TODO
+ * Instances of this class represent send expressions.
  * 
  * @author Christian Fehler
  * @version $Rev: 1066 $
@@ -43,16 +43,16 @@ public final class Send extends Expression implements DefaultIdentifiers ,
 
 
   /**
-   * The expression.
+   * The expressions.
    */
   private Expression [ ] expressions ;
 
 
   /**
-   * TODO
+   * Allocates a new {@link Send}.
    * 
-   * @param pExpression TODO
-   * @param pIdentifier TODO
+   * @param pExpression The child {@link Expression}.
+   * @param pIdentifier The {@link Identifier}.
    */
   public Send ( Expression pExpression , Identifier pIdentifier )
   {
@@ -80,12 +80,14 @@ public final class Send extends Expression implements DefaultIdentifiers ,
 
 
   /**
-   * TODO
+   * Allocates a new {@link Send}.
    * 
-   * @param pExpression TODO
-   * @param pIdentifier TODO
-   * @param pParserStartOffset TODO
-   * @param pParserEndOffset TODO
+   * @param pExpression The child {@link Expression}.
+   * @param pIdentifier The {@link Identifier}.
+   * @param pParserStartOffset The start offset of this {@link Expression} in
+   *          the source code.
+   * @param pParserEndOffset The end offset of this {@link Expression} in the
+   *          source code.
    */
   public Send ( Expression pExpression , Identifier pIdentifier ,
       int pParserStartOffset , int pParserEndOffset )
@@ -134,9 +136,9 @@ public final class Send extends Expression implements DefaultIdentifiers ,
 
 
   /**
-   * TODO
+   * Returns the child {@link Expression}.
    * 
-   * @return TODO
+   * @return The child {@link Expression}.
    */
   public Expression getE ( )
   {
@@ -145,9 +147,9 @@ public final class Send extends Expression implements DefaultIdentifiers ,
 
 
   /**
-   * Returns the sub expressions.
+   * Returns the sub {@link Expression}s.
    * 
-   * @return the sub expressions.
+   * @return the sub {@link Expression}s.
    */
   public Expression [ ] getExpressions ( )
   {
@@ -156,9 +158,9 @@ public final class Send extends Expression implements DefaultIdentifiers ,
 
 
   /**
-   * TODO
+   * Returns the indices of the child {@link Expression}s.
    * 
-   * @return TODO
+   * @return The indices of the child {@link Expression}s.
    */
   public int [ ] getExpressionsIndex ( )
   {
@@ -167,9 +169,9 @@ public final class Send extends Expression implements DefaultIdentifiers ,
 
 
   /**
-   * TODO
+   * Returns the {@link Identifier} of this {@link Expression}.
    * 
-   * @return TODO
+   * @return The {@link Identifier} of this {@link Expression}.
    */
   public Identifier getId ( )
   {
@@ -178,9 +180,9 @@ public final class Send extends Expression implements DefaultIdentifiers ,
 
 
   /**
-   * TODO
+   * Returns the {@link Identifier}s of this {@link Expression}.
    * 
-   * @return TODO
+   * @return The {@link Identifier}s of this {@link Expression}.
    */
   public Identifier [ ] getIdentifiers ( )
   {
@@ -189,9 +191,9 @@ public final class Send extends Expression implements DefaultIdentifiers ,
 
 
   /**
-   * TODO
+   * Returns the indices of the child {@link Identifier}s.
    * 
-   * @return TODO
+   * @return The indices of the child {@link Identifier}s.
    */
   public int [ ] getIdentifiersIndex ( )
   {
@@ -200,9 +202,11 @@ public final class Send extends Expression implements DefaultIdentifiers ,
 
 
   /**
-   * TODO
+   * Returns the {@link Identifier}s and {@link Expression}s in the right
+   * sorting.
    * 
-   * @return TODO
+   * @return The {@link Identifier}s and {@link Expression}s in the right
+   *         sorting.
    * @see SortedChildren#getSortedChildren()
    */
   public PrettyPrintable [ ] getSortedChildren ( )
@@ -241,10 +245,9 @@ public final class Send extends Expression implements DefaultIdentifiers ,
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @param pTypeSubstitution TODO
-   * @return TODO
+   * @see Expression#substitute(TypeSubstitution)
    */
   @ Override
   public Send substitute ( TypeSubstitution pTypeSubstitution )

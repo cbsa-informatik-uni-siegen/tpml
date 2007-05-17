@@ -27,8 +27,10 @@ public final class IsEmpty extends UnaryListOperator
   /**
    * Allocates a new <code>IsEmpty</code> instance.
    * 
-   * @param pParserStartOffset TODO
-   * @param pParserEndOffset TODO
+   * @param pParserStartOffset The start offset of this {@link Expression} in
+   *          the source code.
+   * @param pParserEndOffset The end offset of this {@link Expression} in the
+   *          source code.
    */
   public IsEmpty ( int pParserStartOffset , int pParserEndOffset )
   {

@@ -26,8 +26,10 @@ public final class Fst extends Projection
    * Allocates a new instance of the <code>fst</code> operator which is a
    * special case of the projection that returns the first item of a pair.
    * 
-   * @param pParserStartOffset TODO
-   * @param pParserEndOffset TODO
+   * @param pParserStartOffset The start offset of this {@link Expression} in
+   *          the source code.
+   * @param pParserEndOffset The end offset of this {@link Expression} in the
+   *          source code.
    */
   public Fst ( int pParserStartOffset , int pParserEndOffset )
   {

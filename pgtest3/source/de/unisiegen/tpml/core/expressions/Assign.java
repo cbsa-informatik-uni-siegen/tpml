@@ -26,8 +26,10 @@ public final class Assign extends BinaryOperator
   /**
    * Allocates a new <code>Assign</code> operator.
    * 
-   * @param pParserStartOffset TODO
-   * @param pParserEndOffset TODO
+   * @param pParserStartOffset The start offset of this {@link Expression} in
+   *          the source code.
+   * @param pParserEndOffset The end offset of this {@link Expression} in the
+   *          source code.
    */
   public Assign ( int pParserStartOffset , int pParserEndOffset )
   {

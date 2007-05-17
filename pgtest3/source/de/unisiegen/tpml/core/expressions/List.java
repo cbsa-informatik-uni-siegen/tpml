@@ -149,8 +149,10 @@ public final class List extends Expression implements ChildrenExpressions
    * <code>expressions</code>.
    * 
    * @param pExpressions a non empty array of {@link Expression}s.
-   * @param pParserStartOffset TODO
-   * @param pParserEndOffset TODO
+   * @param pParserStartOffset The start offset of this {@link Expression} in
+   *          the source code.
+   * @param pParserEndOffset The end offset of this {@link Expression} in the
+   *          source code.
    * @throws IllegalArgumentException if <code>expressions</code> is empty.
    * @throws NullPointerException if <code>expressions</code> is
    *           <code>null</code>.
@@ -220,9 +222,9 @@ public final class List extends Expression implements ChildrenExpressions
 
 
   /**
-   * TODO
+   * Returns the indices of the child {@link Expression}s.
    * 
-   * @return TODO
+   * @return The indices of the child {@link Expression}s.
    */
   public int [ ] getExpressionsIndex ( )
   {

@@ -3,7 +3,7 @@ package de.unisiegen.tpml.core.expressions ;
 
 import java.util.ArrayList ;
 import de.unisiegen.tpml.core.exceptions.LanguageParserMultiException ;
-import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException;
+import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException ;
 import de.unisiegen.tpml.core.interfaces.BoundIdentifiers ;
 import de.unisiegen.tpml.core.interfaces.ChildrenExpressions ;
 import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
@@ -132,8 +132,10 @@ public final class Lambda extends Value implements BoundIdentifiers ,
    * @param pIdentifier the identifier of the lambda parameter.
    * @param pTau the type for the parameter or <code>null</code>.
    * @param pExpression the body.
-   * @param pParserStartOffset TODO
-   * @param pParserEndOffset TODO
+   * @param pParserStartOffset The start offset of this {@link Expression} in
+   *          the source code.
+   * @param pParserEndOffset The end offset of this {@link Expression} in the
+   *          source code.
    * @throws NullPointerException if either <code>id</code> or <code>e</code>
    *           is <code>null</code>.
    */
@@ -147,7 +149,7 @@ public final class Lambda extends Value implements BoundIdentifiers ,
 
 
   /**
-   * TODO
+   * Checks the disjunction of the {@link Identifier} sets.
    */
   public void checkDisjunction ( )
   {
@@ -234,9 +236,9 @@ public final class Lambda extends Value implements BoundIdentifiers ,
 
 
   /**
-   * TODO
+   * Returns the indices of the child {@link Expression}s.
    * 
-   * @return TODO
+   * @return The indices of the child {@link Expression}s.
    */
   public int [ ] getExpressionsIndex ( )
   {
@@ -256,9 +258,9 @@ public final class Lambda extends Value implements BoundIdentifiers ,
 
 
   /**
-   * TODO
+   * Returns the {@link Identifier}s of this {@link Expression}.
    * 
-   * @return TODO
+   * @return The {@link Identifier}s of this {@link Expression}.
    */
   public Identifier [ ] getIdentifiers ( )
   {
@@ -322,9 +324,9 @@ public final class Lambda extends Value implements BoundIdentifiers ,
 
 
   /**
-   * TODO
+   * Returns the indices of the child {@link Identifier}s.
    * 
-   * @return TODO
+   * @return The indices of the child {@link Identifier}s.
    */
   public int [ ] getIdentifiersIndex ( )
   {
@@ -355,9 +357,9 @@ public final class Lambda extends Value implements BoundIdentifiers ,
 
 
   /**
-   * TODO
+   * Returns the indices of the child {@link Type}s.
    * 
-   * @return TODO
+   * @return The indices of the child {@link Type}s.
    */
   public int [ ] getTypesIndex ( )
   {

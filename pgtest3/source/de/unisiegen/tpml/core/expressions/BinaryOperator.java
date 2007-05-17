@@ -77,9 +77,10 @@ public abstract class BinaryOperator extends Constant
 
 
   /**
-   * TODO
+   * Returns the prefix of this {@link Expression}.
    * 
-   * @return TODO
+   * @return The prefix of this {@link Expression}.
+   * @see #prefix
    */
   @ Override
   public String getPrefix ( )

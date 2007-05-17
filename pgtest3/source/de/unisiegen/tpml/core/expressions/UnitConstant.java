@@ -25,8 +25,10 @@ public final class UnitConstant extends Constant
   /**
    * Allocates a new <code>UnitConstant</code>.
    * 
-   * @param pParserStartOffset TODO
-   * @param pParserEndOffset TODO
+   * @param pParserStartOffset The start offset of this {@link Expression} in
+   *          the source code.
+   * @param pParserEndOffset The end offset of this {@link Expression} in the
+   *          source code.
    */
   public UnitConstant ( int pParserStartOffset , int pParserEndOffset )
   {

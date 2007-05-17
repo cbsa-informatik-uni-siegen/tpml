@@ -41,8 +41,10 @@ public final class BooleanConstant extends Constant
    * <code>booleanValue</code>.
    * 
    * @param pBooleanValue the boolean value.
-   * @param pParserStartOffset TODO
-   * @param pParserEndOffset TODO
+   * @param pParserStartOffset The start offset of this {@link Expression} in
+   *          the source code.
+   * @param pParserEndOffset The end offset of this {@link Expression} in the
+   *          source code.
    * @see #booleanValue()
    */
   public BooleanConstant ( boolean pBooleanValue , int pParserStartOffset ,

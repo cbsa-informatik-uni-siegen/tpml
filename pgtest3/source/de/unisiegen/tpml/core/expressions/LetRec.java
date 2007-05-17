@@ -3,7 +3,7 @@ package de.unisiegen.tpml.core.expressions ;
 
 import java.util.ArrayList ;
 import de.unisiegen.tpml.core.exceptions.LanguageParserMultiException ;
-import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException;
+import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException ;
 import de.unisiegen.tpml.core.interfaces.BoundIdentifiers ;
 import de.unisiegen.tpml.core.interfaces.ChildrenExpressions ;
 import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
@@ -54,8 +54,10 @@ public final class LetRec extends Let implements BoundIdentifiers ,
    * @param pTau the type for <code>id</code> or <code>null</code>.
    * @param pExpression1 the first expression.
    * @param pExpression2 the second expression.
-   * @param pParserStartOffset TODO
-   * @param pParserEndOffset TODO
+   * @param pParserStartOffset The start offset of this {@link Expression} in
+   *          the source code.
+   * @param pParserEndOffset The end offset of this {@link Expression} in the
+   *          source code.
    * @throws NullPointerException if <code>id</code>, <code>e1</code> or
    *           <code>e2</code> is <code>null</code>.
    */
@@ -69,7 +71,7 @@ public final class LetRec extends Let implements BoundIdentifiers ,
 
 
   /**
-   * TODO
+   * Checks the disjunction of the {@link Identifier} sets.
    */
   @ Override
   public void checkDisjunction ( )

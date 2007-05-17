@@ -1,7 +1,7 @@
 package de.unisiegen.tpml.core.expressions ;
 
 
-import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException;
+import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException ;
 import de.unisiegen.tpml.core.interfaces.ChildrenExpressions ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
@@ -74,8 +74,10 @@ public final class Sequence extends Expression implements ChildrenExpressions
    * 
    * @param pExpression1 the first statement.
    * @param pExpression2 the second statement.
-   * @param pParserStartOffset TODO
-   * @param pParserEndOffset TODO
+   * @param pParserStartOffset The start offset of this {@link Expression} in
+   *          the source code.
+   * @param pParserEndOffset The end offset of this {@link Expression} in the
+   *          source code.
    * @throws NullPointerException if <code>e1</code> or <code>e2</code> is
    *           <code>null</code>.
    */
@@ -163,9 +165,9 @@ public final class Sequence extends Expression implements ChildrenExpressions
 
 
   /**
-   * TODO
+   * Returns the indices of the child {@link Expression}s.
    * 
-   * @return TODO
+   * @return The indices of the child {@link Expression}s.
    */
   public int [ ] getExpressionsIndex ( )
   {

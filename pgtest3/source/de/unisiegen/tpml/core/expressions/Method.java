@@ -13,7 +13,7 @@ import de.unisiegen.tpml.core.types.Type ;
 
 
 /**
- * TODO
+ * Instances of this class represent method expressions.
  * 
  * @author Christian Fehler
  * @version $Rev: 1067 $
@@ -43,7 +43,7 @@ public class Method extends Expression implements DefaultIdentifiers ,
 
 
   /**
-   * TODO
+   * The identifiers.
    * 
    * @see #getIdentifiers()
    */
@@ -59,17 +59,17 @@ public class Method extends Expression implements DefaultIdentifiers ,
 
 
   /**
-   * The expression.
+   * The expressions.
    */
   private Expression [ ] expressions ;
 
 
   /**
-   * TODO
+   * Allocates a new {@link Method}.
    * 
-   * @param pIdentifier TODO
-   * @param pTau TODO
-   * @param pExpression TODO
+   * @param pIdentifier The {@link Identifier}.
+   * @param pTau The {@link Type}.
+   * @param pExpression The child {@link Expression}.
    */
   public Method ( Identifier pIdentifier , MonoType pTau ,
       Expression pExpression )
@@ -113,13 +113,15 @@ public class Method extends Expression implements DefaultIdentifiers ,
 
 
   /**
-   * TODO
+   * Allocates a new {@link Method}.
    * 
-   * @param pIdentifier TODO
-   * @param pTau TODO
-   * @param pExpression TODO
-   * @param pParserStartOffset TODO
-   * @param pParserEndOffset TODO
+   * @param pIdentifier The {@link Identifier}.
+   * @param pTau The {@link Type}.
+   * @param pExpression The child {@link Expression}.
+   * @param pParserStartOffset The start offset of this {@link Expression} in
+   *          the source code.
+   * @param pParserEndOffset The end offset of this {@link Expression} in the
+   *          source code.
    */
   public Method ( Identifier pIdentifier , MonoType pTau ,
       Expression pExpression , int pParserStartOffset , int pParserEndOffset )
@@ -170,9 +172,9 @@ public class Method extends Expression implements DefaultIdentifiers ,
 
 
   /**
-   * TODO
+   * Returns the sub {@link Expression}.
    * 
-   * @return TODO
+   * @return the sub {@link Expression}.
    */
   public Expression getE ( )
   {
@@ -181,9 +183,9 @@ public class Method extends Expression implements DefaultIdentifiers ,
 
 
   /**
-   * Returns the sub expressions.
+   * Returns the sub {@link Expression}s.
    * 
-   * @return the sub expressions.
+   * @return the sub {@link Expression}s.
    */
   public Expression [ ] getExpressions ( )
   {
@@ -192,9 +194,9 @@ public class Method extends Expression implements DefaultIdentifiers ,
 
 
   /**
-   * TODO
+   * Returns the indices of the child {@link Expression}s.
    * 
-   * @return TODO
+   * @return The indices of the child {@link Expression}s.
    */
   public int [ ] getExpressionsIndex ( )
   {
@@ -203,9 +205,9 @@ public class Method extends Expression implements DefaultIdentifiers ,
 
 
   /**
-   * TODO
+   * Returns the {@link Identifier}s of this {@link Expression}.
    * 
-   * @return TODO
+   * @return The {@link Identifier}s of this {@link Expression}.
    */
   public Identifier getId ( )
   {
@@ -214,9 +216,9 @@ public class Method extends Expression implements DefaultIdentifiers ,
 
 
   /**
-   * TODO
+   * Returns the {@link Identifier}s of this {@link Expression}.
    * 
-   * @return TODO
+   * @return The {@link Identifier}s of this {@link Expression}.
    */
   public Identifier [ ] getIdentifiers ( )
   {
@@ -225,9 +227,9 @@ public class Method extends Expression implements DefaultIdentifiers ,
 
 
   /**
-   * TODO
+   * Returns the indices of the child {@link Identifier}s.
    * 
-   * @return TODO
+   * @return The indices of the child {@link Identifier}s.
    */
   public int [ ] getIdentifiersIndex ( )
   {
@@ -236,9 +238,9 @@ public class Method extends Expression implements DefaultIdentifiers ,
 
 
   /**
-   * TODO
+   * Returns the sub {@link Type}.
    * 
-   * @return TODO
+   * @return the sub {@link Type}.
    */
   public MonoType getTau ( )
   {
@@ -247,9 +249,9 @@ public class Method extends Expression implements DefaultIdentifiers ,
 
 
   /**
-   * Returns the types for the <code>identifiers</code>.
+   * Returns the sub {@link Type}s.
    * 
-   * @return the types.
+   * @return the sub {@link Type}s.
    */
   public MonoType [ ] getTypes ( )
   {
@@ -258,9 +260,9 @@ public class Method extends Expression implements DefaultIdentifiers ,
 
 
   /**
-   * TODO
+   * Returns the indices of the child {@link Type}s.
    * 
-   * @return TODO
+   * @return The indices of the child {@link Type}s.
    */
   public int [ ] getTypesIndex ( )
   {
@@ -307,6 +309,8 @@ public class Method extends Expression implements DefaultIdentifiers ,
 
   /**
    * {@inheritDoc}
+   * 
+   * @see Expression#substitute(TypeSubstitution)
    */
   @ Override
   public Method substitute ( TypeSubstitution pTypeSubstitution )

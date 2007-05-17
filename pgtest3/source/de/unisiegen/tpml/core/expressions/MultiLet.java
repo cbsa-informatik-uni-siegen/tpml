@@ -4,7 +4,7 @@ package de.unisiegen.tpml.core.expressions ;
 import java.util.ArrayList ;
 import java.util.Arrays ;
 import de.unisiegen.tpml.core.exceptions.LanguageParserMultiException ;
-import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException;
+import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException ;
 import de.unisiegen.tpml.core.interfaces.BoundIdentifiers ;
 import de.unisiegen.tpml.core.interfaces.ChildrenExpressions ;
 import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
@@ -157,8 +157,10 @@ public final class MultiLet extends Expression implements BoundIdentifiers ,
    *          type of <code>e1</code>) or <code>null</code>.
    * @param pExpression1 the first expression.
    * @param pExpression2 the second expression.
-   * @param pParserStartOffset TODO
-   * @param pParserEndOffset TODO
+   * @param pParserStartOffset The start offset of this {@link Expression} in
+   *          the source code.
+   * @param pParserEndOffset The end offset of this {@link Expression} in the
+   *          source code.
    * @throws IllegalArgumentException if the <code>identifiers</code> list is
    *           empty.
    * @throws NullPointerException if <code>identifiers</code>,
@@ -175,7 +177,7 @@ public final class MultiLet extends Expression implements BoundIdentifiers ,
 
 
   /**
-   * TODO
+   * Checks the disjunction of the {@link Identifier} sets.
    */
   public void checkDisjunction ( )
   {
@@ -283,9 +285,9 @@ public final class MultiLet extends Expression implements BoundIdentifiers ,
 
 
   /**
-   * TODO
+   * Returns the indices of the child {@link Expression}s.
    * 
-   * @return TODO
+   * @return The indices of the child {@link Expression}s.
    */
   public int [ ] getExpressionsIndex ( )
   {
@@ -294,9 +296,9 @@ public final class MultiLet extends Expression implements BoundIdentifiers ,
 
 
   /**
-   * Returns the identifiers for the tuple items.
+   * Returns the {@link Identifier}s of this {@link Expression}.
    * 
-   * @return the identifiers for the tuple items.
+   * @return The {@link Identifier}s of this {@link Expression}.
    */
   public Identifier [ ] getIdentifiers ( )
   {
@@ -380,9 +382,9 @@ public final class MultiLet extends Expression implements BoundIdentifiers ,
 
 
   /**
-   * TODO
+   * Returns the indices of the child {@link Identifier}s.
    * 
-   * @return TODO
+   * @return The indices of the child {@link Identifier}s.
    */
   public int [ ] getIdentifiersIndex ( )
   {
@@ -413,9 +415,9 @@ public final class MultiLet extends Expression implements BoundIdentifiers ,
 
 
   /**
-   * TODO
+   * Returns the indices of the child {@link Type}s.
    * 
-   * @return TODO
+   * @return The indices of the child {@link Type}s.
    */
   public int [ ] getTypesIndex ( )
   {

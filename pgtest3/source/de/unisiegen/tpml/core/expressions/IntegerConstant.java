@@ -40,8 +40,10 @@ public final class IntegerConstant extends Constant
    * <code>intValue</code>.
    * 
    * @param pIntValue the numeric value for the integer constant.
-   * @param pParserStartOffset TODO
-   * @param pParserEndOffset TODO
+   * @param pParserStartOffset The start offset of this {@link Expression} in
+   *          the source code.
+   * @param pParserEndOffset The end offset of this {@link Expression} in the
+   *          source code.
    * @see #intValue()
    */
   public IntegerConstant ( int pIntValue , int pParserStartOffset ,

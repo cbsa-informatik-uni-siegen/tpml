@@ -43,8 +43,10 @@ public final class Location extends Value
    * <code>name</code>.
    * 
    * @param pName the name of the memory location.
-   * @param pParserStartOffset TODO
-   * @param pParserEndOffset TODO
+   * @param pParserStartOffset The start offset of this {@link Expression} in
+   *          the source code.
+   * @param pParserEndOffset The end offset of this {@link Expression} in the
+   *          source code.
    */
   public Location ( String pName , int pParserStartOffset , int pParserEndOffset )
   {

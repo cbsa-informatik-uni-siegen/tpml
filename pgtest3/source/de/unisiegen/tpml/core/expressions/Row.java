@@ -14,7 +14,7 @@ import de.unisiegen.tpml.core.util.BoundRenaming ;
 
 
 /**
- * TODO
+ * Instances of this class represent row expressions.
  * 
  * @author Christian Fehler
  * @version $Rev: 1066 $
@@ -28,17 +28,15 @@ public final class Row extends Expression implements ChildrenExpressions
 
 
   /**
-   * TODO
-   * 
-   * @see #getExpressions()
+   * The expressions.
    */
   private Expression [ ] expressions ;
 
 
   /**
-   * TODO
+   * Allocates a new {@link Row}.
    * 
-   * @param pExpressions TODO
+   * @param pExpressions The child {@link Expression}.
    */
   public Row ( Expression [ ] pExpressions )
   {
@@ -61,11 +59,13 @@ public final class Row extends Expression implements ChildrenExpressions
 
 
   /**
-   * TODO
+   * Allocates a new {@link Row}.
    * 
-   * @param pExpressions TODO
-   * @param pParserStartOffset TODO
-   * @param pParserEndOffset TODO
+   * @param pExpressions The child {@link Expression}.
+   * @param pParserStartOffset The start offset of this {@link Expression} in
+   *          the source code.
+   * @param pParserEndOffset The end offset of this {@link Expression} in the
+   *          source code.
    */
   public Row ( Expression [ ] pExpressions , int pParserStartOffset ,
       int pParserEndOffset )
@@ -77,7 +77,7 @@ public final class Row extends Expression implements ChildrenExpressions
 
 
   /**
-   * TODO
+   * Checks the disjunction of the {@link Identifier} sets.
    */
   public void checkDisjunction ( )
   {
@@ -151,10 +151,9 @@ public final class Row extends Expression implements ChildrenExpressions
 
 
   /**
-   * TODO
+   * Returns the sub {@link Expression}s.
    * 
-   * @return TODO
-   * @see #expressions
+   * @return the sub {@link Expression}s.
    */
   public Expression [ ] getExpressions ( )
   {
@@ -163,9 +162,9 @@ public final class Row extends Expression implements ChildrenExpressions
 
 
   /**
-   * TODO
+   * Returns the indices of the child {@link Expression}s.
    * 
-   * @return TODO
+   * @return The indices of the child {@link Expression}s.
    */
   public int [ ] getExpressionsIndex ( )
   {
@@ -174,10 +173,10 @@ public final class Row extends Expression implements ChildrenExpressions
 
 
   /**
-   * TODO
+   * Returns a list of to the given {@link Attribute} bound {@link Identifier}s.
    * 
-   * @param pAttribute TODO
-   * @return TODO
+   * @param pAttribute The input {@link Attribute}.
+   * @return A list of to the given {@link Attribute} bound {@link Identifier}s.
    */
   public ArrayList < Identifier > getIdentifiersBound ( Attribute pAttribute )
   {
@@ -239,9 +238,10 @@ public final class Row extends Expression implements ChildrenExpressions
 
 
   /**
-   * TODO
+   * Returns the prefix of this {@link Expression}.
    * 
-   * @return TODO
+   * @return The prefix of this {@link Expression}.
+   * @see #prefix
    */
   @ Override
   public String getPrefix ( )
@@ -355,10 +355,9 @@ public final class Row extends Expression implements ChildrenExpressions
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @param pTypeSubstitution TODO
-   * @return TODO
+   * @see Expression#substitute(TypeSubstitution)
    */
   @ Override
   public Row substitute ( TypeSubstitution pTypeSubstitution )
@@ -373,11 +372,11 @@ public final class Row extends Expression implements ChildrenExpressions
 
 
   /**
-   * TODO
+   * Performs the row substitution.
    * 
-   * @param pId TODO
-   * @param pExpression TODO
-   * @return TODO
+   * @param pId The {@link Identifier}.
+   * @param pExpression The {@link Expression} to substitute.
+   * @return The new {@link Row}.
    */
   public Row substituteRow ( Identifier pId , Expression pExpression )
   {

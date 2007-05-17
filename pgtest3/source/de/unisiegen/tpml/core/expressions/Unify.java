@@ -10,7 +10,7 @@ package de.unisiegen.tpml.core.expressions ;
 public class Unify extends Constant
 {
   /**
-   * TODO
+   * Allocates a new <code>Unify</code>.
    */
   public Unify ( )
   {

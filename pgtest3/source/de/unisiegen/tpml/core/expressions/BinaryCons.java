@@ -26,8 +26,10 @@ public final class BinaryCons extends BinaryOperator
   /**
    * Allocates a new <code>BinaryCons</code> instances.
    * 
-   * @param pParserStartOffset TODO
-   * @param pParserEndOffset TODO
+   * @param pParserStartOffset The start offset of this {@link Expression} in
+   *          the source code.
+   * @param pParserEndOffset The end offset of this {@link Expression} in the
+   *          source code.
    */
   public BinaryCons ( int pParserStartOffset , int pParserEndOffset )
   {

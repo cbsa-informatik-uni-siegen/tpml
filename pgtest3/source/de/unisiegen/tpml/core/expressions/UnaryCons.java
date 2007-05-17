@@ -24,8 +24,10 @@ public final class UnaryCons extends Constant
   /**
    * Constructs a new <code>UnaryCons</code> instance.
    * 
-   * @param pParserStartOffset TODO
-   * @param pParserEndOffset TODO
+   * @param pParserStartOffset The start offset of this {@link Expression} in
+   *          the source code.
+   * @param pParserEndOffset The end offset of this {@link Expression} in the
+   *          source code.
    */
   public UnaryCons ( int pParserStartOffset , int pParserEndOffset )
   {

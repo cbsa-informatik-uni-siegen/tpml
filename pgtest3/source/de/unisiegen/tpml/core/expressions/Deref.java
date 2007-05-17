@@ -26,8 +26,10 @@ public final class Deref extends UnaryOperator
   /**
    * Allocates a new <code>Deref</code> instance.
    * 
-   * @param pParserStartOffset TODO
-   * @param pParserEndOffset TODO
+   * @param pParserStartOffset The start offset of this {@link Expression} in
+   *          the source code.
+   * @param pParserEndOffset The end offset of this {@link Expression} in the
+   *          source code.
    */
   public Deref ( int pParserStartOffset , int pParserEndOffset )
   {

@@ -144,8 +144,10 @@ public class Let extends Expression implements BoundIdentifiers , DefaultTypes ,
    *          <code>e1</code>) or <code>null</code>.
    * @param pExpression1 the first expression.
    * @param pExpression2 the second expression.
-   * @param pParserStartOffset TODO
-   * @param pParserEndOffset TODO
+   * @param pParserStartOffset The start offset of this {@link Expression} in
+   *          the source code.
+   * @param pParserEndOffset The end offset of this {@link Expression} in the
+   *          source code.
    * @throws NullPointerException if <code>id</code>, <code>e1</code> or
    *           <code>e2</code> is <code>null</code>.
    */
@@ -160,7 +162,7 @@ public class Let extends Expression implements BoundIdentifiers , DefaultTypes ,
 
 
   /**
-   * TODO
+   * Checks the disjunction of the {@link Identifier} sets.
    */
   public void checkDisjunction ( )
   {
@@ -260,9 +262,9 @@ public class Let extends Expression implements BoundIdentifiers , DefaultTypes ,
 
 
   /**
-   * TODO
+   * Returns the indices of the child {@link Expression}s.
    * 
-   * @return TODO
+   * @return The indices of the child {@link Expression}s.
    */
   public int [ ] getExpressionsIndex ( )
   {
@@ -282,9 +284,9 @@ public class Let extends Expression implements BoundIdentifiers , DefaultTypes ,
 
 
   /**
-   * TODO
+   * Returns the {@link Identifier}s of this {@link Expression}.
    * 
-   * @return TODO
+   * @return The {@link Identifier}s of this {@link Expression}.
    */
   public Identifier [ ] getIdentifiers ( )
   {
@@ -344,9 +346,9 @@ public class Let extends Expression implements BoundIdentifiers , DefaultTypes ,
 
 
   /**
-   * TODO
+   * Returns the indices of the child {@link Identifier}s.
    * 
-   * @return TODO
+   * @return The indices of the child {@link Identifier}s.
    */
   public int [ ] getIdentifiersIndex ( )
   {
@@ -379,9 +381,9 @@ public class Let extends Expression implements BoundIdentifiers , DefaultTypes ,
 
 
   /**
-   * TODO
+   * Returns the indices of the child {@link Type}s.
    * 
-   * @return TODO
+   * @return The indices of the child {@link Type}s.
    */
   public int [ ] getTypesIndex ( )
   {

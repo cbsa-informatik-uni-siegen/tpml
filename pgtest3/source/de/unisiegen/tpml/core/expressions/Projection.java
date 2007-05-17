@@ -58,12 +58,18 @@ public class Projection extends UnaryOperator
    *          applied.
    * @param pIndex the index of the item to select from the tuple, starting with
    *          <code>1</code>.
-   * @param pParserArityStartOffset TODO
-   * @param pParserArityEndOffset TODO
-   * @param pParserIndexStartOffset TODO
-   * @param pParserIndexEndOffset TODO
-   * @param pParserStartOffset TODO
-   * @param pParserEndOffset TODO
+   * @param pParserArityStartOffset The start offset of the arity in the source
+   *          code.
+   * @param pParserArityEndOffset The end offset of the arity in the source
+   *          code.
+   * @param pParserIndexStartOffset The start offset of the index in the source
+   *          code.
+   * @param pParserIndexEndOffset The end offset of the index in the source
+   *          code.
+   * @param pParserStartOffset The start offset of this {@link Expression} in
+   *          the source code.
+   * @param pParserEndOffset The end offset of this {@link Expression} in the
+   *          source code.
    * @throws IllegalArgumentException if the <code>arity</code> or the
    *           <code>index</code> is invalid.
    */
@@ -90,10 +96,14 @@ public class Projection extends UnaryOperator
    * @param pIndex the index of the item to select from the tuple, starting with
    *          <code>1</code>.
    * @param pOp the string representation of the projectin.
-   * @param pParserArityStartOffset TODO
-   * @param pParserArityEndOffset TODO
-   * @param pParserIndexStartOffset TODO
-   * @param pParserIndexEndOffset TODO
+   * @param pParserArityStartOffset The start offset of the arity in the source
+   *          code.
+   * @param pParserArityEndOffset The end offset of the arity in the source
+   *          code.
+   * @param pParserIndexStartOffset The start offset of the index in the source
+   *          code.
+   * @param pParserIndexEndOffset The end offset of the index in the source
+   *          code.
    * @throws IllegalArgumentException if the <code>arity</code> or the
    *           <code>index</code> is invalid.
    */

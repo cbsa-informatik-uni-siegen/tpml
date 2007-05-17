@@ -4,7 +4,7 @@ package de.unisiegen.tpml.core.expressions ;
 import java.util.ArrayList ;
 import java.util.Arrays ;
 import de.unisiegen.tpml.core.exceptions.LanguageParserMultiException ;
-import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException;
+import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException ;
 import de.unisiegen.tpml.core.interfaces.BoundIdentifiers ;
 import de.unisiegen.tpml.core.interfaces.ChildrenExpressions ;
 import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
@@ -141,8 +141,10 @@ public final class MultiLambda extends Value implements BoundIdentifiers ,
    * @param pIdentifiers non-empty set of identifiers.
    * @param pTau the type of the identifiers or <code>null</code>.
    * @param pExpression the function body.
-   * @param pParserStartOffset TODO
-   * @param pParserEndOffset TODO
+   * @param pParserStartOffset The start offset of this {@link Expression} in
+   *          the source code.
+   * @param pParserEndOffset The end offset of this {@link Expression} in the
+   *          source code.
    * @throws IllegalArgumentException if the <code>identifiers</code> list is
    *           empty.
    * @throws NullPointerException if <code>identifiers</code> or
@@ -158,7 +160,7 @@ public final class MultiLambda extends Value implements BoundIdentifiers ,
 
 
   /**
-   * TODO
+   * Checks the disjunction of the {@link Identifier} sets.
    */
   public void checkDisjunction ( )
   {
@@ -253,9 +255,9 @@ public final class MultiLambda extends Value implements BoundIdentifiers ,
 
 
   /**
-   * TODO
+   * Returns the indices of the child {@link Expression}s.
    * 
-   * @return TODO
+   * @return The indices of the child {@link Expression}s.
    */
   public int [ ] getExpressionsIndex ( )
   {
@@ -349,9 +351,9 @@ public final class MultiLambda extends Value implements BoundIdentifiers ,
 
 
   /**
-   * TODO
+   * Returns the indices of the child {@link Identifier}s.
    * 
-   * @return TODO
+   * @return The indices of the child {@link Identifier}s.
    */
   public int [ ] getIdentifiersIndex ( )
   {
@@ -383,9 +385,9 @@ public final class MultiLambda extends Value implements BoundIdentifiers ,
 
 
   /**
-   * TODO
+   * Returns the indices of the child {@link Type}s.
    * 
-   * @return TODO
+   * @return The indices of the child {@link Type}s.
    */
   public int [ ] getTypesIndex ( )
   {

@@ -16,8 +16,10 @@ public final class ArithmeticOperator extends BinaryOperator
   /**
    * Returns the arithmetic division operator.
    * 
-   * @param pParserStartOffset TODO
-   * @param pParserEndOffset TODO
+   * @param pParserStartOffset The start offset of this {@link Expression} in
+   *          the source code.
+   * @param pParserEndOffset The end offset of this {@link Expression} in the
+   *          source code.
    * @return a new instance of the div operator.
    */
   public static final ArithmeticOperator newDiv ( int pParserStartOffset ,
@@ -31,8 +33,10 @@ public final class ArithmeticOperator extends BinaryOperator
   /**
    * Returns the arithmetic minus operator.
    * 
-   * @param pParserStartOffset TODO
-   * @param pParserEndOffset TODO
+   * @param pParserStartOffset The start offset of this {@link Expression} in
+   *          the source code.
+   * @param pParserEndOffset The end offset of this {@link Expression} in the
+   *          source code.
    * @return a new instance of the minus operator.
    */
   public static final ArithmeticOperator newMinus ( int pParserStartOffset ,
@@ -46,8 +50,10 @@ public final class ArithmeticOperator extends BinaryOperator
   /**
    * Returns the arithmetic modulo operator.
    * 
-   * @param pParserStartOffset TODO
-   * @param pParserEndOffset TODO
+   * @param pParserStartOffset The start offset of this {@link Expression} in
+   *          the source code.
+   * @param pParserEndOffset The end offset of this {@link Expression} in the
+   *          source code.
    * @return a new instance of the mod operator.
    */
   public static final ArithmeticOperator newMod ( int pParserStartOffset ,
@@ -61,8 +67,10 @@ public final class ArithmeticOperator extends BinaryOperator
   /**
    * Returns the arithmetic multiplication operator.
    * 
-   * @param pParserStartOffset TODO
-   * @param pParserEndOffset TODO
+   * @param pParserStartOffset The start offset of this {@link Expression} in
+   *          the source code.
+   * @param pParserEndOffset The end offset of this {@link Expression} in the
+   *          source code.
    * @return a new instance of the mult operator.
    */
   public static final ArithmeticOperator newMult ( int pParserStartOffset ,
@@ -76,8 +84,10 @@ public final class ArithmeticOperator extends BinaryOperator
   /**
    * Returns the arithmetic plus operator.
    * 
-   * @param pParserStartOffset TODO
-   * @param pParserEndOffset TODO
+   * @param pParserStartOffset The start offset of this {@link Expression} in
+   *          the source code.
+   * @param pParserEndOffset The end offset of this {@link Expression} in the
+   *          source code.
    * @return a new instance of the plus operator.
    */
   public static final ArithmeticOperator newPlus ( int pParserStartOffset ,
@@ -111,8 +121,10 @@ public final class ArithmeticOperator extends BinaryOperator
    * 
    * @param pText the string representation of the operator.
    * @param pPrettyPriority the pretty print priority for infix pretty printing.
-   * @param pParserStartOffset TODO
-   * @param pParserEndOffset TODO
+   * @param pParserStartOffset The start offset of this {@link Expression} in
+   *          the source code.
+   * @param pParserEndOffset The end offset of this {@link Expression} in the
+   *          source code.
    * @throws NullPointerException if <code>text</code> is <code>null</code>.
    * @see BinaryOperator#BinaryOperator(String, int)
    */

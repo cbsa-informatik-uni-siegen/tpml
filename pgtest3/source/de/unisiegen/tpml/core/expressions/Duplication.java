@@ -15,7 +15,7 @@ import de.unisiegen.tpml.core.util.BoundRenaming ;
 
 
 /**
- * TODO
+ * Instances of this class represent duplication expressions,
  * 
  * @author Christian Fehler
  * @author Christian Fehler
@@ -37,7 +37,7 @@ public final class Duplication extends Expression implements
 
 
   /**
-   * TODO
+   * The expressions.
    * 
    * @see #getExpressions()
    */
@@ -45,7 +45,7 @@ public final class Duplication extends Expression implements
 
 
   /**
-   * TODO
+   * The identifiers.
    * 
    * @see #getIdentifiers()
    */
@@ -53,10 +53,10 @@ public final class Duplication extends Expression implements
 
 
   /**
-   * TODO
+   * Allocates a new {@link Duplication}.
    * 
-   * @param pIdentifiers TODO
-   * @param pExpressions TODO
+   * @param pIdentifiers The {@link Identifier}.
+   * @param pExpressions The child {@link Expression}.
    */
   public Duplication ( Identifier [ ] pIdentifiers , Expression [ ] pExpressions )
   {
@@ -99,12 +99,14 @@ public final class Duplication extends Expression implements
 
 
   /**
-   * TODO
+   * Allocates a new {@link Duplication}.
    * 
-   * @param pIdentifiers TODO
-   * @param pExpressions TODO
-   * @param pParserStartOffset TODO
-   * @param pParserEndOffset TODO
+   * @param pIdentifiers The {@link Identifier}.
+   * @param pExpressions The child {@link Expression}.
+   * @param pParserStartOffset The start offset of this {@link Expression} in
+   *          the source code.
+   * @param pParserEndOffset The end offset of this {@link Expression} in the
+   *          source code.
    */
   public Duplication ( Identifier [ ] pIdentifiers ,
       Expression [ ] pExpressions , int pParserStartOffset ,
@@ -163,10 +165,9 @@ public final class Duplication extends Expression implements
 
 
   /**
-   * TODO
+   * Returns the sub {@link Expression}s.
    * 
-   * @return TODO
-   * @see #expressions
+   * @return the sub {@link Expression}s.
    */
   public Expression [ ] getExpressions ( )
   {
@@ -175,9 +176,9 @@ public final class Duplication extends Expression implements
 
 
   /**
-   * TODO
+   * Returns the indices of the child {@link Expression}s.
    * 
-   * @return TODO
+   * @return The indices of the child {@link Expression}s.
    */
   public int [ ] getExpressionsIndex ( )
   {
@@ -186,10 +187,9 @@ public final class Duplication extends Expression implements
 
 
   /**
-   * TODO
+   * Returns the {@link Identifier}s of this {@link Expression}.
    * 
-   * @return TODO
-   * @see #identifiers
+   * @return The {@link Identifier}s of this {@link Expression}.
    */
   public Identifier [ ] getIdentifiers ( )
   {
@@ -220,9 +220,9 @@ public final class Duplication extends Expression implements
 
 
   /**
-   * TODO
+   * Returns the indices of the child {@link Identifier}s.
    * 
-   * @return TODO
+   * @return The indices of the child {@link Identifier}s.
    */
   public int [ ] getIdentifiersIndex ( )
   {
@@ -231,9 +231,11 @@ public final class Duplication extends Expression implements
 
 
   /**
-   * TODO
+   * Returns the {@link Identifier}s and {@link Expression}s in the right
+   * sorting.
    * 
-   * @return TODO
+   * @return The {@link Identifier}s and {@link Expression}s in the right
+   *         sorting.
    * @see SortedChildren#getSortedChildren()
    */
   public PrettyPrintable [ ] getSortedChildren ( )
@@ -323,10 +325,9 @@ public final class Duplication extends Expression implements
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @param pTypeSubstitution TODO
-   * @return TODO
+   * @see Expression#substitute(TypeSubstitution)
    */
   @ Override
   public Duplication substitute ( TypeSubstitution pTypeSubstitution )

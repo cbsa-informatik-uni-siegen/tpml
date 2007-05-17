@@ -249,7 +249,7 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities
    * Returns the prefix of this {@link Type}.
    * 
    * @return The prefix of this {@link Type}.
-   * @see #parent
+   * @see #prefix
    */
   public String getPrefix ( )
   {

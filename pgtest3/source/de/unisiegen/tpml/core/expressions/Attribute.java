@@ -14,7 +14,7 @@ import de.unisiegen.tpml.core.types.Type ;
 
 
 /**
- * TODO
+ * Instances of this class represent attribute expressions.
  * 
  * @author Christian Fehler
  * @version $Rev: 1066 $
@@ -66,11 +66,11 @@ public final class Attribute extends Expression implements BoundIdentifiers ,
 
 
   /**
-   * TODO
+   * Allocates a new {@link Attribute}.
    * 
-   * @param pIdentifier TODO
-   * @param pTau TODO
-   * @param pExpression TODO
+   * @param pIdentifier The {@link Identifier}.
+   * @param pTau The {@link Type}.
+   * @param pExpression The child {@link Expression}.
    */
   public Attribute ( Identifier pIdentifier , MonoType pTau ,
       Expression pExpression )
@@ -114,13 +114,15 @@ public final class Attribute extends Expression implements BoundIdentifiers ,
 
 
   /**
-   * TODO
+   * Allocates a new {@link Attribute}.
    * 
-   * @param pIdentifier TODO
-   * @param pTau TODO
-   * @param pExpression TODO
-   * @param pParserStartOffset TODO
-   * @param pParserEndOffset TODO
+   * @param pIdentifier The {@link Identifier}.
+   * @param pTau The {@link Type}.
+   * @param pExpression The child {@link Expression}.
+   * @param pParserStartOffset The start offset of this {@link Expression} in
+   *          the source code.
+   * @param pParserEndOffset The end offset of this {@link Expression} in the
+   *          source code.
    */
   public Attribute ( Identifier pIdentifier , MonoType pTau ,
       Expression pExpression , int pParserStartOffset , int pParserEndOffset )
@@ -171,9 +173,9 @@ public final class Attribute extends Expression implements BoundIdentifiers ,
 
 
   /**
-   * TODO
+   * Returns the sub {@link Expression}.
    * 
-   * @return TODO
+   * @return the sub {@link Expression}.
    */
   public Expression getE ( )
   {
@@ -182,9 +184,9 @@ public final class Attribute extends Expression implements BoundIdentifiers ,
 
 
   /**
-   * Returns the sub expressions.
+   * Returns the sub {@link Expression}s.
    * 
-   * @return the sub expressions.
+   * @return the sub {@link Expression}s.
    */
   public Expression [ ] getExpressions ( )
   {
@@ -193,9 +195,9 @@ public final class Attribute extends Expression implements BoundIdentifiers ,
 
 
   /**
-   * TODO
+   * Returns the indices of the child {@link Expression}s.
    * 
-   * @return TODO
+   * @return The indices of the child {@link Expression}s.
    */
   public int [ ] getExpressionsIndex ( )
   {
@@ -204,9 +206,9 @@ public final class Attribute extends Expression implements BoundIdentifiers ,
 
 
   /**
-   * TODO
+   * Returns the {@link Identifier} of this {@link Expression}.
    * 
-   * @return TODO
+   * @return The {@link Identifier} of this {@link Expression}.
    */
   public Identifier getId ( )
   {
@@ -215,9 +217,9 @@ public final class Attribute extends Expression implements BoundIdentifiers ,
 
 
   /**
-   * TODO
+   * Returns the {@link Identifier}s of this {@link Expression}.
    * 
-   * @return TODO
+   * @return The {@link Identifier}s of this {@link Expression}.
    */
   public Identifier [ ] getIdentifiers ( )
   {
@@ -251,9 +253,9 @@ public final class Attribute extends Expression implements BoundIdentifiers ,
 
 
   /**
-   * TODO
+   * Returns the indices of the child {@link Identifier}s.
    * 
-   * @return TODO
+   * @return The indices of the child {@link Identifier}s.
    */
   public int [ ] getIdentifiersIndex ( )
   {
@@ -262,9 +264,9 @@ public final class Attribute extends Expression implements BoundIdentifiers ,
 
 
   /**
-   * TODO
+   * Returns the sub {@link Type}.
    * 
-   * @return TODO
+   * @return the sub {@link Type}.
    */
   public MonoType getTau ( )
   {
@@ -273,9 +275,9 @@ public final class Attribute extends Expression implements BoundIdentifiers ,
 
 
   /**
-   * Returns the types for the <code>identifiers</code>.
+   * Returns the sub {@link Type}s.
    * 
-   * @return the types.
+   * @return the sub {@link Type}s.
    */
   public MonoType [ ] getTypes ( )
   {
@@ -284,9 +286,9 @@ public final class Attribute extends Expression implements BoundIdentifiers ,
 
 
   /**
-   * TODO
+   * Returns the indices of the child {@link Type}s.
    * 
-   * @return TODO
+   * @return The indices of the child {@link Type}s.
    */
   public int [ ] getTypesIndex ( )
   {
@@ -332,10 +334,9 @@ public final class Attribute extends Expression implements BoundIdentifiers ,
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @param pTypeSubstitution TODO
-   * @return TODO
+   * @see Expression#substitute(TypeSubstitution)
    */
   @ Override
   public Attribute substitute ( TypeSubstitution pTypeSubstitution )

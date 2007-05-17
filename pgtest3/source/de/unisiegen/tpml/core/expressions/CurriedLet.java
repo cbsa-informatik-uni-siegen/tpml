@@ -182,8 +182,10 @@ public class CurriedLet extends Expression implements BoundIdentifiers ,
    *          <code>types</code>.
    * @param pExpression1 the function body.
    * @param pExpression2 the second expression.
-   * @param pParserStartOffset TODO
-   * @param pParserEndOffset TODO
+   * @param pParserStartOffset The start offset of this {@link Expression} in
+   *          the source code.
+   * @param pParserEndOffset The end offset of this {@link Expression} in the
+   *          source code.
    * @throws IllegalArgumentException if the <code>identifiers</code> array
    *           contains less than two identifiers, or the arity of
    *           <code>identifiers</code> and <code>types</code> doesn't
@@ -203,7 +205,7 @@ public class CurriedLet extends Expression implements BoundIdentifiers ,
 
 
   /**
-   * TODO
+   * Checks the disjunction of the {@link Identifier} sets.
    */
   public void checkDisjunction ( )
   {
@@ -331,9 +333,9 @@ public class CurriedLet extends Expression implements BoundIdentifiers ,
 
 
   /**
-   * TODO
+   * Returns the indices of the child {@link Expression}s.
    * 
-   * @return TODO
+   * @return The indices of the child {@link Expression}s.
    */
   public int [ ] getExpressionsIndex ( )
   {
@@ -458,9 +460,9 @@ public class CurriedLet extends Expression implements BoundIdentifiers ,
 
 
   /**
-   * TODO
+   * Returns the indices of the child {@link Identifier}s.
    * 
-   * @return TODO
+   * @return The indices of the child {@link Identifier}s.
    */
   public int [ ] getIdentifiersIndex ( )
   {
@@ -489,9 +491,9 @@ public class CurriedLet extends Expression implements BoundIdentifiers ,
 
 
   /**
-   * TODO
+   * Returns the indices of the child {@link Type}s.
    * 
-   * @return TODO
+   * @return The indices of the child {@link Type}s.
    */
   public int [ ] getTypesIndex ( )
   {

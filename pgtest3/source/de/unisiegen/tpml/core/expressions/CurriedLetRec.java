@@ -3,7 +3,7 @@ package de.unisiegen.tpml.core.expressions ;
 
 import java.util.ArrayList ;
 import de.unisiegen.tpml.core.exceptions.LanguageParserMultiException ;
-import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException;
+import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException ;
 import de.unisiegen.tpml.core.interfaces.BoundIdentifiers ;
 import de.unisiegen.tpml.core.interfaces.ChildrenExpressions ;
 import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
@@ -64,8 +64,10 @@ public final class CurriedLetRec extends CurriedLet implements
    *          {@link CurriedLet#getTypes()} for an extensive description.
    * @param pExpression1 the function body.
    * @param pExpression2 the second expression.
-   * @param pParserStartOffset TODO
-   * @param pParserEndOffset TODO
+   * @param pParserStartOffset The start offset of this {@link Expression} in
+   *          the source code.
+   * @param pParserEndOffset The end offset of this {@link Expression} in the
+   *          source code.
    * @throws IllegalArgumentException if the <code>identifiers</code> array
    *           contains less than two identifiers, or the arity of
    *           <code>identifiers</code> and <code>types</code> does not
@@ -87,7 +89,7 @@ public final class CurriedLetRec extends CurriedLet implements
 
 
   /**
-   * TODO
+   * Checks the disjunction of the {@link Identifier} sets.
    */
   @ Override
   public void checkDisjunction ( )

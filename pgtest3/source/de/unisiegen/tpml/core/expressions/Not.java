@@ -24,8 +24,10 @@ public final class Not extends UnaryOperator
   /**
    * Allocates a new <code>Not</code> operator.
    * 
-   * @param pParserStartOffset TODO
-   * @param pParserEndOffset TODO
+   * @param pParserStartOffset The start offset of this {@link Expression} in
+   *          the source code.
+   * @param pParserEndOffset The end offset of this {@link Expression} in the
+   *          source code.
    */
   public Not ( int pParserStartOffset , int pParserEndOffset )
   {

@@ -33,26 +33,26 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
   private class LevelOrderEnumeration implements Enumeration < Expression >
   {
     /**
-     * TODO
+     * The queue.
      */
     private LinkedList < Expression > queue = new LinkedList < Expression > ( ) ;
 
 
     /**
-     * TODO
+     * Initializes a new <code>LevelOrderEnumeration</code>.
      * 
-     * @param expression TODO
+     * @param pExpression The input <code>Expression</code>.
      */
-    LevelOrderEnumeration ( Expression expression )
+    LevelOrderEnumeration ( Expression pExpression )
     {
-      this.queue.add ( expression ) ;
+      this.queue.add ( pExpression ) ;
     }
 
 
     /**
-     * TODO
+     * Returns true, if there are more elements, otherwise false.
      * 
-     * @return TODO
+     * @return True, if there are more elements, otherwise false.
      * @see Enumeration#hasMoreElements()
      */
     public boolean hasMoreElements ( )
@@ -62,9 +62,9 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
 
 
     /**
-     * TODO
+     * Returns the next element.
      * 
-     * @return TODO
+     * @return The next element.
      * @see Enumeration#nextElement()
      */
     public Expression nextElement ( )
@@ -159,7 +159,9 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
 
 
   /**
-   * TODO
+   * A list of all {@link Identifier}s in this {@link Expression}.
+   * 
+   * @see #getIdentifiersAll()
    */
   private ArrayList < Identifier > identifiersAll = null ;
 
@@ -175,7 +177,7 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
 
 
   /**
-   * TODO
+   * A list of lists of bound {@link Identifier}s in this {@link Expression}.
    */
   protected ArrayList < ArrayList < Identifier >> boundIdentifiers = null ;
 
@@ -190,25 +192,30 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
 
 
   /**
-   * TODO
+   * The parent of this {@link Expression}.
+   * 
+   * @see #getParent()
+   * @see #setParent(PrettyPrintable)
    */
   protected PrettyPrintable parent = null ;
 
 
   /**
-   * TODO
+   * The start offset of this {@link Expression} in the source code.
    */
   protected int parserStartOffset = - 1 ;
 
 
   /**
-   * TODO
+   * The end offset of this {@link Expression} in the source code.
    */
   protected int parserEndOffset = - 1 ;
 
 
   /**
-   * TODO
+   * The prefix of this {@link Expression}.
+   * 
+   * @see #getPrefix()
    */
   protected String prefix = null ;
 
@@ -336,9 +343,11 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
 
 
   /**
-   * TODO
+   * Returns true, if a free Identifier is a attribute or self
+   * {@link Identifier}, otherwise false.
    * 
-   * @return TODO
+   * @return True, if a free Identifier is a attribute or self
+   *         {@link Identifier}, otherwise false.
    */
   public boolean getIdentifierFreeNotOnlyVariable ( )
   {
@@ -355,9 +364,10 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
 
 
   /**
-   * TODO
+   * Returns a list of all {@link Identifier}s in this {@link Expression}.
    * 
-   * @return TODO
+   * @return A list of all {@link Identifier}s in this {@link Expression}.
+   * @see #identifiersAll
    */
   public final ArrayList < Identifier > getIdentifiersAll ( )
   {
@@ -443,10 +453,11 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
 
 
   /**
-   * Returns the parent.
+   * Returns the parent of this {@link Expression}.
    * 
-   * @return The parent.
+   * @return The parent of this {@link Expression}.
    * @see #parent
+   * @see #setParent(PrettyPrintable)
    */
   public final PrettyPrintable getParent ( )
   {
@@ -479,9 +490,10 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
 
 
   /**
-   * TODO
+   * Returns the prefix of this {@link Expression}.
    * 
-   * @return TODO
+   * @return The prefix of this {@link Expression}.
+   * @see #prefix
    */
   public String getPrefix ( )
   {
@@ -559,9 +571,11 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
 
 
   /**
-   * TODO
+   * Sets the parent of this {@link Expression}.
    * 
-   * @param pParent The parent to set
+   * @param pParent The parent to set.
+   * @see #parent
+   * @see #getParent()
    */
   public final void setParent ( PrettyPrintable pParent )
   {

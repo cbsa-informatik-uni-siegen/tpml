@@ -17,8 +17,10 @@ public final class RelationalOperator extends BinaryOperator
   /**
    * Returns the equals operator.
    * 
-   * @param pParserStartOffset TODO
-   * @param pParserEndOffset TODO
+   * @param pParserStartOffset The start offset of this {@link Expression} in
+   *          the source code.
+   * @param pParserEndOffset The end offset of this {@link Expression} in the
+   *          source code.
    * @return the equals operator.
    */
   public static final RelationalOperator newEquals ( int pParserStartOffset ,
@@ -31,8 +33,10 @@ public final class RelationalOperator extends BinaryOperator
   /**
    * Returns the greater-equal operator.
    * 
-   * @param pParserStartOffset TODO
-   * @param pParserEndOffset TODO
+   * @param pParserStartOffset The start offset of this {@link Expression} in
+   *          the source code.
+   * @param pParserEndOffset The end offset of this {@link Expression} in the
+   *          source code.
    * @return the greater-equal operator.
    */
   public static final RelationalOperator newGreaterEqual (
@@ -46,8 +50,10 @@ public final class RelationalOperator extends BinaryOperator
   /**
    * Returns the greater-than operator.
    * 
-   * @param pParserStartOffset TODO
-   * @param pParserEndOffset TODO
+   * @param pParserStartOffset The start offset of this {@link Expression} in
+   *          the source code.
+   * @param pParserEndOffset The end offset of this {@link Expression} in the
+   *          source code.
    * @return the greater-than operator.
    */
   public static final RelationalOperator newGreaterThan (
@@ -60,8 +66,10 @@ public final class RelationalOperator extends BinaryOperator
   /**
    * Returns the lower-equal operator.
    * 
-   * @param pParserStartOffset TODO
-   * @param pParserEndOffset TODO
+   * @param pParserStartOffset The start offset of this {@link Expression} in
+   *          the source code.
+   * @param pParserEndOffset The end offset of this {@link Expression} in the
+   *          source code.
    * @return the lower-equal operator.
    */
   public static final RelationalOperator newLowerEqual (
@@ -75,8 +83,10 @@ public final class RelationalOperator extends BinaryOperator
   /**
    * Returns the lower-than operator.
    * 
-   * @param pParserStartOffset TODO
-   * @param pParserEndOffset TODO
+   * @param pParserStartOffset The start offset of this {@link Expression} in
+   *          the source code.
+   * @param pParserEndOffset The end offset of this {@link Expression} in the
+   *          source code.
    * @return the lower-than operator.
    */
   public static final RelationalOperator newLowerThan ( int pParserStartOffset ,
@@ -104,8 +114,10 @@ public final class RelationalOperator extends BinaryOperator
    * representation <code>text</code>.
    * 
    * @param pText the string representation.
-   * @param pParserStartOffset TODO
-   * @param pParserEndOffset TODO
+   * @param pParserStartOffset The start offset of this {@link Expression} in
+   *          the source code.
+   * @param pParserEndOffset The end offset of this {@link Expression} in the
+   *          source code.
    * @throws NullPointerException if <code>text</code> is <code>null</code>.
    */
   private RelationalOperator ( String pText , int pParserStartOffset ,

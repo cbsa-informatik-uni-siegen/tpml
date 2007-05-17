@@ -27,8 +27,10 @@ public final class Tl extends UnaryListOperator
   /**
    * Allocates a new <code>Tl</code> instance.
    * 
-   * @param pParserStartOffset TODO
-   * @param pParserEndOffset TODO
+   * @param pParserStartOffset The start offset of this {@link Expression} in
+   *          the source code.
+   * @param pParserEndOffset The end offset of this {@link Expression} in the
+   *          source code.
    */
   public Tl ( int pParserStartOffset , int pParserEndOffset )
   {

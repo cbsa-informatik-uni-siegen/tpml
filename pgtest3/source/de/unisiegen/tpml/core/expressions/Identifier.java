@@ -2,12 +2,10 @@ package de.unisiegen.tpml.core.expressions ;
 
 
 import java.lang.reflect.InvocationTargetException ;
-import java.text.DecimalFormat ;
 import java.util.ArrayList ;
 import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
-import de.unisiegen.tpml.core.util.Debug ;
 
 
 /**
@@ -22,26 +20,26 @@ import de.unisiegen.tpml.core.util.Debug ;
 public final class Identifier extends Value
 {
   /**
-   * TODO
+   * The set of {@link Identifier}s.
    * 
    * @author Christian Fehler
    */
   public enum Set
   {
     /**
-     * TODO
+     * The set of variable {@link Identifier}s.
      */
     VARIABLE ,
     /**
-     * TODO
+     * The set of attribute {@link Identifier}s.
      */
     ATTRIBUTE ,
     /**
-     * TODO
+     * The set of message {@link Identifier}s.
      */
     MESSAGE ,
     /**
-     * TODO
+     * The set of self {@link Identifier}s.
      */
     SELF
   }
@@ -72,10 +70,6 @@ public final class Identifier extends Value
 
 
   /**
-   * TODO Only for debugging
-   */
-  // private static int debugId = 0 ;
-  /**
    * The name of the {@link Identifier}.
    * 
    * @see #getName()
@@ -84,15 +78,10 @@ public final class Identifier extends Value
 
 
   /**
-   * TODO
-   */
-  @ SuppressWarnings ( "unused" )
-  private String identity = new DecimalFormat ( "000" ).format ( ( int ) ( Math //$NON-NLS-1$
-      .random ( ) * 1000 ) ) ;
-
-
-  /**
-   * TODO
+   * The set of this {@link Identifier}.
+   * 
+   * @see #getSet()
+   * @see #setSet(Set)
    */
   private Set set ;
 
@@ -124,8 +113,10 @@ public final class Identifier extends Value
    * Allocates a new {@link Identifier} with the given <code>name</code>.
    * 
    * @param pName the name of the identifier.
-   * @param pParserStartOffset TODO
-   * @param pParserEndOffset TODO
+   * @param pParserStartOffset The start offset of this {@link Expression} in
+   *          the source code.
+   * @param pParserEndOffset The end offset of this {@link Expression} in the
+   *          source code.
    */
   public Identifier ( String pName , int pParserStartOffset ,
       int pParserEndOffset )
@@ -233,10 +224,10 @@ public final class Identifier extends Value
 
 
   /**
-   * TODO
+   * Returns the array of {@link Identifier}s from the parent.
    * 
-   * @param pInvokedFrom TODO
-   * @return TODO
+   * @param pInvokedFrom The parent.
+   * @return The array of {@link Identifier}s from the parent.
    */
   private final Identifier [ ] getParentIdentifiers ( Object pInvokedFrom )
   {
@@ -271,9 +262,10 @@ public final class Identifier extends Value
 
 
   /**
-   * TODO
+   * Returns the prefix of this {@link Expression}.
    * 
-   * @return TODO
+   * @return The prefix of this {@link Expression}.
+   * @see #prefix
    */
   @ Override
   public String getPrefix ( )
@@ -329,10 +321,11 @@ public final class Identifier extends Value
 
 
   /**
-   * Returns the set.
+   * Returns the set of this {@link Identifier}.
    * 
-   * @return The set.
+   * @return The set of this {@link Identifier}.
    * @see #set
+   * @see #setSet(Set)
    */
   public Set getSet ( )
   {
@@ -369,18 +362,13 @@ public final class Identifier extends Value
     if ( ( this.boundToIdentifier != null )
         && ( this.boundToIdentifier != pBoundToIdentifier ) )
     {
-      Debug.err
-          .println (
-              "An Identifier can not be bound to more than one Expression!" , Debug.CHRISTIAN ) ; //$NON-NLS-1$
-      Debug.err.println ( "Identifier: " + this , Debug.CHRISTIAN ) ; //$NON-NLS-1$
-      Debug.err.println ( "Old boundToExpression: " //$NON-NLS-1$
-          + this.boundToExpression , Debug.CHRISTIAN ) ;
-      Debug.err.println (
-          "New boundToExpression: " + pBoundToExpression , Debug.CHRISTIAN ) ; //$NON-NLS-1$
-      Debug.err.println ( "Old boundToIdentifier: " //$NON-NLS-1$
-          + this.boundToIdentifier , Debug.CHRISTIAN ) ;
-      Debug.err.println (
-          "New boundToIdentifier: " + pBoundToIdentifier , Debug.CHRISTIAN ) ; //$NON-NLS-1$
+      System.err
+          .println ( "An Identifier can not be bound to more than one Expression!" ) ; //$NON-NLS-1$
+      System.err.println ( "Identifier: " + this ) ; //$NON-NLS-1$
+      System.err.println ( "Old boundToExpression: " + this.boundToExpression ) ; //$NON-NLS-1$
+      System.err.println ( "New boundToExpression: " + pBoundToExpression ) ; //$NON-NLS-1$
+      System.err.println ( "Old boundToIdentifier: " + this.boundToIdentifier ) ; //$NON-NLS-1$
+      System.err.println ( "New boundToIdentifier: " + pBoundToIdentifier ) ; //$NON-NLS-1$
     }
     this.boundToExpression = pBoundToExpression ;
     this.boundToIdentifier = pBoundToIdentifier ;
@@ -388,9 +376,11 @@ public final class Identifier extends Value
 
 
   /**
-   * TODO
+   * Sets the set of this {@link Identifier}.
    * 
-   * @param pSet The set to set
+   * @param pSet The set to set.
+   * @see #set
+   * @see #getSet()
    */
   public void setSet ( Set pSet )
   {
@@ -437,18 +427,7 @@ public final class Identifier extends Value
     if ( this.prettyStringBuilder == null )
     {
       this.prettyStringBuilder = factory.newBuilder ( this , PRIO_IDENTIFIER ) ;
-      /*
-       * if ( Debug.isUserName ( Debug.CHRISTIAN ) ) {
-       * this.prettyStringBuilder.addText ( "{" ) ; }
-       */
       this.prettyStringBuilder.addIdentifier ( this.name ) ;
-      /*
-       * if ( Debug.isUserName ( Debug.CHRISTIAN ) ) {
-       * this.prettyStringBuilder.addText ( "|" + new DecimalFormat ( "00"
-       * ).format ( debugId ++ ) + "|" + ( this.set == Set.VARIABLE ? "V" :
-       * this.set == Set.ATTRIBUTE ? "A" : this.set == Set.MESSAGE ? "M" :
-       * this.set == Set.SELF ? "S" : "NOTHING" ) + "}" ) ; }
-       */
     }
     return this.prettyStringBuilder ;
   }

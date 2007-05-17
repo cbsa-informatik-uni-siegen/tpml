@@ -4,7 +4,7 @@ package de.unisiegen.tpml.core.expressions ;
 import java.util.ArrayList ;
 import java.util.Arrays ;
 import de.unisiegen.tpml.core.exceptions.LanguageParserMultiException ;
-import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException;
+import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException ;
 import de.unisiegen.tpml.core.interfaces.BoundIdentifiers ;
 import de.unisiegen.tpml.core.interfaces.ChildrenExpressions ;
 import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
@@ -12,11 +12,12 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
 import de.unisiegen.tpml.core.types.MonoType ;
+import de.unisiegen.tpml.core.types.Type ;
 import de.unisiegen.tpml.core.util.BoundRenaming ;
 
 
 /**
- * TODO
+ * Instances of this class represent curried method expressions.
  * 
  * @author Christian Fehler
  * @version $Rev: 1067 $
@@ -32,7 +33,7 @@ public final class CurriedMethod extends Expression implements
 
 
   /**
-   * TODO
+   * The {@link Identifier}s of this {@link Expression}.
    * 
    * @see #getIdentifiers()
    */
@@ -40,7 +41,7 @@ public final class CurriedMethod extends Expression implements
 
 
   /**
-   * TODO
+   * The sub types.
    * 
    * @see #getTypes()
    */
@@ -48,7 +49,7 @@ public final class CurriedMethod extends Expression implements
 
 
   /**
-   * The expression.
+   * The sub expressions.
    */
   private Expression [ ] expressions ;
 
@@ -66,11 +67,11 @@ public final class CurriedMethod extends Expression implements
 
 
   /**
-   * TODO
+   * Allocates a new {@link CurriedMethod}.
    * 
-   * @param pIdentifiers TODO
-   * @param pTypes TODO
-   * @param pExpression TODO
+   * @param pIdentifiers The {@link Identifier}s.
+   * @param pTypes The {@link Type}s.
+   * @param pExpression The child {@link Expression}.
    */
   public CurriedMethod ( Identifier [ ] pIdentifiers , MonoType [ ] pTypes ,
       Expression pExpression )
@@ -145,13 +146,15 @@ public final class CurriedMethod extends Expression implements
 
 
   /**
-   * TODO
+   * Allocates a new {@link CurriedMethod}.
    * 
-   * @param pIdentifiers TODO
-   * @param pTypes TODO
-   * @param pExpression TODO
-   * @param pParserStartOffset TODO
-   * @param pParserEndOffset TODO
+   * @param pIdentifiers The {@link Identifier}s.
+   * @param pTypes The {@link Type}s.
+   * @param pExpression The child {@link Expression}.
+   * @param pParserStartOffset The start offset of this {@link Expression} in
+   *          the source code.
+   * @param pParserEndOffset The end offset of this {@link Expression} in the
+   *          source code.
    */
   public CurriedMethod ( Identifier [ ] pIdentifiers , MonoType [ ] pTypes ,
       Expression pExpression , int pParserStartOffset , int pParserEndOffset )
@@ -163,7 +166,7 @@ public final class CurriedMethod extends Expression implements
 
 
   /**
-   * TODO
+   * Checks the disjunction of the {@link Identifier} sets.
    */
   public void checkDisjunction ( )
   {
@@ -239,9 +242,9 @@ public final class CurriedMethod extends Expression implements
 
 
   /**
-   * TODO
+   * Returns the sub expression.
    * 
-   * @return TODO
+   * @return the sub expression.
    */
   public Expression getE ( )
   {
@@ -250,9 +253,9 @@ public final class CurriedMethod extends Expression implements
 
 
   /**
-   * Returns the sub expressions.
+   * Returns the sub {@link Expression}s.
    * 
-   * @return the sub expressions.
+   * @return the sub {@link Expression}s.
    */
   public Expression [ ] getExpressions ( )
   {
@@ -261,9 +264,9 @@ public final class CurriedMethod extends Expression implements
 
 
   /**
-   * TODO
+   * Returns the indices of the child {@link Expression}s.
    * 
-   * @return TODO
+   * @return The indices of the child {@link Expression}s.
    */
   public int [ ] getExpressionsIndex ( )
   {
@@ -272,10 +275,9 @@ public final class CurriedMethod extends Expression implements
 
 
   /**
-   * TODO
+   * Returns the {@link Identifier}s of this {@link Expression}.
    * 
-   * @return TODO
-   * @see #identifiers
+   * @return The {@link Identifier}s of this {@link Expression}.
    */
   public Identifier [ ] getIdentifiers ( )
   {
@@ -357,9 +359,9 @@ public final class CurriedMethod extends Expression implements
 
 
   /**
-   * TODO
+   * Returns the indices of the child {@link Identifier}s.
    * 
-   * @return TODO
+   * @return The indices of the child {@link Identifier}s.
    */
   public int [ ] getIdentifiersIndex ( )
   {
@@ -368,10 +370,9 @@ public final class CurriedMethod extends Expression implements
 
 
   /**
-   * TODO
+   * Returns the sub {@link Type}s.
    * 
-   * @return TODO
-   * @see #types
+   * @return the sub {@link Type}s.
    */
   public MonoType [ ] getTypes ( )
   {
@@ -380,9 +381,9 @@ public final class CurriedMethod extends Expression implements
 
 
   /**
-   * TODO
+   * Returns the indices of the child {@link Type}s.
    * 
-   * @return TODO
+   * @return The indices of the child {@link Type}s.
    */
   public int [ ] getTypesIndex ( )
   {
@@ -489,6 +490,8 @@ public final class CurriedMethod extends Expression implements
 
   /**
    * {@inheritDoc}
+   * 
+   * @see Expression#substitute(TypeSubstitution)
    */
   @ Override
   public CurriedMethod substitute ( TypeSubstitution pTypeSubstitution )
