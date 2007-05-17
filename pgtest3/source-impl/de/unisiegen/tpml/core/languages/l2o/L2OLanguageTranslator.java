@@ -91,8 +91,8 @@ public class L2OLanguageTranslator extends L2LanguageTranslator
   {
     if ( pRecursive )
     {
-      return new Attribute ( pAttribute.getId ( ) , pAttribute.getTau ( ) ,
-          translateToCoreSyntax ( pAttribute.getE ( ) , true ) ) ;
+      return new Attribute ( pAttribute.getId ( ) , translateToCoreSyntax (
+          pAttribute.getE ( ) , true ) ) ;
     }
     return pAttribute ;
   }

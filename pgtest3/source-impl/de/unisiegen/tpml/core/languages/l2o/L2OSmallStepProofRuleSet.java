@@ -171,8 +171,7 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
               newRowExpressions [ j ] = rowExpressions [ j ] ;
             }
           }
-          newRowExpressions [ i ] = new Attribute ( attribute.getId ( ) ,
-              attribute.getTau ( ) , attrE ) ;
+          newRowExpressions [ i ] = new Attribute ( attribute.getId ( ) , attrE ) ;
           return new Row ( newRowExpressions ) ;
         }
         /*

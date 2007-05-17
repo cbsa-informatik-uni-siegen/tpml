@@ -944,29 +944,17 @@ attribute						::=	ATTRIBUTE:a IDENTIFIER:id EQUAL expr:e SEMI:s
 									{:
 									   Identifier idA = new Identifier (id,idleft,idright) ;
 									   idA.setSet (Identifier.Set.ATTRIBUTE );
-									   RESULT = new Attribute (idA, null, e, aleft, sright);
-									:}
-								|	ATTRIBUTE:a IDENTIFIER:id COLON type:tau EQUAL expr:e SEMI:s
-									{:
-									   Identifier idA = new Identifier (id,idleft,idright) ;
-									   idA.setSet (Identifier.Set.ATTRIBUTE );
-									   RESULT = new Attribute (idA, tau, e, aleft, sright);
+									   RESULT = new Attribute (idA, e, aleft, sright);
 									:}
 								|	ATTRIBUTE attribute_error_1
 									{: :}
 								;
 
 attribute_error_1				::= /* epsilon */
-									{: Error.expect("Attribute", "a = e ;", "a: \u03C4 = e ;"); :}
+									{: Error.expect("Attribute", "a = e ;"); :}
 								|	IDENTIFIER
-									{: Error.expect("Attribute", "= e ;", ": \u03C4 = e ;"); :}
-								|	IDENTIFIER EQUAL attribute_error_2
-									{: :}
-								|	IDENTIFIER COLON
-									{: Error.expect("Attribute", "\u03C4 = e ;"); :}
-								|	IDENTIFIER COLON type
 									{: Error.expect("Attribute", "= e ;"); :}
-								|	IDENTIFIER COLON type EQUAL attribute_error_2
+								|	IDENTIFIER EQUAL attribute_error_2
 									{: :}
 								;
 

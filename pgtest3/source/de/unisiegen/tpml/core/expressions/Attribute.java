@@ -5,12 +5,9 @@ import java.util.ArrayList ;
 import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException ;
 import de.unisiegen.tpml.core.interfaces.BoundIdentifiers ;
 import de.unisiegen.tpml.core.interfaces.ChildrenExpressions ;
-import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
-import de.unisiegen.tpml.core.types.MonoType ;
-import de.unisiegen.tpml.core.types.Type ;
 
 
 /**
@@ -20,7 +17,7 @@ import de.unisiegen.tpml.core.types.Type ;
  * @version $Rev: 1066 $
  */
 public final class Attribute extends Expression implements BoundIdentifiers ,
-    DefaultTypes , ChildrenExpressions
+    ChildrenExpressions
 {
   /**
    * Indeces of the child {@link Expression}s.
@@ -37,26 +34,11 @@ public final class Attribute extends Expression implements BoundIdentifiers ,
 
 
   /**
-   * Indeces of the child {@link Type}s.
-   */
-  private static final int [ ] INDICES_TYPE = new int [ ]
-  { - 1 } ;
-
-
-  /**
    * The list of identifiers.
    * 
    * @see #getIdentifiers()
    */
   private Identifier [ ] identifiers ;
-
-
-  /**
-   * The types for the identifiers, where the assignment is as follows:
-   * 
-   * @see #getTypes()
-   */
-  private MonoType [ ] types ;
 
 
   /**
@@ -69,11 +51,9 @@ public final class Attribute extends Expression implements BoundIdentifiers ,
    * Allocates a new {@link Attribute}.
    * 
    * @param pIdentifier The {@link Identifier}.
-   * @param pTau The {@link Type}.
    * @param pExpression The child {@link Expression}.
    */
-  public Attribute ( Identifier pIdentifier , MonoType pTau ,
-      Expression pExpression )
+  public Attribute ( Identifier pIdentifier , Expression pExpression )
   {
     if ( pIdentifier == null )
     {
@@ -91,17 +71,6 @@ public final class Attribute extends Expression implements BoundIdentifiers ,
       // this.identifiers [ 0 ] = this.identifiers [ 0 ].clone ( ) ;
     }
     this.identifiers [ 0 ].setParent ( this ) ;
-    // Type
-    this.types = new MonoType [ 1 ] ;
-    this.types [ 0 ] = pTau ;
-    if ( this.types [ 0 ] != null )
-    {
-      if ( this.types [ 0 ].getParent ( ) != null )
-      {
-        // this.types [ 0 ] = this.types [ 0 ].clone ( ) ;
-      }
-      this.types [ 0 ].setParent ( this ) ;
-    }
     // Expression
     this.expressions = new Expression [ 1 ] ;
     this.expressions [ 0 ] = pExpression ;
@@ -117,17 +86,16 @@ public final class Attribute extends Expression implements BoundIdentifiers ,
    * Allocates a new {@link Attribute}.
    * 
    * @param pIdentifier The {@link Identifier}.
-   * @param pTau The {@link Type}.
    * @param pExpression The child {@link Expression}.
    * @param pParserStartOffset The start offset of this {@link Expression} in
    *          the source code.
    * @param pParserEndOffset The end offset of this {@link Expression} in the
    *          source code.
    */
-  public Attribute ( Identifier pIdentifier , MonoType pTau ,
-      Expression pExpression , int pParserStartOffset , int pParserEndOffset )
+  public Attribute ( Identifier pIdentifier , Expression pExpression ,
+      int pParserStartOffset , int pParserEndOffset )
   {
-    this ( pIdentifier , pTau , pExpression ) ;
+    this ( pIdentifier , pExpression ) ;
     this.parserStartOffset = pParserStartOffset ;
     this.parserEndOffset = pParserEndOffset ;
   }
@@ -140,7 +108,6 @@ public final class Attribute extends Expression implements BoundIdentifiers ,
   public Attribute clone ( )
   {
     return new Attribute ( this.identifiers [ 0 ].clone ( ) ,
-        this.types [ 0 ] == null ? null : this.types [ 0 ].clone ( ) ,
         this.expressions [ 0 ].clone ( ) ) ;
   }
 
@@ -154,9 +121,8 @@ public final class Attribute extends Expression implements BoundIdentifiers ,
     if ( pObject instanceof Attribute )
     {
       Attribute other = ( Attribute ) pObject ;
-      return ( ( this.identifiers [ 0 ].equals ( other.identifiers [ 0 ] ) )
-          && ( this.expressions [ 0 ].equals ( other.expressions [ 0 ] ) ) && ( ( this.types [ 0 ] == null ) ? ( other.types [ 0 ] == null )
-          : ( this.types [ 0 ].equals ( other.types [ 0 ] ) ) ) ) ;
+      return ( ( this.identifiers [ 0 ].equals ( other.identifiers [ 0 ] ) ) && ( this.expressions [ 0 ]
+          .equals ( other.expressions [ 0 ] ) ) ) ;
     }
     return false ;
   }
@@ -264,47 +230,13 @@ public final class Attribute extends Expression implements BoundIdentifiers ,
 
 
   /**
-   * Returns the sub {@link Type}.
-   * 
-   * @return the sub {@link Type}.
-   */
-  public MonoType getTau ( )
-  {
-    return this.types [ 0 ] ;
-  }
-
-
-  /**
-   * Returns the sub {@link Type}s.
-   * 
-   * @return the sub {@link Type}s.
-   */
-  public MonoType [ ] getTypes ( )
-  {
-    return this.types ;
-  }
-
-
-  /**
-   * Returns the indices of the child {@link Type}s.
-   * 
-   * @return The indices of the child {@link Type}s.
-   */
-  public int [ ] getTypesIndex ( )
-  {
-    return INDICES_TYPE ;
-  }
-
-
-  /**
    * {@inheritDoc}
    */
   @ Override
   public int hashCode ( )
   {
     return this.identifiers [ 0 ].hashCode ( )
-        + this.expressions [ 0 ].hashCode ( )
-        + ( this.types [ 0 ] == null ? 0 : this.types [ 0 ].hashCode ( ) ) ;
+        + this.expressions [ 0 ].hashCode ( ) ;
   }
 
 
@@ -329,7 +261,7 @@ public final class Attribute extends Expression implements BoundIdentifiers ,
       throw new NotOnlyFreeVariableException ( ) ;
     }
     Expression newE = this.expressions [ 0 ].substitute ( pId , pExpression ) ;
-    return new Attribute ( this.identifiers [ 0 ] , this.types [ 0 ] , newE ) ;
+    return new Attribute ( this.identifiers [ 0 ] , newE ) ;
   }
 
 
@@ -341,10 +273,8 @@ public final class Attribute extends Expression implements BoundIdentifiers ,
   @ Override
   public Attribute substitute ( TypeSubstitution pTypeSubstitution )
   {
-    MonoType newTau = ( this.types [ 0 ] == null ) ? null : this.types [ 0 ]
-        .substitute ( pTypeSubstitution ) ;
     Expression newE = this.expressions [ 0 ].substitute ( pTypeSubstitution ) ;
-    return new Attribute ( this.identifiers [ 0 ] , newTau , newE ) ;
+    return new Attribute ( this.identifiers [ 0 ] , newE ) ;
   }
 
 
@@ -363,13 +293,6 @@ public final class Attribute extends Expression implements BoundIdentifiers ,
       this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addBuilder ( this.identifiers [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_ID ) ;
-      if ( this.types [ 0 ] != null )
-      {
-        this.prettyStringBuilder.addText ( ": " ) ; //$NON-NLS-1$
-        this.prettyStringBuilder.addBuilder ( this.types [ 0 ]
-            .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
-            PRIO_ATTRIBUTE_TAU ) ;
-      }
       this.prettyStringBuilder.addText ( " = " ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addBuilder ( this.expressions [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,

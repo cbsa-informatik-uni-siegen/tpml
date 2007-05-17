@@ -340,8 +340,8 @@ public final class Row extends Expression implements ChildrenExpressions
                   attribute.getId ( ) , newId ) ;
             }
           }
-          newExpressions [ i ] = new Attribute ( newId , attribute.getTau ( ) ,
-              attribute.getE ( ).substitute ( pId , pExpression ) ) ;
+          newExpressions [ i ] = new Attribute ( newId , attribute.getE ( )
+              .substitute ( pId , pExpression ) ) ;
         }
         else
         {
@@ -398,7 +398,7 @@ public final class Row extends Expression implements ChildrenExpressions
         if ( pId.equals ( attribute.getId ( ) ) )
         {
           newExpressions [ i ] = new Attribute ( attribute.getId ( ) ,
-              attribute.getTau ( ) , pExpression ) ;
+              pExpression ) ;
           found = true ;
           break ;
         }
