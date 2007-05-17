@@ -82,25 +82,30 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities
 
 
   /**
-   * TODO
+   * The parent of this {@link Type}.
+   * 
+   * @see #getParent()
+   * @see #setParent(PrettyPrintable)
    */
   protected PrettyPrintable parent = null ;
 
 
   /**
-   * TODO
+   * The start offset of this {@link Type} in the source code.
    */
   protected int parserStartOffset = - 1 ;
 
 
   /**
-   * TODO
+   * The end offset of this {@link Type} in the source code.
    */
   protected int parserEndOffset = - 1 ;
 
 
   /**
-   * TODO
+   * The prefix of this {@link Type}.
+   * 
+   * @see #getPrefix()
    */
   protected String prefix = null ;
 
@@ -204,10 +209,11 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities
 
 
   /**
-   * Returns the parent.
+   * Returns the parent of this {@link Type}.
    * 
-   * @return The parent.
+   * @return The parent of this {@link Type}.
    * @see #parent
+   * @see #setParent(PrettyPrintable)
    */
   public final PrettyPrintable getParent ( )
   {
@@ -240,9 +246,10 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities
 
 
   /**
-   * TODO
+   * Returns the prefix of this {@link Type}.
    * 
-   * @return TODO
+   * @return The prefix of this {@link Type}.
+   * @see #parent
    */
   public String getPrefix ( )
   {
@@ -255,9 +262,11 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities
 
 
   /**
-   * TODO
+   * Sets the parent of this {@link Type}.
    * 
-   * @param pParent The parent to set
+   * @param pParent The parent to set.
+   * @see #parent
+   * @see #getParent()
    */
   public final void setParent ( PrettyPrintable pParent )
   {

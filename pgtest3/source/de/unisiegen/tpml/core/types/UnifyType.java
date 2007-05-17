@@ -2,7 +2,7 @@ package de.unisiegen.tpml.core.types ;
 
 
 /**
- * type for the type equation in the unification algorithm
+ * Type for the type equation in the unification algorithm
  * 
  * @author Benjamin Mies
  */

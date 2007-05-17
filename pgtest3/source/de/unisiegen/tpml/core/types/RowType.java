@@ -3,6 +3,7 @@ package de.unisiegen.tpml.core.types ;
 
 import java.util.Arrays ;
 import java.util.TreeSet ;
+import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.expressions.Identifier ;
 import de.unisiegen.tpml.core.interfaces.DefaultIdentifiers ;
 import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
@@ -14,21 +15,25 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
 
 
 /**
- * TODO
+ * This class represents {@link RowType} in our type systems.
  * 
  * @author Christian Fehler
+ * @version $Rev:420 $
+ * @see ObjectType
  */
 public final class RowType extends MonoType implements DefaultIdentifiers ,
     DefaultTypes , SortedChildren
 {
   /**
-   * TODO
+   * The list of identifiers.
+   * 
+   * @see #getIdentifiers()
    */
   private Identifier [ ] identifiers ;
 
 
   /**
-   * TODO
+   * The children {@link Type}s of this {@link Type}.
    */
   private MonoType [ ] types ;
 
@@ -46,10 +51,11 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
 
 
   /**
-   * TODO
+   * Allocates a new <code>RowType</code> with the specified
+   * {@link Identifier}s and {@link Type}s.
    * 
-   * @param pIdentifiers TODO
-   * @param pTypes TODO
+   * @param pIdentifiers The {@link Identifier}s.
+   * @param pTypes The {@link Type}s.
    */
   public RowType ( Identifier [ ] pIdentifiers , MonoType [ ] pTypes )
   {
@@ -101,12 +107,15 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
 
 
   /**
-   * TODO
+   * Allocates a new <code>RowType</code> with the specified
+   * {@link Identifier}s and {@link Type}s.
    * 
-   * @param pIdentifiers TODO
-   * @param pTypes TODO
-   * @param pParserStartOffset TODO
-   * @param pParserEndOffset TODO
+   * @param pIdentifiers The {@link Identifier}s.
+   * @param pTypes The {@link Type}s.
+   * @param pParserStartOffset The start offset of this {@link Type} in the
+   *          source code.
+   * @param pParserEndOffset The end offset of this {@link Type} in the source
+   *          code.
    */
   public RowType ( Identifier [ ] pIdentifiers , MonoType [ ] pTypes ,
       int pParserStartOffset , int pParserEndOffset )
@@ -178,10 +187,7 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
 
 
   /**
-   * TODO
-   * 
-   * @return TODO
-   * @see MonoType#getCaption()
+   * {@inheritDoc}
    */
   @ Override
   public String getCaption ( )
@@ -191,9 +197,9 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
 
 
   /**
-   * TODO
+   * Returns the {@link Identifier}s of this {@link Expression}.
    * 
-   * @return TODO
+   * @return The {@link Identifier}s of this {@link Expression}.
    * @see #identifiers
    */
   public Identifier [ ] getIdentifiers ( )
@@ -203,9 +209,9 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
 
 
   /**
-   * TODO
+   * Returns the indices of the child {@link Identifier}s.
    * 
-   * @return TODO
+   * @return The indices of the child {@link Identifier}s.
    */
   public int [ ] getIdentifiersIndex ( )
   {
@@ -214,9 +220,9 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @return TODO
+   * @see Type#getPrefix()
    */
   @ Override
   public String getPrefix ( )
@@ -230,9 +236,9 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
 
 
   /**
-   * TODO
+   * Returns the {@link Identifier}s and {@link Type}s in the right sorting.
    * 
-   * @return TODO
+   * @return The {@link Identifier}s and {@link Type}s in the right sorting.
    * @see SortedChildren#getSortedChildren()
    */
   public PrettyPrintable [ ] getSortedChildren ( )
@@ -255,9 +261,9 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
 
 
   /**
-   * TODO
+   * Returns the sub {@link Type}s.
    * 
-   * @return TODO
+   * @return the sub {@link Type}s.
    */
   public MonoType [ ] getTypes ( )
   {
@@ -266,9 +272,9 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
 
 
   /**
-   * TODO
+   * Returns the indices of the child {@link Type}s.
    * 
-   * @return TODO
+   * @return The indices of the child {@link Type}s.
    */
   public int [ ] getTypesIndex ( )
   {
@@ -289,11 +295,9 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @param pTypeSubstitution TODO
-   * @return TODO
-   * @see MonoType#substitute(TypeSubstitution)
+   * @see Type#substitute(TypeSubstitution)
    */
   @ Override
   public RowType substitute ( TypeSubstitution pTypeSubstitution )
@@ -312,10 +316,8 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @param pPrettyStringBuilderFactory TODO
-   * @return TODO
    * @see Type#toPrettyStringBuilder(PrettyStringBuilderFactory)
    */
   @ Override

@@ -21,7 +21,7 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
 public final class TupleType extends MonoType implements DefaultTypes
 {
   /**
-   * The types for the tuple elements.
+   * The children {@link Type}s of this {@link Type}.
    */
   private MonoType [ ] types ;
 
@@ -72,8 +72,8 @@ public final class TupleType extends MonoType implements DefaultTypes
    * <code>types</code>.
    * 
    * @param pTypes the monomorphic types for the tuple elements.
-   * @param pParserStartOffset TODO
-   * @param pParserEndOffset TODO
+   * @param pParserStartOffset The start offset of this {@link Type} in the source code.
+   * @param pParserEndOffset The end offset of this {@link Type} in the source code.
    * @throws IllegalArgumentException if <code>types</code> contains less than
    *           two elements.
    * @throws NullPointerException if <code>pTypes</code> is <code>null</code>.
@@ -158,9 +158,9 @@ public final class TupleType extends MonoType implements DefaultTypes
 
 
   /**
-   * Returns the element types of the tuple.
+   * Returns the sub {@link Type}s.
    * 
-   * @return the element types.
+   * @return the sub {@link Type}s.
    */
   public MonoType [ ] getTypes ( )
   {
@@ -169,9 +169,9 @@ public final class TupleType extends MonoType implements DefaultTypes
 
 
   /**
-   * TODO
+   * Returns the indices of the child {@link Type}s.
    * 
-   * @return TODO
+   * @return The indices of the child {@link Type}s.
    */
   public int [ ] getTypesIndex ( )
   {

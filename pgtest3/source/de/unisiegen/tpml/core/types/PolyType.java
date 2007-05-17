@@ -38,7 +38,7 @@ public final class PolyType extends Type implements DefaultTypes
 
 
   /**
-   * TODO
+   * The children {@link Type}s of this {@link Type}.
    */
   private MonoType [ ] types ;
 
@@ -163,9 +163,9 @@ public final class PolyType extends Type implements DefaultTypes
 
 
   /**
-   * TODO
+   * Returns the sub {@link Type}s.
    * 
-   * @return TODO
+   * @return the sub {@link Type}s.
    */
   public MonoType [ ] getTypes ( )
   {
@@ -174,9 +174,9 @@ public final class PolyType extends Type implements DefaultTypes
 
 
   /**
-   * TODO
+   * Returns the indices of the child {@link Type}s.
    * 
-   * @return TODO
+   * @return The indices of the child {@link Type}s.
    */
   public int [ ] getTypesIndex ( )
   {

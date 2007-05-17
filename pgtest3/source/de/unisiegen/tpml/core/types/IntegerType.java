@@ -24,8 +24,10 @@ public final class IntegerType extends PrimitiveType
   /**
    * Allocates a new <code>IntegerType</code> instance.
    * 
-   * @param pParserStartOffset TODO
-   * @param pParserEndOffset TODO
+   * @param pParserStartOffset The start offset of this {@link Type} in the
+   *          source code.
+   * @param pParserEndOffset The end offset of this {@link Type} in the source
+   *          code.
    */
   public IntegerType ( int pParserStartOffset , int pParserEndOffset )
   {

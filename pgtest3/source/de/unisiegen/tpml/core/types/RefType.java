@@ -34,7 +34,7 @@ public final class RefType extends MonoType implements DefaultTypes
 
 
   /**
-   * TODO
+   * The children {@link Type}s of this {@link Type}.
    */
   private MonoType [ ] types ;
 
@@ -69,8 +69,10 @@ public final class RefType extends MonoType implements DefaultTypes
    * the reference type will be <code>bool ref</code>.
    * 
    * @param pTau the monomorphic base type.
-   * @param pParserStartOffset TODO
-   * @param pParserEndOffset TODO
+   * @param pParserStartOffset The start offset of this {@link Type} in the
+   *          source code.
+   * @param pParserEndOffset The end offset of this {@link Type} in the source
+   *          code.
    * @throws NullPointerException if <code>tau</code> is <code>null</code>.
    */
   public RefType ( MonoType pTau , int pParserStartOffset , int pParserEndOffset )
@@ -149,9 +151,9 @@ public final class RefType extends MonoType implements DefaultTypes
 
 
   /**
-   * TODO
+   * Returns the sub {@link Type}s.
    * 
-   * @return TODO
+   * @return the sub {@link Type}s.
    */
   public MonoType [ ] getTypes ( )
   {
@@ -160,9 +162,9 @@ public final class RefType extends MonoType implements DefaultTypes
 
 
   /**
-   * TODO
+   * Returns the indices of the child {@link Type}s.
    * 
-   * @return TODO
+   * @return The indices of the child {@link Type}s.
    */
   public int [ ] getTypesIndex ( )
   {

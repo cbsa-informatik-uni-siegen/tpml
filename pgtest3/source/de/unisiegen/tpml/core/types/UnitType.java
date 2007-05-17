@@ -23,8 +23,10 @@ public final class UnitType extends PrimitiveType
   /**
    * Allocates a new <code>UnitType</code> instance.
    * 
-   * @param pParserStartOffset TODO
-   * @param pParserEndOffset TODO
+   * @param pParserStartOffset The start offset of this {@link Type} in the
+   *          source code.
+   * @param pParserEndOffset The end offset of this {@link Type} in the source
+   *          code.
    */
   public UnitType ( int pParserStartOffset , int pParserEndOffset )
   {

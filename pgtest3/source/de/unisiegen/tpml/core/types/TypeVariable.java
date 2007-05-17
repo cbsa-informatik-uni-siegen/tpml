@@ -171,8 +171,10 @@ public final class TypeVariable extends MonoType implements
    *          that the type variable was specified in the source code.
    * @param pOffset the offset, that is the number of type variables already
    *          allocated in the proof step identified by <code>index</code>.
-   * @param pParserStartOffset TODO
-   * @param pParserEndOffset TODO
+   * @param pParserStartOffset The start offset of this {@link Type} in the
+   *          source code.
+   * @param pParserEndOffset The end offset of this {@link Type} in the source
+   *          code.
    * @throws IllegalArgumentException if <code>index</code> or
    *           <code>offset</code> is negative.
    * @see TypeVariable

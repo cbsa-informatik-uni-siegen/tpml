@@ -9,9 +9,11 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
 
 
 /**
- * TODO
+ * This class represents {@link ObjectType} in our type systems.
  * 
  * @author Christian Fehler
+ * @version $Rev:420 $
+ * @see RowType
  */
 public final class ObjectType extends MonoType implements DefaultTypes
 {
@@ -23,15 +25,16 @@ public final class ObjectType extends MonoType implements DefaultTypes
 
 
   /**
-   * TODO
+   * The children {@link Type}s of this {@link Type}.
    */
   private MonoType [ ] types ;
 
 
   /**
-   * TODO
+   * Allocates a new <code>ObjectType</code> with the specified
+   * {@link RowType}.
    * 
-   * @param pPhi TODO
+   * @param pPhi The {@link RowType}.
    */
   public ObjectType ( MonoType pPhi )
   {
@@ -54,11 +57,14 @@ public final class ObjectType extends MonoType implements DefaultTypes
 
 
   /**
-   * TODO
+   * Allocates a new <code>ObjectType</code> with the specified
+   * {@link RowType}.
    * 
-   * @param pPhi TODO
-   * @param pParserStartOffset TODO
-   * @param pParserEndOffset TODO
+   * @param pPhi The {@link RowType}.
+   * @param pParserStartOffset The start offset of this {@link Type} in the
+   *          source code.
+   * @param pParserEndOffset The end offset of this {@link Type} in the source
+   *          code.
    */
   public ObjectType ( MonoType pPhi , int pParserStartOffset ,
       int pParserEndOffset )
@@ -116,10 +122,7 @@ public final class ObjectType extends MonoType implements DefaultTypes
 
 
   /**
-   * TODO
-   * 
-   * @return TODO
-   * @see MonoType#getCaption()
+   * {@inheritDoc}
    */
   @ Override
   public String getCaption ( )
@@ -129,9 +132,9 @@ public final class ObjectType extends MonoType implements DefaultTypes
 
 
   /**
-   * TODO
+   * Returns the sub {@link RowType}.
    * 
-   * @return TODO
+   * @return The sub {@link RowType}.
    */
   public RowType getPhi ( )
   {
@@ -140,9 +143,9 @@ public final class ObjectType extends MonoType implements DefaultTypes
 
 
   /**
-   * TODO
+   * Returns the sub {@link Type}s.
    * 
-   * @return TODO
+   * @return the sub {@link Type}s.
    */
   public MonoType [ ] getTypes ( )
   {
@@ -151,9 +154,9 @@ public final class ObjectType extends MonoType implements DefaultTypes
 
 
   /**
-   * TODO
+   * Returns the indices of the child {@link Type}s.
    * 
-   * @return TODO
+   * @return The indices of the child {@link Type}s.
    */
   public int [ ] getTypesIndex ( )
   {
@@ -162,11 +165,9 @@ public final class ObjectType extends MonoType implements DefaultTypes
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @param pTypeSubstitution TODO
-   * @return TODO
-   * @see MonoType#substitute(TypeSubstitution)
+   * @see Type#substitute(TypeSubstitution)
    */
   @ Override
   public ObjectType substitute ( TypeSubstitution pTypeSubstitution )
@@ -180,10 +181,8 @@ public final class ObjectType extends MonoType implements DefaultTypes
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
-   * @param pPrettyStringBuilderFactory TODO
-   * @return TODO
    * @see Type#toPrettyStringBuilder(PrettyStringBuilderFactory)
    */
   @ Override

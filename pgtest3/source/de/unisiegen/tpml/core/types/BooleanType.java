@@ -24,8 +24,10 @@ public final class BooleanType extends PrimitiveType
   /**
    * Allocates a new <code>BooleanType</code> instance.
    * 
-   * @param pParserStartOffset TODO
-   * @param pParserEndOffset TODO
+   * @param pParserStartOffset The start offset of this {@link Type} in the
+   *          source code.
+   * @param pParserEndOffset The end offset of this {@link Type} in the source
+   *          code.
    */
   public BooleanType ( int pParserStartOffset , int pParserEndOffset )
   {
