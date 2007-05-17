@@ -5,17 +5,22 @@ import de.unisiegen.tpml.core.languages.l2.L2TypeCheckerProofRuleSet ;
 
 
 /**
- * TODO
+ * The type proof rules for the <code>L2O</code> language.
  * 
  * @author Christian Fehler
- * @version $Rev: 1066 $
+ * @version $Id:L2OTypeCheckerProofRuleSet.java 419 2006-10-12 09:09:37Z
+ *          christian $
+ * @see L2TypeCheckerProofRuleSet
  */
 public class L2OTypeCheckerProofRuleSet extends L2TypeCheckerProofRuleSet
 {
   /**
-   * TODO
+   * Allocates a new <code>L2OTypeCheckerProofRuleSet</code> for the specified
+   * <code>language</code>.
    * 
-   * @param pL2OLanguage TODO
+   * @param pL2OLanguage The <code>L2O</code> or a derived language.
+   * @throws NullPointerException If <code>language</code> is
+   *           <code>null</code>.
    */
   public L2OTypeCheckerProofRuleSet ( L2OLanguage pL2OLanguage )
   {
