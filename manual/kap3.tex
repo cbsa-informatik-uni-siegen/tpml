@@ -67,7 +67,7 @@ herleiten l"asst.
 
 \section{Die Sprache \LZEROCBN}
 
-\index{Unterschiede}
+\index{Call By Name}
 Die Sprache \LZEROCBN \ bietet den gleichen Funktionsumfang wie die Sprache \LZERO, benutzt aber statt der 
 Call by Value eine Call by Name Semantik. Um dies zu realisieren werden verschiedene Regeln in der Big step 
 und der Small step Semantik gel"oscht oder ge"andert. Nur diese ge"anderten bzw. gel"oschten Regeln werden hier
@@ -318,7 +318,7 @@ Dies sei aber nur am Rande erw"ahnt.
 
 \section{Die Sprache \LONECBN}
 
-\index{Unterschiede}
+\index{Call By Name}
 Die Sprache \LONECBN \ bietet den gleichen Funktionsumfang wie die Sprache \LONE, benutzt aber statt der 
 Call by Value eine Call by Name Semantik. Um dies zu realisieren werden verschiedene Regeln in der Big step 
 und der Small step Semantik gel"oscht oder ge"andert. Nur diese ge"anderten bzw. gel"oschten Regeln werden hier
@@ -362,7 +362,6 @@ herleiten l"asst.
 \section{Die Sprache \LTWO}
 
 \index{Rekursion}
-\index{recursion}
 Die Sprache \LTWO\ erweitert \LONE\ um rekursive Ausdr"ucke\footnote{Wohlgemerkt aber nicht um rekursive Typen. Das
 Typsystem schr"ankt die Sprache also st"arker ein, als dies bei \LONE\ der Fall ist.} und syntaktischen Zucker, der
 es erlaubt Funktionen einfacher zu definieren, "ahnlich zu OCaml.
@@ -433,7 +432,7 @@ eine "Ubersetzung in \notation{Kernsyntax} vorgenommen.
 
 \section{Die Sprache \LTWOCBN}
 
-\index{Unterschiede}
+\index{Call By Name}
 Die Sprache \LTWOCBN \ bietet den gleichen Funktionsumfang wie die Sprache \LTWO, benutzt aber statt der 
 Call by Value eine Call by Name Semantik. Um dies zu realisieren werden verschiedene Regeln in der Big step 
 und der Small step Semantik gel"oscht oder ge"andert. Nur diese ge"anderten bzw. gel"oschten Regeln werden hier
@@ -471,6 +470,37 @@ Ein \notation{small step} hei"st g"ultig f"ur \LTWOCBN, wenn er sich mit den sma
      \mbox{(LET-EXEC)}    & $\bli{\id}{e_1}{e_2} \to e_2[e_1/\id]$
   \end{tabular}\\[7mm]
 herleiten l"asst.
+
+
+\section{Die Sprache \LTWOO}
+
+
+\index{Objekte}
+Die Sprache \LTWOO \ erweitert die Sprache \LTWO\ um Objekte. Die Menge \notation{$\Exp$} der
+g"ultigen Ausdr"ucke wird hierf"ur um die Produktionen
+\bgram
+e \is (e\#m)                                                        & & \mbox{Methodenaufruf}
+  \al \object {self: \tau}{r}                                       & & \mbox{Objekt}
+  \al \{< a_1 = e_1;\ldots;a_n = e_n >\}                            & & \mbox{Duplikation}
+\egram
+erweitert.
+Die Menge \notation{$\Row$} aller \name{Reihen} r von \LTWOO\ ist definiert durch die kontextfreie Grammatik:
+\bgram
+r \is \eps                                                          & & \mbox{leere Reihe}
+  \al \val {a}{e}\ r_1                                              & & \mbox{Attribut}
+  \al \meth {m: \tau}{e}\ r_1                                       & & \mbox{Methode}
+\egram
+Die Menge \notation{$\ValR$}\ $\sleq \Row$ aller \name{Reihenwerte} von \LTWOO\ ist definiert durch die kontextfreie Grammatik:
+\bgram
+\omega \is \eps                                                     & & \mbox{leere Reihe}
+  \al \val {a}{v}\ \omega_1                                         & & \mbox{Attribut}
+  \al \meth {m: \tau}{e}\ \omega_1                                  & & \mbox{Methode}
+\egram
+Die Menge \notation{$\Val$} der Werte $v$ wird um die Produktionen
+\bgram
+v \is \object {self: \tau}{\omega}                                  & & \mbox{Objektwert}
+\egram
+erweitert, wobei s"amtliche Typangaben wieder optional sind.
 
 
 \section{Die Sprache \LTHREE}

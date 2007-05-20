@@ -176,6 +176,7 @@
 \newcommand{\Env}{\name{Env}}
 \newcommand{\Exn}{\name{Exn}}
 \newcommand{\Exp}{\name{Exp}}
+\newcommand{\ValR}{\name{Val}_r}
 
 \newcommand{\Id}{\name{Id}}
 \newcommand{\Int}{\name{Int}}
@@ -226,7 +227,6 @@
 \newcommand{\bend}{\textbf{end}}
 
 \newcommand{\bval}{\textbf{val}}
-\newcommand{\bmethod}{\textbf{method}}
 \newcommand{\bmeth}{\textbf{meth}}
 \newcommand{\bfield}{\textbf{field}}
 \newcommand{\bthis}{\textbf{this}}
@@ -267,7 +267,7 @@
 \newcommand{\vdec}[2]{#1 = #2}
 \newcommand{\fdec}[2]{\bval\ #1 = #2}
 \newcommand{\mdec}[2]{\bmethod\ #1 = #2}
-\newcommand{\object}[2]{\bobject\ #1\ #2\ \bend}
+\newcommand{\object}[2]{\bobject\ (#1)\ #2\ \bend}
 \newcommand{\head}{\name{head}}
 \newcommand{\body}{\name{body}}
 \newcommand{\clone}[1]{\{\langle #1 \rangle\}}
@@ -276,7 +276,8 @@
 \newcommand{\recdots}[2]{\brec\ #1.\ \ldots}
 \newcommand{\abstr}[2]{\lambda #1.\,#2}
 \newcommand{\appl}[2]{#1\,#2}
-
+\newcommand{\val}[2]{\bval\ #1\ =\ #2;}
+\newcommand{\meth}[2]{\bmeth\ #1\ =\ #2;}
 \newcommand{\Ref}{\name{ref}}
 \newcommand{\Deref}{\,!\,}
 \newcommand{\Assign}{\ :=\ }
