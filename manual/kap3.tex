@@ -488,19 +488,95 @@ Die Menge \notation{$\Row$} aller \name{Reihen} r von \LTWOO\ ist definiert durc
 \bgram
 r \is \eps                                                          & & \mbox{leere Reihe}
   \al \val {a}{e}\ r_1                                              & & \mbox{Attribut}
-  \al \meth {m: \tau}{e}\ r_1                                       & & \mbox{Methode}
+  \al \method {m: \tau}{e}\ r_1                                     & & \mbox{Methode}
 \egram
 Die Menge \notation{$\ValR$}\ $\sleq \Row$ aller \name{Reihenwerte} von \LTWOO\ ist definiert durch die kontextfreie Grammatik:
 \bgram
 \omega \is \eps                                                     & & \mbox{leere Reihe}
   \al \val {a}{v}\ \omega_1                                         & & \mbox{Attribut}
-  \al \meth {m: \tau}{e}\ \omega_1                                  & & \mbox{Methode}
+  \al \method {m: \tau}{e}\ \omega_1                                & & \mbox{Methode}
 \egram
 Die Menge \notation{$\Val$} der Werte $v$ wird um die Produktionen
 \bgram
 v \is \object {self: \tau}{\omega}                                  & & \mbox{Objektwert}
 \egram
 erweitert, wobei s"amtliche Typangaben wieder optional sind.
+
+Die Menge der monomorphen Typen \notation{$\Type$} wird erweitert durch eine Produktion f"ur Objekte
+\bgram
+\tau \is <\phi>
+\egram
+
+und die Menge \notation{$\TypeR$} aller $\name{Reihentypen}$ $\phi$ von \LTWOO\ ist durch
+\bgram
+\phi \is \emptyset
+  \al m : \tau;\ \phi_1
+\egram
+definiert, wobei die Methodennamen in einem Reihentyp $\phi$ paarweise verschieden sein m"ussen.
+
+
+\subsection{Big step Semantik von \LTWOO}
+
+Ein \notation{big step} hei"st g"ultig f"ur \LTWOO, wenn er sich mit den big step Regeln von \LTWO\ und den Regeln\\[3mm]
+  \begin{tabular}{ll}
+    \mbox{(OBJECT)}      & $\regel{r \eval \omega}
+                                  {\object{self}{r} \eval \object{self}{\omega}}$ \\[5mm]
+    \mbox{(SEND)}        & $\regel{e \eval \object{self}{\omega} \quad 
+                                     \send{\omega [\object{self}{\omega}/self]}{m} \eval v}
+                                  {\send{e}{m} \eval v}$ \\[5mm]
+    \mbox{(SEND-ATTR)}   & $\regel{\send{\omega[v/a]}{m} \eval v'}
+                                  {\send{(\val{a}{v}\omega)}{m} \eval v'}$ \\[5mm]
+    \mbox{(SEND-SKIP)}   & $\regel{m \neq m' \vee m \in dom_m(\omega) \quad
+                                   \send{\omega}{m} \eval v}
+                                  {\send{(\method{m'}{e}\omega)}{m} \eval v}$ \\[5mm]
+    \mbox{(SEND-EXEC)}   & $\regel{m = m' \wedge m \notin dom_m(\omega) \quad e \eval v}
+                                  {\send{(\method{m'}{e}\omega)}{m} \eval v}$ \\[5mm]
+    \mbox{(OMEGA)}       & $\omega \eval \omega$ \\[3mm]
+    \mbox{(ATTR)}        & $\regel{e \eval v \quad r \eval \omega}
+                                  {\val{a}{e}r \eval \val{a}{v}\omega}$ \\[5mm]
+    \mbox{(METHOD)}      & $\regel{r \eval \omega}
+                                  {\method{m}{e}r \eval \method{m}{e}\omega}$
+  \end{tabular}\\[7mm]
+sowie den dazugeh"origen exception-Regeln herleiten l"asst.
+
+
+\subsection{Small step Semantik von \LTWOO}
+
+Ein \notation{small step} hei"st g"ultig f"ur \LTWOO, wenn er sich mit den small step Regeln von \LTWO\ und den Regeln\\[5mm]
+  \begin{tabular}{ll}
+    \mbox{(OBJECT-EVAL)}    & $\regel{r \to r'}
+                                     {\object{self}{r} \to \object{self}{r'}}$ \\[5mm]
+    \mbox{(SEND-EVAL)}      & $\regel{e \to e'}
+                                     {\send{e}{m} \to \send{e'}{m}}$ \\[5mm]
+    \mbox{(SEND-UNFOLD)}    & $\send{\object{self}{\omega}}{m} \to 
+                               \send{\omega [\object{self}{\omega}/self]}{m}$ \\[3mm]
+    \mbox{(SEND-ATTR)}      & $\send{(\val{a}{v}\omega)}{m} \to \send{\omega [v/a]}{m}$ \\[3mm]
+    \mbox{(SEND-SKIP)}      & $\send{(\method{m'}{e}\omega)}{m} \to \send{\omega}{m}$ \ 
+                              $falls\ m \neq m' \vee m \in dom_m(\omega)$ \\[3mm]
+    \mbox{(SEND-EXEC)}      & $\send{(\method{m'}{e}\omega)}{m} \to e$ \ 
+                              $falls\ m = m' \wedge m \notin dom_m(\omega)$ \\[3mm]
+    \mbox{(ATTR-EVAL)}      & $\regel{e \to e'}
+                                     {\val{a}{e}r \to \val{a}{e'}r}$ \\[5mm]
+    \mbox{(ATTR-RIGHT)}     & $\regel{r \to r'}
+                                     {\val{a}{v}r \to \val{a}{v}r'}$ \\[5mm]
+    \mbox{(METHOD-RIGHT)}   & $\regel{r \to r'}
+                                     {\method{m}{e}r \to \method{m}{e}r'}$
+  \end{tabular}\\[7mm]
+sowie den entsprechenden exception-Regeln herleiten l"asst.
+
+
+\subsection{Syntaktischer Zucker}
+
+Die Sprache \LTWOO\ enth"alt weitere Abk"urzungen zu den in \LTWO\ definierten. Die folgende Abk"urzung steht f"ur die leichtere Definition von Funktionen zur Verf"ugung.
+\beqns
+  \method{m (\id_1: \tau_1)\ldots(\id_n: \tau_n):\tau}{e}
+\eeqns
+steht f"ur
+\beqns
+  \method{m: \tau}{\abstr{\id_1: \tau_1}{\ldots\abstr{\id_n: \tau_n}{e}}}
+\eeqns
+F"ur diesen syntaktischen Zucker wurden keine abgeleiteten Regeln eingef"uhrt, stattdessen wird implizit
+eine "Ubersetzung in \notation{Kernsyntax} vorgenommen.
 
 
 \section{Die Sprache \LTHREE}

@@ -188,6 +188,7 @@
 
 \newcommand{\Row}{\name{Row}}
 \newcommand{\Type}{\name{Type}}
+\newcommand{\TypeR}{\name{Type}_r}
 \newcommand{\Ptype}{\name{PType}}
 \newcommand{\Tvar}{\name{TVar}}
 \newcommand{\Rvar}{\name{RVar}}
@@ -227,7 +228,7 @@
 \newcommand{\bend}{\textbf{end}}
 
 \newcommand{\bval}{\textbf{val}}
-\newcommand{\bmeth}{\textbf{meth}}
+\newcommand{\bmethod}{\textbf{method}}
 \newcommand{\bfield}{\textbf{field}}
 \newcommand{\bthis}{\textbf{this}}
 \newcommand{\bself}{\textbf{self}}
@@ -276,8 +277,9 @@
 \newcommand{\recdots}[2]{\brec\ #1.\ \ldots}
 \newcommand{\abstr}[2]{\lambda #1.\,#2}
 \newcommand{\appl}[2]{#1\,#2}
-\newcommand{\val}[2]{\bval\ #1\ =\ #2;}
-\newcommand{\meth}[2]{\bmeth\ #1\ =\ #2;}
+\newcommand{\val}[2]{\bval\ #1=#2;}
+\newcommand{\method}[2]{\bmethod\ #1=#2;}
+\newcommand{\send}[2]{#1 \# #2}
 \newcommand{\Ref}{\name{ref}}
 \newcommand{\Deref}{\,!\,}
 \newcommand{\Assign}{\ :=\ }
