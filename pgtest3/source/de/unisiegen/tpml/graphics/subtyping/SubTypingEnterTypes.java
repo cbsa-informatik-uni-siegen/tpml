@@ -17,6 +17,7 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
 import javax.swing.border.LineBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -49,6 +50,12 @@ public class SubTypingEnterTypes extends AbstractProofView {
 	 * The unique serialization identifier of this class.
 	 */
 	private static final long serialVersionUID = 5068227950528407089L;
+	
+	/**
+   * The <code>JSplitPane</code> for the <code>component</code>.
+   */
+  private JSplitPane jSplitPane ;
+  //TODO noch einbauen
 
 	/**
 	 * The Panels for input, output and menu
@@ -57,9 +64,11 @@ public class SubTypingEnterTypes extends AbstractProofView {
 
 	private JPanel outputField;
 
-	private JPanel outline;
-
 	private JPanel menu;
+	
+	private JPanel everything;
+	
+	private JPanel outline;
 
 	/**
 	 * The Textfields where the user is able to enter the types
@@ -165,7 +174,7 @@ public class SubTypingEnterTypes extends AbstractProofView {
 		type1 = null;
 
 		type2 = null;
-		this.setSize ( 800, 600 );
+		//this.setSize ( 800, 600 );
 
 		setLayout ( new GridBagLayout ( ) );
 		GridBagConstraints constraints = new GridBagConstraints ( );
@@ -380,7 +389,9 @@ public class SubTypingEnterTypes extends AbstractProofView {
 		constraints.weighty = 0;
 		constraints.weightx = 1;
 		constraints.insets = new Insets ( 5, 5, 5, 5 );
-		this.outputField.add ( labelOutput, constraints );
+		//this.outputField.add ( labelOutput, constraints );
+		//TODO hier muss der Renderer hin....
+		//this.outputField.add ( labelOutput, constraints );
 
 		lOutput = new JLabel (" "); //$NON-NLS-1$
 
@@ -389,7 +400,7 @@ public class SubTypingEnterTypes extends AbstractProofView {
 		constraints.gridwidth = 1;
 		constraints.weighty = 0;
 		constraints.weightx = 0;
-		this.outputField.add ( lOutput, constraints );
+		//this.outputField.add ( lOutput, constraints );
 
 		constraints.gridx = 0;
 		constraints.gridy = 2;

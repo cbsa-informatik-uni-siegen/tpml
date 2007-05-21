@@ -14,5 +14,7 @@ public interface SubTypingProofNode extends ProofNode {
 	public MonoType getType();
 	
 	public MonoType getType2();
+	 
+	public ProofNode getChildAt(int childIndex);
 
 }
