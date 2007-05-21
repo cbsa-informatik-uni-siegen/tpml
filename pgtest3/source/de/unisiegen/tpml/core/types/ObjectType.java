@@ -36,15 +36,11 @@ public final class ObjectType extends MonoType implements DefaultTypes
    * 
    * @param pPhi The {@link RowType}.
    */
-  public ObjectType ( MonoType pPhi )
+  public ObjectType ( RowType pPhi )
   {
     if ( pPhi == null )
     {
       throw new NullPointerException ( "Phi is null" ) ; //$NON-NLS-1$
-    }
-    if ( ! ( pPhi instanceof RowType ) )
-    {
-      throw new IllegalArgumentException ( "The Phi has to be a RowType" ) ; //$NON-NLS-1$
     }
     this.types = new MonoType [ 1 ] ;
     this.types [ 0 ] = pPhi ;
@@ -66,7 +62,7 @@ public final class ObjectType extends MonoType implements DefaultTypes
    * @param pParserEndOffset The end offset of this {@link Type} in the source
    *          code.
    */
-  public ObjectType ( MonoType pPhi , int pParserStartOffset ,
+  public ObjectType ( RowType pPhi , int pParserStartOffset ,
       int pParserEndOffset )
   {
     this ( pPhi ) ;
@@ -83,7 +79,7 @@ public final class ObjectType extends MonoType implements DefaultTypes
   @ Override
   public ObjectType clone ( )
   {
-    return new ObjectType ( this.types [ 0 ].clone ( ) ) ;
+    return new ObjectType ( ( RowType ) this.types [ 0 ].clone ( ) ) ;
   }
 
 
@@ -176,7 +172,8 @@ public final class ObjectType extends MonoType implements DefaultTypes
     {
       throw new NullPointerException ( "Substitution is null" ) ; //$NON-NLS-1$
     }
-    return new ObjectType ( this.types [ 0 ].substitute ( pTypeSubstitution ) ) ;
+    return new ObjectType ( ( RowType ) this.types [ 0 ]
+        .substitute ( pTypeSubstitution ) ) ;
   }
 
 
