@@ -106,6 +106,9 @@ public class TypeInferenceComponent extends AbstractProofComponent implements Sc
 		this.spacing	= 10;
 		this.advanced = advancedP;
 		
+		//TODO mach das ding transparent
+		this.setOpaque(false);
+		
 		
 		// trigger the first layouting
 		relayout ();

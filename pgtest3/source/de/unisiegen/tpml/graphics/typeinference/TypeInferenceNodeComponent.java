@@ -227,6 +227,9 @@ public class TypeInferenceNodeComponent extends JComponent {
 																 int 									spacing, boolean advacedP) {
 		super ();
 		
+		//TODO durchsichtig setzen
+		this.setOpaque(false);
+		
 		this.advanced 									= advacedP;
 		
 		this.proofNode 									= proofNode;
