@@ -1,6 +1,7 @@
 package de.unisiegen.tpml.core.subtyping;
 
 import de.unisiegen.tpml.core.AbstractProofNode;
+import de.unisiegen.tpml.core.ProofRule;
 import de.unisiegen.tpml.core.types.MonoType;
 
 /**
@@ -15,6 +16,8 @@ public class DefaultSubTypingProofNode extends AbstractProofNode implements
 	private MonoType type;
 
 	private MonoType type2;
+	
+	private ProofRule rule;
 
 	/**
 	 * list of proof steps of this node
@@ -106,6 +109,7 @@ public class DefaultSubTypingProofNode extends AbstractProofNode implements
 	 */
 	public void setSteps ( ProofStep[] steps ) {
 		this.steps = steps;
+		this.rule = steps[0].getRule ( );
 	}
 
   /**
@@ -142,6 +146,16 @@ public class DefaultSubTypingProofNode extends AbstractProofNode implements
 		builder.append ( "</html>" ); //$NON-NLS-1$*/
 		return builder.toString ( );
 
+	}
+
+	/**
+	 * 
+	 * {inheritDoc}
+	 *
+	 * @see de.unisiegen.tpml.core.subtyping.SubTypingProofNode#getRule()
+	 */
+	public ProofRule getRule ( ) {
+		return this.rule;
 	}
 
 }
