@@ -183,7 +183,7 @@ public abstract class AbstractRenderer
     AbstractRenderer.envFontMetrics = reference
         .getFontMetrics ( AbstractRenderer.envFont ) ;
     AbstractRenderer.typeColor = theme.getTypeColor ( ) ;
-    AbstractRenderer.typeFont = theme.getFont ( );//.deriveFont ( Font.BOLD ) ;
+    AbstractRenderer.typeFont = theme.getFont ( ).deriveFont ( Font.BOLD ) ;
     AbstractRenderer.typeFontMetrics = reference
         .getFontMetrics ( AbstractRenderer.typeFont ) ;
     AbstractRenderer.underlineColor = theme.getUnderlineColor ( ) ;
