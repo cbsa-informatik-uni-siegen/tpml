@@ -345,9 +345,9 @@ public class TypeInferenceNodeComponent extends JComponent {
   @Override
   protected void paintComponent(Graphics gc)
   {
-
-     gc.setColor(Color.BLACK);
-     gc.drawRect(0, 0, getWidth()-1, getHeight()-1);
+  	//TODO Rahmen entfernen
+   //  gc.setColor(Color.BLACK);
+   //  gc.drawRect(0, 0, getWidth()-1, getHeight()-1);
     super.paintComponent(gc);
   }
 	
