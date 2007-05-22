@@ -2,6 +2,7 @@ package de.unisiegen.tpml.core.subtyping;
 
 import de.unisiegen.tpml.core.AbstractProofNode;
 import de.unisiegen.tpml.core.types.MonoType;
+import de.unisiegen.tpml.core.util.Debug;
 
 /**
  * TODO
@@ -15,7 +16,7 @@ public class DefaultSubTypingProofNode extends AbstractProofNode implements
 	private MonoType type;
 
 	private MonoType type2;
-	
+
 	/**
 	 * list of proof steps of this node
 	 */
@@ -39,11 +40,11 @@ public class DefaultSubTypingProofNode extends AbstractProofNode implements
 		return ( getSteps ( ).length > 0 );
 	}
 
-  /**
-   * {@inheritDoc}
-   *
-   * @see de.unisiegen.tpml.core.subtyping.SubTypingProofNode#isFinished()
-   */
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see de.unisiegen.tpml.core.subtyping.SubTypingProofNode#isFinished()
+	 */
 	public boolean isFinished ( ) {
 
 		if ( !isProven ( ) ) {
@@ -57,12 +58,12 @@ public class DefaultSubTypingProofNode extends AbstractProofNode implements
 		return true;
 	}
 
-  /**
-   * {@inheritDoc}
-   *
-   * @see de.unisiegen.tpml.core.subtyping.SubTypingProofNode#getChildAt(int)
-   */
-  @Override
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see de.unisiegen.tpml.core.subtyping.SubTypingProofNode#getChildAt(int)
+	 */
+	@Override
 	public DefaultSubTypingProofNode getChildAt ( final int childIndex ) {
 
 		return ( DefaultSubTypingProofNode ) super.getChildAt ( childIndex );
@@ -108,38 +109,43 @@ public class DefaultSubTypingProofNode extends AbstractProofNode implements
 		this.steps = steps;
 	}
 
-  /**
-   * {@inheritDoc}
-   * 
-   * Mainly useful for debugging purposes.
-   * 
-   * @see java.lang.Object#toString()
-   */
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * Mainly useful for debugging purposes.
+	 * 
+	 * @see java.lang.Object#toString()
+	 */
 	@Override
 	public String toString ( ) {
 
 		final StringBuilder builder = new StringBuilder ( );
-		//String result = ""; //$NON-NLS-1$
-		builder.append ( "<html>" ); //$NON-NLS-1$
-		builder.append ( type );
-		builder.append ( " <: " ); //$NON-NLS-1$
-		builder.append ( type2 );
-		builder.append (" "); //$NON-NLS-1$
-		if (this.getSteps ( ).length > 0)
-			builder.append ( this.getSteps()[0].getRule ( ).toString ( ) );
-	/*	result += type;
-		result = result.replaceAll ( "<", "&#60" );
-		builder.append ( result );
-		result = "";
-		builder.append ( "<b><font color=\"#FF0000\">" );
-		builder.append ( " &#60: " );
-		builder.append ( "</font></b>" );
-		result += type2;
-		if ( this.getSteps ( ).length > 0 )
-			result += this.getSteps ( )[0].getRule ( ).toString ( );
-		result = result.replaceAll ( "<", "&#60" );
-		builder.append ( result );
-		builder.append ( "</html>" ); //$NON-NLS-1$*/
+
+		if ( Debug.isUserName ( Debug.BENJAMIN ) ) {
+			String result = ""; //$NON-NLS-1$
+			builder.append ( "<html>" ); //$NON-NLS-1$
+			result += type;
+			result = result.replaceAll ( "<", "&#60" );  //$NON-NLS-1$//$NON-NLS-2$
+			builder.append ( result );
+			result = ""; //$NON-NLS-1$
+			builder.append ( "<b><font color=\"#FF0000\">" ); //$NON-NLS-1$
+			builder.append ( " &#60: " ); //$NON-NLS-1$
+			builder.append ( "</font></b>" ); //$NON-NLS-1$
+			result += type2;
+			if ( this.getSteps ( ).length > 0 )
+				result += this.getSteps ( )[0].getRule ( ).toString ( );
+			result = result.replaceAll ( "<", "&#60" ); //$NON-NLS-1$ //$NON-NLS-2$
+			builder.append ( result );
+			builder.append ( "</html>" ); //$NON-NLS-1$
+		} else {
+			builder.append ( type );
+			builder.append ( " <: " ); //$NON-NLS-1$
+			builder.append ( type2 );
+			builder.append ( " " ); //$NON-NLS-1$
+			if ( this.getSteps ( ).length > 0 )
+				builder.append ( this.getSteps ( )[0].getRule ( ).toString ( ) );
+		}
+
 		return builder.toString ( );
 
 	}
@@ -151,13 +157,12 @@ public class DefaultSubTypingProofNode extends AbstractProofNode implements
 	 * @see de.unisiegen.tpml.core.subtyping.SubTypingProofNode#getRule()
 	 */
 	public SubTypingProofRule getRule ( ) {
-	    ProofStep[] steps = getSteps();
-	    if (steps.length > 0) {
-	      return (SubTypingProofRule)steps[0].getRule();
-	    }
-	    else {
-	      return null;
-	    }
-	  }
+		ProofStep[] steps = getSteps ( );
+		if ( steps.length > 0 ) {
+			return ( SubTypingProofRule ) steps[0].getRule ( );
+		} else {
+			return null;
+		}
+	}
 
 }

@@ -287,7 +287,7 @@ public class Debug
   public final static String MICHAEL = "feivel" ;
 
 
-  public final static String BENJAMIN = "benjamin" ;
+  public final static String BENJAMIN = "benny" ;
 
 
   public static DebugOutPrint out = new DebugOutPrint ( ) ;

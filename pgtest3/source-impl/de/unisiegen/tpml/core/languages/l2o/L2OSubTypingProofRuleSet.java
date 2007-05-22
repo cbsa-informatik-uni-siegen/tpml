@@ -141,9 +141,6 @@ public class L2OSubTypingProofRuleSet extends L2SubTypingProofRuleSet {
 		MonoType[] types = r1.getTypes ( );
 		MonoType[] types2 = r2.getTypes ( );
 
-		ArrayList < Identifier > newIds = new ArrayList < Identifier > ( );
-		ArrayList < MonoType > newTypes = new ArrayList < MonoType > ( );
-
 		for ( int i = 0; i < ids2.length; i++ ) {
 			goOn = false;
 			for ( int j = 0; j < ids1.length; j++ ) {
@@ -151,8 +148,6 @@ public class L2OSubTypingProofRuleSet extends L2SubTypingProofRuleSet {
 					if ( ! ( types2[i].equals ( types[j] ) ) ) {
 						throw new SubTypingException ( node );
 					}
-					newIds.add ( ids1[j] );
-					newTypes.add ( types[j] );
 					goOn = true;
 					break;
 				}
@@ -160,22 +155,6 @@ public class L2OSubTypingProofRuleSet extends L2SubTypingProofRuleSet {
 			if ( !goOn ) {
 				throw new SubTypingException ( node );
 			}
-		}
-
-		if ( newIds.size ( ) > 0 ) {
-
-			Identifier[] tmpIds = new Identifier[newIds.size ( )];
-			for ( int i = 0; i < newIds.size ( ); i++ ) {
-				tmpIds[i] = newIds.get ( i );
-			}
-
-			MonoType[] tmpTypes = new MonoType[newTypes.size ( )];
-			for ( int i = 0; i < newTypes.size ( ); i++ ) {
-				tmpTypes[i] = newTypes.get ( i );
-			}
-
-			context.addProofNode ( node, new ObjectType ( new RowType ( tmpIds,
-					tmpTypes ) ), type2 );
 		}
 	}
 
