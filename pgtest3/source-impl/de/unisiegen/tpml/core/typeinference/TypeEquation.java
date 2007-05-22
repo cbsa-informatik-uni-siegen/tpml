@@ -121,7 +121,13 @@ public final class TypeEquation implements TypeFormula, PrettyPrintable,
 	//
 	// Base methods
 	//
-
+	/**
+	 * Clones this type equation, so that the result is an type equation equal to this
+	 * type equation.
+	 *
+	 * @return a deep clone of this object.
+	 * @see Object#clone()
+	 */
 	public TypeEquation clone ( ) {
 		return new TypeEquation ( this.left, this.right );
 	}
@@ -212,17 +218,29 @@ public final class TypeEquation implements TypeFormula, PrettyPrintable,
 	PrettyStringBuilder toPrettyStringBuilder ( PrettyStringBuilderFactory factory ) {
 		PrettyStringBuilder builder = factory.newBuilder ( this, PRIO_EQUATION );
 		builder.addBuilder ( left.toPrettyStringBuilder ( factory ), PRIO_EQUATION );
-		builder.addText ( " = " );
+		builder.addText ( " = " ); //$NON-NLS-1$
 		builder
 				.addBuilder ( right.toPrettyStringBuilder ( factory ), PRIO_EQUATION );
 
 		return builder;
 	}
 
+	/**
+	 * 
+	 * set the left type of this type equation
+	 *
+	 * @param left MonoType to set as left type
+	 */
 	public void setLeft ( MonoType left ) {
 		this.left = left;
 	}
 
+	/**
+	 * 
+	 * set the right type of this type equation
+	 *
+	 * @param right MonoType to set as right type
+	 */
 	public void setRight ( MonoType right ) {
 		this.right = right;
 	}

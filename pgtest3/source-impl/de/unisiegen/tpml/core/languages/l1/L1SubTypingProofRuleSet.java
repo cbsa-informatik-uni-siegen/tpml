@@ -21,11 +21,12 @@ public class L1SubTypingProofRuleSet extends AbstractSubTypingProofRuleSet {
 	 * <code>language</code>.
 	 * 
 	 * @param language the <code>L1</code> or a derived language.
+	 * @param mode the mode chosen by the user
 	 * @throws NullPointerException if <code>language</code> is
 	 *           <code>null</code>.
 	 */
-	public L1SubTypingProofRuleSet ( Language language ) {
-		super ( language );
+	public L1SubTypingProofRuleSet ( Language language, boolean mode ) {
+		super ( language, mode );
 
 		// register the type rules
 		registerByMethodName ( L1Language.L1, "REFL", "applyRefl" ); //$NON-NLS-1$ //$NON-NLS-2$
@@ -79,5 +80,4 @@ public class L1SubTypingProofRuleSet extends AbstractSubTypingProofRuleSet {
 		context.addProofNode ( node, taul, tau2l );
 		context.addProofNode ( node, taur, tau2r );
 	}
-
 }

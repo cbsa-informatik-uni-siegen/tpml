@@ -1,4 +1,4 @@
-	package de.unisiegen.tpml.core.subtyping;
+package de.unisiegen.tpml.core.subtyping;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -107,7 +107,7 @@ public class SubTypingProofModelTest extends JFrame {
 		buttons.add ( guessAllButton );
 
 		//	  Setup combo box for prove
-		JComboBox combo1 = new JComboBox ( );
+		final JComboBox combo1 = new JComboBox ( );
 
 		for ( ProofRule rule : model.getRules ( ) ) {
 			combo1.addItem ( rule.getName ( ) );
@@ -191,6 +191,38 @@ public class SubTypingProofModelTest extends JFrame {
 				} );
 		buttons.add ( redoButton );
 
+		// setup the guess button
+		JButton beginnerButton = new JButton ( "Beginner" );
+		beginnerButton.addActionListener ( new ActionListener ( ) {
+			public void actionPerformed ( ActionEvent event ) {
+						model.setMode ( false );
+						ActionListener temp = combo1.getActionListeners ( )[0];
+						
+						combo1.removeAllItems ( );
+						for ( ProofRule rule : model.getRules ( ) ) {
+							combo1.addItem ( rule.getName ( ) );
+						}
+						combo1.addActionListener ( temp );
+			}
+		} );
+		buttons.add ( beginnerButton );
+		
+		// setup the guess button
+		JButton advancedButton = new JButton ( "Advanced" );
+		advancedButton.addActionListener ( new ActionListener ( ) {
+			public void actionPerformed ( ActionEvent event ) {
+
+						model.setMode ( true );
+						combo1.removeAllItems ( );
+						combo1.removeAllItems ( );
+						for ( ProofRule rule : model.getRules ( ) ) {
+							combo1.addItem ( rule.getName ( ) );
+						}
+	
+			}
+		} );
+		buttons.add ( advancedButton );
+
 		// setup the close button
 		JButton closeButton = new JButton ( "Close" );
 		closeButton.addActionListener ( new ActionListener ( ) {
@@ -241,7 +273,7 @@ public class SubTypingProofModelTest extends JFrame {
 			MonoType type2 = parser2.parse ( );
 
 			SubTypingProofModel model = language
-					.newSubTypingProofModel ( type, type2 );
+					.newSubTypingProofModel ( type, type2, true );
 
 			// evaluate the resulting small step expression
 			SubTypingProofModelTest window = new SubTypingProofModelTest ( model );

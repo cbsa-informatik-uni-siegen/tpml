@@ -333,6 +333,7 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 			}
 			addUndoableTreeEdit ( new UndoableTreeEdit ( ) {
 
+				@SuppressWarnings("synthetic-access")
 				public void redo ( ) {
 
 					node.setFormula ( newFormulas );
@@ -340,6 +341,7 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 
 				}
 
+				@SuppressWarnings("synthetic-access")
 				public void undo ( ) {
 					node.setFormula ( oldFormulas );
 					nodeChanged ( node );
@@ -357,6 +359,7 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 
 				addUndoableTreeEdit ( new UndoableTreeEdit ( ) {
 
+					@SuppressWarnings("synthetic-access")
 					public void redo ( ) {
 
 						judgement.setExpression ( newExpression );
@@ -364,6 +367,7 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 
 					}
 
+					@SuppressWarnings("synthetic-access")
 					public void undo ( ) {
 						judgement.setExpression ( oldExpression );
 						nodeChanged ( node );
@@ -577,6 +581,7 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 		// add redo and undo options
 		addUndoableTreeEdit ( new UndoableTreeEdit ( ) {
 
+			@SuppressWarnings("synthetic-access")
 			public void redo ( ) {
 
 				setFinished ( ( ( DefaultTypeInferenceProofNode ) root ).isFinished ( ) );
@@ -587,6 +592,7 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 				nodeChanged ( pNode );
 			}
 
+			@SuppressWarnings("synthetic-access")
 			public void undo ( ) {
 
 				// update the "finished" state
@@ -653,6 +659,38 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 		return this.ruleSet.getRules ( );
 	}
 
+  /**
+   * {@inheritDoc}
+   *
+   * @see de.unisiegen.tpml.core.ProofModel#undo()
+   */
+	@Override
+	public void undo ( ) throws CannotUndoException {
+		super.undo ( );
+		index-- ;
+	}
+
+  /**
+   * {@inheritDoc}
+   *
+   * @see de.unisiegen.tpml.core.ProofModel#redo()
+   */
+	@Override
+	public void redo ( ) throws CannotRedoException {
+		super.redo ( );
+		index++ ;
+	}
+
+  /**
+   * {@inheritDoc}
+   *
+   * @see de.unisiegen.tpml.core.ProofModel#setFinished()
+   */
+	public void setFinished ( ) {
+		this.setFinished ( true );
+	}
+	
+	/*
 	public ArrayList < MonoType > getSubstitudedTypesForSubstitutions (
 			ArrayList < DefaultTypeSubstitution > substitutions ) {
 		ArrayList < MonoType > result = new ArrayList < MonoType > ( );
@@ -661,21 +699,5 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 			result.add ( s.getType ( ) );
 		}
 		return result;
-	}
-
-	@Override
-	public void undo ( ) throws CannotUndoException {
-		super.undo ( );
-		index-- ;
-	}
-
-	@Override
-	public void redo ( ) throws CannotRedoException {
-		super.redo ( );
-		index++ ;
-	}
-
-	public void setFinished ( ) {
-		this.setFinished ( true );
-	}
+	}*/
 }

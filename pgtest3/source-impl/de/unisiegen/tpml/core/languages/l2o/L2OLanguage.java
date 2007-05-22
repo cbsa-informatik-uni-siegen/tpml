@@ -165,10 +165,10 @@ public class L2OLanguage extends L2Language
    */
   @ Override
   public SubTypingProofModel newSubTypingProofModel ( MonoType type ,
-      MonoType type2 )
+      MonoType type2, boolean mode )
   {
     return new SubTypingProofModel ( type , type2 ,
-        new L2OSubTypingProofRuleSet ( this ) ) ;
+        new L2OSubTypingProofRuleSet ( this, mode ), mode ) ;
   }
 
 

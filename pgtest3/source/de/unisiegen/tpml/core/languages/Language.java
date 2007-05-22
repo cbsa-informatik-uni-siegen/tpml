@@ -126,7 +126,7 @@ public interface Language {
    * 
    * @see SubTypingProofModel
    */
-  public SubTypingProofModel newSubTypingProofModel(MonoType type, MonoType type2);
+  public SubTypingProofModel newSubTypingProofModel(MonoType type, MonoType type2, boolean mode);
   
   /**
    * Allocates a new {@link LanguageParser} for this language, using the specified <code>scanner</code> as

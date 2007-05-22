@@ -1,6 +1,8 @@
 package de.unisiegen.tpml.core.subtyping;
 
 import de.unisiegen.tpml.core.AbstractProofNode;
+import de.unisiegen.tpml.core.ProofRule;
+import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.types.MonoType;
 
 /**
@@ -11,21 +13,21 @@ import de.unisiegen.tpml.core.types.MonoType;
  */
 public class DefaultSubTypingProofNode extends AbstractProofNode implements
 		SubTypingProofNode {
-	
+
 	private MonoType type;
+
 	private MonoType type2;
-	
-	
+
 	/**
 	 * list of proof steps of this node
 	 */
 	private ProofStep[] steps = new ProofStep[0];
 
 	/**
-	 * TODO
-	 *
+	 * Allocates a new proof step with the given <code>expression</code> and the specified <code>rule</code>.
+	 * 
 	 */
-	public DefaultSubTypingProofNode (MonoType pType, MonoType pType2 ) {
+	public DefaultSubTypingProofNode ( MonoType pType, MonoType pType2 ) {
 		type = pType;
 		type2 = pType2;
 	}
@@ -36,7 +38,7 @@ public class DefaultSubTypingProofNode extends AbstractProofNode implements
 	public boolean isProven ( ) {
 		return ( getSteps ( ).length > 0 );
 	}
-	
+
 	public boolean isFinished ( ) {
 
 		if ( !isProven ( ) ) {
@@ -49,13 +51,13 @@ public class DefaultSubTypingProofNode extends AbstractProofNode implements
 		}
 		return true;
 	}
-	
+
 	@Override
 	public DefaultSubTypingProofNode getChildAt ( final int childIndex ) {
 
 		return ( DefaultSubTypingProofNode ) super.getChildAt ( childIndex );
 	}
-	
+
 	/**
 	 * get the proof steps of this node
 	 * @return ProofStep[] steps
@@ -76,12 +78,12 @@ public class DefaultSubTypingProofNode extends AbstractProofNode implements
 	public void setSteps ( ProofStep[] steps ) {
 		this.steps = steps;
 	}
-	
+
 	@Override
 	public String toString ( ) {
 
 		final StringBuilder builder = new StringBuilder ( );
-		String result = "";
+		String result = ""; //$NON-NLS-1$
 		builder.append ( "<html>" ); //$NON-NLS-1$
 		//builder.append ( type );
 		//builder.append ( " <: " ); //$NON-NLS-1$
@@ -91,19 +93,19 @@ public class DefaultSubTypingProofNode extends AbstractProofNode implements
 		//builder.append ( this.getSteps()[0].getRule ( ).toString ( ) );
 		result += type;
 		result = result.replaceAll ( "<", "&#60" );
-		builder.append(result);
+		builder.append ( result );
 		result = "";
-		builder.append( "<b><font color=\"#FF0000\">");
-		builder.append( " &#60: ");
-		builder.append( "</font></b>" );
+		builder.append ( "<b><font color=\"#FF0000\">" );
+		builder.append ( " &#60: " );
+		builder.append ( "</font></b>" );
 		result += type2;
-		if (this.getSteps ( ).length > 0)
-			result += this.getSteps()[0].getRule ( ).toString ( ) ;
+		if ( this.getSteps ( ).length > 0 )
+			result += this.getSteps ( )[0].getRule ( ).toString ( );
 		result = result.replaceAll ( "<", "&#60" );
 		builder.append ( result );
 		builder.append ( "</html>" ); //$NON-NLS-1$
 		return builder.toString ( );
-		
+
 	}
 
 }

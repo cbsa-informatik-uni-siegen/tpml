@@ -13,7 +13,7 @@ import de.unisiegen.tpml.graphics.subtyping.SubTypingEnterTypes;
 
 public class SubTypingTest extends JFrame {
 
-	public SubTypingTest() {
+	public SubTypingTest ( ) {
 
 		setLayout ( new BorderLayout ( ) );
 
@@ -22,10 +22,9 @@ public class SubTypingTest extends JFrame {
 		setTitle ( "SubTyping Test" );
 
 		//	 parse the program (using L4)
-			SubTypingEnterTypes type = new SubTypingEnterTypes ( );
+		SubTypingEnterTypes type = new SubTypingEnterTypes ( );
 
-			this.add ( type, BorderLayout.CENTER );
-
+		this.add ( type, BorderLayout.CENTER );
 
 		this.setVisible ( true );
 
@@ -36,13 +35,13 @@ public class SubTypingTest extends JFrame {
 	 *
 	 * @param args
 	 */
-	public static void main(String[] args) {
+	public static void main ( String[] args ) {
 
 		SubTypingTest test = new SubTypingTest ( );
 
 		test.addWindowListener ( new WindowAdapter ( ) {
 			@Override
-			public void windowClosing(WindowEvent e) {
+			public void windowClosing ( WindowEvent e ) {
 				System.exit ( 0 );
 			}
 		} );

@@ -551,7 +551,7 @@ public class EditorPanel extends javax.swing.JPanel {
 		setTexteditor(false);
 		
 		try {
-			SubTypingProofModel model = language.newSubTypingProofModel(null, null);
+			SubTypingProofModel model = language.newSubTypingProofModel(null, null, this.advanced);
 			//typechecker = new ProofViewComponent(ProofViewFactory
 			//		.newTypeCheckerView(model), model);
 			subtyping = new ProofViewComponent(ProofViewFactory.newSubtypingView(model), model);

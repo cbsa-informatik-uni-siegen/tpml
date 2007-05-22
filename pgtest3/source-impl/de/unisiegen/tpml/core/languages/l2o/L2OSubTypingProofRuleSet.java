@@ -26,18 +26,20 @@ public class L2OSubTypingProofRuleSet extends L2SubTypingProofRuleSet {
 	 * <code>language</code>.
 	 * 
 	 * @param language the <code>L2O</code> or a derived language.
+	 * @param mode the mode chosen by the user
 	 * @throws NullPointerException if <code>language</code> is
 	 *           <code>null</code>.
 	 */
-	public L2OSubTypingProofRuleSet ( Language language ) {
-		super ( language );
+	public L2OSubTypingProofRuleSet ( Language language, boolean mode ) {
+		super ( language, mode );
 
 		unregister ( "REFL" ); //$NON-NLS-1$
 
 		// register the type rules
 		registerByMethodName ( L2OLanguage.L2O, "TRANS", "applyTrans" ); //$NON-NLS-1$ //$NON-NLS-2$
-		registerByMethodName ( L2OLanguage.L2O, "OBJECT-WIDTH", "applyObjectWidth" ); //$NON-NLS-1$ //$NON-NLS-2$
-		registerByMethodName ( L2OLanguage.L2O, "OBJECT-DEPTH", "applyObjectDepth" ); //$NON-NLS-1$ //$NON-NLS-2$
+		//registerByMethodName ( L2OLanguage.L2O, "OBJECT-WIDTH", "applyObjectWidth" ); //$NON-NLS-1$ //$NON-NLS-2$
+		//registerByMethodName ( L2OLanguage.L2O, "OBJECT-DEPTH", "applyObjectDepth" ); //$NON-NLS-1$ //$NON-NLS-2$
+		registerByMethodName ( L2OLanguage.L2O, "OBJECT", "applyObject" ); //$NON-NLS-1$ //$NON-NLS-2$
 		registerByMethodName ( L1Language.L1, "REFL", "applyRefl" ); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
@@ -58,8 +60,8 @@ public class L2OSubTypingProofRuleSet extends L2SubTypingProofRuleSet {
 			ArrayList < Identifier > newIds = new ArrayList < Identifier > ( );
 			ArrayList < MonoType > newTypes = new ArrayList < MonoType > ( );
 
-			RowType r1 = (RowType)( ( ObjectType ) type ).getPhi ( );
-			RowType r2 = (RowType)( ( ObjectType ) type2 ).getPhi ( );
+			RowType r1 = ( RowType ) ( ( ObjectType ) type ).getPhi ( );
+			RowType r2 = ( RowType ) ( ( ObjectType ) type2 ).getPhi ( );
 
 			Identifier[] ids1 = r1.getIdentifiers ( );
 			Identifier[] ids2 = r2.getIdentifiers ( );
@@ -124,8 +126,8 @@ public class L2OSubTypingProofRuleSet extends L2SubTypingProofRuleSet {
 		ObjectType type = ( ObjectType ) node.getType ( );
 		ObjectType type2 = ( ObjectType ) node.getType2 ( );
 
-		RowType r1 = (RowType)( ( ObjectType ) type ).getPhi ( );
-		RowType r2 = (RowType)( ( ObjectType ) type2 ).getPhi ( );
+		RowType r1 = ( RowType ) ( ( ObjectType ) type ).getPhi ( );
+		RowType r2 = ( RowType ) ( ( ObjectType ) type2 ).getPhi ( );
 
 		Identifier[] ids1 = r1.getIdentifiers ( );
 		Identifier[] ids2 = r2.getIdentifiers ( );
@@ -133,9 +135,9 @@ public class L2OSubTypingProofRuleSet extends L2SubTypingProofRuleSet {
 		MonoType[] types = r1.getTypes ( );
 		MonoType[] types2 = r2.getTypes ( );
 
-		ArrayList <Identifier> newIds = new ArrayList<Identifier>();
-		ArrayList<MonoType> newTypes = new ArrayList <MonoType>();
-		
+		ArrayList < Identifier > newIds = new ArrayList < Identifier > ( );
+		ArrayList < MonoType > newTypes = new ArrayList < MonoType > ( );
+
 		for ( int i = 0; i < ids2.length; i++ ) {
 			goOn = false;
 			for ( int j = 0; j < ids1.length; j++ ) {
@@ -143,28 +145,32 @@ public class L2OSubTypingProofRuleSet extends L2SubTypingProofRuleSet {
 					if ( ! ( types2[i].equals ( types[j] ) ) ) {
 						throw new SubTypingException ( node );
 					}
-					newIds.add (  ids1[j] );
+					newIds.add ( ids1[j] );
 					newTypes.add ( types[j] );
 					goOn = true;
 					break;
 				}
 			}
-			if (! goOn ){
-			throw new SubTypingException ( node );
+			if ( !goOn ) {
+				throw new SubTypingException ( node );
 			}
 		}
-		
-		Identifier[] tmpIds = new Identifier[newIds.size ( )];
-		for ( int i = 0; i < newIds.size ( ); i++ ) {
-			tmpIds[i] = newIds.get ( i );
-		}
 
-		MonoType[] tmpTypes = new MonoType[newTypes.size ( )];
-		for ( int i = 0; i < newTypes.size ( ); i++ ) {
-			tmpTypes[i] = newTypes.get ( i );
-		}
+		if ( newIds.size ( ) > 0 ) {
 
-		context.addProofNode ( node, new ObjectType ( new RowType ( tmpIds, tmpTypes )), type2 );
+			Identifier[] tmpIds = new Identifier[newIds.size ( )];
+			for ( int i = 0; i < newIds.size ( ); i++ ) {
+				tmpIds[i] = newIds.get ( i );
+			}
+
+			MonoType[] tmpTypes = new MonoType[newTypes.size ( )];
+			for ( int i = 0; i < newTypes.size ( ); i++ ) {
+				tmpTypes[i] = newTypes.get ( i );
+			}
+
+			context.addProofNode ( node, new ObjectType ( new RowType ( tmpIds,
+					tmpTypes ) ), type2 );
+		}
 	}
 
 	/**
@@ -182,8 +188,8 @@ public class L2OSubTypingProofRuleSet extends L2SubTypingProofRuleSet {
 		ObjectType type = ( ObjectType ) node.getType ( );
 		ObjectType type2 = ( ObjectType ) node.getType2 ( );
 
-		RowType r1 = (RowType)( ( ObjectType ) type ).getPhi ( );
-		RowType r2 = (RowType)( ( ObjectType ) type2 ).getPhi ( );
+		RowType r1 = ( RowType ) ( ( ObjectType ) type ).getPhi ( );
+		RowType r2 = ( RowType ) ( ( ObjectType ) type2 ).getPhi ( );
 
 		Identifier[] ids1 = r1.getIdentifiers ( );
 		Identifier[] ids2 = r2.getIdentifiers ( );
@@ -207,5 +213,51 @@ public class L2OSubTypingProofRuleSet extends L2SubTypingProofRuleSet {
 			}
 		} else
 			throw new SubTypingException ( node );
+	}
+
+	/**
+	 * Applies the <b>(OBJECT)</b> rule to the <code>node</code> using the
+	 * <code>context</code>.
+	 * 
+	 * @param context the subtyping proof context.
+	 * @param node the subtyping proof node.
+	 * @throws SubTypingException throw Exception if rule can't be applied
+	 */
+	public void applyObject ( SubTypingProofContext context,
+			SubTypingProofNode node ) throws SubTypingException {
+		boolean goOn = false;
+
+		ObjectType type = ( ObjectType ) node.getType ( );
+		ObjectType type2 = ( ObjectType ) node.getType2 ( );
+
+		RowType r1 = ( RowType ) type.getPhi ( );
+		RowType r2 = ( RowType ) type2.getPhi ( );
+
+		Identifier[] ids1 = null;
+		Identifier[] ids2 = null;
+		MonoType[] types1 = null;
+		MonoType[] types2 = null;
+
+		ids1 = r1.getIdentifiers ( );
+		ids2 = r2.getIdentifiers ( );
+
+		types1 = r1.getTypes ( );
+		types2 = r2.getTypes ( );
+
+		for ( int i = 0; i < ids2.length; i++ ) {
+			goOn = false;
+			for ( int j = 0; j < ids1.length; j++ ) {
+				if ( ids2[i].equals ( ids1[j] ) ) {
+					//newIds.add (  ids1[j] );
+					//newTypes.add ( types1[j] );
+					context.addProofNode ( node, types1[j], types2[i] );
+					goOn = true;
+					break;
+				}
+			}
+			if ( !goOn ) {
+				throw new SubTypingException ( node );
+			}
+		}
 	}
 }

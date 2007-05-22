@@ -345,6 +345,12 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
 		return this.formula;
 	}
 
+	/**
+	 * 
+	 * set the type formulas for this node
+	 *
+	 * @param formula ArrayList of the new type formulas
+	 */
 	public void setFormula ( ArrayList < TypeFormula > formula ) {
 		this.formula = formula;
 	}

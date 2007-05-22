@@ -6,7 +6,6 @@ import de.unisiegen.tpml.core.Messages;
 import de.unisiegen.tpml.core.typeinference.TypeEquation;
 import de.unisiegen.tpml.core.typeinference.UnifyException;
 import de.unisiegen.tpml.core.types.MonoType;
-import de.unisiegen.tpml.core.types.Type;
 
 public final class SubTypingException extends Exception {
 
@@ -39,12 +38,12 @@ public final class SubTypingException extends Exception {
 	 * Allocates a new {@link UnifyException} object to indicate that the unification of the
 	 * {@link TypeEquation} <code>equationn</code> failed.
 	 * 
-	 * @param equation the {@link TypeEquation} that could not be unified.
+	 * @param pNode the {@link SubTypingProofNode} where the error occurs.
 	 */
 	public SubTypingException ( final SubTypingProofNode pNode ) {
 
-		super ( MessageFormat.format ( Messages
-				.getString ( "SubTypingException.0" ), pNode ) ); //$NON-NLS-1$
+		super ( MessageFormat.format (
+				Messages.getString ( "SubTypingException.0" ), pNode ) ); //$NON-NLS-1$
 		this.node = pNode;
 	}
 

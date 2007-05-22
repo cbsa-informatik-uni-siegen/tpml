@@ -3,11 +3,14 @@ package de.unisiegen.tpml.core.subtyping;
 import org.apache.log4j.Logger;
 
 import de.unisiegen.tpml.core.AbstractProofModel;
+import de.unisiegen.tpml.core.AbstractProofNode;
 import de.unisiegen.tpml.core.AbstractProofRuleSet;
 import de.unisiegen.tpml.core.ProofGuessException;
 import de.unisiegen.tpml.core.ProofNode;
 import de.unisiegen.tpml.core.ProofRule;
 import de.unisiegen.tpml.core.ProofRuleException;
+import de.unisiegen.tpml.core.languages.l1.L1Language;
+import de.unisiegen.tpml.core.languages.l2o.L2OLanguage;
 import de.unisiegen.tpml.core.typechecker.DefaultTypeCheckerProofContext;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofRule;
@@ -16,10 +19,15 @@ import de.unisiegen.tpml.core.typeinference.TypeInferenceProofNode;
 import de.unisiegen.tpml.core.types.MonoType;
 
 /**
- * TODO
+ * The heart of the subtyping algorithm. Subtyping proof rules are supplied via an
+ * {@link de.unisiegen.tpml.core.subtyping.AbstractSubTypingProofRuleSet}
+ * that is passed to the constructor.
  *
  * @author Benjamin Mies
  *
+ * @see de.unisiegen.tpml.core.AbstractProofModel
+ * @see de.unisiegen.tpml.core.subtyping.SubTypingProofContext
+ * @see de.unisiegen.tpml.core.subtyping.SubTypingProofNode
  */
 public class SubTypingProofModel extends AbstractProofModel {
 
@@ -34,37 +42,38 @@ public class SubTypingProofModel extends AbstractProofModel {
 	private static final Logger logger = Logger
 			.getLogger ( SubTypingProofModel.class );
 
+	private boolean mode = true;
+
+	AbstractSubTypingProofRuleSet ruleSet;
+
 	//
-	// Attributes
+	// Constructor
 	//
 
 	/**
-	 * The current proof index, which indicates the number of steps that
-	 * have been performed on the proof model so far (starting with one),
-	 * and is used to generate new unique type variables in the associated
-	 * contexts.
+	 * Allocates a new <code>SubTypingProofModel</code> with the specified <code>type</code> and
+	 * <code>type2</type> as its root node.
 	 * 
-	 * @see #getIndex()
-	 * @see TypeCheckerProofContext#newTypeVariable()
-	 * @see types.TypeVariable
-	 */
-
-	/**
-	 * TODO
+	 * @param type the first {@link MonoType} for the root node.
+	 * @param type2 the second {@link MonoType} for the root node.
+	 * @param ruleSet the available type rules for the model.
+	 * @param mode the chosen mode (Advanced or Beginner)
+	 * 
+	 * @throws NullPointerException if either one <code>type</code> or <code>ruleSet</code> is
+	 *                              <code>null</code>.
 	 *
-	 * @param root
-	 * @param ruleSet
+	 * @see AbstractProofModel#AbstractProofModel(AbstractProofNode, AbstractProofRuleSet)
 	 */
 	public SubTypingProofModel ( MonoType type, MonoType type2,
-			AbstractProofRuleSet ruleSet ) {
+			AbstractSubTypingProofRuleSet ruleSet, boolean mode ) {
 		super ( new DefaultSubTypingProofNode ( type, type2 ), ruleSet );
+		this.ruleSet = ruleSet;
+		this.mode = mode;
 	}
 
 	/**
-	 * TODO
+	 * {@inheritDoc}
 	 *
-	 * @param node
-	 * @throws ProofGuessException
 	 * @see de.unisiegen.tpml.core.AbstractProofModel#guess(de.unisiegen.tpml.core.ProofNode)
 	 */
 	@Override
@@ -74,11 +83,8 @@ public class SubTypingProofModel extends AbstractProofModel {
 	}
 
 	/**
-	 * TODO
+	 * {@inheritDoc}
 	 *
-	 * @param rule
-	 * @param node
-	 * @throws ProofRuleException
 	 * @see de.unisiegen.tpml.core.AbstractProofModel#prove(de.unisiegen.tpml.core.ProofRule, de.unisiegen.tpml.core.ProofNode)
 	 */
 	@Override
@@ -133,11 +139,13 @@ public class SubTypingProofModel extends AbstractProofModel {
 			//	 check if we are finished
 			final DefaultSubTypingProofNode root = ( DefaultSubTypingProofNode ) getRoot ( );
 			context.addRedoAction ( new Runnable ( ) {
+				@SuppressWarnings ( "synthetic-access" )
 				public void run ( ) {
 					setFinished ( root.isFinished ( ) );
 				}
 			} );
 			context.addUndoAction ( new Runnable ( ) {
+				@SuppressWarnings ( "synthetic-access" )
 				public void run ( ) {
 					setFinished ( false );
 				}
@@ -256,10 +264,10 @@ public class SubTypingProofModel extends AbstractProofModel {
 
 		final DefaultSubTypingProofNode child = new DefaultSubTypingProofNode (
 				type, type2 );
-		final ProofStep[] oldSteps = node.getSteps ( );
 
 		// add redo and undo options
 		context.addRedoAction ( new Runnable ( ) {
+			@SuppressWarnings ( "synthetic-access" )
 			public void run ( ) {
 				node.add ( child );
 				nodesWereInserted ( node, new int[] { node.getIndex ( child ) } );
@@ -267,6 +275,7 @@ public class SubTypingProofModel extends AbstractProofModel {
 		} );
 
 		context.addUndoAction ( new Runnable ( ) {
+			@SuppressWarnings ( "synthetic-access" )
 			public void run ( ) {
 				int index = node.getIndex ( child );
 				node.remove ( index );
@@ -290,6 +299,7 @@ public class SubTypingProofModel extends AbstractProofModel {
 		final ProofStep[] oldSteps = node.getSteps ( );
 
 		context.addRedoAction ( new Runnable ( ) {
+			@SuppressWarnings ( "synthetic-access" )
 			public void run ( ) {
 				node.setSteps ( new ProofStep[] { new ProofStep ( node.getType ( ),
 						node.getType2 ( ), rule ) } );
@@ -301,6 +311,7 @@ public class SubTypingProofModel extends AbstractProofModel {
 		} );
 
 		context.addUndoAction ( new Runnable ( ) {
+			@SuppressWarnings ( "synthetic-access" )
 			public void run ( ) {
 				node.setSteps ( oldSteps );
 				ProofRule[] rules = null;
@@ -319,5 +330,46 @@ public class SubTypingProofModel extends AbstractProofModel {
 	@Override
 	public ProofRule[] getRules ( ) {
 		return this.ruleSet.getRules ( );
+	}
+
+	/**
+	 * 
+	 * Set the mode (Beginner, Advanced) of choosen by the user
+	 *
+	 * @param mode boolean, true means advanced, false beginner mode
+	 */
+	public void setMode ( boolean mode ) {
+		if ( this.mode != mode ) {
+			this.mode = mode;
+			if ( this.ruleSet.getLanguage ( ).getName ( ).equalsIgnoreCase ( "l2o" ) ) { //$NON-NLS-1$
+
+				if ( mode ) {
+					this.ruleSet.unregister ( "TRANS" ); //$NON-NLS-1$
+					this.ruleSet.unregister ( "OBJECT-WIDTH" ); //$NON-NLS-1$
+					this.ruleSet.unregister ( "OBJECT-DEPTH" ); //$NON-NLS-1$
+					this.ruleSet.unregister ( "REFL" ); //$NON-NLS-1$
+
+					this.ruleSet.registerByMethodName ( L2OLanguage.L2O,
+							"TRANS", "applyTrans" ); //$NON-NLS-1$ //$NON-NLS-2$
+					this.ruleSet.registerByMethodName ( L2OLanguage.L2O,
+							"OBJECT", "applyObject" ); //$NON-NLS-1$ //$NON-NLS-2$
+					this.ruleSet.registerByMethodName ( L1Language.L1,
+							"REFL", "applyRefl" ); //$NON-NLS-1$ //$NON-NLS-2$
+				} else {
+					this.ruleSet.unregister ( "TRANS" ); //$NON-NLS-1$
+					this.ruleSet.unregister ( "OBJECT" ); //$NON-NLS-1$
+					this.ruleSet.unregister ( "REFL" ); //$NON-NLS-1$
+
+					this.ruleSet.registerByMethodName ( L2OLanguage.L2O,
+							"TRANS", "applyTrans" ); //$NON-NLS-1$ //$NON-NLS-2$
+					this.ruleSet.registerByMethodName ( L2OLanguage.L2O,
+							"OBJECT-WIDTH", "applyObjectWidth" ); //$NON-NLS-1$ //$NON-NLS-2$
+					this.ruleSet.registerByMethodName ( L2OLanguage.L2O,
+							"OBJECT-DEPTH", "applyObjectDepth" ); //$NON-NLS-1$ //$NON-NLS-2$
+					this.ruleSet.registerByMethodName ( L1Language.L1,
+							"REFL", "applyRefl" ); //$NON-NLS-1$ //$NON-NLS-2$
+				}
+			}
+		}
 	}
 }

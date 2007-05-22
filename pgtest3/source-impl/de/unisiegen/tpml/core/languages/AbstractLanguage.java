@@ -63,7 +63,7 @@ public abstract class AbstractLanguage implements Language
    * 
    * @see de.unisiegen.tpml.core.languages.Language#newSubTypingProofModel(de.unisiegen.tpml.core.expressions.Expression)
    */
-  public SubTypingProofModel newSubTypingProofModel ( MonoType type, MonoType type2 )
+  public SubTypingProofModel newSubTypingProofModel ( MonoType type, MonoType type2, boolean mode )
   {
     throw new UnsupportedOperationException ( MessageFormat.format ( Messages
         .getString ( "AbstractLanguage.0" ) , getName ( ) ) ) ; //$NON-NLS-1$

@@ -21,11 +21,12 @@ public class L4SubTypingProofRuleSet extends L3SubTypingProofRuleSet {
    * <code>language</code>.
    * 
    * @param language the <code>L4</code> or a derived language.
+   * @param mode the mode chosen by the user
    * @throws NullPointerException if <code>language</code> is
    *           <code>null</code>.
    */
-	public L4SubTypingProofRuleSet ( Language language ) {
-		super ( language );
+	public L4SubTypingProofRuleSet ( Language language, boolean mode ) {
+		super ( language, mode );
 
     // register the type rules
 		registerByMethodName ( L4Language.L4, "REF", "applyRef" ); //$NON-NLS-1$ //$NON-NLS-2$

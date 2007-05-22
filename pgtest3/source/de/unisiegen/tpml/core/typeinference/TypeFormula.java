@@ -1,7 +1,6 @@
 package de.unisiegen.tpml.core.typeinference;
 
 import java.util.ArrayList;
-import java.util.Collection;
 
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.typechecker.DefaultTypeEnvironment;

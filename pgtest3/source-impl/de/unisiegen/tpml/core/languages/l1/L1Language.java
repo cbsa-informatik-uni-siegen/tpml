@@ -156,10 +156,10 @@ public class L1Language extends L0Language
    * @see de.unisiegen.tpml.core.languages.Language#newSubTypingProofModel(de.unisiegen.tpml.core.expressions.Expression)
    */
   @Override
-  public SubTypingProofModel newSubTypingProofModel ( MonoType type, MonoType type2  )
+  public SubTypingProofModel newSubTypingProofModel ( MonoType type, MonoType type2, boolean mode  )
   {
     return new SubTypingProofModel (type, type2, 
-        new L1SubTypingProofRuleSet ( this ) ) ;
+        new L1SubTypingProofRuleSet ( this, mode ), mode ) ;
   }
 
 

@@ -1,6 +1,3 @@
-/**
- * TODO
- */
 package de.unisiegen.tpml.core.subtyping;
 
 import de.unisiegen.tpml.core.AbstractProofRule;
@@ -10,39 +7,43 @@ import de.unisiegen.tpml.core.typechecker.TypeCheckerProofContext;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode;
 
 /**
- * TODO
+ * Abstract base class for implementations of the <code>SubTypingProofRule</code> interface.
  *
  * @author Benjamin Mies
- *
+ * 
+ * @see de.unisiegen.tpml.core.subtyping.SubTypingProofRule
+ * @see de.unisiegen.tpml.core.AbstractProofRule
  */
 public abstract class AbstractSubTypingProofRule extends AbstractProofRule
 		implements SubTypingProofRule {
 
-	/**
-	 * TODO
-	 *
-	 * @param group
-	 * @param name
-	 */
+  /**
+   * Allocates a new <code>AbstractSubTypingProofRule</code> of the specified <code>name</code>.
+   * 
+   * @param group the group id of the type rule, see the description of the
+   *              {@link AbstractProofRule#getGroup()} method for details.
+   * @param name the name of the type rule to allocate.
+   *
+   * @throws NullPointerException if <code>name</code> is <code>null</code>.
+   * 
+   * @see AbstractProofRule#AbstractProofRule(String)
+   */
 	public AbstractSubTypingProofRule ( int group, String name ) {
 		super ( group, name );
-		// TODO Auto-generated constructor stub
 	}
 
-	/**
-	 * TODO
-	 *
-	 * @param context
-	 * @param node
-	 * @see de.unisiegen.tpml.core.subtyping.SubTypingProofRule#apply(de.unisiegen.tpml.core.subtyping.DefaultSubTypingProofContext, de.unisiegen.tpml.core.subtyping.DefaultSubTypingProofNode)
-	 */
+  /**
+   * {@inheritDoc}
+   *
+   * @see de.unisiegen.tpml.core.subtyping.SubTypingProofRule#apply(de.unisiegen.tpml.core.subtyping.SubTypingProofContext, de.unisiegen.tpml.core.subTyping.SubTypingProofNode)
+   */
 	public void apply ( DefaultSubTypingProofContext context,
 			DefaultSubTypingProofNode node ) throws ProofRuleException {
 		if ( node == null ) {
-			throw new NullPointerException ( "node is null" );
+			throw new NullPointerException ( "node is null" ); //$NON-NLS-1$
 		}
 		if ( context == null ) {
-			throw new NullPointerException ( "context is null" );
+			throw new NullPointerException ( "context is null" ); //$NON-NLS-1$
 		}
 		try {
 			applyInternal ( context, node );
@@ -59,19 +60,18 @@ public abstract class AbstractSubTypingProofRule extends AbstractProofRule
 		}
 	}
 
-	/**
-	 * TODO
-	 *
-	 * @param context
-	 * @param node
-	 * @see de.unisiegen.tpml.core.subtyping.SubTypingProofRule#update(de.unisiegen.tpml.core.subtyping.SubTypingProofContext, de.unisiegen.tpml.core.subtyping.SubTypingProofNode)
-	 */
+	/*
+  /**
+   * {@inheritDoc}
+   *
+   * @see de.unisiegen.tpml.core.subtyping.SubTypingProofRule#update(de.unisiegen.tpml.core.subtyping.SubTypingProofContext, de.unisiegen.tpml.core.subtyping.SubTypingProofNode)
+   /*
 	public void update ( SubTypingProofContext context, SubTypingProofNode node ) {
 		if ( node == null ) {
-			throw new NullPointerException ( "node is null" );
+			throw new NullPointerException ( "node is null" ); //$NON-NLS-1$
 		}
 		if ( context == null ) {
-			throw new NullPointerException ( "context is null" );
+			throw new NullPointerException ( "context is null" ); //$NON-NLS-1$
 		}
 		try {
 			updateInternal ( context, node );
@@ -80,7 +80,7 @@ public abstract class AbstractSubTypingProofRule extends AbstractProofRule
 		} catch ( Exception e ) {
 			throw new RuntimeException ( e );
 		}
-	}
+	}*/
 
 	//
 	// Abstract methods

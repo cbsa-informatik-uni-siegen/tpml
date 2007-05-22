@@ -22,11 +22,12 @@ public class L3SubTypingProofRuleSet extends L2SubTypingProofRuleSet {
 	 * <code>language</code>.
 	 * 
 	 * @param language the <code>L3</code> or a derived language.
+	 * @param mode the mode chosen by the user
 	 * @throws NullPointerException if <code>language</code> is
 	 *           <code>null</code>.
 	 */
-	public L3SubTypingProofRuleSet ( Language language ) {
-		super ( language );
+	public L3SubTypingProofRuleSet ( Language language, boolean mode ) {
+		super ( language, mode );
 
 		// register the type rules
 		registerByMethodName ( L3Language.L3, "PODUCT", "applyProduct" ); //$NON-NLS-1$ //$NON-NLS-2$
