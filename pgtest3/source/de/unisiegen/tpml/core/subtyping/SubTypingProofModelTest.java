@@ -38,7 +38,7 @@ public class SubTypingProofModelTest extends JFrame {
 	public SubTypingProofModelTest ( final SubTypingProofModel model ) {
 		// setup the frame
 		setLayout ( new BorderLayout ( ) );
-		setSize ( 630, 580 );
+		setSize ( 800, 600 );
 		setTitle ( "TypeCheckerProofModel Test" );
 
 		// setup the tree panel
@@ -196,13 +196,13 @@ public class SubTypingProofModelTest extends JFrame {
 		beginnerButton.addActionListener ( new ActionListener ( ) {
 			public void actionPerformed ( ActionEvent event ) {
 						model.setMode ( false );
-						ActionListener temp = combo1.getActionListeners ( )[0];
-						
+						ItemListener temp = combo1.getItemListeners ( )[0];
+						combo1.removeItemListener ( temp );
 						combo1.removeAllItems ( );
 						for ( ProofRule rule : model.getRules ( ) ) {
 							combo1.addItem ( rule.getName ( ) );
 						}
-						combo1.addActionListener ( temp );
+						combo1.addItemListener ( temp );
 			}
 		} );
 		buttons.add ( beginnerButton );
@@ -213,11 +213,13 @@ public class SubTypingProofModelTest extends JFrame {
 			public void actionPerformed ( ActionEvent event ) {
 
 						model.setMode ( true );
-						combo1.removeAllItems ( );
+						ItemListener temp = combo1.getItemListeners ( )[0];
+						combo1.removeItemListener ( temp );
 						combo1.removeAllItems ( );
 						for ( ProofRule rule : model.getRules ( ) ) {
 							combo1.addItem ( rule.getName ( ) );
 						}
+						combo1.addItemListener ( temp );
 	
 			}
 		} );

@@ -332,6 +332,10 @@ public class SubTypingProofModel extends AbstractProofModel {
 		return this.ruleSet.getRules ( );
 	}
 
+	public void setRoot ( MonoType type, MonoType type2 ) {
+		this.root = new DefaultSubTypingProofNode ( type, type2 );
+	}
+
 	/**
 	 * 
 	 * Set the mode (Beginner, Advanced) of choosen by the user
