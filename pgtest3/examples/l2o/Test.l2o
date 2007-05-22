@@ -1,5 +1,4 @@
-(object (self)
-  val a = 0 ;
-  val a' = 1 ;
-  method add = {< a = 1 ; a' = 2 >} ;
-end) # add
+object (self)
+  method add:int = 1 ;
+  method sub:bool = true ;
+end
