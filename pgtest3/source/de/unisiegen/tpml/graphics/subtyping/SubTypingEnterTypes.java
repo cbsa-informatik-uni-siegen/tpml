@@ -27,6 +27,7 @@ import de.unisiegen.tpml.core.ProofGuessException;
 import de.unisiegen.tpml.core.languages.Language;
 import de.unisiegen.tpml.core.languages.LanguageTypeParser;
 import de.unisiegen.tpml.core.subtyping.AbstractSubTyping;
+import de.unisiegen.tpml.core.subtyping.SubTypingProofModel;
 import de.unisiegen.tpml.core.types.MonoType;
 import de.unisiegen.tpml.graphics.AbstractProofView;
 import de.unisiegen.tpml.graphics.Messages;
@@ -56,6 +57,8 @@ public class SubTypingEnterTypes extends AbstractProofView {
    */
   private JSplitPane jSplitPane ;
   //TODO noch einbauen
+  
+  private SubTypingProofModel model;
 
 	/**
 	 * The Panels for input, output and menu
@@ -159,9 +162,9 @@ public class SubTypingEnterTypes extends AbstractProofView {
 	/**
 	 * Allocates a new <code>SubTypingEnterTypes</code> 
 	 */
-	public SubTypingEnterTypes() {	
+	public SubTypingEnterTypes(SubTypingProofModel modelP) {	
 		super ( );
-
+		model = modelP;
 		// open a dialog to choose language
 		clLanguage = new ChangeLanguage ( null, this );
 		clLanguage.setLocationRelativeTo ( this );
@@ -291,6 +294,7 @@ public class SubTypingEnterTypes extends AbstractProofView {
 			public void insertUpdate(DocumentEvent e) {
 				type1 = eventHandling ( editor1, type1, oldType1, outline1 );
 				if (type1 != oldType1) {
+					
 					check ( );
 				}
 			}
@@ -346,14 +350,28 @@ public class SubTypingEnterTypes extends AbstractProofView {
 			public void insertUpdate(DocumentEvent e) {
 				type2 = eventHandling ( editor2, type2, oldType2, outline2 );
 				if (type2 != oldType2)
+				{
+					System.out.println("Das Moedel wird aktuallisiert");
+					
+					model = language.newSubTypingProofModel(type1, type2);
+					outputField.add(new SubTypingComponent ( model, isAdvanced() ));
 					check ( );
+					
+				}
+					
 			}
 
 			@SuppressWarnings("synthetic-access")
 			public void removeUpdate(DocumentEvent e) {
 				type2 = eventHandling ( editor2, type2, oldType2, outline2 );
 				if (type2 != oldType2)
+				{
+					System.out.println("Das Moedel wird aktuallisiert");
+					model = language.newSubTypingProofModel(type1, type2);
+					outputField.add(new SubTypingComponent ( model, isAdvanced() ));
 					check ( );
+				}
+					
 			}
 		} );
 
@@ -392,6 +410,7 @@ public class SubTypingEnterTypes extends AbstractProofView {
 		//this.outputField.add ( labelOutput, constraints );
 		//TODO hier muss der Renderer hin....
 		//this.outputField.add ( labelOutput, constraints );
+		this.outputField.add(new SubTypingComponent ( model, isAdvanced() ));
 
 		lOutput = new JLabel (" "); //$NON-NLS-1$
 
