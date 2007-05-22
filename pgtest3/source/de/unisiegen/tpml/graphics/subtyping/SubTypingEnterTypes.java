@@ -43,6 +43,7 @@ import de.unisiegen.tpml.ui.SideBarListener;
  * Enter two types and find out if one is a subtype of the other one.
  *
  * @author Benjamin Mies
+ * @author Feivel
  *
  */
 public class SubTypingEnterTypes extends AbstractProofView {
@@ -119,6 +120,8 @@ public class SubTypingEnterTypes extends AbstractProofView {
 	private MonoType oldType1;
 
 	private MonoType oldType2;
+	
+	private SubTypingComponent component;
 	
 	/**
 	 * Outlines for better understanding the entered types
@@ -353,8 +356,9 @@ public class SubTypingEnterTypes extends AbstractProofView {
 				{
 					System.out.println("Das Moedel wird aktuallisiert");
 					
-					model = language.newSubTypingProofModel(type1, type2);
-					outputField.add(new SubTypingComponent ( model, isAdvanced() ));
+					model = language.newSubTypingProofModel(type1, type2, isAdvanced());
+					component = new SubTypingComponent ( model, isAdvanced() );
+					outputField.add(component);
 					check ( );
 					
 				}
@@ -367,7 +371,7 @@ public class SubTypingEnterTypes extends AbstractProofView {
 				if (type2 != oldType2)
 				{
 					System.out.println("Das Moedel wird aktuallisiert");
-					model = language.newSubTypingProofModel(type1, type2);
+					model = language.newSubTypingProofModel(type1, type2, isAdvanced() );
 					outputField.add(new SubTypingComponent ( model, isAdvanced() ));
 					check ( );
 				}
@@ -539,5 +543,22 @@ public class SubTypingEnterTypes extends AbstractProofView {
 		System.out.println("Guess");
 		
 	}
+	
+	/**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.tpml.graphics.AbstractProofView#setAdvanced(boolean)
+   */
+  @ Override
+  public void setAdvanced ( boolean advanced )
+  {
+    //TODO testaugabe  System.out.println("jetzt bekommt der TypeInference-View den advaced-Wert: "+advanced);
+    super.setAdvanced ( advanced ) ;
+    if (this.component != null)
+    {
+    	this.component.setAdvanced ( isAdvanced ( ) ) ;
+    }
+    
+  }
 
 }

@@ -545,7 +545,7 @@ public class EditorPanel extends javax.swing.JPanel {
 	}
 	
 	/**
-	 * Starts the TypeInference.
+	 * Starts the Subtyping.
 	 */
 	public void handleSubtyping() {
 		setTexteditor(false);
@@ -559,7 +559,7 @@ public class EditorPanel extends javax.swing.JPanel {
 			//activateFunction(typecheckerButton, typechecker);
 			//
 			activateFunction(null, subtyping);
-			//typeinference.setAdvanced(this.advanced);
+			subtyping.setAdvanced(this.advanced);
 			paintAll(getGraphics());
 			
 
@@ -767,6 +767,7 @@ public class EditorPanel extends javax.swing.JPanel {
 		if (smallstep != null) smallstep.setAdvanced(state);
 		if (typechecker != null) typechecker.setAdvanced(state);
 		if (typeinference != null) typeinference.setAdvanced(state);
+		if (subtyping != null) subtyping.setAdvanced(state);
 		this.advanced = state;
 	}
 	

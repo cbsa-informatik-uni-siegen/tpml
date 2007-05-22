@@ -35,7 +35,7 @@ public class ProofViewFactory {
 	}
 	
 	public static ProofView newSubtypingView (SubTypingProofModel model) {
-		return new SubTypingEnterTypes ();
+		return new SubTypingEnterTypes ( model );
 	}
 	
 }

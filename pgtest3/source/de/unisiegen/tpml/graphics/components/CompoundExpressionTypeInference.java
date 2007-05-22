@@ -184,6 +184,8 @@ public class CompoundExpressionTypeInference extends JComponent
   public CompoundExpressionTypeInference ()
   {
     super ( ) ;
+    //TODO transparewnz
+    this.setOpaque(false);
     this.bonds = new ShowBonds ( ) ;
     this.toListenForMouse = new ToListenForMouseContainer ( ) ;
     this.alternativeColor = null ;

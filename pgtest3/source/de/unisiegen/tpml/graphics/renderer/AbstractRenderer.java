@@ -226,4 +226,13 @@ public abstract class AbstractRenderer
   {
     this.alternativeColor = color ;
   }
+
+
+	/**
+	 * @return the fontAscent
+	 */
+	public static int getFontAscent()
+	{
+		return fontAscent;
+	}
 }
