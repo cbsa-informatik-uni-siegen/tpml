@@ -14,6 +14,7 @@ import de.unisiegen.tpml.core.util.Environment;
  * of an environment.
  * 
  * @author marcell
+ * @author michael
  *
  * @param <S>
  * @param <E>
@@ -62,7 +63,9 @@ public class EnvironmentRenderer<S, E> extends AbstractRenderer {
 	 *
 	 */
 	public EnvironmentRenderer() {
-		this.bracketSize 		= AbstractRenderer.fontDescent;
+		//this.bracketSize 		= AbstractRenderer.fontDescent;
+		//let the bracket be as width as 
+		this.bracketSize 		= AbstractRenderer.expFontMetrics.stringWidth("[");
 		this.collapsed 			= false;
 		this.collapsedArea	= new Rectangle ();
 	}
@@ -180,6 +183,8 @@ public class EnvironmentRenderer<S, E> extends AbstractRenderer {
 		int posX = x;
 		int posY = y + height / 2;
 		posY += AbstractRenderer.fontAscent  / 2;
+		//if the hight is not bigger then the fonhight normal [ ] are used
+		//or else the bracket will bew renderd manually
 		if (height <= AbstractRenderer.fontHeight)
 		{
 			gc.setFont(expFont);
@@ -195,7 +200,6 @@ public class EnvironmentRenderer<S, E> extends AbstractRenderer {
 			gc.drawLine (x, y, x + this.bracketSize, y);
 			gc.drawLine (x, y, x, y + height - 1);
 			gc.drawLine (x, y + height - 1, x + this.bracketSize, y + height - 1);
-			System.out.println(height+ " = " + AbstractRenderer.fontHeight);
 			
 			// the right bracket
 			gc.drawLine (x + width - 1, y, x + width - 1 - this.bracketSize, y);
