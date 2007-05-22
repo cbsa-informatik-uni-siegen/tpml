@@ -5,8 +5,8 @@ import de.unisiegen.tpml.core.expressions.Attribute ;
 import de.unisiegen.tpml.core.expressions.Duplication ;
 import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.expressions.Identifier ;
+import de.unisiegen.tpml.core.expressions.Method ;
 import de.unisiegen.tpml.core.expressions.ObjectExpr ;
-import de.unisiegen.tpml.core.expressions.Recursion ;
 import de.unisiegen.tpml.core.expressions.Row ;
 import de.unisiegen.tpml.core.expressions.Send ;
 import de.unisiegen.tpml.core.languages.l2.L2TypeCheckerProofRuleSet ;
@@ -41,7 +41,10 @@ public class L2OTypeCheckerProofRuleSet extends L2TypeCheckerProofRuleSet
     registerByMethodName ( L2OLanguage.L2O , "SEND" , "applySend" ) ; //$NON-NLS-1$ //$NON-NLS-2$
     registerByMethodName ( L2OLanguage.L2O , "OBJECT" , "applyObject" ) ; //$NON-NLS-1$ //$NON-NLS-2$
     registerByMethodName ( L2OLanguage.L2O , "DUPL" , "applyDupl" ) ; //$NON-NLS-1$ //$NON-NLS-2$
+    registerByMethodName ( L2OLanguage.L2O , "EMPTY" , "applyEmpty" ) ; //$NON-NLS-1$ //$NON-NLS-2$
     registerByMethodName ( L2OLanguage.L2O , "ATTR" , "applyAttr" ) ; //$NON-NLS-1$ //$NON-NLS-2$
+    registerByMethodName ( L2OLanguage.L2O ,
+        "METHOD" , "applyMethod" , "updateMethod" ) ; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
   }
 
 
@@ -133,6 +136,26 @@ public class L2OTypeCheckerProofRuleSet extends L2TypeCheckerProofRuleSet
 
 
   /**
+   * Applies the <b>(EMPTY)</b> rule to the <code>node</code> using the
+   * <code>context</code>.
+   * 
+   * @param pContext The type checker proof context.
+   * @param pNode The type checker proof node.
+   */
+  public void applyEmpty ( TypeCheckerProofContext pContext ,
+      TypeCheckerProofNode pNode )
+  {
+    Row row = ( Row ) pNode.getExpression ( ) ;
+    if ( row.getExpressions ( ).length != 0 )
+    {
+      throw new RuntimeException ( "Can not apply EMPTY" ) ; //$NON-NLS-1$
+    }
+    pContext.addEquation ( pNode.getType ( ) , new RowType (
+        new Identifier [ 0 ] , new MonoType [ 0 ] ) ) ;
+  }
+
+
+  /**
    * Applies the <b>(ATTR)</b> rule to the <code>node</code> using the
    * <code>context</code>.
    * 
@@ -158,5 +181,65 @@ public class L2OTypeCheckerProofRuleSet extends L2TypeCheckerProofRuleSet
     pContext.addProofNode ( pNode , environment.extend ( attribute.getId ( )
         .getName ( ) , tauE ) , new Row ( newRowExpressions ) , tauRow ) ;
     pContext.addEquation ( pNode.getType ( ) , tauRow ) ;
+  }
+
+
+  /**
+   * Applies the <b>(METHOD)</b> rule to the <code>node</code> using the
+   * <code>context</code>.
+   * 
+   * @param pContext The type checker proof context.
+   * @param pNode The type checker proof node.
+   */
+  public void applyMethod ( TypeCheckerProofContext pContext ,
+      TypeCheckerProofNode pNode )
+  {
+    Row row = ( Row ) pNode.getExpression ( ) ;
+    Expression [ ] oldRowExpressions = row.getExpressions ( ) ;
+    Expression [ ] newRowExpressions = new Expression [ oldRowExpressions.length - 1 ] ;
+    for ( int i = 0 ; i < newRowExpressions.length ; i ++ )
+    {
+      newRowExpressions [ i ] = oldRowExpressions [ i + 1 ] ;
+    }
+    Method method = ( Method ) oldRowExpressions [ 0 ] ;
+    Expression e = method.getE ( ) ;
+    MonoType tauE = method.getTau ( ) ;
+    if ( tauE == null )
+    {
+      tauE = pContext.newTypeVariable ( ) ;
+    }
+    MonoType tauRow = pContext.newTypeVariable ( ) ;
+    TypeEnvironment environment = pNode.getEnvironment ( ) ;
+    pContext.addProofNode ( pNode , environment , e , tauE ) ;
+    pContext.addProofNode ( pNode , environment ,
+        new Row ( newRowExpressions ) , tauRow ) ;
+  }
+
+
+  /**
+   * Updates the <code>node</code>, to which <b>(METHOD)</b> was applied
+   * previously, using <code>context</code>.
+   * 
+   * @param pContext The type checker proof context.
+   * @param pNode The type checker proof node.
+   */
+  public void updateMethod ( TypeCheckerProofContext pContext ,
+      TypeCheckerProofNode pNode )
+  {
+    if ( ( pNode.getChildCount ( ) == 2 )
+        && ( pNode.getChildAt ( 0 ).isFinished ( ) )
+        && ( pNode.getChildAt ( 1 ).isFinished ( ) ) )
+    {
+      MonoType tauE = pNode.getChildAt ( 0 ).getType ( ) ;
+      RowType tauRow = ( RowType ) pNode.getChildAt ( 1 ).getType ( ) ;
+      Row row = ( Row ) pNode.getExpression ( ) ;
+      Expression [ ] oldRowExpressions = row.getExpressions ( ) ;
+      Method method = ( Method ) oldRowExpressions [ 0 ] ;
+      RowType tmpRowType = new RowType ( new Identifier [ ]
+      { method.getId ( ) } , new MonoType [ ]
+      { tauE } ) ;
+      RowType union = RowType.union ( tmpRowType , tauRow ) ;
+      pContext.addEquation ( pNode.getType ( ) , union ) ;
+    }
   }
 }

@@ -367,6 +367,8 @@ public class DefaultTypeCheckerProofContext implements TypeCheckerProofContext
       }
       // update the parent node (using the previously applied rule)
       parentNode.getRule ( ).update ( this , parentNode ) ;
+      // Needed if a new TypeEquation was added in the update method
+      this.model.contextApplySubstitution ( this , this.equations.unify ( ) ) ;
       // continue with the next one
       node = parentNode ;
     }

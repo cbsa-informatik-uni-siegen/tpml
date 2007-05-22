@@ -1,6 +1,7 @@
 package de.unisiegen.tpml.core.types ;
 
 
+import java.util.ArrayList ;
 import java.util.Arrays ;
 import java.util.TreeSet ;
 import de.unisiegen.tpml.core.expressions.Expression ;
@@ -24,6 +25,86 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
 public final class RowType extends MonoType implements DefaultIdentifiers ,
     DefaultTypes , SortedChildren
 {
+  /**
+   * Returns a new <code>RowType</code> which unions the method types from the
+   * input <code>RowTypes</code>. The new <code>RowType</code> contains at
+   * first the method types which are in both input <code>RowTypes</code>,
+   * then the method types which are in phi1 and after than the method types
+   * which are in phi2.
+   * 
+   * @param pPhi1 The first input <code>RowType</code>.
+   * @param pPhi2 The second input <code>RowType</code>.
+   * @return A new <code>RowType</code> which unions the method types from the
+   *         input <code>RowTypes</code>.
+   */
+  public static RowType union ( RowType pPhi1 , RowType pPhi2 )
+  {
+    MonoType [ ] phi1Types = pPhi1.getTypes ( ) ;
+    MonoType [ ] phi2Types = pPhi2.getTypes ( ) ;
+    ArrayList < Identifier > phi1Identifiers = new ArrayList < Identifier > ( ) ;
+    for ( Identifier id : pPhi1.getIdentifiers ( ) )
+    {
+      phi1Identifiers.add ( id ) ;
+    }
+    ArrayList < Identifier > phi2Identifiers = new ArrayList < Identifier > ( ) ;
+    for ( Identifier id : pPhi2.getIdentifiers ( ) )
+    {
+      phi2Identifiers.add ( id ) ;
+    }
+    // Result
+    ArrayList < Identifier > resultIdentifiers = new ArrayList < Identifier > ( ) ;
+    ArrayList < MonoType > resultTypes = new ArrayList < MonoType > ( ) ;
+    // Common method types
+    for ( int i = phi1Identifiers.size ( ) - 1 ; i >= 0 ; i -- )
+    {
+      for ( int j = phi2Identifiers.size ( ) - 1 ; j >= 0 ; j -- )
+      {
+        if ( ( phi1Identifiers.get ( i ) != null )
+            && ( phi2Identifiers.get ( j ) != null )
+            && ( phi1Identifiers.get ( i ).equals ( phi2Identifiers.get ( j ) ) ) )
+        {
+          if ( ! ( phi1Types [ i ].equals ( phi2Types [ j ] ) ) )
+          {
+            System.err.println ( "RowType union not defined" ) ; //$NON-NLS-1$
+            throw new RuntimeException ( "RowType union not defined" ) ; //$NON-NLS-1$
+          }
+          resultIdentifiers.add ( 0 , phi1Identifiers.get ( i ) ) ;
+          resultTypes.add ( 0 , phi1Types [ i ] ) ;
+          phi1Identifiers.set ( i , null ) ;
+          phi2Identifiers.set ( j , null ) ;
+        }
+      }
+    }
+    // Method types from phi1
+    for ( int i = 0 ; i < phi1Identifiers.size ( ) ; i ++ )
+    {
+      if ( phi1Identifiers.get ( i ) != null )
+      {
+        resultIdentifiers.add ( phi1Identifiers.get ( i ) ) ;
+        resultTypes.add ( phi1Types [ i ] ) ;
+      }
+    }
+    // Method types from phi2
+    for ( int i = 0 ; i < phi2Identifiers.size ( ) ; i ++ )
+    {
+      if ( phi2Identifiers.get ( i ) != null )
+      {
+        resultIdentifiers.add ( phi2Identifiers.get ( i ) ) ;
+        resultTypes.add ( phi2Types [ i ] ) ;
+      }
+    }
+    // Create the new RowType
+    Identifier [ ] newIdentifiers = new Identifier [ resultIdentifiers.size ( ) ] ;
+    MonoType [ ] newTypes = new MonoType [ resultTypes.size ( ) ] ;
+    for ( int i = 0 ; i < resultIdentifiers.size ( ) ; i ++ )
+    {
+      newIdentifiers [ i ] = resultIdentifiers.get ( i ) ;
+      newTypes [ i ] = resultTypes.get ( i ) ;
+    }
+    return new RowType ( newIdentifiers , newTypes ) ;
+  }
+
+
   /**
    * The list of identifiers.
    * 
@@ -123,6 +204,23 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
     this ( pIdentifiers , pTypes ) ;
     this.parserStartOffset = pParserStartOffset ;
     this.parserEndOffset = pParserEndOffset ;
+    /*
+     * Identifier [ ] id1 = new Identifier [ 5 ] ; id1 [ 0 ] = new Identifier (
+     * "a" ) ; id1 [ 1 ] = new Identifier ( "b" ) ; id1 [ 2 ] = new Identifier (
+     * "c" ) ; id1 [ 3 ] = new Identifier ( "x" ) ; id1 [ 4 ] = new Identifier (
+     * "y" ) ; Identifier [ ] id2 = new Identifier [ 5 ] ; id2 [ 0 ] = new
+     * Identifier ( "c" ) ; id2 [ 1 ] = new Identifier ( "d" ) ; id2 [ 2 ] = new
+     * Identifier ( "e" ) ; id2 [ 3 ] = new Identifier ( "y" ) ; id2 [ 4 ] = new
+     * Identifier ( "x" ) ; MonoType [ ] tau1 = new MonoType [ 5 ] ; tau1 [ 0 ] =
+     * new IntegerType ( ) ; tau1 [ 1 ] = new UnitType ( ) ; tau1 [ 2 ] = new
+     * IntegerType ( ) ; tau1 [ 3 ] = new IntegerType ( ) ; tau1 [ 4 ] = new
+     * BooleanType ( ) ; MonoType [ ] tau2 = new MonoType [ 5 ] ; tau2 [ 0 ] =
+     * new IntegerType ( ) ; tau2 [ 1 ] = new BooleanType ( ) ; tau2 [ 2 ] = new
+     * IntegerType ( ) ; tau2 [ 3 ] = new BooleanType ( ) ; tau2 [ 4 ] = new
+     * IntegerType ( ) ; RowType r1 = new RowType ( id1 , tau1 ) ; RowType r2 =
+     * new RowType ( id2 , tau2 ) ; System.out.println ( RowType.union ( r1 , r2
+     * ).toPrettyString ( ) ) ;
+     */
   }
 
 
