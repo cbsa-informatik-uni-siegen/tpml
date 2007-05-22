@@ -28,7 +28,20 @@ public interface SubTypingProofNode extends ProofNode {
 	 * @return MonoType the second type of this node
 	 */
 	public MonoType getType2();
+	
+  /**
+   * Returns <code>true</code> if this node and all subnodes are finished. A node is finished if
+   * a {@link de.unisiegen.tpml.core.ProofRule} was applied and thereby a proper type is known.
+   * 
+   * @return <code>true</code> if finished.
+   */
+	public boolean isFinished();
 	 
+  /**
+   * {@inheritDoc}
+   *
+   * @see de.unisiegen.tpml.core.ProofNode#getChildAt(int)
+   */
 	public ProofNode getChildAt(int childIndex);
 
 }

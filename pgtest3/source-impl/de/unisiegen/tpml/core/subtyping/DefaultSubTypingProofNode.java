@@ -1,8 +1,6 @@
 package de.unisiegen.tpml.core.subtyping;
 
 import de.unisiegen.tpml.core.AbstractProofNode;
-import de.unisiegen.tpml.core.ProofRule;
-import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.types.MonoType;
 
 /**
@@ -25,6 +23,8 @@ public class DefaultSubTypingProofNode extends AbstractProofNode implements
 
 	/**
 	 * Allocates a new proof step with the given <code>expression</code> and the specified <code>rule</code>.
+	 * @param pType the first MonoType of this node
+	 * @param pType2 the second MonoType of this node
 	 * 
 	 */
 	public DefaultSubTypingProofNode ( MonoType pType, MonoType pType2 ) {
@@ -39,6 +39,11 @@ public class DefaultSubTypingProofNode extends AbstractProofNode implements
 		return ( getSteps ( ).length > 0 );
 	}
 
+  /**
+   * {@inheritDoc}
+   *
+   * @see de.unisiegen.tpml.core.subtyping.SubTypingProofNode#isFinished()
+   */
 	public boolean isFinished ( ) {
 
 		if ( !isProven ( ) ) {
@@ -52,7 +57,12 @@ public class DefaultSubTypingProofNode extends AbstractProofNode implements
 		return true;
 	}
 
-	@Override
+  /**
+   * {@inheritDoc}
+   *
+   * @see de.unisiegen.tpml.core.subtyping.SubTypingProofNode#getChildAt(int)
+   */
+  @Override
 	public DefaultSubTypingProofNode getChildAt ( final int childIndex ) {
 
 		return ( DefaultSubTypingProofNode ) super.getChildAt ( childIndex );
@@ -67,31 +77,57 @@ public class DefaultSubTypingProofNode extends AbstractProofNode implements
 		return this.steps;
 	}
 
+	/**
+	 * 
+	 * {@inheritDoc}
+	 *
+	 * @see de.unisiegen.tpml.core.subtyping.SubTypingProofNode#getType()
+	 */
 	public MonoType getType ( ) {
 		return this.type;
 	}
 
+	/**
+	 * 
+	 * {@inheritDoc}
+	 *
+	 * @see de.unisiegen.tpml.core.subtyping.SubTypingProofNode#getType2()
+	 */
 	public MonoType getType2 ( ) {
 		return this.type2;
 	}
 
+	/**
+	 * 
+	 * 	
+	 * get the proof steps of this node
+	 *
+	 * @param steps new proof steps for this node
+	 */
 	public void setSteps ( ProofStep[] steps ) {
 		this.steps = steps;
 	}
 
+  /**
+   * {@inheritDoc}
+   * 
+   * Mainly useful for debugging purposes.
+   * 
+   * @see java.lang.Object#toString()
+   */
 	@Override
 	public String toString ( ) {
 
 		final StringBuilder builder = new StringBuilder ( );
-		String result = ""; //$NON-NLS-1$
+		//String result = ""; //$NON-NLS-1$
 		builder.append ( "<html>" ); //$NON-NLS-1$
-		//builder.append ( type );
-		//builder.append ( " <: " ); //$NON-NLS-1$
-		//builder.append ( type2 );
-		//builder.append (" ");
-		//if (this.getSteps ( ).length > 0)
-		//builder.append ( this.getSteps()[0].getRule ( ).toString ( ) );
-		result += type;
+		builder.append ( type );
+		builder.append ( " <: " ); //$NON-NLS-1$
+		builder.append ( type2 );
+		builder.append (" "); //$NON-NLS-1$
+		if (this.getSteps ( ).length > 0)
+			builder.append ( this.getSteps()[0].getRule ( ).toString ( ) );
+	/*	result += type;
 		result = result.replaceAll ( "<", "&#60" );
 		builder.append ( result );
 		result = "";
@@ -103,7 +139,7 @@ public class DefaultSubTypingProofNode extends AbstractProofNode implements
 			result += this.getSteps ( )[0].getRule ( ).toString ( );
 		result = result.replaceAll ( "<", "&#60" );
 		builder.append ( result );
-		builder.append ( "</html>" ); //$NON-NLS-1$
+		builder.append ( "</html>" ); //$NON-NLS-1$*/
 		return builder.toString ( );
 
 	}

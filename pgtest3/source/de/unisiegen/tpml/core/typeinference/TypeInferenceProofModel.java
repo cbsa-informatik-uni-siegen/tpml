@@ -145,7 +145,17 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 
 		guessInternal ( ( DefaultTypeInferenceProofNode ) node, null, false );
 	}
-
+	
+	/**
+	 * 
+	 * guess method with additional boolean to signal which mode is chosen
+	 *
+	 * @param node the actual subtyping proof node
+	 * @param mode the actual chosen mode
+	 * @throws ProofGuessException
+	 * 
+	 * @see de.unisiegen.tpml.core.AbstractProofModel#guess(de.unisiegen.tpml.core.ProofNode)
+	 */
 	public void guess ( ProofNode node, boolean mode ) throws ProofGuessException {
 
 		guessInternal ( ( DefaultTypeInferenceProofNode ) node, null, mode );
@@ -176,6 +186,17 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 				.getFirstFormula ( ), false );
 	}
 
+	/**
+	 * 
+	 * prove method with additional boolean to signal which mode is chosen
+	 *
+   * @param rule the {@link ProofRule} to apply. 
+	 * @param pNode the actual subtyping proof node
+	 * @param mode the actual chosen mode
+	 * @throws ProofRuleException
+	 * 
+	* @see de.unisiegen.tpml.core.AbstractProofModel#prove(de.unisiegen.tpml.core.ProofRule, de.unisiegen.tpml.core.ProofNode)
+	 */
 	public void prove ( ProofRule rule, ProofNode pNode, boolean mode )
 			throws ProofRuleException {
 		if ( !this.ruleSet.contains ( rule ) ) {

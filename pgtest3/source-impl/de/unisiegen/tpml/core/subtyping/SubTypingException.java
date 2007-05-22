@@ -7,6 +7,12 @@ import de.unisiegen.tpml.core.typeinference.TypeEquation;
 import de.unisiegen.tpml.core.typeinference.UnifyException;
 import de.unisiegen.tpml.core.types.MonoType;
 
+/**
+ * Exception to indicate that an error occurred during the subtyping algorithm, i.e. 
+ * 
+ * @author Benjamin Mies
+ * 
+ */
 public final class SubTypingException extends Exception {
 
 	//

@@ -105,10 +105,22 @@ public final class ProofStep {
 				+ this.rule.hashCode ( );
 	}
 
+	/**
+	 * 
+	 * get the first type of the subtyping proof node
+	 *
+	 * @return type first MonoType of the node
+	 */
 	public MonoType getType ( ) {
 		return this.type;
 	}
 
+	/**
+	 * 
+	 * get the second type of the subtyping proof node
+	 *
+	 * @return type2 second MonoType of the node
+	 */
 	public MonoType getType2 ( ) {
 		return this.type2;
 	}
