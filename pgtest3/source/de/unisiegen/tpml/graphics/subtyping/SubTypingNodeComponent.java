@@ -431,7 +431,8 @@ public class SubTypingNodeComponent extends JComponent implements TreeNodeCompon
     
     //TODO wieder einbauen
     //if (this.proofNode.getRule() != null) {
-    if (false){
+    if (this.proofNode.isFinished()) 
+    {
       //this.ruleLabel.setText ("(" + this.proofNode.getRule() + ")"); //$NON-NLS-1$ //$NON-NLS-2$
       Dimension ruleLabelSize = this.ruleLabel.getPreferredSize();
       
@@ -444,7 +445,8 @@ public class SubTypingNodeComponent extends JComponent implements TreeNodeCompon
       this.ruleLabel.setVisible (true);
       this.ruleButton.setVisible (false);
     }
-    else {
+    else 
+    {
       // place the menu button
       Dimension buttonSize = this.ruleButton.getNeededSize();
       this.ruleButton.setBounds(posX, this.dimension.height + this.spacing, buttonSize.width, buttonSize.height);

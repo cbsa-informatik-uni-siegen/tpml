@@ -463,6 +463,8 @@ public class CompoundExpressionSubTyping extends JComponent
 		
     type1Renderer.render(posX, posY -(type1Size.height / 2) - AbstractRenderer.getFontAscent() / 2, type1Size.height, gc, bound, new ToListenForMouseContainer());
     posX += type1Size.width;
+    
+    gc.setColor(AbstractRenderer.getTextColor());
         
     gc.drawString(" <: ", posX, posY);
     

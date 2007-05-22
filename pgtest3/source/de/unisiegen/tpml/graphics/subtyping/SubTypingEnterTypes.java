@@ -356,8 +356,11 @@ public class SubTypingEnterTypes extends AbstractProofView {
 				{
 					System.out.println("Das Moedel wird aktuallisiert");
 					
-					model = language.newSubTypingProofModel(type1, type2, isAdvanced());
+					//model = language.newSubTypingProofModel(type1, type2, isAdvanced());
+					model.setRoot(type1, type2);
 					component = new SubTypingComponent ( model, isAdvanced() );
+					System.out.println("advanced: "+isAdvanced());
+					outputField.removeAll();
 					outputField.add(component);
 					check ( );
 					
@@ -371,8 +374,11 @@ public class SubTypingEnterTypes extends AbstractProofView {
 				if (type2 != oldType2)
 				{
 					System.out.println("Das Moedel wird aktuallisiert");
-					model = language.newSubTypingProofModel(type1, type2, isAdvanced() );
-					outputField.add(new SubTypingComponent ( model, isAdvanced() ));
+					//model = language.newSubTypingProofModel(type1, type2, isAdvanced() );
+					model.setRoot(type1, type2);
+					component = new SubTypingComponent ( model, isAdvanced() );
+					outputField.removeAll();
+					outputField.add(component);
 					check ( );
 				}
 					
