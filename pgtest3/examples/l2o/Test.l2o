@@ -1,4 +1,3 @@
-object (self)
-  method add:int = 1 ;
-  method sub:bool = true ;
-end
+(object (self)
+  method add = 1 ;
+end)#add
