@@ -1,3 +1,4 @@
 (object (self)
   method add = 1 ;
+  method sub = true ;
 end)#add
