@@ -255,9 +255,8 @@ public class L2OSmallStepProofRuleSet extends L2SmallStepProofRuleSet
         Expression [ ] newRowExpressions = new Expression [ rowExpressions.length - 1 ] ;
         for ( int i = 0 ; i < newRowExpressions.length ; i ++ )
         {
-          Expression child = rowExpressions [ i + 1 ] ;
-          newRowExpressions [ i ] = child.substitute ( attribute.getId ( ) ,
-              attribute.getE ( ) ) ;
+          newRowExpressions [ i ] = rowExpressions [ i + 1 ].substitute (
+              attribute.getId ( ) , attribute.getE ( ) ) ;
         }
         pContext.addProofStep ( getRuleByName ( SEND_ATTR ) , attribute ) ;
         return new Send ( new Row ( newRowExpressions ) , pSend.getId ( ) ) ;

@@ -69,12 +69,7 @@ public class L2OBigStepProofRuleSet extends L2BigStepProofRuleSet
     Expression [ ] rowExpressions = row.getExpressions ( ) ;
     Attribute attribute = ( Attribute ) rowExpressions [ 0 ] ;
     pContext.addProofNode ( pNode , attribute.getE ( ) ) ;
-    Expression [ ] newRowExpressions = new Expression [ row.getExpressions ( ).length - 1 ] ;
-    for ( int i = 0 ; i < newRowExpressions.length ; i ++ )
-    {
-      newRowExpressions [ i ] = rowExpressions [ i + 1 ] ;
-    }
-    pContext.addProofNode ( pNode , new Row ( newRowExpressions ) ) ;
+    pContext.addProofNode ( pNode , row.tailRow ( ) ) ;
   }
 
 
@@ -95,12 +90,7 @@ public class L2OBigStepProofRuleSet extends L2BigStepProofRuleSet
     {
       throw new IllegalArgumentException ( "Can not apply METHOD" ) ; //$NON-NLS-1$
     }
-    Expression [ ] newRowExpressions = new Expression [ row.getExpressions ( ).length - 1 ] ;
-    for ( int i = 0 ; i < newRowExpressions.length ; i ++ )
-    {
-      newRowExpressions [ i ] = rowExpressions [ i + 1 ] ;
-    }
-    pContext.addProofNode ( pNode , new Row ( newRowExpressions ) ) ;
+    pContext.addProofNode ( pNode , row.tailRow ( ) ) ;
   }
 
 
@@ -316,13 +306,8 @@ public class L2OBigStepProofRuleSet extends L2BigStepProofRuleSet
     }
     if ( ( definedLater ) || ( ! ( send.getId ( ).equals ( methodName ) ) ) )
     {
-      Expression [ ] newRowExpressions = new Expression [ row.getExpressions ( ).length - 1 ] ;
-      for ( int i = 0 ; i < newRowExpressions.length ; i ++ )
-      {
-        newRowExpressions [ i ] = rowExpressions [ i + 1 ] ;
-      }
-      pContext.addProofNode ( pNode , new Send ( new Row ( newRowExpressions ) ,
-          send.getId ( ) ) ) ;
+      pContext.addProofNode ( pNode , new Send ( row.tailRow ( ) , send
+          .getId ( ) ) ) ;
     }
     else
     {

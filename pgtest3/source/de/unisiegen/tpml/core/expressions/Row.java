@@ -413,6 +413,23 @@ public final class Row extends Expression implements ChildrenExpressions
 
 
   /**
+   * Returns the tail <code>Row</code>, the current <code>Row</code>
+   * without the first {@link Expression}.
+   * 
+   * @return The tail <code>Row</code>.
+   */
+  public Row tailRow ( )
+  {
+    Expression [ ] newRowExpressions = new Expression [ this.expressions.length - 1 ] ;
+    for ( int i = 0 ; i < newRowExpressions.length ; i ++ )
+    {
+      newRowExpressions [ i ] = this.expressions [ i + 1 ] ;
+    }
+    return new Row ( newRowExpressions ) ;
+  }
+
+
+  /**
    * {@inheritDoc}
    */
   @ Override

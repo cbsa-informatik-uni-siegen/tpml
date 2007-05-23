@@ -132,6 +132,14 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
 
 
   /**
+   * The remaining {@link RowType}.
+   * 
+   * @see #getRemainingRowType()
+   */
+  private MonoType remainingRowType = null ;
+
+
+  /**
    * Allocates a new <code>RowType</code> with the specified
    * {@link Identifier}s and {@link Type}s.
    * 
@@ -225,6 +233,22 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
 
 
   /**
+   * Allocates a new <code>RowType</code> with the specified
+   * {@link Identifier}s and {@link Type}s.
+   * 
+   * @param pIdentifiers The {@link Identifier}s.
+   * @param pTypes The {@link Type}s.
+   * @param pRemainingRowType The remaining {@link RowType}.
+   */
+  public RowType ( Identifier [ ] pIdentifiers , MonoType [ ] pTypes ,
+      MonoType pRemainingRowType )
+  {
+    this ( pIdentifiers , pTypes ) ;
+    this.remainingRowType = pRemainingRowType ;
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see Type#clone()
@@ -242,7 +266,9 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
     {
       newTypes [ i ] = this.types [ i ].clone ( ) ;
     }
-    return new RowType ( newIdentifiers , newTypes ) ;
+    MonoType newRemainingRowType = ( this.remainingRowType == null ) ? null
+        : this.remainingRowType.clone ( ) ;
+    return new RowType ( newIdentifiers , newTypes , newRemainingRowType ) ;
   }
 
 
@@ -257,8 +283,10 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
     if ( pObject instanceof RowType )
     {
       RowType other = ( RowType ) pObject ;
-      return ( Arrays.equals ( this.identifiers , other.identifiers ) && Arrays
-          .equals ( this.types , other.types ) ) ;
+      return Arrays.equals ( this.identifiers , other.identifiers )
+          && Arrays.equals ( this.types , other.types )
+          && ( ( this.remainingRowType == null ) ? other.remainingRowType == null
+              : this.remainingRowType.equals ( other.remainingRowType ) ) ;
     }
     return false ;
   }
@@ -278,6 +306,10 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
       for ( MonoType type : this.types )
       {
         this.free.addAll ( type.free ( ) ) ;
+      }
+      if ( this.remainingRowType != null )
+      {
+        this.free.addAll ( this.remainingRowType.free ( ) ) ;
       }
     }
     return this.free ;
@@ -330,6 +362,18 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
       this.prefix = PREFIX_PHI ;
     }
     return this.prefix ;
+  }
+
+
+  /**
+   * Returns the remaining {@link RowType}.
+   * 
+   * @return The remaining {@link RowType}.
+   * @see #remainingRowType
+   */
+  public MonoType getRemainingRowType ( )
+  {
+    return this.remainingRowType ;
   }
 
 
@@ -409,7 +453,9 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
     {
       newTypes [ i ] = this.types [ i ].substitute ( pTypeSubstitution ) ;
     }
-    return new RowType ( this.identifiers , newTypes ) ;
+    MonoType newRemainingRowType = ( this.remainingRowType == null ) ? null
+        : this.remainingRowType.substitute ( pTypeSubstitution ) ;
+    return new RowType ( this.identifiers , newTypes , newRemainingRowType ) ;
   }
 
 
@@ -444,6 +490,12 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
         {
           this.prettyStringBuilder.addBreak ( ) ;
         }
+      }
+      if ( this.remainingRowType != null )
+      {
+        this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
+        this.prettyStringBuilder.addBuilder ( this.remainingRowType
+            .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , 0 ) ;
       }
       if ( this.types.length == 0 )
       {

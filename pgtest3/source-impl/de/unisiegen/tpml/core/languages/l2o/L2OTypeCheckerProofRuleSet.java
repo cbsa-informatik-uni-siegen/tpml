@@ -2,9 +2,11 @@ package de.unisiegen.tpml.core.languages.l2o ;
 
 
 import de.unisiegen.tpml.core.expressions.Attribute ;
+import de.unisiegen.tpml.core.expressions.CurriedMethod ;
 import de.unisiegen.tpml.core.expressions.Duplication ;
 import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.expressions.Identifier ;
+import de.unisiegen.tpml.core.expressions.Lambda ;
 import de.unisiegen.tpml.core.expressions.Method ;
 import de.unisiegen.tpml.core.expressions.ObjectExpr ;
 import de.unisiegen.tpml.core.expressions.Row ;
@@ -13,6 +15,7 @@ import de.unisiegen.tpml.core.languages.l2.L2TypeCheckerProofRuleSet ;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofContext ;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode ;
 import de.unisiegen.tpml.core.typechecker.TypeEnvironment ;
+import de.unisiegen.tpml.core.types.ArrowType ;
 import de.unisiegen.tpml.core.types.MonoType ;
 import de.unisiegen.tpml.core.types.ObjectType ;
 import de.unisiegen.tpml.core.types.RowType ;
@@ -60,10 +63,11 @@ public class L2OTypeCheckerProofRuleSet extends L2TypeCheckerProofRuleSet
   {
     Send send = ( Send ) pNode.getExpression ( ) ;
     MonoType tauSendE = pContext.newTypeVariable ( ) ;
+    MonoType tauRemainingRow = pContext.newTypeVariable ( ) ;
     pContext.addProofNode ( pNode , pNode.getEnvironment ( ) , send.getE ( ) ,
         new ObjectType ( new RowType ( new Identifier [ ]
         { send.getId ( ) } , new MonoType [ ]
-        { tauSendE } ) ) ) ;
+        { tauSendE } , tauRemainingRow ) ) ) ;
     pContext.addEquation ( pNode.getType ( ) , tauSendE ) ;
   }
 
@@ -79,24 +83,24 @@ public class L2OTypeCheckerProofRuleSet extends L2TypeCheckerProofRuleSet
       TypeCheckerProofNode pNode )
   {
     ObjectExpr objectExpr = ( ObjectExpr ) pNode.getExpression ( ) ;
-    MonoType tau1 = objectExpr.getTau ( ) ;
-    if ( tau1 == null )
+    MonoType tau = objectExpr.getTau ( ) ;
+    if ( tau == null )
     {
       MonoType rowType = pContext.newTypeVariable ( ) ;
       ObjectType objectType = new ObjectType ( rowType ) ;
       pContext.addEquation ( pNode.getType ( ) , objectType ) ;
-      TypeEnvironment environment = pNode.getEnvironment ( ) ;
-      pContext.addProofNode ( pNode , environment.extend ( objectExpr.getId ( )
-          .getName ( ) , objectType ) , objectExpr.getE ( ) , rowType ) ;
+      pContext.addProofNode ( pNode , pNode.getEnvironment ( ).extend (
+          objectExpr.getId ( ).getName ( ) , objectType ) ,
+          objectExpr.getE ( ) , rowType ) ;
     }
-    else if ( tau1 instanceof ObjectType )
+    else if ( tau instanceof ObjectType )
     {
-      ObjectType objectType = ( ObjectType ) tau1 ;
+      ObjectType objectType = ( ObjectType ) tau ;
       RowType rowType = ( RowType ) objectType.getPhi ( ) ;
       pContext.addEquation ( pNode.getType ( ) , objectType ) ;
-      TypeEnvironment environment = pNode.getEnvironment ( ) ;
-      pContext.addProofNode ( pNode , environment.extend ( objectExpr.getId ( )
-          .getName ( ) , objectType ) , objectExpr.getE ( ) , rowType ) ;
+      pContext.addProofNode ( pNode , pNode.getEnvironment ( ).extend (
+          objectExpr.getId ( ).getName ( ) , objectType ) ,
+          objectExpr.getE ( ) , rowType ) ;
     }
     else
     {
@@ -116,6 +120,21 @@ public class L2OTypeCheckerProofRuleSet extends L2TypeCheckerProofRuleSet
       TypeCheckerProofNode pNode )
   {
     Duplication duplication = ( Duplication ) pNode.getExpression ( ) ;
+    Identifier [ ] duplicationIdentifiers = duplication.getIdentifiers ( ) ;
+    Expression [ ] duplicationExpressions = duplication.getExpressions ( ) ;
+    MonoType tauSelf = pContext.newTypeVariable ( ) ;
+    TypeEnvironment environment = pNode.getEnvironment ( ) ;
+    pContext.addProofNode ( pNode , environment , new Identifier ( "self" ) , //$NON-NLS-1$
+        tauSelf ) ;
+    pContext.addEquation ( pNode.getType ( ) , tauSelf ) ;
+    for ( int i = 0 ; i < duplicationIdentifiers.length ; i ++ )
+    {
+      MonoType tauE = pContext.newTypeVariable ( ) ;
+      pContext.addProofNode ( pNode , environment ,
+          duplicationIdentifiers [ i ] , tauE ) ;
+      pContext.addProofNode ( pNode , environment ,
+          duplicationExpressions [ i ] , tauE ) ;
+    }
   }
 
 
@@ -150,20 +169,14 @@ public class L2OTypeCheckerProofRuleSet extends L2TypeCheckerProofRuleSet
       TypeCheckerProofNode pNode )
   {
     Row row = ( Row ) pNode.getExpression ( ) ;
-    Expression [ ] oldRowExpressions = row.getExpressions ( ) ;
-    Expression [ ] newRowExpressions = new Expression [ oldRowExpressions.length - 1 ] ;
-    for ( int i = 0 ; i < newRowExpressions.length ; i ++ )
-    {
-      newRowExpressions [ i ] = oldRowExpressions [ i + 1 ] ;
-    }
-    Attribute attribute = ( Attribute ) oldRowExpressions [ 0 ] ;
+    Attribute attribute = ( Attribute ) row.getExpressions ( ) [ 0 ] ;
     Expression e = attribute.getE ( ) ;
     MonoType tauE = pContext.newTypeVariable ( ) ;
     MonoType tauRow = pContext.newTypeVariable ( ) ;
     TypeEnvironment environment = pNode.getEnvironment ( ) ;
     pContext.addProofNode ( pNode , environment , e , tauE ) ;
     pContext.addProofNode ( pNode , environment.extend ( attribute.getId ( )
-        .getName ( ) , tauE ) , new Row ( newRowExpressions ) , tauRow ) ;
+        .getName ( ) , tauE ) , row.tailRow ( ) , tauRow ) ;
     pContext.addEquation ( pNode.getType ( ) , tauRow ) ;
   }
 
@@ -179,24 +192,50 @@ public class L2OTypeCheckerProofRuleSet extends L2TypeCheckerProofRuleSet
       TypeCheckerProofNode pNode )
   {
     Row row = ( Row ) pNode.getExpression ( ) ;
-    Expression [ ] oldRowExpressions = row.getExpressions ( ) ;
-    Expression [ ] newRowExpressions = new Expression [ oldRowExpressions.length - 1 ] ;
-    for ( int i = 0 ; i < newRowExpressions.length ; i ++ )
+    Expression [ ] rowExpressions = row.getExpressions ( ) ;
+    if ( rowExpressions [ 0 ] instanceof Method )
     {
-      newRowExpressions [ i ] = oldRowExpressions [ i + 1 ] ;
+      Method method = ( Method ) rowExpressions [ 0 ] ;
+      Expression e = method.getE ( ) ;
+      MonoType tauE = method.getTau ( ) ;
+      if ( tauE == null )
+      {
+        tauE = pContext.newTypeVariable ( ) ;
+      }
+      MonoType tauRow = pContext.newTypeVariable ( ) ;
+      pContext.addProofNode ( pNode , pNode.getEnvironment ( ) , e , tauE ) ;
+      pContext.addProofNode ( pNode , pNode.getEnvironment ( ) ,
+          row.tailRow ( ) , tauRow ) ;
     }
-    Method method = ( Method ) oldRowExpressions [ 0 ] ;
-    Expression e = method.getE ( ) ;
-    MonoType tauE = method.getTau ( ) ;
-    if ( tauE == null )
+    else if ( rowExpressions [ 0 ] instanceof CurriedMethod )
     {
-      tauE = pContext.newTypeVariable ( ) ;
+      CurriedMethod curriedMethod = ( CurriedMethod ) rowExpressions [ 0 ] ;
+      Expression e = curriedMethod.getE ( ) ;
+      MonoType [ ] types = curriedMethod.getTypes ( ) ;
+      Identifier [ ] identifiers = curriedMethod.getIdentifiers ( ) ;
+      for ( int n = identifiers.length - 1 ; n > 0 ; -- n )
+      {
+        e = new Lambda ( identifiers [ n ] , types [ n ] , e ) ;
+      }
+      MonoType tauE = types [ 0 ] ;
+      if ( tauE == null )
+      {
+        tauE = pContext.newTypeVariable ( ) ;
+      }
+      for ( int n = types.length - 1 ; n > 0 ; -- n )
+      {
+        tauE = new ArrowType ( ( types [ n ] != null ) ? types [ n ] : pContext
+            .newTypeVariable ( ) , tauE ) ;
+      }
+      MonoType tauRow = pContext.newTypeVariable ( ) ;
+      pContext.addProofNode ( pNode , pNode.getEnvironment ( ) , e , tauE ) ;
+      pContext.addProofNode ( pNode , pNode.getEnvironment ( ) ,
+          row.tailRow ( ) , tauRow ) ;
     }
-    MonoType tauRow = pContext.newTypeVariable ( ) ;
-    TypeEnvironment environment = pNode.getEnvironment ( ) ;
-    pContext.addProofNode ( pNode , environment , e , tauE ) ;
-    pContext.addProofNode ( pNode , environment ,
-        new Row ( newRowExpressions ) , tauRow ) ;
+    else
+    {
+      throw new RuntimeException ( "Can not apply METHOD" ) ; //$NON-NLS-1$
+    }
   }
 
 
@@ -217,13 +256,29 @@ public class L2OTypeCheckerProofRuleSet extends L2TypeCheckerProofRuleSet
       MonoType tauE = pNode.getChildAt ( 0 ).getType ( ) ;
       RowType tauRow = ( RowType ) pNode.getChildAt ( 1 ).getType ( ) ;
       Row row = ( Row ) pNode.getExpression ( ) ;
-      Expression [ ] oldRowExpressions = row.getExpressions ( ) ;
-      Method method = ( Method ) oldRowExpressions [ 0 ] ;
-      RowType tmpRowType = new RowType ( new Identifier [ ]
-      { method.getId ( ) } , new MonoType [ ]
-      { tauE } ) ;
-      RowType union = RowType.union ( tmpRowType , tauRow ) ;
-      pContext.addEquation ( pNode.getType ( ) , union ) ;
+      Expression [ ] rowExpressions = row.getExpressions ( ) ;
+      if ( rowExpressions [ 0 ] instanceof Method )
+      {
+        Method method = ( Method ) row.getExpressions ( ) [ 0 ] ;
+        RowType tmpRowType = new RowType ( new Identifier [ ]
+        { method.getId ( ) } , new MonoType [ ]
+        { tauE } ) ;
+        RowType union = RowType.union ( tmpRowType , tauRow ) ;
+        pContext.addEquation ( pNode.getType ( ) , union ) ;
+      }
+      else if ( rowExpressions [ 0 ] instanceof CurriedMethod )
+      {
+        CurriedMethod curriedMethod = ( CurriedMethod ) row.getExpressions ( ) [ 0 ] ;
+        RowType tmpRowType = new RowType ( new Identifier [ ]
+        { curriedMethod.getIdentifiers ( ) [ 0 ] } , new MonoType [ ]
+        { tauE } ) ;
+        RowType union = RowType.union ( tmpRowType , tauRow ) ;
+        pContext.addEquation ( pNode.getType ( ) , union ) ;
+      }
+      else
+      {
+        throw new RuntimeException ( "Can not apply METHOD" ) ; //$NON-NLS-1$
+      }
     }
   }
 }
