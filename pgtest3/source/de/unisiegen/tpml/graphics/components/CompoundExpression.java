@@ -155,9 +155,6 @@ public class CompoundExpression < S , E > extends JComponent
         handleMouseMoved ( event ) ;
       }
     } ) ;
-    // CHANGE CHRISTIAN
-    this.addMouseListener ( new OutlineMouseListener ( this ) ) ;
-    // CHANGE CHRISTIAN END
     this.addMouseListener ( new MouseAdapter ( )
     {
       @ Override

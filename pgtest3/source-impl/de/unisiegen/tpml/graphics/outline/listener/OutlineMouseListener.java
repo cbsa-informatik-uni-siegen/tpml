@@ -1,20 +1,19 @@
 package de.unisiegen.tpml.graphics.outline.listener ;
 
 
-import java.awt.Container ;
 import java.awt.event.MouseEvent ;
 import java.awt.event.MouseListener ;
-import javax.swing.JLabel ;
 import javax.swing.tree.TreePath ;
 import de.unisiegen.tpml.core.expressions.Expression ;
-import de.unisiegen.tpml.graphics.StyledLanguageDocument ;
+import de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode ;
+import de.unisiegen.tpml.graphics.bigstep.BigStepNodeComponent ;
 import de.unisiegen.tpml.graphics.bigstep.BigStepView ;
-import de.unisiegen.tpml.graphics.components.CompoundExpression ;
 import de.unisiegen.tpml.graphics.outline.DefaultOutline ;
 import de.unisiegen.tpml.graphics.outline.Outline ;
 import de.unisiegen.tpml.graphics.outline.node.OutlineNode ;
-import de.unisiegen.tpml.graphics.outline.ui.OutlineUI ;
+import de.unisiegen.tpml.graphics.smallstep.SmallStepNodeComponent ;
 import de.unisiegen.tpml.graphics.smallstep.SmallStepView ;
+import de.unisiegen.tpml.graphics.typechecker.TypeCheckerNodeComponent ;
 import de.unisiegen.tpml.graphics.typechecker.TypeCheckerView ;
 import de.unisiegen.tpml.ui.editor.TextEditorPanel ;
 
@@ -44,70 +43,107 @@ public final class OutlineMouseListener implements MouseListener
 
 
   /**
-   * The {@link CompoundExpression}.
-   */
-  private CompoundExpression < ? , ? > compoundExpression ;
-
-
-  /**
    * The {@link TextEditorPanel}.
    */
   private TextEditorPanel textEditorPanel ;
 
 
   /**
-   * The view, one of {@link SmallStepView}, {@link BigStepView} or
-   * {@link TypeCheckerView}.
+   * The {@link TypeCheckerNodeComponent}.
    */
-  private Container view ;
+  private TypeCheckerNodeComponent typeCheckerNodeComponent ;
+
+
+  /**
+   * The {@link BigStepNodeComponent}.
+   */
+  private BigStepNodeComponent bigStepNodeComponent ;
+
+
+  /**
+   * The {@link SmallStepNodeComponent}.
+   */
+  private SmallStepNodeComponent smallStepNodeComponent ;
 
 
   /**
    * Initializes the {@link OutlineMouseListener} with the given
-   * {@link CompoundExpression}. This constructer is used, if the
-   * {@link OutlineMouseListener} listens for <code>MouseEvents</code> on the
-   * {@link SmallStepView}, {@link BigStepView} or {@link TypeCheckerView}.
+   * {@link BigStepNodeComponent}.
    * 
-   * @param pCompoundExpression The {@link CompoundExpression}.
+   * @param pBigStepNodeComponent The {@link BigStepNodeComponent}.
    */
-  public OutlineMouseListener ( CompoundExpression < ? , ? > pCompoundExpression )
+  public OutlineMouseListener ( BigStepNodeComponent pBigStepNodeComponent )
   {
     this.defaultOutline = null ;
-    this.compoundExpression = pCompoundExpression ;
-    this.view = null ;
     this.textEditorPanel = null ;
+    this.typeCheckerNodeComponent = null ;
+    this.bigStepNodeComponent = pBigStepNodeComponent ;
+    this.smallStepNodeComponent = null ;
   }
 
 
   /**
    * Initializes the {@link OutlineMouseListener} with the given
-   * {@link OutlineUI}. This constructer is used, if the
-   * {@link OutlineMouseListener} listens for <code>MouseEvents</code> on the
-   * {@link Outline}.
+   * {@link DefaultOutline}.
    * 
    * @param pDefaultOutline The {@link DefaultOutline}.
    */
   public OutlineMouseListener ( DefaultOutline pDefaultOutline )
   {
     this.defaultOutline = pDefaultOutline ;
-    this.compoundExpression = null ;
-    this.view = null ;
     this.textEditorPanel = null ;
+    this.typeCheckerNodeComponent = null ;
+    this.bigStepNodeComponent = null ;
+    this.smallStepNodeComponent = null ;
   }
 
 
   /**
    * Initializes the {@link OutlineMouseListener} with the given
-   * {@link StyledLanguageDocument}.
+   * {@link SmallStepNodeComponent}.
    * 
-   * @param pTextEditorPanel The {@link StyledLanguageDocument}.
+   * @param pSmallStepNodeComponent The {@link SmallStepNodeComponent}.
+   */
+  public OutlineMouseListener ( SmallStepNodeComponent pSmallStepNodeComponent )
+  {
+    this.defaultOutline = null ;
+    this.textEditorPanel = null ;
+    this.typeCheckerNodeComponent = null ;
+    this.bigStepNodeComponent = null ;
+    this.smallStepNodeComponent = pSmallStepNodeComponent ;
+  }
+
+
+  /**
+   * Initializes the {@link OutlineMouseListener} with the given
+   * {@link TextEditorPanel}.
+   * 
+   * @param pTextEditorPanel The {@link TextEditorPanel}.
    */
   public OutlineMouseListener ( TextEditorPanel pTextEditorPanel )
   {
     this.defaultOutline = null ;
-    this.compoundExpression = null ;
-    this.view = null ;
     this.textEditorPanel = pTextEditorPanel ;
+    this.typeCheckerNodeComponent = null ;
+    this.bigStepNodeComponent = null ;
+    this.smallStepNodeComponent = null ;
+  }
+
+
+  /**
+   * Initializes the {@link OutlineMouseListener} with the given
+   * {@link TypeCheckerProofNode}.
+   * 
+   * @param pTypeCheckerNodeComponent The {@link TypeCheckerNodeComponent}.
+   */
+  public OutlineMouseListener (
+      TypeCheckerNodeComponent pTypeCheckerNodeComponent )
+  {
+    this.defaultOutline = null ;
+    this.textEditorPanel = null ;
+    this.typeCheckerNodeComponent = pTypeCheckerNodeComponent ;
+    this.bigStepNodeComponent = null ;
+    this.smallStepNodeComponent = null ;
   }
 
 
@@ -155,92 +191,180 @@ public final class OutlineMouseListener implements MouseListener
    */
   private final void handleMouseEvent ( MouseEvent pMouseEvent )
   {
-    /*
-     * Outline
-     */
-    if ( ( this.defaultOutline != null )
-        && ( pMouseEvent.getSource ( ).equals ( this.defaultOutline
-            .getOutlineUI ( ).getJTreeOutline ( ) ) ) )
+    if ( pMouseEvent.getButton ( ) == MouseEvent.BUTTON1 )
     {
-      if ( ( pMouseEvent.getButton ( ) == MouseEvent.BUTTON1 )
-          && ( this.defaultOutline.getTextEditorPanel ( ) != null )
-          && ( ( pMouseEvent.getClickCount ( ) >= 2 ) || ( this.defaultOutline
-              .getOutlinePreferences ( ).isHighlightSourceCode ( ) ) ) )
+      /*
+       * Outline.
+       */
+      if ( this.defaultOutline != null )
       {
-        this.defaultOutline.updateHighlighSourceCode ( ) ;
-      }
-      else if ( pMouseEvent.getButton ( ) == MouseEvent.BUTTON3 )
-      {
-        int x = pMouseEvent.getX ( ) ;
-        int y = pMouseEvent.getY ( ) ;
-        TreePath treePath = this.defaultOutline.getOutlineUI ( )
-            .getJTreeOutline ( ).getPathForLocation ( x , y ) ;
-        if ( treePath == null )
+        if ( pMouseEvent.getSource ( ).equals (
+            this.defaultOutline.getOutlineUI ( ).getJTreeOutline ( ) ) )
         {
-          return ;
+          /*
+           * Highlight the source code
+           */
+          if ( ( this.defaultOutline.getTextEditorPanel ( ) != null )
+              && ( ( pMouseEvent.getClickCount ( ) >= 2 ) || ( this.defaultOutline
+                  .getOutlinePreferences ( ).isHighlightSourceCode ( ) ) ) )
+          {
+            this.defaultOutline.updateHighlighSourceCode ( ) ;
+          }
         }
-        this.defaultOutline.getOutlineUI ( ).getJTreeOutline ( )
-            .setSelectionPath ( treePath ) ;
-        setStatus ( ) ;
-        this.defaultOutline.getOutlineUI ( ).getJPopupMenu ( ).show (
-            pMouseEvent.getComponent ( ) , x , y ) ;
+      }
+      /*
+       * Source code editor.
+       */
+      else if ( this.textEditorPanel != null )
+      {
+        if ( pMouseEvent.getSource ( ).equals (
+            this.textEditorPanel.getEditor ( ) ) )
+        {
+          Expression expression = null ;
+          try
+          {
+            expression = this.textEditorPanel.getDocument ( ).getExpression ( ) ;
+          }
+          catch ( Exception e )
+          {
+            // Do nothing
+          }
+          this.textEditorPanel.getOutline ( ).loadPrettyPrintable ( expression ,
+              Outline.Execute.MOUSE_CLICK_EDITOR ) ;
+        }
+      }
+      /*
+       * Type checker.
+       */
+      else if ( this.typeCheckerNodeComponent != null )
+      {
+        /*
+         * Index label.
+         */
+        if ( pMouseEvent.getSource ( ).equals (
+            this.typeCheckerNodeComponent.getIndexLabel ( ) ) )
+        {
+          ( ( TypeCheckerView ) this.typeCheckerNodeComponent.getParent ( )
+              .getParent ( ).getParent ( ).getParent ( ).getParent ( ) )
+              .getOutline ( ).loadPrettyPrintable (
+                  this.typeCheckerNodeComponent.getCompoundExpression ( )
+                      .getExpression ( ) ,
+                  Outline.Execute.MOUSE_CLICK_TYPECHECKER ) ;
+        }
+        /*
+         * Compound expression.
+         */
+        else if ( pMouseEvent.getSource ( ).equals (
+            this.typeCheckerNodeComponent.getCompoundExpression ( ) ) )
+        {
+          ( ( TypeCheckerView ) this.typeCheckerNodeComponent.getParent ( )
+              .getParent ( ).getParent ( ).getParent ( ).getParent ( ) )
+              .getOutline ( ).loadPrettyPrintable (
+                  this.typeCheckerNodeComponent.getCompoundExpression ( )
+                      .getExpression ( ) ,
+                  Outline.Execute.MOUSE_CLICK_TYPECHECKER ) ;
+        }
+        /*
+         * Type label.
+         */
+        else if ( pMouseEvent.getSource ( ).equals (
+            this.typeCheckerNodeComponent.getTypeLabel ( ) ) )
+        {
+          ( ( TypeCheckerView ) this.typeCheckerNodeComponent.getParent ( )
+              .getParent ( ).getParent ( ).getParent ( ).getParent ( ) )
+              .getOutline ( ).loadPrettyPrintable (
+                  this.typeCheckerNodeComponent.getProofNode ( ).getType ( ) ,
+                  Outline.Execute.MOUSE_CLICK_TYPECHECKER ) ;
+        }
+      }
+      /*
+       * Big step.
+       */
+      else if ( this.bigStepNodeComponent != null )
+      {
+        /*
+         * Index label.
+         */
+        if ( pMouseEvent.getSource ( ).equals (
+            this.bigStepNodeComponent.getIndexLabel ( ) ) )
+        {
+          ( ( BigStepView ) this.bigStepNodeComponent.getParent ( )
+              .getParent ( ).getParent ( ).getParent ( ).getParent ( ) )
+              .getOutline ( ).loadPrettyPrintable (
+                  this.bigStepNodeComponent.getCompoundExpression ( )
+                      .getExpression ( ) , Outline.Execute.MOUSE_CLICK_BIGSTEP ) ;
+        }
+        /*
+         * Compound expression.
+         */
+        else if ( pMouseEvent.getSource ( ).equals (
+            this.bigStepNodeComponent.getCompoundExpression ( ) ) )
+        {
+          ( ( BigStepView ) this.bigStepNodeComponent.getParent ( )
+              .getParent ( ).getParent ( ).getParent ( ).getParent ( ) )
+              .getOutline ( ).loadPrettyPrintable (
+                  this.bigStepNodeComponent.getCompoundExpression ( )
+                      .getExpression ( ) , Outline.Execute.MOUSE_CLICK_BIGSTEP ) ;
+        }
+        /*
+         * Result compound expression.
+         */
+        else if ( pMouseEvent.getSource ( ).equals (
+            this.bigStepNodeComponent.getResultCompoundExpression ( ) ) )
+        {
+          ( ( BigStepView ) this.bigStepNodeComponent.getParent ( )
+              .getParent ( ).getParent ( ).getParent ( ).getParent ( ) )
+              .getOutline ( ).loadPrettyPrintable (
+                  this.bigStepNodeComponent.getResultCompoundExpression ( )
+                      .getExpression ( ) , Outline.Execute.MOUSE_CLICK_BIGSTEP ) ;
+        }
+      }
+      /*
+       * Small step.
+       */
+      else if ( this.smallStepNodeComponent != null )
+      {
+        /*
+         * Compound expression.
+         */
+        if ( pMouseEvent.getSource ( ).equals (
+            this.smallStepNodeComponent.getCompoundExpression ( ) ) )
+        {
+          ( ( SmallStepView ) this.smallStepNodeComponent.getParent ( )
+              .getParent ( ).getParent ( ).getParent ( ).getParent ( ) )
+              .getOutline ( ).loadPrettyPrintable (
+                  this.smallStepNodeComponent.getCompoundExpression ( )
+                      .getExpression ( ) ,
+                  Outline.Execute.MOUSE_CLICK_SMALLSTEP ) ;
+        }
       }
     }
-    /*
-     * Editor
-     */
-    else if ( ( this.textEditorPanel != null )
-        && ( pMouseEvent.getSource ( ).equals ( this.textEditorPanel
-            .getEditor ( ) ) ) )
+    else if ( pMouseEvent.getButton ( ) == MouseEvent.BUTTON3 )
     {
-      if ( pMouseEvent.getButton ( ) == MouseEvent.BUTTON1 )
+      /*
+       * Outline.
+       */
+      if ( this.defaultOutline != null )
       {
-        Expression expression = null ;
-        try
+        /*
+         * Popupmenu
+         */
+        if ( pMouseEvent.getSource ( ).equals (
+            this.defaultOutline.getOutlineUI ( ).getJTreeOutline ( ) ) )
         {
-          expression = this.textEditorPanel.getDocument ( ).getExpression ( ) ;
-        }
-        catch ( Exception e )
-        {
-          // Do nothing
-        }
-        this.textEditorPanel.getOutline ( ).loadPrettyPrintable ( expression ,
-            Outline.Execute.MOUSE_CLICK_EDITOR ) ;
-      }
-    }
-    /*
-     * SmallStepView, BigStepView and TypeCheckerView.
-     */
-    else if ( ( pMouseEvent.getSource ( ) instanceof CompoundExpression )
-        || ( pMouseEvent.getSource ( ) instanceof JLabel ) )
-    {
-      if ( this.view == null )
-      {
-        this.view = this.compoundExpression.getParent ( ).getParent ( )
-            .getParent ( ).getParent ( ).getParent ( ).getParent ( ) ;
-      }
-      // SmallStepView
-      if ( pMouseEvent.getButton ( ) == MouseEvent.BUTTON1 )
-      {
-        if ( this.view instanceof SmallStepView )
-        {
-          ( ( SmallStepView ) this.view ).getOutline ( ).loadPrettyPrintable (
-              this.compoundExpression.getExpression ( ) ,
-              Outline.Execute.MOUSE_CLICK_SMALLSTEP ) ;
-        }
-        // BigStepView
-        else if ( this.view instanceof BigStepView )
-        {
-          ( ( BigStepView ) this.view ).getOutline ( ).loadPrettyPrintable (
-              this.compoundExpression.getExpression ( ) ,
-              Outline.Execute.MOUSE_CLICK_BIGSTEP ) ;
-        }
-        // TypeCheckerView
-        else if ( this.view instanceof TypeCheckerView )
-        {
-          ( ( TypeCheckerView ) this.view ).getOutline ( ).loadPrettyPrintable (
-              this.compoundExpression.getExpression ( ) ,
-              Outline.Execute.MOUSE_CLICK_TYPECHECKER ) ;
+          int x = pMouseEvent.getX ( ) ;
+          int y = pMouseEvent.getY ( ) ;
+          TreePath treePath = this.defaultOutline.getOutlineUI ( )
+              .getJTreeOutline ( ).getPathForLocation ( x , y ) ;
+          if ( treePath == null )
+          {
+            return ;
+          }
+          this.defaultOutline.getOutlineUI ( ).getJTreeOutline ( )
+              .setSelectionPath ( treePath ) ;
+          setStatus ( ) ;
+          this.defaultOutline.getOutlineUI ( ).getJPopupMenu ( ).show (
+              pMouseEvent.getComponent ( ) , x , y ) ;
         }
       }
     }
