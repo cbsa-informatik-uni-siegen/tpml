@@ -11,7 +11,12 @@
 	
 	<property name="libdir" value="${basedir}/lib" />
 
-    <target name="generate" depends="version,clean-l0,clean-l1,clean-l2,clean-l2o,clean-l3,clean-l4,l0,l1,l2,l2o,l3,l4" description="Generate parsers and lexers" />
+    <target name="generate" depends="version,l0,l1,l2,l2o,l3,l4" description="Generate parsers and lexers" />
+	
+	<!--
+	  Generate with clean
+	  <target name="generate" depends="version,clean-l0,clean-l1,clean-l2,clean-l2o,clean-l3,clean-l4,l0,l1,l2,l2o,l3,l4" description="Generate parsers and lexers" />
+	-->
 	
 	<property name="impldir" value="${basedir}/source-impl" />
 	<property name="generateddir" value="${basedir}/source-generated" />
