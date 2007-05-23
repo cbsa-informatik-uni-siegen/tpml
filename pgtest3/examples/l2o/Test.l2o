@@ -1,4 +1,4 @@
-(object (self)
-  method add = 1 ;
-  method sub = true ;
-end)#add
+(object (self:< b: bool ; a: int ; >)
+  method a:int = 1 ;
+  method b = true ;
+end)
