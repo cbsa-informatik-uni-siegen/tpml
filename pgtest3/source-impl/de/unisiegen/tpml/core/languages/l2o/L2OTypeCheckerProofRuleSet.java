@@ -58,29 +58,13 @@ public class L2OTypeCheckerProofRuleSet extends L2TypeCheckerProofRuleSet
   public void applySend ( TypeCheckerProofContext pContext ,
       TypeCheckerProofNode pNode )
   {
-    // determine the type for the identifier
     Send send = ( Send ) pNode.getExpression ( ) ;
-    Identifier sendM = send.getId ( ) ;
-    ObjectExpr objectExpr = ( ObjectExpr ) send.getE ( ) ;
-    ObjectType objectType = ( ObjectType ) objectExpr.getTau ( ) ;
-    RowType rowType = ( RowType ) objectType.getPhi ( ) ;
-    MonoType tau = null ;
-    Identifier [ ] rowTypeIdentifiers = rowType.getIdentifiers ( ) ;
-    for ( int i = 0 ; i < rowTypeIdentifiers.length ; i ++ )
-    {
-      if ( rowTypeIdentifiers [ i ].equals ( sendM ) )
-      {
-        tau = rowType.getTypes ( ) [ i ] ;
-        break ;
-      }
-    }
-    if ( tau == null )
-    {
-      tau = pContext.newTypeVariable ( ) ;
-    }
-    pContext.addEquation ( pNode.getType ( ) , tau ) ;
-    TypeEnvironment environment = pNode.getEnvironment ( ) ;
-    pContext.addProofNode ( pNode , environment , send.getE ( ) , tau ) ;
+    MonoType tauSendE = pContext.newTypeVariable ( ) ;
+    pContext.addProofNode ( pNode , pNode.getEnvironment ( ) , send.getE ( ) ,
+        new ObjectType ( new RowType ( new Identifier [ ]
+        { send.getId ( ) } , new MonoType [ ]
+        { tauSendE } ) ) ) ;
+    pContext.addEquation ( pNode.getType ( ) , tauSendE ) ;
   }
 
 

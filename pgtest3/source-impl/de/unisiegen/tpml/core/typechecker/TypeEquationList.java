@@ -1,10 +1,13 @@
 package de.unisiegen.tpml.core.typechecker ;
 
 
+import de.unisiegen.tpml.core.expressions.Identifier ;
 import de.unisiegen.tpml.core.types.ArrowType ;
 import de.unisiegen.tpml.core.types.ListType ;
 import de.unisiegen.tpml.core.types.MonoType ;
+import de.unisiegen.tpml.core.types.ObjectType ;
 import de.unisiegen.tpml.core.types.RefType ;
+import de.unisiegen.tpml.core.types.RowType ;
 import de.unisiegen.tpml.core.types.TupleType ;
 import de.unisiegen.tpml.core.types.TypeVariable ;
 
@@ -146,7 +149,7 @@ public final class TypeEquationList
     MonoType left = this.first.getLeft ( ) ;
     MonoType right = this.first.getRight ( ) ;
     // different actions, depending on the exact types
-    if ( left instanceof TypeVariable || right instanceof TypeVariable )
+    if ( ( left instanceof TypeVariable ) || ( right instanceof TypeVariable ) )
     {
       // the left or right side of the equation is a type variable
       TypeVariable tvar = ( TypeVariable ) ( left instanceof TypeVariable ? left
@@ -162,7 +165,7 @@ public final class TypeEquationList
       }
       // FALL-THROUGH: Otherwise it's a type error
     }
-    else if ( left instanceof ArrowType && right instanceof ArrowType )
+    else if ( ( left instanceof ArrowType ) && ( right instanceof ArrowType ) )
     {
       // cast to ArrowType instances (tau and tau')
       ArrowType taul = ( ArrowType ) left ;
@@ -174,7 +177,7 @@ public final class TypeEquationList
       // try to unify the new list
       return eqns.unify ( ) ;
     }
-    else if ( left instanceof TupleType && right instanceof TupleType )
+    else if ( ( left instanceof TupleType ) && ( right instanceof TupleType ) )
     {
       // cast to TupleType instances (tau and tau')
       TupleType taul = ( TupleType ) left ;
@@ -196,7 +199,7 @@ public final class TypeEquationList
       }
       // FALL-THROUGH: Otherwise it's a type error
     }
-    else if ( left instanceof RefType && right instanceof RefType )
+    else if ( ( left instanceof RefType ) && ( right instanceof RefType ) )
     {
       // cast to RefType instances (tau and tau')
       RefType taul = ( RefType ) left ;
@@ -207,7 +210,7 @@ public final class TypeEquationList
       // try to unify the new list
       return eqns.unify ( ) ;
     }
-    else if ( left instanceof ListType && right instanceof ListType )
+    else if ( ( left instanceof ListType ) && ( right instanceof ListType ) )
     {
       // cast to ListType instances (tau and tau')
       ListType taul = ( ListType ) left ;
@@ -223,6 +226,35 @@ public final class TypeEquationList
     {
       // the types equal, just unify the remaining equations then
       return this.remaining.unify ( ) ;
+    }
+    else if ( ( left instanceof ObjectType ) && ( right instanceof ObjectType ) )
+    {
+      ObjectType taul = ( ObjectType ) left ;
+      ObjectType taur = ( ObjectType ) right ;
+      TypeEquationList eqns = this.remaining ;
+      eqns = eqns.extend ( taul.getPhi ( ) , taur.getPhi ( ) ) ;
+      return eqns.unify ( ) ;
+    }
+    else if ( ( left instanceof RowType ) && ( right instanceof RowType ) )
+    {
+      RowType taul = ( RowType ) left ;
+      RowType taur = ( RowType ) right ;
+      TypeEquationList eqns = this.remaining ;
+      Identifier [ ] taulIdentifiers = taul.getIdentifiers ( ) ;
+      Identifier [ ] taurIdentifiers = taur.getIdentifiers ( ) ;
+      MonoType [ ] taulTypes = taul.getTypes ( ) ;
+      MonoType [ ] taurTypes = taur.getTypes ( ) ;
+      for ( int i = 0 ; i < taulIdentifiers.length ; i ++ )
+      {
+        for ( int j = 0 ; j < taurIdentifiers.length ; j ++ )
+        {
+          if ( taulIdentifiers [ i ].equals ( taurIdentifiers [ j ] ) )
+          {
+            eqns = eqns.extend ( taulTypes [ i ] , taurTypes [ j ] ) ;
+          }
+        }
+      }
+      return eqns.unify ( ) ;
     }
     // TODO Only for debugging
     System.err.println ( "Can not unify" ) ;
