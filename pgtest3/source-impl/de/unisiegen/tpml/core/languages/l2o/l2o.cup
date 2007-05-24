@@ -187,6 +187,8 @@ terminal			BOOL;
 terminal			INT;
 terminal			UNIT;
 
+terminal			MU;
+
 /* Special tokens */
 terminal Integer	NUMBER;
 terminal Integer	TYPEVARIABLE;
@@ -246,6 +248,10 @@ non terminal TypeVariable			type_variable;
 non terminal ArrowType				arrow_type;
 non terminal ObjectType				object_type;
 non terminal RowType				row_type;
+
+non terminal TypeName				type_name;
+non terminal RecType				rec_type;
+
 
 /* Helper non terminals */
 non terminal IdTypePair[]			curried_let_list;
@@ -1200,6 +1206,10 @@ simple_type						::=	LPAREN:l type:t RPAREN:r
 									{: RESULT = t; :}
 								|	object_type:t
 									{: RESULT = t; :}
+								|	type_name:t
+									{: RESULT = t; :}
+								|	rec_type:r
+									{: RESULT = r; :}
 								;
 
 simple_type_error				::= /* epsilon */
@@ -1230,6 +1240,14 @@ unit_type						::= UNIT:u
 
 type_variable					::= TYPEVARIABLE:t
 									{: RESULT = new TypeVariable(0, t, tleft, tright); :}
+								;
+
+type_name						::= IDENTIFIER:id
+									{: RESULT = new TypeName(id, idleft, idright); :}
+								;
+
+rec_type						::= MU:m IDENTIFIER:id DOT type:t
+									{: RESULT = new RecType(new Identifier(id), t, mleft, tright); :}
 								;
 
 object_type						::= LESS:l row_type:r GREATER:g

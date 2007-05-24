@@ -47,6 +47,10 @@ import de.unisiegen.tpml.core.Messages;
 	{
 		switch (id)
 		{
+		
+		case MU:
+			return PrettyStyle.KEYWORD;
+			
 		case BOOL: case INT: case UNIT: case TYPEVARIABLE:
 			return PrettyStyle.TYPE;
 	
@@ -89,7 +93,12 @@ LetterGreek		= [\u03b1-\u03c1\u03c3-\u03c9]
 	"<"					{ return symbol("LESS", LESS); }
 	">"					{ return symbol("GREATER", GREATER); }
 	
+	"."					{ return symbol("DOT", DOT); }
+	
 	// types
+	
+	"mu"				{ return symbol("MU", MU); }
+	
 	"bool"				{ return symbol("BOOL", BOOL); }
 	"int"				{ return symbol("INT", INT); }
 	"unit"				{ return symbol("UNIT", UNIT); }

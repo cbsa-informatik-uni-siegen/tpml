@@ -151,7 +151,7 @@ public class L2OTypeCheckerProofRuleSet extends L2TypeCheckerProofRuleSet
     Row row = ( Row ) pNode.getExpression ( ) ;
     if ( row.getExpressions ( ).length != 0 )
     {
-      throw new RuntimeException ( "Can not apply EMPTY" ) ; //$NON-NLS-1$
+      throw new RuntimeException ( "The row has one or more expressions." ) ; //$NON-NLS-1$
     }
     pContext.addEquation ( pNode.getType ( ) , new RowType (
         new Identifier [ 0 ] , new MonoType [ 0 ] ) ) ;
@@ -234,7 +234,7 @@ public class L2OTypeCheckerProofRuleSet extends L2TypeCheckerProofRuleSet
     }
     else
     {
-      throw new RuntimeException ( "Can not apply METHOD" ) ; //$NON-NLS-1$
+      throw new RuntimeException ( "The first child of the row is not a method or a curried method." ) ; //$NON-NLS-1$
     }
   }
 

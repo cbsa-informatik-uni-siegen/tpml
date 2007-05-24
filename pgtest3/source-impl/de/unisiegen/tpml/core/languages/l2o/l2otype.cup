@@ -141,9 +141,11 @@ action code
 /* Syntactic tokens */
 terminal			ARROW;
 terminal			LPAREN, RPAREN;
-
+terminal			DOT;
 /* Types */
 terminal			BOOL, INT, UNIT, LESS, GREATER, COLON, SEMI;
+
+terminal			MU;
 
 /* Special tokens */
 terminal Integer	TYPEVARIABLE;
@@ -159,6 +161,9 @@ non terminal TypeVariable			type_variable;
 non terminal ArrowType				arrow_type;
 non terminal ObjectType				object_type;
 non terminal RowType				row_type;
+
+non terminal TypeName				type_name;
+non terminal RecType				rec_type;
 
 /* Error non terminals */
 non terminal 		simple_type_error;
@@ -195,6 +200,10 @@ simple_type						::=	LPAREN:l type:t RPAREN:r
 									{: RESULT = t; :}
 								|	object_type:t
 									{: RESULT = t; :}
+								|	type_name:t
+									{: RESULT = t; :}
+								|	rec_type:r
+									{: RESULT = r; :}
 								;
 
 simple_type_error				::= /* epsilon */
@@ -225,6 +234,14 @@ unit_type						::= UNIT:u
 
 type_variable					::= TYPEVARIABLE:t
 									{: RESULT = new TypeVariable(0, t, tleft, tright); :}
+								;
+
+type_name						::= IDENTIFIER:id
+									{: RESULT = new TypeName(id, idleft, idright); :}
+								;
+
+rec_type						::= MU:m IDENTIFIER:id DOT type:t
+									{: RESULT = new RecType(new Identifier(id), t, mleft, tright); :}
 								;
 
 object_type						::= LESS:l row_type:r GREATER:g

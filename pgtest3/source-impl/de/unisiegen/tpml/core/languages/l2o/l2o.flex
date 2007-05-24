@@ -79,6 +79,8 @@ import de.unisiegen.tpml.core.Messages;
 		case SEMI:
 		case DUPLBEGIN:
 		case DUPLEND:
+		
+		case MU:
 			return PrettyStyle.KEYWORD;
 			
 		case BOOL:
@@ -169,6 +171,9 @@ LetterGreek		= [\u03b1-\u03c1\u03c3-\u03c9]
 	"false"				{ return symbol("FALSE", FALSE); }
 	
 	// types
+	
+	"mu"				{ return symbol("MU", MU); }
+	
 	"bool"				{ return symbol("BOOL", BOOL); }
 	"int"				{ return symbol("INT", INT); }
 	"unit"				{ return symbol("UNIT", UNIT); }
