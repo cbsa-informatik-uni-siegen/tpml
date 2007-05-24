@@ -96,8 +96,6 @@ public final class Identifier extends Value
     this.name = pName ;
     this.boundToExpression = null ;
     this.boundToIdentifier = null ;
-    this.parserStartOffset = - 1 ;
-    this.parserEndOffset = - 1 ;
     if ( pName.equals ( "self" ) ) //$NON-NLS-1$
     {
       this.set = Set.SELF ;
