@@ -1,5 +1,6 @@
 package de.unisiegen.tpml.core.subtyping;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import de.unisiegen.tpml.core.AbstractProofRule;
@@ -87,7 +88,7 @@ public abstract class AbstractSubTypingProofRuleSet extends
 				applyMethod.invoke ( AbstractSubTypingProofRuleSet.this, context, node );
 			}
 
-			@Override
+		//	@Override
 			protected void updateInternal ( SubTypingProofContext context,
 					SubTypingProofNode node ) throws Exception {
 				if ( updateMethod != null ) {

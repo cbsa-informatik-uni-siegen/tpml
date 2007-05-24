@@ -52,7 +52,7 @@ public class L1SubTypingProofRuleSet extends AbstractSubTypingProofRuleSet {
 		if ( type.equals ( type2 ) )
 			return;
 
-		throw new SubTypingException ( node );
+		throw new SubTypingException ("Types are not equal", node );
 
 	}
 

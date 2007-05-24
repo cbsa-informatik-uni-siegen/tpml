@@ -1,10 +1,13 @@
 package de.unisiegen.tpml.core.subtyping;
 
+import java.text.MessageFormat;
+
 import org.apache.log4j.Logger;
 
 import de.unisiegen.tpml.core.AbstractProofModel;
 import de.unisiegen.tpml.core.AbstractProofNode;
 import de.unisiegen.tpml.core.AbstractProofRuleSet;
+import de.unisiegen.tpml.core.Messages;
 import de.unisiegen.tpml.core.ProofGuessException;
 import de.unisiegen.tpml.core.ProofNode;
 import de.unisiegen.tpml.core.ProofRule;
@@ -177,7 +180,7 @@ public class SubTypingProofModel extends AbstractProofModel {
 			context.revert ( );
 
 			// re-throw the exception as proof rule exception
-			throw new ProofRuleException ( node, rule, e );
+			throw new ProofRuleException ( e.getMessage ( ), node, rule, null );
 		} catch ( RuntimeException e ) {
 			// revert the actions performed so far
 			context.revert ( );
@@ -205,16 +208,17 @@ public class SubTypingProofModel extends AbstractProofModel {
 	 */
 	private void guessInternal ( DefaultSubTypingProofNode node )
 			throws ProofGuessException {
-
 		if ( node == null ) {
 			throw new NullPointerException ( "node is null" ); //$NON-NLS-1$
 		}
 		if ( node.getSteps ( ).length > 0 ) {
-			throw new IllegalArgumentException ( "The node is already completed" ); //$NON-NLS-1$
+			throw new IllegalArgumentException ( MessageFormat.format(Messages
+					.getString ( "IllegalArgumentException.0" ),node) ); //$NON-NLS-1$
 		}
 
 		if ( !this.root.isNodeRelated ( node ) ) {
-			throw new IllegalArgumentException ( "The node is invalid for the model" ); //$NON-NLS-1$
+			throw new IllegalArgumentException ( MessageFormat.format(Messages
+					.getString ( "IllegalArgumentException.1" ),node) ); //$NON-NLS-1$
 		}
 		// try to guess the next rule
 		logger.debug ( "Trying to guess a rule for " + node ); //$NON-NLS-1$
@@ -237,7 +241,9 @@ public class SubTypingProofModel extends AbstractProofModel {
 
 		// unable to guess next step
 		logger.debug ( "Failed to find rule to apply to " + node ); //$NON-NLS-1$
-		throw new ProofGuessException ( node );
+
+			throw new ProofGuessException ( MessageFormat.format ( Messages
+					.getString ( "ProofGuessException.0" ), node), node ); //$NON-NLS-1$
 	}
 
 	//
@@ -361,13 +367,10 @@ public class SubTypingProofModel extends AbstractProofModel {
 					this.ruleSet.unregister ( "REFL" ); //$NON-NLS-1$
 
 					this.ruleSet.registerByMethodName ( L2OLanguage.L2O,
-							"TRANS", "applyTrans" ); //$NON-NLS-1$ //$NON-NLS-2$
-					this.ruleSet.registerByMethodName ( L2OLanguage.L2O,
 							"OBJECT", "applyObject" ); //$NON-NLS-1$ //$NON-NLS-2$
 					this.ruleSet.registerByMethodName ( L1Language.L1,
 							"REFL", "applyRefl" ); //$NON-NLS-1$ //$NON-NLS-2$
 				} else {
-					this.ruleSet.unregister ( "TRANS" ); //$NON-NLS-1$
 					this.ruleSet.unregister ( "OBJECT" ); //$NON-NLS-1$
 					this.ruleSet.unregister ( "REFL" ); //$NON-NLS-1$
 

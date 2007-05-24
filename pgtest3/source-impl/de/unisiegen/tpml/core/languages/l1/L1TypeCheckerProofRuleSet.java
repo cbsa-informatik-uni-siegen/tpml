@@ -368,11 +368,13 @@ public class L1TypeCheckerProofRuleSet extends AbstractTypeCheckerProofRuleSet
     // add the {tau = bool} equation
     context.addEquation ( node.getType ( ) , new BooleanType ( ) ) ;
   }
-
-
+  
+  
   /**
    * Applies the <b>(UNIFY)</b> rule to the <code>node</code> using the
    * <code>context</code>.
+   * 
+   * !!! This method is just needed for the unification Algorithm !!!
    * 
    * @param pContext the type inference proof context.
    * @param pNode the type inference proof node.
@@ -393,6 +395,8 @@ public class L1TypeCheckerProofRuleSet extends AbstractTypeCheckerProofRuleSet
    * internal implementation of the unify rule now we are able to call unify
    * recursive if needed so we get different handling for beginner or advanced
    * user
+   * 
+   * !!! This method is just needed for the unification Algorithm !!!
    * 
    * @param context the casted default type inference proof context.
    * @param node the casted type equation proof node.

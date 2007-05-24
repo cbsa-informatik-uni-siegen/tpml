@@ -46,10 +46,9 @@ public final class SubTypingException extends Exception {
 	 * 
 	 * @param pNode the {@link SubTypingProofNode} where the error occurs.
 	 */
-	public SubTypingException ( final SubTypingProofNode pNode ) {
+	public SubTypingException (final String message, final SubTypingProofNode pNode ) {
 
-		super ( MessageFormat.format (
-				Messages.getString ( "SubTypingException.0" ), pNode ) ); //$NON-NLS-1$
+		super ( message );
 		this.node = pNode;
 	}
 

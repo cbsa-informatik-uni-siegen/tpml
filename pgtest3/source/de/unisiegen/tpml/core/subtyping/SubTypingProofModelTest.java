@@ -31,7 +31,7 @@ import de.unisiegen.tpml.core.types.MonoType;
 public class SubTypingProofModelTest extends JFrame {
 	private static final String TYPE = "<a: <b:int;>; c:bool;>";
 
-	private static final String TYPE2 = "<a:<>;>";
+	private static final String TYPE2 = "<a:<>; c:int->int;>";
 
 	ProofRule choosen = null;
 

@@ -1,7 +1,9 @@
 package de.unisiegen.tpml.core.languages.l2o;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 
+import de.unisiegen.tpml.core.Messages;
 import de.unisiegen.tpml.core.expressions.Identifier;
 import de.unisiegen.tpml.core.languages.Language;
 import de.unisiegen.tpml.core.languages.l1.L1Language;
@@ -11,6 +13,7 @@ import de.unisiegen.tpml.core.subtyping.SubTypingProofContext;
 import de.unisiegen.tpml.core.subtyping.SubTypingProofNode;
 import de.unisiegen.tpml.core.types.MonoType;
 import de.unisiegen.tpml.core.types.ObjectType;
+import de.unisiegen.tpml.core.types.PrimitiveType;
 import de.unisiegen.tpml.core.types.RowType;
 
 /**
@@ -36,16 +39,17 @@ public class L2OSubTypingProofRuleSet extends L2SubTypingProofRuleSet {
 		unregister ( "REFL" ); //$NON-NLS-1$
 
 		// register the type rules
-		
-		registerByMethodName ( L2OLanguage.L2O, "TRANS", "applyTrans" ); //$NON-NLS-1$ //$NON-NLS-2$
-		if (mode){
+
+		if ( mode ) {
 			registerByMethodName ( L2OLanguage.L2O, "OBJECT", "applyObject" ); //$NON-NLS-1$ //$NON-NLS-2$
+		} else {
+			registerByMethodName ( L2OLanguage.L2O, "TRANS", "applyTrans" ); //$NON-NLS-1$ //$NON-NLS-2$
+			registerByMethodName ( L2OLanguage.L2O,
+					"OBJECT-WIDTH", "applyObjectWidth" ); //$NON-NLS-1$ //$NON-NLS-2$
+			registerByMethodName ( L2OLanguage.L2O,
+					"OBJECT-DEPTH", "applyObjectDepth" ); //$NON-NLS-1$ //$NON-NLS-2$
 		}
-		else{
-			registerByMethodName ( L2OLanguage.L2O, "OBJECT-WIDTH", "applyObjectWidth" ); //$NON-NLS-1$ //$NON-NLS-2$
-			registerByMethodName ( L2OLanguage.L2O, "OBJECT-DEPTH", "applyObjectDepth" ); //$NON-NLS-1$ //$NON-NLS-2$
-		}
-		
+
 		registerByMethodName ( L1Language.L1, "REFL", "applyRefl" ); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
@@ -56,6 +60,7 @@ public class L2OSubTypingProofRuleSet extends L2SubTypingProofRuleSet {
 	 * @param context the subtyping proof context.
 	 * @param node the subtyping proof node.
 	 * @throws SubTypingException throw Exception if rule can't be applied
+	 * @throws PrimitiveTypeException 
 	 */
 	public void applyTrans ( SubTypingProofContext context,
 			SubTypingProofNode node ) throws SubTypingException {
@@ -89,7 +94,7 @@ public class L2OSubTypingProofRuleSet extends L2SubTypingProofRuleSet {
 				}
 				if ( goOn )
 					continue;
-				throw new SubTypingException ( node );
+				throw new SubTypingException (MessageFormat.format ( Messages.getString ( "SubTypingException.0" ),type,type2), node ); //$NON-NLS-1$
 			}
 
 			Identifier[] tmpIds = new Identifier[newIds.size ( )];
@@ -110,9 +115,27 @@ public class L2OSubTypingProofRuleSet extends L2SubTypingProofRuleSet {
 		} catch ( ClassCastException e ) {
 			MonoType type = node.getType ( );
 			MonoType type2 = node.getType2 ( );
-
+			// if both types instance of Primitive Type throw Exception
+			if ( type instanceof PrimitiveType && type2 instanceof PrimitiveType ){
+				throw new SubTypingException ( Messages.getString ( "SubTypingException.1" ), node ); //$NON-NLS-1$
+			}
 			context.addProofNode ( node, type, type );
 			context.addProofNode ( node, type, type2 );
+
+			SubTypingProofNode parent = ( SubTypingProofNode ) node.getParent ( );
+			int count = 0;
+			while ( parent != null ) {
+				if ( parent.getRule ( ).toString ( ).equals ( "TRANS" ) ){
+					count++ ;
+				}
+				else
+					break;
+				parent = (SubTypingProofNode) parent.getParent ( );
+			}
+			
+			if (count >= 15)
+				throw new SubTypingException (Messages.getString ( "SubTypingException.2" ), node ); //$NON-NLS-1$
+			
 
 		}
 
@@ -146,15 +169,15 @@ public class L2OSubTypingProofRuleSet extends L2SubTypingProofRuleSet {
 			for ( int j = 0; j < ids1.length; j++ ) {
 				if ( ids2[i].equals ( ids1[j] ) ) {
 					if ( ! ( types2[i].equals ( types[j] ) ) ) {
-						throw new SubTypingException ( node );
-					}
+						throw new SubTypingException (MessageFormat.format ( Messages.getString ( "SubTypingException.3" ),type,type2), node ); //$NON-NLS-1$
+						}
 					goOn = true;
 					break;
 				}
 			}
 			if ( !goOn ) {
-				throw new SubTypingException ( node );
-			}
+				throw new SubTypingException (MessageFormat.format ( Messages.getString ( "SubTypingException.4" ),type,type2), node ); //$NON-NLS-1$
+				}
 		}
 	}
 
@@ -197,8 +220,8 @@ public class L2OSubTypingProofRuleSet extends L2SubTypingProofRuleSet {
 				break;
 			}
 		} else
-			throw new SubTypingException ( node );
-	}
+			throw new SubTypingException (MessageFormat.format ( Messages.getString ( "SubTypingException.0" ),type, type2), node ); //$NON-NLS-1$
+		}
 
 	/**
 	 * Applies the <b>(OBJECT)</b> rule to the <code>node</code> using the
@@ -241,8 +264,8 @@ public class L2OSubTypingProofRuleSet extends L2SubTypingProofRuleSet {
 				}
 			}
 			if ( !goOn ) {
-				throw new SubTypingException ( node );
-			}
+				throw new SubTypingException (MessageFormat.format ( Messages.getString ( "SubTypingException.3" ),type,type2), node ); //$NON-NLS-1$
+				}
 		}
 	}
 }

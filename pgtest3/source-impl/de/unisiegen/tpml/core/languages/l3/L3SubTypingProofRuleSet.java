@@ -58,7 +58,7 @@ public class L3SubTypingProofRuleSet extends L2SubTypingProofRuleSet {
 				context.addProofNode ( node, types[i], types2[i] );
 			}
 		} else
-			throw new SubTypingException ( node );
+			throw new SubTypingException ("Length of Product types not equal", node );
 	}
 
 	/**
