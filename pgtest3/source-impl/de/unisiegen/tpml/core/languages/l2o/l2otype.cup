@@ -241,7 +241,7 @@ type_name						::= IDENTIFIER:id
 								;
 
 rec_type						::= MU:m IDENTIFIER:id DOT type:t
-									{: RESULT = new RecType(new Identifier(id), t, mleft, tright); :}
+									{: RESULT = new RecType(new TypeName(id), t, mleft, tright); :}
 								;
 
 object_type						::= LESS:l row_type:r GREATER:g

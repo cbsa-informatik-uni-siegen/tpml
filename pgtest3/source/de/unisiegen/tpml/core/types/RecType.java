@@ -1,11 +1,9 @@
 package de.unisiegen.tpml.core.types ;
 
 
+import java.util.ArrayList ;
 import java.util.Set ;
 import java.util.TreeSet ;
-import de.unisiegen.tpml.core.expressions.Expression ;
-import de.unisiegen.tpml.core.expressions.Identifier ;
-import de.unisiegen.tpml.core.interfaces.DefaultIdentifiers ;
 import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
@@ -17,17 +15,30 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
  * 
  * @author Christian Fehler
  * @version $Rev:420 $
- * @see ObjectType
+ * @see #typeNames
  */
-public final class RecType extends MonoType implements DefaultIdentifiers ,
-    DefaultTypes
+public final class RecType extends MonoType implements DefaultTypes
 {
   /**
-   * The list of identifiers.
-   * 
-   * @see #getIdentifiers()
+   * Indeces of the child {@link Type}s.
    */
-  private Identifier [ ] identifiers ;
+  private static final int [ ] INDICES_TYPE = new int [ ]
+  { - 1 } ;
+
+
+  /**
+   * Indeces of the child {@link TypeName}s.
+   */
+  private static final int [ ] INDICES_TYPE_NAME = new int [ ]
+  { - 1 } ;
+
+
+  /**
+   * The list of {@link TypeName}s.
+   * 
+   * @see #getTypeNames()
+   */
+  private TypeName [ ] typeNames ;
 
 
   /**
@@ -37,44 +48,30 @@ public final class RecType extends MonoType implements DefaultIdentifiers ,
 
 
   /**
-   * Indeces of the child {@link Type}s.
-   */
-  private static final int [ ] INDICES_TYPE = new int [ ]
-  { - 1 } ;
-
-
-  /**
-   * Indeces of the child {@link Identifier}s.
-   */
-  private static final int [ ] INDICES_ID = new int [ ]
-  { - 1 } ;
-
-
-  /**
-   * Allocates a new <code>RecType</code> with the specified
-   * {@link Identifier}s and {@link Type}s.
+   * Allocates a new <code>RecType</code> with the specified {@link TypeName}
+   * and {@link Type}.
    * 
-   * @param pIdentifier The {@link Identifier}.
+   * @param pTypeName The {@link TypeName}.
    * @param pTau The {@link Type}.
    */
-  public RecType ( Identifier pIdentifier , MonoType pTau )
+  public RecType ( TypeName pTypeName , MonoType pTau )
   {
-    if ( pIdentifier == null )
+    if ( pTypeName == null )
     {
-      throw new NullPointerException ( "Identifier is null" ) ; //$NON-NLS-1$
+      throw new NullPointerException ( "TypeName is null" ) ; //$NON-NLS-1$
     }
     if ( pTau == null )
     {
       throw new NullPointerException ( "Tau is null" ) ; //$NON-NLS-1$
     }
-    // Identifier
-    this.identifiers = new Identifier [ ]
-    { pIdentifier } ;
-    if ( this.identifiers [ 0 ].getParent ( ) != null )
+    // TypeName
+    this.typeNames = new TypeName [ ]
+    { pTypeName } ;
+    if ( this.typeNames [ 0 ].getParent ( ) != null )
     {
-      // this.identifiers [ 0 ] = this.identifiers [ 0 ].clone ( ) ;
+      // this.typeNames [ 0 ] = this.typeNames [ 0 ].clone ( ) ;
     }
-    this.identifiers [ 0 ].setParent ( this ) ;
+    this.typeNames [ 0 ].setParent ( this ) ;
     // Type
     this.types = new MonoType [ 1 ] ;
     this.types [ 0 ] = pTau ;
@@ -87,20 +84,20 @@ public final class RecType extends MonoType implements DefaultIdentifiers ,
 
 
   /**
-   * Allocates a new <code>RecType</code> with the specified
-   * {@link Identifier}s and {@link Type}s.
+   * Allocates a new <code>RecType</code> with the specified {@link TypeName}
+   * and {@link Type}.
    * 
-   * @param pIdentifier The {@link Identifier}.
+   * @param pTypeName The {@link TypeName}.
    * @param pTau The {@link Type}.
    * @param pParserStartOffset The start offset of this {@link Type} in the
    *          source code.
    * @param pParserEndOffset The end offset of this {@link Type} in the source
    *          code.
    */
-  public RecType ( Identifier pIdentifier , MonoType pTau ,
-      int pParserStartOffset , int pParserEndOffset )
+  public RecType ( TypeName pTypeName , MonoType pTau , int pParserStartOffset ,
+      int pParserEndOffset )
   {
-    this ( pIdentifier , pTau ) ;
+    this ( pTypeName , pTau ) ;
     this.parserStartOffset = pParserStartOffset ;
     this.parserEndOffset = pParserEndOffset ;
   }
@@ -114,7 +111,7 @@ public final class RecType extends MonoType implements DefaultIdentifiers ,
   @ Override
   public RecType clone ( )
   {
-    return new RecType ( this.identifiers [ 0 ].clone ( ) , this.types [ 0 ]
+    return new RecType ( this.typeNames [ 0 ].clone ( ) , this.types [ 0 ]
         .clone ( ) ) ;
   }
 
@@ -130,7 +127,7 @@ public final class RecType extends MonoType implements DefaultIdentifiers ,
     if ( pObject instanceof RecType )
     {
       RecType other = ( RecType ) pObject ;
-      return ( this.identifiers [ 0 ].equals ( other.identifiers [ 0 ] ) )
+      return ( this.typeNames [ 0 ].equals ( other.typeNames [ 0 ] ) )
           && ( this.types [ 0 ].equals ( other.types [ 0 ] ) ) ;
     }
     return false ;
@@ -165,25 +162,57 @@ public final class RecType extends MonoType implements DefaultIdentifiers ,
 
 
   /**
-   * Returns the {@link Identifier}s of this {@link Expression}.
+   * Returns the sub {@link Type}.
    * 
-   * @return The {@link Identifier}s of this {@link Expression}.
-   * @see #identifiers
+   * @return The sub {@link Type}.
    */
-  public Identifier [ ] getIdentifiers ( )
+  public MonoType getTau ( )
   {
-    return this.identifiers ;
+    return this.types [ 0 ] ;
   }
 
 
   /**
-   * Returns the indices of the child {@link Identifier}s.
+   * Returns the {@link TypeName}s of this {@link Type}.
    * 
-   * @return The indices of the child {@link Identifier}s.
+   * @return The {@link TypeName}s of this {@link Type}.
+   * @see #typeNames
    */
-  public int [ ] getIdentifiersIndex ( )
+  public TypeName [ ] getTypeNames ( )
   {
-    return INDICES_ID ;
+    return this.typeNames ;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @return TODO
+   */
+  @ Override
+  public ArrayList < TypeName > getTypeNamesFree ( )
+  {
+    if ( this.typeNamesFree == null )
+    {
+      this.typeNamesFree = new ArrayList < TypeName > ( ) ;
+      this.typeNamesFree.addAll ( this.types [ 0 ].getTypeNamesFree ( ) ) ;
+      while ( this.typeNamesFree.remove ( this.typeNames [ 0 ] ) )
+      {
+        // Remove all TypeNames with the same name
+      }
+    }
+    return this.typeNamesFree ;
+  }
+
+
+  /**
+   * Returns the indices of the child {@link Type}s.
+   * 
+   * @return The indices of the child {@link Type}s.
+   */
+  public int [ ] getTypeNamesIndex ( )
+  {
+    return INDICES_TYPE_NAME ;
   }
 
 
@@ -217,7 +246,7 @@ public final class RecType extends MonoType implements DefaultIdentifiers ,
   @ Override
   public int hashCode ( )
   {
-    return this.identifiers [ 0 ].hashCode ( ) + this.types [ 0 ].hashCode ( ) ;
+    return this.typeNames [ 0 ].hashCode ( ) + this.types [ 0 ].hashCode ( ) ;
   }
 
 
@@ -233,7 +262,7 @@ public final class RecType extends MonoType implements DefaultIdentifiers ,
     {
       throw new NullPointerException ( "Substitution is null" ) ; //$NON-NLS-1$
     }
-    return new RecType ( this.identifiers [ 0 ] , this.types [ 0 ]
+    return new RecType ( this.typeNames [ 0 ] , this.types [ 0 ]
         .substitute ( pTypeSubstitution ) ) ;
   }
 
@@ -253,7 +282,7 @@ public final class RecType extends MonoType implements DefaultIdentifiers ,
       this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
           0 ) ;
       this.prettyStringBuilder.addKeyword ( "\u03bc" ) ; //$NON-NLS-1$
-      this.prettyStringBuilder.addBuilder ( this.identifiers [ 0 ]
+      this.prettyStringBuilder.addBuilder ( this.typeNames [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , 0 ) ;
       this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addBuilder ( this.types [ 0 ]

@@ -7,7 +7,7 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
 
 
 /**
- * Represents an identifier in the type hierarchy.
+ * Represents an type name in the type hierarchy.
  * 
  * @author Christian Fehler
  * @version $Rev:1056 $
@@ -36,7 +36,7 @@ public final class TypeName extends MonoType
   /**
    * Allocates a new {@link TypeName} with the given <code>name</code>.
    * 
-   * @param pName the name of the identifier.
+   * @param pName The name of the type name.
    * @param pParserStartOffset The start offset of this {@link Type} in the
    *          source code.
    * @param pParserEndOffset The end offset of this {@link Type} in the source

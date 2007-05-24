@@ -234,6 +234,31 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities
 
 
   /**
+   * TODO
+   */
+  protected ArrayList < TypeName > typeNamesFree = null ;
+
+
+  /**
+   * TODO
+   * 
+   * @return TODO
+   */
+  public ArrayList < TypeName > getTypeNamesFree ( )
+  {
+    if ( this.typeNamesFree == null )
+    {
+      this.typeNamesFree = new ArrayList < TypeName > ( ) ;
+      for ( Type child : children ( ) )
+      {
+        this.typeNamesFree.addAll ( child.getTypeNamesFree ( ) ) ;
+      }
+    }
+    return this.typeNamesFree ;
+  }
+
+
+  /**
    * Returns the parserStartOffset.
    * 
    * @return The parserStartOffset.
