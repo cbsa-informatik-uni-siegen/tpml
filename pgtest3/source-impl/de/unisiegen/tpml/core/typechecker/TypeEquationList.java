@@ -273,6 +273,7 @@ public final class TypeEquationList
             tau1Types.remove ( i ) ;
             tau2Identifiers.remove ( j ) ;
             tau2Types.remove ( j ) ;
+            break ;
           }
         }
       }
