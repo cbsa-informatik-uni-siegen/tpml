@@ -1,0 +1,1 @@
+let hungry = rec hungry. lambda x:int. hungry in hungry

@@ -1,4 +1,1 @@
-(object (self:< b: bool ; a: int ; >)
-  method a:int = 1 ;
-  method b = true ;
-end)
+lambda x: mu t.int -> t. x

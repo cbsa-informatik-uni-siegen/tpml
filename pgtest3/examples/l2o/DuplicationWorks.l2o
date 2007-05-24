@@ -1,0 +1,5 @@
+(object (self) 
+  val a = 0 ;
+  method b = ({<a=1>}) # g ;
+  method g = a ;
+end) # b

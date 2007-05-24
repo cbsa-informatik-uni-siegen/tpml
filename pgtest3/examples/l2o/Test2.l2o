@@ -1,3 +1,4 @@
-object (self) 
-  method inc x = if x = 0 then false else true ;
-end
+(object (self) 
+  val a = 0 ;
+  method b = {<a=1>} ;
+end) # b
