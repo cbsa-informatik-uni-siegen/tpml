@@ -23,6 +23,8 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
 
+import sun.font.AdvanceCache;
+
 import de.unisiegen.tpml.core.ProofGuessException;
 import de.unisiegen.tpml.core.languages.Language;
 import de.unisiegen.tpml.core.languages.LanguageTypeParser;
@@ -170,6 +172,7 @@ public class SubTypingEnterTypes extends AbstractProofView {
 		model = modelP;
 		// open a dialog to choose language
 		clLanguage = new ChangeLanguage ( null, this );
+		
 		clLanguage.setLocationRelativeTo ( this );
 		clLanguage.setVisible ( true );
 
@@ -186,7 +189,7 @@ public class SubTypingEnterTypes extends AbstractProofView {
 		GridBagConstraints constraints = new GridBagConstraints ( );
 		constraints.fill = GridBagConstraints.BOTH;
 
-		border = new LineBorder ( Color.black, 2 );
+		border = new LineBorder ( Color.GRAY, 1 );
 
 		menu = new JPanel ( );
 		menu.setLayout ( new GridBagLayout ( ) );
@@ -360,8 +363,18 @@ public class SubTypingEnterTypes extends AbstractProofView {
 					model.setRoot(type1, type2);
 					component = new SubTypingComponent ( model, isAdvanced() );
 					System.out.println("advanced: "+isAdvanced());
-					outputField.removeAll();
-					outputField.add(component);
+					GridBagConstraints constraints = new GridBagConstraints ( );
+					constraints.fill = GridBagConstraints.BOTH;
+					constraints.gridx = 0;
+					constraints.gridy = 0;
+					constraints.gridwidth = 1;
+					constraints.weighty = 1;
+					constraints.weightx = 1;
+					//outputField.removeAll();
+					outputField.remove(0);
+					System.out.println(outputField.getLayout().toString());
+					outputField.add(component, constraints);
+					outputField.getParent().repaint();
 					check ( );
 					
 				}
@@ -377,8 +390,18 @@ public class SubTypingEnterTypes extends AbstractProofView {
 					//model = language.newSubTypingProofModel(type1, type2, isAdvanced() );
 					model.setRoot(type1, type2);
 					component = new SubTypingComponent ( model, isAdvanced() );
-					outputField.removeAll();
-					outputField.add(component);
+					GridBagConstraints constraints = new GridBagConstraints ( );
+					constraints.fill = GridBagConstraints.BOTH;
+					constraints.gridx = 0;
+					constraints.gridy = 0;
+					constraints.gridwidth = 1;
+					constraints.weighty = 1;
+					constraints.weightx = 1;
+					//outputField.removeAll();
+					outputField.remove(0);
+					System.out.println(outputField.getLayout().toString());
+					outputField.add(component, constraints);
+					outputField.getParent().repaint();
 					check ( );
 				}
 					
@@ -407,20 +430,23 @@ public class SubTypingEnterTypes extends AbstractProofView {
 		this.add ( inputFields, constraints );
 
 		outputField = new JPanel ( );
+		outputField.setBackground(Color.WHITE);
 		outputField.setLayout ( new GridBagLayout ( ) );
+		//outputField.setLayout( null);
 		outputField.setBorder ( border );
 
 		labelOutput = new JLabel ( Messages.getString ( "result" ) ); //$NON-NLS-1$
 		constraints.gridx = 0;
 		constraints.gridy = 0;
 		constraints.gridwidth = 1;
-		constraints.weighty = 0;
+		constraints.weighty = 1;
 		constraints.weightx = 1;
-		constraints.insets = new Insets ( 5, 5, 5, 5 );
+		//constraints.insets = new Insets ( 5, 5, 5, 5 );
 		//this.outputField.add ( labelOutput, constraints );
 		//TODO hier muss der Renderer hin....
 		//this.outputField.add ( labelOutput, constraints );
-		this.outputField.add(new SubTypingComponent ( model, isAdvanced() ));
+		System.out.println(outputField.getLayout().toString());
+		this.outputField.add(new SubTypingComponent ( model, isAdvanced() ), constraints);
 
 		lOutput = new JLabel (" "); //$NON-NLS-1$
 
@@ -433,7 +459,7 @@ public class SubTypingEnterTypes extends AbstractProofView {
 
 		constraints.gridx = 0;
 		constraints.gridy = 2;
-		constraints.weighty = 0;
+		constraints.weighty = 5;
 		constraints.weightx = 0;
 		constraints.insets = new Insets ( 15, 15, 15, 15 );
 		this.add ( outputField, constraints );
@@ -446,7 +472,7 @@ public class SubTypingEnterTypes extends AbstractProofView {
 		constraints.gridx = 0;
 		constraints.gridy = 0;
 		constraints.weightx = 1;
-		constraints.weighty = 10;
+		constraints.weighty = 5;
 		constraints.gridwidth = 1;
 		constraints.insets = new Insets ( 5, 5, 5, 5 );
 		this.outline.add ( jPanelOutline1, constraints );
@@ -454,12 +480,12 @@ public class SubTypingEnterTypes extends AbstractProofView {
 		JPanel jPanelOutline2 = this.outline2.getJPanelOutline ( );
 		constraints.gridx = 1;
 		constraints.gridy = 0;
-		constraints.weighty = 10;
+		constraints.weighty = 5;
 		this.outline.add ( jPanelOutline2, constraints );
 
 		constraints.gridx = 0;
 		constraints.gridy = 3;
-		constraints.weighty = 10;
+		constraints.weighty = 5;
 		constraints.insets = new Insets ( 15, 15, 15, 15 );
 		this.add ( outline, constraints );
 
@@ -519,6 +545,7 @@ public class SubTypingEnterTypes extends AbstractProofView {
 
 		if (pLanguage != null) {
 			this.language = pLanguage;
+			model = language.newSubTypingProofModel(type1, type2, isAdvanced() );
 			if (!initialized) {
 				initComponents ( );
 				initialized = true;
@@ -558,8 +585,9 @@ public class SubTypingEnterTypes extends AbstractProofView {
   @ Override
   public void setAdvanced ( boolean advanced )
   {
-    //TODO testaugabe  System.out.println("jetzt bekommt der TypeInference-View den advaced-Wert: "+advanced);
+    //TODO Testausgabe System.out.println("jetzt bekommt der Subtyping-View den advaced-Wert: "+advanced + "(SubTypingEnterType)");
     super.setAdvanced ( advanced ) ;
+    model.setMode(advanced);
     if (this.component != null)
     {
     	this.component.setAdvanced ( isAdvanced ( ) ) ;

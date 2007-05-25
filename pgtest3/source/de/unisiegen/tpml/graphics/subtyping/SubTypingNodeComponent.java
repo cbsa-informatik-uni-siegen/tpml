@@ -433,7 +433,7 @@ public class SubTypingNodeComponent extends JComponent implements TreeNodeCompon
     //if (this.proofNode.getRule() != null) {
     if (this.proofNode.isFinished()) 
     {
-      //this.ruleLabel.setText ("(" + this.proofNode.getRule() + ")"); //$NON-NLS-1$ //$NON-NLS-2$
+      this.ruleLabel.setText ("(" + this.proofNode.getRule() + ")"); //$NON-NLS-1$ //$NON-NLS-2$
       Dimension ruleLabelSize = this.ruleLabel.getPreferredSize();
       
       this.ruleLabel.setBounds(posX, this.dimension.height + this.spacing, ruleLabelSize.width, ruleLabelSize.height);

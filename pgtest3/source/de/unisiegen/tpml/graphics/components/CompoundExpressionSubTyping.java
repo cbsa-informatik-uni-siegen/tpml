@@ -8,6 +8,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 
+import javax.swing.JComboBox;
 import javax.swing.JComponent;
 
 import de.unisiegen.tpml.core.expressions.Expression;
@@ -461,15 +462,26 @@ public class CompoundExpressionSubTyping extends JComponent
     ShowBonds bound = new ShowBonds();
 		bound.setExpression(null);
 		
-    type1Renderer.render(posX, posY -(type1Size.height / 2) - AbstractRenderer.getFontAscent() / 2, type1Size.height, gc, bound, new ToListenForMouseContainer());
+    //type1Renderer.render(posX, posY -(type1Size.height / 2) - AbstractRenderer.getFontAscent() / 2, type1Size.height, gc, bound, new ToListenForMouseContainer());
+		type1Renderer.render(posX, posY, type1Size.height, gc, bound, new ToListenForMouseContainer());
     posX += type1Size.width;
     
-    gc.setColor(AbstractRenderer.getTextColor());
+    gc.setColor(Color.BLACK);
+    gc.setFont(new JComboBox().getFont());
         
-    gc.drawString(" <: ", posX, posY);
+    //gc.drawString(" <: ", posX, 0 );
+    int centerV = getHeight ( ) / 2 ;
+    centerV += AbstractRenderer.getTextFontMetrics ( ).getAscent ( ) / 2 ;
+    gc.setFont ( AbstractRenderer.getTextFont ( ) ) ;
+    gc.setColor ( AbstractRenderer.getTextColor ( ) ) ;
+    gc.drawString ( " <: " , posX , centerV ) ;
+    posX += AbstractRenderer.getTextFontMetrics ( ).stringWidth (
+        " <: " ) ;
     
-    posX += AbstractRenderer.getTextFontMetrics().stringWidth(" <: ");
-    type2Renderer.render(posX, posY-(type2Size.height / 2) - AbstractRenderer.getFontAscent() / 2, type2Size.height, gc, bound, new ToListenForMouseContainer());
+    
+    //posX += AbstractRenderer.getTextFontMetrics().stringWidth(" <: ");
+    //type2Renderer.render(posX, posY-(type2Size.height / 2) - AbstractRenderer.getFontAscent() / 2, type2Size.height, gc, bound, new ToListenForMouseContainer());
+    type2Renderer.render(posX, posY, type2Size.height, gc, bound, new ToListenForMouseContainer());
     // if there is an environment and it is of type Store
     // draw the braces around the entire expression with environment
 
