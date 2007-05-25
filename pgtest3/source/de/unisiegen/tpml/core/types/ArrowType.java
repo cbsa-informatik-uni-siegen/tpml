@@ -133,24 +133,6 @@ public final class ArrowType extends MonoType implements DefaultTypes
 
   /**
    * {@inheritDoc}
-   * 
-   * @see Type#free()
-   */
-  @ Override
-  public TreeSet < TypeVariable > free ( )
-  {
-    if ( this.free == null )
-    {
-      this.free = new TreeSet < TypeVariable > ( ) ;
-      this.free.addAll ( this.types [ 0 ].free ( ) ) ;
-      this.free.addAll ( this.types [ 1 ].free ( ) ) ;
-    }
-    return this.free ;
-  }
-
-
-  /**
-   * {@inheritDoc}
    */
   @ Override
   public String getCaption ( )
@@ -202,6 +184,24 @@ public final class ArrowType extends MonoType implements DefaultTypes
   public int [ ] getTypesIndex ( )
   {
     return INDICES_TYPE ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Type#getTypeVariablesFree()
+   */
+  @ Override
+  public TreeSet < TypeVariable > getTypeVariablesFree ( )
+  {
+    if ( this.free == null )
+    {
+      this.free = new TreeSet < TypeVariable > ( ) ;
+      this.free.addAll ( this.types [ 0 ].getTypeVariablesFree ( ) ) ;
+      this.free.addAll ( this.types [ 1 ].getTypeVariablesFree ( ) ) ;
+    }
+    return this.free ;
   }
 
 

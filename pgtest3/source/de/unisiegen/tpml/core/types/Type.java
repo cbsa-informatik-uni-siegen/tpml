@@ -27,8 +27,8 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
 public abstract class Type implements PrettyPrintable , PrettyPrintPriorities
 {
   /**
-   * Shared empty set, returned by {@link #free()} if the type does not contain
-   * any free type variables.
+   * Shared empty set, returned by {@link #getTypeVariablesFree()} if the type
+   * does not contain any free type variables.
    */
   protected static final Set < TypeVariable > EMPTY_SET = Collections
       .unmodifiableSet ( Collections. < TypeVariable > emptySet ( ) ) ;
@@ -64,9 +64,9 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities
   /**
    * Cached <code>TreeSet</code> of the free {@link TypeVariable}s, so the
    * free {@link TypeVariable} do not need to be determined on every invocation
-   * of {@link #free()}.
+   * of {@link #getTypeVariablesFree()}.
    * 
-   * @see #free()
+   * @see #getTypeVariablesFree()
    */
   protected TreeSet < TypeVariable > free = null ;
 
@@ -111,6 +111,12 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities
 
 
   /**
+   * The list of the free {@link TypeName}s in this {@link Type}.
+   */
+  protected ArrayList < TypeName > typeNamesFree = null ;
+
+
+  /**
    * Constructor for all types.
    */
   protected Type ( )
@@ -137,7 +143,7 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities
           .getInterfaces ( ) )
       {
         if ( currentInterface
-            .equals ( de.unisiegen.tpml.core.interfaces.ChildrenExpressions.class ) )
+            .equals ( de.unisiegen.tpml.core.interfaces.DefaultTypes.class ) )
         {
           try
           {
@@ -186,21 +192,6 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities
 
 
   /**
-   * Returns the set of free type variables present within this type. The
-   * default implementation simply returns the empty set, and derived classes
-   * will need to override this method to return the set of free type variables.
-   * The returned set should be considered read-only by the caller and must not
-   * be modified.
-   * 
-   * @return the set of free type variables within this type.
-   */
-  public Set < TypeVariable > free ( )
-  {
-    return EMPTY_SET ;
-  }
-
-
-  /**
    * Returns the caption of this {@link Type}.
    * 
    * @return The caption of this {@link Type}.
@@ -234,31 +225,6 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities
 
 
   /**
-   * TODO
-   */
-  protected ArrayList < TypeName > typeNamesFree = null ;
-
-
-  /**
-   * TODO
-   * 
-   * @return TODO
-   */
-  public ArrayList < TypeName > getTypeNamesFree ( )
-  {
-    if ( this.typeNamesFree == null )
-    {
-      this.typeNamesFree = new ArrayList < TypeName > ( ) ;
-      for ( Type child : children ( ) )
-      {
-        this.typeNamesFree.addAll ( child.getTypeNamesFree ( ) ) ;
-      }
-    }
-    return this.typeNamesFree ;
-  }
-
-
-  /**
    * Returns the parserStartOffset.
    * 
    * @return The parserStartOffset.
@@ -283,6 +249,40 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities
       this.prefix = PREFIX_TAU ;
     }
     return this.prefix ;
+  }
+
+
+  /**
+   * Returns a list of the free {@link TypeName}s in this {@link Type}.
+   * 
+   * @return A list of the free {@link TypeName}s in this {@link Type}.
+   */
+  public ArrayList < TypeName > getTypeNamesFree ( )
+  {
+    if ( this.typeNamesFree == null )
+    {
+      this.typeNamesFree = new ArrayList < TypeName > ( ) ;
+      for ( Type child : children ( ) )
+      {
+        this.typeNamesFree.addAll ( child.getTypeNamesFree ( ) ) ;
+      }
+    }
+    return this.typeNamesFree ;
+  }
+
+
+  /**
+   * Returns the set of free type variables present within this type. The
+   * default implementation simply returns the empty set, and derived classes
+   * will need to override this method to return the set of free type variables.
+   * The returned set should be considered read-only by the caller and must not
+   * be modified.
+   * 
+   * @return the set of free type variables within this type.
+   */
+  public Set < TypeVariable > getTypeVariablesFree ( )
+  {
+    return EMPTY_SET ;
   }
 
 

@@ -421,7 +421,7 @@ public class L1TypeCheckerProofRuleSet extends AbstractTypeCheckerProofRuleSet
           : right ) ;
       MonoType tau = ( left instanceof TypeVariable ? right : left ) ;
       // either tvar equals tau or tvar is not present in tau
-      if ( ! tvar.equals ( tau ) && ! tau.free ( ).contains ( tvar ) )
+      if ( ! tvar.equals ( tau ) && ! tau.getTypeVariablesFree ( ).contains ( tvar ) )
       {
         DefaultTypeSubstitution s = new DefaultTypeSubstitution ( tvar , tau ) ;
         context.addSubstitution ( s ) ;

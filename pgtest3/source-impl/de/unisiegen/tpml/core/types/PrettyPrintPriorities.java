@@ -18,6 +18,24 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 interface PrettyPrintPriorities
 {
   /**
+   * The pretty print priority for type names.
+   */
+  public static final int PRIO_TYPE_NAME = 6 ;
+
+
+  /**
+   * The pretty print priority for rec types.
+   */
+  public static final int PRIO_REC_TYPE = 0 ;
+
+
+  /**
+   * The pretty print priority for the body of rec types.
+   */
+  public static final int PRIO_REC_TYPE_TAU = PRIO_REC_TYPE ;
+
+
+  /**
    * The pretty print priority for identifiers like "< add: int ; >".
    */
   public static final int PRIO_ID = 0 ;

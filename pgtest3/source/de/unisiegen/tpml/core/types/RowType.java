@@ -294,30 +294,6 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
 
   /**
    * {@inheritDoc}
-   * 
-   * @see Type#free()
-   */
-  @ Override
-  public TreeSet < TypeVariable > free ( )
-  {
-    if ( this.free == null )
-    {
-      this.free = new TreeSet < TypeVariable > ( ) ;
-      for ( MonoType type : this.types )
-      {
-        this.free.addAll ( type.free ( ) ) ;
-      }
-      if ( this.remainingRowType != null )
-      {
-        this.free.addAll ( this.remainingRowType.free ( ) ) ;
-      }
-    }
-    return this.free ;
-  }
-
-
-  /**
-   * {@inheritDoc}
    */
   @ Override
   public String getCaption ( )
@@ -421,6 +397,30 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
   public int [ ] getTypesIndex ( )
   {
     return this.indicesType ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Type#getTypeVariablesFree()
+   */
+  @ Override
+  public TreeSet < TypeVariable > getTypeVariablesFree ( )
+  {
+    if ( this.free == null )
+    {
+      this.free = new TreeSet < TypeVariable > ( ) ;
+      for ( MonoType type : this.types )
+      {
+        this.free.addAll ( type.getTypeVariablesFree ( ) ) ;
+      }
+      if ( this.remainingRowType != null )
+      {
+        this.free.addAll ( this.remainingRowType.getTypeVariablesFree ( ) ) ;
+      }
+    }
+    return this.free ;
   }
 
 

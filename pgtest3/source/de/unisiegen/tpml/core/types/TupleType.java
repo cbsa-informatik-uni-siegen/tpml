@@ -27,6 +27,12 @@ public final class TupleType extends MonoType implements DefaultTypes
 
 
   /**
+   * Indeces of the child {@link Type}s.
+   */
+  private int [ ] indicesType ;
+
+
+  /**
    * Allocates a new <code>TupleType</code> with the specified
    * <code>types</code>.
    * 
@@ -72,8 +78,10 @@ public final class TupleType extends MonoType implements DefaultTypes
    * <code>types</code>.
    * 
    * @param pTypes the monomorphic types for the tuple elements.
-   * @param pParserStartOffset The start offset of this {@link Type} in the source code.
-   * @param pParserEndOffset The end offset of this {@link Type} in the source code.
+   * @param pParserStartOffset The start offset of this {@link Type} in the
+   *          source code.
+   * @param pParserEndOffset The end offset of this {@link Type} in the source
+   *          code.
    * @throws IllegalArgumentException if <code>types</code> contains less than
    *           two elements.
    * @throws NullPointerException if <code>pTypes</code> is <code>null</code>.
@@ -85,12 +93,6 @@ public final class TupleType extends MonoType implements DefaultTypes
     this.parserStartOffset = pParserStartOffset ;
     this.parserEndOffset = pParserEndOffset ;
   }
-
-
-  /**
-   * Indeces of the child {@link Type}s.
-   */
-  private int [ ] indicesType ;
 
 
   /**
@@ -129,26 +131,6 @@ public final class TupleType extends MonoType implements DefaultTypes
 
   /**
    * {@inheritDoc}
-   * 
-   * @see Type#free()
-   */
-  @ Override
-  public TreeSet < TypeVariable > free ( )
-  {
-    if ( this.free == null )
-    {
-      this.free = new TreeSet < TypeVariable > ( ) ;
-      for ( MonoType type : this.types )
-      {
-        this.free.addAll ( type.free ( ) ) ;
-      }
-    }
-    return this.free ;
-  }
-
-
-  /**
-   * {@inheritDoc}
    */
   @ Override
   public String getCaption ( )
@@ -176,6 +158,26 @@ public final class TupleType extends MonoType implements DefaultTypes
   public int [ ] getTypesIndex ( )
   {
     return this.indicesType ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Type#getTypeVariablesFree()
+   */
+  @ Override
+  public TreeSet < TypeVariable > getTypeVariablesFree ( )
+  {
+    if ( this.free == null )
+    {
+      this.free = new TreeSet < TypeVariable > ( ) ;
+      for ( MonoType type : this.types )
+      {
+        this.free.addAll ( type.getTypeVariablesFree ( ) ) ;
+      }
+    }
+    return this.free ;
   }
 
 

@@ -60,7 +60,7 @@ public final class DefaultTypeEnvironment extends AbstractEnvironment<String, Ty
   public PolyType closure(MonoType tau) {
     // determine the quantified type variables
     TreeSet<TypeVariable> quantifiedVariables = new TreeSet<TypeVariable>();
-    quantifiedVariables.addAll(tau.free());
+    quantifiedVariables.addAll(tau.getTypeVariablesFree());
     quantifiedVariables.removeAll(free());
     
     // allocate the polymorphic type
@@ -84,7 +84,7 @@ public final class DefaultTypeEnvironment extends AbstractEnvironment<String, Ty
   public Set<TypeVariable> free() {
     TreeSet<TypeVariable> free = new TreeSet<TypeVariable>();
     for (Mapping<String, Type> mapping : this.mappings) {
-      free.addAll(mapping.getEntry().free());
+      free.addAll(mapping.getEntry().getTypeVariablesFree());
     }
     return free;
   }

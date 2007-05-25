@@ -136,23 +136,6 @@ public final class RecType extends MonoType implements DefaultTypes
 
   /**
    * {@inheritDoc}
-   * 
-   * @see Type#free()
-   */
-  @ Override
-  public Set < TypeVariable > free ( )
-  {
-    if ( this.free == null )
-    {
-      this.free = new TreeSet < TypeVariable > ( ) ;
-      this.free.addAll ( this.types [ 0 ].free ( ) ) ;
-    }
-    return this.free ;
-  }
-
-
-  /**
-   * {@inheritDoc}
    */
   @ Override
   public String getCaption ( )
@@ -185,9 +168,9 @@ public final class RecType extends MonoType implements DefaultTypes
 
 
   /**
-   * TODO
+   * Returns a list of the free {@link TypeName}s in this {@link Type}.
    * 
-   * @return TODO
+   * @return A list of the free {@link TypeName}s in this {@link Type}.
    */
   @ Override
   public ArrayList < TypeName > getTypeNamesFree ( )
@@ -241,6 +224,23 @@ public final class RecType extends MonoType implements DefaultTypes
   /**
    * {@inheritDoc}
    * 
+   * @see Type#getTypeVariablesFree()
+   */
+  @ Override
+  public Set < TypeVariable > getTypeVariablesFree ( )
+  {
+    if ( this.free == null )
+    {
+      this.free = new TreeSet < TypeVariable > ( ) ;
+      this.free.addAll ( this.types [ 0 ].getTypeVariablesFree ( ) ) ;
+    }
+    return this.free ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
    * @see Object#hashCode()
    */
   @ Override
@@ -278,15 +278,15 @@ public final class RecType extends MonoType implements DefaultTypes
   {
     if ( this.prettyStringBuilder == null )
     {
-      // TODO PrettyPrintPriorities
       this.prettyStringBuilder = pPrettyStringBuilderFactory.newBuilder ( this ,
-          0 ) ;
+          PRIO_REC_TYPE ) ;
       this.prettyStringBuilder.addKeyword ( "\u03bc" ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addBuilder ( this.typeNames [ 0 ]
-          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , 0 ) ;
+          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_ID ) ;
       this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addBuilder ( this.types [ 0 ]
-          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , 0 ) ;
+          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
+          PRIO_REC_TYPE_TAU ) ;
     }
     return this.prettyStringBuilder ;
   }

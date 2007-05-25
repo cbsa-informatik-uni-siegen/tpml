@@ -140,7 +140,7 @@ public final class DefaultTypeSubstitution implements TypeSubstitution {
       return new TreeSet<TypeVariable>();
     }
     TreeSet<TypeVariable> free = new TreeSet<TypeVariable>();
-    free.addAll(this.type.free());
+    free.addAll(this.type.getTypeVariablesFree());
     free.remove(this.tvar);
     free.addAll(this.parent.free());
     return free;

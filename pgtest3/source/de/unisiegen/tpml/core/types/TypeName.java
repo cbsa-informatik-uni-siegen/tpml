@@ -1,6 +1,7 @@
 package de.unisiegen.tpml.core.types ;
 
 
+import java.util.ArrayList ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
@@ -101,6 +102,23 @@ public final class TypeName extends MonoType
 
 
   /**
+   * Returns a list of the free {@link TypeName}s in this {@link Type}.
+   * 
+   * @return A list of the free {@link TypeName}s in this {@link Type}.
+   */
+  @ Override
+  public ArrayList < TypeName > getTypeNamesFree ( )
+  {
+    if ( this.typeNamesFree == null )
+    {
+      this.typeNamesFree = new ArrayList < TypeName > ( ) ;
+      this.typeNamesFree.add ( this ) ;
+    }
+    return this.typeNamesFree ;
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see Type#hashCode()
@@ -139,8 +157,7 @@ public final class TypeName extends MonoType
   {
     if ( this.prettyStringBuilder == null )
     {
-      // TODO PrettyPrintPriorities
-      this.prettyStringBuilder = factory.newBuilder ( this , 0 ) ;
+      this.prettyStringBuilder = factory.newBuilder ( this , PRIO_TYPE_NAME ) ;
       this.prettyStringBuilder.addIdentifier ( this.name ) ;
     }
     return this.prettyStringBuilder ;

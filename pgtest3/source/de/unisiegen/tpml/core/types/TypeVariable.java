@@ -257,23 +257,6 @@ public final class TypeVariable extends MonoType implements
 
   /**
    * {@inheritDoc}
-   * 
-   * @see Type#free()
-   */
-  @ Override
-  public Set < TypeVariable > free ( )
-  {
-    if ( this.free == null )
-    {
-      this.free = new TreeSet < TypeVariable > ( ) ;
-      this.free.add ( this ) ;
-    }
-    return this.free ;
-  }
-
-
-  /**
-   * {@inheritDoc}
    */
   @ Override
   public String getCaption ( )
@@ -309,6 +292,23 @@ public final class TypeVariable extends MonoType implements
   public int getOffset ( )
   {
     return this.offset ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Type#getTypeVariablesFree()
+   */
+  @ Override
+  public Set < TypeVariable > getTypeVariablesFree ( )
+  {
+    if ( this.free == null )
+    {
+      this.free = new TreeSet < TypeVariable > ( ) ;
+      this.free.add ( this ) ;
+    }
+    return this.free ;
   }
 
 
