@@ -1,6 +1,8 @@
 package de.unisiegen.tpml.core.languages.l2o ;
 
 
+import java.text.MessageFormat ;
+import de.unisiegen.tpml.core.Messages ;
 import de.unisiegen.tpml.core.expressions.Attribute ;
 import de.unisiegen.tpml.core.expressions.CurriedMethod ;
 import de.unisiegen.tpml.core.expressions.Duplication ;
@@ -104,7 +106,8 @@ public class L2OTypeCheckerProofRuleSet extends L2TypeCheckerProofRuleSet
     }
     else
     {
-      throw new RuntimeException ( "Can not apply OBJECT" ) ; //$NON-NLS-1$
+      throw new RuntimeException ( MessageFormat.format ( Messages
+          .getString ( "ProofRuleException.5" ) , objectExpr ) ) ; //$NON-NLS-1$
     }
   }
 
@@ -151,7 +154,8 @@ public class L2OTypeCheckerProofRuleSet extends L2TypeCheckerProofRuleSet
     Row row = ( Row ) pNode.getExpression ( ) ;
     if ( row.getExpressions ( ).length != 0 )
     {
-      throw new RuntimeException ( "The row has one or more expressions." ) ; //$NON-NLS-1$
+      throw new RuntimeException ( MessageFormat.format ( Messages
+          .getString ( "ProofRuleException.4" ) , row ) ) ; //$NON-NLS-1$
     }
     pContext.addEquation ( pNode.getType ( ) , new RowType (
         new Identifier [ 0 ] , new MonoType [ 0 ] ) ) ;
@@ -169,6 +173,16 @@ public class L2OTypeCheckerProofRuleSet extends L2TypeCheckerProofRuleSet
       TypeCheckerProofNode pNode )
   {
     Row row = ( Row ) pNode.getExpression ( ) ;
+    Expression [ ] rowExpressions = row.getExpressions ( ) ;
+    if ( rowExpressions.length == 0 )
+    {
+      throw new RuntimeException ( Messages.getString ( "ProofRuleException.3" ) ) ; //$NON-NLS-1$
+    }
+    if ( ! ( rowExpressions [ 0 ] instanceof Attribute ) )
+    {
+      throw new RuntimeException ( MessageFormat.format ( Messages
+          .getString ( "ProofRuleException.2" ) , rowExpressions [ 0 ] ) ) ; //$NON-NLS-1$ 
+    }
     Attribute attribute = ( Attribute ) row.getExpressions ( ) [ 0 ] ;
     Expression e = attribute.getE ( ) ;
     MonoType tauE = pContext.newTypeVariable ( ) ;
@@ -193,6 +207,10 @@ public class L2OTypeCheckerProofRuleSet extends L2TypeCheckerProofRuleSet
   {
     Row row = ( Row ) pNode.getExpression ( ) ;
     Expression [ ] rowExpressions = row.getExpressions ( ) ;
+    if ( rowExpressions.length == 0 )
+    {
+      throw new RuntimeException ( Messages.getString ( "ProofRuleException.3" ) ) ; //$NON-NLS-1$
+    }
     if ( rowExpressions [ 0 ] instanceof Method )
     {
       Method method = ( Method ) rowExpressions [ 0 ] ;
@@ -234,7 +252,8 @@ public class L2OTypeCheckerProofRuleSet extends L2TypeCheckerProofRuleSet
     }
     else
     {
-      throw new RuntimeException ( "The first child of the row is not a method or a curried method." ) ; //$NON-NLS-1$
+      throw new RuntimeException ( MessageFormat.format ( Messages
+          .getString ( "ProofRuleException.1" ) , rowExpressions [ 0 ] ) ) ; //$NON-NLS-1$
     }
   }
 
@@ -266,7 +285,7 @@ public class L2OTypeCheckerProofRuleSet extends L2TypeCheckerProofRuleSet
         RowType union = RowType.union ( tmpRowType , tauRow ) ;
         pContext.addEquation ( pNode.getType ( ) , union ) ;
       }
-      else if ( rowExpressions [ 0 ] instanceof CurriedMethod )
+      else
       {
         CurriedMethod curriedMethod = ( CurriedMethod ) row.getExpressions ( ) [ 0 ] ;
         RowType tmpRowType = new RowType ( new Identifier [ ]
@@ -274,10 +293,6 @@ public class L2OTypeCheckerProofRuleSet extends L2TypeCheckerProofRuleSet
         { tauE } ) ;
         RowType union = RowType.union ( tmpRowType , tauRow ) ;
         pContext.addEquation ( pNode.getType ( ) , union ) ;
-      }
-      else
-      {
-        throw new RuntimeException ( "Can not apply METHOD" ) ; //$NON-NLS-1$
       }
     }
   }

@@ -2,7 +2,9 @@ package de.unisiegen.tpml.core.typechecker ;
 
 
 import java.lang.reflect.InvocationTargetException ;
+import java.text.MessageFormat ;
 import de.unisiegen.tpml.core.AbstractProofRule ;
+import de.unisiegen.tpml.core.Messages ;
 import de.unisiegen.tpml.core.ProofRuleException ;
 
 
@@ -62,19 +64,28 @@ public abstract class AbstractTypeCheckerProofRule extends AbstractProofRule
     }
     catch ( ProofRuleException e )
     {
-      System.out.println ( e ) ;
       throw e ;
     }
     catch ( InvocationTargetException e )
     {
-      throw new ProofRuleException ( node , this , e.getTargetException ( ) ) ;
+      if ( e.getTargetException ( ) instanceof ClassCastException )
+      {
+        throw new ProofRuleException ( MessageFormat.format ( Messages
+            .getString ( "ProofRuleException.0" ) , this , node ) , node , //$NON-NLS-1$
+            this , e.getTargetException ( ) ) ;
+      }
+      if ( e.getTargetException ( ).getMessage ( ) == null )
+      {
+        throw new ProofRuleException ( node , this , e.getTargetException ( ) ) ;
+      }
+      throw new ProofRuleException ( e.getTargetException ( ).getMessage ( ) ,
+          node , this , e.getTargetException ( ) ) ;
     }
     catch ( Exception e )
     {
       // check if e contains a usable error message
       for ( Throwable t = e ; t != null ; t = t.getCause ( ) )
       {
-        System.out.println ( t ) ;
         if ( t instanceof IllegalArgumentException )
         {
           throw new ProofRuleException ( t.getMessage ( ) , node , this , e ) ;
