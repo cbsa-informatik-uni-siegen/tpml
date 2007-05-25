@@ -300,6 +300,16 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities
 
 
   /**
+   * TODO
+   * 
+   * @param pTypeName TODO
+   * @param pTau TODO
+   * @return TODO
+   */
+  public abstract Type substitute ( TypeName pTypeName , MonoType pTau ) ;
+
+
+  /**
    * Applies the <code>substitution</code> to this type and returns the
    * resulting type, which may be this type itself if either this type does not
    * contain any type variables or no type variables that are present in the

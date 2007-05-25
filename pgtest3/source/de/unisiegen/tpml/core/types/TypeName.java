@@ -131,6 +131,28 @@ public final class TypeName extends MonoType
 
 
   /**
+   * TODO
+   * 
+   * @param pTypeName TODO
+   * @param pTau TODO
+   * @return TODO
+   */
+  @ Override
+  public MonoType substitute ( TypeName pTypeName , MonoType pTau )
+  {
+    if ( pTypeName.equals ( this ) )
+    {
+      /*
+       * We need to clone the type here to make sure we can distinguish an type
+       * in the pretty printer that is substituted multiple times
+       */
+      return pTau.clone ( ) ;
+    }
+    return this ;
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see Type#substitute(TypeSubstitution)

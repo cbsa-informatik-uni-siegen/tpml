@@ -186,6 +186,21 @@ public final class ListType extends MonoType implements DefaultTypes
 
 
   /**
+   * TODO
+   * 
+   * @param pTypeName TODO
+   * @param pTau TODO
+   * @return TODO
+   */
+  @ Override
+  public ListType substitute ( TypeName pTypeName , MonoType pTau )
+  {
+    MonoType newTau = this.types [ 0 ].substitute ( pTypeName , pTau ) ;
+    return new ListType ( newTau ) ;
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see MonoType#substitute(TypeSubstitution)

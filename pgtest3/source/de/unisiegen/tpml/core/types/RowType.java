@@ -437,6 +437,27 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
 
 
   /**
+   * TODO
+   * 
+   * @param pTypeName TODO
+   * @param pTau TODO
+   * @return TODO
+   */
+  @ Override
+  public RowType substitute ( TypeName pTypeName , MonoType pTau )
+  {
+    MonoType [ ] newTypes = new MonoType [ this.types.length ] ;
+    for ( int i = 0 ; i < newTypes.length ; i ++ )
+    {
+      newTypes [ i ] = this.types [ i ].substitute ( pTypeName , pTau ) ;
+    }
+    MonoType newRemainingRowType = ( this.remainingRowType == null ) ? null
+        : this.remainingRowType.substitute ( pTypeName , pTau ) ;
+    return new RowType ( this.identifiers , newTypes , newRemainingRowType ) ;
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see Type#substitute(TypeSubstitution)

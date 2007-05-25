@@ -197,6 +197,21 @@ public final class PolyType extends Type implements DefaultTypes
 
 
   /**
+   * TODO
+   * 
+   * @param pTypeName TODO
+   * @param pType TODO
+   * @return TODO
+   */
+  @ Override
+  public PolyType substitute ( TypeName pTypeName , MonoType pType )
+  {
+    MonoType newTau = this.types [ 0 ].substitute ( pTypeName , pType ) ;
+    return new PolyType ( this.quantifiedVariables , newTau ) ;
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see Type#substitute(TypeSubstitution)

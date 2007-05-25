@@ -185,6 +185,21 @@ public final class RefType extends MonoType implements DefaultTypes
 
 
   /**
+   * TODO
+   * 
+   * @param pTypeName TODO
+   * @param pTau TODO
+   * @return TODO
+   */
+  @ Override
+  public RefType substitute ( TypeName pTypeName , MonoType pTau )
+  {
+    MonoType newTau = this.types [ 0 ].substitute ( pTypeName , pTau ) ;
+    return new RefType ( newTau ) ;
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see MonoType#substitute(TypeSubstitution)

@@ -40,6 +40,17 @@ public abstract class MonoType extends Type
 
 
   /**
+   * TODO
+   * 
+   * @param pTypeName TODO
+   * @param pTau TODO
+   * @return TODO
+   */
+  @ Override
+  public abstract MonoType substitute ( TypeName pTypeName , MonoType pTau ) ;
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see Type#substitute(TypeSubstitution)

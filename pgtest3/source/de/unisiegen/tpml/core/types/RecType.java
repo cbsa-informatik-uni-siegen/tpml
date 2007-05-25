@@ -251,6 +251,29 @@ public final class RecType extends MonoType implements DefaultTypes
 
 
   /**
+   * TODO
+   * 
+   * @param pTypeName TODO
+   * @param pTau TODO
+   * @return TODO
+   */
+  @ Override
+  public RecType substitute ( TypeName pTypeName , MonoType pTau )
+  {
+    /*
+     * Do not substitute, if the TypeNames are equal.
+     */
+    if ( this.typeNames [ 0 ].equals ( pTypeName ) )
+    {
+      return this ;
+    }
+    // TODO BoundRenaming
+    MonoType newTau = this.types [ 0 ].substitute ( pTypeName , pTau ) ;
+    return new RecType ( this.typeNames [ 0 ] , newTau ) ;
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see Type#substitute(TypeSubstitution)

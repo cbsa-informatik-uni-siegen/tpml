@@ -194,6 +194,25 @@ public final class TupleType extends MonoType implements DefaultTypes
 
 
   /**
+   * TODO
+   * 
+   * @param pTypeName TODO
+   * @param pTau TODO
+   * @return TODO
+   */
+  @ Override
+  public TupleType substitute ( TypeName pTypeName , MonoType pTau )
+  {
+    MonoType [ ] newTypes = new MonoType [ this.types.length ] ;
+    for ( int i = 0 ; i < newTypes.length ; i ++ )
+    {
+      newTypes [ i ] = this.types [ i ].substitute ( pTypeName , pTau ) ;
+    }
+    return new TupleType ( newTypes ) ;
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see MonoType#substitute(TypeSubstitution)

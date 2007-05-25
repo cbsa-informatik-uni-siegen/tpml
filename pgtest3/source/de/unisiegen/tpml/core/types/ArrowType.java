@@ -220,6 +220,22 @@ public final class ArrowType extends MonoType implements DefaultTypes
 
 
   /**
+   * TODO
+   * 
+   * @param pTypeName TODO
+   * @param pTau TODO
+   * @return TODO
+   */
+  @ Override
+  public ArrowType substitute ( TypeName pTypeName , MonoType pTau )
+  {
+    MonoType newTau1 = this.types [ 0 ].substitute ( pTypeName , pTau ) ;
+    MonoType newTau2 = this.types [ 1 ].substitute ( pTypeName , pTau ) ;
+    return new ArrowType ( newTau1 , newTau2 ) ;
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see Type#substitute(TypeSubstitution)

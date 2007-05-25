@@ -90,6 +90,22 @@ public abstract class PrimitiveType extends MonoType
 
 
   /**
+   * TODO
+   * 
+   * @param pTypeName TODO
+   * @param pTau TODO
+   * @return TODO
+   */
+  @ Override
+  public PrimitiveType substitute ( @ SuppressWarnings ( "unused" )
+  TypeName pTypeName , @ SuppressWarnings ( "unused" )
+  MonoType pTau )
+  {
+    return this ;
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see Type#substitute(TypeSubstitution)
