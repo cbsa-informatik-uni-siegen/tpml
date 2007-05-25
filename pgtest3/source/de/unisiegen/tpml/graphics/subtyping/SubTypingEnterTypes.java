@@ -8,16 +8,22 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.StringReader;
 import java.text.MessageFormat;
 
+import javax.swing.Action;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSpinner;
 import javax.swing.JSplitPane;
+import javax.swing.KeyStroke;
 import javax.swing.border.LineBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -108,6 +114,11 @@ public class SubTypingEnterTypes extends AbstractProofView {
 	private JLabel lOutput;
 
 	private JLabel labelLanguage;
+	
+	private JSplitPane splitPane;
+	private JPanel toSplit;
+	
+	
 
 	/**
 	 * The entered and parsed types
@@ -159,6 +170,8 @@ public class SubTypingEnterTypes extends AbstractProofView {
 	 * flag which shows if elements already initialized
 	 */
 	private boolean initialized = false;
+
+	private double dividerLocation = 0.5;
 	
 
 	//
@@ -184,6 +197,10 @@ public class SubTypingEnterTypes extends AbstractProofView {
 
 		type2 = null;
 		//this.setSize ( 800, 600 );
+		
+		splitPane = new JSplitPane (JSplitPane.VERTICAL_SPLIT);
+		splitPane.setOneTouchExpandable(true);
+		splitPane.setDividerLocation(dividerLocation );
 
 		setLayout ( new GridBagLayout ( ) );
 		GridBagConstraints constraints = new GridBagConstraints ( );
@@ -194,6 +211,8 @@ public class SubTypingEnterTypes extends AbstractProofView {
 		menu = new JPanel ( );
 		menu.setLayout ( new GridBagLayout ( ) );
 		menu.setBorder ( border );
+		
+		
 
 		changeLanguage = new JButton ( Messages.getString ( "changeLanguage" ) ); //$NON-NLS-1$
 		changeLanguage.addActionListener ( new ActionListener ( ) {
@@ -221,7 +240,7 @@ public class SubTypingEnterTypes extends AbstractProofView {
 		this.menu.add ( labelLanguage, constraints );
 
 		setOutline = new JCheckBox ( Messages.getString ( "showOutline" ) ); //$NON-NLS-1$
-		setOutline.setSelected ( true );
+		setOutline.setSelected ( false );
 		setOutline.setToolTipText ( Messages.getString ( "tooltipOutline" ) ); //$NON-NLS-1$
 		setOutline.addItemListener ( new ItemListener(){
 
@@ -229,9 +248,13 @@ public class SubTypingEnterTypes extends AbstractProofView {
 			public void itemStateChanged(ItemEvent e) {
 				if ( e.getStateChange ( ) == ItemEvent.SELECTED ){
 					SubTypingEnterTypes.this.outline.setVisible ( true );
+					splitPane.setOneTouchExpandable(true);
+					splitPane.setDividerLocation(SubTypingEnterTypes.this.dividerLocation);
 				}
 				if ( e.getStateChange ( ) == ItemEvent.DESELECTED ){
 					SubTypingEnterTypes.this.outline.setVisible ( false );
+					splitPane.setOneTouchExpandable(false);
+
 				}
 				
 			}
@@ -242,6 +265,8 @@ public class SubTypingEnterTypes extends AbstractProofView {
 		constraints.weightx = 2;
 		constraints.weighty = 0;
 		this.menu.add ( setOutline, constraints );
+		
+		
 
 		constraints.gridx = 0;
 		constraints.gridy = 0;
@@ -273,6 +298,17 @@ public class SubTypingEnterTypes extends AbstractProofView {
 		this.editor1 = new StyledLanguageEditor ( );
 		
 		this.document1 = new StyledTypeEnterField ( language );
+		//this.editor1.getInputMap ( ).put(KeyStroke.getKeyStroke("F2"), "nextComponent");
+		//this.editor1.getActionMap().put("nextComponent",nextComponent());
+		this.editor1.addKeyListener(new KeyAdapter(){
+      public void keyPressed(KeyEvent arg0) {
+        if (arg0.getKeyCode() == KeyEvent.VK_TAB){
+           nextComponent ( );
+        }
+     }
+  });
+		
+		//inputFields.addKeyListener ( new KeyListener() )
 		
 		this.scrollpane = new JScrollPane();
 		this.sideBar = new SideBar (this.scrollpane,
@@ -330,6 +366,14 @@ public class SubTypingEnterTypes extends AbstractProofView {
 
 		this.editor2 = new StyledLanguageEditor ( );
 		
+		this.editor2.addKeyListener(new KeyAdapter(){
+      public void keyPressed(KeyEvent arg0) {
+        if (arg0.getKeyCode() == KeyEvent.VK_TAB){
+           nextComponent ( );
+        }
+     }
+  });
+		
 		this.document2 = new StyledTypeEnterField ( language );
 		
 		this.scrollpane2 = new JScrollPane();
@@ -356,13 +400,14 @@ public class SubTypingEnterTypes extends AbstractProofView {
 			public void insertUpdate(DocumentEvent e) {
 				type2 = eventHandling ( editor2, type2, oldType2, outline2 );
 				if (type2 != oldType2)
-				{
-					System.out.println("Das Moedel wird aktuallisiert");
+				{		
+					outputField.remove ( component );
+					//SubTypingEnterTypes.this.remove ( outputField );
 					
-					//model = language.newSubTypingProofModel(type1, type2, isAdvanced());
+					
 					model.setRoot(type1, type2);
 					component = new SubTypingComponent ( model, isAdvanced() );
-					System.out.println("advanced: "+isAdvanced());
+					
 					GridBagConstraints constraints = new GridBagConstraints ( );
 					constraints.fill = GridBagConstraints.BOTH;
 					constraints.gridx = 0;
@@ -370,11 +415,20 @@ public class SubTypingEnterTypes extends AbstractProofView {
 					constraints.gridwidth = 1;
 					constraints.weighty = 1;
 					constraints.weightx = 1;
-					//outputField.removeAll();
-					outputField.remove(0);
-					System.out.println(outputField.getLayout().toString());
-					outputField.add(component, constraints);
-					outputField.getParent().repaint();
+					constraints.insets = new Insets ( 15, 15, 15, 15 );
+					
+					outputField.add ( component, constraints );
+					
+					constraints.gridx = 0;
+					constraints.gridy = 2;
+					constraints.weighty = 5;
+					constraints.weightx = 0;
+					constraints.insets = new Insets ( 15, 15, 15, 15 );
+					//SubTypingEnterTypes.this.add ( outputField, constraints );
+					
+					//SubTypingEnterTypes.this.validate ( );
+					outputField.validate ( );
+					
 					check ( );
 					
 				}
@@ -386,10 +440,14 @@ public class SubTypingEnterTypes extends AbstractProofView {
 				type2 = eventHandling ( editor2, type2, oldType2, outline2 );
 				if (type2 != oldType2)
 				{
-					System.out.println("Das Moedel wird aktuallisiert");
-					//model = language.newSubTypingProofModel(type1, type2, isAdvanced() );
+					//TODO das geht alles noch nicht...
+					outputField.remove ( component );
+					//SubTypingEnterTypes.this.remove ( outputField );
+					
+					
 					model.setRoot(type1, type2);
 					component = new SubTypingComponent ( model, isAdvanced() );
+					
 					GridBagConstraints constraints = new GridBagConstraints ( );
 					constraints.fill = GridBagConstraints.BOTH;
 					constraints.gridx = 0;
@@ -397,11 +455,20 @@ public class SubTypingEnterTypes extends AbstractProofView {
 					constraints.gridwidth = 1;
 					constraints.weighty = 1;
 					constraints.weightx = 1;
-					//outputField.removeAll();
-					outputField.remove(0);
-					System.out.println(outputField.getLayout().toString());
-					outputField.add(component, constraints);
-					outputField.getParent().repaint();
+					constraints.insets = new Insets ( 15, 15, 15, 15 );
+					
+					outputField.add ( component, constraints );
+					
+					constraints.gridx = 0;
+					constraints.gridy = 2;
+					constraints.weighty = 5;
+					constraints.weightx = 0;
+					constraints.insets = new Insets ( 15, 15, 15, 15 );
+					//SubTypingEnterTypes.this.add ( outputField, constraints );
+					
+					//SubTypingEnterTypes.this.validate ( );
+					outputField.validate ( );
+					
 					check ( );
 				}
 					
@@ -441,12 +508,14 @@ public class SubTypingEnterTypes extends AbstractProofView {
 		constraints.gridwidth = 1;
 		constraints.weighty = 1;
 		constraints.weightx = 1;
+		constraints.insets = new Insets ( 15, 15, 15, 15 );
 		//constraints.insets = new Insets ( 5, 5, 5, 5 );
 		//this.outputField.add ( labelOutput, constraints );
 		//TODO hier muss der Renderer hin....
 		//this.outputField.add ( labelOutput, constraints );
 		System.out.println(outputField.getLayout().toString());
-		this.outputField.add(new SubTypingComponent ( model, isAdvanced() ), constraints);
+		component = new SubTypingComponent ( model, isAdvanced() );
+		this.outputField.add(component, constraints);
 
 		lOutput = new JLabel (" "); //$NON-NLS-1$
 
@@ -462,7 +531,9 @@ public class SubTypingEnterTypes extends AbstractProofView {
 		constraints.weighty = 5;
 		constraints.weightx = 0;
 		constraints.insets = new Insets ( 15, 15, 15, 15 );
-		this.add ( outputField, constraints );
+		//this.add ( outputField, constraints );
+		splitPane.add ( outputField, JSplitPane.TOP );
+		splitPane.setDividerLocation(dividerLocation );
 
 		outline = new JPanel ( );
 		outline.setLayout ( new GridBagLayout ( ) );
@@ -476,6 +547,7 @@ public class SubTypingEnterTypes extends AbstractProofView {
 		constraints.gridwidth = 1;
 		constraints.insets = new Insets ( 5, 5, 5, 5 );
 		this.outline.add ( jPanelOutline1, constraints );
+		this.outline.setVisible ( false );
 
 		JPanel jPanelOutline2 = this.outline2.getJPanelOutline ( );
 		constraints.gridx = 1;
@@ -487,10 +559,26 @@ public class SubTypingEnterTypes extends AbstractProofView {
 		constraints.gridy = 3;
 		constraints.weighty = 5;
 		constraints.insets = new Insets ( 15, 15, 15, 15 );
-		this.add ( outline, constraints );
+		//this.add ( outline, constraints );
+		splitPane.add ( outline, JSplitPane.BOTTOM );
+		splitPane.setDividerLocation(dividerLocation );
+		this.add (splitPane, constraints);
 
 		this.setVisible ( true );
 
+	}
+
+	private Action nextComponent ( )
+	{
+		if (editor1.hasFocus ( ))
+		{
+			editor2.requestFocus ( );
+		}
+		else 
+		{
+			editor1.requestFocus ( );
+		}
+		return null;
 	}
 
 	private void selectErrorText (int left, int right) {
