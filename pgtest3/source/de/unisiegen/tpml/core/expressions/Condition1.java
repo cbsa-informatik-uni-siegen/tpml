@@ -2,7 +2,7 @@ package de.unisiegen.tpml.core.expressions ;
 
 
 import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException ;
-import de.unisiegen.tpml.core.interfaces.ChildrenExpressions ;
+import de.unisiegen.tpml.core.interfaces.DefaultExpressions ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
@@ -18,7 +18,7 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
  * @see Condition
  * @see Expression
  */
-public final class Condition1 extends Expression implements ChildrenExpressions
+public final class Condition1 extends Expression implements DefaultExpressions
 {
   /**
    * Indeces of the child {@link Expression}s.

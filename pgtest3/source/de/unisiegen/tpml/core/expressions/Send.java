@@ -2,7 +2,7 @@ package de.unisiegen.tpml.core.expressions ;
 
 
 import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException ;
-import de.unisiegen.tpml.core.interfaces.ChildrenExpressions ;
+import de.unisiegen.tpml.core.interfaces.DefaultExpressions ;
 import de.unisiegen.tpml.core.interfaces.DefaultIdentifiers ;
 import de.unisiegen.tpml.core.interfaces.SortedChildren ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable ;
@@ -18,7 +18,7 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
  * @version $Rev: 1066 $
  */
 public final class Send extends Expression implements DefaultIdentifiers ,
-    ChildrenExpressions , SortedChildren
+    DefaultExpressions , SortedChildren
 {
   /**
    * Indeces of the child {@link Expression}s.

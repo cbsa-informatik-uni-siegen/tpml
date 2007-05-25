@@ -2,7 +2,7 @@ package de.unisiegen.tpml.core.expressions ;
 
 
 import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException ;
-import de.unisiegen.tpml.core.interfaces.ChildrenExpressions ;
+import de.unisiegen.tpml.core.interfaces.DefaultExpressions ;
 import de.unisiegen.tpml.core.interfaces.DefaultIdentifiers ;
 import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
@@ -19,7 +19,7 @@ import de.unisiegen.tpml.core.types.Type ;
  * @version $Rev: 1067 $
  */
 public class Method extends Expression implements DefaultIdentifiers ,
-    DefaultTypes , ChildrenExpressions
+    DefaultTypes , DefaultExpressions
 {
   /**
    * Indeces of the child {@link Expression}s.

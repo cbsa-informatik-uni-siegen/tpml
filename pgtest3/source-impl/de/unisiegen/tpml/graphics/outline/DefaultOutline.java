@@ -612,7 +612,7 @@ public final class DefaultOutline implements Outline
         .getInterfaces ( ) )
     {
       if ( currentInterface
-          .equals ( de.unisiegen.tpml.core.interfaces.ChildrenExpressions.class ) )
+          .equals ( de.unisiegen.tpml.core.interfaces.DefaultExpressions.class ) )
       {
         expressionsIndex = getIndex ( pExpression , GET_EXPRESSIONS_INDEX ) ;
       }

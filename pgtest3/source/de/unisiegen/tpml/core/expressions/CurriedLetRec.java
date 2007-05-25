@@ -5,7 +5,7 @@ import java.util.ArrayList ;
 import de.unisiegen.tpml.core.exceptions.LanguageParserMultiException ;
 import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException ;
 import de.unisiegen.tpml.core.interfaces.BoundIdentifiers ;
-import de.unisiegen.tpml.core.interfaces.ChildrenExpressions ;
+import de.unisiegen.tpml.core.interfaces.DefaultExpressions ;
 import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
@@ -25,7 +25,7 @@ import de.unisiegen.tpml.core.util.BoundRenaming ;
  * @see CurriedLet
  */
 public final class CurriedLetRec extends CurriedLet implements
-    BoundIdentifiers , DefaultTypes , ChildrenExpressions
+    BoundIdentifiers , DefaultTypes , DefaultExpressions
 {
   /**
    * Allocates a new <code>CurriedLetRec</code> instance.

@@ -5,12 +5,12 @@ import de.unisiegen.tpml.core.expressions.Expression ;
 
 
 /**
- * Interface for classes whose instances have children {@link Expression}s.
+ * Interface for classes whose instances have child {@link Expression}s.
  * 
  * @author Christian Fehler
  * @version $Rev:1350 $
  */
-public interface ChildrenExpressions
+public interface DefaultExpressions
 {
   /**
    * Returns the sub {@link Expression}s.

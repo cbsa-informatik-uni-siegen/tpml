@@ -241,7 +241,7 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
           .getInterfaces ( ) )
       {
         if ( currentInterface
-            .equals ( de.unisiegen.tpml.core.interfaces.ChildrenExpressions.class ) )
+            .equals ( de.unisiegen.tpml.core.interfaces.DefaultExpressions.class ) )
         {
           try
           {

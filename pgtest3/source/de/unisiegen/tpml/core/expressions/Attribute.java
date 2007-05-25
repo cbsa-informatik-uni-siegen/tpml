@@ -4,7 +4,7 @@ package de.unisiegen.tpml.core.expressions ;
 import java.util.ArrayList ;
 import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException ;
 import de.unisiegen.tpml.core.interfaces.BoundIdentifiers ;
-import de.unisiegen.tpml.core.interfaces.ChildrenExpressions ;
+import de.unisiegen.tpml.core.interfaces.DefaultExpressions ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
@@ -17,7 +17,7 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
  * @version $Rev: 1066 $
  */
 public final class Attribute extends Expression implements BoundIdentifiers ,
-    ChildrenExpressions
+    DefaultExpressions
 {
   /**
    * Indeces of the child {@link Expression}s.

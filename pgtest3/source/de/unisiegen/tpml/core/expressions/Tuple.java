@@ -3,7 +3,7 @@ package de.unisiegen.tpml.core.expressions ;
 
 import java.util.Arrays ;
 import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException ;
-import de.unisiegen.tpml.core.interfaces.ChildrenExpressions ;
+import de.unisiegen.tpml.core.interfaces.DefaultExpressions ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 
@@ -16,7 +16,7 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
  * @version $Rev:1053 $
  * @see Expression
  */
-public final class Tuple extends Expression implements ChildrenExpressions
+public final class Tuple extends Expression implements DefaultExpressions
 {
   /**
    * The sub expressions.

@@ -6,7 +6,7 @@ import java.util.Arrays ;
 import de.unisiegen.tpml.core.exceptions.LanguageParserMultiException ;
 import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException ;
 import de.unisiegen.tpml.core.exceptions.RowSubstitutionException ;
-import de.unisiegen.tpml.core.interfaces.ChildrenExpressions ;
+import de.unisiegen.tpml.core.interfaces.DefaultExpressions ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
@@ -19,7 +19,7 @@ import de.unisiegen.tpml.core.util.BoundRenaming ;
  * @author Christian Fehler
  * @version $Rev: 1066 $
  */
-public final class Row extends Expression implements ChildrenExpressions
+public final class Row extends Expression implements DefaultExpressions
 {
   /**
    * Indeces of the child {@link Expression}s.

@@ -4,7 +4,7 @@ package de.unisiegen.tpml.core.expressions ;
 import java.util.ArrayList ;
 import java.util.Arrays ;
 import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException ;
-import de.unisiegen.tpml.core.interfaces.ChildrenExpressions ;
+import de.unisiegen.tpml.core.interfaces.DefaultExpressions ;
 import de.unisiegen.tpml.core.interfaces.DefaultIdentifiers ;
 import de.unisiegen.tpml.core.interfaces.SortedChildren ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable ;
@@ -22,7 +22,7 @@ import de.unisiegen.tpml.core.util.BoundRenaming ;
  * @version $Rev: 1066 $
  */
 public final class Duplication extends Expression implements
-    DefaultIdentifiers , ChildrenExpressions , SortedChildren
+    DefaultIdentifiers , DefaultExpressions , SortedChildren
 {
   /**
    * Indeces of the child {@link Expression}s.

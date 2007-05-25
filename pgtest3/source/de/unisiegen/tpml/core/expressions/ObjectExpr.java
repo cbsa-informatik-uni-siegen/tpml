@@ -4,7 +4,7 @@ package de.unisiegen.tpml.core.expressions ;
 import java.util.ArrayList ;
 import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException ;
 import de.unisiegen.tpml.core.interfaces.BoundIdentifiers ;
-import de.unisiegen.tpml.core.interfaces.ChildrenExpressions ;
+import de.unisiegen.tpml.core.interfaces.DefaultExpressions ;
 import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
@@ -20,7 +20,7 @@ import de.unisiegen.tpml.core.types.Type ;
  * @version $Rev: 1066 $
  */
 public final class ObjectExpr extends Expression implements BoundIdentifiers ,
-    DefaultTypes , ChildrenExpressions
+    DefaultTypes , DefaultExpressions
 {
   /**
    * Indeces of the child {@link Expression}s.
