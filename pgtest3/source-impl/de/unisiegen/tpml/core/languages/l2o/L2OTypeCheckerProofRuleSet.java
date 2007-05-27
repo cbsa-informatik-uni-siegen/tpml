@@ -50,6 +50,7 @@ public class L2OTypeCheckerProofRuleSet extends L2TypeCheckerProofRuleSet
     registerByMethodName ( L2OLanguage.L2O , "ATTR" , "applyAttr" ) ; //$NON-NLS-1$ //$NON-NLS-2$
     registerByMethodName ( L2OLanguage.L2O ,
         "METHOD" , "applyMethod" , "updateMethod" ) ; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    
   }
 
 

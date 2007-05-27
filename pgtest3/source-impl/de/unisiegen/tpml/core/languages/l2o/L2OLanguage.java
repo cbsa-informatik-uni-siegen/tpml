@@ -201,7 +201,7 @@ public class L2OLanguage extends L2Language
       Expression expression )
   {
     return new TypeInferenceProofModel ( expression ,
-        new L2TypeInferenceProofRuleSet ( this ) ) ;
+        new L2OTypeInferenceProofRuleSet ( this ) ) ;
   }
 
 

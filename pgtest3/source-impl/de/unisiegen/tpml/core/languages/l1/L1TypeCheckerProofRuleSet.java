@@ -1,6 +1,8 @@
 package de.unisiegen.tpml.core.languages.l1 ;
 
 
+import java.util.ArrayList;
+
 import de.unisiegen.tpml.core.expressions.And ;
 import de.unisiegen.tpml.core.expressions.Application ;
 import de.unisiegen.tpml.core.expressions.Condition ;
@@ -23,6 +25,7 @@ import de.unisiegen.tpml.core.typechecker.DefaultTypeSubstitution ;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofContext ;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode ;
 import de.unisiegen.tpml.core.typechecker.TypeEnvironment ;
+import de.unisiegen.tpml.core.typechecker.TypeEquationList;
 import de.unisiegen.tpml.core.typeinference.DefaultTypeEquationProofNode ;
 import de.unisiegen.tpml.core.typeinference.DefaultTypeInferenceProofContext ;
 import de.unisiegen.tpml.core.typeinference.TypeEquation ;
@@ -31,7 +34,9 @@ import de.unisiegen.tpml.core.types.ArrowType ;
 import de.unisiegen.tpml.core.types.BooleanType ;
 import de.unisiegen.tpml.core.types.ListType ;
 import de.unisiegen.tpml.core.types.MonoType ;
+import de.unisiegen.tpml.core.types.ObjectType;
 import de.unisiegen.tpml.core.types.RefType ;
+import de.unisiegen.tpml.core.types.RowType;
 import de.unisiegen.tpml.core.types.TupleType ;
 import de.unisiegen.tpml.core.types.Type ;
 import de.unisiegen.tpml.core.types.TypeVariable ;
@@ -433,7 +438,6 @@ public class L1TypeCheckerProofRuleSet extends AbstractTypeCheckerProofRuleSet
       ArrowType taul = ( ArrowType ) left ;
       ArrowType taur = ( ArrowType ) right ;
       // check which mode is choosen
-      // TODO change to node.getMode()
       if ( node.getMode ( ) )
       {
         // advanced mode is choosen
@@ -512,6 +516,87 @@ public class L1TypeCheckerProofRuleSet extends AbstractTypeCheckerProofRuleSet
       // we need to check {tau = tau'} as well
       context.addEquation ( taul.getTau ( ) , taur.getTau ( ) ) ;
       return ;
+    }
+    else if ( ( left instanceof ObjectType ) && ( right instanceof ObjectType ) )
+    {
+      ObjectType tau1 = ( ObjectType ) left ;
+      ObjectType tau2 = ( ObjectType ) right ;
+      context.addEquation (  tau1.getPhi ( ) , tau2.getPhi ( ) ) ;
+      return;
+    }
+    else if ( ( left instanceof RowType ) && ( right instanceof RowType ) )
+    {
+      RowType tau1 = ( RowType ) left ;
+      RowType tau2 = ( RowType ) right ;
+      ArrayList < Identifier > tau1Identifiers = new ArrayList < Identifier > ( ) ;
+      for ( Identifier id : tau1.getIdentifiers ( ) )
+      {
+        tau1Identifiers.add ( id ) ;
+      }
+      ArrayList < Identifier > tau2Identifiers = new ArrayList < Identifier > ( ) ;
+      for ( Identifier id : tau2.getIdentifiers ( ) )
+      {
+        tau2Identifiers.add ( id ) ;
+      }
+      ArrayList < MonoType > tau1Types = new ArrayList < MonoType > ( ) ;
+      for ( MonoType tau : tau1.getTypes ( ) )
+      {
+        tau1Types.add ( tau ) ;
+      }
+      ArrayList < MonoType > tau2Types = new ArrayList < MonoType > ( ) ;
+      for ( MonoType tau : tau2.getTypes ( ) )
+      {
+        tau2Types.add ( tau ) ;
+      }
+      // Unify child types
+      for ( int i = tau1Identifiers.size ( ) - 1 ; i >= 0 ; i -- )
+      {
+        for ( int j = tau2Identifiers.size ( ) - 1 ; j >= 0 ; j -- )
+        {
+          if ( tau1Identifiers.get ( i ).equals ( tau2Identifiers.get ( j ) ) )
+          {
+            context.addEquation ( tau1Types.get ( i ) , tau2Types.get ( j ) );
+            tau1Identifiers.remove ( i ) ;
+            tau1Types.remove ( i ) ;
+            tau2Identifiers.remove ( j ) ;
+            tau2Types.remove ( j ) ;
+            break ;
+          }
+        }
+      }
+      // Remaining RowType
+      MonoType tau1RemainingRow = tau1.getRemainingRowType ( ) ;
+      MonoType tau2RemainingRow = tau2.getRemainingRowType ( ) ;
+      if ( ( tau1RemainingRow != null ) && ( tau2Identifiers.size ( ) > 0 ) )
+      {
+      	
+        Identifier [ ] newIdentifiers = new Identifier [ tau2Identifiers
+            .size ( ) ] ;
+        MonoType [ ] newTypes = new MonoType [ tau2Types.size ( ) ] ;
+        for ( int i = 0 ; i < tau2Identifiers.size ( ) ; i ++ )
+        {
+          newIdentifiers [ i ] = tau2Identifiers.get ( i ) ;
+          newTypes [ i ] = tau2Types.get ( i ) ;
+        }
+        RowType newRowType = new RowType ( newIdentifiers , newTypes ) ;
+        context.addEquation ( tau1RemainingRow , newRowType ) ;
+        return;
+      }
+      if ( ( tau2RemainingRow != null ) && ( tau1Identifiers.size ( ) > 0 ) )
+      {
+        Identifier [ ] newIdentifiers = new Identifier [ tau1Identifiers
+            .size ( ) ] ;
+        MonoType [ ] newTypes = new MonoType [ tau1Types.size ( ) ] ;
+        for ( int i = 0 ; i < tau1Identifiers.size ( ) ; i ++ )
+        {
+          newIdentifiers [ i ] = tau1Identifiers.get ( i ) ;
+          newTypes [ i ] = tau1Types.get ( i ) ;
+        }
+        RowType newRowType = new RowType ( newIdentifiers , newTypes ) ;
+        context.addEquation ( tau2RemainingRow , newRowType ) ;
+        return;
+      }
+      return;
     }
     throw new UnifyException ( eqn ) ;
   }
