@@ -1,7 +1,9 @@
 package de.unisiegen.tpml.core.types ;
 
 
+import java.lang.reflect.InvocationTargetException ;
 import java.util.ArrayList ;
+import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.interfaces.DefaultName ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
@@ -61,6 +63,86 @@ public final class TypeName extends MonoType implements DefaultName
   public TypeName clone ( )
   {
     return new TypeName ( this.name ) ;
+  }
+
+
+  /**
+   * Method name for getTypeNames
+   */
+  private static final String GET_TYPE_NAMES = "getTypeNames" ; //$NON-NLS-1$
+
+
+  /**
+   * Returns the array of {@link TypeName}s from the parent.
+   * 
+   * @param pInvokedFrom The parent.
+   * @return The array of {@link TypeName}s from the parent.
+   */
+  private final TypeName [ ] getParentTypeNames ( Object pInvokedFrom )
+  {
+    try
+    {
+      return ( TypeName [ ] ) pInvokedFrom.getClass ( ).getMethod (
+          GET_TYPE_NAMES , new Class [ 0 ] ).invoke ( pInvokedFrom ,
+          new Object [ 0 ] ) ;
+    }
+    catch ( IllegalArgumentException e )
+    {
+      System.err.println ( "TypeName: IllegalArgumentException" ) ; //$NON-NLS-1$
+    }
+    catch ( SecurityException e )
+    {
+      System.err.println ( "TypeName: SecurityException" ) ; //$NON-NLS-1$
+    }
+    catch ( IllegalAccessException e )
+    {
+      System.err.println ( "TypeName: IllegalAccessException" ) ; //$NON-NLS-1$
+    }
+    catch ( InvocationTargetException e )
+    {
+      System.err.println ( "TypeName: InvocationTargetException" ) ; //$NON-NLS-1$
+    }
+    catch ( NoSuchMethodException e )
+    {
+      System.err.println ( "TypeName: NoSuchMethodException" ) ; //$NON-NLS-1$
+    }
+    return null ;
+  }
+
+
+  /**
+   * Returns the prefix of this {@link Expression}.
+   * 
+   * @return The prefix of this {@link Expression}.
+   * @see #prefix
+   */
+  @ Override
+  public String getPrefix ( )
+  {
+    if ( this.prefix == null )
+    {
+      if ( this.parent != null )
+      {
+        for ( Class < Object > currentInterface : this.parent.getClass ( )
+            .getInterfaces ( ) )
+        {
+          if ( currentInterface
+              .equals ( de.unisiegen.tpml.core.interfaces.DefaultTypeNames.class ) )
+          {
+            for ( TypeName typeName : getParentTypeNames ( this.parent ) )
+            {
+              if ( typeName == this )
+              {
+                this.prefix = PREFIX_TYPE_NAME ;
+                return this.prefix ;
+              }
+            }
+          }
+        }
+      }
+      this.prefix = PREFIX_TAU ;
+    }
+    return this.prefix ;
   }
 
 

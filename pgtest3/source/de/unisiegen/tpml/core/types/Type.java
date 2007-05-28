@@ -47,6 +47,12 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities
 
 
   /**
+   * Prefix of {@link TypeName}s.
+   */
+  public static final String PREFIX_TYPE_NAME = "t" ; //$NON-NLS-1$
+
+
+  /**
    * Prefix of phi {@link Type}s.
    */
   public static final String PREFIX_PHI = "\u03A6" ; //$NON-NLS-1$
