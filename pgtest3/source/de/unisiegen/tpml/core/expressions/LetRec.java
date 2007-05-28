@@ -202,11 +202,11 @@ public final class LetRec extends Let implements BoundIdentifiers ,
     /*
      * Perform the bound renaming if required.
      */
-    BoundRenaming boundRenaming = new BoundRenaming ( ) ;
+    BoundRenaming < Identifier > boundRenaming = new BoundRenaming < Identifier > ( ) ;
     boundRenaming.add ( this.getIdentifiersFree ( ) ) ;
     boundRenaming.add ( pExpression.getIdentifiersFree ( ) ) ;
     boundRenaming.add ( pId ) ;
-    Identifier newId = boundRenaming.newId ( this.identifiers [ 0 ] ) ;
+    Identifier newId = boundRenaming.newIdentifier ( this.identifiers [ 0 ] ) ;
     /*
      * Substitute the old Identifier only with the new Identifier, if they are
      * different.

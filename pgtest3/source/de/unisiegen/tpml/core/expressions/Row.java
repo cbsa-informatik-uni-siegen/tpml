@@ -323,7 +323,7 @@ public final class Row extends Expression implements DefaultExpressions
                 pExpression ) ;
             break ;
           }
-          BoundRenaming boundRenaming = new BoundRenaming ( ) ;
+          BoundRenaming < Identifier > boundRenaming = new BoundRenaming < Identifier > ( ) ;
           for ( int j = i + 1 ; j < newExpressions.length ; j ++ )
           {
             boundRenaming.add ( newExpressions [ j ].getIdentifiersFree ( ) ) ;
@@ -331,7 +331,7 @@ public final class Row extends Expression implements DefaultExpressions
           boundRenaming.remove ( attribute.getId ( ) ) ;
           boundRenaming.add ( pExpression.getIdentifiersFree ( ) ) ;
           boundRenaming.add ( pId ) ;
-          Identifier newId = boundRenaming.newId ( attribute.getId ( ) ) ;
+          Identifier newId = boundRenaming.newIdentifier ( attribute.getId ( ) ) ;
           if ( ! attribute.getId ( ).equals ( newId ) )
           {
             for ( int j = i + 1 ; j < newExpressions.length ; j ++ )

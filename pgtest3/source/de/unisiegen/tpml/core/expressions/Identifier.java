@@ -4,6 +4,7 @@ package de.unisiegen.tpml.core.expressions ;
 import java.lang.reflect.InvocationTargetException ;
 import java.util.ArrayList ;
 import de.unisiegen.tpml.core.exceptions.NotOnlyFreeVariableException ;
+import de.unisiegen.tpml.core.interfaces.DefaultName ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 
@@ -17,7 +18,7 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
  * @version $Rev:1056 $
  * @see Value
  */
-public final class Identifier extends Value
+public final class Identifier extends Value implements DefaultName
 {
   /**
    * The set of {@link Identifier}s.

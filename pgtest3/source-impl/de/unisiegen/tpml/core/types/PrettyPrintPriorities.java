@@ -36,6 +36,12 @@ interface PrettyPrintPriorities
 
 
   /**
+   * The pretty print priority for the type name of rec types.
+   */
+  public static final int PRIO_REC_TYPE_TYPE_NAME = 0 ;
+
+
+  /**
    * The pretty print priority for identifiers like "< add: int ; >".
    */
   public static final int PRIO_ID = 0 ;

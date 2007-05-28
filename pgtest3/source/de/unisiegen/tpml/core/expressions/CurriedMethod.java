@@ -440,7 +440,7 @@ public final class CurriedMethod extends Expression implements
     }
     for ( int i = 1 ; i < newIdentifiers.length ; i ++ )
     {
-      BoundRenaming boundRenaming = new BoundRenaming ( ) ;
+      BoundRenaming < Identifier > boundRenaming = new BoundRenaming < Identifier > ( ) ;
       boundRenaming.add ( this.getIdentifiersFree ( ) ) ;
       boundRenaming.add ( pExpression.getIdentifiersFree ( ) ) ;
       boundRenaming.add ( pId ) ;
@@ -457,7 +457,7 @@ public final class CurriedMethod extends Expression implements
           }
         }
       }
-      Identifier newId = boundRenaming.newId ( newIdentifiers [ i ] ) ;
+      Identifier newId = boundRenaming.newIdentifier ( newIdentifiers [ i ] ) ;
       /*
        * Search for an Identifier before the current Identifier with the same
        * name. For example: "let a = b in object (self) method add b b = b a ;

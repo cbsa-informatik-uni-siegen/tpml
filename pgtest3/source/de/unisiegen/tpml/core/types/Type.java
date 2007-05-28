@@ -300,11 +300,14 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities
 
 
   /**
-   * TODO
+   * Substitutes the type <code>pTau</code> for the {@link TypeName}
+   * <code>pTypeName</code> in this type, and returns the resulting type. The
+   * resulting type may be a new <code>Type</code> object or if no
+   * substitution took place, the same object. The method operates recursively.
    * 
-   * @param pTypeName TODO
-   * @param pTau TODO
-   * @return TODO
+   * @param pTypeName The {@link TypeName}.
+   * @param pTau The {@link MonoType}.
+   * @return The resulting {@link Type}.
    */
   public abstract Type substitute ( TypeName pTypeName , MonoType pTau ) ;
 

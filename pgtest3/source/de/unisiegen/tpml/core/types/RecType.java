@@ -4,10 +4,12 @@ package de.unisiegen.tpml.core.types ;
 import java.util.ArrayList ;
 import java.util.Set ;
 import java.util.TreeSet ;
+import de.unisiegen.tpml.core.interfaces.DefaultTypeNames ;
 import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
+import de.unisiegen.tpml.core.util.BoundRenaming ;
 
 
 /**
@@ -17,7 +19,8 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
  * @version $Rev:420 $
  * @see #typeNames
  */
-public final class RecType extends MonoType implements DefaultTypes
+public final class RecType extends MonoType implements DefaultTypes ,
+    DefaultTypeNames
 {
   /**
    * Indeces of the child {@link Type}s.
@@ -251,11 +254,14 @@ public final class RecType extends MonoType implements DefaultTypes
 
 
   /**
-   * TODO
+   * Substitutes the type <code>pTau</code> for the {@link TypeName}
+   * <code>pTypeName</code> in this type, and returns the resulting type. The
+   * resulting type may be a new <code>Type</code> object or if no
+   * substitution took place, the same object. The method operates recursively.
    * 
-   * @param pTypeName TODO
-   * @param pTau TODO
-   * @return TODO
+   * @param pTypeName The {@link TypeName}.
+   * @param pTau The {@link MonoType}.
+   * @return The resulting {@link Type}.
    */
   @ Override
   public RecType substitute ( TypeName pTypeName , MonoType pTau )
@@ -267,9 +273,28 @@ public final class RecType extends MonoType implements DefaultTypes
     {
       return this ;
     }
-    // TODO BoundRenaming
-    MonoType newTau = this.types [ 0 ].substitute ( pTypeName , pTau ) ;
-    return new RecType ( this.typeNames [ 0 ] , newTau ) ;
+    /*
+     * Perform the bound renaming if required.
+     */
+    BoundRenaming < TypeName > boundRenaming = new BoundRenaming < TypeName > ( ) ;
+    boundRenaming.add ( this.getTypeNamesFree ( ) ) ;
+    boundRenaming.add ( pTau.getTypeNamesFree ( ) ) ;
+    boundRenaming.add ( pTypeName ) ;
+    TypeName newTypeName = boundRenaming.newTypeName ( this.typeNames [ 0 ] ) ;
+    /*
+     * Substitute the old Identifier only with the new Identifier, if they are
+     * different.
+     */
+    MonoType newTau = this.types [ 0 ] ;
+    if ( ! this.typeNames [ 0 ].equals ( newTypeName ) )
+    {
+      newTau = newTau.substitute ( this.typeNames [ 0 ] , newTypeName ) ;
+    }
+    /*
+     * Perform the substitution.
+     */
+    newTau = newTau.substitute ( pTypeName , pTau ) ;
+    return new RecType ( newTypeName , newTau ) ;
   }
 
 
@@ -305,8 +330,9 @@ public final class RecType extends MonoType implements DefaultTypes
           PRIO_REC_TYPE ) ;
       this.prettyStringBuilder.addKeyword ( "\u03bc" ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addBuilder ( this.typeNames [ 0 ]
-          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) , PRIO_ID ) ;
-      this.prettyStringBuilder.addText ( " " ) ; //$NON-NLS-1$
+          .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
+          PRIO_REC_TYPE_TYPE_NAME ) ;
+      this.prettyStringBuilder.addText ( "." ) ; //$NON-NLS-1$
       this.prettyStringBuilder.addBuilder ( this.types [ 0 ]
           .toPrettyStringBuilder ( pPrettyStringBuilderFactory ) ,
           PRIO_REC_TYPE_TAU ) ;

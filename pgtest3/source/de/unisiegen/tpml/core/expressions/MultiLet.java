@@ -473,7 +473,7 @@ public final class MultiLet extends Expression implements BoundIdentifiers ,
     Expression newE2 = this.expressions [ 1 ] ;
     for ( int i = 0 ; i < newIdentifiers.length ; i ++ )
     {
-      BoundRenaming boundRenaming = new BoundRenaming ( ) ;
+      BoundRenaming < Identifier > boundRenaming = new BoundRenaming < Identifier > ( ) ;
       boundRenaming.add ( this.expressions [ 1 ].getIdentifiersFree ( ) ) ;
       boundRenaming.remove ( newIdentifiers [ i ] ) ;
       boundRenaming.add ( pExpression.getIdentifiersFree ( ) ) ;
@@ -491,7 +491,7 @@ public final class MultiLet extends Expression implements BoundIdentifiers ,
           }
         }
       }
-      Identifier newId = boundRenaming.newId ( newIdentifiers [ i ] ) ;
+      Identifier newId = boundRenaming.newIdentifier ( newIdentifiers [ i ] ) ;
       /*
        * Search for an Identifier before the current Identifier with the same
        * name. For example: "let a = b in let(b, b) = (1, 2) in b a".

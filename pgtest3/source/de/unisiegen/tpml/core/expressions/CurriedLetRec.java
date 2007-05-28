@@ -334,7 +334,7 @@ public final class CurriedLetRec extends CurriedLet implements
     {
       for ( int i = 1 ; i < newIdentifiers.length ; i ++ )
       {
-        BoundRenaming boundRenaming = new BoundRenaming ( ) ;
+        BoundRenaming < Identifier > boundRenaming = new BoundRenaming < Identifier > ( ) ;
         boundRenaming.add ( this.expressions [ 0 ].getIdentifiersFree ( ) ) ;
         boundRenaming.remove ( newIdentifiers [ i ] ) ;
         boundRenaming.add ( pExpression.getIdentifiersFree ( ) ) ;
@@ -352,7 +352,7 @@ public final class CurriedLetRec extends CurriedLet implements
             }
           }
         }
-        Identifier newId = boundRenaming.newId ( newIdentifiers [ i ] ) ;
+        Identifier newId = boundRenaming.newIdentifier ( newIdentifiers [ i ] ) ;
         /*
          * Search for an Identifier before the current Identifier with the same
          * name. For example: "let a = b in let rec f b b = b a in f".
@@ -375,7 +375,7 @@ public final class CurriedLetRec extends CurriedLet implements
         }
       }
     }
-    BoundRenaming boundRenaming = new BoundRenaming ( ) ;
+    BoundRenaming < Identifier > boundRenaming = new BoundRenaming < Identifier > ( ) ;
     boundRenaming.add ( this.getIdentifiersFree ( ) ) ;
     boundRenaming.add ( pExpression.getIdentifiersFree ( ) ) ;
     boundRenaming.add ( pId ) ;
@@ -386,7 +386,7 @@ public final class CurriedLetRec extends CurriedLet implements
         boundRenaming.add ( this.identifiers [ i ] ) ;
       }
     }
-    Identifier newId = boundRenaming.newId ( this.identifiers [ 0 ] ) ;
+    Identifier newId = boundRenaming.newIdentifier ( this.identifiers [ 0 ] ) ;
     if ( ! this.identifiers [ 0 ].equals ( newId ) )
     {
       if ( ! sameIdAs0 )

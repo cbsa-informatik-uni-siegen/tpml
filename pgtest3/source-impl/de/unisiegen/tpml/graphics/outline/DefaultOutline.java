@@ -25,6 +25,7 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable ;
 import de.unisiegen.tpml.graphics.subtyping.SubTypingEnterTypes ;
 import de.unisiegen.tpml.core.types.MonoType ;
 import de.unisiegen.tpml.core.types.Type ;
+import de.unisiegen.tpml.core.types.TypeName ;
 import de.unisiegen.tpml.graphics.StyledLanguageDocument ;
 import de.unisiegen.tpml.graphics.Theme ;
 import de.unisiegen.tpml.graphics.bigstep.BigStepView ;
@@ -69,6 +70,18 @@ public final class DefaultOutline implements Outline
    * Method name for getIdentifiers
    */
   private static final String GET_IDENTIFIERS = "getIdentifiers" ; //$NON-NLS-1$
+
+
+  /**
+   * Method name for getTypeNames
+   */
+  private static final String GET_TYPE_NAMES = "getTypeNames" ; //$NON-NLS-1$
+
+
+  /**
+   * Method name for getTypeNamesIndex
+   */
+  private static final String GET_TYPE_NAMES_INDEX = "getTypeNamesIndex" ; //$NON-NLS-1$
 
 
   /**
@@ -648,6 +661,7 @@ public final class DefaultOutline implements Outline
     // No sorted children
     if ( sortedChildren == null )
     {
+      // Identifier
       if ( ( identifiers != null ) && ( identifiersIndex != null ) )
       {
         for ( int i = 0 ; i < identifiers.length ; i ++ )
@@ -680,6 +694,7 @@ public final class DefaultOutline implements Outline
           pOutlineNode.add ( outlineNodeId ) ;
         }
       }
+      // Type
       if ( ( types != null ) && ( typesIndex != null ) )
       {
         for ( int i = 0 ; i < types.length ; i ++ )
@@ -692,6 +707,7 @@ public final class DefaultOutline implements Outline
           }
         }
       }
+      // Expression
       if ( expressionsIndex != null )
       {
         ArrayList < Expression > children = pExpression.children ( ) ;
@@ -787,6 +803,9 @@ public final class DefaultOutline implements Outline
     int [ ] identifiersIndex = null ;
     // Sorted children
     PrettyPrintable [ ] sortedChildren = null ;
+    // TypeName
+    TypeName [ ] typeNames = null ;
+    int [ ] typeNamesIndex = null ;
     for ( Class < Object > currentInterface : pType.getClass ( )
         .getInterfaces ( ) )
     {
@@ -807,6 +826,12 @@ public final class DefaultOutline implements Outline
       {
         sortedChildren = getSortedChildren ( pType ) ;
       }
+      else if ( currentInterface
+          .equals ( de.unisiegen.tpml.core.interfaces.DefaultTypeNames.class ) )
+      {
+        typeNamesIndex = getIndex ( pType , GET_TYPE_NAMES_INDEX ) ;
+        typeNames = getTypeNames ( pType ) ;
+      }
     }
     if ( ( types != null ) && ( typesIndex != null ) )
     {
@@ -821,6 +846,15 @@ public final class DefaultOutline implements Outline
           {
             outlineNodeId = new OutlineNode ( identifiers [ i ] ,
                 identifiersIndex [ i ] , null ) ;
+            pOutlineNode.add ( outlineNodeId ) ;
+          }
+        }
+        if ( ( typeNames != null ) && ( typeNamesIndex != null ) )
+        {
+          for ( int i = 0 ; i < typeNames.length ; i ++ )
+          {
+            outlineNodeId = new OutlineNode ( typeNames [ i ] ,
+                typeNamesIndex [ i ] ) ;
             pOutlineNode.add ( outlineNodeId ) ;
           }
         }
@@ -947,6 +981,45 @@ public final class DefaultOutline implements Outline
     {
       return ( Identifier [ ] ) pInvokedFrom.getClass ( ).getMethod (
           GET_IDENTIFIERS , new Class [ 0 ] ).invoke ( pInvokedFrom ,
+          new Object [ 0 ] ) ;
+    }
+    catch ( IllegalArgumentException e )
+    {
+      System.err.println ( "DefaultOutline: IllegalArgumentException" ) ; //$NON-NLS-1$
+    }
+    catch ( SecurityException e )
+    {
+      System.err.println ( "DefaultOutline: SecurityException" ) ; //$NON-NLS-1$
+    }
+    catch ( IllegalAccessException e )
+    {
+      System.err.println ( "DefaultOutline: IllegalAccessException" ) ; //$NON-NLS-1$
+    }
+    catch ( InvocationTargetException e )
+    {
+      System.err.println ( "DefaultOutline: InvocationTargetException" ) ; //$NON-NLS-1$
+    }
+    catch ( NoSuchMethodException e )
+    {
+      System.err.println ( "DefaultOutline: NoSuchMethodException" ) ; //$NON-NLS-1$
+    }
+    return null ;
+  }
+
+
+  /**
+   * Returns the array of {@link TypeName}s from the given {@link Expression}
+   * or {@link Type}.
+   * 
+   * @param pInvokedFrom The {@link Expression} or {@link Type}.
+   * @return The array of {@link TypeName}s.
+   */
+  private final TypeName [ ] getTypeNames ( Object pInvokedFrom )
+  {
+    try
+    {
+      return ( TypeName [ ] ) pInvokedFrom.getClass ( ).getMethod (
+          GET_TYPE_NAMES , new Class [ 0 ] ).invoke ( pInvokedFrom ,
           new Object [ 0 ] ) ;
     }
     catch ( IllegalArgumentException e )
@@ -1257,15 +1330,6 @@ public final class DefaultOutline implements Outline
       return ;
     }
     setError ( false ) ;
-    /*
-     * Do not update, if the the loaded Expression is equal to the new
-     * Expression.
-     */
-    if ( ( this.loadedPrettyPrintable != null )
-        && ( pPrettyPrintable.equals ( this.loadedPrettyPrintable ) ) )
-    {
-      return ;
-    }
     this.loadedPrettyPrintable = pPrettyPrintable ;
     executeTimerCancel ( ) ;
     /*

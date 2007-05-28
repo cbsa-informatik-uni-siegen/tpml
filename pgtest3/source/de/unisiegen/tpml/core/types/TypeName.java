@@ -2,6 +2,7 @@ package de.unisiegen.tpml.core.types ;
 
 
 import java.util.ArrayList ;
+import de.unisiegen.tpml.core.interfaces.DefaultName ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
@@ -13,7 +14,7 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
  * @author Christian Fehler
  * @version $Rev:1056 $
  */
-public final class TypeName extends MonoType
+public final class TypeName extends MonoType implements DefaultName
 {
   /**
    * The name of the {@link TypeName}.
@@ -131,11 +132,14 @@ public final class TypeName extends MonoType
 
 
   /**
-   * TODO
+   * Substitutes the type <code>pTau</code> for the {@link TypeName}
+   * <code>pTypeName</code> in this type, and returns the resulting type. The
+   * resulting type may be a new <code>Type</code> object or if no
+   * substitution took place, the same object. The method operates recursively.
    * 
-   * @param pTypeName TODO
-   * @param pTau TODO
-   * @return TODO
+   * @param pTypeName The {@link TypeName}.
+   * @param pTau The {@link MonoType}.
+   * @return The resulting {@link Type}.
    */
   @ Override
   public MonoType substitute ( TypeName pTypeName , MonoType pTau )

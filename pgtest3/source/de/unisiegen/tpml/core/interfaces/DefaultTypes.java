@@ -1,13 +1,12 @@
 package de.unisiegen.tpml.core.interfaces ;
 
 
-import de.unisiegen.tpml.core.expressions.Identifier ;
 import de.unisiegen.tpml.core.types.MonoType ;
 import de.unisiegen.tpml.core.types.Type ;
 
 
 /**
- * Interface for classes whose instances have multiple {@link Identifier}s.
+ * Interface for classes whose instances have child {@link Type}s.
  * 
  * @author Christian Fehler
  * @version $Rev:1350 $

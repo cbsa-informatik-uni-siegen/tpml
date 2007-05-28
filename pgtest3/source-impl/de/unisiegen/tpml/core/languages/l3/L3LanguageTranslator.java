@@ -86,10 +86,10 @@ public class L3LanguageTranslator extends L2LanguageTranslator
         e = this.translateToCoreSyntax ( e , true ) ;
       }
       // generate a new unique identifier to be used for the tuple parameter
-      final BoundRenaming boundRenaming = new BoundRenaming ( ) ;
+      BoundRenaming < Identifier > boundRenaming = new BoundRenaming < Identifier > ( ) ;
       boundRenaming.add ( e.getIdentifiersFree ( ) ) ;
       boundRenaming.add ( identifiers ) ;
-      final Identifier newId = boundRenaming.newId ( new Identifier ( "id" ) ) ; //$NON-NLS-1$
+      Identifier newId = boundRenaming.newIdentifier ( new Identifier ( "id" ) ) ; //$NON-NLS-1$
       // generate the required let's
       for ( int n = identifiers.length - 1 ; n >= 0 ; -- n )
       {
@@ -113,11 +113,11 @@ public class L3LanguageTranslator extends L2LanguageTranslator
         e2 = this.translateToCoreSyntax ( e2 , true ) ;
       }
       // generate a new unique identifier to be used for the tuple parameter
-      final BoundRenaming boundRenaming = new BoundRenaming ( ) ;
+      BoundRenaming < Identifier > boundRenaming = new BoundRenaming < Identifier > ( ) ;
       boundRenaming.add ( e1.getIdentifiersFree ( ) ) ;
       boundRenaming.add ( e2.getIdentifiersFree ( ) ) ;
       boundRenaming.add ( identifiers ) ;
-      final Identifier newId = boundRenaming.newId ( new Identifier ( "id" ) ) ; //$NON-NLS-1$
+      Identifier newId = boundRenaming.newIdentifier ( new Identifier ( "id" ) ) ; //$NON-NLS-1$
       // generate the required let's
       for ( int n = identifiers.length - 1 ; n >= 0 ; -- n )
       {

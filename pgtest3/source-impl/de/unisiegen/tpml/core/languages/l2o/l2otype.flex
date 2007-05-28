@@ -97,7 +97,7 @@ LetterGreek		= [\u03b1-\u03c1\u03c3-\u03c9]
 	
 	// types
 	
-	"mu"				{ return symbol("MU", MU); }
+	"mu"|"\u03bc"		{ return symbol("MU", MU); }
 	
 	"bool"				{ return symbol("BOOL", BOOL); }
 	"int"				{ return symbol("INT", INT); }

@@ -550,7 +550,7 @@ public class CurriedLet extends Expression implements BoundIdentifiers ,
     {
       for ( int i = 1 ; i < newIdentifiers.length ; i ++ )
       {
-        BoundRenaming boundRenaming = new BoundRenaming ( ) ;
+        BoundRenaming < Identifier > boundRenaming = new BoundRenaming < Identifier > ( ) ;
         boundRenaming.add ( this.expressions [ 0 ].getIdentifiersFree ( ) ) ;
         boundRenaming.remove ( newIdentifiers [ i ] ) ;
         boundRenaming.add ( pExpression.getIdentifiersFree ( ) ) ;
@@ -568,7 +568,7 @@ public class CurriedLet extends Expression implements BoundIdentifiers ,
             }
           }
         }
-        Identifier newId = boundRenaming.newId ( newIdentifiers [ i ] ) ;
+        Identifier newId = boundRenaming.newIdentifier ( newIdentifiers [ i ] ) ;
         /*
          * Search for an Identifier before the current Identifier with the same
          * name. For example: "let a = b in let f b b = b a in f".
@@ -597,12 +597,12 @@ public class CurriedLet extends Expression implements BoundIdentifiers ,
     }
     if ( ! ( this.identifiers [ 0 ].equals ( pId ) ) )
     {
-      BoundRenaming boundRenaming = new BoundRenaming ( ) ;
+      BoundRenaming < Identifier > boundRenaming = new BoundRenaming < Identifier > ( ) ;
       boundRenaming.add ( this.expressions [ 1 ].getIdentifiersFree ( ) ) ;
       boundRenaming.remove ( this.identifiers [ 0 ] ) ;
       boundRenaming.add ( pExpression.getIdentifiersFree ( ) ) ;
       boundRenaming.add ( pId ) ;
-      Identifier newId = boundRenaming.newId ( this.identifiers [ 0 ] ) ;
+      Identifier newId = boundRenaming.newIdentifier ( this.identifiers [ 0 ] ) ;
       /*
        * Substitute the old Identifier only with the new Identifier, if they are
        * different.

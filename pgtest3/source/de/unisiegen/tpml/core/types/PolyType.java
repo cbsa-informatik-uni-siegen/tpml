@@ -197,16 +197,19 @@ public final class PolyType extends Type implements DefaultTypes
 
 
   /**
-   * TODO
+   * Substitutes the type <code>pTau</code> for the {@link TypeName}
+   * <code>pTypeName</code> in this type, and returns the resulting type. The
+   * resulting type may be a new <code>Type</code> object or if no
+   * substitution took place, the same object. The method operates recursively.
    * 
-   * @param pTypeName TODO
-   * @param pType TODO
-   * @return TODO
+   * @param pTypeName The {@link TypeName}.
+   * @param pTau The {@link MonoType}.
+   * @return The resulting {@link Type}.
    */
   @ Override
-  public PolyType substitute ( TypeName pTypeName , MonoType pType )
+  public PolyType substitute ( TypeName pTypeName , MonoType pTau )
   {
-    MonoType newTau = this.types [ 0 ].substitute ( pTypeName , pType ) ;
+    MonoType newTau = this.types [ 0 ].substitute ( pTypeName , pTau ) ;
     return new PolyType ( this.quantifiedVariables , newTau ) ;
   }
 

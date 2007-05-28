@@ -435,12 +435,12 @@ public class Let extends Expression implements BoundIdentifiers , DefaultTypes ,
      * Perform the bound renaming if required.
      */
     ArrayList < Identifier > freeE2 = newE2.getIdentifiersFree ( ) ;
-    BoundRenaming boundRenaming = new BoundRenaming ( ) ;
+    BoundRenaming < Identifier > boundRenaming = new BoundRenaming < Identifier > ( ) ;
     boundRenaming.add ( freeE2 ) ;
     boundRenaming.remove ( this.identifiers [ 0 ] ) ;
     boundRenaming.add ( pExpression.getIdentifiersFree ( ) ) ;
     boundRenaming.add ( pId ) ;
-    Identifier newId = boundRenaming.newId ( this.identifiers [ 0 ] ) ;
+    Identifier newId = boundRenaming.newIdentifier ( this.identifiers [ 0 ] ) ;
     /*
      * Substitute the old Identifier only with the new Identifier, if they are
      * different.

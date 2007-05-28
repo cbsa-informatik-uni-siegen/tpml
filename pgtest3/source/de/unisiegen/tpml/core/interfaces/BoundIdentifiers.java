@@ -7,8 +7,8 @@ import de.unisiegen.tpml.core.expressions.Identifier ;
 
 
 /**
- * Interface for classes whose instances have multiple {@link Identifier}s
- * which bounds other {@link Identifier}s.
+ * Interface for classes whose instances have child {@link Identifier}s which
+ * bound other {@link Identifier}s.
  * 
  * @author Christian Fehler
  * @version $Rev:1350 $

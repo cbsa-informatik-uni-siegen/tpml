@@ -100,10 +100,10 @@ public class L4LanguageTranslator extends L3LanguageTranslator
         e2 = this.translateToCoreSyntax ( e2 , true ) ;
       }
       // determine a new unique identifier
-      final BoundRenaming boundRenaming = new BoundRenaming ( ) ;
+      BoundRenaming < Identifier > boundRenaming = new BoundRenaming < Identifier > ( ) ;
       boundRenaming.add ( e1.getIdentifiersFree ( ) ) ;
       boundRenaming.add ( e2.getIdentifiersFree ( ) ) ;
-      final Identifier newId = boundRenaming.newId ( new Identifier ( "u" ) ) ; //$NON-NLS-1$
+      Identifier newId = boundRenaming.newIdentifier ( new Identifier ( "u" ) ) ; //$NON-NLS-1$
       // generate the let expression
       return new Let ( newId , null , e1 , e2 ) ;
     }
@@ -120,10 +120,10 @@ public class L4LanguageTranslator extends L3LanguageTranslator
         e2 = this.translateToCoreSyntax ( e2 , true ) ;
       }
       // determine a new unique identifier
-      final BoundRenaming boundRenaming = new BoundRenaming ( ) ;
+      BoundRenaming < Identifier > boundRenaming = new BoundRenaming < Identifier > ( ) ;
       boundRenaming.add ( e1.getIdentifiersFree ( ) ) ;
       boundRenaming.add ( e2.getIdentifiersFree ( ) ) ;
-      final Identifier newId = boundRenaming.newId ( new Identifier ( "w" ) ) ; //$NON-NLS-1$
+      Identifier newId = boundRenaming.newIdentifier ( new Identifier ( "w" ) ) ; //$NON-NLS-1$
       // generate the recursion body
       Expression body = new Condition1 ( e1 , new Sequence ( e2 , newId ) ) ;
       // check if we should recurse

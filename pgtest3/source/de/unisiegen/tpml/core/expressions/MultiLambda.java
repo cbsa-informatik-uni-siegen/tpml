@@ -439,7 +439,7 @@ public final class MultiLambda extends Value implements BoundIdentifiers ,
     }
     for ( int i = 0 ; i < newIdentifiers.length ; i ++ )
     {
-      BoundRenaming boundRenaming = new BoundRenaming ( ) ;
+      BoundRenaming < Identifier > boundRenaming = new BoundRenaming < Identifier > ( ) ;
       boundRenaming.add ( this.getIdentifiersFree ( ) ) ;
       boundRenaming.add ( pExpression.getIdentifiersFree ( ) ) ;
       boundRenaming.add ( pId ) ;
@@ -456,7 +456,7 @@ public final class MultiLambda extends Value implements BoundIdentifiers ,
           }
         }
       }
-      Identifier newId = boundRenaming.newId ( newIdentifiers [ i ] ) ;
+      Identifier newId = boundRenaming.newIdentifier ( newIdentifiers [ i ] ) ;
       /*
        * Search for an Identifier before the current Identifier with the same
        * name. For example: "let a = b in lambda (b,b).a".

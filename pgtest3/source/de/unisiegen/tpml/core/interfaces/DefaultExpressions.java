@@ -13,9 +13,9 @@ import de.unisiegen.tpml.core.expressions.Expression ;
 public interface DefaultExpressions
 {
   /**
-   * Returns the sub {@link Expression}s.
+   * Returns the child {@link Expression}s.
    * 
-   * @return the sub {@link Expression}s.
+   * @return the child {@link Expression}s.
    */
   public Expression [ ] getExpressions ( ) ;
 

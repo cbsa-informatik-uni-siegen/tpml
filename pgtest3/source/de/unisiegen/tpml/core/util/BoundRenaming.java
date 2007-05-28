@@ -3,20 +3,24 @@ package de.unisiegen.tpml.core.util ;
 
 import java.util.ArrayList ;
 import de.unisiegen.tpml.core.expressions.Identifier ;
+import de.unisiegen.tpml.core.interfaces.DefaultName ;
+import de.unisiegen.tpml.core.types.TypeName ;
 
 
 /**
  * This class implements the bound renaming.
  * 
  * @author Christian Fehler
+ * @param <E> The {@link Identifier} or {@link TypeName}.
  */
-public final class BoundRenaming
+public final class BoundRenaming < E extends DefaultName >
 {
   /**
-   * The negative list, containing the {@link Identifier}s which should not be
-   * returned as a new {@link Identifier}.
+   * The negative list, containing the {@link Identifier}s or {@link TypeName}s
+   * which should not be returned as a new {@link Identifier} or
+   * {@link TypeName}.
    */
-  private ArrayList < Identifier > negativeList ;
+  private ArrayList < E > negativeList ;
 
 
   /**
@@ -24,43 +28,45 @@ public final class BoundRenaming
    */
   public BoundRenaming ( )
   {
-    this.negativeList = new ArrayList < Identifier > ( ) ;
+    this.negativeList = new ArrayList < E > ( ) ;
   }
 
 
   /**
-   * Adds a list of {@link Identifier}s to the negative list.
+   * Adds a list of {@link Identifier}s or {@link TypeName}s to the negative
+   * list.
    * 
-   * @param pIdentifiers The list of {@link Identifier}s which should be added
-   *          to the negative list.
+   * @param pIdentifiers The list of {@link Identifier}s or {@link TypeName}s
+   *          which should be added to the negative list.
    */
-  public final void add ( ArrayList < Identifier > pIdentifiers )
+  public final void add ( ArrayList < E > pIdentifiers )
   {
     this.negativeList.addAll ( pIdentifiers ) ;
   }
 
 
   /**
-   * Adds a {@link Identifier} to the negative list.
+   * Adds a {@link Identifier} or {@link TypeName} to the negative list.
    * 
-   * @param pId The {@link Identifier} which should be added to the negative
-   *          list.
+   * @param pId The {@link Identifier} or {@link TypeName} which should be added
+   *          to the negative list.
    */
-  public final void add ( Identifier pId )
+  public final void add ( E pId )
   {
     this.negativeList.add ( pId ) ;
   }
 
 
   /**
-   * Adds a array of {@link Identifier}s to the negative list.
+   * Adds a array of {@link Identifier}s or {@link TypeName}s to the negative
+   * list.
    * 
-   * @param pIdentifiers The arry of {@link Identifier}s which should be added
-   *          to the negative list.
+   * @param pIdentifiers The arry of {@link Identifier}s or {@link TypeName}s
+   *          which should be added to the negative list.
    */
-  public final void add ( Identifier [ ] pIdentifiers )
+  public final void add ( E [ ] pIdentifiers )
   {
-    for ( Identifier element : pIdentifiers )
+    for ( E element : pIdentifiers )
     {
       this.negativeList.add ( element ) ;
     }
@@ -77,14 +83,15 @@ public final class BoundRenaming
 
 
   /**
-   * Returns true if the negative list contains the given {@link Identifier},
-   * otherwise false.
+   * Returns true if the negative list contains the given {@link Identifier} or
+   * {@link TypeName}, otherwise false.
    * 
-   * @param pId The {@link Identifier}, which should be tested.
-   * @return True if the negative list contains the given {@link Identifier},
-   *         otherwise false.
+   * @param pId The {@link Identifier} or {@link TypeName}, which should be
+   *          tested.
+   * @return True if the negative list contains the given {@link Identifier} or
+   *         {@link TypeName}, otherwise false.
    */
-  public final boolean contains ( Identifier pId )
+  public final boolean contains ( E pId )
   {
     return this.negativeList.contains ( pId ) ;
   }
@@ -99,7 +106,7 @@ public final class BoundRenaming
    * @param pOldIdentifier The old {@link Identifier}.
    * @return A new {@link Identifier}.
    */
-  public final Identifier newId ( Identifier pOldIdentifier )
+  public final Identifier newIdentifier ( Identifier pOldIdentifier )
   {
     Identifier newIdentifier = pOldIdentifier ;
     while ( this.negativeList.contains ( newIdentifier ) )
@@ -111,12 +118,32 @@ public final class BoundRenaming
 
 
   /**
-   * Removes a {@link Identifier} from the negative list.
+   * Returns a new {@link TypeName}, which has the same name like the given old
+   * {@link TypeName}, if the negative list does not contain a {@link TypeName}
+   * with the same name. Otherwise a {@link TypeName} is returned with the name
+   * appending a "'".
    * 
-   * @param pId The {@link Identifier} which should be removed from the negative
-   *          list.
+   * @param pOldTypeName The old {@link TypeName}.
+   * @return A new {@link TypeName}.
    */
-  public final void remove ( Identifier pId )
+  public final TypeName newTypeName ( TypeName pOldTypeName )
+  {
+    TypeName newTypeName = pOldTypeName ;
+    while ( this.negativeList.contains ( newTypeName ) )
+    {
+      newTypeName = new TypeName ( newTypeName.getName ( ) + "'" ) ; //$NON-NLS-1$
+    }
+    return newTypeName ;
+  }
+
+
+  /**
+   * Removes a {@link Identifier} or {@link TypeName} from the negative list.
+   * 
+   * @param pId The {@link Identifier} or {@link TypeName} which should be
+   *          removed from the negative list.
+   */
+  public final void remove ( E pId )
   {
     while ( this.negativeList.remove ( pId ) )
     {

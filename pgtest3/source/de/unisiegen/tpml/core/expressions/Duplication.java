@@ -283,7 +283,7 @@ public final class Duplication extends Expression implements
       ObjectExpr objectExpr = ( ObjectExpr ) pExpression ;
       Row row = ( Row ) objectExpr.getE ( ) ;
       Identifier [ ] newIdentifiers = new Identifier [ this.identifiers.length ] ;
-      BoundRenaming boundRenaming = new BoundRenaming ( ) ;
+      BoundRenaming < Identifier > boundRenaming = new BoundRenaming < Identifier > ( ) ;
       boundRenaming.add ( row.getIdentifiersFree ( ) ) ;
       for ( Expression e : this.expressions )
       {
@@ -295,7 +295,7 @@ public final class Duplication extends Expression implements
       }
       for ( int i = 0 ; i < this.expressions.length ; i ++ )
       {
-        Identifier newId = boundRenaming.newId ( new Identifier (
+        Identifier newId = boundRenaming.newIdentifier ( new Identifier (
             this.identifiers [ i ].getName ( ) ) ) ;
         boundRenaming.add ( newId ) ;
         newIdentifiers [ i ] = newId ;

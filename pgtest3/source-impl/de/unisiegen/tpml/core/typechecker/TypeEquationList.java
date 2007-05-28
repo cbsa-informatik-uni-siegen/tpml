@@ -1,7 +1,9 @@
 package de.unisiegen.tpml.core.typechecker ;
 
 
+import java.text.MessageFormat ;
 import java.util.ArrayList ;
+import de.unisiegen.tpml.core.Messages ;
 import de.unisiegen.tpml.core.expressions.Identifier ;
 import de.unisiegen.tpml.core.types.ArrowType ;
 import de.unisiegen.tpml.core.types.ListType ;
@@ -158,14 +160,16 @@ public final class TypeEquationList
           : right ) ;
       MonoType tau = ( left instanceof TypeVariable ? right : left ) ;
       // either tvar equals tau or tvar is not present in tau
-      // ???
-      if ( tvar.equals ( tau ) || ! tau.getTypeVariablesFree ( ).contains ( tvar ) )
+      if ( ( tvar.equals ( tau ) )
+          || ( ! tau.getTypeVariablesFree ( ).contains ( tvar ) ) )
       {
         DefaultTypeSubstitution s1 = new DefaultTypeSubstitution ( tvar , tau ) ;
         DefaultTypeSubstitution s2 = this.remaining.substitute ( s1 ).unify ( ) ;
         return s1.compose ( s2 ) ;
       }
-      // FALL-THROUGH: Otherwise it's a type error
+      // Recursive types
+      throw new RuntimeException ( MessageFormat.format ( Messages
+          .getString ( "UnificationException.1" ) , tvar , tau ) ) ; //$NON-NLS-1$
     }
     else if ( ( left instanceof ArrowType ) && ( right instanceof ArrowType ) )
     {
@@ -218,7 +222,6 @@ public final class TypeEquationList
       ListType taul = ( ListType ) left ;
       ListType taur = ( ListType ) right ;
       // we need to check {tau = tau'} as well
-      // ???
       TypeEquationList eqns = this.remaining ;
       eqns = eqns.extend ( taul.getTau ( ) , taur.getTau ( ) ) ;
       // try to unify the new list
