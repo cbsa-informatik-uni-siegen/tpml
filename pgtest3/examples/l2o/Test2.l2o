@@ -1,4 +1,4 @@
-(object (self) 
+object (self)
   val a = 0 ;
-  method b = {<a=1>} ;
-end) # b
+  method b = {< a = 1 >} ;
+end
