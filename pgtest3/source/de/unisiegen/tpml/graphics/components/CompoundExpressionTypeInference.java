@@ -9,26 +9,14 @@ import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.io.StringReader;
-import java.nio.DoubleBuffer;
 import java.util.ArrayList;
 
 import javax.swing.JComponent;
 
 import de.unisiegen.tpml.core.expressions.Expression;
-import de.unisiegen.tpml.core.interpreters.Store;
-import de.unisiegen.tpml.core.languages.Language;
-import de.unisiegen.tpml.core.languages.LanguageFactory;
 import de.unisiegen.tpml.core.typechecker.DefaultTypeSubstitution;
 import de.unisiegen.tpml.core.typechecker.TypeEnvironment;
 import de.unisiegen.tpml.core.typeinference.TypeFormula;
-import de.unisiegen.tpml.core.typeinference.TypeInferenceProofModel;
-import de.unisiegen.tpml.core.typeinference.TypeInferenceProofModelTest;
-//import de.unisiegen.tpml.core.util.Debug;
-import de.unisiegen.tpml.core.util.Environment;
-import de.unisiegen.tpml.graphics.outline.listener.OutlineMouseListener;
 import de.unisiegen.tpml.graphics.renderer.AbstractRenderer;
 import de.unisiegen.tpml.graphics.renderer.EnvironmentRenderer;
 import de.unisiegen.tpml.graphics.renderer.PrettyStringRenderer;
@@ -38,11 +26,7 @@ import de.unisiegen.tpml.graphics.renderer.TypeFormularRenderer;
 
 
 /**
- * this class renders the coumpoundexpression
- *
- *
- * @param <S>
- * @param <E>
+ * this class renders the coumpoundexpression of the TypeInference
  */
 public class CompoundExpressionTypeInference extends JComponent
 {
@@ -53,7 +37,7 @@ public class CompoundExpressionTypeInference extends JComponent
 
 
   /**
-   * Renderer that is used to render the expression
+   * Renderer that is used to render the expressions
    */
   private PrettyStringRenderer expressionRenderer ;
   
@@ -64,13 +48,7 @@ public class CompoundExpressionTypeInference extends JComponent
 
 
   /**
-   * The current expression.
-   */
-  private Expression expression ;
-
-
-  /**
-   * The expression that will be underlined during the rendering.
+   * The expression that will be underlined during the rendering. TODO löschen
    */
   private Expression underlineExpression ;
 
@@ -100,8 +78,8 @@ public class CompoundExpressionTypeInference extends JComponent
 
 
   /**
-   * The current environment. If the environment is <i>null</i> no environment
-   * is rendered.
+   * The current list of DefaultTypeSubsititutions that
+   * are rendered.
    */
   private ArrayList <DefaultTypeSubstitution> defaultTypeSubstitutionList ;
   
@@ -112,7 +90,7 @@ public class CompoundExpressionTypeInference extends JComponent
 
 
   /**
-   * Renderer that is used to render the environment.
+   * Renderer that is used to render the substitutions.
    */
   private SubstitutionRenderer substitutionRenderer ;
 
@@ -378,7 +356,7 @@ public class CompoundExpressionTypeInference extends JComponent
    * 
    * @param underlineExpression
    */
-  public void setUnderlineExpression ( Expression underlineExpression )
+  public void setUnderlineExpression_alt ( Expression underlineExpression )
   {
     boolean needsRepaint = this.underlineExpression != underlineExpression ;
     this.underlineExpression = underlineExpression ;
@@ -515,91 +493,6 @@ public class CompoundExpressionTypeInference extends JComponent
     this.noLineWrapping = noLineWrapping ;
   }
 
-
-  /**
-   * Sets the expression that should rendered.
-   * 
-   * @param expression
-   */
-  public void setExpression_altundlöschen ( Expression expression )
-  {
-    // check if we have a new expression
-    if ( this.expression != expression )
-    {
-      // update to the new expression
-      this.expression = expression ;
-      
-      // CHANGE BENJAMIN
-      /*
-      
-      
-      
-      // TypeInferenceTest
-       
-      try {
-        // parse the program (using L4)
-        LanguageFactory factory = LanguageFactory.newInstance();
-        Language language = factory.getLanguageById("l4");
-        TypeInferenceProofModel model = language.newTypeInferenceProofModel(expression);
-        
-        
-        // evaluate the resulting small step expression
-        TypeInferenceProofModelTest window = new TypeInferenceProofModelTest(model);
-        //window.typechecker= language.newTypeCheckerProofModel(expression);
-        window.addWindowListener(new WindowAdapter() {
-          @Override
-          public void windowClosing(WindowEvent e) {
-           // System.exit(0);
-          }
-        });
-        window.setVisible(true);
-      }
-      catch (Exception e) {
-        e.printStackTrace();
-      }
-    
-      
-      
-      */
-      
-      
-      
-     
-      bonds.setExpression ( this.expression ) ;
-      
-      // CHANGE BENJAMIN END
-      
-      // check what to do with the renderer
-      if ( this.expression == null )
-      {
-        this.expressionRenderer = null ;
-      }
-      else
-      {
-        if ( this.expressionRenderer == null )
-        {
-          
-          // bound = new ShowBonds();
-          // CHANGE MICHAEL
-          // with ervery new expression renderd by the PrettyStringRenderer the
-          // elements listen by mouse will be resetet
-          // toListenForMouse.reset();
-          // CHANGE MICHAEL
-          
-          this.expressionRenderer = new PrettyStringRenderer ( ) ;
-          this.expressionRenderer.setAlternativeColor ( this.alternativeColor ) ;
-        }
-        this.expressionRenderer.setPrettyString ( this.expression
-            .toPrettyString ( ) ) ;
-        // reset the underlineExpression
-        setUnderlineExpression ( this.underlineExpression ) ;
-      }
-      // be sure to schedule a repaint
-      repaint ( ) ;
-    }
-  }
-
-
   /**
    * Sets the TypeSubsittutioins that should be rendered.
    * 
@@ -671,7 +564,7 @@ public class CompoundExpressionTypeInference extends JComponent
    * Calculates the size needed to propperly render the compoundExpression
    * 
    * @param maxWidth
-   * @return
+   * @return Dimension
    */
   public Dimension getNeededSize ( int maxWidth )
   {
@@ -829,30 +722,17 @@ public class CompoundExpressionTypeInference extends JComponent
     	//setSize(getWidth()+100, getHeight()+100);
     	gc.drawString(draggedString, draggedX, draggedY);
     }
-    
-    
   }
 
-
-  public Expression getExpression_altundlöschen ( )
-  {
-    return expression ;
-  }
   
+  /**
+   * @return the list of TypeFormulas
+   */
   public ArrayList getTypeFormulaList ()
   {
   	return typeFormulaList;
   }
-  
-  //TODO um zu testen, ob er die repaint ausführt...
-//  @ Override
-//  public void repaint ()
-//  {
-//  	System.out.println("repaint ausgeführt...");
-//  	
-//  	super.repaint();
-//  }
-  
+
   private static void testAusgabe (String s)
   {
   	//System.out.println(s);
