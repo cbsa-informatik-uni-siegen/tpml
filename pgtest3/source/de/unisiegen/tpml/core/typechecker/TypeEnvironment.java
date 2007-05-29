@@ -50,6 +50,19 @@ public interface TypeEnvironment extends Environment < Identifier , Type >
 
 
   /**
+   * Extends this type environment with an entry for the pair (<code>identifier</code>,<code>type</code>)
+   * and returns the new {@link TypeEnvironment}.
+   * 
+   * @param identifier the identifier for the <code>type</code>.
+   * @param type the {@link Type} that should be set for <code>identifier</code>.
+   * @return the extended type environment.
+   * @throws NullPointerException if <code>identifier</code> or
+   *           <code>type</code> is <code>null</code>.
+   */
+  public TypeEnvironment extend ( Identifier identifier , Type type ) ;
+
+
+  /**
    * Returns the free type variables of all types in this type environment.
    * 
    * @return the set of free type variables in this type environment.
@@ -69,16 +82,13 @@ public interface TypeEnvironment extends Environment < Identifier , Type >
 
 
   /**
-   * Extends this type environment with an entry for the pair (<code>identifier</code>,<code>type</code>)
-   * and returns the new {@link TypeEnvironment}.
+   * Returns the type environment witch contains the same Identifier and Type
+   * pairs like this environment, put only if the Identifiers are variable or
+   * message Identifiers.
    * 
-   * @param identifier the identifier for the <code>type</code>.
-   * @param type the {@link Type} that should be set for <code>identifier</code>.
-   * @return the extended type environment.
-   * @throws NullPointerException if <code>identifier</code> or
-   *           <code>type</code> is <code>null</code>.
+   * @return A new type environment.
    */
-  public TypeEnvironment extend ( Identifier identifier , Type type ) ;
+  public TypeEnvironment star ( ) ;
 
 
   /**

@@ -80,6 +80,19 @@ public final class DefaultTypeEnvironment extends
   /**
    * {@inheritDoc}
    * 
+   * @see TypeEnvironment#extend(Identifier, Type)
+   */
+  public TypeEnvironment extend ( Identifier identifier , Type type )
+  {
+    DefaultTypeEnvironment environment = new DefaultTypeEnvironment ( this ) ;
+    environment.put ( identifier , type ) ;
+    return environment ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
    * @see TypeEnvironment#free()
    */
   public Set < TypeVariable > free ( )
@@ -107,12 +120,20 @@ public final class DefaultTypeEnvironment extends
   /**
    * {@inheritDoc}
    * 
-   * @see TypeEnvironment#extend(Identifier, Type)
+   * @see TypeEnvironment#star()
    */
-  public TypeEnvironment extend ( Identifier identifier , Type type )
+  public TypeEnvironment star ( )
   {
-    DefaultTypeEnvironment environment = new DefaultTypeEnvironment ( this ) ;
-    environment.put ( identifier , type ) ;
+    DefaultTypeEnvironment environment = new DefaultTypeEnvironment ( ) ;
+    for ( Mapping < Identifier , Type > mapping : this.mappings )
+    {
+      Identifier id = mapping.getSymbol ( ) ;
+      if ( ( ! id.getSet ( ).equals ( Identifier.Set.ATTRIBUTE ) )
+          && ( ! id.getSet ( ).equals ( Identifier.Set.SELF ) ) )
+      {
+        environment.put ( id , mapping.getEntry ( ) ) ;
+      }
+    }
     return environment ;
   }
 
