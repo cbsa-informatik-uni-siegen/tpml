@@ -20,7 +20,15 @@ import de.unisiegen.tpml.graphics.smallstep.SmallStepNodeComponent;
 
 /**
  * this Class manages the Rules-Popup-Menu of the different ProofModels
- *
+ * The user gets the rules he can commit to an expression in different ways.
+ * Ihe behavior is set by the int TOMANY and MAX. 
+ * If there are more than TOMANY rules, the rules will be grouped by the
+ * language they are coming from. To let the user acces directly to the rules
+ * he used last there will be MAX rules he can click directly. They will appear
+ * at the top of the menu. 
+ * 
+ * Till now the method is only called by the Bigstepper and the Smallstepper
+ * because of the count of rules.
  *
  * @author Michael 
  *
@@ -144,9 +152,6 @@ public class RulesMenu
       }
     };
     test.addActionListener(al1);
-  	
-    //TODO test teh button
-  	//menu.add(test);
 		
 		//	if to many rules we will devide in menu and submenus, otherwise there will be only seperators 
     //between the rules coming from the different languages
@@ -166,8 +171,6 @@ public class RulesMenu
         for (int i = MAX - 1; i >= 0; i--)
         {
           String name = preferences.get("rule" + i, "");
-          //TODO Testausgabe
-          //System.out.println("Auslesen: rule"+i+" = "+name);
 
           if (name.equalsIgnoreCase(""))
           {
@@ -294,14 +297,9 @@ public class RulesMenu
                   lastUsed.addActionListener(al);
                   if (!isIn)
                   {
-                  	//TODO Testuasgabe
-                  	//System.out.println();
-                    //System.out.println("Die Liste enthälten den Eintrag bisher: "+isIn);
                   	saveToRevert();
                     menu.insert(lastUsed, 0);
                     lastUsedElements.add(0, lastUsed);
-                    //TODO Testausgabe
-                    //System.out.println("jetzt sollte sie drin sein! "+isIn(lastUsed.getText(), lastUsedElements));
                   }
                   //may be we want to move it to top
                   // else
@@ -383,8 +381,6 @@ public class RulesMenu
         }
       }
       saveToRevert();
-      //TODO Testasgabe....
-      //System.out.println("ist gespeichert");
     }
     //if ther are less than TOMANY rules ther will be no submenus, only seperators
     //with this variable you would also be able to disable the submenufunction
@@ -529,8 +525,6 @@ public class RulesMenu
 	{
 		for (int i = 0; i < lastUsedElements.size(); i++)
     {
-      //TODO Testausgabe
-			//System.out.println("rule"+i+" = "+lastUsedElements.get(i).getText());
       preferences.put("rule" + i, lastUsedElements.get(i).getText());
     }
 	}
@@ -561,8 +555,6 @@ public class RulesMenu
 		while (isRuleItem)
 		{
 			revertMenu.add(i, (MenuRuleItem)menu.getComponent(i));
-			//		TODO Testasgabe....
-      //System.out.println("Es wird dem ReverMenü hinzugefügt: "+ ((JMenuItem)menu.getComponent(i)).getText() );
 			i++;
 			if (menu.getComponent(i) instanceof MenuRuleItem)
 			{
@@ -574,7 +566,7 @@ public class RulesMenu
 			}
 		}
 		
-		//jetzt die Last10Elements sichern
+		//save the lastUsedElements
 		revertLastUsedElements.clear();
 		revertLastUsedElements.addAll(lastUsedElements);
 	}
@@ -585,11 +577,7 @@ public class RulesMenu
 	 */
 	public void revertMenu()
 	{
-		//TODO Testausgabe
-		//System.out.println();
-    //System.out.println();
-		//System.out.println("Revert ist aufgerufen!");
-		//als erstes das Menü von den Einträgen befreien
+		//firt remove all entries from menu
 		boolean isRuleItem = false;
 		
 		int i = 0;
@@ -612,15 +600,13 @@ public class RulesMenu
 			}
 		}
 		
-		//Die Einträge wieder hinzufügen
+		//add the entries
 		for (i=0; i<revertMenu.size(); i++)
 		{
-//		TODO Testasgabe....
-      //System.out.println("Menuitem wird wiederhergestellt: "+revertMenu.get(i).getText());
 			menu.insert(revertMenu.get(i),i);
 		}
 		
-		//last10Elements zurücksetzen
+		//reset the lastUsedElements
 		lastUsedElements.clear();
 		lastUsedElements.addAll(revertLastUsedElements);
 	}
@@ -636,12 +622,9 @@ public class RulesMenu
 	private boolean isIn ( String label, ArrayList list )
 	{
 		boolean isIn = false;
-		//TODO Testausgabe
-		//System.out.println("in der Liste sind...");
+		
 		for (int l = 0; l<list.size(); l++)
 		{
-			//TODO Testausgabe
-			//System.out.print(lastUsedElements.get(l).getText()+", ");
 			if (label.equalsIgnoreCase(lastUsedElements.get(l).getText()))
 			{
 				isIn=true;
