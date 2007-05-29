@@ -491,7 +491,7 @@ public class TypeInferenceNodeComponent extends JComponent {
 		
 		this.currentUnderlineExpression = expression;
 		
-		this.compoundExpression.setUnderlineExpression(this.currentUnderlineExpression);
+		//this.compoundExpression.setUnderlineExpression(this.currentUnderlineExpression);
 		
 		// free all the other nodes
 		freeUnderliningSibling(true, Direction.DIRECTION_CHILD);
@@ -884,7 +884,7 @@ public class TypeInferenceNodeComponent extends JComponent {
 	 */
 	private void freeUnderliningSibling (boolean ignoreThis, Direction direction) {
 		if (!ignoreThis) {
-			this.compoundExpression.setUnderlineExpression(null);
+			//this.compoundExpression.setUnderlineExpression(null);
 		}
 
 		TypeInferenceProofNode nextNode = null;
