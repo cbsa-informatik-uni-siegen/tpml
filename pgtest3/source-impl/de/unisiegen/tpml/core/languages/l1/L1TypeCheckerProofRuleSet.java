@@ -1,8 +1,7 @@
 package de.unisiegen.tpml.core.languages.l1 ;
 
 
-import java.util.ArrayList;
-
+import java.util.ArrayList ;
 import de.unisiegen.tpml.core.expressions.And ;
 import de.unisiegen.tpml.core.expressions.Application ;
 import de.unisiegen.tpml.core.expressions.Condition ;
@@ -25,7 +24,6 @@ import de.unisiegen.tpml.core.typechecker.DefaultTypeSubstitution ;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofContext ;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode ;
 import de.unisiegen.tpml.core.typechecker.TypeEnvironment ;
-import de.unisiegen.tpml.core.typechecker.TypeEquationList;
 import de.unisiegen.tpml.core.typeinference.DefaultTypeEquationProofNode ;
 import de.unisiegen.tpml.core.typeinference.DefaultTypeInferenceProofContext ;
 import de.unisiegen.tpml.core.typeinference.TypeEquation ;
@@ -34,9 +32,9 @@ import de.unisiegen.tpml.core.types.ArrowType ;
 import de.unisiegen.tpml.core.types.BooleanType ;
 import de.unisiegen.tpml.core.types.ListType ;
 import de.unisiegen.tpml.core.types.MonoType ;
-import de.unisiegen.tpml.core.types.ObjectType;
+import de.unisiegen.tpml.core.types.ObjectType ;
 import de.unisiegen.tpml.core.types.RefType ;
-import de.unisiegen.tpml.core.types.RowType;
+import de.unisiegen.tpml.core.types.RowType ;
 import de.unisiegen.tpml.core.types.TupleType ;
 import de.unisiegen.tpml.core.types.Type ;
 import de.unisiegen.tpml.core.types.TypeVariable ;
@@ -125,8 +123,8 @@ public class L1TypeCheckerProofRuleSet extends AbstractTypeCheckerProofRuleSet
       // add type equations for tau and tau1->tau2
       context.addEquation ( node.getType ( ) , new ArrowType ( tau1 , tau2 ) ) ;
       // generate a new child node
-      context.addProofNode ( node , environment.extend ( lambda.getId ( )
-          .getName ( ) , tau1 ) , lambda.getE ( ) , tau2 ) ;
+      context.addProofNode ( node , environment.extend ( lambda.getId ( ) ,
+          tau1 ) , lambda.getE ( ) , tau2 ) ;
     }
     else
     {
@@ -147,7 +145,7 @@ public class L1TypeCheckerProofRuleSet extends AbstractTypeCheckerProofRuleSet
       // generate the environment for e
       for ( int n = 0 ; n < identifiers.length ; ++ n )
       {
-        environment = environment.extend ( identifiers [ n ].getName ( ) ,
+        environment = environment.extend ( identifiers [ n ] ,
             typeVariables [ n ] ) ;
       }
       // add the child nodes
@@ -246,7 +244,7 @@ public class L1TypeCheckerProofRuleSet extends AbstractTypeCheckerProofRuleSet
       TypeCheckerProofNode node )
   {
     Type type = node.getEnvironment ( ).get (
-        ( ( Identifier ) node.getExpression ( ) ).getName ( ) ) ;
+        ( ( Identifier ) node.getExpression ( ) ) ) ;
     context.addEquation ( node.getType ( ) , ( MonoType ) type ) ;
   }
 
@@ -284,8 +282,9 @@ public class L1TypeCheckerProofRuleSet extends AbstractTypeCheckerProofRuleSet
       }
       // add the child nodes
       context.addProofNode ( node , environment , e1 , tau1 ) ;
-      context.addProofNode ( node , environment.extend ( let.getId ( )
-          .getName ( ) , tau1 ) , let.getE2 ( ) , node.getType ( ) ) ;
+      context.addProofNode ( node ,
+          environment.extend ( let.getId ( ) , tau1 ) , let.getE2 ( ) , node
+              .getType ( ) ) ;
     }
     else if ( expression instanceof MultiLet )
     {
@@ -303,7 +302,7 @@ public class L1TypeCheckerProofRuleSet extends AbstractTypeCheckerProofRuleSet
       TypeEnvironment environment2 = environment ;
       for ( int n = 0 ; n < identifiers.length ; ++ n )
       {
-        environment2 = environment2.extend ( identifiers [ n ].getName ( ) ,
+        environment2 = environment2.extend ( identifiers [ n ] ,
             typeVariables [ n ] ) ;
       }
       // add the child nodes
@@ -348,8 +347,8 @@ public class L1TypeCheckerProofRuleSet extends AbstractTypeCheckerProofRuleSet
       }
       // add the child nodes
       context.addProofNode ( node , environment , e1 , tau1 ) ;
-      context.addProofNode ( node , environment.extend ( identifiers [ 0 ]
-          .getName ( ) , tau1 ) , curriedLet.getE2 ( ) , node.getType ( ) ) ;
+      context.addProofNode ( node , environment.extend ( identifiers [ 0 ] ,
+          tau1 ) , curriedLet.getE2 ( ) , node.getType ( ) ) ;
     }
   }
 
@@ -373,13 +372,12 @@ public class L1TypeCheckerProofRuleSet extends AbstractTypeCheckerProofRuleSet
     // add the {tau = bool} equation
     context.addEquation ( node.getType ( ) , new BooleanType ( ) ) ;
   }
-  
-  
+
+
   /**
    * Applies the <b>(UNIFY)</b> rule to the <code>node</code> using the
-   * <code>context</code>.
-   * 
-   * !!! This method is just needed for the unification Algorithm !!!
+   * <code>context</code>. !!! This method is just needed for the unification
+   * Algorithm !!!
    * 
    * @param pContext the type inference proof context.
    * @param pNode the type inference proof node.
@@ -399,9 +397,7 @@ public class L1TypeCheckerProofRuleSet extends AbstractTypeCheckerProofRuleSet
   /**
    * internal implementation of the unify rule now we are able to call unify
    * recursive if needed so we get different handling for beginner or advanced
-   * user
-   * 
-   * !!! This method is just needed for the unification Algorithm !!!
+   * user !!! This method is just needed for the unification Algorithm !!!
    * 
    * @param context the casted default type inference proof context.
    * @param node the casted type equation proof node.
@@ -426,7 +422,8 @@ public class L1TypeCheckerProofRuleSet extends AbstractTypeCheckerProofRuleSet
           : right ) ;
       MonoType tau = ( left instanceof TypeVariable ? right : left ) ;
       // either tvar equals tau or tvar is not present in tau
-      if ( ! tvar.equals ( tau ) && ! tau.getTypeVariablesFree ( ).contains ( tvar ) )
+      if ( ! tvar.equals ( tau )
+          && ! tau.getTypeVariablesFree ( ).contains ( tvar ) )
       {
         DefaultTypeSubstitution s = new DefaultTypeSubstitution ( tvar , tau ) ;
         context.addSubstitution ( s ) ;
@@ -521,8 +518,8 @@ public class L1TypeCheckerProofRuleSet extends AbstractTypeCheckerProofRuleSet
     {
       ObjectType tau1 = ( ObjectType ) left ;
       ObjectType tau2 = ( ObjectType ) right ;
-      context.addEquation (  tau1.getPhi ( ) , tau2.getPhi ( ) ) ;
-      return;
+      context.addEquation ( tau1.getPhi ( ) , tau2.getPhi ( ) ) ;
+      return ;
     }
     else if ( ( left instanceof RowType ) && ( right instanceof RowType ) )
     {
@@ -555,7 +552,7 @@ public class L1TypeCheckerProofRuleSet extends AbstractTypeCheckerProofRuleSet
         {
           if ( tau1Identifiers.get ( i ).equals ( tau2Identifiers.get ( j ) ) )
           {
-            context.addEquation ( tau1Types.get ( i ) , tau2Types.get ( j ) );
+            context.addEquation ( tau1Types.get ( i ) , tau2Types.get ( j ) ) ;
             tau1Identifiers.remove ( i ) ;
             tau1Types.remove ( i ) ;
             tau2Identifiers.remove ( j ) ;
@@ -569,7 +566,6 @@ public class L1TypeCheckerProofRuleSet extends AbstractTypeCheckerProofRuleSet
       MonoType tau2RemainingRow = tau2.getRemainingRowType ( ) ;
       if ( ( tau1RemainingRow != null ) && ( tau2Identifiers.size ( ) > 0 ) )
       {
-      	
         Identifier [ ] newIdentifiers = new Identifier [ tau2Identifiers
             .size ( ) ] ;
         MonoType [ ] newTypes = new MonoType [ tau2Types.size ( ) ] ;
@@ -580,7 +576,7 @@ public class L1TypeCheckerProofRuleSet extends AbstractTypeCheckerProofRuleSet
         }
         RowType newRowType = new RowType ( newIdentifiers , newTypes ) ;
         context.addEquation ( tau1RemainingRow , newRowType ) ;
-        return;
+        return ;
       }
       if ( ( tau2RemainingRow != null ) && ( tau1Identifiers.size ( ) > 0 ) )
       {
@@ -594,9 +590,9 @@ public class L1TypeCheckerProofRuleSet extends AbstractTypeCheckerProofRuleSet
         }
         RowType newRowType = new RowType ( newIdentifiers , newTypes ) ;
         context.addEquation ( tau2RemainingRow , newRowType ) ;
-        return;
+        return ;
       }
-      return;
+      return ;
     }
     throw new UnifyException ( eqn ) ;
   }

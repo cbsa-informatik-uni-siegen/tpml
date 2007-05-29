@@ -18,6 +18,7 @@ import javax.swing.SwingUtilities ;
 import de.unisiegen.tpml.core.ProofGuessException ;
 import de.unisiegen.tpml.core.ProofNode ;
 import de.unisiegen.tpml.core.ProofRule ;
+import de.unisiegen.tpml.core.expressions.Identifier ;
 import de.unisiegen.tpml.core.languages.Language ;
 import de.unisiegen.tpml.core.languages.LanguageParser ;
 import de.unisiegen.tpml.core.languages.LanguageTranslator ;
@@ -128,7 +129,7 @@ public class TypeCheckerNodeComponent extends JComponent implements
   /**
    * The {@link CompoundExpression} containing the expression of this node.
    */
-  private CompoundExpression < String , Type > compoundExpression ;
+  private CompoundExpression < Identifier , Type > compoundExpression ;
 
 
   /**
@@ -197,7 +198,7 @@ public class TypeCheckerNodeComponent extends JComponent implements
     this.indexLabel = new JLabel ( ) ;
     this.indexLabel.addMouseListener ( new OutlineMouseListener ( this ) ) ;
     add ( this.indexLabel ) ;
-    this.compoundExpression = new CompoundExpression < String , Type > ( ) ;
+    this.compoundExpression = new CompoundExpression < Identifier , Type > ( ) ;
     this.compoundExpression
         .addMouseListener ( new OutlineMouseListener ( this ) ) ;
     add ( this.compoundExpression ) ;
@@ -767,7 +768,7 @@ public class TypeCheckerNodeComponent extends JComponent implements
    * @return The compoundExpression.
    * @see #compoundExpression
    */
-  public CompoundExpression < String , Type > getCompoundExpression ( )
+  public CompoundExpression < Identifier , Type > getCompoundExpression ( )
   {
     return this.compoundExpression ;
   }

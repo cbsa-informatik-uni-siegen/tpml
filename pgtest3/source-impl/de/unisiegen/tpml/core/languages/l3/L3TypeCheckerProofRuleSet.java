@@ -121,7 +121,7 @@ public class L3TypeCheckerProofRuleSet extends L2TypeCheckerProofRuleSet
       TypeCheckerProofNode node )
   {
     Type type = node.getEnvironment ( ).get (
-        ( ( Identifier ) node.getExpression ( ) ).getName ( ) ) ;
+        ( Identifier ) node.getExpression ( ) ) ;
     context.addEquation ( node.getType ( ) , context.instantiate ( type ) ) ;
   }
 
@@ -243,10 +243,8 @@ public class L3TypeCheckerProofRuleSet extends L2TypeCheckerProofRuleSet
         Let let = ( Let ) expression ;
         MonoType tau = node.getType ( ) ;
         MonoType tau1 = node.getChildAt ( 0 ).getType ( ) ;
-        context
-            .addProofNode ( node , environment.extend ( let.getId ( )
-                .getName ( ) , environment.closure ( tau1 ) ) , let.getE2 ( ) ,
-                tau ) ;
+        context.addProofNode ( node , environment.extend ( let.getId ( ) ,
+            environment.closure ( tau1 ) ) , let.getE2 ( ) , tau ) ;
       }
       else if ( expression instanceof MultiLet )
       {
@@ -258,8 +256,8 @@ public class L3TypeCheckerProofRuleSet extends L2TypeCheckerProofRuleSet
         TypeEnvironment environment2 = environment ;
         for ( int n = 0 ; n < identifiers.length ; ++ n )
         {
-          environment2 = environment2.extend ( identifiers [ n ].getName ( ) ,
-              environment.closure ( types [ n ] ) ) ;
+          environment2 = environment2.extend ( identifiers [ n ] , environment
+              .closure ( types [ n ] ) ) ;
         }
         // add the second proof node (for e2)
         context.addProofNode ( node , environment2 , multiLet.getE2 ( ) , node
@@ -270,9 +268,9 @@ public class L3TypeCheckerProofRuleSet extends L2TypeCheckerProofRuleSet
         CurriedLet curriedLet = ( CurriedLet ) expression ;
         MonoType tau = node.getType ( ) ;
         MonoType tau1 = node.getChildAt ( 0 ).getType ( ) ;
-        context.addProofNode ( node , environment
-            .extend ( curriedLet.getIdentifiers ( ) [ 0 ].getName ( ) ,
-                environment.closure ( tau1 ) ) , curriedLet.getE2 ( ) , tau ) ;
+        context.addProofNode ( node , environment.extend ( curriedLet
+            .getIdentifiers ( ) [ 0 ] , environment.closure ( tau1 ) ) ,
+            curriedLet.getE2 ( ) , tau ) ;
       }
     }
   }

@@ -50,7 +50,6 @@ public class L2OTypeCheckerProofRuleSet extends L2TypeCheckerProofRuleSet
     registerByMethodName ( L2OLanguage.L2O , "ATTR" , "applyAttr" ) ; //$NON-NLS-1$ //$NON-NLS-2$
     registerByMethodName ( L2OLanguage.L2O ,
         "METHOD" , "applyMethod" , "updateMethod" ) ; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-    
   }
 
 
@@ -92,18 +91,18 @@ public class L2OTypeCheckerProofRuleSet extends L2TypeCheckerProofRuleSet
       MonoType rowType = pContext.newTypeVariable ( ) ;
       ObjectType objectType = new ObjectType ( rowType ) ;
       pContext.addEquation ( pNode.getType ( ) , objectType ) ;
-      pContext.addProofNode ( pNode , pNode.getEnvironment ( ).extend (
-          objectExpr.getId ( ).getName ( ) , objectType ) ,
-          objectExpr.getE ( ) , rowType ) ;
+      TypeEnvironment environment = pNode.getEnvironment ( ) ;
+      pContext.addProofNode ( pNode , environment.extend (
+          objectExpr.getId ( ) , objectType ) , objectExpr.getE ( ) , rowType ) ;
     }
     else if ( tau instanceof ObjectType )
     {
       ObjectType objectType = ( ObjectType ) tau ;
       RowType rowType = ( RowType ) objectType.getPhi ( ) ;
       pContext.addEquation ( pNode.getType ( ) , objectType ) ;
-      pContext.addProofNode ( pNode , pNode.getEnvironment ( ).extend (
-          objectExpr.getId ( ).getName ( ) , objectType ) ,
-          objectExpr.getE ( ) , rowType ) ;
+      TypeEnvironment environment = pNode.getEnvironment ( ) ;
+      pContext.addProofNode ( pNode , environment.extend (
+          objectExpr.getId ( ) , objectType ) , objectExpr.getE ( ) , rowType ) ;
     }
     else
     {
@@ -190,8 +189,8 @@ public class L2OTypeCheckerProofRuleSet extends L2TypeCheckerProofRuleSet
     MonoType tauRow = pContext.newTypeVariable ( ) ;
     TypeEnvironment environment = pNode.getEnvironment ( ) ;
     pContext.addProofNode ( pNode , environment , e , tauE ) ;
-    pContext.addProofNode ( pNode , environment.extend ( attribute.getId ( )
-        .getName ( ) , tauE ) , row.tailRow ( ) , tauRow ) ;
+    pContext.addProofNode ( pNode , environment.extend ( attribute.getId ( ) ,
+        tauE ) , row.tailRow ( ) , tauRow ) ;
     pContext.addEquation ( pNode.getType ( ) , tauRow ) ;
   }
 

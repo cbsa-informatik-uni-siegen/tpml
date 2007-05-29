@@ -56,7 +56,7 @@ public class L2TypeCheckerProofRuleSet extends L1TypeCheckerProofRuleSet
     context.addEquation ( node.getType ( ) , tau1 ) ;
     // generate new child node
     TypeEnvironment environment = node.getEnvironment ( ) ;
-    context.addProofNode ( node , environment.extend ( recursion.getId ( )
-        .getName ( ) , tau1 ) , recursion.getE ( ) , tau1 ) ;
+    context.addProofNode ( node , environment.extend ( recursion.getId ( ) ,
+        tau1 ) , recursion.getE ( ) , tau1 ) ;
   }
 }
