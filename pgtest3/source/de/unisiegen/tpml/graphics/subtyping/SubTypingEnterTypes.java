@@ -303,6 +303,8 @@ public class SubTypingEnterTypes extends AbstractProofView {
 		this.editor1.addKeyListener(new KeyAdapter(){
       public void keyPressed(KeyEvent arg0) {
         if (arg0.getKeyCode() == KeyEvent.VK_TAB){
+        	//TODO Den Tab wieder wegnehmen oder so...
+        	arg0.setKeyChar ( '\u0000' ) ;
            nextComponent ( );
         }
      }
