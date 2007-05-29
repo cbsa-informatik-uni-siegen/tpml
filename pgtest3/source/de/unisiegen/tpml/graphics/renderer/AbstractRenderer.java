@@ -20,6 +20,7 @@ import de.unisiegen.tpml.graphics.Theme ;
  * All the Colors and Fonts coms from the current {@link Theme}.
  * 
  * @author marcell
+ * @autor michael
  */
 public abstract class AbstractRenderer
 {
