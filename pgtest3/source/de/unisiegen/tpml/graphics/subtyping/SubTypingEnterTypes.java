@@ -664,6 +664,7 @@ public class SubTypingEnterTypes extends AbstractProofView {
 	public void guess() throws IllegalStateException, ProofGuessException
 	{
 		System.out.println("Guess");
+		this.component.guess ( );
 		
 	}
 	
