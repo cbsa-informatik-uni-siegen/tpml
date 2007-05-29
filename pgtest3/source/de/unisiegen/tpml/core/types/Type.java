@@ -145,8 +145,7 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities
     if ( this.children == null )
     {
       this.children = new ArrayList < Type > ( ) ;
-      for ( Class < Object > currentInterface : this.getClass ( )
-          .getInterfaces ( ) )
+      for ( Class < ? > currentInterface : this.getClass ( ).getInterfaces ( ) )
       {
         if ( currentInterface
             .equals ( de.unisiegen.tpml.core.interfaces.DefaultTypes.class ) )

@@ -52,7 +52,7 @@ public final class ShowBonds
     {
       return ;
     }
-    for ( Class < Object > currentInterface : pExpression.getClass ( )
+    for ( Class < ? > currentInterface : pExpression.getClass ( )
         .getInterfaces ( ) )
     {
       if ( currentInterface

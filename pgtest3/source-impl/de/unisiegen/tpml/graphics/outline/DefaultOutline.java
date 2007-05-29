@@ -621,7 +621,7 @@ public final class DefaultOutline implements Outline
     // Sorted Children
     PrettyPrintable [ ] sortedChildren = null ;
     // Invoke methods
-    for ( Class < Object > currentInterface : pExpression.getClass ( )
+    for ( Class < ? > currentInterface : pExpression.getClass ( )
         .getInterfaces ( ) )
     {
       if ( currentInterface
@@ -806,8 +806,7 @@ public final class DefaultOutline implements Outline
     // TypeName
     TypeName [ ] typeNames = null ;
     int [ ] typeNamesIndex = null ;
-    for ( Class < Object > currentInterface : pType.getClass ( )
-        .getInterfaces ( ) )
+    for ( Class < ? > currentInterface : pType.getClass ( ).getInterfaces ( ) )
     {
       if ( currentInterface
           .equals ( de.unisiegen.tpml.core.interfaces.DefaultTypes.class ) )

@@ -29,7 +29,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
 
-import sun.font.AdvanceCache;
+
 
 import de.unisiegen.tpml.core.ProofGuessException;
 import de.unisiegen.tpml.core.languages.Language;

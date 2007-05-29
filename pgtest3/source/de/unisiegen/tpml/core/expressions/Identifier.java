@@ -273,7 +273,7 @@ public final class Identifier extends Value implements DefaultName
     {
       if ( this.parent != null )
       {
-        for ( Class < Object > currentInterface : this.parent.getClass ( )
+        for ( Class < ? > currentInterface : this.parent.getClass ( )
             .getInterfaces ( ) )
         {
           if ( ( currentInterface

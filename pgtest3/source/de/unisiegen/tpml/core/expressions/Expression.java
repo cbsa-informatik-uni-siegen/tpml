@@ -237,8 +237,7 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
     if ( this.children == null )
     {
       this.children = new ArrayList < Expression > ( ) ;
-      for ( Class < Object > currentInterface : this.getClass ( )
-          .getInterfaces ( ) )
+      for ( Class < ? > currentInterface : this.getClass ( ).getInterfaces ( ) )
       {
         if ( currentInterface
             .equals ( de.unisiegen.tpml.core.interfaces.DefaultExpressions.class ) )
@@ -379,8 +378,7 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
         this.identifiersAll.add ( ( Identifier ) this ) ;
         return this.identifiersAll ;
       }
-      for ( Class < Object > currentInterface : this.getClass ( )
-          .getInterfaces ( ) )
+      for ( Class < ? > currentInterface : this.getClass ( ).getInterfaces ( ) )
       {
         if ( ( currentInterface
             .equals ( de.unisiegen.tpml.core.interfaces.DefaultIdentifiers.class ) )
