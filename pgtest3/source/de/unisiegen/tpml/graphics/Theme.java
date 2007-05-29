@@ -25,6 +25,34 @@ import de.unisiegen.tpml.core.util.beans.AbstractBean ;
  * @see de.unisiegen.tpml.core.util.beans.Bean
  * @see java.beans.PropertyChangeListener
  */
+/**
+ * @author Feivel
+ *
+ */
+/**
+ * @author Feivel
+ *
+ */
+/**
+ * @author Feivel
+ *
+ */
+/**
+ * @author Feivel
+ *
+ */
+/**
+ * @author Feivel
+ *
+ */
+/**
+ * @author Feivel
+ *
+ */
+/**
+ * @author Feivel
+ *
+ */
 public final class Theme extends AbstractBean
 {
   //
@@ -689,6 +717,17 @@ public final class Theme extends AbstractBean
      */
     throw new UnsupportedOperationException (
         "Setting custom fonts mess up TPML on Windows!" ) ; //$NON-NLS-1$
+  }
+  
+  
+  /**
+   * changes the global font-size that is used fot renders and editors to 
+   * the given size
+   * @param size the new sizer;
+   */
+  public void setFontSize (int size)
+  {
+  	font = font.deriveFont ( (float) size );
   }
 
 
