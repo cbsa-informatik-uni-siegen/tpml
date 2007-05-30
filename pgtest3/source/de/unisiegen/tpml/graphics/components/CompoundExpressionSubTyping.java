@@ -3,7 +3,6 @@ package de.unisiegen.tpml.graphics.components;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
@@ -12,16 +11,19 @@ import javax.swing.JComboBox;
 import javax.swing.JComponent;
 
 import de.unisiegen.tpml.core.expressions.Expression;
-import de.unisiegen.tpml.core.interpreters.Store;
-import de.unisiegen.tpml.core.typechecker.TypeEnvironment;
 import de.unisiegen.tpml.core.types.MonoType;
-import de.unisiegen.tpml.core.util.Environment;
-import de.unisiegen.tpml.graphics.outline.listener.OutlineMouseListener;
 import de.unisiegen.tpml.graphics.renderer.AbstractRenderer;
 import de.unisiegen.tpml.graphics.renderer.EnvironmentRenderer;
 import de.unisiegen.tpml.graphics.renderer.PrettyStringRenderer;
 import de.unisiegen.tpml.graphics.renderer.ToListenForMouseContainer;
 
+/**
+ * this calss renders the compound expresions of the
+ * subtyping
+ * 
+ * @author Feivel
+ *
+ */
 public class CompoundExpressionSubTyping extends JComponent
 {
 	/**
@@ -76,18 +78,6 @@ public class CompoundExpressionSubTyping extends JComponent
 
  
   /**
-   * The size of the environment.
-   */
-  private Dimension environmentSize ;
-
-
-  /**
-   * The width of the braces around the expression and the environment.
-   */
-  private int braceSize ;
-
-
-  /**
    * Whether the expression should be wrapped if there is not enough space to
    * render it in on line.<br>
    * Actualy this is only used with the result of the BigStepGUI.
@@ -100,23 +90,6 @@ public class CompoundExpressionSubTyping extends JComponent
    * ignored and only this color is used.
    */
   private Color alternativeColor ;
-
-
-  /**
-   * The arrow symbol that is used between the environment and the expression
-   * when used within the
-   * {@link de.unisiegen.tpml.graphics.typechecker.TypeCheckerNodeComponent}
-   */
-  private static String arrowStr = " \u22b3 " ;
-
-
-  /**
-   * Initialises the CompoundExpression with the default values.<br>
-   * <br>
-   * The braces have a size of 10 pixes, no underlining and the color of the
-   * {@link AbstractRenderer} are ignored.
-   */
-  //private ShowBonds bonds ;
 
 
   // private ToListenForMouseContainer toListenForMouse = new
@@ -136,7 +109,6 @@ public class CompoundExpressionSubTyping extends JComponent
     super ( ) ;
     this.toListenForMouse = new ToListenForMouseContainer ( ) ;
     this.alternativeColor = null ;
-    this.braceSize = 10 ;
     this.underlineExpression = null ;
     this.addMouseMotionListener ( new MouseMotionAdapter ( )
     {
@@ -146,10 +118,7 @@ public class CompoundExpressionSubTyping extends JComponent
         handleMouseMoved ( event ) ;
       }
     } ) ;
-    // CHANGE CHRISTIAN
-    //this.addMouseListener ( new OutlineMouseListener ( this ) ) ;
-    //TODO muss die Outline auf hier reagieren können?
-    // CHANGE CHRISTIAN END
+  
     this.addMouseListener ( new MouseAdapter ( )
     {
       @ Override
@@ -307,7 +276,7 @@ public class CompoundExpressionSubTyping extends JComponent
   /**
    * Sets the expression that should rendered.
    * 
-   * @param expression
+   * @param type1P the type to set
    */
   public void setType1 ( MonoType type1P )
   {
@@ -341,7 +310,7 @@ public class CompoundExpressionSubTyping extends JComponent
   /**
    * Sets the expression that should rendered.
    * 
-   * @param expression
+   * @param type2P
    */
   public void setType2 ( MonoType type2P )
   {
@@ -384,7 +353,7 @@ public class CompoundExpressionSubTyping extends JComponent
    * Calculates the size needed to propperly render the compoundExpression
    * 
    * @param maxWidth
-   * @return
+   * @return the Dimension needed by the Compound Expression
    */
   public Dimension getNeededSize ( int maxWidth )
   {
@@ -405,7 +374,6 @@ public class CompoundExpressionSubTyping extends JComponent
     	//this.expressionSize = this.expressionRenderer.getNeededSizeAll_ ( maxWidth ) ;
       this.type1Size = this.type1Renderer.getNeededSize ( maxWidth ) ;
       this.type2Size = this.type2Renderer.getNeededSize ( maxWidth );
-      //TODO wir brauchen noch das doofe <: Zeichen
       result.width += AbstractRenderer.getTextFontMetrics().stringWidth(" <: ");
       result.width += this.type1Size.width ;
       result.width += this.type2Size.width ;
@@ -495,11 +463,19 @@ public class CompoundExpressionSubTyping extends JComponent
   }
 
 
+  /**
+   * returns the first type
+   * @return first type
+   */
   public MonoType getType1 ( )
   {
     return type1 ;
   }
   
+  /**
+   * returns the second type
+   * @return second type
+   */
   public MonoType getType2 ( )
   {
     return type2 ;
