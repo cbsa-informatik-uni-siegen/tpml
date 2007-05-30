@@ -191,7 +191,8 @@ public class SubstitutionRenderer extends AbstractRenderer {
 //		// calculate the vertical center of the available space 
 //		int posX = x + this.bracketSize;
 		int posX = x;
-		int posY = y + height / 2;
+		//int posY = y + height / 2;
+		int posY = y+AbstractRenderer.fontHeight/2;
 		posY += AbstractRenderer.fontAscent  / 2;
 		
 		// find the first element in the enumeration if there is one

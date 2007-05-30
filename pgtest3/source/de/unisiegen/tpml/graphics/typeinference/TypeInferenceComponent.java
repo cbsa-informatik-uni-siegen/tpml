@@ -107,7 +107,7 @@ public class TypeInferenceComponent extends AbstractProofComponent implements Sc
 		this.advanced = advancedP;
 		
 		//TODO mach das ding transparent
-		this.setOpaque(false);
+		this.setOpaque ( false );
 		
 		
 		// trigger the first layouting
@@ -654,7 +654,7 @@ public class TypeInferenceComponent extends AbstractProofComponent implements Sc
 	@Override
 	protected void paintComponent (Graphics gc) {
 		//TODO wieder weiß machen...
-		//gc.setColor (Color.BLUE);
+		//gc.setColor (Color.LIGHT_GRAY);
 		gc.setColor (Color.WHITE);
 		gc.fillRect(0, 0, getWidth () - 1, getHeight () - 1);
 	}

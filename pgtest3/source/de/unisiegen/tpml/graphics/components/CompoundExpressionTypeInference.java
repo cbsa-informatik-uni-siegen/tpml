@@ -613,11 +613,8 @@ public class CompoundExpressionTypeInference extends JComponent
     //testAusgabe("Größe der Typeformulas: "+typeFormulaSize.height+ ", "+typeFormulaSize.width);
     //System.out.println("Wir adsdieren einfach mal 33");
     //TODO dreckiger Workaround...
-    //if (result.height / 14 >= 3)
-    //{
-    	result.height *= 2;
-    //}
-    //result.height += result.height /2 ;
+    //	result.height *= 2;
+    
     return result ;
   }
 
@@ -712,8 +709,9 @@ public class CompoundExpressionTypeInference extends JComponent
     	this.typeFormularRenderer.renderer( posX, posY, this.typeFormulaSize.width, getHeight (), gc) ;
     }
     
+    //TODO Test
     //gc.setColor (Color.YELLOW);
-    //gc.fillRect(0, 0, getWidth () - 1, getHeight () - 1);
+    //gc.drawRect(0, 0, getWidth () - 1, getHeight () - 1);
     
     //last if dragged render the dragged String
     //TODO mal gucken, ob man hier die größe änern kann...

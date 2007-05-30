@@ -492,8 +492,8 @@ public class CompoundExpression < S , E > extends JComponent
     {
       // now check the size still available for the expression
     	//TODO Test for printing
-    	//this.expressionSize = this.expressionRenderer.getNeededSizeAll_ ( maxWidth ) ;
-      this.expressionSize = this.expressionRenderer.getNeededSize ( maxWidth ) ;
+    	this.expressionSize = this.expressionRenderer.getNeededSizeAll_ ( maxWidth ) ;
+      //this.expressionSize = this.expressionRenderer.getNeededSize ( maxWidth ) ;
       result.width += this.expressionSize.width ;
       result.height = Math.max ( result.height , this.expressionSize.height ) ;
     }
@@ -594,8 +594,9 @@ public class CompoundExpression < S , E > extends JComponent
           bonds , toListenForMouse ) ;
     }
     
+    //TODO nur testen
     //gc.setColor (Color.YELLOW);
-    //gc.fillRect(0, 0, getWidth () - 1, getHeight () - 1);
+    //gc.drawRect(0, 0, getWidth () - 1, getHeight () - 1);
   }
 
 

@@ -346,8 +346,8 @@ public class TypeInferenceNodeComponent extends JComponent {
   protected void paintComponent(Graphics gc)
   {
   	//TODO Rahmen entfernen
-   //  gc.setColor(Color.BLACK);
-   //  gc.drawRect(0, 0, getWidth()-1, getHeight()-1);
+    //gc.setColor(Color.BLACK);
+    //gc.drawRect(0, 0, getWidth()-1, getHeight()-1);
     super.paintComponent(gc);
   }
 	
@@ -968,8 +968,9 @@ public class TypeInferenceNodeComponent extends JComponent {
 	 *
 	 */
 	public void placeExpression () {
-		this.compoundExpression.setBounds(this.ruleDimension.width + this.spacing, 0, this.expressionDimension.width, this.actualExpressionHeight);
-		//this.compoundExpression.setBounds(this.ruleDimension.width + this.spacing, 0, this.expressionDimension.width, this.expressionDimension.height);
+		//TODO mal gucken...
+		//this.compoundExpression.setBounds(this.ruleDimension.width + this.spacing, 0, this.expressionDimension.width, this.actualExpressionHeight);
+		this.compoundExpression.setBounds(this.ruleDimension.width + this.spacing, 0, this.expressionDimension.width, this.expressionDimension.height);
 	}
 	
 	

@@ -411,7 +411,7 @@ public class CompoundExpressionSubTyping extends JComponent
     //double get = Math.random();
     //int getR = (int) (get*10);
     //gc.setColor (test[getR]);
-    //gc.fillRect(0, 0, getWidth () - 1, getHeight () - 1);
+    //gc.ect(0, 0, getWidth () - 1, getHeight () - 1);
   	//--------------------------------
     
     // make sure that we have an expression renderer

@@ -470,7 +470,10 @@ public class PrettyStringRenderer extends AbstractRenderer
         result.breakOffsets.add ( annotation.getBreakOffsets ( ) [ i ] ) ;
       }
     }
-    result.size.height = AbstractRenderer.fontHeight ;
+    //result.size.height = AbstractRenderer.fontHeight ;
+    //TODO geht so nicht, muss man sich etwas anderes ausdenken...
+    //result.size.height = AbstractRenderer.fontDescent + AbstractRenderer.fontAscent + AbstractRenderer.fontLeading ;
+    result.size.height = AbstractRenderer.fontHeight;
     PrettyCharIterator it = this.prettyString.toCharacterIterator ( ) ;
     int i = 0 ;
     int w = 0 ;
@@ -674,7 +677,8 @@ public class PrettyStringRenderer extends AbstractRenderer
     // TODO das mit der Höhe der Ausrücke funktioniert noch nicht richtig...
     // System.out.println("Zeile: "+lineCount);
     // System.out.println("breakOffsets: "+breakOffsets.length);
-    int posY_ = y + height / 2 ;
+    //int posY_ = y + height / 2 ;
+    int posY_ = y + AbstractRenderer.fontHeight/2;
     posY_ += AbstractRenderer.fontAscent / 2 ;
     float addY_ = ( this.result.rows - 1 ) / 2.0f ;
     addY_ *= AbstractRenderer.fontHeight ;

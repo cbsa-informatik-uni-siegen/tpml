@@ -360,7 +360,8 @@ public class TypeFormularRenderer extends AbstractRenderer {
 
 		// calculate the vertical center of the available space 
 		int posX = x ;
-		int posY = y + height / 2;
+		//int posY = y + height / 2;
+		int posY = y + AbstractRenderer.fontHeight/2;
 		//int posY = y + AbstractRenderer.fontHeight;
 		posY += AbstractRenderer.fontAscent  / 2;
 		

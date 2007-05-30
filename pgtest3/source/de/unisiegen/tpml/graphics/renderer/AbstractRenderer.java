@@ -88,6 +88,8 @@ public abstract class AbstractRenderer
 
 
   protected static int fontDescent ;
+  
+  protected static int fontLeading ;
 
 
   protected static Font exponentFont ;
@@ -188,6 +190,8 @@ public abstract class AbstractRenderer
     AbstractRenderer.typeFontMetrics = reference
         .getFontMetrics ( AbstractRenderer.typeFont ) ;
     AbstractRenderer.underlineColor = theme.getUnderlineColor ( ) ;
+    
+    //TODO patching up the fonthight
     AbstractRenderer.fontHeight = Math
         .max ( AbstractRenderer.expFontMetrics.getHeight ( ) , Math
             .max ( AbstractRenderer.keywordFontMetrics.getHeight ( ) , Math
@@ -211,6 +215,17 @@ public abstract class AbstractRenderer
                 AbstractRenderer.constantFontMetrics.getDescent ( ) , Math.max (
                     AbstractRenderer.envFontMetrics.getDescent ( ) ,
                     AbstractRenderer.typeFontMetrics.getDescent ( ) ) ) ) ) ) ;
+    
+    //TODO Patching....
+    
+    AbstractRenderer.fontLeading = Math.max ( 2, 
+    	Math.max ( AbstractRenderer.expFontMetrics
+        .getLeading ( ) , Math
+        .max ( AbstractRenderer.keywordFontMetrics.getLeading ( )  , Math.max (
+            AbstractRenderer.identifierFontMetrics.getLeading ( )  , Math.max (
+                AbstractRenderer.constantFontMetrics.getLeading ( )  , Math.max (
+                    AbstractRenderer.envFontMetrics.getLeading ( )  ,
+                    AbstractRenderer.typeFontMetrics.getLeading ( ) ) ) ) ) )  ) ;
   }
 
 
