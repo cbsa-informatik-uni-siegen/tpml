@@ -215,9 +215,13 @@ public class PrettyStringRenderer extends AbstractRenderer
     {
       this.result = biggestResult ;
     }
-    else
+    else if ( smallestResult != null )
     {
       this.result = smallestResult ;
+    }
+    else 
+    {
+    	this.result = null;
     }
     return this.result.size ;
   }
@@ -653,6 +657,11 @@ public class PrettyStringRenderer extends AbstractRenderer
     if ( result != null )
     {
       arraySize = result.breakOffsets.size ( ) ;
+    }
+    else 
+    {
+    	//TODO patchendieses Fehlerfalls
+    	result = new CheckerResult ();
     }
     int [ ] breakOffsets = new int [ arraySize ] ;
     // TODO Testausgabe
