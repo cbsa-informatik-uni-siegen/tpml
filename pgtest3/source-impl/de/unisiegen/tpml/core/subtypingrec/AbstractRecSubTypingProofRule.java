@@ -1,9 +1,14 @@
-package de.unisiegen.tpml.core.subtyping;
+package de.unisiegen.tpml.core.subtypingrec;
 
 import java.lang.reflect.InvocationTargetException;
 
 import de.unisiegen.tpml.core.AbstractProofRule;
 import de.unisiegen.tpml.core.ProofRuleException;
+import de.unisiegen.tpml.core.subtyping.DefaultSubTypingProofContext;
+import de.unisiegen.tpml.core.subtyping.DefaultSubTypingProofNode;
+import de.unisiegen.tpml.core.subtyping.SubTypingException;
+import de.unisiegen.tpml.core.subtyping.SubTypingProofContext;
+import de.unisiegen.tpml.core.subtyping.SubTypingProofNode;
 import de.unisiegen.tpml.core.typechecker.AbstractTypeCheckerProofRuleSet;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofContext;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode;
@@ -16,8 +21,8 @@ import de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode;
  * @see de.unisiegen.tpml.core.subtyping.SubTypingProofRule
  * @see de.unisiegen.tpml.core.AbstractProofRule
  */
-public abstract class AbstractSubTypingProofRule extends AbstractProofRule
-		implements SubTypingProofRule {
+public abstract class AbstractRecSubTypingProofRule extends AbstractProofRule
+		implements RecSubTypingProofRule {
 
 	/**
 	 * Allocates a new <code>AbstractSubTypingProofRule</code> of the specified <code>name</code>.
@@ -30,7 +35,7 @@ public abstract class AbstractSubTypingProofRule extends AbstractProofRule
 	 * 
 	 * @see AbstractProofRule#AbstractProofRule(String)
 	 */
-	public AbstractSubTypingProofRule ( int group, String name ) {
+	public AbstractRecSubTypingProofRule ( int group, String name ) {
 		super ( group, name );
 	}
 
@@ -39,8 +44,8 @@ public abstract class AbstractSubTypingProofRule extends AbstractProofRule
 	 *
 	 * @see de.unisiegen.tpml.core.subtyping.SubTypingProofRule#apply(de.unisiegen.tpml.core.subtyping.SubTypingProofContext, de.unisiegen.tpml.core.subTyping.RecSubTypingProofNode)
 	 */
-	public void apply ( DefaultSubTypingProofContext context,
-			DefaultSubTypingProofNode node ) throws ProofRuleException {
+	public void apply ( DefaultRecSubTypingProofContext context,
+			DefaultRecSubTypingProofNode node ) throws ProofRuleException {
 		if ( node == null ) {
 			throw new NullPointerException ( "node is null" ); //$NON-NLS-1$
 		}
@@ -106,8 +111,8 @@ public abstract class AbstractSubTypingProofRule extends AbstractProofRule
 	 *                   
 	 * @see #apply(TypeCheckerProofContext, TypeCheckerProofNode)
 	 */
-	protected abstract void applyInternal ( SubTypingProofContext context,
-			SubTypingProofNode node ) throws Exception, SubTypingException;
+	protected abstract void applyInternal ( RecSubTypingProofContext context,
+			RecSubTypingProofNode node ) throws Exception, SubTypingException;
 
 	/*
 	 /**

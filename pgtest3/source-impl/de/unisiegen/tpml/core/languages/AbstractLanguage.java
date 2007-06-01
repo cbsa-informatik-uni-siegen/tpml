@@ -7,6 +7,7 @@ import java.text.MessageFormat;
 import de.unisiegen.tpml.core.Messages;
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.subtyping.SubTypingProofModel;
+import de.unisiegen.tpml.core.subtypingrec.RecSubTypingProofModel;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel;
 import de.unisiegen.tpml.core.typeinference.TypeInferenceProofModel;
 import de.unisiegen.tpml.core.types.MonoType;
@@ -64,6 +65,17 @@ public abstract class AbstractLanguage implements Language
    * @see de.unisiegen.tpml.core.languages.Language#newSubTypingProofModel(de.unisiegen.tpml.core.expressions.Expression)
    */
   public SubTypingProofModel newSubTypingProofModel ( MonoType type, MonoType type2, boolean mode )
+  {
+    throw new UnsupportedOperationException ( MessageFormat.format ( Messages
+        .getString ( "AbstractLanguage.0" ) , getName ( ) ) ) ; //$NON-NLS-1$
+  }
+  
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.tpml.core.languages.Language#newSubTypingProofModel(de.unisiegen.tpml.core.expressions.Expression)
+   */
+  public RecSubTypingProofModel newRecSubTypingProofModel ( MonoType type, MonoType type2, boolean mode )
   {
     throw new UnsupportedOperationException ( MessageFormat.format ( Messages
         .getString ( "AbstractLanguage.0" ) , getName ( ) ) ) ; //$NON-NLS-1$

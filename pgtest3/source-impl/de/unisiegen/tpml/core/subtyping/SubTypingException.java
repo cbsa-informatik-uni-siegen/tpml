@@ -1,8 +1,6 @@
 package de.unisiegen.tpml.core.subtyping;
 
-import java.text.MessageFormat;
-
-import de.unisiegen.tpml.core.Messages;
+import de.unisiegen.tpml.core.subtypingrec.RecSubTypingProofNode;
 import de.unisiegen.tpml.core.typeinference.TypeEquation;
 import de.unisiegen.tpml.core.typeinference.UnifyException;
 import de.unisiegen.tpml.core.types.MonoType;
@@ -50,6 +48,12 @@ public final class SubTypingException extends Exception {
 
 		super ( message );
 		this.node = pNode;
+	}
+	
+	public SubTypingException (final String message, final RecSubTypingProofNode pNode ) {
+		//TODO ???
+		super ( message );
+		//this.node = pNode;
 	}
 
 	//

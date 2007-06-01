@@ -6,6 +6,7 @@ import de.unisiegen.tpml.core.bigstep.BigStepProofModel;
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.smallstep.SmallStepProofModel;
 import de.unisiegen.tpml.core.subtyping.SubTypingProofModel;
+import de.unisiegen.tpml.core.subtypingrec.RecSubTypingProofModel;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel;
 import de.unisiegen.tpml.core.typeinference.TypeInferenceProofModel;
 import de.unisiegen.tpml.core.types.MonoType;
@@ -127,6 +128,8 @@ public interface Language {
    * @see SubTypingProofModel
    */
   public SubTypingProofModel newSubTypingProofModel(MonoType type, MonoType type2, boolean mode);
+  
+  public RecSubTypingProofModel newRecSubTypingProofModel(MonoType type, MonoType type2, boolean mode);
   
   /**
    * Allocates a new {@link LanguageParser} for this language, using the specified <code>scanner</code> as
