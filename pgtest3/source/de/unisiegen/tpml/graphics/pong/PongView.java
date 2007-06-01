@@ -1,10 +1,12 @@
 package de.unisiegen.tpml.graphics.pong;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Frame;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -79,10 +81,18 @@ public class PongView extends JWindow {
 		//setTitle("Pong"); //$NON-NLS-1$
 		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
     GraphicsDevice gs = ge.getDefaultScreenDevice();
-		gs.setFullScreenWindow(this);
+		//gs.setFullScreenWindow(this);
 		this.setAlwaysOnTop(true);
     this.validate();
 		//setSize(640, 480);
+    Dimension fullscreen = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+    fullscreen.height += 4;
+    fullscreen.width += 4;
+    setSize(fullscreen);
 		setLocationRelativeTo(owner);
+		Point location = getLocation();
+		location.y -= 2;
+		location.x -= 2;
+		setLocation(location);
 	}
 }
