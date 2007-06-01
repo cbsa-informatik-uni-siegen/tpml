@@ -9,6 +9,9 @@ import java.awt.GraphicsEnvironment;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -77,10 +80,27 @@ public class PongView extends JWindow {
 				dispose();
 			}
 		});
+		closeButton.addKeyListener( new KeyAdapter () {
+
+			public void keyPressed(KeyEvent e)
+			{
+				if (
+						(
+						e.getKeyCode() == KeyEvent.VK_ESCAPE ||
+						e.getKeyCode() == KeyEvent.VK_SPACE ||
+						e.getKeyCode() == KeyEvent.VK_END ||
+						e.getKeyCode() == KeyEvent.VK_ENTER
+						)
+					 )
+				{
+					dispose();
+				}
+			}			
+		});
 	
 		//setTitle("Pong"); //$NON-NLS-1$
-		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-    GraphicsDevice gs = ge.getDefaultScreenDevice();
+		//GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+    //GraphicsDevice gs = ge.getDefaultScreenDevice();
 		//gs.setFullScreenWindow(this);
 		this.setAlwaysOnTop(true);
     this.validate();
