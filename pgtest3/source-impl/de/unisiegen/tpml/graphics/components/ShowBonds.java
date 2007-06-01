@@ -184,7 +184,10 @@ public final class ShowBonds
                   new Object [ 0 ] ) ;
           for ( MonoType tau : types )
           {
-            check ( tau ) ;
+            if ( tau != null )
+            {
+              check ( tau ) ;
+            }
           }
         }
         catch ( IllegalArgumentException e )
