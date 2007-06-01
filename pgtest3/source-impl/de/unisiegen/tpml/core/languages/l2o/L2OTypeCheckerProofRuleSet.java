@@ -195,6 +195,7 @@ public class L2OTypeCheckerProofRuleSet extends L2TypeCheckerProofRuleSet
     TypeEnvironment environment = pNode.getEnvironment ( ) ;
     environment = environment.star ( ) ;
     pContext.addProofNode ( pNode , environment , e , tauE ) ;
+    environment = pNode.getEnvironment ( ) ;
     environment = environment.extend ( attribute.getId ( ) , tauE ) ;
     pContext.addProofNode ( pNode , environment , row.tailRow ( ) , tauRow ) ;
     pContext.addEquation ( pNode.getType ( ) , tauRow ) ;
