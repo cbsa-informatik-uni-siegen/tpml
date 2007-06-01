@@ -3,11 +3,12 @@ package de.unisiegen.tpml.graphics.outline.binding ;
 
 import java.util.ArrayList ;
 import de.unisiegen.tpml.core.expressions.Expression ;
-import de.unisiegen.tpml.core.expressions.Identifier ;
+import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable ;
+import de.unisiegen.tpml.core.types.Type ;
 
 
 /**
- * Finds the unbound {@link Identifier}s in a given {@link Expression}.
+ * Finds the unbound {@link PrettyPrintable}s in a given {@link Expression}.
  * 
  * @author Christian Fehler
  * @version $Rev: 995 $
@@ -15,17 +16,17 @@ import de.unisiegen.tpml.core.expressions.Identifier ;
 public final class OutlineUnbound
 {
   /**
-   * The list of unbound {@link Identifier}s in the {@link Expression}.
+   * The list of unbound {@link PrettyPrintable}s.
    */
-  private ArrayList < Identifier > list ;
+  private ArrayList < PrettyPrintable > list ;
 
 
   /**
    * Initilizes the list with the given list.
    * 
-   * @param pList The given list.
+   * @param pList The given {@link PrettyPrintable}s list.
    */
-  private OutlineUnbound ( ArrayList < Identifier > pList )
+  private OutlineUnbound ( ArrayList < PrettyPrintable > pList )
   {
     this.list = pList ;
   }
@@ -38,47 +39,62 @@ public final class OutlineUnbound
    */
   public OutlineUnbound ( Expression pExpression )
   {
-    this.list = pExpression.getIdentifiersFree ( ) ;
+    this.list = new ArrayList < PrettyPrintable > ( ) ;
+    this.list.addAll ( pExpression.getIdentifiersFree ( ) ) ;
+    this.list.addAll ( pExpression.getTypeNamesFree ( ) ) ;
   }
 
 
   /**
-   * Returns the unbound {@link Identifier} in the {@link Expression}.
+   * Initilizes the list.
    * 
-   * @param pIndex The index of the unbound {@link Identifier}.
-   * @return The unbound {@link Identifier} in the {@link Expression}.
+   * @param pType The input {@link Type}.
    */
-  public final Identifier get ( int pIndex )
+  public OutlineUnbound ( Type pType )
+  {
+    this.list = new ArrayList < PrettyPrintable > ( ) ;
+    this.list.addAll ( pType.getTypeNamesFree ( ) ) ;
+  }
+
+
+  /**
+   * Returns the unbound {@link PrettyPrintable}.
+   * 
+   * @param pIndex The index of the unbound {@link PrettyPrintable}.
+   * @return The unbound {@link PrettyPrintable}.
+   */
+  public final PrettyPrintable get ( int pIndex )
   {
     return this.list.get ( pIndex ) ;
   }
 
 
   /**
-   * Returns a reduces {@link OutlineUnbound}, which contains only the
-   * {@link Identifier}s which are present in the given {@link Expression}.
+   * Returns a reduced {@link OutlineUnbound}, which contains only the
+   * {@link PrettyPrintable}s which are present in the given
+   * {@link PrettyPrintable}.
    * 
-   * @param pExpression The input {@link Expression}.
-   * @return A reduces {@link OutlineUnbound}, which contains only the
-   *         {@link Identifier}s which are present in the given
-   *         {@link Expression}.
+   * @param pPrettyPrintable The input {@link PrettyPrintable}.
+   * @return A reduced {@link OutlineUnbound}, which contains only the
+   *         {@link PrettyPrintable}s which are present in the given
+   *         {@link PrettyPrintable}.
    */
-  public OutlineUnbound reduce ( Expression pExpression )
+  public OutlineUnbound reduce ( PrettyPrintable pPrettyPrintable )
   {
-    OutlineUnbound result = new OutlineUnbound ( new ArrayList < Identifier > (
-        this.list ) ) ;
-    for ( int i = result.size ( ) - 1 ; i >= 0 ; i -- )
+    OutlineUnbound result = new OutlineUnbound (
+        new ArrayList < PrettyPrintable > ( this.list ) ) ;
+    for ( int i = result.list.size ( ) - 1 ; i >= 0 ; i -- )
     {
       try
       {
-        pExpression.toPrettyString ( ).getAnnotationForPrintable (
-            result.get ( i ) ) ;
+        pPrettyPrintable.toPrettyString ( ).getAnnotationForPrintable (
+            result.list.get ( i ) ) ;
       }
       catch ( IllegalArgumentException e )
       {
-        result.remove ( i ) ;
+        result.list.remove ( i ) ;
         /*
-         * Happens if the unbound Identifier is not in this node.
+         * Happens if the unbound Identifier or TypeName is not in this node.
          */
       }
     }
@@ -87,22 +103,10 @@ public final class OutlineUnbound
 
 
   /**
-   * Removes the {@link Identifier} with the given index.
+   * Returns the size of the {@link PrettyPrintable} list. The size is equal to
+   * the number of unbound {@link PrettyPrintable}s.
    * 
-   * @param pIndex The index of the unbound {@link Identifier}.
-   * @return The removed {@link Identifier}.
-   */
-  public final Identifier remove ( int pIndex )
-  {
-    return this.list.remove ( pIndex ) ;
-  }
-
-
-  /**
-   * Returns the size of the list. The size is equal to the number of unbound
-   * {@link Identifier}s.
-   * 
-   * @return The number of unbound {@link Identifier}s.
+   * @return The number of unbound {@link PrettyPrintable}s.
    */
   public final int size ( )
   {

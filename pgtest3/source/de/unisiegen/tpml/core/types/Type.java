@@ -123,6 +123,12 @@ public abstract class Type implements PrettyPrintable , PrettyPrintPriorities
 
 
   /**
+   * A list of lists of bound {@link TypeName}s in this {@link Type}.
+   */
+  protected ArrayList < ArrayList < TypeName >> boundTypeNames = null ;
+
+
+  /**
    * Constructor for all types.
    */
   protected Type ( )

@@ -10,6 +10,7 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyCharIterator ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyPrintable ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStyle ;
 import de.unisiegen.tpml.core.types.Type ;
+import de.unisiegen.tpml.core.types.TypeName ;
 import de.unisiegen.tpml.graphics.Theme ;
 import de.unisiegen.tpml.graphics.outline.Outline ;
 import de.unisiegen.tpml.graphics.outline.binding.OutlineBinding ;
@@ -355,7 +356,7 @@ public final class OutlineNode extends DefaultMutableTreeNode
    * @see #getOutlineBinding()
    * @see #setOutlineBinding(OutlineBinding)
    */
-  private OutlineBinding outlineBinding ;
+  private OutlineBinding < ? > outlineBinding ;
 
 
   /**
@@ -404,15 +405,21 @@ public final class OutlineNode extends DefaultMutableTreeNode
 
 
   /**
+   * Indicates, if this node is a {@link Identifier}.
+   */
+  private boolean isIdentifier ;
+
+
+  /**
    * Indicates, if this node is a {@link Type}.
    */
   private boolean isType ;
 
 
   /**
-   * Indicates, if this node is a {@link Identifier}.
+   * Indicates, if this node is a {@link TypeName}.
    */
-  private boolean isIdentifier ;
+  private boolean isTypeName ;
 
 
   /**
@@ -506,6 +513,7 @@ public final class OutlineNode extends DefaultMutableTreeNode
     this.isExpression = false ;
     this.isIdentifier = false ;
     this.isType = false ;
+    this.isTypeName = false ;
     this.boundStart = NO_BINDING ;
     this.boundEnd = NO_BINDING ;
     this.lastSelectionStart = NO_SELECTION ;
@@ -522,10 +530,10 @@ public final class OutlineNode extends DefaultMutableTreeNode
    * @param pExpression The {@link Expression} repressented by this node.
    * @param pOutlineUnbound The {@link OutlineUnbound} which repressents the
    *          free {@link Identifier}s in all nodes.
-   * @param pIndex The child index.
+   * @param pChildIndex The child index.
    */
   public OutlineNode ( Expression pExpression , OutlineUnbound pOutlineUnbound ,
-      int pIndex )
+      int pChildIndex )
   {
     this ( ) ;
     this.expression = pExpression ;
@@ -536,8 +544,8 @@ public final class OutlineNode extends DefaultMutableTreeNode
     this.currentOutlineBreak = new OutlineBreak ( ) ;
     this.isExpression = true ;
     this.childIndex = pExpression.getPrefix ( )
-        + ( ( pIndex <= OutlineNode.NO_CHILD_INDEX ) ? BETWEEN1
-            : SMALL_SUB_BEGIN + pIndex + SMALL_SUB_END + BETWEEN1 ) ;
+        + ( ( pChildIndex <= OutlineNode.NO_CHILD_INDEX ) ? BETWEEN1
+            : SMALL_SUB_BEGIN + pChildIndex + SMALL_SUB_END + BETWEEN1 ) ;
   }
 
 
@@ -547,10 +555,10 @@ public final class OutlineNode extends DefaultMutableTreeNode
    * 
    * @param pIdentifier The {@link Identifier} repressented by this node.
    * @param pOutlineBinding The bindings in this node.
-   * @param pIndex The child index.
+   * @param pChildIndex The child index.
    */
-  public OutlineNode ( Identifier pIdentifier , int pIndex ,
-      OutlineBinding pOutlineBinding )
+  public OutlineNode ( Identifier pIdentifier , int pChildIndex ,
+      OutlineBinding < Identifier > pOutlineBinding )
   {
     this ( ) ;
     this.expression = pIdentifier ;
@@ -561,8 +569,8 @@ public final class OutlineNode extends DefaultMutableTreeNode
     this.currentOutlineBreak = new OutlineBreak ( ) ;
     this.isIdentifier = true ;
     this.childIndex = pIdentifier.getPrefix ( )
-        + ( ( pIndex <= OutlineNode.NO_CHILD_INDEX ) ? BETWEEN1
-            : SMALL_SUB_BEGIN + pIndex + SMALL_SUB_END + BETWEEN1 ) ;
+        + ( ( pChildIndex <= OutlineNode.NO_CHILD_INDEX ) ? BETWEEN1
+            : SMALL_SUB_BEGIN + pChildIndex + SMALL_SUB_END + BETWEEN1 ) ;
   }
 
 
@@ -571,18 +579,47 @@ public final class OutlineNode extends DefaultMutableTreeNode
    * used for {@link Type}s.
    * 
    * @param pType The {@link Type} repressented by this node.
+   * @param pOutlineUnbound The {@link OutlineUnbound} which repressents the
+   *          free {@link TypeName}s in all nodes.
    * @param pChildIndex The child index.
    */
-  public OutlineNode ( Type pType , int pChildIndex )
+  public OutlineNode ( Type pType , OutlineUnbound pOutlineUnbound ,
+      int pChildIndex )
   {
     this ( ) ;
     this.type = pType ;
     this.caption = pType.getCaption ( ) ;
     this.prettyString = pType.toPrettyString ( ).toString ( ) ;
+    this.outlineUnbound = pOutlineUnbound.reduce ( this.type ) ;
     this.outlineBreak = new OutlineBreak ( this.type ) ;
     this.currentOutlineBreak = new OutlineBreak ( ) ;
     this.isType = true ;
     this.childIndex = pType.getPrefix ( )
+        + ( ( pChildIndex <= OutlineNode.NO_CHILD_INDEX ) ? BETWEEN1
+            : SMALL_SUB_BEGIN + pChildIndex + SMALL_SUB_END + BETWEEN1 ) ;
+  }
+
+
+  /**
+   * This constructor initializes the values and loads the description. It is
+   * used for {@link TypeName}s.
+   * 
+   * @param pTypeName The {@link TypeName} repressented by this node.
+   * @param pChildIndex The child index.
+   * @param pOutlineBinding The bindings in this node.
+   */
+  public OutlineNode ( TypeName pTypeName , int pChildIndex ,
+      OutlineBinding < TypeName > pOutlineBinding )
+  {
+    this ( ) ;
+    this.type = pTypeName ;
+    this.caption = pTypeName.getCaption ( ) ;
+    this.prettyString = pTypeName.toPrettyString ( ).toString ( ) ;
+    this.outlineBinding = pOutlineBinding ;
+    this.outlineBreak = new OutlineBreak ( this.type ) ;
+    this.currentOutlineBreak = new OutlineBreak ( ) ;
+    this.isTypeName = true ;
+    this.childIndex = pTypeName.getPrefix ( )
         + ( ( pChildIndex <= OutlineNode.NO_CHILD_INDEX ) ? BETWEEN1
             : SMALL_SUB_BEGIN + pChildIndex + SMALL_SUB_END + BETWEEN1 ) ;
   }
@@ -673,14 +710,16 @@ public final class OutlineNode extends DefaultMutableTreeNode
 
 
   /**
-   * This method returns the length of the binding {@link Identifier}, if the
-   * {@link Identifier} begins at the given pCharIndex.
+   * This method returns the length of the binding {@link Identifier} or
+   * {@link TypeName}, if the {@link Identifier} or {@link TypeName} begins at
+   * the given pCharIndex.
    * 
-   * @param pCharIndex The index of the char in the {@link Expression}.
-   * @return The length of the {@link Identifier}, if the {@link Identifier}
-   *         begins at the given pCharIndex.
+   * @param pCharIndex The index of the char.
+   * @return The length of the {@link Identifier} or {@link TypeName}, if the
+   *         {@link Identifier} or {@link TypeName} begins at the given
+   *         pCharIndex.
    */
-  private final int charIsBindingIdentifier ( int pCharIndex )
+  private final int charIsBinding ( int pCharIndex )
   {
     if ( ( pCharIndex >= this.boundStart ) && ( pCharIndex <= this.boundEnd ) )
     {
@@ -691,14 +730,16 @@ public final class OutlineNode extends DefaultMutableTreeNode
 
 
   /**
-   * This method returns the length of the bound {@link Identifier}, if the
-   * {@link Identifier} begins at the given pCharIndex.
+   * This method returns the length of the bound {@link Identifier} or
+   * {@link TypeName}, if the {@link Identifier} or {@link TypeName} begins at
+   * the given pCharIndex.
    * 
    * @param pCharIndex The index of the char in the {@link Expression}.
-   * @return The length of the {@link Identifier}, if the {@link Identifier}
-   *         begins at the given pCharIndex.
+   * @return The length of the {@link Identifier} or {@link TypeName}, if the
+   *         {@link Identifier} or {@link TypeName} begins at the given
+   *         pCharIndex.
    */
-  private final int charIsBoundIdentifier ( int pCharIndex )
+  private final int charIsBound ( int pCharIndex )
   {
     if ( this.outlineBinding == null )
     {
@@ -709,8 +750,22 @@ public final class OutlineNode extends DefaultMutableTreeNode
     {
       try
       {
-        prettyAnnotation = this.expression.toPrettyString ( )
-            .getAnnotationForPrintable ( this.outlineBinding.get ( i ) ) ;
+        if ( this.expression != null )
+        {
+          prettyAnnotation = this.expression.toPrettyString ( )
+              .getAnnotationForPrintable (
+                  ( PrettyPrintable ) this.outlineBinding.get ( i ) ) ;
+        }
+        else if ( this.type != null )
+        {
+          prettyAnnotation = this.type.toPrettyString ( )
+              .getAnnotationForPrintable (
+                  ( PrettyPrintable ) this.outlineBinding.get ( i ) ) ;
+        }
+        else
+        {
+          return - 1 ;
+        }
         if ( ( pCharIndex >= prettyAnnotation.getStartOffset ( ) )
             && ( pCharIndex <= prettyAnnotation.getEndOffset ( ) ) )
         {
@@ -742,8 +797,21 @@ public final class OutlineNode extends DefaultMutableTreeNode
   {
     for ( int i = 0 ; i < this.outlineUnbound.size ( ) ; i ++ )
     {
-      PrettyAnnotation prettyAnnotation = this.expression.toPrettyString ( )
-          .getAnnotationForPrintable ( this.outlineUnbound.get ( i ) ) ;
+      PrettyAnnotation prettyAnnotation = null ;
+      if ( this.expression != null )
+      {
+        prettyAnnotation = this.expression.toPrettyString ( )
+            .getAnnotationForPrintable ( this.outlineUnbound.get ( i ) ) ;
+      }
+      else if ( this.type != null )
+      {
+        prettyAnnotation = this.type.toPrettyString ( )
+            .getAnnotationForPrintable ( this.outlineUnbound.get ( i ) ) ;
+      }
+      else
+      {
+        return - 1 ;
+      }
       if ( ( pCharIndex >= prettyAnnotation.getStartOffset ( ) )
           && ( pCharIndex <= prettyAnnotation.getEndOffset ( ) ) )
       {
@@ -798,7 +866,7 @@ public final class OutlineNode extends DefaultMutableTreeNode
    * @see #outlineBinding
    * @see #setOutlineBinding(OutlineBinding)
    */
-  public final OutlineBinding getOutlineBinding ( )
+  public final OutlineBinding < ? > getOutlineBinding ( )
   {
     return this.outlineBinding ;
   }
@@ -825,17 +893,13 @@ public final class OutlineNode extends DefaultMutableTreeNode
    */
   public final PrettyPrintable getPrettyPrintable ( )
   {
-    if ( this.isExpression )
+    if ( this.isExpression || this.isIdentifier )
     {
       return this.expression ;
     }
-    if ( this.isType )
+    if ( this.isType || this.isTypeName )
     {
       return this.type ;
-    }
-    if ( this.isIdentifier )
-    {
-      return this.expression ;
     }
     return null ;
   }
@@ -901,6 +965,18 @@ public final class OutlineNode extends DefaultMutableTreeNode
 
 
   /**
+   * Returns the isTypeName.
+   * 
+   * @return The isTypeName.
+   * @see #isTypeName
+   */
+  public final boolean isTypeName ( )
+  {
+    return this.isTypeName ;
+  }
+
+
+  /**
    * Loads the current color settings.
    */
   public final void propertyChanged ( )
@@ -933,7 +1009,7 @@ public final class OutlineNode extends DefaultMutableTreeNode
    */
   public void setBindingIdentifier ( Identifier pBindingIdentifier )
   {
-    if ( ( this.isType ) || ( pBindingIdentifier == null ) )
+    if ( pBindingIdentifier == null )
     {
       this.boundStart = NO_BINDING ;
       this.boundEnd = NO_BINDING ;
@@ -941,8 +1017,23 @@ public final class OutlineNode extends DefaultMutableTreeNode
     }
     try
     {
-      PrettyAnnotation prettyAnnotation = this.expression.toPrettyString ( )
-          .getAnnotationForPrintable ( pBindingIdentifier ) ;
+      PrettyAnnotation prettyAnnotation ;
+      if ( this.type != null )
+      {
+        prettyAnnotation = this.type.toPrettyString ( )
+            .getAnnotationForPrintable ( pBindingIdentifier ) ;
+      }
+      else if ( this.expression != null )
+      {
+        prettyAnnotation = this.expression.toPrettyString ( )
+            .getAnnotationForPrintable ( pBindingIdentifier ) ;
+      }
+      else
+      {
+        this.boundStart = NO_BINDING ;
+        this.boundEnd = NO_BINDING ;
+        return ;
+      }
       this.boundStart = prettyAnnotation.getStartOffset ( ) ;
       this.boundEnd = prettyAnnotation.getEndOffset ( ) ;
     }
@@ -950,6 +1041,52 @@ public final class OutlineNode extends DefaultMutableTreeNode
     {
       /*
        * Happens if the bound Identifiers are not in this node.
+       */
+      this.boundStart = NO_BINDING ;
+      this.boundEnd = NO_BINDING ;
+    }
+  }
+
+
+  /**
+   * Sets the {@link TypeName} which should be highlighted.
+   * 
+   * @param pBindingTypeName The {@link TypeName} which should be highlighted.
+   */
+  public void setBindingTypeName ( TypeName pBindingTypeName )
+  {
+    if ( pBindingTypeName == null )
+    {
+      this.boundStart = NO_BINDING ;
+      this.boundEnd = NO_BINDING ;
+      return ;
+    }
+    try
+    {
+      PrettyAnnotation prettyAnnotation ;
+      if ( this.type != null )
+      {
+        prettyAnnotation = this.type.toPrettyString ( )
+            .getAnnotationForPrintable ( pBindingTypeName ) ;
+      }
+      else if ( this.expression != null )
+      {
+        prettyAnnotation = this.expression.toPrettyString ( )
+            .getAnnotationForPrintable ( pBindingTypeName ) ;
+      }
+      else
+      {
+        this.boundStart = NO_BINDING ;
+        this.boundEnd = NO_BINDING ;
+        return ;
+      }
+      this.boundStart = prettyAnnotation.getStartOffset ( ) ;
+      this.boundEnd = prettyAnnotation.getEndOffset ( ) ;
+    }
+    catch ( IllegalArgumentException e )
+    {
+      /*
+       * Happens if the bound TypeNames are not in this node.
        */
       this.boundStart = NO_BINDING ;
       this.boundEnd = NO_BINDING ;
@@ -976,9 +1113,9 @@ public final class OutlineNode extends DefaultMutableTreeNode
    * @see #outlineBinding
    * @see #getOutlineBinding()
    */
-  public final void setOutlineBinding ( OutlineBinding pOutlineBinding )
+  public final void setOutlineBinding ( OutlineBinding < ? > pOutlineBinding )
   {
-    if ( ! this.isIdentifier )
+    if ( ( ! this.isIdentifier ) && ( ! this.isTypeName ) )
     {
       this.outlineBinding = pOutlineBinding ;
     }
@@ -1120,27 +1257,27 @@ public final class OutlineNode extends DefaultMutableTreeNode
         }
       }
       /*
-       * Bound Identifier
+       * Bound Identifier or bound TypeName
        */
-      else if ( ( binding ) && ( this.isExpression )
+      else if ( ( binding ) && ( this.isExpression || this.isType )
           && ( this.outlineBinding != null )
-          && ( ( count = charIsBoundIdentifier ( charIndex ) ) >= 0 ) )
+          && ( ( count = charIsBound ( charIndex ) ) >= 0 ) )
       {
         charIndex = updateCaptionBinding ( charIndex , count ,
             prettyCharIterator , result , prefix , this.boundIdColor ) ;
       }
       /*
-       * Binding Identifier.
+       * Binding Identifier or binding TypeName
        */
-      else if ( ( binding )
-          && ( ( count = charIsBindingIdentifier ( charIndex ) ) >= 0 ) )
+      else if ( ( binding ) && ( ( count = charIsBinding ( charIndex ) ) >= 0 ) )
       {
         charIndex = updateCaptionBinding ( charIndex , count ,
             prettyCharIterator , result , prefix , this.bindingIdColor ) ;
       }
       /*
-       * The selected Identifier-Expression is bound in this Expression, but
-       * should not be selected
+       * The selected Identifier-Expression is bound in this Expression or Type,
+       * but should not be selected or the selected TypeName-Type is bound in
+       * this Expression or Type, but should not be selected.
        */
       else if ( ( ! selection ) && ( binding )
           && ( this.boundStart != NO_BINDING )

@@ -73,7 +73,7 @@ public class OutlineNodeCache
    * 
    * @see #getOutlineBinding()
    */
-  private OutlineBinding outlineBinding ;
+  private OutlineBinding < ? > outlineBinding ;
 
 
   /**
@@ -104,7 +104,7 @@ public class OutlineNodeCache
   public OutlineNodeCache ( int pSelectionStart , int pSelectionEnd ,
       boolean pSelection , boolean pBinding , boolean pFree , boolean pReplace ,
       int pBoundStart , int pBoundEnd , int pBreakCount ,
-      OutlineBinding pOutlineBinding , String pCaption )
+      OutlineBinding < ? > pOutlineBinding , String pCaption )
   {
     this.selectionStart = pSelectionStart ;
     this.selectionEnd = pSelectionEnd ;
@@ -174,7 +174,7 @@ public class OutlineNodeCache
    * @return The {@link OutlineBinding}.
    * @see #outlineBinding
    */
-  public final OutlineBinding getOutlineBinding ( )
+  public final OutlineBinding < ? > getOutlineBinding ( )
   {
     return this.outlineBinding ;
   }

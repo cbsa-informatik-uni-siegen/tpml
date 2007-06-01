@@ -71,7 +71,7 @@ public final class OutlineNodeCacheList
   public final String getCaption ( int pSelectionStart , int pSelectionEnd ,
       boolean pSelection , boolean pBinding , boolean pFree , boolean pReplace ,
       int pBoundStart , int pBoundEnd , int pBreakCount ,
-      OutlineBinding pOutlineBinding )
+      OutlineBinding < ? > pOutlineBinding )
   {
     for ( OutlineNodeCache current : this.list )
     {

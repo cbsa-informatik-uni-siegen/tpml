@@ -79,6 +79,12 @@ public final class DefaultOutline implements Outline
 
 
   /**
+   * Method name for getTypeNamesBound
+   */
+  private static final String GET_TYPE_NAMES_BOUND = "getTypeNamesBound" ; //$NON-NLS-1$
+
+
+  /**
    * Method name for getTypeNamesIndex
    */
   private static final String GET_TYPE_NAMES_INDEX = "getTypeNamesIndex" ; //$NON-NLS-1$
@@ -685,7 +691,7 @@ public final class DefaultOutline implements Outline
                   && ( typesIndex [ j ] == identifiersIndex [ i ] ) )
               {
                 outlineNodeType = new OutlineNode ( types [ j ] ,
-                    typesIndex [ j ] ) ;
+                    this.outlineUnbound , typesIndex [ j ] ) ;
                 createType ( types [ j ] , outlineNodeType ) ;
                 outlineNodeId.add ( outlineNodeType ) ;
               }
@@ -701,7 +707,8 @@ public final class DefaultOutline implements Outline
         {
           if ( ( types [ i ] != null ) && ( typesIndex [ i ] == - 1 ) )
           {
-            outlineNodeType = new OutlineNode ( types [ i ] , typesIndex [ i ] ) ;
+            outlineNodeType = new OutlineNode ( types [ i ] ,
+                this.outlineUnbound , typesIndex [ i ] ) ;
             createType ( types [ i ] , outlineNodeType ) ;
             pOutlineNode.add ( outlineNodeType ) ;
           }
@@ -728,6 +735,7 @@ public final class DefaultOutline implements Outline
       {
         PrettyPrintable current = sortedChildren [ i ] ;
         boolean found = false ;
+        // Identifier
         if ( ( identifiers != null ) && ( identifiersIndex != null ) )
         {
           for ( int j = 0 ; j < identifiers.length ; j ++ )
@@ -750,13 +758,15 @@ public final class DefaultOutline implements Outline
             }
           }
         }
+        // Type
         if ( ( ! found ) && ( types != null ) && ( typesIndex != null ) )
         {
           for ( int j = 0 ; j < types.length ; j ++ )
           {
             if ( current == types [ j ] )
             {
-              outlineNodeType = new OutlineNode ( types [ j ] , typesIndex [ j ] ) ;
+              outlineNodeType = new OutlineNode ( types [ j ] ,
+                  this.outlineUnbound , typesIndex [ j ] ) ;
               createType ( types [ j ] , outlineNodeType ) ;
               pOutlineNode.add ( outlineNodeType ) ;
               found = true ;
@@ -764,6 +774,7 @@ public final class DefaultOutline implements Outline
             }
           }
         }
+        // Expression
         if ( ( ! found ) && ( expressionsIndex != null ) )
         {
           ArrayList < Expression > children = pExpression.children ( ) ;
@@ -806,6 +817,8 @@ public final class DefaultOutline implements Outline
     // TypeName
     TypeName [ ] typeNames = null ;
     int [ ] typeNamesIndex = null ;
+    // Bound TypeName
+    ArrayList < ArrayList < TypeName >> typeNamesBound = null ;
     for ( Class < ? > currentInterface : pType.getClass ( ).getInterfaces ( ) )
     {
       if ( currentInterface
@@ -831,73 +844,115 @@ public final class DefaultOutline implements Outline
         typeNamesIndex = getIndex ( pType , GET_TYPE_NAMES_INDEX ) ;
         typeNames = getTypeNames ( pType ) ;
       }
-    }
-    if ( ( types != null ) && ( typesIndex != null ) )
-    {
-      OutlineNode outlineNodeId ;
-      OutlineNode outlineNodeType ;
-      // No sorted children
-      if ( sortedChildren == null )
+      else if ( currentInterface
+          .equals ( de.unisiegen.tpml.core.interfaces.BoundTypeNames.class ) )
       {
-        if ( ( identifiers != null ) && ( identifiersIndex != null ) )
+        typeNamesIndex = getIndex ( pType , GET_TYPE_NAMES_INDEX ) ;
+        typeNames = getTypeNames ( pType ) ;
+        typeNamesBound = getTypeNamesBound ( pType ) ;
+      }
+    }
+    OutlineNode outlineNodeId ;
+    OutlineNode outlineNodeType ;
+    OutlineBinding < TypeName > outlineBinding ;
+    // No sorted children
+    if ( sortedChildren == null )
+    {
+      // Identifier
+      if ( ( identifiers != null ) && ( identifiersIndex != null ) )
+      {
+        for ( int i = 0 ; i < identifiers.length ; i ++ )
         {
-          for ( int i = 0 ; i < identifiers.length ; i ++ )
-          {
-            outlineNodeId = new OutlineNode ( identifiers [ i ] ,
-                identifiersIndex [ i ] , null ) ;
-            pOutlineNode.add ( outlineNodeId ) ;
-          }
+          outlineNodeId = new OutlineNode ( identifiers [ i ] ,
+              identifiersIndex [ i ] , null ) ;
+          pOutlineNode.add ( outlineNodeId ) ;
         }
-        if ( ( typeNames != null ) && ( typeNamesIndex != null ) )
+      }
+      // TypeName
+      if ( ( typeNames != null ) && ( typeNamesIndex != null ) )
+      {
+        for ( int i = 0 ; i < typeNames.length ; i ++ )
         {
-          for ( int i = 0 ; i < typeNames.length ; i ++ )
+          if ( typeNamesBound == null )
           {
-            outlineNodeId = new OutlineNode ( typeNames [ i ] ,
-                typeNamesIndex [ i ] ) ;
-            pOutlineNode.add ( outlineNodeId ) ;
+            outlineBinding = null ;
           }
+          else
+          {
+            outlineBinding = new OutlineBinding < TypeName > ( typeNamesBound
+                .get ( i ) ) ;
+          }
+          outlineNodeId = new OutlineNode ( typeNames [ i ] ,
+              typeNamesIndex [ i ] , outlineBinding ) ;
+          pOutlineNode.add ( outlineNodeId ) ;
         }
+      }
+      // Type
+      if ( ( types != null ) && ( typesIndex != null ) )
+      {
         for ( int i = 0 ; i < types.length ; i ++ )
         {
-          outlineNodeType = new OutlineNode ( types [ i ] , typesIndex [ i ] ) ;
+          outlineNodeType = new OutlineNode ( types [ i ] ,
+              this.outlineUnbound , typesIndex [ i ] ) ;
           createType ( types [ i ] , outlineNodeType ) ;
           pOutlineNode.add ( outlineNodeType ) ;
         }
       }
-      // Sorted children
-      else
+    }
+    // Sorted children
+    else
+    {
+      for ( int i = 0 ; i < sortedChildren.length ; i ++ )
       {
-        for ( int i = 0 ; i < sortedChildren.length ; i ++ )
+        PrettyPrintable current = sortedChildren [ i ] ;
+        boolean found = false ;
+        // Identifier
+        if ( ( identifiers != null ) && ( identifiersIndex != null ) )
         {
-          PrettyPrintable current = sortedChildren [ i ] ;
-          boolean found = false ;
-          if ( ( identifiers != null ) && ( identifiersIndex != null ) )
+          for ( int j = 0 ; j < identifiers.length ; j ++ )
           {
-            for ( int j = 0 ; j < identifiers.length ; j ++ )
+            if ( current == identifiers [ j ] )
             {
-              if ( current == identifiers [ j ] )
-              {
-                outlineNodeId = new OutlineNode ( identifiers [ j ] ,
-                    identifiersIndex [ j ] , null ) ;
-                pOutlineNode.add ( outlineNodeId ) ;
-                found = true ;
-                break ;
-              }
+              outlineNodeId = new OutlineNode ( identifiers [ j ] ,
+                  identifiersIndex [ j ] , null ) ;
+              pOutlineNode.add ( outlineNodeId ) ;
+              found = true ;
+              break ;
             }
           }
-          if ( ! found )
+        }
+        // TypeName
+        if ( ( ! found ) && ( typeNames != null ) && ( typeNamesIndex != null ) )
+        {
+          for ( int j = 0 ; j < typeNames.length ; j ++ )
           {
-            for ( int j = 0 ; j < types.length ; j ++ )
+            if ( typeNamesBound == null )
             {
-              if ( current == types [ j ] )
-              {
-                outlineNodeType = new OutlineNode ( types [ j ] ,
-                    typesIndex [ j ] ) ;
-                createType ( types [ j ] , outlineNodeType ) ;
-                pOutlineNode.add ( outlineNodeType ) ;
-                found = true ;
-                break ;
-              }
+              outlineBinding = null ;
+            }
+            else
+            {
+              outlineBinding = new OutlineBinding < TypeName > ( typeNamesBound
+                  .get ( j ) ) ;
+            }
+            outlineNodeId = new OutlineNode ( typeNames [ j ] ,
+                typeNamesIndex [ j ] , outlineBinding ) ;
+            pOutlineNode.add ( outlineNodeId ) ;
+          }
+        }
+        // Type
+        if ( ( ! found ) && ( types != null ) && ( typesIndex != null ) )
+        {
+          for ( int j = 0 ; j < types.length ; j ++ )
+          {
+            if ( current == types [ j ] )
+            {
+              outlineNodeType = new OutlineNode ( types [ j ] ,
+                  this.outlineUnbound , typesIndex [ j ] ) ;
+              createType ( types [ j ] , outlineNodeType ) ;
+              pOutlineNode.add ( outlineNodeType ) ;
+              found = true ;
+              break ;
             }
           }
         }
@@ -926,7 +981,8 @@ public final class DefaultOutline implements Outline
     else if ( this.loadedPrettyPrintable instanceof Type )
     {
       Type type = ( Type ) this.loadedPrettyPrintable ;
-      this.rootOutlineNode = new OutlineNode ( type ,
+      this.outlineUnbound = new OutlineUnbound ( type ) ;
+      this.rootOutlineNode = new OutlineNode ( type , this.outlineUnbound ,
           OutlineNode.NO_CHILD_INDEX ) ;
       createType ( type , this.rootOutlineNode ) ;
     }
@@ -980,45 +1036,6 @@ public final class DefaultOutline implements Outline
     {
       return ( Identifier [ ] ) pInvokedFrom.getClass ( ).getMethod (
           GET_IDENTIFIERS , new Class [ 0 ] ).invoke ( pInvokedFrom ,
-          new Object [ 0 ] ) ;
-    }
-    catch ( IllegalArgumentException e )
-    {
-      System.err.println ( "DefaultOutline: IllegalArgumentException" ) ; //$NON-NLS-1$
-    }
-    catch ( SecurityException e )
-    {
-      System.err.println ( "DefaultOutline: SecurityException" ) ; //$NON-NLS-1$
-    }
-    catch ( IllegalAccessException e )
-    {
-      System.err.println ( "DefaultOutline: IllegalAccessException" ) ; //$NON-NLS-1$
-    }
-    catch ( InvocationTargetException e )
-    {
-      System.err.println ( "DefaultOutline: InvocationTargetException" ) ; //$NON-NLS-1$
-    }
-    catch ( NoSuchMethodException e )
-    {
-      System.err.println ( "DefaultOutline: NoSuchMethodException" ) ; //$NON-NLS-1$
-    }
-    return null ;
-  }
-
-
-  /**
-   * Returns the array of {@link TypeName}s from the given {@link Expression}
-   * or {@link Type}.
-   * 
-   * @param pInvokedFrom The {@link Expression} or {@link Type}.
-   * @return The array of {@link TypeName}s.
-   */
-  private final TypeName [ ] getTypeNames ( Object pInvokedFrom )
-  {
-    try
-    {
-      return ( TypeName [ ] ) pInvokedFrom.getClass ( ).getMethod (
-          GET_TYPE_NAMES , new Class [ 0 ] ).invoke ( pInvokedFrom ,
           new Object [ 0 ] ) ;
     }
     catch ( IllegalArgumentException e )
@@ -1221,6 +1238,85 @@ public final class DefaultOutline implements Outline
   public TextEditorPanel getTextEditorPanel ( )
   {
     return this.textEditorPanel ;
+  }
+
+
+  /**
+   * Returns the array of {@link TypeName}s from the given {@link Expression}
+   * or {@link Type}.
+   * 
+   * @param pInvokedFrom The {@link Expression} or {@link Type}.
+   * @return The array of {@link TypeName}s.
+   */
+  private final TypeName [ ] getTypeNames ( Object pInvokedFrom )
+  {
+    try
+    {
+      return ( TypeName [ ] ) pInvokedFrom.getClass ( ).getMethod (
+          GET_TYPE_NAMES , new Class [ 0 ] ).invoke ( pInvokedFrom ,
+          new Object [ 0 ] ) ;
+    }
+    catch ( IllegalArgumentException e )
+    {
+      System.err.println ( "DefaultOutline: IllegalArgumentException" ) ; //$NON-NLS-1$
+    }
+    catch ( SecurityException e )
+    {
+      System.err.println ( "DefaultOutline: SecurityException" ) ; //$NON-NLS-1$
+    }
+    catch ( IllegalAccessException e )
+    {
+      System.err.println ( "DefaultOutline: IllegalAccessException" ) ; //$NON-NLS-1$
+    }
+    catch ( InvocationTargetException e )
+    {
+      System.err.println ( "DefaultOutline: InvocationTargetException" ) ; //$NON-NLS-1$
+    }
+    catch ( NoSuchMethodException e )
+    {
+      System.err.println ( "DefaultOutline: NoSuchMethodException" ) ; //$NON-NLS-1$
+    }
+    return null ;
+  }
+
+
+  /**
+   * Returns the array of bound {@link TypeName}s from the given {@link Type}.
+   * 
+   * @param pInvokedFrom The {@link Type}.
+   * @return The array of bound {@link TypeName}s.
+   */
+  @ SuppressWarnings ( "unchecked" )
+  private final ArrayList < ArrayList < TypeName >> getTypeNamesBound (
+      Object pInvokedFrom )
+  {
+    try
+    {
+      return ( ArrayList < ArrayList < TypeName >> ) pInvokedFrom.getClass ( )
+          .getMethod ( GET_TYPE_NAMES_BOUND , new Class [ 0 ] ).invoke (
+              pInvokedFrom , new Object [ 0 ] ) ;
+    }
+    catch ( IllegalArgumentException e )
+    {
+      System.err.println ( "DefaultOutline: IllegalArgumentException" ) ; //$NON-NLS-1$
+    }
+    catch ( SecurityException e )
+    {
+      System.err.println ( "DefaultOutline: SecurityException" ) ; //$NON-NLS-1$
+    }
+    catch ( IllegalAccessException e )
+    {
+      System.err.println ( "DefaultOutline: IllegalAccessException" ) ; //$NON-NLS-1$
+    }
+    catch ( InvocationTargetException e )
+    {
+      System.err.println ( "DefaultOutline: InvocationTargetException" ) ; //$NON-NLS-1$
+    }
+    catch ( NoSuchMethodException e )
+    {
+      System.err.println ( "DefaultOutline: NoSuchMethodException" ) ; //$NON-NLS-1$
+    }
+    return null ;
   }
 
 
@@ -1554,6 +1650,11 @@ public final class DefaultOutline implements Outline
     {
       updateType ( list , pTreePath ) ;
     }
+    // Type
+    else if ( selectedNode.isTypeName ( ) )
+    {
+      updateTypeName ( list , pTreePath ) ;
+    }
     updateBreaks ( ) ;
   }
 
@@ -1879,6 +1980,45 @@ public final class DefaultOutline implements Outline
     OutlineNode selectedNode = pList.get ( pList.size ( ) - 1 ) ;
     for ( int i = 0 ; i < pList.size ( ) ; i ++ )
     {
+      if ( ( selectedNode.getPrettyPrintable ( ) instanceof TypeName )
+          && ( i < pList.size ( ) - 1 )
+          && ( ( ( TypeName ) selectedNode.getPrettyPrintable ( ) )
+              .getBoundToType ( ) != null ) )
+      {
+        try
+        {
+          TypeName typeName = ( TypeName ) selectedNode.getPrettyPrintable ( ) ;
+          /*
+           * Highlight the TypeName in the child node with the bound TypeName
+           * index.
+           */
+          if ( pList.get ( i ).getPrettyPrintable ( ) == typeName
+              .getBoundToType ( ) )
+          {
+            for ( int j = 0 ; j < pList.get ( i ).getChildCount ( ) ; j ++ )
+            {
+              OutlineNode nodeTypeName = ( OutlineNode ) pList.get ( i )
+                  .getChildAt ( j ) ;
+              if ( nodeTypeName.getPrettyPrintable ( ) == typeName
+                  .getBoundToTypeName ( ) )
+              {
+                nodeTypeName.setBindingTypeName ( typeName
+                    .getBoundToTypeName ( ) ) ;
+                nodeTypeName.updateCaption ( ) ;
+                break ;
+              }
+            }
+          }
+          /*
+           * Highlight the TypeName in the node.
+           */
+          pList.get ( i ).setBindingTypeName ( typeName.getBoundToTypeName ( ) ) ;
+        }
+        catch ( IllegalArgumentException e )
+        {
+          // Do nothing
+        }
+      }
       /*
        * It should be replaced in higher nodes, but not the selected node
        */
@@ -1900,6 +2040,49 @@ public final class DefaultOutline implements Outline
       {
         continue ;
       }
+      PrettyAnnotation prettyAnnotation = pList.get ( i ).getPrettyPrintable ( )
+          .toPrettyString ( ).getAnnotationForPrintable (
+              selectedNode.getPrettyPrintable ( ) ) ;
+      pList.get ( i ).updateCaption ( prettyAnnotation.getStartOffset ( ) ,
+          prettyAnnotation.getEndOffset ( ) ) ;
+      /*
+       * Node has changed and can be repainted
+       */
+      this.outlineUI.getTreeModel ( ).nodeChanged (
+          ( ( OutlineNode ) pTreePath.getPath ( ) [ i ] ) ) ;
+    }
+  }
+
+
+  /**
+   * Updates the caption of the selected node and its higher nodes.
+   * 
+   * @param pList The parent nodes of the selected node.
+   * @param pTreePath The selected <code>TreePath</code>.
+   */
+  private final void updateTypeName ( ArrayList < OutlineNode > pList ,
+      TreePath pTreePath )
+  {
+    OutlineNode selectedNode = pList.get ( pList.size ( ) - 1 ) ;
+    for ( int i = 0 ; i < pList.size ( ) ; i ++ )
+    {
+      /*
+       * Sets the new binding in higher nodes
+       */
+      pList.get ( i ).setOutlineBinding ( selectedNode.getOutlineBinding ( ) ) ;
+      /*
+       * Sets the setBindingTypeName value.
+       */
+      pList.get ( i ).setBindingTypeName (
+          ( ( TypeName ) selectedNode.getPrettyPrintable ( ) )
+              .getBoundToTypeName ( ) ) ;
+      /*
+       * It should be replaced in higher nodes
+       */
+      pList.get ( i ).setReplaceInThisNode ( true ) ;
+      /*
+       * Update the caption of the node
+       */
       PrettyAnnotation prettyAnnotation = pList.get ( i ).getPrettyPrintable ( )
           .toPrettyString ( ).getAnnotationForPrintable (
               selectedNode.getPrettyPrintable ( ) ) ;

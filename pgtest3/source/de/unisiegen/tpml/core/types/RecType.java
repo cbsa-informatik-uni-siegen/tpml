@@ -4,7 +4,7 @@ package de.unisiegen.tpml.core.types ;
 import java.util.ArrayList ;
 import java.util.Set ;
 import java.util.TreeSet ;
-import de.unisiegen.tpml.core.interfaces.DefaultTypeNames ;
+import de.unisiegen.tpml.core.interfaces.BoundTypeNames ;
 import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
@@ -20,7 +20,7 @@ import de.unisiegen.tpml.core.util.BoundRenaming ;
  * @see #typeNames
  */
 public final class RecType extends MonoType implements DefaultTypes ,
-    DefaultTypeNames
+    BoundTypeNames
 {
   /**
    * Indeces of the child {@link Type}s.
@@ -167,6 +167,32 @@ public final class RecType extends MonoType implements DefaultTypes ,
   public TypeName [ ] getTypeNames ( )
   {
     return this.typeNames ;
+  }
+
+
+  /**
+   * Returns a list of lists of in this {@link Type} bound {@link TypeName}s.
+   * 
+   * @return A list of lists of in this {@link Type} bound {@link TypeName}s.
+   */
+  public ArrayList < ArrayList < TypeName >> getTypeNamesBound ( )
+  {
+    if ( this.boundTypeNames == null )
+    {
+      this.boundTypeNames = new ArrayList < ArrayList < TypeName >> ( 1 ) ;
+      ArrayList < TypeName > boundTypeNamesList = new ArrayList < TypeName > ( ) ;
+      ArrayList < TypeName > boundTau = this.types [ 0 ].getTypeNamesFree ( ) ;
+      for ( TypeName freeTypeName : boundTau )
+      {
+        if ( this.typeNames [ 0 ].equals ( freeTypeName ) )
+        {
+          freeTypeName.setBoundTo ( this , this.typeNames [ 0 ] ) ;
+          boundTypeNamesList.add ( freeTypeName ) ;
+        }
+      }
+      this.boundTypeNames.add ( boundTypeNamesList ) ;
+    }
+    return this.boundTypeNames ;
   }
 
 

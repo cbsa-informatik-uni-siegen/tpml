@@ -4,6 +4,7 @@ package de.unisiegen.tpml.core.types ;
 import java.lang.reflect.InvocationTargetException ;
 import java.util.ArrayList ;
 import de.unisiegen.tpml.core.expressions.Expression ;
+import de.unisiegen.tpml.core.expressions.Identifier ;
 import de.unisiegen.tpml.core.interfaces.DefaultName ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
@@ -18,6 +19,30 @@ import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
  */
 public final class TypeName extends MonoType implements DefaultName
 {
+  /**
+   * Method name for getTypeNames
+   */
+  private static final String GET_TYPE_NAMES = "getTypeNames" ; //$NON-NLS-1$
+
+
+  /**
+   * The {@link Type} in which this {@link TypeName} is bound.
+   * 
+   * @see #getBoundToType()
+   * @see #setBoundTo(Type,TypeName)
+   */
+  private Type boundToType ;
+
+
+  /**
+   * The {@link TypeName} to which this {@link TypeName} is bound.
+   * 
+   * @see #getBoundToTypeName()
+   * @see #setBoundTo(Type,TypeName)
+   */
+  private TypeName boundToTypeName ;
+
+
   /**
    * The name of the {@link TypeName}.
    * 
@@ -67,9 +92,67 @@ public final class TypeName extends MonoType implements DefaultName
 
 
   /**
-   * Method name for getTypeNames
+   * {@inheritDoc}
+   * 
+   * @see Type#equals(Object)
    */
-  private static final String GET_TYPE_NAMES = "getTypeNames" ; //$NON-NLS-1$
+  @ Override
+  public boolean equals ( Object obj )
+  {
+    if ( obj instanceof TypeName )
+    {
+      TypeName other = ( TypeName ) obj ;
+      return this.name.equals ( other.name ) ;
+    }
+    return false ;
+  }
+
+
+  /**
+   * Returns the {@link Type} in which this {@link TypeName} is bound.
+   * 
+   * @return The {@link Type} in which this {@link TypeName} is bound.
+   * @see #boundToType
+   * @see #setBoundTo(Type,TypeName)
+   */
+  public Type getBoundToType ( )
+  {
+    return this.boundToType ;
+  }
+
+
+  /**
+   * Returns the {@link TypeName} to which this {@link TypeName} is bound.
+   * 
+   * @return The {@link TypeName} to which this {@link TypeName} is bound.
+   * @see #boundToTypeName
+   * @see #setBoundTo(Type,TypeName)
+   */
+  public TypeName getBoundToTypeName ( )
+  {
+    return this.boundToTypeName ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   */
+  @ Override
+  public String getCaption ( )
+  {
+    return "Type-Name" ; //$NON-NLS-1$
+  }
+
+
+  /**
+   * Returns the name of the {@link TypeName}.
+   * 
+   * @return the name of the {@link TypeName}.
+   */
+  public String getName ( )
+  {
+    return this.name ;
+  }
 
 
   /**
@@ -126,8 +209,9 @@ public final class TypeName extends MonoType implements DefaultName
         for ( Class < ? > currentInterface : this.parent.getClass ( )
             .getInterfaces ( ) )
         {
-          if ( currentInterface
-              .equals ( de.unisiegen.tpml.core.interfaces.DefaultTypeNames.class ) )
+          if ( ( currentInterface
+              .equals ( de.unisiegen.tpml.core.interfaces.DefaultTypeNames.class ) || ( currentInterface
+              .equals ( de.unisiegen.tpml.core.interfaces.BoundTypeNames.class ) ) ) )
           {
             for ( TypeName typeName : getParentTypeNames ( this.parent ) )
             {
@@ -143,44 +227,6 @@ public final class TypeName extends MonoType implements DefaultName
       this.prefix = PREFIX_TAU ;
     }
     return this.prefix ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Type#equals(Object)
-   */
-  @ Override
-  public boolean equals ( Object obj )
-  {
-    if ( obj instanceof TypeName )
-    {
-      TypeName other = ( TypeName ) obj ;
-      return this.name.equals ( other.name ) ;
-    }
-    return false ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   */
-  @ Override
-  public String getCaption ( )
-  {
-    return "Type-Name" ; //$NON-NLS-1$
-  }
-
-
-  /**
-   * Returns the name of the {@link TypeName}.
-   * 
-   * @return the name of the {@link TypeName}.
-   */
-  public String getName ( )
-  {
-    return this.name ;
   }
 
 
@@ -210,6 +256,35 @@ public final class TypeName extends MonoType implements DefaultName
   public int hashCode ( )
   {
     return this.name.hashCode ( ) ;
+  }
+
+
+  /**
+   * Sets the {@link TypeName} to which this {@link TypeName} is bound and the
+   * {@link Type} in which this {@link TypeName} is bound.
+   * 
+   * @param pBoundToType The {@link Type} in which this {@link Identifier} is
+   *          bound.
+   * @param pBoundToTypeName The {@link TypeName} to which this
+   *          {@link Identifier} is bound.
+   * @see #boundToTypeName
+   * @see #getBoundToTypeName()
+   */
+  public void setBoundTo ( Type pBoundToType , TypeName pBoundToTypeName )
+  {
+    if ( ( this.boundToTypeName != null )
+        && ( this.boundToTypeName != pBoundToTypeName ) )
+    {
+      System.err
+          .println ( "An TypeName can not be bound to more than one Type!" ) ; //$NON-NLS-1$
+      System.err.println ( "TypeName: " + this ) ; //$NON-NLS-1$
+      System.err.println ( "Old boundToType: " + this.boundToType ) ; //$NON-NLS-1$
+      System.err.println ( "New boundToType: " + pBoundToType ) ; //$NON-NLS-1$
+      System.err.println ( "Old boundToTypeName: " + this.boundToTypeName ) ; //$NON-NLS-1$
+      System.err.println ( "New boundToTypeName: " + pBoundToTypeName ) ; //$NON-NLS-1$
+    }
+    this.boundToType = pBoundToType ;
+    this.boundToTypeName = pBoundToTypeName ;
   }
 
 

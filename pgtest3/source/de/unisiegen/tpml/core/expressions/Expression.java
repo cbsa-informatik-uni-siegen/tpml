@@ -11,6 +11,8 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyString ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
+import de.unisiegen.tpml.core.types.MonoType ;
+import de.unisiegen.tpml.core.types.TypeName ;
 
 
 /**
@@ -149,6 +151,12 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
 
 
   /**
+   * Method name for getTypes
+   */
+  private static final String GET_TYPES = "getTypes" ; //$NON-NLS-1$
+
+
+  /**
    * Cached <code>TreeSet</code> of the free Identifiers, so the free
    * Identifier do not need to be determined on every invocation of
    * {@link #getIdentifiersFree()}.
@@ -218,6 +226,12 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
    * @see #getPrefix()
    */
   protected String prefix = null ;
+
+
+  /**
+   * The list of the free {@link TypeName}s in this {@link Expression}.
+   */
+  private ArrayList < TypeName > typeNamesFree = null ;
 
 
   /**
@@ -507,6 +521,68 @@ public abstract class Expression implements Cloneable , PrettyPrintable ,
       }
     }
     return this.prefix ;
+  }
+
+
+  /**
+   * Returns a list of the free {@link TypeName}s in this {@link Expression}.
+   * 
+   * @return A list of the free {@link TypeName}s in this {@link Expression}.
+   */
+  public ArrayList < TypeName > getTypeNamesFree ( )
+  {
+    if ( this.typeNamesFree == null )
+    {
+      this.typeNamesFree = new ArrayList < TypeName > ( ) ;
+      MonoType [ ] types = null ;
+      for ( Class < ? > currentInterface : this.getClass ( ).getInterfaces ( ) )
+      {
+        if ( currentInterface
+            .equals ( de.unisiegen.tpml.core.interfaces.DefaultTypes.class ) )
+        {
+          try
+          {
+            types = ( MonoType [ ] ) this.getClass ( ).getMethod ( GET_TYPES ,
+                new Class [ 0 ] ).invoke ( this , new Object [ 0 ] ) ;
+          }
+          catch ( IllegalArgumentException e )
+          {
+            System.err.println ( "Expression: IllegalArgumentException" ) ; //$NON-NLS-1$
+          }
+          catch ( SecurityException e )
+          {
+            System.err.println ( "Expression: SecurityException" ) ; //$NON-NLS-1$
+          }
+          catch ( IllegalAccessException e )
+          {
+            System.err.println ( "Expression: IllegalAccessException" ) ; //$NON-NLS-1$
+          }
+          catch ( InvocationTargetException e )
+          {
+            System.err.println ( "Expression: InvocationTargetException" ) ; //$NON-NLS-1$
+          }
+          catch ( NoSuchMethodException e )
+          {
+            System.err.println ( "Expression: NoSuchMethodException" ) ; //$NON-NLS-1$
+          }
+        }
+        if ( types != null )
+        {
+          for ( MonoType type : types )
+          {
+            if ( type != null )
+            {
+              this.typeNamesFree.addAll ( type.getTypeNamesFree ( ) ) ;
+            }
+          }
+        }
+        for ( Expression child : children ( ) )
+        {
+          this.typeNamesFree.addAll ( child.getTypeNamesFree ( ) ) ;
+        }
+      }
+    }
+    return this.typeNamesFree ;
   }
 
 

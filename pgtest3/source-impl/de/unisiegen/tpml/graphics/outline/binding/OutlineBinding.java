@@ -4,6 +4,7 @@ package de.unisiegen.tpml.graphics.outline.binding ;
 import java.util.ArrayList ;
 import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.expressions.Identifier ;
+import de.unisiegen.tpml.core.types.TypeName ;
 
 
 /**
@@ -11,29 +12,31 @@ import de.unisiegen.tpml.core.expressions.Identifier ;
  * 
  * @author Christian Fehler
  * @version $Rev: 995 $
+ * @param <E> The {@link Identifier} or {@link TypeName}.
  */
-public final class OutlineBinding
+public final class OutlineBinding < E >
 {
   /**
-   * The list of {@link Identifier}s, which are bound by the given
-   * {@link Identifier} in the given {@link Expression}.
+   * The list of {@link Identifier}s or {@link TypeName}s, which are bound by
+   * the given {@link Identifier} or {@link TypeName} in the given
+   * {@link Expression}.
    * 
    * @see #get(int)
    * @see #size()
    */
-  private ArrayList < Identifier > list ;
+  private ArrayList < E > list ;
 
 
   /**
    * Initilizes the list and sets the bound values.
    * 
-   * @param pList The list of bound {@link Identifier}s.
+   * @param pList The list of bound {@link Identifier}s or {@link TypeName}s.
    */
-  public OutlineBinding ( ArrayList < Identifier > pList )
+  public OutlineBinding ( ArrayList < E > pList )
   {
     if ( pList == null )
     {
-      this.list = new ArrayList < Identifier > ( ) ;
+      this.list = new ArrayList < E > ( ) ;
     }
     else
     {
@@ -52,7 +55,7 @@ public final class OutlineBinding
   {
     if ( pObject instanceof OutlineBinding )
     {
-      OutlineBinding other = ( OutlineBinding ) pObject ;
+      OutlineBinding < ? > other = ( OutlineBinding ) pObject ;
       if ( this.list.size ( ) != other.list.size ( ) )
       {
         return false ;
@@ -71,25 +74,27 @@ public final class OutlineBinding
 
 
   /**
-   * Returns the bound {@link Identifier} in the {@link Expression}.
+   * Returns the bound {@link Identifier} or {@link TypeName} in the
+   * {@link Expression}.
    * 
-   * @param pIndex The index of the {@link Identifier}.
-   * @return The bound {@link Identifier} in the {@link Expression}.
+   * @param pIndex The index of the {@link Identifier} or {@link TypeName}.
+   * @return The bound {@link Identifier} or {@link TypeName} in the
+   *         {@link Expression}.
    * @see #list
    */
-  public final Identifier get ( int pIndex )
+  public final E get ( int pIndex )
   {
     return this.list.get ( pIndex ) ;
   }
 
 
   /**
-   * Removes the {@link Identifier} with the given index.
+   * Removes the {@link Identifier} or {@link TypeName} with the given index.
    * 
-   * @param pIndex The index of the bound {@link Identifier}.
-   * @return The removed {@link Identifier}.
+   * @param pIndex The index of the bound {@link Identifier} or {@link TypeName}.
+   * @return The removed {@link Identifier} or {@link TypeName}.
    */
-  public final Identifier remove ( int pIndex )
+  public final E remove ( int pIndex )
   {
     return this.list.remove ( pIndex ) ;
   }
@@ -97,9 +102,9 @@ public final class OutlineBinding
 
   /**
    * Returns the size of the list. The size is equal to the number of bound
-   * {@link Identifier}s.
+   * {@link Identifier}s or {@link TypeName}s.
    * 
-   * @return The number of {@link Identifier}s.
+   * @return The number of {@link Identifier}s or {@link TypeName}.
    * @see #list
    */
   public final int size ( )
