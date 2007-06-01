@@ -479,6 +479,14 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
     }
     MonoType newRemainingRowType = ( this.remainingRowType == null ) ? null
         : this.remainingRowType.substitute ( pTypeSubstitution ) ;
+    if ( newRemainingRowType instanceof RowType )
+    {
+      RowType r = ( RowType ) newRemainingRowType ;
+      if ( r.getTypes ( ).length == 0 )
+      {
+        newRemainingRowType = null ;
+      }
+    }
     return new RowType ( this.identifiers , newTypes , newRemainingRowType ) ;
   }
 
