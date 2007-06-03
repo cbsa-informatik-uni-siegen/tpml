@@ -251,4 +251,9 @@ public abstract class AbstractRenderer
 	{
 		return fontAscent;
 	}
+	
+	public static int getAbsoluteHeight()
+	{
+		return fontHeight + fontLeading;
+	}
 }

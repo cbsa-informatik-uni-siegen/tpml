@@ -113,7 +113,7 @@ public class SubstitutionRenderer extends AbstractRenderer {
 		}
 		else 
 		{
-			result.height = AbstractRenderer.fontHeight;
+			result.height = AbstractRenderer.fontHeight+AbstractRenderer.fontLeading;
 			// get the first element
 			DefaultTypeSubstitution s = defaultTypeSubstitutionList.get(0);
 			
@@ -192,7 +192,7 @@ public class SubstitutionRenderer extends AbstractRenderer {
 //		int posX = x + this.bracketSize;
 		int posX = x;
 		//int posY = y + height / 2;
-		int posY = y+AbstractRenderer.fontHeight/2;
+		int posY = y+(AbstractRenderer.fontHeight+AbstractRenderer.fontLeading)/2;
 		posY += AbstractRenderer.fontAscent  / 2;
 		
 		// find the first element in the enumeration if there is one

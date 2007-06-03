@@ -105,7 +105,7 @@ public class EnvironmentRenderer<S, E> extends AbstractRenderer {
 	 * @return The size needed to render the environment.
 	 */
 	public Dimension getNeededSize () {
-		Dimension result = new Dimension (2 * this.bracketSize, AbstractRenderer.fontHeight);
+		Dimension result = new Dimension (2 * this.bracketSize, AbstractRenderer.getAbsoluteHeight ( ));
 		
 		Enumeration<S> env = this.environment.symbols();
 		
@@ -185,7 +185,7 @@ public class EnvironmentRenderer<S, E> extends AbstractRenderer {
 		posY += AbstractRenderer.fontAscent  / 2;
 		//if the hight is not bigger then the fonhight normal [ ] are used
 		//or else the bracket will bew renderd manually
-		if (height <= AbstractRenderer.fontHeight)
+		if (height <= AbstractRenderer.getAbsoluteHeight())
 		{
 			gc.setFont(expFont);
 			gc.drawString("[", x, posY);
@@ -241,8 +241,8 @@ public class EnvironmentRenderer<S, E> extends AbstractRenderer {
 				posX += AbstractRenderer.envFontMetrics.stringWidth(collapsString);
 				this.collapsedArea.width 	= (posX -  collapsedArea.x);
 				
-				this.collapsedArea.y = posY-fontHeight;
-				this.collapsedArea.height = fontHeight;
+				this.collapsedArea.y = posY-AbstractRenderer.getAbsoluteHeight();
+				this.collapsedArea.height = AbstractRenderer.getAbsoluteHeight();
 			}
 			
 		}

@@ -169,7 +169,7 @@ public class TypeFormularRenderer extends AbstractRenderer {
 	 * @return The size needed to render the environment.
 	 */
 	public Dimension getNeededSize (int y) {
-		Dimension result = new Dimension (2 * AbstractRenderer.keywordFontMetrics.stringWidth(("{")), AbstractRenderer.fontHeight);
+		Dimension result = new Dimension (2 * AbstractRenderer.keywordFontMetrics.stringWidth(("{")), AbstractRenderer.getAbsoluteHeight ( ));
 		
 		//Enumeration<S> env = this.environment.symbols();
 		
@@ -191,7 +191,7 @@ public class TypeFormularRenderer extends AbstractRenderer {
 
 			// if there is more then only one element in the environment
 			// the same will happen and the hight will be counted...
-			result.height = typeFormulaList.size() * AbstractRenderer.fontHeight;
+			result.height = typeFormulaList.size() * AbstractRenderer.getAbsoluteHeight ( );
 			for (int i = 0; i < typeFormulaList.size(); i++)
 			{
 				int lineWidth = einrücken;
@@ -361,7 +361,7 @@ public class TypeFormularRenderer extends AbstractRenderer {
 		// calculate the vertical center of the available space 
 		int posX = x ;
 		//int posY = y + height / 2;
-		int posY = y + AbstractRenderer.fontHeight/2;
+		int posY = y + AbstractRenderer.getAbsoluteHeight ( ) /2;
 		//int posY = y + AbstractRenderer.fontHeight;
 		posY += AbstractRenderer.fontAscent  / 2;
 		

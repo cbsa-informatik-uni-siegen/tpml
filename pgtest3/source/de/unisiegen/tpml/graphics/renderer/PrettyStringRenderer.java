@@ -65,7 +65,7 @@ public class PrettyStringRenderer extends AbstractRenderer
     /**
      * the needed size
      */
-    public Dimension size ;
+    public Dimension sizeOfResult ;
 
 
     /**
@@ -73,7 +73,7 @@ public class PrettyStringRenderer extends AbstractRenderer
      */
     public CheckerResult ( )
     {
-      this.size = new Dimension ( ) ;
+      this.sizeOfResult = new Dimension ( ) ;
       this.breakOffsets = new ArrayList < Integer > ( ) ;
     }
   }
@@ -199,13 +199,13 @@ public class PrettyStringRenderer extends AbstractRenderer
     CheckerResult biggestResult = null ;
     for ( CheckerResult r : this.results )
     {
-      if ( smallestResult == null || smallestResult.size.width > r.size.width )
+      if ( smallestResult == null || smallestResult.sizeOfResult.width > r.sizeOfResult.width )
       {
         smallestResult = r ;
       }
-      if ( r.size.width < maxWidth )
+      if ( r.sizeOfResult.width < maxWidth )
       {
-        if ( biggestResult == null || biggestResult.size.width < r.size.width )
+        if ( biggestResult == null || biggestResult.sizeOfResult.width < r.sizeOfResult.width )
         {
           biggestResult = r ;
         }
@@ -223,7 +223,7 @@ public class PrettyStringRenderer extends AbstractRenderer
     {
     	this.result = null;
     }
-    return this.result.size ;
+    return this.result.sizeOfResult ;
   }
 
 
@@ -406,9 +406,9 @@ public class PrettyStringRenderer extends AbstractRenderer
     // }
     this.result = new CheckerResult ( ) ;
     this.result.rows = 0 ;
-    this.result.size.height = 0 ;
+    this.result.sizeOfResult.height = 0 ;
     // this.result.size.width = results.get(0).size.width;
-    this.result.size.width = actualMaxNeededWidth ;
+    this.result.sizeOfResult.width = actualMaxNeededWidth ;
     // this.result.size.width = maxWidth;
     // for (CheckerResult r : this.resultsForPrinting) {
     // TODO Testausgabe
@@ -424,9 +424,9 @@ public class PrettyStringRenderer extends AbstractRenderer
       // this.result.rows = this.result.rows+r.rows;
     }
     // this.result.size.height=this.result.size.height/2;
-    this.result.size.height = fontHeight * ( result.breakOffsets.size ( ) + 2 ) ;
+    this.result.sizeOfResult.height = AbstractRenderer.getAbsoluteHeight() * ( result.breakOffsets.size ( ) + 2 ) ;
     this.result.rows = result.breakOffsets.size ( ) + 1 ;
-    return ( this.result.size ) ;
+    return ( this.result.sizeOfResult ) ;
   }
 
 
@@ -477,7 +477,9 @@ public class PrettyStringRenderer extends AbstractRenderer
     //result.size.height = AbstractRenderer.fontHeight ;
     //TODO geht so nicht, muss man sich etwas anderes ausdenken...
     //result.size.height = AbstractRenderer.fontDescent + AbstractRenderer.fontAscent + AbstractRenderer.fontLeading ;
-    result.size.height = AbstractRenderer.fontHeight;
+    //result.sizeOfResult.height = AbstractRenderer.fontHeight;
+    result.sizeOfResult.height = AbstractRenderer.getAbsoluteHeight();
+    System.out.println("Größe: "+AbstractRenderer.fontHeight + ", Leading"+AbstractRenderer.fontLeading);
     PrettyCharIterator it = this.prettyString.toCharacterIterator ( ) ;
     int i = 0 ;
     int w = 0 ;
@@ -488,8 +490,8 @@ public class PrettyStringRenderer extends AbstractRenderer
         if ( result.breakOffsets.get ( j ).intValue ( ) == i )
         {
           // System.out.println("Treffer, die Zeilen werden um eins erhöht!");
-          result.size.height += AbstractRenderer.fontHeight ;
-          result.size.width = Math.max ( w , result.size.width ) ;
+          result.sizeOfResult.height += AbstractRenderer.getAbsoluteHeight();
+          result.sizeOfResult.width = Math.max ( w , result.sizeOfResult.width ) ;
           result.rows ++ ;
           // let the next line be to big fonts indentated
           w = AbstractRenderer.expFontMetrics.stringWidth ( "GG" ) ;
@@ -518,7 +520,7 @@ public class PrettyStringRenderer extends AbstractRenderer
       }
       // System.out.println("Rows: "+result.rows);
     }
-    result.size.width = Math.max ( w , result.size.width ) ;
+    result.sizeOfResult.width = Math.max ( w , result.sizeOfResult.width ) ;
     // the result contains the size of the whole expression when renderd
     // with the given Annotation
     return result ;
@@ -631,8 +633,7 @@ public class PrettyStringRenderer extends AbstractRenderer
    * @param toListenForM
    * @return The width of the expression will get returned.
    */
-  public void render ( int x , int y , int height , Graphics gc ,
-      ShowBonds bound , ToListenForMouseContainer toListenForM )
+  public void render ( int x , int y , int height , Graphics gc , ShowBonds bound , ToListenForMouseContainer toListenForM )
   {
     toListenForMouse = toListenForM ;
     // get The MousePosition
@@ -687,15 +688,15 @@ public class PrettyStringRenderer extends AbstractRenderer
     // System.out.println("Zeile: "+lineCount);
     // System.out.println("breakOffsets: "+breakOffsets.length);
     //int posY_ = y + height / 2 ;
-    int posY_ = y + AbstractRenderer.fontHeight/2;
+    int posY_ = y + AbstractRenderer.getAbsoluteHeight()/2;
     posY_ += AbstractRenderer.fontAscent / 2 ;
     float addY_ = ( this.result.rows - 1 ) / 2.0f ;
-    addY_ *= AbstractRenderer.fontHeight ;
+    addY_ *= AbstractRenderer.getAbsoluteHeight();
     posY_ -= addY_ ;
     // System.out.println("Y-Position: "+posY_);
     // mousePosition[1] is the x-coordinate, start to count at 1
-    lineCount = ( ( mousePosition [ 1 ] - ( posY_ - AbstractRenderer.fontHeight ) ) / fm
-        .getHeight ( ) ) + 1 ;
+    //lineCount = ( ( mousePosition [ 1 ] - ( posY_ - AbstractRenderer.getAbsoluteHeight() ) ) / fm.getHeight ( ) ) + 1 ;
+    lineCount = ( ( mousePosition [ 1 ] - ( posY_ - AbstractRenderer.getAbsoluteHeight() ) ) / AbstractRenderer.getAbsoluteHeight ( ) ) + 1 ;
     //System.out.println("Linecount: "+lineCount);
     if ( lineCount > 1 )
     {
@@ -747,7 +748,7 @@ public class PrettyStringRenderer extends AbstractRenderer
     int posY = y + height / 2 ;
     posY += AbstractRenderer.fontAscent / 2 ;
     float addY = ( this.result.rows - 1 ) / 2.0f ;
-    addY *= AbstractRenderer.fontHeight ;
+    addY *= AbstractRenderer.getAbsoluteHeight() ;
     posY -= addY ;
     // start and end position for the underlining (if the pointer is over the
     // button)
@@ -766,14 +767,15 @@ public class PrettyStringRenderer extends AbstractRenderer
       {
         if ( breakOffsets [ j ] == i )
         {
-          posY += AbstractRenderer.fontHeight ;
+          posY += AbstractRenderer.getAbsoluteHeight() ;
           posX = x ;
         }
       }
       fm = AbstractRenderer.expFontMetrics ;
       int charWidth = fm.stringWidth ( "" + c ) ;
       // just corrects the posY to start at baseline instead of the middel
-      int posYC = posY - ( fm.getHeight ( ) - fm.getDescent ( ) ) ;
+      //int posYC = posY - ( fm.getHeight ( ) - fm.getDescent ( ) ) ;
+      int posYC = posY - ( AbstractRenderer.getAbsoluteHeight ( ) - fm.getDescent ( ) ) ;
       // int charHighth = fm.getHeight();
       // ArrayList <Bonds> annotationsList =
       // instanceOfShowBound.getAnnotations();
