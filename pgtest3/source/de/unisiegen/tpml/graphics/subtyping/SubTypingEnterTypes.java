@@ -46,7 +46,7 @@ import de.unisiegen.tpml.ui.SideBar;
 import de.unisiegen.tpml.ui.SideBarListener;
 
 /**
- * 
+ * This is the Subtyping view. This view is very different to the other views.
  * Input and Result mask for the Subtyping Algorithm.
  * Enter two types and find out if one is a subtype of the other one.
  *
@@ -60,12 +60,6 @@ public class SubTypingEnterTypes extends AbstractProofView {
 	 * The unique serialization identifier of this class.
 	 */
 	private static final long serialVersionUID = 5068227950528407089L;
-	
-	/**
-   * The <code>JSplitPane</code> for the <code>component</code>.
-   */
-  private JSplitPane jSplitPane ;
-  //TODO noch einbauen
   
   private SubTypingProofModel model;
 
@@ -115,7 +109,11 @@ public class SubTypingEnterTypes extends AbstractProofView {
 
 	private JLabel labelLanguage;
 	
+	/**
+   * The <code>JSplitPane</code> to devide the outline and the rest
+   */
 	private JSplitPane splitPane;
+	
 	private JPanel toSplit;
 	
 	
@@ -567,6 +565,8 @@ public class SubTypingEnterTypes extends AbstractProofView {
 		this.add (splitPane, constraints);
 
 		this.setVisible ( true );
+		
+		this.validate();
 
 	}
 
