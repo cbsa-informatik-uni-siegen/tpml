@@ -10,26 +10,19 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.io.StringReader;
 import java.text.MessageFormat;
 
-import javax.swing.Action;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JSpinner;
 import javax.swing.JSplitPane;
-import javax.swing.KeyStroke;
 import javax.swing.border.LineBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
-
-
 
 import de.unisiegen.tpml.core.ProofGuessException;
 import de.unisiegen.tpml.core.languages.Language;
@@ -40,6 +33,7 @@ import de.unisiegen.tpml.core.types.MonoType;
 import de.unisiegen.tpml.graphics.AbstractProofView;
 import de.unisiegen.tpml.graphics.Messages;
 import de.unisiegen.tpml.graphics.StyledLanguageEditor;
+import de.unisiegen.tpml.graphics.bigstep.BigStepView;
 import de.unisiegen.tpml.graphics.outline.DefaultOutline;
 import de.unisiegen.tpml.graphics.outline.Outline;
 import de.unisiegen.tpml.ui.SideBar;
@@ -47,8 +41,12 @@ import de.unisiegen.tpml.ui.SideBarListener;
 
 /**
  * This is the Subtyping view. This view is very different to the other views.
- * Input and Result mask for the Subtyping Algorithm.
- * Enter two types and find out if one is a subtype of the other one.
+ * It is not connected to the source-view. So the user must select the language
+ * and inter the two types he wants to check. The user can change the language
+ * everytime.
+ * the scond part of the view is alike the BigStepView. ({@link BigStepView})
+ * where you have the view and two outlines, one for each type. 
+
  *
  * @author Benjamin Mies
  * @author Feivel
@@ -60,104 +58,125 @@ public class SubTypingEnterTypes extends AbstractProofView {
 	 * The unique serialization identifier of this class.
 	 */
 	private static final long serialVersionUID = 5068227950528407089L;
-  
+	
+	 /**
+   * The {@link SubTypingProofModel}.
+   */
   private SubTypingProofModel model;
+  
+  /**
+	 * The entered and parsed type1 ({@link MonoType})
+	 */
+	private MonoType type1;
 
+	 /**
+	 * The entered and parsed type1 ({@link MonoType})
+	 */
+	private MonoType type2;
+	
 	/**
-	 * The Panels for input, output and menu
+	 * The last entered types
+	 */
+	private MonoType oldType1;
+	/***/
+	private MonoType oldType2;
+	
+	/**
+	 * The {@link SubTypingComponent} component
+	 */
+	private SubTypingComponent component;
+	
+	/**
+	 * The actual choosen language
+	 */
+	private Language language;
+	
+
+	
+  //GUI-components
+  
+  /**
+	 * The panel for input
 	 */
 	private JPanel inputFields;
 
+	 /**
+	 * The panel for output
+	 */
 	private JPanel outputField;
 
+	 /**
+	 * The panel for menu
+	 */
 	private JPanel menu;
 	
-	private JPanel everything;
-	
+	/**
+	 * The panel for the two outlines
+	 */
 	private JPanel outline;
 
 	/**
 	 * The Textfields where the user is able to enter the types
 	 */
-	
 	private SideBar			sideBar;
-	
+	/***/
 	private SideBar			sideBar2;
-	
+	/***/
 	private JScrollPane scrollpane;
-	
+	/***/
 	private JScrollPane scrollpane2;
-
+	/***/
 	private StyledLanguageEditor editor1;
-
+	/***/
 	private StyledLanguageEditor editor2;
-
+	/***/
 	private StyledTypeEnterField document1;
-
+	/***/
 	private StyledTypeEnterField document2;
 
 	/**
 	 * Labels that informs the user what to do
 	 */
 	private JLabel label;
-
+	/***/
 	private JLabel label2;
-
-	private JLabel labelOutput;
-
+	/***/
 	private JLabel lOutput;
-
+	/***/
 	private JLabel labelLanguage;
 	
-	/**
-   * The <code>JSplitPane</code> to devide the outline and the rest
-   */
-	private JSplitPane splitPane;
-	
-	private JPanel toSplit;
-	
-	
-
-	/**
-	 * The entered and parsed types
-	 */
-	private MonoType type1;
-
-	private MonoType type2;
-
-	/**
-	 * The before entered types
-	 */
-	private MonoType oldType1;
-
-	private MonoType oldType2;
-	
-	private SubTypingComponent component;
-	
-	/**
-	 * Outlines for better understanding the entered types
-	 */
-
-	private DefaultOutline outline1;
-
-	private DefaultOutline outline2;
-
-	/**
-	 * The actual choosen language
-	 */
-	private Language language;
-
-	/**
-	 * Black border 
-	 */
-	private LineBorder border;
 	
 	/**
 	 * The Buttons of the menu
 	 */
 	private JButton changeLanguage;
 
+	/**
+	 * The JCheckBox to enable or disable the Outlines
+	 */
 	private JCheckBox setOutline;
+	
+	/**
+   * The <code>JSplitPane</code> to devide the outline and the result
+   */
+	private JSplitPane splitPane;
+	
+	/**
+	 * Black border 
+	 */
+	private LineBorder border;
+	
+	/**
+	 * Outlines for better understanding the entered type 1
+	 */
+	private DefaultOutline outline1;
+
+	/**
+	 * Outlines for better understanding the entered type 2
+	 */
+	private DefaultOutline outline2;
+
+
 
 	/**
 	 * Dialog to change language
@@ -169,6 +188,9 @@ public class SubTypingEnterTypes extends AbstractProofView {
 	 */
 	private boolean initialized = false;
 
+	/**
+	 * hte division of the JSplitPane
+	 */
 	private double dividerLocation = 0.5;
 	
 
@@ -177,6 +199,7 @@ public class SubTypingEnterTypes extends AbstractProofView {
 	//
 	/**
 	 * Allocates a new <code>SubTypingEnterTypes</code> 
+	 * @param modelP	The model 
 	 */
 	public SubTypingEnterTypes(SubTypingProofModel modelP) {	
 		super ( );
@@ -189,6 +212,9 @@ public class SubTypingEnterTypes extends AbstractProofView {
 
 	}
 
+	/**
+	 * inizialisize the gui
+	 */
 	private void initComponents() {
 
 		type1 = null;
@@ -301,9 +327,10 @@ public class SubTypingEnterTypes extends AbstractProofView {
 		this.editor1.addKeyListener(new KeyAdapter(){
       public void keyPressed(KeyEvent arg0) {
         if (arg0.getKeyCode() == KeyEvent.VK_TAB){
-        	//TODO Den Tab wieder wegnehmen oder so...
-        	arg0.setKeyChar ( '\u0000' ) ;
-           nextComponent ( );
+        	//Remove tabs and so on
+        	editor1.setText ( editor1.getText ( ).trim ( ));
+        	editor2.setText ( editor2.getText ( ).trim ( ));
+           nextEditor ( );
         }
      }
   });
@@ -369,7 +396,10 @@ public class SubTypingEnterTypes extends AbstractProofView {
 		this.editor2.addKeyListener(new KeyAdapter(){
       public void keyPressed(KeyEvent arg0) {
         if (arg0.getKeyCode() == KeyEvent.VK_TAB){
-           nextComponent ( );
+        	//remove tabs and so on
+        	editor1.setText ( editor1.getText ( ).trim ( ));
+        	editor2.setText ( editor2.getText ( ).trim ( ));
+           nextEditor ( );
         }
      }
   });
@@ -440,7 +470,6 @@ public class SubTypingEnterTypes extends AbstractProofView {
 				type2 = eventHandling ( editor2, type2, oldType2, outline2 );
 				if (type2 != oldType2)
 				{
-					//TODO das geht alles noch nicht...
 					outputField.remove ( component );
 					//SubTypingEnterTypes.this.remove ( outputField );
 					
@@ -502,18 +531,14 @@ public class SubTypingEnterTypes extends AbstractProofView {
 		//outputField.setLayout( null);
 		outputField.setBorder ( border );
 
-		labelOutput = new JLabel ( Messages.getString ( "result" ) ); //$NON-NLS-1$
+		//labelOutput = new JLabel ( Messages.getString ( "result" ) ); //$NON-NLS-1$
 		constraints.gridx = 0;
 		constraints.gridy = 0;
 		constraints.gridwidth = 1;
 		constraints.weighty = 1;
 		constraints.weightx = 1;
 		constraints.insets = new Insets ( 15, 15, 15, 15 );
-		//constraints.insets = new Insets ( 5, 5, 5, 5 );
-		//this.outputField.add ( labelOutput, constraints );
-		//TODO hier muss der Renderer hin....
-		//this.outputField.add ( labelOutput, constraints );
-		System.out.println(outputField.getLayout().toString());
+
 		component = new SubTypingComponent ( model, isAdvanced() );
 		this.outputField.add(component, constraints);
 
@@ -570,23 +595,48 @@ public class SubTypingEnterTypes extends AbstractProofView {
 
 	}
 
-	private Action nextComponent ( )
+	/**
+	 * privides the TAB-Key Funktion in the Textfields
+	 * if the user is in editor1 he comes to editor2
+	 * and inversly
+	 * 
+	 */
+	private void nextEditor ( )
 	{
+		//normal variant: The focus switches from editor1 to editor2 and fro,
+		//editor2 to the next component that will be the buttonmenu at the top
 		if (editor1.hasFocus ( ))
 		{
-			editor2.requestFocus ( );
+			editor1.transferFocus ( );
 		}
-		else 
+		if (editor2.hasFocus ( ))
 		{
-			editor1.requestFocus ( );
+			editor2.transferFocus ( );	
 		}
-		return null;
+		
+		//other variant: The focus only switchs between the 2 editors
+//		if (editor1.hasFocus ( ))
+//		{
+//			editor2.requestFocus ( );
+//		}
+//		else 
+//		{
+//			editor1.requestFocus ( );
+//		}
 	}
 
+	/**
+	 * TODO Dok
+	 * @param left
+	 * @param right
+	 */
 	private void selectErrorText (int left, int right) {
 		this.editor1.select(left, right);
 	}
 
+	/**
+	 * TODO Dokumentation
+	 */
 	void check() {
 		if (type1 != null && type2 != null) {
 			if (AbstractSubTyping.check ( type1, type2 )) {
@@ -602,6 +652,13 @@ public class SubTypingEnterTypes extends AbstractProofView {
 		}
 	}
 
+	/**
+	 * @param editor		The Editor to read the Type
+	 * @param pType			The type
+	 * @param oldType		The last type
+	 * @param outline		The outline
+	 * @return					The Monotype
+	 */
 	MonoType eventHandling(StyledLanguageEditor editor, MonoType pType,
 			MonoType oldType, DefaultOutline outline) {
 		MonoType type;
@@ -661,11 +718,14 @@ public class SubTypingEnterTypes extends AbstractProofView {
 		}
 	}
 
+	/**
+	 * provides a Guess 
+	 * @throws IllegalStateException
+	 * @throws ProofGuessException
+	 */
 	public void guess() throws IllegalStateException, ProofGuessException
 	{
-		System.out.println("Guess");
 		this.component.guess ( );
-		
 	}
 	
 	/**
@@ -676,7 +736,6 @@ public class SubTypingEnterTypes extends AbstractProofView {
   @ Override
   public void setAdvanced ( boolean advanced )
   {
-    //TODO Testausgabe System.out.println("jetzt bekommt der Subtyping-View den advaced-Wert: "+advanced + "(SubTypingEnterType)");
     super.setAdvanced ( advanced ) ;
     model.setMode(advanced);
     if (this.component != null)
