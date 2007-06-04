@@ -479,7 +479,9 @@ public class PrettyStringRenderer extends AbstractRenderer
     //result.size.height = AbstractRenderer.fontDescent + AbstractRenderer.fontAscent + AbstractRenderer.fontLeading ;
     //result.sizeOfResult.height = AbstractRenderer.fontHeight;
     result.sizeOfResult.height = AbstractRenderer.getAbsoluteHeight();
-    System.out.println("Größe: "+AbstractRenderer.fontHeight + ", Leading"+AbstractRenderer.fontLeading);
+    
+    //System.out.println("Größe: "+AbstractRenderer.fontHeight + ", Leading"+AbstractRenderer.fontLeading);
+    
     PrettyCharIterator it = this.prettyString.toCharacterIterator ( ) ;
     int i = 0 ;
     int w = 0 ;
@@ -638,22 +640,27 @@ public class PrettyStringRenderer extends AbstractRenderer
     toListenForMouse = toListenForM ;
     // get The MousePosition
     int [ ] mousePosition = toListenForMouse.getHereIam ( ) ;
-    //System.out.println("Mouseposition: "+mousePosition[0] + ", "+mousePosition[1]);
+    
+    // System.out.println("Mouseposition: "+mousePosition[0] + ", "+mousePosition[1]);
+    
     boolean mouseOver = true ;
-    // System.out.println("mousePostition: "+mousePosition[0]+",
-    // "+mousePosition[1]);
+    
+    // System.out.println("mousePostition: "+mousePosition[0]+", "+mousePosition[1]);
+    
     if ( mousePosition [ 0 ] == 0 && mousePosition [ 1 ] == 0 )
     {
       mouseOver = false ;
     }
+    
     // System.out.println("also die Mausposition: "+mouseOver);
+    
     // get the Char-Position to the MousePosition
     // count the chars by using the charwidth adding till the mouseposition is
     // found
     // for functioning in more than 1 line the lines are count
     // the breakoffsets to find the line
     
-    //check teh linewraping
+    //check the linewraping
     int arraySize = 0 ;
     if ( result != null )
     {
@@ -665,39 +672,52 @@ public class PrettyStringRenderer extends AbstractRenderer
     	result = new CheckerResult ();
     }
     int [ ] breakOffsets = new int [ arraySize ] ;
+    
     // TODO Testausgabe
     // System.out.println("----------------------------------------------"+result.breakOffsets.size());
     // System.out.print("Umbruchstellen: ");
+    
     for ( int i = 0 ; i < result.breakOffsets.size ( ) ; i ++ )
     {
       breakOffsets [ i ] = result.breakOffsets.get ( i ).intValue ( ) ;
+      
       // TODO Testausgabe
       // System.out.print(+breakOffsets[i]+", ");
+      
     }
+    
     // System.out.println();
+    
     // an Iterator through all chars
     PrettyCharIterator it = this.prettyString.toCharacterIterator ( ) ;
     // find out wher the mousepointer is, at wich char
+    
     int charPosition = x ;
     int charIndex = 0 ;
     FontMetrics fm = null ;
     fm = AbstractRenderer.expFontMetrics ;
     // if the cahr is not in the first line the startvalue must be different
     int lineCount = 0 ;
+    
     // TODO das mit der Höhe der Ausrücke funktioniert noch nicht richtig...
     // System.out.println("Zeile: "+lineCount);
     // System.out.println("breakOffsets: "+breakOffsets.length);
-    //int posY_ = y + height / 2 ;
-    int posY_ = y + AbstractRenderer.getAbsoluteHeight()/2;
+    
+    int posY_ = y + height / 2 ;
+    //int posY_ = y + AbstractRenderer.getAbsoluteHeight()/2;
     posY_ += AbstractRenderer.fontAscent / 2 ;
     float addY_ = ( this.result.rows - 1 ) / 2.0f ;
     addY_ *= AbstractRenderer.getAbsoluteHeight();
     posY_ -= addY_ ;
+    
     // System.out.println("Y-Position: "+posY_);
+    
     // mousePosition[1] is the x-coordinate, start to count at 1
     //lineCount = ( ( mousePosition [ 1 ] - ( posY_ - AbstractRenderer.getAbsoluteHeight() ) ) / fm.getHeight ( ) ) + 1 ;
     lineCount = ( ( mousePosition [ 1 ] - ( posY_ - AbstractRenderer.getAbsoluteHeight() ) ) / AbstractRenderer.getAbsoluteHeight ( ) ) + 1 ;
-    //System.out.println("Linecount: "+lineCount);
+    
+    // System.out.println("Linecount: "+lineCount);
+    
     if ( lineCount > 1 )
     {
       // may be the mousepointer is under the expression
@@ -711,17 +731,19 @@ public class PrettyStringRenderer extends AbstractRenderer
     }
     // add the width of the chars till the mousepointer is reached an dcount the
     // chars
-    for ( char c = it.setIndex ( Math.max ( charIndex , 0 ) ) ; c != CharacterIterator.DONE ; c = it
-        .next ( ) , charIndex ++ )
+    for ( char c = it.setIndex ( Math.max ( charIndex , 0 ) ) ; c != CharacterIterator.DONE ; c = it.next ( ) , charIndex ++ )
     {
       int charWidth = fm.stringWidth ( "" + c ) ;
+      
       // System.out.print(c);
+      
       charPosition = charPosition + charWidth ;
       if ( charPosition > mousePosition [ 0 ] )
       {
         break ;
       }
     }
+    
     // System.out.println("die Maus: "+mousePosition[0]);
     // System.out.println("Position: "+charIndex);
     // TODO Testausgabe
@@ -730,6 +752,7 @@ public class PrettyStringRenderer extends AbstractRenderer
     // System.out.println(annotationsList.get(i).getStartOffset());
     // System.out.println(annotationsList.get(i).getEndOffset());
     // }
+    
     // get the annotations
     ArrayList < Bonds > annotationsList = new ArrayList < Bonds > ( ) ;
     if ( mouseOver )
@@ -739,7 +762,9 @@ public class PrettyStringRenderer extends AbstractRenderer
     }
     // this will be the annotation to underline, if -1 there is no underlining
     int rightAnnotationList = isInList ( charIndex , annotationsList ) ;
+    
     // System.out.println(rightAnnotationList);
+    
     // get the starting offsets x is just the left border
     // y will be the center of the space available minus the
     // propper amount of rows
