@@ -194,6 +194,9 @@ public class TypeInferenceNodeComponent extends JComponent {
 	 */
 	private MouseMotionAdapter												underlineRuleAdapter;
 	
+	/**
+	 * The Advanced Setting
+	 */
 	private boolean																		advanced;
 	
 	/**
@@ -336,9 +339,10 @@ public class TypeInferenceNodeComponent extends JComponent {
 		
 		// apply the advanced setting
 		//TODO
-		setAdvanced(false);
+		setAdvanced(advanced);
 	}
-	
+
+
 	/**
    * Just paints a Rect arround the silly BopoundExpression to see failure
    */
@@ -453,6 +457,8 @@ public class TypeInferenceNodeComponent extends JComponent {
 	 * @see TypeInferenceComponent#setAdvanced(boolean)
 	 */
 	void setAdvanced(boolean advanced) {
+		System.out.println("Wir holen uns die Regeln, und der Advancedwert ist: "+advanced);
+		
 		// Fill the menu with menuitems
 		JPopupMenu menu = new JPopupMenu ();
 		ProofRule[] rules = this.proofModel.getRules();
@@ -463,6 +469,7 @@ public class TypeInferenceNodeComponent extends JComponent {
 					if (r.getGroup() != group) {
 						menu.addSeparator();
 					}
+					
 					menu.add(new MenuRuleItem (r));
 					group = r.getGroup();
 				}
