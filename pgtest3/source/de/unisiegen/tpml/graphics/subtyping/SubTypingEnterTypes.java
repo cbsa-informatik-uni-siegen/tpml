@@ -692,7 +692,10 @@ public class SubTypingEnterTypes extends AbstractProofView {
 
 		if (pLanguage != null) {
 			this.language = pLanguage;
-			model = language.newSubTypingProofModel(type1, type2, isAdvanced() );
+			//no new model, we have to actualisize the old one
+			//model = language.newSubTypingProofModel(type1, type2, isAdvanced() );
+			model.setRoot(type1, type2);
+			model.setMode(isAdvanced());
 			if (!initialized) {
 				initComponents ( );
 				initialized = true;
