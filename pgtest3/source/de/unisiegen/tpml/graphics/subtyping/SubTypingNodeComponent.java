@@ -15,6 +15,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
 
+import sun.font.AdvanceCache;
+
 import de.unisiegen.tpml.core.ProofGuessException;
 import de.unisiegen.tpml.core.ProofNode;
 import de.unisiegen.tpml.core.ProofRule;
@@ -157,6 +159,10 @@ public class SubTypingNodeComponent extends JComponent implements TreeNodeCompon
      * Create the PopupMenu for the menu button
      */
     JPopupMenu menu = new JPopupMenu ();
+    
+    //TODO wir wollen mal zusehen, dass hier das richtige Model ist, und dass daher dann auch hier der richtige Advanced ist...
+    //model.getMode();
+    
     
     ProofRule[] rules = this.proofModel.getRules();
     if (rules.length > 0) {
@@ -505,6 +511,41 @@ public class SubTypingNodeComponent extends JComponent implements TreeNodeCompon
   @Override
   public void setBounds (int x, int y, int width, int height) {
     super.setBounds (x, y, width, height);
+  }
+  
+  /**
+   * Let the NodeComponent get an new RulesMenu because of the change of the
+   * advaced value
+   *
+   * @param advancedP
+   */
+  public void setAdvanced (boolean advancedP)
+  {
+  	 /*
+     * Create the PopupMenu for the menu button
+     */
+    JPopupMenu menu = new JPopupMenu ();
+    
+    //TODO wir wollen mal zusehen, dass hier das richtige Model ist, und dass daher dann auch hier der richtige Advanced ist...
+    // System.out.println("jetzt sollte es aber doch endlich mal richtig gehen!!!! "+proofModel.getMode());
+    
+    
+    ProofRule[] rules = this.proofModel.getRules();
+    if (rules.length > 0) {
+      int group = rules[0].getGroup();
+      for (ProofRule r : rules) {
+        if (r.getGroup() != group) {
+          menu.addSeparator();
+        }
+        menu.add(new MenuRuleItem(r));
+        group = r.getGroup();
+      }
+    }
+    menu.addSeparator();
+    menu.add (new MenuGuessItem ());
+    menu.add (new MenuGuessTreeItem ());
+    
+    this.ruleButton.setMenu(menu);
   }
 
 

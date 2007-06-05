@@ -6,6 +6,8 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyAdapter;
@@ -25,6 +27,7 @@ import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
 
 import de.unisiegen.tpml.core.ProofGuessException;
+import de.unisiegen.tpml.core.ProofModel;
 import de.unisiegen.tpml.core.languages.Language;
 import de.unisiegen.tpml.core.languages.LanguageTypeParser;
 import de.unisiegen.tpml.core.subtyping.AbstractSubTyping;
@@ -38,6 +41,7 @@ import de.unisiegen.tpml.graphics.outline.DefaultOutline;
 import de.unisiegen.tpml.graphics.outline.Outline;
 import de.unisiegen.tpml.ui.SideBar;
 import de.unisiegen.tpml.ui.SideBarListener;
+import de.unisiegen.tpml.ui.proofview.ProofViewComponent;
 
 /**
  * This is the Subtyping view. This view is very different to the other views.
@@ -103,7 +107,12 @@ public class SubTypingEnterTypes extends AbstractProofView {
 	 /**
 	 * The panel for output
 	 */
-	private JPanel outputField;
+	private JPanel outputField; //replaced by the Scrollpane... we hope that this funktions
+	
+	/**
+	 * The Scrollpane for the outputfield
+	 */
+	private JScrollPane scrollOutput; 
 
 	 /**
 	 * The panel for menu
@@ -204,12 +213,23 @@ public class SubTypingEnterTypes extends AbstractProofView {
 	public SubTypingEnterTypes(SubTypingProofModel modelP) {	
 		super ( );
 		model = modelP;
-		// open a dialog to choose language
+		
+		selectNewLanguage();
+
+	}
+
+	private void selectNewLanguage()
+	{
+//	 open a dialog to choose language
 		clLanguage = new ChangeLanguage ( null, this );
+		
+		//remove the languages without Typs
+		clLanguage.removeLanguage(0);
+		clLanguage.removeLanguage(0);
 		
 		clLanguage.setLocationRelativeTo ( this );
 		clLanguage.setVisible ( true );
-
+		
 	}
 
 	/**
@@ -243,9 +263,12 @@ public class SubTypingEnterTypes extends AbstractProofView {
 			@SuppressWarnings("synthetic-access")
 			public void actionPerformed(ActionEvent event) {
 				SubTypingEnterTypes.this.setEnabled ( false );
-				clLanguage = new ChangeLanguage ( null, SubTypingEnterTypes.this );
-				clLanguage.setLocationRelativeTo ( SubTypingEnterTypes.this );
-				clLanguage.setVisible ( true );
+				selectNewLanguage();
+				
+//				
+//				clLanguage = new ChangeLanguage ( null, SubTypingEnterTypes.this );
+//				clLanguage.setLocationRelativeTo ( SubTypingEnterTypes.this );
+//				clLanguage.setVisible ( true );
 			}
 		} );
 		constraints.gridx = 0;
@@ -364,15 +387,15 @@ public class SubTypingEnterTypes extends AbstractProofView {
 				type1 = eventHandling ( editor1, type1, oldType1, outline1 );
 				if (type1 != oldType1) {
 					
-					check ( );
+					//check ( );
 				}
 			}
 
 			@SuppressWarnings("synthetic-access")
 			public void removeUpdate(DocumentEvent e) {
 				type1 = eventHandling ( editor1, type1, oldType1, outline1 );
-				if (type1 != oldType1)
-					check ( );
+				//if (type1 != oldType1)
+					//check ( );
 			}
 		} );
 		
@@ -431,35 +454,12 @@ public class SubTypingEnterTypes extends AbstractProofView {
 				type2 = eventHandling ( editor2, type2, oldType2, outline2 );
 				if (type2 != oldType2)
 				{		
-					outputField.remove ( component );
-					//SubTypingEnterTypes.this.remove ( outputField );
-					
-					
 					model.setRoot(type1, type2);
 					component = new SubTypingComponent ( model, isAdvanced() );
+					scrollOutput.setViewportView(component);
+					validate();
 					
-					GridBagConstraints constraints = new GridBagConstraints ( );
-					constraints.fill = GridBagConstraints.BOTH;
-					constraints.gridx = 0;
-					constraints.gridy = 0;
-					constraints.gridwidth = 1;
-					constraints.weighty = 1;
-					constraints.weightx = 1;
-					constraints.insets = new Insets ( 15, 15, 15, 15 );
-					
-					outputField.add ( component, constraints );
-					
-					constraints.gridx = 0;
-					constraints.gridy = 2;
-					constraints.weighty = 5;
-					constraints.weightx = 0;
-					constraints.insets = new Insets ( 15, 15, 15, 15 );
-					//SubTypingEnterTypes.this.add ( outputField, constraints );
-					
-					//SubTypingEnterTypes.this.validate ( );
-					outputField.validate ( );
-					
-					check ( );
+					//check ( );
 					
 				}
 					
@@ -470,35 +470,12 @@ public class SubTypingEnterTypes extends AbstractProofView {
 				type2 = eventHandling ( editor2, type2, oldType2, outline2 );
 				if (type2 != oldType2)
 				{
-					outputField.remove ( component );
-					//SubTypingEnterTypes.this.remove ( outputField );
-					
-					
 					model.setRoot(type1, type2);
 					component = new SubTypingComponent ( model, isAdvanced() );
-					
-					GridBagConstraints constraints = new GridBagConstraints ( );
-					constraints.fill = GridBagConstraints.BOTH;
-					constraints.gridx = 0;
-					constraints.gridy = 0;
-					constraints.gridwidth = 1;
-					constraints.weighty = 1;
-					constraints.weightx = 1;
-					constraints.insets = new Insets ( 15, 15, 15, 15 );
-					
-					outputField.add ( component, constraints );
-					
-					constraints.gridx = 0;
-					constraints.gridy = 2;
-					constraints.weighty = 5;
-					constraints.weightx = 0;
-					constraints.insets = new Insets ( 15, 15, 15, 15 );
-					//SubTypingEnterTypes.this.add ( outputField, constraints );
-					
-					//SubTypingEnterTypes.this.validate ( );
-					outputField.validate ( );
-					
-					check ( );
+					scrollOutput.setViewportView(component);
+					validate();
+
+					//check ( );
 				}
 					
 			}
@@ -524,6 +501,9 @@ public class SubTypingEnterTypes extends AbstractProofView {
 		constraints.weighty = 0;
 		constraints.insets = new Insets ( 15, 15, 15, 15 );
 		this.add ( inputFields, constraints );
+		
+		scrollOutput = new JScrollPane();
+		scrollOutput.setBackground(Color.WHITE);
 
 		outputField = new JPanel ( );
 		outputField.setBackground(Color.WHITE);
@@ -540,7 +520,22 @@ public class SubTypingEnterTypes extends AbstractProofView {
 		constraints.insets = new Insets ( 15, 15, 15, 15 );
 
 		component = new SubTypingComponent ( model, isAdvanced() );
-		this.outputField.add(component, constraints);
+		
+		this.outputField.add (this.scrollOutput, constraints);
+		
+		this.scrollOutput.setViewportView(this.component);
+		this.scrollOutput.getViewport().setBackground(Color.WHITE);
+		
+		this.scrollOutput.addComponentListener(new ComponentAdapter () {
+			@Override
+			public void componentResized (ComponentEvent event) {
+				SubTypingEnterTypes.this.component.setAvailableWidth(SubTypingEnterTypes.this.scrollOutput.getViewport ().getWidth());
+			}
+		});
+		
+		
+		
+		//this.outputField.add(component, constraints);
 
 		lOutput = new JLabel (" "); //$NON-NLS-1$
 
@@ -557,7 +552,7 @@ public class SubTypingEnterTypes extends AbstractProofView {
 		constraints.weightx = 0;
 		constraints.insets = new Insets ( 15, 15, 15, 15 );
 		//this.add ( outputField, constraints );
-		splitPane.add ( outputField, JSplitPane.TOP );
+		splitPane.add ( scrollOutput, JSplitPane.TOP );
 		splitPane.setDividerLocation(dividerLocation );
 
 		outline = new JPanel ( );
@@ -626,7 +621,8 @@ public class SubTypingEnterTypes extends AbstractProofView {
 	}
 
 	/**
-	 * TODO Dok
+	 * sets the errortext of the languagestylededitor
+	 * 
 	 * @param left
 	 * @param right
 	 */
@@ -635,22 +631,22 @@ public class SubTypingEnterTypes extends AbstractProofView {
 	}
 
 	/**
+	 * mal gucken, ob wir die überhautp noch brauchen...
 	 * TODO Dokumentation
 	 */
-	void check() {
-		if (type1 != null && type2 != null) {
-			if (AbstractSubTyping.check ( type1, type2 )) {
-				lOutput.setText ( Messages.getString ( "subtypeFound" ) ) ; //$NON-NLS-1$
-				lOutput.setForeground(Color.green);
-			}
-
-			else {
-				lOutput.setText ( Messages.getString ( "noSubtype" ) ); //$NON-NLS-1$
-				lOutput.setForeground(Color.red);
-			}
-		
-		}
-	}
+//	void check() {
+//		if (type1 != null && type2 != null) {
+//			if (AbstractSubTyping.check ( type1, type2 )) {
+//				lOutput.setText ( Messages.getString ( "subtypeFound" ) ) ; //$NON-NLS-1$
+//				lOutput.setForeground(Color.green);
+//			}
+//
+//			else {
+//				lOutput.setText ( Messages.getString ( "noSubtype" ) ); //$NON-NLS-1$
+//				lOutput.setForeground(Color.red);
+//			}
+//		}
+//	}
 
 	/**
 	 * @param editor		The Editor to read the Type
@@ -693,9 +689,15 @@ public class SubTypingEnterTypes extends AbstractProofView {
 		if (pLanguage != null) {
 			this.language = pLanguage;
 			//no new model, we have to actualisize the old one
-			//model = language.newSubTypingProofModel(type1, type2, isAdvanced() );
-			model.setRoot(type1, type2);
-			model.setMode(isAdvanced());
+			
+			model = language.newSubTypingProofModel(type1, type2, isAdvanced() );
+			
+			
+			
+			((ProofViewComponent)getParent()).setModel((ProofModel)model);
+			//model.setRoot(type1, type2);
+			//model.setMode(isAdvanced());
+			
 			if (!initialized) {
 				initComponents ( );
 				initialized = true;
@@ -705,7 +707,7 @@ public class SubTypingEnterTypes extends AbstractProofView {
 
 				this.document2.setLanguage ( language );
 				type2 = eventHandling ( editor2, type2, oldType2, outline2 );
-				check ( );
+				//check ( );
 				try {
 					this.document1.processChanged ( );
 				} catch (BadLocationException e) {
@@ -739,13 +741,29 @@ public class SubTypingEnterTypes extends AbstractProofView {
   @ Override
   public void setAdvanced ( boolean advanced )
   {
+  	// System.out.println("Der Advance-Wert ändert sich! (SubTypingEnterType) "+advanced);
     super.setAdvanced ( advanced ) ;
+    //Warum geht das nicht???
+   
+    
+    //((SubTypingProofModel)((ProofViewComponent)getParent()).getModel()).setMode(advanced);
+    // System.out.println("der Advanced des Models: "+model.getMode());
+    
     model.setMode(advanced);
+    
     if (this.component != null)
     {
     	this.component.setAdvanced ( isAdvanced ( ) ) ;
     }
     
   }
+
+	/**
+	 * @param model the model to set
+	 */
+	//public void setModel(SubTypingProofModel model)
+	//{
+	//	this.model = model;
+	//}
 
 }

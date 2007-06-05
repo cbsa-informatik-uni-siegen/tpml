@@ -15,16 +15,46 @@ import de.unisiegen.tpml.core.ProofGuessException;
 import de.unisiegen.tpml.core.ProofNode;
 import de.unisiegen.tpml.core.subtyping.SubTypingProofModel;
 import de.unisiegen.tpml.core.subtyping.SubTypingProofNode;
-import de.unisiegen.tpml.core.subtyping.SubTypingProofModel;
 import de.unisiegen.tpml.graphics.AbstractProofComponent;
-import de.unisiegen.tpml.graphics.subtyping.SubTypingComponent;
-import de.unisiegen.tpml.graphics.subtyping.SubTypingNodeComponent;
-import de.unisiegen.tpml.graphics.subtyping.SubTypingNodeListener;
 import de.unisiegen.tpml.graphics.renderer.EnvironmentRenderer;
 import de.unisiegen.tpml.graphics.renderer.PrettyStringRenderer;
 import de.unisiegen.tpml.graphics.renderer.TreeArrowRenderer;
 import de.unisiegen.tpml.graphics.tree.TreeNodeLayout;
 
+/**
+ * Implementation of the graphical representation of the SubTyping-Interpreter.
+ * <br>
+ * The layouting is very similar to the layouting of the BigStep-Interpreter.
+ * The entire placing of the nodes is done within the method 
+ * {@link #relayout()} but actualy the layouting is passed over
+ * to the {@link de.unisiegen.tpml.graphics.tree.TreeNodeLayout} 
+ * to place the nodes. <br>
+ * <br>
+ * The lines and arrows of the tree are rendered using the 
+ * {@link de.unisiegen.tpml.graphics.renderer.TreeArrowRenderer},
+ * so all nodes within the tree implement the 
+ * {@link de.unisiegen.tpml.graphics.tree.TreeNodeComponent} interface.<br>
+ * <br>
+ * The nodes are not stored directly in the <i>SubTypingComponent</i>, they are
+ * stored using the <i>Userobject</i> provided by the {@link de.unisiegen.tpml.core.ProofNode}.<br>
+ * Everytime the content of the tree changes ({@link #treeContentChanged()} is called) the 
+ * {@link #checkForUserObject(SubTypingProofNode)}-method is called. This causes a recursive traversing
+ * of the entire tree to check if every node has its corresponding 
+ * {@link de.unisiegen.tpml.graphics.subtyping.SubTypingNodeComponent}.<br>
+ * <br>
+ * When nodes get removed only the userobject of that nodes needs to get release.<br>
+ * When nodes get inserted, the first of them is stored in the {@link #jumpNode} so the
+ * next time the component gets layouted the {@link #jumpToNodeVisible()}-method is called
+ * and the scrollview of the {@link de.unisiegen.tpml.graphics.subtyping.SubTypingView} 
+ * scrolls to a place the stored node gets visible.
+ * 
+ * @see de.unisiegen.tpml.graphics.subtyping.SubTypingEnterTypes
+ * @see de.unisiegen.tpml.graphics.subtyping.SubTypingNodeComponent
+ * @see de.unisiegen.tpml.graphics.tree.TreeNodeLayout
+ * @see de.unisiegen.tpml.graphics.renderer.TreeArrowRenderer
+ * @author michael
+ *
+ */
 public class SubTypingComponent extends AbstractProofComponent implements Scrollable 
 {
 	
@@ -34,7 +64,7 @@ public class SubTypingComponent extends AbstractProofComponent implements Scroll
 	private static final long serialVersionUID = 3793854335585017325L;
 
 	/**
-	 * Handles the layouting of the BigStepNodeComponents to a tree. 
+	 * Handles the layouting of the SubTypingComponents to a tree. 
 	 */
 	private TreeNodeLayout							treeNodeLayout;
 	
@@ -48,19 +78,19 @@ public class SubTypingComponent extends AbstractProofComponent implements Scroll
 	 * Contains the <i>ProofNode</i> where to scroll. <br>
 	 * When new nodes get inserted, the first of those nodes is
 	 * assigned to the jumpNode. When the layout is changing (that
-	 * is always happening when nodes get inserted) the <i>BigStepComponent</i>
+	 * is always happening when nodes get inserted) the <i>SubTypingComponent</i>
 	 * scrolls itself, so that the <i>jumpNode</i> is visible. 
 	 */
 	private ProofNode										jumpNode;
 	
 	
 	/**
-	 * The border around the <i>BigStepComponent</i> in pixels.<br>
+	 * The border around the <i>SubTypingComponent</i> in pixels.<br>
 	 * This are 20 pixels per default.
 	 */
 	private int													border;
 	
-	private boolean 										advanced;
+	//private boolean 										advanced;
 	
 	
 	/**
@@ -69,11 +99,12 @@ public class SubTypingComponent extends AbstractProofComponent implements Scroll
 	 * The first <i>treeContentChanged</i> is called manualy at the end of
 	 * the constructor to get started. 
 	 * 
-	 * @param model The model the <i>BigStepComponent</i> should visualise.
+	 * @param model The model the <i>SubTypingComponent</i> should visualise.
+	 * @param advacedP The advancesetting
 	 */
 	public SubTypingComponent (SubTypingProofModel model, boolean advacedP) {
 		super ( model );
-		this.advanced 					= advacedP;
+		//this.advanced 					= advacedP;
 		this.treeNodeLayout 		= new TreeNodeLayout ();
 		this.border							= 20;
 		this.jumpNode						= null;
@@ -116,11 +147,11 @@ public class SubTypingComponent extends AbstractProofComponent implements Scroll
 	
 	/**
 	 * Checks all nodes below the given node for an UserObject.<br>
-	 * All <i>BigStepProofNode</i>s are provided with an UserObject.
-	 * The UserObject is the <i>BigStepNodeComponent</i>, that is the actual
-	 * node the BigStepGUI works with.<br>
+	 * All <i>SubTypingProofNode</i>s are provided with an UserObject.
+	 * The UserObject is the <i>SubTypingNodeComponent</i>, that is the actual
+	 * node the SubTypingGUI works with.<br>
 	 * <br>
-	 * This function goes recursive over the tree and checks every <i>BigStepProofNode</i>
+	 * This function goes recursive over the tree and checks every <i>SubTypingProofNode</i>
 	 * whether an userObject is already present. If none is there, a new one created.<br>
 	 * <br>
 	 * Here the nodes get there index value.
@@ -137,6 +168,7 @@ public class SubTypingComponent extends AbstractProofComponent implements Scroll
 			// if the node has no userobject it may be new in the
 			// tree, so a new TypeCheckerNodeComponent will be created
 			// and added to the TypeCheckerProofNode  
+			// System.out.println("Die NodeComponent wird erzeugt... der Advancedwert ist: "+ ((SubTypingProofModel) this.proofModel).getMode());
 			nodeComponent = new SubTypingNodeComponent (node, (SubTypingProofModel)this.proofModel, this.translator);
 			node.setUserObject(nodeComponent);
 			
@@ -199,7 +231,7 @@ public class SubTypingComponent extends AbstractProofComponent implements Scroll
 	 */
 	/**
 	 * Assigns the first, newly inserted node to the jumpNode. When
-	 * the next relayout is called, the <i>BigStepComponent</i> is able to
+	 * the next relayout is called, the <i>SubTypingComponent</i> is able to
 	 * scroll to a propper position.<br>
 	 * <br>
 	 * Reimplementation of the {@link AbstractProofComponent#nodesInserted(TreeModelEvent)}
@@ -381,7 +413,7 @@ public class SubTypingComponent extends AbstractProofComponent implements Scroll
 	
 	
 	/**
-	 * Renders the decoration of the BigStepComponent.<br>
+	 * Renders the decoration of the SubTypingComponent.<br>
 	 * <br>
 	 * Reimplementation of {@link javax.swing.JComponent#paint(java.awt.Graphics)}
 	 * Method.<br>
@@ -460,11 +492,43 @@ public class SubTypingComponent extends AbstractProofComponent implements Scroll
 	}
 
 
-	public void setAdvanced(boolean b)
+	/**
+	 * lets the rulesmenu get updatet.. there are different rules to show
+	 *
+	 * @param advancedP
+	 */
+	public void setAdvanced(boolean advancedP)
 	{
-		advanced = b;
+		// System.out.println("der AdvancedWert des profMeldes wird auf "+advancedP+" gesetzt.");
+		// System.out.println("Wir wollen neue Regeln backen...");
+		((SubTypingProofModel) proofModel).setMode( advancedP );
+		// System.out.println("der AdvancedWert des profMeldes ist: "+advancedP+ ((SubTypingProofModel) proofModel).getMode());
+		
+//	 update all active nodes
+		// System.out.println("üüü");
+		Enumeration<ProofNode> enumeration = this.proofModel.getRoot().postorderEnumeration();
+		while (enumeration.hasMoreElements()) 
+		{
+			// System.out.println("111");
+			// tell the component belonging to this node, that we have a new advanced state
+			SubTypingProofNode node = (SubTypingProofNode)enumeration.nextElement();
+			SubTypingNodeComponent component = (SubTypingNodeComponent)node.getUserObject();
+			component.setAdvanced(advancedP);
+		}
+		
 		
 	}	
+	
+	/**
+	 * sets the SubTypingProofModel 
+	 *
+	 * @param m the new SubTypingProofModel
+	 */
+	public void setModel (SubTypingProofModel m)
+	{
+		proofModel =  m;
+		((SubTypingComponent) getParent()).setModel(m);
+	}
 
 
 }
