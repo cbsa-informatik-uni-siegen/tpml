@@ -16,6 +16,8 @@ import de.unisiegen.tpml.graphics.Messages;
  * Dialog to change the language for Subtyping
  *
  * @author Benjamin Mies
+ * @autor Michael Oeste
+ * 
  *
  */
 public class ChangeLanguage extends javax.swing.JDialog {
@@ -380,5 +382,20 @@ public class ChangeLanguage extends javax.swing.JDialog {
 	 */
 	public Language getLanguage() {
 		return language;
+	}
+
+	
+	/**
+	 * Mehtod providing to delete elements of the languageslist.
+	 * it is used, if ther should only viewd languages with types
+	 *
+	 * @param i	language to remove
+	 */
+	public void removeLanguage(int i)
+	{
+		if (i<languagesList.getModel().getSize())
+		{
+			((DefaultListModel)languagesList.getModel()).remove(i);
+		}
 	}
 }
