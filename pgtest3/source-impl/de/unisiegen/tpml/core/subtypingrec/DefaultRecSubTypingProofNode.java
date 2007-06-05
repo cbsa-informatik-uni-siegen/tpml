@@ -10,10 +10,13 @@ import de.unisiegen.tpml.core.types.MonoType;
 import de.unisiegen.tpml.core.util.Debug;
 
 /**
- * TODO
+ * Default implementation of the <code>RecSubTypingProofNode</code> interface. The class for nodes
+ * in a {@link de.unisiegen.tpml.core.subtypingrec.RecSubTypingProofModel}.
  *
  * @author Benjamin Mies
  *
+ * @see de.unisiegen.tpml.core.AbstractProofNode
+ * @see de.unisiegen.tpml.core.subtypingrec.RecSubTypingProofNode
  */
 public class DefaultRecSubTypingProofNode extends AbstractProofNode implements
 		RecSubTypingProofNode, SubTypingProofNode {

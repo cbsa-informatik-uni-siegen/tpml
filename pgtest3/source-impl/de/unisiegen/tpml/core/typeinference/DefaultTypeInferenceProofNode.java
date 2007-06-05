@@ -10,8 +10,13 @@ import de.unisiegen.tpml.core.typechecker.DefaultTypeSubstitution;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofRule;
 
 /**
- * @author benjamin
+ * Default implementation of the <code>TypeInferenceProofNode</code> interface. The class for nodes
+ * in a {@link de.unisiegen.tpml.core.typeinference.TypeInferenceProofModel}.
  *
+ * @author Benjamin Mies
+ *
+ * @see de.unisiegen.tpml.core.AbstractProofNode
+ * @see de.unisiegen.tpml.core.typeinference.TypeInferenceProofNode
  */
 public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
 		TypeInferenceProofNode {

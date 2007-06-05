@@ -8,19 +8,19 @@ import de.unisiegen.tpml.core.subtyping.SubTypingException;
 import de.unisiegen.tpml.core.types.MonoType;
 
 /**
- * Default implementation of the <code>TypeCheckerProofContext</code> interface.
+ * Default implementation of the <code>RecSubTypingProofContext</code> interface.
  *
  * @author Benjamin Mies
  * 
- * @see de.unisiegen.tpml.core.subtyping.SubTypingProofContext
+ * @see de.unisiegen.tpml.core.subtypingrec.RecSubTypingProofContext
  */
 public class DefaultRecSubTypingProofContext implements
 		RecSubTypingProofContext {
 
 	/**
-	 * The subtyping proof model with which this proof context is associated.
+	 * The rec subtyping proof model with which this proof context is associated.
 	 * 
-	 * @see #SubTypingProofContext(RecSubTypingProofModel)
+	 * @see #RecSubTypingProofContext(RecSubTypingProofModel)
 	 */
 	private RecSubTypingProofModel model;
 
@@ -46,7 +46,7 @@ public class DefaultRecSubTypingProofContext implements
 	private LinkedList < Runnable > undoActions = new LinkedList < Runnable > ( );
 
 	/**
-	 * Allocates a new proof step with the given <code>expression</code> and the specified <code>rule</code>.
+	 * Allocates a new proof step with the given types.
 	 * @param pModel the subtyping proof model with which the context is associated.
 	 * @param pNode the actual subtyping proof node
 	 * 

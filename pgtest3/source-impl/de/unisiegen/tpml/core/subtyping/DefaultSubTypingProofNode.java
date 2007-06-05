@@ -5,10 +5,13 @@ import de.unisiegen.tpml.core.types.MonoType;
 import de.unisiegen.tpml.core.util.Debug;
 
 /**
- * TODO
+ * Default implementation of the <code>SubTypingProofNode</code> interface. The class for nodes
+ * in a {@link de.unisiegen.tpml.core.subtyping.SubTypingProofModel}.
  *
  * @author Benjamin Mies
  *
+ * @see de.unisiegen.tpml.core.AbstractProofNode
+ * @see de.unisiegen.tpml.core.subtyping.SubTypingProofNode
  */
 public class DefaultSubTypingProofNode extends AbstractProofNode implements
 		SubTypingProofNode {

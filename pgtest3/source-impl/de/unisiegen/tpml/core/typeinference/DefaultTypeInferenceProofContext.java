@@ -46,10 +46,11 @@ import de.unisiegen.tpml.core.types.UnifyType;
 import de.unisiegen.tpml.core.types.UnitType;
 
 /**
+ * Default implementation of the <code>TypeInferenceProofContext</code>
+ * interface.
  * 
- *
  * @author Benjamin Mies
- *
+ * @see de.unisiegen.tpml.core.typeinference.TypeInferenceProofContext
  */
 public class DefaultTypeInferenceProofContext implements
 		TypeCheckerProofContext {
