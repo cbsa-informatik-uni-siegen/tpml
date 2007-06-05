@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.core.languages.l1;
+package de.unisiegen.tpml.core.languages.l2;
 
 import java.io.Reader;
 
@@ -10,13 +10,13 @@ import java.text.MessageFormat;
 import de.unisiegen.tpml.core.Messages;
 
 /**
- * This is the type scanner class for L1.
+ * This is the type scanner class for L2.
  */
 %%
 
-%class L1TypeScanner
+%class L2TypeScanner
 %extends AbstractLanguageTypeScanner
-%implements L1TypeTerminals
+%implements L2TypeTerminals
 
 %function nextSymbol
 %type LanguageSymbol
@@ -47,6 +47,9 @@ import de.unisiegen.tpml.core.Messages;
 	{
 		switch (id)
 		{
+		case MU:
+			return PrettyStyle.KEYWORD;
+			
 		case BOOL: case INT: case UNIT: case TYPEVARIABLE:
 			return PrettyStyle.TYPE;
 			
@@ -68,6 +71,7 @@ import de.unisiegen.tpml.core.Messages;
 LineTerminator	= \r|\n|\r\n
 WhiteSpace		= {LineTerminator} | [ \t\f]
 
+Identifier		= [a-zA-Z] [a-zA-Z0-9_]* '*
 LetterAX		= [a-x]
 LetterGreek		= [\u03b1-\u03c1\u03c3-\u03c9]
 
@@ -79,11 +83,13 @@ LetterGreek		= [\u03b1-\u03c1\u03c3-\u03c9]
 	"("					{ return symbol("LPAREN", LPAREN); }
 	")"					{ return symbol("RPAREN", RPAREN); }
 	"->"|"\u2192"		{ return symbol("ARROW", ARROW); }
+	"."					{ return symbol("DOT", DOT); }
 	
 	// types
 	"bool"				{ return symbol("BOOL", BOOL); }
 	"int"				{ return symbol("INT", INT); }
 	"unit"				{ return symbol("UNIT", UNIT); }
+	"mu"|"\u03bc"		{ return symbol("MU", MU); }
 	"'"{LetterAX}		{ return symbol("TYPEVARIABLE", TYPEVARIABLE, (int)(yycharat(1) - 'a')); }
 	{LetterGreek}		{
 							int c = yycharat(0);
@@ -94,6 +100,8 @@ LetterGreek		= [\u03b1-\u03c1\u03c3-\u03c9]
 							}
 							return symbol("TYPEVARIABLE", TYPEVARIABLE, (int)(c - '\u03b1'));
 						}
+
+	{Identifier}		{ return symbol("IDENTIFIER", IDENTIFIER, yytext()); }
 	
 	// whitespace
 	{WhiteSpace}		{ /* ignore */ }

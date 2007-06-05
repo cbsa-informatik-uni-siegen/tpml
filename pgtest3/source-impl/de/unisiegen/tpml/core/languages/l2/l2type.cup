@@ -144,8 +144,7 @@ terminal			LPAREN, RPAREN;
 terminal			DOT;
 
 /* Types */
-terminal			BOOL, INT, UNIT, LESS, GREATER, COLON, SEMI;
-
+terminal			BOOL, INT, UNIT;
 terminal			MU;
 
 /* Special tokens */
@@ -160,18 +159,12 @@ non terminal IntegerType			integer_type;
 non terminal UnitType				unit_type;
 non terminal TypeVariable			type_variable;
 non terminal ArrowType				arrow_type;
-non terminal ObjectType				object_type;
-non terminal RowType				row_type;
-
 non terminal TypeName				type_name;
 non terminal RecType				rec_type;
 
 /* Error non terminals */
 non terminal 		simple_type_error;
 non terminal 		arrow_type_error;
-non terminal 		object_type_error;
-non terminal		row_type_error;
-
 non terminal		rec_type_error;
 
 /* Precedences, based on http://caml.inria.fr/pub/docs/manual-ocaml/manual015.html */
@@ -205,8 +198,6 @@ simple_type						::=	LPAREN:l type:t RPAREN:r
 									{: RESULT = t; :}
 								|	rec_type:r
 									{: RESULT = r; :}
-								|	object_type:t
-									{: RESULT = t; :}
 								;
 
 simple_type_error				::= /* epsilon */
@@ -255,55 +246,4 @@ rec_type_error					::= /* epsilon */
 									{: Error.expect("Rec-Type", ".\u03C4"); :}
 								|	IDENTIFIER DOT
 									{: Error.expect("Rec-Type", "\u03C4"); :}
-								;
-
-object_type						::= LESS:l row_type:r GREATER:g
-									{: 
-									   Duplicated.check(r);
-									   RESULT = new ObjectType ( r, lleft, gright);
-									:}
-								|	LESS:l GREATER:g
-									{:
-									   Identifier [] m = new Identifier [0];
-									   MonoType [] types = new MonoType [0];
-									   RESULT = new ObjectType ( new RowType (m, types), lleft, gright);
-									:}
-								|	LESS object_type_error
-									{: :}
-								;
-
-object_type_error				::= /* epsilon */
-									{: Error.expect("Object-Type", "m<sub>1</sub>: \u03C4; ... m<sub>n</sub>: \u03C4; >"); :}
-								|	row_type
-									{: Error.expect("Object-Type", "... m<sub>n</sub>: \u03C4; >"); :}
-								;
-
-row_type						::= IDENTIFIER:id COLON type:tau SEMI:s
-									{:
-									   Identifier [] m = new Identifier [1];
-									   m [0] = new Identifier (id,idleft,idright);
-									   MonoType [] types = new MonoType [1];
-									   types [0] = tau;
-									   RESULT = new RowType (m, types, idleft, sright) ;
-									:}
-								|	IDENTIFIER:id COLON type:tau SEMI row_type:r
-									{:
-									   Identifier [] m = new Identifier [r.getIdentifiers().length + 1];
-									   m [0] = new Identifier (id,idleft,idright);
-									   System.arraycopy ( r.getIdentifiers() , 0 , m , 1 , r.getIdentifiers().length );
-									   MonoType [] types = new MonoType [r.getTypes().length + 1];
-									   types [0] = tau;
-									   System.arraycopy ( r.getTypes() , 0 , types , 1 , r.getTypes().length );
-									   RESULT = new RowType (m, types, idleft, rright) ;
-									:}
-								|	IDENTIFIER row_type_error
-									{: :}
-								;
-
-row_type_error					::= /* epsilon */
-									{: Error.expect("Object-Type", ": \u03C4 ; ... m<sub>n</sub>: \u03C4; >"); :}
-								|	COLON
-									{: Error.expect("Object-Type", "\u03C4 ; ... m<sub>n</sub>: \u03C4; >"); :}
-								|	COLON type
-									{: Error.expect("Object-Type", "; ... m<sub>n</sub>: \u03C4; >"); :}
 								;

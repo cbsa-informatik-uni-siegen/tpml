@@ -1,24 +1,24 @@
 package de.unisiegen.tpml.core.languages.l2 ;
 
 
-import java.io.Reader;
-
-import java_cup.runtime.lr_parser;
-import de.unisiegen.tpml.core.Messages;
-import de.unisiegen.tpml.core.bigstep.BigStepProofModel;
-import de.unisiegen.tpml.core.expressions.Expression;
-import de.unisiegen.tpml.core.languages.Language;
-import de.unisiegen.tpml.core.languages.LanguageParser;
-import de.unisiegen.tpml.core.languages.LanguageScanner;
-import de.unisiegen.tpml.core.languages.LanguageTranslator;
-import de.unisiegen.tpml.core.languages.l1.L1Language;
-import de.unisiegen.tpml.core.languages.l1.L1RecSubTypingProofRuleSet;
-import de.unisiegen.tpml.core.smallstep.SmallStepProofModel;
-import de.unisiegen.tpml.core.subtyping.SubTypingProofModel;
-import de.unisiegen.tpml.core.subtypingrec.RecSubTypingProofModel;
-import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel;
-import de.unisiegen.tpml.core.typeinference.TypeInferenceProofModel;
-import de.unisiegen.tpml.core.types.MonoType;
+import java.io.Reader ;
+import java_cup.runtime.lr_parser ;
+import de.unisiegen.tpml.core.Messages ;
+import de.unisiegen.tpml.core.bigstep.BigStepProofModel ;
+import de.unisiegen.tpml.core.expressions.Expression ;
+import de.unisiegen.tpml.core.languages.Language ;
+import de.unisiegen.tpml.core.languages.LanguageParser ;
+import de.unisiegen.tpml.core.languages.LanguageScanner ;
+import de.unisiegen.tpml.core.languages.LanguageTranslator ;
+import de.unisiegen.tpml.core.languages.LanguageTypeParser ;
+import de.unisiegen.tpml.core.languages.LanguageTypeScanner ;
+import de.unisiegen.tpml.core.languages.l1.L1Language ;
+import de.unisiegen.tpml.core.smallstep.SmallStepProofModel ;
+import de.unisiegen.tpml.core.subtyping.SubTypingProofModel ;
+import de.unisiegen.tpml.core.subtypingrec.RecSubTypingProofModel ;
+import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel ;
+import de.unisiegen.tpml.core.typeinference.TypeInferenceProofModel ;
+import de.unisiegen.tpml.core.types.MonoType ;
 
 
 /**
@@ -68,24 +68,24 @@ public class L2Language extends L1Language
   /**
    * {@inheritDoc}
    * 
-   * @see Language#getName()
-   */
-  @ Override
-  public String getName ( )
-  {
-    return "L2" ; //$NON-NLS-1$
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
    * @see Language#getTitle()
    */
   @ Override
   public int getId ( )
   {
     return L2Language.L2 ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Language#getName()
+   */
+  @ Override
+  public String getName ( )
+  {
+    return "L2" ; //$NON-NLS-1$
   }
 
 
@@ -117,6 +117,59 @@ public class L2Language extends L1Language
   /**
    * {@inheritDoc}
    * 
+   * @see Language#newParser(LanguageScanner)
+   */
+  @ Override
+  public LanguageParser newParser ( LanguageScanner scanner )
+  {
+    if ( scanner == null )
+    {
+      throw new NullPointerException ( "scanner is null" ) ; //$NON-NLS-1$
+    }
+    final lr_parser parser = new L2Parser ( scanner ) ;
+    return new LanguageParser ( )
+    {
+      public Expression parse ( ) throws Exception
+      {
+        return ( Expression ) parser.parse ( ).value ;
+      }
+    } ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.tpml.core.languages.Language#newSubTypingProofModel(MonoType,MonoType,boolean)
+   */
+  @ Override
+  public RecSubTypingProofModel newRecSubTypingProofModel ( MonoType type ,
+      MonoType type2 , boolean mode )
+  {
+    return new RecSubTypingProofModel ( type , type2 ,
+        new L2RecSubTypingProofRuleSet ( this , mode ) , mode ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Language#newScanner(java.io.Reader)
+   */
+  @ Override
+  public LanguageScanner newScanner ( Reader reader )
+  {
+    if ( reader == null )
+    {
+      throw new NullPointerException ( "reader is null" ) ; //$NON-NLS-1$
+    }
+    return new L2Scanner ( reader ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
    * @see de.unisiegen.tpml.core.languages.Language#newSmallStepProofModel(de.unisiegen.tpml.core.expressions.Expression)
    */
   @ Override
@@ -124,6 +177,32 @@ public class L2Language extends L1Language
   {
     return new SmallStepProofModel ( expression , new L2SmallStepProofRuleSet (
         this ) ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.tpml.core.languages.Language#newSubTypingProofModel(MonoType,MonoType,boolean)
+   */
+  @ Override
+  public SubTypingProofModel newSubTypingProofModel ( MonoType type ,
+      MonoType type2 , boolean mode )
+  {
+    return new SubTypingProofModel ( type , type2 ,
+        new L2SubTypingProofRuleSet ( this , mode ) , mode ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.tpml.core.languages.Language#newTranslator()
+   */
+  @ Override
+  public LanguageTranslator newTranslator ( )
+  {
+    return new L2LanguageTranslator ( ) ;
   }
 
 
@@ -152,50 +231,26 @@ public class L2Language extends L1Language
     return new TypeInferenceProofModel ( expression ,
         new L2TypeInferenceProofRuleSet ( this ) ) ;
   }
-  
-  /**
-   * {@inheritDoc}
-   * 
-   * @see de.unisiegen.tpml.core.languages.Language#newSubTypingProofModel(de.unisiegen.tpml.core.expressions.Expression)
-   */
-  @Override
-  public SubTypingProofModel newSubTypingProofModel ( MonoType type, MonoType type2, boolean mode )
-  {
-    return new SubTypingProofModel (type, type2, 
-        new L2SubTypingProofRuleSet ( this, mode ), mode ) ;
-  }
-  
-  /**
-   * {@inheritDoc}
-   * 
-   * @see de.unisiegen.tpml.core.languages.Language#newSubTypingProofModel(de.unisiegen.tpml.core.expressions.Expression)
-   */
-  @Override
-  public RecSubTypingProofModel newRecSubTypingProofModel ( MonoType type, MonoType type2, boolean mode  )
-  {
-    return new RecSubTypingProofModel (type, type2, 
-        new L2RecSubTypingProofRuleSet ( this, mode ), mode ) ;
-  }
 
 
   /**
    * {@inheritDoc}
    * 
-   * @see Language#newParser(LanguageScanner)
+   * @see de.unisiegen.tpml.core.languages.AbstractLanguage#newTypeParser(de.unisiegen.tpml.core.languages.LanguageTypeScanner)
    */
   @ Override
-  public LanguageParser newParser ( LanguageScanner scanner )
+  public LanguageTypeParser newTypeParser ( LanguageTypeScanner scanner )
   {
     if ( scanner == null )
     {
       throw new NullPointerException ( "scanner is null" ) ; //$NON-NLS-1$
     }
-    final lr_parser parser = new L2Parser ( scanner ) ;
-    return new LanguageParser ( )
+    final lr_parser parser = new L2TypeParser ( scanner ) ;
+    return new LanguageTypeParser ( )
     {
-      public Expression parse ( ) throws Exception
+      public MonoType parse ( ) throws Exception
       {
-        return ( Expression ) parser.parse ( ).value ;
+        return ( MonoType ) parser.parse ( ).value ;
       }
     } ;
   }
@@ -204,27 +259,15 @@ public class L2Language extends L1Language
   /**
    * {@inheritDoc}
    * 
-   * @see Language#newScanner(java.io.Reader)
+   * @see de.unisiegen.tpml.core.languages.AbstractLanguage#newTypeScanner(java.io.Reader)
    */
   @ Override
-  public LanguageScanner newScanner ( Reader reader )
+  public LanguageTypeScanner newTypeScanner ( Reader reader )
   {
     if ( reader == null )
     {
       throw new NullPointerException ( "reader is null" ) ; //$NON-NLS-1$
     }
-    return new L2Scanner ( reader ) ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see de.unisiegen.tpml.core.languages.Language#newTranslator()
-   */
-  @ Override
-  public LanguageTranslator newTranslator ( )
-  {
-    return new L2LanguageTranslator ( ) ;
+    return new L2TypeScanner ( reader ) ;
   }
 }

@@ -136,6 +136,7 @@
 	</target>
 	
 	<target name="l2" description="Generates lexer and parser for L2">
+		<!-- Expressions -->
 		<jflex 
     		file="${impldir}/de/unisiegen/tpml/core/languages/l2/l2.flex"
     		destdir="${generateddir}"
@@ -146,6 +147,24 @@
 			package="de.unisiegen.tpml.core.languages.l2"
 			parser="L2AbstractParser"
 			symbols="L2Terminals"
+			interface="yes"
+			debug="no"
+			expect="1000000"
+			nonterms="no"
+			nopositions="no"
+			dump_grammar="no" />
+		
+		<!-- Types -->
+		<jflex 
+    		file="${impldir}/de/unisiegen/tpml/core/languages/l2/l2type.flex"
+    		destdir="${generateddir}"
+			nobak="yes" />
+		<cup
+			srcfile="${impldir}/de/unisiegen/tpml/core/languages/l2/l2type.cup"
+			destdir="${generateddir}/de/unisiegen/tpml/core/languages/l2"
+			package="de.unisiegen.tpml.core.languages.l2"
+			parser="L2AbstractTypeParser"
+			symbols="L2TypeTerminals"
 			interface="yes"
 			debug="no"
 			expect="1000000"

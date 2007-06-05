@@ -97,11 +97,10 @@ LetterGreek		= [\u03b1-\u03c1\u03c3-\u03c9]
 	
 	// types
 	
-	"mu"|"\u03bc"		{ return symbol("MU", MU); }
-	
 	"bool"				{ return symbol("BOOL", BOOL); }
 	"int"				{ return symbol("INT", INT); }
 	"unit"				{ return symbol("UNIT", UNIT); }
+	"mu"|"\u03bc"		{ return symbol("MU", MU); }
 	"'"{LetterAX}		{ return symbol("TYPEVARIABLE", TYPEVARIABLE, (int)(yycharat(1) - 'a')); }
 	{LetterGreek}		{
 							int c = yycharat(0);

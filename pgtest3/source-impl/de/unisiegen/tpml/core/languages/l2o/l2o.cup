@@ -1206,12 +1206,12 @@ simple_type						::=	LPAREN:l type:t RPAREN:r
 									{: RESULT = u; :}
 								|	type_variable:t
 									{: RESULT = t; :}
-								|	object_type:t
-									{: RESULT = t; :}
 								|	type_name:t
 									{: RESULT = t; :}
 								|	rec_type:r
 									{: RESULT = r; :}
+								|	object_type:t
+									{: RESULT = t; :}
 								;
 
 simple_type_error				::= /* epsilon */
