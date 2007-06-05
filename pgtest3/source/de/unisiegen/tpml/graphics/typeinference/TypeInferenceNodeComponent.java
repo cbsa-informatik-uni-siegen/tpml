@@ -736,11 +736,7 @@ public class TypeInferenceNodeComponent extends JComponent {
 		//TODO
 		allFormulasList = proofNode.getAllFormulas();
 		substitutionList = proofNode.getSubstitution();
-		//TODO geht hier nicht...
-		if (allFormulasList.size()<1)
-		{
-			//proofModel.setFinished(true);	
-		}
+		
 		
 		testAusgabe("update...");
 		//placeExpression();
@@ -748,6 +744,21 @@ public class TypeInferenceNodeComponent extends JComponent {
 		testAusgabe("Breite "+WIDTH);
 		this.compoundExpression.setDefaultTypeSubstitutionList(substitutionList);
 		this.compoundExpression.setTypeFormulaList(allFormulasList);
+		
+		//check if the expressions contain syntactic sugar
+		
+		//First, disable the Translator Item
+		translateItem.setEnabled(false);
+		
+		for  ( int i = 0; i<allFormulasList.size(); i++)
+		{
+			Expression exp = allFormulasList.get(i).getExpression();
+			if (translator.containsSyntacticSugar(exp, true))
+			{
+				translateItem.setEnabled(true);
+			}
+		}
+		
 		this.compoundExpression.repaint();
 		this.repaint();
 		
