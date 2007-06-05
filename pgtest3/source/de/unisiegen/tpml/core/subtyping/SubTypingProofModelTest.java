@@ -195,32 +195,32 @@ public class SubTypingProofModelTest extends JFrame {
 		JButton beginnerButton = new JButton ( "Beginner" );
 		beginnerButton.addActionListener ( new ActionListener ( ) {
 			public void actionPerformed ( ActionEvent event ) {
-						model.setMode ( false );
-						ItemListener temp = combo1.getItemListeners ( )[0];
-						combo1.removeItemListener ( temp );
-						combo1.removeAllItems ( );
-						for ( ProofRule rule : model.getRules ( ) ) {
-							combo1.addItem ( rule.getName ( ) );
-						}
-						combo1.addItemListener ( temp );
+				model.setMode ( false );
+				ItemListener temp = combo1.getItemListeners ( )[0];
+				combo1.removeItemListener ( temp );
+				combo1.removeAllItems ( );
+				for ( ProofRule rule : model.getRules ( ) ) {
+					combo1.addItem ( rule.getName ( ) );
+				}
+				combo1.addItemListener ( temp );
 			}
 		} );
 		buttons.add ( beginnerButton );
-		
+
 		// setup the guess button
 		JButton advancedButton = new JButton ( "Advanced" );
 		advancedButton.addActionListener ( new ActionListener ( ) {
 			public void actionPerformed ( ActionEvent event ) {
 
-						model.setMode ( true );
-						ItemListener temp = combo1.getItemListeners ( )[0];
-						combo1.removeItemListener ( temp );
-						combo1.removeAllItems ( );
-						for ( ProofRule rule : model.getRules ( ) ) {
-							combo1.addItem ( rule.getName ( ) );
-						}
-						combo1.addItemListener ( temp );
-	
+				model.setMode ( true );
+				ItemListener temp = combo1.getItemListeners ( )[0];
+				combo1.removeItemListener ( temp );
+				combo1.removeAllItems ( );
+				for ( ProofRule rule : model.getRules ( ) ) {
+					combo1.addItem ( rule.getName ( ) );
+				}
+				combo1.addItemListener ( temp );
+
 			}
 		} );
 		buttons.add ( advancedButton );
@@ -274,8 +274,8 @@ public class SubTypingProofModelTest extends JFrame {
 					TYPE2 ) );
 			MonoType type2 = parser2.parse ( );
 
-			SubTypingProofModel model = language
-					.newSubTypingProofModel ( type, type2, true );
+			SubTypingProofModel model = language.newSubTypingProofModel ( type,
+					type2, true );
 
 			// evaluate the resulting small step expression
 			SubTypingProofModelTest window = new SubTypingProofModelTest ( model );

@@ -212,13 +212,13 @@ public class SubTypingProofModel extends AbstractProofModel {
 			throw new NullPointerException ( "node is null" ); //$NON-NLS-1$
 		}
 		if ( node.getSteps ( ).length > 0 ) {
-			throw new IllegalArgumentException ( MessageFormat.format(Messages
-					.getString ( "IllegalArgumentException.0" ),node) ); //$NON-NLS-1$
+			throw new IllegalArgumentException ( MessageFormat.format ( Messages
+					.getString ( "IllegalArgumentException.0" ), node ) ); //$NON-NLS-1$
 		}
 
 		if ( !this.root.isNodeRelated ( node ) ) {
-			throw new IllegalArgumentException ( MessageFormat.format(Messages
-					.getString ( "IllegalArgumentException.1" ),node) ); //$NON-NLS-1$
+			throw new IllegalArgumentException ( MessageFormat.format ( Messages
+					.getString ( "IllegalArgumentException.1" ), node ) ); //$NON-NLS-1$
 		}
 		// try to guess the next rule
 		logger.debug ( "Trying to guess a rule for " + node ); //$NON-NLS-1$
@@ -242,8 +242,8 @@ public class SubTypingProofModel extends AbstractProofModel {
 		// unable to guess next step
 		logger.debug ( "Failed to find rule to apply to " + node ); //$NON-NLS-1$
 
-			throw new ProofGuessException ( MessageFormat.format ( Messages
-					.getString ( "ProofGuessException.0" ), node), node ); //$NON-NLS-1$
+		throw new ProofGuessException ( MessageFormat.format ( Messages
+				.getString ( "ProofGuessException.0" ), node ), node ); //$NON-NLS-1$
 	}
 
 	//
@@ -348,7 +348,7 @@ public class SubTypingProofModel extends AbstractProofModel {
 	public void setRoot ( MonoType type, MonoType type2 ) {
 		this.root = new DefaultSubTypingProofNode ( type, type2 );
 	}
-	
+
 	/**
 	 * 
 	 * Set the mode (Beginner, Advanced) of choosen by the user

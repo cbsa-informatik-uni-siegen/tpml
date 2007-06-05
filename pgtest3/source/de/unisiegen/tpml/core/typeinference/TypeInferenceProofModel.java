@@ -145,7 +145,7 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 
 		guessInternal ( ( DefaultTypeInferenceProofNode ) node, null, false );
 	}
-	
+
 	/**
 	 * 
 	 * guess method with additional boolean to signal which mode is chosen
@@ -190,12 +190,12 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 	 * 
 	 * prove method with additional boolean to signal which mode is chosen
 	 *
-   * @param rule the {@link ProofRule} to apply. 
+	 * @param rule the {@link ProofRule} to apply. 
 	 * @param pNode the actual subtyping proof node
 	 * @param mode the actual chosen mode
 	 * @throws ProofRuleException
 	 * 
-	* @see de.unisiegen.tpml.core.AbstractProofModel#prove(de.unisiegen.tpml.core.ProofRule, de.unisiegen.tpml.core.ProofNode)
+	 * @see de.unisiegen.tpml.core.AbstractProofModel#prove(de.unisiegen.tpml.core.ProofRule, de.unisiegen.tpml.core.ProofNode)
 	 */
 	public void prove ( ProofRule rule, ProofNode pNode, boolean mode )
 			throws ProofRuleException {
@@ -342,19 +342,18 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 			for ( TypeFormula formula : node.getAllFormulas ( ) ) {
 				if ( formula instanceof TypeJudgement ) {
 					try {
-					Expression expression = translateToCoreSyntaxInternal ( node,
-							( TypeJudgement ) formula, recursive, all );
-					newFormulas.add ( new TypeJudgement ( formula.getEnvironment ( ),
-							expression, formula.getType ( ) ) );
-					}
-					catch (IllegalStateException e){
+						Expression expression = translateToCoreSyntaxInternal ( node,
+								( TypeJudgement ) formula, recursive, all );
+						newFormulas.add ( new TypeJudgement ( formula.getEnvironment ( ),
+								expression, formula.getType ( ) ) );
+					} catch ( IllegalStateException e ) {
 						//Nothing to do here
 					}
 				}
 			}
 			addUndoableTreeEdit ( new UndoableTreeEdit ( ) {
 
-				@SuppressWarnings("synthetic-access")
+				@SuppressWarnings ( "synthetic-access" )
 				public void redo ( ) {
 
 					node.setFormula ( newFormulas );
@@ -362,7 +361,7 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 
 				}
 
-				@SuppressWarnings("synthetic-access")
+				@SuppressWarnings ( "synthetic-access" )
 				public void undo ( ) {
 					node.setFormula ( oldFormulas );
 					nodeChanged ( node );
@@ -380,7 +379,7 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 
 				addUndoableTreeEdit ( new UndoableTreeEdit ( ) {
 
-					@SuppressWarnings("synthetic-access")
+					@SuppressWarnings ( "synthetic-access" )
 					public void redo ( ) {
 
 						judgement.setExpression ( newExpression );
@@ -388,7 +387,7 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 
 					}
 
-					@SuppressWarnings("synthetic-access")
+					@SuppressWarnings ( "synthetic-access" )
 					public void undo ( ) {
 						judgement.setExpression ( oldExpression );
 						nodeChanged ( node );
@@ -408,13 +407,11 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 			TypeJudgement judgement, boolean recursive, boolean all ) {
 
 		// verify that the node actually contains syntactic sugar
-	
-			if ( !containsSyntacticSugar ( node, judgement.getExpression ( ),
-					recursive ) ) {
-				throw new IllegalArgumentException (
-						"node does not contain syntactic sugar" ); //$NON-NLS-1$
-			}
-	
+
+		if ( !containsSyntacticSugar ( node, judgement.getExpression ( ), recursive ) ) {
+			throw new IllegalArgumentException (
+					"node does not contain syntactic sugar" ); //$NON-NLS-1$
+		}
 
 		// verify that no actions were performed on the node
 		if ( node.getSteps ( ).length > 0 ) {
@@ -602,7 +599,7 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 		// add redo and undo options
 		addUndoableTreeEdit ( new UndoableTreeEdit ( ) {
 
-			@SuppressWarnings("synthetic-access")
+			@SuppressWarnings ( "synthetic-access" )
 			public void redo ( ) {
 
 				setFinished ( ( ( DefaultTypeInferenceProofNode ) root ).isFinished ( ) );
@@ -613,7 +610,7 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 				nodeChanged ( pNode );
 			}
 
-			@SuppressWarnings("synthetic-access")
+			@SuppressWarnings ( "synthetic-access" )
 			public void undo ( ) {
 
 				// update the "finished" state
@@ -680,45 +677,45 @@ public final class TypeInferenceProofModel extends AbstractProofModel {
 		return this.ruleSet.getRules ( );
 	}
 
-  /**
-   * {@inheritDoc}
-   *
-   * @see de.unisiegen.tpml.core.ProofModel#undo()
-   */
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see de.unisiegen.tpml.core.ProofModel#undo()
+	 */
 	@Override
 	public void undo ( ) throws CannotUndoException {
 		super.undo ( );
 		index-- ;
 	}
 
-  /**
-   * {@inheritDoc}
-   *
-   * @see de.unisiegen.tpml.core.ProofModel#redo()
-   */
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see de.unisiegen.tpml.core.ProofModel#redo()
+	 */
 	@Override
 	public void redo ( ) throws CannotRedoException {
 		super.redo ( );
 		index++ ;
 	}
 
-  /**
-   * {@inheritDoc}
-   *
-   * @see de.unisiegen.tpml.core.ProofModel#setFinished()
-   */
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see de.unisiegen.tpml.core.ProofModel#setFinished()
+	 */
 	public void setFinished ( ) {
 		this.setFinished ( true );
 	}
-	
-	/*
-	public ArrayList < MonoType > getSubstitudedTypesForSubstitutions (
-			ArrayList < DefaultTypeSubstitution > substitutions ) {
-		ArrayList < MonoType > result = new ArrayList < MonoType > ( );
 
-		for ( DefaultTypeSubstitution s : substitutions ) {
-			result.add ( s.getType ( ) );
-		}
-		return result;
-	}*/
+	/*
+	 public ArrayList < MonoType > getSubstitudedTypesForSubstitutions (
+	 ArrayList < DefaultTypeSubstitution > substitutions ) {
+	 ArrayList < MonoType > result = new ArrayList < MonoType > ( );
+
+	 for ( DefaultTypeSubstitution s : substitutions ) {
+	 result.add ( s.getType ( ) );
+	 }
+	 return result;
+	 }*/
 }

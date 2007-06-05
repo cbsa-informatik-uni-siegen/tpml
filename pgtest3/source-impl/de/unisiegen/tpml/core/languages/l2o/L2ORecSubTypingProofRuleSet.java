@@ -7,10 +7,11 @@ import de.unisiegen.tpml.core.Messages;
 import de.unisiegen.tpml.core.expressions.Identifier;
 import de.unisiegen.tpml.core.languages.Language;
 import de.unisiegen.tpml.core.languages.l1.L1Language;
-import de.unisiegen.tpml.core.languages.l2.L2SubTypingProofRuleSet;
+import de.unisiegen.tpml.core.languages.l2.L2RecSubTypingProofRuleSet;
 import de.unisiegen.tpml.core.subtyping.SubTypingException;
-import de.unisiegen.tpml.core.subtyping.SubTypingProofContext;
 import de.unisiegen.tpml.core.subtyping.SubTypingProofNode;
+import de.unisiegen.tpml.core.subtypingrec.RecSubTypingProofContext;
+import de.unisiegen.tpml.core.subtypingrec.RecSubTypingProofNode;
 import de.unisiegen.tpml.core.types.MonoType;
 import de.unisiegen.tpml.core.types.ObjectType;
 import de.unisiegen.tpml.core.types.PrimitiveType;
@@ -22,7 +23,7 @@ import de.unisiegen.tpml.core.types.RowType;
  * @author Benjamin Mies
  * @see de.unisiegen.tpml.core.subtyping.AbstractSubTypingProofRuleSet
  */
-public class L2OSubTypingProofRuleSet extends L2SubTypingProofRuleSet {
+public class L2ORecSubTypingProofRuleSet extends L2RecSubTypingProofRuleSet {
 
 	/**
 	 * Allocates a new <code>L2OSubTypingProofRuleSet</code> for the specified
@@ -33,7 +34,7 @@ public class L2OSubTypingProofRuleSet extends L2SubTypingProofRuleSet {
 	 * @throws NullPointerException if <code>language</code> is
 	 *           <code>null</code>.
 	 */
-	public L2OSubTypingProofRuleSet ( Language language, boolean mode ) {
+	public L2ORecSubTypingProofRuleSet ( Language language, boolean mode ) {
 		super ( language, mode );
 
 		unregister ( "REFL" ); //$NON-NLS-1$
@@ -62,8 +63,8 @@ public class L2OSubTypingProofRuleSet extends L2SubTypingProofRuleSet {
 	 * @throws SubTypingException throw Exception if rule can't be applied
 	 * @throws PrimitiveTypeException 
 	 */
-	public void applyTrans ( SubTypingProofContext context,
-			SubTypingProofNode node ) throws SubTypingException {
+	public void applyTrans ( RecSubTypingProofContext context,
+			RecSubTypingProofNode node ) throws SubTypingException {
 		try {
 			ObjectType type = ( ObjectType ) node.getType2 ( );
 			ObjectType type2 = ( ObjectType ) node.getType ( );
@@ -94,8 +95,7 @@ public class L2OSubTypingProofRuleSet extends L2SubTypingProofRuleSet {
 				}
 				if ( goOn )
 					continue;
-				throw new SubTypingException ( MessageFormat.format ( Messages
-						.getString ( "SubTypingException.0" ), type, type2 ), node ); //$NON-NLS-1$
+				throw new SubTypingException (MessageFormat.format ( Messages.getString ( "SubTypingException.0" ),type,type2), node ); //$NON-NLS-1$
 			}
 
 			Identifier[] tmpIds = new Identifier[newIds.size ( )];
@@ -117,9 +117,8 @@ public class L2OSubTypingProofRuleSet extends L2SubTypingProofRuleSet {
 			MonoType type = node.getType ( );
 			MonoType type2 = node.getType2 ( );
 			// if both types instance of Primitive Type throw Exception
-			if ( type instanceof PrimitiveType && type2 instanceof PrimitiveType ) {
-				throw new SubTypingException ( Messages
-						.getString ( "SubTypingException.1" ), node ); //$NON-NLS-1$
+			if ( type instanceof PrimitiveType && type2 instanceof PrimitiveType ){
+				throw new SubTypingException ( Messages.getString ( "SubTypingException.1" ), node ); //$NON-NLS-1$
 			}
 			context.addProofNode ( node, type, type );
 			context.addProofNode ( node, type, type2 );
@@ -127,16 +126,17 @@ public class L2OSubTypingProofRuleSet extends L2SubTypingProofRuleSet {
 			SubTypingProofNode parent = ( SubTypingProofNode ) node.getParent ( );
 			int count = 0;
 			while ( parent != null ) {
-				if ( parent.getRule ( ).toString ( ).equals ( "TRANS" ) ) { //$NON-NLS-1$
+				if ( parent.getRule ( ).toString ( ).equals ( "TRANS" ) ){ //$NON-NLS-1$
 					count++ ;
-				} else
+				}
+				else
 					break;
-				parent = ( SubTypingProofNode ) parent.getParent ( );
+				parent = (SubTypingProofNode) parent.getParent ( );
 			}
-
-			if ( count >= 15 )
-				throw new SubTypingException ( Messages
-						.getString ( "SubTypingException.2" ), node ); //$NON-NLS-1$
+			
+			if (count >= 15)
+				throw new SubTypingException (Messages.getString ( "SubTypingException.2" ), node ); //$NON-NLS-1$
+			
 
 		}
 
@@ -150,8 +150,8 @@ public class L2OSubTypingProofRuleSet extends L2SubTypingProofRuleSet {
 	 * @param node the subtyping proof node.
 	 * @throws SubTypingException throw Exception if rule can't be applied
 	 */
-	public void applyObjectWidth ( SubTypingProofContext context,
-			SubTypingProofNode node ) throws SubTypingException {
+	public void applyObjectWidth ( RecSubTypingProofContext context,
+			RecSubTypingProofNode node ) throws SubTypingException {
 		boolean goOn;
 		ObjectType type = ( ObjectType ) node.getType ( );
 		ObjectType type2 = ( ObjectType ) node.getType2 ( );
@@ -170,17 +170,16 @@ public class L2OSubTypingProofRuleSet extends L2SubTypingProofRuleSet {
 			for ( int j = 0; j < ids1.length; j++ ) {
 				if ( ids2[i].equals ( ids1[j] ) ) {
 					if ( ! ( types2[i].equals ( types[j] ) ) ) {
-						throw new SubTypingException ( MessageFormat.format ( Messages
-								.getString ( "SubTypingException.3" ), type, type2 ), node ); //$NON-NLS-1$
-					}
+						throw new SubTypingException (MessageFormat.format ( Messages.getString ( "SubTypingException.3" ),type,type2), node ); //$NON-NLS-1$
+						}
 					goOn = true;
 					break;
 				}
 			}
 			if ( !goOn ) {
-				throw new SubTypingException ( MessageFormat.format ( Messages
-						.getString ( "SubTypingException.4" ), type, type2 ), node ); //$NON-NLS-1$
-			}
+				throw new SubTypingException (MessageFormat.format ( Messages.getString ( "SubTypingException.4" ),type,type2), node ); //$NON-NLS-1$
+				}
+			context.addSeenType ( node.getType ( ), node.getType2 ( ) );
 		}
 	}
 
@@ -192,8 +191,8 @@ public class L2OSubTypingProofRuleSet extends L2SubTypingProofRuleSet {
 	 * @param node the subtyping proof node.
 	 * @throws SubTypingException throw Exception if rule can't be applied
 	 */
-	public void applyObjectDepth ( SubTypingProofContext context,
-			SubTypingProofNode node ) throws SubTypingException {
+	public void applyObjectDepth ( RecSubTypingProofContext context,
+			RecSubTypingProofNode node ) throws SubTypingException {
 
 		boolean goOn;
 		ObjectType type = ( ObjectType ) node.getType ( );
@@ -223,9 +222,9 @@ public class L2OSubTypingProofRuleSet extends L2SubTypingProofRuleSet {
 				break;
 			}
 		} else
-			throw new SubTypingException ( MessageFormat.format ( Messages
-					.getString ( "SubTypingException.0" ), type, type2 ), node ); //$NON-NLS-1$
-	}
+			throw new SubTypingException (MessageFormat.format ( Messages.getString ( "SubTypingException.0" ),type, type2), node ); //$NON-NLS-1$
+		context.addSeenType ( node.getType ( ), node.getType2 ( ) );
+		}
 
 	/**
 	 * Applies the <b>(OBJECT)</b> rule to the <code>node</code> using the
@@ -235,8 +234,8 @@ public class L2OSubTypingProofRuleSet extends L2SubTypingProofRuleSet {
 	 * @param node the subtyping proof node.
 	 * @throws SubTypingException throw Exception if rule can't be applied
 	 */
-	public void applyObject ( SubTypingProofContext context,
-			SubTypingProofNode node ) throws SubTypingException {
+	public void applyObject ( RecSubTypingProofContext context,
+			RecSubTypingProofNode node ) throws SubTypingException {
 		boolean goOn = false;
 
 		ObjectType type = ( ObjectType ) node.getType ( );
@@ -268,9 +267,9 @@ public class L2OSubTypingProofRuleSet extends L2SubTypingProofRuleSet {
 				}
 			}
 			if ( !goOn ) {
-				throw new SubTypingException ( MessageFormat.format ( Messages
-						.getString ( "SubTypingException.3" ), type, type2 ), node ); //$NON-NLS-1$
-			}
+				throw new SubTypingException (MessageFormat.format ( Messages.getString ( "SubTypingException.3" ),type,type2), node ); //$NON-NLS-1$
+				}
 		}
+		context.addSeenType ( node.getType ( ), node.getType2 ( ) );
 	}
 }

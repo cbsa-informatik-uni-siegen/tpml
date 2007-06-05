@@ -16,16 +16,16 @@ import de.unisiegen.tpml.core.languages.Language;
 public abstract class AbstractRecSubTypingProofRuleSet extends
 		AbstractProofRuleSet {
 
-  /**
-   * Allocates a new <code>AbstractSubTypingProofRuleSet</code> for the specified <code>language</code>.
-   * 
-   * @param language the {@link Language} to which the subtyping proof rules in this set belong.
-   * @param mode the mode chosen by the user
-   * 
-   * @throws NullPointerException if <code>language</code> is <code>null</code>.
-   */
-	public AbstractRecSubTypingProofRuleSet (Language language, boolean mode) {
-    super(language);
+	/**
+	 * Allocates a new <code>AbstractSubTypingProofRuleSet</code> for the specified <code>language</code>.
+	 * 
+	 * @param language the {@link Language} to which the subtyping proof rules in this set belong.
+	 * @param mode the mode chosen by the user
+	 * 
+	 * @throws NullPointerException if <code>language</code> is <code>null</code>.
+	 */
+	public AbstractRecSubTypingProofRuleSet ( Language language, boolean mode ) {
+		super ( language );
 	}
 
 	//
@@ -84,16 +84,8 @@ public abstract class AbstractRecSubTypingProofRuleSet extends
 			@Override
 			protected void applyInternal ( RecSubTypingProofContext context,
 					RecSubTypingProofNode node ) throws Exception {
-				applyMethod.invoke ( AbstractRecSubTypingProofRuleSet.this, context, node );
-			}
-
-		//	@Override
-			protected void updateInternal ( RecSubTypingProofContext context,
-					RecSubTypingProofNode node ) throws Exception {
-				if ( updateMethod != null ) {
-					updateMethod.invoke ( AbstractRecSubTypingProofRuleSet.this, context,
-							node );
-				}
+				applyMethod.invoke ( AbstractRecSubTypingProofRuleSet.this, context,
+						node );
 			}
 		} );
 	}
@@ -180,17 +172,16 @@ public abstract class AbstractRecSubTypingProofRuleSet extends
 		}
 		try {
 			// lookup the method with the parameters BigStepProofContext and BigStepProofNode
-			return getClass ( )
-					.getMethod (
-							methodName,
-							new Class[] { RecSubTypingProofContext.class,
-									RecSubTypingProofNode.class } );
+			return getClass ( ).getMethod (
+					methodName,
+					new Class[] { RecSubTypingProofContext.class,
+							RecSubTypingProofNode.class } );
 		} catch ( RuntimeException e ) {
 			// just re-throw the exception
 			throw e;
 		} catch ( Exception e ) {
 			// translate the exception to a runtime exception
-			throw new RuntimeException ( "Method " + methodName + " not found", e );  //$NON-NLS-1$//$NON-NLS-2$
+			throw new RuntimeException ( "Method " + methodName + " not found", e ); //$NON-NLS-1$//$NON-NLS-2$
 		}
 	}
 }

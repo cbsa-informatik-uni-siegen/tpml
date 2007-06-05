@@ -16,11 +16,11 @@ import de.unisiegen.tpml.core.util.Debug;
  *
  */
 public class DefaultRecSubTypingProofNode extends AbstractProofNode implements
-		RecSubTypingProofNode, SubTypingProofNode{
+		RecSubTypingProofNode, SubTypingProofNode {
 
 	private DefaultSubType type;
-	
-	private ArrayList<DefaultSubType> seenTypes;
+
+	private ArrayList < DefaultSubType > seenTypes;
 
 	/**
 	 * list of proof steps of this node
@@ -31,10 +31,12 @@ public class DefaultRecSubTypingProofNode extends AbstractProofNode implements
 	 * Allocates a new proof step with the given <code>expression</code> and the specified <code>rule</code>.
 	 * @param pType the first MonoType of this node
 	 * @param pType2 the second MonoType of this node
+	 * @param pSeenTypes list of all so far seen types
 	 * 
 	 */
-	public DefaultRecSubTypingProofNode ( MonoType pType, MonoType pType2, ArrayList<DefaultSubType> pSeenTypes ) {
-		type = new DefaultSubType(pType, pType2);
+	public DefaultRecSubTypingProofNode ( MonoType pType, MonoType pType2,
+			ArrayList < DefaultSubType > pSeenTypes ) {
+		type = new DefaultSubType ( pType, pType2 );
 		seenTypes = pSeenTypes;
 	}
 
@@ -82,8 +84,15 @@ public class DefaultRecSubTypingProofNode extends AbstractProofNode implements
 
 		return this.steps;
 	}
-	
-	public DefaultSubType getSubType(){
+
+	/**
+	 * 
+	 * 
+	 *
+	 * {@inheritDoc}
+	 * @see de.unisiegen.tpml.core.subtypingrec.RecSubTypingProofNode#getSubType()
+	 */
+	public DefaultSubType getSubType ( ) {
 		return this.type;
 	}
 
@@ -130,37 +139,38 @@ public class DefaultRecSubTypingProofNode extends AbstractProofNode implements
 
 		final StringBuilder builder = new StringBuilder ( );
 
-	
-
 		if ( Debug.isUserName ( Debug.BENJAMIN ) ) {
 			builder.append ( "<html>" ); //$NON-NLS-1$
-			builder.append ("[ A = ");
-			for (DefaultSubType subtype : seenTypes){
-				builder.append (" ( " + subtype + " ) ");
+			builder.append ( "[ A = " ); //$NON-NLS-1$
+			for ( DefaultSubType subtype : seenTypes ) {
+				builder.append ( "<b><font color=\"#0000FF\">(</font></b>" ); //$NON-NLS-1$ )
+				builder.append ( " ( " + subtype + " ) " ); //$NON-NLS-1$ //$NON-NLS-2$
+				builder.append ( "<b><font color=\"#0000FF\">)</font></b>" ); //$NON-NLS-1$ )
 			}
-			builder.append (" ]");
-			builder.append("<br>");
+			builder.append ( " ]" ); //$NON-NLS-1$
+			builder.append ( "<br>" ); //$NON-NLS-1$
 			String result = ""; //$NON-NLS-1$
 			result += type.getSubtype ( );
-			result = result.replaceAll ( "<", "&#60" );  //$NON-NLS-1$//$NON-NLS-2$
+			result = result.replaceAll ( "<", "&#60" ); //$NON-NLS-1$//$NON-NLS-2$
 			builder.append ( result );
 			result = ""; //$NON-NLS-1$
 			builder.append ( "<b><font color=\"#FF0000\">" ); //$NON-NLS-1$
 			builder.append ( " &#60: " ); //$NON-NLS-1$
 			builder.append ( "</font></b>" ); //$NON-NLS-1$
 			result += type.getOvertype ( );
+			builder.append ( " " ); //$NON-NLS-1$
 			if ( this.getSteps ( ).length > 0 )
 				result += this.getSteps ( )[0].getRule ( ).toString ( );
 			result = result.replaceAll ( "<", "&#60" ); //$NON-NLS-1$ //$NON-NLS-2$
 			builder.append ( result );
 			builder.append ( "</html>" ); //$NON-NLS-1$
 		} else {
-			builder.append ("[ A = ");
-			for (DefaultSubType subtype : seenTypes){
-				builder.append (" ( " + subtype + " ) ");
+			builder.append ( "[ A = " ); //$NON-NLS-1$
+			for ( DefaultSubType subtype : seenTypes ) {
+				builder.append ( " ( " + subtype + " ) " ); //$NON-NLS-1$//$NON-NLS-2$
 			}
-			builder.append (" ]");
-			builder.append ("\n");
+			builder.append ( " ]" ); //$NON-NLS-1$
+			builder.append ( "\n" ); //$NON-NLS-1$
 			builder.append ( type.getSubtype ( ) );
 			builder.append ( " <: " ); //$NON-NLS-1$
 			builder.append ( type.getOvertype ( ) );
@@ -188,6 +198,11 @@ public class DefaultRecSubTypingProofNode extends AbstractProofNode implements
 		}
 	}
 
+	/**
+	 * {@inheritDoc} 
+	 * 
+	 * @see de.unisiegen.tpml.core.subtypingrec.RecSubTypingProofNode#getSeenTypes()
+	 */
 	public ArrayList < DefaultSubType > getSeenTypes ( ) {
 		return this.seenTypes;
 	}

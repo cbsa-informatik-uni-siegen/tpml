@@ -87,8 +87,8 @@ public abstract class AbstractSubTyping {
 	}
 
 	private static boolean checkObjectType ( MonoType type1, MonoType type2 ) {
-		RowType r1 =(RowType) ( ( ObjectType ) type1 ).getPhi ( );
-		RowType r2 =(RowType) ( ( ObjectType ) type2 ).getPhi ( );
+		RowType r1 = ( RowType ) ( ( ObjectType ) type1 ).getPhi ( );
+		RowType r2 = ( RowType ) ( ( ObjectType ) type2 ).getPhi ( );
 		return checkRowType ( r1, r2 );
 	}
 

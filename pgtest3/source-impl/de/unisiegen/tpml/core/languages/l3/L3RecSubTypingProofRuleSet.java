@@ -1,5 +1,7 @@
 package de.unisiegen.tpml.core.languages.l3;
 
+import java.text.MessageFormat;
+
 import de.unisiegen.tpml.core.languages.Language;
 import de.unisiegen.tpml.core.languages.l1.L1Language;
 import de.unisiegen.tpml.core.languages.l2.L2RecSubTypingProofRuleSet;
@@ -65,7 +67,7 @@ public class L3RecSubTypingProofRuleSet extends L2RecSubTypingProofRuleSet {
 				context.addSeenType ( node.getType ( ), node.getType2 ( ) );
 			}
 		} else
-			throw new SubTypingException ("Length of Product types not equal", node );
+			throw new SubTypingException (MessageFormat.format ( "SubTypingException.6", node.getType ( ), node.getType2 ( ) ), node ); //$NON-NLS-1$
 	}
 
 	/**

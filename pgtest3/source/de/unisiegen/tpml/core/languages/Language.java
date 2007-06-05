@@ -38,6 +38,11 @@ public interface Language {
   public String getName();
   
   
+  /**
+   * Returns the id of the language
+   *
+   * @return the id of the language
+   */
   public int getId () ;
   
   
@@ -115,10 +120,12 @@ public interface Language {
   public TypeInferenceProofModel newTypeInferenceProofModel(Expression expression);
   
   /**
-   * Allocates a new {@link SubTypingProofModel} for the <code>expression</code> in this language, which
-   * is used to prove that <code>expression</code> is well-typed using the rules from this language.
+   * Allocates a new {@link SubTypingProofModel} for the <code>types</code> in this language, which
+   * is used to prove that <code>types</code> is well-typed using the rules from this language.
+   * @param type the subtype of the new model
+   * @param type2 the overtype of the new model
+   * @param mode the chosen mode
    * 
-   * @param expression the {@link Expression} for the subtyping proof model.
    * 
    * @return the newly allocated subtyping proof model.
    * 
@@ -129,6 +136,21 @@ public interface Language {
    */
   public SubTypingProofModel newSubTypingProofModel(MonoType type, MonoType type2, boolean mode);
   
+  /**
+   * Allocates a new {@link RecSubTypingProofModel} for the <code>types</code> in this language, which
+   * is used to prove that <code>types</code> is well-typed using the rules from this language.
+   * 
+   * @param type the subtype of the new model
+   * @param type2 the overtype of the new model
+   * @param mode the chosen mode
+   * 
+   * @return the newly allocated subtyping proof model.
+   * 
+   * @throws NullPointerException if <code>expression</code> is <code>null</code>.
+   * @throws UnsupportedOperationException if the language does not include a type system.
+   * 
+   * @see SubTypingProofModel
+   */
   public RecSubTypingProofModel newRecSubTypingProofModel(MonoType type, MonoType type2, boolean mode);
   
   /**

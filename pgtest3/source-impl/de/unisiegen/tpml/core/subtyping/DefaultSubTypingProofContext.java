@@ -14,14 +14,14 @@ import de.unisiegen.tpml.core.types.MonoType;
  */
 public class DefaultSubTypingProofContext implements SubTypingProofContext {
 
-  /**
-   * The subtyping proof model with which this proof context is associated.
-   * 
-   * @see #SubTypingProofContext(SubTypingProofModel)
-   */
+	/**
+	 * The subtyping proof model with which this proof context is associated.
+	 * 
+	 * @see #SubTypingProofContext(SubTypingProofModel)
+	 */
 	private SubTypingProofModel model;
 
-	@SuppressWarnings("unused")
+	@SuppressWarnings ( "unused" )
 	private DefaultSubTypingProofNode node;
 
 	/**
@@ -52,24 +52,24 @@ public class DefaultSubTypingProofContext implements SubTypingProofContext {
 		node = ( DefaultSubTypingProofNode ) pNode;
 	}
 
-  //
-  // Rule application
-  //
-  
-  /**
-   * Applies the specified proof <code>rule</code> to the given <code>node</code>.
-   * 
-   * @param rule the proof rule to apply to the <code>node</code>.
-   * @param pNode the proof node to which to apply the <code>rule</code>.
-   * @param type the type the user guessed for the <code>node</code> or <code>null</code>
-   *             if the user didn't enter a type.
-   * 
-   * @throws NullPointerException if <code>rule</code> or <code>node</code> is <code>null</code>.
-   * @throws ProofRuleException if the application of the <code>rule</code> to the
-   *                            <code>node</code> failed for some reason.
-   * @throws SubTypingException if an error occurs while the type the application 
-   *                            of <code>rule</code> to <code>node</code>.
-   */
+	//
+	// Rule application
+	//
+
+	/**
+	 * Applies the specified proof <code>rule</code> to the given <code>node</code>.
+	 * 
+	 * @param rule the proof rule to apply to the <code>node</code>.
+	 * @param pNode the proof node to which to apply the <code>rule</code>.
+	 * @param type the type the user guessed for the <code>node</code> or <code>null</code>
+	 *             if the user didn't enter a type.
+	 * 
+	 * @throws NullPointerException if <code>rule</code> or <code>node</code> is <code>null</code>.
+	 * @throws ProofRuleException if the application of the <code>rule</code> to the
+	 *                            <code>node</code> failed for some reason.
+	 * @throws SubTypingException if an error occurs while the type the application 
+	 *                            of <code>rule</code> to <code>node</code>.
+	 */
 	public void apply ( SubTypingProofRule rule, DefaultSubTypingProofNode pNode )
 			throws ProofRuleException, SubTypingException {
 
@@ -78,11 +78,11 @@ public class DefaultSubTypingProofContext implements SubTypingProofContext {
 		rule.apply ( this, pNode );
 	}
 
-  /**
-   * {@inheritDoc}
-   *
-   * @see de.unisiegen.tpml.core.subtyping.SubTypingProofContext#addProofNode(de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode, de.unisiegen.tpml.core.typechecker.TypeEnvironment, de.unisiegen.tpml.core.expressions.Expression, de.unisiegen.tpml.core.types.MonoType)
-   */
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see de.unisiegen.tpml.core.subtyping.SubTypingProofContext#addProofNode(de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode, de.unisiegen.tpml.core.typechecker.TypeEnvironment, de.unisiegen.tpml.core.expressions.Expression, de.unisiegen.tpml.core.types.MonoType)
+	 */
 	public void addProofNode ( SubTypingProofNode pNode, MonoType type,
 			MonoType type2 ) {
 		model.contextAddProofNode ( this, pNode, type, type2 );
@@ -159,7 +159,7 @@ public class DefaultSubTypingProofContext implements SubTypingProofContext {
 	 */
 	Runnable getRedoActions ( ) {
 		return new Runnable ( ) {
-			@SuppressWarnings("synthetic-access")
+			@SuppressWarnings ( "synthetic-access" )
 			public void run ( ) {
 				for ( Runnable redoAction : DefaultSubTypingProofContext.this.redoActions ) {
 					redoAction.run ( );
@@ -178,7 +178,7 @@ public class DefaultSubTypingProofContext implements SubTypingProofContext {
 	 */
 	Runnable getUndoActions ( ) {
 		return new Runnable ( ) {
-			@SuppressWarnings("synthetic-access")
+			@SuppressWarnings ( "synthetic-access" )
 			public void run ( ) {
 				for ( Runnable undoAction : DefaultSubTypingProofContext.this.undoActions ) {
 					undoAction.run ( );

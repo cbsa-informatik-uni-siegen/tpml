@@ -4,11 +4,7 @@ import java.lang.reflect.InvocationTargetException;
 
 import de.unisiegen.tpml.core.AbstractProofRule;
 import de.unisiegen.tpml.core.ProofRuleException;
-import de.unisiegen.tpml.core.subtyping.DefaultSubTypingProofContext;
-import de.unisiegen.tpml.core.subtyping.DefaultSubTypingProofNode;
 import de.unisiegen.tpml.core.subtyping.SubTypingException;
-import de.unisiegen.tpml.core.subtyping.SubTypingProofContext;
-import de.unisiegen.tpml.core.subtyping.SubTypingProofNode;
 import de.unisiegen.tpml.core.typechecker.AbstractTypeCheckerProofRuleSet;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofContext;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode;
@@ -57,9 +53,10 @@ public abstract class AbstractRecSubTypingProofRule extends AbstractProofRule
 		} catch ( ProofRuleException e ) {
 			throw e;
 		} catch ( InvocationTargetException e ) {
-			if (e.getTargetException ( ) instanceof RuntimeException)
+			if ( e.getTargetException ( ) instanceof RuntimeException )
 				throw new ProofRuleException ( node, this, e );
-			throw new ProofRuleException ( e.getTargetException ( ).getMessage ( ), node, this, e );
+			throw new ProofRuleException ( e.getTargetException ( ).getMessage ( ),
+					node, this, e );
 		} catch ( Exception e ) {
 			// check if e contains a usable error message
 			for ( Throwable t = e; t != null; t = t.getCause ( ) ) {

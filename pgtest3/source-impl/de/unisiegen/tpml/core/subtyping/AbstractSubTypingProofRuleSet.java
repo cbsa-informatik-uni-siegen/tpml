@@ -1,6 +1,5 @@
 package de.unisiegen.tpml.core.subtyping;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import de.unisiegen.tpml.core.AbstractProofRule;
@@ -17,16 +16,16 @@ import de.unisiegen.tpml.core.languages.Language;
 public abstract class AbstractSubTypingProofRuleSet extends
 		AbstractProofRuleSet {
 
-  /**
-   * Allocates a new <code>AbstractSubTypingProofRuleSet</code> for the specified <code>language</code>.
-   * 
-   * @param language the {@link Language} to which the subtyping proof rules in this set belong.
-   * @param mode the mode chosen by the user
-   * 
-   * @throws NullPointerException if <code>language</code> is <code>null</code>.
-   */
-	public AbstractSubTypingProofRuleSet (Language language, boolean mode) {
-    super(language);
+	/**
+	 * Allocates a new <code>AbstractSubTypingProofRuleSet</code> for the specified <code>language</code>.
+	 * 
+	 * @param language the {@link Language} to which the subtyping proof rules in this set belong.
+	 * @param mode the mode chosen by the user
+	 * 
+	 * @throws NullPointerException if <code>language</code> is <code>null</code>.
+	 */
+	public AbstractSubTypingProofRuleSet ( Language language, boolean mode ) {
+		super ( language );
 	}
 
 	//
@@ -86,15 +85,6 @@ public abstract class AbstractSubTypingProofRuleSet extends
 			protected void applyInternal ( SubTypingProofContext context,
 					SubTypingProofNode node ) throws Exception {
 				applyMethod.invoke ( AbstractSubTypingProofRuleSet.this, context, node );
-			}
-
-		//	@Override
-			protected void updateInternal ( SubTypingProofContext context,
-					SubTypingProofNode node ) throws Exception {
-				if ( updateMethod != null ) {
-					updateMethod.invoke ( AbstractSubTypingProofRuleSet.this, context,
-							node );
-				}
 			}
 		} );
 	}
@@ -191,7 +181,7 @@ public abstract class AbstractSubTypingProofRuleSet extends
 			throw e;
 		} catch ( Exception e ) {
 			// translate the exception to a runtime exception
-			throw new RuntimeException ( "Method " + methodName + " not found", e );  //$NON-NLS-1$//$NON-NLS-2$
+			throw new RuntimeException ( "Method " + methodName + " not found", e ); //$NON-NLS-1$//$NON-NLS-2$
 		}
 	}
 }

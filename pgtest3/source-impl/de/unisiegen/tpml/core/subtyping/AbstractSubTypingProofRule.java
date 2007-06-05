@@ -52,9 +52,10 @@ public abstract class AbstractSubTypingProofRule extends AbstractProofRule
 		} catch ( ProofRuleException e ) {
 			throw e;
 		} catch ( InvocationTargetException e ) {
-			if (e.getTargetException ( ) instanceof RuntimeException)
+			if ( e.getTargetException ( ) instanceof RuntimeException )
 				throw new ProofRuleException ( node, this, e );
-			throw new ProofRuleException ( e.getTargetException ( ).getMessage ( ), node, this, e );
+			throw new ProofRuleException ( e.getTargetException ( ).getMessage ( ),
+					node, this, e );
 		} catch ( Exception e ) {
 			// check if e contains a usable error message
 			for ( Throwable t = e; t != null; t = t.getCause ( ) ) {

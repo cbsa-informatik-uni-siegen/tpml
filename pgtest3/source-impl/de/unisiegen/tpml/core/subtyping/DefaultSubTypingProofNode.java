@@ -23,7 +23,7 @@ public class DefaultSubTypingProofNode extends AbstractProofNode implements
 	private ProofStep[] steps = new ProofStep[0];
 
 	/**
-	 * Allocates a new proof step with the given <code>expression</code> and the specified <code>rule</code>.
+	 * Allocates a new proof node with the given types.
 	 * @param pType the first MonoType of this node
 	 * @param pType2 the second MonoType of this node
 	 * 
@@ -125,7 +125,7 @@ public class DefaultSubTypingProofNode extends AbstractProofNode implements
 			String result = ""; //$NON-NLS-1$
 			builder.append ( "<html>" ); //$NON-NLS-1$
 			result += type;
-			result = result.replaceAll ( "<", "&#60" );  //$NON-NLS-1$//$NON-NLS-2$
+			result = result.replaceAll ( "<", "&#60" ); //$NON-NLS-1$//$NON-NLS-2$
 			builder.append ( result );
 			result = ""; //$NON-NLS-1$
 			builder.append ( "<b><font color=\"#FF0000\">" ); //$NON-NLS-1$

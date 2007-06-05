@@ -1,29 +1,30 @@
 package de.unisiegen.tpml.core.languages.l2o ;
 
 
-import java.io.Reader ;
-import java_cup.runtime.lr_parser ;
-import de.unisiegen.tpml.core.AbstractProofRule ;
-import de.unisiegen.tpml.core.Messages ;
-import de.unisiegen.tpml.core.bigstep.BigStepProofModel ;
-import de.unisiegen.tpml.core.expressions.Expression ;
-import de.unisiegen.tpml.core.languages.AbstractLanguage ;
-import de.unisiegen.tpml.core.languages.Language ;
-import de.unisiegen.tpml.core.languages.LanguageParser ;
-import de.unisiegen.tpml.core.languages.LanguageScanner ;
-import de.unisiegen.tpml.core.languages.LanguageTranslator ;
-import de.unisiegen.tpml.core.languages.LanguageTypeParser ;
-import de.unisiegen.tpml.core.languages.LanguageTypeScanner ;
-import de.unisiegen.tpml.core.languages.l0.L0Language ;
-import de.unisiegen.tpml.core.languages.l1.L1Language ;
-import de.unisiegen.tpml.core.languages.l2.L2Language ;
-import de.unisiegen.tpml.core.languages.l2.L2TypeInferenceProofRuleSet ;
-import de.unisiegen.tpml.core.languages.l2cbn.L2CBNLanguage ;
-import de.unisiegen.tpml.core.smallstep.SmallStepProofModel ;
-import de.unisiegen.tpml.core.subtyping.SubTypingProofModel ;
-import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel ;
-import de.unisiegen.tpml.core.typeinference.TypeInferenceProofModel ;
-import de.unisiegen.tpml.core.types.MonoType ;
+import java.io.Reader;
+
+import java_cup.runtime.lr_parser;
+import de.unisiegen.tpml.core.AbstractProofRule;
+import de.unisiegen.tpml.core.Messages;
+import de.unisiegen.tpml.core.bigstep.BigStepProofModel;
+import de.unisiegen.tpml.core.expressions.Expression;
+import de.unisiegen.tpml.core.languages.AbstractLanguage;
+import de.unisiegen.tpml.core.languages.Language;
+import de.unisiegen.tpml.core.languages.LanguageParser;
+import de.unisiegen.tpml.core.languages.LanguageScanner;
+import de.unisiegen.tpml.core.languages.LanguageTranslator;
+import de.unisiegen.tpml.core.languages.LanguageTypeParser;
+import de.unisiegen.tpml.core.languages.LanguageTypeScanner;
+import de.unisiegen.tpml.core.languages.l0.L0Language;
+import de.unisiegen.tpml.core.languages.l1.L1Language;
+import de.unisiegen.tpml.core.languages.l2.L2Language;
+import de.unisiegen.tpml.core.languages.l2cbn.L2CBNLanguage;
+import de.unisiegen.tpml.core.smallstep.SmallStepProofModel;
+import de.unisiegen.tpml.core.subtyping.SubTypingProofModel;
+import de.unisiegen.tpml.core.subtypingrec.RecSubTypingProofModel;
+import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel;
+import de.unisiegen.tpml.core.typeinference.TypeInferenceProofModel;
+import de.unisiegen.tpml.core.types.MonoType;
 
 
 /**
@@ -161,7 +162,7 @@ public class L2OLanguage extends L2Language
   /**
    * {@inheritDoc}
    * 
-   * @see Language#newSubTypingProofModel(MonoType,MonoType)
+   * @see Language#newSubTypingProofModel(MonoType, MonoType, boolean)
    */
   @ Override
   public SubTypingProofModel newSubTypingProofModel ( MonoType type ,
@@ -169,6 +170,19 @@ public class L2OLanguage extends L2Language
   {
     return new SubTypingProofModel ( type , type2 ,
         new L2OSubTypingProofRuleSet ( this, mode ), mode ) ;
+  }
+  
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Language#newSubTypingProofModel(MonoType, MonoType, boolean)
+   */
+  @ Override
+  public RecSubTypingProofModel newRecSubTypingProofModel ( MonoType type ,
+      MonoType type2, boolean mode )
+  {
+    return new RecSubTypingProofModel ( type , type2 ,
+        new L2ORecSubTypingProofRuleSet ( this, mode ), mode ) ;
   }
 
 

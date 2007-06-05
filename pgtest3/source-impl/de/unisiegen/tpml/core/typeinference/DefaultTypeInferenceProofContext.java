@@ -387,9 +387,7 @@ public class DefaultTypeInferenceProofContext implements
 				break;
 			}
 		}
-		if (!sortedFormulas.remove ( formula ))
-			throw new RuntimeException("Actual Formula not deleted from list"); 
-		
+
 		//	 Create a new List of formulas needed for new node
 		ArrayList < TypeFormula > formulas = new ArrayList < TypeFormula > ( );
 		for ( TypeFormula form : sortedFormulas ) {

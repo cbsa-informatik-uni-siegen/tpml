@@ -1,8 +1,5 @@
 package de.unisiegen.tpml.core.languages.l3;
 
-import java.util.ArrayList;
-
-import de.unisiegen.tpml.core.expressions.Identifier;
 import de.unisiegen.tpml.core.languages.l1.L1Language;
 import de.unisiegen.tpml.core.languages.l2.L2Language;
 import de.unisiegen.tpml.core.typechecker.DefaultTypeSubstitution;
@@ -15,9 +12,6 @@ import de.unisiegen.tpml.core.typeinference.UnifyException;
 import de.unisiegen.tpml.core.types.ArrowType;
 import de.unisiegen.tpml.core.types.ListType;
 import de.unisiegen.tpml.core.types.MonoType;
-import de.unisiegen.tpml.core.types.ObjectType;
-import de.unisiegen.tpml.core.types.RefType;
-import de.unisiegen.tpml.core.types.RowType;
 import de.unisiegen.tpml.core.types.TupleType;
 import de.unisiegen.tpml.core.types.TypeVariable;
 

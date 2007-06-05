@@ -14,19 +14,20 @@ import de.unisiegen.tpml.core.types.MonoType;
  * 
  * @see de.unisiegen.tpml.core.subtyping.SubTypingProofContext
  */
-public class DefaultRecSubTypingProofContext implements RecSubTypingProofContext {
+public class DefaultRecSubTypingProofContext implements
+		RecSubTypingProofContext {
 
-  /**
-   * The subtyping proof model with which this proof context is associated.
-   * 
-   * @see #SubTypingProofContext(RecSubTypingProofModel)
-   */
+	/**
+	 * The subtyping proof model with which this proof context is associated.
+	 * 
+	 * @see #SubTypingProofContext(RecSubTypingProofModel)
+	 */
 	private RecSubTypingProofModel model;
 
-	@SuppressWarnings("unused")
+	@SuppressWarnings ( "unused" )
 	private DefaultRecSubTypingProofNode node;
-	
-	private ArrayList<DefaultSubType> seenTypes = new ArrayList < DefaultSubType > ();
+
+	private ArrayList < DefaultSubType > seenTypes = new ArrayList < DefaultSubType > ( );
 
 	/**
 	 * The list of redoable actions on the proof model.
@@ -56,27 +57,28 @@ public class DefaultRecSubTypingProofContext implements RecSubTypingProofContext
 		node = ( DefaultRecSubTypingProofNode ) pNode;
 	}
 
-  //
-  // Rule application
-  //
-  
-  /**
-   * Applies the specified proof <code>rule</code> to the given <code>node</code>.
-   * 
-   * @param rule the proof rule to apply to the <code>node</code>.
-   * @param pNode the proof node to which to apply the <code>rule</code>.
-   * @param type the type the user guessed for the <code>node</code> or <code>null</code>
-   *             if the user didn't enter a type.
-   * 
-   * @throws NullPointerException if <code>rule</code> or <code>node</code> is <code>null</code>.
-   * @throws ProofRuleException if the application of the <code>rule</code> to the
-   *                            <code>node</code> failed for some reason.
-   * @throws SubTypingException if an error occurs while the type the application 
-   *                            of <code>rule</code> to <code>node</code>.
-   */
-	public void apply ( RecSubTypingProofRule rule, DefaultRecSubTypingProofNode pNode )
-			throws ProofRuleException, SubTypingException {
-		
+	//
+	// Rule application
+	//
+
+	/**
+	 * Applies the specified proof <code>rule</code> to the given <code>node</code>.
+	 * 
+	 * @param rule the proof rule to apply to the <code>node</code>.
+	 * @param pNode the proof node to which to apply the <code>rule</code>.
+	 * @param type the type the user guessed for the <code>node</code> or <code>null</code>
+	 *             if the user didn't enter a type.
+	 * 
+	 * @throws NullPointerException if <code>rule</code> or <code>node</code> is <code>null</code>.
+	 * @throws ProofRuleException if the application of the <code>rule</code> to the
+	 *                            <code>node</code> failed for some reason.
+	 * @throws SubTypingException if an error occurs while the type the application 
+	 *                            of <code>rule</code> to <code>node</code>.
+	 */
+	public void apply ( RecSubTypingProofRule rule,
+			DefaultRecSubTypingProofNode pNode ) throws ProofRuleException,
+			SubTypingException {
+
 		seenTypes.addAll ( pNode.getSeenTypes ( ) );
 
 		model.contextSetProofNodeRule ( this, pNode, rule );
@@ -84,19 +86,24 @@ public class DefaultRecSubTypingProofContext implements RecSubTypingProofContext
 		rule.apply ( this, pNode );
 	}
 
-  /**
-   * {@inheritDoc}
-   *
-   * @see de.unisiegen.tpml.core.subtyping.SubTypingProofContext#addProofNode(de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode, de.unisiegen.tpml.core.typechecker.TypeEnvironment, de.unisiegen.tpml.core.expressions.Expression, de.unisiegen.tpml.core.types.MonoType)
-   */
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see de.unisiegen.tpml.core.subtyping.SubTypingProofContext#addProofNode(de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode, de.unisiegen.tpml.core.typechecker.TypeEnvironment, de.unisiegen.tpml.core.expressions.Expression, de.unisiegen.tpml.core.types.MonoType)
+	 */
 	public void addProofNode ( RecSubTypingProofNode pNode, MonoType type,
 			MonoType type2 ) {
 		model.contextAddProofNode ( this, pNode, type, type2, seenTypes );
 
 	}
-	
-	public void addSeenType( MonoType type, MonoType type2 ){
-		DefaultSubType subtype = new DefaultSubType( type, type2);
+
+	/**
+	 *{@inheritDoc}
+	 * 
+	 * @see de.unisiegen.tpml.core.subtypingrec.RecSubTypingProofContext#addSeenType(de.unisiegen.tpml.core.types.MonoType, de.unisiegen.tpml.core.types.MonoType)
+	 */
+	public void addSeenType ( MonoType type, MonoType type2 ) {
+		DefaultSubType subtype = new DefaultSubType ( type, type2 );
 		seenTypes.remove ( subtype );
 		seenTypes.add ( 0, subtype );
 	}
@@ -171,7 +178,7 @@ public class DefaultRecSubTypingProofContext implements RecSubTypingProofContext
 	 */
 	Runnable getRedoActions ( ) {
 		return new Runnable ( ) {
-			@SuppressWarnings("synthetic-access")
+			@SuppressWarnings ( "synthetic-access" )
 			public void run ( ) {
 				for ( Runnable redoAction : DefaultRecSubTypingProofContext.this.redoActions ) {
 					redoAction.run ( );
@@ -190,7 +197,7 @@ public class DefaultRecSubTypingProofContext implements RecSubTypingProofContext
 	 */
 	Runnable getUndoActions ( ) {
 		return new Runnable ( ) {
-			@SuppressWarnings("synthetic-access")
+			@SuppressWarnings ( "synthetic-access" )
 			public void run ( ) {
 				for ( Runnable undoAction : DefaultRecSubTypingProofContext.this.undoActions ) {
 					undoAction.run ( );

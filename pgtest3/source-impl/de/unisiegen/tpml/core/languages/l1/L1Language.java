@@ -154,7 +154,7 @@ public class L1Language extends L0Language
   /**
    * {@inheritDoc}
    * 
-   * @see de.unisiegen.tpml.core.languages.Language#newSubTypingProofModel(de.unisiegen.tpml.core.expressions.Expression)
+   * @see de.unisiegen.tpml.core.languages.Language#newSubTypingProofModel(MonoType, MonoType, boolean)
    */
   @Override
   public SubTypingProofModel newSubTypingProofModel ( MonoType type, MonoType type2, boolean mode  )
@@ -166,7 +166,7 @@ public class L1Language extends L0Language
   /**
    * {@inheritDoc}
    * 
-   * @see de.unisiegen.tpml.core.languages.Language#newSubTypingProofModel(de.unisiegen.tpml.core.expressions.Expression)
+   * @see de.unisiegen.tpml.core.languages.Language#newSubTypingProofModel(MonoType, MonoType, boolean)
    */
   @Override
   public RecSubTypingProofModel newRecSubTypingProofModel ( MonoType type, MonoType type2, boolean mode  )

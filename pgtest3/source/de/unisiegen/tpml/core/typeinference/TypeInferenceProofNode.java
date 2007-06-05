@@ -29,7 +29,7 @@ public interface TypeInferenceProofNode extends ProofNode {
 	 * 
 	 * @return <code>true</code> if finished.
 	 */
-	public boolean isFinished();
+	public boolean isFinished ( );
 
 	/**
 	 * Convenience wrapper for the {@link ProofNode#getSteps()} method, which returns the
@@ -42,7 +42,7 @@ public interface TypeInferenceProofNode extends ProofNode {
 	 * @see TypeCheckerProofRule
 	 * @see de.unisiegen.tpml.core.ProofStep
 	 */
-	public TypeCheckerProofRule getRule();
+	public TypeCheckerProofRule getRule ( );
 
 	//
 	// Primitives
@@ -53,20 +53,20 @@ public interface TypeInferenceProofNode extends ProofNode {
 	 *
 	 * @see de.unisiegen.tpml.core.ProofNode#getChildAt(int)
 	 */
-	public TypeInferenceProofNode getChildAt(int childIndex);
+	public TypeInferenceProofNode getChildAt ( int childIndex );
 
 	/**
 	 * {@inheritDoc}
 	 *
 	 * @see de.unisiegen.tpml.core.ProofNode#getParent()
 	 */
-	public TypeInferenceProofNode getParent();
-	
+	public TypeInferenceProofNode getParent ( );
+
 	/**
 	 * get the proof steps of this node
 	 * @return ProofStep[] steps
 	 */
-	public ProofStep[] getSteps();
+	public ProofStep[] getSteps ( );
 
 	//
 	// Tree Queries
@@ -77,7 +77,7 @@ public interface TypeInferenceProofNode extends ProofNode {
 	 *
 	 * @see de.unisiegen.tpml.core.ProofNode#getParent()
 	 */
-	public TypeInferenceProofNode getRoot();
+	public TypeInferenceProofNode getRoot ( );
 
 	//
 	// Child Queries
@@ -88,28 +88,28 @@ public interface TypeInferenceProofNode extends ProofNode {
 	 *
 	 * @see de.unisiegen.tpml.core.ProofNode#getFirstChild()
 	 */
-	public TypeInferenceProofNode getFirstChild();
+	public TypeInferenceProofNode getFirstChild ( );
 
 	/**
 	 * {@inheritDoc}
 	 *
 	 * @see de.unisiegen.tpml.core.ProofNode#getLastChild()
 	 */
-	public TypeInferenceProofNode getLastChild();
+	public TypeInferenceProofNode getLastChild ( );
 
 	/**
 	 * {@inheritDoc}
 	 *
 	 * @see de.unisiegen.tpml.core.ProofNode#getChildAfter(javax.swing.tree.TreeNode)
 	 */
-	public TypeInferenceProofNode getChildAfter(TreeNode aChild);
+	public TypeInferenceProofNode getChildAfter ( TreeNode aChild );
 
 	/**
 	 * {@inheritDoc}
 	 *
 	 * @see de.unisiegen.tpml.core.ProofNode#getChildBefore(javax.swing.tree.TreeNode)
 	 */
-	public TypeInferenceProofNode getChildBefore(TreeNode aChild);
+	public TypeInferenceProofNode getChildBefore ( TreeNode aChild );
 
 	//
 	// Leaf Queries
@@ -120,38 +120,35 @@ public interface TypeInferenceProofNode extends ProofNode {
 	 *
 	 * @see de.unisiegen.tpml.core.ProofNode#getFirstLeaf()
 	 */
-	public TypeInferenceProofNode getFirstLeaf();
+	public TypeInferenceProofNode getFirstLeaf ( );
 
 	/**
 	 * {@inheritDoc}
 	 *
 	 * @see de.unisiegen.tpml.core.ProofNode#getLastLeaf()
 	 */
-	public TypeInferenceProofNode getLastLeaf();
-	
-	
+	public TypeInferenceProofNode getLastLeaf ( );
+
 	/**
 	 * 
 	 * get the type substitution list of this node
 	 *
 	 * @return TypeSubstitutionList substitutions 
 	 */
-	public ArrayList<DefaultTypeSubstitution> getSubstitution();
-	
-	
+	public ArrayList < DefaultTypeSubstitution > getSubstitution ( );
+
 	/**
 	 * get the first type formula of this type formula list
 	 *
 	 * @return TypeFormula first in list
 	 */
-	public TypeFormula getFirstFormula();
-	
-	
+	public TypeFormula getFirstFormula ( );
+
 	/**
 	 * get the type formula list of this node
 	 * 
 	 * @return ArrayList with all type formulas
 	 */
-	public ArrayList<TypeFormula> getAllFormulas();
-	
+	public ArrayList < TypeFormula > getAllFormulas ( );
+
 }

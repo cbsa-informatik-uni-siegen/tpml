@@ -2,7 +2,6 @@ package de.unisiegen.tpml.core.subtyping;
 
 import de.unisiegen.tpml.core.subtypingrec.RecSubTypingProofNode;
 import de.unisiegen.tpml.core.typeinference.TypeEquation;
-import de.unisiegen.tpml.core.typeinference.UnifyException;
 import de.unisiegen.tpml.core.types.MonoType;
 
 /**
@@ -39,18 +38,26 @@ public final class SubTypingException extends Exception {
 	//
 
 	/**
-	 * Allocates a new {@link UnifyException} object to indicate that the unification of the
-	 * {@link TypeEquation} <code>equationn</code> failed.
+	 * Allocates a new {@link SubTypingException} object to indicate that the subtyping failed.
+	 * @param message the reason for throwing this exception
 	 * 
 	 * @param pNode the {@link SubTypingProofNode} where the error occurs.
 	 */
-	public SubTypingException (final String message, final SubTypingProofNode pNode ) {
+	public SubTypingException ( final String message,
+			final SubTypingProofNode pNode ) {
 
 		super ( message );
 		this.node = pNode;
 	}
-	
-	public SubTypingException (final String message, final RecSubTypingProofNode pNode ) {
+
+	/**
+	 * Allocates a new {@link SubTypingException} object to indicate that the subtyping failed.
+	 * @param message the reason for throwing this exception
+	 * 
+	 * @param pNode the {@link RecSubTypingProofNode} where the error occurs.
+	 */
+	public SubTypingException ( final String message,
+			final RecSubTypingProofNode pNode ) {
 		//TODO ???
 		super ( message );
 		//this.node = pNode;

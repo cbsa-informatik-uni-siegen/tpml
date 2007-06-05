@@ -15,7 +15,7 @@ import de.unisiegen.tpml.core.types.MonoType;
  * @author Benjamin Mies
  *
  */
-public interface TypeFormula{
+public interface TypeFormula {
 
 	//
 	// Attributes
@@ -25,7 +25,7 @@ public interface TypeFormula{
 	 * get the Expression of this type formula
 	 * @return Expression
 	 */
-	public Expression getExpression();
+	public Expression getExpression ( );
 
 	/**
 	 * 
@@ -33,7 +33,7 @@ public interface TypeFormula{
 	 *
 	 * @return DefaultTypeEnvironment
 	 */
-	public DefaultTypeEnvironment getEnvironment();
+	public DefaultTypeEnvironment getEnvironment ( );
 
 	/**
 	 * 
@@ -41,7 +41,7 @@ public interface TypeFormula{
 	 *
 	 * @return MonoType
 	 */
-	public MonoType getType();
+	public MonoType getType ( );
 
 	/**
 	 * 
@@ -49,7 +49,7 @@ public interface TypeFormula{
 	 *
 	 * @return String
 	 */
-	public String toString();
+	public String toString ( );
 
 	/**
 	 * 
@@ -58,7 +58,6 @@ public interface TypeFormula{
 	 * @param s TypeSubstitution
 	 * @return
 	 */
-	public TypeFormula substitute(ArrayList<DefaultTypeSubstitution> s);
-
+	public TypeFormula substitute ( ArrayList < DefaultTypeSubstitution > s );
 
 }

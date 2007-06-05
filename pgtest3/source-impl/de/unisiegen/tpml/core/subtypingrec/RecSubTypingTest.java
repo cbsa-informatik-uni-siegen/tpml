@@ -24,10 +24,10 @@ public class RecSubTypingTest extends JFrame {
 		//	 parse the program (using L4)
 		/*SubTypingEnterTypes type = new SubTypingEnterTypes ( );
 
-		this.add ( type, BorderLayout.CENTER );
+		 this.add ( type, BorderLayout.CENTER );
 
-		this.setVisible ( true );
-		*/
+		 this.setVisible ( true );
+		 */
 	}
 
 	/**

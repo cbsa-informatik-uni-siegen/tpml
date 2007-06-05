@@ -1,5 +1,6 @@
 package de.unisiegen.tpml.core.languages.l1;
 
+import de.unisiegen.tpml.core.Messages;
 import de.unisiegen.tpml.core.languages.Language;
 import de.unisiegen.tpml.core.subtyping.AbstractSubTypingProofRuleSet;
 import de.unisiegen.tpml.core.subtyping.SubTypingException;
@@ -52,7 +53,7 @@ public class L1SubTypingProofRuleSet extends AbstractSubTypingProofRuleSet {
 		if ( type.equals ( type2 ) )
 			return;
 
-		throw new SubTypingException ("Types are not equal", node );
+		throw new SubTypingException ( Messages.getString ( "SubTypingException.5" ), node ); //$NON-NLS-1$
 
 	}
 

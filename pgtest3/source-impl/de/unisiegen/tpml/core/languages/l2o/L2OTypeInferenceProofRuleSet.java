@@ -15,12 +15,9 @@ import de.unisiegen.tpml.core.typeinference.DefaultTypeInferenceProofContext;
 import de.unisiegen.tpml.core.typeinference.TypeEquation;
 import de.unisiegen.tpml.core.typeinference.UnifyException;
 import de.unisiegen.tpml.core.types.ArrowType;
-import de.unisiegen.tpml.core.types.ListType;
 import de.unisiegen.tpml.core.types.MonoType;
 import de.unisiegen.tpml.core.types.ObjectType;
-import de.unisiegen.tpml.core.types.RefType;
 import de.unisiegen.tpml.core.types.RowType;
-import de.unisiegen.tpml.core.types.TupleType;
 import de.unisiegen.tpml.core.types.TypeVariable;
 
 /**

@@ -15,10 +15,8 @@ import de.unisiegen.tpml.core.ProofRule;
 import de.unisiegen.tpml.core.ProofRuleException;
 import de.unisiegen.tpml.core.languages.l1.L1Language;
 import de.unisiegen.tpml.core.languages.l2o.L2OLanguage;
-import de.unisiegen.tpml.core.subtyping.AbstractSubTypingProofRuleSet;
 import de.unisiegen.tpml.core.subtyping.ProofStep;
 import de.unisiegen.tpml.core.subtyping.SubTypingException;
-import de.unisiegen.tpml.core.subtyping.SubTypingProofRule;
 import de.unisiegen.tpml.core.typechecker.DefaultTypeCheckerProofContext;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofRule;
@@ -74,7 +72,8 @@ public class RecSubTypingProofModel extends AbstractProofModel {
 	 */
 	public RecSubTypingProofModel ( MonoType type, MonoType type2,
 			AbstractRecSubTypingProofRuleSet ruleSet, boolean mode ) {
-		super ( new DefaultRecSubTypingProofNode ( type, type2, new ArrayList<DefaultSubType>() ), ruleSet );
+		super ( new DefaultRecSubTypingProofNode ( type, type2,
+				new ArrayList < DefaultSubType > ( ) ), ruleSet );
 		this.ruleSet = ruleSet;
 		this.mode = mode;
 	}
@@ -217,13 +216,13 @@ public class RecSubTypingProofModel extends AbstractProofModel {
 			throw new NullPointerException ( "node is null" ); //$NON-NLS-1$
 		}
 		if ( node.getSteps ( ).length > 0 ) {
-			throw new IllegalArgumentException ( MessageFormat.format(Messages
-					.getString ( "IllegalArgumentException.0" ),node) ); //$NON-NLS-1$
+			throw new IllegalArgumentException ( MessageFormat.format ( Messages
+					.getString ( "IllegalArgumentException.0" ), node ) ); //$NON-NLS-1$
 		}
 
 		if ( !this.root.isNodeRelated ( node ) ) {
-			throw new IllegalArgumentException ( MessageFormat.format(Messages
-					.getString ( "IllegalArgumentException.1" ),node) ); //$NON-NLS-1$
+			throw new IllegalArgumentException ( MessageFormat.format ( Messages
+					.getString ( "IllegalArgumentException.1" ), node ) ); //$NON-NLS-1$
 		}
 		// try to guess the next rule
 		logger.debug ( "Trying to guess a rule for " + node ); //$NON-NLS-1$
@@ -247,8 +246,8 @@ public class RecSubTypingProofModel extends AbstractProofModel {
 		// unable to guess next step
 		logger.debug ( "Failed to find rule to apply to " + node ); //$NON-NLS-1$
 
-			throw new ProofGuessException ( MessageFormat.format ( Messages
-					.getString ( "ProofGuessException.0" ), node), node ); //$NON-NLS-1$
+		throw new ProofGuessException ( MessageFormat.format ( Messages
+				.getString ( "ProofGuessException.0" ), node ), node ); //$NON-NLS-1$
 	}
 
 	//
@@ -269,7 +268,8 @@ public class RecSubTypingProofModel extends AbstractProofModel {
 	 * @throws NullPointerException if any of the parameters is <code>null</code>.
 	 */
 	void contextAddProofNode ( final DefaultRecSubTypingProofContext context,
-			final RecSubTypingProofNode pNode, final MonoType type, final MonoType type2, final ArrayList<DefaultSubType> seenTypes ) {
+			final RecSubTypingProofNode pNode, final MonoType type,
+			final MonoType type2, final ArrayList < DefaultSubType > seenTypes ) {
 
 		final DefaultRecSubTypingProofNode node = ( DefaultRecSubTypingProofNode ) pNode;
 
@@ -349,8 +349,10 @@ public class RecSubTypingProofModel extends AbstractProofModel {
 	 *
 	 * @param type first MonoType of the new root
 	 * @param type2 second MonoType of the new root
+	 * @param seenTypes list of the already seen subtypes
 	 */
-	public void setRoot ( MonoType type, MonoType type2, ArrayList<DefaultSubType> seenTypes ) {
+	public void setRoot ( MonoType type, MonoType type2,
+			ArrayList < DefaultSubType > seenTypes ) {
 		this.root = new DefaultRecSubTypingProofNode ( type, type2, seenTypes );
 	}
 

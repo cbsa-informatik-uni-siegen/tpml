@@ -1,5 +1,7 @@
 package de.unisiegen.tpml.core.languages.l3;
 
+import java.text.MessageFormat;
+
 import de.unisiegen.tpml.core.languages.Language;
 import de.unisiegen.tpml.core.languages.l2.L2SubTypingProofRuleSet;
 import de.unisiegen.tpml.core.subtyping.SubTypingException;
@@ -58,7 +60,7 @@ public class L3SubTypingProofRuleSet extends L2SubTypingProofRuleSet {
 				context.addProofNode ( node, types[i], types2[i] );
 			}
 		} else
-			throw new SubTypingException ("Length of Product types not equal", node );
+			throw new SubTypingException (MessageFormat.format ( "SubTypingException.6", node.getType ( ), node.getType2 ( ) ), node ); //$NON-NLS-1$
 	}
 
 	/**
