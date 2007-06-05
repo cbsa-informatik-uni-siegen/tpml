@@ -158,6 +158,50 @@ diesem Typ auszuwerten.
 \end{center}
 \end{figure}
 
+\subsection{Type Inference}
+Der Type Inference Algorithmus ist, wie der Small Step Interpreter 
+auch, in einer Listenstruktur realisiert, und kann "uber {\bf Beweis} 
+$\rightarrow$ {\bf Type Inference} gestartet werden. Die Bedienung ist auch diesmal 
+wieder an die bereits genannten Beweisarten angelehnt. Es besteht 
+auch hier die M"oglichkeit selber Regeln auf den aktuellen Ausdruck
+anzuwenden, den n"achsten Schritt erraten zu lassen, oder den kompletten
+Ausdruck zu vervollst"andigen.
+
+Wendet man die Regel Unify an, werden die evtl. daraus hervorgehenden
+Type Substitutions in einer Liste "uber den Type Formulas gesammelt. 
+Dabei ist die zuletzt gesammelte Type Substitution sichtbar. Die bereits
+vorher gesammelten Type Substitutions werden durch drei Punkte angedeutet,
+und k"onnen als Tooltip "uber den Punkten eingesehen werden.
+
+Wenn man sich etwas mit der Funktionsweise des Algorithmus vertraut gemacht hat,
+kann man "uber {\bf Beweis} $\rightarrow$ {\bf Fortgeschrittener} in den 
+Advanced Modus wechseln. In diesem Modus werden Type Equations, bei denen beide
+Typvariablen aus Arrow Types bestehen, jetzt nicht mehr neue Type Equations
+aufgenommen, sondern diese werden direkt zu Type Substitutions aufgel"ost.
+Ausserdem wird beim Anwenden einer Regel auf den Ausdruck nicht mehr vom System
+versucht die Regel einer Type Formula zuzuordnen, sondern es wird versucht die Regel
+auf die erste Type Formula anzuwenden. Diese k"onnen allerdings durch Drag 
+and Drop umsortiert werden.
+
+Das Regelwerk ist, mit einer Ausnahme, "aquivalent zum Type Checker. Es wurde 
+noch die Regel {\bf UNIFY} hinzugenommen. Die sich aus folgenden Ableitungsschritten
+zusammensetzt:\\[4mm] 
+
+\begin{tabular}{ll}
+  (EMPTY)\  & $\unify(\emp) = [\,]$ \\[3mm]
+  (TRIV)\   & $\unify(\{\tau = \tau\} \cup E) = \unify(E)$\\[3mm]
+  (ARROW)\  & $\unify(\{\tau_1 \to \tau_2 = \tau'_1 \to \tau'_2\} \cup E)$\\[1mm]
+            & \quad $= \unify(\{\tau_1 = \tau'_1,\,\tau_2 = \tau'_2\} \cup E)$\\[3mm]
+  (VAR)\    & $\unify(\{\alpha = \tau\} \cup E) = \unify(\{\tau = \alpha\} \cup E)$\\[2mm]
+            & $\ =\, \bcase 
+                      [\tau/\alpha] \circ s & \mbox{falls } \alpha \notin \var{\tau} \mbox{ und } \unify(E[\tau/\alpha]) = s \\[2mm]
+                      \fail         & \mbox{falls } \alpha \notin \var{\tau} \mbox{ und } \unify(E[\tau/\alpha]) = \fail\\[1mm]
+                                    & \mbox{oder } \alpha \in \var{\tau} \mbox{ und } \alpha \neq \tau
+                     \ecase\vspace{3mm}$\\
+  (STRUCT)\ & $\unify(\{\tau_1 = \tau_2\} \cup E) = \fail$\\[1mm]
+            & \ in  allen anderen F\"allen
+\end{tabular}\\[6mm]
+ 
 
 
 % vi:set syntax=tex ts=2 sw=2 et encoding=UTF-8:
