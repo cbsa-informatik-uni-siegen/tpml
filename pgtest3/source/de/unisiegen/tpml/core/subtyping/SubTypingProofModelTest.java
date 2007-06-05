@@ -29,9 +29,9 @@ import de.unisiegen.tpml.core.languages.LanguageTypeParser;
 import de.unisiegen.tpml.core.types.MonoType;
 
 public class SubTypingProofModelTest extends JFrame {
-	private static final String TYPE = "<a: <b:int;>; c:bool;>";
+	private static final String TYPE = "<add: int; sub: bool;>";
 
-	private static final String TYPE2 = "<a:<>; c:int->int;>";
+	private static final String TYPE2 = "<sub:bool; add:int;>";
 
 	ProofRule choosen = null;
 
@@ -39,7 +39,7 @@ public class SubTypingProofModelTest extends JFrame {
 		// setup the frame
 		setLayout ( new BorderLayout ( ) );
 		setSize ( 800, 600 );
-		setTitle ( "TypeCheckerProofModel Test" );
+		setTitle ( "SubTypingProofModel Test" );
 
 		// setup the tree panel
 		JPanel treePanel = new JPanel ( new BorderLayout ( ) );

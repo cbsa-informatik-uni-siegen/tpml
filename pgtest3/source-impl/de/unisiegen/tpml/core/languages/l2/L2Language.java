@@ -169,13 +169,13 @@ public class L2Language extends L1Language
    * {@inheritDoc}
    * 
    * @see de.unisiegen.tpml.core.languages.Language#newSubTypingProofModel(de.unisiegen.tpml.core.expressions.Expression)
-   *
+   */
   @Override
   public RecSubTypingProofModel newRecSubTypingProofModel ( MonoType type, MonoType type2, boolean mode  )
   {
     return new RecSubTypingProofModel (type, type2, 
         new L2RecSubTypingProofRuleSet ( this, mode ), mode ) ;
-  }*/
+  }
 
 
   /**

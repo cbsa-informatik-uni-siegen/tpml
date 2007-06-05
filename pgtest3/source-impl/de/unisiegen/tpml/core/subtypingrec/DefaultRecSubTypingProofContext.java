@@ -26,7 +26,7 @@ public class DefaultRecSubTypingProofContext implements RecSubTypingProofContext
 	@SuppressWarnings("unused")
 	private DefaultRecSubTypingProofNode node;
 	
-	private ArrayList<DefaultSubType> seenTypes;
+	private ArrayList<DefaultSubType> seenTypes = new ArrayList < DefaultSubType > ();
 
 	/**
 	 * The list of redoable actions on the proof model.
@@ -77,7 +77,7 @@ public class DefaultRecSubTypingProofContext implements RecSubTypingProofContext
 	public void apply ( RecSubTypingProofRule rule, DefaultRecSubTypingProofNode pNode )
 			throws ProofRuleException, SubTypingException {
 		
-		seenTypes = pNode.getSeenTypes ( );
+		seenTypes.addAll ( pNode.getSeenTypes ( ) );
 
 		model.contextSetProofNodeRule ( this, pNode, rule );
 		//	 try to apply the rule to the node
@@ -96,7 +96,9 @@ public class DefaultRecSubTypingProofContext implements RecSubTypingProofContext
 	}
 	
 	public void addSeenType( MonoType type, MonoType type2 ){
-		seenTypes.add ( new DefaultSubType( type, type2) );
+		DefaultSubType subtype = new DefaultSubType( type, type2);
+		seenTypes.remove ( subtype );
+		seenTypes.add ( 0, subtype );
 	}
 
 	/**

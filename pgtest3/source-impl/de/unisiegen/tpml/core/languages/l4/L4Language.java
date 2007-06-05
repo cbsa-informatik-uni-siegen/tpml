@@ -16,6 +16,7 @@ import de.unisiegen.tpml.core.languages.LanguageTypeScanner;
 import de.unisiegen.tpml.core.languages.l3.L3Language;
 import de.unisiegen.tpml.core.smallstep.SmallStepProofModel;
 import de.unisiegen.tpml.core.subtyping.SubTypingProofModel;
+import de.unisiegen.tpml.core.subtypingrec.RecSubTypingProofModel;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofModel;
 import de.unisiegen.tpml.core.typeinference.TypeInferenceProofModel;
 import de.unisiegen.tpml.core.types.MonoType;
@@ -165,6 +166,18 @@ public class L4Language extends L3Language
   {
     return new SubTypingProofModel (type, type2, 
         new L4SubTypingProofRuleSet ( this, mode ), mode ) ;
+  }
+  
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.tpml.core.languages.Language#newSubTypingProofModel(de.unisiegen.tpml.core.expressions.Expression)
+   */
+  @Override
+  public RecSubTypingProofModel newRecSubTypingProofModel ( MonoType type, MonoType type2, boolean mode  )
+  {
+    return new RecSubTypingProofModel (type, type2, 
+        new L4RecSubTypingProofRuleSet ( this, mode ), mode ) ;
   }
 
 

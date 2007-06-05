@@ -19,5 +19,23 @@ public class DefaultSubType {
 	public MonoType getSubtype ( ) {
 		return this.subtype;
 	}
+	
+  public boolean equals ( Object pObject ){
+  	if (pObject instanceof DefaultSubType){
+  		DefaultSubType other = (DefaultSubType) pObject;
+  		
+  		return (this.subtype.equals ( other.subtype ) && this.overtype.equals ( other.overtype ));
+  		
+  	}
+  	return false;
+  }
+	
+	public String toString(){
+		final StringBuilder builder = new StringBuilder ( );
+		builder.append ( subtype );
+		builder.append ( " &#60: " );
+		builder.append ( overtype );
+		return builder.toString ( );
+	}
 
 }

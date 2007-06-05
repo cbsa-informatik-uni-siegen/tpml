@@ -3,7 +3,25 @@
  */
 package de.unisiegen.tpml.core.languages.l1;
 
+import java.util.ArrayList;
+
+import de.unisiegen.tpml.core.expressions.Identifier;
 import de.unisiegen.tpml.core.languages.l2.L2Language;
+import de.unisiegen.tpml.core.typechecker.DefaultTypeSubstitution;
+import de.unisiegen.tpml.core.typechecker.TypeCheckerProofContext;
+import de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode;
+import de.unisiegen.tpml.core.typeinference.DefaultTypeEquationProofNode;
+import de.unisiegen.tpml.core.typeinference.DefaultTypeInferenceProofContext;
+import de.unisiegen.tpml.core.typeinference.TypeEquation;
+import de.unisiegen.tpml.core.typeinference.UnifyException;
+import de.unisiegen.tpml.core.types.ArrowType;
+import de.unisiegen.tpml.core.types.ListType;
+import de.unisiegen.tpml.core.types.MonoType;
+import de.unisiegen.tpml.core.types.ObjectType;
+import de.unisiegen.tpml.core.types.RefType;
+import de.unisiegen.tpml.core.types.RowType;
+import de.unisiegen.tpml.core.types.TupleType;
+import de.unisiegen.tpml.core.types.TypeVariable;
 
 /**
  * The type proof rules for the <code>L1</code> language.
@@ -49,4 +67,87 @@ public class L1TypeInferenceProofRuleSet extends L1TypeCheckerProofRuleSet{
 	   
 		
 	}
+	
+  /**
+   * Applies the <b>(UNIFY)</b> rule to the <code>node</code> using the
+   * <code>context</code>.
+   * 
+   * @param pContext the type inference proof context.
+   * @param pNode the type inference proof node.
+   * @throws UnifyException
+   */
+  public void applyUnify ( TypeCheckerProofContext pContext ,
+      TypeCheckerProofNode pNode ) throws UnifyException
+  {
+    // convert in needed types
+    DefaultTypeInferenceProofContext context = ( DefaultTypeInferenceProofContext ) pContext ;
+    DefaultTypeEquationProofNode node = ( DefaultTypeEquationProofNode ) pNode ;
+    TypeEquation eqn = node.getEquation ( ) ;
+    unify ( context , node , eqn ) ;
+  }
+
+
+  /**
+   * internal implementation of the unify rule now we are able to call unify
+   * recursive if needed so we get different handling for beginner or advanced
+   * user 
+   * 
+   * @param context the casted default type inference proof context.
+   * @param node the casted type equation proof node.
+   * @param eqn the actual type equation
+   * @throws UnifyException
+   */
+  public void unify ( DefaultTypeInferenceProofContext context ,
+      DefaultTypeEquationProofNode node , TypeEquation eqn )
+      throws UnifyException
+  {
+    // empty equation is not longer possible so this rule is not implemented
+    MonoType left = eqn.getLeft ( ) ;
+    MonoType right = eqn.getRight ( ) ;
+    if ( left.equals ( right ) )
+    {
+      return ;
+    }
+    else if ( left instanceof TypeVariable || right instanceof TypeVariable )
+    {
+      // the left or right side of the equation is a type variable
+      TypeVariable tvar = ( TypeVariable ) ( left instanceof TypeVariable ? left
+          : right ) ;
+      MonoType tau = ( left instanceof TypeVariable ? right : left ) ;
+      // either tvar equals tau or tvar is not present in tau
+      if ( ! tvar.equals ( tau )
+          && ! tau.getTypeVariablesFree ( ).contains ( tvar ) )
+      {
+        DefaultTypeSubstitution s = new DefaultTypeSubstitution ( tvar , tau ) ;
+        context.addSubstitution ( s ) ;
+        return ;
+      }
+    }
+    else if ( left instanceof ArrowType && right instanceof ArrowType )
+    {
+      ArrowType taul = ( ArrowType ) left ;
+      ArrowType taur = ( ArrowType ) right ;
+      // check which mode is choosen
+      if ( node.getMode ( ) )
+      {
+        // advanced mode is choosen
+        // unify tau1 = tau1', tau2 = tau2'
+        unify ( context , node , new TypeEquation ( taul.getTau2 ( ) , taur
+            .getTau2 ( ) ) ) ;
+        TypeEquation eqn2 = new TypeEquation ( taul.getTau1 ( ) , taur
+            .getTau1 ( ) ) ;
+        eqn2 = ( TypeEquation ) eqn2.substitute ( context.getSubstitution ( ) ) ;
+        unify ( context , node , eqn2 ) ;
+      }
+      else
+      {
+        // beginner mode is choosen
+        // equations are added to list and will be unified later
+        context.addEquation ( taul.getTau2 ( ) , taur.getTau2 ( ) ) ;
+        context.addEquation ( taul.getTau1 ( ) , taur.getTau1 ( ) ) ;
+      }
+      return ;
+    }
+    throw new UnifyException ( eqn ) ;
+  }
 }

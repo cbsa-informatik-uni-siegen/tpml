@@ -30,10 +30,10 @@ public class L1RecSubTypingProofRuleSet extends AbstractRecSubTypingProofRuleSet
 		super ( language, mode );
 
 		// register the type rules
-		registerByMethodName ( L1Language.L1, "REFL", "applyRefl" ); //$NON-NLS-1$ //$NON-NLS-2$
 		registerByMethodName ( L1Language.L1, "ARROW", "applyArrow" ); //$NON-NLS-1$ //$NON-NLS-2$
 		registerByMethodName ( L1Language.L1, "S-MU-LEFT", "applyMuLeft" ); //$NON-NLS-1$ //$NON-NLS-2$
 		registerByMethodName ( L1Language.L1, "S-MU-RIGHT", "applyMuRight" ); //$NON-NLS-1$ //$NON-NLS-2$
+		registerByMethodName ( L1Language.L1, "REFL", "applyRefl" ); //$NON-NLS-1$ //$NON-NLS-2$
 		registerByMethodName ( L1Language.L1, "S-ASSUME", "applyAssume" ); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
@@ -116,6 +116,8 @@ public class L1RecSubTypingProofRuleSet extends AbstractRecSubTypingProofRuleSet
 
 		context.addProofNode ( node,
 				rec.getTau ( ).substitute ( rec.getTypeNames ( )[0], rec ), node.getType2 ( ) );
+		
+		context.addSeenType ( node.getType ( ), node.getType2 ( ) );
 
 	}
 
@@ -133,6 +135,8 @@ public class L1RecSubTypingProofRuleSet extends AbstractRecSubTypingProofRuleSet
 
 		context.addProofNode ( node, node.getType ( ), rec.getTau ( ).substitute ( rec
 				.getTypeNames ( )[0], rec ) );
+		
+		context.addSeenType ( node.getType ( ), node.getType2 ( ) );
 
 	}
 }

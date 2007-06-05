@@ -130,9 +130,17 @@ public class DefaultRecSubTypingProofNode extends AbstractProofNode implements
 
 		final StringBuilder builder = new StringBuilder ( );
 
+	
+
 		if ( Debug.isUserName ( Debug.BENJAMIN ) ) {
-			String result = ""; //$NON-NLS-1$
 			builder.append ( "<html>" ); //$NON-NLS-1$
+			builder.append ("[ A = ");
+			for (DefaultSubType subtype : seenTypes){
+				builder.append (" ( " + subtype + " ) ");
+			}
+			builder.append (" ]");
+			builder.append("<br>");
+			String result = ""; //$NON-NLS-1$
 			result += type.getSubtype ( );
 			result = result.replaceAll ( "<", "&#60" );  //$NON-NLS-1$//$NON-NLS-2$
 			builder.append ( result );
@@ -147,6 +155,12 @@ public class DefaultRecSubTypingProofNode extends AbstractProofNode implements
 			builder.append ( result );
 			builder.append ( "</html>" ); //$NON-NLS-1$
 		} else {
+			builder.append ("[ A = ");
+			for (DefaultSubType subtype : seenTypes){
+				builder.append (" ( " + subtype + " ) ");
+			}
+			builder.append (" ]");
+			builder.append ("\n");
 			builder.append ( type.getSubtype ( ) );
 			builder.append ( " <: " ); //$NON-NLS-1$
 			builder.append ( type.getOvertype ( ) );

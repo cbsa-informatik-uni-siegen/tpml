@@ -29,9 +29,9 @@ import de.unisiegen.tpml.core.languages.LanguageTypeParser;
 import de.unisiegen.tpml.core.types.MonoType;
 
 public class RecSubTypingProofModelTest extends JFrame {
-	private static final String TYPE = "mu t.int->t";
+	private static final String TYPE = "mu t.t->t->t";
 
-	private static final String TYPE2 = "mu t.int->t";
+	private static final String TYPE2 = "mu t.t->t";
 
 	ProofRule choosen = null;
 
@@ -39,7 +39,7 @@ public class RecSubTypingProofModelTest extends JFrame {
 		// setup the frame
 		setLayout ( new BorderLayout ( ) );
 		setSize ( 800, 600 );
-		setTitle ( "TypeCheckerProofModel Test" );
+		setTitle ( "RecSubtypingProofModel Test" );
 
 		// setup the tree panel
 		JPanel treePanel = new JPanel ( new BorderLayout ( ) );
@@ -265,7 +265,7 @@ public class RecSubTypingProofModelTest extends JFrame {
 		try {
 			// parse the program (using L4)
 			LanguageFactory factory = LanguageFactory.newInstance ( );
-			Language language = factory.getLanguageById ( "L2O" );
+			Language language = factory.getLanguageById ( "L2o" );
 			LanguageTypeParser parser = language.newTypeParser ( new StringReader (
 					TYPE ) );
 			MonoType type = parser.parse ( );
