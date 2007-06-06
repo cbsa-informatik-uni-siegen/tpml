@@ -193,6 +193,7 @@ terminal			DO;
 terminal			BOOL;
 terminal			INT;
 terminal			UNIT;
+terminal			MU;
 terminal			LIST;
 
 /* Special tokens */
@@ -269,6 +270,8 @@ non terminal ArrowType				arrow_type;
 non terminal TupleType				tuple_type;
 non terminal ListType				list_type;
 non terminal RefType				ref_type;
+non terminal TypeName				type_name;
+non terminal RecType				rec_type;
 
 /* Helper non terminals */
 non terminal IdTypePair[]			curried_let_list;
@@ -324,6 +327,7 @@ non terminal		list_list_error;
 non terminal		while_error_1;
 non terminal		while_error_2;
 non terminal		while_error_3;
+non terminal		rec_type_error;
 
 /* Precedences, based on http://caml.inria.fr/pub/docs/manual-ocaml/manual015.html */
 precedence nonassoc	IN;
@@ -1201,6 +1205,10 @@ simple_type						::=	LPAREN:l type:t RPAREN:r
 									{: RESULT = u; :}
 								|	type_variable:t
 									{: RESULT = t; :}
+								|	type_name:t
+									{: RESULT = t; :}
+								|	rec_type:r
+									{: RESULT = r; :}
 								;
 
 simple_type_error				::= /* epsilon */
@@ -1231,6 +1239,24 @@ unit_type						::= UNIT:u
 
 type_variable					::= TYPEVARIABLE:t
 									{: RESULT = new TypeVariable(0, t, tleft, tright); :}
+								;
+
+type_name						::= IDENTIFIER:id
+									{: RESULT = new TypeName(id, idleft, idright); :}
+								;
+
+rec_type						::= MU:m IDENTIFIER:id DOT type:t
+									{: RESULT = new RecType(new TypeName(id, idleft, idright), t, mleft, tright); :}
+								|	MU rec_type_error
+									{: :}								
+								;
+
+rec_type_error					::= /* epsilon */
+									{: Error.expect("Rec-Type", "t.\u03C4"); :}
+								|	IDENTIFIER
+									{: Error.expect("Rec-Type", ".\u03C4"); :}
+								|	IDENTIFIER DOT
+									{: Error.expect("Rec-Type", "\u03C4"); :}
 								;
 
 tuple_type						::= tuple_type_list:t

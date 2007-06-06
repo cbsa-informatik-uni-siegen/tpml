@@ -68,6 +68,7 @@ import de.unisiegen.tpml.core.Messages;
 
 		case LAMBDA: case LET: case REC: case IN: case IF: case THEN: case ELSE:
 		case AMPERAMPER: case BARBAR:
+		case MU:
 			return PrettyStyle.KEYWORD;
 			
 		case BOOL: case INT: case UNIT: case TYPEVARIABLE: case LIST:
@@ -166,6 +167,7 @@ LetterGreek		= [\u03b1-\u03c1\u03c3-\u03c9]
 	"bool"				{ return symbol("BOOL", BOOL); }
 	"int"				{ return symbol("INT", INT); }
 	"unit"				{ return symbol("UNIT", UNIT); }
+	"mu"|"\u03bc"		{ return symbol("MU", MU); }
 	"list"				{ return symbol("LIST", LIST); }
 	"'"{LetterAX}		{ return symbol("TYPEVARIABLE", TYPEVARIABLE, (int)(yycharat(1) - 'a')); }
 	{LetterGreek}		{

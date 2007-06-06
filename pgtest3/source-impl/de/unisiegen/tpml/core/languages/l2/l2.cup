@@ -263,7 +263,6 @@ non terminal 		curried_let_rec_error_2;
 non terminal 		curried_let_rec_error_3;
 non terminal 		curried_let_rec_pair_error;
 non terminal 		lambda_error;
-non terminal 		id_type_pair_error;
 non terminal 		simple_expr_error_1;
 non terminal 		simple_expr_error_2;
 non terminal 		infix_operation_error;
@@ -705,7 +704,11 @@ curried_let_rec_error_2			::= /* epsilon */
 									{: Error.expect("Curried-Let-Rec", "e<sub>1</sub> in e<sub>2</sub>" ); :}
 								|	expr
 									{: Error.expect("Curried-Let-Rec", "in e<sub>2</sub>" ); :}
-								|	expr IN
+								|	expr IN curried_let_rec_error_3
+									{: :}
+								;
+
+curried_let_rec_error_3			::= /* epsilon */
 									{: Error.expect("Curried-Let-Rec", "e<sub>2</sub>" ); :}
 								;
 
@@ -888,6 +891,7 @@ unit_type						::= UNIT:u
 type_variable					::= TYPEVARIABLE:t
 									{: RESULT = new TypeVariable(0, t, tleft, tright); :}
 								;
+
 type_name						::= IDENTIFIER:id
 									{: RESULT = new TypeName(id, idleft, idright); :}
 								;

@@ -141,14 +141,17 @@ action code
 /* Syntactic tokens */
 terminal			ARROW;
 terminal			LPAREN, RPAREN;
+terminal			DOT;
 terminal			STAR;
 
 /* Types */
 terminal			BOOL, INT, UNIT;
+terminal			MU;
 terminal			LIST;
 
 /* Special tokens */
 terminal Integer	TYPEVARIABLE;
+terminal String		IDENTIFIER;
 
 /* Non terminals */
 non terminal MonoType				type;
@@ -158,6 +161,8 @@ non terminal IntegerType			integer_type;
 non terminal UnitType				unit_type;
 non terminal TypeVariable			type_variable;
 non terminal ArrowType				arrow_type;
+non terminal TypeName				type_name;
+non terminal RecType				rec_type;
 non terminal TupleType				tuple_type;
 non terminal ListType				list_type;
 non terminal MonoType[]				tuple_type_list;
@@ -165,6 +170,7 @@ non terminal MonoType[]				tuple_type_list;
 /* Error non terminals */
 non terminal 		simple_type_error;
 non terminal 		arrow_type_error;
+non terminal		rec_type_error;
 non terminal		tuple_type_list_error;
 
 /* Precedences, based on http://caml.inria.fr/pub/docs/manual-ocaml/manual015.html */
@@ -199,6 +205,10 @@ simple_type						::=	LPAREN:l type:t RPAREN:r
 									{: RESULT = u; :}
 								|	type_variable:t
 									{: RESULT = t; :}
+								|	type_name:t
+									{: RESULT = t; :}
+								|	rec_type:r
+									{: RESULT = r; :}
 								;
 
 simple_type_error				::= /* epsilon */
@@ -229,6 +239,24 @@ unit_type						::= UNIT:u
 
 type_variable					::= TYPEVARIABLE:t
 									{: RESULT = new TypeVariable(0, t, tleft, tright); :}
+								;
+
+type_name						::= IDENTIFIER:id
+									{: RESULT = new TypeName(id, idleft, idright); :}
+								;
+
+rec_type						::= MU:m IDENTIFIER:id DOT type:t
+									{: RESULT = new RecType(new TypeName(id, idleft, idright), t, mleft, tright); :}
+								|	MU rec_type_error
+									{: :}								
+								;
+
+rec_type_error					::= /* epsilon */
+									{: Error.expect("Rec-Type", "t.\u03C4"); :}
+								|	IDENTIFIER
+									{: Error.expect("Rec-Type", ".\u03C4"); :}
+								|	IDENTIFIER DOT
+									{: Error.expect("Rec-Type", "\u03C4"); :}
 								;
 
 tuple_type						::= tuple_type_list:t

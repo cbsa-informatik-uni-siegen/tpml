@@ -47,8 +47,14 @@ import de.unisiegen.tpml.core.Messages;
 	{
 		switch (id)
 		{
+		case MU:
+			return PrettyStyle.KEYWORD;
+			
 		case BOOL: case INT: case UNIT: case TYPEVARIABLE: case LIST:
 			return PrettyStyle.TYPE;
+			
+		case IDENTIFIER:
+			return PrettyStyle.IDENTIFIER;
 			
 		default:
 			return PrettyStyle.NONE;
@@ -67,6 +73,7 @@ import de.unisiegen.tpml.core.Messages;
 LineTerminator	= \r|\n|\r\n
 WhiteSpace		= {LineTerminator} | [ \t\f]
 
+Identifier		= [a-zA-Z] [a-zA-Z0-9_]* '*
 LetterAX		= [a-x]
 LetterGreek		= [\u03b1-\u03c1\u03c3-\u03c9]
 
@@ -78,11 +85,13 @@ LetterGreek		= [\u03b1-\u03c1\u03c3-\u03c9]
 	")"					{ return symbol("RPAREN", RPAREN); }
 	"*"					{ return symbol("STAR", STAR); }
 	"->"|"\u2192"		{ return symbol("ARROW", ARROW); }
+	"."					{ return symbol("DOT", DOT); }
 	
 	// types
 	"bool"				{ return symbol("BOOL", BOOL); }
 	"int"				{ return symbol("INT", INT); }
 	"unit"				{ return symbol("UNIT", UNIT); }
+	"mu"|"\u03bc"		{ return symbol("MU", MU); }
 	"list"				{ return symbol("LIST", LIST); }
 	"'"{LetterAX}		{ return symbol("TYPEVARIABLE", TYPEVARIABLE, (int)(yycharat(1) - 'a')); }
 	{LetterGreek}		{
@@ -95,6 +104,8 @@ LetterGreek		= [\u03b1-\u03c1\u03c3-\u03c9]
 							return symbol("TYPEVARIABLE", TYPEVARIABLE, (int)(c - '\u03b1'));
 						}
 	
+	{Identifier}		{ return symbol("IDENTIFIER", IDENTIFIER, yytext()); }
+
 	// whitespace
 	{WhiteSpace}		{ /* ignore */ }
 }

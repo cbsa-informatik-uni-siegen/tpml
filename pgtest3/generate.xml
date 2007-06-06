@@ -11,8 +11,7 @@
 	
 	<property name="libdir" value="${basedir}/lib" />
 
-    <target name="generate" depends="version,clean-l0,clean-l1,clean-l2,clean-l2o,clean-l3,clean-l4,l0,l1,l2,l2o,l3,l4" description="Generate parsers and lexers" />
-
+    <target name="generate" depends="version,l0,l1,l2,l2o,l3,l4" description="Generate parsers and lexers" />
 	
 	<property name="impldir" value="${basedir}/source-impl" />
 	<property name="generateddir" value="${basedir}/source-generated" />
@@ -91,7 +90,7 @@
 			symbols="L0Terminals"
 			interface="yes"
 			debug="no"
-			expect="1000000"
+			expect="10"
 			nonterms="no"
 			nopositions="no"
 			dump_grammar="no" />
@@ -111,7 +110,7 @@
 			symbols="L1Terminals"
 			interface="yes"
 			debug="no"
-			expect="1000000"
+			expect="228"
 			nonterms="no"
 			nopositions="no"
 			dump_grammar="no" />
@@ -129,7 +128,7 @@
 			symbols="L1TypeTerminals"
 			interface="yes"
 			debug="no"
-			expect="1000000"
+			expect="1"
 			nonterms="no"
 			nopositions="no"
 			dump_grammar="no" />
@@ -149,7 +148,7 @@
 			symbols="L2Terminals"
 			interface="yes"
 			debug="no"
-			expect="1000000"
+			expect="319"
 			nonterms="no"
 			nopositions="no"
 			dump_grammar="no" />
@@ -167,7 +166,7 @@
 			symbols="L2TypeTerminals"
 			interface="yes"
 			debug="no"
-			expect="1000000"
+			expect="1"
 			nonterms="no"
 			nopositions="no"
 			dump_grammar="no" />
@@ -187,7 +186,7 @@
 			symbols="L2OTerminals"
 			interface="yes"
 			debug="no"
-			expect="1000000"
+			expect="460"
 			nonterms="no"
 			nopositions="no"
 			dump_grammar="no" />
@@ -205,7 +204,7 @@
 			symbols="L2OTypeTerminals"
 			interface="yes"
 			debug="no"
-			expect="1000000"
+			expect="4"
 			nonterms="no"
 			nopositions="no"
 			dump_grammar="no" />
@@ -225,7 +224,7 @@
 			symbols="L3Terminals"
 			interface="yes"
 			debug="no"
-			expect="1000000"
+			expect="835"
 			nonterms="no"
 			nopositions="no"
 			dump_grammar="no" />
@@ -243,7 +242,7 @@
 			symbols="L3TypeTerminals"
 			interface="yes"
 			debug="no"
-			expect="1000000"
+			expect="3"
 			nonterms="no"
 			nopositions="no"
 			dump_grammar="no" />
@@ -263,7 +262,7 @@
 			symbols="L4Terminals"
 			interface="yes"
 			debug="no"
-			expect="1000000"
+			expect="980"
 			nonterms="no"
 			nopositions="no"
 			dump_grammar="no" />
@@ -281,7 +280,7 @@
 			symbols="L4TypeTerminals"
 			interface="yes"
 			debug="no"
-			expect="1000000"
+			expect="5"
 			nonterms="no"
 			nopositions="no"
 			dump_grammar="no" />

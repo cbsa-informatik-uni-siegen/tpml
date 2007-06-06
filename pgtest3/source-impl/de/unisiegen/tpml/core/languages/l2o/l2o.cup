@@ -750,7 +750,11 @@ curried_let_rec_error_2			::= /* epsilon */
 									{: Error.expect("Curried-Let-Rec", "e<sub>1</sub> in e<sub>2</sub>" ); :}
 								|	expr
 									{: Error.expect("Curried-Let-Rec", "in e<sub>2</sub>" ); :}
-								|	expr IN
+								|	expr IN curried_let_rec_error_3
+									{: :}
+								;
+
+curried_let_rec_error_3			::= /* epsilon */
 									{: Error.expect("Curried-Let-Rec", "e<sub>2</sub>" ); :}
 								;
 
