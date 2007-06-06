@@ -335,7 +335,7 @@ public class Pong extends JComponent {
 		if (this.ball.posX >= 1.0f) {
 			this.gameState = GameState.GameStateHold;
 			this.npcBat.points++;
-			if (this.npcBat.points > WINPOINTS)
+			if (this.npcBat.points >= WINPOINTS && this.npcBat.points >= this.pcBat.points + 2 )
 			{
 				String message = "Computer wins!";
 				String title = "Computer wins!";
@@ -351,7 +351,7 @@ public class Pong extends JComponent {
 		if (this.ball.posX <= 0.0f) {
 			this.gameState = GameState.GameStateHold; 
 			this.pcBat.points++;
-			if (this.pcBat.points > WINPOINTS)
+			if (this.pcBat.points >= WINPOINTS && this.pcBat.points >= this.pcBat.points + 2 )
 			{
 				String message = "Congratulations! You win!";
 				String title = "You win!";
