@@ -1494,6 +1494,10 @@ public final class DefaultOutline implements Outline
    */
   private final void propertyChanged ( OutlineNode pOutlineNode )
   {
+    if ( pOutlineNode == null )
+    {
+      return ;
+    }
     pOutlineNode.propertyChanged ( ) ;
     pOutlineNode.updateCaption ( ) ;
     this.outlineUI.getTreeModel ( ).nodeChanged ( pOutlineNode ) ;
