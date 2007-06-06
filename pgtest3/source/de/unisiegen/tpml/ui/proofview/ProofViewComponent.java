@@ -10,6 +10,8 @@ import javax.swing.JOptionPane;
 
 import org.apache.log4j.Logger;
 
+import sun.font.AdvanceCache;
+
 import de.unisiegen.tpml.core.CannotRedoException;
 import de.unisiegen.tpml.core.CannotUndoException;
 import de.unisiegen.tpml.core.ProofModel;
@@ -96,6 +98,12 @@ public class ProofViewComponent extends JComponent implements EditorComponent {
 		add((JComponent) view, BorderLayout.CENTER);
 	}
 
+	public void setModel (ProofModel m)
+	{
+		model = m;
+		this.model.addPropertyChangeListener(new ModelChangeListener());
+		add((JComponent) view, BorderLayout.CENTER);
+	}
 	
 	
 	//
@@ -305,5 +313,11 @@ public class ProofViewComponent extends JComponent implements EditorComponent {
 	 */
 	public void setAdvanced(boolean status) {
 		this.view.setAdvanced(status);
+	}
+
+	public ProofModel getModel()
+	{
+		return this.model;
+		
 	}
 }
