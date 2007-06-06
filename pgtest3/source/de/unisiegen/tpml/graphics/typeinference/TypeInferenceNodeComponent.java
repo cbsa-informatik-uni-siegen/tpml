@@ -753,9 +753,10 @@ public class TypeInferenceNodeComponent extends JComponent {
 		for  ( int i = 0; i<allFormulasList.size(); i++)
 		{
 			Expression exp = allFormulasList.get(i).getExpression();
-			if (translator.containsSyntacticSugar(exp, true))
+			if (exp != null && translator.containsSyntacticSugar(exp, true))
 			{
 				translateItem.setEnabled(true);
+				break;
 			}
 		}
 		
