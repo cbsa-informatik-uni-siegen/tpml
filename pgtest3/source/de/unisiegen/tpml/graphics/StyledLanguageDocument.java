@@ -27,6 +27,7 @@ import de.unisiegen.tpml.core.languages.LanguageScanner ;
 import de.unisiegen.tpml.core.languages.LanguageScannerException ;
 import de.unisiegen.tpml.core.languages.LanguageSymbol ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStyle ;
+import de.unisiegen.tpml.core.types.TypeName ;
 import de.unisiegen.tpml.core.util.beans.Bean ;
 
 
@@ -438,6 +439,17 @@ public class StyledLanguageDocument extends DefaultStyledDocument implements
           setCharacterAttributes ( id.getParserStartOffset ( ) , id
               .getParserEndOffset ( )
               - id.getParserStartOffset ( ) , freeSet , false ) ;
+        }
+        for ( TypeName typeName : expression.getTypeNamesFree ( ) )
+        {
+          SimpleAttributeSet freeSet = new SimpleAttributeSet ( ) ;
+          StyleConstants.setForeground ( freeSet , Theme.currentTheme ( )
+              .getFreeIdColor ( ) ) ;
+          StyleConstants.setBold ( freeSet , true ) ;
+          freeSet.addAttribute ( "Free TypeName" , "Free TypeName" ) ; //$NON-NLS-1$ //$NON-NLS-2$
+          setCharacterAttributes ( typeName.getParserStartOffset ( ) , typeName
+              .getParserEndOffset ( )
+              - typeName.getParserStartOffset ( ) , freeSet , false ) ;
         }
       }
       catch ( LanguageParserMultiException e )
