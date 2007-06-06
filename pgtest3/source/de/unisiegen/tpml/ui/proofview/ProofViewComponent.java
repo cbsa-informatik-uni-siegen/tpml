@@ -10,8 +10,6 @@ import javax.swing.JOptionPane;
 
 import org.apache.log4j.Logger;
 
-import sun.font.AdvanceCache;
-
 import de.unisiegen.tpml.core.CannotRedoException;
 import de.unisiegen.tpml.core.CannotUndoException;
 import de.unisiegen.tpml.core.ProofModel;
