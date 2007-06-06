@@ -21,7 +21,9 @@ import de.unisiegen.tpml.core.languages.LanguageTypeParser;
 import de.unisiegen.tpml.core.languages.LanguageTypeScanner;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStyle;
 import de.unisiegen.tpml.core.types.MonoType;
+import de.unisiegen.tpml.core.types.TypeName;
 import de.unisiegen.tpml.graphics.StyledLanguageDocument;
+import de.unisiegen.tpml.graphics.Theme;
 
 /**
  * An implementation of the {@link javax.swing.text.StyledDocument} interface to
@@ -168,6 +170,17 @@ public class StyledTypeEnterField extends StyledLanguageDocument {
 				// ...and try to parse the token stream
 				try {
 					MonoType type = parser.parse ( );
+          for ( TypeName typeName : type.getTypeNamesFree ( ) )
+          {
+            SimpleAttributeSet freeSet = new SimpleAttributeSet ( ) ;
+            StyleConstants.setForeground ( freeSet , Theme.currentTheme ( )
+                .getFreeIdColor ( ) ) ;
+            StyleConstants.setBold ( freeSet , true ) ;
+            freeSet.addAttribute ( "Free TypeName" , "Free TypeName" ) ; //$NON-NLS-1$ //$NON-NLS-2$
+            setCharacterAttributes ( typeName.getParserStartOffset ( ) , typeName
+                .getParserEndOffset ( )
+                - typeName.getParserStartOffset ( ) , freeSet , false ) ;
+          }
 				} catch (LanguageParserMultiException e) {
 					String[] message = e.getMessages ( );
 					int[] startOffset = e.getParserStartOffset ( );
