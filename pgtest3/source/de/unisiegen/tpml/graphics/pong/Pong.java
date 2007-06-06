@@ -26,6 +26,7 @@ import javax.swing.JWindow;
 
 /**
  * @author marcell
+ * @author Michael
  *
  */
 public class Pong extends JComponent {
@@ -254,7 +255,7 @@ public class Pong extends JComponent {
 			}
 		});
 		
-		setDoubleBuffered(false);
+		setDoubleBuffered(true);
 		setOpaque(true);
 		this.renderAll = true;
 	}
@@ -311,7 +312,7 @@ public class Pong extends JComponent {
 		this.npc.act();
 		
 		//this.ball.speed += 0.00001;
-		this.ball.speed += 0.000001;
+		this.ball.speed += 0.000005;
 		
 		
 		// check the bat movement of the player
@@ -339,6 +340,7 @@ public class Pong extends JComponent {
 				String message = "Computer wins!";
 				String title = "Computer wins!";
 				parent.setAlwaysOnTop(false);
+				parent.setVisible(false);
 				JOptionPane.showMessageDialog(parent, message, title, JOptionPane.INFORMATION_MESSAGE);
 				parent.dispose();
 			}
@@ -351,9 +353,10 @@ public class Pong extends JComponent {
 			this.pcBat.points++;
 			if (this.pcBat.points > WINPOINTS)
 			{
-				String message = "You win!";
+				String message = "Congratulations! You win!";
 				String title = "You win!";
 				parent.setAlwaysOnTop(false);	
+				parent.setVisible(false);
 				JOptionPane.showMessageDialog(parent, message, title, JOptionPane.INFORMATION_MESSAGE);
 				parent.dispose();
 			}

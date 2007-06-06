@@ -27,6 +27,7 @@ import de.unisiegen.tpml.graphics.Messages;
  * 
  * @version $Rev$
  * @author Marcell Fischbach
+ * @author Michael
  *
  * @see de.unisiegen.tpml.graphics.pong.Pong
  */
