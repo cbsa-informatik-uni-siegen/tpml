@@ -204,7 +204,8 @@ public final class TypeEquationList
         // try to unify the new list
         return eqns.unify ( ) ;
       }
-      // FALL-THROUGH: Otherwise it's a type error
+      throw new RuntimeException ( MessageFormat.format ( Messages
+          .getString ( "UnificationException.4" ) , left , right ) ) ; //$NON-NLS-1$
     }
     else if ( ( left instanceof RefType ) && ( right instanceof RefType ) )
     {
