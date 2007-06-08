@@ -309,11 +309,6 @@ public final class TypeEquationList
           RowType newRowType = new RowType ( newIdentifiers , newTypes ) ;
           eqns = eqns.extend ( tau1RemainingRow , newRowType ) ;
         }
-        else
-        {
-          throw new RuntimeException ( MessageFormat.format ( Messages
-              .getString ( "UnificationException.2" ) , left , right ) ) ; //$NON-NLS-1$
-        }
       }
       // Second remaining RowType
       if ( tau2RemainingRow != null )
@@ -332,11 +327,6 @@ public final class TypeEquationList
           }
           RowType newRowType = new RowType ( newIdentifiers , newTypes ) ;
           eqns = eqns.extend ( tau2RemainingRow , newRowType ) ;
-        }
-        else
-        {
-          throw new RuntimeException ( MessageFormat.format ( Messages
-              .getString ( "UnificationException.2" ) , left , right ) ) ; //$NON-NLS-1$
         }
       }
       if ( ( tau1Identifiers.size ( ) > 0 ) || ( tau2Identifiers.size ( ) > 0 ) )

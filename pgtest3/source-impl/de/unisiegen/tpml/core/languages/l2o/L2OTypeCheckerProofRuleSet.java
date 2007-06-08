@@ -20,6 +20,7 @@ import de.unisiegen.tpml.core.typechecker.TypeEnvironment ;
 import de.unisiegen.tpml.core.types.ArrowType ;
 import de.unisiegen.tpml.core.types.MonoType ;
 import de.unisiegen.tpml.core.types.ObjectType ;
+import de.unisiegen.tpml.core.types.RecType ;
 import de.unisiegen.tpml.core.types.RowType ;
 import de.unisiegen.tpml.core.types.TypeVariable ;
 
@@ -101,6 +102,29 @@ public class L2OTypeCheckerProofRuleSet extends L2TypeCheckerProofRuleSet
     else if ( tau instanceof ObjectType )
     {
       ObjectType objectType = ( ObjectType ) tau ;
+      RowType rowType = ( RowType ) objectType.getPhi ( ) ;
+      if ( ( objectExpr.getE ( ) instanceof Row )
+          && ( ( ( Row ) objectExpr.getE ( ) ).getExpressions ( ).length != rowType
+              .getTypes ( ).length ) )
+      {
+        throw new RuntimeException (
+            MessageFormat
+                .format (
+                    Messages.getString ( "UnificationException.2" ) , pNode.getType ( ) , objectType ) ) ; //$NON-NLS-1$
+      }
+      pContext.addEquation ( pNode.getType ( ) , objectType ) ;
+      TypeEnvironment environment = pNode.getEnvironment ( ) ;
+      environment = environment.star ( ) ;
+      environment = environment.extend ( objectExpr.getId ( ) , objectType ) ;
+      pContext.addProofNode ( pNode , environment , objectExpr.getE ( ) ,
+          rowType ) ;
+    }
+    else if ( ( tau instanceof RecType )
+        && ( ( ( RecType ) tau ).getTau ( ) instanceof ObjectType ) )
+    {
+      // TODO
+      RecType recType = ( RecType ) tau ;
+      ObjectType objectType = ( ObjectType ) recType.getTau ( ) ;
       RowType rowType = ( RowType ) objectType.getPhi ( ) ;
       pContext.addEquation ( pNode.getType ( ) , objectType ) ;
       TypeEnvironment environment = pNode.getEnvironment ( ) ;
