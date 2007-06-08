@@ -6,6 +6,8 @@ import java.awt.event.MouseListener ;
 import javax.swing.tree.TreePath ;
 import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode ;
+import de.unisiegen.tpml.core.types.MonoType ;
+import de.unisiegen.tpml.graphics.StyledLanguageEditor ;
 import de.unisiegen.tpml.graphics.bigstep.BigStepNodeComponent ;
 import de.unisiegen.tpml.graphics.bigstep.BigStepView ;
 import de.unisiegen.tpml.graphics.outline.DefaultOutline ;
@@ -13,6 +15,7 @@ import de.unisiegen.tpml.graphics.outline.Outline ;
 import de.unisiegen.tpml.graphics.outline.node.OutlineNode ;
 import de.unisiegen.tpml.graphics.smallstep.SmallStepNodeComponent ;
 import de.unisiegen.tpml.graphics.smallstep.SmallStepView ;
+import de.unisiegen.tpml.graphics.subtyping.StyledTypeEnterField ;
 import de.unisiegen.tpml.graphics.typechecker.TypeCheckerNodeComponent ;
 import de.unisiegen.tpml.graphics.typechecker.TypeCheckerView ;
 import de.unisiegen.tpml.ui.editor.TextEditorPanel ;
@@ -49,6 +52,12 @@ public final class OutlineMouseListener implements MouseListener
 
 
   /**
+   * The {@link StyledLanguageEditor}
+   */
+  private StyledLanguageEditor styledLanguageEditor ;
+
+
+  /**
    * The {@link TypeCheckerNodeComponent}.
    */
   private TypeCheckerNodeComponent typeCheckerNodeComponent ;
@@ -79,6 +88,7 @@ public final class OutlineMouseListener implements MouseListener
     this.typeCheckerNodeComponent = null ;
     this.bigStepNodeComponent = pBigStepNodeComponent ;
     this.smallStepNodeComponent = null ;
+    this.styledLanguageEditor = null ;
   }
 
 
@@ -95,6 +105,7 @@ public final class OutlineMouseListener implements MouseListener
     this.typeCheckerNodeComponent = null ;
     this.bigStepNodeComponent = null ;
     this.smallStepNodeComponent = null ;
+    this.styledLanguageEditor = null ;
   }
 
 
@@ -111,6 +122,26 @@ public final class OutlineMouseListener implements MouseListener
     this.typeCheckerNodeComponent = null ;
     this.bigStepNodeComponent = null ;
     this.smallStepNodeComponent = pSmallStepNodeComponent ;
+    this.styledLanguageEditor = null ;
+  }
+
+
+  /**
+   * Initializes the {@link OutlineMouseListener} with the given
+   * {@link StyledLanguageEditor}.
+   * 
+   * @param pStyledLanguageEditor The {@link StyledLanguageEditor}.
+   * @param pDefaultOutline The {@link DefaultOutline}.
+   */
+  public OutlineMouseListener ( StyledLanguageEditor pStyledLanguageEditor ,
+      DefaultOutline pDefaultOutline )
+  {
+    this.defaultOutline = pDefaultOutline ;
+    this.textEditorPanel = null ;
+    this.typeCheckerNodeComponent = null ;
+    this.bigStepNodeComponent = null ;
+    this.smallStepNodeComponent = null ;
+    this.styledLanguageEditor = pStyledLanguageEditor ;
   }
 
 
@@ -127,6 +158,7 @@ public final class OutlineMouseListener implements MouseListener
     this.typeCheckerNodeComponent = null ;
     this.bigStepNodeComponent = null ;
     this.smallStepNodeComponent = null ;
+    this.styledLanguageEditor = null ;
   }
 
 
@@ -144,6 +176,7 @@ public final class OutlineMouseListener implements MouseListener
     this.typeCheckerNodeComponent = pTypeCheckerNodeComponent ;
     this.bigStepNodeComponent = null ;
     this.smallStepNodeComponent = null ;
+    this.styledLanguageEditor = null ;
   }
 
 
@@ -204,7 +237,8 @@ public final class OutlineMouseListener implements MouseListener
           /*
            * Highlight the source code
            */
-          if ( ( this.defaultOutline.getTextEditorPanel ( ) != null )
+          if ( ( ( this.defaultOutline.getTextEditorPanel ( ) != null ) || ( this.defaultOutline
+              .getSubTypingEnterTypes ( ) != null ) )
               && ( ( pMouseEvent.getClickCount ( ) >= 2 ) || ( this.defaultOutline
                   .getOutlinePreferences ( ).isHighlightSourceCode ( ) ) ) )
           {
@@ -213,9 +247,30 @@ public final class OutlineMouseListener implements MouseListener
         }
       }
       /*
+       * StyledLanguageEditor.
+       */
+      if ( this.styledLanguageEditor != null )
+      {
+        if ( pMouseEvent.getSource ( ).equals ( this.styledLanguageEditor ) )
+        {
+          MonoType type = null ;
+          try
+          {
+            type = ( ( StyledTypeEnterField ) this.styledLanguageEditor
+                .getDocument ( ) ).getType ( ) ;
+          }
+          catch ( Exception e )
+          {
+            // Do nothing
+          }
+          this.defaultOutline.loadPrettyPrintable ( type ,
+              Outline.Execute.MOUSE_CLICK_EDITOR ) ;
+        }
+      }
+      /*
        * Source code editor.
        */
-      else if ( this.textEditorPanel != null )
+      if ( this.textEditorPanel != null )
       {
         if ( pMouseEvent.getSource ( ).equals (
             this.textEditorPanel.getEditor ( ) ) )
@@ -236,7 +291,7 @@ public final class OutlineMouseListener implements MouseListener
       /*
        * Type checker.
        */
-      else if ( this.typeCheckerNodeComponent != null )
+      if ( this.typeCheckerNodeComponent != null )
       {
         /*
          * Index label.
@@ -280,7 +335,7 @@ public final class OutlineMouseListener implements MouseListener
       /*
        * Big step.
        */
-      else if ( this.bigStepNodeComponent != null )
+      if ( this.bigStepNodeComponent != null )
       {
         /*
          * Index label.
@@ -322,7 +377,7 @@ public final class OutlineMouseListener implements MouseListener
       /*
        * Small step.
        */
-      else if ( this.smallStepNodeComponent != null )
+      if ( this.smallStepNodeComponent != null )
       {
         /*
          * Compound expression.

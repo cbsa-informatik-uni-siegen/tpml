@@ -27,6 +27,7 @@ import de.unisiegen.tpml.core.types.MonoType ;
 import de.unisiegen.tpml.core.types.Type ;
 import de.unisiegen.tpml.core.types.TypeName ;
 import de.unisiegen.tpml.graphics.StyledLanguageDocument ;
+import de.unisiegen.tpml.graphics.StyledLanguageEditor ;
 import de.unisiegen.tpml.graphics.Theme ;
 import de.unisiegen.tpml.graphics.bigstep.BigStepView ;
 import de.unisiegen.tpml.graphics.outline.binding.OutlineBinding ;
@@ -169,7 +170,19 @@ public final class DefaultOutline implements Outline
 
 
   /**
-   * the {@link OutlineItemListener}.
+   * The subTypingEnterTypes
+   */
+  private SubTypingEnterTypes subTypingEnterTypes ;
+
+
+  /**
+   * The {@link StyledLanguageEditor}.
+   */
+  private StyledLanguageEditor styledLanguageEditor ;
+
+
+  /**
+   * The {@link OutlineItemListener}.
    */
   private OutlineItemListener outlineItemListener ;
 
@@ -186,6 +199,7 @@ public final class DefaultOutline implements Outline
     this.outlinePreferences = new OutlinePreferences ( ) ;
     this.outlineUI = new OutlineUI ( this ) ;
     this.textEditorPanel = null ;
+    this.subTypingEnterTypes = null ;
     this.outlineUI.getJCheckBoxHighlightSourceCode ( ).setEnabled ( false ) ;
     this.outlineUI.getJCheckBoxHighlightSourceCode ( ).setSelected ( false ) ;
     this.outlineUI.getJMenuItemHighlightSourceCode ( ).setEnabled ( false ) ;
@@ -273,6 +287,7 @@ public final class DefaultOutline implements Outline
     this.outlinePreferences = new OutlinePreferences ( ) ;
     this.outlineUI = new OutlineUI ( this ) ;
     this.textEditorPanel = null ;
+    this.subTypingEnterTypes = null ;
     this.outlineUI.getJCheckBoxHighlightSourceCode ( ).setEnabled ( false ) ;
     this.outlineUI.getJCheckBoxHighlightSourceCode ( ).setSelected ( false ) ;
     this.outlineUI.getJMenuItemHighlightSourceCode ( ).setEnabled ( false ) ;
@@ -355,15 +370,18 @@ public final class DefaultOutline implements Outline
    * Initilizes the {@link OutlinePreferences} and the {@link OutlineUI}.
    * 
    * @param pSubTypingEnterTypes The {@link SubTypingEnterTypes}.
+   * @param pStyledLanguageEditor The {@link StyledLanguageEditor}.
    */
-  public DefaultOutline ( @ SuppressWarnings ( "unused" )
-  SubTypingEnterTypes pSubTypingEnterTypes )
+  public DefaultOutline ( SubTypingEnterTypes pSubTypingEnterTypes ,
+      StyledLanguageEditor pStyledLanguageEditor )
   {
     this.loadedPrettyPrintable = null ;
     this.rootOutlineNode = null ;
     this.outlinePreferences = new OutlinePreferences ( ) ;
     this.outlineUI = new OutlineUI ( this ) ;
     this.textEditorPanel = null ;
+    this.subTypingEnterTypes = pSubTypingEnterTypes ;
+    this.styledLanguageEditor = pStyledLanguageEditor ;
     this.outlineUI.getJCheckBoxBinding ( ).setVisible ( false ) ;
     this.outlineUI.getJCheckBoxFree ( ).setVisible ( false ) ;
     this.outlineUI.getJMenuItemBinding ( ).setVisible ( false ) ;
@@ -372,6 +390,8 @@ public final class DefaultOutline implements Outline
     Theme.currentTheme ( ).addPropertyChangeListener (
         new OutlinePropertyChangeListener ( this ) ) ;
     // MouseListener
+    pStyledLanguageEditor.addMouseListener ( new OutlineMouseListener (
+        pStyledLanguageEditor , this ) ) ;
     this.outlineUI.getJTreeOutline ( ).addMouseListener (
         new OutlineMouseListener ( this ) ) ;
     // ActionListener
@@ -438,6 +458,7 @@ public final class DefaultOutline implements Outline
     this.outlinePreferences = new OutlinePreferences ( ) ;
     this.outlineUI = new OutlineUI ( this ) ;
     this.textEditorPanel = pTextEditorPanel ;
+    this.subTypingEnterTypes = null ;
     // ComponentListener
     this.outlineUI.getJPanelMain ( ).addComponentListener (
         new OutlineComponentListener ( pTextEditorPanel.getJSplitPane ( ) ,
@@ -525,6 +546,7 @@ public final class DefaultOutline implements Outline
     this.outlinePreferences = new OutlinePreferences ( ) ;
     this.outlineUI = new OutlineUI ( this ) ;
     this.textEditorPanel = null ;
+    this.subTypingEnterTypes = null ;
     this.outlineUI.getJCheckBoxHighlightSourceCode ( ).setEnabled ( false ) ;
     this.outlineUI.getJCheckBoxHighlightSourceCode ( ).setSelected ( false ) ;
     this.outlineUI.getJMenuItemHighlightSourceCode ( ).setEnabled ( false ) ;
@@ -1230,6 +1252,30 @@ public final class DefaultOutline implements Outline
 
 
   /**
+   * Returns the styledLanguageEditor.
+   * 
+   * @return The styledLanguageEditor.
+   * @see #styledLanguageEditor
+   */
+  public StyledLanguageEditor getStyledLanguageEditor ( )
+  {
+    return this.styledLanguageEditor ;
+  }
+
+
+  /**
+   * Returns the subTypingEnterTypes.
+   * 
+   * @return The subTypingEnterTypes.
+   * @see #subTypingEnterTypes
+   */
+  public SubTypingEnterTypes getSubTypingEnterTypes ( )
+  {
+    return this.subTypingEnterTypes ;
+  }
+
+
+  /**
    * Returns the textEditorPanel.
    * 
    * @return The textEditorPanel.
@@ -1873,7 +1919,20 @@ public final class DefaultOutline implements Outline
       return ;
     }
     OutlineNode outlineNode = ( OutlineNode ) treePath.getLastPathComponent ( ) ;
-    StyledLanguageDocument document = this.textEditorPanel.getDocument ( ) ;
+    StyledLanguageDocument document ;
+    if ( this.textEditorPanel != null )
+    {
+      document = this.textEditorPanel.getDocument ( ) ;
+    }
+    else if ( this.styledLanguageEditor != null )
+    {
+      document = ( StyledLanguageDocument ) this.styledLanguageEditor
+          .getDocument ( ) ;
+    }
+    else
+    {
+      return ;
+    }
     if ( outlineNode.getPrettyPrintable ( ) instanceof Expression )
     {
       try

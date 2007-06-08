@@ -152,6 +152,7 @@ public final class TypeEquationList
     // otherwise, we examine the first equation in the list
     MonoType left = this.first.getLeft ( ) ;
     MonoType right = this.first.getRight ( ) ;
+    Debug.out.println ( "Unify: " + left + " = " + right , Debug.CHRISTIAN ) ; //$NON-NLS-1$//$NON-NLS-2$
     // different actions, depending on the exact types
     if ( ( left instanceof TypeVariable ) || ( right instanceof TypeVariable ) )
     {
@@ -283,38 +284,70 @@ public final class TypeEquationList
       // Remaining RowType
       MonoType tau1RemainingRow = tau1.getRemainingRowType ( ) ;
       MonoType tau2RemainingRow = tau2.getRemainingRowType ( ) ;
-      if ( ( tau1RemainingRow != null ) && ( tau2Identifiers.size ( ) > 0 ) )
+      // First and second remaining RowTypes
+      if ( ( tau1RemainingRow != null ) && ( tau2RemainingRow != null ) )
       {
-        Identifier [ ] newIdentifiers = new Identifier [ tau2Identifiers
-            .size ( ) ] ;
-        MonoType [ ] newTypes = new MonoType [ tau2Types.size ( ) ] ;
-        for ( int i = 0 ; i < tau2Identifiers.size ( ) ; i ++ )
-        {
-          newIdentifiers [ i ] = tau2Identifiers.get ( i ) ;
-          newTypes [ i ] = tau2Types.get ( i ) ;
-        }
-        RowType newRowType = new RowType ( newIdentifiers , newTypes ) ;
-        eqns = eqns.extend ( tau1RemainingRow , newRowType ) ;
+        eqns = eqns.extend ( tau1RemainingRow , tau2RemainingRow ) ;
+        return eqns.unify ( ) ;
       }
-      if ( ( tau2RemainingRow != null ) && ( tau1Identifiers.size ( ) > 0 ) )
+      // First remaining RowType
+      if ( tau1RemainingRow != null )
       {
-        Identifier [ ] newIdentifiers = new Identifier [ tau1Identifiers
-            .size ( ) ] ;
-        MonoType [ ] newTypes = new MonoType [ tau1Types.size ( ) ] ;
-        for ( int i = 0 ; i < tau1Identifiers.size ( ) ; i ++ )
+        if ( tau2Identifiers.size ( ) > 0 )
         {
-          newIdentifiers [ i ] = tau1Identifiers.get ( i ) ;
-          newTypes [ i ] = tau1Types.get ( i ) ;
+          Identifier [ ] newIdentifiers = new Identifier [ tau2Identifiers
+              .size ( ) ] ;
+          MonoType [ ] newTypes = new MonoType [ tau2Types.size ( ) ] ;
+          for ( int i = tau2Identifiers.size ( ) - 1 ; i >= 0 ; i -- )
+          {
+            newIdentifiers [ i ] = tau2Identifiers.get ( i ) ;
+            newTypes [ i ] = tau2Types.get ( i ) ;
+            tau2Identifiers.remove ( i ) ;
+            tau2Types.remove ( i ) ;
+          }
+          RowType newRowType = new RowType ( newIdentifiers , newTypes ) ;
+          eqns = eqns.extend ( tau1RemainingRow , newRowType ) ;
         }
-        RowType newRowType = new RowType ( newIdentifiers , newTypes ) ;
-        eqns = eqns.extend ( tau2RemainingRow , newRowType ) ;
+        else
+        {
+          throw new RuntimeException ( MessageFormat.format ( Messages
+              .getString ( "UnificationException.2" ) , left , right ) ) ; //$NON-NLS-1$
+        }
+      }
+      // Second remaining RowType
+      if ( tau2RemainingRow != null )
+      {
+        if ( tau1Identifiers.size ( ) > 0 )
+        {
+          Identifier [ ] newIdentifiers = new Identifier [ tau1Identifiers
+              .size ( ) ] ;
+          MonoType [ ] newTypes = new MonoType [ tau1Types.size ( ) ] ;
+          for ( int i = tau1Identifiers.size ( ) - 1 ; i >= 0 ; i -- )
+          {
+            newIdentifiers [ i ] = tau1Identifiers.get ( i ) ;
+            newTypes [ i ] = tau1Types.get ( i ) ;
+            tau1Identifiers.remove ( i ) ;
+            tau1Types.remove ( i ) ;
+          }
+          RowType newRowType = new RowType ( newIdentifiers , newTypes ) ;
+          eqns = eqns.extend ( tau2RemainingRow , newRowType ) ;
+        }
+        else
+        {
+          throw new RuntimeException ( MessageFormat.format ( Messages
+              .getString ( "UnificationException.2" ) , left , right ) ) ; //$NON-NLS-1$
+        }
+      }
+      if ( ( tau1Identifiers.size ( ) > 0 ) || ( tau2Identifiers.size ( ) > 0 ) )
+      {
+        throw new RuntimeException ( MessageFormat.format ( Messages
+            .getString ( "UnificationException.3" ) , left , right ) ) ; //$NON-NLS-1$
       }
       return eqns.unify ( ) ;
     }
-    Debug.err.println (
-        "Can not unify: '" + left + "' = '" + right + "'" , Debug.CHRISTIAN ) ; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     // (left = right) cannot be unified
-    throw new UnificationException ( this.first ) ;
+    throw new RuntimeException ( MessageFormat.format ( Messages
+        .getString ( "UnificationException.0" ) , left , right ) ) ; //$NON-NLS-1$
   }
 
 

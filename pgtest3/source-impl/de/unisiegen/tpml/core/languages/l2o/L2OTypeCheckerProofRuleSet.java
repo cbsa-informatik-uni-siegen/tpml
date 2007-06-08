@@ -21,6 +21,7 @@ import de.unisiegen.tpml.core.types.ArrowType ;
 import de.unisiegen.tpml.core.types.MonoType ;
 import de.unisiegen.tpml.core.types.ObjectType ;
 import de.unisiegen.tpml.core.types.RowType ;
+import de.unisiegen.tpml.core.types.TypeVariable ;
 
 
 /**
@@ -63,14 +64,14 @@ public class L2OTypeCheckerProofRuleSet extends L2TypeCheckerProofRuleSet
       TypeCheckerProofNode pNode )
   {
     Send send = ( Send ) pNode.getExpression ( ) ;
-    MonoType tauSendE = pContext.newTypeVariable ( ) ;
+    MonoType tauSendE = pNode.getType ( ) ;
     MonoType tauRemainingRow = pContext.newTypeVariable ( ) ;
     TypeEnvironment environment = pNode.getEnvironment ( ) ;
     pContext.addProofNode ( pNode , environment , send.getE ( ) ,
         new ObjectType ( new RowType ( new Identifier [ ]
         { send.getId ( ) } , new MonoType [ ]
         { tauSendE } , tauRemainingRow ) ) ) ;
-    pContext.addEquation ( pNode.getType ( ) , tauSendE ) ;
+    // pContext.addEquation ( pNode.getType ( ) , tauSendE ) ;
   }
 
 
@@ -222,49 +223,97 @@ public class L2OTypeCheckerProofRuleSet extends L2TypeCheckerProofRuleSet
     if ( rowExpressions [ 0 ] instanceof Method )
     {
       Method method = ( Method ) rowExpressions [ 0 ] ;
-      Expression e = method.getE ( ) ;
-      MonoType tauE = method.getTau ( ) ;
-      if ( tauE == null )
+      Expression methodE = method.getE ( ) ;
+      MonoType methodTau = method.getTau ( ) ;
+      if ( methodTau == null )
       {
-        tauE = pContext.newTypeVariable ( ) ;
+        methodTau = pContext.newTypeVariable ( ) ;
       }
       MonoType tauRow = pContext.newTypeVariable ( ) ;
+      MonoType nodeType = pNode.getType ( ) ;
       TypeEnvironment environment = pNode.getEnvironment ( ) ;
-      pContext.addProofNode ( pNode , environment , e , tauE ) ;
-      pContext.addProofNode ( pNode , environment , row.tailRow ( ) , tauRow ) ;
-      RowType union = new RowType ( new Identifier [ ]
-      { method.getId ( ) } , new MonoType [ ]
-      { tauE } , tauRow ) ;
-      pContext.addEquation ( pNode.getType ( ) , union ) ;
+      pContext.addProofNode ( pNode , environment , methodE , methodTau ) ;
+      if ( ( nodeType instanceof TypeVariable )
+          || ( ( nodeType instanceof RowType ) && ( method.getId ( )
+              .equals ( ( ( RowType ) nodeType ).getIdentifiers ( ) [ 0 ] ) ) ) )
+      {
+        pContext.addProofNode ( pNode , environment , row.tailRow ( ) , tauRow ) ;
+        RowType union = new RowType ( new Identifier [ ]
+        { method.getId ( ) } , new MonoType [ ]
+        { methodTau } , tauRow ) ;
+        pContext.addEquation ( pNode.getType ( ) , union ) ;
+      }
+      else
+      {
+        RowType rowType = ( RowType ) nodeType ;
+        RowType unionRow = new RowType ( new Identifier [ ]
+        { rowType.getIdentifiers ( ) [ 0 ] } , new MonoType [ ]
+        { rowType.getTypes ( ) [ 0 ] } , tauRow ) ;
+        pContext.addProofNode ( pNode , environment , row.tailRow ( ) ,
+            unionRow ) ;
+        RowType unionEquation = new RowType ( new Identifier [ ]
+        { method.getId ( ) } , new MonoType [ ]
+        { methodTau } , tauRow ) ;
+        MonoType remainingRowType = rowType.getRemainingRowType ( ) ;
+        if ( remainingRowType != null )
+        {
+          pContext.addEquation ( remainingRowType , unionEquation ) ;
+        }
+      }
     }
     else if ( rowExpressions [ 0 ] instanceof CurriedMethod )
     {
       CurriedMethod curriedMethod = ( CurriedMethod ) rowExpressions [ 0 ] ;
-      Expression e = curriedMethod.getE ( ) ;
+      Expression curriedMethodE = curriedMethod.getE ( ) ;
       MonoType [ ] types = curriedMethod.getTypes ( ) ;
       Identifier [ ] identifiers = curriedMethod.getIdentifiers ( ) ;
       for ( int n = identifiers.length - 1 ; n > 0 ; -- n )
       {
-        e = new Lambda ( identifiers [ n ] , types [ n ] , e ) ;
+        curriedMethodE = new Lambda ( identifiers [ n ] , types [ n ] ,
+            curriedMethodE ) ;
       }
-      MonoType tauE = types [ 0 ] ;
-      if ( tauE == null )
+      MonoType curriedMethodTau = types [ 0 ] ;
+      if ( curriedMethodTau == null )
       {
-        tauE = pContext.newTypeVariable ( ) ;
+        curriedMethodTau = pContext.newTypeVariable ( ) ;
       }
       for ( int n = types.length - 1 ; n > 0 ; -- n )
       {
-        tauE = new ArrowType ( ( types [ n ] != null ) ? types [ n ] : pContext
-            .newTypeVariable ( ) , tauE ) ;
+        curriedMethodTau = new ArrowType ( ( types [ n ] != null ) ? types [ n ]
+            : pContext.newTypeVariable ( ) , curriedMethodTau ) ;
       }
       MonoType tauRow = pContext.newTypeVariable ( ) ;
+      MonoType nodeType = pNode.getType ( ) ;
       TypeEnvironment environment = pNode.getEnvironment ( ) ;
-      pContext.addProofNode ( pNode , environment , e , tauE ) ;
-      pContext.addProofNode ( pNode , environment , row.tailRow ( ) , tauRow ) ;
-      RowType union = new RowType ( new Identifier [ ]
-      { identifiers [ 0 ] } , new MonoType [ ]
-      { tauE } , tauRow ) ;
-      pContext.addEquation ( pNode.getType ( ) , union ) ;
+      pContext.addProofNode ( pNode , environment , curriedMethodE ,
+          curriedMethodTau ) ;
+      if ( ( nodeType instanceof TypeVariable )
+          || ( ( nodeType instanceof RowType ) && ( identifiers [ 0 ]
+              .equals ( ( ( RowType ) nodeType ).getIdentifiers ( ) [ 0 ] ) ) ) )
+      {
+        pContext.addProofNode ( pNode , environment , row.tailRow ( ) , tauRow ) ;
+        RowType union = new RowType ( new Identifier [ ]
+        { identifiers [ 0 ] } , new MonoType [ ]
+        { curriedMethodTau } , tauRow ) ;
+        pContext.addEquation ( pNode.getType ( ) , union ) ;
+      }
+      else
+      {
+        RowType rowType = ( RowType ) nodeType ;
+        RowType unionRow = new RowType ( new Identifier [ ]
+        { rowType.getIdentifiers ( ) [ 0 ] } , new MonoType [ ]
+        { rowType.getTypes ( ) [ 0 ] } , tauRow ) ;
+        pContext.addProofNode ( pNode , environment , row.tailRow ( ) ,
+            unionRow ) ;
+        RowType unionEquation = new RowType ( new Identifier [ ]
+        { identifiers [ 0 ] } , new MonoType [ ]
+        { curriedMethodTau } , tauRow ) ;
+        MonoType remainingRowType = rowType.getRemainingRowType ( ) ;
+        if ( remainingRowType != null )
+        {
+          pContext.addEquation ( remainingRowType , unionEquation ) ;
+        }
+      }
     }
     else
     {

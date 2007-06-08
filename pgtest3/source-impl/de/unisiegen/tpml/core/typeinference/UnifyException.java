@@ -50,7 +50,7 @@ public final class UnifyException extends Exception {
 	public UnifyException ( final TypeEquation equation ) {
 
 		super ( MessageFormat.format ( Messages
-				.getString ( "UnificationException.0" ), equation ) ); //$NON-NLS-1$
+				.getString ( "UnificationException.0" ), equation.getLeft ( ), equation.getRight ( ) ) ); //$NON-NLS-1$
 		this.equation = equation;
 	}
 
