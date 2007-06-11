@@ -269,7 +269,7 @@ public class RecSubTypingProofModelTest extends JFrame {
 		try {
 			// parse the program (using L4)
 			LanguageFactory factory = LanguageFactory.newInstance ( );
-			Language language = factory.getLanguageById ( "L2o" );
+			Language language = factory.getLanguageById ( "L2" );
 			LanguageTypeParser parser = language.newTypeParser ( new StringReader (
 					TYPE ) );
 			MonoType type = parser.parse ( );

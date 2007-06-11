@@ -4,6 +4,7 @@ import java.io.Reader;
 
 import de.unisiegen.tpml.core.bigstep.BigStepProofModel;
 import de.unisiegen.tpml.core.expressions.Expression;
+import de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofModel;
 import de.unisiegen.tpml.core.smallstep.SmallStepProofModel;
 import de.unisiegen.tpml.core.subtyping.SubTypingProofModel;
 import de.unisiegen.tpml.core.subtypingrec.RecSubTypingProofModel;
@@ -103,6 +104,8 @@ public interface Language {
    * @see TypeCheckerProofModel
    */
   public TypeCheckerProofModel newTypeCheckerProofModel(Expression expression);
+  
+  public MinimalTypingProofModel newMinimalTypingProofModel(Expression expression);
   
   /**
    * Allocates a new {@link TypeInferenceProofModel} for the <code>expression</code> in this language, which
