@@ -9,6 +9,7 @@ import de.unisiegen.tpml.core.Messages ;
 import de.unisiegen.tpml.core.exceptions.LanguageParserMultiException ;
 import de.unisiegen.tpml.core.interfaces.BoundTypeNames ;
 import de.unisiegen.tpml.core.interfaces.DefaultTypes ;
+import de.unisiegen.tpml.core.languages.LanguageParserException ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
@@ -115,6 +116,12 @@ public final class RecType extends MonoType implements DefaultTypes ,
       { pTypeName.getParserStartOffset ( ) , pTau.getParserStartOffset ( ) } ,
           new int [ ]
           { pTypeName.getParserEndOffset ( ) , pTau.getParserEndOffset ( ) } ) ;
+    }
+    if ( pTau instanceof RecType )
+    {
+      throw new LanguageParserException ( MessageFormat.format ( Messages
+          .getString ( "Exception.7" ) , this.toPrettyString ( ) ) , //$NON-NLS-1$
+          pParserStartOffset , pParserEndOffset ) ;
     }
   }
 
