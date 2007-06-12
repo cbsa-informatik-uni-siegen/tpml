@@ -249,29 +249,26 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
       if ( pRemainingRowType instanceof RowType )
       {
         RowType rowType = ( RowType ) pRemainingRowType ;
-        Identifier [ ] newIdentifiers = new Identifier [ this.identifiers.length
+        this.identifiers = new Identifier [ pIdentifiers.length
             + rowType.getIdentifiers ( ).length ] ;
-        for ( int i = 0 ; i < this.identifiers.length ; i ++ )
+        for ( int i = 0 ; i < pIdentifiers.length ; i ++ )
         {
-          newIdentifiers [ i ] = this.identifiers [ i ] ;
+          this.identifiers [ i ] = pIdentifiers [ i ] ;
         }
         for ( int i = 0 ; i < rowType.getIdentifiers ( ).length ; i ++ )
         {
-          newIdentifiers [ this.identifiers.length + i ] = rowType
+          this.identifiers [ pIdentifiers.length + i ] = rowType
               .getIdentifiers ( ) [ i ] ;
         }
-        MonoType [ ] newTypes = new MonoType [ this.types.length
-            + rowType.getTypes ( ).length ] ;
-        for ( int i = 0 ; i < this.types.length ; i ++ )
+        this.types = new MonoType [ pTypes.length + rowType.getTypes ( ).length ] ;
+        for ( int i = 0 ; i < pTypes.length ; i ++ )
         {
-          newTypes [ i ] = this.types [ i ] ;
+          this.types [ i ] = pTypes [ i ] ;
         }
         for ( int i = 0 ; i < rowType.getTypes ( ).length ; i ++ )
         {
-          newTypes [ this.types.length + i ] = rowType.getTypes ( ) [ i ] ;
+          this.types [ pTypes.length + i ] = rowType.getTypes ( ) [ i ] ;
         }
-        this.identifiers = newIdentifiers ;
-        this.types = newTypes ;
         this.remainingRowType = rowType.getRemainingRowType ( ) ;
         return ;
       }
