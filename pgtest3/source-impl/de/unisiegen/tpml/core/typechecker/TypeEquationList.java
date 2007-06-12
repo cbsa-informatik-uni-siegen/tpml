@@ -289,6 +289,12 @@ public final class TypeEquationList
       if ( ( tau1RemainingRow != null ) && ( tau2RemainingRow != null ) )
       {
         eqns = eqns.extend ( tau1RemainingRow , tau2RemainingRow ) ;
+        if ( ( tau1Identifiers.size ( ) > 0 )
+            || ( tau2Identifiers.size ( ) > 0 ) )
+        {
+          throw new RuntimeException ( MessageFormat.format ( Messages
+              .getString ( "UnificationException.3" ) , left , right ) ) ; //$NON-NLS-1$
+        }
         return eqns.unify ( ) ;
       }
       // First remaining RowType
