@@ -244,6 +244,38 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
       MonoType pRemainingRowType )
   {
     this ( pIdentifiers , pTypes ) ;
+    if ( pRemainingRowType != null )
+    {
+      if ( pRemainingRowType instanceof RowType )
+      {
+        RowType rowType = ( RowType ) pRemainingRowType ;
+        Identifier [ ] newIdentifiers = new Identifier [ this.identifiers.length
+            + rowType.getIdentifiers ( ).length ] ;
+        for ( int i = 0 ; i < this.identifiers.length ; i ++ )
+        {
+          newIdentifiers [ i ] = this.identifiers [ i ] ;
+        }
+        for ( int i = 0 ; i < rowType.getIdentifiers ( ).length ; i ++ )
+        {
+          newIdentifiers [ this.identifiers.length + i ] = rowType
+              .getIdentifiers ( ) [ i ] ;
+        }
+        MonoType [ ] newTypes = new MonoType [ this.types.length
+            + rowType.getTypes ( ).length ] ;
+        for ( int i = 0 ; i < this.types.length ; i ++ )
+        {
+          newTypes [ i ] = this.types [ i ] ;
+        }
+        for ( int i = 0 ; i < rowType.getTypes ( ).length ; i ++ )
+        {
+          newTypes [ this.types.length + i ] = rowType.getTypes ( ) [ i ] ;
+        }
+        this.identifiers = newIdentifiers ;
+        this.types = newTypes ;
+        this.remainingRowType = rowType.getRemainingRowType ( ) ;
+        return ;
+      }
+    }
     this.remainingRowType = pRemainingRowType ;
   }
 
