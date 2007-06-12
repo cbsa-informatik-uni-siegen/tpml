@@ -209,6 +209,12 @@ public class L2OTypeInferenceProofRuleSet extends L2OTypeCheckerProofRuleSet
       if ( ( tau1RemainingRow != null ) && ( tau2RemainingRow != null ) )
       {
         context.addEquation ( tau1RemainingRow , tau2RemainingRow ) ;
+        if ( ( tau1Identifiers.size ( ) > 0 )
+            || ( tau2Identifiers.size ( ) > 0 ) )
+        {
+          throw new RuntimeException ( MessageFormat.format ( Messages
+              .getString ( "UnificationException.3" ) , left , right ) ) ; //$NON-NLS-1$
+        }
         return ;
       }
       // First remaining RowType
