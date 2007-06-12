@@ -169,5 +169,20 @@ public class TypeJudgement implements TypeFormula {
 	public void setExpression ( final Expression expression ) {
 		this.expression = expression;
 	}
+	
+	@Override
+	public boolean equals (Object o){
+		try {
+			TypeJudgement other = (TypeJudgement) o;
+			if (this.environment.equals ( other.environment ))
+				if (this.expression.equals ( other.expression ))
+					if (this.type.equals ( other.type ))
+						return true;
+		}
+		catch (ClassCastException e){
+			return false;
+		}
+		return false;
+	}
 
 }

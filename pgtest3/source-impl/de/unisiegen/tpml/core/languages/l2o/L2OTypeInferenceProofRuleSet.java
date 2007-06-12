@@ -2,8 +2,10 @@ package de.unisiegen.tpml.core.languages.l2o ;
 
 
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 
+import de.unisiegen.tpml.core.Messages;
 import de.unisiegen.tpml.core.expressions.Identifier;
 import de.unisiegen.tpml.core.languages.l1.L1Language;
 import de.unisiegen.tpml.core.languages.l2.L2Language;
@@ -191,6 +193,7 @@ public class L2OTypeInferenceProofRuleSet extends L2OTypeCheckerProofRuleSet
           if ( tau1Identifiers.get ( i ).equals ( tau2Identifiers.get ( j ) ) )
           {
             context.addEquation ( tau1Types.get ( i ) , tau2Types.get ( j ) ) ;
+            
             tau1Identifiers.remove ( i ) ;
             tau1Types.remove ( i ) ;
             tau2Identifiers.remove ( j ) ;
@@ -202,33 +205,54 @@ public class L2OTypeInferenceProofRuleSet extends L2OTypeCheckerProofRuleSet
       // Remaining RowType
       MonoType tau1RemainingRow = tau1.getRemainingRowType ( ) ;
       MonoType tau2RemainingRow = tau2.getRemainingRowType ( ) ;
-      if ( ( tau1RemainingRow != null ) && ( tau2Identifiers.size ( ) > 0 ) )
+      // First and second remaining RowTypes
+      if ( ( tau1RemainingRow != null ) && ( tau2RemainingRow != null ) )
       {
-        Identifier [ ] newIdentifiers = new Identifier [ tau2Identifiers
-            .size ( ) ] ;
-        MonoType [ ] newTypes = new MonoType [ tau2Types.size ( ) ] ;
-        for ( int i = 0 ; i < tau2Identifiers.size ( ) ; i ++ )
-        {
-          newIdentifiers [ i ] = tau2Identifiers.get ( i ) ;
-          newTypes [ i ] = tau2Types.get ( i ) ;
-        }
-        RowType newRowType = new RowType ( newIdentifiers , newTypes ) ;
-        context.addEquation ( tau1RemainingRow , newRowType ) ;
+        context.addEquation ( tau1RemainingRow , tau2RemainingRow ) ;
         return ;
       }
-      if ( ( tau2RemainingRow != null ) && ( tau1Identifiers.size ( ) > 0 ) )
+      // First remaining RowType
+      if ( tau1RemainingRow != null )
       {
-        Identifier [ ] newIdentifiers = new Identifier [ tau1Identifiers
-            .size ( ) ] ;
-        MonoType [ ] newTypes = new MonoType [ tau1Types.size ( ) ] ;
-        for ( int i = 0 ; i < tau1Identifiers.size ( ) ; i ++ )
+        if ( tau2Identifiers.size ( ) > 0 )
         {
-          newIdentifiers [ i ] = tau1Identifiers.get ( i ) ;
-          newTypes [ i ] = tau1Types.get ( i ) ;
+          Identifier [ ] newIdentifiers = new Identifier [ tau2Identifiers
+              .size ( ) ] ;
+          MonoType [ ] newTypes = new MonoType [ tau2Types.size ( ) ] ;
+          for ( int i = tau2Identifiers.size ( ) - 1 ; i >= 0 ; i -- )
+          {
+            newIdentifiers [ i ] = tau2Identifiers.get ( i ) ;
+            newTypes [ i ] = tau2Types.get ( i ) ;
+            tau2Identifiers.remove ( i ) ;
+            tau2Types.remove ( i ) ;
+          }
+          RowType newRowType = new RowType ( newIdentifiers , newTypes ) ;
+          context.addEquation ( tau1RemainingRow , newRowType ) ;
         }
-        RowType newRowType = new RowType ( newIdentifiers , newTypes ) ;
-        context.addEquation ( tau2RemainingRow , newRowType ) ;
-        return ;
+      }
+      // Second remaining RowType
+      if ( tau2RemainingRow != null )
+      {
+        if ( tau1Identifiers.size ( ) > 0 )
+        {
+          Identifier [ ] newIdentifiers = new Identifier [ tau1Identifiers
+              .size ( ) ] ;
+          MonoType [ ] newTypes = new MonoType [ tau1Types.size ( ) ] ;
+          for ( int i = tau1Identifiers.size ( ) - 1 ; i >= 0 ; i -- )
+          {
+            newIdentifiers [ i ] = tau1Identifiers.get ( i ) ;
+            newTypes [ i ] = tau1Types.get ( i ) ;
+            tau1Identifiers.remove ( i ) ;
+            tau1Types.remove ( i ) ;
+          }
+          RowType newRowType = new RowType ( newIdentifiers , newTypes ) ;
+          context.addEquation ( tau2RemainingRow , newRowType ) ;
+        }
+      }
+      if ( ( tau1Identifiers.size ( ) > 0 ) || ( tau2Identifiers.size ( ) > 0 ) )
+      {
+        throw new RuntimeException ( MessageFormat.format ( Messages
+            .getString ( "UnificationException.3" ) , left , right ) ) ; //$NON-NLS-1$
       }
       return ;
     }

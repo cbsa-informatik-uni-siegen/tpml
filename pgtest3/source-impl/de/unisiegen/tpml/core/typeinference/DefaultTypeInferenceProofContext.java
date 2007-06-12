@@ -388,6 +388,8 @@ public class DefaultTypeInferenceProofContext implements
 				break;
 			}
 		}
+//	 Remove the actual formula from list
+		sortedFormulas.remove ( formula );
 
 		//	 Create a new List of formulas needed for new node
 		ArrayList < TypeFormula > formulas = new ArrayList < TypeFormula > ( );
@@ -398,7 +400,9 @@ public class DefaultTypeInferenceProofContext implements
 			if ( !formulas.contains ( actual ) )
 				formulas.add ( actual );
 		}
-
+		
+		
+		
 		// create the new node
 		this.model.contextAddProofNode ( this, node, formulas, newSubstitutions,
 				rule, formula );
