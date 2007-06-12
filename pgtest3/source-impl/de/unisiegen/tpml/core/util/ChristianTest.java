@@ -1,6 +1,7 @@
 package de.unisiegen.tpml.core.util ;
 
 
+import de.unisiegen.tpml.core.expressions.Identifier ;
 import de.unisiegen.tpml.core.types.* ;
 
 
@@ -8,7 +9,19 @@ public class ChristianTest
 {
   public static void main ( String [ ] pArguments )
   {
-    testRecTypeSubstitution ( ) ;
+    rowTypeRemainingRowTypeUnion();
+  }
+
+
+  public static void rowTypeRemainingRowTypeUnion ( )
+  {
+    RowType a = new RowType ( new Identifier [ ]
+    { new Identifier ( "a" ) } , new MonoType [ ]
+    { new IntegerType ( ) } , new RowType ( new Identifier [ ]
+    { new Identifier ( "b" ) } , new MonoType [ ]
+    { new BooleanType ( ) } , new TypeVariable ( 1 , 0 ) ) ) ;
+    System.out.println ( a ) ;
+    System.out.println ( a.getRemainingRowType ( ) ) ;
   }
 
 
