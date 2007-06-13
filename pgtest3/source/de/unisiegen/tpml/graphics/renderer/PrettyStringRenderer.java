@@ -643,7 +643,7 @@ public class PrettyStringRenderer extends AbstractRenderer
     int [ ] mousePosition = toListenForMouse.getHereIam ( ) ;
     
     //TODO Testausgae
-    System.out.println("Mouseposition: "+mousePosition[0] + ", "+mousePosition[1]);
+    //System.out.println("Mouseposition: "+mousePosition[0] + ", "+mousePosition[1]);
     
     boolean mouseOver = true ;
     
@@ -718,7 +718,7 @@ public class PrettyStringRenderer extends AbstractRenderer
     //lineCount = ( ( mousePosition [ 1 ] - ( posY_ - AbstractRenderer.getAbsoluteHeight() ) ) / fm.getHeight ( ) ) + 1 ;
     lineCount = ( ( mousePosition [ 1 ] - ( posY_ - AbstractRenderer.getAbsoluteHeight() ) ) / AbstractRenderer.getAbsoluteHeight ( ) ) + 1 ;
     
-    System.out.println("Linecount: "+lineCount);
+    //System.out.println("Linecount: "+lineCount);
     
     //Testen, ob die Maus wirklich über dem PrittySTring ist...
     boolean highlight = false;
