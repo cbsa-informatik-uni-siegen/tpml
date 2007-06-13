@@ -1,13 +1,15 @@
 package de.unisiegen.tpml.core.languages.l2o;
 
 import de.unisiegen.tpml.core.expressions.Identifier;
+import de.unisiegen.tpml.core.expressions.ObjectExpr;
 import de.unisiegen.tpml.core.expressions.Send;
 import de.unisiegen.tpml.core.languages.l1.L1Language;
-import de.unisiegen.tpml.core.languages.l2.L2Language;
 import de.unisiegen.tpml.core.languages.l2.L2MinimalTypingProofRuleSet;
 import de.unisiegen.tpml.core.minimaltyping.MinimalTypingExpressionProofNode;
 import de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofContext;
 import de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofNode;
+import de.unisiegen.tpml.core.minimaltyping.TypeEnvironment;
+import de.unisiegen.tpml.core.types.MonoType;
 import de.unisiegen.tpml.core.types.RowType;
 
 /**
@@ -53,12 +55,41 @@ L2MinimalTypingProofRuleSet {
 		MinimalTypingExpressionProofNode node = (MinimalTypingExpressionProofNode) pNode;
 		Send send = (Send) node.getExpression ( );
 		if (node.getFirstChild ( ).isFinished ( )){
-			//TODO type für m wird type von parent node
 			
-			Identifier id = send.getId ( );
+			Identifier m = send.getId ( );
 			RowType row = (RowType) node.getFirstChild ( ).getType ( );
 			
+			Identifier [] ids = row.getIdentifiers();
+			MonoType [] types = row.getTypes();
+			
+			Identifier id;
+			
+			// search for type of m in the rowtype and set this type for the node
+			for ( int i = 0; i< ids.length; i++){
+				id = ids[i];
+				if (m.equals(id)){
+					MonoType type = types[i];
+					context.setNodeType(node, type);
+					return;
+				}
+			}
+			throw new RuntimeException("type of m is not in phi");
 		}
+	}
+	
+	/**
+	 * Applies the <b>(OBJECT)</b> rule to the
+	 * <code>node</node> using the <code>context</code>.
+	 * 
+	 * @param context the minimal typing proof context.
+	 * @param node the minimal typing proof node.
+	 */
+	public void applyObject ( MinimalTypingProofContext context,
+			MinimalTypingProofNode pNode ) {
+		MinimalTypingExpressionProofNode node = (MinimalTypingExpressionProofNode) pNode;
+		ObjectExpr object = (ObjectExpr) node.getExpression();
+		TypeEnvironment environment = node.getEnvironment();
+		context.addProofNode(node, environment.extend(, type), expression)
 	}
 
 	/**
