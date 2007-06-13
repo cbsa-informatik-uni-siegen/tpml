@@ -6,9 +6,6 @@ public interface MinimalTypingExpressionProofNode extends
 		MinimalTypingProofNode {
 	
   
-
-  
-  public void setType(MonoType type);
   
   /**
    * Returns the type environment for this type node, that is, the environment in which the type

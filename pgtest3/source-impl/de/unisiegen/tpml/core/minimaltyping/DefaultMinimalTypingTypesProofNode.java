@@ -1,6 +1,8 @@
 package de.unisiegen.tpml.core.minimaltyping;
 
+import de.unisiegen.tpml.core.expressions.Unify;
 import de.unisiegen.tpml.core.types.MonoType;
+import de.unisiegen.tpml.core.types.UnifyType;
 
 public class DefaultMinimalTypingTypesProofNode extends
 		AbstractMinimalTypingProofNode implements MinimalTypingTypesProofNode{
@@ -9,7 +11,7 @@ public class DefaultMinimalTypingTypesProofNode extends
 
 	public DefaultMinimalTypingTypesProofNode ( MonoType pType,
 			MonoType pType2 ) {
-		super ( null );
+		super ( new Unify() );
 		this.type = pType;
 		this.type2 = pType2;
 		

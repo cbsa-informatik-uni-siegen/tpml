@@ -145,6 +145,10 @@ public class DefaultMinimalTypingProofContext implements MinimalTypingProofConte
 		this.model.contextAddProofNode ( this, (AbstractMinimalTypingProofNode) node, type, type );
 		
 	}
+	
+	public void setNodeType(MinimalTypingProofNode node, MonoType type){
+		this.model.contextSetProofNodeType ( this, (AbstractMinimalTypingProofNode) node, type );
+	}
 
 
   /**

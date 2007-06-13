@@ -29,13 +29,13 @@ import de.unisiegen.tpml.core.languages.LanguageTypeParser;
 import de.unisiegen.tpml.core.types.MonoType;
 
 public class RecSubTypingProofModelTest extends JFrame {
-	//private static final String TYPE = "mu t.t->t->t";
+	private static final String TYPE = "mu t.t->t->t";
 
-	//private static final String TYPE2 = "mu t.t->t";
+	private static final String TYPE2 = "mu t.t->t";
 
-	private static final String TYPE = "mu t.int->t";
+	//private static final String TYPE = "mu t.int->t";
 
-	private static final String TYPE2 = "mu t.int->t";
+	//private static final String TYPE2 = "mu t.int->t";
 
 	ProofRule choosen = null;
 

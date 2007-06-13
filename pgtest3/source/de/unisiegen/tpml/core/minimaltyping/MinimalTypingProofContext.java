@@ -38,6 +38,8 @@ public interface MinimalTypingProofContext {
   
   public void addProofNode(MinimalTypingProofNode node, MonoType type, MonoType type2);
   
+  public void setNodeType(MinimalTypingProofNode node, MonoType type);
+  
   /**
    * Returns the {@link Type} for the given <code>expression</code> if possible, i.e. <b>(BOOL)</b> if
    * <code>expression</code> is an instance of {@link de.unisiegen.tpml.core.expressions.BooleanConstant}.

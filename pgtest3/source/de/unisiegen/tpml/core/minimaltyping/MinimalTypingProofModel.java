@@ -437,6 +437,23 @@ public class MinimalTypingProofModel extends AbstractExpressionProofModel {
       }
     });
   }
+  
+  public void contextSetProofNodeType(DefaultMinimalTypingProofContext context, AbstractMinimalTypingProofNode pNode, final MonoType type) {
+  	final DefaultMinimalTypingExpressionProofNode node = (DefaultMinimalTypingExpressionProofNode) pNode;
+    context.addRedoAction(new Runnable() {
+      public void run() {
+        node.setType ( type );
+        nodeChanged(node);
+      }
+    });
+    
+    context.addUndoAction(new Runnable() {
+      public void run() {
+        node.setType ( null );
+        nodeChanged(node);
+      }
+    });
+  }
 
 
 

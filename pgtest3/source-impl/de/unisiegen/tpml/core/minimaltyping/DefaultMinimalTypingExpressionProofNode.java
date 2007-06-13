@@ -87,9 +87,6 @@ public class DefaultMinimalTypingExpressionProofNode extends
    * @see #getType()
    */
   public void setType(MonoType type) {
-    if (type == null) {
-      throw new NullPointerException("type is null");
-    }
     this.type = type;
   }
   

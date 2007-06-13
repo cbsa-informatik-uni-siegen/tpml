@@ -15,6 +15,8 @@ import de.unisiegen.tpml.core.languages.LanguageTranslator;
 import de.unisiegen.tpml.core.languages.LanguageTypeParser;
 import de.unisiegen.tpml.core.languages.LanguageTypeScanner;
 import de.unisiegen.tpml.core.languages.l1.L1Language;
+import de.unisiegen.tpml.core.languages.l1.L1MinimalTypingProofRuleSet;
+import de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofModel;
 import de.unisiegen.tpml.core.smallstep.SmallStepProofModel;
 import de.unisiegen.tpml.core.subtyping.SubTypingProofModel;
 import de.unisiegen.tpml.core.subtypingrec.RecSubTypingProofModel;
@@ -212,11 +214,7 @@ public class L2Language extends L1Language
   /**
    * {@inheritDoc}
    * 
-<<<<<<< .mine
-   * @see de.unisiegen.tpml.core.languages.Language#newSubTypingProofModel(MonoType, MonoType, boolean)
-=======
    * @see de.unisiegen.tpml.core.languages.l1.L1Language#newTypeCheckerProofModel(de.unisiegen.tpml.core.expressions.Expression)
->>>>>>> .r1624
    */
   @ Override
   public TypeCheckerProofModel newTypeCheckerProofModel ( Expression expression )
@@ -229,11 +227,7 @@ public class L2Language extends L1Language
   /**
    * {@inheritDoc}
    * 
-<<<<<<< .mine
-   * @see de.unisiegen.tpml.core.languages.Language#newSubTypingProofModel(MonoType, MonoType, boolean)
-=======
    * @see de.unisiegen.tpml.core.languages.l1.L1Language#newTypeInferenceProofModel(de.unisiegen.tpml.core.expressions.Expression)
->>>>>>> .r1624
    */
   @ Override
   public TypeInferenceProofModel newTypeInferenceProofModel (
@@ -241,6 +235,17 @@ public class L2Language extends L1Language
   {
     return new TypeInferenceProofModel ( expression ,
         new L2TypeInferenceProofRuleSet ( this ) ) ;
+  }
+  
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.tpml.core.languages.AbstractLanguage#newTypeCheckerProofModel(de.unisiegen.tpml.core.expressions.Expression)
+   */
+  @ Override
+  public MinimalTypingProofModel newMinimalTypingProofModel ( Expression expression )
+  {
+    return new MinimalTypingProofModel ( expression , new L2MinimalTypingProofRuleSet(this));
   }
 
 
