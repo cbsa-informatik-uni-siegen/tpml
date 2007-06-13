@@ -630,18 +630,20 @@ public class PrettyStringRenderer extends AbstractRenderer
    * @param x Left position where the rendering should take place
    * @param y Top position where the rendering should take place
    * @param height The height that is available for the rendering.
+   * @param width The width that is available for the rendering.
    * @param gc The Graphics context that will be used to render
    * @param bound
    * @param toListenForM
    * @return The width of the expression will get returned.
    */
-  public void render ( int x , int y , int height , Graphics gc , ShowBonds bound , ToListenForMouseContainer toListenForM )
+  public void render ( int x , int y ,int width , int height,  Graphics gc , ShowBonds bound , ToListenForMouseContainer toListenForM )
   {
     toListenForMouse = toListenForM ;
     // get The MousePosition
     int [ ] mousePosition = toListenForMouse.getHereIam ( ) ;
     
-    // System.out.println("Mouseposition: "+mousePosition[0] + ", "+mousePosition[1]);
+    //TODO Testausgae
+    System.out.println("Mouseposition: "+mousePosition[0] + ", "+mousePosition[1]);
     
     boolean mouseOver = true ;
     
@@ -716,11 +718,23 @@ public class PrettyStringRenderer extends AbstractRenderer
     //lineCount = ( ( mousePosition [ 1 ] - ( posY_ - AbstractRenderer.getAbsoluteHeight() ) ) / fm.getHeight ( ) ) + 1 ;
     lineCount = ( ( mousePosition [ 1 ] - ( posY_ - AbstractRenderer.getAbsoluteHeight() ) ) / AbstractRenderer.getAbsoluteHeight ( ) ) + 1 ;
     
-    // System.out.println("Linecount: "+lineCount);
+    System.out.println("Linecount: "+lineCount);
     
-    if ( lineCount > 1 )
+    //Testen, ob die Maus wirklich über dem PrittySTring ist...
+    boolean highlight = false;
+    if ( lineCount >= 1 && lineCount <= height / AbstractRenderer.getAbsoluteHeight() ) //schon mal die richtige Zeile
     {
-      // may be the mousepointer is under the expression
+    	if ( (mousePosition[0] > x) && (mousePosition[0] <= x + width)  )
+    	{
+    		highlight = true;
+    	}
+    	
+    }   
+    
+    if ( lineCount > 1 && lineCount <= height / AbstractRenderer.getAbsoluteHeight() )
+    {
+      
+    	// may be the mousepointer is under the expression
       try
       {
         charIndex = breakOffsets [ lineCount - 2 ] ;
@@ -729,6 +743,7 @@ public class PrettyStringRenderer extends AbstractRenderer
       {
       }
     }
+
     // add the width of the chars till the mousepointer is reached an dcount the
     // chars
     for ( char c = it.setIndex ( Math.max ( charIndex , 0 ) ) ; c != CharacterIterator.DONE ; c = it.next ( ) , charIndex ++ )
@@ -833,7 +848,7 @@ public class PrettyStringRenderer extends AbstractRenderer
         // if actual char is in the same List as the list in wich the char where
         // MousePointer is
         // the char should be highlightet
-        if ( isInList ( i , annotationsList ) == rightAnnotationList )
+        if ( isInList ( i , annotationsList ) == rightAnnotationList && highlight)
         {
           // type highlighted in bold
           fm.getFont ( ).getName ( ) ;
