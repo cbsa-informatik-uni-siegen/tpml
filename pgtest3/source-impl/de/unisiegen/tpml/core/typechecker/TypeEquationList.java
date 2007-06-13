@@ -9,6 +9,7 @@ import de.unisiegen.tpml.core.types.ArrowType ;
 import de.unisiegen.tpml.core.types.ListType ;
 import de.unisiegen.tpml.core.types.MonoType ;
 import de.unisiegen.tpml.core.types.ObjectType ;
+import de.unisiegen.tpml.core.types.RecType ;
 import de.unisiegen.tpml.core.types.RefType ;
 import de.unisiegen.tpml.core.types.RowType ;
 import de.unisiegen.tpml.core.types.TupleType ;
@@ -132,17 +133,45 @@ public final class TypeEquationList
 
 
   //
+  // Base methods
+  //
+  /**
+   * Returns the string representation of the equations contained in this list.
+   * This method is mainly useful for debugging purposes.
+   * 
+   * @return the string representation.
+   * @see TypeEquation#toString()
+   * @see java.lang.Object#toString()
+   */
+  @ Override
+  public String toString ( )
+  {
+    StringBuilder builder = new StringBuilder ( 128 ) ;
+    builder.append ( '{' ) ;
+    for ( TypeEquationList list = this ; list != EMPTY_LIST ; list = list.remaining )
+    {
+      if ( list != this ) builder.append ( ", " ) ; //$NON-NLS-1$
+      builder.append ( list.first ) ;
+    }
+    builder.append ( '}' ) ;
+    return builder.toString ( ) ;
+  }
+
+
+  //
   // Unification
   //
   /**
    * This method is the heart of the unification algorithm implementation. It
    * returns the unificator for this type equation list.
    * 
+   * @param pSeenTypes TODO
    * @return the unificator for this type equation.
    * @throws UnificationException if one of the equations contained within this
    *           list could not be unified.
    */
-  public DefaultTypeSubstitution unify ( ) throws UnificationException
+  public DefaultTypeSubstitution unify ( ArrayList < TypeEquation > pSeenTypes )
+      throws UnificationException
   {
     // an empty type equation list is easy to unify
     if ( this == EMPTY_LIST )
@@ -152,7 +181,38 @@ public final class TypeEquationList
     // otherwise, we examine the first equation in the list
     MonoType left = this.first.getLeft ( ) ;
     MonoType right = this.first.getRight ( ) ;
-    Debug.out.println ( "Unify: " + left + " = " + right , Debug.CHRISTIAN ) ; //$NON-NLS-1$//$NON-NLS-2$
+    // TODO ASSUME rule
+    if ( pSeenTypes.contains ( this.first ) )
+    {
+      Debug.out.println (
+          "Unify - ASSUME:     " + left + " = " + right , Debug.CHRISTIAN ) ; //$NON-NLS-1$//$NON-NLS-2$
+      TypeEquationList eqns = this.remaining ;
+      return eqns.unify ( pSeenTypes ) ;
+    }
+    // TODO MU-LEFT
+    if ( left instanceof RecType )
+    {
+      RecType recType = ( RecType ) left ;
+      Debug.out.println (
+          "Unify - MU-LEFT:    " + left + " = " + right , Debug.CHRISTIAN ) ; //$NON-NLS-1$//$NON-NLS-2$
+      TypeEquationList eqns = this.remaining ;
+      eqns = eqns.extend ( recType.getTau ( ).substitute (
+          recType.getTypeName ( ) , recType ) , right ) ;
+      pSeenTypes.add ( this.first ) ;
+      return eqns.unify ( pSeenTypes ) ;
+    }
+    // TODO MU-RIGHT
+    if ( right instanceof RecType )
+    {
+      RecType recType = ( RecType ) right ;
+      Debug.out.println (
+          "Unify - MU-RIGHT:   " + left + " = " + right , Debug.CHRISTIAN ) ; //$NON-NLS-1$//$NON-NLS-2$
+      TypeEquationList eqns = this.remaining ;
+      eqns = eqns.extend ( left , recType.getTau ( ).substitute (
+          recType.getTypeName ( ) , recType ) ) ;
+      pSeenTypes.add ( this.first ) ;
+      return eqns.unify ( pSeenTypes ) ;
+    }
     // different actions, depending on the exact types
     if ( ( left instanceof TypeVariable ) || ( right instanceof TypeVariable ) )
     {
@@ -160,12 +220,16 @@ public final class TypeEquationList
       TypeVariable tvar = ( TypeVariable ) ( left instanceof TypeVariable ? left
           : right ) ;
       MonoType tau = ( left instanceof TypeVariable ? right : left ) ;
+      Debug.out.println (
+          "Unify - VARIABLE    " + tvar + " = " + tau , Debug.CHRISTIAN ) ; //$NON-NLS-1$//$NON-NLS-2$
       // either tvar equals tau or tvar is not present in tau
       if ( ( tvar.equals ( tau ) )
           || ( ! tau.getTypeVariablesFree ( ).contains ( tvar ) ) )
       {
         DefaultTypeSubstitution s1 = new DefaultTypeSubstitution ( tvar , tau ) ;
-        DefaultTypeSubstitution s2 = this.remaining.substitute ( s1 ).unify ( ) ;
+        pSeenTypes.add ( this.first ) ;
+        DefaultTypeSubstitution s2 = this.remaining.substitute ( s1 ).unify (
+            pSeenTypes ) ;
         return s1.compose ( s2 ) ;
       }
       // Recursive types
@@ -174,6 +238,8 @@ public final class TypeEquationList
     }
     else if ( ( left instanceof ArrowType ) && ( right instanceof ArrowType ) )
     {
+      Debug.out.println (
+          "Unify - ARROW       " + left + " = " + right , Debug.CHRISTIAN ) ; //$NON-NLS-1$//$NON-NLS-2$
       // cast to ArrowType instances (tau and tau')
       ArrowType taul = ( ArrowType ) left ;
       ArrowType taur = ( ArrowType ) right ;
@@ -182,10 +248,13 @@ public final class TypeEquationList
       eqns = eqns.extend ( taul.getTau2 ( ) , taur.getTau2 ( ) ) ;
       eqns = eqns.extend ( taul.getTau1 ( ) , taur.getTau1 ( ) ) ;
       // try to unify the new list
-      return eqns.unify ( ) ;
+      pSeenTypes.add ( this.first ) ;
+      return eqns.unify ( pSeenTypes ) ;
     }
     else if ( ( left instanceof TupleType ) && ( right instanceof TupleType ) )
     {
+      Debug.out.println (
+          "Unify - TUPLE       " + left + " = " + right , Debug.CHRISTIAN ) ; //$NON-NLS-1$//$NON-NLS-2$
       // cast to TupleType instances (tau and tau')
       TupleType taul = ( TupleType ) left ;
       TupleType taur = ( TupleType ) right ;
@@ -202,13 +271,16 @@ public final class TypeEquationList
           eqns = eqns.extend ( typesl [ n ] , typesr [ n ] ) ;
         }
         // try to unify the new list
-        return eqns.unify ( ) ;
+        pSeenTypes.add ( this.first ) ;
+        return eqns.unify ( pSeenTypes ) ;
       }
       throw new RuntimeException ( MessageFormat.format ( Messages
           .getString ( "UnificationException.4" ) , left , right ) ) ; //$NON-NLS-1$
     }
     else if ( ( left instanceof RefType ) && ( right instanceof RefType ) )
     {
+      Debug.out.println (
+          "Unify - REF         " + left + " = " + right , Debug.CHRISTIAN ) ; //$NON-NLS-1$//$NON-NLS-2$
       // cast to RefType instances (tau and tau')
       RefType taul = ( RefType ) left ;
       RefType taur = ( RefType ) right ;
@@ -216,10 +288,13 @@ public final class TypeEquationList
       TypeEquationList eqns = this.remaining ;
       eqns = eqns.extend ( taul.getTau ( ) , taur.getTau ( ) ) ;
       // try to unify the new list
-      return eqns.unify ( ) ;
+      pSeenTypes.add ( this.first ) ;
+      return eqns.unify ( pSeenTypes ) ;
     }
     else if ( ( left instanceof ListType ) && ( right instanceof ListType ) )
     {
+      Debug.out.println (
+          "Unify - LIST        " + left + " = " + right , Debug.CHRISTIAN ) ; //$NON-NLS-1$//$NON-NLS-2$
       // cast to ListType instances (tau and tau')
       ListType taul = ( ListType ) left ;
       ListType taur = ( ListType ) right ;
@@ -227,22 +302,31 @@ public final class TypeEquationList
       TypeEquationList eqns = this.remaining ;
       eqns = eqns.extend ( taul.getTau ( ) , taur.getTau ( ) ) ;
       // try to unify the new list
-      return eqns.unify ( ) ;
+      pSeenTypes.add ( this.first ) ;
+      return eqns.unify ( pSeenTypes ) ;
     }
     else if ( left.equals ( right ) )
     {
+      Debug.out.println (
+          "Unify - EQUAL       " + left + " = " + right , Debug.CHRISTIAN ) ; //$NON-NLS-1$//$NON-NLS-2$
       // the types equal, just unify the remaining equations then
-      return this.remaining.unify ( ) ;
+      pSeenTypes.add ( this.first ) ;
+      return this.remaining.unify ( pSeenTypes ) ;
     }
     else if ( ( left instanceof ObjectType ) && ( right instanceof ObjectType ) )
     {
+      Debug.out.println (
+          "Unify - OBJECT      " + left + " = " + right , Debug.CHRISTIAN ) ; //$NON-NLS-1$//$NON-NLS-2$
       ObjectType tau1 = ( ObjectType ) left ;
       ObjectType tau2 = ( ObjectType ) right ;
-      return this.remaining.extend ( tau1.getPhi ( ) , tau2.getPhi ( ) )
-          .unify ( ) ;
+      pSeenTypes.add ( this.first ) ;
+      return this.remaining.extend ( tau1.getPhi ( ) , tau2.getPhi ( ) ).unify (
+          pSeenTypes ) ;
     }
     else if ( ( left instanceof RowType ) && ( right instanceof RowType ) )
     {
+      Debug.out.println (
+          "Unify - ROW         " + left + " = " + right , Debug.CHRISTIAN ) ; //$NON-NLS-1$//$NON-NLS-2$
       RowType tau1 = ( RowType ) left ;
       RowType tau2 = ( RowType ) right ;
       TypeEquationList eqns = this.remaining ;
@@ -295,7 +379,8 @@ public final class TypeEquationList
           throw new RuntimeException ( MessageFormat.format ( Messages
               .getString ( "UnificationException.3" ) , left , right ) ) ; //$NON-NLS-1$
         }
-        return eqns.unify ( ) ;
+        pSeenTypes.add ( this.first ) ;
+        return eqns.unify ( pSeenTypes ) ;
       }
       // First remaining RowType
       if ( tau1RemainingRow != null )
@@ -340,36 +425,11 @@ public final class TypeEquationList
         throw new RuntimeException ( MessageFormat.format ( Messages
             .getString ( "UnificationException.3" ) , left , right ) ) ; //$NON-NLS-1$
       }
-      return eqns.unify ( ) ;
+      pSeenTypes.add ( this.first ) ;
+      return eqns.unify ( pSeenTypes ) ;
     }
     // (left = right) cannot be unified
     throw new RuntimeException ( MessageFormat.format ( Messages
         .getString ( "UnificationException.0" ) , left , right ) ) ; //$NON-NLS-1$
-  }
-
-
-  //
-  // Base methods
-  //
-  /**
-   * Returns the string representation of the equations contained in this list.
-   * This method is mainly useful for debugging purposes.
-   * 
-   * @return the string representation.
-   * @see TypeEquation#toString()
-   * @see java.lang.Object#toString()
-   */
-  @ Override
-  public String toString ( )
-  {
-    StringBuilder builder = new StringBuilder ( 128 ) ;
-    builder.append ( '{' ) ;
-    for ( TypeEquationList list = this ; list != EMPTY_LIST ; list = list.remaining )
-    {
-      if ( list != this ) builder.append ( ", " ) ; //$NON-NLS-1$
-      builder.append ( list.first ) ;
-    }
-    builder.append ( '}' ) ;
-    return builder.toString ( ) ;
   }
 }

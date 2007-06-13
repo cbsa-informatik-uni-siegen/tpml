@@ -103,14 +103,16 @@ public class L2OTypeCheckerProofRuleSet extends L2TypeCheckerProofRuleSet
     {
       ObjectType objectType = ( ObjectType ) tau ;
       RowType rowType = ( RowType ) objectType.getPhi ( ) ;
-      if ( ( objectExpr.getE ( ) instanceof Row )
-          && ( ( ( Row ) objectExpr.getE ( ) ).getExpressions ( ).length != rowType
-              .getTypes ( ).length ) )
+      if ( objectExpr.getE ( ) instanceof Row )
       {
-        throw new RuntimeException (
-            MessageFormat
-                .format (
-                    Messages.getString ( "UnificationException.2" ) , pNode.getType ( ) , objectType ) ) ; //$NON-NLS-1$
+        Row row = ( Row ) objectExpr.getE ( ) ;
+        if ( row.getNumberOfMethods ( ) != rowType.getTypes ( ).length )
+        {
+          throw new RuntimeException (
+              MessageFormat
+                  .format (
+                      Messages.getString ( "UnificationException.2" ) , pNode.getType ( ) , objectType ) ) ; //$NON-NLS-1$
+        }
       }
       pContext.addEquation ( pNode.getType ( ) , objectType ) ;
       TypeEnvironment environment = pNode.getEnvironment ( ) ;
@@ -124,8 +126,20 @@ public class L2OTypeCheckerProofRuleSet extends L2TypeCheckerProofRuleSet
     {
       // TODO
       RecType recType = ( RecType ) tau ;
-      ObjectType objectType = ( ObjectType ) recType.getTau ( ) ;
+      ObjectType objectType = ( ObjectType ) recType.getTau ( ).substitute (
+          recType.getTypeName ( ) , recType ) ;
       RowType rowType = ( RowType ) objectType.getPhi ( ) ;
+      if ( objectExpr.getE ( ) instanceof Row )
+      {
+        Row row = ( Row ) objectExpr.getE ( ) ;
+        if ( row.getNumberOfMethods ( ) != rowType.getTypes ( ).length )
+        {
+          throw new RuntimeException (
+              MessageFormat
+                  .format (
+                      Messages.getString ( "UnificationException.2" ) , pNode.getType ( ) , objectType ) ) ; //$NON-NLS-1$
+        }
+      }
       pContext.addEquation ( pNode.getType ( ) , objectType ) ;
       TypeEnvironment environment = pNode.getEnvironment ( ) ;
       environment = environment.star ( ) ;

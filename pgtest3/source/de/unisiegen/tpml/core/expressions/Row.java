@@ -238,6 +238,45 @@ public final class Row extends Expression implements DefaultExpressions
 
 
   /**
+   * Returns the number of child {@link Attribute}s.
+   * 
+   * @return The number of child {@link Attribute}s.
+   */
+  public int getNumberOfAttributes ( )
+  {
+    int count = 0 ;
+    for ( Expression expression : this.expressions )
+    {
+      if ( expression instanceof Attribute )
+      {
+        count ++ ;
+      }
+    }
+    return count ;
+  }
+
+
+  /**
+   * Returns the number of child {@link Method}s or {@link CurriedMethod}s.
+   * 
+   * @return The number of child {@link Method}s or {@link CurriedMethod}s.
+   */
+  public int getNumberOfMethods ( )
+  {
+    int count = 0 ;
+    for ( Expression expression : this.expressions )
+    {
+      if ( ( expression instanceof Method )
+          || ( expression instanceof CurriedMethod ) )
+      {
+        count ++ ;
+      }
+    }
+    return count ;
+  }
+
+
+  /**
    * Returns the prefix of this {@link Expression}.
    * 
    * @return The prefix of this {@link Expression}.

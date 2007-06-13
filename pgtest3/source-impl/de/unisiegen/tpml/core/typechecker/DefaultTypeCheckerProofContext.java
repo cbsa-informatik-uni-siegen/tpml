@@ -1,6 +1,7 @@
 package de.unisiegen.tpml.core.typechecker ;
 
 
+import java.util.ArrayList ;
 import java.util.Collections ;
 import java.util.LinkedList ;
 import java.util.TreeSet ;
@@ -40,14 +41,12 @@ import de.unisiegen.tpml.core.types.UnitType ;
  * interface.
  * 
  * @author Benedikt Meurer
+ * @author Christian Fehler
  * @version $Rev:511M $
  * @see de.unisiegen.tpml.core.typechecker.TypeCheckerProofContext
  */
 public class DefaultTypeCheckerProofContext implements TypeCheckerProofContext
 {
-  //
-  // Attributes
-  //
   /**
    * The current offset for the <code>TypeVariable</code> allocation. The
    * offset combined with the index from the {@link #model} will be used to
@@ -64,7 +63,7 @@ public class DefaultTypeCheckerProofContext implements TypeCheckerProofContext
    * The list of type equations that has been collected for this context and
    * will be used as input for the unification algorithm.
    * 
-   * @see typechecker.TypeEquations
+   * @see TypeEquation
    */
   private TypeEquationList equations = TypeEquationList.EMPTY_LIST ;
 
@@ -95,49 +94,44 @@ public class DefaultTypeCheckerProofContext implements TypeCheckerProofContext
   private LinkedList < Runnable > undoActions = new LinkedList < Runnable > ( ) ;
 
 
-  //
-  // Constructor (package)
-  //
   /**
    * Allocates a new <code>DefaultTypeCheckerProofContext</code> with the
    * specified <code>model</code>. This constructor automatically increments
    * the index of the <code>model</code> using a redo/undo pair, via the
    * {@link TypeCheckerProofModel#setIndex(int)} method.
    * 
-   * @param model the type checker proof model with which the context is
-   *          associated.
+   * @param pTypeCheckerProofModel the type checker proof model with which the
+   *          context is associated.
    * @throws NullPointerException if <code>model</code> is <code>null</code>.
    * @see TypeCheckerProofModel#setIndex(int)
    */
-  public DefaultTypeCheckerProofContext ( final TypeCheckerProofModel model )
+  public DefaultTypeCheckerProofContext (
+      final TypeCheckerProofModel pTypeCheckerProofModel )
   {
-    if ( model == null )
+    if ( pTypeCheckerProofModel == null )
     {
-      throw new NullPointerException ( "model is null" ) ;
+      throw new NullPointerException ( "Model is null" ) ; //$NON-NLS-1$
     }
-    this.model = model ;
+    this.model = pTypeCheckerProofModel ;
     // increment the model index
-    final int index = model.getIndex ( ) ;
+    final int index = pTypeCheckerProofModel.getIndex ( ) ;
     addRedoAction ( new Runnable ( )
     {
       public void run ( )
       {
-        model.setIndex ( index + 1 ) ;
+        pTypeCheckerProofModel.setIndex ( index + 1 ) ;
       }
     } ) ;
     addUndoAction ( new Runnable ( )
     {
       public void run ( )
       {
-        model.setIndex ( index ) ;
+        pTypeCheckerProofModel.setIndex ( index ) ;
       }
     } ) ;
   }
 
 
-  //
-  // Primitives
-  //
   /**
    * {@inheritDoc}
    * 
@@ -175,7 +169,7 @@ public class DefaultTypeCheckerProofContext implements TypeCheckerProofContext
   {
     if ( expression == null )
     {
-      throw new NullPointerException ( "expression is null" ) ;
+      throw new NullPointerException ( "Expression is null" ) ; //$NON-NLS-1$
     }
     if ( expression instanceof BooleanConstant )
     {
@@ -275,7 +269,7 @@ public class DefaultTypeCheckerProofContext implements TypeCheckerProofContext
     else
     {
       // not a simple expression
-      throw new IllegalArgumentException ( "Cannot determine the type for "
+      throw new IllegalArgumentException ( "Cannot determine the type for " //$NON-NLS-1$
           + expression ) ;
     }
   }
@@ -290,7 +284,7 @@ public class DefaultTypeCheckerProofContext implements TypeCheckerProofContext
   {
     if ( type == null )
     {
-      throw new NullPointerException ( "type is null" ) ;
+      throw new NullPointerException ( "Type is null" ) ; //$NON-NLS-1$
     }
     if ( type instanceof PolyType )
     {
@@ -303,10 +297,7 @@ public class DefaultTypeCheckerProofContext implements TypeCheckerProofContext
       }
       return tau ;
     }
-    else
-    {
-      return ( MonoType ) type ;
-    }
+    return ( MonoType ) type ;
   }
 
 
@@ -321,9 +312,6 @@ public class DefaultTypeCheckerProofContext implements TypeCheckerProofContext
   }
 
 
-  //
-  // Rule application
-  //
   /**
    * Applies the specified proof <code>rule</code> to the given
    * <code>node</code>.
@@ -343,24 +331,27 @@ public class DefaultTypeCheckerProofContext implements TypeCheckerProofContext
   void apply ( TypeCheckerProofRule rule , TypeCheckerProofNode node ,
       MonoType type ) throws ProofRuleException , UnificationException
   {
+    TypeCheckerProofNode tmpNode = node ;
     // record the proof step for the node
     this.model.contextSetProofNodeRule ( this ,
-        ( DefaultTypeCheckerProofNode ) node , rule ) ;
+        ( DefaultTypeCheckerProofNode ) tmpNode , rule ) ;
     // try to apply the rule to the node
-    rule.apply ( this , node ) ;
+    rule.apply ( this , tmpNode ) ;
     // check if the user specified a type
     if ( type != null )
     {
       // add an equation for { node.getType() = type }
-      addEquation ( node.getType ( ) , type ) ;
+      addEquation ( tmpNode.getType ( ) , type ) ;
     }
     // unify the type equations and apply the substitution to the model
-    this.model.contextApplySubstitution ( this , this.equations.unify ( ) ) ;
+    // TODO
+    this.model.contextApplySubstitution ( this , this.equations
+        .unify ( new ArrayList < TypeEquation > ( ) ) ) ;
     // update all super nodes
     for ( ; ; )
     {
       // determine the parent node
-      TypeCheckerProofNode parentNode = node.getParent ( ) ;
+      TypeCheckerProofNode parentNode = tmpNode.getParent ( ) ;
       if ( parentNode == null )
       {
         break ;
@@ -368,9 +359,10 @@ public class DefaultTypeCheckerProofContext implements TypeCheckerProofContext
       // update the parent node (using the previously applied rule)
       parentNode.getRule ( ).update ( this , parentNode ) ;
       // Needed if a new TypeEquation was added in the update method
-      //this.model.contextApplySubstitution ( this , this.equations.unify ( ) ) ;
+      // this.model.contextApplySubstitution ( this , this.equations.unify ( ) )
+      // ;
       // continue with the next one
-      node = parentNode ;
+      tmpNode = parentNode ;
     }
   }
 
@@ -393,9 +385,6 @@ public class DefaultTypeCheckerProofContext implements TypeCheckerProofContext
   }
 
 
-  //
-  // Context action handling
-  //
   /**
    * Adds the specified <code>redoAction</code> to the internal list of
    * redoable actions, and runs the <code>redoAction</code>. This method
@@ -412,7 +401,7 @@ public class DefaultTypeCheckerProofContext implements TypeCheckerProofContext
   {
     if ( redoAction == null )
     {
-      throw new NullPointerException ( "undoAction is null" ) ;
+      throw new NullPointerException ( "redoAction is null" ) ; //$NON-NLS-1$
     }
     // perform the action
     redoAction.run ( ) ;
@@ -437,7 +426,7 @@ public class DefaultTypeCheckerProofContext implements TypeCheckerProofContext
   {
     if ( undoAction == null )
     {
-      throw new NullPointerException ( "undoAction is null" ) ;
+      throw new NullPointerException ( "undoAction is null" ) ; //$NON-NLS-1$
     }
     // record the action
     this.undoActions.add ( 0 , undoAction ) ;
@@ -456,6 +445,7 @@ public class DefaultTypeCheckerProofContext implements TypeCheckerProofContext
   {
     return new Runnable ( )
     {
+      @ SuppressWarnings ( "synthetic-access" )
       public void run ( )
       {
         for ( Runnable redoAction : DefaultTypeCheckerProofContext.this.redoActions )
@@ -479,6 +469,7 @@ public class DefaultTypeCheckerProofContext implements TypeCheckerProofContext
   {
     return new Runnable ( )
     {
+      @ SuppressWarnings ( "synthetic-access" )
       public void run ( )
       {
         for ( Runnable undoAction : DefaultTypeCheckerProofContext.this.undoActions )
@@ -487,19 +478,5 @@ public class DefaultTypeCheckerProofContext implements TypeCheckerProofContext
         }
       }
     } ;
-  }
-
-
-  public TypeEquationList getEquations ( )
-  {
-    return this.equations ;
-  }
-
-
-  public void addProofNode ( TypeCheckerProofNode node ,
-      TypeEnvironment environment , Expression expression , MonoType type ,
-      TypeEquationList eqns )
-  {
-    // TODO Auto-generated method stub
   }
 }
