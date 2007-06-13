@@ -179,6 +179,18 @@ public final class RecType extends MonoType implements DefaultTypes ,
 
 
   /**
+   * Returns the {@link TypeName} of this {@link Type}.
+   * 
+   * @return The {@link TypeName} of this {@link Type}.
+   * @see #typeNames
+   */
+  public TypeName getTypeName ( )
+  {
+    return this.typeNames [ 0 ] ;
+  }
+
+
+  /**
    * Returns the {@link TypeName}s of this {@link Type}.
    * 
    * @return The {@link TypeName}s of this {@link Type}.

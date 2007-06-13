@@ -115,7 +115,7 @@ public class L1RecSubTypingProofRuleSet extends AbstractRecSubTypingProofRuleSet
 		RecType rec = ( RecType ) node.getType ( );
 
 		context.addProofNode ( node,
-				rec.getTau ( ).substitute ( rec.getTypeNames ( )[0], rec ), node.getType2 ( ) );
+				rec.getTau ( ).substitute ( rec.getTypeName ( ), rec ), node.getType2 ( ) );
 		
 		context.addSeenType ( node.getType ( ), node.getType2 ( ) );
 
@@ -134,7 +134,7 @@ public class L1RecSubTypingProofRuleSet extends AbstractRecSubTypingProofRuleSet
 		RecType rec = ( RecType ) node.getType2 ( );
 
 		context.addProofNode ( node, node.getType ( ), rec.getTau ( ).substitute ( rec
-				.getTypeNames ( )[0], rec ) );
+				.getTypeName ( ), rec ) );
 		
 		context.addSeenType ( node.getType ( ), node.getType2 ( ) );
 
