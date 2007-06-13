@@ -1,1 +1,5 @@
-lambda x: mu t.int -> t.x
+(object (self)
+  method a = true ;
+  method b = 1 ;
+  method c = () ;
+end) # b
