@@ -603,7 +603,8 @@ public class CompoundExpressionTypeInference extends JComponent
     	//TODO Test for printing
     	//this.expressionSize = this.expressionRenderer.getNeededSizeAll_ ( maxWidth ) ;
       //this.typeFormulaSize = this.expressionRenderer.getNeededSize ( maxWidth ) ;
-    	this.typeFormulaSize = this.typeFormularRenderer.getNeededSize(0) ;
+    	this.typeFormulaSize = this.typeFormularRenderer.getNeededSize( maxWidth ) ;
+    	//this.typeFormulaSize = this.typeFormularRenderer.getNeededSize( Integer.MAX_VALUE ) ;
     	//testAusgabe("Die gebrauchte Größe der typeFormulaSize: "+typeFormulaSize.height + ", "+ typeFormulaSize.width);
       //this.typeFormulaSize = this.typeFormularRenderer.getNeededSize (  ) ;
       result.width += Math.max(this.typeFormulaSize.width, this.substitutionSize.width) ;
@@ -700,13 +701,14 @@ public class CompoundExpressionTypeInference extends JComponent
       gc.drawString ( CompoundExpressionTypeInference.arrowStr , posX , centerV ) ;
       posX += AbstractRenderer.getTextFontMetrics ( ).stringWidth ( CompoundExpressionTypeInference.arrowStr ) ;
       // draw the expression at the last position.
-      this.expressionRenderer.render ( posX , posY , getHeight ( ) , gc ,
+      this.expressionRenderer.render ( posX , posY , getWidth(), getHeight ( ) , gc ,
           bonds , toListenForMouse ) ;
     }
     
     if (this.typeFormulaList != null)
     {
-    	this.typeFormularRenderer.renderer( posX, posY, this.typeFormulaSize.width, getHeight (), gc) ;
+    	//this.typeFormularRenderer.renderer( posX, posY, this.typeFormulaSize.width, getHeight (), gc) ;
+    	this.typeFormularRenderer.renderer( posX, posY, this.typeFormulaSize.width, typeFormulaSize.height , gc) ;
     }
     
     //TODO Test

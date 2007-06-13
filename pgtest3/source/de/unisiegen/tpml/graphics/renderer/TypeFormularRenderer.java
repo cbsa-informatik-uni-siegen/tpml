@@ -33,7 +33,7 @@ public class TypeFormularRenderer extends AbstractRenderer {
 	/**
 	 * the Renderer for the expressions and...
 	 */
-	private PrettyStringRenderer prettyStringrenderer;
+	//private PrettyStringRenderer prettyStringrenderer;
 	
 	/**
 	 * the List of Strings for the tooltip
@@ -162,79 +162,6 @@ public class TypeFormularRenderer extends AbstractRenderer {
 	
 	
 	/**
-	 * Calculates the size, that is needed to propperly render
-	 * the TypeFormula.
-	 * @param y //TODO mal sehen, ob wir das brauchen...
-	 * 
-	 * @return The size needed to render the environment.
-	 */
-	public Dimension getNeededSize (int y) {
-		Dimension result = new Dimension (2 * AbstractRenderer.keywordFontMetrics.stringWidth(("{")), AbstractRenderer.getAbsoluteHeight ( ));
-		
-		//Enumeration<S> env = this.environment.symbols();
-		
-		if  ( typeFormulaList.size() == 0 ) 
-		{
-			// secure some space between the two brackets when
-			// no content is there to be shown
-			result.width += 5;
-		}
-		else 
-		{
-			//first we will render the solve
-			int einrücken = AbstractRenderer.keywordFontMetrics.stringWidth("solve {");
-			result.width += einrücken;
-			
-			
-			// get the first element
-			TypeFormula t = typeFormulaList.get(0);
-
-			// if there is more then only one element in the environment
-			// the same will happen and the hight will be counted...
-			result.height = typeFormulaList.size() * AbstractRenderer.getAbsoluteHeight ( );
-			for (int i = 0; i < typeFormulaList.size(); i++)
-			{
-				int lineWidth = einrücken;
-
-				t = typeFormulaList.get(i);
-				if (t instanceof TypeEquation)
-				{
-					lineWidth = lineWidth + AbstractRenderer.keywordFontMetrics.stringWidth(t.toString());
-				}
-				else
-				// if (t instanceof TypeJudgement)
-				{
-					TypeEnvironment environment = t.getEnvironment();
-					Expression expression = t.getExpression();
-					Type type = t.getType();
-					// lineWidth = lineWidth + 2*AbstractRenderer.keywordFontMetrics.stringWidth("[");
-					// TODO TExt in Box...
-					lineWidth = lineWidth + AbstractRenderer.keywordFontMetrics.stringWidth(environment.toString());
-					lineWidth = lineWidth + AbstractRenderer.keywordFontMetrics.stringWidth(arrowString);
-					lineWidth = lineWidth + AbstractRenderer.keywordFontMetrics.stringWidth(expression.toString());
-					lineWidth = lineWidth + AbstractRenderer.keywordFontMetrics.stringWidth("::");
-					lineWidth = lineWidth + AbstractRenderer.keywordFontMetrics.stringWidth(type.toString());
-
-				}
-				testAusgabe("Die Momentane Breite ist: " + result.width);
-				testAusgabe("Die aktuelle Zeile ist: " + lineWidth);
-				if (lineWidth > result.width)
-				{
-					result.width = lineWidth;
-				}
-				testAusgabe("Jetzt ist die Breite: " + result.width);
-
-			}
-				// result.width += AbstractRenderer.expFontMetrics.stringWidth(TypeFormularRenderer.collapsString);
-
-		}
-		//TODO Test
-		//result.height = y / 2 + ((AbstractRenderer.fontHeight)*typeFormulaList.size());
-		
-		return result;
-	}
-	
-	/**
 	 * Returns whether the environment was collapsed.
 	 * @return
 	 */
@@ -329,6 +256,174 @@ public class TypeFormularRenderer extends AbstractRenderer {
 	
 	
 	/**
+		 * Calculates the size, that is needed to propperly render
+		 * the TypeFormula.
+		 * @param maxWidth //TODOwir brauchen es..
+		 * 
+		 * @return The size needed to render the environment.
+		 */
+		public Dimension getNeededSize (int maxWidth) {
+			//Abfabg komisches Verhalten der GUI
+			if (maxWidth < 0)
+			{
+				return new Dimension (0, 0);
+			}
+			//Dimension result = new Dimension (2 * AbstractRenderer.keywordFontMetrics.stringWidth(("{")), AbstractRenderer.getAbsoluteHeight ( ));
+			Dimension result = new Dimension(0,0);
+			
+			System.out.println("Das ist ja toll: "+maxWidth);
+			
+	//		if  ( typeFormulaList.size() == 0 ) 
+	//		{
+	//			// secure some space between the two brackets when
+	//			// no content is there to be shown
+	//			result.width += 5;
+	//		}
+			//else 
+			{
+				//first we need the space for the solve
+				int insertSpace = AbstractRenderer.keywordFontMetrics.stringWidth("solve {");
+				result.width += insertSpace;
+				
+				//Wir brauchen einen prittyStringrenderer, damit wir die breiten herausbekommen
+				PrettyStringRenderer prettyStringrenderer;
+				
+				
+				// get the first element
+				// TypeFormula t = typeFormulaList.get(0);
+	
+				// if there is more then only one element in the environment
+				// the same will happen and the hight will be counted...
+				//TODO ???
+				//result.height = typeFormulaList.size() * AbstractRenderer.getAbsoluteHeight ( );
+				
+				//Wir brauchen 4 Breiten, davon das Maximum. Jeden Durchlauf der Forschleife werden diese Werte berechent,
+				//und letztlich brauchen wir dann das Maximum dieser maxima. daher merken wir uns dieses Maximum
+				int lineWidthMaxAll = insertSpace;
+				
+				for (int i = 0; i < typeFormulaList.size(); i++)
+				{
+					//Wir haben bis zu 4 Breiten, von denen wir dann das Maximum zurückgeben müssen...
+					//Eventuell geht aber auch alles in einen Zeile, dann bleieben die anderen eben einrücken...
+					int lineWidthTypeFormula = insertSpace;
+					int lineWidthEnvironment = insertSpace;
+					int lineWidthExpression = insertSpace;
+					int lineWidthType = insertSpace;
+					
+					//Diese Variable bestimmt, ob umgebrochen werden muss oder nicht...
+					int restOfWidth = maxWidth - insertSpace;
+	
+					TypeFormula t = typeFormulaList.get(i);
+					if (t instanceof TypeEquation)
+					{
+						lineWidthTypeFormula += AbstractRenderer.keywordFontMetrics.stringWidth(t.toString());
+					}
+					else
+					// if (t instanceof TypeJudgement)
+					{
+						TypeEnvironment environment = t.getEnvironment();
+						Expression expression = t.getExpression();
+						Type type = t.getType();
+						// lineWidth = lineWidth + 2*AbstractRenderer.keywordFontMetrics.stringWidth("[");
+						// TODO TExt in Box...
+						lineWidthEnvironment += AbstractRenderer.keywordFontMetrics.stringWidth(environment.toString());
+						lineWidthEnvironment += AbstractRenderer.keywordFontMetrics.stringWidth(arrowString);
+						restOfWidth -= lineWidthEnvironment;
+						
+						//lineWidth = lineWidth + AbstractRenderer.keywordFontMetrics.stringWidth(expression.toString());
+						prettyStringrenderer = new PrettyStringRenderer();
+						prettyStringrenderer.setPrettyString(expression.toPrettyString());
+						//prüfe man die Breite, wenn wir alles hätten
+						Dimension expressionSize = prettyStringrenderer.getNeededSize(maxWidth-insertSpace);
+						System.out.println("Die Breite: "+expressionSize.width+", "+(maxWidth-insertSpace));
+						//Dimension expressionSize = prettyStringrenderer.getNeededSize(Integer.MAX_VALUE);
+						System.out.println("Wenn für die Expression nicht umgebrochen werden muss: "+expressionSize.width);
+	//				Wenn es nicht mehr genug Platz ist für die Expression
+						if (restOfWidth < expressionSize.width)
+						{
+							//lineWidth = einrücken;
+							restOfWidth = maxWidth - insertSpace;
+							result.height += AbstractRenderer.getAbsoluteHeight();
+							//Wenn der in der nächsten Zeile gerendert werden soll, dann hat er mehr Platz
+							expressionSize = prettyStringrenderer.getNeededSize(restOfWidth);
+							lineWidthExpression = insertSpace + expressionSize.width;
+							lineWidthExpression += AbstractRenderer.keywordFontMetrics.stringWidth(" :: ");
+							restOfWidth -= lineWidthExpression;
+							result.height += expressionSize.height;
+						}
+						else
+						{
+							//Wenn wir nicht umgebrochen haben, dann müssen wir die Breite der Environment erhöhen...
+							System.out.println("Es wurde nicht umgebrochen, also: "+expressionSize.width);
+							lineWidthEnvironment += expressionSize.width;
+							lineWidthEnvironment += AbstractRenderer.keywordFontMetrics.stringWidth(" :: ");
+							restOfWidth -= lineWidthEnvironment;
+							//Außerdem muss die Höhe um die Höhe der Expression erhöht werden...
+							result.height += expressionSize.height;
+						}
+						// Wenn nach dem Doppelpunkt nicht mehr genug Platz für den Typ ist...
+						prettyStringrenderer.setPrettyString(type.toPrettyString());
+						Dimension typeSize = prettyStringrenderer.getNeededSize(maxWidth-insertSpace);
+						if (restOfWidth < typeSize.width)
+						{
+							//lineWidth = einrücken;
+							restOfWidth = maxWidth - insertSpace;
+							//result.height += expressionSize.height;
+							typeSize  = prettyStringrenderer.getNeededSize(restOfWidth);
+							lineWidthType = insertSpace + typeSize.width;
+							restOfWidth -= lineWidthType;
+							result.height += typeSize.height;
+						}
+						else
+						{
+							//Wenn noch garnicht umgebrochen wurde, dann ist auch lineWidtnExpression noch einrücken...
+							if (lineWidthExpression == insertSpace)
+							{
+								//Dann müssen wir das auch noch der ersten Zeiel zurechnen...
+								lineWidthEnvironment += typeSize.width;
+							}
+							else
+							{
+								lineWidthExpression += typeSize.width;
+							}
+							result.height += typeSize.height;
+						}
+						//SO, die Breite ist nun das Max der Werte...
+						int lineWidthMax = Math.max(lineWidthEnvironment,
+								Math.max(lineWidthExpression, 
+								Math.max(lineWidthType, lineWidthTypeFormula)));
+						
+						lineWidthMaxAll = Math.max(lineWidthMax, lineWidthMaxAll);
+						
+						System.out.println("Die Maximale Breite ist: "+lineWidthMax+" ("+lineWidthEnvironment+", "+lineWidthExpression+", "+lineWidthType+", "+lineWidthTypeFormula+")");
+						
+						result.width = lineWidthMaxAll;
+						
+					}
+	//				testAusgabe("Die Momentane Breite ist: " + result.width);
+	//				testAusgabe("Die aktuelle Zeile ist: " + lineWidth);
+	//				if (lineWidth > result.width)
+	//				{
+	//					result.width = lineWidth;
+	//				}
+	//				testAusgabe("Jetzt ist die Breite: " + result.width);
+	
+				}
+					// result.width += AbstractRenderer.expFontMetrics.stringWidth(TypeFormularRenderer.collapsString);
+	
+			}
+			//TODO Test
+			//result.height = y / 2 + ((AbstractRenderer.fontHeight)*typeFormulaList.size());
+			
+			//result.width += 1000;
+			
+	//	TODO test einen extrazeiel frei lassen
+			result.height += AbstractRenderer.getAbsoluteHeight() * (typeFormulaList.size()-1);
+			
+			return result;
+		}
+
+	/**
 	 * Renders the Typeformulas.<br>
 	 * <br>
 	 * The Typeformulas are rendered line by lien. They will appear
@@ -348,6 +443,7 @@ public class TypeFormularRenderer extends AbstractRenderer {
 		//TODO was soll denn das hier nochmal
 		gc.setColor(this.alternativeColor != null ? this.alternativeColor : Color.BLACK);
 		
+		gc.drawRect(x, y, width, height-1);
 		// the left bracket
 		//gc.drawLine (x, y, x + this.bracketSize, y);
 		//gc.drawLine (x, y, x, y + height - 1);
@@ -357,6 +453,10 @@ public class TypeFormularRenderer extends AbstractRenderer {
 		//gc.drawLine (x + width - 1, y, x + width - 1 - this.bracketSize, y);
 		//gc.drawLine (x + width - 1, y, x + width - 1, y + height - 1);
 		//gc.drawLine (x + width - 1, y + height - 1, x + width - 1 -this.bracketSize, y + height - 1);
+		
+		int nochNutzbar = width;
+		
+		System.out.println("Noich nutzbar am Anfag: "+nochNutzbar);
 
 		// calculate the vertical center of the available space 
 		int posX = x ;
@@ -397,27 +497,39 @@ public class TypeFormularRenderer extends AbstractRenderer {
 				//einrücken = AbstractRenderer.keywordFontMetrics.stringWidth("solve {");
 			einrücken = posX-einrücken;
 			
-			prettyStringrenderer = new PrettyStringRenderer();
+			
+			System.out.println("Noich nutzbar wenn das Einrücken abgezogen ist: "+nochNutzbar);
+			
+			//prettyStringrenderer = new PrettyStringRenderer();
 			typeFprmularPostitions = new ArrayList <Rectangle> ();
 			typeEquations = new ArrayList <Integer> ();
 			for (int i = 0; i < typeFormulaList.size(); i++)
 			{
+				nochNutzbar = width - einrücken;
+				System.out.println("Noich nutzbar wenn das Einrücken abgezogen ist: "+nochNutzbar);
 				t = typeFormulaList.get(i);
 				if (t instanceof TypeEquation)
 				{
+					//Renderer, damit die einzel gerendert werden...
+					PrettyStringRenderer typeEquationStringrenderer = new PrettyStringRenderer();
+					
+					
+					//Typeequations werden einfach hingerendert...
 					TypeEquation s = (TypeEquation)t;
 					
 					//gc.drawString(t.toString(), posX, posY);
 					//posX += AbstractRenderer.expFontMetrics.stringWidth(t.toString());
-					prettyStringrenderer.setPrettyString(s.toPrettyString());
-					Dimension typeEquationSize = prettyStringrenderer.getNeededSize(Integer.MAX_VALUE);
+					typeEquationStringrenderer.setPrettyString(s.toPrettyString());
+					//Wir wollen nicht, dass er hier umbricht, das wäre doof
+					Dimension typeEquationSize = typeEquationStringrenderer.getNeededSize(Integer.MAX_VALUE);
 					ShowBonds bound = new ShowBonds();
 					//TODO Wenn es keine Expression ist, dann muss auch was gehen
 					
 					bound.setExpression(null);
+					bound.setType(t.getType());
 					//TODO wir wollen hier den haben, den auch die Compoundexpression hat
 					//ToListenForMouseContainer toListenForM = new ToListenForMouseContainer();
-					prettyStringrenderer.render(posX, posY-(typeEquationSize.height / 2) - fontAscent / 2, typeEquationSize.height, gc, bound, toListenForM);
+					typeEquationStringrenderer.render(posX, posY-(typeEquationSize.height / 2) - fontAscent / 2, typeEquationSize.width, typeEquationSize.height, gc, bound, toListenForM);
 					//TODO Merken wir uns mal den Bereich:
 					this.typeFprmularPostitions.add(new Rectangle(posX, posY, typeEquationSize.width, typeEquationSize.height));
 					this.typeEquations.add(i);
@@ -431,11 +543,22 @@ public class TypeFormularRenderer extends AbstractRenderer {
 						posX = x+einrücken;
 						//posY += AbstractRenderer.fontHeight;
 						posY += typeEquationSize.height;
+						
+//					TODO test einen extrazeiel frei lassen
+						posY += AbstractRenderer.getAbsoluteHeight();
 					}
 					
 				}
 				else if (t instanceof TypeJudgement)
 				{
+					
+//				Renderer, damit die einzel gerendert werden...
+					//PrettyStringRenderer prettyStringrenderer = new PrettyStringRenderer();
+					PrettyStringRenderer expressionRenderer = new PrettyStringRenderer();
+					PrettyStringRenderer typeRenderer = new PrettyStringRenderer();
+					
+					
+					
 					int oldPosX = posX;
 					TypeEnvironment environment = t.getEnvironment();
 					Expression expression = t.getExpression();
@@ -458,7 +581,12 @@ public class TypeFormularRenderer extends AbstractRenderer {
 					environmentRenderer.renderer(posX, posY-(environmentRenderer.getNeededSize().height / 2) - fontAscent / 2, environmentRenderer.getNeededSize().width, environmentRenderer.getNeededSize().height, gc);
 				
 					posX += environmentRenderer.getNeededSize().width;
-					höhe = Math.max(höhe,  environmentRenderer.getNeededSize().height);
+					nochNutzbar -= environmentRenderer.getNeededSize().width;
+					
+					System.out.println("Noich nutzbar nach der Environment: "+nochNutzbar);
+					
+					//höhe = Math.max(höhe,  environmentRenderer.getNeededSize().height);
+					höhe = Math.max(0,  environmentRenderer.getNeededSize().height);
 					//TODO Umsetzen des Highlightextes...
 					String envCollapsedString = environmentRenderer.getCollapsedString();
 					if (envCollapsedString != null)
@@ -467,39 +595,81 @@ public class TypeFormularRenderer extends AbstractRenderer {
 						this.collapsedAreas.add(environmentRenderer.getCollapsedArea());
 						this.collapsedStrings.add(environmentRenderer.getCollapsedString());
 					}
-				
-					//gc.drawString("]", posX, posY);
-					//posX += AbstractRenderer.keywordFontMetrics.stringWidth("]");
 					
 					gc.setColor(AbstractRenderer.expColor);
 					gc.drawString(arrowString, posX, posY);
 					posX += AbstractRenderer.expFontMetrics.stringWidth(arrowString);
+					nochNutzbar -= AbstractRenderer.expFontMetrics.stringWidth(arrowString);
 					
+					System.out.println("Noich nutzbar nach Arrow: "+nochNutzbar);
+			
 					//gc.drawString(expression.toString(), posX, posY);
-					prettyStringrenderer = new PrettyStringRenderer ();
 					ShowBonds bound = new ShowBonds();
 					bound.setExpression(expression);
 					//ToListenForMouseContainer toListenForM = new ToListenForMouseContainer();
-					prettyStringrenderer.setPrettyString(expression.toPrettyString());
-					Dimension expressionSize = prettyStringrenderer.getNeededSize(Integer.MAX_VALUE);
+					expressionRenderer.setPrettyString(expression.toPrettyString());
+					Dimension expressionSize = expressionRenderer.getNeededSize(width-einrücken);
 					//prettyStringrenderer.render(x, y, height, gc, bound, toListenForM)
-					//TODO warum -8
-					prettyStringrenderer.render(posX, posY-(expressionSize.height / 2) - fontAscent / 2, expressionSize.height, gc, bound, toListenForM);
+					if (nochNutzbar < expressionSize.width )
+					{
+						System.out.println("Noich nutzbar weniger als wir für die Expression brauchen, neue Zeile: "+nochNutzbar);
+						posX = einrücken;
+						nochNutzbar = width - einrücken;
+						
+						System.out.println("Noich nutzbar in der neuen Zeile nachedem einrücken abgezogen ist...: "+nochNutzbar);
+						
+						expressionSize = expressionRenderer.getNeededSize(nochNutzbar);
+						höhe = Math.max(höhe, expressionSize.height);
+						posY += environmentSize.height;
+						//TODO ???
+						expressionRenderer.render(posX, posY-AbstractRenderer.fontHeight, expressionSize.width, expressionSize.height, gc, bound, toListenForM);
+						
+					}
+					else
+					{
+						//TODO ???
+						expressionRenderer.render(posX, posY-AbstractRenderer.fontHeight / 2 - AbstractRenderer.fontAscent / 2, expressionSize.width ,expressionSize.height, gc, bound, toListenForM);
+					}
+					//prettyStringrenderer.render(posX, posY-(expressionSize.height / 2) - fontAscent / 2, expressionSize.height, gc, bound, toListenForM);
 					//posX += AbstractRenderer.keywordFontMetrics.stringWidth(expression.toString());
 					posX += expressionSize.width;
+					nochNutzbar -= expressionSize.width;
+					
+					System.out.println("Noich nutzbar nach Expression : "+nochNutzbar);
 					
 					gc.setColor(AbstractRenderer.expColor);
 					gc.setFont(expFont);
 					gc.drawString("::", posX, posY);
 					posX += AbstractRenderer.expFontMetrics.stringWidth("::");
+					nochNutzbar -= AbstractRenderer.expFontMetrics.stringWidth("::");
+					
+					System.out.println("Noich nutzbar nach :: : "+nochNutzbar);
+					
+					
+					
 					
 					//gc.drawString(type.toString(), posX, posY);
 					//posX += AbstractRenderer.expFontMetrics.stringWidth(type.toString());
-					prettyStringrenderer.setPrettyString(type.toPrettyString());
-					Dimension typeSize = prettyStringrenderer.getNeededSize(Integer.MAX_VALUE);
-					prettyStringrenderer.render(posX, posY-(expressionSize.height / 2) - fontAscent / 2, expressionSize.height, gc, bound, toListenForM);
-					posX += typeSize.width;
+					typeRenderer.setPrettyString(type.toPrettyString());
+					//Dimension typeSize = prettyStringrenderer.getNeededSize(Integer.MAX_VALUE);
+					Dimension typeSize = typeRenderer.getNeededSize(width - einrücken);
 					
+					if (nochNutzbar < typeSize.width)
+					{
+						System.out.println("Noich nutzbar < Typsize, neue Zeile: "+nochNutzbar);
+						posX = einrücken;
+						nochNutzbar = width -  einrücken;
+						
+						System.out.println("Noich nutzbar in der neuen Zeile: "+nochNutzbar);
+						
+						//posY += Math.max(höhe, expressionSize.height);
+						posY += expressionSize.height;
+						
+					}
+
+					typeRenderer.render(posX, posY-(typeSize.height / 2) - fontAscent / 2, typeSize.width ,typeSize.height, gc, bound, toListenForM);
+					posX += typeSize.width;
+
 					this.typeFprmularPostitions.add(new Rectangle(oldPosX, posY, posX-oldPosX, höhe));
 					this.typeEquations.add(i);
 					
@@ -511,7 +681,14 @@ public class TypeFormularRenderer extends AbstractRenderer {
 						posX = x+einrücken;
 						
 						//posY += Math.max(AbstractRenderer.fontHeight, expressionSize.height);
-						posY += Math.max(höhe, expressionSize.height);
+						//posY += Math.max(höhe, expressionSize.height);
+						//TODO vielleicht einen Fallunterscheidung: Wenn die Expression schon umgebrochen hat, dann muss hier 
+						//nur noch die TypeSize.hight addiert werden, sonst auch noch die ExpressionSize.heigth
+						//posY += typeSize.height;
+						posY += höhe;
+						
+						//TODO test einen extrazeiel frei lassen
+						posY += AbstractRenderer.getAbsoluteHeight();
 					}	
 				}
 			}
