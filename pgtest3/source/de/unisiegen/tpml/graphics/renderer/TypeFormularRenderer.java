@@ -226,19 +226,19 @@ public class TypeFormularRenderer extends AbstractRenderer {
 		int toChange =  this.typeEquations.get(i).intValue();
 		if (remebmbertoChange == toChange)
 		{
-			System.out.println("Die sind gleich");
+			testAusgabe("Die sind gleich");
 			remebmbertoChange = -1;
 			markedArea = null;
 		}
 		else if (remebmbertoChange == -1)
 		{
 			remebmbertoChange = toChange;
-			System.out.println("neuer Wert gemerkt...");
+			testAusgabe("neuer Wert gemerkt...");
 			markedArea = new Rectangle (x, y-height, width, height);
 		}
 		else
 		{
-			System.out.println("Tauschen: "+remebmbertoChange + " mit "+toChange);
+			testAusgabe("Tauschen: "+remebmbertoChange + " mit "+toChange);
 			TypeFormula firstElement = typeFormulaList.get(remebmbertoChange);
 			TypeFormula secondElement = typeFormulaList.get(toChange);
 			typeFormulaList.remove(remebmbertoChange);
@@ -271,7 +271,7 @@ public class TypeFormularRenderer extends AbstractRenderer {
 			//Dimension result = new Dimension (2 * AbstractRenderer.keywordFontMetrics.stringWidth(("{")), AbstractRenderer.getAbsoluteHeight ( ));
 			Dimension result = new Dimension(0,0);
 			
-			System.out.println("Das ist ja toll: "+maxWidth);
+			testAusgabe("Das ist ja toll: "+maxWidth);
 			
 	//		if  ( typeFormulaList.size() == 0 ) 
 	//		{
@@ -335,9 +335,9 @@ public class TypeFormularRenderer extends AbstractRenderer {
 						prettyStringrenderer.setPrettyString(expression.toPrettyString());
 						//prüfe man die Breite, wenn wir alles hätten
 						Dimension expressionSize = prettyStringrenderer.getNeededSize(maxWidth-insertSpace);
-						System.out.println("Die Breite: "+expressionSize.width+", "+(maxWidth-insertSpace));
+						testAusgabe("Die Breite: "+expressionSize.width+", "+(maxWidth-insertSpace));
 						//Dimension expressionSize = prettyStringrenderer.getNeededSize(Integer.MAX_VALUE);
-						System.out.println("Wenn für die Expression nicht umgebrochen werden muss: "+expressionSize.width);
+						testAusgabe("Wenn für die Expression nicht umgebrochen werden muss: "+expressionSize.width);
 	//				Wenn es nicht mehr genug Platz ist für die Expression
 						if (restOfWidth < expressionSize.width)
 						{
@@ -354,7 +354,7 @@ public class TypeFormularRenderer extends AbstractRenderer {
 						else
 						{
 							//Wenn wir nicht umgebrochen haben, dann müssen wir die Breite der Environment erhöhen...
-							System.out.println("Es wurde nicht umgebrochen, also: "+expressionSize.width);
+							testAusgabe("Es wurde nicht umgebrochen, also: "+expressionSize.width);
 							lineWidthEnvironment += expressionSize.width;
 							lineWidthEnvironment += AbstractRenderer.keywordFontMetrics.stringWidth(" :: ");
 							restOfWidth -= lineWidthEnvironment;
@@ -395,7 +395,7 @@ public class TypeFormularRenderer extends AbstractRenderer {
 						
 						lineWidthMaxAll = Math.max(lineWidthMax, lineWidthMaxAll);
 						
-						System.out.println("Die Maximale Breite ist: "+lineWidthMax+" ("+lineWidthEnvironment+", "+lineWidthExpression+", "+lineWidthType+", "+lineWidthTypeFormula+")");
+						testAusgabe("Die Maximale Breite ist: "+lineWidthMax+" ("+lineWidthEnvironment+", "+lineWidthExpression+", "+lineWidthType+", "+lineWidthTypeFormula+")");
 						
 						result.width = lineWidthMaxAll;
 						
@@ -456,7 +456,7 @@ public class TypeFormularRenderer extends AbstractRenderer {
 		
 		int nochNutzbar = width;
 		
-		System.out.println("Noich nutzbar am Anfag: "+nochNutzbar);
+		testAusgabe("Noich nutzbar am Anfag: "+nochNutzbar);
 
 		// calculate the vertical center of the available space 
 		int posX = x ;
@@ -498,7 +498,7 @@ public class TypeFormularRenderer extends AbstractRenderer {
 			einrücken = posX-einrücken;
 			
 			
-			System.out.println("Noich nutzbar wenn das Einrücken abgezogen ist: "+nochNutzbar);
+			testAusgabe("Noich nutzbar wenn das Einrücken abgezogen ist: "+nochNutzbar);
 			
 			//prettyStringrenderer = new PrettyStringRenderer();
 			typeFprmularPostitions = new ArrayList <Rectangle> ();
@@ -506,7 +506,7 @@ public class TypeFormularRenderer extends AbstractRenderer {
 			for (int i = 0; i < typeFormulaList.size(); i++)
 			{
 				nochNutzbar = width - einrücken;
-				System.out.println("Noich nutzbar wenn das Einrücken abgezogen ist: "+nochNutzbar);
+				testAusgabe("Noich nutzbar wenn das Einrücken abgezogen ist: "+nochNutzbar);
 				t = typeFormulaList.get(i);
 				if (t instanceof TypeEquation)
 				{
@@ -576,14 +576,14 @@ public class TypeFormularRenderer extends AbstractRenderer {
 					//gc.drawString(environment.toString(), posX, posY);
 					//posX += AbstractRenderer.keywordFontMetrics.stringWidth(environment.toString());
 					
-					//System.out.println("Die Größe: "+environmentRenderer.getNeededSize().width); 
+					//testAusgabe("Die Größe: "+environmentRenderer.getNeededSize().width); 
 					Dimension environmentSize = environmentRenderer.getNeededSize() ;
 					environmentRenderer.renderer(posX, posY-(environmentRenderer.getNeededSize().height / 2) - fontAscent / 2, environmentRenderer.getNeededSize().width, environmentRenderer.getNeededSize().height, gc);
 				
 					posX += environmentRenderer.getNeededSize().width;
 					nochNutzbar -= environmentRenderer.getNeededSize().width;
 					
-					System.out.println("Noich nutzbar nach der Environment: "+nochNutzbar);
+					testAusgabe("Noich nutzbar nach der Environment: "+nochNutzbar);
 					
 					//höhe = Math.max(höhe,  environmentRenderer.getNeededSize().height);
 					höhe = Math.max(0,  environmentRenderer.getNeededSize().height);
@@ -601,7 +601,7 @@ public class TypeFormularRenderer extends AbstractRenderer {
 					posX += AbstractRenderer.expFontMetrics.stringWidth(arrowString);
 					nochNutzbar -= AbstractRenderer.expFontMetrics.stringWidth(arrowString);
 					
-					System.out.println("Noich nutzbar nach Arrow: "+nochNutzbar);
+					testAusgabe("Noich nutzbar nach Arrow: "+nochNutzbar);
 			
 					//gc.drawString(expression.toString(), posX, posY);
 					ShowBonds bound = new ShowBonds();
@@ -612,11 +612,11 @@ public class TypeFormularRenderer extends AbstractRenderer {
 					//prettyStringrenderer.render(x, y, height, gc, bound, toListenForM)
 					if (nochNutzbar < expressionSize.width )
 					{
-						System.out.println("Noich nutzbar weniger als wir für die Expression brauchen, neue Zeile: "+nochNutzbar);
+						testAusgabe("Noich nutzbar weniger als wir für die Expression brauchen, neue Zeile: "+nochNutzbar);
 						posX = einrücken;
 						nochNutzbar = width - einrücken;
 						
-						System.out.println("Noich nutzbar in der neuen Zeile nachedem einrücken abgezogen ist...: "+nochNutzbar);
+						testAusgabe("Noich nutzbar in der neuen Zeile nachedem einrücken abgezogen ist...: "+nochNutzbar);
 						
 						expressionSize = expressionRenderer.getNeededSize(nochNutzbar);
 						höhe = Math.max(höhe, expressionSize.height);
@@ -635,7 +635,7 @@ public class TypeFormularRenderer extends AbstractRenderer {
 					posX += expressionSize.width;
 					nochNutzbar -= expressionSize.width;
 					
-					System.out.println("Noich nutzbar nach Expression : "+nochNutzbar);
+					testAusgabe("Noich nutzbar nach Expression : "+nochNutzbar);
 					
 					gc.setColor(AbstractRenderer.expColor);
 					gc.setFont(expFont);
@@ -643,7 +643,7 @@ public class TypeFormularRenderer extends AbstractRenderer {
 					posX += AbstractRenderer.expFontMetrics.stringWidth("::");
 					nochNutzbar -= AbstractRenderer.expFontMetrics.stringWidth("::");
 					
-					System.out.println("Noich nutzbar nach :: : "+nochNutzbar);
+					testAusgabe("Noich nutzbar nach :: : "+nochNutzbar);
 					
 					
 					
@@ -656,11 +656,11 @@ public class TypeFormularRenderer extends AbstractRenderer {
 					
 					if (nochNutzbar < typeSize.width)
 					{
-						System.out.println("Noich nutzbar < Typsize, neue Zeile: "+nochNutzbar);
+						testAusgabe("Noich nutzbar < Typsize, neue Zeile: "+nochNutzbar);
 						posX = einrücken;
 						nochNutzbar = width -  einrücken;
 						
-						System.out.println("Noich nutzbar in der neuen Zeile: "+nochNutzbar);
+						testAusgabe("Noich nutzbar in der neuen Zeile: "+nochNutzbar);
 						
 						//posY += Math.max(höhe, expressionSize.height);
 						posY += expressionSize.height;
@@ -676,8 +676,8 @@ public class TypeFormularRenderer extends AbstractRenderer {
 					//everey line but the last needs a line braek
 					if (i<(typeFormulaList.size()-1))
 					{
-						//System.out.println("Liste hat Elemente: "+typeFormulaList.size());
-						//System.out.println("Wir sind bei Element: "+i);
+						//testAusgabe("Liste hat Elemente: "+typeFormulaList.size());
+						//testAusgabe("Wir sind bei Element: "+i);
 						posX = x+einrücken;
 						
 						//posY += Math.max(AbstractRenderer.fontHeight, expressionSize.height);
