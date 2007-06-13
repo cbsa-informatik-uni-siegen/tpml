@@ -563,7 +563,7 @@ public class CompoundExpression < S , E > extends JComponent
     	
     	//TODO Testausgabe
     	//System.out.println(getHeight());
-    	this.expressionRenderer.render ( posX , posY , getHeight () , gc , bonds , toListenForMouse ) ;
+    	this.expressionRenderer.render ( posX , posY , getWidth(), getHeight () , gc , bonds , toListenForMouse ) ;
       posX += this.expressionSize.width ;
       // if there is an environment render it now
       if ( this.environment != null )
@@ -590,7 +590,7 @@ public class CompoundExpression < S , E > extends JComponent
       // draw the expression at the last position.
       //TODO Testausgabe
       //System.out.println(getHeight());
-      this.expressionRenderer.render ( posX , posY , getHeight ( ) , gc ,
+      this.expressionRenderer.render ( posX , posY , getWidth() ,getHeight ( ) , gc ,
           bonds , toListenForMouse ) ;
     }
     
