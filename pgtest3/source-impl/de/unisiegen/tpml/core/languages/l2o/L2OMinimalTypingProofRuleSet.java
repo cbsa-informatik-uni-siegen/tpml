@@ -89,7 +89,7 @@ L2MinimalTypingProofRuleSet {
 		MinimalTypingExpressionProofNode node = (MinimalTypingExpressionProofNode) pNode;
 		ObjectExpr object = (ObjectExpr) node.getExpression();
 		TypeEnvironment environment = node.getEnvironment();
-		context.addProofNode(node, environment.extend(, type), expression)
+		//context.addProofNode(node, environment.extend(, type), expression)
 	}
 
 	/**
