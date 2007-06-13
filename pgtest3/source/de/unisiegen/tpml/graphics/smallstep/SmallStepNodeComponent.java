@@ -635,6 +635,9 @@ public class SmallStepNodeComponent extends JComponent
         } ) ;
       }
     }
+    
+    
+    
     else if ( item instanceof MenuTranslateItem )
     {
       int answer = 1 ;
