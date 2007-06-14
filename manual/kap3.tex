@@ -117,6 +117,8 @@ Die Menge \notation{$\Type$} der \Define{Typen}{Typ} \Engl{types}{type} $\tau$ i
 \bgram
   \tau \is \bool \mid \z \mid \unit
        \al \tau_1 \to \tau_2
+       \al \mu t.\tau
+       \al t
 \egram
 Die abstrakte Syntax, definiert durch die Menge $\Exp$ der g"ultigen Ausdr"ucke, wird erweitert durch neue Produktionen
 \bgram
@@ -563,6 +565,32 @@ Ein \notation{small step} hei"st g"ultig f"ur \LTWOO, wenn er sich mit den small
                                      {\method{m}{e}r \to \method{m}{e}r'}$
   \end{tabular}\\[7mm]
 sowie den entsprechenden exception-Regeln herleiten l"asst.
+
+
+\subsection{Typsystem von \LTWOO}
+
+Ein \notation{Typurteil} hei"st g"ultig f"ur \LTWOO, wenn es sich mit den Typregeln von \LTWO\ und den Regeln\\[3mm]
+\begin{tabular}{ll}
+  \mbox{(SEND)\   } & $\regel{\Tj{\Gamma}{e}{<m:\tau;\phi>}}
+                           {\Tj{\Gamma}{\send{e}{m}}{\tau}}$\\[5mm]
+  \mbox{(OBJECT)\ } & $\regel{\Tj{\Gamma^*[\tau/self]}{r}{\phi}
+                             \quad \tau = <\phi>}
+                             {\Tj{\Gamma}{\object{self:\tau}{r}}{\tau}}$\\[5mm]
+  \mbox{(DUPL)\   } & $\regel{\Tj{\Gamma}{self}{\tau}
+                              \quad \forall i = 1 \ldots n :
+                              \Tj{\Gamma}{a_i}{\tau_i} \wedge
+                              \Tj{\Gamma}{e_i}{\tau_i}}
+                             {\Tj{\Gamma}{\{< a_1 = e_1;\ldots;a_n = e_n >\}}{\tau}}$\\[5mm]
+  \mbox{(EMPTY)\  } & $\Tj{\Gamma}{\epsilon}{\emptyset}$\\[5mm]
+  \mbox{(ATTR)\   } & $\regel{\Tj{\Gamma^*}{e}{\tau}
+                              \quad \Tj{\Gamma[\tau/a]}{r_1}{\phi}}
+                             {\Tj{\Gamma}{\val{a}{e}r_1}{\phi}}$ \\[5mm]
+  \mbox{(METHOD)\ } & $\regel{\Tj{\Gamma}{e}{\tau}
+                              \quad \Tj{\Gamma}{r_1}{\phi}}
+                             {\Tj{\Gamma}{\method{m}{e}r_1}{m:\tau;\phi}}$
+\end{tabular}\\[7mm]
+herleiten l"asst. $\Gamma^*$ ist die Typumgebung mit der Eigenschaft, dass nur Identifier enthalten sind,
+die nicht zu einem Objekt oder Attribut geh"oren.
 
 
 \subsection{Syntaktischer Zucker}
