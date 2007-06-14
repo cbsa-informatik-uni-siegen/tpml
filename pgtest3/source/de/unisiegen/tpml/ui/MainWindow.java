@@ -1143,7 +1143,7 @@ public class MainWindow extends javax.swing.JFrame
       {
         LanguageFactory langfactory = LanguageFactory.newInstance ( ) ;
         Language language = langfactory.getLanguageByFile ( file ) ;
-        StringBuffer buffer = new StringBuffer ( ) ;
+        StringBuilder buffer = new StringBuilder ( ) ;
         FileInputStream in = new FileInputStream ( file ) ;
         int onechar ;
         while ( ( onechar = in.read ( ) ) != - 1 )

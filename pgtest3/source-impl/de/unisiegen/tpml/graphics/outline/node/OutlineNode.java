@@ -218,7 +218,7 @@ public final class OutlineNode extends DefaultMutableTreeNode
    */
   private static final String getHex ( int pNumber )
   {
-    StringBuffer result = new StringBuffer ( ) ;
+    StringBuilder result = new StringBuilder ( ) ;
     int remainder = Math.abs ( pNumber ) ;
     int base = 0 ;
     if ( remainder > 0 )
@@ -1201,8 +1201,8 @@ public final class OutlineNode extends DefaultMutableTreeNode
     {
       throw new IllegalArgumentException ( "Not an Expression and not a Type" ) ; //$NON-NLS-1$
     }
-    // Initialize the result as a StringBuffer
-    StringBuffer result = new StringBuffer ( ) ;
+    // Initialize the result as a StringBuilder
+    StringBuilder result = new StringBuilder ( ) ;
     // Build the first part of the node caption
     result.append ( HTML ) ;
     result.append ( this.childIndex ) ;
@@ -1215,7 +1215,7 @@ public final class OutlineNode extends DefaultMutableTreeNode
     result.append ( FONT_AFTER_COLOR ) ;
     int count = - 1 ;
     int charIndex = 0 ;
-    StringBuffer prefix = new StringBuffer ( ) ;
+    StringBuilder prefix = new StringBuilder ( ) ;
     prefix.append ( "<font color=\"#FFFFFF\">" ) ; //$NON-NLS-1$
     prefix.append ( this.childIndex ) ;
     prefix.append ( this.caption ) ;
@@ -1364,14 +1364,14 @@ public final class OutlineNode extends DefaultMutableTreeNode
    * @param pCharIndex The char index.
    * @param pCount The number of characters.
    * @param pPrettyCharIterator The {@link PrettyCharIterator}.
-   * @param pResult The result {@link StringBuffer}.
+   * @param pResult The result {@link StringBuilder}.
    * @param pPrefix The prefix before a break.
    * @param pColor The {@link Color} of the characters.
    * @return The charIndex at the end of this method.
    */
   private final int updateCaptionBinding ( int pCharIndex , int pCount ,
-      PrettyCharIterator pPrettyCharIterator , StringBuffer pResult ,
-      StringBuffer pPrefix , String pColor )
+      PrettyCharIterator pPrettyCharIterator , StringBuilder pResult ,
+      StringBuilder pPrefix , String pColor )
   {
     int charIndex = pCharIndex ;
     pPrettyCharIterator.setIndex ( pPrettyCharIterator.getIndex ( ) + pCount ) ;
@@ -1404,14 +1404,14 @@ public final class OutlineNode extends DefaultMutableTreeNode
    * @param pCharIndex The char index.
    * @param pSelectionEnd The end index of the selection.
    * @param pPrettyCharIterator The {@link PrettyCharIterator}.
-   * @param pResult The result {@link StringBuffer}.
+   * @param pResult The result {@link StringBuilder}.
    * @param pPrefix The prefix before a break.
    * @param pColor The {@link Color} of the characters.
    * @return The charIndex at the end of this method.
    */
   private final int updateCaptionSelection ( int pCharIndex ,
       int pSelectionEnd , PrettyCharIterator pPrettyCharIterator ,
-      StringBuffer pResult , StringBuffer pPrefix , String pColor )
+      StringBuilder pResult , StringBuilder pPrefix , String pColor )
   {
     int charIndex = pCharIndex ;
     pPrettyCharIterator.setIndex ( pSelectionEnd + 1 ) ;
@@ -1455,14 +1455,14 @@ public final class OutlineNode extends DefaultMutableTreeNode
    * @param pBold True if bold is active.
    * @param pPrettyStyle The {@link PrettyStyle}.
    * @param pPrettyCharIterator The {@link PrettyCharIterator}.
-   * @param pResult The result {@link StringBuffer}.
+   * @param pResult The result {@link StringBuilder}.
    * @param pPrefix The prefix before a break.
    * @param pColor The {@link Color} of the characters.
    * @return The charIndex at the end of this method.
    */
   private final int updateCaptionStyle ( int pCharIndex , boolean pBold ,
       PrettyStyle pPrettyStyle , PrettyCharIterator pPrettyCharIterator ,
-      StringBuffer pResult , StringBuffer pPrefix , String pColor )
+      StringBuilder pResult , StringBuilder pPrefix , String pColor )
   {
     int charIndex = pCharIndex ;
     if ( pBold )
