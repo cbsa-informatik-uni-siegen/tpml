@@ -1,4 +1,3 @@
-let hungry = 
-  rec hungry: mu t.int -> t.
-    lambda x: int.hungry
+let rec hungry: mu t.int -> t = 
+  lambda x: int.hungry
 in hungry
