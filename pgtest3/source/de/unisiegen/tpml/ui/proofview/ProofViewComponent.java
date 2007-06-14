@@ -96,11 +96,23 @@ public class ProofViewComponent extends JComponent implements EditorComponent {
 		add((JComponent) view, BorderLayout.CENTER);
 	}
 
+	/**
+	 * sets the model of the ProofViewComponent
+	 * @param m the modle
+	 */
 	public void setModel (ProofModel m)
 	{
 		model = m;
 		this.model.addPropertyChangeListener(new ModelChangeListener());
 		add((JComponent) view, BorderLayout.CENTER);
+		setDefaultStates ( );
+		//setPongStatus ( false );
+		
+		
+		//setPongStatus ( false );
+		//setRedoStatus ( false );
+		//setUndoStatus ( false );
+		
 	}
 	
 	
@@ -150,7 +162,7 @@ public class ProofViewComponent extends JComponent implements EditorComponent {
 	 * 
 	 * @see #isPongStatus()
 	 */
-	private void setPongStatus(boolean pongStatus) {
+	public void setPongStatus(boolean pongStatus) {
 		if (this.pongStatus != pongStatus) {
 			boolean oldPongStatus = this.pongStatus;
 			this.pongStatus = pongStatus;
