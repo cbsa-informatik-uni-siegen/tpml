@@ -78,8 +78,6 @@ public abstract class AbstractProofView extends JComponent implements ProofView 
 		if (this.advanced != advanced) {
 			boolean oldAdvanced = this.advanced;
 			this.advanced = advanced;
-			//TODO Testausgaben
-			//  System.out.println("Advaced ändert sich (AbstractProofView)");
 			firePropertyChange("advanced", oldAdvanced, advanced);
 		}
 	}
