@@ -80,11 +80,6 @@ public class SubTypingNodeComponent extends JComponent implements TreeNodeCompon
    */
   private CompoundExpressionSubTyping							   expression;
   
-  /**
-   * Label containing the down-directed double-arrow separating the 
-   * Expression and the Resul-Expression.
-   */
-  private JLabel                                      downArrowLabel;
   
   /**
    * Component containing the result-expression and the result-store.
@@ -134,13 +129,7 @@ public class SubTypingNodeComponent extends JComponent implements TreeNodeCompon
     
     this.expression         = new CompoundExpressionSubTyping ();
     add (this.expression);
-    
-    //TODO was ist denn das??? this.indexLabel.addMouseListener ( new OutlineMouseListener ( this.expression ) ) ;
-     
-    this.downArrowLabel     = new JLabel ();
 
-    add (this.downArrowLabel);
-    this.downArrowLabel.setText(" \u21d3 "); // \u21d3 is the double arrow down //$NON-NLS-1$ //$NON-NLS-1$ //$NON-NLS-1$
     
     this.resultExpression   = new CompoundExpression<Location, Expression>();
     add (this.resultExpression);
@@ -401,10 +390,6 @@ public class SubTypingNodeComponent extends JComponent implements TreeNodeCompon
     this.dimension.width += expSize.width;
     this.dimension.height = Math.max(expSize.height, this.dimension.height);
 
-    Dimension arrowSize = this.downArrowLabel.getPreferredSize();
-    this.dimension.width += arrowSize.width;
-    this.dimension.height = Math.max(arrowSize.height, this.dimension.height);
-
     // the result should never be wrapped so we use 
     // the Integer.MAX_VALUE to prevent linewrapping
     Dimension resultSize = this.resultExpression.getNeededSize(Integer.MAX_VALUE);
@@ -420,8 +405,6 @@ public class SubTypingNodeComponent extends JComponent implements TreeNodeCompon
     this.expression.setBounds(posX, 0, expSize.width, this.dimension.height);
     posX += expSize.width;
     
-    this.downArrowLabel.setBounds (posX, 0, arrowSize.width, this.dimension.height);
-    posX += arrowSize.width;
     
     this.resultExpression.setBounds(posX, 0, resultSize.width, this.dimension.height);
     

@@ -8,6 +8,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyAdapter;
@@ -350,13 +352,39 @@ public class SubTypingEnterTypes extends AbstractProofView {
 		this.editor1.addKeyListener(new KeyAdapter(){
       public void keyPressed(KeyEvent arg0) {
         if (arg0.getKeyCode() == KeyEvent.VK_TAB){
-        	//Remove tabs and so on
-        	editor1.setText ( editor1.getText ( ).trim ( ));
-        	editor2.setText ( editor2.getText ( ).trim ( ));
-           nextEditor ( );
+        	//remove tabs and so on
+        	//this is now done by the Fucuslistener
+        	if (arg0.getModifiers ( ) == KeyEvent.SHIFT_MASK)
+        	{
+        		lastEditor ( );
+        	}
+        	else {
+        		nextEditor ( );
+        	}
+           
         }
      }
   });
+		
+		this.editor1.addFocusListener ( new FocusListener() {
+
+			public void focusGained ( FocusEvent e )
+			{
+				editor1.setText ( editor1.getText ( ).trim ( ));
+      	editor2.setText ( editor2.getText ( ).trim ( ));
+			}
+
+			public void focusLost ( FocusEvent e )
+			{
+				editor1.setText ( editor1.getText ( ).trim ( ));
+      	editor2.setText ( editor2.getText ( ).trim ( ));
+      	
+				//tell the ProofviewComponent the new model to provide the redo/undo/pong
+				((ProofViewComponent)getParent()).setModel((ProofModel)model);
+				((ProofViewComponent)getParent()).setPongStatus(!SubTypingEnterTypes.this.model.isCheating() && SubTypingEnterTypes.this.model.isFinished());
+			}
+		});
+
 		
 		//inputFields.addKeyListener ( new KeyListener() )
 		
@@ -385,9 +413,29 @@ public class SubTypingEnterTypes extends AbstractProofView {
 			@SuppressWarnings("synthetic-access")
 			public void insertUpdate(DocumentEvent e) {
 				type1 = eventHandling ( editor1, type1, oldType1, outline1 );
-				if (type1 != oldType1) {
+				if (type1 != oldType1) 
+				{
+					if (type2 != null)
+					{
+//					TODO mal probieren ob ein neues Model nicht geiler ist...
+						
+						//model.setRoot(type1, type2);
+						model = language.newSubTypingProofModel(type1, type2, isAdvanced() );
+						
+						//tell the ProofviewComponent the new model to provide the redo/undo/pong
+						//this ist now done bye the Docuslisteners
+						//((ProofViewComponent)getParent()).setModel((ProofModel)model);
+						
+						component = new SubTypingComponent ( model, isAdvanced() );
+						scrollOutput.setViewportView(component);
+						validate();
+						
+						//model.is
+						
+						//check ( );
+						
+					}
 					
-					//check ( );
 				}
 			}
 
@@ -416,16 +464,43 @@ public class SubTypingEnterTypes extends AbstractProofView {
 
 		this.editor2 = new StyledLanguageEditor ( );
 		
+		//the editors need an KeyListener to provide the next and last component change
 		this.editor2.addKeyListener(new KeyAdapter(){
       public void keyPressed(KeyEvent arg0) {
-        if (arg0.getKeyCode() == KeyEvent.VK_TAB){
+        if (arg0.getKeyCode() == KeyEvent.VK_TAB)
+        {
         	//remove tabs and so on
-        	editor1.setText ( editor1.getText ( ).trim ( ));
-        	editor2.setText ( editor2.getText ( ).trim ( ));
-           nextEditor ( );
+        	//this is now done by the FocusListenrs
+        	if (arg0.getModifiers ( ) == KeyEvent.SHIFT_MASK)
+        	{
+        		lastEditor ( );
+        	}
+        	else 
+        	{
+        		nextEditor ( );
+        	}
         }
      }
   });
+		
+		this.editor2.addFocusListener ( new FocusListener() {
+
+			public void focusGained ( FocusEvent e )
+			{
+				editor1.setText ( editor1.getText ( ).trim ( ));
+      	editor2.setText ( editor2.getText ( ).trim ( ));
+			
+			}
+
+			public void focusLost ( FocusEvent e )
+			{
+				editor1.setText ( editor1.getText ( ).trim ( ));
+      	editor2.setText ( editor2.getText ( ).trim ( ));
+				//tell the ProofviewComponent the new model to provide the redo/undo/pong
+				((ProofViewComponent)getParent()).setModel((ProofModel)model);
+				((ProofViewComponent)getParent()).setPongStatus(!SubTypingEnterTypes.this.model.isCheating() && SubTypingEnterTypes.this.model.isFinished());
+			}
+		});
 		
 		this.document2 = new StyledTypeEnterField ( language );
 		
@@ -454,10 +529,19 @@ public class SubTypingEnterTypes extends AbstractProofView {
 				type2 = eventHandling ( editor2, type2, oldType2, outline2 );
 				if (type2 != oldType2)
 				{		
-					model.setRoot(type1, type2);
+					//TODO mal probieren ob ein neues Model nicht geiler ist...
+					
+					//model.setRoot(type1, type2);
+					model = language.newSubTypingProofModel(type1, type2, isAdvanced() );
+					
+					//tell the ProofviewComponent the new model to provide the redo/undo/pong
+					//((ProofViewComponent)getParent()).setModel((ProofModel)model);
+					
 					component = new SubTypingComponent ( model, isAdvanced() );
 					scrollOutput.setViewportView(component);
 					validate();
+					
+					//model.is
 					
 					//check ( );
 					
@@ -470,8 +554,12 @@ public class SubTypingEnterTypes extends AbstractProofView {
 				type2 = eventHandling ( editor2, type2, oldType2, outline2 );
 				if (type2 != oldType2)
 				{
-					model.setRoot(type1, type2);
+					//model.setRoot(type1, type2);
+					model = language.newSubTypingProofModel(type1, type2, isAdvanced() );
+					
+					//tell the ProofviewComponent the new model to provide the redo
 					component = new SubTypingComponent ( model, isAdvanced() );
+					
 					scrollOutput.setViewportView(component);
 					validate();
 
@@ -608,6 +696,26 @@ public class SubTypingEnterTypes extends AbstractProofView {
 		{
 			editor2.transferFocus ( );	
 		}
+	}
+	
+		/**
+		 * privides the TAB-Key Funktion in the Textfields
+		 * if the user is in editor2 he comes to editor1
+		 * and inversly
+		 * 
+		 */
+		private void lastEditor ( )
+		{
+			//normal variant: The focus switches from editor1 to editor2 and fro,
+			//editor2 to the next component that will be the buttonmenu at the top
+			if (editor1.hasFocus ( ))
+			{
+				editor1.transferFocusBackward ( );
+			}
+			if (editor2.hasFocus ( ))
+			{
+				editor2.transferFocusBackward ( );	
+			}
 		
 		//other variant: The focus only switchs between the 2 editors
 //		if (editor1.hasFocus ( ))
@@ -688,12 +796,11 @@ public class SubTypingEnterTypes extends AbstractProofView {
 
 		if (pLanguage != null) {
 			this.language = pLanguage;
-			//no new model, we have to actualisize the old one
 			
+			//ther ist no chance to actualisize the language of a model so wee need a new one
 			model = language.newSubTypingProofModel(type1, type2, isAdvanced() );
 			
-			
-			
+			//tell the ProofviewComponent the new model to provide the redo/undo/pong
 			((ProofViewComponent)getParent()).setModel((ProofModel)model);
 			//model.setRoot(type1, type2);
 			//model.setMode(isAdvanced());
@@ -741,29 +848,14 @@ public class SubTypingEnterTypes extends AbstractProofView {
   @ Override
   public void setAdvanced ( boolean advanced )
   {
-  	// System.out.println("Der Advance-Wert ändert sich! (SubTypingEnterType) "+advanced);
     super.setAdvanced ( advanced ) ;
-    //Warum geht das nicht???
-   
-    
-    //((SubTypingProofModel)((ProofViewComponent)getParent()).getModel()).setMode(advanced);
-    // System.out.println("der Advanced des Models: "+model.getMode());
-    
+  
     model.setMode(advanced);
     
     if (this.component != null)
     {
     	this.component.setAdvanced ( isAdvanced ( ) ) ;
     }
-    
   }
-
-	/**
-	 * @param model the model to set
-	 */
-	//public void setModel(SubTypingProofModel model)
-	//{
-	//	this.model = model;
-	//}
 
 }
