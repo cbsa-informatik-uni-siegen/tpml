@@ -456,9 +456,8 @@ public class TypeInferenceNodeComponent extends JComponent {
 	 * 
 	 * @see TypeInferenceComponent#setAdvanced(boolean)
 	 */
-	void setAdvanced(boolean advanced) {
-		System.out.println("Wir holen uns die Regeln, und der Advancedwert ist: "+advanced);
-		
+	void setAdvanced(boolean advanced) 
+	{
 		// Fill the menu with menuitems
 		JPopupMenu menu = new JPopupMenu ();
 		ProofRule[] rules = this.proofModel.getRules();
