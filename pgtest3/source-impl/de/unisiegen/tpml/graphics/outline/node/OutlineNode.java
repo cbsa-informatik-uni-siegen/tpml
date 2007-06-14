@@ -165,6 +165,12 @@ public final class OutlineNode extends DefaultMutableTreeNode
   /**
    * Before the description.
    */
+  private static final String PREFIX_BEGIN = "<font color=\"#FFFFFF\">" ; //$NON-NLS-1$
+
+
+  /**
+   * Before the description.
+   */
   private static final String DESCRIPTION_BEGIN = "<font color=\"#0000FF\">" ; //$NON-NLS-1$
 
 
@@ -495,6 +501,12 @@ public final class OutlineNode extends DefaultMutableTreeNode
 
 
   /**
+   * The prefix after a break.
+   */
+  private String prefix ;
+
+
+  /**
    * This constructor initializes the values.
    */
   private OutlineNode ( )
@@ -546,6 +558,8 @@ public final class OutlineNode extends DefaultMutableTreeNode
     this.childIndex = pExpression.getPrefix ( )
         + ( ( pChildIndex <= OutlineNode.NO_CHILD_INDEX ) ? BETWEEN1
             : SMALL_SUB_BEGIN + pChildIndex + SMALL_SUB_END + BETWEEN1 ) ;
+    this.prefix = PREFIX_BEGIN + this.childIndex + this.caption + BETWEEN2
+        + FONT_END ;
   }
 
 
@@ -571,6 +585,8 @@ public final class OutlineNode extends DefaultMutableTreeNode
     this.childIndex = pIdentifier.getPrefix ( )
         + ( ( pChildIndex <= OutlineNode.NO_CHILD_INDEX ) ? BETWEEN1
             : SMALL_SUB_BEGIN + pChildIndex + SMALL_SUB_END + BETWEEN1 ) ;
+    this.prefix = PREFIX_BEGIN + this.childIndex + this.caption + BETWEEN2
+        + FONT_END ;
   }
 
 
@@ -597,6 +613,8 @@ public final class OutlineNode extends DefaultMutableTreeNode
     this.childIndex = pType.getPrefix ( )
         + ( ( pChildIndex <= OutlineNode.NO_CHILD_INDEX ) ? BETWEEN1
             : SMALL_SUB_BEGIN + pChildIndex + SMALL_SUB_END + BETWEEN1 ) ;
+    this.prefix = PREFIX_BEGIN + this.childIndex + this.caption + BETWEEN2
+        + FONT_END ;
   }
 
 
@@ -622,6 +640,8 @@ public final class OutlineNode extends DefaultMutableTreeNode
     this.childIndex = pTypeName.getPrefix ( )
         + ( ( pChildIndex <= OutlineNode.NO_CHILD_INDEX ) ? BETWEEN1
             : SMALL_SUB_BEGIN + pChildIndex + SMALL_SUB_END + BETWEEN1 ) ;
+    this.prefix = PREFIX_BEGIN + this.childIndex + this.caption + BETWEEN2
+        + FONT_END ;
   }
 
 
@@ -1215,12 +1235,6 @@ public final class OutlineNode extends DefaultMutableTreeNode
     result.append ( FONT_AFTER_COLOR ) ;
     int count = - 1 ;
     int charIndex = 0 ;
-    StringBuilder prefix = new StringBuilder ( ) ;
-    prefix.append ( "<font color=\"#FFFFFF\">" ) ; //$NON-NLS-1$
-    prefix.append ( this.childIndex ) ;
-    prefix.append ( this.caption ) ;
-    prefix.append ( BETWEEN2 ) ;
-    prefix.append ( FONT_END ) ;
     final int length = this.prettyString.length ( ) ;
     while ( charIndex < length )
     {
@@ -1230,7 +1244,7 @@ public final class OutlineNode extends DefaultMutableTreeNode
       if ( ( charIndex == selectionStart ) && ( selection ) )
       {
         charIndex = updateCaptionSelection ( charIndex , selectionEnd ,
-            prettyCharIterator , result , prefix , this.selectionColor ) ;
+            prettyCharIterator , result , this.selectionColor ) ;
       }
       /*
        * No selection and binding.
@@ -1240,7 +1254,7 @@ public final class OutlineNode extends DefaultMutableTreeNode
           && ( this.outlineBinding.size ( ) > 0 ) )
       {
         charIndex = updateCaptionSelection ( charIndex , selectionEnd ,
-            prettyCharIterator , result , prefix , this.selectionColor ) ;
+            prettyCharIterator , result , this.selectionColor ) ;
       }
       /*
        * No selection and replace.
@@ -1264,7 +1278,7 @@ public final class OutlineNode extends DefaultMutableTreeNode
           && ( ( count = charIsBound ( charIndex ) ) >= 0 ) )
       {
         charIndex = updateCaptionBinding ( charIndex , count ,
-            prettyCharIterator , result , prefix , this.boundIdColor ) ;
+            prettyCharIterator , result , this.boundIdColor ) ;
       }
       /*
        * Binding Identifier or binding TypeName
@@ -1272,7 +1286,7 @@ public final class OutlineNode extends DefaultMutableTreeNode
       else if ( ( binding ) && ( ( count = charIsBinding ( charIndex ) ) >= 0 ) )
       {
         charIndex = updateCaptionBinding ( charIndex , count ,
-            prettyCharIterator , result , prefix , this.bindingIdColor ) ;
+            prettyCharIterator , result , this.bindingIdColor ) ;
       }
       /*
        * The selected Identifier-Expression is bound in this Expression or Type,
@@ -1284,7 +1298,7 @@ public final class OutlineNode extends DefaultMutableTreeNode
           && ( this.boundEnd != NO_BINDING ) && ( charIndex == selectionStart ) )
       {
         charIndex = updateCaptionSelection ( charIndex , selectionEnd ,
-            prettyCharIterator , result , prefix , this.selectionColor ) ;
+            prettyCharIterator , result , this.selectionColor ) ;
       }
       /*
        * Unbound Identifier
@@ -1293,7 +1307,7 @@ public final class OutlineNode extends DefaultMutableTreeNode
           && ( ( count = charIsFreeIdentifier ( charIndex ) ) >= 0 ) )
       {
         charIndex = updateCaptionBinding ( charIndex , count ,
-            prettyCharIterator , result , prefix , this.freeIdColor ) ;
+            prettyCharIterator , result , this.freeIdColor ) ;
       }
       /*
        * Keyword
@@ -1301,7 +1315,7 @@ public final class OutlineNode extends DefaultMutableTreeNode
       else if ( PrettyStyle.KEYWORD.equals ( prettyCharIterator.getStyle ( ) ) )
       {
         charIndex = updateCaptionStyle ( charIndex , true ,
-            PrettyStyle.KEYWORD , prettyCharIterator , result , prefix ,
+            PrettyStyle.KEYWORD , prettyCharIterator , result ,
             this.keywordColor ) ;
       }
       /*
@@ -1311,7 +1325,7 @@ public final class OutlineNode extends DefaultMutableTreeNode
           .equals ( prettyCharIterator.getStyle ( ) ) )
       {
         charIndex = updateCaptionStyle ( charIndex , false ,
-            PrettyStyle.IDENTIFIER , prettyCharIterator , result , prefix ,
+            PrettyStyle.IDENTIFIER , prettyCharIterator , result ,
             this.identifierColor ) ;
       }
       /*
@@ -1320,7 +1334,7 @@ public final class OutlineNode extends DefaultMutableTreeNode
       else if ( PrettyStyle.CONSTANT.equals ( prettyCharIterator.getStyle ( ) ) )
       {
         charIndex = updateCaptionStyle ( charIndex , true ,
-            PrettyStyle.CONSTANT , prettyCharIterator , result , prefix ,
+            PrettyStyle.CONSTANT , prettyCharIterator , result ,
             this.constantColor ) ;
       }
       /*
@@ -1329,7 +1343,7 @@ public final class OutlineNode extends DefaultMutableTreeNode
       else if ( PrettyStyle.TYPE.equals ( prettyCharIterator.getStyle ( ) ) )
       {
         charIndex = updateCaptionStyle ( charIndex , true , PrettyStyle.TYPE ,
-            prettyCharIterator , result , prefix , this.typeColor ) ;
+            prettyCharIterator , result , this.typeColor ) ;
       }
       /*
        * Normal character
@@ -1365,13 +1379,12 @@ public final class OutlineNode extends DefaultMutableTreeNode
    * @param pCount The number of characters.
    * @param pPrettyCharIterator The {@link PrettyCharIterator}.
    * @param pResult The result {@link StringBuilder}.
-   * @param pPrefix The prefix before a break.
    * @param pColor The {@link Color} of the characters.
    * @return The charIndex at the end of this method.
    */
   private final int updateCaptionBinding ( int pCharIndex , int pCount ,
       PrettyCharIterator pPrettyCharIterator , StringBuilder pResult ,
-      StringBuilder pPrefix , String pColor )
+      String pColor )
   {
     int charIndex = pCharIndex ;
     pPrettyCharIterator.setIndex ( pPrettyCharIterator.getIndex ( ) + pCount ) ;
@@ -1384,7 +1397,7 @@ public final class OutlineNode extends DefaultMutableTreeNode
       {
         pResult.append ( FONT_BOLD_END ) ;
         pResult.append ( BREAK ) ;
-        pResult.append ( pPrefix ) ;
+        pResult.append ( this.prefix ) ;
         pResult.append ( FONT_BOLD_BEGIN ) ;
         pResult.append ( pColor ) ;
         pResult.append ( FONT_AFTER_COLOR ) ;
@@ -1405,13 +1418,12 @@ public final class OutlineNode extends DefaultMutableTreeNode
    * @param pSelectionEnd The end index of the selection.
    * @param pPrettyCharIterator The {@link PrettyCharIterator}.
    * @param pResult The result {@link StringBuilder}.
-   * @param pPrefix The prefix before a break.
    * @param pColor The {@link Color} of the characters.
    * @return The charIndex at the end of this method.
    */
   private final int updateCaptionSelection ( int pCharIndex ,
       int pSelectionEnd , PrettyCharIterator pPrettyCharIterator ,
-      StringBuilder pResult , StringBuilder pPrefix , String pColor )
+      StringBuilder pResult , String pColor )
   {
     int charIndex = pCharIndex ;
     pPrettyCharIterator.setIndex ( pSelectionEnd + 1 ) ;
@@ -1430,7 +1442,7 @@ public final class OutlineNode extends DefaultMutableTreeNode
       {
         pResult.append ( FONT_BOLD_END ) ;
         pResult.append ( BREAK ) ;
-        pResult.append ( pPrefix ) ;
+        pResult.append ( this.prefix ) ;
         pResult.append ( FONT_BOLD_BEGIN ) ;
         pResult.append ( pColor ) ;
         pResult.append ( FONT_AFTER_COLOR ) ;
@@ -1456,13 +1468,12 @@ public final class OutlineNode extends DefaultMutableTreeNode
    * @param pPrettyStyle The {@link PrettyStyle}.
    * @param pPrettyCharIterator The {@link PrettyCharIterator}.
    * @param pResult The result {@link StringBuilder}.
-   * @param pPrefix The prefix before a break.
    * @param pColor The {@link Color} of the characters.
    * @return The charIndex at the end of this method.
    */
   private final int updateCaptionStyle ( int pCharIndex , boolean pBold ,
       PrettyStyle pPrettyStyle , PrettyCharIterator pPrettyCharIterator ,
-      StringBuilder pResult , StringBuilder pPrefix , String pColor )
+      StringBuilder pResult , String pColor )
   {
     int charIndex = pCharIndex ;
     if ( pBold )
@@ -1481,7 +1492,7 @@ public final class OutlineNode extends DefaultMutableTreeNode
       {
         pResult.append ( FONT_BOLD_END ) ;
         pResult.append ( BREAK ) ;
-        pResult.append ( pPrefix ) ;
+        pResult.append ( this.prefix ) ;
         pResult.append ( FONT_BOLD_BEGIN ) ;
         pResult.append ( pColor ) ;
         pResult.append ( FONT_AFTER_COLOR ) ;
