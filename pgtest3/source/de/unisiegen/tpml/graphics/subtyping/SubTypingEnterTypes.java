@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
@@ -349,35 +350,39 @@ public class SubTypingEnterTypes extends AbstractProofView {
 		this.document1 = new StyledTypeEnterField ( language );
 		//this.editor1.getInputMap ( ).put(KeyStroke.getKeyStroke("F2"), "nextComponent");
 		//this.editor1.getActionMap().put("nextComponent",nextComponent());
-		this.editor1.addKeyListener(new KeyAdapter(){
-      public void keyPressed(KeyEvent arg0) {
-        if (arg0.getKeyCode() == KeyEvent.VK_TAB){
-        	//remove tabs and so on
-        	//this is now done by the Fucuslistener
-        	if (arg0.getModifiers ( ) == KeyEvent.SHIFT_MASK)
-        	{
-        		lastEditor ( );
-        	}
-        	else {
-        		nextEditor ( );
-        	}
-           
-        }
-     }
-  });
+//		this.editor1.addKeyListener(new KeyAdapter(){
+//      public void keyPressed(KeyEvent arg0) {
+//        if (arg0.getKeyCode() == KeyEvent.VK_TAB){
+//        	//remove tabs and so on
+//        	//this is now done by the Fucuslistener
+//        	if (arg0.getModifiers ( ) == KeyEvent.SHIFT_MASK)
+//        	{
+//        		lastEditor ( );
+//        	}
+//        	else {
+//        		nextEditor ( );
+//        	}
+//           
+//        }
+//     }
+//  });
+		this.editor1.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, null);
+		this.editor1.setFocusTraversalKeys ( KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, null );
 		
 		this.editor1.addFocusListener ( new FocusListener() {
 
 			public void focusGained ( FocusEvent e )
 			{
-				editor1.setText ( editor1.getText ( ).trim ( ));
-      	editor2.setText ( editor2.getText ( ).trim ( ));
+				//editor1.setText ( editor1.getText ( ).trim ( ));
+      	//editor2.setText ( editor2.getText ( ).trim ( ));
+				editor1.setSelectionStart ( 0 );
+				editor1.setSelectionEnd ( editor1.getText ( ).length ( ) );
 			}
 
 			public void focusLost ( FocusEvent e )
 			{
-				editor1.setText ( editor1.getText ( ).trim ( ));
-      	editor2.setText ( editor2.getText ( ).trim ( ));
+				//editor1.setText ( editor1.getText ( ).trim ( ));
+      	//editor2.setText ( editor2.getText ( ).trim ( ));
       	
 				//tell the ProofviewComponent the new model to provide the redo/undo/pong
 				((ProofViewComponent)getParent()).setModel((ProofModel)model);
@@ -465,37 +470,44 @@ public class SubTypingEnterTypes extends AbstractProofView {
 		this.editor2 = new StyledLanguageEditor ( );
 		
 		//the editors need an KeyListener to provide the next and last component change
-		this.editor2.addKeyListener(new KeyAdapter(){
-      public void keyPressed(KeyEvent arg0) {
-        if (arg0.getKeyCode() == KeyEvent.VK_TAB)
-        {
-        	//remove tabs and so on
-        	//this is now done by the FocusListenrs
-        	if (arg0.getModifiers ( ) == KeyEvent.SHIFT_MASK)
-        	{
-        		lastEditor ( );
-        	}
-        	else 
-        	{
-        		nextEditor ( );
-        	}
-        }
-     }
-  });
+//		this.editor2.addKeyListener(new KeyAdapter(){
+//      public void keyPressed(KeyEvent arg0) {
+//        if (arg0.getKeyCode() == KeyEvent.VK_TAB)
+//        {
+//        	//remove tabs and so on
+//        	//this is now done by the FocusListenrs
+//        	if (arg0.getModifiers ( ) == KeyEvent.SHIFT_MASK)
+//        	{
+//        		lastEditor ( );
+//        	}
+//        	else 
+//        	{
+//        		nextEditor ( );
+//        	}
+//        }
+//     }
+//  });
+		
+		this.editor2.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, null);
+		this.editor2.setFocusTraversalKeys ( KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, null );
 		
 		this.editor2.addFocusListener ( new FocusListener() {
 
 			public void focusGained ( FocusEvent e )
 			{
-				editor1.setText ( editor1.getText ( ).trim ( ));
-      	editor2.setText ( editor2.getText ( ).trim ( ));
+				//editor1.setText ( editor1.getText ( ).trim ( ));
+      	//editor2.setText ( editor2.getText ( ).trim ( ));
+				
+				editor2.setSelectionStart ( 0 );
+				editor2.setSelectionEnd ( editor1.getText ( ).length ( ) );
 			
 			}
 
 			public void focusLost ( FocusEvent e )
 			{
-				editor1.setText ( editor1.getText ( ).trim ( ));
-      	editor2.setText ( editor2.getText ( ).trim ( ));
+				//editor1.setText ( editor1.getText ( ).trim ( ));
+      	//editor2.setText ( editor2.getText ( ).trim ( ));
+				
 				//tell the ProofviewComponent the new model to provide the redo/undo/pong
 				((ProofViewComponent)getParent()).setModel((ProofModel)model);
 				((ProofViewComponent)getParent()).setPongStatus(!SubTypingEnterTypes.this.model.isCheating() && SubTypingEnterTypes.this.model.isFinished());
