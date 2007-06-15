@@ -185,20 +185,20 @@ public final class TypeEquationListTypeChecker
     // otherwise, we examine the first equation in the list
     MonoType left = this.first.getLeft ( ) ;
     MonoType right = this.first.getRight ( ) ;
+    // ASSUME
+    if ( pSeenTypes.contains ( this.first ) )
+    {
+      Debug.out.println (
+          "Unify - ASSUME:     " + left + " = " + right , Debug.CHRISTIAN ) ; //$NON-NLS-1$//$NON-NLS-2$
+      return this.remaining.unify ( pSeenTypes ) ;
+    }
     // TRIV
-    if ( left.equals ( right ) )
+    else if ( left.equals ( right ) )
     {
       Debug.out.println (
           "Unify - TRIV        " + left + " = " + right , Debug.CHRISTIAN ) ; //$NON-NLS-1$//$NON-NLS-2$
       // the types equal, just unify the remaining equations then
       pSeenTypes.add ( this.first ) ;
-      return this.remaining.unify ( pSeenTypes ) ;
-    }
-    // ASSUME
-    else if ( pSeenTypes.contains ( this.first ) )
-    {
-      Debug.out.println (
-          "Unify - ASSUME:     " + left + " = " + right , Debug.CHRISTIAN ) ; //$NON-NLS-1$//$NON-NLS-2$
       return this.remaining.unify ( pSeenTypes ) ;
     }
     // MU-LEFT
