@@ -1,7 +1,6 @@
 package de.unisiegen.tpml.core.typechecker ;
 
 
-import java.util.ArrayList ;
 import java.util.Collections ;
 import java.util.LinkedList ;
 import java.util.TreeSet ;
@@ -63,9 +62,9 @@ public class DefaultTypeCheckerProofContext implements TypeCheckerProofContext
    * The list of type equations that has been collected for this context and
    * will be used as input for the unification algorithm.
    * 
-   * @see TypeEquation
+   * @see TypeEquationTypeChecker
    */
-  private TypeEquationList equations = TypeEquationList.EMPTY_LIST ;
+  private TypeEquationListTypeChecker equations = TypeEquationListTypeChecker.EMPTY_LIST ;
 
 
   /**
@@ -346,7 +345,7 @@ public class DefaultTypeCheckerProofContext implements TypeCheckerProofContext
     // unify the type equations and apply the substitution to the model
     // TODO
     this.model.contextApplySubstitution ( this , this.equations
-        .unify ( new ArrayList < TypeEquation > ( ) ) ) ;
+        .unify ( new SeenTypes < TypeEquationTypeChecker > ( ) ) ) ;
     // update all super nodes
     for ( ; ; )
     {

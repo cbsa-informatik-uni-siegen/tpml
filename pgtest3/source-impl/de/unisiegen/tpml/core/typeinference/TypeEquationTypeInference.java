@@ -18,9 +18,9 @@ import de.unisiegen.tpml.core.types.UnitType;
  *
  * @author Benjamin Mies
  *
- * @see de.unisiegen.tpml.core.typechecker.TypeEquationList
+ * @see de.unisiegen.tpml.core.typechecker.TypeEquationListTypeChecker
  */
-public final class TypeEquation implements TypeFormula, PrettyPrintable,
+public final class TypeEquationTypeInference implements TypeFormula, PrettyPrintable,
 		PrettyPrintPriorities {
 
 	//
@@ -54,7 +54,7 @@ public final class TypeEquation implements TypeFormula, PrettyPrintable,
 	 * 
 	 * @throws NullPointerException if <code>left</code> or <code>right</code> is <code>null</code>.
 	 */
-	public TypeEquation ( final MonoType left, final MonoType right ) {
+	public TypeEquationTypeInference ( final MonoType left, final MonoType right ) {
 
 		if ( left == null ) {
 			throw new NullPointerException ( "left is null" ); //$NON-NLS-1$
@@ -100,14 +100,14 @@ public final class TypeEquation implements TypeFormula, PrettyPrintable,
 	 * 
 	 * @param s the {@link TypeSubstitution} to apply.
 	 * 
-	 * @return the resulting {@link TypeEquation}.
+	 * @return the resulting {@link TypeEquationTypeInference}.
 	 * 
 	 * @see de.unisiegen.tpml.core.types.Type#substitute(TypeSubstitution)
 	 */
 	public TypeFormula substitute (
 			ArrayList < DefaultTypeSubstitution > substitutions ) {
 
-		TypeEquation newEqn = this.clone ( );
+		TypeEquationTypeInference newEqn = this.clone ( );
 
 		for ( TypeSubstitution s : substitutions ) {
 			newEqn.setLeft ( newEqn.getLeft ( ).substitute ( s ) );
@@ -125,11 +125,11 @@ public final class TypeEquation implements TypeFormula, PrettyPrintable,
 	 * Clones this type equation, so that the result is an type equation equal to this
 	 * type equation.
 	 *
-	 * @return a deep clone of this object.
+	 * @return a clone of this object.
 	 * @see Object#clone()
 	 */
-	public TypeEquation clone ( ) {
-		return new TypeEquation ( this.left, this.right );
+	public TypeEquationTypeInference clone ( ) {
+		return new TypeEquationTypeInference ( this.left, this.right );
 	}
 
 	/**
@@ -153,8 +153,8 @@ public final class TypeEquation implements TypeFormula, PrettyPrintable,
 	@Override
 	public boolean equals ( final Object obj ) {
 
-		if ( obj instanceof TypeEquation ) {
-			final TypeEquation other = ( TypeEquation ) obj;
+		if ( obj instanceof TypeEquationTypeInference ) {
+			final TypeEquationTypeInference other = ( TypeEquationTypeInference ) obj;
 			return ( this.left.equals ( other.left ) && this.right
 					.equals ( other.right ) );
 		}

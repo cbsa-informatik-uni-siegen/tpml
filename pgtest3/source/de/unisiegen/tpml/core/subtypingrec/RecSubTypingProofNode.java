@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import de.unisiegen.tpml.core.ProofNode;
 import de.unisiegen.tpml.core.ProofRule;
+import de.unisiegen.tpml.core.typechecker.SeenTypes;
 import de.unisiegen.tpml.core.types.MonoType;
 
 /**
@@ -73,6 +74,6 @@ public interface RecSubTypingProofNode extends ProofNode {
 	 *
 	 * @return a list of already seen subtypes
 	 */
-	public ArrayList < DefaultSubType > getSeenTypes ( );
+	public SeenTypes < DefaultSubType > getSeenTypes ( );
 
 }

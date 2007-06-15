@@ -1,7 +1,7 @@
 package de.unisiegen.tpml.core.subtyping;
 
 import de.unisiegen.tpml.core.subtypingrec.RecSubTypingProofNode;
-import de.unisiegen.tpml.core.typeinference.TypeEquation;
+import de.unisiegen.tpml.core.typeinference.TypeEquationTypeInference;
 import de.unisiegen.tpml.core.types.MonoType;
 
 /**
@@ -26,7 +26,7 @@ public final class SubTypingException extends Exception {
 	//
 
 	/**
-	 * The {@link TypeEquation} that failed to unify.
+	 * The {@link TypeEquationTypeInference} that failed to unify.
 	 * 
 	 * @see #getTau1()
 	 * @see #getTau2()

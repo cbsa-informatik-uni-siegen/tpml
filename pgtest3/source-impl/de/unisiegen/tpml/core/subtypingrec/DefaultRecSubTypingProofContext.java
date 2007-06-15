@@ -5,6 +5,7 @@ import java.util.LinkedList;
 
 import de.unisiegen.tpml.core.ProofRuleException;
 import de.unisiegen.tpml.core.subtyping.SubTypingException;
+import de.unisiegen.tpml.core.typechecker.SeenTypes;
 import de.unisiegen.tpml.core.types.MonoType;
 
 /**
@@ -27,7 +28,7 @@ public class DefaultRecSubTypingProofContext implements
 	@SuppressWarnings ( "unused" )
 	private DefaultRecSubTypingProofNode node;
 
-	private ArrayList < DefaultSubType > seenTypes = new ArrayList < DefaultSubType > ( );
+	private SeenTypes < DefaultSubType > seenTypes = new SeenTypes < DefaultSubType > ( );
 
 	/**
 	 * The list of redoable actions on the proof model.
@@ -104,8 +105,7 @@ public class DefaultRecSubTypingProofContext implements
 	 */
 	public void addSeenType ( MonoType type, MonoType type2 ) {
 		DefaultSubType subtype = new DefaultSubType ( type, type2 );
-		seenTypes.remove ( subtype );
-		seenTypes.add ( 0, subtype );
+		seenTypes.add ( subtype );
 	}
 
 	/**

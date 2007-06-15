@@ -146,7 +146,7 @@ public class TypeJudgement implements TypeFormula {
 	 * 
 	 * @return the string representation.
 	 * 
-	 * @see TypeEquation#toString()
+	 * @see TypeEquationTypeInference#toString()
 	 * @see java.lang.Object#toString()
 	 */
 	@Override

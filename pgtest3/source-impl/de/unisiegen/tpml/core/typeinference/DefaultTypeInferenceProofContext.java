@@ -73,9 +73,9 @@ public class DefaultTypeInferenceProofContext implements
 	/**
 	 * The list of type equations that has been collected for this context
 	 * 
-	 * @see typeinference.TypeEquation
+	 * @see typeinference.TypeEquationTypeInference
 	 */
-	private final ArrayList < TypeEquation > equations = new ArrayList < TypeEquation > ( );
+	private final ArrayList < TypeEquationTypeInference > equations = new ArrayList < TypeEquationTypeInference > ( );
 
 	/**
 	 * The list of all type substitutions that has been collected for this context
@@ -158,7 +158,7 @@ public class DefaultTypeInferenceProofContext implements
 	 */
 	public void addEquation ( final MonoType left, final MonoType right ) {
 
-		final TypeEquation eqn = new TypeEquation ( left, right );
+		final TypeEquationTypeInference eqn = new TypeEquationTypeInference ( left, right );
 		//equations = equations.extend(left, right);
 		equations.add ( 0, eqn );
 	}
@@ -328,7 +328,7 @@ public class DefaultTypeInferenceProofContext implements
 		} else if ( rule.toString ( ).equals ( "UNIFY" ) ) { //$NON-NLS-1$
 
 			typeNode = new DefaultTypeEquationProofNode ( formula.getEnvironment ( ),
-					new Unify ( ), formula.getType ( ), ( TypeEquation ) formula, mode );
+					new Unify ( ), formula.getType ( ), ( TypeEquationTypeInference ) formula, mode );
 
 		} else {
 
@@ -363,7 +363,7 @@ public class DefaultTypeInferenceProofContext implements
 		}
 
 		for ( TypeFormula form : node.getAllFormulas ( ) ) {
-			if ( form instanceof TypeEquation )
+			if ( form instanceof TypeEquationTypeInference )
 				sortedFormulas.add ( form );
 		}
 
@@ -374,7 +374,7 @@ public class DefaultTypeInferenceProofContext implements
 					( DefaultTypeEnvironment ) child.getEnvironment ( ), child
 							.getExpression ( ), child.getType ( ) );
 			for ( int j = 0; j < sortedFormulas.size ( ); j++ ) {
-				if ( sortedFormulas.get ( j ) instanceof TypeEquation
+				if ( sortedFormulas.get ( j ) instanceof TypeEquationTypeInference
 						|| j == sortedFormulas.size ( ) - 1 ) {
 					sortedFormulas.add ( j, insert );
 					break;
@@ -382,7 +382,7 @@ public class DefaultTypeInferenceProofContext implements
 			}
 		}
 		for ( int j = 0; j < sortedFormulas.size ( ); j++ ) {
-			if ( sortedFormulas.get ( j ) instanceof TypeEquation
+			if ( sortedFormulas.get ( j ) instanceof TypeEquationTypeInference
 					|| j == sortedFormulas.size ( ) - 1 ) {
 				sortedFormulas.addAll ( j, equations );
 				break;

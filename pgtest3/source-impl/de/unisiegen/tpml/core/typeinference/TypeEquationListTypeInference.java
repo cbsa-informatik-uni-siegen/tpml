@@ -7,9 +7,9 @@ import de.unisiegen.tpml.core.types.MonoType;
  *
  * @author Benjamin Mies
  *
- * @see de.unisiegen.tpml.core.typeinference.TypeEquation
+ * @see de.unisiegen.tpml.core.typeinference.TypeEquationTypeInference
  */
-public final class TypeEquationList {
+public final class TypeEquationListTypeInference {
 
 	//
 	// Constants
@@ -18,9 +18,9 @@ public final class TypeEquationList {
 	/**
 	 * The empty equation list.
 	 * 
-	 * @see #TypeEquationList()
+	 * @see #TypeEquationListTypeInference()
 	 */
-	public static final TypeEquationList EMPTY_LIST = new TypeEquationList ( );
+	public static final TypeEquationListTypeInference EMPTY_LIST = new TypeEquationListTypeInference ( );
 
 	//
 	// Attributes
@@ -29,12 +29,12 @@ public final class TypeEquationList {
 	/**
 	 * The first equation in the list.
 	 */
-	private TypeEquation first;
+	private TypeEquationTypeInference first;
 
 	/**
 	 * The remaining equations or <code>null</code>.
 	 */
-	private TypeEquationList remaining;
+	private TypeEquationListTypeInference remaining;
 
 	//
 	// Constructors (private)
@@ -45,22 +45,22 @@ public final class TypeEquationList {
 	 * 
 	 * @see #EMPTY_LIST
 	 */
-	private TypeEquationList ( ) {
+	private TypeEquationListTypeInference ( ) {
 
 		super ( );
 	}
 
 	/**
-	 * Allocates a new equation list, which basicly extends <code>remaining</code> with a new {@link TypeEquation}
+	 * Allocates a new equation list, which basicly extends <code>remaining</code> with a new {@link TypeEquationTypeInference}
 	 * <code>first</code>.
 	 * 
-	 * @param first the new {@link TypeEquation}.
-	 * @param remaining an existing {@link TypeEquationList}
+	 * @param first the new {@link TypeEquationTypeInference}.
+	 * @param remaining an existing {@link TypeEquationListTypeInference}
 	 * 
 	 * @throws NullPointerException if <code>first</code> or <code>remaining</code> is <code>null</code>.
 	 */
-	private TypeEquationList ( final TypeEquation first,
-			final TypeEquationList remaining ) {
+	private TypeEquationListTypeInference ( final TypeEquationTypeInference first,
+			final TypeEquationListTypeInference remaining ) {
 
 		if ( first == null ) {
 			throw new NullPointerException ( "first is null" ); //$NON-NLS-1$
@@ -77,19 +77,19 @@ public final class TypeEquationList {
 	//
 
 	/**
-	 * Allocates a new {@link TypeEquationList}, which extends this equation list with a new {@link TypeEquation}
+	 * Allocates a new {@link TypeEquationListTypeInference}, which extends this equation list with a new {@link TypeEquationTypeInference}
 	 * for <code>left</code> and <code>right</code>.
 	 * 
 	 * @param left the left side of the new equation.
 	 * @param right the right side of the new equation.
 	 * 
-	 * @return the extended {@link TypeEquationList}.
+	 * @return the extended {@link TypeEquationListTypeInference}.
 	 * 
 	 * @throws NullPointerException if <code>left</code> or <code>right</code> is <code>null</code>.
 	 */
-	public TypeEquationList extend ( final MonoType left, final MonoType right ) {
+	public TypeEquationListTypeInference extend ( final MonoType left, final MonoType right ) {
 
-		return new TypeEquationList ( new TypeEquation ( left, right ), this );
+		return new TypeEquationListTypeInference ( new TypeEquationTypeInference ( left, right ), this );
 	}
 
 	/**
@@ -123,7 +123,7 @@ public final class TypeEquationList {
 	 * 
 	 * @return the string representation.
 	 * 
-	 * @see TypeEquation#toString()
+	 * @see TypeEquationTypeInference#toString()
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
@@ -131,7 +131,7 @@ public final class TypeEquationList {
 
 		final StringBuilder builder = new StringBuilder ( 128 );
 		builder.append ( '{' );
-		for ( TypeEquationList list = this; list != EMPTY_LIST; list = list.remaining ) {
+		for ( TypeEquationListTypeInference list = this; list != EMPTY_LIST; list = list.remaining ) {
 			if ( list != this ) {
 				builder.append ( ", " ); //$NON-NLS-1$
 			}
@@ -150,7 +150,7 @@ public final class TypeEquationList {
 	 * 
 	 * @return TypeEquation first
 	 */
-	public TypeEquation getFirst ( ) {
+	public TypeEquationTypeInference getFirst ( ) {
 
 		return this.first;
 	}
@@ -161,7 +161,7 @@ public final class TypeEquationList {
 	 *
 	 * @return TypeEquationList remaining
 	 */
-	public TypeEquationList getRemaining ( ) {
+	public TypeEquationListTypeInference getRemaining ( ) {
 
 		return this.remaining;
 	}

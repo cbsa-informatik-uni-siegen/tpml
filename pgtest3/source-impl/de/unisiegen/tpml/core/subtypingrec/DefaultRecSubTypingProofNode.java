@@ -6,6 +6,7 @@ import de.unisiegen.tpml.core.AbstractProofNode;
 import de.unisiegen.tpml.core.subtyping.ProofStep;
 import de.unisiegen.tpml.core.subtyping.SubTypingProofNode;
 import de.unisiegen.tpml.core.subtyping.SubTypingProofRule;
+import de.unisiegen.tpml.core.typechecker.SeenTypes;
 import de.unisiegen.tpml.core.types.MonoType;
 import de.unisiegen.tpml.core.util.Debug;
 
@@ -23,7 +24,7 @@ public class DefaultRecSubTypingProofNode extends AbstractProofNode implements
 
 	private DefaultSubType type;
 
-	private ArrayList < DefaultSubType > seenTypes;
+	private SeenTypes < DefaultSubType > seenTypes;
 
 	/**
 	 * list of proof steps of this node
@@ -38,7 +39,7 @@ public class DefaultRecSubTypingProofNode extends AbstractProofNode implements
 	 * 
 	 */
 	public DefaultRecSubTypingProofNode ( MonoType pType, MonoType pType2,
-			ArrayList < DefaultSubType > pSeenTypes ) {
+      SeenTypes < DefaultSubType > pSeenTypes ) {
 		type = new DefaultSubType ( pType, pType2 );
 		seenTypes = pSeenTypes;
 	}
@@ -206,7 +207,7 @@ public class DefaultRecSubTypingProofNode extends AbstractProofNode implements
 	 * 
 	 * @see de.unisiegen.tpml.core.subtypingrec.RecSubTypingProofNode#getSeenTypes()
 	 */
-	public ArrayList < DefaultSubType > getSeenTypes ( ) {
+	public SeenTypes < DefaultSubType > getSeenTypes ( ) {
 		return this.seenTypes;
 	}
 

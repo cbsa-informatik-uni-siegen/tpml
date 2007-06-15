@@ -12,7 +12,7 @@ import de.unisiegen.tpml.core.types.Type;
  * @author Benedikt Meurer
  * @version $Rev: 1194 $
  * 
- * @see de.unisiegen.tpml.core.typechecker.TypeEquationList#unify()
+ * @see de.unisiegen.tpml.core.typechecker.TypeEquationListTypeChecker#unify()
  */
 public final class UnifyException extends Exception {
 
@@ -30,12 +30,12 @@ public final class UnifyException extends Exception {
 	//
 
 	/**
-	 * The {@link TypeEquation} that failed to unify.
+	 * The {@link TypeEquationTypeInference} that failed to unify.
 	 * 
 	 * @see #getTau1()
 	 * @see #getTau2()
 	 */
-	private TypeEquation equation;
+	private TypeEquationTypeInference equation;
 
 	//
 	// Constructor (package)
@@ -43,11 +43,11 @@ public final class UnifyException extends Exception {
 
 	/**
 	 * Allocates a new {@link UnifyException} object to indicate that the unification of the
-	 * {@link TypeEquation} <code>equationn</code> failed.
+	 * {@link TypeEquationTypeInference} <code>equationn</code> failed.
 	 * 
-	 * @param equation the {@link TypeEquation} that could not be unified.
+	 * @param equation the {@link TypeEquationTypeInference} that could not be unified.
 	 */
-	public UnifyException ( final TypeEquation equation ) {
+	public UnifyException ( final TypeEquationTypeInference equation ) {
 
 		super ( MessageFormat.format ( Messages
 				.getString ( "UnificationException.0" ), equation.getLeft ( ), equation.getRight ( ) ) ); //$NON-NLS-1$

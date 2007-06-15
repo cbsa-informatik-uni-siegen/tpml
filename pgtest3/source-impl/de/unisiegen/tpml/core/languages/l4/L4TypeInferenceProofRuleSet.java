@@ -8,7 +8,7 @@ import de.unisiegen.tpml.core.typechecker.TypeCheckerProofContext;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode;
 import de.unisiegen.tpml.core.typeinference.DefaultTypeEquationProofNode;
 import de.unisiegen.tpml.core.typeinference.DefaultTypeInferenceProofContext;
-import de.unisiegen.tpml.core.typeinference.TypeEquation;
+import de.unisiegen.tpml.core.typeinference.TypeEquationTypeInference;
 import de.unisiegen.tpml.core.typeinference.UnifyException;
 import de.unisiegen.tpml.core.types.ArrowType;
 import de.unisiegen.tpml.core.types.ListType;
@@ -89,7 +89,7 @@ public class L4TypeInferenceProofRuleSet extends L4TypeCheckerProofRuleSet {
     // convert in needed types
     DefaultTypeInferenceProofContext context = ( DefaultTypeInferenceProofContext ) pContext ;
     DefaultTypeEquationProofNode node = ( DefaultTypeEquationProofNode ) pNode ;
-    TypeEquation eqn = node.getEquation ( ) ;
+    TypeEquationTypeInference eqn = node.getEquation ( ) ;
     unify ( context , node , eqn ) ;
   }
 
@@ -105,7 +105,7 @@ public class L4TypeInferenceProofRuleSet extends L4TypeCheckerProofRuleSet {
    * @throws UnifyException
    */
   public void unify ( DefaultTypeInferenceProofContext context ,
-      DefaultTypeEquationProofNode node , TypeEquation eqn )
+      DefaultTypeEquationProofNode node , TypeEquationTypeInference eqn )
       throws UnifyException
   {
     // empty equation is not longer possible so this rule is not implemented
@@ -139,11 +139,11 @@ public class L4TypeInferenceProofRuleSet extends L4TypeCheckerProofRuleSet {
       {
         // advanced mode is choosen
         // unify tau1 = tau1', tau2 = tau2'
-        unify ( context , node , new TypeEquation ( taul.getTau2 ( ) , taur
+        unify ( context , node , new TypeEquationTypeInference ( taul.getTau2 ( ) , taur
             .getTau2 ( ) ) ) ;
-        TypeEquation eqn2 = new TypeEquation ( taul.getTau1 ( ) , taur
+        TypeEquationTypeInference eqn2 = new TypeEquationTypeInference ( taul.getTau1 ( ) , taur
             .getTau1 ( ) ) ;
-        eqn2 = ( TypeEquation ) eqn2.substitute ( context.getSubstitution ( ) ) ;
+        eqn2 = ( TypeEquationTypeInference ) eqn2.substitute ( context.getSubstitution ( ) ) ;
         unify ( context , node , eqn2 ) ;
       }
       else

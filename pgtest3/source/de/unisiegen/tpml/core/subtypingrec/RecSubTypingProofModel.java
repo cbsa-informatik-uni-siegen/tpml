@@ -18,6 +18,7 @@ import de.unisiegen.tpml.core.languages.l2o.L2OLanguage;
 import de.unisiegen.tpml.core.subtyping.ProofStep;
 import de.unisiegen.tpml.core.subtyping.SubTypingException;
 import de.unisiegen.tpml.core.typechecker.DefaultTypeCheckerProofContext;
+import de.unisiegen.tpml.core.typechecker.SeenTypes;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofRule;
 import de.unisiegen.tpml.core.typeinference.DefaultTypeInferenceProofContext;
@@ -73,7 +74,7 @@ public class RecSubTypingProofModel extends AbstractProofModel {
 	public RecSubTypingProofModel ( MonoType type, MonoType type2,
 			AbstractRecSubTypingProofRuleSet ruleSet, boolean mode ) {
 		super ( new DefaultRecSubTypingProofNode ( type, type2,
-				new ArrayList < DefaultSubType > ( ) ), ruleSet );
+				new SeenTypes < DefaultSubType > ( ) ), ruleSet );
 		this.ruleSet = ruleSet;
 		this.mode = mode;
 	}
@@ -269,7 +270,7 @@ public class RecSubTypingProofModel extends AbstractProofModel {
 	 */
 	void contextAddProofNode ( final DefaultRecSubTypingProofContext context,
 			final RecSubTypingProofNode pNode, final MonoType type,
-			final MonoType type2, final ArrayList < DefaultSubType > seenTypes ) {
+			final MonoType type2, final SeenTypes < DefaultSubType > seenTypes ) {
 
 		final DefaultRecSubTypingProofNode node = ( DefaultRecSubTypingProofNode ) pNode;
 
@@ -352,7 +353,7 @@ public class RecSubTypingProofModel extends AbstractProofModel {
 	 * @param seenTypes list of the already seen subtypes
 	 */
 	public void setRoot ( MonoType type, MonoType type2,
-			ArrayList < DefaultSubType > seenTypes ) {
+			SeenTypes < DefaultSubType > seenTypes ) {
 		this.root = new DefaultRecSubTypingProofNode ( type, type2, seenTypes );
 	}
 

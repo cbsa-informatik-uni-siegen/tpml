@@ -26,7 +26,7 @@ public interface TypeCheckerProofContext {
    * @param left the monomorphic type on the left side.
    * @param right the monomorphic type on the right side.
    * 
-   * @see TypeEquation
+   * @see TypeEquationTypeChecker
    */
   public void addEquation(MonoType left, MonoType right);
   

@@ -31,7 +31,7 @@ public class DefaultTypeEquationProofNode extends DefaultTypeCheckerProofNode
 	/**
 	 * list of collected type equations
 	 */
-	private TypeEquation equation;
+	private TypeEquationTypeInference equation;
 
 	private boolean mode;
 
@@ -51,7 +51,7 @@ public class DefaultTypeEquationProofNode extends DefaultTypeCheckerProofNode
 	 */
 	public DefaultTypeEquationProofNode ( final TypeEnvironment environment,
 			final Expression expression, final MonoType type,
-			final TypeEquation eqns, boolean pMode ) {
+			final TypeEquationTypeInference eqns, boolean pMode ) {
 
 		super ( environment, expression, type );
 		equation = eqns;
@@ -77,7 +77,7 @@ public class DefaultTypeEquationProofNode extends DefaultTypeCheckerProofNode
 	 * get the type equation list of this node
 	 * @return equations TypeEquationList equations
 	 */
-	public TypeEquation getEquation ( ) {
+	public TypeEquationTypeInference getEquation ( ) {
 
 		return this.equation;
 	}

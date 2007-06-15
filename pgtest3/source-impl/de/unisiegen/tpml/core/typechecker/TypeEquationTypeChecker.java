@@ -10,9 +10,9 @@ import de.unisiegen.tpml.core.types.MonoType ;
  * @author Benedikt Meurer
  * @author Christian Fehler
  * @version $Rev:838 $
- * @see de.unisiegen.tpml.core.typechecker.TypeEquationList
+ * @see de.unisiegen.tpml.core.typechecker.TypeEquationListTypeChecker
  */
-public final class TypeEquation
+public final class TypeEquationTypeChecker
 {
   /**
    * The monomorphic type on the left side.
@@ -39,7 +39,7 @@ public final class TypeEquation
    * @throws NullPointerException if <code>left</code> or <code>right</code>
    *           is <code>null</code>.
    */
-  public TypeEquation ( MonoType pLeft , MonoType pRight )
+  public TypeEquationTypeChecker ( MonoType pLeft , MonoType pRight )
   {
     if ( pLeft == null )
     {
@@ -62,9 +62,9 @@ public final class TypeEquation
   @ Override
   public boolean equals ( Object obj )
   {
-    if ( obj instanceof TypeEquation )
+    if ( obj instanceof TypeEquationTypeChecker )
     {
-      TypeEquation other = ( TypeEquation ) obj ;
+      TypeEquationTypeChecker other = ( TypeEquationTypeChecker ) obj ;
       return ( this.left.equals ( other.left ) && this.right
           .equals ( other.right ) ) ;
     }
@@ -111,13 +111,13 @@ public final class TypeEquation
    * sides of the equation and returns the resulting equation.
    * 
    * @param s the {@link TypeSubstitution} to apply.
-   * @return the resulting {@link TypeEquation}.
+   * @return the resulting {@link TypeEquationTypeChecker}.
    * @see de.unisiegen.tpml.core.types.Type#substitute(TypeSubstitution)
    */
-  public TypeEquation substitute ( TypeSubstitution s )
+  public TypeEquationTypeChecker substitute ( TypeSubstitution s )
   {
     // apply the substitution to the left and the right side
-    return new TypeEquation ( this.left.substitute ( s ) , this.right
+    return new TypeEquationTypeChecker ( this.left.substitute ( s ) , this.right
         .substitute ( s ) ) ;
   }
 
