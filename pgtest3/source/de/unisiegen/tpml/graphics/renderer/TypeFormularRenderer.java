@@ -7,8 +7,6 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Enumeration;
 
-import javax.sound.sampled.LineEvent;
-
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.typechecker.TypeEnvironment;
 import de.unisiegen.tpml.core.typeinference.TypeEquation;
@@ -16,8 +14,6 @@ import de.unisiegen.tpml.core.typeinference.TypeFormula;
 import de.unisiegen.tpml.core.typeinference.TypeJudgement;
 import de.unisiegen.tpml.core.types.Type;
 import de.unisiegen.tpml.graphics.components.ShowBonds;
-//TODO Renderer als Klassenvariable einführen und die Höhe und breite in der
-//getNeededSize auch mit deren Größen berechnen
 
 /**
  * Subclass of the {@link AbstractRenderer} providing the rendering
@@ -28,16 +24,15 @@ import de.unisiegen.tpml.graphics.components.ShowBonds;
  */
 public class TypeFormularRenderer extends AbstractRenderer {
 	
+	/**
+	 * the space between two elements of the typeformulalist
+	 */
 	private static final int spaceBetweenLines = AbstractRenderer.getAbsoluteHeight() / 3;
 	
 	/**
 	 * the Renderer for the environments
 	 */
 	private EnvironmentRenderer environmentRenderer;
-	/**
-	 * the Renderer for the expressions and...
-	 */
-	//private PrettyStringRenderer prettyStringrenderer;
 	
 	/**
 	 * the List of Strings for the tooltip
@@ -49,10 +44,19 @@ public class TypeFormularRenderer extends AbstractRenderer {
 	 */
 	private ArrayList <Rectangle> typeFprmularPostitions;
 	
+	/**
+	 * the typeequations
+	 */
 	private ArrayList <Integer> typeEquations;
 	
-	private int remebmbertoChange=-1; 
+	/**
+	 * remembers the entry to swapp by . -1 if no entry is remembered
+	 */
+	private int remebmberToSwapp=-1; 
 	
+	/**
+	 * provides a rectangle arround the entry which should be swapped
+	 */
 	private Rectangle markedArea;
 	
 	/**
@@ -223,33 +227,43 @@ public class TypeFormularRenderer extends AbstractRenderer {
 		return this.typeFprmularPostitions;
 	}
 	
+	/**
+	 * mars an entry and remebers it to swapp it with the second marked one
+	 *
+	 * @param x				discribes the rect to draw
+	 * @param y				discribes the rect to draw
+	 * @param width		discribes the rect to draw
+	 * @param height	discribes the rect to draw
+	 * @param gc			the graphicCOmponent to draw
+	 * @param i				the index of the typeeEquation to remember
+	 */
 	public void markArea (int x, int y, int width, int height, Graphics gc, int i)
 	{
 		gc.setColor(Color.BLUE);
 		gc.drawRect(x, y-height, width, height);
 		int toChange =  this.typeEquations.get(i).intValue();
-		if (remebmbertoChange == toChange)
+		if (remebmberToSwapp == toChange)
 		{
 			testAusgabe("Die sind gleich");
-			remebmbertoChange = -1;
+			remebmberToSwapp = -1;
 			markedArea = null;
 		}
-		else if (remebmbertoChange == -1)
+		else if (remebmberToSwapp == -1)
 		{
-			remebmbertoChange = toChange;
+			remebmberToSwapp = toChange;
 			testAusgabe("neuer Wert gemerkt...");
 			markedArea = new Rectangle (x, y-height, width, height);
 		}
 		else
 		{
-			testAusgabe("Tauschen: "+remebmbertoChange + " mit "+toChange);
-			TypeFormula firstElement = typeFormulaList.get(remebmbertoChange);
+			testAusgabe("Tauschen: "+remebmberToSwapp + " mit "+toChange);
+			TypeFormula firstElement = typeFormulaList.get(remebmberToSwapp);
 			TypeFormula secondElement = typeFormulaList.get(toChange);
-			typeFormulaList.remove(remebmbertoChange);
-			typeFormulaList.add(remebmbertoChange, secondElement);
+			typeFormulaList.remove(remebmberToSwapp);
+			typeFormulaList.add(remebmberToSwapp, secondElement);
 			typeFormulaList.remove(toChange);
 			typeFormulaList.add(toChange, firstElement);
-			remebmbertoChange = -1;
+			remebmberToSwapp = -1;
 			markedArea = null;
 			
 			
@@ -405,18 +419,11 @@ public class TypeFormularRenderer extends AbstractRenderer {
 					testAusgabe("Die Maximale Breite ist: "+lineWidthMax+" ("+lineWidthEnvironment+", "+lineWidthExpression+", "+lineWidthType+", "+lineWidthTypeFormula+")");
 					
 					result.width = lineWidthMaxAll;
-	//				testAusgabe("Die Momentane Breite ist: " + result.width);
-	//				testAusgabe("Die aktuelle Zeile ist: " + lineWidth);
-	//				if (lineWidth > result.width)
-	//				{
-	//					result.width = lineWidth;
-	//				}
-	//				testAusgabe("Jetzt ist die Breite: " + result.width);
-	
 				}
-					// result.width += AbstractRenderer.expFontMetrics.stringWidth(TypeFormularRenderer.collapsString);
 	
 			}
+			//TODO nur zum testen, damit man sieht, wenn er wieder etwas zu tief verschiebt...
+			result.height += AbstractRenderer.getAbsoluteHeight();
 			
 			return result;
 		}
@@ -435,10 +442,6 @@ public class TypeFormularRenderer extends AbstractRenderer {
 	 */
 	public void renderer (int x, int y, int width, int height, Graphics gc) {
 		
-		//
-		// just render the brackets around the environment
-		
-		//TODO was soll denn das hier nochmal
 		gc.setColor(this.alternativeColor != null ? this.alternativeColor : Color.BLACK);
 		
 		gc.drawRect(x, y, width, height-1);
@@ -521,15 +524,14 @@ public class TypeFormularRenderer extends AbstractRenderer {
 					//Wir wollen nicht, dass er hier umbricht, das wäre doof
 					Dimension typeEquationSize = typeEquationStringrenderer.getNeededSize(Integer.MAX_VALUE);
 					ShowBonds bound = new ShowBonds();
-					//TODO Wenn es keine Expression ist, dann muss auch was gehen
 					
 					bound.setExpression(null);
 					bound.setType(t.getType());
 					//TODO wir wollen hier den haben, den auch die Compoundexpression hat
 					//ToListenForMouseContainer toListenForM = new ToListenForMouseContainer();
 					typeEquationStringrenderer.render(posX, posY-(typeEquationSize.height / 2) - fontAscent / 2, typeEquationSize.width, typeEquationSize.height, gc, bound, toListenForM);
-					//TODO Merken wir uns mal den Bereich:
-					this.typeFprmularPostitions.add(new Rectangle(posX, posY, typeEquationSize.width, typeEquationSize.height));
+					
+					this.typeFprmularPostitions.add(new Rectangle(posX, posY-fontAscent, typeEquationSize.width, typeEquationSize.height));
 					this.typeEquations.add(i);
 					posX += typeEquationSize.width;
 					
@@ -541,7 +543,6 @@ public class TypeFormularRenderer extends AbstractRenderer {
 						posX = x+einrücken;
 						//posY += AbstractRenderer.fontHeight;
 						posY += typeEquationSize.height;
-//					TODO test einen extrazeiel frei lassen
 						posY += spaceBetweenLines;
 					}
 				}
