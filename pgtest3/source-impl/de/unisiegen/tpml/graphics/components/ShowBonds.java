@@ -6,6 +6,7 @@ import java.util.ArrayList ;
 import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.expressions.Identifier ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyAnnotation ;
+import de.unisiegen.tpml.core.typeinference.TypeEquationTypeInference ;
 import de.unisiegen.tpml.core.types.MonoType ;
 import de.unisiegen.tpml.core.types.Type ;
 import de.unisiegen.tpml.core.types.TypeName ;
@@ -62,6 +63,12 @@ public final class ShowBonds
 
 
   /**
+   * The current loaded {@link TypeEquationTypeInference}.
+   */
+  private TypeEquationTypeInference typeEquationTypeInference = null ;
+
+
+  /**
    * List of all Bonds in loaded {link Expression}.
    */
   private ArrayList < Bonds > result = null ;
@@ -114,6 +121,11 @@ public final class ShowBonds
               current = this.type.toPrettyString ( ).getAnnotationForPrintable (
                   id [ i ] ) ;
             }
+            else if ( this.typeEquationTypeInference != null )
+            {
+              current = this.typeEquationTypeInference.toPrettyString ( )
+                  .getAnnotationForPrintable ( id [ i ] ) ;
+            }
             else
             {
               return ;
@@ -133,6 +145,13 @@ public final class ShowBonds
                 {
                   bonds.addPrettyAnnotation ( this.type.toPrettyString ( )
                       .getAnnotationForPrintable ( boundId ) ) ;
+                }
+                else if ( this.typeEquationTypeInference != null )
+                {
+                  bonds
+                      .addPrettyAnnotation ( this.typeEquationTypeInference
+                          .toPrettyString ( ).getAnnotationForPrintable (
+                              boundId ) ) ;
                 }
                 else
                 {
@@ -264,6 +283,11 @@ public final class ShowBonds
               current = this.type.toPrettyString ( ).getAnnotationForPrintable (
                   typeNames [ i ] ) ;
             }
+            else if ( this.typeEquationTypeInference != null )
+            {
+              current = this.typeEquationTypeInference.toPrettyString ( )
+                  .getAnnotationForPrintable ( typeNames [ i ] ) ;
+            }
             else
             {
               return ;
@@ -283,6 +307,12 @@ public final class ShowBonds
                 {
                   bonds.addPrettyAnnotation ( this.type.toPrettyString ( )
                       .getAnnotationForPrintable ( boundTypeNames ) ) ;
+                }
+                else if ( this.typeEquationTypeInference != null )
+                {
+                  bonds.addPrettyAnnotation ( this.typeEquationTypeInference
+                      .toPrettyString ( ).getAnnotationForPrintable (
+                          boundTypeNames ) ) ;
                 }
                 else
                 {
@@ -346,6 +376,11 @@ public final class ShowBonds
       {
         check ( this.type ) ;
       }
+      else if ( this.typeEquationTypeInference != null )
+      {
+        check ( this.typeEquationTypeInference.getLeft ( ) ) ;
+        check ( this.typeEquationTypeInference.getRight ( ) ) ;
+      }
     }
     return this.result ;
   }
@@ -370,5 +405,39 @@ public final class ShowBonds
   public final void setType ( Type pType )
   {
     this.type = pType ;
+  }
+
+
+  /**
+   * Set the {@link TypeEquationTypeInference} to get the bonds.
+   * 
+   * @param pTypeEquationTypeInference The input
+   *          {@link TypeEquationTypeInference}.
+   */
+  public final void setTypeEquationTypeInference (
+      TypeEquationTypeInference pTypeEquationTypeInference )
+  {
+    this.typeEquationTypeInference = pTypeEquationTypeInference ;
+  }
+  
+  
+  /**
+   * {@inheritDoc} Mainly useful for debugging purposes.
+   * 
+   * @see java.lang.Object#toString()
+   */
+  @ Override
+  public String toString ( )
+  {
+    if ( this.result == null)
+    {
+      return "" ; //$NON-NLS-1$
+    }
+    String s = "" ; //$NON-NLS-1$
+    for ( Bonds item : this.result )
+    {
+      s += item + "\n";  //$NON-NLS-1$
+    }
+    return s ;
   }
 }

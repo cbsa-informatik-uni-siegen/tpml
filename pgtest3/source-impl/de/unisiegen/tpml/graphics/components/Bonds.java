@@ -89,4 +89,21 @@ public final class Bonds
   {
     return this.startOffset ;
   }
+
+
+  /**
+   * {@inheritDoc} Mainly useful for debugging purposes.
+   * 
+   * @see java.lang.Object#toString()
+   */
+  @ Override
+  public String toString ( )
+  {
+    String result = this.startOffset + "-" + this.endOffset ; //$NON-NLS-1$
+    for ( PrettyAnnotation item : this.prettyAnnotation )
+    {
+      result += "; " + item.getStartOffset ( ) + "-" + item.getEndOffset ( ) ; //$NON-NLS-1$ //$NON-NLS-2$
+    }
+    return result ;
+  }
 }

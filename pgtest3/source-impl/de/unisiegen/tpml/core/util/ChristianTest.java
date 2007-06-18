@@ -2,14 +2,37 @@ package de.unisiegen.tpml.core.util ;
 
 
 import de.unisiegen.tpml.core.expressions.Identifier ;
-import de.unisiegen.tpml.core.types.* ;
+import de.unisiegen.tpml.core.typeinference.TypeEquationTypeInference ;
+import de.unisiegen.tpml.core.types.ArrowType ;
+import de.unisiegen.tpml.core.types.BooleanType ;
+import de.unisiegen.tpml.core.types.IntegerType ;
+import de.unisiegen.tpml.core.types.MonoType ;
+import de.unisiegen.tpml.core.types.RecType ;
+import de.unisiegen.tpml.core.types.RowType ;
+import de.unisiegen.tpml.core.types.TypeName ;
+import de.unisiegen.tpml.core.types.TypeVariable ;
+import de.unisiegen.tpml.graphics.components.ShowBonds ;
 
 
 public class ChristianTest
 {
   public static void main ( String [ ] pArguments )
   {
-    rowTypeRemainingRowTypeUnion();
+    testShowBounds ( ) ;
+  }
+
+
+  public static void testShowBounds ( )
+  {
+    TypeEquationTypeInference t = new TypeEquationTypeInference ( new RecType (
+        new TypeName ( "t" ) , new ArrowType ( new IntegerType ( ) ,
+            new TypeName ( "t" ) ) ) , new RecType ( new TypeName ( "s" ) ,
+        new ArrowType ( new IntegerType ( ) , new TypeName ( "s" ) ) ) ) ;
+    System.out.println ( t ) ;
+    ShowBonds s = new ShowBonds ( ) ;
+    s.setTypeEquationTypeInference ( t ) ;
+    s.getAnnotations ( ) ;
+    System.out.println ( s ) ;
   }
 
 
