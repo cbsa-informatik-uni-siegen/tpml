@@ -59,6 +59,24 @@ public class SeenTypes < E > implements Iterable < E >
   /**
    * TODO
    * 
+   * @return TODO
+   * @see Object#clone()
+   */
+  @ Override
+  public SeenTypes < E > clone ( )
+  {
+    SeenTypes < E > newSeenTypes = new SeenTypes < E > ( ) ;
+    for ( E item : this.list )
+    {
+      newSeenTypes.add ( item ) ;
+    }
+    return newSeenTypes ;
+  }
+
+
+  /**
+   * TODO
+   * 
    * @param pItem
    * @return TODO
    */
@@ -77,6 +95,17 @@ public class SeenTypes < E > implements Iterable < E >
   public Iterator < E > iterator ( )
   {
     return this.list.iterator ( ) ;
+  }
+
+
+  /**
+   * TODO
+   * 
+   * @return TODO
+   */
+  public int size ( )
+  {
+    return this.list.size ( ) ;
   }
 
 
