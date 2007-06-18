@@ -182,14 +182,13 @@ public final class TypeEquationListTypeChecker
     {
       return DefaultTypeSubstitution.EMPTY_SUBSTITUTION ;
     }
-    // otherwise, we examine the first equation in the list
     MonoType left = this.first.getLeft ( ) ;
     MonoType right = this.first.getRight ( ) ;
     // ASSUME
     if ( pSeenTypes.contains ( this.first ) )
     {
       Debug.out.println (
-          "Unify - ASSUME:     " + left + " = " + right , Debug.CHRISTIAN ) ; //$NON-NLS-1$//$NON-NLS-2$
+          "Unify - ASSUME      " + left + " = " + right , Debug.CHRISTIAN ) ; //$NON-NLS-1$//$NON-NLS-2$
       return this.remaining.unify ( pSeenTypes ) ;
     }
     // TRIV
@@ -206,7 +205,7 @@ public final class TypeEquationListTypeChecker
     {
       RecType recType = ( RecType ) left ;
       Debug.out.println (
-          "Unify - MU-LEFT:    " + left + " = " + right , Debug.CHRISTIAN ) ; //$NON-NLS-1$//$NON-NLS-2$
+          "Unify - MU-LEFT     " + left + " = " + right , Debug.CHRISTIAN ) ; //$NON-NLS-1$//$NON-NLS-2$
       TypeEquationListTypeChecker eqns = this.remaining ;
       eqns = eqns.extend ( recType.getTau ( ).substitute (
           recType.getTypeName ( ) , recType ) , right ) ;
@@ -218,7 +217,7 @@ public final class TypeEquationListTypeChecker
     {
       RecType recType = ( RecType ) right ;
       Debug.out.println (
-          "Unify - MU-RIGHT:   " + left + " = " + right , Debug.CHRISTIAN ) ; //$NON-NLS-1$//$NON-NLS-2$
+          "Unify - MU-RIGHT    " + left + " = " + right , Debug.CHRISTIAN ) ; //$NON-NLS-1$//$NON-NLS-2$
       TypeEquationListTypeChecker eqns = this.remaining ;
       eqns = eqns.extend ( left , recType.getTau ( ).substitute (
           recType.getTypeName ( ) , recType ) ) ;
@@ -292,21 +291,6 @@ public final class TypeEquationListTypeChecker
       throw new RuntimeException ( MessageFormat.format ( Messages
           .getString ( "UnificationException.4" ) , left , right ) ) ; //$NON-NLS-1$
     }
-    // REF
-    else if ( ( left instanceof RefType ) && ( right instanceof RefType ) )
-    {
-      Debug.out.println (
-          "Unify - REF         " + left + " = " + right , Debug.CHRISTIAN ) ; //$NON-NLS-1$//$NON-NLS-2$
-      // cast to RefType instances (tau and tau')
-      RefType taul = ( RefType ) left ;
-      RefType taur = ( RefType ) right ;
-      // we need to check {tau = tau'} as well
-      TypeEquationListTypeChecker eqns = this.remaining ;
-      eqns = eqns.extend ( taul.getTau ( ) , taur.getTau ( ) ) ;
-      // try to unify the new list
-      pSeenTypes.add ( this.first ) ;
-      return eqns.unify ( pSeenTypes ) ;
-    }
     // LIST
     else if ( ( left instanceof ListType ) && ( right instanceof ListType ) )
     {
@@ -315,6 +299,21 @@ public final class TypeEquationListTypeChecker
       // cast to ListType instances (tau and tau')
       ListType taul = ( ListType ) left ;
       ListType taur = ( ListType ) right ;
+      // we need to check {tau = tau'} as well
+      TypeEquationListTypeChecker eqns = this.remaining ;
+      eqns = eqns.extend ( taul.getTau ( ) , taur.getTau ( ) ) ;
+      // try to unify the new list
+      pSeenTypes.add ( this.first ) ;
+      return eqns.unify ( pSeenTypes ) ;
+    }
+    // REF
+    else if ( ( left instanceof RefType ) && ( right instanceof RefType ) )
+    {
+      Debug.out.println (
+          "Unify - REF         " + left + " = " + right , Debug.CHRISTIAN ) ; //$NON-NLS-1$//$NON-NLS-2$
+      // cast to RefType instances (tau and tau')
+      RefType taul = ( RefType ) left ;
+      RefType taur = ( RefType ) right ;
       // we need to check {tau = tau'} as well
       TypeEquationListTypeChecker eqns = this.remaining ;
       eqns = eqns.extend ( taul.getTau ( ) , taur.getTau ( ) ) ;
