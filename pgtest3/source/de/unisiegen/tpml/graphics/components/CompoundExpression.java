@@ -246,6 +246,12 @@ public class CompoundExpression < S , E > extends JComponent
     
     //tell the PrettyStringRenderer where the mouse pointer is
     toListenForMouse.setHereIam ( event.getX ( ) , event.getY ( ) ) ;
+    
+    
+    //TODO das brauchen wir hier nicht...
+    //if the mouse is over the expression, let the showbound know it
+    //bonds.setExpression(this.expression);
+   
 
     //first, we do not want to mark anything, we are waiting for mouse pointer is over one bounded id
     toListenForMouse.setMark ( false ) ;
@@ -366,11 +372,9 @@ public class CompoundExpression < S , E > extends JComponent
       
       
       */
-      
-      
-      
-     
-      bonds.setExpression ( this.expression ) ;
+
+     bonds = new ShowBonds(); 
+     bonds.setExpression ( this.expression ) ;
       
       // CHANGE BENJAMIN END
       
