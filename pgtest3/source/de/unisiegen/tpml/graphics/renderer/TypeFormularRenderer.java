@@ -9,7 +9,7 @@ import java.util.Enumeration;
 
 import de.unisiegen.tpml.core.expressions.Expression;
 import de.unisiegen.tpml.core.typechecker.TypeEnvironment;
-import de.unisiegen.tpml.core.typeinference.TypeEquation;
+import de.unisiegen.tpml.core.typeinference.TypeEquationTypeInference;
 import de.unisiegen.tpml.core.typeinference.TypeFormula;
 import de.unisiegen.tpml.core.typeinference.TypeJudgement;
 import de.unisiegen.tpml.core.types.Type;
@@ -404,7 +404,7 @@ public class TypeFormularRenderer extends AbstractRenderer {
 						}
 						
 					}
-					else if (t instanceof TypeEquation)
+					else if (t instanceof TypeEquationTypeInference)
 					{
 						lineWidthTypeFormula += AbstractRenderer.keywordFontMetrics.stringWidth(t.toString());
 						lineHeightTypeFormula += AbstractRenderer.getAbsoluteHeight();
@@ -509,14 +509,14 @@ public class TypeFormularRenderer extends AbstractRenderer {
 				nochNutzbar = width - einrücken;
 				testAusgabe("Noich nutzbar wenn das Einrücken abgezogen ist: "+nochNutzbar);
 				t = typeFormulaList.get(i);
-				if (t instanceof TypeEquation)
+				if (t instanceof TypeEquationTypeInference)
 				{
 					//Renderer, damit die einzel gerendert werden...
 					PrettyStringRenderer typeEquationStringrenderer = new PrettyStringRenderer();
 					
 					
 					//Typeequations werden einfach hingerendert...
-					TypeEquation s = (TypeEquation)t;
+          TypeEquationTypeInference s = (TypeEquationTypeInference)t;
 					
 					//gc.drawString(t.toString(), posX, posY);
 					//posX += AbstractRenderer.expFontMetrics.stringWidth(t.toString());
