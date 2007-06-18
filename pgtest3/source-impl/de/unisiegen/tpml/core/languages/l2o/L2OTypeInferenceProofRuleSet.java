@@ -115,7 +115,7 @@ public class L2OTypeInferenceProofRuleSet extends L2OTypeCheckerProofRuleSet
     if ( context.getSeenTypes ( ).contains ( eqn ) )
     {
       Debug.out.println (
-          "Unify - ASSUME:     " + left + " = " + right , Debug.CHRISTIAN ) ; //$NON-NLS-1$//$NON-NLS-2$
+          "Unify - ASSUME      " + left + " = " + right , Debug.CHRISTIAN ) ; //$NON-NLS-1$//$NON-NLS-2$
       return ;
     }
     // TRIV
@@ -131,7 +131,7 @@ public class L2OTypeInferenceProofRuleSet extends L2OTypeCheckerProofRuleSet
     {
       RecType recType = ( RecType ) left ;
       Debug.out.println (
-          "Unify - MU-LEFT:    " + left + " = " + right , Debug.CHRISTIAN ) ; //$NON-NLS-1$//$NON-NLS-2$
+          "Unify - MU-LEFT     " + left + " = " + right , Debug.CHRISTIAN ) ; //$NON-NLS-1$//$NON-NLS-2$
       context.addEquation ( recType.getTau ( ).substitute (
           recType.getTypeName ( ) , recType ) , right ) ;
       context.addSeenType ( eqn ) ;
@@ -142,7 +142,7 @@ public class L2OTypeInferenceProofRuleSet extends L2OTypeCheckerProofRuleSet
     {
       RecType recType = ( RecType ) right ;
       Debug.out.println (
-          "Unify - MU-RIGHT:   " + left + " = " + right , Debug.CHRISTIAN ) ; //$NON-NLS-1$//$NON-NLS-2$
+          "Unify - MU-RIGHT    " + left + " = " + right , Debug.CHRISTIAN ) ; //$NON-NLS-1$//$NON-NLS-2$
       context.addEquation ( left , recType.getTau ( ).substitute (
           recType.getTypeName ( ) , recType ) ) ;
       context.addSeenType ( eqn ) ;
@@ -155,6 +155,8 @@ public class L2OTypeInferenceProofRuleSet extends L2OTypeCheckerProofRuleSet
       TypeVariable tvar = ( TypeVariable ) ( left instanceof TypeVariable ? left
           : right ) ;
       MonoType tau = ( left instanceof TypeVariable ? right : left ) ;
+      Debug.out.println (
+          "Unify - VAR         " + tvar + " = " + tau , Debug.CHRISTIAN ) ; //$NON-NLS-1$//$NON-NLS-2$
       // either tvar equals tau or tvar is not present in tau
       if ( ! tvar.equals ( tau )
           && ! tau.getTypeVariablesFree ( ).contains ( tvar ) )
@@ -171,6 +173,8 @@ public class L2OTypeInferenceProofRuleSet extends L2OTypeCheckerProofRuleSet
     {
       ArrowType taul = ( ArrowType ) left ;
       ArrowType taur = ( ArrowType ) right ;
+      Debug.out.println (
+          "Unify - ARROW       " + left + " = " + right , Debug.CHRISTIAN ) ; //$NON-NLS-1$//$NON-NLS-2$
       // check which mode is choosen
       if ( node.getMode ( ) )
       {
@@ -198,6 +202,8 @@ public class L2OTypeInferenceProofRuleSet extends L2OTypeCheckerProofRuleSet
     // OBJECT
     else if ( ( left instanceof ObjectType ) && ( right instanceof ObjectType ) )
     {
+      Debug.out.println (
+          "Unify - OBJECT      " + left + " = " + right , Debug.CHRISTIAN ) ; //$NON-NLS-1$//$NON-NLS-2$
       ObjectType tau1 = ( ObjectType ) left ;
       ObjectType tau2 = ( ObjectType ) right ;
       context.addEquation ( tau1.getPhi ( ) , tau2.getPhi ( ) ) ;
@@ -207,6 +213,8 @@ public class L2OTypeInferenceProofRuleSet extends L2OTypeCheckerProofRuleSet
     // ROW
     else if ( ( left instanceof RowType ) && ( right instanceof RowType ) )
     {
+      Debug.out.println (
+          "Unify - ROW         " + left + " = " + right , Debug.CHRISTIAN ) ; //$NON-NLS-1$//$NON-NLS-2$
       RowType tau1 = ( RowType ) left ;
       RowType tau2 = ( RowType ) right ;
       ArrayList < Identifier > tau1Identifiers = new ArrayList < Identifier > ( ) ;
