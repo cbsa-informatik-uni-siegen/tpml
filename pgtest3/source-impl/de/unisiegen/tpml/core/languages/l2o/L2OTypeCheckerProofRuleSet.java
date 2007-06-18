@@ -72,7 +72,6 @@ public class L2OTypeCheckerProofRuleSet extends L2TypeCheckerProofRuleSet
         new ObjectType ( new RowType ( new Identifier [ ]
         { send.getId ( ) } , new MonoType [ ]
         { tauSendE } , tauRemainingRow ) ) ) ;
-    // pContext.addEquation ( pNode.getType ( ) , tauSendE ) ;
   }
 
 
@@ -124,7 +123,6 @@ public class L2OTypeCheckerProofRuleSet extends L2TypeCheckerProofRuleSet
     else if ( ( tau instanceof RecType )
         && ( ( ( RecType ) tau ).getTau ( ) instanceof ObjectType ) )
     {
-      // TODO
       RecType recType = ( RecType ) tau ;
       ObjectType objectType = ( ObjectType ) recType.getTau ( ).substitute (
           recType.getTypeName ( ) , recType ) ;
@@ -271,9 +269,33 @@ public class L2OTypeCheckerProofRuleSet extends L2TypeCheckerProofRuleSet
       MonoType nodeType = pNode.getType ( ) ;
       TypeEnvironment environment = pNode.getEnvironment ( ) ;
       pContext.addProofNode ( pNode , environment , methodE , methodTau ) ;
-      if ( ( nodeType instanceof TypeVariable )
-          || ( ( nodeType instanceof RowType ) && ( method.getId ( )
-              .equals ( ( ( RowType ) nodeType ).getIdentifiers ( ) [ 0 ] ) ) ) )
+      boolean definedLater = false ;
+      if ( nodeType instanceof RowType )
+      {
+        RowType rowType = ( RowType ) nodeType ;
+        for ( int i = 1 ; i < rowExpressions.length ; i ++ )
+        {
+          Expression rowChild = rowExpressions [ i ] ;
+          if ( ( rowChild instanceof Method )
+              && ( ( ( Method ) rowChild ).getId ( ).equals ( rowType
+                  .getIdentifiers ( ) [ 0 ] ) ) )
+          {
+            definedLater = true ;
+            break ;
+          }
+          else if ( ( rowChild instanceof CurriedMethod )
+              && ( ( ( CurriedMethod ) rowChild ).getIdentifiers ( ) [ 0 ]
+                  .equals ( rowType.getIdentifiers ( ) [ 0 ] ) ) )
+          {
+            definedLater = true ;
+            break ;
+          }
+        }
+      }
+      if ( ( ! definedLater )
+          && ( ( nodeType instanceof TypeVariable ) || ( ( nodeType instanceof RowType ) && ( method
+              .getId ( )
+              .equals ( ( ( RowType ) nodeType ).getIdentifiers ( ) [ 0 ] ) ) ) ) )
       {
         pContext.addProofNode ( pNode , environment , row.tailRow ( ) , tauRow ) ;
         RowType union = new RowType ( new Identifier [ ]
@@ -325,9 +347,32 @@ public class L2OTypeCheckerProofRuleSet extends L2TypeCheckerProofRuleSet
       TypeEnvironment environment = pNode.getEnvironment ( ) ;
       pContext.addProofNode ( pNode , environment , curriedMethodE ,
           curriedMethodTau ) ;
-      if ( ( nodeType instanceof TypeVariable )
-          || ( ( nodeType instanceof RowType ) && ( identifiers [ 0 ]
-              .equals ( ( ( RowType ) nodeType ).getIdentifiers ( ) [ 0 ] ) ) ) )
+      boolean definedLater = false ;
+      if ( nodeType instanceof RowType )
+      {
+        RowType rowType = ( RowType ) nodeType ;
+        for ( int i = 1 ; i < rowExpressions.length ; i ++ )
+        {
+          Expression rowChild = rowExpressions [ i ] ;
+          if ( ( rowChild instanceof Method )
+              && ( ( ( Method ) rowChild ).getId ( ).equals ( rowType
+                  .getIdentifiers ( ) [ 0 ] ) ) )
+          {
+            definedLater = true ;
+            break ;
+          }
+          else if ( ( rowChild instanceof CurriedMethod )
+              && ( ( ( CurriedMethod ) rowChild ).getIdentifiers ( ) [ 0 ]
+                  .equals ( rowType.getIdentifiers ( ) [ 0 ] ) ) )
+          {
+            definedLater = true ;
+            break ;
+          }
+        }
+      }
+      if ( ( ! definedLater )
+          && ( ( nodeType instanceof TypeVariable ) || ( ( nodeType instanceof RowType ) && ( identifiers [ 0 ]
+              .equals ( ( ( RowType ) nodeType ).getIdentifiers ( ) [ 0 ] ) ) ) ) )
       {
         pContext.addProofNode ( pNode , environment , row.tailRow ( ) , tauRow ) ;
         RowType union = new RowType ( new Identifier [ ]
