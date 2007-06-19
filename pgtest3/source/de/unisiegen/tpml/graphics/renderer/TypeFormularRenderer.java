@@ -535,7 +535,7 @@ public class TypeFormularRenderer extends AbstractRenderer {
 					//ToListenForMouseContainer toListenForM = new ToListenForMouseContainer();
 					typeEquationStringrenderer.render(posX, posY-(typeEquationSize.height / 2) - fontAscent / 2, typeEquationSize.width, typeEquationSize.height, gc, bondTypeEquation, toListenForM);
 					
-					this.typeFprmularPostitions.add(new Rectangle(posX, posY-fontAscent, typeEquationSize.width, typeEquationSize.height));
+					this.typeFprmularPostitions.add(new Rectangle(posX, posY+AbstractRenderer.fontDescent, typeEquationSize.width, typeEquationSize.height));
 					this.typeEquations.add(i);
 					posX += typeEquationSize.width;
 					
