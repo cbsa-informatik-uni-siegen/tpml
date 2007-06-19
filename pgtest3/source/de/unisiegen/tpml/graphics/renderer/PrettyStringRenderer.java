@@ -6,6 +6,7 @@ import java.awt.Dimension ;
 import java.awt.Font ;
 import java.awt.FontMetrics ;
 import java.awt.Graphics ;
+import java.security.SecureRandom;
 import java.text.CharacterIterator ;
 import java.util.ArrayList ;
 import java.util.Collections ;
@@ -638,6 +639,9 @@ public class PrettyStringRenderer extends AbstractRenderer
    */
   public void render ( int x , int y ,int width , int height,  Graphics gc , ShowBonds bound , ToListenForMouseContainer toListenForM )
   {
+  	//check if the mouse is over the expression an over wich symbol (-1) the mosue is not their
+  	int pos = getSymbolUnderMouse();
+  	
     toListenForMouse = toListenForM ;
     // get The MousePosition
     int [ ] mousePosition = toListenForMouse.getHereIam ( ) ;
@@ -724,7 +728,7 @@ public class PrettyStringRenderer extends AbstractRenderer
     boolean highlight = false;
     if ( lineCount >= 1 && lineCount <= height / AbstractRenderer.getAbsoluteHeight() ) //schon mal die richtige Zeile
     {
-    	if ( (mousePosition[0] > x) && (mousePosition[0] <= x + width)  )
+    	if ( (mousePosition[0] > x) && (mousePosition[0] <= x + width) && (mousePosition[1] > y) && (mousePosition[1] <= y + height) )
     	{
     		highlight = true;
     	}
@@ -778,7 +782,7 @@ public class PrettyStringRenderer extends AbstractRenderer
     // this will be the annotation to underline, if -1 there is no underlining
     int rightAnnotationList = isInList ( charIndex , annotationsList ) ;
     
-    // System.out.println(rightAnnotationList);
+   
     
     // get the starting offsets x is just the left border
     // y will be the center of the space available minus the
@@ -981,4 +985,11 @@ public class PrettyStringRenderer extends AbstractRenderer
      * c); // go on to the next character }
      */
   }
+
+
+	private int getSymbolUnderMouse()
+	{
+		// TODO Auto-generated method stub
+		return 0;
+	}
 }
