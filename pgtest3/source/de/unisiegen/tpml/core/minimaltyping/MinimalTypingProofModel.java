@@ -55,7 +55,6 @@ public class MinimalTypingProofModel extends AbstractExpressionProofModel {
    */
   private int index = 1;
   
-  public DefaultMinimalTypingProofContext context;
   
   
   
@@ -77,7 +76,6 @@ public class MinimalTypingProofModel extends AbstractExpressionProofModel {
    */
   public MinimalTypingProofModel(Expression expression, AbstractMinimalTypingProofRuleSet ruleSet) {
     super(new DefaultMinimalTypingExpressionProofNode(new DefaultTypeEnvironment(), expression), ruleSet);
-    context = new DefaultMinimalTypingProofContext(this);
   }
   
 
@@ -116,7 +114,7 @@ public class MinimalTypingProofModel extends AbstractExpressionProofModel {
    */
   public void setIndex(int index) {
     if (index < 1) {
-      throw new IllegalArgumentException("index is invalid");
+      throw new IllegalArgumentException("index is invalid"); //$NON-NLS-1$
     }
     this.index = index;
   }
@@ -139,38 +137,6 @@ public class MinimalTypingProofModel extends AbstractExpressionProofModel {
   }
   
   /**
-   * Guesses the next proof step for the specified <code>node</code> using the <code>type</code>
-   * for the <code>node</code>. This method is used for the <tt>"Enter type"</tt> action in the
-   * type checker user interface.
-   * 
-   * The <code>node</code> must not be already proven (see the
-   * {@link ProofNode#isProven()} method for details), otherwise
-   * an {@link IllegalStateException} is thrown.
-   * 
-   * @param node the {@link ProofNode} for which the next proof step should
-   *             be guessed.
-   *             
-   * @throws IllegalArgumentException if the <code>node</code> is invalid for this model.             
-   * @throws IllegalStateException if for some reason <code>node</code> cannot be proven.
-   * @throws NullPointerException if <code>node</code> or <code>type</code> is <code>null</code>.
-   * @throws ProofGuessException if the next proof step could not be guessed.
-   *
-   * @see #guess(ProofNode)
-   * @see #prove(ProofRule, ProofNode)
-   */
-  public void guessWithType(ProofNode node, MonoType type) throws ProofGuessException {
-    if (type == null) {
-      throw new NullPointerException("type is null");
-    }
-    
-    // guess the rule for the node utilizing the type
-    guessInternal((MinimalTypingProofNode)node, type);
-    
-    // try to complete the node
-    complete(node);
-  }
-  
-  /**
    * {@inheritDoc}
    *
    * @see de.unisiegen.tpml.core.AbstractProofModel#prove(de.unisiegen.tpml.core.ProofRule, de.unisiegen.tpml.core.ProofNode)
@@ -178,13 +144,13 @@ public class MinimalTypingProofModel extends AbstractExpressionProofModel {
   @Override
   public void prove(ProofRule rule, ProofNode node) throws ProofRuleException {
     if (!this.ruleSet.contains(rule)) {
-      throw new IllegalArgumentException("The rule is invalid for the model");
+      throw new IllegalArgumentException("The rule is invalid for the model"); //$NON-NLS-1$
     }
     if (!this.root.isNodeRelated(node)) {
-      throw new IllegalArgumentException("The node is invalid for the model");
+      throw new IllegalArgumentException("The node is invalid for the model"); //$NON-NLS-1$
     }
     if (node.getRules().length > 0) {
-      throw new IllegalArgumentException("The node is already completed");
+      throw new IllegalArgumentException("The node is already completed"); //$NON-NLS-1$
     }
     
     // try to apply the rule to the specified node
@@ -222,9 +188,11 @@ public class MinimalTypingProofModel extends AbstractExpressionProofModel {
       context.apply(rule, node, type);
       
       // check if we are finished
-      final MinimalTypingProofNode root = (MinimalTypingProofNode)getRoot();
-      context.addRedoAction(new Runnable() { public void run() { setFinished(root.isFinished()); } });
-      context.addUndoAction(new Runnable() { public void run() { setFinished(false); } });
+      final MinimalTypingProofNode modelRoot = (MinimalTypingProofNode)getRoot();
+      context.addRedoAction(new Runnable() { @SuppressWarnings("synthetic-access")
+		public void run() { setFinished(modelRoot.isFinished()); } });
+      context.addUndoAction(new Runnable() { @SuppressWarnings("synthetic-access")
+		public void run() { setFinished(false); } });
       
       // determine the redo and undo actions from the context
       final Runnable redoActions = context.getRedoActions();
@@ -272,20 +240,20 @@ public class MinimalTypingProofModel extends AbstractExpressionProofModel {
   	
   	if (node == null) {
     	
-      throw new NullPointerException("node is null");
+      throw new NullPointerException("node is null"); //$NON-NLS-1$
     }
     if (node.getSteps().length > 0) {
     	
-      throw new IllegalArgumentException("The node is already completed");
+      throw new IllegalArgumentException("The node is already completed"); //$NON-NLS-1$
     }
     if (!this.root.isNodeRelated(node)) {
     	
-      throw new IllegalArgumentException("The node is invalid for the model");
+      throw new IllegalArgumentException("The node is invalid for the model"); //$NON-NLS-1$
     }
     
     
     // try to guess the next rule
-    logger.debug("Trying to guess a rule for " + node);
+    logger.debug("Trying to guess a rule for " + node); //$NON-NLS-1$
     for (ProofRule rule : this.ruleSet.getRules()) { // MUST be the getRules() from the ProofRuleSet
       try {
         // try to apply the rule to the specified node
@@ -295,18 +263,18 @@ public class MinimalTypingProofModel extends AbstractExpressionProofModel {
         setCheating(true);
         
         // yep, we did it
-        logger.debug("Successfully applied (" + rule + ") to " + node);
+        logger.debug("Successfully applied (" + rule + ") to " + node); //$NON-NLS-1$ //$NON-NLS-2$
         return;
       }
       catch (ProofRuleException e) {
         // rule failed to apply... so, next one, please
-        logger.debug("Failed to apply (" + rule + ") to " + node, e);
+        logger.debug("Failed to apply (" + rule + ") to " + node, e); //$NON-NLS-1$ //$NON-NLS-2$
         continue;
       }
     }
     
     // unable to guess next step
-    logger.debug("Failed to find rule to apply to " + node);
+    logger.debug("Failed to find rule to apply to " + node); //$NON-NLS-1$
     throw new ProofGuessException(node);
   }
   
@@ -320,92 +288,95 @@ public class MinimalTypingProofModel extends AbstractExpressionProofModel {
    * Adds a new child proof node below the <code>node</code> using the <code>context</code>, for the
    * <code>environment</code>, <code>expression</code> and <code>type</code>.
    * 
-   * @param context the <code>TypeCheckerProofContext</code> on which the action is to be performed.
-   * @param node the parent <code>DefaultTypeCheckerProofNode</code>.
+   * @param context the <code>MinimalTypingProofContext</code> on which the action is to be performed.
+   * @param node the parent <code>DefaultMinimalTypingProofNode</code>.
    * @param environment the <code>TypeEnvironment</code> for the child node.
    * @param expression the <code>Expression</code> for the child node.
-   * @param type the type variable or the concrete type for the child node, used for the unification.
+   * @param type the concrete type for the child node.
    * 
    * @throws IllegalArgumentException if <code>node</code> is invalid for this tree.
    * @throws NullPointerException if any of the parameters is <code>null</code>.
    */
   public void contextAddProofNode(DefaultMinimalTypingProofContext context, final AbstractMinimalTypingProofNode node, TypeEnvironment environment, Expression expression) {
     if (context == null) {
-      throw new NullPointerException("context is null");
+      throw new NullPointerException("context is null"); //$NON-NLS-1$
     }
     if (node == null) {
-      throw new NullPointerException("node is null");
+      throw new NullPointerException("node is null"); //$NON-NLS-1$
     }
     if (environment == null) {
-      throw new NullPointerException("environment is null");
+      throw new NullPointerException("environment is null"); //$NON-NLS-1$
     }
     if (expression == null) {
-      throw new NullPointerException("expression is null");
+      throw new NullPointerException("expression is null"); //$NON-NLS-1$
     }
     if (!this.root.isNodeRelated(node)) {
-      throw new IllegalArgumentException("node is invalid");
+      throw new IllegalArgumentException("node is invalid"); //$NON-NLS-1$
     }
     
     final DefaultMinimalTypingExpressionProofNode child = new DefaultMinimalTypingExpressionProofNode(environment, expression);
      context.addRedoAction(new Runnable() {
-      public void run() {
+      @SuppressWarnings("synthetic-access")
+		public void run() {
         node.add(child);
         nodesWereInserted(node, new int[] { node.getIndex(child) });
       }
     });
     
     context.addUndoAction(new Runnable() {
-      public void run() {
-        int index = node.getIndex(child);
-        node.remove(index);
-        nodesWereRemoved(node, new int[] { index }, new Object[] { child });
+      @SuppressWarnings("synthetic-access")
+		public void run() {
+        int finalIndex = node.getIndex(child);
+        node.remove(finalIndex);
+        nodesWereRemoved(node, new int[] { finalIndex }, new Object[] { child });
       }
     });
   }
   
   /**
    * Adds a new child proof node below the <code>node</code> using the <code>context</code>, for the
-   * <code>environment</code>, <code>expression</code> and <code>type</code>.
+   *  <code>type</code> and <code>type2</code>.
    * 
-   * @param context the <code>TypeCheckerProofContext</code> on which the action is to be performed.
-   * @param node the parent <code>DefaultTypeCheckerProofNode</code>.
-   * @param environment the <code>TypeEnvironment</code> for the child node.
-   * @param expression the <code>Expression</code> for the child node.
-   * @param type the type variable or the concrete type for the child node, used for the unification.
+   * @param context the <code>MinimalTypingProofContext</code> on which the action is to be performed.
+   * @param node the parent <code>DefaultMinimalTypingProofNode</code>.
+   * @param type the first concrete type for type Comparison.
+   * @param type2 the second concrete type for type Comparison.
    * 
    * @throws IllegalArgumentException if <code>node</code> is invalid for this tree.
    * @throws NullPointerException if any of the parameters is <code>null</code>.
    */
   public void contextAddProofNode(DefaultMinimalTypingProofContext context, final AbstractMinimalTypingProofNode node, MonoType type, MonoType type2) {
     if (context == null) {
-      throw new NullPointerException("context is null");
+      throw new NullPointerException("context is null"); //$NON-NLS-1$
     }
     if (node == null) {
-      throw new NullPointerException("node is null");
+      throw new NullPointerException("node is null"); //$NON-NLS-1$
     }
     if (type == null) {
-      throw new NullPointerException("type is null");
+      throw new NullPointerException("type is null"); //$NON-NLS-1$
     }
     if (type2 == null) {
-      throw new NullPointerException("type2 is null");
+      throw new NullPointerException("type2 is null"); //$NON-NLS-1$
     }
     if (!this.root.isNodeRelated(node)) {
-      throw new IllegalArgumentException("node is invalid");
+      throw new IllegalArgumentException("node is invalid"); //$NON-NLS-1$
     }
     
     final DefaultMinimalTypingTypesProofNode child = new DefaultMinimalTypingTypesProofNode(type, type2);
      context.addRedoAction(new Runnable() {
-      public void run() {
+      @SuppressWarnings("synthetic-access")
+		public void run() {
         node.add(child);
         nodesWereInserted(node, new int[] { node.getIndex(child) });
       }
     });
     
     context.addUndoAction(new Runnable() {
-      public void run() {
-        int index = node.getIndex(child);
-        node.remove(index);
-        nodesWereRemoved(node, new int[] { index }, new Object[] { child });
+      @SuppressWarnings("synthetic-access")
+		public void run() {
+        int finalIndex = node.getIndex(child);
+        node.remove(finalIndex);
+        nodesWereRemoved(node, new int[] { finalIndex }, new Object[] { child });
       }
     });
   }
@@ -424,31 +395,43 @@ public class MinimalTypingProofModel extends AbstractExpressionProofModel {
     final ProofStep[] oldSteps = node.getSteps();
     
     context.addRedoAction(new Runnable() {
-      public void run() {
+      @SuppressWarnings("synthetic-access")
+		public void run() {
         node.setSteps(new ProofStep[] { new ProofStep(node.getExpression(), rule) });
         nodeChanged(node);
       }
     });
     
     context.addUndoAction(new Runnable() {
-      public void run() {
+      @SuppressWarnings("synthetic-access")
+		public void run() {
         node.setSteps(oldSteps);
         nodeChanged(node);
       }
     });
   }
   
+  /**
+   * 
+   * Set the type of the pNode
+   *
+   * @param context minimal typing proof context
+   * @param pNode the node to set the type
+   * @param type the new type
+   */
   public void contextSetProofNodeType(DefaultMinimalTypingProofContext context, AbstractMinimalTypingProofNode pNode, final MonoType type) {
   	final DefaultMinimalTypingExpressionProofNode node = (DefaultMinimalTypingExpressionProofNode) pNode;
     context.addRedoAction(new Runnable() {
-      public void run() {
+      @SuppressWarnings("synthetic-access")
+		public void run() {
         node.setType ( type );
         nodeChanged(node);
       }
     });
     
     context.addUndoAction(new Runnable() {
-      public void run() {
+      @SuppressWarnings("synthetic-access")
+		public void run() {
         node.setType ( null );
         nodeChanged(node);
       }

@@ -42,7 +42,8 @@ public class L1SubTypingProofRuleSet extends AbstractSubTypingProofRuleSet {
 	 * @param node the subtyping proof node.
 	 * @throws SubTypingException throw Exception if rule can't be applied
 	 */
-	public void applyRefl ( SubTypingProofContext context, SubTypingProofNode node )
+	public void applyRefl ( @SuppressWarnings("unused")
+	SubTypingProofContext context, SubTypingProofNode node )
 			throws SubTypingException {
 		MonoType type;
 		MonoType type2;

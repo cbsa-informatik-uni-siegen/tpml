@@ -97,7 +97,6 @@ public class L1TypeInferenceProofRuleSet extends L1TypeCheckerProofRuleSet
       TypeEquationProofNode node , TypeEquationTypeInference eqn )
       throws UnifyException
   {
-	  System.out.println("unify");
     // empty equation is not longer possible so this rule is not implemented
     MonoType left = eqn.getLeft ( ) ;
     MonoType right = eqn.getRight ( ) ;

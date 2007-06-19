@@ -18,7 +18,6 @@ import de.unisiegen.tpml.core.languages.LanguageTypeScanner;
 import de.unisiegen.tpml.core.languages.l0.L0Language;
 import de.unisiegen.tpml.core.languages.l1.L1Language;
 import de.unisiegen.tpml.core.languages.l2.L2Language;
-import de.unisiegen.tpml.core.languages.l2.L2MinimalTypingProofRuleSet;
 import de.unisiegen.tpml.core.languages.l2cbn.L2CBNLanguage;
 import de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofModel;
 import de.unisiegen.tpml.core.smallstep.SmallStepProofModel;

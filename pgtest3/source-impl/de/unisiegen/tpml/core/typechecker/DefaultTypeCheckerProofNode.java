@@ -87,7 +87,7 @@ public class DefaultTypeCheckerProofNode extends AbstractExpressionProofNode imp
    */
   void setEnvironment(TypeEnvironment environment) {
     if (environment == null) {
-      throw new NullPointerException("environment is null");
+      throw new NullPointerException("environment is null"); //$NON-NLS-1$
     }
     this.environment = environment;
   }
@@ -129,7 +129,7 @@ public class DefaultTypeCheckerProofNode extends AbstractExpressionProofNode imp
    */
   void setType(MonoType type) {
     if (type == null) {
-      throw new NullPointerException("type is null");
+      throw new NullPointerException("type is null"); //$NON-NLS-1$
     }
     this.type = type;
   }
@@ -144,9 +144,7 @@ public class DefaultTypeCheckerProofNode extends AbstractExpressionProofNode imp
     if (steps.length > 0) {
       return (TypeCheckerProofRule)steps[0].getRule();
     }
-    else {
       return null;
-    }
   }
   
   
@@ -289,12 +287,12 @@ public class DefaultTypeCheckerProofNode extends AbstractExpressionProofNode imp
   public String toString() {
     StringBuilder builder = new StringBuilder();
     builder.append(this.environment);
-    builder.append(" \u22b3 ");
+    builder.append(" \u22b3 "); //$NON-NLS-1$
     builder.append(this.expression);
-    builder.append(" :: ");
+    builder.append(" :: "); //$NON-NLS-1$
     builder.append(this.type);
     if (getRule() != null) {
-      builder.append(" (" + getRule() + ")");
+      builder.append(" (" + getRule() + ")");  //$NON-NLS-1$//$NON-NLS-2$
     }
     return builder.toString();
   }

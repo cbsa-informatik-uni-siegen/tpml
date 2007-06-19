@@ -1,7 +1,5 @@
 package de.unisiegen.tpml.core.subtypingrec;
 
-import java.util.ArrayList;
-
 import de.unisiegen.tpml.core.ProofNode;
 import de.unisiegen.tpml.core.ProofRule;
 import de.unisiegen.tpml.core.typechecker.SeenTypes;

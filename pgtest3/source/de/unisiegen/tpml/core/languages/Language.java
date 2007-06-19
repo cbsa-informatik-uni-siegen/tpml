@@ -105,6 +105,19 @@ public interface Language {
    */
   public TypeCheckerProofModel newTypeCheckerProofModel(Expression expression);
   
+  /**
+   * Allocates a new {@link MinimalTypingProofModel} for the <code>expression</code> in this language, which
+   * is used to prove that <code>expression</code> is well-typed using the rules from this language.
+   * 
+   * @param expression the {@link Expression} for the type checker proof model.
+   * 
+   * @return the newly allocated minimal typing proof model.
+   * 
+   * @throws NullPointerException if <code>expression</code> is <code>null</code>.
+   * @throws UnsupportedOperationException if the language does not include a type system.
+   * 
+   * @see MinimalTypingProofModel
+   */
   public MinimalTypingProofModel newMinimalTypingProofModel(Expression expression);
   
   /**

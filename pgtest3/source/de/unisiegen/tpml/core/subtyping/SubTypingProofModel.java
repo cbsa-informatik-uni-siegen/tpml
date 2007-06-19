@@ -140,11 +140,11 @@ public class SubTypingProofModel extends AbstractProofModel {
 			context.apply ( rule, node );
 
 			//	 check if we are finished
-			final DefaultSubTypingProofNode root = ( DefaultSubTypingProofNode ) getRoot ( );
+			final DefaultSubTypingProofNode modelRoot = ( DefaultSubTypingProofNode ) getRoot ( );
 			context.addRedoAction ( new Runnable ( ) {
 				@SuppressWarnings ( "synthetic-access" )
 				public void run ( ) {
-					setFinished ( root.isFinished ( ) );
+					setFinished ( modelRoot.isFinished ( ) );
 				}
 			} );
 			context.addUndoAction ( new Runnable ( ) {

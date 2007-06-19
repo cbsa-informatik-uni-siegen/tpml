@@ -1,6 +1,3 @@
-/**
- * TODO
- */
 package de.unisiegen.tpml.core.subtyping;
 
 import de.unisiegen.tpml.core.types.MonoType;

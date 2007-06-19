@@ -45,7 +45,8 @@ public class L1RecSubTypingProofRuleSet extends AbstractRecSubTypingProofRuleSet
 	 * @param node the subtyping proof node.
 	 * @throws SubTypingException throw Exception if rule can't be applied
 	 */
-	public void applyRefl ( RecSubTypingProofContext context,
+	public void applyRefl ( @SuppressWarnings("unused")
+	RecSubTypingProofContext context,
 			RecSubTypingProofNode node ) throws SubTypingException {
 		MonoType type;
 		MonoType type2;
@@ -95,7 +96,8 @@ public class L1RecSubTypingProofRuleSet extends AbstractRecSubTypingProofRuleSet
 	 * @param node the subtyping proof node.
 	 * @throws SubTypingException throw Exception if rule can't be applied
 	 */
-	public void applyAssume ( RecSubTypingProofContext context,
+	public void applyAssume ( @SuppressWarnings("unused")
+	RecSubTypingProofContext context,
 			RecSubTypingProofNode node ) throws SubTypingException {
 		if ( node.getSeenTypes ( ).contains ( node.getSubType ( ) ) )
 			return;

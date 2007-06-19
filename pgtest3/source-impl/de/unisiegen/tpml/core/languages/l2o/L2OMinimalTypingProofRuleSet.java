@@ -38,12 +38,12 @@ public class L2OMinimalTypingProofRuleSet extends L2MinimalTypingProofRuleSet {
 		super ( language );
 		// register the type rules
 		registerByMethodName ( L2OLanguage.L2O, "EMPTY", "applyEmpty" );//$NON-NLS-1$ //$NON-NLS-2$
-		registerByMethodName ( L2OLanguage.L2O, "SEND", "applySend", "updateSend" );//$NON-NLS-1$ //$NON-NLS-2$
+		registerByMethodName ( L2OLanguage.L2O, "SEND", "applySend", "updateSend" );//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		registerByMethodName ( L2OLanguage.L2O,
-				"OBJECT", "applyObject", "updateObject" );//$NON-NLS-1$ //$NON-NLS-2$
+				"OBJECT", "applyObject", "updateObject" );//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		//registerByMethodName ( L2OLanguage.L2O, "DUPL-SUBSUME", "applyDuplSubsume", "updateDuplSubsume" );//$NON-NLS-1$ //$NON-NLS-2$
 		registerByMethodName ( L2OLanguage.L2O,
-				"METHOD-SUBSUME", "applyMethodSubsume", "updateMethodSubsume" );//$NON-NLS-1$ //$NON-NLS-2$
+				"METHOD-SUBSUME", "applyMethodSubsume", "updateMethodSubsume" );//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 	}
 
@@ -52,7 +52,7 @@ public class L2OMinimalTypingProofRuleSet extends L2MinimalTypingProofRuleSet {
 	 * <code>node</node> using the <code>context</code>.
 	 * 
 	 * @param context the minimal typing proof context.
-	 * @param node the minimal typing proof node.
+	 * @param pNode the minimal typing proof node.
 	 */
 	public void applySend ( MinimalTypingProofContext context,
 			MinimalTypingProofNode pNode ) {
@@ -61,6 +61,13 @@ public class L2OMinimalTypingProofRuleSet extends L2MinimalTypingProofRuleSet {
 		context.addProofNode ( node, node.getEnvironment ( ), send.getE ( ) );
 	}
 
+	  /**
+	   * Updates the <code>node</code> to which <b>(SEND)</b> was applied
+	   * previously.
+	   * 
+	   * @param context the minimal typing proof context.
+	   * @param pNode the node to update according to <b>(SEND)</b>.
+	   */
 	public void updateSend ( MinimalTypingProofContext context,
 			MinimalTypingProofNode pNode ) {
 		MinimalTypingExpressionProofNode node = ( MinimalTypingExpressionProofNode ) pNode;
@@ -93,7 +100,7 @@ public class L2OMinimalTypingProofRuleSet extends L2MinimalTypingProofRuleSet {
 	 * <code>node</node> using the <code>context</code>.
 	 * 
 	 * @param context the minimal typing proof context.
-	 * @param node the minimal typing proof node.
+	 * @param pNode the minimal typing proof node.
 	 */
 	public void applyObject ( MinimalTypingProofContext context,
 			MinimalTypingProofNode pNode ) {
@@ -108,6 +115,13 @@ public class L2OMinimalTypingProofRuleSet extends L2MinimalTypingProofRuleSet {
 				environment.extend ( object.getId ( ), tau ), object.getE ( ) );
 	}
 
+	  /**
+	   * Updates the <code>node</code> to which <b>(OBJECT)</b> was applied
+	   * previously.
+	   * 
+	   * @param context the minimal typing proof context.
+	   * @param pNode the node to update according to <b>(OBJECT)</b>.
+	   */
 	public void updateObject ( MinimalTypingProofContext context,
 			MinimalTypingProofNode pNode ) {
 		MinimalTypingExpressionProofNode node = ( MinimalTypingExpressionProofNode ) pNode;
@@ -147,7 +161,7 @@ public class L2OMinimalTypingProofRuleSet extends L2MinimalTypingProofRuleSet {
 	 * <code>node</node> using the <code>context</code>.
 	 * 
 	 * @param context the minimal typing proof context.
-	 * @param node the minimal typing proof node.
+	 * @param pNode the minimal typing proof node.
 	 */
 	public void applyDuplSubsume ( MinimalTypingProofContext context,
 			MinimalTypingProofNode pNode ) {
@@ -157,6 +171,13 @@ public class L2OMinimalTypingProofRuleSet extends L2MinimalTypingProofRuleSet {
 				.getExpressions ( )[0] );
 	}
 
+	  /**
+	   * Updates the <code>node</code> to which <b>(DUPL-SUBSUME)</b> was applied
+	   * previously.
+	   * 
+	   * @param context the minimal typing proof context.
+	   * @param pNode the node to update according to <b>(DUPL-SUBSUME)</b>.
+	   */
 	public void updateDuplSubsume ( MinimalTypingProofContext context,
 			MinimalTypingProofNode pNode ) {
 		MinimalTypingExpressionProofNode node = ( MinimalTypingExpressionProofNode ) pNode;
@@ -174,11 +195,10 @@ public class L2OMinimalTypingProofRuleSet extends L2MinimalTypingProofRuleSet {
 		if ( node.getChildCount ( ) == duplication.getExpressions ( ).length ) {
 			// all childs added, so nothing more to do
 			return;
-		} else {
+		} 
 			// add next child
 			context.addProofNode ( node, node.getEnvironment ( ), duplication
 					.getExpressions ( )[node.getChildCount ( )] );
-		}
 	}
 
 	/**
@@ -186,7 +206,7 @@ public class L2OMinimalTypingProofRuleSet extends L2MinimalTypingProofRuleSet {
 	 * <code>node</node> using the <code>context</code>.
 	 * 
 	 * @param context the minimal typing proof context.
-	 * @param node the minimal typing proof node.
+	 * @param pNode the minimal typing proof node.
 	 */
 	public void applyMethodSubsume ( MinimalTypingProofContext context,
 			MinimalTypingProofNode pNode ) {
@@ -196,14 +216,67 @@ public class L2OMinimalTypingProofRuleSet extends L2MinimalTypingProofRuleSet {
 
 	}
 
+	  /**
+	   * Updates the <code>node</code> to which <b>(METHOD-SUBSUME)</b> was applied
+	   * previously.
+	   * 
+	   * @param context the minimal typing proof context.
+	   * @param pNode the node to update according to <b>(METHOD-SUBSUME)</b>.
+	   */
 	public void updateMethodSubsume ( MinimalTypingProofContext context,
 			MinimalTypingProofNode pNode ) {
 		MinimalTypingExpressionProofNode node = ( MinimalTypingExpressionProofNode ) pNode;
-		if ( node.getFirstChild ( ).isFinished ( ) ) {
-			Method method = ( Method ) node.getExpression ( );
-			//TODO at a ProofNode with r1 as expression
-			//context.addProofNode ( node, node.getEnvironment ( ), expression )
+		Method method = ( Method ) node.getExpression ( );
+		if ( node.getChildCount ( ) == 1 && node.getFirstChild ( ).isFinished ( ) ) {
+			
+			// Create the tailRow and add it as Expression of a new Child
+			Expression [] expressions = ((Row) node.getExpression ( )).getExpressions ( );
+			Expression [] tailRow = new Expression [expressions.length-1];
+			for (int i = 1; i < expressions.length; i++){
+				tailRow [i-1] = expressions[i];
+			}
+			Row row = new Row ( tailRow );
+			context.addProofNode ( node, node.getEnvironment ( ), row );
 		}
+		if ( node.getChildCount ( ) == 2 && node.getChildAt ( 1 ).isFinished ( ) ) {
+			TypeEnvironment environment = node.getEnvironment ( );
+			ObjectType type = (ObjectType) environment.get ( new Identifier("self") ); //$NON-NLS-1$
+			RowType rowType = (RowType) type.getPhi ( );
+			Identifier [] identifiers = rowType.getIdentifiers ( );
+			MonoType [] types = rowType.getTypes ( );
+			Identifier m = method.getId ( );
+			MonoType tau = null;
+			
+			for ( int i = 0; i < identifiers.length; i++){
+				if (m.equals ( identifiers[i] )){
+					tau = types[i];
+					break;
+				}
+			}
+			if (tau == null)
+				throw new RuntimeException("Type of Method not found");
+			context.addProofNode ( node, tau, node.getFirstChild ( ).getType ( ) );
+		}
+		if ( node.getChildCount ( ) == 3 && node.getChildAt ( 2 ).isFinished ( ) ) {
+			TypeEnvironment environment = node.getEnvironment ( );
+			ObjectType type = (ObjectType) environment.get ( new Identifier("self") ); //$NON-NLS-1$
+			RowType rowType = (RowType) type.getPhi ( );
+			Identifier [] identifiers = rowType.getIdentifiers ( );
+			MonoType [] types = rowType.getTypes ( );
+			Identifier m = method.getId ( );
+			MonoType tau = null;
+			
+			for ( int i = 0; i < identifiers.length; i++){
+				if (m.equals ( identifiers[i] )){
+					tau = types[i];
+					break;
+				}
+			}
+			if (tau == null)
+				throw new RuntimeException("Type of Method not found");
+			RowType row;
+		}
+		
 	}
 
 	/**
@@ -211,7 +284,7 @@ public class L2OMinimalTypingProofRuleSet extends L2MinimalTypingProofRuleSet {
 	 * <code>node</node> using the <code>context</code>.
 	 * 
 	 * @param context the minimal typing proof context.
-	 * @param node the minimal typing proof node.
+	 * @param pNode the minimal typing proof node.
 	 */
 	public void applyAttr ( MinimalTypingProofContext context,
 			MinimalTypingProofNode pNode ) {
@@ -221,14 +294,31 @@ public class L2OMinimalTypingProofRuleSet extends L2MinimalTypingProofRuleSet {
 		context.addProofNode ( node, environment, attr.getE ( ) );
 	}
 
+	  /**
+	   * Updates the <code>node</code> to which <b>(ATTR)</b> was applied
+	   * previously.
+	   * 
+	   * @param context the minimal typing proof context.
+	   * @param pNode the node to update according to <b>(ATTR)</b>.
+	   */
 	public void updateAttr ( MinimalTypingProofContext context,
 			MinimalTypingProofNode pNode ) {
 		MinimalTypingExpressionProofNode node = ( MinimalTypingExpressionProofNode ) pNode;
-		if ( node.getFirstChild ( ).isFinished ( ) ) {
+		if ( node.getChildCount ( ) == 1 && node.getFirstChild ( ).isFinished ( ) ) {
 			Attribute attr = ( Attribute ) node.getExpression ( );
 			TypeEnvironment environment = node.getEnvironment ( );
-			//TODO at a ProofNode with r1 as expression
-			//context.addProofNode ( node, environment.extend ( attr.getId ( ), node.getFirstChild ( ).getType ( ) ), expression )
+			
+			// Create the tailRow and add it as Expression of a new Child
+			Expression [] expressions = ((Row) node.getExpression ( )).getExpressions ( );
+			Expression [] tailRow = new Expression [expressions.length-1];
+			for (int i = 1; i < expressions.length; i++){
+				tailRow [i-1] = expressions[i];
+			}
+			Row row = new Row ( tailRow );
+			context.addProofNode ( node, environment.extend ( attr.getId ( ), node.getFirstChild ( ).getType ( ) ), row );
+		}
+		if ( node.getChildCount ( ) == 2 && node.getChildAt ( 1 ).isFinished ( ) ) {
+			context.setNodeType ( node, node.getChildAt ( 1 ).getType ( ) );
 		}
 	}
 
@@ -237,7 +327,7 @@ public class L2OMinimalTypingProofRuleSet extends L2MinimalTypingProofRuleSet {
 	 * <code>node</node> using the <code>context</code>.
 	 * 
 	 * @param context the minimal typing proof context.
-	 * @param node the minimal typing proof node.
+	 * @param pNode the minimal typing proof node.
 	 */
 	public void applyEmpty ( MinimalTypingProofContext context,
 			MinimalTypingProofNode pNode ) {

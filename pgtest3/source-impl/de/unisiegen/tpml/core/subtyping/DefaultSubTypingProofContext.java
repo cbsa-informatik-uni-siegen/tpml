@@ -48,8 +48,8 @@ public class DefaultSubTypingProofContext implements SubTypingProofContext {
 	 */
 	public DefaultSubTypingProofContext ( SubTypingProofModel pModel,
 			SubTypingProofNode pNode ) {
-		model = pModel;
-		node = ( DefaultSubTypingProofNode ) pNode;
+		this.model = pModel;
+		this.node = ( DefaultSubTypingProofNode ) pNode;
 	}
 
 	//
@@ -73,7 +73,7 @@ public class DefaultSubTypingProofContext implements SubTypingProofContext {
 	public void apply ( SubTypingProofRule rule, DefaultSubTypingProofNode pNode )
 			throws ProofRuleException, SubTypingException {
 
-		model.contextSetProofNodeRule ( this, pNode, rule );
+		this.model.contextSetProofNodeRule ( this, pNode, rule );
 		//	 try to apply the rule to the node
 		rule.apply ( this, pNode );
 	}
@@ -85,7 +85,7 @@ public class DefaultSubTypingProofContext implements SubTypingProofContext {
 	 */
 	public void addProofNode ( SubTypingProofNode pNode, MonoType type,
 			MonoType type2 ) {
-		model.contextAddProofNode ( this, pNode, type, type2 );
+		this.model.contextAddProofNode ( this, pNode, type, type2 );
 
 	}
 

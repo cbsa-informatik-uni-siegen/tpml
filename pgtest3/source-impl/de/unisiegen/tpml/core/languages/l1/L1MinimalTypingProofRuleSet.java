@@ -15,7 +15,6 @@ import de.unisiegen.tpml.core.expressions.MultiLambda;
 import de.unisiegen.tpml.core.expressions.MultiLet;
 import de.unisiegen.tpml.core.expressions.Or;
 import de.unisiegen.tpml.core.expressions.Recursion;
-import de.unisiegen.tpml.core.expressions.Tuple;
 import de.unisiegen.tpml.core.minimaltyping.AbstractMinimalTypingProofRuleSet;
 import de.unisiegen.tpml.core.minimaltyping.MinimalTypingExpressionProofNode;
 import de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofContext;
@@ -48,15 +47,15 @@ public class L1MinimalTypingProofRuleSet extends
 		super ( language );
 		// register the type rules
 		registerByMethodName ( L1Language.L1, "SUBTYPE", "applySubtype" ); //$NON-NLS-1$ //$NON-NLS-2$
-		registerByMethodName ( L1Language.L1, "LET", "applyLet", "updateLet" );//$NON-NLS-1$ //$NON-NLS-2$
+		registerByMethodName ( L1Language.L1, "LET", "applyLet", "updateLet" );//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		registerByMethodName ( L1Language.L1,
-				"APP-SUBSUME", "applyAppSubsume", "updateAppSubsume" );//$NON-NLS-1$ //$NON-NLS-2$
+				"APP-SUBSUME", "applyAppSubsume", "updateAppSubsume" );//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		registerByMethodName ( L1Language.L1,
-				"COND-SUBSUME", "applyCondSubsume", "updateCondSubsume" );//$NON-NLS-1$ //$NON-NLS-2$
-		registerByMethodName ( L1Language.L1, "ABSTR", "applyAbstr",
-				"updateAbstr" );
-		registerByMethodName ( L1Language.L1, "AND", "applyAnd", "updateAnd" );//$NON-NLS-1$ //$NON-NLS-2$
-		registerByMethodName ( L1Language.L1, "OR", "applyOr", "updateOr" );//$NON-NLS-1$ //$NON-NLS-2$
+				"COND-SUBSUME", "applyCondSubsume", "updateCondSubsume" );//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		registerByMethodName ( L1Language.L1, "ABSTR", "applyAbstr",  //$NON-NLS-1$//$NON-NLS-2$
+				"updateAbstr" ); //$NON-NLS-1$
+		registerByMethodName ( L1Language.L1, "AND", "applyAnd", "updateAnd" );//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		registerByMethodName ( L1Language.L1, "OR", "applyOr", "updateOr" );//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		registerByMethodName ( L1Language.L1, "CONST", "applyConst" );//$NON-NLS-1$ //$NON-NLS-2$
 		registerByMethodName ( L1Language.L1, "ID", "applyId" );//$NON-NLS-1$ //$NON-NLS-2$
 
@@ -67,7 +66,7 @@ public class L1MinimalTypingProofRuleSet extends
 	 * <code>node</node> using the <code>context</code>.
 	 * 
 	 * @param context the minimal typing proof context.
-	 * @param node the minimal typing proof node.
+	 * @param pNode the minimal typing proof node.
 	 */
 	public void applyId ( MinimalTypingProofContext context,
 			MinimalTypingProofNode pNode ) {
@@ -110,6 +109,13 @@ public class L1MinimalTypingProofRuleSet extends
 
 	}
 
+	  /**
+	   * Updates the <code>node</code> to which <b>(AND)</b> was applied
+	   * previously.
+	   * 
+	   * @param context the minimal typing proof context.
+	   * @param pNode the node to update according to <b>(AND)</b>.
+	   */
 	public void updateAnd ( MinimalTypingProofContext context,
 			MinimalTypingProofNode pNode ) {
 		MinimalTypingExpressionProofNode node = ( MinimalTypingExpressionProofNode ) pNode;
@@ -143,6 +149,13 @@ public class L1MinimalTypingProofRuleSet extends
 
 	}
 
+	 /**
+	   * Updates the <code>node</code> to which <b>(OR)</b> was applied
+	   * previously.
+	   * 
+	   * @param context the minimal typing proof context.
+	   * @param pNode the node to update according to <b>(OR)</b>.
+	   */
 	public void updateOr ( MinimalTypingProofContext context,
 			MinimalTypingProofNode pNode ) {
 		MinimalTypingExpressionProofNode node = ( MinimalTypingExpressionProofNode ) pNode;
@@ -184,6 +197,13 @@ public class L1MinimalTypingProofRuleSet extends
 		}
 	}
 
+	 /**
+	   * Updates the <code>node</code> to which <b>(APP-SUBSUME)</b> was applied
+	   * previously.
+	   * 
+	   * @param context the minimal typing proof context.
+	   * @param pNode the node to update according to <b>(APP-SUBSUME)</b>.
+	   */
 	public void updateAppSubsume ( MinimalTypingProofContext context,
 			MinimalTypingProofNode pNode ) {
 		MinimalTypingExpressionProofNode node = ( MinimalTypingExpressionProofNode ) pNode;
@@ -226,7 +246,7 @@ public class L1MinimalTypingProofRuleSet extends
 	public void applyAbstr ( MinimalTypingProofContext context,
 			MinimalTypingProofNode pNode ) {
 		MinimalTypingExpressionProofNode node = ( MinimalTypingExpressionProofNode ) pNode;
-		Expression expression = ( Expression ) node.getExpression ( );
+		Expression expression = node.getExpression ( );
 
 		if ( expression instanceof Lambda ) {
 			Lambda lambda = ( Lambda ) expression;
@@ -259,6 +279,13 @@ public class L1MinimalTypingProofRuleSet extends
 
 	}
 
+	 /**
+	   * Updates the <code>node</code> to which <b>(ABSTR)</b> was applied
+	   * previously.
+	   * 
+	   * @param context the minimal typing proof context.
+	   * @param pNode the node to update according to <b>(ABSTR)</b>.
+	   */
 	public void updateAbstr ( MinimalTypingProofContext context,
 			MinimalTypingProofNode pNode ) {
 		MinimalTypingExpressionProofNode node = ( MinimalTypingExpressionProofNode ) pNode;
@@ -297,6 +324,13 @@ public class L1MinimalTypingProofRuleSet extends
 		context.addProofNode ( node, node.getEnvironment ( ), cond.getE0 ( ) );
 	}
 
+	 /**
+	   * Updates the <code>node</code> to which <b>(COND-SUBSUME)</b> was applied
+	   * previously.
+	   * 
+	   * @param context the minimal typing proof context.
+	   * @param pNode the node to update according to <b>(COND-SUBSUME)</b>.
+	   */
 	public void updateCondSubsume ( MinimalTypingProofContext context,
 			MinimalTypingProofNode pNode ) {
 		MinimalTypingExpressionProofNode node = ( MinimalTypingExpressionProofNode ) pNode;
@@ -365,6 +399,13 @@ public class L1MinimalTypingProofRuleSet extends
 		}
 	}
 
+	 /**
+	   * Updates the <code>node</code> to which <b>(LET)</b> was applied
+	   * previously.
+	   * 
+	   * @param context the minimal typing proof context.
+	   * @param pNode the node to update according to <b>(LET)</b>.
+	   */
 	public void updateLet ( MinimalTypingProofContext context,
 			MinimalTypingProofNode pNode ) {
 		MinimalTypingExpressionProofNode node = ( MinimalTypingExpressionProofNode ) pNode;
@@ -372,15 +413,12 @@ public class L1MinimalTypingProofRuleSet extends
 
 		if ( node.getChildCount ( ) == 1 && node.getFirstChild ( ).isFinished ( ) ) {
 			if ( expression instanceof Let ) {
-				System.out.println ( "let" );
 				Let let = ( Let ) node.getExpression ( );
 				TypeEnvironment environment = node.getEnvironment ( );
 				context.addProofNode ( node, environment.extend ( let.getId ( ),
 						let.getTau ( ) ), let.getE2 ( ) );
 			} else if ( expression instanceof MultiLet ) {
-				System.out.println ( "multilet" );
 				MultiLet let = ( MultiLet ) expression;
-				Tuple tuple = ( Tuple ) node.getFirstChild ( ).getExpression ( );
 				MinimalTypingExpressionProofNode child = ( MinimalTypingExpressionProofNode ) node
 						.getFirstChild ( );
 				Identifier[] ids = let.getIdentifiers ( );
@@ -391,7 +429,6 @@ public class L1MinimalTypingProofRuleSet extends
 				}
 				context.addProofNode ( node, environment, let.getE2 ( ) );
 			} else if ( expression instanceof CurriedLet ) {
-				System.out.println ( "curriedlet" );
 				CurriedLet let = ( CurriedLet ) expression;
 				TypeEnvironment environment = node.getEnvironment ( );
 
@@ -420,7 +457,8 @@ public class L1MinimalTypingProofRuleSet extends
 	 * @param context the minimal typing proof context.
 	 * @param pNode the minimal typing proof node.
 	 */
-	public void applySubtype ( MinimalTypingProofContext context,
+	public void applySubtype ( 
+			@SuppressWarnings("unused") MinimalTypingProofContext context,
 			MinimalTypingProofNode pNode ) {
 		MinimalTypingTypesProofNode node = ( MinimalTypingTypesProofNode ) pNode;
 		MonoType type = node.getType ( );
@@ -429,6 +467,13 @@ public class L1MinimalTypingProofRuleSet extends
 
 	}
 
+	/**
+	 * 
+	 * Check if type is subtype of type2, neede for advanced mode
+	 *
+	 * @param type MonoType subtype
+	 * @param type2 MonoType general type
+	 */
 	public void subtypeInternal ( MonoType type, MonoType type2 ) {
 		if ( type.equals ( type2 ) )
 			return;

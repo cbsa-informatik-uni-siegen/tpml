@@ -1,7 +1,6 @@
 package de.unisiegen.tpml.core.subtypingrec;
 
 import java.text.MessageFormat;
-import java.util.ArrayList;
 
 import org.apache.log4j.Logger;
 
@@ -145,11 +144,11 @@ public class RecSubTypingProofModel extends AbstractProofModel {
 			context.apply ( rule, node );
 
 			//	 check if we are finished
-			final DefaultRecSubTypingProofNode root = ( DefaultRecSubTypingProofNode ) getRoot ( );
+			final DefaultRecSubTypingProofNode modelRoot = ( DefaultRecSubTypingProofNode ) getRoot ( );
 			context.addRedoAction ( new Runnable ( ) {
 				@SuppressWarnings ( "synthetic-access" )
 				public void run ( ) {
-					setFinished ( root.isFinished ( ) );
+					setFinished ( modelRoot.isFinished ( ) );
 				}
 			} );
 			context.addUndoAction ( new Runnable ( ) {

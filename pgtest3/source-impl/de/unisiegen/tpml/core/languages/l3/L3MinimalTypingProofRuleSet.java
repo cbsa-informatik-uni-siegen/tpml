@@ -1,7 +1,5 @@
 package de.unisiegen.tpml.core.languages.l3;
 
-import de.unisiegen.tpml.core.expressions.Identifier;
-import de.unisiegen.tpml.core.expressions.Recursion;
 import de.unisiegen.tpml.core.expressions.Tuple;
 import de.unisiegen.tpml.core.languages.l1.L1Language;
 import de.unisiegen.tpml.core.languages.l2.L2Language;
@@ -9,7 +7,6 @@ import de.unisiegen.tpml.core.languages.l2.L2MinimalTypingProofRuleSet;
 import de.unisiegen.tpml.core.minimaltyping.MinimalTypingExpressionProofNode;
 import de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofContext;
 import de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofNode;
-import de.unisiegen.tpml.core.minimaltyping.TypeEnvironment;
 import de.unisiegen.tpml.core.types.MonoType;
 import de.unisiegen.tpml.core.types.TupleType;
 
@@ -33,7 +30,7 @@ public class L3MinimalTypingProofRuleSet extends L2MinimalTypingProofRuleSet {
 		super ( language );
 		// register the type rules
 		registerByMethodName ( L2Language.L2,
-				"TUPLE", "applyTuple", "updateTuple" );//$NON-NLS-1$ //$NON-NLS-2$
+				"TUPLE", "applyTuple", "updateTuple" );//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 	}
 
@@ -42,7 +39,7 @@ public class L3MinimalTypingProofRuleSet extends L2MinimalTypingProofRuleSet {
 	 * <code>node</node> using the <code>context</code>.
 	 * 
 	 * @param context the minimal typing proof context.
-	 * @param node the minimal typing proof node.
+	 * @param pNode the minimal typing proof node.
 	 */
 	public void applyTuple ( MinimalTypingProofContext context,
 			MinimalTypingProofNode pNode ) {
@@ -53,6 +50,13 @@ public class L3MinimalTypingProofRuleSet extends L2MinimalTypingProofRuleSet {
 				.getExpressions ( )[0] );
 	}
 
+	  /**
+	   * Updates the <code>node</code> to which <b>(TUPLE)</b> was applied
+	   * previously.
+	   * 
+	   * @param context the minimal typing proof context.
+	   * @param pNode the node to update according to <b>(TUPLE)</b>.
+	   */
 	public void updateTuple ( MinimalTypingProofContext context,
 			MinimalTypingProofNode pNode ) {
 		MinimalTypingExpressionProofNode node = ( MinimalTypingExpressionProofNode ) pNode;
@@ -68,11 +72,10 @@ public class L3MinimalTypingProofRuleSet extends L2MinimalTypingProofRuleSet {
 				TupleType type = new TupleType(types);
 				context.setNodeType ( node, type );
 				return;
-			} else {
+			}
 				// add next child
 				context.addProofNode ( node, node.getEnvironment ( ), tuple
 						.getExpressions ( )[node.getChildCount ( )] );
-			}
 		}
 	}
 

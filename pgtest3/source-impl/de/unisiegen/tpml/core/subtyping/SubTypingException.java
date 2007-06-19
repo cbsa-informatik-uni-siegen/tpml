@@ -57,10 +57,9 @@ public final class SubTypingException extends Exception {
 	 * @param pNode the {@link RecSubTypingProofNode} where the error occurs.
 	 */
 	public SubTypingException ( final String message,
+			@SuppressWarnings("unused")
 			final RecSubTypingProofNode pNode ) {
-		//TODO ???
 		super ( message );
-		//this.node = pNode;
 	}
 
 	//

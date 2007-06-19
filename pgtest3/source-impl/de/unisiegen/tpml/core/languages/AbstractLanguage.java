@@ -78,7 +78,10 @@ public abstract class AbstractLanguage implements Language
    * 
    * @see de.unisiegen.tpml.core.languages.Language#newSubTypingProofModel(de.unisiegen.tpml.core.expressions.Expression)
    */
-  public SubTypingProofModel newSubTypingProofModel ( MonoType type, MonoType type2, boolean mode )
+  public SubTypingProofModel newSubTypingProofModel ( 
+		  @SuppressWarnings("unused")	MonoType type, 
+		  @SuppressWarnings("unused") MonoType type2, 
+		  @SuppressWarnings("unused")	boolean mode )
   {
     throw new UnsupportedOperationException ( MessageFormat.format ( Messages
         .getString ( "AbstractLanguage.0" ) , getName ( ) ) ) ; //$NON-NLS-1$
@@ -87,9 +90,12 @@ public abstract class AbstractLanguage implements Language
   /**
    * {@inheritDoc}
    * 
-   * @see de.unisiegen.tpml.core.languages.Language#newSubTypingProofModel(de.unisiegen.tpml.core.expressions.Expression)
+   * @see de.unisiegen.tpml.core.languages.Language#newRecSubTypingProofModel(MonoType type, MonoType type2, boolean mode)
    */
-  public RecSubTypingProofModel newRecSubTypingProofModel ( MonoType type, MonoType type2, boolean mode )
+  public RecSubTypingProofModel newRecSubTypingProofModel ( 
+		  @SuppressWarnings("unused")	MonoType type, 
+		  @SuppressWarnings("unused")	MonoType type2, 
+		  @SuppressWarnings("unused")	boolean mode )
   {
     throw new UnsupportedOperationException ( MessageFormat.format ( Messages
         .getString ( "AbstractLanguage.0" ) , getName ( ) ) ) ; //$NON-NLS-1$

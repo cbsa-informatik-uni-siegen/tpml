@@ -28,7 +28,7 @@ public class L2MinimalTypingProofRuleSet extends
 	public L2MinimalTypingProofRuleSet ( L1Language language ) {
 		super ( language );
 		// register the type rules
-		registerByMethodName ( L2Language.L2,"REC", "applyRec", "updateRec" );//$NON-NLS-1$ //$NON-NLS-2$
+		registerByMethodName ( L2Language.L2,"REC", "applyRec", "updateRec" );//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 	}
 
@@ -37,7 +37,7 @@ public class L2MinimalTypingProofRuleSet extends
 	 * <code>node</node> using the <code>context</code>.
 	 * 
 	 * @param context the minimal typing proof context.
-	 * @param node the minimal typing proof node.
+	 * @param pNode the minimal typing proof node.
 	 */
 	public void applyRec ( MinimalTypingProofContext context,
 			MinimalTypingProofNode pNode ) {
@@ -51,6 +51,13 @@ public class L2MinimalTypingProofRuleSet extends
 		context.addProofNode ( node, environment.extend ( rec.getId ( ), rec.getTau ( ) ), rec.getE ( ) );
 	}
 	
+	  /**
+	   * Updates the <code>node</code> to which <b>(REC)</b> was applied
+	   * previously.
+	   * 
+	   * @param context the minimal typing proof context.
+	   * @param pNode the node to update according to <b>(REC)</b>.
+	   */
 	public void updateRec ( MinimalTypingProofContext context,
 			MinimalTypingProofNode pNode ) {
 		MinimalTypingExpressionProofNode node = (MinimalTypingExpressionProofNode) pNode;

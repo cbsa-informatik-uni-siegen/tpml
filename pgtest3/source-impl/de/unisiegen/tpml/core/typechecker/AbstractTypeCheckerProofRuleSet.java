@@ -76,10 +76,10 @@ public abstract class AbstractTypeCheckerProofRuleSet extends AbstractProofRuleS
    */
   protected void register(int group, String name, final Method applyMethod, final Method updateMethod) {
     if (name == null) {
-      throw new NullPointerException("name is null");
+      throw new NullPointerException("name is null"); //$NON-NLS-1$
     }
     if (applyMethod == null) {
-      throw new NullPointerException("applyMethod is null");
+      throw new NullPointerException("applyMethod is null"); //$NON-NLS-1$
     }
     
     // register a new proof rule with the name and methods
@@ -172,7 +172,7 @@ public abstract class AbstractTypeCheckerProofRuleSet extends AbstractProofRuleS
    */
   private Method getMethodByName(String methodName) {
     if (methodName == null) {
-      throw new NullPointerException("methodName is null");
+      throw new NullPointerException("methodName is null"); //$NON-NLS-1$
     }
     try {
       // lookup the method with the parameters BigStepProofContext and BigStepProofNode
@@ -184,7 +184,7 @@ public abstract class AbstractTypeCheckerProofRuleSet extends AbstractProofRuleS
     }
     catch (Exception e) {
       // translate the exception to a runtime exception
-      throw new RuntimeException("Method " + methodName + " not found", e);
+      throw new RuntimeException("Method " + methodName + " not found", e); //$NON-NLS-1$ //$NON-NLS-2$
     }
   }
 }

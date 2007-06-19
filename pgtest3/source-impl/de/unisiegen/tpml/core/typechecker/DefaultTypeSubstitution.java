@@ -92,13 +92,13 @@ public final class DefaultTypeSubstitution implements TypeSubstitution {
    */
   DefaultTypeSubstitution(TypeVariable tvar, MonoType type, DefaultTypeSubstitution parent) {
     if (tvar == null) {
-      throw new NullPointerException("tvar is null");
+      throw new NullPointerException("tvar is null"); //$NON-NLS-1$
     }
     if (type == null) {
-      throw new NullPointerException("type is null");
+      throw new NullPointerException("type is null"); //$NON-NLS-1$
     }
     if (parent == null) {
-      throw new NullPointerException("parent is null");
+      throw new NullPointerException("parent is null"); //$NON-NLS-1$
     }
     this.tvar = tvar;
     this.type = type;
@@ -124,10 +124,10 @@ public final class DefaultTypeSubstitution implements TypeSubstitution {
     }
 
     // compose(parent, s)
-    DefaultTypeSubstitution parent = this.parent.compose(s);
+    DefaultTypeSubstitution parentSubstitution = this.parent.compose(s);
     
     // and prepend (name,type) pair
-    return new DefaultTypeSubstitution(this.tvar, this.type, parent);
+    return new DefaultTypeSubstitution(this.tvar, this.type, parentSubstitution);
   }
 
   /**
@@ -151,27 +151,31 @@ public final class DefaultTypeSubstitution implements TypeSubstitution {
    *
    * @see de.unisiegen.tpml.core.typechecker.TypeSubstitution#get(de.unisiegen.tpml.core.types.TypeVariable)
    */
-  public MonoType get(TypeVariable tvar) {
+  public MonoType get(TypeVariable pTvar) {
     if (this == EMPTY_SUBSTITUTION) {
       // reached the end of the substitution chain
-      return tvar;
+      return pTvar;
     }
-    else if (this.tvar.equals(tvar)) {
+    else if (this.tvar.equals(pTvar)) {
       // we have a match here
       return this.type;
     }
     else {
       // check the parent substitution
-      return this.parent.get(tvar);
+      return this.parent.get(pTvar);
     }
   }
   
+  /**
+   * {@inheritDoc}
+   * 
+   * Mainly useful for debugging purposes.
+   * 
+   * @see java.lang.Object#toString()
+   */
+  @Override
   public String toString()
   {
-	  return type.toString()+"/"+tvar.toString();
+	  return this.type.toString()+"/"+this.tvar.toString(); //$NON-NLS-1$
   }
-
-	public MonoType getType() {
-		return this.type;
-	}
 }

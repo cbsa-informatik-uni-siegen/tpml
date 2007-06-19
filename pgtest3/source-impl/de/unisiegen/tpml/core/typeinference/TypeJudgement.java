@@ -52,9 +52,9 @@ public class TypeJudgement implements TypeFormula {
 	public TypeJudgement ( final DefaultTypeEnvironment env,
 			final Expression expr, final MonoType t ) {
 
-		environment = env;
-		expression = expr;
-		type = t;
+		this.environment = env;
+		this.expression = expr;
+		this.type = t;
 	}
 
 	/**
@@ -153,11 +153,11 @@ public class TypeJudgement implements TypeFormula {
 	public String toString ( ) {
 
 		final StringBuilder builder = new StringBuilder ( 128 );
-		builder.append ( environment );
+		builder.append ( this.environment );
 		builder.append ( " \u22b3 " ); //$NON-NLS-1$
-		builder.append ( expression );
+		builder.append ( this.expression );
 		builder.append ( " :: " ); //$NON-NLS-1$
-		builder.append ( type );
+		builder.append ( this.type );
 		return builder.toString ( );
 	}
 
@@ -170,6 +170,10 @@ public class TypeJudgement implements TypeFormula {
 		this.expression = expression;
 	}
 	
+	/**
+	 *
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
 	@Override
 	public boolean equals (Object o){
 		try {

@@ -32,8 +32,8 @@ public class DefaultSubTypingProofNode extends AbstractProofNode implements
 	 * 
 	 */
 	public DefaultSubTypingProofNode ( MonoType pType, MonoType pType2 ) {
-		type = pType;
-		type2 = pType2;
+		this.type = pType;
+		this.type2 = pType2;
 	}
 
 	/**
@@ -127,23 +127,23 @@ public class DefaultSubTypingProofNode extends AbstractProofNode implements
 		if ( Debug.isUserName ( Debug.BENJAMIN ) ) {
 			String result = ""; //$NON-NLS-1$
 			builder.append ( "<html>" ); //$NON-NLS-1$
-			result += type;
+			result += this.type;
 			result = result.replaceAll ( "<", "&#60" ); //$NON-NLS-1$//$NON-NLS-2$
 			builder.append ( result );
 			result = ""; //$NON-NLS-1$
 			builder.append ( "<b><font color=\"#FF0000\">" ); //$NON-NLS-1$
 			builder.append ( " &#60: " ); //$NON-NLS-1$
 			builder.append ( "</font></b>" ); //$NON-NLS-1$
-			result += type2;
+			result += this.type2;
 			if ( this.getSteps ( ).length > 0 )
 				result += this.getSteps ( )[0].getRule ( ).toString ( );
 			result = result.replaceAll ( "<", "&#60" ); //$NON-NLS-1$ //$NON-NLS-2$
 			builder.append ( result );
 			builder.append ( "</html>" ); //$NON-NLS-1$
 		} else {
-			builder.append ( type );
+			builder.append ( this.type );
 			builder.append ( " <: " ); //$NON-NLS-1$
-			builder.append ( type2 );
+			builder.append ( this.type2 );
 			builder.append ( " " ); //$NON-NLS-1$
 			if ( this.getSteps ( ).length > 0 )
 				builder.append ( this.getSteps ( )[0].getRule ( ).toString ( ) );
@@ -160,12 +160,10 @@ public class DefaultSubTypingProofNode extends AbstractProofNode implements
 	 * @see de.unisiegen.tpml.core.subtyping.SubTypingProofNode#getRule()
 	 */
 	public SubTypingProofRule getRule ( ) {
-		ProofStep[] steps = getSteps ( );
-		if ( steps.length > 0 ) {
-			return ( SubTypingProofRule ) steps[0].getRule ( );
-		} else {
-			return null;
-		}
+		ProofStep[] proofSteps = getSteps ( );
+		if ( proofSteps.length > 0 )
+			return ( SubTypingProofRule ) proofSteps[0].getRule ( );
+		return null;
 	}
 
 }

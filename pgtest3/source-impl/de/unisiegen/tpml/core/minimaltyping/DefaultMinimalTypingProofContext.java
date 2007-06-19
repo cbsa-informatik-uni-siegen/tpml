@@ -36,29 +36,17 @@ import de.unisiegen.tpml.core.types.UnitType ;
 
 
 /**
- * Default implementation of the <code>TypeCheckerProofContext</code>
+ * Default implementation of the <code>MinimalTypingProofContext</code>
  * interface.
  * 
- * @author Benedikt Meurer
- * @version $Rev:511M $
- * @see de.unisiegen.tpml.core.typechecker.TypeCheckerProofContext
+ * @author Benjamin MIes
+ * @see de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofContext
  */
 public class DefaultMinimalTypingProofContext implements MinimalTypingProofContext
 {
   //
   // Attributes
   //
-  /**
-   * The current offset for the <code>TypeVariable</code> allocation. The
-   * offset combined with the index from the {@link #model} will be used to
-   * generate a new type variable on every invocation of the method
-   * {@link #newTypeVariable()}. The offset will be incremented afterwards.
-   * 
-   * @see #newTypeVariable()
-   * @see TypeVariable
-   */
-  private int offset = 0 ;
-
 
   /**
    * The type checker proof model with which this proof context is associated.
@@ -104,7 +92,7 @@ public class DefaultMinimalTypingProofContext implements MinimalTypingProofConte
   {
     if ( model == null )
     {
-      throw new NullPointerException ( "model is null" ) ;
+      throw new NullPointerException ( "model is null" ) ; //$NON-NLS-1$
     }
     this.model = model ;
     // increment the model index
@@ -129,7 +117,7 @@ public class DefaultMinimalTypingProofContext implements MinimalTypingProofConte
   /**
    * {@inheritDoc}
    * 
-   * @see de.unisiegen.tpml.core.minimaltyping.MinimalTypingrProofContext#addProofNode(de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode,
+   * @see de.unisiegen.tpml.core.minimaltyping.MinimalTypingrProofContext#addProofNode(de.unisiegen.tpml.core.minimaltyping.MinimalTypingProofNode,
    *      de.unisiegen.tpml.core.minimaltyping.TypeEnvironment,
    *      de.unisiegen.tpml.core.expressions.Expression,
    *      de.unisiegen.tpml.core.types.MonoType)
@@ -141,11 +129,25 @@ public class DefaultMinimalTypingProofContext implements MinimalTypingProofConte
         ( AbstractMinimalTypingProofNode ) node , environment , expression  ) ;
   }
   
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.tpml.core.minimaltyping.MinimalTypingrProofContext#addProofNode(de.unisiegen.tpml.core.minimal.MinimalTypingProofNode,
+   *      de.unisiegen.tpml.core.types.MonoType,
+   *      de.unisiegen.tpml.core.types.MonoType)
+   */
 	public void addProofNode ( MinimalTypingProofNode node, MonoType type, MonoType type2 ) {
 		this.model.contextAddProofNode ( this, (AbstractMinimalTypingProofNode) node, type, type2 );
 		
 	}
 	
+	  /**
+	   * {@inheritDoc}
+	   * 
+	   * @see de.unisiegen.tpml.core.minimaltyping.MinimalTypingrProofContext#setNodeType(de.unisiegen.tpml.core.minimal.MinimalTypingProofNode,
+	   *      de.unisiegen.tpml.core.types.MonoType,
+	   *      de.unisiegen.tpml.core.types.MonoType)
+	   */
 	public void setNodeType(MinimalTypingProofNode node, MonoType type){
 		this.model.contextSetProofNodeType ( this, (AbstractMinimalTypingProofNode) node, type );
 	}
@@ -160,7 +162,7 @@ public class DefaultMinimalTypingProofContext implements MinimalTypingProofConte
   {
     if ( expression == null )
     {
-      throw new NullPointerException ( "expression is null" ) ;
+      throw new NullPointerException ( "expression is null" ) ; //$NON-NLS-1$
     }
     if ( expression instanceof BooleanConstant )
     {
@@ -260,7 +262,7 @@ public class DefaultMinimalTypingProofContext implements MinimalTypingProofConte
     else
     {
       // not a simple expression
-      throw new IllegalArgumentException ( "Cannot determine the type for "
+      throw new IllegalArgumentException ( "Cannot determine the type for " //$NON-NLS-1$
           + expression ) ;
     }
   }
@@ -282,9 +284,10 @@ public class DefaultMinimalTypingProofContext implements MinimalTypingProofConte
    * @throws ProofRuleException if the application of the <code>rule</code> to
    *           the <code>node</code> failed for some reason.
    */
-  void apply ( MinimalTypingProofRule rule , MinimalTypingProofNode node ,
+  void apply ( MinimalTypingProofRule rule , MinimalTypingProofNode pNode ,
       MonoType type ) throws ProofRuleException
   {
+	  MinimalTypingProofNode node = pNode;
     // record the proof step for the node
     this.model.contextSetProofNodeRule ( this ,
         ( AbstractMinimalTypingProofNode ) node , rule ) ;
@@ -350,7 +353,7 @@ public class DefaultMinimalTypingProofContext implements MinimalTypingProofConte
   {
     if ( redoAction == null )
     {
-      throw new NullPointerException ( "undoAction is null" ) ;
+      throw new NullPointerException ( "undoAction is null" ) ; //$NON-NLS-1$
     }
     // perform the action
     redoAction.run ( ) ;
@@ -375,7 +378,7 @@ public class DefaultMinimalTypingProofContext implements MinimalTypingProofConte
   {
     if ( undoAction == null )
     {
-      throw new NullPointerException ( "undoAction is null" ) ;
+      throw new NullPointerException ( "undoAction is null" ) ; //$NON-NLS-1$
     }
     // record the action
     this.undoActions.add ( 0 , undoAction ) ;
@@ -394,7 +397,8 @@ public class DefaultMinimalTypingProofContext implements MinimalTypingProofConte
   {
     return new Runnable ( )
     {
-      public void run ( )
+      @SuppressWarnings("synthetic-access")
+		public void run ( )
       {
         for ( Runnable redoAction : DefaultMinimalTypingProofContext.this.redoActions )
         {
@@ -417,7 +421,8 @@ public class DefaultMinimalTypingProofContext implements MinimalTypingProofConte
   {
     return new Runnable ( )
     {
-      public void run ( )
+      @SuppressWarnings("synthetic-access")
+		public void run ( )
       {
         for ( Runnable undoAction : DefaultMinimalTypingProofContext.this.undoActions )
         {

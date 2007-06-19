@@ -2,28 +2,28 @@ package de.unisiegen.tpml.core.languages.l4 ;
 
 
 
-import java.text.MessageFormat ;
-import de.unisiegen.tpml.core.Messages ;
-import de.unisiegen.tpml.core.languages.l1.L1Language ;
-import de.unisiegen.tpml.core.languages.l2.L2Language ;
-import de.unisiegen.tpml.core.languages.l3.L3Language ;
-import de.unisiegen.tpml.core.typechecker.DefaultTypeSubstitution ;
-import de.unisiegen.tpml.core.typechecker.TypeCheckerProofContext ;
-import de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode ;
-import de.unisiegen.tpml.core.typeinference.DefaultTypeEquationProofNode ;
-import de.unisiegen.tpml.core.typeinference.DefaultTypeInferenceProofContext ;
+import java.text.MessageFormat;
+
+import de.unisiegen.tpml.core.Messages;
+import de.unisiegen.tpml.core.languages.l1.L1Language;
+import de.unisiegen.tpml.core.languages.l2.L2Language;
+import de.unisiegen.tpml.core.languages.l3.L3Language;
+import de.unisiegen.tpml.core.typechecker.DefaultTypeSubstitution;
+import de.unisiegen.tpml.core.typechecker.TypeCheckerProofContext;
+import de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode;
+import de.unisiegen.tpml.core.typeinference.DefaultTypeInferenceProofContext;
 import de.unisiegen.tpml.core.typeinference.TypeEquationProofNode;
-import de.unisiegen.tpml.core.typeinference.TypeEquationTypeInference ;
+import de.unisiegen.tpml.core.typeinference.TypeEquationTypeInference;
 import de.unisiegen.tpml.core.typeinference.TypeInferenceProofContext;
-import de.unisiegen.tpml.core.typeinference.UnifyException ;
-import de.unisiegen.tpml.core.types.ArrowType ;
-import de.unisiegen.tpml.core.types.ListType ;
-import de.unisiegen.tpml.core.types.MonoType ;
-import de.unisiegen.tpml.core.types.RecType ;
-import de.unisiegen.tpml.core.types.RefType ;
-import de.unisiegen.tpml.core.types.TupleType ;
-import de.unisiegen.tpml.core.types.TypeVariable ;
-import de.unisiegen.tpml.core.util.Debug ;
+import de.unisiegen.tpml.core.typeinference.UnifyException;
+import de.unisiegen.tpml.core.types.ArrowType;
+import de.unisiegen.tpml.core.types.ListType;
+import de.unisiegen.tpml.core.types.MonoType;
+import de.unisiegen.tpml.core.types.RecType;
+import de.unisiegen.tpml.core.types.RefType;
+import de.unisiegen.tpml.core.types.TupleType;
+import de.unisiegen.tpml.core.types.TypeVariable;
+import de.unisiegen.tpml.core.util.Debug;
 
 
 /**

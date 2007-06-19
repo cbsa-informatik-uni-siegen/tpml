@@ -72,8 +72,8 @@ public class L2ORecSubTypingProofRuleSet extends L2RecSubTypingProofRuleSet {
 			ArrayList < Identifier > newIds = new ArrayList < Identifier > ( );
 			ArrayList < MonoType > newTypes = new ArrayList < MonoType > ( );
 
-			RowType r1 = ( RowType ) ( ( ObjectType ) type ).getPhi ( );
-			RowType r2 = ( RowType ) ( ( ObjectType ) type2 ).getPhi ( );
+			RowType r1 = ( RowType ) ( type ).getPhi ( );
+			RowType r2 = ( RowType ) ( type2 ).getPhi ( );
 
 			Identifier[] ids1 = r1.getIdentifiers ( );
 			Identifier[] ids2 = r2.getIdentifiers ( );
@@ -156,8 +156,8 @@ public class L2ORecSubTypingProofRuleSet extends L2RecSubTypingProofRuleSet {
 		ObjectType type = ( ObjectType ) node.getType ( );
 		ObjectType type2 = ( ObjectType ) node.getType2 ( );
 
-		RowType r1 = ( RowType ) ( ( ObjectType ) type ).getPhi ( );
-		RowType r2 = ( RowType ) ( ( ObjectType ) type2 ).getPhi ( );
+		RowType r1 = ( RowType ) ( type ).getPhi ( );
+		RowType r2 = ( RowType ) ( type2 ).getPhi ( );
 
 		Identifier[] ids1 = r1.getIdentifiers ( );
 		Identifier[] ids2 = r2.getIdentifiers ( );
@@ -198,8 +198,8 @@ public class L2ORecSubTypingProofRuleSet extends L2RecSubTypingProofRuleSet {
 		ObjectType type = ( ObjectType ) node.getType ( );
 		ObjectType type2 = ( ObjectType ) node.getType2 ( );
 
-		RowType r1 = ( RowType ) ( ( ObjectType ) type ).getPhi ( );
-		RowType r2 = ( RowType ) ( ( ObjectType ) type2 ).getPhi ( );
+		RowType r1 = ( RowType ) ( type ).getPhi ( );
+		RowType r2 = ( RowType ) ( type2 ).getPhi ( );
 
 		Identifier[] ids1 = r1.getIdentifiers ( );
 		Identifier[] ids2 = r2.getIdentifiers ( );

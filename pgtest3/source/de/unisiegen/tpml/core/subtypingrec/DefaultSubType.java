@@ -23,8 +23,8 @@ public class DefaultSubType {
 	 * 
 	 */
 	public DefaultSubType ( MonoType type, MonoType type2 ) {
-		subtype = type;
-		overtype = type2;
+		this.subtype = type;
+		this.overtype = type2;
 	}
 
 	/**
@@ -71,13 +71,14 @@ public class DefaultSubType {
 	 * 
 	 * @see java.lang.Object#toString()
 	 */
+	@Override
 	public String toString ( ) {
 		final StringBuilder builder = new StringBuilder ( );
-		builder.append ( subtype );
+		builder.append ( this.subtype );
 		builder.append ( "<b><font color=\"#FF0000\">" ); //$NON-NLS-1$
 		builder.append ( " &#60: " ); //$NON-NLS-1$
 		builder.append ( "</font></b>" ); //$NON-NLS-1$
-		builder.append ( overtype );
+		builder.append ( this.overtype );
 		return builder.toString ( );
 	}
 
