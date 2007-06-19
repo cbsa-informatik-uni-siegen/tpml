@@ -293,6 +293,7 @@ public class CompoundExpressionTypeInference extends JComponent
 	      				testAusgabe(""+i+". Bereicht: "+rects.get(i).toString());
 	      				Graphics gc = getGraphics();
 	      				typeFormularRenderer.markArea(rects.get(i).x, rects.get(i).y, rects.get(i).width, rects.get(i).height, gc, i);
+
 	      			}
 	      		}
 	    		}

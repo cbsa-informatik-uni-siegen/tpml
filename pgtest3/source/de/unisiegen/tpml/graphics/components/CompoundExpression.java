@@ -372,7 +372,8 @@ public class CompoundExpression < S , E > extends JComponent
       
       
       */
-
+     //because of the bounds are cached we need a new one. The expression
+      //might change by translating in coresyntax
      bonds = new ShowBonds(); 
      bonds.setExpression ( this.expression ) ;
       
