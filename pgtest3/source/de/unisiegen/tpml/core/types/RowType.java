@@ -1,9 +1,11 @@
 package de.unisiegen.tpml.core.types ;
 
 
+import java.text.MessageFormat ;
 import java.util.ArrayList ;
 import java.util.Arrays ;
 import java.util.TreeSet ;
+import de.unisiegen.tpml.core.Messages ;
 import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.expressions.Identifier ;
 import de.unisiegen.tpml.core.interfaces.DefaultIdentifiers ;
@@ -212,23 +214,6 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
     this ( pIdentifiers , pTypes ) ;
     this.parserStartOffset = pParserStartOffset ;
     this.parserEndOffset = pParserEndOffset ;
-    /*
-     * Identifier [ ] id1 = new Identifier [ 5 ] ; id1 [ 0 ] = new Identifier (
-     * "a" ) ; id1 [ 1 ] = new Identifier ( "b" ) ; id1 [ 2 ] = new Identifier (
-     * "c" ) ; id1 [ 3 ] = new Identifier ( "x" ) ; id1 [ 4 ] = new Identifier (
-     * "y" ) ; Identifier [ ] id2 = new Identifier [ 5 ] ; id2 [ 0 ] = new
-     * Identifier ( "c" ) ; id2 [ 1 ] = new Identifier ( "d" ) ; id2 [ 2 ] = new
-     * Identifier ( "e" ) ; id2 [ 3 ] = new Identifier ( "y" ) ; id2 [ 4 ] = new
-     * Identifier ( "x" ) ; MonoType [ ] tau1 = new MonoType [ 5 ] ; tau1 [ 0 ] =
-     * new IntegerType ( ) ; tau1 [ 1 ] = new UnitType ( ) ; tau1 [ 2 ] = new
-     * IntegerType ( ) ; tau1 [ 3 ] = new IntegerType ( ) ; tau1 [ 4 ] = new
-     * BooleanType ( ) ; MonoType [ ] tau2 = new MonoType [ 5 ] ; tau2 [ 0 ] =
-     * new IntegerType ( ) ; tau2 [ 1 ] = new BooleanType ( ) ; tau2 [ 2 ] = new
-     * IntegerType ( ) ; tau2 [ 3 ] = new BooleanType ( ) ; tau2 [ 4 ] = new
-     * IntegerType ( ) ; RowType r1 = new RowType ( id1 , tau1 ) ; RowType r2 =
-     * new RowType ( id2 , tau2 ) ; System.out.println ( RowType.union ( r1 , r2
-     * ).toPrettyString ( ) ) ;
-     */
   }
 
 
@@ -244,36 +229,113 @@ public final class RowType extends MonoType implements DefaultIdentifiers ,
       MonoType pRemainingRowType )
   {
     this ( pIdentifiers , pTypes ) ;
-    if ( pRemainingRowType != null )
+    if ( ( pRemainingRowType != null )
+        && ( pRemainingRowType instanceof RowType ) )
     {
-      if ( pRemainingRowType instanceof RowType )
+      RowType rowType = ( RowType ) pRemainingRowType ;
+      this.identifiers = new Identifier [ pIdentifiers.length
+          + rowType.getIdentifiers ( ).length ] ;
+      this.indicesId = new int [ this.identifiers.length ] ;
+      for ( int i = 0 ; i < pIdentifiers.length ; i ++ )
       {
-        RowType rowType = ( RowType ) pRemainingRowType ;
-        this.identifiers = new Identifier [ pIdentifiers.length
-            + rowType.getIdentifiers ( ).length ] ;
-        for ( int i = 0 ; i < pIdentifiers.length ; i ++ )
+        this.identifiers [ i ] = pIdentifiers [ i ] ;
+        this.indicesId [ i ] = i + 1 ;
+      }
+      for ( int i = 0 ; i < rowType.getIdentifiers ( ).length ; i ++ )
+      {
+        this.identifiers [ pIdentifiers.length + i ] = rowType
+            .getIdentifiers ( ) [ i ] ;
+        this.indicesId [ pIdentifiers.length + i ] = pIdentifiers.length + i
+            + 1 ;
+      }
+      this.types = new MonoType [ pTypes.length + rowType.getTypes ( ).length ] ;
+      this.indicesType = new int [ this.types.length ] ;
+      for ( int i = 0 ; i < pTypes.length ; i ++ )
+      {
+        this.types [ i ] = pTypes [ i ] ;
+        this.indicesType [ i ] = i + 1 ;
+      }
+      for ( int i = 0 ; i < rowType.getTypes ( ).length ; i ++ )
+      {
+        this.types [ pTypes.length + i ] = rowType.getTypes ( ) [ i ] ;
+        this.indicesType [ pTypes.length + i ] = pTypes.length + i + 1 ;
+      }
+      this.remainingRowType = rowType.getRemainingRowType ( ) ;
+    }
+    else
+    {
+      this.remainingRowType = pRemainingRowType ;
+    }
+    checkDifferentTypes ( ) ;
+    // Delete double Identifiers with the same Type
+    ArrayList < Identifier > newIdentifiers = new ArrayList < Identifier > (
+        this.identifiers.length ) ;
+    for ( Identifier id : this.identifiers )
+    {
+      newIdentifiers.add ( id ) ;
+    }
+    ArrayList < MonoType > newTypes = new ArrayList < MonoType > (
+        this.types.length ) ;
+    for ( MonoType tau : this.types )
+    {
+      newTypes.add ( tau ) ;
+    }
+    for ( int i = newIdentifiers.size ( ) - 1 ; i >= 0 ; i -- )
+    {
+      for ( int j = i - 1 ; j >= 0 ; j -- )
+      {
+        if ( ( ! ( newTypes.get ( i ) instanceof TypeVariable ) )
+            && ( ! ( newTypes.get ( j ) instanceof TypeVariable ) )
+            && ( newIdentifiers.get ( i ).equals ( newIdentifiers.get ( j ) ) ) )
         {
-          this.identifiers [ i ] = pIdentifiers [ i ] ;
+          newIdentifiers.remove ( i ) ;
+          newTypes.remove ( i ) ;
+          break ;
         }
-        for ( int i = 0 ; i < rowType.getIdentifiers ( ).length ; i ++ )
-        {
-          this.identifiers [ pIdentifiers.length + i ] = rowType
-              .getIdentifiers ( ) [ i ] ;
-        }
-        this.types = new MonoType [ pTypes.length + rowType.getTypes ( ).length ] ;
-        for ( int i = 0 ; i < pTypes.length ; i ++ )
-        {
-          this.types [ i ] = pTypes [ i ] ;
-        }
-        for ( int i = 0 ; i < rowType.getTypes ( ).length ; i ++ )
-        {
-          this.types [ pTypes.length + i ] = rowType.getTypes ( ) [ i ] ;
-        }
-        this.remainingRowType = rowType.getRemainingRowType ( ) ;
-        return ;
       }
     }
-    this.remainingRowType = pRemainingRowType ;
+    if ( newIdentifiers.size ( ) != this.identifiers.length )
+    {
+      this.identifiers = new Identifier [ newIdentifiers.size ( ) ] ;
+      this.indicesId = new int [ newIdentifiers.size ( ) ] ;
+      for ( int i = 0 ; i < newIdentifiers.size ( ) ; i ++ )
+      {
+        this.identifiers [ i ] = newIdentifiers.get ( i ) ;
+        this.indicesId [ i ] = i + 1 ;
+      }
+      this.types = new MonoType [ newTypes.size ( ) ] ;
+      this.indicesType = new int [ newTypes.size ( ) ] ;
+      for ( int i = 0 ; i < newTypes.size ( ) ; i ++ )
+      {
+        this.types [ i ] = newTypes.get ( i ) ;
+        this.indicesType [ i ] = i + 1 ;
+      }
+    }
+  }
+
+
+  /**
+   * Checks if this {@link RowType} has methods with the same name, but
+   * different types.
+   */
+  public void checkDifferentTypes ( )
+  {
+    for ( int i = 0 ; i < this.identifiers.length ; i ++ )
+    {
+      for ( int j = i + 1 ; j < this.identifiers.length ; j ++ )
+      {
+        if ( this.identifiers [ i ].equals ( this.identifiers [ j ] ) )
+        {
+          if ( ( ! ( this.types [ i ] instanceof TypeVariable ) )
+              && ( ! ( this.types [ j ] instanceof TypeVariable ) )
+              && ( ! this.types [ i ].equals ( this.types [ j ] ) ) )
+          {
+            throw new RuntimeException ( MessageFormat.format ( Messages
+                .getString ( "ProofRuleException.6" ) , this ) ) ; //$NON-NLS-1$
+          }
+        }
+      }
+    }
   }
 
 
