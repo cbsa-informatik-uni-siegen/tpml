@@ -1,5 +1,6 @@
 package de.unisiegen.tpml.core.subtyping;
 
+
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -26,6 +27,7 @@ import de.unisiegen.tpml.core.ProofRule;
 import de.unisiegen.tpml.core.languages.Language;
 import de.unisiegen.tpml.core.languages.LanguageFactory;
 import de.unisiegen.tpml.core.languages.LanguageTypeParser;
+import de.unisiegen.tpml.core.subtyping.SubTypingProofModel;
 import de.unisiegen.tpml.core.types.MonoType;
 
 public class SubTypingProofModelTest extends JFrame {
@@ -237,11 +239,11 @@ public class SubTypingProofModelTest extends JFrame {
 
 	private static ProofNode nextNode ( SubTypingProofModel model ) {
 
-		LinkedList < DefaultSubTypingProofNode > nodes = new LinkedList < DefaultSubTypingProofNode > ( );
-		nodes.add ( ( DefaultSubTypingProofNode ) model.getRoot ( ) );
+		LinkedList < ProofNode > nodes = new LinkedList < ProofNode > ( );
+		nodes.add ( ( ProofNode ) model.getRoot ( ) );
 		while ( !nodes.isEmpty ( ) ) {
-			DefaultSubTypingProofNode node = nodes.poll ( );
-			if ( node.getSteps ( ).length == 0 ) {
+			ProofNode node = nodes.poll ( );
+			if ( node.getRules ( ).length == 0 ) {
 				return node;
 			}
 			for ( int n = 0; n < node.getChildCount ( ); ++n ) {
