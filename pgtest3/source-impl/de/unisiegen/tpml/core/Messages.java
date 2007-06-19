@@ -1,4 +1,4 @@
-package de.unisiegen.tpml.graphics ;
+package de.unisiegen.tpml.core ;
 
 
 import java.util.MissingResourceException ;
@@ -18,7 +18,7 @@ public class Messages
    * The resource bundle.
    */
   private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle
-      .getBundle ( "de.unisiegen.tpml.graphics.messages" ) ; //$NON-NLS-1$
+      .getBundle ( "de.unisiegen.tpml.core.messages" ) ; //$NON-NLS-1$
 
 
   /**
