@@ -139,7 +139,7 @@ public class SeenTypes < E > implements Cloneable , Iterable < E >
     result.append ( "[" ) ; //$NON-NLS-1$
     for ( int i = 0 ; i < this.list.size ( ) ; i ++ )
     {
-      result.append ( this.list.get ( i ).toString ( ) ) ;
+      result.append ( this.list.get ( i ) ) ;
       if ( i < this.list.size ( ) - 1 )
       {
         result.append ( ", " ) ; //$NON-NLS-1$

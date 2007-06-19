@@ -293,6 +293,18 @@ public final class TypeEquationTypeInference implements TypeFormula ,
   @ Override
   public String toString ( )
   {
-    return ( this.seenTypes + " " + this.left + " = " + this.right ) ; //$NON-NLS-1$ //$NON-NLS-2$
+    StringBuilder result = new StringBuilder ( ) ;
+    result.append ( "[" ) ; //$NON-NLS-1$
+    for ( int i = 0 ; i < this.seenTypes.size ( ) ; i ++ )
+    {
+      result.append ( this.seenTypes.get ( i ).left + " = " //$NON-NLS-1$
+          + this.seenTypes.get ( i ).right ) ;
+      if ( i < this.seenTypes.size ( ) - 1 )
+      {
+        result.append ( ", " ) ; //$NON-NLS-1$
+      }
+    }
+    result.append ( "] " ) ; //$NON-NLS-1$
+    return result.toString ( ) + this.left + " = " + this.right ; //$NON-NLS-1$ 
   }
 }
