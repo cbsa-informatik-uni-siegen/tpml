@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 
 import de.unisiegen.tpml.core.expressions.Expression;
+import de.unisiegen.tpml.core.interfaces.BoundTypeNames;
 import de.unisiegen.tpml.core.typechecker.TypeEnvironment;
 import de.unisiegen.tpml.core.typeinference.TypeEquationTypeInference;
 import de.unisiegen.tpml.core.typeinference.TypeFormula;
@@ -517,19 +518,22 @@ public class TypeFormularRenderer extends AbstractRenderer {
 					
 					//Typeequations werden einfach hingerendert...
           TypeEquationTypeInference s = (TypeEquationTypeInference)t;
-					
+          
+          //get the highlightinfos
+          ShowBonds bondTypeEquation = new ShowBonds();
+					bondTypeEquation.setTypeEquationTypeInference(s);
+					bondTypeEquation.getAnnotations();
+
 					//gc.drawString(t.toString(), posX, posY);
 					//posX += AbstractRenderer.expFontMetrics.stringWidth(t.toString());
 					typeEquationStringrenderer.setPrettyString(s.toPrettyString());
 					//Wir wollen nicht, dass er hier umbricht, das wäre doof
 					Dimension typeEquationSize = typeEquationStringrenderer.getNeededSize(Integer.MAX_VALUE);
-					ShowBonds bound = new ShowBonds();
-					
-					bound.setExpression(null);
-					bound.setType(t.getType());
+					//ShowBonds bound = new ShowBonds();
+				
 					//TODO wir wollen hier den haben, den auch die Compoundexpression hat
 					//ToListenForMouseContainer toListenForM = new ToListenForMouseContainer();
-					typeEquationStringrenderer.render(posX, posY-(typeEquationSize.height / 2) - fontAscent / 2, typeEquationSize.width, typeEquationSize.height, gc, bound, toListenForM);
+					typeEquationStringrenderer.render(posX, posY-(typeEquationSize.height / 2) - fontAscent / 2, typeEquationSize.width, typeEquationSize.height, gc, bondTypeEquation, toListenForM);
 					
 					this.typeFprmularPostitions.add(new Rectangle(posX, posY-fontAscent, typeEquationSize.width, typeEquationSize.height));
 					this.typeEquations.add(i);
@@ -648,6 +652,9 @@ public class TypeFormularRenderer extends AbstractRenderer {
 					//gc.drawString(type.toString(), posX, posY);
 					//posX += AbstractRenderer.expFontMetrics.stringWidth(type.toString());
 					typeRenderer.setPrettyString(type.toPrettyString());
+					ShowBonds bondType = new ShowBonds();
+					bondType.setType(type);
+					
 					//Dimension typeSize = prettyStringrenderer.getNeededSize(Integer.MAX_VALUE);
 					Dimension typeSize = typeRenderer.getNeededSize(width - einrücken);
 					
@@ -664,7 +671,7 @@ public class TypeFormularRenderer extends AbstractRenderer {
 						
 					}
 
-					typeRenderer.render(posX, posY-(typeSize.height / 2) - fontAscent / 2, typeSize.width ,typeSize.height, gc, bound, toListenForM);
+					typeRenderer.render(posX, posY-(typeSize.height / 2) - fontAscent / 2, typeSize.width ,typeSize.height, gc, bondType, toListenForM);
 					posX += typeSize.width;
 
 					this.typeFprmularPostitions.add(new Rectangle(oldPosX, posY, posX-oldPosX, höhe));
