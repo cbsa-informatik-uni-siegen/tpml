@@ -139,7 +139,8 @@ public class DefaultTypeCheckerProofContext implements TypeCheckerProofContext
    */
   public void addEquation ( MonoType left , MonoType right )
   {
-    this.equations = this.equations.extend ( left , right ) ;
+    this.equations = this.equations.extend ( new TypeEquationTypeChecker (
+        left , right , new SeenTypes < TypeEquationTypeChecker > ( ) ) ) ;
   }
 
 
@@ -343,9 +344,7 @@ public class DefaultTypeCheckerProofContext implements TypeCheckerProofContext
       addEquation ( tmpNode.getType ( ) , type ) ;
     }
     // unify the type equations and apply the substitution to the model
-    // TODO
-    this.model.contextApplySubstitution ( this , this.equations
-        .unify ( new SeenTypes < TypeEquationTypeChecker > ( ) ) ) ;
+    this.model.contextApplySubstitution ( this , this.equations.unify ( ) ) ;
     // update all super nodes
     for ( ; ; )
     {

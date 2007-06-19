@@ -31,15 +31,24 @@ public final class TypeEquationTypeChecker
 
 
   /**
+   * The {@link TypeEquationTypeChecker}s which were unified before.
+   */
+  private SeenTypes < TypeEquationTypeChecker > seenTypes ;
+
+
+  /**
    * Allocates a new <code>TypeEquation</code> with the given
    * <code>left</code> and <code>right</code> side types.
    * 
    * @param pLeft the monomorphic type on the left side.
    * @param pRight the monomorphic type on the right side.
+   * @param pSeenTypes The {@link TypeEquationTypeChecker}s which were unified
+   *          before.
    * @throws NullPointerException if <code>left</code> or <code>right</code>
    *           is <code>null</code>.
    */
-  public TypeEquationTypeChecker ( MonoType pLeft , MonoType pRight )
+  public TypeEquationTypeChecker ( MonoType pLeft , MonoType pRight ,
+      SeenTypes < TypeEquationTypeChecker > pSeenTypes )
   {
     if ( pLeft == null )
     {
@@ -49,8 +58,13 @@ public final class TypeEquationTypeChecker
     {
       throw new NullPointerException ( "Right is null" ) ; //$NON-NLS-1$
     }
+    if ( pSeenTypes == null )
+    {
+      throw new NullPointerException ( "SeenTypes is null" ) ; //$NON-NLS-1$
+    }
     this.left = pLeft ;
     this.right = pRight ;
+    this.seenTypes = pSeenTypes ;
   }
 
 
@@ -95,6 +109,18 @@ public final class TypeEquationTypeChecker
 
 
   /**
+   * Returns the seenTypes.
+   * 
+   * @return The seenTypes.
+   * @see #seenTypes
+   */
+  public SeenTypes < TypeEquationTypeChecker > getSeenTypes ( )
+  {
+    return this.seenTypes ;
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see java.lang.Object#hashCode()
@@ -117,8 +143,8 @@ public final class TypeEquationTypeChecker
   public TypeEquationTypeChecker substitute ( TypeSubstitution s )
   {
     // apply the substitution to the left and the right side
-    return new TypeEquationTypeChecker ( this.left.substitute ( s ) , this.right
-        .substitute ( s ) ) ;
+    return new TypeEquationTypeChecker ( this.left.substitute ( s ) ,
+        this.right.substitute ( s ) , this.seenTypes ) ;
   }
 
 
