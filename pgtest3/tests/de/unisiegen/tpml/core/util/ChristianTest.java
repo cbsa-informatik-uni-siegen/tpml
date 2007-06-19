@@ -2,6 +2,7 @@ package de.unisiegen.tpml.core.util ;
 
 
 import de.unisiegen.tpml.core.expressions.Identifier ;
+import de.unisiegen.tpml.core.typechecker.SeenTypes ;
 import de.unisiegen.tpml.core.typeinference.TypeEquationTypeInference ;
 import de.unisiegen.tpml.core.types.ArrowType ;
 import de.unisiegen.tpml.core.types.BooleanType ;
@@ -27,7 +28,8 @@ public class ChristianTest
     TypeEquationTypeInference t = new TypeEquationTypeInference ( new RecType (
         new TypeName ( "t" ) , new ArrowType ( new IntegerType ( ) ,
             new TypeName ( "t" ) ) ) , new RecType ( new TypeName ( "s" ) ,
-        new ArrowType ( new IntegerType ( ) , new TypeName ( "s" ) ) ) ) ;
+        new ArrowType ( new IntegerType ( ) , new TypeName ( "s" ) ) ) ,
+        new SeenTypes < TypeEquationTypeInference > ( ) ) ;
     System.out.println ( t ) ;
     ShowBonds s = new ShowBonds ( ) ;
     s.setTypeEquationTypeInference ( t ) ;
