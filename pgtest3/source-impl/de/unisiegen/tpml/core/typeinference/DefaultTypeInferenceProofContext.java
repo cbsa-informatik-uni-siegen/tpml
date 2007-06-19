@@ -118,32 +118,22 @@ public class DefaultTypeInferenceProofContext implements
   private final LinkedList < Runnable > undoActions = new LinkedList < Runnable > ( ) ;
 
 
-  /**
-   * The seen types in this context.
-   */
-  private SeenTypes < TypeEquationTypeInference > seenTypes ;
-
-
   //
   // Constructor
   //
   /**
    * @param pModel the type inference proof model with which the context is
    *          associated.
-   * @param pSeenTypes The seen types in this context.
    * @throws NullPointerException if <code>model</code> is <code>null</code>.
    * @see TypeInferenceProofModel#setIndex(int)
    */
-  public DefaultTypeInferenceProofContext (
-      final TypeInferenceProofModel pModel ,
-      final SeenTypes < TypeEquationTypeInference > pSeenTypes )
+  public DefaultTypeInferenceProofContext ( final TypeInferenceProofModel pModel )
   {
     if ( pModel == null )
     {
       throw new NullPointerException ( "model is null" ) ; //$NON-NLS-1$
     }
     this.model = pModel ;
-    this.seenTypes = pSeenTypes ;
     // this.equations = pNode.getEquations();
     /*
      * // increment the model index final int index = model.getIndex();
@@ -154,33 +144,31 @@ public class DefaultTypeInferenceProofContext implements
   }
 
 
-  //
-  // Primitives
-  //
   /**
-   * {@inheritDoc}
+   * TODO
    * 
+   * @param left TODO
+   * @param right TODO
    * @see de.unisiegen.tpml.core.typechecker.TypeCheckerProofContext#addEquation(de.unisiegen.tpml.core.types.MonoType,
    *      de.unisiegen.tpml.core.types.MonoType)
    */
-  public void addEquation ( final MonoType left , final MonoType right )
+  public void addEquation ( MonoType left , MonoType right )
   {
-    final TypeEquationTypeInference eqn = new TypeEquationTypeInference ( left ,
-        right ) ;
-    // equations = equations.extend(left, right);
-    this.equations.add ( 0 , eqn ) ;
+    // TODO Test
+    addEquation ( new TypeEquationTypeInference ( left , right ,
+        new SeenTypes < TypeEquationTypeInference > ( ) ) ) ;
   }
 
 
   /**
-   * Adds a {@link TypeEquationTypeInference} to the context.
+   * TODO
    * 
-   * @param pTypeEquationTypeInference The {@link TypeEquationTypeInference} to
-   *          add.
+   * @param pTypeEquationTypeInference TODO
    */
-  public void addSeenType ( TypeEquationTypeInference pTypeEquationTypeInference )
+  public void addEquation ( TypeEquationTypeInference pTypeEquationTypeInference )
   {
-    this.seenTypes.add ( pTypeEquationTypeInference ) ;
+    // TODO Test
+    this.equations.add ( 0 , pTypeEquationTypeInference ) ;
   }
 
 
@@ -199,6 +187,216 @@ public class DefaultTypeInferenceProofContext implements
     final DefaultTypeCheckerProofNode child = new DefaultTypeCheckerProofNode (
         environment , expression , type ) ;
     ( ( DefaultTypeCheckerProofNode ) pNode ).add ( child ) ;
+  }
+
+
+  //
+  // Context action handling
+  //
+  /**
+   * Adds the specified <code>redoAction</code> to the internal list of
+   * redoable actions, and runs the <code>redoAction</code>. This method
+   * should be called before adding the matching undo action via
+   * {@link #addUndoAction(Runnable)}.
+   * 
+   * @param redoAction the redoable action.
+   * @see #addUndoAction(Runnable)
+   * @see #getRedoActions()
+   * @throws NullPointerException if <code>redoAction</code> is
+   *           <code>null</code>.
+   */
+  void addRedoAction ( final Runnable redoAction )
+  {
+    if ( redoAction == null )
+    {
+      throw new NullPointerException ( "undoAction is null" ) ; //$NON-NLS-1$
+    }
+    // perform the action
+    redoAction.run ( ) ;
+    // record the action
+    this.redoActions.add ( redoAction ) ;
+  }
+
+
+  /**
+   * Extend a new Substitution to the SubstitutionList
+   * 
+   * @param s the new found substitution
+   */
+  public void addSubstitution ( TypeSubstitution s )
+  {
+    DefaultTypeSubstitution sub = ( DefaultTypeSubstitution ) s ;
+    this.substitution.add ( sub ) ;
+  }
+
+
+  /**
+   * Adds the specified <code>undoAction</code> to the internal list of
+   * undoable actions, and runs the <code>undoActions</code>. This method
+   * should be called after adding the matching redo action via
+   * {@link #addRedoAction(Runnable)}.
+   * 
+   * @param undoAction the undoable action.
+   * @see #addRedoAction(Runnable)
+   * @see #getUndoActions()
+   * @throws NullPointerException if <code>undoAction</code> is
+   *           <code>null</code>.
+   */
+  void addUndoAction ( final Runnable undoAction )
+  {
+    if ( undoAction == null )
+    {
+      throw new NullPointerException ( "undoAction is null" ) ; //$NON-NLS-1$
+    }
+    // record the action
+    this.undoActions.add ( 0 , undoAction ) ;
+  }
+
+
+  //
+  // Rule applicationxterm
+  //
+  /**
+   * Applies the specified proof <code>rule</code> to the actual
+   * <code>node</code>.
+   * 
+   * @param rule the proof rule to apply to the <code>node</code>.
+   * @param formula the TypeFormula to which to apply the <code>rule</code>.
+   * @param type the type the user guessed for the <code>node</code> or
+   *          <code>null</code> if the user didn't enter a type.
+   * @param mode The choosen mode.
+   * @param node The {@link DefaultTypeInferenceProofNode}.
+   * @throws ProofRuleException if the application of the <code>rule</code> to
+   *           the <code>node</code> failed for some reason.
+   * @throws UnifyException if an error occurs while unifying the type equations
+   *           that resulted from the application of <code>rule</code> to
+   *           <code>node</code>.
+   */
+  @ SuppressWarnings ( "unused" )
+  void apply ( final TypeCheckerProofRule rule , final TypeFormula formula ,
+      @ SuppressWarnings ( "unused" )
+      final MonoType type , boolean mode , DefaultTypeInferenceProofNode node )
+      throws ProofRuleException , UnifyException
+  {
+    DefaultTypeCheckerProofNode typeNode = null ;
+    if ( formula.getExpression ( ) != null )
+    {
+      typeNode = new DefaultTypeCheckerProofNode ( formula.getEnvironment ( ) ,
+          formula.getExpression ( ) , formula.getType ( ) ) ;
+    }
+    else if ( rule.toString ( ).equals ( "UNIFY" ) ) { //$NON-NLS-1$
+      typeNode = new DefaultTypeEquationProofNode ( formula.getEnvironment ( ) ,
+          new Unify ( ) , new UnifyType ( ) ,
+          ( TypeEquationTypeInference ) formula , mode ) ;
+    }
+    else
+    {
+      typeNode = new DefaultTypeCheckerProofNode ( formula.getEnvironment ( ) ,
+          new Unify ( ) , new UnifyType ( ) ) ;
+      throw new ProofRuleException ( typeNode , rule ) ;
+    }
+    // try to apply the rule to the node
+    rule.apply ( this , typeNode ) ;
+    // check if the user specified a type
+    /**
+     * if (type != null) { add an equation for { node.getType() = type }
+     * addEquation(node.getType(), type); }
+     */
+    // Create a new List of type substitutions
+    ArrayList < DefaultTypeSubstitution > newSubstitutions = new ArrayList < DefaultTypeSubstitution > ( ) ;
+    newSubstitutions.addAll ( this.substitution ) ;
+    newSubstitutions.addAll ( this.substitutions ) ;
+    // Create a new List of formulas and sort it
+    ArrayList < TypeFormula > sortedFormulas = new ArrayList < TypeFormula > ( ) ;
+    // sortedFormulas.addAll ( node.getAllFormulas ( ) );
+    for ( TypeFormula form : node.getAllFormulas ( ) )
+    {
+      if ( form instanceof TypeJudgement ) sortedFormulas.add ( form ) ;
+    }
+    for ( TypeFormula form : node.getAllFormulas ( ) )
+    {
+      if ( form instanceof TypeEquationTypeInference )
+        sortedFormulas.add ( form ) ;
+    }
+    DefaultTypeCheckerProofNode child ;
+    for ( int i = 0 ; i < typeNode.getChildCount ( ) ; i ++ )
+    {
+      child = typeNode.getChildAt ( i ) ;
+      TypeJudgement insert = new TypeJudgement (
+          ( DefaultTypeEnvironment ) child.getEnvironment ( ) , child
+              .getExpression ( ) , child.getType ( ) ) ;
+      for ( int j = 0 ; j < sortedFormulas.size ( ) ; j ++ )
+      {
+        if ( sortedFormulas.get ( j ) instanceof TypeEquationTypeInference
+            || j == sortedFormulas.size ( ) - 1 )
+        {
+          sortedFormulas.add ( j , insert ) ;
+          break ;
+        }
+      }
+    }
+    for ( int j = 0 ; j < sortedFormulas.size ( ) ; j ++ )
+    {
+      if ( sortedFormulas.get ( j ) instanceof TypeEquationTypeInference
+          || j == sortedFormulas.size ( ) - 1 )
+      {
+        sortedFormulas.addAll ( j , this.equations ) ;
+        break ;
+      }
+    }
+    // Remove the actual formula from list
+    sortedFormulas.remove ( formula ) ;
+    // Create a new List of formulas needed for new node
+    ArrayList < TypeFormula > formulas = new ArrayList < TypeFormula > ( ) ;
+    for ( TypeFormula form : sortedFormulas )
+    {
+      TypeFormula actual = form ;
+      actual = actual.substitute ( newSubstitutions ) ;
+      // don't add formula if it is already in list
+      if ( ! formulas.contains ( actual ) ) formulas.add ( actual ) ;
+    }
+    // create the new node
+    this.model.contextAddProofNode ( this , node , formulas , newSubstitutions ,
+        rule , formula ) ;
+    if ( formulas.size ( ) < 1 )
+    {
+      this.model.setFinished ( ) ;
+    }
+  }
+
+
+  /**
+   * Returns a <code>Runnable</code>, which performs all the previously
+   * recorded redoable actions, added via {@link #addRedoAction(Runnable)}.
+   * 
+   * @return a <code>Runnable</code> for all recorded redoable actions.
+   * @see #addRedoAction(Runnable)
+   * @see #getUndoActions()
+   */
+  Runnable getRedoActions ( )
+  {
+    return new Runnable ( )
+    {
+      @ SuppressWarnings ( "synthetic-access" )
+      public void run ( )
+      {
+        for ( final Runnable redoAction : DefaultTypeInferenceProofContext.this.redoActions )
+        {
+          redoAction.run ( ) ;
+        }
+      }
+    } ;
+  }
+
+
+  /**
+   * get a list of all substitutions
+   * 
+   * @return ArrayList<DefaultTypeSubstitutions substitutions
+   */
+  public ArrayList < DefaultTypeSubstitution > getSubstitution ( )
+  {
+    return this.substitution ;
   }
 
 
@@ -318,6 +516,30 @@ public class DefaultTypeInferenceProofContext implements
 
 
   /**
+   * Returns a <code>Runnable</code>, which performs all the previously
+   * recorded undoable actions, added via {@link #addUndoAction(Runnable)}.
+   * 
+   * @return a <code>Runnable</code> for all recorded undoable actions.
+   * @see #addUndoAction(Runnable)
+   * @see #getRedoActions()
+   */
+  Runnable getUndoActions ( )
+  {
+    return new Runnable ( )
+    {
+      @ SuppressWarnings ( "synthetic-access" )
+      public void run ( )
+      {
+        for ( final Runnable undoAction : DefaultTypeInferenceProofContext.this.undoActions )
+        {
+          undoAction.run ( ) ;
+        }
+      }
+    } ;
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see de.unisiegen.tpml.core.typechecker.TypeCheckerProofContext#instantiate(de.unisiegen.tpml.core.types.Type)
@@ -356,130 +578,6 @@ public class DefaultTypeInferenceProofContext implements
 
 
   /**
-   * Extend a new Substitution to the SubstitutionList
-   * 
-   * @param s the new found substitution
-   */
-  public void addSubstitution ( TypeSubstitution s )
-  {
-    DefaultTypeSubstitution sub = ( DefaultTypeSubstitution ) s ;
-    this.substitution.add ( sub ) ;
-  }
-
-
-  //
-  // Rule applicationxterm
-  //
-  /**
-   * Applies the specified proof <code>rule</code> to the actual
-   * <code>node</code>.
-   * 
-   * @param rule the proof rule to apply to the <code>node</code>.
-   * @param formula the TypeFormula to which to apply the <code>rule</code>.
-   * @param type the type the user guessed for the <code>node</code> or
-   *          <code>null</code> if the user didn't enter a type.
-   * @param mode The choosen mode.
-   * @param node The {@link DefaultTypeInferenceProofNode}.
-   * @throws ProofRuleException if the application of the <code>rule</code> to
-   *           the <code>node</code> failed for some reason.
-   * @throws UnifyException if an error occurs while unifying the type equations
-   *           that resulted from the application of <code>rule</code> to
-   *           <code>node</code>.
-   */
-  @ SuppressWarnings ( "unused" )
-  void apply ( final TypeCheckerProofRule rule , final TypeFormula formula ,
-      @ SuppressWarnings ( "unused" )
-      final MonoType type , boolean mode , DefaultTypeInferenceProofNode node )
-      throws ProofRuleException , UnifyException
-  {
-    DefaultTypeCheckerProofNode typeNode = null ;
-    if ( formula.getExpression ( ) != null )
-    {
-      typeNode = new DefaultTypeCheckerProofNode ( formula.getEnvironment ( ) ,
-          formula.getExpression ( ) , formula.getType ( ) ) ;
-    }
-    else if ( rule.toString ( ).equals ( "UNIFY" ) ) { //$NON-NLS-1$
-      typeNode = new DefaultTypeEquationProofNode ( formula.getEnvironment ( ) ,
-          new Unify ( ) , new UnifyType ( ) ,
-          ( TypeEquationTypeInference ) formula , mode ) ;
-    }
-    else
-    {
-      typeNode = new DefaultTypeCheckerProofNode ( formula.getEnvironment ( ) ,
-          new Unify ( ) , new UnifyType ( ) ) ;
-      throw new ProofRuleException ( typeNode , rule ) ;
-    }
-    // try to apply the rule to the node
-    rule.apply ( this , typeNode ) ;
-    // check if the user specified a type
-    /**
-     * if (type != null) { add an equation for { node.getType() = type }
-     * addEquation(node.getType(), type); }
-     */
-    // Create a new List of type substitutions
-    ArrayList < DefaultTypeSubstitution > newSubstitutions = new ArrayList < DefaultTypeSubstitution > ( ) ;
-    newSubstitutions.addAll ( this.substitution ) ;
-    newSubstitutions.addAll ( this.substitutions ) ;
-    // Create a new List of formulas and sort it
-    ArrayList < TypeFormula > sortedFormulas = new ArrayList < TypeFormula > ( ) ;
-    // sortedFormulas.addAll ( node.getAllFormulas ( ) );
-    for ( TypeFormula form : node.getAllFormulas ( ) )
-    {
-      if ( form instanceof TypeJudgement ) sortedFormulas.add ( form ) ;
-    }
-    for ( TypeFormula form : node.getAllFormulas ( ) )
-    {
-      if ( form instanceof TypeEquationTypeInference )
-        sortedFormulas.add ( form ) ;
-    }
-    DefaultTypeCheckerProofNode child ;
-    for ( int i = 0 ; i < typeNode.getChildCount ( ) ; i ++ )
-    {
-      child = typeNode.getChildAt ( i ) ;
-      TypeJudgement insert = new TypeJudgement (
-          ( DefaultTypeEnvironment ) child.getEnvironment ( ) , child
-              .getExpression ( ) , child.getType ( ) ) ;
-      for ( int j = 0 ; j < sortedFormulas.size ( ) ; j ++ )
-      {
-        if ( sortedFormulas.get ( j ) instanceof TypeEquationTypeInference
-            || j == sortedFormulas.size ( ) - 1 )
-        {
-          sortedFormulas.add ( j , insert ) ;
-          break ;
-        }
-      }
-    }
-    for ( int j = 0 ; j < sortedFormulas.size ( ) ; j ++ )
-    {
-      if ( sortedFormulas.get ( j ) instanceof TypeEquationTypeInference
-          || j == sortedFormulas.size ( ) - 1 )
-      {
-        sortedFormulas.addAll ( j , this.equations ) ;
-        break ;
-      }
-    }
-    // Remove the actual formula from list
-    sortedFormulas.remove ( formula ) ;
-    // Create a new List of formulas needed for new node
-    ArrayList < TypeFormula > formulas = new ArrayList < TypeFormula > ( ) ;
-    for ( TypeFormula form : sortedFormulas )
-    {
-      TypeFormula actual = form ;
-      actual = actual.substitute ( newSubstitutions ) ;
-      // don't add formula if it is already in list
-      if ( ! formulas.contains ( actual ) ) formulas.add ( actual ) ;
-    }
-    // create the new node
-    this.model.contextAddProofNode ( this , node , formulas , newSubstitutions ,
-        rule , formula ) ;
-    if ( formulas.size ( ) < 1 )
-    {
-      this.model.setFinished ( ) ;
-    }
-  }
-
-
-  /**
    * Invokes all previously registered undo actions and clears the list of undo
    * actions.
    * 
@@ -498,105 +596,6 @@ public class DefaultTypeInferenceProofContext implements
 
 
   //
-  // Context action handling
-  //
-  /**
-   * Adds the specified <code>redoAction</code> to the internal list of
-   * redoable actions, and runs the <code>redoAction</code>. This method
-   * should be called before adding the matching undo action via
-   * {@link #addUndoAction(Runnable)}.
-   * 
-   * @param redoAction the redoable action.
-   * @see #addUndoAction(Runnable)
-   * @see #getRedoActions()
-   * @throws NullPointerException if <code>redoAction</code> is
-   *           <code>null</code>.
-   */
-  void addRedoAction ( final Runnable redoAction )
-  {
-    if ( redoAction == null )
-    {
-      throw new NullPointerException ( "undoAction is null" ) ; //$NON-NLS-1$
-    }
-    // perform the action
-    redoAction.run ( ) ;
-    // record the action
-    this.redoActions.add ( redoAction ) ;
-  }
-
-
-  /**
-   * Adds the specified <code>undoAction</code> to the internal list of
-   * undoable actions, and runs the <code>undoActions</code>. This method
-   * should be called after adding the matching redo action via
-   * {@link #addRedoAction(Runnable)}.
-   * 
-   * @param undoAction the undoable action.
-   * @see #addRedoAction(Runnable)
-   * @see #getUndoActions()
-   * @throws NullPointerException if <code>undoAction</code> is
-   *           <code>null</code>.
-   */
-  void addUndoAction ( final Runnable undoAction )
-  {
-    if ( undoAction == null )
-    {
-      throw new NullPointerException ( "undoAction is null" ) ; //$NON-NLS-1$
-    }
-    // record the action
-    this.undoActions.add ( 0 , undoAction ) ;
-  }
-
-
-  /**
-   * Returns a <code>Runnable</code>, which performs all the previously
-   * recorded redoable actions, added via {@link #addRedoAction(Runnable)}.
-   * 
-   * @return a <code>Runnable</code> for all recorded redoable actions.
-   * @see #addRedoAction(Runnable)
-   * @see #getUndoActions()
-   */
-  Runnable getRedoActions ( )
-  {
-    return new Runnable ( )
-    {
-      @ SuppressWarnings ( "synthetic-access" )
-      public void run ( )
-      {
-        for ( final Runnable redoAction : DefaultTypeInferenceProofContext.this.redoActions )
-        {
-          redoAction.run ( ) ;
-        }
-      }
-    } ;
-  }
-
-
-  /**
-   * Returns a <code>Runnable</code>, which performs all the previously
-   * recorded undoable actions, added via {@link #addUndoAction(Runnable)}.
-   * 
-   * @return a <code>Runnable</code> for all recorded undoable actions.
-   * @see #addUndoAction(Runnable)
-   * @see #getRedoActions()
-   */
-  Runnable getUndoActions ( )
-  {
-    return new Runnable ( )
-    {
-      @ SuppressWarnings ( "synthetic-access" )
-      public void run ( )
-      {
-        for ( final Runnable undoAction : DefaultTypeInferenceProofContext.this.undoActions )
-        {
-          undoAction.run ( ) ;
-        }
-      }
-    } ;
-  }
-
-
-  //
   // Accessors
   //
   /**
@@ -608,33 +607,5 @@ public class DefaultTypeInferenceProofContext implements
       final ArrayList < DefaultTypeSubstitution > subs )
   {
     this.substitutions = subs ;
-  }
-
-
-  /**
-   * get a list of all substitutions
-   * 
-   * @return ArrayList<DefaultTypeSubstitutions substitutions
-   */
-  public ArrayList < DefaultTypeSubstitution > getSubstitution ( )
-  {
-    return this.substitution ;
-  }
-
-
-  /*
-   * Set the newes type substitution @param substitution DefaultTypeSubstitution
-   * public void setSubstitution(TypeSubstitutionList s) { this.substitution =
-   * s; }
-   */
-  /**
-   * Returns the seenTypes.
-   * 
-   * @return The seenTypes.
-   * @see #seenTypes
-   */
-  public SeenTypes < TypeEquationTypeInference > getSeenTypes ( )
-  {
-    return this.seenTypes ;
   }
 }

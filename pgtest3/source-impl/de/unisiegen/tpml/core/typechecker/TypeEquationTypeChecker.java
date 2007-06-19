@@ -157,6 +157,6 @@ public final class TypeEquationTypeChecker
   @ Override
   public String toString ( )
   {
-    return ( this.left + " = " + this.right ) ; //$NON-NLS-1$
+    return ( this.seenTypes + " " + this.left + " = " + this.right ) ; //$NON-NLS-1$ //$NON-NLS-2$
   }
 }

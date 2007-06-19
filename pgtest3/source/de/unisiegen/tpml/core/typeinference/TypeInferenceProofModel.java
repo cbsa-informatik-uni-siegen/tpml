@@ -17,7 +17,6 @@ import de.unisiegen.tpml.core.expressions.Expression ;
 import de.unisiegen.tpml.core.expressions.IsEmpty ;
 import de.unisiegen.tpml.core.typechecker.DefaultTypeEnvironment ;
 import de.unisiegen.tpml.core.typechecker.DefaultTypeSubstitution ;
-import de.unisiegen.tpml.core.typechecker.SeenTypes ;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofContext ;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofRule ;
 import de.unisiegen.tpml.core.types.MonoType ;
@@ -64,7 +63,6 @@ public final class TypeInferenceProofModel extends AbstractProofModel
   private int index = 1 ;
 
 
-
   //
   // Constructor
   //
@@ -85,8 +83,7 @@ public final class TypeInferenceProofModel extends AbstractProofModel
     super ( new DefaultTypeInferenceProofNode (
         new TypeJudgement ( new DefaultTypeEnvironment ( ) , expression ,
             new TypeVariable ( 1 , 0 ) ) ,
-        new ArrayList < DefaultTypeSubstitution > ( ) ,
-        new SeenTypes < TypeEquationTypeInference > ( ) ) , pRuleSet ) ;
+        new ArrayList < DefaultTypeSubstitution > ( ) ) , pRuleSet ) ;
   }
 
 
@@ -475,7 +472,7 @@ public final class TypeInferenceProofModel extends AbstractProofModel
   {
     // allocate a new TypeCheckerContext
     DefaultTypeInferenceProofContext context = new DefaultTypeInferenceProofContext (
-        this , node.getSeenTypes ( ).clone ( ) ) ;
+        this ) ;
     this.index ++ ;
     DefaultTypeInferenceProofNode typeNode = node ;
     Exception e = null ;
@@ -634,7 +631,7 @@ public final class TypeInferenceProofModel extends AbstractProofModel
       final TypeCheckerProofRule rule , final TypeFormula formula )
   {
     final DefaultTypeInferenceProofNode child = new DefaultTypeInferenceProofNode (
-        formulas , subs , context.getSeenTypes ( ) ) ;
+        formulas , subs ) ;
     final ProofStep [ ] oldSteps = pNode.getSteps ( ) ;
     // add redo and undo options
     addUndoableTreeEdit ( new UndoableTreeEdit ( )

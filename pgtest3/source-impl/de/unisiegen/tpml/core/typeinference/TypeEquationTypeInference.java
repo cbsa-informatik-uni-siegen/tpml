@@ -9,6 +9,8 @@ import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilder ;
 import de.unisiegen.tpml.core.prettyprinter.PrettyStringBuilderFactory ;
 import de.unisiegen.tpml.core.typechecker.DefaultTypeEnvironment ;
 import de.unisiegen.tpml.core.typechecker.DefaultTypeSubstitution ;
+import de.unisiegen.tpml.core.typechecker.SeenTypes ;
+import de.unisiegen.tpml.core.typechecker.TypeEquationTypeChecker ;
 import de.unisiegen.tpml.core.typechecker.TypeSubstitution ;
 import de.unisiegen.tpml.core.types.MonoType ;
 
@@ -17,6 +19,7 @@ import de.unisiegen.tpml.core.types.MonoType ;
  * Represents a type equation. Used for the unification algorithm.
  * 
  * @author Benjamin Mies
+ * @author Christian Fehler
  * @see de.unisiegen.tpml.core.typechecker.TypeEquationListTypeChecker
  */
 public final class TypeEquationTypeInference implements TypeFormula ,
@@ -41,6 +44,12 @@ public final class TypeEquationTypeInference implements TypeFormula ,
   private MonoType right ;
 
 
+  /**
+   * The {@link TypeEquationTypeInference}s which were unified before.
+   */
+  private SeenTypes < TypeEquationTypeInference > seenTypes ;
+
+
   //
   // Constructor (package)
   //
@@ -50,11 +59,13 @@ public final class TypeEquationTypeInference implements TypeFormula ,
    * 
    * @param pLeft the monomorphic type on the left side.
    * @param pRight the monomorphic type on the right side.
+   * @param pSeenTypes The {@link TypeEquationTypeChecker}s which were unified
+   *          before.
    * @throws NullPointerException if <code>left</code> or <code>right</code>
    *           is <code>null</code>.
    */
   public TypeEquationTypeInference ( final MonoType pLeft ,
-      final MonoType pRight )
+      final MonoType pRight , SeenTypes < TypeEquationTypeInference > pSeenTypes )
   {
     if ( pLeft == null )
     {
@@ -64,8 +75,71 @@ public final class TypeEquationTypeInference implements TypeFormula ,
     {
       throw new NullPointerException ( "right is null" ) ; //$NON-NLS-1$
     }
+    if ( pSeenTypes == null )
+    {
+      throw new NullPointerException ( "SeenTypes is null" ) ; //$NON-NLS-1$
+    }
     this.left = pLeft ;
     this.right = pRight ;
+    this.seenTypes = pSeenTypes ;
+  }
+
+
+  //
+  // Base methods
+  //
+  /**
+   * Clones this type equation, so that the result is an type equation equal to
+   * this type equation.
+   * 
+   * @return a clone of this object.
+   * @see Object#clone()
+   */
+  @ Override
+  public TypeEquationTypeInference clone ( )
+  {
+    return new TypeEquationTypeInference ( this.left , this.right ,
+        this.seenTypes ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see java.lang.Object#equals(java.lang.Object)
+   */
+  @ Override
+  public boolean equals ( final Object obj )
+  {
+    if ( obj instanceof TypeEquationTypeInference )
+    {
+      final TypeEquationTypeInference other = ( TypeEquationTypeInference ) obj ;
+      return ( this.left.equals ( other.left ) && this.right
+          .equals ( other.right ) ) ;
+    }
+    return false ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.tpml.core.typeinference.TypeFormula#getEnvironment()
+   */
+  public DefaultTypeEnvironment getEnvironment ( )
+  {
+    return new DefaultTypeEnvironment ( ) ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.tpml.core.typeinference.TypeFormula#getExpression()
+   */
+  public Expression getExpression ( )
+  {
+    return null ;
   }
 
 
@@ -94,6 +168,63 @@ public final class TypeEquationTypeInference implements TypeFormula ,
   }
 
 
+  /**
+   * Returns the seenTypes.
+   * 
+   * @return The seenTypes.
+   * @see #seenTypes
+   */
+  public SeenTypes < TypeEquationTypeInference > getSeenTypes ( )
+  {
+    return this.seenTypes ;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.tpml.core.typeinference.TypeFormula#getType()
+   */
+  public MonoType getType ( )
+  {
+    throw new RuntimeException ( "Do not use me!" ) ; //$NON-NLS-1$
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see java.lang.Object#hashCode()
+   */
+  @ Override
+  public int hashCode ( )
+  {
+    return this.left.hashCode ( ) + this.right.hashCode ( ) ;
+  }
+
+
+  /**
+   * set the left type of this type equation
+   * 
+   * @param pLeft MonoType to set as left type
+   */
+  public void setLeft ( MonoType pLeft )
+  {
+    this.left = pLeft ;
+  }
+
+
+  /**
+   * set the right type of this type equation
+   * 
+   * @param pRight MonoType to set as right type
+   */
+  public void setRight ( MonoType pRight )
+  {
+    this.right = pRight ;
+  }
+
+
   //
   // Primitives
   //
@@ -116,99 +247,6 @@ public final class TypeEquationTypeInference implements TypeFormula ,
     }
     // apply the substitution to the left and the right side
     return newEqn ;
-  }
-
-
-  //
-  // Base methods
-  //
-  /**
-   * Clones this type equation, so that the result is an type equation equal to
-   * this type equation.
-   * 
-   * @return a clone of this object.
-   * @see Object#clone()
-   */
-  @ Override
-  public TypeEquationTypeInference clone ( )
-  {
-    return new TypeEquationTypeInference ( this.left , this.right ) ;
-  }
-
-
-  /**
-   * {@inheritDoc} Returns the string representation for the type equation,
-   * which is primarily useful for debugging.
-   * 
-   * @see java.lang.Object#toString()
-   */
-  @ Override
-  public String toString ( )
-  {
-    return ( this.left + " = " + this.right ) ; //$NON-NLS-1$
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see java.lang.Object#equals(java.lang.Object)
-   */
-  @ Override
-  public boolean equals ( final Object obj )
-  {
-    if ( obj instanceof TypeEquationTypeInference )
-    {
-      final TypeEquationTypeInference other = ( TypeEquationTypeInference ) obj ;
-      return ( this.left.equals ( other.left ) && this.right
-          .equals ( other.right ) ) ;
-    }
-    return false ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see java.lang.Object#hashCode()
-   */
-  @ Override
-  public int hashCode ( )
-  {
-    return this.left.hashCode ( ) + this.right.hashCode ( ) ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see de.unisiegen.tpml.core.typeinference.TypeFormula#getEnvironment()
-   */
-  public DefaultTypeEnvironment getEnvironment ( )
-  {
-    return new DefaultTypeEnvironment ( ) ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see de.unisiegen.tpml.core.typeinference.TypeFormula#getExpression()
-   */
-  public Expression getExpression ( )
-  {
-    return null ;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see de.unisiegen.tpml.core.typeinference.TypeFormula#getType()
-   */
-  public MonoType getType ( )
-  {
-    throw new RuntimeException ( "Do not use me!" ) ; //$NON-NLS-1$
   }
 
 
@@ -247,23 +285,14 @@ public final class TypeEquationTypeInference implements TypeFormula ,
 
 
   /**
-   * set the left type of this type equation
+   * {@inheritDoc} Returns the string representation for the type equation,
+   * which is primarily useful for debugging.
    * 
-   * @param pLeft MonoType to set as left type
+   * @see java.lang.Object#toString()
    */
-  public void setLeft ( MonoType pLeft )
+  @ Override
+  public String toString ( )
   {
-    this.left = pLeft ;
-  }
-
-
-  /**
-   * set the right type of this type equation
-   * 
-   * @param pRight MonoType to set as right type
-   */
-  public void setRight ( MonoType pRight )
-  {
-    this.right = pRight ;
+    return ( this.seenTypes + " " + this.left + " = " + this.right ) ; //$NON-NLS-1$ //$NON-NLS-2$
   }
 }

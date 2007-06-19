@@ -6,7 +6,6 @@ import javax.swing.tree.TreeNode ;
 import de.unisiegen.tpml.core.AbstractProofNode ;
 import de.unisiegen.tpml.core.ProofStep ;
 import de.unisiegen.tpml.core.typechecker.DefaultTypeSubstitution ;
-import de.unisiegen.tpml.core.typechecker.SeenTypes ;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofNode ;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofRule ;
 
@@ -46,27 +45,18 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
 
 
   /**
-   * The seen types in this node.
-   */
-  private SeenTypes < TypeEquationTypeInference > seenTypes ;
-
-
-  /**
    * Allocates a new <code>DefaultTypeEquationProofNode</code>
    * 
    * @param judgement type formulas of the node
    * @param subs subs substitutions of the node
-   * @param pSeenTypes The seen types in this node.
    */
   public DefaultTypeInferenceProofNode (
       final ArrayList < TypeFormula > judgement ,
-      final ArrayList < DefaultTypeSubstitution > subs ,
-      SeenTypes < TypeEquationTypeInference > pSeenTypes )
+      final ArrayList < DefaultTypeSubstitution > subs )
   {
     // equations = eqns;
     this.formula = judgement ;
     this.substitutions = subs ;
-    this.seenTypes = pSeenTypes ;
   }
 
 
@@ -78,16 +68,13 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
    * 
    * @param judgement type judgement of the node which will be added to formula
    * @param subs substitutions of the node
-   * @param pSeenTypes The seen types in this node.
    */
   public DefaultTypeInferenceProofNode ( final TypeJudgement judgement ,
-      final ArrayList < DefaultTypeSubstitution > subs ,
-      SeenTypes < TypeEquationTypeInference > pSeenTypes )
+      final ArrayList < DefaultTypeSubstitution > subs )
   {
     // equations = eqns;
     this.formula.add ( judgement ) ;
     this.substitutions = subs ;
-    this.seenTypes = pSeenTypes ;
   }
 
 
@@ -264,18 +251,6 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
   }
 
 
-  /**
-   * Returns the seenTypes.
-   * 
-   * @return The seenTypes.
-   * @see #seenTypes
-   */
-  public SeenTypes < TypeEquationTypeInference > getSeenTypes ( )
-  {
-    return this.seenTypes ;
-  }
-
-
   //
   // Accessors
   //
@@ -379,8 +354,6 @@ public class DefaultTypeInferenceProofNode extends AbstractProofNode implements
   {
     final StringBuilder builder = new StringBuilder ( ) ;
     builder.append ( "<html>" ) ; //$NON-NLS-1$
-    builder.append ( "A: " + this.seenTypes ) ; //$NON-NLS-1$
-    builder.append ( "<br>" ) ; //$NON-NLS-1$
     builder.append ( "S: " + this.substitutions ) ; //$NON-NLS-1$
     builder.append ( "<br>" ) ; //$NON-NLS-1$
     for ( int i = 0 ; i < this.formula.size ( ) ; i ++ )

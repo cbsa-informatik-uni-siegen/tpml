@@ -6,7 +6,6 @@ import javax.swing.tree.TreeNode ;
 import de.unisiegen.tpml.core.ProofNode ;
 import de.unisiegen.tpml.core.ProofStep ;
 import de.unisiegen.tpml.core.typechecker.DefaultTypeSubstitution ;
-import de.unisiegen.tpml.core.typechecker.SeenTypes ;
 import de.unisiegen.tpml.core.typechecker.TypeCheckerProofRule ;
 
 
@@ -128,14 +127,6 @@ public interface TypeInferenceProofNode extends ProofNode
    * @see de.unisiegen.tpml.core.ProofNode#getFirstLeaf()
    */
   public TypeInferenceProofNode getFirstLeaf ( ) ;
-
-
-  /**
-   * Returns the seenTypes.
-   * 
-   * @return The seenTypes.
-   */
-  public SeenTypes < TypeEquationTypeInference > getSeenTypes ( ) ;
 
 
   /**

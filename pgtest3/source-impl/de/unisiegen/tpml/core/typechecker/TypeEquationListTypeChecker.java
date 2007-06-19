@@ -200,7 +200,7 @@ public final class TypeEquationListTypeChecker
       TypeEquationListTypeChecker eqns = this.remaining ;
       eqns = eqns.extend ( new TypeEquationTypeChecker ( recType.getTau ( )
           .substitute ( recType.getTypeName ( ) , recType ) , right ,
-          this.first.getSeenTypes ( ) ) ) ;
+          this.first.getSeenTypes ( ).clone ( ) ) ) ;
       return eqns.unify ( ) ;
     }
     // MU-RIGHT
@@ -212,7 +212,7 @@ public final class TypeEquationListTypeChecker
       TypeEquationListTypeChecker eqns = this.remaining ;
       eqns = eqns.extend ( new TypeEquationTypeChecker ( left , recType
           .getTau ( ).substitute ( recType.getTypeName ( ) , recType ) ,
-          this.first.getSeenTypes ( ) ) ) ;
+          this.first.getSeenTypes ( ).clone ( ) ) ) ;
       return eqns.unify ( ) ;
     }
     // VAR
